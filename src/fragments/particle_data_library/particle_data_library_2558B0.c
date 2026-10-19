@@ -19,12 +19,12 @@ typedef struct unk_arg2_func_81001D80 {
     /* 0x08 */ s32 unk_08[1];
 } unk_arg2_func_81001D80; // size = 0xC
 
-typedef struct unk_D_81003FE0 {
+typedef struct ParticleCondition {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation[3];
     /* 0x0A */ s16 unk_0A;
-} unk_D_81003FE0; // size = 0xC
+} ParticleCondition; // size = 0xC
 
 typedef struct unk_D_81004160 {
     /* 0x00 */ f32 x;
@@ -34,7 +34,7 @@ typedef struct unk_D_81004160 {
 } unk_D_81004160; // size = 0x10
 
 // .data
-unk_D_81003FE0 gParticleConditionTable[18] = {
+ParticleCondition gParticleConditionTable[18] = {
     { 0x002C, 0x0041, 0x0008, 0x0026, 0x0060, 0x0073 },
     { 0x0020, 0x0041, 0x0008, 0x0026, 0x0060, 0x0073 },
     { 0x0024, 0x0041, 0x0008, 0x0026, 0x0060, 0x0073 },
@@ -63,13 +63,13 @@ f32 gParticleScaleTable[12] = {
     0.7250000238f, 0.6499999762f, 0.5749999881f, 0.5f, 0.4250000119f, 0.349999994f,
 };
 Vec3f gVecZero = { 0.0f, 0.0f, 0.0f };
-Vec3f D_81004118 = { 0.0f, 0.0f, 0.0f };
+Vec3f gVecZeroAlt = { 0.0f, 0.0f, 0.0f };
 Vec3f gVecOne = { 1.0f, 1.0f, 1.0f };
 Vec3f gVecTwo = { 2.0f, 2.0f, 2.0f };
-Vec3f D_8100413C = { 0.0f, 10.0f, 0.0f };
-Vec3f D_81004148 = { 10000.0f, 10000.0f, 10000.0f };
-Vec3f D_81004154 = { -10000.0f, -10000.0f, -10000.0f };
-Vec3f D_81004160 = { 1.0f, 1.0f, 1.0f };
+Vec3f gVecY10 = { 0.0f, 10.0f, 0.0f };
+Vec3f gVecLargePos = { 10000.0f, 10000.0f, 10000.0f };
+Vec3f gVecSmallPos = { -10000.0f, -10000.0f, -10000.0f };
+Vec3f gVecOneAlt = { 1.0f, 1.0f, 1.0f };
 static u32 pad_D_8100416C = 0;
 
 // .bss
@@ -82,12 +82,12 @@ void Particle31_ResetSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
     u8 var_v0 = arg0->modelPhase;
     s32 pad[2];
     Vec3f sp50 = gVecZero;
-    Vec3f sp44 = D_81004118;
+    Vec3f sp44 = gVecZeroAlt;
     Vec3f sp38 = gVecOne;
     Vec3f sp2C = gVecTwo;
-    Vec3f sp20 = D_8100413C;
-    Vec3f sp14 = D_81004148;
-    Vec3f sp8 = D_81004154;
+    Vec3f sp20 = gVecY10;
+    Vec3f sp14 = gVecLargePos;
+    Vec3f sp8 = gVecSmallPos;
 
     if (var_v0 == 0xFF) {
         var_v0 = 0;
@@ -122,7 +122,7 @@ void Particle31_SpawnSpeciesEffect(Particle* arg0) {
     Vec3f sp78;
     s32 var_s1;
     f32 temp_fv0_2;
-    Vec3f sp64 = D_81004160;
+    Vec3f sp64 = gVecOneAlt;
     f32 sp60;
     f32 sp5C;
     f32 sp58;

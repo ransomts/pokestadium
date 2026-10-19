@@ -89,7 +89,7 @@ static Gfx gDL_UI_ModulateState[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DC58[] = {
+Gfx gDL_UI_ModulatePoint[] = {
     gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_POINT),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
@@ -103,14 +103,14 @@ Gfx gDL_OverlayUI2[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DC98[] = {
+Gfx gDL_UI_ModulateBilerpCld[] = {
     gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_CLD_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DCB8[] = {
+Gfx gDL_UI_ModulatePointAA[] = {
     gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_POINT),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_XLU_SURF2),
@@ -124,21 +124,21 @@ Gfx gDL_BaseUI[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DCF8[] = {
+Gfx gDL_UI_ModulatePointZB[] = {
     gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_POINT),
     gsDPSetRenderMode(G_RM_PASS, G_RM_ZB_XLU_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DD18[] = {
+Gfx gDL_UI_ModulateBilerpZB[] = {
     gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_ZB_XLU_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DD38[] = {
+Gfx gDL_UI_ModulateBilerpZbCld[] = {
     gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_ZB_CLD_SURF2),

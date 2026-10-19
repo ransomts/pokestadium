@@ -38,8 +38,8 @@ static char* gBattleModeSubtitle_5;
 static char* gBattleModeSubtitle_6;
 static char* gBattleModeSubtitle_7;
 static char* gBattleModeSubtitle_8;
-unk_D_83003CE0 gMenuStaticStrings;
-unk_D_83003CE0 gMenuOptionStrings;
+RentalRulesStringTable gMenuStaticStrings;
+RentalRulesStringTable gMenuOptionStrings;
 
 char** gQualifyingSpeciesCountString = NULL;
 static char** gBattleModeMessageBank = NULL;

@@ -3158,7 +3158,7 @@ void BattleAI_PickBestMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u16* 
 s32 BattleAI_ScoreAllCandidateMoves(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8* arg2, u8 arg3);
 s32 BattleAI_ScoreAllCandidateMovesRatioToMaxHp(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8* arg2, u8 arg3);
 s32 BattleAI_ScoreAllCandidateMovesRatioToCurrentHp(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8* arg2, u8 arg3);
-void func_8437921C(void);
+void BattleAI_Init(void);
 u8 BattleAI_CalcStagedMovePower(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3);
 void BattleAI_ApplyInverseWeightScale(u8 arg0, u8* arg1);
 void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData* arg1, s32 arg2, u8 arg3, u8 arg4, MoveCandidateScore* arg5);

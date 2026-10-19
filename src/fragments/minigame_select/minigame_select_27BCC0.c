@@ -31,8 +31,8 @@ typedef struct ItemSelectionCoords {
 
 static u16 gSelectionFlags;
 static s32 gSelectionFrameCounter;
-static unk_D_82508B00* gControllerInputs;
-static unk_D_82508B00 gControllerStates[4];
+static ControllerState* gControllerInputs;
+static ControllerState gControllerStates[4];
 static UIElement gUIElements[14];
 static UIWidget* gUIElementArray[2];
 static UIWidget* gComputerUIElements[2];
@@ -1034,7 +1034,7 @@ s32 MiniGameSelect_CursorNodeCallback(s32 arg0, GraphNode* arg1) {
 
 void MiniGameSelect_ResetInputStates(void) {
     s32 i;
-    unk_D_82508B00* ptr = &gControllerStates[0];
+    ControllerState* ptr = &gControllerStates[0];
 
     for (i = 0; i < 4; i++, ptr++) {
         ptr->posX = 0;
@@ -1048,7 +1048,7 @@ void MiniGameSelect_ResetInputStates(void) {
 
 void MiniGameSelect_ReadInputsWithRepeat(void) {
     Controller* var_a0;
-    unk_D_82508B00* var_v1;
+    ControllerState* var_v1;
     s32 i;
     u16 tmp;
 

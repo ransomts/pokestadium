@@ -2088,7 +2088,7 @@ static u32 gFragment22MonIconPalette2[] = {
     0x841F9CE3, 0xADABBDEB, 0xB5A9A525, 0x7C1FA527, 0xB5EB8C61, 0x841F841F, 0x94A3AD67, 0xA527841F, 0x73DD8C61,
     0x94E3A525, 0xA5279D25, 0x9CE59CE5, 0x8C5F7C1F, 0xAD279D25, 0x841FC631,
 };
-static Gfx D_88013D20[] = {
+static Gfx gFragment22GfxDL_Empty[] = {
     gsSPEndDisplayList(),
 };
 static u32 gFragment22MonIconPalette3[] = {

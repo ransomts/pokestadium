@@ -4,7 +4,7 @@
 #include "global.h"
 #include "src/game_state.h"
 
-typedef struct unk_D_83003CE0 {
+typedef struct RentalRulesStringTable {
     /* 0x00 */ char* posX[29];
     /* 0x74 */ char* unk_74;
     /* 0x78 */ char* unk_78;
@@ -17,7 +17,7 @@ typedef struct unk_D_83003CE0 {
     /* 0x94 */ char* unk_94;
     /* 0x98 */ char* unk_98;
     /* 0x9C */ char unk9C[0x64];
-} unk_D_83003CE0; // size = 0x100
+} RentalRulesStringTable; // size = 0x100
 
 typedef struct unk_D_83079E70_014_000 {
     /* 0x00 */ s16 posX;
@@ -42,8 +42,8 @@ typedef struct QualifyingSpeciesWindow {
     /* 0x14 */ SpeciesPage unk_14[6];
 } QualifyingSpeciesWindow; // size = 0xD4
 
-extern unk_D_83003CE0 gMenuStaticStrings;
-extern unk_D_83003CE0 gMenuOptionStrings;
+extern RentalRulesStringTable gMenuStaticStrings;
+extern RentalRulesStringTable gMenuOptionStrings;
 
 extern char** gQualifyingSpeciesCountString;
 

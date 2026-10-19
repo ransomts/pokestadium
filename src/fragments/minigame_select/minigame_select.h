@@ -4,14 +4,14 @@
 #include "global.h"
 #include "src/gfx_rect.h"
 
-typedef struct unk_D_82508B00 {
+typedef struct ControllerState {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ u16 unk_08;
     /* 0x0A */ s16 unk_0A;
-} unk_D_82508B00; // size = 0xC
+} ControllerState; // size = 0xC
 
 typedef struct unk_D_8250A288 {
     /* 0x00 */ s16 posX;

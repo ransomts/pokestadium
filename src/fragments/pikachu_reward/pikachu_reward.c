@@ -155,12 +155,12 @@ s32 PikachuReward_CountKnownMoves(void) {
 }
 
 void PikachuReward_UpdateLeadPikachuAnimation(void) {
-    static s32 D_83202004 = 0;
+    static s32 gPikachuAnimTimer = 0;
 
     if ((gPikachuNodes[0].unk_040.posX != 0xA) && (gPikachuNodes[0].unk_040.posX != 5)) {
-        D_83202004++;
-        if (D_83202004 == 0x3C) {
-            D_83202004 = 0;
+        gPikachuAnimTimer++;
+        if (gPikachuAnimTimer == 0x3C) {
+            gPikachuAnimTimer = 0;
             ModelAnim_SetEventTrack(&gPikachuNodes[0], -1);
             ModelAnim_SetEventTrack(&gPikachuNodes[0], 0xA);
         }

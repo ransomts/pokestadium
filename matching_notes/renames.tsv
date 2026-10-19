@@ -17590,3 +17590,66 @@ D_86002DD8	gScoreMarkerDL	w11		display list that renders the score marker using 
 D_87906048	gMiniGameUnusedVar1	w11		unused variable in minigame actor framework	applied@c7b59f65
 D_879060C0	gMiniGameUnusedVar2	w11		unused variable in minigame actor framework	applied@c7b59f65
 D_87906110	gMiniDebugGravityVector	w11		accessed as GV (gravity) and PW (power/weight) in minigameDebuggVectorEditor	applied@c7b59f65
+func_8437921C	BattleAI_Init	w12		empty function, likely a placeholder or initialization routine for the AI subsystem	applied@49a671ad
+D_86600AB8	gMiniGameCamYaw	w12		updated by controller buttons and passed as yaw to Camera_ComputeEyeFromAngles	applied@49a671ad
+D_86600ABA	gMiniGameCamPitch	w12		updated by controller buttons and passed as pitch to Camera_ComputeEyeFromAngles	applied@49a671ad
+unk_D_82508B00	ControllerState	w12		(struct used for gControllerStates, contains stick and button input flags)	applied@49a671ad
+D_81004118	gVecZeroAlt	w12		Vec3f initialized to 0,0,0 used in Particle31_ResetSlot	applied@49a671ad
+D_8100413C	gVecY10	w12		Vec3f initialized to 0,10,0 used in Particle31_ResetSlot	applied@49a671ad
+D_81004148	gVecLargePos	w12		Vec3f initialized to 10000,10000,10000 used in Particle31_ResetSlot	applied@49a671ad
+D_81004154	gVecSmallPos	w12		Vec3f initialized to -10000,-10000,-10000 used in Particle31_ResetSlot	applied@49a671ad
+D_81004160	gVecOneAlt	w12		Vec3f initialized to 1,1,1 used in Particle31_SpawnSpeciesEffect	applied@49a671ad
+unk_D_81003FE0	ParticleCondition	w12		Struct used in gParticleConditionTable containing position and rotation offsets	applied@49a671ad
+D_8140DC58	gDL_UI_ModulatePoint	w12		uses gDL_UI_ModulateState with G_TF_POINT and G_RM_XLU_SURF2	applied@49a671ad
+D_8140DC98	gDL_UI_ModulateBilerpCld	w12		uses gDL_UI_ModulateState with G_TF_BILERP and G_RM_CLD_SURF2	applied@49a671ad
+D_8140DCB8	gDL_UI_ModulatePointAA	w12		uses gDL_UI_ModulateState with G_TF_POINT and G_RM_AA_XLU_SURF2	applied@49a671ad
+D_8140DCF8	gDL_UI_ModulatePointZB	w12		uses gDL_UI_ModulateState with G_TF_POINT and G_RM_ZB_XLU_SURF2	applied@49a671ad
+D_8140DD18	gDL_UI_ModulateBilerpZB	w12		uses gDL_UI_ModulateState with G_TF_BILERP and G_RM_ZB_XLU_SURF2	applied@49a671ad
+D_8140DD38	gDL_UI_ModulateBilerpZbCld	w12		uses gDL_UI_ModulateState with G_TF_BILERP and G_RM_ZB_CLD_SURF2	applied@49a671ad
+D_83202004	gPikachuAnimTimer	w12		static counter used to trigger ModelAnim_SetEventTrack 0xA in PikachuReward_UpdateLeadPikachuAnimation	applied@49a671ad
+D_88826A44	gPokedexGraphNode	w12		GraphNode* used in Pokedex fragment for rendering	applied@49a671ad
+D_88826A50	gMapPinActive	w12		s16 toggle for map pin visibility	applied@49a671ad
+D_88826A58	gMapCategory	w12		s16 tracking the current Pokedex category	applied@49a671ad
+D_88826A7E	gMapAreaId	w12		u16 tracking the current map area	applied@49a671ad
+D_88826CB0	gMapXOffset	w12		s16 coordinate for map panning	applied@49a671ad
+D_88826CB2	gMapYOffset	w12		s16 coordinate for map panning	applied@49a671ad
+D_88826CB4	gMapZoomLevel	w12		s16 value for map zoom state	applied@49a671ad
+D_88826CD4	gMapAreaData	w12		u8* pointer to map area binary data	applied@49a671ad
+D_88826CE8	gMapMatrix	w12		Mtx* matrix used for map transformations	applied@49a671ad
+unk_D_88826CF0	MapAreaMarker	w12		typedef for map marker coordinates and rotation	applied@49a671ad
+unk_D_88826CF0_004	MapMarkerPos	w12		typedef for a single marker position (x, y, rot, unk)	applied@49a671ad
+D_88823610	Pokedex_BgEndDL	w12		gsSPEndDisplayList() used to terminate a display list for the Pokedex background	applied@49a671ad
+D_88823698	Pokedex_IconEndDL	w12		gsSPEndDisplayList() used to terminate a display list for the Pokedex icon	applied@49a671ad
+D_88823720	Pokedex_IconEndDL2	w12		gsSPEndDisplayList() used to terminate a display list for the Pokedex icon	applied@49a671ad
+D_888237A8	Pokedex_IconEndDL3	w12		gsSPEndDisplayList() used to terminate a display list for the Pokedex icon	applied@49a671ad
+D_88823830	Pokedex_IconEndDL4	w12		gsSPEndDisplayList() used to terminate a display list for the Pokedex icon	applied@49a671ad
+D_888238B8	Pokedex_IconEndDL5	w12		gsSPEndDisplayList() used to terminate a display list for the Pokedex icon	applied@49a671ad
+D_888239C0	Pokedex_IconEndDL6	w12		gsSPEndDisplayList() used to terminate a display list for the Pokedex icon	applied@49a671ad
+D_888246B0	Pokedex_LocationEndDL	w12		gsSPEndDisplayList() used to terminate a display list for the location texture	applied@49a671ad
+D_888250D8	Pokedex_SmallIconEndDL	w12		gsSPEndDisplayList() used to terminate a display list for the small icon	applied@49a671ad
+D_888251A0	Pokedex_SmallIconEndDL2	w12		gsSPEndDisplayList() used to terminate a display list for the small icon	applied@49a671ad
+D_888252C8	Pokedex_BgResetDL	w12		Resets texture and geometry mode after drawing Pokedex background	applied@49a671ad
+D_888253A0	Pokedex_IconResetDL	w12		Resets texture and geometry mode after drawing Pokedex icon	applied@49a671ad
+D_888254F8	Pokedex_IconResetDL2	w12		Resets texture and geometry mode after drawing Pokedex icon	applied@49a671ad
+D_88825548	Pokedex_SmallIconResetDL	w12		Resets texture and geometry mode after drawing Pokedex small icon	applied@49a671ad
+D_88825598	Pokedex_SmallIconResetDL2	w12		Resets texture and geometry mode after drawing Pokedex small icon	applied@49a671ad
+D_8882627C	gPokedexMapMinBound	w12		Vec3f used as a bounding box or reference point for the Pokedex map	applied@49a671ad
+D_88826288	gPokedexMapMaxBound	w12		Vec3f used as a bounding box or reference point for the Pokedex map	applied@49a671ad
+D_88826294	gPokedexMapMarkerPositions	w12		Array of 36 Vec3f coordinates for map markers	applied@49a671ad
+D_88826444	gPokedexMapMarkerCoords	w12		Table of 2D coordinates for the Pokedex overview map	applied@49a671ad
+D_888264D4	gPokedexMapAreaOrder	w12		s16 array mapping marker indices to area IDs	applied@49a671ad
+D_8882651C	gPokedexMapAreaSequence	w12		s16 array defining the traversal sequence of map areas	applied@49a671ad
+D_88826564	gPokedexMapAreaTypes	w12		s16 array likely defining the type or category of each map area	applied@49a671ad
+D_888265DC	gPokedexMapAreaData	w12		u32 array containing flags and pointers for map area properties	applied@49a671ad
+D_88823618	gMapLabelTopBorderTex	w12		texture for the top border of the map label box	applied@49a671ad
+D_888236A0	gMapLabelBottomBorderTex	w12		texture for the bottom border of the map label box	applied@49a671ad
+D_88823728	gMapLabelLeftBorderTex	w12		texture for the left border of the map label box	applied@49a671ad
+D_888237B0	gMapLabelRightBorderTex	w12		texture for the right border of the map label box	applied@49a671ad
+D_888251A8	gMapLabelBgTex	w12		texture for the background fill of the map label box	applied@49a671ad
+D_88823248	gMapLabelTailLeftTex	w12		texture for the left side of the label tail/pointer	applied@49a671ad
+D_88823340	gMapLabelTailRightTex	w12		texture for the right side of the label tail/pointer	applied@49a671ad
+D_88823838	gMapLabelTailBottomLeftTex	w12		texture for the bottom-left part of the label tail	applied@49a671ad
+D_888238C0	gMapLabelTailBottomRightTex	w12		texture for the bottom-right part of the label tail	applied@49a671ad
+D_88826CCE	gMapLabelMaxWidth	w12		stores the maximum width encountered among map labels	applied@49a671ad
+D_88013D20	gFragment22GfxDL_Empty	w12		Empty display list for fragment 22	applied@49a671ad
+unk_D_83003CE0	RentalRulesStringTable	w12		unk_D_83003CE0:char**	applied@49a671ad

@@ -1414,7 +1414,7 @@ s32 BattleAI_ScoreAllCandidateMovesRatioToCurrentHp(BattleAI_MonData* arg0, Batt
     return BattleAI_ScaleSignedRatio(BattleAI_ScoreAllCandidateMoves(arg0, arg1, arg2, arg3), arg1->unk_12.unk_0C);
 }
 
-void func_8437921C(void) {
+void BattleAI_Init(void) {
 }
 
 u8 BattleAI_CalcStagedMovePower(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3) {
