@@ -17105,3 +17105,7 @@ D_82F13F90	gTradeEvoGlowDL	w16		display list for the glow backdrop in TradeEvo_D
 D_82F13FD0	gTradeCableLightXPos	w16		table of X positions for cable lights in TradeCable_SetLightState	applied@64260372
 D_82F13FD4	gTradeCableLightYPos	w16		table of Y positions for cable lights in TradeCable_SetLightState	applied@64260372
 D_82F13FE0	gTradeCableSparkTex	w16		array of texture pointers for sparks in TradeCable_DrawLightSpark	applied@64260372
+D_82D07A88	MenuTextureA_PanelVtx13_Extra	w17		Vtx array used in MenuTextureB_DisplayList as a vertex set for a panel segment.	applied@bd36b4b7
+D_82D07E08	MenuTextureA_PanelVtx14_Extra	w17		Vtx array used in MenuTextureB_DisplayList as a vertex set for a panel segment.	applied@bd36b4b7
+D_82D09EEC	gRotatingCornersAngle	w17		Static s16 incremented by 0x2000 and used in SINS() to animate corner positions in PakUi_DrawRotatingCorners.	applied@bd36b4b7
+D_82D0ABD0	gStatusPopup	w17		used as the target for PakUi_InitStatusPopup and PakUi_OpenStatusPopup	applied@bd36b4b7
