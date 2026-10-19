@@ -172,3 +172,24 @@ Goal: adopt michiiik's tree layout. Everything needed is in place:
    2,306 tail (statics etc.) can then cross-reference their SRC directly
    (their tree at /tmp/opencode/hippo or re-clone shallow).
 4. Tier C shared-name field scoping (pycparser) remains open, unchanged.
+
+## Reorg execution state (2026-10-18 23:50 handoff)
+
+DONE: 23 gated reorg commits (pilot 16->credits + 21 batch commits; groups 9-15, 17-60,
+62-76 as yaml joins allowed). ROM byte-identical, full make OK at HEAD (3e53b9db).
+Tooling: matching_notes/reorg.py (apply/plan per group) + reorg_batch.py (batch driver,
+bisect-on-failure, skips problem groups). File+header moves + include rewrites + yaml
+path rewrites incl. dict-form bss entries and relocs segments.
+
+REMAINING for the next session:
+1. Residual `fragments/N/` yaml entries per group (grep yamls/us/rom.yaml): the moves
+   and gates passed, but each group has some un-joined subsegment entries left at old
+   paths - a consistent class; inspect one group (e.g. 16 post-commit) to identify the
+   entry kinds that never join and extend join_group.
+2. Isolated gate failures: groups 5, 6, 7, 8, 61 (apply ok, gate failed) - investigate
+   individually; likely the same residual-class root cause.
+3. Skipped problem groups (join problems): 1, 31, 77 (and 16's residuals).
+4. The main segment (src/*.c hex names -> semantic, 113 files, 18 join problems).
+5. rev1: 95 OURS-BETTER reversion rows in matching_notes/hippo_name_conflicts.md -
+   append to ledger + apply when no reorg gate is mid-flight.
+6. 21 re-resolvable name collisions (report has the list).
