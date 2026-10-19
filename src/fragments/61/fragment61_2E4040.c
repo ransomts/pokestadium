@@ -14,12 +14,12 @@
 #include "src/dp_intro.h"
 #include "src/hal_libc.h"
 
-s16 D_8423E580;
-Controller* D_8423E584;
-s16 D_8423E588;
-s16 D_8423E58A;
+s16 gRulePromptCurrentIndex;
+Controller* gRulePromptController;
+s16 gRulePromptAnimFrame;
+s16 gRulePromptSelectedOption;
 
-s16 D_84211700 = 0;
+s16 gRulePromptState = 0;
 RulePromptConfig gRulePromptConfigs[] = {
     {
         132,
@@ -244,7 +244,7 @@ RulePromptConfig gRulePromptConfigs[] = {
 };
 
 void TeamSelection_RulePrompt_DrawOption(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
-    if (arg2 == D_8423E58A) {
+    if (arg2 == gRulePromptSelectedOption) {
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
     } else {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -261,8 +261,8 @@ void TeamSelection_RulePrompt_DrawOptionSetFour(RulePromptConfig* arg0) {
     TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 3, TeamSelection_GetLabelText(0x18));
     Font_EndTexturedTextRendering();
 
-    if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
+    if (gRulePromptSelectedOption >= 0) {
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (gRulePromptSelectedOption * 0x1C) + 0xC);
     }
 }
 
@@ -274,8 +274,8 @@ void TeamSelection_RulePrompt_DrawOptionSetThreeA(RulePromptConfig* arg0) {
     TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 2, TeamSelection_GetLabelText(0x1B));
     Font_EndTexturedTextRendering();
 
-    if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
+    if (gRulePromptSelectedOption >= 0) {
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (gRulePromptSelectedOption * 0x1C) + 0xC);
     }
 }
 
@@ -287,8 +287,8 @@ void TeamSelection_RulePrompt_DrawOptionSetThreeB(RulePromptConfig* arg0) {
     TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 2, TeamSelection_GetLabelText(0x18));
     Font_EndTexturedTextRendering();
 
-    if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
+    if (gRulePromptSelectedOption >= 0) {
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (gRulePromptSelectedOption * 0x1C) + 0xC);
     }
 }
 
@@ -300,8 +300,8 @@ void TeamSelection_RulePrompt_DrawOptionSetThreeC(RulePromptConfig* arg0) {
     TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 2, TeamSelection_GetLabelText(0x1E));
     Font_EndTexturedTextRendering();
 
-    if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
+    if (gRulePromptSelectedOption >= 0) {
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (gRulePromptSelectedOption * 0x1C) + 0xC);
     }
 }
 
@@ -312,8 +312,8 @@ void TeamSelection_RulePrompt_DrawOptionSetTwo(RulePromptConfig* arg0) {
     TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 1, TeamSelection_GetLabelText(0x20));
     Font_EndTexturedTextRendering();
 
-    if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
+    if (gRulePromptSelectedOption >= 0) {
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (gRulePromptSelectedOption * 0x1C) + 0xC);
     }
 }
 
@@ -393,8 +393,8 @@ void TeamSelection_RulePrompt_DrawOptionSetTwoB(RulePromptConfig* arg0) {
     TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 1, TeamSelection_GetLabelText(0x20));
     Font_EndTexturedTextRendering();
 
-    if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
+    if (gRulePromptSelectedOption >= 0) {
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (gRulePromptSelectedOption * 0x1C) + 0xC);
     }
 }
 
@@ -432,10 +432,10 @@ void TeamSelection_RulePrompt_DrawFrame(s32 arg0) {
     s16 var_a3;
     RulePromptConfig* temp_s0;
 
-    if ((D_84211700 != 0) && (D_8423E588 > 0)) {
-        temp_s0 = &gRulePromptConfigs[D_8423E580];
-        if (D_8423E588 < 4) {
-            var_a3 = (temp_s0->unk_06 * D_8423E588) / 4;
+    if ((gRulePromptState != 0) && (gRulePromptAnimFrame > 0)) {
+        temp_s0 = &gRulePromptConfigs[gRulePromptCurrentIndex];
+        if (gRulePromptAnimFrame < 4) {
+            var_a3 = (temp_s0->unk_06 * gRulePromptAnimFrame) / 4;
             if (var_a3 < 0x10) {
                 var_a3 = 0x10;
             }
@@ -444,7 +444,7 @@ void TeamSelection_RulePrompt_DrawFrame(s32 arg0) {
         } else {
             Ui_DrawBorderedPanel(temp_s0->posX, temp_s0->posY, temp_s0->rotation, temp_s0->unk_06, temp_s0->unk_0C);
 
-            switch (D_8423E580) {
+            switch (gRulePromptCurrentIndex) {
                 case 0:
                     TeamSelection_RulePrompt_DrawOptionSetFour(temp_s0);
                     break;
@@ -511,11 +511,11 @@ void TeamSelection_RulePrompt_DrawFrame(s32 arg0) {
 }
 
 void TeamSelection_RulePrompt_HandleInput(void) {
-    s16 tmp = gRulePromptConfigs[D_8423E580].unk_0A;
+    s16 tmp = gRulePromptConfigs[gRulePromptCurrentIndex].unk_0A;
 
-    if (D_8423E584 != NULL) {
-        if (BTN_IS_PRESSED(D_8423E584, BTN_A)) {
-            s32 tmp2 = (gRulePromptConfigs[D_8423E580].unk_0E >> (D_8423E58A * 3));
+    if (gRulePromptController != NULL) {
+        if (BTN_IS_PRESSED(gRulePromptController, BTN_A)) {
+            s32 tmp2 = (gRulePromptConfigs[gRulePromptCurrentIndex].unk_0E >> (gRulePromptSelectedOption * 3));
 
             switch (tmp2 & 7) {
                 case 1:
@@ -546,48 +546,48 @@ void TeamSelection_RulePrompt_HandleInput(void) {
                     }
                     break;
             }
-            D_84211700 = 3;
-        } else if (BTN_IS_PRESSED(D_8423E584, BTN_B)) {
+            gRulePromptState = 3;
+        } else if (BTN_IS_PRESSED(gRulePromptController, BTN_B)) {
             Audio_PlaySoundEffectById(3);
-            D_8423E58A = -1;
-            D_84211700 = 3;
-        } else if (BTN_IS_PRESSED(D_8423E584, BTN_DUP)) {
+            gRulePromptSelectedOption = -1;
+            gRulePromptState = 3;
+        } else if (BTN_IS_PRESSED(gRulePromptController, BTN_DUP)) {
             Audio_PlaySoundEffectById(1);
-            D_8423E58A -= 1;
-            if (D_8423E58A < 0) {
-                D_8423E58A = tmp - 1;
+            gRulePromptSelectedOption -= 1;
+            if (gRulePromptSelectedOption < 0) {
+                gRulePromptSelectedOption = tmp - 1;
             }
-        } else if (BTN_IS_PRESSED(D_8423E584, BTN_DDOWN)) {
+        } else if (BTN_IS_PRESSED(gRulePromptController, BTN_DDOWN)) {
             Audio_PlaySoundEffectById(1);
-            D_8423E58A += 1;
-            if (D_8423E58A >= tmp) {
-                D_8423E58A = 0;
+            gRulePromptSelectedOption += 1;
+            if (gRulePromptSelectedOption >= tmp) {
+                gRulePromptSelectedOption = 0;
             }
         }
     }
-    D_8423E588 = 4;
+    gRulePromptAnimFrame = 4;
 }
 
 void TeamSelection_RulePrompt_AdvanceOpen(void) {
-    D_8423E588++;
-    if (D_8423E588 >= 5) {
-        D_8423E588 = 4;
-        D_84211700 = 2;
+    gRulePromptAnimFrame++;
+    if (gRulePromptAnimFrame >= 5) {
+        gRulePromptAnimFrame = 4;
+        gRulePromptState = 2;
     }
 }
 
 void TeamSelection_RulePrompt_AdvanceClose(void) {
-    D_8423E588--;
-    if (D_8423E588 < 0) {
-        D_8423E588 = 0;
-        D_84211700 = 4;
+    gRulePromptAnimFrame--;
+    if (gRulePromptAnimFrame < 0) {
+        gRulePromptAnimFrame = 0;
+        gRulePromptState = 4;
     }
 }
 
 s32 TeamSelection_RulePrompt_Update(void) {
     s32 sp1C = 0;
 
-    switch (D_84211700) {
+    switch (gRulePromptState) {
         case 2:
             sp1C = 0;
             TeamSelection_RulePrompt_HandleInput();
@@ -608,7 +608,7 @@ s32 TeamSelection_RulePrompt_Update(void) {
 }
 
 s32 TeamSelection_RulePrompt_Open(s16 arg0, Controller* arg1) {
-    if (D_84211700 == 0) {
+    if (gRulePromptState == 0) {
         switch (arg0) {
             case 8:
                 Audio_PlaySoundEffectById(0x1F);
@@ -618,29 +618,29 @@ s32 TeamSelection_RulePrompt_Open(s16 arg0, Controller* arg1) {
                 break;
         }
         Audio_PlaySoundEffectById(4);
-        D_8423E580 = arg0;
-        D_8423E58A = gRulePromptConfigs[arg0].unk_0B;
-        D_8423E588 = 0;
-        D_8423E584 = arg1;
-        D_84211700 = 1;
+        gRulePromptCurrentIndex = arg0;
+        gRulePromptSelectedOption = gRulePromptConfigs[arg0].unk_0B;
+        gRulePromptAnimFrame = 0;
+        gRulePromptController = arg1;
+        gRulePromptState = 1;
         return 1;
     }
     return 0;
 }
 
 s32 TeamSelection_RulePrompt_BeginClose(s16 arg0) {
-    if ((D_84211700 == 2) && (arg0 == D_8423E580)) {
-        D_8423E58A = -1;
-        D_84211700 = 3;
+    if ((gRulePromptState == 2) && (arg0 == gRulePromptCurrentIndex)) {
+        gRulePromptSelectedOption = -1;
+        gRulePromptState = 3;
         return 1;
     }
     return 0;
 }
 
 s16 TeamSelection_RulePrompt_TryFinish(s16 arg0) {
-    if ((D_84211700 == 4) && (arg0 == D_8423E580)) {
-        D_84211700 = 0;
-        return D_8423E58A + 1;
+    if ((gRulePromptState == 4) && (arg0 == gRulePromptCurrentIndex)) {
+        gRulePromptState = 0;
+        return gRulePromptSelectedOption + 1;
     }
     return -1;
 }

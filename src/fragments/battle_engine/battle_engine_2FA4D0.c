@@ -167,7 +167,7 @@ static Gfx gDefaultGfxSetup[] = {
     gsSPEndDisplayList(),
 };
 
-void func_8430FC10(void) {
+void BattleHud_InitEmpty(void) {
 }
 
 void func_8430FC18(void) {
@@ -292,7 +292,7 @@ void BattleHud_DrawHpBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_843109EC(void) {
+void BattleHud_InitEmpty5(void) {
 }
 
 void BattleHud_DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2) {

@@ -289,10 +289,10 @@ typedef struct unk_D_84384588 {
     /* 0x02 */ char unk02[0xE];
 } unk_D_84384588; // size = 0x10
 
-typedef struct unk_D_84390178 {
+typedef struct BattleInitState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ char unk04[0x14];
-} unk_D_84390178; // size >= 0x18
+} BattleInitState; // size >= 0x18
 
 typedef struct unk_D_8438FF70 {
     /* 0x00 */ Vec3f posX;
@@ -988,7 +988,7 @@ extern f32 gHPBarTimer;
 extern f32 gPhaseTimer;
 extern u8 gBattleResultPhase;
 extern s32 gBattleInitFlag;
-extern unk_D_84390178 gBattleInitStruct;
+extern BattleInitState gBattleInitStruct;
 extern Vec3f gCameraPosition;
 extern BattleMessageBuffers* gBattleMessageQueues;
 extern unk_D_843901B0 gCameraPreset;
@@ -1040,8 +1040,8 @@ extern arg1_func_80019420* gMessageStringLists[40];
 
 
 s32 Battle_StageGeoDispatchCallback(s32 arg0, GraphNode* arg1);
-s32 Battle_StageLightAngleCallbackA(s32 arg0, unk_D_86002F34_alt18* arg1);
-s32 Battle_StageLightAngleCallbackB(s32 arg0, unk_D_86002F34_alt18* arg1);
+s32 Battle_StageLightAngleCallbackA(s32 arg0, PillarGlowParams* arg1);
+s32 Battle_StageLightAngleCallbackB(s32 arg0, PillarGlowParams* arg1);
 s32 Battle_StageMaterialTintCallback(s32 arg0, Fragment2_1GraphNode* arg1);
 void Battle_SetStageTintColor(u8 arg0, u8 arg1, u8 arg2);
 void Battle_SetStageScale(f32 arg0);
@@ -1290,7 +1290,7 @@ void BattleAnim_StatusIdleCase3Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlay
 void BattleAnim_StatusIdleCase3(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1);
 void BattleAnim_StatusIdleCase14Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1);
 void BattleAnim_StatusIdleCase14Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1);
-void func_8430A4E0(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1);
+void BattleAnim_StatusIdleCase14Sub2(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1);
 void BattleAnim_StatusIdleCase14(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1);
 s32 BattleAnim_ApproachAngleAndCheckThreshold(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2);
 void BattleAnim_StatusIdleCase4Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1);
@@ -1423,13 +1423,13 @@ void BattleScene_UpdateActionCollection(void);
 void BattleScene_UpdateActionSelectPhase(void);
 
 
-void func_8430FC10(void);
+void BattleHud_InitEmpty(void);
 void BattleHud_DrawTranslucentShadowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 void BattleHud_DrawGradientRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5);
 void Battle_DrawGradientRectWrapper(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5);
 void func_84310360(void);
 void BattleHud_DrawHpBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3);
-void func_843109EC(void);
+void BattleHud_InitEmpty5(void);
 void BattleHud_DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2);
 void BattleHud_DrawHpFractionText(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void BattleHud_DrawSpeciesNameLabel(s16 arg0, s16 arg1, s32 arg2, char* arg3, s32 arg4);
@@ -3048,7 +3048,7 @@ void HandleMoveEffectFlags(void);
 void Battle_ApplyAnimStateEffects(unk_BattlePlayerEntity* arg0);
 void ApplyParalysisSpeedCut(unk_BattlePlayerEntity* arg0);
 void ApplyBurnAttackCut(unk_BattlePlayerEntity* arg0);
-void func_84370B7C(unk_BattlePlayerEntity* arg0);
+void Battle_InitPokemonRuntimeState(unk_BattlePlayerEntity* arg0);
 s32 Battle_IsPartyMemberAlive(unk_BattlePlayerEntity* arg0);
 void func_84370E70(void);
 void func_84370E78(void);

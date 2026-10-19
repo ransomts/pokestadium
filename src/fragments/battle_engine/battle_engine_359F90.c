@@ -712,7 +712,7 @@ void ApplyBurnAttackCut(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void func_84370B7C(unk_BattlePlayerEntity* arg0) {
+void Battle_InitPokemonRuntimeState(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* sp28;
     PokemonAudioInfo* sp24;
     PokemonData* sp34;
@@ -1886,7 +1886,7 @@ void BeginBattleForEntity(unk_BattlePlayerEntity* arg0) {
     func_8436FA80(arg0);
     Vec3f_SetComponentsDuplicate(&arg0->unk_448.posX, 0.0f, 0.0f, 0.0f);
     Vec3f_SetComponentsDuplicate(&arg0->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
-    func_84370B7C(arg0);
+    Battle_InitPokemonRuntimeState(arg0);
 
     if (arg0 == sActivePokemon[0]) {
         Battle_ResetTransientRuntimeState(0, 1);

@@ -70,7 +70,7 @@ static u16 D_86B0EBB8;
 
 s32 Diorama_LogoRotateColorCallback(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
-        unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
+        PillarGlowParams* ptr = (PillarGlowParams*)arg1;
 
         gFragment17ColorAnim->posX += gFragment17ColorAnim->unk_08;
         gFragment17ColorAnim->posY += gFragment17ColorAnim->unk_0A;

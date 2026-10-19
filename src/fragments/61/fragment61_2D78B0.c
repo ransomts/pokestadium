@@ -23,14 +23,14 @@
 BinArchive* gBattleSelectionBackgroundArchive;
 void* gPartyScreenBackground;
 unk_D_842168A0_0013C* gBattleSelectionControllerInfo;
-char** D_84211B3C;
-char** D_84211B40;
+char** gTextTable_24;
+char** gTextTable_25;
 char** gMessageBank_26;
-char** D_84211B48;
+char** gTextTable_1A;
 char** gMessageBank_06;
 gItemPanel gPartyInfo;
 unk_D_842168A0 gControllerInfo;
-unk_D_84229EB0 gPokemonData;
+RegisteredTeamMenu gPokemonData;
 unk_D_8423D3A8 gMoveScreenInfo;
 unk_D_8423D3D8 gBattleSelectionSlots[4];
 s16 gMenuSelectionIndex;
@@ -54,11 +54,11 @@ s32 TeamSelection_CheckCartRemoved(s32 arg0) {
 }
 
 char* TeamSelection_GetTextFromSetA(s32 arg0) {
-    return Text_GetString(NULL, 0, D_84211B3C, arg0 - 1);
+    return Text_GetString(NULL, 0, gTextTable_24, arg0 - 1);
 }
 
 char* TeamSelection_GetTextFromSetB(s32 arg0) {
-    return Text_GetString(NULL, 0, D_84211B40, arg0 - 1);
+    return Text_GetString(NULL, 0, gTextTable_25, arg0 - 1);
 }
 
 char* TeamSelection_GetModeText(s32 arg0) {
@@ -66,7 +66,7 @@ char* TeamSelection_GetModeText(s32 arg0) {
 }
 
 char* TeamSelection_GetLabelText(s32 arg0) {
-    return Text_GetString(NULL, 0, D_84211B48, arg0);
+    return Text_GetString(NULL, 0, gTextTable_1A, arg0);
 }
 
 char* TeamSelection_GetInstructionText(s32 arg0) {
@@ -74,7 +74,7 @@ char* TeamSelection_GetInstructionText(s32 arg0) {
 }
 
 char* TeamSelection_FormatText(char* arg0, s32 arg1, s32 arg2) {
-    return Text_GetString(arg0, arg1, D_84211B48, arg2);
+    return Text_GetString(arg0, arg1, gTextTable_1A, arg2);
 }
 
 void TeamSelection_DrawCornerFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -348,7 +348,7 @@ void TeamSelection_DrawCategoryScreen(s16 arg0, s16 arg1, s16 arg2) {
             Font_SetActive(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetLineHeight(0x18);
-            Font_Printf(0x58, 0x154, Text_GetString(NULL, 0, D_84211B48, 0x4D));
+            Font_Printf(0x58, 0x154, Text_GetString(NULL, 0, gTextTable_1A, 0x4D));
             Font_EndTexturedTextRendering();
         }
     }
@@ -463,13 +463,13 @@ void TeamSelection_DrawFrame(s16 arg0, s16 arg1) {
     Font_SetActive(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
 
-    Font_Printf(0x6A, 0x2C, Text_GetString(NULL, 0, D_84211B48, arg0 + 0x37));
+    Font_Printf(0x6A, 0x2C, Text_GetString(NULL, 0, gTextTable_1A, arg0 + 0x37));
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Font_Printf(0x68, 0x2A, Text_GetString(NULL, 0, D_84211B48, arg0 + 0x37));
+    Font_Printf(0x68, 0x2A, Text_GetString(NULL, 0, gTextTable_1A, arg0 + 0x37));
 
     if ((arg0 == 0) && (var_t0 != 0)) {
         Font_SetActive(4, 0);
-        Font_Printf(0x1F9, 0x2F, Text_GetString(NULL, 0, D_84211B48, 0x4E));
+        Font_Printf(0x1F9, 0x2F, Text_GetString(NULL, 0, gTextTable_1A, 0x4E));
     }
     Font_EndTexturedTextRendering();
 }
@@ -905,7 +905,7 @@ s32 Team_SelectRegisteredTeams(void) {
 }
 
 void RegisteredTeam_Register(void) {
-    unk_D_84229EB0* ptr;
+    RegisteredTeamMenu* ptr;
     char sp74[16];
     s16 temp_v0;
     u16 var_s1;
@@ -1095,10 +1095,10 @@ s32 Rental_Main(s32 arg0, UNUSED s32 arg1) {
     PokeIcon_OpenModelArchives();
     Text_InitStringTables();
 
-    D_84211B3C = Text_GetStringTable(0x24);
-    D_84211B40 = Text_GetStringTable(0x25);
+    gTextTable_24 = Text_GetStringTable(0x24);
+    gTextTable_25 = Text_GetStringTable(0x25);
     gMessageBank_26 = Text_GetStringTable(0x26);
-    D_84211B48 = Text_GetStringTable(0x1A);
+    gTextTable_1A = Text_GetStringTable(0x1A);
     gMessageBank_06 = Text_GetStringTable(6);
 
     Save_EnsureBankLoaded(gSessionContext.unk_0001 / 4);

@@ -16,7 +16,7 @@
 #include "src/fragments/47/fragment47.h"
 #include "src/memory.h"
 
-typedef struct unk_D_8423E518 {
+typedef struct TrainerSlotSaveData {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
@@ -24,14 +24,14 @@ typedef struct unk_D_8423E518 {
     /* 0x04 */ u16 rotation;
     /* 0x06 */ char unk_06[1];
     /* 0x07 */ char unk_07[0xD];
-} unk_D_8423E518; // size = 0x14
+} TrainerSlotSaveData; // size = 0x14
 
 GraphNode* gMenuGraphRoot;
-Fragment2_1GraphNode D_8423D408[2][6];
+Fragment2_1GraphNode gMenuModelNodes[2][6];
 unk_D_86002F58_004_000_004* gMenuGeoLayouts[6];
 unk_D_86002F58_004_000_004* gMenuCommonGeoLayout;
 u8* gMenuTextureSegments[4];
-unk_D_8423E518 gTrainerSlotData[4];
+TrainerSlotSaveData gTrainerSlotData[4];
 s16 gSelectedIconIndex;
 s16 gMenuMode;
 s16 D_8423E56C;
@@ -40,7 +40,7 @@ Controller* gCurrentController;
 s16 gMenuBackgroundWidth;
 s16 gMenuBackgroundHeight;
 s16 gMessageId;
-s32 D_8423E57C;
+s32 gMenuControllerId;
 
 RentalSlotAnimData gIconConfig[] = {
     {
@@ -92,7 +92,7 @@ u32 gMenuRootLayout[] = {
     0x00000243,  0x05000000, 0x0D000000, 0x05000000, 0x0F000002, 0x05000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
-Vtx D_84210E48[] = {
+Vtx gMenuVtx_Slot[] = {
     VTX(-32, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 32, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 32, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, 64, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -100,11 +100,11 @@ Vtx D_84210E48[] = {
     VTX(-16, 39, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-16, 15, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, 15, 0, 1024, 768, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(16, 39, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84210F08[] = {
+static Gfx gMenuGfx_Slot[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84210E48, 12, 0),
+    gsSPVertex(gMenuVtx_Slot, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -116,11 +116,11 @@ static Gfx D_84210F08[] = {
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84210FF0[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84210E48, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_84210F08, 0x06000000, 0x01000000, 0x00000000,
+static u32 gMenuGeoLayout_Slot[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_Slot, 0x05000000, 0x22040000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_Slot, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84211028[] = {
+static Vtx gMenuVtx_Special1[] = {
     VTX(-38, 60, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-38, 40, 0, 0, 640, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(38, 40, 0, 2432, 640, 0xFF, 0xFF, 0xFF, 0xFF), VTX(38, 60, 0, 2432, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-38, 40, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-38, 20, 0, 0, 640, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -132,7 +132,7 @@ static Gfx D_842110E8[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84211028, 12, 0),
+    gsSPVertex(gMenuVtx_Special1, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 76, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -144,8 +144,8 @@ static Gfx D_842110E8[] = {
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_842111D0[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84211028, 0x05000000, 0x22050000,
+static u32 gMenuGeoLayout_Special1[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_Special1, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_842110E8, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84211208[] = {
@@ -177,7 +177,7 @@ static Gfx D_84211308[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84211430[] = {
+static u32 gMenuGeoLayout_Special2[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84211208, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_84211308, 0x06000000, 0x01000000, 0x00000000,
 };
@@ -197,15 +197,15 @@ static Gfx D_842114A8[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84211510[] = {
+static u32 gMenuGeoLayout_Common[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84211468, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_842114A8, 0x06000000, 0x01000000,
 };
 
-s16 D_84211544[] = { 0x46, 0x28, 0x1E, 0x1E, 0x1E, 0x1E, 0x28, 0x3C, 0x5A, 0x78, 0x6E, 0x64 };
-s16 D_8421155C[] = { 0x14, 0x3C, 0x5F, 0x78, 0x82, 0x87, 0x82, 0x78, 0x6E, 0x69, 0x66, 0x64 };
-s16 D_84211574[] = { 0x46, 0x32, 0x28, 0x1E, 0x19, 0x14, 0x14, 0x14, 0x19, 0x1E, 0x28, 0x32 };
-s16 D_8421158C[] = {
+s16 gMenuOpenScaleX[] = { 0x46, 0x28, 0x1E, 0x1E, 0x1E, 0x1E, 0x28, 0x3C, 0x5A, 0x78, 0x6E, 0x64 };
+s16 gMenuOpenScaleY[] = { 0x14, 0x3C, 0x5F, 0x78, 0x82, 0x87, 0x82, 0x78, 0x6E, 0x69, 0x66, 0x64 };
+s16 gMenuSelectScaleX[] = { 0x46, 0x32, 0x28, 0x1E, 0x19, 0x14, 0x14, 0x14, 0x19, 0x1E, 0x28, 0x32 };
+s16 gMenuSelectScaleY[] = {
     0x64, 0x6E, 0x82, 0x96, 0xA0, 0xA0, 0x78, 0x50, 0x32, 0x1E, 0xA, 5,
 };
 
@@ -394,11 +394,11 @@ void TeamSelection_TrainerSlots_UpdateModelScale(s16 arg0, f32 arg1) {
         var_a2 = 0x2000;
     }
 
-    D_8423D408[0][arg0].unk_030.x = ((SINS(gIconConfig[arg0].unk_0A) * var_fa0) + 1.0f) * arg1;
-    D_8423D408[0][arg0].unk_030.y = ((COSS(gIconConfig[arg0].unk_0A) * var_fa0) + 1.0f) * arg1;
+    gMenuModelNodes[0][arg0].unk_030.x = ((SINS(gIconConfig[arg0].unk_0A) * var_fa0) + 1.0f) * arg1;
+    gMenuModelNodes[0][arg0].unk_030.y = ((COSS(gIconConfig[arg0].unk_0A) * var_fa0) + 1.0f) * arg1;
 
-    D_8423D408[1][arg0].unk_030.x = ((SINS(gIconConfig[arg0].unk_0A) * var_fa0) + 1.0f) * arg1;
-    D_8423D408[1][arg0].unk_030.y = ((COSS(gIconConfig[arg0].unk_0A) * var_fa0) + 1.0f) * arg1;
+    gMenuModelNodes[1][arg0].unk_030.x = ((SINS(gIconConfig[arg0].unk_0A) * var_fa0) + 1.0f) * arg1;
+    gMenuModelNodes[1][arg0].unk_030.y = ((COSS(gIconConfig[arg0].unk_0A) * var_fa0) + 1.0f) * arg1;
 
     gIconConfig[arg0].unk_0A += var_a2 + ((MathUtil_Random16() & 0xF) * 0x10);
 }
@@ -415,11 +415,11 @@ void TeamSelection_TrainerSlots_UpdateModelPose(s16 arg0, f32 arg1) {
         var_fv0 = 1.0f;
     }
 
-    D_8423D408[0][arg0].unk_01E.z = SINS(gIconConfig[arg0].unk_08) * (1536.0f * var_fv0);
+    gMenuModelNodes[0][arg0].unk_01E.z = SINS(gIconConfig[arg0].unk_08) * (1536.0f * var_fv0);
 
-    D_8423D408[0][arg0].unk_024.x =
+    gMenuModelNodes[0][arg0].unk_024.x =
         (gIconConfig[arg0].posY - 320.0f) - (SINS(gIconConfig[arg0].unk_08) * (6.0f * var_fv0));
-    D_8423D408[1][arg0].unk_024.x =
+    gMenuModelNodes[1][arg0].unk_024.x =
         (gIconConfig[arg0].posY - 320.0f) - (SINS(gIconConfig[arg0].unk_08) * (6.0f * var_fv0));
 
     gIconConfig[arg0].unk_08 += var_v0;
@@ -512,7 +512,7 @@ void TeamSelection_TrainerSlots_HandleInput(void) {
             Audio_PlaySoundEffectById(8);
             D_8423E56C = 6;
         }
-    } else if ((D_8423E57C != 0) && (BTN_IS_PRESSED(gCurrentController, BTN_B))) {
+    } else if ((gMenuControllerId != 0) && (BTN_IS_PRESSED(gCurrentController, BTN_B))) {
         D_8423E56C = 5;
         Audio_PlaySoundEffectById(3);
     } else if (BTN_IS_PRESSED(gCurrentController, BTN_DUP)) {
@@ -535,8 +535,8 @@ void TeamSelection_TrainerSlots_AnimateOpen(void) {
     s16 i;
 
     for (i = 0; i < 12; i++) {
-        D_8423D408[0][i].unk_030.x = D_84211544[gMenuTimer] / 100.0f;
-        D_8423D408[0][i].unk_030.y = D_8421155C[gMenuTimer] / 100.0f;
+        gMenuModelNodes[0][i].unk_030.x = gMenuOpenScaleX[gMenuTimer] / 100.0f;
+        gMenuModelNodes[0][i].unk_030.y = gMenuOpenScaleY[gMenuTimer] / 100.0f;
     }
 
     gMenuBackgroundWidth = ((((gMenuTimer * 0x32) + 0x32) / 12) + 6) & (u16)~1;
@@ -550,16 +550,16 @@ void TeamSelection_TrainerSlots_AnimateOpen(void) {
 
 void TeamSelection_TrainerSlots_AnimateSelected(void) {
     if (gMenuTimer++ < 12) {
-        D_8423D408[0][gSelectedIconIndex].unk_030.x = D_84211574[gMenuTimer] / 100.0f;
-        D_8423D408[0][gSelectedIconIndex].unk_030.y = D_8421158C[gMenuTimer] / 100.0f;
+        gMenuModelNodes[0][gSelectedIconIndex].unk_030.x = gMenuSelectScaleX[gMenuTimer] / 100.0f;
+        gMenuModelNodes[0][gSelectedIconIndex].unk_030.y = gMenuSelectScaleY[gMenuTimer] / 100.0f;
 
-        D_8423D408[1][gSelectedIconIndex].unk_030.x = D_84211574[gMenuTimer] / 100.0f;
-        D_8423D408[1][gSelectedIconIndex].unk_030.y = D_8421158C[gMenuTimer] / 100.0f;
+        gMenuModelNodes[1][gSelectedIconIndex].unk_030.x = gMenuSelectScaleX[gMenuTimer] / 100.0f;
+        gMenuModelNodes[1][gSelectedIconIndex].unk_030.y = gMenuSelectScaleY[gMenuTimer] / 100.0f;
 
-        D_8423D408[0][gSelectedIconIndex].unk_01E.z = 0;
+        gMenuModelNodes[0][gSelectedIconIndex].unk_01E.z = 0;
     } else {
-        ModelRenderer_ClearDisplayObject(&D_8423D408[0][gSelectedIconIndex]);
-        ModelRenderer_ClearDisplayObject(&D_8423D408[1][gSelectedIconIndex]);
+        ModelRenderer_ClearDisplayObject(&gMenuModelNodes[0][gSelectedIconIndex]);
+        ModelRenderer_ClearDisplayObject(&gMenuModelNodes[1][gSelectedIconIndex]);
         D_8423E56C = 0;
     }
 }
@@ -571,8 +571,8 @@ void TeamSelection_TrainerSlots_AnimateClose(void) {
     if (gMenuTimer == 0) {
         for (i = 0; i < 6; i++) {
             if (i != gSelectedIconIndex) {
-                ModelRenderer_ClearDisplayObject(&D_8423D408[0][i]);
-                ModelRenderer_ClearDisplayObject(&D_8423D408[1][i]);
+                ModelRenderer_ClearDisplayObject(&gMenuModelNodes[0][i]);
+                ModelRenderer_ClearDisplayObject(&gMenuModelNodes[1][i]);
             }
         }
 
@@ -602,8 +602,8 @@ void TeamSelection_TrainerSlots_Teardown(void) {
     if (gMenuTimer == 0) {
 
         for (i = 0; i < 6; i++) {
-            ModelRenderer_ClearDisplayObject(&D_8423D408[0][i]);
-            ModelRenderer_ClearDisplayObject(&D_8423D408[1][i]);
+            ModelRenderer_ClearDisplayObject(&gMenuModelNodes[0][i]);
+            ModelRenderer_ClearDisplayObject(&gMenuModelNodes[1][i]);
         }
 
         gSelectedIconIndex = -2;
@@ -721,12 +721,12 @@ void TeamSelection_TrainerSlots_InitializeModels(void) {
 
     for (i = 0; i < 6; i++) {
         if (gIconConfig[i].posX != 0) {
-            Model_InitDisplayObject(D_8423D408[0] + i, 0, 0, gMenuGeoLayouts[i]);
-            Model_InitDisplayObject(D_8423D408[1] + i, 0, 0, gMenuCommonGeoLayout);
-            Vec3f_SetComponentsDuplicate(&D_8423D408[0][i].unk_024, gIconConfig[i].posY - 0x140, 0xF0 - gIconConfig[i].rotation, -579.f);
-            Vec3f_SetComponentsDuplicate(&D_8423D408[1][i].unk_024, gIconConfig[i].posY - 0x140, 0xE4 - gIconConfig[i].rotation,
+            Model_InitDisplayObject(gMenuModelNodes[0] + i, 0, 0, gMenuGeoLayouts[i]);
+            Model_InitDisplayObject(gMenuModelNodes[1] + i, 0, 0, gMenuCommonGeoLayout);
+            Vec3f_SetComponentsDuplicate(&gMenuModelNodes[0][i].unk_024, gIconConfig[i].posY - 0x140, 0xF0 - gIconConfig[i].rotation, -579.f);
+            Vec3f_SetComponentsDuplicate(&gMenuModelNodes[1][i].unk_024, gIconConfig[i].posY - 0x140, 0xE4 - gIconConfig[i].rotation,
                           -579.0f);
-            D_8423D408[1][i].unk_01D = 0xB4;
+            gMenuModelNodes[1][i].unk_01D = 0xB4;
         }
     }
 
@@ -734,8 +734,8 @@ void TeamSelection_TrainerSlots_InitializeModels(void) {
         gMessageId = Deck_FindFirstFreeTeamSlot();
         if (gMessageId == 0) {
             gMenuFlags[0] = 0;
-            D_8423D408[0][4].unk_01D = 0xA0;
-            D_8423D408[1][4].unk_01D = 0x64;
+            gMenuModelNodes[0][4].unk_01D = 0xA0;
+            gMenuModelNodes[1][4].unk_01D = 0x64;
         }
     }
 
@@ -765,18 +765,18 @@ s32 TeamSelection_TrainerSlots_Initialize(s16 arg0) {
 
     gMenuGraphRoot = process_geo_layout(temp_v0, gMenuRootLayout);
     gMenuMode = arg0;
-    gMenuGeoLayouts[3] = gMenuGeoLayouts[2] = gMenuGeoLayouts[1] = gMenuGeoLayouts[0] = process_geo_layout(temp_v0, D_84210FF0);
-    gMenuGeoLayouts[4] = process_geo_layout(temp_v0, D_842111D0);
-    gMenuGeoLayouts[5] = process_geo_layout(temp_v0, D_84211430);
-    gMenuCommonGeoLayout = process_geo_layout(temp_v0, D_84211510);
+    gMenuGeoLayouts[3] = gMenuGeoLayouts[2] = gMenuGeoLayouts[1] = gMenuGeoLayouts[0] = process_geo_layout(temp_v0, gMenuGeoLayout_Slot);
+    gMenuGeoLayouts[4] = process_geo_layout(temp_v0, gMenuGeoLayout_Special1);
+    gMenuGeoLayouts[5] = process_geo_layout(temp_v0, gMenuGeoLayout_Special2);
+    gMenuCommonGeoLayout = process_geo_layout(temp_v0, gMenuGeoLayout_Common);
 
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
 
-    var_s2 = &D_8423D408[0][0];
+    var_s2 = &gMenuModelNodes[0][0];
     for (i = 0; i < 12; var_s2++, i++) {
         ModelRenderer_AttachDisplayObject(var_s2);
-        D_8423D408[0][i].unk_000.unk_14 = i;
+        gMenuModelNodes[0][i].unk_000.unk_14 = i;
     }
 
     TeamSelection_TrainerSlots_PollGameBoySaves();
@@ -798,7 +798,7 @@ s32 TeamSelection_TrainerSlots_Open(s16 arg0, s32 arg1) {
         }
 
         gCurrentController = &gControllers[arg0];
-        D_8423E57C = arg1;
+        gMenuControllerId = arg1;
         gMenuTimer = 0;
         D_8423E56C = 1;
         return 1;

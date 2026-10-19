@@ -7,7 +7,7 @@
 #include "src/fragments/47/fragment47.h"
 
 struct unk_D_842168A0;
-struct unk_D_84229EB0;
+struct RegisteredTeamMenu;
 
 typedef struct unk_D_8423D3A8 {
     /* 0x00 */ u8 posX;
@@ -66,7 +66,7 @@ typedef struct gItemPanel {
     /* 0x0030 */ unk_D_838067F0_0168_0000 unk_0030[6];
     /* 0x4D40 */ struct unk_D_842168A0* pokemonPanel;
     /* 0x4D44 */ unk_D_8423D3A8* moveScreen;
-    /* 0x4D48 */ struct unk_D_84229EB0* registrationManager;
+    /* 0x4D48 */ struct RegisteredTeamMenu* registrationManager;
 } gItemPanel; // size = 0x4D4C
 
 typedef struct unk_D_842168A0_0013C {
@@ -104,7 +104,7 @@ typedef struct unk_D_842168A0 {
     /* 0x1360C */ unk_D_8423D3A8* unk_1360C;
 } unk_D_842168A0; // size = 0x13610
 
-typedef struct unk_D_84229EB0 {
+typedef struct RegisteredTeamMenu {
     /* 0x00000 */ u8 unk_00000;
     /* 0x00001 */ u8 unk_00001;
     /* 0x00002 */ u8 unk_00002;
@@ -134,7 +134,7 @@ typedef struct unk_D_84229EB0 {
     /* 0x134EC */ unk_D_842168A0* unk_134EC;
     /* 0x134F0 */ unk_D_8423D3A8* unk_134F0;
     /* 0x134F4 */ char unk134F4[0x4];
-} unk_D_84229EB0; // size = 0x134F8
+} RegisteredTeamMenu; // size = 0x134F8
 
 typedef struct unk_D_8423D3D8 {
     /* 0x00 */ u8 posX;
@@ -252,7 +252,7 @@ void Rental_HandleTeamSaveResult(gItemPanel* arg0);
 void Rental_HandleTeamCancel(gItemPanel* arg0);
 void Rental_TeamTraySlideTick(gItemPanel* arg0);
 s32 Rental_TeamSlotsUpdate(gItemPanel* arg0);
-s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, unk_D_84229EB0* arg3, s16 arg4, u16 arg5,
+s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, RegisteredTeamMenu* arg3, s16 arg4, u16 arg5,
                   char* arg6, s16 arg7, s16 arg8, s16 arg9);
 s32 Rental_TeamTrayOpen(gItemPanel* arg0, s16 arg1);
 s32 Rental_TeamTrayResume(gItemPanel*);
@@ -281,7 +281,7 @@ void TeamSelection_Preview_DrawTypeIcon(s16 arg0, s16 arg1, s16 arg2);
 void TeamSelection_Preview_DrawMovePanel(s16 arg0, s16 arg1, s32 arg2);
 s16 TeamSelection_Preview_CenterMoveText(s16 arg0, s16 arg1, char* arg2);
 void TeamSelection_Preview_DrawPokemonDetails(unk_D_8423D3A8* arg0, s32 arg1);
-void func_8420C360(unk_D_8423D3A8* arg0);
+void TeamSelection_Preview_Idle(unk_D_8423D3A8* arg0);
 void TeamSelection_Preview_HandleInput(unk_D_8423D3A8* arg0);
 void TeamSelection_Preview_Open(unk_D_8423D3A8* arg0);
 void TeamSelection_Preview_Close(unk_D_8423D3A8* arg0);
@@ -313,49 +313,49 @@ s32 TeamSelection_RulePrompt_Update(void);
 s32 TeamSelection_RulePrompt_Open(s16 arg0, Controller* arg1);
 s32 TeamSelection_RulePrompt_BeginClose(s16 arg0);
 s16 TeamSelection_RulePrompt_TryFinish(s16 arg0);
-s32 func_8420DBA0(unk_D_84229EB0_00024* arg0);
+s32 RegisteredTeam_SaveToSlot(unk_D_84229EB0_00024* arg0);
 void RegisteredTeam_DeleteAndCompact(unk_D_84229EB0_00024* arg0);
-void TeamSelection_RegisteredTeam_DrawCard(unk_D_84229EB0* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_00024* arg3);
+void TeamSelection_RegisteredTeam_DrawCard(RegisteredTeamMenu* arg0, s16 arg1, s16 arg2, unk_D_84229EB0_00024* arg3);
 void TeamSelection_RegisteredTeam_DrawHeader(s16 arg0, s16 arg1);
-void TeamSelection_RegisteredTeam_DrawScrollbar(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_DrawAnimatedListFrame(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_DrawAnimatedCursor(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_DrawVisibleCards(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_Render(unk_D_84229EB0* arg0, s32 arg1);
+void TeamSelection_RegisteredTeam_DrawScrollbar(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_DrawAnimatedListFrame(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_DrawAnimatedCursor(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_DrawVisibleCards(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_Render(RegisteredTeamMenu* arg0, s32 arg1);
 unk_D_84229EB0_00024* GetPrevPage(unk_D_84229EB0_00024* arg0, s32 arg1);
 unk_D_84229EB0_00024* GetNextPage(unk_D_84229EB0_00024* arg0, s32 arg1);
 s32 TeamSelection_RegisteredTeam_Load(unk_D_84229EB0_00024* arg0, s16 arg1);
-void TeamSelection_RegisteredTeam_UpdatePreview(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_InitializeSelection(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_SetOpeningPosition(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_AdvanceOpen(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_AdvanceClose(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_AdvanceReturnFromEdit(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_MoveListUp(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_MoveListDown(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_HandleListInput(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_MovePokemonLeft(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_MovePokemonRight(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_MovePokemonUp(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_MovePokemonDown(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_HandlePokemonInput(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_AdvanceCursorTransition(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_AdvancePanelShrink(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_AdvancePanelExpand(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_HandleRulePromptA(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_HandleRulePromptB(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_HandleSavePrompt(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_EditTeam(unk_D_84229EB0* arg0);
-void RegisteredTeam_SaveFromTray(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_HandleDiscardPrompt(unk_D_84229EB0* arg0);
-void TeamSelection_RegisteredTeam_LoadVisible(unk_D_84229EB0* arg0);
-s32 TeamSelection_RegisteredTeam_Update(unk_D_84229EB0* arg0);
-s32 TeamSelection_RegisteredTeam_Initialize(unk_D_84229EB0* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3,
+void TeamSelection_RegisteredTeam_UpdatePreview(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_InitializeSelection(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_SetOpeningPosition(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_AdvanceOpen(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_AdvanceClose(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_AdvanceReturnFromEdit(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_MoveListUp(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_MoveListDown(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_HandleListInput(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_MovePokemonLeft(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_MovePokemonRight(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_MovePokemonUp(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_MovePokemonDown(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_HandlePokemonInput(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_AdvanceCursorTransition(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_AdvancePanelShrink(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_AdvancePanelExpand(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_HandleRulePromptA(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_HandleRulePromptB(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_HandleSavePrompt(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_EditTeam(RegisteredTeamMenu* arg0);
+void RegisteredTeam_SaveFromTray(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_HandleDiscardPrompt(RegisteredTeamMenu* arg0);
+void TeamSelection_RegisteredTeam_LoadVisible(RegisteredTeamMenu* arg0);
+s32 TeamSelection_RegisteredTeam_Update(RegisteredTeamMenu* arg0);
+s32 TeamSelection_RegisteredTeam_Initialize(RegisteredTeamMenu* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3,
                   s16 arg4, s16 arg5, s16 arg6, s16 arg7);
-s32 RegistrationManager_Begin(unk_D_84229EB0* arg0);
-s32 RegistrationManager_Initialize(unk_D_84229EB0* arg0, u16 arg1, char* arg2, unk_D_838067F0_0168_0000* arg3);
-s32 TeamSelection_RegisteredTeam_GetSelection(unk_D_84229EB0* arg0);
-s32 RegisteredTeam_LoadSelected(unk_D_84229EB0* arg0, unk_D_84229EB0_00024** arg1);
-void TeamSelection_RegisteredTeam_ApplySelection(unk_D_84229EB0* arg0, s16 arg1);
+s32 RegistrationManager_Begin(RegisteredTeamMenu* arg0);
+s32 RegistrationManager_Initialize(RegisteredTeamMenu* arg0, u16 arg1, char* arg2, unk_D_838067F0_0168_0000* arg3);
+s32 TeamSelection_RegisteredTeam_GetSelection(RegisteredTeamMenu* arg0);
+s32 RegisteredTeam_LoadSelected(RegisteredTeamMenu* arg0, unk_D_84229EB0_00024** arg1);
+void TeamSelection_RegisteredTeam_ApplySelection(RegisteredTeamMenu* arg0, s16 arg1);
 
 #endif // _FRAGMENT61_H_

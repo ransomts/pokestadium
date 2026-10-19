@@ -75,7 +75,7 @@ void Pokemon_SetDisplayNameFromOt(PokemonData* arg0) {
     _bcopy(&sp18, arg0->unk_46, 0xB);
 }
 
-s32 VictoryPalace_LoadSpeciesRecord(unk_func_800228F0* arg0, u16 arg1) {
+s32 VictoryPalace_LoadSpeciesRecord(SpeciesRecord* arg0, u16 arg1) {
     unk_func_800228F0_sp24 sp24;
     s32 var_v1;
 

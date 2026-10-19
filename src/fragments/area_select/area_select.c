@@ -361,36 +361,36 @@ void AreaSelect_Update(void) {
 }
 
 void AreaSelect_DrawNameBannerCrossfade(s16 arg0, s16 arg1, s16 arg2) {
-    static s16 D_82203074 = 1;
-    static s16 D_82203078 = 1;
+    static s16 gBannerYOffset = 1;
+    static s16 gBannerYDir = 1;
 
     s16 sp1E;
 
     if (arg0 == 2) {
         sp1E = (gTransitionFrame * 0x2A) + 3;
-        AreaSelect_DrawNameBanner(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF - sp1E, gPreviousAreaIndex);
-        AreaSelect_DrawNameBanner(arg1, (arg2 + (D_82203074 / 4)) - 5, sp1E, gCurrentAreaIndex);
+        AreaSelect_DrawNameBanner(arg1, (arg2 + (gBannerYOffset / 4)) - 5, 0xFF - sp1E, gPreviousAreaIndex);
+        AreaSelect_DrawNameBanner(arg1, (arg2 + (gBannerYOffset / 4)) - 5, sp1E, gCurrentAreaIndex);
     } else if ((arg0 != 8) && (arg0 != 0)) {
-        AreaSelect_DrawNameBanner(arg1, (arg2 + (D_82203074 / 4)) - 5, 0xFF, gCurrentAreaIndex);
+        AreaSelect_DrawNameBanner(arg1, (arg2 + (gBannerYOffset / 4)) - 5, 0xFF, gCurrentAreaIndex);
     }
 
-    D_82203074 += D_82203078;
-    if (D_82203074 == 0) {
-        D_82203078 = 1;
+    gBannerYOffset += gBannerYDir;
+    if (gBannerYOffset == 0) {
+        gBannerYDir = 1;
     }
 
-    if (D_82203074 == 0x2B) {
-        D_82203078 = -1;
+    if (gBannerYOffset == 0x2B) {
+        gBannerYDir = -1;
     }
 }
 
 void AreaSelect_DrawMewtwoMarker(s16 arg0, s16 arg1) {
-    static u32 D_8220307C[] = {
+    static u32 gMewtwoMarkerTextures[] = {
         0x03044C60, 0x03045020, 0x030453E0, 0x030457A0, 0x03045B60, 0x03045F20, 0x030462E0,
         0x030466A0, 0x03046A60, 0x03046E20, 0x030471E0, 0x030475A0, 0x03047960, 0x03047D20,
         0x030480E0, 0x030484A0, 0x03048860, 0x030493A0, 0x03048FE0, 0x03048C20,
     };
-    static s16 D_822030CC = 0;
+    static s16 gMewtwoMarkerFrame = 0;
 
     if (gAreaAudioState.unk_07 != 0) {
         gDPPipeSync(gDisplayListHead++);
@@ -406,13 +406,13 @@ void AreaSelect_DrawMewtwoMarker(s16 arg0, s16 arg1) {
             gDPSetPrimColor(gDisplayListHead++, 0, 0xFF, 255, 255, 255, 255);
         }
 
-        gDPLoadTextureBlock_4b(gDisplayListHead++, D_8220307C[D_822030CC], G_IM_FMT_I, 48, 40, 0,
+        gDPLoadTextureBlock_4b(gDisplayListHead++, gMewtwoMarkerTextures[gMewtwoMarkerFrame], G_IM_FMT_I, 48, 40, 0,
                                G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                G_TX_NOLOD, G_TX_NOLOD);
 
         Gfx_DrawTexturedRectClipped(arg0 - 0x28, arg1 - 0x28, 0x50, 0x50, 0, 0, 0x200, 0x200, 0);
 
-        D_822030CC = (D_822030CC + 1) % 20;
+        gMewtwoMarkerFrame = (gMewtwoMarkerFrame + 1) % 20;
     }
 }
 

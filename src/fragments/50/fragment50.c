@@ -23,25 +23,25 @@
 #include "src/stage_loader.h"
 #include "src/util.h"
 
-typedef struct unk_D_82607420 {
+typedef struct PokedexGraphNode {
     /* 0x000 */ s32 unk_000;
     /* 0x004 */ unk_D_86002F58_004_000_010_024* unk_004;
     /* 0x008 */ Fragment2_1GraphNode unk_008;
-} unk_D_82607420; // size = 0x170
+} PokedexGraphNode; // size = 0x170
 
-typedef struct unk_D_82604180 {
+typedef struct PokedexStageParam {
     /* 0x00 */ f32 posX;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
-} unk_D_82604180; // size = 0x14
+} PokedexStageParam; // size = 0x14
 
 static s32 pad_D_82607410[2];
 static GraphNode* gFragment50GraphRoot;
 static AssetManager* gFragment50AssetManager;
-static unk_D_82607420 gFragment50GraphNodes[5];
+static PokedexGraphNode gFragment50GraphNodes[5];
 static s16 gPokedexPanelGraphNodeIndex;
 static s16 gPokedexPanelGraphNodeIndex2;
 static s16 gPokedexPanelCurrentMonIndex;
@@ -62,8 +62,8 @@ static s16 gPokedexPanelLoadState;
 static s16 gPokedexPanelLoadTimer;
 static s16 gPokedexPanelHighlightPhase;
 static s16 gPokedexPanelInputState;
-static s16 D_82608554;
-static s16 D_82608556;
+static s16 gPokedexPanelTimer1;
+static s16 gPokedexPanelTimer2;
 static CameraStruct* gFragment50Camera;
 static s32 pad_D_82608560[2];
 static u16 gFragment50ImageBuffer[151][0x640];
@@ -124,7 +124,7 @@ static u32 gFragment50TextEntry6[] = {
 static u32 gFragment50TextEntry7[] = {
     0xA5B8A5E0, 0xA5EAA1BC, 0xA5C0A1BC, 0xA4CEA4B7, 0xA4ED0000, 0xA1C70000,
 };
-static unk_D_82604180 gFragment50StageParams[] = {
+static PokedexStageParam gFragment50StageParams[] = {
     {
         4.5f,
         0x0000,
@@ -1701,7 +1701,7 @@ s32 VictoryPalace_StringsEqual(s8* arg0, s8* arg1) {
 
 s32 VictoryPalace_IsCurrentSpeciesOwnedByPlayer(void) {
     s32 sp44 = 0;
-    unk_func_800228F0 sp20;
+    SpeciesRecord sp20;
     char* tmp;
 
     VictoryPalace_LoadSpeciesRecord(&sp20, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
@@ -1757,12 +1757,12 @@ Gfx* VictoryPalace_DrawFrameBorder(Gfx* arg0) {
 
 s32 VictoryPalace_SpeciesObtained(s32 arg0) {
     UNUSED s32 pad;
-    unk_func_800228F0 sp18;
+    SpeciesRecord sp18;
 
     return VictoryPalace_LoadSpeciesRecord(&sp18, arg0);
 }
 
-s32 VictoryPalace_UpdateLeftPillarGlow(s32 arg0, unk_D_86002F34_alt18* arg1) {
+s32 VictoryPalace_UpdateLeftPillarGlow(s32 arg0, PillarGlowParams* arg1) {
     u8* ptr;
     s16 idx = 5;
     s16 sp30; // purposely the wrong type to fix the stack, should be f32
@@ -1775,7 +1775,7 @@ s32 VictoryPalace_UpdateLeftPillarGlow(s32 arg0, unk_D_86002F34_alt18* arg1) {
         arg1->unk_1C = sp2E + 0x2000;
         arg1->unk_1E = sp2C - 0x2000;
 
-        ptr = &D_800AF770[idx];
+        ptr = &gPillarGlowValues[idx];
 
         if (gPokedexPanelLoadState == 1) {
             gPokedexPanelLoadTimer = 5;
@@ -1797,7 +1797,7 @@ s32 VictoryPalace_UpdateLeftPillarGlow(s32 arg0, unk_D_86002F34_alt18* arg1) {
     return 0;
 }
 
-s32 VictoryPalace_UpdateRightPillarGlow(s32 arg0, unk_D_86002F34_alt18* arg1) {
+s32 VictoryPalace_UpdateRightPillarGlow(s32 arg0, PillarGlowParams* arg1) {
     UNUSED s32 pad;
     f32 sp30;
     s16 sp2E;
@@ -1817,7 +1817,7 @@ s32 VictoryPalace_UpdateRightPillarGlow(s32 arg0, unk_D_86002F34_alt18* arg1) {
     return 0;
 }
 
-void func_82600C00(void) {
+void VictoryPalace_EmptyFunc1(void) {
 }
 
 void func_82600C08(void) {
@@ -1838,7 +1838,7 @@ void VictoryPalace_InitCamera(void) {
     gCurrentCameraNode = gFragment50Camera;
 }
 
-void func_82600CFC(void) {
+void VictoryPalace_EmptyFunc3(void) {
 }
 
 void VictoryPalace_PollInput(void) {
@@ -1932,7 +1932,7 @@ void VictoryPalace_DrawOverlay(void) {
         gSPTextureRectangle(gDisplayListHead++, 0x006C, 0x0224, 0x032C, 0x0390, G_TX_RENDERTILE, 0, 0, 0, 0);
         Ui_DrawBorderedPanelNoFill(0x19, 0x87, 0xB4, 0x5F);
     } else if (gPokedexPanelShowInfo == 1) {
-        unk_func_800228F0 sp158;
+        SpeciesRecord sp158;
         UNUSED s32 pad2[1];
 
         VictoryPalace_LoadSpeciesRecord(&sp158, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
@@ -2005,7 +2005,7 @@ void VictoryPalace_DrawOverlay(void) {
     Font_BeginTranslucentTextRendering();
 
     if (gPokedexPanelShowDebug == 1) {
-        unk_D_82604180* sp7C = &gFragment50StageParams[gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount];
+        PokedexStageParam* sp7C = &gFragment50StageParams[gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount];
 
         Font_SetActive(2, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -2016,7 +2016,7 @@ void VictoryPalace_DrawOverlay(void) {
         Font_Printf(0x1E, 0xC8, " POS-Y %3.1f", sp7C->unk_0C);
         Font_Printf(0x1E, 0xD4, " POS-Z %3.1f", sp7C->unk_10);
     } else if ((gPokedexPanelShowInfo == 1) && (VictoryPalace_SpeciesObtained((gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1) != 0)) {
-        unk_func_800228F0 sp58;
+        SpeciesRecord sp58;
 
         VictoryPalace_LoadSpeciesRecord(&sp58, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -2095,8 +2095,8 @@ void VictoryPalace_InitCarouselModel(s16 arg0) {
     s32 tmp = 0xF000;
     f32 temp_fs0;
     s32 idx = (gPokedexPanelGraphNodeIndex + arg0 + 5) % 5;
-    unk_D_82607420* temp_s0 = &gFragment50GraphNodes[idx];
-    unk_D_82604180* temp_s1 = &gFragment50StageParams[temp_s0->unk_000 - 1];
+    PokedexGraphNode* temp_s0 = &gFragment50GraphNodes[idx];
+    PokedexStageParam* temp_s1 = &gFragment50StageParams[temp_s0->unk_000 - 1];
 
     if (VictoryPalace_SpeciesObtained(temp_s0->unk_000) == 0) {
         return;
@@ -2156,7 +2156,7 @@ void VictoryPalace_RequestCarouselIconLoad(s16 arg0) {
 void VictoryPalace_LoadCurrentCarouselIcon(s16 arg0) {
     arg1_func_80010CA8 sp54;
     s16 temp_s1 = ((gPokedexPanelCurrentMonIndex + arg0 + gPokedexPanelMonCount) % gPokedexPanelMonCount) + 1;
-    unk_func_800228F0 sp2C;
+    SpeciesRecord sp2C;
 
     if (VictoryPalace_SpeciesObtained(temp_s1) != 0) {
         VictoryPalace_LoadSpeciesRecord(&sp2C, temp_s1);
@@ -2186,13 +2186,13 @@ void VictoryPalace_SetBackgroundPositionX(f32 arg0) {
     gFragment50GraphNodeB.unk_024.x = arg0;
 }
 
-void func_826028CC(void) {
+void VictoryPalace_EmptyFunc7(void) {
 }
 
 void VictoryPalace_UpdateCarouselModelRotation(void) {
     s32 idx = (gPokedexPanelGraphNodeIndex + 5) % 5;
-    unk_D_82604180* temp_s1;
-    unk_D_82607420* temp_s0;
+    PokedexStageParam* temp_s1;
+    PokedexGraphNode* temp_s0;
     f32 temp_fs0;
 
     temp_s0 = &gFragment50GraphNodes[idx];
@@ -2325,8 +2325,8 @@ s32 VictoryPalace_HandleInput(s16* arg0) {
 s32 HallOfFame_HandleGalleryInput(void) {
     UNUSED s16 pad;
     s16 sp54 = 2;
-    unk_D_82604180* temp_s0;
-    unk_D_82607420* temp_v0;
+    PokedexStageParam* temp_s0;
+    PokedexGraphNode* temp_v0;
 
     while (sp54 == 2) {
         VictoryPalace_PollInput();
@@ -2586,7 +2586,7 @@ void HallOfFame_SpawnPokeIcon(s32 arg0, f32 arg1) {
         temp_s0->unk_024.y = 0.0f;
         temp_s0->unk_024.z = 0.0f;
         temp_s0->unk_040.unk_0C = 0;
-        *(u8*)Util_ConvertAddrToVirtAddr(&D_800AF770[arg0]) = gFragment50GraphNodes[arg0].unk_000 - 1;
+        *(u8*)Util_ConvertAddrToVirtAddr(&gPillarGlowValues[arg0]) = gFragment50GraphNodes[arg0].unk_000 - 1;
     }
 }
 

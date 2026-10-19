@@ -73,7 +73,7 @@ s32 Battle_StageGeoDispatchCallback(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 Battle_StageLightAngleCallbackA(s32 arg0, unk_D_86002F34_alt18* arg1) {
+s32 Battle_StageLightAngleCallbackA(s32 arg0, PillarGlowParams* arg1) {
     UNUSED s32 pad;
     f32 sp28;
     s16 sp26;
@@ -87,7 +87,7 @@ s32 Battle_StageLightAngleCallbackA(s32 arg0, unk_D_86002F34_alt18* arg1) {
     return 0;
 }
 
-s32 Battle_StageLightAngleCallbackB(s32 arg0, unk_D_86002F34_alt18* arg1) {
+s32 Battle_StageLightAngleCallbackB(s32 arg0, PillarGlowParams* arg1) {
     UNUSED s32 pad;
     f32 sp28;
     s16 sp26;

@@ -14,12 +14,12 @@
 #include "src/dp_intro.h"
 #include "src/hal_libc.h"
 
-typedef struct unk_D_842115F0 {
+typedef struct MoveTypeColorInfo {
     /* 0x00 */ Color_RGB8 posX[4];
     /* 0x0C */ u8* unk_0C;
-} unk_D_842115F0; // size = 0x10
+} MoveTypeColorInfo; // size = 0x10
 
-unk_D_842115F0 gMoveColorInfoTable[] = {
+MoveTypeColorInfo gMoveColorInfoTable[] = {
     {
         {
             { 0xB4, 0xB4, 0xB4 },
@@ -206,8 +206,8 @@ void TeamSelection_Preview_DrawHeader(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 void TeamSelection_Preview_DrawTypeIcon(s16 arg0, s16 arg1, s16 arg2) {
-    unk_D_842115F0* sp34 = &gMoveColorInfoTable[PokemonType_ToDisplayIndex(arg2)];
-    unk_D_842115F0* sp30 = &gMoveColorInfoTable[PokemonType_ToDisplayIndex(arg2)];
+    MoveTypeColorInfo* sp34 = &gMoveColorInfoTable[PokemonType_ToDisplayIndex(arg2)];
+    MoveTypeColorInfo* sp30 = &gMoveColorInfoTable[PokemonType_ToDisplayIndex(arg2)];
 
     gDPSetEnvColor(gDisplayListHead++, sp34->posX->r, sp34->posX->g, sp34->posX->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, (sp30->posX + 1)->r, (sp30->posX + 1)->g, (sp30->posX + 1)->b, 255);
@@ -378,7 +378,7 @@ void TeamSelection_Preview_DrawPokemonDetails(unk_D_8423D3A8* arg0, s32 arg1) {
     }
 }
 
-void func_8420C360(unk_D_8423D3A8* arg0) {
+void TeamSelection_Preview_Idle(unk_D_8423D3A8* arg0) {
 }
 
 void TeamSelection_Preview_HandleInput(unk_D_8423D3A8* arg0) {
@@ -445,7 +445,7 @@ s32 TeamSelection_Preview_Update(unk_D_8423D3A8* arg0) {
     switch (arg0->posX) {
         case 0:
             sp1C = 0;
-            func_8420C360(arg0);
+            TeamSelection_Preview_Idle(arg0);
             break;
 
         case 1:

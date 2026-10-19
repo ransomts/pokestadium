@@ -201,7 +201,7 @@ void DisplayList_BuildDigitDisplayBackground(Gfx* gfx) {
     s32 temp_a3;
 
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &gCommonGfxInit;    }
-    temp_a3 = ((s32) ((D_800AF770[5]) * 0x55) / 255) + 0xAA;
+    temp_a3 = ((s32) ((gPillarGlowValues[5]) * 0x55) / 255) + 0xAA;
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = ((temp_a3 & 0xFF) | 0xFA000000);    _gfx->words.w1 = -0x3701;    }
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFB000000;    _gfx->words.w1 = 0x501E0AFF;    }
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xFD700000;    _gfx->words.w1 = Util_ConvertAddrToVirtAddr(&D_3008000);    }
@@ -241,7 +241,7 @@ void Fragment31_DrawNumberDigit(Gfx* gfx) {
     Mtx* sp30;
     s32 sp2C;
 
-    temp_t0 = D_800AF770[var_v0];
+    temp_t0 = gPillarGlowValues[var_v0];
     switch (gFragment31_NumberDrawPhase) {
     case 0:
         sp4D = (((s32) (temp_t0 + 1) / 100) + 0x10) & 0xFF;

@@ -16677,3 +16677,69 @@ unk_D_8380565C	RentalViewerBgData	w9		struct containing PokemonData at offset 0x
 D_838067D8	gRentalViewerState	w9		Used as the primary state controller for the Rental Viewer scene transitions and updates	applied@1c98d55c
 unk_D_8380548C	RentalSlotAnimData	w9		Struct containing animation offsets and properties for the 6 selectable slots	applied@1c98d55c
 D_04001800	gRentalIconTexEmpty	w9		Texture used when player index is 5 in Gallery_RentalViewerNodePostCallback	applied@1c98d55c
+D_82203074	gBannerYOffset	w10		used in AreaSelect_DrawNameBannerCrossfade to calculate vertical position of banners	applied@c4159dfb
+D_82203078	gBannerYDir	w10		used as a step value (1 or -1) for gBannerYOffset in AreaSelect_DrawNameBannerCrossfade	applied@c4159dfb
+D_8220307C	gMewtwoMarkerTextures	w10		array of 20 texture pointers used in AreaSelect_DrawMewtwoMarker for animation	applied@c4159dfb
+D_822030CC	gMewtwoMarkerFrame	w10		index used to cycle through gMewtwoMarkerTextures in AreaSelect_DrawMewtwoMarker	applied@c4159dfb
+func_8430A4E0	BattleAnim_StatusIdleCase14Sub2	w10		empty case in the state machine for StatusIdleCase14	applied@c4159dfb
+D_843900D0	gDist2D_X	w10		used as temporary storage for squared X difference in BattleAnim_Distance2D	applied@c4159dfb
+D_843900D4	gDist2D_Y	w10		used as temporary storage for squared Y difference in BattleAnim_Distance2D	applied@c4159dfb
+D_843900D8	gSplineA_T3	w10		temporary storage for t^3 in Battle_ComputeSplineWeightsVariantA	applied@c4159dfb
+D_843900DC	gSplineA_T2	w10		temporary storage for t^2 in Battle_ComputeSplineWeightsVariantA	applied@c4159dfb
+D_843900E0	gSplineA_InvT	w10		temporary storage for (1-t) in Battle_ComputeSplineWeightsVariantA	applied@c4159dfb
+D_843900E4	gSplineB_T3	w10		temporary storage for t^3 in Battle_ComputeSplineWeightsVariantB	applied@c4159dfb
+D_843900E8	gSplineB_T2	w10		temporary storage for t^2 in Battle_ComputeSplineWeightsVariantB	applied@c4159dfb
+D_843900EC	gSplineB_InvT	w10		temporary storage for (1-t) in Battle_ComputeSplineWeightsVariantB	applied@c4159dfb
+D_843900F0	gSplineC_T3	w10		temporary storage for t^3 in Battle_ComputeSplineWeightsVariantC	applied@c4159dfb
+D_843900F4	gSplineC_T2	w10		temporary storage for t^2 in Battle_ComputeSplineWeightsVariantC	applied@c4159dfb
+D_843900F8	gSplineC_InvT	w10		temporary storage for (1-t) in Battle_ComputeSplineWeightsVariantC	applied@c4159dfb
+D_843900FC	gSplineD_CB	w10		temporary storage for CB(arg1) in Battle_ComputeSplineWeightsVariantD	applied@c4159dfb
+D_84390100	gSplineD_InvT	w10		temporary storage for (1-t) in Battle_ComputeSplineWeightsVariantD	applied@c4159dfb
+D_84390104	gSplineD_InvT2	w10		temporary storage for (1-t)^2 in Battle_ComputeSplineWeightsVariantD	applied@c4159dfb
+D_84390108	gSplineD_InvT3	w10		temporary storage for (1-t)^3 in Battle_ComputeSplineWeightsVariantD	applied@c4159dfb
+func_84370B7C	Battle_InitPokemonRuntimeState	w10		initializes runtime state for a specific pokemon entity, called for both active pokemon in Battle_InitializeActiveRuntimeState	applied@c4159dfb
+D_84385750	gBattleBitmaskTable	w10		array of bit-shifted values (1, 2, 4, 8...) used for flag masking	applied@c4159dfb
+D_84385758	gAttractInputScript	w10		table of timing and button values used by BattleScene_AdvanceAttractInputScript to simulate inputs	applied@c4159dfb
+unk_D_84390178	BattleInitState	w10		struct used to track the progress and current timer of the attract mode input script	applied@c4159dfb
+func_8430FC10	BattleHud_InitEmpty	w10		empty function in HUD domain	applied@c4159dfb
+func_843109EC	BattleHud_InitEmpty5	w10		empty function in HUD domain	applied@c4159dfb
+unk_D_82607420	PokedexGraphNode	w10		Contains a GraphNode and a pointer to a model/asset structure.	applied@c4159dfb
+unk_D_82604180	PokedexStageParam	w10		Contains posX, rotation, and 3D offsets for Pokedex model placement.	applied@c4159dfb
+D_82608554	gPokedexPanelTimer1	w10		S16 global used alongside gPokedexPanelLoadTimer for timing.	applied@c4159dfb
+D_82608556	gPokedexPanelTimer2	w10		S16 global used alongside gPokedexPanelLoadTimer for timing.	applied@c4159dfb
+func_82600C00	VictoryPalace_EmptyFunc1	w10		empty function in Victory Palace sequence	applied@c4159dfb
+func_82600CFC	VictoryPalace_EmptyFunc3	w10		empty function in Victory Palace sequence	applied@c4159dfb
+func_826028CC	VictoryPalace_EmptyFunc7	w10		empty function in Victory Palace sequence	applied@c4159dfb
+unk_func_800228F0	SpeciesRecord	w10		struct used in VictoryPalace_LoadSpeciesRecord and VictoryPalace_IsCurrentSpeciesOwnedByPlayer	applied@c4159dfb
+unk_D_86002F34_alt18	PillarGlowParams	w10		struct passed to VictoryPalace_UpdateLeftPillarGlow and RightPillarGlow containing r,g,b,a	applied@c4159dfb
+D_800AF770	gPillarGlowValues	w10		array accessed by index in VictoryPalace_UpdateLeftPillarGlow to set modelPhase	applied@c4159dfb
+D_84211B3C	gTextTable_24	w10		Text_GetStringTable(0x24) used in TeamSelection_GetTextFromSetA	applied@c4159dfb
+D_84211B40	gTextTable_25	w10		Text_GetStringTable(0x25) used in TeamSelection_GetTextFromSetB	applied@c4159dfb
+D_84211B48	gTextTable_1A	w10		Text_GetStringTable(0x1A) used in TeamSelection_GetLabelText and TeamSelection_FormatText	applied@c4159dfb
+D_84211544	gMenuOpenScaleX	w10		s16 array used in TeamSelection_TrainerSlots_AnimateOpen to set model scale X based on gMenuTimer	applied@c4159dfb
+D_8421155C	gMenuOpenScaleY	w10		s16 array used in TeamSelection_TrainerSlots_AnimateOpen to set model scale Y based on gMenuTimer	applied@c4159dfb
+D_84211574	gMenuSelectScaleX	w10		s16 array used in TeamSelection_TrainerSlots_AnimateSelected to animate the selected icon scale X	applied@c4159dfb
+D_8421158C	gMenuSelectScaleY	w10		s16 array used in TeamSelection_TrainerSlots_AnimateSelected to animate the selected icon scale Y	applied@c4159dfb
+D_8423E57C	gMenuControllerId	w10		s32 variable set in TeamSelection_TrainerSlots_Open and checked in TeamSelection_TrainerSlots_HandleInput	applied@c4159dfb
+D_8423D408	gMenuModelNodes	w10		Fragment2_1GraphNode array used for trainer slot models, indexed by [0/1][slotIndex]	applied@c4159dfb
+unk_D_8423E518	TrainerSlotSaveData	w10		struct containing posX (save state), posY (center flag), and rotation (ID) populated by GbSave functions	applied@c4159dfb
+D_84210FF0	gMenuGeoLayout_Slot	w10		Geo layout table used to initialize gMenuGeoLayouts[0-3]	applied@c4159dfb
+D_842111D0	gMenuGeoLayout_Special1	w10		Geo layout table used to initialize gMenuGeoLayouts[4]	applied@c4159dfb
+D_84211430	gMenuGeoLayout_Special2	w10		Geo layout table used to initialize gMenuGeoLayouts[5]	applied@c4159dfb
+D_84211510	gMenuGeoLayout_Common	w10		Geo layout table used to initialize gMenuCommonGeoLayout	applied@c4159dfb
+D_84210E48	gMenuVtx_Slot	w10		Vertex data for the trainer slot frames	applied@c4159dfb
+D_84210F08	gMenuGfx_Slot	w10		Display list for the trainer slot frames	applied@c4159dfb
+D_84211028	gMenuVtx_Special1	w10		Vertex data for special slot frames	applied@c4159dfb
+unk_D_842115F0	MoveTypeColorInfo	w10		contains RGB colors and a pointer to a texture for Pokemon types used in move panels	applied@c4159dfb
+func_8420C360	TeamSelection_Preview_Idle	w10		called in TeamSelection_Preview_Update when state is 0, performs no operations	applied@c4159dfb
+D_8423E580	gRulePromptCurrentIndex	w10		index into gRulePromptConfigs used in TeamSelection_RulePrompt_DrawFrame and Open	applied@c4159dfb
+D_8423E584	gRulePromptController	w10		Controller pointer used in TeamSelection_RulePrompt_HandleInput for button checks	applied@c4159dfb
+D_8423E588	gRulePromptAnimFrame	w10		counter used to animate the panel opening/closing in TeamSelection_RulePrompt_DrawFrame	applied@c4159dfb
+D_8423E58A	gRulePromptSelectedOption	w10		index of the currently highlighted option, used for coloring and marker drawing	applied@c4159dfb
+D_84211700	gRulePromptState	w10		state machine variable (0: closed, 1: opening, 2: active, 3: closing, 4: finished)	applied@c4159dfb
+func_8420DBA0	RegisteredTeam_SaveToSlot	w10		calls Deck_OpenAndSetName, Deck_WriteEntries, and Save_FlushDirtyBanks to save a team to a slot	applied@c4159dfb
+D_84211850	gTeamCardIcons	w10		array of textures used in TeamSelection_RegisteredTeam_DrawCard for Pokemon icons	applied@c4159dfb
+D_84211870	gTeamCardXOffsets	w10		s16 array of X offsets used to position cards in TeamSelection_RegisteredTeam_DrawCard	applied@c4159dfb
+D_8421187C	gTeamCardYOffsets	w10		s16 array of Y offsets used to position cards in TeamSelection_RegisteredTeam_DrawCard	applied@c4159dfb
+D_84211888	gScrollbarAnimFrame	w10		static variable incremented in TeamSelection_RegisteredTeam_DrawScrollbar to animate the handle	applied@c4159dfb
+unk_D_84229EB0	RegisteredTeamMenu	w10		main state struct for the registered team selection menu, including cursor and scroll positions	applied@c4159dfb

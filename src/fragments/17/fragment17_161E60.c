@@ -754,7 +754,7 @@ static s8 gFragment17TextBuffer2[0x100];
 static s32 gFragment17RandomIdx;
 
 s32 Completion_LightAngleCallbackA(s32 arg0, GraphNode* arg1) {
-    unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
+    PillarGlowParams* ptr = (PillarGlowParams*)arg1;
     f32 sp28;
     s16 sp26;
     s16 sp24;
@@ -768,7 +768,7 @@ s32 Completion_LightAngleCallbackA(s32 arg0, GraphNode* arg1) {
 }
 
 s32 Completion_LightAngleCallbackB(s32 arg0, GraphNode* arg1) {
-    unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
+    PillarGlowParams* ptr = (PillarGlowParams*)arg1;
     f32 sp28;
     s16 sp26;
     s16 sp24;

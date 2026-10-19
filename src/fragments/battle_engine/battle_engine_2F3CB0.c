@@ -338,7 +338,7 @@ void BattleAnim_StatusIdleCase14Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePla
     }
 }
 
-void func_8430A4E0(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase14Sub2(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
 void BattleAnim_StatusIdleCase14(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
@@ -351,7 +351,7 @@ void BattleAnim_StatusIdleCase14(unk_BattlePlayerEntity* arg0, unk_BattlePlayerE
             break;
 
         case 2:
-            func_8430A4E0(arg0, arg1);
+            BattleAnim_StatusIdleCase14Sub2(arg0, arg1);
             break;
     }
 }

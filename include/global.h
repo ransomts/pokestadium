@@ -372,7 +372,7 @@ typedef struct unk_D_86002F34_alt17 {
     /* 0x00 */ GraphNode posX;
 } unk_D_86002F34_alt17; // size = 0x18
 
-typedef struct unk_D_86002F34_alt18 {
+typedef struct PillarGlowParams {
     /* 0x00 */ GraphNode posX;
     /* 0x18 */ u8 r;
     /* 0x19 */ u8 g;
@@ -380,7 +380,7 @@ typedef struct unk_D_86002F34_alt18 {
     /* 0x1B */ u8 a;
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
-} unk_D_86002F34_alt18; // size = 0x20
+} PillarGlowParams; // size = 0x20
 
 typedef struct unk_D_86002F34_alt19 {
     /* 0x00 */ GraphNode posX;

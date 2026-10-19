@@ -705,7 +705,7 @@ s32 Rental_TeamSlotsUpdate(gItemPanel* arg0) {
     return sp1C;
 }
 
-s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, unk_D_84229EB0* arg3, s16 arg4,
+s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, RegisteredTeamMenu* arg3, s16 arg4,
                   u16 arg5, char* arg6, s16 arg7, s16 arg8, s16 arg9) {
     s32 i;
 

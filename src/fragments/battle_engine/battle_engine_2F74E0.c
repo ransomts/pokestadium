@@ -18,9 +18,9 @@ static Controller* gActiveController1;
 static Controller* gActiveController2;
 static Controller gDemoController;
 s32 gBattleInitFlag;
-unk_D_84390178 gBattleInitStruct;
+BattleInitState gBattleInitStruct;
 
-static u8 D_84385750[] = {
+static u8 gBattleBitmaskTable[] = {
     0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
 };
 
@@ -374,8 +374,8 @@ void BattleScene_HandleActionSelectionCancel(s32 arg0) {
 
 void Battle_InitializeActiveRuntimeState(void) {
     BattleScene_InitializePresentationTimers();
-    func_84370B7C(sActivePokemon[0]);
-    func_84370B7C(sActivePokemon[1]);
+    Battle_InitPokemonRuntimeState(sActivePokemon[0]);
+    Battle_InitPokemonRuntimeState(sActivePokemon[1]);
 
     gPlayerScaleFactors[0] = sActivePokemon[0]->animationState.unk_38.unk_0C;
     gPlayerScaleFactors[1] = sActivePokemon[1]->animationState.unk_38.unk_0C;
@@ -1136,7 +1136,7 @@ void BattleScene_HideParticipantOwnerAndSecondaryModels(void) {
 }
 
 void BattleScene_AdvanceAttractInputScript(void) {
-    static u16 D_84385758[][3] = {
+    static u16 gAttractInputScript[][3] = {
         { 0x17C, 0, 0 },        { 0xA, BTN_L, 0 },  { 0xA, BTN_R, 0 }, { 0xC8, BTN_START, 0 },
         { 0xC8, BTN_START, 0 }, { 0xDC, BTN_A, 0 }, { 0, 0, 0 },
     };
@@ -1145,10 +1145,10 @@ void BattleScene_AdvanceAttractInputScript(void) {
     controller->buttonPressed = 0;
 
     if (gBattleInitStruct.posX == 0) {
-        gBattleInitStruct.posX = D_84385758[gBattleInitFlag][0];
+        gBattleInitStruct.posX = gAttractInputScript[gBattleInitFlag][0];
         if (gBattleInitStruct.posX != 0) {
-            controller->buttonPressed = D_84385758[gBattleInitFlag][1];
-            controller->buttonDown = D_84385758[gBattleInitFlag][2];
+            controller->buttonPressed = gAttractInputScript[gBattleInitFlag][1];
+            controller->buttonDown = gAttractInputScript[gBattleInitFlag][2];
             gBattleInitFlag++;
         }
     }

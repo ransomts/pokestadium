@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-extern u8 D_800AF770[8];
+extern u8 gPillarGlowValues[8];
 extern s16 gHpWheelDigitOffsetOnes[4];
 extern s16 gHpWheelDigitOffsetTens[4];
 extern s16 gHpWheelDigitOffsetHundreds[4];

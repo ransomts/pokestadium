@@ -6,7 +6,7 @@
 #include "src/fragments/31/fragment31.h"
 
 // .bss
-u8 D_800AF770[8];
+u8 gPillarGlowValues[8];
 s16 gHpWheelDigitOffsetOnes[4];
 s16 gHpWheelDigitOffsetTens[4];
 s16 gHpWheelDigitOffsetHundreds[4];
