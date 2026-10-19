@@ -111,6 +111,15 @@ def plan_files(sub_ren):
 
 
 def apply_group(group, no_gate):
+    # refuse to start from a desynced index: a previous failed apply + revert
+    # leaves STAGED renames behind, and any later `git add && git commit`
+    # (even of one unrelated file) sweeps them into that commit (the df9f2cde
+    # lesson: 18 renames rode a reorg.py-only commit)
+    r0 = sh(["git", "diff", "--cached", "--name-only"])
+    if r0.stdout.strip():
+        print("refusing: git index has staged changes - `git reset` first:")
+        print("  " + "\n  ".join(r0.stdout.splitlines()[:5]))
+        return 1
     ours = parse_yaml(OUR_YAML)
     theirs = parse_yaml(os.path.join(HIPPO, "yamls/us/rom.yaml"))
     seg_ren, sub_ren, problems = join_group(ours, theirs, group)
@@ -297,7 +306,9 @@ def revert(manifest):
             sh(["git", "mv", dst, src])
     sh(["git", "checkout", "--", "src", "include", "yamls/us/rom.yaml"])
     # include rewrites: restore from git
-    print("reverted (includes restored from git)")
+    sh(["git", "reset", "-q"])  # clear the staged renames git mv left behind
+    sh(["git", "clean", "-fdq", "src"])
+    print("reverted (includes restored from git, index reset, leftovers cleaned)")
 
 
 def main():
