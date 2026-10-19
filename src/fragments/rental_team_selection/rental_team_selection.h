@@ -4,7 +4,7 @@
 #include "global.h"
 #include "src/11BA0.h"
 #include "src/1AB70.h"
-#include "src/fragments/47/fragment47.h"
+#include "src/fragments/gallery_rental_viewer/gallery_rental_viewer.h"
 
 struct unk_D_842168A0;
 struct RegisteredTeamMenu;

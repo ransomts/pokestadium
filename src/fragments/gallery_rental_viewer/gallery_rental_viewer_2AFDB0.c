@@ -1,4 +1,4 @@
-#include "fragment47.h"
+#include "src/fragments/gallery_rental_viewer/gallery_rental_viewer.h"
 #include "src/1AB70.h"
 #include "src/1CF30.h"
 #include "src/20470.h"
@@ -7,7 +7,7 @@
 #include "src/30640.h"
 #include "src/49790.h"
 #include "src/6BC0.h"
-#include "src/fragments/61/fragment61.h"
+#include "src/fragments/rental_team_selection/rental_team_selection.h"
 
 static unk_D_838067F0 D_838067F0;
 

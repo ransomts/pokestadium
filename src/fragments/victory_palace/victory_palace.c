@@ -1,4 +1,4 @@
-#include "fragment50.h"
+#include "src/fragments/victory_palace/victory_palace.h"
 #include "src/12D80.h"
 #include "src/19840.h"
 #include "src/1AB70.h"

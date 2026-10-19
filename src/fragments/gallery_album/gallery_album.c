@@ -11,7 +11,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 #include "src/fragments/minigame_select/minigame_select.h"
-#include "src/fragments/43/fragment43.h"
+#include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 
 static s32 gItemSelectState;
 static GallerySceneGrid gItemSelectContext;

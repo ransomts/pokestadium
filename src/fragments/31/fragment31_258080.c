@@ -1,7 +1,7 @@
 #include "fragment31.h"
 #include "src/fragments/clefairy_game/clefairy_game.h"
 #include "src/fragments/rattata_game/rattata_game.h"
-#include "src/fragments/50/fragment50.h"
+#include "src/fragments/victory_palace/victory_palace.h"
 #include "src/6A40.h"
 #include "src/12D80.h"
 #include "src/32D10.h"

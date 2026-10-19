@@ -1,4 +1,4 @@
-#include "fragment61.h"
+#include "src/fragments/rental_team_selection/rental_team_selection.h"
 #include "src/12D80.h"
 #include "src/1C720.h"
 #include "src/1CF30.h"
@@ -13,7 +13,7 @@
 #include "src/geo_layout.h"
 #include "src/math_util.h"
 #include "src/memmap.h"
-#include "src/fragments/47/fragment47.h"
+#include "src/fragments/gallery_rental_viewer/gallery_rental_viewer.h"
 #include "src/memory.h"
 
 typedef struct TrainerSlotSaveData {

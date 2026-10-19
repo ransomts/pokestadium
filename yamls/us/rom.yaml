@@ -1733,17 +1733,17 @@
     start: 0x2A1B30
     vram: 0x83400000
     subsegments:
-    - [0x2A1B30, textbin,   fragments/43/fragment43_header]
-    - [0x2A1B50, c,      fragments/43/fragment43_2A1B50]
-    - [0x2A3E70, c,      fragments/43/fragment43_2A3E70]
-    - [0x2A3F60, c,      fragments/43/fragment43_2A3F60]
-    - [0x2A4950, .data,   fragments/43/fragment43_2A1B50]
-    - [0x2A4970, .data,   fragments/43/fragment43_2A3F60]
-    - [0x2A49F0, .rodata, fragments/43/fragment43_2A3F60]
+    - [0x2A1B30, textbin,   fragments/gallery_backgrounds/gallery_backgrounds_header]
+    - [0x2A1B50, c,      fragments/gallery_backgrounds/gallery_backgrounds_2A1B50]
+    - [0x2A3E70, c,      fragments/gallery_backgrounds/gallery_backgrounds_2A3E70]
+    - [0x2A3F60, c,      fragments/gallery_backgrounds/gallery_backgrounds_2A3F60]
+    - [0x2A4950, .data,   fragments/gallery_backgrounds/gallery_backgrounds_2A1B50]
+    - [0x2A4970, .data,   fragments/gallery_backgrounds/gallery_backgrounds_2A3F60]
+    - [0x2A49F0, .rodata, fragments/gallery_backgrounds/gallery_backgrounds_2A3F60]
 
-    - {vram: 0x83402EE0, type:  .bss, name: fragments/43/fragment43_2A1B50}
-    - {vram: 0x83407BF0, type:  .bss, name: fragments/43/fragment43_2A3E70}
-    - {vram: 0x83407C00, type:  .bss, name: fragments/43/fragment43_2A3F60}
+    - {vram: 0x83402EE0, type:  .bss, name: fragments/gallery_backgrounds/gallery_backgrounds_2A1B50}
+    - {vram: 0x83407BF0, type:  .bss, name: fragments/gallery_backgrounds/gallery_backgrounds_2A3E70}
+    - {vram: 0x83407C00, type:  .bss, name: fragments/gallery_backgrounds/gallery_backgrounds_2A3F60}
 
   - name: fragment43_relocs
     type: code
@@ -1825,22 +1825,22 @@
     start: 0x2AD8F0
     vram: 0x83800000
     subsegments:
-    - [0x2AD8F0, textbin,   fragments/47/fragment47_header]
-    - [0x2AD910, c,      fragments/47/fragment47_2AD910]
-    - [0x2AE1F0, c,      fragments/47/fragment47_2AE1F0]
-    - [0x2AFDB0, c,      fragments/47/fragment47_2AFDB0]
+    - [0x2AD8F0, textbin,   fragments/gallery_rental_viewer/gallery_rental_viewer_header]
+    - [0x2AD910, c,      fragments/gallery_rental_viewer/gallery_rental_viewer_2AD910]
+    - [0x2AE1F0, c,      fragments/gallery_rental_viewer/gallery_rental_viewer_2AE1F0]
+    - [0x2AFDB0, c,      fragments/gallery_rental_viewer/gallery_rental_viewer_2AFDB0]
 
-    - [0x2B25A0, .data,   fragments/47/fragment47_2AD910]
-    - [0x2B25B0, .data,   fragments/47/fragment47_2AE1F0]
-    - [0x2B2E30, .data,   fragments/47/fragment47_2AFDB0]
+    - [0x2B25A0, .data,   fragments/gallery_rental_viewer/gallery_rental_viewer_2AD910]
+    - [0x2B25B0, .data,   fragments/gallery_rental_viewer/gallery_rental_viewer_2AE1F0]
+    - [0x2B2E30, .data,   fragments/gallery_rental_viewer/gallery_rental_viewer_2AFDB0]
 
-    - [0x2B2E50, .rodata, fragments/47/fragment47_2AD910]
-    - [0x2B2E90, .rodata, fragments/47/fragment47_2AE1F0]
-    - [0x2B2F10, .rodata, fragments/47/fragment47_2AFDB0]
+    - [0x2B2E50, .rodata, fragments/gallery_rental_viewer/gallery_rental_viewer_2AD910]
+    - [0x2B2E90, .rodata, fragments/gallery_rental_viewer/gallery_rental_viewer_2AE1F0]
+    - [0x2B2F10, .rodata, fragments/gallery_rental_viewer/gallery_rental_viewer_2AFDB0]
 
-    - {vram: 0x83805650, type:  .bss, name: fragments/47/fragment47_2AD910}
-    - {vram: 0x83805670, type:  .bss, name: fragments/47/fragment47_2AE1F0}
-    - {vram: 0x838067F0, type:  .bss, name: fragments/47/fragment47_2AFDB0}
+    - {vram: 0x83805650, type:  .bss, name: fragments/gallery_rental_viewer/gallery_rental_viewer_2AD910}
+    - {vram: 0x83805670, type:  .bss, name: fragments/gallery_rental_viewer/gallery_rental_viewer_2AE1F0}
+    - {vram: 0x838067F0, type:  .bss, name: fragments/gallery_rental_viewer/gallery_rental_viewer_2AFDB0}
 
   - name: fragment47_relocs
     type: code
@@ -1899,12 +1899,12 @@
     start: 0x2B5350
     vram: 0x82600000
     subsegments:
-    - [0x2B5350, textbin,   fragments/50/fragment50_header]
-    - [0x2B5370, c,      fragments/50/fragment50]
-    - [0x2B91D0, .data,   fragments/50/fragment50]
-    - [0x2BC690, .rodata, fragments/50/fragment50]
+    - [0x2B5350, textbin,   fragments/victory_palace/victory_palace_header]
+    - [0x2B5370, c,      fragments/victory_palace/victory_palace]
+    - [0x2B91D0, .data,   fragments/victory_palace/victory_palace]
+    - [0x2BC690, .rodata, fragments/victory_palace/victory_palace]
 
-    - {vram: 0x82607410, type:  .bss, name: fragments/50/fragment50}
+    - {vram: 0x82607410, type:  .bss, name: fragments/victory_palace/victory_palace}
 
   - name: fragment50_relocs
     type: code
@@ -2135,34 +2135,34 @@
     start: 0x2D7890
     vram: 0x84200000
     subsegments:
-    - [0x2D7890, textbin,   fragments/61/fragment61_header]
+    - [0x2D7890, textbin,   fragments/rental_team_selection/rental_team_selection_header]
     - [0x2D78B0, c,      fragments/61/fragment61_2D78B0]
-    - [0x2DB900, c,      fragments/61/fragment61_2DB900]
+    - [0x2DB900, c,      fragments/rental_team_selection/rental_team_selection_2DB900]
     - [0x2DD710, c,      fragments/61/fragment61_2DD710]
     - [0x2DFB60, c,      fragments/61/fragment61_2DFB60]
-    - [0x2E2C20, c,      fragments/61/fragment61_2E2C20]
-    - [0x2E4040, c,      fragments/61/fragment61_2E4040]
-    - [0x2E5430, c,      fragments/61/fragment61_2E5430]
+    - [0x2E2C20, c,      fragments/rental_team_selection/rental_team_selection_2E2C20]
+    - [0x2E4040, c,      fragments/rental_team_selection/rental_team_selection_2E4040]
+    - [0x2E5430, c,      fragments/rental_team_selection/rental_team_selection_2E5430]
 
     - [0x2E85D0, .data,   fragments/61/fragment61_2D78B0]
-    - [0x2E8630, .data,   fragments/61/fragment61_2DB900]
+    - [0x2E8630, .data,   fragments/rental_team_selection/rental_team_selection_2DB900]
     - [0x2E8E40, .data,   fragments/61/fragment61_2DD710]
     - [0x2E8E60, .data,   fragments/61/fragment61_2DFB60]
-    - [0x2E8E80, .data,   fragments/61/fragment61_2E2C20]
-    - [0x2E8F90, .data,   fragments/61/fragment61_2E4040]
-    - [0x2E90E0, .data,   fragments/61/fragment61_2E5430]
+    - [0x2E8E80, .data,   fragments/rental_team_selection/rental_team_selection_2E2C20]
+    - [0x2E8F90, .data,   fragments/rental_team_selection/rental_team_selection_2E4040]
+    - [0x2E90E0, .data,   fragments/rental_team_selection/rental_team_selection_2E5430]
     
     - [0x2E9120, .rodata, fragments/61/fragment61_2D78B0]
-    - [0x2E9150, .rodata, fragments/61/fragment61_2DB900]
+    - [0x2E9150, .rodata, fragments/rental_team_selection/rental_team_selection_2DB900]
     - [0x2E91D0, .rodata, fragments/61/fragment61_2DD710]
     - [0x2E9250, .rodata, fragments/61/fragment61_2DFB60]
-    - [0x2E92B0, .rodata, fragments/61/fragment61_2E2C20]
-    - [0x2E92E0, .rodata, fragments/61/fragment61_2E4040]
-    - [0x2E9350, .rodata, fragments/61/fragment61_2E5430]
+    - [0x2E92B0, .rodata, fragments/rental_team_selection/rental_team_selection_2E2C20]
+    - [0x2E92E0, .rodata, fragments/rental_team_selection/rental_team_selection_2E4040]
+    - [0x2E9350, .rodata, fragments/rental_team_selection/rental_team_selection_2E5430]
 
     - {vram: 0x84211B30, type:  .bss, name: fragments/61/fragment61_2D78B0}
-    - {vram: 0x8423D400, type:  .bss, name: fragments/61/fragment61_2DB900}
-    - {vram: 0x8423E580, type:  .bss, name: fragments/61/fragment61_2E4040}
+    - {vram: 0x8423D400, type:  .bss, name: fragments/rental_team_selection/rental_team_selection_2DB900}
+    - {vram: 0x8423E580, type:  .bss, name: fragments/rental_team_selection/rental_team_selection_2E4040}
     
 
   - name: fragment61_relocs

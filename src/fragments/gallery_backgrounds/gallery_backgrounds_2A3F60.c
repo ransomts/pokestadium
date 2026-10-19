@@ -1,8 +1,8 @@
-#include "fragment43.h"
+#include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 #include "src/1CF30.h"
 #include "src/20470.h"
 #include "src/49790.h"
-#include "src/fragments/43/fragment43.h"
+#include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 
 static s16 D_83407C00;
 static Controller* D_83407C04;

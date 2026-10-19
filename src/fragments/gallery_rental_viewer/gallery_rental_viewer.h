@@ -4,7 +4,7 @@
 #include "global.h"
 #include "src/30640.h"
 #include "src/geo_layout.h"
-#include "src/fragments/43/fragment43.h"
+#include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 
 typedef struct RentalViewerBgData {
     /* 0x000 */ u32 unk_000;

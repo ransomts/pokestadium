@@ -1,4 +1,4 @@
-#include "fragment43.h"
+#include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 #include "src/2E110.h"
 
 static char** gMessageBank_2C;

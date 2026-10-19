@@ -2,7 +2,7 @@
 #include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
 #include "src/fragments/31/fragment31.h"
 #include "src/fragments/particle_math/particle_math.h"
-#include "src/fragments/43/fragment43.h"
+#include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 #include "src/11BA0.h"
 #include "src/12D80.h"
 #include "src/17300.h"

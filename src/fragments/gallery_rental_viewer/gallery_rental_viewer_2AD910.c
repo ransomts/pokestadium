@@ -1,4 +1,4 @@
-#include "fragment47.h"
+#include "src/fragments/gallery_rental_viewer/gallery_rental_viewer.h"
 #include "src/1AB70.h"
 #include "src/1CF30.h"
 #include "src/20330.h"

@@ -6,7 +6,7 @@
 #include "src/6A40.h"
 #include "src/C030.h"
 #include "src/dp_intro.h"
-#include "src/fragments/43/fragment43.h"
+#include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
