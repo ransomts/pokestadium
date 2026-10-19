@@ -1301,12 +1301,12 @@
     start: 0x1F7C90
     vram: 0x88600000
     subsegments:
-    - [0x1F7C90, textbin,   fragments/27/fragment27_header]
-    - [0x1F7CB0, c,      fragments/27/fragment27]
-    - [0x1FD750, .data,   fragments/27/fragment27]
-    - [0x214060, .rodata, fragments/27/fragment27]
+    - [0x1F7C90, textbin,   fragments/lab_pc_icons/lab_pc_icons_header]
+    - [0x1F7CB0, c,      fragments/lab_pc_icons/lab_pc_icons]
+    - [0x1FD750, .data,   fragments/lab_pc_icons/lab_pc_icons]
+    - [0x214060, .rodata, fragments/lab_pc_icons/lab_pc_icons]
 
-    - {vram: 0x8861C510, type:  .bss, name: fragments/27/fragment27}
+    - {vram: 0x8861C510, type:  .bss, name: fragments/lab_pc_icons/lab_pc_icons}
 
   - name: fragment27_relocs
     type: code
