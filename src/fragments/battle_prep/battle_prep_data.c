@@ -1,4 +1,4 @@
-#include "fragment63.h"
+#include "battle_prep.h"
 
 SpeciesDisplayParams gSpeciesDisplayParamsFront[] = {
     {

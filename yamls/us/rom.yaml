@@ -2349,39 +2349,39 @@
     start: 0x394100
     vram: 0x84B00000
     subsegments:
-    - [0x394100, textbin,   fragments/63/fragment63_header]
-    - [0x394120, c,      fragments/63/fragment63_394120]
-    - [0x3974E0, c,      fragments/63/fragment63_3974E0]
-    - [0x397B10, c,      fragments/63/fragment63_397B10]
-    - [0x39AC50, c,      fragments/63/fragment63_39AC50]
-    - [0x39BFB0, c,      fragments/63/fragment63_39BFB0]
-    - [0x39ED60, c,      fragments/63/fragment63_39ED60]
-    - [0x3A0010, c,      fragments/63/fragment63_3A0010]
-    - [0x3A1970, c,      fragments/63/fragment63_3A1970]
-    - [0x3A1C30, c,      fragments/63/fragment63_3A1C30]
-    - [0x3A3BF0, c,      fragments/63/fragment63_data]
+    - [0x394100, textbin,   fragments/battle_prep/battle_prep_header]
+    - [0x394120, c,      fragments/battle_prep/battle_prep_394120]
+    - [0x3974E0, c,      fragments/battle_prep/battle_prep_3974E0]
+    - [0x397B10, c,      fragments/battle_prep/battle_prep_397B10]
+    - [0x39AC50, c,      fragments/battle_prep/battle_prep_39AC50]
+    - [0x39BFB0, c,      fragments/battle_prep/battle_prep_39BFB0]
+    - [0x39ED60, c,      fragments/battle_prep/battle_prep_39ED60]
+    - [0x3A0010, c,      fragments/battle_prep/battle_prep_3A0010]
+    - [0x3A1970, c,      fragments/battle_prep/battle_prep_3A1970]
+    - [0x3A1C30, c,      fragments/battle_prep/battle_prep_3A1C30]
+    - [0x3A3BF0, c,      fragments/battle_prep/battle_prep_data]
     
-    - [0x3A3C10, .data,   fragments/63/fragment63_394120]
-    - [0x3A3D40, .data,   fragments/63/fragment63_397B10]
-    - [0x3A5D20, .data,   fragments/63/fragment63_39AC50]
-    - [0x3A8D10, .data,   fragments/63/fragment63_39BFB0]
-    - [0x3AA490, .data,   fragments/63/fragment63_39ED60]
-    - [0x3AABA0, .data,   fragments/63/fragment63_3A0010]
-    - [0x3AB000, .data,   fragments/63/fragment63_3A1970]
-    - [0x3AB650, .data,   fragments/63/fragment63_3A1C30]
-    - [0x3AB720, .data,   fragments/63/fragment63_data]
+    - [0x3A3C10, .data,   fragments/battle_prep/battle_prep_394120]
+    - [0x3A3D40, .data,   fragments/battle_prep/battle_prep_397B10]
+    - [0x3A5D20, .data,   fragments/battle_prep/battle_prep_39AC50]
+    - [0x3A8D10, .data,   fragments/battle_prep/battle_prep_39BFB0]
+    - [0x3AA490, .data,   fragments/battle_prep/battle_prep_39ED60]
+    - [0x3AABA0, .data,   fragments/battle_prep/battle_prep_3A0010]
+    - [0x3AB000, .data,   fragments/battle_prep/battle_prep_3A1970]
+    - [0x3AB650, .data,   fragments/battle_prep/battle_prep_3A1C30]
+    - [0x3AB720, .data,   fragments/battle_prep/battle_prep_data]
     
-    - [0x3AD860, .rodata, fragments/63/fragment63_394120]
-    - [0x3AD8B0, .rodata, fragments/63/fragment63_3974E0]
-    - [0x3AD8C0, .rodata, fragments/63/fragment63_397B10]
-    - [0x3AD8F0, .rodata, fragments/63/fragment63_39AC50]
-    - [0x3AD900, .rodata, fragments/63/fragment63_39BFB0]
-    - [0x3AD920, .rodata, fragments/63/fragment63_39ED60]
-    - [0x3AD930, .rodata, fragments/63/fragment63_3A0010]
-    - [0x3AD970, .rodata, fragments/63/fragment63_3A1970]
-    - [0x3AD980, .rodata, fragments/63/fragment63_3A1C30]
+    - [0x3AD860, .rodata, fragments/battle_prep/battle_prep_394120]
+    - [0x3AD8B0, .rodata, fragments/battle_prep/battle_prep_3974E0]
+    - [0x3AD8C0, .rodata, fragments/battle_prep/battle_prep_397B10]
+    - [0x3AD8F0, .rodata, fragments/battle_prep/battle_prep_39AC50]
+    - [0x3AD900, .rodata, fragments/battle_prep/battle_prep_39BFB0]
+    - [0x3AD920, .rodata, fragments/battle_prep/battle_prep_39ED60]
+    - [0x3AD930, .rodata, fragments/battle_prep/battle_prep_3A0010]
+    - [0x3AD970, .rodata, fragments/battle_prep/battle_prep_3A1970]
+    - [0x3AD980, .rodata, fragments/battle_prep/battle_prep_3A1C30]
 
-    - {vram: 0x84B19910, type:  .bss, name: fragments/63/fragment63_394120}
+    - {vram: 0x84B19910, type:  .bss, name: fragments/battle_prep/battle_prep_394120}
 
   - name: fragment63_relocs
     type: code
@@ -2398,12 +2398,12 @@
     start: 0x3AEE50
     vram: 0x84800000
     subsegments:
-    - [0x3AEE50, textbin,   fragments/64/fragment64_header]
-    - [0x3AEE70, c,      fragments/64/fragment64]
-    - [0x3B2390, .data,   fragments/64/fragment64]
-    - [0x3B2530, .rodata, fragments/64/fragment64]
+    - [0x3AEE50, textbin,   fragments/battle_order_select/battle_order_select_header]
+    - [0x3AEE70, c,      fragments/battle_order_select/battle_order_select]
+    - [0x3B2390, .data,   fragments/battle_order_select/battle_order_select]
+    - [0x3B2530, .rodata, fragments/battle_order_select/battle_order_select]
 
-    - {vram: 0x84803760, type:  .bss, name: fragments/64/fragment64}
+    - {vram: 0x84803760, type:  .bss, name: fragments/battle_order_select/battle_order_select}
 
   - name: fragment64_relocs
     type: code
