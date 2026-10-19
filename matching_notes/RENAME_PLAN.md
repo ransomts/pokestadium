@@ -143,3 +143,32 @@ michiiik-nameless overlap (~498), undefined_syms.ld-blocked (~530), weak evidenc
 Next: another LLM wave pass on the tail, Tier C shared-name field scoping (pycparser),
 and the F5 upstream fold (rename commits are cherry-pickable; credit Team Hippodrome for
 hp1 rows in PRs).
+
+## PIVOT (owner decision, 2026-10-18 ~21:10): michiiik is the target, not pret
+
+pret/pokestadium is no longer the upstream; michiiik/pokestadium (Team Hippodrome) is.
+What was done immediately:
+- ma1: 5,139 alignment renames - michiiik's name replaces ours wherever we diverged
+  (of 5,175 divergent; 36 dropped as collisions/vetoes). Ledger total: 16,340.
+  NOTE: a few of their names are narrower than ours (e.g. our GetItemName -> their
+  Text_GetTmHmName for func_80021CE0) - reversal is one ledger row if the owner wants.
+- The pret F5/up-* PR series is DEAD. Future contributions go TO michiiik: our value
+  is the rename automation + matching tooling + the 4,550 symbols we named that they
+  have not + the other-version (jp/it/es/fr/de/eu) backlog.
+- The other session was notified (/tmp/opencode/FROM_RENAME_SESSION.md).
+
+## Next: the semantic reorg (staged, ready to execute)
+
+Goal: adopt michiiik's tree layout. Everything needed is in place:
+1. matching_notes/hippo_file_map.md - the address-join map (288/304 files 1:1;
+   13 splits listed at the bottom; 1 of theirs spans several of ours).
+2. Reorg recipe per fragment group, gated: rewrite the yaml subsegment paths
+   (fragments/N/fragmentN_XXXX -> fragments/<semantic>/<name> per the map) + git mv
+   the .c/.h + fix #includes (check the include style first: flat vs path-qualified)
+   + make extract + full make OK + re-extract invariance + diff-init. One commit per
+   group, ~15-30 gated batches. Reuse rename.py's gate discipline; the ROM is the
+   safety net (byte-identical through everything).
+3. After the reorg: file-level diffs against michiiik become meaningful - the nameless
+   2,306 tail (statics etc.) can then cross-reference their SRC directly
+   (their tree at /tmp/opencode/hippo or re-clone shallow).
+4. Tier C shared-name field scoping (pycparser) remains open, unchanged.
