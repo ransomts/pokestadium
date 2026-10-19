@@ -1576,12 +1576,12 @@
     start: 0x272830
     vram: 0x82200000
     subsegments:
-    - [0x272830, textbin,   fragments/37/fragment37_header]
-    - [0x272850, c,      fragments/37/fragment37]
-    - [0x2757D0, .data,   fragments/37/fragment37]
-    - [0x275900, .rodata, fragments/37/fragment37]
+    - [0x272830, textbin,   fragments/area_select/area_select_header]
+    - [0x272850, c,      fragments/area_select/area_select]
+    - [0x2757D0, .data,   fragments/area_select/area_select]
+    - [0x275900, .rodata, fragments/area_select/area_select]
 
-    - {vram: 0x822030F0, type:  .bss, name: fragments/37/fragment37}
+    - {vram: 0x822030F0, type:  .bss, name: fragments/area_select/area_select}
 
   - name: fragment37_relocs
     type: code
@@ -1598,12 +1598,12 @@
     start: 0x275CE0
     vram: 0x82300000
     subsegments:
-    - [0x275CE0, textbin,   fragments/38/fragment38_header]
-    - [0x275D00, c,      fragments/38/fragment38]
-    - [0x27B600, .data,   fragments/38/fragment38]
-    - [0x27B6B0, .rodata, fragments/38/fragment38]
+    - [0x275CE0, textbin,   fragments/event_battle/event_battle_header]
+    - [0x275D00, c,      fragments/event_battle/event_battle]
+    - [0x27B600, .data,   fragments/event_battle/event_battle]
+    - [0x27B6B0, .rodata, fragments/event_battle/event_battle]
 
-    - {vram: 0x82305A20, type:  .bss, name: fragments/38/fragment38}
+    - {vram: 0x82305A20, type:  .bss, name: fragments/event_battle/event_battle}
 
   - name: fragment38_relocs
     type: code

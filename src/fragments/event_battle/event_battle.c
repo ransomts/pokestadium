@@ -1,4 +1,4 @@
-#include "fragment38.h"
+#include "event_battle.h"
 #include "src/1AB70.h"
 #include "src/1CF30.h"
 #include "src/20330.h"
