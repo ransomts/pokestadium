@@ -24,11 +24,11 @@
 #include "src/stage_loader.h"
 
 static u8* gMenuMiscAssets;
-static unk_D_81303FA8 gEntryStatus[4];
+static PortStatus gEntryStatus[4];
 static s16 gSelectedEntryIndex;
-static unk_D_81304008 gEntryGraphNodes[4];
+static PortGraphNode gEntryGraphNodes[4];
 static GraphNode* gMenuGeoNode;
-static GraphNode* D_8130464C;
+static GraphNode* gPortSelectRootNode;
 static s16 gIsEntrySelectionActive;
 static s32 gPlayerNameLength;
 static char** gEntryMessageBank;
@@ -37,7 +37,7 @@ static s16 gPulseAlpha;
 static s16 gPrevSelectedEntryIndex;
 static s32 gEntryConfirmState;
 
-static u32 D_81303C20[] = {
+static u32 gPortSelectAnimData[] = {
     0xA4B3A4CE, 0xA5ABA1BC, 0xA5C8A5EA, 0x0AA5C3A5, 0xB8A4CFA1, 0xA2A4C4A4, 0xAB0AA4A8, 0xA4DEA4BB, 0xA4F3A1A3,
     0x00000000, 0xA5ECA5DD, 0xA1BCA5C8, 0xA4ACA1A2, 0x0AA4DFA4, 0xC4A4ABA4, 0xEAA4DEA4, 0xBB0AA4F3, 0xA1A30000,
     0xA5DDA5B1, 0xA5E2A5F3, 0xA5BBA5F3, 0x0AA5BFA1, 0xBCA4C7A1, 0xA2A5ECA5, 0xDD0AA1BC, 0xA5C8A4B5, 0xA4ECA4C6,
@@ -46,13 +46,13 @@ static u32 D_81303C20[] = {
 
 static s16 gMenuAnimTimer = 0;
 
-static u32 D_81303CB4[] = {
+static u32 gPortSelectGeoLayout[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243, 0x05000000,
     0x0D000000,  0x05000000, 0x14000000, 0x002D013B, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002, 0x05000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-static Vtx D_81303D18[] = {
+static Vtx gPortSelectVertices[] = {
     VTX(-32, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 32, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 32, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, 64, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -61,11 +61,11 @@ static Vtx D_81303D18[] = {
     VTX(16, 15, 0, 1024, 768, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(16, 39, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static Gfx D_81303DD8[] = {
+static Gfx gPortSelectDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_81303D18, 12, 0),
+    gsSPVertex(gPortSelectVertices, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -78,16 +78,16 @@ static Gfx D_81303DD8[] = {
     gsSPEndDisplayList(),
 };
 
-static u32 D_81303EC0[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_81303D18, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, TransferPak_RenderPortNodeCallback, D_81303DD8, 0x06000000, 0x01000000,
+static u32 gPortSelectNodeData[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gPortSelectVertices, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, TransferPak_RenderPortNodeCallback, gPortSelectDisplayList, 0x06000000, 0x01000000,
 };
 
-static u32 D_81303EF4[] = {
+static u32 gPortModelTextures[] = {
     D_201D820, D_201DB20, D_201DE20, D_201E120, NULL,
 };
 
-static u32 D_81303F08[] = {
+static u32 gPortGradientColors[] = {
     0x1E1E1E00,
     0x00006400,
     0x0000FF00,
@@ -115,7 +115,7 @@ s32 TransferPak_RenderPortNodeCallback(s32 arg0, GraphNode* arg1) {
 
         if (gEntryGraphNodes[idx].unk_01C != NULL) {
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(gEntryGraphNodes[idx].unk_01C));
-            gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_81303EF4[gEntryGraphNodes[idx].unk_002]));
+            gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(gPortModelTextures[gEntryGraphNodes[idx].unk_002]));
             gSPDisplayList(gDisplayListHead++, arg1->unk_14);
         }
         GeoRender_ApplyMaterialState();
@@ -141,7 +141,7 @@ void TransferPak_LaunchSelectedPortAnim(void) {
 }
 
 s32 TransferPak_GetPortErrorCode(s32 arg0) {
-    unk_D_81303FA8* ptr = &gEntryStatus[arg0];
+    PortStatus* ptr = &gEntryStatus[arg0];
     s32 var_v1;
 
     if (ptr->TrainerSlotSaveData_GamePort != 0) {
@@ -305,19 +305,19 @@ void TransferPak_DrawSpinningPakIcon(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16
 }
 
 void TransferPak_UpdatePulseAlpha(void) {
-    static s16 D_81303F30 = 0;
-    static u16 D_81303F34[] = { 0, 0x6400, 0, 0xFF00 };
+    static s16 gPulseTimer = 0;
+    static u16 gPulseAlphaTable[] = { 0, 0x6400, 0, 0xFF00 };
 
-    s16 temp_v0 = (D_81303F30 + 0xA) & 0x1FF;
+    s16 temp_v0 = (gPulseTimer + 0xA) & 0x1FF;
 
-    D_81303F30 = 0x100;
+    gPulseTimer = 0x100;
 
-    if (temp_v0 < D_81303F30) {
+    if (temp_v0 < gPulseTimer) {
         gPulseAlpha = temp_v0;
-        D_81303F30 = temp_v0;
+        gPulseTimer = temp_v0;
     } else {
         gPulseAlpha = 0x1FF - temp_v0;
-        D_81303F30 = temp_v0;
+        gPulseTimer = temp_v0;
     }
 }
 
@@ -434,13 +434,13 @@ void TransferPak_DrawPromptPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4
 }
 
 void TransferPak_DrawPortSelectOverlay(void) {
-    static s32 D_81303F3C = 0;
+    static s32 gBgTextureIndex = 0;
 
     TransferPak_UpdatePulseAlpha();
 
     if (gCurrentGameState == 0x25) {
-        TransferPak_DrawSpinningPakIcon(gBgTextureSequence[D_81303F3C], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
-        D_81303F3C = (D_81303F3C + 1) % 5;
+        TransferPak_DrawSpinningPakIcon(gBgTextureSequence[gBgTextureIndex], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
+        gBgTextureIndex = (gBgTextureIndex + 1) % 5;
         TransferPak_DrawPulsingGuideIcon(D_30055B0, 0x98, 0xEE, 0x20, 0x23, 2.0f, 1);
         TransferPak_DrawPulsingGuideIcon(D_3004EF0, 0xC2, 0x100, 0x28, 0x2B, 2.0f, 1);
         TransferPak_DrawPulsingGuideIcon(D_30055B0, 0x1AA, 0xEE, 0x20, 0x23, 2.0f, -1);
@@ -553,7 +553,7 @@ void TransferPak_DrawFrame(s32 arg0) {
     }
 
     TransferPak_DrawPortSelectOverlay();
-    Geo_RenderRootNode(D_8130464C);
+    Geo_RenderRootNode(gPortSelectRootNode);
     BgStage_AdvanceFrame();
 }
 
@@ -610,13 +610,13 @@ void TransferPak_AutoSelectPort(void) {
 }
 
 void TransferPak_AnimatePortModels(void) {
-    static s16 D_81303F40[] = { 0x5C0, 0x680, 0x580, 0 };
+    static s16 gPortAnimSines[] = { 0x5C0, 0x680, 0x580, 0 };
 
     f32 var_fv0;
     f32 var_fv1;
     s16 var_a1;
     s32 var_s1;
-    unk_D_81304008* var_s0;
+    PortGraphNode* var_s0;
     Fragment2_1GraphNode* var_v0;
     s32 i;
 
@@ -631,7 +631,7 @@ void TransferPak_AnimatePortModels(void) {
                     var_s1 = 0x3000;
                 } else {
                     var_fv0 = 1.0f;
-                    var_a1 = D_81303F40[0];
+                    var_a1 = gPortAnimSines[0];
                     var_fv1 = 0.02f;
                     var_s1 = 0x2000;
                 }
@@ -735,7 +735,7 @@ s32 TransferPak_PortSelectLoop(s32 arg0) {
 }
 
 void TransferPak_InitPortModels(void) {
-    static s16 D_81303F48[] = { 1, 2, 0, 3 };
+    static s16 gPortModelOrder[] = { 1, 2, 0, 3 };
 
     Fragment2_1GraphNode* ptr;
     s32 temp_s1;
@@ -744,7 +744,7 @@ void TransferPak_InitPortModels(void) {
     gEntryConfirmState = 0;
 
     for (i = 0; i < 4; i++) {
-        temp_s1 = D_81303F48[i];
+        temp_s1 = gPortModelOrder[i];
         ptr = &gEntryGraphNodes[temp_s1].unk_028;
 
         ModelRenderer_AttachDisplayObject(ptr);
@@ -785,8 +785,8 @@ void TransferPak_InitPortModels(void) {
 void TransferPak_InitScene(void) {
     MemoryBlock* sp1C = MainPool_AllocState(main_pool_get_available(), 0);
 
-    D_8130464C = process_geo_layout(sp1C, &D_81303CB4);
-    gMenuGeoNode = process_geo_layout(sp1C, &D_81303EC0);
+    gPortSelectRootNode = process_geo_layout(sp1C, &gPortSelectGeoLayout);
+    gMenuGeoNode = process_geo_layout(sp1C, &gPortSelectNodeData);
     MainPool_FinalizeAllocation(sp1C);
     ModelRenderer_InitDisplayRoots();
     TransferPak_InitPortModels();

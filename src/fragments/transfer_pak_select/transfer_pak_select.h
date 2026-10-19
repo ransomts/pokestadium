@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-typedef struct unk_D_81304008 {
+typedef struct PortGraphNode {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ s16 unk_004;
@@ -19,9 +19,9 @@ typedef struct unk_D_81304008 {
     /* 0x020 */ f32 unk_020;
     /* 0x020 */ f32 unk_024;
     /* 0x020 */ Fragment2_1GraphNode unk_028;
-} unk_D_81304008; // size = 0x190
+} PortGraphNode; // size = 0x190
 
-typedef struct unk_D_81303FA8 {
+typedef struct PortStatus {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
@@ -31,7 +31,7 @@ typedef struct unk_D_81303FA8 {
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ char RentalSlotAnimData_PosePhase[1];
     /* 0x09 */ char unk09[0xD];
-} unk_D_81303FA8; // size = 0x16
+} PortStatus; // size = 0x16
 
 s32 TransferPak_RenderPortNodeCallback(s32 arg0, GraphNode* arg1);
 s32 TransferPak_GetPresentationMode(void);

@@ -24,7 +24,7 @@ extern s16 gMenuOptionTimers[4];
 extern s16 gMenuSelectedOption;
 extern s16 gMenuOptionUsedFlags[9];
 extern s16 gMenuOptionFlags[4];
-extern u32* D_8780FA70;
+extern u32* gCurrentPlayerIconTex;
 extern u16 gResultFlag_Special;
 extern u16 gResultMenuVisible;
 extern u16 gResultExitPending;

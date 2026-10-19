@@ -17671,3 +17671,19 @@ D_82F13F5C	gTransferArrowAnimTimer	w13		Static timer incremented by 0x1000 used 
 D_82F13F78	gSaveSeqMenuMarkerAnim	w13		used in SINS() to animate the menu cursor marker in Trade_DrawSaveSeqMenuPanel	applied@198d1efc
 D_82F13F88	gSaveSeqMessageAnim	w13		incremented by 0x800 in RentalMenu_DrawMessage to animate the backdrop	applied@198d1efc
 D_82F13F8C	gPortPanelYOffsets	w13		array of Y offsets (0x32, 0x14A) used for Trade_DrawPortInfoPanel in Trade_DrawSaveSeq	applied@198d1efc
+D_81303C20	gPortSelectAnimData	w14		u32 array used for animation timing/offsets in TransferPak_AnimatePortModels	applied@b53d60c1
+D_81303CB4	gPortSelectGeoLayout	w14		geo layout definition passed to process_geo_layout in TransferPak_InitScene	applied@b53d60c1
+D_81303D18	gPortSelectVertices	w14		vertex array for the port selection UI elements	applied@b53d60c1
+D_81303DD8	gPortSelectDisplayList	w14		Gfx display list for rendering port selection UI	applied@b53d60c1
+D_81303EC0	gPortSelectNodeData	w14		node data for the port selection geometry	applied@b53d60c1
+D_81303EF4	gPortModelTextures	w14		array of texture pointers for the different game versions (Red/Blue/Yellow/Gold/Silver)	applied@b53d60c1
+D_8130464C	gPortSelectRootNode	w14		GraphNode root for the port selection scene	applied@b53d60c1
+unk_D_81303FA8	PortStatus	w14		struct containing port game ID, save state, and trainer name for a specific port	applied@b53d60c1
+unk_D_81304008	PortGraphNode	w14		struct managing the 3D model and animation state for a port entry	applied@b53d60c1
+D_81303F08	gPortGradientColors	w14		color data used for the pulsing/gradient UI effects	applied@b53d60c1
+D_81303F30	gPulseTimer	w14		static timer used in TransferPak_UpdatePulseAlpha to calculate gPulseAlpha	applied@b53d60c1
+D_81303F34	gPulseAlphaTable	w14		lookup table for alpha pulsing values	applied@b53d60c1
+D_81303F3C	gBgTextureIndex	w14		static index used to cycle through gBgTextureSequence in TransferPak_DrawPortSelectOverlay	applied@b53d60c1
+D_81303F40	gPortAnimSines	w14		array of sine wave offsets for the idle animation of port models	applied@b53d60c1
+D_81303F48	gPortModelOrder	w14		array defining the mapping of port indices to model slots	applied@b53d60c1
+D_8780FA70	gCurrentPlayerIconTex	w14		stores the selected texture from gPositiveTextureBank or gNegativeTextureBank in Widget_DrawPlayerIconScaled	applied@b53d60c1

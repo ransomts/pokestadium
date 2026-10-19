@@ -302,7 +302,7 @@ s32 Text_MeasureStringWidth(UNUSED TextObject* arg0, char* arg1) {
 }
 
 void Widget_DrawPlayerIconScaled(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
-    static u32* D_8780FA70;
+    static u32* gCurrentPlayerIconTex;
 
     f32 temp_fa0;
     f32 temp_fv1;
@@ -313,12 +313,12 @@ void Widget_DrawPlayerIconScaled(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg
     if ((arg3 != 0.0f) && (arg4 != 0.0f)) {
         if (arg0 < 0) {
             arg0 = -1 - arg0;
-            D_8780FA70 = gNegativeTextureBank[arg0];
+            gCurrentPlayerIconTex = gNegativeTextureBank[arg0];
         } else {
-            D_8780FA70 = gPositiveTextureBank[arg0 % 4];
+            gCurrentPlayerIconTex = gPositiveTextureBank[arg0 % 4];
         }
 
-        gDPLoadTextureBlock(gDisplayListHead++, D_8780FA70, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 26, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gCurrentPlayerIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 36, 26, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
