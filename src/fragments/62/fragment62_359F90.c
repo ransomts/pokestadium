@@ -78,9 +78,9 @@ static s32 pad_D_843C4DF0[21];
 u8 gIsBattleMode;
 u8 gAnimStateFlag;
 static s32 pad_D_843C4E48[252];
-unk_D_800FCB18* gCurrentBattleEntity;
-unk_D_800FCB18* gDefenderBattleEntity;
-static unk_D_800FCB18 gBattleTempEntities[2];
+PokemonAudioInfo* gCurrentBattleEntity;
+PokemonAudioInfo* gDefenderBattleEntity;
+static PokemonAudioInfo gBattleTempEntities[2];
 
 u8 D_8438AC60[] = {
     0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x0E, 0x4A, 0x00, 0x00,
@@ -188,7 +188,7 @@ u8 GetRandomU8_Alt(void) {
 
 void ShowDamageMessage(s32 arg0, s32 arg1) {
     unk_D_800AE540_0004* temp_a3;
-    unk_D_800FCB18* temp_a2_2;
+    PokemonAudioInfo* temp_a2_2;
     unk_BattlePlayerAnimState* temp_v1;
     s32 sp18;
 
@@ -219,8 +219,8 @@ void ShowDamageMessage(s32 arg0, s32 arg1) {
 }
 
 void ResetBattleAfterMove(s32 arg0, s32 arg1) {
-    unk_D_800FCB18* sp1C = &sActivePokemon[arg0]->unk_654.unk_38;
-    unk_D_800FCB18* sp18 = &sActivePokemon[arg1]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[arg0]->unk_654.unk_38;
+    PokemonAudioInfo* sp18 = &sActivePokemon[arg1]->unk_654.unk_38;
 
     ShowDamageMessage(arg0, arg1);
     gMoveEffectIndex = 0;
@@ -243,8 +243,8 @@ void ResetBattleAfterMove(s32 arg0, s32 arg1) {
 void func_8436FA80(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->unk_654;
     unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->unk_654;
-    unk_D_800FCB18* temp_a1 = &sActivePokemon[0]->unk_654.unk_38;
-    unk_D_800FCB18* temp_a2 = &sActivePokemon[1]->unk_654.unk_38;
+    PokemonAudioInfo* temp_a1 = &sActivePokemon[0]->unk_654.unk_38;
+    PokemonAudioInfo* temp_a2 = &sActivePokemon[1]->unk_654.unk_38;
     s32 var_v0;
 
     if (arg0 == sActivePokemon[0]) {
@@ -281,8 +281,8 @@ void ApplyDamageRandomFactor(void) {
 }
 
 u16 CompareMovePriority(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_D_800FCB18* ptr1 = &arg0->unk_654.unk_38;
-    unk_D_800FCB18* ptr2 = &arg1->unk_654.unk_38;
+    PokemonAudioInfo* ptr1 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* ptr2 = &arg1->unk_654.unk_38;
 
     if (ptr1->unk_5A == 0x62) {
         if (ptr2->unk_5A != 0x62) {
@@ -577,7 +577,7 @@ void ProcessTurnEnd(void) {
 }
 
 void DecrementMovePP(s32 arg0) {
-    unk_D_800FCB18* temp_v0;
+    PokemonAudioInfo* temp_v0;
     unk_BattlePlayerAnimState* temp_a1;
     PokemonData* temp_a2;
 
@@ -691,7 +691,7 @@ void Battle_ApplyAnimStateEffects(unk_BattlePlayerEntity* arg0) {
 }
 
 void ApplyParalysisSpeedCut(unk_BattlePlayerEntity* arg0) {
-    unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* temp_v0 = &arg0->unk_654.unk_38;
 
     if (arg0->unk_654.unk_38.unk_15 & 0x40) {
         temp_v0->unk_2E >>= 2;
@@ -702,7 +702,7 @@ void ApplyParalysisSpeedCut(unk_BattlePlayerEntity* arg0) {
 }
 
 void ApplyBurnAttackCut(unk_BattlePlayerEntity* arg0) {
-    unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* temp_v0 = &arg0->unk_654.unk_38;
 
     if (arg0->unk_654.unk_38.unk_15 & 0x10) {
         temp_v0->unk_2A >>= 1;
@@ -714,7 +714,7 @@ void ApplyBurnAttackCut(unk_BattlePlayerEntity* arg0) {
 
 void func_84370B7C(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* sp28;
-    unk_D_800FCB18* sp24;
+    PokemonAudioInfo* sp24;
     PokemonData* sp34;
     s32 i;
     s32 j;
@@ -812,7 +812,7 @@ void func_84370E80(void) {
 }
 
 void Battle_ApplyRageContinuation(void) {
-    unk_D_800FCB18* sp24;
+    PokemonAudioInfo* sp24;
 
     if ((gDefenderBattleEntity->unk_4D & 0x40) && ((gDefenderBattleEntity->unk_5C[0]) != 0xD)) {
         sp24 = gCurrentBattleEntity;
@@ -842,7 +842,7 @@ void func_84371010(void) {
 }
 
 void func_84371080(void) {
-    unk_D_800FCB18* sp1C = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
     switch (gBattleEffectType) {
         case 1:
@@ -919,7 +919,7 @@ void func_8437114C(void) {
 }
 
 void Battle_QueueMoveFailureAndApplyRecoil(void) {
-    unk_D_800FCB18* sp1C;
+    PokemonAudioInfo* sp1C;
 
     if (gTypeEffectivenessMsgState & 0x7F) {
         if (gBattleEffectType == 0xFF) {
@@ -958,7 +958,7 @@ void Battle_QueueMoveFailureAndApplyRecoil(void) {
 }
 
 void func_843714D8(void) {
-    unk_D_800FCB18* ptr;
+    PokemonAudioInfo* ptr;
     PokemonData* temp_a0;
     unk_BattlePlayerAnimState* temp_a1;
 
@@ -1258,11 +1258,11 @@ s32 Battle_CheckCriticalHit(void) {
 }
 
 s32 ProcessBattleEntityStatus(void) {
-    unk_D_800FCB18* sp2C;
+    PokemonAudioInfo* sp2C;
     unk_BattlePlayerAnimState* temp_v0;
     u16 sp26;
     u8 sp25;
-    unk_D_800FCB18* temp_v1;
+    PokemonAudioInfo* temp_v1;
 
     temp_v0 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654;
     temp_v1 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
@@ -1615,8 +1615,8 @@ end:
 void ResetBattleEntityStatus(unk_BattlePlayerEntity* arg0) {
     s32 sp1C = IsPrimaryEntity(arg0);
     unk_BattlePlayerAnimState* temp_a10;
-    unk_D_800FCB18* temp_a11;
-    unk_D_800FCB18* temp_a01;
+    PokemonAudioInfo* temp_a11;
+    PokemonAudioInfo* temp_a01;
 
     temp_a10 = &sActivePokemon[sp1C]->unk_654;
     temp_a11 = &sActivePokemon[sp1C]->unk_654.unk_38;
@@ -1821,8 +1821,8 @@ s32 ProcessFaintChecks(void) {
 }
 
 void BeginBattleMainLoop(void) {
-    unk_D_800FCB18* sp1C = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
-    unk_D_800FCB18* sp18 = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* sp18 = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_BattlePlayerAnimState* ptr1 = &sActivePokemon[0]->unk_654;
     unk_BattlePlayerAnimState* ptr2 = &sActivePokemon[1]->unk_654;
 
@@ -1859,8 +1859,8 @@ void BeginBattleMainLoop(void) {
 void BeginBattleForEntity(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* sp24;
     unk_BattlePlayerAnimState* sp20;
-    unk_D_800FCB18* ptr1;
-    unk_D_800FCB18* ptr2;
+    PokemonAudioInfo* ptr1;
+    PokemonAudioInfo* ptr2;
 
     ptr1 = &arg0->unk_654.unk_38;
 

@@ -67,7 +67,7 @@ s32 LabPCList_HeaderSelectIcon_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 a
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_883176D8, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 18, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock(gDisplayListHead++, gTitleScreenImageData_1, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 18, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 4) << 2, (arg2 + 1) << 2, (arg1 + 0x22) << 2, (arg2 + 0x13) << 2,
@@ -779,13 +779,13 @@ s32 LabPCList_DrawPageHeader(unk_func_88302D98* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_88317920, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 24, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gTitleScreenImageData_2, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 24, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 4) << 2, (arg2 + 3) << 2, (arg1 + 0x1D) << 2, (arg2 + 0x1A) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_88317F28, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 24, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gTitleScreenImageData_3, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 24, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, ((arg1 + spE8) + 0x26) << 2, (arg2 + 3) << 2, ((arg1 + spE8) + 0x3F) << 2,

@@ -301,7 +301,7 @@ void UpdateControllerInfo(void) {
 void SwapPlayerSelections(void) {
     s32 i;
     PickerPokemonEntry sp50;
-    unk_func_82F00838_sp30 sp30[2];
+    RentalItemInfo sp30[2];
 
     for (i = 0; i < 2; i++) {
         Picker_GetSelectionInfo(i, &sp30[i]);
@@ -482,7 +482,7 @@ void Trade_UpdateWaitForCableCondition(void) {
 }
 
 void Trade_UpdateWaitForPickSelection(void) {
-    unk_func_82F00838_sp30 sp20;
+    RentalItemInfo sp20;
 
     if (GetPickerState() == 0) {
         Picker_GetSelectionInfo(gActivePlayerIndex, &sp20);

@@ -635,7 +635,7 @@ void Trade_UpdateBoxMachineFlowFrameReturn(unk_D_82F20A40* arg0) {
 }
 
 void Trade_UpdateBoxMachineSlots(unk_D_82F20A40* arg0, s16 arg1, s16 arg2) {
-    unk_D_82F20A40_00E* ptr;
+    PanelRect* ptr;
     s32 i;
     s32 tmp;
 
@@ -728,7 +728,7 @@ void Trade_UpdateBoxMachineFlowConfirmInput(unk_D_82F20A40* arg0) {
     }
 }
 
-void Trade_UpdateBoxMachineRect(unk_D_82F20A40_00E* arg0, s16 arg1, s16 arg2) {
+void Trade_UpdateBoxMachineRect(PanelRect* arg0, s16 arg1, s16 arg2) {
     if ((arg0->unk_04 != 0xE8) || (arg0->unk_06 != 0)) {
         s32 tmp = (arg0->unk_00 * 0) / arg2;
 
@@ -775,7 +775,7 @@ void Trade_UpdateBoxMachineFlowClose(unk_D_82F20A40* arg0) {
 
 void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0) {
     Color_RGB8* var_v0;
-    unk_D_82F20A40_00E* temp_s4 = &arg0->unk_06;
+    PanelRect* temp_s4 = &arg0->unk_06;
     s32 i;
     unk_D_82F14450* ptr;
 
@@ -843,7 +843,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
     Color_RGB8 sp88 = { 0x1E, 0x1E, 0x82 };
     Color_RGB8 sp84 = { 0x64, 0x1E, 0x1E };
     char sp68[28];
-    unk_D_82F20A40_00E* ptr;
+    PanelRect* ptr;
 
     for (i = 0; i < 3; i++) {
         ptr = &arg0->unk_0E[i];
@@ -913,7 +913,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
 }
 
 void Trade_DrawBoxMachineTitle(unk_D_82F20A40* arg0) {
-    unk_D_82F20A40_00E* temp_s1 = &arg0->unk_26;
+    PanelRect* temp_s1 = &arg0->unk_26;
     char* temp_v0;
 
     Picker_DrawLargePanelBorder(arg0->unk_26.unk_00, arg0->unk_26.unk_02, arg0->unk_26.unk_04, arg0->unk_26.unk_06, 0x1E, 0x1E, 0x82,
@@ -930,7 +930,7 @@ void Trade_DrawBoxMachineTitle(unk_D_82F20A40* arg0) {
 
 void Trade_DrawBoxMachineConfirm(unk_D_82F20A40* arg0) {
     char* temp_v0;
-    unk_D_82F20A40_00E* temp_s3 = &arg0->unk_2E;
+    PanelRect* temp_s3 = &arg0->unk_2E;
     s32 i;
     s32 tmp;
     Color_RGB8 sp54 = { 0x1E, 0x1E, 0x82 };
@@ -974,7 +974,7 @@ void Trade_DrawBoxMachineConfirm(unk_D_82F20A40* arg0) {
 void Trade_DrawBoxMachineBanner(unk_D_82F20A40* arg0) {
     UNUSED s32 pad;
     char* sp48;
-    unk_D_82F20A40_00E* temp_s0 = &arg0->unk_36;
+    PanelRect* temp_s0 = &arg0->unk_36;
     Color_RGB8 sp40 = { 0x64, 0x1E, 0x1E };
 
     if (arg0->unk_04 == 0) {

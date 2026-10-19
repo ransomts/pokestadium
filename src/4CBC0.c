@@ -698,9 +698,9 @@ s32 PlayBattleMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     switch (arg0) {
         case 0x90001:
             if (D_80078FAC == 0) {
-                D_80078ED4 = 0;
-                D_80078ED8 = 0;
-                D_80078EDC = 0;
+                gSpecialSequenceState = 0;
+                gSequenceMusicHandle1 = 0;
+                gSequenceMusicHandle2 = 0;
                 sp38 = 2;
                 D_80078FAC++;
                 Audio_UpdateSpecialSequence(0x1E, 0);

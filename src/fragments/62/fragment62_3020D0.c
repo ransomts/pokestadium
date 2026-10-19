@@ -13,12 +13,12 @@
 #include "src/memory.h"
 #include "stdarg.h"
 
-unk_D_843901A0* gBattleMessageBuffers;
+BattleMessageBuffers* gBattleMessageBuffers;
 
-static u8 D_84385990[] = { 0xE, 0x4A };
-static u8 D_84385994[] = { 0x60, 0x69, 0x75, 0x78, 0x85 };
-static u8 D_8438599C[] = { 0x61, 0x64, 0x66, 0x68, 0x8C };
-static u8 D_843859A4[] = {
+static u8 gMoveCat_Physical[] = { 0xE, 0x4A };
+static u8 gMoveCat_Special[] = { 0x60, 0x69, 0x75, 0x78, 0x85 };
+static u8 gMoveCat_Status[] = { 0x61, 0x64, 0x66, 0x68, 0x8C };
+static u8 gMoveCat_Other[] = {
     1,    0xA,  0xB,  0x11, 0x13, 0x14, 0x15, 0x1E, 0x22, 0x23, 0x25, 0x27, 0x2B, 0x2C, 0x2D, 0x2E,
     0x2F, 0x40, 0x44, 0x46, 0x47, 0x51, 0x59, 0x5A, 0x5B, 0x5C, 0x67, 0x6A, 0x6B, 0x6E, 0x6F, 0x76,
     0x7A, 0x80, 0x84, 0x8B, 0x8D, 0x91, 0x94, 0x96, 0x97, 0x9A, 0x9C, 0x9F, 0xA3, 0xA4,
@@ -135,17 +135,17 @@ void InitBattleDialogParameters(void) {
 
 void DetermineMessageCategoryAndDisplay(void) {
     u32 sp1C;
-    unk_D_800FCB18* sp18 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* sp18 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
     sp18->unk_58 = sp18->unk_44.unk_00;
 
-    if (Array_ContainsValue(sp18->unk_44.unk_00, D_84385990, 2) != 0) {
+    if (Array_ContainsValue(sp18->unk_44.unk_00, gMoveCat_Physical, 2) != 0) {
         sp1C = 0;
-    } else if (Array_ContainsValue(sp18->unk_44.unk_00, D_84385994, 5) != 0) {
+    } else if (Array_ContainsValue(sp18->unk_44.unk_00, gMoveCat_Special, 5) != 0) {
         sp1C = 1;
-    } else if (Array_ContainsValue(sp18->unk_44.unk_00, D_8438599C, 5) != 0) {
+    } else if (Array_ContainsValue(sp18->unk_44.unk_00, gMoveCat_Status, 5) != 0) {
         sp1C = 2;
-    } else if (Array_ContainsValue(sp18->unk_44.unk_00, D_843859A4, 0x2E) != 0) {
+    } else if (Array_ContainsValue(sp18->unk_44.unk_00, gMoveCat_Other, 0x2E) != 0) {
         sp1C = 3;
     } else {
         sp1C = 4;
@@ -207,15 +207,15 @@ void DetermineMessageCategoryAndDisplay(void) {
 void Battle_QueueMoveCategoryMessage(void) {
     u32 sp24;
     UNUSED s32 pad;
-    unk_D_800FCB18* sp1C = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
-    if (Array_ContainsValue(sp1C->unk_5A, D_84385990, 2) != 0) {
+    if (Array_ContainsValue(sp1C->unk_5A, gMoveCat_Physical, 2) != 0) {
         sp24 = 0;
-    } else if (Array_ContainsValue(sp1C->unk_5A, D_84385994, 5) != 0) {
+    } else if (Array_ContainsValue(sp1C->unk_5A, gMoveCat_Special, 5) != 0) {
         sp24 = 1;
-    } else if (Array_ContainsValue(sp1C->unk_5A, D_8438599C, 5) != 0) {
+    } else if (Array_ContainsValue(sp1C->unk_5A, gMoveCat_Status, 5) != 0) {
         sp24 = 2;
-    } else if (Array_ContainsValue(sp1C->unk_5A, D_843859A4, 0x2E) != 0) {
+    } else if (Array_ContainsValue(sp1C->unk_5A, gMoveCat_Other, 0x2E) != 0) {
         sp24 = 3;
     } else {
         sp24 = 4;
@@ -250,17 +250,17 @@ void Battle_QueueMoveCategoryMessage(void) {
 void Battle_QueueMetronomeMoveMessage(void) {
     s32 sp2C;
     s32 tmp;
-    unk_D_800FCB18* sp24;
+    PokemonAudioInfo* sp24;
 
     sp24 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
 
-    if (Array_ContainsValue(sp24->unk_5A, D_84385990, 2) != 0) {
+    if (Array_ContainsValue(sp24->unk_5A, gMoveCat_Physical, 2) != 0) {
         sp2C = 0;
-    } else if (Array_ContainsValue(sp24->unk_5A, D_84385994, 5) != 0) {
+    } else if (Array_ContainsValue(sp24->unk_5A, gMoveCat_Special, 5) != 0) {
         sp2C = 1;
-    } else if (Array_ContainsValue(sp24->unk_5A, D_8438599C, 5) != 0) {
+    } else if (Array_ContainsValue(sp24->unk_5A, gMoveCat_Status, 5) != 0) {
         sp2C = 2;
-    } else if (Array_ContainsValue(sp24->unk_5A, D_843859A4, 0x2E) != 0) {
+    } else if (Array_ContainsValue(sp24->unk_5A, gMoveCat_Other, 0x2E) != 0) {
         sp2C = 3;
     } else {
         sp2C = 4;
@@ -517,7 +517,7 @@ void RenderDialogBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 }
 
 s32 BattleBox_SelectMessage(unk_D_843901A0_4C8* arg0) {
-    unk_D_843901A0* temp_v0;
+    BattleMessageBuffers* temp_v0;
     s32 tmp;
 
     arg0->unk_10 = 0;
@@ -746,8 +746,8 @@ void BattleScene_TickHudTimers(void) {
 }
 
 void Battle_InitMessageQueues(void) {
-    gBattleMessageBuffers = main_pool_alloc(sizeof(unk_D_843901A0), 0);
-    bzero(gBattleMessageBuffers, sizeof(unk_D_843901A0));
+    gBattleMessageBuffers = main_pool_alloc(sizeof(BattleMessageBuffers), 0);
+    bzero(gBattleMessageBuffers, sizeof(BattleMessageBuffers));
 }
 
 void Battle_InitCamera(void) {

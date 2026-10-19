@@ -241,7 +241,7 @@ static Color_RGBA8 gTextColor_WhiteSemiTransparent_Alt = { 0xF0, 0xF0, 0xF0, 0x4
 static Color_RGBA8 gTextColor_YellowOpaque_Alt = { 0xF0, 0xF0, 0x00, 0xFF };
 
 void MenuOption_DrawBox(s32 arg0, s32 arg1, unk_func_8820634C_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
-    static Color_RGBA8 D_88217E08 = { 0x6C, 0x6C, 0x7E, 0xFF };
+    static Color_RGBA8 gBoxColor_DarkGrayBlue_Alt = { 0x6C, 0x6C, 0x7E, 0xFF };
     unk_func_8820634C_arg2_unk0* temp_v0_7;
     Color_RGBA8 sp48;
     u32 color;
@@ -250,7 +250,7 @@ void MenuOption_DrawBox(s32 arg0, s32 arg1, unk_func_8820634C_arg2* arg2, s32 ar
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
     gDPSetRenderMode(gDisplayListHead++, 0, 0);
 
-    color = GPACK_RGBA5551(D_88217E08.r, D_88217E08.g, D_88217E08.b, 1);
+    color = GPACK_RGBA5551(gBoxColor_DarkGrayBlue_Alt.r, gBoxColor_DarkGrayBlue_Alt.g, gBoxColor_DarkGrayBlue_Alt.b, 1);
     gDPPipeSync(gDisplayListHead++);
     gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg5->unk_3C + arg0) - 1, (arg1 + arg5->unk_3E) - 1);
@@ -1463,10 +1463,10 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         184,
         54,
         42,
-        D_8821D378,
+        gPanelTexture_S1,
         0x30,
         0x0000,
-        D_882181E0,
+        gPanelAccent_S1,
         1,
         1,
     },
@@ -1475,7 +1475,7 @@ static Color_RGBA8 gDialogTitleColor = { 0xFF, 0xFF, 0x00, 0xFF };
 static Color_RGBA8 gDialogBodyColor = { 0x2D, 0x1A, 0x41, 0xFF };
 static Color_RGBA8 gDialogShadowColor = { 0x6F, 0x5F, 0x7F, 0xFF };
 static Color_RGBA8* gDialogColorPalette[] = {
-    gPanelTextureDefault, gPanelTextureDefault, gPanelTextureAlt1, gTexture_MainMenuOption1, gPanelTextureAlt3, gPanelTextureAlt2, gPanelTextureAlt4, D_88218220,
+    gPanelTextureDefault, gPanelTextureDefault, gPanelTextureAlt1, gTexture_MainMenuOption1, gPanelTextureAlt3, gPanelTextureAlt2, gPanelTextureAlt4, gPanelTexture_S2,
 };
 static Color_RGBA8* gDialogAccentPalette[] = { gPanelTextureAlt4, gPanelTextureAlt4 };
 static Color_RGBA8 gDialogDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };

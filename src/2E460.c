@@ -542,10 +542,10 @@ void Game_RunPokemonLab(void) {
 
             FRAGMENT_LOAD_AND_CALL2(fragment22, var_s4, 0);
 
-            while ((game_state == STATE_POKEMON_LAB) && (D_800AE520.unk_00 != 0)) {
-                D_800AE520.unk_00 = 0;
-                game_state = Fragment_LoadAndCall(D_800AE520.fragment_id, D_800AE520.rom_start, D_800AE520.rom_end,
-                                           D_800AE520.arg0, D_800AE520.arg1);
+            while ((game_state == STATE_POKEMON_LAB) && (gFragmentCallContext.unk_00 != 0)) {
+                gFragmentCallContext.unk_00 = 0;
+                game_state = Fragment_LoadAndCall(gFragmentCallContext.fragment_id, gFragmentCallContext.rom_start, gFragmentCallContext.rom_end,
+                                           gFragmentCallContext.arg0, gFragmentCallContext.arg1);
             }
 
             Stage_Destroy();

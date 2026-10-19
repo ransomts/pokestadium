@@ -1,6 +1,6 @@
 #include "fragment34.h"
 
-static u8 D_8140E470[][3] = {
+static u8 gParticleColorPalette[][3] = {
     { 0, 0, 0 },          { 0, 0x14, 0x1E },    { 0, 0x23, 0x2D },    { 0x40, 0x40, 0x40 }, { 0x46, 0x55, 0x55 },
     { 0x6E, 0x6E, 0x6E }, { 0x80, 0x80, 0x80 }, { 0xB4, 0xC8, 0xC8 }, { 0xC8, 0xFF, 0xFF }, { 0xE6, 0xF0, 0xF0 },
     { 0xFF, 0xFF, 0xFF }, { 0xFF, 0, 0 },       { 0xF0, 0x28, 0x28 }, { 0xFF, 0x80, 0x80 }, { 0xAA, 0x32, 0 },
@@ -21,11 +21,11 @@ u8 gPrimColorPalette[] = {
     0x0C, 0x19, 0x23, 0x36, 0x2F, 0x3B,
 };
 
-static u8 D_8140E540[] = {
+static u8 gParticleColorSetB[] = {
     0x17, 0x19, 0x25, 0x23, 0x35, 0x14,
 };
 
-static u8 D_8140E548[] = {
+static u8 gParticleRandomColorIndices[] = {
     0x0A, 0x19, 0x36, 0x24, 0x16,
 };
 
@@ -211,9 +211,9 @@ void RenderGroundQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
 }
 
 void GetPaletteColor(u8* arg0, u16 arg1) {
-    arg0[0] = D_8140E470[arg1][0];
-    arg0[1] = D_8140E470[arg1][1];
-    arg0[2] = D_8140E470[arg1][2];
+    arg0[0] = gParticleColorPalette[arg1][0];
+    arg0[1] = gParticleColorPalette[arg1][1];
+    arg0[2] = gParticleColorPalette[arg1][2];
 }
 
 void GetPaletteColorPair(u8* arg0, u8* arg1, u16 arg2) {
@@ -225,15 +225,15 @@ void GetPaletteColorPair(u8* arg0, u8* arg1, u16 arg2) {
 }
 
 void SetPrimColorFromPalette(ParticleEffectInstance* arg0, u16 arg1) {
-    arg0->prim_r = D_8140E470[arg1][0];
-    arg0->prim_g = D_8140E470[arg1][1];
-    arg0->prim_b = D_8140E470[arg1][2];
+    arg0->prim_r = gParticleColorPalette[arg1][0];
+    arg0->prim_g = gParticleColorPalette[arg1][1];
+    arg0->prim_b = gParticleColorPalette[arg1][2];
 }
 
 void SetEnvColorFromPalette(ParticleEffectInstance* arg0, u16 arg1) {
-    arg0->env_r = D_8140E470[arg1][0];
-    arg0->env_g = D_8140E470[arg1][1];
-    arg0->env_b = D_8140E470[arg1][2];
+    arg0->env_r = gParticleColorPalette[arg1][0];
+    arg0->env_g = gParticleColorPalette[arg1][1];
+    arg0->env_b = gParticleColorPalette[arg1][2];
 }
 
 void SetPrimEnvColorFromPair(ParticleEffectInstance* arg0, u16 arg1) {
@@ -253,11 +253,11 @@ void SetEnvColorFromPreset(ParticleEffectInstance* arg0, s16 arg1) {
 }
 
 void ParticleGfx_RecolorPrimFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
-    SetPrimColorFromPalette(arg0, D_8140E540[arg1]);
+    SetPrimColorFromPalette(arg0, gParticleColorSetB[arg1]);
 }
 
 void ParticleGfx_RecolorEnvFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
-    SetEnvColorFromPalette(arg0, D_8140E540[arg1]);
+    SetEnvColorFromPalette(arg0, gParticleColorSetB[arg1]);
 }
 
 void ParticleGfx_RecolorPrimEnvFromPaletteSetA(ParticleEffectInstance* arg0, s16 arg1) {
@@ -268,18 +268,18 @@ void ParticleGfx_RecolorPrimEnvFromPaletteSetA(ParticleEffectInstance* arg0, s16
 }
 
 void ParticleGfx_RecolorPrimEnvFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
-    u8 sp1F = D_8140E540[arg1];
+    u8 sp1F = gParticleColorSetB[arg1];
 
     SetPrimColorFromPalette(arg0, sp1F);
     SetEnvColorFromPalette(arg0, sp1F);
 }
 
 void SetRandomPrimColor(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, D_8140E548[(RandomMod(5) & 0xFF)]);
+    SetPrimColorFromPalette(arg0, gParticleRandomColorIndices[(RandomMod(5) & 0xFF)]);
 }
 
 void SetRandomEnvColor(ParticleEffectInstance* arg0) {
-    SetEnvColorFromPalette(arg0, D_8140E548[RandomMod(5) & 0xFF]);
+    SetEnvColorFromPalette(arg0, gParticleRandomColorIndices[RandomMod(5) & 0xFF]);
 }
 
 s32 IsPrimColorSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {

@@ -31,7 +31,7 @@ Fragment2_1GraphNode D_8423D408[2][6];
 unk_D_86002F58_004_000_004* gMenuGeoLayouts[6];
 unk_D_86002F58_004_000_004* gMenuCommonGeoLayout;
 u8* gMenuTextureSegments[4];
-unk_D_8423E518 D_8423E518[4];
+unk_D_8423E518 gTrainerSlotData[4];
 s16 gSelectedIconIndex;
 s16 gMenuMode;
 s16 D_8423E56C;
@@ -276,12 +276,12 @@ void DrawPlayerInfoEntry(s32 arg0) {
         if (gIconConfig[arg0].unk_01 == 0) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetFont(8, 0);
-            Text_Print(((arg0 * 128) - (MeasureTextWidth(8, 0, D_8423E518[arg0].unk_06) / 2)) + 0x80, 0x5C,
-                          D_8423E518[arg0].unk_06);
+            Text_Print(((arg0 * 128) - (MeasureTextWidth(8, 0, gTrainerSlotData[arg0].unk_06) / 2)) + 0x80, 0x5C,
+                          gTrainerSlotData[arg0].unk_06);
             Text_SetEnvColor(0xFF, 0xBE, 0xFF, 0xFF);
             Text_SetFont(4, 0);
             Text_Print(((arg0 * 128) - (MeasureTextWidth(4, 0, "ID  00000") / 2)) + 0x80, 0x73, "ID  %05d",
-                          D_8423E518[arg0].unk_04);
+                          gTrainerSlotData[arg0].unk_04);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetFont(8, 0);
@@ -676,8 +676,8 @@ void TeamSelection_TrainerSlots_ApplySaveStates(void) {
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        if (D_8423E518[i].unk_01 != 0) {
-            switch (D_8423E518[i].unk_01) {
+        if (gTrainerSlotData[i].unk_01 != 0) {
+            switch (gTrainerSlotData[i].unk_01) {
                 case 1:
                     gMenuTextureSegments[i] = D_201E420;
                     break;
@@ -695,12 +695,12 @@ void TeamSelection_TrainerSlots_ApplySaveStates(void) {
                     break;
             }
 
-            if (D_8423E518[i].unk_00 != 0) {
+            if (gTrainerSlotData[i].unk_00 != 0) {
                 gIconConfig[i].unk_01 = 0x14;
             }
         } else {
             gMenuTextureSegments[i] = D_2026420;
-            if (D_8423E518[i].unk_00 == 2) {
+            if (gTrainerSlotData[i].unk_00 == 2) {
                 gIconConfig[i].unk_01 = 0x15;
             } else {
                 gIconConfig[i].unk_00 = 0;
@@ -749,12 +749,12 @@ void TeamSelection_TrainerSlots_PollGameBoySaves(void) {
 
     for (i = 0; i < 4; i++) {
         Controller_ReadInput(i, &sp48);
-        DecodeGen1String(D_8423E518[i].unk_06, sp48.unk_02);
-        D_8423E518[i].unk_04 = sp48.unk_00;
-        D_8423E518[i].unk_01 = MenuItem_GetHeldItemId(i);
-        D_8423E518[i].unk_00 = MenuItem_GetPokemonSpecies(i);
-        D_8423E518[i].unk_02 = MenuItem_GetPokemonGender(i);
-        D_8423E518[i].unk_03 = (temp_s3 & (1 << i)) != 0;
+        DecodeGen1String(gTrainerSlotData[i].unk_06, sp48.unk_02);
+        gTrainerSlotData[i].unk_04 = sp48.unk_00;
+        gTrainerSlotData[i].unk_01 = MenuItem_GetHeldItemId(i);
+        gTrainerSlotData[i].unk_00 = MenuItem_GetPokemonSpecies(i);
+        gTrainerSlotData[i].unk_02 = MenuItem_GetPokemonGender(i);
+        gTrainerSlotData[i].unk_03 = (temp_s3 & (1 << i)) != 0;
     }
 }
 

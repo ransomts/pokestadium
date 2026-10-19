@@ -6,22 +6,22 @@
 #include "src/6BC0.h"
 #include "src/F420.h"
 
-const char D_8690A520[] = "FREE BATTLE";
-const char D_8690A52C[] = "POK\xE9 CUP";
-const char D_8690A538[] = "POK\xE9 CUP2";
-const char D_8690A544[] = "PETIT CUP";
-const char D_8690A550[] = "PIKA CUP";
-const char D_8690A55C[] = "PRIME CUP";
-const char D_8690A568[] = "PEWTER GYM";
-const char D_8690A574[] = "CERULEAN GYM";
-const char D_8690A584[] = "VERMILION GYM";
-const char D_8690A594[] = "CELADON GYM";
-const char D_8690A5A0[] = "FUCHSIA GYM";
-const char D_8690A5AC[] = "SAFFRON GYM";
-const char D_8690A5B8[] = "CINNABAR GYM";
-const char D_8690A5C8[] = "VIRIDIAN GYM";
-const char D_8690A5D8[] = "VS ELITE FOUR";
-const char D_8690A5E8[] = "VS MEWTWO";
+const char gCupNameFreeBattle[] = "FREE BATTLE";
+const char gCupNamePokeCup[] = "POK\xE9 CUP";
+const char gCupNamePokeCup2[] = "POK\xE9 CUP2";
+const char gCupNamePetitCup[] = "PETIT CUP";
+const char gCupNamePikaCup[] = "PIKA CUP";
+const char gCupNamePrimeCup[] = "PRIME CUP";
+const char gCupNamePewterGym[] = "PEWTER GYM";
+const char gCupNameCeruleanGym[] = "CERULEAN GYM";
+const char gCupNameVermilionGym[] = "VERMILION GYM";
+const char gCupNameCeladonGym[] = "CELADON GYM";
+const char gCupNameFuchsiaGym[] = "FUCHSIA GYM";
+const char gCupNameSaffronGym[] = "SAFFRON GYM";
+const char gCupNameCinnabarGym[] = "CINNABAR GYM";
+const char gCupNameViridianGym[] = "VIRIDIAN GYM";
+const char gCupNameEliteFour[] = "VS ELITE FOUR";
+const char gCupNameMewtwo[] = "VS MEWTWO";
 
 extern u8 D_50002A0[];
 extern u8 D_50003F0[];
@@ -61,7 +61,7 @@ void DrawPanelBackground(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
 }
 
-void func_869043F4(void) {
+void StagePanel_Init(void) {
 }
 
 void DrawBorderedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
@@ -124,7 +124,7 @@ void DrawBorderedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86904BFC(void) {
+void StagePanel_Update(void) {
 }
 
 void DrawClippedTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {

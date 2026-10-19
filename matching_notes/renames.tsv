@@ -10922,3 +10922,222 @@ func_88806EC8	Pokedex_UpdateCameraEaseSpeed	hp1		matches michiiik/pokestadium (T
 func_88806F20	Pokedex_EaseVec3Toward	hp1		matches michiiik/pokestadium (Team Hippodrome) symbol at 0x88806F20 - independent complete decomp of the same ROM, cross-referenced by address	applied@0c45a76
 func_88807090	Pokedex_UpdateAreaMapFrame	hp1		matches michiiik/pokestadium (Team Hippodrome) symbol at 0x88807090 - independent complete decomp of the same ROM, cross-referenced by address	applied@0c45a76
 func_888071C8	Pokedex_GetCountTier	hp1		matches michiiik/pokestadium (Team Hippodrome) symbol at 0x888071C8 - independent complete decomp of the same ROM, cross-referenced by address	applied@0c45a76
+D_80075674	gCurrentPokemonBank	w30		used in GetCurrentPokemonBank and GbSave_SetActivePort to track active GB port/bank	applied@540feb7
+D_80075678	gGbSaveActive	w30		set to 1 in GbSave_SetActivePort to mark a port as active	applied@540feb7
+D_8007567C	gTitleScreenState	w30		passed as a pointer to fragment36 in Game_RunTitleScreen	applied@540feb7
+D_800AE520	gFragmentCallContext	w30	unk_D_800AE520:FragmentCallContext	stores fragment_id, rom_start, rom_end, and arguments for deferred fragment calls	applied@540feb7
+func_8002B244	State_Empty	w30		empty function called in state machine context	applied@540feb7
+D_80078394	gPlayerSideActiveIndex	w30		tracks which player index is active on a specific side	applied@540feb7
+D_8007839C	gRecentMoveCount	w30		number of recent moves stored for each player side	applied@540feb7
+D_800783DC	gAudioQueueSfxToggle	w30		toggle flag for alternating sound effects in move sequences	applied@540feb7
+D_800783E0	gAudioLowHPWarningFlag	w30		flag to prevent repeated low HP warnings	applied@540feb7
+D_800783E8	gAudioQueueSfxToggleB	w30		secondary toggle flag for audio sequence effects	applied@540feb7
+D_800783F0	gAudioSfxParam0	w30		generic audio parameter 0	applied@540feb7
+D_800783F4	gAudioSfxParam1	w30		generic audio parameter 1	applied@540feb7
+D_800783F8	gAudioSfxParam2	w30		generic audio parameter 2	applied@540feb7
+D_8007840C	gAudioStadiumSfxEnabled	w30		flag enabling stadium-specific sound effects	applied@540feb7
+D_8007C7E0	gAudioVolumeScale0	w30		constant volume scale factor 0	applied@540feb7
+D_8007C7E8	gAudioVolumeScale1	w30		constant volume scale factor 1	applied@540feb7
+D_8007C7F0	gAudioVolumeScale2	w30		constant volume scale factor 2	applied@540feb7
+D_8007C7F8	gAudioVolumeScale3	w30		constant volume scale factor 3	applied@540feb7
+D_8007CB80	gAudioPitchScale0	w30		constant pitch scale factor 0	applied@540feb7
+D_8007CB84	gAudioPitchScale1	w30		constant pitch scale factor 1	applied@540feb7
+D_8007CB88	gAudioPitchScale2	w30		constant pitch scale factor 2	applied@540feb7
+D_8007CB8C	gAudioPitchScale3	w30		constant pitch scale factor 3	applied@540feb7
+D_8007CB90	gAudioPitchStep	w30		constant pitch step increment	applied@540feb7
+D_800FCCB1	gAudioSfxCrossoverFlag	w30		flag indicating a crossover in audio effect state	applied@540feb7
+D_800FCCC4	gAudioEffectStateSfx0	w30		state for audio effect 0	applied@540feb7
+D_800FCCCA	gAudioEffectToggleSfx1	w30		toggle for audio effect 1	applied@540feb7
+D_800FCCCE	gAudioEffectToggleSfx2	w30		toggle for audio effect 2	applied@540feb7
+unk_D_800FCB18	PokemonAudioInfo	w30		struct containing HP and move data for audio processing	applied@540feb7
+D_800FCD18	gAudioShuffleBuffer	w30		buffer used in ShuffleIndices to randomize message order	applied@540feb7
+D_800FC714	gAudioSeqData	w30		pointer to sequence data used in Audio_UpdateEffects	applied@540feb7
+D_80078E74	gDefaultMusicVolume	w30		used as a default volume value (112) in ResultScreen_SetAnimation case 0x1D	applied@540feb7
+D_80078E78	gMusicStateFlag1	w30		flag checked and set in ResultScreen_SetAnimation to modify music track selection (e.g., 0x31 to 0x46)	applied@540feb7
+D_80078E7C	gMusicStateFlag2	w30		flag checked and set in ResultScreen_SetAnimation to modify music track selection (e.g., 0x3A to 0x48)	applied@540feb7
+D_80078ECC	gCurrentBgmHandle	w30		handle used with MusSetupVolumeFade, MusSetDurationScale, and PlayBackgroundMusic	applied@540feb7
+D_80078ED0	gBgmFadeState	w30		state variable (0, 1, 2) controlling the volume fade logic in ResultScreen_SetAnimation	applied@540feb7
+D_80078ED4	gSpecialSequenceState	w30		state variable returned by Audio_GetSpecialSequenceState and used in Audio_UpdateSpecialSequence	applied@540feb7
+D_80078ED8	gSequenceMusicHandle1	w30		music handle stored during special sequence state 2 in Audio_UpdateSpecialSequence	applied@540feb7
+D_80078EDC	gSequenceMusicHandle2	w30		music handle stored during special sequence state 3 in Audio_UpdateSpecialSequence	applied@540feb7
+D_800FF9B0	gLastMusicHandle	w30		stores gMusicHandle specifically when animation 0x1D is triggered	applied@540feb7
+D_800FF9B4	gCurrentAnimationId	w30		stores the animation ID passed to ResultScreen_SetAnimation, checked in Stage_SetFadeColor	applied@540feb7
+D_80078EBC	gBgmCategoryTable7	w30		table of animation IDs used for category 12 in Audio_StartTrackForCategory	applied@540feb7
+func_869043F4	StagePanel_Init	w30		empty function, likely a placeholder or initialization stub for the stage panel	applied@540feb7
+func_86904BFC	StagePanel_Update	w30		empty function, likely a placeholder or update stub for the stage panel	applied@540feb7
+D_8690A520	gCupNameFreeBattle	w30		string literal "FREE BATTLE"	applied@540feb7
+D_8690A52C	gCupNamePokeCup	w30		string literal "POK\xE9 CUP"	applied@540feb7
+D_8690A538	gCupNamePokeCup2	w30		string literal "POK\xE9 CUP2"	applied@540feb7
+D_8690A544	gCupNamePetitCup	w30		string literal "PETIT CUP"	applied@540feb7
+D_8690A550	gCupNamePikaCup	w30		string literal "PIKA CUP"	applied@540feb7
+D_8690A55C	gCupNamePrimeCup	w30		string literal "PRIME CUP"	applied@540feb7
+D_8690A568	gCupNamePewterGym	w30		string literal "PEWTER GYM"	applied@540feb7
+D_8690A574	gCupNameCeruleanGym	w30		string literal "CERULEAN GYM"	applied@540feb7
+D_8690A584	gCupNameVermilionGym	w30		string literal "VERMILION GYM"	applied@540feb7
+D_8690A594	gCupNameCeladonGym	w30		string literal "CELADON GYM"	applied@540feb7
+D_8690A5A0	gCupNameFuchsiaGym	w30		string literal "FUCHSIA GYM"	applied@540feb7
+D_8690A5AC	gCupNameSaffronGym	w30		string literal "SAFFRON GYM"	applied@540feb7
+D_8690A5B8	gCupNameCinnabarGym	w30		string literal "CINNABAR GYM"	applied@540feb7
+D_8690A5C8	gCupNameViridianGym	w30		string literal "VIRIDIAN GYM"	applied@540feb7
+D_8690A5D8	gCupNameEliteFour	w30		string literal "VS ELITE FOUR"	applied@540feb7
+D_8690A5E8	gCupNameMewtwo	w30		string literal "VS MEWTWO"	applied@540feb7
+D_88217E08	gBoxColor_DarkGrayBlue_Alt	w30		color used for drawing menu option boxes	applied@540feb7
+D_8821D378	gPanelTexture_S1	w30		texture used in gUIComponentInfo table	applied@540feb7
+D_882181E0	gPanelAccent_S1	w30		texture used in gUIComponentInfo table	applied@540feb7
+D_88218220	gPanelTexture_S2	w30		texture used in gDialogColorPalette table	applied@540feb7
+D_88224FC4	gCommonStrings	w30		used as a message bank for "Do?", "Qty", and other UI labels	applied@540feb7
+D_88217FE8	gListItemColors	w30		color table for list items based on selection state	applied@540feb7
+D_88217FFC	gListItemBgColor	w30		background color for list items	applied@540feb7
+D_882180A8	gTextWhite	w30		RGBA8 color {0xF0, 0xF0, 0xF0, 0xFF} used for menu text	applied@540feb7
+D_8831A160	gSpeciesSortOrder	w30		table used in CompareSpeciesOrder to define a custom sorting sequence for species	applied@540feb7
+D_8831A244	gCupAllowedMasks	w30		table used in PokemonAllowedInCup to check if species is allowed in a specific cup	applied@540feb7
+D_8831A250	gHmItemIds	w30		list of item IDs that are identified as HMs in LabPCList_IsHmItemId	applied@540feb7
+D_8831A258	gSpecialTmItemIds	w30		list of item IDs identified as special TMs in LabPCList_IsSpecialTmItemId	applied@540feb7
+D_883176D0	gEmptyDl_1	w30		display list containing only an end marker	applied@540feb7
+D_883176D8	gTitleScreenImageData_1	w30		raw image data used for title screen graphics	applied@540feb7
+D_88317920	gTitleScreenImageData_2	w30		raw image data used for title screen graphics	applied@540feb7
+D_88317F20	gEmptyDl_2	w30		display list containing only an end marker	applied@540feb7
+D_88317F28	gTitleScreenImageData_3	w30		raw image data used for title screen graphics	applied@540feb7
+D_88318528	gEmptyDl_3	w30		display list containing only an end marker	applied@540feb7
+D_883186E0	gEmptyDl_4	w30		display list containing only an end marker	applied@540feb7
+D_88319898	gEmptyDl_5	w30		display list containing only an end marker	applied@540feb7
+D_8140E470	gParticleColorPalette	w30		RGB table used by GetPaletteColor and SetPrimColorFromPalette to assign colors to particles	applied@540feb7
+D_8140E540	gParticleColorSetB	w30		Index table used by ParticleGfx_RecolorPrimFromPaletteSetB to look up colors in gParticleColorPalette	applied@540feb7
+D_8140E548	gParticleRandomColorIndices	w30		Index table used by SetRandomPrimColor to pick a random color from gParticleColorPalette	applied@540feb7
+func_82F0BEF8	RentalMenu_DrawMessage	w30	unk_D_82F210E0:RentalMenuState	draws the message backdrop and specific text based on the current state (unk_10) using D_82F13B70 strings	applied@540feb7
+D_82F21128	gRentalMenuCursorIndex	w30		used in RentalMenu_HandleSelection to track the vertical selection index (0-2)	applied@540feb7
+D_82F2112C	gRentalMenuSaveDirection	w30		set in RentalMenu_HandleSelection and returned by Trade_GetSaveDirection	applied@540feb7
+D_82F21130	gRentalMenuSaveSlotIndex	w30		set in RentalMenu_HandleSelection and returned by Trade_GetSaveSlotIndex	applied@540feb7
+unk_D_82F210E0	RentalMenuState	w30		global state struct for the rental menu, tracks state (unk_00), timer (unk_02), and panel positions	applied@540feb7
+unk_func_82F00838_sp30	RentalItemInfo	w30		struct passed to LoadRentalItemData and returned by Picker_GetSelectionInfo, contains save/item data	applied@540feb7
+unk_D_82F20A40_00E	PanelRect	w30		struct used for panel coordinates (unk_00=x, unk_02=y, unk_04=w, unk_06=h)	applied@540feb7
+D_82E019B0	gCupSelectBgArchive	w30		BinArchive pointer used to load background texture atlas via BinArchive_GetFile	applied@540feb7
+D_82E019C8	gCupSelectNodesA	w30		Array of 4 Fragment2_1GraphNode used for sliding UI elements in Stage_DrawFrame	applied@540feb7
+D_82E01F68	gCupSelectNodesB	w30		Array of 3 Fragment2_1GraphNode used for sliding UI elements in Stage_DrawFrame	applied@540feb7
+D_82E023A8	gCupSelectCursor	w30		s16 used as a menu index, incremented/decremented by D-pad and used in DrawBorderCorners	applied@540feb7
+D_82E023AA	gCupSelectMaxIndex	w30		s16 used as the upper bound for gCupSelectCursor in Menu_HandleInput	applied@540feb7
+D_82E01110	gCupSelectBgGeo	w30		Geo layout table passed to process_geo_layout for the background	applied@540feb7
+D_82E01170	gCupSelectBgTextures	w30		Array of texture pointers used in Background_DrawLayer	applied@540feb7
+D_82E01180	gCupSelectVtx_0	w30		Vertex data for the first quad of the background	applied@540feb7
+D_82E011C0	gCupSelectVtx_1	w30		Vertex data for the second quad of the background	applied@540feb7
+D_82E01200	gCupSelectVtx_2	w30		Vertex data for the third quad of the background	applied@540feb7
+D_82E01240	gCupSelectVtx_3	w30		Vertex data for the fourth quad of the background	applied@540feb7
+D_82E01280	gCupSelectVtx_4	w30		Vertex data for the fifth quad of the background	applied@540feb7
+D_82E012C0	gCupSelectVtx_5	w30		Vertex data for the sixth quad of the background	applied@540feb7
+D_82E01300	gCupSelectVtx_6	w30		Vertex data for the seventh quad of the background	applied@540feb7
+D_82E01340	gCupSelectVtx_7	w30		Vertex data for the eighth quad of the background	applied@540feb7
+D_82E01380	gCupSelectVtx_8	w30		Vertex data for the ninth quad of the background	applied@540feb7
+D_82E013C0	gCupSelectVtx_9	w30		Vertex data for the tenth quad of the background	applied@540feb7
+D_82E01400	gCupSelectVtx_10	w30		Vertex data for the eleventh quad of the background	applied@540feb7
+D_82E01440	gCupSelectVtx_11	w30		Vertex data for the twelfth quad of the background	applied@540feb7
+D_82E01480	gCupSelectBgDL	w30		Display list containing texture tiles and vertices for the background	applied@540feb7
+D_82E01800	gCupSelectOverlayGeo	w30		Geo layout table passed to process_geo_layout for the overlay	applied@540feb7
+D_82E01838	gCupSelectOverlayVtx	w30		Vertex data for the overlay layer	applied@540feb7
+D_82E018B8	gCupSelectOverlayDL	w30		Display list for the overlay layer	applied@540feb7
+D_82E01960	gCupSelectUiGeo	w30		Geo layout table passed to process_geo_layout for the UI	applied@540feb7
+D_82E01994	gBorderCornerAnimTimer	w30		Static s16 used with SINS to animate the border corners in DrawBorderCorners	applied@540feb7
+D_8423E518	gTrainerSlotData	w30		unk_D_8423E518:TrainerSlotData	applied@540feb7
+unk_D_84211704	RulePromptConfig	w30		RulePromptConfig	applied@540feb7
+D_84211704	gRulePromptConfigs	w30		RulePromptConfig	applied@540feb7
+D_8438E440	gBattleMainCamera	w30		CameraStruct used in BattleScene_UpdateFrame and BattleScene_Dispatch	applied@540feb7
+D_8438E530	gBattleColorRect	w30		ColorRectNode used in ColorRectNode_SetColor and BattleScreen_Init	applied@540feb7
+D_8438E550	gBattleGraphNode0	w30		GraphNode initialized in BattleScreen_Init and added as child	applied@540feb7
+D_8438E568	gBattleGraphNode1	w30		GraphNode initialized in BattleScreen_Init and added as child	applied@540feb7
+D_8438E580	gBattleGraphNode2	w30		GraphNode initialized in BattleScreen_Init and added as child	applied@540feb7
+D_8438E598	gBattlePortraitCamera0	w30		CameraStruct used in HandleBattlePhase and RenderPokemonPortraits	applied@540feb7
+D_8438E688	gBattlePortraitCamera1	w30		CameraStruct used in HandleBattlePhase and RenderPokemonPortraits	applied@540feb7
+D_8438E780	gBattleBgTexture	w30		Used in RenderBackgroundScreen as a texture pointer	applied@540feb7
+D_8438E784	gBattleMainGraph	w30		GraphNode pointer initialized via process_geo_layout in BattleScreen_Init	applied@540feb7
+D_8438E788	gBattlePortraitGraph0	w30		GraphNode pointer initialized via process_geo_layout in BattleScreen_Init	applied@540feb7
+D_8438E78C	gBattlePortraitGraph1	w30		GraphNode pointer initialized via process_geo_layout in BattleScreen_Init	applied@540feb7
+D_8438E790	gBattlePortraitFb0	w30		FramebufferImage used for Pokemon portraits	applied@540feb7
+D_8438E794	gBattlePortraitFb1	w30		FramebufferImage used for Pokemon portraits	applied@540feb7
+D_8438E798	gBattlePokemonData	w30		Array of Pokemon data used in PokemonSelection_ClearFlags and BattleScene_UpdateFrame	applied@540feb7
+D_8438E79C	gBattleSceneState	w30		Switch used in PokemonSelectScreen_Update to toggle between UpdateFrame and UpdatePausedFrame	applied@540feb7
+D_8438E7A0	gPokemonSelectionIndex	w30		Incremented in PokemonSelection_AssignIndices	applied@540feb7
+D_8438E7A4	gBattleGlobalColor	w30		Color_RGBA8_u32 used in ColorRectNode_SetColor and RenderBackgroundScreen	applied@540feb7
+D_8438E7A8	gBattleGlobalScale	w30		f32 used in FragmentNode_SetGlobalScale and FragmentNode_SetScaleAndColor	applied@540feb7
+D_8438E7AC	gBattleCompletionTimer	w30		Used in Battle_UpdateCompletionGate and PokemonSelectScreen_Update to trigger transition	applied@540feb7
+D_84385990	gMoveCat_Physical	w30		used in DetermineMessageCategoryAndDisplay to check move category (0xE, 0x4A)	applied@540feb7
+D_84385994	gMoveCat_Special	w30		used in DetermineMessageCategoryAndDisplay to check move category (0x60, 0x69, 0x75, 0x78, 0x85)	applied@540feb7
+D_8438599C	gMoveCat_Status	w30		used in DetermineMessageCategoryAndDisplay to check move category (0x61, 0x64, 0x66, 0x68, 0x8C)	applied@540feb7
+D_843859A4	gMoveCat_Other	w30		used in DetermineMessageCategoryAndDisplay to check move category (large table of IDs)	applied@540feb7
+unk_D_843901A0	BattleMessageBuffers	w30	unk_D_843901A0:BattleMessageBuffers	structure containing multiple message buffers and dialog state used throughout the file	applied@540feb7
+func_8433DECC	BattleAnim_CreateSprayColumnEffect	w30		calls SharedDirectionalSprayFade and DelayedRisingColumnFade particle callbacks	applied@540feb7
+func_8433DFF4	BattleAnim_CreateSprayColumnEffectTrigger	w30		similar to func_8433DECC but calls ParticleEffect_TriggerEffect	applied@540feb7
+func_8433E124	BattleAnim_CreateStreamSprayColumnEffect	w30		calls DirectionalStreamFade, DirectionalSprayFade, and DelayedRisingColumnFade callbacks	applied@540feb7
+func_8433E33C	BattleAnim_CreateBurstStreamEffect	w30		calls UpwardBurstFade, WideScatterBurstFade, and DirectionalStreamFade callbacks	applied@540feb7
+func_8433E46C	BattleAnim_CreateCollisionRandomEffect	w30		calls ParticleEffect_CollisionHandler and ParticleEffect_RandomDirectionHandler2	applied@540feb7
+D_843925E0	gRibbonEmitters	w30		array of 4 emitters used in RibbonMesh_Spawn and ParticleEmitters_Render	applied@540feb7
+D_843975E0	gWaterTexOffsetA	w30		used in gDPSetTileSize within WaterSurface_Render	applied@540feb7
+D_843975E2	gWaterTexOffsetB	w30		used in gDPSetTileSize within WaterSurface_Render	applied@540feb7
+D_843975E4	gWaterTexOffsetC	w30		used in gDPSetTileSize within WaterSurface_Render	applied@540feb7
+D_843975E8	gWaterCameraBounds	w30		passed to TerrainGrid_BuildCameraBounds and used for height sampling	applied@540feb7
+unk_D_843951D0_1010	WaterHeightNode	w30		struct containing height (unk_04) and position (unk_00, unk_08) for water grid	applied@540feb7
+unk_D_843951D0	WaterHeightMap	w30		contains the 16x16 grid of WaterHeightNode and vertex buffer	applied@540feb7
+D_84388E40	gWaterGfxSetup	w30		Gfx display list for basic geometry setup used in particle rendering	applied@540feb7
+D_84388E88	gWaterGfxParticleBase	w30		Gfx display list for particle rendering setup	applied@540feb7
+D_84388F00	gWaterGfxParticleMod	w30		Gfx display list for particle rendering with modulate combine mode	applied@540feb7
+D_84388F80	gWaterGfxSurfaceBase	w30		Gfx display list for rendering the main water surface	applied@540feb7
+D_84388FF8	gWaterGfxSurfaceEdge	w30		Gfx display list for rendering the water surface edge/border	applied@540feb7
+func_84A02074	Glc_GetInputStatus	w30		returns 0, used as a gate for input processing in Glc_SelectRoom	applied@540feb7
+D_84A03130	gGymMessageBank	w30		message bank 0x19 used for room/gym names	applied@540feb7
+D_84A03134	gRoomMessageBank	w30		message bank 0x22 used for room descriptions	applied@540feb7
+D_84A03138	gTrainerPortraits	w30	unk_D_84A03138:TrainerPortrait	array of 4 trainer portrait structures loaded from battle_portraits archive	applied@540feb7
+D_84A03168	gTrainerDataArchive	w30		BinArchive containing trainer data files	applied@540feb7
+D_84A0316C	gPortraitGfxArchive	w30		BinArchive containing portrait graphics (battle_portraits)	applied@540feb7
+D_84A03174	gBgTexture1	w30		background texture file index 0xD	applied@540feb7
+D_84A03178	gBgTexture2	w30		background texture file index 0x10	applied@540feb7
+D_84A0317C	gBgTexture3	w30		background texture file index 0xE	applied@540feb7
+D_84A03188	gPrevRoomIndex	w30		stores the previous room index for cursor interpolation and fading	applied@540feb7
+D_84A030E0	gCurrentRoomIndex	w30		index into D_84A02F00, used to track the selected room	applied@540feb7
+D_84A030E4	gRoomTransitionTimer	w30		timer used for cursor movement and fade transitions	applied@540feb7
+D_84A030E8	gPanelFadeAlpha	w30		alpha value used for fading in/out the detail panels	applied@540feb7
+D_84A030EC	gInfoPanelHeight	w30		controls the height/vertical position of the info panel	applied@540feb7
+D_84A030F0	gBgFadeAlpha	w30		alpha value for blending between background textures	applied@540feb7
+D_84A02F00	gRoomDefinitions	w30	unk_D_84A02F00:RoomDef	table of room properties including coordinates, colors, and message IDs	applied@540feb7
+D_84A030F8	gScrollDirection	w30		static variable controlling the direction of portrait scroll	applied@540feb7
+D_86301710	gCurrentGeoLayout	w30		used to load model data via GeoLayout_LoadById	applied@540feb7
+D_8630171C	gCameraDist	w30		passed as distance parameter to Camera_SetViewParameters	applied@540feb7
+D_8630171E	gCameraRotX	w30		passed as rotation parameter to Camera_SetViewParameters	applied@540feb7
+D_86301720	gCameraRotY	w30		passed as rotation parameter to Camera_SetViewParameters	applied@540feb7
+D_86301724	gGamePhase	w30		determines HUD state (0: Instructions, 1: Countdown, 2: Playing, 3: Winner, 4: Exit)	applied@540feb7
+D_86301728	gHudTextObj	w30		initialized via Text_Init and used in GetTextWidth/Text_Print	applied@540feb7
+D_86301D40	gGameTimer	w30		incremented in playing loop and used to format TIME HH:MM.SS in HUD	applied@540feb7
+D_86301D44	gCurrentPlayerNode	w30		temporary pointer to the active player's state struct	applied@540feb7
+D_86301D4C	gIsCountdownActive	w30		flag used to control the ReadyCountdown loop and HUD display	applied@540feb7
+D_86301D4E	gCountdownTimer	w30		decremented in ReadyCountdown and used to display the countdown number	applied@540feb7
+D_86301D50	gPlayerJumpState	w30		array indexed by player, reset to 0 during spawn/init	applied@540feb7
+D_86301D58	gStageCenterNode	w30		GraphNode for the central object (loaded with ID 0x9A)	applied@540feb7
+unk_D_86301730	PlayerState	w30		struct containing player physics, input snapshots, and GraphNode	applied@540feb7
+D_800ABDFC	gGeoLayoutStackDepth	w30		s16 global used in geo layout processing, likely tracking depth or state	applied@540feb7
+unk_D_800ABE00_cmd8	GeoCmd_SetCallback	w30		used in GeoLayoutCmd_SetNodeCallback to set node callback	applied@540feb7
+unk_D_800ABE00_cmd9	GeoCmd_AllocNode	w30		used in GeoLayoutCmd_AllocNode to allocate a basic graph node	applied@540feb7
+unk_D_800ABE00_cmdA	GeoCmd_AllocAltNode	w30		used in GeoLayoutCmd_AllocAltNodeWithParent to allocate an alternative node	applied@540feb7
+unk_D_800ABE00_cmdB	GeoCmd_CreateCamera	w30		used in GeoLayoutCmd_CreateCameraNode to initialize camera parameters	applied@540feb7
+unk_D_800ABE00_cmdC	GeoCmd_CreateType3	w30		used in geo_layout_cmd_create_type3 to create a type 3 geo node	applied@540feb7
+unk_D_800ABE00_cmdD	GeoCmd_CreateType4	w30		used in geo_layout_cmd_create_type4 to create a type 4 geo node	applied@540feb7
+unk_D_800ABE00_cmdE	GeoCmd_CreateOrtho	w30		used in geo_layout_cmd_create_ortho to create an orthographic projection node	applied@540feb7
+unk_D_800ABE00_cmdF	GeoCmd_CreatePerspective	w30		used in geo_layout_cmd_create_perspective to create a perspective projection node	applied@540feb7
+unk_D_800ABE00_cmd10	GeoCmd_CreateBackground	w30		used in geo_layout_cmd_create_background to create a background node	applied@540feb7
+unk_D_800ABE00_cmd11	GeoCmd_CreateClearDepth	w30		used in geo_layout_cmd_create_clear_depth to create a depth clear node	applied@540feb7
+unk_D_800ABE00_cmd13	GeoCmd_CreateColorRect	w30		used in GeoLayoutCmd_CreateColorRectNode to create a colored rectangle	applied@540feb7
+unk_D_800ABE00_cmd14	GeoCmd_CreateColoredVertex	w30		used in GeoLayoutCmd_CreateColoredVertexNode to create a colored vertex node	applied@540feb7
+unk_D_800ABE00_cmd15	GeoCmd_Skip	w30		used in geo_layout_cmd_skip to advance the command pointer	applied@540feb7
+unk_D_800ABE00_cmd16	GeoCmd_CreateAmbientLight	w30		used in geo_layout_cmd_create_ambient_light to create ambient lighting	applied@540feb7
+unk_D_800ABE00_cmd17	GeoCmd_CreateMesh	w30		used in GeoLayoutCmd_CreateMeshNode to create a mesh node	applied@540feb7
+unk_D_800ABE00_cmd18	GeoCmd_CreateShadow	w30		used in geo_layout_cmd_create_shadow to create a shadow node	applied@540feb7
+unk_D_800ABE00_cmd19	GeoCmd_CreateCullDist	w30		used in geo_layout_cmd_create_cull_distance to create a culling distance node	applied@540feb7
+unk_D_800ABE00_cmd1A	GeoCmd_CreateSwitchCase	w30		used in geo_layout_cmd_create_switch_case to create a switch case node	applied@540feb7
+unk_D_800ABE00_cmd1B	GeoCmd_CreateTransform	w30		used in GeoLayoutCmd_CreateTransformNode to create a transform node	applied@540feb7
+unk_D_800ABE00_cmd1C	GeoCmd_CreateScale	w30		used in GeoLayoutCmd_CreateScaleNode to create a translation/scale node	applied@540feb7
+unk_D_800ABE00_cmd1D	GeoCmd_CreateAnimatedPart	w30		used in geo_layout_cmd_create_animated_part to create an animated part node	applied@540feb7
+unk_D_800ABE00_cmd1E	GeoCmd_CreateDisplayList	w30		used in GeoLayoutCmd_CreateDisplayListNode to create a display list node	applied@540feb7
+unk_D_800ABE00_cmd1F	GeoCmd_CreateShadowNode	w30		used in GeoLayoutCmd_CreateShadowNode to create a shadow model part	applied@540feb7
+unk_D_800ABE00_cmd20	GeoCmd_CreateBillboard	w30		used in GeoLayoutCmd_CreateBillboardNode to create a billboard node	applied@540feb7
+unk_D_800ABE00_cmd21	GeoCmd_CreateScaleBillboard	w30		used in geo_layout_cmd_create_scale to create a scaled billboard node	applied@540feb7
+unk_D_800ABE00_cmd22	GeoCmd_CreateSimpleGfx	w30		used in geo_layout_cmd_create_display_list to create a simple gfx node	applied@540feb7
+unk_D_800ABE00_cmd23	GeoCmd_CreateShadowTex	w30		used in geo_layout_cmd_create_shadow_texture to create a shadow texture node	applied@540feb7
+unk_D_800ABE00_cmd24	GeoCmd_CreateAnchor	w30		used in geo_layout_cmd_create_anchor to create an anchor node	applied@540feb7
+unk_D_800ABE00_cmd25	GeoCmd_SetNodeFlag4	w30		used in geo_layout_cmd_set_node_flag4 to set flag 4 on the current node	applied@540feb7
+unk_D_800ABE00_cmd26	GeoCmd_CreateGroup	w30		used in geo_layout_cmd_create_group to create a group node	applied@540feb7

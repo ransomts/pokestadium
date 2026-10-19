@@ -12,7 +12,7 @@ typedef struct unk_D_800FCB18_044 {
     /* 0x05 */ u8 unk_05;
 } unk_D_800FCB18_044; // size = 0x6
 
-typedef struct unk_D_800FCB18 {
+typedef struct PokemonAudioInfo {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char unk02[0x2];
@@ -63,7 +63,7 @@ typedef struct unk_D_800FCB18 {
     /* 0x5B */ u8 unk_5B;
     /* 0x5C */ u8 unk_5C[6];
     /* 0x62 */ char unk62[0x2];
-} unk_D_800FCB18; // size = 0x64
+} PokemonAudioInfo; // size = 0x64
 
 typedef struct amConfig {
     /* 0x00 */ u32 outputRate;
@@ -81,7 +81,7 @@ extern f32 gMusicChannel1Volume;
 extern f32 gMusicChannel1Step;
 extern u8 mus_sound_effect_blocked;
 
-extern unk_D_800FCB18* gAudioInfoPtr[4];
+extern PokemonAudioInfo* gAudioInfoPtr[4];
 
 void amCreateAudioMgr(ALSynConfig*, amConfig*, u32, s32, s32);
 OSTask* AudioTask_Build(OSTask*);
@@ -95,12 +95,12 @@ void SetTeamScores(u8, u8, u8, u8);
 void SetPlayerSidesAndReset(u8, u8, u8, u8);
 void ProcessMenuSelection(u32 arg0, u32 arg1);
 void AudioFrameUpdate(s32 arg0);
-void ProcessAudioInfo(s32, unk_D_800FCB18*);
+void ProcessAudioInfo(s32, PokemonAudioInfo*);
 void RemovePlayer(u32);
 void PlayerDefeated(u32);
 void ProcessCommandQueue(u32 arg0);
 void ProcessAudioCommandQueue(s32);
-void HandleMoveEvent(unk_D_800FCB18* arg0, s32 arg1, s32 arg2, s32 arg3);
+void HandleMoveEvent(PokemonAudioInfo* arg0, s32 arg1, s32 arg2, s32 arg3);
 void QueuePlayerDefeatMessage(s32);
 void HandleStadiumModeAudio(void);
 void QueueEndTurnSound(void);

@@ -97,7 +97,7 @@ extern File2SubHeader2* gMoveSoundArchive;
 extern ALSeqFile* gMoveSoundSeqTable;
 extern ALSeqFile* gAudioSeqBank;
 extern ALSeqFile* gAudioSeqBuffer;
-extern ALSeqFile* D_800FC714;
+extern ALSeqFile* gAudioSeqData;
 extern u32* D_800FC798;
 
 s32 Audio_PlaySoundEffect(u32 arg0, s32 arg1, s32 arg2);

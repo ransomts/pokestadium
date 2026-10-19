@@ -12,8 +12,8 @@ unk_D_843C60A4* D_843C60A4;
 unk_D_843C60A4* D_843C60A8;
 unk_D_843C60AC* D_843C60AC;
 unk_D_843C60AC* D_843C60B0;
-unk_D_800FCB18* D_843C60B4;
-unk_D_800FCB18* D_843C60B8;
+PokemonAudioInfo* D_843C60B4;
+PokemonAudioInfo* D_843C60B8;
 s32 D_843C60BC;
 unk_D_843C60C0 D_843C60C0[2];
 u8 D_843C60E8;
@@ -110,7 +110,7 @@ void BattleAI_SeedRandomState(u8 arg0) {
     D_843C6154 = ~D_843C6150;
 }
 
-u8 BattleAI_EstimateCriticalHitChance(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2) {
+u8 BattleAI_EstimateCriticalHitChance(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2) {
     s32 var_v1;
 
     if (D_8438AC60[0] == 1) {
@@ -151,7 +151,7 @@ u8 BattleAI_EstimateCriticalHitChance(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1
     return var_v1;
 }
 
-u16 BattleAI_ApplyMoveEffectDamageOverride(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1) {
+u16 BattleAI_ApplyMoveEffectDamageOverride(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1) {
     s32 var_v0;
 
     switch (D_843C6148.unk_01) {
@@ -204,7 +204,7 @@ void BattleAI_ClampDamageRatio(void) {
     }
 }
 
-void BattleAI_ApplyTypeEffectAndStab(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1) {
+void BattleAI_ApplyTypeEffectAndStab(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1) {
     TypeEffectivenessEntry* var_v0;
     u8 tmp1 = arg0->unk_16[6];
     u8 tmp2 = arg0->unk_16[7];
@@ -227,7 +227,7 @@ void BattleAI_ApplyTypeEffectAndStab(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1)
     }
 }
 
-void BattleAI_PrepareDamageCalcState(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2) {
+void BattleAI_PrepareDamageCalcState(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2) {
     MoveBattleData* temp_v0 = &gMoveBattleData[arg2 - 1];
 
     D_843C6148.unk_00 = temp_v0->unk_00;
@@ -283,7 +283,7 @@ void BattleAI_PrepareDamageCalcState(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1,
     }
 }
 
-void BattleAI_CalcDamage(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1) {
+void BattleAI_CalcDamage(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1) {
     u8 tmp = D_843C6148.unk_01;
 
     if (tmp == 7) {
@@ -308,7 +308,7 @@ void BattleAI_CalcDamage(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1) {
     }
 }
 
-u16 BattleAI_PredictDamage(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2, u8 arg3) {
+u16 BattleAI_PredictDamage(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3) {
     if (BattleAI_EstimateCriticalHitChance(arg0, arg1, arg2) >= (0xE6 - (D_843C5564->unk_04 / 2))) {
         D_843C6144 = 1;
     } else {
@@ -328,7 +328,7 @@ u16 BattleAI_PredictDamage(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2, 
 
 void BattleAI_ResetTeamState(unk_D_843C60AC* arg0) {
     u8 i;
-    unk_D_800FCB18* temp_v0 = &arg0->unk_12;
+    PokemonAudioInfo* temp_v0 = &arg0->unk_12;
 
     arg0->unk_04 = 0;
     for (i = 0; i < 6; i++) {
@@ -449,7 +449,7 @@ s32 BattleAI_IsThresholdMet(u8 arg0, u8 arg1) {
     return 0;
 }
 
-u16 BattleAI_ScaleStatHigh(unk_D_800FCB18* arg0) {
+u16 BattleAI_ScaleStatHigh(PokemonAudioInfo* arg0) {
     u16 var_v1 = arg0->unk_3C << 2;
 
     if (arg0->unk_15 & 0x40) {
@@ -463,7 +463,7 @@ u16 BattleAI_ScaleStatHigh(unk_D_800FCB18* arg0) {
     return var_v1;
 }
 
-u16 BattleAI_ScaleStatLow(unk_D_800FCB18* arg0) {
+u16 BattleAI_ScaleStatLow(PokemonAudioInfo* arg0) {
     u16 var_v1 = arg0->unk_3C >> 2;
 
     if (arg0->unk_15 & 0x40) {
@@ -476,7 +476,7 @@ u16 BattleAI_ScaleStatLow(unk_D_800FCB18* arg0) {
     return var_v1;
 }
 
-f32 Battle_GetTypeEffectiveness(u8 arg0, unk_D_800FCB18* arg1) {
+f32 Battle_GetTypeEffectiveness(u8 arg0, PokemonAudioInfo* arg1) {
     TypeEffectivenessEntry* var_v0 = &gTypeEffectivenessTable[0];
     u8 temp_v1 = arg1->unk_16[6];
     u8 temp_a2 = arg1->unk_16[7];
@@ -588,7 +588,7 @@ u8 BattleAI_ClassifyMoveAvailability(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1,
     u8 i;
     u8 sp36;
     u8 temp_v0;
-    unk_D_800FCB18* sp30;
+    PokemonAudioInfo* sp30;
 
     sp30 = &arg1->unk_12;
     if (arg1 == D_843C60AC) {
@@ -1107,7 +1107,7 @@ void BattleAI_UpdateRememberedMoveCandidate(unk_D_843C60AC* arg0, u8 arg1) {
     }
 }
 
-u16 BattleAI_ScoreMove(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2) {
+u16 BattleAI_ScoreMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2) {
     u16 var_v0;
 
     if (D_843C5564->unk_00 & 0x10) {
@@ -1187,7 +1187,7 @@ u16 BattleAI_ScoreMove(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2) {
     return var_v0;
 }
 
-void BattleAI_PickBestMove(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u16* arg2, u8* arg3, u8 arg4, u8 arg5) {
+void BattleAI_PickBestMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u16* arg2, u8* arg3, u8 arg4, u8 arg5) {
     u16 temp_v0;
     u8 var_a1;
     u16 tmp = arg4;
@@ -1284,7 +1284,7 @@ s32 BattleAI_ScoreAllCandidateMoves(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, 
     u16 spD6;
     unk_D_843C60AC sp60;
     s16 tmp;
-    unk_D_800FCB18* temp_s2;
+    PokemonAudioInfo* temp_s2;
     UNUSED s32 pad2;
 
     spD6 = 0;
@@ -1417,7 +1417,7 @@ s32 BattleAI_ScoreAllCandidateMovesRatioToCurrentHp(unk_D_843C60AC* arg0, unk_D_
 void func_8437921C(void) {
 }
 
-u8 BattleAI_CalcStagedMovePower(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2, u8 arg3) {
+u8 BattleAI_CalcStagedMovePower(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3) {
     s32 var_t0;
     s32 var_a3;
     StatStageMultiplier* var_a0;
@@ -1487,8 +1487,8 @@ void BattleAI_ApplyInverseWeightScale(u8 arg0, u8* arg1) {
 void BattleAI_BuildMoveCandidateScores(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, s32 arg2, u8 arg3, u8 arg4, unk_func_843794CC* arg5) {
     u8 i;
     u8 sp10E;
-    unk_D_800FCB18* var_s0;
-    unk_D_800FCB18* var_s3;
+    PokemonAudioInfo* var_s0;
+    PokemonAudioInfo* var_s3;
     s16 sp102;
     s16 sp100;
     s16 var_v1;
@@ -2319,14 +2319,14 @@ void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func
     s32 var_s1;
     s32 var_s2;
     u8 var_s5;
-    unk_D_800FCB18* temp_s3;
-    unk_D_800FCB18* temp_s6;
+    PokemonAudioInfo* temp_s3;
+    PokemonAudioInfo* temp_s6;
     unk_D_843C60AC* temp_fp;
     unk_D_843C60AC* temp_s4;
     unk_func_843794CC* temp_s7;
     s32 tmp6;
     s32 tmp7;
-    unk_D_800FCB18* oppMon;
+    PokemonAudioInfo* oppMon;
     s32 spC0;
     u8 temp_s0;
     u8 temp_t0;
@@ -3555,7 +3555,7 @@ s32 BattleAI_SelectBestScoredMove(unk_D_843C60AC* arg0, UNUSED unk_D_843C60AC* a
     u8 i;
     s32 sp70;
     s32 sp6C;
-    unk_D_800FCB18* ptr;
+    PokemonAudioInfo* ptr;
     s32 var_s3;
     s32 var_s4;
     s32 var_s2;
@@ -3960,7 +3960,7 @@ s32 BattleAI_ScoreAllTeamCandidates(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, 
     u8 j;
     u8 k;
     u8 l;
-    unk_D_800FCB18* temp_s3;
+    PokemonAudioInfo* temp_s3;
     u8 sp13E;
     u8 m;
     u8 sp135;
@@ -4176,7 +4176,7 @@ s32 BattleAI_SelectRandomUsableCandidate(unk_D_843C60A4* arg0) {
     return var_v1;
 }
 
-s32 BattleAI_SelectRandomUsableMoveSlot(unk_D_800FCB18* arg0) {
+s32 BattleAI_SelectRandomUsableMoveSlot(PokemonAudioInfo* arg0) {
     u8 i;
     u8 var_a1;
     s32 var_a2;
@@ -4323,7 +4323,7 @@ s32 BattleAI_SelectLeadFromScoredGroup(unk_D_843C60A4* arg0, unk_D_843C60A4* arg
     u8 sp13C;
     u8 sp13B;
     u8 sp13A;
-    unk_D_800FCB18* temp_v0;
+    PokemonAudioInfo* temp_v0;
     unk_D_843C60AC* temp_s6;
     u8 sp12F;
     UNUSED u8 sp12E;
@@ -4573,8 +4573,8 @@ u8 BattleAI_SelectBestSwitchCandidateIndex(unk_D_843C60A4* arg0, unk_D_843C60A4*
 u8 BattleAI_SelectBestAttackTargetIndex(unk_D_843C60AC* arg0, s32* arg1, s32* arg2, unk_D_843C60A4* arg3, u8 arg4, s32 arg5) {
     u8 i;
     u8 j;
-    unk_D_800FCB18* temp_s5;
-    unk_D_800FCB18* ptr;
+    PokemonAudioInfo* temp_s5;
+    PokemonAudioInfo* ptr;
     s32 temp_v0_2;
     s32 var_a0;
     s32 sp70 = 0x80000002;
@@ -4667,8 +4667,8 @@ u8 BattleAI_SelectBestAttackTargetIndex(unk_D_843C60AC* arg0, s32* arg1, s32* ar
 s32 BattleAI_ScoreSwitchUrgencyFromThreatMove(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8 arg2) {
     u8 sp2F;
     u16 temp_v0;
-    unk_D_800FCB18* sp20 = &arg0->unk_12;
-    unk_D_800FCB18* sp1C = &arg1->unk_12;
+    PokemonAudioInfo* sp20 = &arg0->unk_12;
+    PokemonAudioInfo* sp1C = &arg1->unk_12;
 
     if (BattleAI_FindHeuristicMove(arg0, arg0, 0, &sp2F) != 0) {
         if ((BattleAI_ScoreMove(sp20, sp1C, sp2F) != 0) && (sp1C->unk_2E < sp20->unk_2E)) {
@@ -4810,8 +4810,8 @@ u8 BattleAI_ScoreAttackVsSwitch(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, unk_
     s32 sp60;
     s32 sp5C;
     s32 sp58;
-    unk_D_800FCB18* sp40 = &arg0->unk_12;
-    unk_D_800FCB18* sp3C = &arg1->unk_12;
+    PokemonAudioInfo* sp40 = &arg0->unk_12;
+    PokemonAudioInfo* sp3C = &arg1->unk_12;
     s32 sp4C;
 
     sp4C = 0;
@@ -4960,7 +4960,7 @@ u16 BattleAI_ApplyStatStageModifier(u16* arg0, u16 arg1, u8 arg2) {
     return *arg0;
 }
 
-void BattleAI_SimulateStatBoostGuess(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2, u8 arg3) {
+void BattleAI_SimulateStatBoostGuess(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3) {
     u16 tmp;
 
     if (gMoveBattleData[arg2 - 1].unk_02 != 0) {
@@ -5004,7 +5004,7 @@ void BattleAI_BuildAllCandidateMoveScores(unk_func_8438220C* arg0) {
     u8 i;
     u8 sp5E;
     u8 j;
-    unk_D_800FCB18* temp_a0;
+    PokemonAudioInfo* temp_a0;
     unk_D_843C60AC* temp_s1;
 
     if (D_843C60B4->unk_0C > 0) {
@@ -5196,7 +5196,7 @@ s32 BattleAI_IsRestrictedRandomMove(u8 arg0) {
     return 0;
 }
 
-s32 BattleAI_IsMoveExcludedForSpecies(unk_D_800FCB18* arg0, s32 arg1, u8 arg2, u8 arg3) {
+s32 BattleAI_IsMoveExcludedForSpecies(PokemonAudioInfo* arg0, s32 arg1, u8 arg2, u8 arg3) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -5228,7 +5228,7 @@ s32 BattleAI_IsMoveExcludedForSpecies(unk_D_800FCB18* arg0, s32 arg1, u8 arg2, u
     return 1;
 }
 
-s32 BattleAI_IsMoveIneffective(unk_D_800FCB18* arg0, unk_D_800FCB18* arg1, u8 arg2) {
+s32 BattleAI_IsMoveIneffective(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2) {
     s32 sp24 = 0;
     MoveBattleData* sp1C = &gMoveBattleData[arg2 - 1];
 
@@ -5332,8 +5332,8 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
     s32 temp_v1_5;
     u8 var_v0;
     u8 var_v1;
-    unk_D_800FCB18* temp_s2;
-    unk_D_800FCB18* temp_s0;
+    PokemonAudioInfo* temp_s2;
+    PokemonAudioInfo* temp_s0;
     unk_D_843C5568* var_s3;
 
     for (i = 0; i < 2; i++) {
@@ -5784,8 +5784,8 @@ void BattleAI_InitTrainerRecords(void) {
 }
 
 s32 Battle_GetEntityState(s32 arg0, s32 arg1) {
-    unk_D_800FCB18* temp_s4 = &sActivePokemon[arg0]->unk_654.unk_38;
-    unk_D_800FCB18* temp_s6 = &sActivePokemon[1 - arg0]->unk_654.unk_38;
+    PokemonAudioInfo* temp_s4 = &sActivePokemon[arg0]->unk_654.unk_38;
+    PokemonAudioInfo* temp_s6 = &sActivePokemon[1 - arg0]->unk_654.unk_38;
     s32 var_s2 = 0;
     u8 var_s0;
     u8 var_s3;

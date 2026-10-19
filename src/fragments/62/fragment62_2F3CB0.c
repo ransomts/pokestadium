@@ -813,7 +813,7 @@ void BattleAnim_StatusIdleCase15Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePla
 }
 
 void BattleAnim_StatusIdleCase15Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_D_800FCB18* temp_a0 = &arg1->unk_654.unk_38;
+    PokemonAudioInfo* temp_a0 = &arg1->unk_654.unk_38;
     s16 sp22;
 
     arg1->unk_4A8 += 0xCCC;
@@ -862,7 +862,7 @@ void BattleAnim_StatusIdleCase16Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_Ba
 }
 
 void BattleAnim_StatusIdleCase16Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_D_800FCB18* ptr = &arg1->unk_654.unk_38;
+    PokemonAudioInfo* ptr = &arg1->unk_654.unk_38;
     UNUSED s32 pad;
     f32 temp_fs0;
 

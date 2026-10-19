@@ -3,14 +3,14 @@
 
 #include "global.h"
 
-typedef struct unk_D_84A03138 {
+typedef struct TrainerPortrait {
     /* 0x00 */ u8 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ char* unk_08;
-} unk_D_84A03138; // size = 0xC
+} TrainerPortrait; // size = 0xC
 
-typedef struct unk_D_84A02F00 {
+typedef struct RoomDef {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ s16 unk_02;
@@ -31,7 +31,7 @@ typedef struct unk_D_84A02F00 {
     /* 0x20 */ s16 unk_20;
     /* 0x22 */ s16 unk_22;
     /* 0x24 */ u8* unk_24;
-} unk_D_84A02F00; // size = 0x28
+} RoomDef; // size = 0x28
 
 void TileBackgroundTexture(u8* arg0, u8* arg1, u8 arg2);
 void Glc_DrawScaledTextureRgba(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8* arg5, f32 arg6);
@@ -42,12 +42,12 @@ void DrawPortraitIcons(void);
 void AnimatePortraitScroll(void);
 void DrawAnimatedSprites(void);
 void DrawMessageList(void);
-void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2);
-void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2);
+void DrawDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2);
+void DrawAlternateDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2);
 void Glc_UpdateRoomInfoPanelFade(void);
 void Glc_UpdateMapCursor(void);
 void Glc_Draw(void);
-s32 func_84A02074(void);
+s32 Glc_GetInputStatus(void);
 s32 Glc_SelectRoom(void);
 void LoadTrainerPortraits(void);
 void Glc_ClearTrainerPanels(void);

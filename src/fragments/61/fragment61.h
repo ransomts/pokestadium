@@ -143,7 +143,7 @@ typedef struct unk_D_8423D3D8 {
     /* 0x04 */ unk_D_800AE540_0004* unk_04;
 } unk_D_8423D3D8; // size = 0x8
 
-typedef struct unk_D_84211704 {
+typedef struct RulePromptConfig {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
@@ -153,7 +153,7 @@ typedef struct unk_D_84211704 {
     /* 0x0B */ s8 unk_0B;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ u16 unk_0E;
-} unk_D_84211704; // size = 0x10
+} RulePromptConfig; // size = 0x10
 
 s32 CheckPIIdleAndReturnArg(s32 arg0);
 char* GetMessageBank24String(s32 arg0);
@@ -292,19 +292,19 @@ s32 MoveScreen_Start(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg
 s32 TeamSelection_Preview_StartCompact(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168_0000* arg3);
 s32 GetSelectedMoveIndex(unk_D_8423D3A8* arg0);
 void Menu_PrintItem(s16 arg0, s16 arg1, s16 arg2, char* arg3);
-void TeamSelection_RulePrompt_DrawOptionSetFour(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawOptionSetThreeA(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawOptionSetThreeB(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawOptionSetThreeC(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawOptionSetTwo(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawSingleLabel(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawThreeRowPanel(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawOptionSetTwoB(unk_D_84211704* arg0);
-void TeamSelection_RulePrompt_DrawNumberAndLabel(unk_D_84211704* arg0, s16 arg1);
-void TeamSelection_RulePrompt_DrawBinaryLabel(unk_D_84211704* arg0, s16 arg1);
+void TeamSelection_RulePrompt_DrawOptionSetFour(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawOptionSetThreeA(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawOptionSetThreeB(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawOptionSetThreeC(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawOptionSetTwo(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawSingleLabel(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawThreeRowPanel(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawOptionSetTwoB(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawNumberAndLabel(RulePromptConfig* arg0, s16 arg1);
+void TeamSelection_RulePrompt_DrawBinaryLabel(RulePromptConfig* arg0, s16 arg1);
 void TeamSelection_RulePrompt_DrawFrame(s32 arg0);
 void TeamSelection_RulePrompt_HandleInput(void);
 void TeamSelection_RulePrompt_AdvanceOpen(void);

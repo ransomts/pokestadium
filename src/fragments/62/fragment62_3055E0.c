@@ -635,7 +635,7 @@ s32 Battle_ProcessOpponentAction(CameraStruct* arg0, unk_BattlePlayerEntity* arg
     s16 sp4E;
     s16 sp4C;
     UNUSED s32 pad3[2];
-    unk_D_800FCB18* temp_v1;
+    PokemonAudioInfo* temp_v1;
 
     temp_v1 = &sActivePokemon[IsPrimaryEntity(arg1) == 0]->unk_654.unk_38;
 

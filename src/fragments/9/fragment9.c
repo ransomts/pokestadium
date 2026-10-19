@@ -43,7 +43,7 @@ static u32 gGeoLayout_StageCommands[] = {
     0x0A000000, 0x800AC840, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-typedef struct unk_D_86301730 {
+typedef struct PlayerState {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
@@ -54,25 +54,25 @@ typedef struct unk_D_86301730 {
     /* 0x17B */ s8 unk_17B;
     /* 0x17C */ u16 unk_17C;
     /* 0x17E */ char pad17E[6];
-} unk_D_86301730; // size = 0x184
+} PlayerState; // size = 0x184
 
-static unk_D_86002F30* D_86301710;
+static unk_D_86002F30* gCurrentGeoLayout;
 static unk_D_86002F34* gStageRootNode;
 static CameraStruct* gCamera;
-static s16 D_8630171C;
-static s16 D_8630171E;
-static s16 D_86301720;
+static s16 gCameraDist;
+static s16 gCameraRotX;
+static s16 gCameraRotY;
 static u16 gFrameCounter;
-static s32 D_86301724;
-static TextObject* D_86301728;
-static unk_D_86301730 D_86301730[4];
-static u32 D_86301D40;
-static unk_D_86301730* D_86301D44;
+static s32 gGamePhase;
+static TextObject* gHudTextObj;
+static PlayerState D_86301730[4];
+static u32 gGameTimer;
+static PlayerState* gCurrentPlayerNode;
 static Fragment2_1GraphNode* D_86301D48;
-static s16 D_86301D4C;
-static s16 D_86301D4E;
-static s16 D_86301D50[4];
-static Fragment2_1GraphNode D_86301D58;
+static s16 gIsCountdownActive;
+static s16 gCountdownTimer;
+static s16 gPlayerJumpState[4];
+static Fragment2_1GraphNode gStageCenterNode;
 
 void JigglypuffGame_SnapshotInputs(void) {
     s32 i;
@@ -109,9 +109,9 @@ void JigglypuffGame_ReadInputs(void) {
 void JigglypuffGame_InitCamera(void) {
     gCamera = gStageRootNode->unk_00.unk_0C;
 
-    D_8630171C = 0x600;
-    D_8630171E = 0;
-    D_86301720 = 0x15E;
+    gCameraDist = 0x600;
+    gCameraRotX = 0;
+    gCameraRotY = 0x15E;
 
     gCamera->unk_24.near = 100.0f;
     gCamera->unk_24.far = 12800.0f;
@@ -121,7 +121,7 @@ void JigglypuffGame_InitCamera(void) {
     gCamera->unk_60.at.y = 70.0f;
     gCamera->unk_60.at.z = 0.0f;
 
-    Camera_SetViewParameters(&gCamera->unk_60.at, &gCamera->unk_60.eye, D_86301720, D_8630171C, D_8630171E);
+    Camera_SetViewParameters(&gCamera->unk_60.at, &gCamera->unk_60.eye, gCameraRotY, gCameraDist, gCameraRotX);
 }
 
 void func_86300230(void) {
@@ -154,27 +154,27 @@ void JigglypuffGame_DrawHud(s32 arg0) {
             Text_SetFont(4, -2);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xC8, 0xC8, 0x64, 0xFF);
-            Text_Print(0xA0 - (GetTextWidth(D_86301728, gText_DrawInstructions) / 2), 0x46, gText_DrawInstructions);
+            Text_Print(0xA0 - (GetTextWidth(gHudTextObj, gText_DrawInstructions) / 2), 0x46, gText_DrawInstructions);
             Text_SetFont(2, -2);
-            Text_Print(0xA0 - (GetTextWidth(D_86301728, (char*)gTextTable_StageNames) / 2), 0x5A, (char*)gTextTable_StageNames);
-            Text_Print(0xA0 - (GetTextWidth(D_86301728, gText_JumpWithCStick) / 2), 0x6E, gText_JumpWithCStick);
-            Text_Print(0xA0 - (GetTextWidth(D_86301728, gText_DrawWithAButton) / 2), 0x7D, gText_DrawWithAButton);
+            Text_Print(0xA0 - (GetTextWidth(gHudTextObj, (char*)gTextTable_StageNames) / 2), 0x5A, (char*)gTextTable_StageNames);
+            Text_Print(0xA0 - (GetTextWidth(gHudTextObj, gText_JumpWithCStick) / 2), 0x6E, gText_JumpWithCStick);
+            Text_Print(0xA0 - (GetTextWidth(gHudTextObj, gText_DrawWithAButton) / 2), 0x7D, gText_DrawWithAButton);
 
             if (gFrameCounter & 0x10) {
                 Text_SetFont(4, -2);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 Text_SetPrimColor(5, 5, 0xFF, 0xFF);
-                Text_Print(0xA0 - (GetTextWidth(D_86301728, "PUSH START") / 2), 0xAA, "PUSH START");
+                Text_Print(0xA0 - (GetTextWidth(gHudTextObj, "PUSH START") / 2), 0xAA, "PUSH START");
             }
 
             Text_EndRender();
 
             for (i = 0; i < 4; i++) {
-                D_86301D44 = &D_86301730[i];
+                gCurrentPlayerNode = &D_86301730[i];
 
                 Text_SetFont(2, -2);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xC8);
-                Text_Print(30 + (i * 0x46), 0xDA, "LV%02d", D_86301D44->unk_002);
+                Text_Print(30 + (i * 0x46), 0xDA, "LV%02d", gCurrentPlayerNode->unk_002);
             }
             break;
 
@@ -182,16 +182,16 @@ void JigglypuffGame_DrawHud(s32 arg0) {
         case 2:
             Text_SetFont(2, -2);
             Text_SetEnvColor(0xFF, 0xFF, 5, 0xFA);
-            Text_Print(0x64, 0xD9, "TIME %02d:%02d.%02d", (D_86301D40 * 2) / 3600, ((D_86301D40 * 2) / 60) % 60,
-                          (((D_86301D40 * 2) % 60) * 0x64) / 60);
+            Text_Print(0x64, 0xD9, "TIME %02d:%02d.%02d", (gGameTimer * 2) / 3600, ((gGameTimer * 2) / 60) % 60,
+                          (((gGameTimer * 2) % 60) * 0x64) / 60);
 
-            if ((D_86301D4C == 1) && ((D_86301D4E % 30) >= 0xF)) {
+            if ((gIsCountdownActive == 1) && ((gCountdownTimer % 30) >= 0xF)) {
                 Text_SetFont(0x20, -2);
                 Text_SetEnvColor(0xFF, 5, 5, 0xFA);
-                Text_Print(0x96, 0x14, "%d", (D_86301D4E / 30) + 1);
+                Text_Print(0x96, 0x14, "%d", (gCountdownTimer / 30) + 1);
             }
 
-            if ((D_86301D40 != 0) && (D_86301D40 < 0xF)) {
+            if ((gGameTimer != 0) && (gGameTimer < 0xF)) {
                 Text_SetFont(0x20, -2);
                 Text_SetEnvColor(0xFF, 0xFF, 5, 0xFA);
                 Text_Print(0x78, 0x14, "GO!");
@@ -221,31 +221,31 @@ s32 JigglypuffGame_WaitForStart(void) {
     Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
-        D_86301D44 = &D_86301730[i];
-        D_86301D48 = &D_86301D44->unk_004;
+        gCurrentPlayerNode = &D_86301730[i];
+        D_86301D48 = &gCurrentPlayerNode->unk_004;
 
         GraphNode_TriggerAction(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
         D_86301D48->unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
 
-        D_86301D50[i] = 0;
+        gPlayerJumpState[i] = 0;
     }
 
     var_s5 = 1;
-    D_86301724 = 0;
+    gGamePhase = 0;
 
     while (var_s5 == 1) {
         JigglypuffGame_ReadInputs();
 
         for (i = 0; i < 4; i++) {
-            D_86301D44 = &D_86301730[i];
+            gCurrentPlayerNode = &D_86301730[i];
 
-            if (D_86301D44->unk_17C & 1) {
+            if (gCurrentPlayerNode->unk_17C & 1) {
                 return -1;
             }
 
-            if (D_86301D44->unk_17C & 0x1000) {
+            if (gCurrentPlayerNode->unk_17C & 0x1000) {
                 var_s5 = 0;
             }
         }
@@ -254,7 +254,7 @@ s32 JigglypuffGame_WaitForStart(void) {
             JigglypuffGame_UpdatePlayerPhysics(i);
         }
 
-        JigglypuffGame_DrawFrame(D_86301724);
+        JigglypuffGame_DrawFrame(gGamePhase);
     }
 
     return 0;
@@ -266,26 +266,26 @@ void JigglypuffGame_ReadyCountdown(void) {
     Stage_FadeIn(0x10);
 
     for (i = 0; i < 4; i++) {
-        D_86301D44 = &D_86301730[i];
-        D_86301D48 = &D_86301D44->unk_004;
+        gCurrentPlayerNode = &D_86301730[i];
+        D_86301D48 = &gCurrentPlayerNode->unk_004;
 
         GraphNode_TriggerAction(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
         D_86301D48->unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
 
-        D_86301D50[i] = 0;
+        gPlayerJumpState[i] = 0;
     }
 
-    D_86301D4C = 1;
-    D_86301D4E = 0x5A;
-    D_86301724 = 1;
+    gIsCountdownActive = 1;
+    gCountdownTimer = 0x5A;
+    gGamePhase = 1;
 
-    while (D_86301D4C == 1) {
-        if (D_86301D4E > 0) {
-            D_86301D4E--;
+    while (gIsCountdownActive == 1) {
+        if (gCountdownTimer > 0) {
+            gCountdownTimer--;
         } else {
-            D_86301D4C = 0;
+            gIsCountdownActive = 0;
         }
 
         JigglypuffGame_ReadInputs();
@@ -294,7 +294,7 @@ void JigglypuffGame_ReadyCountdown(void) {
             JigglypuffGame_UpdatePlayerPhysics(i);
         }
 
-        JigglypuffGame_DrawFrame(D_86301724);
+        JigglypuffGame_DrawFrame(gGamePhase);
     }
 }
 
@@ -346,9 +346,9 @@ void JigglypuffGame_ApplySeparationForce(s32 arg0) {
         }
     }
 
-    temp_fs0 = D_86301D58.unk_024.x;
-    temp_fs1 = D_86301D58.unk_024.y;
-    temp_fs2 = D_86301D58.unk_024.z;
+    temp_fs0 = gStageCenterNode.unk_024.x;
+    temp_fs1 = gStageCenterNode.unk_024.y;
+    temp_fs2 = gStageCenterNode.unk_024.z;
 
     temp1 = temp_fs0 - spA0;
     temp2 = temp_fs1 - sp9C;
@@ -372,62 +372,62 @@ void JigglypuffGame_UpdatePlayerPhysics(s32 arg0) {
     s32 temp_a0;
     s32 temp_a2;
 
-    D_86301D44 = &D_86301730[arg0];
-    D_86301D48 = &D_86301D44->unk_004;
+    gCurrentPlayerNode = &D_86301730[arg0];
+    D_86301D48 = &gCurrentPlayerNode->unk_004;
 
-    switch (D_86301D44->unk_000) {
+    switch (gCurrentPlayerNode->unk_000) {
         case 1:
             break;
 
         case 0:
-            D_86301D48->unk_030.y = ((D_86301D44->unk_179 + 256.0f) * 0.00390625f) + 0.2f;
-            D_86301D48->unk_01E.y = D_86301D44->unk_178 << 8;
+            D_86301D48->unk_030.y = ((gCurrentPlayerNode->unk_179 + 256.0f) * 0.00390625f) + 0.2f;
+            D_86301D48->unk_01E.y = gCurrentPlayerNode->unk_178 << 8;
 
-            D_86301D44->unk_16C.x = 0.0f;
-            D_86301D44->unk_16C.y = 0.0f;
+            gCurrentPlayerNode->unk_16C.x = 0.0f;
+            gCurrentPlayerNode->unk_16C.y = 0.0f;
 
-            temp_a2 = D_86301D44->unk_178 - D_86301D44->unk_17A;
-            temp_a0 = D_86301D44->unk_179 - D_86301D44->unk_17B;
+            temp_a2 = gCurrentPlayerNode->unk_178 - gCurrentPlayerNode->unk_17A;
+            temp_a0 = gCurrentPlayerNode->unk_179 - gCurrentPlayerNode->unk_17B;
 
             if (temp_a0 > 10) {
-                D_86301D44->unk_000 = 1;
-                D_86301D44->unk_16C.y = temp_a0 * 0.2f;
+                gCurrentPlayerNode->unk_000 = 1;
+                gCurrentPlayerNode->unk_16C.y = temp_a0 * 0.2f;
 
-                if (D_86301D44->unk_16C.y > 15.0f) {
-                    D_86301D44->unk_16C.y = 15.0f;
+                if (gCurrentPlayerNode->unk_16C.y > 15.0f) {
+                    gCurrentPlayerNode->unk_16C.y = 15.0f;
                 }
 
-                D_86301D44->unk_16C.x = temp_a2 * 0.1f;
-            } else if (Math_AbsF(D_86301D44->unk_178) > 50.0f) {
-                D_86301D44->unk_000 = 1;
-                D_86301D44->unk_16C.y = 2.0f;
-                D_86301D44->unk_16C.x = D_86301D44->unk_178 * 0.05f;
+                gCurrentPlayerNode->unk_16C.x = temp_a2 * 0.1f;
+            } else if (Math_AbsF(gCurrentPlayerNode->unk_178) > 50.0f) {
+                gCurrentPlayerNode->unk_000 = 1;
+                gCurrentPlayerNode->unk_16C.y = 2.0f;
+                gCurrentPlayerNode->unk_16C.x = gCurrentPlayerNode->unk_178 * 0.05f;
             }
             break;
     }
 
     JigglypuffGame_ApplySeparationForce(arg0);
 
-    D_86301D48->unk_024.x += D_86301D44->unk_16C.x;
-    D_86301D48->unk_024.y += D_86301D44->unk_16C.y;
+    D_86301D48->unk_024.x += gCurrentPlayerNode->unk_16C.x;
+    D_86301D48->unk_024.y += gCurrentPlayerNode->unk_16C.y;
 
     if (D_86301D48->unk_024.y > 0.0f) {
-        D_86301D44->unk_16C.y -= 1.0f;
+        gCurrentPlayerNode->unk_16C.y -= 1.0f;
     }
 
     if (D_86301D48->unk_024.y < 0.0f) {
         D_86301D48->unk_024.y = 0.0f;
-        D_86301D44->unk_000 = 0;
+        gCurrentPlayerNode->unk_000 = 0;
     }
 
     if (D_86301D48->unk_024.x < -100.0f) {
         D_86301D48->unk_024.x = -100.0f;
-        D_86301D44->unk_16C.x *= -1.0f;
+        gCurrentPlayerNode->unk_16C.x *= -1.0f;
     }
 
     if (D_86301D48->unk_024.x > 100.0f) {
         D_86301D48->unk_024.x = 100.0f;
-        D_86301D44->unk_16C.x *= -1.0f;
+        gCurrentPlayerNode->unk_16C.x *= -1.0f;
     }
 
     if (GetRandomMod(0x64) == 0) {
@@ -444,18 +444,18 @@ void JigglypuffGame_PlayingLoop(void) {
     s32 var_s6 = 1;
 
     for (i = 0; i < 4; i++) {
-        D_86301D44 = &D_86301730[i];
-        D_86301D48 = &D_86301D44->unk_004;
+        gCurrentPlayerNode = &D_86301730[i];
+        D_86301D48 = &gCurrentPlayerNode->unk_004;
 
         GraphNode_TriggerAction(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
 
-        D_86301D50[i] = 0;
+        gPlayerJumpState[i] = 0;
     }
 
-    D_86301D40 = 0;
-    D_86301724 = 2;
+    gGameTimer = 0;
+    gGamePhase = 2;
 
     while (var_s6 != 0) {
         JigglypuffGame_ReadInputs();
@@ -469,8 +469,8 @@ void JigglypuffGame_PlayingLoop(void) {
             JigglypuffGame_UpdatePlayerPhysics(i);
         }
 
-        D_86301D40++;
-        JigglypuffGame_DrawFrame(D_86301724);
+        gGameTimer++;
+        JigglypuffGame_DrawFrame(gGamePhase);
     }
 }
 
@@ -491,11 +491,11 @@ void JigglypuffGame_ShowWinnerSequence(void) {
         }
     }
 
-    D_86301724 = 3;
+    gGamePhase = 3;
 
     for (j = 0; j < 0x5A; j++) {
         JigglypuffGame_ReadInputs();
-        JigglypuffGame_DrawFrame(D_86301724);
+        JigglypuffGame_DrawFrame(gGamePhase);
     }
 }
 
@@ -506,17 +506,17 @@ void JigglypuffGame_FadeOutLoop(void) {
 
     for (i = 0; i < 30; i++) {
         JigglypuffGame_ReadInputs();
-        JigglypuffGame_DrawFrame(D_86301724);
+        JigglypuffGame_DrawFrame(gGamePhase);
     }
 }
 
 void JigglypuffGame_WaitForExit(void) {
-    D_86301724 = 4;
+    gGamePhase = 4;
     SetResultFlag(1);
 
     while (gResultExitPending == 0) {
         JigglypuffGame_ReadInputs();
-        JigglypuffGame_DrawFrame(D_86301724);
+        JigglypuffGame_DrawFrame(gGamePhase);
     }
 }
 
@@ -528,14 +528,14 @@ void JigglypuffGame_Init(void) {
     mem_pool_resize_block(temp_v0);
     Graph_InitRoots();
     AssetManager_LoadArchives();
-    D_86301710 = GeoLayout_LoadById(0x27);
+    gCurrentGeoLayout = GeoLayout_LoadById(0x27);
 
     for (i = 0; i < 4; i++) {
-        D_86301D44 = &D_86301730[i];
-        D_86301D48 = &D_86301D44->unk_004;
+        gCurrentPlayerNode = &D_86301730[i];
+        D_86301D48 = &gCurrentPlayerNode->unk_004;
 
         Graph_AddToRootList0(D_86301D48);
-        GraphNode_InitChild(D_86301D48, 0, 0x27, D_86301710->unk_08->unk_00[0]);
+        GraphNode_InitChild(D_86301D48, 0, 0x27, gCurrentGeoLayout->unk_08->unk_00[0]);
 
         D_86301D48->unk_024.x = (i - 1.5f) * 50.0f;
         D_86301D48->unk_024.y = 0.0f;
@@ -545,7 +545,7 @@ void JigglypuffGame_Init(void) {
         D_86301D48->unk_030.y = 1.2f;
         D_86301D48->unk_030.z = 1.2f;
 
-        D_86301D44->unk_16C.y = 0.0f;
+        gCurrentPlayerNode->unk_16C.y = 0.0f;
 
         GraphNode_TriggerAction(D_86301D48, 2);
         InitAnimState(D_86301D48);
@@ -554,11 +554,11 @@ void JigglypuffGame_Init(void) {
     }
 
     AssetManager_LoadArchives();
-    D_86301710 = GeoLayout_LoadById(0x9A);
-    D_86301D48 = &D_86301D58;
+    gCurrentGeoLayout = GeoLayout_LoadById(0x9A);
+    D_86301D48 = &gStageCenterNode;
 
     Graph_AddToRootList0(D_86301D48);
-    GraphNode_InitChild(D_86301D48, 0, 0x9A, D_86301710->unk_08->unk_00[0]);
+    GraphNode_InitChild(D_86301D48, 0, 0x9A, gCurrentGeoLayout->unk_08->unk_00[0]);
 
     D_86301D48->unk_024.x = 0.0f;
     D_86301D48->unk_024.y = 0.0f;
@@ -583,7 +583,7 @@ void Minigame_JigglypuffDoodle(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     Gfx_InitBuffers(0x10000, 0);
     sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    D_86301728 = Text_Init(0x26, 0);
+    gHudTextObj = Text_Init(0x26, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);

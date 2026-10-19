@@ -12,14 +12,14 @@ typedef struct arg1_func_80019420 {
     /* 0x04 */ void* unk_04;
 } arg1_func_80019420; // size = 0x8
 
-typedef struct unk_D_800AE520 {
+typedef struct FragmentCallContext {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 fragment_id;
     /* 0x04 */ u8* rom_start;
     /* 0x08 */ u8* rom_end;
     /* 0x0C */ s32 arg0;
     /* 0x10 */ s32 arg1;
-} unk_D_800AE520; // size >= 0x14
+} FragmentCallContext; // size >= 0x14
 
 typedef struct unk_func_80026268_arg0_000 {
     /* 0x00 */ u8 unk_00;
@@ -126,7 +126,7 @@ typedef struct unk_D_800AE540 {
 
 extern u16 D_80073660[16][256];
 extern s32 gCurrentGameState;
-extern unk_D_800AE520 D_800AE520;
+extern FragmentCallContext gFragmentCallContext;
 extern unk_D_800AE540 gBattleContext;
 extern BinArchive* gBattleArchive;
 
@@ -163,7 +163,7 @@ void State_BattleNow(s32 arg0);
 void State_BattleFromEvent(void);
 void State_FastN64Logo(void);
 void State_FastBattle(void);
-void func_8002B244(void);
+void State_Empty(void);
 void State_KidsClubTitle(void);
 void Game_ShutdownAndLoadFragment(s32 arg0, s32 arg1);
 void Game_ResetStorageDevice(void);

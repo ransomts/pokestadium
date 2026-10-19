@@ -228,8 +228,8 @@ s32 Battle_UpdateAnimFrame(unk_BattlePlayerEntity* arg0) {
 }
 
 void Battle_UpdateHPScale(void) {
-    unk_D_800FCB18* temp_a2;
-    unk_D_800FCB18* temp_a3;
+    PokemonAudioInfo* temp_a2;
+    PokemonAudioInfo* temp_a3;
     unk_BattlePlayerAnimState* ptr1;
     unk_BattlePlayerAnimState* ptr2;
     PokemonData* ptr3;
@@ -256,7 +256,7 @@ s32 Battle_CheckMoveAvailability(unk_BattlePlayerEntity* arg0) {
     s32 i;
     s32 var_v1;
     unk_BattlePlayerAnimState* temp_v1;
-    unk_D_800FCB18* temp_v0;
+    PokemonAudioInfo* temp_v0;
 
     temp_v1 = &arg0->unk_654;
     temp_v0 = &arg0->unk_654.unk_38;
@@ -286,7 +286,7 @@ s32 Battle_CheckMoveAvailability(unk_BattlePlayerEntity* arg0) {
 }
 
 s32 Battle_IsMoveInvalid(unk_BattlePlayerEntity* arg0, s32 arg1) {
-    unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* ptr = &arg0->unk_654.unk_38;
 
     if (!(ptr->unk_32[arg1] & 0x3F)) {
         return 1;
@@ -385,7 +385,7 @@ void Battle_InitLighting(void) {
 }
 
 s32 Battle_HasAnyValidMoves(unk_BattlePlayerEntity* arg0) {
-    unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* temp_v0 = &arg0->unk_654.unk_38;
     s32 i;
     s32 var_v1 = 0;
 
@@ -558,7 +558,7 @@ s32 Battle_HandleMoveTimeout_Random(unk_BattlePlayerEntity* arg0, unk_BattlePlay
     return 0;
 }
 
-void Battle_RandomizeMoveSlot(UNUSED unk_D_800FCB18* arg0, UNUSED unk_D_800FCB18* arg1, UNUSED unk_BattlePlayerAnimState* arg2,
+void Battle_RandomizeMoveSlot(UNUSED PokemonAudioInfo* arg0, UNUSED PokemonAudioInfo* arg1, UNUSED unk_BattlePlayerAnimState* arg2,
                    UNUSED unk_BattlePlayerAnimState* arg3, UNUSED unk_BattlePlayerEntity* arg4) {
     if ((gBattleTimer == 1.0f) && (gRandomMoveSelectedFlag == 0)) {
         gRandomMoveSelectedFlag = 1;
@@ -567,8 +567,8 @@ void Battle_RandomizeMoveSlot(UNUSED unk_D_800FCB18* arg0, UNUSED unk_D_800FCB18
 }
 
 s32 Battle_UpdateMoveSelection(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_D_800FCB18* sp34 = &arg0->unk_654.unk_38;
-    unk_D_800FCB18* sp30 = &arg1->unk_654.unk_38;
+    PokemonAudioInfo* sp34 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* sp30 = &arg1->unk_654.unk_38;
     unk_BattlePlayerAnimState* sp2C = &arg0->unk_654;
     unk_BattlePlayerAnimState* sp28 = &arg1->unk_654;
 
@@ -677,7 +677,7 @@ void Battle_HandleMenuNavigation(unk_BattlePlayerEntity* arg0) {
 
 void Battle_ClearMoveSelection(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
-    unk_D_800FCB18* temp_v1 = &sActivePokemon[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
+    PokemonAudioInfo* temp_v1 = &sActivePokemon[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
 
     if (temp_v1->unk_4C & 0x20) {
         arg0->unk_654.unk_38.unk_5A = 0xFF;
@@ -834,7 +834,7 @@ void Battle_UpdateInputState(unk_BattlePlayerEntity* arg0) {
 
 void Battle_ApplyMoveAnimation(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
-    unk_D_800FCB18* temp_v1 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* temp_v1 = &arg0->unk_654.unk_38;
 
     if (arg0->unk_654.unk_14 != 4) {
         temp_v0->unk_0C = temp_v0->unk_14;
@@ -860,7 +860,7 @@ s32 Battle_CheckInputTimeout(unk_BattlePlayerEntity* arg0) {
     s32 temp_a1;
     s32 var_v1;
     unk_BattlePlayerAnimState* temp_v0;
-    unk_D_800FCB18* temp_a0;
+    PokemonAudioInfo* temp_a0;
     Controller* cont;
 
     temp_v0 = &arg0->unk_654;
@@ -908,7 +908,7 @@ s32 Battle_CheckInputTimeout(unk_BattlePlayerEntity* arg0) {
 s32 Battle_HandleMoveError(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     unk_BattlePlayerAnimState* sp24 = &arg0->unk_654;
-    unk_D_800FCB18* ptr = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* ptr = &arg0->unk_654.unk_38;
 
     if (!(ptr->unk_32[sp24->unk_14] & 0x3F)) {
         PlaySoundEffect_Error();
@@ -1159,8 +1159,8 @@ void DemoFeedScriptedInput(void) {
 }
 
 void Battle_SyncMoveFlags(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_D_800FCB18* temp_v0 = &arg0->unk_654.unk_38;
-    unk_D_800FCB18* temp_v1 = &arg1->unk_654.unk_38;
+    PokemonAudioInfo* temp_v0 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* temp_v1 = &arg1->unk_654.unk_38;
 
     if (!(arg0->unk_654.unk_38.unk_4D & 0x60)) {
         temp_v0->unk_4C &= ~8;
@@ -1176,8 +1176,8 @@ void Battle_SyncMoveFlags(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* 
 void Battle_DemoUpdate(void) {
     unk_BattlePlayerAnimState* sp24 = &sActivePokemon[0]->unk_654;
     unk_BattlePlayerAnimState* sp20 = &sActivePokemon[1]->unk_654;
-    unk_D_800FCB18* sp1C = &sActivePokemon[0]->unk_654.unk_38;
-    unk_D_800FCB18* sp18 = &sActivePokemon[1]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[0]->unk_654.unk_38;
+    PokemonAudioInfo* sp18 = &sActivePokemon[1]->unk_654.unk_38;
     Controller* cont = &gDemoController;
 
     DemoFeedScriptedInput();
@@ -1228,8 +1228,8 @@ void Battle_DemoUpdate(void) {
 
 void Battle_UpdateEntityInteraction(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     UNUSED s32 pad;
-    unk_D_800FCB18* sp20 = &arg0->unk_654.unk_38;
-    unk_D_800FCB18* sp1C = &arg1->unk_654.unk_38;
+    PokemonAudioInfo* sp20 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &arg1->unk_654.unk_38;
 
     if (Battle_UpdateDualEntityState(arg0, arg1) == 0) {
         if (!(sp20->unk_4D & 0x60)) {
@@ -1264,8 +1264,8 @@ void Battle_UpdateEntityInteraction(unk_BattlePlayerEntity* arg0, unk_BattlePlay
 void Battle_UpdateEntities(void) {
     unk_BattlePlayerAnimState* sp24 = &sActivePokemon[0]->unk_654;
     unk_BattlePlayerAnimState* sp20 = &sActivePokemon[1]->unk_654;
-    unk_D_800FCB18* sp1C = &sActivePokemon[0]->unk_654.unk_38;
-    unk_D_800FCB18* sp18 = &sActivePokemon[1]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[0]->unk_654.unk_38;
+    PokemonAudioInfo* sp18 = &sActivePokemon[1]->unk_654.unk_38;
 
     if (sActivePokemon[0]->unk_724->unk_000 & 2) {
         gBattleControllerId = gCurrentDamage;

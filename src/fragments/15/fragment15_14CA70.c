@@ -86,8 +86,8 @@ Color_RGB8 gStagePanelBlueColor = { 0, 0, 150 };
 Color_RGB8 gStagePanelWhiteColor = { 0, 0, 250 };
 
 char* gStagePanelLabelStrings[] = {
-    D_8690A520, D_8690A52C, D_8690A538, D_8690A544, D_8690A550, D_8690A55C, D_8690A568, D_8690A574,
-    D_8690A584, D_8690A594, D_8690A5A0, D_8690A5AC, D_8690A5B8, D_8690A5C8, D_8690A5D8, D_8690A5E8,
+    gCupNameFreeBattle, gCupNamePokeCup, gCupNamePokeCup2, gCupNamePetitCup, gCupNamePikaCup, gCupNamePrimeCup, gCupNamePewterGym, gCupNameCeruleanGym,
+    gCupNameVermilionGym, gCupNameCeladonGym, gCupNameFuchsiaGym, gCupNameSaffronGym, gCupNameCinnabarGym, gCupNameViridianGym, gCupNameEliteFour, gCupNameMewtwo,
 };
 
 Color_RGB8 gStagePanelGradientStartColor = { 0, 100, 255 };

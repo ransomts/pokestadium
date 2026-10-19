@@ -18,7 +18,7 @@ void Audio_SetVolumeFadeAndDuration(s32 arg0, u32 arg1) {
 void Audio_ResetAndSetFade(s32 arg0) {
     s32 i;
 
-    D_8007840C = 0;
+    gAudioStadiumSfxEnabled = 0;
     AudioFrameUpdate(0);
     Audio_SetVolumeFadeAndDuration(3, arg0);
 

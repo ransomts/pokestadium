@@ -30,7 +30,7 @@ typedef struct unk_D_88218070 {
 } unk_D_88218070; // size = 0x14
 
 static char** gMessageBank_0x2A;
-static char** D_88224FC4;
+static char** gCommonStrings;
 static char** gStageNames;
 static char** gMessageBank_0xC;
 
@@ -216,7 +216,7 @@ void NumericInput_Init(YesNoPanel* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     ptr->unk_18[0] = sp54;
 
     sp50 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(sp50, 0xA, 2, GetMessageString(NULL, 0, D_88224FC4, 0x17), 8);
+    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(sp50, 0xA, 2, GetMessageString(NULL, 0, gCommonStrings, 0x17), 8);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp54, sp50);
 
     sp58 = mem_pool_alloc(arg3, sizeof(unk_func_88001300_000));
@@ -226,7 +226,7 @@ void NumericInput_Init(YesNoPanel* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     ptr->unk_18[1] = sp58;
 
     sp4C = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(sp4C, 6, 2, GetMessageString(NULL, 0, D_88224FC4, 0x18), 8);
+    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(sp4C, 6, 2, GetMessageString(NULL, 0, gCommonStrings, 0x18), 8);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp58, sp4C);
     ((func8850CAB4)Memmap_GetFragmentVaddr(GridMenu_SelectFirstEnabled))(arg0->unk_30);
 
@@ -318,11 +318,11 @@ s32 MeasureMaxTextWidth(spE8_func_882121E0* arg0, s32 arg1) {
 }
 
 void ListItem_Draw(s32 arg0, s32 arg1, s8* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
-    static Color_RGBA8 D_88217FE8[] = {
+    static Color_RGBA8 gListItemColors[] = {
         { 0xF0, 0xF0, 0xF0, 0xFF }, { 0xF0, 0xF0, 0xF0, 0x4D }, { 0xF0, 0xF0, 0x00, 0xFF },
         { 0xCB, 0xFF, 0xD6, 0xFF }, { 0xB2, 0xFF, 0xC3, 0xFF },
     };
-    static Color_RGBA8 D_88217FFC = { 0x6C, 0x6C, 0x7E, 0xFF };
+    static Color_RGBA8 gListItemBgColor = { 0x6C, 0x6C, 0x7E, 0xFF };
 
     Color_RGBA8 sp3C;
     s32 temp_t2;
@@ -332,7 +332,7 @@ void ListItem_Draw(s32 arg0, s32 arg1, s8* arg2, s32 arg3, s32 arg4, unk_func_88
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
-    temp_t2 = ((D_88217FFC.r << 8) & 0xF800) | ((D_88217FFC.g << 3) & 0x7C0) | ((D_88217FFC.b >> 2) & 0x3E) | 1;
+    temp_t2 = ((gListItemBgColor.r << 8) & 0xF800) | ((gListItemBgColor.g << 3) & 0x7C0) | ((gListItemBgColor.b >> 2) & 0x3E) | 1;
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -342,11 +342,11 @@ void ListItem_Draw(s32 arg0, s32 arg1, s8* arg2, s32 arg3, s32 arg4, unk_func_88
     Text_ResetState();
 
     if (arg4 & 0x100) {
-        sp3C = D_88217FE8[2];
+        sp3C = gListItemColors[2];
     } else if (arg4 & 4) {
-        sp3C = D_88217FE8[1];
+        sp3C = gListItemColors[1];
     } else {
-        sp3C = D_88217FE8[0];
+        sp3C = gListItemColors[0];
     }
 
     Text_SetEnvColor(sp3C.r, sp3C.g, sp3C.b, sp3C.a);
@@ -483,7 +483,7 @@ s32 StageName_DrawEntry(u8* arg0, s32 arg1, s32 arg2, s32 arg3) {
     Text_Print(arg1 + 0x19, arg2 + 4, GetMessageString(NULL, 0, gStageNames, arg0[0] - 1));
 
     if (IsStageSpecial(arg0[0]) == 0) {
-        sp24 = GetMessageString(NULL, 0, D_88224FC4, 0x19);
+        sp24 = GetMessageString(NULL, 0, gCommonStrings, 0x19);
         sprintf(sp2C, "%s00", sp24);
         Text_SetFont(4, 0);
         Text_Print(((arg1 + arg3) - MeasureTextWidth(0, 0, &sp2C)) - 0x19, arg2 + 8, "%s%02d", sp24, arg0[1]);
@@ -704,7 +704,7 @@ void NumericEntry_Create(QuantityEntry* arg0, s32 arg1, s32 arg2, MemoryPool* ar
     unk_func_885012A4* sp38;
     unk_func_8850878C* sp34;
 
-    sp44 = GetMessageString(NULL, 0, D_88224FC4, 0x19);
+    sp44 = GetMessageString(NULL, 0, gCommonStrings, 0x19);
     sp40 = MeasureTextWidth(8, 0, sp44) + 0xC + (MeasureTextWidth(8, 0, "0") * 2);
 
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(QuantityEntry));
@@ -884,12 +884,12 @@ void ItemInfo_Draw(s32 arg0, s32 arg1, ItemBlockHeader* arg2, s32 arg3, s32 arg4
     Text_SetEnvColor(gColor_ItemInfoText.r, gColor_ItemInfoText.g, gColor_ItemInfoText.b, gColor_ItemInfoText.a);
     Text_SetFont(0x10, 0);
 
-    sp64 = GetMessageString(NULL, 0, D_88224FC4, 0x14);
+    sp64 = GetMessageString(NULL, 0, gCommonStrings, 0x14);
     Text_Print(arg0 + 8, arg1 + 6, sp64);
     Text_Print(MeasureTextWidth(0, 0, sp64) + arg0 + 8, arg1 + 6, "%s", &arg2->unk_08);
     Text_SetFont(8, 0);
 
-    sp64 = GetMessageString(NULL, 0, D_88224FC4, 0x15);
+    sp64 = GetMessageString(NULL, 0, gCommonStrings, 0x15);
     Text_Print(arg0 + 0xD, arg1 + 0x24, sp64);
     Text_Print(MeasureTextWidth(0, 0, sp64) + arg0 + 0xD, arg1 + 0x24, "%05d", arg2->unk_04);
     Text_SetupDL();
@@ -1037,7 +1037,7 @@ void MainMenuFragment_Init(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(temp_s0_2, arg0->unk_38);
 
     temp_s0_3 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(temp_s0_3, 0x60, 4, GetMessageString(NULL, 0, D_88224FC4, 0x13),
+    ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(temp_s0_3, 0x60, 4, GetMessageString(NULL, 0, gCommonStrings, 0x13),
                                                            8);
     temp_s0_3->unk_3C = 0x1C;
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_38, temp_s0_3);
@@ -1058,7 +1058,7 @@ void MainMenuFragment_Init(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_
 
     for (j = 0; j < 2; j++) {
         temp_s0_4 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-        sp7C = GetMessageString(NULL, 0, D_88224FC4, gMainMenuOptionInfo[j].unk_00);
+        sp7C = GetMessageString(NULL, 0, gCommonStrings, gMainMenuOptionInfo[j].unk_00);
 
         ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(temp_s0_4, (0x228 - MeasureTextWidth(0x10, 0, sp7C)) / 2,
                                                                0x10, sp7C, 0x10);
@@ -1296,7 +1296,7 @@ s32 Fragment_InputHandler(unk_func_8821421C_038_04C* arg0, Controller* arg1) {
                         break;
 
                     case 1:
-                        NumericInput_SetPrompt(arg0->unk_00.unk_24->unk_48, GetMessageString(NULL, 0, D_88224FC4, 0x16));
+                        NumericInput_SetPrompt(arg0->unk_00.unk_24->unk_48, GetMessageString(NULL, 0, gCommonStrings, 0x16));
                         ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(arg0->unk_00.unk_24->unk_48->unk_30, 1);
                         PlaySoundEffect(2);
 
@@ -1326,7 +1326,7 @@ void Fragment_CreateUI(unk_func_8821421C_02C_06C_02C* arg0, unk_func_8820BE14_02
                    unk_func_8820BE14_02C_038* arg2, QuantityEntry* arg3, unk_func_88217740* arg4,
                    TextObjectGraphics* arg5, MemoryPool* arg6) {
     static u16 gMenuOptionIds[] = { 8, 9, 0xA, 0xB, 0xC };
-    static Color_RGBA8 D_882180A8 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gTextWhite = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     s32 i;
 
@@ -1351,9 +1351,9 @@ void Fragment_CreateUI(unk_func_8821421C_02C_06C_02C* arg0, unk_func_8820BE14_02
     for (i = 0; i < 5; i++) {
         arg0->unk_78[i].unk_00 = mem_pool_alloc(arg6, sizeof(unk_func_8850878C));
         ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(arg0->unk_78[i].unk_00, 0, 0,
-                                                               GetMessageString(NULL, 0, D_88224FC4, gMenuOptionIds[i]), 0x10);
+                                                               GetMessageString(NULL, 0, gCommonStrings, gMenuOptionIds[i]), 0x10);
 
-        arg0->unk_78[i].unk_00->unk_30 = D_882180A8;
+        arg0->unk_78[i].unk_00->unk_30 = gTextWhite;
         arg0->unk_78[i].unk_00->unk_44 = arg0->unk_78[i].unk_00->unk_44;
         arg0->unk_78[i].unk_08 = 0;
         arg0->unk_78[i].unk_04 = 0;
@@ -2229,9 +2229,9 @@ void Fragment_Initialize(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_fu
 
     MessageBank_SetPointer_0x14_0x2A(0x15, SaveSlot_GetTrainerName(temp_s0, spDC));
 
-    spE8->unk_00[1] = GetMessageString(temp_s1, sizeof(char) * 40, D_88224FC4, 0xF);
-    spE8->unk_00[0] = GetMessageString(NULL, 0, D_88224FC4, 0xE);
-    spE8->unk_00[2] = GetMessageString(NULL, 0, D_88224FC4, 0x10);
+    spE8->unk_00[1] = GetMessageString(temp_s1, sizeof(char) * 40, gCommonStrings, 0xF);
+    spE8->unk_00[0] = GetMessageString(NULL, 0, gCommonStrings, 0xE);
+    spE8->unk_00[2] = GetMessageString(NULL, 0, gCommonStrings, 0x10);
 
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, 0xA4);
 
@@ -2316,7 +2316,7 @@ void Fragment_Initialize(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_fu
 
     for (i = 0; i < 6; i++) {
         temp_s0_3 = mem_pool_alloc(argB, sizeof(unk_func_8850878C));
-        spA8 = GetMessageString(NULL, 0, D_88224FC4, gPanelStyleTable[i].unk_00);
+        spA8 = GetMessageString(NULL, 0, gCommonStrings, gPanelStyleTable[i].unk_00);
         ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(temp_s0_3, (0x228 - MeasureTextWidth(0x10, 0, spA8)) / 2,
                                                                0x10, spA8, 0x10);
 
@@ -2334,7 +2334,7 @@ void Fragment_Initialize(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_fu
 
     for (j = 0; j < 2; j++) {
         temp_s0_4 = mem_pool_alloc(argB, sizeof(unk_func_8850878C));
-        sp9C = GetMessageString(NULL, 0, D_88224FC4, gSpecialPanelStyle[j].unk_00);
+        sp9C = GetMessageString(NULL, 0, gCommonStrings, gSpecialPanelStyle[j].unk_00);
         ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(temp_s0_4, (0x228 - MeasureTextWidth(0x10, 0, sp9C)) / 2,
                                                                0x10, sp9C, 0x10);
 
@@ -2469,7 +2469,7 @@ void Fragment_Initialize(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_fu
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, temp_s0_6);
 
     for (i = 0; i < 1; i++) {
-        sp6C = GetMessageString(NULL, 0, D_88224FC4, gSomeConstantArray[i]);
+        sp6C = GetMessageString(NULL, 0, gCommonStrings, gSomeConstantArray[i]);
 
         arg0->unk_94[i].unk_00 = mem_pool_alloc(argB, sizeof(unk_func_8850878C));
         ((func8850878C)Memmap_GetFragmentVaddr(TextObject_Create))(arg0->unk_94[i].unk_00, 0, 0, sp6C, 0x10);
@@ -2946,7 +2946,7 @@ void Menu_Create(ItemPCScreen* arg0, s32 arg1, s32 arg2, MemoryPool* arg3, s32 a
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp64, sp60);
 
     sp5C = mem_pool_alloc(arg3, sizeof(unk_func_88509E34));
-    ((func88509E34)Memmap_GetFragmentVaddr(LabelFragment_Create))(sp5C, 0, 0, GetMessageString(NULL, 0, D_88224FC4, 0));
+    ((func88509E34)Memmap_GetFragmentVaddr(LabelFragment_Create))(sp5C, 0, 0, GetMessageString(NULL, 0, gCommonStrings, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp64, sp5C);
 
     arg0->unk_34 = mem_pool_alloc(arg3, sizeof(YesNoPanel));
@@ -3014,7 +3014,7 @@ void TextObject_Confirm(UNUSED TextObject* arg0) {
     MessageBank_Init();
 
     gMessageBank_0x2A = GetMessageBank(0x2A);
-    D_88224FC4 = GetMessageBank(3);
+    gCommonStrings = GetMessageBank(3);
     gStageNames = GetMessageBank(0x27);
     gMessageBank_0xC = GetMessageBank(0xC);
     sp24 = GetMessageBank(7);

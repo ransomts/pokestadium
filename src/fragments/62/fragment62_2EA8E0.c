@@ -16,59 +16,59 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static CameraStruct D_8438E440;
-static unk_D_8690A610 D_8438E530;
-static GraphNode D_8438E550;
-static GraphNode D_8438E568;
-static GraphNode D_8438E580;
-static CameraStruct D_8438E598;
-static CameraStruct D_8438E688;
+static CameraStruct gBattleMainCamera;
+static unk_D_8690A610 gBattleColorRect;
+static GraphNode gBattleGraphNode0;
+static GraphNode gBattleGraphNode1;
+static GraphNode gBattleGraphNode2;
+static CameraStruct gBattlePortraitCamera0;
+static CameraStruct gBattlePortraitCamera1;
 u8* gPokemonPortraitImage0;
 u8* gPokemonPortraitImage1;
-static void* D_8438E780;
-static GraphNode* D_8438E784;
-static GraphNode* D_8438E788;
-static GraphNode* D_8438E78C;
-static FramebufferImage* D_8438E790;
-static FramebufferImage* D_8438E794;
-static unk_D_800AE540_1194* D_8438E798;
-static s32 D_8438E79C;
-static s32 D_8438E7A0;
-static Color_RGBA8_u32 D_8438E7A4;
-static f32 D_8438E7A8;
-static s32 D_8438E7AC;
+static void* gBattleBgTexture;
+static GraphNode* gBattleMainGraph;
+static GraphNode* gBattlePortraitGraph0;
+static GraphNode* gBattlePortraitGraph1;
+static FramebufferImage* gBattlePortraitFb0;
+static FramebufferImage* gBattlePortraitFb1;
+static unk_D_800AE540_1194* gBattlePokemonData;
+static s32 gBattleSceneState;
+static s32 gPokemonSelectionIndex;
+static Color_RGBA8_u32 gBattleGlobalColor;
+static f32 gBattleGlobalScale;
+static s32 gBattleCompletionTimer;
 
 static u8 D_84384350[] = {
     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x11, 0x01,
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01,
 };
 static u32 D_84384364[] = {
-    0x0C00FFFF,  0x05000000,  0x07000000,    &D_8438E440,   0x05000000, 0x0D000000,    0x05000000,  0x07000000,
-    &D_8438E530, 0x14000000,  0x002D0019,    0xFFFFFF28,    0x08000000, CameraNode_GetPanTiltPositive, 0x00000000,  0x14000000,
+    0x0C00FFFF,  0x05000000,  0x07000000,    &gBattleMainCamera,   0x05000000, 0x0D000000,    0x05000000,  0x07000000,
+    &gBattleColorRect, 0x14000000,  0x002D0019,    0xFFFFFF28,    0x08000000, CameraNode_GetPanTiltPositive, 0x00000000,  0x14000000,
     0x002D0019,  0x80808028,  0x08000000,    CameraNode_GetPanTiltNegative, 0x00000000, 0x16646464,    0x0F000002,  0x05000000,
     0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  FragmentNode_SetScaleAndColor,
-    0x00000000,  0x05000000,  0x07000000,    &D_8438E550,   0x06000000, 0x06000000,    0x0F000003,  0x05000000,
+    0x00000000,  0x05000000,  0x07000000,    &gBattleGraphNode0,   0x06000000, 0x06000000,    0x0F000003,  0x05000000,
     0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  FragmentNode_SetScaleAndColor,
-    0x00000000,  0x05000000,  0x07000000,    &D_8438E568,   0x06000000, 0x06000000,    0x0F000002,  0x05000000,
+    0x00000000,  0x05000000,  0x07000000,    &gBattleGraphNode1,   0x06000000, 0x06000000,    0x0F000002,  0x05000000,
     0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  FragmentNode_SetScaleAndColor,
-    0x00000000,  0x05000000,  0x07000000,    &D_8438E580,   0x06000000, 0x06000000,    0x0F000003,  0x05000000,
+    0x00000000,  0x05000000,  0x07000000,    &gBattleGraphNode2,   0x06000000, 0x06000000,    0x0F000003,  0x05000000,
     0x0A000000,  &gGraphRoot0, 0x06000000,    0x0F000002,    0x05000000, 0x0A000000,    &gGraphRoot1, 0x06000000,
     0x09000000,  0x08000000,  CameraNode_UpdateCallback, 0x00000000,    0x06000000, 0x06000000,    0x06000000,  0x01000000,
 };
 static u32 D_843844C4[] = {
-    0x0C00FFFF,  0x05000000, 0x07000000, &D_8438E598, 0x05000000, 0x0D000001, 0x05000000,
+    0x0C00FFFF,  0x05000000, 0x07000000, &gBattlePortraitCamera0, 0x05000000, 0x0D000001, 0x05000000,
     0x14000000,  0x002D0019, 0xFFFFFF28, 0x16FFFFFF,  0x0F000003, 0x05000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
 };
 static u32 D_84384514[] = {
-    0x0C00FFFF,  0x05000000, 0x07000000, &D_8438E688, 0x05000000, 0x0D000002, 0x05000000,
+    0x0C00FFFF,  0x05000000, 0x07000000, &gBattlePortraitCamera1, 0x05000000, 0x0D000002, 0x05000000,
     0x14000000,  0x002D0019, 0xFFFFFF28, 0x16FFFFFF,  0x0F000003, 0x05000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
 };
 
 s32 CameraNode_UpdateCallback(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
-        HandleCameraMode(5, &D_8438E440);
+        HandleCameraMode(5, &gBattleMainCamera);
     }
     return 0;
 }
@@ -103,28 +103,28 @@ s32 CameraNode_GetPanTiltNegative(s32 arg0, unk_D_86002F34_alt18* arg1) {
 
 s32 FragmentNode_SetScaleAndColor(s32 arg0, Fragment2_1GraphNode* arg1) {
     if (arg0 == 2) {
-        Vec3f_Set(&arg1->unk_030, D_8438E7A8, D_8438E7A8, D_8438E7A8);
-        arg1->unk_03C.rgba = D_8438E7A4.rgba;
+        Vec3f_Set(&arg1->unk_030, gBattleGlobalScale, gBattleGlobalScale, gBattleGlobalScale);
+        arg1->unk_03C.rgba = gBattleGlobalColor.rgba;
     }
     return 0;
 }
 
 void ColorRectNode_SetColor(u8 arg0, u8 arg1, u8 arg2) {
-    D_8438E7A4.r = arg0;
-    D_8438E7A4.g = arg1;
-    D_8438E7A4.b = arg2;
+    gBattleGlobalColor.r = arg0;
+    gBattleGlobalColor.g = arg1;
+    gBattleGlobalColor.b = arg2;
 
     if (((arg0 & arg1 & arg2) & 0xFF) == 0xFF) {
-        if (D_8438E530.unk_00.unk_14 == 1) {
-            D_8438E530.unk_00.unk_01 |= 1;
+        if (gBattleColorRect.unk_00.unk_14 == 1) {
+            gBattleColorRect.unk_00.unk_01 |= 1;
         }
     } else {
-        D_8438E530.unk_00.unk_01 &= ~1;
+        gBattleColorRect.unk_00.unk_01 &= ~1;
     }
 }
 
 void FragmentNode_SetGlobalScale(f32 arg0) {
-    D_8438E7A8 = arg0;
+    gBattleGlobalScale = arg0;
 }
 
 u16 Color_ModulateWithGlobal(u16 arg0) {
@@ -132,9 +132,9 @@ u16 Color_ModulateWithGlobal(u16 arg0) {
     s32 g;
     s32 b;
 
-    r = ((((((arg0 >> 11) & 0x1F) << 3) + (((arg0 >> 11) & 0x1F) >> 2)) * D_8438E7A4.r) / 255) >> 3;
-    g = ((((((arg0 >> 6) & 0x1F) << 3) + (((arg0 >> 6) & 0x1F) >> 2)) * D_8438E7A4.g) / 255) >> 3;
-    b = ((((((arg0 >> 1) & 0x1F) << 3) + (((arg0 >> 1) & 0x1F) >> 2)) * D_8438E7A4.b) / 255) >> 3;
+    r = ((((((arg0 >> 11) & 0x1F) << 3) + (((arg0 >> 11) & 0x1F) >> 2)) * gBattleGlobalColor.r) / 255) >> 3;
+    g = ((((((arg0 >> 6) & 0x1F) << 3) + (((arg0 >> 6) & 0x1F) >> 2)) * gBattleGlobalColor.g) / 255) >> 3;
+    b = ((((((arg0 >> 1) & 0x1F) << 3) + (((arg0 >> 1) & 0x1F) >> 2)) * gBattleGlobalColor.b) / 255) >> 3;
 
     return (r << 11) | (g << 6) | (b << 1) | 1;
 }
@@ -147,29 +147,29 @@ void RenderBackgroundScreen(void) {
     s16 sp46;
     s16 sp44;
 
-    if ((u32)D_8438E780 == NULL) {
+    if ((u32)gBattleBgTexture == NULL) {
         Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
         return;
     }
 
-    if ((u32)D_8438E780 == -1) {
+    if ((u32)gBattleBgTexture == -1) {
         Gfx_FillScreen(&gDisplayListHead, 1);
         return;
     }
 
-    if ((u32)D_8438E780 < 0x10000) {
-        Gfx_FillScreen(&gDisplayListHead, Color_ModulateWithGlobal(D_8438E780));
+    if ((u32)gBattleBgTexture < 0x10000) {
+        Gfx_FillScreen(&gDisplayListHead, Color_ModulateWithGlobal(gBattleBgTexture));
         return;
     }
 
-    sp4E = D_8438E440.unk_18.x;
-    sp4A = D_8438E440.unk_18.y;
-    sp4C = D_8438E440.unk_18.width + sp4E;
-    sp48 = (D_8438E440.unk_18.height / 2) + sp4A;
-    sp46 = D_8438E440.unk_18.height + sp4A;
-    sp44 = 0x10000 / (D_8438E440.unk_18.height / 2);
+    sp4E = gBattleMainCamera.unk_18.x;
+    sp4A = gBattleMainCamera.unk_18.y;
+    sp4C = gBattleMainCamera.unk_18.width + sp4E;
+    sp48 = (gBattleMainCamera.unk_18.height / 2) + sp4A;
+    sp46 = gBattleMainCamera.unk_18.height + sp4A;
+    sp44 = 0x10000 / (gBattleMainCamera.unk_18.height / 2);
 
-    if ((D_8438E440.unk_18.width < 0x140) || (D_8438E440.unk_18.height < 0xF0)) {
+    if ((gBattleMainCamera.unk_18.width < 0x140) || (gBattleMainCamera.unk_18.height < 0xF0)) {
         Gfx_FillScreen(&gDisplayListHead, 1);
     } else {
         Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
@@ -178,10 +178,10 @@ void RenderBackgroundScreen(void) {
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
-    gDPSetPrimColor(gDisplayListHead++, 0, 0, D_8438E7A4.r, D_8438E7A4.g, D_8438E7A4.b, 255);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, gBattleGlobalColor.r, gBattleGlobalColor.g, gBattleGlobalColor.b, 255);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
 
-    gDPLoadTextureBlock(gDisplayListHead++, Memmap_GetFragmentVaddr(D_8438E780), G_IM_FMT_RGBA, G_IM_SIZ_32b, 4, 64, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, Memmap_GetFragmentVaddr(gBattleBgTexture), G_IM_FMT_RGBA, G_IM_SIZ_32b, 4, 64, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, sp4E << 2, sp4A << 2, sp4C << 2, sp48 << 2, G_TX_RENDERTILE, 0, 0, 0, sp44);
@@ -283,7 +283,7 @@ void PokemonSelection_ClearFlags(void) {
     s32 j;
     s32 x;
     unk_D_800AE540_0004* temp_a2;
-    unk_D_800AE540_1194* ptr = &D_8438E798[0];
+    unk_D_800AE540_1194* ptr = &gBattlePokemonData[0];
 
     for (i = 0; i < 2; i++, ptr++) {
         for (j = 0; j < ptr->unk_01; j++) {
@@ -301,7 +301,7 @@ void PokemonSelection_AssignIndices(void) {
     s32 x;
     s32 var_v0 = 0;
     unk_D_800AE540_0004* temp_a3;
-    unk_D_800AE540_1194* ptr = &D_8438E798[0];
+    unk_D_800AE540_1194* ptr = &gBattlePokemonData[0];
 
     for (i = 0; i < 2; i++, ptr++) {
         for (j = 0; j < ptr->unk_01; j++) {
@@ -309,14 +309,14 @@ void PokemonSelection_AssignIndices(void) {
             for (x = 0; x < temp_a3->unk_002; x++) {
                 if ((temp_a3->unk_01C[x].unk_25 == 0) && (temp_a3->unk_01C[x].unk_02 == 0)) {
                     var_v0 = 1;
-                    temp_a3->unk_01C[x].unk_25 = D_8438E7A0;
+                    temp_a3->unk_01C[x].unk_25 = gPokemonSelectionIndex;
                 }
             }
         }
     }
 
     if (var_v0 != 0) {
-        D_8438E7A0 += 1;
+        gPokemonSelectionIndex += 1;
     }
 }
 
@@ -331,26 +331,26 @@ s32 BattleScene_UpdateFrame(s32 arg0) {
 
     Gfx_FinishFrame();
     AnimationFrame_StallCheck();
-    BattleInitDispatch(2, D_8438E798);
-    HandleBattlePhase(2, &D_8438E598, &D_8438E688);
-    sp1C = BattleScene_Dispatch(2, &D_8438E440);
-    HandleCameraMode(2, &D_8438E440);
-    FramebufferNode_Init(D_8438E788, D_8438E790);
-    FramebufferNode_Init(D_8438E78C, D_8438E794);
+    BattleInitDispatch(2, gBattlePokemonData);
+    HandleBattlePhase(2, &gBattlePortraitCamera0, &gBattlePortraitCamera1);
+    sp1C = BattleScene_Dispatch(2, &gBattleMainCamera);
+    HandleCameraMode(2, &gBattleMainCamera);
+    FramebufferNode_Init(gBattlePortraitGraph0, gBattlePortraitFb0);
+    FramebufferNode_Init(gBattlePortraitGraph1, gBattlePortraitFb1);
     Stage_BeginDisplayList();
     RenderBackgroundScreen();
-    Graph_SetTextureState(D_8438E784);
-    BattleInitDispatch(5, D_8438E798);
-    RenderPokemonPortraits(D_8438E788, D_8438E790);
-    RenderPokemonPortraits(D_8438E78C, D_8438E794);
+    Graph_SetTextureState(gBattleMainGraph);
+    BattleInitDispatch(5, gBattlePokemonData);
+    RenderPokemonPortraits(gBattlePortraitGraph0, gBattlePortraitFb0);
+    RenderPokemonPortraits(gBattlePortraitGraph1, gBattlePortraitFb1);
     PokemonSelection_AssignIndices();
 
     if (sp1C == 1) {
-        D_8438E798[0].unk_1C = 1;
+        gBattlePokemonData[0].unk_1C = 1;
     }
 
     if (sp1C == 2) {
-        D_8438E798[1].unk_1C = 1;
+        gBattlePokemonData[1].unk_1C = 1;
     }
 
     return sp1C;
@@ -365,23 +365,23 @@ s32 BattleScene_UpdatePausedFrame(s32 arg0) {
         AnimationFrame_StallCheck();
         Stage_BeginDisplayList();
         RenderBackgroundScreen();
-        Graph_SetTextureState(D_8438E784);
-        BattleInitDispatch(5, D_8438E798);
-        RenderPokemonPortraits(D_8438E788, D_8438E790);
-        RenderPokemonPortraits(D_8438E78C, D_8438E794);
+        Graph_SetTextureState(gBattleMainGraph);
+        BattleInitDispatch(5, gBattlePokemonData);
+        RenderPokemonPortraits(gBattlePortraitGraph0, gBattlePortraitFb0);
+        RenderPokemonPortraits(gBattlePortraitGraph1, gBattlePortraitFb1);
     }
 
     if ((arg0 == 0) && BTN_IS_PRESSED(gPlayer1Controller, BTN_START)) {
-        D_8438E79C = 0;
+        gBattleSceneState = 0;
     }
     return sp1C;
 }
 
 void Battle_UpdateCompletionGate(void) {
-    if (D_8438E7AC < 0) {
-        D_8438E7AC++;
-    } else if ((D_8438E7AC == 0) && (gBattleContext.unk_0000 == 0x10) && gPlayer1Controller->buttonPressed) {
-        D_8438E7AC = 1;
+    if (gBattleCompletionTimer < 0) {
+        gBattleCompletionTimer++;
+    } else if ((gBattleCompletionTimer == 0) && (gBattleContext.unk_0000 == 0x10) && gPlayer1Controller->buttonPressed) {
+        gBattleCompletionTimer = 1;
     }
 }
 
@@ -389,14 +389,14 @@ s32 PokemonSelectScreen_Update(s32 arg0) {
     s32 sp1C = 0;
 
     Cont_StartReadInputs();
-    ProcessPokemonSelection(&D_8438E798[0]);
-    UpdatePokemonStateOnExit(&D_8438E798[0]);
-    ProcessPokemonSelection(&D_8438E798[1]);
-    UpdatePokemonStateOnExit(&D_8438E798[1]);
+    ProcessPokemonSelection(&gBattlePokemonData[0]);
+    UpdatePokemonStateOnExit(&gBattlePokemonData[0]);
+    ProcessPokemonSelection(&gBattlePokemonData[1]);
+    UpdatePokemonStateOnExit(&gBattlePokemonData[1]);
     Cont_ReadInputs();
     MenuInput_Init();
 
-    switch (D_8438E79C) {
+    switch (gBattleSceneState) {
         case 0:
             sp1C = BattleScene_UpdateFrame(arg0);
             break;
@@ -406,16 +406,16 @@ s32 PokemonSelectScreen_Update(s32 arg0) {
             break;
     }
 
-    if ((sp1C != 0) && (D_8438E7AC <= 0)) {
-        D_8438E7AC = 1;
+    if ((sp1C != 0) && (gBattleCompletionTimer <= 0)) {
+        gBattleCompletionTimer = 1;
     }
 
     Battle_UpdateCompletionGate();
-    StartPokemonAnimation(&D_8438E798[0]);
-    StartPokemonAnimation(&D_8438E798[1]);
+    StartPokemonAnimation(&gBattlePokemonData[0]);
+    StartPokemonAnimation(&gBattlePokemonData[1]);
 
-    if ((arg0 != 2) && (D_8438E7AC == 1)) {
-        D_8438E7AC = 2;
+    if ((arg0 != 2) && (gBattleCompletionTimer == 1)) {
+        gBattleCompletionTimer = 2;
         AudioFrameUpdate(0);
         if (gBattleContext.unk_0000 != 0x11) {
             Stage_SetFadeColor(0x1E);
@@ -511,20 +511,20 @@ void BattleScreen_Init(Stage* arg0) {
         Text_Init(3, 0);
     }
 
-    D_8438E798[0].unk_10 = AssetManager_Create(3);
-    D_8438E798[1].unk_10 = AssetManager_Create(3);
+    gBattlePokemonData[0].unk_10 = AssetManager_Create(3);
+    gBattlePokemonData[1].unk_10 = AssetManager_Create(3);
     AssetManager_LoadArchives();
 
     sp2C = main_pool_alloc(0x10, 0);
     FramebufferImage_Init(sp2C, 0, 2, 0x4C, 0x4C, arg0->unk_18[0]->depth_p->img_p);
-    D_8438E790 = FramebufferImage_Allocate(0, 2, 0x4C, 0x4C, 0);
-    D_8438E794 = FramebufferImage_Allocate(0, 2, 0x4C, 0x4C, 0);
+    gBattlePortraitFb0 = FramebufferImage_Allocate(0, 2, 0x4C, 0x4C, 0);
+    gBattlePortraitFb1 = FramebufferImage_Allocate(0, 2, 0x4C, 0x4C, 0);
 
-    FramebufferImage_AttachDepth(D_8438E790, sp2C);
-    FramebufferImage_AttachDepth(D_8438E794, sp2C);
+    FramebufferImage_AttachDepth(gBattlePortraitFb0, sp2C);
+    FramebufferImage_AttachDepth(gBattlePortraitFb1, sp2C);
 
-    gPokemonPortraitImage0 = D_8438E790->img_p;
-    gPokemonPortraitImage1 = D_8438E794->img_p;
+    gPokemonPortraitImage0 = gBattlePortraitFb0->img_p;
+    gPokemonPortraitImage1 = gBattlePortraitFb1->img_p;
 
     FRAGMENT_LOAD(fragment31);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
@@ -543,68 +543,68 @@ void BattleScreen_Init(Stage* arg0) {
     }
 
     sp3C = BinArchive_GetFile(ASSET_LOAD2(stadium_models, 1, 1), sp32);
-    D_8438E780 = sp3C(2, 0);
+    gBattleBgTexture = sp3C(2, 0);
 
     sp28 = GeoLayout_LoadById(0x9A);
     Battle_SelectComRoster();
-    PokemonSelection_InitPlayer(&D_8438E798[0], sp28);
-    PokemonSelection_InitPlayer(&D_8438E798[1], sp28);
+    PokemonSelection_InitPlayer(&gBattlePokemonData[0], sp28);
+    PokemonSelection_InitPlayer(&gBattlePokemonData[1], sp28);
 
     PokemonSelection_ClearFlags();
-    CameraNode_Create(NULL, &D_8438E440, 0, 0, 0x140, 0xF0);
-    CameraNode_Create(NULL, &D_8438E598, 0x1E, 0x50, 0x4C, 0x4C);
-    CameraNode_Create(NULL, &D_8438E688, 0xE2, 0x50, 0x4C, 0x4C);
-    ColorRectNode_Create(0, &D_8438E530, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
-    GraphNode_AllocInit(NULL, &D_8438E550);
-    GraphNode_AllocInit(NULL, &D_8438E568);
-    GraphNode_AllocInit(NULL, &D_8438E580);
-    Perspective_SetParams(&D_8438E440, 30.0f, 192.0f, 24576.0f);
+    CameraNode_Create(NULL, &gBattleMainCamera, 0, 0, 0x140, 0xF0);
+    CameraNode_Create(NULL, &gBattlePortraitCamera0, 0x1E, 0x50, 0x4C, 0x4C);
+    CameraNode_Create(NULL, &gBattlePortraitCamera1, 0xE2, 0x50, 0x4C, 0x4C);
+    ColorRectNode_Create(0, &gBattleColorRect, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    GraphNode_AllocInit(NULL, &gBattleGraphNode0);
+    GraphNode_AllocInit(NULL, &gBattleGraphNode1);
+    GraphNode_AllocInit(NULL, &gBattleGraphNode2);
+    Perspective_SetParams(&gBattleMainCamera, 30.0f, 192.0f, 24576.0f);
     Graph_InitRoots();
-    BattleInitDispatch(0, D_8438E798);
-    HandleBattlePhase(0, &D_8438E598, &D_8438E688);
-    BattleScene_Dispatch(0, &D_8438E440);
-    HandleCameraMode(0, &D_8438E440);
+    BattleInitDispatch(0, gBattlePokemonData);
+    HandleBattlePhase(0, &gBattlePortraitCamera0, &gBattlePortraitCamera1);
+    BattleScene_Dispatch(0, &gBattleMainCamera);
+    HandleCameraMode(0, &gBattleMainCamera);
 
     sp44 = state_pool_try_init(main_pool_get_available(), 0);
-    D_8438E784 = process_geo_layout(sp44, D_84384364);
-    D_8438E788 = process_geo_layout(sp44, D_843844C4);
-    D_8438E78C = process_geo_layout(sp44, D_84384514);
+    gBattleMainGraph = process_geo_layout(sp44, D_84384364);
+    gBattlePortraitGraph0 = process_geo_layout(sp44, D_843844C4);
+    gBattlePortraitGraph1 = process_geo_layout(sp44, D_84384514);
 
     temp_v0_4 = sp3C(0, 0);
     if (temp_v0_4 != NULL) {
-        GraphNode_AddChild(&D_8438E550, process_geo_layout(sp44, temp_v0_4));
+        GraphNode_AddChild(&gBattleGraphNode0, process_geo_layout(sp44, temp_v0_4));
     }
 
     temp_v0_4 = sp3C(1, 0);
     if (temp_v0_4 != NULL) {
-        GraphNode_AddChild(&D_8438E568, process_geo_layout(sp44, temp_v0_4));
+        GraphNode_AddChild(&gBattleGraphNode1, process_geo_layout(sp44, temp_v0_4));
     }
 
     temp_v0_4 = sp3C(3, 0);
     if (temp_v0_4 != NULL) {
-        GraphNode_AddChild(&D_8438E580, process_geo_layout(sp44, temp_v0_4));
+        GraphNode_AddChild(&gBattleGraphNode2, process_geo_layout(sp44, temp_v0_4));
     }
 
     mem_pool_resize_block(sp44);
 
     temp_v0_7 = sp3C(4, 0);
     if (temp_v0_7 == NULL) {
-        D_8438E530.unk_00.unk_14 = 0;
-        D_8438E530.unk_00.unk_01 &= ~1;
+        gBattleColorRect.unk_00.unk_14 = 0;
+        gBattleColorRect.unk_00.unk_01 &= ~1;
     } else {
-        D_8438E530.unk_18.unk_00 = temp_v0_7->unk_00;
-        D_8438E530.unk_18.unk_02 = temp_v0_7->unk_02;
-        D_8438E530.unk_18.unk_04.rgba = temp_v0_7->unk_04.rgba;
-        D_8438E530.unk_00.unk_14 = 1;
+        gBattleColorRect.unk_18.unk_00 = temp_v0_7->unk_00;
+        gBattleColorRect.unk_18.unk_02 = temp_v0_7->unk_02;
+        gBattleColorRect.unk_18.unk_04.rgba = temp_v0_7->unk_04.rgba;
+        gBattleColorRect.unk_00.unk_14 = 1;
     }
 
-    BattleInitDispatch(3, D_8438E798);
-    HandleBattlePhase(3, &D_8438E598, &D_8438E688);
-    BattleScene_Dispatch(3, &D_8438E440);
-    HandleCameraMode(3, &D_8438E440);
+    BattleInitDispatch(3, gBattlePokemonData);
+    HandleBattlePhase(3, &gBattlePortraitCamera0, &gBattlePortraitCamera1);
+    BattleScene_Dispatch(3, &gBattleMainCamera);
+    HandleCameraMode(3, &gBattleMainCamera);
 
-    D_8438E7A0 = 1;
-    D_8438E79C = 0;
+    gPokemonSelectionIndex = 1;
+    gBattleSceneState = 0;
 }
 
 void func_84301A24(void) {
@@ -613,8 +613,8 @@ void func_84301A24(void) {
 s32 BattleScreen_Run(s32 arg0, unk_D_800AE540* arg1) {
     Stage* sp24;
 
-    D_8438E798 = gBattleContext.unk_1194;
-    D_8438E7AC = -2;
+    gBattlePokemonData = gBattleContext.unk_1194;
+    gBattleCompletionTimer = -2;
 
     main_pool_push_state('BATL');
 

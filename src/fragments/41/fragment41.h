@@ -49,14 +49,14 @@ typedef struct PickerState {
     /* 0x6294 */ char unk6294[0x4];
 } PickerState; // size = 0x6298
 
-typedef struct unk_func_82F00838_sp30 {
+typedef struct RentalItemInfo {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0C */ PickerPokemonEntry* unk_0C;
-} unk_func_82F00838_sp30; // size = 0x10
+} RentalItemInfo; // size = 0x10
 
 typedef struct unk_D_82F14450 {
     /* 0x00 */ u8 unk_00;
@@ -93,24 +93,24 @@ typedef struct unk_D_82F20A10 {
     /* 0x24 */ unk_func_8001B1FC* unk_24;
 } unk_D_82F20A10; // size >= 0x28
 
-typedef struct unk_D_82F20A40_00E {
+typedef struct PanelRect {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
     /* 0x06 */ s16 unk_06;
-} unk_D_82F20A40_00E; // size = 0x8
+} PanelRect; // size = 0x8
 
 typedef struct unk_D_82F20A40 {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ s16 unk_04;
-    /* 0x06 */ unk_D_82F20A40_00E unk_06;
-    /* 0x0E */ unk_D_82F20A40_00E unk_0E[3];
-    /* 0x26 */ unk_D_82F20A40_00E unk_26;
-    /* 0x2E */ unk_D_82F20A40_00E unk_2E;
-    /* 0x36 */ unk_D_82F20A40_00E unk_36;
-    /* 0x40 */ unk_D_82F20A40_00E* unk_40;
-    /* 0x44 */ unk_D_82F20A40_00E* unk_44;
+    /* 0x06 */ PanelRect unk_06;
+    /* 0x0E */ PanelRect unk_0E[3];
+    /* 0x26 */ PanelRect unk_26;
+    /* 0x2E */ PanelRect unk_2E;
+    /* 0x36 */ PanelRect unk_36;
+    /* 0x40 */ PanelRect* unk_40;
+    /* 0x44 */ PanelRect* unk_44;
 } unk_D_82F20A40; // size = 0x48
 
 typedef struct unk_D_82F20A88 {
@@ -132,7 +132,7 @@ typedef struct unk_D_82F20A88 {
     /* 0x028 */ Fragment2_1GraphNode unk_028;
 } unk_D_82F20A88; // size = 0x190
 
-typedef struct unk_D_82F210E0 {
+typedef struct RentalMenuState {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ s16 unk_02;
     /* 0x04 */ u16 unk_04;
@@ -143,11 +143,11 @@ typedef struct unk_D_82F210E0 {
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
-    /* 0x14 */ unk_D_82F20A40_00E unk_14[2];
-    /* 0x24 */ unk_D_82F20A40_00E unk_24;
-    /* 0x2C */ unk_D_82F20A40_00E unk_2C;
-    /* 0x34 */ unk_D_82F20A40_00E unk_34;
-} unk_D_82F210E0; // size = 0x3C
+    /* 0x14 */ PanelRect unk_14[2];
+    /* 0x24 */ PanelRect unk_24;
+    /* 0x2C */ PanelRect unk_2C;
+    /* 0x34 */ PanelRect unk_34;
+} RentalMenuState; // size = 0x3C
 
 typedef struct unk_D_82F21160 {
     /* 0x00 */ s16 unk_00;
@@ -219,7 +219,7 @@ typedef struct unk_D_82F21238 {
     /* 0x24 */ PokemonData* unk_24;
     /* 0x28 */ AssetManager* unk_28;
     /* 0x2C */ unk_func_8001B1FC* unk_2C;
-    /* 0x30 */ unk_D_82F20A40_00E unk_30;
+    /* 0x30 */ PanelRect unk_30;
 } unk_D_82F21238; // size = 0x38
 
 extern s32 gFragment41FrameCounter;
@@ -287,7 +287,7 @@ void Picker_Update(void);
 void Picker_Render(void);
 u16* Picker_GetSelectedSprite(s32);
 void Picker_SwapSelectedSprites(void);
-s32 Picker_GetSelectionInfo(s32 arg0, unk_func_82F00838_sp30* arg1);
+s32 Picker_GetSelectionInfo(s32 arg0, RentalItemInfo* arg1);
 
 void Picker_SetSelectedSprite(s16, PokemonData*);
 void BattleResultScreen_Start(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3);
@@ -328,7 +328,7 @@ void Trade_UpdateBoxMachineSlots(unk_D_82F20A40* arg0, s16 arg1, s16 arg2);
 void Trade_UpdateBoxMachineFlowPanelsFull(unk_D_82F20A40* arg0);
 void Trade_UpdateBoxMachineFlowConfirmOpen(unk_D_82F20A40* arg0);
 void Trade_UpdateBoxMachineFlowConfirmInput(unk_D_82F20A40* arg0);
-void Trade_UpdateBoxMachineRect(unk_D_82F20A40_00E* arg0, s16 arg1, s16 arg2);
+void Trade_UpdateBoxMachineRect(PanelRect* arg0, s16 arg1, s16 arg2);
 void Trade_UpdateBoxMachineFlowConfirmDone(unk_D_82F20A40* arg0);
 void Trade_UpdateBoxMachineFlowClose(unk_D_82F20A40* arg0);
 void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0);
@@ -342,24 +342,24 @@ void InitMenuGraphics(void);
 void UpdateMenuStateMachine(void);
 void Trade_DrawBoxMachine(void);
 
-s32 LoadRentalItemData(unk_func_82F00838_sp30* arg0);
-s32 InitRentalItems(unk_D_82F210E0* arg0);
+s32 LoadRentalItemData(RentalItemInfo* arg0);
+s32 InitRentalItems(RentalMenuState* arg0);
 void RentalMenu_Init(s32 arg0);
-void RentalMenu_UpdatePanels(unk_D_82F210E0* arg0);
-void RentalMenu_HandleSelection(unk_D_82F210E0* arg0);
-void RentalMenu_ConfirmWait(unk_D_82F210E0* arg0);
-void RentalMenu_ShowItemDetailsA(unk_D_82F210E0* arg0);
-void RentalMenu_ShowItemDetailsB(unk_D_82F210E0* arg0);
-void RentalMenu_ShowOptions(unk_D_82F210E0* arg0);
-void RentalMenu_ProcessItemSelection(unk_D_82F210E0* arg0);
-void RentalMenu_Finalize(unk_D_82F210E0* arg0);
+void RentalMenu_UpdatePanels(RentalMenuState* arg0);
+void RentalMenu_HandleSelection(RentalMenuState* arg0);
+void RentalMenu_ConfirmWait(RentalMenuState* arg0);
+void RentalMenu_ShowItemDetailsA(RentalMenuState* arg0);
+void RentalMenu_ShowItemDetailsB(RentalMenuState* arg0);
+void RentalMenu_ShowOptions(RentalMenuState* arg0);
+void RentalMenu_ProcessItemSelection(RentalMenuState* arg0);
+void RentalMenu_Finalize(RentalMenuState* arg0);
 void Trade_DrawSaveSeqBoxThumbnail(s16 arg0, s16 arg1, s16 arg2);
-void RentalMenu_RenderItemList(unk_D_82F210E0* arg0);
-void RentalMenu_DrawPanels(unk_D_82F210E0* arg0);
-void Trade_DrawSaveSeqBannerPanel(unk_D_82F210E0* arg0);
-void Trade_DrawSaveSeqSubBanner(unk_D_82F210E0* arg0);
+void RentalMenu_RenderItemList(RentalMenuState* arg0);
+void RentalMenu_DrawPanels(RentalMenuState* arg0);
+void Trade_DrawSaveSeqBannerPanel(RentalMenuState* arg0);
+void Trade_DrawSaveSeqSubBanner(RentalMenuState* arg0);
 void Trade_DrawSaveSeqMessageBackdrop(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
-void func_82F0BEF8(unk_D_82F210E0* arg0);
+void RentalMenu_DrawMessage(RentalMenuState* arg0);
 s32 Trade_GetSaveSeqState(void);
 s32 Trade_GetSaveDirection(void);
 s32 Trade_GetSaveSlotIndex(void);
@@ -395,7 +395,7 @@ void DrawTransitionOverlay(s16 arg0, s16 arg1, s16 arg2);
 void DrawMenuPanelBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void DrawTransitionImage(unk_D_82F21238* arg0);
 void func_82F0ECA4(void);
-void DrawTransitionText(unk_D_82F20A40_00E* arg0, PokemonData* arg1);
+void DrawTransitionText(PanelRect* arg0, PokemonData* arg1);
 void ScreenTransition_Render(void);
 void MenuPanel_ResetState(void);
 void MenuPanel_SetState(s32 arg0, s16 arg1);

@@ -462,7 +462,7 @@ void BattleAnim_StartEffect18ScatterRadialAndColumnSequence(void) {
     ParticleDef_CreateFull(8, 4, 2, BattleAnim_CallbackSharedDirectionalSprayFade, &gParticleEffectData[0x13], 0x14, 4, 7, 0, 0x25, 0);
 }
 
-void func_8433DECC(void) {
+void BattleAnim_CreateSprayColumnEffect(void) {
     ParticleDef_CreateBC20CDAlt(0x2C, 4, 0x10, 0xA, 0xFF);
     ParticleDef_CreateDefault(0x30, 0x20, 0xA);
     ParticleDef_CreateFull(0, 8, 5, BattleAnim_CallbackSharedDirectionalSprayFade, &gParticleEffectData[0x12], 8, 3, 3, 0, 0x25, 0);
@@ -470,7 +470,7 @@ void func_8433DECC(void) {
     ParticleDef_CreateFull(0, 4, 2, BattleAnim_CallbackSharedDescriptor0FDelayedRisingColumnRandomScale, &gParticleEffectData[0xF], 0x14, 4, 3, 0, 0x25, 0);
 }
 
-void func_8433DFF4(void) {
+void BattleAnim_CreateSprayColumnEffectTrigger(void) {
     ParticleDef_CreateBC20CDAlt(0, 4, 8, 0xA, 0xC8);
     ParticleDef_CreateDefault(0x30, 0x20, 0xA);
     ParticleDef_CreateFull(0, 8, 5, BattleAnim_CallbackSharedDirectionalSprayFade, &gParticleEffectData[0x12], 8, 3, 3, 0, 0x25, 0);
@@ -479,7 +479,7 @@ void func_8433DFF4(void) {
     ParticleEffect_TriggerEffect();
 }
 
-void func_8433E124(void) {
+void BattleAnim_CreateStreamSprayColumnEffect(void) {
     ParticleDef_CreateNullType17(0x64, 1);
     ParticleDef_CreateDefault(0, 0x10, 3);
     ParticleDef_CreateFull(0, 8, 3, BattleAnim_CallbackStartEffect59EndEffect28DirectionalStreamFade, &gParticleEffectData[0x14], 2, 1, 2, 0, 0x25, 0);
@@ -492,7 +492,7 @@ void func_8433E124(void) {
     ParticleDef_CreateFull(0, 4, 2, BattleAnim_CallbackSharedDescriptor0FDelayedRisingColumnRandomScale, &gParticleEffectData[0xF], 0x14, 2, 1, 0, 0x25, 0);
 }
 
-void func_8433E33C(void) {
+void BattleAnim_CreateBurstStreamEffect(void) {
     ParticleDef_CreateBC20CD(0x22, 4, 0x10, 0xA);
     ParticleDef_CreateDefault(0, 0x20, 3);
     ParticleDef_CreateDefault(0x30, 0x20, 0xA);
@@ -501,7 +501,7 @@ void func_8433E33C(void) {
     ParticleDef_CreateFull(0, 8, 2, BattleAnim_CallbackStartEffect59EndEffect28DirectionalStreamFade, &gParticleEffectData[0x13], 0xC, 3, 3, 0, 0x25, 0);
 }
 
-void func_8433E46C(void) {
+void BattleAnim_CreateCollisionRandomEffect(void) {
     ParticleDef_CreateFull(0, 4, 5, ParticleEffect_CollisionHandler, &gParticleEffectData[0x11], 8, 4, 0x10, gParticleTexture_Default, 0x25, 0);
     ParticleDef_CreateFull(0, 1, 0x24, ParticleEffect_RandomDirectionHandler2, &gParticleEffectData[0x15], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
 }

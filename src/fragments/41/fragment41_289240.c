@@ -995,7 +995,7 @@ void Picker_SetSelectedSprite(s16 arg0, PokemonData* arg1) {
     PokeIcon_LoadModelTextureForMon(gPickerState[arg0].unk_0028, 0, arg1);
 }
 
-s32 Picker_GetSelectionInfo(s32 arg0, unk_func_82F00838_sp30* arg1) {
+s32 Picker_GetSelectionInfo(s32 arg0, RentalItemInfo* arg1) {
     s32 ret = 0;
     PickerState* ptr;
 

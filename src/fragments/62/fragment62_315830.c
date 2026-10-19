@@ -7,7 +7,7 @@ void HandleMoveHitAnimation(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     PokemonData* ptr;
     unk_BattlePlayerAnimState* sp2C;
-    unk_D_800FCB18* sp28;
+    PokemonAudioInfo* sp28;
     unk_BattleAnimDataEntry* sp20;
     s32 idx = IsPrimaryEntity(arg0);
 
@@ -71,7 +71,7 @@ void ResumeMoveAnimationIfNotTriggered(unk_BattlePlayerEntity* arg0) {
 
 void HandleItemOrStatusEffect(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* sp24 = &arg0->unk_654;
-    unk_D_800FCB18* sp28 = &sp24->unk_38;
+    PokemonAudioInfo* sp28 = &sp24->unk_38;
     PokemonData* sp2C = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
 
     if ((gBattleState.unk_00->unk_38 != 0xB) || (gBattleState.unk_00->unk_20 >= 6)) {

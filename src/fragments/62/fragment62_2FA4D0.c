@@ -997,7 +997,7 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
     s32 i;
     s32 sp64[] = { 0, 0, 0, 0 };
     u8 sp60[4];
-    unk_D_800FCB18* temp_s0;
+    PokemonAudioInfo* temp_s0;
     PokemonData* sp58;
     UNUSED s32 pad;
 

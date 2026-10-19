@@ -96,7 +96,7 @@ ALSeqFile* gAudioSeqBank;
 ALSeqFile* gAudioSeqBuffer;
 s32 pad_D_800FC70C;
 s32 pad_D_800FC710;
-ALSeqFile* D_800FC714;
+ALSeqFile* gAudioSeqData;
 u8 pad_D_800FC718[0x80];
 u32* D_800FC798;
 
@@ -669,9 +669,9 @@ s32 Audio_Initialize(void) {
     // load the fourth archive's third seq at 0x1A2AD20
     Rom_DmaRead(gAudioSeqBank->seqArray[2].offset, sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
-    D_800FC714 = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
-    Rom_DmaRead(gAudioSeqBank->seqArray[2].offset, D_800FC714, 4 + (num_files * sizeof(ALSeqData)));
-    alSeqFileNew(D_800FC714, gAudioSeqBank->seqArray[2].offset);
+    gAudioSeqData = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
+    Rom_DmaRead(gAudioSeqBank->seqArray[2].offset, gAudioSeqData, 4 + (num_files * sizeof(ALSeqData)));
+    alSeqFileNew(gAudioSeqData, gAudioSeqBank->seqArray[2].offset);
 
     gMusicFadeBuffer = alHeapAlloc(audio_heap, 0xB80, 2);
 

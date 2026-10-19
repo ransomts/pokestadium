@@ -577,11 +577,11 @@ static s32 pad_D_80075664 = 0;
 s32 gCurrentGameState = STATE_N64_LOGO_INTRO;
 static s32 gLastGameState = STATE_N64_LOGO_INTRO;
 static s32 pad_D_80075670 = 0;
-static s16 D_80075674 = 0;
-static s16 D_80075678 = 0;
-static s16 D_8007567C = 0;
+static s16 gCurrentPokemonBank = 0;
+static s16 gGbSaveActive = 0;
+static s16 gTitleScreenState = 0;
 
-unk_D_800AE520 D_800AE520;
+FragmentCallContext gFragmentCallContext;
 s32 pad_D_800AE534[2];
 unk_D_800AE540 gBattleContext;
 BinArchive* gBattleArchive;
@@ -613,12 +613,12 @@ s32 Fragment_LoadAndCall(s32 arg0, u8* romStart, u8* romEnd, u32 arg3, u32 arg4)
 }
 
 void Fragment_LoadAndCall2(s32 arg0, u8* arg1, u8* arg2, s32 arg3, s32 arg4) {
-    D_800AE520.unk_00 = 1;
-    D_800AE520.fragment_id = arg0;
-    D_800AE520.rom_start = arg1;
-    D_800AE520.rom_end = arg2;
-    D_800AE520.arg0 = arg3;
-    D_800AE520.arg1 = arg4;
+    gFragmentCallContext.unk_00 = 1;
+    gFragmentCallContext.fragment_id = arg0;
+    gFragmentCallContext.rom_start = arg1;
+    gFragmentCallContext.rom_end = arg2;
+    gFragmentCallContext.arg0 = arg3;
+    gFragmentCallContext.arg1 = arg4;
 }
 
 unk_D_800AE540_0004* Trainer_GetSlots(void) {
@@ -626,13 +626,13 @@ unk_D_800AE540_0004* Trainer_GetSlots(void) {
 }
 
 s32 GetCurrentPokemonBank(void) {
-    return D_80075674;
+    return gCurrentPokemonBank;
 }
 
 void GbSave_SetActivePort(s32 arg0) {
     if ((arg0 >= 0) && (arg0 < 4)) {
-        D_80075674 = arg0;
-        D_80075678 = 1;
+        gCurrentPokemonBank = arg0;
+        gGbSaveActive = 1;
     }
 }
 
@@ -693,7 +693,7 @@ void Game_GoToTitle(void) {
 }
 
 void Game_RunTitleScreen(void) {
-    gCurrentGameState = FRAGMENT_LOAD_AND_CALL(fragment36, 0, &D_8007567C);
+    gCurrentGameState = FRAGMENT_LOAD_AND_CALL(fragment36, 0, &gTitleScreenState);
 
     if (gCurrentGameState == STATE_TITLE_SCREEN) {
         main_pool_push_state('DEMO');
@@ -730,7 +730,7 @@ void Game_RunTitleScreen(void) {
 
     gBattleContext.unk_0002 = 0;
     gBattleContext.unk_11F6 = 0;
-    D_80075674 = -1;
+    gCurrentPokemonBank = -1;
 }
 
 void State_N64ddBootUnused(void) {
@@ -752,10 +752,10 @@ void State_StubbedDebug(void) {
     Stage_Set(temp_s0);
     FRAGMENT_LOAD_AND_CALL2(fragment67, 1, 0);
 
-    while ((gCurrentGameState == STATE_STUBBED_DEBUG) && (D_800AE520.unk_00 != 0)) {
-        D_800AE520.unk_00 = 0;
-        gCurrentGameState = Fragment_LoadAndCall(D_800AE520.fragment_id, D_800AE520.rom_start, D_800AE520.rom_end,
-                                          D_800AE520.arg0, D_800AE520.arg1);
+    while ((gCurrentGameState == STATE_STUBBED_DEBUG) && (gFragmentCallContext.unk_00 != 0)) {
+        gFragmentCallContext.unk_00 = 0;
+        gCurrentGameState = Fragment_LoadAndCall(gFragmentCallContext.fragment_id, gFragmentCallContext.rom_start, gFragmentCallContext.rom_end,
+                                          gFragmentCallContext.arg0, gFragmentCallContext.arg1);
     }
 
     Stage_Destroy();
@@ -766,7 +766,7 @@ void State_StubbedDebug(void) {
 
 void Game_RunAreaSelect(void) {
     gCurrentGameState = FRAGMENT_LOAD_AND_CALL(fragment37, 0, 0);
-    D_80075674 = -1;
+    gCurrentPokemonBank = -1;
 }
 
 void Game_RunEventBattle(void) {
@@ -1074,7 +1074,7 @@ void Game_RunGbTower(void) {
 
     main_pool_push_state('EMU0');
 
-    if ((FRAGMENT_LOAD_AND_CALL(fragment33, 0, 0) == 0) && (D_80075674 >= 0) && (D_80075674 < 4)) {
+    if ((FRAGMENT_LOAD_AND_CALL(fragment33, 0, 0) == 0) && (gCurrentPokemonBank >= 0) && (gCurrentPokemonBank < 4)) {
         Music_StopTrack(4);
         Audio_WaitForLoadAndFade(1);
         Sched_RunFrames(2);
@@ -1082,7 +1082,7 @@ void Game_RunGbTower(void) {
 
         sp2C.unk_04 = main_pool_alloc(sizeof(*sp2C.unk_04), 0);
 
-        FRAGMENT_LOAD_AND_CALL(fragment53, D_80075674, &sp2C);
+        FRAGMENT_LOAD_AND_CALL(fragment53, gCurrentPokemonBank, &sp2C);
         GbEmu_Create(&sp2C);
 
         sp34 = GbEmu_RecvMessage();
@@ -1092,10 +1092,10 @@ void Game_RunGbTower(void) {
         Audio_Pause();
 
         if (sp34 != 0) {
-            Game_ShutdownAndLoadFragment(D_80075674, sp34);
+            Game_ShutdownAndLoadFragment(gCurrentPokemonBank, sp34);
         }
 
-        PlayerSave_RequestRefresh(D_80075674);
+        PlayerSave_RequestRefresh(gCurrentPokemonBank);
         GbsEnsureBankLoaded(2);
         GbsGetPlayerName(&sp24);
 
@@ -1295,7 +1295,7 @@ void State_FastBattle(void) {
     gCurrentGameState = STATE_TITLE_SCREEN;
 }
 
-void func_8002B244(void) {
+void State_Empty(void) {
 }
 
 void State_KidsClubTitle(void) {

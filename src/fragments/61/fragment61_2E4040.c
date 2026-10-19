@@ -20,7 +20,7 @@ s16 D_8423E588;
 s16 D_8423E58A;
 
 s16 D_84211700 = 0;
-unk_D_84211704 D_84211704[] = {
+RulePromptConfig gRulePromptConfigs[] = {
     {
         132,
         300,
@@ -252,7 +252,7 @@ void Menu_PrintItem(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
     Text_Print(arg0 + 0x3C, arg1 + (arg2 * 0x1C) + 0xC, arg3);
 }
 
-void TeamSelection_RulePrompt_DrawOptionSetFour(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetFour(RulePromptConfig* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x15));
@@ -266,7 +266,7 @@ void TeamSelection_RulePrompt_DrawOptionSetFour(unk_D_84211704* arg0) {
     }
 }
 
-void TeamSelection_RulePrompt_DrawOptionSetThreeA(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetThreeA(RulePromptConfig* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x19));
@@ -279,7 +279,7 @@ void TeamSelection_RulePrompt_DrawOptionSetThreeA(unk_D_84211704* arg0) {
     }
 }
 
-void TeamSelection_RulePrompt_DrawOptionSetThreeB(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetThreeB(RulePromptConfig* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x15));
@@ -292,7 +292,7 @@ void TeamSelection_RulePrompt_DrawOptionSetThreeB(unk_D_84211704* arg0) {
     }
 }
 
-void TeamSelection_RulePrompt_DrawOptionSetThreeC(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetThreeC(RulePromptConfig* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x1C));
@@ -305,7 +305,7 @@ void TeamSelection_RulePrompt_DrawOptionSetThreeC(unk_D_84211704* arg0) {
     }
 }
 
-void TeamSelection_RulePrompt_DrawOptionSetTwo(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetTwo(RulePromptConfig* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x1F));
@@ -317,14 +317,14 @@ void TeamSelection_RulePrompt_DrawOptionSetTwo(unk_D_84211704* arg0) {
     }
 }
 
-void TeamSelection_RulePrompt_DrawSingleLabel(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawSingleLabel(RulePromptConfig* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_Print(arg0->unk_00 + 0x2D, arg0->unk_02 + 0x38, GetMessageBank1AString(0x21));
     Text_SetupDL();
 }
 
-void TeamSelection_RulePrompt_DrawThreeRowPanel(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawThreeRowPanel(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -339,7 +339,7 @@ void TeamSelection_RulePrompt_DrawThreeRowPanel(unk_D_84211704* arg0) {
     Text_SetupDL();
 }
 
-void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + arg0->unk_08 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -355,7 +355,7 @@ void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(unk_D_84211704* arg0) {
     Text_SetupDL();
 }
 
-void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -371,7 +371,7 @@ void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(unk_D_84211704* arg0) {
     Text_SetupDL();
 }
 
-void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -386,7 +386,7 @@ void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(unk_D_84211704* arg0) {
     Text_SetupDL();
 }
 
-void TeamSelection_RulePrompt_DrawOptionSetTwoB(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetTwoB(RulePromptConfig* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x26));
@@ -398,7 +398,7 @@ void TeamSelection_RulePrompt_DrawOptionSetTwoB(unk_D_84211704* arg0) {
     }
 }
 
-void TeamSelection_RulePrompt_DrawNumberAndLabel(unk_D_84211704* arg0, s16 arg1) {
+void TeamSelection_RulePrompt_DrawNumberAndLabel(RulePromptConfig* arg0, s16 arg1) {
     char sp28[0x100];
     s32 tmp;
     char* sp20;
@@ -416,7 +416,7 @@ void TeamSelection_RulePrompt_DrawNumberAndLabel(unk_D_84211704* arg0, s16 arg1)
     Text_SetupDL();
 }
 
-void TeamSelection_RulePrompt_DrawBinaryLabel(unk_D_84211704* arg0, s16 arg1) {
+void TeamSelection_RulePrompt_DrawBinaryLabel(RulePromptConfig* arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     if (arg1 == 0) {
@@ -430,10 +430,10 @@ void TeamSelection_RulePrompt_DrawBinaryLabel(unk_D_84211704* arg0, s16 arg1) {
 void TeamSelection_RulePrompt_DrawFrame(s32 arg0) {
     s16 tmp2;
     s16 var_a3;
-    unk_D_84211704* temp_s0;
+    RulePromptConfig* temp_s0;
 
     if ((D_84211700 != 0) && (D_8423E588 > 0)) {
-        temp_s0 = &D_84211704[D_8423E580];
+        temp_s0 = &gRulePromptConfigs[D_8423E580];
         if (D_8423E588 < 4) {
             var_a3 = (temp_s0->unk_06 * D_8423E588) / 4;
             if (var_a3 < 0x10) {
@@ -511,11 +511,11 @@ void TeamSelection_RulePrompt_DrawFrame(s32 arg0) {
 }
 
 void TeamSelection_RulePrompt_HandleInput(void) {
-    s16 tmp = D_84211704[D_8423E580].unk_0A;
+    s16 tmp = gRulePromptConfigs[D_8423E580].unk_0A;
 
     if (D_8423E584 != NULL) {
         if (BTN_IS_PRESSED(D_8423E584, BTN_A)) {
-            s32 tmp2 = (D_84211704[D_8423E580].unk_0E >> (D_8423E58A * 3));
+            s32 tmp2 = (gRulePromptConfigs[D_8423E580].unk_0E >> (D_8423E58A * 3));
 
             switch (tmp2 & 7) {
                 case 1:
@@ -619,7 +619,7 @@ s32 TeamSelection_RulePrompt_Open(s16 arg0, Controller* arg1) {
         }
         PlaySoundEffect(4);
         D_8423E580 = arg0;
-        D_8423E58A = D_84211704[arg0].unk_0B;
+        D_8423E58A = gRulePromptConfigs[arg0].unk_0B;
         D_8423E588 = 0;
         D_8423E584 = arg1;
         D_84211700 = 1;

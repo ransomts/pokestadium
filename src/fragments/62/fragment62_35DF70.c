@@ -198,7 +198,7 @@ void Battle_ResetState(void) {
 }
 
 void Battle_HandleItemEffect(void) {
-    unk_D_800FCB18* temp_a2 = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* temp_a2 = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     unk_BattlePlayerAnimState* temp_a0 = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654;
 
     if (gDefenderBattleEntity->unk_4D & 0x10) {
@@ -949,8 +949,8 @@ void Battle_Effect_Conversion(void) {
 
 void Battle_Effect_Haze(void) {
     s32 i;
-    unk_D_800FCB18* temp_t0 = &sActivePokemon[0]->unk_654.unk_38;
-    unk_D_800FCB18* temp_a3 = &sActivePokemon[1]->unk_654.unk_38;
+    PokemonAudioInfo* temp_t0 = &sActivePokemon[0]->unk_654.unk_38;
+    PokemonAudioInfo* temp_a3 = &sActivePokemon[1]->unk_654.unk_38;
 
     gBattleState.unk_00->unk_48 = 0x1D;
 
@@ -994,7 +994,7 @@ void Battle_Effect_Haze(void) {
 void Battle_Effect_Heal(void) {
     u8 temp_v0;
     unk_BattlePlayerAnimState* temp_a1;
-    unk_D_800FCB18* temp_a2;
+    PokemonAudioInfo* temp_a2;
 
     temp_a1 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654;
     temp_a2 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
@@ -1042,7 +1042,7 @@ void Battle_Effect_Transform(void) {
     s32 i;
     unk_BattlePlayerAnimState* sp20;
     unk_BattlePlayerAnimState* sp1C;
-    unk_D_800FCB18* ptr;
+    PokemonAudioInfo* ptr;
 
     sp20 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654;
     sp1C = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654;
@@ -1123,7 +1123,7 @@ void Battle_Effect_ReflectLightScreen(void) {
 }
 
 void SpAttack_Dispatch(void) {
-    unk_D_800FCB18* ptr = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* ptr = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
     s32 idx = ptr->unk_44.unk_01;
 
     if (D_8438AE54[idx - 1] != NULL) {

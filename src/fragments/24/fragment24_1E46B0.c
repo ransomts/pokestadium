@@ -7,10 +7,10 @@
 #include "src/hal_libc.h"
 #include "src/memory.h"
 
-static Gfx D_883176D0[] = {
+static Gfx gEmptyDl_1[] = {
     gsSPEndDisplayList(),
 };
-u32 D_883176D8[] = {
+u32 gTitleScreenImageData_1[] = {
     0x00000000, 0x00000000, 0x0000051D, 0x4F0C0300, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x020B5FDF, 0xFFBF2F08, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000007,
     0x1FAFFFFF, 0xFFFFFF7F, 0x0D040000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00030C6F, 0xEFFFFFFF,
@@ -31,7 +31,7 @@ u32 D_883176D8[] = {
 static Gfx gEmptyDisplayList2[] = {
     gsSPEndDisplayList(),
 };
-u32 D_88317920[] = {
+u32 gTitleScreenImageData_2[] = {
     0x42104210, 0x42104210, 0x42104210, 0x421139CF, 0x39CF39CF, 0x39CF39CF, 0x39CF39CF, 0x39CF39CF, 0x39CF39CF,
     0x39CF39CF, 0x39CF39CF, 0x39CF39CF, 0x42114210, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210,
     0x421139CF, 0x4A538C63, 0xC631D6B5, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7,
@@ -76,10 +76,10 @@ u32 D_88317920[] = {
     0x42104210, 0x42104210, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211,
     0x42114211, 0x42114211, 0x42114210, 0x42104210, 0x42104210, 0x42104210,
 };
-static Gfx D_88317F20[] = {
+static Gfx gEmptyDl_2[] = {
     gsSPEndDisplayList(),
 };
-u32 D_88317F28[] = {
+u32 gTitleScreenImageData_3[] = {
     0x421039CF, 0x4A534211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211,
     0x39CF4211, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x39CF6B5B, 0xD6B5DEF7,
     0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xD6B5B5AD, 0x7BDF39CF, 0x42114211,
@@ -124,7 +124,7 @@ u32 D_88317F28[] = {
     0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211,
     0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210,
 };
-static Gfx D_88318528[] = {
+static Gfx gEmptyDl_3[] = {
     gsSPEndDisplayList(),
 };
 u32 gCheckerboardPattern[] = {
@@ -141,7 +141,7 @@ u32 gCheckerboardPattern[] = {
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFDB, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
     0xFFFE5289, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x52895289, 0x5289FFFE,
 };
-static Gfx D_883186E0[] = {
+static Gfx gEmptyDl_4[] = {
     gsSPEndDisplayList(),
 };
 u32 gCheckerboardPattern2[] = {
@@ -274,7 +274,7 @@ u32 gTitleScreenImage[] = {
     0x9AAA9A9A, 0x9999889A, 0xBBA989A9, 0xBA9BAA9A, 0x98888888, 0x9AAA9889, 0x9AA8AAA9, 0x99988888, 0x889AAA88,
     0x88000000, 0x00000000, 0x0008BDB9, 0x99586000, 0x00000000, 0x00000000, 0x024699BA,
 };
-static Gfx D_88319898[] = {
+static Gfx gEmptyDl_5[] = {
     gsSPEndDisplayList(),
 };
 u32 gFontBitmapData[] = {
@@ -546,7 +546,7 @@ s32 CompareByField38(PokemonListEntry* arg0, PokemonListEntry* arg1) {
 }
 
 s32 CompareSpeciesOrder(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
-    static u8 D_8831A160[] = {
+    static u8 gSpeciesSortOrder[] = {
         0x09, 0x38, 0x8B, 0x0E, 0x0F, 0x0D, 0x81, 0x90, 0x08, 0x0B, 0x50, 0x0A, 0x91, 0x3F, 0x06, 0x66, 0x65,
         0x64, 0x73, 0x72, 0x80, 0x25, 0x1F, 0x03, 0x67, 0x70, 0x76, 0x77, 0x58, 0x5A, 0x57, 0x59, 0x5B, 0x56,
         0x11, 0x10, 0x8F, 0x5C, 0x39, 0x94, 0x96, 0x2B, 0x5D, 0x2A, 0x8D, 0x61, 0x62, 0x8A, 0x89, 0x15, 0x1D,
@@ -557,7 +557,7 @@ s32 CompareSpeciesOrder(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0
         0x83, 0x82, 0x54, 0x78, 0x3B, 0x20, 0x4A, 0x68, 0x85, 0x49, 0x32, 0x44, 0x16, 0x1E, 0x88, 0x3A, 0x26,
         0x6D, 0x5E, 0x5F, 0x3C, 0x3D, 0x01, 0x7F, 0x05, 0x95, 0x53, 0x1B, 0x19, 0x1A, 0x52, 0x51, 0x00,
     };
-    s32 var_v0 = D_8831A160[*(u8*)&arg0->unk_08 - 1] - D_8831A160[*(u8*)&arg1->unk_08 - 1];
+    s32 var_v0 = gSpeciesSortOrder[*(u8*)&arg0->unk_08 - 1] - gSpeciesSortOrder[*(u8*)&arg1->unk_08 - 1];
     s32 ret;
 
     if (var_v0 != 0) {
@@ -701,11 +701,11 @@ s32 PokemonHasExactTypes(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_
 }
 
 s32 PokemonAllowedInCup(PokemonListEntry* arg0, u8* arg1) {
-    static u8 D_8831A244[] = {
+    static u8 gCupAllowedMasks[] = {
         0x03, 0x04, 0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     };
 
-    return ((1 << D_8831A244[*arg1]) & ((gSpeciesDisplayTable + arg0->unk_08 - 1)->unk_0C)) != 0;
+    return ((1 << gCupAllowedMasks[*arg1]) & ((gSpeciesDisplayTable + arg0->unk_08 - 1)->unk_0C)) != 0;
 }
 
 typedef struct unk_func_883164C0 {
@@ -1006,12 +1006,12 @@ s32 LabPCList_IsTmItemId(s32* arg0) {
 }
 
 s32 LabPCList_IsHmItemId(s32* arg0) {
-    static u8 D_8831A250[] = { 0x23, 0x24, 0x25, 0x26, 0x27, 0x28 };
+    static u8 gHmItemIds[] = { 0x23, 0x24, 0x25, 0x26, 0x27, 0x28 };
 
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        if (*arg0 == D_8831A250[i]) {
+        if (*arg0 == gHmItemIds[i]) {
             *arg0 = i;
             return 1;
         }
@@ -1021,12 +1021,12 @@ s32 LabPCList_IsHmItemId(s32* arg0) {
 }
 
 s32 LabPCList_IsSpecialTmItemId(s32* arg0) {
-    static u8 D_8831A258[] = { 0x4F };
+    static u8 gSpecialTmItemIds[] = { 0x4F };
 
     s32 i;
 
     for (i = 0; i < 1; i++) {
-        if (*arg0 == D_8831A258[i]) {
+        if (*arg0 == gSpecialTmItemIds[i]) {
             *arg0 = i + 0x32;
             return 1;
         }

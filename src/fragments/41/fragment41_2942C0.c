@@ -271,7 +271,7 @@ void ScreenTransition_Init(unk_D_82F21238* arg0, s32 arg1) {
 }
 
 void ScreenTransition_Start(s16 arg0) {
-    unk_func_82F00838_sp30 sp20;
+    RentalItemInfo sp20;
     unk_D_82F21238* ptr = &gScreenTransition;
 
     main_pool_push_state('intr');
@@ -466,7 +466,7 @@ void ScreenTransition_ApplyPokemonUpdate(unk_D_82F21238* arg0) {
 
 void ScreenTransition_ShrinkReverse(unk_D_82F21238* arg0) {
     s16 var_v1;
-    unk_D_82F20A40_00E* ptr = &arg0->unk_30;
+    PanelRect* ptr = &arg0->unk_30;
 
     ScreenTransition_UpdateAnim(arg0);
     arg0->unk_0C--;
@@ -501,7 +501,7 @@ void ScreenTransition_ShrinkReverse(unk_D_82F21238* arg0) {
 }
 
 void ScreenTransition_Collapse(unk_D_82F21238* arg0) {
-    unk_D_82F20A40_00E* temp_v0_2 = &arg0->unk_30;
+    PanelRect* temp_v0_2 = &arg0->unk_30;
 
     if (arg0->unk_0C > 0) {
         arg0->unk_0C--;
@@ -709,7 +709,7 @@ void DrawTransitionImage(unk_D_82F21238* arg0) {
 void func_82F0ECA4(void) {
 }
 
-void DrawTransitionText(unk_D_82F20A40_00E* arg0, PokemonData* arg1) {
+void DrawTransitionText(PanelRect* arg0, PokemonData* arg1) {
     s16 spC6;
     s8 sp44[0x80];
     char* sp40;

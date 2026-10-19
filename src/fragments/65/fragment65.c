@@ -11,19 +11,19 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static char** D_84A03130;
-static char** D_84A03134;
-static unk_D_84A03138 D_84A03138[4];
-static BinArchive* D_84A03168;
-static BinArchive* D_84A0316C;
+static char** gGymMessageBank;
+static char** gRoomMessageBank;
+static TrainerPortrait gTrainerPortraits[4];
+static BinArchive* gTrainerDataArchive;
+static BinArchive* gPortraitGfxArchive;
 static BinArchive* D_84A03170;
-static u8* D_84A03174;
-static u8* D_84A03178;
-static u8* D_84A0317C;
+static u8* gBgTexture1;
+static u8* gBgTexture2;
+static u8* gBgTexture3;
 static unk_func_80027FA0 D_84A03180;
-static s16 D_84A03188;
+static s16 gPrevRoomIndex;
 
-static unk_D_84A02F00 D_84A02F00[] = {
+static RoomDef gRoomDefinitions[] = {
     {
         0x00,      0x00, 154, 390,  118, 362, 96, 278, 48, 70, -32768, 0, 0, 0, 2, { 0x96, 0x64, 0xFF, 0x00 },
         D_3000000, 0,    30,  NULL,
@@ -74,11 +74,11 @@ static unk_D_84A02F00 D_84A02F00[] = {
     },
 };
 
-static s16 D_84A030E0 = 0;
-static s16 D_84A030E4 = 0;
-static s16 D_84A030E8 = 0xFF;
-static s16 D_84A030EC = 0;
-static s16 D_84A030F0 = 0;
+static s16 gCurrentRoomIndex = 0;
+static s16 gRoomTransitionTimer = 0;
+static s16 gPanelFadeAlpha = 0xFF;
+static s16 gInfoPanelHeight = 0;
+static s16 gBgFadeAlpha = 0;
 
 void TileBackgroundTexture(u8* arg0, u8* arg1, u8 arg2) {
     s32 i;
@@ -142,39 +142,39 @@ void DrawInfoPanel(void) {
     UNUSED s32 pad;
     s16 temp_v0;
 
-    if (D_84A030EC >= 0x10) {
-        sp3A = 0xF0 - (D_84A030EC / 2);
-        DrawSimplePanel(0x78, sp3A, 0x190, D_84A030EC);
-        Text_DrawWindowRect(0x7F, sp3A + 7, 0x182, D_84A030EC - 0xE, 0x14, 0x32, 0x64, 0x96);
+    if (gInfoPanelHeight >= 0x10) {
+        sp3A = 0xF0 - (gInfoPanelHeight / 2);
+        DrawSimplePanel(0x78, sp3A, 0x190, gInfoPanelHeight);
+        Text_DrawWindowRect(0x7F, sp3A + 7, 0x182, gInfoPanelHeight - 0xE, 0x14, 0x32, 0x64, 0x96);
 
-        if (D_84A030EC == 0x50) {
+        if (gInfoPanelHeight == 0x50) {
             Text_ResetState();
             Text_SetFont(8, 0);
             Text_SetLineHeight(0x18);
 
-            if (D_84A030E0 == 7) {
-                Text_Print(0x88, sp3A + 0x10, GetMessageString(NULL, 0, D_84A03130, 0xC));
-            } else if (D_84A030E0 == 0xA) {
-                Text_Print(0x88, sp3A + 0x10, GetMessageString(NULL, 0, D_84A03130, 0xD));
+            if (gCurrentRoomIndex == 7) {
+                Text_Print(0x88, sp3A + 0x10, GetMessageString(NULL, 0, gGymMessageBank, 0xC));
+            } else if (gCurrentRoomIndex == 0xA) {
+                Text_Print(0x88, sp3A + 0x10, GetMessageString(NULL, 0, gGymMessageBank, 0xD));
             } else {
-                temp_v0 = D_84A02F00[D_84A030E0].unk_22;
+                temp_v0 = gRoomDefinitions[gCurrentRoomIndex].unk_22;
                 if (temp_v0 >= 0x1E) {
-                    MessageBank_SetPointer_0x14_0x2A(0x24, GetMessageString(NULL, 0, D_84A03134, temp_v0));
+                    MessageBank_SetPointer_0x14_0x2A(0x24, GetMessageString(NULL, 0, gRoomMessageBank, temp_v0));
                 } else if (temp_v0 >= 0) {
-                    MessageBank_SetPointer_0x14_0x2A(0x24, GetMessageString(NULL, 0, D_84A03130, temp_v0));
+                    MessageBank_SetPointer_0x14_0x2A(0x24, GetMessageString(NULL, 0, gGymMessageBank, temp_v0));
                 } else {
                     MessageBank_SetPointer_0x14_0x2A(0x24, " ");
                 }
 
-                temp_v0 = D_84A02F00[D_84A030E0 + 1].unk_22;
+                temp_v0 = gRoomDefinitions[gCurrentRoomIndex + 1].unk_22;
                 if (temp_v0 >= 0x1E) {
-                    MessageBank_SetPointer_0x14_0x2A(0x29, GetMessageString(NULL, 0, D_84A03134, temp_v0));
+                    MessageBank_SetPointer_0x14_0x2A(0x29, GetMessageString(NULL, 0, gRoomMessageBank, temp_v0));
                 } else if (temp_v0 >= 0) {
-                    MessageBank_SetPointer_0x14_0x2A(0x29, GetMessageString(NULL, 0, D_84A03130, temp_v0));
+                    MessageBank_SetPointer_0x14_0x2A(0x29, GetMessageString(NULL, 0, gGymMessageBank, temp_v0));
                 } else {
                     MessageBank_SetPointer_0x14_0x2A(0x29, " ");
                 }
-                Text_Print(0x88, sp3A + 0x10, GetMessageString(sp40, sizeof(sp40), D_84A03130, 0xE));
+                Text_Print(0x88, sp3A + 0x10, GetMessageString(sp40, sizeof(sp40), gGymMessageBank, 0xE));
             }
             Text_SetupDL();
         }
@@ -185,29 +185,29 @@ void DrawPortraitIcons(void) {
     UNUSED s32 pad[3];
     s32 i;
     char* var_s0;
-    unk_D_84A02F00* sp58 = &D_84A02F00[D_84A030E0];
+    RoomDef* sp58 = &gRoomDefinitions[gCurrentRoomIndex];
 
     for (i = 0; i < 4; i++) {
-        if (D_84A03138[i].unk_00 != 0) {
-            s16 tmp = D_84A03138[i].unk_02;
+        if (gTrainerPortraits[i].unk_00 != 0) {
+            s16 tmp = gTrainerPortraits[i].unk_02;
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             Glc_DrawScaledTextureRgba(tmp, 0xF0, 0x80, 0x40, 0x80, D_3009290, 2.0f);
             Glc_DrawScaledTextureRgba(tmp, 0x130, 0x80, 0x40, 0x80, D_300A290, 2.0f);
             Glc_DrawScaledTextureRgba(tmp, 0x170, 0x80, 0x40, 0x80, D_300B290, 2.0f);
-            Glc_DrawScaledTextureRgba(tmp + 8, 0x138, 0x70, 0x38, 0x80, D_84A03138[i].unk_04 + 0x208, 2.0f);
-            Glc_DrawScaledTextureRgba(tmp + 8, 0x170, 0x70, 0x38, 0x80, D_84A03138[i].unk_04 + 0x1008, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp + 8, 0x138, 0x70, 0x38, 0x80, gTrainerPortraits[i].unk_04 + 0x208, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp + 8, 0x170, 0x70, 0x38, 0x80, gTrainerPortraits[i].unk_04 + 0x1008, 2.0f);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
             Text_ResetState();
 
-            if ((D_84A030E0 >= 8) || (i == 3)) {
+            if ((gCurrentRoomIndex >= 8) || (i == 3)) {
                 Text_SetFont(8, 0);
 
                 if (sp58->unk_20 >= 0) {
-                    var_s0 = GetMessageString(NULL, 0, D_84A03130, sp58->unk_20);
+                    var_s0 = GetMessageString(NULL, 0, gGymMessageBank, sp58->unk_20);
                 } else {
                     var_s0 = " ";
                 }
@@ -217,15 +217,15 @@ void DrawPortraitIcons(void) {
 
             Text_SetFont(4, 0);
 
-            if ((i == 3) && (D_84A030E0 < 8)) {
-                Text_Print(tmp + 8, 0x10C, GetMessageString(NULL, 0, D_84A03130, 8));
+            if ((i == 3) && (gCurrentRoomIndex < 8)) {
+                Text_Print(tmp + 8, 0x10C, GetMessageString(NULL, 0, gGymMessageBank, 8));
             } else {
-                Text_Print(tmp + 8, 0x10C, GetMessageString(NULL, 0, D_84A03130, 0xF));
+                Text_Print(tmp + 8, 0x10C, GetMessageString(NULL, 0, gGymMessageBank, 0xF));
             }
 
             Text_SetFont(0x10, 0);
-            Text_Print((tmp - (MeasureTextWidth(0x10, 0, D_84A03138[i].unk_08) / 2)) + 0x40, 0x11C,
-                          D_84A03138[i].unk_08);
+            Text_Print((tmp - (MeasureTextWidth(0x10, 0, gTrainerPortraits[i].unk_08) / 2)) + 0x40, 0x11C,
+                          gTrainerPortraits[i].unk_08);
             Text_SetupDL();
         }
     }
@@ -233,7 +233,7 @@ void DrawPortraitIcons(void) {
 
 void AnimatePortraitScroll(void) {
     static s16 D_84A030F4 = 0;
-    static s16 D_84A030F8 = 1;
+    static s16 gScrollDirection = 1;
 
     s16 i;
     s16 var_s1 = (D_84A030F4 / 4) + 0x22;
@@ -247,13 +247,13 @@ void AnimatePortraitScroll(void) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    D_84A030F4 += D_84A030F8;
+    D_84A030F4 += gScrollDirection;
     if (D_84A030F4 == 0) {
-        D_84A030F8 = 1;
+        gScrollDirection = 1;
     }
 
     if (D_84A030F4 == 0x23) {
-        D_84A030F8 = -1;
+        gScrollDirection = -1;
     }
 }
 
@@ -261,13 +261,13 @@ void DrawAnimatedSprites(void) {
     s32 i;
     s32 var_a0;
     s32 var_s2;
-    unk_D_84A02F00* var_s0;
+    RoomDef* var_s0;
 
-    if (D_84A030E0 < 9) {
-        var_s0 = &D_84A02F00[0];
+    if (gCurrentRoomIndex < 9) {
+        var_s0 = &gRoomDefinitions[0];
         var_s2 = 9;
     } else {
-        var_s0 = &D_84A02F00[9];
+        var_s0 = &gRoomDefinitions[9];
         var_s2 = 3;
     }
 
@@ -309,14 +309,14 @@ void DrawAnimatedSprites(void) {
 void DrawMessageList(void) {
     s32 var_s2;
     char* var_s0;
-    unk_D_84A02F00* var_s1;
+    RoomDef* var_s1;
     s16 tmp;
 
-    if (D_84A030E0 < 9) {
-        var_s1 = &D_84A02F00[0];
+    if (gCurrentRoomIndex < 9) {
+        var_s1 = &gRoomDefinitions[0];
         var_s2 = 8;
     } else {
-        var_s1 = &D_84A02F00[9];
+        var_s1 = &gRoomDefinitions[9];
         var_s2 = 3;
     }
 
@@ -328,9 +328,9 @@ void DrawMessageList(void) {
     for (; var_s2 > 0; var_s2--, var_s1++) {
         if (var_s1->unk_01 != 0) {
             if (var_s1->unk_22 >= 0x1E) {
-                var_s0 = GetMessageString(NULL, 0, D_84A03134, var_s1->unk_22);
+                var_s0 = GetMessageString(NULL, 0, gRoomMessageBank, var_s1->unk_22);
             } else if (var_s1->unk_22 >= 0) {
-                var_s0 = GetMessageString(NULL, 0, D_84A03130, var_s1->unk_22);
+                var_s0 = GetMessageString(NULL, 0, gGymMessageBank, var_s1->unk_22);
             } else {
                 var_s0 = " ";
             }
@@ -343,7 +343,7 @@ void DrawMessageList(void) {
     Text_SetupDL();
 }
 
-void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
+void DrawDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
     char* sp54;
 
     if (arg0->unk_24 != NULL) {
@@ -368,7 +368,7 @@ void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
         Text_SetFont(8, 0);
 
         if (arg0->unk_20 >= 0) {
-            sp54 = GetMessageString(NULL, 0, D_84A03130, arg0->unk_20);
+            sp54 = GetMessageString(NULL, 0, gGymMessageBank, arg0->unk_20);
         } else {
             sp54 = " ";
         }
@@ -376,9 +376,9 @@ void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
         Text_SetFont(0x20, 0);
 
         if (arg0->unk_22 >= 0x1E) {
-            sp54 = GetMessageString(NULL, 0, D_84A03134, arg0->unk_22);
+            sp54 = GetMessageString(NULL, 0, gRoomMessageBank, arg0->unk_22);
         } else if (arg0->unk_22 >= 0) {
-            sp54 = GetMessageString(NULL, 0, D_84A03130, arg0->unk_22);
+            sp54 = GetMessageString(NULL, 0, gGymMessageBank, arg0->unk_22);
         } else {
             sp54 = " ";
         }
@@ -389,7 +389,7 @@ void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     }
 }
 
-void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
+void DrawAlternateDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
     char* var_s0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -418,9 +418,9 @@ void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     Text_SetFont(0x10, 0);
 
     if (arg0->unk_22 >= 0x1E) {
-        var_s0 = GetMessageString(NULL, 0, D_84A03134, arg0->unk_22);
+        var_s0 = GetMessageString(NULL, 0, gRoomMessageBank, arg0->unk_22);
     } else if (arg0->unk_22 >= 0) {
-        var_s0 = GetMessageString(NULL, 0, D_84A03130, arg0->unk_22);
+        var_s0 = GetMessageString(NULL, 0, gGymMessageBank, arg0->unk_22);
     } else {
         var_s0 = " ";
     }
@@ -433,31 +433,31 @@ void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
 void Glc_UpdateRoomInfoPanelFade(void) {
     u8 sp1F;
 
-    if (D_84A030E8 > 0) {
-        if (D_84A030E8 < 0xFF) {
-            if (D_84A030E0 == 0xA) {
-                DrawAlternateDetailPanel(&D_84A02F00[D_84A030E0], D_84A030E8, D_84A030E8);
+    if (gPanelFadeAlpha > 0) {
+        if (gPanelFadeAlpha < 0xFF) {
+            if (gCurrentRoomIndex == 0xA) {
+                DrawAlternateDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], gPanelFadeAlpha, gPanelFadeAlpha);
             } else {
-                DrawDetailPanel(&D_84A02F00[D_84A030E0], D_84A030E8, D_84A030E8);
+                DrawDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], gPanelFadeAlpha, gPanelFadeAlpha);
             }
-        } else if (D_84A030E4 == 0) {
-            if (D_84A030E0 == 0xA) {
-                DrawAlternateDetailPanel(&D_84A02F00[D_84A030E0], 0xFF, 0xFF);
+        } else if (gRoomTransitionTimer == 0) {
+            if (gCurrentRoomIndex == 0xA) {
+                DrawAlternateDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF);
             } else {
-                DrawDetailPanel(&D_84A02F00[D_84A030E0], 0xFF, 0xFF);
+                DrawDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF);
             }
         } else {
-            sp1F = ((D_84A030E4 * 0xFF) / 4) & 0xFF;
-            if (D_84A030E0 == 0xA) {
-                DrawAlternateDetailPanel(&D_84A02F00[D_84A030E0], 0xFF, 0xFF - sp1F);
+            sp1F = ((gRoomTransitionTimer * 0xFF) / 4) & 0xFF;
+            if (gCurrentRoomIndex == 0xA) {
+                DrawAlternateDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF - sp1F);
             } else {
-                DrawDetailPanel(&D_84A02F00[D_84A030E0], 0xFF, 0xFF - sp1F);
+                DrawDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF - sp1F);
             }
 
-            if (D_84A03188 == 0xA) {
-                DrawAlternateDetailPanel(&D_84A02F00[D_84A03188], sp1F, sp1F);
+            if (gPrevRoomIndex == 0xA) {
+                DrawAlternateDetailPanel(&gRoomDefinitions[gPrevRoomIndex], sp1F, sp1F);
             } else {
-                DrawDetailPanel(&D_84A02F00[D_84A03188], sp1F, sp1F);
+                DrawDetailPanel(&gRoomDefinitions[gPrevRoomIndex], sp1F, sp1F);
             }
         }
     }
@@ -466,17 +466,17 @@ void Glc_UpdateRoomInfoPanelFade(void) {
 void Glc_UpdateMapCursor(void) {
     s16 sp1E;
     s16 sp1C;
-    unk_D_84A02F00* temp_a1 = &D_84A02F00[D_84A030E0];
+    RoomDef* temp_a1 = &gRoomDefinitions[gCurrentRoomIndex];
 
-    if (D_84A030E4 == 0) {
+    if (gRoomTransitionTimer == 0) {
         sp1E = temp_a1->unk_06 - 0x20;
         sp1C = temp_a1->unk_08 - 0xD;
     } else {
-        sp1E = ((((D_84A02F00[D_84A03188].unk_06 - temp_a1->unk_06) * D_84A030E4) / 4) + temp_a1->unk_06) - 0x20;
-        sp1C = ((((D_84A02F00[D_84A03188].unk_08 - temp_a1->unk_08) * D_84A030E4) / 4) + temp_a1->unk_08) - 0xD;
+        sp1E = ((((gRoomDefinitions[gPrevRoomIndex].unk_06 - temp_a1->unk_06) * gRoomTransitionTimer) / 4) + temp_a1->unk_06) - 0x20;
+        sp1C = ((((gRoomDefinitions[gPrevRoomIndex].unk_08 - temp_a1->unk_08) * gRoomTransitionTimer) / 4) + temp_a1->unk_08) - 0xD;
 
-        D_84A030E4--;
-        if ((D_84A030E4 == 0) && ((D_84A030E0 == 8) || (D_84A030E0 == 9))) {
+        gRoomTransitionTimer--;
+        if ((gRoomTransitionTimer == 0) && ((gCurrentRoomIndex == 8) || (gCurrentRoomIndex == 9))) {
             Stage_SetFillColor(1);
             Stage_FadeOut(8);
         }
@@ -488,20 +488,20 @@ void Glc_UpdateMapCursor(void) {
 void Glc_Draw(void) {
     Stage_BeginDisplayList();
 
-    if (D_84A030E0 < 9) {
-        if (D_84A030F0 == 0) {
-            Gfx_DrawTextureAtlas(D_84A03174);
-        } else if (D_84A030F0 == 0xFF) {
-            Gfx_DrawTextureAtlas(D_84A03178);
+    if (gCurrentRoomIndex < 9) {
+        if (gBgFadeAlpha == 0) {
+            Gfx_DrawTextureAtlas(gBgTexture1);
+        } else if (gBgFadeAlpha == 0xFF) {
+            Gfx_DrawTextureAtlas(gBgTexture2);
         } else {
-            TileBackgroundTexture(D_84A03174, D_84A03178, D_84A030F0);
-            if (D_84A030F0 < 0xFF) {
-                D_84A030F0 += 5;
+            TileBackgroundTexture(gBgTexture1, gBgTexture2, gBgFadeAlpha);
+            if (gBgFadeAlpha < 0xFF) {
+                gBgFadeAlpha += 5;
             }
         }
     } else {
-        Gfx_DrawTextureAtlas(D_84A0317C);
-        D_84A030F0 = 0xFF;
+        Gfx_DrawTextureAtlas(gBgTexture3);
+        gBgFadeAlpha = 0xFF;
     }
 
     if (gBattleContext.unk_11F2 == 1) {
@@ -522,7 +522,7 @@ void Glc_Draw(void) {
     Stage_Advance();
 }
 
-s32 func_84A02074(void) {
+s32 Glc_GetInputStatus(void) {
     return 0;
 }
 
@@ -530,22 +530,22 @@ s32 Glc_SelectRoom(void) {
     s16 var_s4;
     s16 var_s1;
     s16 var_s3;
-    unk_D_84A02F00* temp_s0;
+    RoomDef* temp_s0;
 
     var_s4 = 0x1E;
     var_s3 = 2;
 
     while (var_s3 == 2) {
         var_s1 = -1;
-        temp_s0 = &D_84A02F00[D_84A030E0];
+        temp_s0 = &gRoomDefinitions[gCurrentRoomIndex];
 
         Game_UpdateInputs();
 
-        if (func_84A02074() == 0) {
+        if (Glc_GetInputStatus() == 0) {
             if (Stage_GetFadeState() == 0) {
-                if (D_84A030E4 == 0) {
-                    D_84A03188 = D_84A030E0;
-                    if (D_84A030E0 == 0xB) {
+                if (gRoomTransitionTimer == 0) {
+                    gPrevRoomIndex = gCurrentRoomIndex;
+                    if (gCurrentRoomIndex == 0xB) {
                         var_s4--;
                         if (var_s4 == 0) {
                             var_s3 = 3;
@@ -556,8 +556,8 @@ s32 Glc_SelectRoom(void) {
                     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
                         PlaySoundEffect(3);
                         if (temp_s0->unk_00 >= 0xA) {
-                            D_84A030E0 = 9;
-                            D_84A030E4 = 3;
+                            gCurrentRoomIndex = 9;
+                            gRoomTransitionTimer = 3;
                         } else {
                             var_s3 = 1;
                         }
@@ -571,19 +571,19 @@ s32 Glc_SelectRoom(void) {
                         var_s1 = temp_s0->unk_17 - 1;
                     }
 
-                    if ((var_s1 >= 0) && (D_84A02F00[var_s1].unk_01 != 0)) {
+                    if ((var_s1 >= 0) && (gRoomDefinitions[var_s1].unk_01 != 0)) {
                         PlaySoundEffect(1);
-                        D_84A030E0 = var_s1;
-                        D_84A030E4 = 3;
+                        gCurrentRoomIndex = var_s1;
+                        gRoomTransitionTimer = 3;
                     }
                 }
             } else if (Stage_GetFadeState() == 1) {
-                if (D_84A030E0 == 8) {
-                    D_84A030E0 = 0xA;
+                if (gCurrentRoomIndex == 8) {
+                    gCurrentRoomIndex = 0xA;
                 }
 
-                if (D_84A030E0 == 9) {
-                    D_84A030E0 = 7;
+                if (gCurrentRoomIndex == 9) {
+                    gCurrentRoomIndex = 7;
                 }
                 Stage_FadeIn(8);
             }
@@ -600,30 +600,30 @@ void LoadTrainerPortraits(void) {
     TrainerData* var_s1;
     s32 portrait_file_idx;
 
-    if (D_84A030E0 == 0xB) {
+    if (gCurrentRoomIndex == 0xB) {
         var_s7 = 1;
     } else {
         var_s7 = 4;
     }
 
-    if (D_84A030E0 < 8) {
-        var_a1 = D_84A030E0 + 0xC;
+    if (gCurrentRoomIndex < 8) {
+        var_a1 = gCurrentRoomIndex + 0xC;
     } else {
-        var_a1 = D_84A030E0 + 0xA;
+        var_a1 = gCurrentRoomIndex + 0xA;
     }
 
     if (gBattleContext.unk_11F2 != 0) {
         var_a1 += 0x1F;
     }
 
-    var_s1 = BinArchive_GetFile(D_84A03168, var_a1);
+    var_s1 = BinArchive_GetFile(gTrainerDataArchive, var_a1);
 
     for (i = 0; i < var_s7; i++) {
         portrait_file_idx = (var_s1[i].gfx_file_idx >> 8) & 0xFF;
-        D_84A03138[i].unk_00 = 1;
-        D_84A03138[i].unk_02 = 0x280;
-        D_84A03138[i].unk_08 = var_s1[i].name1;
-        D_84A03138[i].unk_04 = BinArchive_GetFile(D_84A0316C, portrait_file_idx);
+        gTrainerPortraits[i].unk_00 = 1;
+        gTrainerPortraits[i].unk_02 = 0x280;
+        gTrainerPortraits[i].unk_08 = var_s1[i].name1;
+        gTrainerPortraits[i].unk_04 = BinArchive_GetFile(gPortraitGfxArchive, portrait_file_idx);
     }
 }
 
@@ -631,7 +631,7 @@ void Glc_ClearTrainerPanels(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        D_84A03138[i].unk_00 = 0;
+        gTrainerPortraits[i].unk_00 = 0;
     }
 }
 
@@ -640,7 +640,7 @@ void Glc_AnimateTrainerPanelsIn(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     while (arg2-- > 0) {
         for (i = arg0; i <= arg1; i++) {
-            D_84A03138[i].unk_02 += arg3;
+            gTrainerPortraits[i].unk_02 += arg3;
         }
         Game_UpdateInputs();
         Glc_Draw();
@@ -658,13 +658,13 @@ s32 PlayIntroSequence(void) {
     Music_StopTrack(8);
 
     for (i = 3; i >= 0; i--) {
-        D_84A030E8 = i << 6;
+        gPanelFadeAlpha = i << 6;
         Game_UpdateInputs();
         Glc_Draw();
     }
 
     Music_ChangeTrack(0x2B);
-    if (D_84A030E0 == 0xB) {
+    if (gCurrentRoomIndex == 0xB) {
         Glc_AnimateTrainerPanelsIn(0, 0, 6, -0x40);
     } else {
         Glc_AnimateTrainerPanelsIn(0, 3, 3, -0x40);
@@ -679,7 +679,7 @@ s32 PlayIntroSequence(void) {
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             var_s1_2 = 1;
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-            if (D_84A030E0 == 0xB) {
+            if (gCurrentRoomIndex == 0xB) {
                 var_s1_2 = 1;
             } else {
                 var_s1_2 = 2;
@@ -690,7 +690,7 @@ s32 PlayIntroSequence(void) {
     if (var_s1_2 == 1) {
         PlaySoundEffect(0x1C);
         var_s1 = 0;
-        if (D_84A030E0 == 0xB) {
+        if (gCurrentRoomIndex == 0xB) {
             Glc_AnimateTrainerPanelsIn(0, 0, 6, -0x40);
         } else {
             Glc_AnimateTrainerPanelsIn(3, 3, 2, -0x40);
@@ -704,7 +704,7 @@ s32 PlayIntroSequence(void) {
         PlaySoundEffect(3);
         var_s1 = 2;
         Music_StopTrack(0x12);
-        if (D_84A030E0 == 0xB) {
+        if (gCurrentRoomIndex == 0xB) {
             Glc_AnimateTrainerPanelsIn(0, 0, 6, 0x40);
         } else {
             Glc_AnimateTrainerPanelsIn(0, 0, 2, 0x40);
@@ -721,7 +721,7 @@ s32 PlayIntroSequence(void) {
         }
 
         for (i = 1; i < 5; i++) {
-            D_84A030E8 = (i << 6) - 1;
+            gPanelFadeAlpha = (i << 6) - 1;
             Game_UpdateInputs();
             Glc_Draw();
         }
@@ -737,11 +737,11 @@ s32 ShowBattleStartPrompt(void) {
 
     if (gBattleContext.unk_0002 == 7) {
         PlayUISfx(0x01100015, 0, 0);
-        D_84A030F0 = 5;
+        gBgFadeAlpha = 5;
     }
 
     for (i = 1; i < 5; i++) {
-        D_84A030EC = i * 0x14;
+        gInfoPanelHeight = i * 0x14;
         Game_UpdateInputs();
         Glc_Draw();
     }
@@ -754,25 +754,25 @@ s32 ShowBattleStartPrompt(void) {
     PlaySoundEffect(0x01100011);
 
     if (gBattleContext.unk_0002 == 8) {
-        D_84A02F00[11].unk_01 = 0x3C;
+        gRoomDefinitions[11].unk_01 = 0x3C;
     } else {
-        D_84A02F00[D_84A03180.unk_04].unk_01 = 0x3C;
+        gRoomDefinitions[D_84A03180.unk_04].unk_01 = 0x3C;
     }
 
     if (D_84A03180.unk_04 == 8) {
-        D_84A02F00[9].unk_01 = 0x3C;
-        D_84A02F00[10].unk_01 = 0x3C;
+        gRoomDefinitions[9].unk_01 = 0x3C;
+        gRoomDefinitions[10].unk_01 = 0x3C;
     }
 
     for (i = 3; i >= 0; i--) {
-        D_84A030EC = i * 0x14;
+        gInfoPanelHeight = i * 0x14;
         Game_UpdateInputs();
         Glc_Draw();
     }
 
-    D_84A03188 = D_84A030E0;
-    D_84A030E0 += 1;
-    D_84A030E4 = 3;
+    gPrevRoomIndex = gCurrentRoomIndex;
+    gCurrentRoomIndex += 1;
+    gRoomTransitionTimer = 3;
     return 2;
 }
 
@@ -804,10 +804,10 @@ s16 Glc_RunMenu(s16 arg0) {
     }
 
     gBattleContext.unk_0003 = 1;
-    if (D_84A030E0 < 8) {
-        gBattleContext.unk_0002 = D_84A030E0;
+    if (gCurrentRoomIndex < 8) {
+        gBattleContext.unk_0002 = gCurrentRoomIndex;
     } else {
-        gBattleContext.unk_0002 = D_84A030E0 - 2;
+        gBattleContext.unk_0002 = gCurrentRoomIndex - 2;
     }
     return arg0;
 }
@@ -818,9 +818,9 @@ s16 Glc_InitMenu(s16 arg0) {
     s16 var_v1 = D_84A03180.unk_04;
 
     if (gBattleContext.unk_0002 < 8) {
-        D_84A030E0 = gBattleContext.unk_0002;
+        gCurrentRoomIndex = gBattleContext.unk_0002;
     } else {
-        D_84A030E0 = gBattleContext.unk_0002 + 2;
+        gCurrentRoomIndex = gBattleContext.unk_0002 + 2;
     }
 
     if (arg0 == 1) {
@@ -831,30 +831,30 @@ s16 Glc_InitMenu(s16 arg0) {
     }
 
     if (var_v1 >= 8) {
-        D_84A030F0 = 0xFF;
+        gBgFadeAlpha = 0xFF;
     } else {
-        D_84A030F0 = 0;
+        gBgFadeAlpha = 0;
     }
 
     for (i = 0; i <= var_v1; i++) {
-        D_84A02F00[i].unk_01 = 1;
+        gRoomDefinitions[i].unk_01 = 1;
     }
 
-    if (D_84A02F00[8].unk_01 != 0) {
-        D_84A02F00[9].unk_01 = 1;
-        D_84A02F00[10].unk_01 = 1;
+    if (gRoomDefinitions[8].unk_01 != 0) {
+        gRoomDefinitions[9].unk_01 = 1;
+        gRoomDefinitions[10].unk_01 = 1;
     }
 
     for (i = 0; i < 4; i++) {
-        D_84A03138[i].unk_00 = 0;
+        gTrainerPortraits[i].unk_00 = 0;
     }
 
     for (i = 0; i < 8; i++) {
-        D_84A02F00[i].unk_24 = BinArchive_GetFile(D_84A0316C, i + 2);
+        gRoomDefinitions[i].unk_24 = BinArchive_GetFile(gPortraitGfxArchive, i + 2);
     }
 
-    D_84A02F00[10].unk_24 = D_300CC10;
-    D_84A02F00[11].unk_24 = BinArchive_GetFile(D_84A0316C, 0xE);
+    gRoomDefinitions[10].unk_24 = D_300CC10;
+    gRoomDefinitions[11].unk_24 = BinArchive_GetFile(gPortraitGfxArchive, 0xE);
     return sp2C;
 }
 
@@ -867,16 +867,16 @@ s32 InitializePokemonStadiumMenu(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gym_leader_castle_ui, 0);
     MessageBank_Init();
-    D_84A03130 = GetMessageBank(0x19);
-    D_84A03134 = GetMessageBank(0x22);
+    gGymMessageBank = GetMessageBank(0x19);
+    gRoomMessageBank = GetMessageBank(0x22);
     GbsEnsureBankLoaded(2);
     GBAudio_ResetState(&D_84A03180, gBattleContext.unk_11F2);
-    D_84A03168 = Asset_Load2(0x898000, NULL, 1, 1);
-    D_84A0316C = ASSET_LOAD2(battle_portraits, 1, 1);
+    gTrainerDataArchive = Asset_Load2(0x898000, NULL, 1, 1);
+    gPortraitGfxArchive = ASSET_LOAD2(battle_portraits, 1, 1);
     D_84A03170 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_84A03174 = BinArchive_GetFile(D_84A03170, 0xD);
-    D_84A03178 = BinArchive_GetFile(D_84A03170, 0x10);
-    D_84A0317C = BinArchive_GetFile(D_84A03170, 0xE);
+    gBgTexture1 = BinArchive_GetFile(D_84A03170, 0xD);
+    gBgTexture2 = BinArchive_GetFile(D_84A03170, 0x10);
+    gBgTexture3 = BinArchive_GetFile(D_84A03170, 0xE);
     Menu_SetupDisplayList();
 
     sp1E = Glc_InitMenu(arg0);
