@@ -7,7 +7,7 @@ s16 miniInputLockTimer;
 s16 gMiniGameIdleTimer;
 s16 miniShowHUB;
 s16 miniDifficulty;
-s16 D_87906048; //  unused?
+s16 gMiniGameUnusedVar1; //  unused?
 s16 gMetapodAudioMuted;
 s32 pad_D_8790604C; //	unused?
 CameraStruct* gMiniCameraStruct;
@@ -41,7 +41,7 @@ Vec3s gMiniCamBasePos;
 s32 pad_D_879060B4;
 s32 pad_D_879060B8;
 Controller* miniControllerPtr;
-s16 D_879060C0;
+s16 gMiniGameUnusedVar2;
 s16 miniEkansCountdown;
 s8 gMiniHudColors[4];
 s16 miniHudTransparency;
@@ -50,7 +50,7 @@ s32 pad_D_879060D0[4];
 Vec3f gMiniDebugBasePos;
 Vec3f pad_D_879060F0;
 Vec3f gMiniDebugCamVelocity;
-Vec3f D_87906110;
+Vec3f gMiniDebugGravityVector;
 
 void miniApplyCameraDebugOffset(void) {
     miniCameraXRot = gMiniCamBaseRotX + gMiniCamRotXDelta;
@@ -266,10 +266,10 @@ void minigameDebuggVectorEditor(void) {
 
         case 4:
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CLEFT)) {
-                D_87906110.y -= 0.02;
+                gMiniDebugGravityVector.y -= 0.02;
             }
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT)) {
-                D_87906110.y += 0.02;
+                gMiniDebugGravityVector.y += 0.02;
             }
             break;
     }
@@ -284,8 +284,8 @@ void minigameDebuggVectorEditor(void) {
     Font_Printf(0x82, 0x98, "VY:%2.2f", gMiniDebugCamVelocity.y);
     Font_Printf(0x82, 0xA4, "BX:%2.2f", gMiniDebugBasePos.x);
     Font_Printf(0x82, 0xB0, "BY:%2.2f", gMiniDebugBasePos.y);
-    Font_Printf(0x82, 0xBC, "GV:%2.2f", D_87906110.y);
-    Font_Printf(0x82, 0xC8, "PW:%2.2f", D_87906110.x);
+    Font_Printf(0x82, 0xBC, "GV:%2.2f", gMiniDebugGravityVector.y);
+    Font_Printf(0x82, 0xC8, "PW:%2.2f", gMiniDebugGravityVector.x);
 
     Font_EndTexturedTextRendering();
 }

@@ -1555,7 +1555,7 @@ s32 LabItem_IsOperationIdle(unk_func_8821421C_02C_06C_02C* arg0) {
     return var_v1;
 }
 
-void func_88210DA8(void) {
+void LabItem_OperationDummy(void) {
 }
 
 s32 LabItem_ComputeRemainingCapacity(s32 arg0, unk_func_8820BE14_06C* arg1) {

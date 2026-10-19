@@ -17545,3 +17545,48 @@ D_812346EC	gApuInitValues	w10		array initialized to 0xA0 in GbPak_InitGfx	applie
 D_812346F2	gApuInitValuesEnd	w10		end boundary for the 0xA0 initialization loop	applied@fcf22d55
 D_81234700	gAudioWorkBufferEnd	w10		used to calculate the size of gAudioWorkBuffer for zeroing	applied@fcf22d55
 D_812346FC	gAudioInitFlag	w10		initialized to 0 at the start of GbPak_InitGfx	applied@fcf22d55
+func_8432A414	BattleScene_UpdateCameraStateEmpty	w11		empty function in battle scene logic	applied@c7b59f65
+func_843553B4	BattleAnim_CallbackUnusedEmpty	w11		empty function in a file full of particle callbacks	applied@c7b59f65
+func_84A00630	Glc_NoOp	w11		empty function in gym leader castle domain	applied@c7b59f65
+D_84A03170	gBgArchive	w11		loaded from "backgrounds" asset and used to retrieve gBgTexture1/2/3	applied@c7b59f65
+D_84A03180	gSessionSettings	w11		type SessionModeSettings, initialized via Save_GetModeSettings	applied@c7b59f65
+func_86300F60	JigglypuffGame_EmptyFunc1	w11		empty function in the Jigglypuff doodle fragment	applied@c7b59f65
+func_863015EC	JigglypuffGame_EmptyFunc2	w11		empty function in the Jigglypuff doodle fragment	applied@c7b59f65
+func_88201488	LabPC_DrawSlot	w11		draws a Pokemon slot with background colors, texture for the mon, and its name/number	applied@c7b59f65
+func_88210DA8	LabItem_OperationDummy	w11		no-op function in lab item logic	applied@c7b59f65
+D_8821E0F8	gPanelDlEndS1	w11		Display list terminator for the S1 panel texture.	applied@c7b59f65
+D_88605B10	gMovesPanelBgColor	w11		color used for solid color backgrounds in LabPC_InitMovesPanel	applied@c7b59f65
+D_88605B14	gMovesPanelIconPos	w11		position table for icons in LabPC_InitMovesPanel	applied@c7b59f65
+D_88605B24	gMovesPanelFlyPos_A	w11		position table for fly widgets in LabPC_InitMovesPanel	applied@c7b59f65
+D_88605B34	gMovesPanelFlyPos_B	w11		position table for fly widgets in LabPC_InitMovesPanel	applied@c7b59f65
+D_88605B48	gTrainerInfoAccentColor	w11		unused color in LabPC_DrawTrainerInfoWidget	applied@c7b59f65
+D_88605B58	gDetailPanelStatBgColor	w11		color for the stat page background in LabPC_BuildMonDetailPanel	applied@c7b59f65
+D_88605B5C	gDetailPanelTrainerBgColor	w11		color for the trainer info page background in LabPC_BuildMonDetailPanel	applied@c7b59f65
+D_88605B60	gMovesPanelSelectionColor	w11		color for the animated frame in LabPC_BuildMonDetailPanel	applied@c7b59f65
+D_8831A4C0	gLabPCListMessageBank	w11		char** table used by Text_GetString in LabPCList functions	applied@c7b59f65
+D_8831A4D0	gLabPCListStatNames	w11		char** table used for stat names in LabPCList	applied@c7b59f65
+D_883171D0	gLabPCListHeaderColors	w11		Color_RGBA8 array used for header background fills	applied@c7b59f65
+D_8831721C	gLabPCListHeaderWidths	w11		s32 array containing widths for Pokemon, ID, and OT headers	applied@c7b59f65
+D_8831725C	gLabPCListPageStarts	w11		s32 array containing the starting indices for each page	applied@c7b59f65
+func_88304850	LabPCList_DrawEntryCell	w11		draws a grid cell with background colors, stat numbers, and type/move names based on column index	applied@c7b59f65
+D_883172C0	gStatFilterColors	w11		RGBA8 colors used in LabPCList_DrawEntryCell to highlight filtered stats	applied@c7b59f65
+D_883172CC	gStatCellColors	w11		RGBA8 color table for alternating cell backgrounds in the PC list	applied@c7b59f65
+D_88317298	gStatFilterRanges	w11		Table of min/max values used in LabPCList_CheckStatFilterRange	applied@c7b59f65
+func_88305F28	LabPCList_ApplyItemToMon	w11		handles applying TMs, PP Ups, or Vitamins to a selected Pokemon in the PC list	applied@c7b59f65
+D_8831A500	gRowMenuHeaderBuf	w11		Static buffer used to store the formatted header string for the row menu	applied@c7b59f65
+D_883172F4	ColumnMenuOption	w11		Typedef for the table mapping column headers to string IDs and counts	applied@c7b59f65
+D_883172DC	gSortOptionStrings_Level	w11		String IDs for sorting options related to level	applied@c7b59f65
+D_883172E4	gSortOptionStrings_Stat	w11		String IDs for sorting options related to stats	applied@c7b59f65
+D_883172E8	gSortOptionStrings_HP	w11		String IDs for sorting options related to HP	applied@c7b59f65
+D_883172EC	gSortOptionStrings_Atk	w11		String IDs for sorting options related to Attack	applied@c7b59f65
+D_883172F0	gSortOptionStrings_Def	w11		String IDs for sorting options related to Defense	applied@c7b59f65
+unk_func_8830867C_02C_0CC_000	LabPCListEntry	w11		Structure representing a single Pokemon entry in the PC list	applied@c7b59f65
+D_86002A94	gKarpPlayerSpacing	w11		used to calculate X position of players: (i - 1.5f) * D_86002A94	applied@c7b59f65
+D_86003B78	gMiniHudGameTimerTick	w11		initialized to 0 in MagikarpGame_Play and not used elsewhere, likely a frame tick	applied@c7b59f65
+D_86002B90	gScoreMarkerDL_End	w11		contains only gsSPEndDisplayList, used as a terminator	applied@c7b59f65
+D_86002B98	gScoreMarkerTexData	w11		texture data for the score markers, loaded via gsDPLoadTextureBlock	applied@c7b59f65
+D_86002D98	gScoreMarkerVerts	w11		vertex data for the score marker quad	applied@c7b59f65
+D_86002DD8	gScoreMarkerDL	w11		display list that renders the score marker using gScoreMarkerTexData and gScoreMarkerVerts	applied@c7b59f65
+D_87906048	gMiniGameUnusedVar1	w11		unused variable in minigame actor framework	applied@c7b59f65
+D_879060C0	gMiniGameUnusedVar2	w11		unused variable in minigame actor framework	applied@c7b59f65
+D_87906110	gMiniDebugGravityVector	w11		accessed as GV (gravity) and PW (power/weight) in minigameDebuggVectorEditor	applied@c7b59f65

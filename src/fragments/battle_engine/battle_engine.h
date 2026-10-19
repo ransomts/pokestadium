@@ -1760,7 +1760,7 @@ u16 BattleScene_IsOwnerInViewWedge(BattlePlayerEntity* arg0, CameraStruct* arg1,
 u16 BattleScene_IsOwnerInViewWedgeAlt(BattlePlayerEntity* arg0, CameraStruct* arg1, BattlePlayerEntity* a2, s16 arg3, f32 arg4);
 void BattleScene_UpdateBothOwnersVisibilityCulling(CameraStruct* arg0);
 void BattleScene_UpdateOpponentVisibilityCulling(CameraStruct* arg0);
-void func_8432A414(void);
+void BattleScene_UpdateCameraStateEmpty(void);
 void BattleScene_ShowBothOwners(void);
 void BattleScene_HideOpponentOwner(void);
 void BattleScene_HideActiveOwner(void);
@@ -2671,7 +2671,7 @@ void BattleAnim_CallbackDescriptor50BurstChild_InitParticle(ParticleEffectInstan
 void BattleAnim_CallbackDescriptor50BurstChild(ParticleEffectInstance* arg0);
 void BattleAnim_CallbackDescriptor50BurstEmitter_InitParticle(ParticleEffectInstance* arg0);
 void BattleAnim_CallbackDescriptor50BurstEmitter(ParticleEffectInstance* arg0);
-void func_843553B4(void);
+void BattleAnim_CallbackUnusedEmpty(void);
 void BattleAnim_CallbackUnusedFallingTrailVariant(ParticleEffectInstance* arg0);
 void BattleAnim_CallbackSharedDescriptor3CExpandingFadeIn_InitParticle(ParticleEffectInstance* arg0);
 void BattleAnim_CallbackSharedDescriptor3CExpandingFadeIn(ParticleEffectInstance* arg0);

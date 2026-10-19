@@ -364,7 +364,7 @@ void BattleScene_UpdateOpponentVisibilityCulling(CameraStruct* arg0) {
     }
 }
 
-void func_8432A414(void) {
+void BattleScene_UpdateCameraStateEmpty(void) {
 }
 
 void BattleScene_ShowBothOwners(void) {

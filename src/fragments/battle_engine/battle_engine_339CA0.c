@@ -2432,7 +2432,7 @@ void BattleAnim_CallbackDescriptor50BurstEmitter(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_843553B4(void) {
+void BattleAnim_CallbackUnusedEmpty(void) {
 }
 
 void BattleAnim_CallbackUnusedFallingTrailVariant(ParticleEffectInstance* arg0) {

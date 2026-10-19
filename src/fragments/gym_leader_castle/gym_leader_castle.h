@@ -35,7 +35,7 @@ typedef struct RoomDef {
 
 void Glc_DrawBackgroundCrossfade(u8* arg0, u8* arg1, u8 arg2);
 void Glc_DrawScaledTextureRgba(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8* arg5, f32 arg6);
-void func_84A00630(void);
+void Glc_NoOp(void);
 void Glc_DrawScaledTextureIa8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5);
 void Glc_DrawRoomDescription(void);
 void Glc_DrawTrainerIntroPanels(void);

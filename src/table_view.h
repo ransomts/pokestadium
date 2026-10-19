@@ -110,16 +110,16 @@ typedef struct unk_func_8830867C_02C_0CC_000_008 {
     /* 0x2E */ u16 unk_2E;
 } unk_func_8830867C_02C_0CC_000_008; // size = 0x30
 
-typedef struct unk_func_8830867C_02C_0CC_000 {
+typedef struct LabPCListEntry {
     /* 0x00 */ unk_func_8830867C_02C_0CC_000_000* posX;
     /* 0x04 */ s32 rotation;
     /* 0x08 */ unk_func_8830867C_02C_0CC_000_008 unk_08;
     /* 0x38 */ char unk_38[4];
     /* 0x3C */ char unk3C[0x20];
-} unk_func_8830867C_02C_0CC_000; // size = 0x5C
+} LabPCListEntry; // size = 0x5C
 
 typedef struct unk_func_8830867C_02C_0CC {
-    /* 0x00 */ unk_func_8830867C_02C_0CC_000** posX;
+    /* 0x00 */ LabPCListEntry** posX;
     /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
 } unk_func_8830867C_02C_0CC; // size = 0xC
@@ -130,7 +130,7 @@ typedef struct unk_func_8830867C_04C_030_02C_000_000_00C {
     /* 0x08 */ s32 unk_08;
 } unk_func_8830867C_04C_030_02C_000_000_00C; // size >= 0xC
 
-typedef s32 (*func_func_8002D1AC)(unk_func_8830867C_02C_0CC_000*, s32*);
+typedef s32 (*func_func_8002D1AC)(LabPCListEntry*, s32*);
 typedef s32 (*SortComparatorFunc)(s32, s32);
 
 void TableView_Initialize(unk_func_88201DA0_038*, unk_func_88201DA0_034*, s32, s32, s32);

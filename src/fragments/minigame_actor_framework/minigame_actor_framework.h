@@ -158,7 +158,7 @@ extern s16 miniInputLockTimer;
 extern s16 gMiniGameIdleTimer;
 extern s16 miniShowHUB;
 extern s16 miniDifficulty;
-extern s16 D_87906048;
+extern s16 gMiniGameUnusedVar1;
 extern s16 gMetapodAudioMuted;
 extern CameraStruct* gMiniCameraStruct;      // geo layout
 extern CameraStruct* gMiniCameraPtr;
@@ -190,7 +190,7 @@ extern Vec3s gMiniCamBasePos;
 extern s16 miniDebugMode;
 extern s16 gMiniGameStateVar1;
 extern Controller* miniControllerPtr;
-extern s16 D_879060C0;
+extern s16 gMiniGameUnusedVar2;
 extern s16 miniEkansCountdown;
 extern s8 gMiniHudColors[4];
 extern s16 miniHudTransparency;
@@ -198,7 +198,7 @@ extern s16 gMiniDebugCameraMode;
 
 extern Vec3f gMiniDebugBasePos;
 extern Vec3f gMiniDebugCamVelocity;
-extern Vec3f D_87906110;
+extern Vec3f gMiniDebugGravityVector;
 
 ret_func_80004454 MiniGame_GetFragmentFunc(void);
 float MinigameGetVec3Distance_2d(MiniActor* arg0, MiniActor* arg1);

@@ -16,11 +16,11 @@ static char** gRoomMessageBank;
 static TrainerPortrait gTrainerPortraits[4];
 static BinArchive* gTrainerDataArchive;
 static BinArchive* gPortraitGfxArchive;
-static BinArchive* D_84A03170;
+static BinArchive* gBgArchive;
 static u8* gBgTexture1;
 static u8* gBgTexture2;
 static u8* gBgTexture3;
-static SessionModeSettings D_84A03180;
+static SessionModeSettings gSessionSettings;
 static s16 gPrevRoomIndex;
 
 static RoomDef gRoomDefinitions[] = {
@@ -122,7 +122,7 @@ void Glc_DrawScaledTextureRgba(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4,
     Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg6, 1024.0f / arg6, 0);
 }
 
-void func_84A00630(void) {
+void Glc_NoOp(void) {
 }
 
 void Glc_DrawScaledTextureIa8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5) {
@@ -714,7 +714,7 @@ s32 GymLeaderCastle_ShowIntro(void) {
         }
         Glc_ClearTrainerPanels();
 
-        if (D_84A03180.rotation < 8) {
+        if (gSessionSettings.rotation < 8) {
             Audio_PlayMusicIfChanged(0x2A);
         } else {
             Audio_PlayMusicIfChanged(0x27);
@@ -756,10 +756,10 @@ s32 Glc_AdvanceRoom(void) {
     if (gSessionContext.unk_0002 == 8) {
         gRoomDefinitions[11].unk_01 = 0x3C;
     } else {
-        gRoomDefinitions[D_84A03180.rotation].unk_01 = 0x3C;
+        gRoomDefinitions[gSessionSettings.rotation].unk_01 = 0x3C;
     }
 
-    if (D_84A03180.rotation == 8) {
+    if (gSessionSettings.rotation == 8) {
         gRoomDefinitions[9].unk_01 = 0x3C;
         gRoomDefinitions[10].unk_01 = 0x3C;
     }
@@ -815,7 +815,7 @@ s16 Glc_RunMenu(s16 arg0) {
 s16 Glc_InitMenu(s16 arg0) {
     s16 i;
     s16 sp2C = 2;
-    s16 var_v1 = D_84A03180.rotation;
+    s16 var_v1 = gSessionSettings.rotation;
 
     if (gSessionContext.unk_0002 < 8) {
         gCurrentRoomIndex = gSessionContext.unk_0002;
@@ -870,17 +870,17 @@ s32 GymLeaderCastle_Main(s32 arg0, UNUSED s32 arg1) {
     gGymMessageBank = Text_GetStringTable(0x19);
     gRoomMessageBank = Text_GetStringTable(0x22);
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&D_84A03180, gSessionContext.inRound2);
+    Save_GetModeSettings(&gSessionSettings, gSessionContext.inRound2);
     gTrainerDataArchive = BinArchive_Open(0x898000, NULL, 1, 1);
     gPortraitGfxArchive = ASSET_LOAD2(battle_portraits, 1, 1);
-    D_84A03170 = ASSET_LOAD2(backgrounds, 1, 1);
-    gBgTexture1 = BinArchive_GetFile(D_84A03170, 0xD);
-    gBgTexture2 = BinArchive_GetFile(D_84A03170, 0x10);
-    gBgTexture3 = BinArchive_GetFile(D_84A03170, 0xE);
+    gBgArchive = ASSET_LOAD2(backgrounds, 1, 1);
+    gBgTexture1 = BinArchive_GetFile(gBgArchive, 0xD);
+    gBgTexture2 = BinArchive_GetFile(gBgArchive, 0x10);
+    gBgTexture3 = BinArchive_GetFile(gBgArchive, 0xE);
     StageLoader_UpdateSegments();
 
     sp1E = Glc_InitMenu(arg0);
-    if (D_84A03180.rotation < 8) {
+    if (gSessionSettings.rotation < 8) {
         Audio_PlayMusicIfChanged(0x2A);
     } else {
         Audio_PlayMusicIfChanged(0x27);

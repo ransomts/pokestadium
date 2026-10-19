@@ -630,7 +630,7 @@ s32 LabPCList_FilterByAnyType(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C
 }
 
 typedef struct unk_func_88316304 {
-    /* 0x00 */ unk_func_8830867C_02C_0CC_000** posX;
+    /* 0x00 */ LabPCListEntry** posX;
     /* 0x04 */ char unk04[0x4];
     /* 0x08 */ u8 unk_08;
     /* 0x09 */ char unk09[0x8];

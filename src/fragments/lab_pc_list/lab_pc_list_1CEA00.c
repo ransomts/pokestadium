@@ -16,16 +16,16 @@
 #include "src/stage_loader.h"
 #include "src/fragments/pokemon_lab_support/pokemon_lab_support.h"
 
-char** D_8831A4C0;
+char** gLabPCListMessageBank;
 char** gMoveListMessageTable;
 char** gMsgBank_ItemNames;
 char** gMoveNamesTable;
-char** D_8831A4D0;
+char** gLabPCListStatNames;
 char** gMessageBank_MoveNames;
 char** gMsgBank_StatNames;
 s32 pad_D_8831A4DC[8];
 
-static Color_RGBA8 D_883171D0[] = {
+static Color_RGBA8 gLabPCListHeaderColors[] = {
     { 0x31, 0x48, 0x6B, 0xFF },
     { 0x47, 0x5E, 0x80, 0xFF },
     { 0x2B, 0x40, 0x5F, 0xFF },
@@ -51,7 +51,7 @@ s32 LabPCList_HeaderSelectIcon_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 a
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -98,7 +98,7 @@ s32 LabPCList_HeaderPokemon_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g << 3) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -138,7 +138,7 @@ s32 LabPCList_HeaderNickname_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -177,7 +177,7 @@ s32 LabPCList_HeaderID_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g << 3) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -216,7 +216,7 @@ s32 LabPCList_HeaderOT_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -255,7 +255,7 @@ s32 LabPCList_HeaderArea_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g << 3) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -294,7 +294,7 @@ s32 LabPCList_HeaderTypes_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
 
     {
         // clang-format off
-        s32 temp_t3 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+        s32 temp_t3 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
         // clang-format on
         gDPSetFillColor(gDisplayListHead++, (temp_t3 << 0x10) | temp_t3);
         gDPFillRectangle(gDisplayListHead++, arg1, arg2, arg1 + 0x47, (arg2 + arg0->unk_14.posY) - 1);
@@ -302,7 +302,7 @@ s32 LabPCList_HeaderTypes_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
 
     {
         // clang-format off
-        s32 sp34 = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g * 8) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+        s32 sp34 = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g * 8) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
         // clang-format on
         gDPSetFillColor(gDisplayListHead++, (sp34 << 0x10) | sp34);
         gDPFillRectangle(gDisplayListHead++, arg1 + 0x48, arg2, (arg1 + (u32)arg0->unk_14.posX) - 1,
@@ -345,7 +345,7 @@ s32 LabPCList_HeaderMoves_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
 
     {
         // clang-format off
-        s32 temp_t3 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+        s32 temp_t3 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
         // clang-format on
 
         gDPSetFillColor(gDisplayListHead++, (temp_t3 << 0x10) | temp_t3);
@@ -354,7 +354,7 @@ s32 LabPCList_HeaderMoves_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
 
     {
         // clang-format off
-        s32 sp5C = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g << 3) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+        s32 sp5C = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
         // clang-format on
 
         gDPSetFillColor(gDisplayListHead++, (sp5C << 0x10) | sp5C);
@@ -363,7 +363,7 @@ s32 LabPCList_HeaderMoves_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
 
     {
         // clang-format off
-        s32 temp_a2 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+        s32 temp_a2 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
         // clang-format on
 
         gDPSetFillColor(gDisplayListHead++, (temp_a2 << 0x10) | temp_a2);
@@ -372,7 +372,7 @@ s32 LabPCList_HeaderMoves_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
 
     {
         // clang-format off
-        s32 temp_a0 = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g << 3) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+        s32 temp_a0 = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
         // clang-format on
 
         gDPSetFillColor(gDisplayListHead++, (temp_a0 << 0x10) | temp_a0);
@@ -421,7 +421,7 @@ s32 LabPCList_HeaderLevel_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -461,7 +461,7 @@ s32 LabPCList_HeaderHp_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g << 3) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -500,7 +500,7 @@ s32 LabPCList_HeaderAttack_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2)
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -537,7 +537,7 @@ s32 LabPCList_HeaderDefense_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g << 3) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -575,7 +575,7 @@ s32 LabPCList_HeaderSpeed_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[0].r << 8) & 0xF800) | ((D_883171D0[0].g << 3) & 0x7C0) | ((D_883171D0[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[0].r << 8) & 0xF800) | ((gLabPCListHeaderColors[0].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[0].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -613,7 +613,7 @@ s32 LabPCList_HeaderSpecial_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     // clang-format off
-    temp_t2 = ((D_883171D0[1].r << 8) & 0xF800) | ((D_883171D0[1].g << 3) & 0x7C0) | ((D_883171D0[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
+    temp_t2 = ((gLabPCListHeaderColors[1].r << 8) & 0xF800) | ((gLabPCListHeaderColors[1].g << 3) & 0x7C0) | ((gLabPCListHeaderColors[1].b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
 
     gDPSetFillColor(gDisplayListHead++, (temp_t2 << 0x10) | temp_t2);
@@ -894,7 +894,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
                    unk_func_8830867C_03C* arg7, unk_func_8830867C_040* arg8, unk_func_8830867C_044* arg9,
                    unk_func_8830867C_048* argA, unk_func_8830867C_04C* argB, unk_func_889000C4* argC,
                    FragmentEntry argD, unk_func_8830867C_054* argE, MemoryPool* argF, TextObject* arg10) {
-    static s32 D_8831721C[] = {
+    static s32 gLabPCListHeaderWidths[] = {
         0x0000005C,
         0x00000034,
         0x0000004C,
@@ -902,7 +902,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     static s32 D_88317228[] = { 0x38, 0x48, 0x48 };
     static s32 D_88317234[] = { 0x69, 0x69, 0x69, 0x69 };
     static s32 D_88317244[] = { 0x46, 0x46, 0x46, 0x46, 0x46, 0x46 };
-    static s32 D_8831725C[] = {
+    static s32 gLabPCListPageStarts[] = {
         0x00000000,
         0x00000006,
         0x0000000A,
@@ -929,7 +929,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     PointerList_Allocate(&arg0->unk_0CC, 0x1E6, argF);
     LabPCList_LoadAllBoxes(&arg0->boxTable);
 
-    arg0->unk_0DC = D_8831721C;
+    arg0->unk_0DC = gLabPCListHeaderWidths;
 
     LabPCList_FlattenEntries(&arg0->unk_03C, &arg0->boxTable);
     LabPCList_LoadDecks(arg0, argF);
@@ -950,7 +950,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     arg0->rowMenuIndex = 0;
     arg0->unk_0D8 = 0;
     arg0->columnPage = 0;
-    arg0->pageColumnStarts = D_8831725C;
+    arg0->pageColumnStarts = gLabPCListPageStarts;
     arg0->unk_0E0 = 0;
     arg0->monInfoFragmentEntry = argD;
     arg0->monInfoContext = argE;
@@ -1078,7 +1078,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     LabPCList_SwitchColumnPage(arg0);
 
     arg0->unk_034 = mem_pool_alloc(argF, sizeof(unk_func_8830867C_02C_034));
-    ((func88506DCC)Memmap_GetFragmentVaddr(WidgetTree_InitScrollableGrid))(arg0->unk_034, 0, 0x4A, func_88304850, 0x228, 0x14, 0xE,
+    ((func88506DCC)Memmap_GetFragmentVaddr(WidgetTree_InitScrollableGrid))(arg0->unk_034, 0, 0x4A, LabPCList_DrawEntryCell, 0x228, 0x14, 0xE,
                                                            argF);
     ((func88506F1C)Memmap_GetFragmentVaddr(WidgetTree_BindScrollableGridPage))(arg0->unk_034, &arg0->unk_03C, argF);
     arg0->unk_034->unk_70 = arg0;
@@ -1263,7 +1263,7 @@ typedef struct unk_D_88317298 {
 } unk_D_88317298; // size = 0x8
 
 s32 LabPCList_CheckStatFilterRange(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1) {
-    static unk_D_88317298 D_88317298[] = {
+    static unk_D_88317298 gStatFilterRanges[] = {
         { 0x19, 0x1E }, { 0xF, 0x14 }, { 0x32, 0x37 }, { 0x1, 0x1E }, { 0x1, 0x32 },
     };
 
@@ -1271,7 +1271,7 @@ s32 LabPCList_CheckStatFilterRange(unk_func_8830867C_02C* arg0, unk_func_8830485
     s32 sp18 = 0;
 
     if (LabPCList_HasFilterFlag(arg0, 0x20) != 0) {
-        ptr = &D_88317298[arg0->filterState.unk_2C];
+        ptr = &gStatFilterRanges[arg0->filterState.unk_2C];
         if (arg1->unk_2C < ptr->posX) {
             sp18 = 1;
         } else if (ptr->rotation < arg1->unk_2C) {
@@ -1284,8 +1284,8 @@ s32 LabPCList_CheckStatFilterRange(unk_func_8830867C_02C* arg0, unk_func_8830485
 // Score 5776 -> 3777 (round 7). Stack layout now matches. Confirmed shapes:
 // - sp50/sp58 were not variables: 0x50 (arg0 + 0x84) and 0x58 (arg1 + 4) are compiler CSE temps,
 //   pad[2] keeps the frame at 0xC0.
-// - D_883172CC[arg3 & 1] must be hoisted into temp_v1 before the first loop so that (arg3 & 1) << 3
-//   is CSE'd (target keeps it in s0, used for both D_883171D0 and D_883172CC rows).
+// - gStatCellColors[arg3 & 1] must be hoisted into temp_v1 before the first loop so that (arg3 & 1) << 3
+//   is CSE'd (target keeps it in s0, used for both gLabPCListHeaderColors and gStatCellColors rows).
 // - var_s4 is assigned inside the Font_Printf argument list (target computes arg1 + 2 after the
 //   nested Text_GetString call).
 // - cases 2 and 10-15 compute the x offset into a variable first (t0 in target, `x + var` operand
@@ -1295,7 +1295,7 @@ s32 LabPCList_CheckStatFilterRange(unk_func_8830867C_02C* arg0, unk_func_8830485
 // spilled to 0x50 (ours keeps it in s0 and spills temp_s7 to 0x48), li a3,3 / lui ra,0xF600 issued
 // in block 2. Target BattleAnimDataEntry reads arg0 into s6 for (arg0 + 0x25, temp_s7) but reloads arg0 for the
 // FillRectangle w1 words. Dead ends: x/var_s6/temp_s7 = arg0 copies (copy-propagated, identical),
-// ternary for var_s1, s16 var_s1, (arg3 & 1) * 2 indexing of a 1D D_883171D0, 2D cast lvalue,
+// ternary for var_s1, s16 var_s1, (arg3 & 1) * 2 indexing of a 1D gLabPCListHeaderColors, 2D cast lvalue,
 // temp_s7 as an inline expression (worse), separate temp var for the case offsets (identical).
 // Moving `temp_s7 = var_s1 + arg0;` after the var_s6 load scores 3453 but adds stray spills.
 // Good permuter candidate from this state.
@@ -1355,10 +1355,10 @@ s32 LabPCList_CheckStatFilterRange(unk_func_8830867C_02C* arg0, unk_func_8830485
 // The decl POSITION matters: `s32 x0;` after temp_s7 (before spA8) or the assignment right before the
 // for (after the var_s6 load) scores 3011. Remaining: gDLH still not t0 / colour webs in a3/a0 vs
 // t-regs, and the arg0 load groups. Re-seed the farm from this.
-void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s32 arg3, s32 arg4, unk_func_8830867C_02C_034 *arg5)
+void LabPCList_DrawEntryCell(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s32 arg3, s32 arg4, unk_func_8830867C_02C_034 *arg5)
 {
-  static Color_RGBA8 D_883172C0[] = {{0xF0, 0xF0, 0xF0, 0xFF}, {0xB2, 0xFF, 0xC3, 0xFF}, {0xFF, 0xB2, 0xC3, 0xFF}};
-  static Color_RGBA8 D_883172CC[][2] = {{{0x50, 0x51, 0x54, 0xFF}, {0x59, 0x5B, 0x5E, 0xFF}}, {{0x43, 0x44, 0x46, 0xFF}, {0x4B, 0x4C, 0x4F, 0xFF}}};
+  static Color_RGBA8 gStatFilterColors[] = {{0xF0, 0xF0, 0xF0, 0xFF}, {0xB2, 0xFF, 0xC3, 0xFF}, {0xFF, 0xB2, 0xC3, 0xFF}};
+  static Color_RGBA8 gStatCellColors[][2] = {{{0x50, 0x51, 0x54, 0xFF}, {0x59, 0x5B, 0x5E, 0xFF}}, {{0x43, 0x44, 0x46, 0xFF}, {0x4B, 0x4C, 0x4F, 0xFF}}};
   Color_RGBA8 spBC;
   Color_RGBA8 (*tbl)[2];
   unk_func_88304850_arg2 *mon;
@@ -1373,7 +1373,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s32 arg3, s
   unk_func_8830867C_02C *temp_s5;
   temp_s5 = arg5->unk_70;
   spA8 = 0x13;
-  tbl = (Color_RGBA8 (*)[2]) D_883171D0;
+  tbl = (Color_RGBA8 (*)[2]) gLabPCListHeaderColors;
   temp_a0 = (arg3 & 1) * 8;
   var_s7 = ((temp_s5->itemMenu->unk_2C->unk_30 & 2) ? (temp_s5->itemMenu->posX.unk_10.posX - temp_s5->unk_000.unk_10.posX) : (arg5->posX.posX.unk_14.posX)) + arg0;
   var_s1 = arg0 + 0x84;
@@ -1391,7 +1391,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s32 arg3, s
   gDPFillRectangle(gDisplayListHead++, arg0 + 0x26, arg1, arg0 + 0x81, arg1 + spA8);
   var_s6 = temp_s5->pageColumnStarts[temp_s5->columnPage]; for (var_s1 = arg0 + 0x84; var_s1 < var_s7; var_s1 += ((s32 *) temp_s5->unk_0DC)[var_s6], var_s6++)
   {
-    temp_a0_2 = ((((((Color_RGBA8 *) (((u8 *) D_883172CC) + (temp_s7 * 8)))[var_s6 & 1].r << 8) & 0xF800) | ((((Color_RGBA8 *) (((u8 *) D_883172CC) + (temp_s7 * 8)))[var_s6 & 1].g << 3) & 0x7C0)) | ((((Color_RGBA8 *) (((u8 *) D_883172CC) + (temp_s7 * 8)))[var_s6 & 1].b >> 2) & 0x3E)) | 1;
+    temp_a0_2 = ((((((Color_RGBA8 *) (((u8 *) gStatCellColors) + (temp_s7 * 8)))[var_s6 & 1].r << 8) & 0xF800) | ((((Color_RGBA8 *) (((u8 *) gStatCellColors) + (temp_s7 * 8)))[var_s6 & 1].g << 3) & 0x7C0)) | ((((Color_RGBA8 *) (((u8 *) gStatCellColors) + (temp_s7 * 8)))[var_s6 & 1].b >> 2) & 0x3E)) | 1;
     gDPPipeSync(gDisplayListHead++);
     gDPSetFillColor(gDisplayListHead++, (temp_a0_2 << 0x10) | temp_a0_2);
     gDPFillRectangle(gDisplayListHead++, var_s1, arg1, (((s32 *) temp_s5->unk_0DC)[var_s6] + var_s1) - 1, arg1 + spA8);
@@ -1403,7 +1403,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s32 arg3, s
     return;
   }
     Gfx_DrawNumberDigits(arg0 + 6, arg1 + 4, arg3 + 1, 3);
-    spBC = D_883172C0[LabPCList_CheckStatFilterRange(temp_s5, mon)];
+    spBC = gStatFilterColors[LabPCList_CheckStatFilterRange(temp_s5, mon)];
     if (arg4 & 4)
     {
       spBC.a = 0x4D;
@@ -1422,7 +1422,7 @@ void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s32 arg3, s
     }
     else
     {
-      Font_Printf((arg0 + spA8) + 0x26, arg1 + 2, Text_GetString(NULL, 0, D_8831A4D0, mon->unk_08 - 1));
+      Font_Printf((arg0 + spA8) + 0x26, arg1 + 2, Text_GetString(NULL, 0, gLabPCListStatNames, mon->unk_08 - 1));
     }
     Font_EndTexturedTextRendering();
     var_s6 = temp_s5->pageColumnStarts[temp_s5->columnPage];
@@ -1613,8 +1613,8 @@ s32 LabPCList_CheckAnyDirty(unk_func_8830867C_02C* arg0) {
     return var_a0;
 }
 
-s32 LabPCList_FindEntryIndex(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC_000* arg1) {
-    unk_func_8830867C_02C_0CC_000** ptr = arg0->posX;
+s32 LabPCList_FindEntryIndex(unk_func_8830867C_02C_0CC* arg0, LabPCListEntry* arg1) {
+    LabPCListEntry** ptr = arg0->posX;
     s32 i;
 
     for (i = 0; i < arg0->unk_08; i++) {
@@ -1626,7 +1626,7 @@ s32 LabPCList_FindEntryIndex(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_
     return -1;
 }
 
-void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* arg1, Controller* arg2) {
+void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1, Controller* arg2) {
     func88500A6C temp_v0_4;
     s32 sp90;
     s32 sp8C;
@@ -1635,7 +1635,7 @@ void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C
     s32 sp80;
     s32 sp7C;
     unk_func_88001300_000_010 sp78;
-    unk_func_8830867C_02C_0CC_000* sp74;
+    LabPCListEntry* sp74;
     s32 sp70;
     char sp50[0x20];
     char sp30[0x20];
@@ -1701,7 +1701,7 @@ void LabPCList_ReindexBoxSlots(unk_func_8830867C_02C_0CC_000_000* arg0) {
     }
 }
 
-void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* arg1, s32 arg2, s32 arg3) {
+void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1, s32 arg2, s32 arg3) {
     unk_func_8830867C_02C_144_000* ptr = arg0->boxTable.posX;
     unk_func_8830867C_02C_0CC_000_000* temp_s0 = &ptr[arg2].unk_0C[arg3];
     unk_func_8830867C_02C_0CC_000_000* sp24 = arg1->posX;
@@ -1718,7 +1718,7 @@ void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C
     temp_s0->unk_0C = 1;
 }
 
-s32 LabPCList_ApplyVitaminItem(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030_02C_000* arg1, u32** arg2,
+s32 LabPCList_ApplyVitaminItem(LabPCListEntry* arg0, unk_func_8830867C_04C_030_02C_000* arg1, u32** arg2,
                   u32** arg3) {
     unk_func_8830867C_02C_0CC_000_008* temp_s0 = &arg0->unk_08;
     u16 sp3A;
@@ -1797,7 +1797,7 @@ s32 LabPCList_ApplyVitaminItem(unk_func_8830867C_02C_0CC_000* arg0, unk_func_883
     return sp34;
 }
 
-void LabPCList_ApplyPpUpItem(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2, s32* arg3,
+void LabPCList_ApplyPpUpItem(LabPCListEntry* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2, s32* arg3,
                    s32* arg4) {
     s32 var_v1;
     MoveBattleData* temp_v0;
@@ -1828,7 +1828,7 @@ void LabPCList_ClearMovesFrom(unk_func_8830867C_02C_0CC_000_008* arg0, s32 arg1)
     }
 }
 
-void LabPCList_TeachTmMove(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2) {
+void LabPCList_TeachTmMove(LabPCListEntry* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2) {
     unk_func_8830867C_02C_0CC_000_008* ptr = &arg0->unk_08;
     s32 var_a0;
 
@@ -1892,9 +1892,9 @@ void LabPCList_RunPartySelectionModal(unk_func_8830867C_02C* arg0, Controller* a
     arg0->unk_02C->unk_2C = 0xB;
 }
 
-void func_88305F28(unk_func_8830867C_02C* arg0) {
+void LabPCList_ApplyItemToMon(unk_func_8830867C_02C* arg0) {
     unk_func_8830867C_04C_030_02C_000_000* spDC;
-    unk_func_8830867C_02C_0CC_000* spD8;
+    LabPCListEntry* spD8;
     s32 spD4;
     s32 spD0;
     s32 spCC;
@@ -1907,7 +1907,7 @@ void func_88305F28(unk_func_8830867C_02C* arg0) {
     s32 spB0;
     s32 spAC;
     unk_func_88001300_000_010 spA8;
-    unk_func_8830867C_02C_0CC_000 sp4C;
+    LabPCListEntry sp4C;
     char* sp48;
     char* sp44;
     s32 sp40;
@@ -2081,11 +2081,11 @@ s32 LabPCList_OpenListMenu(unk_func_8830867C_02C* arg0, Controller* arg1) {
 }
 
 s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1) {
-    static char D_8831A500[0x20];
+    static char gRowMenuHeaderBuf[0x20];
 
     char* sp44[5];
     u32 sp40;
-    unk_func_8830867C_02C_0CC_000* sp3C;
+    LabPCListEntry* sp3C;
     u32 sp38;
     s32 sp34;
     s32 sp30;
@@ -2098,10 +2098,10 @@ s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1) {
         sp38 = 0x23;
     }
 
-    Text_SetStringToken(0x19, Text_GetString(NULL, 0, D_8831A4D0, sp3C->unk_08.posX - 1));
-    Text_GetString(D_8831A500, 0x20, gMoveListMessageTable, sp38);
+    Text_SetStringToken(0x19, Text_GetString(NULL, 0, gLabPCListStatNames, sp3C->unk_08.posX - 1));
+    Text_GetString(gRowMenuHeaderBuf, 0x20, gMoveListMessageTable, sp38);
 
-    sp44[0] = D_8831A500;
+    sp44[0] = gRowMenuHeaderBuf;
     sp38 = (arg0->filterState.rotation & 0x10) ? (0x26) : (0x25);
     sp44[1] = Text_GetString(NULL, 0, gMoveListMessageTable, sp38);
     sp44[2] = Text_GetString(NULL, 0, gMoveListMessageTable, 0x27);
@@ -2197,43 +2197,43 @@ typedef struct unk_D_883172F4 {
 } unk_D_883172F4; // size = 0x8
 
 s32 LabPCList_HandleColumnHeaderClick(unk_func_8830867C_02C* arg0, unk_func_88001300_000* arg1, s32 arg2, Controller* arg3) {
-    static s16 D_883172DC[] = {
+    static s16 gSortOptionStrings_Level[] = {
         0x001E,
         0x001F,
         0x0020,
         0x0000,
     };
-    static s16 D_883172E4[] = {
+    static s16 gSortOptionStrings_Stat[] = {
         0x001E,
         0x001F,
     };
-    static s16 D_883172E8[] = {
+    static s16 gSortOptionStrings_HP[] = {
         0x001D,
         0x0000,
     };
-    static s16 D_883172EC[] = {
+    static s16 gSortOptionStrings_Atk[] = {
         0x0021,
         0x0000,
     };
-    static s16 D_883172F0[] = {
+    static s16 gSortOptionStrings_Def[] = {
         0x0022,
         0x0000,
     };
-    static unk_D_883172F4 D_883172F4[] = {
+    static unk_D_883172F4 ColumnMenuOption[] = {
         {
-            D_883172EC,
+            gSortOptionStrings_Atk,
             0x00000001,
         },
         {
-            D_883172E8,
+            gSortOptionStrings_HP,
             0x00000001,
         },
         {
-            D_883172EC,
+            gSortOptionStrings_Atk,
             0x00000001,
         },
         {
-            D_883172F0,
+            gSortOptionStrings_Def,
             0x00000001,
         },
         {
@@ -2245,27 +2245,27 @@ s32 LabPCList_HandleColumnHeaderClick(unk_func_8830867C_02C* arg0, unk_func_8800
             0x00000000,
         },
         {
-            D_883172DC,
+            gSortOptionStrings_Level,
             0x00000003,
         },
         {
-            D_883172E4,
+            gSortOptionStrings_Stat,
             0x00000002,
         },
         {
-            D_883172E4,
+            gSortOptionStrings_Stat,
             0x00000002,
         },
         {
-            D_883172E4,
+            gSortOptionStrings_Stat,
             0x00000002,
         },
         {
-            D_883172E4,
+            gSortOptionStrings_Stat,
             0x00000002,
         },
         {
-            D_883172E4,
+            gSortOptionStrings_Stat,
             0x00000002,
         },
     };
@@ -2275,11 +2275,11 @@ s32 LabPCList_HandleColumnHeaderClick(unk_func_8830867C_02C* arg0, unk_func_8800
     s32 i;
     char* sp40[3];
 
-    for (i = 0; i < D_883172F4[arg2 - 2].rotation; i++) {
-        sp40[i] = Text_GetString(NULL, 0, gMoveListMessageTable, D_883172F4[arg2 - 2].posX[i]);
+    for (i = 0; i < ColumnMenuOption[arg2 - 2].rotation; i++) {
+        sp40[i] = Text_GetString(NULL, 0, gMoveListMessageTable, ColumnMenuOption[arg2 - 2].posX[i]);
     }
 
-    BattleInfoWidget_SetLabels(arg0->unk_08C, sp40, D_883172F4[arg2 - 2].rotation);
+    BattleInfoWidget_SetLabels(arg0->unk_08C, sp40, ColumnMenuOption[arg2 - 2].rotation);
 
     arg0->unk_08C->unk_30 = arg1->unk_10;
     arg0->unk_08C->unk_34 = arg1->unk_14;
@@ -2446,7 +2446,7 @@ void LabPCList_SaveAll(unk_func_8830867C_02C* arg0, s32 arg1) {
 void LabPCList_MarkIneligibleEntries(unk_func_8830867C_02C* arg0) {
     s32 i;
     s32 var_v0;
-    unk_func_8830867C_02C_0CC_000** temp_v0_2;
+    LabPCListEntry** temp_v0_2;
     unk_func_8830867C_04C_030_02C_000_000* temp_s1;
 
     temp_s1 = arg0->itemMenu->unk_30->unk_2C->posX[arg0->itemMenu->unk_30->unk_38].posX[0];
@@ -2587,8 +2587,8 @@ s32 LabPCList_HandlePageSwitchInput(ChildSelectionProxy* arg0, Controller* arg1)
 s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 arg2) {
     UNUSED s32 pad;
     s32 temp_v0;
-    unk_func_8830867C_02C_0CC_000* sp24;
-    unk_func_8830867C_02C_0CC_000* sp20;
+    LabPCListEntry* sp24;
+    LabPCListEntry* sp20;
 
     if (arg0->unk_24->unk_0E0 != 0) {
         if (arg2 & 2) {
@@ -2610,7 +2610,7 @@ s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 a
 
                 if (BattleInfoWidget_RunItemMenuModal(arg0->unk_24->itemMenu, arg1) == 1) {
                     Ui_SendMessageAndPollInput(NULL);
-                    func_88305F28(arg0->unk_24);
+                    LabPCList_ApplyItemToMon(arg0->unk_24);
                     LabPCList_ResetGridSelection(arg0);
                     LabPCList_SetGridInteractive(arg0->unk_24, 1);
                 } else {
@@ -2665,7 +2665,7 @@ s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 a
                     Ui_SendMessageAndPollInput(NULL);
                     Ui_SendMessageAndPollInput(NULL);
                     if (BattleInfoWidget_RunItemMenuModal(arg0->unk_24->itemMenu, arg1) == 1) {
-                        func_88305F28(arg0->unk_24);
+                        LabPCList_ApplyItemToMon(arg0->unk_24);
                     }
                     Ui_SendMessageAndPollInput(NULL);
 
@@ -3051,7 +3051,7 @@ void LabPCList_BuildWidget(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPo
 
     sp78 = mem_pool_alloc(arg3, sizeof(unk_func_88509A2C));
     ((func88509A2C)Memmap_GetFragmentVaddr(WidgetTree_InitSaveSlotLabel))(sp78, 0x38, 0x22, GbSave_GetActivePort(),
-                                                           Text_GetString(NULL, 0, D_8831A4C0, 0));
+                                                           Text_GetString(NULL, 0, gLabPCListMessageBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->posX.posX, &sp78->posX.posX);
 
     sp74 = mem_pool_alloc(arg3, sizeof(unk_func_88509E34));
@@ -3099,7 +3099,7 @@ void LabPCList_BuildWidget(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPo
     arg0->unk_54.unk_14 = sp88;
     arg0->unk_6C = 0;
     arg0->unk_70 = arg6;
-    arg0->unk_74 = D_8831A4D0;
+    arg0->unk_74 = gLabPCListStatNames;
     arg0->unk_78 = gMoveNamesTable;
     arg0->unk_7C = gMessageBank_MoveNames;
     arg0->unk_80 = arg7;
@@ -3191,9 +3191,9 @@ s32 LabPCList_ShowListScreen(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     Text_InitStringTables();
 
-    D_8831A4C0 = Text_GetStringTable(0x2A);
+    gLabPCListMessageBank = Text_GetStringTable(0x2A);
     gMoveNamesTable = Text_GetStringTable(0x25);
-    D_8831A4D0 = Text_GetStringTable(0x24);
+    gLabPCListStatNames = Text_GetStringTable(0x24);
     gMessageBank_MoveNames = Text_GetStringTable(0x26);
     gMoveListMessageTable = Text_GetStringTable(5);
     gMsgBank_StatNames = Text_GetStringTable(0x27);

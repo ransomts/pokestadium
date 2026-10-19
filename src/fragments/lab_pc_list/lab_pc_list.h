@@ -591,11 +591,11 @@ typedef struct PokemonListEntry {
     /* 0x43 */ u8 unk_43;
 } PokemonListEntry; // size >= 0x44
 
-extern char** D_8831A4C0;
+extern char** gLabPCListMessageBank;
 extern char** gMoveListMessageTable;
 extern char** gMsgBank_ItemNames;
 extern char** gMoveNamesTable;
-extern char** D_8831A4D0;
+extern char** gLabPCListStatNames;
 extern char** gMessageBank_MoveNames;
 extern char** gMsgBank_StatNames;
 extern Color_RGBA8 gPartyLabelColor;
@@ -654,7 +654,7 @@ void LabPCList_DrawPlainText(s32 arg0, s32 arg1, s8* arg2, s32 arg3);
 void LabPCList_DrawFormattedNumber(s32 arg0, s32 arg1, char* arg2, s32 arg3);
 void LabPCList_DrawStatNumber(s32 arg0, s32 arg1, char* arg2, s32 arg3, u8* arg4);
 s32 LabPCList_CheckStatFilterRange(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1);
-void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s32 arg4,
+void LabPCList_DrawEntryCell(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5);
 void LabPCList_SaveFilterState(unk_func_8830867C_02C* arg0);
 void LabPCList_RestoreFilterState(unk_func_8830867C_02C* arg0);
@@ -667,16 +667,16 @@ s32 LabPCList_ToggleFilterFlag(unk_func_8830867C_02C* arg0, s32 arg1);
 void LabPCList_SetSortMode(unk_func_8830867C_02C* arg0, s32 arg1);
 void LabPCList_ApplyFiltersAndSort(unk_func_8830867C_02C* arg0);
 s32 LabPCList_CheckAnyDirty(unk_func_8830867C_02C* arg0);
-s32 LabPCList_FindEntryIndex(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC_000* arg1);
-void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* arg1, Controller* arg2);
+s32 LabPCList_FindEntryIndex(unk_func_8830867C_02C_0CC* arg0, LabPCListEntry* arg1);
+void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1, Controller* arg2);
 void LabPCList_ReindexBoxSlots(unk_func_8830867C_02C_0CC_000_000* arg0);
-void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* arg1, s32 arg2, s32 arg3);
+void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1, s32 arg2, s32 arg3);
 void LabPCList_ClearMovesFrom(unk_func_8830867C_02C_0CC_000_008* arg0, s32 arg1);
-void LabPCList_TeachTmMove(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2);
+void LabPCList_TeachTmMove(LabPCListEntry* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2);
 void LabPCList_SetRowMenuState(unk_func_8830867C_02C* arg0, s32 arg1);
 s32 LabPCList_RowMenuHandleInput(unk_func_8830867C_02C* arg0, Controller* arg1);
 void LabPCList_RunPartySelectionModal(unk_func_8830867C_02C* arg0, Controller* arg1);
-void func_88305F28(unk_func_8830867C_02C* arg0);
+void LabPCList_ApplyItemToMon(unk_func_8830867C_02C* arg0);
 s32 LabPCList_OpenListMenu(unk_func_8830867C_02C* arg0, Controller* arg1);
 s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1);
 s32 LabPCList_HandleColumnHeaderClick(unk_func_8830867C_02C* arg0, unk_func_88001300_000* arg1, s32 arg2, Controller* arg3);
@@ -807,8 +807,8 @@ void BattleInfoWidget_DrawSlotEntry(s32 arg0, s32 arg1, unk_func_88309160_arg2* 
 void BattleInfoWidget_DrawLocationEntry(s32 arg0, s32 arg1, unk_func_88309160_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030_1CEA00* arg5);
 void BattleInfoWidget_BuildMoveDestinationMenu(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, MemoryPool* arg4);
 void BattleInfoWidget_BindMoveDestinationData(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_144* arg1);
-void BattleInfoWidget_MarkFullBoxSlots(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC_000* arg1, unk_func_88313894_020* arg2);
-void BattleInfoWidget_MarkIneligibleDestinations(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_0CC_000* arg1);
+void BattleInfoWidget_MarkFullBoxSlots(unk_func_88200FA0_030_030_1CEA00* arg0, LabPCListEntry* arg1, unk_func_88313894_020* arg2);
+void BattleInfoWidget_MarkIneligibleDestinations(unk_func_8830867C_048* arg0, LabPCListEntry* arg1);
 void BattleInfoWidget_FormatLocationName(char* arg0, s32 arg1, s32 arg2);
 void BattleInfoWidget_SetMoveDestinationTitle(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2);
 void BattleInfoWidget_SyncDestinationPage(unk_func_8830867C_048* arg0);

@@ -3244,7 +3244,7 @@ void BattleInfoWidget_UpdateItemMenuTitle(unk_func_8830867C_04C* arg0) {
 
     if (arg0->unk_88 != NULL) {
         sp1C = 0x4D;
-        Text_SetStringToken(0x19, Text_GetString(NULL, 0, D_8831A4D0, arg0->unk_88->posX.posX - 1));
+        Text_SetStringToken(0x19, Text_GetString(NULL, 0, gLabPCListStatNames, arg0->unk_88->posX.posX - 1));
     } else {
         sp1C = 0x4E;
     }
@@ -3775,7 +3775,7 @@ typedef struct unk_func_88313894 {
     /* 0x40 */ unk_func_88313894_020 unk_40;
 } unk_func_88313894; // size >= 0x60
 
-void BattleInfoWidget_MarkFullBoxSlots(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC_000* arg1,
+void BattleInfoWidget_MarkFullBoxSlots(unk_func_88200FA0_030_030_1CEA00* arg0, LabPCListEntry* arg1,
                    unk_func_88313894_020* arg2) {
     unk_func_8830867C_02C_0CC_000_000* sp24 = arg2->unk_0C;
     s32 i;
@@ -3791,7 +3791,7 @@ void BattleInfoWidget_MarkFullBoxSlots(unk_func_88200FA0_030_030_1CEA00* arg0, u
     }
 }
 
-void BattleInfoWidget_MarkIneligibleDestinations(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_0CC_000* arg1) {
+void BattleInfoWidget_MarkIneligibleDestinations(unk_func_8830867C_048* arg0, LabPCListEntry* arg1) {
     u16* temp_v0_2;
     u16* temp_v0_3;
     unk_func_88313894* temp_s1;

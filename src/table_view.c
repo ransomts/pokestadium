@@ -191,8 +191,8 @@ void PointerList_Insert(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
 
 void PointerList_Remove(unk_func_8830867C_02C_0CC* arg0, s32 arg1) {
     s32 var_a2;
-    unk_func_8830867C_02C_0CC_000** var_v0;
-    unk_func_8830867C_02C_0CC_000** var_v1;
+    LabPCListEntry** var_v0;
+    LabPCListEntry** var_v1;
 
     var_v0 = &arg0->posX[arg1];
     var_v1 = var_v0 + 1;
@@ -358,10 +358,10 @@ void PointerList_Sort(unk_func_8830867C_02C_0CC* arg0, s32 (*arg1)(s32, s32)) {
 }
 
 void PointerList_Filter(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1,
-                   s32 (*arg2)(unk_func_8830867C_02C_0CC_000*, s32*), s32* arg3) {
+                   s32 (*arg2)(LabPCListEntry*, s32*), s32* arg3) {
     s32 var_s2;
-    unk_func_8830867C_02C_0CC_000** var_s0;
-    unk_func_8830867C_02C_0CC_000** var_s1;
+    LabPCListEntry** var_s0;
+    LabPCListEntry** var_s1;
 
     var_s1 = arg1->posX;
     var_s2 = arg0->unk_08;

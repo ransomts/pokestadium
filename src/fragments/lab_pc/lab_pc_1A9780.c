@@ -114,7 +114,7 @@ s32 LabPC_AllBoxesEmpty(unk_func_88205880_A030* arg0) {
     return 1;
 }
 
-void func_88201488(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
+void LabPC_DrawSlot(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
     static Color_RGBA8 gSlotTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 gSlotBgColor1 = { 0x28, 0x28, 0x64, 0xFF };
     static Color_RGBA8 gSlotBgColor2 = { 0x3C, 0x3C, 0x82, 0xFF };
@@ -242,7 +242,7 @@ void BoxList_Init(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_88001300
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_58, arg0->unk_50);
 
     arg0->unk_30 = mem_pool_alloc(arg6, sizeof(unk_func_88200FA0_030_030));
-    ((func885060BC)Memmap_GetFragmentVaddr(WidgetTree_InitPagedGrid))(arg0->unk_30, 0, 0x1C, func_88201488, 0x6A, 0x4B, 4, 5,
+    ((func885060BC)Memmap_GetFragmentVaddr(WidgetTree_InitPagedGrid))(arg0->unk_30, 0, 0x1C, LabPC_DrawSlot, 0x6A, 0x4B, 4, 5,
                                                            arg6);
     ((func88506238)Memmap_GetFragmentVaddr(WidgetTree_AllocateEntryFlags))(arg0->unk_30, 0x14, arg6);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, arg0->unk_30);

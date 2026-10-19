@@ -436,7 +436,7 @@ void JigglypuffGame_UpdatePlayerPhysics(s32 arg0) {
     }
 }
 
-void func_86300F60(void) {
+void JigglypuffGame_EmptyFunc1(void) {
 }
 
 void JigglypuffGame_PlayingLoop(void) {
@@ -611,5 +611,5 @@ void Minigame_JigglypuffDoodle(UNUSED s32 arg0, UNUSED s32 arg1) {
     Widget_PauseMenuGetResult();
 }
 
-void func_863015EC(void) {
+void JigglypuffGame_EmptyFunc2(void) {
 }

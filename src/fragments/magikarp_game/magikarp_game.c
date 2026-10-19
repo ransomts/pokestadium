@@ -50,7 +50,7 @@ static MiniHudRandomChance gMiniHudRandomChanceTable[31] = {
     { 0xA5B3, 0xA5C4, 0xA4C0, 0xA1A3, 0x0000, 0x0000 },
 };
 
-static f32 D_86002A94 = 50.0f;
+static f32 gKarpPlayerSpacing = 50.0f;
 
 typedef struct MiniHudTextureRect {
     /* 0x00 */ s16 posX;
@@ -168,7 +168,7 @@ static MiniHudPlayerGraph* gCurrentPlayerWheel;
 static s16 gMiniHudIntroActive;
 static s16 gMiniHudIntroTimer;
 static s16 gMiniHudActionFlags[4];
-static s16 D_86003B78;
+static s16 gMiniHudGameTimerTick;
 static TextObject* gMiniHudTextObj;
 static s32 gMiniHudMaxWheelValue;
 static Fragment2_1GraphNode gMiniHudWheelNodes[4];
@@ -421,11 +421,11 @@ void MagikarpGame_DrawOverlay(s32 arg0) {
     }
 }
 
-static Gfx D_86002B90[] = {
+static Gfx gScoreMarkerDL_End[] = {
     gsSPEndDisplayList(),
 };
 
-static u32 D_86002B98[] = {
+static u32 gScoreMarkerTexData[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x000A000F, 0x00140014, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x0000000A, 0x00190021, 0x002A0033, 0x0036003B, 0x00000000, 0x00000000,
     0x00000000, 0x0000000A, 0x0019002A, 0x003B004B, 0x00550060, 0x00640067, 0x00000000, 0x00000000, 0x00000000,
@@ -443,14 +443,14 @@ static u32 D_86002B98[] = {
     0x00FF00FF, 0x00FF00FF,
 };
 
-static Vtx D_86002D98[] = {
+static Vtx gScoreMarkerVerts[] = {
     VTX(-25, 0, -25, 0, 0, 0x00, 0x00, 0x00, 0xFF),
     VTX(-25, 0, 25, 0, 1024, 0x00, 0x00, 0x00, 0xFF),
     VTX(25, 0, 25, 1024, 1024, 0x00, 0x00, 0x00, 0xFF),
     VTX(25, 0, -25, 1024, 0, 0x00, 0x00, 0x00, 0xFF),
 };
 
-static Gfx D_86002DD8[] = {
+static Gfx gScoreMarkerDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetRenderMode(G_RM_ZB_XLU_SURF, G_RM_ZB_XLU_SURF2),
@@ -460,10 +460,10 @@ static Gfx D_86002DD8[] = {
     gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_PASS2),
     gsDPSetPrimColor(0, 0, 0, 0, 0, 200),
     gsDPSetTextureLUT(G_TT_NONE),
-    gsDPLoadTextureBlock(D_86002B98, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0, G_TX_MIRROR | G_TX_WRAP,
+    gsDPLoadTextureBlock(gScoreMarkerTexData, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 16, 0, G_TX_MIRROR | G_TX_WRAP,
                          G_TX_MIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_86002D98, 4, 0),
+    gsSPVertex(gScoreMarkerVerts, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsSPEndDisplayList(),
@@ -489,7 +489,7 @@ void MagikarpGame_DrawScoreMarkers(void) {
         guMtxCatL(&spC0, &sp100, var_s1);
 
         gSPMatrix(gfx++, var_s1, G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(gfx++, D_86002DD8);
+        gSPDisplayList(gfx++, gScoreMarkerDL);
         gSPPopMatrix(gfx++, G_MTX_MODELVIEW);
         var_s1++;
     }
@@ -874,7 +874,7 @@ void MagikarpGame_Play(void) {
     }
 
     gMiniHudGameTimer = 0;
-    D_86003B78 = 0;
+    gMiniHudGameTimerTick = 0;
     gMiniHudState = 2;
 
     while (var_s6 != 0) {
@@ -1125,7 +1125,7 @@ void MagikarpGame_InitActors(void) {
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
         Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->unk_08->posX[0]);
 
-        gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
+        gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * gKarpPlayerSpacing;
 
         gCurrentPlayerGraph->unk_000.unk_024.y = 0.0f;
         gCurrentPlayerGraph->unk_000.unk_024.z = 0.0f;
@@ -1159,7 +1159,7 @@ void MagikarpGame_InitActors(void) {
 
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
         Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->unk_08->posX[0]);
-        gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
+        gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * gKarpPlayerSpacing;
         gCurrentPlayerGraph->unk_000.unk_024.z = 0.0f;
         gCurrentPlayerGraph->unk_000.unk_024.y = 200.0f;
         gCurrentPlayerGraph->unk_000.unk_01E.y = -0x8000;

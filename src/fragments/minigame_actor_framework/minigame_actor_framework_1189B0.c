@@ -312,7 +312,7 @@ void miniResetGlobalState(void) {
     gMiniGameTimer1 = 0;
     gMiniGameTimer2 = 0;
     miniInputLockTimer = 0;
-    D_87906048 = 0;
+    gMiniGameUnusedVar1 = 0;
     gMetapodAudioMuted = 0;
     gMiniGameStateVar3 = 0;
     miniTutoScreenState = 0;

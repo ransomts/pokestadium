@@ -2976,7 +2976,7 @@ void ekansMinigameInitObjects(void) {
     miniEkansInitCam();
 
     miniEkansCountdown = 0x3C;
-    D_879060C0 = miniEkansCountdown * 0x1E;
+    gMiniGameUnusedVar2 = miniEkansCountdown * 0x1E;
     gMinigameStateVar2 = 0;
     gMinigameStateVar1 = 0;
 }
@@ -3040,14 +3040,14 @@ s32 EkansGame_UpdateStartCountdown(void) {
 s32 EkansGame_UpdateMainCountdown(void) {
     s32 sp1C = 0;
 
-    D_879060C0--;
-    if (D_879060C0 == 0) {
+    gMiniGameUnusedVar2--;
+    if (gMiniGameUnusedVar2 == 0) {
         miniEkansCountdown = 0;
         EkansGame_PlaySoundEventGuarded(0xB, 0);
         sp1C = 1;
     } else {
-        miniEkansCountdown = (D_879060C0 / 30) + 1;
-        if ((D_879060C0 % 30) == 0) {
+        miniEkansCountdown = (gMiniGameUnusedVar2 / 30) + 1;
+        if ((gMiniGameUnusedVar2 % 30) == 0) {
             if (miniEkansCountdown == 0xB) {
                 sp1C = 0;
                 EkansGame_PlaySoundEventGuarded(0xC, 0);
@@ -3146,7 +3146,7 @@ void miniEkansInitCam(void) {
     gMiniDebugCamVelocity.x = 10.0f;
     gMiniDebugCamVelocity.y = 8.0f;
 
-    D_87906110.y = 1.0f;
+    gMiniDebugGravityVector.y = 1.0f;
 }
 
 void EkansGame_CameraControls(void) {

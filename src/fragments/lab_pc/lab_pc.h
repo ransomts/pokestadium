@@ -655,7 +655,7 @@ void LabItem_SetOperationState(unk_func_8821421C_02C_06C_02C* arg0, s32 arg1);
 void LabItem_SetOperationMode(unk_func_8821421C_02C_06C_02C* arg0, s32 arg1);
 void LabItem_ResetOperation(unk_func_8821421C_02C_06C_02C* arg0);
 s32 LabItem_IsOperationIdle(unk_func_8821421C_02C_06C_02C* arg0);
-void func_88210DA8(void);
+void LabItem_OperationDummy(void);
 s32 LabItem_ComputeRemainingCapacity(s32 arg0, unk_func_8820BE14_06C* arg1);
 s32 LabItem_ComputeMaxTransferQuantity(s32 arg0, unk_func_8820BE14_06C* arg1);
 void LabItem_InsertGridEntry(unk_func_8820BE14_02C_038* arg0, u8* arg1);
