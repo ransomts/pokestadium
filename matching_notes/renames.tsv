@@ -16525,3 +16525,51 @@ D_8006F000	gLeoBootIdMagic	w6		string literal "P2J" used to validate the boot di
 D_8006F004	gLeoBootIdCompany	w6		string literal "01" used to validate the company ID in Leo_ValidateBootDiskId	applied@8d175d87
 D_800818E0	gLeoDiskId	w6		global structure containing disk metadata (company, gameName, diskNumber) read from the disk	applied@8d175d87
 D_8006F070	gRootNodeScaleDefault	w6		initialized to {1, 1, 1}, likely the default scale for the root node	applied@8d175d87
+D_8122AD50	gStadiumScreenText	w7		used in DrawStadiumScreen to index into TileMap_8x8 for rendering text	applied@4dc4fbf1
+D_8122C520	gGbPakProbeBuffer	w7		used as a temporary buffer for reading and verifying cartridge probe blocks	applied@4dc4fbf1
+D_8122B224	gGbPakMessageQueue	w7		used as a message queue for the GB Pak service thread	applied@4dc4fbf1
+D_8780F940	gResultCubeRotationOffset	w7		float array used in conjunction with gResultRotationAngles for cube animation	applied@4dc4fbf1
+D_8780FC40	gResultState	w7		tracks the current state of the result screen (0: idle, 1: win animation, 2: cube drop, 3: menu, etc.)	applied@4dc4fbf1
+D_8780FCAA	gResultIconYOffset	w7		decremented by 0x14 per frame in Widget_PauseMenuUpdate to slide player icons into view	applied@4dc4fbf1
+D_8780FE38	gLastRspTimestamp	w7		used in UpdateDeltaTime to calculate the difference between current and previous gRspTaskManager.unk_A34	applied@4dc4fbf1
+D_8780FE3C	gResultCubeCycleTimer	w7		decremented in state 4 to control the timing of cycling through lowest scorers	applied@4dc4fbf1
+D_8780FE40	gResultCubeCycleInterval	w7		set to 1 or 3 in state 4 to determine the frame interval for cycling cubes	applied@4dc4fbf1
+D_8780FE44	gResultAnimDelayTimer	w7		used as a countdown timer for various animations (e.g., state 1 transition, special win)	applied@4dc4fbf1
+unk_00	posX	w7		unk_ResultCubeState:x coordinate used in MathUtil_BuildTransformMtx for cube rendering	applied@4dc4fbf1
+unk_02	posY	w7		unk_ResultCubeState:y coordinate used in MathUtil_BuildTransformMtx for cube rendering	applied@4dc4fbf1
+unk_04	rotation	w7		unk_ResultCubeState:f32 rotation value incremented by 7.5f or 15.0f and wrapped at 360.0f	applied@4dc4fbf1
+func_87900020	MiniGame_GetFragmentFunc	w7		returns itself as a function pointer, likely for a fragment jump table	applied@4dc4fbf1
+D_87903DA8	gMiniGameTimer1	w7		reset to 0 in miniResetGlobalState alongside other timers	applied@4dc4fbf1
+D_87903DAC	gMiniGameTimer2	w7		reset to 0 in miniResetGlobalState alongside other timers	applied@4dc4fbf1
+D_87903DB8	gMiniGameStateVar1	w7		global s16 state variable used in minigame logic	applied@4dc4fbf1
+D_87903DBC	gMiniGameStateVar2	w7		global s16 state variable used in minigame logic	applied@4dc4fbf1
+D_87903DC0	gMiniGameStateVar3	w7		reset to 0 in miniResetGlobalState	applied@4dc4fbf1
+D_87903DC8	gMiniTutoTimer1	w7		reset to 0 in miniResetGlobalState, grouped with miniTutoScreenState	applied@4dc4fbf1
+D_87903DCC	gMiniTutoTimer2	w7		reset to 0 in miniResetGlobalState, grouped with miniTutoScreenState	applied@4dc4fbf1
+D_87903DD0	gMiniTutoTimer3	w7		reset to 0 in miniResetGlobalState, grouped with miniTutoScreenState	applied@4dc4fbf1
+D_87903DD4	gMiniTutoTimer4	w7		global s16 state variable grouped with tutorial state	applied@4dc4fbf1
+unk_D_87903E00	Gfx_TextureConfig	w7		Contains texture loading callback, drawing function, and data pointer.	applied@4dc4fbf1
+unk_D_87903E10	Gfx_TextureNode	w7		Contains a flag and a pointer to a Gfx_TextureConfig.	applied@4dc4fbf1
+D_87903E40	gMiniTutoScreenNode2	w7		Pointer to gMiniTutoScreenConfig2, following the Node0/Node1 pattern.	applied@4dc4fbf1
+D_87903E48	gMiniTutoScreenConfig3	w7		Texture config for gMiniTutoScreenGraphics, following Config0/1/2 pattern.	applied@4dc4fbf1
+D_87903E58	gMiniTutoScreenNode3	w7		Pointer to gMiniTutoScreenConfig3, following the Node0/1/2 pattern.	applied@4dc4fbf1
+D_87A01180	gStageSubtitles_Alt1	w7		table of text IDs similar to gTextTable_StageSubtitles	applied@4dc4fbf1
+D_87A01190	gStageSubtitles_Alt2	w7		table of text IDs similar to gTextTable_StageSubtitles	applied@4dc4fbf1
+D_87A011A4	gStageSubtitles_Alt3	w7		table of text IDs similar to gTextTable_StageSubtitles	applied@4dc4fbf1
+func_87A010C8	MiniCam_GetResetFunc	w7		returns itself as a function pointer, likely a reset or init hook	applied@4dc4fbf1
+D_800697D0	gGbPakPollIndex	w7		tracks the current Game Boy Pak index being polled for connection status	applied@4dc4fbf1
+unk_8007F330	gBssPadding1	w7		allocated 0x400 bytes in .bss between gIdleThread and pThreads	applied@4dc4fbf1
+unk_8007F8E0	gBssPadding2	w7		allocated 0x720 bytes in .bss between pThreads and D_80080000	applied@4dc4fbf1
+D_80080000	gBssPadding3	w7		allocated 0x18E0 bytes at the end of .bss	applied@4dc4fbf1
+D_80068BC8	gIdentityMatrix	w7		identity matrix used for modelview in StageLoader_SetupFrame	applied@4dc4fbf1
+D_80068C08	gViewportLowRes	w7		viewport settings used when StageContext_IsHighResolution is false	applied@4dc4fbf1
+D_80068C18	gViewportHighRes	w7		viewport settings used when StageContext_IsHighResolution is true	applied@4dc4fbf1
+D_80068C28	gFullQuadVertices	w7		vertices for a 320x240 quad used for screen-space overlays/fades	applied@4dc4fbf1
+D_80068C68	gFullQuadDL	w7		display list that renders the full quad D_80068C28	applied@4dc4fbf1
+unk_D_80068CA0	TextQueueNode	w7		linked list node containing x, y, and string for the text renderer	applied@4dc4fbf1
+D_80068CA0	gTextQueueTransient	w7		head of the linked list for transient strings processed in TextRenderer_FlushQueuedStrings	applied@4dc4fbf1
+D_80068CA4	gTextQueuePersistent	w7		head of the linked list for persistent strings processed in TextRenderer_FlushQueuedStrings	applied@4dc4fbf1
+D_80068CA8	gTextQueueTimer	w7		counter incremented in TextRenderer_FlushQueuedStrings to eventually clear persistent strings	applied@4dc4fbf1
+D_800A7450	gFramebufferRequest	w7		struct passed to Display_QueueFramebufferRequest to manage framebuffers	applied@4dc4fbf1
+D_800A7468	gProjectionMatrix	w7		matrix initialized via guOrtho in StageLoader_SetupFrame	applied@4dc4fbf1
+D_800A74B0	gTextRenderDLHead	w7		pointer to the current display list head used specifically by TextRenderer functions	applied@4dc4fbf1

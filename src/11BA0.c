@@ -5,11 +5,11 @@
 
 void GeoNode_Init(GraphNode* arg0, u8 arg1) {
     if (arg0 != NULL) {
-        arg0->unk_00 = arg1;
+        arg0->posX = arg1;
         arg0->unk_01 = 0x11;
-        arg0->unk_02 = 0;
+        arg0->posY = 0;
         arg0->unk_03 = 0;
-        arg0->unk_04 = arg0;
+        arg0->rotation = arg0;
         arg0->unk_08 = arg0;
         arg0->unk_0C = NULL;
         arg0->unk_10 = NULL;
@@ -105,7 +105,7 @@ unk_D_86002F34_alt14* GeoNode_CreateOrtho(MainPoolState* arg0, unk_D_86002F34_al
 
     if (arg1 != NULL) {
         GeoNode_Init(arg1, 5);
-        arg1->unk_00.unk_02 |= arg2 & 3;
+        arg1->posX.posY |= arg2 & 3;
     }
 
     return arg1;
@@ -118,7 +118,7 @@ unk_D_86002F34_alt15* GeoNode_CreatePerspective(MainPoolState* arg0, unk_D_86002
 
     if (arg1 != NULL) {
         GeoNode_Init(arg1, 6);
-        arg1->unk_00.unk_02 |= arg2 & 3;
+        arg1->posX.posY |= arg2 & 3;
     }
 
     return arg1;
@@ -157,9 +157,9 @@ unk_D_8690A610* GeoNode_CreateFog(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 
     }
 
     if (arg1 != NULL) {
-        arg1->unk_18.unk_00 = arg2;
-        arg1->unk_18.unk_02 = arg3;
-        arg1->unk_18.unk_04.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
+        arg1->unk_18.posX = arg2;
+        arg1->unk_18.posY = arg3;
+        arg1->unk_18.rotation.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
         GeoNode_Init(arg1, 0xA);
     }
 
@@ -320,7 +320,7 @@ unk_D_86002F34_alt7* GeoNode_CreateDisplayListPart(MainPoolState* arg0, unk_D_86
         arg1->unk_18 = arg3;
         arg1->unk_1C = arg4;
         GeoNode_Init(arg1, 0x15);
-        arg1->unk_00.unk_03 = arg2;
+        arg1->posX.unk_03 = arg2;
     }
 
     return arg1;
@@ -343,17 +343,17 @@ Fragment2_1GraphNode* GeoNode_CreateModelPart(MainPoolState* arg0, Fragment2_1Gr
         arg1->modelPhase = 0;
         arg1->unk_0A0.rgba = 0xFFFFFF00;
         arg1->unk_03C.rgba = 0xFFFFFF00;
-        arg1->unk_040.unk_00 = 0;
-        arg1->unk_040.unk_04 = NULL;
+        arg1->unk_040.posX = 0;
+        arg1->unk_040.rotation = NULL;
         arg1->unk_040.unk_08 = 0;
         arg1->unk_040.unk_0C = 0x10000;
         arg1->unk_040.unk_12 = 0;
-        arg1->unk_054.unk_00 = 0;
-        arg1->unk_054.unk_04 = NULL;
+        arg1->unk_054.posX = 0;
+        arg1->unk_054.rotation = NULL;
         arg1->unk_054.unk_08 = 0;
         arg1->unk_054.unk_0A = 0;
         GeoNode_Init(&arg1->unk_000, 0x16);
-        arg1->unk_000.unk_02 |= 0x60;
+        arg1->unk_000.posY |= 0x60;
     }
 
     return arg1;
@@ -372,7 +372,7 @@ unk_D_86002F34_alt8* GeoNode_CreateDisplayListMatrix(MainPoolState* arg0, unk_D_
             MtxF_Copy(&arg1->unk_1C, arg4);
         }
         GeoNode_Init(arg1, 0x17);
-        arg1->unk_00.unk_03 = arg2;
+        arg1->posX.unk_03 = arg2;
     }
 
     return arg1;
@@ -397,7 +397,7 @@ unk_D_86002F34_alt9* GeoNode_CreateScale(MainPoolState* arg0, unk_D_86002F34_alt
         arg1->unk_28 = arg5;
         arg1->unk_18 = arg3;
         GeoNode_Init(arg1, 0x18);
-        arg1->unk_00.unk_03 = arg2;
+        arg1->posX.unk_03 = arg2;
     }
 
     return arg1;
@@ -411,7 +411,7 @@ SimpleGfxNode* GeoNode_CreateDisplayList(MainPoolState* arg0, SimpleGfxNode* arg
     if (arg1 != NULL) {
         arg1->unk_18 = arg3;
         GeoNode_Init(arg1, 0x19);
-        arg1->unk_00.unk_03 = arg2;
+        arg1->posX.unk_03 = arg2;
     }
 
     return arg1;
@@ -465,7 +465,7 @@ unk_D_86002F34_alt24* GeoNode_CreateGroup(MainPoolState* arg0, unk_D_86002F34_al
         arg1->unk_24 = arg9;
         arg1->unk_28.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
         GeoNode_Init(arg1, 0x1C);
-        arg1->unk_00.unk_03 = arg2;
+        arg1->posX.unk_03 = arg2;
     }
 
     return arg1;
@@ -513,12 +513,12 @@ void GeoCamera_SetBackground(CameraStruct* arg0, s16 arg1, s16 arg2, u8 arg3, u8
 
     if (arg2 < 2) {
         if ((arg1 == 2) || (arg1 == 4)) {
-            ptr->unk_00 = 0;
+            ptr->posX = 0;
         } else {
-            ptr->unk_00 = 1;
+            ptr->posX = 1;
         }
     } else {
-        ptr->unk_00 = arg1;
+        ptr->posX = arg1;
         ptr->unk_08 = arg2;
         ptr->unk_0A = 1;
         ptr->color.r = arg3;
@@ -537,7 +537,7 @@ void GeoCamera_SetBackgroundTexture(CameraStruct* arg0, s16 arg1, s16 arg2, s32 
     ptr->unk_16 = 0;
     ptr->unk_18 = 0;
     ptr->unk_1A = 0;
-    ptr->unk_02 = 0;
+    ptr->posY = 0;
     ptr->texture = D_1000800;
 }
 
@@ -549,21 +549,21 @@ void GraphNode_AppendChild(GraphNode* arg0, GraphNode* arg1) {
         temp_v0 = arg0->unk_0C;
         if (temp_v0 == NULL) {
             arg0->unk_0C = arg1;
-            arg1->unk_04 = arg1;
+            arg1->rotation = arg1;
             arg1->unk_08 = arg1;
         } else {
-            temp_v1 = temp_v0->unk_04;
+            temp_v1 = temp_v0->rotation;
             arg1->unk_08 = temp_v0;
-            arg1->unk_04 = temp_v1;
-            temp_v0->unk_04 = arg1;
+            arg1->rotation = temp_v1;
+            temp_v0->rotation = arg1;
             temp_v1->unk_08 = arg1;
         }
     }
 }
 
 void GraphNode_RemoveChild(GraphNode* arg0, GraphNode* arg1) {    
-    arg1->unk_04->unk_08 = arg1->unk_08;
-    arg1->unk_08->unk_04 = arg1->unk_04;
+    arg1->rotation->unk_08 = arg1->unk_08;
+    arg1->unk_08->rotation = arg1->rotation;
     if ((CameraStruct*)arg1 == arg0->unk_0C) {
         if (arg1 == arg1->unk_08) {
             arg0->unk_0C = NULL;

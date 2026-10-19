@@ -35,25 +35,25 @@ typedef union {
 } FileHeaders;
 
 typedef struct unk_D_800FC6CC {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u32 unk_04;
+    /* 0x00 */ u32 posX;
+    /* 0x04 */ u32 rotation;
 } unk_D_800FC6CC; // size = 0x8
 
 typedef struct unk_D_800FC6D4_entry {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
 } unk_D_800FC6D4_entry; // size = 0x4
 
 typedef struct unk_D_800FC6D4_008 {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ u32 posX;
+    /* 0x04 */ u8 rotation;
 } unk_D_800FC6D4_008; // size = 0x5
 
 typedef struct GbTrackHeader {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 num_entries;
-    /* 0x04 */ u16 unk_04;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ unk_D_800FC6D4_008* offset;
     /* 0x0C */ char unk_0C[0x4];

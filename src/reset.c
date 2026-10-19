@@ -14,8 +14,8 @@ typedef struct UnkStruct800A6D20 {
 } UnkStruct800A6D20; // size = 0x600
 
 typedef struct UnkStruct4 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ s32 unk_08;
 } UnkStruct4; // size >= 0xC
@@ -112,7 +112,7 @@ void SoftReset_Thread(void* unused) {
         if (gSoftResetThread.gSoftResetLineNum < 0x10U) {
             UnkStruct4* temp_v0 = Display_GetWorkerStatus();
             if (temp_v0 != NULL) {
-                if (temp_v0->unk_04 == 320) {
+                if (temp_v0->rotation == 320) {
                     SoftReset_ClearLines320(temp_v0->unk_08);
                 } else {
                     SoftReset_ClearLines640(temp_v0->unk_08);

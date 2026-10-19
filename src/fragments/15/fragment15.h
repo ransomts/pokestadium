@@ -6,8 +6,8 @@
 #include "src/1C720.h"
 
 typedef struct unk_D_8690B2F8 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
 } unk_D_8690B2F8; // size >= 0x10
@@ -23,8 +23,8 @@ typedef struct unk_D_8690A710 {
 } unk_D_8690A710; // size = 0x184
 
 typedef struct unk_D_8690B350 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
@@ -32,9 +32,9 @@ typedef struct unk_D_8690B350 {
 } unk_D_8690B350; // size = 0x10
 
 typedef struct unk_D_8690B360 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -44,7 +44,7 @@ typedef struct unk_D_8690B360 {
 } unk_D_8690B360; // size = 0x18
 
 typedef struct unk_D_8690B308 {
-    /* 0x00 */ s16 unk_00[8];
+    /* 0x00 */ s16 posX[8];
     /* 0x18 */ f32 unk_10;
     /* 0x1C */ f32 unk_14;
     /* 0x20 */ f32 unk_18;
@@ -60,8 +60,8 @@ typedef struct unk_D_8690B308 {
 } unk_D_8690B308; // size >= 0x38
 
 typedef struct unk_D_8690B3C0 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
 } unk_D_8690B3C0; // size >= 0x10

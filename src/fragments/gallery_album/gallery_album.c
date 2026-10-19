@@ -42,10 +42,10 @@ s32 Gallery_AlbumHandleGridInput(unk_D_83407B38* arg0) {
 
     sp64 = 0;
     sp60 = arg0->unk_08;
-    sp5C = arg0->unk_00;
+    sp5C = arg0->posX;
 
-    sp58 = arg0->unk_00 % 3;
-    sp54 = arg0->unk_00 / 3;
+    sp58 = arg0->posX % 3;
+    sp54 = arg0->posX / 3;
 
     sp4C = 0;
     sp48 = 0;
@@ -100,8 +100,8 @@ s32 Gallery_AlbumHandleGridInput(unk_D_83407B38* arg0) {
         }
     }
 
-    arg0->unk_00 = (sp54 * 3) + sp58;
-    if (sp5C != arg0->unk_00) {
+    arg0->posX = (sp54 * 3) + sp58;
+    if (sp5C != arg0->posX) {
         Audio_PlaySoundEffectById(1);
     }
 
@@ -123,25 +123,25 @@ s32 Gallery_AlbumHandleGridInput(unk_D_83407B38* arg0) {
         for (i = 0; i < arg0->unk_14; i++) {
             sp40 = arg0->unk_20[arg0->unk_08 * arg0->unk_14 + i];
             if (Gallery_IsSceneReady(sp40) != 0) {
-                sp40->unk_00 = 0;
+                sp40->posX = 0;
             }
         }
     }
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {
-        sp3C = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
+        sp3C = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
         sp38 = arg0->unk_20[sp3C];
 
-        if (arg0->unk_04 == -1) {
+        if (arg0->rotation == -1) {
             if ((sp54 * 3) < 6) {
                 if (Gallery_IsSceneReady(sp38) != 0) {
-                    arg0->unk_04 = sp3C;
+                    arg0->rotation = sp3C;
                     arg0->unk_B0->unk_18 = sp38->unk_18;
-                    arg0->unk_B0->unk_00 = 0;
+                    arg0->unk_B0->posX = 0;
                     if (gItemSelectMode == 2) {
                         gItemSelectState = 3;
                         Audio_PlaySoundEffectById(0xD);
-                        gGalleryMainSelection.unk_04 = arg0->unk_04;
+                        gGalleryMainSelection.rotation = arg0->rotation;
                     } else {
                         Audio_PlaySoundEffectById(2);
                     }
@@ -153,40 +153,40 @@ s32 Gallery_AlbumHandleGridInput(unk_D_83407B38* arg0) {
                 Audio_PlaySoundEffectById(3);
             }
         } else if ((sp54 * 3) < 6) {
-            if (sp3C != arg0->unk_04) {
+            if (sp3C != arg0->rotation) {
                 Audio_PlaySoundEffectById(0x29);
-                Gallery_SwapPhotoRecords(sp38->unk_18, arg0->unk_20[arg0->unk_04]->unk_18);
+                Gallery_SwapPhotoRecords(sp38->unk_18, arg0->unk_20[arg0->rotation]->unk_18);
 
                 tmp = gSlotStatusFlags[sp3C];
-                gSlotStatusFlags[sp3C] = gSlotStatusFlags[arg0->unk_04];
-                gSlotStatusFlags[arg0->unk_04] = tmp;
+                gSlotStatusFlags[sp3C] = gSlotStatusFlags[arg0->rotation];
+                gSlotStatusFlags[arg0->rotation] = tmp;
 
-                arg0->unk_20[arg0->unk_04]->unk_00 = 0;
-                sp38->unk_00 = 0;
+                arg0->unk_20[arg0->rotation]->posX = 0;
+                sp38->posX = 0;
             } else {
                 Audio_PlaySoundEffectById(3);
             }
-            arg0->unk_04 = -1;
+            arg0->rotation = -1;
         } else {
             gItemSelectState = 2;
             ItemSelect_ResultAnimTimer = 0;
             Audio_PlayCategory12SoundCommand(0x0120000C, 0, 0);
         }
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
-        if (arg0->unk_04 == -1) {
+        if (arg0->rotation == -1) {
             sp64 = 1;
             if (gItemSelectMode == 2) {
                 Gallery_InitPageCursor(&gGalleryMainSelection);
             }
         } else {
-            arg0->unk_04 = -1;
+            arg0->rotation = -1;
         }
         Audio_PlaySoundEffectById(3);
     } else if (gPlayer1Controller->buttonPressed & 4) {
-        idx = arg0->unk_08 * arg0->unk_14 + arg0->unk_00;
+        idx = arg0->unk_08 * arg0->unk_14 + arg0->posX;
         ptr = arg0->unk_20[idx];
 
-        if (((sp54 * 3) < 6) && (arg0->unk_04 == -1) && (Gallery_IsSceneReady(ptr) != 0)) {
+        if (((sp54 * 3) < 6) && (arg0->rotation == -1) && (Gallery_IsSceneReady(ptr) != 0)) {
             sp64 = 2;
             Audio_PlaySoundEffectById(0x19);
             Gallery_SetEnlargeTarget(ptr->unk_18);
@@ -223,7 +223,7 @@ void Gallery_AlbumInit(s32 arg0, s32 arg1) {
     tmp = PokeIcon_AllocFramebuffers(5);
     Gallery_InitSceneGrid(&gItemSelectContext, 0x88, 0x66, 6, 3, tmp, gStadiumModelArchive, gGalleryEntries, 0x24, 1);
     if (gItemSelectMode == 2) {
-        Gallery_RestorePosition(&gItemSelectContext, &gGalleryFinalSelection.unk_00);
+        Gallery_RestorePosition(&gItemSelectContext, &gGalleryFinalSelection.posX);
     } else if (arg1 == 0) {
         Gallery_RestorePosition(&gItemSelectContext, &gGalleryTertiarySelection);
     }
@@ -514,7 +514,7 @@ void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
         ptr = arg2->unk_20[temp_s3];
 
         var_s4 = 0;
-        if ((temp_s3 != arg2->unk_04) && (Gallery_IsSceneReady(ptr) != 0) && (ptr->unk_00 == 2)) {
+        if ((temp_s3 != arg2->rotation) && (Gallery_IsSceneReady(ptr) != 0) && (ptr->posX == 2)) {
             var_s4 = 1;
             Gallery_DrawPhotoThumbnail(ptr->unk_08->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
         }
@@ -528,17 +528,17 @@ void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
         }
     }
 
-    if (arg2->unk_04 != -1) {
+    if (arg2->rotation != -1) {
         s32 sp70;
         s32 sp6C;
         s32 sp68;
         s32 sp64;
         f32 sp60;
 
-        Gallery_IndexToGridPos(arg2, &sp70, &sp6C, arg2->unk_00);
+        Gallery_IndexToGridPos(arg2, &sp70, &sp6C, arg2->posX);
 
         ptr = arg2->unk_B0;
-        if ((Gallery_IsSceneReady(ptr) != 0) && (ptr->unk_00 == 2)) {
+        if ((Gallery_IsSceneReady(ptr) != 0) && (ptr->posX == 2)) {
             if (sp6C < 2) {
                 Gallery_DrawDropShadow((sp70 * 0xA0) + arg0, (sp6C * 0x76) + arg1, 0x88, 0x66);
                 Gallery_DrawPhotoThumbnail(ptr->unk_08->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
@@ -649,7 +649,7 @@ void Gallery_AlbumDrawGridPanel(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     Gallery_AlbumDrawCornerMarkers(arg0 + 0x20, arg1, 0x207);
     Gallery_AlbumDrawTitleBar(&gItemSelectContext, 0x65, 0x24);
 
-    if (gItemSelectContext.unk_04 == -1) {
+    if (gItemSelectContext.rotation == -1) {
         Gallery_AlbumDrawEnlargeHint(arg1 + 0x108);
     }
 
@@ -701,8 +701,8 @@ void Gallery_AlbumDrawGradientBackground(void) {
 }
 
 typedef struct unk_D_83503EA8 {
-    /* 0x00 */ u8* unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ u8* posX;
+    /* 0x04 */ s32 rotation;
 } unk_D_83503EA8; // size = 0x8
 
 void Gallery_AlbumDrawAnimatedOverlay(s32 arg0, s32 arg1, s32 arg2) {
@@ -804,10 +804,10 @@ void Gallery_AlbumDrawAnimatedOverlay(s32 arg0, s32 arg1, s32 arg2) {
         D_83503F34--;
         if (D_83503F34 <= 0) {
             D_83503F30++;
-            D_83503F34 = D_83503EA8[D_83503F30].unk_04;
+            D_83503F34 = D_83503EA8[D_83503F30].rotation;
             if (D_83503F34 < 0) {
                 D_83503F30 = 0;
-                D_83503F34 = D_83503EA8[0].unk_04;
+                D_83503F34 = D_83503EA8[0].rotation;
             }
         }
     } else {
@@ -819,10 +819,10 @@ void Gallery_AlbumDrawAnimatedOverlay(s32 arg0, s32 arg1, s32 arg2) {
         D_83503F3C--;
         if (D_83503F3C <= 0) {
             D_83503F38++;
-            D_83503F3C = D_83503EF0[D_83503F38].unk_04;
+            D_83503F3C = D_83503EF0[D_83503F38].rotation;
             if (D_83503F3C < 0) {
                 D_83503F38 = 0;
-                D_83503F3C = D_83503EF0[0].unk_04;
+                D_83503F3C = D_83503EF0[0].rotation;
             }
         }
     }
@@ -840,7 +840,7 @@ void Gallery_AlbumDrawAnimatedOverlay(s32 arg0, s32 arg1, s32 arg2) {
     }
 
     if (arg2 != 0) {
-        spEC = D_83503EA8[D_83503F30].unk_00;
+        spEC = D_83503EA8[D_83503F30].posX;
     }
 
     if (spEC != NULL) {
@@ -858,7 +858,7 @@ void Gallery_AlbumDrawAnimatedOverlay(s32 arg0, s32 arg1, s32 arg2) {
     }
 
     if (arg2 == 0) {
-        spE8 = D_83503EF0[D_83503F38].unk_00;
+        spE8 = D_83503EF0[D_83503F38].posX;
     }
 
     if (spE8 != NULL) {
@@ -932,14 +932,14 @@ void Gallery_AlbumDrawExitButton(int arg0, int arg1, s32 arg2, f32 arg3) {
 }
 
 char* Gallery_AlbumGetStatusText(unk_D_83407B38* arg0) {
-    s32 tmp = arg0->unk_00 / 3;
+    s32 tmp = arg0->posX / 3;
     char* var_v0;
 
     if (gItemSelectMode == 2) {
         var_v0 = Gallery_GetUiString(0x29);
     } else if (tmp < 2) {
         var_v0 = Gallery_GetUiString(0x25);
-    } else if (arg0->unk_04 != -1) {
+    } else if (arg0->rotation != -1) {
         var_v0 = Gallery_GetUiString(0x26);
     } else if (gItemSelectMode == 1) {
         var_v0 = Gallery_GetUiString(0x28);
@@ -981,13 +981,13 @@ f32 Gallery_AlbumPulseAlpha(s32* arg0, u32* arg1, s32 arg2) {
 }
 
 void Gallery_AlbumDrawCursor(unk_D_83407B38* arg0) {
-    s32 temp_hi = arg0->unk_00 % 3;
-    s32 temp_lo = arg0->unk_00 / 3;
+    s32 temp_hi = arg0->posX % 3;
+    s32 temp_lo = arg0->posX / 3;
     s32 var_v0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    if (arg0->unk_04 == -1) {
+    if (arg0->rotation == -1) {
         var_v0 = 0;
     } else {
         var_v0 = -0x10;
@@ -995,7 +995,7 @@ void Gallery_AlbumDrawCursor(unk_D_83407B38* arg0) {
 
     if (temp_lo < 2) {
         Gallery_DrawSelectionCorners((temp_hi * 0xA0) + var_v0 + 0x67, (temp_lo * 0x76) + var_v0 + 0x4A, 0x90, 0x6E);
-    } else if (arg0->unk_04 != -1) {
+    } else if (arg0->rotation != -1) {
         Gallery_DrawSelectionCorners(0x41, 0x15A, 0x4C, 0x3B);
     } else {
         Gallery_DrawSelectionCorners(0x1E1, 0x172, 0x6C, 0x45);
@@ -1017,12 +1017,12 @@ void Gallery_AlbumDraw(void) {
     f32 sp24;
     f32 var_fv1;
 
-    Gallery_IndexToGridPos(&gItemSelectContext, &sp30, &sp2C, gItemSelectContext.unk_00);
+    Gallery_IndexToGridPos(&gItemSelectContext, &sp30, &sp2C, gItemSelectContext.posX);
     BgStage_DrawFrame();
     Gallery_AlbumDrawGradientBackground();
     Gallery_AlbumDrawGridPanel(0x1E, 0x2A, &gItemSelectContext);
     if (ItemSelect_ShowResult != 0) {
-        if (gItemSelectContext.unk_04 == -1) {
+        if (gItemSelectContext.rotation == -1) {
             var_a2 = 1;
         } else {
             var_a2 = 0;
@@ -1045,7 +1045,7 @@ void Gallery_AlbumDraw(void) {
 
         sp24 = Gallery_AlbumPulseAlpha(&D_83503F54, &D_83503F58, 0x1E);
         temp_fv0 = Gallery_AlbumPulseAlpha(&D_83503F5C, &D_83503F60, 0xF);
-        if ((gItemSelectContext.unk_04 == -1) && (sp2C >= 2)) {
+        if ((gItemSelectContext.rotation == -1) && (sp2C >= 2)) {
             var_fv1 = temp_fv0;
         } else {
             var_fv1 = sp24;
@@ -1061,9 +1061,9 @@ void Gallery_AlbumDraw(void) {
 void Gallery_AlbumAdvanceDeleteAnimation(unk_D_83407B38* arg0) {
     ItemSelect_ResultAnimTimer++;
     if (ItemSelect_ResultAnimTimer >= 0x15) {
-        Gallery_ClearPhotoRecord(arg0->unk_20[arg0->unk_04]->unk_18);
-        gSlotStatusFlags[arg0->unk_04] = 0;
-        arg0->unk_04 = -1;
+        Gallery_ClearPhotoRecord(arg0->unk_20[arg0->rotation]->unk_18);
+        gSlotStatusFlags[arg0->rotation] = 0;
+        arg0->rotation = -1;
         gItemSelectState = 1;
         ItemSelect_ResultAnimTimer = 0;
     }
@@ -1072,7 +1072,7 @@ void Gallery_AlbumAdvanceDeleteAnimation(unk_D_83407B38* arg0) {
 void Gallery_AlbumConfirmAndExit(unk_D_83407B38* arg0) {
     Camera* sp1C = arg0->unk_B0;
 
-    if ((Gallery_IsSceneReady(sp1C) != 0) && (sp1C->unk_00 == 2)) {
+    if ((Gallery_IsSceneReady(sp1C) != 0) && (sp1C->posX == 2)) {
         gItemSelectState = 4;
         ItemSelect_HighlightFlags = 0xFFFF;
         StageContext_SetClearColor(0xFFFF);
@@ -1185,7 +1185,7 @@ s32 Gallery_AlbumGetResult(unk_D_83407B38* arg0) {
     }
 
     if (gItemSelectMode == 2) {
-        Gallery_SavePosition(arg0, &gGalleryFinalSelection.unk_00);
+        Gallery_SavePosition(arg0, &gGalleryFinalSelection.posX);
     } else {
         Gallery_SavePosition(arg0, &gGalleryTertiarySelection);
         if (sp1C == 0) {

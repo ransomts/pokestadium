@@ -138,7 +138,7 @@ void BattlePrep_DrawCursorArrow(unk_D_84B2665C* arg0, s16 arg1, s16 arg2) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    Gfx_DrawTexturedRectClipped(arg1, arg2 + (arg0->unk_04 * 0xE) + 1, 0x10, 0xB, 0, 0, 0x800, 0x800, 0);
+    Gfx_DrawTexturedRectClipped(arg1, arg2 + (arg0->rotation * 0xE) + 1, 0x10, 0xB, 0, 0, 0x800, 0x800, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -148,7 +148,7 @@ void BattlePrep_DrawCursorArrow(unk_D_84B2665C* arg0, s16 arg1, s16 arg2) {
 void BattlePrep_DrawRuleOption(unk_D_84B2665C* arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s8* arg5) {
     if (arg4 == 0) {
         Text_SetEnvColor(0x64, 0x64, 0x64, 0xFF);
-    } else if (arg3 == arg0->unk_04) {
+    } else if (arg3 == arg0->rotation) {
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
     } else {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -157,17 +157,17 @@ void BattlePrep_DrawRuleOption(unk_D_84B2665C* arg0, s16 arg1, s16 arg2, s16 arg
 }
 
 void BattlePrep_DrawResultPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 0xC, arg1->unk_02 + 0x18);
+    BattlePrep_DrawCursorArrow(arg0, arg1->posX + 0xC, arg1->posY + 0x18);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
-    Font_Printf(arg1->unk_00 + 0x10, arg1->unk_02 + 6, BattlePrep_GetString(0x29));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x22, arg1->unk_02 + 0x18, 0, 1, BattlePrep_GetString(0x2A));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x22, arg1->unk_02 + 0x18, 1, 1, BattlePrep_GetString(0x2B));
+    Font_Printf(arg1->posX + 0x10, arg1->posY + 6, BattlePrep_GetString(0x29));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x22, arg1->posY + 0x18, 0, 1, BattlePrep_GetString(0x2A));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x22, arg1->posY + 0x18, 1, 1, BattlePrep_GetString(0x2B));
 
     if (arg1->unk_06 == 0x48) {
         Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Font_Printf(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x36, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.unk_11F3);
+        Font_Printf(arg1->posX + 0x4A, arg1->posY + 0x36, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.unk_11F3);
     }
 
     Font_EndTexturedTextRendering();
@@ -181,17 +181,17 @@ void BattlePrep_DrawContinuePrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     sp28 = !!(gSessionContext.unk_11F5 & 2);
     sp28 = !sp28;
 
-    BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
+    BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, BattlePrep_GetString(0x2D));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, sp2C, BattlePrep_GetString(0x2E));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, sp28, BattlePrep_GetString(0x2F));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 3, 1, BattlePrep_GetString(0x30));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 4, 1, BattlePrep_GetString(0x31));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 0, sp2C, BattlePrep_GetString(0x2D));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 1, sp2C, BattlePrep_GetString(0x2E));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 2, sp28, BattlePrep_GetString(0x2F));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 3, 1, BattlePrep_GetString(0x30));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 4, 1, BattlePrep_GetString(0x31));
     Font_SetActive(1, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Font_Printf(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x4C, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.unk_11F3);
+    Font_Printf(arg1->posX + 0x4A, arg1->posY + 0x4C, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.unk_11F3);
     Font_EndTexturedTextRendering();
 }
 
@@ -199,33 +199,33 @@ void BattlePrep_DrawGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     s32 sp2C = !!(gSessionContext.unk_11F5 & 2);
 
     sp2C = !sp2C;
-    BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
+    BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, BattlePrep_GetString(0x2F));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, BattlePrep_GetString(0x32));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, 1, BattlePrep_GetString(0x31));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 0, sp2C, BattlePrep_GetString(0x2F));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 1, 1, BattlePrep_GetString(0x32));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 2, 1, BattlePrep_GetString(0x31));
     Font_EndTexturedTextRendering();
 }
 
 void BattlePrep_DrawRetireStreakPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     s32 sp2C = gSessionContext.unk_1194[0].unk_1E < 0x63 && gSessionContext.unk_1194[1].unk_1E < 0x63;
 
-    BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
+    BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, BattlePrep_GetString(0x33));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, BattlePrep_GetString(0x34));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, 1, BattlePrep_GetString(0x31));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 0, sp2C, BattlePrep_GetString(0x33));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 1, 1, BattlePrep_GetString(0x34));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 2, 1, BattlePrep_GetString(0x31));
     Font_EndTexturedTextRendering();
 }
 
 void BattlePrep_DrawQuitPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
+    BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, 1, BattlePrep_GetString(0x35));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, BattlePrep_GetString(0x31));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 0, 1, BattlePrep_GetString(0x35));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 1, 1, BattlePrep_GetString(0x31));
     Font_EndTexturedTextRendering();
 }
 
@@ -239,16 +239,16 @@ void BattlePrep_DrawCupRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
 
     if ((gSessionContext.unk_0000 == 3) || (gSessionContext.unk_0000 == 6)) {
         temp_v0 = BattlePrep_GetString(gSessionContext.unk_0000 - 1);
-        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 6, temp_v0);
+        Font_Printf((arg1->posX - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->posY + 6, temp_v0);
         temp_v0 = BattlePrep_GetString(gSessionContext.unk_0002 + 7);
-        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x18, temp_v0);
+        Font_Printf((arg1->posX - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->posY + 0x18, temp_v0);
         temp_v0 = BattlePrep_GetString(gSessionContext.unk_0003 + 0xA);
-        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x2A, temp_v0);
+        Font_Printf((arg1->posX - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->posY + 0x2A, temp_v0);
     } else {
         temp_v0 = BattlePrep_GetString(gSessionContext.unk_0000 - 1);
-        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0xA, temp_v0);
+        Font_Printf((arg1->posX - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->posY + 0xA, temp_v0);
         temp_v0 = BattlePrep_GetString(gSessionContext.unk_0003 + 0xA);
-        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x26, temp_v0);
+        Font_Printf((arg1->posX - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->posY + 0x26, temp_v0);
     }
 
     Font_DisableTwoCycleTexturing();
@@ -266,20 +266,20 @@ void BattlePrep_DrawCastleRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1
 
     sprintf(sp2C, "%s %s", BattlePrep_GetString(gSessionContext.unk_0002 + 0x13), BattlePrep_GetString(0x36));
     sp12C = Font_MeasureTextExtent(4, 0, sp2C);
-    Font_Printf((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0xA, sp2C);
+    Font_Printf((arg1->posX - (sp12C / 2)) + 0x64, arg1->posY + 0xA, sp2C);
 
     if (gSessionContext.unk_0002 < 9) {
         if (gSessionContext.unk_0002 == 8) {
             sprintf(sp2C, "%s %d", BattlePrep_GetString(0x1B), gSessionContext.unk_0003);
             sp12C = Font_MeasureTextExtent(4, 0, sp2C);
-            Font_Printf((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26, sp2C);
+            Font_Printf((arg1->posX - (sp12C / 2)) + 0x64, arg1->posY + 0x26, sp2C);
         } else if (gSessionContext.unk_0003 < 4) {
             sprintf(&sp2C, "%s %d", BattlePrep_GetString(0x37), gSessionContext.unk_0003);
             sp12C = Font_MeasureTextExtent(4, 0, sp2C);
-            Font_Printf((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26, sp2C);
+            Font_Printf((arg1->posX - (sp12C / 2)) + 0x64, arg1->posY + 0x26, sp2C);
         } else {
             sp12C = Font_MeasureTextExtent(4, 0, BattlePrep_GetString(gSessionContext.unk_0002 + 0x1D));
-            Font_Printf((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26,
+            Font_Printf((arg1->posX - (sp12C / 2)) + 0x64, arg1->posY + 0x26,
                           BattlePrep_GetString(gSessionContext.unk_0002 + 0x1D));
         }
     }
@@ -333,25 +333,25 @@ void BattlePrep_SetStreakColor(unk_D_800AE540_1194* arg0) {
 }
 
 void BattlePrep_DrawTeamPreview(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    BattlePrep_DrawBorderedRect(arg1->unk_00 + 8, arg1->unk_02 + 0x14, 0xA8, 0x20, 0, 0, 0, 0xFF);
-    BattlePrep_DrawBorderedRect(arg1->unk_00 + 8, arg1->unk_02 + 0x44, 0xA8, 0x20, 0, 0, 0, 0xFF);
-    BattlePrep_DrawRankBadge(arg1->unk_00 + 8, arg1->unk_02 + 0x14, gSessionContext.unk_1194);
-    BattlePrep_DrawRankBadge(arg1->unk_00 + 8, arg1->unk_02 + 0x44, &gSessionContext.unk_1194[1]);
+    BattlePrep_DrawBorderedRect(arg1->posX + 8, arg1->posY + 0x14, 0xA8, 0x20, 0, 0, 0, 0xFF);
+    BattlePrep_DrawBorderedRect(arg1->posX + 8, arg1->posY + 0x44, 0xA8, 0x20, 0, 0, 0, 0xFF);
+    BattlePrep_DrawRankBadge(arg1->posX + 8, arg1->posY + 0x14, gSessionContext.unk_1194);
+    BattlePrep_DrawRankBadge(arg1->posX + 8, arg1->posY + 0x44, &gSessionContext.unk_1194[1]);
     Font_BeginTranslucentTextRendering();
     Font_EnableTwoCycleTexturing();
     Font_SetActive(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
-    Font_Printf(arg1->unk_00 + 0x40, arg1->unk_02 + 2, BattlePrep_GetString(0x38));
+    Font_Printf(arg1->posX + 0x40, arg1->posY + 2, BattlePrep_GetString(0x38));
     Font_DisableTwoCycleTexturing();
     Font_SetActive(0x10, 0);
     BattlePrep_SetStreakColor(&gSessionContext.unk_1194[0]);
-    Font_Printf(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x18, "%2d", gSessionContext.unk_1194[0].unk_1E);
+    Font_Printf(arg1->posX + 0x5C, arg1->posY + 0x18, "%2d", gSessionContext.unk_1194[0].unk_1E);
     BattlePrep_SetStreakColor(&gSessionContext.unk_1194[1]);
-    Font_Printf(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x48, "%2d", gSessionContext.unk_1194[1].unk_1E);
+    Font_Printf(arg1->posX + 0x5C, arg1->posY + 0x48, "%2d", gSessionContext.unk_1194[1].unk_1E);
     Font_SetActive(4, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Font_Printf(arg1->unk_00 + 0x82, arg1->unk_02 + 0x1F, BattlePrep_GetString(0x39));
-    Font_Printf(arg1->unk_00 + 0x82, arg1->unk_02 + 0x4F, BattlePrep_GetString(0x39));
+    Font_Printf(arg1->posX + 0x82, arg1->posY + 0x1F, BattlePrep_GetString(0x39));
+    Font_Printf(arg1->posX + 0x82, arg1->posY + 0x4F, BattlePrep_GetString(0x39));
     Font_EndTexturedTextRendering();
 }
 
@@ -362,60 +362,60 @@ void BattlePrep_DrawStreakGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg
     s32 temp_v0;
 
     Session_LoadContinueRecord(&sp50, NULL);
-    BattlePrep_DrawBorderedRect(arg1->unk_00 + 0x10, arg1->unk_02 + 0x14, 0xA8, 0x3C, 0, 0, 0, 0xFF);
-    BattlePrep_DrawBorderedRect(arg1->unk_00 + 0x10, arg1->unk_02 + 0x60, 0xA8, 0x22, 0, 0, 0, 0xFF);
-    BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 0x14, arg1->unk_02 + 0x64);
+    BattlePrep_DrawBorderedRect(arg1->posX + 0x10, arg1->posY + 0x14, 0xA8, 0x3C, 0, 0, 0, 0xFF);
+    BattlePrep_DrawBorderedRect(arg1->posX + 0x10, arg1->posY + 0x60, 0xA8, 0x22, 0, 0, 0, 0xFF);
+    BattlePrep_DrawCursorArrow(arg0, arg1->posX + 0x14, arg1->posY + 0x64);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
-    Font_Printf(arg1->unk_00 + 0x10, arg1->unk_02 + 6, BattlePrep_GetString(0x3A));
-    Font_Printf(arg1->unk_00 + 0x10, arg1->unk_02 + 0x52, BattlePrep_GetString(0x3B));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x2A, arg1->unk_02 + 0x64, 0, 1, BattlePrep_GetString(0x3C));
-    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x2A, arg1->unk_02 + 0x64, 1, 1, BattlePrep_GetString(0x3D));
+    Font_Printf(arg1->posX + 0x10, arg1->posY + 6, BattlePrep_GetString(0x3A));
+    Font_Printf(arg1->posX + 0x10, arg1->posY + 0x52, BattlePrep_GetString(0x3B));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x2A, arg1->posY + 0x64, 0, 1, BattlePrep_GetString(0x3C));
+    BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x2A, arg1->posY + 0x64, 1, 1, BattlePrep_GetString(0x3D));
     Text_SetEnvColor(0xFF, 0x64, 0x64, 0xFF);
 
-    if (sp50.unk_00 == 7) {
-        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, BattlePrep_GetString(sp50.unk_00 - 1));
-        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, BattlePrep_GetString(sp50.unk_01 + 0x13));
+    if (sp50.posX == 7) {
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x17, BattlePrep_GetString(sp50.posX - 1));
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x26, BattlePrep_GetString(sp50.unk_01 + 0x13));
         if (sp50.unk_01 < 8) {
-            if (sp50.unk_02 < 4) {
-                Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, "%s %d", BattlePrep_GetString(0x37), sp50.unk_02);
+            if (sp50.posY < 4) {
+                Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x35, "%s %d", BattlePrep_GetString(0x37), sp50.posY);
             } else {
-                Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, BattlePrep_GetString(0x3E));
+                Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x35, BattlePrep_GetString(0x3E));
             }
         } else {
-            Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, "%s %d", BattlePrep_GetString(0x1B), sp50.unk_02);
+            Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x35, "%s %d", BattlePrep_GetString(0x1B), sp50.posY);
         }
-    } else if ((sp50.unk_00 == 3) || (sp50.unk_00 == 6)) {
-        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, BattlePrep_GetString(sp50.unk_00 - 1));
-        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, BattlePrep_GetString(sp50.unk_01 + 7));
-        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, BattlePrep_GetString(sp50.unk_02 + 0xA));
+    } else if ((sp50.posX == 3) || (sp50.posX == 6)) {
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x17, BattlePrep_GetString(sp50.posX - 1));
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x26, BattlePrep_GetString(sp50.unk_01 + 7));
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x35, BattlePrep_GetString(sp50.posY + 0xA));
     } else {
-        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, BattlePrep_GetString(sp50.unk_00 - 1));
-        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, BattlePrep_GetString(sp50.unk_02 + 0xA));
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x17, BattlePrep_GetString(sp50.posX - 1));
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x26, BattlePrep_GetString(sp50.posY + 0xA));
     }
 
-    if (sp50.unk_00 != 7) {
+    if (sp50.posX != 7) {
         Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Font_Printf(arg1->unk_00 + 0x64, arg1->unk_02 + 0x43, "%s %d", BattlePrep_GetString(0x2C), sp50.unk_04);
+        Font_Printf(arg1->posX + 0x64, arg1->posY + 0x43, "%s %d", BattlePrep_GetString(0x2C), sp50.rotation);
     }
 
-    if (arg0->unk_04 == 0) {
-        sp48 = (arg1->unk_04 - Font_MeasureTextExtent(1, 0, BattlePrep_GetString(0x3F))) / 2;
+    if (arg0->rotation == 0) {
+        sp48 = (arg1->rotation - Font_MeasureTextExtent(1, 0, BattlePrep_GetString(0x3F))) / 2;
         Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         Font_SetLineHeight(0xC);
-        Font_Printf(arg1->unk_00 + sp48, arg1->unk_02 + 0x86, BattlePrep_GetString(0x3F));
+        Font_Printf(arg1->posX + sp48, arg1->posY + 0x86, BattlePrep_GetString(0x3F));
     }
 
     Font_EndTexturedTextRendering();
 
     if (sp50.unk_03 == 1) {
-        temp_v0 = Font_MeasureTextExtent(1, 0, BattlePrep_GetString(sp50.unk_00 - 1));
+        temp_v0 = Font_MeasureTextExtent(1, 0, BattlePrep_GetString(sp50.posX - 1));
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawTextureRgba16(arg1->unk_00 + temp_v0 + 0x20, arg1->unk_02 + 0x15, 0x10, 0x10, D_3027690, 0x10, 0);
+        Gfx_DrawTextureRgba16(arg1->posX + temp_v0 + 0x20, arg1->posY + 0x15, 0x10, 0x10, D_3027690, 0x10, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
@@ -426,26 +426,26 @@ void BattlePrep_DrawRuleWindow(unk_D_84B2665C* arg0) {
     s16 temp_a1;
     s16 var_a3;
 
-    if ((arg0->unk_00 != 0) && (arg0->unk_02 > 0)) {
+    if ((arg0->posX != 0) && (arg0->posY > 0)) {
         temp_s0 = &gBattlePrepRuleWindowLayouts[arg0->unk_01 - 1];
 
-        if (arg0->unk_02 < 4) {
-            var_a3 = (temp_s0->unk_06 * arg0->unk_02) / 4;
+        if (arg0->posY < 4) {
+            var_a3 = (temp_s0->unk_06 * arg0->posY) / 4;
             if (var_a3 < 0x10) {
                 var_a3 = 0x10;
             }
 
-            temp_a1 = temp_s0->unk_02 + ((temp_s0->unk_06 - var_a3) / 2);
+            temp_a1 = temp_s0->posY + ((temp_s0->unk_06 - var_a3) / 2);
             if (temp_s0->unk_0C == 0) {
-                Ui_DrawBorderedPanel(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
+                Ui_DrawBorderedPanel(temp_s0->posX, temp_a1, temp_s0->rotation, var_a3, temp_s0->unk_0A);
             } else {
-                BattlePrep_DrawBorderedRect(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, 0x1E, 0x1E, 0x82, 0xFF);
+                BattlePrep_DrawBorderedRect(temp_s0->posX, temp_a1, temp_s0->rotation, var_a3, 0x1E, 0x1E, 0x82, 0xFF);
             }
         } else {
             if (temp_s0->unk_0C == 0) {
-                Ui_DrawBorderedPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
+                Ui_DrawBorderedPanel(temp_s0->posX, temp_s0->posY, temp_s0->rotation, temp_s0->unk_06, temp_s0->unk_0A);
             } else {
-                BattlePrep_DrawBorderedRect(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82,
+                BattlePrep_DrawBorderedRect(temp_s0->posX, temp_s0->posY, temp_s0->rotation, temp_s0->unk_06, 0x1E, 0x1E, 0x82,
                               0xFF);
             }
 
@@ -503,7 +503,7 @@ void BattlePrep_RunQuitMenu(unk_D_84B2665C* arg0) {
     sp22 = sp24->unk_08 - 1;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        tmp = sp24->unk_10 >> (arg0->unk_04 * 3);
+        tmp = sp24->unk_10 >> (arg0->rotation * 3);
         switch (tmp & 7) {
             case 1:
                 Audio_PlaySoundEffectById(3);
@@ -529,44 +529,44 @@ void BattlePrep_RunQuitMenu(unk_D_84B2665C* arg0) {
                 Audio_PlaySoundEffectById(0x21);
                 break;
         }
-        arg0->unk_00 = 2;
+        arg0->posX = 2;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
         Audio_PlaySoundEffectById(1);
         do {
-            arg0->unk_04--;
-            if (arg0->unk_04 < 0) {
-                arg0->unk_04 = sp22;
+            arg0->rotation--;
+            if (arg0->rotation < 0) {
+                arg0->rotation = sp22;
             }
-        } while (!(sp24->unk_0E & (1 << arg0->unk_04)));
+        } while (!(sp24->unk_0E & (1 << arg0->rotation)));
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
         Audio_PlaySoundEffectById(1);
         do {
-            arg0->unk_04++;
-            if (sp22 < arg0->unk_04) {
-                arg0->unk_04 = 0;
+            arg0->rotation++;
+            if (sp22 < arg0->rotation) {
+                arg0->rotation = 0;
             }
-        } while (!(sp24->unk_0E & (1 << arg0->unk_04)));
+        } while (!(sp24->unk_0E & (1 << arg0->rotation)));
     }
 }
 
 void BattlePrep_RuleWindowExpanding(unk_D_84B2665C* arg0) {
-    arg0->unk_02++;
-    if (arg0->unk_02 >= 5) {
-        arg0->unk_02 = 4;
-        arg0->unk_00 = 3;
+    arg0->posY++;
+    if (arg0->posY >= 5) {
+        arg0->posY = 4;
+        arg0->posX = 3;
     }
 }
 
 void BattlePrep_RuleWindowCollapsing(unk_D_84B2665C* arg0) {
-    arg0->unk_02--;
-    if (arg0->unk_02 < 0) {
-        arg0->unk_02 = 0;
-        arg0->unk_00 = 4;
+    arg0->posY--;
+    if (arg0->posY < 0) {
+        arg0->posY = 0;
+        arg0->posX = 4;
     }
 }
 
 void BattlePrep_UpdateRuleWindow(unk_D_84B2665C* arg0) {
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 1:
             BattlePrep_RuleWindowExpanding(arg0);
             break;
@@ -585,9 +585,9 @@ void BattlePrep_InitRuleWindow(unk_D_84B2665C* arg0, s16 arg1) {
     unk_D_84B17550* ptr = &gBattlePrepRuleWindowLayouts[arg1 - 1];
 
     arg0->unk_01 = arg1;
-    arg0->unk_02 = 0;
-    arg0->unk_04 = 0;
-    arg0->unk_00 = 1;
+    arg0->posY = 0;
+    arg0->rotation = 0;
+    arg0->posX = 1;
 
     ptr->unk_0E = -1;
 
@@ -609,21 +609,21 @@ void BattlePrep_InitRuleWindow(unk_D_84B2665C* arg0, s16 arg1) {
         ptr->unk_0E &= ~1;
     }
 
-    while (!(ptr->unk_0E & (1 << arg0->unk_04))) {
-        arg0->unk_04++;
+    while (!(ptr->unk_0E & (1 << arg0->rotation))) {
+        arg0->rotation++;
     }
 }
 
 void BattlePrep_CloseRuleWindow(unk_D_84B2665C* arg0) {
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
     arg0->unk_01 = 0;
-    arg0->unk_02 = 0;
+    arg0->posY = 0;
 }
 
 s32 BattlePrep_PollRuleWindow(unk_D_84B2665C* arg0) {
-    if (arg0->unk_00 == 4) {
-        arg0->unk_00 = 0;
-        return arg0->unk_04;
+    if (arg0->posX == 4) {
+        arg0->posX = 0;
+        return arg0->rotation;
     }
     return -1;
 }

@@ -1197,7 +1197,7 @@ static f32 gResultCubeRotationScale[] = {
     1.0f,
 };
 
-static f32 D_8780F940[] = {
+static f32 gResultCubeRotationOffset[] = {
     0.0f, 3.0f,  6.0f,  9.0f,  12.0f,  15.0f,  12.0f,  9.0f,  6.0f,  3.0f,
     0.0f, -3.0f, -6.0f, -9.0f, -12.0f, -15.0f, -12.0f, -9.0f, -6.0f, -3.0f,
 };
@@ -1213,7 +1213,7 @@ static u8 gResultStateMessageIds[] = {
     3,
 };
 
-static s32 D_8780FC40;
+static s32 gResultState;
 static u8 gResultFlag_Win;
 static s32 gResultFrameCounter;
 static u8 gResultScoreThresholdMet;
@@ -1247,7 +1247,7 @@ static s16 gResultAnimYOffset;
 static u8 gResultAnimStep;
 static u8 gResultBankSyncDone;
 static u8 gResultAnimTimer;
-static s16 D_8780FCAA;
+static s16 gResultIconYOffset;
 static u8 gResultCubeAnimFrame[4];
 static u8 gResultCubeAnimTimer[4];
 static char pad_D_8780FCB4[0x4];
@@ -1255,9 +1255,9 @@ static u16 gResultTiledTexX[10];
 static u16 gResultTiledTexY[3];
 
 typedef struct ResultCubeState {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ f32 rotation;
 } ResultCubeState; // size = 0x8
 
 static ResultCubeState gResultCubes[4][9];
@@ -1277,7 +1277,7 @@ void Widget_PauseMenuInit(void) {
     u8 i;
     u8 j;
 
-    D_8780FC40 = 0;
+    gResultState = 0;
     gResultFlag_Win = 0;
     gResultScoreThresholdMet = 0;
     gResultSelectedOption = 0;
@@ -1301,7 +1301,7 @@ void Widget_PauseMenuInit(void) {
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 9; j++) {
-            gResultCubes[i][j].unk_04 = 0.0f;
+            gResultCubes[i][j].rotation = 0.0f;
         }
     }
 
@@ -1342,20 +1342,20 @@ void Widget_PauseMenuResetWinStreak(void) {
 }
 
 void UpdateDeltaTime(void) {
-    static u32 D_8780FE38;
+    static u32 gLastRspTimestamp;
 
     u32 v0 = gRspTaskManager.unk_A34;
 
     if (gResultDeltaTimeInit == 0) {
         gResultDeltaTimeInit = 1;
-    } else if (D_8780FE38 < v0) {
-        gResultDeltaTime = v0 - D_8780FE38;
+    } else if (gLastRspTimestamp < v0) {
+        gResultDeltaTime = v0 - gLastRspTimestamp;
     } else {
         // Counter wrapped around
-        gResultDeltaTime = (v0 + 0xFFFFFFFFLL + 1) - D_8780FE38;
+        gResultDeltaTime = (v0 + 0xFFFFFFFFLL + 1) - gLastRspTimestamp;
     }
 
-    D_8780FE38 = v0;
+    gLastRspTimestamp = v0;
 }
 
 void Widget_PauseMenuTrigger(s16 arg0) {
@@ -1512,9 +1512,9 @@ void Widget_PauseMenuDrawWinIcons(s16 arg0) {
     for (i = 0; i < 4; i++) {
         for (j = 0; j < gMenuOptionTimers[i]; j++) {
             if ((gMenuOptionTimers[i] >= gMenuSubState) && (gResultCubeStateFlag[i] == 2)) {
-                gResultCubes[i][j].unk_04 += 7.5f;
-                if (gResultCubes[i][j].unk_04 >= 360.0f) {
-                    gResultCubes[i][j].unk_04 -= 360.0f;
+                gResultCubes[i][j].rotation += 7.5f;
+                if (gResultCubes[i][j].rotation >= 360.0f) {
+                    gResultCubes[i][j].rotation -= 360.0f;
                 }
             }
 
@@ -1523,11 +1523,11 @@ void Widget_PauseMenuDrawWinIcons(s16 arg0) {
                     break;
                 }
 
-                if ((0xB6 - (j * 0x12)) != gResultCubes[i][j].unk_02) {
-                    gResultCubes[i][j].unk_02 += 6;
-                    gResultCubes[i][j].unk_04 += 15.0f;
-                    if (gResultCubes[i][j].unk_04 >= 360.0f) {
-                        gResultCubes[i][j].unk_04 -= 360.0f;
+                if ((0xB6 - (j * 0x12)) != gResultCubes[i][j].posY) {
+                    gResultCubes[i][j].posY += 6;
+                    gResultCubes[i][j].rotation += 15.0f;
+                    if (gResultCubes[i][j].rotation >= 360.0f) {
+                        gResultCubes[i][j].rotation -= 360.0f;
                     }
                 } else {
                     if (gResultCubeStateFlag[i] == 1) {
@@ -1547,16 +1547,16 @@ void Widget_PauseMenuDrawWinIcons(s16 arg0) {
                     }
 
                     if (gMenuOptionTimers[i] < gMenuSubState) {
-                        gResultCubes[i][j].unk_04 += 7.5f;
-                        if (gResultCubes[i][j].unk_04 >= 360.0f) {
-                            gResultCubes[i][j].unk_04 -= 360.0f;
+                        gResultCubes[i][j].rotation += 7.5f;
+                        if (gResultCubes[i][j].rotation >= 360.0f) {
+                            gResultCubes[i][j].rotation -= 360.0f;
                         }
                     }
                 }
             }
 
-            MathUtil_BuildTransformMtx(spC8, 0.2f, 0.2f, 0.2f, gResultCubes[i][j].unk_04, 0.0f, 1.0f, 0.0f,
-                          (gResultCubes[i][j].unk_00 + arg0) - 0xA0, 0x78 - gResultCubes[i][j].unk_02, 0.0f);
+            MathUtil_BuildTransformMtx(spC8, 0.2f, 0.2f, 0.2f, gResultCubes[i][j].rotation, 0.0f, 1.0f, 0.0f,
+                          (gResultCubes[i][j].posX + arg0) - 0xA0, 0x78 - gResultCubes[i][j].posY, 0.0f);
 
             gSPMatrix(gDisplayListHead++, (u32)spC8++ & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(gDisplayListHead++, gResultCubeRenderDL);
@@ -1788,7 +1788,7 @@ void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
             } else {
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
-                if ((gMenuSelectedOption == i) && ((D_8780FC40 == 4) || (((D_8780FC40 == 5) || (D_8780FC40 == 6)) &&
+                if ((gMenuSelectedOption == i) && ((gResultState == 4) || (((gResultState == 5) || (gResultState == 6)) &&
                                                                 ((gResultAnimTimer >= 0x28) || ((gResultAnimTimer % 10) < 5))))) {
                     var_a0 = 1;
                 }
@@ -1813,7 +1813,7 @@ void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
         }
         Widget_PauseMenuDrawIconQuad(var_a0, gResultCubeTextureTable[gMiniHudColorDefaults[i]][i], 0x24, 0x1A, ((i * 0x36) + arg0) + 0x3E, 0xBF,
                       ((i * 0x36) + arg0) + 0x62, 0xD9, gResultCubeRotationScale[gResultCubeAnimFrame[i]], gResultCubeRotationScale[gResultCubeAnimFrame[i]],
-                      gResultCubeRotationScale[gResultCubeAnimFrame[i]], D_8780F940[gResultCubeAnimTimer[i]], 0.0f, 0.0f, 1.0f);
+                      gResultCubeRotationScale[gResultCubeAnimFrame[i]], gResultCubeRotationOffset[gResultCubeAnimTimer[i]], 0.0f, 0.0f, 1.0f);
     }
 
     Font_BeginTranslucentTextRendering();
@@ -1860,9 +1860,9 @@ void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
 }
 
 s32 Widget_PauseMenuUpdate(void) {
-    static s32 D_8780FE3C;
-    static s32 D_8780FE40;
-    static s32 D_8780FE44;
+    static s32 gResultCubeCycleTimer;
+    static s32 gResultCubeCycleInterval;
+    static s32 gResultAnimDelayTimer;
 
     u8 sp70[] = {
         0, 0, 30, 0, 0, 250,
@@ -1892,15 +1892,15 @@ s32 Widget_PauseMenuUpdate(void) {
 
     UpdateDeltaTime();
 
-    switch (D_8780FC40) {
+    switch (gResultState) {
         case 0:
             if (gResultFlag_Win != 0) {
                 gResultFlag_Win = 0;
                 gResultAnimFrame = 0xB;
                 gResultAnimTimer_0 = 1;
-                D_8780FC40 = 1;
+                gResultState = 1;
                 gResultMenuVisible = 0;
-                D_8780FE44 = 0xB4;
+                gResultAnimDelayTimer = 0xB4;
                 if (gMenuCursorX != 0) {
                     if ((gResultPlayerScored[0] + gResultPlayerScored[1] + gResultPlayerScored[2] + gResultPlayerScored[3]) != 0) {
                         for (i = 0; i < 4; i++) {
@@ -1952,22 +1952,22 @@ s32 Widget_PauseMenuUpdate(void) {
             break;
 
         case 1:
-            if (D_8780FE44 > 0) {
-                D_8780FE44 -= gResultDeltaTime;
+            if (gResultAnimDelayTimer > 0) {
+                gResultAnimDelayTimer -= gResultDeltaTime;
             }
 
-            if ((D_8780FE44 <= 0) && (gResultController->buttonPressed & 0x8000)) {
+            if ((gResultAnimDelayTimer <= 0) && (gResultController->buttonPressed & 0x8000)) {
                 gResultConfirmPressed = 1;
                 if (gMenuCursorX == 0) {
                     Audio_PlaySoundEffectById(4);
-                    D_8780FC40 = 3;
+                    gResultState = 3;
                     gResultMenuActive = 1;
                     gResultOptionLimit = 3;
                 } else {
                     Audio_PlayPersistentSoundCommand(0x12, 0);
-                    D_8780FC40 = 2;
+                    gResultState = 2;
                     gResultAnimTimer_1 = 1;
-                    D_8780FCAA = 0x190;
+                    gResultIconYOffset = 0x190;
                     Widget_PauseMenuCheckTournamentEnd();
                     if (gResultScoreThresholdMet != 0) {
                         gResultOptionLimit = 2;
@@ -1980,7 +1980,7 @@ s32 Widget_PauseMenuUpdate(void) {
             break;
 
         case 2:
-            if (D_8780FCAA == 0) {
+            if (gResultIconYOffset == 0) {
                 if (gResultScoreThresholdMet == 1) {
                     if (gResultAnimTimer_2 == 0) {
                         for (i = 0; i < 4; i++) {
@@ -2011,22 +2011,22 @@ s32 Widget_PauseMenuUpdate(void) {
                                 if (Widget_PauseMenuCheckHyperUnlock() != 0) {
                                     Audio_StartMusicTrack(0x13);
                                     gResultSpecialWinActive = 1;
-                                    D_8780FE44 = 0xB4;
+                                    gResultAnimDelayTimer = 0xB4;
                                 } else {
-                                    D_8780FC40 = 3;
+                                    gResultState = 3;
                                     gResultMenuActive = 1;
                                 }
                             }
                         } else {
-                            D_8780FE44 -= gResultDeltaTime;
-                            if (D_8780FE44 <= 0) {
+                            gResultAnimDelayTimer -= gResultDeltaTime;
+                            if (gResultAnimDelayTimer <= 0) {
                                 if (gResultController->buttonPressed & 0x8000) {
                                     Audio_PlaySoundEffectById(4);
-                                    D_8780FC40 = 3;
+                                    gResultState = 3;
                                     gResultMenuActive = 1;
                                     gResultSpecialWinActive = 0;
                                 }
-                            } else if ((D_8780FE44 < 0xAB) && (gResultBankSyncDone == 0)) {
+                            } else if ((gResultAnimDelayTimer < 0xAB) && (gResultBankSyncDone == 0)) {
                                 gMenuRandomSeed |= 1;
                                 Save_SetOptionsField1E(gMenuRandomSeed & 0xFF);
                                 Save_CommitTypedRecord(0x14, 0);
@@ -2055,35 +2055,35 @@ s32 Widget_PauseMenuUpdate(void) {
             } else if (gResultController->buttonPressed & 0x8000) {
                 Audio_PlaySoundEffectById(2);
                 if (gMenuCursorX == 0) {
-                    D_8780FC40 = 6;
+                    gResultState = 6;
                 } else if (gResultScoreThresholdMet != 0) {
-                    D_8780FC40 = 6;
+                    gResultState = 6;
                 } else if (gResultSelectedOption == 0) {
                     gResultMenuActive = 0;
                     gResultCubesActive = 1;
                     if (gResultLowestScorerCount == 1) {
-                        D_8780FC40 = 5;
+                        gResultState = 5;
                         gResultAnimTimer = 0x2F;
                     } else {
-                        D_8780FC40 = 4;
-                        D_8780FE3C = 0x60 - Rand_Range(0x20);
+                        gResultState = 4;
+                        gResultCubeCycleTimer = 0x60 - Rand_Range(0x20);
                         gResultCubeCycleIndex = 0;
                     }
                 } else {
-                    D_8780FC40 = 6;
+                    gResultState = 6;
                 }
             }
             break;
 
         case 4:
-            D_8780FE3C--;
-            if (D_8780FE3C >= 0x1F) {
-                D_8780FE40 = 1;
+            gResultCubeCycleTimer--;
+            if (gResultCubeCycleTimer >= 0x1F) {
+                gResultCubeCycleInterval = 1;
             } else {
-                D_8780FE40 = 3;
+                gResultCubeCycleInterval = 3;
             }
 
-            if (!(gResultFrameCounter & D_8780FE40)) {
+            if (!(gResultFrameCounter & gResultCubeCycleInterval)) {
                 gResultCubeCycleIndex++;
                 Audio_PlaySoundEffectById(1);
                 if (gResultCubeCycleIndex >= gResultLowestScorerCount) {
@@ -2092,8 +2092,8 @@ s32 Widget_PauseMenuUpdate(void) {
                 gMenuSelectedOption = gResultLowestScorerIndices[gResultCubeCycleIndex];
             }
 
-            if (D_8780FE3C <= 0) {
-                D_8780FC40 = 5;
+            if (gResultCubeCycleTimer <= 0) {
+                gResultState = 5;
                 gResultAnimTimer = 0x2A;
             }
             break;
@@ -2103,7 +2103,7 @@ s32 Widget_PauseMenuUpdate(void) {
             if (gResultAnimTimer == 0x29) {
                 Audio_PlaySoundEffectById(0x11);
             } else if (gResultAnimTimer <= 0) {
-                D_8780FC40 = 6;
+                gResultState = 6;
             }
             break;
 
@@ -2142,25 +2142,25 @@ s32 Widget_PauseMenuUpdate(void) {
             ResultScreen_RenderResultGraphics(gResultAnimFrame, gResultPlayerScored[0], gResultPlayerScored[1], gResultPlayerScored[2], gResultPlayerScored[3]);
         }
 
-        if ((D_8780FC40 != 0) && (D_8780FC40 != 1)) {
+        if ((gResultState != 0) && (gResultState != 1)) {
             Gfx_FillRectWithDisplayState(0, 0, 0x140, 0xF0, 0, 0, 0, 0xB4);
         }
 
         if (gResultAnimTimer_1 != 0) {
-            D_8780FCAA -= 0x14;
-            if (D_8780FCAA <= 0) {
-                D_8780FCAA = 0;
+            gResultIconYOffset -= 0x14;
+            if (gResultIconYOffset <= 0) {
+                gResultIconYOffset = 0;
                 if (gResultSfxTriggered == 0) {
                     gResultSfxTriggered = 1;
                     Audio_PlayPersistentSoundCommand(0x13, 0);
 
                     for (i = 0; i < 4; i++) {
                         if (gResultPlayerScored[i] != 0) {
-                            gResultCubes[i][gMenuOptionTimers[i] - 1].unk_00 = (i * 0x36) + 0x4F;
-                            gResultCubes[i][gMenuOptionTimers[i] - 1].unk_02 = -0x58;
-                            gResultCubes[i][gMenuOptionTimers[i] - 1].unk_04 =
+                            gResultCubes[i][gMenuOptionTimers[i] - 1].posX = (i * 0x36) + 0x4F;
+                            gResultCubes[i][gMenuOptionTimers[i] - 1].posY = -0x58;
+                            gResultCubes[i][gMenuOptionTimers[i] - 1].rotation =
                                 360.0f -
-                                ((((s32)((0xC8 - gMenuOptionTimers[i] * 0x12) - gResultCubes[i][gMenuOptionTimers[i] - 1].unk_02) / 6) %
+                                ((((s32)((0xC8 - gMenuOptionTimers[i] * 0x12) - gResultCubes[i][gMenuOptionTimers[i] - 1].posY) / 6) %
                                   24) *
                                  15.0f);
                         }
@@ -2177,8 +2177,8 @@ s32 Widget_PauseMenuUpdate(void) {
                 }
             }
 
-            Widget_PauseMenuDrawPlayerIcons(D_8780FCAA);
-            Widget_PauseMenuDrawWinIcons(D_8780FCAA);
+            Widget_PauseMenuDrawPlayerIcons(gResultIconYOffset);
+            Widget_PauseMenuDrawWinIcons(gResultIconYOffset);
         }
 
         if (gResultAnimTimer_2 != 0) {

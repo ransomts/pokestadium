@@ -13,11 +13,11 @@
 #define STAT_ATTACK 5
 
 typedef struct PokemonStats {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 baseHP;
     /* 0x07 */ u8 baseSpecial;
@@ -32,11 +32,11 @@ typedef struct PokemonStats {
 } PokemonStats; // size = 0x17
 
 typedef struct gBaseStats {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
@@ -61,10 +61,10 @@ typedef struct TypeColorEntry {
 extern TypeColorEntry D_80071D88[];
 
 typedef struct unk_D_800AE4E8_004_1_000_010_000 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01[2];
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
@@ -81,13 +81,13 @@ typedef struct unk_D_800AE4E8_004_1_000_010_000 {
 } unk_D_800AE4E8_004_1_000_010_000; // size = 0x21
 
 typedef struct unk_D_800AE4E8_004_1_000_010 {
-    /* 0x00 */ unk_D_800AE4E8_004_1_000_010_000 unk_00;
+    /* 0x00 */ unk_D_800AE4E8_004_1_000_010_000 posX;
     /* 0x21 */ u8 unk_21[11];
     /* 0x2C */ u8 unk_2C[11];
 } unk_D_800AE4E8_004_1_000_010; // size = 0x37
 
 typedef struct unk_D_800AC910_050_9AC_008 {
-    /* 0x00 */ unk_D_800AE4E8_004_1_000_010_000 unk_00;
+    /* 0x00 */ unk_D_800AE4E8_004_1_000_010_000 posX;
     /* 0x21 */ u8 unk_21;
     /* 0x22 */ u16 unk_22;
     /* 0x24 */ u16 unk_24;
@@ -97,11 +97,11 @@ typedef struct unk_D_800AC910_050_9AC_008 {
 } unk_D_800AC910_050_9AC_008; // size = 0x2C
 
 typedef struct unk_func_80022C28_ret {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
@@ -134,7 +134,7 @@ typedef struct unk_D_800AC910_050_B40 {
 } unk_D_800AC910_050_B40; // size >= 0x391
 
 typedef struct unk_D_800AC910_050_FA0 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char unk02[0x1];
     /* 0x03 */ u8 unk_03;
@@ -191,17 +191,17 @@ typedef struct unk_D_800AC910_054 {
 } unk_D_800AC910_054; // size = 0x34C0
 
 typedef struct Gen1StringDecodeBuffer {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[11];
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ char posY[11];
     /* 0x0D */ u8 unk_0D[2];
     /* 0x0F */ char unkF[0x1];
 } Gen1StringDecodeBuffer; // size = 0x10
 
 typedef struct unk_D_800AC910 {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06[0x13];
     /* 0x19 */ u8 unk_19[0x20];

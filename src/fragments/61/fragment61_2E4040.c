@@ -255,146 +255,146 @@ void TeamSelection_RulePrompt_DrawOption(s16 arg0, s16 arg1, s16 arg2, char* arg
 void TeamSelection_RulePrompt_DrawOptionSetFour(RulePromptConfig* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 0, TeamSelection_GetLabelText(0x15));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 1, TeamSelection_GetLabelText(0x16));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 2, TeamSelection_GetLabelText(0x17));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 3, TeamSelection_GetLabelText(0x18));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 0, TeamSelection_GetLabelText(0x15));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 1, TeamSelection_GetLabelText(0x16));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 2, TeamSelection_GetLabelText(0x17));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 3, TeamSelection_GetLabelText(0x18));
     Font_EndTexturedTextRendering();
 
     if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
 void TeamSelection_RulePrompt_DrawOptionSetThreeA(RulePromptConfig* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 0, TeamSelection_GetLabelText(0x19));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 1, TeamSelection_GetLabelText(0x1A));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 2, TeamSelection_GetLabelText(0x1B));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 0, TeamSelection_GetLabelText(0x19));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 1, TeamSelection_GetLabelText(0x1A));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 2, TeamSelection_GetLabelText(0x1B));
     Font_EndTexturedTextRendering();
 
     if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
 void TeamSelection_RulePrompt_DrawOptionSetThreeB(RulePromptConfig* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 0, TeamSelection_GetLabelText(0x15));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 1, TeamSelection_GetLabelText(0x17));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 2, TeamSelection_GetLabelText(0x18));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 0, TeamSelection_GetLabelText(0x15));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 1, TeamSelection_GetLabelText(0x17));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 2, TeamSelection_GetLabelText(0x18));
     Font_EndTexturedTextRendering();
 
     if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
 void TeamSelection_RulePrompt_DrawOptionSetThreeC(RulePromptConfig* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 0, TeamSelection_GetLabelText(0x1C));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 1, TeamSelection_GetLabelText(0x1D));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 2, TeamSelection_GetLabelText(0x1E));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 0, TeamSelection_GetLabelText(0x1C));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 1, TeamSelection_GetLabelText(0x1D));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 2, TeamSelection_GetLabelText(0x1E));
     Font_EndTexturedTextRendering();
 
     if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
 void TeamSelection_RulePrompt_DrawOptionSetTwo(RulePromptConfig* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 0, TeamSelection_GetLabelText(0x1F));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 1, TeamSelection_GetLabelText(0x20));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 0, TeamSelection_GetLabelText(0x1F));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 1, TeamSelection_GetLabelText(0x20));
     Font_EndTexturedTextRendering();
 
     if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
 void TeamSelection_RulePrompt_DrawSingleLabel(RulePromptConfig* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Font_Printf(arg0->unk_00 + 0x2D, arg0->unk_02 + 0x38, TeamSelection_GetLabelText(0x21));
+    Font_Printf(arg0->posX + 0x2D, arg0->posY + 0x38, TeamSelection_GetLabelText(0x21));
     Font_EndTexturedTextRendering();
 }
 
 void TeamSelection_RulePrompt_DrawThreeRowPanel(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x18, arg0->unk_02 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x18, arg0->unk_02 + 0x3A, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x18, arg0->unk_02 + 0x4E, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + 0x3A, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + 0x4E, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Font_Printf(arg0->unk_00 + 0x78, arg0->unk_02 + 0x38, TeamSelection_GetLabelText(0x22));
+    Font_Printf(arg0->posX + 0x78, arg0->posY + 0x38, TeamSelection_GetLabelText(0x22));
     Font_EndTexturedTextRendering();
 }
 
 void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x18, arg0->unk_02 + arg0->unk_08 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x18, arg0->unk_02 + arg0->unk_08 + 0x3A, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x18, arg0->unk_02 + arg0->unk_08 + 0x4E, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->unk_08 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->unk_08 + 0x3A, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->unk_08 + 0x4E, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     Font_SetLineHeight(0x1E);
-    Font_Printf(arg0->unk_00 + 0x78, arg0->unk_02 + arg0->unk_08 + 0x29, TeamSelection_GetLabelText(0x23));
+    Font_Printf(arg0->posX + 0x78, arg0->posY + arg0->unk_08 + 0x29, TeamSelection_GetLabelText(0x23));
     Font_EndTexturedTextRendering();
 }
 
 void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x24, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x38, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x10, arg0->posY + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x10, arg0->posY + 0x24, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x10, arg0->posY + 0x38, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     Font_SetLineHeight(0x1C);
-    Font_Printf(arg0->unk_00 + 0x68, arg0->unk_02 + 0x14, TeamSelection_GetLabelText(0x24));
+    Font_Printf(arg0->posX + 0x68, arg0->posY + 0x14, TeamSelection_GetLabelText(0x24));
     Font_EndTexturedTextRendering();
 }
 
 void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x24, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x38, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x10, arg0->posY + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x10, arg0->posY + 0x24, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x10, arg0->posY + 0x38, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Font_Printf(arg0->unk_00 + 0x68, arg0->unk_02 + 0x22, TeamSelection_GetLabelText(0x25));
+    Font_Printf(arg0->posX + 0x68, arg0->posY + 0x22, TeamSelection_GetLabelText(0x25));
     Font_EndTexturedTextRendering();
 }
 
 void TeamSelection_RulePrompt_DrawOptionSetTwoB(RulePromptConfig* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 0, TeamSelection_GetLabelText(0x26));
-    TeamSelection_RulePrompt_DrawOption(arg0->unk_00, arg0->unk_02, 1, TeamSelection_GetLabelText(0x20));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 0, TeamSelection_GetLabelText(0x26));
+    TeamSelection_RulePrompt_DrawOption(arg0->posX, arg0->posY, 1, TeamSelection_GetLabelText(0x20));
     Font_EndTexturedTextRendering();
 
     if (D_8423E58A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, arg0->unk_02 + (D_8423E58A * 0x1C) + 0xC);
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_8423E58A * 0x1C) + 0xC);
     }
 }
 
@@ -408,11 +408,11 @@ void TeamSelection_RulePrompt_DrawNumberAndLabel(RulePromptConfig* arg0, s16 arg
     Font_SetLineHeight(0x1C);
     Text_SetNumberToken(2, arg1);
     sp20 = TeamSelection_FormatText(sp28, sizeof(sp28), 0x27);
-    tmp = ((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp20)) / 2);
-    Font_Printf(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, sp20);
+    tmp = ((arg0->rotation - Font_MeasureTextExtent(0, 0, sp20)) / 2);
+    Font_Printf(arg0->posX + tmp, arg0->posY + 0x14, sp20);
     sp20 = TeamSelection_GetLabelText(0x28);
-    tmp = ((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp20)) / 2);
-    Font_Printf(arg0->unk_00 + tmp, arg0->unk_02 + 0x56, sp20);
+    tmp = ((arg0->rotation - Font_MeasureTextExtent(0, 0, sp20)) / 2);
+    Font_Printf(arg0->posX + tmp, arg0->posY + 0x56, sp20);
     Font_EndTexturedTextRendering();
 }
 
@@ -420,9 +420,9 @@ void TeamSelection_RulePrompt_DrawBinaryLabel(RulePromptConfig* arg0, s16 arg1) 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     if (arg1 == 0) {
-        Font_Printf(arg0->unk_00 + 0x18, arg0->unk_02 + 0x14, TeamSelection_GetLabelText(0x29));
+        Font_Printf(arg0->posX + 0x18, arg0->posY + 0x14, TeamSelection_GetLabelText(0x29));
     } else {
-        Font_Printf(arg0->unk_00 + 0x39, arg0->unk_02 + 0x14, TeamSelection_GetLabelText(0x2A));
+        Font_Printf(arg0->posX + 0x39, arg0->posY + 0x14, TeamSelection_GetLabelText(0x2A));
     }
     Font_EndTexturedTextRendering();
 }
@@ -439,10 +439,10 @@ void TeamSelection_RulePrompt_DrawFrame(s32 arg0) {
             if (var_a3 < 0x10) {
                 var_a3 = 0x10;
             }
-            tmp2 = temp_s0->unk_02 + ((temp_s0->unk_06 - var_a3) / 2);
-            Ui_DrawBorderedPanel(temp_s0->unk_00, tmp2, temp_s0->unk_04, var_a3, temp_s0->unk_0C);
+            tmp2 = temp_s0->posY + ((temp_s0->unk_06 - var_a3) / 2);
+            Ui_DrawBorderedPanel(temp_s0->posX, tmp2, temp_s0->rotation, var_a3, temp_s0->unk_0C);
         } else {
-            Ui_DrawBorderedPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0C);
+            Ui_DrawBorderedPanel(temp_s0->posX, temp_s0->posY, temp_s0->rotation, temp_s0->unk_06, temp_s0->unk_0C);
 
             switch (D_8423E580) {
                 case 0:

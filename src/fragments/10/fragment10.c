@@ -350,7 +350,7 @@ void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
 
         gSPEndDisplayList(temp_v0++);
 
-        gCurrentHudState->unk_190->unk_1C = gCurrentHudState->unk_028.unk_0A8[0].unk_04;
+        gCurrentHudState->unk_190->unk_1C = gCurrentHudState->unk_028.unk_0A8[0].rotation;
     }
 }
 
@@ -446,7 +446,7 @@ void DrowzeeGame_JudgePlayerTiming(void) {
 
     if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
         D_864052CC->previousHealthState = D_864052CC->unk_16C;
-        if (gCurrentHealthSegment < (D_864052CC->unk_004.unk_040.unk_04->unk_0A / 2)) {
+        if (gCurrentHealthSegment < (D_864052CC->unk_004.unk_040.rotation->unk_0A / 2)) {
             D_864052CC->unk_16C = 0;
         } else {
             D_864052CC->unk_16C = 1;
@@ -813,7 +813,7 @@ void DrowzeeGame_ShowResultText(void) {
 }
 
 void DrowzeeGame_InitCamera(void) {
-    D_87B000EC = D_87B000E8->unk_00.unk_0C;
+    D_87B000EC = D_87B000E8->posX.unk_0C;
 
     D_87B000F0 = 0x900;
     D_87B000F2 = 0;
@@ -835,7 +835,7 @@ void DrowzeeGame_InitPlayerOverlays(void) {
     for (i = 0; i < 4; i++) {
         gCurrentHudState = &gPlayerHudStates[i];
         gCurrentHudState->unk_190 = GeoNode_CreateScale(temp_s5, NULL, 4, NULL, &gRootNodePosition, 0.0f);
-        GraphNode_AppendChild(&gGraphRoot0, &gCurrentHudState->unk_190->unk_00);
+        GraphNode_AppendChild(&gGraphRoot0, &gCurrentHudState->unk_190->posX);
     }
 
     MainPool_FinalizeAllocation(temp_s5);
@@ -854,7 +854,7 @@ void DrowzeeGame_LoadAssets(void) {
     D_87B000E4 = Model_LoadByArchiveIndex(0xC7);
     gCurrentGraphNode = &gResultScreenNode;
     ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC7, D_87B000E4->unk_08->unk_00[0]);
+    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC7, D_87B000E4->unk_08->posX[0]);
     ModelAnim_SetAnimation(gCurrentGraphNode, 0);
     ModelAnim_SetFrame(gCurrentGraphNode, 0);
     D_87B000E4 = Model_LoadByArchiveIndex(0xC4);
@@ -864,13 +864,13 @@ void DrowzeeGame_LoadAssets(void) {
         gCurrentGraphNode = &gCurrentHudState->unk_028;
 
         ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC4, D_87B000E4->unk_08->unk_00[0]);
+        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC4, D_87B000E4->unk_08->posX[0]);
         gCurrentHudState->unk_004 = 0;
         ModelAnim_SetAnimation(gCurrentGraphNode, gCurrentHudState->unk_004);
-        ModelAnim_SetFrame(gCurrentGraphNode, MiniGame_RandomRange(gCurrentGraphNode->unk_040.unk_04->unk_0A));
+        ModelAnim_SetFrame(gCurrentGraphNode, MiniGame_RandomRange(gCurrentGraphNode->unk_040.rotation->unk_0A));
 
-        gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].unk_00;
-        gCurrentGraphNode->unk_024.y = gPlayerSpawnInfo[i].unk_04;
+        gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].posX;
+        gCurrentGraphNode->unk_024.y = gPlayerSpawnInfo[i].rotation;
         gCurrentGraphNode->unk_024.z = gPlayerSpawnInfo[i].unk_08;
 
         gCurrentGraphNode->unk_030.x = gPlayerSpawnInfo[i].unk_0C;
@@ -902,12 +902,12 @@ void DrowzeeGame_LoadAssets(void) {
     D_864052CC = &gGameState;
     gCurrentGraphNode = &D_864052CC->unk_004;
     ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC3, D_87B000E4->unk_08->unk_00[0]);
+    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC3, D_87B000E4->unk_08->posX[0]);
 
     D_864052CC->unk_001 = D_864052CC->unk_000 = 0;
 
     ModelAnim_SetAnimation(gCurrentGraphNode, D_864052CC->unk_000);
-    ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.unk_04->unk_0A);
+    ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.rotation->unk_0A);
 
     gCurrentGraphNode->unk_024.y = 20.0f;
     gCurrentGraphNode->unk_030.x = 1.0f;
@@ -923,11 +923,11 @@ void DrowzeeGame_LoadAssets(void) {
         gCurrentGraphNode = &gPlayerResultNodes[i];
 
         ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xD2, D_87B000E4->unk_08->unk_00[0]);
+        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xD2, D_87B000E4->unk_08->posX[0]);
         ModelAnim_SetAnimation(gCurrentGraphNode, 0);
-        ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.unk_04->unk_0A);
+        ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.rotation->unk_0A);
 
-        gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].unk_00;
+        gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].posX;
         gCurrentGraphNode->unk_024.y = 25.0f;
         gCurrentGraphNode->unk_024.z = gPlayerSpawnInfo[i].unk_08;
         gCurrentGraphNode->unk_01E.x = gPlayerSpawnInfo[i].unk_18;

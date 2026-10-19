@@ -14,18 +14,18 @@ u32 gTextTable_StageSubtitles[] = {
     0xA5B70000,
 };
 
-u32 D_87A01180[] = {
+u32 gStageSubtitles_Alt1[] = {
     0xA5ABA5B9,
     0xA5DF0000,
     0xA5BFA5B1,
     0xA5B70000,
 };
 
-u32 D_87A01190[] = {
+u32 gStageSubtitles_Alt2[] = {
     0xA5E0A5B5, 0xA5B70000, 0xA5B3A5B8, 0xA5EDA5A6, 0x00000000,
 };
 
-u32 D_87A011A4[] = {
+u32 gStageSubtitles_Alt3[] = {
     0xA5B7A5B2, 0xA5EB0000, 0xA4CEA4AB, 0xA4C10000, 0xA4D2A4AD, 0xA4EFA4B1, 0x00000000,
 };
 
@@ -243,8 +243,8 @@ void Gfx_DrawTilemap(s32 arg0) {
 
 typedef void (*ret_func_87A010C8)(void);
 
-ret_func_87A010C8 func_87A010C8(void) {
-    return func_87A010C8;
+ret_func_87A010C8 MiniCam_GetResetFunc(void) {
+    return MiniCam_GetResetFunc;
 }
 
 s32 MiniSound_DispatchCommand(s32 arg0, s32 arg1, s32 arg2) {

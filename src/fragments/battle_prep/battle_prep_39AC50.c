@@ -88,12 +88,12 @@ s32 BattlePrepRoster_DrawIconVariantA(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         temp_a3 = (BattleUiState*)gDefaultGraphRoot->unk_000.unk_14;
 
-        temp_v1 = gDefaultGraphRoot->modelPhase - temp_a3->unk_04->modelPhase;
+        temp_v1 = gDefaultGraphRoot->modelPhase - temp_a3->rotation->modelPhase;
         if (temp_v1 < 5) {
-            var_a1 = ((arg1->unk_00.unk_14 * 3) + temp_v1) - 2;
+            var_a1 = ((arg1->posX.unk_14 * 3) + temp_v1) - 2;
             sp30 = D_300C000;
         } else {
-            var_a1 = (arg1->unk_00.unk_14 * 3) + temp_v1 + 1;
+            var_a1 = (arg1->posX.unk_14 * 3) + temp_v1 + 1;
             sp30 = D_300D800;
         }
 
@@ -114,12 +114,12 @@ s32 BattlePrepRoster_DrawIconVariantB(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         temp_a3 = (BattleUiState*)gDefaultGraphRoot->unk_000.unk_14;
 
-        temp_v1 = gDefaultGraphRoot->modelPhase - temp_a3->unk_04->modelPhase;
+        temp_v1 = gDefaultGraphRoot->modelPhase - temp_a3->rotation->modelPhase;
         if (temp_v1 < 5) {
-            var_a1 = (arg1->unk_00.unk_14 * 2) + (((temp_v1 - 1) / 2) * 6) + ((temp_v1 - 1) % 2);
+            var_a1 = (arg1->posX.unk_14 * 2) + (((temp_v1 - 1) / 2) * 6) + ((temp_v1 - 1) % 2);
             sp30 = D_300F000;
         } else {
-            var_a1 = (arg1->unk_00.unk_14 * 2) + (((temp_v1 - 5) / 2) * 6) + ((temp_v1 - 5) % 2) + 0xC;
+            var_a1 = (arg1->posX.unk_14 * 2) + (((temp_v1 - 5) / 2) * 6) + ((temp_v1 - 5) % 2) + 0xC;
             sp30 = D_300FC00;
         }
 
@@ -137,7 +137,7 @@ s32 BattlePrepRoster_DrawTrainerBadge(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v1 = (BattleUiState*)gDefaultGraphRoot->unk_000.unk_14;
-        if (temp_v1->unk_04->modelPhase == gDefaultGraphRoot->modelPhase) {
+        if (temp_v1->rotation->modelPhase == gDefaultGraphRoot->modelPhase) {
             var_a3 = temp_v1->unk_24->img_p;
         } else {
             var_a3 = temp_v1->unk_28->img_p;
@@ -145,7 +145,7 @@ s32 BattlePrepRoster_DrawTrainerBadge(s32 arg0, SimpleGfxNode* arg1) {
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)var_a3 & 0x1FFFFFFF);
-        gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
+        gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
         GeoRender_ApplyMaterialState();
     }
@@ -714,11 +714,11 @@ s32 BattlePrepRoster_ConvergeIconsStep(BattleUiState* arg0, s16 arg1) {
 
     if (sp24 >= arg1) {
         for (i = 0; i < 5; i++) {
-            arg0->unk_04[i].unk_01E.x -= sp22;
+            arg0->rotation[i].unk_01E.x -= sp22;
         }
 
         for (i = 5; i < 10; i++) {
-            arg0->unk_04[i].unk_01E.x += sp22;
+            arg0->rotation[i].unk_01E.x += sp22;
         }
 
         return 0;
@@ -742,7 +742,7 @@ s32 BattlePrepRoster_ZoomStepNTSC(BattleUiState* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x14) {
-        arg0->unk_04[10].unk_024.z = -80.0f - (arg1 * 30.0f);
+        arg0->rotation[10].unk_024.z = -80.0f - (arg1 * 30.0f);
         return 0;
     }
 
@@ -763,7 +763,7 @@ s32 BattlePrepRoster_ZoomStepPAL(BattleUiState* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x10) {
-        arg0->unk_04[10].unk_024.z = -80.0f - (arg1 * 38.0f);
+        arg0->rotation[10].unk_024.z = -80.0f - (arg1 * 38.0f);
         return 0;
     }
 
@@ -797,7 +797,7 @@ void BattlePrepRoster_UpdateAssembleStep(BattleUiState* arg0) {
     }
 
     if (sp24 != 0) {
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     }
     arg0->unk_01++;
 }
@@ -808,12 +808,12 @@ void BattlePrepRoster_UpdateLoadingStep(BattleUiState* arg0) {
     arg0->unk_01++;
     if ((arg0->unk_01 >= 0x1E) && (PokeIcon_AreSlotsIdle(arg0->unk_20) != 0)) {
         arg0->unk_01 = 0;
-        arg0->unk_00 = 2;
+        arg0->posX = 2;
     }
 }
 
 void BattlePrepRoster_Update(BattleUiState* arg0) {
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 1:
             BattlePrepRoster_UpdateLoadingStep(arg0);
             break;
@@ -833,11 +833,11 @@ void BattlePrepRoster_LoadDexIdsSingle(BattleUiState* arg0) {
     PokeIcon_AttachDepthBuffer(arg0->unk_20, temp_s0, GfxImage_Allocate(0, 2, 0x80, 0x60, 1));
 
     for (count = 0, i = 0; i < gSessionContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].posX.posX, 0);
     }
 
     for (count = 6, i = 0; i < gSessionContext.unk_1194[1].unk_08[0]->unk_214->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[1].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[1].unk_08[0]->unk_214->unk_028[i].posX.posX, 0);
     }
 }
 
@@ -849,22 +849,22 @@ void BattlePrepRoster_LoadDexIdsDouble(BattleUiState* arg0) {
     PokeIcon_AttachDepthBuffer(arg0->unk_20, tmp, GfxImage_Allocate(0, 2, 0x60, 0x40, 1));
 
     for (count = 0, i = 0; i < gSessionContext.unk_1194[0].unk_08[0]->unk_214->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[0].unk_08[0]->unk_214->unk_028[i].posX.posX, 0);
     }
 
     if (gSessionContext.unk_1194[0].unk_08[1] != NULL) {
         for (i = 0, count = 6; i < gSessionContext.unk_1194[0].unk_08[1]->unk_214->unk_002; count++, i++) {
-            SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[0].unk_08[1]->unk_214->unk_028[i].unk_00.unk_00, 0);
+            SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[0].unk_08[1]->unk_214->unk_028[i].posX.posX, 0);
         }
     }
 
     for (i = 0, count = 12; i < gSessionContext.unk_1194[1].unk_08[0]->unk_214->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[1].unk_08[0]->unk_214->unk_028[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[1].unk_08[0]->unk_214->unk_028[i].posX.posX, 0);
     }
 
     if (gSessionContext.unk_1194[1].unk_08[1] != NULL) {
         for (count = 18, i = 0; i < gSessionContext.unk_1194[1].unk_08[1]->unk_214->unk_002; count++, i++) {
-            SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[1].unk_08[1]->unk_214->unk_028[i].unk_00.unk_00, 0);
+            SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.unk_1194[1].unk_08[1]->unk_214->unk_028[i].posX.posX, 0);
         }
     }
 }
@@ -876,7 +876,7 @@ void BattlePrepRoster_Load(BattleUiState* arg0, BinArchive* arg1) {
     PokeIcon_OpenModelArchives();
     FRAGMENT_LOAD(fragment31);
 
-    if (arg0->unk_02 == 1) {
+    if (arg0->posY == 1) {
         BattlePrepRoster_LoadDexIdsDouble(arg0);
     } else {
         BattlePrepRoster_LoadDexIdsSingle(arg0);
@@ -884,43 +884,43 @@ void BattlePrepRoster_Load(BattleUiState* arg0, BinArchive* arg1) {
 
     BattlePrep_DrawTrainerStatusIcon(arg0->unk_24, 0, sp24, D_3000000);
     BattlePrep_DrawTrainerStatusIcon(arg0->unk_28, 1, sp20, D_3003000);
-    arg0->unk_00 = 1;
+    arg0->posX = 1;
 }
 
 void BattlePrepRoster_PositionIconsSingle(BattleUiState* arg0) {
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[0].unk_024, -96.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[2].unk_024, -32.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[3].unk_024, 32.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[4].unk_024, 96.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[5].unk_024, -96.0f, -96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[6].unk_024, -32.0f, -96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[7].unk_024, 32.0f, -96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[0].unk_024, -96.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[2].unk_024, -32.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[3].unk_024, 32.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[4].unk_024, 96.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[5].unk_024, -96.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[6].unk_024, -32.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[7].unk_024, 32.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[9].unk_024, 96.0f, -96.0f, -289.0f);
 
-    arg0->unk_04[1].unk_000.unk_01 &= ~1;
-    arg0->unk_04[8].unk_000.unk_01 &= ~1;
+    arg0->rotation[1].unk_000.unk_01 &= ~1;
+    arg0->rotation[8].unk_000.unk_01 &= ~1;
 }
 
 void BattlePrepRoster_PositionIconsDouble(BattleUiState* arg0) {
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[0].unk_024, -96.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[1].unk_024, -40.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[2].unk_024, 8.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[3].unk_024, 56.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[4].unk_024, 104.0f, 96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[5].unk_024, -104.0f, -96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[6].unk_024, -56.0f, -96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[7].unk_024, -8.0f, -96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[8].unk_024, 40.0f, -96.0f, -289.0f);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04[9].unk_024, 96.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[0].unk_024, -96.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[1].unk_024, -40.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[2].unk_024, 8.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[3].unk_024, 56.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[4].unk_024, 104.0f, 96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[5].unk_024, -104.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[6].unk_024, -56.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[7].unk_024, -8.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[8].unk_024, 40.0f, -96.0f, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation[9].unk_024, 96.0f, -96.0f, -289.0f);
 }
 
 s32 BattlePrepRoster_InitDisplayObjects(BattleUiState* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
     s16 var_a1;
 
-    if (arg0->unk_00 == 2) {
-        arg0->unk_00 = 3;
-        arg0->unk_04 = arg1;
+    if (arg0->posX == 2) {
+        arg0->posX = 3;
+        arg0->rotation = arg1;
         arg0->unk_01 = 0;
         if (osTvType == OS_TV_PAL) {
             var_a1 = 0x53F0;
@@ -929,54 +929,54 @@ s32 BattlePrepRoster_InitDisplayObjects(BattleUiState* arg0, Fragment2_1GraphNod
         }
 
         for (i = 0; i < 11; i++) {
-            arg0->unk_04[i].unk_000.unk_14 = arg0;
+            arg0->rotation[i].unk_000.unk_14 = arg0;
         }
 
         for (i = 0; i < 5; i++) {
-            arg0->unk_04[i].unk_01E.x = var_a1;
+            arg0->rotation[i].unk_01E.x = var_a1;
         }
 
         // clang-format off
-        for (i = 5; i < 10; i++) { arg0->unk_04[i].unk_01E.x = -var_a1; }
+        for (i = 5; i < 10; i++) { arg0->rotation[i].unk_01E.x = -var_a1; }
         // clang-format on
 
-        Model_InitDisplayObject(&arg0->unk_04[0], 1, 0, arg0->unk_14);
-        Model_InitDisplayObject(&arg0->unk_04[1], 1, 0, arg0->unk_0C);
-        Model_InitDisplayObject(&arg0->unk_04[2], 1, 0, arg0->unk_0C);
-        Model_InitDisplayObject(&arg0->unk_04[3], 1, 0, arg0->unk_0C);
-        Model_InitDisplayObject(&arg0->unk_04[4], 1, 0, arg0->unk_0C);
-        Model_InitDisplayObject(&arg0->unk_04[5], 1, 0, arg0->unk_10);
-        Model_InitDisplayObject(&arg0->unk_04[6], 1, 0, arg0->unk_10);
-        Model_InitDisplayObject(&arg0->unk_04[7], 1, 0, arg0->unk_10);
-        Model_InitDisplayObject(&arg0->unk_04[8], 1, 0, arg0->unk_10);
-        Model_InitDisplayObject(&arg0->unk_04[9], 1, 0, arg0->unk_18);
-        Model_InitDisplayObject(&arg0->unk_04[10], 3, 0, arg0->unk_1C);
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[10].unk_024, 0.0f, 0.0f, 1000.0f);
+        Model_InitDisplayObject(&arg0->rotation[0], 1, 0, arg0->unk_14);
+        Model_InitDisplayObject(&arg0->rotation[1], 1, 0, arg0->unk_0C);
+        Model_InitDisplayObject(&arg0->rotation[2], 1, 0, arg0->unk_0C);
+        Model_InitDisplayObject(&arg0->rotation[3], 1, 0, arg0->unk_0C);
+        Model_InitDisplayObject(&arg0->rotation[4], 1, 0, arg0->unk_0C);
+        Model_InitDisplayObject(&arg0->rotation[5], 1, 0, arg0->unk_10);
+        Model_InitDisplayObject(&arg0->rotation[6], 1, 0, arg0->unk_10);
+        Model_InitDisplayObject(&arg0->rotation[7], 1, 0, arg0->unk_10);
+        Model_InitDisplayObject(&arg0->rotation[8], 1, 0, arg0->unk_10);
+        Model_InitDisplayObject(&arg0->rotation[9], 1, 0, arg0->unk_18);
+        Model_InitDisplayObject(&arg0->rotation[10], 3, 0, arg0->unk_1C);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[10].unk_024, 0.0f, 0.0f, 1000.0f);
 
-        if (arg0->unk_02 == 1) {
+        if (arg0->posY == 1) {
             BattlePrepRoster_PositionIconsDouble(arg0);
         } else {
             BattlePrepRoster_PositionIconsSingle(arg0);
         }
     }
 
-    return arg0->unk_00 == 3;
+    return arg0->posX == 3;
 }
 
 void BattlePrepRoster_Init(BattleUiState* arg0, CameraStruct* arg1) {
     MemoryBlock* temp_s1;
 
     arg0->unk_08 = arg1;
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
     arg0->unk_01 = 0;
-    arg0->unk_02 = 0;
+    arg0->posY = 0;
     arg0->unk_24 = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
     arg0->unk_28 = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
 
     if ((gSessionContext.unk_0001 == 0) && ((gSessionContext.unk_1194[0].unk_01 == 2) || (gSessionContext.unk_1194[1].unk_01 == 2))) {
-        arg0->unk_02 = 1;
+        arg0->posY = 1;
     }
-    if (arg0->unk_02 == 1) {
+    if (arg0->posY == 1) {
         arg0->unk_20 = PokeIcon_CreateRenderList(NULL, 0x18, 0x60, 0x40);
     } else {
         arg0->unk_20 = PokeIcon_CreateRenderList(NULL, 0xC, 0x80, 0x60);
@@ -984,7 +984,7 @@ void BattlePrepRoster_Init(BattleUiState* arg0, CameraStruct* arg1) {
     PokeIcon_SetNameTable(arg0->unk_20, gSpeciesDisplayParamsFront);
 
     temp_s1 = MainPool_AllocState(main_pool_get_available(), 0);
-    if (arg0->unk_02 == 1) {
+    if (arg0->posY == 1) {
         arg0->unk_0C = process_geo_layout(temp_s1, gPowerGaugeLeftLayoutDouble);
         arg0->unk_10 = process_geo_layout(temp_s1, gPowerGaugeRightLayoutDouble);
     } else {

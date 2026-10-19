@@ -5,18 +5,18 @@
 #include "6BC0.h"
 
 typedef struct unk_D_82508B00 {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ u16 unk_08;
     /* 0x0A */ s16 unk_0A;
 } unk_D_82508B00; // size = 0xC
 
 typedef struct unk_D_8250A288 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
 } unk_D_8250A288; // size >= 0xA
@@ -35,9 +35,9 @@ typedef struct UIElementNode {
 } UIElementNode; // size >= 0x3C
 
 typedef struct unk_D_8250A228 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x08 */ s16 unk_0A;
@@ -81,9 +81,9 @@ typedef struct unk_D_8250A308 {
 } unk_D_8250A308; // size = 0x174
 
 typedef struct unk_D_8250A480 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -93,9 +93,9 @@ typedef struct unk_D_8250A480 {
 } unk_D_8250A480; // size = 0x18
 
 typedef struct unk_D_8250A498 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;

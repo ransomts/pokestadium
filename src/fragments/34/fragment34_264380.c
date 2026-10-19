@@ -1001,50 +1001,50 @@ void ParticleGfx_LoadTextureI4ToList(Gfx* gfx, u8* texture, s32 width, s32 heigh
 }
 
 Gfx* ParticleGfx_LoadDescriptorTexture(Gfx* arg0, u8* texture, arg1_func_81407874_014_004* arg2, s32 tmem, s32 rtile) {
-    switch (arg2->unk_04->fmt) {
+    switch (arg2->rotation->fmt) {
         case G_IM_FMT_RGBA:
-            switch (arg2->unk_04->size) {
+            switch (arg2->rotation->size) {
                 case G_IM_SIZ_16b:
-                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg2->unk_04->width,
-                                     arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1, 0,
-                                     arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks, arg2->unk_04->maskt,
-                                     arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg2->rotation->width,
+                                     arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1, 0,
+                                     arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks, arg2->rotation->maskt,
+                                     arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
             }
             break;
 
         case G_IM_FMT_IA:
-            switch (arg2->unk_04->size) {
+            switch (arg2->rotation->size) {
                 case G_IM_SIZ_8b:
-                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_IA, G_IM_SIZ_8b, arg2->unk_04->width,
-                                     arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1, 0,
-                                     arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks, arg2->unk_04->maskt,
-                                     arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_IA, G_IM_SIZ_8b, arg2->rotation->width,
+                                     arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1, 0,
+                                     arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks, arg2->rotation->maskt,
+                                     arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
 
                 case G_IM_SIZ_16b:
-                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_IA, G_IM_SIZ_16b, arg2->unk_04->width,
-                                     arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1, 0,
-                                     arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks, arg2->unk_04->maskt,
-                                     arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_IA, G_IM_SIZ_16b, arg2->rotation->width,
+                                     arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1, 0,
+                                     arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks, arg2->rotation->maskt,
+                                     arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
             }
             break;
 
         case G_IM_FMT_I:
-            switch (arg2->unk_04->size) {
+            switch (arg2->rotation->size) {
                 case G_IM_SIZ_4b:
-                    gDPLoadMultiTile_4b(arg0++, texture, tmem, rtile, G_IM_FMT_I, arg2->unk_04->width,
-                                        arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1,
-                                        0, arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks,
-                                        arg2->unk_04->maskt, arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile_4b(arg0++, texture, tmem, rtile, G_IM_FMT_I, arg2->rotation->width,
+                                        arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1,
+                                        0, arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks,
+                                        arg2->rotation->maskt, arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
 
                 case G_IM_SIZ_8b:
-                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_I, G_IM_SIZ_8b, arg2->unk_04->width,
-                                     arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1, 0,
-                                     arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks, arg2->unk_04->maskt,
-                                     arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_I, G_IM_SIZ_8b, arg2->rotation->width,
+                                     arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1, 0,
+                                     arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks, arg2->rotation->maskt,
+                                     arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
             }
             break;
@@ -1059,10 +1059,10 @@ Gfx* ParticleGfx_LoadDescriptorTextureAndTile(Gfx* arg0, arg1_func_81407874_014_
 
     texture = NULL;
     if (arg1->unk_0C != NULL) {
-        ret = ParticleGfx_GetFrameDivisor(arg1->unk_0C->unk_06) % arg1->unk_0C->unk_04;
-        texture = arg1->unk_0C->unk_00.texture[ret];
-    } else if (arg1->unk_00 != NULL) {
-        texture = arg1->unk_00;
+        ret = ParticleGfx_GetFrameDivisor(arg1->unk_0C->unk_06) % arg1->unk_0C->rotation;
+        texture = arg1->unk_0C->posX.texture[ret];
+    } else if (arg1->posX != NULL) {
+        texture = arg1->posX;
     }
 
     if (texture != NULL) {
@@ -1072,13 +1072,13 @@ Gfx* ParticleGfx_LoadDescriptorTextureAndTile(Gfx* arg0, arg1_func_81407874_014_
     if (arg1->unk_08 != NULL) {
         switch (rtile) {
             case G_TX_RENDERTILE:
-                ParticleGfx_SetFrameIndexedTileSize(arg0++, arg1->unk_08->unk_00, arg1->unk_08->unk_02, arg1->unk_08->unk_04,
-                              arg1->unk_08->unk_06, arg1->unk_04->width, arg1->unk_04->height, arg1->unk_08->unk_08);
+                ParticleGfx_SetFrameIndexedTileSize(arg0++, arg1->unk_08->posX, arg1->unk_08->posY, arg1->unk_08->rotation,
+                              arg1->unk_08->unk_06, arg1->rotation->width, arg1->rotation->height, arg1->unk_08->unk_08);
                 break;
 
             case 1:
-                ParticleGfx_SetFrameIndexedAuxTileSize(arg0++, arg1->unk_08->unk_00, arg1->unk_08->unk_02, arg1->unk_08->unk_04,
-                              arg1->unk_08->unk_06, arg1->unk_04->width, arg1->unk_04->height, arg1->unk_08->unk_08);
+                ParticleGfx_SetFrameIndexedAuxTileSize(arg0++, arg1->unk_08->posX, arg1->unk_08->posY, arg1->unk_08->rotation,
+                              arg1->unk_08->unk_06, arg1->rotation->width, arg1->rotation->height, arg1->unk_08->unk_08);
                 break;
         }
     }
@@ -1087,21 +1087,21 @@ Gfx* ParticleGfx_LoadDescriptorTextureAndTile(Gfx* arg0, arg1_func_81407874_014_
 }
 
 Gfx* ParticleGfx_LoadPrimaryDescriptorTexture(Gfx* arg0, arg1_func_81407874_014* arg1) {
-    return ParticleGfx_LoadDescriptorTextureAndTile(arg0, arg1->unk_00, 0, G_TX_RENDERTILE);
+    return ParticleGfx_LoadDescriptorTextureAndTile(arg0, arg1->posX, 0, G_TX_RENDERTILE);
 }
 
 Gfx* ParticleGfx_LoadSecondaryDescriptorTexture(Gfx* arg0, arg1_func_81407874_014* arg1) {
     s32 var_a2 = 0;
 
-    if (arg1->unk_04->unk_00 != arg1->unk_00->unk_00) {
+    if (arg1->rotation->posX != arg1->posX->posX) {
         var_a2 = 0x100;
     }
-    return ParticleGfx_LoadDescriptorTextureAndTile(arg0, arg1->unk_04, var_a2, 1);
+    return ParticleGfx_LoadDescriptorTextureAndTile(arg0, arg1->rotation, var_a2, 1);
 }
 
 void ParticleGfx_SetCombineModeFromDescriptor(Gfx* arg0, arg1_func_81407874_014_000_010* arg1) {
     gDPSetCombine(arg0++,
-                  GCCc0w0(arg1->unk_00, arg1->unk_02, arg1->unk_04, arg1->unk_06) | GCCc1w0(arg1->unk_08, arg1->unk_0A),
+                  GCCc0w0(arg1->posX, arg1->posY, arg1->rotation, arg1->unk_06) | GCCc1w0(arg1->unk_08, arg1->unk_0A),
 
                   GCCc0w1(arg1->unk_01, arg1->unk_03, arg1->unk_05, arg1->unk_07) |
                       GCCc1w1(arg1->unk_09, arg1->unk_0C, arg1->unk_0E, arg1->unk_0B, arg1->unk_0D, arg1->unk_0F));
@@ -1119,8 +1119,8 @@ Gfx* Gfx_ApplyTextureState(Gfx* arg0, arg1_func_81407874_014* arg1) {
     s16 sp14;
     s16 sp10;
 
-    var_a3 = arg1->unk_00;
-    sp20 = arg1->unk_04;
+    var_a3 = arg1->posX;
+    sp20 = arg1->rotation;
 
     if (var_a3 != NULL) {
         if (var_a3->unk_10 != NULL) {
@@ -1128,8 +1128,8 @@ Gfx* Gfx_ApplyTextureState(Gfx* arg0, arg1_func_81407874_014* arg1) {
         }
 
         if (var_a3->unk_14 != NULL) {
-            if (var_a3->unk_14->unk_04 == 0) {
-                color.rgba = var_a3->unk_14->unk_00.color.rgba;
+            if (var_a3->unk_14->rotation == 0) {
+                color.rgba = var_a3->unk_14->posX.color.rgba;
                 sp1c = color.rgba >> 0x18;
                 sp18 = color.rgba >> 0x10;
                 sp14 = color.rgba >> 0x8;
@@ -1138,8 +1138,8 @@ Gfx* Gfx_ApplyTextureState(Gfx* arg0, arg1_func_81407874_014* arg1) {
                 gDPPipeSync(arg0++);
                 gDPSetPrimColor(arg0++, 0, 0xFF, sp1c, sp18, sp14, sp10);
             } else {
-                ret = ParticleGfx_GetFrameDivisor(var_a3->unk_14->unk_06) % var_a3->unk_14->unk_04;
-                temp_v1 = &var_a3->unk_14->unk_00.ptr5[ret];
+                ret = ParticleGfx_GetFrameDivisor(var_a3->unk_14->unk_06) % var_a3->unk_14->rotation;
+                temp_v1 = &var_a3->unk_14->posX.ptr5[ret];
 
                 gDPPipeSync(arg0++);
                 gDPSetPrimColor(arg0++, 0, temp_v1->l, temp_v1->color.r, temp_v1->color.g, temp_v1->color.b,
@@ -1148,11 +1148,11 @@ Gfx* Gfx_ApplyTextureState(Gfx* arg0, arg1_func_81407874_014* arg1) {
         }
 
         if (var_a3->unk_18 != NULL) {
-            if (var_a3->unk_18->unk_04 == 0) {
-                gDPSetColor(arg0++, G_SETENVCOLOR, var_a3->unk_18->unk_00.color.rgba);
+            if (var_a3->unk_18->rotation == 0) {
+                gDPSetColor(arg0++, G_SETENVCOLOR, var_a3->unk_18->posX.color.rgba);
             } else {
-                ret = ParticleGfx_GetFrameDivisor(var_a3->unk_18->unk_06) % var_a3->unk_18->unk_04;
-                temp_v0 = &var_a3->unk_18->unk_00.ptr4[ret];
+                ret = ParticleGfx_GetFrameDivisor(var_a3->unk_18->unk_06) % var_a3->unk_18->rotation;
+                temp_v0 = &var_a3->unk_18->posX.ptr4[ret];
 
                 gDPSetEnvColor(arg0++, temp_v0->color.r, temp_v0->color.g, temp_v0->color.b, temp_v0->color.a);
             }
@@ -1160,12 +1160,12 @@ Gfx* Gfx_ApplyTextureState(Gfx* arg0, arg1_func_81407874_014* arg1) {
 
         if (var_a3->unk_1C != NULL) {
             gSPSetGeometryMode(arg0++, G_TEXTURE_GEN);
-            gSPTexture(arg0++, var_a3->unk_1C->unk_00, var_a3->unk_1C->unk_02, 0, G_TX_RENDERTILE, G_ON);
-        } else if (var_a3->unk_04 != 0) {
+            gSPTexture(arg0++, var_a3->unk_1C->posX, var_a3->unk_1C->posY, 0, G_TX_RENDERTILE, G_ON);
+        } else if (var_a3->rotation != 0) {
             gSPTexture(arg0++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
         }
 
-        if (var_a3->unk_04 != 0) {
+        if (var_a3->rotation != 0) {
             gDPSetTextureLUT(arg0++, G_TT_NONE);
         }
 

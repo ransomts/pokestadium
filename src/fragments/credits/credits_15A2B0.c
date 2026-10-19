@@ -3220,19 +3220,19 @@ void Credits_InitCameraKeyframeBlend(CameraStruct* arg0, u16 arg1, s8 arg2, u8 a
     sCameraElapsed = 0;
     sCameraDuration = arg1;
 
-    Camera_ComputeEyeFromAngles(&ptr->unk_00, &sp3C, 720.0f, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_0C) << 0xF) / 180, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_10) << 0xF) / 180);
+    Camera_ComputeEyeFromAngles(&ptr->posX, &sp3C, 720.0f, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_0C) << 0xF) / 180, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_10) << 0xF) / 180);
     Camera_ComputeEyeFromAngles(&ptr->unk_14, &sp30, 720.0f, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_20) << 0xF) / 180, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_24) << 0xF) / 180);
 
-    sCurrentCamera->unk_60.eye = ptr->unk_00;
+    sCurrentCamera->unk_60.eye = ptr->posX;
     sCurrentCamera->unk_60.at = sp3C;
 
     sCurrentCamera->unk_24.fovy = ptr->unk_28;
     sCurrentCamera->unk_24.near = ptr->unk_30;
     sCurrentCamera->unk_24.far = ptr->unk_34;
 
-    sCameraEyeStep.x = ((ptr->unk_14.x - ptr->unk_00.x) * scale) / arg1;
-    sCameraEyeStep.y = ((ptr->unk_14.y - ptr->unk_00.y) * scale) / arg1;
-    sCameraEyeStep.z = ((ptr->unk_14.z - ptr->unk_00.z) * scale) / arg1;
+    sCameraEyeStep.x = ((ptr->unk_14.x - ptr->posX.x) * scale) / arg1;
+    sCameraEyeStep.y = ((ptr->unk_14.y - ptr->posX.y) * scale) / arg1;
+    sCameraEyeStep.z = ((ptr->unk_14.z - ptr->posX.z) * scale) / arg1;
 
     sCameraAtStep.x = ((sp30.x - sp3C.x) * scale) / arg1;
     sCameraAtStep.y = ((sp30.y - sp3C.y) * scale) / arg1;
@@ -3263,22 +3263,22 @@ void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u
     sCameraDuration = arg4;
 
     if (arg6 < 6) {
-        *sCameraYawPtr = gStageCameraPositions[arg5][arg6].unk_00;
+        *sCameraYawPtr = gStageCameraPositions[arg5][arg6].posX;
     } else if (arg6 < 9) {
-        *sCameraYawPtr = sCreditsPivotCameras[arg5][arg6 - 6].unk_00;
+        *sCameraYawPtr = sCreditsPivotCameras[arg5][arg6 - 6].posX;
     }
 
     if (arg6 < 6) {
-        if (gStageCameraPositions[arg5][arg6].unk_04 == 1) {
-            if (gStageCameraPositions[arg5][arg6].unk_00 < gStageCameraPositions[arg5][arg6].unk_02) {
-                sCameraYawRate = (gStageCameraPositions[arg5][arg6].unk_02 - gStageCameraPositions[arg5][arg6].unk_00) / arg4;
+        if (gStageCameraPositions[arg5][arg6].rotation == 1) {
+            if (gStageCameraPositions[arg5][arg6].posX < gStageCameraPositions[arg5][arg6].posY) {
+                sCameraYawRate = (gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) / arg4;
             } else {
-                sCameraYawRate = ((gStageCameraPositions[arg5][arg6].unk_02 - gStageCameraPositions[arg5][arg6].unk_00) + 0x10000) / arg4;
+                sCameraYawRate = ((gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) + 0x10000) / arg4;
             }
-        } else if (gStageCameraPositions[arg5][arg6].unk_00 < gStageCameraPositions[arg5][arg6].unk_02) {
-            sCameraYawRate = (s32)((gStageCameraPositions[arg5][arg6].unk_02 - gStageCameraPositions[arg5][arg6].unk_00) + 0xFFFF0000) / arg4;
+        } else if (gStageCameraPositions[arg5][arg6].posX < gStageCameraPositions[arg5][arg6].posY) {
+            sCameraYawRate = (s32)((gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) + 0xFFFF0000) / arg4;
         } else {
-            sCameraYawRate = (s32)(gStageCameraPositions[arg5][arg6].unk_02 - gStageCameraPositions[arg5][arg6].unk_00) / arg4;
+            sCameraYawRate = (s32)(gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) / arg4;
         }
 
         *arg0 = gStageCameraPositions[arg5][arg6].unk_06;
@@ -3292,18 +3292,18 @@ void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u
         sCurrentCamera->unk_24.near = gStageCameraPositions[arg5][arg6].unk_14;
         sCurrentCamera->unk_24.far = gStageCameraPositions[arg5][arg6].unk_18;
     } else if (arg6 < 9) {
-        if (sCreditsPivotCameras[arg5][arg6 - 6].unk_04 == 1) {
-            if (sCreditsPivotCameras[arg5][arg6 - 6].unk_00 < sCreditsPivotCameras[arg5][arg6 - 6].unk_02) {
-                sCameraYawRate = (s32)(sCreditsPivotCameras[arg5][arg6 - 6].unk_02 - sCreditsPivotCameras[arg5][arg6 - 6].unk_00) / arg4;
+        if (sCreditsPivotCameras[arg5][arg6 - 6].rotation == 1) {
+            if (sCreditsPivotCameras[arg5][arg6 - 6].posX < sCreditsPivotCameras[arg5][arg6 - 6].posY) {
+                sCameraYawRate = (s32)(sCreditsPivotCameras[arg5][arg6 - 6].posY - sCreditsPivotCameras[arg5][arg6 - 6].posX) / arg4;
             } else {
                 sCameraYawRate =
-                    (s32)((sCreditsPivotCameras[arg5][arg6 - 6].unk_02 - sCreditsPivotCameras[arg5][arg6 - 6].unk_00) + 0x10000) / arg4;
+                    (s32)((sCreditsPivotCameras[arg5][arg6 - 6].posY - sCreditsPivotCameras[arg5][arg6 - 6].posX) + 0x10000) / arg4;
             }
-        } else if (sCreditsPivotCameras[arg5][arg6 - 6].unk_00 < sCreditsPivotCameras[arg5][arg6 - 6].unk_02) {
+        } else if (sCreditsPivotCameras[arg5][arg6 - 6].posX < sCreditsPivotCameras[arg5][arg6 - 6].posY) {
             sCameraYawRate =
-                (s32)(sCreditsPivotCameras[arg5][arg6 - 6].unk_02 + sCreditsPivotCameras[arg5][arg6 - 6].unk_00 + 0xFFFF0000) / arg4;
+                (s32)(sCreditsPivotCameras[arg5][arg6 - 6].posY + sCreditsPivotCameras[arg5][arg6 - 6].posX + 0xFFFF0000) / arg4;
         } else {
-            sCameraYawRate = (s32)(sCreditsPivotCameras[arg5][arg6 - 6].unk_02 - sCreditsPivotCameras[arg5][arg6 - 6].unk_00) / arg4;
+            sCameraYawRate = (s32)(sCreditsPivotCameras[arg5][arg6 - 6].posY - sCreditsPivotCameras[arg5][arg6 - 6].posX) / arg4;
         }
 
         *arg0 = sCreditsPivotCameras[arg5][arg6 - 6].unk_06;

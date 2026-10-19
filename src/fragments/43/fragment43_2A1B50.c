@@ -56,7 +56,7 @@ void Gallery_LoadUnlockedBackgrounds(void) {
     }
 
     Save_GetModeSettings(&D_83407AF0, 1);
-    if (D_83407AF0.unk_00 == 0x1F8) {
+    if (D_83407AF0.posX == 0x1F8) {
         gGalleryAudioStateFlag = 1;
     } else {
         gGalleryAudioStateFlag = 0;
@@ -94,7 +94,7 @@ void Gallery_LoadUnlockedBackgrounds(void) {
     Gallery_ClearSavedPosition(&gGalleryMainSelectionCam);
     Gallery_ClearSavedPosition(&gGallerySubSelection);
     Gallery_ClearSavedPosition(&gGalleryTertiarySelection);
-    Gallery_ClearSavedPosition(&gGalleryFinalSelection.unk_00);
+    Gallery_ClearSavedPosition(&gGalleryFinalSelection.posX);
     Gallery_ClearPhotoRenderTarget();
     Gallery_InitSceneGrid(&gGalleryCamList, 0x3C, 0x2D, 0x10, 4, 0, 0, gCurrentCamEntryPage, 0x10, 0);
 }
@@ -232,8 +232,8 @@ PhotoSceneData* Gallery_GetEnlargeTarget(s32 arg0) {
 }
 
 void Gallery_InitPageCursor(unk_D_83407B00* arg0) {
-    arg0->unk_00 = 0;
-    arg0->unk_04 = -1;
+    arg0->posX = 0;
+    arg0->rotation = -1;
 }
 
 s32 Gallery_CountTextLines(s8* arg0) {
@@ -482,8 +482,8 @@ void Gallery_InitSceneGrid(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s
     UNUSED s32 pad2;
     s32 i;
 
-    arg0->unk_00 = 0;
-    arg0->unk_04 = -1;
+    arg0->posX = 0;
+    arg0->rotation = -1;
     arg0->unk_08 = 0;
 
     arg0->unk_0C = arg8 / arg3;
@@ -526,13 +526,13 @@ void Gallery_ProcessSceneGrid(unk_D_83407B38* arg0) {
         for (i = 0; i < arg0->unk_14 + 1; i++) {
             if (i < arg0->unk_14) {
                 var_s0 = arg0->unk_20[arg0->unk_08 * arg0->unk_14 + i];
-            } else if (arg0->unk_04 != -1) {
+            } else if (arg0->rotation != -1) {
                 var_s0 = arg0->unk_B0;
             } else {
                 var_s0 = NULL;
             }
 
-            if ((Gallery_IsSceneReady(var_s0) != 0) && (var_s0->unk_00 == 0)) {
+            if ((Gallery_IsSceneReady(var_s0) != 0) && (var_s0->posX == 0)) {
                 main_pool_push_state('albu');
                 Gallery_ProcessSceneInstance(var_s0);
                 break;
@@ -546,7 +546,7 @@ void Gallery_ProcessSceneGrid(unk_D_83407B38* arg0) {
 void Gallery_FinishActiveScene(void) {
     Camera* temp_v0 = Gallery_GetActiveScene();
 
-    if ((temp_v0 != NULL) && (temp_v0->unk_00 == 2)) {
+    if ((temp_v0 != NULL) && (temp_v0->posX == 2)) {
         main_pool_pop_state('albu');
         Gallery_ClearActiveScene();
     }
@@ -569,19 +569,19 @@ s32 Gallery_CountReadyScenesOnPage(unk_D_83407B38* arg0, s32 arg1) {
 }
 
 void Gallery_ClearSavedPosition(unk_D_83407B00* arg0) {
-    arg0->unk_00 = -1;
-    arg0->unk_04 = -1;
+    arg0->posX = -1;
+    arg0->rotation = -1;
 }
 
 void Gallery_SavePosition(unk_D_83407B38* arg0, unk_D_83407B00* arg1) {
-    arg1->unk_00 = arg0->unk_00;
-    arg1->unk_04 = arg0->unk_08;
+    arg1->posX = arg0->posX;
+    arg1->rotation = arg0->unk_08;
 }
 
 void Gallery_RestorePosition(unk_D_83407B38* arg0, unk_D_83407B00* arg1) {
-    if (arg1->unk_00 != -1) {
-        arg0->unk_00 = arg1->unk_00;
-        arg0->unk_08 = arg1->unk_04;
+    if (arg1->posX != -1) {
+        arg0->posX = arg1->posX;
+        arg0->unk_08 = arg1->rotation;
     }
 }
 

@@ -1,21 +1,21 @@
 #include "2D340.h"
 
 void TableView_Initialize(unk_func_88201DA0_038* arg0, unk_func_88201DA0_034* arg1, s32 arg2, s32 arg3, s32 arg4) {
-    arg0->unk_00 = arg1;
+    arg0->posX = arg1;
     arg0->unk_0C = arg2;
-    arg0->unk_04 = arg3;
+    arg0->rotation = arg3;
     arg0->unk_08 = arg4;
 }
 
 void ByteMatrix_Allocate(unk_func_8820BE14_06C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
-    arg0->unk_00 = mem_pool_alloc(arg3, arg1 * arg2);
+    arg0->posX = mem_pool_alloc(arg3, arg1 * arg2);
     arg0->unk_0C = arg1;
-    arg0->unk_04 = arg2;
+    arg0->rotation = arg2;
     arg0->unk_08 = 0;
 }
 
 void ByteMatrix_Free(unk_func_8820BE14_06C* arg0, MemoryPool* arg1) {
-    mem_pool_free(arg1, arg0->unk_00);
+    mem_pool_free(arg1, arg0->posX);
 }
 
 s32 ByteMatrix_AppendRow(unk_func_8820BE14_06C* arg0, s8* a1) {
@@ -23,11 +23,11 @@ s32 ByteMatrix_AppendRow(unk_func_8820BE14_06C* arg0, s8* a1) {
     s32 i;
     s8* arg1;
 
-    if (arg0->unk_08 >= arg0->unk_04) {
+    if (arg0->unk_08 >= arg0->rotation) {
         return 1;
     }
 
-    var_v0 = (u8*)arg0->unk_00 + (arg0->unk_0C * arg0->unk_08);
+    var_v0 = (u8*)arg0->posX + (arg0->unk_0C * arg0->unk_08);
     arg1 = a1;
 
     for (i = arg0->unk_0C; i > 0; i--) {
@@ -43,11 +43,11 @@ s32 ByteMatrix_InsertRow(unk_func_8820BE14_06C* arg0, s8* arg1, s32 arg2) {
     s8* var_t0;
     s8* var_v1;
 
-    if ((arg0->unk_08 >= arg0->unk_04) || (arg0->unk_08 < arg2)) {
+    if ((arg0->unk_08 >= arg0->rotation) || (arg0->unk_08 < arg2)) {
         return 1;
     }
 
-    var_v1 = (s8*)arg0->unk_00 + (arg0->unk_0C * arg0->unk_08);
+    var_v1 = (s8*)arg0->posX + (arg0->unk_0C * arg0->unk_08);
     var_t0 = var_v1 + arg0->unk_0C;
     var_t1 = (arg0->unk_08 - arg2) * arg0->unk_0C;
 
@@ -58,7 +58,7 @@ s32 ByteMatrix_InsertRow(unk_func_8820BE14_06C* arg0, s8* arg1, s32 arg2) {
 
     var_v1 = arg1;
     var_t1 = arg0->unk_0C;
-    var_t0 = (u8*)arg0->unk_00 + (arg0->unk_0C * arg2);
+    var_t0 = (u8*)arg0->posX + (arg0->unk_0C * arg2);
 
     while (var_t1 > 0) {
         *var_t0++ = *var_v1++;
@@ -78,7 +78,7 @@ s32 ByteMatrix_RemoveRow(unk_func_8820BE14_06C* arg0, s32 arg1) {
         return 1;
     }
 
-    var_v1 = (s8*)arg0->unk_00 + (arg0->unk_0C * arg1);
+    var_v1 = (s8*)arg0->posX + (arg0->unk_0C * arg1);
 
     arg0->unk_08--;
 
@@ -102,7 +102,7 @@ s32 ByteMatrix_CopyRow(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
         return 1;
     }
 
-    var_v0 = (s8*)arg0->unk_00 + (arg0->unk_0C * arg2);
+    var_v0 = (s8*)arg0->posX + (arg0->unk_0C * arg2);
     arg1 = a1;
 
     for (i = arg0->unk_0C; i > 0; i--) {
@@ -121,7 +121,7 @@ s32 ByteMatrix_CopyRowAt(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
         return 1;
     }
 
-    var_v0 = (s8*)arg0->unk_00 + (arg0->unk_0C * arg2);
+    var_v0 = (s8*)arg0->posX + (arg0->unk_0C * arg2);
     arg1 = a1;
 
     for (i = arg0->unk_0C; i > 0; i--) {
@@ -140,7 +140,7 @@ s32 WordList_Remove(unk_func_8830867C_04C_030_02C_000_000_00C* arg0, s32 arg1) {
         return 1;
     }
 
-    var_v1 = (s16*)arg0->unk_00 + arg1;
+    var_v1 = (s16*)arg0->posX + arg1;
 
     arg0->unk_08--;
 
@@ -156,19 +156,19 @@ s32 WordList_Remove(unk_func_8830867C_04C_030_02C_000_000_00C* arg0, s32 arg1) {
 }
 
 void PointerList_Initialize(unk_func_88205880_A030* arg0, void** arg1, s32 arg2, s32 arg3) {
-    arg0->unk_00 = arg1;
-    arg0->unk_04 = arg2;
+    arg0->posX = arg1;
+    arg0->rotation = arg2;
     arg0->unk_08 = arg3;
 }
 
 void PointerList_Allocate(unk_func_88200FA0_030_038* arg0, s32 arg1, MemoryPool* arg2) {
-    arg0->unk_00 = mem_pool_alloc(arg2, arg1 * 4);
-    arg0->unk_04 = arg1;
+    arg0->posX = mem_pool_alloc(arg2, arg1 * 4);
+    arg0->rotation = arg1;
     arg0->unk_08 = 0;
 }
 
 void PointerList_Free(unk_func_88200FA0_030_038* arg0, MemoryPool* arg1) {
-    mem_pool_free(arg1, arg0->unk_00);
+    mem_pool_free(arg1, arg0->posX);
 }
 
 void PointerList_Insert(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
@@ -176,7 +176,7 @@ void PointerList_Insert(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
     unk_func_88205880_00D0** var_t0;
     unk_func_88205880_00D0** var_v0;
 
-    var_v0 = &arg0->unk_00[arg0->unk_08];
+    var_v0 = &arg0->posX[arg0->unk_08];
     var_t0 = var_v0 + 1;
     var_t1 = arg0->unk_08 - arg2;
 
@@ -185,7 +185,7 @@ void PointerList_Insert(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
         var_t1--;
     }
 
-    arg0->unk_00[arg2] = arg1;
+    arg0->posX[arg2] = arg1;
     arg0->unk_08++;
 }
 
@@ -194,7 +194,7 @@ void PointerList_Remove(unk_func_8830867C_02C_0CC* arg0, s32 arg1) {
     unk_func_8830867C_02C_0CC_000** var_v0;
     unk_func_8830867C_02C_0CC_000** var_v1;
 
-    var_v0 = &arg0->unk_00[arg1];
+    var_v0 = &arg0->posX[arg1];
     var_v1 = var_v0 + 1;
 
     arg0->unk_08--;
@@ -354,7 +354,7 @@ void Sort_QuickSort(void** base, s32 n, s32 (*cmp)(s32, s32)) {
 }
 
 void PointerList_Sort(unk_func_8830867C_02C_0CC* arg0, s32 (*arg1)(s32, s32)) {
-    Sort_QuickSort(arg0->unk_00, arg0->unk_08, arg1);
+    Sort_QuickSort(arg0->posX, arg0->unk_08, arg1);
 }
 
 void PointerList_Filter(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1,
@@ -363,9 +363,9 @@ void PointerList_Filter(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0
     unk_func_8830867C_02C_0CC_000** var_s0;
     unk_func_8830867C_02C_0CC_000** var_s1;
 
-    var_s1 = arg1->unk_00;
+    var_s1 = arg1->posX;
     var_s2 = arg0->unk_08;
-    var_s0 = arg0->unk_00;
+    var_s0 = arg0->posX;
 
     while (var_s2 > 0) {
         if (arg2(*var_s0, arg3) != 0) {
@@ -375,7 +375,7 @@ void PointerList_Filter(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0
         var_s0++;
     }
 
-    arg1->unk_08 = ((s32)var_s1 - (s32)arg1->unk_00) >> 2;
+    arg1->unk_08 = ((s32)var_s1 - (s32)arg1->posX) >> 2;
 }
 
 s32 Text_CompareU16Terminated(u16* a0, u16* a1) {

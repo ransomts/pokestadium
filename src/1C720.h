@@ -5,9 +5,9 @@
 #include "src/29BA0.h"
 
 typedef struct unk_func_8001C014 {
-	/* 0x00 */ char unk_00[0x2];
-	/* 0x02 */ u16 unk_02;
-	/* 0x04 */ s8 unk_04[0x10];
+	/* 0x00 */ char posX[0x2];
+	/* 0x02 */ u16 posY;
+	/* 0x04 */ s8 rotation[0x10];
 	/* 0x14 */ s8 unk_14[0x10];
 } unk_func_8001C014; // size >= 0x24
 

@@ -172,18 +172,18 @@ void BattleMenu_DrawScrollingRulesText(void) {
 void BattleMenu_InitTeamOrderState(unk_D_84803760* arg0, unk_D_800AE540_1194* arg1, s32 arg2) {
     s32 i;
 
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
     arg0->unk_01 = 0;
 
     for (i = 0; i < 6; i++) {
-        arg0->unk_02[i] = 0;
+        arg0->posY[i] = 0;
         arg0->unk_08[i] = 1;
     }
 
     if (arg2 != 0) {
         if (arg2 != 8) {
             // clang-format off
-            for (i = 3; i < 6; i++) { arg0->unk_02[i] = -1; }
+            for (i = 3; i < 6; i++) { arg0->posY[i] = -1; }
             // clang-format on
         }
     }
@@ -287,7 +287,7 @@ void BattleMenu_DrawTeamOrderSidebarTeam0(void) {
 
     var_s1 = var_s2 + 0x76;
     for (i = 0; i < 6; i++) {
-        temp_v0->unk_02[i] = BattleMenu_DrawSidebarRowTypeIcon(0x2D, var_s1 - i * 0x17, temp_v0->unk_02[i], temp_v0->unk_08[i]);
+        temp_v0->posY[i] = BattleMenu_DrawSidebarRowTypeIcon(0x2D, var_s1 - i * 0x17, temp_v0->posY[i], temp_v0->unk_08[i]);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -322,7 +322,7 @@ void BattleMenu_DrawTeamOrderSidebarTeam1(void) {
 
     var_s1 = var_s2 + 0xC;
     for (i = 0; i < 6; i++) {
-        temp_v0->unk_02[i] = BattleMenu_DrawSidebarRowTypeIcon(0x2D, var_s1 + i * 0x17, temp_v0->unk_02[i], temp_v0->unk_08[i]);
+        temp_v0->posY[i] = BattleMenu_DrawSidebarRowTypeIcon(0x2D, var_s1 + i * 0x17, temp_v0->posY[i], temp_v0->unk_08[i]);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -331,9 +331,9 @@ void BattleMenu_DrawTeamOrderSidebarTeam1(void) {
 void BattleMenu_AppendOrderSlotIcon(s32 arg0, s32 arg1) {
     unk_D_84803760* temp_v0 = &gSelectionStates[arg0];
 
-    temp_v0->unk_02[temp_v0->unk_00] = ((arg1 + 1) << 4) | (temp_v0->unk_02[temp_v0->unk_00] & 0xF);
-    temp_v0->unk_08[temp_v0->unk_00] = 1;
-    temp_v0->unk_00++;
+    temp_v0->posY[temp_v0->posX] = ((arg1 + 1) << 4) | (temp_v0->posY[temp_v0->posX] & 0xF);
+    temp_v0->unk_08[temp_v0->posX] = 1;
+    temp_v0->posX++;
 }
 
 void BattleMenu_ResetOrderSlotIcons(s32 arg0) {
@@ -343,7 +343,7 @@ void BattleMenu_ResetOrderSlotIcons(s32 arg0) {
     for (i = 0; i < 6; i++) {
         ptr->unk_08[i] = -1;
     }
-    ptr->unk_00 = 0;
+    ptr->posX = 0;
 }
 
 void BattleMenu_DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
@@ -623,12 +623,12 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
     }
 
     idx = PokemonType_ToDisplayIndex(sp78->unk_06);
-    Text_SetEnvColor(gModeColors[idx].unk_00.r, gModeColors[idx].unk_00.g, gModeColors[idx].unk_00.b, 0xFF);
+    Text_SetEnvColor(gModeColors[idx].posX.r, gModeColors[idx].posX.g, gModeColors[idx].posX.b, 0xFF);
     Font_Printf(temp_fp + 0x7A, sp7C + 0x2F, Text_GetString(NULL, 0, gModeNames, PokemonType_ToDisplayIndex(sp78->unk_06)));
 
     if (sp78->unk_06 != sp78->unk_07) {
         idx = PokemonType_ToDisplayIndex(sp78->unk_07);
-        Text_SetEnvColor(gModeColors[idx].unk_00.r, gModeColors[idx].unk_00.g, gModeColors[idx].unk_00.b, 0xFF);
+        Text_SetEnvColor(gModeColors[idx].posX.r, gModeColors[idx].posX.g, gModeColors[idx].posX.b, 0xFF);
         Font_Printf(temp_fp + 0x7A, sp7C + 0x43, Text_GetString(NULL, 0, gModeNames, PokemonType_ToDisplayIndex(sp78->unk_07)));
     }
 
@@ -648,7 +648,7 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
         }
         temp_v1 = &gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].unk_01];
         Font_SetActive(4, 0);
-        Text_SetEnvColor(temp_v1->unk_00.r, temp_v1->unk_00.g, temp_v1->unk_00.b, 0xFF);
+        Text_SetEnvColor(temp_v1->posX.r, temp_v1->posX.g, temp_v1->posX.b, 0xFF);
         Font_Printf(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, Text_GetString(NULL, 0, D_84803788, sp78->unk_09[i] - 1));
         Font_SetActive(4, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -664,7 +664,7 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
             break;
         }
         Gfx_DrawTextureRgba16(temp_fp + 0x136, (i * 0x14) + sp7C + 7, 0x14, 0x14,
-                      gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].unk_01].unk_04, 0x14, 0);
+                      gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].unk_01].rotation, 0x14, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -757,9 +757,9 @@ void BattleMenu_UpdateComPanelAutoInput(void) {
         if (gInputTimerValue == 0) {
             ptr = gInputTimingTable[var_v0];
 
-            gInputTimerValue = ptr[gInputTimerIndex].unk_00;
+            gInputTimerValue = ptr[gInputTimerIndex].posX;
             if (gInputTimerValue != 0) {
-                gPanelController.buttonPressed = ptr[gInputTimerIndex].unk_02;
+                gPanelController.buttonPressed = ptr[gInputTimerIndex].posY;
                 gInputTimerIndex++;
             }
         }
@@ -1125,7 +1125,7 @@ void BattleMenu_RearrangeLeadPokemon(unk_D_800AE540_1194* arg0, unk_D_84803760* 
     s32 tmp;
 
     if (arg0->unk_01 == 2) {
-        tmp = ((arg1->unk_02[0] >> 4) & 0xF) - 1;
+        tmp = ((arg1->posY[0] >> 4) & 0xF) - 1;
         if (tmp == arg0->unk_08[1]->unk_001) {
             temp_v0 = arg0->unk_08[0];
             arg0->unk_08[0] = arg0->unk_08[1];
@@ -1206,8 +1206,8 @@ void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg
     for (i = 0; i < arg2->unk_214->unk_002; i++) {
         temp_s0 = &arg2->unk_214->unk_028[i];
         Pokemon_PrepareBattleMon(temp_s0);
-        temp_s0->unk_06 = gSpeciesBaseStats[temp_s0->unk_00.unk_00 - 1].unk_06;
-        temp_s0->unk_07 = gSpeciesBaseStats[temp_s0->unk_00.unk_00 - 1].unk_07;
+        temp_s0->unk_06 = gSpeciesBaseStats[temp_s0->posX.posX - 1].unk_06;
+        temp_s0->unk_07 = gSpeciesBaseStats[temp_s0->posX.posX - 1].unk_07;
         PokeIcon_LoadModelTextureForMon(temp_v1->unk_0020[i], 0, temp_s0);
     }
 

@@ -5,18 +5,18 @@
 #include "src/memory.h"
 
 typedef struct SimpleGfxNode {
-    /* 0x00 */ GraphRootNode unk_00;
+    /* 0x00 */ GraphRootNode posX;
     /* 0x18 */ Gfx* unk_18;
 } SimpleGfxNode; // size = 0x1C
 
 typedef struct unk_D_8690A610_018 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ Color_RGBA8_u32 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ Color_RGBA8_u32 rotation;
 } unk_D_8690A610_018; // size = 0x8
 
 typedef struct unk_D_8690A610 {
-    /* 0x00 */ GraphRootNode unk_00;
+    /* 0x00 */ GraphRootNode posX;
     /* 0x18 */ unk_D_8690A610_018 unk_18;
 } unk_D_8690A610; // size = 0x20
 

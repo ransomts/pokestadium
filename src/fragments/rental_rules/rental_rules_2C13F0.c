@@ -87,8 +87,8 @@ s32 RentalRules_BuildSpeciesPage(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2) {
     s32 var_s3;
 
     for (i = 0; i < 6; i++) {
-        arg0->unk_00[i].unk_00 = 0;
-        arg0->unk_00[i].unk_02 = 0;
+        arg0->posX[i].posX = 0;
+        arg0->posX[i].posY = 0;
     }
 
     var_s3 = 0;
@@ -100,12 +100,12 @@ s32 RentalRules_BuildSpeciesPage(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2) {
         } else {
             var_s3++;
         }
-        arg0->unk_00[i].unk_00 = var_a0;
+        arg0->posX[i].posX = var_a0;
 
         if (RentalRules_SpeciesMatchesCategory(var_a0, arg2) != 0) {
-            arg0->unk_00[i].unk_02 = 1;
+            arg0->posX[i].posY = 1;
         } else {
-            arg0->unk_00[i].unk_02 = 0;
+            arg0->posX[i].posY = 0;
         }
     }
 
@@ -124,8 +124,8 @@ s32 RentalRules_ScrollPageUp(unk_D_83079E70* arg0) {
     s32 sp1C = 0;
 
     if (RentalRules_BuildSpeciesPage(arg0->unk_10->unk_1C, arg0->unk_08 - 1, gSessionContext.unk_0001) > 0) {
-        arg0->unk_00 = 3;
-        arg0->unk_02 = 4;
+        arg0->posX = 3;
+        arg0->posY = 4;
         arg0->unk_08--;
         arg0->unk_10 = arg0->unk_10->unk_1C;
         arg0->unk_0A = -1;
@@ -141,8 +141,8 @@ s32 RentalRules_ScrollPageDown(unk_D_83079E70* arg0) {
     s32 sp1C = 0;
 
     if (RentalRules_BuildSpeciesPage(RentalRules_AdvancePageNode(arg0->unk_10, 5), arg0->unk_08 + 5, gSessionContext.unk_0001) > 0) {
-        arg0->unk_00 = 3;
-        arg0->unk_02 = 4;
+        arg0->posX = 3;
+        arg0->posY = 4;
         arg0->unk_08++;
         arg0->unk_10 = arg0->unk_10->unk_18;
         arg0->unk_0A = 1;
@@ -155,19 +155,19 @@ s32 RentalRules_ScrollPageDown(unk_D_83079E70* arg0) {
 }
 
 void RentalRules_QualifyingSpeciesWindowUpdateOpen(unk_D_83079E70* arg0) {
-    arg0->unk_02--;
-    arg0->unk_04 = ((5 - arg0->unk_02) << 0xA) / 5;
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 2;
-        arg0->unk_02 = 0;
+    arg0->posY--;
+    arg0->rotation = ((5 - arg0->posY) << 0xA) / 5;
+    if (arg0->posY <= 0) {
+        arg0->posX = 2;
+        arg0->posY = 0;
         arg0->unk_0C = 2;
     }
 }
 
 void RentalRules_QualifyingSpeciesWindowUpdateShown(unk_D_83079E70* arg0) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
-        arg0->unk_00 = 4;
-        arg0->unk_02 = 5;
+        arg0->posX = 4;
+        arg0->posY = 5;
         arg0->unk_0C = -1;
         Audio_PlaySoundEffectById(3);
     } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DUP)) {
@@ -180,8 +180,8 @@ void RentalRules_QualifyingSpeciesWindowUpdateShown(unk_D_83079E70* arg0) {
 void RentalRules_QualifyingSpeciesWindowUpdateScrolling(unk_D_83079E70* arg0) {
     s32 var_v1;
 
-    arg0->unk_02--;
-    if (arg0->unk_02 <= 0) {
+    arg0->posY--;
+    if (arg0->posY <= 0) {
         var_v1 = 0;
         if (BTN_IS_DOWN(gPlayer1Controller, BTN_DUP)) {
             var_v1 = RentalRules_ScrollPageUp(arg0);
@@ -190,19 +190,19 @@ void RentalRules_QualifyingSpeciesWindowUpdateScrolling(unk_D_83079E70* arg0) {
         }
 
         if (var_v1 == 0) {
-            arg0->unk_00 = 2;
-            arg0->unk_02 = 0;
+            arg0->posX = 2;
+            arg0->posY = 0;
             arg0->unk_0C = 2;
         }
     }
 }
 
 void RentalRules_QualifyingSpeciesWindowUpdateClose(unk_D_83079E70* arg0) {
-    arg0->unk_02--;
-    arg0->unk_04 = (arg0->unk_02 << 0xA) / 5;
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 0;
-        arg0->unk_02 = 0;
+    arg0->posY--;
+    arg0->rotation = (arg0->posY << 0xA) / 5;
+    if (arg0->posY <= 0) {
+        arg0->posX = 0;
+        arg0->posY = 0;
         arg0->unk_0C = -1;
     }
 }
@@ -220,12 +220,12 @@ void RentalRules_DrawScrollbar(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
     Gfx_DrawTextureIa8(arg0, arg1 + 0x114, 0x10, 8, D_200A280, 0x10, 0);
     Gfx_DrawTexturedRectClipped(arg0, arg1 + 8, 0x10, 0x10C, 0, 0, 0x400, 0, 0);
 
-    if (arg2->unk_00 != 3) {
+    if (arg2->posX != 3) {
         temp_t0 = (arg2->unk_08 * 0x10C) / 21;
     } else if (arg2->unk_0A > 0) {
-        temp_t0 = (((arg2->unk_08 * 4) - arg2->unk_02) * 0x10C) / 84;
+        temp_t0 = (((arg2->unk_08 * 4) - arg2->posY) * 0x10C) / 84;
     } else {
-        temp_t0 = (((arg2->unk_08 * 4) + arg2->unk_02) * 0x10C) / 84;
+        temp_t0 = (((arg2->unk_08 * 4) + arg2->posY) * 0x10C) / 84;
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -261,8 +261,8 @@ void RentalRules_DrawSpeciesPage(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
     s16 temp_s0;
 
     for (i = 0; i < 6; i++) {
-        if (arg2->unk_00[i].unk_00 != 0) {
-            if (arg2->unk_00[i].unk_02 != 0) {
+        if (arg2->posX[i].posX != 0) {
+            if (arg2->posX[i].posY != 0) {
                 var_v0 = &sp78;
             } else {
                 var_v0 = &sp74;
@@ -276,7 +276,7 @@ void RentalRules_DrawSpeciesPage(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 6; i++) {
-        temp_s0 = arg2->unk_00[i].unk_00;
+        temp_s0 = arg2->posX[i].posX;
         if (temp_s0 != NULL) {
             Gfx_DrawTextureRgba16(arg0 + (i * 0x54) + 0x16, arg1 + 3, 0x28, 0x28, gPokemonIconTextures[temp_s0 - 1], 0x28, 0);
         }
@@ -289,7 +289,7 @@ void RentalRules_DrawSpeciesPage(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     for (i = 0; i < 6; i++) {
-        temp_s0 = arg2->unk_00[i].unk_00;
+        temp_s0 = arg2->posX[i].posX;
         if (temp_s0 != NULL) {
             Font_Printf(arg0 + (i * 0x54) + 2, arg1 + 0x2A, RentalRules_GetPokemonName(temp_s0));
         }
@@ -302,8 +302,8 @@ void RentalRules_QualifyingSpeciesWindowInit(s32 arg0) {
     unk_D_83079E70* ptr = &D_83079E70;
     s32 i;
 
-    ptr->unk_00 = 0;
-    ptr->unk_04 = 0;
+    ptr->posX = 0;
+    ptr->rotation = 0;
 
     for (i = 0; i < 6; i++) {
         ptr->unk_14[i].unk_18 = &ptr->unk_14[(i + 1) % 6];
@@ -320,8 +320,8 @@ void RentalRules_QualifyingSpeciesWindowInit(s32 arg0) {
 void RentalRules_QualifyingSpeciesWindowUpdate(void) {
     unk_D_83079E70* ptr = &D_83079E70;
 
-    if (ptr->unk_00 != 0) {
-        switch (ptr->unk_00) {
+    if (ptr->posX != 0) {
+        switch (ptr->posX) {
             case 1:
                 RentalRules_QualifyingSpeciesWindowUpdateOpen(&D_83079E70);
                 break;
@@ -346,15 +346,15 @@ void RentalRules_QualifyingSpeciesWindowDraw(void) {
     s16 spA4;
     unk_D_83079E70* ptr = &D_83079E70;
 
-    if (ptr->unk_04 == 0) {
+    if (ptr->rotation == 0) {
         return;
     }
 
-    spA6 = (((0x400 - ptr->unk_04) * 0x108) / 1024) + 0x38;
-    spA4 = (((0x400 - ptr->unk_04) * 0xA8) / 1024) + 0x5C;
-    RentalRules_DrawWindowFrame(spA6, spA4, (ptr->unk_04 * 0x210) / 1024, (ptr->unk_04 * 0x150) / 1024);
+    spA6 = (((0x400 - ptr->rotation) * 0x108) / 1024) + 0x38;
+    spA4 = (((0x400 - ptr->rotation) * 0xA8) / 1024) + 0x5C;
+    RentalRules_DrawWindowFrame(spA6, spA4, (ptr->rotation * 0x210) / 1024, (ptr->rotation * 0x150) / 1024);
 
-    if (ptr->unk_04 >= 0x400) {
+    if (ptr->rotation >= 0x400) {
         UNUSED s32 pad;
         s32 i;
         unk_D_83079E70_000* var_s0;
@@ -383,8 +383,8 @@ void RentalRules_QualifyingSpeciesWindowDraw(void) {
             return;
         }
 
-        if (ptr->unk_00 == 3) {
-            s16 sp4A = spA4 - ((ptr->unk_0A * 0x3C * (4 - ptr->unk_02)) / 4);
+        if (ptr->posX == 3) {
+            s16 sp4A = spA4 - ((ptr->unk_0A * 0x3C * (4 - ptr->posY)) / 4);
             Gfx_SetScissorRect(&gDisplayListHead, spA6 + 0x18, spA4 + 0x24, 0x1F8, 0x12C);
             if (ptr->unk_0A > 0) {
                 var_s0 = ptr->unk_10->unk_1C;
@@ -420,9 +420,9 @@ void RentalRules_QualifyingSpeciesWindowOpen(void) {
     unk_D_83079E70* ptr = &D_83079E70;
     s32 i;
 
-    ptr->unk_00 = 1;
-    ptr->unk_02 = 5;
-    ptr->unk_04 = 0;
+    ptr->posX = 1;
+    ptr->posY = 5;
+    ptr->rotation = 0;
     ptr->unk_08 = 0;
     ptr->unk_0A = 0;
     ptr->unk_0C = -1;
@@ -437,7 +437,7 @@ void RentalRules_QualifyingSpeciesWindowOpen(void) {
 s32 RentalRules_QualifyingSpeciesWindowIsActive(void) {
     s32 ret;
 
-    if (D_83079E70.unk_00 != 0) {
+    if (D_83079E70.posX != 0) {
         ret = 1;
     } else {
         ret = 0;
@@ -446,5 +446,5 @@ s32 RentalRules_QualifyingSpeciesWindowIsActive(void) {
 }
 
 s32 RentalRules_GetQualifyingSpeciesDisplayOpeningProgress(void) {
-    return D_83079E70.unk_04;
+    return D_83079E70.rotation;
 }

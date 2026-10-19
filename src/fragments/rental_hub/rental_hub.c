@@ -232,7 +232,7 @@ void RentalHub_LoadBackgroundImage(unk_func_80027FA0* arg0) {
     gBattleHeaderArchive = BinArchive_Open(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
 
     if (gSessionContext.unk_0000 == 7) {
-        if (arg0->unk_04 < 8) {
+        if (arg0->rotation < 8) {
             gFragment54TextureAtlas = BinArchive_GetFile(gBattleHeaderArchive, 0xD);
         } else {
             gFragment54TextureAtlas = BinArchive_GetFile(gBattleHeaderArchive, 0x10);
@@ -263,7 +263,7 @@ s32 RentalHub_MenuMain(void) {
     gMenuCursorIndex = 0;
 
     if (gSessionContext.unk_0000 == 7) {
-        if (sp1C.unk_04 < 8) {
+        if (sp1C.rotation < 8) {
             Audio_PlayMusicIfChanged(0x2A);
         } else {
             Audio_PlayMusicIfChanged(0x27);

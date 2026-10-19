@@ -40,8 +40,8 @@ s32 Intro_LightAngleCallbackB(s32, GraphNode*);
 s32 Intro_FogColorCallback(s32, GraphNode*);
 
 typedef struct unk_D_86B0DD58 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
 } unk_D_86B0DD58; // size = 0xC
 
@@ -214,11 +214,11 @@ void Intro_SetBackgroundTint(u8 arg0, u8 arg1, u8 arg2) {
     gOverlayColor.b = arg2;
 
     if (v == 0xFF) {
-        if (gBattleOverlayRect.unk_00.unk_14 == 1) {
-            gBattleOverlayRect.unk_00.unk_01 |= 1;
+        if (gBattleOverlayRect.posX.unk_14 == 1) {
+            gBattleOverlayRect.posX.unk_01 |= 1;
         }
     } else {
-        gBattleOverlayRect.unk_00.unk_01 &= ~1;
+        gBattleOverlayRect.posX.unk_01 &= ~1;
     }
 }
 
@@ -240,12 +240,12 @@ void Intro_LoadPokemonTextures(void) {
 }
 
 void Intro_LoadShowcaseModel(void) {
-    gCameraTarget->unk_174 = gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C].unk_00.unk_00;
+    gCameraTarget->unk_174 = gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C].posX.posX;
     ModelRenderer_AttachDisplayObject(&gCameraTarget->unk_004);
     PokeIcon_OpenModelArchives();
 
     gCameraTarget->unk_000 = Model_LoadForPokemon(&gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C]);
-    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->posX[0]);
     ModelAnim_SetAnimation(&gCameraTarget->unk_004, 0);
     gCameraTarget->unk_004.modelPhase = 0;
     Intro_LoadPokemonTextures();
@@ -266,11 +266,11 @@ void Intro_ReplaceShowcaseModel(void) {
 }
 
 void Intro_SetupOrbitCamera(void) {
-    gCameraState->unk_00->unk_24.fovy = 30.0f;
-    gCameraState->unk_00->unk_24.near = 30.0f;
-    gCameraState->unk_00->unk_24.far = 6400.0f;
-    Intro_ComputeFollowPoint(gCameraTarget, &gCameraState->unk_04);
-    Intro_LoadCameraKeyframe(&gScrollBarSegmentData[gCameraTarget->unk_17C], gCameraState->unk_00);
+    gCameraState->posX->unk_24.fovy = 30.0f;
+    gCameraState->posX->unk_24.near = 30.0f;
+    gCameraState->posX->unk_24.far = 6400.0f;
+    Intro_ComputeFollowPoint(gCameraTarget, &gCameraState->rotation);
+    Intro_LoadCameraKeyframe(&gScrollBarSegmentData[gCameraTarget->unk_17C], gCameraState->posX);
     Intro_UpdateOrbitCamera();
 }
 
@@ -281,11 +281,11 @@ void Intro_LoadStageModel(void) {
 
     main_pool_push_state('MONS');
 
-    gCameraTarget->unk_174 = gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_00;
+    gCameraTarget->unk_174 = gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].posX;
     ModelRenderer_AttachDisplayObject(&gCameraTarget->unk_004);
     PokeIcon_OpenModelArchives();
     gCameraTarget->unk_000 = Model_LoadByArchiveIndex(gCameraTarget->unk_174);
-    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->posX[0]);
     ModelAnim_SetAnimation(&gCameraTarget->unk_004, 0);
     Vec3f_SetComponentsDuplicate(&gCameraTarget->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
 }
@@ -293,17 +293,17 @@ void Intro_LoadStageModel(void) {
 void Intro_SetupStaticCamera(void) {
     gMonsterLandingState = 0;
     gMonsterLandingYVel = 0.0f;
-    gCameraState->unk_00->unk_24.fovy = 40.0f;
-    gCameraState->unk_00->unk_24.near = 30.0f;
-    gCameraState->unk_00->unk_24.far = 6400.0f;
+    gCameraState->posX->unk_24.fovy = 40.0f;
+    gCameraState->posX->unk_24.near = 30.0f;
+    gCameraState->posX->unk_24.far = 6400.0f;
 
-    Vec3f_SetComponentsDuplicate(&gCameraState->unk_00->unk_60.at, gCameraTarget->unk_004.unk_024.x,
-                  gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_04 + gCameraTarget->unk_004.unk_024.y, gCameraTarget->unk_004.unk_024.z);
+    Vec3f_SetComponentsDuplicate(&gCameraState->posX->unk_60.at, gCameraTarget->unk_004.unk_024.x,
+                  gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].rotation + gCameraTarget->unk_004.unk_024.y, gCameraTarget->unk_004.unk_024.z);
 
     if ((gCurrentMonsterSpawnIdx == 4) || (gCurrentMonsterSpawnIdx == 5)) {
-        Vec3f_SetComponentsDuplicate(&gCameraState->unk_00->unk_60.eye, 0, 100.0f, 328.0f);
+        Vec3f_SetComponentsDuplicate(&gCameraState->posX->unk_60.eye, 0, 100.0f, 328.0f);
     } else {
-        Vec3f_SetComponentsDuplicate(&gCameraState->unk_00->unk_60.eye, 0, 100.0f, 250.0f);
+        Vec3f_SetComponentsDuplicate(&gCameraState->posX->unk_60.eye, 0, 100.0f, 250.0f);
     }
 }
 
@@ -358,8 +358,8 @@ s32 Intro_UpdateModelLanding(void) {
         gCameraTarget->unk_004.unk_024.y = 0.0f;
     }
 
-    Vec3f_SetComponentsDuplicate(&gCameraState->unk_00->unk_60.at, gCameraTarget->unk_004.unk_024.x,
-                  gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_04 + gCameraTarget->unk_004.unk_024.y, gCameraTarget->unk_004.unk_024.z);
+    Vec3f_SetComponentsDuplicate(&gCameraState->posX->unk_60.at, gCameraTarget->unk_004.unk_024.x,
+                  gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].rotation + gCameraTarget->unk_004.unk_024.y, gCameraTarget->unk_004.unk_024.z);
 
     if (gCameraTarget->unk_004.unk_024.y <= 0.5f) {
         return 1;
@@ -378,24 +378,24 @@ void Intro_EmitLandingParticles(void) {
     if (gCameraTarget->unk_178 & 1) {
         Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
                       gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-        Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
+        Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &gMiniTutoScreenNode2, 1);
 
         if ((gCameraTarget->unk_178 >= 0xA) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
+            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &gMiniTutoScreenNode2, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x14) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
+            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &gMiniTutoScreenNode2, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x1E) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
+            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &gMiniTutoScreenNode2, 1);
         }
     }
 }
@@ -430,9 +430,9 @@ void Intro_SetupTextPanel(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s1
     arg0->unk_A4 = 0;
     arg0->unk_AC = 0.0f;
 
-    arg0->unk_B0.unk_00 = gUIElementColors->unk_00;
-    arg0->unk_B0.unk_02 = gUIElementColors->unk_02;
-    arg0->unk_B0.unk_04 = gUIElementColors->unk_04;
+    arg0->unk_B0.posX = gUIElementColors->posX;
+    arg0->unk_B0.posY = gUIElementColors->posY;
+    arg0->unk_B0.rotation = gUIElementColors->rotation;
     arg0->unk_B0.unk_06 = gUIElementColors->unk_06;
     arg0->unk_B0.unk_08 = gUIElementColors->unk_08;
     arg0->unk_B0.unk_0A = gUIElementColors->unk_0A;
@@ -497,8 +497,8 @@ void Intro_StartFirstShowcase(void) {
 }
 
 void Intro_BeginOrbitCamera(void) {
-    gCameraState->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
-    gMiniCameraPtr = gCameraState->unk_00;
+    gCameraState->posX = gMiniCameraStruct->posX.unk_0C;
+    gMiniCameraPtr = gCameraState->posX;
     Intro_SetupOrbitCamera();
 }
 
@@ -513,8 +513,8 @@ void Intro_StartFinalStageModel(void) {
 }
 
 void Intro_BeginStaticCamera(void) {
-    gCameraState->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
-    gMiniCameraPtr = gCameraState->unk_00;
+    gCameraState->posX = gMiniCameraStruct->posX.unk_0C;
+    gMiniCameraPtr = gCameraState->posX;
     Intro_SetupStaticCamera();
 }
 
@@ -542,7 +542,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
     switch (gCameraTarget->unk_16C) {
         case 0:
             Intro_SetupOrbitCamera();
-            Intro_UpdateCameraKeyframe(gCameraState->unk_00);
+            Intro_UpdateCameraKeyframe(gCameraState->posX);
             gCameraTarget->unk_170 = 0;
             gCameraTarget->unk_16C += 1;
             break;
@@ -553,7 +553,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
                 gUIElementName->unk_90 = 0;
             }
 
-            if (Intro_UpdateCameraKeyframe(gCameraState->unk_00) != 0) {
+            if (Intro_UpdateCameraKeyframe(gCameraState->posX) != 0) {
                 if ((gSessionContext.unk_0001 == 7) && (gCameraTarget->unk_17C == 5)) {
                     return 1;
                 }
@@ -589,7 +589,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
         case 3:
             WipeTransition_Update();
             if (gCameraTarget->unk_178++ > 0) {
-                Intro_UpdateCameraKeyframe(gCameraState->unk_00);
+                Intro_UpdateCameraKeyframe(gCameraState->posX);
             }
 
             if (WipeTransition_GetState() == 0) {
@@ -733,14 +733,14 @@ void Intro_DrawTextPanels(void) {
                 }
 
                 if (gUIElementHealthFill->unk_84 != 0) {
-                    gUIElementHealthBar->unk_B0.unk_00 = Math_StepToS32(
-                        gUIElementHealthBar->unk_B0.unk_00, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_00,
+                    gUIElementHealthBar->unk_B0.posX = Math_StepToS32(
+                        gUIElementHealthBar->unk_B0.posX, gUIElementColors[gUIElementHealthBar->unk_88 + 1].posX,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0C, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0C);
-                    gUIElementHealthBar->unk_B0.unk_02 = Math_StepToS32(
-                        gUIElementHealthBar->unk_B0.unk_02, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_02,
+                    gUIElementHealthBar->unk_B0.posY = Math_StepToS32(
+                        gUIElementHealthBar->unk_B0.posY, gUIElementColors[gUIElementHealthBar->unk_88 + 1].posY,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0E, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0E);
-                    gUIElementHealthBar->unk_B0.unk_04 = Math_StepToS32(
-                        gUIElementHealthBar->unk_B0.unk_04, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_04,
+                    gUIElementHealthBar->unk_B0.rotation = Math_StepToS32(
+                        gUIElementHealthBar->unk_B0.rotation, gUIElementColors[gUIElementHealthBar->unk_88 + 1].rotation,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_10, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_10);
                     gUIElementHealthBar->unk_B0.unk_06 = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_06, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_06,
@@ -751,9 +751,9 @@ void Intro_DrawTextPanels(void) {
                     gUIElementHealthBar->unk_B0.unk_0A = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_0A, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0A,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_16, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_16);
-                    if ((gUIElementHealthBar->unk_B0.unk_00 == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_00) &&
-                        (gUIElementHealthBar->unk_B0.unk_02 == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_02) &&
-                        (gUIElementHealthBar->unk_B0.unk_04 == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_04) &&
+                    if ((gUIElementHealthBar->unk_B0.posX == gUIElementColors[gUIElementHealthBar->unk_88 + 1].posX) &&
+                        (gUIElementHealthBar->unk_B0.posY == gUIElementColors[gUIElementHealthBar->unk_88 + 1].posY) &&
+                        (gUIElementHealthBar->unk_B0.rotation == gUIElementColors[gUIElementHealthBar->unk_88 + 1].rotation) &&
                         (gUIElementHealthBar->unk_B0.unk_06 == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_06) &&
                         (gUIElementHealthBar->unk_B0.unk_08 == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_08) &&
                         (gUIElementHealthBar->unk_B0.unk_0A == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0A)) {
@@ -827,7 +827,7 @@ void Intro_RenderFrame(void) {
     }
 
     GeoRender_AdvanceFrameCounter();
-    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
+    Geo_RenderRootNode(&gMiniCameraStruct->posX);
     Intro_DrawTextPanels();
     MiniFx_DrawParticles();
     BgStage_AdvanceFrame();
@@ -837,7 +837,7 @@ void Intro_RenderBlackFrame(void) {
     BgStage_DrawFrame();
     GfxImage_FillCurrent(&gDisplayListHead, 1);
     GeoRender_AdvanceFrameCounter();
-    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
+    Geo_RenderRootNode(&gMiniCameraStruct->posX);
     Gfx_FillRectWithDisplayState(0, 0, 0x140, 0xF0, 0, 0, 0, 0xFF);
     BgStage_AdvanceFrame();
 }
@@ -1006,13 +1006,13 @@ void Stage_LoadModels(void) {
 
     temp_v0_6 = sp2C(4, 0);
     if (temp_v0_6 == NULL) {
-        gBattleOverlayRect.unk_00.unk_14 = 0;
-        gBattleOverlayRect.unk_00.unk_01 &= ~1;
+        gBattleOverlayRect.posX.unk_14 = 0;
+        gBattleOverlayRect.posX.unk_01 &= ~1;
     } else {
-        gBattleOverlayRect.unk_18.unk_00 = temp_v0_6->unk_00;
-        gBattleOverlayRect.unk_18.unk_02 = temp_v0_6->unk_02;
-        gBattleOverlayRect.unk_18.unk_04.rgba = temp_v0_6->unk_04.rgba;
-        gBattleOverlayRect.unk_00.unk_14 = 1;
+        gBattleOverlayRect.unk_18.posX = temp_v0_6->posX;
+        gBattleOverlayRect.unk_18.posY = temp_v0_6->posY;
+        gBattleOverlayRect.unk_18.rotation.rgba = temp_v0_6->rotation.rgba;
+        gBattleOverlayRect.posX.unk_14 = 1;
     }
 
     ModelRenderer_InitDisplayRoots();

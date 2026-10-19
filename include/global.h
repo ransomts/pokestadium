@@ -20,8 +20,8 @@ struct unk_D_86002F58_004_000_00C;
 
 typedef union arg1_func_80010CA8 {
     struct {
-        /* 0x00 */ s16 unk_00;
-        /* 0x02 */ s8 unk_02;
+        /* 0x00 */ s16 posX;
+        /* 0x02 */ s8 posY;
         /* 0x03 */ s8 unk_03;
     };
     u32 raw;
@@ -29,7 +29,7 @@ typedef union arg1_func_80010CA8 {
 
 typedef struct unk_D_86002F58_004_000_00C_028 {
     /* 0x00 */ char pad0[4];
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ char pad6[6];
     /* 0x0C */ s32* unk_0C;
@@ -39,16 +39,16 @@ typedef struct unk_D_86002F58_004_000_00C_028 {
 typedef unk_D_86002F58_004_000_00C_028* (*unk_D_86002F58_004_000_00C_028_func)(s32, s32);
 
 typedef struct unk_D_86002F58_004_000_010_024 {
-    /* 0x00 */ u16 unk_00;
+    /* 0x00 */ u16 posX;
     /* 0x02 */ char unk02[0x6];
     /* 0x08 */ struct unk_D_86002F58_004_000_004* unk_08;
 } unk_D_86002F58_004_000_010_024; // size >= 0xC
 
 typedef struct AssetManager {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
-    /* 0x04 */ s32 unk_04[1];
+    /* 0x02 */ u8 posY;
+    /* 0x04 */ s32 rotation[1];
     /* 0x08 */ char pad8[0x10];
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ s32 unk_1C;
@@ -65,23 +65,23 @@ typedef struct AssetManager {
 } AssetManager; // size = 0x70
 
 typedef struct unk_D_86002F58_004_000_004 {
-    /* 0x00 */ struct unk_D_86002F58_004_000_004* unk_00[4];
+    /* 0x00 */ struct unk_D_86002F58_004_000_004* posX[4];
     /* 0x10 */ struct unk_D_86002F58_004_000_00C* unk_10;
     /* 0x14 */ AssetManager* unk_14;
 } unk_D_86002F58_004_000_004; // size >= 0x18
 
 typedef struct unk_D_86002F58_004_000_00C {
-    /* 0x00 */ unk_D_86002F58_004_000_004 unk_00;
+    /* 0x00 */ unk_D_86002F58_004_000_004 posX;
     /* 0x18 */ char unk_18[0x10];
     /* 0x28 */ unk_D_86002F58_004_000_00C_028_func unk_28;
 } unk_D_86002F58_004_000_00C; // size >= 0x2C
 
 typedef struct GraphRootNode {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ struct GraphRootNode* unk_04;
+    /* 0x04 */ struct GraphRootNode* rotation;
     /* 0x08 */ struct GraphRootNode* unk_08;
     /* 0x0C */ unk_D_86002F58_004_000_00C* unk_0C;
     /* 0x10 */ AssetManager* unk_10;
@@ -89,9 +89,9 @@ typedef struct GraphRootNode {
 } GraphRootNode; // size = 0x18
 
 typedef struct unk_D_86002F58_004_000_040_004 {
-    /* 0x00 */ s16 unk_00;
+    /* 0x00 */ s16 posX;
     /* 0x02 */ char unk02[0x2];
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ u16 unk_08;
     /* 0x0A */ u16 unk_0A;
@@ -102,8 +102,8 @@ typedef struct unk_D_86002F58_004_000_040_004 {
 } unk_D_86002F58_004_000_040_004; // size >= 0x1C
 
 typedef struct unk_D_86002F58_004_000_040 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x04 */ unk_D_86002F58_004_000_040_004* unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x04 */ unk_D_86002F58_004_000_040_004* rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ u32 unk_0C;
     /* 0x10 */ char unk10[0x2];
@@ -111,9 +111,9 @@ typedef struct unk_D_86002F58_004_000_040 {
 } unk_D_86002F58_004_000_040; // size >= 0x14
 
 typedef struct unk_D_86002F58_004_000_054_004 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ char unk_02[0x2];
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ char posY[0x2];
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ u16 unk_08;
     /* 0x0A */ u16 unk_0A;
@@ -122,16 +122,16 @@ typedef struct unk_D_86002F58_004_000_054_004 {
 } unk_D_86002F58_004_000_054_004; // size >= 0x14
 
 typedef struct unk_D_86002F58_004_000_054 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x04 */ unk_D_86002F58_004_000_054_004* unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x04 */ unk_D_86002F58_004_000_054_004* rotation;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ u16 unk_0A;
 } unk_D_86002F58_004_000_054; // size = 0xC
 
 typedef struct unk_D_86002F58_004_000_0A8 {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02;
-    /* 0x04 */ Vec3f unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u8 posY;
+    /* 0x04 */ Vec3f rotation;
 } unk_D_86002F58_004_000_0A8; // size = 0x10
 
 typedef struct Fragment2_1GraphNode {
@@ -162,27 +162,27 @@ typedef struct Fragment2_1GraphNode {
 } Fragment2_1GraphNode; // size = 0x168
 
 typedef struct ColorLerpEntry5 {
-    /* 0x00 */ u8 unk_00[5];
+    /* 0x00 */ u8 posX[5];
 } ColorLerpEntry5; // size = 0x5
 
 typedef struct ColorLerpEntry4 {
-    /* 0x00 */ u8 unk_00[4];
+    /* 0x00 */ u8 posX[4];
 } ColorLerpEntry4; // size = 0x4
 
 typedef struct unk_D_86002F34_000_014 {
-    /* 0x00 */ u8* unk_00;
-    /* 0x04 */ u8* unk_04;
+    /* 0x00 */ u8* posX;
+    /* 0x04 */ u8* rotation;
 } unk_D_86002F34_000_014; // size >= 0x8
 
 struct GraphNode;
 typedef s32 (*func_D_86002F34_000_010)(s32, struct GraphNode*);
 
 typedef struct GraphNode {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ struct GraphNode* unk_04;
+    /* 0x04 */ struct GraphNode* rotation;
     /* 0x08 */ struct GraphNode* unk_08;
     /* 0x0C */ struct CameraStruct* unk_0C;
     /* 0x10 */ func_D_86002F34_000_010 unk_10;
@@ -228,8 +228,8 @@ typedef struct unk_D_86002F34_00C_060 {
 } unk_D_86002F34_00C_060; // size >= 0x6C
 
 typedef struct unk_D_86002F34_00C_0CC {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
     /* 0x04 */ Color_RGBA8_u32 color;
     /* 0x08 */ u16 unk_08;
     /* 0x0A */ u16 unk_0A;
@@ -245,7 +245,7 @@ typedef struct unk_D_86002F34_00C_0CC {
 } unk_D_86002F34_00C_0CC; // size >= 0x20
 
 typedef struct CameraStruct {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ unk_D_86002F34_00C_018 unk_18;	//	viewPort
     /* 0x24 */ unk_D_86002F34_00C_024 unk_24;	//	projection
     /* 0x40 */ unk_D_86002F34_00C_040 unk_40;
@@ -255,7 +255,7 @@ typedef struct CameraStruct {
 } CameraStruct; // size = 0xF0
 
 typedef struct unk_D_86002F34_alt1 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ u16 unk_1A;
     /* 0x1C */ s8 unk_1C;
@@ -265,32 +265,32 @@ typedef struct unk_D_86002F34_alt1 {
 } unk_D_86002F34_alt1; // size >= 0x28
 
 typedef struct unk_D_86002F34_alt2 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ GraphNode* unk_18;
 } unk_D_86002F34_alt2; // size >= 0x1C
 
 typedef struct unk_D_86002F34_alt3 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 unk_1A;
     /* 0x1C */ s32 unk_1C;
 } unk_D_86002F34_alt3; // size >= 0x20
 
 typedef struct unk_D_86002F34_alt4 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ Color_RGBA8_u32 unk_18;
     /* 0x1C */ u16 unk_1C;
     /* 0x1E */ u16 unk_1E;
 } unk_D_86002F34_alt4; // size >= 0x20
 
 typedef struct unk_D_86002F34_alt5 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ Vec3f unk_18;
     /* 0x24 */ Vec3s unk_24;
 } unk_D_86002F34_alt5; // size = 0x2C
 
 typedef struct unk_D_86002F34_alt6 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ Vec3s unk_18;
     /* 0x1E */ Vec3s unk_1E;
     /* 0x24 */ Vec3f unk_24;
@@ -300,26 +300,26 @@ typedef struct unk_D_86002F34_alt6 {
 } unk_D_86002F34_alt6; // size = 0x34
 
 typedef struct unk_D_86002F34_alt7 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ Gfx* unk_18;
     /* 0x1C */ s16 unk_1C;
 } unk_D_86002F34_alt7; // size = 0x20
 
 typedef struct unk_D_86002F34_alt8 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ Gfx* unk_18;
     /* 0x1C */ MtxF unk_1C;
 } unk_D_86002F34_alt8; // size = 0x5C
 
 typedef struct unk_D_86002F34_alt9 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ Gfx* unk_18;
     /* 0x1C */ Vec3f unk_1C;
     /* 0x28 */ f32 unk_28;
 } unk_D_86002F34_alt9; // size = 0x2C
 
 typedef struct unk_D_86002F34_alt10 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ Gfx* unk_18;
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
@@ -331,19 +331,19 @@ typedef struct unk_D_86002F34_alt10 {
 typedef struct unk_D_86002F34_alt11_018 {
     /* 0x00 */ u8 fmt;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
+    /* 0x02 */ s16 posY;
     /* 0x04 */ char unk04[0x4];
     /* 0x08 */ u8* texture;
 } unk_D_86002F34_alt11_018; // size >= 0xC
 
 typedef struct unk_D_86002F34_alt11 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ unk_D_86002F34_alt11_018* unk_18;
     /* 0x1C */ unk_D_86002F34_alt11_018* unk_1C;
 } unk_D_86002F34_alt11; // size >= 0x20
 
 typedef struct unk_D_86002F34_alt12 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 unk_1A;
     /* 0x1C */ s16 unk_1C;
@@ -351,29 +351,29 @@ typedef struct unk_D_86002F34_alt12 {
 } unk_D_86002F34_alt12; // size = 0x20
 
 typedef struct unk_D_86002F34_alt13 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ s16 unk_18;
 } unk_D_86002F34_alt13; // size = 0x1C
 
 typedef struct unk_D_86002F34_alt14 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
 } unk_D_86002F34_alt14; // size = 0x18
 
 typedef struct unk_D_86002F34_alt15 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
 } unk_D_86002F34_alt15; // size = 0x18
 
 typedef struct unk_D_86002F34_alt16 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ u32 unk_18;
 } unk_D_86002F34_alt16; // size = 0x1C
 
 typedef struct unk_D_86002F34_alt17 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
 } unk_D_86002F34_alt17; // size = 0x18
 
 typedef struct unk_D_86002F34_alt18 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ u8 r;
     /* 0x19 */ u8 g;
     /* 0x1A */ u8 b;
@@ -383,36 +383,36 @@ typedef struct unk_D_86002F34_alt18 {
 } unk_D_86002F34_alt18; // size = 0x20
 
 typedef struct unk_D_86002F34_alt19 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ u8 r;
     /* 0x19 */ u8 g;
     /* 0x1A */ u8 b;
 } unk_D_86002F34_alt19; // size = 0x1C
 
 typedef struct unk_D_86002F34_alt20 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 unk_1A;
 } unk_D_86002F34_alt20; // size = 0x1C
 
 typedef struct unk_D_86002F34_alt21 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 unk_1A;
 } unk_D_86002F34_alt21; // size = 0x1C
 
 typedef struct unk_D_86002F34_alt22 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ Vec3f unk_18;
 } unk_D_86002F34_alt22; // size = 0x24
 
 typedef struct unk_D_86002F34_alt23 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ s16 unk_18;
 } unk_D_86002F34_alt23; // size = 0x1C
 
 typedef struct unk_D_86002F34_alt24 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 unk_1A;
     /* 0x1C */ s16 unk_1C;
@@ -430,7 +430,7 @@ typedef void* (*func_unk_D_800ABE10)(s32, s32);
 #define unk_D_86002F34_018_GFX_TYPE_3 3 // 32-bit per texel
 
 typedef struct unk_D_86002F34_018 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 type;
     /* 0x02 */ s16 width;
     /* 0x04 */ s16 height;
@@ -439,13 +439,13 @@ typedef struct unk_D_86002F34_018 {
 } unk_D_86002F34_018; // size = 0xC
 
 typedef struct unk_D_86002F34_01C {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s16* unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s16* rotation;
     /* 0x08 */ char unk08[0x4];
 } unk_D_86002F34_01C; // size = 0xC
 
 typedef struct unk_D_86002F34 {
-    /* 0x00 */ GraphNode unk_00;
+    /* 0x00 */ GraphNode posX;
     /* 0x18 */ unk_D_86002F34_018* unk_18;
     /* 0x1C */ unk_D_86002F34_01C* unk_1C;
     /* 0x20 */ Vtx* unk_20;
@@ -462,10 +462,10 @@ typedef struct unk_D_86002F30 {
 } unk_D_86002F30; // size = 0x18 ??
 
 typedef struct UnkInputStruct8000D738 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u16 (*unk_04)[6][0x640];
+    /* 0x04 */ u16 (*rotation)[6][0x640];
 } UnkInputStruct8000D738; // size = 0x8
 
 typedef struct GbEmuState {
@@ -484,8 +484,8 @@ typedef struct GbEmuState {
 } GbEmuState; // size = 0x2210
 
 typedef struct unk_D_864027C0 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -496,11 +496,11 @@ typedef struct unk_D_864027C0 {
 } unk_D_864027C0; // size = 0x20
 
 typedef struct arg1_func_81407874_014_000_010 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
@@ -520,8 +520,8 @@ typedef struct TextObjectThreadData {
 } TextObjectThreadData; // size = 0x1C0
 
 typedef struct TiledTexture {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ u8* unk_0C;
 } TiledTexture; // size = 0x10
@@ -537,7 +537,7 @@ typedef struct TrainerData {
 
 // GB Emulator State
 typedef struct GbPakDeviceState {
-    /* 0x00000 */ u8 unk_00[0x208];
+    /* 0x00000 */ u8 posX[0x208];
     /* 0x00208 */ u8 unk_208[0x40];
     /* 0x00248 */ u8 unk_248[0x40];
     /* 0x00288 */ u8 unk_288[0x100];

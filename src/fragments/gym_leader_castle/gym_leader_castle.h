@@ -4,17 +4,17 @@
 #include "global.h"
 
 typedef struct TrainerPortrait {
-    /* 0x00 */ u8 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ char* unk_08;
 } TrainerPortrait; // size = 0xC
 
 typedef struct RoomDef {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;

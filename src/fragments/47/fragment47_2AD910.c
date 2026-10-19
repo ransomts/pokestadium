@@ -125,7 +125,7 @@ s32 Gallery_RentalViewerHandleInput(void) {
                 if (D_83804CB8 <= 0) {
                     gSnapSelectState = 1;
                     if (gSnapSelectMode == 1) {
-                        D_83805664 = gGalleryFinalSelection.unk_08.unk_00;
+                        D_83805664 = gGalleryFinalSelection.unk_08.posX;
                         Gallery_RentalViewerLoadPort(1);
                     } else {
                         if (gSnapSelectMode == 2) {
@@ -243,7 +243,7 @@ s32 Gallery_RentalViewerGetResult(void) {
         }
     }
 
-    temp_a0->unk_00 = D_83805664;
+    temp_a0->posX = D_83805664;
     Gallery_RentalViewerSaveBoxCursor(temp_a0);
     return var_v1;
 }

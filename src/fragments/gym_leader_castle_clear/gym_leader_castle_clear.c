@@ -17,8 +17,8 @@ s32 Glc_GeoSpriteCallback(s32, GraphNode*);
 s32 Glc_GeoBannerCallback(s32, GraphNode*);
 
 typedef struct unk_D_83101E6C {
-    /* 0x00 */ s16 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
@@ -28,16 +28,16 @@ typedef struct unk_D_83101E6C {
 } unk_D_83101E6C; // size = 0x14
 
 typedef struct unk_D_83102218 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x08 */ f32 unk_08;
 } unk_D_83102218; // size = 0xC
 
 typedef struct unk_D_83102224 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
 } unk_D_83102224; // size = 0x8
 
 static BinArchive* D_83101EE0;
@@ -202,13 +202,13 @@ void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
             arg0->unk_17A = ptr2->unk_10 + (((ptr1->unk_10 - ptr2->unk_10) * arg0->unk_16C) / arg0->unk_16E);
             arg0->unk_17C = ptr2->unk_12 + (((ptr1->unk_12 - ptr2->unk_12) * arg0->unk_16C) / arg0->unk_16E);
 
-            var_fv1 = ptr2->unk_04 + (((ptr1->unk_04 - ptr2->unk_04) * arg0->unk_16C) / arg0->unk_16E);
+            var_fv1 = ptr2->rotation + (((ptr1->rotation - ptr2->rotation) * arg0->unk_16C) / arg0->unk_16E);
 
             if (arg0->unk_16C <= 0) {
                 arg0->unk_170++;
                 ptr1 = &gNodeColorScaleTable[arg0->unk_170];
 
-                arg0->unk_16C = arg0->unk_16E = ptr1->unk_00;
+                arg0->unk_16C = arg0->unk_16E = ptr1->posX;
                 arg0->unk_172 = ptr1->unk_08;
                 arg0->unk_174 = ptr1->unk_0A;
                 arg0->unk_176 = ptr1->unk_0C;
@@ -216,7 +216,7 @@ void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
                 arg0->unk_17A = ptr1->unk_10;
                 arg0->unk_17C = ptr1->unk_12;
 
-                var_fv1 = ptr1->unk_04;
+                var_fv1 = ptr1->rotation;
 
                 if (arg0->unk_16C == -1) {
                     arg0->unk_16E = 0;
@@ -261,23 +261,23 @@ s32 Glc_GeoSpriteCallback(s32 arg0, GraphNode* arg1) {
 }
 
 void Glc_InitCircleWipe(void) {
-    gBorderAnimState.unk_00 = 0;
-    gBorderAnimState.unk_02 = 0;
+    gBorderAnimState.posX = 0;
+    gBorderAnimState.posY = 0;
     gBorderAnimState.unk_08 = 7.0f;
 }
 
 void Glc_UpdateCircleWipe(void) {
     s32 tmp;
 
-    switch (gBorderAnimState.unk_00) {
+    switch (gBorderAnimState.posX) {
         case 1:
-            gBorderAnimState.unk_02--;
-            gBorderAnimState.unk_08 = (gBorderAnimState.unk_02 * 7.0f) / gBorderAnimState.unk_04;
+            gBorderAnimState.posY--;
+            gBorderAnimState.unk_08 = (gBorderAnimState.posY * 7.0f) / gBorderAnimState.rotation;
 
-            tmp = gBorderAnimState.unk_02 <= 0;
+            tmp = gBorderAnimState.posY <= 0;
             if (tmp) {
-                gBorderAnimState.unk_00 = 2;
-                gBorderAnimState.unk_02 = gBorderAnimState.unk_04 = 0;
+                gBorderAnimState.posX = 2;
+                gBorderAnimState.posY = gBorderAnimState.rotation = 0;
                 gBorderAnimState.unk_08 = 0.0f;
             }
             break;
@@ -300,11 +300,11 @@ void Glc_DrawCircleWipe(void) {
     s32 temp_ft2;
 
     Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
-    if (gBorderAnimState.unk_00 == 0) {
+    if (gBorderAnimState.posX == 0) {
         return;
     }
 
-    if ((gBorderAnimState.unk_08 <= 0.0f) || (gBorderAnimState.unk_00 == 2)) {
+    if ((gBorderAnimState.unk_08 <= 0.0f) || (gBorderAnimState.posX == 2)) {
         gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
         gDPSetFillColor(gDisplayListHead++, 0x00010001);
         gDPFillRectangle(gDisplayListHead++, 0, 0, 639, 479);
@@ -371,27 +371,27 @@ void Glc_DrawCircleWipe(void) {
 
 void Glc_StartCircleWipe(s16 arg0) {
     if (arg0 > 0) {
-        gBorderAnimState.unk_00 = 1;
-        gBorderAnimState.unk_02 = gBorderAnimState.unk_04 = arg0;
+        gBorderAnimState.posX = 1;
+        gBorderAnimState.posY = gBorderAnimState.rotation = arg0;
         gBorderAnimState.unk_08 = 7.0f;
     }
 }
 
 void Glc_InitBackgroundFade(void) {
-    gFadeAnimState.unk_00 = 0;
-    gFadeAnimState.unk_02 = 0;
-    gFadeAnimState.unk_04 = 0xC0;
+    gFadeAnimState.posX = 0;
+    gFadeAnimState.posY = 0;
+    gFadeAnimState.rotation = 0xC0;
 }
 
 void Glc_UpdateBackgroundFade(void) {
-    switch (gFadeAnimState.unk_00) {
+    switch (gFadeAnimState.posX) {
         case 1:
-            gFadeAnimState.unk_02--;
-            gFadeAnimState.unk_04 = ((gFadeAnimState.unk_02 * -0x3F) / 10) + 0xFF;
-            if (gFadeAnimState.unk_02 <= 0) {
-                gFadeAnimState.unk_00 = 2;
-                gFadeAnimState.unk_02 = 0;
-                gFadeAnimState.unk_04 = 0xFF;
+            gFadeAnimState.posY--;
+            gFadeAnimState.rotation = ((gFadeAnimState.posY * -0x3F) / 10) + 0xFF;
+            if (gFadeAnimState.posY <= 0) {
+                gFadeAnimState.posX = 2;
+                gFadeAnimState.posY = 0;
+                gFadeAnimState.rotation = 0xFF;
             }
             break;
 
@@ -430,18 +430,18 @@ void Glc_DrawFadedBackground(u8* arg0, s16 arg1) {
 }
 
 void Glc_DrawBackground(void) {
-    if (gFadeAnimState.unk_04 < 0xFF) {
-        Glc_DrawFadedBackground(D_83101EE4, gFadeAnimState.unk_04);
+    if (gFadeAnimState.rotation < 0xFF) {
+        Glc_DrawFadedBackground(D_83101EE4, gFadeAnimState.rotation);
     } else {
         Gfx_DrawTiledRgba16Image(D_83101EE4);
     }
 }
 
 void Glc_StartBackgroundFade(s16 arg0) {
-    gFadeAnimState.unk_00 = arg0;
-    if (gFadeAnimState.unk_00 == 1) {
-        gFadeAnimState.unk_02 = 0xA;
-        gFadeAnimState.unk_04 = 0xC0;
+    gFadeAnimState.posX = arg0;
+    if (gFadeAnimState.posX == 1) {
+        gFadeAnimState.posY = 0xA;
+        gFadeAnimState.rotation = 0xC0;
     }
 }
 
@@ -467,7 +467,7 @@ void Glc_InitObjectAnimation(unk_D_83101F00* arg0, s16 arg1) {
                 arg0->unk_170 = 0;
                 ptr = &gNodeColorScaleTable[arg0->unk_170];
 
-                arg0->unk_16C = arg0->unk_16E = ptr->unk_00;
+                arg0->unk_16C = arg0->unk_16E = ptr->posX;
                 arg0->unk_172 = ptr->unk_08;
                 arg0->unk_174 = ptr->unk_0A;
                 arg0->unk_176 = ptr->unk_0C;
@@ -475,7 +475,7 @@ void Glc_InitObjectAnimation(unk_D_83101F00* arg0, s16 arg1) {
                 arg0->unk_17A = ptr->unk_10;
                 arg0->unk_17C = ptr->unk_12;
 
-                Vec3f_SetComponentsDuplicate(&arg0->unk_000.unk_030, ptr->unk_04, ptr->unk_04, ptr->unk_04);
+                Vec3f_SetComponentsDuplicate(&arg0->unk_000.unk_030, ptr->rotation, ptr->rotation, ptr->rotation);
                 break;
         }
     }
@@ -566,7 +566,7 @@ s32 Glc_ClearAdvanceState(void) {
             break;
 
         case 2:
-            if (gBorderAnimState.unk_00 == 2) {
+            if (gBorderAnimState.posX == 2) {
                 sp1C = 0;
             }
             break;

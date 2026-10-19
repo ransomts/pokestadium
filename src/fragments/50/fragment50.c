@@ -30,8 +30,8 @@ typedef struct unk_D_82607420 {
 } unk_D_82607420; // size = 0x170
 
 typedef struct unk_D_82604180 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -1706,7 +1706,7 @@ s32 VictoryPalace_IsCurrentSpeciesOwnedByPlayer(void) {
 
     VictoryPalace_LoadSpeciesRecord(&sp20, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
     tmp = Text_GetPlayerLabel(1);
-    if ((sp20.unk_02 == 0) && (VictoryPalace_StringsEqual(&sp20.unk_14, tmp) == 1)) {
+    if ((sp20.posY == 0) && (VictoryPalace_StringsEqual(&sp20.unk_14, tmp) == 1)) {
         sp44 = 1;
     }
     return sp44;
@@ -1957,7 +1957,7 @@ void VictoryPalace_DrawOverlay(void) {
 
         gDisplayListHead = VictoryPalace_DrawFrameBorder(gDisplayListHead);
 
-        if (sp158.unk_00 & 0x80) {
+        if (sp158.posX & 0x80) {
             s32 temp_v0_2;
 
             gDPPipeSync(gDisplayListHead++);
@@ -1969,7 +1969,7 @@ void VictoryPalace_DrawOverlay(void) {
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
 
-            temp_v0_2 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gFragment50StringTable, (((sp158.unk_00 & 0x7F) - 1) % 7) + 7));
+            temp_v0_2 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gFragment50StringTable, (((sp158.posX & 0x7F) - 1) % 7) + 7));
 
             gSPTextureRectangle(gDisplayListHead++, (temp_v0_2 + 0x49) << 2, 0x0264, (temp_v0_2 + 0x59) << 2, 0x02A4,
                                 G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
@@ -2010,8 +2010,8 @@ void VictoryPalace_DrawOverlay(void) {
         Font_SetActive(2, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_Printf(0x1E, 0x8C, " --- No.%03d ---", (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
-        Font_Printf(0x1E, 0x98, " SCALE %3.1f", sp7C->unk_00);
-        Font_Printf(0x1E, 0xA4, " FRAME %d", sp7C->unk_04);
+        Font_Printf(0x1E, 0x98, " SCALE %3.1f", sp7C->posX);
+        Font_Printf(0x1E, 0xA4, " FRAME %d", sp7C->rotation);
         Font_Printf(0x1E, 0xBC, " POS-X %3.1f", sp7C->unk_08);
         Font_Printf(0x1E, 0xC8, " POS-Y %3.1f", sp7C->unk_0C);
         Font_Printf(0x1E, 0xD4, " POS-Z %3.1f", sp7C->unk_10);
@@ -2042,12 +2042,12 @@ void VictoryPalace_DrawOverlay(void) {
         }
 
         Font_SetActive(8, 0);
-        Font_Printf(0x84, 0x2A, "%s", sp58.unk_04);
+        Font_Printf(0x84, 0x2A, "%s", sp58.rotation);
         Font_SetActive(4, 0);
         Font_Printf(0x8C, 0x42, "%d", sp58.unk_01);
         Font_Printf(0x8C, 0x56, "%s", sp58.unk_14);
-        Font_Printf(0x8C, 0x6A, "%05d", sp58.unk_02);
-        Font_Printf(0x46, 0x98, "%s", Text_GetString(NULL, 0, gFragment50StringTable, (((sp58.unk_00 & 0x7F) - 1) % 7) + 7));
+        Font_Printf(0x8C, 0x6A, "%05d", sp58.posY);
+        Font_Printf(0x46, 0x98, "%s", Text_GetString(NULL, 0, gFragment50StringTable, (((sp58.posX & 0x7F) - 1) % 7) + 7));
         Font_DisableTwoCycleTexturing();
     }
 
@@ -2103,7 +2103,7 @@ void VictoryPalace_InitCarouselModel(s16 arg0) {
     }
 
     temp_s0->unk_008.modelPhase = 0xFF;
-    Model_InitDisplayObject(&temp_s0->unk_008, 0, temp_s0->unk_000, temp_s0->unk_004->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&temp_s0->unk_008, 0, temp_s0->unk_000, temp_s0->unk_004->unk_08->posX[0]);
 
     if (temp_s0->unk_000 == 0x90) {
         ModelAnim_SetAnimation(&temp_s0->unk_008, 0xB);
@@ -2111,8 +2111,8 @@ void VictoryPalace_InitCarouselModel(s16 arg0) {
         ModelAnim_SetAnimation(&temp_s0->unk_008, 1);
     }
 
-    temp_s0->unk_008.unk_000.unk_02 &= ~0x40;
-    Vec3f_SetComponentsDuplicate(&temp_s0->unk_008.unk_030, temp_s1->unk_00, temp_s1->unk_00, temp_s1->unk_00);
+    temp_s0->unk_008.unk_000.posY &= ~0x40;
+    Vec3f_SetComponentsDuplicate(&temp_s0->unk_008.unk_030, temp_s1->posX, temp_s1->posX, temp_s1->posX);
 
     temp_fs0 = (tmp * 6.283f) / 65536.0f;
     temp_s0->unk_008.unk_024.x =
@@ -2121,7 +2121,7 @@ void VictoryPalace_InitCarouselModel(s16 arg0) {
     temp_s0->unk_008.unk_024.z = (temp_s1->unk_08 * __sinf(temp_fs0)) - (__cosf(temp_fs0) * temp_s1->unk_10);
 
     temp_s0->unk_008.unk_01E.y = tmp;
-    temp_s0->unk_008.unk_040.unk_08 = temp_s1->unk_04 << 0x10;
+    temp_s0->unk_008.unk_040.unk_08 = temp_s1->rotation << 0x10;
     temp_s0->unk_008.unk_040.unk_0C = 0;
     temp_s0->unk_008.unk_01C = gPokedexPanelModelId;
 }
@@ -2200,11 +2200,11 @@ void VictoryPalace_UpdateCarouselModelRotation(void) {
 
     temp_fs0 = (temp_s0->unk_008.unk_01E.y * 6.283) / 65536.0;
 
-    temp_s0->unk_008.unk_030.x = temp_s1->unk_00;
-    temp_s0->unk_008.unk_030.y = temp_s1->unk_00;
-    temp_s0->unk_008.unk_030.z = temp_s1->unk_00;
+    temp_s0->unk_008.unk_030.x = temp_s1->posX;
+    temp_s0->unk_008.unk_030.y = temp_s1->posX;
+    temp_s0->unk_008.unk_030.z = temp_s1->posX;
 
-    temp_s0->unk_008.unk_040.unk_08 = temp_s1->unk_04 << 0x10;
+    temp_s0->unk_008.unk_040.unk_08 = temp_s1->rotation << 0x10;
 
     temp_s0->unk_008.unk_024.x = (-temp_s1->unk_08 * __cosf(temp_fs0)) - (__sinf(temp_fs0) * temp_s1->unk_10);
     temp_s0->unk_008.unk_024.y = temp_s1->unk_0C;
@@ -2382,19 +2382,19 @@ s32 HallOfFame_HandleGalleryInput(void) {
             }
 
             if (BTN_IS_DOWN(gPlayer1Controller, BTN_L)) {
-                temp_s0->unk_00 -= 0.1f;
+                temp_s0->posX -= 0.1f;
             }
 
             if (BTN_IS_DOWN(gPlayer1Controller, BTN_R)) {
-                temp_s0->unk_00 += 0.1f;
+                temp_s0->posX += 0.1f;
             }
 
             if (BTN_IS_DOWN(gPlayer1Controller, BTN_DLEFT)) {
-                temp_s0->unk_04 -= 1;
+                temp_s0->rotation -= 1;
             }
 
             if (BTN_IS_DOWN(gPlayer1Controller, BTN_DRIGHT)) {
-                temp_s0->unk_04 += 1;
+                temp_s0->rotation += 1;
             }
         }
 
@@ -2574,8 +2574,8 @@ void HallOfFame_SpawnPokeIcon(s32 arg0, f32 arg1) {
         Fragment2_1GraphNode* temp_s0 = &gFragment50GraphNodeArray[arg0];
 
         temp_s0->modelPhase = arg0;
-        Model_InitDisplayObject(temp_s0, 0, 0xB6, gFragment50ObjData->unk_08->unk_00[0]);
-        temp_s0->unk_000.unk_02 &= ~0x40;
+        Model_InitDisplayObject(temp_s0, 0, 0xB6, gFragment50ObjData->unk_08->posX[0]);
+        temp_s0->unk_000.posY &= ~0x40;
         temp_s0->unk_01E.x = 0;
         temp_s0->unk_01E.y = 0;
         temp_s0->unk_01E.z = 0;
@@ -2634,9 +2634,9 @@ void HallOfFame_InitGallery(void) {
 
     ptr = &gFragment50GraphNodeA;
     ModelRenderer_AttachDisplayObject(&gFragment50GraphNodeA);
-    Model_InitDisplayObject(&gFragment50GraphNodeA, 0, 0xB7, temp_s0->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&gFragment50GraphNodeA, 0, 0xB7, temp_s0->unk_08->posX[0]);
 
-    ptr->unk_000.unk_02 &= ~0x40;
+    ptr->unk_000.posY &= ~0x40;
     ptr->unk_024.x = 0.0f;
     ptr->unk_024.y = 0.0f;
     ptr->unk_024.z = 0.0f;
@@ -2651,9 +2651,9 @@ void HallOfFame_InitGallery(void) {
     temp_s0 = Model_LoadByArchiveIndex(0xB7);
     ptr = &gFragment50GraphNodeB;
     ModelRenderer_AttachDisplayObject(&gFragment50GraphNodeB);
-    Model_InitDisplayObject(&gFragment50GraphNodeB, 0, 0xB7, temp_s0->unk_08->unk_00[1]);
+    Model_InitDisplayObject(&gFragment50GraphNodeB, 0, 0xB7, temp_s0->unk_08->posX[1]);
 
-    ptr->unk_000.unk_02 &= ~0x40;
+    ptr->unk_000.posY &= ~0x40;
     ptr->unk_024.x = 0.0f;
     ptr->unk_024.y = 0.0f;
     ptr->unk_024.z = 0.0f;

@@ -4,8 +4,8 @@
 #include "global.h"
 
 typedef struct AnimFrame {
-    /* 0x00 */ u32* unk_00;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ u32* posX;
+    /* 0x04 */ s16 rotation;
 } AnimFrame; // size = 0x8
 
 extern char** gItemNamesBank;

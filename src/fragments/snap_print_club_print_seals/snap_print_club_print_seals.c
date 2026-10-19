@@ -130,14 +130,14 @@ s32 Snap_PrintClubPrintSeals(s32 arg0, s32 arg1) {
 
             if (sp4E != var_v0) {
                 D_8FA00A00->unk_18 = &sp60[var_v0];
-                D_8FA00A00->unk_00 = 0;
+                D_8FA00A00->posX = 0;
                 sp4E = var_v0;
             }
             main_pool_push_state('DRAW');
 
             do {
                 Gallery_ProcessSceneInstance(D_8FA00A00);
-            } while (D_8FA00A00->unk_00 != 2);
+            } while (D_8FA00A00->posX != 2);
 
             Snap_PrintClubDrawSealMargin(i);
             main_pool_pop_state('DRAW');

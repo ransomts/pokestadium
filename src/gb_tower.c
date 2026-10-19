@@ -353,20 +353,20 @@ u8 GbTower_SetPollMask(u8 arg0) {
 
 void GbTower_PollPakConnection(void) {
     u8 sp1F;
-    static s32 D_800697D0 = 0; // .data
+    static s32 gGbPakPollIndex = 0; // .data
 
     if (gGbPakReadErrorFlag == 0) {
-        if (gGbPakReadMask & (1 << D_800697D0)) {
-            if (osGbpakGetStatus(&gGbPakPfs[D_800697D0], &sp1F) == 0) {
-                gGbPakReadErrorCount[D_800697D0] = 0;
+        if (gGbPakReadMask & (1 << gGbPakPollIndex)) {
+            if (osGbpakGetStatus(&gGbPakPfs[gGbPakPollIndex], &sp1F) == 0) {
+                gGbPakReadErrorCount[gGbPakPollIndex] = 0;
             } else {
-                gGbPakReadErrorCount[D_800697D0]++;
-                if (gGbPakReadErrorCount[D_800697D0] == 3) {
+                gGbPakReadErrorCount[gGbPakPollIndex]++;
+                if (gGbPakReadErrorCount[gGbPakPollIndex] == 3) {
                     gGbPakReadErrorFlag = 1;
-                    Game_ShutdownAndLoadFragment(D_800697D0, 1);
+                    Game_ShutdownAndLoadFragment(gGbPakPollIndex, 1);
                 }
             }
         }
-        D_800697D0 = (D_800697D0 + 1) & 3;
+        gGbPakPollIndex = (gGbPakPollIndex + 1) & 3;
     }
 }

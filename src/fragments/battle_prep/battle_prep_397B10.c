@@ -621,7 +621,7 @@ s32 BattlePrep_BindCarouselSegment0(s32 arg0, SimpleGfxNode* arg1) {
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_0C & 0x1FFFFFFF);
-        gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
+        gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
         GeoRender_ApplyMaterialState();
     }
@@ -636,7 +636,7 @@ s32 BattlePrep_BindCarouselSegment1(s32 arg0, SimpleGfxNode* arg1) {
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[0] & 0x1FFFFFFF);
-        gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
+        gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
         GeoRender_ApplyMaterialState();
     }
@@ -652,7 +652,7 @@ s32 BattlePrep_BindCarouselSegment3(s32 arg0, SimpleGfxNode* arg1) {
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[2] & 0x1FFFFFFF);
         gSPSegment(gDisplayListHead++, 0x0E, (u32)temp_a0->unk_10[3] & 0x1FFFFFFF);
-        gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
+        gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
         GeoRender_ApplyMaterialState();
     }
@@ -667,7 +667,7 @@ s32 BattlePrep_BindCarouselSegment2(s32 arg0, SimpleGfxNode* arg1) {
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[1] & 0x1FFFFFFF);
-        gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
+        gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
         GeoRender_ApplyMaterialState();
     }
@@ -680,7 +680,7 @@ s32 BattlePrep_CarouselDepthCallback(s32 arg0, unk_D_86002F34_alt5* arg1) {
     if (arg0 == 2) {
         temp_a0 = (unk_D_84B259A8*)gDefaultGraphRoot->unk_000.unk_14;
 
-        arg1->unk_24.z = temp_a0->unk_02[(gDefaultGraphRoot->modelPhase - temp_a0->unk_20->modelPhase) - 9];
+        arg1->unk_24.z = temp_a0->posY[(gDefaultGraphRoot->modelPhase - temp_a0->unk_20->modelPhase) - 9];
     }
     return 0;
 }
@@ -767,7 +767,7 @@ void BattlePrep_CarouselStepFinalNTSC(unk_D_84B259A8* arg0, s16 arg1) {
         arg0->unk_20[9 + i].unk_024 = arg0->unk_20[10 + i].unk_024;
         arg0->unk_20[9 + i].unk_030 = arg0->unk_20[10 + i].unk_030;
 
-        arg0->unk_02[i] = arg0->unk_02[i + 1];
+        arg0->posY[i] = arg0->posY[i + 1];
 
         arg0->unk_20[13 + i].unk_024 = arg0->unk_20[14 + i].unk_024;
         arg0->unk_20[13 + i].unk_030 = arg0->unk_20[14 + i].unk_030;
@@ -777,7 +777,7 @@ void BattlePrep_CarouselStepFinalNTSC(unk_D_84B259A8* arg0, s16 arg1) {
         f32 sp28 = (arg1 + 1) * 0.0625f;
         s32 sp24 = (arg1 << 0xC) - 0x1000;
 
-        arg0->unk_02[3] = sp24;
+        arg0->posY[3] = sp24;
         arg0->unk_20[12].unk_024.x = 0.0f;
         arg0->unk_20[16].unk_024.x = 0.0f;
 
@@ -813,7 +813,7 @@ void BattlePrep_CarouselStepFinalPAL(unk_D_84B259A8* arg0, s16 arg1) {
         arg0->unk_20[9 + i].unk_024 = arg0->unk_20[10 + i].unk_024;
         arg0->unk_20[9 + i].unk_030 = arg0->unk_20[10 + i].unk_030;
 
-        arg0->unk_02[i] = arg0->unk_02[i + 1];
+        arg0->posY[i] = arg0->posY[i + 1];
 
         arg0->unk_20[13 + i].unk_024 = arg0->unk_20[14 + i].unk_024;
         arg0->unk_20[13 + i].unk_030 = arg0->unk_20[14 + i].unk_030;
@@ -823,7 +823,7 @@ void BattlePrep_CarouselStepFinalPAL(unk_D_84B259A8* arg0, s16 arg1) {
         f32 sp28 = (arg1 + 1) / 13.0f;
         s32 sp24 = (arg1 * 0x1333) - 0xCCA;
 
-        arg0->unk_02[3] = sp24;
+        arg0->posY[3] = sp24;
         arg0->unk_20[12].unk_024.x = 0.0f;
         arg0->unk_20[16].unk_024.x = 0.0f;
 
@@ -909,7 +909,7 @@ void BattlePrep_CarouselExitAnimation(unk_D_84B259A8* arg0) {
         for (i = 0; i < 17; i++) {
             BattlePrep_ResetDisplayObject(&arg0->unk_20[i]);
         }
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     }
 }
 
@@ -938,13 +938,13 @@ void BattlePrep_CarouselEntryAnimation(unk_D_84B259A8* arg0) {
     }
 
     if (arg0->unk_01 == 0x20) {
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     }
     arg0->unk_01++;
 }
 
 void BattlePrep_UpdateCarouselState(unk_D_84B259A8* arg0) {
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 1:
             BattlePrep_UpdateCarousel(arg0);
             break;
@@ -1055,7 +1055,7 @@ void BattlePrep_InitCarouselEntry(unk_D_84B259A8* arg0, Fragment2_1GraphNode* ar
 
     arg0->unk_20 = arg1;
     arg0->unk_01 = 0;
-    arg0->unk_00 = 1;
+    arg0->posX = 1;
     BattlePrep_InitCarouselBanner(arg0, -0x140, 0x30);
 
     for (i = 0; i < 4; i++) {
@@ -1073,7 +1073,7 @@ void BattlePrep_InitCarouselEntry(unk_D_84B259A8* arg0, Fragment2_1GraphNode* ar
 
 void BattlePrep_StartCarouselExit(unk_D_84B259A8* arg0) {
     arg0->unk_01 = 0;
-    arg0->unk_00 = 3;
+    arg0->posX = 3;
 }
 
 void BattlePrep_InitCarouselExit(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
@@ -1081,7 +1081,7 @@ void BattlePrep_InitCarouselExit(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg
 
     arg0->unk_20 = arg1;
     arg0->unk_01 = 0;
-    arg0->unk_00 = 2;
+    arg0->posX = 2;
     BattlePrep_InitCarouselBanner(arg0, -0x140, 0);
 
     for (i = 0; i < 4; i++) {
@@ -1255,7 +1255,7 @@ void BattlePrep_ApplyBannerColors(unk_D_84B259A8* arg0) {
 }
 
 void BattlePrep_InitBannerScene(unk_D_84B259A8* arg0) {
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
     arg0->unk_01 = 0;
     BattlePrep_LoadBannerAssets(arg0);
     BattlePrep_LoadBannerGeoLayouts(arg0);
@@ -1270,7 +1270,7 @@ s32 BattlePrep_BadgeCarouselGeoCallback(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         temp_a0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
         tmp = ((gDefaultGraphRoot->modelPhase - temp_a0->unk_08->modelPhase) % 8) - 4;
-        tmp2 = (arg1->unk_00.unk_14 * 4) + tmp;
+        tmp2 = (arg1->posX.unk_14 * 4) + tmp;
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[tmp2] & 0x1FFFFFFF);
@@ -1292,9 +1292,9 @@ s32 BattlePrep_BadgeCarouselGlowCallback(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         temp_v0 = (unk_D_84B259E8*)gDefaultGraphRoot->unk_000.unk_14;
         tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->unk_08->modelPhase) % 8) - 4;
-        tmp2 = tmp + arg1->unk_00.unk_14 * 4;
+        tmp2 = tmp + arg1->posX.unk_14 * 4;
 
-        if ((temp_v0->unk_02 != 0) && ((tmp2 + 1) == gSessionContext.unk_0003)) {
+        if ((temp_v0->posY != 0) && ((tmp2 + 1) == gSessionContext.unk_0003)) {
             // clang-format off
             if (gBarHighlightAnimPhase >= 0) { var_t1 = (s32)(SINS((s32)(SINS(gBarHighlightAnimPhase) * 16384.0f)) * 127.0f) + 0x7F;
             } else {
@@ -1325,7 +1325,7 @@ s32 BattlePrep_BadgeCarouselTextureCallback(s32 arg0, SimpleGfxNode* arg1) {
         gDPPipeSync(gDisplayListHead++);
 
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_30[tmp]->img_p & 0x1FFFFFFF);
-        gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
+        gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
         GeoRender_ApplyMaterialState();
     }
@@ -1344,7 +1344,7 @@ s32 BattlePrep_BadgeCarouselGlowCallback2(s32 arg0, SimpleGfxNode* arg1) {
         tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->unk_08->modelPhase) % 8);
         tmp -= 4;
 
-        if ((temp_v0->unk_02 != 0) && ((tmp + 1) == gSessionContext.unk_0003)) {
+        if ((temp_v0->posY != 0) && ((tmp + 1) == gSessionContext.unk_0003)) {
             // clang-format off
             if (gSegmentHighlightAnimPhase >= 0) {                var_t1 = (s32)(SINS((s32)(SINS(gSegmentHighlightAnimPhase) * 16384.0f)) * 127.0f)+ 0x7F;
             } else {
@@ -1355,7 +1355,7 @@ s32 BattlePrep_BadgeCarouselGlowCallback2(s32 arg0, SimpleGfxNode* arg1) {
 
             gDPSetPrimColor(gDisplayListHead++, 0, gDefaultGraphRoot->unk_01D, 200, 200, 30, var_t1);
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, var_t1);
-            gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
+            gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
             GeoRender_ApplyMaterialState();
             gSegmentHighlightAnimPhase += 0x800;
@@ -1402,7 +1402,7 @@ void BattlePrep_BadgeSlideInLeft(unk_D_84B259E8* arg0) {
 
     if (arg0->unk_01 == 0xA) {
         arg0->unk_01 = 0;
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     }
 }
 
@@ -1421,7 +1421,7 @@ void BattlePrep_BadgeSlideInRight(unk_D_84B259E8* arg0) {
             BattlePrep_ResetDisplayObject(&arg0->unk_08[4 + i]);
         }
         arg0->unk_01 = 0;
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     }
 }
 
@@ -1460,7 +1460,7 @@ void BattlePrep_BadgeRevealSpin(unk_D_84B259E8* arg0) {
         }
 
         arg0->unk_01 = 0;
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     }
 }
 
@@ -1477,12 +1477,12 @@ void BattlePrep_BadgeHideSpin(unk_D_84B259E8* arg0) {
         Audio_PlayCategory11SoundCommand(0x0110000C, 0, 0);
         BattlePrep_ResetBadgeSlideSlots(arg0);
         arg0->unk_01 = 0;
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     }
 }
 
 void BattlePrep_UpdateBadgeCarousel(unk_D_84B259E8* arg0) {
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 1:
             BattlePrep_BadgeSlideInLeft(arg0);
             break;
@@ -1514,7 +1514,7 @@ void BattlePrep_InitBadgeCarousel(unk_D_84B259E8* arg0, Fragment2_1GraphNode* ar
             Vec3f_SetComponentsDuplicate(&arg0->unk_08[i].unk_024, 320.0f, -48.0f, -289.0f);
             arg0->unk_08[i].unk_000.unk_14 = (s32)arg0;
         }
-        arg0->unk_00 = 1;
+        arg0->posX = 1;
     } else {
         for (i = 12, var_s2 = -0x60; i < 16; i++) {
             Model_InitDisplayObject(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
@@ -1525,11 +1525,11 @@ void BattlePrep_InitBadgeCarousel(unk_D_84B259E8* arg0, Fragment2_1GraphNode* ar
         }
 
         if (arg2 == 1) {
-            arg0->unk_02 = 0;
-            arg0->unk_00 = 3;
+            arg0->posY = 0;
+            arg0->posX = 3;
         } else {
-            arg0->unk_02 = 1;
-            arg0->unk_00 = 4;
+            arg0->posY = 1;
+            arg0->posX = 4;
         }
     }
 }
@@ -1663,10 +1663,10 @@ void BattlePrep_InitBadgeCarouselScene(unk_D_84B259E8* arg0, BinArchive* arg1, B
     s32 i;
     MemoryBlock* temp_v0;
 
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
     arg0->unk_01 = 0;
-    arg0->unk_02 = 1;
-    arg0->unk_04 = 0;
+    arg0->posY = 1;
+    arg0->rotation = 0;
 
     for (i = 0; i < 4; i++) {
         arg0->unk_30[i] = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);

@@ -10,11 +10,11 @@ struct unk_D_842168A0;
 struct unk_D_84229EB0;
 
 typedef struct unk_D_8423D3A8 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -70,8 +70,8 @@ typedef struct gItemPanel {
 } gItemPanel; // size = 0x4D4C
 
 typedef struct unk_D_842168A0_0013C {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ PokemonData unk_04[1];
+    /* 0x00 */ u32 posX;
+    /* 0x04 */ PokemonData rotation[1];
 } unk_D_842168A0_0013C; // size >= 0x58
 
 typedef struct unk_D_842168A0 {
@@ -137,16 +137,16 @@ typedef struct unk_D_84229EB0 {
 } unk_D_84229EB0; // size = 0x134F8
 
 typedef struct unk_D_8423D3D8 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ unk_D_800AE540_0004* unk_04;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ unk_D_800AE540_0004* rotation;
 } unk_D_8423D3D8; // size = 0x8
 
 typedef struct RulePromptConfig {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s8 unk_0A;

@@ -13,10 +13,10 @@ u8 gBattleTimerLimits[3] = { 1, 15, 30 };
 static s16 gBattleToggleFlag = 0;
 
 void Team_ClearTrainerSlot(unk_D_800AE540_1194* arg0) {
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
     arg0->unk_01 = 0;
-    arg0->unk_02 = 0;
-    arg0->unk_04 = 0;
+    arg0->posY = 0;
+    arg0->rotation = 0;
     arg0->unk_14 = 0;
     arg0->unk_08[0] = 0;
     arg0->unk_08[1] = 0;
@@ -136,8 +136,8 @@ void Trainer_AddPokemon(unk_D_800AE540_0004* arg0, PokemonData* arg1) {
 }
 
 PokemonData* Pokemon_CreateDefault(PokemonData* arg0, u8 arg1, s16 arg2) {
-    arg0->unk_00.unk_00 = arg1;
-    arg0->unk_04 = 0;
+    arg0->posX.posX = arg1;
+    arg0->rotation = 0;
     arg0->unk_05 = 0;
 
     arg0->unk_06 = gSpeciesBaseStats[arg1 - 1].unk_06;
@@ -170,7 +170,7 @@ PokemonData* Pokemon_CreateDefault(PokemonData* arg0, u8 arg1, s16 arg2) {
 
     Pokemon_RecalcStats(arg0);
 
-    arg0->unk_02 = arg0->unk_26;
+    arg0->posY = arg0->unk_26;
 
     Text_CopySpeciesName(arg0->unk_30, arg1);
     HAL_Strcpy(arg0->unk_3B, Text_GetPlayerLabel(0));
@@ -352,16 +352,16 @@ void Team_ScaleOpponentToLevel(s16 arg0) {
 
     for (i = 0; i < gSessionContext.unk_1194[1].unk_08[0]->unk_002; i++, var_s1++, var_s0++) {
         var_s0->unk_24 = arg0;
-        var_s0->unk_10 = Pokemon_ExpForLevel(var_s0->unk_00.unk_00, arg0);
+        var_s0->unk_10 = Pokemon_ExpForLevel(var_s0->posX.posX, arg0);
         Pokemon_RecalcStats(var_s0);
-        var_s0->unk_02 = var_s0->unk_26;
+        var_s0->posY = var_s0->unk_26;
 
         *var_s1 = *var_s0;
     }
 }
 
 typedef struct unk_func_8002BFC4_004 {
-    /* 0x000 */ char unk_00[0x4];
+    /* 0x000 */ char posX[0x4];
     /* 0x004 */ char unk04[0x8];
     /* 0x00C */ char unk_0C[0x4];
     /* 0x010 */ char unk10[0x24];
@@ -371,7 +371,7 @@ typedef struct unk_func_8002BFC4_004 {
 } unk_func_8002BFC4_004; // size >= 0x8C
 
 typedef struct unk_func_8002BFC4 {
-    /* 0x000 */ s32 unk_00;
+    /* 0x000 */ s32 posX;
     /* 0x004 */ unk_func_8002BFC4_004 unk_004;
     /* 0x090 */ char unk090[0x1A0];
 } unk_func_8002BFC4; // size = 0x230
@@ -405,8 +405,8 @@ void Team_LoadPresetTrainer(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
         Trainer_AddPokemon(temp_s3, &temp_s2->unk_38[i]);
     }
 
-    HAL_Strcpy(temp_s3->unk_008, temp_s2->unk_00);
-    HAL_Strcpy(temp_s3->unk_214->unk_014, temp_s2->unk_00);
+    HAL_Strcpy(temp_s3->unk_008, temp_s2->posX);
+    HAL_Strcpy(temp_s3->unk_214->unk_014, temp_s2->posX);
     HAL_Strcpy(temp_s3->unk_214->unk_220, temp_s2->unk_0C);
 
     temp_s3->unk_214->unk_003 = (temp_s2->unk_34 >> 8) & 0xFF;
@@ -526,10 +526,10 @@ void Session_SaveContinueData(void) {
     unk_func_800281D4 sp20;
     unk_D_800AE540_0874* sp1C = gSessionContext.unk_1194[0].unk_08[0]->unk_214;
 
-    sp20.unk_00 = gSessionContext.unk_0000;
+    sp20.posX = gSessionContext.unk_0000;
     sp20.unk_01 = gSessionContext.unk_0002;
-    sp20.unk_02 = gSessionContext.unk_0003;
-    sp20.unk_04 = gSessionContext.unk_11F3;
+    sp20.posY = gSessionContext.unk_0003;
+    sp20.rotation = gSessionContext.unk_11F3;
     sp20.unk_03 = gSessionContext.unk_11F2;
 
     sp20.unk_0D = gSessionContext.unk_11F0;
@@ -551,11 +551,11 @@ s32 Session_LoadContinueData(void) {
 
     temp_v0 = Session_LoadContinueRecord(&sp250, sp58);
     if (temp_v0 != -1) {
-        Session_SetMode(sp250.unk_00, sp250.unk_00, sp250.unk_01);
+        Session_SetMode(sp250.posX, sp250.posX, sp250.unk_01);
 
         _bcopy(sp250.unk_05, gSessionContext.unk_11E4[0], 8);
-        gSessionContext.unk_0003 = sp250.unk_02;
-        gSessionContext.unk_11F3 = sp250.unk_04;
+        gSessionContext.unk_0003 = sp250.posY;
+        gSessionContext.unk_11F3 = sp250.rotation;
         gSessionContext.unk_11F2 = sp250.unk_03;
         gSessionContext.unk_11F0 = sp250.unk_0D;
         tmp = sp250.unk_0E;

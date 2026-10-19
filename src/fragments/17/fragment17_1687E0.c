@@ -352,7 +352,7 @@ void UI_DrawGradientTexture(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, Sp
                       PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetEnvColor(gDisplayListHead++, (u8)arg5->unk_06, (u8)arg5->unk_08, (u8)arg5->unk_0A, 255);
-    gDPSetPrimColor(gDisplayListHead++, 0, 0, (u8)arg5->unk_00, (u8)arg5->unk_02, (u8)arg5->unk_04, 255);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, (u8)arg5->posX, (u8)arg5->posY, (u8)arg5->rotation, 255);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
 
     UI_DrawTiledTexture(arg1, arg2, arg3, arg4, arg0, arg3);

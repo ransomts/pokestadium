@@ -36,11 +36,11 @@ f32 BattleScene_GetParticipantModelHeight(unk_BattlePlayerEntity* arg0) {
 }
 
 f32 BattleScene_GetParticipantModelRadius(unk_BattlePlayerEntity* arg0) {
-    return gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].unk_00;
+    return gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].posX;
 }
 
 f32 BattleScene_GetParticipantModelWidth(unk_BattlePlayerEntity* arg0) {
-    return gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].unk_04;
+    return gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].rotation;
 }
 
 f32 BattleScene_GetParticipantEyeHeight(unk_BattlePlayerEntity* arg0) {
@@ -119,7 +119,7 @@ u8 Battle_GetCameraShotFieldB(unk_BattlePlayerEntity* arg0) {
     s16 sp18 = arg0->animationState.unk_38.unk_5A - 1;
     unk_BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_000[sp18];
 
-    return ptr->unk_02;
+    return ptr->posY;
 }
 
 u8 Battle_GetCameraShotFieldC(unk_BattlePlayerEntity* arg0) {
@@ -134,7 +134,7 @@ u8 Battle_GetCameraShotFieldC(unk_BattlePlayerEntity* arg0) {
 s16 Battle_GetSideAnimTableFieldB(unk_BattlePlayerEntity* arg0) {
     unk_BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_A80;
 
-    return ptr->unk_02;
+    return ptr->posY;
 }
 
 s32 Battle_GetSideAnimTableFieldC(unk_BattlePlayerEntity* arg0) {
@@ -170,7 +170,7 @@ void BattleScene_GetParticipantModelRotation(unk_BattlePlayerEntity* arg0, Vec3s
 u16 Battle_GetActiveMonHp(unk_BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
 
-    return ptr->unk_02;
+    return ptr->posY;
 }
 
 s16 BattleScene_GetParticipantFacingAngle(unk_BattlePlayerEntity* arg0) {
@@ -262,11 +262,11 @@ f32 BattleScene_GetParticipantModelRadiusScaled(unk_BattlePlayerEntity* arg0) {
 }
 
 unk_D_86002F58_004_000_004* Battle_GetMoveEffectListEntry(unk_BattlePlayerEntity* arg0, s32 arg1) {
-    return arg0->pokemonAnimation->unk_14->unk_00[2]->unk_00[arg1];
+    return arg0->pokemonAnimation->unk_14->posX[2]->posX[arg1];
 }
 
 s32 Battle_GetTrainerId(unk_BattlePlayerEntity* arg0, UNUSED s32 arg1) {
-    return arg0->pokemonAnimation->unk_02;
+    return arg0->pokemonAnimation->posY;
 }
 
 char* Battle_GetActiveMoveName(unk_BattlePlayerEntity* arg0) {
@@ -297,18 +297,18 @@ void Battle_AdvanceSecondaryModelAnimIfFinished(unk_BattlePlayerEntity* arg0, un
     sp28 = &gAnimDataByPlayer[idx]->unk_AF0;
 
     if (!(sp20->unk_34 & 0x4002)) {
-        if ((BattleAnim_IsSessionBusy(arg0) == 0) && (arg1->unk_000.unk_040.unk_00 != -1) &&
+        if ((BattleAnim_IsSessionBusy(arg0) == 0) && (arg1->unk_000.unk_040.posX != -1) &&
             (ModelAnim_IsFinished(&arg1->unk_000) == 1)) {
             if (sp20->unk_34 & 0x200) {
-                ModelAnim_SetAnimation(&arg1->unk_000, sp2C->unk_00);
+                ModelAnim_SetAnimation(&arg1->unk_000, sp2C->posX);
             } else if ((sp20->unk_34 & 1) && (BattleScene_ByteArrayContains(arg1->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0)) {
-                ModelAnim_SetAnimation(&arg1->unk_000, sp28->unk_00);
+                ModelAnim_SetAnimation(&arg1->unk_000, sp28->posX);
             } else {
                 if (arg1->unk_000.unk_01A == 0x84) {
                     idx = BattleAnim_RandomRange(5);
                     ModelAnim_SetAnimation(&arg1->unk_000, idx + 0xE);
                 } else {
-                    ModelAnim_SetAnimation(&arg1->unk_000, sp30->unk_00);
+                    ModelAnim_SetAnimation(&arg1->unk_000, sp30->posX);
                 }
 
                 if (!(sp20->unk_34 & 1)) {
@@ -336,17 +336,17 @@ void Battle_ResetModelToIdleAnim(unk_BattlePlayerEntity* arg0) {
     idx = BattleScene_GetParticipantSideIndex(arg0);
     sp2C = &gAnimDataByPlayer[idx]->unk_AF0;
 
-    if (!(sp24->unk_34 & 0x4002) && (BattleAnim_IsSessionBusy(arg0) == 0) && (arg0->unk_000.unk_040.unk_00 != -1)) {
+    if (!(sp24->unk_34 & 0x4002) && (BattleAnim_IsSessionBusy(arg0) == 0) && (arg0->unk_000.unk_040.posX != -1)) {
         ModelAnim_SetFrame(&arg0->unk_000, 0);
         if (sp24->unk_34 & 0x200) {
-            ModelAnim_SetAnimation(&arg0->unk_000, sp30->unk_00);
+            ModelAnim_SetAnimation(&arg0->unk_000, sp30->posX);
         } else if ((sp24->unk_34 & 1) && (BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, gSpecialMoveIDs, 8) != 0)) {
-            ModelAnim_SetAnimation(&arg0->unk_000, sp2C->unk_00);
+            ModelAnim_SetAnimation(&arg0->unk_000, sp2C->posX);
         } else {
             if (arg0->unk_000.unk_01A == 0x84) {
                 ModelAnim_SetAnimation(&arg0->unk_000, BattleAnim_RandomRange(5) + 0xE);
             } else {
-                ModelAnim_SetAnimation(&arg0->unk_000, sp34->unk_00);
+                ModelAnim_SetAnimation(&arg0->unk_000, sp34->posX);
             }
 
             if (!(sp24->unk_34 & 1)) {
@@ -359,9 +359,9 @@ void Battle_ResetModelToIdleAnim(unk_BattlePlayerEntity* arg0) {
 void Battle_SetModelToStatusAnim(unk_BattlePlayerEntity* arg0) {
     unk_BattleAnimDataEntry* sp1C = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_A80;
 
-    if (arg0->unk_000.unk_040.unk_00 != -1) {
+    if (arg0->unk_000.unk_040.posX != -1) {
         ModelAnim_SetFrame(&arg0->unk_000, 0);
-        ModelAnim_SetAnimation(&arg0->unk_000, sp1C->unk_00);
+        ModelAnim_SetAnimation(&arg0->unk_000, sp1C->posX);
     }
 }
 
@@ -472,9 +472,9 @@ void BattleScene_ReinitParticipantBodyModel(unk_BattlePlayerEntity* arg0, unk_Ba
     ModelAnim_SetAnimation(&arg1->unk_000, 0);
 
     if ((arg1->unk_000.unk_01A == 0x32) || (arg1->unk_000.unk_01A == 0x33)) {
-        arg1->unk_000.unk_000.unk_02 &= 0xFFBF;
+        arg1->unk_000.unk_000.posY &= 0xFFBF;
     } else {
-        arg1->unk_000.unk_000.unk_02 |= 0x40;
+        arg1->unk_000.unk_000.posY |= 0x40;
     }
 
     if (!(arg0->animationState.unk_34 & 0x200)) {
@@ -508,7 +508,7 @@ void BattleScene_ReinitParticipantOwnerModel(unk_BattlePlayerEntity* arg0, unk_D
 
     ModelAnim_SetFrame(&arg1->unk_000, 0);
     ModelAnim_SetAnimation(&arg1->unk_000, 0);
-    arg1->unk_000.unk_000.unk_02 &= ~0x40;
+    arg1->unk_000.unk_000.posY &= ~0x40;
 }
 
 void BattleScene_ReinitParticipantSecondaryModels(unk_BattlePlayerEntity* arg0, s16 arg1) {
@@ -532,7 +532,7 @@ void BattleScene_ReinitParticipantSecondaryModels(unk_BattlePlayerEntity* arg0, 
         ModelAnim_SetFrame(&var_s0->unk_000, 0);
         ModelAnim_SetAnimation(&var_s0->unk_000, 0);
 
-        var_s0->unk_000.unk_000.unk_02 &= ~0x40;
+        var_s0->unk_000.unk_000.posY &= ~0x40;
 
         if (arg0 == sActivePokemon[0]) {
             Vec3f_SetComponentsDuplicate(&var_s0->unk_000.unk_024, -150.0f, 0.0f, 0.0f);

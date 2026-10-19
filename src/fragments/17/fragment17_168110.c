@@ -2,7 +2,7 @@
 #include "src/F420.h"
 
 typedef struct CameraModeFlag {
-    u8 unk_00[1];
+    u8 posX[1];
 } CameraModeFlag; // size = ??
 
 static CameraModeFlag gCameraModeFlag = { 0x8E };
@@ -25,8 +25,8 @@ void Intro_ComputeFollowPoint(unk_D_86B0FA78* arg0, Vec3f* arg1) {
     f32 sp24 = 0.0f;
     CameraModeFlag sp20 = gCameraModeFlag;
 
-    if (Util_ByteInArray(gCameraTarget->unk_174, sp20.unk_00, 1) != 0) {
-        sp24 = gMonsterStageData.unk_04 / 1.5f;
+    if (Util_ByteInArray(gCameraTarget->unk_174, sp20.posX, 1) != 0) {
+        sp24 = gMonsterStageData.rotation / 1.5f;
     }
 
     if (gMonsterStageData.unk_08 != 0) {
@@ -35,29 +35,29 @@ void Intro_ComputeFollowPoint(unk_D_86B0FA78* arg0, Vec3f* arg1) {
         arg1->z = arg0->unk_004.unk_024.z;
     } else {
         arg1->x = arg0->unk_004.unk_024.x;
-        arg1->y = arg0->unk_004.unk_024.y + gMonsterStageData.unk_04;
+        arg1->y = arg0->unk_004.unk_024.y + gMonsterStageData.rotation;
         arg1->z = arg0->unk_004.unk_024.z;
     }
 
     if (arg1->y < 0) {
-        arg1->y = gMonsterStageData.unk_04;
+        arg1->y = gMonsterStageData.rotation;
     }
 }
 
 void Intro_UpdateOrbitCamera(void) {
-    Camera_ComputeEyeFromAngles(&gCameraState->unk_04, &gCameraState->unk_00->unk_60.at, gCameraState->unk_1C, gCameraState->unk_10,
+    Camera_ComputeEyeFromAngles(&gCameraState->rotation, &gCameraState->posX->unk_60.at, gCameraState->unk_1C, gCameraState->unk_10,
                   Intro_GetTrackedModelFacingOffset() + gCameraState->unk_12);
-    Camera_ComputeEyeFromAngles(&gCameraState->unk_04, &gCameraState->unk_00->unk_60.eye, gCameraState->unk_20, gCameraState->unk_16,
+    Camera_ComputeEyeFromAngles(&gCameraState->rotation, &gCameraState->posX->unk_60.eye, gCameraState->unk_20, gCameraState->unk_16,
                   Intro_GetTrackedModelFacingOffset() + gCameraState->unk_18);
 
-    gCameraState->unk_00->unk_60.at.y += gMonsterStageData.unk_0C;
-    if (gCameraState->unk_00->unk_60.eye.y <= 10.0f) {
-        gCameraState->unk_00->unk_60.eye.y = 10.0f;
+    gCameraState->posX->unk_60.at.y += gMonsterStageData.unk_0C;
+    if (gCameraState->posX->unk_60.eye.y <= 10.0f) {
+        gCameraState->posX->unk_60.eye.y = 10.0f;
     }
 }
 
 f32 Intro_ClampOrbitDistance(f32 arg0, f32 arg1) {
-    f32 temp_fv1 = gMonsterStageData.unk_00 * arg0;
+    f32 temp_fv1 = gMonsterStageData.posX * arg0;
 
     if (arg1 < temp_fv1) {
         return arg1;
@@ -112,7 +112,7 @@ void Intro_LoadCameraKeyframe(unk_D_86B0C160* arg0, CameraStruct* arg1) {
     sp2C = Intro_ClampOrbitDistance(arg0->unk_10, 500.0f);
     sp28 = Intro_ClampOrbitDistance(arg0->unk_24, 500.0f);
 
-    IntroCamKeyframe_SetAngles(arg0->unk_00, Intro_GetTrackedModelFacingOffset() + arg0->unk_02, arg0->unk_14, Intro_GetTrackedModelFacingOffset() + arg0->unk_16);
+    IntroCamKeyframe_SetAngles(arg0->posX, Intro_GetTrackedModelFacingOffset() + arg0->posY, arg0->unk_14, Intro_GetTrackedModelFacingOffset() + arg0->unk_16);
     IntroCamKeyframe_SetDistance(sp34, sp30);
 
     IntroCamKeyframe_SetAtAngles(arg0->unk_06, Intro_GetTrackedModelFacingOffset() + arg0->unk_08, arg0->unk_1A, Intro_GetTrackedModelFacingOffset() + arg0->unk_1C);
@@ -137,7 +137,7 @@ s32 Intro_UpdateCameraKeyframe(CameraStruct* arg0) {
     }
 
     Math_EaseTowardF(&gCameraState->unk_44, gCameraState->unk_38, gCameraState->unk_3C);
-    Camera_ComputeEyeFromAngles(&gCameraState->unk_04, &sp50, gCameraState->unk_34, gCameraState->unk_2A,
+    Camera_ComputeEyeFromAngles(&gCameraState->rotation, &sp50, gCameraState->unk_34, gCameraState->unk_2A,
                   Intro_GetTrackedModelFacingOffset() + gCameraState->unk_2C);
 
     if (sp50.y <= 10.0f) {
@@ -147,7 +147,7 @@ s32 Intro_UpdateCameraKeyframe(CameraStruct* arg0) {
     func_86B01404(&sp44, &arg0->unk_60.eye);
     Vec3f_CalculateDistanceAngles(&sp44, &sp50, &sp34, &sp2E, &sp2C);
     Camera_ComputeEyeFromAngles(&sp44, &arg0->unk_60.eye, gCameraState->unk_44 * sp34, sp2E, sp2C);
-    Camera_ComputeEyeFromAngles(&gCameraState->unk_04, &sp38, gCameraState->unk_30, gCameraState->unk_24,
+    Camera_ComputeEyeFromAngles(&gCameraState->rotation, &sp38, gCameraState->unk_30, gCameraState->unk_24,
                   Intro_GetTrackedModelFacingOffset() + gCameraState->unk_26);
 
     sp38.y += gMonsterStageData.unk_0C;

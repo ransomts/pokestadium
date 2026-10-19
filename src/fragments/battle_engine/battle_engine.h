@@ -31,7 +31,7 @@ typedef struct unk_D_84390010_168 {
 
 typedef struct unk_BattlePlayerAnimState {
     /* 0x00 */ char unk00[0x4];
-    /* 0x04 */ u32 unk_04;
+    /* 0x04 */ u32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ u32 unk_10;
@@ -62,7 +62,7 @@ typedef struct unk_BattlePlayerAnimState {
 } unk_BattlePlayerAnimState; // size = 0xCC
 
 typedef struct unk_D_84390010_728_0168 {
-    /* 0x00 */ GraphRootNode unk_00;
+    /* 0x00 */ GraphRootNode posX;
     /* 0x18 */ char unk18[0x4];
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
@@ -96,8 +96,8 @@ typedef struct unk_D_84390010_728 {
 } unk_D_84390010_728; // size = 0x19C
 
 typedef struct unk_D_84390010_8C4 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s8 unk_08[4];
     /* 0x0C */ char unk0C[0x3C];
     /* 0x48 */ s8 unk_48[4];
@@ -105,13 +105,13 @@ typedef struct unk_D_84390010_8C4 {
 } unk_D_84390010_8C4; // size = 0x88
 
 typedef struct unk_D_84390010_94C {
-    /* 0x00 */ u8 unk_00[10];
+    /* 0x00 */ u8 posX[10];
     /* 0x0A */ u8 unk_0A[4];
     /* 0x0E */ char unk0E[0x12];
 } unk_D_84390010_94C; // size = 0x20
 
 typedef struct unk_D_84390048 {
-    /* 0x00 */ Vec3f unk_00;
+    /* 0x00 */ Vec3f posX;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ u8 unk_18;
     /* 0x19 */ u8 unk_19;
@@ -121,7 +121,7 @@ typedef struct unk_D_84390048 {
 } unk_D_84390048; // size = 0x20
 
 typedef struct unk_D_84390010_448 {
-    /* 0x00 */ Vec3f unk_00;
+    /* 0x00 */ Vec3f posX;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
     /* 0x24 */ unk_D_84390048 unk_24;
@@ -169,11 +169,11 @@ typedef struct unk_BattlePlayerEntity {
 } unk_BattlePlayerEntity; // size = 0xA0C
 
 typedef struct unk_BattleAnimDataEntry {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
@@ -253,15 +253,15 @@ typedef struct unk_D_84390240_000 {
 } unk_D_84390240_000; // size = 0xE0
 
 typedef struct unk_D_84390240 {
-    /* 0x00 */ unk_D_84390240_000* unk_00;
+    /* 0x00 */ unk_D_84390240_000* posX;
     /* 0x04 */ char unk04[0x3C];
 } unk_D_84390240; // size = 0x40
 
 typedef void (*unk_D_84385384_func)(unk_BattlePlayerEntity*);
 
 typedef struct unk_D_84385384 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x04 */ unk_D_84385384_func unk_04[7];
+    /* 0x00 */ s16 posX;
+    /* 0x04 */ unk_D_84385384_func rotation[7];
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ s32 unk_28;
@@ -274,28 +274,28 @@ typedef struct unk_D_843C4E44 {
 } unk_D_843C4E44; // size >= 0x3F4
 
 typedef struct unk_D_843C4DEC {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ s32 posX;
     /* 0x04 */ char unk04[0x54];
 } unk_D_843C4DEC; // size = 0x58
 
 typedef struct unk_D_84390068 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_D_84385384_func unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ unk_D_84385384_func rotation;
 } unk_D_84390068; // size = 0x8
 
 typedef struct unk_D_84384588 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char unk02[0xE];
 } unk_D_84384588; // size = 0x10
 
 typedef struct unk_D_84390178 {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ s32 posX;
     /* 0x04 */ char unk04[0x14];
 } unk_D_84390178; // size >= 0x18
 
 typedef struct unk_D_8438FF70 {
-    /* 0x00 */ Vec3f unk_00;
+    /* 0x00 */ Vec3f posX;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
@@ -304,21 +304,21 @@ typedef struct unk_D_8438FF70 {
 } unk_D_8438FF70; // size = 0x20
 
 typedef struct unk_D_84390028 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
 } unk_D_84390028; // size = 0x10
 
 typedef struct unk_D_84384608 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ u16 rotation;
 } unk_D_84384608; // size = 0x8
 
 typedef struct unk_D_843847BC {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -326,7 +326,7 @@ typedef struct unk_D_843847BC {
 } unk_D_843847BC; // size = 0x18
 
 typedef struct unk_D_843901B0 {
-    /* 0x00 */Vec3f unk_00;
+    /* 0x00 */Vec3f posX;
     /* 0x0C */s16 unk_0C;
     /* 0x0E */s16 unk_0E;
     /* 0x10 */char unk10[0x2];
@@ -347,8 +347,8 @@ typedef struct unk_D_843901B0 {
 } unk_D_843901B0; // size >= 0x40
 
 typedef struct unk_D_843901A0_4C8 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -385,8 +385,8 @@ typedef struct BattleMessageBuffers {
 } BattleMessageBuffers; // size = 0x4F4
 
 typedef struct unk_D_84385790 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ Color_RGBA8 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ Color_RGBA8 rotation;
 } unk_D_84385790; // size = 0x8
 
 typedef struct arg1_func_84344CE8 {
@@ -396,15 +396,15 @@ typedef struct arg1_func_84344CE8 {
 } arg1_func_84344CE8; // size >= 0x1C
 
 typedef struct arg1_func_8434E21C {
-    /* 0x00 */ u8* unk_00;
-    /* 0x04 */ u8* unk_04;
+    /* 0x00 */ u8* posX;
+    /* 0x04 */ u8* rotation;
     /* 0x08 */ char unk08[0x2];
     /* 0x0A */ s16 unk_0A;
 } arg1_func_8434E21C; // size >= 0xC
 
 typedef struct unk_D_843925E0_430 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -440,8 +440,8 @@ typedef struct unk_D_843925E0 {
 } unk_D_843925E0; // size = 0xAF8
 
 typedef struct unk_D_843975E8 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -453,8 +453,8 @@ typedef struct unk_D_843975E8 {
 } unk_D_843975E8; // size = 0x28
 
 typedef struct unk_D_84398F50_048 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ u8 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ Vec3f unk_10;
@@ -480,8 +480,8 @@ typedef struct unk_D_84398F50 {
 } unk_D_84398F50; // size = 0x5E8
 
 typedef struct WaterSurfaceVertex {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -501,8 +501,8 @@ typedef struct WaterSurfaceData {
 } WaterSurfaceData; // size >= 0x1C14
 
 typedef struct unk_D_8439E680_0014 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -523,8 +523,8 @@ typedef struct WaterSurface {
 } WaterSurface; // size >= 0x2014
 
 typedef struct unk_D_843A22C0_038 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x08 */ u8 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x08 */ u8 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
@@ -547,8 +547,8 @@ typedef struct unk_D_843A22C0 {
 } unk_D_843A22C0; // size = 0x358
 
 typedef struct WaterParticleParticle {
-    /* 0x00 */ u8 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
@@ -574,8 +574,8 @@ typedef struct WaterParticleEmitter {
 } WaterParticleEmitter; // size = 0x430
 
 typedef struct ParticleState {
-    /* 0x00 */ u8 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
@@ -602,8 +602,8 @@ typedef struct ParticleEmitter {
 } ParticleEmitter; // size = 0x434
 
 typedef struct unk_D_843ACA10_01C {
-    /* 0x00 */ u8 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
@@ -628,8 +628,8 @@ typedef struct unk_D_843ACA10 {
 } unk_D_843ACA10; // size = 0x41C
 
 typedef struct unk_D_843ADA80_040 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
@@ -658,8 +658,8 @@ typedef struct unk_D_843ADA80 {
 } unk_D_843ADA80; // size = 0x360
 
 typedef struct WaterParticleVertex {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ u8 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ Vec3f unk_10;
@@ -669,17 +669,17 @@ typedef struct WaterParticleVertex {
 } WaterParticleVertex; // size = 0x28
 
 typedef struct TextureTileInfo {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
 } TextureTileInfo; // size = 0xC
 
 typedef struct CombineParams {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -689,8 +689,8 @@ typedef struct CombineParams {
 } CombineParams; // size = 0x20
 
 typedef struct ColorBlendInfo {
-    /* 0x00 */ Color_RGBA8 unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ Color_RGBA8 posX;
+    /* 0x04 */ u8 rotation;
 } ColorBlendInfo; // size = 0x8
 
 typedef struct WaterParticleSystem {
@@ -719,9 +719,9 @@ typedef struct WaterParticleSystem {
 } WaterParticleSystem; // size = 0x240
 
 typedef struct Particle {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ Vec3f unk_0C;
@@ -734,8 +734,8 @@ typedef struct unk_D_843C49C0 {
 } unk_D_843C49C0; // size = 0x1E4
 
 typedef struct unk_D_843C3508_0A4 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
@@ -765,32 +765,32 @@ typedef struct unk_D_843C3508 {
 } unk_D_843C3508; // size = 0x374
 
 typedef struct StatStageMultiplier {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
 } StatStageMultiplier; // size = 0x2
 
 typedef struct TypeEffectivenessEntry {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
 } TypeEffectivenessEntry; // size = 0x3
 
 typedef struct unk_D_843C60AC {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05[1];
     /* 0x0C */ char unk06[0xC];
     /* 0x12 */ PokemonAudioInfo unk_12;
 } unk_D_843C60AC; // size = 0x76
 
 typedef struct unk_D_843C60A4 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01[2];
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04[2];
+    /* 0x04 */ u8 rotation[2];
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07[1];
     /* 0x08 */ u8 unk_08;
@@ -824,11 +824,11 @@ typedef struct unk_D_843C5568 {
 } unk_D_843C5568; // size = 0x59C
 
 typedef struct unk_func_843794CC {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
@@ -850,23 +850,23 @@ typedef struct unk_func_843794CC {
 } unk_func_843794CC; // size = 0x2C
 
 typedef struct unk_D_843C5310 {
-    /* 0x00 */ u8 unk_00[1];
+    /* 0x00 */ u8 posX[1];
     /* 0x01 */ char unk01[9];
     /* 0x0A */ u8 unk_0A[1];
     /* 0x0B */ char unk0B[0x15];
 } unk_D_843C5310; // size = 0x20
 
 typedef struct unk_D_843C60C0 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
-    /* 0x04 */ s32 unk_04[1];
+    /* 0x02 */ u8 posY;
+    /* 0x04 */ s32 rotation[1];
     /* 0x08 */ char unk08[0xC];
 } unk_D_843C60C0; // size = 0x14
 
 typedef struct unk_D_843C60F0_00C {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
@@ -883,33 +883,33 @@ typedef struct unk_D_843C60F0_00C {
 } unk_D_843C60F0_00C; // size = 0x14
 
 typedef struct unk_D_843C60F0 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ char unk03[0x9];
     /* 0x0C */ unk_D_843C60C0 unk_0C[3];
 } unk_D_843C60F0; // size >= 0x48
 
 typedef struct unk_D_843C6148 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ char unk06[0x2];
 } unk_D_843C6148; // size <= 0x8
 
 typedef struct unk_func_8438220C {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ char unk01[0x3];
-    /* 0x04 */ unk_func_843794CC unk_04[4];
+    /* 0x04 */ unk_func_843794CC rotation[4];
     /* 0xB4 */ u8 unk_B4;
     /* 0xB8 */ s32 unk_B8;
 } unk_func_8438220C; // size = 0xBC
 
 typedef struct unk_func_8437F85C_arg3 {
-    /* 0x00 */ u8 unk_00[3][3];
+    /* 0x00 */ u8 posX[3][3];
 } unk_func_8437F85C_arg3; // size = 0x3
 
 extern unk_D_8438E7B0* gAnimDataByPlayer[];

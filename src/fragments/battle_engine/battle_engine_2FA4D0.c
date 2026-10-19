@@ -442,13 +442,13 @@ void BattleHud_DrawMonInfoPanel(unk_BattlePlayerEntity* arg0, PokemonData* arg1,
 
     BattleHud_DrawLevelNumber(arg3 + 3, arg4 + 0x10, arg1->unk_24);
     BattleHud_DrawHpBar(arg3 + 2, arg4 + 0x19, gPlayerScaleFactors[BattleScene_GetParticipantSideIndex(arg0)], arg1->unk_26);
-    BattleHud_DrawHpFractionText(arg3 + 0xC, arg4 + 0x1F, arg1->unk_02, arg1->unk_26);
+    BattleHud_DrawHpFractionText(arg3 + 0xC, arg4 + 0x1F, arg1->posY, arg1->unk_26);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
 
     sp34 = Font_MeasureTextExtent(2, 0, Battle_GetActiveMonNickname(arg0)) / 2;
     Font_Printf((arg3 - sp34) + 0x23, arg4 + 2, Battle_GetActiveMonNickname(arg0));
-    sp34 = Font_MeasureTextExtent(1, 0, Text_GetString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
+    sp34 = Font_MeasureTextExtent(1, 0, Text_GetString(NULL, 0, gMessageBank_0x29, arg2->posX));
 
     if (sp34 >= 0x28) {
         Font_SetActive(1, -1);
@@ -458,8 +458,8 @@ void BattleHud_DrawMonInfoPanel(unk_BattlePlayerEntity* arg0, PokemonData* arg1,
         sp34 = (arg3 - (sp34 / 2)) + 0x2C;
     }
 
-    Text_SetEnvColor(arg2->unk_04.r, arg2->unk_04.g, arg2->unk_04.b, 0xFF);
-    Font_Printf(sp34, arg4 + 0xE, Text_GetString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
+    Text_SetEnvColor(arg2->rotation.r, arg2->rotation.g, arg2->rotation.b, 0xFF);
+    Font_Printf(sp34, arg4 + 0xE, Text_GetString(NULL, 0, gMessageBank_0x29, arg2->posX));
     Font_EndTexturedTextRendering();
 }
 
@@ -589,7 +589,7 @@ void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2
     if (arg0 == sActivePokemon[0]) {
         if (arg0->pokemonAnimation->unk_01 == 1) {
             for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_02 == 0) {
+                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY == 0) {
                     var_v0_2 = 2;
                 } else if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_05 != 0) {
                     var_v0_2 = 1;
@@ -600,7 +600,7 @@ void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2
             }
         } else {
             for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_02 == 0) {
+                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY == 0) {
                     var_v0_2 = 2;
                 } else if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_05 != 0) {
                     var_v0_2 = 1;
@@ -611,7 +611,7 @@ void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2
             }
 
             for (j = 0; j < arg0->pokemonAnimation->unk_08[1]->unk_002; j++) {
-                if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].unk_02 == 0) {
+                if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].posY == 0) {
                     var_v0_2 = 2;
                 } else if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].unk_05 != 0) {
                     var_v0_2 = 1;
@@ -626,7 +626,7 @@ void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2
     if (arg0 == sActivePokemon[1]) {
         if (arg0->pokemonAnimation->unk_01 == 1) {
             for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_02 == 0) {
+                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY == 0) {
                     var_v0_2 = 2;
                 } else if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_05 != 0) {
                     var_v0_2 = 1;
@@ -637,7 +637,7 @@ void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2
             }
         } else {
             for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_02 == 0) {
+                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY == 0) {
                     var_v0_2 = 2;
                 } else if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_05 != 0) {
                     var_v0_2 = 1;
@@ -648,7 +648,7 @@ void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2
             }
 
             for (j = 0; j < arg0->pokemonAnimation->unk_08[1]->unk_002; j++) {
-                if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].unk_02 == 0) {
+                if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].posY == 0) {
                     var_v0_2 = 2;
                 } else if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].unk_05 != 0) {
                     var_v0_2 = 1;
@@ -673,7 +673,7 @@ void BattleHud_DrawMonStatusBoxPlayer(unk_BattlePlayerEntity* arg0, s16 arg1, s1
     sp80 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
     sp7C = &arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C]->unk_01C[arg0->animationState.unk_08];
 
-    if (sp7C->unk_02 == 0) {
+    if (sp7C->posY == 0) {
         var_v1 = 1;
     } else {
         var_v1 = Status_ToDisplayIconIndex(sp7C->unk_05);
@@ -761,7 +761,7 @@ void BattleHud_DrawMonStatusBoxOpponent(unk_BattlePlayerEntity* arg0, s16 arg1, 
     sp80 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
     sp7C = &arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C]->unk_01C[arg0->animationState.unk_08];
 
-    if (sp7C->unk_02 == 0) {
+    if (sp7C->posY == 0) {
         var_v1 = 1;
     } else {
         var_v1 = Status_ToDisplayIconIndex(sp7C->unk_05);
@@ -1250,8 +1250,8 @@ void BattleHud_DrawDoublesRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540
     s32 var_t0;
 
     BattleHud_DrawLevelNumber(arg3 + 3, arg4 + 4, arg2->unk_24);
-    BattleHud_DrawHpBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
-    BattleHud_DrawHpFractionText(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
+    BattleHud_DrawHpBar(arg3 + 0x1E, arg4 + 0xE, arg2->posY, arg2->unk_26);
+    BattleHud_DrawHpFractionText(arg3 + 0x26, arg4 + 0x14, arg2->posY, arg2->unk_26);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
@@ -1286,7 +1286,7 @@ void BattleHud_DrawDoublesRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540
     Font_Printf(arg3 + 0x1D, arg4 + 2, arg2->unk_30);
     Font_EndTexturedTextRendering();
 
-    if (arg1->unk_01C[arg5].unk_02 == 0) {
+    if (arg1->unk_01C[arg5].posY == 0) {
         var_t0 = 1;
     } else {
         var_t0 = Status_ToDisplayIconIndex(arg1->unk_01C[arg5].unk_05);
@@ -1305,8 +1305,8 @@ void BattleHud_DrawPartyRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0
     s32 var_t0;
 
     BattleHud_DrawLevelNumber(arg3 + 3, arg4 + 4, arg2->unk_24);
-    BattleHud_DrawHpBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
-    BattleHud_DrawHpFractionText(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
+    BattleHud_DrawHpBar(arg3 + 0x1E, arg4 + 0xE, arg2->posY, arg2->unk_26);
+    BattleHud_DrawHpFractionText(arg3 + 0x26, arg4 + 0x14, arg2->posY, arg2->unk_26);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
@@ -1329,7 +1329,7 @@ void BattleHud_DrawPartyRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0
     Font_Printf(arg3 + 0x1D, arg4 + 2, arg2->unk_30);
     Font_EndTexturedTextRendering();
 
-    if (arg1->unk_01C[arg5].unk_02 == 0) {
+    if (arg1->unk_01C[arg5].posY == 0) {
         var_t0 = 1;
     } else {
         var_t0 = Status_ToDisplayIconIndex(arg1->unk_01C[arg5].unk_05);
@@ -1472,7 +1472,7 @@ void BattleHud_DrawCompactMonStatusBox(unk_BattlePlayerEntity* arg0, s16 arg1, s
     sp40 = &arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C]->unk_01C[arg0->animationState.unk_08];
     temp_v0 = &arg0->animationState;
 
-    if (sp40->unk_02 == 0) {
+    if (sp40->posY == 0) {
         var_t0 = 1;
     } else {
         var_t0 = Status_ToDisplayIconIndex(sp40->unk_05);

@@ -19,7 +19,7 @@ static u32 gMiniGeoLayout[] = {
 };
 
 void miniUnkInitCamera(void) {
-    gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
+    gMiniCameraPtr = gMiniCameraStruct->posX.unk_0C;
 
     miniCameraXRot = 0xA00;
     miniCameraYRot = 0;
@@ -44,7 +44,7 @@ void miniUnkDrawHUB(UNUSED s32 arg0) {
     BgStage_DrawFrame();
     GfxImage_FillCurrent(&gDisplayListHead, 1);
     GeoRender_AdvanceFrameCounter();
-    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
+    Geo_RenderRootNode(&gMiniCameraStruct->posX);
 
     if (miniDebugMode != 0) {
         showDebuggCameraInfo();

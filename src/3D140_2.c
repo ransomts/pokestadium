@@ -58,7 +58,7 @@ typedef struct AMDMAState {
 } AMDMAState; // size = 0xC
 
 typedef struct HPHistoryEntry {
-    /* 0x00 */ u16 unk_00[16];
+    /* 0x00 */ u16 posX[16];
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ u16 unk_28[16];
@@ -73,7 +73,7 @@ typedef struct HPHistoryEntry {
 } HPHistoryEntry; // size = 0x84
 
 typedef struct AudioCommandMapEntry {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
 } AudioCommandMapEntry;
 
@@ -504,7 +504,7 @@ void Audio_ResetChannelGroupState(u8 arg0) {
 
     if (arg0 < 3) {
         for (i = 0; i < 16; i++) {
-            gHPHistory[arg0].unk_00[i] = 0;
+            gHPHistory[arg0].posX[i] = 0;
             gHPHistory[arg0].unk_28[i] = 0;
             gHPHistory[arg0].unk_50[i] = 0;
         }
@@ -679,9 +679,9 @@ void AudioFrameUpdate(s32 arg0) {
         }
 
         gHPHistory[0].unk_24++;
-        gHPHistory[0].unk_00[gHPHistory[0].unk_24 & 0xF] = gAudioInfoPtr[0]->unk_0C;
+        gHPHistory[0].posX[gHPHistory[0].unk_24 & 0xF] = gAudioInfoPtr[0]->unk_0C;
         gHPHistory[1].unk_24++;
-        gHPHistory[1].unk_00[gHPHistory[1].unk_24 & 0xF] = gAudioInfoPtr[1]->unk_0C;
+        gHPHistory[1].posX[gHPHistory[1].unk_24 & 0xF] = gAudioInfoPtr[1]->unk_0C;
 
         if (gAudioQueueMode == 0) {
             return;
@@ -927,11 +927,11 @@ void AudioFrameUpdate(s32 arg0) {
         }
 
         if ((gAudioInfoPtr[0]->unk_28 * 0.5f) <
-            (gHPHistory[0].unk_00[(gHPHistory[0].unk_24 - 1) & 0xF] -
-             gHPHistory[0].unk_00[gHPHistory[0].unk_24 & 0xF])) {
+            (gHPHistory[0].posX[(gHPHistory[0].unk_24 - 1) & 0xF] -
+             gHPHistory[0].posX[gHPHistory[0].unk_24 & 0xF])) {
             if ((gAudioInfoPtr[1]->unk_28 * 0.5f) <
-                (gHPHistory[1].unk_00[(gHPHistory[1].unk_24 - 1) & 0xF] -
-                 gHPHistory[1].unk_00[gHPHistory[1].unk_24 & 0xF])) {
+                (gHPHistory[1].posX[(gHPHistory[1].unk_24 - 1) & 0xF] -
+                 gHPHistory[1].posX[gHPHistory[1].unk_24 & 0xF])) {
                 if (((((u32)gAudioInfoPtr[0]->unk_0C * 100) / gAudioInfoPtr[0]->unk_28) < 0x14U) &&
                     ((((u32)gAudioInfoPtr[1]->unk_0C * 100) / gAudioInfoPtr[1]->unk_28) < 0x14U)) {
                     Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x25A);
@@ -1077,7 +1077,7 @@ void ProcessAudioInfo(s32 arg0, PokemonAudioInfo* arg1) {
 
     PlayerCurrentHP[side] = gAudioInfoPtr[side]->unk_0C;
     gHPHistory[side].unk_24++;
-    gHPHistory[side].unk_00[gHPHistory[side].unk_24 & 0xF] = gAudioInfoPtr[side]->unk_0C;
+    gHPHistory[side].posX[gHPHistory[side].unk_24 & 0xF] = gAudioInfoPtr[side]->unk_0C;
 
     value = gAudioInfoPtr[side]->unk_0B;
     if ((value <= 0) || (value >= 0x98)) {
@@ -1394,7 +1394,7 @@ void ProcessAudioCommandQueue(s32 arg0) {
         case 0x6B:
         case 0x6C:
             gHPHistory[temp_s0].unk_24++;
-            gHPHistory[temp_s0].unk_00[gHPHistory[temp_s0].unk_24 & 0xF] = gAudioInfoPtr[temp_s0]->unk_0C;
+            gHPHistory[temp_s0].posX[gHPHistory[temp_s0].unk_24 & 0xF] = gAudioInfoPtr[temp_s0]->unk_0C;
             mask = osSetIntMask(1);
             gAudioQueueDelayCounter = sp3C;
             osSetIntMask(mask);
@@ -1742,13 +1742,13 @@ void ProcessAudioCommandQueue(s32 arg0) {
         case 0xB0:
             Audio_QueueSequenceId(0x167);
             gHPHistory[temp_s0].unk_24++;
-            gHPHistory[temp_s0].unk_00[gHPHistory[temp_s0].unk_24 & 0xF] = gAudioInfoPtr[temp_s0]->unk_0C;
+            gHPHistory[temp_s0].posX[gHPHistory[temp_s0].unk_24 & 0xF] = gAudioInfoPtr[temp_s0]->unk_0C;
             gCommandQueueCount = 0;
             return;
         case 0xB1:
             Audio_QueueSequenceId(0x166);
             gHPHistory[temp_s0].unk_24++;
-            gHPHistory[temp_s0].unk_00[gHPHistory[temp_s0].unk_24 & 0xF] = gAudioInfoPtr[temp_s0]->unk_0C;
+            gHPHistory[temp_s0].posX[gHPHistory[temp_s0].unk_24 & 0xF] = gAudioInfoPtr[temp_s0]->unk_0C;
             gCommandQueueCount = 0;
             return;
         case 0xB3:
@@ -1924,9 +1924,9 @@ void HandleMoveEvent(PokemonAudioInfo* arg0, s32 arg1, s32 arg2, s32 arg3) {
                 for (i = 0; i < 5; i++) {
                     // FAKE
                     if (arg2) {}
-                    if (arg1 == AudioCommandMap[i].unk_00) {
-                        if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF]) {
-                            tmp = (gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C);
+                    if (arg1 == AudioCommandMap[i].posX) {
+                        if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].posX[gHPHistory[sp40].unk_24 & 0xF]) {
+                            tmp = (gHPHistory[sp40].posX[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C);
                             gAudioHPChangePercent = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
                         } else {
                             gAudioHPChangePercent = 0;
@@ -1936,8 +1936,8 @@ void HandleMoveEvent(PokemonAudioInfo* arg0, s32 arg1, s32 arg2, s32 arg3) {
                     }
 
                     if (arg1 == AudioCommandMap[i].unk_01) {
-                        if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF]) {
-                            tmp = gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C;
+                        if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].posX[gHPHistory[sp40].unk_24 & 0xF]) {
+                            tmp = gHPHistory[sp40].posX[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C;
                             gAudioHPChangePercent = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
                         } else {
                             gAudioHPChangePercent = 0;
@@ -1951,8 +1951,8 @@ void HandleMoveEvent(PokemonAudioInfo* arg0, s32 arg1, s32 arg2, s32 arg3) {
             temp_v0 = osSetIntMask(sp2C);
 
             gAudioQueueDelayCounter = 0x1E;
-            if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF]) {
-                tmp = gHPHistory[sp40].unk_00[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C;
+            if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].posX[gHPHistory[sp40].unk_24 & 0xF]) {
+                tmp = gHPHistory[sp40].posX[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C;
                 gAudioHPChangePercent = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;
             } else {
                 gAudioHPChangePercent = 0;
@@ -2042,7 +2042,7 @@ void HandleMoveEvent(PokemonAudioInfo* arg0, s32 arg1, s32 arg2, s32 arg3) {
                         Audio_QueueSoundAvoidingRecent(gAudioCueTable_ComboF);
                     }
                 } else if (tmp != -5) {
-                    if ((gHPHistory[sp40 ^ 1].unk_00[gHPHistory[sp40 ^ 1].unk_24 & 0xF] < tmp) && (gAudioFlagUnused4 == 0)) {
+                    if ((gHPHistory[sp40 ^ 1].posX[gHPHistory[sp40 ^ 1].unk_24 & 0xF] < tmp) && (gAudioFlagUnused4 == 0)) {
                         if (BitArray_IsBitSet(gAudioEffectTriggeredMask, arg1 - 1) == 0) {
                             sp34 = arg1 + 0x1A2;
                             BitArray_SetBit(gAudioEffectTriggeredMask, arg1 - 1, 1);
@@ -2091,7 +2091,7 @@ void HandleMoveEvent(PokemonAudioInfo* arg0, s32 arg1, s32 arg2, s32 arg3) {
                 if ((tmp >> 0x10) == 0) {
                     tmp = tmp << 1;
 
-                    if (gHPHistory[sp40 ^ 1].unk_00[gHPHistory[sp40 ^ 1].unk_24 & 0xF] < tmp) {
+                    if (gHPHistory[sp40 ^ 1].posX[gHPHistory[sp40 ^ 1].unk_24 & 0xF] < tmp) {
                         if (BitArray_IsBitSet(gAudioEffectTriggeredMask, arg1 - 1) == 0) {
                             sp34 = arg1 + 0x1A2;
                             BitArray_SetBit(gAudioEffectTriggeredMask, arg1 - 1, 1);
@@ -2613,7 +2613,7 @@ u32 Battle_EstimateMoveDamage(u32 arg0, PokemonAudioInfo* arg1, PokemonAudioInfo
 
     dmg = base * mulB * eff2 * stab;
 
-    prevA = (u32)gHPHistory[side ^ 1].unk_00[gHPHistory[side ^ 1].unk_24 & 0xF];
+    prevA = (u32)gHPHistory[side ^ 1].posX[gHPHistory[side ^ 1].unk_24 & 0xF];
     if (prevA == 0) {
         prevA = 1;
     }
@@ -2624,7 +2624,7 @@ u32 Battle_EstimateMoveDamage(u32 arg0, PokemonAudioInfo* arg1, PokemonAudioInfo
         mulA = 1.0f;
     }
 
-    prevB = (u32)gHPHistory[side].unk_00[gHPHistory[side].unk_24 & 0xF];
+    prevB = (u32)gHPHistory[side].posX[gHPHistory[side].unk_24 & 0xF];
     if (prevB == 0) {
         prevB = 1;
     }

@@ -10,21 +10,21 @@
 
 s16 minigameState = 0;
 s16 minigameInputLock = 0;
-s16 D_87903DA8 = 0;
-s16 D_87903DAC = 0;
+s16 gMiniGameTimer1 = 0;
+s16 gMiniGameTimer2 = 0;
 s16 miniDebugMode = 0;
 s32 pad_D_87903DB4 = 0;
-s16 D_87903DB8 = 0;
-s16 D_87903DBC = 0;
-s16 D_87903DC0 = 0;
+s16 gMiniGameStateVar1 = 0;
+s16 gMiniGameStateVar2 = 0;
+s16 gMiniGameStateVar3 = 0;
 s16 miniTutoScreenState = 0;
-s16 D_87903DC8 = 0;
-s16 D_87903DCC = 0;
-s16 D_87903DD0 = 0;
-s16 D_87903DD4 = 0;
+s16 gMiniTutoTimer1 = 0;
+s16 gMiniTutoTimer2 = 0;
+s16 gMiniTutoTimer3 = 0;
+s16 gMiniTutoTimer4 = 0;
 
-ret_func_80004454 func_87900020(void) {
-    return func_87900020;
+ret_func_80004454 MiniGame_GetFragmentFunc(void) {
+    return MiniGame_GetFragmentFunc;
 }
 
 // func_8790002C
@@ -140,10 +140,10 @@ void MiniActor_UpdateAnimation(MiniActor* poke) {
         case 1:
             ModelAnim_SetAnimation(&poke->unk_000, poke->unk_24A);
             if (poke->unk_26C != 0) {
-                ModelAnim_BindTransformCurve(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, -0x10000);
-                ModelAnim_SetFrame(&poke->unk_000, poke->unk_000.unk_040.unk_04->unk_0A - 1);
+                ModelAnim_BindTransformCurve(&poke->unk_000, 0, poke->unk_000.unk_040.rotation, -0x10000);
+                ModelAnim_SetFrame(&poke->unk_000, poke->unk_000.unk_040.rotation->unk_0A - 1);
             } else {
-                ModelAnim_BindTransformCurve(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, 0x10000);
+                ModelAnim_BindTransformCurve(&poke->unk_000, 0, poke->unk_000.unk_040.rotation, 0x10000);
                 ModelAnim_SetFrame(&poke->unk_000, poke->unk_26E);
                 ModelAnim_ClearEventTrack(&poke->unk_000);
                 if (poke->unk_24C != -1) {
@@ -176,7 +176,7 @@ void MiniActor_UpdateAnimation(MiniActor* poke) {
 }
 
 void MiniActor_SnapAnimToLastFrame(Fragment2_1GraphNode* arg0) {
-    ModelAnim_SetFrame(arg0, arg0->unk_040.unk_04->unk_0A - 1);
+    ModelAnim_SetFrame(arg0, arg0->unk_040.rotation->unk_0A - 1);
 }
 
 void MiniActor_ReadControllerInputs(void) {
@@ -309,16 +309,16 @@ void miniResetGlobalState(void) {
     s16* ptr = gMiniHudColorDefaults;
 
     minigameInputLock = 0;
-    D_87903DA8 = 0;
-    D_87903DAC = 0;
+    gMiniGameTimer1 = 0;
+    gMiniGameTimer2 = 0;
     miniInputLockTimer = 0;
     D_87906048 = 0;
     D_8790604A = 0;
-    D_87903DC0 = 0;
+    gMiniGameStateVar3 = 0;
     miniTutoScreenState = 0;
-    D_87903DC8 = 0;
-    D_87903DCC = 0;
-    D_87903DD0 = 0;
+    gMiniTutoTimer1 = 0;
+    gMiniTutoTimer2 = 0;
+    gMiniTutoTimer3 = 0;
     gMiniCameraNearBackup = 0;
 
     Widget_PauseMenuInit();

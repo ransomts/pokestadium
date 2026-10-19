@@ -112,9 +112,9 @@ s32 Gallery_FilmSelectHandleInput(unk_D_83407B38* arg0) {
 
     sp54 = 0;
     sp50 = arg0->unk_08;
-    sp4C = arg0->unk_00;
-    sp48 = arg0->unk_00 % 3;
-    sp44 = arg0->unk_00 / 3;
+    sp4C = arg0->posX;
+    sp48 = arg0->posX % 3;
+    sp44 = arg0->posX / 3;
     sp40 = 0;
     sp3C = 0;
 
@@ -178,8 +178,8 @@ s32 Gallery_FilmSelectHandleInput(unk_D_83407B38* arg0) {
 
     sp1C = sp44 * 3;
 
-    arg0->unk_00 = sp1C + sp48;
-    if (sp4C != arg0->unk_00) {
+    arg0->posX = sp1C + sp48;
+    if (sp4C != arg0->posX) {
         gSelectionMessageState = 0;
         Audio_PlaySoundEffectById(1);
     }
@@ -197,7 +197,7 @@ s32 Gallery_FilmSelectHandleInput(unk_D_83407B38* arg0) {
             arg0->unk_08 = tmp;
         }
     } else if (gPlayer1Controller->buttonPressed & 0x8000) {
-        idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
+        idx = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
         if (sp1C < 6) {
             if (Gallery_IsSceneReady(arg0->unk_20[idx]) != 0) {
                 if (gMonSelectionFlags[idx] == 0) {
@@ -229,7 +229,7 @@ s32 Gallery_FilmSelectHandleInput(unk_D_83407B38* arg0) {
             Audio_PlaySoundEffectById(3);
         }
     } else if (gPlayer1Controller->buttonPressed & 4) {
-        idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
+        idx = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
         if ((sp1C < 6) && (Gallery_IsSceneReady(arg0->unk_20[idx]) != 0)) {
             Audio_PlaySoundEffectById(0x19);
             Gallery_SetEnlargeTarget(arg0->unk_20[idx]->unk_18);
@@ -248,7 +248,7 @@ s32 Gallery_FilmSelectHandleInput(unk_D_83407B38* arg0) {
             ptr = arg0->unk_20[(arg0->unk_08 * arg0->unk_14) + i];
 
             if (ptr != NULL) {
-                ptr->unk_00 = 0;
+                ptr->posX = 0;
             }
         }
     }
@@ -279,7 +279,7 @@ void Gallery_FilmSelectInit(s32 arg0) {
 
     Gallery_InitSceneGrid(&gSelectionCamList, 0x88, 0x66, 6, 3, PokeIcon_AllocFramebuffers(5), D_836032F8, gDisplayableMonIndices, 0x18, 1);
 
-    if (gGallerySelection.unk_00 != -1) {
+    if (gGallerySelection.posX != -1) {
         Gallery_RestorePosition(&gSelectionCamList, &gGallerySelection);
     }
 
@@ -426,7 +426,7 @@ void Gallery_FilmSelectDrawPhotoGrid(unk_D_83407B38* arg0) {
     for (i = 0; i < arg0->unk_14; i++) {
         temp_s5 = (arg0->unk_08 * arg0->unk_14) + i;
         temp_s0 = arg0->unk_20[temp_s5];
-        if ((Gallery_IsSceneReady(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
+        if ((Gallery_IsSceneReady(temp_s0) != 0) && (temp_s0->posX == 2)) {
             temp_s4 = (i / 3) * 0x6E;
             temp_s1 = (i % 3) * 0xA4;
             Gallery_DrawPhotoThumbnail(temp_s0->unk_08->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);
@@ -447,8 +447,8 @@ void Gallery_FilmSelectDrawPhotoGrid(unk_D_83407B38* arg0) {
 }
 
 void Gallery_FilmSelectDrawSelectionCursor(unk_D_83407B38* arg0) {
-    s32 temp_hi = arg0->unk_00 % 3;
-    s32 temp_lo = arg0->unk_00 / 3;
+    s32 temp_hi = arg0->posX % 3;
+    s32 temp_lo = arg0->posX / 3;
     s32 var_a0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -641,8 +641,8 @@ char* Gallery_FilmSelectGetHelpText(unk_D_83407B38* arg0) {
     static s32 D_836032B4[] = { 0x21, 0x24 };
 
     char* var_v0;
-    s32 temp_lo = arg0->unk_00 % 3;
-    s32 temp_hi = arg0->unk_00 / 3;
+    s32 temp_lo = arg0->posX % 3;
+    s32 temp_hi = arg0->posX / 3;
 
     if (gSelectionMessageState == 0) {
         if (temp_hi < 2) {
@@ -746,7 +746,7 @@ void Gallery_FilmSelectDraw(void) {
     f32 sp1C;
     f32 sp18;
 
-    Gallery_IndexToGridPos(&gSelectionCamList, &sp28, &sp24, gSelectionCamList.unk_00);
+    Gallery_IndexToGridPos(&gSelectionCamList, &sp28, &sp24, gSelectionCamList.posX);
     BgStage_DrawFrame();
     Gallery_FilmSelectDrawBackgroundGradient();
     Gallery_FilmSelectDrawBandedStrip(0, 0x4F, 0x280, 1);
@@ -859,8 +859,8 @@ void Gallery_FilmSelectRunLoop(void) {
 }
 
 s32 Gallery_FilmSelectFinalize(unk_D_83407B38* arg0) {
-    s32 temp_hi = arg0->unk_00 % 3;
-    s32 temp_lo = arg0->unk_00 / 3;
+    s32 temp_hi = arg0->posX % 3;
+    s32 temp_lo = arg0->posX / 3;
     s32 sp1C;
 
     if (temp_lo < 2) {

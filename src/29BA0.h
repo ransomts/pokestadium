@@ -7,13 +7,13 @@
 #include "PR/leo.h"
 
 typedef struct arg1_func_80019420 {
-    /* 0x00 */ s8 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ void* unk_04;
+    /* 0x00 */ s8 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ void* rotation;
 } arg1_func_80019420; // size = 0x8
 
 typedef struct FragmentCallContext {
-    /* 0x00 */ s16 unk_00;
+    /* 0x00 */ s16 posX;
     /* 0x02 */ s16 fragment_id;
     /* 0x04 */ u8* rom_start;
     /* 0x08 */ u8* rom_end;
@@ -22,14 +22,14 @@ typedef struct FragmentCallContext {
 } FragmentCallContext; // size >= 0x14
 
 typedef struct unk_func_80026268_arg0_000 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
 } unk_func_80026268_arg0_000; // size = 0x2
 
 typedef struct PokemonData {
-    /* 0x00 */ unk_func_80026268_arg0_000 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ unk_func_80026268_arg0_000 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
@@ -87,10 +87,10 @@ typedef struct unk_D_800AE540_0004 {
 } unk_D_800AE540_0004; // size = 0x21C
 
 typedef struct unk_D_800AE540_1194 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ unk_D_800AE540_0004* unk_04;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ unk_D_800AE540_0004* rotation;
     /* 0x08 */ unk_D_800AE540_0004* unk_08[2];
     /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ unk_D_86002F58_004_000_004* unk_14;

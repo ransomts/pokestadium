@@ -132,7 +132,7 @@ void BattleScene_UpdateSecondaryModelOrbit(unk_BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_000.unk_024.z = arg0->unk_000.unk_024.z + sp5C.z;
 
         ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
-        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
+        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.posX);
     }
 }
 
@@ -163,7 +163,7 @@ s32 BattleScene_ShrinkSecondaryModelsToScale(unk_BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_000.unk_030.z = temp_fv0_2;
 
         ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
-        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
+        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.posX);
 
         if (arg0->unk_168[i].unk_000.unk_030.y < 0.8) {
             arg0->unk_168[i].unk_169 = 1;
@@ -182,7 +182,7 @@ void BattleScene_ShowSecondaryModelsStaggeredFrame(unk_BattlePlayerEntity* arg0)
         arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
 
         ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
-        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
+        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.posX);
         Vec3f_SetComponentsDuplicate(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
         BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
         BattleAnim_Vec3sCopy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
@@ -201,7 +201,7 @@ void BattleScene_UpdateSecondaryModelTrailPosition(unk_BattlePlayerEntity* arg0,
 
     for (i = 0; i < 2; i++) {
         ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
-        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
+        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.posX);
         Vec3f_CalculateDistanceAngles(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, &sp90, &sp8E, &sp8C);
         Camera_ComputeEyeFromAngles(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, sp7C[i] * sp90, sp8E, sp8C);
         BattleAnim_StepToS16(&arg0->unk_168[i].unk_000.unk_01E.y, arg0->unk_000.unk_01E.y, sp70[i] * arg1);
@@ -221,7 +221,7 @@ void BattleAnim_StatusIdleCase1Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_Bat
     }
     BattleAnim_InitSwayOffset(arg1, 20.0f, 0x1FFE);
     arg1->animationSubstate++;
-    arg1->effectGraphNode.unk_000.unk_02 &= ~0x20;
+    arg1->effectGraphNode.unk_000.posY &= ~0x20;
     ModelAnim_SetFrame(&arg1->effectGraphNode, 0);
 }
 
@@ -259,7 +259,7 @@ void BattleAnim_StatusIdleCase2Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_Bat
     arg1->animationSubstate++;
     BattleAnim_InitSwayOffset(arg1, 0.0f, 0x3FFC);
     arg1->effectGraphNode.unk_000.unk_01 |= 1;
-    arg1->effectGraphNode.unk_000.unk_02 &= ~0x20;
+    arg1->effectGraphNode.unk_000.posY &= ~0x20;
     ModelAnim_SetFrame(&arg1->effectGraphNode, 0);
 }
 
@@ -591,7 +591,7 @@ void BattleAnim_StatusIdleCase7(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEn
 
 void BattleAnim_ResetOwnerFacingAndExitStatusIdle(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
-    CameraStruct* sp18 = gBattleScene.unk_00->unk_DC;
+    CameraStruct* sp18 = gBattleScene.posX->unk_DC;
 
     BattleScene_PositionParticipantModel(arg0);
     Vec3s_SetComponents(&arg0->unk_000.unk_01E, 0, arg0->sideSign << 0xE, 0);
@@ -611,7 +611,7 @@ void BattleAnim_StatusIdleCase8Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlay
 }
 
 void BattleAnim_StatusIdleCase8Sub1(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    CameraStruct* temp_s0 = gBattleScene.unk_00->unk_DC;
+    CameraStruct* temp_s0 = gBattleScene.posX->unk_DC;
     f32 temp_fa0;
     f32 temp_fa1_2;
     f32 temp_ft4;

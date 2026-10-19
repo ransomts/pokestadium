@@ -23,9 +23,9 @@
 #include "src/17300.h"
 
 typedef struct unk_D_86002920 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -53,9 +53,9 @@ static unk_D_86002920 gMiniHudRandomChanceTable[31] = {
 static f32 D_86002A94 = 50.0f;
 
 typedef struct unk_D_86002A98 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -209,7 +209,7 @@ void MagikarpGame_UpdateAIInputBias(void) {
 
                 case 5:
                 case 7:
-                    if (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_04) {
+                    if (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].rotation) {
                         D_86003B5C->unk_174 = 0x8000;
                     }
                     break;
@@ -285,7 +285,7 @@ s32 MagikarpGame_ReadInputs(void) {
 }
 
 void MagikarpGame_InitCamera(void) {
-    gMiniHudCamera = gMiniHudMainGraph->unk_00.unk_0C;
+    gMiniHudCamera = gMiniHudMainGraph->posX.unk_0C;
     MiniCam_SetActive(gMiniHudCamera);
     gMiniHudCamAtY = 0x600;
     gMiniHudCamAtZ = 0;
@@ -327,9 +327,9 @@ void MagikarpGame_DrawOverlay(s32 arg0) {
             unk_D_86002A98* tmp = &gMiniHudTextureRects[i];
 
             if (gMiniHudPlayerStates[i].unk_000 == 0) {
-                Widget_DrawPlayerIcon(i, tmp->unk_00, tmp->unk_02, 0.75f);
+                Widget_DrawPlayerIcon(i, tmp->posX, tmp->posY, 0.75f);
             } else {
-                Widget_DrawPlayerIcon(-1 - i, tmp->unk_00, tmp->unk_02, 0.75f);
+                Widget_DrawPlayerIcon(-1 - i, tmp->posX, tmp->posY, 0.75f);
             }
         }
 
@@ -483,8 +483,8 @@ void MagikarpGame_DrawScoreMarkers(void) {
 
     for (i = 0; i < 4; i++) {
         gCurrentPlayerGraph = &gMiniHudPlayerStates[i].unk_004;
-        temp_f20 = (410.0f - gCurrentPlayerGraph->unk_000.unk_0A8[0].unk_04.y) / 510.0f;
-        guTranslate(&sp100, gCurrentPlayerGraph->unk_000.unk_0A8[0].unk_04.x, 0.0f, 0.0f);
+        temp_f20 = (410.0f - gCurrentPlayerGraph->unk_000.unk_0A8[0].rotation.y) / 510.0f;
+        guTranslate(&sp100, gCurrentPlayerGraph->unk_000.unk_0A8[0].rotation.x, 0.0f, 0.0f);
         guScale(&spC0, temp_f20, temp_f20, temp_f20);
         guMtxCatL(&spC0, &sp100, var_s1);
 
@@ -1123,7 +1123,7 @@ void MagikarpGame_InitActors(void) {
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
-        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->unk_08->posX[0]);
 
         gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
 
@@ -1158,7 +1158,7 @@ void MagikarpGame_InitActors(void) {
         gCurrentPlayerGraph = gCurrentPlayerWheel;
 
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
-        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->unk_08->posX[0]);
         gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
         gCurrentPlayerGraph->unk_000.unk_024.z = 0.0f;
         gCurrentPlayerGraph->unk_000.unk_024.y = 200.0f;

@@ -24,10 +24,10 @@ typedef struct func_800253F4_arg1 {
 } func_800253F4_arg1; // size >= 0x1A3
 
 typedef struct unk_func_800228F0 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ char unk_04[16];
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ char rotation[16];
     /* 0x14 */ char unk_14[16];
 } unk_func_800228F0; // size >= 0x28
 

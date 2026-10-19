@@ -42,7 +42,7 @@ s32 Leo_ValidateBootDiskId(void) {
 s32 Leo_AcceptPokemonDiskDescriptor(LeoDiskDescriptor* arg0) {
     s32 var_v1 = 0;
 
-    if (arg0->unk_00 == 'POKE') {
+    if (arg0->posX == 'POKE') {
         var_v1 = 1;
         gBootIDData = *arg0;
     }
@@ -52,29 +52,29 @@ s32 Leo_AcceptPokemonDiskDescriptor(LeoDiskDescriptor* arg0) {
 
 s32 Leo_QueueDiskIdRead(void) {
     Storage_QueueDiskIdRead(&gBootMsgQueue, 0);
-    gBootState.unk_00 = 3;
+    gBootState.posX = 3;
     return 0;
 }
 
 s32 Leo_QueueDiskReset(void) {
     Storage_QueueDiskReset(&gBootMsgQueue, 0);
-    gBootState.unk_00 = 5;
+    gBootState.posX = 5;
     return 0;
 }
 
 s32 Leo_QueueBootBlockRead(LeoDiskDescriptor* arg0) {
     Storage_QueueDiskTransfer(0, arg0, 0x230, 1, &gBootMsgQueue, 1);
-    gBootState.unk_04 = 0;
-    gBootState.unk_02 = 0;
-    gBootState.unk_00 = 7;
+    gBootState.rotation = 0;
+    gBootState.posY = 0;
+    gBootState.posX = 7;
     return 0;
 }
 
 s32 Leo_QueueDiskPayloadRead(void) {
-    Storage_QueueDiskTransfer(0, gBootIDData.unk_08, gBootIDData.unk_04, gBootIDData.unk_06, &gBootMsgQueue, 1);
-    gBootState.unk_04 = 0;
-    gBootState.unk_02 = 0;
-    gBootState.unk_00 = 9;
+    Storage_QueueDiskTransfer(0, gBootIDData.unk_08, gBootIDData.rotation, gBootIDData.unk_06, &gBootMsgQueue, 1);
+    gBootState.rotation = 0;
+    gBootState.posY = 0;
+    gBootState.posX = 9;
     return 0;
 }
 
@@ -86,69 +86,69 @@ s32 Leo_HandleDiskIdCompletion(void) {
             case 0:
                 switch (Leo_ValidateBootDiskId()) {
                     case 0:
-                        gBootState.unk_04 = sp1C;
-                        gBootState.unk_02 = 0;
-                        gBootState.unk_00 = 6;
+                        gBootState.rotation = sp1C;
+                        gBootState.posY = 0;
+                        gBootState.posX = 6;
                         break;
 
                     case 1:
-                        gBootState.unk_04 = sp1C;
-                        gBootState.unk_02 = 5;
-                        gBootState.unk_00 = 4;
+                        gBootState.rotation = sp1C;
+                        gBootState.posY = 5;
+                        gBootState.posX = 4;
                         break;
 
                     case 2:
-                        gBootState.unk_02 = 4;
-                        gBootState.unk_00 = 4;
-                        gBootState.unk_04 = 0x2C;
+                        gBootState.posY = 4;
+                        gBootState.posX = 4;
+                        gBootState.rotation = 0x2C;
                         break;
                 }
                 break;
 
             case 42:
-                gBootState.unk_00 = 2;
+                gBootState.posX = 2;
                 break;
 
             case 35:
-                gBootState.unk_00 = 2;
+                gBootState.posX = 2;
                 break;
 
             case 49:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 2;
-                gBootState.unk_00 = 2;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 2;
+                gBootState.posX = 2;
                 break;
 
             case 2:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 3;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 3;
+                gBootState.posX = 4;
                 break;
 
             case 11:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 1;
+                gBootState.posX = 4;
                 break;
 
             case 34:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 1;
+                gBootState.posX = 4;
                 break;
 
             case 43:
                 if (gBootState.unk_06++ >= 0x1F) {
-                    gBootState.unk_02 = 1;
+                    gBootState.posY = 1;
                 }
                 LeoResetClear();
-                gBootState.unk_00 = 2;
+                gBootState.posX = 2;
                 break;
 
             default:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 1;
+                gBootState.posX = 4;
                 break;
         }
 
@@ -164,39 +164,39 @@ s32 Leo_HandleResetCompletion(void) {
     if (osRecvMesg(&gBootMsgQueue, &sp1C, 0) != -1) {
         switch (sp1C) {
             default:
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 1;
-                gBootState.unk_04 = sp1C;
+                gBootState.posY = 1;
+                gBootState.posX = 1;
+                gBootState.rotation = sp1C;
                 break;
 
             case 0:
-                gBootState.unk_00 = 4;
+                gBootState.posX = 4;
                 break;
 
             case 35:
-                gBootState.unk_00 = 4;
+                gBootState.posX = 4;
                 break;
 
             case 2:
-                gBootState.unk_00 = 4;
+                gBootState.posX = 4;
                 break;
 
             case 42:
-                gBootState.unk_04 = 0;
-                gBootState.unk_02 = 0;
-                gBootState.unk_00 = 2;
+                gBootState.rotation = 0;
+                gBootState.posY = 0;
+                gBootState.posX = 2;
                 break;
 
             case 47:
-                gBootState.unk_04 = 0;
-                gBootState.unk_02 = 0;
-                gBootState.unk_00 = 2;
+                gBootState.rotation = 0;
+                gBootState.posY = 0;
+                gBootState.posX = 2;
                 break;
 
             case 34:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 1;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 1;
+                gBootState.posX = 1;
                 break;
         }
         return 1;
@@ -213,47 +213,47 @@ s32 Leo_HandleBootBlockCompletion(LeoDiskDescriptor* arg0) {
         switch (sp24) {
             case 0:
                 if (Leo_AcceptPokemonDiskDescriptor(arg0) != 0) {
-                    gBootState.unk_00 = 8;
+                    gBootState.posX = 8;
                 } else {
-                    gBootState.unk_02 = 5;
-                    gBootState.unk_00 = 4;
+                    gBootState.posY = 5;
+                    gBootState.posX = 4;
                 }
                 break;
 
             case 0x23:
-                gBootState.unk_00 = 8;
+                gBootState.posX = 8;
                 break;
 
             case 0x2A:
-                gBootState.unk_00 = 2;
+                gBootState.posX = 2;
                 break;
 
             case 0x2F:
-                gBootState.unk_00 = 2;
+                gBootState.posX = 2;
                 break;
 
             case 0x31:
-                gBootState.unk_04 = sp24;
-                gBootState.unk_02 = 2;
-                gBootState.unk_00 = 2;
+                gBootState.rotation = sp24;
+                gBootState.posY = 2;
+                gBootState.posX = 2;
                 break;
 
             case 2:
-                gBootState.unk_04 = sp24;
-                gBootState.unk_02 = 3;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp24;
+                gBootState.posY = 3;
+                gBootState.posX = 4;
                 break;
 
             case 0x22:
-                gBootState.unk_04 = sp24;
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp24;
+                gBootState.posY = 1;
+                gBootState.posX = 4;
                 break;
 
             default:
-                gBootState.unk_04 = sp24;
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp24;
+                gBootState.posY = 1;
+                gBootState.posX = 4;
                 break;
         }
         return 1;
@@ -268,43 +268,43 @@ s32 Leo_HandlePayloadCompletion(void) {
     if (osRecvMesg(&gBootMsgQueue, &sp1C, 0) != -1) {
         switch (sp1C) {
             case 0:
-                gBootState.unk_00 = 0xA;
+                gBootState.posX = 0xA;
                 break;
 
             case 0x23:
-                gBootState.unk_00 = 8;
+                gBootState.posX = 8;
                 break;
 
             case 0x2A:
-                gBootState.unk_00 = 2;
+                gBootState.posX = 2;
                 break;
 
             case 0x2F:
-                gBootState.unk_00 = 2;
+                gBootState.posX = 2;
                 break;
 
             case 0x31:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 2;
-                gBootState.unk_00 = 2;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 2;
+                gBootState.posX = 2;
                 break;
 
             case 2:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 3;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 3;
+                gBootState.posX = 4;
                 break;
 
             case 0x22:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 1;
+                gBootState.posX = 4;
                 break;
 
             default:
-                gBootState.unk_04 = sp1C;
-                gBootState.unk_02 = 1;
-                gBootState.unk_00 = 4;
+                gBootState.rotation = sp1C;
+                gBootState.posY = 1;
+                gBootState.posX = 4;
                 break;
         }
         return 1;
@@ -325,20 +325,20 @@ s32 Leo_PollDiskReady(void) {
             break;
 
         default:
-            gBootState.unk_04 = temp_v0;
-            gBootState.unk_02 = 1;
+            gBootState.rotation = temp_v0;
+            gBootState.posY = 1;
             break;
 
         case 42:
-            gBootState.unk_04 = 0;
-            gBootState.unk_02 = 0;
-            gBootState.unk_00 = 2;
+            gBootState.rotation = 0;
+            gBootState.posY = 0;
+            gBootState.posX = 2;
             break;
 
         case 47:
-            gBootState.unk_04 = 0;
-            gBootState.unk_02 = 0;
-            gBootState.unk_00 = 2;
+            gBootState.rotation = 0;
+            gBootState.posY = 0;
+            gBootState.posX = 2;
             break;
     }
     return 0;
@@ -352,7 +352,7 @@ s32 Leo_RunBootStateMachine(LeoDiskDescriptor* arg0) {
 
     if (Storage_GetDiskStatus() != 0) {
         while (sp24 != 0) {
-            switch (gBootState.unk_00) {
+            switch (gBootState.posX) {
                 case 0:
                     sp24 = 0;
                     break;
@@ -400,20 +400,20 @@ s32 Leo_RunBootStateMachine(LeoDiskDescriptor* arg0) {
         }
     }
 
-    return (gBootState.unk_00 << 0x10) | (gBootState.unk_02 << 8) | gBootState.unk_04;
+    return (gBootState.posX << 0x10) | (gBootState.posY << 8) | gBootState.rotation;
 }
 
 s32 Leo_InitializeBootState(void) {
     s32 sp1C = Storage_GetDiskStatus();
 
     if (sp1C != 0) {
-        gBootState.unk_00 = 2;
+        gBootState.posX = 2;
     } else {
-        gBootState.unk_00 = 0;
+        gBootState.posX = 0;
     }
 
-    gBootState.unk_04 = 0;
-    gBootState.unk_02 = 0;
+    gBootState.rotation = 0;
+    gBootState.posY = 0;
     gBootState.unk_06 = 0;
 
     osCreateMesgQueue(&gBootMsgQueue, &gBootMsgBuffer, 1);
@@ -421,18 +421,18 @@ s32 Leo_InitializeBootState(void) {
 }
 
 void Leo_AbortPendingBootRequest(void) {
-    s32 tmp = gBootState.unk_00;
+    s32 tmp = gBootState.posX;
 
     if (tmp == 3) {
         osRecvMesg(&gBootMsgQueue, NULL, 1);
-        gBootState.unk_00 = 2;
+        gBootState.posX = 2;
     } else {
         switch (tmp) {
             case 5:
             case 7:
             case 9:
                 osRecvMesg(&gBootMsgQueue, NULL, 1);
-                gBootState.unk_00 = 4;
+                gBootState.posX = 4;
                 break;
         }
     }
@@ -440,8 +440,8 @@ void Leo_AbortPendingBootRequest(void) {
 
 void Leo_ResetBootStateIfReady(void) {
     if (Storage_GetDiskStatus() != 0) {
-        gBootState.unk_00 = 2;
-        gBootState.unk_04 = 0;
-        gBootState.unk_02 = 0;
+        gBootState.posX = 2;
+        gBootState.rotation = 0;
+        gBootState.posY = 0;
     }
 }

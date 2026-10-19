@@ -153,7 +153,7 @@ void Gallery_DrawHelpBalloonScrollTexture(s16 arg0, s16 arg1, s16 arg2, s16 arg3
     gDPLoadTextureTile(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, arg2, 0, 0, 0, arg2 - 1, arg3 - 1, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    GalleryUI_DrawScrollingTextureRect(arg0, arg1, arg2, arg3, gStagePanelAnimState.unk_02 << 5, 0, 0x400, 0x400);
+    GalleryUI_DrawScrollingTextureRect(arg0, arg1, arg2, arg3, gStagePanelAnimState.posY << 5, 0, 0x400, 0x400);
 }
 
 void Gallery_DrawHelpBalloonBubble(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
@@ -600,7 +600,7 @@ void Gallery_CameraDrawHelpBalloon(void) {
     Color_RGB8 sp30 = gStagePanelGradientEndColor;
 
     if (gStagePanelStateIndex >= 3) {
-        GalleryUI_DrawGradientQuad(0, 0, 0x140, 0xF0, gStagePanelFadeData.unk_04);
+        GalleryUI_DrawGradientQuad(0, 0, 0x140, 0xF0, gStagePanelFadeData.rotation);
     }
 
     if (gStagePanelStateIndex == 4) {
@@ -624,10 +624,10 @@ void Gallery_CameraDrawHelpBalloon(void) {
 }
 
 s16 GalleryUI_ClampReelDigitX(s16 arg0) {
-    if ((arg0 - gStagePanelAnimState.unk_04) <= (gStagePanelAnimState.unk_0C + 15.0f)) {
+    if ((arg0 - gStagePanelAnimState.rotation) <= (gStagePanelAnimState.unk_0C + 15.0f)) {
         return 1000;
     }
-    return arg0 - gStagePanelAnimState.unk_04;
+    return arg0 - gStagePanelAnimState.rotation;
 }
 
 void Gallery_DrawPhotoCounterReel(void) {
@@ -645,7 +645,7 @@ void Gallery_DrawPhotoCounterReel(void) {
     Gallery_DrawHelpBalloonBubble(D_5000BA0, GalleryUI_ClampReelDigitX(sp24 + 0x10), 0x18, 8, 0x1E);
 
     if (gStagePanelStateIndex == 0) {
-        if (gStagePanelAnimState.unk_00 == 0) {
+        if (gStagePanelAnimState.posX == 0) {
             sprintf(&sp40, "%d", 0x18 - gStageSnapshotCount);
 
             Font_BeginTranslucentTextRendering();
@@ -682,7 +682,7 @@ void Gallery_DrawPhotoCounterReel(void) {
                 sp32 = 3;
             }
 
-            Font_Printf((sp24 - gStagePanelAnimState.unk_00) + sp32 + 0x1D, 0x21, &sp40);
+            Font_Printf((sp24 - gStagePanelAnimState.posX) + sp32 + 0x1D, 0x21, &sp40);
 
             if ((0x18 - gStageSnapshotCount) >= 0xB) {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -695,10 +695,10 @@ void Gallery_DrawPhotoCounterReel(void) {
                 sp32 = 3;
             }
 
-            Font_Printf((sp24 - gStagePanelAnimState.unk_00) + sp32 + 9, 0x21, &sp34);
+            Font_Printf((sp24 - gStagePanelAnimState.posX) + sp32 + 9, 0x21, &sp34);
             Font_EndTexturedTextRendering();
         }
-    } else if (gStagePanelAnimState.unk_00 == 0) {
+    } else if (gStagePanelAnimState.posX == 0) {
         if (gStageSnapshotCount != 0) {
             sprintf(&sp40, "%d", 0x18 - gStageSnapshotCount);
 
@@ -737,7 +737,7 @@ void Gallery_DrawPhotoCounterReel(void) {
             sp32 = 3;
         }
 
-        Font_Printf((sp24 + gStagePanelAnimState.unk_00 + sp32) - 0xB, 0x21, &sp40);
+        Font_Printf((sp24 + gStagePanelAnimState.posX + sp32) - 0xB, 0x21, &sp40);
 
         if ((0x18 - gStageSnapshotCount) >= 0xB) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -750,7 +750,7 @@ void Gallery_DrawPhotoCounterReel(void) {
             sp32 = 3;
         }
 
-        Font_Printf(sp24 + gStagePanelAnimState.unk_00 + sp32 + 9, 0x21, &sp34);
+        Font_Printf(sp24 + gStagePanelAnimState.posX + sp32 + 9, 0x21, &sp34);
         Font_EndTexturedTextRendering();
     }
 
@@ -800,10 +800,10 @@ void Gallery_DrawPhotoCounterReelExit(void) {
 
 void Gallery_DrawFrameMarkers(void) {
     if (gStagePanelStateIndex == 0) {
-        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[0], gStagePanelAnimData.unk_00[4], 0x30, 0x19, 0, 0);
-        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[1], gStagePanelAnimData.unk_00[5], 0x30, 0x19, 0x4000, 1);
-        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[2], gStagePanelAnimData.unk_00[6], 0x30, 0x19, -0x8000, 1);
-        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[3], gStagePanelAnimData.unk_00[7], 0x30, 0x19, -0x4000, 1);
+        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.posX[0], gStagePanelAnimData.posX[4], 0x30, 0x19, 0, 0);
+        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.posX[1], gStagePanelAnimData.posX[5], 0x30, 0x19, 0x4000, 1);
+        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.posX[2], gStagePanelAnimData.posX[6], 0x30, 0x19, -0x8000, 1);
+        DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.posX[3], gStagePanelAnimData.posX[7], 0x30, 0x19, -0x4000, 1);
         GalleryUI_DrawRotateArrowIcon(&D_5000C90, gStagePanelAnimData.unk_10, gStagePanelAnimData.unk_20, 0x18, 0x38, 0, 0);
         GalleryUI_DrawRotateArrowIconMirrored(&D_5000C90, gStagePanelAnimData.unk_10, gStagePanelAnimData.unk_20, 0x18, 0x38, 0, 1);
         GalleryUI_DrawRotateArrowIcon(&D_5000C90, gStagePanelAnimData.unk_14, gStagePanelAnimData.unk_24, 0x18, 0x38, 0x4000, 1);
@@ -816,7 +816,7 @@ void Gallery_DrawFrameMarkers(void) {
 }
 
 void Gallery_DrawTutorialTextBox(void) {
-    if (gTutorialTextBoxState.unk_00 != 0xFF) {
+    if (gTutorialTextBoxState.posX != 0xFF) {
         Gallery_DrawHelpBalloonFrame(0x3C, 0x9B - (gTutorialTextBoxState.unk_0C / 2), gTutorialTextBoxState.unk_08, gTutorialTextBoxState.unk_0C, 0, 0, 0x9B, 0x7D);
         Font_BeginTranslucentTextRendering();
         Font_SetActive(2, 0);

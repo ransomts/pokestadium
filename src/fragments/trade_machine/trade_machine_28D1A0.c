@@ -16,9 +16,9 @@ void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
 
     main_pool_push_state('BBRD');
 
-    ptr->unk_00 = 1;
-    ptr->unk_02 = -1;
-    ptr->unk_04 = arg2;
+    ptr->posX = 1;
+    ptr->posY = -1;
+    ptr->rotation = arg2;
     ptr->unk_06 = arg3;
     ptr->unk_0C = 0;
     ptr->unk_0E = 0;
@@ -30,20 +30,20 @@ void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
     ptr->unk_1C = NULL;
     ptr->unk_20 = PokeIcon_AllocFramebuffers(1);
     ptr->unk_24 = PokeIcon_CreateModelPreview(ptr->unk_20, 0xE4, 0xA0, 0, 0, 0xE0, 0xA0, D_3014468);
-    ptr->unk_24->unk_00 &= ~2;
+    ptr->unk_24->posX &= ~2;
     PokeIcon_SetPreviewMon(ptr->unk_24, ptr->unk_14, 0x108D);
     Audio_PlaySoundEffectById(4);
 }
 
 void Trade_UpdateInfoBoxOpenIn(unk_D_82F20A10* arg0) {
     arg0->unk_10--;
-    arg0->unk_04 = 0x38 - (((0x38 - arg0->unk_08) * arg0->unk_10) / 6);
+    arg0->rotation = 0x38 - (((0x38 - arg0->unk_08) * arg0->unk_10) / 6);
     arg0->unk_06 = 0x70 - (((0x70 - arg0->unk_0A) * arg0->unk_10) / 6);
     arg0->unk_0C = 0x210 - ((arg0->unk_10 * 0x210) / 6);
     arg0->unk_0E = 0x148 - ((arg0->unk_10 * 0x148) / 6);
     if (arg0->unk_10 <= 0) {
-        arg0->unk_00 = 2;
-        arg0->unk_02 = 4;
+        arg0->posX = 2;
+        arg0->posY = 4;
         gResultOptionIndex = 0;
     }
 }
@@ -92,8 +92,8 @@ void Trade_UpdateInfoBoxChoose(unk_D_82F20A10* arg0) {
     }
 
     if (var_t0 != 0) {
-        arg0->unk_00 = 3;
-        arg0->unk_02 = -1;
+        arg0->posX = 3;
+        arg0->posY = -1;
         arg0->unk_10 = 6;
         arg0->unk_1C = 0;
         if (gResultOptionIndex == 0) {
@@ -108,13 +108,13 @@ void Trade_UpdateInfoBoxChoose(unk_D_82F20A10* arg0) {
 
 void Trade_UpdateInfoBoxCloseOut(unk_D_82F20A10* arg0) {
     arg0->unk_10--;
-    arg0->unk_04 = arg0->unk_08 - (((arg0->unk_08 - 0x38) * arg0->unk_10) / 6);
+    arg0->rotation = arg0->unk_08 - (((arg0->unk_08 - 0x38) * arg0->unk_10) / 6);
     arg0->unk_06 = arg0->unk_0A - (((arg0->unk_0A - 0x70) * arg0->unk_10) / 6);
     arg0->unk_0C = (arg0->unk_10 * 0x210) / 6;
     arg0->unk_0E = (arg0->unk_10 * 0x148) / 6;
 
     if (arg0->unk_10 <= 0) {
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
         main_pool_pop_state('BBRD');
     }
 }
@@ -234,7 +234,7 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
     sp8C[0] = Text_GetString(NULL, 0, D_82F13B70, 0x12);
     sp8C[1] = Text_GetString(NULL, 0, D_82F13B70, 0x13);
     sp11C = arg0->unk_14;
-    Trade_DrawPickScreenFrame(arg0->unk_04, arg0->unk_06, arg0->unk_0C, arg0->unk_0E);
+    Trade_DrawPickScreenFrame(arg0->rotation, arg0->unk_06, arg0->unk_0C, arg0->unk_0E);
 
     if ((arg0->unk_0C == 0x210) && (arg0->unk_0E == 0x148)) {
         if (arg0->unk_18->unk_0010 == 0) {
@@ -243,22 +243,22 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
             var_v0 = &D_82F13C50;
         }
 
-        if (arg0->unk_02 != 0) {
-            Trade_DrawFilledFrame(arg0->unk_04, arg0->unk_06, 0x210, 0x24, var_v0->r, var_v0->g, var_v0->b);
-            Trade_DrawFilledFrame(arg0->unk_04 + 0xE0, arg0->unk_06 + 0x24, 0x130, 0x1C, 0x3C, 0x3C, 0x82);
-            Trade_DrawFilledFrame(arg0->unk_04 + 0xE0, arg0->unk_06 + 0x40, 0x130, 0x84, 0x3C, 0x3C, 0x82);
-            Trade_DrawFilledFrame(arg0->unk_04, arg0->unk_06 + 0xC4, 0x210, 0x60, 0x3C, 0x3C, 0x82);
+        if (arg0->posY != 0) {
+            Trade_DrawFilledFrame(arg0->rotation, arg0->unk_06, 0x210, 0x24, var_v0->r, var_v0->g, var_v0->b);
+            Trade_DrawFilledFrame(arg0->rotation + 0xE0, arg0->unk_06 + 0x24, 0x130, 0x1C, 0x3C, 0x3C, 0x82);
+            Trade_DrawFilledFrame(arg0->rotation + 0xE0, arg0->unk_06 + 0x40, 0x130, 0x84, 0x3C, 0x3C, 0x82);
+            Trade_DrawFilledFrame(arg0->rotation, arg0->unk_06 + 0xC4, 0x210, 0x60, 0x3C, 0x3C, 0x82);
         }
 
-        Trade_DrawFilledFrame(arg0->unk_04, arg0->unk_06 + 0x124, 0x210, 0x24, 0x28, 0x28, 0x64);
-        BattleHud_DrawHpBarTexture(arg0->unk_04 + 0x140, arg0->unk_06 + 0x5A, 0x94, sp11C->unk_02, sp11C->unk_26);
+        Trade_DrawFilledFrame(arg0->rotation, arg0->unk_06 + 0x124, 0x210, 0x24, 0x28, 0x28, 0x64);
+        BattleHud_DrawHpBarTexture(arg0->rotation + 0x140, arg0->unk_06 + 0x5A, 0x94, sp11C->posY, sp11C->unk_26);
 
         gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
-        Gfx_DrawTextureRgba16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0xD0, 0x1C, 0x1A, D_302DE68, 0x1C, 0x200000);
-        Gfx_DrawTextureRgba16(arg0->unk_04 + 0xE2, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302E9C8, 0x1C, 0x200000);
-        Gfx_DrawTextureRgba16(arg0->unk_04 + 0x110, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302EF78, 0x1C, 0x200000);
-        Gfx_DrawTextureRgba16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0x104, 0x1C, 0x1A, D_302E418, 0x1C, 0x200000);
+        Gfx_DrawTextureRgba16(arg0->rotation + 0xF8, arg0->unk_06 + 0xD0, 0x1C, 0x1A, D_302DE68, 0x1C, 0x200000);
+        Gfx_DrawTextureRgba16(arg0->rotation + 0xE2, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302E9C8, 0x1C, 0x200000);
+        Gfx_DrawTextureRgba16(arg0->rotation + 0x110, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302EF78, 0x1C, 0x200000);
+        Gfx_DrawTextureRgba16(arg0->rotation + 0xF8, arg0->unk_06 + 0x104, 0x1C, 0x1A, D_302E418, 0x1C, 0x200000);
 
         for (i = 0; i < 4; i++) {
             if (sp11C->unk_09[i] == 0) {
@@ -266,12 +266,12 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
             }
 
             if (Trade_IsMoveInvalid(sp11C->unk_09[i]) == 0) {
-                Gfx_DrawTextureRgba16(D_82F13C54[i] + arg0->unk_04, D_82F13C5C[i] + arg0->unk_06, 0x14, 0x14,
+                Gfx_DrawTextureRgba16(D_82F13C54[i] + arg0->rotation, D_82F13C5C[i] + arg0->unk_06, 0x14, 0x14,
                               gMoveIconTextureTable[gMoveDisplayInfo[sp11C->unk_09[i] - 1].unk_01], 0x14, 0x200000);
             }
         }
 
-        Trade_DrawMovingSheen(arg0->unk_04, arg0->unk_06 + 0x24, arg0->unk_1C);
+        Trade_DrawMovingSheen(arg0->rotation, arg0->unk_06 + 0x24, arg0->unk_1C);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -289,72 +289,72 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
                 }
 
                 sp80 = ((sp11C->unk_20[i] >> 6) * var_t0) + ptr->unk_05;
-                Gfx_DrawTextureIa8(D_82F13C54[i] + arg0->unk_04 + 0xB6, D_82F13C5C[i] + arg0->unk_06 + 6, 8, 0xC, D_302F528,
+                Gfx_DrawTextureIa8(D_82F13C54[i] + arg0->rotation + 0xB6, D_82F13C5C[i] + arg0->unk_06 + 6, 8, 0xC, D_302F528,
                               8, 0);
-                Trade_DrawNumberTwoDigits(D_82F13C54[i] + arg0->unk_04 + 0xA4, D_82F13C5C[i] + arg0->unk_06 + 6,
+                Trade_DrawNumberTwoDigits(D_82F13C54[i] + arg0->rotation + 0xA4, D_82F13C5C[i] + arg0->unk_06 + 6,
                               sp11C->unk_20[i] & 0x3F);
-                Trade_DrawNumberTwoDigits(D_82F13C54[i] + arg0->unk_04 + 0xC0, D_82F13C5C[i] + arg0->unk_06 + 6, sp80);
+                Trade_DrawNumberTwoDigits(D_82F13C54[i] + arg0->rotation + 0xC0, D_82F13C5C[i] + arg0->unk_06 + 6, sp80);
             }
         }
 
         Font_BeginTranslucentTextRendering();
         Font_SetActive(0x10, 0);
-        Font_Printf(arg0->unk_04 + 0x10, arg0->unk_06 + 6, sp11C->unk_30);
+        Font_Printf(arg0->rotation + 0x10, arg0->unk_06 + 6, sp11C->unk_30);
         Font_SetActive(0x10, 0);
-        Font_Printf(arg0->unk_04 + 0xA0, arg0->unk_06 + 6, "%s%d", Text_GetString(NULL, 0, D_82F13B74, 0x15),
+        Font_Printf(arg0->rotation + 0xA0, arg0->unk_06 + 6, "%s%d", Text_GetString(NULL, 0, D_82F13B74, 0x15),
                       sp11C->unk_24);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->unk_04 + 0x12E, arg0->unk_06 + 8, "%s%03d", Text_GetString(NULL, 0, D_82F13B74, 0x16),
-                      sp11C->unk_00.unk_00);
+        Font_Printf(arg0->rotation + 0x12E, arg0->unk_06 + 8, "%s%03d", Text_GetString(NULL, 0, D_82F13B74, 0x16),
+                      sp11C->posX.posX);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->unk_04 + 0x19C, arg0->unk_06 + 8, Trade_GetSpeciesName(sp11C->unk_00.unk_00));
+        Font_Printf(arg0->rotation + 0x19C, arg0->unk_06 + 8, Trade_GetSpeciesName(sp11C->posX.posX));
 
         temp_s0 = PokemonType_ToDisplayIndex(sp11C->unk_06);
         temp_s1_2 = PokemonType_ToDisplayIndex(sp11C->unk_07);
 
         Font_SetActive(8, 0);
-        Font_Printf(arg0->unk_04 + 0xE4, arg0->unk_06 + 0x28, Text_GetString(NULL, 0, D_82F13B70, 0xC));
+        Font_Printf(arg0->rotation + 0xE4, arg0->unk_06 + 0x28, Text_GetString(NULL, 0, D_82F13B70, 0xC));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Font_Printf(arg0->unk_04 + 0x120, arg0->unk_06 + 0x28, "1/");
+        Font_Printf(arg0->rotation + 0x120, arg0->unk_06 + 0x28, "1/");
         Text_SetEnvColor(D_80071D88[temp_s0].color.r, D_80071D88[temp_s0].color.g, D_80071D88[temp_s0].color.b, 0xFF);
-        Font_Printf(arg0->unk_04 + 0x13E, arg0->unk_06 + 0x28, "%s", Trade_GetTypeName(sp11C->unk_06));
+        Font_Printf(arg0->rotation + 0x13E, arg0->unk_06 + 0x28, "%s", Trade_GetTypeName(sp11C->unk_06));
 
         if (sp11C->unk_06 != sp11C->unk_07) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(arg0->unk_04 + 0x19E, arg0->unk_06 + 0x28, "2/");
+            Font_Printf(arg0->rotation + 0x19E, arg0->unk_06 + 0x28, "2/");
             Text_SetEnvColor(D_80071D88[temp_s1_2].color.r, D_80071D88[temp_s1_2].color.g, D_80071D88[temp_s1_2].color.b,
                           0xFF);
-            Font_Printf(arg0->unk_04 + 0x1BC, arg0->unk_06 + 0x28, "%s", Trade_GetTypeName(sp11C->unk_07));
+            Font_Printf(arg0->rotation + 0x1BC, arg0->unk_06 + 0x28, "%s", Trade_GetTypeName(sp11C->unk_07));
         }
 
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0x44, Text_GetString(NULL, 0, D_82F13B74, 8));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x44, Text_GetString(NULL, 0, D_82F13B74, 8));
         Font_SetActive(8, 0);
         sprintf(sp94, "%d", sp11C->unk_26);
-        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x44, sp94);
+        Font_Printf((arg0->rotation - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x44, sp94);
         temp_s1_3 = 0x1D0 - Font_MeasureTextExtent(0, 0, "999");
         sprintf(sp94, "/");
         temp_v0_5 = Font_MeasureTextExtent(0, 0, sp94);
-        Font_Printf((arg0->unk_04 + temp_s1_3) - temp_v0_5, arg0->unk_06 + 0x44, sp94);
+        Font_Printf((arg0->rotation + temp_s1_3) - temp_v0_5, arg0->unk_06 + 0x44, sp94);
         temp_s1_3 -= temp_v0_5;
-        sprintf(sp94, "%d", sp11C->unk_02);
-        Font_Printf((arg0->unk_04 + temp_s1_3) - Font_MeasureTextExtent(0, 0, sp94), arg0->unk_06 + 0x44, sp94);
+        sprintf(sp94, "%d", sp11C->posY);
+        Font_Printf((arg0->rotation + temp_s1_3) - Font_MeasureTextExtent(0, 0, sp94), arg0->unk_06 + 0x44, sp94);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0x6A, Text_GetString(NULL, 0, D_82F13B70, 0xD));
-        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0x80, Text_GetString(NULL, 0, D_82F13B70, 0xE));
-        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0x96, Text_GetString(NULL, 0, D_82F13B70, 0xF));
-        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0xAC, Text_GetString(NULL, 0, D_82F13B70, 0x10));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x6A, Text_GetString(NULL, 0, D_82F13B70, 0xD));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x80, Text_GetString(NULL, 0, D_82F13B70, 0xE));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x96, Text_GetString(NULL, 0, D_82F13B70, 0xF));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0xAC, Text_GetString(NULL, 0, D_82F13B70, 0x10));
         Font_SetActive(8, 0);
 
         sprintf(sp94, "%d", sp11C->unk_28);
-        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x6A, sp94);
+        Font_Printf((arg0->rotation - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x6A, sp94);
         sprintf(sp94, "%d", sp11C->unk_2A);
-        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x80, sp94);
+        Font_Printf((arg0->rotation - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x80, sp94);
         sprintf(sp94, "%d", sp11C->unk_2C);
-        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x96, sp94);
+        Font_Printf((arg0->rotation - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x96, sp94);
         sprintf(sp94, "%d", sp11C->unk_2E);
-        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0xAC, sp94);
+        Font_Printf((arg0->rotation - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0xAC, sp94);
         Font_SetActive(8, 0);
 
         {
@@ -381,15 +381,15 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
                     sp74 = D_29C080;
                 }
                 Text_SetEnvColor(sp70->r, sp70->g, sp70->b, 0xFF);
-                Font_Printf(D_82F13C54[i] + arg0->unk_04 + 0x18, D_82F13C5C[i] + arg0->unk_06, sp74);
+                Font_Printf(D_82F13C54[i] + arg0->rotation + 0x18, D_82F13C5C[i] + arg0->unk_06, sp74);
             }
 
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(arg0->unk_04 + 0x10, arg0->unk_06 + 0x12A, Text_GetString(NULL, 0, D_82F13B70, 0x11));
+            Font_Printf(arg0->rotation + 0x10, arg0->unk_06 + 0x12A, Text_GetString(NULL, 0, D_82F13B70, 0x11));
 
             for (i = 0; i < 2; i++) {
-                Font_Printf(arg0->unk_04 + D_82F13C64[i], arg0->unk_06 + 0x12A, sp8C[i]);
+                Font_Printf(arg0->rotation + D_82F13C64[i], arg0->unk_06 + 0x12A, sp8C[i]);
             }
 
             Font_EndTexturedTextRendering();
@@ -403,22 +403,22 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
                     sp60[j] = Font_MeasureTextExtent(0, 0, sp8C[j]);
                 }
 
-                Trade_DrawSelectionCorners((D_82F13C64[gResultOptionIndex] + arg0->unk_04) - 8, arg0->unk_06 + 0x128,
+                Trade_DrawSelectionCorners((D_82F13C64[gResultOptionIndex] + arg0->rotation) - 8, arg0->unk_06 + 0x128,
                               sp60[gResultOptionIndex] + 0x10, 0x1E);
             }
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-        if (arg0->unk_02 > 0) {
-            arg0->unk_02--;
+        if (arg0->posY > 0) {
+            arg0->posY--;
         }
     }
 }
 
 void Trade_ResetInfoBox(void) {
-    gBattleResultScreenState.unk_00 = 0;
-    gBattleResultScreenState.unk_04 = 0;
+    gBattleResultScreenState.posX = 0;
+    gBattleResultScreenState.rotation = 0;
     gBattleResultScreenState.unk_06 = 0;
     gBattleResultScreenState.unk_0C = 0;
     gBattleResultScreenState.unk_0E = 0;
@@ -433,8 +433,8 @@ void Trade_ResetInfoBox(void) {
 void Trade_UpdateInfoBox(void) {
     unk_D_82F20A10* ptr = &gBattleResultScreenState;
 
-    if (ptr->unk_00) {
-        switch (ptr->unk_00) {
+    if (ptr->posX) {
+        switch (ptr->posX) {
             case 1:
                 Trade_UpdateInfoBoxOpenIn(&gBattleResultScreenState);
                 break;
@@ -451,11 +451,11 @@ void Trade_UpdateInfoBox(void) {
 }
 
 void Trade_DrawInfoBoxIfActive(void) {
-    if (gBattleResultScreenState.unk_00 != 0) {
+    if (gBattleResultScreenState.posX != 0) {
         Trade_DrawInfoBox(&gBattleResultScreenState);
     }
 }
 
 s32 Trade_GetInfoBoxState(void) {
-    return gBattleResultScreenState.unk_00;
+    return gBattleResultScreenState.posX;
 }

@@ -344,19 +344,19 @@ void Widget_DrawAnimIcon16(s16 arg0, s16 arg1, AnimFrame* arg2) {
             return;
         }
         gAnimSprite1_Ptr = arg2;
-        gAnimSprite1_Timer = arg2->unk_04;
+        gAnimSprite1_Timer = arg2->rotation;
     }
 
     gAnimSprite1_Timer--;
     if (gAnimSprite1_Timer <= 0) {
         gAnimSprite1_Ptr++;
-        if (gAnimSprite1_Ptr->unk_00 == NULL) {
+        if (gAnimSprite1_Ptr->posX == NULL) {
             gAnimSprite1_Ptr = arg2;
         }
-        gAnimSprite1_Timer = gAnimSprite1_Ptr->unk_04;
+        gAnimSprite1_Timer = gAnimSprite1_Ptr->rotation;
     }
 
-    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite1_Ptr->unk_00, 0x10, 0);
+    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite1_Ptr->posX, 0x10, 0);
 }
 
 void Widget_DrawAnimIcon16B(s16 arg0, s16 arg1, AnimFrame* arg2) {
@@ -370,19 +370,19 @@ void Widget_DrawAnimIcon16B(s16 arg0, s16 arg1, AnimFrame* arg2) {
             return;
         }
         gAnimSprite2_Ptr = arg2;
-        gAnimSprite2_Timer = arg2->unk_04;
+        gAnimSprite2_Timer = arg2->rotation;
     }
 
     gAnimSprite2_Timer--;
     if (gAnimSprite2_Timer <= 0) {
         gAnimSprite2_Ptr++;
-        if (gAnimSprite2_Ptr->unk_00 == NULL) {
+        if (gAnimSprite2_Ptr->posX == NULL) {
             gAnimSprite2_Ptr = arg2;
         }
-        gAnimSprite2_Timer = gAnimSprite2_Ptr->unk_04;
+        gAnimSprite2_Timer = gAnimSprite2_Ptr->rotation;
     }
 
-    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite2_Ptr->unk_00, 0x10, 0);
+    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite2_Ptr->posX, 0x10, 0);
 }
 
 void Widget_DrawAnimIcon16C(s16 arg0, s16 arg1, AnimFrame* arg2) {
@@ -396,19 +396,19 @@ void Widget_DrawAnimIcon16C(s16 arg0, s16 arg1, AnimFrame* arg2) {
             return;
         }
         gAnimSprite3_Ptr = arg2;
-        gAnimSprite3_Timer = arg2->unk_04;
+        gAnimSprite3_Timer = arg2->rotation;
     }
 
     gAnimSprite3_Timer--;
     if (gAnimSprite3_Timer <= 0) {
         gAnimSprite3_Ptr++;
-        if (gAnimSprite3_Ptr->unk_00 == NULL) {
+        if (gAnimSprite3_Ptr->posX == NULL) {
             gAnimSprite3_Ptr = arg2;
         }
-        gAnimSprite3_Timer = gAnimSprite3_Ptr->unk_04;
+        gAnimSprite3_Timer = gAnimSprite3_Ptr->rotation;
     }
 
-    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite3_Ptr->unk_00, 0x10, 0);
+    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite3_Ptr->posX, 0x10, 0);
 }
 
 void Widget_DrawAnimIcon40x20(s16 arg0, s16 arg1, AnimFrame* arg2) {
@@ -422,19 +422,19 @@ void Widget_DrawAnimIcon40x20(s16 arg0, s16 arg1, AnimFrame* arg2) {
             return;
         }
         gAnimTex1_Ptr = arg2;
-        gAnimTex1_Timer = arg2->unk_04;
+        gAnimTex1_Timer = arg2->rotation;
     }
 
     gAnimTex1_Timer--;
     if (gAnimTex1_Timer <= 0) {
         gAnimTex1_Ptr++;
-        if (gAnimTex1_Ptr->unk_00 == NULL) {
+        if (gAnimTex1_Ptr->posX == NULL) {
             gAnimTex1_Ptr = arg2;
         }
-        gAnimTex1_Timer = gAnimTex1_Ptr->unk_04;
+        gAnimTex1_Timer = gAnimTex1_Ptr->rotation;
     }
 
-    gDPLoadTextureTile(gDisplayListHead++, gAnimTex1_Ptr->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 40, 0, 0, 0, 39, 19, 0,
+    gDPLoadTextureTile(gDisplayListHead++, gAnimTex1_Ptr->posX, G_IM_FMT_RGBA, G_IM_SIZ_32b, 40, 0, 0, 0, 39, 19, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
@@ -452,19 +452,19 @@ void Widget_DrawAnimIcon40x20B(s16 arg0, s16 arg1, AnimFrame* arg2) {
             return;
         }
         gAnimTex2_Ptr = arg2;
-        gAnimTex2_Timer = arg2->unk_04;
+        gAnimTex2_Timer = arg2->rotation;
     }
 
     gAnimTex2_Timer--;
     if (gAnimTex2_Timer <= 0) {
         gAnimTex2_Ptr++;
-        if (gAnimTex2_Ptr->unk_00 == NULL) {
+        if (gAnimTex2_Ptr->posX == NULL) {
             gAnimTex2_Ptr = arg2;
         }
-        gAnimTex2_Timer = gAnimTex2_Ptr->unk_04;
+        gAnimTex2_Timer = gAnimTex2_Ptr->rotation;
     }
 
-    gDPLoadTextureTile(gDisplayListHead++, gAnimTex2_Ptr->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 40, 0, 0, 0, 39, 19, 0,
+    gDPLoadTextureTile(gDisplayListHead++, gAnimTex2_Ptr->posX, G_IM_FMT_RGBA, G_IM_SIZ_32b, 40, 0, 0, 0, 39, 19, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
@@ -482,19 +482,19 @@ void Widget_DrawAnimIcon24(s16 arg0, s16 arg1, AnimFrame* arg2) {
             return;
         }
         gAnimSpriteLarge_Ptr = arg2;
-        gAnimSpriteLarge_Timer = arg2->unk_04;
+        gAnimSpriteLarge_Timer = arg2->rotation;
     }
 
     gAnimSpriteLarge_Timer--;
     if (gAnimSpriteLarge_Timer <= 0) {
         gAnimSpriteLarge_Ptr++;
-        if (gAnimSpriteLarge_Ptr->unk_00 == NULL) {
+        if (gAnimSpriteLarge_Ptr->posX == NULL) {
             gAnimSpriteLarge_Ptr = arg2;
         }
-        gAnimSpriteLarge_Timer = gAnimSpriteLarge_Ptr->unk_04;
+        gAnimSpriteLarge_Timer = gAnimSpriteLarge_Ptr->rotation;
     }
 
-    Gfx_DrawTextureRgba32(arg0, arg1, 0x18, 0x13, gAnimSpriteLarge_Ptr->unk_00, 0x18, 0);
+    Gfx_DrawTextureRgba32(arg0, arg1, 0x18, 0x13, gAnimSpriteLarge_Ptr->posX, 0x18, 0);
 }
 
 void Widget_DrawAnimIcon28(s16 arg0, s16 arg1, s16 arg2, AnimFrame* arg3) {
@@ -511,19 +511,19 @@ void Widget_DrawAnimIcon28(s16 arg0, s16 arg1, s16 arg2, AnimFrame* arg3) {
             return;
         }
         gAnimTexDual_Ptr[arg0] = arg3;
-        gAnimTexDual_Timer[arg0] = arg3->unk_04;
+        gAnimTexDual_Timer[arg0] = arg3->rotation;
     }
 
     gAnimTexDual_Timer[arg0]--;
     if (gAnimTexDual_Timer[arg0] <= 0) {
         gAnimTexDual_Ptr[arg0]++;
-        if (gAnimTexDual_Ptr[arg0]->unk_00 == NULL) {
+        if (gAnimTexDual_Ptr[arg0]->posX == NULL) {
             gAnimTexDual_Ptr[arg0] = arg3;
         }
-        gAnimTexDual_Timer[arg0] = gAnimTexDual_Ptr[arg0]->unk_04;
+        gAnimTexDual_Timer[arg0] = gAnimTexDual_Ptr[arg0]->rotation;
     }
 
-    gDPLoadTextureTile(gDisplayListHead++, gAnimTexDual_Ptr[arg0]->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_32b, 28, 0, 0, 0, 27, 27,
+    gDPLoadTextureTile(gDisplayListHead++, gAnimTexDual_Ptr[arg0]->posX, G_IM_FMT_RGBA, G_IM_SIZ_32b, 28, 0, 0, 0, 27, 27,
                        0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 

@@ -17,11 +17,11 @@
 #include "src/memory.h"
 
 typedef struct unk_D_8423E518 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u16 unk_04;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ char unk_06[1];
     /* 0x07 */ char unk_07[0xD];
 } unk_D_8423E518; // size = 0x14
@@ -253,7 +253,7 @@ s32 TeamSelection_TrainerSlots_GraphCallback(s32 arg0, SimpleGfxNode* arg1) {
         gDPSetEnvColor(gDisplayListHead++, 0, 0, 0, gDefaultGraphRoot->unk_01D);
         gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(var_a0));
         gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(var_a3));
-        gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
+        gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
         GeoRender_ApplyMaterialState();
     }
@@ -263,16 +263,16 @@ s32 TeamSelection_TrainerSlots_GraphCallback(s32 arg0, SimpleGfxNode* arg1) {
 
 void TeamSelection_TrainerSlots_DrawCursorPrompt(void) {
     if (D_8423E56C == 3) {
-        s16 tmp = (gIconConfig[gSelectedIconIndex].unk_02 - (gIconConfig[gSelectedIconIndex].unk_06 / 2)) - 0x1E;
+        s16 tmp = (gIconConfig[gSelectedIconIndex].posY - (gIconConfig[gSelectedIconIndex].unk_06 / 2)) - 0x1E;
 
-        Ui_DrawAnimatedTextureMarker(tmp, gIconConfig[gSelectedIconIndex].unk_04 - 0x20);
+        Ui_DrawAnimatedTextureMarker(tmp, gIconConfig[gSelectedIconIndex].rotation - 0x20);
     }
 }
 
 void TeamSelection_TrainerSlots_DrawEntry(s32 arg0) {
     UNUSED s32 pad;
 
-    if (gIconConfig[arg0].unk_00 != 0) {
+    if (gIconConfig[arg0].posX != 0) {
         if (gIconConfig[arg0].unk_01 == 0) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetActive(8, 0);
@@ -281,7 +281,7 @@ void TeamSelection_TrainerSlots_DrawEntry(s32 arg0) {
             Text_SetEnvColor(0xFF, 0xBE, 0xFF, 0xFF);
             Font_SetActive(4, 0);
             Font_Printf(((arg0 * 128) - (Font_MeasureTextExtent(4, 0, "ID  00000") / 2)) + 0x80, 0x73, "ID  %05d",
-                          gTrainerSlotData[arg0].unk_04);
+                          gTrainerSlotData[arg0].rotation);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetActive(8, 0);
@@ -336,7 +336,7 @@ void TeamSelection_TrainerSlots_DrawEntries(void) {
 void TeamSelection_TrainerSlots_DrawEntryFrame(s32 arg0, s16 arg1, s16 arg2) {
     Color_RGBA8 sp2C;
 
-    if (gIconConfig[arg0].unk_00 != 0) {
+    if (gIconConfig[arg0].posX != 0) {
         if (gIconConfig[arg0].unk_01 == 0) {
             Color_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0xFF);
         } else {
@@ -418,9 +418,9 @@ void TeamSelection_TrainerSlots_UpdateModelPose(s16 arg0, f32 arg1) {
     D_8423D408[0][arg0].unk_01E.z = SINS(gIconConfig[arg0].unk_08) * (1536.0f * var_fv0);
 
     D_8423D408[0][arg0].unk_024.x =
-        (gIconConfig[arg0].unk_02 - 320.0f) - (SINS(gIconConfig[arg0].unk_08) * (6.0f * var_fv0));
+        (gIconConfig[arg0].posY - 320.0f) - (SINS(gIconConfig[arg0].unk_08) * (6.0f * var_fv0));
     D_8423D408[1][arg0].unk_024.x =
-        (gIconConfig[arg0].unk_02 - 320.0f) - (SINS(gIconConfig[arg0].unk_08) * (6.0f * var_fv0));
+        (gIconConfig[arg0].posY - 320.0f) - (SINS(gIconConfig[arg0].unk_08) * (6.0f * var_fv0));
 
     gIconConfig[arg0].unk_08 += var_v0;
 }
@@ -440,7 +440,7 @@ void TeamSelection_TrainerSlots_MoveFromSpecialUp(void) {
         }
 
         for (i = 0; i < 4; i++) {
-            if (gIconConfig[var_v1].unk_00 != 0) {
+            if (gIconConfig[var_v1].posX != 0) {
                 gSelectedIconIndex = var_v1;
                 Audio_PlaySoundEffectById(1);
                 break;
@@ -457,7 +457,7 @@ void TeamSelection_TrainerSlots_MoveFromTrainerToSpecial(void) {
     if (gSelectedIconIndex < 4) {
         var_v0 = gSelectedIconIndex / 2 + 4;
         for (i = 0; i < 2; i++) {
-            if (gIconConfig[var_v0].unk_00 != 0) {
+            if (gIconConfig[var_v0].posX != 0) {
                 gSelectedIconIndex = var_v0;
                 Audio_PlaySoundEffectById(1);
                 break;
@@ -472,13 +472,13 @@ void TeamSelection_TrainerSlots_MovePrevious(void) {
 
     if ((gSelectedIconIndex > 0) && (gSelectedIconIndex < 4)) {
         for (i = gSelectedIconIndex - 1; i >= 0; i--) {
-            if (gIconConfig[i].unk_00 != 0) {
+            if (gIconConfig[i].posX != 0) {
                 gSelectedIconIndex = i;
                 Audio_PlaySoundEffectById(1);
                 break;
             }
         }
-    } else if ((gSelectedIconIndex == 5) && (gIconConfig[4].unk_00 != 0)) {
+    } else if ((gSelectedIconIndex == 5) && (gIconConfig[4].posX != 0)) {
         gSelectedIconIndex = 4;
         Audio_PlaySoundEffectById(1);
     }
@@ -489,7 +489,7 @@ void TeamSelection_TrainerSlots_MoveNext(void) {
 
     if (gSelectedIconIndex < 3) {
         for (i = gSelectedIconIndex + 1; i < 4; i++) {
-            if (gIconConfig[i].unk_00 != 0) {
+            if (gIconConfig[i].posX != 0) {
                 gSelectedIconIndex = i;
                 Audio_PlaySoundEffectById(1);
                 break;
@@ -695,15 +695,15 @@ void TeamSelection_TrainerSlots_ApplySaveStates(void) {
                     break;
             }
 
-            if (gTrainerSlotData[i].unk_00 != 0) {
+            if (gTrainerSlotData[i].posX != 0) {
                 gIconConfig[i].unk_01 = 0x14;
             }
         } else {
             gMenuTextureSegments[i] = D_2026420;
-            if (gTrainerSlotData[i].unk_00 == 2) {
+            if (gTrainerSlotData[i].posX == 2) {
                 gIconConfig[i].unk_01 = 0x15;
             } else {
-                gIconConfig[i].unk_00 = 0;
+                gIconConfig[i].posX = 0;
                 gIconConfig[i].unk_01 = 1;
             }
         }
@@ -720,11 +720,11 @@ void TeamSelection_TrainerSlots_InitializeModels(void) {
     }
 
     for (i = 0; i < 6; i++) {
-        if (gIconConfig[i].unk_00 != 0) {
+        if (gIconConfig[i].posX != 0) {
             Model_InitDisplayObject(D_8423D408[0] + i, 0, 0, gMenuGeoLayouts[i]);
             Model_InitDisplayObject(D_8423D408[1] + i, 0, 0, gMenuCommonGeoLayout);
-            Vec3f_SetComponentsDuplicate(&D_8423D408[0][i].unk_024, gIconConfig[i].unk_02 - 0x140, 0xF0 - gIconConfig[i].unk_04, -579.f);
-            Vec3f_SetComponentsDuplicate(&D_8423D408[1][i].unk_024, gIconConfig[i].unk_02 - 0x140, 0xE4 - gIconConfig[i].unk_04,
+            Vec3f_SetComponentsDuplicate(&D_8423D408[0][i].unk_024, gIconConfig[i].posY - 0x140, 0xF0 - gIconConfig[i].rotation, -579.f);
+            Vec3f_SetComponentsDuplicate(&D_8423D408[1][i].unk_024, gIconConfig[i].posY - 0x140, 0xE4 - gIconConfig[i].rotation,
                           -579.0f);
             D_8423D408[1][i].unk_01D = 0xB4;
         }
@@ -749,11 +749,11 @@ void TeamSelection_TrainerSlots_PollGameBoySaves(void) {
 
     for (i = 0; i < 4; i++) {
         GbSave_CopyPlayerIdentity(i, &sp48);
-        Text_UntranscodeName(gTrainerSlotData[i].unk_06, sp48.unk_02);
-        gTrainerSlotData[i].unk_04 = sp48.unk_00;
+        Text_UntranscodeName(gTrainerSlotData[i].unk_06, sp48.posY);
+        gTrainerSlotData[i].rotation = sp48.posX;
         gTrainerSlotData[i].unk_01 = GbSave_GetPortGame(i);
-        gTrainerSlotData[i].unk_00 = GbSave_GetSaveState(i);
-        gTrainerSlotData[i].unk_02 = GbSave_SavedAtPokemonCenter(i);
+        gTrainerSlotData[i].posX = GbSave_GetSaveState(i);
+        gTrainerSlotData[i].posY = GbSave_SavedAtPokemonCenter(i);
         gTrainerSlotData[i].unk_03 = (temp_s3 & (1 << i)) != 0;
     }
 }
@@ -787,11 +787,11 @@ s32 TeamSelection_TrainerSlots_Initialize(s16 arg0) {
 s32 TeamSelection_TrainerSlots_Open(s16 arg0, s32 arg1) {
     if (D_8423E56C == 0) {
         TeamSelection_TrainerSlots_InitializeModels();
-        if (gIconConfig[arg0].unk_00 != 0) {
+        if (gIconConfig[arg0].posX != 0) {
             gSelectedIconIndex = arg0;
         } else {
             for (gSelectedIconIndex = 0; gSelectedIconIndex < 5; gSelectedIconIndex++) {
-                if (gIconConfig[gSelectedIconIndex].unk_00 != 0) {
+                if (gIconConfig[gSelectedIconIndex].posX != 0) {
                     break;
                 }
             }

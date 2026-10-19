@@ -19,8 +19,8 @@
 #include "src/stage_loader.h"
 
 typedef struct StageFadePalette {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ Color_RGB8 unk_03[4];
 } StageFadePalette; // size = 0x10
 
@@ -125,11 +125,11 @@ void Credits_SetBackgroundTint(u8 r, u8 g, u8 b) {
     gGlobalBackgroundColor.b = b;
 
     if (v == 0xFF) {
-        if (gStageFragmentState.unk_00.unk_14 == 1) {
-            gStageFragmentState.unk_00.unk_01 |= 1;
+        if (gStageFragmentState.posX.unk_14 == 1) {
+            gStageFragmentState.posX.unk_01 |= 1;
         }
     } else {
-        gStageFragmentState.unk_00.unk_01 &= ~1;
+        gStageFragmentState.posX.unk_01 &= ~1;
     }
 }
 
@@ -172,26 +172,26 @@ void Credits_LoadBackgroundScene(s8 arg0, u8 arg1) {
 
     temp_v0_4 = sp28(4, 0);
     if (temp_v0_4 == NULL) {
-        gStageFragmentState.unk_00.unk_14 = 0;
-        gStageFragmentState.unk_00.unk_01 &= ~1;
+        gStageFragmentState.posX.unk_14 = 0;
+        gStageFragmentState.posX.unk_01 &= ~1;
     } else {
-        gStageFragmentState.unk_18.unk_00 = temp_v0_4->unk_00;
-        gStageFragmentState.unk_18.unk_02 = temp_v0_4->unk_02;
-        gStageFragmentState.unk_18.unk_04.rgba = temp_v0_4->unk_04.rgba;
-        gStageFragmentState.unk_00.unk_14 = 1;
+        gStageFragmentState.unk_18.posX = temp_v0_4->posX;
+        gStageFragmentState.unk_18.posY = temp_v0_4->posY;
+        gStageFragmentState.unk_18.rotation.rgba = temp_v0_4->rotation.rgba;
+        gStageFragmentState.posX.unk_14 = 1;
     }
 
     Credits_SetBackgroundTint(0xFF, 0xFF, 0xFF);
 
     if (arg1 < 6) {
-        Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
+        Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY, arg0, arg1);
     } else if (arg1 < 9) {
-        Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
+        Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY, arg0, arg1);
     } else if (arg1 < 0xF) {
         if (gCurrentPhaseIndex == 7) {
-            Credits_InitCameraKeyframeBlend(sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28, arg0, arg1);
+            Credits_InitCameraKeyframeBlend(sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY - 0x28, arg0, arg1);
         } else {
-            Credits_InitCameraKeyframeBlend(sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
+            Credits_InitCameraKeyframeBlend(sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY, arg0, arg1);
         }
     } else {
         sSceneCamera->unk_60.at.y = gStageCameraPositions[arg0][gCurrentSubStageId].unk_10;
@@ -217,15 +217,15 @@ void Credits_UpdateCamera(void) {
 void Credits_DrawFadeOverlay(void) {
     u8 temp_v1_2;
 
-    if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
+    if (gStagePhases[gCurrentPhaseIndex].posX != -1) {
         if (gCreditsShotTimer < 8) {
             temp_v1_2 = (s8)ROUND_MAX(((-(f32)gCreditsShotTimer / 8) + 1.0f) * 255.0f);
             if (temp_v1_2 != 0) {
                 Gfx_FillRectWithDisplayState(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
             }
         } else {
-            if ((gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28) < gCreditsShotTimer) {
-                s32 tmp = gStagePhases[gCurrentPhaseIndex].unk_02;
+            if ((gStagePhases[gCurrentPhaseIndex].posY - 0x28) < gCreditsShotTimer) {
+                s32 tmp = gStagePhases[gCurrentPhaseIndex].posY;
 
                 temp_v1_2 = (s32)ROUND_MAX((((gCreditsShotTimer - tmp) + 0x28) * 255.0f) / 40.0f);
                 if (temp_v1_2 != 0) {
@@ -328,8 +328,8 @@ void Credits_MainLoop(s32 arg0) {
         Stage_UpdateLogic();
         Particle_UpdateFrameCounters();
 
-        if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
-            if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
+        if (gStagePhases[gCurrentPhaseIndex].posY != 0) {
+            if (gStagePhases[gCurrentPhaseIndex].posX != -1) {
                 if (gCurrentSubStageId < 9) {
                     Credits_StepCameraYawBlend();
                 } else {
@@ -337,16 +337,16 @@ void Credits_MainLoop(s32 arg0) {
                 }
             }
 
-            if (gCreditsShotTimer >= gStagePhases[gCurrentPhaseIndex].unk_02) {
+            if (gCreditsShotTimer >= gStagePhases[gCurrentPhaseIndex].posY) {
                 gCurrentPhaseIndex++;
-                if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
-                    gStagePhases[gCurrentPhaseIndex].unk_02 =
-                        gStagePhases[gCurrentPhaseIndex - 1].unk_02 + (gStagePhases[gCurrentPhaseIndex].unk_02 - gCreditsShotTimer);
+                if (gStagePhases[gCurrentPhaseIndex].posY != 0) {
+                    gStagePhases[gCurrentPhaseIndex].posY =
+                        gStagePhases[gCurrentPhaseIndex - 1].posY + (gStagePhases[gCurrentPhaseIndex].posY - gCreditsShotTimer);
                 }
 
                 gCreditsShotTimer = 0;
 
-                if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
+                if (gStagePhases[gCurrentPhaseIndex].posX != -1) {
                     Credits_SelectNextScene(&gCurrentStageId, &gCurrentSubStageId);
                     Credits_LoadBackgroundScene(gCurrentStageId, gCurrentSubStageId);
                 } else {
@@ -357,13 +357,13 @@ void Credits_MainLoop(s32 arg0) {
                     GeoNode_CreateContainer(NULL, &gStageOverlayNode);
                     GeoNode_CreateContainer(NULL, &gStageForegroundNode);
 
-                    gStageFragmentState.unk_00.unk_01 &= ~1;
-                    if (gStagePhases[gCurrentPhaseIndex].unk_02 == 0) {
+                    gStageFragmentState.posX.unk_01 &= ~1;
+                    if (gStagePhases[gCurrentPhaseIndex].posY == 0) {
                         main_pool_pop_state('BACK');
                     }
                 }
             } else if ((gCurrentPhaseIndex == 3) && (D_86A026F8 < 2) &&
-                       (gCreditsShotTimer >= (((gStagePhases[gCurrentPhaseIndex].unk_02 * (D_86A026F8 + 1)) / 3) - 1))) {
+                       (gCreditsShotTimer >= (((gStagePhases[gCurrentPhaseIndex].posY * (D_86A026F8 + 1)) / 3) - 1))) {
                 Credits_SelectNextScene(&gCurrentStageId, &gCurrentSubStageId);
                 Credits_LoadBackgroundScene(gCurrentStageId, 0xFF);
                 D_86A026F8++;
@@ -382,7 +382,7 @@ void Credits_MainLoop(s32 arg0) {
 
         Credits_DrawFrame(1);
 
-        if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
+        if (gStagePhases[gCurrentPhaseIndex].posY != 0) {
             gCreditsShotTimer += gPhaseDelta;
         }
     }
@@ -1495,36 +1495,36 @@ s32 Credits_InterpolateRoleColor(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 a
         return 0;
     }
 
-    gStageFadePalettes[3].unk_00 = (arg2 - arg3) - 0x15;
-    gStageFadePalettes[4].unk_00 = (arg2 - arg3) - 1;
+    gStageFadePalettes[3].posX = (arg2 - arg3) - 0x15;
+    gStageFadePalettes[4].posX = (arg2 - arg3) - 1;
 
     for (i = 0; i < 5; i++) {
-        if (arg1 == gStageFadePalettes[i].unk_00) {
+        if (arg1 == gStageFadePalettes[i].posX) {
             for (j = 0; j < 4; j++) {
                 Color_SetRGBA(&arg0[j], gStageFadePalettes[i].unk_03[j].r, gStageFadePalettes[i].unk_03[j].g, gStageFadePalettes[i].unk_03[j].b,
-                              gStageFadePalettes[i].unk_02);
+                              gStageFadePalettes[i].posY);
             }
             break;
         }
 
-        if ((gStageFadePalettes[i].unk_00 < arg1) && (arg1 < gStageFadePalettes[i + 1].unk_00)) {
+        if ((gStageFadePalettes[i].posX < arg1) && (arg1 < gStageFadePalettes[i + 1].posX)) {
             temp_fv1 =
-                (s32)ROUND_MAX((((gStageFadePalettes[i + 1].unk_02 - gStageFadePalettes[i].unk_02) * (arg1 - gStageFadePalettes[i].unk_00)) /
-                                (f32)(gStageFadePalettes[i + 1].unk_00 - gStageFadePalettes[i].unk_00)) +
-                               gStageFadePalettes[i].unk_02);
+                (s32)ROUND_MAX((((gStageFadePalettes[i + 1].posY - gStageFadePalettes[i].posY) * (arg1 - gStageFadePalettes[i].posX)) /
+                                (f32)(gStageFadePalettes[i + 1].posX - gStageFadePalettes[i].posX)) +
+                               gStageFadePalettes[i].posY);
 
             for (j = 0; j < 4; j++) {
                 arg0[j].r = (s32)ROUND_MAX(
-                    (((gStageFadePalettes[i + 1].unk_03[j].r - gStageFadePalettes[i].unk_03[j].r) * (arg1 - gStageFadePalettes[i].unk_00)) /
-                     (f32)(gStageFadePalettes[i + 1].unk_00 - gStageFadePalettes[i].unk_00)) +
+                    (((gStageFadePalettes[i + 1].unk_03[j].r - gStageFadePalettes[i].unk_03[j].r) * (arg1 - gStageFadePalettes[i].posX)) /
+                     (f32)(gStageFadePalettes[i + 1].posX - gStageFadePalettes[i].posX)) +
                     gStageFadePalettes[i].unk_03[j].r);
                 arg0[j].g = (s32)ROUND_MAX(
-                    (((gStageFadePalettes[i + 1].unk_03[j].g - gStageFadePalettes[i].unk_03[j].g) * (arg1 - gStageFadePalettes[i].unk_00)) /
-                     (f32)(gStageFadePalettes[i + 1].unk_00 - gStageFadePalettes[i].unk_00)) +
+                    (((gStageFadePalettes[i + 1].unk_03[j].g - gStageFadePalettes[i].unk_03[j].g) * (arg1 - gStageFadePalettes[i].posX)) /
+                     (f32)(gStageFadePalettes[i + 1].posX - gStageFadePalettes[i].posX)) +
                     gStageFadePalettes[i].unk_03[j].g);
                 arg0[j].b = (s32)ROUND_MAX(
-                    (((gStageFadePalettes[i + 1].unk_03[j].b - gStageFadePalettes[i].unk_03[j].b) * (arg1 - gStageFadePalettes[i].unk_00)) /
-                     (f32)(gStageFadePalettes[i + 1].unk_00 - gStageFadePalettes[i].unk_00)) +
+                    (((gStageFadePalettes[i + 1].unk_03[j].b - gStageFadePalettes[i].unk_03[j].b) * (arg1 - gStageFadePalettes[i].posX)) /
+                     (f32)(gStageFadePalettes[i + 1].posX - gStageFadePalettes[i].posX)) +
                     gStageFadePalettes[i].unk_03[j].b);
                 arg0[j].a = temp_fv1;
             }
@@ -1547,7 +1547,7 @@ void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2) {
     sCreditsMessageBank = Text_GetStringTable(0x2D);
 
     for (i = 0, ptr = gMessageDecompressTable; i < sp2C; i++, ptr++) {
-        ptr->unk_04[0] = Text_GetString(NULL, 0, sCreditsMessageBank, i);
+        ptr->rotation[0] = Text_GetString(NULL, 0, sCreditsMessageBank, i);
     }
 
     gPhaseDelta = arg0;
@@ -1592,7 +1592,7 @@ void Credits_DrawRoleList(void) {
     var_s0 = 0;
     var_s1 = 0;
 
-    if (Credits_InterpolateRoleColor(sp60, gStageLayoutPtr->unk_00, gStageLayoutPtr->unk_02, gStageLayoutPtr->unk_04) != 0) {
+    if (Credits_InterpolateRoleColor(sp60, gStageLayoutPtr->posX, gStageLayoutPtr->posY, gStageLayoutPtr->rotation) != 0) {
         Font_BeginTranslucentTextRendering();
         Font_EnableTwoCycleTexturing();
         Font_SetActive(4, 0);
@@ -1604,7 +1604,7 @@ void Credits_DrawRoleList(void) {
 
         ptr = gStageLayoutPtr->unk_08;
         for (i = 0; i < gStageLayoutPtr->unk_05; i++, ptr++) {
-            switch (ptr->unk_00) {
+            switch (ptr->posX) {
                 case 0:
                     var_s0++;
                     break;
@@ -1624,13 +1624,13 @@ void Credits_DrawRoleList(void) {
         var_s11 = (((-((gStageLayoutPtr->unk_05 - var_s1) * 0x11) - var_a1) + 0xF0) / 2) & 0xFFFF;
 
         for (i = 0, ptr = gStageLayoutPtr->unk_08; i < gStageLayoutPtr->unk_05; i++, ptr++) {
-            if (ptr->unk_00 == 2) {
+            if (ptr->posX == 2) {
                 var_s11 += 0xA;
                 continue;
             }
 
-            if (var_s5 != ptr->unk_00) {
-                switch (ptr->unk_00) {
+            if (var_s5 != ptr->posX) {
+                switch (ptr->posX) {
                     case 0:
                         Text_SetEnvColor(sp60[0].r, sp60[0].g, sp60[0].b, sp60[0].a);
                         Text_SetPrimColor(sp60[1].r, sp60[1].g, sp60[1].b, sp60[1].a);
@@ -1647,8 +1647,8 @@ void Credits_DrawRoleList(void) {
                 }
             }
 
-            Font_Printf(0xA0 - (Font_MeasureTextExtent(0, 0, ptr->unk_04[gUnusedTimer1]) / 2), (var_s11 * 4) >> 2,
-                          ptr->unk_04[gUnusedTimer1]);
+            Font_Printf(0xA0 - (Font_MeasureTextExtent(0, 0, ptr->rotation[gUnusedTimer1]) / 2), (var_s11 * 4) >> 2,
+                          ptr->rotation[gUnusedTimer1]);
             var_s11 += 0x11;
         }
 
@@ -1656,18 +1656,18 @@ void Credits_DrawRoleList(void) {
         Font_EndTexturedTextRendering();
     }
 
-    gStageLayoutPtr->unk_00 = gStageLayoutPtr->unk_00 + gPhaseDelta;
-    if (gStageLayoutPtr->unk_00 >= gStageLayoutPtr->unk_02) {
+    gStageLayoutPtr->posX = gStageLayoutPtr->posX + gPhaseDelta;
+    if (gStageLayoutPtr->posX >= gStageLayoutPtr->posY) {
         sp4C = *gStageLayoutPtr;
 
         gStageLayoutPtr++;
 
         gStageLayoutPtr->unk_08 = &sp4C.unk_08[sp4C.unk_05];
-        if (gStageLayoutPtr->unk_02 == 0) {
+        if (gStageLayoutPtr->posY == 0) {
             gStageLayoutPtr = NULL;
         } else {
-            gStageLayoutPtr->unk_02 = (gStageLayoutPtr->unk_02 - sp4C.unk_00) + sp4C.unk_02;
-            gStageLayoutPtr->unk_00 = 0;
+            gStageLayoutPtr->posY = (gStageLayoutPtr->posY - sp4C.posX) + sp4C.posY;
+            gStageLayoutPtr->posX = 0;
         }
     }
 }

@@ -14,15 +14,15 @@ typedef struct unk_D_810047E0 {
 } unk_D_810047E0; // size = 0x2C
 
 typedef struct unk_arg2_func_81001D80 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08[1];
 } unk_arg2_func_81001D80; // size = 0xC
 
 typedef struct unk_D_81003FE0 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04[3];
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation[3];
     /* 0x0A */ s16 unk_0A;
 } unk_D_81003FE0; // size = 0xC
 
@@ -238,18 +238,18 @@ void Particle31_UpdateSpeciesEffectTrigger(unk_D_810047E0* arg0) {
     switch (gDefaultGraphRoot->unk_01A) {
     case 0x6D:
     case 0x6E:
-        temp_v1 = gDefaultGraphRoot->unk_040.unk_00;
+        temp_v1 = gDefaultGraphRoot->unk_040.posX;
         temp_a0 = gParticleConditionIndexSeq[D_81004B54 % 18];
         switch(temp_v1) {
         case 4:
-            if (var_a1 == gParticleConditionTable[temp_a0].unk_02) {
+            if (var_a1 == gParticleConditionTable[temp_a0].posY) {
                 Particle31_SpawnSpeciesEffect(arg0);
                 return;
             }
             break;
         case 3:
                 var_v0 = 0;
-                var_v1 = &gParticleConditionTable[temp_a0].unk_00;
+                var_v1 = &gParticleConditionTable[temp_a0].posX;
                 do {
                     if (var_a1 == var_v1[2]) {
                         Particle31_SpawnSpeciesEffect(arg0);
@@ -266,7 +266,7 @@ void Particle31_UpdateSpeciesEffectTrigger(unk_D_810047E0* arg0) {
             }
             break;
         default:
-            if (var_a1 == gParticleConditionTable[temp_a0].unk_00) {
+            if (var_a1 == gParticleConditionTable[temp_a0].posX) {
                 Particle31_SpawnSpeciesEffect(arg0);
                 return;
             }
@@ -539,19 +539,19 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
                 case 0x6D:
                 case 0x6E:
                     var_a3 = 0;
-                    temp_v0_2 = gDefaultGraphRoot->unk_040.unk_00;
+                    temp_v0_2 = gDefaultGraphRoot->unk_040.posX;
                     temp_a2 = gParticleConditionIndexSeq[D_81004B54 % 18];
                     temp_a1 = (s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
                     switch (temp_v0_2) {
                     case 4:
-                        temp_a0 = gParticleConditionTable[temp_a2].unk_02;
+                        temp_a0 = gParticleConditionTable[temp_a2].posY;
                         if (((u32) temp_a1 >= (u32) temp_a0) && ((u32) temp_a1 < (u32) (temp_a0 + 0xF))) {
                             var_a3 = 1;
                         }
                         break;
                     case 3:
                         for (i = 0; i < 3; i++) {
-                            temp_a0 = gParticleConditionTable[temp_a2].unk_04[i];
+                            temp_a0 = gParticleConditionTable[temp_a2].rotation[i];
                             if (((u32) temp_a1 >= (u32) temp_a0) && ((u32) temp_a1 < (u32) (temp_a0 + 0xF))) {
                                 var_a3 = 1;
                             }
@@ -564,7 +564,7 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
                         }
                         break;
                     default:
-                        temp_a0 = gParticleConditionTable[temp_a2].unk_00;
+                        temp_a0 = gParticleConditionTable[temp_a2].posX;
                         if (((u32) temp_a1 >= (u32) temp_a0) && ((u32) temp_a1 < (u32) (temp_a0 + 0xF))) {
                             var_a3 = 1;
                         }

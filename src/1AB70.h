@@ -7,9 +7,9 @@
 #include "29BA0.h"
 
 typedef struct unk_func_8001B1FC {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -27,17 +27,17 @@ typedef struct unk_func_8001B1FC {
 
 typedef union unk_func_8001A024_008_014 {
     struct {
-        /* 0x00 */ s16 unk_00;
-        /* 0x02 */ s16 unk_02;
+        /* 0x00 */ s16 posX;
+        /* 0x02 */ s16 posY;
     };
     u8* ptr;
     u32 raw;
 } unk_func_8001A024_008_014; // size = 0x4
 
 typedef struct unk_func_8001A024_008 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ FramebufferImage* unk_0C;
     /* 0x10 */ arg1_func_80010CA8 unk_10;
@@ -45,11 +45,11 @@ typedef struct unk_func_8001A024_008 {
 } unk_func_8001A024_008; // size = 0x18
 
 typedef struct SpriteDisplay {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s8 unk_02;
+    /* 0x02 */ s8 posY;
     /* 0x03 */ s8 unk_03;
-    /* 0x04 */ AssetManager* unk_04;
+    /* 0x04 */ AssetManager* rotation;
     /* 0x08 */ unk_func_8001A024_008* unk_08;
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ Fragment2_1GraphNode* unk_10;
@@ -58,10 +58,10 @@ typedef struct SpriteDisplay {
 } SpriteDisplay; // size = 0x1C
 
 typedef struct BattleUiState {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
-    /* 0x04 */ Fragment2_1GraphNode* unk_04;
+    /* 0x02 */ u8 posY;
+    /* 0x04 */ Fragment2_1GraphNode* rotation;
     /* 0x08 */ CameraStruct* unk_08;
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ GraphNode* unk_10;

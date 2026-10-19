@@ -712,7 +712,7 @@ void DynamoGame_ShowResultText(void) {
 }
 
 void DynamoGame_InitCamera(void) {
-    D_87B000EC = D_87B000E8->unk_00.unk_0C;
+    D_87B000EC = D_87B000E8->posX.unk_0C;
 
     D_87B000F0 = -0x200;
     D_87B000F2 = 0;
@@ -755,17 +755,17 @@ void DynamoGame_LoadAssets(void) {
                 ModelRenderer_AttachDisplayObject(gCurrentHealthBarNode);
 
                 if (i == 0) {
-                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC5, D_87B000E4->unk_08->unk_00[0]);
+                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC5, D_87B000E4->unk_08->posX[0]);
                 } else {
-                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC6, D_87B000E4->unk_08->unk_00[0]);
+                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC6, D_87B000E4->unk_08->posX[0]);
                 }
 
                 gCurrentHealthBar->unk_008 = 0;
                 ModelAnim_SetAnimation(gCurrentHealthBarNode, gCurrentHealthBar->unk_008);
-                ModelAnim_SetFrame(gCurrentHealthBarNode, MiniGame_RandomRange(gCurrentHealthBarNode->unk_040.unk_04->unk_0A));
+                ModelAnim_SetFrame(gCurrentHealthBarNode, MiniGame_RandomRange(gCurrentHealthBarNode->unk_040.rotation->unk_0A));
 
-                gCurrentHealthBarNode->unk_024.x = gHealthBarPositions[j].unk_00;
-                gCurrentHealthBarNode->unk_024.y = gHealthBarPositions[j].unk_04;
+                gCurrentHealthBarNode->unk_024.x = gHealthBarPositions[j].posX;
+                gCurrentHealthBarNode->unk_024.y = gHealthBarPositions[j].rotation;
 
                 if (i == 0) {
                     gCurrentHealthBarNode->unk_024.y += 0.15f;
@@ -805,9 +805,9 @@ void DynamoGame_LoadAssets(void) {
             gCurrentHealthBarNode = gHealthBarGraphNodePtrs[j];
 
             ModelRenderer_AttachDisplayObject(gCurrentHealthBarNode);
-            Model_InitDisplayObject(gCurrentHealthBarNode, 0, sp5C[j], D_87B000E4->unk_08->unk_00[0]);
+            Model_InitDisplayObject(gCurrentHealthBarNode, 0, sp5C[j], D_87B000E4->unk_08->posX[0]);
             ModelAnim_SetAnimation(gCurrentHealthBarNode, 0);
-            ModelAnim_SetFrame(gCurrentHealthBarNode, gCurrentHealthBarNode->unk_040.unk_04->unk_0A);
+            ModelAnim_SetFrame(gCurrentHealthBarNode, gCurrentHealthBarNode->unk_040.rotation->unk_0A);
         }
     }
 

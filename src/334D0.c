@@ -18,7 +18,7 @@ typedef struct unk_func_80032F94_a0 {
 } unk_func_80032F94_a0;  // size = 0x20
 
 typedef struct unk_D_800B2EA8 {
-    u8 unk_00[0xA8];
+    u8 posX[0xA8];
 } unk_D_800B2EA8; // size = 0xA8
 
 typedef struct {
@@ -101,7 +101,7 @@ void ModelRenderer_ClearSlotModels(s32 arg0) {
     StadiumModelSlot* slot = &gStadiumModelSlots[arg0];
 
     for (i = 0; i < 3; i++) {
-        slot[i].model.unk_00 = 0;
+        slot[i].model.posX = 0;
     }
 }
 

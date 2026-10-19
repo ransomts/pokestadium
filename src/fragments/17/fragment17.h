@@ -4,7 +4,7 @@
 #include "global.h"
 
 typedef struct unk_D_86B0E5D4_04 {
-    /* 0x00 */ Vec3f unk_00;
+    /* 0x00 */ Vec3f posX;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ char unk10[0x2];
@@ -35,14 +35,14 @@ typedef struct unk_D_86B0E5D4_04 {
 } unk_D_86B0E5D4_04; // size >= 0x78
 
 typedef struct unk_D_86B0E5D4 {
-    /* 0x00 */ CameraStruct* unk_00;
-    /* 0x04 */ unk_D_86B0E5D4_04 unk_04;
+    /* 0x00 */ CameraStruct* posX;
+    /* 0x04 */ unk_D_86B0E5D4_04 rotation;
 } unk_D_86B0E5D4; // size = 0x7C
 
 typedef struct unk_D_86B0C160 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -66,7 +66,7 @@ typedef struct unk_D_86B0E5F0 {
 } unk_D_86B0E5F0; // size = 0x170
 
 typedef struct unk_D_86B0C4C8 {
-    /* 0x00 */ Vec3f unk_00;
+    /* 0x00 */ Vec3f posX;
     /* 0x0C */ u8 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ u16 unk_10;
@@ -74,9 +74,9 @@ typedef struct unk_D_86B0C4C8 {
 } unk_D_86B0C4C8; // size = 0x14
 
 typedef struct SpriteColorParams {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ u16 unk_08;
     /* 0x0A */ u16 unk_0A;
@@ -89,7 +89,7 @@ typedef struct SpriteColorParams {
 } SpriteColorParams; // size = 0x18
 
 typedef struct GfxTileParams {
-    /* 0x00 */ SpriteColorParams unk_00;
+    /* 0x00 */ SpriteColorParams posX;
     /* 0x18 */ SpriteColorParams unk_18;
 } GfxTileParams; // size = 0x30
 
@@ -123,8 +123,8 @@ typedef struct unk_D_86B0FA50 {
 } unk_D_86B0FA50; // size = 0xC8
 
 typedef struct unk_D_86B0FA7C {
-    /* 0x00 */ CameraStruct* unk_00;
-    /* 0x04 */ Vec3f unk_04;
+    /* 0x00 */ CameraStruct* posX;
+    /* 0x04 */ Vec3f rotation;
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
     /* 0x14 */ char unk14[0x2];
@@ -147,7 +147,7 @@ typedef struct unk_D_86B0FA7C {
 } unk_D_86B0FA7C; // size = 0x7C
 
 typedef struct unk_D_86B0C264 {
-    /* 0x00 */ Vec3f unk_00;
+    /* 0x00 */ Vec3f posX;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ u16 unk_10;

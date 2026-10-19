@@ -21,9 +21,9 @@
 #include "src/util.h"
 
 typedef struct {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
 
     /* 0x08 */ s16 unk_08;
@@ -307,7 +307,7 @@ s32 Gallery_ConfigurePhotoCamera(s32 arg0, CameraStruct* arg1) {
 
     if (arg0 == 2) {
         src = (unk_D_83403C60_050_00C*)((u8*)gCamSecondary->unk_18 + 0x50);
-        GeoCamera_SetViewport(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
+        GeoCamera_SetViewport(arg1, 0, 0, gCamSecondary->rotation, gCamSecondary->unk_06);
         GeoCamera_SetPerspective(arg1, Gallery_GetPhotoScaleIndex(gCamSecondary->unk_18), 20.0f, 10000.0f);
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[0] = src[0];
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[1] = src[1];
@@ -319,7 +319,7 @@ s32 Gallery_ConfigurePhotoCamera(s32 arg0, CameraStruct* arg1) {
 s32 Gallery_SetScenePoseCamera(s32 arg0, CameraStruct* arg1) {
     if (Gallery_GetScenePoseIndex(arg0) != 0) {
         if (arg0 == 2) {
-            GeoCamera_SetViewport(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
+            GeoCamera_SetViewport(arg1, 0, 0, gCamSecondary->rotation, gCamSecondary->unk_06);
             GeoCamera_SetPerspective(arg1, 45.0f, 20.0f, 8000.0f);
         }
     }
@@ -405,21 +405,21 @@ void Gallery_InitializePhotoGrid(s32 arg0, s32 arg1) {
     temp_a2 = arg1 + 0x2B;
     temp_a3 = arg1 - 0x2B;
     for(i = 0; i < 12; i+=2) {
-        gCamQuadVertices[i].unk_00 = temp_v0;
+        gCamQuadVertices[i].posX = temp_v0;
         gCamQuadVertices[i].unk_08 = 0;
-        gCamQuadVertices[i + 1].unk_00 = temp_v1;
+        gCamQuadVertices[i + 1].posX = temp_v1;
         gCamQuadVertices[i + 1].unk_08 = 0x18E0;
         if (i < 10) {
             temp_a0 = temp_a2 - (i * 0xA);
-            gCamQuadVertices[i].unk_02 = temp_a0;
-            gCamQuadVertices[i + 1].unk_02 = temp_a0;
+            gCamQuadVertices[i].posY = temp_a0;
+            gCamQuadVertices[i + 1].posY = temp_a0;
             temp_a1 = (i * 5) << 5;
             gCamQuadVertices[i].unk_0A = temp_a1;
             gCamQuadVertices[i + 1].unk_0A = temp_a1;
         } else {
-            gCamQuadVertices[10].unk_02 = temp_a3;
+            gCamQuadVertices[10].posY = temp_a3;
             var->unk_0A = 0x540;
-            gCamQuadVertices[11].unk_02 = temp_a3;
+            gCamQuadVertices[11].posY = temp_a3;
             var2->unk_0A = 0x540;
         }
     }
@@ -500,8 +500,8 @@ void Gallery_CopyPhotoMonFromBattleMon(PhotoMonData* arg0, PokemonData* arg1) {
     s32 i;
 
     bzero(arg0, sizeof(PhotoMonData));
-    arg0->unk_00 = arg1->unk_0E;
-    arg0->unk_02 = arg1->unk_00.unk_00;
+    arg0->posX = arg1->unk_0E;
+    arg0->posY = arg1->posX.posX;
 
     for (i = 0; i < 11; i++) {
         arg0->unk_03[i] = ((s8*)arg1->unk_30)[i];
@@ -517,8 +517,8 @@ void Gallery_CopyBattleMonFromPhotoMon(PokemonData* arg0, PhotoMonSpecies* arg1)
 
     bzero(arg0, sizeof(PokemonData));
 
-    arg0->unk_0E = arg1->unk_00;
-    arg0->unk_00.unk_00 = arg1->unk_02;
+    arg0->unk_0E = arg1->posX;
+    arg0->posX.posX = arg1->posY;
 
     for (i = 0; i < 11; i++) {
         arg0->unk_30[i] = arg1->unk_03[i];
@@ -546,9 +546,9 @@ Camera* Geo_CreateSceneInstance(s16 arg0, s16 arg1, FramebufferImage* arg2, Fram
     Camera* temp_v0 = main_pool_alloc(sizeof(Camera), 0);
 
     if (temp_v0 != NULL) {
-        temp_v0->unk_00 = 0;
-        temp_v0->unk_02 = 0;
-        temp_v0->unk_04 = arg0;
+        temp_v0->posX = 0;
+        temp_v0->posY = 0;
+        temp_v0->rotation = arg0;
         temp_v0->unk_06 = arg1;
 
         if (arg2 != NULL) {
@@ -581,16 +581,16 @@ Camera* Geo_CreateSceneInstance(s16 arg0, s16 arg1, FramebufferImage* arg2, Fram
 
 typedef union unk_func_80026268_arg0_000_raw {
     struct {
-        u8 unk_00;
+        u8 posX;
         u8 unk_01;
-        u16 unk_02;
+        u16 posY;
     };
     f32 raw;
 } unk_func_80026268_arg0_000_raw; // size = 0x4
 
 typedef struct PhotoMonRaw {
-    /* 0x00 */ unk_func_80026268_arg0_000_raw unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ unk_func_80026268_arg0_000_raw posX;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ u8 unk_08;
@@ -621,7 +621,7 @@ typedef struct PhotoMonRaw {
 } PhotoMonRaw; // size = 0x54
 
 typedef struct PhotoSceneRaw {
-    /* 0x00 */ PhotoMonRaw unk_00;
+    /* 0x00 */ PhotoMonRaw posX;
     /* 0x54 */ char unk54[0x18];
     /* 0x6C */ u8 unk_6C;
     /* 0x6D */ char unk6D[0x3];
@@ -639,24 +639,24 @@ void Gallery_InitializePhotoModel(Camera* arg0) {
 
     temp_s1 = (PhotoSceneRaw*)arg0->unk_18;
     Gallery_CopyBattleMonFromPhotoMon(&sp30, &temp_s1->unk_70);
-    Vec3f_SetComponentsDuplicate(&arg0->unk_20->unk_024, 0, temp_s1->unk_00.unk_00.raw, 0); //?
+    Vec3f_SetComponentsDuplicate(&arg0->unk_20->unk_024, 0, temp_s1->posX.posX.raw, 0); //?
     arg0->unk_20->modelPhase = 0xFE;
-    sp94 = sp30.unk_00.unk_00;
-    if (sp30.unk_00.unk_00 == 0x99) {
-        sp30.unk_00.unk_00 = 0x19;
+    sp94 = sp30.posX.posX;
+    if (sp30.posX.posX == 0x99) {
+        sp30.posX.posX = 0x19;
     }
     Model_ComputeSizeVariant(&sp90, &sp30);
-    sp30.unk_00.unk_00 = sp94;
-    PokeIcon_RequestFrameLoad(arg0->unk_10, sp30.unk_00.unk_00, sp90);
+    sp30.posX.posX = sp94;
+    PokeIcon_RequestFrameLoad(arg0->unk_10, sp30.posX.posX, sp90);
     PokeIcon_WaitFrameLoad(arg0->unk_10);
     ModelRenderer_ClearDisplayObject(arg0->unk_20);
-    Model_InitDisplayObject(arg0->unk_20, 0, sp30.unk_00.unk_00, arg0->unk_10->unk_24->unk_08->unk_00[0]);
+    Model_InitDisplayObject(arg0->unk_20, 0, sp30.posX.posX, arg0->unk_10->unk_24->unk_08->posX[0]);
     sp28 = Util_ConvertAddrToVirtAddr(&Particle31_UnpackSlotData);
-    sp28(arg0->unk_20, Util_ConvertAddrToVirtAddr(&temp_s1->unk_00.unk_09[1]));
-    ModelAnim_SetAnimation(arg0->unk_20, temp_s1->unk_00.unk_05);
-    ModelAnim_SetFrame(arg0->unk_20, temp_s1->unk_00.unk_06);
-    ModelAnim_SetEventTrack(arg0->unk_20, temp_s1->unk_00.unk_08);
-    ModelAnim_SetEventFrame(arg0->unk_20, (s16)temp_s1->unk_00.unk_09[0]);
+    sp28(arg0->unk_20, Util_ConvertAddrToVirtAddr(&temp_s1->posX.unk_09[1]));
+    ModelAnim_SetAnimation(arg0->unk_20, temp_s1->posX.unk_05);
+    ModelAnim_SetFrame(arg0->unk_20, temp_s1->posX.unk_06);
+    ModelAnim_SetEventTrack(arg0->unk_20, temp_s1->posX.unk_08);
+    ModelAnim_SetEventFrame(arg0->unk_20, (s16)temp_s1->posX.unk_09[0]);
 }
 
 void Gallery_LoadPhotoSceneGraph(Camera* arg0) {
@@ -694,9 +694,9 @@ void Gallery_LoadPhotoSceneGraph(Camera* arg0) {
         arg0->unk_24->unk_14 = 0;
         return;
     }
-    arg0->unk_24->unk_18 = (s16) temp_v0_4->unk_00;
-    arg0->unk_24->unk_1A = (s16) temp_v0_4->unk_02;
-    arg0->unk_24->unk_1C = (s32) temp_v0_4->unk_04;
+    arg0->unk_24->unk_18 = (s16) temp_v0_4->posX;
+    arg0->unk_24->unk_1A = (s16) temp_v0_4->posY;
+    arg0->unk_24->unk_1C = (s32) temp_v0_4->rotation;
     arg0->unk_24->unk_14 = 1;
     temp_v1 = arg0->unk_24;
     temp_v1->unk_01 = (u8) (temp_v1->unk_01 | 1);
@@ -709,8 +709,8 @@ u8* Gallery_ProcessSceneInstance(Camera* arg0) {
     sp24 = (CamFrameCounter*)((u8*)arg0->unk_18 + 0x50);
     sp20 = Util_ConvertAddrToVirtAddr(&Particle_UpdateFrameCountersAlias);
     gCamSecondary = arg0;
-    if (arg0->unk_00 == 1) {
-        switch (arg0->unk_02) {
+    if (arg0->posX == 1) {
+        switch (arg0->posY) {
             case 2:
                 Gallery_InitializePhotoModel(arg0);
                 Gallery_LoadPhotoSceneGraph(arg0);
@@ -735,15 +735,15 @@ u8* Gallery_ProcessSceneInstance(Camera* arg0) {
         }
  
     }
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 0:
-            arg0->unk_00 = 1;
-            arg0->unk_02 = 2;
+            arg0->posX = 1;
+            arg0->posY = 2;
             break;
         case 1:
-            arg0->unk_02--;
-            if (arg0->unk_02 <= 0) {
-                arg0->unk_00 = 2;
+            arg0->posY--;
+            if (arg0->posY <= 0) {
+                arg0->posX = 2;
             }
             break;
         case 2:
@@ -780,7 +780,7 @@ s32 Gallery_FindReadyScene(Camera** arg0, s32 arg1) {
 
     for (i = 0; i < arg1; i++) {
         temp_s1 = arg0[i];
-        if ((Gallery_IsSceneReady(temp_s1) != 0) && (temp_s1->unk_00 == 1)) {
+        if ((Gallery_IsSceneReady(temp_s1) != 0) && (temp_s1->posX == 1)) {
             sp30 = i;
             break;
         }
@@ -799,7 +799,7 @@ void Gallery_ClearActiveScene(void) {
 s32 Gallery_IsPhotoSpeciesValid(PhotoSceneData* arg0) {
     s32 v1 = 0;
 
-    if ((arg0->unk_00.unk_04 > 0 && arg0->unk_00.unk_04 < 0x98) || arg0->unk_00.unk_04 == 0x99) {
+    if ((arg0->posX.rotation > 0 && arg0->posX.rotation < 0x98) || arg0->posX.rotation == 0x99) {
         v1 = 1;
     }
     return v1;

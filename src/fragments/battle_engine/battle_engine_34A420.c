@@ -5,9 +5,9 @@
 #include "include/math.h"
 
 typedef struct unk_D_84397610 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -25,8 +25,8 @@ typedef struct unk_D_84397610 {
 } unk_D_84397610; // size = 0x38
 
 typedef struct unk_D_84397648 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
 } unk_D_84397648; // size = 0x10
@@ -52,9 +52,9 @@ void Radial20_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 
     unk_D_84397648* ptr2;
     s32 i;
 
-    ptr1->unk_00 = 0;
-    ptr1->unk_02 = 0;
-    ptr1->unk_04 = 0;
+    ptr1->posX = 0;
+    ptr1->posY = 0;
+    ptr1->rotation = 0;
     ptr1->unk_06 = 0x46;
     ptr1->unk_08 = arg0;
     ptr1->unk_0C = arg1;
@@ -75,8 +75,8 @@ void Radial20_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 
 
     ptr2 = &gTrailPoints[0];
     for (i = 0; i < 400; i++, ptr2++) {
-        ptr2->unk_00 = arg0;
-        ptr2->unk_04 = arg1;
+        ptr2->posX = arg0;
+        ptr2->rotation = arg1;
         ptr2->unk_08 = arg2;
         ptr2->unk_0C = ptr1->unk_14;
     }
@@ -85,7 +85,7 @@ void Radial20_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 
 f32 Strip400_GetTailFadeRatio(void) {
     unk_D_84397610* ptr = &gTrailState;
     f32 tmp;
-    s32 tmp2 = ptr->unk_00;
+    s32 tmp2 = ptr->posX;
 
     if (tmp2 < (ptr->unk_06 - 0x34)) {
         return 1.0f;
@@ -116,18 +116,18 @@ s32 Radial20_Update(void) {
     s32 tmp00;
     Vec3f sp7C;
 
-    ptr->unk_00++;
-    if (ptr->unk_06 < ptr->unk_00) {
+    ptr->posX++;
+    if (ptr->unk_06 < ptr->posX) {
         return -1;
     }
 
-    if ((ptr->unk_06 - 0x28) < ptr->unk_00) {
-        ptr->unk_00 = ptr->unk_06 - 0x34;
-        ptr->unk_02++;
-        if (ptr->unk_02 >= 0x15) {
+    if ((ptr->unk_06 - 0x28) < ptr->posX) {
+        ptr->posX = ptr->unk_06 - 0x34;
+        ptr->posY++;
+        if (ptr->posY >= 0x15) {
             return -1;
         }
-    } else if (ptr->unk_00 < 0x1E) {
+    } else if (ptr->posX < 0x1E) {
         ptr->unk_2A += 10;
         if (ptr->unk_2A > 0xC8) {
             ptr->unk_2A = 0xC8;
@@ -144,7 +144,7 @@ s32 Radial20_Update(void) {
         ptr->unk_28 = 0xC8;
     }
 
-    if (((ptr->unk_06 - 0x34) < ptr->unk_00) && (ptr->unk_00 < (ptr->unk_06 - 0x28))) {
+    if (((ptr->unk_06 - 0x34) < ptr->posX) && (ptr->posX < (ptr->unk_06 - 0x28))) {
         ptr->unk_24 -= 0.1;
         if (ptr->unk_24 < 0.25) {
             ptr->unk_24 = 0.25f;
@@ -154,7 +154,7 @@ s32 Radial20_Update(void) {
     var_s0 = &gTrailPoints[0];
 
     for (i = 0; i < ptr->unk_28; i++) {
-        tmp00 = ptr->unk_00;
+        tmp00 = ptr->posX;
 
         if ((ptr->unk_06 - 0x28) < tmp00) {
             var_s0->unk_0C -= 6.0;
@@ -162,19 +162,19 @@ s32 Radial20_Update(void) {
                 var_s0->unk_0C = ptr->unk_18;
             }
             // M_PI * 80
-            var_fs1 = __sinf((((ptr->unk_00 + i) % 200) * 251.327419281005859) / 200.0) * 0.1;
+            var_fs1 = __sinf((((ptr->posX + i) % 200) * 251.327419281005859) / 200.0) * 0.1;
         } else if ((ptr->unk_06 - 0x2D) < tmp00) {
-            var_fs1 = __sinf((((ptr->unk_00 + i) % 200) * 251.327419281005859) / 200.0) + 2.0;
+            var_fs1 = __sinf((((ptr->posX + i) % 200) * 251.327419281005859) / 200.0) + 2.0;
             var_s0->unk_0C += var_fs1;
         } else if ((ptr->unk_06 - 0x34) < tmp00) {
             var_s0->unk_0C -= 8.0;
             if (var_s0->unk_0C < ptr->unk_18) {
                 var_s0->unk_0C = ptr->unk_18;
             }
-            var_fs1 = __sinf((((ptr->unk_00 + i) % 200) * 251.327419281005859) / 200.0) * 0.1;
+            var_fs1 = __sinf((((ptr->posX + i) % 200) * 251.327419281005859) / 200.0) * 0.1;
         } else {
             // M_PI * 60
-            var_fs1 = __sinf((((ptr->unk_00 + i) % 200) * 188.495564460754395) / 200.0);
+            var_fs1 = __sinf((((ptr->posX + i) % 200) * 188.495564460754395) / 200.0);
             var_s0->unk_0C += var_fs1;
         }
 
@@ -190,12 +190,12 @@ s32 Radial20_Update(void) {
         temp_ft0 = __cosf(temp_fs4) * tmp2 + sp90;
 
         var_s0->unk_08 = temp_ft0;
-        var_s0->unk_04 = temp_fs0_2 + var_fs1;
-        var_s0->unk_00 = spB8;
+        var_s0->rotation = temp_fs0_2 + var_fs1;
+        var_s0->posX = spB8;
         var_s0++;
 
-        var_s0->unk_00 = spB8;
-        var_s0->unk_04 = (2.0 * __sinf(temp_fs5 * 3.0)) + temp_fs0_2 + var_fs1;
+        var_s0->posX = spB8;
+        var_s0->rotation = (2.0 * __sinf(temp_fs5 * 3.0)) + temp_fs0_2 + var_fs1;
         var_s0->unk_08 = temp_ft0;
         var_s0++;
     }
@@ -235,9 +235,9 @@ Gfx* Strip400_Draw(Gfx* arg0) {
     var_a0 = &gTrailPoints[0];
 
     for (i = 0; i < ptr->unk_28; i++) {
-        vtx->v.ob[0] = var_a0->unk_00;
-        if (var_a0->unk_04 > 0.0) {
-            vtx->v.ob[1] = var_a0->unk_04;
+        vtx->v.ob[0] = var_a0->posX;
+        if (var_a0->rotation > 0.0) {
+            vtx->v.ob[1] = var_a0->rotation;
         } else {
             vtx->v.ob[1] = 0;
         }
@@ -249,9 +249,9 @@ Gfx* Strip400_Draw(Gfx* arg0) {
         vtx++;
         var_a0++;
 
-        vtx->v.ob[0] = var_a0->unk_00;
-        if (var_a0->unk_04 > 0.0) {
-            vtx->v.ob[1] = var_a0->unk_04;
+        vtx->v.ob[0] = var_a0->posX;
+        if (var_a0->rotation > 0.0) {
+            vtx->v.ob[1] = var_a0->rotation;
         } else {
             vtx->v.ob[1] = 0;
         }
@@ -295,8 +295,8 @@ void Radial20_ResetPool(void) {
 
         var_v1 = &var_a2->unk_048[0];
         for (j = 0; j < 20; j++, var_v1++) {
-            var_v1->unk_00 = 0.0f;
-            var_v1->unk_04 = 0;
+            var_v1->posX = 0.0f;
+            var_v1->rotation = 0;
             var_v1->unk_08 = 1.0f;
             var_v1->unk_0C = 0.0f;
             var_v1->unk_10.x = 0.0f;
@@ -349,11 +349,11 @@ void Radial20_VariantA(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
 
             var_a1_2 = &var_v0->unk_048[0];
             for (j = 0; j < 20; j++) {
-                var_a1_2->unk_00 = j;
+                var_a1_2->posX = j;
                 if (j == 0) {
-                    var_a1_2->unk_04 = 0xFF;
+                    var_a1_2->rotation = 0xFF;
                 } else {
-                    var_a1_2->unk_04 = (argA * (0x13 - j)) / 20;
+                    var_a1_2->rotation = (argA * (0x13 - j)) / 20;
                 }
                 var_a1_2->unk_08 = argC;
                 var_a1_2->unk_0C = 0.0f;
@@ -398,8 +398,8 @@ void Radial20_VariantB(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
 
             var_v1_2 = &var_v0->unk_048[0];
             for (j = 0; j < 20; j++, var_v1_2++) {
-                var_v1_2->unk_00 = j;
-                var_v1_2->unk_04 = argA;
+                var_v1_2->posX = j;
+                var_v1_2->rotation = argA;
                 var_v1_2->unk_08 = argC;
                 var_v1_2->unk_0C = 0.0f;
                 var_v1_2->unk_10 = spC;
@@ -459,8 +459,8 @@ void Radial20_VariantC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             temp_s4 = (guRandom() % 10) + 4;
 
             for (j = 0, temp_s3 = temp_s7, temp_s2 = spA4; j < 20; j++) {
-                var_s0->unk_00 = j;
-                var_s0->unk_04 = argA;
+                var_s0->posX = j;
+                var_s0->rotation = argA;
                 var_s0->unk_08 = argF;
                 var_s0->unk_0C = 0.0f;
                 var_s0->unk_10 = spBC;
@@ -530,8 +530,8 @@ void Radial20_VariantD(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             temp_s4 = (guRandom() % 10) + 4;
 
             for (j = 0, temp_s3 = temp_s7, temp_s2 = spA4; j < 20; j++) {
-                var_s0->unk_00 = j;
-                var_s0->unk_04 = argA;
+                var_s0->posX = j;
+                var_s0->rotation = argA;
                 var_s0->unk_08 = argF;
                 var_s0->unk_0C = 0.0f;
                 var_s0->unk_10 = spBC;
@@ -594,8 +594,8 @@ void Radial20_VariantE(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             temp_fp = RAND(10) + 4;
 
             for (j = 0; j < 20; j++) {
-                var_s0->unk_00 = j;
-                var_s0->unk_04 = argA;
+                var_s0->posX = j;
+                var_s0->rotation = argA;
                 var_s0->unk_08 = argC;
                 var_s0->unk_0C = 0.0f;
                 var_s0->unk_10 = spBC;
@@ -637,8 +637,8 @@ void Radial20_UpdateNode(unk_D_84398F50* arg0) {
         case 0:
             var_v0 = &arg0->unk_048[0];
             for (i = 0; i < 20; i++, var_v0++) {
-                if (var_v0->unk_00 > 0.0) {
-                    var_v0->unk_00 -= 1.0;
+                if (var_v0->posX > 0.0) {
+                    var_v0->posX -= 1.0;
                 } else {
                     var_v0->unk_10.x += var_v0->unk_1C.x;
                     var_v0->unk_10.y += var_v0->unk_1C.y;
@@ -656,9 +656,9 @@ void Radial20_UpdateNode(unk_D_84398F50* arg0) {
         case 3:
             var_v0 = &arg0->unk_048[0];
             for (i = 0; i < 20; i++, var_v0++) {
-                if (var_v0->unk_00 > 0.0) {
+                if (var_v0->posX > 0.0) {
                     var_v0->unk_10 = sp28;
-                    var_v0->unk_00 -= 1.0;
+                    var_v0->posX -= 1.0;
                 } else {
                     var_v0->unk_10.x += var_v0->unk_1C.x;
                     var_v0->unk_10.y += var_v0->unk_1C.y;
@@ -689,9 +689,9 @@ void Radial20_UpdateNode(unk_D_84398F50* arg0) {
         default:
             var_v0 = &arg0->unk_048[0];
             for (i = 0; i < 20; i++, var_v0++) {
-                if (var_v0->unk_00 > 0.0) {
+                if (var_v0->posX > 0.0) {
                     var_v0->unk_10 = sp28;
-                    var_v0->unk_00 -= 1.0;
+                    var_v0->posX -= 1.0;
                 } else {
                     var_v0->unk_10.x += var_v0->unk_1C.x;
                     var_v0->unk_10.y = sp28.y;
@@ -710,9 +710,9 @@ void Radial20_UpdateNode(unk_D_84398F50* arg0) {
         case 6:
             var_v0 = &arg0->unk_048[0];
             for (i = 0; i < 20; i++, var_v0++) {
-                if (var_v0->unk_00 > 0.0) {
+                if (var_v0->posX > 0.0) {
                     var_v0->unk_10 = sp28;
-                    var_v0->unk_00 -= 1.0;
+                    var_v0->posX -= 1.0;
                 } else {
                     var_v0->unk_10.x += var_v0->unk_1C.x;
                     var_v0->unk_10.y += var_v0->unk_1C.y;
@@ -732,8 +732,8 @@ void Radial20_UpdateNode(unk_D_84398F50* arg0) {
         case 8:
             var_v0 = &arg0->unk_048[0];
             for (i = 0; i < 20; i++, var_v0++) {
-                if (var_v0->unk_00 > 0.0) {
-                    var_v0->unk_00 -= 1.0;
+                if (var_v0->posX > 0.0) {
+                    var_v0->posX -= 1.0;
                 } else {
                     var_v0->unk_10.x += var_v0->unk_1C.x;
                     var_v0->unk_10.y += var_v0->unk_1C.y;
@@ -753,8 +753,8 @@ void Radial20_UpdateNode(unk_D_84398F50* arg0) {
         case 4:
             var_v0 = &arg0->unk_048[0];
             for (i = 0; i < 20; i++, var_v0++) {
-                if (var_v0->unk_00 > 0.0) {
-                    var_v0->unk_00 -= 1.0;
+                if (var_v0->posX > 0.0) {
+                    var_v0->posX -= 1.0;
                 } else {
                     var_v0->unk_10.x += var_v0->unk_1C.x;
                     var_v0->unk_10.y += var_v0->unk_1C.y;
@@ -876,7 +876,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx->v.tc[1] = 0;
                         vtx++;
 
-                        if (var_s2->unk_00 <= 0.0) {
+                        if (var_s2->posX <= 0.0) {
                             Radial20_RotateVertexOffset(var_s2->unk_0C + M_PI_F, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f,
                                           0.0f);
                         }
@@ -904,10 +904,10 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx->v.cn[0] = 0xFF;
                         vtx->v.cn[1] = 0x40;
                         vtx->v.cn[2] = 0x40;
-                        vtx->v.cn[3] = var_s2->unk_04;
+                        vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
 
-                        if (var_s2->unk_00 <= 0.0) {
+                        if (var_s2->posX <= 0.0) {
                             Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f,
                                           0.0f, 0.0f);
                         }
@@ -918,10 +918,10 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx->v.cn[0] = 0;
                         vtx->v.cn[1] = 0xA0;
                         vtx->v.cn[2] = 0xFF;
-                        vtx->v.cn[3] = var_s2->unk_04;
+                        vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
 
-                        if (var_s2->unk_00 <= 0.0) {
+                        if (var_s2->posX <= 0.0) {
                             Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->unk_08,
                                           1.0f, 0.0f, 0.0f);
                         }
@@ -932,7 +932,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx->v.cn[0] = 0xFF;
                         vtx->v.cn[1] = 0xFF;
                         vtx->v.cn[2] = 0;
-                        vtx->v.cn[3] = var_s2->unk_04;
+                        vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
                         var_s2++;
                     }
@@ -951,10 +951,10 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx->v.cn[0] = sp1B4->unk_00A.r;
                         vtx->v.cn[1] = sp1B4->unk_00A.g;
                         vtx->v.cn[2] = sp1B4->unk_00A.b;
-                        vtx->v.cn[3] = var_s2->unk_04;
+                        vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
 
-                        if (var_s2->unk_00 <= 0.0) {
+                        if (var_s2->posX <= 0.0) {
                             Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f,
                                           0.0f, 0.0f);
                         }
@@ -965,10 +965,10 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx->v.cn[0] = sp1B4->unk_00A.r;
                         vtx->v.cn[1] = sp1B4->unk_00A.g;
                         vtx->v.cn[2] = sp1B4->unk_00A.b;
-                        vtx->v.cn[3] = var_s2->unk_04;
+                        vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
 
-                        if (var_s2->unk_00 <= 0.0) {
+                        if (var_s2->posX <= 0.0) {
                             Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->unk_08,
                                           1.0f, 0.0f, 0.0f);
                         }
@@ -979,7 +979,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx->v.cn[0] = sp1B4->unk_00A.r;
                         vtx->v.cn[1] = sp1B4->unk_00A.g;
                         vtx->v.cn[2] = sp1B4->unk_00A.b;
-                        vtx->v.cn[3] = var_s2->unk_04;
+                        vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
                         var_s2++;
                     }
@@ -1032,13 +1032,13 @@ Gfx* func_84362084(Gfx* arg0) {
                                     AuxiliaryEffect_Spawn(sp1B4->unk_002, x1, y1, z1, 0xA, 0.75f);
                                 }
 
-                                vtx->v.cn[0] = ((gParticlePaletteR[x] * (0xFF - var_s2->unk_04)) +
-                                                (var_s2->unk_04 * 0xFF)) / 255;
-                                vtx->v.cn[1] = ((gParticlePaletteG[x] * (0xFF - var_s2->unk_04)) +
-                                                (var_s2->unk_04 * 0xFF)) / 255;
-                                vtx->v.cn[2] = ((gParticlePaletteB[x] * (0xFF - var_s2->unk_04)) +
-                                                (var_s2->unk_04 * 0xFF)) / 255;
-                                vtx->v.cn[3] = var_s2->unk_04;
+                                vtx->v.cn[0] = ((gParticlePaletteR[x] * (0xFF - var_s2->rotation)) +
+                                                (var_s2->rotation * 0xFF)) / 255;
+                                vtx->v.cn[1] = ((gParticlePaletteG[x] * (0xFF - var_s2->rotation)) +
+                                                (var_s2->rotation * 0xFF)) / 255;
+                                vtx->v.cn[2] = ((gParticlePaletteB[x] * (0xFF - var_s2->rotation)) +
+                                                (var_s2->rotation * 0xFF)) / 255;
+                                vtx->v.cn[3] = var_s2->rotation;
                                 vtx++;
                             }
                         }
@@ -1052,7 +1052,7 @@ Gfx* func_84362084(Gfx* arg0) {
 
                     for (j = 0; j < 20; j++, var_s2++) {
                         for (x = 0; x < 15; x++) {
-                            if (var_s2->unk_00 <= 0.0) {
+                            if (var_s2->posX <= 0.0) {
                                 Radial20_RotateVertexOffset(var_s2->unk_0C + ((2.0 * x * M_PI_F) / 15.0), &var_s2->unk_1C, &sp1A0,
                                               var_s2->unk_08, 1.0f, 0.0f, 0.0f);
                             }
@@ -1063,7 +1063,7 @@ Gfx* func_84362084(Gfx* arg0) {
                             vtx->v.cn[0] = sp1B4->unk_00A.r;
                             vtx->v.cn[1] = sp1B4->unk_00A.g;
                             vtx->v.cn[2] = sp1B4->unk_00A.b;
-                            vtx->v.cn[3] = var_s2->unk_04;
+                            vtx->v.cn[3] = var_s2->rotation;
                             vtx++;
                         }
                     }

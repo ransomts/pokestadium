@@ -37,8 +37,8 @@ typedef struct unk_D_838067F0_0168 {
 } unk_D_838067F0_0168; // size = 0x2698
 
 typedef struct unk_D_838067F0_003C {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ u8 unk_02[1];
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ u8 posY[1];
     /* 0x03 */ char unk03[0x13];
 } unk_D_838067F0_003C; // size = 0x16
 
@@ -66,10 +66,10 @@ typedef struct unk_D_838067F0 {
 } unk_D_838067F0; // size = 0x1D088
 
 typedef struct unk_D_8380548C {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;

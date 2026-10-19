@@ -8,8 +8,8 @@
 #include "src/29BA0.h"
 
 typedef struct unk_func_80019600 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
     /* 0x04 */ OSMesgQueue* queue;
     /* 0x08 */ void* unk_08;
     /* 0x0C */ void* unk_0C;
@@ -19,9 +19,9 @@ typedef struct unk_func_80019600 {
 } unk_func_80019600; // size >= 0x1C
 
 typedef struct sp18_func_800198E4 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -30,8 +30,8 @@ typedef struct sp18_func_800198E4 {
 } sp18_func_800198E4; // size = 0x1C
 
 typedef struct unk_D_800ABE10_A04 {
-    /* 0x00 */ BinArchive* unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ BinArchive* posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ BinArchive* unk_10;

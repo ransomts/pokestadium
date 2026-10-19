@@ -115,11 +115,11 @@ void Battle_SetStageTintColor(u8 arg0, u8 arg1, u8 arg2) {
     gBattleGlobalColor.b = arg2;
 
     if (((arg0 & arg1 & arg2) & 0xFF) == 0xFF) {
-        if (gBattleColorRect.unk_00.unk_14 == 1) {
-            gBattleColorRect.unk_00.unk_01 |= 1;
+        if (gBattleColorRect.posX.unk_14 == 1) {
+            gBattleColorRect.posX.unk_01 |= 1;
         }
     } else {
-        gBattleColorRect.unk_00.unk_01 &= ~1;
+        gBattleColorRect.posX.unk_01 &= ~1;
     }
 }
 
@@ -194,7 +194,7 @@ void Battle_RenderActivePokemonThumbnail(GraphNode* arg0, FramebufferImage* arg1
     CameraStruct* sp2C = arg0->unk_0C;
     unk_D_86002F34_00C_018 sp20;
 
-    if (sp2C->unk_00.unk_01 & 0x10) {
+    if (sp2C->posX.unk_01 & 0x10) {
         sp20 = sp2C->unk_18;
 
         sp2C->unk_18.x = 0;
@@ -206,7 +206,7 @@ void Battle_RenderActivePokemonThumbnail(GraphNode* arg0, FramebufferImage* arg1
         GfxImage_FillCurrent(&gDisplayListHead, 0x10D);
         Geo_RenderRootNode(arg0);
 
-        sp2C->unk_00.unk_01 &= ~0x10;
+        sp2C->posX.unk_01 &= ~0x10;
 
         sp2C->unk_18 = sp20;
     }
@@ -307,7 +307,7 @@ void Battle_UpdateFaintBatches(void) {
         for (j = 0; j < ptr->unk_01; j++) {
             temp_a3 = ptr->unk_08[j];
             for (x = 0; x < temp_a3->unk_002; x++) {
-                if ((temp_a3->unk_01C[x].unk_25 == 0) && (temp_a3->unk_01C[x].unk_02 == 0)) {
+                if ((temp_a3->unk_01C[x].unk_25 == 0) && (temp_a3->unk_01C[x].posY == 0)) {
                     var_v0 = 1;
                     temp_a3->unk_01C[x].unk_25 = gPokemonSelectionIndex;
                 }
@@ -482,11 +482,11 @@ void Battle_SelectComRoster(void) {
 void BattleScene_InitializeParticipantPresentation(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1) {
     unk_D_800AE540_0004* temp_v0 = arg0->unk_08[0];
 
-    arg0->unk_18 = arg1->unk_08->unk_00[0];
-    arg0->unk_00 |= 0xA0;
+    arg0->unk_18 = arg1->unk_08->posX[0];
+    arg0->posX |= 0xA0;
     arg0->unk_1C = 0;
-    arg0->unk_02 = temp_v0->unk_01C[0].unk_00.unk_00;
-    arg0->unk_04 = temp_v0->unk_01C;
+    arg0->posY = temp_v0->unk_01C[0].posX.posX;
+    arg0->rotation = temp_v0->unk_01C;
     Trainer_RequestPokeIcon(arg0);
 }
 
@@ -589,13 +589,13 @@ void BattleScene_Init(Stage* arg0) {
 
     temp_v0_7 = sp3C(4, 0);
     if (temp_v0_7 == NULL) {
-        gBattleColorRect.unk_00.unk_14 = 0;
-        gBattleColorRect.unk_00.unk_01 &= ~1;
+        gBattleColorRect.posX.unk_14 = 0;
+        gBattleColorRect.posX.unk_01 &= ~1;
     } else {
-        gBattleColorRect.unk_18.unk_00 = temp_v0_7->unk_00;
-        gBattleColorRect.unk_18.unk_02 = temp_v0_7->unk_02;
-        gBattleColorRect.unk_18.unk_04.rgba = temp_v0_7->unk_04.rgba;
-        gBattleColorRect.unk_00.unk_14 = 1;
+        gBattleColorRect.unk_18.posX = temp_v0_7->posX;
+        gBattleColorRect.unk_18.posY = temp_v0_7->posY;
+        gBattleColorRect.unk_18.rotation.rgba = temp_v0_7->rotation.rgba;
+        gBattleColorRect.posX.unk_14 = 1;
     }
 
     BattleScene_DispatchLifecycle(3, gBattlePokemonData);

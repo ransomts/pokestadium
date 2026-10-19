@@ -55,8 +55,8 @@ void Trail50EffectAlt_Init(void) {
         var_a0 = &var_v0->unk_040[0];
 
         for (j = 0; j < 10; j++, var_a0++) {
-            var_a0->unk_00 = 0;
-            var_a0->unk_04 = 1.0f;
+            var_a0->posX = 0;
+            var_a0->rotation = 1.0f;
             var_a0->unk_08 = 0.0f;
 
             var_a0->unk_0C.x = 0.0f;
@@ -118,8 +118,8 @@ void Trail50EffectAlt_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f3
 
             var_s0 = var_v1->unk_040;
             for (j = 0; j < 10; j++, var_s0++) {
-                var_s0->unk_00 = (arg9 * (9 - j)) / 10;
-                var_s0->unk_04 = argB;
+                var_s0->posX = (arg9 * (9 - j)) / 10;
+                var_s0->rotation = argB;
                 var_s0->unk_08 = (RAND(120) * 6.2831855f) / 120.0;
                 var_s0->unk_0C = sp7C;
                 var_s0->unk_18 = sp70;
@@ -145,7 +145,7 @@ void Trail50EffectAlt_AdvanceNodes(unk_D_843ADA80* arg0) {
 
     for (i = 0; i < 10; i++, var_s0++) {
         if (i == 0) {
-            var_s0->unk_30 = var_s0->unk_04;
+            var_s0->unk_30 = var_s0->rotation;
             var_s0->unk_34 = var_s0->unk_08;
             var_s0->unk_38 = var_s0->unk_0C;
             var_s0->unk_44 = var_s0->unk_18;
@@ -183,12 +183,12 @@ void Trail50EffectAlt_AdvanceNodes(unk_D_843ADA80* arg0) {
                     break;
             }
 
-            var_s0->unk_04 += 2.0;
-            if (arg0->unk_014 < var_s0->unk_04) {
-                var_s0->unk_04 = arg0->unk_014;
+            var_s0->rotation += 2.0;
+            if (arg0->unk_014 < var_s0->rotation) {
+                var_s0->rotation = arg0->unk_014;
             }
         } else {
-            var_s0->unk_30 = var_s0->unk_04;
+            var_s0->unk_30 = var_s0->rotation;
             var_s0->unk_34 = var_s0->unk_08;
 
             var_s0->unk_38 = var_s0->unk_0C;
@@ -197,7 +197,7 @@ void Trail50EffectAlt_AdvanceNodes(unk_D_843ADA80* arg0) {
             var_s0->unk_0C = var_s0[-1].unk_38;
             var_s0->unk_08 = var_s0[-1].unk_34;
             var_s0->unk_18 = var_s0[-1].unk_44;
-            var_s0->unk_04 = var_s0[-1].unk_30;
+            var_s0->rotation = var_s0[-1].unk_30;
         }
     }
 }
@@ -261,7 +261,7 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
 
             var_s0 = var_s5->unk_020;
             for (j = 0; j < 10; j++) {
-                Trail50EffectAlt_Update(temp_s0->unk_08, &sp184, temp_s0->unk_04 * tmp);
+                Trail50EffectAlt_Update(temp_s0->unk_08, &sp184, temp_s0->rotation * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {
@@ -274,10 +274,10 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s5->unk_00A.r;
                 var_s0->v.cn[1] = var_s5->unk_00A.g;
                 var_s0->v.cn[2] = var_s5->unk_00A.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
-                Trail50EffectAlt_Update(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->unk_04 * tmp);
+                Trail50EffectAlt_Update(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->rotation * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {
@@ -290,7 +290,7 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s5->unk_00A.r;
                 var_s0->v.cn[1] = var_s5->unk_00A.g;
                 var_s0->v.cn[2] = var_s5->unk_00A.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
                 temp_s0++;

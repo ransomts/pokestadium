@@ -115,7 +115,7 @@ void RentalRules_LoadBackgroundArchive(void) {
         if (gSessionContext.unk_0000 == 7) {
             Save_EnsureBankLoaded(2);
             Save_GetModeSettings(&sp20, gSessionContext.unk_11F2);
-            if (sp20.unk_04 < 8) {
+            if (sp20.rotation < 8) {
                 gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, 0xD);
             } else {
                 gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, 0x10);
@@ -337,7 +337,7 @@ s32 RentalRules_RuleListHasEmptyEntry(s16* arg0) {
     s32 ret = 0;
 
     while (*arg0 != -1) {
-        if (gMenuOptionStrings.unk_00[*arg0] == '\x00') {
+        if (gMenuOptionStrings.posX[*arg0] == '\x00') {
             ret = 1;
             break;
         }
@@ -389,7 +389,7 @@ void RentalRules_UpdateMainInput(void) {
         D_83003C80 = 2;
         gMenuFadeTimer = 0;
 
-        if (gMenuOptionStrings.unk_00[gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]] != NULL) {
+        if (gMenuOptionStrings.posX[gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]] != NULL) {
             RentalRules_PopupOpen(gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]);
         } else {
             RentalRules_QualifyingSpeciesWindowOpen();
@@ -587,7 +587,7 @@ void RentalRules_DrawRuleListText(s16 arg0, s16 arg1) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
         tmp = gCurrentMenuOptionIds[i];
-        Font_Printf(arg0 + 0x54, arg1 + 0x26 + i * 0x18, gMenuStaticStrings.unk_00[tmp]);
+        Font_Printf(arg0 + 0x54, arg1 + 0x26 + i * 0x18, gMenuStaticStrings.posX[tmp]);
     }
 }
 
@@ -662,18 +662,18 @@ void RentalRules_LoadCategoryStrings(void) {
     s32 i;
 
     for (i = 0; i < 29; i++) {
-        gMenuStaticStrings.unk_00[i] = Text_GetString(NULL, 0, D_830039C0, i + 4);
+        gMenuStaticStrings.posX[i] = Text_GetString(NULL, 0, D_830039C0, i + 4);
     }
 
-    gMenuStaticStrings.unk_74 = gMenuStaticStrings.unk_00[2];
-    gMenuStaticStrings.unk_78 = gMenuStaticStrings.unk_00[10];
-    gMenuStaticStrings.unk_7C = gMenuStaticStrings.unk_00[12];
-    gMenuStaticStrings.unk_80 = gMenuStaticStrings.unk_00[15];
-    gMenuStaticStrings.unk_84 = gMenuStaticStrings.unk_00[22];
-    gMenuStaticStrings.unk_88 = gMenuStaticStrings.unk_00[27];
+    gMenuStaticStrings.unk_74 = gMenuStaticStrings.posX[2];
+    gMenuStaticStrings.unk_78 = gMenuStaticStrings.posX[10];
+    gMenuStaticStrings.unk_7C = gMenuStaticStrings.posX[12];
+    gMenuStaticStrings.unk_80 = gMenuStaticStrings.posX[15];
+    gMenuStaticStrings.unk_84 = gMenuStaticStrings.posX[22];
+    gMenuStaticStrings.unk_88 = gMenuStaticStrings.posX[27];
     gMenuStaticStrings.unk_8C = Text_GetString(NULL, 0, D_830039C0, 0x21);
-    gMenuStaticStrings.unk_90 = gMenuStaticStrings.unk_00[20];
-    gMenuStaticStrings.unk_94 = gMenuStaticStrings.unk_00[4];
+    gMenuStaticStrings.unk_90 = gMenuStaticStrings.posX[20];
+    gMenuStaticStrings.unk_94 = gMenuStaticStrings.posX[4];
     gMenuStaticStrings.unk_98 = Text_GetString(NULL, 0, D_830039C0, 0x22);
 }
 
@@ -688,11 +688,11 @@ void RentalRules_LoadDescriptionStrings(void) {
             case 14:
             case 19:
             case 24:
-                gMenuOptionStrings.unk_00[i] = NULL;
+                gMenuOptionStrings.posX[i] = NULL;
                 break;
 
             default:
-                gMenuOptionStrings.unk_00[i] = Text_GetString(NULL, 0, D_830039C0, var_s2 + 0x23);
+                gMenuOptionStrings.posX[i] = Text_GetString(NULL, 0, D_830039C0, var_s2 + 0x23);
                 var_s2++;
                 break;
         }

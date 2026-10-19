@@ -133,8 +133,8 @@ s16 AuxiliaryEffect_Alloc(void) {
         if (var_a0->unk_000 == 0) {
             var_v1 = &var_a0->unk_004[0];
             for (j = 0; j < 20; j++, var_v1++) {
-                var_v1->unk_00 = 0;
-                var_v1->unk_04 = 0;
+                var_v1->posX = 0;
+                var_v1->rotation = 0;
                 var_v1->unk_08 = 1.0f;
                 var_v1->unk_0C.x = 0.0f;
                 var_v1->unk_0C.y = 0.0f;
@@ -155,9 +155,9 @@ void AuxiliaryEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32
     if (temp_v0->unk_000 != 0) {
         var_v1 = &temp_v0->unk_004[0];
         for (i = 0; i < 20; i++, var_v1++) {
-            if (var_v1->unk_00 == 0) {
-                var_v1->unk_00 = 1;
-                var_v1->unk_04 = 0;
+            if (var_v1->posX == 0) {
+                var_v1->posX = 1;
+                var_v1->rotation = 0;
                 var_v1->unk_06 = arg4;
                 var_v1->unk_08 = arg5;
                 var_v1->unk_0C.x = arg1;
@@ -177,10 +177,10 @@ void AuxiliaryEffect_Update(s16 arg0) {
     if (temp_v0->unk_000 != 0) {
         var_v1 = &temp_v0->unk_004[0];
         for (i = 0; i < 20; i++, var_v1++) {
-            if (var_v1->unk_00 == 1) {
-                var_v1->unk_04++;
-                if (var_v1->unk_06 < var_v1->unk_04) {
-                    var_v1->unk_00 = 0;
+            if (var_v1->posX == 1) {
+                var_v1->rotation++;
+                if (var_v1->unk_06 < var_v1->rotation) {
+                    var_v1->posX = 0;
                 }
                 var_v1->unk_0C.y -= 0.75f;
             }
@@ -201,7 +201,7 @@ Gfx* AuxiliaryEffect_DrawOne(Gfx* arg0, Particle* arg1, MtxF* arg2) {
     spC8 = arg1->unk_0C.y;
     spC4 = arg1->unk_0C.z;
     spC0 = arg1->unk_08;
-    spC0 *= __sinf((arg1->unk_04 * 3.1415927f) / 10.0f);
+    spC0 *= __sinf((arg1->rotation * 3.1415927f) / 10.0f);
 
     guScale(&sp38, spC0, spC0, spC0);
     guTranslate(&sp78, spCC, spC8, spC4);
@@ -234,7 +234,7 @@ Gfx* AuxiliaryEffect_Draw(s16 arg0, Gfx* arg1) {
 
     var_s0 = &temp_s3->unk_004;
     for (i = 0; i < 20; i++, var_s0++) {
-        if (var_s0->unk_00 == 1) {
+        if (var_s0->posX == 1) {
             arg1 = AuxiliaryEffect_DrawOne(arg1, var_s0, &sp38);
         }
     }

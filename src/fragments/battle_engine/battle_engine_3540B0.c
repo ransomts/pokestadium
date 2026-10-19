@@ -31,8 +31,8 @@ void OwnerAnchoredFourStream_Init(void) {
 
         var_a0 = &var_v0->unk_01C[0];
         for (j = 0; j < 15; j++, var_a0++) {
-            var_a0->unk_00 = 0;
-            var_a0->unk_04 = 1.0f;
+            var_a0->posX = 0;
+            var_a0->rotation = 1.0f;
             var_a0->unk_08 = 0.0f;
             var_a0->unk_0C.x = 0.0f;
             var_a0->unk_0C.y = 0.0f;
@@ -88,8 +88,8 @@ void OwnerAnchoredFourStream_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
 
             var_s0 = &var_v1->unk_01C[0];
             for (j = 0; j < 15; j++, var_s0++) {
-                var_s0->unk_00 = (arg9 * (0xE - j)) / 15;
-                var_s0->unk_04 = argB;
+                var_s0->posX = (arg9 * (0xE - j)) / 15;
+                var_s0->rotation = argB;
                 var_s0->unk_08 = (RAND(120) * 6.2831855f) / 120.0;
                 var_s0->unk_0C = sp64;
                 var_s0->unk_18 = sp58;
@@ -114,7 +114,7 @@ void OwnerAnchoredFourStream_UpdateNodeChain(unk_D_843ACA10* arg0) {
 
     for (i = 0; i < 15; i++, var_s0++) {
         if (i == 0) {
-            var_s0->unk_24 = var_s0->unk_04;
+            var_s0->unk_24 = var_s0->rotation;
             var_s0->unk_28 = var_s0->unk_08;
 
             var_s0->unk_2C = var_s0->unk_0C;
@@ -139,12 +139,12 @@ void OwnerAnchoredFourStream_UpdateNodeChain(unk_D_843ACA10* arg0) {
 
             BattleAnim_SetParticlePosition(arg0->unk_018, var_s0->unk_0C);
 
-            var_s0->unk_04 += 2.0;
-            if (arg0->unk_00C < var_s0->unk_04) {
-                var_s0->unk_04 = arg0->unk_00C;
+            var_s0->rotation += 2.0;
+            if (arg0->unk_00C < var_s0->rotation) {
+                var_s0->rotation = arg0->unk_00C;
             }
         } else {
-            var_s0->unk_24 = var_s0->unk_04;
+            var_s0->unk_24 = var_s0->rotation;
             var_s0->unk_28 = var_s0->unk_08;
 
             var_s0->unk_2C = var_s0->unk_0C;
@@ -153,7 +153,7 @@ void OwnerAnchoredFourStream_UpdateNodeChain(unk_D_843ACA10* arg0) {
             var_s0->unk_0C = var_s0[-1].unk_2C;
             var_s0->unk_08 = var_s0[-1].unk_28;
             var_s0->unk_18 = var_s0[-1].unk_38;
-            var_s0->unk_04 = var_s0[-1].unk_24;
+            var_s0->rotation = var_s0[-1].unk_24;
         }
     }
 }
@@ -212,7 +212,7 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
 
             var_s0 = var_s5->unk_014;
             for (j = 0; j < 15; j++) {
-                OwnerAnchoredFourStream_Update(temp_s0->unk_08, &sp154, temp_s0->unk_04);
+                OwnerAnchoredFourStream_Update(temp_s0->unk_08, &sp154, temp_s0->rotation);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -225,10 +225,10 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s5->unk_008.r;
                 var_s0->v.cn[1] = var_s5->unk_008.g;
                 var_s0->v.cn[2] = var_s5->unk_008.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
-                OwnerAnchoredFourStream_Update(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
+                OwnerAnchoredFourStream_Update(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->rotation);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -241,7 +241,7 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s5->unk_008.r;
                 var_s0->v.cn[1] = var_s5->unk_008.g;
                 var_s0->v.cn[2] = var_s5->unk_008.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
                 temp_s0++;

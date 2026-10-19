@@ -5,13 +5,13 @@
 #include "29BA0.h"
 
 typedef struct PaletteColor {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ Color_RGBA8 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ Color_RGBA8 rotation;
 } PaletteColor; // size = 0x8
 
 typedef struct MoveCategoryColorGradient {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ Color_RGBA8 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ Color_RGBA8 rotation;
     /* 0x08 */ Color_RGBA8 unk_08;
 } MoveCategoryColorGradient; // size = 0xC
 

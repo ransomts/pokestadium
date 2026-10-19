@@ -52,8 +52,8 @@ void TexturedRibbonSheet_Init(void) {
 
         var_a0 = &var_v0->unk_038[0];
         for (j = 0; j < 10; j++, var_a0++) {
-            var_a0->unk_00 = 0.0f;
-            var_a0->unk_04 = 0;
+            var_a0->posX = 0.0f;
+            var_a0->rotation = 0;
             var_a0->unk_08 = 0.0f;
             var_a0->unk_0C.z = var_a0->unk_0C.y = var_a0->unk_0C.x = 0.0f;
             var_a0->unk_18.z = var_a0->unk_18.y = var_a0->unk_18.x = 0.0f;
@@ -108,8 +108,8 @@ void TexturedRibbonSheet_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4,
 
             var_s0 = &var_v1->unk_038[0];
             for (j = 0; j < 10; j++, var_s0++) {
-                var_s0->unk_00 = j;
-                var_s0->unk_04 = (arg9 * (9 - j)) / 10;
+                var_s0->posX = j;
+                var_s0->rotation = (arg9 * (9 - j)) / 10;
                 var_s0->unk_08 = (RAND(100) * 6.2831854820251465) / 100.0;
                 var_s0->unk_0C = sp74;
                 var_s0->unk_18 = sp68;
@@ -247,7 +247,7 @@ Gfx* TexturedRibbonSheet_Draw(Gfx* arg0) {
             for (j = 0; j < 10; j++, temp_s0++) {
                 if ((j == 0) || (var_s5->unk_004 < 2)) {
                     for (k = 0, vtx2 = &temp_s0->unk_30[0]; k < 2; k++) {
-                        if (temp_s0->unk_00 <= 0.0) {
+                        if (temp_s0->posX <= 0.0) {
                             TexturedRibbonSheet_Update(temp_s0->unk_08 + ((2.0 * k * 3.1415927410125732) / 2), &sp13C,
                                           (10.0f * tmp) * 0.8f);
                         }
@@ -259,14 +259,14 @@ Gfx* TexturedRibbonSheet_Draw(Gfx* arg0) {
                         vtx->v.cn[0] = var_s5->unk_00A.r;
                         vtx->v.cn[1] = var_s5->unk_00A.g;
                         vtx->v.cn[2] = var_s5->unk_00A.b;
-                        vtx->v.cn[3] = temp_s0->unk_04;
+                        vtx->v.cn[3] = temp_s0->rotation;
 
                         *vtx2++ = *vtx++;
                     }
                 } else {
                     for (k = 0, vtx2 = &temp_s0->unk_30[0]; k < 2; k++) {
                         *vtx = *vtx2++;
-                        vtx->v.cn[3] = temp_s0->unk_04;
+                        vtx->v.cn[3] = temp_s0->rotation;
 
                         vtx++;
                     }

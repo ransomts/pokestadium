@@ -312,13 +312,13 @@ void BattleAnim_UpdateParticleAnchor(ParticleEffectInstance* arg0) {
 
 void BattleAnim_UpdateParticleCameraScale(ParticleEffectInstance* arg0) {
     if ((arg0->unk_10 == NULL) || (Particle_HasFlags(arg0, 0x108) != 0)) {
-        gParticleRenderContext.unk_00.x = 1.0f;
-        gParticleRenderContext.unk_00.y = 1.0f;
-        gParticleRenderContext.unk_00.z = 1.0f;
+        gParticleRenderContext.posX.x = 1.0f;
+        gParticleRenderContext.posX.y = 1.0f;
+        gParticleRenderContext.posX.z = 1.0f;
     } else if (Particle_LacksFlags(arg0, 0x800) != 0) {
-        gParticleRenderContext.unk_00.x = BattleAnim_GetOwnerModelScale(arg0->unk_10);
-        gParticleRenderContext.unk_00.y = BattleAnim_GetOwnerModelScale(arg0->unk_10);
-        gParticleRenderContext.unk_00.z = BattleAnim_GetOwnerModelScale(arg0->unk_10);
+        gParticleRenderContext.posX.x = BattleAnim_GetOwnerModelScale(arg0->unk_10);
+        gParticleRenderContext.posX.y = BattleAnim_GetOwnerModelScale(arg0->unk_10);
+        gParticleRenderContext.posX.z = BattleAnim_GetOwnerModelScale(arg0->unk_10);
     }
 }
 
@@ -359,8 +359,8 @@ void BattleAnim_InitializeParticleFromEffect(ParticleEffectInstance* arg0, unk_B
     while (arg0 != NULL) {
         arg0->unk_10 = arg1;
         arg0->unk_AC = arg3++;
-        arg0->unk_08 = arg2->unk_00;
-        arg0->unk_0C = arg2->unk_04;
+        arg0->unk_08 = arg2->posX;
+        arg0->unk_0C = arg2->rotation;
         arg0->targetAlpha = arg2->unk_19;
         arg0->unk_CE = arg2->unk_1A;
         arg0->alphaStep = arg2->unk_12;
@@ -386,8 +386,8 @@ void BattleAnim_InitializeParticleFromEffect(ParticleEffectInstance* arg0, unk_B
 void BattleAnim_SpawnEffectParticles(gBattleAnimEffectSlots* arg0, s32 arg1) {
     s16 i;
     s16 var_s2;
-    ParticleEffectData* temp_a2 = arg0->unk_04;
-    ParticleRenderSettings* temp_a3 = arg0->unk_04->unk_04.a;
+    ParticleEffectData* temp_a2 = arg0->rotation;
+    ParticleRenderSettings* temp_a3 = arg0->rotation->rotation.a;
     unk_BattlePlayerEntity* tmp08 = arg0->unk_08;
     s16 tmp12 = arg0->unk_12;
 
@@ -402,7 +402,7 @@ void BattleAnim_SpawnEffectParticles(gBattleAnimEffectSlots* arg0, s32 arg1) {
             break;
     }
 
-    if ((temp_a2->unk_00 == 1) && (temp_a3->unk_00 == 1)) {
+    if ((temp_a2->posX == 1) && (temp_a3->posX == 1)) {
         BattleAnim_InitializeParticleFromEffect(Particle_AllocChain(var_s2), tmp08, arg0, 0);
         return;
     }
@@ -644,8 +644,8 @@ gBattleAnimEffectSlots* BattleAnim_CreateEffectSlot(s32 arg0, s32 arg1, s8 arg2,
         sp1C->unk_0E = arg0 + D_843902A8;
         sp1C->unk_0C = arg1;
         sp1C->unk_14 = arg2;
-        sp1C->unk_00 = arg3;
-        sp1C->unk_04 = arg4;
+        sp1C->posX = arg3;
+        sp1C->rotation = arg4;
         sp1C->unk_08 = arg5;
         sp1C->unk_16 = arg8;
         sp1C->unk_10 = arg6;

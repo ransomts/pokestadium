@@ -18,7 +18,7 @@ typedef struct unk_D_800FCED8_0198 {
 
 typedef struct unk_D_800FCED8_01598 {
     /* 0x00 */ char unk00[0x4];
-    /* 0x04 */ u32 unk_04;
+    /* 0x04 */ u32 rotation;
 } unk_D_800FCED8_01598; // size = 0x8
 
 typedef void (*unk_D_800FCED8_190)(s32, unk_D_800FCED8_01598*, s32, OSMesgQueue*);

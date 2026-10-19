@@ -17,9 +17,9 @@
 #include "src/stage_loader.h"
 
 typedef struct unk_D_82F14438 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -28,9 +28,9 @@ typedef struct unk_D_82F14438 {
 } unk_D_82F14438; // size = 0x14
 
 typedef struct unk_D_82F144B0 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
 } unk_D_82F144B0; // size = 0xA
@@ -79,15 +79,15 @@ void Trade_SetFadeRect(s16 arg0) {
 
     switch (arg0) {
         case 0:
-            ptr->unk_02 = 0;
-            ptr->unk_04 = 0;
+            ptr->posY = 0;
+            ptr->rotation = 0;
             ptr->unk_06 = 0x280;
             ptr->unk_08 = 0x1E0;
             break;
 
         case 1:
-            ptr->unk_02 = 0;
-            ptr->unk_04 = 0x154;
+            ptr->posY = 0;
+            ptr->rotation = 0x154;
             ptr->unk_06 = 0x280;
             ptr->unk_08 = 0x8C;
             break;
@@ -95,32 +95,32 @@ void Trade_SetFadeRect(s16 arg0) {
 }
 
 void Trade_ResetFade(void) {
-    gProgressBarRect.unk_00 = -1;
+    gProgressBarRect.posX = -1;
     Trade_SetFadeRect(0);
 }
 
 void Trade_DrawFadeRect(void) {
     unk_D_82F144B0* ptr = &gProgressBarRect;
 
-    if ((ptr->unk_00 != 0) && (TradeCable_IsSequenceActive() != 0)) {
-        if (ptr->unk_00 > 0) {
-            ptr->unk_00--;
+    if ((ptr->posX != 0) && (TradeCable_IsSequenceActive() != 0)) {
+        if (ptr->posX > 0) {
+            ptr->posX--;
         }
 
         gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
         gDPSetFillColor(gDisplayListHead++, 0x00010001);
-        gDPFillRectangle(gDisplayListHead++, ptr->unk_02, ptr->unk_04, (ptr->unk_02 + ptr->unk_06) - 1,
-                         (ptr->unk_04 + ptr->unk_08) - 1);
+        gDPFillRectangle(gDisplayListHead++, ptr->posY, ptr->rotation, (ptr->posY + ptr->unk_06) - 1,
+                         (ptr->rotation + ptr->unk_08) - 1);
     }
 }
 
 void Trade_ResetTextPrinter(void) {
     gCurrentTextBox = &gTextBoxState;
-    gTextBoxState.unk_00 = 0;
-    gTextBoxState.unk_02 = 0;
+    gTextBoxState.posX = 0;
+    gTextBoxState.posY = 0;
     gTextBoxState.unk_08 = 0;
     gTextBoxState.unk_0A = 2;
-    gTextBoxState.unk_04 = 0;
+    gTextBoxState.rotation = 0;
     gTextBoxState.unk_06 = 0;
     gTextBoxState.unk_0C = 0;
     gTextBoxState.unk_10 = NULL;
@@ -129,20 +129,20 @@ void Trade_ResetTextPrinter(void) {
 void Trade_SetTextPrinter(s16 arg0, s16 arg1, s8* arg2, s32 arg3) {
     s8* ptr;
 
-    gCurrentTextBox->unk_00 = 0;
-    gCurrentTextBox->unk_02 = 0;
+    gCurrentTextBox->posX = 0;
+    gCurrentTextBox->posY = 0;
 
     ptr = arg2;
     if (ptr != NULL) {
         while (*ptr != '\x00') {
-            gCurrentTextBox->unk_02++;
+            gCurrentTextBox->posY++;
             ptr++;
         }
     }
 
     gCurrentTextBox->unk_08 = 0;
     gCurrentTextBox->unk_0A = 2;
-    gCurrentTextBox->unk_04 = arg0;
+    gCurrentTextBox->rotation = arg0;
     gCurrentTextBox->unk_06 = arg1;
     gCurrentTextBox->unk_0C = 0;
 
@@ -167,7 +167,7 @@ void Trade_ShowTextMenu(unk_D_82F13B78* arg0, s32 arg1) {
     if (NULL != arg0) {
         unk_D_82F13B78* ptr = &arg0[gMessageEntryIndex];
 
-        Trade_SetTextPrinter(ptr->unk_00, ptr->unk_02, ptr->unk_04, arg1);
+        Trade_SetTextPrinter(ptr->posX, ptr->posY, ptr->rotation, arg1);
         gMessageEntryIndex++;
     }
 }
@@ -176,7 +176,7 @@ s32 Trade_IsTextMenuAtEnd(unk_D_82F13B78* arg0) {
     unk_D_82F13B78* ptr = &arg0[gMessageEntryIndex];
     s32 var_v1 = 0;
 
-    if (ptr->unk_04 == NULL) {
+    if (ptr->rotation == NULL) {
         var_v1 = 1;
     }
     return var_v1;
@@ -185,7 +185,7 @@ s32 Trade_IsTextMenuAtEnd(unk_D_82F13B78* arg0) {
 void Trade_UpdateTextPrinter(void) {
     u8 tmp;
 
-    if ((gCurrentTextBox->unk_10 != 0) && (gCurrentTextBox->unk_00 >= 0)) {
+    if ((gCurrentTextBox->unk_10 != 0) && (gCurrentTextBox->posX >= 0)) {
         if (gPlayer1Controller->buttonPressed & 0x8000) {
             gCurrentTextBox->unk_08 = 0;
             gCurrentTextBox->unk_0A = 1;
@@ -197,15 +197,15 @@ void Trade_UpdateTextPrinter(void) {
             Audio_PlaySoundEffectById(0x01200001);
             gCurrentTextBox->unk_08 = gCurrentTextBox->unk_0A;
 
-            gCurrentTextBox->unk_00++;
+            gCurrentTextBox->posX++;
 
-            tmp = gCurrentTextBox->unk_10[gCurrentTextBox->unk_00 - 1];
+            tmp = gCurrentTextBox->unk_10[gCurrentTextBox->posX - 1];
             if (tmp >= 0x80) {
-                gCurrentTextBox->unk_00++;
+                gCurrentTextBox->posX++;
             }
 
-            if (gCurrentTextBox->unk_00 >= gCurrentTextBox->unk_02) {
-                gCurrentTextBox->unk_00 = -1;
+            if (gCurrentTextBox->posX >= gCurrentTextBox->posY) {
+                gCurrentTextBox->posX = -1;
             }
         }
     }
@@ -215,9 +215,9 @@ s32 Trade_GetTextPrinterState(void) {
     s32 var_v1 = 0;
 
     if (gCurrentTextBox->unk_10 != NULL) {
-        if (gCurrentTextBox->unk_00 == -1) {
+        if (gCurrentTextBox->posX == -1) {
             var_v1 = 2;
-        } else if (gCurrentTextBox->unk_00 >= 0) {
+        } else if (gCurrentTextBox->posX >= 0) {
             var_v1 = 1;
         }
     }
@@ -249,18 +249,18 @@ void Trade_DrawTextPrinter(void) {
 
         Font_SetLineHeight(0x1E);
         temp_t0 = Font_MeasureTextExtent(0, 0, gCurrentTextBox->unk_10) / 2;
-        if (gCurrentTextBox->unk_00 == -1) {
-            Font_Printf(gCurrentTextBox->unk_04 - temp_t0, gCurrentTextBox->unk_06, gCurrentTextBox->unk_10);
+        if (gCurrentTextBox->posX == -1) {
+            Font_Printf(gCurrentTextBox->rotation - temp_t0, gCurrentTextBox->unk_06, gCurrentTextBox->unk_10);
         } else {
             s8* p_sp38 = sp38;
             s8* other = gCurrentTextBox->unk_10;
 
-            for (i = 0; i < gCurrentTextBox->unk_00; i++) {
+            for (i = 0; i < gCurrentTextBox->posX; i++) {
                 *p_sp38++ = *other++;
             }
 
             *p_sp38 = '\x00';
-            Font_Printf(gCurrentTextBox->unk_04 - temp_t0, gCurrentTextBox->unk_06, &sp38);
+            Font_Printf(gCurrentTextBox->rotation - temp_t0, gCurrentTextBox->unk_06, &sp38);
         }
         Font_EndTexturedTextRendering();
         D_82F13B88++;
@@ -285,14 +285,14 @@ void Trade_ScanPorts(void) {
     for (i = 0, ptr = &gPlayerInfo[0]; i < 4; i++, ptr++) {
         GbSave_CopyPlayerIdentity(i, &sp40);
         GbSave_EnsureMainDataLoaded(i);
-        Text_UntranscodeNameWrapper(ptr->unk_08, sp40.unk_02);
-        ptr->unk_06 = sp40.unk_00;
+        Text_UntranscodeNameWrapper(ptr->unk_08, sp40.posY);
+        ptr->unk_06 = sp40.posX;
         ptr->unk_01 = GbSave_GetPortGame(i);
-        ptr->unk_00 = GbSave_GetSaveState(i);
+        ptr->posX = GbSave_GetSaveState(i);
         ptr->unk_03 = GbSave_SavedAtPokemonCenter(i);
-        ptr->unk_04 = GbSave_HasPokedex(i);
+        ptr->rotation = GbSave_HasPokedex(i);
         ptr->unk_05 = (temp_s2 & (1 << i)) != 0;
-        ptr->unk_02 = GbSave_GetPartyCount(i);
+        ptr->posY = GbSave_GetPartyCount(i);
     }
 
     main_pool_pop_state('info');
@@ -325,7 +325,7 @@ void Trade_Init(void) {
     D_82F144C4 = Text_GetStringTable(0x24);
     D_82F144C8 = Text_GetStringTable(0x25);
     D_82F144CC = Text_GetStringTable(0x26);
-    D_82F13B78[0].unk_04 = Text_GetString(NULL, 0, D_82F13B70, 0);
+    D_82F13B78[0].rotation = Text_GetString(NULL, 0, D_82F13B70, 0);
     gFragment41State = 0;
     Trade_ResetTextMenu();
     gFragment41FrameCounter = 0;
@@ -467,11 +467,11 @@ void Trade_UpdateWaitForCableCondition(void) {
 
         case 12:
             if (TradeCable_CheckSequenceCondition(0xC) != 0) {
-                if (gProgressBarRect.unk_00 == -1) {
-                    gProgressBarRect.unk_00 = 5;
+                if (gProgressBarRect.posX == -1) {
+                    gProgressBarRect.posX = 5;
                 }
             } else {
-                gProgressBarRect.unk_00 = -1;
+                gProgressBarRect.posX = -1;
             }
 
             if (TradeCable_CheckSequenceCondition(0xA) != 0) {
@@ -487,7 +487,7 @@ void Trade_UpdateWaitForPickSelection(void) {
     if (Trade_IsPickScreenActive() == 0) {
         Trade_GetPickScreenSnapshot(gActivePlayerIndex, &sp20);
 
-        if (sp20.unk_00 != 0) {
+        if (sp20.posX != 0) {
             if (gActivePlayerIndex == 0) {
                 Trade_ChangeTopic(0x13);
             } else {
@@ -510,11 +510,11 @@ void Trade_UpdateWaitForDepositSave(void) {
     Trade_SetFadeRect(1);
 
     if (Trade_GetSaveSeqState() == 2) {
-        if (gProgressBarRect.unk_00 == -1) {
-            gProgressBarRect.unk_00 = 3;
+        if (gProgressBarRect.posX == -1) {
+            gProgressBarRect.posX = 3;
         }
     } else {
-        gProgressBarRect.unk_00 = -1;
+        gProgressBarRect.posX = -1;
     }
 
     if (Trade_GetSaveSeqState() == 0) {
@@ -530,11 +530,11 @@ void Trade_UpdateWaitForWithdrawSave(void) {
     Trade_SetFadeRect(1);
 
     if (Trade_GetSaveSeqState() == 2) {
-        if (gProgressBarRect.unk_00 == -1) {
-            gProgressBarRect.unk_00 = 3;
+        if (gProgressBarRect.posX == -1) {
+            gProgressBarRect.posX = 3;
         }
     } else {
-        gProgressBarRect.unk_00 = -1;
+        gProgressBarRect.posX = -1;
     }
 
     if (Trade_GetSaveSeqState() == 7) {

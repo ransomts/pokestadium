@@ -4,17 +4,17 @@
 #include "global.h"
 
 typedef struct LeoDiskDescriptor {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ void* unk_08;
     /* 0x0C */ s32 unk_0C;
 } LeoDiskDescriptor; // size = 0x10
 
 typedef struct LeoBootState {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
 } LeoBootState; // size = 0x8
 

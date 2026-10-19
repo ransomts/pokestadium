@@ -37,12 +37,12 @@ typedef struct Yay0 {
 typedef struct BinArchive {
     union {
         struct {
-            /* 0x00 */ u16 unk_00;
-            /* 0x02 */ u16 unk_02;
+            /* 0x00 */ u16 posX;
+            /* 0x02 */ u16 posY;
         };
         s32 raw;
     };
-    /* 0x04 */ u32 unk_04;
+    /* 0x04 */ u32 rotation;
     /* 0x08 */ u32 total_size;
     /* 0x0C */ u32 num_files;
 } BinArchive; // size = 0x10
@@ -55,14 +55,14 @@ typedef struct BinArchiveFile {
 } BinArchiveFile; // size = 0x10
 
 typedef struct StorageRange {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
 } StorageRange; // size >= 0x8
 
 typedef struct JpegStreamInfo {
-    /* 0x00 */ u8 unk_00; // mode
+    /* 0x00 */ u8 posX; // mode
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char unk02[0x2];
     /* 0x04 */ s16 width;
@@ -74,8 +74,8 @@ typedef struct JpegStreamInfo {
 } JpegStreamInfo; // size = 0x18
 
 typedef struct JpegDspTaskData {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;

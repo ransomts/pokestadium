@@ -29,8 +29,8 @@ void BattleAnim_SixSlotTrail_ResetPool(void) {
 
         var_a0 = &var_v0->unk_0A4[0];
         for (j = 0; j < 20; j++, var_a0++) {
-            var_a0->unk_00 = 0.0f;
-            var_a0->unk_04 = 1.0f;
+            var_a0->posX = 0.0f;
+            var_a0->rotation = 1.0f;
             var_a0->unk_08 = 0.0f;
             var_a0->unk_0C.x = 0.0f;
             var_a0->unk_0C.y = 0.0f;
@@ -71,13 +71,13 @@ void BattleAnim_SixSlotTrail_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
             var_v0->unk_084 = arg10;
             var_v0->unk_020 = arg14;
             var_v0->unk_024 = arg15;
-            var_v0->unk_068.unk_00 = 0;
-            var_v0->unk_068.unk_02 = 0;
-            var_v0->unk_074.unk_00 = 0;
-            var_v0->unk_074.unk_02 = 0;
-            var_v0->unk_068.unk_04 = arg16;
+            var_v0->unk_068.posX = 0;
+            var_v0->unk_068.posY = 0;
+            var_v0->unk_074.posX = 0;
+            var_v0->unk_074.posY = 0;
+            var_v0->unk_068.rotation = arg16;
             var_v0->unk_068.unk_06 = arg17;
-            var_v0->unk_074.unk_04 = arg1A;
+            var_v0->unk_074.rotation = arg1A;
             var_v0->unk_074.unk_06 = arg1B;
             var_v0->unk_068.unk_08 = arg18;
             var_v0->unk_068.unk_0A = arg19;
@@ -88,20 +88,20 @@ void BattleAnim_SixSlotTrail_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
             var_v0->unk_01C = 0x46;
             var_v0->unk_014 = 1.0f;
             var_v0->unk_018 = 1.0f;
-            var_v0->unk_008.unk_00.r = arg7;
-            var_v0->unk_008.unk_00.g = arg8;
-            var_v0->unk_008.unk_00.b = arg9;
-            var_v0->unk_008.unk_00.a = argA;
-            var_v0->unk_008.unk_04 = argB;
-            var_v0->unk_00D.unk_00.r = argC;
-            var_v0->unk_00D.unk_00.g = argD;
-            var_v0->unk_00D.unk_00.b = argE;
-            var_v0->unk_00D.unk_00.a = argF;
+            var_v0->unk_008.posX.r = arg7;
+            var_v0->unk_008.posX.g = arg8;
+            var_v0->unk_008.posX.b = arg9;
+            var_v0->unk_008.posX.a = argA;
+            var_v0->unk_008.rotation = argB;
+            var_v0->unk_00D.posX.r = argC;
+            var_v0->unk_00D.posX.g = argD;
+            var_v0->unk_00D.posX.b = argE;
+            var_v0->unk_00D.posX.a = argF;
 
             var_v1_2 = &var_v0->unk_0A4[0];
             for (j = 0; j < 20; j++, var_v1_2++) {
-                var_v1_2->unk_00 = 2.0f * j;
-                var_v1_2->unk_04 = arg11;
+                var_v1_2->posX = 2.0f * j;
+                var_v1_2->rotation = arg11;
                 var_v1_2->unk_08 = 0.0f;
                 var_v1_2->unk_0C = spC;
                 var_v1_2->unk_18 = sp0;
@@ -177,7 +177,7 @@ void BattleAnim_SixSlotTrail_UpdateSlot(unk_D_843C3508* arg0) {
 
     var_s0 = &arg0->unk_0A4[0];
     for (i = 0; i < 20; i++, var_s0++) {
-        if (var_s0->unk_00 > 0.0) {
+        if (var_s0->posX > 0.0) {
             temp_s3 = RAND(20) + 2;
             temp_s2 = RAND(10) + 4;
             temp_s4 = RAND(20) + 2;
@@ -191,15 +191,15 @@ void BattleAnim_SixSlotTrail_UpdateSlot(unk_D_843C3508* arg0) {
             var_s0->unk_0C.x = sp98.x;
             var_s0->unk_0C.y = sp98.y + temp_fs2;
             var_s0->unk_0C.z = sp98.z + temp_fs1_2;
-            var_s0->unk_00 -= 1.0;
+            var_s0->posX -= 1.0;
         } else {
             var_s0->unk_0C.x += var_s0->unk_18.x;
             var_s0->unk_0C.y += var_s0->unk_18.y;
             var_s0->unk_0C.z += var_s0->unk_18.z;
             var_s0->unk_08 += arg0->unk_084;
-            var_s0->unk_04 += 3.0f;
-            if (arg0->unk_080 < var_s0->unk_04) {
-                var_s0->unk_04 = arg0->unk_080;
+            var_s0->rotation += 3.0f;
+            if (arg0->unk_080 < var_s0->rotation) {
+                var_s0->rotation = arg0->unk_080;
             }
         }
     }
@@ -269,12 +269,12 @@ Gfx* BattleAnim_SixSlotTrail_LoadTextures(Gfx* arg0, unk_D_843C3508* arg1) {
     ptr = &arg1->unk_068;
     gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_020], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
-    gDPSetTileSize(arg0++, G_TX_RENDERTILE, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
+    gDPSetTileSize(arg0++, G_TX_RENDERTILE, ptr->posX, ptr->posY, (ptr->posX + 31) << 2, (ptr->posY + 31) << 2);
 
     ptr = &arg1->unk_074;
     gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_024], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
-    gDPSetTileSize(arg0++, 1, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
+    gDPSetTileSize(arg0++, 1, ptr->posX, ptr->posY, (ptr->posX + 31) << 2, (ptr->posY + 31) << 2);
 
     return arg0;
 }
@@ -321,15 +321,15 @@ Gfx* BattleAnim_SixSlotTrail_DrawAll(Gfx* arg0) {
                 for (k = 0; k < 2; k++) {
                     switch (var_s6->unk_002) {
                         case 0:
-                            if (var_s0->unk_00 <= 0.0) {
+                            if (var_s0->posX <= 0.0) {
                                 BattleAnim_SixSlotTrail_ComputeRotatedOffset(var_s0->unk_08 + ((k % 2) * 3.1415927f), &var_s0->unk_18, &spF0,
-                                              var_s0->unk_04, 1.0f, 0.0f, 0.0f);
+                                              var_s0->rotation, 1.0f, 0.0f, 0.0f);
                             }
                             break;
 
                         case 1:
-                            if (var_s0->unk_00 <= 0.0) {
-                                BattleAnim_SixSlotTrail_ComputeCameraRelativeOffset(k % 2, &var_s0->unk_18, &var_s0->unk_0C, &spF0, var_s0->unk_04, 1.0f,
+                            if (var_s0->posX <= 0.0) {
+                                BattleAnim_SixSlotTrail_ComputeCameraRelativeOffset(k % 2, &var_s0->unk_18, &var_s0->unk_0C, &spF0, var_s0->rotation, 1.0f,
                                               0.0f, 0.0f);
                             }
                             break;
@@ -353,15 +353,15 @@ Gfx* BattleAnim_SixSlotTrail_DrawAll(Gfx* arg0) {
             gSPDisplayList(arg0++, sWaterEffectRenderStateDL);
 
             Gfx_SetCombineRaw(
-                arg0++, var_s6->unk_028.unk_00, var_s6->unk_028.unk_04, var_s6->unk_028.unk_08, var_s6->unk_028.unk_0C,
+                arg0++, var_s6->unk_028.posX, var_s6->unk_028.rotation, var_s6->unk_028.unk_08, var_s6->unk_028.unk_0C,
                 var_s6->unk_028.unk_10, var_s6->unk_028.unk_14, var_s6->unk_028.unk_18, var_s6->unk_028.unk_1C,
-                var_s6->unk_048.unk_00, var_s6->unk_048.unk_04, var_s6->unk_048.unk_08, var_s6->unk_048.unk_0C,
+                var_s6->unk_048.posX, var_s6->unk_048.rotation, var_s6->unk_048.unk_08, var_s6->unk_048.unk_0C,
                 var_s6->unk_048.unk_10, var_s6->unk_048.unk_14, var_s6->unk_048.unk_18, var_s6->unk_048.unk_1C);
 
-            gDPSetPrimColor(arg0++, 0, var_s6->unk_008.unk_04, var_s6->unk_008.unk_00.r, var_s6->unk_008.unk_00.g,
-                            var_s6->unk_008.unk_00.b, (u8)(var_s6->unk_008.unk_00.a * var_s6->unk_014));
-            gDPSetEnvColor(arg0++, var_s6->unk_00D.unk_00.r, var_s6->unk_00D.unk_00.g, var_s6->unk_00D.unk_00.b,
-                           (u8)(var_s6->unk_00D.unk_00.a * var_s6->unk_018));
+            gDPSetPrimColor(arg0++, 0, var_s6->unk_008.rotation, var_s6->unk_008.posX.r, var_s6->unk_008.posX.g,
+                            var_s6->unk_008.posX.b, (u8)(var_s6->unk_008.posX.a * var_s6->unk_014));
+            gDPSetEnvColor(arg0++, var_s6->unk_00D.posX.r, var_s6->unk_00D.posX.g, var_s6->unk_00D.posX.b,
+                           (u8)(var_s6->unk_00D.posX.a * var_s6->unk_018));
 
             arg0 = BattleAnim_SixSlotTrail_LoadTextures(arg0, var_s6);
 

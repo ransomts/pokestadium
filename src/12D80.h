@@ -11,14 +11,14 @@ typedef struct unk_D_800AB970 {
 } unk_D_800AB970; // size = 0x190?
 
 typedef struct unk_D_800ABB00 {
-    /* 0x00 */ void* unk_00;
-    /* 0x04 */ void* unk_04;
+    /* 0x00 */ void* posX;
+    /* 0x04 */ void* rotation;
     /* 0x08 */ char unk08[0x8];
 } unk_D_800ABB00; // size >= 0x10?
 
 typedef struct unk_D_800ABB28 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ Gfx* unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ Gfx* rotation;
     /* 0x08 */ Gfx* unk_08;
     /* 0x0C */ MtxF* unk_0C;
     /* 0x10 */ Color_RGBA8_u32 unk_10;
@@ -33,11 +33,11 @@ typedef struct unk_D_800ABB28 {
 } unk_D_800ABB28; // size = 0x28
 
 typedef struct unk_D_800ABB10 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ Color_RGBA8_u32 unk_04;
+    /* 0x04 */ Color_RGBA8_u32 rotation;
     /* 0x08 */ Color_RGBA8_u32 unk_08;
     /* 0x0C */ unk_D_86002F34_alt11_018* unk_0C;
     /* 0x10 */ unk_D_800ABB28* unk_10;

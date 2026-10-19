@@ -4,9 +4,9 @@
 #include "src/32D10.h"
 
 typedef struct unk_arg1_func_81002830 {
-    /* 0x00 */ s16 unk_00;
+    /* 0x00 */ s16 posX;
     /* 0x02 */ s16 unk02;
-    /* 0x04 */ s32 unk_04[1];
+    /* 0x04 */ s32 rotation[1];
 } unk_arg1_func_81002830; // size = 0x8
 
 typedef struct unk_arg1_func_81002968 {
@@ -32,11 +32,11 @@ void LoadTextureBlockWithTileSize(Gfx* gfx, unk_arg1_func_81002830* arg1) {
     if (gDefaultGraphRoot->unk_01C == 0) {
         ptr = arg1;
         var_a3 = gTextureOffsetScale;
-        temp_v0 = 0x4000 - (ptr->unk_00 * var_a3);
+        temp_v0 = 0x4000 - (ptr->posX * var_a3);
         if (var_a4) {}
         var_a4 = var_a3;
         var_a3 = 32;
-        gDPLoadTextureBlock(gfx++, ptr->unk_04[var_a4 & 0x7], G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, var_a3, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        gDPLoadTextureBlock(gfx++, ptr->rotation[var_a4 & 0x7], G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, var_a3, 0, G_TX_NOMIRROR | G_TX_WRAP,
                     G_TX_NOMIRROR | G_TX_CLAMP, 6, 5, G_TX_NOLOD, G_TX_NOLOD);
         var_a5 = 0;
         gDPSetTileSize(gfx++, var_a5, temp_v0, var_a5, ((temp_v0 + 63) << 2), 124);
@@ -79,7 +79,7 @@ void DisplayList_InitSelectedTextureSegment(s32 arg0, TextureState* state) {
             if (index >= 8) {
                 index = 0;
             }
-            if (gDefaultGraphRoot->unk_040.unk_00 >= 2) {
+            if (gDefaultGraphRoot->unk_040.posX >= 2) {
                 index = 0;
             }
         } else {

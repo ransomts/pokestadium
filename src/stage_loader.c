@@ -10,17 +10,17 @@
 #include "profiler.h"
 #include "stdarg.h"
 
-typedef struct unk_D_80068CA0 {
-    /* 0x00 */ struct unk_D_80068CA0* next;
-    /* 0x04 */ s16 unk_04;
+typedef struct TextQueueNode {
+    /* 0x00 */ struct TextQueueNode* next;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s8 unk_08[4];
-} unk_D_80068CA0; // size = 0xC
+} TextQueueNode; // size = 0xC
 
 s32 gShowCPUProfiler = 0;
 s32 gShowMEMProfiler = 0;
 
-static Mtx D_80068BC8 = { {
+static Mtx gIdentityMatrix = { {
     {
         0x00010000,
         0x00000000,
@@ -47,7 +47,7 @@ static Mtx D_80068BC8 = { {
     },
 } };
 
-static Vp D_80068C08 = { {
+static Vp gViewportLowRes = { {
     {
         0x0280,
         0x01E0,
@@ -63,7 +63,7 @@ static Vp D_80068C08 = { {
 
 } };
 
-static Vp D_80068C18 = { {
+static Vp gViewportHighRes = { {
     {
         0x0500,
         0x03C0,
@@ -78,28 +78,28 @@ static Vp D_80068C18 = { {
     },
 } };
 
-static Vtx D_80068C28[] = {
+static Vtx gFullQuadVertices[] = {
     VTX(0, 240, 0, 0, 0, 0x00, 0x00, 0x81, 0xFF),
     VTX(0, 0, 0, 0, 0, 0x00, 0x00, 0x81, 0xFF),
     VTX(320, 0, 0, 0, 0, 0x00, 0x00, 0x81, 0xFF),
     VTX(320, 240, 0, 0, 0, 0x00, 0x00, 0x81, 0xFF),
 };
 
-static Gfx D_80068C68[] = {
+static Gfx gFullQuadDL[] = {
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsDPSetRenderMode(G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2),
     gsDPSetCombineLERP(0, 0, 0, ENVIRONMENT, 0, 0, 0, ENVIRONMENT, 0, 0, 0, ENVIRONMENT, 0, 0, 0, ENVIRONMENT),
-    gsSPVertex(D_80068C28, 4, 0),
+    gsSPVertex(gFullQuadVertices, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 
 static s32 D_80068C98_Pad[2] = { 0, 0 };
 
-static unk_D_80068CA0* D_80068CA0 = NULL;
-static unk_D_80068CA0* D_80068CA4 = NULL;
+static TextQueueNode* gTextQueueTransient = NULL;
+static TextQueueNode* gTextQueuePersistent = NULL;
 
-static s32 D_80068CA8 = 0;
+static s32 gTextQueueTimer = 0;
 
 static s32 D_80068CAC_Pad[1] = { 0 };
 
@@ -170,11 +170,11 @@ static u32 gOverlayTextureData[] = {
     0x00111001, 0x11000011, 0x00011110, 0x11001101, 0x11001111, 0x10000110, 0x00110001, 0x10000000, 0x00000000,
 };
 
-static unk_D_800A7450 D_800A7450;
+static unk_D_800A7450 gFramebufferRequest;
 static Stage* gCurrentStage;
-static Mtx D_800A7468;
+static Mtx gProjectionMatrix;
 static char pad_D_800A74A8[0x8];
-static Gfx* D_800A74B0;
+static Gfx* gTextRenderDLHead;
 
 s32 StageContext_IsHighResolution(void);
 void TextRenderer_FlushQueuedStrings(Gfx**, s32);
@@ -215,7 +215,7 @@ void StageFade_Update(void) {
 
     if (a != 0) {
         gDPSetEnvColor(gDisplayListHead++, r, g, b, a);
-        gSPDisplayList(gDisplayListHead++, D_80068C68);
+        gSPDisplayList(gDisplayListHead++, gFullQuadDL);
     }
 
     if (gCurrentStage->unk_11 == 1) {
@@ -324,21 +324,21 @@ void StageLoader_ResetGraphicsState(void) {
 
 void StageLoader_SetupFrame(void) {
     GfxImage_SetRenderTarget(&gDisplayListHead, gCurrentStage->unk_18[gCurrentStage->unk_16]);
-    guOrtho(&D_800A7468, 0.0f, 320.0f, 0.0f, 240.0f, -2.0f, 2.0f, 1.0f);
+    guOrtho(&gProjectionMatrix, 0.0f, 320.0f, 0.0f, 240.0f, -2.0f, 2.0f, 1.0f);
     Gfx_SetDefaultRenderState();
     Gfx_SetDefaultGeometryState();
 
-    gSPMatrix(gDisplayListHead++, (u32)&D_80068BC8 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-    gSPMatrix(gDisplayListHead++, (u32)&D_800A7468 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(gDisplayListHead++, (u32)&gIdentityMatrix & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+    gSPMatrix(gDisplayListHead++, (u32)&gProjectionMatrix & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPPerspNormalize(gDisplayListHead++, 0xFFFF);
 
     if (gCurrentStage->unk_0C == 1) {
-        gSPViewport(gDisplayListHead++, (u32)&D_80068C18 & 0x1FFFFFFF);
+        gSPViewport(gDisplayListHead++, (u32)&gViewportHighRes & 0x1FFFFFFF);
     } else {
-        gSPViewport(gDisplayListHead++, (u32)&D_80068C08 & 0x1FFFFFFF);
+        gSPViewport(gDisplayListHead++, (u32)&gViewportLowRes & 0x1FFFFFFF);
     }
 
-    Gfx_SetScissorRect(&gDisplayListHead, 0, 0, gCurrentStage->unk_00, gCurrentStage->unk_02);
+    Gfx_SetScissorRect(&gDisplayListHead, 0, 0, gCurrentStage->posX, gCurrentStage->posY);
     StageFade_Update();
 
     if (gShowCPUProfiler != 0) {
@@ -368,12 +368,12 @@ void StageLoader_SwapDisplayListAndReset(void) {
 
 void StageLoader_BeginFrame(void) {
     StageLoader_SetupFrame();
-    D_800A7450.unk_00 = gCurrentStage->unk_10;
-    D_800A7450.unk_01 = gCurrentStage->unk_0C;
-    D_800A7450.unk_02 = gCurrentStage->unk_0D;
-    D_800A7450.unk_03 = gCurrentStage->unk_16;
-    D_800A7450.unk_0C = gCurrentStage->unk_18[gCurrentStage->unk_16];
-    Gfx_GetDisplayListRange(&D_800A7450.unk_04, &D_800A7450.unk_08);
+    gFramebufferRequest.posX = gCurrentStage->unk_10;
+    gFramebufferRequest.unk_01 = gCurrentStage->unk_0C;
+    gFramebufferRequest.posY = gCurrentStage->unk_0D;
+    gFramebufferRequest.unk_03 = gCurrentStage->unk_16;
+    gFramebufferRequest.unk_0C = gCurrentStage->unk_18[gCurrentStage->unk_16];
+    Gfx_GetDisplayListRange(&gFramebufferRequest.rotation, &gFramebufferRequest.unk_08);
     gCurrentStage->unk_16++;
     if (gCurrentStage->unk_16 == gCurrentStage->unk_0E) {
         gCurrentStage->unk_16 = 0;
@@ -387,7 +387,7 @@ void StageLoader_FillFrame(void) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
     gDPSetFillColor(gDisplayListHead++, (gCurrentStage->unk_14 << 0x10) | gCurrentStage->unk_14);
-    gDPFillRectangle(gDisplayListHead++, gCurrentStage->unk_04, gCurrentStage->unk_08, gCurrentStage->unk_06,
+    gDPFillRectangle(gDisplayListHead++, gCurrentStage->rotation, gCurrentStage->unk_08, gCurrentStage->unk_06,
                      gCurrentStage->unk_0A);
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -398,9 +398,9 @@ Stage* StageContext_Allocate(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 ar
 
     if (temp_v0 != NULL) {
         if (arg0 == 1) {
-            temp_v0->unk_00 = 0x280, temp_v0->unk_02 = 0x1E0;
+            temp_v0->posX = 0x280, temp_v0->posY = 0x1E0;
         } else {
-            temp_v0->unk_00 = 0x140, temp_v0->unk_02 = 0xF0;
+            temp_v0->posX = 0x140, temp_v0->posY = 0xF0;
         }
 
         temp_v0->unk_11 = 1;
@@ -411,10 +411,10 @@ Stage* StageContext_Allocate(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 ar
         temp_v0->unk_10 = arg4;
         temp_v0->unk_14 = Display_GetFramebufferClearColor();
         temp_v0->unk_16 = 0;
-        temp_v0->unk_04 = 0;
-        temp_v0->unk_06 = temp_v0->unk_00 - 1;
+        temp_v0->rotation = 0;
+        temp_v0->unk_06 = temp_v0->posX - 1;
         temp_v0->unk_08 = 0;
-        temp_v0->unk_0A = temp_v0->unk_02 - 1;
+        temp_v0->unk_0A = temp_v0->posY - 1;
 
         temp_v0->unk_18[0] = 0;
         temp_v0->unk_18[1] = 0;
@@ -425,12 +425,12 @@ Stage* StageContext_Allocate(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 ar
 
             for (i = 0; i < temp_v0->unk_0E; i++) {
                 temp_v0->unk_18[i] =
-                    GfxImage_Allocate(0, IMAGE_SIZE_BITS_16b, temp_v0->unk_00, temp_v0->unk_02, MEMORY_POOL_RIGHT);
+                    GfxImage_Allocate(0, IMAGE_SIZE_BITS_16b, temp_v0->posX, temp_v0->posY, MEMORY_POOL_RIGHT);
             }
 
             if (temp_v0->unk_0F == 1) {
                 void* temp_s3 =
-                    GfxImage_Allocate(0, IMAGE_SIZE_BITS_16b, temp_v0->unk_00, temp_v0->unk_02, MEMORY_POOL_LEFT);
+                    GfxImage_Allocate(0, IMAGE_SIZE_BITS_16b, temp_v0->posX, temp_v0->posY, MEMORY_POOL_LEFT);
 
                 for (i = 0; i < temp_v0->unk_0E; i++) {
                     GfxImage_AttachDepthBuffer(temp_v0->unk_18[i], temp_s3);
@@ -477,7 +477,7 @@ void StageContext_Deactivate(void) {
     if (gCurrentStage != NULL) {
         StageLoader_FillFrame();
         StageLoader_BeginFrame();
-        Display_QueueFramebufferRequest(&D_800A7450);
+        Display_QueueFramebufferRequest(&gFramebufferRequest);
         Display_WaitForCompletion();
         Display_WaitForFrames(2);
         gCurrentStage = NULL;
@@ -494,7 +494,7 @@ void StageLoader_UpdateSegments(void) {
 
 s32 BgStage_AdvanceFrame(void) {
     StageLoader_BeginFrame();
-    Display_QueueFramebufferRequest(&D_800A7450);
+    Display_QueueFramebufferRequest(&gFramebufferRequest);
     Display_WaitForCompletion();
     StageLoader_SwapDisplayListAndReset();
 }
@@ -503,7 +503,7 @@ void StageLoader_RunFrames(s32 arg0) {
     while (arg0-- > 0) {
         StageLoader_FillFrame();
         StageLoader_BeginFrame();
-        Display_QueueFramebufferRequest(&D_800A7450);
+        Display_QueueFramebufferRequest(&gFramebufferRequest);
         Display_WaitForCompletion();
         StageLoader_SwapDisplayListAndReset();
     }
@@ -590,32 +590,32 @@ s32 StageContext_IsHighResolution(void) {
 }
 
 void TextRenderer_SetupGlyphState(void) {
-    gDPPipeSync(D_800A74B0++);
-    gDPSetCycleType(D_800A74B0++, G_CYC_1CYCLE);
-    gDPSetTexturePersp(D_800A74B0++, G_TP_NONE);
-    gDPSetTextureFilter(D_800A74B0++, G_TF_POINT);
-    gDPSetPrimColor(D_800A74B0++, 0, 0, 255, 255, 255, 255);
-    gDPSetRenderMode(D_800A74B0++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
-    gDPSetCombineMode(D_800A74B0++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    gDPLoadTextureBlock_4b(D_800A74B0++, (u32)gOverlayTextureData & 0x1FFFFFFF, G_IM_FMT_IA, 96, 48, 0,
+    gDPPipeSync(gTextRenderDLHead++);
+    gDPSetCycleType(gTextRenderDLHead++, G_CYC_1CYCLE);
+    gDPSetTexturePersp(gTextRenderDLHead++, G_TP_NONE);
+    gDPSetTextureFilter(gTextRenderDLHead++, G_TF_POINT);
+    gDPSetPrimColor(gTextRenderDLHead++, 0, 0, 255, 255, 255, 255);
+    gDPSetRenderMode(gTextRenderDLHead++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
+    gDPSetCombineMode(gTextRenderDLHead++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPLoadTextureBlock_4b(gTextRenderDLHead++, (u32)gOverlayTextureData & 0x1FFFFFFF, G_IM_FMT_IA, 96, 48, 0,
                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 }
 
 void TextRenderer_RestoreState(void) {
-    gDPPipeSync(D_800A74B0++);
-    gDPSetTexturePersp(D_800A74B0++, G_TP_PERSP);
-    gDPSetTextureFilter(D_800A74B0++, G_TF_BILERP);
-    gDPSetAlphaCompare(D_800A74B0++, G_AC_NONE);
-    gSPTexture(D_800A74B0++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
+    gDPPipeSync(gTextRenderDLHead++);
+    gDPSetTexturePersp(gTextRenderDLHead++, G_TP_PERSP);
+    gDPSetTextureFilter(gTextRenderDLHead++, G_TF_BILERP);
+    gDPSetAlphaCompare(gTextRenderDLHead++, G_AC_NONE);
+    gSPTexture(gTextRenderDLHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
 void TextRenderer_DrawGlyphSmall(s16 arg0, s16 arg1, s16 arg2) {
-    gSPTextureRectangle(D_800A74B0++, arg0 * 4, arg1 * 4, (arg0 + 6) << 2, (arg1 + 8) << 2, G_TX_RENDERTILE,
+    gSPTextureRectangle(gTextRenderDLHead++, arg0 * 4, arg1 * 4, (arg0 + 6) << 2, (arg1 + 8) << 2, G_TX_RENDERTILE,
                         ((arg2 % 16) * 6) << 5, (u16)(arg2 / 16) << 8, 0x0400, 0x0400);
 }
 
 void TextRenderer_DrawGlyphLarge(s16 arg0, s16 arg1, s16 arg2) {
-    gSPTextureRectangle(D_800A74B0++, arg0 * 8, arg1 * 8, (arg0 + 6) << 3, (arg1 + 8) << 3, G_TX_RENDERTILE,
+    gSPTextureRectangle(gTextRenderDLHead++, arg0 * 8, arg1 * 8, (arg0 + 6) << 3, (arg1 + 8) << 3, G_TX_RENDERTILE,
                         ((arg2 % 16) * 6) << 5, (u16)(arg2 / 16) << 8, 0x0200, 0x0200);
 }
 
@@ -638,53 +638,53 @@ void TextRenderer_DrawString(s16 arg0, s16 arg1, s8* arg2, s32 arg3) {
 }
 
 void TextRenderer_FlushQueuedStrings(Gfx** arg0, s32 arg1) {
-    unk_D_80068CA0* var_s0 = D_80068CA0;
-    unk_D_80068CA0* var_s2 = D_80068CA4;
+    TextQueueNode* var_s0 = gTextQueueTransient;
+    TextQueueNode* var_s2 = gTextQueuePersistent;
 
-    D_800A74B0 = *arg0;
+    gTextRenderDLHead = *arg0;
 
     if ((var_s0 != NULL) || (var_s2 != NULL)) {
         TextRenderer_SetupGlyphState();
 
         while (var_s0 != NULL) {
-            unk_D_80068CA0* next = var_s0->next;
+            TextQueueNode* next = var_s0->next;
 
-            TextRenderer_DrawString(var_s0->unk_04, var_s0->unk_06, var_s0->unk_08, arg1);
+            TextRenderer_DrawString(var_s0->rotation, var_s0->unk_06, var_s0->unk_08, arg1);
             Util_Free(var_s0);
             var_s0 = next;
         }
 
         while (var_s2 != NULL) {
-            TextRenderer_DrawString(var_s2->unk_04, var_s2->unk_06, var_s2->unk_08, arg1);
+            TextRenderer_DrawString(var_s2->rotation, var_s2->unk_06, var_s2->unk_08, arg1);
             var_s2 = var_s2->next;
         }
 
         TextRenderer_RestoreState();
-        D_80068CA0 = NULL;
+        gTextQueueTransient = NULL;
     }
 
-    *arg0 = D_800A74B0;
+    *arg0 = gTextRenderDLHead;
 
-    D_80068CA8++;
-    if (D_80068CA8 >= 0x384) {
-        D_80068CA8 = 0;
-        if (D_80068CA4 != NULL) {
+    gTextQueueTimer++;
+    if (gTextQueueTimer >= 0x384) {
+        gTextQueueTimer = 0;
+        if (gTextQueuePersistent != NULL) {
             TextRenderer_ClearQueuedStrings();
         }
     }
 }
 
 void TextRenderer_ClearQueuedStrings(void) {
-    unk_D_80068CA0* var_s0 = D_80068CA4;
+    TextQueueNode* var_s0 = gTextQueuePersistent;
 
     while (var_s0 != NULL) {
-        unk_D_80068CA0* next = var_s0->next;
+        TextQueueNode* next = var_s0->next;
 
         Util_Free(var_s0);
         var_s0 = next;
     }
 
-    D_80068CA4 = NULL;
+    gTextQueuePersistent = NULL;
 }
 
 char* TextRenderer_FormatCopy(char* buffer, const char* data, size_t size) {
@@ -694,7 +694,7 @@ char* TextRenderer_FormatCopy(char* buffer, const char* data, size_t size) {
 s32 HAL_Printf(s16 x, s16 y, const char* fmt, ...) {
     s32 sp124;
     char sp20[0x104];
-    unk_D_80068CA0* sp1C;
+    TextQueueNode* sp1C;
     va_list args;
 
     va_start(args, fmt);
@@ -702,14 +702,14 @@ s32 HAL_Printf(s16 x, s16 y, const char* fmt, ...) {
     sp124 = _Printf(TextRenderer_FormatCopy, sp20, fmt, args);
 
     if (sp124 > 0) {
-        sp1C = Util_Malloc(sp124 + sizeof(unk_D_80068CA0));
+        sp1C = Util_Malloc(sp124 + sizeof(TextQueueNode));
         if (sp1C != NULL) {
-            sp1C->unk_04 = x;
+            sp1C->rotation = x;
             sp1C->unk_06 = y;
             memcpy(sp1C->unk_08, &sp20, sp124);
             sp1C->unk_08[sp124] = 0;
-            sp1C->next = D_80068CA0;
-            D_80068CA0 = sp1C;
+            sp1C->next = gTextQueueTransient;
+            gTextQueueTransient = sp1C;
         }
     }
 
@@ -721,22 +721,22 @@ s32 HAL_Printf(s16 x, s16 y, const char* fmt, ...) {
 s32 TextRenderer_QueuePersistentString(s16 x, s16 y, const char* fmt, ...) {
     s32 sp124;
     char sp20[0x104];
-    unk_D_80068CA0* sp1C;
+    TextQueueNode* sp1C;
     va_list args;
 
     va_start(args, fmt);
 
-    D_80068CA8 = 0;
+    gTextQueueTimer = 0;
     sp124 = _Printf(TextRenderer_FormatCopy, sp20, fmt, args);
     if (sp124 > 0) {
-        sp1C = Util_Malloc(sp124 + sizeof(unk_D_80068CA0));
+        sp1C = Util_Malloc(sp124 + sizeof(TextQueueNode));
         if (sp1C != NULL) {
-            sp1C->unk_04 = x;
+            sp1C->rotation = x;
             sp1C->unk_06 = y;
             memcpy(sp1C->unk_08, &sp20, sp124);
             sp1C->unk_08[sp124] = 0;
-            sp1C->next = D_80068CA4;
-            D_80068CA4 = sp1C;
+            sp1C->next = gTextQueuePersistent;
+            gTextQueuePersistent = sp1C;
         }
     }
 

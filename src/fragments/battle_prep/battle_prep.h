@@ -7,16 +7,16 @@
 #include "src/geo_layout.h"
 
 typedef struct unk_D_84B19910_002 {
-    /* 0x02 */ s16 unk_00;
-    /* 0x04 */ s16 unk_02;
-    /* 0x06 */ s16 unk_04;
+    /* 0x02 */ s16 posX;
+    /* 0x04 */ s16 posY;
+    /* 0x06 */ s16 rotation;
 } unk_D_84B19910_002; 
 
 typedef struct unk_D_84B19910 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ unk_D_84B19910_002 unk_02;
-    ///* 0x02 */ s16 unk_02;
-    ///* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ unk_D_84B19910_002 posY;
+    ///* 0x02 */ s16 posY;
+    ///* 0x04 */ s16 rotation;
     ///* 0x06 */ s16 unk_06;
 } unk_D_84B19910; // size = 0x8
 
@@ -32,17 +32,17 @@ typedef struct unk_D_84B1A598 {
 } unk_D_84B1A598; // size >= 0xB410
 
 typedef struct unk_D_84B2665C {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ char unk06[0x2];
 } unk_D_84B2665C; // size >= 0x8
 
 typedef struct unk_D_84B259A8 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02[5];
+    /* 0x02 */ s16 posY[5];
     /* 0x0C */ void* unk_0C;
     /* 0x10 */ void* unk_10;
     /* 0x14 */ void* unk_14;
@@ -59,10 +59,10 @@ typedef struct unk_D_84B259A8 {
 } unk_D_84B259A8; // size >= 0x40
 
 typedef struct unk_D_84B259E8 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
-    /* 0x04 */ s32 unk_04;
+    /* 0x02 */ u8 posY;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ Fragment2_1GraphNode* unk_08;
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ u8* unk_10[4];
@@ -71,10 +71,10 @@ typedef struct unk_D_84B259E8 {
 } unk_D_84B259E8; // size >= 0x40
 
 typedef struct unk_D_84B25A58 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
-    /* 0x04 */ Fragment2_1GraphNode* unk_04;
+    /* 0x02 */ u8 posY;
+    /* 0x04 */ Fragment2_1GraphNode* rotation;
     /* 0x08 */ unk_D_86002F34* unk_08;
     /* 0x0C */ unk_D_86002F34* unk_0C;
     /* 0x10 */ unk_D_86002F34* unk_10;
@@ -88,9 +88,9 @@ typedef struct unk_D_84B25A58 {
 } unk_D_84B25A58; // size = 0x38
 
 typedef struct unk_D_84B25A90 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x00 */ u8 unk_01;
-    /* 0x04 */ Fragment2_1GraphNode* unk_04;
+    /* 0x04 */ Fragment2_1GraphNode* rotation;
     /* 0x08 */ unk_D_86002F34* unk_08;
     /* 0x0C */ unk_D_86002F34* unk_0C;
     /* 0x10 */ unk_D_86002F34* unk_10;
@@ -104,16 +104,16 @@ typedef struct unk_D_84B25A90 {
 } unk_D_84B25A90; // size = 0x30
 
 typedef struct unk_D_84B25AC0_000 {
-    /* 0x00 */ Fragment2_1GraphNode* unk_00;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ Fragment2_1GraphNode* posX;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ Color_RGB8 unk_08;
     /* 0x0C */ u8* unk_0C;
 } unk_D_84B25AC0_000; // size = 0x10
 
 typedef struct unk_D_84B25AC0_0A0 {
-    /* 0x00 */ Fragment2_1GraphNode* unk_00;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ Fragment2_1GraphNode* posX;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ Color_RGBA8 unk_0A;
@@ -136,15 +136,15 @@ typedef struct unk_D_84B25AC0 {
 } unk_D_84B25AC0; // size = 0x5C0
 
 typedef struct unk_D_84B26640_010_010 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ s8 unk_01;
-    /* 0x02 */ s8 unk_02;
-    /* 0x04 */ Fragment2_1GraphNode* unk_04;
+    /* 0x02 */ s8 posY;
+    /* 0x04 */ Fragment2_1GraphNode* rotation;
     /* 0x08 */ unk_D_86002F34* unk_08;
 } BarState; // size = 0xC
 
 typedef struct unk_D_84B26640 {
-    /* 0x00 */ BarState unk_00;
+    /* 0x00 */ BarState posX;
     /* 0x00 */ char unk0C[0x4];
     /* 0x00 */ BarState unk_10;
     /* 0x00 */ unk_D_84B2665C unk_1C;
@@ -160,9 +160,9 @@ typedef struct unk_func_84B067B4 {
 } unk_func_84B067B4; // size = 0x230
 
 typedef struct unk_D_84B17550 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;

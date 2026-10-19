@@ -32,26 +32,26 @@ typedef struct unk_D_8690A69C {
 } unk_D_8690A69C; // size = 0x170
 
 typedef struct unk_D_8690A718 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char unk02[0xE];
 } unk_D_8690A718; // size = 0x10
 
 typedef struct unk_D_86908CA0 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x04 */ f32 unk_04;
+    /* 0x04 */ f32 rotation;
 } unk_D_86908CA0; // size = 0x8
 
 typedef struct unk_D_86909168 {
-    /* 0x0 */ s32 unk_00;
-    /* 0x4 */ s32 unk_04;
+    /* 0x0 */ s32 posX;
+    /* 0x4 */ s32 rotation;
 } unk_D_86909168; // size = 0x8
 
 typedef struct unk_D_869091B8 {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -384,11 +384,11 @@ void Gallery_SetBackgroundTint(u8 arg0, u8 arg1, u8 arg2) {
     gGlobalColorRGBA.b = arg2;
 
     if (v == 0xFF) {
-        if (gStagePanelRootNode.unk_00.unk_14 == 1) {
-            gStagePanelRootNode.unk_00.unk_01 |= 1;
+        if (gStagePanelRootNode.posX.unk_14 == 1) {
+            gStagePanelRootNode.posX.unk_01 |= 1;
         }
     } else {
-        gStagePanelRootNode.unk_00.unk_01 &= ~1;
+        gStagePanelRootNode.posX.unk_01 &= ~1;
     }
 }
 
@@ -404,7 +404,7 @@ void Gallery_LoadPhotoTextures(void) {
         sp1C = sp20 + sizeof(unk_70D3A0);
     }
 
-    Dma_WriteChunks(&gStageAnimScriptTable->unk_00, temp_a1, temp_a1 + 0xBC0, 0);
+    Dma_WriteChunks(&gStageAnimScriptTable->posX, temp_a1, temp_a1 + 0xBC0, 0);
     Dma_WriteChunks(&gCameraConfig, sp20, sp1C, 0);
 }
 
@@ -412,10 +412,10 @@ unk_D_86002F58_004_000_010_024* Gallery_LoadSurfingPikachuIcon(PokemonData* arg0
     arg1_func_80010CA8 sp1C;
     AssetManager* sp18;
 
-    arg0->unk_00.unk_00 = 25;
+    arg0->posX.posX = 25;
     sp18 = PokeIcon_AllocFramebuffers(1);
     Model_ComputeSizeVariant(&sp1C, arg0);
-    PokeIcon_RequestFrameLoad(sp18, arg0->unk_00.unk_00 = 153, sp1C);
+    PokeIcon_RequestFrameLoad(sp18, arg0->posX.posX = 153, sp1C);
     PokeIcon_WaitFrameLoad(sp18);
 
     return sp18->unk_24;
@@ -423,10 +423,10 @@ unk_D_86002F58_004_000_010_024* Gallery_LoadSurfingPikachuIcon(PokemonData* arg0
 
 void Gallery_SetupPhotoModel(void) {
     Gallery_CopyBattleMonFromPhotoMon(&gStagePanelPlayerData, &D_83407AC8);
-    gStagePanelState->unk_16C = D_83407AC8.unk_02;
+    gStagePanelState->unk_16C = D_83407AC8.posY;
 
-    gCameraZoomOffset = gStageCameraConfig[gStagePanelState->unk_16C - 1].unk_04;
-    gStageAnimIndexA = gStageCameraConfig[gStagePanelState->unk_16C - 1].unk_00 - 6;
+    gCameraZoomOffset = gStageCameraConfig[gStagePanelState->unk_16C - 1].rotation;
+    gStageAnimIndexA = gStageCameraConfig[gStagePanelState->unk_16C - 1].posX - 6;
     gStageAnimIndexB = gStageCameraConfig[gStagePanelState->unk_16C - 1].unk_01 - 6;
 
     ModelRenderer_AttachDisplayObject(&gStagePanelState->unk_004);
@@ -438,9 +438,9 @@ void Gallery_SetupPhotoModel(void) {
         gStagePanelState->unk_000 = Model_LoadForPokemon(&gStagePanelPlayerData);
     }
 
-    Model_InitDisplayObject(&gStagePanelState->unk_004, 0, gStagePanelState->unk_16C, gStagePanelState->unk_000->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&gStagePanelState->unk_004, 0, gStagePanelState->unk_16C, gStagePanelState->unk_000->unk_08->posX[0]);
     Gallery_LoadPhotoTextures();
-    ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].unk_00);
+    ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].posX);
 
     gStagePanelState->unk_004.unk_024.y += gCameraConfig.unk_08;
     gStagePanelState->unk_004.modelPhase = 0;
@@ -487,13 +487,13 @@ void Gallery_LoadBackgroundSet(s32 arg0) {
 
     temp_v1 = sp18(4, 0);
     if (temp_v1 == NULL) {
-        gStagePanelRootNode.unk_00.unk_14 = 0;
-        gStagePanelRootNode.unk_00.unk_01 &= ~1;
+        gStagePanelRootNode.posX.unk_14 = 0;
+        gStagePanelRootNode.posX.unk_01 &= ~1;
     } else {
-        gStagePanelRootNode.unk_18.unk_00 = temp_v1->unk_00;
-        gStagePanelRootNode.unk_18.unk_02 = temp_v1->unk_02;
-        gStagePanelRootNode.unk_18.unk_04.rgba = temp_v1->unk_04.rgba;
-        gStagePanelRootNode.unk_00.unk_14 = 1;
+        gStagePanelRootNode.unk_18.posX = temp_v1->posX;
+        gStagePanelRootNode.unk_18.posY = temp_v1->posY;
+        gStagePanelRootNode.unk_18.rotation.rgba = temp_v1->rotation.rgba;
+        gStagePanelRootNode.posX.unk_14 = 1;
     }
 
     Gallery_SetBackgroundTint(0xFF, 0xFF, 0xFF);
@@ -538,27 +538,27 @@ void GalleryCamera_InitIntroSequence(void) {
     gStageAnimStateFlag = 0;
     gStagePanelStateIndex = 0;
 
-    gStagePanelAnimState.unk_02 = 0;
+    gStagePanelAnimState.posY = 0;
     gStagePanelAnimState.unk_06 = 0;
     gStagePanelAnimState.unk_0A = 0;
 
-    gStagePanelAnimData.unk_00[0] = 0xA0;
-    gStagePanelAnimData.unk_00[4] = -0x14;
-    gStagePanelAnimData.unk_00[1] = 0x14A;
-    gStagePanelAnimData.unk_00[5] = 0x78;
-    gStagePanelAnimData.unk_00[2] = 0xA0;
-    gStagePanelAnimData.unk_00[6] = 0x104;
-    gStagePanelAnimData.unk_00[3] = -0xA;
-    gStagePanelAnimData.unk_00[7] = 0x78;
+    gStagePanelAnimData.posX[0] = 0xA0;
+    gStagePanelAnimData.posX[4] = -0x14;
+    gStagePanelAnimData.posX[1] = 0x14A;
+    gStagePanelAnimData.posX[5] = 0x78;
+    gStagePanelAnimData.posX[2] = 0xA0;
+    gStagePanelAnimData.posX[6] = 0x104;
+    gStagePanelAnimData.posX[3] = -0xA;
+    gStagePanelAnimData.posX[7] = 0x78;
 
     GalleryCamera_ComputeFrameCornerPos(&gStagePanelAnimData.unk_10, &gStagePanelAnimData.unk_20, &gStagePanelAnimData.unk_30, 0.0f, 0.0f, 12.5f, 15.5f, 0);
     GalleryCamera_ComputeFrameCornerPos(&gStagePanelAnimData.unk_14, &gStagePanelAnimData.unk_24, &gStagePanelAnimData.unk_32, 320.0f, 0.0f, 307.5f, 15.5f, -0x8000);
     GalleryCamera_ComputeFrameCornerPos(&gStagePanelAnimData.unk_18, &gStagePanelAnimData.unk_28, &gStagePanelAnimData.unk_34, 320.0f, 240.0f, 308.8f, 224.5f, 0);
     GalleryCamera_ComputeFrameCornerPos(&gStagePanelAnimData.unk_1C, &gStagePanelAnimData.unk_2C, &gStagePanelAnimData.unk_36, 0.0f, 240.0f, 12.5f, 224.5f, -0x8000);
 
-    gTutorialTextBoxState.unk_00 = 0xFF;
+    gTutorialTextBoxState.posX = 0xFF;
     gControllerScriptIndex = 0;
-    gControllerScriptButtonTimer = gControllerScriptInputs[0].unk_00;
+    gControllerScriptButtonTimer = gControllerScriptInputs[0].posX;
     gControllerScriptButtonPrev = 0;
     gTutorialMessageIndex = 0;
     gTutorialMessageTimer = 0;
@@ -575,16 +575,16 @@ void GalleryCamera_CopyControllerState(Controller* arg0, Controller* arg1) {
 void SimulateControllerInputFromScript(void) {
     Controller* c = &gControllerScriptTemp;
 
-    gControllerScriptButtonPrev = gControllerScriptInputs[gControllerScriptIndex].unk_02;
+    gControllerScriptButtonPrev = gControllerScriptInputs[gControllerScriptIndex].posY;
     if (gControllerScriptButtonTimer == 0) {
         gControllerScriptIndex++;
-        gControllerScriptButtonTimer = gControllerScriptInputs[gControllerScriptIndex].unk_00;
+        gControllerScriptButtonTimer = gControllerScriptInputs[gControllerScriptIndex].posX;
     }
 
-    c->stickMag = gControllerScriptInputs[gControllerScriptIndex].unk_04;
+    c->stickMag = gControllerScriptInputs[gControllerScriptIndex].rotation;
     c->stickY = gControllerScriptInputs[gControllerScriptIndex].unk_0C;
-    c->buttonPressed = gControllerScriptInputs[gControllerScriptIndex].unk_02 & (gControllerScriptInputs[gControllerScriptIndex].unk_02 ^ gControllerScriptButtonPrev);
-    c->buttonDown = gControllerScriptInputs[gControllerScriptIndex].unk_02;
+    c->buttonPressed = gControllerScriptInputs[gControllerScriptIndex].posY & (gControllerScriptInputs[gControllerScriptIndex].posY ^ gControllerScriptButtonPrev);
+    c->buttonDown = gControllerScriptInputs[gControllerScriptIndex].posY;
 
     if (gControllerScriptButtonTimer > 0) {
         gControllerScriptButtonTimer--;
@@ -610,7 +610,7 @@ void GalleryCamera_UpdatePokemonIdleAnim(void) {
     }
 
     if ((gStageAnimTimer >= 0x96) && (ModelAnim_IsAnimationDone(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 0)) {
-        ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].unk_00);
+        ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].posX);
         ModelAnim_SetFrame(&gStagePanelState->unk_004, 0);
         ModelAnim_SetEventFrame(&gStagePanelState->unk_004, 0);
         ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].unk_01);
@@ -618,7 +618,7 @@ void GalleryCamera_UpdatePokemonIdleAnim(void) {
     }
 
     if ((ModelAnim_IsAnimationDone(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 1)) {
-        ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].unk_00);
+        ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].posX);
         ModelAnim_SetFrame(&gStagePanelState->unk_004, 0);
         gStageAnimTimer = 0;
         gStageAnimStateFlag = 0;
@@ -637,7 +637,7 @@ void GalleryCamera_UpdatePokemonEventLoop(void) {
 }
 
 void GalleryCamera_ClearFinishedEventTrack(void) {
-    if ((gStagePanelState->unk_004.unk_054.unk_00 != -1) && (ModelAnim_IsEventTrackNearEnd(&gStagePanelState->unk_004) == 1)) {
+    if ((gStagePanelState->unk_004.unk_054.posX != -1) && (ModelAnim_IsEventTrackNearEnd(&gStagePanelState->unk_004) == 1)) {
         ModelAnim_SetEventFrame(&gStagePanelState->unk_004, 0);
         ModelAnim_SetEventTrack(&gStagePanelState->unk_004, -1);
     }
@@ -662,18 +662,18 @@ void Gallery_CapturePhoto(void) {
             gDisplayableMonIndices[gStageSnapshotCount].unk_6C |= gCameraParams->unk_00C * 0x10;
             gDisplayableMonIndices[gStageSnapshotCount].unk_68 = gTimerCounter;
 
-            gDisplayableMonIndices[gStageSnapshotCount].unk_00 = gStagePanelState->unk_004.unk_024.y;
-            gDisplayableMonIndices[gStageSnapshotCount].unk_04 = gStagePanelState->unk_16C;
+            gDisplayableMonIndices[gStageSnapshotCount].posX = gStagePanelState->unk_004.unk_024.y;
+            gDisplayableMonIndices[gStageSnapshotCount].rotation = gStagePanelState->unk_16C;
             gDisplayableMonIndices[gStageSnapshotCount].unk_06 = gStagePanelState->unk_004.unk_040.unk_08 >> 0x10;
-            gDisplayableMonIndices[gStageSnapshotCount].unk_05 = gStagePanelState->unk_004.unk_040.unk_00;
-            gDisplayableMonIndices[gStageSnapshotCount].unk_08 = gStagePanelState->unk_004.unk_054.unk_00;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_05 = gStagePanelState->unk_004.unk_040.posX;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_08 = gStagePanelState->unk_004.unk_054.posX;
             gDisplayableMonIndices[gStageSnapshotCount].unk_09 = gStagePanelState->unk_004.unk_054.unk_08;
 
             Particle31_PackSlotData(gDisplayableMonIndices[gStageSnapshotCount].unk_0A);
             Gallery_CopyPhotoMonFromBattleMon(&gDisplayableMonIndices[gStageSnapshotCount].unk_70, &gStagePanelPlayerData);
         }
 
-        gStagePanelAnimState.unk_00 = 0x14;
+        gStagePanelAnimState.posX = 0x14;
 
         gStageSnapshotCount++;
         if (gStagePanelMode != 1) {
@@ -728,13 +728,13 @@ s32 Gallery_HandleBackgroundSwitchInput(void) {
 
     gCameraNavMaxIndex = 0xF;
     if (gStagePanelGbAudioState.unk_07 == 0) {
-        if (gStagePanelGbAudioState.unk_04 == 8) {
+        if (gStagePanelGbAudioState.rotation == 8) {
             gCameraNavMaxIndex--;
-        } else if (gStagePanelGbAudioState.unk_04 == 7) {
+        } else if (gStagePanelGbAudioState.rotation == 7) {
             gCameraNavMaxIndex -= 2;
         } else {
             gCameraNavMaxIndex -= 2;
-            gCameraNavMaxIndex += gStagePanelGbAudioState.unk_04 - 7;
+            gCameraNavMaxIndex += gStagePanelGbAudioState.rotation - 7;
         }
     }
 
@@ -789,18 +789,18 @@ void Gallery_CameraUpdateTutorialText(void) {
 
     if ((gStagePanelMode == 1) && (gTutorialMessageIds[gTutorialMessageIndex] != 0xFF)) {
         gTutorialMessageTimer++;
-        if (gTutorialMessageTimer == gTutorialTextTimers[gTutorialMessageIndex].unk_00) {
-            gTutorialTextBoxState.unk_00 = 0;
+        if (gTutorialMessageTimer == gTutorialTextTimers[gTutorialMessageIndex].posX) {
+            gTutorialTextBoxState.posX = 0;
         }
 
-        if (gTutorialMessageTimer == gTutorialTextTimers[gTutorialMessageIndex].unk_04) {
-            gTutorialTextBoxState.unk_00 = 0xFF;
+        if (gTutorialMessageTimer == gTutorialTextTimers[gTutorialMessageIndex].rotation) {
+            gTutorialTextBoxState.posX = 0xFF;
             gTutorialMessageIndex++;
         }
 
-        switch (gTutorialTextBoxState.unk_00) {
+        switch (gTutorialTextBoxState.posX) {
             case 0x0:
-                gTutorialTextBoxState.unk_04 = 0;
+                gTutorialTextBoxState.rotation = 0;
                 gTutorialTextBoxState.unk_08 = 0xC8;
                 gTutorialTextBoxState.unk_0C = 0x14;
 
@@ -809,20 +809,20 @@ void Gallery_CameraUpdateTutorialText(void) {
                 // clang-format on
 
                 sprintf(gTutorialTextBoxStringBuffer, Text_GetString(NULL, 0, gMessageBankPtr, gTutorialMessageIds[gTutorialMessageIndex]));
-                gTutorialTextBoxState.unk_00++;
+                gTutorialTextBoxState.posX++;
                 break;
 
             case 0x1:
                 gTutorialTextBoxState.unk_0C = Math_StepToS32(gTutorialTextBoxState.unk_0C, 0x23, 0xA, 0xA);
                 if (gTutorialTextBoxState.unk_0C == 0x23) {
-                    gTutorialTextBoxState.unk_00++;
+                    gTutorialTextBoxState.posX++;
                 }
                 break;
 
             case 0x2:
-                if (gTutorialTextBoxStringBuffer[gTutorialTextBoxState.unk_04] != 0) {
-                    gTutorialTextBoxCharBuffer[gTutorialTextBoxState.unk_04] = gTutorialTextBoxStringBuffer[gTutorialTextBoxState.unk_04];
-                    gTutorialTextBoxState.unk_04++;
+                if (gTutorialTextBoxStringBuffer[gTutorialTextBoxState.rotation] != 0) {
+                    gTutorialTextBoxCharBuffer[gTutorialTextBoxState.rotation] = gTutorialTextBoxStringBuffer[gTutorialTextBoxState.rotation];
+                    gTutorialTextBoxState.rotation++;
                     Audio_PlaySoundEffectById(0x3C);
                 }
                 break;
@@ -836,11 +836,11 @@ void Gallery_CameraUpdateTutorialText(void) {
 s32 Gallery_CameraExitState_Active(void) {
     Gallery_CameraUpdateTutorialText();
 
-    if (gStagePanelAnimState.unk_00 != 0) {
-        gStagePanelAnimState.unk_02 -= 3;
+    if (gStagePanelAnimState.posX != 0) {
+        gStagePanelAnimState.posY -= 3;
     }
 
-    gStagePanelAnimState.unk_00 = Math_StepToS32(gStagePanelAnimState.unk_00, 0, 2, 2);
+    gStagePanelAnimState.posX = Math_StepToS32(gStagePanelAnimState.posX, 0, 2, 2);
 
     if (gStagePanelTransitionTimer) {
         gStagePanelTransitionTimer--;
@@ -850,8 +850,8 @@ s32 Gallery_CameraExitState_Active(void) {
     if (gStageSnapshotCount && gStageSnapshotCount && gStageSnapshotCount) {}
 
     if (gStageSnapshotCount == 0x18) {
-        gStagePanelAnimState.unk_00 = 0x14;
-        gStagePanelFadeData.unk_04 = 0;
+        gStagePanelAnimState.posX = 0x14;
+        gStagePanelFadeData.rotation = 0;
         gStagePanelStateIndex = 1;
         gStageSnapshotCount--;
         Audio_PlaySoundEffectById(0x2D);
@@ -898,13 +898,13 @@ s32 Gallery_CameraExitState_Active(void) {
 }
 
 s32 Gallery_CameraExitState_CountDown(void) {
-    gStagePanelAnimState.unk_04 = 0;
-    gStagePanelAnimState.unk_02 += 4;
+    gStagePanelAnimState.rotation = 0;
+    gStagePanelAnimState.posY += 4;
 
-    if (gStagePanelAnimState.unk_00 == 0) {
+    if (gStagePanelAnimState.posX == 0) {
         if (gStageSnapshotCount != 0) {
             gStageSnapshotCount--;
-            gStagePanelAnimState.unk_00 = 0x14;
+            gStagePanelAnimState.posX = 0x14;
         } else {
             gStagePanelStateIndex = 2;
             Audio_PlaySoundEffectById(0x2E);
@@ -912,15 +912,15 @@ s32 Gallery_CameraExitState_CountDown(void) {
         }
     }
 
-    gStagePanelAnimState.unk_00 = Math_StepToS32(gStagePanelAnimState.unk_00, 0, 0xF, 0xF);
+    gStagePanelAnimState.posX = Math_StepToS32(gStagePanelAnimState.posX, 0, 0xF, 0xF);
     return 0;
 }
 
 s32 Gallery_CameraExitState_SpinOut(void) {
-    gStagePanelAnimState.unk_02 += 4;
-    gStagePanelAnimState.unk_04 = Math_StepToS32(gStagePanelAnimState.unk_04, 0x30, 0xA, 0xA);
+    gStagePanelAnimState.posY += 4;
+    gStagePanelAnimState.rotation = Math_StepToS32(gStagePanelAnimState.rotation, 0x30, 0xA, 0xA);
 
-    if (gStagePanelAnimState.unk_04 >= 0x30) {
+    if (gStagePanelAnimState.rotation >= 0x30) {
         gStagePanelAnimState.unk_08 = Math_StepToS32(gStagePanelAnimState.unk_08, 0, 0xC8, 0xC8);
         gStagePanelAnimState.unk_0A -= 0x31C7;
         gStagePanelAnimState.unk_06 = SINS(gStagePanelAnimState.unk_0A) * gStagePanelAnimState.unk_08;
@@ -933,13 +933,13 @@ s32 Gallery_CameraExitState_SpinOut(void) {
 }
 
 s32 Gallery_CameraExitState_ExpandBox(void) {
-    gStagePanelFadeData.unk_04 = Math_StepToS32(gStagePanelFadeData.unk_04, 0x50, 0xA, 0xA);
-    if (gStagePanelFadeData.unk_04 == 0x50) {
+    gStagePanelFadeData.rotation = Math_StepToS32(gStagePanelFadeData.rotation, 0x50, 0xA, 0xA);
+    if (gStagePanelFadeData.rotation == 0x50) {
         gStagePanelFadeData.unk_0C = 0xAA;
         gStagePanelFadeData.unk_0E = 0xA;
         gStagePanelFadeData.unk_08 = 0xA0 - (gStagePanelFadeData.unk_0C / 2);
         gStagePanelFadeData.unk_0A = 0x78;
-        gStagePanelFadeData.unk_00 = 0;
+        gStagePanelFadeData.posX = 0;
         gStagePanelStateIndex = 4;
         Audio_PlaySoundEffectById(0x30);
     }
@@ -950,10 +950,10 @@ s32 Gallery_CameraExitState_FadeOut(void) {
     gStagePanelFadeData.unk_0E = Math_StepToS32(gStagePanelFadeData.unk_0E, 0x32, 0xA, 0xA);
 
     if (gStagePanelFadeData.unk_0E == 0x32) {
-        gStagePanelFadeData.unk_00++;
+        gStagePanelFadeData.posX++;
     }
 
-    if (gStagePanelFadeData.unk_00 == 0x32) {
+    if (gStagePanelFadeData.posX == 0x32) {
         gStageReturnCode = 2;
         return gStageReturnCode;
     }
@@ -1031,14 +1031,14 @@ void Gallery_CameraIntro(void) {
     while (true) {
         Gallery_CameraReadInput();
         var_s3 = Math_StepToS32(var_s3, 0x46, 0xA, 0xA);
-        gStagePanelAnimData.unk_00[0] = Math_StepToS32(gStagePanelAnimData.unk_00[0], 0xA0, 0xA, 0xA);
-        gStagePanelAnimData.unk_00[4] = Math_StepToS32(gStagePanelAnimData.unk_00[4], 0x24, 0xA, 0xA);
-        gStagePanelAnimData.unk_00[1] = Math_StepToS32(gStagePanelAnimData.unk_00[1], 0x120, 0xA, 0xA);
-        gStagePanelAnimData.unk_00[5] = Math_StepToS32(gStagePanelAnimData.unk_00[5], 0x78, 0xA, 0xA);
-        gStagePanelAnimData.unk_00[2] = Math_StepToS32(gStagePanelAnimData.unk_00[2], 0xA0, 0xA, 0xA);
-        gStagePanelAnimData.unk_00[6] = Math_StepToS32(gStagePanelAnimData.unk_00[6], 0xCC, 0xA, 0xA);
-        gStagePanelAnimData.unk_00[3] = Math_StepToS32(gStagePanelAnimData.unk_00[3], 0x20, 0xA, 0xA);
-        gStagePanelAnimData.unk_00[7] = Math_StepToS32(gStagePanelAnimData.unk_00[7], 0x78, 0xA, 0xA);
+        gStagePanelAnimData.posX[0] = Math_StepToS32(gStagePanelAnimData.posX[0], 0xA0, 0xA, 0xA);
+        gStagePanelAnimData.posX[4] = Math_StepToS32(gStagePanelAnimData.posX[4], 0x24, 0xA, 0xA);
+        gStagePanelAnimData.posX[1] = Math_StepToS32(gStagePanelAnimData.posX[1], 0x120, 0xA, 0xA);
+        gStagePanelAnimData.posX[5] = Math_StepToS32(gStagePanelAnimData.posX[5], 0x78, 0xA, 0xA);
+        gStagePanelAnimData.posX[2] = Math_StepToS32(gStagePanelAnimData.posX[2], 0xA0, 0xA, 0xA);
+        gStagePanelAnimData.posX[6] = Math_StepToS32(gStagePanelAnimData.posX[6], 0xCC, 0xA, 0xA);
+        gStagePanelAnimData.posX[3] = Math_StepToS32(gStagePanelAnimData.posX[3], 0x20, 0xA, 0xA);
+        gStagePanelAnimData.posX[7] = Math_StepToS32(gStagePanelAnimData.posX[7], 0x78, 0xA, 0xA);
 
         if (var_s3 < 0x3D) {
             GalleryCamera_AddPolarOffset(&gStagePanelAnimData.unk_10, &gStagePanelAnimData.unk_20, gStagePanelAnimData.unk_30 + 0x8000, 0xA);

@@ -17,14 +17,14 @@
 #include "src/stage_loader.h"
 
 typedef struct unk_D_86B10BD0 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
 } unk_D_86B10BD0; // size >= 0xC
 
 typedef struct unk_D_86B10BE0 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -74,8 +74,8 @@ void FirstClearBonus_InitCamera(void) {
 }
 
 void FirstClearBonus_InitState(void) {
-    D_86B10BD0.unk_00 = 0;
-    D_86B10BD0.unk_04 = 0;
+    D_86B10BD0.posX = 0;
+    D_86B10BD0.rotation = 0;
     D_86B10BD0.unk_08 = 0;
     gMessageBoxState.unk_10 = 0xA;
 }
@@ -144,25 +144,25 @@ void FirstClearBonus_DrawDialogFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 
 }
 
 void FirstClearBonus_ShowDialogBox(void) {
-    gMessageBoxState.unk_00 = 0xFF;
+    gMessageBoxState.posX = 0xFF;
 }
 
 void FirstClearBonus_HideDialogBox(void) {
-    gMessageBoxState.unk_00 = 0;
+    gMessageBoxState.posX = 0;
 }
 
 s32 FirstClearBonus_RevealNextChar(void) {
-    if (D_86B109C8[gMessageBoxState.unk_04] == 0) {
+    if (D_86B109C8[gMessageBoxState.rotation] == 0) {
         return 1;
     }
 
-    D_86B10AC8[gMessageBoxState.unk_04++] = D_86B109C8[gMessageBoxState.unk_04];
+    D_86B10AC8[gMessageBoxState.rotation++] = D_86B109C8[gMessageBoxState.rotation];
 
-    if (D_86B109C8[gMessageBoxState.unk_04] == 0) {
+    if (D_86B109C8[gMessageBoxState.rotation] == 0) {
         return 1;
     }
 
-    D_86B10AC8[gMessageBoxState.unk_04++] = D_86B109C8[gMessageBoxState.unk_04];
+    D_86B10AC8[gMessageBoxState.rotation++] = D_86B109C8[gMessageBoxState.rotation];
     return 0;
 }
 
@@ -181,7 +181,7 @@ void FirstClearBonus_DrawDialogText(void) {
 void FirstClearBonus_UpdateDialogSequence(void) {
     s32 i;
 
-    switch (gMessageBoxState.unk_00) {
+    switch (gMessageBoxState.posX) {
         case 0x0:
             if (gSessionContext.unk_0000 == 0x16) {
                 sprintf(D_86B109C8, Text_GetString(NULL, 0, D_86B10840, 0x91));
@@ -189,7 +189,7 @@ void FirstClearBonus_UpdateDialogSequence(void) {
                 sprintf(D_86B109C8, Text_GetString(NULL, 0, D_86B10840, 0x93));
             }
 
-            gMessageBoxState.unk_04 = 0;
+            gMessageBoxState.rotation = 0;
             gMessageBoxState.unk_08 = 0;
             gMessageBoxState.unk_0C = 0xC8;
             gMessageBoxState.unk_10 = 0xA;
@@ -199,13 +199,13 @@ void FirstClearBonus_UpdateDialogSequence(void) {
             // clang-format on
 
             FirstClearBonus_DrawDialogBox();
-            gMessageBoxState.unk_00++;
+            gMessageBoxState.posX++;
             break;
 
         case 0x1:
             gMessageBoxState.unk_10 = Math_StepToS32(gMessageBoxState.unk_10, 0x28, 8, 8);
             if (gMessageBoxState.unk_10 == 0x28) {
-                gMessageBoxState.unk_00++;
+                gMessageBoxState.posX++;
             }
             FirstClearBonus_DrawDialogBox();
             break;
@@ -213,7 +213,7 @@ void FirstClearBonus_UpdateDialogSequence(void) {
         case 0x2:
             FirstClearBonus_DrawDialogBox();
             if (FirstClearBonus_RevealNextChar() != 0) {
-                gMessageBoxState.unk_00++;
+                gMessageBoxState.posX++;
             }
             FirstClearBonus_DrawDialogText();
             break;
@@ -229,21 +229,21 @@ void FirstClearBonus_UpdateDialogSequence(void) {
                     sprintf(D_86B109C8, Text_GetString(NULL, 0, D_86B10840, 0x94));
                 }
 
-                gMessageBoxState.unk_04 = 0;
+                gMessageBoxState.rotation = 0;
                 gMessageBoxState.unk_08 = 0;
 
                 // clang-format off
                 for (i = 0; i < 255; i++) { D_86B10AC8[i] = 0; }
                 // clang-format on
 
-                gMessageBoxState.unk_00++;
+                gMessageBoxState.posX++;
             }
             break;
 
         case 0x4:
             FirstClearBonus_DrawDialogBox();
             if (FirstClearBonus_RevealNextChar() != 0) {
-                gMessageBoxState.unk_00++;
+                gMessageBoxState.posX++;
             }
             FirstClearBonus_DrawDialogText();
             break;
@@ -253,7 +253,7 @@ void FirstClearBonus_UpdateDialogSequence(void) {
             FirstClearBonus_DrawDialogText();
 
             if (gMessageBoxState.unk_08++ == 0x41) {
-                gMessageBoxState.unk_00 = 0xFF;
+                gMessageBoxState.posX = 0xFF;
             }
             break;
 
@@ -312,11 +312,11 @@ void FirstClearBonus_RenderFrame(void) {
 s32 FirstClearBonus_UpdateScene(void) {
     s32 sp24 = 0;
 
-    switch (D_86B10BD0.unk_00) {
+    switch (D_86B10BD0.posX) {
         case 0:
-            D_86B10850.unk_000.unk_02 |= 0x20;
+            D_86B10850.unk_000.posY |= 0x20;
             D_86B10850.unk_000.unk_01 |= 1;
-            D_86B10BD0.unk_00++;
+            D_86B10BD0.posX++;
             break;
 
         case 1:
@@ -326,25 +326,25 @@ s32 FirstClearBonus_UpdateScene(void) {
 
             if ((D_86B10850.unk_040.unk_08 >> 0x10) == 0x72) {
                 D_86B10BD0.unk_08 = 0;
-                D_86B10850.unk_000.unk_02 &= 0xFFDF;
+                D_86B10850.unk_000.posY &= 0xFFDF;
                 FirstClearBonus_HideDialogBox();
                 Audio_StartMusicTrack(0x13);
-                D_86B10BD0.unk_00++;
+                D_86B10BD0.posX++;
             }
             break;
 
         case 2:
-            if (gMessageBoxState.unk_00 == 0xFF) {
+            if (gMessageBoxState.posX == 0xFF) {
                 D_86B10BD0.unk_08 = 0;
-                D_86B10850.unk_000.unk_02 |= 0x20;
+                D_86B10850.unk_000.posY |= 0x20;
                 FirstClearBonus_ShowDialogBox();
-                D_86B10BD0.unk_00++;
+                D_86B10BD0.posX++;
             }
             break;
 
         case 3:
             if (ModelAnim_IsAnimationDone(&D_86B10850) != 0) {
-                D_86B10BD0.unk_00++;
+                D_86B10BD0.posX++;
             }
             break;
 
@@ -402,15 +402,15 @@ void FirstClearBonus_InitScene(void) {
 
     if (gSessionContext.unk_0000 == 0x16) {
         D_86B10844 = Model_LoadByArchiveIndex(0xD5);
-        Model_InitDisplayObject(&D_86B10850, 0, 0xD5, D_86B10844->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&D_86B10850, 0, 0xD5, D_86B10844->unk_08->posX[0]);
     } else {
         D_86B10844 = Model_LoadByArchiveIndex(0xD4);
-        Model_InitDisplayObject(&D_86B10850, 0, 0xD4, D_86B10844->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&D_86B10850, 0, 0xD4, D_86B10844->unk_08->posX[0]);
     }
 
     ModelAnim_SetAnimation(&D_86B10850, 0);
 
-    D_86B10850.unk_000.unk_02 &= ~0x20;
+    D_86B10850.unk_000.posY &= ~0x20;
     D_86B10850.unk_000.unk_01 &= ~1;
 
     Vec3f_SetComponentsDuplicate(&D_86B10850.unk_024, 0.0f, 11.0f, -105.0f);

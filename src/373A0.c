@@ -10,11 +10,11 @@
 #include "src/485C0.h"
 
 typedef struct SfxTableEntry {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
 } SfxTableEntry; // size = 0x5
 
 static SfxTableEntry gMenuSfxTable[151] = {
@@ -220,7 +220,7 @@ s32 Audio_PlayCommand(u32 arg0, s32 arg1, s32 arg2) {
                 arg1 = 0;
             }
 
-            switch (gMenuSfxTable[arg1].unk_00) {
+            switch (gMenuSfxTable[arg1].posX) {
                 case 0:
                     return 0;
 
@@ -684,7 +684,7 @@ s32 Audio_InitBanks(void) {
     Rom_DmaRead(gAudioArchiveOffsets[6], gAudioSeqTOC, 0x100);
 
     for (i = 0; i < 32; i++) {
-        gAudioSeqTOC[i].unk_00 += gAudioArchiveOffsets[6];
+        gAudioSeqTOC[i].posX += gAudioArchiveOffsets[6];
     }
 
     gAudioSfxDataBuffer = alHeapAlloc(audio_heap, 0x2328, 1);

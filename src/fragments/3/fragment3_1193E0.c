@@ -94,16 +94,16 @@ s32 minigameDebuggModeControl(void) {
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_L)) {
-        D_87903DB8++;
-        if (D_87903DB8 == 1) {
-            D_87903DB8 = 0;
+        gMiniGameStateVar1++;
+        if (gMiniGameStateVar1 == 1) {
+            gMiniGameStateVar1 = 0;
         }
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_R)) {
-        D_87903DB8--;
-        if (D_87903DB8 < 0) {
-            D_87903DB8 = 0;
+        gMiniGameStateVar1--;
+        if (gMiniGameStateVar1 < 0) {
+            gMiniGameStateVar1 = 0;
         }
     }
 
@@ -118,7 +118,7 @@ s32 minigameDebuggModeControl(void) {
         gMiniCamFovDelta = 0;
     }
 
-    if (D_87903DB8 == 0) {
+    if (gMiniGameStateVar1 == 0) {
         if (BTN_IS_DOWN(gPlayer1Controller, 0xCF00)) {
             if (BTN_IS_DOWN(gPlayer1Controller, BTN_DUP)) {
                 sp6 = miniCameraYRot + 0x8000;
@@ -178,7 +178,7 @@ void showDebuggCameraInfo(void) {
     Font_SetActive(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
-    if (D_87903DB8 == 0) {
+    if (gMiniGameStateVar1 == 0) {
         Font_Printf(0x19, 0x1C, "TRANSRATE");
     }
 

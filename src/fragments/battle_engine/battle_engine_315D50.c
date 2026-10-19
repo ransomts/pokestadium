@@ -4828,11 +4828,11 @@ void BattleAnim_StopOwnerCategoryParticles(u8 arg0, unk_BattlePlayerEntity* arg1
 void BattleAnim_RegisterAssetTable(arg1_func_80019420* arg0) {
     if (arg0 != NULL) {
         do {
-            if (arg0->unk_02 != 0) {
-                gBattleAnimAssetPointers[arg0->unk_02] = arg0->unk_04;
+            if (arg0->posY != 0) {
+                gBattleAnimAssetPointers[arg0->posY] = arg0->rotation;
                 arg0++;
             }
-        } while (arg0->unk_00 != 0);
+        } while (arg0->posX != 0);
     }
 }
 
@@ -5022,7 +5022,7 @@ void BattleAnim_BindModelAnim(Fragment2_1GraphNode* arg0, s16 arg1) {
 
 void BattleAnim_BindModelAnimReversed(Fragment2_1GraphNode* arg0, s16 arg1) {
     ModelAnim_BindTransformCurve(arg0, 0, gBattleAnimAssetPointers[arg1], -0x10000);
-    ModelAnim_SetFrame(arg0, arg0->unk_040.unk_04->unk_0A - 1);
+    ModelAnim_SetFrame(arg0, arg0->unk_040.rotation->unk_0A - 1);
 }
 
 s32 BattleAnim_IsModelAnimComplete(Fragment2_1GraphNode* arg0) {
@@ -5059,7 +5059,7 @@ void BattleAnim_UpdateCamera(CameraStruct* arg0) {
     gParticleRenderContext.unk_0C = arg0;
     gParticleCameraInfo = &gParticleRenderContext.unk_10;
 
-    MtxF_Copy(&gParticleCameraInfo->unk_00, &arg0->unk_60.mtxf);
+    MtxF_Copy(&gParticleCameraInfo->posX, &arg0->unk_60.mtxf);
     ParticleMath_CopyVec3f(&gParticleCameraInfo->unk_40, &arg0->unk_60.eye);
     ParticleMath_CopyVec3f(&gParticleCameraInfo->unk_4C, &arg0->unk_60.at);
     BattleAnim_GetCameraLookAngles(&gParticleCameraInfo->unk_70, &gParticleCameraInfo->unk_72);
@@ -5103,9 +5103,9 @@ void BattleAnim_Reset(void) {
 
     gParticleEffectEntityA = NULL;
     gWaterEffectCounter = 0;
-    gParticleRenderContext.unk_00.x = 1.0f;
-    gParticleRenderContext.unk_00.y = 1.0f;
-    gParticleRenderContext.unk_00.z = 1.0f;
+    gParticleRenderContext.posX.x = 1.0f;
+    gParticleRenderContext.posX.y = 1.0f;
+    gParticleRenderContext.posX.z = 1.0f;
     gGameStateFlag = 0;
     gWaterAnimParams.unk_0C = 1.0f;
     gWaterAnimParams.unk_10 = 1.0f;

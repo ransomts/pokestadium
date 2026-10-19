@@ -5,7 +5,7 @@
 #include "src/29BA0.h"
 
 typedef struct unk_D_83003CE0 {
-    /* 0x00 */ char* unk_00[29];
+    /* 0x00 */ char* posX[29];
     /* 0x74 */ char* unk_74;
     /* 0x78 */ char* unk_78;
     /* 0x7C */ char* unk_7C;
@@ -20,20 +20,20 @@ typedef struct unk_D_83003CE0 {
 } unk_D_83003CE0; // size = 0x100
 
 typedef struct unk_D_83079E70_014_000 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
 } unk_D_83079E70_014_000; // size = 0x4
 
 typedef struct unk_D_83079E70_000 {
-    /* 0x00 */ unk_D_83079E70_014_000 unk_00[6];
+    /* 0x00 */ unk_D_83079E70_014_000 posX[6];
     /* 0x18 */ struct unk_D_83079E70_000* unk_18;
     /* 0x1C */ struct unk_D_83079E70_000* unk_1C;
 } unk_D_83079E70_000; // size = 0x20
 
 typedef struct unk_D_83079E70 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;

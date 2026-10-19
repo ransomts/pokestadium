@@ -29,19 +29,19 @@ typedef void (*unk_func_88001300_024)(struct unk_func_88001300_000*, s32);
 typedef void (*unk_func_88001300_000_000_0C)(struct unk_func_88001300_000_000*, MemoryPool*);
 
 typedef struct unk_func_88001300_000_000 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ struct unk_func_88001300_000_000* unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ struct unk_func_88001300_000_000* rotation;
     /* 0x08 */ struct unk_func_88001300_000_000* unk_08;
     /* 0x0C */ unk_func_88001300_000_000_0C unk_0C;
 } unk_func_88001300_000_000; // size = 0x10
 
 typedef struct unk_func_88001300_000_010 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
 } unk_func_88001300_000_010; // size = 0x4
 
 typedef struct unk_func_88001300_000 {
-    /* 0x00 */ unk_func_88001300_000_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000_000 posX;
     /* 0x10 */ unk_func_88001300_000_010 unk_10;
     /* 0x14 */ unk_func_88001300_000_010 unk_14;
     /* 0x18 */ unk_func_88001300_018 unk_18;
@@ -53,12 +53,12 @@ typedef struct unk_func_88001300_000 {
 } unk_func_88001300_000; // size = 0x2C
 
 typedef struct unk_func_88001300_02C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
 } unk_func_88001300_02C; // size = 0x30
 
 typedef struct unk_func_88001300_030 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ Color_RGBA8 unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ s32 unk_34;
@@ -66,13 +66,13 @@ typedef struct unk_func_88001300_030 {
 } unk_func_88001300_030; // size = 0x3C
 
 typedef struct unk_func_88001300_038 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_88001300_038; // size = 0x34
 
 typedef struct unk_func_88001300_034 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ u8 unk_34;
@@ -93,7 +93,7 @@ typedef struct unk_func_88001300_03C_00C {
 } unk_func_88001300_03C_00C; // size = 0x2C
 
 typedef struct unk_func_88001300_03C_01C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ Color_RGBA8 unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_88001300_03C_01C; // size = 0x34
@@ -122,7 +122,7 @@ typedef struct unk_func_88001300_03C {
 } unk_func_88001300_03C; // size = 0x40
 
 typedef struct unk_func_88001300 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_02C* unk_2C;
     /* 0x30 */ unk_func_88001300_030* unk_30;
     /* 0x34 */ unk_func_88001300_034* unk_34;
@@ -135,12 +135,12 @@ typedef struct unk_func_88001300 {
 } unk_func_88001300; // size = 0x58
 
 typedef struct unk_func_88500E34 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ u8* unk_2C;
 } unk_func_88500E34; // size = 0x30
 
 typedef struct unk_func_88509A2C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ s32 unk_34;
@@ -150,14 +150,14 @@ typedef struct unk_func_88509A2C {
 } unk_func_88509A2C; // size = 0x4C
 
 typedef struct unk_func_88500EE4 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ u8* unk_2C;
     /* 0x30 */ Color_RGBA8 unk_30;
     /* 0x34 */ Color_RGBA8 unk_34;
 } unk_func_88500EE4; // size = 0x38
 
 typedef struct unk_func_885088F4 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ s32 unk_34;
@@ -165,23 +165,23 @@ typedef struct unk_func_885088F4 {
 } unk_func_885088F4; // size = 0x3C
 
 typedef struct unk_func_88509F0C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ char* unk_2C;
 } unk_func_88509F0C; // size = 0x30
 
 typedef struct unk_func_88509E34 {
-    /* 0x00 */ unk_func_88509F0C unk_00;
+    /* 0x00 */ unk_func_88509F0C posX;
     /* 0x30 */ char unk30[0x4];
 } unk_func_88509E34; // size = 0x34
 
 typedef struct unk_func_8850B254 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ Color_RGBA8 unk_2C;
     /* 0x30 */ Color_RGBA8 unk_30;
 } unk_func_8850B254; // size = 0x34
 
 typedef struct unk_func_8850878C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ Color_RGBA8 unk_30;
     /* 0x34 */ Color_RGBA8 unk_34;
@@ -192,12 +192,12 @@ typedef struct unk_func_8850878C {
 } unk_func_8850878C; // size = 0x48
 
 typedef struct unk_func_885012A4 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ Color_RGBA8 unk_2C;
 } unk_func_885012A4; // size = 0x30
 
 typedef struct unk_func_88503298 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_8850878C* unk_30;
 } unk_func_88503298; // size = 0x34
@@ -205,7 +205,7 @@ typedef struct unk_func_88503298 {
 typedef void (*unk_func_88200FA0_030_030_040)(s32, s32, char*, s32, s32, struct unk_func_88200FA0_030_030*);
 
 typedef struct unk_func_88200FA0_030_030 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_8820BE14_06C* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ u16* unk_34;
@@ -224,7 +224,7 @@ typedef struct unk_func_88200FA0_030_030 {
 
 // Copy of above with unk_2C changed just for fragment23_1AE680
 typedef struct unk_func_88200FA0_030_030_1AE680 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88205880_A030* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ u16* unk_34;
@@ -243,7 +243,7 @@ typedef struct unk_func_88200FA0_030_030_1AE680 {
 
 // Copy of above with unk_2C changed just for fragment24_1CEA00
 typedef struct unk_func_88200FA0_030_030_1CEA00 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_8830867C_02C_0CC* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ u16* unk_34;
@@ -261,30 +261,30 @@ typedef struct unk_func_88200FA0_030_030_1CEA00 {
 } unk_func_88200FA0_030_030_1CEA00; // size = 0x54
 
 typedef struct unk_func_8850182C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ Color_RGBA8 unk_2C;
 } unk_func_8850182C; // size = 0x30
 
 typedef struct unk_func_889000C4_02C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_889000C4_02C; // size = 0x34
 
 typedef struct unk_func_889000C4_044_02C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ char unk30[0x4];
 } unk_func_889000C4_044_02C; // size = 0x34
 
 typedef struct unk_func_88500994 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_88500994; // size = 0x34
 
 typedef struct unk_func_889000C4_044 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_889000C4_044_02C* unk_2C;
     /* 0x30 */ unk_func_88500994* unk_30;
     /* 0x34 */ unk_func_8850878C* unk_34;
@@ -292,7 +292,7 @@ typedef struct unk_func_889000C4_044 {
 } unk_func_889000C4_044; // size = 0x3C
 
 typedef struct unk_func_889000C4 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_889000C4_02C* unk_2C;
     /* 0x30 */ unk_func_88200FA0_030_030* unk_30;
     /* 0x34 */ unk_func_88200FA0_030_038 unk_34;
@@ -301,19 +301,19 @@ typedef struct unk_func_889000C4 {
 } unk_func_889000C4; // size = 0x48
 
 typedef struct unk_func_8850143C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ Color_RGBA8 unk_2C;
     /* 0x30 */ Color_RGBA8 unk_30;
 } unk_func_8850143C; // size = 0x34
 
 typedef struct unk_func_8820399C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ unk_func_8850143C* unk_30;
 } unk_func_8820399C; // size = 0x34
 
 typedef struct WidgetTree_InitMessagePanel {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_885012A4* unk_30;
     /* 0x34 */ unk_func_8850878C* unk_34;
@@ -324,7 +324,7 @@ typedef s32 (*unk_func_8850CD44_010)(struct unk_func_8850CD44* arg0, Controller*
 typedef void (*unk_func_8850CD44_014)(struct unk_func_8850CD44* arg0, s32 arg1);
 
 typedef struct unk_func_882173EC {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ unk_func_88001300_000_010 unk_30;
     /* 0x34 */ unk_func_88001300_000_010 unk_34;
@@ -340,8 +340,8 @@ typedef struct unk_func_8850CD44 {
 } unk_func_8850CD44; // size = 0x24
 
 typedef struct unk_func_882025E0_03C {
-    /* 0x00 */ unk_func_8850878C* unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ unk_func_8850878C* posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
 } unk_func_882025E0_03C; // size = 0xC
 
@@ -349,16 +349,16 @@ typedef s32 (*unk_func_882025E0_010)(struct unk_func_882025E0* arg0, Controller*
 typedef void (*unk_func_882025E0_014)(struct unk_func_882025E0* arg0, s32 arg1);
 
 typedef struct unk_func_882025E0_024_02C {
-    /* 0x00 */ unk_func_88205880_00D0* unk_00[2];
+    /* 0x00 */ unk_func_88205880_00D0* posX[2];
     /* 0x08 */ s32 unk_08;
 } unk_func_882025E0_024_02C; // size >= 0xC
 
 typedef struct unk_func_882025E0_024_02C_wrap {
-    /* 0x00 */ unk_func_882025E0_024_02C* unk_00;
+    /* 0x00 */ unk_func_882025E0_024_02C* posX;
 } unk_func_882025E0_024_02C_wrap; // size >= 0xC
 
 typedef struct unk_func_882025E0_024 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_882025E0_024_02C_wrap* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ u16* unk_34;
@@ -376,7 +376,7 @@ typedef struct unk_func_882025E0_024 {
 } unk_func_882025E0_024; // size >= 0x54
 
 typedef struct unk_func_882025E0_000 {
-    /* 0x00 */ unk_func_88001300_000_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000_000 posX;
     /* 0x10 */ unk_func_882025E0_010 unk_10;
     /* 0x14 */ unk_func_882025E0_014 unk_14;
     /* 0x18 */ s32 unk_18;
@@ -385,7 +385,7 @@ typedef struct unk_func_882025E0_000 {
 } unk_func_882025E0_000; // size = 0x24
 
 typedef struct unk_func_882025E0 {
-    /* 0x00 */ unk_func_882025E0_000 unk_00;
+    /* 0x00 */ unk_func_882025E0_000 posX;
     /* 0x24 */ unk_func_88200FA0_030_030* unk_24[2]; // unk_func_882025E0_024
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
@@ -395,7 +395,7 @@ typedef struct unk_func_882025E0 {
 } unk_func_882025E0; // size = 0x78
 
 typedef struct unk_func_882025E0_1A9780 {
-    /* 0x00 */ unk_func_882025E0_000 unk_00;
+    /* 0x00 */ unk_func_882025E0_000 posX;
     /* 0x24 */ unk_func_88200FA0_030_030_1AE680* unk_24[2];
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
@@ -405,30 +405,30 @@ typedef struct unk_func_882025E0_1A9780 {
 } unk_func_882025E0_1A9780; // size = 0x78
 
 typedef struct unk_func_88205880_0098_008_040_02C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
 } unk_func_88205880_0098_008_040_02C; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_040_03C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
 } unk_func_88205880_0098_008_040_03C; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_040_05C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_88205880_0098_008_040_05C; // size = 0x34
 
 typedef struct unk_func_88205880_0098_008_040_06C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ unk_func_88001300_000_010 unk_30;
     /* 0x34 */ unk_func_88001300_000_010 unk_34;
 } unk_func_88205880_0098_008_040_06C; // size = 0x38
 
 typedef struct unk_func_88205880_0098_008_040 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88205880_0098_008_040_02C* unk_2C[4];
     /* 0x3C */ unk_func_88205880_0098_008_040_03C* unk_3C[4];
     /* 0x4C */ unk_func_88205880_0098_008_040_06C* unk_4C[4];
@@ -438,44 +438,44 @@ typedef struct unk_func_88205880_0098_008_040 {
 } unk_func_88205880_0098_008_040; // size = 0x8C
 
 typedef struct unk_func_88205880_0098_008_044 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ PokemonData* unk_2C;
 } unk_func_88205880_0098_008_044; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_048 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ PokemonData* unk_2C;
 } unk_func_88205880_0098_008_048; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_04C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ PokemonData* unk_2C;
 } unk_func_88205880_0098_008_04C; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_050 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ PokemonData* unk_30;
     /* 0x34 */ unk_func_8001B1FC* unk_34;
 } unk_func_88205880_0098_008_050; // size = 0x38
 
 typedef struct unk_func_88205880_0098_008_054 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ PokemonData* unk_2C;
 } unk_func_88205880_0098_008_054; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_058 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
 } unk_func_88205880_0098_008_058; // size = 0x30
 
 typedef struct unk_func_88205880_0098_008_070 {
-    /* 0x00 */ unk_func_88001300_03C unk_00;
+    /* 0x00 */ unk_func_88001300_03C posX;
     /* 0x40 */ s32 unk_40;
 } unk_func_88205880_0098_008_070; // size = 0x44
 
 typedef struct unk_func_88205880_0098_008 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_88001300_02C* unk_30;
     /* 0x34 */ unk_func_88001300_02C* unk_34;
@@ -504,9 +504,9 @@ typedef struct unk_func_88205880_0098_008 {
 } unk_func_88205880_0098_008; // size = 0x90
 
 typedef struct unk_func_88205880_0098 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ MemoryPool* unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ MemoryPool* rotation;
     /* 0x08 */ unk_func_88205880_0098_008* unk_08;
     /* 0x0C */ PokemonData* unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -522,7 +522,7 @@ typedef struct unk_func_88205880_0098 {
 } unk_func_88205880_0098; // size = 0x38
 
 typedef struct unk_func_88201DA0 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_88200FA0_030_030* unk_30;
     /* 0x34 */ unk_func_88201DA0_034* unk_34;
@@ -537,18 +537,18 @@ typedef struct unk_func_88201DA0 {
 } unk_func_88201DA0; // size = 0x64
 
 typedef struct unk_func_8820253C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88205880_00D0* unk_2C;
 } unk_func_8820253C; // size = 0x30
 
 typedef struct unk_func_88217740 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_88217740; // size = 0x34
 
 typedef struct unk_func_882149A0 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ u8* unk_2C;
     /* 0x30 */ s16 unk_30;
     /* 0x32 */ Color_RGBA8 unk_32;
@@ -561,7 +561,7 @@ typedef s32 (*unk_func_8830867C_02C_048_000_010)(struct unk_func_8830867C_02C_04
 typedef void (*unk_func_8830867C_02C_048_000_014)(struct unk_func_8830867C_02C_048_000*, s32);
 
 typedef struct unk_func_8830867C_02C_048_000 {
-    /* 0x00 */ unk_func_88001300_000_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000_000 posX;
     /* 0x10 */ unk_func_8830867C_02C_048_000_010 unk_10;
     /* 0x14 */ unk_func_8830867C_02C_048_000_014 unk_14;
     /* 0x18 */ s32 unk_18;
@@ -570,12 +570,12 @@ typedef struct unk_func_8830867C_02C_048_000 {
 } unk_func_8830867C_02C_048_000; // size = 0x24
 
 typedef struct unk_func_88203ED8_064 {
-    /* 0x00 */ unk_func_8830867C_02C_048_000 unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_048_000 posX;
     /* 0x24 */ struct unk_func_88203ED8* unk_24;
 } unk_func_88203ED8_064; // size = 0x28
 
 typedef struct unk_func_88203ED8 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x2C */ unk_func_8820399C* unk_30;
     /* 0x2C */ unk_func_8820399C* unk_34;
@@ -596,11 +596,11 @@ typedef struct unk_func_88203ED8 {
 } unk_func_88203ED8; // size = 0x88
 
 typedef struct unk_func_8820BE14_02C_038_084 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
 } unk_func_8820BE14_02C_038_084; // size >= 0x18
 
 typedef struct unk_func_8820BE14_02C_038 {
-    /* 0x00 */ unk_func_88200FA0_030_030 unk_00; // unk_func_882025E0_024
+    /* 0x00 */ unk_func_88200FA0_030_030 posX; // unk_func_882025E0_024
     /* 0x54 */ u16 unk_54;
     /* 0x56 */ u16 unk_56;
     /* 0x58 */ s32 unk_58;
@@ -620,13 +620,13 @@ typedef struct unk_func_8820BE14_02C_038 {
 } unk_func_8820BE14_02C_038; // size = 0x90
 
 typedef struct unk_func_88507D4C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_8820BE14_02C_038* unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_88507D4C; // size = 0x34
 
 typedef struct unk_func_8821421C_038_034 {
-    /* 0x00 */ unk_func_88200FA0_030_030 unk_00;
+    /* 0x00 */ unk_func_88200FA0_030_030 posX;
     /* 0x54 */ u16 unk_54;
     /* 0x56 */ u16 unk_56;
     /* 0x58 */ s32 unk_58;
@@ -641,7 +641,7 @@ typedef s32 (*unk_func_8850BD40_010)(struct unk_func_8850BD40*);
 typedef void (*unk_func_8850BD40_014)(struct unk_func_8850BD40*);
 
 typedef struct unk_func_8850BD40 {
-    /* 0x00 */ unk_func_88001300_000_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000_000 posX;
     /* 0x10 */ unk_func_8850BD40_010 unk_10;
     /* 0x14 */ unk_func_8850BD40_014 unk_14;
     /* 0x18 */ char unk18[0x4];
@@ -655,7 +655,7 @@ typedef struct unk_func_8821421C_038_050 {
 } unk_func_8821421C_038_050; // size = 0x14
 
 typedef struct unk_func_8820E99C_030_044 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ char unk2C[0x4];
     /* 0x30 */ s32 unk_30;
 } unk_func_8820E99C_030_044; // size = 0x34
@@ -663,7 +663,7 @@ typedef struct unk_func_8820E99C_030_044 {
 struct unk_func_8830867C_02C;
 
 typedef struct unk_func_8830867C_02C_034 {
-    /* 0x00 */ unk_func_88200FA0_030_030_1CEA00 unk_00;
+    /* 0x00 */ unk_func_88200FA0_030_030_1CEA00 posX;
     /* 0x54 */ s16 unk_54;
     /* 0x58 */ s32 unk_58;
     /* 0x5C */ s32 unk_5C;
@@ -673,49 +673,49 @@ typedef struct unk_func_8830867C_02C_034 {
 } unk_func_8830867C_02C_034; // size = 0x74
 
 typedef struct unk_func_8830867C_02C_048 {
-    /* 0x00 */ unk_func_8830867C_02C_048_000 unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_048_000 posX;
     /* 0x24 */ struct unk_func_8830867C_02C* unk_24;
 } unk_func_8830867C_02C_048; // size = 0x28
 
 typedef struct unk_func_8830867C_034_038 {
-    /* 0x00 */ unk_func_8830867C_02C_048_000 unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_048_000 posX;
     /* 0x24 */ struct unk_func_8830867C_034* unk_24;
 } unk_func_8830867C_034_038; // size = 0x28
 
 typedef struct unk_func_8830867C_044_040 {
-    /* 0x00 */ unk_func_8830867C_02C_048_000 unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_048_000 posX;
     /* 0x24 */ struct unk_func_8830867C_044* unk_24;
 } unk_func_8830867C_044_040; // size = 0x28
 
 typedef struct unk_func_8830867C_03C_058 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ MoveCategoryColorGradient* unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ MoveCategoryColorGradient* rotation;
 } unk_func_8830867C_03C_058; // size = 0x8
 
 typedef struct unk_func_8830867C_03C_0D0 {
-    /* 0x00 */ unk_func_8830867C_03C_058** unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ unk_func_8830867C_03C_058** posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
 } unk_func_8830867C_03C_0D0; // size = 0x10
 
 typedef struct unk_func_8830867C_03C_04C {
-    /* 0x00 */ unk_func_8830867C_02C_048_000 unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_048_000 posX;
     /* 0x24 */ struct unk_func_8830867C_03C* unk_24;
 } unk_func_8830867C_03C_04C; // size = 0x28
 
 typedef struct unk_func_8830867C_040_05C {
-    /* 0x00 */ unk_func_8830867C_02C_048_000 unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_048_000 posX;
     /* 0x24 */ struct unk_func_8830867C_040* unk_24;
 } unk_func_8830867C_040_05C; // size = 0x28
 
 typedef struct unk_func_8830867C_04C_080 {
-    /* 0x00 */ unk_func_8830867C_02C_048_000 unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_048_000 posX;
     /* 0x24 */ struct unk_func_8830867C_04C* unk_24;
 } unk_func_8830867C_04C_080; // size = 0x28
 
 typedef struct unk_func_8830867C_048_048 {
-    /* 0x00 */ unk_func_8830867C_02C_048_000 unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_048_000 posX;
     /* 0x24 */ struct unk_func_8830867C_048* unk_24;
 } unk_func_8830867C_048_048; // size = 0x28
 

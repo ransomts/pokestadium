@@ -98,7 +98,7 @@ void func_828002E4(void) {
     ModelRenderer_AttachDisplayObject(&D_82800538);
     PokeIcon_OpenModelArchives();
     gGeoLayout_StageBackground = Model_LoadByArchiveIndex(0x96);
-    Model_InitDisplayObject(&D_82800538, 0, 0x96, gGeoLayout_StageBackground->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&D_82800538, 0, 0x96, gGeoLayout_StageBackground->unk_08->posX[0]);
     ModelAnim_SetAnimation(&D_82800538, 0);
 }
 

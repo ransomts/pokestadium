@@ -78,9 +78,9 @@ void Gallery_DrawYesNoOptions(MenuPanelInfo* arg0, s16 arg1) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     if (arg1 == 0) {
-        Font_Printf(arg0->unk_00 + 0x18, arg0->unk_02 + 0x14, Gallery_GetCommonUiString(0x29));
+        Font_Printf(arg0->posX + 0x18, arg0->posY + 0x14, Gallery_GetCommonUiString(0x29));
     } else {
-        Font_Printf(arg0->unk_00 + 0x39, arg0->unk_02 + 0x14, Gallery_GetCommonUiString(0x2A));
+        Font_Printf(arg0->posX + 0x39, arg0->posY + 0x14, Gallery_GetCommonUiString(0x2A));
     }
     Font_EndTexturedTextRendering();
 }
@@ -93,8 +93,8 @@ void Gallery_DrawSaveOptions(MenuPanelInfo* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     temp_v0 = Gallery_GetUiString(0x2A);
-    tmp = (arg0->unk_04 - Font_MeasureTextExtent(0, 0, temp_v0)) / 2;
-    Font_Printf(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, temp_v0);
+    tmp = (arg0->rotation - Font_MeasureTextExtent(0, 0, temp_v0)) / 2;
+    Font_Printf(arg0->posX + tmp, arg0->posY + 0x14, temp_v0);
 
     for (i = 0; i < arg0->unk_08; i++) {
         Font_SetActive(0x10, 0);
@@ -105,18 +105,18 @@ void Gallery_DrawSaveOptions(MenuPanelInfo* arg0) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         }
 
-        Font_Printf(arg0->unk_00 + 0x3C, D_83402EA4[i] + arg0->unk_02 + 0x40, temp_v0);
+        Font_Printf(arg0->posX + 0x3C, D_83402EA4[i] + arg0->posY + 0x40, temp_v0);
 
         if (i == 1) {
             Font_SetActive(8, 0);
-            Font_Printf(arg0->unk_00 + 0x3C, D_83402EA4[i] + arg0->unk_02 + 0x58, Gallery_GetUiString(0x36));
+            Font_Printf(arg0->posX + 0x3C, D_83402EA4[i] + arg0->posY + 0x58, Gallery_GetUiString(0x36));
         }
     }
 
     Font_EndTexturedTextRendering();
 
     if (D_83407C0A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, D_83402EA4[D_83407C0A] + arg0->unk_02 + 0x48);
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, D_83402EA4[D_83407C0A] + arg0->posY + 0x48);
     }
 }
 
@@ -128,8 +128,8 @@ void Gallery_DrawDeleteOptions(MenuPanelInfo* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     temp_v0 = Gallery_GetUiString(0x2E);
-    tmp = (arg0->unk_04 - Font_MeasureTextExtent(0, 0, temp_v0)) / 2;
-    Font_Printf(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, temp_v0);
+    tmp = (arg0->rotation - Font_MeasureTextExtent(0, 0, temp_v0)) / 2;
+    Font_Printf(arg0->posX + tmp, arg0->posY + 0x14, temp_v0);
 
     for (i = 0; i < arg0->unk_08; i++) {
         Font_SetActive(0x10, 0);
@@ -139,13 +139,13 @@ void Gallery_DrawDeleteOptions(MenuPanelInfo* arg0) {
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         }
-        Font_Printf(arg0->unk_00 + 0x3C, arg0->unk_02 + (i * 0x22) + 0x40, temp_v0);
+        Font_Printf(arg0->posX + 0x3C, arg0->posY + (i * 0x22) + 0x40, temp_v0);
     }
 
     Font_EndTexturedTextRendering();
 
     if (D_83407C0A >= 0) {
-        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, arg0->unk_02 + (D_83407C0A * 0x22) + 0x48);
+        Ui_DrawAnimatedTextureMarker(arg0->posX + 0x10, arg0->posY + (D_83407C0A * 0x22) + 0x48);
     }
 }
 
@@ -155,7 +155,7 @@ void Gallery_DrawMessagePrompt(MenuPanelInfo* arg0) {
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Font_Printf(arg0->unk_00 + sp18, arg0->unk_02 + 0x14, Gallery_GetUiString(0x41));
+    Font_Printf(arg0->posX + sp18, arg0->posY + 0x14, Gallery_GetUiString(0x41));
     Font_EndTexturedTextRendering();
 }
 
@@ -175,11 +175,11 @@ void Gallery_DrawConfirmPrompt(UNUSED s32 arg0) {
             if (var_a3 < 16) {
                 var_a3 = 16;
             }
-            tmp = temp_s0->unk_02 + ((temp_s0->unk_06 - var_a3) / 2);
+            tmp = temp_s0->posY + ((temp_s0->unk_06 - var_a3) / 2);
 
-            Ui_DrawBorderedPanel(temp_s0->unk_00, tmp, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
+            Ui_DrawBorderedPanel(temp_s0->posX, tmp, temp_s0->rotation, var_a3, temp_s0->unk_0A);
         } else {
-            Ui_DrawBorderedPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
+            Ui_DrawBorderedPanel(temp_s0->posX, temp_s0->posY, temp_s0->rotation, temp_s0->unk_06, temp_s0->unk_0A);
 
             switch (D_83407C00) {
                 case 0:

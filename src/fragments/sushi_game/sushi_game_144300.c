@@ -367,7 +367,7 @@ void RenderSushiGoRoundUI(void) {
             if (gIsDemoMode == 0) {
                 Font_SetActive(4, 0);
                 for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
-                    if ((ptr->unk_040.unk_00 != 0) && (ptr->unk_040.unk_00 != 1)) {
+                    if ((ptr->unk_040.posX != 0) && (ptr->unk_040.posX != 1)) {
                         if ((i / 2) != 0) {
                             var_s7 = -0x14;
                         } else {

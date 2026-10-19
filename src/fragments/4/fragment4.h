@@ -5,9 +5,9 @@
 
 extern u32 gTextTable_StageNames[];
 extern u32 gTextTable_StageSubtitles[];
-extern u32 D_87A01180[];
-extern u32 D_87A01190[];
-extern u32 D_87A011A4[];
+extern u32 gStageSubtitles_Alt1[];
+extern u32 gStageSubtitles_Alt2[];
+extern u32 gStageSubtitles_Alt3[];
 
 void MiniCam_SetActive(CameraStruct*);
 Gfx* MiniCam_ApplyProjection(Gfx*);

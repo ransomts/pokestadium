@@ -6,7 +6,7 @@
 #include "src/29BA0.h"
 
 typedef struct PickerPokemonEntry {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ char unk01[0xD];
     /* 0x0E */ u16 unk_0E;
     /* 0x10 */ char unk10[0x14];
@@ -50,20 +50,20 @@ typedef struct PickerState {
 } PickerState; // size = 0x6298
 
 typedef struct RentalItemInfo {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0C */ PickerPokemonEntry* unk_0C;
 } RentalItemInfo; // size = 0x10
 
 typedef struct unk_D_82F14450 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ char unk_08[1];
@@ -71,15 +71,15 @@ typedef struct unk_D_82F14450 {
 } unk_D_82F14450; // size = 0x16
 
 typedef struct unk_D_82F13B78 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ char* unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ char* rotation;
 } unk_D_82F13B78; // size = 0x8
 
 typedef struct unk_D_82F20A10 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -94,16 +94,16 @@ typedef struct unk_D_82F20A10 {
 } unk_D_82F20A10; // size >= 0x28
 
 typedef struct PanelRect {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
 } PanelRect; // size = 0x8
 
 typedef struct unk_D_82F20A40 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ PanelRect unk_06;
     /* 0x0E */ PanelRect unk_0E[3];
     /* 0x26 */ PanelRect unk_26;
@@ -133,9 +133,9 @@ typedef struct unk_D_82F20A88 {
 } unk_D_82F20A88; // size = 0x190
 
 typedef struct RentalMenuState {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -150,9 +150,9 @@ typedef struct RentalMenuState {
 } RentalMenuState; // size = 0x3C
 
 typedef struct unk_D_82F21160 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -166,9 +166,9 @@ typedef struct unk_D_82F21160 {
 } unk_D_82F21160; // size = 0x20
 
 typedef struct unk_D_82F21140 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -181,15 +181,15 @@ typedef struct unk_D_82F21140 {
 } unk_D_82F21140; // size = 0x1C
 
 typedef struct unk_D_82F211A0_010 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
 } unk_D_82F211A0_010; // size = 0x6
 
 typedef struct unk_D_82F211A0 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x00 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x00 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -199,9 +199,9 @@ typedef struct unk_D_82F211A0 {
 } unk_D_82F211A0; // size = 0x4C
 
 typedef struct unk_D_82F21238 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;

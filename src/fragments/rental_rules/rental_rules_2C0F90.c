@@ -84,9 +84,9 @@ void RentalRules_PopupDraw(void) {
             Font_SetActive(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetLineHeight(0x18);
-            Font_Printf(0x50, temp_s0 + 6, gMenuStaticStrings.unk_00[gDialogMessageId]);
+            Font_Printf(0x50, temp_s0 + 6, gMenuStaticStrings.posX[gDialogMessageId]);
             Font_SetActive(8, 0);
-            Font_Printf(0x50, temp_s0 + 0x28, gMenuOptionStrings.unk_00[gDialogMessageId]);
+            Font_Printf(0x50, temp_s0 + 0x28, gMenuOptionStrings.posX[gDialogMessageId]);
             Font_EndTexturedTextRendering();
         }
     }
@@ -99,7 +99,7 @@ void RentalRules_PopupOpen(s16 arg0) {
     gDialogTimer = 5;
     gDialogAnimProgress = 0;
     gDialogMessageId = arg0;
-    tmp = (RentalRules_CountTextLines(gMenuOptionStrings.unk_00[gDialogMessageId]) * 0x18);
+    tmp = (RentalRules_CountTextLines(gMenuOptionStrings.posX[gDialogMessageId]) * 0x18);
     gDialogHeight = 0x2C + tmp;
     gDialogYPos = ((0x1E0 - gDialogHeight) / 2) + 0x14;
 }

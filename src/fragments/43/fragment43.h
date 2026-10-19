@@ -5,9 +5,9 @@
 #include "30640.h"
 
 typedef struct MenuPanelInfo {
-    /* 0x00 */ s16 unk_00;
-    /* 0x00 */ s16 unk_02;
-    /* 0x00 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x00 */ s16 posY;
+    /* 0x00 */ s16 rotation;
     /* 0x00 */ s16 unk_06;
     /* 0x00 */ s8 unk_08;
     /* 0x00 */ s8 unk_09;
@@ -16,16 +16,16 @@ typedef struct MenuPanelInfo {
 } MenuPanelInfo; // size = 0x10
 
 typedef struct unk_D_83407B18_008 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ char unk_0A[0x2];
 } unk_D_83407B18_008; // size >= 0xC
 
 typedef struct unk_D_83407B18 {
-    /* 0x00 */ unk_D_83407B00 unk_00;
+    /* 0x00 */ unk_D_83407B00 posX;
     /* 0x08 */ unk_D_83407B18_008 unk_08;
     /* 0x14 */ char unk14[0x4];
 } unk_D_83407B18; // size = 0x18

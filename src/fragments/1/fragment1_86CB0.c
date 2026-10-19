@@ -1,12 +1,12 @@
 #include "global.h"
 
 typedef struct GbApu_ResetChannels {
-  /* 0x00 */ u8 unk_00;
+  /* 0x00 */ u8 posX;
   /* 0x02 */ char unk02[0x02];
-  /* 0x04 */ s32 unk_04;
+  /* 0x04 */ s32 rotation;
   /* 0x08 */ union {
-      u16 unk_00;
-      s32 unk_02;
+      u16 posX;
+      s32 posY;
   } unk_08;
   /* 0x0C */ u32 unk_0C;
   /* 0x10 */ u16 unk_10;
@@ -40,9 +40,9 @@ typedef struct GbApu_ResetChannels {
 } GbApu_ResetChannels; // size = 0x50
 
 typedef struct unk_D_8122EEA8 {
-  /* 0x00 */ u8 unk_00;
+  /* 0x00 */ u8 posX;
   /* 0x01 */ u8 unk_01;
-  /* 0x02 */ u8 unk_02;
+  /* 0x02 */ u8 posY;
   /* 0x03 */ u8 unk_03;
 } unk_D_8122EEA8; // size = 0x4
 
@@ -287,7 +287,7 @@ s32 GbAudio_GetDutyVolume(u32 arg0, s32 arg1) {
 u16 GbApu_UpdateSquare1Channel(void) {
     u16 var_t0;
 
-    if (gGbApuSquare1.unk_00 == 0) {
+    if (gGbApuSquare1.posX == 0) {
         if (gGbApuSquare1.unk_3C == 0) {
             return 0U;
         }
@@ -303,9 +303,9 @@ u16 GbApu_UpdateSquare1Channel(void) {
         gGbApuSquare1.unk_4C = 0U;
     }
     {
-        s32 temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare1.unk_3B, gGbApuSquare1.unk_08.unk_00);
-        gGbApuSquare1.unk_08.unk_02 += gGbApuSquare1.unk_0C;
-        gGbApuSquare1.unk_08.unk_02 &= 0x1FFFFF;
+        s32 temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare1.unk_3B, gGbApuSquare1.unk_08.posX);
+        gGbApuSquare1.unk_08.posY += gGbApuSquare1.unk_0C;
+        gGbApuSquare1.unk_08.posY &= 0x1FFFFF;
         if (gGbApuSquare1.unk_4C == 1) {
             if (gGbApuSquare1.unk_3C != 0) {
                 gGbApuSquare1.unk_3C--;
@@ -328,12 +328,12 @@ u16 GbApu_UpdateSquare1Channel(void) {
             break;
         }
         if (gGbApuSquare1.unk_10 <= 0) {
-            gGbApuSquare1.unk_00 = 0U;
+            gGbApuSquare1.posX = 0U;
             return var_t0;
         } else {
             if ((gGbApuSquare1.unk_10 >= 0x800) && (gGbApuSquare1.unk_39 == 0)) {
                 gGbApuSquare1.unk_10 = 0x7FFU;
-                gGbApuSquare1.unk_00 = 0U;
+                gGbApuSquare1.posX = 0U;
             }
             gGbApuSquare1.unk_0C = GbApu_FreqToStep2x(gGbApuSquare1.unk_10);
         }
@@ -347,7 +347,7 @@ u16 GbApu_UpdateSquare1Channel(void) {
                     gGbApuSquare1.unk_2D--;
                 }
                 if (!gGbApuSquare1.unk_2D) {
-                    gGbApuSquare1.unk_00 = 0;
+                    gGbApuSquare1.posX = 0;
                 }
                 break;
             
@@ -370,7 +370,7 @@ u16 GbApu_UpdateSquare1Channel(void) {
             gGbApuSquare1.unk_14--;
         }
         if (gGbApuSquare1.unk_14 == 0) {
-            gGbApuSquare1.unk_00 = 0U;
+            gGbApuSquare1.posX = 0U;
         }
     }
     return var_t0;
@@ -381,7 +381,7 @@ s32 GbApu_UpdateSquare2Channel(void) {
     s32 var_a3;
     u8 var_v0;
 
-    if (gGbApuSquare2.unk_00 == 0) {
+    if (gGbApuSquare2.posX == 0) {
         if (gGbApuSquare2.unk_3C == 0) {
             return 0;
         }
@@ -394,9 +394,9 @@ s32 GbApu_UpdateSquare2Channel(void) {
     } else {
         gGbApuSquare2.unk_4C = 0U;
     }
-    temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare2.unk_3B, gGbApuSquare2.unk_08.unk_00);
-    gGbApuSquare2.unk_08.unk_02 += gGbApuSquare2.unk_0C;
-    gGbApuSquare2.unk_08.unk_02 &= 0x1FFFFF;
+    temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare2.unk_3B, gGbApuSquare2.unk_08.posX);
+    gGbApuSquare2.unk_08.posY += gGbApuSquare2.unk_0C;
+    gGbApuSquare2.unk_08.posY &= 0x1FFFFF;
     if (gGbApuSquare2.unk_4C == 1) {
         if (gGbApuSquare2.unk_3C != 0) {
             gGbApuSquare2.unk_3C--;
@@ -418,7 +418,7 @@ s32 GbApu_UpdateSquare2Channel(void) {
                         gGbApuSquare2.unk_2D--;
                     }
                     if (!gGbApuSquare2.unk_2D) {
-                        gGbApuSquare2.unk_00 = 0;
+                        gGbApuSquare2.posX = 0;
                     }
                     break;
                 
@@ -441,7 +441,7 @@ s32 GbApu_UpdateSquare2Channel(void) {
             gGbApuSquare2.unk_14--;
         }
         if (gGbApuSquare2.unk_14 == 0) {
-            gGbApuSquare2.unk_00 = 0U;
+            gGbApuSquare2.posX = 0U;
         }
     }
     return var_a3;
@@ -453,7 +453,7 @@ u16 GbApu_UpdateWaveChannel(void) {
     u16 temp_a1;
     u16 var_a0;
 
-    if (gGbApuWave.unk_00 == 0) {
+    if (gGbApuWave.posX == 0) {
         if (gGbApuWave.unk_3C == 0) {
             return 0U;
         }
@@ -461,16 +461,16 @@ u16 GbApu_UpdateWaveChannel(void) {
         gGbApuWave.unk_20 = gGbApuWave.unk_3C;
         gGbApuWave.unk_0C = (s32) gGbApuWave.unk_40;
     } else {    
-        if (gGbApuWave.unk_04 != 0) {
-            gGbApuWave.unk_04--;
-            if (gGbApuWave.unk_04 >= 0x21) {
+        if (gGbApuWave.rotation != 0) {
+            gGbApuWave.rotation--;
+            if (gGbApuWave.rotation >= 0x21) {
                 if (gGbApuWave.unk_3C == 0) {
-                    gGbApuWave.unk_04 = 0x20;
-                    gGbApuWave.unk_08.unk_02 = 0;
+                    gGbApuWave.rotation = 0x20;
+                    gGbApuWave.unk_08.posY = 0;
                     gGbApuWave.unk_0C = GbApu_FreqToStep(gGbApuWave.unk_10);
                     gGbApuWave.unk_20 = gGbWaveLevelTable[gGbApuWave.unk_21];
                 } else {
-                    if (!(gGbApuWave.unk_04 & 7)) {
+                    if (!(gGbApuWave.rotation & 7)) {
                         gGbApuWave.unk_3C--;
                     }
                     gGbApuWave.unk_20 = gGbApuWave.unk_3C;
@@ -479,9 +479,9 @@ u16 GbApu_UpdateWaveChannel(void) {
             }
         }
     }
-    temp_a0 = GbAudio_GetDutyVolume(7, gGbApuWave.unk_08.unk_00);
-    gGbApuWave.unk_08.unk_02 += gGbApuWave.unk_0C;
-    gGbApuWave.unk_08.unk_02 &= 0x1FFFFF;
+    temp_a0 = GbAudio_GetDutyVolume(7, gGbApuWave.unk_08.posX);
+    gGbApuWave.unk_08.posY += gGbApuWave.unk_0C;
+    gGbApuWave.unk_08.posY &= 0x1FFFFF;
     if (gGbApuWave.unk_4C - 1 == 0) {
 
         if (gGbApuWave.unk_3C != 0) {
@@ -502,7 +502,7 @@ u16 GbApu_UpdateWaveChannel(void) {
             gGbApuWave.unk_14--;
         }
         if (gGbApuWave.unk_14 == 0) {
-            gGbApuWave.unk_00 = 0U;
+            gGbApuWave.posX = 0U;
         }
     }
     return temp_a0;
@@ -529,7 +529,7 @@ u16 GbAudio_StepNoiseChannel(void) {
         var_a2 = gGbApuNoise.unk_40;
     }
 
-    if (gGbApuNoise.unk_00 == 0) {
+    if (gGbApuNoise.posX == 0) {
         if (gGbApuNoise.unk_3C == 0) {
             return 0;
         }
@@ -537,10 +537,10 @@ u16 GbAudio_StepNoiseChannel(void) {
         gGbApuNoise.unk_20 = gGbApuNoise.unk_3C;
         gGbApuNoise.unk_0C = gGbApuNoise.unk_40;
     }
-    temp_v0 = GbAudio_GetDutyVolume(6, gGbApuNoise.unk_08.unk_00);
-    gGbApuNoise.unk_08.unk_02 += var_a2;
-    if (gGbApuNoise.unk_08.unk_00  >= (u32)D_8120EACC) {
-        gGbApuNoise.unk_08.unk_00  = D_8120EAC8;
+    temp_v0 = GbAudio_GetDutyVolume(6, gGbApuNoise.unk_08.posX);
+    gGbApuNoise.unk_08.posY += var_a2;
+    if (gGbApuNoise.unk_08.posX  >= (u32)D_8120EACC) {
+        gGbApuNoise.unk_08.posX  = D_8120EAC8;
     }
     temp_v0 *= gGbApuNoise.unk_3C;
     if ((gGbApuNoise.unk_3C != gGbApuNoise.unk_20) && ((D_8120EB6C % 95) == 0)) {
@@ -560,7 +560,7 @@ u16 GbAudio_StepNoiseChannel(void) {
                     gGbApuNoise.unk_2D--;
                 }
                 if (gGbApuNoise.unk_2D == 0) {
-                    gGbApuNoise.unk_00 = 0;
+                    gGbApuNoise.posX = 0;
                 }
                 break;
             case 1:
@@ -584,7 +584,7 @@ u16 GbAudio_StepNoiseChannel(void) {
             gGbApuNoise.unk_14--;
         }
         if (gGbApuNoise.unk_14 == 0) {
-            gGbApuNoise.unk_00 = 0U;
+            gGbApuNoise.posX = 0U;
         }
     }
     
@@ -646,7 +646,7 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
         case 0x12:
             gGbApuSquare1.unk_21 = GB_APU_REGS.volume1;
             if ((GB_APU_REGS.volume1 == 0) && (GB_APU_REGS.envDir1 == 0)) {
-                gGbApuSquare1.unk_00 = 0;
+                gGbApuSquare1.posX = 0;
             }
             break;
         case 0x13:
@@ -666,7 +666,7 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
                 gGbApuSquare1.unk_28 = GB_APU_REGS.envSweep1 * 800;
                 gGbApuSquare1.unk_2D = gGbApuSquare1.unk_21;
                 if (GB_APU_REGS.power) {
-                    gGbApuSquare1.unk_00 = 1;
+                    gGbApuSquare1.posX = 1;
                 }
             }
             if (gGbApuSquare1.unk_34 == 0) {
@@ -682,7 +682,7 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
         case 0x17:
             gGbApuSquare2.unk_21 = GB_APU_REGS.volume2;
             if ((GB_APU_REGS.volume2 == 0) && (GB_APU_REGS.envDir2 == 0)) {
-                gGbApuSquare2.unk_00 = 0;
+                gGbApuSquare2.posX = 0;
             }
             break;
         case 0x18:
@@ -695,20 +695,20 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             gGbApuSquare2.unk_0C = GbApu_FreqToStep2x(gGbApuSquare2.unk_10);
             if ((s32)GB_APU_REGS.trigger2 == 1) {
                 gGbApuSquare2.unk_14 = gGbApuSquare2.unk_1C * 200;
-                gGbApuSquare2.unk_08.unk_02 = 0;
+                gGbApuSquare2.unk_08.posY = 0;
                 gGbApuSquare2.unk_20 = gGbEnvStepTable[gGbApuSquare2.unk_21];
                 gGbApuSquare2.unk_24 = 0;
                 gGbApuSquare2.unk_2E = GB_APU_REGS.envDir2;
                 gGbApuSquare2.unk_28 = GB_APU_REGS.envSweep2 * 800;
                 gGbApuSquare2.unk_2D = gGbApuSquare2.unk_21;
                 if (GB_APU_REGS.power) {
-                    gGbApuSquare2.unk_00 = 1;
+                    gGbApuSquare2.posX = 1;
                 }
             }
             break;
         case 0x1A:
             if (GB_APU_REGS.waveOn == 0) {
-                gGbApuWave.unk_00 = GB_APU_REGS.waveOn;
+                gGbApuWave.posX = GB_APU_REGS.waveOn;
             }
             break;
         case 0x1B:
@@ -728,9 +728,9 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             gGbApuWave.unk_18 = GB_APU_REGS.counter3;
             if ((s32)GB_APU_REGS.trigger3 == 1) {
                 gGbApuWave.unk_14 = gGbApuWave.unk_1C * 200;
-                gGbApuWave.unk_04 = 0x140;
+                gGbApuWave.rotation = 0x140;
                 if (GB_APU_REGS.power && ((s32)GB_APU_REGS.waveOn == 1)) {
-                    gGbApuWave.unk_00 = 1;
+                    gGbApuWave.posX = 1;
                 }
             }
             break;
@@ -759,13 +759,13 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
         case 0x21:
             gGbApuNoise.unk_21 = GB_APU_REGS.volume4;
             if ((GB_APU_REGS.volume4 == 0) && (GB_APU_REGS.envDir4 == 0)) {
-                gGbApuNoise.unk_00 = 0;
+                gGbApuNoise.posX = 0;
             }
             break;
         case 0x22:
             gGbApuNoise.unk_10 = GB_APU_REGS.shift4;
             gGbApuNoise.unk_0C = func_81207494(GB_APU_REGS.shift4, GB_APU_REGS.width4, GB_APU_REGS.ratio4);
-            if (gGbApuNoise.unk_00 == 0) {
+            if (gGbApuNoise.posX == 0) {
                 gGbApuNoise.unk_40 = gGbApuNoise.unk_0C;
             }
             if (gGbApuNoise.unk_40 < gGbApuNoise.unk_0C) {
@@ -782,8 +782,8 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             gGbApuNoise.unk_18 = GB_APU_REGS.counter4;
             if ((s32)GB_APU_REGS.trigger4 == 1) {
                 gGbApuNoise.unk_14 = gGbApuNoise.unk_1C * 200;
-                if (gGbApuNoise.unk_00 == 0) {
-                    gGbApuNoise.unk_08.unk_02 = 0;
+                if (gGbApuNoise.posX == 0) {
+                    gGbApuNoise.unk_08.posY = 0;
                 }
                 gGbApuNoise.unk_2D = gGbApuNoise.unk_21;
                 switch ((s32)GB_APU_REGS.width4) {
@@ -794,23 +794,23 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
                         gGbApuNoise.unk_20 = gGbNoiseStepTable1[gGbApuNoise.unk_2D];
                         break;
                 }
-                if ((gGbApuNoise.unk_00 == 0) || (gGbApuNoise.unk_3C < gGbApuNoise.unk_20)) {
+                if ((gGbApuNoise.posX == 0) || (gGbApuNoise.unk_3C < gGbApuNoise.unk_20)) {
                     gGbApuNoise.unk_3C = gGbApuNoise.unk_20;
                 }
                 gGbApuNoise.unk_24 = 0;
                 gGbApuNoise.unk_2E = GB_APU_REGS.envDir4;
                 gGbApuNoise.unk_28 = GB_APU_REGS.envSweep4 * 800;
                 if (GB_APU_REGS.power) {
-                    gGbApuNoise.unk_00 = 1;
+                    gGbApuNoise.posX = 1;
                 }
             }
             break;
         case 0x26:
             if (!(value & 0x80)) {
-                gGbApuSquare1.unk_00 = 0;
-                gGbApuSquare2.unk_00 = 0;
-                gGbApuWave.unk_00 = 0;
-                gGbApuNoise.unk_00 = 0;
+                gGbApuSquare1.posX = 0;
+                gGbApuSquare2.posX = 0;
+                gGbApuWave.posX = 0;
+                gGbApuNoise.posX = 0;
             }
             break;
     }
@@ -929,9 +929,9 @@ void GbAudio_MixChannels(s32 numSamples, s16* out) {
         idx++;
     }
 
-    gGbApuStatusLatch.unk_00 = 0;
+    gGbApuStatusLatch.posX = 0;
     gGbApuStatusLatch.unk_01 = 0;
-    gGbApuStatusLatch.unk_02 = 0;
+    gGbApuStatusLatch.posY = 0;
     gGbApuStatusLatch.unk_03 = 0;
 }
 
@@ -944,7 +944,7 @@ void GbAudio_QueueWrite(u16 arg0, u8 arg1, u16 arg2) {
     switch (temp_v1) {
     case 20:
         if (arg1 & 0x80) {
-            gGbApuStatusLatch.unk_00 = 2;
+            gGbApuStatusLatch.posX = 2;
             return;
         }
     default:
@@ -957,7 +957,7 @@ void GbAudio_QueueWrite(u16 arg0, u8 arg1, u16 arg2) {
         break;
     case 30:
         if (arg1 & 0x80) {
-            gGbApuStatusLatch.unk_02 = 2;
+            gGbApuStatusLatch.posY = 2;
             return;
         }
         break;
@@ -969,21 +969,21 @@ void GbAudio_QueueWrite(u16 arg0, u8 arg1, u16 arg2) {
         break;
     case 38:
         if (!(arg1 & 1)) {
-            gGbApuStatusLatch.unk_00 = 1;
+            gGbApuStatusLatch.posX = 1;
         }
         if (!(arg1 & 2)) {
             gGbApuStatusLatch.unk_01 = 1;
         }
         if (!(arg1 & 4)) {
-            gGbApuStatusLatch.unk_02 = 1;
+            gGbApuStatusLatch.posY = 1;
         }
         if (!(arg1 & 8)) {
             gGbApuStatusLatch.unk_03 = 1;
         }
         if (!(arg1 & 0x80)) {
-            gGbApuStatusLatch.unk_00 = 1;
+            gGbApuStatusLatch.posX = 1;
             gGbApuStatusLatch.unk_01 = 1;
-            gGbApuStatusLatch.unk_02 = 1;
+            gGbApuStatusLatch.posY = 1;
             gGbApuStatusLatch.unk_03 = 1;
         }
         break;
@@ -1005,10 +1005,10 @@ void GbAudio_Reset(void) {
   gGbApuSquare2.unk_3C = 0;
   gGbApuWave.unk_3C = 0;
   gGbApuNoise.unk_3C = 0;
-  gGbApuSquare1.unk_08.unk_02 = 0;
-  gGbApuSquare2.unk_08.unk_02 = 0;
-  gGbApuWave.unk_08.unk_02 = 0;
-  gGbApuNoise.unk_08.unk_02 = 0;
+  gGbApuSquare1.unk_08.posY = 0;
+  gGbApuSquare2.unk_08.posY = 0;
+  gGbApuWave.unk_08.posY = 0;
+  gGbApuNoise.unk_08.posY = 0;
 }
 
 void GbApu_Reset(s32 arg0) {
@@ -1049,25 +1049,25 @@ u8 GbMem_ReadIoRegister(u16 arg0) {
   u8 var_v1;
   u8 temp;
   if ((arg0 & 0xFFFF) == 0xFF26) {
-      if (gGbApuStatusLatch.unk_00 != 0) {
-          var_v1 = (gGbApuStatusLatch.unk_00 - 1) & 0xFF;
+      if (gGbApuStatusLatch.posX != 0) {
+          var_v1 = (gGbApuStatusLatch.posX - 1) & 0xFF;
       } else {
-          var_v1 = gGbApuSquare1.unk_00;
+          var_v1 = gGbApuSquare1.posX;
       }
       if (gGbApuStatusLatch.unk_01 != 0) {
           var_a0 = (gGbApuStatusLatch.unk_01 - 1) & 0xFF;
       } else {
-          var_a0 = gGbApuSquare2.unk_00;
+          var_a0 = gGbApuSquare2.posX;
       }
-      if (gGbApuStatusLatch.unk_02 != 0) {
-          var_a1 = (gGbApuStatusLatch.unk_02 - 1) & 0xFF;
+      if (gGbApuStatusLatch.posY != 0) {
+          var_a1 = (gGbApuStatusLatch.posY - 1) & 0xFF;
       } else {
-          var_a1 = gGbApuWave.unk_00;
+          var_a1 = gGbApuWave.posX;
       }
       if (gGbApuStatusLatch.unk_03 != 0) {
           var_a2 = (gGbApuStatusLatch.unk_03 - 1) & 0xFF;
       } else {
-          var_a2 = gGbApuNoise.unk_00;
+          var_a2 = gGbApuNoise.posX;
       }
       temp = ((((u32)D_8120EA86 >> 0xF) << 7) | (var_a2 * 8) | (var_a1 * 4) | (var_a0 * 2) | var_v1);
       return temp;

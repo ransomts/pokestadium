@@ -122,38 +122,38 @@ typedef struct MiniActor {
 // Possibly unk_D_86002F34_alt7, unk_D_86002F34_alt8, 
 // unk_D_86002F34_alt9 or unk_D_86002F34_alt2
 typedef struct arg1_func_87902F80 {
-    /* 0x00 */ struct GraphNode unk_00;
+    /* 0x00 */ struct GraphNode posX;
     /* 0x18 */ Gfx* unk_18;
 } arg1_func_87902F80; // size >= 0x1C
 
-typedef struct unk_D_87903E00 {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ void* unk_04;
+typedef struct Gfx_TextureConfig {
+    /* 0x00 */ u32 posX;
+    /* 0x04 */ void* rotation;
     /* 0x08 */ void* unk_08;
     /* 0x0C */ u32* unk_0C;
-} unk_D_87903E00; // size = 0x10
+} Gfx_TextureConfig; // size = 0x10
 
-typedef struct unk_D_87903E10 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_D_87903E00* unk_04;
-} unk_D_87903E10; // size = 0x8
+typedef struct Gfx_TextureNode {
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ Gfx_TextureConfig* rotation;
+} Gfx_TextureNode; // size = 0x8
 
 extern s16 minigameState;
 extern s16 minigameInputLock;
-extern s16 D_87903DA8;
-extern s16 D_87903DAC;
-extern s16 D_87903DBC;
-extern s16 D_87903DC0;
+extern s16 gMiniGameTimer1;
+extern s16 gMiniGameTimer2;
+extern s16 gMiniGameStateVar2;
+extern s16 gMiniGameStateVar3;
 extern s16 miniTutoScreenState;
-extern s16 D_87903DC8;
-extern s16 D_87903DCC;
-extern s16 D_87903DD0;
-extern s16 D_87903DD4;
+extern s16 gMiniTutoTimer1;
+extern s16 gMiniTutoTimer2;
+extern s16 gMiniTutoTimer3;
+extern s16 gMiniTutoTimer4;
 
-extern unk_D_87903E10 gMiniTutoScreenNode0;
-extern unk_D_87903E10 gMiniTutoScreenNode1;
-extern unk_D_87903E10 D_87903E40;
-extern unk_D_87903E10 D_87903E58;
+extern Gfx_TextureNode gMiniTutoScreenNode0;
+extern Gfx_TextureNode gMiniTutoScreenNode1;
+extern Gfx_TextureNode gMiniTutoScreenNode2;
+extern Gfx_TextureNode gMiniTutoScreenNode3;
 extern s16 miniInputLockTimer;
 extern s16 D_87906042;
 extern s16 miniShowHUB;
@@ -188,7 +188,7 @@ extern s16 gMiniCamBaseFov;
 extern Vec3s gMiniCamBasePos;
 
 extern s16 miniDebugMode;
-extern s16 D_87903DB8;
+extern s16 gMiniGameStateVar1;
 extern Controller* miniControllerPtr;
 extern s16 D_879060C0;
 extern s16 miniEkansCountdown;
@@ -200,7 +200,7 @@ extern Vec3f gMiniDebugBasePos;
 extern Vec3f gMiniDebugCamVelocity;
 extern Vec3f D_87906110;
 
-ret_func_80004454 func_87900020(void);
+ret_func_80004454 MiniGame_GetFragmentFunc(void);
 float MinigameGetVec3Distance_2d(MiniActor* arg0, MiniActor* arg1);
 void MinigameGetVec3Distance_3d(MiniActor* arg0, MiniActor* arg1);
 s32 miniActorCubeOverlapCheckUnused(MiniActor* arg0, MiniActor* arg1);

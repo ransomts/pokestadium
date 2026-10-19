@@ -17,7 +17,7 @@ f32 GalleryCamera_Distance3D(Vec3f arg0, Vec3f arg1) {
 }
 
 f32 GalleryCamera_ComputeZoomDistance(f32 arg0) {
-    f32 temp_fv1 = (gCameraConfig.unk_00 + gCameraZoomOffset) * arg0;
+    f32 temp_fv1 = (gCameraConfig.posX + gCameraZoomOffset) * arg0;
 
     if (temp_fv1 > 400.0f) {
         return 400.0f;
@@ -33,7 +33,7 @@ void func_8690232C(void) {
 }
 
 void GalleryCamera_InitFreeView(void) {
-    gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
+    gMiniCameraPtr = gMiniCameraStruct->posX.unk_0C;
     gCameraYaw = 0;
     gCameraPitch = 0;
     gCameraDistance = GalleryCamera_ComputeZoomDistance(4.0f);
@@ -41,7 +41,7 @@ void GalleryCamera_InitFreeView(void) {
     if (gCameraConfig.unk_08 != 0.0f) {
         gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_08;
     } else {
-        gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_04 + gCameraConfig.unk_0C;
+        gMiniCameraPtr->unk_60.at.y = gCameraConfig.rotation + gCameraConfig.unk_0C;
     }
 
     Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
@@ -71,7 +71,7 @@ void GalleryCamera_DebugAdjustZoomOffset(void) {
             gCameraZoomOffset -= gPlayer2Controller->stickMag / 400.0f;
         }
 
-        temp_fv1 = 10.0f - gCameraConfig.unk_00;
+        temp_fv1 = 10.0f - gCameraConfig.posX;
         if (gCameraZoomOffset < temp_fv1) {
             gCameraZoomOffset = temp_fv1;
         }
@@ -94,7 +94,7 @@ void GalleryCamera_ResetFreeView(void) {
     if (gCameraConfig.unk_08 != 0) {
         gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_08;
     } else {
-        gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_04 + gCameraConfig.unk_0C;
+        gMiniCameraPtr->unk_60.at.y = gCameraConfig.rotation + gCameraConfig.unk_0C;
     }
 
     Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);

@@ -188,16 +188,16 @@ void Glc_DrawTrainerIntroPanels(void) {
     RoomDef* sp58 = &gRoomDefinitions[gCurrentRoomIndex];
 
     for (i = 0; i < 4; i++) {
-        if (gTrainerPortraits[i].unk_00 != 0) {
-            s16 tmp = gTrainerPortraits[i].unk_02;
+        if (gTrainerPortraits[i].posX != 0) {
+            s16 tmp = gTrainerPortraits[i].posY;
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             Glc_DrawScaledTextureRgba(tmp, 0xF0, 0x80, 0x40, 0x80, D_3009290, 2.0f);
             Glc_DrawScaledTextureRgba(tmp, 0x130, 0x80, 0x40, 0x80, D_300A290, 2.0f);
             Glc_DrawScaledTextureRgba(tmp, 0x170, 0x80, 0x40, 0x80, D_300B290, 2.0f);
-            Glc_DrawScaledTextureRgba(tmp + 8, 0x138, 0x70, 0x38, 0x80, gTrainerPortraits[i].unk_04 + 0x208, 2.0f);
-            Glc_DrawScaledTextureRgba(tmp + 8, 0x170, 0x70, 0x38, 0x80, gTrainerPortraits[i].unk_04 + 0x1008, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp + 8, 0x138, 0x70, 0x38, 0x80, gTrainerPortraits[i].rotation + 0x208, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp + 8, 0x170, 0x70, 0x38, 0x80, gTrainerPortraits[i].rotation + 0x1008, 2.0f);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -293,7 +293,7 @@ void Glc_DrawRoomMarkers(void) {
 
             gDPSetEnvColor(gDisplayListHead++, var_s0->unk_18.r, var_s0->unk_18.g, var_s0->unk_18.b, var_a0);
 
-            if (var_s0->unk_00 == 9) {
+            if (var_s0->posX == 9) {
                 gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 0, 255);
             } else {
                 gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, 255);
@@ -334,8 +334,8 @@ void Glc_DrawRoomLabels(void) {
             } else {
                 var_s0 = " ";
             }
-            tmp = var_s1->unk_02 - (Font_MeasureTextExtent(4, 0, var_s0) / 2);
-            Font_Printf(tmp, var_s1->unk_04, var_s0);
+            tmp = var_s1->posY - (Font_MeasureTextExtent(4, 0, var_s0) / 2);
+            Font_Printf(tmp, var_s1->rotation, var_s0);
         }
     }
 
@@ -555,7 +555,7 @@ s32 Glc_SelectRoom(void) {
                         var_s3 = 3;
                     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
                         Audio_PlaySoundEffectById(3);
-                        if (temp_s0->unk_00 >= 0xA) {
+                        if (temp_s0->posX >= 0xA) {
                             gCurrentRoomIndex = 9;
                             gRoomTransitionTimer = 3;
                         } else {
@@ -620,10 +620,10 @@ void Glc_LoadTrainerPanels(void) {
 
     for (i = 0; i < var_s7; i++) {
         portrait_file_idx = (var_s1[i].gfx_file_idx >> 8) & 0xFF;
-        gTrainerPortraits[i].unk_00 = 1;
-        gTrainerPortraits[i].unk_02 = 0x280;
+        gTrainerPortraits[i].posX = 1;
+        gTrainerPortraits[i].posY = 0x280;
         gTrainerPortraits[i].unk_08 = var_s1[i].name1;
-        gTrainerPortraits[i].unk_04 = BinArchive_GetFile(gPortraitGfxArchive, portrait_file_idx);
+        gTrainerPortraits[i].rotation = BinArchive_GetFile(gPortraitGfxArchive, portrait_file_idx);
     }
 }
 
@@ -631,7 +631,7 @@ void Glc_ClearTrainerPanels(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        gTrainerPortraits[i].unk_00 = 0;
+        gTrainerPortraits[i].posX = 0;
     }
 }
 
@@ -640,7 +640,7 @@ void Glc_AnimateTrainerPanelsIn(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     while (arg2-- > 0) {
         for (i = arg0; i <= arg1; i++) {
-            gTrainerPortraits[i].unk_02 += arg3;
+            gTrainerPortraits[i].posY += arg3;
         }
         Controller_PollInputs();
         Glc_Draw();
@@ -714,7 +714,7 @@ s32 GymLeaderCastle_ShowIntro(void) {
         }
         Glc_ClearTrainerPanels();
 
-        if (D_84A03180.unk_04 < 8) {
+        if (D_84A03180.rotation < 8) {
             Audio_PlayMusicIfChanged(0x2A);
         } else {
             Audio_PlayMusicIfChanged(0x27);
@@ -756,10 +756,10 @@ s32 Glc_AdvanceRoom(void) {
     if (gSessionContext.unk_0002 == 8) {
         gRoomDefinitions[11].unk_01 = 0x3C;
     } else {
-        gRoomDefinitions[D_84A03180.unk_04].unk_01 = 0x3C;
+        gRoomDefinitions[D_84A03180.rotation].unk_01 = 0x3C;
     }
 
-    if (D_84A03180.unk_04 == 8) {
+    if (D_84A03180.rotation == 8) {
         gRoomDefinitions[9].unk_01 = 0x3C;
         gRoomDefinitions[10].unk_01 = 0x3C;
     }
@@ -815,7 +815,7 @@ s16 Glc_RunMenu(s16 arg0) {
 s16 Glc_InitMenu(s16 arg0) {
     s16 i;
     s16 sp2C = 2;
-    s16 var_v1 = D_84A03180.unk_04;
+    s16 var_v1 = D_84A03180.rotation;
 
     if (gSessionContext.unk_0002 < 8) {
         gCurrentRoomIndex = gSessionContext.unk_0002;
@@ -846,7 +846,7 @@ s16 Glc_InitMenu(s16 arg0) {
     }
 
     for (i = 0; i < 4; i++) {
-        gTrainerPortraits[i].unk_00 = 0;
+        gTrainerPortraits[i].posX = 0;
     }
 
     for (i = 0; i < 8; i++) {
@@ -880,7 +880,7 @@ s32 GymLeaderCastle_Main(s32 arg0, UNUSED s32 arg1) {
     StageLoader_UpdateSegments();
 
     sp1E = Glc_InitMenu(arg0);
-    if (D_84A03180.unk_04 < 8) {
+    if (D_84A03180.rotation < 8) {
         Audio_PlayMusicIfChanged(0x2A);
     } else {
         Audio_PlayMusicIfChanged(0x27);

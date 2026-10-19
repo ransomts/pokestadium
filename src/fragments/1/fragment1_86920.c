@@ -1,16 +1,16 @@
 #include "global.h"
 
 typedef struct unk_func_81206FA0 {
-  /* 0x00 */ s32 unk_00;
-  /* 0x04 */ s32 unk_04;
+  /* 0x00 */ s32 posX;
+  /* 0x04 */ s32 rotation;
   /* 0x08 */ s32 unk_08;
   /* 0x0C */ s32 unk_0C;
 } unk_func_81206FA0; // size = 0x10
 
 typedef struct unk_D_81234690 {
     /* 0x00 */ u8  pad0[2];
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -44,11 +44,11 @@ u32 GbApu_AllocZeroed(unk_func_81206FA0* arg0, s32 arg1) {
   u32 temp_a2;
   u32 var_a1;
   temp_v0 = ALIGN16(arg1);
-  temp_a2 = arg0->unk_04;
-  if ((arg0->unk_00 + arg0->unk_08) >= (temp_a2 + temp_v0)) {
-      arg0->unk_04 += temp_v0;
+  temp_a2 = arg0->rotation;
+  if ((arg0->posX + arg0->unk_08) >= (temp_a2 + temp_v0)) {
+      arg0->rotation += temp_v0;
       var_a1 = temp_a2;
-      while (var_a1 < arg0->unk_04) {
+      while (var_a1 < arg0->rotation) {
           *((u8*)var_a1++) = 0;
       }
   } else {
@@ -63,9 +63,9 @@ s32 GbApu_Alloc(unk_func_81206FA0* arg0, s32 arg1) {
   u32 temp_v0;
 
   temp_v0 = ALIGN16(arg1);
-  temp_a2 = arg0->unk_04;
-  if ((arg0->unk_00 + arg0->unk_08) >= (arg0->unk_04 + temp_v0)) {
-      arg0->unk_04 = temp_v0 + temp_a2;
+  temp_a2 = arg0->rotation;
+  if ((arg0->posX + arg0->unk_08) >= (arg0->rotation + temp_v0)) {
+      arg0->rotation = temp_v0 + temp_a2;
   } else {
       return 0;
   }
@@ -74,8 +74,8 @@ s32 GbApu_Alloc(unk_func_81206FA0* arg0, s32 arg1) {
 }
 
 void GbApu_InitAllocator(unk_func_81206FA0* arg0, s32 arg1, s32 arg2) {
-  arg0->unk_00 = ALIGN16(arg1);
-  arg0->unk_04 = ALIGN16(arg1);
+  arg0->posX = ALIGN16(arg1);
+  arg0->rotation = ALIGN16(arg1);
   arg0->unk_08 = (s32) (arg2 - (arg1 & 0xF));
   arg0->unk_0C = 0;
 }
@@ -104,9 +104,9 @@ void GbPak_InitGfx(void) {
     gAudioTimer = 16.713f;
     gAudioFramesPerSec = 0x3C;
     do {} while (0);
-    gAudioConfig.unk_02 = 0xBB80;
-    gAudioConfig.unk_04 = osAiSetFrequency(gAudioConfig.unk_02);
-    gAudioConfig.unk_06 = (s16) (((gAudioConfig.unk_02 / gAudioFramesPerSec) + 0xF) & ~0xF);
+    gAudioConfig.posY = 0xBB80;
+    gAudioConfig.rotation = osAiSetFrequency(gAudioConfig.posY);
+    gAudioConfig.unk_06 = (s16) (((gAudioConfig.posY / gAudioFramesPerSec) + 0xF) & ~0xF);
     var_v1_2 = (s16*) &D_812346EC;
     gAudioConfig.unk_0A = (s16) (gAudioConfig.unk_06 - 0x10);
     gAudioConfig.unk_08 = (s16) (gAudioConfig.unk_06 + 0x10);

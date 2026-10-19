@@ -352,7 +352,7 @@ void Title_LoadAssets(void) {
 
     D_82100EB0 = ASSET_LOAD2(backgrounds, 1, 1);
 
-    if (D_82100EA8.unk_00 == 0x1F8) {
+    if (D_82100EA8.posX == 0x1F8) {
         D_82100EB4 = BinArchive_GetFile(D_82100EB0, 0x11);
     } else {
         D_82100EB4 = BinArchive_GetFile(D_82100EB0, 0);

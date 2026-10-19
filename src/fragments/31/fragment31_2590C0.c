@@ -3,9 +3,9 @@
 #include "src/12D80.h"
 
 typedef struct GraphNodeRange {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u16 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u16 rotation;
 } GraphNodeRange; // size = 0x6
 
 typedef struct GraphFlag {
@@ -15,7 +15,7 @@ typedef struct GraphFlag {
 
 typedef struct GraphCondition {
     /* 0x00 */ char unk00[0x4];
-    /* 0x04 */ GraphFlag* unk_04;
+    /* 0x04 */ GraphFlag* rotation;
     /* 0x08 */ char unk08[0xC];
     /* 0x14 */ GraphNodeRange* unk_14;
 } GraphCondition; // size = 0x18
@@ -29,18 +29,18 @@ void DisplayList_SetFlagInRange(s32 arg0, GraphCondition* arg1) {
     if (arg0 == 2) {
         temp_v0 = arg1->unk_14;
         var_v1 = 0;
-        if (gDefaultGraphRoot->unk_040.unk_00 == temp_v0->unk_00) {
+        if (gDefaultGraphRoot->unk_040.posX == temp_v0->posX) {
             temp_a2 = ((s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10) & 0xFFFF;
-            if ((temp_a2 >= (s32) temp_v0->unk_02) && ((s32) temp_v0->unk_04 >= temp_a2)) {
+            if ((temp_a2 >= (s32) temp_v0->posY) && ((s32) temp_v0->rotation >= temp_a2)) {
                 var_v1 = 1;
             }
         }
         if (var_v1 == 1) {
-            temp_v0_2 = arg1->unk_04;
+            temp_v0_2 = arg1->rotation;
             temp_v0_2->unk_01 |= 1;
             return;
         }
-        temp_v0_2 = arg1->unk_04;
+        temp_v0_2 = arg1->rotation;
         temp_v0_2->unk_01 &= 0xFFFE;
     }
 }
@@ -54,18 +54,18 @@ void DisplayList_SetFlagOutOfRange(s32 arg0, GraphCondition* arg1) {
     if (arg0 == 2) {
         temp_v0 = arg1->unk_14;
         var_v1 = 1;
-        if (gDefaultGraphRoot->unk_040.unk_00 == temp_v0->unk_00) {
+        if (gDefaultGraphRoot->unk_040.posX == temp_v0->posX) {
             temp_a2 = ((s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10) & 0xFFFF;
-            if ((temp_a2 >= (s32) temp_v0->unk_02) && ((s32) temp_v0->unk_04 >= temp_a2)) {
+            if ((temp_a2 >= (s32) temp_v0->posY) && ((s32) temp_v0->rotation >= temp_a2)) {
                 var_v1 = 0;
             }
         }
         if (var_v1 == 1) {
-            temp_v0_2 = arg1->unk_04;
+            temp_v0_2 = arg1->rotation;
             temp_v0_2->unk_01 |= 1;
             return;
         }
-        temp_v0_2 = arg1->unk_04;
+        temp_v0_2 = arg1->rotation;
         temp_v0_2->unk_01 &= 0xFFFE;
     }
 }

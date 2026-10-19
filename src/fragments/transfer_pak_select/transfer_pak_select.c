@@ -128,7 +128,7 @@ s32 TransferPak_GetPresentationMode(void) {
 
     Save_EnsureBankLoaded(2);
     Save_GetOptions(&sp18);
-    return sp18.unk_00;
+    return sp18.posX;
 }
 
 void TransferPak_LaunchSelectedPortAnim(void) {
@@ -145,7 +145,7 @@ s32 TransferPak_GetPortErrorCode(s32 arg0) {
     s32 var_v1;
 
     if (ptr->unk_01 != 0) {
-        if (ptr->unk_00 == 0) {
+        if (ptr->posX == 0) {
             if (GbSave_HasPokedex(arg0) == 0) {
                 var_v1 = 0x16;
             } else if (ptr->unk_03 != 0) {
@@ -156,9 +156,9 @@ s32 TransferPak_GetPortErrorCode(s32 arg0) {
         } else {
             var_v1 = 0x14;
         }
-    } else if (ptr->unk_00 == 2) {
+    } else if (ptr->posX == 2) {
         var_v1 = 0x15;
-    } else if (ptr->unk_04 != 0) {
+    } else if (ptr->rotation != 0) {
         var_v1 = 1;
     } else {
         var_v1 = 2;
@@ -201,7 +201,7 @@ void TransferPak_DrawPortBox(s32 arg0, s32 arg1, s32 arg2) {
     s16 tmp2;
     s16 tmp1;
 
-    if (gEntryStatus[arg0].unk_00 == 1) {
+    if (gEntryStatus[arg0].posX == 1) {
         tmp1 = 0x80;
     } else {
         tmp1 = 0xFF;
@@ -247,14 +247,14 @@ void TransferPak_DrawPortBox(s32 arg0, s32 arg1, s32 arg2) {
 
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
-    if (gEntryStatus[arg0].unk_00 == 0) {
+    if (gEntryStatus[arg0].posX == 0) {
         Font_SetActive(8, 0);
         Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, gEntryStatus[arg0].unk_08) / 2)) + 0x3C, arg2 + 0xA,
                       gEntryStatus[arg0].unk_08);
         Font_SetActive(4, 0);
         sprintf(gEntryIdBuffer, "ID %05d", gEntryStatus[arg0].unk_06);
         Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, gEntryIdBuffer) / 2)) + 0x3C, arg2 + 0x1E, gEntryIdBuffer);
-    } else if (gEntryStatus[arg0].unk_00 != 1) {
+    } else if (gEntryStatus[arg0].posX != 1) {
         Font_SetActive(8, 0);
         Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, "?????") / 2)) + 0x3C, arg2 + 0xA, "?????");
         Font_SetActive(4, 0);
@@ -566,13 +566,13 @@ void TransferPak_ScanAllPorts(void) {
 
     for (i = 0; i < 4; i++) {
         GbSave_CopyPlayerIdentity(i, &sp48);
-        Text_UntranscodeNameWrapper(gEntryStatus[i].unk_08, sp48.unk_02);
-        gEntryStatus[i].unk_06 = sp48.unk_00;
+        Text_UntranscodeNameWrapper(gEntryStatus[i].unk_08, sp48.posY);
+        gEntryStatus[i].unk_06 = sp48.posX;
         gEntryStatus[i].unk_01 = GbSave_GetPortGame(i);
-        gEntryStatus[i].unk_00 = GbSave_GetSaveState(i);
+        gEntryStatus[i].posX = GbSave_GetSaveState(i);
         gEntryStatus[i].unk_03 = GbSave_SavedAtPokemonCenter(i);
-        gEntryStatus[i].unk_04 = (temp_s3 & (1 << i)) != 0;
-        gEntryStatus[i].unk_02 = GbSave_GetPartyCount(i);
+        gEntryStatus[i].rotation = (temp_s3 & (1 << i)) != 0;
+        gEntryStatus[i].posY = GbSave_GetPartyCount(i);
     }
 }
 

@@ -7,11 +7,11 @@
 extern u8 gAudioEffectId;
 
 typedef struct AudioChannelConfig {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
 } AudioChannelConfig; // size = 0x5
 
 static AudioChannelConfig gAudioChannelConfigTable[151] = {
@@ -1180,7 +1180,7 @@ void Cry_Play(u32 arg0, u32 arg1) {
                 sp24 = 0x70;
             } else {
                 sp24 = 0x60;
-                var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_04;
+                var_a3 = gAudioChannelConfigTable[arg0 - 1].rotation;
             }
             break;
 

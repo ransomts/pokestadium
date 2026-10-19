@@ -18,13 +18,13 @@ typedef struct unk_D_8650A528 {
 } unk_D_8650A528; // size = 0x180
 
 typedef struct unk_D_8650AB30_000 {
-    /* 0x00 */ s8 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ s8 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
 } unk_D_8650AB30_000; // size = 0xC
 
 typedef struct unk_D_8650AB30 {
-    /* 0x00 */ unk_D_8650AB30_000 unk_00[12];
+    /* 0x00 */ unk_D_8650AB30_000 posX[12];
 } unk_D_8650AB30; // size = 0x90
 
 extern s32 gHealthBarPaletteIndex;

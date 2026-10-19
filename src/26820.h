@@ -6,25 +6,25 @@
 #include "29BA0.h"
 
 typedef struct PlayerName {
-    /* 0x00 */ s16 unk_00;
-    /* 0x04 */ struct PlayerName* unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x04 */ struct PlayerName* rotation;
 } PlayerName; // size = 0x8
 
 typedef struct unk_func_80027FA0 {
-    /* 0x00 */ u16 unk_00;
+    /* 0x00 */ u16 posX;
     /* 0x02 */ char unk02[0x2];
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
 } unk_func_80027FA0; // size = 0x8
 
 typedef struct unk_func_800281D4 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05[2][4];
     /* 0x0D */ u8 unk_0D;
     /* 0x0E */ u16 unk_0E;
@@ -32,7 +32,7 @@ typedef struct unk_func_800281D4 {
 } unk_func_800281D4; // size = 0x20
 
 typedef struct unk_D_800AE4E8_004_1_000_000 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char unk02[0xA];
     /* 0x0C */ u16 unk_0C;
@@ -50,9 +50,9 @@ typedef struct unk_D_800AE4E8_004_1 {
 } unk_D_800AE4E8_004_1; // size = 0x3700
 
 typedef struct unk_D_800AE4E8_004_2_1EA0 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ PlayerName unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ PlayerName rotation;
     /* 0x0C */ unk_func_80027FA0 unk_0C[1];
     /* 0x14 */ char unk14[0x8];
     /* 0x1C */ u16 unk_1C;
@@ -62,10 +62,10 @@ typedef struct unk_D_800AE4E8_004_2_1EA0 {
 } unk_D_800AE4E8_004_2_1EA0; // size = 0x28
 
 typedef struct unk_D_800AE4E8_004_2_0DC0_002 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ char unk_04[11];
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ char rotation[11];
     /* 0x0F */ char unk_0F[11];
 } unk_D_800AE4E8_004_2_0DC0_002; // size = 0x1A
 
@@ -125,12 +125,12 @@ typedef struct unk_D_800AE4E8_004_3_0000 {
 } unk_D_800AE4E8_004_3_0000; // size = 0x468
 
 typedef struct unk_D_800AE4E8_004_3_34E0_010 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
 } unk_D_800AE4E8_004_3_34E0_010; // size = 0x2
 
 typedef struct unk_D_800AE4E8_004_3_34E0 {
-    /* 0x0000 */ unk_D_800AE4E8_004_1_000_000 unk_00;
+    /* 0x0000 */ unk_D_800AE4E8_004_1_000_000 posX;
     /* 0x0000 */ unk_D_800AE4E8_004_3_34E0_010 unk_10[1];
     /* 0x0012 */ char unk12[0xCE];
 } unk_D_800AE4E8_004_3_34E0; // size = 0xE0
@@ -148,8 +148,8 @@ typedef union unk_D_800AE4E8_004 {
 } unk_D_800AE4E8_004;
 
 typedef struct unk_D_800AE4E8 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_D_800AE4E8_004 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ unk_D_800AE4E8_004 rotation;
     /* 0x08 */ unk_D_800AE4E8_004 unk_08;
 } unk_D_800AE4E8; // size = 0xC
 

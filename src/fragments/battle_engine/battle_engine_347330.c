@@ -5,8 +5,8 @@
 #include "include/math.h"
 
 typedef struct WaterHeightNode {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ s16 unk_10;
@@ -332,20 +332,20 @@ void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5
         ptr3->unk_0C = ptr2->unk_0C;
         ptr2->unk_18 = 0.0f;
         ptr2->unk_14 = (i * TWO_PI) / 30.0;
-        ptr2->unk_00 = (__cosf((i * TWO_PI) / 30.0) * (arg3 * arg4)) + arg0;
-        ptr2->unk_04 = ptr->unk_008;
+        ptr2->posX = (__cosf((i * TWO_PI) / 30.0) * (arg3 * arg4)) + arg0;
+        ptr2->rotation = ptr->unk_008;
 
-        if (ptr2->unk_04 < 0.0) {
-            ptr2->unk_04 = 0.0f;
+        if (ptr2->rotation < 0.0) {
+            ptr2->rotation = 0.0f;
         }
         ptr2->unk_08 = (__sinf(ptr2->unk_14) * (arg3 * arg4)) + arg2;
 
         ptr3->unk_18 = 0.0f;
         ptr3->unk_14 = ptr2->unk_14;
-        ptr3->unk_00 = ptr2->unk_00;
-        ptr3->unk_04 = ptr->unk_008;
-        if (ptr3->unk_04 < 0.0) {
-            ptr3->unk_04 = 0.0f;
+        ptr3->posX = ptr2->posX;
+        ptr3->rotation = ptr->unk_008;
+        if (ptr3->rotation < 0.0) {
+            ptr3->rotation = 0.0f;
         }
 
         ptr3->unk_08 = ptr2->unk_08;
@@ -430,56 +430,56 @@ s32 RibbonMesh_Update(unk_D_843925E0* arg0) {
 
         if (temp_s6 != -1) {
             if (temp_s6 == 1) {
-                temp_s0->unk_04 = ((((2.0 * __sinf(temp_s0->unk_14 + temp_s0->unk_18 + sp94)) -
+                temp_s0->rotation = ((((2.0 * __sinf(temp_s0->unk_14 + temp_s0->unk_18 + sp94)) -
                                      (__cosf(temp_s0->unk_14 + temp_s0->unk_18 + sp90) * 3.0)) +
                                     sp84) *
                                    sp98) +
                                   sp7C;
-                temp_s1->unk_04 = (((((5.0 * __sinf(temp_s1->unk_14 + temp_s1->unk_18 + sp8C)) -
+                temp_s1->rotation = (((((5.0 * __sinf(temp_s1->unk_14 + temp_s1->unk_18 + sp8C)) -
                                       (__cosf(temp_s1->unk_14 + temp_s1->unk_18 + sp88) * 3.0)) +
                                      sp84) *
                                     sp98) +
                                    sp7C) -
                                   50.0;
 
-                if (temp_s1->unk_04 > 400.0) {
+                if (temp_s1->rotation > 400.0) {
                     var_s5++;
                 }
 
-                if (temp_s0->unk_04 < 0.0) {
-                    temp_s0->unk_04 = 0.0f;
+                if (temp_s0->rotation < 0.0) {
+                    temp_s0->rotation = 0.0f;
                 }
 
-                if (temp_s1->unk_04 < 0.0) {
-                    temp_s1->unk_04 = 0.0f;
+                if (temp_s1->rotation < 0.0) {
+                    temp_s1->rotation = 0.0f;
                 }
             }
         } else {
-            temp_s0->unk_04 = sp7C - ((((2.0 * __sinf(temp_s0->unk_14 + temp_s0->unk_18 + sp94)) -
+            temp_s0->rotation = sp7C - ((((2.0 * __sinf(temp_s0->unk_14 + temp_s0->unk_18 + sp94)) -
                                         (__cosf(temp_s0->unk_14 + temp_s0->unk_18 + sp90) * 3.0)) +
                                        sp84) *
                                       sp98);
-            temp_s1->unk_04 = (sp7C - ((((5.0 * __sinf(temp_s1->unk_14 + temp_s1->unk_18 + sp8C)) -
+            temp_s1->rotation = (sp7C - ((((5.0 * __sinf(temp_s1->unk_14 + temp_s1->unk_18 + sp8C)) -
                                          (__cosf(temp_s1->unk_14 + temp_s1->unk_18 + sp88) * 3.0)) +
                                         sp84) *
                                        sp98)) -
                               50.0;
 
-            if (temp_s0->unk_04 < 0.0) {
+            if (temp_s0->rotation < 0.0) {
                 var_s5++;
-                temp_s0->unk_04 = 0.0f;
+                temp_s0->rotation = 0.0f;
             }
 
-            if (temp_s1->unk_04 < 0.0) {
-                temp_s1->unk_04 = 0.0f;
+            if (temp_s1->rotation < 0.0) {
+                temp_s1->rotation = 0.0f;
             }
         }
 
         temp_s1->unk_18 += 0.3;
         temp_s1->unk_14 += 0.08;
 
-        var_s2->v.ob[0] = temp_s0->unk_00;
-        var_s2->v.ob[1] = temp_s0->unk_04;
+        var_s2->v.ob[0] = temp_s0->posX;
+        var_s2->v.ob[1] = temp_s0->rotation;
         var_s2->v.ob[2] = temp_s0->unk_08;
         var_s2->v.tc[0] = temp_s0->unk_0C;
         var_s2->v.tc[1] = temp_s0->unk_0E;
@@ -489,8 +489,8 @@ s32 RibbonMesh_Update(unk_D_843925E0* arg0) {
         var_s2->v.cn[3] = temp_s0->unk_10.a;
         var_s2++;
 
-        var_s2->v.ob[0] = temp_s1->unk_00;
-        var_s2->v.ob[1] = temp_s1->unk_04;
+        var_s2->v.ob[0] = temp_s1->posX;
+        var_s2->v.ob[1] = temp_s1->rotation;
         var_s2->v.ob[2] = temp_s1->unk_08;
         var_s2->v.tc[0] = temp_s1->unk_0C;
         var_s2->v.tc[1] = temp_s1->unk_0E;
@@ -704,8 +704,8 @@ void TerrainGrid_BuildCameraBounds(unk_D_843975E8* arg0, f32 arg1) {
     sp44 = (sp4C * TWO_PI) / 720.0;
     sp40 = sp8C + arg1;
 
-    arg0->unk_00 = (sp40 * sp84) + spB0;
-    arg0->unk_04 = (sp40 * sp80) + spAC;
+    arg0->posX = (sp40 * sp84) + spB0;
+    arg0->rotation = (sp40 * sp80) + spAC;
     arg0->unk_08 = (sp40 * sp7C) + spA8;
 
     sp50 = __cosf(sp44);
@@ -778,21 +778,21 @@ f32 TerrainGrid_SampleHeightAndSlope(f32 arg0, f32 arg1, f32* arg2) {
         var_a0 = 0xE;
     }
 
-    spC0 = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_00;
-    spBC = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_04;
+    spC0 = gWaterHeightMap.unk_1010[var_v1][var_a0].posX;
+    spBC = gWaterHeightMap.unk_1010[var_v1][var_a0].rotation;
     spB8 = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_08;
-    spB4 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].unk_00;
-    spB0 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].unk_04;
+    spB4 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].posX;
+    spB0 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].rotation;
     spAC = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].unk_08;
-    spA8 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].unk_00;
-    spA4 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].unk_04;
+    spA8 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].posX;
+    spA4 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].rotation;
     spA0 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].unk_08;
-    sp9C = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].unk_00;
-    sp98 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].unk_04;
+    sp9C = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].posX;
+    sp98 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].rotation;
     sp94 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].unk_08;
 
     temp_fv0 = spB4 - arg0;
-    spBC = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_04;
+    spBC = gWaterHeightMap.unk_1010[var_v1][var_a0].rotation;
     temp_fv1 = spAC - arg1;
     temp_fa0 = sp9C - arg0;
     temp_fa1 = sp94 - arg1;
@@ -845,7 +845,7 @@ s32 TerrainGrid_UpdateWaves(void) {
     if (gWaterHeightMap.unk_0000 < 0x3C) {
         ptr = &gWaterHeightMap.unk_1010[0][0];
         for (j = 0; j < 16; j++) {
-            ptr->unk_04 += (30.0 * __sinf((((gWaterHeightMap.unk_0000 + j) % 15) * TWO_PI_F) / 15.0f)) + 10.0;
+            ptr->rotation += (30.0 * __sinf((((gWaterHeightMap.unk_0000 + j) % 15) * TWO_PI_F) / 15.0f)) + 10.0;
             ptr++;
         }
         gWaterHeightMap.unk_0004 += 0.001;
@@ -854,10 +854,10 @@ s32 TerrainGrid_UpdateWaves(void) {
             ptr = &gWaterHeightMap.unk_1010[0][2];
             for (j = 0; j < 13; j++) {
                 if (0) {}
-                if (ptr->unk_04 > 0.0) {
-                    ptr->unk_04 -= 40.0;
-                    if (ptr->unk_04 < 0.0) {
-                        ptr->unk_04 = 0.0f;
+                if (ptr->rotation > 0.0) {
+                    ptr->rotation -= 40.0;
+                    if (ptr->rotation < 0.0) {
+                        ptr->rotation = 0.0f;
                     }
                 }
                 ptr++;
@@ -865,7 +865,7 @@ s32 TerrainGrid_UpdateWaves(void) {
         } else {
             ptr = &gWaterHeightMap.unk_1010[0][2];
             for (j = 0; j < 13; j++) {
-                ptr->unk_04 += 30.0;
+                ptr->rotation += 30.0;
                 ptr++;
             }
         }
@@ -881,21 +881,21 @@ s32 TerrainGrid_UpdateWaves(void) {
         for (j = 0; j < 16; j++) {
             temp_v0 = 1;
 
-            tmp = ptr->unk_04;
+            tmp = ptr->rotation;
             var_fv0 = 0.0f;
             if (i > 0) {
                 temp_v0 = 2;
-                var_fv0 += gWaterHeightMap.unk_1010[i - 1][j].unk_04 - tmp;
+                var_fv0 += gWaterHeightMap.unk_1010[i - 1][j].rotation - tmp;
             }
 
             if ((!ptr) && (!ptr)) {}
 
             if (j > 0) {
-                var_fv0 += gWaterHeightMap.unk_1010[i][j - 1].unk_04 - tmp;
+                var_fv0 += gWaterHeightMap.unk_1010[i][j - 1].rotation - tmp;
             }
 
             if (j < 0xF) {
-                var_fv0 += gWaterHeightMap.unk_1010[i][j + 1].unk_04 - tmp;
+                var_fv0 += gWaterHeightMap.unk_1010[i][j + 1].rotation - tmp;
             }
 
             temp_v0++;
@@ -910,9 +910,9 @@ s32 TerrainGrid_UpdateWaves(void) {
     ptr = &gWaterHeightMap.unk_1010[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++, ptr++) {
-            ptr->unk_04 = ptr->unk_0C;
-            if (ptr->unk_04 < 0.0) {
-                ptr->unk_04 = 0.0f;
+            ptr->rotation = ptr->unk_0C;
+            if (ptr->rotation < 0.0) {
+                ptr->rotation = 0.0f;
             }
         }
     }
@@ -934,8 +934,8 @@ void TerrainGrid_Init(s32 arg0, s16 arg1, s16 arg2) {
 
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++, ptr++) {
-            ptr->unk_00 = arg0 * (((i * 150.0f) - 1200.0f) - 440.0f);
-            ptr->unk_04 = 1.0f;
+            ptr->posX = arg0 * (((i * 150.0f) - 1200.0f) - 440.0f);
+            ptr->rotation = 1.0f;
             ptr->unk_08 = (j * 200.0f) - 1600.0f;
             ptr->unk_0C = 1.0f;
             ptr->unk_10 = 0xFF;
@@ -1043,8 +1043,8 @@ Gfx* TerrainGrid_Draw(Gfx* arg0) {
 
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            vtx->v.ob[0] = var_v1->unk_00;
-            vtx->v.ob[1] = var_v1->unk_04;
+            vtx->v.ob[0] = var_v1->posX;
+            vtx->v.ob[1] = var_v1->rotation;
             vtx->v.ob[2] = var_v1->unk_08;
             vtx->v.tc[0] = (i * 0x800) / 3;
             vtx->v.tc[1] = (j * 0x800) / 3;
@@ -1093,26 +1093,26 @@ Gfx* TerrainGrid_Draw(Gfx* arg0) {
         }
     }
 
-    sp12C = (gWaterCameraBounds.unk_00 - gWaterCameraBounds.unk_0C) + gWaterCameraBounds.unk_18;
-    sp130 = (gWaterCameraBounds.unk_04 - gWaterCameraBounds.unk_10) + gWaterCameraBounds.unk_1C;
+    sp12C = (gWaterCameraBounds.posX - gWaterCameraBounds.unk_0C) + gWaterCameraBounds.unk_18;
+    sp130 = (gWaterCameraBounds.rotation - gWaterCameraBounds.unk_10) + gWaterCameraBounds.unk_1C;
     sp134 = (gWaterCameraBounds.unk_08 - gWaterCameraBounds.unk_14) + gWaterCameraBounds.unk_20;
     sp11C = TerrainGrid_SampleHeightAndSlope(sp12C, sp134, &sp110);
 
-    sp120 = gWaterCameraBounds.unk_00 + gWaterCameraBounds.unk_0C + gWaterCameraBounds.unk_18;
-    sp124 = gWaterCameraBounds.unk_04 + gWaterCameraBounds.unk_10 + gWaterCameraBounds.unk_1C;
+    sp120 = gWaterCameraBounds.posX + gWaterCameraBounds.unk_0C + gWaterCameraBounds.unk_18;
+    sp124 = gWaterCameraBounds.rotation + gWaterCameraBounds.unk_10 + gWaterCameraBounds.unk_1C;
     sp128 = gWaterCameraBounds.unk_08 + gWaterCameraBounds.unk_14 + gWaterCameraBounds.unk_20;
     temp_fv0 = TerrainGrid_SampleHeightAndSlope(sp120, sp128, &sp110);
 
     if ((sp130 < sp11C) || (sp124 < temp_fv0)) {
         temp_v0 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
 
-        temp_v0[0].v.ob[0] = (gWaterCameraBounds.unk_00 - gWaterCameraBounds.unk_0C) - gWaterCameraBounds.unk_18;
+        temp_v0[0].v.ob[0] = (gWaterCameraBounds.posX - gWaterCameraBounds.unk_0C) - gWaterCameraBounds.unk_18;
         temp_v0[0].v.ob[1] = sp11C;
         temp_v0[0].v.ob[2] = (gWaterCameraBounds.unk_08 - gWaterCameraBounds.unk_14) - gWaterCameraBounds.unk_20;
         temp_v0[0].v.tc[0] = 0;
         temp_v0[0].v.tc[1] = 0;
 
-        temp_v0[1].v.ob[0] = (gWaterCameraBounds.unk_00 + gWaterCameraBounds.unk_0C) - gWaterCameraBounds.unk_18;
+        temp_v0[1].v.ob[0] = (gWaterCameraBounds.posX + gWaterCameraBounds.unk_0C) - gWaterCameraBounds.unk_18;
         temp_v0[1].v.ob[1] = sp11C;
         temp_v0[1].v.ob[2] = (gWaterCameraBounds.unk_08 + gWaterCameraBounds.unk_14) - gWaterCameraBounds.unk_20;
         temp_v0[1].v.tc[0] = 0x3E0;

@@ -5,15 +5,15 @@
 #include "src/29BA0.h"
 
 typedef struct unk_D_832025C8 {
-    /* 0x000 */ s32 unk_00;
+    /* 0x000 */ s32 posX;
     /* 0x004 */ char unk04[0x1FC];
 } unk_D_832025C8; // size = 0x200
 
 typedef struct unk_D_832027C8 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
-    /* 0x04 */ PokemonData unk_04;
+    /* 0x02 */ u8 posY;
+    /* 0x04 */ PokemonData rotation;
 } unk_D_832027C8; // size = 0x58
 
 s32 PikachuReward_PositionSurfingPikachuModel(s32 arg0, Fragment2_1GraphNode* arg1);

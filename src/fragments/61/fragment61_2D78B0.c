@@ -603,21 +603,21 @@ void TeamSelection_InitializeSlots(void) {
     unk_D_800AE540_0004* var_v0 = gSessionContext.unk_0004;
 
     for (i = 0; i < 4; i++) {
-        gBattleSelectionSlots[i].unk_00 = 0;
+        gBattleSelectionSlots[i].posX = 0;
         gBattleSelectionSlots[i].unk_01 = i;
-        gBattleSelectionSlots[i].unk_02 = i;
+        gBattleSelectionSlots[i].posY = i;
     }
 
     for (i = 0; i < 4; i++, var_v0++) {
         if (var_v0->unk_000 & 1) {
             if (!(var_v0->unk_000 & 2)) {
-                gBattleSelectionSlots[var_v0->unk_001].unk_00 = 1;
-                gBattleSelectionSlots[var_v0->unk_001].unk_04 = var_v0;
+                gBattleSelectionSlots[var_v0->unk_001].posX = 1;
+                gBattleSelectionSlots[var_v0->unk_001].rotation = var_v0;
             } else if (gSessionContext.unk_0000 == 0) {
-                gBattleSelectionSlots[var_v0->unk_001].unk_00 = 1;
-                gBattleSelectionSlots[var_v0->unk_001].unk_04 = var_v0;
+                gBattleSelectionSlots[var_v0->unk_001].posX = 1;
+                gBattleSelectionSlots[var_v0->unk_001].rotation = var_v0;
                 gBattleSelectionSlots[var_v0->unk_001].unk_01 = 4;
-                gBattleSelectionSlots[var_v0->unk_001].unk_02 = 0;
+                gBattleSelectionSlots[var_v0->unk_001].posY = 0;
             }
         }
     }
@@ -630,21 +630,21 @@ void TeamSelection_InitializeSlot(unk_D_8423D3D8* arg0, s16 arg1) {
     Gen1StringDecodeBuffer sp38;
 
     if (arg1 == 4) {
-        gSubsystemEnableMask |= TeamSelection_RegisteredTeam_Initialize(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 0, 0x2C, 0x54, arg0->unk_02);
+        gSubsystemEnableMask |= TeamSelection_RegisteredTeam_Initialize(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 0, 0x2C, 0x54, arg0->posY);
         return;
     }
 
     if (arg1 < 4) {
         GbSave_CopyPlayerIdentity(arg1, &sp38);
-        Text_UntranscodeName(sp50, sp38.unk_02);
-        var_v1 = sp38.unk_00;
+        Text_UntranscodeName(sp50, sp38.posY);
+        var_v1 = sp38.posX;
     } else {
         HAL_Strcpy(sp50, Text_GetPlayerLabel(1));
         var_v1 = 0;
     }
 
-    gSubsystemEnableMask |= Rental_InitTeamTray(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->unk_02);
-    gSubsystemEnableMask |= Rental_PrimeCarousel(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 0, 0x68, 0xE4, arg0->unk_02, arg1, gBattleSelectionControllerInfo);
+    gSubsystemEnableMask |= Rental_InitTeamTray(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, NULL, 0, var_v1, sp50, 0x40, 0x54, arg0->posY);
+    gSubsystemEnableMask |= Rental_PrimeCarousel(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 0, 0x68, 0xE4, arg0->posY, arg1, gBattleSelectionControllerInfo);
 }
 
 s32 Team_CommitSelectionToTrainer(unk_D_8423D3D8* arg0, s16 arg1) {
@@ -653,31 +653,31 @@ s32 Team_CommitSelectionToTrainer(unk_D_8423D3D8* arg0, s16 arg1) {
     unk_D_84229EB0_00024* sp34;
     s32 i;
 
-    arg0->unk_04->unk_002 = 0;
+    arg0->rotation->unk_002 = 0;
     if (arg1 == 4) {
         temp_s3 = RegisteredTeam_LoadSelected(&gPokemonData, &sp34);
         if (sp34 != NULL) {
-            arg0->unk_04->unk_018 = sp34->unk_4D10;
+            arg0->rotation->unk_018 = sp34->unk_4D10;
             if (gSessionContext.unk_0000 != 0) {
-                HAL_Strcpy(arg0->unk_04->unk_008, sp34->unk_4D12);
+                HAL_Strcpy(arg0->rotation->unk_008, sp34->unk_4D12);
             }
-            HAL_Strcpy(arg0->unk_04->unk_214->unk_014, sp34->unk_4D12);
+            HAL_Strcpy(arg0->rotation->unk_214->unk_014, sp34->unk_4D12);
 
             for (i = 0; i < temp_s3; i++) {
-                Trainer_AddPokemon(arg0->unk_04, &sp34->unk_0000[i].unk_004);
+                Trainer_AddPokemon(arg0->rotation, &sp34->unk_0000[i].unk_004);
             }
             var_s0 = 1;
         }
     } else {
-        arg0->unk_04->unk_018 = gPartyInfo.unk_001C;
+        arg0->rotation->unk_018 = gPartyInfo.unk_001C;
         if (gSessionContext.unk_0000 != 0) {
-            HAL_Strcpy(arg0->unk_04->unk_008, gPartyInfo.unk_001E);
+            HAL_Strcpy(arg0->rotation->unk_008, gPartyInfo.unk_001E);
         }
-        HAL_Strcpy(arg0->unk_04->unk_214->unk_014, gPartyInfo.unk_001E);
+        HAL_Strcpy(arg0->rotation->unk_214->unk_014, gPartyInfo.unk_001E);
 
         if (gPartyInfo.unk_0006 > 0) {
             for (i = 0; i < gPartyInfo.unk_0006; i++) {
-                Trainer_AddPokemon(arg0->unk_04, &gPartyInfo.unk_0030[i].unk_004);
+                Trainer_AddPokemon(arg0->rotation, &gPartyInfo.unk_0030[i].unk_004);
             }
             var_s0 = 1;
         }
@@ -721,7 +721,7 @@ void TeamSelection_FadeIn(void) {
 }
 
 void TeamSelection_ApplySlotSelection(s16 arg0, s16 arg1) {
-    unk_D_800AE540_0004* temp_v1 = gBattleSelectionSlots[arg0].unk_04;
+    unk_D_800AE540_0004* temp_v1 = gBattleSelectionSlots[arg0].rotation;
 
     if (temp_v1->unk_002 != 0) {
         if (arg1 == 4) {
@@ -767,15 +767,15 @@ s32 Team_SelectTeams(void) {
     gSubsystemEnableMask |= TeamSelection_Preview_Initialize(&gMoveScreenInfo);
 
     while (var_s1 >= 0 && var_s1 < 4) {
-        if (gBattleSelectionSlots[var_s1].unk_00 != 0) {
-            var_s2 = TeamSelection_RunModal(gBattleSelectionSlots[var_s1].unk_02, 0, gBattleSelectionSlots[var_s1].unk_01, 1);
-            gBattleSelectionSlots[var_s1].unk_04->unk_002 = 0;
+        if (gBattleSelectionSlots[var_s1].posX != 0) {
+            var_s2 = TeamSelection_RunModal(gBattleSelectionSlots[var_s1].posY, 0, gBattleSelectionSlots[var_s1].unk_01, 1);
+            gBattleSelectionSlots[var_s1].rotation->unk_002 = 0;
 
             if (var_s2 < 0) {
                 var_s1 -= 1;
                 while (var_s1 >= 0) {
-                    if (gBattleSelectionSlots[var_s1].unk_00 != 0) {
-                        var_s2 = (gBattleSelectionSlots[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4;
+                    if (gBattleSelectionSlots[var_s1].posX != 0) {
+                        var_s2 = (gBattleSelectionSlots[var_s1].rotation->unk_01C[0].unk_52 & 0x70) >> 4;
                         break;
                     }
                     var_s1--;
@@ -849,19 +849,19 @@ s32 Team_SelectRegisteredTeams(void) {
     gSubsystemEnableMask |= TeamSelection_Preview_Initialize(&gMoveScreenInfo);
 
     while ((var_s1 >= 0) && (var_s1 < 4)) {
-        if (gBattleSelectionSlots[var_s1].unk_00 != 0) {
-            if (gBattleSelectionSlots[var_s1].unk_04->unk_002 == 0) {
-                var_s2 = TeamSelection_RunModal(gBattleSelectionSlots[var_s1].unk_02, 0, gBattleSelectionSlots[var_s1].unk_01, 1);
+        if (gBattleSelectionSlots[var_s1].posX != 0) {
+            if (gBattleSelectionSlots[var_s1].rotation->unk_002 == 0) {
+                var_s2 = TeamSelection_RunModal(gBattleSelectionSlots[var_s1].posY, 0, gBattleSelectionSlots[var_s1].unk_01, 1);
             } else {
-                var_s2 = ((gBattleSelectionSlots[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4);
+                var_s2 = ((gBattleSelectionSlots[var_s1].rotation->unk_01C[0].unk_52 & 0x70) >> 4);
             }
 
             if (var_s2 < 0) {
                 var_s1--;
 
                 while (var_s1 >= 0) {
-                    if (gBattleSelectionSlots[var_s1].unk_00 != 0) {
-                        var_s2 = (gBattleSelectionSlots[var_s1].unk_04->unk_01C[0].unk_52 & 0x70) >> 4;
+                    if (gBattleSelectionSlots[var_s1].posX != 0) {
+                        var_s2 = (gBattleSelectionSlots[var_s1].rotation->unk_01C[0].unk_52 & 0x70) >> 4;
                         break;
                     }
                     var_s1--;
@@ -923,8 +923,8 @@ void RegisteredTeam_Register(void) {
             GbSave_LoadPort(temp_v0);
             GbSave_MarkBoxDataLoaded(temp_v0);
             GbSave_CopyPlayerIdentity(temp_v0, &sp60);
-            Text_UntranscodeName(sp74, sp60.unk_02);
-            var_s1 = sp60.unk_00;
+            Text_UntranscodeName(sp74, sp60.posY);
+            var_s1 = sp60.posX;
         } else {
             HAL_Strcpy(sp74, Text_GetPlayerLabel(1));
             var_s1 = 0;
@@ -1072,7 +1072,7 @@ void Rental_LoadBackgroundImage(void) {
         } else {
             Save_EnsureBankLoaded(2);
             Save_GetModeSettings(&sp20, gSessionContext.unk_11F2);
-            if (sp20.unk_04 < 8) {
+            if (sp20.rotation < 8) {
                 gPartyScreenBackground = BinArchive_GetFile(gBattleSelectionBackgroundArchive, 0xD);
             } else {
                 gPartyScreenBackground = BinArchive_GetFile(gBattleSelectionBackgroundArchive, 0x10);

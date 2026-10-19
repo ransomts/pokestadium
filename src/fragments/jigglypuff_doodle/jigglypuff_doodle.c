@@ -107,7 +107,7 @@ void JigglypuffGame_ReadInputs(void) {
 }
 
 void JigglypuffGame_InitCamera(void) {
-    gCamera = gStageRootNode->unk_00.unk_0C;
+    gCamera = gStageRootNode->posX.unk_0C;
 
     gCameraDist = 0x600;
     gCameraRotX = 0;
@@ -535,7 +535,7 @@ void JigglypuffGame_Init(void) {
         D_86301D48 = &gCurrentPlayerNode->unk_004;
 
         ModelRenderer_AttachDisplayObject(D_86301D48);
-        Model_InitDisplayObject(D_86301D48, 0, 0x27, gCurrentGeoLayout->unk_08->unk_00[0]);
+        Model_InitDisplayObject(D_86301D48, 0, 0x27, gCurrentGeoLayout->unk_08->posX[0]);
 
         D_86301D48->unk_024.x = (i - 1.5f) * 50.0f;
         D_86301D48->unk_024.y = 0.0f;
@@ -558,7 +558,7 @@ void JigglypuffGame_Init(void) {
     D_86301D48 = &gStageCenterNode;
 
     ModelRenderer_AttachDisplayObject(D_86301D48);
-    Model_InitDisplayObject(D_86301D48, 0, 0x9A, gCurrentGeoLayout->unk_08->unk_00[0]);
+    Model_InitDisplayObject(D_86301D48, 0, 0x9A, gCurrentGeoLayout->unk_08->posX[0]);
 
     D_86301D48->unk_024.x = 0.0f;
     D_86301D48->unk_024.y = 0.0f;

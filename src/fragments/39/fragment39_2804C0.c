@@ -8,30 +8,30 @@ static unk_D_8250A498 gOptionMenu;
 static char* gOptionMenuItems[9];
 
 void KidsClub_InitMatchBanner(char** arg0) {
-    gMessageBox.unk_00 = 0;
-    gMessageBox.unk_02 = 0;
+    gMessageBox.posX = 0;
+    gMessageBox.posY = 0;
     gMessageBox.unk_14 = arg0;
 }
 
 s32 KidsClub_GetMatchBannerState(void) {
-    return gMessageBox.unk_00;
+    return gMessageBox.posX;
 }
 
 void KidsClub_SetMatchBannerState(s16 arg0) {
     unk_D_8250A480* ptr = &gMessageBox;
 
-    ptr->unk_00 = arg0;
+    ptr->posX = arg0;
 
-    switch (ptr->unk_00) {
+    switch (ptr->posX) {
         case 0:
-            ptr->unk_02 = 0;
+            ptr->posY = 0;
             ptr->unk_0C = 0;
             ptr->unk_10 = 0.0f;
             break;
 
         case 1:
-            ptr->unk_02 = 0xA;
-            ptr->unk_04 = -0xF8;
+            ptr->posY = 0xA;
+            ptr->rotation = -0xF8;
             ptr->unk_06 = 0x5A;
             ptr->unk_08 = 0x280;
             ptr->unk_0A = 0x15E;
@@ -39,32 +39,32 @@ void KidsClub_SetMatchBannerState(s16 arg0) {
             break;
 
         case 2:
-            ptr->unk_02 = 0x12C;
-            ptr->unk_04 = 0xBC;
+            ptr->posY = 0x12C;
+            ptr->rotation = 0xBC;
             ptr->unk_08 = 0x5C;
             ptr->unk_0C = 0;
             break;
 
         case 3:
-            ptr->unk_02 = 0xA;
+            ptr->posY = 0xA;
             ptr->unk_10 = 0.0f;
             break;
     }
 }
 
 void KidsClub_AdvanceMatchBannerOpen(unk_D_8250A480* arg0) {
-    arg0->unk_02--;
-    arg0->unk_04 = ((arg0->unk_02 * -0x1B4) / 10) + 0xBC;
-    arg0->unk_08 = ((arg0->unk_02 * 0x224) / 10) + 0x5C;
-    if (arg0->unk_02 <= 0) {
+    arg0->posY--;
+    arg0->rotation = ((arg0->posY * -0x1B4) / 10) + 0xBC;
+    arg0->unk_08 = ((arg0->posY * 0x224) / 10) + 0x5C;
+    if (arg0->posY <= 0) {
         KidsClub_SetMatchBannerState(2);
     }
 }
 
 void KidsClub_UpdateMatchBannerIdle(unk_D_8250A480* arg0) {
-    arg0->unk_02 = 0x12C;
+    arg0->posY = 0x12C;
     arg0->unk_10 = 0.0f;
-    if (arg0->unk_02 <= 0) {
+    if (arg0->posY <= 0) {
         arg0->unk_0C += 0x1000;
         arg0->unk_10 += 0.05f;
         if (arg0->unk_10 > 4.0f) {
@@ -74,10 +74,10 @@ void KidsClub_UpdateMatchBannerIdle(unk_D_8250A480* arg0) {
 }
 
 void KidsClub_AdvanceMatchBannerClose(unk_D_8250A480* arg0) {
-    arg0->unk_02--;
-    arg0->unk_04 = ((arg0->unk_02 * -0x1C4) / 10) + 0x280;
-    arg0->unk_08 = ((arg0->unk_02 * 0x224) / 10) - 0x1C8;
-    if (arg0->unk_02 <= 0) {
+    arg0->posY--;
+    arg0->rotation = ((arg0->posY * -0x1C4) / 10) + 0x280;
+    arg0->unk_08 = ((arg0->posY * 0x224) / 10) - 0x1C8;
+    if (arg0->posY <= 0) {
         KidsClub_SetMatchBannerState(0);
     }
 }
@@ -85,8 +85,8 @@ void KidsClub_AdvanceMatchBannerClose(unk_D_8250A480* arg0) {
 void KidsClub_UpdateMatchBanner(void) {
     unk_D_8250A480* ptr = &gMessageBox;
 
-    if (ptr->unk_00 != 0) {
-        switch (ptr->unk_00) {
+    if (ptr->posX != 0) {
+        switch (ptr->posX) {
             case 1:
                 KidsClub_AdvanceMatchBannerOpen(ptr);
                 break;
@@ -192,17 +192,17 @@ void KidsClub_DrawMatchBanner(void) {
     char* sp2C = Text_GetString(NULL, 0, ptr->unk_14, 0);
     char* sp28 = Text_GetString(NULL, 0, ptr->unk_14, 1);
 
-    if (ptr->unk_00 != 0) {
-        KidsClub_DrawRoundedFrame(ptr->unk_04, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
+    if (ptr->posX != 0) {
+        KidsClub_DrawRoundedFrame(ptr->rotation, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
         KidsClub_DrawRoundedFrame(ptr->unk_08, ptr->unk_0A, 0x1C8, 0x2C, 0x64, 0, 0x50, 0x80);
         Font_BeginTranslucentTextRendering();
         Font_SetActive(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         if (ptr->unk_10 <= 0.0f) {
-            Font_Printf((ptr->unk_04 - (Font_MeasureTextExtent(0, 0, sp2C) / 2)) + 0x7C, ptr->unk_06 + 0xA, sp2C);
+            Font_Printf((ptr->rotation - (Font_MeasureTextExtent(0, 0, sp2C) / 2)) + 0x7C, ptr->unk_06 + 0xA, sp2C);
             Font_Printf((ptr->unk_08 - (Font_MeasureTextExtent(0, 0, sp28) / 2)) + 0xE4, ptr->unk_0A + 0xA, sp28);
         } else {
-            KidsClub_DrawWavyText(ptr->unk_04 + 0x18, ptr->unk_06 + 0xA, sp2C, ptr->unk_10, ptr->unk_0C);
+            KidsClub_DrawWavyText(ptr->rotation + 0x18, ptr->unk_06 + 0xA, sp2C, ptr->unk_10, ptr->unk_0C);
             KidsClub_DrawWavyText(ptr->unk_08 + 0x18, ptr->unk_0A + 0xA, sp28, ptr->unk_10, ptr->unk_0C);
         }
         Font_EndTexturedTextRendering();
@@ -212,8 +212,8 @@ void KidsClub_DrawMatchBanner(void) {
 void KidsClub_InitRoundBanner(char** arg0) {
     s32 i;
 
-    gOptionMenu.unk_00 = 0;
-    gOptionMenu.unk_02 = 0;
+    gOptionMenu.posX = 0;
+    gOptionMenu.posY = 0;
     gOptionMenu.unk_14 = arg0;
 
     for (i = 0; i < 9; i++) {
@@ -230,29 +230,29 @@ void KidsClub_SetRoundBannerLabel(s16 arg0) {
     if (ptr->unk_12 != ptr->unk_10) {
         ptr->unk_10 = ptr->unk_12;
         ptr->unk_0C = ptr->unk_0E;
-        ptr->unk_04 = ptr->unk_06;
+        ptr->rotation = ptr->unk_06;
     }
     ptr->unk_12 = arg0;
     ptr->unk_0E = Font_MeasureTextExtent(0, 0, gOptionMenuItems[ptr->unk_12], arg0) + 0x30;
     ptr->unk_06 = (0x280 - ptr->unk_0E) / 2;
-    ptr->unk_02 = 5;
+    ptr->posY = 5;
 }
 
 void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1) {
     unk_D_8250A498* ptr = &gOptionMenu;
 
-    ptr->unk_00 = arg0;
+    ptr->posX = arg0;
 
-    switch (ptr->unk_00) {
+    switch (ptr->posX) {
         case 0:
-            ptr->unk_02 = 0;
+            ptr->posY = 0;
             break;
 
         case 1:
-            ptr->unk_02 = 0xA;
+            ptr->posY = 0xA;
             ptr->unk_10 = ptr->unk_12 = arg1;
             ptr->unk_0C = ptr->unk_0E = Font_MeasureTextExtent(0, 0, gOptionMenuItems[ptr->unk_12], arg1) + 0x30;
-            ptr->unk_04 = ptr->unk_06 = (0x280 - ptr->unk_0C) / 2;
+            ptr->rotation = ptr->unk_06 = (0x280 - ptr->unk_0C) / 2;
             ptr->unk_08 = -0x2C;
             ptr->unk_0A = 0x1E0;
             break;
@@ -262,36 +262,36 @@ void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1) {
             break;
 
         case 3:
-            ptr->unk_02 = 0xA;
+            ptr->posY = 0xA;
             break;
     }
 }
 
 void KidsClub_AdvanceRoundBannerOpen(unk_D_8250A498* arg0) {
-    arg0->unk_02--;
-    arg0->unk_08 = ((arg0->unk_02 * -0x68) / 10) + 0x3C;
-    arg0->unk_0A = ((arg0->unk_02 * 0x56) / 10) + 0x18A;
-    if (arg0->unk_02 <= 0) {
+    arg0->posY--;
+    arg0->unk_08 = ((arg0->posY * -0x68) / 10) + 0x3C;
+    arg0->unk_0A = ((arg0->posY * 0x56) / 10) + 0x18A;
+    if (arg0->posY <= 0) {
         KidsClub_SetRoundBannerState(2, -1);
     }
 }
 
 void KidsClub_UpdateRoundBannerCrossfade(unk_D_8250A498* arg0) {
     if (arg0->unk_10 != arg0->unk_12) {
-        arg0->unk_02--;
-        if (arg0->unk_02 <= 0) {
+        arg0->posY--;
+        if (arg0->posY <= 0) {
             arg0->unk_10 = arg0->unk_12;
             arg0->unk_0C = arg0->unk_0E;
-            arg0->unk_04 = arg0->unk_06;
+            arg0->rotation = arg0->unk_06;
         }
     }
 }
 
 void KidsClub_AdvanceRoundBannerClose(unk_D_8250A498* arg0) {
-    arg0->unk_02--;
-    arg0->unk_08 = ((arg0->unk_02 * 0x68) / 10) - 0x2C;
-    arg0->unk_0A = ((arg0->unk_02 * -0x56) / 10) + 0x1E0;
-    if (arg0->unk_02 <= 0) {
+    arg0->posY--;
+    arg0->unk_08 = ((arg0->posY * 0x68) / 10) - 0x2C;
+    arg0->unk_0A = ((arg0->posY * -0x56) / 10) + 0x1E0;
+    if (arg0->posY <= 0) {
         KidsClub_SetRoundBannerState(0, -1);
     }
 }
@@ -299,8 +299,8 @@ void KidsClub_AdvanceRoundBannerClose(unk_D_8250A498* arg0) {
 void KidsClub_UpdateRoundBanner(void) {
     unk_D_8250A498* ptr = &gOptionMenu;
 
-    if (ptr->unk_00 != 0) {
-        switch (ptr->unk_00) {
+    if (ptr->posX != 0) {
+        switch (ptr->posX) {
             case 1:
                 KidsClub_AdvanceRoundBannerOpen(ptr);
                 break;
@@ -323,13 +323,13 @@ void KidsClub_DrawRoundBanner(void) {
     s16 tmp;
     char* sp34 = Text_GetString(NULL, 0, ptr->unk_14, 0x10);
 
-    if (ptr->unk_00 != 0) {
+    if (ptr->posX != 0) {
         if (ptr->unk_10 == ptr->unk_12) {
-            KidsClub_DrawRoundedFrame(ptr->unk_04, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
+            KidsClub_DrawRoundedFrame(ptr->rotation, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
         } else {
-            tmp = (ptr->unk_02 << 7) / 5;
-            KidsClub_DrawRoundedFrame(ptr->unk_04, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, tmp);
-            tmp = ((-ptr->unk_02 * 0x80) + 0x280) / 5;
+            tmp = (ptr->posY << 7) / 5;
+            KidsClub_DrawRoundedFrame(ptr->rotation, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, tmp);
+            tmp = ((-ptr->posY * 0x80) + 0x280) / 5;
             KidsClub_DrawRoundedFrame(ptr->unk_06, ptr->unk_08, ptr->unk_0E, 0x2C, 0x1E, 0x1E, 0x82, tmp);
         }
 
@@ -342,13 +342,13 @@ void KidsClub_DrawRoundBanner(void) {
         sp3C = gOptionMenuItems[ptr->unk_10];
         if (ptr->unk_10 == ptr->unk_12) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(ptr->unk_04 + 0x18, ptr->unk_08 + 0xA, sp3C);
+            Font_Printf(ptr->rotation + 0x18, ptr->unk_08 + 0xA, sp3C);
         } else {
-            tmp = (ptr->unk_02 * 0xFF) / 5;
+            tmp = (ptr->posY * 0xFF) / 5;
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
-            Font_Printf(ptr->unk_04 + 0x18, ptr->unk_08 + 0xA, sp3C);
+            Font_Printf(ptr->rotation + 0x18, ptr->unk_08 + 0xA, sp3C);
             sp3C = gOptionMenuItems[ptr->unk_12];
-            tmp = ((5 - ptr->unk_02) * 0xFF) / 5;
+            tmp = ((5 - ptr->posY) * 0xFF) / 5;
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
             Font_Printf(ptr->unk_06 + 0x18, ptr->unk_08 + 0xA, sp3C);
         }

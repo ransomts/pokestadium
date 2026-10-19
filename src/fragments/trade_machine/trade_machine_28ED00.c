@@ -134,9 +134,9 @@ s32 Trade_DrawBox3DModel(s32 arg0, GraphNode* arg1) {
 s16 Trade_GetBoxSlotType(unk_D_82F14450* arg0) {
     s16 ret;
 
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 0:
-            if (arg0->unk_04 == 0) {
+            if (arg0->rotation == 0) {
                 ret = 4;
             } else if (arg0->unk_03 == 0) {
                 ret = 3;
@@ -439,32 +439,32 @@ void Trade_ResetBoxMachineFlow(void) {
     unk_D_82F20A40* ptr = &D_82F20A40;
     s32 i;
 
-    ptr->unk_00 = 1;
-    ptr->unk_02 = 0xA;
-    ptr->unk_04 = 0;
-    ptr->unk_06.unk_00 = 0x40;
-    ptr->unk_06.unk_02 = 0x8C;
-    ptr->unk_06.unk_04 = 0x200;
+    ptr->posX = 1;
+    ptr->posY = 0xA;
+    ptr->rotation = 0;
+    ptr->unk_06.posX = 0x40;
+    ptr->unk_06.posY = 0x8C;
+    ptr->unk_06.rotation = 0x200;
     ptr->unk_06.unk_06 = 0;
 
     for (i = 0; i < 3; i++) {
-        ptr->unk_0E[i].unk_00 = 0x7C + i * 0x88;
-        ptr->unk_0E[i].unk_02 = 0x10C;
-        ptr->unk_0E[i].unk_04 = 0x78;
+        ptr->unk_0E[i].posX = 0x7C + i * 0x88;
+        ptr->unk_0E[i].posY = 0x10C;
+        ptr->unk_0E[i].rotation = 0x78;
         ptr->unk_0E[i].unk_06 = 0;
     }
 
-    ptr->unk_26.unk_00 = 0x38;
-    ptr->unk_26.unk_02 = 0x1A4;
-    ptr->unk_26.unk_04 = 0x210;
+    ptr->unk_26.posX = 0x38;
+    ptr->unk_26.posY = 0x1A4;
+    ptr->unk_26.rotation = 0x210;
     ptr->unk_26.unk_06 = 0;
-    ptr->unk_2E.unk_00 = 0xCC;
-    ptr->unk_2E.unk_02 = 0x130;
-    ptr->unk_2E.unk_04 = 0xE8;
+    ptr->unk_2E.posX = 0xCC;
+    ptr->unk_2E.posY = 0x130;
+    ptr->unk_2E.rotation = 0xE8;
     ptr->unk_2E.unk_06 = 0;
-    ptr->unk_36.unk_00 = 0;
-    ptr->unk_36.unk_02 = 0;
-    ptr->unk_36.unk_04 = 0;
+    ptr->unk_36.posX = 0;
+    ptr->unk_36.posY = 0;
+    ptr->unk_36.rotation = 0;
     ptr->unk_36.unk_06 = 0;
 
     gSelectedPlayerIndices[1] = -1;
@@ -480,37 +480,37 @@ s32 Trade_GetSelectedBox(s16 arg0) {
 }
 
 s32 Trade_GetBoxMachineFlowState(void) {
-    return D_82F20A40.unk_00;
+    return D_82F20A40.posX;
 }
 
 void Trade_UpdateBoxMachineFlowOpen(unk_D_82F20A40* arg0, s32 arg1) {
     s32 i;
 
-    arg0->unk_02--;
+    arg0->posY--;
     if (arg1 != 0) {
-        arg0->unk_06.unk_00 = 0x40 - ((arg0->unk_02 * 0) / 10);
-        arg0->unk_06.unk_02 = 0x48 - ((arg0->unk_02 * -0x44) / 10);
-        arg0->unk_06.unk_04 = 0x200 - ((arg0->unk_02 * 0) / 10);
-        arg0->unk_06.unk_06 = 0x88 - ((arg0->unk_02 * 0x88) / 10);
+        arg0->unk_06.posX = 0x40 - ((arg0->posY * 0) / 10);
+        arg0->unk_06.posY = 0x48 - ((arg0->posY * -0x44) / 10);
+        arg0->unk_06.rotation = 0x200 - ((arg0->posY * 0) / 10);
+        arg0->unk_06.unk_06 = 0x88 - ((arg0->posY * 0x88) / 10);
     }
 
     for (i = 0; i < 3; i++) {
-        arg0->unk_0E[i].unk_00 = ((i * 0x88) - ((arg0->unk_02 * 0) / 10)) + 0x7C;
-        arg0->unk_0E[i].unk_02 = 0xF0 - ((arg0->unk_02 * -0x1C) / 10);
-        arg0->unk_0E[i].unk_04 = 0x78 - ((arg0->unk_02 * 0) / 10);
-        arg0->unk_0E[i].unk_06 = 0x38 - ((arg0->unk_02 * 0x38) / 10);
+        arg0->unk_0E[i].posX = ((i * 0x88) - ((arg0->posY * 0) / 10)) + 0x7C;
+        arg0->unk_0E[i].posY = 0xF0 - ((arg0->posY * -0x1C) / 10);
+        arg0->unk_0E[i].rotation = 0x78 - ((arg0->posY * 0) / 10);
+        arg0->unk_0E[i].unk_06 = 0x38 - ((arg0->posY * 0x38) / 10);
     }
 
     if (arg1 != 0) {
-        arg0->unk_26.unk_00 = 0x38 - ((arg0->unk_02 * 0) / 10);
-        arg0->unk_26.unk_02 = 0x190 - ((arg0->unk_02 * -0x14) / 10);
-        arg0->unk_26.unk_04 = 0x210 - ((arg0->unk_02 * 0) / 10);
-        arg0->unk_26.unk_06 = 0x28 - ((arg0->unk_02 * 0x28) / 10);
+        arg0->unk_26.posX = 0x38 - ((arg0->posY * 0) / 10);
+        arg0->unk_26.posY = 0x190 - ((arg0->posY * -0x14) / 10);
+        arg0->unk_26.rotation = 0x210 - ((arg0->posY * 0) / 10);
+        arg0->unk_26.unk_06 = 0x28 - ((arg0->posY * 0x28) / 10);
     }
 
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 2;
-        arg0->unk_02 = 0;
+    if (arg0->posY <= 0) {
+        arg0->posX = 2;
+        arg0->posY = 0;
         Trade_SetBoxSlotAnimState(gPlayerSlotInfo, 1);
 
         for (i = 0; i < 3; i++) {
@@ -543,8 +543,8 @@ void Trade_UpdateBoxMachineFlowSelect(unk_D_82F20A40* arg0) {
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A) && (gSelectedSlotIndex != -1)) {
         if (gPlayerSlotInfo[gSelectedSlotIndex + 1].unk_004 == 0) {
-            arg0->unk_00 = 6;
-            arg0->unk_02 = 0xA;
+            arg0->posX = 6;
+            arg0->posY = 0xA;
 
             for (i = 0; i < 3; i++) {
                 if (gPlayerSlotInfo[i + 1].unk_002 != -1) {
@@ -557,11 +557,11 @@ void Trade_UpdateBoxMachineFlowSelect(unk_D_82F20A40* arg0) {
             }
             Audio_PlaySoundEffectById(2);
         } else {
-            arg0->unk_00 = 3;
-            arg0->unk_02 = 0xA;
-            arg0->unk_04 = gPlayerSlotInfo[gSelectedSlotIndex + 1].unk_004;
+            arg0->posX = 3;
+            arg0->posY = 0xA;
+            arg0->rotation = gPlayerSlotInfo[gSelectedSlotIndex + 1].unk_004;
 
-            switch (arg0->unk_04) {
+            switch (arg0->rotation) {
                 case 1:
                     arg0->unk_40 = &D_82F13EEC;
                     arg0->unk_44 = &D_82F13EF4;
@@ -589,8 +589,8 @@ void Trade_UpdateBoxMachineFlowSelect(unk_D_82F20A40* arg0) {
             }
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-        arg0->unk_00 = 0xB;
-        arg0->unk_02 = 0xA;
+        arg0->posX = 0xB;
+        arg0->posY = 0xA;
 
         for (i = 0; i < 4; i++) {
             Trade_SetBoxSlotAnimState(&gPlayerSlotInfo[i], 0);
@@ -601,34 +601,34 @@ void Trade_UpdateBoxMachineFlowSelect(unk_D_82F20A40* arg0) {
 }
 
 void Trade_UpdateBoxMachineFlowFrameMove(unk_D_82F20A40* arg0) {
-    arg0->unk_02--;
-    arg0->unk_36.unk_00 = arg0->unk_44->unk_00 - (((arg0->unk_44->unk_00 - arg0->unk_40->unk_00) * arg0->unk_02) / 10);
-    arg0->unk_36.unk_02 = arg0->unk_44->unk_02 - (((arg0->unk_44->unk_02 - arg0->unk_40->unk_02) * arg0->unk_02) / 10);
-    arg0->unk_36.unk_04 = arg0->unk_44->unk_04 - (((arg0->unk_44->unk_04 - arg0->unk_40->unk_04) * arg0->unk_02) / 10);
-    arg0->unk_36.unk_06 = arg0->unk_44->unk_06 - (((arg0->unk_44->unk_06 - arg0->unk_40->unk_06) * arg0->unk_02) / 10);
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 4;
-        arg0->unk_02 = 0;
+    arg0->posY--;
+    arg0->unk_36.posX = arg0->unk_44->posX - (((arg0->unk_44->posX - arg0->unk_40->posX) * arg0->posY) / 10);
+    arg0->unk_36.posY = arg0->unk_44->posY - (((arg0->unk_44->posY - arg0->unk_40->posY) * arg0->posY) / 10);
+    arg0->unk_36.rotation = arg0->unk_44->rotation - (((arg0->unk_44->rotation - arg0->unk_40->rotation) * arg0->posY) / 10);
+    arg0->unk_36.unk_06 = arg0->unk_44->unk_06 - (((arg0->unk_44->unk_06 - arg0->unk_40->unk_06) * arg0->posY) / 10);
+    if (arg0->posY <= 0) {
+        arg0->posX = 4;
+        arg0->posY = 0;
     }
 }
 
 void Trade_UpdateBoxMachineFlowConfirmWait(unk_D_82F20A40* arg0) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
-        arg0->unk_00 = 5;
-        arg0->unk_02 = 0xA;
+        arg0->posX = 5;
+        arg0->posY = 0xA;
     }
 }
 
 void Trade_UpdateBoxMachineFlowFrameReturn(unk_D_82F20A40* arg0) {
-    arg0->unk_02--;
-    arg0->unk_36.unk_00 = arg0->unk_40->unk_00 - (((arg0->unk_40->unk_00 - arg0->unk_44->unk_00) * arg0->unk_02) / 10);
-    arg0->unk_36.unk_02 = arg0->unk_40->unk_02 - (((arg0->unk_40->unk_02 - arg0->unk_44->unk_02) * arg0->unk_02) / 10);
-    arg0->unk_36.unk_04 = arg0->unk_40->unk_04 - (((arg0->unk_40->unk_04 - arg0->unk_44->unk_04) * arg0->unk_02) / 10);
-    arg0->unk_36.unk_06 = arg0->unk_40->unk_06 - (((arg0->unk_40->unk_06 - arg0->unk_44->unk_06) * arg0->unk_02) / 10);
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 2;
-        arg0->unk_02 = 0;
-        arg0->unk_04 = 0;
+    arg0->posY--;
+    arg0->unk_36.posX = arg0->unk_40->posX - (((arg0->unk_40->posX - arg0->unk_44->posX) * arg0->posY) / 10);
+    arg0->unk_36.posY = arg0->unk_40->posY - (((arg0->unk_40->posY - arg0->unk_44->posY) * arg0->posY) / 10);
+    arg0->unk_36.rotation = arg0->unk_40->rotation - (((arg0->unk_40->rotation - arg0->unk_44->rotation) * arg0->posY) / 10);
+    arg0->unk_36.unk_06 = arg0->unk_40->unk_06 - (((arg0->unk_40->unk_06 - arg0->unk_44->unk_06) * arg0->posY) / 10);
+    if (arg0->posY <= 0) {
+        arg0->posX = 2;
+        arg0->posY = 0;
+        arg0->rotation = 0;
         arg0->unk_44 = NULL;
         arg0->unk_40 = NULL;
     }
@@ -642,15 +642,15 @@ void Trade_UpdateBoxMachineSlots(unk_D_82F20A40* arg0, s16 arg1, s16 arg2) {
     for (i = 0; i < 3; i++) {
         ptr = &arg0->unk_0E[i];
 
-        if ((ptr->unk_04 == 0x78) && (ptr->unk_06 == 0)) {
+        if ((ptr->rotation == 0x78) && (ptr->unk_06 == 0)) {
             continue;
         }
 
-        tmp = (ptr->unk_00 * 0) / arg2;
+        tmp = (ptr->posX * 0) / arg2;
 
-        ptr->unk_00 = (0x7C + (i * 0x88)) - (tmp);
-        ptr->unk_02 = 0x10C - ((arg1 * 0x1C) / arg2);
-        ptr->unk_04 = 0x78 - (tmp);
+        ptr->posX = (0x7C + (i * 0x88)) - (tmp);
+        ptr->posY = 0x10C - ((arg1 * 0x1C) / arg2);
+        ptr->rotation = 0x78 - (tmp);
         ptr->unk_06 = -((arg1 * -0x38) / arg2);
     }
 }
@@ -658,30 +658,30 @@ void Trade_UpdateBoxMachineSlots(unk_D_82F20A40* arg0, s16 arg1, s16 arg2) {
 void Trade_UpdateBoxMachineFlowPanelsFull(unk_D_82F20A40* arg0) {
     s32 i;
 
-    arg0->unk_02--;
-    Trade_UpdateBoxMachineSlots(arg0, arg0->unk_02, 0xA);
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 7;
-        arg0->unk_02 = 0xA;
+    arg0->posY--;
+    Trade_UpdateBoxMachineSlots(arg0, arg0->posY, 0xA);
+    if (arg0->posY <= 0) {
+        arg0->posX = 7;
+        arg0->posY = 0xA;
 
         for (i = 0; i < 3; i++) {
-            arg0->unk_0E[i].unk_00 = 0x7C + i * 0x88;
-            arg0->unk_0E[i].unk_02 = 0x10C;
-            arg0->unk_0E[i].unk_04 = 0x78;
+            arg0->unk_0E[i].posX = 0x7C + i * 0x88;
+            arg0->unk_0E[i].posY = 0x10C;
+            arg0->unk_0E[i].rotation = 0x78;
             arg0->unk_0E[i].unk_06 = 0;
         }
     }
 }
 
 void Trade_UpdateBoxMachineFlowConfirmOpen(unk_D_82F20A40* arg0) {
-    arg0->unk_02--;
-    arg0->unk_2E.unk_00 = 0xCC - (arg0->unk_02 * 0) / 10;
-    arg0->unk_2E.unk_02 = 0xF8 - ((arg0->unk_02 * -0x38) / 10);
-    arg0->unk_2E.unk_04 = 0xE8 - (arg0->unk_02 * 0) / 10;
-    arg0->unk_2E.unk_06 = 0x70 - ((arg0->unk_02 * 0x70) / 10);
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 8;
-        arg0->unk_02 = 0;
+    arg0->posY--;
+    arg0->unk_2E.posX = 0xCC - (arg0->posY * 0) / 10;
+    arg0->unk_2E.posY = 0xF8 - ((arg0->posY * -0x38) / 10);
+    arg0->unk_2E.rotation = 0xE8 - (arg0->posY * 0) / 10;
+    arg0->unk_2E.unk_06 = 0x70 - ((arg0->posY * 0x70) / 10);
+    if (arg0->posY <= 0) {
+        arg0->posX = 8;
+        arg0->posY = 0;
         gSubMenuSelection = 0;
     }
 }
@@ -714,14 +714,14 @@ void Trade_UpdateBoxMachineFlowConfirmInput(unk_D_82F20A40* arg0) {
 
     if (var_a2 != 0) {
         if (gSubMenuSelection == 0) {
-            arg0->unk_00 = 0xB;
-            arg0->unk_02 = 0xA;
+            arg0->posX = 0xB;
+            arg0->posY = 0xA;
             Trade_SetBoxSlotAnimState(gPlayerSlotInfo, 0);
             Trade_SetBoxSlotAnimState(&gPlayerSlotInfo[gSelectedSlotIndex + 1], 0);
             Audio_PlaySoundEffectById(0x1B);
         } else {
-            arg0->unk_00 = 9;
-            arg0->unk_02 = 0xA;
+            arg0->posX = 9;
+            arg0->posY = 0xA;
             Trade_SetBoxSlotAnimState(&gPlayerSlotInfo[gSelectedSlotIndex + 1], 5);
             Audio_PlaySoundEffectById(3);
         }
@@ -729,47 +729,47 @@ void Trade_UpdateBoxMachineFlowConfirmInput(unk_D_82F20A40* arg0) {
 }
 
 void Trade_UpdateBoxMachineRect(PanelRect* arg0, s16 arg1, s16 arg2) {
-    if ((arg0->unk_04 != 0xE8) || (arg0->unk_06 != 0)) {
-        s32 tmp = (arg0->unk_00 * 0) / arg2;
+    if ((arg0->rotation != 0xE8) || (arg0->unk_06 != 0)) {
+        s32 tmp = (arg0->posX * 0) / arg2;
 
-        arg0->unk_00 = 0xCC - tmp;
-        arg0->unk_02 = 0x130 - ((arg1 * 0x38) / arg2);
-        arg0->unk_04 = 0xE8 - tmp;
+        arg0->posX = 0xCC - tmp;
+        arg0->posY = 0x130 - ((arg1 * 0x38) / arg2);
+        arg0->rotation = 0xE8 - tmp;
         arg0->unk_06 = -((arg1 * -0x70) / arg2);
     }
 }
 
 void Trade_UpdateBoxMachineFlowConfirmDone(unk_D_82F20A40* arg0) {
-    if (arg0->unk_02 > 0) {
-        arg0->unk_02--;
+    if (arg0->posY > 0) {
+        arg0->posY--;
     }
 
-    Trade_UpdateBoxMachineRect(&arg0->unk_2E, arg0->unk_02, 0xA);
+    Trade_UpdateBoxMachineRect(&arg0->unk_2E, arg0->posY, 0xA);
 
-    if ((arg0->unk_02 <= 0) && (gSelectedPlayerIndices[1] == -1)) {
-        arg0->unk_00 = 0xA;
-        arg0->unk_02 = 0xA;
+    if ((arg0->posY <= 0) && (gSelectedPlayerIndices[1] == -1)) {
+        arg0->posX = 0xA;
+        arg0->posY = 0xA;
     }
 }
 
 void Trade_UpdateBoxMachineFlowClose(unk_D_82F20A40* arg0) {
-    arg0->unk_02--;
-    arg0->unk_06.unk_00 = 0x40 - (arg0->unk_02 * 0) / 10;
-    arg0->unk_06.unk_02 = 0x8C - ((arg0->unk_02 * 0x44) / 10);
-    arg0->unk_06.unk_04 = 0x200 - (arg0->unk_02 * 0) / 10;
-    arg0->unk_06.unk_06 = -((arg0->unk_02 * -0x88) / 10);
+    arg0->posY--;
+    arg0->unk_06.posX = 0x40 - (arg0->posY * 0) / 10;
+    arg0->unk_06.posY = 0x8C - ((arg0->posY * 0x44) / 10);
+    arg0->unk_06.rotation = 0x200 - (arg0->posY * 0) / 10;
+    arg0->unk_06.unk_06 = -((arg0->posY * -0x88) / 10);
 
-    Trade_UpdateBoxMachineSlots(arg0, arg0->unk_02, 0xA);
-    Trade_UpdateBoxMachineRect(&arg0->unk_2E, arg0->unk_02, 0xA);
+    Trade_UpdateBoxMachineSlots(arg0, arg0->posY, 0xA);
+    Trade_UpdateBoxMachineRect(&arg0->unk_2E, arg0->posY, 0xA);
 
-    arg0->unk_26.unk_00 = 0x38 - (arg0->unk_02 * 0) / 10;
-    arg0->unk_26.unk_02 = 0x1A4 - ((arg0->unk_02 * 0x14) / 10);
-    arg0->unk_26.unk_04 = 0x210 - (arg0->unk_02 * 0) / 10;
-    arg0->unk_26.unk_06 = -((arg0->unk_02 * -0x28) / 10);
+    arg0->unk_26.posX = 0x38 - (arg0->posY * 0) / 10;
+    arg0->unk_26.posY = 0x1A4 - ((arg0->posY * 0x14) / 10);
+    arg0->unk_26.rotation = 0x210 - (arg0->posY * 0) / 10;
+    arg0->unk_26.unk_06 = -((arg0->posY * -0x28) / 10);
 
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 0;
-        arg0->unk_02 = 0;
+    if (arg0->posY <= 0) {
+        arg0->posX = 0;
+        arg0->posY = 0;
     }
 }
 
@@ -779,12 +779,12 @@ void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0) {
     s32 i;
     unk_D_82F14450* ptr;
 
-    Trade_DrawPickScreenFrame(temp_s4->unk_00, temp_s4->unk_02, temp_s4->unk_04, temp_s4->unk_06);
+    Trade_DrawPickScreenFrame(temp_s4->posX, temp_s4->posY, temp_s4->rotation, temp_s4->unk_06);
 
-    if ((temp_s4->unk_04 == 0x200) && (temp_s4->unk_06 == 0x88)) {
+    if ((temp_s4->rotation == 0x200) && (temp_s4->unk_06 == 0x88)) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
-        Gfx_FillRectRgba(temp_s4->unk_00, temp_s4->unk_02, temp_s4->unk_04, temp_s4->unk_06, 0x32, 0x32, 0x96, 0xFF);
+        Gfx_FillRectRgba(temp_s4->posX, temp_s4->posY, temp_s4->rotation, temp_s4->unk_06, 0x32, 0x32, 0x96, 0xFF);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -798,15 +798,15 @@ void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0) {
                 var_v0 = &sp5C;
             }
 
-            Trade_DrawRoundedFrameSmall(temp_s4->unk_00 + (i * 0x110) + 0x10, temp_s4->unk_02 + 0x28, 0xD0, 0x50, var_v0->r,
+            Trade_DrawRoundedFrameSmall(temp_s4->posX + (i * 0x110) + 0x10, temp_s4->posY + 0x28, 0xD0, 0x50, var_v0->r,
                           var_v0->g, var_v0->b, 0xFF);
         }
 
-        Trade_DrawBoxMachineTransferArrows(temp_s4->unk_00 + 0xE0, temp_s4->unk_02 + 0x28);
+        Trade_DrawBoxMachineTransferArrows(temp_s4->posX + 0xE0, temp_s4->posY + 0x28);
         Font_BeginTranslucentTextRendering();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetActive(0x10, 0);
-        Font_Printf(temp_s4->unk_00 + 0x5A, temp_s4->unk_02 + 8, Text_GetString(NULL, 0, D_82F13B70, 1));
+        Font_Printf(temp_s4->posX + 0x5A, temp_s4->posY + 8, Text_GetString(NULL, 0, D_82F13B70, 1));
 
         for (i = 0; i < 2; i++) {
             if (gSelectedPlayerIndices[i] != -1) {
@@ -824,9 +824,9 @@ void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0) {
                 if (ptr) {}
 
                 Font_SetActive(0x10, 0);
-                Font_Printf(temp_s4->unk_00 + (i * 0x110) + 0x24, temp_s4->unk_02 + 0x3C, ptr->unk_08);
+                Font_Printf(temp_s4->posX + (i * 0x110) + 0x24, temp_s4->posY + 0x3C, ptr->unk_08);
                 Font_SetActive(8, 0);
-                Font_Printf(temp_s4->unk_00 + (i * 0x110) + 0x24, temp_s4->unk_02 + 0x54, "ID%05d", ptr->unk_06);
+                Font_Printf(temp_s4->posX + (i * 0x110) + 0x24, temp_s4->posY + 0x54, "ID%05d", ptr->unk_06);
             }
         }
 
@@ -848,7 +848,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
     for (i = 0; i < 3; i++) {
         ptr = &arg0->unk_0E[i];
 
-        if ((arg0->unk_0E[i].unk_04 == 0x78) && (ptr->unk_06 == 0)) {
+        if ((arg0->unk_0E[i].rotation == 0x78) && (ptr->unk_06 == 0)) {
             continue;
         }
 
@@ -864,7 +864,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
             var_v0 = &sp84;
         }
 
-        Trade_DrawRoundedFrameLarge(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, var_v0->r, var_v0->g, var_v0->b, var_v1);
+        Trade_DrawRoundedFrameLarge(ptr->posX, ptr->posY, ptr->rotation, ptr->unk_06, var_v0->r, var_v0->g, var_v0->b, var_v1);
     }
 
     Font_BeginTranslucentTextRendering();
@@ -886,7 +886,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
                 break;
         }
 
-        if ((arg0->unk_0E[i].unk_04 == 0x78) && (ptr->unk_06 == 0x38)) {
+        if ((arg0->unk_0E[i].rotation == 0x78) && (ptr->unk_06 == 0x38)) {
             Font_SetActive(8, 0);
             if (var_s2 != NULL) {
                 var_s0_2 = var_s2->unk_08;
@@ -894,7 +894,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
                 var_s0_2 = "?????";
             }
 
-            Font_Printf(((ptr->unk_04 - Font_MeasureTextExtent(0, 0, var_s0_2)) / 2) + ptr->unk_00, ptr->unk_02 + 8, var_s0_2);
+            Font_Printf(((ptr->rotation - Font_MeasureTextExtent(0, 0, var_s0_2)) / 2) + ptr->posX, ptr->posY + 8, var_s0_2);
             Font_SetActive(4, 0);
 
             if (var_s2 != NULL) {
@@ -904,7 +904,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
                 var_s0_2 = "ID*****";
             }
 
-            Font_Printf(((ptr->unk_04 - Font_MeasureTextExtent(0, 0, var_s0_2)) / 2) + ptr->unk_00, ptr->unk_02 + 0x20,
+            Font_Printf(((ptr->rotation - Font_MeasureTextExtent(0, 0, var_s0_2)) / 2) + ptr->posX, ptr->posY + 0x20,
                           var_s0_2);
         }
     }
@@ -916,14 +916,14 @@ void Trade_DrawBoxMachineTitle(unk_D_82F20A40* arg0) {
     PanelRect* temp_s1 = &arg0->unk_26;
     char* temp_v0;
 
-    Trade_DrawRoundedFrameLarge(arg0->unk_26.unk_00, arg0->unk_26.unk_02, arg0->unk_26.unk_04, arg0->unk_26.unk_06, 0x1E, 0x1E, 0x82,
+    Trade_DrawRoundedFrameLarge(arg0->unk_26.posX, arg0->unk_26.posY, arg0->unk_26.rotation, arg0->unk_26.unk_06, 0x1E, 0x1E, 0x82,
                   0xFF);
-    if ((temp_s1->unk_04 == 0x210) && (temp_s1->unk_06 == 0x28)) {
+    if ((temp_s1->rotation == 0x210) && (temp_s1->unk_06 == 0x28)) {
         Font_BeginTranslucentTextRendering();
         Font_SetActive(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         temp_v0 = Text_GetString(NULL, 0, D_82F13B70, 2);
-        Font_Printf((temp_s1->unk_00 - (Font_MeasureTextExtent(0, 0, temp_v0) / 2)) + 0x108, temp_s1->unk_02 + 8, temp_v0);
+        Font_Printf((temp_s1->posX - (Font_MeasureTextExtent(0, 0, temp_v0) / 2)) + 0x108, temp_s1->posY + 8, temp_v0);
         Font_EndTexturedTextRendering();
     }
 }
@@ -936,15 +936,15 @@ void Trade_DrawBoxMachineConfirm(unk_D_82F20A40* arg0) {
     Color_RGB8 sp54 = { 0x1E, 0x1E, 0x82 };
     char* sp4C[2];
 
-    if ((temp_s3->unk_04 == 0xE8) && (temp_s3->unk_06 == 0)) {
+    if ((temp_s3->rotation == 0xE8) && (temp_s3->unk_06 == 0)) {
         return;
     }
 
-    if ((temp_s3->unk_04 >= 0xE) && (temp_s3->unk_06 >= 0xE)) {
-        Ui_DrawGradientPanel(temp_s3->unk_00, temp_s3->unk_02, temp_s3->unk_04, temp_s3->unk_06, &sp54, &sp54);
+    if ((temp_s3->rotation >= 0xE) && (temp_s3->unk_06 >= 0xE)) {
+        Ui_DrawGradientPanel(temp_s3->posX, temp_s3->posY, temp_s3->rotation, temp_s3->unk_06, &sp54, &sp54);
     }
 
-    if ((temp_s3->unk_04 != 0xE8) || (temp_s3->unk_06 != 0x70)) {
+    if ((temp_s3->rotation != 0xE8) || (temp_s3->unk_06 != 0x70)) {
         return;
     }
 
@@ -952,8 +952,8 @@ void Trade_DrawBoxMachineConfirm(unk_D_82F20A40* arg0) {
     Font_SetActive(0x10, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     temp_v0 = Text_GetString(NULL, 0, D_82F13B70, 3);
-    tmp = (temp_s3->unk_00 - (Font_MeasureTextExtent(0, 0, temp_v0) / 2)) + 0x74;
-    Font_Printf(tmp, temp_s3->unk_02 + 0x10, temp_v0);
+    tmp = (temp_s3->posX - (Font_MeasureTextExtent(0, 0, temp_v0) / 2)) + 0x74;
+    Font_Printf(tmp, temp_s3->posY + 0x10, temp_v0);
 
     for (i = 0; i < 2; i++) {
         sp4C[0] = Text_GetString(NULL, 0, D_82F13B70, 4);
@@ -964,7 +964,7 @@ void Trade_DrawBoxMachineConfirm(unk_D_82F20A40* arg0) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
         // clang-format off
-        tmp = (temp_s3->unk_00 - (Font_MeasureTextExtent(0, 0, sp4C[i]) / 2)) + 0x74; Font_Printf(tmp, temp_s3->unk_02 + (i * 0x1C) + 0x2C, sp4C[i]);
+        tmp = (temp_s3->posX - (Font_MeasureTextExtent(0, 0, sp4C[i]) / 2)) + 0x74; Font_Printf(tmp, temp_s3->posY + (i * 0x1C) + 0x2C, sp4C[i]);
         // clang-format on
     }
 
@@ -977,7 +977,7 @@ void Trade_DrawBoxMachineBanner(unk_D_82F20A40* arg0) {
     PanelRect* temp_s0 = &arg0->unk_36;
     Color_RGB8 sp40 = { 0x64, 0x1E, 0x1E };
 
-    if (arg0->unk_04 == 0) {
+    if (arg0->rotation == 0) {
         return;
     }
 
@@ -985,41 +985,41 @@ void Trade_DrawBoxMachineBanner(unk_D_82F20A40* arg0) {
         return;
     }
 
-    if ((arg0->unk_36.unk_04 != arg0->unk_40->unk_04) || (arg0->unk_36.unk_06 != arg0->unk_40->unk_06)) {
+    if ((arg0->unk_36.rotation != arg0->unk_40->rotation) || (arg0->unk_36.unk_06 != arg0->unk_40->unk_06)) {
 
-        if ((temp_s0->unk_04 >= 0xE) && (temp_s0->unk_06 >= 0xE)) {
-            Ui_DrawGradientPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, &sp40, &sp40);
+        if ((temp_s0->rotation >= 0xE) && (temp_s0->unk_06 >= 0xE)) {
+            Ui_DrawGradientPanel(temp_s0->posX, temp_s0->posY, temp_s0->rotation, temp_s0->unk_06, &sp40, &sp40);
         }
 
-        if ((temp_s0->unk_04 >= arg0->unk_44->unk_04) && (temp_s0->unk_06 >= arg0->unk_44->unk_06)) {
+        if ((temp_s0->rotation >= arg0->unk_44->rotation) && (temp_s0->unk_06 >= arg0->unk_44->unk_06)) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetLineHeight(0x1A);
 
-            switch (arg0->unk_04) {
+            switch (arg0->rotation) {
                 case 1:
                     sp48 = Text_GetString(NULL, 0, D_82F13B70, 6);
-                    Font_Printf((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
-                                  temp_s0->unk_02 + 0x10, sp48);
+                    Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
+                                  temp_s0->posY + 0x10, sp48);
                     break;
 
                 case 2:
                     sp48 = Text_GetString(NULL, 0, D_82F13B70, 7);
-                    Font_Printf((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
-                                  temp_s0->unk_02 + 0x10, sp48);
+                    Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
+                                  temp_s0->posY + 0x10, sp48);
                     break;
 
                 case 3:
                     sp48 = Text_GetString(NULL, 0, D_82F13B70, 8);
-                    Font_Printf((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
-                                  temp_s0->unk_02 + 0x10, sp48);
+                    Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
+                                  temp_s0->posY + 0x10, sp48);
                     break;
 
                 case 4:
                     sp48 = Text_GetString(NULL, 0, D_82F13B70, 9);
-                    Font_Printf((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
-                                  temp_s0->unk_02 + 0x10, sp48);
+                    Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
+                                  temp_s0->posY + 0x10, sp48);
                     break;
             }
 
@@ -1095,9 +1095,9 @@ void Trade_InitBoxMachine(void) {
     gMenuOverlayNode = process_geo_layout(sp1C, D_82F13E58);
     MainPool_FinalizeAllocation(sp1C);
 
-    D_82F20A40.unk_00 = 0;
-    D_82F20A40.unk_02 = 0;
-    D_82F20A40.unk_04 = 0;
+    D_82F20A40.posX = 0;
+    D_82F20A40.posY = 0;
+    D_82F20A40.rotation = 0;
 
     for (i = 0; i < 2; i++) {
         gSelectedPlayerIndices[i] = -1;
@@ -1111,11 +1111,11 @@ void Trade_InitBoxMachine(void) {
 void Trade_UpdateBoxMachine(void) {
     unk_D_82F20A40* ptr = &D_82F20A40;
 
-    if (ptr->unk_00 == 0) {
+    if (ptr->posX == 0) {
         return;
     }
 
-    switch (ptr->unk_00) {
+    switch (ptr->posX) {
         case 1:
             Trade_UpdateBoxMachineFlowOpen(ptr, 1);
             break;
@@ -1167,14 +1167,14 @@ void Trade_UpdateBoxMachine(void) {
 void Trade_DrawBoxMachine(void) {
     unk_D_82F20A40* ptr = &D_82F20A40;
 
-    if (ptr->unk_00 != 0) {
+    if (ptr->posX != 0) {
         GeoRender_AdvanceFrameCounter();
         Trade_DrawBoxMachineTopBar(&D_82F20A40);
         Trade_DrawBoxMachineSlots(&D_82F20A40);
         Trade_DrawBoxMachineTitle(&D_82F20A40);
         Trade_DrawBoxMachineConfirm(&D_82F20A40);
         Geo_RenderRootNode(gMenuRootNode);
-        Trade_DrawBoxMachineCursor(ptr->unk_00);
+        Trade_DrawBoxMachineCursor(ptr->posX);
         Trade_DrawBoxMachineBanner(&D_82F20A40);
     }
 }

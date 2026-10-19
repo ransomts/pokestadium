@@ -29,7 +29,7 @@ void BattleScene_SetBothOwnerActiveFlags(void) {
 }
 
 void BattleScene_SetOwnerPoseFlag(unk_D_84390010_728_0168* arg0) {
-    arg0->unk_00.unk_01 |= 0x10;
+    arg0->posX.unk_01 |= 0x10;
 }
 
 void BattleScene_LoadOwnerCameraFramingConstants(unk_BattlePlayerEntity* arg0) {
@@ -41,9 +41,9 @@ void BattleScene_LoadOwnerCameraFramingConstants(unk_BattlePlayerEntity* arg0) {
         var_v0 = 1;
     }
 
-    arg0->unk_728.unk_168->unk_20 = gEntityInitParams[var_v0].unk_04;
-    arg0->unk_728.unk_168->unk_1C = gEntityInitParams[var_v0].unk_00;
-    arg0->unk_728.unk_168->unk_1E = gEntityInitParams[var_v0].unk_02;
+    arg0->unk_728.unk_168->unk_20 = gEntityInitParams[var_v0].rotation;
+    arg0->unk_728.unk_168->unk_1C = gEntityInitParams[var_v0].posX;
+    arg0->unk_728.unk_168->unk_1E = gEntityInitParams[var_v0].posY;
 
     arg0->unk_728.unk_178 = gEntityInitParams[var_v0].unk_14;
 
@@ -53,7 +53,7 @@ void BattleScene_LoadOwnerCameraFramingConstants(unk_BattlePlayerEntity* arg0) {
 }
 
 void BattleScene_SetupOwnerCameraFraming(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    if (gBattleScene.unk_00->unk_1C == 1) {
+    if (gBattleScene.posX->unk_1C == 1) {
         BattleScene_SetBothOwnerActiveFlags();
     } else {
         BattleScene_ClearBothOwnerActiveFlags();
@@ -77,16 +77,16 @@ void BattleScene_ApplyOwnerCameraFraming(unk_BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_184 = gAnimDataSetB[temp_v0]->unk_0C;
     if (gAnimDataSetB[temp_v0]->unk_10 == 0xFF) {
         arg0->unk_728.unk_186 = gAnimDataSetB[temp_v0]->unk_0E * arg0->unk_728.unk_178;
-        tmp = gAnimDataSetB[temp_v0]->unk_00.z * arg0->unk_728.unk_178;
+        tmp = gAnimDataSetB[temp_v0]->posX.z * arg0->unk_728.unk_178;
     } else {
         arg0->unk_728.unk_186 = gAnimDataSetB[temp_v0]->unk_0E;
-        tmp = gAnimDataSetB[temp_v0]->unk_00.z;
+        tmp = gAnimDataSetB[temp_v0]->posX.z;
     }
 
     arg0->unk_728.unk_190 = tmp;
-    arg0->unk_728.unk_188 = gAnimDataSetB[temp_v0]->unk_00.x;
+    arg0->unk_728.unk_188 = gAnimDataSetB[temp_v0]->posX.x;
     arg0->unk_728.unk_180 = gAnimDataSetB[temp_v0]->unk_12;
-    tmp2 = gAnimDataSetB[temp_v0]->unk_00.y;
+    tmp2 = gAnimDataSetB[temp_v0]->posX.y;
     arg0->unk_728.unk_194 = tmp2;
 
     BattleScene_SetCameraAtAndEyeFromAngles(sp30, arg0->unk_728.unk_000.unk_024.x + arg0->unk_728.unk_190, arg0->unk_728.unk_000.unk_024.y + tmp2,
@@ -109,7 +109,7 @@ void BattleScene_TickOwnerSlideIn(unk_BattlePlayerEntity* arg0, s32 arg1) {
     s16 var_a0;
     unk_D_84390010_728_0168* temp_v0;
 
-    arg0->unk_728.unk_168->unk_00.unk_01 |= 1;
+    arg0->unk_728.unk_168->posX.unk_01 |= 1;
     arg0->unk_728.unk_000.unk_000.unk_01 |= 1;
 
     if (arg0->unk_728.unk_178 == 1) {
@@ -141,14 +141,14 @@ void BattleScene_TickOwnerSlideOut(unk_BattlePlayerEntity* arg0, s32 arg1) {
         arg0->unk_728.unk_18C = 0;
         arg0->unk_728.unk_168->unk_1C = Math_StepToS32(arg0->unk_728.unk_168->unk_1C, -0x48, arg1, arg1);
         if (arg0->unk_728.unk_168->unk_1C == -0x48) {
-            arg0->unk_728.unk_168->unk_00.unk_01 &= ~1;
+            arg0->unk_728.unk_168->posX.unk_01 &= ~1;
             arg0->unk_728.unk_000.unk_000.unk_01 &= ~1;
         }
     } else {
         arg0->unk_728.unk_18C = 0;
         arg0->unk_728.unk_168->unk_1C = Math_StepToS32(arg0->unk_728.unk_168->unk_1C, 0x15F, arg1, arg1);
         if (arg0->unk_728.unk_168->unk_1C == 0x15F) {
-            arg0->unk_728.unk_168->unk_00.unk_01 &= ~1;
+            arg0->unk_728.unk_168->posX.unk_01 &= ~1;
             arg0->unk_728.unk_000.unk_000.unk_01 &= ~1;
         }
     }

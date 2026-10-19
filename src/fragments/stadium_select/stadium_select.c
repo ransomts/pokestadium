@@ -18,9 +18,9 @@
 #include "src/stage_loader.h"
 
 typedef struct MenuItemInfo {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s8 unk_08;
     /* 0x09 */ s8 unk_09;
@@ -29,9 +29,9 @@ typedef struct MenuItemInfo {
 } MenuItemInfo; // size = 0xC
 
 typedef struct MenuRectAnim {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -562,13 +562,13 @@ void StadiumSelect_UpdateSparkles(s16 arg0) {
                 break;
 
             default:
-                switch (var_s0->unk_00) {
+                switch (var_s0->posX) {
                     case 1:
                         var_s0->unk_06 = (s32)(COSS(var_s0->unk_08) * 16.0f) + 0x10;
-                        AnimateRectangle(var_s0->unk_02, var_s0->unk_04, var_s0->unk_06);
+                        AnimateRectangle(var_s0->posY, var_s0->rotation, var_s0->unk_06);
                         var_s0->unk_08 += 0x1000;
                         if ((u16)var_s0->unk_08 == 0x8000) {
-                            var_s0->unk_00 = 2;
+                            var_s0->posX = 2;
                             var_s0->unk_0A = (MathUtil_Random16() & 7) + 0x14;
                         }
                         break;
@@ -576,7 +576,7 @@ void StadiumSelect_UpdateSparkles(s16 arg0) {
                     case 2:
                         var_s0->unk_0A--;
                         if (var_s0->unk_0A == 0) {
-                            var_s0->unk_00 = 1;
+                            var_s0->posX = 1;
                         }
                         break;
                 }
@@ -588,18 +588,18 @@ void StadiumSelect_InitSparkleFlags(void) {
     s32 i;
 
     for (i = 0; i < gMenuConfig.unk_05; i++) {
-        gMenuRectAnimations[i].unk_00 = 1;
+        gMenuRectAnimations[i].posX = 1;
     }
 
     for (i = 0; i < gMenuConfig.unk_06; i++) {
-        gMenuRectAnimations[i + 6].unk_00 = 1;
+        gMenuRectAnimations[i + 6].posX = 1;
     }
 
-    if (gMenuConfig.unk_00 & 0x10) {
+    if (gMenuConfig.posX & 0x10) {
         gMenuAnimFlag0[0] = 1;
     }
 
-    if (gMenuConfig.unk_00 & 0x20) {
+    if (gMenuConfig.posX & 0x20) {
         gMenuAnimFlag1[0] = 1;
     }
 }
@@ -800,9 +800,9 @@ void StadiumSelect_RenderFrame(s32 arg0, s32 arg1, f32 arg2) {
     if (arg2 != 0.0f) {
         MenuItemInfo* ptr = &gMenuItemInfo[gSelectedMenuIndex];
 
-        temp_v1 = (ptr->unk_04 / 2) + ptr->unk_00;
-        temp_t1 = (ptr->unk_06 / 2) + ptr->unk_02;
-        temp_fv0 = ptr->unk_04 / 640.0f;
+        temp_v1 = (ptr->rotation / 2) + ptr->posX;
+        temp_t1 = (ptr->unk_06 / 2) + ptr->posY;
+        temp_fv0 = ptr->rotation / 640.0f;
         Gfx_DrawTiledImageMesh(temp_v1 + ((0x140 - temp_v1) * arg2), temp_t1 + ((0xF0 - temp_t1) * arg2), 0,
                       ((1.0f - temp_fv0) * arg2) + temp_fv0, gTileMapVertices, gCurrentBackgroundTexture);
     }
@@ -810,7 +810,7 @@ void StadiumSelect_RenderFrame(s32 arg0, s32 arg1, f32 arg2) {
     if (arg1 != 0) {
         MenuItemInfo* ptr = &gMenuItemInfo[gSelectedMenuIndex];
 
-        StadiumSelect_DrawSelectionCorners(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
+        StadiumSelect_DrawSelectionCorners(ptr->posX, ptr->posY, ptr->rotation, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
     }
 
     StadiumSelect_UpdateSparkles(arg0);
@@ -860,7 +860,7 @@ FramebufferImage* StadiumSelect_BuildSimpleCupIcon(u8* arg0, s16 arg1) {
         Gfx_DrawTextureRgba16(4, (i * 0x10) + 4, 0x80, 0x10, (i << 0xC) + arg0, 0x80, 0);
     }
 
-    if (gMenuConfig.unk_00 & (1 << arg1)) {
+    if (gMenuConfig.posX & (1 << arg1)) {
         if (arg1 == 4) {
             var_v0 = 5;
         } else {

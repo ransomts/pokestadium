@@ -9,12 +9,12 @@
 #include "src/stage_loader.h"
 
 typedef struct GalleryBlockEntry {
-    /* 0x00 */ PokemonData unk_00;
+    /* 0x00 */ PokemonData posX;
     /* 0x54 */ char unk54[0x38];
 } GalleryBlockEntry; // size = 0x8C
 
 typedef struct GalleryMenuState {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ s32 posX;
     /* 0x04 */ char unk04[0x70];
 } GalleryMenuState; // size >= 0x74
 
@@ -46,7 +46,7 @@ void GalleryDebugger_LoadDeckEntries(void) {
     s32 i;
 
     gGalleryState = 0;
-    gGalleryMenuState.unk_00 = 0;
+    gGalleryMenuState.posX = 0;
     Save_EnsureBankLoaded(2);
 
     for (i = 0; i < 36; i++) {
@@ -90,7 +90,7 @@ void GalleryDebugger_DrawMenu(void) {
 
     for (i = 0; i < 3; i++) {
         s32 tmp = i * 0x16;
-        if (i != gGalleryMenuState.unk_00) {
+        if (i != gGalleryMenuState.posX) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
@@ -111,28 +111,28 @@ void GalleryDebugger_DrawFrame(void) {
 
 s32 GalleryDebugger_HandleMenuInput(void) {
     s32 var_a2 = 0;
-    s32 temp_a1 = gGalleryMenuState.unk_00;
+    s32 temp_a1 = gGalleryMenuState.posX;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        gGalleryMenuState.unk_00--;
-        if (gGalleryMenuState.unk_00 < 0) {
-            gGalleryMenuState.unk_00 = 0;
+        gGalleryMenuState.posX--;
+        if (gGalleryMenuState.posX < 0) {
+            gGalleryMenuState.posX = 0;
         }
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        gGalleryMenuState.unk_00++;
-        if (gGalleryMenuState.unk_00 >= 3) {
-            gGalleryMenuState.unk_00 = 2;
+        gGalleryMenuState.posX++;
+        if (gGalleryMenuState.posX >= 3) {
+            gGalleryMenuState.posX = 2;
         }
     }
 
-    if (temp_a1 != gGalleryMenuState.unk_00) {
+    if (temp_a1 != gGalleryMenuState.posX) {
         gGalleryPfsError = 0;
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        switch (gGalleryMenuState.unk_00) {
+        switch (gGalleryMenuState.posX) {
             case 0:
                 func_83900030();
                 var_a2 = 0;

@@ -488,8 +488,8 @@ void Model_DrawWithSegment(StadiumModel* model, void* arg1,  void* arg2, void* a
     segment = &model->unkSegment;
     D_800B2F50 = arg1;
     *segment = *temp_v0;
-    model->unk_00 = 1;
-    model->unk_02 = 0;
+    model->posX = 1;
+    model->posY = 0;
     model->modelSegment = segment;
     sp40 = temp_s0->xx;
     sp3C = temp_s0->yx;
@@ -570,7 +570,7 @@ void func_80033D44(StadiumModel* model, s16 arg1, f32 arg2, f32 arg3, f32 arg4, 
     s32 pad[2];
 
     segment = Memmap_GetSegmentVaddr(model->modelSegment);
-    idx = model->unk_02++;
+    idx = model->posY++;
     dx = arg6 - arg3;
     dy = arg7 - arg4;
     dz = arg8 - arg5;
@@ -600,7 +600,7 @@ void func_80033D44(StadiumModel* model, s16 arg1, f32 arg2, f32 arg3, f32 arg4, 
         sp138 = arg4 + spC8;
         sp134 = arg5 + spC4;
         xf = &model->transforms[idx];
-        xf->unk_00 = arg1;
+        xf->posX = arg1;
         xf->maxDist = arg2;
         xf->x0 = arg3;
         xf->y0 = arg4;
@@ -665,7 +665,7 @@ void func_80034254(StadiumModel* model) {
         temp_v1 = indexTable[i];
         if (temp_v1 == i) {
             var_fv0 = 10000.0f;
-            for (j = 0; j < model->unk_02; j++) {
+            for (j = 0; j < model->posY; j++) {
                 var_a0 = &var_a2->cmd.weights[j];
                 if (var_a0->dist < var_fv0) {
                     var_fv0 = var_a0->dist;
@@ -946,7 +946,7 @@ void Model_ApplyVertexTransforms(StadiumModel* model) {
 
     segment = Memmap_GetSegmentVaddr(model->modelSegment);
     mvtx = &model->mvtx;
-    count = model->unk_02;
+    count = model->posY;
 
     for (i = 0; i < count; i++) {
         func_80034824(segment, &model->transforms[i], i, mvtx);
@@ -1562,7 +1562,7 @@ void Model_DrawPrepared(StadiumModel* model, MtxF* mtx) {
         func_80035248(segment, mtx, mvtx);
         Model_OffsetVertexHeights(segment, mvtx, model->position.y * -10.0f);
         func_80034348(segment, mvtx);
-        for(var_s0 = 0; var_s0 < model->unk_02; var_s0++) {
+        for(var_s0 = 0; var_s0 < model->posY; var_s0++) {
             func_80034BD4(segment, &model->transforms[var_s0], var_s0, mvtx);
         }
         func_80035FA8(segment, mvtx);

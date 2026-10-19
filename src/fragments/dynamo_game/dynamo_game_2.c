@@ -84,6 +84,6 @@ void DynamoGame_InitCrankIconDisplay(void) {
 
     sp1C = MainPool_AllocState(main_pool_get_available(), 0);
     gHealthBarNode = GeoNode_CreateDisplayList(sp1C, NULL, 1, NULL);
-    GraphNode_AppendChild(&gGraphRoot0, &gHealthBarNode->unk_00);
+    GraphNode_AppendChild(&gGraphRoot0, &gHealthBarNode->posX);
     MainPool_FinalizeAllocation(sp1C);
 }

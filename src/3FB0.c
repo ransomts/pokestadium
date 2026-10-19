@@ -86,9 +86,9 @@ void Jpeg_ParseStreamMarkers(JpegStreamInfo* arg0, u8* arg1) {
     // this seems weird as it will break entirely if number of components is less than 3.
     // Looking at every JPEG used in the Stadium rom, no JPEGs use this ID, they're all 0x22.
     if (arg0->start_of_frame[7] == 0x21) {
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     } else {
-        arg0->unk_00 = 2;
+        arg0->posX = 2;
     }
 
     arg0->width = (arg0->start_of_frame[3] << 8) | arg0->start_of_frame[4];
@@ -121,7 +121,7 @@ void Jpeg_InitializeDspTask(UnkStruct80001380* arg0, JpegDspTaskData* arg1) {
 
 void Jpeg_BuildDspInput(JpegDecoder* decoder, JpegHuffmanTable* hTable, JpegStreamInfo* arg2) {
     decoder->imageData = arg2->start_of_scan;
-    decoder->mode = arg2->unk_00;
+    decoder->mode = arg2->posX;
     decoder->unk_05 = 2;
     decoder->hTablePtrs[0] = &hTable[0];
     decoder->hTablePtrs[1] = &hTable[2];
@@ -131,9 +131,9 @@ void Jpeg_BuildDspInput(JpegDecoder* decoder, JpegHuffmanTable* hTable, JpegStre
 }
 
 void Jpeg_BuildDspOutput(JpegDspTaskData* arg0, u8(arg1)[2][0x80], JpegStreamInfo* arg2) {
-    arg0->unk_00 = 0;
-    arg0->unk_08 = arg2->unk_00;
-    arg0->unk_04 = 1;
+    arg0->posX = 0;
+    arg0->unk_08 = arg2->posX;
+    arg0->rotation = 1;
     arg0->unk_0C = (u32)&arg1[0] & 0x1FFFFFFF;
     arg0->unk_10 = (u32)&arg1[1] & 0x1FFFFFFF;
     arg0->unk_14 = (u32)&arg1[1] & 0x1FFFFFFF;
@@ -181,7 +181,7 @@ s32 Jpeg_DecodeImage(u32 addr, s32 arg1, u8* arg2) {
                 return 0;
             }
 
-            sp90.unk_00 = addr & 0x1FFFFFFF;
+            sp90.posX = addr & 0x1FFFFFFF;
             Sched_SubmitTask(&sp318, 1);
             var_s4 = 1;
             Sched_WaitForTaskMessage(&sp318);
@@ -399,15 +399,15 @@ void* Storage_LoadAssetByLbaRange(StorageRange* arg0, s32 arg1) {
         var_s0 = 0;
     }
 
-    LeoLBAToByte(arg0->unk_00, arg0->unk_02, &sp44);
+    LeoLBAToByte(arg0->posX, arg0->posY, &sp44);
     sp44 = ALIGN16(sp44);
 
     temp_v0 = main_pool_alloc(sp44, var_s0);
 
     if (temp_v0 != NULL) {
-        temp_s0 = arg0->unk_04 + temp_v0;
+        temp_s0 = arg0->rotation + temp_v0;
 
-        Storage_QueueDiskTransfer(0, temp_v0, arg0->unk_00, arg0->unk_02, &gDmaCompletionQueue, 0);
+        Storage_QueueDiskTransfer(0, temp_v0, arg0->posX, arg0->posY, &gDmaCompletionQueue, 0);
         osRecvMesg(&gDmaCompletionQueue, NULL, 1);
 
         if (((u32*)temp_s0->magic)[0] == 'PERS' && (((u32*)temp_s0->magic)[1] == '-SZP')) {
@@ -415,7 +415,7 @@ void* Storage_LoadAssetByLbaRange(StorageRange* arg0, s32 arg1) {
         } else if (((u32*)temp_s0->magic)[0] == 'PRES' && (((u32*)temp_s0->magic)[1] == 'JPEG')) {
             sp40 = Jpeg_LoadDecodedImage(temp_v0, temp_s0, arg1);
         } else {
-            sp40 = Asset_CopyUncompressed(temp_v0, arg0->unk_04, arg0->unk_08, arg1);
+            sp40 = Asset_CopyUncompressed(temp_v0, arg0->rotation, arg0->unk_08, arg1);
         }
     }
 
@@ -423,11 +423,11 @@ void* Storage_LoadAssetByLbaRange(StorageRange* arg0, s32 arg1) {
 }
 
 StorageRange* Storage_SetLbaRange(StorageRange* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_00 = arg1;
-    arg0->unk_02 = arg2 - arg1;
-    arg0->unk_04 = 0;
+    arg0->posX = arg1;
+    arg0->posY = arg2 - arg1;
+    arg0->rotation = 0;
 
-    LeoLBAToByte(arg0->unk_00, arg0->unk_02, &arg0->unk_08);
+    LeoLBAToByte(arg0->posX, arg0->posY, &arg0->unk_08);
 
     return arg0;
 }
@@ -448,9 +448,9 @@ StorageRange* Storage_SetByteRange(StorageRange* arg0, u32 arg1, u32 offset, u32
         sp2C = 0;
     }
 
-    arg0->unk_00 = sp28 + arg1;
-    arg0->unk_02 = (sp24 - sp28) + 1;
-    arg0->unk_04 = offset - sp2C;
+    arg0->posX = sp28 + arg1;
+    arg0->posY = (sp24 - sp28) + 1;
+    arg0->rotation = offset - sp2C;
     arg0->unk_08 = size;
 
     return arg0;
@@ -590,7 +590,7 @@ BinArchive* BinArchive_Open(u8* romStart, u8* romEnd, s32 arg2, s32 arg3) {
     }
 
     if (ret != NULL) {
-        ret->unk_04 = romStart;
+        ret->rotation = romStart;
     }
 
     return ret;
@@ -609,7 +609,7 @@ void* BinArchive_LoadByLbaRange(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             var_a0 = Storage_LoadAssetByLbaRange(&sp20, 0);
             if (var_a0 != NULL) {
                 main_pool_realloc(var_a0, var_a0->total_size);
-                var_a0->unk_00 |= 1;
+                var_a0->posX |= 1;
             }
             break;
 
@@ -618,9 +618,9 @@ void* BinArchive_LoadByLbaRange(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             var_a0 = Storage_LoadAssetByLbaRange(&sp20, 0);
             if (var_a0 != NULL) {
                 main_pool_realloc(var_a0, (var_a0->num_files * sizeof(BinArchiveFile)) + sizeof(BinArchive));
-                var_a0->unk_00 |= 2;
+                var_a0->posX |= 2;
                 if (arg3 == 1) {
-                    var_a0->unk_00 |= 4;
+                    var_a0->posX |= 4;
                 }
             }
             break;
@@ -629,14 +629,14 @@ void* BinArchive_LoadByLbaRange(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
             Storage_SetLbaRange(&sp20, arg0, arg0 + 1);
             var_a0 = Storage_LoadAssetByLbaRange(&sp20, 1);
             if (arg3 == 1) {
-                var_a0->unk_00 |= 4;
+                var_a0->posX |= 4;
             }
             break;
     }
 
     if (var_a0 != NULL) {
-        var_a0->unk_00 |= 0x80;
-        var_a0->unk_04 = arg0;
+        var_a0->posX |= 0x80;
+        var_a0->rotation = arg0;
     }
 
     return var_a0;
@@ -647,7 +647,7 @@ void BinArchive_Free(void* arg0) {
 }
 
 Fragment* BinArchive_LoadFileFromRom(BinArchive* arg0, BinArchiveFile* arg1) {
-    u8* temp_a0 = arg0->unk_04 + arg1->offset;
+    u8* temp_a0 = arg0->rotation + arg1->offset;
 
     return Asset_LoadCompressed(temp_a0, arg1->size + temp_a0, 0, 0);
 }
@@ -655,7 +655,7 @@ Fragment* BinArchive_LoadFileFromRom(BinArchive* arg0, BinArchiveFile* arg1) {
 void* BinArchive_LoadFileBuffered(BinArchive* arg0, BinArchiveFile* arg1) {
     StorageRange sp1C;
 
-    Storage_SetByteRange(&sp1C, arg0->unk_04, arg1->offset, arg1->size);
+    Storage_SetByteRange(&sp1C, arg0->rotation, arg1->offset, arg1->size);
     return Storage_LoadAssetByLbaRange(&sp1C, 0);
 }
 
@@ -665,12 +665,12 @@ void* BinArchive_GetFile(BinArchive* archive, s32 file_number) {
     BinArchiveFile* sp18 = (u8*)archive + sizeof(BinArchive) + (file_number * sizeof(BinArchiveFile));
 
     if (file_number < archive->num_files) {
-        if (archive->unk_00 & 1) {
+        if (archive->posX & 1) {
             var_a2 = (u8*)archive + sp18->offset;
-        } else if (!(archive->unk_00 & 4) && (sp18->unk_08 != NULL)) {
+        } else if (!(archive->posX & 4) && (sp18->unk_08 != NULL)) {
             var_a2 = sp18->unk_08;
         } else {
-            if (archive->unk_00 & 0x80) {
+            if (archive->posX & 0x80) {
                 var_a2 = BinArchive_LoadFileBuffered(archive, sp18);
             } else {
                 var_a2 = BinArchive_LoadFileFromRom(archive, sp18);
@@ -678,7 +678,7 @@ void* BinArchive_GetFile(BinArchive* archive, s32 file_number) {
 
             if (var_a2 != NULL) {
                 if ((((u32*)var_a2->magic)[0] == 'FRAG') && (((u32*)var_a2->magic)[1] == 'MENT')) {
-                    Fragment_Register(archive->unk_02, var_a2);
+                    Fragment_Register(archive->posY, var_a2);
                 }
 
                 sp18->unk_08 = var_a2;

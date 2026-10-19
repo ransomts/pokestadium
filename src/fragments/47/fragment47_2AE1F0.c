@@ -14,11 +14,11 @@
 #include "src/memory.h"
 
 typedef struct PlayerSlotData {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u16 unk_04;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ char unk_06[1];
     /* 0x07 */ char unk07[0xD];
 } PlayerSlotData; // size = 0x14
@@ -307,7 +307,7 @@ void Gallery_RentalViewerAnimateSlotBob(s32 arg0, f32 arg1) {
 
     gPlayerIconNodes[0][arg0].unk_01E.z = SINS(gPlayerIconAnimData[arg0].unk_08) * (1536.0f * var_fv0);
     gPlayerIconNodes[1][arg0].unk_024.x = gPlayerIconNodes[0][arg0].unk_024.x =
-        (gPlayerIconAnimData[arg0].unk_02 - 320.0f) - (SINS(gPlayerIconAnimData[arg0].unk_08) * (6.0f * var_fv0));
+        (gPlayerIconAnimData[arg0].posY - 320.0f) - (SINS(gPlayerIconAnimData[arg0].unk_08) * (6.0f * var_fv0));
 
     gPlayerIconAnimData[arg0].unk_08 += var_v0;
 }
@@ -319,11 +319,11 @@ void Gallery_RentalViewerRefreshPortStatus(void) {
 
     for (i = 0; i < 4; i++) {
         GbSave_CopyPlayerIdentity(i, &sp48);
-        Text_UntranscodeName(gPlayerSlotData[i].unk_06, &sp48.unk_02);
-        gPlayerSlotData[i].unk_04 = sp48.unk_00;
+        Text_UntranscodeName(gPlayerSlotData[i].unk_06, &sp48.posY);
+        gPlayerSlotData[i].rotation = sp48.posX;
         gPlayerSlotData[i].unk_01 = GbSave_GetPortGame(i);
-        gPlayerSlotData[i].unk_00 = GbSave_GetSaveState(i);
-        gPlayerSlotData[i].unk_02 = GbSave_SavedAtPokemonCenter(i);
+        gPlayerSlotData[i].posX = GbSave_GetSaveState(i);
+        gPlayerSlotData[i].posY = GbSave_SavedAtPokemonCenter(i);
         gPlayerSlotData[i].unk_03 = (temp_s3 & (1 << i)) != 0;
     }
 }
@@ -351,15 +351,15 @@ void Gallery_RentalViewerUpdatePortIcons(void) {
                     break;
             }
 
-            if (gPlayerSlotData[i].unk_00 != 0) {
+            if (gPlayerSlotData[i].posX != 0) {
                 gPlayerIconAnimData[i].unk_01 = 0x14;
             }
         } else {
             gPlayerIconTextures[i] = &D_2026420;
-            if (gPlayerSlotData[i].unk_00 == 2) {
+            if (gPlayerSlotData[i].posX == 2) {
                 gPlayerIconAnimData[i].unk_01 = 0x15;
             } else {
-                gPlayerIconAnimData[i].unk_00 = 0;
+                gPlayerIconAnimData[i].posX = 0;
                 gPlayerIconAnimData[i].unk_01 = 1;
             }
         }
@@ -399,12 +399,12 @@ void Gallery_RentalViewerInitSlotModels(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        if (gPlayerIconAnimData[i].unk_00 != 0) {
+        if (gPlayerIconAnimData[i].posX != 0) {
             Model_InitDisplayObject(gPlayerIconNodes[0] + i, 0, 0, gSnapSelectNodes[i]);
             Model_InitDisplayObject(gPlayerIconNodes[1] + i, 0, 0, gSnapSelectRentalNode);
-            Vec3f_SetComponentsDuplicate(&gPlayerIconNodes[0][i].unk_024, gPlayerIconAnimData[i].unk_02 - 0x140, 0xF0 - gPlayerIconAnimData[i].unk_04,
+            Vec3f_SetComponentsDuplicate(&gPlayerIconNodes[0][i].unk_024, gPlayerIconAnimData[i].posY - 0x140, 0xF0 - gPlayerIconAnimData[i].rotation,
                           -579.0f);
-            Vec3f_SetComponentsDuplicate(&gPlayerIconNodes[1][i].unk_024, gPlayerIconAnimData[i].unk_02 - 0x140, 0xE4 - gPlayerIconAnimData[i].unk_04,
+            Vec3f_SetComponentsDuplicate(&gPlayerIconNodes[1][i].unk_024, gPlayerIconAnimData[i].posY - 0x140, 0xE4 - gPlayerIconAnimData[i].rotation,
                           -579.0f);
             gPlayerIconNodes[1][i].unk_01D = 0xB4;
         }
@@ -416,7 +416,7 @@ s32 Gallery_RentalViewerBeginZoomIntro(s32 arg0) {
         Gallery_RentalViewerInitSlotModels();
         if (arg0 < 0) {
             for (gSelectedPlayerIndex = 0; gSelectedPlayerIndex < 5; gSelectedPlayerIndex++) {
-                if (gPlayerIconAnimData[gSelectedPlayerIndex].unk_00 != 0) {
+                if (gPlayerIconAnimData[gSelectedPlayerIndex].posX != 0) {
                     break;
                 }
             }
@@ -462,7 +462,7 @@ void Gallery_RentalViewerMoveCursorUp(void) {
         }
 
         for (i = 0; i < 4; i++) {
-            if (gPlayerIconAnimData[var_v1].unk_00 != 0) {
+            if (gPlayerIconAnimData[var_v1].posX != 0) {
                 gSelectedPlayerIndex = var_v1;
                 Audio_PlaySoundEffectById(1);
                 break;
@@ -480,7 +480,7 @@ void Gallery_RentalViewerMoveCursorDown(void) {
         var_v0 = (gSelectedPlayerIndex / 2) + 4;
 
         for (i = 0; i < 2; i++) {
-            if (gPlayerIconAnimData[var_v0].unk_00 != 0) {
+            if (gPlayerIconAnimData[var_v0].posX != 0) {
                 gSelectedPlayerIndex = var_v0;
                 Audio_PlaySoundEffectById(1);
                 break;
@@ -495,7 +495,7 @@ void Gallery_RentalViewerMoveCursorLeft(void) {
 
     if ((gSelectedPlayerIndex > 0) && (gSelectedPlayerIndex < 4)) {
         for (i = gSelectedPlayerIndex - 1; i >= 0; i--) {
-            if (gPlayerIconAnimData[i].unk_00 != 0) {
+            if (gPlayerIconAnimData[i].posX != 0) {
                 gSelectedPlayerIndex = i;
                 Audio_PlaySoundEffectById(1);
                 break;
@@ -512,7 +512,7 @@ void Gallery_RentalViewerMoveCursorRight(void) {
 
     if (gSelectedPlayerIndex < 3) {
         for (i = gSelectedPlayerIndex + 1; i < 4; i++) {
-            if (gPlayerIconAnimData[i].unk_00 != 0) {
+            if (gPlayerIconAnimData[i].posX != 0) {
                 gSelectedPlayerIndex = i;
                 Audio_PlaySoundEffectById(1);
                 break;
@@ -684,8 +684,8 @@ void Gallery_RentalViewerUpdate(void) {
 void Gallery_RentalViewerDrawCursorMarker(void) {
 
     if (D_838067D8 == 3) {
-        s32 tmp = gPlayerIconAnimData[gSelectedPlayerIndex].unk_02 - (gPlayerIconAnimData[gSelectedPlayerIndex].unk_06 / 2) - 0x1E;
-        s32 tmp2 = gPlayerIconAnimData[gSelectedPlayerIndex].unk_04 - 0x20;
+        s32 tmp = gPlayerIconAnimData[gSelectedPlayerIndex].posY - (gPlayerIconAnimData[gSelectedPlayerIndex].unk_06 / 2) - 0x1E;
+        s32 tmp2 = gPlayerIconAnimData[gSelectedPlayerIndex].rotation - 0x20;
 
         Ui_DrawAnimatedTextureMarker(tmp, tmp2);
     }
@@ -694,7 +694,7 @@ void Gallery_RentalViewerDrawCursorMarker(void) {
 void Gallery_RentalViewerDrawSlotFrame(s32 arg0, s16 arg1, s32 arg2) {
     Color_RGBA8 sp2C;
 
-    if (gPlayerIconAnimData[arg0].unk_00 != 0) {
+    if (gPlayerIconAnimData[arg0].posX != 0) {
         if (gPlayerIconAnimData[arg0].unk_01 == 0) {
             Color_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0xFF);
         } else {
@@ -709,7 +709,7 @@ void Gallery_RentalViewerDrawSlotFrame(s32 arg0, s16 arg1, s32 arg2) {
 void Gallery_RentalViewerDrawSlotLabel(s32 arg0) {
     UNUSED s32 pad;
 
-    if (gPlayerIconAnimData[arg0].unk_00 != 0) {
+    if (gPlayerIconAnimData[arg0].posX != 0) {
         if (gPlayerIconAnimData[arg0].unk_01 == 0) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetActive(8, 0);
@@ -718,7 +718,7 @@ void Gallery_RentalViewerDrawSlotLabel(s32 arg0) {
             Text_SetEnvColor(0xFF, 0xBE, 0xFF, 0xFF);
             Font_SetActive(4, 0);
             Font_Printf(((arg0 << 7) - (Font_MeasureTextExtent(4, 0, "ID  00000") / 2)) + 0x80, 0x73, "ID  %05d",
-                          gPlayerSlotData[arg0].unk_04);
+                          gPlayerSlotData[arg0].rotation);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetActive(8, 0);

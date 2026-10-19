@@ -99,9 +99,9 @@ void Widget_CountdownInit(void) {
     ModelRenderer_AttachSecondaryDisplayObject(&gFragment2_1GraphNode);
     sp1C = MainPool_AllocState(main_pool_get_available(), 0);
     gFragment2_1DisplayNode = GeoNode_CreateDisplayList(sp1C, NULL, 4, gFragment2_1EmptyDL);
-    gFragment2_1GraphNode.unk_000.unk_02 |= 8;
+    gFragment2_1GraphNode.unk_000.posY |= 8;
 
-    GraphNode_AppendChild(&gFragment2_1GraphNode.unk_000, &gFragment2_1DisplayNode->unk_00);
+    GraphNode_AppendChild(&gFragment2_1GraphNode.unk_000, &gFragment2_1DisplayNode->posX);
     MainPool_FinalizeAllocation(sp1C);
 }
 

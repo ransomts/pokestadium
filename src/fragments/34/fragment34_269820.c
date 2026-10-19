@@ -591,15 +591,15 @@ void Particle_UpdateWorldTransform(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SetVelocityScaledXYZ(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
-    arg0->unk_38.x = arg1 * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y = arg2 * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z = arg3 * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x = arg1 * gParticleRenderContext.posX.y;
+    arg0->unk_38.y = arg2 * gParticleRenderContext.posX.y;
+    arg0->unk_38.z = arg3 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityScaledVec(ParticleEffectInstance* arg0, Vec3f arg1) {
-    arg0->unk_38.x = arg1.x * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y = arg1.y * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z = arg1.z * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x = arg1.x * gParticleRenderContext.posX.y;
+    arg0->unk_38.y = arg1.y * gParticleRenderContext.posX.y;
+    arg0->unk_38.z = arg1.z * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityDirectXYZ(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
@@ -609,15 +609,15 @@ void Particle_SetVelocityDirectXYZ(ParticleEffectInstance* arg0, f32 arg1, f32 a
 }
 
 void Particle_SetVelocityXScaled(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.x = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityYScaled(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.y = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.y = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityZScaled(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.z = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.z = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetPositionFromRotationTemplate1(ParticleEffectInstance* arg0, f32 arg1) {
@@ -635,9 +635,9 @@ void Particle_SetPositionFromRotationTemplate2(ParticleEffectInstance* arg0, f32
 }
 
 void Particle_AddVelocityScaledVec(ParticleEffectInstance* arg0, Vec3f arg1) {
-    arg0->unk_38.x += arg1.x * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y += arg1.y * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z += arg1.z * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += arg1.x * gParticleRenderContext.posX.y;
+    arg0->unk_38.y += arg1.y * gParticleRenderContext.posX.y;
+    arg0->unk_38.z += arg1.z * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityDirectVec(ParticleEffectInstance* arg0, Vec3f arg1) {
@@ -647,50 +647,50 @@ void Particle_AddVelocityDirectVec(ParticleEffectInstance* arg0, Vec3f arg1) {
 }
 
 void Particle_AddVelocityScaledXYZ(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
-    arg0->unk_38.x += arg1 * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y += arg2 * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z += arg3 * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += arg1 * gParticleRenderContext.posX.y;
+    arg0->unk_38.y += arg2 * gParticleRenderContext.posX.y;
+    arg0->unk_38.z += arg3 * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityXScaled(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.x += arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityYScaled(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.y += arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.y += arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityZScaled(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.z += arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.z += arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityForward(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.x += arg1 * SINS(arg0->unk_94.y) * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y) * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += arg1 * SINS(arg0->unk_94.y) * gParticleRenderContext.posX.y;
+    arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y) * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityBackward(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.x += arg1 * SINS(arg0->unk_94.y + 0x8000) * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y + 0x8000) * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += arg1 * SINS(arg0->unk_94.y + 0x8000) * gParticleRenderContext.posX.y;
+    arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y + 0x8000) * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityRight(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.x += arg1 * SINS(arg0->unk_94.y + 0x4000) * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y + 0x4000) * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += arg1 * SINS(arg0->unk_94.y + 0x4000) * gParticleRenderContext.posX.y;
+    arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y + 0x4000) * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityLeft(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_38.x += arg1 * SINS(arg0->unk_94.y - 0x4000) * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y - 0x4000) * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += arg1 * SINS(arg0->unk_94.y - 0x4000) * gParticleRenderContext.posX.y;
+    arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y - 0x4000) * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddVelocityFromDirVector(ParticleEffectInstance* arg0, f32 arg1) {
     Vec3f sp1C;
 
     Particle_ComputeVectorFromRotationY(arg0, arg1, &sp1C);
-    arg0->unk_38.x += sp1C.x * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y += sp1C.y * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z += sp1C.z * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += sp1C.x * gParticleRenderContext.posX.y;
+    arg0->unk_38.y += sp1C.y * gParticleRenderContext.posX.y;
+    arg0->unk_38.z += sp1C.z * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddPositionFromRotationTemplate1(ParticleEffectInstance* arg0, f32 arg1) {
@@ -715,36 +715,36 @@ void Particle_AddPositionRotatedVectorByYaw(ParticleEffectInstance* arg0, Vec3f 
 }
 
 void Particle_SetRandomVelocityX(ParticleEffectInstance* arg0, s32 arg1) {
-    arg0->unk_38.x = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetRandomVelocityY(ParticleEffectInstance* arg0, s32 arg1) {
-    arg0->unk_38.y = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.y = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetRandomVelocityZ(ParticleEffectInstance* arg0, s32 arg1) {
-    arg0->unk_38.z = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.z = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetRandomVelocityXOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_38.x = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.unk_00.y) + arg2;
+    arg0->unk_38.x = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y) + arg2;
 }
 
 void Particle_SetRandomVelocityYOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_38.y = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.unk_00.y) + arg2;
+    arg0->unk_38.y = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y) + arg2;
 }
 
 void Particle_SetRandomVelocityZOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_38.z = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.unk_00.y) + arg2;
+    arg0->unk_38.z = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y) + arg2;
 }
 
 void Particle_SetRandomVelocityXSymmetric(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
     f32 temp_fv0 = ParticleMath_RandomSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
-        arg0->unk_38.x = (temp_fv0 + arg2) * gParticleRenderContext.unk_00.y;
+        arg0->unk_38.x = (temp_fv0 + arg2) * gParticleRenderContext.posX.y;
     } else {
-        arg0->unk_38.x = (temp_fv0 - arg2) * gParticleRenderContext.unk_00.y;
+        arg0->unk_38.x = (temp_fv0 - arg2) * gParticleRenderContext.posX.y;
     }
 }
 
@@ -752,9 +752,9 @@ void Particle_SetRandomVelocityYSymmetric(ParticleEffectInstance* arg0, s32 arg1
     f32 temp_fv0 = ParticleMath_RandomSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
-        arg0->unk_38.y = (temp_fv0 + arg2) * gParticleRenderContext.unk_00.y;
+        arg0->unk_38.y = (temp_fv0 + arg2) * gParticleRenderContext.posX.y;
     } else {
-        arg0->unk_38.y = (temp_fv0 - arg2) * gParticleRenderContext.unk_00.y;
+        arg0->unk_38.y = (temp_fv0 - arg2) * gParticleRenderContext.posX.y;
     }
 }
 
@@ -762,9 +762,9 @@ void Particle_SetRandomVelocityZSymmetric(ParticleEffectInstance* arg0, s32 arg1
     f32 temp_fv0 = ParticleMath_RandomSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
-        arg0->unk_38.z = (temp_fv0 + arg2) * gParticleRenderContext.unk_00.y;
+        arg0->unk_38.z = (temp_fv0 + arg2) * gParticleRenderContext.posX.y;
     } else {
-        arg0->unk_38.z = (temp_fv0 - arg2) * gParticleRenderContext.unk_00.y;
+        arg0->unk_38.z = (temp_fv0 - arg2) * gParticleRenderContext.posX.y;
     }
 }
 
@@ -775,9 +775,9 @@ void Particle_SetRandomVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 a
     sp18.y = ParticleMath_RandomSigned(arg2);
     sp18.z = ParticleMath_RandomSigned(arg3);
 
-    arg0->unk_38.x = sp18.x * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y = sp18.y * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z = sp18.z * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x = sp18.x * gParticleRenderContext.posX.y;
+    arg0->unk_38.y = sp18.y * gParticleRenderContext.posX.y;
+    arg0->unk_38.z = sp18.z * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetRandomModVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -787,9 +787,9 @@ void Particle_SetRandomModVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s3
     sp1C.y = ParticleMath_RandomRange(arg2);
     sp1C.z = ParticleMath_RandomRange(arg3);
 
-    arg0->unk_38.x = sp1C.x * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y = sp1C.y * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z = sp1C.z * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x = sp1C.x * gParticleRenderContext.posX.y;
+    arg0->unk_38.y = sp1C.y * gParticleRenderContext.posX.y;
+    arg0->unk_38.z = sp1C.z * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetRandomRotatedVelocityXY(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
@@ -802,9 +802,9 @@ void Particle_SetRandomRotatedVelocityXY(ParticleEffectInstance* arg0, s32 arg1,
 
     ParticleMath_RotateVec3fY(&sp20, sp2C, arg0->unk_94);
 
-    arg0->unk_38.x = sp20.x * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y = sp20.y * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z = sp20.z * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x = sp20.x * gParticleRenderContext.posX.y;
+    arg0->unk_38.y = sp20.y * gParticleRenderContext.posX.y;
+    arg0->unk_38.z = sp20.z * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddRandomVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 arg2, s32 arg3) {
@@ -814,9 +814,9 @@ void Particle_AddRandomVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 a
     sp24.y = ParticleMath_RandomSigned(arg2);
     sp24.z = ParticleMath_RandomSigned(arg3);
 
-    arg0->unk_38.x += sp24.x * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.y += sp24.y * gParticleRenderContext.unk_00.y;
-    arg0->unk_38.z += sp24.z * gParticleRenderContext.unk_00.y;
+    arg0->unk_38.x += sp24.x * gParticleRenderContext.posX.y;
+    arg0->unk_38.y += sp24.y * gParticleRenderContext.posX.y;
+    arg0->unk_38.z += sp24.z * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetOrigin(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
@@ -826,73 +826,73 @@ void Particle_SetOrigin(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 ar
 }
 
 void Particle_SetVelocity(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
-    arg0->unk_50.x = arg1 * gParticleRenderContext.unk_00.y;
-    arg0->unk_50.y = arg2 * gParticleRenderContext.unk_00.y;
-    arg0->unk_50.z = arg3 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.x = arg1 * gParticleRenderContext.posX.y;
+    arg0->unk_50.y = arg2 * gParticleRenderContext.posX.y;
+    arg0->unk_50.z = arg3 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityX(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.x = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.x = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityY(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.y = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.y = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityZ(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.z = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.z = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityRandomDirection(ParticleEffectInstance* arg0, f32 arg1) {
-    ParticleMath_RandomDirection(&arg0->unk_50, arg1 * gParticleRenderContext.unk_00.y);
+    ParticleMath_RandomDirection(&arg0->unk_50, arg1 * gParticleRenderContext.posX.y);
 }
 
 void Particle_AddVelocity(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
-    arg0->unk_50.x += arg1 * gParticleRenderContext.unk_00.y;
-    arg0->unk_50.y += arg2 * gParticleRenderContext.unk_00.y;
-    arg0->unk_50.z += arg3 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.x += arg1 * gParticleRenderContext.posX.y;
+    arg0->unk_50.y += arg2 * gParticleRenderContext.posX.y;
+    arg0->unk_50.z += arg3 * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddScaledVelocityX(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.x += arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.x += arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddScaledVelocityY(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.y += arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.y += arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_AddScaledVelocityZ(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.z += arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.z += arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SubtractScaledVelocityXYZ(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
-    arg0->unk_50.x -= arg1 * gParticleRenderContext.unk_00.y;
-    arg0->unk_50.y -= arg2 * gParticleRenderContext.unk_00.y;
-    arg0->unk_50.z -= arg3 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.x -= arg1 * gParticleRenderContext.posX.y;
+    arg0->unk_50.y -= arg2 * gParticleRenderContext.posX.y;
+    arg0->unk_50.z -= arg3 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SubtractScaledVelocityX(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.x -= arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.x -= arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SubtractScaledVelocityY(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.y -= arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.y -= arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SubtractScaledVelocityZ(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_50.z -= arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_50.z -= arg1 * gParticleRenderContext.posX.y;
 }
 
 s32 Particle_ApproachVelocityX(ParticleEffectInstance* arg0, f32 arg1) {
-    return ParticleMath_ApproachFloat(&arg0->unk_50.x, arg1 * gParticleRenderContext.unk_00.y, arg0->unk_5C.x);
+    return ParticleMath_ApproachFloat(&arg0->unk_50.x, arg1 * gParticleRenderContext.posX.y, arg0->unk_5C.x);
 }
 
 s32 Particle_ApproachVelocityY(ParticleEffectInstance* arg0, f32 arg1) {
-    return ParticleMath_ApproachFloat(&arg0->unk_50.y, arg1 * gParticleRenderContext.unk_00.y, arg0->unk_5C.y);
+    return ParticleMath_ApproachFloat(&arg0->unk_50.y, arg1 * gParticleRenderContext.posX.y, arg0->unk_5C.y);
 }
 
 s32 Particle_ApproachVelocityZ(ParticleEffectInstance* arg0, f32 arg1) {
-    return ParticleMath_ApproachFloat(&arg0->unk_50.z, arg1 * gParticleRenderContext.unk_00.y, arg0->unk_5C.z);
+    return ParticleMath_ApproachFloat(&arg0->unk_50.z, arg1 * gParticleRenderContext.posX.y, arg0->unk_5C.z);
 }
 
 void Particle_CopyVelocityFromTarget(ParticleEffectInstance* arg0) {
@@ -1048,25 +1048,25 @@ s32 Particle_FallAccelerateAndCheckGround(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SetVelocityTarget(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
-    arg0->unk_5C.x = arg1 * gParticleRenderContext.unk_00.y;
-    arg0->unk_5C.y = arg2 * gParticleRenderContext.unk_00.y;
-    arg0->unk_5C.z = arg3 * gParticleRenderContext.unk_00.y;
+    arg0->unk_5C.x = arg1 * gParticleRenderContext.posX.y;
+    arg0->unk_5C.y = arg2 * gParticleRenderContext.posX.y;
+    arg0->unk_5C.z = arg3 * gParticleRenderContext.posX.y;
 }
 
 void Particle_Field5C_SetXScaled_0A07C(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_5C.x = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_5C.x = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_Field5C_SetYScaled_0A094(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_5C.y = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_5C.y = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_Field5C_SetZScaled_0A0AC(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_5C.z = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_5C.z = arg1 * gParticleRenderContext.posX.y;
 }
 
 s32 Particle_Field5C_ApproachY_0A0C4(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
-    return ParticleMath_ApproachFloat(&arg0->unk_5C.y, arg1 * gParticleRenderContext.unk_00.y, arg2 * gParticleRenderContext.unk_00.y);
+    return ParticleMath_ApproachFloat(&arg0->unk_5C.y, arg1 * gParticleRenderContext.posX.y, arg2 * gParticleRenderContext.posX.y);
 }
 
 f32 ParticleMath_ScaleApproachStep(f32 arg0) {
@@ -1386,56 +1386,56 @@ void Particle_ComputeVectorFromRotationYZVariant(ParticleEffectInstance* arg0, f
 }
 
 void Particle_SetSpeed(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_74 = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_74 = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetAcceleration(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_78 = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_78 = arg1 * gParticleRenderContext.posX.y;
 }
 
 s32 Particle_ApproachSpeedScaled(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
-    return ParticleMath_ApproachFloat(&arg0->unk_74, arg1 * gParticleRenderContext.unk_00.y, arg2 * gParticleRenderContext.unk_00.y);
+    return ParticleMath_ApproachFloat(&arg0->unk_74, arg1 * gParticleRenderContext.posX.y, arg2 * gParticleRenderContext.posX.y);
 }
 
 s32 Particle_ApproachSpeed(ParticleEffectInstance* arg0, f32 arg1) {
-    return ParticleMath_ApproachFloat(&arg0->unk_74, arg1 * gParticleRenderContext.unk_00.y, arg0->unk_78);
+    return ParticleMath_ApproachFloat(&arg0->unk_74, arg1 * gParticleRenderContext.posX.y, arg0->unk_78);
 }
 
 s32 Particle_ApproachAcceleration(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
-    return ParticleMath_ApproachFloat(&arg0->unk_78, arg1 * gParticleRenderContext.unk_00.y, arg2 * gParticleRenderContext.unk_00.y);
+    return ParticleMath_ApproachFloat(&arg0->unk_78, arg1 * gParticleRenderContext.posX.y, arg2 * gParticleRenderContext.posX.y);
 }
 
 void Particle_Field7C_SetVecScaled_0AE84(ParticleEffectInstance* arg0, Vec3f arg1) {
-    arg0->unk_7C.x = arg1.x * gParticleRenderContext.unk_00.y;
-    arg0->unk_7C.y = arg1.y * gParticleRenderContext.unk_00.y;
-    arg0->unk_7C.z = arg1.z * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.x = arg1.x * gParticleRenderContext.posX.y;
+    arg0->unk_7C.y = arg1.y * gParticleRenderContext.posX.y;
+    arg0->unk_7C.z = arg1.z * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetVelocityImpulse(ParticleEffectInstance* arg0, f32 arg1, f32 arg2, f32 arg3) {
-    arg0->unk_7C.x = arg1 * gParticleRenderContext.unk_00.y;
-    arg0->unk_7C.y = arg2 * gParticleRenderContext.unk_00.y;
-    arg0->unk_7C.z = arg3 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.x = arg1 * gParticleRenderContext.posX.y;
+    arg0->unk_7C.y = arg2 * gParticleRenderContext.posX.y;
+    arg0->unk_7C.z = arg3 * gParticleRenderContext.posX.y;
 }
 
 void Particle_Field7C_SetXScaled_0AF0C(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_7C.x = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.x = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_Field7C_SetYScaled_0AF24(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_7C.y = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.y = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_Field7C_SetZScaled_0AF3C(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_7C.z = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.z = arg1 * gParticleRenderContext.posX.y;
 }
 
 s32 Particle_Field7C_IncrementXUntilAtLeast_0AF54(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
     f32 temp_fv0;
     s32 var_v1 = 0;
 
-    arg0->unk_7C.x += arg2 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.x += arg2 * gParticleRenderContext.posX.y;
 
-    temp_fv0 = arg1 * gParticleRenderContext.unk_00.y;
+    temp_fv0 = arg1 * gParticleRenderContext.posX.y;
     if (temp_fv0 <= arg0->unk_7C.x) {
         arg0->unk_7C.x = temp_fv0;
         var_v1 = 1;
@@ -1447,9 +1447,9 @@ s32 Particle_Field7C_IncrementYUntilAtLeast_0AFA8(ParticleEffectInstance* arg0, 
     f32 temp_fv0;
     s32 var_v1 = 0;
 
-    arg0->unk_7C.y += arg2 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.y += arg2 * gParticleRenderContext.posX.y;
 
-    temp_fv0 = arg1 * gParticleRenderContext.unk_00.y;
+    temp_fv0 = arg1 * gParticleRenderContext.posX.y;
     if (temp_fv0 <= arg0->unk_7C.y) {
         arg0->unk_7C.y = temp_fv0;
         var_v1 = 1;
@@ -1461,9 +1461,9 @@ s32 Particle_Field7C_IncrementZUntilAtLeast_0AFFC(ParticleEffectInstance* arg0, 
     f32 temp_fv0;
     s32 var_v1 = 0;
 
-    arg0->unk_7C.z += arg2 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.z += arg2 * gParticleRenderContext.posX.y;
 
-    temp_fv0 = arg1 * gParticleRenderContext.unk_00.y;
+    temp_fv0 = arg1 * gParticleRenderContext.posX.y;
     if (temp_fv0 <= arg0->unk_7C.z) {
         arg0->unk_7C.z = temp_fv0;
         var_v1 = 1;
@@ -1475,9 +1475,9 @@ s32 Particle_Field7C_DecrementXUntilAtMost_0B050(ParticleEffectInstance* arg0, f
     f32 temp_fv0;
     s32 var_v1 = 0;
 
-    arg0->unk_7C.x -= arg2 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.x -= arg2 * gParticleRenderContext.posX.y;
 
-    temp_fv0 = arg1 * gParticleRenderContext.unk_00.y;
+    temp_fv0 = arg1 * gParticleRenderContext.posX.y;
     if (arg0->unk_7C.x <= temp_fv0) {
         arg0->unk_7C.x = temp_fv0;
         var_v1 = 1;
@@ -1489,9 +1489,9 @@ s32 Particle_Field7C_DecrementYUntilAtMost_0B0A4(ParticleEffectInstance* arg0, f
     s32 var_v1 = 0;
     f32 temp_fv0;
 
-    arg0->unk_7C.y -= arg2 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.y -= arg2 * gParticleRenderContext.posX.y;
 
-    temp_fv0 = arg1 * gParticleRenderContext.unk_00.y;
+    temp_fv0 = arg1 * gParticleRenderContext.posX.y;
     if (arg0->unk_7C.y <= temp_fv0) {
         arg0->unk_7C.y = temp_fv0;
         var_v1 = 1;
@@ -1503,9 +1503,9 @@ s32 Particle_Field7C_DecrementZUntilAtMost_0B0F8(ParticleEffectInstance* arg0, f
     f32 temp_fv0;
     s32 var_v1 = 0;
 
-    arg0->unk_7C.z -= arg2 * gParticleRenderContext.unk_00.y;
+    arg0->unk_7C.z -= arg2 * gParticleRenderContext.posX.y;
 
-    temp_fv0 = arg1 * gParticleRenderContext.unk_00.y;
+    temp_fv0 = arg1 * gParticleRenderContext.posX.y;
     if (arg0->unk_7C.z <= temp_fv0) {
         arg0->unk_7C.z = temp_fv0;
         var_v1 = 1;
@@ -1520,7 +1520,7 @@ void Particle_Field7C_ScaleVec_0B14C(ParticleEffectInstance* arg0, f32 arg1) {
 }
 
 s32 Particle_Field7C_ApproachY_0B180(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
-    return ParticleMath_ApproachFloat(&arg0->unk_7C.y, arg1 * gParticleRenderContext.unk_00.y, arg2 * gParticleRenderContext.unk_00.y);
+    return ParticleMath_ApproachFloat(&arg0->unk_7C.y, arg1 * gParticleRenderContext.posX.y, arg2 * gParticleRenderContext.posX.y);
 }
 
 void Particle_Field7C_SetYFromField74AngleX_0B1C4(ParticleEffectInstance* arg0) {
@@ -1608,8 +1608,8 @@ void Particle_UpdateRotatingVelocityXZ(ParticleEffectInstance* arg0, f32 arg1, s
 
     arg0->rotationDelta.y += arg2;
 
-    arg0->unk_50.x = arg1 * gParticleRenderContext.unk_00.y * SINS(arg0->rotationDelta.y);
-    arg0->unk_50.z = arg1 * gParticleRenderContext.unk_00.y * COSS(arg0->rotationDelta.y);
+    arg0->unk_50.x = arg1 * gParticleRenderContext.posX.y * SINS(arg0->rotationDelta.y);
+    arg0->unk_50.z = arg1 * gParticleRenderContext.posX.y * COSS(arg0->rotationDelta.y);
 
     arg0->unk_7C.x = arg0->unk_50.x - tmp1;
     arg0->unk_7C.z = arg0->unk_50.z - tmp2;
@@ -1621,8 +1621,8 @@ s32 Particle_Field50_AdvanceField7CWithTimer_0B854(ParticleEffectInstance* arg0,
     if (Particle_LacksFlags(arg0, 2) != 0) {
         Particle_SetFlags(arg0, 2);
         arg0->unk_50.x = arg0->unk_50.y = arg0->unk_50.z = 0.0f;
-        arg0->unk_74 = arg3 * gParticleRenderContext.unk_00.y;
-        arg0->unk_7C.y = arg1 * gParticleRenderContext.unk_00.y;
+        arg0->unk_74 = arg3 * gParticleRenderContext.posX.y;
+        arg0->unk_7C.y = arg1 * gParticleRenderContext.posX.y;
         arg0->unk_94.y = arg4;
         Particle_Field7C_SetXZFromField74AngleY_0B278(arg0);
         arg0->durationTimer = arg5;
@@ -1632,7 +1632,7 @@ s32 Particle_Field50_AdvanceField7CWithTimer_0B854(ParticleEffectInstance* arg0,
     if (arg0->durationTimer < 0) {
         sp24 = 1;
     } else {
-        arg0->unk_7C.y -= arg2 * gParticleRenderContext.unk_00.y;
+        arg0->unk_7C.y -= arg2 * gParticleRenderContext.posX.y;
         Particle_AddVelocityFromTarget(arg0);
     }
 
@@ -1640,7 +1640,7 @@ s32 Particle_Field50_AdvanceField7CWithTimer_0B854(ParticleEffectInstance* arg0,
 }
 
 void Particle_SetScaleFactor1(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_1C = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_1C = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetScale(ParticleEffectInstance* arg0, f32 arg1) {
@@ -1648,15 +1648,15 @@ void Particle_SetScale(ParticleEffectInstance* arg0, f32 arg1) {
 }
 
 void Particle_SetScaleSpeed(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_20 = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_20 = arg1 * gParticleRenderContext.posX.y;
 }
 
 void Particle_SetScaleTarget(ParticleEffectInstance* arg0, f32 arg1) {
-    arg0->unk_24 = arg1 * gParticleRenderContext.unk_00.y;
+    arg0->unk_24 = arg1 * gParticleRenderContext.posX.y;
 }
 
 s32 Particle_ApproachScaleFactor1(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
-    return ParticleMath_ApproachFloat(&arg0->unk_1C, arg1 * gParticleRenderContext.unk_00.y, arg2 * gParticleRenderContext.unk_00.y);
+    return ParticleMath_ApproachFloat(&arg0->unk_1C, arg1 * gParticleRenderContext.posX.y, arg2 * gParticleRenderContext.posX.y);
 }
 
 s32 Particle_ApproachScaleFactor1WithCallback(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
@@ -1682,7 +1682,7 @@ s32 Particle_ApproachScaleFactor2WithCallback(ParticleEffectInstance* arg0) {
 }
 
 s32 Particle_Field20_Approach_0BA84(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
-    return ParticleMath_ApproachFloat(&arg0->unk_20, arg1 * gParticleRenderContext.unk_00.y, arg2 * gParticleRenderContext.unk_00.y);
+    return ParticleMath_ApproachFloat(&arg0->unk_20, arg1 * gParticleRenderContext.posX.y, arg2 * gParticleRenderContext.posX.y);
 }
 
 void Particle_SetPrimColor(ParticleEffectInstance* arg0, u8 arg1, u8 arg2, u8 arg3) {
@@ -2017,22 +2017,22 @@ void Particle_SetRenderMode(s16 arg0) {
 void Particle_InvokeRenderSetup(ParticleEffectInstance* arg0, ParticleRenderSettings* arg1) {
     switch (arg1->unk_01) {
         case 0:
-            arg1->unk_04(arg0, arg1->unk_0C.arg, arg1);
+            arg1->rotation(arg0, arg1->unk_0C.arg, arg1);
             break;
 
         case 1:
-            arg1->unk_04(arg0, arg1->unk_0C.s->arg, arg1);
+            arg1->rotation(arg0, arg1->unk_0C.s->arg, arg1);
             break;
     }
 }
 
 void Particle_PrepareRender(ParticleEffectInstance* arg0) {
     UNUSED s32 pad;
-    ParticleRenderSettings* sp18 = arg0->unk_0C->unk_04.a;
+    ParticleRenderSettings* sp18 = arg0->unk_0C->rotation.a;
 
-    if (arg0->unk_0C->unk_00 == 1) {
-        Particle_SetRenderMode(sp18->unk_02);
-        if (sp18->unk_00 == 1) {
+    if (arg0->unk_0C->posX == 1) {
+        Particle_SetRenderMode(sp18->posY);
+        if (sp18->posX == 1) {
             Particle_InvokeRenderSetup(arg0, sp18);
         }
     }
@@ -2040,18 +2040,18 @@ void Particle_PrepareRender(ParticleEffectInstance* arg0) {
 
 void Particle_DispatchDraw(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     UNUSED s32 pad;
-    ParticleRenderSettings* sp18 = arg0->unk_0C->unk_04.a;
+    ParticleRenderSettings* sp18 = arg0->unk_0C->rotation.a;
 
-    switch (arg0->unk_0C->unk_00) {
+    switch (arg0->unk_0C->posX) {
         case 1:
-            if (sp18->unk_00 == 0) {
+            if (sp18->posX == 0) {
                 Particle_InvokeRenderSetup(arg0, sp18);
             }
             sp18->unk_08(arg0, arg1, sp18);
             break;
 
         case 3:
-            arg0->unk_0C->unk_04.func(arg0, arg1);
+            arg0->unk_0C->rotation.func(arg0, arg1);
             break;
     }
 }

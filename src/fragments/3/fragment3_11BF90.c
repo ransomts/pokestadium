@@ -16,7 +16,7 @@ void miniRankingActorsInit(void) {
     for (i = 0; i < 3; i++, ptr++) {
         ModelRenderer_AttachDisplayObject(&ptr->unk_000);
         ptr->unk_168 = Model_LoadByArchiveIndex(0xAB);
-        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->posX[0]);
         ModelAnim_SetAnimation(&ptr->unk_000, 0);
         ptr->unk_000.unk_000.unk_01 &= ~1;
         miniActorAllToZero(ptr);
@@ -105,7 +105,7 @@ Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, ColorLerpData* arg1) {
     temp_a2 = gDefaultGraphRoot->unk_000.unk_14;
     temp_a3 = (gDefaultGraphRoot->unk_040.unk_08 >> 0x10) + 1;
 
-    pad = arg1->unk_00;
+    pad = arg1->posX;
     switch (pad) {
         case 1:
             if (temp_a3 < 0xF) {
@@ -146,8 +146,8 @@ Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, ColorLerpData* arg1) {
 
     switch (temp_a2) {
         case 0:
-            sp2C = &arg1->unk_04[sp38];
-            sp28 = &arg1->unk_04[sp34];
+            sp2C = &arg1->rotation[sp38];
+            sp28 = &arg1->rotation[sp34];
             sp24 = &arg1->unk_10[sp38];
             sp20 = &arg1->unk_10[sp34];
             break;
@@ -169,16 +169,16 @@ Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, ColorLerpData* arg1) {
 
 
 
-    tmp1 = ((sp28->unk_00[0] * sp30) + (sp2C->unk_00[0] * (0x100 - sp30))) >> 8;
-    tmp2 = ((sp28->unk_00[1] * sp30) + (sp2C->unk_00[1] * (0x100 - sp30))) >> 8;
-    tmp3 = ((sp28->unk_00[2] * sp30) + (sp2C->unk_00[2] * (0x100 - sp30))) >> 8;
-    tmp4 = ((sp28->unk_00[3] * sp30) + (sp2C->unk_00[3] * (0x100 - sp30))) >> 8;
-    tmp5 = ((sp28->unk_00[4] * sp30) + (sp2C->unk_00[4] * (0x100 - sp30))) >> 8;
+    tmp1 = ((sp28->posX[0] * sp30) + (sp2C->posX[0] * (0x100 - sp30))) >> 8;
+    tmp2 = ((sp28->posX[1] * sp30) + (sp2C->posX[1] * (0x100 - sp30))) >> 8;
+    tmp3 = ((sp28->posX[2] * sp30) + (sp2C->posX[2] * (0x100 - sp30))) >> 8;
+    tmp4 = ((sp28->posX[3] * sp30) + (sp2C->posX[3] * (0x100 - sp30))) >> 8;
+    tmp5 = ((sp28->posX[4] * sp30) + (sp2C->posX[4] * (0x100 - sp30))) >> 8;
 
-    tmp6 = ((sp20->unk_00[0] * sp30) + (sp24->unk_00[0] * (0x100 - sp30))) >> 8;
-    tmp7 = ((sp20->unk_00[1] * sp30) + (sp24->unk_00[1] * (0x100 - sp30))) >> 8;
-    tmp8 = ((sp20->unk_00[2] * sp30) + (sp24->unk_00[2] * (0x100 - sp30))) >> 8;
-    tmp9 = ((sp20->unk_00[3] * sp30) + (sp24->unk_00[3] * (0x100 - sp30))) >> 8;
+    tmp6 = ((sp20->posX[0] * sp30) + (sp24->posX[0] * (0x100 - sp30))) >> 8;
+    tmp7 = ((sp20->posX[1] * sp30) + (sp24->posX[1] * (0x100 - sp30))) >> 8;
+    tmp8 = ((sp20->posX[2] * sp30) + (sp24->posX[2] * (0x100 - sp30))) >> 8;
+    tmp9 = ((sp20->posX[3] * sp30) + (sp24->posX[3] * (0x100 - sp30))) >> 8;
 
     gDPPipeSync(gfx++);
     gDPSetPrimColor(gfx++, 0, tmp5, tmp1, tmp2, tmp3, tmp4);

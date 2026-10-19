@@ -901,15 +901,15 @@ u16 Color_AdjustRGB5551(u16 arg0, arg1_func_80010CA8 arg1) {
     if (arg0 & 1) {
         Color_RGB5551ToHSV(arg0, &sp24);
 
-        if (arg1.unk_00 != 0) {
-            sp24.x += (arg1.unk_00 * 0.015625f);
+        if (arg1.posX != 0) {
+            sp24.x += (arg1.posX * 0.015625f);
         }
 
-        if (arg1.unk_02 != 0) {
-            if (arg1.unk_02 > 0) {
-                sp24.y += ((1.0f - sp24.y) * arg1.unk_02 * 0.125f);
+        if (arg1.posY != 0) {
+            if (arg1.posY > 0) {
+                sp24.y += ((1.0f - sp24.y) * arg1.posY * 0.125f);
             } else {
-                sp24.y += (sp24.y * arg1.unk_02 * 0.125f);
+                sp24.y += (sp24.y * arg1.posY * 0.125f);
             }
         }
 
@@ -940,15 +940,15 @@ u32 Color_AdjustRGBA8(u32 arg0, arg1_func_80010CA8 arg1) {
     if (arg.a > 0) {
         Color_RGBA8ToHSV(arg, &sp2C);
 
-        if (arg1.unk_00 != 0) {
-            sp2C.x += (arg1.unk_00 * 0.015625f);
+        if (arg1.posX != 0) {
+            sp2C.x += (arg1.posX * 0.015625f);
         }
 
-        if (arg1.unk_02 != 0) {
-            if (arg1.unk_02 > 0) {
-                sp2C.y += ((1.0f - sp2C.y) * arg1.unk_02 * 0.125f);
+        if (arg1.posY != 0) {
+            if (arg1.posY > 0) {
+                sp2C.y += ((1.0f - sp2C.y) * arg1.posY * 0.125f);
             } else {
-                sp2C.y += (sp2C.y * arg1.unk_02 * 0.125f);
+                sp2C.y += (sp2C.y * arg1.posY * 0.125f);
             }
         }
 

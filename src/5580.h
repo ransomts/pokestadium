@@ -35,11 +35,11 @@ typedef struct unk_D_800A62E0 {
 struct FramebufferImage;
 
 typedef struct UnkArray4 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u32 unk_04;
+    /* 0x04 */ u32 rotation;
     /* 0x08 */ u32 unk_08;
     /* 0x0C */ struct FramebufferImage* unk_0C;
 } UnkArray4; // size = 0x10

@@ -19,9 +19,9 @@
 #include "src/stage_loader.h"
 
 typedef struct ItemSelectionCoords {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -799,7 +799,7 @@ s32 MiniGameSelect_DrawMenuBackdrop(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
         tmp = gDefaultGraphRoot->unk_000.unk_14;
         var_v0 = 0;
-        if ((tmp == D_8250A288.unk_00) && (D_8250A26C != 7)) {
+        if ((tmp == D_8250A288.posX) && (D_8250A26C != 7)) {
             var_v0 = (gSelectionFrameCounter % 30u) / 3;
         }
 
@@ -950,7 +950,7 @@ void MiniGameSelect_UpdateCursor(Fragment2_1GraphNode* a0) {
             if (MiniGameSelect_IsWidgetInState(gUIElementArray[0], 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0x8C;
-                arg0->unk_16A = (D_8250A288.unk_00 * 0x58) + 0xBA;
+                arg0->unk_16A = (D_8250A288.posX * 0x58) + 0xBA;
                 break;
             }
             break;
@@ -959,7 +959,7 @@ void MiniGameSelect_UpdateCursor(Fragment2_1GraphNode* a0) {
             if (MiniGameSelect_IsWidgetInState(gComputerUIElements[0], 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0x96;
-                arg0->unk_16A = (D_8250A288.unk_02 * 0x62) + 0xBA;
+                arg0->unk_16A = (D_8250A288.posY * 0x62) + 0xBA;
             }
             break;
 
@@ -972,7 +972,7 @@ void MiniGameSelect_UpdateCursor(Fragment2_1GraphNode* a0) {
             break;
 
         case 4:
-            if (gSelectionCoords.unk_00 == 2) {
+            if (gSelectionCoords.posX == 2) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0xF0;
                 if (gSelectionFlags & 1) {
@@ -1037,9 +1037,9 @@ void MiniGameSelect_ResetInputStates(void) {
     unk_D_82508B00* ptr = &gControllerStates[0];
 
     for (i = 0; i < 4; i++, ptr++) {
-        ptr->unk_00 = 0;
-        ptr->unk_02 = 0;
-        ptr->unk_04 = 0;
+        ptr->posX = 0;
+        ptr->posY = 0;
+        ptr->rotation = 0;
         ptr->unk_06 = 0;
         ptr->unk_08 = 0;
         ptr->unk_0A = 0xA;
@@ -1053,55 +1053,55 @@ void MiniGameSelect_ReadInputsWithRepeat(void) {
     u16 tmp;
 
     for (i = 0, var_v1 = &gControllerStates[0], var_a0 = &gControllers[0]; i < 4; i++, var_a0++, var_v1++) {
-        var_v1->unk_00 = var_v1->unk_02;
+        var_v1->posX = var_v1->posY;
 
         if (var_a0->rawStickX < -0x32) {
-            var_v1->unk_02 = 0x200;
+            var_v1->posY = 0x200;
         } else if (var_a0->rawStickX > 0x32) {
-            var_v1->unk_02 = 0x100;
+            var_v1->posY = 0x100;
         } else {
-            var_v1->unk_02 = 0;
+            var_v1->posY = 0;
         }
 
         if (var_a0->rawStickY < -0x32) {
-            var_v1->unk_02 |= 0x400;
+            var_v1->posY |= 0x400;
         } else if (var_a0->rawStickY > 0x32) {
-            var_v1->unk_02 |= 0x800;
+            var_v1->posY |= 0x800;
         }
 
-        tmp = var_v1->unk_00 ^ var_v1->unk_02;
-        var_v1->unk_04 = tmp & var_v1->unk_02;
-        var_v1->unk_06 = tmp & var_v1->unk_00;
-        var_v1->unk_02 |= var_a0->buttonDown;
-        var_v1->unk_04 |= var_a0->buttonPressed;
+        tmp = var_v1->posX ^ var_v1->posY;
+        var_v1->rotation = tmp & var_v1->posY;
+        var_v1->unk_06 = tmp & var_v1->posX;
+        var_v1->posY |= var_a0->buttonDown;
+        var_v1->rotation |= var_a0->buttonPressed;
         var_v1->unk_08 = 0;
 
-        if (var_v1->unk_04 & 0x800) {
+        if (var_v1->rotation & 0x800) {
             var_v1->unk_0A = 0xA;
             var_v1->unk_08 = 0x800;
-        } else if (var_v1->unk_04 & 0x400) {
+        } else if (var_v1->rotation & 0x400) {
             var_v1->unk_0A = 0xA;
             var_v1->unk_08 = 0x400;
-        } else if (var_v1->unk_04 & 0x200) {
+        } else if (var_v1->rotation & 0x200) {
             var_v1->unk_0A = 0xA;
             var_v1->unk_08 = 0x200;
-        } else if (var_v1->unk_04 & 0x100) {
+        } else if (var_v1->rotation & 0x100) {
             var_v1->unk_0A = 0xA;
             var_v1->unk_08 = 0x100;
         } else {
             var_v1->unk_0A--;
             if (var_v1->unk_0A <= 0) {
                 var_v1->unk_0A = 0;
-                if (var_v1->unk_02 & 0x800) {
+                if (var_v1->posY & 0x800) {
                     var_v1->unk_0A = 2;
                     var_v1->unk_08 = 0x800;
-                } else if (var_v1->unk_02 & 0x400) {
+                } else if (var_v1->posY & 0x400) {
                     var_v1->unk_0A = 2;
                     var_v1->unk_08 = 0x400;
-                } else if (var_v1->unk_02 & 0x200) {
+                } else if (var_v1->posY & 0x200) {
                     var_v1->unk_0A = 2;
                     var_v1->unk_08 = 0x200;
-                } else if (var_v1->unk_02 & 0x100) {
+                } else if (var_v1->posY & 0x100) {
                     var_v1->unk_0A = 2;
                     var_v1->unk_08 = 0x100;
                 }
@@ -1271,7 +1271,7 @@ void MiniGameSelect_RenderNumberSpinner(UIElement* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if ((gUnused0 == 1) || (gUnused0 == 2)) {
-        var_v1 = D_8250A288.unk_04 - 1;
+        var_v1 = D_8250A288.rotation - 1;
         for (i = 0; i < 3; i++) {
             temp_v0 = var_v1++;
             if ((temp_v0 <= 0) || (temp_v0 >= 0xA)) {
@@ -1283,7 +1283,7 @@ void MiniGameSelect_RenderNumberSpinner(UIElement* arg0) {
         for (i = 0; i < 3; i++) {
             sp90[i] = -1;
         }
-        sp90[1] = D_8250A288.unk_04;
+        sp90[1] = D_8250A288.rotation;
     }
 
     Gfx_SetScissorRect(&gDisplayListHead, 0x6E, 0xE, 0x1C, 0x1A);
@@ -1327,15 +1327,15 @@ unk_D_8250A228* MiniGameSelect_CreateMenuWidget(s16 arg0, s16 arg1, GraphNode* a
 
     temp_s1 = &temp_v0->unk_3C;
 
-    temp_v0->unk_00 = arg0;
-    temp_v0->unk_02 = 0;
-    temp_v0->unk_04 = arg1;
+    temp_v0->posX = arg0;
+    temp_v0->posY = 0;
+    temp_v0->rotation = arg1;
     ModelRenderer_AttachDisplayObject(temp_s1);
     temp_s1->unk_1E = -0x4000;
     Model_InitDisplayObject(temp_s1, 0, 0, arg2);
     temp_s1->unk_01 &= ~1;
 
-    switch (temp_v0->unk_00) {
+    switch (temp_v0->posX) {
         case 1:
             temp_v0->unk_38 = NULL;
             Vec3f_SetComponentsDuplicate(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 88.0f) + 196.0f), -579.0f);
@@ -1361,8 +1361,8 @@ unk_D_8250A228* MiniGameSelect_CreateMenuWidget(s16 arg0, s16 arg1, GraphNode* a
 
         case 4:
             temp_v0->unk_38 = NULL;
-            temp_v0->unk_0C = temp_v0->unk_04;
-            temp_v0->unk_0A = temp_v0->unk_04;
+            temp_v0->unk_0C = temp_v0->rotation;
+            temp_v0->unk_0A = temp_v0->rotation;
             Vec3f_SetComponentsDuplicate(&temp_s1->unk_24, (((arg1 % 3) * 96.0f) + 224.0f) - 320.0f,
                           240.0f - (((arg1 / 3) * 96.0f) + 156.0f), -579.0f);
             temp_s1->unk_14 = arg1;
@@ -1392,15 +1392,15 @@ void SetUIElementState(unk_D_8250A228* arg0, s16 arg1) {
     s32 var_v0;
     s32 i;
 
-    arg0->unk_02 = arg1;
+    arg0->posY = arg1;
 
-    if ((arg0 == NULL) || (arg0->unk_00 == 0)) {
+    if ((arg0 == NULL) || (arg0->posX == 0)) {
         return;
     }
 
     var_v0 = 0;
 
-    switch (arg0->unk_02) {
+    switch (arg0->posY) {
         case 1:
             arg0->unk_06 |= 1;
             arg0->unk_08 = 0xA;
@@ -1414,7 +1414,7 @@ void SetUIElementState(unk_D_8250A228* arg0, s16 arg1) {
                 var_v0 = 1;
             }
 
-            if ((arg0->unk_00 == 4) && (gMenuSelectedOption == -1)) {
+            if ((arg0->posX == 4) && (gMenuSelectedOption == -1)) {
                 arg0->unk_06 |= 2;
             }
             break;
@@ -1456,7 +1456,7 @@ void SetUIElementState(unk_D_8250A228* arg0, s16 arg1) {
     }
 
     if (var_v0 != 0) {
-        SetUIElementState(arg0->unk_34, arg0->unk_02);
+        SetUIElementState(arg0->unk_34, arg0->posY);
     }
 }
 
@@ -1477,11 +1477,11 @@ s32 MiniGameSelect_IsWidgetInState(unk_D_8250A228* arg0, s16 arg1) {
         return 0;
     }
 
-    if (arg0->unk_00 == 0) {
+    if (arg0->posX == 0) {
         return 0;
     }
 
-    if (arg1 == arg0->unk_02) {
+    if (arg1 == arg0->posY) {
         ret = 1;
     }
     return ret;
@@ -1679,9 +1679,9 @@ void MiniGameSelect_UpdateWidgets(void) {
 }
 
 void MiniGameSelect_ClearOptionPanelState(void) {
-    gSelectionCoords.unk_00 = 0;
-    gSelectionCoords.unk_02 = 0;
-    gSelectionCoords.unk_04 = 0;
+    gSelectionCoords.posX = 0;
+    gSelectionCoords.posY = 0;
+    gSelectionCoords.rotation = 0;
     gSelectionCoords.unk_06 = 0;
     gSelectionCoords.unk_08 = 0;
     gSelectionCoords.unk_0A = 0;
@@ -1690,9 +1690,9 @@ void MiniGameSelect_ClearOptionPanelState(void) {
 }
 
 void MiniGameSelect_ResetSelection(void) {
-    D_8250A288.unk_00 = 0;
-    D_8250A288.unk_02 = 0;
-    D_8250A288.unk_04 = 3;
+    D_8250A288.posX = 0;
+    D_8250A288.posY = 0;
+    D_8250A288.rotation = 3;
     D_8250A288.unk_06 = 0;
 
     if (gSelectionFlags & 1) {
@@ -1703,9 +1703,9 @@ void MiniGameSelect_ResetSelection(void) {
 }
 
 void MiniGameSelect_LoadSavedSelection(s16 arg0, s16 arg1) {
-    D_8250A288.unk_00 = gMenuCursorX;
-    D_8250A288.unk_02 = arg0;
-    D_8250A288.unk_04 = gMenuSubState;
+    D_8250A288.posX = gMenuCursorX;
+    D_8250A288.posY = arg0;
+    D_8250A288.rotation = gMenuSubState;
     D_8250A288.unk_06 = MiniGameSelect_GameIDToIndex(arg1);
     D_8250A288.unk_08 = MiniGameSelect_FindTableIndex(gMenuState, gSelectionFlags & 1);
 }
@@ -1819,7 +1819,7 @@ void UI_DrawStatusIcon(void) {
             if (MiniGameSelect_IsWidgetInState(gUIElementArray[0], 2) != 0) {
                 sp30 = 1;
                 sp40 = 0x8C;
-                sp38 = D_8250A288.unk_00 * 0x58 + 0xBA;
+                sp38 = D_8250A288.posX * 0x58 + 0xBA;
                 break;
             }
             break;
@@ -1830,7 +1830,7 @@ void UI_DrawStatusIcon(void) {
             if (MiniGameSelect_IsWidgetInState(gComputerUIElements[0], 2) != 0) {
                 sp30 = 1;
                 sp40 = 0x96;
-                sp38 = D_8250A288.unk_02 * 0x62 + 0xBA;
+                sp38 = D_8250A288.posY * 0x62 + 0xBA;
                 break;
             }
             break;
@@ -1846,7 +1846,7 @@ void UI_DrawStatusIcon(void) {
             break;
 
         case 4:
-            if (gSelectionCoords.unk_00 == 2) {
+            if (gSelectionCoords.posX == 2) {
                 sp30 = 1;
                 sp40 = 0xDC;
                 sp38 = ((gSelectionFlags & 1) ? 0x36 : 0x48) + (D_8250A288.unk_08 * 0x18) + 0xA4;
@@ -1935,9 +1935,9 @@ void MiniGameSelect_DrawOptionPanel(void) {
     sp5C[2] = Text_GetString(NULL, 0, gStringTable, 5);
     sp5C[3] = Text_GetString(NULL, 0, gStringTable, 6);
 
-    if (gSelectionCoords.unk_00 != 0) {
+    if (gSelectionCoords.posX != 0) {
         Ui_DrawGradientPanel(gSelectionCoords.unk_08, gSelectionCoords.unk_0A, gSelectionCoords.unk_0C, gSelectionCoords.unk_0E, &sp80, &sp7C);
-        if (gSelectionCoords.unk_00 == 2) {
+        if (gSelectionCoords.posX == 2) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -1992,11 +1992,11 @@ void MiniGameSelect_ReturnToIdle(void) {
     }
 
     D_8250A26C = 1;
-    sp1C = D_8250A288.unk_00;
+    sp1C = D_8250A288.posX;
     MiniGameSelect_ResetSelection();
 
     if (sp18 == 0) {
-        D_8250A288.unk_00 = sp1C;
+        D_8250A288.posX = sp1C;
     }
     gSubMenuState = 0;
     KidsClub_ResetTournamentState(gSubMenuState);
@@ -2012,30 +2012,30 @@ void MiniGameSelect_UpdateMainMenu(void) {
 
     Rand_Range(0x80);
 
-    tmp = D_8250A288.unk_00;
-    if (gControllerInputs->unk_04 & 0x800) {
-        D_8250A288.unk_00--;
-        if (D_8250A288.unk_00 < 0) {
-            D_8250A288.unk_00 = 1;
+    tmp = D_8250A288.posX;
+    if (gControllerInputs->rotation & 0x800) {
+        D_8250A288.posX--;
+        if (D_8250A288.posX < 0) {
+            D_8250A288.posX = 1;
         }
     }
 
-    if (gControllerInputs->unk_04 & 0x400) {
-        D_8250A288.unk_00++;
-        if (D_8250A288.unk_00 >= 2) {
-            D_8250A288.unk_00 = 0;
+    if (gControllerInputs->rotation & 0x400) {
+        D_8250A288.posX++;
+        if (D_8250A288.posX >= 2) {
+            D_8250A288.posX = 0;
         }
     }
 
-    if (tmp != D_8250A288.unk_00) {
+    if (tmp != D_8250A288.posX) {
         Audio_PlaySoundEffectById(1);
     }
 
-    if (gControllerInputs->unk_04 & 0x8000) {
-        gMenuCursorX = D_8250A288.unk_00;
+    if (gControllerInputs->rotation & 0x8000) {
+        gMenuCursorX = D_8250A288.posX;
         D_8250A26C = 2;
         KidsClub_SetMatchBannerState(1);
-        D_8250A288.unk_02 = 0;
+        D_8250A288.posY = 0;
 
         for (i = 0; i < 4; i++) {
             gMiniHudColorDefaults[i] = 1;
@@ -2051,7 +2051,7 @@ void MiniGameSelect_UpdateMainMenu(void) {
             Audio_PlaySoundEffectById(0xC);
         }
         SetUIElementState(gUIElementArray[0], 3);
-    } else if (gControllerInputs->unk_04 & 0x4000) {
+    } else if (gControllerInputs->rotation & 0x4000) {
         D_8250A26C = 7;
         D_8250A288.unk_06 = -1;
         StageContext_SetClearColor(1);
@@ -2063,7 +2063,7 @@ void MiniGameSelect_UpdateMainMenu(void) {
 
 void MiniGameSelect_LeaveJoinMenu(void) {
     KidsClub_SetMatchBannerState(3);
-    if (D_8250A288.unk_00 == 0) {
+    if (D_8250A288.posX == 0) {
         D_8250A26C = 5;
         MiniGameSelect_LinkWidgets(gComputerUIElements[0], gItemGridElements[0]);
         KidsClub_SetRoundBannerState(1, D_8250A288.unk_06);
@@ -2086,34 +2086,34 @@ void MiniGameSelect_PlayerJoinUpdate(void) {
 
     gComputerUIElements[1]->unk_0A = gMenuCursorX;
     if ((MiniGameSelect_IsWidgetInState(gComputerUIElements[0], 2) != 0) && (KidsClub_GetMatchBannerState() == 2)) {
-        var_v1 = D_8250A288.unk_02;
-        if ((gControllerInputs->unk_04 & 0x800) && (gMiniHudColorDefaults[0] == 0)) {
-            D_8250A288.unk_02--;
-            if (D_8250A288.unk_02 < 0) {
-                D_8250A288.unk_02 = 1;
+        var_v1 = D_8250A288.posY;
+        if ((gControllerInputs->rotation & 0x800) && (gMiniHudColorDefaults[0] == 0)) {
+            D_8250A288.posY--;
+            if (D_8250A288.posY < 0) {
+                D_8250A288.posY = 1;
             }
         }
 
-        if ((gControllerInputs->unk_04 & 0x400) && (gMiniHudColorDefaults[0] == 0)) {
-            D_8250A288.unk_02++;
-            if (D_8250A288.unk_02 >= 2) {
-                D_8250A288.unk_02 = 0;
+        if ((gControllerInputs->rotation & 0x400) && (gMiniHudColorDefaults[0] == 0)) {
+            D_8250A288.posY++;
+            if (D_8250A288.posY >= 2) {
+                D_8250A288.posY = 0;
             }
         }
 
-        if (var_v1 != D_8250A288.unk_02) {
+        if (var_v1 != D_8250A288.posY) {
             Audio_PlaySoundEffectById(1);
         }
 
         var_s4 = 0;
-        switch (D_8250A288.unk_02) {
+        switch (D_8250A288.posY) {
             case 0:
                 for (i = 0; i < 4; i++) {
-                    if ((gControllerStates[i].unk_04 & 0x8000) && (gMiniHudColorDefaults[i] != 0)) {
+                    if ((gControllerStates[i].rotation & 0x8000) && (gMiniHudColorDefaults[i] != 0)) {
                         var_s4 = 1;
                         gMiniHudColorDefaults[i] = 0;
                         Audio_PlaySoundEffectById(0xD);
-                    } else if (gControllerStates[i].unk_04 & 0x4000) {
+                    } else if (gControllerStates[i].rotation & 0x4000) {
                         if (gMiniHudColorDefaults[i] != 1) {
                             var_s4 = 1;
                             gMiniHudColorDefaults[i] = 1;
@@ -2124,7 +2124,7 @@ void MiniGameSelect_PlayerJoinUpdate(void) {
                 break;
 
             case 1:
-                if (gControllerInputs->unk_04 & 0x8000) {
+                if (gControllerInputs->rotation & 0x8000) {
                     var_s4 = 1;
                     gMenuCursorY = 0;
 
@@ -2144,7 +2144,7 @@ void MiniGameSelect_PlayerJoinUpdate(void) {
                 break;
         }
 
-        if ((var_s4 == 0) && (gControllerInputs->unk_04 & 0x4000)) {
+        if ((var_s4 == 0) && (gControllerInputs->rotation & 0x4000)) {
             MiniGameSelect_ReturnToIdle();
             KidsClub_SetMatchBannerState(3);
             SetUIElementState(gComputerUIElements[0], 8);
@@ -2162,11 +2162,11 @@ void MiniGameSelect_UpdateOptionPanel(void) {
     s32 var_v0;
     s32 tmp;
 
-    switch (gSelectionCoords.unk_00) {
+    switch (gSelectionCoords.posX) {
         case 0:
-            gSelectionCoords.unk_00 = 1;
-            gSelectionCoords.unk_02 = 0;
-            gSelectionCoords.unk_04 = 8;
+            gSelectionCoords.posX = 1;
+            gSelectionCoords.posY = 0;
+            gSelectionCoords.rotation = 8;
             gSelectionCoords.unk_06 = 0x12C;
             gSelectionCoords.unk_08 = 0x140;
             gSelectionCoords.unk_0A = 0xF0;
@@ -2174,13 +2174,13 @@ void MiniGameSelect_UpdateOptionPanel(void) {
             break;
 
         case 1:
-            gSelectionCoords.unk_04 -= 1;
-            gSelectionCoords.unk_08 = ((gSelectionCoords.unk_04 * 0x8C) / 8) + 0xB4;
-            gSelectionCoords.unk_0A = ((gSelectionCoords.unk_04 * 0x54) / 8) + 0x9C;
-            gSelectionCoords.unk_0C = 0x118 - ((gSelectionCoords.unk_04 * 0x118) / 8);
-            gSelectionCoords.unk_0E = 0xA8 - ((gSelectionCoords.unk_04 * 0xA8) / 8);
-            if (gSelectionCoords.unk_04 <= 0) {
-                gSelectionCoords.unk_00 = 2;
+            gSelectionCoords.rotation -= 1;
+            gSelectionCoords.unk_08 = ((gSelectionCoords.rotation * 0x8C) / 8) + 0xB4;
+            gSelectionCoords.unk_0A = ((gSelectionCoords.rotation * 0x54) / 8) + 0x9C;
+            gSelectionCoords.unk_0C = 0x118 - ((gSelectionCoords.rotation * 0x118) / 8);
+            gSelectionCoords.unk_0E = 0xA8 - ((gSelectionCoords.rotation * 0xA8) / 8);
+            if (gSelectionCoords.rotation <= 0) {
+                gSelectionCoords.posX = 2;
             }
             break;
 
@@ -2188,7 +2188,7 @@ void MiniGameSelect_UpdateOptionPanel(void) {
             var_v0 = 0;
             if (gSelectionFlags & 1) {
                 var_a2 = 4;
-                if (!(gControllerInputs->unk_02 & 0xCC00)) {
+                if (!(gControllerInputs->posY & 0xCC00)) {
                     var_v0 = 1;
                 }
             } else {
@@ -2202,14 +2202,14 @@ void MiniGameSelect_UpdateOptionPanel(void) {
             }
 
             tmp = D_8250A288.unk_08;
-            if (gControllerInputs->unk_04 & 0x800) {
+            if (gControllerInputs->rotation & 0x800) {
                 D_8250A288.unk_08 -= 1;
                 if (D_8250A288.unk_08 < 0) {
                     D_8250A288.unk_08 = var_a2 - 1;
                 }
             }
 
-            if (gControllerInputs->unk_04 & 0x400) {
+            if (gControllerInputs->rotation & 0x400) {
                 D_8250A288.unk_08 += 1;
                 if (D_8250A288.unk_08 >= var_a2) {
                     D_8250A288.unk_08 = 0;
@@ -2220,24 +2220,24 @@ void MiniGameSelect_UpdateOptionPanel(void) {
                 Audio_PlaySoundEffectById(1);
             }
 
-            if (gControllerInputs->unk_04 & 0x8000) {
+            if (gControllerInputs->rotation & 0x8000) {
                 if (gSelectionFlags & 1) {
                     gMenuState = gCategoryMapB[D_8250A288.unk_08];
                 } else {
                     gMenuState = gCategoryMapA[D_8250A288.unk_08];
                 }
-                gSelectionCoords.unk_00 = 3;
-                gSelectionCoords.unk_02 = 1;
-                gSelectionCoords.unk_04 = 8;
+                gSelectionCoords.posX = 3;
+                gSelectionCoords.posY = 1;
+                gSelectionCoords.rotation = 8;
                 gSelectionCoords.unk_08 = 0xB4;
                 gSelectionCoords.unk_0A = 0x9C;
                 gSelectionCoords.unk_0C = 0x118;
                 gSelectionCoords.unk_0E = 0xA8;
                 Audio_PlaySoundEffectById(2);
-            } else if (gControllerInputs->unk_04 & 0x4000) {
-                gSelectionCoords.unk_00 = 3;
-                gSelectionCoords.unk_02 = 0;
-                gSelectionCoords.unk_04 = 8;
+            } else if (gControllerInputs->rotation & 0x4000) {
+                gSelectionCoords.posX = 3;
+                gSelectionCoords.posY = 0;
+                gSelectionCoords.rotation = 8;
                 gSelectionCoords.unk_08 = 0xB4;
                 gSelectionCoords.unk_0A = 0x9C;
                 gSelectionCoords.unk_0C = 0x118;
@@ -2247,14 +2247,14 @@ void MiniGameSelect_UpdateOptionPanel(void) {
             break;
 
         case 3:
-            gSelectionCoords.unk_04 -= 1;
-            gSelectionCoords.unk_08 = ((gSelectionCoords.unk_04 * -0x8C) / 8) + 0x140;
-            gSelectionCoords.unk_0A = ((gSelectionCoords.unk_04 * -0x54) / 8) + 0xF0;
-            gSelectionCoords.unk_0C = (gSelectionCoords.unk_04 * 0x118) / 8;
-            gSelectionCoords.unk_0E = (gSelectionCoords.unk_04 * 0xA8) / 8;
-            if (gSelectionCoords.unk_04 <= 0) {
-                gSelectionCoords.unk_00 = 0;
-                if (gSelectionCoords.unk_02 != 0) {
+            gSelectionCoords.rotation -= 1;
+            gSelectionCoords.unk_08 = ((gSelectionCoords.rotation * -0x8C) / 8) + 0x140;
+            gSelectionCoords.unk_0A = ((gSelectionCoords.rotation * -0x54) / 8) + 0xF0;
+            gSelectionCoords.unk_0C = (gSelectionCoords.rotation * 0x118) / 8;
+            gSelectionCoords.unk_0E = (gSelectionCoords.rotation * 0xA8) / 8;
+            if (gSelectionCoords.rotation <= 0) {
+                gSelectionCoords.posX = 0;
+                if (gSelectionCoords.posY != 0) {
                     MiniGameSelect_LeaveJoinMenu();
                 } else {
                     D_8250A26C = 2;
@@ -2263,7 +2263,7 @@ void MiniGameSelect_UpdateOptionPanel(void) {
             break;
     }
 
-    if (gSelectionCoords.unk_00 != 2) {
+    if (gSelectionCoords.posX != 2) {
         gComputerUIElements[0]->unk_06 |= 1;
     }
 }
@@ -2274,8 +2274,8 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
     if (MiniGameSelect_IsWidgetInState(gComputerUIRoot, 2) != 0) {
         switch (gUnused0) {
             case 0:
-                if (gControllerInputs->unk_04 & 0x8000) {
-                    gMenuSubState = D_8250A288.unk_04;
+                if (gControllerInputs->rotation & 0x8000) {
+                    gMenuSubState = D_8250A288.rotation;
 
                     for (i = 0; i < 4; i++) {
                         gMenuOptionTimers[i] = 0;
@@ -2286,15 +2286,15 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
                     SetUIElementState(gComputerUIRoot, 3);
                     Audio_PlaySoundEffectById(0xE);
                     KidsClub_SetRoundBannerState(1, D_8250A288.unk_06);
-                } else if (gControllerInputs->unk_04 & 0x4000) {
+                } else if (gControllerInputs->rotation & 0x4000) {
                     D_8250A26C = 2;
                     KidsClub_SetMatchBannerState(1);
                     SetUIElementState(gComputerUIRoot, 8);
                     Audio_PlaySoundEffectById(3);
-                } else if ((gControllerInputs->unk_08 & 0x800) && (D_8250A288.unk_04 < 9)) {
+                } else if ((gControllerInputs->unk_08 & 0x800) && (D_8250A288.rotation < 9)) {
                     gUnused0 = 2;
                     gUnused1 = 5;
-                } else if ((gControllerInputs->unk_08 & 0x400) && (D_8250A288.unk_04 >= 2)) {
+                } else if ((gControllerInputs->unk_08 & 0x400) && (D_8250A288.rotation >= 2)) {
                     gUnused0 = 1;
                     gUnused1 = 5;
                 }
@@ -2310,7 +2310,7 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
                 if (gUnused1 <= 0) {
                     gUnused0 = 0;
                     gUnused2 = 0;
-                    D_8250A288.unk_04 -= 1;
+                    D_8250A288.rotation -= 1;
                 }
                 break;
 
@@ -2320,7 +2320,7 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
                 if (gUnused1 <= 0) {
                     gUnused0 = 0;
                     gUnused2 = 0;
-                    D_8250A288.unk_04 += 1;
+                    D_8250A288.rotation += 1;
                 }
                 break;
         }
@@ -2343,37 +2343,37 @@ s32 MiniGameSelect_UpdateGridCursor(s16* arg0, s16 arg1) {
     var_t0 = *arg0 / 3;
 
     if (gSelectionTimer == -1) {
-        if (gControllerStates[arg1].unk_04 & 0x800) {
+        if (gControllerStates[arg1].rotation & 0x800) {
             var_t0 -= 1;
             if (var_t0 < 0) {
                 var_t0 = 2;
             }
         }
 
-        if (gControllerStates[arg1].unk_04 & 0x400) {
+        if (gControllerStates[arg1].rotation & 0x400) {
             var_t0 += 1;
             if (var_t0 >= 3) {
                 var_t0 = 0;
             }
         }
 
-        if (gControllerStates[arg1].unk_04 & 0x200) {
+        if (gControllerStates[arg1].rotation & 0x200) {
             var_a3 -= 1;
             if (var_a3 < 0) {
                 var_a3 = 2;
             }
         }
 
-        if (gControllerStates[arg1].unk_04 & 0x100) {
+        if (gControllerStates[arg1].rotation & 0x100) {
             var_a3 += 1;
             if (var_a3 >= 3) {
                 var_a3 = 0;
             }
         }
 
-        if (gControllerStates[arg1].unk_04 & 0x8000) {
+        if (gControllerStates[arg1].rotation & 0x8000) {
             sp1E = 1;
-        } else if (gControllerStates[arg1].unk_04 & 0x4000) {
+        } else if (gControllerStates[arg1].rotation & 0x4000) {
             switch (gSubMenuState) {
                 case 0:
                     sp1E = -1;
@@ -2381,7 +2381,7 @@ s32 MiniGameSelect_UpdateGridCursor(s16* arg0, s16 arg1) {
 
                 case 1:
                 case 4:
-                    if (D_8250A288.unk_00 == 0) {
+                    if (D_8250A288.posX == 0) {
                         sp1E = -1;
                         gSubMenuState = 0;
                         MiniGameSelect_LinkWidgets(gComputerUIElements[0], gItemGridElements[0]);
@@ -2524,9 +2524,9 @@ void MiniGameSelect_ConfirmUpdate(void) {
             continue;
         }
 
-        if (gControllerStates[i].unk_02 & 0x20) {
+        if (gControllerStates[i].posY & 0x20) {
             gMenuOptionFlags[i] = 1;
-        } else if (gControllerStates[i].unk_02 & 0x10) {
+        } else if (gControllerStates[i].posY & 0x10) {
             gMenuOptionFlags[i] = 2;
         }
     }

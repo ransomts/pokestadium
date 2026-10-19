@@ -58,7 +58,7 @@ typedef struct AMDMAState {
 } AMDMAState; // size = 0xC
 
 typedef struct HPHistoryEntry {
-    /* 0x00 */ u16 unk_00[16];
+    /* 0x00 */ u16 posX[16];
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ u16 unk_28[16];
@@ -73,7 +73,7 @@ typedef struct HPHistoryEntry {
 } HPHistoryEntry; // size = 0x84
 
 typedef struct AudioCommandMapEntry {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
 } AudioCommandMapEntry;
 

@@ -51,12 +51,12 @@ SpriteDisplay* PokeIcon_CreateRenderList(AssetManager* arg0, s16 arg1, s16 arg2,
     SpriteDisplay* temp_v0 = main_pool_alloc(sizeof(SpriteDisplay), 0);
 
     if (temp_v0 != NULL) {
-        temp_v0->unk_00 = 0;
-        temp_v0->unk_02 = 0;
+        temp_v0->posX = 0;
+        temp_v0->posY = 0;
         temp_v0->unk_03 = -1;
         temp_v0->unk_01 = arg1;
         temp_v0->unk_08 = main_pool_alloc(arg1 * sizeof(unk_func_8001A024_008), 0);
-        temp_v0->unk_04 = arg0;
+        temp_v0->rotation = arg0;
         temp_v0->unk_14 = NULL;
         temp_v0->unk_18 = gSpeciesDisplayTable;
 
@@ -65,7 +65,7 @@ SpriteDisplay* PokeIcon_CreateRenderList(AssetManager* arg0, s16 arg1, s16 arg2,
         }
 
         for (i = 0; i < arg1; i++) {
-            temp_v0->unk_08[i].unk_00 = 0;
+            temp_v0->unk_08[i].posX = 0;
             temp_v0->unk_08[i].unk_14.raw = 0;
             temp_v0->unk_08[i].unk_0C = GfxImage_Allocate(0, 2, arg2, arg3, 0);
             bzero(temp_v0->unk_08[i].unk_0C->img_p, arg2 * arg3 * 2);
@@ -82,7 +82,7 @@ SpriteDisplay* PokeIcon_CreateRenderList(AssetManager* arg0, s16 arg1, s16 arg2,
 void PokeIcon_AttachDepthBuffer(SpriteDisplay* arg0, AssetManager* arg1, FramebufferImage* arg2) {
     s32 i;
 
-    arg0->unk_04 = arg1;
+    arg0->rotation = arg1;
     arg0->unk_14 = arg2;
 
     for (i = 0; i < arg0->unk_01; ++i) {
@@ -102,13 +102,13 @@ void PokeIcon_ResetRenderList(SpriteDisplay* arg0) {
     unk_func_8001A024_008* tempImg_p;
     FramebufferImage* tempDepth_p;
 
-    if (arg0->unk_00 & 1) {
-        PokeIcon_WaitFrameLoad(arg0->unk_04);
+    if (arg0->posX & 1) {
+        PokeIcon_WaitFrameLoad(arg0->rotation);
         ModelRenderer_ClearDisplayObject(arg0->unk_10);
     }
 
-    arg0->unk_00 = 0;
-    arg0->unk_02 = 0;
+    arg0->posX = 0;
+    arg0->posY = 0;
     arg0->unk_03 = -1;
 
     for (i = 0; i < arg0->unk_01; ++i) {
@@ -116,7 +116,7 @@ void PokeIcon_ResetRenderList(SpriteDisplay* arg0) {
         tempDepth_p = tempImg_p->unk_0C;
         w = tempDepth_p->width;
         h = tempDepth_p->height;
-        tempImg_p->unk_00 = 0;
+        tempImg_p->posX = 0;
         arg0->unk_08[i].unk_14.raw = 0;
         bzero(arg0->unk_08[i].unk_0C->img_p, w * h * 2);
     }
@@ -135,16 +135,16 @@ void SpriteDisplay_SetupSlot(SpriteDisplay* arg0, s32 arg1, s32 arg2, u16 arg3) 
             arg2 = 0x98;
         }
     
-        arg0->unk_08[arg1].unk_00 = 1;
-        arg0->unk_08[arg1].unk_02 = arg3 & ~1;
+        arg0->unk_08[arg1].posX = 1;
+        arg0->unk_08[arg1].posY = arg3 & ~1;
         arg0->unk_08[arg1].unk_14.raw = arg2;
-        arg0->unk_08[arg1].unk_08 = arg0->unk_18[arg2 - 1].unk_02 / 100.0f;
+        arg0->unk_08[arg1].unk_08 = arg0->unk_18[arg2 - 1].posY / 100.0f;
         arg0->unk_08[arg1].unk_10.raw = 0;
     
         if (arg0->unk_18[arg2 - 1].name == NULL) {
-            arg0->unk_08[arg1].unk_04 = arg0->unk_18[arg2 - 1].unk_08 - 0xE38;
+            arg0->unk_08[arg1].rotation = arg0->unk_18[arg2 - 1].unk_08 - 0xE38;
         } else {
-            arg0->unk_08[arg1].unk_04 = -0xE38;
+            arg0->unk_08[arg1].rotation = -0xE38;
         }
     }
 }
@@ -157,25 +157,25 @@ void SpriteDisplay_ConfigSlotWithAnim(SpriteDisplay* arg0, s32 arg1, PokemonData
         w = arg0->unk_08[arg1].unk_0C->width;
         h = arg0->unk_08[arg1].unk_0C->height;
         bzero(arg0->unk_08[arg1].unk_0C->img_p, w * h * 2);
-        if (((s32) arg2->unk_00.unk_00 > 0) && ((s32) arg2->unk_00.unk_00 < 0x98)) {
-            arg0->unk_08[arg1].unk_00 = 3;
+        if (((s32) arg2->posX.posX > 0) && ((s32) arg2->posX.posX < 0x98)) {
+            arg0->unk_08[arg1].posX = 3;
             arg0->unk_08[arg1].unk_14.raw = arg2;;
-            arg0->unk_08[arg1].unk_02 = arg3 & ~1;
-            arg0->unk_08[arg1].unk_08 = arg0->unk_18[arg2->unk_00.unk_00 - 1].unk_02 / 100.0f;
+            arg0->unk_08[arg1].posY = arg3 & ~1;
+            arg0->unk_08[arg1].unk_08 = arg0->unk_18[arg2->posX.posX - 1].posY / 100.0f;
             Model_ComputeSizeVariant(&arg0->unk_08[arg1].unk_10, arg2);
-            if (arg0->unk_18[arg2->unk_00.unk_00 - 1].name == NULL) {
-                arg0->unk_08[arg1].unk_04 = arg0->unk_18[arg2->unk_00.unk_00 - 1].unk_08 - 0xE38;;
+            if (arg0->unk_18[arg2->posX.posX - 1].name == NULL) {
+                arg0->unk_08[arg1].rotation = arg0->unk_18[arg2->posX.posX - 1].unk_08 - 0xE38;;
                 return;
             }
-            arg0->unk_08[arg1].unk_04  = -0xE38;
+            arg0->unk_08[arg1].rotation  = -0xE38;
             return;
         }
-        arg0->unk_08[arg1].unk_00 = 1;
-        arg0->unk_08[arg1].unk_02 = arg3 & ~1;
+        arg0->unk_08[arg1].posX = 1;
+        arg0->unk_08[arg1].posY = arg3 & ~1;
         arg0->unk_08[arg1].unk_14.raw = 0x98;
-        arg0->unk_08[arg1].unk_08 = (f32) ((f32) arg0->unk_18[151].unk_02 / 100.0f);
+        arg0->unk_08[arg1].unk_08 = (f32) ((f32) arg0->unk_18[151].posY / 100.0f);
         arg0->unk_08[arg1].unk_10.raw = 0;
-        arg0->unk_08[arg1].unk_04 = -0xE38;
+        arg0->unk_08[arg1].rotation = -0xE38;
     }
 }
 
@@ -212,12 +212,12 @@ void PokeIcon_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
 
     sp34 = arg0->unk_0C->unk_0C;
     temp_s1 = &arg0->unk_08[arg1];
-    sp2C = arg0->unk_04->unk_24->unk_08->unk_00[0];
+    sp2C = arg0->rotation->unk_24->unk_08->posX[0];
 
     ModelRenderer_ClearDisplayObject(arg0->unk_10);
     ModelAnim_ClearTransformChannel(arg0->unk_10);
 
-    if (temp_s1->unk_00 & 2) {
+    if (temp_s1->posX & 2) {
         sp38.x = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 >> 0x10) >> 6;
         sp38.y = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 >> 6) >> 4;
         sp38.z = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 << 6) >> 6;
@@ -228,20 +228,20 @@ void PokeIcon_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
         sp38.x = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 0x10) >> 6;
         sp38.y = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 6) >> 4;
         sp38.z = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 << 6) >> 6;
-        Model_InitDisplayObject(arg0->unk_10, 0, temp_s1->unk_14.unk_02, sp2C);
+        Model_InitDisplayObject(arg0->unk_10, 0, temp_s1->unk_14.posY, sp2C);
         ModelAnim_SetAnimation(arg0->unk_10, 1);
         ModelAnim_SetFrame(arg0->unk_10, arg0->unk_18[temp_s1->unk_14.raw - 1].unk_01);
     }
     Vec3f_FromVec3s(&arg0->unk_10->unk_024, &sp38);
-    arg0->unk_10->unk_000.unk_02 &= ~0x40;
-    arg0->unk_10->unk_000.unk_02 |= 0x80;
+    arg0->unk_10->unk_000.posY &= ~0x40;
+    arg0->unk_10->unk_000.posY |= 0x80;
     Vec3f_SetComponentsDuplicate(&arg0->unk_10->unk_030, temp_s1->unk_08, temp_s1->unk_08, temp_s1->unk_08);
-    Camera_ComputeEyeFromAngles(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->unk_04);
+    Camera_ComputeEyeFromAngles(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->rotation);
     GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
     GeoRender_AdvanceFrameCounter();
     GeoRender_SetMode(3);
     Geo_RenderRootNode(arg0->unk_0C);
-    GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
+    GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_08[arg1].posY);
     GeoRender_SetMode(1);
     Geo_RenderRootNode(arg0->unk_0C);
 }
@@ -254,35 +254,35 @@ s32 PokeIcon_ProcessNextSlot(SpriteDisplay* arg0, s32 arg1) {
     unk_func_8001A024_008* temp_v0_2;
 
     sp24 = -1;
-    sp20 = arg0->unk_02;
-    if (arg0->unk_00 & 1) {
+    sp20 = arg0->posY;
+    if (arg0->posX & 1) {
         if (arg1 == 1) {
-            var_v0 = PokeIcon_WaitFrameLoad(arg0->unk_04);
+            var_v0 = PokeIcon_WaitFrameLoad(arg0->rotation);
         } else {
-            var_v0 = PokeIcon_PollFrameLoad(arg0->unk_04);
+            var_v0 = PokeIcon_PollFrameLoad(arg0->rotation);
         }
         if (var_v0 != 0) {
-            arg0->unk_00 &= 0xFFFE;
-            arg0->unk_08[sp20].unk_00 &= 0xFFFE;
+            arg0->posX &= 0xFFFE;
+            arg0->unk_08[sp20].posX &= 0xFFFE;
             PokeIcon_RenderSlot(arg0, sp20);
             arg0->unk_03 = sp20;
             sp24 = sp20;
-            arg0->unk_02++;
-            if (arg0->unk_02 >= arg0->unk_01) {
-                arg0->unk_02 = 0;
+            arg0->posY++;
+            if (arg0->posY >= arg0->unk_01) {
+                arg0->posY = 0;
             }
         }
     } else {
         for (i = 0; i < arg0->unk_01; i++) {
             temp_v0_2 = &arg0->unk_08[sp20];
-            if (temp_v0_2->unk_00 & 1) {
-                arg0->unk_00 |= 1;
-                if (temp_v0_2->unk_00 & 2) {
-                    PokeIcon_RequestFrameLoad(arg0->unk_04, *temp_v0_2->unk_14.ptr, temp_v0_2->unk_10);
+            if (temp_v0_2->posX & 1) {
+                arg0->posX |= 1;
+                if (temp_v0_2->posX & 2) {
+                    PokeIcon_RequestFrameLoad(arg0->rotation, *temp_v0_2->unk_14.ptr, temp_v0_2->unk_10);
                 } else {
-                    PokeIcon_RequestFrameLoad(arg0->unk_04, temp_v0_2->unk_14.unk_02, temp_v0_2->unk_10);
+                    PokeIcon_RequestFrameLoad(arg0->rotation, temp_v0_2->unk_14.posY, temp_v0_2->unk_10);
                 }
-                arg0->unk_02 = sp20;
+                arg0->posY = sp20;
                 break;
             } else {
                 sp20 += 1;
@@ -305,41 +305,41 @@ s32 PokeIcon_ProcessAllSlots(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
 
     sp44 = -1;
-    var_s1 = arg0->unk_02;
+    var_s1 = arg0->posY;
     if (arg0->unk_03 >= 0) {
         temp_s0 = &arg0->unk_08[arg0->unk_03];
-        if (temp_s0->unk_00 & 4) {
+        if (temp_s0->posX & 4) {
             while (Display_IsFrameReady() == 0) {}
             PokeIcon_AdjustImageColorBuffer(temp_s0->unk_0C, temp_s0->unk_10);
-            temp_s0->unk_00 &= ~4;
+            temp_s0->posX &= ~4;
         }
     }
 
     for (i = 0; i < arg0->unk_01; i++) {
         temp_s1 = &arg0->unk_08[var_s1];
-        if (temp_s1->unk_00 & 1) {
+        if (temp_s1->posX & 1) {
             if (Display_IsFrameReady() == 0) {
                 do { } while (Display_IsFrameReady() == 0); }
 
             sp48.raw = 0;
-            if (temp_s1->unk_00 & 2) {
-                PokeIcon_RequestFrameLoad(arg0->unk_04, *temp_s1->unk_14.ptr, sp48);
+            if (temp_s1->posX & 2) {
+                PokeIcon_RequestFrameLoad(arg0->rotation, *temp_s1->unk_14.ptr, sp48);
                 if (temp_s1->unk_10.raw != 0) {
-                    temp_s1->unk_00 |= 4;
+                    temp_s1->posX |= 4;
                 }
             } else {
-                PokeIcon_RequestFrameLoad(arg0->unk_04, temp_s1->unk_14.unk_02, sp48);
+                PokeIcon_RequestFrameLoad(arg0->rotation, temp_s1->unk_14.posY, sp48);
             }
 
-            PokeIcon_WaitFrameLoad(arg0->unk_04);
-            arg0->unk_08[var_s1].unk_00 &= ~1;
+            PokeIcon_WaitFrameLoad(arg0->rotation);
+            arg0->unk_08[var_s1].posX &= ~1;
             PokeIcon_RenderSlot(arg0, var_s1);
             sp44 = var_s1;
-            arg0->unk_02 = var_s1;
+            arg0->posY = var_s1;
             arg0->unk_03 = var_s1;
-            arg0->unk_02++;
-            if (arg0->unk_02 >= arg0->unk_01) {
-                arg0->unk_02 = 0;
+            arg0->posY++;
+            if (arg0->posY >= arg0->unk_01) {
+                arg0->posY = 0;
             }
             break;
         }
@@ -361,28 +361,28 @@ s32 PokeIcon_RenderNextSlotBlocking(SpriteDisplay* arg0, s32 arg1) {
     unk_func_8001A024_008* temp_s1;
     
     var_a2 = -1;
-    var_s0 = arg0->unk_02;
+    var_s0 = arg0->posY;
     temp_a0 = arg0->unk_08;
     
     for (i = 0; i < arg0->unk_01; i++) {
         temp_s1 = &arg0->unk_08[var_s0];
-        if (temp_s1->unk_00 & 1) {
+        if (temp_s1->posX & 1) {
             while (Display_IsFrameReady() == 0) {}
             
-            if (temp_s1->unk_00 & 2) {
-                PokeIcon_RequestFrameLoad(arg0->unk_04, *temp_s1->unk_14.ptr, temp_s1->unk_10);
+            if (temp_s1->posX & 2) {
+                PokeIcon_RequestFrameLoad(arg0->rotation, *temp_s1->unk_14.ptr, temp_s1->unk_10);
             } else {
-                PokeIcon_RequestFrameLoad(arg0->unk_04, temp_s1->unk_14.unk_02, temp_s1->unk_10);
+                PokeIcon_RequestFrameLoad(arg0->rotation, temp_s1->unk_14.posY, temp_s1->unk_10);
             }
-            PokeIcon_WaitFrameLoad(arg0->unk_04);
-            arg0->unk_08[var_s0].unk_00 &= ~1;
+            PokeIcon_WaitFrameLoad(arg0->rotation);
+            arg0->unk_08[var_s0].posX &= ~1;
             PokeIcon_RenderSlot(arg0, var_s0);
-            arg0->unk_02 = var_s0;
+            arg0->posY = var_s0;
             var_a2 = var_s0;
-            arg0->unk_02++;
+            arg0->posY++;
             arg0->unk_03 = var_s0;
-            if (arg0->unk_02 >= arg0->unk_01) {
-                arg0->unk_02 = 0;
+            if (arg0->posY >= arg0->unk_01) {
+                arg0->posY = 0;
             }
             break;
         } else {
@@ -400,18 +400,18 @@ void PokeIcon_RedrawSlot(SpriteDisplay* arg0, s32 arg1) {
 
     if (arg1 == arg0->unk_03) {
         GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
-        GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
+        GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_08[arg1].posY);
         GeoRender_SetMode(1);
         Geo_RenderRootNode(arg0->unk_0C);
         return;
     }
     for (i = arg0->unk_01; i > 0; i--) {
-        if (arg0->unk_08[i - 1].unk_00 & 1) {
+        if (arg0->unk_08[i - 1].posX & 1) {
             break;
         }
     }
     if (i == 0) {
-        arg0->unk_08[arg1].unk_00 |= 1;
+        arg0->unk_08[arg1].posX |= 1;
     }
 }
 
@@ -428,7 +428,7 @@ s32 PokeIcon_AreSlotsIdle(SpriteDisplay* arg0) {
     s32 i;
     
     for (i = 0; i < arg0->unk_01; i++) {
-        if (arg0->unk_08[i].unk_00 & 5) {
+        if (arg0->unk_08[i].posX & 5) {
             return 0;
         }
     }
@@ -445,8 +445,8 @@ void PokeIcon_LoadModelTexture(u16* arg0, s32 arg1) {
 
     if ((arg1 > 0) && (arg1 < 0x99)) {
         temp_v1 = gAssetManager.unk_A04.unk_10;
-        temp_a1 = temp_v1->unk_04 + temp_v1[arg1].raw;
-        Dma_WriteChunks(arg0, temp_a1, temp_v1[arg1].unk_04 + temp_a1, 0);
+        temp_a1 = temp_v1->rotation + temp_v1[arg1].raw;
+        Dma_WriteChunks(arg0, temp_a1, temp_v1[arg1].rotation + temp_a1, 0);
     }
 }
 
@@ -459,7 +459,7 @@ void PokeIcon_LoadModelTextureForMon(u16* arg0, s32 arg1, PokemonData* arg2) {
     }
 
     Model_ComputeSizeVariant(&sp1C, arg2);
-    PokeIcon_LoadModelTexture(arg0, arg2->unk_00.unk_00);
+    PokeIcon_LoadModelTexture(arg0, arg2->posX.posX);
     PokeIcon_AdjustImageColors(arg0, 0x640, sp1C);
 }
 
@@ -493,10 +493,10 @@ unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16
     unk_func_8001B1FC* temp_v0 = main_pool_alloc(sizeof(unk_func_8001B1FC), 0);
 
     if (temp_v0 != NULL) {
-        temp_v0->unk_00 = 6;
+        temp_v0->posX = 6;
         temp_v0->unk_1C = arg0;
         temp_v0->unk_14 = 0;
-        temp_v0->unk_04 = arg1;
+        temp_v0->rotation = arg1;
         temp_v0->unk_06 = arg2;
         temp_v0->unk_08 = arg5;
         temp_v0->unk_0A = arg6;
@@ -511,16 +511,16 @@ unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16
 
 void PokeIcon_SetPreviewMon(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2) {
     arg1_func_80010CA8 sp2C;
-    s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 >> 0x10) >> 6;
-    s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 >> 6) >> 4;
-    s16 tmp3 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 << 6) >> 6;
+    s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1->posX.posX - 1].unk_14 >> 0x10) >> 6;
+    s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1->posX.posX - 1].unk_14 >> 6) >> 4;
+    s16 tmp3 = (s16)(gSpeciesDisplayTable[arg1->posX.posX - 1].unk_14 << 6) >> 6;
 
-    arg0->unk_00 |= 1;
+    arg0->posX |= 1;
     arg0->unk_14 = arg1;
     arg0->unk_12 = 0x100;
     arg0->unk_10 = 0;
-    arg0->unk_02 = arg2;
-    arg0->unk_18 = gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_02 / 100.0f;
+    arg0->posY = arg2;
+    arg0->unk_18 = gSpeciesDisplayTable[arg1->posX.posX - 1].posY / 100.0f;
 
     arg0->unk_24->unk_024.x = tmp1;
     arg0->unk_24->unk_024.y = tmp2;
@@ -528,13 +528,13 @@ void PokeIcon_SetPreviewMon(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2
 
     arg0->unk_24->unk_01E = gSpriteAnimUpdateFunc;
     Model_ComputeSizeVariant(&sp2C, arg1);
-    PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1->unk_00.unk_00, sp2C);
+    PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1->posX.posX, sp2C);
     PokeIcon_WaitFrameLoad(arg0->unk_1C);
     ModelRenderer_ClearDisplayObject(arg0->unk_24);
-    Model_InitDisplayObject(arg0->unk_24, 0, arg1->unk_00.unk_00, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
+    Model_InitDisplayObject(arg0->unk_24, 0, arg1->posX.posX, arg0->unk_1C->unk_24->unk_08->posX[0]);
     ModelAnim_SetAnimation(arg0->unk_24, 1);
-    arg0->unk_24->unk_000.unk_02 &= ~0x40;
-    arg0->unk_24->unk_000.unk_02 |= 0x80;
+    arg0->unk_24->unk_000.posY &= ~0x40;
+    arg0->unk_24->unk_000.posY |= 0x80;
 }
 
 void PokeIcon_SetPreviewSpecies(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
@@ -543,12 +543,12 @@ void PokeIcon_SetPreviewSpecies(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
     s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 >> 6) >> 4;
     s16 tmp3 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 << 6) >> 6;
 
-    arg0->unk_00 &= ~1;
+    arg0->posX &= ~1;
     arg0->unk_14 = arg1;
     arg0->unk_12 = 0x100;
     arg0->unk_10 = 0;
-    arg0->unk_02 = arg2;
-    arg0->unk_18 = gSpeciesDisplayTable[arg1 - 1].unk_02 / 100.0f;
+    arg0->posY = arg2;
+    arg0->unk_18 = gSpeciesDisplayTable[arg1 - 1].posY / 100.0f;
 
     arg0->unk_24->unk_024.x = tmp1;
     arg0->unk_24->unk_024.y = tmp2;
@@ -559,10 +559,10 @@ void PokeIcon_SetPreviewSpecies(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
     PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1, sp34);
     PokeIcon_WaitFrameLoad(arg0->unk_1C);
     ModelRenderer_ClearDisplayObject(arg0->unk_24);
-    Model_InitDisplayObject(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
+    Model_InitDisplayObject(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->unk_08->posX[0]);
     ModelAnim_SetAnimation(arg0->unk_24, 1);
-    arg0->unk_24->unk_000.unk_02 &= ~0x40;
-    arg0->unk_24->unk_000.unk_02 |= 0x80;
+    arg0->unk_24->unk_000.posY &= ~0x40;
+    arg0->unk_24->unk_000.posY |= 0x80;
 }
 
 s32 PokeIcon_HandlePreviewInput(Vec3s* arg0) {
@@ -631,7 +631,7 @@ void PokeIcon_UpdatePreview(unk_func_8001B1FC* arg0) {
     s32 var_v1;
 
     var_v1 = 0;
-    if (arg0->unk_00 & 2) {
+    if (arg0->posX & 2) {
         var_v1 = PokeIcon_HandlePreviewInput(&arg0->unk_24->unk_01E);
         if (var_v1 == 0) {
             var_v1 = func_8001B6BC(&arg0->unk_24->unk_01E);
@@ -641,7 +641,7 @@ void PokeIcon_UpdatePreview(unk_func_8001B1FC* arg0) {
     if (var_v1 != 0) {
         arg0->unk_12 = 0;
         arg0->unk_10 = 0x78;
-    } else if (arg0->unk_00 & 4) {
+    } else if (arg0->posX & 4) {
         if (arg0->unk_10 > 0) {
             arg0->unk_10--;
         } else {
@@ -658,7 +658,7 @@ void PokeIcon_DrawPreview(unk_func_8001B1FC* arg0) {
     s32 i;
 
     if (arg0->unk_0C == 0) {
-        GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_02);
+        GfxImage_FillCurrent(&gDisplayListHead, arg0->posY);
         return;
     }
 
@@ -674,8 +674,8 @@ void PokeIcon_DrawPreview(unk_func_8001B1FC* arg0) {
         if (var_v0 >= 9) {
             var_v0 = 8;
         }
-        Gfx_DrawTextureRgba16(0, i, arg0->unk_08, var_v0, var_s2, arg0->unk_04, 0x200000);
-        var_s2 += arg0->unk_04 * 0x10;
+        Gfx_DrawTextureRgba16(0, i, arg0->unk_08, var_v0, var_s2, arg0->rotation, 0x200000);
+        var_s2 += arg0->rotation * 0x10;
     }
 
     gDPPipeSync(gDisplayListHead++);

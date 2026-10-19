@@ -57,7 +57,7 @@ s32 LabPC_StatusToIconIndex(s32 arg0) {
 PaletteColor* LabPC_GetMonStatusIcon(PokemonData* arg0) {
     s32 var_v1;
 
-    if (arg0->unk_02 == 0) {
+    if (arg0->posY == 0) {
         var_v1 = 1;
     } else {
         var_v1 = LabPC_StatusToIconIndex(arg0->unk_05);

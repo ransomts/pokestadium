@@ -25,8 +25,8 @@
 #include "src/stage_loader.h"
 
 typedef struct unk_D_86203CEC {
-    /* 0x0 */ void* unk_00;
-    /* 0x4 */ s16 unk_04;
+    /* 0x0 */ void* posX;
+    /* 0x4 */ s16 rotation;
     /* 0x6 */ s16 unk_06;
 } unk_D_86203CEC; // size = 0x8
 
@@ -111,10 +111,10 @@ static AnimFrame gRacePanelAnim3[] = {
 };
 
 static unk_D_86203CEC gRaceAIDifficultyTable[] = {
-    { D_87A01190, 0x0019, 0x000F },
+    { gStageSubtitles_Alt2, 0x0019, 0x000F },
     { gTextTable_StageSubtitles, 0x0019, 0x0014 },
-    { D_87A01180, 0x001E, 0x0028 },
-    { D_87A011A4, 0x0028, 0x005A },
+    { gStageSubtitles_Alt1, 0x001E, 0x0028 },
+    { gStageSubtitles_Alt3, 0x0028, 0x005A },
 };
 
 static u32 gRaceStageScript[] = {
@@ -233,7 +233,7 @@ void RattataGame_UpdateAIInput(void) {
                 if (gRacePlayerState->unk_002 > 0) {
                     temp_s0 = &gRaceAIDifficultyTable[gRacePlayerState->unk_002 - 1];
 
-                    if (Rand_Range(0x64) < temp_s0->unk_04) {
+                    if (Rand_Range(0x64) < temp_s0->rotation) {
                         gRacePlayerState->unk_170 |= 0x8000;
                     }
 
@@ -269,7 +269,7 @@ void RattataGame_PollInput(void) {
 
 void RattataGame_InitCamera(void) {
     gRaceCameraInitFlag = 0;
-    gRaceCamera = gRaceGraphRoot->unk_00.unk_0C;
+    gRaceCamera = gRaceGraphRoot->posX.unk_0C;
 
     MiniCam_SetActive(gRaceCamera);
     gRaceCameraDist = 0x1300;
@@ -717,7 +717,7 @@ void RattataGame_UpdateHurdleMarkers(unk_D_86203E50* arg0) {
                 case 0:
                     if ((unk_190 - (temp_fs1 - 30.0f)) < 5.0f) {
                         gRaceObstaclePtr->unk_002 = 1;
-                        Model_InitDisplayObject(temp_s1, 0, 0xB0, gRaceStageAssets->unk_08->unk_00[arg0_unk000]);
+                        Model_InitDisplayObject(temp_s1, 0, 0xB0, gRaceStageAssets->unk_08->posX[arg0_unk000]);
                     }
                     break;
 
@@ -1280,7 +1280,7 @@ void RattataGame_LoadAssets(void) {
     gRaceStageReady = 0;
     gRaceStageData = Model_LoadByArchiveIndex(0xB8);
     ModelRenderer_AttachDisplayObject(&gRacePlayerGraphNodeTemp);
-    Model_InitDisplayObject(&gRacePlayerGraphNodeTemp, 0, 0xB8, gRaceStageData->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&gRacePlayerGraphNodeTemp, 0, 0xB8, gRaceStageData->unk_08->posX[0]);
     gRacePlayerGraphNodeTemp.unk_024.y = -26.0f;
     gRaceStageData = Model_LoadByArchiveIndex(0xAF);
 
@@ -1291,7 +1291,7 @@ void RattataGame_LoadAssets(void) {
 
         RattataGame_InitAIDifficulty(gRacePlayerState);
         ModelRenderer_AttachDisplayObject(temp_s0);
-        Model_InitDisplayObject(temp_s0, 0, 0xAF, gRaceStageData->unk_08->unk_00[0]);
+        Model_InitDisplayObject(temp_s0, 0, 0xAF, gRaceStageData->unk_08->posX[0]);
         temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
         temp_s0->unk_024.y = 0.0f;
         temp_s0->unk_030.x = 1.0f;

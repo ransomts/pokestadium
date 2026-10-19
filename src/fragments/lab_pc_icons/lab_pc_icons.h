@@ -5,7 +5,7 @@
 #include "fragments/24/fragment24.h"
 
 typedef struct unk_func_8860439C_sp64 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ char* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ Color_RGBA8 unk_34;

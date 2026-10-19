@@ -1579,7 +1579,7 @@ void SandshrewGame_PlaySoundEvent(s16 arg0, s16 arg1) {
     }
 
     if (var_s0 != 0) {
-        D_87903DBC++;
+        gMiniGameStateVar2++;
         Audio_DispatchSoundBankCommand(var_s0, sp30, sp2C);
     }
 }
@@ -1662,7 +1662,7 @@ void miniSandshewReangleAll(void) {
 
 void miniSandshewChangeAnim(MiniActor* actor, s32 animID) {
     ModelAnim_SetAnimation(&actor->unk_000, animID);
-    ModelAnim_BindTransformCurve(&actor->unk_000, 0, actor->unk_000.unk_040.unk_04, 0x10000);
+    ModelAnim_BindTransformCurve(&actor->unk_000, 0, actor->unk_000.unk_040.rotation, 0x10000);
     ModelAnim_SetFrame(&actor->unk_000, 0);
     ModelAnim_SetSpeed(&actor->unk_000, 0x10000);
 }
@@ -1842,7 +1842,7 @@ void SandshrewGame_DigStateMachine(MiniActor* sandshrew) {
             } else {
                 sandshrew->diggingSpeed = 0.0f;
                 ModelAnim_SetAnimation(&sandshrew->unk_000, 3);
-                ModelAnim_BindTransformCurve(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
+                ModelAnim_BindTransformCurve(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.rotation, 0x10000);
                 ModelAnim_SetFrame(&sandshrew->unk_000, 0);
                 ModelAnim_SetSpeed(&sandshrew->unk_000, 0x10000);
                 SandshrewGame_PlaySoundEventGuarded(4, sandshrew - miniSandshrews);
@@ -1859,7 +1859,7 @@ void SandshrewGame_DigStateMachine(MiniActor* sandshrew) {
 
         case 0x64: //	win start animation
             ModelAnim_SetAnimation(&sandshrew->unk_000, 4);
-            ModelAnim_BindTransformCurve(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
+            ModelAnim_BindTransformCurve(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.rotation, 0x10000);
             ModelAnim_SetFrame(&sandshrew->unk_000, 0);
             ModelAnim_SetSpeed(&sandshrew->unk_000, 0x10000);
             sandshrew->mainState++;
@@ -2036,7 +2036,7 @@ void SandshrewGame_UpdateGeiser(MiniActor* geiser) {
     }
 
     if ((geiser->mainState >= 2) && (gTimerMask2 == 0)) {
-        Particle_EmitBurstFromObject(&geiser->unk_000, MiniFx_UpdateCoolGravityParticle, &D_87903E58, 4, 0xA);
+        Particle_EmitBurstFromObject(&geiser->unk_000, MiniFx_UpdateCoolGravityParticle, &gMiniTutoScreenNode3, 4, 0xA);
     }
 }
 
@@ -2055,7 +2055,7 @@ void SandshrewGame_UpdateGeisers(void) {
 }
 
 void SandshrewGame_InitCamera(void) {
-    gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
+    gMiniCameraPtr = gMiniCameraStruct->posX.unk_0C;
 
     miniCameraXRot = 0x1600;
     miniCameraYRot = 0;
@@ -2139,7 +2139,7 @@ s32 SandshrewGame_CheckWinCondition(void) {
         miniSandshrewGeiserPtr++;
     }
 
-    D_87903DD4 = var_s4;
+    gMiniTutoTimer4 = var_s4;
     return var_s7;
 }
 
@@ -2218,7 +2218,7 @@ void SandshrewGame_MinigameStateMachine(void) {
         case 6:
             if (gResultExitPending != 0) {
                 minigameState++;
-                D_87903DAC = 1;
+                gMiniGameTimer2 = 1;
             }
             break;
     }
@@ -2268,7 +2268,7 @@ void SandshrewGame_DrawTutorialText(void) {
 }
 
 void SandshrewGame_DrawTutorialScreen(void) {
-    switch (D_87903DCC) {
+    switch (gMiniTutoTimer2) {
         case 3:
             SandshrewGame_DrawTutorialText();
 
@@ -2289,7 +2289,7 @@ void SandshrewGame_DrawTutorialScreen(void) {
 
     if (miniTutoScreenState == -2) {
         Font_SetActive(0x10, -2);
-        if (D_87903DD0 == 0x18) {
+        if (gMiniTutoTimer3 == 0x18) {
             miniDrawResultIcons(miniSandshrews);
         }
         Font_SetActive(4, -2);
@@ -2350,7 +2350,7 @@ void SandshrewGame_DrawFrame(s32 arg0) {
         GeoRender_AdvanceFrameCounter();
     }
 
-    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
+    Geo_RenderRootNode(&gMiniCameraStruct->posX);
     MiniFx_DrawParticles();
 
     if (miniDebugMode == 0) {
@@ -2412,7 +2412,7 @@ void SandshrewGame_MainLoop(void) {
             SandshrewGame_CameraControls();
         }
 
-        if ((miniDebugMode == 0) && ((D_87903DAC != 0) || (gResultFlag_Special != 0))) {
+        if ((miniDebugMode == 0) && ((gMiniGameTimer2 != 0) || (gResultFlag_Special != 0))) {
             var_s5 = 0;
         }
 
@@ -2478,7 +2478,7 @@ void SandshrewGame_LoadAssets(void) {
     for (i = 0; i < 4; i++) {
         miniSandshrews[i].unk_23C = 0xA1;
         miniSandshrews[i].unk_168 = temp_s1;
-        Model_InitDisplayObject(&miniSandshrews[i].unk_000, 0, miniSandshrews[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&miniSandshrews[i].unk_000, 0, miniSandshrews[i].unk_23C, temp_s1->unk_08->posX[0]);
         ModelAnim_SetAnimation(&miniSandshrews[i].unk_000, 0);
     }
 
@@ -2487,7 +2487,7 @@ void SandshrewGame_LoadAssets(void) {
     for (i = 0; i < 4; i++) {
         miniSandshrewHoles[i].unk_23C = 0x9D;
         miniSandshrewHoles[i].unk_168 = temp_s1;
-        Model_InitDisplayObject(&miniSandshrewHoles[i].unk_000, 0, miniSandshrewHoles[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&miniSandshrewHoles[i].unk_000, 0, miniSandshrewHoles[i].unk_23C, temp_s1->unk_08->posX[0]);
         ModelAnim_SetAnimation(&miniSandshrewHoles[i].unk_000, 0);
     }
 
@@ -2496,7 +2496,7 @@ void SandshrewGame_LoadAssets(void) {
     for (i = 0; i < 4; i++) {
         miniSandshrewGeisers[i].unk_23C = 0xA2;
         miniSandshrewGeisers[i].unk_168 = temp_s1;
-        Model_InitDisplayObject(&miniSandshrewGeisers[i].unk_000, 0, miniSandshrewGeisers[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&miniSandshrewGeisers[i].unk_000, 0, miniSandshrewGeisers[i].unk_23C, temp_s1->unk_08->posX[0]);
         ModelAnim_SetAnimation(&miniSandshrewGeisers[i].unk_000, 0);
     }
 }

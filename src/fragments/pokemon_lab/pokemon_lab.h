@@ -5,7 +5,7 @@
 #include "src/fragments/26/fragment26.h"
 
 typedef struct unk_func_8800071C {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ u8* unk_2C;
     /* 0x30 */ u8* unk_30;
     /* 0x34 */ Color_RGBA8 unk_34;
@@ -13,20 +13,20 @@ typedef struct unk_func_8800071C {
 } unk_func_8800071C; // size = 0x3C
 
 typedef struct unk_func_88000830 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ u8** unk_30;
     /* 0x34 */ s32 unk_34;
 } unk_func_88000830; // size = 0x38
 
 typedef struct unk_func_88000C18 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ Color_RGBA8 unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_88000C18; // size = 0x34
 
 typedef struct unk_func_88000CC8 {
-    /* 0x00 */ unk_func_88001300_000 unk_00;
+    /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ u8* unk_2C;
     /* 0x30 */ u8* unk_30[2];
     /* 0x38 */ u8* unk_38[3];

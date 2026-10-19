@@ -5,9 +5,9 @@
 #include "src/29BA0.h"
 
 typedef struct unk_D_84803760 {
-    /* 0x00 */ s8 unk_00;
+    /* 0x00 */ s8 posX;
     /* 0x01 */ s8 unk_01;
-    /* 0x02 */ s8 unk_02[6];
+    /* 0x02 */ s8 posY[6];
     /* 0x08 */ s8 unk_08[6];
     /* 0x0E */ s8 unk_0E;
     /* 0x0F */ s8 unk_0F;
@@ -38,13 +38,13 @@ typedef struct unk_D_848037A0 {
 } unk_D_848037A0; // size = 0x4B20
 
 typedef struct unk_D_848035FC {
-    /* 0x00 */ Color_RGB8 unk_00;
-    /* 0x04 */ u8* unk_04;
+    /* 0x00 */ Color_RGB8 posX;
+    /* 0x04 */ u8* rotation;
 } unk_D_848035FC; // size = 0x8
 
 typedef struct unk_D_84803548 {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
 } unk_D_84803548; // size = 0x4
 
 void BattleMenu_DrawBottomActionButtons(void);

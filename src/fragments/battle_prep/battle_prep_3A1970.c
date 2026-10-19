@@ -118,23 +118,23 @@ void BattlePrep_TrophyModelIdle(BarState* arg0) {
 void BattlePrep_TrophyModelGrow(BarState* arg0) {
     arg0->unk_01++;
     if (arg0->unk_01 == 8) {
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
     }
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
 }
 
 void BattlePrep_TrophyModelShrink(BarState* arg0) {
     arg0->unk_01--;
     if (arg0->unk_01 == 0) {
-        arg0->unk_00 = 0;
-        ModelRenderer_ClearDisplayObject(arg0->unk_04);
+        arg0->posX = 0;
+        ModelRenderer_ClearDisplayObject(arg0->rotation);
     } else {
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
     }
 }
 
 void BattlePrep_UpdateTrophyModel(BarState* arg0) {
-    switch ((s8)arg0->unk_00) {
+    switch ((s8)arg0->posX) {
         case 1:
             BattlePrep_TrophyModelIdle(arg0);
             break;
@@ -150,30 +150,30 @@ void BattlePrep_UpdateTrophyModel(BarState* arg0) {
 }
 
 void BattlePrep_StartTrophyModelGrow(BarState* arg0, Fragment2_1GraphNode* arg1) {
-    arg0->unk_04 = arg1;
+    arg0->rotation = arg1;
     arg0->unk_01 = 0;
-    arg0->unk_00 = 2;
+    arg0->posX = 2;
     Model_InitDisplayObject(arg1, 1, 0, arg0->unk_08);
-    arg0->unk_04->unk_000.unk_14 = arg0;
-    if (arg0->unk_02 == 0) {
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_024, 32.0f, 26.0f, -288.0f);
+    arg0->rotation->unk_000.unk_14 = arg0;
+    if (arg0->posY == 0) {
+        Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_024, 32.0f, 26.0f, -288.0f);
     } else {
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_024, -96.0f, 80.0f, -288.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_024, -96.0f, 80.0f, -288.0f);
     }
-    Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_030, 0.1f, 0.1f, 0.1f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_030, 0.1f, 0.1f, 0.1f);
 }
 
 void BattlePrep_StartTrophyModelShrink(BarState* arg0) {
     arg0->unk_01 = 8;
-    arg0->unk_00 = 3;
+    arg0->posX = 3;
 }
 
 void BattlePrep_InitTrophyModel(BarState* arg0, u8 arg1) {
     MemoryBlock* sp2C;
 
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
     arg0->unk_01 = 0;
-    arg0->unk_02 = arg1;
+    arg0->posY = arg1;
 
     sp2C = MainPool_AllocState(main_pool_get_available(), 0);
     if (arg1 == 0) {

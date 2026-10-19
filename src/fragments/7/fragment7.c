@@ -73,7 +73,7 @@ static u32 gPatternTileData[] = {
 };
 
 typedef struct unk_D_861047B8 {
-    /* 0x00 */ u8 unk_00[6];
+    /* 0x00 */ u8 posX[6];
     /* 0x06 */ u8 unk_06[4];
 } unk_D_861047B8; // size = 0xA
 
@@ -104,9 +104,9 @@ static unk_D_861047B8 gWeightedItemTable[0x2E] = {
 };
 
 typedef struct unk_D_86104984 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -164,7 +164,7 @@ static u32* gPatternTilePtrs[4][2] = {
 };
 
 typedef struct unk_D_86104B5C {
-    /* 0x00 */ u8 unk_00[3];
+    /* 0x00 */ u8 posX[3];
 } unk_D_86104B5C;
 
 static unk_D_86104B5C gResultScreenDLParams1 = { 0, 0, 30 };
@@ -401,7 +401,7 @@ void ClefairyGame_GeneratePattern(void) {
     ptr = &gItemPairStates[0];
 
     while (var_a1 != 0) {
-        if (var_a0->unk_00[0] != 0xFF) {
+        if (var_a0->posX[0] != 0xFF) {
             temp_v0 = var_a0->unk_06[gPlayerType % 4];
             if ((temp_v0 > 0) && (temp_v0 != 0xFF)) {
                 var_s2++;
@@ -416,9 +416,9 @@ void ClefairyGame_GeneratePattern(void) {
     temp_v0_2 = ClefairyGame_ChoosePatternEntry(var_s2, var_a3);
 
     for (i = 0; i < 6; i++, ptr++) {
-        ptr->unk_000 = temp_v0_2->unk_00[i];
+        ptr->unk_000 = temp_v0_2->posX[i];
         ptr->unk_002 = 0;
-        ptr->unk_16C = gFragment7Struct3->unk_08->unk_00[ptr->unk_000];
+        ptr->unk_16C = gFragment7Struct3->unk_08->posX[ptr->unk_000];
     }
 
     var_v0 = ClefairyGame_ChoosePatternEntry(var_s2, var_a3);
@@ -427,9 +427,9 @@ void ClefairyGame_GeneratePattern(void) {
     }
 
     for (i = 0; i < 6; i++) {
-        ptr->unk_000 = var_v0->unk_00[i];
+        ptr->unk_000 = var_v0->posX[i];
         ptr->unk_002 = 0;
-        ptr->unk_16C = gFragment7Struct3->unk_08->unk_00[ptr->unk_000];
+        ptr->unk_16C = gFragment7Struct3->unk_08->posX[ptr->unk_000];
         ptr++;
     }
 }
@@ -522,7 +522,7 @@ void ClefairyGame_PollInputs(void) {
 }
 
 void ClefairyGame_InitCamera(void) {
-    gFragment7Camera = gFragment7Struct2->unk_00.unk_0C;
+    gFragment7Camera = gFragment7Struct2->posX.unk_0C;
     MiniCam_SetActive(gFragment7Camera);
 
     gCameraX = 0x600;
@@ -559,9 +559,9 @@ void ClefairyGame_DrawOverlay(s32 arg0) {
             unk_D_86104984* ptr = &gPlayerIconPositions[i];
 
             if (gPlayerStates[i].unk_000 == 0) {
-                Widget_DrawPlayerIcon(i, ptr->unk_00, ptr->unk_02, 0.75f);
+                Widget_DrawPlayerIcon(i, ptr->posX, ptr->posY, 0.75f);
             } else {
-                Widget_DrawPlayerIcon(-1 - i, ptr->unk_00, ptr->unk_02, 0.75f);
+                Widget_DrawPlayerIcon(-1 - i, ptr->posX, ptr->posY, 0.75f);
             }
         }
 
@@ -711,7 +711,7 @@ void ClefairyGame_DrawProgressBars(s32 arg0) {
         unk_D_86104984* ptr = &gPlayerIconPositions[i];
 
         gCurrentPlayerState = &gPlayerStates[i];
-        Widget_DrawProgressBar(ptr->unk_00 - 0xE, ptr->unk_02 - 5, 0x32, gCurrentPlayerState->unk_1A8, gCurrentPlayerState->unk_1AA);
+        Widget_DrawProgressBar(ptr->posX - 0xE, ptr->posY - 5, 0x32, gCurrentPlayerState->unk_1A8, gCurrentPlayerState->unk_1AA);
     }
 
     if ((arg0 == 8) && (gResultScreenBarMax != 0)) {
@@ -1760,7 +1760,7 @@ void ClefairyGame_LoadAssets(void) {
         gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
 
         ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
-        Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB1, gFragment7Struct1->unk_08->unk_00[0]);
+        Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB1, gFragment7Struct1->unk_08->posX[0]);
 
         gCurrentPlayerGraphNode->unk_024.x = (i - 1.5f) * 40.0f;
         gCurrentPlayerGraphNode->unk_024.y = 0.0f;
@@ -1781,7 +1781,7 @@ void ClefairyGame_LoadAssets(void) {
     gFragment7Struct1 = Model_LoadByArchiveIndex(0xB2);
     gCurrentPlayerGraphNode = &gResultScreenGraphNode1;
     ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
-    Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB2, gFragment7Struct1->unk_08->unk_00[0]);
+    Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB2, gFragment7Struct1->unk_08->posX[0]);
     gCurrentPlayerGraphNode->unk_024.x = 0.0f;
     gCurrentPlayerGraphNode->unk_024.y = 10.0f;
     gCurrentPlayerGraphNode->unk_024.z = -145.0f;
@@ -1793,7 +1793,7 @@ void ClefairyGame_LoadAssets(void) {
     gFragment7Struct1 = Model_LoadByArchiveIndex(0xB3);
     gCurrentPlayerGraphNode = &gResultScreenGraphNode2;
     ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
-    Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB3, gFragment7Struct1->unk_08->unk_00[0]);
+    Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB3, gFragment7Struct1->unk_08->posX[0]);
     gFragment7Struct3 = Model_LoadByArchiveIndex(0xB4);
 
     for (i = 0; i < 12; i++) {
@@ -1807,7 +1807,7 @@ void ClefairyGame_LoadAssets(void) {
     for (i = 0; i < 4; i++) {
         gCurrentPlayerGraphNode = &gResultScreenGraphNodes[i].unk_004;
         ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
-        Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB5, gFragment7Struct1->unk_08->unk_00[0]);
+        Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB5, gFragment7Struct1->unk_08->posX[0]);
         gCurrentPlayerGraphNode->unk_024.x = (i - 1.5f) * 40.0f;
         gCurrentPlayerGraphNode->unk_024.y = 0.0f;
         gCurrentPlayerGraphNode->unk_024.z = 0.0f;

@@ -12,8 +12,8 @@ void Save_ResetBank(UNUSED MainPoolBlock* arg0, u32 arg1) {
     unk_D_800AE4E8* temp_v0 = &gGbsSaveBanks[bank_num];
 
     if ((arg1 >= 'BNK0') && (arg1 < 'BNK4')) {
-        temp_v0->unk_00 &= ~3;
-        temp_v0->unk_04.unk1 = NULL;
+        temp_v0->posX &= ~3;
+        temp_v0->rotation.unk1 = NULL;
         temp_v0->unk_08.unk1 = NULL;
     }
 }
@@ -69,26 +69,26 @@ void Save_WriteFooter(u8* arg0, s32 arg1, s32 arg2) {
 
 void Save_WriteRecord(u8* arg0, u8* arg1, s32 arg2, s32 arg3) {
     _bcopy(arg0, arg1, arg2);
-    gGbsSaveBanks[arg3].unk_00 |= 2;
+    gGbsSaveBanks[arg3].posX |= 2;
 }
 
 void Save_CommitRecord(u8* arg0, s32 arg1, s32 arg2) {
     if (*arg0 & 2) {
         *arg0 &= ~2;
         Save_WriteFooter(arg0, arg1, 1);
-        gGbsSaveBanks[arg2].unk_00 |= 2;
+        gGbsSaveBanks[arg2].posX |= 2;
     }
 }
 
 void Save_InvalidateRecord(u8* arg0, s32 arg1, s32 arg2) {
     if (*arg0 & 2) {
         Save_WriteFooter(arg0, arg1, 0);
-        gGbsSaveBanks[arg2].unk_00 |= 2;
+        gGbsSaveBanks[arg2].posX |= 2;
     }
 }
 
 void Save_RestoreRecord(u8* arg0, s32 arg1, s32 arg2) {
-    u32 tmp = arg0 - (u8*)gGbsSaveBanks[arg2].unk_04.unk1;
+    u32 tmp = arg0 - (u8*)gGbsSaveBanks[arg2].rotation.unk1;
 
     _bcopy(tmp + (u8*)gGbsSaveBanks[arg2].unk_08.unk1, arg0, arg1);
 }
@@ -96,7 +96,7 @@ void Save_RestoreRecord(u8* arg0, s32 arg1, s32 arg2) {
 void Save_ClearRecord(u8* arg0, s32 arg1, s32 arg2) {
     bzero(arg0, arg1);
     *arg0 |= 2;
-    gGbsSaveBanks[arg2].unk_00 |= 2;
+    gGbsSaveBanks[arg2].posX |= 2;
 }
 
 void Save_LoadWithRepair(s32 arg0, s32 arg1) {
@@ -112,56 +112,56 @@ void Save_LoadWithRepair(s32 arg0, s32 arg1) {
             sp30 = gCurrentBankSlot / 4;
             idx2 = gCurrentBankSlot % 4;
             sp34 = 0x160;
-            sp24 = (u8*)&gGbsSaveBanks[sp30].unk_04.unk1->unk_0000[idx2][arg1];
+            sp24 = (u8*)&gGbsSaveBanks[sp30].rotation.unk1->unk_0000[idx2][arg1];
             sp20 = (u8*)&gGbsSaveBanks[sp30].unk_08.unk1->unk_0000[idx2][arg1];
             break;
 
         case 17:
             sp30 = 3;
             sp34 = 0x468;
-            sp24 = (u8*)&gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1];
+            sp24 = (u8*)&gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1];
             sp20 = (u8*)&gGbsSaveBanks[3].unk_08.unk3->unk_0000[arg1];
             break;
 
         case 18:
             sp30 = 3;
             sp34 = 0xE0;
-            sp24 = (u8*)&gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1];
+            sp24 = (u8*)&gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1];
             sp20 = (u8*)&gGbsSaveBanks[3].unk_08.unk3->unk_34E0[arg1];
             break;
 
         case 19:
             sp30 = 2;
             sp34 = 0xF60;
-            sp24 = (u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_0DC0;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_0DC0;
             sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_0DC0;
             break;
 
         case 20:
             sp30 = 2;
             sp34 = 0x28;
-            sp24 = (u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1EA0;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EA0;
             sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_1EA0;
             break;
 
         case 21:
             sp30 = 2;
             sp34 = 0x180;
-            sp24 = (u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1D20;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1D20;
             sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_1D20;
             break;
 
         case 22:
             sp30 = 2;
             sp34 = 0x13B8;
-            sp24 = (u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1EC8;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EC8;
             sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_1EC8;
             break;
 
         case 23:
             sp30 = 2;
             sp34 = 0xB84;
-            sp24 = (u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_3280;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_3280;
             sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_3280;
             break;
     }
@@ -195,9 +195,9 @@ void GbSave_LoadBattleMonRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010*
 }
 
 void GbSave_SaveBattleMonRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
-    arg0->unk_04 = arg0->unk_24;
+    arg0->rotation = arg0->unk_24;
 
-    Pokemon_ToGbRecord(arg0, &arg1->unk_00);
+    Pokemon_ToGbRecord(arg0, &arg1->posX);
     Text_TranscodeName(arg1->unk_21, arg0->unk_30);
 
     _bcopy(arg0->unk_46, arg1->unk_2C, 0xB);
@@ -210,35 +210,35 @@ s32 Save_IsTypedRecordFlagSet(s32 arg0, s32 arg1, s16 arg2) {
 
     switch (arg0) {
         case 16:
-            var_v1 = (gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_000.unk_00 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_000.posX & arg2) != 0;
             break;
 
         case 17:
-            var_v1 = (gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_000.unk_00 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.posX & arg2) != 0;
             break;
 
         case 18:
-            var_v1 = (gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_00.unk_00 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.posX & arg2) != 0;
             break;
 
         case 19:
-            var_v1 = (gGbsSaveBanks[2].unk_04.unk2->unk_0DC0.unk_000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_0DC0.unk_000 & arg2) != 0;
             break;
 
         case 20:
-            var_v1 = (gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_00 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_1EA0.posX & arg2) != 0;
             break;
 
         case 21:
-            var_v1 = (gGbsSaveBanks[2].unk_04.unk2->unk_1D20.unk_000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_1D20.unk_000 & arg2) != 0;
             break;
 
         case 22:
-            var_v1 = (gGbsSaveBanks[2].unk_04.unk2->unk_1EC8.unk_0000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_1EC8.unk_0000 & arg2) != 0;
             break;
 
         case 23:
-            var_v1 = (gGbsSaveBanks[2].unk_04.unk2->unk_3280.unk_0000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_3280.unk_0000 & arg2) != 0;
             break;
     }
 
@@ -251,35 +251,35 @@ void Save_MarkRecordDirty(s32 arg0, s32 arg1, s16 arg2) {
 
     switch (arg0) {
         case 16:
-            gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_000.unk_00 |= arg2;
+            gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_000.posX |= arg2;
             break;
 
         case 17:
-            gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_000.unk_00 |= arg2;
+            gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.posX |= arg2;
             break;
 
         case 18:
-            gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_00.unk_00 |= arg2;
+            gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.posX |= arg2;
             break;
 
         case 19:
-            gGbsSaveBanks[2].unk_04.unk2->unk_0DC0.unk_000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->unk_0DC0.unk_000 |= arg2;
             break;
 
         case 20:
-            gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_00 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->unk_1EA0.posX |= arg2;
             break;
 
         case 21:
-            gGbsSaveBanks[2].unk_04.unk2->unk_1D20.unk_000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->unk_1D20.unk_000 |= arg2;
             break;
 
         case 22:
-            gGbsSaveBanks[2].unk_04.unk2->unk_1EC8.unk_0000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->unk_1EC8.unk_0000 |= arg2;
             break;
 
         case 23:
-            gGbsSaveBanks[2].unk_04.unk2->unk_3280.unk_0000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->unk_3280.unk_0000 |= arg2;
             break;
     }
 }
@@ -293,35 +293,35 @@ void Save_CommitTypedRecord(s32 arg0, s32 arg1) {
 
     switch (arg0) {
         case 16:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1], 0x160, idx1);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1], 0x160, idx1);
             break;
 
         case 17:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1], 0x468, 3);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1], 0x468, 3);
             break;
 
         case 18:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1], 0xE0, 3);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1], 0xE0, 3);
             break;
 
         case 19:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_0DC0, 0xF60, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_0DC0, 0xF60, 2);
             break;
 
         case 20:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1EA0, 0x28, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EA0, 0x28, 2);
             break;
 
         case 21:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1D20, 0x180, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1D20, 0x180, 2);
             break;
 
         case 22:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1EC8, 0x13B8, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EC8, 0x13B8, 2);
             break;
 
         case 23:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_3280, 0xB84, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_3280, 0xB84, 2);
             break;
     }
 }
@@ -332,35 +332,35 @@ void Save_InvalidateTypedRecord(s32 arg0, s32 arg1) {
 
     switch (arg0) {
         case 16:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1], 0x160, idx1);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1], 0x160, idx1);
             break;
 
         case 17:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1], 0x468, 3);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1], 0x468, 3);
             break;
 
         case 18:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1], 0xE0, 3);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1], 0xE0, 3);
             break;
 
         case 19:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_0DC0, 0xF60, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_0DC0, 0xF60, 2);
             break;
 
         case 20:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1EA0, 0x28, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EA0, 0x28, 2);
             break;
 
         case 21:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1D20, 0x180, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1D20, 0x180, 2);
             break;
 
         case 22:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1EC8, 0x13B8, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EC8, 0x13B8, 2);
             break;
 
         case 23:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_3280, 0xB84, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_3280, 0xB84, 2);
             break;
     }
 }
@@ -371,35 +371,35 @@ void Save_RestoreTypedRecord(s32 arg0, s32 arg1) {
 
     switch (arg0) {
         case 16:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1], 0x160, idx1);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1], 0x160, idx1);
             break;
 
         case 17:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1], 0x468, 3);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1], 0x468, 3);
             break;
 
         case 18:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1], 0xE0, 3);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1], 0xE0, 3);
             break;
 
         case 19:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_0DC0, 0xF60, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_0DC0, 0xF60, 2);
             break;
 
         case 20:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1EA0, 0x28, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EA0, 0x28, 2);
             break;
 
         case 21:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1D20, 0x180, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1D20, 0x180, 2);
             break;
 
         case 22:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_1EC8, 0x13B8, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EC8, 0x13B8, 2);
             break;
 
         case 23:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].unk_04.unk2->unk_3280, 0xB84, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_3280, 0xB84, 2);
             break;
     }
 }
@@ -419,48 +419,48 @@ void Save_ClearTypedRecord(s32 arg0, s32 arg1) {
 
     switch (arg0) {
         case 16:
-            sp38 = &gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1];
+            sp38 = &gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1];
             Save_ClearRecord(sp38, 0x160, idx1);
             sp38->unk_000.unk_01 = 0x50;
             break;
 
         case 17:
-            sp34 = &gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1];
+            sp34 = &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1];
             Save_ClearRecord(sp34, 0x468, 3);
             sp34->unk_000.unk_01 = 0x50;
             break;
 
         case 18:
-            sp30 = &gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1];
+            sp30 = &gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1];
             Save_ClearRecord(sp30, 0xE0, 3);
-            sp30->unk_00.unk_01 = 0x50;
+            sp30->posX.unk_01 = 0x50;
             break;
 
         case 19:
-            sp2C = &gGbsSaveBanks[2].unk_04.unk2->unk_0DC0;
+            sp2C = &gGbsSaveBanks[2].rotation.unk2->unk_0DC0;
             Save_ClearRecord(sp2C, 0xF60, 2);
             sp2C->unk_000 |= 1;
             break;
 
         case 20:
-            sp28 = &gGbsSaveBanks[2].unk_04.unk2->unk_1EA0;
+            sp28 = &gGbsSaveBanks[2].rotation.unk2->unk_1EA0;
             Save_ClearRecord(sp28, 0x28, 2);
-            sp28->unk_00 |= 1;
+            sp28->posX |= 1;
             break;
 
         case 21:
-            sp24 = &gGbsSaveBanks[2].unk_04.unk2->unk_1D20;
+            sp24 = &gGbsSaveBanks[2].rotation.unk2->unk_1D20;
             Save_ClearRecord(sp24, 0x180, 2);
             break;
 
         case 22:
-            sp20 = &gGbsSaveBanks[2].unk_04.unk2->unk_1EC8;
+            sp20 = &gGbsSaveBanks[2].rotation.unk2->unk_1EC8;
             Save_ClearRecord(sp20, 0x13B8, 2);
             sp20->unk_0000 |= 1;
             break;
 
         case 23:
-            sp1C = &gGbsSaveBanks[2].unk_04.unk2->unk_3280;
+            sp1C = &gGbsSaveBanks[2].rotation.unk2->unk_3280;
             Save_ClearRecord(sp1C, 0xB84, 2);
             sp1C->unk_0000 |= 1;
             break;
@@ -471,7 +471,7 @@ void Save_CommitBankRecords(s16 arg0) {
     s32 i;
     s32 sp28;
 
-    if (gGbsSaveBanks[arg0].unk_00 & 1) {
+    if (gGbsSaveBanks[arg0].posX & 1) {
         sp28 = gCurrentBankSlot;
 
         switch (arg0) {
@@ -611,15 +611,15 @@ s32 Deck_GetSaveEntryTrainerId(s32 arg0, s32 arg1) {
 
         switch (arg0) {
             case 16:
-                sp1C = gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_000.unk_0C;
+                sp1C = gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_000.unk_0C;
                 break;
 
             case 17:
-                sp1C = gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_000.unk_0C;
+                sp1C = gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.unk_0C;
                 break;
 
             case 18:
-                sp1C = gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_00.unk_0C;
+                sp1C = gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_0C;
                 break;
         }
     }
@@ -640,15 +640,15 @@ char* Deck_GetSaveEntryName(s32 arg0, s32 arg1, char* arg2) {
 
         switch (arg0) {
             case 16:
-                var_a1 = &gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_000.unk_01;
+                var_a1 = &gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_000.unk_01;
                 break;
 
             case 17:
-                var_a1 = &gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_000.unk_01;
+                var_a1 = &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.unk_01;
                 break;
 
             case 18:
-                var_a1 = &gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_00.unk_01;
+                var_a1 = &gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_01;
                 break;
         }
 
@@ -673,7 +673,7 @@ void Deck_SetSaveEntryTrainerIdAndName(s32 arg0, s32 arg1, s32 arg2, char* arg3,
 
     switch (arg0) {
         case 16:
-            temp_v0 = &gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1];
+            temp_v0 = &gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1];
             if (arg4 >= 0) {
                 temp_v0->unk_000.unk_0C = arg4;
             }
@@ -686,7 +686,7 @@ void Deck_SetSaveEntryTrainerIdAndName(s32 arg0, s32 arg1, s32 arg2, char* arg3,
             break;
 
         case 17:
-            temp_v0_2 = &gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1];
+            temp_v0_2 = &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1];
             if (arg4 >= 0) {
                 temp_v0_2->unk_000.unk_0C = arg4;
             }
@@ -699,13 +699,13 @@ void Deck_SetSaveEntryTrainerIdAndName(s32 arg0, s32 arg1, s32 arg2, char* arg3,
             break;
 
         case 18:
-            temp_v0_3 = &gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1];
+            temp_v0_3 = &gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1];
             if (arg4 >= 0) {
-                temp_v0_3->unk_00.unk_0C = arg4;
+                temp_v0_3->posX.unk_0C = arg4;
             }
 
             if (arg3 != NULL) {
-                Text_TranscodeName(&temp_v0_3->unk_00.unk_01, arg3);
+                Text_TranscodeName(&temp_v0_3->posX.unk_01, arg3);
             }
 
             Save_MarkRecordDirty(arg0, arg1, 3);
@@ -720,15 +720,15 @@ s16 Deck_GetSaveEntryCount(s32 arg0, s32 arg1) {
 
     switch (arg0) {
         case 16:
-            var_v1 = gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_000.unk_0E;
+            var_v1 = gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_000.unk_0E;
             break;
 
         case 17:
-            var_v1 = gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_000.unk_0E;
+            var_v1 = gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.unk_0E;
             break;
 
         case 18:
-            var_v1 = gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_00.unk_0E;
+            var_v1 = gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_0E;
             break;
 
         case 19:
@@ -754,15 +754,15 @@ void Deck_SetSaveEntryCount(s32 arg0, s32 arg1, s32 arg2) {
     if (arg2 < Deck_GetSaveEntryCount(arg0, arg1)) {
         switch (arg0) {
             case 16:
-                gGbsSaveBanks[sp1C].unk_04.unk1->unk_0000[sp18][arg1].unk_000.unk_0E = arg2;
+                gGbsSaveBanks[sp1C].rotation.unk1->unk_0000[sp18][arg1].unk_000.unk_0E = arg2;
                 break;
 
             case 17:
-                gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_000.unk_0E = arg2;
+                gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.unk_0E = arg2;
                 break;
 
             case 18:
-                gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_00.unk_0E = arg2;
+                gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_0E = arg2;
                 break;
         }
 
@@ -782,15 +782,15 @@ void Deck_IncrementSaveEntryCount(s32 arg0, s32 arg1) {
     if (sp1C < Deck_GetSaveRecordCapacity(arg0)) {
         switch (arg0) {
             case 16:
-                gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_000.unk_0E = sp1C + 1;
+                gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_000.unk_0E = sp1C + 1;
                 break;
 
             case 17:
-                gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_000.unk_0E = sp1C + 1;
+                gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.unk_0E = sp1C + 1;
                 break;
 
             case 18:
-                gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_00.unk_0E = sp1C + 1;
+                gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_0E = sp1C + 1;
                 break;
         }
         Save_MarkRecordDirty(arg0, arg1, 2);
@@ -805,28 +805,28 @@ s32 Deck_ReadSaveEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     if (arg2 < Deck_GetSaveEntryCount(arg0, arg1)) {
         switch (arg0) {
             case 16:
-                GbSave_LoadBattleMonRecord(arg3, &gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_010[arg2]);
+                GbSave_LoadBattleMonRecord(arg3, &gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_010[arg2]);
                 break;
 
             case 17:
-                GbSave_LoadBattleMonRecord(arg3, &gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_010[arg2]);
+                GbSave_LoadBattleMonRecord(arg3, &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_010[arg2]);
                 break;
 
             case 18:
-                *(unk_D_800AE4E8_004_3_34E0_010*)arg3 = gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_10[arg2];
+                *(unk_D_800AE4E8_004_3_34E0_010*)arg3 = gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].unk_10[arg2];
                 break;
 
             case 19:
-                *(unk_D_800AE4E8_004_2_0DC0_002*)arg3 = gGbsSaveBanks[2].unk_04.unk2->unk_0DC0.unk_002[arg2];
+                *(unk_D_800AE4E8_004_2_0DC0_002*)arg3 = gGbsSaveBanks[2].rotation.unk2->unk_0DC0.unk_002[arg2];
                 break;
 
             case 22:
-                _bcopy(&gGbsSaveBanks[2].unk_04.unk2->unk_1EC8.unk_0002[arg2], arg3,
+                _bcopy(&gGbsSaveBanks[2].rotation.unk2->unk_1EC8.unk_0002[arg2], arg3,
                        sizeof(unk_D_800AE4E8_004_2_1EC8_0002));
                 break;
 
             case 23:
-                _bcopy(&gGbsSaveBanks[2].unk_04.unk2->unk_3280.unk_0002[arg2], arg3,
+                _bcopy(&gGbsSaveBanks[2].rotation.unk2->unk_3280.unk_0002[arg2], arg3,
                        sizeof(unk_D_800AE4E8_004_2_1EC8_0002));
                 break;
         }
@@ -846,22 +846,22 @@ s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     if ((arg2 < sp24) || ((arg2 == sp24) && (arg2 < sp28))) {
         switch (arg0) {
             case 16:
-                GbSave_SaveBattleMonRecord(arg3, &gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1].unk_010[arg2]);
+                GbSave_SaveBattleMonRecord(arg3, &gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_010[arg2]);
                 break;
             case 17:
-                GbSave_SaveBattleMonRecord(arg3, &gGbsSaveBanks[3].unk_04.unk3->unk_0000[arg1].unk_010[arg2]);
+                GbSave_SaveBattleMonRecord(arg3, &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_010[arg2]);
                 break;
             case 18:
-                gGbsSaveBanks[3].unk_04.unk3->unk_34E0[arg1].unk_10[arg2] = *(unk_D_800AE4E8_004_3_34E0_010*)arg3;
+                gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].unk_10[arg2] = *(unk_D_800AE4E8_004_3_34E0_010*)arg3;
                 break;
             case 19:
-                gGbsSaveBanks[2].unk_04.unk2->unk_0DC0.unk_002[arg2] = *(unk_D_800AE4E8_004_2_0DC0_002*)arg3;
+                gGbsSaveBanks[2].rotation.unk2->unk_0DC0.unk_002[arg2] = *(unk_D_800AE4E8_004_2_0DC0_002*)arg3;
                 break;
             case 22:
-                _bcopy(arg3, &gGbsSaveBanks[2].unk_04.unk2->unk_1EC8.unk_0002[arg2], 0x8C);
+                _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->unk_1EC8.unk_0002[arg2], 0x8C);
                 break;
             case 23:
-                _bcopy(arg3, &gGbsSaveBanks[2].unk_04.unk2->unk_3280.unk_0002[arg2], 0x8C);
+                _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->unk_3280.unk_0002[arg2], 0x8C);
                 break;
         }
 
@@ -877,47 +877,47 @@ s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
 }
 
 void Save_GetOptions(PlayerName* arg0) {
-    *arg0 = gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04;
+    *arg0 = gGbsSaveBanks[2].rotation.unk2->unk_1EA0.rotation;
 }
 
 void Save_SetOptions(PlayerName* arg0) {
-    if (bcmp(arg0, &gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04, 8) != 0) {
-        gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_04 = *arg0;
+    if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->unk_1EA0.rotation, 8) != 0) {
+        gGbsSaveBanks[2].rotation.unk2->unk_1EA0.rotation = *arg0;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
 
 void Save_GetModeSettings(unk_func_80027FA0* arg0, s16 arg1) {
-    *arg0 = gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1];
+    *arg0 = gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1];
 }
 
 void Save_SetModeSettings(unk_func_80027FA0* arg0, s16 arg1) {
-    if (bcmp(arg0, &gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1], sizeof(unk_func_80027FA0)) != 0) {
-        gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_0C[arg1] = *arg0;
+    if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1], sizeof(unk_func_80027FA0)) != 0) {
+        gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1] = *arg0;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
 
 void Save_GetOptionsField02(u16* arg0) {
-    *arg0 = gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_02;
+    *arg0 = gGbsSaveBanks[2].rotation.unk2->unk_1EA0.posY;
 }
 
 void Save_SetOptionsField02(u16* arg0) {
     u16 tmp = *arg0;
-    unk_D_800AE4E8_004_2* temp_v1 = gGbsSaveBanks[2].unk_04.unk2;
+    unk_D_800AE4E8_004_2* temp_v1 = gGbsSaveBanks[2].rotation.unk2;
 
-    if (temp_v1->unk_1EA0.unk_02 != tmp) {
-        temp_v1->unk_1EA0.unk_02 = tmp;
+    if (temp_v1->unk_1EA0.posY != tmp) {
+        temp_v1->unk_1EA0.posY = tmp;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
 
 s32 Save_GetOptionsField1E(void) {
-    return gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_1E;
+    return gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_1E;
 }
 
 void Save_SetOptionsField1E(u8 arg0) {
-    unk_D_800AE4E8_004_2* temp_v0 = gGbsSaveBanks[2].unk_04.unk2;
+    unk_D_800AE4E8_004_2* temp_v0 = gGbsSaveBanks[2].rotation.unk2;
 
     if (temp_v0->unk_1EA0.unk_1E != arg0) {
         temp_v0->unk_1EA0.unk_1E = arg0;
@@ -926,11 +926,11 @@ void Save_SetOptionsField1E(u8 arg0) {
 }
 
 s32 Save_GetOptionsField1F(void) {
-    return gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_1F;
+    return gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_1F;
 }
 
 void Save_SetOptionsField1F(u8 arg0) {
-    unk_D_800AE4E8_004_2* temp_v0 = gGbsSaveBanks[2].unk_04.unk2;
+    unk_D_800AE4E8_004_2* temp_v0 = gGbsSaveBanks[2].rotation.unk2;
 
     if (temp_v0->unk_1EA0.unk_1F != arg0) {
         temp_v0->unk_1EA0.unk_1F = arg0;
@@ -939,12 +939,12 @@ void Save_SetOptionsField1F(u8 arg0) {
 }
 
 s32 Save_GetSelectedPokemonId(void) {
-    return gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_1C;
+    return gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_1C;
 }
 
 void Save_SetSelectedPokemonId(u8 arg0, u8 arg1) {
     s32 temp_v0 = (((arg1 & 1) << 8) | arg0) & 0xFFFF;
-    unk_D_800AE4E8_004_2* temp_v1 = gGbsSaveBanks[2].unk_04.unk2;
+    unk_D_800AE4E8_004_2* temp_v1 = gGbsSaveBanks[2].rotation.unk2;
 
     if (temp_v1->unk_1EA0.unk_1C != temp_v0) {
         temp_v1->unk_1EA0.unk_1C = temp_v0;
@@ -956,8 +956,8 @@ void Session_SaveContinueRecord(unk_func_800281D4* arg0, PokemonData* arg1, s32 
     unk_D_800AE4E8_004_2_1D20* temp_v0;
     s32 i;
 
-    if (gGbsSaveBanks[2].unk_00 & 1) {
-        temp_v0 = &gGbsSaveBanks[2].unk_04.unk2->unk_1D20;
+    if (gGbsSaveBanks[2].posX & 1) {
+        temp_v0 = &gGbsSaveBanks[2].rotation.unk2->unk_1D20;
 
         temp_v0->unk_000 |= 3;
         temp_v0->unk_002 = *arg0;
@@ -976,8 +976,8 @@ s32 Session_LoadContinueRecord(unk_func_800281D4* arg0, PokemonData* arg1) {
     unk_D_800AE4E8_004_2_1D20* temp_v0;
     s32 i;
 
-    if (gGbsSaveBanks[2].unk_00 & 1) {
-        temp_v0 = &gGbsSaveBanks[2].unk_04.unk2->unk_1D20;
+    if (gGbsSaveBanks[2].posX & 1) {
+        temp_v0 = &gGbsSaveBanks[2].rotation.unk2->unk_1D20;
 
         if (temp_v0->unk_000 & 1) {
             *arg0 = temp_v0->unk_002;
@@ -997,8 +997,8 @@ s32 Session_LoadContinueRecord(unk_func_800281D4* arg0, PokemonData* arg1) {
 s32 Save_ContinueRecordExists(void) {
     s32 var_v1 = 0;
 
-    if (gGbsSaveBanks[2].unk_00 & 1) {
-        unk_D_800AE4E8_004_2_1D20* temp_v0 = &gGbsSaveBanks[2].unk_04.unk2->unk_1D20;
+    if (gGbsSaveBanks[2].posX & 1) {
+        unk_D_800AE4E8_004_2_1D20* temp_v0 = &gGbsSaveBanks[2].rotation.unk2->unk_1D20;
 
         var_v1 = (temp_v0->unk_000 & 1) != 0;
     }
@@ -1019,8 +1019,8 @@ s32 Save_FlushBank(s16 arg0) {
 
     temp_s5 = gGbsBankSizeTable[arg0] >> 7;
 
-    if ((gGbsSaveBanks[arg0].unk_00 & 1) && (gGbsSaveBanks[arg0].unk_00 & 2)) {
-        _bcopy(gGbsSaveBanks[arg0].unk_04.unk1, gGbsSaveBanks[arg0].unk_08.unk1, gGbsBankSizeTable[arg0]);
+    if ((gGbsSaveBanks[arg0].posX & 1) && (gGbsSaveBanks[arg0].posX & 2)) {
+        _bcopy(gGbsSaveBanks[arg0].rotation.unk1, gGbsSaveBanks[arg0].unk_08.unk1, gGbsBankSizeTable[arg0]);
         var_s0 = 0;
         while (Flash_EraseSectorByIndex(arg0) == -1) {
             var_s0++;
@@ -1031,7 +1031,7 @@ s32 Save_FlushBank(s16 arg0) {
 
         var_s0 = 0;
         sp38 = arg0 << 7;
-        while (Flash_ProgramPages((u8*)gGbsSaveBanks[arg0].unk_04.unk1, sp38, temp_s5, 1) == -1) {
+        while (Flash_ProgramPages((u8*)gGbsSaveBanks[arg0].rotation.unk1, sp38, temp_s5, 1) == -1) {
             var_s0++;
             if (var_s0 == 4) {
                 return -1;
@@ -1056,7 +1056,7 @@ s32 Save_FlushBank(s16 arg0) {
             }
         }
 
-        gGbsSaveBanks[arg0].unk_00 &= ~2;
+        gGbsSaveBanks[arg0].posX &= ~2;
     }
 
     return 0;
@@ -1079,11 +1079,11 @@ s32 Save_AllocateBank(s16 arg0, u32 arg1) {
     s32 sp2C = 0;
     u8* sp28;
 
-    if (gGbsSaveBanks[arg0].unk_04.unk1 == NULL) {
+    if (gGbsSaveBanks[arg0].rotation.unk1 == NULL) {
         sp28 = main_pool_alloc_with_func(arg1 * 2, 0, 'BNK0' + arg0, Save_ResetBank);
         if (sp28 != NULL) {
             bzero(sp28, arg1 * 2);
-            gGbsSaveBanks[arg0].unk_04.unk1 = sp28;
+            gGbsSaveBanks[arg0].rotation.unk1 = sp28;
             gGbsSaveBanks[arg0].unk_08.unk1 = sp28 + arg1;
             Flash_ProgramPages(sp28, arg0 << 7, arg1 >> 7, 0);
             Flash_ProgramPages(gGbsSaveBanks[arg0].unk_08.unk1, (arg0 << 7) + 0x200, arg1 >> 7, 0);
@@ -1107,7 +1107,7 @@ void Save_InitializeBank0(void) {
             }
         }
 
-        gGbsSaveBanks->unk_00 |= 1;
+        gGbsSaveBanks->posX |= 1;
         gCurrentBankSlot = sp28;
     }
 }
@@ -1125,7 +1125,7 @@ void Save_InitializeBank1(void) {
             }
             gCurrentBankSlot++;
         }
-        gGbsSaveBanks[1].unk_00 |= 1;
+        gGbsSaveBanks[1].posX |= 1;
         gCurrentBankSlot = sp28;
     }
 }
@@ -1148,7 +1148,7 @@ void Save_InitializeBank2(void) {
         Save_LoadWithRepair(22, 0);
         Save_LoadWithRepair(23, 0);
 
-        gGbsSaveBanks[2].unk_00 |= 1;
+        gGbsSaveBanks[2].posX |= 1;
         gCurrentBankSlot = sp20;
     }
 }
@@ -1165,12 +1165,12 @@ void Save_InitializeBank3(void) {
             Save_LoadWithRepair(18, i);
         }
 
-        gGbsSaveBanks[3].unk_00 |= 1;
+        gGbsSaveBanks[3].posX |= 1;
     }
 }
 
 s32 Save_EnsureBankLoaded(s16 arg0) {
-    if (!((gGbsSaveBanks[arg0].unk_00 & 1) != 0)) {
+    if (!((gGbsSaveBanks[arg0].posX & 1) != 0)) {
         switch (arg0) {
             case 0:
                 Save_InitializeBank0();
@@ -1190,7 +1190,7 @@ s32 Save_EnsureBankLoaded(s16 arg0) {
         }
     }
 
-    return (gGbsSaveBanks[arg0].unk_00 & 1) != 0;
+    return (gGbsSaveBanks[arg0].posX & 1) != 0;
 }
 
 void Save_EnsureAllBanksLoaded(void) {
@@ -1220,7 +1220,7 @@ s32 RegisteredTeam_ReadSlot(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     s32 idx2 = gCurrentBankSlot % 4;
 
     if ((arg1 >= 0) && (arg1 < 0xA)) {
-        *arg0 = gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1];
+        *arg0 = gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1];
         var_v1 = 1;
     }
     return var_v1;
@@ -1232,7 +1232,7 @@ s32 RegisteredTeam_WriteSlot(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     s32 idx2 = gCurrentBankSlot % 4;
 
     if ((arg1 >= 0) && (arg1 < 0xA)) {
-        gGbsSaveBanks[idx1].unk_04.unk1->unk_0000[idx2][arg1] = *arg0;
+        gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1] = *arg0;
         Save_MarkRecordDirty(0x10, arg1, 2);
         var_v1 = 1;
     }

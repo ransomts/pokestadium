@@ -5,11 +5,11 @@
 
 // .data
 typedef struct {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;  // animation variant; only Charizard (6) sets it
+    /* 0x02 */ u8 posY;  // animation variant; only Charizard (6) sets it
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
 } PokemonAnimDataEntry;  // size = 0x05
 
 PokemonAnimDataEntry gPokemonAnimData[151] = {
@@ -209,7 +209,7 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
         case 0x35:
         case 0x52:
         case 0x53:
-            if (gPokemonAnimData[arg1 - 1].unk_02 == 1) {
+            if (gPokemonAnimData[arg1 - 1].posY == 1) {
                 sound = 0;
             } else {
                 sound = 4;
@@ -271,7 +271,7 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
         case 0x35:
         case 0x52:
         case 0x53:
-            if (gPokemonAnimData[arg1 - 1].unk_02== 1) {
+            if (gPokemonAnimData[arg1 - 1].posY== 1) {
                 sound = 0;
             } else {
                 sound = 4;

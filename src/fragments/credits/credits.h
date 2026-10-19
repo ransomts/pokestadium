@@ -4,28 +4,28 @@
 #include "global.h"
 
 typedef struct StagePhaseInfo {
-    /* 0x00 */ s8 unk_00;
+    /* 0x00 */ s8 posX;
     /* 0x01 */ s8 unk_01;
-    /* 0x02 */ u16 unk_02;
+    /* 0x02 */ u16 posY;
 } StagePhaseInfo; // size = 0x4
 
 typedef struct MessageDecompressEntry {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ char* unk_04[2];
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ char* rotation[2];
 } MessageDecompressEntry; // size = 0xC
 
 typedef struct StageCameraConfig {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x08 */ MessageDecompressEntry* unk_08;
 } StageCameraConfig; // size = 0xC
 
 typedef struct unk_D_86A03170 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s8 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s8 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0C */ f32 unk_0C;
@@ -35,7 +35,7 @@ typedef struct unk_D_86A03170 {
 } unk_D_86A03170; // size = 0x1C
 
 typedef struct CreditsMovingCamera {
-    /* 0x00 */ Vec3f unk_00;
+    /* 0x00 */ Vec3f posX;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ Vec3f unk_14;

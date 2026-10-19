@@ -56,7 +56,7 @@ void DisplayTask_Initialize(UnkStruct80001380* arg0) {
 }
 
 void DisplayTask_Submit(UnkStruct80001380* arg0, struct UnkArray4* arg1, s32 arg2) {
-    arg0->task.t.data_ptr = (void*)(uintptr_t)arg1->unk_04;
+    arg0->task.t.data_ptr = (void*)(uintptr_t)arg1->rotation;
     arg0->task.t.data_size = arg1->unk_08;
     Sched_SubmitTask(arg0, arg2);
 }
@@ -81,17 +81,17 @@ void Video_SetMode(s8 arg0, s8 arg1) {
 
 void DisplayWorker_SetBufferConfig(struct UnkArray4* arg0) {
     if (arg0 == NULL) {
-        gIntroTaskState.pendingTask.unk_04 = 0;
+        gIntroTaskState.pendingTask.rotation = 0;
         gIntroTaskState.pendingTask.unk_08 = 0;
         gIntroTaskState.pendingTask.unk_0C = NULL;
         gIntroTaskState.pendingTask.unk_01 = gIntroTaskState.currentTask.unk_01;
-        gIntroTaskState.pendingTask.unk_02 = gIntroTaskState.currentTask.unk_02;
-        gIntroTaskState.pendingTask.unk_00 = gIntroTaskState.currentTask.unk_00;
+        gIntroTaskState.pendingTask.posY = gIntroTaskState.currentTask.posY;
+        gIntroTaskState.pendingTask.posX = gIntroTaskState.currentTask.posX;
     } else {
         gIntroTaskState.pendingTask.unk_01 = arg0->unk_01;
-        gIntroTaskState.pendingTask.unk_02 = arg0->unk_02;
-        gIntroTaskState.pendingTask.unk_00 = arg0->unk_00;
-        gIntroTaskState.pendingTask.unk_04 = arg0->unk_04;
+        gIntroTaskState.pendingTask.posY = arg0->posY;
+        gIntroTaskState.pendingTask.posX = arg0->posX;
+        gIntroTaskState.pendingTask.rotation = arg0->rotation;
         gIntroTaskState.pendingTask.unk_08 = arg0->unk_08;
         gIntroTaskState.pendingTask.unk_0C = arg0->unk_0C;
         gIntroTaskState.pendingTask.unk_03 = arg0->unk_03;
@@ -102,17 +102,17 @@ void DisplayWorker_ProcessFrame(void) {
     s32 i;
     s32 sp20 = 0;
 
-    if (gIntroTaskState.currentTask.unk_04 != 0) {
+    if (gIntroTaskState.currentTask.rotation != 0) {
         Sched_WaitForTaskMessage(&gIntroTaskState.unk_A20);
     }
 
-    if ((gIntroTaskState.pendingTask.unk_04 != 0) && (gIntroTaskState.previousTask.unk_0C != gIntroTaskState.pendingTask.unk_0C) &&
+    if ((gIntroTaskState.pendingTask.rotation != 0) && (gIntroTaskState.previousTask.unk_0C != gIntroTaskState.pendingTask.unk_0C) &&
         (gIntroTaskState.previousTask.unk_03 != gIntroTaskState.pendingTask.unk_03)) {
         DisplayTask_Submit(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 1);
         sp20 = 1;
     }
 
-    for (i = 1; i < gIntroTaskState.previousTask.unk_00; i++) {
+    for (i = 1; i < gIntroTaskState.previousTask.posX; i++) {
         Sched_WaitClientQueue(&gIntroTaskState);
     }
 
@@ -124,8 +124,8 @@ void DisplayWorker_ProcessFrame(void) {
         osViSwapBuffer(gIntroTaskState.currentTask.unk_0C->img_p);
         osViRepeatLine(0);
         if ((gIntroTaskState.currentTask.unk_01 != gIntroTaskState.previousTask.unk_01) ||
-            (gIntroTaskState.currentTask.unk_02 != gIntroTaskState.previousTask.unk_02)) {
-            Video_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.unk_02);
+            (gIntroTaskState.currentTask.posY != gIntroTaskState.previousTask.posY)) {
+            Video_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.posY);
         }
         if (gForceBlackScreen != 0) {
             osViBlack(1U);
@@ -137,12 +137,12 @@ void DisplayWorker_ProcessFrame(void) {
         osViRepeatLine(1);
         osViSwapBuffer(gIntroTaskState.framebufferImage->img_p);
         if ((gIntroTaskState.currentTask.unk_01 != gIntroTaskState.previousTask.unk_01) ||
-            (gIntroTaskState.currentTask.unk_02 != gIntroTaskState.previousTask.unk_02)) {
-            Video_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.unk_02);
+            (gIntroTaskState.currentTask.posY != gIntroTaskState.previousTask.posY)) {
+            Video_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.posY);
         }
     }
 
-    if ((sp20 == 0) && (gIntroTaskState.pendingTask.unk_04 != 0)) {
+    if ((sp20 == 0) && (gIntroTaskState.pendingTask.rotation != 0)) {
         DisplayTask_Submit(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 0);
     }
 
@@ -256,10 +256,10 @@ void Display_WaitForFrames(s32 arg0) {
 
 void Display_SetBufferConfig(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6, s32 arg7) {
     arg0->unk_01 = arg1;
-    arg0->unk_02 = arg2;
-    arg0->unk_00 = arg3;
+    arg0->posY = arg2;
+    arg0->posX = arg3;
     arg0->unk_03 = arg4;
-    arg0->unk_04 = arg5;
+    arg0->rotation = arg5;
     arg0->unk_08 = arg6;
     arg0->unk_0C = (struct FramebufferImage*)(uintptr_t)arg7;
 }
@@ -269,13 +269,13 @@ s32 Display_GetWorkerStatus(void) {
 }
 
 void Display_ApplyPendingVideoMode(void) {
-    Video_SetMode((s8)gIntroTaskState.previousTask.unk_01, (s8)gIntroTaskState.previousTask.unk_02);
+    Video_SetMode((s8)gIntroTaskState.previousTask.unk_01, (s8)gIntroTaskState.previousTask.posY);
 }
 
 s32 Display_IsFrameReady(void) {
     s32 result = 1;
 
-    if (gIntroTaskState.currentTask.unk_04 != 0) {
+    if (gIntroTaskState.currentTask.rotation != 0) {
         result = gIntroTaskState.unk_A20.queue.validCount > 0;
     }
     return result;

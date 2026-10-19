@@ -613,7 +613,7 @@ s32 Fragment_LoadAndCall(s32 arg0, u8* romStart, u8* romEnd, u32 arg3, u32 arg4)
 }
 
 void Fragment_QueueCall(s32 arg0, u8* arg1, u8* arg2, s32 arg3, s32 arg4) {
-    gFragmentCallContext.unk_00 = 1;
+    gFragmentCallContext.posX = 1;
     gFragmentCallContext.fragment_id = arg0;
     gFragmentCallContext.rom_start = arg1;
     gFragmentCallContext.rom_end = arg2;
@@ -752,8 +752,8 @@ void State_StubbedDebug(void) {
     StageContext_Activate(temp_s0);
     FRAGMENT_LOAD_AND_CALL2(fragment67, 1, 0);
 
-    while ((gCurrentGameState == STATE_STUBBED_DEBUG) && (gFragmentCallContext.unk_00 != 0)) {
-        gFragmentCallContext.unk_00 = 0;
+    while ((gCurrentGameState == STATE_STUBBED_DEBUG) && (gFragmentCallContext.posX != 0)) {
+        gFragmentCallContext.posX = 0;
         gCurrentGameState = Fragment_LoadAndCall(gFragmentCallContext.fragment_id, gFragmentCallContext.rom_start, gFragmentCallContext.rom_end,
                                           gFragmentCallContext.arg0, gFragmentCallContext.arg1);
     }
@@ -1080,7 +1080,7 @@ void State_GbTower(void) {
         Display_WaitForFrames(2);
         Audio_Disable();
 
-        sp2C.unk_04 = main_pool_alloc(sizeof(*sp2C.unk_04), 0);
+        sp2C.rotation = main_pool_alloc(sizeof(*sp2C.rotation), 0);
 
         FRAGMENT_LOAD_AND_CALL(fragment53, gCurrentPokemonBank, &sp2C);
         GbTower_Start(&sp2C);
@@ -1099,7 +1099,7 @@ void State_GbTower(void) {
         Save_EnsureBankLoaded(2);
         Save_GetOptions(&sp24);
 
-        sp24.unk_04 = sp2C.unk_00;
+        sp24.rotation = sp2C.posX;
 
         Save_SetOptions(&sp24);
         Save_CommitTypedRecord(0x14, 0);

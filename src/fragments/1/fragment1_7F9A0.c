@@ -9,7 +9,7 @@
 #include "include/variables.h"
 
 typedef struct unk_D_8122C4FA {
-  /* 0x00 */ u8 unk_00;
+  /* 0x00 */ u8 posX;
   /* 0x01 */ u8 unk_01;
 } unk_D_8122C4FA; // size >= 0x2
 
@@ -89,7 +89,7 @@ extern u8 TileMap_12x12[256];
 extern u16 Palette_StageColors[4];
 
 // .rodata
-const u8 D_8122AD50[] = {
+const u8 gStadiumScreenText[] = {
     0x74, 0x73, 0x72, 0xAA, 0xB0, 0xAA, 0xA4, 0xA0, 0xAD, 0x89, 0x73, 0x72, 0x71, 0xA9, 0xAF, 0xA9, 0xB5, 0x9F, 0x90, 0x00,
 };
 
@@ -99,7 +99,7 @@ extern FramebufferImage* FramebufferImage1;
 extern u8 gStadiumUIMap[234];
 extern u8 gGameTitle_PokemonYellow[16];
 extern GbPakThreadContext GbPakThreadData[2];
-extern s32 D_8122B224[];
+extern s32 gGbPakMessageQueue[];
 extern s32 UnknownCounterB;
 extern GbPakDeviceState* GbPakDevice;
 extern TileAssetFragment* TileAssetFragments[3];
@@ -168,7 +168,7 @@ extern unk_D_8122C4FA gGbEmuButtonBindingSelections;
 extern u8 GbPakStatusByte;
 extern u8 TempBuffer_GbPakReg[0x1F];
 // extern s8 D_8122C51F;
-extern u8 D_8122C520[0x20];
+extern u8 gGbPakProbeBuffer[0x20];
 extern u8* gGbEmuFont1Data;
 extern u8* gGbEmuFont2Data;
 extern u8* DataStruct_TileAssets;
@@ -286,9 +286,9 @@ s32 GbPak_VerifyProbeBlock(GbPakDeviceState* arg0) {
 
   ret = GbPak_SelectRamBank(arg0, arg0->unk_5DA0 / 8192);
   if (ret == 0) {
-      ret = osGbpakReadWrite(&arg0->pfs, 0, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), D_8122C520, sizeof(D_8122C520));
+      ret = osGbpakReadWrite(&arg0->pfs, 0, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), gGbPakProbeBuffer, sizeof(gGbPakProbeBuffer));
       if (ret == 0) {
-          ret = bcmp(D_8122C520, &arg0->unk_5D80, sizeof(D_8122C520));
+          ret = bcmp(gGbPakProbeBuffer, &arg0->unk_5D80, sizeof(gGbPakProbeBuffer));
       }
   }
   return ret;
@@ -327,11 +327,11 @@ s32 GbPak_VerifyWritableProbeBlock(GbPakDeviceState* arg0) {
         GbPak_PrepareProbeBlock(arg0, count);
         ret = GbPak_SelectRamBank(arg0, arg0->unk_5DA0 / 8192);
         if (ret == 0) {
-            ret = osGbpakReadWrite(&arg0->pfs, 1, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), &arg0->unk_5D80, sizeof(D_8122C520));
+            ret = osGbpakReadWrite(&arg0->pfs, 1, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), &arg0->unk_5D80, sizeof(gGbPakProbeBuffer));
             if (ret == 0) {
-                ret = osGbpakReadWrite(&arg0->pfs, 0, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), D_8122C520, sizeof(D_8122C520));
+                ret = osGbpakReadWrite(&arg0->pfs, 0, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), gGbPakProbeBuffer, sizeof(gGbPakProbeBuffer));
                 if (ret == 0) {
-                    ret = bcmp(D_8122C520, &arg0->unk_5D80, sizeof(D_8122C520));
+                    ret = bcmp(gGbPakProbeBuffer, &arg0->unk_5D80, sizeof(gGbPakProbeBuffer));
                     if (ret == 0) {
                         count -= 1;
                         if (count == 0) {
@@ -1032,9 +1032,9 @@ void DrawStadiumScreen(s32 arg0, s32 arg1) {
 
     for (i = 0; i <= count; i++) {
         BlendWithAlphaMap((u16*) ((x * 2) + fb + 0x788),
-                      &gGbEmuFont1Data[TileMap_8x8[D_8122AD50[arg1 + count - i] - i + 0x43] * 0xA0], 0xFFFE, 0xC, 0xA,
+                      &gGbEmuFont1Data[TileMap_8x8[gStadiumScreenText[arg1 + count - i] - i + 0x43] * 0xA0], 0xFFFE, 0xC, 0xA,
                       0x10);
-        x += TileMap_8x8[TileMap_8x8[D_8122AD50[arg1 + count - i] - i + 0x43]];
+        x += TileMap_8x8[TileMap_8x8[gStadiumScreenText[arg1 + count - i] - i + 0x43]];
     }
 
     GbEmu_BlitWithPixelOp((u16*) (fb + 0x7FE), (u16*) (DataStruct_TileAssets + 0xAD18), 0, 0x10, 0xA);
@@ -1317,7 +1317,7 @@ void GbEmu_ResetEmulatorState(GbPakDeviceState* arg0) {
   s32 var_a0;
   u8* var_a1;
 
-  bzero(arg0->unk_00, 0x208);
+  bzero(arg0->posX, 0x208);
   bzero(arg0->unk_208, 0x40);
   bzero(arg0->unk_248, 0x40);
   bzero(arg0->unk_388, 0x400);
@@ -1615,12 +1615,12 @@ void LoadCompressedBank(GbPakDeviceState* arg0) {
 }
 
 void GbEmu_ApplyButtonMapping(void) {
-  if ((gGbEmuButtonBindingSelections.unk_01 == gGbEmuButtonBindingSelections.unk_00) || (gGbEmuButtonBindingSelections.unk_00 >= 5) || (gGbEmuButtonBindingSelections.unk_01 >= 5)) {
-      gGbEmuButtonBindingSelections.unk_00 = 0;
+  if ((gGbEmuButtonBindingSelections.unk_01 == gGbEmuButtonBindingSelections.posX) || (gGbEmuButtonBindingSelections.posX >= 5) || (gGbEmuButtonBindingSelections.unk_01 >= 5)) {
+      gGbEmuButtonBindingSelections.posX = 0;
       gGbEmuButtonBindingSelections.unk_01 = 1;
   }
 
-  gAudioModeIndex0 = (gGbEmuButtonBindingSelections.unk_00 == 1) ?   0x20 : (gGbEmuButtonBindingSelections.unk_00 == 2) ? 0x10 : (gGbEmuButtonBindingSelections.unk_00 == 3) ? 2 : (gGbEmuButtonBindingSelections.unk_00 == 4) ? 4 : 0x1000;
+  gAudioModeIndex0 = (gGbEmuButtonBindingSelections.posX == 1) ?   0x20 : (gGbEmuButtonBindingSelections.posX == 2) ? 0x10 : (gGbEmuButtonBindingSelections.posX == 3) ? 2 : (gGbEmuButtonBindingSelections.posX == 4) ? 4 : 0x1000;
   gAudioModeIndex1 = (gGbEmuButtonBindingSelections.unk_01 == 0) ? 0x1000 : (gGbEmuButtonBindingSelections.unk_01 == 2) ? 0x10 : (gGbEmuButtonBindingSelections.unk_01 == 3) ? 2 : (gGbEmuButtonBindingSelections.unk_01 == 4) ? 4 : 0x20;
 }
 
@@ -1644,7 +1644,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
             GbAudio_SetAlternateRendererEnabled(1);
             GbAudio_SetAlternateStreamId(1);
 
-            gGbEmuButtonBindingSelections.unk_00 = (gAudioModeIndex0 == 0x20)   ? 1
+            gGbEmuButtonBindingSelections.posX = (gAudioModeIndex0 == 0x20)   ? 1
                                 : (gAudioModeIndex0 == 0x10) ? 2
                                 : (gAudioModeIndex0 == 2)    ? 3
                                 : (gAudioModeIndex0 == 4)    ? 4
@@ -1655,8 +1655,8 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 : (gAudioModeIndex0 == 4)    ? 4
                                                        : 1;
 
-            if (gGbEmuButtonBindingSelections.unk_01 == gGbEmuButtonBindingSelections.unk_00) {
-                gGbEmuButtonBindingSelections.unk_00 = 0;
+            if (gGbEmuButtonBindingSelections.unk_01 == gGbEmuButtonBindingSelections.posX) {
+                gGbEmuButtonBindingSelections.posX = 0;
                 gGbEmuButtonBindingSelections.unk_01 = 1;
             }
             return;
@@ -1677,7 +1677,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                 return;
             }
             {
-                ((GbPakThreadContext*) D_8122B224)[UnknownCounterB].mesg[0] = NULL;
+                ((GbPakThreadContext*) gGbPakMessageQueue)[UnknownCounterB].mesg[0] = NULL;
                 switch (Flag_GbPakInitialized) {
                     case 1:
                         arg0->unk_53FD -= 4;
@@ -1776,7 +1776,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 return;
                             case 0x8000:
                                 GbAudio_SetAlternateStreamId(6);
-                                gEmuSavedAudioMode = (s32) gGbEmuButtonBindingSelections.unk_00;
+                                gEmuSavedAudioMode = (s32) gGbEmuButtonBindingSelections.posX;
                                 Flag_GbPakPowerState = 0;
                                 Flag_GbPakInitialized = 7;
                                 return;
@@ -1799,7 +1799,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                     GbAudio_SetAlternateStreamId(3);
                                     return;
                                 }
-                                gGbEmuButtonBindingSelections.unk_00 = var_v0;
+                                gGbEmuButtonBindingSelections.posX = var_v0;
                                 GbAudio_SetAlternateStreamId(6);
                                 if (Flag_GbPakInitialized == 8) {
                                     Flag_GbPakInitialized = 9;
@@ -1838,7 +1838,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             case 0x4:
                                 var_v0_2 = 4;
                             block_119:
-                                if (gGbEmuButtonBindingSelections.unk_00 == var_v0_2) {
+                                if (gGbEmuButtonBindingSelections.posX == var_v0_2) {
                                     GbAudio_SetAlternateStreamId(3);
                                     return;
                                 }
@@ -1872,11 +1872,11 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
                                 GbAudio_SetAlternateStreamId(8);
-                                gGbEmuButtonBindingSelections.unk_00 = gEmuSavedAudioMode;
+                                gGbEmuButtonBindingSelections.posX = gEmuSavedAudioMode;
                                 Flag_GbPakInitialized = 9;
                                 return;
                             case 0x8000:
-                                if (gGbEmuButtonBindingSelections.unk_00 == gGbEmuButtonBindingSelections.unk_01) {
+                                if (gGbEmuButtonBindingSelections.posX == gGbEmuButtonBindingSelections.unk_01) {
                                     GbAudio_SetAlternateStreamId(3);
                                 } else {
                                     GbAudio_SetAlternateStreamId(6);
@@ -1884,16 +1884,16 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 }
                                 return;
                             case 0x200:
-                                gGbEmuButtonBindingSelections.unk_00--;
-                                if ((gGbEmuButtonBindingSelections.unk_00 < 0) || (gGbEmuButtonBindingSelections.unk_00 >= 5)) {
-                                    gGbEmuButtonBindingSelections.unk_00 = 0U;
+                                gGbEmuButtonBindingSelections.posX--;
+                                if ((gGbEmuButtonBindingSelections.posX < 0) || (gGbEmuButtonBindingSelections.posX >= 5)) {
+                                    gGbEmuButtonBindingSelections.posX = 0U;
                                 }
                                 GbAudio_SetAlternateStreamId(5);
                                 return;
                             case 0x100:
-                                gGbEmuButtonBindingSelections.unk_00++;
-                                if (gGbEmuButtonBindingSelections.unk_00 >= 5) {
-                                    gGbEmuButtonBindingSelections.unk_00 = 4U;
+                                gGbEmuButtonBindingSelections.posX++;
+                                if (gGbEmuButtonBindingSelections.posX >= 5) {
+                                    gGbEmuButtonBindingSelections.posX = 4U;
                                 }
                                 GbAudio_SetAlternateStreamId(5);
                                 return;
@@ -1922,7 +1922,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 Flag_GbPakInitialized = 0xD;
                                 return;
                             case 0x8000:
-                                if (gGbEmuButtonBindingSelections.unk_00 == gGbEmuButtonBindingSelections.unk_01) {
+                                if (gGbEmuButtonBindingSelections.posX == gGbEmuButtonBindingSelections.unk_01) {
                                     GbAudio_SetAlternateStreamId(3);
                                 } else {
                                     GbAudio_SetAlternateStreamId(6);
@@ -2187,7 +2187,7 @@ void GbPak_DrawMenu(s32 arg0) {
             x = 0x28;
             i = 1;
         draw_first:
-            switch (gGbEmuButtonBindingSelections.unk_00) {
+            switch (gGbEmuButtonBindingSelections.posX) {
                 case 0:
                 default:
                     j = 0xBBD8;
@@ -2240,7 +2240,7 @@ void GbPak_DrawMenu(s32 arg0) {
 
     switch (Flag_GbPakInitialized) {
         case 8:
-            j = gGbEmuButtonBindingSelections.unk_00;
+            j = gGbEmuButtonBindingSelections.posX;
             i = 0;
             base = fb + 0x3C3E;
             break;
@@ -2676,8 +2676,8 @@ reset:
 
     }
 
-    emu->unk_00[0x126] = GbMem_ReadIoRegister(0xFF26);
-    GbApu_SelectRegionClock(emu->unk_00[0x14D] >> 7);
+    emu->posX[0x126] = GbMem_ReadIoRegister(0xFF26);
+    GbApu_SelectRegionClock(emu->posX[0x14D] >> 7);
     emu->unk_53C0 = 0;
     emu->unk_5490 = emu->audioMode;
     if (Flag_GbPakInitialized == 0) {
@@ -2811,21 +2811,21 @@ reset:
 
 void GbEmu_Init(GbEmuState* arg0) {
   GbPakStatusByte = 0;
-  gGbEmuPresentationMode = arg0->inputConfig.unk_02;
+  gGbEmuPresentationMode = arg0->inputConfig.posY;
   if ((gGbEmuPresentationMode < 0) || (gGbEmuPresentationMode >= 3)) {
       gGbEmuPresentationMode = 0;
   }
-  gGbEmuButtonBindingSelections.unk_00 = ((arg0->inputConfig.unk_00 & 0xFF00) >> 8);
-  gGbEmuButtonBindingSelections.unk_01 = (arg0->inputConfig.unk_00 + 1) & 0xFF;
+  gGbEmuButtonBindingSelections.posX = ((arg0->inputConfig.posX & 0xFF00) >> 8);
+  gGbEmuButtonBindingSelections.unk_01 = (arg0->inputConfig.posX + 1) & 0xFF;
   GbEmu_ApplyButtonMapping();
   gGbEmuFont1Data = arg0->font1 + 0x90;
   gGbEmuFont2Data = arg0->font2 + 0x90;
-  EmuMainInit(0, GbSave_GetActivePort(), 5, 0x50, &gSIEventMesgQueue, arg0->inputConfig.unk_04);
+  EmuMainInit(0, GbSave_GetActivePort(), 5, 0x50, &gSIEventMesgQueue, arg0->inputConfig.rotation);
 }
 
 void GbEmu_RunFrame(GbEmuState* arg0) {
   if (EmuMainLoop(0) != 0) {
-      arg0->inputConfig.unk_00 = ((gGbEmuButtonBindingSelections.unk_01 - 1) & 0xFF) | (gGbEmuButtonBindingSelections.unk_00 << 8);
+      arg0->inputConfig.posX = ((gGbEmuButtonBindingSelections.unk_01 - 1) & 0xFF) | (gGbEmuButtonBindingSelections.posX << 8);
       IO_WRITE(SP_STATUS_REG, 0x8000);
       osSendMesg(&arg0->queue2, UnknownFlag, 0);
   }

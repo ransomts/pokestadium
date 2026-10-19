@@ -6,27 +6,27 @@
 #include "src/6BC0.h"
 
 typedef struct PhotoMonSpecies {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ s8 unk_03[11];
     /* 0x0E */ s8 unk_0E[11];
 } PhotoMonSpecies; // size >= 0x1A
 
 typedef struct PhotoMonData {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03[11];
     /* 0x0E */ u8 unk_0E[11];
     /* 0x19 */ char unk19[0x1];
 } PhotoMonData; // size = 0x1A
 
 typedef struct unk_D_83402EE0_00A {
-    /* 0x00 */ u8 unk_00[7];
+    /* 0x00 */ u8 posX[7];
 } unk_D_83402EE0_00A; // size = 0x7
 
 typedef struct unk_D_83402EE0 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ u8 unk_08;
@@ -41,7 +41,7 @@ typedef struct unk_D_83402EE0 {
 } unk_D_83402EE0; // size = 0x8C
 
 typedef struct PhotoSceneData {
-    /* 0x00 */ PokemonData unk_00;
+    /* 0x00 */ PokemonData posX;
     /* 0x54 */ char unk54[0x18];
     /* 0x6C */ u8 unk_6C;
     /* 0x6D */ char unk6D[0x3];
@@ -50,8 +50,8 @@ typedef struct PhotoSceneData {
 } PhotoSceneData; // size = 0x8C
 
 typedef struct unk_D_83403C60_050_00C {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
 } unk_D_83403C60_050_00C; // size = 0xC
 
@@ -67,25 +67,25 @@ typedef struct unk_D_83407B00 {
                         s16 unk_00s;
                         s16 unk_02s;
                     };
-                    s32 unk_00;
+                    s32 posX;
                 };
     /* 0x04 */ union {
                     struct {
                         s16 unk_04s;
                         s16 unk_06s;
                     };
-                    s32 unk_04;
+                    s32 rotation;
                 };
 } unk_D_83407B00; // size = 0x8
 
 typedef struct unk_func_800314BC_temp_v4 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s32 rotation;
 } unk_func_800314BC_temp_v4; // size = 0x8
 
 typedef struct unk_func_80031270_024 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char pad2[0x12];
     /* 0x14 */ s32 unk_14;
@@ -95,9 +95,9 @@ typedef struct unk_func_80031270_024 {
 } unk_func_80031270_024; // size = 0x20
 
 typedef struct Camera {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ FramebufferImage* unk_08;
     /* 0x0C */ FramebufferImage* unk_0C;
@@ -114,13 +114,13 @@ typedef struct Camera {
 } Camera; // size = 0x38
 
 typedef struct unk_D_83407B38_0B0 {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ s32 posX;
     /* 0x00 */ s32 unk_08;
 } unk_D_83407B38_0B0; // size >= 0xC
 
 typedef struct unk_D_83407B38 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;

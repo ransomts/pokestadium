@@ -1194,10 +1194,10 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
             if (gResultMenuVisible == 0) {
                 if (MiniGame_RandomRange(2) == 0) {
                     for (j = 0; j < 12; j++) {
-                        if (gHealthBarEffectData->unk_00[j].unk_00 == -1) {
-                            gHealthBarEffectData->unk_00[j].unk_00 = 0;
-                            gHealthBarEffectData->unk_00[j].unk_04 = MiniGame_RandomRange(0x50);
-                            gHealthBarEffectData->unk_00[j].unk_08 = MiniGame_RandomRange(0x168);
+                        if (gHealthBarEffectData->posX[j].posX == -1) {
+                            gHealthBarEffectData->posX[j].posX = 0;
+                            gHealthBarEffectData->posX[j].rotation = MiniGame_RandomRange(0x50);
+                            gHealthBarEffectData->posX[j].unk_08 = MiniGame_RandomRange(0x168);
                             break;
                         }
                     }
@@ -1205,26 +1205,26 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
             }
 
             for (j = 0; j < 12; j++) {
-                if (gHealthBarEffectData->unk_00[j].unk_00 == -1) {
+                if (gHealthBarEffectData->posX[j].posX == -1) {
                     continue;
                 }
 
-                gDPLoadTextureBlock_4b(var_s1++, &HealthBarTextureData[(gHealthBarEffectData->unk_00[j].unk_00 * 0xC00) / 2], G_IM_FMT_I,
+                gDPLoadTextureBlock_4b(var_s1++, &HealthBarTextureData[(gHealthBarEffectData->posX[j].posX * 0xC00) / 2], G_IM_FMT_I,
                                        32, 96, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                guRotateRPY(var_s4, gHealthBarEffectData->unk_00[j].unk_04, 0.0f, gHealthBarEffectData->unk_00[j].unk_08);
+                guRotateRPY(var_s4, gHealthBarEffectData->posX[j].rotation, 0.0f, gHealthBarEffectData->posX[j].unk_08);
 
                 gSPMatrix(var_s1++, var_s4++, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPVertex(var_s1++, HealthBarSegmentVertices[gHealthBarEffectData->unk_00[j].unk_00], 4, 0);
+                gSPVertex(var_s1++, HealthBarSegmentVertices[gHealthBarEffectData->posX[j].posX], 4, 0);
                 gSP2Triangles(var_s1++, 0, 3, 1, 0, 0, 2, 3, 0);
                 gSPPopMatrix(var_s1++, G_MTX_MODELVIEW);
 
                 if (gResultMenuVisible == 0) {
-                    if (gHealthBarEffectData->unk_00[j].unk_00 == 7) {
-                        gHealthBarEffectData->unk_00[j].unk_00 = -1;
+                    if (gHealthBarEffectData->posX[j].posX == 7) {
+                        gHealthBarEffectData->posX[j].posX = -1;
                     } else {
-                        gHealthBarEffectData->unk_00[j].unk_00++;
+                        gHealthBarEffectData->posX[j].posX++;
                     }
                 }
             }
@@ -1251,7 +1251,7 @@ void DynamoGame_InitSparkEffects(void) {
         gCurrentHealthBar = &gHealthBarData[i];
 
         gCurrentHealthBar->unk_17C = GeoNode_CreateScale(temp_s5, NULL, 4, NULL, &gRootNodePosition, 1.0f);
-        GraphNode_AppendChild(&gGraphRoot0, &gCurrentHealthBar->unk_17C->unk_00);
+        GraphNode_AppendChild(&gGraphRoot0, &gCurrentHealthBar->unk_17C->posX);
     }
 
     MainPool_FinalizeAllocation(temp_s5);
@@ -1260,9 +1260,9 @@ void DynamoGame_InitSparkEffects(void) {
         gHealthBarEffectData = &D_8650AB30[i];
 
         for (j = 0; j < 12; j++) {
-            gHealthBarEffectData->unk_00[j].unk_00 = -1;
-            gHealthBarEffectData->unk_00[j].unk_04 = 0.0f;
-            gHealthBarEffectData->unk_00[j].unk_08 = 0.0f;
+            gHealthBarEffectData->posX[j].posX = -1;
+            gHealthBarEffectData->posX[j].rotation = 0.0f;
+            gHealthBarEffectData->posX[j].unk_08 = 0.0f;
         }
     }
 }

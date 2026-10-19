@@ -27,7 +27,7 @@ void GeoLayout_ConvertTextures(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1) {
     unk_D_86002F34_01C* var_s4 = arg0->unk_1C;
 
     for (i = 0; i < arg0->unk_24; i++, var_s2++) {
-        if (var_s2->unk_00 == 0) {
+        if (var_s2->posX == 0) {
             if (var_s2->type == unk_D_86002F34_018_GFX_TYPE_2) {
                 u16* var_s1 = (u16*)var_s2->texture;
                 for (j = 0; j < var_s2->num_texels; j++, var_s1++) {
@@ -43,8 +43,8 @@ void GeoLayout_ConvertTextures(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1) {
         }
     }
     for (i = 0; i < arg0->unk_25; i++, var_s4++) {
-        u16* var_s1 = var_s4->unk_04;
-        for (j = 0; j < var_s4->unk_00; j++, var_s1++) {
+        u16* var_s1 = var_s4->rotation;
+        for (j = 0; j < var_s4->posX; j++, var_s1++) {
             *var_s1 = Color_AdjustRGB5551(*var_s1, arg1);
         }
     }
@@ -114,13 +114,13 @@ Fragment* Fragment_LoadFromLbaRange(MainPoolState* arg0, StorageRange* arg1, PER
     Fragment* sp38;
     PERSSZP* temp_s1;
 
-    LeoLBAToByte(arg1->unk_00, arg1->unk_02, &sp3C);
+    LeoLBAToByte(arg1->posX, arg1->posY, &sp3C);
     sp3C = ALIGN16(sp3C);
 
     if (arg3 >= sp3C) {
-        temp_s1 = arg1->unk_04 + (u8*)arg2;
+        temp_s1 = arg1->rotation + (u8*)arg2;
 
-        Storage_QueueDiskTransfer(0, arg2, arg1->unk_00, arg1->unk_02, &gAssetManager.unk_9EC, 0);
+        Storage_QueueDiskTransfer(0, arg2, arg1->posX, arg1->posY, &gAssetManager.unk_9EC, 0);
         osRecvMesg(&gAssetManager.unk_9EC, NULL, 1);
 
         if (((u32*)temp_s1->magic)[0] == 'PERS' && (((u32*)temp_s1->magic)[1] == '-SZP')) {
@@ -128,7 +128,7 @@ Fragment* Fragment_LoadFromLbaRange(MainPoolState* arg0, StorageRange* arg1, PER
         } else if (((u32*)temp_s1->magic)[0] == 'PRES' && (((u32*)temp_s1->magic)[1] == 'JPEG')) {
             sp38 = Jpeg_AllocAndDecodeFragment(arg0, arg2, temp_s1);
         } else {
-            sp38 = Asset_AllocAndCopyFragment(arg0, arg2, arg1->unk_04, arg1->unk_08);
+            sp38 = Asset_AllocAndCopyFragment(arg0, arg2, arg1->rotation, arg1->unk_08);
         }
     }
 
@@ -141,7 +141,7 @@ void Fragment_RelocateAndCommit(MainPoolState* arg0, u32 arg1, Fragment* arg2) {
 }
 
 Fragment* BinArchive_LoadFileFromRomRange(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
-    s32 temp_a1 = arg1->unk_04 + arg2->offset;
+    s32 temp_a1 = arg1->rotation + arg2->offset;
 
     return Fragment_LoadFromRomRange(arg0, temp_a1, arg2->size + temp_a1, arg3, arg4);
 }
@@ -149,7 +149,7 @@ Fragment* BinArchive_LoadFileFromRomRange(MainPoolState* arg0, BinArchive* arg1,
 Fragment* BinArchive_LoadFileFromLbaRange(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
     StorageRange sp1C;
 
-    Storage_SetByteRange(&sp1C, arg1->unk_04, arg2->offset, arg2->size);
+    Storage_SetByteRange(&sp1C, arg1->rotation, arg2->offset, arg2->size);
     return Fragment_LoadFromLbaRange(arg0, &sp1C, arg3, arg4);
 }
 
@@ -159,12 +159,12 @@ Fragment* BinArchive_LoadFileToPool(MainPoolState* arg0, BinArchive* arg1, s32 a
     BinArchiveFile* sp2C = (u8*)arg1 + sizeof(BinArchive) + (arg2 * sizeof(BinArchiveFile));
 
     if (arg2 < arg1->num_files) {
-        if (arg1->unk_00 & 1) {
+        if (arg1->posX & 1) {
             var_s0 = (u8*)arg1 + sp2C->offset;
-        } else if (!(arg1->unk_00 & 4) && (sp2C->unk_08 != NULL)) {
+        } else if (!(arg1->posX & 4) && (sp2C->unk_08 != NULL)) {
             var_s0 = sp2C->unk_08;
         } else {
-            if (arg1->unk_00 & 0x80) {
+            if (arg1->posX & 0x80) {
                 var_s0 = BinArchive_LoadFileFromLbaRange(arg0, arg1, sp2C, arg3, arg4);
             } else {
                 var_s0 = BinArchive_LoadFileFromRomRange(arg0, arg1, sp2C, arg3, arg4);
@@ -172,7 +172,7 @@ Fragment* BinArchive_LoadFileToPool(MainPoolState* arg0, BinArchive* arg1, s32 a
 
             if (var_s0 != NULL) {
                 if ((((u32*)var_s0->magic)[0] == 'FRAG') && (((u32*)var_s0->magic)[1] == 'MENT')) {
-                    Fragment_RelocateAndCommit(arg0, arg1->unk_02, var_s0);
+                    Fragment_RelocateAndCommit(arg0, arg1->posY, var_s0);
                 }
                 sp2C->unk_08 = var_s0;
             }
@@ -194,7 +194,7 @@ s32 Fragment_ProcessGeoLayout(MemoryBlock* arg0, Fragment* arg1, arg1_func_80010
     for (i = 0; i < temp_v0->unk_03; i++) {
         temp_v0_2 = process_geo_layout(arg0, temp_v0->unk_08[i]);
 
-        if (temp_v0_2->unk_00.unk_00 == 0xE) {
+        if (temp_v0_2->posX.posX == 0xE) {
             temp_v0_2->unk_28 = arg1;
             if (arg2.raw != 0) {
                 GeoLayout_ConvertTextures(temp_v0_2, arg2);
@@ -207,9 +207,9 @@ s32 Fragment_ProcessGeoLayout(MemoryBlock* arg0, Fragment* arg1, arg1_func_80010
 }
 
 void Fragment_ProcessGeoLayoutList(MemoryBlock* arg0, arg1_func_80019420* arg1) {
-    while (arg1->unk_00) {
-        if (arg1->unk_00 == 3) {
-            arg1->unk_04 = process_geo_layout(arg0, arg1->unk_04);
+    while (arg1->posX) {
+        if (arg1->posX == 3) {
+            arg1->rotation = process_geo_layout(arg0, arg1->rotation);
         }
 
         arg1++;
@@ -222,7 +222,7 @@ void PokeIcon_LoadModelArchive(unk_func_80019600* arg0) {
     Fragment* sp24;
 
     sp28 = MainPool_InitState(arg0->pool, arg0->size);
-    sp24 = BinArchive_LoadFileToPool(sp28, gAssetManager.unk_A04.unk_00, arg0->unk_02, gAssetManager.unk_A04.unk_08, 0x28000);
+    sp24 = BinArchive_LoadFileToPool(sp28, gAssetManager.unk_A04.posX, arg0->posY, gAssetManager.unk_A04.unk_08, 0x28000);
 
     if (sp24 != NULL) {
         arg0->unk_08 = Fragment_ProcessGeoLayout(sp28, sp24, arg0->unk_18);
@@ -246,7 +246,7 @@ void PokeIcon_LoadMultipleModels(unk_func_80019600* arg0) {
     var_s0 = arg0->unk_0C;
 
     while (*var_s0 != -1) {
-        temp_v0 = BinArchive_LoadFileToPool(temp_s3, gAssetManager.unk_A04.unk_04, *var_s0, gAssetManager.unk_A04.unk_08, 0x28000);
+        temp_v0 = BinArchive_LoadFileToPool(temp_s3, gAssetManager.unk_A04.rotation, *var_s0, gAssetManager.unk_A04.unk_08, 0x28000);
         if (temp_v0 == NULL) {
             break;
         }
@@ -269,7 +269,7 @@ void PokeIcon_ThreadMain(UNUSED void* arg0) {
     while (true) {
         osRecvMesg(&gAssetManager.unk_9D0, &sp34, 1);
 
-        switch (sp34->unk_00) {
+        switch (sp34->posX) {
             case 1:
                 PokeIcon_LoadModelArchive(sp34);
                 break;
@@ -296,22 +296,22 @@ AssetManager* PokeIcon_AllocFramebuffers(u32 arg0) {
     s16 i = 1;
     AssetManager* temp_v0 = main_pool_alloc(sizeof(AssetManager), 1);
 
-    temp_v0->unk_00 = arg0;
+    temp_v0->posX = arg0;
     temp_v0->unk_01 = 0;
-    temp_v0->unk_02 = 0;
+    temp_v0->posY = 0;
     temp_v0->unk_24 = 0;
-    temp_v0->unk_04[0] = NULL;
-    temp_v0->unk_04[1] = NULL;
+    temp_v0->rotation[0] = NULL;
+    temp_v0->rotation[1] = NULL;
     temp_v0->unk_18 = NULL;
     temp_v0->unk_2C.raw = 0;
 
     if (arg0 & 1) {
-        temp_v0->unk_04[0] = main_pool_alloc(0x3C000, 1);
+        temp_v0->rotation[0] = main_pool_alloc(0x3C000, 1);
         if (arg0 & 4) {
-            temp_v0->unk_04[1] = main_pool_alloc(0x3C000, 1);
+            temp_v0->rotation[1] = main_pool_alloc(0x3C000, 1);
         } else if (arg0 & 8) {
             for (i = 1; i < 5; i++) {
-                temp_v0->unk_04[i] = main_pool_alloc(0x3C000, 1);
+                temp_v0->rotation[i] = main_pool_alloc(0x3C000, 1);
             }
         }
     }
@@ -326,8 +326,8 @@ AssetManager* PokeIcon_AllocFramebuffers(u32 arg0) {
 }
 
 void PokeIcon_OpenModelArchives(void) {
-    gAssetManager.unk_A04.unk_00 = BinArchive_Open(0x920000, NULL, 1, 1);
-    gAssetManager.unk_A04.unk_04 = BinArchive_Open(0x8CC000, NULL, 1, 1);
+    gAssetManager.unk_A04.posX = BinArchive_Open(0x920000, NULL, 1, 1);
+    gAssetManager.unk_A04.rotation = BinArchive_Open(0x8CC000, NULL, 1, 1);
     gAssetManager.unk_A04.unk_08 = main_pool_alloc(0x28000, 1);
 }
 
@@ -337,25 +337,25 @@ s32 PokeIcon_RequestFrameLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 a
     s32 var_v1;
 
     sp1C = 0;
-    if ((arg0->unk_00 & 1) && !(arg0->unk_01 & 1)) {
+    if ((arg0->posX & 1) && !(arg0->unk_01 & 1)) {
         sp18 = Util_Malloc(sizeof(sp18_func_800198E4));
         if (sp18 != NULL) {
-            var_v1 = arg0->unk_02;
-            if (arg0->unk_00 & 4) {
+            var_v1 = arg0->posY;
+            if (arg0->posX & 4) {
                 var_v1 ^= 1;
             }
 
-            sp18->unk_00 = 1;
-            sp18->unk_02 = arg1 - 1;
-            sp18->unk_04 = &arg0->unk_30;
+            sp18->posX = 1;
+            sp18->posY = arg1 - 1;
+            sp18->rotation = &arg0->unk_30;
             sp18->unk_08 = 0;
             sp18->unk_0C = 0;
-            sp18->unk_10 = arg0->unk_04[var_v1];
+            sp18->unk_10 = arg0->rotation[var_v1];
             sp18->unk_14 = 0x3C000;
             sp18->unk_18 = arg2;
 
-            if ((arg0->unk_24 != NULL) && (arg0->unk_24->unk_00 == arg1) && (arg0->unk_2C.raw == sp18->unk_18.raw)) {
-                osSendMesg(sp18->unk_04, sp18, 1);
+            if ((arg0->unk_24 != NULL) && (arg0->unk_24->posX == arg1) && (arg0->unk_2C.raw == sp18->unk_18.raw)) {
+                osSendMesg(sp18->rotation, sp18, 1);
             } else {
                 osSendMesg(&gAssetManager.unk_9D0, sp18, 1);
             }
@@ -369,8 +369,8 @@ s32 PokeIcon_RequestFrameLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 a
 }
 
 s32 PokeIcon_RequestFrameLoadWithVariant(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3) {
-    if ((arg0->unk_00 & 8) && !(arg0->unk_01 & 1)) {
-        arg0->unk_02 = arg3;
+    if ((arg0->posX & 8) && !(arg0->unk_01 & 1)) {
+        arg0->posY = arg3;
         PokeIcon_RequestFrameLoad(arg0, arg1, arg2);
     }
     return 0;
@@ -380,12 +380,12 @@ s32 PokeIcon_RequestBackgroundLoad(AssetManager* arg0, s32 arg1, s32 arg2) {
     s32 sp1C = 0;
     sp18_func_800198E4* temp_v0;
 
-    if ((arg0->unk_00 & 2) && !(arg0->unk_01 & 2)) {
+    if ((arg0->posX & 2) && !(arg0->unk_01 & 2)) {
         temp_v0 = Util_Malloc(sizeof(sp18_func_800198E4));
         if (temp_v0 != NULL) {
-            temp_v0->unk_00 = 2;
-            temp_v0->unk_02 = 0;
-            temp_v0->unk_04 = &arg0->unk_50;
+            temp_v0->posX = 2;
+            temp_v0->posY = 0;
+            temp_v0->rotation = &arg0->unk_50;
             temp_v0->unk_08 = arg2;
             temp_v0->unk_0C = arg1;
             temp_v0->unk_10 = arg0->unk_18;
@@ -404,12 +404,12 @@ s32 PokeIcon_RequestBackgroundLoad(AssetManager* arg0, s32 arg1, s32 arg2) {
 s32 PokeIcon_ApplyLoadResult(AssetManager* arg0, sp18_func_800198E4* arg1) {
     s32 sp1C = 0;
 
-    switch (arg1->unk_00) {
+    switch (arg1->posX) {
         case 1:
             arg0->unk_01 &= ~1;
             if (arg1->unk_08 != 0) {
-                if (arg0->unk_00 & 4) {
-                    arg0->unk_02 ^= 1;
+                if (arg0->posX & 4) {
+                    arg0->posY ^= 1;
                 }
                 arg0->unk_24 = arg1->unk_08;
                 arg0->unk_1C = arg1->unk_14;
@@ -472,7 +472,7 @@ unk_D_86002F30* Model_LoadByArchiveIndex(s32 arg0) {
     unk_D_86002F30* sp24 = NULL;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.unk_00, arg0 - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.posX, arg0 - 1);
     if (sp2C != NULL) {
         sp20 = MainPool_AllocState(main_pool_get_available(), 0);
         sp28.raw = 0;
@@ -489,7 +489,7 @@ unk_D_86002F30* Model_LoadForPokemon(PokemonData* arg0) {
     unk_D_86002F30* sp24 = NULL;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.unk_00, arg0->unk_00.unk_00 - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.posX, arg0->posX.posX - 1);
     if (sp2C != NULL) {
         sp20 = MainPool_AllocState(main_pool_get_available(), 0);
         Model_ComputeSizeVariant(&sp28, arg0);
@@ -505,11 +505,11 @@ s32 Model_LoadWithScale(s32 arg0, s32 arg1) {
     s32 sp24 = 0;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.unk_00, arg0 - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.posX, arg0 - 1);
     if (sp2C != NULL) {
         sp20 = MainPool_AllocState(main_pool_get_available(), 0);
         sp28.raw = 0;
-        sp28.unk_00 = arg1 * 64;
+        sp28.posX = arg1 * 64;
         sp24 = Fragment_ProcessGeoLayout(sp20, sp2C, sp28);
         MainPool_FinalizeAllocation(sp20);
     }
@@ -522,7 +522,7 @@ arg1_func_80019420* BattleAnim_LoadResourceTable(s32 arg0) {
     MemoryBlock* sp1C;
 
     sp20 = NULL;
-    sp24 = BinArchive_GetFile(gAssetManager.unk_A04.unk_04, arg0);
+    sp24 = BinArchive_GetFile(gAssetManager.unk_A04.rotation, arg0);
     if (sp24 != NULL) {
         sp1C = MainPool_AllocState(main_pool_get_available(), 0);
         sp20 = sp24->data;

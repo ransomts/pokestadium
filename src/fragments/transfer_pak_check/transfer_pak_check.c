@@ -1239,7 +1239,7 @@ void PakUi_DrawTitleHeader(s16 arg0) {
     Gfx_DrawTextureRgba16(0x100, 0x40, 0x80, 0x10, D_300C820, 0x80, 0);
     Gfx_DrawTextureRgba16(0x100, 0x50, 0x80, 0x10, D_300D820, 0x80, 0);
 
-    ptr = &gMenuItemColors[gMenuItemData[0].unk_04];
+    ptr = &gMenuItemColors[gMenuItemData[0].rotation];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
     Gfx_DrawTextureI4(0x120, 0x60, 8, 8, D_300F240, 0x10, 0);
@@ -1249,7 +1249,7 @@ void PakUi_DrawTitleHeader(s16 arg0) {
     Gfx_DrawTexturedRectClipped(0x70, 0x74, 8, 0x14, 0, 0xE0, 0x400, 0, 0);
     Gfx_DrawTexturedRectClipped(0x78, 0x6C, 0xA8, 8, 0xE0, 0, 0, 0x400, 0);
 
-    ptr = &gMenuItemColors[gMenuItemData[1].unk_04];
+    ptr = &gMenuItemColors[gMenuItemData[1].rotation];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
     Gfx_DrawTextureI4(0x12C, 0x60, 8, 8, D_300F240, 0x10, 0);
@@ -1259,7 +1259,7 @@ void PakUi_DrawTitleHeader(s16 arg0) {
     Gfx_DrawTexturedRectClipped(0xF8, 0x80, 8, 8, 0, 0xE0, 0x400, 0, 0);
     Gfx_DrawTexturedRectClipped(0x100, 0x78, 0x2C, 8, 0xE0, 0, 0, 0x400, 0);
 
-    ptr = &gMenuItemColors[gMenuItemData[2].unk_04];
+    ptr = &gMenuItemColors[gMenuItemData[2].rotation];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
     Gfx_DrawTextureI4(0x14C, 0x60, 8, 8, D_300F240, 0x10, 0);
@@ -1269,7 +1269,7 @@ void PakUi_DrawTitleHeader(s16 arg0) {
     Gfx_DrawTexturedRectClipped(0x180, 0x80, 8, 8, 0, 0xE0, 0x400, 0, 0);
     Gfx_DrawTexturedRectClipped(0x154, 0x78, 0x2C, 8, 0, 0, 0, 0x400, 0);
 
-    ptr = &gMenuItemColors[gMenuItemData[3].unk_04];
+    ptr = &gMenuItemColors[gMenuItemData[3].rotation];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
     Gfx_DrawTextureI4(0x158, 0x60, 8, 8, D_300F240, 0x10, 0);
@@ -1410,7 +1410,7 @@ void PakUi_InitPartyCard(s32 arg0) {
 
     gMenuFramebufferImages[arg0] = GfxImage_Allocate(0, 2, 0x80, 0xCC, 1);
     if (gMenuItemData[arg0].unk_01 != 0) {
-        if (gMenuItemData[arg0].unk_00 == 0) {
+        if (gMenuItemData[arg0].posX == 0) {
             if (gMenuItemData[arg0].unk_03 != 0) {
                 PakUi_BuildPartyCard(arg0, 1, 0, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
             } else {
@@ -1419,9 +1419,9 @@ void PakUi_InitPartyCard(s32 arg0) {
         } else {
             PakUi_BuildPartyCard(arg0, 1, 0x14, -1, "?????");
         }
-    } else if (gMenuItemData[arg0].unk_00 == 2) {
+    } else if (gMenuItemData[arg0].posX == 2) {
         PakUi_BuildPartyCard(arg0, 1, 0x15, -1, "?????");
-    } else if (gMenuItemData[arg0].unk_04 != 0) {
+    } else if (gMenuItemData[arg0].rotation != 0) {
         PakUi_BuildPartyCard(arg0, 0, 1, -1, NULL);
     } else {
         PakUi_BuildPartyCard(arg0, 0, 2, -1, NULL);
@@ -1722,34 +1722,34 @@ void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32
             PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 2, arg1, Text_GetString(NULL, 0, gMenuMessageBank, 0x2D));
             Text_SetEnvColor(0xFF, 0x64, 0x64, 0xFF);
 
-            if (arg2->unk_00 == 7) {
-                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
+            if (arg2->posX == 7) {
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
                 Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_01 + 0x13));
 
                 if (arg2->unk_01 < 8) {
-                    if (arg2->unk_02 < 4) {
-                        Text_SetNumberToken(1, arg2->unk_02);
+                    if (arg2->posY < 4) {
+                        Text_SetNumberToken(1, arg2->posY);
                         Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gMenuMessageBank, 0x2E));
                     } else {
                         Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gMenuMessageBank, 0x2F));
                     }
                 } else {
-                    Text_SetNumberToken(1, arg2->unk_02);
+                    Text_SetNumberToken(1, arg2->posY);
                     Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gMenuMessageBank, 0x30));
                 }
-            } else if ((arg2->unk_00 == 3) || (arg2->unk_00 == 6)) {
-                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
+            } else if ((arg2->posX == 3) || (arg2->posX == 6)) {
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
                 Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_01 + 7));
-                Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_02 + 0xA));
+                Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posY + 0xA));
             } else {
-                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
-                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_02 + 0xA));
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posY + 0xA));
             }
 
-            if (arg2->unk_00 != 7) {
+            if (arg2->posX != 7) {
                 Font_SetActive(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                Text_SetNumberToken(1, arg2->unk_04);
+                Text_SetNumberToken(1, arg2->rotation);
                 Font_Printf(0x12D, temp_s0 + 0x85, Text_GetString(&sp50, 0x100, gMenuMessageBank, 0x31));
             }
 
@@ -1760,7 +1760,7 @@ void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32
             Font_EndTexturedTextRendering();
 
             if (arg2->unk_03 == 1) {
-                s32 temp_v0_3 = Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
+                s32 temp_v0_3 = Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
 
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -1932,12 +1932,12 @@ void PakUi_DrawStatusPopup(unk_D_82D0ABD0* arg0) {
     s16 sp48;
     s16 sp4A;
 
-    if (arg0->unk_02 >= 0x10) {
-        sp48 = arg0->unk_02;
-        sp4A = arg0->unk_04;
+    if (arg0->posY >= 0x10) {
+        sp48 = arg0->posY;
+        sp4A = arg0->rotation;
         temp_s0 = arg0->unk_06 + ((0xA6 - sp48) / 2);
         Ui_DrawBorderedPanel(sp4A, temp_s0, 0x19E, sp48, 1);
-        if (arg0->unk_02 == 0xA6) {
+        if (arg0->posY == 0xA6) {
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             Gfx_DrawTextureRgba16(sp4A + 0x1E, temp_s0 + 0x20, 0x48, 0x12, D_3024C80, 0x48, 0);
@@ -1978,25 +1978,25 @@ void PakUi_DrawStatusPopup(unk_D_82D0ABD0* arg0) {
 s32 PakUi_UpdateStatusPopup(unk_D_82D0ABD0* arg0) {
     s16 sp1E = -2;
 
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 1:
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
                 Audio_PlaySoundEffectById(3);
-                arg0->unk_00 = 3;
+                arg0->posX = 3;
             }
             break;
 
         case 2:
-            arg0->unk_02 += 0x14;
-            if (arg0->unk_02 == 0xA6) {
-                arg0->unk_00 = 1;
+            arg0->posY += 0x14;
+            if (arg0->posY == 0xA6) {
+                arg0->posX = 1;
             }
             break;
 
         case 3:
-            arg0->unk_02 -= 0x14;
-            if (arg0->unk_02 == 6) {
-                arg0->unk_00 = 0;
+            arg0->posY -= 0x14;
+            if (arg0->posY == 6) {
+                arg0->posX = 0;
                 sp1E = -1;
             }
             break;
@@ -2005,14 +2005,14 @@ s32 PakUi_UpdateStatusPopup(unk_D_82D0ABD0* arg0) {
 }
 
 void PakUi_InitStatusPopup(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
-    arg0->unk_00 = 0;
-    arg0->unk_02 = 6;
-    arg0->unk_04 = arg1;
+    arg0->posX = 0;
+    arg0->posY = 6;
+    arg0->rotation = arg1;
     arg0->unk_06 = arg2;
 }
 
 void PakUi_OpenStatusPopup(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
-    arg0->unk_00 = 2;
+    arg0->posX = 2;
     arg0->unk_08 = arg1;
     arg0->unk_0A = arg2;
 }
@@ -2170,7 +2170,7 @@ void PakUi_DrawHeaderProgressBar(s32 arg0, s32 arg1) {
         PakUi_DrawThickBoxBorder(0x38, (s16)((0x3C - tmp) / 2) + 0x24, 0x210, tmp, 0x1E, 0x1E, 0x82, 0x96);
         if (arg0 == 10) {
             sp48 = PakUi_ComputeBlinkAlpha();
-            if (gGbAudioState.unk_00 == 0x1F8) {
+            if (gGbAudioState.posX == 0x1F8) {
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp48);
 
@@ -2184,7 +2184,7 @@ void PakUi_DrawHeaderProgressBar(s32 arg0, s32 arg1) {
             tmp = (Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gMenuMessageBank, 0x3B)));
             Font_Printf(0x140 - tmp / 2, 0x36, Text_GetString(NULL, 0, gMenuMessageBank, 0x3B));
 
-            if (gGbAudioState.unk_00 == 0x1F8) {
+            if (gGbAudioState.posX == 0x1F8) {
                 Font_SetActive(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, sp48);
                 Font_Printf(0x1D6, 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, 0x3C));
@@ -2299,7 +2299,7 @@ void PakUi_UpdateMenuDisplayFrame(s32 arg0, s32 arg1) {
 
     if (arg1 != 0) {
         unk_D_82D09F1C* ptr = &gMenuNavigationTable[gAudioMessageIndex];
-        PakUi_DrawRotatingCorners(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
+        PakUi_DrawRotatingCorners(ptr->posX, ptr->posY, ptr->rotation, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
     }
 
     PakUi_DrawStatusPopup(&D_82D0ABD0);
@@ -2551,7 +2551,7 @@ s32 TransferPak_MenuHandleInput(void) {
         sp24 = gMenuNavigationTable[gAudioMessageIndex].unk_0A;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT)) {
         sp24 = gMenuNavigationTable[gAudioMessageIndex].unk_0B;
-    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (gGbAudioState.unk_00 == 0x1F8)) {
+    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (gGbAudioState.posX == 0x1F8)) {
         Audio_PlaySoundEffectById(2);
         var_a3 = -1;
         gSessionContext.unk_11F2 ^= 1;
@@ -2566,19 +2566,19 @@ s32 TransferPak_MenuHandleInput(void) {
         var_a2 = 0;
         if (gMenuItemData->unk_01 == 0) {
             var_a1 = 1;
-        } else if (gMenuItemData->unk_00 != 0) {
+        } else if (gMenuItemData->posX != 0) {
             var_a1 = 2;
-        } else if (gMenuItemData->unk_02 != 6) {
+        } else if (gMenuItemData->posY != 6) {
             var_a1 = 3;
         }
 
-        if (gMenuItemData[1].unk_04 == 0) {
+        if (gMenuItemData[1].rotation == 0) {
             var_a2 = 4;
         } else if (gMenuItemData[1].unk_01 == 0) {
             var_a2 = 1;
-        } else if (gMenuItemData[1].unk_00 != 0) {
+        } else if (gMenuItemData[1].posX != 0) {
             var_a2 = 2;
-        } else if (gMenuItemData[1].unk_02 != 6) {
+        } else if (gMenuItemData[1].posY != 6) {
             var_a2 = 3;
         }
 
@@ -2589,7 +2589,7 @@ s32 TransferPak_MenuHandleInput(void) {
         }
     }
 
-    if ((var_a3 == 6) && (gMenuItemData[1].unk_04 == 0)) {
+    if ((var_a3 == 6) && (gMenuItemData[1].rotation == 0)) {
         Audio_PlaySoundEffectById(8);
         PakUi_OpenStatusPopup(&D_82D0ABD0, 0, 4);
         var_a3 = -2;
@@ -2745,13 +2745,13 @@ void Pak_PollPortStatus(void) {
 
     for (i = 0; i < 4; i++) {
         GbSave_CopyPlayerIdentity(i, &sp48);
-        Text_UntranscodeName(&gMenuItemData[i].unk_08, &sp48.unk_02);
-        gMenuItemData[i].unk_06 = sp48.unk_00;
+        Text_UntranscodeName(&gMenuItemData[i].unk_08, &sp48.posY);
+        gMenuItemData[i].unk_06 = sp48.posX;
         gMenuItemData[i].unk_01 = GbSave_GetPortGame(i);
-        gMenuItemData[i].unk_00 = GbSave_GetSaveState(i);
+        gMenuItemData[i].posX = GbSave_GetSaveState(i);
         gMenuItemData[i].unk_03 = GbSave_SavedAtPokemonCenter(i);
-        gMenuItemData[i].unk_04 = (temp_s3 & (1 << i)) != 0;
-        gMenuItemData[i].unk_02 = GbSave_GetPartyCount(i);
+        gMenuItemData[i].rotation = (temp_s3 & (1 << i)) != 0;
+        gMenuItemData[i].posY = GbSave_GetPartyCount(i);
     }
 }
 

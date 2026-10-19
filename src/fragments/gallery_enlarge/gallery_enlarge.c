@@ -34,8 +34,8 @@ void Gallery_EnlargeDraw(void) {
     static s16 gFragment46_FrameCounter = 0;
 
     BgStage_DrawFrame();
-    if (gFragment46_Camera->unk_00 == 2) {
-        Gallery_DrawPhotoThumbnail(gFragment46_Camera->unk_08->img_p, 0, 0, gFragment46_Camera->unk_04, gFragment46_Camera->unk_06, 1, 0);
+    if (gFragment46_Camera->posX == 2) {
+        Gallery_DrawPhotoThumbnail(gFragment46_Camera->unk_08->img_p, 0, 0, gFragment46_Camera->rotation, gFragment46_Camera->unk_06, 1, 0);
     }
     BgStage_AdvanceFrame();
     gFragment46_FrameCounter += 0x1000;
@@ -96,7 +96,7 @@ void Gallery_EnlargeReadInput(void) {
 void Gallery_EnlargeLoop(void) {
     do {
         Gallery_ProcessSceneInstance(gFragment46_Camera);
-    } while (gFragment46_Camera->unk_00 != 2);
+    } while (gFragment46_Camera->posX != 2);
 
     StageFade_StartFromOpaque(1);
 

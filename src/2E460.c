@@ -47,13 +47,13 @@ TiledTexture gMenuTextureInfo_Alternates[] = {
 
 void GbSave_BuildPortSummary(PortSummary* arg0, s32 arg1) {
     if (GbSave_GetSaveState(arg1) != 0) {
-        arg0->unk_00 = 1;
+        arg0->posX = 1;
     } else {
-        arg0->unk_00 = 0;
+        arg0->posX = 0;
         arg0->unk_08 = GbSave_GetTrainerId(arg1);
         GbSave_GetPlayerName(arg1, &arg0[1]);
     }
-    arg0->unk_04 = GbSave_GetPortGame(arg1);
+    arg0->rotation = GbSave_GetPortGame(arg1);
 }
 
 void Gfx_DrawTiledTextureStrip(TiledTexture* arg0, s32 arg1, s32 a2) {
@@ -70,10 +70,10 @@ void Gfx_DrawTiledTextureStrip(TiledTexture* arg0, s32 arg1, s32 a2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    temp_lo = 0x1000 / (arg0->unk_00 * 2);
+    temp_lo = 0x1000 / (arg0->posX * 2);
     var_s2 = arg0->unk_0C;
     arg2 = a2;
-    i = arg0->unk_04;
+    i = arg0->rotation;
 
     while (i > 0) {
         if (temp_lo < i) {
@@ -82,7 +82,7 @@ void Gfx_DrawTiledTextureStrip(TiledTexture* arg0, s32 arg1, s32 a2) {
             var_t0 = i;
         }
 
-        gDPLoadTextureBlock(gDisplayListHead++, var_s2, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg0->unk_00, var_t0, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, var_s2, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg0->posX, var_t0, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg1 + arg0->unk_08) - 1) << 2,
@@ -90,7 +90,7 @@ void Gfx_DrawTiledTextureStrip(TiledTexture* arg0, s32 arg1, s32 a2) {
 
         i -= var_t0;
         arg2 += var_t0;
-        var_s2 += var_t0 * arg0->unk_00 * 2;
+        var_s2 += var_t0 * arg0->posX * 2;
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -103,19 +103,19 @@ s32 Ui_AdjustVerticalSelection(VerticalSelection* arg0, s32 arg1) {
     switch (arg1) {
         case 0x800:
             Audio_PlaySoundEffectById(1);
-            if (arg0->unk_04 == 0) {
-                arg0->unk_04 += arg0->unk_08;
+            if (arg0->rotation == 0) {
+                arg0->rotation += arg0->unk_08;
             }
-            arg0->unk_04--;
+            arg0->rotation--;
             ret = 1;
             break;
 
         case 0x400:
             Audio_PlaySoundEffectById(1);
-            if (arg0->unk_04 >= (arg0->unk_08 - 1)) {
-                arg0->unk_04 -= arg0->unk_08;
+            if (arg0->rotation >= (arg0->unk_08 - 1)) {
+                arg0->rotation -= arg0->unk_08;
             }
-            arg0->unk_04++;
+            arg0->rotation++;
             ret = 1;
             break;
     }
@@ -136,19 +136,19 @@ s32 Ui_AdjustHorizontalSelection(HorizontalSelection* arg0, s32 arg1) {
     switch (arg1) {
         case 0x200:
             Audio_PlaySoundEffectById(1);
-            if (arg0->unk_04 == 0) {
-                arg0->unk_04 += arg0->unk_08;
+            if (arg0->rotation == 0) {
+                arg0->rotation += arg0->unk_08;
             }
-            arg0->unk_04--;
+            arg0->rotation--;
             ret = 1;
             break;
 
         case 0x100:
             Audio_PlaySoundEffectById(1);
-            if (arg0->unk_04 >= (arg0->unk_08 - 1)) {
-                arg0->unk_04 -= arg0->unk_08;
+            if (arg0->rotation >= (arg0->unk_08 - 1)) {
+                arg0->rotation -= arg0->unk_08;
             }
-            arg0->unk_04++;
+            arg0->rotation++;
             ret = 1;
             break;
     }
@@ -168,25 +168,25 @@ void Ui_AdjustSteppedScrollSelection(SteppedScrollSelection* arg0) {
     s32 sp18 = arg0->unk_0C;
 
     if (gPlayer1Controller->buttonDown & 0x2000) {
-        sp18 = ((arg0->unk_08 - arg0->unk_04) + 1) / 10;
+        sp18 = ((arg0->unk_08 - arg0->rotation) + 1) / 10;
     }
 
     switch (temp_v0) {
         case 0x800:
             Audio_PlaySoundEffectById(1);
-            if (arg0->unk_00 - sp18 < arg0->unk_04) {
-                arg0->unk_00 = arg0->unk_04;
+            if (arg0->posX - sp18 < arg0->rotation) {
+                arg0->posX = arg0->rotation;
             } else {
-                arg0->unk_00 -= sp18;
+                arg0->posX -= sp18;
             }
             break;
 
         case 0x400:
             Audio_PlaySoundEffectById(1);
-            if (arg0->unk_08 < arg0->unk_00 + sp18) {
-                arg0->unk_00 = arg0->unk_08;
+            if (arg0->unk_08 < arg0->posX + sp18) {
+                arg0->posX = arg0->unk_08;
             } else {
-                arg0->unk_00 += sp18;
+                arg0->posX += sp18;
             }
             break;
     }
@@ -228,15 +228,15 @@ s32 Ui_AdjustNumericSelection(NumericSelection* arg0, s32 arg1) {
             break;
 
         case 0x800:
-            if (arg0->unk_00 == arg0->unk_08) {
-                arg0->unk_00 = arg0->unk_00 - ((arg0->unk_00 / var_a2) * var_a2);
-                if (arg0->unk_00 < arg0->unk_04) {
-                    arg0->unk_00 = arg0->unk_04;
+            if (arg0->posX == arg0->unk_08) {
+                arg0->posX = arg0->posX - ((arg0->posX / var_a2) * var_a2);
+                if (arg0->posX < arg0->rotation) {
+                    arg0->posX = arg0->rotation;
                 }
             } else {
-                arg0->unk_00 += var_a2;
-                if (arg0->unk_08 < arg0->unk_00) {
-                    arg0->unk_00 = arg0->unk_08;
+                arg0->posX += var_a2;
+                if (arg0->unk_08 < arg0->posX) {
+                    arg0->posX = arg0->unk_08;
                 }
             }
             Audio_PlaySoundEffectById(1);
@@ -244,12 +244,12 @@ s32 Ui_AdjustNumericSelection(NumericSelection* arg0, s32 arg1) {
             break;
 
         case 0x400:
-            if (arg0->unk_00 == arg0->unk_04) {
-                arg0->unk_00 = arg0->unk_08;
+            if (arg0->posX == arg0->rotation) {
+                arg0->posX = arg0->unk_08;
             } else {
-                arg0->unk_00 -= var_a2;
-                if (arg0->unk_00 < arg0->unk_04) {
-                    arg0->unk_00 = arg0->unk_04;
+                arg0->posX -= var_a2;
+                if (arg0->posX < arg0->rotation) {
+                    arg0->posX = arg0->rotation;
                 }
             }
             Audio_PlaySoundEffectById(1);
@@ -278,12 +278,12 @@ s32 Ui_AdjustSteppedRangeSelection(SteppedRangeSelection* arg0) {
                 sp18 *= 0xA;
 
             case 0x800:
-                if (arg0->unk_00 >= arg0->unk_08) {
-                    arg0->unk_00 = arg0->unk_04;
-                } else if (arg0->unk_08 < (arg0->unk_00 + sp18)) {
-                    arg0->unk_00 = arg0->unk_08;
+                if (arg0->posX >= arg0->unk_08) {
+                    arg0->posX = arg0->rotation;
+                } else if (arg0->unk_08 < (arg0->posX + sp18)) {
+                    arg0->posX = arg0->unk_08;
                 } else {
-                    arg0->unk_00 = arg0->unk_00 + sp18;
+                    arg0->posX = arg0->posX + sp18;
                 }
                 break;
 
@@ -291,12 +291,12 @@ s32 Ui_AdjustSteppedRangeSelection(SteppedRangeSelection* arg0) {
                 sp18 *= 0xA;
 
             case 0x400:
-                if (arg0->unk_04 >= arg0->unk_00) {
-                    arg0->unk_00 = arg0->unk_08;
-                } else if ((arg0->unk_00 - sp18) < arg0->unk_04) {
-                    arg0->unk_00 = arg0->unk_04;
+                if (arg0->rotation >= arg0->posX) {
+                    arg0->posX = arg0->unk_08;
+                } else if ((arg0->posX - sp18) < arg0->rotation) {
+                    arg0->posX = arg0->rotation;
                 } else {
-                    arg0->unk_00 = arg0->unk_00 - sp18;
+                    arg0->posX = arg0->posX - sp18;
                 }
                 break;
         }
@@ -447,7 +447,7 @@ MoveBattleData* Move_GetData(s32 arg0) {
 }
 
 s32 Species_GetMoveSlot(PokemonData* arg0, s32 arg1) {
-    s32 temp_v0 = arg0->unk_00.unk_00 - 1;
+    s32 temp_v0 = arg0->posX.posX - 1;
     s32 var_v1;
 
     if (arg1 == 1) {
@@ -542,8 +542,8 @@ void State_PokemonLab(void) {
 
             FRAGMENT_LOAD_AND_CALL2(fragment22, var_s4, 0);
 
-            while ((game_state == STATE_POKEMON_LAB) && (gFragmentCallContext.unk_00 != 0)) {
-                gFragmentCallContext.unk_00 = 0;
+            while ((game_state == STATE_POKEMON_LAB) && (gFragmentCallContext.posX != 0)) {
+                gFragmentCallContext.posX = 0;
                 game_state = Fragment_LoadAndCall(gFragmentCallContext.fragment_id, gFragmentCallContext.rom_start, gFragmentCallContext.rom_end,
                                            gFragmentCallContext.arg0, gFragmentCallContext.arg1);
             }

@@ -43,11 +43,11 @@ s32 GbTower_TeamPrepFrameCallback(u8 arg0) {
 void GbTower_BuildPartyResult(UnkInputStruct8000D738* arg0) {
     s32 i;
     PlayerName sp34;
-    u16(*var_s1)[0x640] = arg0->unk_04[0];
+    u16(*var_s1)[0x640] = arg0->rotation[0];
 
     Save_GetOptions(&sp34);
-    arg0->unk_02 = sp34.unk_00;
-    arg0->unk_00 = sp34.unk_04;
+    arg0->posY = sp34.posX;
+    arg0->posX = sp34.rotation;
     arg0->unk_03 = gLoadedPokemonCount;
 
     for (i = 0; i < gLoadedPokemonCount; i++, var_s1++) {

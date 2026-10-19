@@ -44,19 +44,19 @@ void Model_InitDisplayObject(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, unk
 
     arg0->unk_000.unk_01 |= 0x1;
 
-    arg0->unk_000.unk_02 &= ~0x4;
-    arg0->unk_000.unk_02 |= 0x20;
-    arg0->unk_000.unk_02 |= 0x40;
-    arg0->unk_000.unk_02 &= ~0x2;
+    arg0->unk_000.posY &= ~0x4;
+    arg0->unk_000.posY |= 0x20;
+    arg0->unk_000.posY |= 0x40;
+    arg0->unk_000.posY &= ~0x2;
 
     arg0->unk_0A0.rgba = 0xFFFFFF00;
     arg0->unk_03C.rgba = 0xFFFFFF00;
-    arg0->unk_040.unk_00 = -1;
-    arg0->unk_040.unk_04 = NULL;
-    arg0->unk_054.unk_00 = -1;
-    arg0->unk_054.unk_04 = NULL;
+    arg0->unk_040.posX = -1;
+    arg0->unk_040.rotation = NULL;
+    arg0->unk_054.posX = -1;
+    arg0->unk_054.rotation = NULL;
 
-    arg0->unk_000.unk_02 &= ~0x8;
+    arg0->unk_000.posY &= ~0x8;
 
     if (arg2 > 0) {
         ModelAnim_StartDisplayObjectAnimation(arg0);
@@ -74,7 +74,7 @@ s32 ModelAnim_SetAnimation(Fragment2_1GraphNode* arg0, s32 arg1) {
 
     if (arg1 == -1) {
         ModelAnim_ClearTransformChannel(arg0);
-    } else if (arg1 < temp_v0->unk_04) {
+    } else if (arg1 < temp_v0->rotation) {
         ModelAnim_BindTransformCurve(arg0, arg1, temp_v0->unk_0C[arg1], 0x10000);
         return 1;
     }
@@ -133,10 +133,10 @@ arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, PokemonDa
     u8 var_a0;
     s8* var_v1;
 
-    sp30 = &gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1];
+    sp30 = &gSpeciesDisplayTable[arg1->posX.posX - 1];
     sp34.raw = 0;
 
-    Text_CopySpeciesName(sp38, arg1->unk_00.unk_00);
+    Text_CopySpeciesName(sp38, arg1->posX.posX);
 
     if (HAL_Strcmp(arg1->unk_30, sp38) != 0) {
         var_a0 = ((arg1->unk_0E >> 8) & 0xFF) + (arg1->unk_0E & 0xFF);
@@ -155,7 +155,7 @@ arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, PokemonDa
             var_a0 += 0;
         }
 
-        sp34.unk_00 = ((((sp30->unk_12 - sp30->unk_10) << 6) * var_a0) / 255) + (sp30->unk_10 << 6);
+        sp34.posX = ((((sp30->unk_12 - sp30->unk_10) << 6) * var_a0) / 255) + (sp30->unk_10 << 6);
     }
 
     *arg0 = sp34;
@@ -165,10 +165,10 @@ arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, PokemonDa
 void Model_ComputeSizeVariantFromRecord(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2) {
     PokemonData stack;
 
-    stack.unk_00.unk_00 = arg2;
-    stack.unk_0E = arg1->unk_02;
+    stack.posX.posX = arg2;
+    stack.unk_0E = arg1->posY;
 
-    _bcopy(arg1->unk_04, stack.unk_30, 0x10);
+    _bcopy(arg1->rotation, stack.unk_30, 0x10);
     _bcopy(arg1->unk_14, stack.unk_3B, 0x10);
     Model_ComputeSizeVariant(arg0, &stack);
 }
@@ -178,27 +178,27 @@ void Trainer_RequestPokeIcon(unk_D_800AE540_1194* arg0) {
     s16 sp2A;
     unk_D_800AE540_0004* temp_a1;
 
-    sp2A = arg0->unk_02;
+    sp2A = arg0->posY;
     sp2C.raw = 0;
-    if (!(arg0->unk_00 & 0x40) && (arg0->unk_00 & 0x80)) {
-        temp_a1 = arg0->unk_04;
-        if ((temp_a1 != NULL) && (sp2A == arg0->unk_04->unk_000)) {
-            Model_ComputeSizeVariant(&sp2C, (PokemonData*)arg0->unk_04);
-            if ((sp2A == 0x19) && (arg0->unk_04->unk_01C[0].unk_30[6] & 0x80)) {
+    if (!(arg0->posX & 0x40) && (arg0->posX & 0x80)) {
+        temp_a1 = arg0->rotation;
+        if ((temp_a1 != NULL) && (sp2A == arg0->rotation->unk_000)) {
+            Model_ComputeSizeVariant(&sp2C, (PokemonData*)arg0->rotation);
+            if ((sp2A == 0x19) && (arg0->rotation->unk_01C[0].unk_30[6] & 0x80)) {
                 sp2A = 0x99;
             }
         }
-        if (!(arg0->unk_10->unk_00 & 4)) {
+        if (!(arg0->unk_10->posX & 4)) {
             while (Display_IsFrameReady() == 0) {}
         }
         PokeIcon_RequestFrameLoad(arg0->unk_10, (u16) sp2A, sp2C);
-        arg0->unk_00 |= 0x40;
-        arg0->unk_00 &= ~0x10;
+        arg0->posX |= 0x40;
+        arg0->posX &= ~0x10;
 
-        if (arg0->unk_00 & 0x20) {
+        if (arg0->posX & 0x20) {
             PokeIcon_WaitFrameLoad(arg0->unk_10);
             arg0->unk_14 = arg0->unk_10->unk_24;
-            arg0->unk_00 &= ~0xE0;
+            arg0->posX &= ~0xE0;
         }
     }
 }
@@ -206,16 +206,16 @@ void Trainer_RequestPokeIcon(unk_D_800AE540_1194* arg0) {
 void PokeIcon_PollFrameLoadForObject(unk_func_8001C248* arg0) {
     if (PokeIcon_PollFrameLoad(arg0->unk_000.unk_10)) {
         arg0->unk_000.unk_14 = arg0->unk_000.unk_10->unk_24;
-        arg0->unk_000.unk_00 &= ~0xE0;
-        arg0->unk_000.unk_00 |= 0x10;
+        arg0->unk_000.posX &= ~0xE0;
+        arg0->unk_000.posX |= 0x10;
     }
 }
 
 void PokeIcon_WaitFrameLoadForObject(unk_func_8001C248* arg0) {
-    if (arg0->unk_000.unk_00 & 0x40 && PokeIcon_WaitFrameLoad(arg0->unk_000.unk_10) != 0) {
+    if (arg0->unk_000.posX & 0x40 && PokeIcon_WaitFrameLoad(arg0->unk_000.unk_10) != 0) {
         arg0->unk_000.unk_14 = arg0->unk_000.unk_10->unk_24;
-        arg0->unk_000.unk_00 &= ~0xE0;
-        arg0->unk_000.unk_00 |= 0x10;
+        arg0->unk_000.posX &= ~0xE0;
+        arg0->unk_000.posX |= 0x10;
     }
 }
 

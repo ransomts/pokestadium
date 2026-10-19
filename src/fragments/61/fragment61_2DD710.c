@@ -85,7 +85,7 @@ void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         for (i = 0; i < 6; i++) {
-            if (arg0->unk_0030[i].unk_004.unk_00.unk_00 != 0) {
+            if (arg0->unk_0030[i].unk_004.posX.posX != 0) {
                 s16 tmp1 = gSlotPosXOffsets[i] + arg0->unk_0018 + 2;
                 s16 tmp2 = gSlotPosYOffsets[i] + arg0->unk_001A + 2;
 
@@ -140,7 +140,7 @@ void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1) {
         Font_SetActive(4, 0);
 
         for (i = 0; i < 6; i++) {
-            if (arg0->unk_0030[i].unk_004.unk_00.unk_00 != 0) {
+            if (arg0->unk_0030[i].unk_004.posX.posX != 0) {
                 s16 tmp1 = gSlotPosXOffsets[i] + arg0->unk_0018 + 0x2C;
                 s16 tmp2 = gSlotPosYOffsets[i] + arg0->unk_001A + 5;
 
@@ -151,7 +151,7 @@ void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1) {
         Font_SetActive(4, 0);
 
         for (i = 0; i < 6; i++) {
-            if (arg0->unk_0030[i].unk_004.unk_00.unk_00 != 0) {
+            if (arg0->unk_0030[i].unk_004.posX.posX != 0) {
                 sp42 = gSlotPosXOffsets[i] + arg0->unk_0018 + 0x2C;
                 sp40 = gSlotPosYOffsets[i] + arg0->unk_001A + 0x17;
                 Font_Printf(sp42, sp40, "%s %d", TeamSelection_GetInstructionText(0x15), arg0->unk_0030[i].unk_004.unk_24);
@@ -170,8 +170,8 @@ void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1) {
 void Rental_ClearTeamSlot(gItemPanel* arg0) {
     s16 temp_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
-    if (arg0->unk_0030[temp_v0].unk_004.unk_00.unk_00 != 0) {
-        arg0->unk_0030[temp_v0].unk_004.unk_00.unk_00 = 0;
+    if (arg0->unk_0030[temp_v0].unk_004.posX.posX != 0) {
+        arg0->unk_0030[temp_v0].unk_004.posX.posX = 0;
         arg0->unk_0030[temp_v0].raw = 0;
         arg0->unk_0006 -= 1;
     }
@@ -181,8 +181,8 @@ void Rental_BeginSlotReplace(gItemPanel* arg0) {
     s16 sp1E = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
     if (Rental_CarouselResumeInput(arg0->pokemonPanel) != 0) {
-        if (arg0->unk_0030[sp1E].unk_004.unk_00.unk_00 != 0) {
-            arg0->unk_0030[sp1E].unk_004.unk_00.unk_00 = 0;
+        if (arg0->unk_0030[sp1E].unk_004.posX.posX != 0) {
+            arg0->unk_0030[sp1E].unk_004.posX.posX = 0;
             arg0->unk_0030[sp1E].raw = 0;
             arg0->unk_0006--;
         }
@@ -203,7 +203,7 @@ s32 Rental_SaveTeamToDeck(gItemPanel* arg0) {
         temp_s3 = Deck_OpenAndSetName(0x10, 0, temp_v0, arg0->unk_001E, arg0->unk_001E, arg0->unk_001C);
 
         for (i = 0; i < arg0->unk_0006; i++) {
-            Deck_WriteEntries(&arg0->unk_0030[i].unk_004.unk_00.unk_00, 1, temp_s3);
+            Deck_WriteEntries(&arg0->unk_0030[i].unk_004.posX.posX, 1, temp_s3);
         }
 
         Deck_CloseAndFlush(temp_s3);
@@ -404,7 +404,7 @@ void Rental_TeamGridHandleInput(gItemPanel* arg0) {
     } else if (BTN_IS_PRESSED(cont, BTN_A)) {
         s32 temp_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
-        if (arg0->unk_0030[temp_v0].unk_004.unk_00.unk_00 != 0) {
+        if (arg0->unk_0030[temp_v0].unk_004.posX.posX != 0) {
             Audio_PlaySoundEffectById(2);
             arg0->unk_0001 = 0xB;
         }
@@ -483,7 +483,7 @@ void Rental_HandleTeamConfirmation(gItemPanel* arg0) {
         case 4:
             for (i = 0; i < 6; i++) {
                 arg0->unk_0030[i].raw = 0;
-                arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
+                arg0->unk_0030[i].unk_004.posX.posX = 0;
             }
 
             Rental_CarouselRequestRedraw(arg0->pokemonPanel);
@@ -533,7 +533,7 @@ void Rental_HandleRegisteredTeamConfirmation(gItemPanel* arg0) {
         case 3:
             for (i = 0; i < 6; i++) {
                 arg0->unk_0030[i].raw = 0;
-                arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
+                arg0->unk_0030[i].unk_004.posX.posX = 0;
             }
 
             Rental_CarouselRequestRedraw(arg0->pokemonPanel);
@@ -730,7 +730,7 @@ s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* 
 
     for (i = 0; i < 6; i++) {
         arg0->unk_0030[i].raw = 0;
-        arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
+        arg0->unk_0030[i].unk_004.posX.posX = 0;
     }
 
     HAL_Strcpy(arg0->unk_001E, arg6);
@@ -764,7 +764,7 @@ s32 Rental_ResetTeamSlots(gItemPanel* arg0) {
 
     for (i = 0; i < 6; i++) {
         arg0->unk_0030[i].raw = 0;
-        arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
+        arg0->unk_0030[i].unk_004.posX.posX = 0;
     }
 
     Rental_CarouselRequestRedraw(arg0->pokemonPanel);
@@ -815,7 +815,7 @@ s32 Rental_AssignMonToSlot(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
         return 0;
     }
 
-    if (arg0->unk_0030[var_v0].unk_004.unk_00.unk_00 == 0) {
+    if (arg0->unk_0030[var_v0].unk_004.posX.posX == 0) {
         arg0->unk_0006 += 1;
     }
 
@@ -834,7 +834,7 @@ s32 Rental_AssignMonToSlot(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     } else {
         do {
             var_v0 = (var_v0 + 1) % 6;
-        } while (arg0->unk_0030[var_v0].unk_004.unk_00.unk_00 != 0);
+        } while (arg0->unk_0030[var_v0].unk_004.posX.posX != 0);
         arg0->unk_0010 = var_v0 % 3;
         arg0->unk_0012 = var_v0 / 3;
         arg0->unk_0001 = 2;
@@ -880,19 +880,19 @@ s32 Rental_CanAddMonToTeam(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     unk_D_838067F0_0168_0000* ptr;
 
     ptr = &arg0->unk_0030[0];
-    temp_a2 = arg1->unk_004.unk_00.unk_00;
+    temp_a2 = arg1->unk_004.posX.posX;
 
-    if (arg1->unk_004.unk_00.unk_00 == 0) {
+    if (arg1->unk_004.posX.posX == 0) {
         return 0;
     }
 
     for (i = 0; i < 6; i++, ptr++) {
-        if ((ptr->unk_004.unk_00.unk_00 != 0) && !(ptr->raw & 0x80000000)) {
+        if ((ptr->unk_004.posX.posX != 0) && !(ptr->raw & 0x80000000)) {
             if (gSessionContext.unk_0001 == 0) {
                 if (ptr->raw == arg1->raw) {
                     return 0;
                 }
-            } else if (ptr->unk_004.unk_00.unk_00 == temp_a2) {
+            } else if (ptr->unk_004.posX.posX == temp_a2) {
                 return 0;
             }
         }
@@ -905,13 +905,13 @@ s32 Rental_TeamContainsMon(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     s32 i;
     unk_D_838067F0_0168_0000* ptr;
 
-    if (arg1->unk_004.unk_00.unk_00 == 0) {
+    if (arg1->unk_004.posX.posX == 0) {
         return 0;
     }
 
     ptr = &arg0->unk_0030[0];
     for (i = 0; i < 6; i++, ptr++) {
-        if ((ptr->unk_004.unk_00.unk_00 != 0) && !(ptr->raw & 0x80000000) && (ptr->raw == arg1->raw)) {
+        if ((ptr->unk_004.posX.posX != 0) && !(ptr->raw & 0x80000000) && (ptr->raw == arg1->raw)) {
             return 1;
         }
     }
@@ -937,6 +937,6 @@ void Rental_CopyRosterToTeam(gItemPanel* arg0, PokemonData* arg1, s16 arg2) {
         arg0->unk_0030[i].unk_000 = (arg1[i].unk_52 & 0x70) >> 4;
         arg0->unk_0030[i].unk_001 = arg1[i].unk_52 & 0xF;
         arg0->unk_0030[i].unk_002 = arg1[i].unk_53;
-        arg0->unk_0030[i].unk_003 = arg1[i].unk_00.unk_00;
+        arg0->unk_0030[i].unk_003 = arg1[i].posX.posX;
     }
 }

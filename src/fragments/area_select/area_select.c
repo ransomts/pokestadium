@@ -16,9 +16,9 @@
 #include "src/math_util.h"
 
 typedef struct AreaConfig {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s8 unk_06;
     /* 0x07 */ s8 unk_07;
     /* 0x08 */ s8 unk_08;
@@ -27,15 +27,15 @@ typedef struct AreaConfig {
 } AreaConfig; // size = 0xE
 
 typedef struct ParticlePos {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
 } ParticlePos; // size = 0x6
 
 typedef struct ParticleTrail {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
@@ -43,9 +43,9 @@ typedef struct ParticleTrail {
 } ParticleTrail; // size = 0x24
 
 typedef struct TileOverlay {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ Color_RGBA8 unk_08;
 } TileOverlay; // size >= 0xC
@@ -145,9 +145,9 @@ Vtx* AreaSelect_BuildExitFadeVertices(void) {
     u8 temp_s4;
     u8 temp_s5;
 
-    temp_s6 = gTileOverlayState.unk_00;
-    temp_s7 = gTileOverlayState.unk_02;
-    temp_s0 = gTileOverlayState.unk_04;
+    temp_s6 = gTileOverlayState.posX;
+    temp_s7 = gTileOverlayState.posY;
+    temp_s0 = gTileOverlayState.rotation;
     temp_s2 = gTileOverlayState.unk_08.r;
     temp_s3 = gTileOverlayState.unk_08.g;
     temp_s4 = gTileOverlayState.unk_08.b;
@@ -228,11 +228,11 @@ void AreaSelect_AdvanceMagnemiteTrail(void) {
             gParticleTrailState[i].unk_0C[j + 1] = gParticleTrailState[i].unk_0C[j];
         }
 
-        temp_fv0 = (gParticleTrailState[0].unk_06 * gParticleTrailState[0].unk_04) / 100;
+        temp_fv0 = (gParticleTrailState[0].unk_06 * gParticleTrailState[0].rotation) / 100;
 
-        gParticleTrailState[i].unk_0C[0].unk_00 = gParticleTrailState[0].unk_00 + (COSS((var_v0)) * temp_fv0);
-        gParticleTrailState[i].unk_0C[0].unk_02 = gParticleTrailState[0].unk_02 + (SINS((var_v0)) * temp_fv0);
-        gParticleTrailState[i].unk_0C[0].unk_04 = (gParticleTrailState[0].unk_06 * 0x48) / 100;
+        gParticleTrailState[i].unk_0C[0].posX = gParticleTrailState[0].posX + (COSS((var_v0)) * temp_fv0);
+        gParticleTrailState[i].unk_0C[0].posY = gParticleTrailState[0].posY + (SINS((var_v0)) * temp_fv0);
+        gParticleTrailState[i].unk_0C[0].rotation = (gParticleTrailState[0].unk_06 * 0x48) / 100;
 
         var_v0 -= 0x5555;
     }
@@ -241,9 +241,9 @@ void AreaSelect_AdvanceMagnemiteTrail(void) {
 void AreaSelect_InitMagnemiteTrail(s32 arg0) {
     s32 i;
 
-    gParticleTrailState[0].unk_00 = gTileConfigTable[arg0].unk_00;
-    gParticleTrailState[0].unk_02 = gTileConfigTable[arg0].unk_02;
-    gParticleTrailState[0].unk_04 = gTileConfigTable[arg0].unk_04;
+    gParticleTrailState[0].posX = gTileConfigTable[arg0].posX;
+    gParticleTrailState[0].posY = gTileConfigTable[arg0].posY;
+    gParticleTrailState[0].rotation = gTileConfigTable[arg0].rotation;
     gParticleTrailState[0].unk_06 = 0x64;
     gParticleTrailState[0].unk_0A = 0;
     gParticleTrailState[0].unk_08 = 0;
@@ -293,9 +293,9 @@ void AreaSelect_DrawMagnemiteTrail(u8* arg0) {
 
     for (i = 5; i >= 0; i--) {
         for (j = 0; j < 3; j++) {
-            temp_s1 = gParticleTrailState[j].unk_0C[i].unk_04;
-            temp_s3 = gParticleTrailState[j].unk_0C[i].unk_00;
-            temp_s4 = gParticleTrailState[j].unk_0C[i].unk_02;
+            temp_s1 = gParticleTrailState[j].unk_0C[i].rotation;
+            temp_s3 = gParticleTrailState[j].unk_0C[i].posX;
+            temp_s4 = gParticleTrailState[j].unk_0C[i].posY;
 
             if (temp_s1 != 0) {
                 if (i == 0) {
@@ -338,7 +338,7 @@ void AreaSelect_DrawNameBanner(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     if (arg3 != 8) {
         if (arg3 == 7) {
-            arg3 += gAreaPlayerName.unk_00;
+            arg3 += gAreaPlayerName.posX;
         }
         var_s2 = gBackgroundTexturePtrs[arg3];
 
@@ -511,16 +511,16 @@ s32 AreaSelect_HandleInput(void) {
     s8 var_s0 = 8;
     s32 var_t1 = 1;
 
-    gParticleTrailState->unk_00 = gTileConfigTable[gCurrentAreaIndex].unk_00;
-    gParticleTrailState->unk_02 = gTileConfigTable[gCurrentAreaIndex].unk_02;
-    gParticleTrailState->unk_04 = gTileConfigTable[gCurrentAreaIndex].unk_04;
+    gParticleTrailState->posX = gTileConfigTable[gCurrentAreaIndex].posX;
+    gParticleTrailState->posY = gTileConfigTable[gCurrentAreaIndex].posY;
+    gParticleTrailState->rotation = gTileConfigTable[gCurrentAreaIndex].rotation;
     gParticleTrailState->unk_06 = 0x64;
 
-    gTileOverlayState.unk_00 = gTileConfigTable[gCurrentAreaIndex].unk_00;
-    gTileOverlayState.unk_02 = gTileConfigTable[gCurrentAreaIndex].unk_02;
+    gTileOverlayState.posX = gTileConfigTable[gCurrentAreaIndex].posX;
+    gTileOverlayState.posY = gTileConfigTable[gCurrentAreaIndex].posY;
     gTileOverlayState.unk_08 = gTileConfigTable[gCurrentAreaIndex].unk_0A;
     gTileOverlayState.unk_06 = 0;
-    gTileOverlayState.unk_04 = 0x12C;
+    gTileOverlayState.rotation = 0x12C;
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {
         if (gCurrentAreaIndex == 3) {
@@ -563,18 +563,18 @@ s16 AreaSelect_UpdateCursorMove(void) {
     s32 vA_2;
     s32 vA_4;
 
-    vA_0 = gTileConfigTable[gPreviousAreaIndex].unk_00;
-    vA_2 = gTileConfigTable[gPreviousAreaIndex].unk_02;
-    vA_4 = gTileConfigTable[gPreviousAreaIndex].unk_04;
-    v8_0 = gTileConfigTable[gCurrentAreaIndex].unk_00;
-    v8_2 = gTileConfigTable[gCurrentAreaIndex].unk_02;
-    v8_4 = gTileConfigTable[gCurrentAreaIndex].unk_04;
+    vA_0 = gTileConfigTable[gPreviousAreaIndex].posX;
+    vA_2 = gTileConfigTable[gPreviousAreaIndex].posY;
+    vA_4 = gTileConfigTable[gPreviousAreaIndex].rotation;
+    v8_0 = gTileConfigTable[gCurrentAreaIndex].posX;
+    v8_2 = gTileConfigTable[gCurrentAreaIndex].posY;
+    v8_4 = gTileConfigTable[gCurrentAreaIndex].rotation;
 
     gTransitionFrame++;
 
-    gParticleTrailState->unk_00 = (((v8_0 - vA_0) * gTransitionFrame) / 6) + vA_0;
-    gParticleTrailState->unk_02 = (((v8_2 - vA_2) * gTransitionFrame) / 6) + vA_2;
-    gParticleTrailState->unk_04 = (((v8_4 - vA_4) * gTransitionFrame) / 6) + vA_4;
+    gParticleTrailState->posX = (((v8_0 - vA_0) * gTransitionFrame) / 6) + vA_0;
+    gParticleTrailState->posY = (((v8_2 - vA_2) * gTransitionFrame) / 6) + vA_2;
+    gParticleTrailState->rotation = (((v8_4 - vA_4) * gTransitionFrame) / 6) + vA_4;
     gParticleTrailState->unk_06 = 0x64;
     gParticleTrailState->unk_08 += 0x800;
 
@@ -787,14 +787,14 @@ void AreaSelect_Loop(void) {
 void AreaSelect_LoadBackgroundArt(void) {
     gAreaAssetArchive = ASSET_LOAD2(backgrounds, 1, 1);
 
-    if (gAreaPlayerName.unk_00 == 2) {
+    if (gAreaPlayerName.posX == 2) {
         if (gSessionContext.unk_11F2 == 0) {
             gBgTexturePrimary = BinArchive_GetFile(gAreaAssetArchive, 1);
             gBgTextureSecondary = BinArchive_GetFile(gAreaAssetArchive, 2);
         } else {
             gBgTextureSecondary = gBgTexturePrimary = BinArchive_GetFile(gAreaAssetArchive, 2);
         }
-    } else if (gAreaPlayerName.unk_00 == 1) {
+    } else if (gAreaPlayerName.posX == 1) {
         gBgTextureSecondary = gBgTexturePrimary = BinArchive_GetFile(gAreaAssetArchive, 0x13);
     } else {
         gBgTextureSecondary = gBgTexturePrimary = BinArchive_GetFile(gAreaAssetArchive, 0x12);
@@ -822,7 +822,7 @@ s32 AreaSelect_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     AreaSelect_LoadBackgroundArt();
     gCurrentAreaIndex = 8;
 
-    if ((gAreaAudioState.unk_07 != 0) && !(gSessionContext.unk_11F5 & 4) && !(gAreaAudioState.unk_00 & 0x100)) {
+    if ((gAreaAudioState.unk_07 != 0) && !(gSessionContext.unk_11F5 & 4) && !(gAreaAudioState.posX & 0x100)) {
         gOverlayAlpha = 0xFF;
     }
 

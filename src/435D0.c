@@ -2,16 +2,16 @@
 #include "4A3E0.h"
 
 typedef struct EnvelopeState {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
 } EnvelopeState; // size = 0x5
 
 typedef struct VibratoState {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ u8 unk_0C;
 } VibratoState; // size = 0x10
@@ -98,9 +98,9 @@ s32 GbMusic_StartTableSequence(u16 arg0) {
 
     arg0--;
 
-    a = gAudioSfxBankExtra->entries[arg0].unk_00;
+    a = gAudioSfxBankExtra->entries[arg0].posX;
     gCurrentTrackId = a;
-    gTrackPitchOffset = gAudioSfxBankExtra->entries[arg0].unk_02;
+    gTrackPitchOffset = gAudioSfxBankExtra->entries[arg0].posY;
     gTrackBpmOffset = gAudioSfxBankExtra->entries[arg0].unk_03;
     gCurrentTrackData = offset + a * 0x18;
 
@@ -111,7 +111,7 @@ s32 GbMusic_StartTableSequence(u16 arg0) {
 
 void GbMusic_UpdateChannel(u32 arg0) {
     if (gChannelWaitCounters[arg0] < 2) {
-        gEnvelopeState[arg0].unk_03 = gEnvelopeState[arg0].unk_04;
+        gEnvelopeState[arg0].unk_03 = gEnvelopeState[arg0].rotation;
         gChannelStatus[arg0] &= (u8)~0x30;
         GbMusic_DecodeChannelCommands(arg0);
         return;
@@ -132,7 +132,7 @@ void GbMusic_UpdateChannel(u32 arg0) {
             GbMusic_AdvancePitchSlide(arg0);
         } else if (gEnvelopeState[arg0].unk_03 != 0) {
             gEnvelopeState[arg0].unk_03--;
-        } else if (gEnvelopeState[arg0].unk_00 != 0) {
+        } else if (gEnvelopeState[arg0].posX != 0) {
             if (gEnvelopeState[arg0].unk_01 & 0xF) {
                 gEnvelopeState[arg0].unk_01--;
             } else {
@@ -142,20 +142,20 @@ void GbMusic_UpdateChannel(u32 arg0) {
                 gEnvelopeState[arg0].unk_01 |= sp2F;
 
                 if ((gChannelStatus[arg0] & 8) != 0) {
-                    sp2F = gEnvelopeState[arg0].unk_00 & 0xF;
+                    sp2F = gEnvelopeState[arg0].posX & 0xF;
                     gChannelStatus[arg0] &= ~8;
-                    if (gEnvelopeState[arg0].unk_02 < sp2F) {
+                    if (gEnvelopeState[arg0].posY < sp2F) {
                         sp2F = gChannelStatus[arg0] * 0;
                     } else {
-                        sp2F = gEnvelopeState[arg0].unk_02 - sp2F;
+                        sp2F = gEnvelopeState[arg0].posY - sp2F;
                     }
                 } else {
-                    sp2F = (gEnvelopeState[arg0].unk_00 & 0xF0) >> 4;
+                    sp2F = (gEnvelopeState[arg0].posX & 0xF0) >> 4;
                     gChannelStatus[arg0] &= 8;
-                    if ((0xFF - sp2F) < gEnvelopeState[arg0].unk_02) {
+                    if ((0xFF - sp2F) < gEnvelopeState[arg0].posY) {
                         sp2F = 0xFF;
                     } else {
-                        sp2F += gEnvelopeState[arg0].unk_02;
+                        sp2F += gEnvelopeState[arg0].posY;
                     }
                 }
                 GbAudio_QueueRegisterWrite(GbMusic_GetChannelRegister(arg0, 3), sp2F, 0);
@@ -315,7 +315,7 @@ u8 GbMusic_CmdSetEnvelope(u32 arg0) {
 
     temp_v0 = GbMusic_ReadStreamByte(arg0);
     gEnvelopeState[arg0].unk_03 = temp_v0;
-    gEnvelopeState[arg0].unk_04 = temp_v0;
+    gEnvelopeState[arg0].rotation = temp_v0;
 
     temp_v0 = GbMusic_ReadStreamByte(arg0);
     temp_a0 = temp_v0 & 0xF0;
@@ -326,7 +326,7 @@ u8 GbMusic_CmdSetEnvelope(u32 arg0) {
     temp_a0 = temp_a1 + temp_t9;
     temp_a0 <<= 4;
     temp_t9 = temp_a0 | temp_a1;
-    gEnvelopeState[arg0].unk_00 = temp_t9;
+    gEnvelopeState[arg0].posX = temp_t9;
 
     temp_t9 = temp_v0 & 0xF;
     temp_v0 = temp_t9 << 4;
@@ -341,7 +341,7 @@ u8 GbMusic_CmdPitchSlide(u32 arg0) {
 
     gVibratoState[arg0].unk_0C = GbMusic_ReadStreamByte(arg0);
     temp_v0 = GbMusic_ReadStreamByte(arg0);
-    gVibratoState[arg0].unk_04 = GbMusic_GetNoteFrequency(temp_v0 & 0xF, (temp_v0 & 0xF0) >> 4);
+    gVibratoState[arg0].rotation = GbMusic_GetNoteFrequency(temp_v0 & 0xF, (temp_v0 & 0xF0) >> 4);
     gChannelStatus[arg0] |= 0x10;
     GbMusic_ScheduleNote(arg0, GbMusic_ReadStreamByte(arg0));
     return 1;
@@ -565,7 +565,7 @@ s32 GbMusic_TriggerChannelNote(u32 arg0, u16 arg1, u16 arg2) {
     if (gChannelStatus[arg0] & 1) {
         var_s1++;
     }
-    gEnvelopeState[arg0].unk_02 = var_s1 & 0xFF;
+    gEnvelopeState[arg0].posY = var_s1 & 0xFF;
     GbMusic_WriteChannelFrequency(arg0, var_s1);
     return 1;
 }
@@ -687,32 +687,32 @@ void GbMusic_AdvancePitchSlide(u32 arg0) {
     u8 sp1E;
     u16 sp1C;
 
-    gVibratoState[arg0].unk_00 += gVibratoState[arg0].unk_08;
+    gVibratoState[arg0].posX += gVibratoState[arg0].unk_08;
     if (gChannelStatus[arg0] & 0x20) {
-        if (gVibratoState[arg0].unk_04 < gVibratoState[arg0].unk_00) {
+        if (gVibratoState[arg0].rotation < gVibratoState[arg0].posX) {
             gChannelStatus[arg0] &= ~0x30;
             return;
         }
-    } else if (gVibratoState[arg0].unk_00 < gVibratoState[arg0].unk_04) {
+    } else if (gVibratoState[arg0].posX < gVibratoState[arg0].rotation) {
         gChannelStatus[arg0] &= ~0x30;
         return;
     }
 
-    sp1F = gVibratoState[arg0].unk_00;
-    sp1E = ((u16)gVibratoState[arg0].unk_00 & 0xFF00) >> 8;
+    sp1F = gVibratoState[arg0].posX;
+    sp1E = ((u16)gVibratoState[arg0].posX & 0xFF00) >> 8;
     sp1C = GbMusic_GetChannelRegister(arg0, 3);
     GbAudio_QueueRegisterWrite(sp1C, sp1F, 0);
     GbAudio_QueueRegisterWrite(sp1C + 1, sp1E, 0);
 }
 
 s32 GbMusic_StartPitchSlide(u32 arg0, u16 arg1) {
-    gVibratoState[arg0].unk_00 = arg1;
-    if (arg1 < gVibratoState[arg0].unk_04) {
+    gVibratoState[arg0].posX = arg1;
+    if (arg1 < gVibratoState[arg0].rotation) {
         gChannelStatus[arg0] &= ~0x20;
     } else {
         gChannelStatus[arg0] |= 0x20;
     }
-    gVibratoState[arg0].unk_08 = (gVibratoState[arg0].unk_04 - gVibratoState[arg0].unk_00) / gVibratoState[arg0].unk_0C;
+    gVibratoState[arg0].unk_08 = (gVibratoState[arg0].rotation - gVibratoState[arg0].posX) / gVibratoState[arg0].unk_0C;
     return 1;
 }
 
@@ -774,16 +774,16 @@ void GbMusic_StartMusic(u8 arg0) {
         gChannelSustainValues[i] = 0;
 
         gEnvelopeState[i].unk_03 = 0;
-        gEnvelopeState[i].unk_00 = 0;
+        gEnvelopeState[i].posX = 0;
         gEnvelopeState[i].unk_01 = 0;
-        gEnvelopeState[i].unk_02 = 0;
-        gEnvelopeState[i].unk_04 = 0;
+        gEnvelopeState[i].posY = 0;
+        gEnvelopeState[i].rotation = 0;
 
         gChannelControl[i] = 0;
 
         gVibratoState[i].unk_0C = 0;
-        gVibratoState[i].unk_00 = 0;
-        gVibratoState[i].unk_04 = 0;
+        gVibratoState[i].posX = 0;
+        gVibratoState[i].rotation = 0;
         gVibratoState[i].unk_08 = 0;
 
         gChannelJumpCounters[i] = 1;
@@ -833,14 +833,14 @@ void GbMusic_StartSfx(u8 arg0) {
         gChannelSustainValues[i] = 0;
 
         gEnvelopeState[i].unk_03 = 0;
-        gEnvelopeState[i].unk_00 = 0;
+        gEnvelopeState[i].posX = 0;
         gEnvelopeState[i].unk_01 = 0;
-        gEnvelopeState[i].unk_02 = 0;
-        gEnvelopeState[i].unk_04 = 0;
+        gEnvelopeState[i].posY = 0;
+        gEnvelopeState[i].rotation = 0;
 
         gVibratoState[i].unk_0C = 0;
-        gVibratoState[i].unk_00 = 0.0f;
-        gVibratoState[i].unk_04 = 0.0f;
+        gVibratoState[i].posX = 0.0f;
+        gVibratoState[i].rotation = 0.0f;
         gVibratoState[i].unk_08 = 0.0f;
 
         gChannelJumpCounters[i] = 1;
@@ -893,7 +893,7 @@ void GbMusic_BindSequenceTracks(u8 arg0) {
     u8 temp;
     u8 temp_v1;
 
-    temp_v1 = ((unk_D_800FC6D4_008*)gCurrentTrackData)->unk_04;
+    temp_v1 = ((unk_D_800FC6D4_008*)gCurrentTrackData)->rotation;
     temp = (temp_v1 >> 6) & 3;
     x = temp_v1 & 0xF;
     i = 0;
@@ -903,14 +903,14 @@ void GbMusic_BindSequenceTracks(u8 arg0) {
             gChannelStatus[x] |= 4;
         }
 
-        gChannelProgramCounters[x] = ((unk_D_800FC6D4_008*)gCurrentTrackData + i)->unk_00;
+        gChannelProgramCounters[x] = ((unk_D_800FC6D4_008*)gCurrentTrackData + i)->posX;
         gChannelDataBases[x] = gChannelProgramCounters[x];
         i++;
         
         if (i > temp) {
             break;
         }
-        x = ((unk_D_800FC6D4_008*)gCurrentTrackData + i)->unk_04 & 0xF;
+        x = ((unk_D_800FC6D4_008*)gCurrentTrackData + i)->rotation & 0xF;
     }
 
     if ((arg0 >= gTrackRangeStart) && (arg0 < gTrackRangeEnd)) {
@@ -940,8 +940,8 @@ s32 GbMusic_CountActiveHighChannels(void) {
 }
 
 typedef struct GbTrackEntry {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u32 unk_04;
+    /* 0x00 */ u32 posX;
+    /* 0x04 */ u32 rotation;
 } GbTrackEntry; // size = 0x8
 
 void Music_ResolveTrackOffsets(GbTrackHeader* arg0) {
@@ -955,7 +955,7 @@ void Music_ResolveTrackOffsets(GbTrackHeader* arg0) {
         return;
     }
 
-    end = arg0->unk_04;
+    end = arg0->rotation;
     base = (u32)arg0;
     temp_v1 = arg0->offset;
     temp_v1 += base;
@@ -965,7 +965,7 @@ void Music_ResolveTrackOffsets(GbTrackHeader* arg0) {
         temp_v0 = (GbTrackEntry*)((u32)i * 8 + (u32)temp_v1);
         // IDO needs the separate += 0 to match the og register allocation
         temp_v0 += 0;
-        temp_v0->unk_00 += base;
+        temp_v0->posX += base;
     }
 
     arg0->flags = 1;

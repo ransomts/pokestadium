@@ -12,52 +12,52 @@ extern u32 gMiniTutoScreenPalette[];
 extern u32 gMiniTutoScreenSettings[];
 extern u32 gMiniTutoScreenGraphics[];
 
-unk_D_87903E00 gMiniTutoScreenConfig0 = {
+Gfx_TextureConfig gMiniTutoScreenConfig0 = {
     0x00000001,
     ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
     gMiniTutoScreenTilemap,
 };
 
-unk_D_87903E10 gMiniTutoScreenNode0 = {
+Gfx_TextureNode gMiniTutoScreenNode0 = {
     0x00000001,
     &gMiniTutoScreenConfig0,
 };
 
-unk_D_87903E00 gMiniTutoScreenConfig1 = {
+Gfx_TextureConfig gMiniTutoScreenConfig1 = {
     0x01000001,
     ParticleGfx_LoadTextureCallbackIa8_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
     gMiniTutoScreenPalette,
 };
 
-unk_D_87903E10 gMiniTutoScreenNode1 = {
+Gfx_TextureNode gMiniTutoScreenNode1 = {
     0x00000001,
     &gMiniTutoScreenConfig1,
 };
 
-unk_D_87903E00 gMiniTutoScreenConfig2 = {
+Gfx_TextureConfig gMiniTutoScreenConfig2 = {
     0x01000002,
     ParticleGfx_LoadTextureCallbackIa8_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
     gMiniTutoScreenSettings,
 };
 
-unk_D_87903E10 D_87903E40 = {
+Gfx_TextureNode gMiniTutoScreenNode2 = {
     0x00000001,
     &gMiniTutoScreenConfig2,
 };
 
-unk_D_87903E00 D_87903E48 = {
+Gfx_TextureConfig gMiniTutoScreenConfig3 = {
     0x00000001,
     ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
     gMiniTutoScreenGraphics,
 };
 
-unk_D_87903E10 D_87903E58 = {
+Gfx_TextureNode gMiniTutoScreenNode3 = {
     0x00000001,
-    &D_87903E48,
+    &gMiniTutoScreenConfig3,
 };
 
 s16 gMiniActorPosOffsets[4][4] = {
@@ -310,30 +310,30 @@ u32 gMiniTutoScreenGraphics[] = {
 
 void miniTutoScreenBegin(void) {
     if (miniTutoScreenState > 0) {
-        D_87903DCC = miniTutoScreenState;
+        gMiniTutoTimer2 = miniTutoScreenState;
         miniTutoScreenState = -2;
-        D_87903DC0 = 1;
+        gMiniGameStateVar3 = 1;
     }
 }
 
 void miniTutoScreenEnd(void) {
     miniTutoScreenState = -1;
-    D_87903DC0 = 0;
-    D_87903DCC = 0;
-    D_87903DD0 = 0;
+    gMiniGameStateVar3 = 0;
+    gMiniTutoTimer2 = 0;
+    gMiniTutoTimer3 = 0;
 }
 
 void miniTutoScreenShow(s16 arg0) {
-    switch (D_87903DC0) {
+    switch (gMiniGameStateVar3) {
         case 1:
-            D_87903DD0 = 0x18;
-            D_87903DC8 = arg0;
-            D_87903DC0++;
+            gMiniTutoTimer3 = 0x18;
+            gMiniTutoTimer1 = arg0;
+            gMiniGameStateVar3++;
             break;
 
         case 2:
-            D_87903DC8--;
-            if (D_87903DC8 == 0) {
+            gMiniTutoTimer1--;
+            if (gMiniTutoTimer1 == 0) {
                 miniTutoScreenEnd();
             }
             break;
@@ -341,16 +341,16 @@ void miniTutoScreenShow(s16 arg0) {
 }
 
 void miniTutoScreenShowTimed(s16 arg0, s16 arg1) {
-    switch (D_87903DC0) {
+    switch (gMiniGameStateVar3) {
         case 1:
-            D_87903DD0 = arg0; // 0x11
-            D_87903DC8 = arg1;
-            D_87903DC0++;
+            gMiniTutoTimer3 = arg0; // 0x11
+            gMiniTutoTimer1 = arg1;
+            gMiniGameStateVar3++;
             break;
 
         case 2:
-            D_87903DC8--;
-            if (D_87903DC8 == 0) {
+            gMiniTutoTimer1--;
+            if (gMiniTutoTimer1 == 0) {
                 miniTutoScreenEnd();
             }
             break;
@@ -370,7 +370,7 @@ void miniDrawResultIcons(MiniActor* arg0) {
     var_s2 = 0;
     for (i = 0; i < 4; i++) {
         if (arg0[i].isWinner != 0) {
-            temp_a2 = gMiniActorPosOffsets[D_87903DD4][var_s2];
+            temp_a2 = gMiniActorPosOffsets[gMiniTutoTimer4][var_s2];
             if (arg0[i].isComp != 0) {
                 Widget_DrawPlayerIcon(-1 - i, 0x78, temp_a2, 1.0f);
             } else {

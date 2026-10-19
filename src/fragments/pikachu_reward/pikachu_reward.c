@@ -71,8 +71,8 @@ s32 PikachuReward_CheckNoSpecialMove(PokemonData* arg0) {
 s32 PikachuReward_CheckEligibleForSurf(PokemonData* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 sp1C = 0;
 
-    if ((arg0->unk_00.unk_00 > 0) && (arg0->unk_00.unk_00 < 0x98)) {
-        if ((PikachuReward_CheckNoSpecialMove(arg0) != 0) && (gSpeciesDisplayTable[arg0->unk_00.unk_00 - 1].unk_0C & arg3)) {
+    if ((arg0->posX.posX > 0) && (arg0->posX.posX < 0x98)) {
+        if ((PikachuReward_CheckNoSpecialMove(arg0) != 0) && (gSpeciesDisplayTable[arg0->posX.posX - 1].unk_0C & arg3)) {
             if ((arg0->unk_24 >= arg1) && (arg2 >= arg0->unk_24)) {
                 sp1C = 1;
             }
@@ -86,7 +86,7 @@ s32 PikachuReward_SearchDeckForPikachu(s16 arg0, s16 arg1, s16 arg2) {
     s32 sp34;
     s16 var_s3;
     unk_func_80022C28_ret* var_v0;
-    PokemonData* ptr = &gPikachuSession.unk_04;
+    PokemonData* ptr = &gPikachuSession.rotation;
 
     sp34 = 0;
     var_s3 = 0;
@@ -98,10 +98,10 @@ s32 PikachuReward_SearchDeckForPikachu(s16 arg0, s16 arg1, s16 arg2) {
     }
 
     if (var_v0 != NULL) {
-        while (Deck_ReadEntries(&ptr->unk_00.unk_00, 1, var_v0) == 1) {
+        while (Deck_ReadEntries(&ptr->posX.posX, 1, var_v0) == 1) {
             if (PikachuReward_CheckEligibleForSurf(ptr, 1, 0x64, 0x20) != 0) {
                 if (!arg2--) {
-                    if (ptr->unk_00.unk_00 == 0x19) {
+                    if (ptr->posX.posX == 0x19) {
                         sp34 = 1;
                     }
                     break;
@@ -125,13 +125,13 @@ s32 PikachuReward_FindPikachuOnCart(void) {
     var_v1 = gSessionContext.unk_1194[0].unk_08[0];
 
     for (i = 0; i < var_v1->unk_002; i++) {
-        if (var_v1->unk_01C[i].unk_00.unk_00 == 0x19) {
-            gPikachuSession.unk_00 = (var_v1->unk_01C[i].unk_52 & 0x70) >> 4;
+        if (var_v1->unk_01C[i].posX.posX == 0x19) {
+            gPikachuSession.posX = (var_v1->unk_01C[i].unk_52 & 0x70) >> 4;
             gPikachuSession.unk_01 = var_v1->unk_01C[i].unk_52 & 0xF;
-            if ((gPikachuSession.unk_00 < 4) && (gPikachuSession.unk_01 < 0xD)) {
-                if (GbSave_LoadPort(gPikachuSession.unk_00) != 0) {
-                    gPikachuSession.unk_02 = PikachuReward_SearchDeckForPikachu(gPikachuSession.unk_00, gPikachuSession.unk_01, var_v1->unk_01C[i].unk_53);
-                    if (gPikachuSession.unk_02 >= 0) {
+            if ((gPikachuSession.posX < 4) && (gPikachuSession.unk_01 < 0xD)) {
+                if (GbSave_LoadPort(gPikachuSession.posX) != 0) {
+                    gPikachuSession.posY = PikachuReward_SearchDeckForPikachu(gPikachuSession.posX, gPikachuSession.unk_01, var_v1->unk_01C[i].unk_53);
+                    if (gPikachuSession.posY >= 0) {
                         return 1;
                     }
                 }
@@ -147,7 +147,7 @@ s32 PikachuReward_CountKnownMoves(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (gPikachuSession.unk_04.unk_09[i] == 0) {
+        if (gPikachuSession.rotation.unk_09[i] == 0) {
             break;
         }
     }
@@ -157,7 +157,7 @@ s32 PikachuReward_CountKnownMoves(void) {
 void PikachuReward_UpdateLeadPikachuAnimation(void) {
     static s32 D_83202004 = 0;
 
-    if ((gPikachuNodes[0].unk_040.unk_00 != 0xA) && (gPikachuNodes[0].unk_040.unk_00 != 5)) {
+    if ((gPikachuNodes[0].unk_040.posX != 0xA) && (gPikachuNodes[0].unk_040.posX != 5)) {
         D_83202004++;
         if (D_83202004 == 0x3C) {
             D_83202004 = 0;
@@ -166,7 +166,7 @@ void PikachuReward_UpdateLeadPikachuAnimation(void) {
         }
     }
 
-    if ((gPikachuNodes[0].unk_040.unk_00 != 0) && (ModelAnim_IsFinished(&gPikachuNodes[0]) != 0)) {
+    if ((gPikachuNodes[0].unk_040.posX != 0) && (ModelAnim_IsFinished(&gPikachuNodes[0]) != 0)) {
         if (gPikachuActive != 0) {
             gPikachuNodes[0].unk_000.unk_01 &= ~1;
         } else {
@@ -227,19 +227,19 @@ s32 PikachuReward_RenderFrame(u8 arg0) {
 void PikachuReward_DrawBlinkingStarIcon(s16 arg0, s16 arg1) {
     s32 var_a3;
 
-    if (gTextFadeState.unk_00 < 0x10) {
-        var_a3 = gTextFadeState.unk_00 * 0x10;
-    } else if (gTextFadeState.unk_00 < 0x23) {
+    if (gTextFadeState.posX < 0x10) {
+        var_a3 = gTextFadeState.posX * 0x10;
+    } else if (gTextFadeState.posX < 0x23) {
         var_a3 = 0xFF;
-    } else if (gTextFadeState.unk_00 < 0x32) {
-        var_a3 = (-gTextFadeState.unk_00 * 0x10) + 0x320;
+    } else if (gTextFadeState.posX < 0x32) {
+        var_a3 = (-gTextFadeState.posX * 0x10) + 0x320;
     } else {
         var_a3 = 0;
     }
 
-    gTextFadeState.unk_00++;
-    if (gTextFadeState.unk_00 >= 0x3D) {
-        gTextFadeState.unk_00 = 0;
+    gTextFadeState.posX++;
+    if (gTextFadeState.posX >= 0x3D) {
+        gTextFadeState.posX = 0;
     }
 
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, var_a3);
@@ -278,7 +278,7 @@ void PikachuReward_ShowTextForFrames(char* arg0, s32 arg1) {
 }
 
 void PikachuReward_ShowTextWaitForA(char* arg0, s32 arg1) {
-    gTextFadeState.unk_00 = 0x10;
+    gTextFadeState.posX = 0x10;
 
     do {
         Controller_PollInputs();
@@ -412,8 +412,8 @@ s32 PikachuReward_SelectMoveToForget(char* arg0) {
                 var_s0 = 0;
             }
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-            if ((gPikachuSession.unk_04.unk_09[var_s0] == 0xF) || (gPikachuSession.unk_04.unk_09[var_s0] == 0x13) ||
-                (gPikachuSession.unk_04.unk_09[var_s0] == 0x46) || (gPikachuSession.unk_04.unk_09[var_s0] == 0x94)) {
+            if ((gPikachuSession.rotation.unk_09[var_s0] == 0xF) || (gPikachuSession.rotation.unk_09[var_s0] == 0x13) ||
+                (gPikachuSession.rotation.unk_09[var_s0] == 0x46) || (gPikachuSession.rotation.unk_09[var_s0] == 0x94)) {
                 Audio_PlaySoundEffectById(8);
             } else {
                 var_s4 = 0;
@@ -445,7 +445,7 @@ s32 PikachuReward_SelectMoveToForget(char* arg0) {
         }
 
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-        Font_Printf(0xB6, 0x28, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.unk_04.unk_09[0] - 1));
+        Font_Printf(0xB6, 0x28, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.rotation.unk_09[0] - 1));
 
         if (var_s0 == 1) {
             var_a2 = 0;
@@ -454,7 +454,7 @@ s32 PikachuReward_SelectMoveToForget(char* arg0) {
         }
 
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-        Font_Printf(0xB6, 0x38, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.unk_04.unk_09[1] - 1));
+        Font_Printf(0xB6, 0x38, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.rotation.unk_09[1] - 1));
 
         if (var_s0 == 2) {
             var_a2 = 0;
@@ -463,7 +463,7 @@ s32 PikachuReward_SelectMoveToForget(char* arg0) {
         }
 
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-        Font_Printf(0xB6, 0x48, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.unk_04.unk_09[2] - 1));
+        Font_Printf(0xB6, 0x48, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.rotation.unk_09[2] - 1));
 
         if (var_s0 == 3) {
             var_a2 = 0;
@@ -472,7 +472,7 @@ s32 PikachuReward_SelectMoveToForget(char* arg0) {
         }
 
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-        Font_Printf(0xB6, 0x58, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.unk_04.unk_09[3] - 1));
+        Font_Printf(0xB6, 0x58, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.rotation.unk_09[3] - 1));
 
         Font_EndTexturedTextRendering();
         BgStage_AdvanceFrame();
@@ -579,7 +579,7 @@ s32 PikachuReward_ResolveMoveSlot(void) {
                     gPikachuVisibilityState = 0;
                     Effect_TriggerMoveVisual(0x85, 0x19, 0);
                     PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 0xB), 1);
-                    Text_SetStringToken(0x1D, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.unk_04.unk_09[spAC] - 1));
+                    Text_SetStringToken(0x1D, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.rotation.unk_09[spAC] - 1));
                     Text_GetString(sp2C, sizeof(sp2C), gStadiumMessageBank, 0xC);
                     Audio_StopMusic(0x3C);
                     PikachuReward_ScrollTextIn(sp2C);
@@ -648,22 +648,22 @@ void PikachuReward_SaveToCartridge(void) {
     unk_func_80022C28_ret* var_v0;
 
     if (gPikachuSession.unk_01 == 0) {
-        var_v0 = Deck_Open(0x20, gPikachuSession.unk_00, 0, 2);
+        var_v0 = Deck_Open(0x20, gPikachuSession.posX, 0, 2);
     } else {
-        var_v0 = Deck_Open(0x21, gPikachuSession.unk_00, gPikachuSession.unk_01 - 1, 2);
+        var_v0 = Deck_Open(0x21, gPikachuSession.posX, gPikachuSession.unk_01 - 1, 2);
     }
 
-    Deck_SetCursor(var_v0, gPikachuSession.unk_02);
-    Deck_WriteEntries(&gPikachuSession.unk_04, 1, var_v0);
+    Deck_SetCursor(var_v0, gPikachuSession.posY);
+    Deck_WriteEntries(&gPikachuSession.rotation, 1, var_v0);
     Deck_CloseAndFlush(var_v0);
     PikachuReward_ShowSaveStatusScreen(0);
     PikachuReward_ShowSaveStatusScreen(0);
-    GbSave_ValidateBeforeWrite(gPikachuSession.unk_00);
+    GbSave_ValidateBeforeWrite(gPikachuSession.posX);
 
-    while (GbSave_RebuildAndWriteSave(gPikachuSession.unk_00) == 0) {
+    while (GbSave_RebuildAndWriteSave(gPikachuSession.posX) == 0) {
         var_s0 = 2;
         do {
-            temp_v0 = GbSave_PollCartRemoval(gPikachuSession.unk_00);
+            temp_v0 = GbSave_PollCartRemoval(gPikachuSession.posX);
             if (temp_v0 == 1) {
                 var_s0 = 1;
             }
@@ -678,7 +678,7 @@ void PikachuReward_SaveToCartridge(void) {
         PikachuReward_ShowSaveStatusScreen(0);
         PikachuReward_ShowSaveStatusScreen(0);
     }
-    GbSave_RequirePakPresent(gPikachuSession.unk_00);
+    GbSave_RequirePakPresent(gPikachuSession.posX);
 }
 
 void PikachuReward_TeachSurfToPikachu(s32 arg0) {
@@ -689,12 +689,12 @@ void PikachuReward_TeachSurfToPikachu(s32 arg0) {
     PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gStadiumMessageBank, 0xE), 1);
 
     for (i = PikachuReward_CountKnownMoves(); i < 4; i++) {
-        gPikachuSession.unk_04.unk_09[i] = 0;
-        gPikachuSession.unk_04.unk_20[i] = 0;
+        gPikachuSession.rotation.unk_09[i] = 0;
+        gPikachuSession.rotation.unk_20[i] = 0;
     }
 
-    gPikachuSession.unk_04.unk_09[arg0] = 0x39;
-    gPikachuSession.unk_04.unk_20[arg0] = gMoveData[0x38].unk_05;
+    gPikachuSession.rotation.unk_09[arg0] = 0x39;
+    gPikachuSession.rotation.unk_20[arg0] = gMoveData[0x38].unk_05;
 
     PikachuReward_SaveToCartridge();
     PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 0xE), 1);
@@ -743,10 +743,10 @@ void PikachuReward_SetupScene(void) {
         ModelRenderer_AttachDisplayObject(&gPikachuNodes[i]);
     }
 
-    Model_InitDisplayObject(&gPikachuNodes[0], 0, 0, gPikachuModelData->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&gPikachuNodes[0], 0, 0, gPikachuModelData->unk_08->posX[0]);
     Vec3f_SetComponentsDuplicate(&gPikachuNodes[0].unk_030, 16.0f, 16.0f, 16.0f);
     ModelAnim_SetAnimation(&gPikachuNodes[0], 0);
-    gPikachuNodes->unk_000.unk_02 &= ~0x40;
+    gPikachuNodes->unk_000.posY &= ~0x40;
     PikachuReward_SetupFollowerModel(&gPikachuNodes[1], -0x50, 0x17C, 0x1800);
     PikachuReward_SetupFollowerModel(&gPikachuNodes[2], 0, 0x17C, 0);
     PikachuReward_SetupFollowerModel(&gPikachuNodes[3], 0x50, 0x17C, -0x1800);
@@ -771,7 +771,7 @@ s32 Stadium_BonusPikachuReward(UNUSED s32 arg0, UNUSED s32 arg1) {
         gMoveNameBank = Text_GetStringTable(0x25);
         gStadiumMessageBank = Text_GetStringTable(0x1C);
         PokeIcon_OpenModelArchives();
-        gPikachuModelData = Model_LoadForPokemon(&gPikachuSession.unk_04);
+        gPikachuModelData = Model_LoadForPokemon(&gPikachuSession.rotation);
         PikachuReward_SetupScene();
         StageContext_Activate(sp20);
         PikachuReward_RunSequence();

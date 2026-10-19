@@ -9,14 +9,14 @@ typedef struct GbSoundReg {
 } GbSoundReg; // size = 0x2
 
 typedef struct unk_D_800FD068 {
-    /* 0x00 */ u8* unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ u8* posX;
+    /* 0x04 */ u8 rotation;
     /* 0x06 */ u16 unk_06;
 } unk_D_800FD068; // size = 0x8
 
 typedef struct unk_D_800FCFD8 {
-    /* 0x00 */ u32 unk_00;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ u32 posX;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 pad05[0x3];
     /* 0x04 */ u32 unk_08;
     /* 0x04 */ f32 unk_0C;
@@ -31,8 +31,8 @@ typedef struct unk_D_800FCFD8 {
 
 // Game Boy sound channel 2 (square) state.
 typedef struct unk_D_800FCF90 {
-    /* 0x00 */ u32 unk_00; // sample clock
-    /* 0x04 */ s16 unk_04; // volume
+    /* 0x00 */ u32 posX; // sample clock
+    /* 0x04 */ s16 rotation; // volume
     /* 0x06 */ s16 unk_06; // volume step
     /* 0x08 */ u32 unk_08; // envelope period
     /* 0x0C */ u32 unk_0C; // next envelope step
@@ -46,15 +46,15 @@ typedef struct unk_D_800FCF90 {
 } unk_D_800FCF90; // size = 0x28
 
 typedef struct unk_D_800FCFB8 {
-    /* 0x00 */ u32 unk_00;
+    /* 0x00 */ u32 posX;
     /* 0x04 */ u8 unk04[0x18];
     /* 0x1C */ u8 unk_1C;
 } unk_D_800FCFB8; // size = 0x20
 
 // Game Boy sound channel 1 (square with sweep) state.
 typedef struct unk_D_800FCF60 {
-    /* 0x00 */ u32 unk_00; // sample clock
-    /* 0x04 */ u16 unk_04; // frequency
+    /* 0x00 */ u32 posX; // sample clock
+    /* 0x04 */ u16 rotation; // frequency
     /* 0x08 */ u32 unk_08; // sweep period
     /* 0x0C */ s16 unk_0C; // volume
     /* 0x0E */ s16 unk_0E; // volume step
@@ -103,8 +103,8 @@ void GbAudio_GenerateSamples(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
 }
 
 void GbAudio_QueueRegisterWrite(u16 arg0, u8 arg1, u16 arg2) {
-    D_800FD068[D_800FD6AC].unk_00 = &D_800FD008[(arg0 & 0xFF) - 0x10].value;
-    D_800FD068[D_800FD6AC].unk_04 = arg1;
+    D_800FD068[D_800FD6AC].posX = &D_800FD008[(arg0 & 0xFF) - 0x10].value;
+    D_800FD068[D_800FD6AC].rotation = arg1;
     D_800FD068[D_800FD6AC].unk_06 = arg2 + 1;
     D_800FD6A0[arg0 & 0xFF] = arg1;
     D_800FD6AC++;
@@ -157,18 +157,18 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
     D_800FD6AC = 0;
     D_800FD068[0].unk_06 = 0;
     D_800FD6A8 = 0;
-    D_800FCF60.unk_00 = 0;
+    D_800FCF60.posX = 0;
     D_800FCF60.unk_2C = 0;
 
-    D_800FCF90.unk_00 = 0;
+    D_800FCF90.posX = 0;
     D_800FCF90.unk_24 = 0;
 
-    D_800FCFB8.unk_00 = 0;
+    D_800FCFB8.posX = 0;
     D_800FCFB8.unk_1C = 0;
 
-    D_800FCFD8.unk_00 = 0;
+    D_800FCFD8.posX = 0;
     D_800FCFD8.unk_28 = 0;
-    D_800FCFD8.unk_04 = 0xFF;
+    D_800FCFD8.rotation = 0xFF;
 
     GbAudio_ClearOutputBuffer();
     GbAudio_ClearInterpolationHistory();
@@ -264,8 +264,8 @@ void func_80049A60(u32 arg0) {
 
 void GbAudio_ApplyQueuedWrites(u16 arg0) {
     while (D_800FD068[D_800FD6A8].unk_06 >= arg0) {
-        D_800FD068[D_800FD6A8].unk_00[0] = D_800FD068[D_800FD6A8].unk_04;
-        D_800FD068[D_800FD6A8].unk_00[1] = 1;
+        D_800FD068[D_800FD6A8].posX[0] = D_800FD068[D_800FD6A8].rotation;
+        D_800FD068[D_800FD6A8].posX[1] = 1;
         D_800FD6A8++;
         if (D_800FD6A8 >= 0xC8) {
             D_800FD6A8 -= 0xC8;
@@ -305,8 +305,8 @@ s16 func_80049DF0(void) {
 
     if (changed) {
         nr14 = D_800FD008[4].value;
-        D_800FCF60.unk_04 = D_800FD008[3].value | ((u8)(nr14 & 7) << 8);
-        D_800FCF60.unk_24 = ((0x800 - D_800FCF60.unk_04) * D_800FD004) >> 11;
+        D_800FCF60.rotation = D_800FD008[3].value | ((u8)(nr14 & 7) << 8);
+        D_800FCF60.unk_24 = ((0x800 - D_800FCF60.rotation) * D_800FD004) >> 11;
         duty = (D_800FD008[1].value & 0xC0) >> 6;
         nr11 = D_800FD008[1].value;
         switch (duty) {
@@ -362,7 +362,7 @@ s16 func_80049DF0(void) {
         }
 
         if (nr14 & 0x80) {
-            D_800FCF60.unk_00 = 0;
+            D_800FCF60.posX = 0;
             D_800FCF60.unk_2C = 1;
             D_800FCF60.unk_1E = phase;
             D_800FCF60.unk_1C = 0;
@@ -398,33 +398,33 @@ s16 func_80049DF0(void) {
         return 0;
     }
 
-    if (D_800FCF60.unk_28 < D_800FCF60.unk_00) {
+    if (D_800FCF60.unk_28 < D_800FCF60.posX) {
         D_800FCF60.unk_2C = 0;
         D_800FD008[0x16].value &= ~1;
         return 0;
     }
 
-    if ((D_800FCF60.unk_08 - (D_800FCF60.unk_00 % D_800FCF60.unk_08)) <= 0x40) {
+    if ((D_800FCF60.unk_08 - (D_800FCF60.posX % D_800FCF60.unk_08)) <= 0x40) {
         duty = D_800FD008[0].value;
         if (!(duty & 8)) {
-            freq = (u16)((D_800FCF60.unk_04 >> (duty & 7)) + D_800FCF60.unk_04);
+            freq = (u16)((D_800FCF60.rotation >> (duty & 7)) + D_800FCF60.rotation);
             if (freq >= 0x800) {
                 D_800FCF60.unk_2C = 0;
                 D_800FD008[0x16].value &= ~1;
                 return 0;
             }
-            D_800FCF60.unk_04 = freq;
+            D_800FCF60.rotation = freq;
             duty = (p[2] & 0xC0) >> 6;
         } else {
-            freq = (u16)(D_800FCF60.unk_04 - (D_800FCF60.unk_04 >> (duty & 7)));
+            freq = (u16)(D_800FCF60.rotation - (D_800FCF60.rotation >> (duty & 7)));
             if (freq >= 0x800 || freq < 0) {
                 dir[0] = p[4] & 8;
                 goto skip;
             }
-            D_800FCF60.unk_04 = freq;
+            D_800FCF60.rotation = freq;
             duty = (p[2] & 0xC0) >> 6;
         }
-        D_800FCF60.unk_24 = ((0x800 - D_800FCF60.unk_04) * D_800FD004) >> 11;
+        D_800FCF60.unk_24 = ((0x800 - D_800FCF60.rotation) * D_800FD004) >> 11;
         switch (duty) {
             case 0:
                 D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 3;
@@ -461,11 +461,11 @@ s16 func_80049DF0(void) {
     }
     dir[0] = p[4] & 8;
 skip:
-    if (D_800FCF60.unk_14 < D_800FCF60.unk_00) {
+    if (D_800FCF60.unk_14 < D_800FCF60.posX) {
         D_800FCF60.unk_0C += D_800FCF60.unk_0E;
         D_800FCF60.unk_14 += D_800FCF60.unk_10;
     }
-    while (D_800FCF60.unk_20 < D_800FCF60.unk_00) {
+    while (D_800FCF60.unk_20 < D_800FCF60.posX) {
         D_800FCF60.unk_1E ^= 1;
         D_800FCF60.unk_20 += D_800FCF60.unk_18[D_800FCF60.unk_1E];
     }
@@ -485,7 +485,7 @@ skip:
     if (D_800FCF60.unk_1E == 0) {
         value = -value;
     }
-    D_800FCF60.unk_00 = D_800FCF60.unk_00 + 0x40;
+    D_800FCF60.posX = D_800FCF60.posX + 0x40;
     return value;
 }
 
@@ -574,12 +574,12 @@ s16 func_8004A474(void) {
         }
 
         if (nr24 & 0x80) {
-            D_800FCF90.unk_00 = 0;
+            D_800FCF90.posX = 0;
             D_800FCF90.unk_24 = 1;
             D_800FCF90.unk_16 = phase;
             D_800FCF90.unk_14 = 0;
             D_800FCF90.unk_18 = 0;
-            D_800FCF90.unk_04 = ((u8)duty & 0xF0) << 7;
+            D_800FCF90.rotation = ((u8)duty & 0xF0) << 7;
             if (duty & 7) {
                 if (dir) {
                     D_800FCF90.unk_06 = 0x800;
@@ -606,7 +606,7 @@ s16 func_8004A474(void) {
         return 0;
     }
 
-    pos = D_800FCF90.unk_00;
+    pos = D_800FCF90.posX;
     if (D_800FCF90.unk_20 < pos) {
         D_800FCF90.unk_24 = 0;
         D_800FD008[0x16].value &= ~2;
@@ -615,7 +615,7 @@ s16 func_8004A474(void) {
 
     dir = p[0xE] & 8;
     if (D_800FCF90.unk_0C < pos) {
-        D_800FCF90.unk_04 += D_800FCF90.unk_06;
+        D_800FCF90.rotation += D_800FCF90.unk_06;
         D_800FCF90.unk_0C += D_800FCF90.unk_08;
     }
     while (D_800FCF90.unk_18 <= pos) {
@@ -623,28 +623,28 @@ s16 func_8004A474(void) {
         D_800FCF90.unk_18 += D_800FCF90.unk_10[D_800FCF90.unk_16];
     }
 
-    if (!dir && (D_800FCF90.unk_04 < 0)) {
+    if (!dir && (D_800FCF90.rotation < 0)) {
         D_800FCF90.unk_24 = 0;
         return 0;
     }
 
-    if ((u16)D_800FCF90.unk_04 > 0x7800) {
-        D_800FCF90.unk_04 = 0x7800;
+    if ((u16)D_800FCF90.rotation > 0x7800) {
+        D_800FCF90.rotation = 0x7800;
         D_800FCF90.unk_06 = 0;
         D_800FCF90.unk_0C = -1;
     }
 
-    value = D_800FCF90.unk_04;
+    value = D_800FCF90.rotation;
     if (D_800FCF90.unk_16 == 0) {
         value = -value;
     }
-    D_800FCF90.unk_00 = pos + 0x40;
+    D_800FCF90.posX = pos + 0x40;
     return value;
 }
 
 typedef struct unk_D_80078A60 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x04 */ f32 unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x04 */ f32 rotation;
 } unk_D_80078A60; // size = 0x8
 
 unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.5f }, { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xD, 8.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.25f }, { 4, 1.25f }, { 5, 1.25f }, { 6, 1.25f }, { 7, 1.25f }, { 8, 1.25f }, { 9, 1.25f }, { 0xA, 1.25f }, { 0xB, 1.25f }, { 0xC, 1.25f }, { 0xD, 1.25f }, { 0xD, 2.5f }, { 0xD, 5.0f }, { 0xD, 10.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xD, 12.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.75f }, { 4, 1.75f }, { 5, 1.75f }, { 6, 1.75f }, { 7, 1.75f }, { 8, 1.75f }, { 9, 1.75f }, { 0xA, 1.75f }, { 0xB, 1.75f }, { 0xC, 1.75f }, { 0xD, 1.75f }, { 0xD, 3.5f }, { 0xD, 7.0f }, { 0xD, 14.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } } };
@@ -653,15 +653,15 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // sample value (`value`, s16: 1000 -> 970; idx and sample then get the target a1/a0) and pos merged into
 // nr (1035 -> 1000) -- the target keeps one register per variable across disjoint ranges; NR41 read into the sample local before the
 // unk_24 length computation (farm candidate n1; 1120 -> 1035; into nr 1075, dir/changed 1110, len 1135,
-// idx 1170, i 1415, flags 1935); `if (unk_20 < unk_00)` re-reading the field
+// idx 1170, i 1415, flags 1935); `if (unk_20 < posX)` re-reading the field
 // instead of pos (farm candidate func_8004A89C__l1, 1510 -> 1120: no pos copy into v0); tail `dir = D_800FD008[k].value & 8` with a
 // non-constant index (k = 0x11 set after pos; trick from the func_8004A474 farm candidate) right after
-// `sample = unk_04`, tested `!dir`: fresh-lui load + andi in the unk_20 beqz delay slot, in a1 like the
+// `sample = rotation`, tested `!dir`: fresh-lui load + andi in the unk_20 beqz delay slot, in a1 like the
 // target (2000 -> 1510; with a constant index or a u8* pointer the load folds into the t0 base; other
 // locals for it 2345-2400); clamp stores in 14/18/20 order (2195 -> 2000); `unk_10 = 0` (int literal) stops IDO sharing one
-// 0.0f register across the function; table row read TWICE as D_80078A60[..][..].unk_00 / .unk_04 (no entry
+// 0.0f register across the function; table row read TWICE as D_80078A60[..][..].posX / .rotation (no entry
 // pointer) puts the unk_0C store in the beq delay slot with 0xc(v1) addressing (3215 -> 2195);
-// `unk_20 = unk_1C = len*D_800FD004*4` (no pos temp; 0x1C stored first like the target); `sample = unk_04`
+// `unk_20 = unk_1C = len*D_800FD004*4` (no pos temp; 0x1C stored first like the target); `sample = rotation`
 // before the unk_20 test, NR42&8 read inline in the final test (fresh lui like the target), ent2 taken
 // BEFORE the value load, `value = value * unk_14; return value;` (trunc result in a0 like the target).
 // Remaining (mostly regalloc): target keeps idx in a1, (u16)col in a2 (computed in place), row ptr in a3,
@@ -674,14 +674,14 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // from D_800FD008 instead of a local, reusing idx for dir / sample for len, s32/u16 value/sample/idx,
 // declaration order (no effect), chained 0x20-first store; single (u8) casts on idx/nr/flags/len/dir uses
 // (best 2110 = (u8)flags or (u8)nr in the kill tests, before the clamp fix; pairs of them are worse).
-// At 955: tail `value = unk_04` (sample through the value local; target a0 + uopt copy t5 suggests
-// this) gives the right tail v0/a0 but 1245 overall; ent2 from a re-read of unk_04 after the lh 1020;
+// At 955: tail `value = rotation` (sample through the value local; target a0 + uopt copy t5 suggests
+// this) gives the right tail v0/a0 but 1245 overall; ent2 from a re-read of rotation after the lh 1020;
 // col in a u16/s32/u32 local, entry+col locals, row/col locals (1765-2300); merge sweep over all local
 // pairs after the changed/value + pos/nr merges: no further gain; inline dir / `if (nr & 7)`: worse.
 // Round 8 pass 4 (agent-14): 955 -> 345: `f32 fv = D_8007D4D0` right after `if (flags & 0x80) {` used for unk_14 and
 // unk_18 (farm candidate t, 470 -> 345: fixes the li 1 / lwc1 order); before that 955 -> 470: `(u8)(nr & 0xF0) * D_8007D4D0` for unk_14 (810 -> 695) and NR41 read inline
 // in the unk_24 length (no sample local there: 695 -> 470; into nr/value 625, i 930, via p 690), on top of
-// (a) + (b) below + the call index written `gAudioSeqTOC[D_800FCFD8.unk_04 & 0xFF]`
+// (a) + (b) below + the call index written `gAudioSeqTOC[D_800FCFD8.rotation & 0xFF]`
 // (both args; the extra and consumes the target's missing ring temp t6, like the (u8) trick in func_80049DF0;
 // (u8)/(u16)/(s8)/(s16) casts there: 1045-1655). Leads (see func_80049DF0's notes):
 // (a) the target's col is a REAL variable (a2: andi/sra/andi 0xffff in place, no ring temps), which shifts
@@ -695,13 +695,13 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // (target dir a1, flags a2, pos a2). Tail pos into flags/k/i instead of nr: 1095-1400 (860 at 810).
 // Remaining at 345: top idx a0 / row a1 / sample v0 / load temp a3 (target a1/a3/a0/v0); tail sample a3 and
 // no `move t5,a0` copy before the value lh (target a0 + copy). `ent2 = &gAudioSeqTOC[(u8)value]` with value =
-// unk_04 materialises the copy early (andi instead of move): 375. One-element arrays (the func_80049DF0
+// rotation materialises the copy early (andi instead of move): 375. One-element arrays (the func_80049DF0
 // fix) for dir/sample/idx/col/flags/nr/ent2: 640-2390.
 // Remaining at 810: col/row ptr a3/a2 (target a2/a3), dir/flags a2/a1 (target a1/a2), pos a3 (target a2),
 // `li 1` for unk_28 scheduled after the lui, tail sample/value v0/a0 (target a0 + move t5,a0).
-// Round 9 F1 (farm v1/v2/v3/320): writing the unk_20 wrap test as `(D_800FCFD8.unk_20 < D_800FCFD8.unk_00) != 0`
+// Round 9 F1 (farm v1/v2/v3/320): writing the unk_20 wrap test as `(D_800FCFD8.unk_20 < D_800FCFD8.posX) != 0`
 // (an explicit boolean compare instead of the bare condition): 345 -> 320. The other candidate edits
-// (`!= 0U`, comma-noise `((0, D_800FCFD8)).unk_04`, statement line joins) are equivalent or worse noise.
+// (`!= 0U`, comma-noise `((0, D_800FCFD8)).rotation`, statement line joins) are equivalent or worse noise.
 
 extern unk_D_80078A60 D_80078A60[8][16];
 extern f32 D_8007D4D0;
@@ -733,7 +733,7 @@ s16 func_8004A89C(void) {
         row = nr43 & 7;
         col = (((u8*)&D_800FD008[0x12])[0] & 0xF0) >> 4;
         entry = &D_80078A60[row][col];
-        sampleId = entry->unk_00;
+        sampleId = entry->posX;
         if (sampleId == 0xFF) {
             D_800FCFD8.unk_28 = 0;
             return 0;
@@ -741,11 +741,11 @@ s16 func_8004A89C(void) {
         if (((u8*)&D_800FD008[0x12])[0] & 8) {
             sampleId += 0x10;
         }
-        D_800FCFD8.unk_0C = D_80078A60[nr43 & 7][col].unk_04;
-        if (sampleId != D_800FCFD8.unk_04) {
-            D_800FCFD8.unk_04 = sampleId;
-            ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (D_800FCFD8.unk_04 << 1));
-            Rom_DmaRead(ent->unk_00, (u32)gAudioSfxDataBuffer, ent->unk_04);
+        D_800FCFD8.unk_0C = D_80078A60[nr43 & 7][col].rotation;
+        if (sampleId != D_800FCFD8.rotation) {
+            D_800FCFD8.rotation = sampleId;
+            ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (D_800FCFD8.rotation << 1));
+            Rom_DmaRead(ent->posX, (u32)gAudioSfxDataBuffer, ent->rotation);
         }
 
         D_800FCFD8.unk_08 = 0;
@@ -764,7 +764,7 @@ s16 func_8004A89C(void) {
         nr44 = ((u8*)&D_800FD008[0x13])[0];
         if (nr44 & 0x80) {
             fv = D_8007D4D0;
-            D_800FCFD8.unk_00 = 0;
+            D_800FCFD8.posX = 0;
             D_800FCFD8.unk_28 = 1;
             D_800FCFD8.unk_14 = (u8)(((u8*)&D_800FD008[0x11])[0] & 0xF0) * fv;
             if (((u8*)&D_800FD008[0x11])[0] & 7) {
@@ -793,25 +793,25 @@ s16 func_8004A89C(void) {
         return 0;
     }
 
-    if (D_800FCFD8.unk_24 < D_800FCFD8.unk_00) {
+    if (D_800FCFD8.unk_24 < D_800FCFD8.posX) {
         D_800FCFD8.unk_28 = 0;
         ((u8*)&D_800FD008[0x16])[0] &= 0xFFF7;
         return 0;
     }
 
-    if (D_800FCFD8.unk_20 < D_800FCFD8.unk_00) {
+    if (D_800FCFD8.unk_20 < D_800FCFD8.posX) {
         D_800FCFD8.unk_20 += D_800FCFD8.unk_1C;
         D_800FCFD8.unk_14 += D_800FCFD8.unk_18;
     }
 
-    ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (D_800FCFD8.unk_04 << 1));
+    ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (D_800FCFD8.rotation << 1));
     if (1) {}
     sample = ((s16*)gAudioSfxDataBuffer)[D_800FCFD8.unk_08];
     D_800FCFD8.unk_10 += 1.0f;
     if (D_800FCFD8.unk_0C <= D_800FCFD8.unk_10) {
         D_800FCFD8.unk_08++;
         D_800FCFD8.unk_10 -= D_800FCFD8.unk_0C;
-        if (D_800FCFD8.unk_08 >= (ent->unk_04 >> 1)) {
+        if (D_800FCFD8.unk_08 >= (ent->rotation >> 1)) {
             D_800FCFD8.unk_08 = 0;
         }
     }
@@ -826,7 +826,7 @@ s16 func_8004A89C(void) {
         D_800FCFD8.unk_20 = -1;
     }
     sample = sample * D_800FCFD8.unk_14;
-    D_800FCFD8.unk_00 += 0x100;
+    D_800FCFD8.posX += 0x100;
     return sample;
 }
 

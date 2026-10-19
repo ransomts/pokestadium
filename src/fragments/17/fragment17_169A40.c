@@ -130,7 +130,7 @@ void MewtwoIntro_InitScene(void) {
     PokeIcon_OpenModelArchives();
 
     gStageGeoLayout = Model_LoadByArchiveIndex(0xD6);
-    Model_InitDisplayObject(&gStageRootFragmentNode, 0, 0xD6, gStageGeoLayout->unk_08->unk_00[0]);
+    Model_InitDisplayObject(&gStageRootFragmentNode, 0, 0xD6, gStageGeoLayout->unk_08->posX[0]);
     ModelAnim_SetAnimation(&gStageRootFragmentNode, 1);
     Vec3f_SetComponentsDuplicate(&gStageRootFragmentNode.unk_024, 0.0f, 0.0f, 0.0f);
     gStageFadeAlpha = 0;
@@ -154,7 +154,7 @@ s32 Stage_ShowMewtwoIntro(void) {
     if (gSessionContext.unk_11F2 == 1) {
         D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
         gBackgroundTextureData = BinArchive_GetFile(D_86B10824, 2);
-    } else if (D_86B10830.unk_00 & 0x100) {
+    } else if (D_86B10830.posX & 0x100) {
         D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
         gBackgroundTextureData = BinArchive_GetFile(D_86B10824, 1);
     } else {
