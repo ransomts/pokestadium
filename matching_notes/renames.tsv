@@ -17400,3 +17400,35 @@ unk_D_800AE4E8_004_1_000_010	SaveBank_PokemonData	w6		structure passed to Pokemo
 unk_D_800AE4E8_004_3_34E0_010	SaveBank_ItemBoxEntry	w6		structure used in Deck_ReadSaveEntry case 18	applied@d684cf7d
 unk_D_800AE4E8_004_2_0DC0_002	SaveBank_VictoryPalaceEntry	w6		structure used in Deck_ReadSaveEntry case 19	applied@d684cf7d
 unk_D_800AE4E8_004_2_1EC8_0002	SaveBank_GalleryEntry	w6		structure used in Deck_ReadSaveEntry case 22/23	applied@d684cf7d
+func_8431FCC4	BattleScene_NullHandler	w7		empty function in battle scene logic	applied@32fb0b79
+func_84324404	BattleScene_EmptyFunc1	w7		called from an empty context or as a stub	applied@32fb0b79
+func_8432440C	BattleScene_EmptyFunc2	w7		called from an empty context or as a stub	applied@32fb0b79
+func_843378CC	BattleAnim_EffectStart_Generic	w7		entry in gStateFunctionTable, likely a generic effect starter	applied@32fb0b79
+func_8434A9EC	BattleAnim_EffectStart_Custom	w7		entry in gStateFunctionTable, likely a custom effect starter	applied@32fb0b79
+func_8433765C	BattleAnim_EffectStart_Special	w7		entry in gStateFunctionTable, likely a special effect starter	applied@32fb0b79
+func_8434A930	BattleAnim_EffectEnd_Custom	w7		entry in gParticleStateFunctionTable, likely a custom effect ender	applied@32fb0b79
+D_8438684C	gBattleScript_Param05	w7		battle script parameter table entry with value 0x05	applied@32fb0b79
+D_84386850	gBattleScript_Param06	w7		battle script parameter table entry with value 0x06	applied@32fb0b79
+D_84386854	gBattleScript_Param09	w7		battle script parameter table entry with value 0x09	applied@32fb0b79
+D_84386858	gBattleScript_Param0A	w7		battle script parameter table entry with value 0x0A	applied@32fb0b79
+D_84386870	gBattleScript_Param10	w7		battle script parameter table entry with value 0x10	applied@32fb0b79
+D_84386880	gBattleScript_Param13	w7		battle script parameter table entry with value 0x13	applied@32fb0b79
+D_8438688C	gBattleScript_Param16	w7		battle script parameter table entry with value 0x16	applied@32fb0b79
+D_84386898	gBattleScript_Param19	w7		battle script parameter table entry with value 0x19	applied@32fb0b79
+D_8438689C	gBattleScript_Param1A	w7		battle script parameter table entry with value 0x1A	applied@32fb0b79
+D_843868A8	gBattleScript_Param27	w7		battle script parameter table entry with value 0x27	applied@32fb0b79
+D_84386BC4	gBattleScript_MsgStart	w7		first entry in Fragment62_GroupPtrArray, likely marking the start of a message sequence	applied@32fb0b79
+D_84386BC8	gBattleScript_MsgEnd	w7		second entry in Fragment62_GroupPtrArray, likely marking the end of a message sequence	applied@32fb0b79
+D_843868B0	gBattleScript_AnimAttack	w7		used in Fragment62_ComplexPtrTable for attack animations	applied@32fb0b79
+D_843868B8	gBattleScript_AnimHit	w7		used in Fragment62_ComplexPtrTable for hit animations	applied@32fb0b79
+D_843868BC	gBattleScript_AnimMiss	w7		used in Fragment62_ComplexPtrTable for miss animations	applied@32fb0b79
+D_843868C0	gBattleScript_AnimFaint	w7		used in Fragment62_ComplexPtrTable for fainting animations	applied@32fb0b79
+func_8433209C	BattleAnim_EmptyCallback	w7		empty function likely used as a placeholder callback	applied@32fb0b79
+func_84340AC4	BattleAnim_UnusedEmptyFunc	w7		empty function in battle engine particle sequence file	applied@32fb0b79
+D_84389060	gRadialDrawDL_End	w7		display list terminator for radial effects	applied@32fb0b79
+D_843A06A0	gWaterSurfaceAltData	w7		global state for the water surface effect, including vertex grid and animation timers	applied@32fb0b79
+D_84389560	gWaterSurfaceAltLights	w7		Lights2 structure used for the water surface rendering	applied@32fb0b79
+D_84389B60	gTrail50EffectAlt_GfxSetup	w7		sets up rendering state for the trail effect, using a simple shaded geometry mode	applied@32fb0b79
+D_84389BB0	gWaterParticleVertices	w7		defines a quad of 4 vertices for the water particle texture	applied@32fb0b79
+unk_D_843ADA80	Trail50EffectAltInstance	w7		structure representing a single instance of the trail effect, containing state and nodes	applied@32fb0b79
+unk_D_843ADA80_040	Trail50EffectAltNode	w7		structure for a single node in the trail, containing position, rotation, and velocity	applied@32fb0b79

@@ -311,7 +311,7 @@ void BattleAnim_CallbackEndEffects85And87GravityFallDelay(ParticleEffectInstance
     }
 }
 
-void func_84340AC4(void) {
+void BattleAnim_UnusedEmptyFunc(void) {
 }
 
 void BattleAnim_OrphanDescriptor2BAnd2EEmitterSequence(void) {

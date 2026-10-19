@@ -1,7 +1,7 @@
 #include "battle_engine.h"
 #include "src/gfx_buffer.h"
 
-static unk_D_843ADA80 gWaterParticleSystems[50];
+static Trail50EffectAltInstance gWaterParticleSystems[50];
 
 static Gfx gWaterParticleSetupDL[] = {
     gsDPPipeSync(),
@@ -42,8 +42,8 @@ Gfx gWaterParticleQuadDL[] = {
 };
 
 void Trail50Effect_Init(void) {
-    unk_D_843ADA80* var_v0 = &gWaterParticleSystems[0];
-    unk_D_843ADA80_040* var_a0;
+    Trail50EffectAltInstance* var_v0 = &gWaterParticleSystems[0];
+    Trail50EffectAltNode* var_a0;
     s32 i;
     s32 j;
 
@@ -71,8 +71,8 @@ void Trail50Effect_Init(void) {
 
 void Trail50Effect_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
-    unk_D_843ADA80* var_v1;
-    unk_D_843ADA80_040* var_s0;
+    Trail50EffectAltInstance* var_v1;
+    Trail50EffectAltNode* var_s0;
     s32 i;
     s32 j;
     Vec3f sp7C;
@@ -138,10 +138,10 @@ void Trail50Effect_Update(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void Trail50Effect_AdvanceNodes(unk_D_843ADA80* arg0) {
+void Trail50Effect_AdvanceNodes(Trail50EffectAltInstance* arg0) {
     s32 i;
     f32 temp_fs3 = arg0->unk_010;
-    unk_D_843ADA80_040* var_s0 = &arg0->unk_040[0];
+    Trail50EffectAltNode* var_s0 = &arg0->unk_040[0];
 
     for (i = 0; i < 10; i++, var_s0++) {
         if (i == 0) {
@@ -204,7 +204,7 @@ void Trail50Effect_AdvanceNodes(unk_D_843ADA80* arg0) {
 
 s32 Trail50Effect_IsComplete(void) {
     s32 i;
-    unk_D_843ADA80* var_s0 = &gWaterParticleSystems[0];
+    Trail50EffectAltInstance* var_s0 = &gWaterParticleSystems[0];
 
     for (i = 0; i < 50; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -223,8 +223,8 @@ Gfx* Trail50Effect_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
-    unk_D_843ADA80_040* temp_s0;
-    unk_D_843ADA80* var_s5;
+    Trail50EffectAltNode* temp_s0;
+    Trail50EffectAltInstance* var_s5;
     Vtx* var_s0;
     Vec3f sp184;
     UNUSED s32 pad[15];

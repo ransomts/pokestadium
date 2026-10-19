@@ -288,7 +288,7 @@ void BattleScene_ClearInactiveOwnerAnimationFlags(void) {
     }
 }
 
-void func_8431FCC4(void) {
+void BattleScene_NullHandler(void) {
 }
 
 s32 BattleScene_AnimateDisplayedHpToRuntime(BattlePlayerEntity* arg0) {
@@ -1967,10 +1967,10 @@ void BattleScene_RunActionEffectHpTransition(CameraStruct* arg0) {
     }
 }
 
-void func_84324404(void) {
+void BattleScene_EmptyFunc1(void) {
 }
 
-void func_8432440C(void) {
+void BattleScene_EmptyFunc2(void) {
 }
 
 void BattleScene_RunRepeatedHitHpTransition(CameraStruct* arg0) {

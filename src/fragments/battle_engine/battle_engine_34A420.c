@@ -36,7 +36,7 @@ static TrailPoint gTrailPoints[400];
 static s32 pad_D_84398F48[2];
 static RadialNode gRadialNodes[10];
 
-static Gfx D_84389060[] = {
+static Gfx gRadialDrawDL_End[] = {
     gsSPEndDisplayList(),
 };
 

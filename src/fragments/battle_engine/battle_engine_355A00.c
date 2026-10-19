@@ -1,9 +1,9 @@
 #include "battle_engine.h"
 #include "src/gfx_buffer.h"
 
-static unk_D_843ADA80 gTrail50EffectAltInstances[50];
+static Trail50EffectAltInstance gTrail50EffectAltInstances[50];
 
-static Gfx D_84389B60[] = {
+static Gfx gTrail50EffectAlt_GfxSetup[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -16,7 +16,7 @@ static Gfx D_84389B60[] = {
     gsDPSetColorDither(G_CD_NOISE),
     gsSPEndDisplayList(),
 };
-static Vtx D_84389BB0[] = {
+static Vtx gWaterParticleVertices[] = {
     VTX(-6, 0, -6, 2048, 0, 0xFF, 0xFF, 0xFF, 0x14),
     VTX(6, 0, -6, 0, 0, 0xFF, 0xFF, 0xFF, 0x14),
     VTX(-6, 0, 6, 2048, 2048, 0xFF, 0xFF, 0xFF, 0x14),
@@ -36,14 +36,14 @@ static Gfx gWaterParticleTextureDL[] = {
     gsDPSetTextureLUT(G_TT_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPPipeSync(),
-    gsSPVertex(D_84389BB0, 4, 0),
+    gsSPVertex(gWaterParticleVertices, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 2, 0),
     gsSPEndDisplayList(),
 };
 
 void Trail50EffectAlt_Init(void) {
-    unk_D_843ADA80* var_v0 = &gTrail50EffectAltInstances[0];
-    unk_D_843ADA80_040* var_a0;
+    Trail50EffectAltInstance* var_v0 = &gTrail50EffectAltInstances[0];
+    Trail50EffectAltNode* var_a0;
     s32 i;
     s32 j;
 
@@ -71,8 +71,8 @@ void Trail50EffectAlt_Init(void) {
 
 void Trail50EffectAlt_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
-    unk_D_843ADA80* var_v1;
-    unk_D_843ADA80_040* var_s0;
+    Trail50EffectAltInstance* var_v1;
+    Trail50EffectAltNode* var_s0;
     s32 i;
     s32 j;
     Vec3f sp7C;
@@ -138,10 +138,10 @@ void Trail50EffectAlt_Update(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void Trail50EffectAlt_AdvanceNodes(unk_D_843ADA80* arg0) {
+void Trail50EffectAlt_AdvanceNodes(Trail50EffectAltInstance* arg0) {
     s32 i;
     f32 temp_fs3 = arg0->unk_010;
-    unk_D_843ADA80_040* var_s0 = &arg0->unk_040[0];
+    Trail50EffectAltNode* var_s0 = &arg0->unk_040[0];
 
     for (i = 0; i < 10; i++, var_s0++) {
         if (i == 0) {
@@ -204,7 +204,7 @@ void Trail50EffectAlt_AdvanceNodes(unk_D_843ADA80* arg0) {
 
 s32 Trail50EffectAlt_IsComplete(void) {
     s32 i;
-    unk_D_843ADA80* var_s0 = &gTrail50EffectAltInstances[0];
+    Trail50EffectAltInstance* var_s0 = &gTrail50EffectAltInstances[0];
 
     for (i = 0; i < 50; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -223,8 +223,8 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
-    unk_D_843ADA80_040* temp_s0;
-    unk_D_843ADA80* var_s5;
+    Trail50EffectAltNode* temp_s0;
+    Trail50EffectAltInstance* var_s5;
     Vtx* var_s0;
     Vec3f sp184;
     UNUSED s32 pad[15];
@@ -298,7 +298,7 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
 
             var_s0 = var_s5->unk_020;
 
-            gSPDisplayList(arg0++, D_84389B60);
+            gSPDisplayList(arg0++, gTrail50EffectAlt_GfxSetup);
 
             for (k = 0; k < 9; k++) {
                 gSPVertex(arg0++, var_s0, 4, 0);

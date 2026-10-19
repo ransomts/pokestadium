@@ -1675,7 +1675,7 @@ void ParticleEffect_InitFireSet(void) {
     BattleAnim_SpawnOwnerModelTintPaletteFade(8, 0xB, 0x10, 8, 0xC8, 0x10);
 }
 
-void func_8433765C(void) {
+void BattleAnim_EffectStart_Special(void) {
 }
 
 void ParticleEffect_InitEmptySet2(void) {
@@ -1694,7 +1694,7 @@ void ParticleEffect_InitSparkleSet(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(0x18, BattleAnim_CallbackEndEffects40And54Descriptor46SpreadScaleFade, &gBattleAnimParticleDescriptors[0x46], 0, 8, 0x11, 9, 0, 0);
 }
 
-void func_843378CC(void) {
+void BattleAnim_EffectStart_Generic(void) {
 }
 
 void ParticleEffect_InitCombinedSet(void) {

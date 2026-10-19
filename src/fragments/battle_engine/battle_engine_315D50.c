@@ -947,7 +947,7 @@ ParticleEffectData gBattleAnimParticleDescriptors[] = {
 static func_D_84390320 gStateFunctionTable[] = {
     BattleAnim_EffectStartNop, BattleAnim_StartEffect1Descriptor2FPhaseFadeOut, BattleAnim_StartEffect2Descriptor08IndexedScaleDelayFade, BattleAnim_StartEffect3ModelTintAndVerticalFade, BattleAnim_StartEffect4TintDescriptor53ScalePulse, BattleAnim_EffectStartNop, BattleAnim_StartEffect6AnimatedScaleAndBurstEmitter,
     BattleAnim_StartEffect7GlobalTintFade, BattleAnim_StartEffect8ModelBurstAndVerticalFade, BattleAnim_EffectStartNop, BattleAnim_StartEffect10Model60AndModelAnimWait, BattleAnim_StartEffect11GlobalTintFade, BattleAnim_StartEffect12DelayedModelAnim, BattleAnim_StartEffect13SecondaryOwnerSpeciesBranch,
-    BattleAnim_StartEffect14ModelAnimAndMoveKeyedTintParticles, BattleAnim_StartEffect15Descriptor08IndexedScaleDelayFade, BattleAnim_StartEffect16TintDescriptor34Sequence, BattleAnim_StartEffect17ModelAnimFinish, BattleAnim_StartEffect18ScatterRadialAndColumnSequence, BattleAnim_EffectStartNop, func_843378CC,
+    BattleAnim_StartEffect14ModelAnimAndMoveKeyedTintParticles, BattleAnim_StartEffect15Descriptor08IndexedScaleDelayFade, BattleAnim_StartEffect16TintDescriptor34Sequence, BattleAnim_StartEffect17ModelAnimFinish, BattleAnim_StartEffect18ScatterRadialAndColumnSequence, BattleAnim_EffectStartNop, BattleAnim_EffectStart_Generic,
     ParticleEffect_WaterAnimBurst, ParticleEffect_InitSetA, ParticleEffect_InitSmokeSetA, ParticleEffect_PaletteScriptBurst, BattleAnim_EffectStartNop, InitParticleEffectSet_Alt2, BattleAnim_EffectStartNop,
     ParticleEffect_RegisterEffectE0, ParticleEffect_GroupSetupA, ParticleEffect_FinalGroupSetup, ParticleEffect_ComplexNodeSetup, BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, ParticleEffect_RegisterSparkle,
     ParticleEffect_InitSmokeSetB, ParticleEffect_BasicMultiBurst2, ParticleEffect_SimpleBurstScript, ParticleEffect_RegisterExplosion, InitParticleEffectSet_WithFade, ParticleEffect_RegisterLargeExplosion, ParticleEffect_TextureSetup,
@@ -957,13 +957,13 @@ static func_D_84390320 gStateFunctionTable[] = {
     ParticleEffect_RegisterHandlers_Default, ParticleEffect_RegisterHandler_416B0, ParticleEffect_RegisterParticleNodes, ParticleEffect_RegisterMultipleHandlers, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandler_49384, ParticleEffect_RegisterHandlers_49504,
     InitParticleEffectSet_WithDifferentTiming, ParticleEffect_RegisterHandler_49058, ParticleEffect_RegisterHandler_47448, BattleAnim_CreateCollisionRandomEffect, ParticleEffect_RegisterHandler_49108, ParticleEffect_RegisterHandlers_Alternate, ParticleEffect_RegisterEffectE0Alt,
     InitSmallGlowEffectSet, InitParticleEffectSet_Single, ParticleEffect_RegisterHandler_498D8, ParticleEffect_RegisterDefaultTexture, ParticleEffect_AdvancedModeSetup, ParticleEffect_RegisterAll_48630, ParticleEffect_SimpleBurst,
-    ParticleEffect_InitSmokeSetC, ParticleEffect_FinalSetupA, ParticleEffect_RegisterLargeExplosionAndEffects, func_8434A9EC, ParticleEffect_MultiNodeC2, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
+    ParticleEffect_InitSmokeSetC, ParticleEffect_FinalSetupA, ParticleEffect_RegisterLargeExplosionAndEffects, BattleAnim_EffectStart_Custom, ParticleEffect_MultiNodeC2, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
     ParticleEffect_PortraitBurstNode, ParticleEffect_PortraitBurstCheck, ParticleEffect_WaterAnimFirework, ParticleEffect_SimpleBurst2, ParticleEffect_PaletteMultiBurst2, ParticleEffect_PaletteBurst4, ParticleEffect_PaletteBurst5,
     BattleAnim_EffectStartNop, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurst4, ParticleEffect_RotationEntry, BattleAnim_DisableEffectSpawningAlias, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
     ParticleEffect_TriggerSpecial, ParticleEffect_AlphaBurst, ParticleEffect_AlphaBurst2, ParticleEffect_AdditionalSetupA, ParticleEffect_SimpleGroupSetup, ParticleEffect_ComplexGroupSetup, ParticleEffect_RegisterHandler_490A8,
     ParticleEffect_PortraitBurstInit, ParticleEffect_TriggerDefault1, ParticleEffect_FinalSetupB, ParticleEffect_FinalSetupC, ParticleEffect_AdditionalNodeA, ParticleEffect_StateCollisionSetupA, ParticleEffect_CreateWithCallback,
     ParticleEffect_CreateCallback, InitSmallGlowEffectSet, ParticleEffect_TriggerDefault3, BattleAnim_StartEffect122GlobalAndOwnerTintFade, ParticleEffect_ConditionalStateSetup, ParticleEffect_CollisionResponseSwitch, ParticleEffect_RegisterCallbacks,
-    func_8433765C, ParticleEffect_CreateVariant45, ParticleEffect_CreateVariant47, ParticleEffect_CreateTypeX, ParticleEffect_CreateSmoke, ParticleEffect_CreateSmokeHighPriority, ParticleEffect_CreateDual,
+    BattleAnim_EffectStart_Special, ParticleEffect_CreateVariant45, ParticleEffect_CreateVariant47, ParticleEffect_CreateTypeX, ParticleEffect_CreateSmoke, ParticleEffect_CreateSmokeHighPriority, ParticleEffect_CreateDual,
     BattleAnim_StartEffect133ModeOrbitBurstAndEffect135Followup, BattleAnim_StartEffect134ModeOrbitAndMetadataBurst, BattleAnim_StartEffect135ExpandingFlashAndRisingScaleFade, BattleAnim_EffectStartNop, BattleAnim_StartEffect137Descriptor3FRisingFade, ParticleEffect_TextureNodeSetup, BattleAnim_StartEffect139DualRepeatingSparks,
     BattleAnim_StartEffect140StartEffect139Alias, BattleAnim_StartEffect141GridRiseAndFallingBurst, BattleAnim_StartEffect142StartEffect141Alias, BattleAnim_StartEffect143ModeOrbitAndMetadataBurst, BattleAnim_EffectStartNop,
 };
@@ -976,7 +976,7 @@ static func_D_84390320 gParticleStateFunctionTable[] = {
     ParticleEffect_ConfigB, ParticleEffect_ConfigA, ParticleEffect_SpecialSetupA, ParticleEffect_SpecialSetupB, ParticleEffect_AdditionalSetupB, ParticleEffect_InitSparkleSet, ParticleEffect_Trigger56A74,
     ParticleEffect_ModeSetup, ParticleEffect_CollisionSetup, ParticleEffect_ConfigVariantA, ParticleEffect_CombinedSetupA, ParticleEffect_CombinedSetupB, ParticleEffect_SpecialSetupC, BattleAnim_EffectEndNop,
     ParticleEffect_RegisterColorAnim, ParticleEffect_RegisterHandler_WithParticleData, ParticleEffect_WaterAnimBurst2, ParticleEffect_MultiHandleSetup, InitParticleEffectSet_WithCustomCallback, ParticleEffect_InitSetC, ParticleEffect_SimpleNodeSetup,
-    ParticleEffect_InitSetB, ParticleEffect_FullSetupB, func_8434A930, ParticleEffect_InitCombinedSet, ParticleEffect_WaterAnimFirework2, ParticleEffect_SimpleBurst3, ParticleEffect_PaletteMultiBurst3,
+    ParticleEffect_InitSetB, ParticleEffect_FullSetupB, BattleAnim_EffectEnd_Custom, ParticleEffect_InitCombinedSet, ParticleEffect_WaterAnimFirework2, ParticleEffect_SimpleBurst3, ParticleEffect_PaletteMultiBurst3,
     ParticleEffect_FireworkBurst, ParticleEffect_FireballBurst, ParticleEffect_FireworkEntry, ParticleEffect_SimpleNodeBurst, InitParticleEffectSet_WithMultiple, InitParticleEffectSet_WithTimedFireball, InitParticleEffectSet_Variant2,
     InitParticleEffectSet_WithComplex, InitParticleEffectSet_Variant3, BattleAnim_CreateSprayColumnEffectTrigger, ParticleEffect_AlphaFirework2, ParticleEffect_AlphaFirework, ParticleEffect_MultiNodeAEntry, ParticleEffect_TriggerAnother,
     ParticleEffect_TriggerDefault2, ParticleEffect_RegisterHandlers_4967C, ParticleEffect_CreateColorVariant, ParticleEffect_ConfigVariantB, ParticleEffect_RegisterAll_489FC, ParticleEffect_RegisterAll_489FC, ParticleEffect_ConfigureAndTrigger_4917C,
@@ -1001,28 +1001,28 @@ static u8 gBattleScriptTable_48[] = {
     0x00,
 
 };
-static u8 D_8438684C[] = {
+static u8 gBattleScript_Param05[] = {
     0x05,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386850[] = {
+static u8 gBattleScript_Param06[] = {
     0x06,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386854[] = {
+static u8 gBattleScript_Param09[] = {
     0x09,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_84386858[] = {
+static u8 gBattleScript_Param0A[] = {
     0x0A,
     0x3F,
     0x00,
@@ -1054,7 +1054,7 @@ static u8 gBattleScript_NullParam11[] = {
     0x00,
 
 };
-static u8 D_84386870[] = {
+static u8 gBattleScript_Param10[] = {
     0x10,
     0x3F,
     0x00,
@@ -1082,7 +1082,7 @@ static u8 gBattleScriptCmd_46[] = {
     0x00,
 
 };
-static u8 D_84386880[] = {
+static u8 gBattleScript_Param13[] = {
     0x13,
     0x3F,
     0x00,
@@ -1093,7 +1093,7 @@ static u8 gBattleScriptTable_84[] = {
     0x14, 0x3F, 0x00, 0x00, 0x15, 0x3F, 0x00, 0x00,
 
 };
-static u8 D_8438688C[] = {
+static u8 gBattleScript_Param16[] = {
     0x16, 0x3F, 0x00, 0x00, 0x17, 0x3F, 0x00, 0x00,
 
 };
@@ -1104,14 +1104,14 @@ static u8 gBattleScript_NullParam2[] = {
     0x00,
 
 };
-static u8 D_84386898[] = {
+static u8 gBattleScript_Param19[] = {
     0x19,
     0x32,
     0x3F,
     0x00,
 
 };
-static u8 D_8438689C[] = {
+static u8 gBattleScript_Param1A[] = {
     0x1A,
     0x3F,
     0x00,
@@ -1132,7 +1132,7 @@ static u8 gBattleScriptTable_A4[] = {
     0x00,
 
 };
-static u8 D_843868A8[] = {
+static u8 gBattleScript_Param27[] = {
     0x27,
     0x3F,
     0x00,
@@ -1146,7 +1146,7 @@ static u8 D_843868AC[] = {
     0x00,
 
 };
-static u8 D_843868B0[] = {
+static u8 gBattleScript_AnimAttack[] = {
     0x1F,
     0x3F,
     0x00,
@@ -1160,21 +1160,21 @@ static u8 gBattleScriptTable_B4[] = {
     0x00,
 
 };
-static u8 D_843868B8[] = {
+static u8 gBattleScript_AnimHit[] = {
     0x21,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_843868BC[] = {
+static u8 gBattleScript_AnimMiss[] = {
     0x22,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 D_843868C0[] = {
+static u8 gBattleScript_AnimFaint[] = {
     0x23, 0x3F, 0x00, 0x00, 0x24, 0x3F, 0x00, 0x00,
 
 };
@@ -2388,14 +2388,14 @@ static u8 gBattleScript_NullParam3[] = {
     0x00, 0x00, 0x00, 0x00, 0x59, 0x00, 0x00, 0x00,
 
 };
-static u8 D_84386BC4[] = {
+static u8 gBattleScript_MsgStart[] = {
     0x01,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 D_84386BC8[] = {
+static u8 gBattleScript_MsgEnd[] = {
     0x30, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
 
 };
@@ -2987,7 +2987,7 @@ static u8* Fragment62_SubTablePtr2D[][2] = {
     },
     {
         gBattleScriptCmd_15_Alt,
-        D_84386870,
+        gBattleScript_Param10,
     },
     {
         gBattleScriptCmd_8C,
@@ -3015,7 +3015,7 @@ static u8* Fragment62_DataPtrArray[] = {
     gBattleScriptCmd_80, gBattleScriptCmd_81, gBattleScriptCmd_82, gBattleScriptCmd_83, gBattleScriptCmd_84, gBattleScriptCmd_90,
 };
 static u8* Fragment62_GroupPtrArray[] = {
-    gBattleScript_NullParam3, D_84386BC4, Fragment62_Byte09, D_84386BC8, Fragment62_Byte31,
+    gBattleScript_NullParam3, gBattleScript_MsgStart, Fragment62_Byte09, gBattleScript_MsgEnd, Fragment62_Byte31,
 };
 static u8* Fragment62_SpecialPairPtr[] = { gBattleScriptCmd_00, gBattleScriptCmd_2C_Alt2 };
 static u8* Fragment62_ComplexPtrTable[][5] = {
@@ -3079,7 +3079,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_29_Alt,
         gBattleScriptCmd_00,
         Fragment62_Byte2A,
-        D_843868B0,
+        gBattleScript_AnimAttack,
         gBattleScript_NullParam2,
     },
     {
@@ -3135,21 +3135,21 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_0A,
         gBattleScriptCmd_00,
         Fragment62_Byte2F,
-        D_84386854,
+        gBattleScript_Param09,
         gBattleScript_NullParam2,
     },
     {
         gBattleScriptCmd_00,
         gBattleScriptCmd_00,
         Fragment62_Bytes57_23,
-        D_84386858,
+        gBattleScript_Param0A,
         gBattleScript_NullParam2,
     },
     {
         gBattleScriptCmd_0A,
         gBattleScriptCmd_00,
         gBattleScript_NullParam3,
-        D_84386854,
+        gBattleScript_Param09,
         gBattleScript_NullParam,
     },
     {
@@ -3178,7 +3178,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_00,
         Fragment62_Byte55,
         gBattleScript_NullParam7,
-        D_84386858,
+        gBattleScript_Param0A,
     },
     {
         gBattleScriptCmd_00,
@@ -3219,7 +3219,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_1F,
         gBattleScriptCmd_00,
         Fragment62_Byte37,
-        D_8438688C,
+        gBattleScript_Param16,
         gBattleScript_NullParam2,
     },
     {
@@ -3233,21 +3233,21 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_77,
         gBattleScriptCmd_00,
         Fragment62_Byte25,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
         gBattleScriptCmd_76,
         gBattleScriptCmd_00,
         Fragment62_Byte2F,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
         gBattleScriptCmd_79,
         gBattleScriptCmd_00,
         Fragment62_Bytes54_25,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
@@ -3303,21 +3303,21 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_43,
         gBattleScriptCmd_00,
         Fragment62_Byte26,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
         gBattleScriptCmd_43,
         gBattleScriptCmd_00,
         Fragment62_Byte26,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
         gBattleScriptCmd_43,
         gBattleScriptCmd_00,
         Fragment62_Byte25,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
@@ -3352,21 +3352,21 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_2B_Alt,
         gBattleScriptCmd_00,
         gBattleScript_NullParam3,
-        D_843868B8,
+        gBattleScript_AnimHit,
         gBattleScript_NullParam,
     },
     {
         gBattleScriptCmd_2C_Alt2,
         gBattleScriptCmd_00,
         gBattleScript_NullParam3,
-        D_843868BC,
+        gBattleScript_AnimMiss,
         gBattleScript_NullParam,
     },
     {
         gBattleScriptJump_2D,
         gBattleScriptCmd_00,
         Fragment62_Byte23,
-        D_843868C0,
+        gBattleScript_AnimFaint,
         gBattleScript_NullParam2,
     },
     {
@@ -3422,7 +3422,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptJump_24,
         gBattleScriptCmd_00,
         Fragment62_Byte10,
-        D_8438689C,
+        gBattleScript_Param1A,
         gBattleScript_NullParam8,
     },
     {
@@ -3436,7 +3436,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_22,
         gBattleScriptCmd_00,
         Fragment62_Byte17,
-        D_84386898,
+        gBattleScript_Param19,
         gBattleScript_NullParam8,
     },
     {
@@ -3464,21 +3464,21 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptJump_27,
         gBattleScriptCmd_00,
         Fragment62_Byte46,
-        D_843868A8,
+        gBattleScript_Param27,
         gBattleScriptCmd_29,
     },
     {
         gBattleScriptCmd_76,
         gBattleScriptCmd_00,
         Fragment62_Byte25,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
         gBattleScriptCmd_71,
         gBattleScriptCmd_00,
         Fragment62_Bytes4D_0E,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
@@ -3520,21 +3520,21 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_18_Alt,
         gBattleScriptCmd_00,
         Fragment62_Byte15,
-        D_84386880,
+        gBattleScript_Param13,
         gBattleScript_NullParam4,
     },
     {
         gBattleScriptCmd_18_Alt,
         gBattleScriptCmd_00,
         Fragment62_Byte15,
-        D_84386880,
+        gBattleScript_Param13,
         gBattleScript_NullParam4,
     },
     {
         gBattleScriptCmd_08_09,
         gBattleScriptCmd_00,
         Fragment62_Byte1F,
-        D_8438684C,
+        gBattleScript_Param05,
         gBattleScript_NullParam,
     },
     {
@@ -3548,7 +3548,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_66_0B_0C,
         gBattleScriptCmd_00,
         Fragment62_Byte04,
-        D_84386858,
+        gBattleScript_Param0A,
         gBattleScript_NullParam2,
     },
     {
@@ -3583,7 +3583,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptJump_39,
         gBattleScriptCmd_00,
         Fragment62_Byte1A,
-        D_84386858,
+        gBattleScript_Param0A,
         gBattleScript_NullParam2,
     },
     {
@@ -3940,7 +3940,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_3E,
         gBattleScriptCmd_00,
         Fragment62_Byte25,
-        D_84386850,
+        gBattleScript_Param06,
         gBattleScript_NullParam2,
     },
     {
@@ -3962,7 +3962,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_2C_Alt2,
         gBattleScript_NullParam3,
         gBattleScriptCmd_2A,
-        D_843868BC,
+        gBattleScript_AnimMiss,
     },
     {
         gBattleScriptCmd_42,
@@ -4010,7 +4010,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScriptCmd_18_Alt,
         gBattleScriptCmd_00,
         Fragment62_Byte15,
-        D_84386880,
+        gBattleScript_Param13,
         gBattleScript_NullParam4,
     },
     {

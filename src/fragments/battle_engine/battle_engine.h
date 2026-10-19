@@ -627,7 +627,7 @@ typedef struct unk_D_843ACA10 {
     /* 0x418 */ f32 renderScale;
 } unk_D_843ACA10; // size = 0x41C
 
-typedef struct unk_D_843ADA80_040 {
+typedef struct Trail50EffectAltNode {
     /* 0x00 */ u8 posX;
     /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
@@ -638,9 +638,9 @@ typedef struct unk_D_843ADA80_040 {
     /* 0x34 */ f32 unk_34;
     /* 0x38 */ Vec3f unk_38;
     /* 0x44 */ Vec3f unk_44;
-} unk_D_843ADA80_040; // size = 0x50
+} Trail50EffectAltNode; // size = 0x50
 
-typedef struct unk_D_843ADA80 {
+typedef struct Trail50EffectAltInstance {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ s16 unk_004;
@@ -654,8 +654,8 @@ typedef struct unk_D_843ADA80 {
     /* 0x020 */ Vtx* unk_020;
     /* 0x024 */ Vec3f unk_024;
     /* 0x030 */ char unk030[0x10];
-    /* 0x040 */ unk_D_843ADA80_040 unk_040[10];
-} unk_D_843ADA80; // size = 0x360
+    /* 0x040 */ Trail50EffectAltNode unk_040[10];
+} Trail50EffectAltInstance; // size = 0x360
 
 typedef struct WaterParticleVertex {
     /* 0x00 */ s32 posX;
@@ -1619,7 +1619,7 @@ s32 BattleScene_AdvanceOwnerAnimationAndClearFlags(BattlePlayerEntity* arg0);
 s32 BattleScene_AdvanceDoublesOwnerAnimation(BattlePlayerEntity* arg0);
 s32 BattleScene_AdvanceBothOwnerAnimations(void);
 void BattleScene_ClearInactiveOwnerAnimationFlags(void);
-void func_8431FCC4(void);
+void BattleScene_NullHandler(void);
 s32 BattleScene_AnimateDisplayedHpToRuntime(BattlePlayerEntity* arg0);
 void BattleScene_ClearPhaseFlag(void);
 void BattleScene_SetPhaseFlag(void);
@@ -1694,8 +1694,8 @@ void BattleScene_RunBasicHpTransition(CameraStruct* arg0);
 void BattleScene_RunConditionalHpTransition(CameraStruct* arg0);
 void BattleScene_RunMoveEffectEndHpTransition(CameraStruct* arg0);
 void BattleScene_RunActionEffectHpTransition(CameraStruct* arg0);
-void func_84324404(void);
-void func_8432440C(void);
+void BattleScene_EmptyFunc1(void);
+void BattleScene_EmptyFunc2(void);
 void BattleScene_RunRepeatedHitHpTransition(CameraStruct* arg0);
 void BattleScene_ActionSetupFinalizeStep(CameraStruct* arg0);
 void BattleScene_Phase2(CameraStruct* arg0);
@@ -1998,7 +1998,7 @@ void BattleAnim_SetupOwnerModelTintRampDetach(ParticleEffectInstance* arg0);
 void BattleAnim_CallbackOwnerModelTintRampDetach(ParticleEffectInstance* arg0);
 void BattleAnim_SetupOwnerModelTintPulseDetach(ParticleEffectInstance* arg0);
 void BattleAnim_CallbackOwnerModelTintPulseDetach(ParticleEffectInstance* arg0);
-void func_8433209C(void);
+void BattleAnim_EmptyCallback(void);
 void BattleAnim_CallbackOwnerModelTintHoldFadeDetach(ParticleEffectInstance* arg0);
 void BattleAnim_SetupOwnerModelTintPaletteApproachInactive(ParticleEffectInstance* arg0);
 void BattleAnim_CallbackOwnerModelTintPaletteApproachInactive(ParticleEffectInstance* arg0);
@@ -2104,10 +2104,10 @@ void ParticleEffect_InitSmokeSetB(void);
 void ParticleEffect_InitExplosionSetB(void);
 void ParticleEffect_InitSmokeSetC(void);
 void ParticleEffect_InitFireSet(void);
-void func_8433765C(void);
+void BattleAnim_EffectStart_Special(void);
 void ParticleEffect_InitEmptySet2(void);
 void ParticleEffect_InitSparkleSet(void);
-void func_843378CC(void);
+void BattleAnim_EffectStart_Generic(void);
 void ParticleEffect_InitCombinedSet(void);
 
 
@@ -2270,7 +2270,7 @@ void BattleAnim_SetupEndEffect26Descriptor2CGravityScatterFall(ParticleEffectIns
 void BattleAnim_CallbackEndEffect26Descriptor2CGravityScatterFall(ParticleEffectInstance* arg0);
 void BattleAnim_SetupEndEffects85And87GravityFallDelay(ParticleEffectInstance* arg0);
 void BattleAnim_CallbackEndEffects85And87GravityFallDelay(ParticleEffectInstance* arg0);
-void func_84340AC4(void);
+void BattleAnim_UnusedEmptyFunc(void);
 void BattleAnim_OrphanDescriptor2BAnd2EEmitterSequence(void);
 void RegisterParticleEffect_ComplexMovement(void);
 void RegisterParticleEffect_Burst(void);
@@ -2495,9 +2495,9 @@ void Gfx_ParticleRedPrimCallback2(s32 arg0, arg1_func_84344CE8* arg1);
 void ParticleEffect_SimpleBurst(void);
 void BattleAnim_StartEffect39Descriptor26ModelAnimWaitSequence(void);
 void ParticleEffect_SimpleBurstScript(void);
-void func_8434A930(void);
+void BattleAnim_EffectEnd_Custom(void);
 void ParticleEffect_MultiNodeAEntry(void);
-void func_8434A9EC(void);
+void BattleAnim_EffectStart_Custom(void);
 void ParticleEffect_MultiNodeC2(void);
 void Gfx_PokemonPortraitCallback(Gfx* arg0, u8 arg1, UNUSED u16 arg2);
 void Gfx_PokemonPortraitCallback2(s32 arg0, arg1_func_84344CE8* arg1);
@@ -2972,7 +2972,7 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0);
 void Trail50Effect_Init(void);
 void Trail50Effect_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
 void Trail50Effect_Update(f32 arg0, Vec3f* arg1, f32 arg2);
-void Trail50Effect_AdvanceNodes(unk_D_843ADA80* arg0);
+void Trail50Effect_AdvanceNodes(Trail50EffectAltInstance* arg0);
 s32 Trail50Effect_IsComplete(void);
 Gfx* Trail50Effect_Draw(Gfx* arg0);
 
@@ -2980,7 +2980,7 @@ Gfx* Trail50Effect_Draw(Gfx* arg0);
 void Trail50EffectAlt_Init(void);
 void Trail50EffectAlt_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9, f32 argA, f32 argB, f32 argC, s16 argD);
 void Trail50EffectAlt_Update(f32 arg0, Vec3f* arg1, f32 arg2);
-void Trail50EffectAlt_AdvanceNodes(unk_D_843ADA80* arg0);
+void Trail50EffectAlt_AdvanceNodes(Trail50EffectAltInstance* arg0);
 s32 Trail50EffectAlt_IsComplete(void);
 Gfx* Trail50EffectAlt_Draw(Gfx* arg0);
 

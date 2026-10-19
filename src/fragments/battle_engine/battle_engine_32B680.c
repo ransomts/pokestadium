@@ -3852,17 +3852,17 @@ void ParticleEffect_SimpleBurstScript(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x26, 0);
 }
 
-void func_8434A930(void) {
+void BattleAnim_EffectEnd_Custom(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(6, BattleAnim_CallbackInitModelAnim, &gParticleDefaultCallback, 0, 1, 0xA, 0, 4, 2);
     BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0xA, 0, 5, 0);
     BattleAnim_EndEffect58Descriptor4AAnd51Sequence();
 }
 
 void ParticleEffect_MultiNodeAEntry(void) {
-    func_8434A930();
+    BattleAnim_EffectEnd_Custom();
 }
 
-void func_8434A9EC(void) {
+void BattleAnim_EffectStart_Custom(void) {
     BattleAnim_SpawnOwnerModelTintRampDetach(4, 0xA, 0, 0xFF, 0x40);
     BattleAnim_SpawnOwnerModelAlphaFadeZeroStartPreset(8);
     BattleAnim_CreateEffectSlotForCurrentOwner(0xC, BattleAnim_CallbackInitModelAnim, &gParticleDefaultCallback, 0, 1, 0xE, 0, 6, 0);
