@@ -1,48 +1,27 @@
-# F6 parked symbols - what is NOT renamed and why (2026-10-17 night session)
+# F6 parked symbols - what is NOT renamed and why (refreshed 2026-10-19)
 
-Ledger: matching_notes/renames.tsv (3,713 applied rows, resumable). Report of everything
-deliberately left as a placeholder, so the next session can pick targets deliberately.
+Ledger: matching_notes/renames.tsv (16,435+ applied). Current truth: RENAME_PLAN.md
+bottom sections. Old round-11 content is superseded - farm closure LIFTED (code 100%),
+alias triple resolved (s1), func_80022734 renamed (ApplyPPUps).
 
-## 1. Farm-merge closure (blocked on the 5 open functions)
-- 67 symbols in renames_protected.txt + the 5 functions themselves (func_8004A89C,
-  func_80034348, func_8437B0CC, func_88304850, func_88805AEC).
-- ~140 struct-field rows on the open drafts' structs (fragment24/61/62 headers etc.)
-  were dropped by preflight during batch c1. After the functions match: harvest,
-  unprotect, re-propose (rename_fields_inventory.tsv + rename_field_agent.py).
+## Blocked / by policy
+- undefined_syms.ld-defined symbols (~530): renaming needs never-touch .ld edits.
+- VRAM/segment addresses (7-hex D_ names): asset space, not symbols.
+- Locals (argN/spXX/temp_): parked by owner decision 2026-10-17.
+- jtbl_*, by-design binaries, already-named (upstream + our applied) symbols.
 
-## 2. Species-stats follow-ups (from the s1 consolidation analysis, NOTES ROUND 11)
-- PokemonStats (22630.h) field names are ROTATED by one relative to the true byte
-  columns: baseSpecial(+7)=baseAttack, baseSpeed(+8)=baseDefense, baseDefense(+9)=baseSpeed,
-  baseAttack(+0xA)=baseSpecial. Evidence: jump table at 0x8007C0D8 + 40-species
-  byte-verified table + the HP-DV formula. Gameplay-observable -> owner decision.
-- STAT_* defines in the same headers are likewise rotated (true order: ATTACK 2,
-  DEFENSE 3, SPEED 4, SPECIAL 5); relabeling needs case-body reordering for byte-identity.
-- D_8006FEE8 ("pmname_151" string) and D_80070F84 (folded alias base): dual-source
-  (symbol_addrs + undefined_syms.ld) - never-touch, out of scope forever.
-- D_8006FF00 was renamed gSpeciesDisplayTable (s1); its row 151 is the id-152 dummy row,
-  not Mew (datamig_overrides.txt comment says otherwise - off by one).
+## Weak evidence / no source
+- ~2,306 placeholders at last count, mostly C statics: statics-tail gemma waves are
+  running (see RENAME_PLAN CURRENT STATE); the michiiik statics address-join is the
+  bigger lever once their toolchain pin is answered.
+- Symbols michiiik also lacks (~498 overlap): LLM-tail only.
 
-## 3. Struct fields (Tier C remainder)
-- Only globally-unique field names are renamable with today's rename.py (345 of 4,312
-  fields across 652 typedefs; c1 applied 26, the rest either weak evidence or protected).
-- ~2,500+ (typedef, field) pairs share names across 2+ structs (unk_00 in 475!). Needs
-  struct-scoped field rows: extend rename.py with pycparser-based type-aware member
-  rewriting, or per-file scoping. This is the main Tier C follow-up.
-- Structs declared in .c files cannot take field rows today (decl rewrite is .h-only).
-
-## 4. Locals (argN/spXX/temp_/var_)
-- Parked by owner decision 2026-10-17 evening. Pure C-text rewrites, ROM-neutral;
-  would need a --func-scoped row mode in rename.py.
-
-## 5. Weak-evidence symbols (the bulk)
-- ~4,500 func_ + ~4,650 D_ placeholders remain referenced in src/ (many are: symbols
-  only in symbol_addrs with no src evidence, C statics, protected, or out-of-scope).
-- Every wave's agents skipped what they could not name with evidence; re-running
-  rename_agent.py on a file re-proposes only what still looks nameable. The RENAME
-  recipe and driver are in matching_notes/rename_wave.py + RENAME_PLAN.md.
-
-## 6. Out-of-scope classes (hard, by spec)
-- undefined_syms.ld-defined symbols (639 assignments; renaming needs .ld edits on the
-  never-touch list). Examples: D_80073267 (GetPokemonBaseStat table view).
-- Asset VRAM anchors (D_[0-9A-F]000xxx).
-- jtbl_*, fragment header/binary stubs, by-design names.
+## Follow-ups with decisions or work attached
+- michiiik toolchain pin (build their tree for the statics map) - ask via the port
+  channel; their ci/ dir didn't answer it from the clone.
+- Reorg residuals: groups 5/6/7/8/61 (gate failures), 1/31/77 (join problems),
+  main-segment semantic rename, per-group un-joined yaml entries.
+- Tier C shared-name struct fields (~2.5k pairs): needs pycparser-scoped row tooling.
+- 21 re-resolvable name collisions (list in hippo_name_conflicts.md).
+- PokemonStats field rotation + STAT_* defines (evidence in NOTES round 11): owner call.
+- MusyX family: OURS carries genuine SDK names vs their Audio_* - contribute upstream.
