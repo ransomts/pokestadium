@@ -62,6 +62,7 @@ def revert_groups(groups):
 
 def run(groups):
     applied = []
+    bad = []
     for g in groups:
         if not apply_group(g):
             print(f"group {g} failed to apply - reverting all")
@@ -81,10 +82,12 @@ def run(groups):
     print("gate failed - reverting all, then bisecting", flush=True)
     revert_groups(applied)
     if len(groups) == 1:
-        print(f"group {groups[0]} is the failure - needs manual attention")
+        print(f"group {groups[0]} is the failure - needs manual attention", flush=True)
         return False
-    half = len(groups) // 2
-    return run(groups[:half]) and run(groups[half:])
+    # bisect, but ALWAYS continue with the remaining halves
+    ok_first = run(groups[:len(groups) // 2])
+    ok_second = run(groups[len(groups) // 2:])
+    return ok_first and ok_second
 
 
 def main():
@@ -95,9 +98,19 @@ def main():
     args = ap.parse_args()
     if args.all:
         r = sh([PY, f"{HERE}/reorg.py", "plan"])
-        groups = [int(l.split(":")[0]) for l in r.stdout.splitlines()
-                  if l.strip() and not l.startswith("main") and l.split(":")[1].strip()[0].isdigit()]
-        groups = [g for g in groups if g != 16]  # pilot done
+        clean, skipped = [], []
+        for line in r.stdout.splitlines():
+            line = line.strip()
+            if not line or line.startswith("main"):
+                continue
+            gid, rest = line.split(":", 1)
+            if not gid.isdigit():
+                continue
+            n_prob = int(rest.split("problems")[0].split(",")[-1])
+            (clean if n_prob == 0 else skipped).append(int(gid))
+        groups = [g for g in clean if g != 16]  # pilot done
+        if skipped:
+            print(f"SKIPPING problem groups (manual follow-up): {skipped}", flush=True)
     else:
         groups = [int(g) for g in args.groups]
     print(f"groups: {groups}", flush=True)
