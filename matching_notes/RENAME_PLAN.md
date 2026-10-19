@@ -193,3 +193,18 @@ REMAINING for the next session:
 5. rev1: 95 OURS-BETTER reversion rows in matching_notes/hippo_name_conflicts.md -
    append to ledger + apply when no reorg gate is mid-flight.
 6. 21 re-resolvable name collisions (report has the list).
+
+## Placeholder continuation (2026-10-19 morning)
+
+rev1 applied+committed (22ea8a0d, 95 ours-better reversions; ledger 16,435). Remaining
+placeholders ~2,306, overwhelmingly C statics.
+
+NEXT BIG LEVER - the statics cross-reference (now unlocked by the reorg): our files sit
+on michiiik's exact paths, so BUILD THEIR TREE (re-clone shallow to /tmp/opencode/hippo -
+/tmp gets cleaned overnight; symlink our baseroms/us/baserom.z64 into theirs; check
+their build system - pret-style make with their own tools/ido) and use THEIR
+build/pokestadium-us.map as {address: name} for THEIR statics (file-scope statics appear
+in maps as local symbols). Our map has the same addresses for the same ROM -> a
+deterministic address join renames our placeholder statics (incl. D_-named ones the LLM
+waves skipped). Then: LLM/gemma tail pass for whatever remains + the reorg residual
+cleanup (failed groups 5/6/7/8/61, problem groups 1/31/77, main segment).
