@@ -16436,3 +16436,48 @@ Particle_FieldA8_GetS16_0BE28	Particle_GetTimerA8	rev1		<justification above>	ap
 Particle_FieldA8_DecrementTo_0BE30	Particle_DecrementTimerA8Clamp	rev1		<justification above>	applied@9cb22ab3
 Particle_FieldA8_DecrementToZeroStep1_0BE6C	Particle_DecrementTimerA8ToZero	rev1		<justification above>	applied@9cb22ab3
 Particle_FieldA8_DecrementToZeroStep1AndStepState_0BE8C	Particle_DecrementTimerA8ToZeroWithCallback	rev1		<justification above>	applied@9cb22ab3
+D_80073660	gSincosTable	w5		16x256 table of precomputed trigonometric values used for rotations/oscillations	pending
+unk_D_800AE540	SessionContext	w5	unk_D_800AE540:SessionContext	Global context structure tracking game session state, flags, and trainer slots	pending
+unk_func_8002D860	PortSummary	w5		unk_func_8002D860:PortSummary	pending
+unk_func_88500020	TiledTexture	w5		unk_func_88500020:TiledTexture	pending
+unk_func_8002DCB8_arg0	VerticalSelection	w5		unk_func_8002DCB8_arg0:VerticalSelection	pending
+unk_func_8002DD98_arg0	HorizontalSelection	w5		unk_func_8002DD98_arg0:HorizontalSelection	pending
+unk_func_8002DE78_arg0	SteppedScrollSelection	w5		unk_func_8002DE78_arg0:SteppedScrollSelection	pending
+unk_func_8830867C_044_038_030	NumericSelection	w5		unk_func_8830867C_044_038_030:NumericSelection	pending
+unk_func_8002E128_arg0	SteppedRangeSelection	w5		unk_func_8002E128_arg0:SteppedRangeSelection	pending
+unk_func_8002EBD8_arg0	SelectionDirection	w5		unk_func_8002EBD8_arg0:SelectionDirection	pending
+unk_D_8007596C	MenuItemCoord	w5		unk_D_8007596C:MenuItemCoord	pending
+D_80075950	gQuantitylessItems	w5		D_80075950:gQuantitylessItems	pending
+func_800318F0	Gallery_StubInvalidIndex	w5		returns an invalid index via a stub call	pending
+unk_D_800761B0	CamQuadVertex	w5		struct containing 8 s16s used for gCamQuadVertices	pending
+unk_func_8003013C_arg1	CamAngleOffsets	w5		struct containing offsets used in Gallery_SetCameraAngleOffsets	pending
+unk_func_80031660_sp24	CamFrameCounter	w5		struct containing a s32 used to set gTimerCounter	pending
+unk_D_83403C60	PhotoSceneData	w5		main data struct for photo scenes, contains species and pose info	pending
+unk_D_83402EE0_070	PhotoMonData	w5		struct used to copy PokemonData for photo display	pending
+unk_D_83407AC8	PhotoMonSpecies	w5		struct containing species data within PhotoSceneData	pending
+unk_func_80026268_arg0_raw	PhotoMonRaw	w5		raw byte representation of photo pokemon data	pending
+unk_D_83403C60_raw	PhotoSceneRaw	w5		raw byte representation of photo scene data	pending
+D_80077C70	gSfxHandle_SpecialC	w5		used in Audio_FadeCommand case 0xA1 to set duration scale	pending
+D_80077C7C	gSfxHandle_MenuSfx	w5		used in Audio_PlayCommand case 0x16 to track sound effect handle	pending
+D_80079014	gCurrentSfxBankId	w5		compared against arg0 in Audio_PlayCommand to determine if bank reload is needed	pending
+D_800FC680	gSfxWaveTableBuffer	w5		allocated via alHeapAlloc and used during bank initialization	pending
+D_800FC684	gSfxWaveTable	w5		allocated and used as the first wave table for MusBankInitialize	pending
+D_800FC690	gSfxBankSecondary	w5		allocated and initialized via MusBankInitialize from archive 2	pending
+D_800FC698	gSfxBankScratch	w5		array of 3 buffers allocated for audio data	pending
+D_800FC6CC	gAudioSeqTOC	w5		allocated and filled with offsets from Rom_DmaRead	pending
+D_800FC6D0	gAudioSfxDataBuffer	w5		allocated via alHeapAlloc for audio archive data	pending
+D_800FC6D4	gAudioSfxBankExtra	w5		allocated and loaded from the 5th main archive	pending
+D_800FC6E0	gAudioArchiveOffsets	w5		array of offsets read from ROM to locate audio archives	pending
+D_800FC6E4	gSfxArchiveHeader	w5		allocated and used to store the first archive's header and file list	pending
+D_800FC6EC	gSfxSubHeader1	w5		allocated and used to read sub-header for SFX table and bank	pending
+D_800FC6F0	gSfxSubHeader2	w5		allocated and used to read sub-header for secondary SFX bank	pending
+D_800FC6F4	gAudioSeqHeader1	w5		allocated and used as a sequence file header	pending
+D_800FC6F8	gAudioSeqHeader2	w5		allocated and used as a sequence file header	pending
+D_800FC798	gAudioHeaderTemp	w5		temporary buffer for reading archive headers	pending
+unk_D_80077970	SfxTableEntry	w5	unk_D_80077970:SfxTableEntry	struct used in gMenuSfxTable to map menu IDs to sound effects	pending
+D_80077DE8	gAudioDmaBufferCount	w5		u32 array of 2, used in DMA management	pending
+D_800A62C0	gDmaCompletionQueue	w5		osCreateMesgQueue is called with this as the queue and D_800A62D8 as the message, used across Dma_ReadChunks, Flash_ProgramPages, etc.	pending
+D_800A62D8	gDmaCompletionMsg	w5		Used as the message object for gDmaCompletionQueue in Dma_InitializeCompletionQueue.	pending
+unk_func_80003680_sp300	JpegStreamInfo	w5	unk_func_80003680_sp300:Struct	Contains JPEG markers like quantization_table, huffman_table, start_of_frame, and start_of_scan.	pending
+unk_func_80003680_sp90	JpegDspTaskData	w5	unk_func_80003680_sp90:Struct	Passed to Jpeg_InitializeDspTask and Jpeg_BuildDspOutput to configure DSP task parameters.	pending
+unk_func_800041C0	StorageRange	w5	unk_func_800041C0:Struct	Used in Storage_SetLbaRange and Storage_SetByteRange to define a range of data to be loaded from storage.	pending

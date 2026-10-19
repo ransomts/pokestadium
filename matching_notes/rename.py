@@ -567,21 +567,22 @@ def map_symbol_span(name):
 
 def do_rewrites(rows, files):
     rw = Rewriter()
+    # also-pairs FIRST, main-row word mappings AFTER: the word map is
+    # last-writer-wins, and an agent can file a type annotation as an also
+    # pair (`old:Struct`) - the main row must own that symbol's rename
+    # (the w5 orphan lesson: everything became the literal word "Struct").
     for r in rows:
-        if r.is_field_row():
-            ot, of, nt, nf = parse_field(r)
-            if r.also:
-                for pair in r.also.split(","):
-                    a, b = pair.split(":")
-                    rw.rewrite_word(a.strip(), b.strip(), files)
-            rw.rewrite_member(of, nf, files)
-            continue
-        rw.rewrite_sa_line(r.old, r.new)
-        rw.rewrite_word(r.old, r.new, files)
         if r.also:
             for pair in r.also.split(","):
                 a, b = pair.split(":")
                 rw.rewrite_word(a.strip(), b.strip(), files)
+    for r in rows:
+        if r.is_field_row():
+            ot, of, nt, nf = parse_field(r)
+            rw.rewrite_member(of, nf, files)
+            continue
+        rw.rewrite_sa_line(r.old, r.new)
+        rw.rewrite_word(r.old, r.new, files)
         if not sa_definitions(r.old):
             info = dlabel_info(r.old)
             if info:

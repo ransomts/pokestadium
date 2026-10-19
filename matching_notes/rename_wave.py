@@ -199,7 +199,19 @@ def fixup(rows, facts, batch, log, vetoes):
         seen_old.add(old)
         seen_new.add(new)
         kept.append((old, new, batch, also, just))
-    return kept
+    # also-pair collision guard (w5 orphan lesson): agents file type
+    # annotations as also pairs (`old:Struct`); a pair whose old is a
+    # main-row old would clobber that row's rename in the word map.
+    # The main row owns the symbol - drop the pair.
+    main_olds = {k[0] for k in kept}
+    out = []
+    for old, new, b, also, just in kept:
+        if also:
+            pairs = [p for p in also.split(",")
+                     if p.split(":", 1)[0].strip() not in main_olds]
+            also = ",".join(pairs)
+        out.append((old, new, b, also, just))
+    return out
 
 
 def plan_fixup_loop(batch, log, max_rounds=6):

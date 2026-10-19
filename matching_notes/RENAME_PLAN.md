@@ -227,3 +227,31 @@ CORRECTION: statics waves STOPPED at w5 - post-rewrite check failure (rows pendi
 ledger, auto-reverted, no damage). Next session: read the failure block above the STOP
 in scratch/rename_waves/driver_statics.log (likely an old-name-still-present or orphan
 class specific to statics rows), fix, re-run `run 1 6`.
+
+## w5 failure diagnosis + fix (2026-10-19 evening session)
+
+Root cause (preserved log: scratch/rename_waves/driver_statics_w5fail.log): three
+typedef rows (`unk_func_80003680_sp300 -> JpegStreamInfo`, `..._sp90 -> JpegDspTaskData`,
+`unk_func_800041C0 -> StorageRange`) carried an agent-filed type annotation
+`old:Struct` in the ALSO column. rename.py's do_rewrites applied also-pairs AFTER the
+main mapping into the same last-writer-wins word map, so `Struct` clobbered the real
+new name - every occurrence of the old typedef became the literal word `Struct`, the
+orphan post-check (correctly) failed, and the batch auto-reverted. Repro confirmed via
+importlib on the pending rows (word map said `Struct`).
+
+Fixes (both committed before relaunch):
+1. rename.py do_rewrites: also-pairs first, main-row word mappings after - the main
+   row owns the symbol; annotations can never win a collision again.
+2. rename_wave.py fixup: drop also-pairs whose old equals any kept row's main old
+   (the `old:Struct` class never reaches the ledger now).
+
+Verified: repro maps all three olds to their intended names; fixup on w5/merged.tsv
+yields 54 kept rows with clean also columns; wave-1 agent results all reusable;
+make extract + make -j24 green (ROM OK) at HEAD. Relaunch: `run 1 6 --model gemma-4-31b`.
+
+## CURRENT STATE (2026-10-19 evening, latest)
+Statics-tail waves RE-RUNNING after the also-pair fix (log
+scratch/rename_waves/driver_statics.log; queue: 170 files, 13 waves, driver runs
+queue waves 1-6 = batches w5-w10). Open items unchanged: michiiik toolchain pin
+(ask them; then statics address-join), reorg residuals (groups 5/6/7/8/61, 1/31/77,
+main segment, un-joined yaml entries), michiiik-nameless tail after all waves.
