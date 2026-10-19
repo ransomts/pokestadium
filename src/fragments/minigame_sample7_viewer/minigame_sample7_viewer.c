@@ -1,4 +1,4 @@
-#include "fragment12.h"
+#include "minigame_sample7_viewer.h"
 #include "src/12D80.h"
 #include "src/17300.h"
 #include "src/18140.h"

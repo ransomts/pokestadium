@@ -878,19 +878,19 @@
     start: 0x138F20
     vram: 0x86500000
     subsegments:
-    - [0x138F20, textbin,   fragments/11/fragment11_header]
-    - [0x138F40, c,      fragments/11/fragment11]
-    - [0x13B030, c,      fragments/11/fragment11_1]
-    - [0x13B8E0, c,      fragments/11/fragment11_2]
-    - [0x13BB40, .data,   fragments/11/fragment11]
-    - [0x13BE70, .data,   fragments/11/fragment11_1]
-    - [0x1420F0, .data,   fragments/11/fragment11_2]
-    - [0x142190, .rodata, fragments/11/fragment11]
-    - [0x1421D0, .rodata, fragments/11/fragment11_1]
-    - [0x1421E0, .rodata, fragments/11/fragment11_2]
+    - [0x138F20, textbin,   fragments/dynamo_game/dynamo_game_header]
+    - [0x138F40, c,      fragments/dynamo_game/dynamo_game]
+    - [0x13B030, c,      fragments/dynamo_game/dynamo_game_1]
+    - [0x13B8E0, c,      fragments/dynamo_game/dynamo_game_2]
+    - [0x13BB40, .data,   fragments/dynamo_game/dynamo_game]
+    - [0x13BE70, .data,   fragments/dynamo_game/dynamo_game_1]
+    - [0x1420F0, .data,   fragments/dynamo_game/dynamo_game_2]
+    - [0x142190, .rodata, fragments/dynamo_game/dynamo_game]
+    - [0x1421D0, .rodata, fragments/dynamo_game/dynamo_game_1]
+    - [0x1421E0, .rodata, fragments/dynamo_game/dynamo_game_2]
 
-    - {vram: 0x865092E0, type:  .bss, name: fragments/11/fragment11}
-    - {vram: 0x8650AD80, type:  .bss, name: fragments/11/fragment11_2}
+    - {vram: 0x865092E0, type:  .bss, name: fragments/dynamo_game/dynamo_game}
+    - {vram: 0x8650AD80, type:  .bss, name: fragments/dynamo_game/dynamo_game_2}
 
   - name: fragment11_relocs
     type: code
@@ -907,12 +907,12 @@
     start: 0x142B10
     vram: 0x86600000
     subsegments:
-    - [0x142B10, textbin,   fragments/12/fragment12_header]
-    - [0x142B30, c,      fragments/12/fragment12]
-    - [0x143360, .data,   fragments/12/fragment12]
-    - [0x143400, .rodata, fragments/12/fragment12]
+    - [0x142B10, textbin,   fragments/minigame_sample7_viewer/minigame_sample7_viewer_header]
+    - [0x142B30, c,      fragments/minigame_sample7_viewer/minigame_sample7_viewer]
+    - [0x143360, .data,   fragments/minigame_sample7_viewer/minigame_sample7_viewer]
+    - [0x143400, .rodata, fragments/minigame_sample7_viewer/minigame_sample7_viewer]
 
-    - {vram: 0x86600940, type:  .bss, name: fragments/12/fragment12}
+    - {vram: 0x86600940, type:  .bss, name: fragments/minigame_sample7_viewer/minigame_sample7_viewer}
 
   - name: fragment12_relocs
     type: code
@@ -928,12 +928,12 @@
     start: 0x143700
     vram: 0x86700000
     subsegments:
-    - [0x143700, textbin,   fragments/13/fragment13_header]
-    - [0x143720, c,      fragments/13/fragment13]
-    - [0x143F40, .data,   fragments/13/fragment13]
-    - [0x143FE0, .rodata, fragments/13/fragment13]
+    - [0x143700, textbin,   fragments/minigame_sample8_viewer/minigame_sample8_viewer_header]
+    - [0x143720, c,      fragments/minigame_sample8_viewer/minigame_sample8_viewer]
+    - [0x143F40, .data,   fragments/minigame_sample8_viewer/minigame_sample8_viewer]
+    - [0x143FE0, .rodata, fragments/minigame_sample8_viewer/minigame_sample8_viewer]
 
-    - {vram: 0x86700930, type:  .bss, name: fragments/13/fragment13}
+    - {vram: 0x86700930, type:  .bss, name: fragments/minigame_sample8_viewer/minigame_sample8_viewer}
 
   - name: fragment13_relocs
     type: code
@@ -950,20 +950,20 @@
     start: 0x1442E0
     vram: 0x86800000
     subsegments:
-    - [0x1442E0, textbin,   fragments/14/fragment14_header]
-    - [0x144300, c,      fragments/14/fragment14_144300]
-    - [0x1462A0, c,      fragments/14/fragment14_1462A0]
-    - [0x14A030, c,      fragments/14/fragment14_14A030]
-    - [0x14AFB0, .data,   fragments/14/fragment14_144300]
-    - [0x14B270, .data,   fragments/14/fragment14_1462A0]
-    - [0x14B420, .data,   fragments/14/fragment14_14A030]
-    - [0x14B660, .rodata, fragments/14/fragment14_144300]
-    - [0x14B6A0, .rodata, fragments/14/fragment14_1462A0]
-    - [0x14B790, .rodata, fragments/14/fragment14_14A030]
+    - [0x1442E0, textbin,   fragments/sushi_game/sushi_game_header]
+    - [0x144300, c,      fragments/sushi_game/sushi_game_144300]
+    - [0x1462A0, c,      fragments/sushi_game/sushi_game_1462A0]
+    - [0x14A030, c,      fragments/sushi_game/sushi_game_14A030]
+    - [0x14AFB0, .data,   fragments/sushi_game/sushi_game_144300]
+    - [0x14B270, .data,   fragments/sushi_game/sushi_game_1462A0]
+    - [0x14B420, .data,   fragments/sushi_game/sushi_game_14A030]
+    - [0x14B660, .rodata, fragments/sushi_game/sushi_game_144300]
+    - [0x14B6A0, .rodata, fragments/sushi_game/sushi_game_1462A0]
+    - [0x14B790, .rodata, fragments/sushi_game/sushi_game_14A030]
 
-    - {vram: 0x86807500, type:  .bss, name: fragments/14/fragment14_144300}
-    - {vram: 0x86807550, type:  .bss, name: fragments/14/fragment14_1462A0}
-    - {vram: 0x868084D0, type:  .bss, name: fragments/14/fragment14_14A030}
+    - {vram: 0x86807500, type:  .bss, name: fragments/sushi_game/sushi_game_144300}
+    - {vram: 0x86807550, type:  .bss, name: fragments/sushi_game/sushi_game_1462A0}
+    - {vram: 0x868084D0, type:  .bss, name: fragments/sushi_game/sushi_game_14A030}
 
   - name: fragment14_relocs
     type: code
