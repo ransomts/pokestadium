@@ -310,6 +310,19 @@ def pragma_count(func):
 
 # ---------------------------------------------------------------- pre-flight
 
+def sa_addr_claims():
+    """{address: set(names)} across the symbol_addrs files - to catch renames
+    whose append address is already claimed by a DIFFERENT symbol (the
+    gBssStart/text_bss_VRAM lesson: bss anchors live in symbol_addrs too)."""
+    claims = {}
+    for f in SA_FILES:
+        if not os.path.exists(f):
+            continue
+        for m in re.finditer(r"^(\S+)\s*=\s*(0x[0-9A-Fa-f]+)\s*;", file_text(f), re.M):
+            claims.setdefault(int(m.group(2), 16), set()).add(m.group(1))
+    return claims
+
+
 def preflight(rows, protected, named, allow_applied_skip=True):
     errors, warnings = [], []
     seen_old, seen_new = {}, {}
@@ -375,6 +388,13 @@ def preflight(rows, protected, named, allow_applied_skip=True):
                 info = dlabel_info(r.old)
                 if info is None:
                     errors.append(f"{tag}: {r.old} dlabel present but unparseable")
+                else:
+                    _f, addr, _sz = info
+                    others = sa_addr_claims().get(addr, set()) - {r.old}
+                    if others:
+                        errors.append(f"{tag}: {r.old} address 0x{addr:08X} already"
+                                      f" claimed by {sorted(others)[:3]} (segment anchor"
+                                      f" - renaming it collides in symbol_addrs)")
         elif len(defs) > 1:
             errors.append(f"{tag}: {r.old} defined in multiple symbol_addrs files")
         if sa_definitions(r.new):
