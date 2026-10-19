@@ -1323,16 +1323,16 @@
     start: 0x214900
     vram: 0x88800000
     subsegments:
-    - [0x214900, textbin,   fragments/28/fragment28_header]
-    - [0x214920, c,      fragments/28/fragment28_214920]
-    - [0x2190D0, c,      fragments/28/fragment28_2190D0]
-    - [0x21CA50, .data,   fragments/28/fragment28_214920]
-    - [0x234B50, .data,   fragments/28/fragment28_2190D0]
-    - [0x23AF80, .rodata, fragments/28/fragment28_214920]
-    - [0x23AFE0, .rodata, fragments/28/fragment28_2190D0]
+    - [0x214900, textbin,   fragments/pokedex/pokedex_header]
+    - [0x214920, c,      fragments/pokedex/pokedex_214920]
+    - [0x2190D0, c,      fragments/pokedex/pokedex_2190D0]
+    - [0x21CA50, .data,   fragments/pokedex/pokedex_214920]
+    - [0x234B50, .data,   fragments/pokedex/pokedex_2190D0]
+    - [0x23AF80, .rodata, fragments/pokedex/pokedex_214920]
+    - [0x23AFE0, .rodata, fragments/pokedex/pokedex_2190D0]
 
-    - {vram: 0x888267A0, type:  .bss, name: fragments/28/fragment28_214920}
-    - {vram: 0x888269C0, type:  .bss, name: fragments/28/fragment28_2190D0}
+    - {vram: 0x888267A0, type:  .bss, name: fragments/pokedex/pokedex_214920}
+    - {vram: 0x888269C0, type:  .bss, name: fragments/pokedex/pokedex_2190D0}
 
   - name: fragment28_relocs
     type: code
