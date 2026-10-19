@@ -222,7 +222,7 @@ void PokeIcon_LoadModelArchive(unk_func_80019600* arg0) {
     Fragment* sp24;
 
     sp28 = MainPool_InitState(arg0->pool, arg0->size);
-    sp24 = BinArchive_LoadFileToPool(sp28, gAssetManager.unk_A04.posX, arg0->posY, gAssetManager.unk_A04.RentalSlotAnimData_PosePhase, 0x28000);
+    sp24 = BinArchive_LoadFileToPool(sp28, gAssetManager.modelArchives.posX, arg0->posY, gAssetManager.modelArchives.RentalSlotAnimData_PosePhase, 0x28000);
 
     if (sp24 != NULL) {
         arg0->RentalSlotAnimData_PosePhase = Fragment_ProcessGeoLayout(sp28, sp24, arg0->unk_18);
@@ -246,7 +246,7 @@ void PokeIcon_LoadMultipleModels(unk_func_80019600* arg0) {
     var_s0 = arg0->unk_0C;
 
     while (*var_s0 != -1) {
-        temp_v0 = BinArchive_LoadFileToPool(temp_s3, gAssetManager.unk_A04.rotation, *var_s0, gAssetManager.unk_A04.RentalSlotAnimData_PosePhase, 0x28000);
+        temp_v0 = BinArchive_LoadFileToPool(temp_s3, gAssetManager.modelArchives.rotation, *var_s0, gAssetManager.modelArchives.RentalSlotAnimData_PosePhase, 0x28000);
         if (temp_v0 == NULL) {
             break;
         }
@@ -326,9 +326,9 @@ AssetManager* PokeIcon_AllocFramebuffers(u32 arg0) {
 }
 
 void PokeIcon_OpenModelArchives(void) {
-    gAssetManager.unk_A04.posX = BinArchive_Open(0x920000, NULL, 1, 1);
-    gAssetManager.unk_A04.rotation = BinArchive_Open(0x8CC000, NULL, 1, 1);
-    gAssetManager.unk_A04.RentalSlotAnimData_PosePhase = main_pool_alloc(0x28000, 1);
+    gAssetManager.modelArchives.posX = BinArchive_Open(0x920000, NULL, 1, 1);
+    gAssetManager.modelArchives.rotation = BinArchive_Open(0x8CC000, NULL, 1, 1);
+    gAssetManager.modelArchives.RentalSlotAnimData_PosePhase = main_pool_alloc(0x28000, 1);
 }
 
 s32 PokeIcon_RequestFrameLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2) {
@@ -472,7 +472,7 @@ ModelData* Model_LoadByArchiveIndex(s32 arg0) {
     ModelData* sp24 = NULL;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.posX, arg0 - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.modelArchives.posX, arg0 - 1);
     if (sp2C != NULL) {
         sp20 = MainPool_AllocState(main_pool_get_available(), 0);
         sp28.raw = 0;
@@ -489,7 +489,7 @@ ModelData* Model_LoadForPokemon(PokemonData* arg0) {
     ModelData* sp24 = NULL;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.posX, arg0->posX.posX - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.modelArchives.posX, arg0->posX.posX - 1);
     if (sp2C != NULL) {
         sp20 = MainPool_AllocState(main_pool_get_available(), 0);
         Model_ComputeSizeVariant(&sp28, arg0);
@@ -505,7 +505,7 @@ s32 Model_LoadWithScale(s32 arg0, s32 arg1) {
     s32 sp24 = 0;
     MemoryBlock* sp20;
 
-    sp2C = BinArchive_GetFile(gAssetManager.unk_A04.posX, arg0 - 1);
+    sp2C = BinArchive_GetFile(gAssetManager.modelArchives.posX, arg0 - 1);
     if (sp2C != NULL) {
         sp20 = MainPool_AllocState(main_pool_get_available(), 0);
         sp28.raw = 0;
@@ -522,7 +522,7 @@ arg1_func_80019420* BattleAnim_LoadResourceTable(s32 arg0) {
     MemoryBlock* sp1C;
 
     sp20 = NULL;
-    sp24 = BinArchive_GetFile(gAssetManager.unk_A04.rotation, arg0);
+    sp24 = BinArchive_GetFile(gAssetManager.modelArchives.rotation, arg0);
     if (sp24 != NULL) {
         sp1C = MainPool_AllocState(main_pool_get_available(), 0);
         sp20 = sp24->data;

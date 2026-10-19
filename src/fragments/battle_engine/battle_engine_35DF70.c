@@ -118,7 +118,7 @@ void Battle_Effect_Poison(void) {
             case 2:
                 if (gBattleScene.posX->unk_48 != 0x18) {
                     gBattleScene.posX->unk_48 = 0;
-                    sp1C = gBattleMessageQueues->unk_208;
+                    sp1C = gBattleMessageQueues->targetEffectMessage;
                 } else {
                     sp1C = gBattleMessageQueues->unk_308;
                 }
@@ -130,7 +130,7 @@ void Battle_Effect_Poison(void) {
 
             case 33:
                 gBattleScene.posX->unk_48 = 0;
-                sp1C = gBattleMessageQueues->unk_208;
+                sp1C = gBattleMessageQueues->targetEffectMessage;
                 if (Battle_Random() >= 0x67) {
                     return;
                 }
@@ -151,7 +151,7 @@ void Battle_Effect_Poison(void) {
         gBattleTarget->unk_15 |= 8;
         if (gBattleUser->unk_44.posX == 0x5C) {
             gBattleTarget->unk_4E |= 1;
-            gBattleTarget->unk_51 = 0;
+            gBattleTarget->toxicCounter = 0;
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
             Battle_QueueMessage(sp1C, -0x7C);
         } else {
@@ -183,10 +183,10 @@ void Battle_Effect_DrainHP(void) {
 
     if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 8) {
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-        Battle_QueueMessage(gBattleMessageQueues->unk_208, -0x79);
+        Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, -0x79);
     } else {
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-        Battle_QueueMessage(gBattleMessageQueues->unk_208, -0x78);
+        Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, -0x78);
     }
 }
 
@@ -237,7 +237,7 @@ void Battle_Effect_SecondaryStatusChance(void) {
                 gBattleTarget->unk_15 = 0x10;
                 ApplyBurnAttackCut(sActivePokemon[!gBattleScene.posX->unk_2C]);
                 Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-                Battle_QueueMessage(gBattleMessageQueues->unk_208, -0x76);
+                Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, -0x76);
                 break;
 
             case 5:
@@ -246,7 +246,7 @@ void Battle_Effect_SecondaryStatusChance(void) {
                     gBattleTarget->statusFlags2 &= ~0x20;
                     gBattleTarget->unk_15 = 0x20;
                     Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-                    Battle_QueueMessage(gBattleMessageQueues->unk_208, -0x75);
+                    Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, -0x75);
                 }
                 break;
 
@@ -255,7 +255,7 @@ void Battle_Effect_SecondaryStatusChance(void) {
                 gBattleTarget->unk_15 = 0x40;
                 ApplyParalysisSpeedCut(sActivePokemon[!gBattleScene.posX->unk_2C]);
                 Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-                Battle_QueueMessage(gBattleMessageQueues->unk_208, -0x74);
+                Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, -0x74);
                 break;
         }
     }
@@ -532,10 +532,10 @@ void Battle_Effect_LowerStat(void) {
 
             if (sp20 == 2) {
                 Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-                Battle_QueueMessage(gBattleMessageQueues->unk_208, sp24 + 0x9A);
+                Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, sp24 + 0x9A);
             } else {
                 Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-                Battle_QueueMessage(gBattleMessageQueues->unk_208, sp24 + 0xA0);
+                Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, sp24 + 0xA0);
             }
 
             if ((sp28 != 0) || (gBattleRuleFlags[0] != 1)) {
@@ -774,7 +774,7 @@ void Battle_Effect_ConfuseChance(void) {
         gBattleTarget->unk_4C |= 0x80;
         gBattleTarget->unk_50 = (Battle_Random() & 3) + 2;
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-        Battle_QueueMessage(gBattleMessageQueues->unk_208, -0x46);
+        Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, -0x46);
     }
 }
 

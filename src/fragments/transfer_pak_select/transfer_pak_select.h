@@ -9,14 +9,14 @@ typedef struct PortGraphNode {
     /* 0x004 */ s16 unk_004;
     /* 0x006 */ char unk006[0x2];
     /* 0x008 */ s16 unk_008;
-    /* 0x00A */ s16 unk_00A;
+    /* 0x00A */ s16 bobPhase;
     /* 0x00C */ s16 unk_00C;
     /* 0x00E */ s16 unk_00E;
     /* 0x010 */ s16 unk_010;
-    /* 0x014 */ f32 unk_014;
-    /* 0x018 */ f32 unk_018;
+    /* 0x014 */ f32 scaleX;
+    /* 0x018 */ f32 scaleY;
     /* 0x01C */ u8* unk_01C;
-    /* 0x020 */ f32 unk_020;
+    /* 0x020 */ f32 launchVelX;
     /* 0x020 */ f32 unk_024;
     /* 0x020 */ Fragment2_1GraphNode unk_028;
 } PortGraphNode; // size = 0x190

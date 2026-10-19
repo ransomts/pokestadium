@@ -51,7 +51,7 @@ typedef struct PokemonAudioInfo {
     /* 0x4E */ u8 unk_4E;
     /* 0x4F */ u8 multiTurnCounter;
     /* 0x50 */ u8 unk_50;
-    /* 0x51 */ u8 unk_51;
+    /* 0x51 */ u8 toxicCounter;
     /* 0x52 */ u8 unk_52;
     /* 0x53 */ u8 unk_53;
     /* 0x54 */ u16 unk_54;

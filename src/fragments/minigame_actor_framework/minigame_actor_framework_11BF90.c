@@ -15,8 +15,8 @@ void miniRankingActorsInit(void) {
 
     for (i = 0; i < 3; i++, ptr++) {
         ModelRenderer_AttachDisplayObject(&ptr->unk_000);
-        ptr->unk_168 = Model_LoadByArchiveIndex(0xAB);
-        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->RentalSlotAnimData_PosePhase->posX[0]);
+        ptr->modelData = Model_LoadByArchiveIndex(0xAB);
+        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->modelData->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&ptr->unk_000, 0);
         ptr->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
         miniActorAllToZero(ptr);

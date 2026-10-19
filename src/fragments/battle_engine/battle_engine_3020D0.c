@@ -41,8 +41,8 @@ void Battle_ClearAllMessageQueues(void) {
     gBattleMessageQueues->unk_448[0][1] = 0;
     gBattleMessageQueues->unk_448[1][0] = 0;
     gBattleMessageQueues->unk_448[1][1] = 0;
-    gBattleMessageQueues->unk_208[0] = 0;
-    gBattleMessageQueues->unk_208[1] = 0;
+    gBattleMessageQueues->targetEffectMessage[0] = 0;
+    gBattleMessageQueues->targetEffectMessage[1] = 0;
     gBattleMessageQueues->unk_308[0] = 0;
     gBattleMessageQueues->unk_308[1] = 0;
     gBattleMessageQueues->statChangeMessage[0] = 0;
@@ -427,7 +427,7 @@ void BattleBox_DrawMessage(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
                 arg0->unk_10 += 1;
             }
 
-            if (Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->targetEffectMessage[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
             break;
@@ -446,7 +446,7 @@ void BattleBox_DrawMessage(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
             }
 
             if ((arg0->unk_10 < 3) &&
-                (Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0)) {
+                (Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->targetEffectMessage[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0)) {
                 arg0->unk_10 += 1;
             }
             break;
@@ -460,17 +460,17 @@ void BattleBox_DrawMessage(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
                 arg0->unk_10 += 1;
             }
 
-            if (Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->unk_208[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->targetEffectMessage[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
             break;
 
         case 4:
-            Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->unk_248[1], arg1 + 4, arg2 + 3);
+            Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->poisonBurnMessage[1], arg1 + 4, arg2 + 3);
             break;
 
         case 5:
-            Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->unk_288[1], arg1 + 4, arg2 + 3);
+            Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->leechSeedMessage[1], arg1 + 4, arg2 + 3);
             break;
 
         case 6:
@@ -549,10 +549,10 @@ s32 BattleBox_SelectMessage(unk_D_843901A0_4C8* arg0) {
             arg0->unk_0C = gBattleScene.posX->unk_2C;
             BattleBox_PlayTextBlip(gBattleMessageQueues->unk_088);
             BattleBox_PlayTextBlip(gBattleMessageQueues->secondaryMessage);
-            BattleBox_PlayTextBlip(gBattleMessageQueues->unk_208);
+            BattleBox_PlayTextBlip(gBattleMessageQueues->targetEffectMessage);
             BattleBox_PlayTextBlip(gBattleMessageQueues->hitCountMessage);
             BattleBox_PlayTextBlip(gBattleMessageQueues->unk_308);
-            if ((gBattleMessageQueues->unk_088[1] == 0) && (gBattleMessageQueues->secondaryMessage[1] == 0) && (gBattleMessageQueues->unk_208[1] == 0) &&
+            if ((gBattleMessageQueues->unk_088[1] == 0) && (gBattleMessageQueues->secondaryMessage[1] == 0) && (gBattleMessageQueues->targetEffectMessage[1] == 0) &&
                 (gBattleMessageQueues->hitCountMessage[1] == 0) && (gBattleMessageQueues->unk_308[1] == 0)) {
                 arg0->posX = 0xFF;
                 return 1;
@@ -564,8 +564,8 @@ s32 BattleBox_SelectMessage(unk_D_843901A0_4C8* arg0) {
             arg0->unk_0C = gBattleScene.posX->unk_2C;
             BattleBox_PlayTextBlip(gBattleMessageQueues->unk_088);
             BattleBox_PlayTextBlip(gBattleMessageQueues->secondaryMessage);
-            BattleBox_PlayTextBlip(gBattleMessageQueues->unk_208);
-            if ((gBattleMessageQueues->unk_088[1] == 0) && (gBattleMessageQueues->secondaryMessage[1] == 0) && (gBattleMessageQueues->unk_208[1] == 0)) {
+            BattleBox_PlayTextBlip(gBattleMessageQueues->targetEffectMessage);
+            if ((gBattleMessageQueues->unk_088[1] == 0) && (gBattleMessageQueues->secondaryMessage[1] == 0) && (gBattleMessageQueues->targetEffectMessage[1] == 0)) {
                 arg0->posX = 0xFF;
                 return 1;
             }
@@ -601,8 +601,8 @@ s32 BattleBox_SelectMessage(unk_D_843901A0_4C8* arg0) {
         case 4:
         case 5:
         case 6:
-            BattleBox_PlayTextBlip(gBattleMessageQueues->unk_248);
-            BattleBox_PlayTextBlip(gBattleMessageQueues->unk_288);
+            BattleBox_PlayTextBlip(gBattleMessageQueues->poisonBurnMessage);
+            BattleBox_PlayTextBlip(gBattleMessageQueues->leechSeedMessage);
             BattleBox_PlayTextBlip(gBattleMessageQueues->recoilMessage);
             arg0->posX += 1;
             break;

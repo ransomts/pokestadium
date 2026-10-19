@@ -228,11 +228,11 @@ void Intro_LoadPokemonTextures(void) {
     u8* temp_a1;
     u8* sp1C;
 
-    temp_a1 = (u32)_70D3A0_ROM_START + (gStageRomOffsets[gCameraTarget->unk_174 - 1] & 0xFFFFFF);
+    temp_a1 = (u32)_70D3A0_ROM_START + (gStageRomOffsets[gCameraTarget->modelId - 1] & 0xFFFFFF);
     sp24 = (u32)_70D3A0_ROM_START +
-           ((((gCameraTarget->unk_174 ^ 0) * sizeof(unk_D_70B10)) - sizeof(unk_D_70B10) + (u32)D_70B10) & 0xFFFFFF);
+           ((((gCameraTarget->modelId ^ 0) * sizeof(unk_D_70B10)) - sizeof(unk_D_70B10) + (u32)D_70B10) & 0xFFFFFF);
     sp1C = (u32)_70D3A0_ROM_START +
-           (((gCameraTarget->unk_174 * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
+           (((gCameraTarget->modelId * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
 
     Dma_WriteChunks(gMonsterModelData, temp_a1, temp_a1 + 0xBC0, 0);
     Dma_WriteChunks(&gMonsterStageData, sp1C, sp1C + sizeof(unk_70D3A0), 0);
@@ -240,12 +240,12 @@ void Intro_LoadPokemonTextures(void) {
 }
 
 void Intro_LoadShowcaseModel(void) {
-    gCameraTarget->unk_174 = gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C].posX.posX;
+    gCameraTarget->modelId = gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C].posX.posX;
     ModelRenderer_AttachDisplayObject(&gCameraTarget->unk_004);
     PokeIcon_OpenModelArchives();
 
     gCameraTarget->unk_000 = Model_LoadForPokemon(&gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C]);
-    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
+    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->modelId, gCameraTarget->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gCameraTarget->unk_004, 0);
     gCameraTarget->unk_004.modelPhase = 0;
     Intro_LoadPokemonTextures();
@@ -281,11 +281,11 @@ void Intro_LoadStageModel(void) {
 
     main_pool_push_state('MONS');
 
-    gCameraTarget->unk_174 = gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].posX;
+    gCameraTarget->modelId = gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].posX;
     ModelRenderer_AttachDisplayObject(&gCameraTarget->unk_004);
     PokeIcon_OpenModelArchives();
-    gCameraTarget->unk_000 = Model_LoadByArchiveIndex(gCameraTarget->unk_174);
-    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
+    gCameraTarget->unk_000 = Model_LoadByArchiveIndex(gCameraTarget->modelId);
+    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->modelId, gCameraTarget->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gCameraTarget->unk_004, 0);
     Vec3f_SetComponentsDuplicate(&gCameraTarget->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
 }
@@ -489,7 +489,7 @@ void Intro_ConfigureTextPanels(void) {
 void Intro_StartFirstShowcase(void) {
     gCameraTarget->unk_16C = 0;
     gCameraTarget->unk_17C = 0;
-    gCameraTarget->unk_174 = 0;
+    gCameraTarget->modelId = 0;
 
     main_pool_push_state('MONS');
 
@@ -505,7 +505,7 @@ void Intro_BeginOrbitCamera(void) {
 void Intro_StartFinalStageModel(void) {
     gCameraTarget->unk_16C = 6;
     gCameraTarget->unk_17C = 6;
-    gCameraTarget->unk_174 = 0;
+    gCameraTarget->modelId = 0;
 
     main_pool_push_state('MONS');
 

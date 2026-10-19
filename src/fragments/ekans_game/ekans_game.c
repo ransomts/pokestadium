@@ -3462,7 +3462,7 @@ void EkansGame_LoadAssets(void) {
     temp_s1 = Model_LoadByArchiveIndex(0x9F);
     for (i = 0; i < 4; i++) {
         miniEkanses[i].unk_23C = 0x9F;
-        miniEkanses[i].unk_168 = temp_s1;
+        miniEkanses[i].modelData = temp_s1;
         Model_InitDisplayObject(&miniEkanses[i].unk_000, 0, miniEkanses[i].unk_23C, temp_s1->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&miniEkanses[i].unk_000, 0);
     }
@@ -3470,7 +3470,7 @@ void EkansGame_LoadAssets(void) {
     temp_s1 = Model_LoadByArchiveIndex(0xA4);
     for (i = 0; i < 9; i++) {
         miniDigletts[i].unk_23C = 0xA4;
-        miniDigletts[i].unk_168 = temp_s1;
+        miniDigletts[i].modelData = temp_s1;
         Model_InitDisplayObject(&miniDigletts[i].unk_000, 0, miniDigletts[i].unk_23C, temp_s1->RentalSlotAnimData_PosePhase->posX[0]);
         miniDigletts[i].unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
@@ -3478,7 +3478,7 @@ void EkansGame_LoadAssets(void) {
     temp_s1 = Model_LoadByArchiveIndex(0xA3);
     for (i = 0; i < 9; i++) {
         miniDiglettHoles[i].unk_23C = 0xA3;
-        miniDiglettHoles[i].unk_168 = temp_s1;
+        miniDiglettHoles[i].modelData = temp_s1;
         Model_InitDisplayObject(&miniDiglettHoles[i].unk_000, 0, miniDiglettHoles[i].unk_23C, temp_s1->RentalSlotAnimData_PosePhase->posX[0]);
     }
 }

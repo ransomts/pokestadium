@@ -181,7 +181,7 @@ void DisplayWorker_ThreadMain(UNUSED void* arg) {
         profiler_log_thread5_time(UNK_EVENT_2);
         DisplayWorker_SetBufferConfig(sp4C);
         DisplayWorker_ProcessFrame();
-        osSendMesg(&gIntroTaskState.unk_A04, (void*)'DONE', 0);
+        osSendMesg(&gIntroTaskState.doneQueue, (void*)'DONE', 0);
     }
 }
 
@@ -202,7 +202,7 @@ void DisplayWorker_Initialize(void) {
     osCreateThread(&gIntroTaskState.thread, 5, DisplayWorker_ThreadMain, NULL, &gIntroTaskState.framebufferImage, 0x28);
     osStartThread(&gIntroTaskState.thread);
     osCreateMesgQueue(&gIntroTaskState.unk_9EC, &gIntroTaskState.unk_9E4, 1);
-    osCreateMesgQueue(&gIntroTaskState.unk_A04, &gIntroTaskState.unk_9E8, 1);
+    osCreateMesgQueue(&gIntroTaskState.doneQueue, &gIntroTaskState.doneMessage, 1);
     gIntroTaskState.unk_A88 = 0;
     gIntroTaskState.waitingForMessage = 0;
     gIntroTaskState.framebufferImage = GfxImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
@@ -240,7 +240,7 @@ s32 Display_IsCurrentFramebuffer(void) {
 }
 
 void Display_WaitForCompletion(void) {
-    osRecvMesg(&gIntroTaskState.unk_A04, NULL, 1);
+    osRecvMesg(&gIntroTaskState.doneQueue, NULL, 1);
 }
 
 void Display_QueueFramebufferRequest(void* arg0) {

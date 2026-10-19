@@ -134,7 +134,7 @@ s32 TransferPak_GetPresentationMode(void) {
 void TransferPak_LaunchSelectedPortAnim(void) {
     if (gSelectedEntryIndex >= 0) {
         gEntryGraphNodes[gSelectedEntryIndex].unk_000 = 1;
-        gEntryGraphNodes[gSelectedEntryIndex].unk_020 = -gEntryGraphNodes[gSelectedEntryIndex].unk_028.unk_024.x / 20.0f;
+        gEntryGraphNodes[gSelectedEntryIndex].launchVelX = -gEntryGraphNodes[gSelectedEntryIndex].unk_028.unk_024.x / 20.0f;
         gEntryGraphNodes[gSelectedEntryIndex].unk_024 = 36.0f;
         gIsEntrySelectionActive = 0;
     }
@@ -625,7 +625,7 @@ void TransferPak_AnimatePortModels(void) {
             case 0:
                 if (i == gSelectedEntryIndex) {
                     var_fv0 = 1.5f;
-                    var_s0->unk_00A = gMenuAnimTimer + 0x4000;
+                    var_s0->bobPhase = gMenuAnimTimer + 0x4000;
                     var_a1 = 0;
                     var_fv1 = 0.06f;
                     var_s1 = 0x3000;
@@ -636,29 +636,29 @@ void TransferPak_AnimatePortModels(void) {
                     var_s1 = 0x2000;
                 }
 
-                var_s0->unk_004 = var_s0->unk_00E - (SINS(var_s0->unk_00A) * (6.0f * var_fv0));
-                var_s0->unk_010 = SINS(var_s0->unk_00A) * (1536.0f * var_fv0);
-                var_s0->unk_014 = (SINS(var_s0->unk_00C) * var_fv1) + 1.0f;
-                var_s0->unk_018 = (COSS(var_s0->unk_00C) * var_fv1) + 1.0f;
+                var_s0->unk_004 = var_s0->unk_00E - (SINS(var_s0->bobPhase) * (6.0f * var_fv0));
+                var_s0->unk_010 = SINS(var_s0->bobPhase) * (1536.0f * var_fv0);
+                var_s0->scaleX = (SINS(var_s0->unk_00C) * var_fv1) + 1.0f;
+                var_s0->scaleY = (COSS(var_s0->unk_00C) * var_fv1) + 1.0f;
 
-                var_s0->unk_00A += var_a1;
+                var_s0->bobPhase += var_a1;
                 var_s0->unk_00C += var_s1 + ((MathUtil_Random16() & 0xF) * 0x10);
 
                 var_s0->unk_028.unk_024.z = -579.0f;
                 var_s0->unk_028.unk_01E.z = var_s0->unk_010;
-                var_s0->unk_028.unk_030.x = var_s0->unk_014;
-                var_s0->unk_028.unk_030.y = var_s0->unk_018;
+                var_s0->unk_028.unk_030.x = var_s0->scaleX;
+                var_s0->unk_028.unk_030.y = var_s0->scaleY;
                 break;
 
             case 1:
                 var_v0 = &var_s0->unk_028;
 
-                var_v0->unk_024.x += var_s0->unk_020;
-                if (var_s0->unk_020 < 0.0f) {
+                var_v0->unk_024.x += var_s0->launchVelX;
+                if (var_s0->launchVelX < 0.0f) {
                     if (var_v0->unk_024.x < 0.0f) {
                         var_v0->unk_024.x = 0.0f;
                     }
-                } else if ((var_s0->unk_020 > 0.0f) && (var_v0->unk_024.x > 0.0f)) {
+                } else if ((var_s0->launchVelX > 0.0f) && (var_v0->unk_024.x > 0.0f)) {
                     var_v0->unk_024.x = 0.0f;
                 }
 

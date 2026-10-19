@@ -1561,7 +1561,7 @@ void MiniGameSelect_UpdateWidgets(void) {
     UIElementNode* temp_v0;
 
     for (i = 0; i < 14; i++, var_s0++) {
-        temp_v0 = &var_s0->unk_03C;
+        temp_v0 = &var_s0->displayObject;
 
         if (var_s0->unk_000 == 0) {
             continue;
@@ -1610,31 +1610,31 @@ void MiniGameSelect_UpdateWidgets(void) {
                     };
 
                     var_s0->unk_002 = 6;
-                    var_s0->unk_018 = 5.0f;
+                    var_s0->launchAccel = 5.0f;
                     var_s0->unk_01C = 10.0f;
-                    var_s0->unk_020 = sp58[var_s0->unk_004];
+                    var_s0->launchDir = sp58[var_s0->unk_004];
 
-                    temp_fa1 = SQ(var_s0->unk_020.x) + SQ(var_s0->unk_020.y) + SQ(var_s0->unk_020.z);
+                    temp_fa1 = SQ(var_s0->launchDir.x) + SQ(var_s0->launchDir.y) + SQ(var_s0->launchDir.z);
                     if (temp_fa1 > 0.001f) {
                         temp_fa1 = 1.0f / sqrtf(temp_fa1);
-                        var_s0->unk_020.x *= temp_fa1;
-                        var_s0->unk_020.y *= temp_fa1;
-                        var_s0->unk_020.z *= temp_fa1;
+                        var_s0->launchDir.x *= temp_fa1;
+                        var_s0->launchDir.y *= temp_fa1;
+                        var_s0->launchDir.z *= temp_fa1;
                     }
                 }
                 break;
 
             case 6:
                 MiniGameSelect_StaggerWidgetFade(var_s0);
-                var_s0->unk_018 -= 0.5f;
-                if (var_s0->unk_018 < 0.0f) {
-                    var_s0->unk_018 = 0.0f;
+                var_s0->launchAccel -= 0.5f;
+                if (var_s0->launchAccel < 0.0f) {
+                    var_s0->launchAccel = 0.0f;
                 }
 
-                var_s0->unk_01C += var_s0->unk_018;
-                temp_v0->unk_24.x += (var_s0->unk_020.x * var_s0->unk_01C);
-                temp_v0->unk_24.y += (var_s0->unk_020.y * var_s0->unk_01C);
-                temp_v0->unk_24.z += (var_s0->unk_020.z * var_s0->unk_01C);
+                var_s0->unk_01C += var_s0->launchAccel;
+                temp_v0->unk_24.x += (var_s0->launchDir.x * var_s0->unk_01C);
+                temp_v0->unk_24.y += (var_s0->launchDir.y * var_s0->unk_01C);
+                temp_v0->unk_24.z += (var_s0->launchDir.z * var_s0->unk_01C);
 
                 if ((var_s0->unk_004 & 0xFFFFFFFF) != 4) {
                     if (var_s0->unk_004 & 1) {

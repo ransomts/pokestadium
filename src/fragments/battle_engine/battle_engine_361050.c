@@ -2036,7 +2036,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
             }
 
             if (var_s0->unk_4E & 1) {
-                var_v1 *= var_s0->unk_51;
+                var_v1 *= var_s0->toxicCounter;
             }
             var_s2->unk_16 += var_v1;
         }
@@ -2049,7 +2049,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
             }
 
             if (var_s3->unk_4E & 1) {
-                var_v0 *= var_s3->unk_51;
+                var_v0 *= var_s3->toxicCounter;
             }
             var_s2->unk_0E += var_v0;
         }
@@ -2062,7 +2062,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
             }
 
             if (var_s0->unk_4E & 1) {
-                var_v1 *= var_s0->unk_51 + 1;
+                var_v1 *= var_s0->toxicCounter + 1;
             }
 
             var_s2->unk_16 += var_v1;
@@ -2079,7 +2079,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
             }
 
             if (var_s3->unk_4E & 1) {
-                var_v0 *= var_s3->unk_51 + 1;
+                var_v0 *= var_s3->toxicCounter + 1;
             }
 
             var_s2->unk_0E += var_v0;
@@ -4881,7 +4881,7 @@ u8 BattleAI_ScoreAttackVsSwitch(BattleAI_MonData* arg0, BattleAI_MonData* arg1, 
                 }
 
                 if (sp40->unk_4E & 1) {
-                    sp6C += sp40->unk_51 * 0x4D;
+                    sp6C += sp40->toxicCounter * 0x4D;
                     if (sp40->statusFlags2 & 0x80) {
                         sp6C *= 2;
                     }
@@ -5359,7 +5359,7 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
         temp_s0->unk_4E = temp_s2->unk_4E;
         temp_s0->multiTurnCounter = temp_s2->multiTurnCounter;
         temp_s0->unk_50 = temp_s2->unk_50;
-        temp_s0->unk_51 = temp_s2->unk_51;
+        temp_s0->toxicCounter = temp_s2->toxicCounter;
         temp_s0->unk_52 = temp_s2->unk_52;
         temp_s0->unk_54 = temp_s2->unk_54;
         temp_s0->disabledMoveId = temp_s2->disabledMoveId;

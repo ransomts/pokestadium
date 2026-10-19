@@ -114,18 +114,18 @@ void DynamoGame_AssignTeams(void) {
     for (i = 0; i < 4; i++) {
         switch (gMenuOptionFlags[i]) {
             case 1:
-                gHealthBarData[i].unk_004 = 1;
+                gHealthBarData[i].team = 1;
                 break;
 
             case 2:
-                gHealthBarData[i].unk_004 = 0;
+                gHealthBarData[i].team = 0;
                 break;
 
             default:
                 if (MiniGame_RandomRange(2) != 0) {
-                    gHealthBarData[i].unk_004 = 0;
+                    gHealthBarData[i].team = 0;
                 } else {
-                    gHealthBarData[i].unk_004 = 1;
+                    gHealthBarData[i].team = 1;
                 }
                 break;
         }
@@ -167,9 +167,9 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                     switch (gCurrentHealthBar->unk_008) {
                         case 6:
                             var_s1 = 1;
-                            if (gCurrentHealthBar->unk_004 == 0) {
+                            if (gCurrentHealthBar->team == 0) {
                                 gHealthBarAnimFlagA = 1;
-                            } else if (gCurrentHealthBar->unk_004 == 1) {
+                            } else if (gCurrentHealthBar->team == 1) {
                                 gHealthBarAnimFlagB = 1;
                             }
                             break;
@@ -205,7 +205,7 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                 }
             } else {
                 if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
-                    temp_ft2 = ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->chargeTarget);
+                    temp_ft2 = ROUND_MAX((gCurrentHealthBar->charge * 100.0f) / gCurrentHealthBar->chargeTarget);
 
                     if (temp_ft2 >= 0x4B) {
                         var_s0_2 = 4;
@@ -245,10 +245,10 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                         ModelAnim_SetEventTrack(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_008);
                     }
                 } else if (gCurrentHealthBar->unk_008 == 6) {
-                    if (gCurrentHealthBar->unk_004 == 0) {
+                    if (gCurrentHealthBar->team == 0) {
                         ModelAnim_SetFrame(&gCurrentHealthBar->unk_014, 0x1B);
                         ModelAnim_SetEventFrame(&gCurrentHealthBar->unk_014, 0x1B);
-                    } else if (gCurrentHealthBar->unk_004 == 1) {
+                    } else if (gCurrentHealthBar->team == 1) {
                         ModelAnim_SetFrame(&gCurrentHealthBar->unk_014, 0x4B);
                         ModelAnim_SetEventFrame(&gCurrentHealthBar->unk_014, 0x4B);
                     }
@@ -286,9 +286,9 @@ void DynamoGame_SyncChainLinkAnimations(void) {
             case 4:
                 if (gHealthBarData[i - 1].unk_00C != 1) {
                     var_a0 = 1;
-                    if (gHealthBarData[i - 1].unk_004 == 0) {
+                    if (gHealthBarData[i - 1].team == 0) {
                         gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.anchor4Position;
-                    } else if (gHealthBarData[i - 1].unk_004 == 1) {
+                    } else if (gHealthBarData[i - 1].team == 1) {
                         gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.unk_0DC;
                     }
                 }
@@ -328,15 +328,15 @@ void DynamoGame_DetermineWinners(void) {
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
 
-        if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->chargeTarget) && (var_s4 < gCurrentHealthBar->unk_010)) {
-            var_s4 = gCurrentHealthBar->unk_010;
+        if ((gCurrentHealthBar->charge >= gCurrentHealthBar->chargeTarget) && (var_s4 < gCurrentHealthBar->charge)) {
+            var_s4 = gCurrentHealthBar->charge;
         }
     }
 
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
 
-        if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->chargeTarget) && (var_s4 == gCurrentHealthBar->unk_010)) {
+        if ((gCurrentHealthBar->charge >= gCurrentHealthBar->chargeTarget) && (var_s4 == gCurrentHealthBar->charge)) {
             gCurrentHealthBar->unk_00C = 1;
             Widget_PauseMenuRecordWin(i);
 
@@ -351,11 +351,11 @@ void DynamoGame_DetermineWinners(void) {
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
 
-        if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->chargeTarget) {
+        if (gCurrentHealthBar->charge >= gCurrentHealthBar->chargeTarget) {
             if (gCurrentHealthBar->unk_00C == 1) {
-                gCurrentHealthBar->unk_010 = gCurrentHealthBar->chargeTarget + 1;
+                gCurrentHealthBar->charge = gCurrentHealthBar->chargeTarget + 1;
             } else {
-                gCurrentHealthBar->unk_010 = gCurrentHealthBar->chargeTarget;
+                gCurrentHealthBar->charge = gCurrentHealthBar->chargeTarget;
             }
         }
     }
@@ -470,7 +470,7 @@ void DynamoGame_DrawTutorialScreen(s32 arg0) {
         for (i = 0; i < 4; i++) {
             gCurrentHealthBar = &gHealthBarData[i];
 
-            Widget_DrawProgressBar((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->unk_010, gCurrentHealthBar->chargeTarget + 1);
+            Widget_DrawProgressBar((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->charge, gCurrentHealthBar->chargeTarget + 1);
         }
     }
 
@@ -552,10 +552,10 @@ void DynamoGame_DrawFrame(s32 arg0) {
                     for (i = 0; i < 4; i++) {
                         gCurrentHealthBar = &gHealthBarData[i];
 
-                        gCurrentHealthBar->unk_010 += gCurrentHealthBar->chargeDelta;
-                        if (gCurrentHealthBar->unk_010 < 0) {
-                            gCurrentHealthBar->unk_010 = 0;
-                        } else if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->chargeTarget) {
+                        gCurrentHealthBar->charge += gCurrentHealthBar->chargeDelta;
+                        if (gCurrentHealthBar->charge < 0) {
+                            gCurrentHealthBar->charge = 0;
+                        } else if (gCurrentHealthBar->charge >= gCurrentHealthBar->chargeTarget) {
                             gDrowzeeGameIsOver = 1;
                         }
                         gCurrentHealthBar->lastChargeDelta = gCurrentHealthBar->chargeDelta;
@@ -748,7 +748,7 @@ void DynamoGame_LoadAssets(void) {
         }
 
         for (j = 0; j < 4; j++) {
-            if (i == gHealthBarData[j].unk_004) {
+            if (i == gHealthBarData[j].team) {
                 gCurrentHealthBar = &gHealthBarData[j];
                 gCurrentHealthBarNode = &gCurrentHealthBar->unk_014;
 
@@ -786,7 +786,7 @@ void DynamoGame_LoadAssets(void) {
 
                 DynamoGame_ComputeAIChargeDelta(gCurrentHealthBar, 0);
 
-                gCurrentHealthBar->unk_010 = 0;
+                gCurrentHealthBar->charge = 0;
                 gCurrentHealthBar->chargeTarget = 0x28;
             }
         }

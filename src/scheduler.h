@@ -54,9 +54,9 @@ typedef struct UnkStruct80083CA0_2 {
     /* 0x1E0 */ u8 unk1E0[0x800];
     /* 0x9E0 */ struct FramebufferImage* framebufferImage;
     /* 0x9E4 */ OSMesg unk_9E4;
-    /* 0x9E8 */ OSMesg unk_9E8;
+    /* 0x9E8 */ OSMesg doneMessage;
     /* 0x9EC */ OSMesgQueue unk_9EC;
-    /* 0xA04 */ OSMesgQueue unk_A04;
+    /* 0xA04 */ OSMesgQueue doneQueue;
     /* 0xA1C */ char unkA1C[0x4];
     /* 0xA20 */ UnkStruct80001380 unk_A20;
     /* 0xA88 */ u16 unk_A88;

@@ -25,7 +25,7 @@ void Intro_ComputeFollowPoint(unk_D_86B0FA78* arg0, Vec3f* arg1) {
     f32 sp24 = 0.0f;
     CameraModeFlag sp20 = gCameraModeFlag;
 
-    if (Util_ByteInArray(gCameraTarget->unk_174, sp20.posX, 1) != 0) {
+    if (Util_ByteInArray(gCameraTarget->modelId, sp20.posX, 1) != 0) {
         sp24 = gMonsterStageData.rotation / 1.5f;
     }
 

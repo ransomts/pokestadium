@@ -525,11 +525,11 @@ void Battle_ApplyDamage(void) {
     if (gBattleTarget->statusFlags2 & 0x10) {
         if (gBattleScene.posX->unk_48 == 0x14) {
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
-            Battle_QueueMessage(gBattleMessageQueues->unk_208, 0x2B);
+            Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, 0x2B);
             if (gBattleTarget->substituteHp < gBattleDamage) {
                 gBattleTarget->statusFlags2 &= 0xFFEF;
                 Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
-                Battle_QueueMessage(gBattleMessageQueues->unk_208, 0x2C);
+                Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, 0x2C);
 
                 if ((gBattleRuleFlags[0] == 1) && (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x1D)) {
                     Battle_ExecuteMoveEffect();
@@ -546,11 +546,11 @@ void Battle_ApplyDamage(void) {
             }
         } else {
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-            Battle_QueueMessage(gBattleMessageQueues->unk_208, 0x2B);
+            Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, 0x2B);
             if (gBattleTarget->substituteHp < gBattleDamage) {
                 gBattleTarget->statusFlags2 &= 0xFFEF;
                 Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-                Battle_QueueMessage(gBattleMessageQueues->unk_208, 0x2C);
+                Battle_QueueMessage(gBattleMessageQueues->targetEffectMessage, 0x2C);
 
                 if ((gBattleRuleFlags[0] == 1) && (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x1D)) {
                     Battle_ExecuteMoveEffect();
@@ -1002,8 +1002,8 @@ void Battle_ApplyPoisonOrBurnDamage(void) {
     }
 
     if (gBattleUser->unk_4E & 1) {
-        gBattleUser->unk_51++;
-        var_a0 *= gBattleUser->unk_51;
+        gBattleUser->toxicCounter++;
+        var_a0 *= gBattleUser->toxicCounter;
     }
 
     if (gBattleUser->unk_0E < var_a0) {
@@ -1032,8 +1032,8 @@ void Battle_ApplyLeechSeedDamage(void) {
     }
 
     if (gBattleUser->unk_4E & 1) {
-        gBattleUser->unk_51++;
-        var_a0 *= gBattleUser->unk_51;
+        gBattleUser->toxicCounter++;
+        var_a0 *= gBattleUser->toxicCounter;
     }
 
     if (gBattleUser->unk_10 < var_a0) {
@@ -1059,10 +1059,10 @@ s32 Battle_ApplyResidualEffects(void) {
     if (gBattleUser->unk_15 & 0x18) {
         if (gBattleUser->unk_15 & 8) {
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
-            Battle_QueueMessage(gBattleMessageQueues->unk_248, 0);
+            Battle_QueueMessage(gBattleMessageQueues->poisonBurnMessage, 0);
         } else {
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
-            Battle_QueueMessage(gBattleMessageQueues->unk_248, 1);
+            Battle_QueueMessage(gBattleMessageQueues->poisonBurnMessage, 1);
         }
         Battle_ApplyPoisonOrBurnDamage();
         gBattleTarget->unk_0E = gBattleTarget->unk_0C;
@@ -1071,7 +1071,7 @@ s32 Battle_ApplyResidualEffects(void) {
     if (gBattleUser->statusFlags2 & 0x80) {
         Battle_ApplyLeechSeedDamage();
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
-        Battle_QueueMessage(gBattleMessageQueues->unk_288, 2);
+        Battle_QueueMessage(gBattleMessageQueues->leechSeedMessage, 2);
     }
 
     if (gBattleUser->unk_0C != 0) {

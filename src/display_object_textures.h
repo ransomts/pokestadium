@@ -45,7 +45,7 @@ typedef struct unk_D_800ABE10 {
     /* 0x9D0 */ OSMesgQueue requestQueue;
     /* 0x9E8 */ OSMesg unk_9E8;
     /* 0x9EC */ OSMesgQueue unk_9EC;
-    /* 0xA04 */ unk_D_800ABE10_A04 unk_A04;
+    /* 0xA04 */ unk_D_800ABE10_A04 modelArchives;
 } unk_D_800ABE10; // size >= 0xA18
 
 extern unk_D_800ABE10 gAssetManager;

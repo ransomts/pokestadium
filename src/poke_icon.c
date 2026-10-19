@@ -20,7 +20,7 @@ s32 PokeIcon_CaptureGeoNode(s32, GraphNode*);
 
 s32 PokeIcon_CaptureGeoNode(s32 arg0, GraphNode* arg1) {
     if (arg0 == 0) {
-        gAssetManager.unk_A04.unk_0C = arg1;
+        gAssetManager.modelArchives.unk_0C = arg1;
     }
     return 0;
 }
@@ -37,7 +37,7 @@ void PokeIcon_InitRenderScene(SpriteDisplay* arg0, s16 arg1, s16 arg2) {
     MemoryBlock* sp20 = MainPool_AllocState(main_pool_get_available(), 0);
 
     arg0->unk_0C = process_geo_layout(sp20, sSpriteGeoLayoutCommands);
-    arg0->unk_10 = gAssetManager.unk_A04.unk_0C;
+    arg0->unk_10 = gAssetManager.modelArchives.unk_0C;
     MainPool_FinalizeAllocation(sp20);
     sp24 = arg0->unk_0C->unk_0C;
     GeoCamera_SetViewport(sp24, 0, 0, arg1, arg2);
@@ -436,7 +436,7 @@ s32 PokeIcon_AreSlotsIdle(SpriteDisplay* arg0) {
 }
 
 void PokeIcon_OpenModelArchive(void) {
-    gAssetManager.unk_A04.unk_10 = BinArchive_Open(0x820000, NULL, 1, 1);
+    gAssetManager.modelArchives.unk_10 = BinArchive_Open(0x820000, NULL, 1, 1);
 }
 
 void PokeIcon_LoadModelTexture(u16* arg0, s32 arg1) {
@@ -444,7 +444,7 @@ void PokeIcon_LoadModelTexture(u16* arg0, s32 arg1) {
     u8* temp_a1;
 
     if ((arg1 > 0) && (arg1 < 0x99)) {
-        temp_v1 = gAssetManager.unk_A04.unk_10;
+        temp_v1 = gAssetManager.modelArchives.unk_10;
         temp_a1 = temp_v1->rotation + temp_v1[arg1].raw;
         Dma_WriteChunks(arg0, temp_a1, temp_v1[arg1].rotation + temp_a1, 0);
     }

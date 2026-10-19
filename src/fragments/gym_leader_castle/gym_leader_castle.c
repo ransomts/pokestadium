@@ -299,7 +299,7 @@ void Glc_DrawRoomMarkers(void) {
                 gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, 255);
             }
 
-            Glc_DrawScaledTextureIa8(var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E * 2, var_s0->unk_10 * 2, var_s0->unk_1C, 2.0f);
+            Glc_DrawScaledTextureIa8(var_s0->markerX, var_s0->markerY, var_s0->markerWidth * 2, var_s0->markerHeight * 2, var_s0->markerTexture, 2.0f);
         }
     }
 
@@ -469,10 +469,10 @@ void Glc_UpdateMapCursor(void) {
     RoomDef* temp_a1 = &gRoomDefinitions[gCurrentRoomIndex];
 
     if (gRoomTransitionTimer == 0) {
-        sp1E = temp_a1->unk_06 - 0x20;
+        sp1E = temp_a1->cursorX - 0x20;
         sp1C = temp_a1->RentalSlotAnimData_PosePhase - 0xD;
     } else {
-        sp1E = ((((gRoomDefinitions[gPrevRoomIndex].unk_06 - temp_a1->unk_06) * gRoomTransitionTimer) / 4) + temp_a1->unk_06) - 0x20;
+        sp1E = ((((gRoomDefinitions[gPrevRoomIndex].cursorX - temp_a1->cursorX) * gRoomTransitionTimer) / 4) + temp_a1->cursorX) - 0x20;
         sp1C = ((((gRoomDefinitions[gPrevRoomIndex].RentalSlotAnimData_PosePhase - temp_a1->RentalSlotAnimData_PosePhase) * gRoomTransitionTimer) / 4) + temp_a1->RentalSlotAnimData_PosePhase) - 0xD;
 
         gRoomTransitionTimer--;
@@ -561,14 +561,14 @@ s32 Glc_SelectRoom(void) {
                         } else {
                             var_s3 = 1;
                         }
-                    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP) && (temp_s0->unk_14 != 0)) {
-                        var_s1 = temp_s0->unk_14 - 1;
-                    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN) && (temp_s0->unk_15 != 0)) {
-                        var_s1 = temp_s0->unk_15 - 1;
-                    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT) && (temp_s0->unk_16 != 0)) {
-                        var_s1 = temp_s0->unk_16 - 1;
-                    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT) && (temp_s0->unk_17 != 0)) {
-                        var_s1 = temp_s0->unk_17 - 1;
+                    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP) && (temp_s0->roomUp != 0)) {
+                        var_s1 = temp_s0->roomUp - 1;
+                    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN) && (temp_s0->roomDown != 0)) {
+                        var_s1 = temp_s0->roomDown - 1;
+                    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT) && (temp_s0->roomLeft != 0)) {
+                        var_s1 = temp_s0->roomLeft - 1;
+                    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT) && (temp_s0->roomRight != 0)) {
+                        var_s1 = temp_s0->roomRight - 1;
                     }
 
                     if ((var_s1 >= 0) && (gRoomDefinitions[var_s1].TrainerSlotSaveData_GamePort != 0)) {

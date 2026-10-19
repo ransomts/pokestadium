@@ -60,14 +60,14 @@ typedef struct UIElement {
     /* 0x00A */ s16 unk_00A;
     /* 0x00C */ s16 unk_00C;
     /* 0x00E */ s16 fadeChannels[4];
-    /* 0x018 */ f32 unk_018;
+    /* 0x018 */ f32 launchAccel;
     /* 0x01C */ f32 unk_01C;
-    /* 0x020 */ Vec3f unk_020;
+    /* 0x020 */ Vec3f launchDir;
     /* 0x02C */ UIWidget* returnWidget;
     /* 0x030 */ UIWidget* unk_030;
     /* 0x034 */ s32 unk_034;
     /* 0x034 */ s32 unk_038;
-    /* 0x03C */ UIElementNode unk_03C;
+    /* 0x03C */ UIElementNode displayObject;
     /* 0x078 */ char unk078[0x12C];
 } UIElement; // size = 0x1A4
 

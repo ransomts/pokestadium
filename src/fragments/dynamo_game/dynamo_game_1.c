@@ -1155,16 +1155,16 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
         if ((gDrowzeeGameIsOver == 0) || ((gCurrentHealthBar->unk_00C == 1) && (gCurrentHealthBar->unk_008 != 6))) {
             if (gDrowzeeGameIsOver == 0) {
                 gCurrentHealthBar->unk_17C->unk_28 =
-                    (s32)ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->chargeTarget) / 250.0f;
+                    (s32)ROUND_MAX((gCurrentHealthBar->charge * 100.0f) / gCurrentHealthBar->chargeTarget) / 250.0f;
 
-                if (gCurrentHealthBar->unk_004 == 0) {
+                if (gCurrentHealthBar->team == 0) {
                     gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.anchor4Position;
-                } else if (gCurrentHealthBar->unk_004 == 1) {
+                } else if (gCurrentHealthBar->team == 1) {
                     gCurrentHealthBar->unk_17C->unk_28 *= 1.2f;
                     gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.unk_0DC;
                 }
             } else {
-                if (gCurrentHealthBar->unk_004 == 0) {
+                if (gCurrentHealthBar->team == 0) {
                     if (gResultMenuVisible == 0) {
                         if (gCurrentHealthBar->unk_17C->unk_28 > 0.0f) {
                             gCurrentHealthBar->unk_17C->unk_28 -= 0.003f;
@@ -1176,7 +1176,7 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
                     }
 
                     gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.anchor4Position;
-                } else if (gCurrentHealthBar->unk_004 == 1) {
+                } else if (gCurrentHealthBar->team == 1) {
                     if (gResultMenuVisible == 0) {
                         if (gCurrentHealthBar->unk_17C->unk_28 > 0.0f) {
                             gCurrentHealthBar->unk_17C->unk_28 -= 0.0036f;

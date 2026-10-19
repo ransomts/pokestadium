@@ -98,7 +98,7 @@ typedef struct unk_D_86B0FA78 {
     /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ s32 unk_16C;
     /* 0x170 */ s32 unk_170;
-    /* 0x174 */ s32 unk_174;
+    /* 0x174 */ s32 modelId;
     /* 0x178 */ s32 unk_178;
     /* 0x17C */ s32 unk_17C;
     /* 0x180 */ s16 unk_180;

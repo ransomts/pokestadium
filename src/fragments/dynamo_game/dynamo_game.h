@@ -6,12 +6,12 @@
 
 typedef struct DynamoHealthBar {
     /* 0x000 */ s32 unk_000;
-    /* 0x004 */ s32 unk_004;
+    /* 0x004 */ s32 team;
     /* 0x008 */ s32 unk_008;
     /* 0x00C */ u8 unk_00C;
     /* 0x00D */ s8 chargeDelta;
     /* 0x00E */ s8 lastChargeDelta;
-    /* 0x010 */ s16 unk_010;
+    /* 0x010 */ s16 charge;
     /* 0x010 */ s16 chargeTarget;
     /* 0x014 */ Fragment2_1GraphNode unk_014;
     /* 0x17C */ unk_D_86002F34_alt9* unk_17C;

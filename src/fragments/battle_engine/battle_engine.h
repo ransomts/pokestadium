@@ -371,9 +371,9 @@ typedef struct BattleMessageBuffers {
     /* 0x148 */ s8 secondaryMessage[64];
     /* 0x188 */ s8 unk_188[64];
     /* 0x1C8 */ s8 recallMessage[64];
-    /* 0x208 */ s8 unk_208[64];
-    /* 0x248 */ s8 unk_248[64];
-    /* 0x288 */ s8 unk_288[64];
+    /* 0x208 */ s8 targetEffectMessage[64];
+    /* 0x248 */ s8 poisonBurnMessage[64];
+    /* 0x288 */ s8 leechSeedMessage[64];
     /* 0x2C8 */ s8 statChangeMessage[64];
     /* 0x2C8 */ s8 unk_308[64];
     /* 0x348 */ s8 rageMessage[64];
@@ -468,7 +468,7 @@ typedef struct RadialNode {
     /* 0x004 */ s16 unk_004;
     /* 0x006 */ s16 unk_006;
     /* 0x008 */ s16 unk_008;
-    /* 0x00A */ Color_RGBA8 unk_00A;
+    /* 0x00A */ Color_RGBA8 primColor;
     /* 0x00E */ Color_RGB8 envColor;
     /* 0x014 */ f32 unk_014;
     /* 0x018 */ f32 unk_018;

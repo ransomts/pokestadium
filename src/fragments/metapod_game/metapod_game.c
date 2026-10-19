@@ -1838,11 +1838,11 @@ void MetapodGame_LoadAssets(void) {
         }
 
         miniMetapods[i].unk_23C = playerVariations[randN][0];
-        miniMetapods[i].unk_168 = Model_LoadByArchiveIndex(miniMetapods[i].unk_23C);
+        miniMetapods[i].modelData = Model_LoadByArchiveIndex(miniMetapods[i].unk_23C);
         miniMetapods[i].cubeRadio = playerVariations[randN][1];
         miniMetapods[i].halfHeight = playerVariations[randN][2];
 
-        Model_InitDisplayObject(&miniMetapods[i].unk_000, 0, miniMetapods[i].unk_23C, miniMetapods[i].unk_168->RentalSlotAnimData_PosePhase->posX[0]);
+        Model_InitDisplayObject(&miniMetapods[i].unk_000, 0, miniMetapods[i].unk_23C, miniMetapods[i].modelData->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&miniMetapods[i].unk_000, 0);
 
         if (miniMetapods) {}
@@ -1851,7 +1851,7 @@ void MetapodGame_LoadAssets(void) {
     temp_s1_2 = Model_LoadByArchiveIndex(0x9C);
     for (i = 0; i < 20; i++) {
         miniMetapodRocks[i].unk_23C = 0x9C;
-        miniMetapodRocks[i].unk_168 = temp_s1_2;
+        miniMetapodRocks[i].modelData = temp_s1_2;
 
         Model_InitDisplayObject(&miniMetapodRocks[i].unk_000, 0, miniMetapodRocks[i].unk_23C, temp_s1_2->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&miniMetapodRocks[i].unk_000, 0);

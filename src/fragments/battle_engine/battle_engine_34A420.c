@@ -336,10 +336,10 @@ void Radial20_VariantA(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             var_v0->unk_004 = 0;
             var_v0->unk_006 = argE;
             var_v0->unk_008 = arg6;
-            var_v0->unk_00A.r = arg7;
-            var_v0->unk_00A.g = arg8;
-            var_v0->unk_00A.b = arg9;
-            var_v0->unk_00A.a = argA;
+            var_v0->primColor.r = arg7;
+            var_v0->primColor.g = arg8;
+            var_v0->primColor.b = arg9;
+            var_v0->primColor.a = argA;
             var_v0->unk_014 = argD;
             var_v0->unk_018 = argB;
 
@@ -390,9 +390,9 @@ void Radial20_VariantB(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             var_v0->unk_004 = 0;
             var_v0->unk_006 = argE;
             var_v0->unk_008 = arg6;
-            var_v0->unk_00A.r = arg7;
-            var_v0->unk_00A.g = arg8;
-            var_v0->unk_00A.b = arg9;
+            var_v0->primColor.r = arg7;
+            var_v0->primColor.g = arg8;
+            var_v0->primColor.b = arg9;
             var_v0->unk_014 = argD;
             var_v0->unk_018 = argB;
 
@@ -443,10 +443,10 @@ void Radial20_VariantC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             var_v0->unk_004 = 0;
             var_v0->unk_006 = arg11;
             var_v0->unk_008 = arg6;
-            var_v0->unk_00A.r = arg7;
-            var_v0->unk_00A.g = arg8;
-            var_v0->unk_00A.b = arg9;
-            var_v0->unk_00A.a = argA;
+            var_v0->primColor.r = arg7;
+            var_v0->primColor.g = arg8;
+            var_v0->primColor.b = arg9;
+            var_v0->primColor.a = argA;
             var_v0->envColor.r = argB;
             var_v0->envColor.g = argC;
             var_v0->envColor.b = argD;
@@ -514,10 +514,10 @@ void Radial20_VariantD(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             var_v0->unk_004 = 0;
             var_v0->unk_006 = arg11;
             var_v0->unk_008 = arg6;
-            var_v0->unk_00A.r = arg7;
-            var_v0->unk_00A.g = arg8;
-            var_v0->unk_00A.b = arg9;
-            var_v0->unk_00A.a = argA;
+            var_v0->primColor.r = arg7;
+            var_v0->primColor.g = arg8;
+            var_v0->primColor.b = arg9;
+            var_v0->primColor.a = argA;
             var_v0->envColor.r = argB;
             var_v0->envColor.g = argC;
             var_v0->envColor.b = argD;
@@ -582,9 +582,9 @@ void Radial20_VariantE(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             var_v0->unk_004 = 0;
             var_v0->unk_006 = argE;
             var_v0->unk_008 = arg6;
-            var_v0->unk_00A.r = arg7;
-            var_v0->unk_00A.g = arg8;
-            var_v0->unk_00A.b = arg9;
+            var_v0->primColor.r = arg7;
+            var_v0->primColor.g = arg8;
+            var_v0->primColor.b = arg9;
             var_v0->unk_014 = argD;
             var_v0->unk_018 = argB;
 
@@ -948,9 +948,9 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
                         vtx->v.ob[2] = var_s2->unk_10.z + sp1A0.z;
-                        vtx->v.cn[0] = sp1B4->unk_00A.r;
-                        vtx->v.cn[1] = sp1B4->unk_00A.g;
-                        vtx->v.cn[2] = sp1B4->unk_00A.b;
+                        vtx->v.cn[0] = sp1B4->primColor.r;
+                        vtx->v.cn[1] = sp1B4->primColor.g;
+                        vtx->v.cn[2] = sp1B4->primColor.b;
                         vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
 
@@ -962,9 +962,9 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
                         vtx->v.ob[2] = var_s2->unk_10.z + sp1A0.z;
-                        vtx->v.cn[0] = sp1B4->unk_00A.r;
-                        vtx->v.cn[1] = sp1B4->unk_00A.g;
-                        vtx->v.cn[2] = sp1B4->unk_00A.b;
+                        vtx->v.cn[0] = sp1B4->primColor.r;
+                        vtx->v.cn[1] = sp1B4->primColor.g;
+                        vtx->v.cn[2] = sp1B4->primColor.b;
                         vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
 
@@ -976,9 +976,9 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
                         vtx->v.ob[2] = var_s2->unk_10.z + sp1A0.z;
-                        vtx->v.cn[0] = sp1B4->unk_00A.r;
-                        vtx->v.cn[1] = sp1B4->unk_00A.g;
-                        vtx->v.cn[2] = sp1B4->unk_00A.b;
+                        vtx->v.cn[0] = sp1B4->primColor.r;
+                        vtx->v.cn[1] = sp1B4->primColor.g;
+                        vtx->v.cn[2] = sp1B4->primColor.b;
                         vtx->v.cn[3] = var_s2->rotation;
                         vtx++;
                         var_s2++;
@@ -998,9 +998,9 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                             vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                             vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
                             vtx->v.ob[2] = var_s2->unk_10.z + sp1A0.z;
-                            vtx->v.cn[0] = sp1B4->unk_00A.r;
-                            vtx->v.cn[1] = sp1B4->unk_00A.g;
-                            vtx->v.cn[2] = sp1B4->unk_00A.b;
+                            vtx->v.cn[0] = sp1B4->primColor.r;
+                            vtx->v.cn[1] = sp1B4->primColor.g;
+                            vtx->v.cn[2] = sp1B4->primColor.b;
                             vtx->v.cn[3] = 0x64;
                             vtx++;
                         }
@@ -1060,9 +1060,9 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                             vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                             vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
                             vtx->v.ob[2] = var_s2->unk_10.z + sp1A0.z;
-                            vtx->v.cn[0] = sp1B4->unk_00A.r;
-                            vtx->v.cn[1] = sp1B4->unk_00A.g;
-                            vtx->v.cn[2] = sp1B4->unk_00A.b;
+                            vtx->v.cn[0] = sp1B4->primColor.r;
+                            vtx->v.cn[1] = sp1B4->primColor.g;
+                            vtx->v.cn[2] = sp1B4->primColor.b;
                             vtx->v.cn[3] = var_s2->rotation;
                             vtx++;
                         }
@@ -1079,8 +1079,8 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                     case 0:
                     case 3:
                         gSPDisplayList(arg0++, gRadialNodeDrawDL);
-                        gDPSetPrimColor(arg0++, 0, 0, sp1B4->unk_00A.r, sp1B4->unk_00A.g, sp1B4->unk_00A.b,
-                                        sp1B4->unk_00A.a);
+                        gDPSetPrimColor(arg0++, 0, 0, sp1B4->primColor.r, sp1B4->primColor.g, sp1B4->primColor.b,
+                                        sp1B4->primColor.a);
                         gDPSetEnvColor(arg0++, sp1B4->envColor.r, sp1B4->envColor.g, sp1B4->envColor.b, 0);
                         gSPVertex(arg0++, vtx, 4, 0);
                         gSP2Triangles(arg0++, 0, 2, 1, 0, 2, 3, 1, 0);
