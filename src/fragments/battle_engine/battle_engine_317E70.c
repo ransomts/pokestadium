@@ -2,7 +2,7 @@
 #include "src/12D80.h"
 #include "src/1C720.h"
 #include "src/F420.h"
-#include "src/fragments/34/fragment34.h"
+#include "src/fragments/particle_math/particle_math.h"
 #include "src/memory.h"
 
 void BattleAnim_InitParticleSystem(void) {

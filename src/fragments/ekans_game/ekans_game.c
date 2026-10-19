@@ -16,7 +16,7 @@
 #include "src/6A40.h"
 #include "src/6BC0.h"
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
-#include "src/fragments/34/fragment34.h"
+#include "src/fragments/particle_math/particle_math.h"
 #include "src/memory.h"
 #include "src/stage_loader.h"
 #include "src/geo_layout.h"

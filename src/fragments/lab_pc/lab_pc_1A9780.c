@@ -15,7 +15,7 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 #include "src/stage_loader.h"
-#include "src/fragments/29/fragment29.h"
+#include "src/fragments/lab_ui_support/lab_ui_support.h"
 
 typedef struct unk_func_88201488_arg2_000 {
     /* 0x00 */ u8 posX;

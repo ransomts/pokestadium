@@ -980,17 +980,17 @@
     start: 0x14CA50
     vram: 0x86900000
     subsegments:
-    - [0x14CA50, textbin,   fragments/15/fragment15_header]
-    - [0x14CA70, c,      fragments/15/fragment15_14CA70]
-    - [0x14EC80, c,      fragments/15/fragment15_14EC80]
-    - [0x150AC0, c,      fragments/15/fragment15_150AC0]
-    - [0x1554D0, .data,   fragments/15/fragment15_14CA70]
-    - [0x156EB0, .rodata, fragments/15/fragment15_14CA70]
-    - [0x156F00, .rodata, fragments/15/fragment15_14EC80]
-    - [0x156F70, .rodata, fragments/15/fragment15_150AC0]
+    - [0x14CA50, textbin,   fragments/gallery_camera/gallery_camera_header]
+    - [0x14CA70, c,      fragments/gallery_camera/gallery_camera_14CA70]
+    - [0x14EC80, c,      fragments/gallery_camera/gallery_camera_14EC80]
+    - [0x150AC0, c,      fragments/gallery_camera/gallery_camera_150AC0]
+    - [0x1554D0, .data,   fragments/gallery_camera/gallery_camera_14CA70]
+    - [0x156EB0, .rodata, fragments/gallery_camera/gallery_camera_14CA70]
+    - [0x156F00, .rodata, fragments/gallery_camera/gallery_camera_14EC80]
+    - [0x156F70, .rodata, fragments/gallery_camera/gallery_camera_150AC0]
 
-    - {vram: 0x8690A610, type:  .bss, name: fragments/15/fragment15_14CA70}
-    - {vram: 0x8690B600, type:  .bss, name: fragments/15/fragment15_14EC80}
+    - {vram: 0x8690A610, type:  .bss, name: fragments/gallery_camera/gallery_camera_14CA70}
+    - {vram: 0x8690B600, type:  .bss, name: fragments/gallery_camera/gallery_camera_14EC80}
 
   - name: fragment15_relocs
     type: code
@@ -1035,41 +1035,41 @@
     start: 0x15F990
     vram: 0x86B00000
     subsegments:
-    - [0x15F990, textbin,   fragments/17/fragment17_header]
-    - [0x15F9B0, c,      fragments/17/fragment17_15F9B0]
-    - [0x15FA60, c,      fragments/17/fragment17_15FA60]
-    - [0x160CB0, c,      fragments/17/fragment17_160CB0]
-    - [0x161000, c,      fragments/17/fragment17_161000]
-    - [0x161590, c,      fragments/17/fragment17_161590]
-    - [0x161E60, c,      fragments/17/fragment17_161E60]
-    - [0x164B00, c,      fragments/17/fragment17_164B00]
-    - [0x165640, c,      fragments/17/fragment17_165640]
-    - [0x168110, c,      fragments/17/fragment17_168110]
-    - [0x1687E0, c,      fragments/17/fragment17_1687E0]
-    - [0x169510, c,      fragments/17/fragment17_169510]
-    - [0x169A40, c,      fragments/17/fragment17_169A40]
-    - [0x16A0E0, c,      fragments/17/fragment17_16A0E0]
-    - [0x16B580, .data,   fragments/17/fragment17_15FA60]
-    - [0x16B6E0, .data,   fragments/17/fragment17_161590]
-    - [0x16B6F0, .data,   fragments/17/fragment17_161E60]
-    - [0x16D670, .data,   fragments/17/fragment17_165640]
-    - [0x16D950, .data,   fragments/17/fragment17_168110]
-    - [0x16D960, .data,   fragments/17/fragment17_1687E0]
-    - [0x16DBE0, .data,   fragments/17/fragment17_169A40]
-    - [0x16DC40, .data,   fragments/17/fragment17_16A0E0]
+    - [0x15F990, textbin,   fragments/demo_scenes/demo_scenes_header]
+    - [0x15F9B0, c,      fragments/demo_scenes/demo_scenes_15F9B0]
+    - [0x15FA60, c,      fragments/demo_scenes/demo_scenes_15FA60]
+    - [0x160CB0, c,      fragments/demo_scenes/demo_scenes_160CB0]
+    - [0x161000, c,      fragments/demo_scenes/demo_scenes_161000]
+    - [0x161590, c,      fragments/demo_scenes/demo_scenes_161590]
+    - [0x161E60, c,      fragments/demo_scenes/demo_scenes_161E60]
+    - [0x164B00, c,      fragments/demo_scenes/demo_scenes_164B00]
+    - [0x165640, c,      fragments/demo_scenes/demo_scenes_165640]
+    - [0x168110, c,      fragments/demo_scenes/demo_scenes_168110]
+    - [0x1687E0, c,      fragments/demo_scenes/demo_scenes_1687E0]
+    - [0x169510, c,      fragments/demo_scenes/demo_scenes_169510]
+    - [0x169A40, c,      fragments/demo_scenes/demo_scenes_169A40]
+    - [0x16A0E0, c,      fragments/demo_scenes/demo_scenes_16A0E0]
+    - [0x16B580, .data,   fragments/demo_scenes/demo_scenes_15FA60]
+    - [0x16B6E0, .data,   fragments/demo_scenes/demo_scenes_161590]
+    - [0x16B6F0, .data,   fragments/demo_scenes/demo_scenes_161E60]
+    - [0x16D670, .data,   fragments/demo_scenes/demo_scenes_165640]
+    - [0x16D950, .data,   fragments/demo_scenes/demo_scenes_168110]
+    - [0x16D960, .data,   fragments/demo_scenes/demo_scenes_1687E0]
+    - [0x16DBE0, .data,   fragments/demo_scenes/demo_scenes_169A40]
+    - [0x16DC40, .data,   fragments/demo_scenes/demo_scenes_16A0E0]
 
-    - [0x16DD70, .rodata, fragments/17/fragment17_15F9B0]
-    - [0x16DDA0, .rodata, fragments/17/fragment17_15FA60]
-    - [0x16DDF0, .rodata, fragments/17/fragment17_161E60]
-    - [0x16DEA0, .rodata, fragments/17/fragment17_165640]
-    - [0x16DF30, .rodata, fragments/17/fragment17_16A0E0]
+    - [0x16DD70, .rodata, fragments/demo_scenes/demo_scenes_15F9B0]
+    - [0x16DDA0, .rodata, fragments/demo_scenes/demo_scenes_15FA60]
+    - [0x16DDF0, .rodata, fragments/demo_scenes/demo_scenes_161E60]
+    - [0x16DEA0, .rodata, fragments/demo_scenes/demo_scenes_165640]
+    - [0x16DF30, .rodata, fragments/demo_scenes/demo_scenes_16A0E0]
 
-    - {vram: 0x86B0E5D0, type: .bss, name: fragments/17/fragment17_15FA60}
-    - {vram: 0x86B0EBC0, type: .bss, name: fragments/17/fragment17_161E60}
-    - {vram: 0x86B0F9D0, type: .bss, name: fragments/17/fragment17_165640}
-    - {vram: 0x86B106A0, type: .bss, name: fragments/17/fragment17_1687E0}
-    - {vram: 0x86B106B0, type: .bss, name: fragments/17/fragment17_169A40}
-    - {vram: 0x86B10840, type: .bss, name: fragments/17/fragment17_16A0E0}
+    - {vram: 0x86B0E5D0, type: .bss, name: fragments/demo_scenes/demo_scenes_15FA60}
+    - {vram: 0x86B0EBC0, type: .bss, name: fragments/demo_scenes/demo_scenes_161E60}
+    - {vram: 0x86B0F9D0, type: .bss, name: fragments/demo_scenes/demo_scenes_165640}
+    - {vram: 0x86B106A0, type: .bss, name: fragments/demo_scenes/demo_scenes_1687E0}
+    - {vram: 0x86B106B0, type: .bss, name: fragments/demo_scenes/demo_scenes_169A40}
+    - {vram: 0x86B10840, type: .bss, name: fragments/demo_scenes/demo_scenes_16A0E0}
 
   - name: fragment17_relocs
     type: code
@@ -1231,17 +1231,17 @@
     start: 0x1CE9E0
     vram: 0x88300000
     subsegments:
-    - [0x1CE9E0, textbin,   fragments/24/fragment24_header]
-    - [0x1CEA00, c,      fragments/24/fragment24_1CEA00]
-    - [0x1D7B40, c,      fragments/24/fragment24_1D7B40]
-    - [0x1E46B0, c,      fragments/24/fragment24_1E46B0]
-    - [0x1E5BB0, .data,   fragments/24/fragment24_1CEA00]
-    - [0x1E5D40, .data,   fragments/24/fragment24_1D7B40]
-    - [0x1E60B0, .data,   fragments/24/fragment24_1E46B0]
-    - [0x1E8C40, .rodata, fragments/24/fragment24_1CEA00]
-    - [0x1E8DB0, .rodata, fragments/24/fragment24_1D7B40]
+    - [0x1CE9E0, textbin,   fragments/lab_pc_list/lab_pc_list_header]
+    - [0x1CEA00, c,      fragments/lab_pc_list/lab_pc_list_1CEA00]
+    - [0x1D7B40, c,      fragments/lab_pc_list/lab_pc_list_1D7B40]
+    - [0x1E46B0, c,      fragments/lab_pc_list/lab_pc_list_1E46B0]
+    - [0x1E5BB0, .data,   fragments/lab_pc_list/lab_pc_list_1CEA00]
+    - [0x1E5D40, .data,   fragments/lab_pc_list/lab_pc_list_1D7B40]
+    - [0x1E60B0, .data,   fragments/lab_pc_list/lab_pc_list_1E46B0]
+    - [0x1E8C40, .rodata, fragments/lab_pc_list/lab_pc_list_1CEA00]
+    - [0x1E8DB0, .rodata, fragments/lab_pc_list/lab_pc_list_1D7B40]
 
-    - {vram: 0x8831A4C0, type:  .bss, name: fragments/24/fragment24_1CEA00}
+    - {vram: 0x8831A4C0, type:  .bss, name: fragments/lab_pc_list/lab_pc_list_1CEA00}
 
   - name: fragment24_relocs
     type: code
@@ -1258,11 +1258,11 @@
     start: 0x1EA640
     vram: 0x88400000
     subsegments:
-    - [0x1EA640, textbin, fragments/25/fragment25_header]
-    - [0x1EA660, c,       fragments/25/fragment25]
-    - [0x1EA740, .data,   fragments/25/fragment25]
+    - [0x1EA640, textbin, fragments/pokemon_lab_support/pokemon_lab_support_header]
+    - [0x1EA660, c,       fragments/pokemon_lab_support/pokemon_lab_support]
+    - [0x1EA740, .data,   fragments/pokemon_lab_support/pokemon_lab_support]
 
-    - {vram: 0x88400200, type: .bss, name: fragments/25/fragment25}
+    - {vram: 0x88400200, type: .bss, name: fragments/pokemon_lab_support/pokemon_lab_support}
 
   - name: fragment25_relocs
     type: code
@@ -1279,12 +1279,12 @@
     start: 0x1EA860
     vram: 0x88500000
     subsegments:
-    - [0x1EA860, textbin,   fragments/26/fragment26_header]
-    - [0x1EA880, c,         fragments/26/fragment26]
-    - [0x1F77E0, .data,     fragments/26/fragment26]
-    - [0x1F7810, .rodata,   fragments/26/fragment26]
+    - [0x1EA860, textbin,   fragments/widget_tree/widget_tree_header]
+    - [0x1EA880, c,         fragments/widget_tree/widget_tree]
+    - [0x1F77E0, .data,     fragments/widget_tree/widget_tree]
+    - [0x1F7810, .rodata,   fragments/widget_tree/widget_tree]
 
-    - {vram: 0x8850CFE0, type:  .bss, name: fragments/26/fragment26}
+    - {vram: 0x8850CFE0, type:  .bss, name: fragments/widget_tree/widget_tree}
 
   - name: fragment26_relocs
     type: code
@@ -1349,11 +1349,11 @@
     start: 0x23C250
     vram: 0x88900000
     subsegments:
-    - [0x23C250, textbin,   fragments/29/fragment29_header]
-    - [0x23C270, c,      fragments/29/fragment29]
-    - [0x23D3C0, .data,   fragments/29/fragment29]
+    - [0x23C250, textbin,   fragments/lab_ui_support/lab_ui_support_header]
+    - [0x23C270, c,      fragments/lab_ui_support/lab_ui_support]
+    - [0x23D3C0, .data,   fragments/lab_ui_support/lab_ui_support]
 
-    - {vram: 0x889011E0, type:  .bss, name: fragments/29/fragment29}
+    - {vram: 0x889011E0, type:  .bss, name: fragments/lab_ui_support/lab_ui_support}
 
   - name: fragment29_relocs
     type: code
@@ -1505,19 +1505,19 @@
     start: 0x261F70
     vram: 0x81400000
     subsegments:
-    - [0x261F70, textbin,   fragments/34/fragment34_header]
-    - [0x261F90, c,      fragments/34/fragment34_261F90]
-    - [0x264380, c,      fragments/34/fragment34_264380]
-    - [0x269820, c,      fragments/34/fragment34_269820]
-    - [0x26E540, c,      fragments/34/fragment34_26E540]
-    - [0x26E6D0, c,      fragments/34/fragment34_26E6D0]
-    - [0x26F9B0, c,      fragments/34/fragment34_26F9B0]
-    - [0x26F9C0, .data,   fragments/34/fragment34_264380]
-    - [0x2703D0, .data,   fragments/34/fragment34_269820]
-    - [0x2703E0, .data,   fragments/34/fragment34_26E6D0]
-    - [0x270570, .rodata, fragments/34/fragment34_269820]
+    - [0x261F70, textbin,   fragments/particle_math/particle_math_header]
+    - [0x261F90, c,      fragments/particle_math/particle_math_261F90]
+    - [0x264380, c,      fragments/particle_math/particle_math_264380]
+    - [0x269820, c,      fragments/particle_math/particle_math_269820]
+    - [0x26E540, c,      fragments/particle_math/particle_math_26E540]
+    - [0x26E6D0, c,      fragments/particle_math/particle_math_26E6D0]
+    - [0x26F9B0, c,      fragments/particle_math/particle_math_26F9B0]
+    - [0x26F9C0, .data,   fragments/particle_math/particle_math_264380]
+    - [0x2703D0, .data,   fragments/particle_math/particle_math_269820]
+    - [0x2703E0, .data,   fragments/particle_math/particle_math_26E6D0]
+    - [0x270570, .rodata, fragments/particle_math/particle_math_269820]
 
-    - {vram: 0x8140E620, type:  .bss, name: fragments/34/fragment34_261F90}
+    - {vram: 0x8140E620, type:  .bss, name: fragments/particle_math/particle_math_261F90}
 
   - name: fragment34_relocs
     type: code
@@ -1620,16 +1620,16 @@
     start: 0x27BCA0
     vram: 0x82500000
     subsegments:
-    - [0x27BCA0, textbin,   fragments/39/fragment39_header]
-    - [0x27BCC0, c,      fragments/39/fragment39_27BCC0]
-    - [0x2804C0, c,      fragments/39/fragment39_2804C0]
-    - [0x281C40, c,      fragments/39/fragment39_281C40]
-    - [0x281E50, .data,   fragments/39/fragment39_27BCC0]
-    - [0x2846C0, .rodata, fragments/39/fragment39_27BCC0]
-    - [0x284780, .rodata, fragments/39/fragment39_2804C0]
+    - [0x27BCA0, textbin,   fragments/minigame_select/minigame_select_header]
+    - [0x27BCC0, c,      fragments/minigame_select/minigame_select_27BCC0]
+    - [0x2804C0, c,      fragments/minigame_select/minigame_select_2804C0]
+    - [0x281C40, c,      fragments/minigame_select/minigame_select_281C40]
+    - [0x281E50, .data,   fragments/minigame_select/minigame_select_27BCC0]
+    - [0x2846C0, .rodata, fragments/minigame_select/minigame_select_27BCC0]
+    - [0x284780, .rodata, fragments/minigame_select/minigame_select_2804C0]
 
-    - {vram: 0x82508AF0, type:  .bss, name: fragments/39/fragment39_27BCC0}
-    - {vram: 0x8250A480, type:  .bss, name: fragments/39/fragment39_2804C0}
+    - {vram: 0x82508AF0, type:  .bss, name: fragments/minigame_select/minigame_select_27BCC0}
+    - {vram: 0x8250A480, type:  .bss, name: fragments/minigame_select/minigame_select_2804C0}
 
   - name: fragment39_relocs
     type: code

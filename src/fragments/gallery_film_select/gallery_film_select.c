@@ -9,7 +9,7 @@
 #include "src/49790.h"
 #include "src/6A40.h"
 #include "src/controller.h"
-#include "src/fragments/39/fragment39.h"
+#include "src/fragments/minigame_select/minigame_select.h"
 #include "src/fragments/43/fragment43.h"
 #include "src/memory.h"
 #include "src/stage_loader.h"

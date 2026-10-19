@@ -1,0 +1,369 @@
+#include "src/fragments/demo_scenes/demo_scenes.h"
+#include "src/1CF30.h"
+#include "src/6BC0.h"
+
+static Gfx gGfxSetup_ScrollBar[] = {
+    gsDPPipeSync(),
+    gsDPSetCycleType(G_CYC_1CYCLE),
+    gsSPClearGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING),
+    gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_NOOP2),
+    gsDPSetCombineMode(G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM),
+    gsDPSetPrimColor(0, 0, 5, 5, 5, 255),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsDPSetTexturePersp(G_TP_NONE),
+    gsSPEndDisplayList(),
+};
+
+static Gfx gGfxRestore_ScrollBar[] = {
+    gsDPSetCycleType(G_CYC_2CYCLE),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
+    gsDPSetTexturePersp(G_TP_PERSP),
+    gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING),
+    gsSPEndDisplayList(),
+};
+
+DioramaAnimData gScrollBarSegmentData[] = {
+    {
+        0,
+        0,
+        0,
+        0,
+        12743,
+        0.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.0f,
+        4.0f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        30.0f,
+    },
+    {
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.0f,
+        3.0f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+    {
+        0,
+        0,
+        0,
+        7281,
+        16384,
+        0.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.0f,
+        3.5f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+    {
+        0,
+        0,
+        0,
+        25486,
+        9102,
+        0.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        0,
+        -380,
+        0.5f,
+        4.0f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+    {
+        0,
+        12743,
+        0,
+        -3640,
+        9102,
+        3.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        1820,
+        0,
+        0.0f,
+        3.5f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+    {
+        0,
+        0,
+        0,
+        14563,
+        0,
+        0.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.0f,
+        4.0f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+    {
+        -7282,
+        0,
+        0,
+        25486,
+        14563,
+        2.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        0,
+        -198,
+        0.5f,
+        4.0f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+    {
+        0,
+        0,
+        0,
+        -3640,
+        23665,
+        0.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        1820,
+        0,
+        0.0f,
+        3.5f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+    {
+        0,
+        0,
+        0,
+        14563,
+        0,
+        0.0f,
+        10.0f,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.0f,
+        4.0f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+    {
+        0,
+        0,
+        0,
+        -3640,
+        0,
+        0.0f,
+        7.0f,
+        0,
+        0,
+        0,
+        1820,
+        0,
+        0.0f,
+        3.5f,
+        0.15000000596046448f,
+        0.009999999776482582f,
+        200.0f,
+    },
+};
+
+static s16 gScrollMode;
+static s16 gScrollOffset;
+static s16 gScrollStep;
+
+void WipeTransition_Start(s32 arg0, s32 arg1) {
+    gScrollMode = arg0;
+    gScrollStep = arg1;
+
+    if ((gScrollMode == 0) || ((gScrollMode != 1) && (gScrollMode != 2) && (gScrollMode == 3))) {
+        gScrollOffset = 0x140;
+    } else {
+        gScrollOffset = 0;
+    }
+}
+
+s32 WipeTransition_GetState(void) {
+    return gScrollMode;
+}
+
+void WipeTransition_Update(void) {
+    s16 tmp = gScrollOffset;
+
+    switch (gScrollMode) {
+        case 2:
+            if (tmp < 0x140) {
+                tmp += gScrollStep;
+            } else {
+                gScrollMode = 0;
+            }
+            break;
+
+        case 3:
+            if (tmp > 0) {
+                tmp -= gScrollStep;
+            } else {
+                gScrollMode = 1;
+            }
+
+            if (tmp < 0) {
+                tmp = 0;
+            }
+            break;
+    }
+
+    gScrollOffset = tmp;
+}
+
+Gfx* WipeTransition_BuildBrickDisplayList(Gfx* gfx, u32 arg1) {
+    s32 idx1 = arg1 % 2;
+    s32 idx2 = (arg1 + 1) % 2;
+    s32 i;
+    s16 xl;
+    s16 yl;
+
+    gSPDisplayList(gfx++, gGfxSetup_ScrollBar);
+
+    gDPLoadTextureBlock_4b(gfx++, D_3000000, G_IM_FMT_I, 12, 48, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+
+    gDPPipeSync(gfx++);
+
+    for (i = idx1; i < 5; i += 2) {
+        xl = (gScrollOffset * 2) - 0x140;
+        yl = (i * 0x30);
+
+        gSPScisTextureRectangle(gfx++, xl << 2, yl << 2, (xl + 0x280) << 2, (yl + 24) << 2, 0, 0, 0, 1 << 6, 1 << 10);
+        gSPScisTextureRectangle(gfx++, xl << 2, (yl + 24) << 2, (xl + 0x280) << 2, (yl + 48) << 2, 0, 0, 0, 1 << 6,
+                                1 << 10);
+    }
+
+    for (i = idx2; i < 5; i += 2) {
+        xl = -gScrollOffset * 2;
+        yl = (i * 0x30);
+
+        gSPScisTextureRectangle(gfx++, xl << 2, yl << 2, (xl + 0x280) << 2, (yl + 24) << 2, 0, 0x500, 0, -(1 << 6),
+                                1 << 10);
+        gSPScisTextureRectangle(gfx++, xl << 2, (yl + 24) << 2, (xl + 0x280) << 2, (yl + 48) << 2, 0, 0x500, 0,
+                                -(1 << 6), 1 << 10);
+    }
+
+    gSPDisplayList(gfx++, gGfxRestore_ScrollBar);
+
+    return gfx;
+}
+
+void WipeTransition_Draw(void) {
+    Gfx* var_a0 = gDisplayListHead;
+
+    if (gScrollMode != 0) {
+        if (gScrollMode == 2) {
+            var_a0 = WipeTransition_BuildBrickDisplayList(var_a0, 0);
+        } else {
+            var_a0 = WipeTransition_BuildBrickDisplayList(var_a0, 1);
+        }
+    }
+    gDisplayListHead = var_a0;
+}
+
+void UI_DrawClippedTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
+    ClipRect sp30;
+
+    GfxRect_SetBounds(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+
+    if (GfxRect_ClipToScissor(&sp30) != 0) {
+        if (arg6 != 0) {
+            arg4 += ((sp30.x1 - arg0) * arg6) >> 5;
+        }
+
+        if (arg7 != 0) {
+            arg5 += ((sp30.y2 - arg1) * arg7) >> 5;
+        }
+
+        sp30.y1 += 1;
+        sp30.x2 += 1;
+
+        gSPTextureRectangle(gDisplayListHead++, sp30.x1 << 2, sp30.y2 << 2, sp30.y1 << 2, sp30.x2 << 2, G_TX_RENDERTILE,
+                            arg4, arg5, arg6, arg7);
+    }
+}
+
+void UI_DrawTiledTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, UNUSED s32 arg5) {
+    gDPLoadTextureTile(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, arg2, arg3, 0, 0, arg2 - 1, arg3 - 1, 0,
+                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
+                       G_TX_NOLOD);
+
+    UI_DrawClippedTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400);
+}
+
+void UI_DrawGradientTexture(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, SpriteColorParams* arg5) {
+    gDPPipeSync(gDisplayListHead++);
+
+    gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
+    gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
+    gDPSetCombineLERP(gDisplayListHead++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
+                      PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+    gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
+    gDPSetEnvColor(gDisplayListHead++, (u8)arg5->unk_06, (u8)arg5->unk_08, (u8)arg5->unk_0A, 255);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, (u8)arg5->posX, (u8)arg5->posY, (u8)arg5->rotation, 255);
+    gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
+
+    UI_DrawTiledTexture(arg1, arg2, arg3, arg4, arg0, arg3);
+
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
+}
+
+void UI_DrawTextureRgba16(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+    gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
+
+    Gfx_DrawTextureRgba16(arg1, arg2, arg3, arg4, arg0, arg3, 0);
+
+    gSPDisplayList(gDisplayListHead++, gPrefDL_End);
+}

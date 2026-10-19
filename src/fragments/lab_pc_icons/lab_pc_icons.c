@@ -13,8 +13,8 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 #include "src/util.h"
-#include "fragments/26/fragment26.h"
-#include "fragments/25/fragment25.h"
+#include "src/fragments/widget_tree/widget_tree.h"
+#include "src/fragments/pokemon_lab_support/pokemon_lab_support.h"
 
 static char** gMonSummaryStrings;
 static char** gMonSpeciesNames;
