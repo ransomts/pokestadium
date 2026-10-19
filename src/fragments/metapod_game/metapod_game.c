@@ -1813,7 +1813,7 @@ void MetapodGame_LoadAssets(void) {
 
     s32 i;
     MemoryBlock* temp_v0;
-    unk_D_86002F30* temp_s1_2;
+    ModelData* temp_s1_2;
     s32 randN;
 
     temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);

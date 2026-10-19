@@ -90,7 +90,7 @@ static s32 pad_D_822031D0[0x2];
 static s16 gCurrentAreaIndex;
 static s16 gPreviousAreaIndex;
 static s16 gTransitionFrame;
-static unk_func_80027FA0 gAreaAudioState;
+static SessionModeSettings gAreaAudioState;
 static PlayerName gAreaPlayerName;
 
 s32 AreaSelect_CheckCartRemoved(s32 arg0) {

@@ -18,7 +18,7 @@
 
 static char** gMessageBank14;
 static s32 pad_D_82100EA4;
-static unk_func_80027FA0 D_82100EA8;
+static SessionModeSettings D_82100EA8;
 static BinArchive* D_82100EB0;
 static u8* D_82100EB4;
 static void* D_82100EB8;

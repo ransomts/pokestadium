@@ -1063,7 +1063,7 @@ void Rental_LoadRosterForMode(void) {
 }
 
 void Rental_LoadBackgroundImage(void) {
-    unk_func_80027FA0 sp20;
+    SessionModeSettings sp20;
 
     gBattleSelectionBackgroundArchive = ASSET_LOAD2(backgrounds, 1, 1);
     if (gSessionContext.unk_0000 == 7) {

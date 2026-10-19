@@ -9,7 +9,7 @@ static f32 gCameraDistance;
 static s16 gCameraPitchTmp;
 static s16 gCameraYawTmp;
 static f32 gHorizontalDist;
-static f32 D_8690B610;
+static f32 gGalleryCameraTimer;
 static Vec3f gCameraInitialPos;
 
 f32 GalleryCamera_Distance3D(Vec3f arg0, Vec3f arg1) {
@@ -56,7 +56,7 @@ void GalleryCamera_InitFreeView(void) {
     gMiniCameraPtr->unk_24.fovy = 40.0f;
     gCameraParams->unk_008 = 40.0f;
 
-    D_8690B610 = 0.0f;
+    gGalleryCameraTimer = 0.0f;
 
     Vec3f_SetComponentsDuplicate(&gCameraInitialPos, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y, gMiniCameraPtr->unk_60.at.z);
 }
@@ -108,7 +108,7 @@ void GalleryCamera_ResetFreeView(void) {
     gMiniCameraPtr->unk_24.far = 10000.0f;
     gMiniCameraPtr->unk_24.fovy = 40.0f;
     gCameraParams->unk_008 = 40.0f;
-    D_8690B610 = 0.0f;
+    gGalleryCameraTimer = 0.0f;
 
     Vec3f_SetComponentsDuplicate(&gCameraInitialPos, gMiniCameraPtr->unk_60.at.x, gMiniCameraPtr->unk_60.at.y, gMiniCameraPtr->unk_60.at.z);
 }

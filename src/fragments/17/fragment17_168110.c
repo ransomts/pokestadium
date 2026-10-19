@@ -94,7 +94,7 @@ void IntroCamKeyframe_SetTransitionSpeed(f32 arg0, f32 arg1) {
     gCameraState->unk_3C = arg1;
 }
 
-void Intro_LoadCameraKeyframe(unk_D_86B0C160* arg0, CameraStruct* arg1) {
+void Intro_LoadCameraKeyframe(DioramaAnimData* arg0, CameraStruct* arg1) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;

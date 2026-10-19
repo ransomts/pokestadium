@@ -48,7 +48,7 @@ static s16 gSelectedMenuIndex;
 static FramebufferImage* gMenuBackgroundImages[6];
 static GraphNode* gMenuBarGraphNode;
 static GraphNode* gMenuOptionGraphNode;
-static unk_func_80027FA0 gMenuConfig;
+static SessionModeSettings gMenuConfig;
 
 static u8 gBackgroundFileIds[] = {
     0x09, 0x07, 0x08, 0x0C, 0x0A, 0x0B,

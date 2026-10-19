@@ -887,12 +887,12 @@ void Save_SetOptions(PlayerName* arg0) {
     }
 }
 
-void Save_GetModeSettings(unk_func_80027FA0* arg0, s16 arg1) {
+void Save_GetModeSettings(SessionModeSettings* arg0, s16 arg1) {
     *arg0 = gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1];
 }
 
-void Save_SetModeSettings(unk_func_80027FA0* arg0, s16 arg1) {
-    if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1], sizeof(unk_func_80027FA0)) != 0) {
+void Save_SetModeSettings(SessionModeSettings* arg0, s16 arg1) {
+    if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1], sizeof(SessionModeSettings)) != 0) {
         gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1] = *arg0;
         Save_MarkRecordDirty(0x14, 0, 2);
     }

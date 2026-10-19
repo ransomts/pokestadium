@@ -444,7 +444,7 @@ typedef struct unk_D_86002F34_01C {
     /* 0x08 */ char unk08[0x4];
 } unk_D_86002F34_01C; // size = 0xC
 
-typedef struct unk_D_86002F34 {
+typedef struct MiniHudMainGraph {
     /* 0x00 */ GraphNode posX;
     /* 0x18 */ unk_D_86002F34_018* unk_18;
     /* 0x1C */ unk_D_86002F34_01C* unk_1C;
@@ -453,13 +453,13 @@ typedef struct unk_D_86002F34 {
     /* 0x25 */ u8 unk_25;
     /* 0x26 */ s16 unk_26;
     /* 0x28 */ func_unk_D_800ABE10 unk_28;
-} unk_D_86002F34; // size = 0x2C
+} MiniHudMainGraph; // size = 0x2C
 
-// Are unk_D_86002F30 and unk_D_800AC840 the same?
-typedef struct unk_D_86002F30 {
+// Are ModelData and unk_D_800AC840 the same?
+typedef struct ModelData {
     /* 0x00 */ char unk00[0x8];
     /* 0x08 */ unk_D_86002F58_004_000_004* unk_08;
-} unk_D_86002F30; // size = 0x18 ??
+} ModelData; // size = 0x18 ??
 
 typedef struct UnkInputStruct8000D738 {
     /* 0x00 */ s16 posX;

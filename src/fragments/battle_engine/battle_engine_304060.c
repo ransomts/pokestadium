@@ -263,7 +263,7 @@ void BattleScene_IntroCameraStep4Or6(CameraStruct* arg0, s32 arg1) {
 
 void BattleScene_IntroCameraStep8Or10(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad[2];
-    unk_D_86B0C160* sp24;
+    DioramaAnimData* sp24;
     s32 var_a0;
     unk_BattlePlayerEntity* temp_s0;
 

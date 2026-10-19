@@ -146,7 +146,7 @@ void DynamoGame_UpdatePlayerAnimState(void) {
             sp58 = gCurrentHealthBar->unk_008;
 
             var_s1 = 0;
-            if (D_87B000C8 != 0) {
+            if (gDrowzeeGameIsOver != 0) {
                 if (gResultTimer < 0x57) {
                     var_s1 = 2;
                 } else if (gResultTimer == 0x57) {
@@ -340,7 +340,7 @@ void DynamoGame_DetermineWinners(void) {
             gCurrentHealthBar->unk_00C = 1;
             Widget_PauseMenuRecordWin(i);
 
-            D_87B000D4++;
+            gDrowzeeWinnerCount++;
 
             if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                 Audio_DispatchSoundBankCommand(0x80003, i, 0);
@@ -369,7 +369,7 @@ void DynamoGame_UpdateCountdownAndCue(UNUSED s32 arg0) {
 void DynamoGame_ReadPlayerCrankInput(void) {
     u8 i;
 
-    if ((gResultFlag_Special != 0) || (gResultMenuVisible != 0) || (D_87B000C8 != 0)) {
+    if ((gResultFlag_Special != 0) || (gResultMenuVisible != 0) || (gDrowzeeGameIsOver != 0)) {
         return;
     }
 
@@ -432,7 +432,7 @@ void DynamoGame_ReadPlayerCrankInput(void) {
 void DynamoGame_DrawTutorialScreen(s32 arg0) {
     u8 i;
 
-    if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
+    if ((arg0 == 0) || ((arg0 == 3) && (gDrowzeeTutorialPage == 1))) {
         Ui_DrawBorderedPanel(0x18, 0x16, 0x110, 0x90, 0x15);
         Ui_DrawBorderedPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
 
@@ -444,7 +444,7 @@ void DynamoGame_DrawTutorialScreen(s32 arg0) {
         Widget_DrawAnimIcon16C(0x74, 0xC6, gResultScreenUIElements3);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
-    } else if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
+    } else if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (gDrowzeeTutorialPage == 0))) {
         s16 sp5C[] = {
             0x002B,
             0x0071,
@@ -466,7 +466,7 @@ void DynamoGame_DrawTutorialScreen(s32 arg0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 
-    if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
+    if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (gDrowzeeTutorialPage == 0))) {
         for (i = 0; i < 4; i++) {
             gCurrentHealthBar = &gHealthBarData[i];
 
@@ -477,7 +477,7 @@ void DynamoGame_DrawTutorialScreen(s32 arg0) {
     Font_BeginTranslucentTextRendering();
     Font_EnableTwoCycleTexturing();
 
-    if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
+    if ((arg0 == 0) || ((arg0 == 3) && (gDrowzeeTutorialPage == 1))) {
         s32 temp_s0;
         s32 sp48;
         s32 sp44;
@@ -531,7 +531,7 @@ void DynamoGame_DrawFrame(s32 arg0) {
         GeoRender_AdvanceFrameCounter();
     }
 
-    Geo_RenderRootNode(D_87B000E8);
+    Geo_RenderRootNode(gDrowzeeStageRoot);
 
     if (gResultConfirmPressed == 0) {
         DynamoGame_DrawTutorialScreen(arg0);
@@ -541,10 +541,10 @@ void DynamoGame_DrawFrame(s32 arg0) {
     BgStage_AdvanceFrame();
 
     if (gResultMenuVisible == 0) {
-        D_87B000C0++;
+        gDrowzeeFrameCounter++;
 
         if (arg0 == 2) {
-            if (D_87B000C8 == 0) {
+            if (gDrowzeeGameIsOver == 0) {
                 gHealthBarUpdateCounter++;
                 if (gHealthBarUpdateCounter >= 0xF) {
                     gHealthBarUpdateCounter = 0;
@@ -556,13 +556,13 @@ void DynamoGame_DrawFrame(s32 arg0) {
                         if (gCurrentHealthBar->unk_010 < 0) {
                             gCurrentHealthBar->unk_010 = 0;
                         } else if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) {
-                            D_87B000C8 = 1;
+                            gDrowzeeGameIsOver = 1;
                         }
                         gCurrentHealthBar->unk_00E = gCurrentHealthBar->unk_00D;
                         DynamoGame_ComputeAIChargeDelta(gCurrentHealthBar, 1);
                     }
 
-                    if (D_87B000C8 != 0) {
+                    if (gDrowzeeGameIsOver != 0) {
                         DynamoGame_DetermineWinners();
                         DynamoGame_SyncChainLinkAnimations();
                     }
@@ -574,14 +574,14 @@ void DynamoGame_DrawFrame(s32 arg0) {
                     case 0x5B:
                     case 0x6F:
                     case 0x83:
-                        if ((D_87B000D4 != 4) && (gResultFlag_Special == 0)) {
+                        if ((gDrowzeeWinnerCount != 4) && (gResultFlag_Special == 0)) {
                             Audio_DispatchSoundBankCommand(0x80004, 0, 0);
                             Audio_DispatchSoundBankCommand(0x80005, 0, 0);
                         }
                         break;
 
                     case 0x96:
-                        if ((D_87B000D4 != 4) && (gResultFlag_Special == 0)) {
+                        if ((gDrowzeeWinnerCount != 4) && (gResultFlag_Special == 0)) {
                             Audio_DispatchSoundBankCommand(0x80006, 0, 0);
                         }
                         break;
@@ -613,7 +613,7 @@ void DynamoGame_WaitForStart(void) {
             } else if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
                 Audio_PlaySoundEffectById(3);
                 Widget_PauseMenuTrigger(2);
-                D_87B000D0 = 1;
+                gDrowzeeTutorialPage = 1;
                 return;
             }
         }
@@ -632,13 +632,13 @@ void DynamoGame_WaitForStart(void) {
 
     if (gResultFlag_Special == 0) {
         while (true) {
-            if (D_87B000C4 <= 0) {
+            if (gDrowzeeStartCountdown <= 0) {
                 break;
             }
 
             for (i = 3; i > 0; i--) {
                 s32 tmp = (i * 0x3C) / 2;
-                if (tmp == D_87B000C4) {
+                if (tmp == gDrowzeeStartCountdown) {
                     if (i == 3) {
                         Widget_CountdownStart(1);
                     }
@@ -646,7 +646,7 @@ void DynamoGame_WaitForStart(void) {
                 }
             }
 
-            D_87B000C4--;
+            gDrowzeeStartCountdown--;
 
             MenuInput_FrameUpdate();
             DynamoGame_UpdateCountdownAndCue(1);
@@ -682,7 +682,7 @@ void DynamoGame_MainLoop(void) {
             MenuInput_FrameUpdate();
             DynamoGame_UpdateCountdownAndCue(2);
 
-            if (D_87B000C8 == 0) {
+            if (gDrowzeeGameIsOver == 0) {
                 DynamoGame_ReadPlayerCrankInput();
             } else if (gResultExitPending != 0) {
                 var_s0 = 0;
@@ -712,19 +712,19 @@ void DynamoGame_ShowResultText(void) {
 }
 
 void DynamoGame_InitCamera(void) {
-    D_87B000EC = D_87B000E8->posX.unk_0C;
+    gDrowzeeCamera = gDrowzeeStageRoot->posX.unk_0C;
 
-    D_87B000F0 = -0x200;
-    D_87B000F2 = 0;
-    D_87B000F4 = 0xBE;
+    gDrowzeeCamDist = -0x200;
+    gDrowzeeCamYaw = 0;
+    gDrowzeeCamPitch = 0xBE;
 
-    D_87B000EC->unk_24.near = 50.0f;
-    D_87B000EC->unk_24.far = 6400.0f;
-    D_87B000EC->unk_24.fovy = 40.0f;
+    gDrowzeeCamera->unk_24.near = 50.0f;
+    gDrowzeeCamera->unk_24.far = 6400.0f;
+    gDrowzeeCamera->unk_24.fovy = 40.0f;
 
-    D_87B000EC->unk_60.at.y = 51.0f;
+    gDrowzeeCamera->unk_60.at.y = 51.0f;
 
-    Camera_ComputeEyeFromAngles(&D_87B000EC->unk_60.at, &D_87B000EC->unk_60.eye, D_87B000F4, D_87B000F0, D_87B000F2);
+    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamPitch, gDrowzeeCamDist, gDrowzeeCamYaw);
 }
 
 void DynamoGame_LoadAssets(void) {
@@ -733,7 +733,7 @@ void DynamoGame_LoadAssets(void) {
     MemoryBlock* temp_v0;
 
     temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
-    D_87B000E8 = process_geo_layout(temp_v0, gResultScreenGeoLayoutData);
+    gDrowzeeStageRoot = process_geo_layout(temp_v0, gResultScreenGeoLayoutData);
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
     PokeIcon_OpenModelArchives();
@@ -742,9 +742,9 @@ void DynamoGame_LoadAssets(void) {
 
     for (i = 0; i < 2; i++) {
         if (i == 0) {
-            D_87B000E4 = Model_LoadByArchiveIndex(0xC5);
+            gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xC5);
         } else {
-            D_87B000E4 = Model_LoadByArchiveIndex(0xC6);
+            gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xC6);
         }
 
         for (j = 0; j < 4; j++) {
@@ -755,9 +755,9 @@ void DynamoGame_LoadAssets(void) {
                 ModelRenderer_AttachDisplayObject(gCurrentHealthBarNode);
 
                 if (i == 0) {
-                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC5, D_87B000E4->unk_08->posX[0]);
+                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC5, gDrowzeeModelTemp->unk_08->posX[0]);
                 } else {
-                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC6, D_87B000E4->unk_08->posX[0]);
+                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC6, gDrowzeeModelTemp->unk_08->posX[0]);
                 }
 
                 gCurrentHealthBar->unk_008 = 0;
@@ -799,13 +799,13 @@ void DynamoGame_LoadAssets(void) {
 
         for (j = 0; j < 13; j++) {
             if ((j != 2) && (j != 3) && (j != 4)) {
-                D_87B000E4 = Model_LoadByArchiveIndex(sp5C[j]);
+                gDrowzeeModelTemp = Model_LoadByArchiveIndex(sp5C[j]);
             }
 
             gCurrentHealthBarNode = gHealthBarGraphNodePtrs[j];
 
             ModelRenderer_AttachDisplayObject(gCurrentHealthBarNode);
-            Model_InitDisplayObject(gCurrentHealthBarNode, 0, sp5C[j], D_87B000E4->unk_08->posX[0]);
+            Model_InitDisplayObject(gCurrentHealthBarNode, 0, sp5C[j], gDrowzeeModelTemp->unk_08->posX[0]);
             ModelAnim_SetAnimation(gCurrentHealthBarNode, 0);
             ModelAnim_SetFrame(gCurrentHealthBarNode, gCurrentHealthBarNode->unk_040.rotation->unk_0A);
         }

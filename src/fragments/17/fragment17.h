@@ -34,12 +34,12 @@ typedef struct unk_D_86B0E5D4_04 {
     /* 0x74 */ f32 unk_74;
 } unk_D_86B0E5D4_04; // size >= 0x78
 
-typedef struct unk_D_86B0E5D4 {
+typedef struct DioramaState {
     /* 0x00 */ CameraStruct* posX;
     /* 0x04 */ unk_D_86B0E5D4_04 rotation;
-} unk_D_86B0E5D4; // size = 0x7C
+} DioramaState; // size = 0x7C
 
-typedef struct unk_D_86B0C160 {
+typedef struct DioramaAnimData {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -57,21 +57,21 @@ typedef struct unk_D_86B0C160 {
     /* 0x28 */ f32 unk_28;
     /* 0x2C */ f32 unk_2C;
     /* 0x30 */ f32 unk_30;
-} unk_D_86B0C160; // size = 0x34
+} DioramaAnimData; // size = 0x34
 
-typedef struct unk_D_86B0E5F0 {
-    /* 0x000 */ unk_D_86002F30* unk_000;
+typedef struct DioramaModelSlot {
+    /* 0x000 */ ModelData* unk_000;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ s32 unk_16C;
-} unk_D_86B0E5F0; // size = 0x170
+} DioramaModelSlot; // size = 0x170
 
-typedef struct unk_D_86B0C4C8 {
+typedef struct DioramaObjectDef {
     /* 0x00 */ Vec3f posX;
     /* 0x0C */ u8 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ u16 unk_10;
     /* 0x12 */ char unk12[0x2];
-} unk_D_86B0C4C8; // size = 0x14
+} DioramaObjectDef; // size = 0x14
 
 typedef struct SpriteColorParams {
     /* 0x00 */ u16 posX;
@@ -94,7 +94,7 @@ typedef struct GfxTileParams {
 } GfxTileParams; // size = 0x30
 
 typedef struct unk_D_86B0FA78 {
-    /* 0x000 */ unk_D_86002F30* unk_000;
+    /* 0x000 */ ModelData* unk_000;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ s32 unk_16C;
     /* 0x170 */ s32 unk_170;
@@ -146,7 +146,7 @@ typedef struct unk_D_86B0FA7C {
     /* 0x48 */ char unk48[0x34];
 } unk_D_86B0FA7C; // size = 0x7C
 
-typedef struct unk_D_86B0C264 {
+typedef struct DioramaPresetData {
     /* 0x00 */ Vec3f posX;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -156,11 +156,11 @@ typedef struct unk_D_86B0C264 {
     /* 0x14 */ u16 unk_16;
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 unk_1A;
-} unk_D_86B0C264; // size = 0x1C
+} DioramaPresetData; // size = 0x1C
 
-extern unk_D_86B0C160 gScrollBarSegmentData[];
-extern s32 D_86B0E5DC;
-extern char** D_86B0E5E0;
+extern DioramaAnimData gScrollBarSegmentData[];
+extern s32 gDioramaEndScreenActive;
+extern char** gDioramaEndCaptionStringId;
 extern unk_D_86B0FA78* gCameraTarget;
 extern unk_D_86B0FA7C* gCameraState;
 extern unk_70D3A0 gMonsterStageData;
@@ -172,10 +172,10 @@ s32 Diorama_ScaleRotateCallbackA(s32 arg0, GraphNode* arg1);
 s32 Diorama_ScaleRotateCallbackB(s32 arg0, GraphNode* arg1);
 s32 Diorama_GroupStateCallback(s32 arg0, GraphNode* arg1);
 void Diorama_ClearModelSlots(void);
-void Diorama_FreeModelSlots(unk_D_86B0E5F0* arg0);
+void Diorama_FreeModelSlots(DioramaModelSlot* arg0);
 void Diorama_PushModelPool(void);
-void Diorama_InitModelSlot(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1);
-void Diorama_SetModelSlotPosition(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1);
+void Diorama_InitModelSlot(DioramaModelSlot* arg0, DioramaObjectDef* arg1);
+void Diorama_SetModelSlotPosition(DioramaModelSlot* arg0, DioramaObjectDef* arg1);
 void Diorama_SetGlowFromGroup(s32 arg0);
 void Diorama_LoadModelGroup(s32 arg0);
 void Diorama_SwitchModelGroup(s32 arg0);
@@ -208,9 +208,9 @@ void DioramaCamKeyframe_SetDistance(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2)
 void DioramaCamKeyframe_SetAtAngles(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
 void DioramaCamKeyframe_SetAtDistance(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
 void DioramaCamKeyframe_SetTransitionSpeed(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2);
-void Diorama_LoadCameraKeyframe(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1);
-void Diorama_SetCameraToKeyframeStart(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1);
-s32 Diorama_UpdateCameraKeyframe(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1);
+void Diorama_LoadCameraKeyframe(DioramaAnimData* arg0, DioramaState* arg1);
+void Diorama_SetCameraToKeyframeStart(unk_D_86B0E5D4_04* arg0, DioramaState* arg1);
+s32 Diorama_UpdateCameraKeyframe(unk_D_86B0E5D4_04* arg0, DioramaState* arg1);
 
 void Diorama_DrawEndBackgroundTiles(u8*);
 void Diorama_DrawFullscreenTexture(u8*, s32, s32, s32, s32, u8, u8);
@@ -304,7 +304,7 @@ void IntroCamKeyframe_SetDistance(f32 arg0, f32 arg1);
 void IntroCamKeyframe_SetAtAngles(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void IntroCamKeyframe_SetAtDistance(f32 arg0, f32 arg1);
 void IntroCamKeyframe_SetTransitionSpeed(f32 arg0, f32 arg1);
-void Intro_LoadCameraKeyframe(unk_D_86B0C160* arg0, CameraStruct* arg1);
+void Intro_LoadCameraKeyframe(DioramaAnimData* arg0, CameraStruct* arg1);
 s32 Intro_UpdateCameraKeyframe(CameraStruct* arg0);
 
 void WipeTransition_Start(s32 arg0, s32 arg1);

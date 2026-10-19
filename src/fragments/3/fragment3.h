@@ -8,7 +8,7 @@
 
 typedef struct MiniActor {
     /* 0x000 */ Fragment2_1GraphNode unk_000;		// collider ? model ?
-    /* 0x168 */ unk_D_86002F30* unk_168;
+    /* 0x168 */ ModelData* unk_168;
     /* 0x16C */ Vec3f scale;
     /* 0x178 */ char unk178[0x18];	//	unused
     /* 0x190 */ Vec3f totalPos;		//	all positions

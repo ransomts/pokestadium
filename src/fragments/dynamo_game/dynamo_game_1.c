@@ -1152,8 +1152,8 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
 
         gSPDisplayList(var_s1++, HealthBarDisplayList);
 
-        if ((D_87B000C8 == 0) || ((gCurrentHealthBar->unk_00C == 1) && (gCurrentHealthBar->unk_008 != 6))) {
-            if (D_87B000C8 == 0) {
+        if ((gDrowzeeGameIsOver == 0) || ((gCurrentHealthBar->unk_00C == 1) && (gCurrentHealthBar->unk_008 != 6))) {
+            if (gDrowzeeGameIsOver == 0) {
                 gCurrentHealthBar->unk_17C->unk_28 =
                     (s32)ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->unk_012) / 250.0f;
 
@@ -1229,7 +1229,7 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
                 }
             }
 
-            gDPLoadTextureBlock_4b(var_s1++, &HealthBarBackgroundTextureData[((D_87B000C0 % 4) << 0xA) / 2], G_IM_FMT_I, 32, 32, 0,
+            gDPLoadTextureBlock_4b(var_s1++, &HealthBarBackgroundTextureData[((gDrowzeeFrameCounter % 4) << 0xA) / 2], G_IM_FMT_I, 32, 32, 0,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                    G_TX_NOLOD, G_TX_NOLOD);
             gSPVertex(var_s1++, HealthBarBackgroundVertices, 4, 0);

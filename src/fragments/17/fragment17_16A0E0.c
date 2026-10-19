@@ -46,7 +46,7 @@ static u32 D_86B0E374[] = {
 };
 
 static char** D_86B10840;
-static unk_D_86002F30* D_86B10844;
+static ModelData* D_86B10844;
 static GraphNode* D_86B10848;
 static Fragment2_1GraphNode D_86B10850;
 static CameraStruct* D_86B109B8;

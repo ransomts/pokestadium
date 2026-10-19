@@ -13,7 +13,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static unk_D_86002F30* gGeoLayout_StageBackground;
+static ModelData* gGeoLayout_StageBackground;
 static GraphNode* gStageTextureNode;
 static Fragment2_1GraphNode D_82800538;
 static BinArchive* D_828006A0;

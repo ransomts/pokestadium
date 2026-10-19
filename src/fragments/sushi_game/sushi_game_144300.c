@@ -96,7 +96,7 @@ static Color_RGB8 gSushiColorGradC[] = {
 };
 static s32 gResultSoundCategories[] = { 0x50002, 0x50002, 0x50001, 0x50002, 0, 0, 0 };
 
-unk_D_86002F34* gSushiGoRoundGraphNode;
+MiniHudMainGraph* gSushiGoRoundGraphNode;
 static TextObject* gSushiGoRoundTextObject;
 static u32 gSushiGoRoundFrameCounter;
 static s32 gSushiGoRoundState;

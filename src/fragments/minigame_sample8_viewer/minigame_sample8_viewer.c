@@ -24,7 +24,7 @@ static u32 gMiniGameGeoLayout[] = {
     0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-static unk_D_86002F30* D_86700930;
+static ModelData* D_86700930;
 static GraphNode* gMiniGameRootNode;
 static CameraStruct* gMiniGameCameraNode;
 static Fragment2_1GraphNode D_86700940;

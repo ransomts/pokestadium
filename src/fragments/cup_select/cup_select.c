@@ -20,7 +20,7 @@ static GraphNode* gOverlayGraphNode;
 static GraphNode* gUIGraphNode;
 static Fragment2_1GraphNode gCupSelectNodesA[4];
 static Fragment2_1GraphNode gCupSelectNodesB[3];
-static unk_func_80027FA0 D_82E023A0;
+static SessionModeSettings D_82E023A0;
 static s16 gCupSelectCursor;
 static s16 gCupSelectMaxIndex;
 

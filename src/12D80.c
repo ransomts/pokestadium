@@ -398,7 +398,7 @@ void Geo_ProcessNodeChildren(GraphNode* arg0) {
 
 void Geo_NodeReference(GraphNode* arg0) {
     UNUSED s32 pad;
-    GraphNode* temp_a1 = ((unk_D_86002F34*)arg0)->unk_18;
+    GraphNode* temp_a1 = ((MiniHudMainGraph*)arg0)->unk_18;
 
     if ((temp_a1 != NULL) && (temp_a1->unk_01 & 1)) {
         gGraphNodeReturnVal = 0;

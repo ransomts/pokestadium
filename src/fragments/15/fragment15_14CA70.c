@@ -25,30 +25,30 @@
 #include "src/stage_loader.h"
 #include "src/util.h"
 
-typedef struct unk_D_8690A69C {
+typedef struct GalleryState {
     /* 0x000 */ unk_D_86002F58_004_000_010_024* unk_000;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ s32 unk_16C;
-} unk_D_8690A69C; // size = 0x170
+} GalleryState; // size = 0x170
 
-typedef struct unk_D_8690A718 {
+typedef struct GalleryAnimScriptEntry {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char unk02[0xE];
-} unk_D_8690A718; // size = 0x10
+} GalleryAnimScriptEntry; // size = 0x10
 
-typedef struct unk_D_86908CA0 {
+typedef struct GalleryCameraConfig {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x04 */ f32 rotation;
-} unk_D_86908CA0; // size = 0x8
+} GalleryCameraConfig; // size = 0x8
 
-typedef struct unk_D_86909168 {
+typedef struct GalleryTextTimer {
     /* 0x0 */ s32 posX;
     /* 0x4 */ s32 rotation;
-} unk_D_86909168; // size = 0x8
+} GalleryTextTimer; // size = 0x8
 
-typedef struct unk_D_869091B8 {
+typedef struct GalleryScriptInput {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ f32 rotation;
@@ -56,7 +56,7 @@ typedef struct unk_D_869091B8 {
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ char unk14[0xC];
-} unk_D_869091B8; // size = 0x20
+} GalleryScriptInput; // size = 0x20
 
 static u8 gStageFragmentIds[] = {
     0x00, 0x01, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x11,
@@ -93,7 +93,7 @@ char* gStagePanelLabelStrings[] = {
 Color_RGB8 gStagePanelGradientStartColor = { 0, 100, 255 };
 Color_RGB8 gStagePanelGradientEndColor = { 100, 255, 255 };
 
-static unk_D_86908CA0 gStageCameraConfig[] = {
+static GalleryCameraConfig gStageCameraConfig[] = {
     { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, 5.0f },
     { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, 4.0f },   { 0xAB, 0xAC, 1.0f },   { 0xAB, 0xAC, 0.0f },
     { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, -10.0f }, { 0xAB, 0xAC, 0.0f },   { 0xAB, 0xAC, 0.0f },
@@ -135,12 +135,12 @@ static unk_D_86908CA0 gStageCameraConfig[] = {
     { 0xAB, 0xAC, -8.0f },
 };
 
-static unk_D_86909168 gTutorialTextTimers[] = {
+static GalleryTextTimer gTutorialTextTimers[] = {
     { 0x1A, 0x60 },   { 0x7F, 0x117 },  { 0x135, 0x230 }, { 0x24A, 0x361 }, { 0x387, 0x46C },
     { 0x48D, 0x543 }, { 0x564, 0x653 }, { 0x673, 0x6D0 }, { 0x76C, 0x858 }, { 0x87D, 0x1FCC },
 };
 
-static unk_D_869091B8 gControllerScriptInputs[] = {
+static GalleryScriptInput gControllerScriptInputs[] = {
     { 0xC4, 0, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 4, 0x8000, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 0xD, 0, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
@@ -305,7 +305,7 @@ static Color_RGBA8_u32 gGlobalColorRGBA;
 static s32 pad_D_8690A690;
 static s32 pad_D_8690A694;
 static BinArchive* D_8690A698;
-static unk_D_8690A69C* gStagePanelState;
+static GalleryState* gStagePanelState;
 static PokemonData gStagePanelPlayerData;
 static s32 gStageAnimTimer;
 static s32 gStageSoundTimer;
@@ -314,16 +314,16 @@ static s32 gStageAnimIndexA;
 static s32 gStageAnimIndexB;
 f32 gCameraZoomOffset;
 static s32 gStagePanelMode;
-unk_D_8690A710* gCameraParams;
-static unk_D_8690A718 gStageAnimScriptTable[190];
-unk_D_8690B2F8 gCameraConfig;
-unk_D_8690B308 gStagePanelAnimData;
+GalleryCameraParams* gCameraParams;
+static GalleryAnimScriptEntry gStageAnimScriptTable[190];
+GalleryCameraConfigState gCameraConfig;
+GalleryAnimData gStagePanelAnimData;
 static s32 gStagePanelTransitionTimer;
 s32 gStageSnapshotCount;
 s32 gStagePanelStateIndex;
-unk_D_8690B350 gStagePanelFadeData;
-unk_D_8690B360 gStagePanelAnimState;
-static unk_func_80027FA0 gStagePanelGbAudioState;
+GalleryFadeData gStagePanelFadeData;
+GalleryAnimState gStagePanelAnimState;
+static SessionModeSettings gStagePanelGbAudioState;
 s32 gCameraNavActiveFlag;
 s32 gCameraNavSubIndex;
 s32 gCameraNavTransition;
@@ -332,7 +332,7 @@ Controller gControllerInput;
 static u16 gControllerScriptButtonPrev;
 static s32 gControllerScriptIndex;
 static u16 gControllerScriptButtonTimer;
-unk_D_8690B3C0 gTutorialTextBoxState;
+GalleryTextBoxState gTutorialTextBoxState;
 s8 gTutorialTextBoxCharBuffer[255];
 static s8 gTutorialTextBoxStringBuffer[0x100];
 static Controller gControllerScriptTemp;
@@ -1114,11 +1114,11 @@ void Gallery_CameraInit(s32 arg0) {
     gStagePanelMode = arg0;
     Gallery_InitBackgroundScene();
 
-    gStagePanelState = main_pool_alloc(sizeof(unk_D_8690A69C), 0);
-    bzero(gStagePanelState, sizeof(unk_D_8690A69C));
+    gStagePanelState = main_pool_alloc(sizeof(GalleryState), 0);
+    bzero(gStagePanelState, sizeof(GalleryState));
 
-    gCameraParams = main_pool_alloc(sizeof(unk_D_8690A710), 0);
-    bzero(gCameraParams, sizeof(unk_D_8690A710));
+    gCameraParams = main_pool_alloc(sizeof(GalleryCameraParams), 0);
+    bzero(gCameraParams, sizeof(GalleryCameraParams));
 
     GalleryCamera_InitIntroSequence();
     Gallery_SetupPhotoModel();

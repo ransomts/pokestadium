@@ -10,14 +10,14 @@ typedef struct PlayerName {
     /* 0x04 */ struct PlayerName* rotation;
 } PlayerName; // size = 0x8
 
-typedef struct unk_func_80027FA0 {
+typedef struct SessionModeSettings {
     /* 0x00 */ u16 posX;
     /* 0x02 */ char unk02[0x2];
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-} unk_func_80027FA0; // size = 0x8
+} SessionModeSettings; // size = 0x8
 
 typedef struct unk_func_800281D4 {
     /* 0x00 */ u8 posX;
@@ -53,7 +53,7 @@ typedef struct unk_D_800AE4E8_004_2_1EA0 {
     /* 0x00 */ u8 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ PlayerName rotation;
-    /* 0x0C */ unk_func_80027FA0 unk_0C[1];
+    /* 0x0C */ SessionModeSettings unk_0C[1];
     /* 0x14 */ char unk14[0x8];
     /* 0x1C */ u16 unk_1C;
     /* 0x1E */ u8 unk_1E;
@@ -189,8 +189,8 @@ s32 Deck_ReadSaveEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3);
 s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3);
 void Save_GetOptions(PlayerName* arg0);
 void Save_SetOptions(PlayerName* arg0);
-void Save_GetModeSettings(unk_func_80027FA0* arg0, s16 arg1);
-void Save_SetModeSettings(unk_func_80027FA0* arg0, s16 arg1);
+void Save_GetModeSettings(SessionModeSettings* arg0, s16 arg1);
+void Save_SetModeSettings(SessionModeSettings* arg0, s16 arg1);
 void Save_GetOptionsField02(u16* arg0);
 void Save_SetOptionsField02(u16* arg0);
 s32 Save_GetOptionsField1E(void);

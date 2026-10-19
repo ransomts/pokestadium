@@ -20,7 +20,7 @@ static BinArchive* D_84A03170;
 static u8* gBgTexture1;
 static u8* gBgTexture2;
 static u8* gBgTexture3;
-static unk_func_80027FA0 D_84A03180;
+static SessionModeSettings D_84A03180;
 static s16 gPrevRoomIndex;
 
 static RoomDef gRoomDefinitions[] = {

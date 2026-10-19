@@ -479,7 +479,7 @@ void Battle_SelectComRoster(void) {
     }
 }
 
-void BattleScene_InitializeParticipantPresentation(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1) {
+void BattleScene_InitializeParticipantPresentation(unk_D_800AE540_1194* arg0, ModelData* arg1) {
     unk_D_800AE540_0004* temp_v0 = arg0->unk_08[0];
 
     arg0->unk_18 = arg1->unk_08->posX[0];
@@ -498,7 +498,7 @@ void BattleScene_Init(Stage* arg0) {
     s32 pad;
     s16 sp32;
     FramebufferImage* sp2C;
-    unk_D_86002F30* sp28;
+    ModelData* sp28;
 
     Battle_SetStageTintColor(0xFF, 0xFF, 0xFF);
     Battle_SetStageScale(1.0f);

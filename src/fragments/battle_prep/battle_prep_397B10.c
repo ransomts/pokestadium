@@ -1144,7 +1144,7 @@ void BattlePrep_LoadBannerAssets(unk_D_84B259A8* arg0) {
 }
 
 void BattlePrep_AdjustBannerTextureOffset(unk_D_84B259A8* arg0) {
-    unk_D_86002F34* ptr;
+    MiniHudMainGraph* ptr;
     s32 var_v0;
     s32 var_v1;
     u8* var_a0;
@@ -1219,7 +1219,7 @@ void BattlePrep_LoadBannerGeoLayouts(unk_D_84B259A8* arg0) {
     MainPool_FinalizeAllocation(temp_v0);
 }
 
-void BattlePrep_SetVertexGradientColors(unk_D_86002F34* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2) {
+void BattlePrep_SetVertexGradientColors(MiniHudMainGraph* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2) {
     Vtx* var_v0 = arg0->unk_20;
     s16 temp_v1 = arg0->unk_26 / 2;
     s16 i;

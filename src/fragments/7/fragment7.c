@@ -43,17 +43,17 @@ typedef struct unk_D_861054C0 {
     /* 0x1BC */ f32 unk_1BC;
 } unk_D_861054C0; // size = 0x1C0
 
-typedef struct unk_D_86105EA0 {
+typedef struct PlayerGraphNodeState {
     /* 0x000 */ char unk000[0x4];
     /* 0x004 */ Fragment2_1GraphNode unk_004;
-} unk_D_86105EA0; // size = 0x16C
+} PlayerGraphNodeState; // size = 0x16C
 
-typedef struct unk_D_86106450 {
+typedef struct ItemPairState {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ unk_D_86002F58_004_000_004* unk_16C;
-} unk_D_86106450; // size = 0x170
+} ItemPairState; // size = 0x170
 
 void ClefairyGame_DespawnPatternIcons(void);
 void ClefairyGame_SpawnPatternIcons(void);
@@ -72,12 +72,12 @@ static u32 gPatternTileData[] = {
     0xA4B5A4F3, 0xA5CFA5A4, 0xA5C3A1AA, 0x00000000,
 };
 
-typedef struct unk_D_861047B8 {
+typedef struct PatternEntry {
     /* 0x00 */ u8 posX[6];
     /* 0x06 */ u8 unk_06[4];
-} unk_D_861047B8; // size = 0xA
+} PatternEntry; // size = 0xA
 
-static unk_D_861047B8 gWeightedItemTable[0x2E] = {
+static PatternEntry gWeightedItemTable[0x2E] = {
     { { 1, 1, 3, 2, 0, 0 }, { 1, 0, 0, 0 } }, { { 0, 1, 0, 1, 2, 2 }, { 1, 0, 0, 0 } },
     { { 2, 0, 2, 1, 0, 0 }, { 1, 1, 0, 0 } }, { { 0, 1, 2, 3, 0, 1 }, { 1, 1, 0, 0 } },
     { { 3, 3, 3, 2, 0, 2 }, { 1, 0, 0, 0 } }, { { 2, 3, 3, 2, 3, 2 }, { 1, 1, 0, 0 } },
@@ -103,16 +103,16 @@ static unk_D_861047B8 gWeightedItemTable[0x2E] = {
     { { 0, 2, 3, 2, 1, 3 }, { 0, 0, 0, 1 } }, { { 0xFF, -1, -1, -1, -1, -1 }, { 0xFF, 0xFF, 0xFF, 0xFF } },
 };
 
-typedef struct unk_D_86104984 {
+typedef struct IconPosition {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-} unk_D_86104984; // size = 0xC
+} IconPosition; // size = 0xC
 
-static unk_D_86104984 gPlayerIconPositions[4] = {
+static IconPosition gPlayerIconPositions[4] = {
     { 0x31, 0xD4, -1, -1, 0, -1 },
     { 0x73, 0xD4, -1, -1, 0xFF, 0xFF },
     { 0xB5, 0xD4, -1, -1, -0x100, 0xFF },
@@ -163,12 +163,12 @@ static u32* gPatternTilePtrs[4][2] = {
     { gPatternTile4, gPatternTile5 },
 };
 
-typedef struct unk_D_86104B5C {
+typedef struct DLParam {
     /* 0x00 */ u8 posX[3];
-} unk_D_86104B5C;
+} DLParam;
 
-static unk_D_86104B5C gResultScreenDLParams1 = { 0, 0, 30 };
-static unk_D_86104B5C gResultScreenDLParams2 = { 0, 0, 150 };
+static DLParam gResultScreenDLParams1 = { 0, 0, 30 };
+static DLParam gResultScreenDLParams2 = { 0, 0, 150 };
 
 static s32 pad_86104B64[] = { 0, 0, 0 };
 static Gfx gEmptyDL1[] = {
@@ -294,10 +294,10 @@ u32 gPatternTile7[] = {
     0xFFFEFFFE, 0xFFFED6B5, 0xD6B5D6B5, 0xD6B5FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x00000000, 0x00000000,
 };
 
-static unk_D_86002F30* gFragment7Struct1;
-static unk_D_86002F34* gFragment7Struct2;
+static ModelData* gFragment7Struct1;
+static MiniHudMainGraph* gFragment7Struct2;
 static CameraStruct* gFragment7Camera;
-static unk_D_86002F30* gFragment7Struct3;
+static ModelData* gFragment7Struct3;
 static s16 gCameraX;
 static s16 gCameraY;
 static s16 gCameraZ;
@@ -323,8 +323,8 @@ static s16 gResultScreenActionFlag;
 static s16 gResultScreenActionTimer;
 static Fragment2_1GraphNode gResultScreenGraphNode1;
 static Fragment2_1GraphNode gResultScreenGraphNode2;
-static unk_D_86105EA0 gResultScreenGraphNodes[4];
-static unk_D_86106450 gItemPairStates[12];
+static PlayerGraphNodeState gResultScreenGraphNodes[4];
+static ItemPairState gItemPairStates[12];
 static s16 gPauseState;
 
 void ClefairyGame_HidePatternIcons(void) {
@@ -343,11 +343,11 @@ void ClefairyGame_SetAllPlayerAnimSpeed(s32 arg0) {
     }
 }
 
-unk_D_861047B8* ClefairyGame_ChoosePatternEntry(s32 arg0, s32 arg1) {
+PatternEntry* ClefairyGame_ChoosePatternEntry(s32 arg0, s32 arg1) {
     UNUSED s32 pad[4];
-    unk_D_861047B8* sp34;
+    PatternEntry* sp34;
     s32 var_v1;
-    unk_D_861047B8* var_s0;
+    PatternEntry* var_s0;
     s32 i;
     u8 temp_s1;
     s16 tmp;
@@ -383,14 +383,14 @@ unk_D_861047B8* ClefairyGame_ChoosePatternEntry(s32 arg0, s32 arg1) {
 }
 
 void ClefairyGame_GeneratePattern(void) {
-    unk_D_86106450* ptr;
+    ItemPairState* ptr;
     s32 var_a1;
     s32 var_s2;
     u8 temp_v0;
     u16 var_a3;
-    unk_D_861047B8* temp_v0_2;
-    unk_D_861047B8* var_v0;
-    unk_D_861047B8* var_a0;
+    PatternEntry* temp_v0_2;
+    PatternEntry* var_v0;
+    PatternEntry* var_a0;
     s32 i;
 
     gPlayerItemCount = 4;
@@ -547,8 +547,8 @@ void func_86100C28(void) {
 
 void ClefairyGame_DrawOverlay(s32 arg0) {
     s32 i;
-    UNUSED unk_D_86104B5C sp60 = gResultScreenDLParams1;
-    UNUSED unk_D_86104B5C sp5C = gResultScreenDLParams2;
+    UNUSED DLParam sp60 = gResultScreenDLParams1;
+    UNUSED DLParam sp5C = gResultScreenDLParams2;
 
     if (arg0 != 0) {
 
@@ -556,7 +556,7 @@ void ClefairyGame_DrawOverlay(s32 arg0) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gResultScreenAlpha);
 
         for (i = 0; i < 4; i++) {
-            unk_D_86104984* ptr = &gPlayerIconPositions[i];
+            IconPosition* ptr = &gPlayerIconPositions[i];
 
             if (gPlayerStates[i].unk_000 == 0) {
                 Widget_DrawPlayerIcon(i, ptr->posX, ptr->posY, 0.75f);
@@ -708,7 +708,7 @@ void ClefairyGame_DrawProgressBars(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        unk_D_86104984* ptr = &gPlayerIconPositions[i];
+        IconPosition* ptr = &gPlayerIconPositions[i];
 
         gCurrentPlayerState = &gPlayerStates[i];
         Widget_DrawProgressBar(ptr->posX - 0xE, ptr->posY - 5, 0x32, gCurrentPlayerState->unk_1A8, gCurrentPlayerState->unk_1AA);
@@ -1001,7 +1001,7 @@ s32 ClefairyGame_WaitDemoAdvance(void) {
 
 s32 ClefairyGame_SpawnPatternIconStep(void) {
     UNUSED s32 pad[2];
-    unk_D_86106450* sp1C;
+    ItemPairState* sp1C;
     s16 index;
 
     if (((gPlayerItemCount - 1) * gPlayerItemRows) < gResultScreenTimer) {
@@ -1027,7 +1027,7 @@ s32 ClefairyGame_FinishPatternIconSpawn(void) {
 
     if ((gPlayerItemCount * gPlayerItemRows) < gResultScreenTimer) {
         for (i = 0; i < gPlayerItemCount; i++) {
-            unk_D_86106450* ptr = &gItemPairStates[i];
+            ItemPairState* ptr = &gItemPairStates[i];
 
             ModelRenderer_ClearDisplayObject(&ptr->unk_004);
             ptr->unk_002 = 0;
@@ -1679,7 +1679,7 @@ void ClefairyGame_ShowWinnerSequence(void) {
     }
 
     for (i = 0; i < gPlayerItemCount; i++) {
-        unk_D_86106450* ptr = &gItemPairStates[i];
+        ItemPairState* ptr = &gItemPairStates[i];
 
         if (ptr->unk_002 == 0) {
             Model_InitDisplayObject(&ptr->unk_004, 0, 0xB4, ptr->unk_16C);
@@ -1738,7 +1738,7 @@ void ClefairyGame_LoadAssets(void) {
         gPlayerType = 2;
     }
 
-    gFragment7Struct2 = (unk_D_86002F34*)process_geo_layout(temp_v0, gResultScreenParams);
+    gFragment7Struct2 = (MiniHudMainGraph*)process_geo_layout(temp_v0, gResultScreenParams);
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
     PokeIcon_OpenModelArchives();

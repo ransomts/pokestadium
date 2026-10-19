@@ -143,7 +143,7 @@ typedef struct unk_D_86807180 {
 extern s32 gSushiOrderIndices[];
 extern unk_D_86807180 gSushiItemDefs[];
 
-extern unk_D_86002F34* gSushiGoRoundGraphNode;
+extern MiniHudMainGraph* gSushiGoRoundGraphNode;
 extern s32 gSushiGoRoundTimer;
 extern unk_D_86807558 gSushiEntities[4];
 

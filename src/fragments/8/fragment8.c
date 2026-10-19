@@ -24,11 +24,11 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_86203CEC {
+typedef struct RaceAIDifficulty {
     /* 0x0 */ void* posX;
     /* 0x4 */ s16 rotation;
     /* 0x6 */ s16 unk_06;
-} unk_D_86203CEC; // size = 0x8
+} RaceAIDifficulty; // size = 0x8
 
 static u32 gRaceTextTable[] = {
     0xFFFFFFD8, 0xFFFFFF65, 0x00000056, 0x00000097, 0xA4CFA4B7, 0xA4ECA5B3, 0xA5E9A5C3, 0xA5BF0000, 0xA1A1A1A1,
@@ -110,7 +110,7 @@ static AnimFrame gRacePanelAnim3[] = {
     { 0x03042E00, 0x0E }, { 0x03044360, 0x02 }, { 0x03044A80, 0x06 }, { 0x03044360, 0x02 }, { 0, 0 },
 };
 
-static unk_D_86203CEC gRaceAIDifficultyTable[] = {
+static RaceAIDifficulty gRaceAIDifficultyTable[] = {
     { gStageSubtitles_Alt2, 0x0019, 0x000F },
     { gTextTable_StageSubtitles, 0x0019, 0x0014 },
     { gStageSubtitles_Alt1, 0x001E, 0x0028 },
@@ -131,9 +131,9 @@ static u32 gRaceStageScript[] = {
 const char gRaceNumPlayersFmt[] = " %dP";
 const char gRaceStringFmt[] = "%s";
 
-static unk_D_86002F30* gRaceStageData;
-static unk_D_86002F30* gRaceStageAssets;
-static unk_D_86002F34* gRaceGraphRoot;
+static ModelData* gRaceStageData;
+static ModelData* gRaceStageAssets;
+static MiniHudMainGraph* gRaceGraphRoot;
 static CameraStruct* gRaceCamera;
 static s16 gRaceCameraDist;
 static s16 gRaceCameraYaw;
@@ -141,8 +141,8 @@ static s16 gRaceCameraPitch;
 static u16 gRaceFrameCounter;
 static s32 gRacePhase;
 static s16 gRaceFinishOrder;
-static unk_D_86203E50 gRacePlayerStates[4];
-static unk_D_86203E50* gRacePlayerState;
+static RacePlayerState gRacePlayerStates[4];
+static RacePlayerState* gRacePlayerState;
 static Fragment2_1GraphNode* gRacePlayerGraphNode;
 static Fragment2_1GraphNode gRacePlayerGraphNodeTemp;
 static s16 gRaceResultScreenActive;
@@ -156,14 +156,14 @@ static TextObject* gRaceTextObject;
 static s16 gRaceIsResultScreen;
 static s16 gRaceStageReady;
 static s16 gRaceLaneIndex;
-static unk_D_86204720 gRaceObstacles[4][10];
-static unk_D_86204720* gRaceObstaclePtr;
+static RaceObstacle gRaceObstacles[4][10];
+static RaceObstacle* gRaceObstaclePtr;
 static s32 gRaceFinishOrderTable[4];
 static s32 gRaceFinishCount;
 static s16 gRaceCameraInitFlag;
 u32 gRacePlayerScreenY[4];
 
-void RattataGame_InitAIDifficulty(unk_D_86203E50* arg0) {
+void RattataGame_InitAIDifficulty(RacePlayerState* arg0) {
     arg0->unk_002 = gMenuState + 1;
 }
 
@@ -212,7 +212,7 @@ void Race_Stub(void) {
 void RattataGame_UpdateAIInput(void) {
     UNUSED s32 pad[2];
     s32 i;
-    unk_D_86203CEC* temp_s0;
+    RaceAIDifficulty* temp_s0;
     u16 sp60[4];
     f32 temp_fv0;
     f32 temp_fv1;
@@ -606,14 +606,14 @@ void RattataGame_UpdateStartCountdown(void) {
     }
 }
 
-void RattataGame_SyncRacerZPosition(unk_D_86203E50* arg0) {
+void RattataGame_SyncRacerZPosition(RacePlayerState* arg0) {
     f32 temp_fv0 = arg0->unk_178 - 30.0f;
 
     arg0->unk_008.unk_024.z = temp_fv0;
     arg0->unk_194 = temp_fv0 / 3.0f;
 }
 
-void RattataGame_ResetRacerState(unk_D_86203E50* arg0) {
+void RattataGame_ResetRacerState(RacePlayerState* arg0) {
     arg0->unk_19C = 0;
     arg0->unk_180 = 30.0f;
     arg0->unk_184 = 30.0f;
@@ -626,7 +626,7 @@ void RattataGame_ResetRacerState(unk_D_86203E50* arg0) {
     arg0->unk_190 = 0.0f - arg0->unk_194;
 }
 
-s32 RattataGame_CheckHurdleCollision(unk_D_86203E50* arg0, unk_D_86204720* arg1) {
+s32 RattataGame_CheckHurdleCollision(RacePlayerState* arg0, RaceObstacle* arg1) {
     f32 temp_fv0;
     f32 temp_fv1;
 
@@ -660,11 +660,11 @@ s32 RattataGame_CheckHurdleCollision(unk_D_86203E50* arg0, unk_D_86204720* arg1)
     return -1;
 }
 
-void RattataGame_UpdateRunAnimSpeed(unk_D_86203E50* arg0) {
+void RattataGame_UpdateRunAnimSpeed(RacePlayerState* arg0) {
     arg0->unk_008.unk_040.unk_0C = (arg0->unk_178 * 196608.0f) / arg0->unk_180;
 }
 
-void RattataGame_SetRacerAnimState(unk_D_86203E50* arg0, s32 arg1) {
+void RattataGame_SetRacerAnimState(RacePlayerState* arg0, s32 arg1) {
     Fragment2_1GraphNode* temp_s0 = &arg0->unk_008;
 
     switch (arg1) {
@@ -696,7 +696,7 @@ void RattataGame_SetRacerAnimState(unk_D_86203E50* arg0, s32 arg1) {
     }
 }
 
-void RattataGame_UpdateHurdleMarkers(unk_D_86203E50* arg0) {
+void RattataGame_UpdateHurdleMarkers(RacePlayerState* arg0) {
     s32 i;
     f32 temp_fs1;
     u32 temp_v0;
@@ -969,12 +969,12 @@ void RattataGame_MainLoop(void) {
     s16 temp_s1_2;
     s16 var_s3;
     Fragment2_1GraphNode* var_s2;
-    unk_D_86203E50* temp_s1;
+    RacePlayerState* temp_s1;
     s16 var_v0_2;
     s16 sp8C;
-    unk_D_86203E50* temp_v1;
-    unk_D_86203E50* sp78[4];
-    unk_D_86203E50* var_s0_3;
+    RacePlayerState* temp_v1;
+    RacePlayerState* sp78[4];
+    RacePlayerState* var_s0_3;
 
     spA4 = 1;
 

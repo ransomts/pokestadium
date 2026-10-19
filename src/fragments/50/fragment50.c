@@ -49,7 +49,7 @@ static s32 pad_D_82607B58[2];
 static Fragment2_1GraphNode gFragment50GraphNodeArray[5];
 static Fragment2_1GraphNode gFragment50GraphNodeA;
 static Fragment2_1GraphNode gFragment50GraphNodeB;
-static unk_D_86002F30* gFragment50ObjData;
+static ModelData* gFragment50ObjData;
 static s16 gPokedexPanelCameraFovY;
 static s16 gPokedexPanelCameraFovZ;
 static s16 gPokedexPanelCameraFovX;
@@ -2594,7 +2594,7 @@ void HallOfFame_InitGallery(void) {
     s32 i;
     s16 j;
     MemoryBlock* temp_v0;
-    unk_D_86002F30* temp_s0;
+    ModelData* temp_s0;
     Fragment2_1GraphNode* ptr;
 
     gPokedexPanelModelId = 0;

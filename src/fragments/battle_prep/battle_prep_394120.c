@@ -30,7 +30,7 @@ unk_D_84B25A90 gUIElementB;
 unk_D_84B25AC0 gUIBarA;
 unk_D_84B25AC0 gUIBarB;
 unk_D_84B26640 gBattleMenuState;
-unk_func_80027FA0 gBattleProgress;
+SessionModeSettings gBattleProgress;
 char** gBattleMessageTable;
 
 static u8* gTrainerIconTextures[] = {

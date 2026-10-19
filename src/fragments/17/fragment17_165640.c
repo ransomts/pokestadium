@@ -137,7 +137,7 @@ static unk_D_86B0FA50* gUIElementHealthBar;
 static unk_D_86B0FA50* gUIElementHealthFill;
 static unk_D_86B0FA50* gUIElementStatus;
 static unk_D_86B0FA50* gUIElementBorder;
-static s16 D_86B0FA64;
+static s16 gCameraZoomSlew;
 static s16 gCameraZoomPitch;
 static s16 gCameraZoomYaw;
 static f32 gCameraZoomFov;
@@ -145,13 +145,13 @@ static s32 gBattleSequenceFrameCount;
 static s32 gBattleSequenceType;
 unk_D_86B0FA78* gCameraTarget;
 unk_D_86B0FA7C* gCameraState;
-static u8 D_86B0FA80[0xBE0];
+static u8 gMonsterModelData[0xBE0];
 unk_70D3A0 gMonsterStageData;
 static unk_D_70B10 gMonsterStageParams;
 static unk_D_800AE540_0004* gMonsterDataPtr;
 static unk_D_800AE540_1194* gMonsterContextPtr;
 
-static u32 D_86B0DE5C[] = {
+static u32 gMiniCameraLayout[] = {
     0x0C00FFFF, 0x05000000,    0x0B00001E,  0x00000000,    0x014000F0,  0x0000000F,  0x00000000, 0x00000000,
     0x05000000, 0x0D000000,    0x05000000,  0x07000000,    &gBattleOverlayRect, 0x14000000,  0x002D0019, 0xFFFFFF28,
     0x08000000, Intro_LightAngleCallbackA, 0x00000000,  0x14000000,    0x002D0019,  0x80808028,  0x08000000, Intro_LightAngleCallbackB,
@@ -234,7 +234,7 @@ void Intro_LoadPokemonTextures(void) {
     sp1C = (u32)_70D3A0_ROM_START +
            (((gCameraTarget->unk_174 * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
 
-    Dma_WriteChunks(D_86B0FA80, temp_a1, temp_a1 + 0xBC0, 0);
+    Dma_WriteChunks(gMonsterModelData, temp_a1, temp_a1 + 0xBC0, 0);
     Dma_WriteChunks(&gMonsterStageData, sp1C, sp1C + sizeof(unk_70D3A0), 0);
     Dma_WriteChunks(&gMonsterStageParams, sp24, sp24 + sizeof(unk_D_70B10), 0);
 }
@@ -406,9 +406,9 @@ void Intro_FadeInBackgroundTint(void) {
 }
 
 void Intro_UpdateCryEventTrack(void) {
-    if (((gCameraTarget->unk_178 % 50) == 0) && (gCameraTarget->unk_170 == 0) && (D_86B0FA80[0xA51] != 0xFF)) {
+    if (((gCameraTarget->unk_178 % 50) == 0) && (gCameraTarget->unk_170 == 0) && (gMonsterModelData[0xA51] != 0xFF)) {
         ModelAnim_ClearEventTrack(&gCameraTarget->unk_004);
-        ModelAnim_SetEventTrack(&gCameraTarget->unk_004, D_86B0FA80[0xA51]);
+        ModelAnim_SetEventTrack(&gCameraTarget->unk_004, gMonsterModelData[0xA51]);
         gCameraTarget->unk_170 = 1;
     } else if ((gCameraTarget->unk_170 == 1) && (ModelAnim_IsEventTrackNearEnd(&gCameraTarget->unk_004) == 1)) {
         gCameraTarget->unk_170 = 0;
@@ -622,7 +622,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
                 Intro_EmitLandingParticles();
             }
             if (gCameraTarget->unk_178++ >= 0x41) {
-                D_86B0FA64 = 0;
+                gCameraZoomSlew = 0;
                 Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraZoomFov, &gCameraZoomPitch, &gCameraZoomYaw);
                 gCameraTarget->unk_16C++;
             }
@@ -643,8 +643,8 @@ s32 Intro_UpdateShowcaseSequence(void) {
                 gCameraTarget->unk_178 = 0x64;
             }
 
-            D_86B0FA64 = Math_StepToS32(D_86B0FA64, 0x3C, 1, 1);
-            gCameraZoomYaw += D_86B0FA64;
+            gCameraZoomSlew = Math_StepToS32(gCameraZoomSlew, 0x3C, 1, 1);
+            gCameraZoomYaw += gCameraZoomSlew;
             Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraZoomFov, gCameraZoomPitch, gCameraZoomYaw);
             break;
     }
@@ -984,7 +984,7 @@ void Stage_LoadModels(void) {
     GeoNode_CreateContainer(NULL, &gMiniCameraRoot1);
     GeoNode_CreateContainer(NULL, &gMiniCameraRoot2);
     sp34 = MainPool_AllocState(main_pool_get_available(), 0);
-    gMiniCameraStruct = process_geo_layout(sp34, D_86B0DE5C);
+    gMiniCameraStruct = process_geo_layout(sp34, gMiniCameraLayout);
 
     temp_v0_3 = sp2C(0, 0);
     if (temp_v0_3 != NULL) {

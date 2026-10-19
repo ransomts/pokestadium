@@ -228,7 +228,7 @@ s16 RentalHub_MenuLoop(void) {
     return var_v1;
 }
 
-void RentalHub_LoadBackgroundImage(unk_func_80027FA0* arg0) {
+void RentalHub_LoadBackgroundImage(SessionModeSettings* arg0) {
     gBattleHeaderArchive = BinArchive_Open(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
 
     if (gSessionContext.unk_0000 == 7) {
@@ -244,7 +244,7 @@ void RentalHub_LoadBackgroundImage(unk_func_80027FA0* arg0) {
 
 s32 RentalHub_MenuMain(void) {
     s16 sp26;
-    unk_func_80027FA0 sp1C;
+    SessionModeSettings sp1C;
     s16 temp_v0;
 
     main_pool_push_state('menu');

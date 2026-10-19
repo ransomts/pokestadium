@@ -168,7 +168,7 @@ s32 BattlePrepStarBurst_DrawSparkParticle(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void BattlePrepStarBurst_InitSparkSlot(unk_D_84B25AC0_000* arg0, unk_D_86002F34* arg1, s16 arg2, s16 arg3, s16 arg4) {
+void BattlePrepStarBurst_InitSparkSlot(unk_D_84B25AC0_000* arg0, MiniHudMainGraph* arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->rotation = 0;
     arg0->unk_06 = arg4;
     arg0->unk_08.r = 0x50;
@@ -213,7 +213,7 @@ s32 BattlePrepStarBurst_DrawRainbowParticle(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void BattlePrepStarBurst_InitRainbowParticle(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, s16 arg2, s16 arg3, s16 arg4) {
+void BattlePrepStarBurst_InitRainbowParticle(unk_D_84B25AC0_0A0* arg0, MiniHudMainGraph* arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_06 = 0;
     arg0->rotation = 0;
     arg0->unk_08 = arg4;
@@ -246,7 +246,7 @@ void BattlePrepStarBurst_SpawnFlashCopy(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0
     Vec3f_SetComponentsDuplicate(&arg0->posX->unk_030, 0.5f, 0.5f, 0.5f);
 }
 
-void BattlePrepStarBurst_SpawnScatterParticle(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, Vec3f* arg2) {
+void BattlePrepStarBurst_SpawnScatterParticle(unk_D_84B25AC0_0A0* arg0, MiniHudMainGraph* arg1, Vec3f* arg2) {
     arg0->unk_06 = 0;
     arg0->rotation = 3;
     Color_SetRGBA(&arg0->unk_0A, 0xFF, 0xFF, 0xC8, 0xFF);

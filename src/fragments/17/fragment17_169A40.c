@@ -22,14 +22,14 @@ static u32 gStageGeoLayoutCommands[] = {
     0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-static unk_D_86002F30* gStageGeoLayout;
+static ModelData* gStageGeoLayout;
 static GraphNode* gStageRootGraphNode;
 static Fragment2_1GraphNode gStageRootFragmentNode;
 static CameraStruct* gStageCamera;
 static BinArchive* D_86B10824;
 static u8* gBackgroundTextureData;
 static u8 gStageFadeAlpha;
-static unk_func_80027FA0 D_86B10830;
+static SessionModeSettings gSessionModeSettings;
 
 void MewtwoIntro_DrawOverlay(void) {
 }
@@ -149,12 +149,12 @@ s32 Stage_ShowMewtwoIntro(void) {
     FRAGMENT_LOAD(fragment31);
 
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&D_86B10830, gSessionContext.unk_11F2);
+    Save_GetModeSettings(&gSessionModeSettings, gSessionContext.unk_11F2);
 
     if (gSessionContext.unk_11F2 == 1) {
         D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
         gBackgroundTextureData = BinArchive_GetFile(D_86B10824, 2);
-    } else if (D_86B10830.posX & 0x100) {
+    } else if (gSessionModeSettings.posX & 0x100) {
         D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
         gBackgroundTextureData = BinArchive_GetFile(D_86B10824, 1);
     } else {

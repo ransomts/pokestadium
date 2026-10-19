@@ -17,7 +17,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_86B0E5D8 {
+typedef struct DioramaColorAnim {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ u8 rotation;
@@ -26,12 +26,12 @@ typedef struct unk_D_86B0E5D8 {
     /* 0x07 */ u8 unk_07;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-} unk_D_86B0E5D8; // size = 0xC
+} DioramaColorAnim; // size = 0xC
 
 extern u32 gFragment17MaskTable[];
-extern unk_D_86B0C4C8* gFragment17ObjectDefs[];
-extern unk_D_86B0C160 gFragment17AnimData[];
-extern unk_D_86B0C264 gFragment17PresetData[];
+extern DioramaObjectDef* gFragment17ObjectDefs[];
+extern DioramaAnimData gFragment17AnimData[];
+extern DioramaPresetData gFragment17PresetData[];
 extern u32 gFragment17StageLayout0[];
 extern u32 gFragment17StageLayout1[];
 
@@ -57,13 +57,13 @@ static u32 gFragment17GeoLayoutCommands[] = {
 };
 
 static GraphNode* gFragment17RootNode;
-static unk_D_86B0E5D4* gFragment17State;
-static unk_D_86B0E5D8* gFragment17ColorAnim;
-s32 D_86B0E5DC;
-char** D_86B0E5E0;
+static DioramaState* gFragment17State;
+static DioramaColorAnim* gFragment17ColorAnim;
+s32 gDioramaEndScreenActive;
+char** gDioramaEndCaptionStringId;
 static BinArchive* D_86B0E5E4;
 static u8* D_86B0E5E8;
-static unk_D_86B0E5F0 gFragment17Objects[4];
+static DioramaModelSlot gFragment17Objects[4];
 static s32 gFragment17WindowAlpha;
 static s32 gFragment17Result;
 static u16 D_86B0EBB8;
@@ -129,7 +129,7 @@ void Diorama_ClearModelSlots(void) {
     }
 }
 
-void Diorama_FreeModelSlots(unk_D_86B0E5F0* arg0) {
+void Diorama_FreeModelSlots(DioramaModelSlot* arg0) {
     while (arg0->unk_16C != 1) {
         ModelRenderer_ClearDisplayObject(&arg0->unk_004);
         arg0++;
@@ -141,7 +141,7 @@ void Diorama_PushModelPool(void) {
     main_pool_push_state('MONS');
 }
 
-void Diorama_InitModelSlot(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
+void Diorama_InitModelSlot(DioramaModelSlot* arg0, DioramaObjectDef* arg1) {
     ModelRenderer_AttachDisplayObject(&arg0->unk_004);
 
     arg0->unk_000 = Model_LoadByArchiveIndex(arg1->unk_0C);
@@ -159,7 +159,7 @@ void Diorama_InitModelSlot(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
     arg0->unk_004.unk_000.posY &= ~0x40;
 }
 
-void Diorama_SetModelSlotPosition(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
+void Diorama_SetModelSlotPosition(DioramaModelSlot* arg0, DioramaObjectDef* arg1) {
     arg0->unk_004.unk_024.x = arg1->posX.x;
     arg0->unk_004.unk_024.y = arg1->posX.y;
     arg0->unk_004.unk_024.z = arg1->posX.z;
@@ -177,8 +177,8 @@ void Diorama_SetGlowFromGroup(s32 arg0) {
 }
 
 void Diorama_LoadModelGroup(s32 arg0) {
-    unk_D_86B0C4C8* var_s0 = gFragment17ObjectDefs[arg0];
-    unk_D_86B0E5F0* var_s1 = gFragment17Objects;
+    DioramaObjectDef* var_s0 = gFragment17ObjectDefs[arg0];
+    DioramaModelSlot* var_s1 = gFragment17Objects;
 
     Diorama_ClearModelSlots();
     Diorama_PushModelPool();
@@ -196,8 +196,8 @@ void Diorama_LoadModelGroup(s32 arg0) {
 }
 
 void Diorama_SwitchModelGroup(s32 arg0) {
-    unk_D_86B0C4C8* sp2C = gFragment17ObjectDefs[arg0];
-    unk_D_86B0E5F0* var_s1 = gFragment17Objects;
+    DioramaObjectDef* sp2C = gFragment17ObjectDefs[arg0];
+    DioramaModelSlot* var_s1 = gFragment17Objects;
 
     Diorama_FreeModelSlots(gFragment17Objects);
     Diorama_ClearModelSlots();
@@ -270,8 +270,8 @@ void Diorama_DrawGroupTransitionOverlay(void) {
 }
 
 s32 Diorama_SlideModelsForward(s32 arg0) {
-    unk_D_86B0E5F0* var_v0 = gFragment17Objects;
-    unk_D_86B0C4C8* var_v1 = gFragment17ObjectDefs[arg0];
+    DioramaModelSlot* var_v0 = gFragment17Objects;
+    DioramaObjectDef* var_v1 = gFragment17ObjectDefs[arg0];
     s32 var_a1 = 1;
 
     while (var_v1->unk_0C != 0x98) {
@@ -296,12 +296,12 @@ void Diorama_FinishSequence(void) {
     gFragment17State->rotation.unk_4C = 9;
     gFragment17State->rotation.unk_50 = 0;
     gFragment17Objects->unk_004.unk_000.unk_01 &= ~1;
-    D_86B0E5DC = 1;
+    gDioramaEndScreenActive = 1;
 }
 
 void Diorama_UpdateProximityHighlight(s32 arg0) {
-    unk_D_86B0C4C8* ptr1 = gFragment17ObjectDefs[arg0];
-    unk_D_86B0E5F0* ptr2 = &gFragment17Objects[0];
+    DioramaObjectDef* ptr1 = gFragment17ObjectDefs[arg0];
+    DioramaModelSlot* ptr2 = &gFragment17Objects[0];
     s16 sp88[] = {
         // D_86B0BD20
         0x1554,
@@ -337,11 +337,11 @@ void Diorama_ReadControllerInput(void) {
 }
 
 void Diorama_InitSceneState(void) {
-    gFragment17State = main_pool_alloc(sizeof(unk_D_86B0E5D4), 0);
-    bzero(gFragment17State, sizeof(unk_D_86B0E5D4));
+    gFragment17State = main_pool_alloc(sizeof(DioramaState), 0);
+    bzero(gFragment17State, sizeof(DioramaState));
 
-    gFragment17ColorAnim = main_pool_alloc(sizeof(unk_D_86B0E5D8), 0);
-    bzero(gFragment17ColorAnim, sizeof(unk_D_86B0E5D8));
+    gFragment17ColorAnim = main_pool_alloc(sizeof(DioramaColorAnim), 0);
+    bzero(gFragment17ColorAnim, sizeof(DioramaColorAnim));
 
     gFragment17State->posX = gFragment17RootNode->unk_0C;
 
@@ -520,7 +520,7 @@ void Diorama_InitScene(void) {
     Diorama_InitSceneState();
 
     gFragment17WindowAlpha = 0;
-    D_86B0E5DC = 0;
+    gDioramaEndScreenActive = 0;
 }
 
 s32 Stage_ShowBootDiorama(void) {
@@ -543,7 +543,7 @@ s32 Stage_ShowBootDiorama(void) {
     }
 
     Text_InitStringTables();
-    D_86B0E5E0 = Text_GetStringTable(0x14);
+    gDioramaEndCaptionStringId = Text_GetStringTable(0x14);
     Diorama_InitScene();
     StageLoader_UpdateSegments();
     Diorama_RunLoop();

@@ -16573,3 +16573,60 @@ D_80068CA8	gTextQueueTimer	w7		counter incremented in TextRenderer_FlushQueuedSt
 D_800A7450	gFramebufferRequest	w7		struct passed to Display_QueueFramebufferRequest to manage framebuffers	applied@4dc4fbf1
 D_800A7468	gProjectionMatrix	w7		matrix initialized via guOrtho in StageLoader_SetupFrame	applied@4dc4fbf1
 D_800A74B0	gTextRenderDLHead	w7		pointer to the current display list head used specifically by TextRenderer functions	applied@4dc4fbf1
+D_86402840	gDrowzeeGameTimer	w8		increments in DrowzeeGame_UpdateRoundTick and checked against 0x3C and 0x6A for game state transitions	applied@c74b3641
+D_864052CC	gDrowzeeGameStatePtr	w8		pointer to gGameState used throughout the game logic to track AI and breath phases	applied@c74b3641
+D_87B000C8	gDrowzeeGameIsOver	w8		checked in DrowzeeGame_UpdateRoundTick and DrowzeeGame_MainLoop to trigger end-game sequences	applied@c74b3641
+D_87B000D4	gDrowzeeWinnerCount	w8		incremented in DrowzeeGame_ProcessElimination to count players remaining/winning	applied@c74b3641
+D_87B000C0	gDrowzeeFrameCounter	w8		incremented in DrowzeeGame_DrawFrame and used for modulo 64 in DrowzeeGame_DrawPlayerOverlay	applied@c74b3641
+D_87B000E8	gDrowzeeStageRoot	w8		passed to Geo_RenderRootNode and used as the base for camera initialization	applied@c74b3641
+D_87B000E4	gDrowzeeModelTemp	w8		temporary storage for Model_LoadByArchiveIndex results (0xC7, 0xC4, 0xC3, 0xD2)	applied@c74b3641
+D_87B000EC	gDrowzeeCamera	w8		pointer to the camera object initialized in DrowzeeGame_InitCamera	applied@c74b3641
+D_87B000F0	gDrowzeeCamDist	w8		used as distance parameter in Camera_ComputeEyeFromAngles	applied@c74b3641
+D_87B000F2	gDrowzeeCamYaw	w8		used as yaw parameter in Camera_ComputeEyeFromAngles	applied@c74b3641
+D_87B000F4	gDrowzeeCamPitch	w8		used as pitch parameter in Camera_ComputeEyeFromAngles	applied@c74b3641
+D_87B000D0	gDrowzeeTutorialPage	w8		checked in DrowzeeGame_DrawTutorialScreen to determine which page to render	applied@c74b3641
+D_87B000C4	gDrowzeeStartCountdown	w8		decremented in DrowzeeGame_WaitForStart to trigger countdown sound effects	applied@c74b3641
+D_87B000CC	gDrowzeePauseTriggered	w8		set to 1 in DrowzeeGame_UpdateRoundTick before calling Widget_PauseMenuTrigger	applied@c74b3641
+D_86402994	gBreathPhaseIndex	w8		static counter used to index into D_86402998 for breath animation phases	applied@c74b3641
+unk_D_8690A69C	GalleryState	w8		unk_D_8690A69C:GalleryState	applied@c74b3641
+unk_D_8690A718	GalleryAnimScriptEntry	w8		unk_D_8690A718:GalleryAnimScriptEntry	applied@c74b3641
+unk_D_86908CA0	GalleryCameraConfig	w8		unk_D_86908CA0:GalleryCameraConfig	applied@c74b3641
+unk_D_86909168	GalleryTextTimer	w8		unk_D_86909168:GalleryTextTimer	applied@c74b3641
+unk_D_869091B8	GalleryScriptInput	w8		unk_D_869091B8:GalleryScriptInput	applied@c74b3641
+unk_D_8690A710	GalleryCameraParams	w8		unk_D_8690A710:GalleryCameraParams	applied@c74b3641
+unk_D_8690B2F8	GalleryCameraConfigState	w8		unk_D_8690B2F8:GalleryCameraConfigState	applied@c74b3641
+unk_D_8690B308	GalleryAnimData	w8		unk_D_8690B308:GalleryAnimData	applied@c74b3641
+unk_D_8690B350	GalleryFadeData	w8		unk_D_8690B350:GalleryFadeData	applied@c74b3641
+unk_D_8690B360	GalleryAnimState	w8		unk_D_8690B360:GalleryAnimState	applied@c74b3641
+unk_D_8690B3C0	GalleryTextBoxState	w8		unk_D_8690B3C0:GalleryTextBoxState	applied@c74b3641
+D_8690B610	gGalleryCameraTimer	w8		initialized to 0.0f in Init and Reset functions, likely a frame or transition timer	applied@c74b3641
+unk_D_86B0E5D8	DioramaColorAnim	w8		struct containing color and position data for logo glow	applied@c74b3641
+unk_D_86B0E5D4	DioramaState	w8		main state struct for diorama sequence and camera	applied@c74b3641
+unk_D_86B0E5F0	DioramaModelSlot	w8		struct managing a model renderer and its active status	applied@c74b3641
+unk_D_86B0C4C8	DioramaObjectDef	w8		definition struct for models in a diorama group	applied@c74b3641
+unk_D_86B0C160	DioramaAnimData	w8		camera animation data for diorama sequences	applied@c74b3641
+unk_D_86B0C264	DioramaPresetData	w8		preset data for camera and glow colors per group	applied@c74b3641
+D_86B0E5DC	gDioramaEndScreenActive	w8		checks if the end background/caption should be rendered in Diorama_DrawEndBackgroundTiles and Diorama_DrawEndCaption	applied@c74b3641
+D_86B0BD50	gDioramaCaptionYOffset	w8		incremented each frame in Diorama_DrawEndCaption to animate the vertical position of the text	applied@c74b3641
+D_86B0E5E0	gDioramaEndCaptionStringId	w8		passed as the string ID to Text_GetString in Diorama_DrawEndCaption	applied@c74b3641
+D_86B0EBDC	gCompletionSceneState	w8		Global state structure tracking reward Pokemon IDs, model pointers, and dialogue progress.	applied@c74b3641
+D_86B0FA64	gCameraZoomSlew	w8		used in Intro_UpdateShowcaseSequence case 9 to smoothly interpolate camera yaw	applied@c74b3641
+D_86B0FA80	gMonsterModelData	w8		buffer used to store loaded monster-specific texture and animation data	applied@c74b3641
+D_86B0DE5C	gMiniCameraLayout	w8		layout table used by process_geo_layout to build the mini-camera scene graph	applied@c74b3641
+D_86B10830	gSessionModeSettings	w8		passed to Save_GetModeSettings to retrieve session configuration	applied@c74b3641
+unk_func_80027FA0	SessionModeSettings	w8		typedef for the structure used by Save_GetModeSettings	applied@c74b3641
+unk_D_86002F30	ModelData	w8		returned by Model_LoadByArchiveIndex and used to initialize a display object	applied@c74b3641
+D_86003598	gMiniHudScoreWheels	w8		unk_D_86002F58_004[4]	applied@c74b3641
+unk_D_86002920	MiniHudRandomChance	w8		MiniHudRandomChance	applied@c74b3641
+unk_D_86002A98	MiniHudTextureRect	w8		MiniHudTextureRect	applied@c74b3641
+unk_D_86002F58	MiniHudPlayerState	w8		MiniHudPlayerState	applied@c74b3641
+unk_D_86002F58_004	MiniHudPlayerGraph	w8		MiniHudPlayerGraph	applied@c74b3641
+unk_D_86002F34	MiniHudMainGraph	w8		MiniHudMainGraph	applied@c74b3641
+unk_D_86105EA0	PlayerGraphNodeState	w8		wrapper for Fragment2_1GraphNode used in result screen	applied@c74b3641
+unk_D_86106450	ItemPairState	w8		tracks spawn status and model for pattern icons	applied@c74b3641
+unk_D_861047B8	PatternEntry	w8		table entry for item patterns and weights	applied@c74b3641
+unk_D_86104984	IconPosition	w8		screen coordinates and rotation for player icons	applied@c74b3641
+unk_D_86104B5C	DLParam	w8		small struct used for result screen display list parameters	applied@c74b3641
+unk_D_86203CEC	RaceAIDifficulty	w8		contains rotation and unk_06 used as probability thresholds in RattataGame_UpdateAIInput	applied@c74b3641
+unk_D_86203E50	RacePlayerState	w8		main state struct for racers, contains graph node, position, and finish order	applied@c74b3641
+unk_D_86204720	RaceObstacle	w8		struct for hurdles, contains graph node and collision state	applied@c74b3641

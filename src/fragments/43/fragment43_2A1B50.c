@@ -20,7 +20,7 @@ PhotoMonSpecies D_83407AC8;
 s32 gGallerySpecialUnlocked;
 s32 gGallerySpecialViewed;
 s32 gGalleryAudioStateFlag;
-static unk_func_80027FA0 D_83407AF0;
+static SessionModeSettings D_83407AF0;
 unk_D_83407B00 gGallerySelection;
 unk_D_83407B00 gGalleryMainSelectionCam;
 unk_D_83407B00 gGallerySubSelection;

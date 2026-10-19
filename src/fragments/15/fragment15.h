@@ -5,14 +5,14 @@
 #include "src/controller.h"
 #include "src/1C720.h"
 
-typedef struct unk_D_8690B2F8 {
+typedef struct GalleryCameraConfigState {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
-} unk_D_8690B2F8; // size >= 0x10
+} GalleryCameraConfigState; // size >= 0x10
 
-typedef struct unk_D_8690A710 {
+typedef struct GalleryCameraParams {
     /* 0x000 */ char unk000[0x4];
     /* 0x004 */ f32 unk_004;
     /* 0x008 */ f32 unk_008;
@@ -20,18 +20,18 @@ typedef struct unk_D_8690A710 {
     /* 0x010 */ char unk010[0x4];
     /* 0x014 */ u8 unk_014;
     /* 0x015 */ char unk015[0x16F];
-} unk_D_8690A710; // size = 0x184
+} GalleryCameraParams; // size = 0x184
 
-typedef struct unk_D_8690B350 {
+typedef struct GalleryFadeData {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
-} unk_D_8690B350; // size = 0x10
+} GalleryFadeData; // size = 0x10
 
-typedef struct unk_D_8690B360 {
+typedef struct GalleryAnimState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -41,9 +41,9 @@ typedef struct unk_D_8690B360 {
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
-} unk_D_8690B360; // size = 0x18
+} GalleryAnimState; // size = 0x18
 
-typedef struct unk_D_8690B308 {
+typedef struct GalleryAnimData {
     /* 0x00 */ s16 posX[8];
     /* 0x18 */ f32 unk_10;
     /* 0x1C */ f32 unk_14;
@@ -57,14 +57,14 @@ typedef struct unk_D_8690B308 {
     /* 0x3A */ s16 unk_32;
     /* 0x3C */ s16 unk_34;
     /* 0x3E */ s16 unk_36;
-} unk_D_8690B308; // size >= 0x38
+} GalleryAnimData; // size >= 0x38
 
-typedef struct unk_D_8690B3C0 {
+typedef struct GalleryTextBoxState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
-} unk_D_8690B3C0; // size >= 0x10
+} GalleryTextBoxState; // size >= 0x10
 
 extern u8 D_5001950[];
 extern u8 D_5003AE8[];
@@ -96,20 +96,20 @@ extern const char gCupNameMewtwo[];
 
 extern char** gMessageBankPtr;
 extern f32 gCameraZoomOffset;
-extern unk_D_8690A710* gCameraParams;
-extern unk_D_8690B2F8 gCameraConfig;
-extern unk_D_8690B308 gStagePanelAnimData;
+extern GalleryCameraParams* gCameraParams;
+extern GalleryCameraConfigState gCameraConfig;
+extern GalleryAnimData gStagePanelAnimData;
 extern s32 gStageSnapshotCount;
 extern s32 gStagePanelStateIndex;
-extern unk_D_8690B350 gStagePanelFadeData;
-extern unk_D_8690B360 gStagePanelAnimState;
+extern GalleryFadeData gStagePanelFadeData;
+extern GalleryAnimState gStagePanelAnimState;
 
 extern s32 gCameraNavSubIndex;
 extern s32 gCameraNavTransition;
 extern s32 gCameraNavActiveFlag;
 extern s32 gCameraNavMaxIndex;
 extern Controller gControllerInput;
-extern unk_D_8690B3C0 gTutorialTextBoxState;
+extern GalleryTextBoxState gTutorialTextBoxState;
 extern s8 gTutorialTextBoxCharBuffer[255];
 
 s32 GalleryCamera_BgAngleCallbackA(s32 arg0, GraphNode* arg1);

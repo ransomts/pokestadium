@@ -2453,7 +2453,7 @@ void SandshrewGame_ShowResultText(void) {
 void SandshrewGame_LoadAssets(void) {
     s32 i;
     MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
-    unk_D_86002F30* temp_s1;
+    ModelData* temp_s1;
 
     gMiniCameraStruct = process_geo_layout(temp_v0, gSandshrewStageScript);
     MainPool_FinalizeAllocation(temp_v0);

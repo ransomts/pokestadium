@@ -22,7 +22,7 @@ static Gfx gGfxRestore_ScrollBar[] = {
     gsSPEndDisplayList(),
 };
 
-unk_D_86B0C160 gScrollBarSegmentData[] = {
+DioramaAnimData gScrollBarSegmentData[] = {
     {
         0,
         0,

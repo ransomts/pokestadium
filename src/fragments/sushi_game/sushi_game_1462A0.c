@@ -82,7 +82,7 @@ static s32 gSushiStateTable[4][4] = {
     },
 };
 
-static unk_D_86002F30* gSushiGraphData;
+static ModelData* gSushiGraphData;
 unk_D_86807558 gSushiEntities[4];
 s32 gSushiInstanceIds[4];
 static s32 gSushiActiveCount;

@@ -58,8 +58,8 @@ typedef struct unk_D_86B0EBD8 {
 } unk_D_86B0EBD8; // size = 0x4C
 
 typedef struct unk_D_86B0EBDC {
-    /* 0x000 */ unk_D_86002F30* unk_000;
-    /* 0x004 */ unk_D_86002F30* unk_004;
+    /* 0x000 */ ModelData* unk_000;
+    /* 0x004 */ ModelData* unk_004;
     /* 0x008 */ Fragment2_1GraphNode unk_008;
     /* 0x170 */ Fragment2_1GraphNode unk_170;
     /* 0x2D8 */ s32 unk_2D8;
@@ -121,7 +121,7 @@ u32 gFragment17MaskTable[] = {
     0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF,
     0x53FF53FF, 0x53FF53FF, 0x53FF53FF, 0x53FF53FF,
 };
-unk_D_86B0C160 gFragment17AnimData[] = {
+DioramaAnimData gFragment17AnimData[] = {
     {
         0,
         16384,
@@ -218,7 +218,7 @@ unk_D_86B0C160 gFragment17AnimData[] = {
         255.0f,
     },
 };
-unk_D_86B0C264 gFragment17PresetData[] = {
+DioramaPresetData gFragment17PresetData[] = {
     {
         { 0.0f, 60.0f, 0.0f },
         -12743,
@@ -275,27 +275,27 @@ unk_D_86B0C264 gFragment17PresetData[] = {
         0,
     },
 };
-static unk_D_86B0C4C8 gFragment17ObjDef0[] = {
+static DioramaObjectDef gFragment17ObjDef0[] = {
     { { 240.0f, 0.0f, 0.0f }, 9, 2, 0, 0 },    { { 160.0f, 0.0f, 0.0f }, 112, 2, 0, 0 },
     { { 80.0f, 0.0f, 0.0f }, 115, 2, 0, 0 },   { { 10.0f, 0.0f, 10.0f }, 67, 2, 0, 0 },
     { { -140.0f, 0.0f, 0.0f }, 152, 2, 0, 0 },
 };
-static unk_D_86B0C4C8 gFragment17ObjDef1[] = {
+static DioramaObjectDef gFragment17ObjDef1[] = {
     { { -10.0f, 0.0f, 10.0f }, 34, 2, 0, 0 },     { { -60.0f, 0.0f, 20.0f }, 28, 2, 0, 0 },
     { { -120.0f, 10.0f, -30.0f }, 123, 2, 0, 0 }, { { -180.0f, 0.0f, 0.0f }, 141, 2, 0, 0 },
     { { -140.0f, 0.0f, 0.0f }, 152, 2, 0, 0 },
 };
-static unk_D_86B0C4C8 gFragment17ObjDef2[] = {
+static DioramaObjectDef gFragment17ObjDef2[] = {
     { { 0.0f, -100.0f, -750.0f }, 18, 2, 0, 0 },  { { -35.0f, 40.0f, -350.0f }, 22, 2, 0, 0 },
     { { 78.0f, -50.0f, -150.0f }, 142, 2, 0, 0 }, { { -18.0f, -30.0f, 450.0f }, 6, 2, 10, 0 },
     { { -140.0f, 0.0f, 0.0f }, 152, 2, 0, 0 },
 };
-static unk_D_86B0C4C8 gFragment17ObjDef3[] = {
+static DioramaObjectDef gFragment17ObjDef3[] = {
     { { 0.0f, 30.0f, -900.0f }, 119, 2, 0, 0 },   { { 15.0f, 10.0f, -250.0f }, 87, 2, 0, 0 },
     { { -38.0f, 20.0f, -550.0f }, 118, 2, 0, 0 }, { { 18.0f, 30.0f, 150.0f }, 73, 2, 0, 0 },
     { { -140.0f, 0.0f, 0.0f }, 152, 2, 0, 0 },
 };
-static unk_D_86B0C4C8 gFragment17ObjDef4[] = {
+static DioramaObjectDef gFragment17ObjDef4[] = {
     {
         { 0.0f, 0.0f, 0.0f },
         0xD7,
@@ -321,7 +321,7 @@ static unk_D_86B0C4C8 gFragment17ObjDef4[] = {
 
 static s32 pad_D_86B0C4BC[3] = { 0, 0, 0 };
 
-unk_D_86B0C4C8* gFragment17ObjectDefs[] = {
+DioramaObjectDef* gFragment17ObjectDefs[] = {
     gFragment17ObjDef0, gFragment17ObjDef1, gFragment17ObjDef2, gFragment17ObjDef3, gFragment17ObjDef4, NULL,
 };
 
@@ -745,7 +745,7 @@ static f32 gFragment17CameraDist;
 static char** gFragment17MsgBank0;
 static char** gFragment17MsgBank1;
 static unk_D_86B0EBD8* gFragment17TileStruct;
-static unk_D_86B0EBDC* D_86B0EBDC;
+static unk_D_86B0EBDC* gCompletionSceneState;
 static unk_D_86B0EBE0* gFragment17TextState;
 static u8 gFragment17StageBuffer[0xA60];
 static u8 gFragment17ActionTable[0x180];
@@ -785,16 +785,16 @@ void Completion_SelectBonusPokemon(void) {
     s32 temp_s0 = osGetCount() & 0xFF;
     s32 var_v0;
 
-    D_86B0EBDC->unk_2F0 = 0;
+    gCompletionSceneState->unk_2F0 = 0;
     Save_EnsureBankLoaded(2);
     var_v0 = Save_GetSelectedPokemonId() & 0xFF;
 
-    D_86B0EBDC->unk_2E8 = var_v0;
+    gCompletionSceneState->unk_2E8 = var_v0;
 
     if (var_v0 == 0) {
-        D_86B0EBDC->unk_2D8 = 0;
+        gCompletionSceneState->unk_2D8 = 0;
     } else {
-        D_86B0EBDC->unk_2D8 = 1;
+        gCompletionSceneState->unk_2D8 = 1;
     }
 
     while (temp_s0-- > 0) {
@@ -803,13 +803,13 @@ void Completion_SelectBonusPokemon(void) {
 
     if (gSessionContext.unk_0000 == 0x1A) {
         gFragment17RandomIdx = 8;
-        D_86B0EBDC->unk_2EC = gFragment17RandomTable[gFragment17RandomIdx];
+        gCompletionSceneState->unk_2EC = gFragment17RandomTable[gFragment17RandomIdx];
     } else {
         gFragment17RandomIdx = MathUtil_Random_ZeroOne() * 8.0f;
         if (gFragment17RandomIdx >= 8) {
             gFragment17RandomIdx = 1;
         }
-        D_86B0EBDC->unk_2EC = gFragment17RandomTable[gFragment17RandomIdx];
+        gCompletionSceneState->unk_2EC = gFragment17RandomTable[gFragment17RandomIdx];
     }
 }
 
@@ -818,41 +818,41 @@ void Completion_LoadModels(void) {
 
     main_pool_push_state('MONS');
 
-    ModelRenderer_AttachDisplayObject(&D_86B0EBDC->unk_008);
+    ModelRenderer_AttachDisplayObject(&gCompletionSceneState->unk_008);
     PokeIcon_OpenModelArchives();
 
-    D_86B0EBDC->unk_000 = Model_LoadByArchiveIndex(0xD3);
-    D_86B0EBDC->unk_008.modelPhase = 0xFF;
+    gCompletionSceneState->unk_000 = Model_LoadByArchiveIndex(0xD3);
+    gCompletionSceneState->unk_008.modelPhase = 0xFF;
 
-    Model_InitDisplayObject(&D_86B0EBDC->unk_008, 0, 0xD3, D_86B0EBDC->unk_000->unk_08->posX[0]);
-    ModelAnim_SetAnimation(&D_86B0EBDC->unk_008, 0);
-    ModelRenderer_AttachDisplayObject(&D_86B0EBDC->unk_170);
+    Model_InitDisplayObject(&gCompletionSceneState->unk_008, 0, 0xD3, gCompletionSceneState->unk_000->unk_08->posX[0]);
+    ModelAnim_SetAnimation(&gCompletionSceneState->unk_008, 0);
+    ModelRenderer_AttachDisplayObject(&gCompletionSceneState->unk_170);
     PokeIcon_OpenModelArchives();
 
-    D_86B0EBDC->unk_004 = Model_LoadByArchiveIndex(D_86B0EBDC->unk_2EC);
-    D_86B0EBDC->unk_170.modelPhase = 0;
-    Model_InitDisplayObject(&D_86B0EBDC->unk_170, 0, D_86B0EBDC->unk_2EC, D_86B0EBDC->unk_004->unk_08->posX[0]);
-    ModelAnim_SetAnimation(&D_86B0EBDC->unk_170, 0);
-    D_86B0EBDC->unk_170.unk_000.posY &= ~0x40;
+    gCompletionSceneState->unk_004 = Model_LoadByArchiveIndex(gCompletionSceneState->unk_2EC);
+    gCompletionSceneState->unk_170.modelPhase = 0;
+    Model_InitDisplayObject(&gCompletionSceneState->unk_170, 0, gCompletionSceneState->unk_2EC, gCompletionSceneState->unk_004->unk_08->posX[0]);
+    ModelAnim_SetAnimation(&gCompletionSceneState->unk_170, 0);
+    gCompletionSceneState->unk_170.unk_000.posY &= ~0x40;
 
-    D_86B0EBDC->unk_170.unk_030.x = D_86B0EBDC->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].posX / 1000.0f;
-    D_86B0EBDC->unk_170.unk_030.y = D_86B0EBDC->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].posX / 1000.0f;
-    D_86B0EBDC->unk_170.unk_030.z = D_86B0EBDC->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].posX / 1000.0f;
+    gCompletionSceneState->unk_170.unk_030.x = gCompletionSceneState->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].posX / 1000.0f;
+    gCompletionSceneState->unk_170.unk_030.y = gCompletionSceneState->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].posX / 1000.0f;
+    gCompletionSceneState->unk_170.unk_030.z = gCompletionSceneState->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].posX / 1000.0f;
 
-    D_86B0EBDC->unk_2FC = gFragment17ObjPresetTable[gFragment17RandomIdx].unk_08;
-    D_86B0EBDC->unk_300 = gFragment17ObjPresetTable[gFragment17RandomIdx].unk_0C;
-    D_86B0EBDC->unk_170.unk_024.y = -100.0f;
-    D_86B0EBDC->unk_008.unk_000.posY &= ~0x20;
-    D_86B0EBDC->unk_170.unk_000.unk_01 &= ~1;
+    gCompletionSceneState->unk_2FC = gFragment17ObjPresetTable[gFragment17RandomIdx].unk_08;
+    gCompletionSceneState->unk_300 = gFragment17ObjPresetTable[gFragment17RandomIdx].unk_0C;
+    gCompletionSceneState->unk_170.unk_024.y = -100.0f;
+    gCompletionSceneState->unk_008.unk_000.posY &= ~0x20;
+    gCompletionSceneState->unk_170.unk_000.unk_01 &= ~1;
 
-    temp_a1 = _70D3A0_ROM_START + (gStageRomOffsets[D_86B0EBDC->unk_2EC - 1] & 0xFFFFFF);
+    temp_a1 = _70D3A0_ROM_START + (gStageRomOffsets[gCompletionSceneState->unk_2EC - 1] & 0xFFFFFF);
     Dma_WriteChunks(gFragment17StageBuffer, temp_a1, temp_a1 + 0xBC0, 0);
-    D_86B0EBDC->unk_308 = 0;
+    gCompletionSceneState->unk_308 = 0;
     miniRankingActorsInit();
 }
 
 void Completion_ResetSceneStep(void) {
-    D_86B0EBDC->unk_2DC = 0;
+    gCompletionSceneState->unk_2DC = 0;
 }
 
 void Completion_ResetDialogToIdle(void) {
@@ -863,10 +863,10 @@ void Completion_ResetDialogToIdle(void) {
 void Completion_PositionBonusModel(void) {
     Vec3f sp1C;
 
-    if (GeoRender_FindAnchorPosition(&D_86B0EBDC->unk_008, 1, &sp1C) != NULL) {
-        D_86B0EBDC->unk_170.unk_024.x = sp1C.x;
-        D_86B0EBDC->unk_170.unk_024.y = D_86B0EBDC->unk_2FC + sp1C.y;
-        D_86B0EBDC->unk_170.unk_024.z = D_86B0EBDC->unk_300 + sp1C.z;
+    if (GeoRender_FindAnchorPosition(&gCompletionSceneState->unk_008, 1, &sp1C) != NULL) {
+        gCompletionSceneState->unk_170.unk_024.x = sp1C.x;
+        gCompletionSceneState->unk_170.unk_024.y = gCompletionSceneState->unk_2FC + sp1C.y;
+        gCompletionSceneState->unk_170.unk_024.z = gCompletionSceneState->unk_300 + sp1C.z;
     }
 }
 
@@ -942,7 +942,7 @@ void Completion_DrawSpeciesRewardText(s16 arg0, s16 arg1) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
     Font_SetLineHeight(0x10);
-    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2EC - 1));
     Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, 0xA5);
     Font_Printf((arg0 - (Font_MeasureTextExtent(2, 0, gFragment17TextBuffer) / 2)) + 0x5A, arg1 + 5, gFragment17TextBuffer);
     Font_Printf(arg0 + 0x28, arg1 + 0x19, Text_GetString(NULL, 0, gFragment17MsgBank0, 0xA2));
@@ -951,7 +951,7 @@ void Completion_DrawSpeciesRewardText(s16 arg0, s16 arg1) {
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
-    if (D_86B0EBDC->unk_2F0 == 1) {
+    if (gCompletionSceneState->unk_2F0 == 1) {
         Gfx_DrawTextureRgba16Ia8(arg0 + 0x14, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
     } else {
         Gfx_DrawTextureRgba16Ia8(arg0 + 0x55, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
@@ -995,7 +995,7 @@ void Completion_UpdateGiftDialogFirstTime(void) {
             if (gSessionContext.unk_0000 == 0x1A) {
                 sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, 0x96));
             } else {
-                Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+                Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2EC - 1));
                 Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Intro);
             }
 
@@ -1035,7 +1035,7 @@ void Completion_UpdateGiftDialogFirstTime(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+                    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2EC - 1));
                     Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Confirm);
                     gFragment17TextState->posX++;
                 }
@@ -1046,7 +1046,7 @@ void Completion_UpdateGiftDialogFirstTime(void) {
             Completion_DrawDialogBox();
             Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
             if ((Completion_WrapDialogText() != 0) && (gFragment17TextState->unk_18 == 0)) {
-                D_86B0EBDC->unk_2F0 = 1;
+                gCompletionSceneState->unk_2F0 = 1;
                 gFragment17TextState->unk_10 = 0;
                 gFragment17TextState->rotation = 0;
 
@@ -1055,8 +1055,8 @@ void Completion_UpdateGiftDialogFirstTime(void) {
                 // clang-format on
 
                 sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Success));
-                Cry_Play(D_86B0EBDC->unk_2EC, 2);
-                ModelAnim_SetAnimation(&D_86B0EBDC->unk_170, *gFragment17ActionTable);
+                Cry_Play(gCompletionSceneState->unk_2EC, 2);
+                ModelAnim_SetAnimation(&gCompletionSceneState->unk_170, *gFragment17ActionTable);
                 gFragment17TextState->posX++;
             }
             break;
@@ -1085,7 +1085,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
             if (gSessionContext.unk_0000 == 0x1A) {
                 sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, 0x96));
             } else {
-                Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+                Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2EC - 1));
                 Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Intro2);
             }
             gFragment17TextState->rotation = 0;
@@ -1160,8 +1160,8 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    Text_SetStringToken(0x20, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2E8 - 1));
-                    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+                    Text_SetStringToken(0x20, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2E8 - 1));
+                    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2EC - 1));
                     Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Failure);
                     gFragment17TextState->posX++;
                 }
@@ -1339,8 +1339,8 @@ s32 Completion_MoveCameraToFront(void) {
     gFragment17Camera->unk_60.eye.z = Math_StepToF(gFragment17Camera->unk_60.eye.z, 190.0f, tmp.z / 60.0f, tmp.z / 60.0f);
 
     if (gFragment17Camera->unk_60.eye.z >= 85.0f) {
-        D_86B0EBDC->unk_008.unk_000.posY |= 0x20;
-        D_86B0EBDC->unk_170.unk_000.unk_01 |= 1;
+        gCompletionSceneState->unk_008.unk_000.posY |= 0x20;
+        gCompletionSceneState->unk_170.unk_000.unk_01 |= 1;
         Completion_PositionBonusModel();
     }
 
@@ -1367,35 +1367,35 @@ void Completion_AbortDialogToIdle(void) {
 void Completion_HandleAcceptDeclineInput(void) {
     if (gFragment17TextState->posX == 0xD) {
         if (gPlayer1Controller->buttonPressed & 0x200) {
-            D_86B0EBDC->unk_2F0 = 1;
+            gCompletionSceneState->unk_2F0 = 1;
         }
 
         if (gPlayer1Controller->buttonPressed & 0x100) {
-            D_86B0EBDC->unk_2F0 = 0;
+            gCompletionSceneState->unk_2F0 = 0;
         }
 
         if ((gPlayer1Controller->buttonPressed & 0x200) || (gPlayer1Controller->buttonPressed & 0x100)) {
             Audio_PlaySoundEffectById(1);
         }
 
-        if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 1)) {
+        if ((gPlayer1Controller->buttonPressed & 0x8000) && (gCompletionSceneState->unk_2F0 == 1)) {
             Audio_PlaySoundEffectById(2);
             gFragment17TextState->posX = 6;
             Completion_ResetDialogText();
-            Text_SetStringToken(0x20, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2E8 - 1));
-            Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+            Text_SetStringToken(0x20, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2E8 - 1));
+            Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2EC - 1));
             Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Timeout);
-            ModelAnim_SetAnimation(&D_86B0EBDC->unk_170, *gFragment17ActionTable);
-            Cry_Play(D_86B0EBDC->unk_2EC, 2);
+            ModelAnim_SetAnimation(&gCompletionSceneState->unk_170, *gFragment17ActionTable);
+            Cry_Play(gCompletionSceneState->unk_2EC, 2);
         }
 
-        if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 0)) {
+        if ((gPlayer1Controller->buttonPressed & 0x8000) && (gCompletionSceneState->unk_2F0 == 0)) {
             Audio_PlaySoundEffectById(3);
             gFragment17TextState->posX = 7;
             Completion_ResetDialogText();
-            Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+            Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2EC - 1));
             Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Extra);
-            ModelAnim_SetSpeed(&D_86B0EBDC->unk_008, -1);
+            ModelAnim_SetSpeed(&gCompletionSceneState->unk_008, -1);
         }
     }
 }
@@ -1408,29 +1408,29 @@ void Completion_HandleContinuePrompt(void) {
 }
 
 void Completion_UpdateCryEventTrack(void) {
-    D_86B0EBDC->unk_304++;
-    if (((D_86B0EBDC->unk_304 % 60) == 0) && (D_86B0EBDC->unk_308 == 0) && (gFragment17StageBuffer[2641] != 0xFF)) {
-        ModelAnim_ClearEventTrack(&D_86B0EBDC->unk_170);
-        ModelAnim_SetEventTrack(&D_86B0EBDC->unk_170, gFragment17StageBuffer[2641]);
-        D_86B0EBDC->unk_308 = 1;
-    } else if ((D_86B0EBDC->unk_308 == 1) && (ModelAnim_IsEventTrackNearEnd(&D_86B0EBDC->unk_170) == 1)) {
-        D_86B0EBDC->unk_308 = 0;
-        ModelAnim_SetEventFrame(&D_86B0EBDC->unk_170, 0);
-        ModelAnim_SetEventTrack(&D_86B0EBDC->unk_170, -1);
+    gCompletionSceneState->unk_304++;
+    if (((gCompletionSceneState->unk_304 % 60) == 0) && (gCompletionSceneState->unk_308 == 0) && (gFragment17StageBuffer[2641] != 0xFF)) {
+        ModelAnim_ClearEventTrack(&gCompletionSceneState->unk_170);
+        ModelAnim_SetEventTrack(&gCompletionSceneState->unk_170, gFragment17StageBuffer[2641]);
+        gCompletionSceneState->unk_308 = 1;
+    } else if ((gCompletionSceneState->unk_308 == 1) && (ModelAnim_IsEventTrackNearEnd(&gCompletionSceneState->unk_170) == 1)) {
+        gCompletionSceneState->unk_308 = 0;
+        ModelAnim_SetEventFrame(&gCompletionSceneState->unk_170, 0);
+        ModelAnim_SetEventTrack(&gCompletionSceneState->unk_170, -1);
     }
 }
 
 void Completion_LoopBonusModelIdleAnim(void) {
-    if (ModelAnim_IsAnimationDone(&D_86B0EBDC->unk_170) == 1) {
-        ModelAnim_SetFrame(&D_86B0EBDC->unk_170, 0);
-        ModelAnim_SetAnimation(&D_86B0EBDC->unk_170, 0);
+    if (ModelAnim_IsAnimationDone(&gCompletionSceneState->unk_170) == 1) {
+        ModelAnim_SetFrame(&gCompletionSceneState->unk_170, 0);
+        ModelAnim_SetAnimation(&gCompletionSceneState->unk_170, 0);
     }
 }
 
 void Completion_ClampAnimTimer(void) {
-    if (((s32)D_86B0EBDC->unk_008.unk_040.unk_0C >> 0x10) == -1) {
-        if ((D_86B0EBDC->unk_008.unk_040.unk_08 >> 0x10) > 0) {
-            D_86B0EBDC->unk_008.unk_040.unk_08 += 0xFFFF0000;
+    if (((s32)gCompletionSceneState->unk_008.unk_040.unk_0C >> 0x10) == -1) {
+        if ((gCompletionSceneState->unk_008.unk_040.unk_08 >> 0x10) > 0) {
+            gCompletionSceneState->unk_008.unk_040.unk_08 += 0xFFFF0000;
         }
     }
 }
@@ -1442,81 +1442,81 @@ void Completion_ReadControllerInput(void) {
 }
 
 s32 Completion_UpdateSceneSteps(void) {
-    if (D_86B0EBDC->unk_2DC >= 7) {
+    if (gCompletionSceneState->unk_2DC >= 7) {
         Completion_HandleContinuePrompt();
         Completion_UpdateCryEventTrack();
         Completion_LoopBonusModelIdleAnim();
     }
 
-    switch (D_86B0EBDC->unk_2DC) {
+    switch (gCompletionSceneState->unk_2DC) {
         case 0:
             if (Completion_SlideLogoBannerIn() != 0) {
-                D_86B0EBDC->unk_2DC++;
+                gCompletionSceneState->unk_2DC++;
             }
             break;
 
         case 1:
             if (Completion_AnimateLogoBannerColor() != 0) {
-                D_86B0EBDC->unk_2E4 = 0;
-                D_86B0EBDC->unk_2DC++;
+                gCompletionSceneState->unk_2E4 = 0;
+                gCompletionSceneState->unk_2DC++;
             }
             break;
 
         case 2:
-            if (D_86B0EBDC->unk_2E4++ == 0x14) {
-                D_86B0EBDC->unk_2E4 = 0;
-                D_86B0EBDC->unk_2DC++;
+            if (gCompletionSceneState->unk_2E4++ == 0x14) {
+                gCompletionSceneState->unk_2E4 = 0;
+                gCompletionSceneState->unk_2DC++;
             }
             break;
 
         case 3:
             if (Completion_SlideLogoBannerOut() != 0) {
-                D_86B0EBDC->unk_2DC++;
+                gCompletionSceneState->unk_2DC++;
             }
             break;
 
         case 4:
-            if (D_86B0EBDC->unk_2E4++ >= 0x1E) {
+            if (gCompletionSceneState->unk_2E4++ >= 0x1E) {
                 Vec3f_SetComponentsDuplicate(&gFragment17Camera->unk_60.at, 0.0f, 90.0f, 0.0f);
                 Vec3f_SetComponentsDuplicate(&gFragment17Camera->unk_60.eye, 0.0f, 80.0f, 90.0f);
 
-                if (D_86B0EBDC->unk_2E4 == 0x1F) {
+                if (gCompletionSceneState->unk_2E4 == 0x1F) {
                     miniRankingActorSetup1st(0.2f, 0.0f, 125.0f, -235.0f, 0x7D2, 0, 0);
                 }
 
-                if (D_86B0EBDC->unk_2E4 == 0x3C) {
+                if (gCompletionSceneState->unk_2E4 == 0x3C) {
                     miniRankingActorSetup2nd(0.2f, 100.0f, 125.0f, -235.0f, 0x7D2, -0xE38, 0);
                 }
 
-                if (D_86B0EBDC->unk_2E4 == 0x5A) {
+                if (gCompletionSceneState->unk_2E4 == 0x5A) {
                     miniRankingActorSetup3rd(0.2f, -100.0f, 125.0f, -235.0f, 0x7D2, 0xE38, 0);
                 }
             }
 
-            if (D_86B0EBDC->unk_2E4 == 0x78) {
-                D_86B0EBDC->unk_2E4 = 0;
-                D_86B0EBDC->unk_2DC++;
+            if (gCompletionSceneState->unk_2E4 == 0x78) {
+                gCompletionSceneState->unk_2E4 = 0;
+                gCompletionSceneState->unk_2DC++;
             }
             break;
 
         case 5:
             if (Completion_MoveCameraToFront() != 0) {
-                D_86B0EBDC->unk_2DC++;
+                gCompletionSceneState->unk_2DC++;
             }
             break;
 
         case 6:
             Completion_PositionBonusModel();
-            if (ModelAnim_IsAnimationDone(&D_86B0EBDC->unk_008) != 0) {
-                D_86B0EBDC->unk_2E4 = 0;
-                D_86B0EBDC->unk_2DC++;
+            if (ModelAnim_IsAnimationDone(&gCompletionSceneState->unk_008) != 0) {
+                gCompletionSceneState->unk_2E4 = 0;
+                gCompletionSceneState->unk_2DC++;
             }
             break;
 
         case 7:
             Completion_StartGiftDialog();
             Audio_StartMusicTrack(0x13);
-            D_86B0EBDC->unk_2DC++;
+            gCompletionSceneState->unk_2DC++;
             break;
 
         case 8:
@@ -1524,14 +1524,14 @@ s32 Completion_UpdateSceneSteps(void) {
             Completion_PositionBonusModel();
             Completion_HandleAcceptDeclineInput();
             if (gFragment17TextState->posX == 0xC) {
-                D_86B0EBDC->unk_2DC++;
+                gCompletionSceneState->unk_2DC++;
             }
             break;
 
         case 9:
             Completion_ClampAnimTimer();
             Completion_PositionBonusModel();
-            if (D_86B0EBDC->unk_2E4++ == 2) {
+            if (gCompletionSceneState->unk_2E4++ == 2) {
                 return 1;
             }
             break;
@@ -1541,7 +1541,7 @@ s32 Completion_UpdateSceneSteps(void) {
 }
 
 void Completion_DrawDialog(void) {
-    if (D_86B0EBDC->unk_2D8 == 1) {
+    if (gCompletionSceneState->unk_2D8 == 1) {
         Completion_UpdateGiftDialogWithExisting();
     } else {
         Completion_UpdateGiftDialogFirstTime();
@@ -1596,12 +1596,12 @@ void Completion_FadeOutAndSave(void) {
         Completion_RenderFrame(2);
     }
 
-    if (D_86B0EBDC->unk_2F0 == 1) {
+    if (gCompletionSceneState->unk_2F0 == 1) {
         if (gSessionContext.unk_0000 == 0x1A) {
-            Save_SetSelectedPokemonId(D_86B0EBDC->unk_2EC, 1);
+            Save_SetSelectedPokemonId(gCompletionSceneState->unk_2EC, 1);
             Save_SetOptionsField1F(1);
         } else {
-            Save_SetSelectedPokemonId(D_86B0EBDC->unk_2EC, gSessionContext.unk_11F2);
+            Save_SetSelectedPokemonId(gCompletionSceneState->unk_2EC, gSessionContext.unk_11F2);
         }
         Save_CommitTypedRecord(0x14, 0);
         Save_FlushBank(2);
@@ -1619,8 +1619,8 @@ void Completion_InitScene(void) {
     gFragment17TextState = main_pool_alloc(0x20, 0);
     bzero(gFragment17TextState, 0x20);
 
-    D_86B0EBDC = main_pool_alloc(0x30C, 0);
-    bzero(D_86B0EBDC, 0x30C);
+    gCompletionSceneState = main_pool_alloc(0x30C, 0);
+    bzero(gCompletionSceneState, 0x30C);
 
     gFragment17TileStruct = main_pool_alloc(0x4C, 0);
     bzero(gFragment17TileStruct, 0x4C);

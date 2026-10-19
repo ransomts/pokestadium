@@ -24,7 +24,7 @@
 
 static GraphNode* gCameraGraphNode;
 static GraphNode* gPikachuGeoNode;
-static unk_D_86002F30* gPikachuModelData;
+static ModelData* gPikachuModelData;
 static char** gMoveNameBank;
 static char** gStadiumMessageBank;
 static Fragment2_1GraphNode gPikachuNodes[4];

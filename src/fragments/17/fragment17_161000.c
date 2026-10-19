@@ -76,7 +76,7 @@ void DioramaCamKeyframe_SetTransitionSpeed(unk_D_86B0E5D4_04* arg0, f32 arg1, f3
     arg0->unk_38 = arg2;
 }
 
-void Diorama_LoadCameraKeyframe(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
+void Diorama_LoadCameraKeyframe(DioramaAnimData* arg0, DioramaState* arg1) {
     unk_D_86B0E5D4_04* ptr = &arg1->rotation;
     CameraStruct* ptr2 = arg1->posX;
     f32 sp34;
@@ -105,14 +105,14 @@ void Diorama_LoadCameraKeyframe(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
     DioramaCamKeyframe_SetTransitionSpeed(ptr, arg0->unk_28, arg0->unk_2C);
 }
 
-void Diorama_SetCameraToKeyframeStart(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
+void Diorama_SetCameraToKeyframeStart(unk_D_86B0E5D4_04* arg0, DioramaState* arg1) {
     CameraStruct* sp2C = arg1->posX;
 
     Camera_ComputeEyeFromAngles(&arg0->posX, &sp2C->unk_60.at, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
     Camera_ComputeEyeFromAngles(&sp2C->unk_60.at, &sp2C->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 }
 
-s32 Diorama_UpdateCameraKeyframe(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
+s32 Diorama_UpdateCameraKeyframe(unk_D_86B0E5D4_04* arg0, DioramaState* arg1) {
     CameraStruct* temp_s2 = arg1->posX;
     Vec3f sp58;
     Vec3f sp4C;

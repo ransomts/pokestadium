@@ -108,7 +108,7 @@ char* RentalRules_GetPokemonName(s32 arg0) {
 }
 
 void RentalRules_LoadBackgroundArchive(void) {
-    unk_func_80027FA0 sp20;
+    SessionModeSettings sp20;
 
     if (gSessionContext.unk_0000 != 0xA) {
         gBattleAssetArchive = BinArchive_Open(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);

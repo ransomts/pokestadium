@@ -23,7 +23,7 @@
 static GraphNode* gTextureStateNode;
 static Fragment2_1GraphNode gMenuOptionNodes[8];
 static unk_D_82D0AB38 gMenuItemData[4];
-static unk_func_80027FA0 gGbAudioState;
+static SessionModeSettings gGbAudioState;
 static u16 gPlayerMoney;
 static char** gMenuMessageBank;
 static s32 gIsStickerStationConnected;

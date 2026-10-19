@@ -28,7 +28,7 @@ static unk_D_864027C0 gPlayerSpawnInfo[] = {
     { 68.0f, 0.0f, 68.0f, 1.0f, 1.0f, 1.0f, 0, 0x9D80, 0 },
 };
 
-static u16 D_86402840 = 0;
+static u16 gDrowzeeGameTimer = 0;
 static u16 gPlayerButtonPressed = 0;
 
 u8 gUseAlphaBlend = 0;
@@ -67,7 +67,7 @@ static HudState gPlayerHudStates[4];
 static ResultGameState gGameState;
 
 static HudState* gCurrentHudState;
-static ResultGameState* D_864052CC;
+static ResultGameState* gDrowzeeGameStatePtr;
 static Fragment2_1GraphNode* gCurrentGraphNode;
 static u8 gHealthSegmentExactMatch;
 static s16 gCurrentHealthSegment;
@@ -83,9 +83,9 @@ void DrowzeeGame_UpdatePlayerTimingWindows(void) {
         }
 
         gCurrentHudState->unk_008 =
-            gHealthBarSegmentTable[D_864052CC->unk_000][2] + DrowzeeGame_ComputeAITimingBias(D_864052CC->unk_000, gCurrentHudState->unk_000);
+            gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][2] + DrowzeeGame_ComputeAITimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
         gCurrentHudState->unk_00A =
-            gHealthBarSegmentTable[D_864052CC->unk_000][6] + DrowzeeGame_ComputeAITimingBias(D_864052CC->unk_000, gCurrentHudState->unk_000);
+            gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][6] + DrowzeeGame_ComputeAITimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
     }
 }
 
@@ -122,7 +122,7 @@ void DrowzeeGame_LoopDrowzeeIdleAnim(void) {
 }
 
 void DrowzeeGame_AdvanceBreathPhase(ResultGameState* arg0) {
-    static u8 D_86402994 = 0;
+    static u8 gBreathPhaseIndex = 0;
     static u8 D_86402998[] = {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x08, 0x08, 0x09,
         0x09, 0x09, 0x0A, 0x0A, 0x0A, 0x0B, 0x0B, 0x0B, 0x0C, 0x0C, 0x0C, 0x0D,
@@ -132,8 +132,8 @@ void DrowzeeGame_AdvanceBreathPhase(ResultGameState* arg0) {
         arg0->unk_001 = arg0->unk_000;
 
         if (arg0->unk_000 != 0xD) {
-            D_86402994++;
-            arg0->unk_000 = D_86402998[D_86402994];
+            gBreathPhaseIndex++;
+            arg0->unk_000 = D_86402998[gBreathPhaseIndex];
         }
 
         if (arg0->unk_001 != arg0->unk_000) {
@@ -159,11 +159,11 @@ void DrowzeeGame_UpdatePlayerAnimations(void) {
 
             if ((ModelAnim_IsFinished(&gCurrentHudState->unk_028) != 0) ||
                 ((gCurrentHudState->unk_010 == 0) && (gCurrentHudState->unk_012 > 0)) ||
-                ((D_87B000C8 != 0) && (gCurrentHudState->unk_00C == 1) && (D_86402840 == 0x3C) && (D_87B000D4 == 1))) {
+                ((gDrowzeeGameIsOver != 0) && (gCurrentHudState->unk_00C == 1) && (gDrowzeeGameTimer == 0x3C) && (gDrowzeeWinnerCount == 1))) {
                 temp_s1 = gCurrentHudState->unk_004;
 
-                if ((D_87B000C8 != 0) && (gCurrentHudState->unk_00C == 1) &&
-                    ((D_86402840 == 0x3C) || (gCurrentHudState->unk_004 == 6))) {
+                if ((gDrowzeeGameIsOver != 0) && (gCurrentHudState->unk_00C == 1) &&
+                    ((gDrowzeeGameTimer == 0x3C) || (gCurrentHudState->unk_004 == 6))) {
                     gCurrentHudState->unk_004 = 6;
                 } else {
                     temp_fv0 = (gCurrentHudState->unk_010 * 100.0f) / gCurrentHudState->unk_00E;
@@ -245,8 +245,8 @@ void DrowzeeGame_ProcessElimination(u8 arg0) {
 
     D_864029B4--;
     if (D_864029B4 < 2) {
-        D_864052CC->unk_004.unk_040.unk_0C = 0;
-        D_87B000C8 = 1;
+        gDrowzeeGameStatePtr->unk_004.unk_040.unk_0C = 0;
+        gDrowzeeGameIsOver = 1;
 
         Audio_FadeOutAll(0xA);
 
@@ -259,15 +259,15 @@ void DrowzeeGame_ProcessElimination(u8 arg0) {
             }
         }
 
-        D_87B000D4 = 0;
+        gDrowzeeWinnerCount = 0;
 
         for (i = 0; i < 4; i++) {
             if (gPlayerHudStates[i].unk_00C == 1) {
-                D_87B000D4++;
+                gDrowzeeWinnerCount++;
             }
         }
 
-        if (D_87B000D4 == 1) {
+        if (gDrowzeeWinnerCount == 1) {
             for (i = 0; i < 4; i++) {
                 if (gPlayerHudStates[i].unk_00C == 1) {
                     Widget_PauseMenuRecordWin(i);
@@ -296,8 +296,8 @@ void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
             temp_a3 = gCurrentHudState->unk_028.unk_040.unk_08 >> 0x10;
 
             gSPDisplayList(temp_v0++, gDamageOverlayDL);
-            gDPSetTileSize(temp_v0++, G_TX_RENDERTILE, 0x0000, (0x40 - (D_87B000C0 % 64)) << 2, 0x007C,
-                           ((0x80 - (D_87B000C0 % 64)) & 0x3F) << 2);
+            gDPSetTileSize(temp_v0++, G_TX_RENDERTILE, 0x0000, (0x40 - (gDrowzeeFrameCounter % 64)) << 2, 0x007C,
+                           ((0x80 - (gDrowzeeFrameCounter % 64)) & 0x3F) << 2);
             gSPDisplayList(temp_v0++, gHealthBarDL);
 
             if ((gCurrentHudState->unk_004 == 5) && (temp_a3 >= 0x18)) {
@@ -370,12 +370,12 @@ void DrowzeeGame_UpdateRoundTick(s32 arg0) {
         if (arg0 == 2) {
             static u8 D_864029C0 = 0;
 
-            gCurrentHealthSegment = D_864052CC->unk_004.unk_040.unk_08 >> 0x10;
+            gCurrentHealthSegment = gDrowzeeGameStatePtr->unk_004.unk_040.unk_08 >> 0x10;
             gHealthSegmentExactMatch = 0;
 
             for (i = 0; i < 8; i++) {
                 temp = gCurrentHealthSegment;
-                if (temp == gHealthBarSegmentTable[D_864052CC->unk_000][i]) {
+                if (temp == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][i]) {
                     gHealthSegmentExactMatch = 1;
                     break;
                 }
@@ -383,10 +383,10 @@ void DrowzeeGame_UpdateRoundTick(s32 arg0) {
 
             gUseAlphaBlend = 0;
 
-            if (D_87B000C8 == 0) {
+            if (gDrowzeeGameIsOver == 0) {
                 for (i = 0; i < 8; i++) {
                     temp = gCurrentHealthSegment;
-                    if ((temp + 1) == gHealthBarSegmentTable[D_864052CC->unk_000][i]) {
+                    if ((temp + 1) == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][i]) {
                         gUseAlphaBlend = 1;
                         break;
                     }
@@ -398,22 +398,22 @@ void DrowzeeGame_UpdateRoundTick(s32 arg0) {
 
                 gCurrentHudState->unk_012 = gCurrentHudState->unk_010;
 
-                if ((D_87B000C8 != 0) && (gCurrentHudState->unk_00C == 1) && (D_86402840 >= 0x3C) && (D_87B000D4 == 1) &&
+                if ((gDrowzeeGameIsOver != 0) && (gCurrentHudState->unk_00C == 1) && (gDrowzeeGameTimer >= 0x3C) && (gDrowzeeWinnerCount == 1) &&
                     (D_864029C0 < 0x10)) {
                     gCurrentHudState->unk_028.unk_01E.y += sp24[i];
                 }
             }
 
-            if (D_87B000C8 != 0) {
-                if (D_86402840 < 0x3C) {
-                    D_86402840++;
+            if (gDrowzeeGameIsOver != 0) {
+                if (gDrowzeeGameTimer < 0x3C) {
+                    gDrowzeeGameTimer++;
                 } else {
-                    if (D_86402840 < 0x6A) {
-                        if (D_86402840 == 0x69) {
-                            D_87B000CC = 1;
+                    if (gDrowzeeGameTimer < 0x6A) {
+                        if (gDrowzeeGameTimer == 0x69) {
+                            gDrowzeePauseTriggered = 1;
                             Widget_PauseMenuTrigger(1);
                         }
-                        D_86402840++;
+                        gDrowzeeGameTimer++;
                     }
 
                     if (D_864029C0 < 0x10) {
@@ -423,7 +423,7 @@ void DrowzeeGame_UpdateRoundTick(s32 arg0) {
             }
         }
 
-        if (D_87B000C8 != 0) {
+        if (gDrowzeeGameIsOver != 0) {
             static f32 D_864029C4 = 1.0f;
 
             D_864029C4 -= 0.06f;
@@ -445,24 +445,24 @@ void DrowzeeGame_JudgePlayerTiming(void) {
     UNUSED s32 pad;
 
     if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
-        D_864052CC->previousHealthState = D_864052CC->unk_16C;
-        if (gCurrentHealthSegment < (D_864052CC->unk_004.unk_040.rotation->unk_0A / 2)) {
-            D_864052CC->unk_16C = 0;
+        gDrowzeeGameStatePtr->previousHealthState = gDrowzeeGameStatePtr->unk_16C;
+        if (gCurrentHealthSegment < (gDrowzeeGameStatePtr->unk_004.unk_040.rotation->unk_0A / 2)) {
+            gDrowzeeGameStatePtr->unk_16C = 0;
         } else {
-            D_864052CC->unk_16C = 1;
+            gDrowzeeGameStatePtr->unk_16C = 1;
         }
 
-        if (D_864052CC->unk_16C != D_864052CC->previousHealthState) {
-            Audio_DispatchSoundBankCommand(0x70003, 1 - D_864052CC->unk_16C, 0);
+        if (gDrowzeeGameStatePtr->unk_16C != gDrowzeeGameStatePtr->previousHealthState) {
+            Audio_DispatchSoundBankCommand(0x70003, 1 - gDrowzeeGameStatePtr->unk_16C, 0);
 
             for (i = 0; i < 4; i++) {
                 gCurrentHudState = &gPlayerHudStates[i];
 
                 if ((gCurrentHudState->unk_274 == 0) && (gCurrentHudState->unk_010 > 0)) {
-                    if (D_864052CC->previousHealthState != 0) {
-                        gCurrentHudState->unk_194[D_864052CC->unk_001][7]++;
+                    if (gDrowzeeGameStatePtr->previousHealthState != 0) {
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_001][7]++;
                     } else {
-                        gCurrentHudState->unk_194[D_864052CC->unk_000][7]++;
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][7]++;
                     }
                 } else {
                     gCurrentHudState->unk_274 = 0;
@@ -519,31 +519,31 @@ void DrowzeeGame_JudgePlayerTiming(void) {
                     }
 
                     gCurrentHudState->unk_274 = 1;
-                    if (D_864052CC->unk_16C == 0) {
+                    if (gDrowzeeGameStatePtr->unk_16C == 0) {
                         var_a2 = 2;
                     } else {
                         var_a2 = 6;
                     }
 
-                    if ((gHealthBarSegmentTable[D_864052CC->unk_000][var_a2] - 3) >= gCurrentHealthSegment) {
-                        gCurrentHudState->unk_194[D_864052CC->unk_000][0]++;
-                    } else if ((gCurrentHealthSegment + 2) == gHealthBarSegmentTable[D_864052CC->unk_000][var_a2]) {
-                        gCurrentHudState->unk_194[D_864052CC->unk_000][1]++;
-                    } else if ((gCurrentHealthSegment + 1) == gHealthBarSegmentTable[D_864052CC->unk_000][var_a2]) {
-                        gCurrentHudState->unk_194[D_864052CC->unk_000][2]++;
-                    } else if (gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][var_a2]) {
-                        gCurrentHudState->unk_194[D_864052CC->unk_000][3]++;
-                    } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[D_864052CC->unk_000][var_a2] + 1)) {
-                        gCurrentHudState->unk_194[D_864052CC->unk_000][4]++;
-                    } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[D_864052CC->unk_000][var_a2] + 2)) {
-                        gCurrentHudState->unk_194[D_864052CC->unk_000][5]++;
-                    } else if (gCurrentHealthSegment >= (gHealthBarSegmentTable[D_864052CC->unk_000][var_a2] + 3)) {
-                        gCurrentHudState->unk_194[D_864052CC->unk_000][6]++;
+                    if ((gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] - 3) >= gCurrentHealthSegment) {
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][0]++;
+                    } else if ((gCurrentHealthSegment + 2) == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][1]++;
+                    } else if ((gCurrentHealthSegment + 1) == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][2]++;
+                    } else if (gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][3]++;
+                    } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 1)) {
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][4]++;
+                    } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 2)) {
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][5]++;
+                    } else if (gCurrentHealthSegment >= (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 3)) {
+                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][6]++;
                     }
                 }
 
-                if ((gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][3]) ||
-                    (gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][7])) {
+                if ((gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][3]) ||
+                    (gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][7])) {
                     if (gCurrentHudState->unk_014 == 0) {
                         gCurrentHudState->unk_010--;
                         if (gCurrentHudState->unk_018 == 0) {
@@ -558,7 +558,7 @@ void DrowzeeGame_JudgePlayerTiming(void) {
             }
         }
 
-        if ((gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][3]) || (gCurrentHealthSegment == gHealthBarSegmentTable[D_864052CC->unk_000][7])) {
+        if ((gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][3]) || (gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][7])) {
             D_864029C8 = 0;
         }
 
@@ -576,7 +576,7 @@ void DrowzeeGame_JudgePlayerTiming(void) {
 }
 
 void DrowzeeGame_DrawTutorialScreen(s32 arg0) {
-    if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
+    if ((arg0 == 0) || ((arg0 == 3) && (gDrowzeeTutorialPage == 1))) {
         Ui_DrawBorderedPanel(0x18, 0x16, 0x110, 0x90, 0x15);
         Ui_DrawBorderedPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
 
@@ -588,7 +588,7 @@ void DrowzeeGame_DrawTutorialScreen(s32 arg0) {
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    } else if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (D_87B000D0 == 0))) {
+    } else if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (gDrowzeeTutorialPage == 0))) {
         u8 i;
         s16 sp74[] = {
             0x0025,
@@ -620,7 +620,7 @@ void DrowzeeGame_DrawTutorialScreen(s32 arg0) {
     Font_BeginTranslucentTextRendering();
     Font_EnableTwoCycleTexturing();
 
-    if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
+    if ((arg0 == 0) || ((arg0 == 3) && (gDrowzeeTutorialPage == 1))) {
         char* temp_s2 = Text_GetString(NULL, 0, gItemNamesBank, 0x29);
         s32 sp58;
         s32 sp54;
@@ -664,7 +664,7 @@ void DrowzeeGame_DrawFrame(s32 arg0) {
         GeoRender_AdvanceFrameCounter();
     }
 
-    Geo_RenderRootNode(D_87B000E8);
+    Geo_RenderRootNode(gDrowzeeStageRoot);
 
     if (gResultConfirmPressed == 0) {
         DrowzeeGame_DrawTutorialScreen(arg0);
@@ -674,7 +674,7 @@ void DrowzeeGame_DrawFrame(s32 arg0) {
     BgStage_AdvanceFrame();
 
     if (gResultMenuVisible == 0) {
-        D_87B000C0++;
+        gDrowzeeFrameCounter++;
     }
 }
 
@@ -695,7 +695,7 @@ void DrowzeeGame_WaitForStart(void) {
             } else if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
                 Audio_PlaySoundEffectById(3);
                 Widget_PauseMenuTrigger(2);
-                D_87B000D0 = 1;
+                gDrowzeeTutorialPage = 1;
                 return;
             }
         }
@@ -715,12 +715,12 @@ void DrowzeeGame_WaitForStart(void) {
     Audio_FadeOutAll(0x3C);
     if (gResultFlag_Special == 0) {
         while (true) {
-            if (D_87B000C4 <= 0) {
+            if (gDrowzeeStartCountdown <= 0) {
                 break;
             }
 
             for (i = 3; i > 0; i--) {
-                if (D_87B000C4 == ((i * 0x3C) / 2)) {
+                if (gDrowzeeStartCountdown == ((i * 0x3C) / 2)) {
                     if (i == 3) {
                         Widget_CountdownStart(1);
                     }
@@ -728,7 +728,7 @@ void DrowzeeGame_WaitForStart(void) {
                 }
             }
 
-            D_87B000C4--;
+            gDrowzeeStartCountdown--;
 
             MenuInput_FrameUpdate();
             DrowzeeGame_UpdateRoundTick(1);
@@ -768,7 +768,7 @@ void DrowzeeGame_MainLoop(void) {
             MenuInput_FrameUpdate();
             DrowzeeGame_UpdateRoundTick(2);
 
-            if (D_87B000C8 == 0) {
+            if (gDrowzeeGameIsOver == 0) {
                 if (D_864029E0 < 0x1E) {
                     if (gResultMenuVisible == 0) {
                         D_864029E0++;
@@ -778,10 +778,10 @@ void DrowzeeGame_MainLoop(void) {
                         Audio_DispatchSoundBankCommand(0x70003, 1, 0);
                         D_864029E0++;
                     }
-                    ModelAnim_SetFrame(&D_864052CC->unk_004, 1);
+                    ModelAnim_SetFrame(&gDrowzeeGameStatePtr->unk_004, 1);
                 } else {
                     DrowzeeGame_JudgePlayerTiming();
-                    DrowzeeGame_AdvanceBreathPhase(D_864052CC);
+                    DrowzeeGame_AdvanceBreathPhase(gDrowzeeGameStatePtr);
                 }
             } else if (gResultExitPending != 0) {
                 var_s2 = 0;
@@ -813,19 +813,19 @@ void DrowzeeGame_ShowResultText(void) {
 }
 
 void DrowzeeGame_InitCamera(void) {
-    D_87B000EC = D_87B000E8->posX.unk_0C;
+    gDrowzeeCamera = gDrowzeeStageRoot->posX.unk_0C;
 
-    D_87B000F0 = 0x900;
-    D_87B000F2 = 0;
-    D_87B000F4 = 0x190;
+    gDrowzeeCamDist = 0x900;
+    gDrowzeeCamYaw = 0;
+    gDrowzeeCamPitch = 0x190;
 
-    D_87B000EC->unk_24.near = 50.0f;
-    D_87B000EC->unk_24.far = 6400.0f;
-    D_87B000EC->unk_24.fovy = 27.5f;
+    gDrowzeeCamera->unk_24.near = 50.0f;
+    gDrowzeeCamera->unk_24.far = 6400.0f;
+    gDrowzeeCamera->unk_24.fovy = 27.5f;
 
-    D_87B000EC->unk_60.at.y = 25.0f;
+    gDrowzeeCamera->unk_60.at.y = 25.0f;
 
-    Camera_ComputeEyeFromAngles(&D_87B000EC->unk_60.at, &D_87B000EC->unk_60.eye, D_87B000F4, D_87B000F0, D_87B000F2);
+    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamPitch, gDrowzeeCamDist, gDrowzeeCamYaw);
 }
 
 void DrowzeeGame_InitPlayerOverlays(void) {
@@ -847,24 +847,24 @@ void DrowzeeGame_LoadAssets(void) {
     u8 y;
     MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
 
-    D_87B000E8 = process_geo_layout(temp_v0, gGeoLayoutData);
+    gDrowzeeStageRoot = process_geo_layout(temp_v0, gGeoLayoutData);
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
     PokeIcon_OpenModelArchives();
-    D_87B000E4 = Model_LoadByArchiveIndex(0xC7);
+    gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xC7);
     gCurrentGraphNode = &gResultScreenNode;
     ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC7, D_87B000E4->unk_08->posX[0]);
+    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC7, gDrowzeeModelTemp->unk_08->posX[0]);
     ModelAnim_SetAnimation(gCurrentGraphNode, 0);
     ModelAnim_SetFrame(gCurrentGraphNode, 0);
-    D_87B000E4 = Model_LoadByArchiveIndex(0xC4);
+    gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xC4);
 
     for (i = 0; i < 4; i++) {
         gCurrentHudState = &gPlayerHudStates[i];
         gCurrentGraphNode = &gCurrentHudState->unk_028;
 
         ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC4, D_87B000E4->unk_08->posX[0]);
+        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC4, gDrowzeeModelTemp->unk_08->posX[0]);
         gCurrentHudState->unk_004 = 0;
         ModelAnim_SetAnimation(gCurrentGraphNode, gCurrentHudState->unk_004);
         ModelAnim_SetFrame(gCurrentGraphNode, MiniGame_RandomRange(gCurrentGraphNode->unk_040.rotation->unk_0A));
@@ -898,15 +898,15 @@ void DrowzeeGame_LoadAssets(void) {
         gCurrentHudState->unk_274 = 0;
     }
 
-    D_87B000E4 = Model_LoadByArchiveIndex(0xC3);
-    D_864052CC = &gGameState;
-    gCurrentGraphNode = &D_864052CC->unk_004;
+    gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xC3);
+    gDrowzeeGameStatePtr = &gGameState;
+    gCurrentGraphNode = &gDrowzeeGameStatePtr->unk_004;
     ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC3, D_87B000E4->unk_08->posX[0]);
+    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC3, gDrowzeeModelTemp->unk_08->posX[0]);
 
-    D_864052CC->unk_001 = D_864052CC->unk_000 = 0;
+    gDrowzeeGameStatePtr->unk_001 = gDrowzeeGameStatePtr->unk_000 = 0;
 
-    ModelAnim_SetAnimation(gCurrentGraphNode, D_864052CC->unk_000);
+    ModelAnim_SetAnimation(gCurrentGraphNode, gDrowzeeGameStatePtr->unk_000);
     ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.rotation->unk_0A);
 
     gCurrentGraphNode->unk_024.y = 20.0f;
@@ -915,15 +915,15 @@ void DrowzeeGame_LoadAssets(void) {
     gCurrentGraphNode->unk_030.z = 1.0f;
     gCurrentGraphNode->unk_01E.x = -0xB00;
 
-    D_864052CC->unk_16C = 0;
-    D_864052CC->previousHealthState = 0;
-    D_87B000E4 = Model_LoadByArchiveIndex(0xD2);
+    gDrowzeeGameStatePtr->unk_16C = 0;
+    gDrowzeeGameStatePtr->previousHealthState = 0;
+    gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xD2);
 
     for (i = 0; i < 4; i++) {
         gCurrentGraphNode = &gPlayerResultNodes[i];
 
         ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xD2, D_87B000E4->unk_08->posX[0]);
+        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xD2, gDrowzeeModelTemp->unk_08->posX[0]);
         ModelAnim_SetAnimation(gCurrentGraphNode, 0);
         ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.rotation->unk_0A);
 

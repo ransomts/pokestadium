@@ -16,7 +16,7 @@ void RentalHub_Draw(s16 arg0);
 void RentalHub_FadeInWait(void);
 void RentalHub_FadeOutWait(void);
 s16 RentalHub_MenuLoop(void);
-void RentalHub_LoadBackgroundImage(unk_func_80027FA0* arg0);
+void RentalHub_LoadBackgroundImage(SessionModeSettings* arg0);
 s32 RentalHub_MenuMain(void);
 s32 RentalHub_LoadRentalPicker(void);
 s32 RentalHub_LoadRentalRules(void);

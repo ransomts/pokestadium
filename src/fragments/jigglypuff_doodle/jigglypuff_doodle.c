@@ -56,8 +56,8 @@ typedef struct PlayerState {
     /* 0x17E */ char pad17E[6];
 } PlayerState; // size = 0x184
 
-static unk_D_86002F30* gCurrentGeoLayout;
-static unk_D_86002F34* gStageRootNode;
+static ModelData* gCurrentGeoLayout;
+static MiniHudMainGraph* gStageRootNode;
 static CameraStruct* gCamera;
 static s16 gCameraDist;
 static s16 gCameraRotX;

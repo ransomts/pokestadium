@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-typedef struct unk_D_86204720 {
+typedef struct RaceObstacle {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
@@ -12,9 +12,9 @@ typedef struct unk_D_86204720 {
     /* 0x172 */ s8 unk_172[6];
     /* 0x178 */ s16 unk_178;
     /* 0x17A */ u16 unk_17A;
-} unk_D_86204720; // size = 0x17C
+} RaceObstacle; // size = 0x17C
 
-typedef struct unk_D_86203E50 {
+typedef struct RacePlayerState {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ char pad4[4];
@@ -45,11 +45,11 @@ typedef struct unk_D_86203E50 {
     /* 0x1B6 */ char pad1B6[0x12];
     /* 0x1C8 */ u16 unk_1C8;
     /* 0x1CA */ char pad1CA[6];
-} unk_D_86203E50; // size = 0x1D0
+} RacePlayerState; // size = 0x1D0
 
 extern u32 gRacePlayerScreenY[4];
 
-void RattataGame_InitAIDifficulty(unk_D_86203E50* arg0);
+void RattataGame_InitAIDifficulty(RacePlayerState* arg0);
 void RattataGame_DrawRankBanners(void);
 void Race_Stub(void);
 void RattataGame_UpdateAIInput(void);
@@ -61,12 +61,12 @@ void RattataGame_DrawTutorialScreen(s32 arg0);
 void RattataGame_DrawFrame(s32 arg0);
 s32 RattataGame_WaitForStart(void);
 void RattataGame_UpdateStartCountdown(void);
-void RattataGame_SyncRacerZPosition(unk_D_86203E50* arg0);
-void RattataGame_ResetRacerState(unk_D_86203E50* arg0);
-s32 RattataGame_CheckHurdleCollision(unk_D_86203E50* arg0, unk_D_86204720* arg1);
-void RattataGame_UpdateRunAnimSpeed(unk_D_86203E50* arg0);
-void RattataGame_SetRacerAnimState(unk_D_86203E50* arg0, s32 arg1);
-void RattataGame_UpdateHurdleMarkers(unk_D_86203E50* arg0);
+void RattataGame_SyncRacerZPosition(RacePlayerState* arg0);
+void RattataGame_ResetRacerState(RacePlayerState* arg0);
+s32 RattataGame_CheckHurdleCollision(RacePlayerState* arg0, RaceObstacle* arg1);
+void RattataGame_UpdateRunAnimSpeed(RacePlayerState* arg0);
+void RattataGame_SetRacerAnimState(RacePlayerState* arg0, s32 arg1);
+void RattataGame_UpdateHurdleMarkers(RacePlayerState* arg0);
 s16 RattataGame_UpdateRacers(void);
 void RattataGame_AdvanceFinishLineApproach(void);
 void RattataGame_MainLoop(void);

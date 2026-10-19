@@ -22,16 +22,16 @@
 #include "src/12D80.h"
 #include "src/17300.h"
 
-typedef struct unk_D_86002920 {
+typedef struct MiniHudRandomChance {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-} unk_D_86002920; // size = 0xC
+} MiniHudRandomChance; // size = 0xC
 
-static unk_D_86002920 gMiniHudRandomChanceTable[31] = {
+static MiniHudRandomChance gMiniHudRandomChanceTable[31] = {
     { 0x87A0, 0x1190, 0x0032, 0x0028, 0x0005, 0x0000 }, { 0x87A0, 0x1178, 0x004B, 0x0037, 0x0014, 0x0000 },
     { 0x87A0, 0x1180, 0x005C, 0x003C, 0x001E, 0x0000 }, { 0x87A0, 0x11A4, 0x0063, 0x005A, 0x0028, 0x0000 },
     { 0xFFFF, 0xFFE2, 0xFFFF, 0xFFF5, 0x0000, 0x0007 }, { 0x0000, 0x0019, 0x000D, 0x000D, 0x000B, 0x000C },
@@ -52,16 +52,16 @@ static unk_D_86002920 gMiniHudRandomChanceTable[31] = {
 
 static f32 D_86002A94 = 50.0f;
 
-typedef struct unk_D_86002A98 {
+typedef struct MiniHudTextureRect {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-} unk_D_86002A98; // size = 0xC
+} MiniHudTextureRect; // size = 0xC
 
-static unk_D_86002A98 gMiniHudTextureRects[4] = {
+static MiniHudTextureRect gMiniHudTextureRects[4] = {
     { 0x0014, 0x00D7, 0xFFFF, 0xFFFF, 0x0000, 0xFFFF },
     { 0x005A, 0x00D7, 0xFFFF, 0xFFFF, 0x00FF, 0x00FF },
     { 0x00A0, 0x00D7, 0xFFFF, 0xFFFF, 0xFF00, 0x00FF },
@@ -122,8 +122,8 @@ static u32 gMiniHudGeoLayout[] = {
     0x87806398, (u32)&D_6000000,  (u32)&D_1000000,
 };
 
-static unk_D_86002F30* gMiniHudGeoLayoutObj;
-static unk_D_86002F34* gMiniHudMainGraph;
+static ModelData* gMiniHudGeoLayoutObj;
+static MiniHudMainGraph* gMiniHudMainGraph;
 static CameraStruct* gMiniHudCamera;
 static s16 gMiniHudCamAtY;
 static s16 gMiniHudCamAtZ;
@@ -134,17 +134,17 @@ static s32 gMiniHudState;
 static s16 gMiniHudAlpha;
 static s32 gMiniHudTilemap;
 
-typedef struct unk_D_86002F58_004 {
+typedef struct MiniHudPlayerGraph {
     /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ s16 unk_168;
     /* 0x16A */ u16 unk_16A;
     /* 0x16C */ s16 unk_16C;
-} unk_D_86002F58_004; // size = 0x170
+} MiniHudPlayerGraph; // size = 0x170
 
-typedef struct unk_D_86002F58 {
+typedef struct MiniHudPlayerState {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ char pad2[2];
-    /* 0x004 */ unk_D_86002F58_004 unk_004;
+    /* 0x004 */ MiniHudPlayerGraph unk_004;
     /* 0x174 */ u16 unk_174;
     /* 0x176 */ u16 unk_176[2];
     /* 0x17A */ u16 unk_17A;
@@ -157,14 +157,14 @@ typedef struct unk_D_86002F58 {
     /* 0x18A */ s16 unk_18A;
     /* 0x18C */ s16 unk_18C;
     /* 0x18E */ char pad18E[2];
-} unk_D_86002F58; // size = 0x190
+} MiniHudPlayerState; // size = 0x190
 
-static unk_D_86002F58 gMiniHudPlayerStates[4];
-static unk_D_86002F58_004 D_86003598[4];
+static MiniHudPlayerState gMiniHudPlayerStates[4];
+static MiniHudPlayerGraph gMiniHudScoreWheels[4];
 static u32 gMiniHudGameTimer;
-static unk_D_86002F58* D_86003B5C;
-static unk_D_86002F58_004* gCurrentPlayerGraph;
-static unk_D_86002F58_004* gCurrentPlayerWheel;
+static MiniHudPlayerState* D_86003B5C;
+static MiniHudPlayerGraph* gCurrentPlayerGraph;
+static MiniHudPlayerGraph* gCurrentPlayerWheel;
 static s16 gMiniHudIntroActive;
 static s16 gMiniHudIntroTimer;
 static s16 gMiniHudActionFlags[4];
@@ -324,7 +324,7 @@ void MagikarpGame_DrawOverlay(s32 arg0) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gMiniHudAlpha);
 
         for (i = 0; i < 4; i++) {
-            unk_D_86002A98* tmp = &gMiniHudTextureRects[i];
+            MiniHudTextureRect* tmp = &gMiniHudTextureRects[i];
 
             if (gMiniHudPlayerStates[i].unk_000 == 0) {
                 Widget_DrawPlayerIcon(i, tmp->posX, tmp->posY, 0.75f);
@@ -525,7 +525,7 @@ void MagikarpGame_UpdateSplashRipple(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        gCurrentPlayerGraph = gCurrentPlayerWheel = &D_86003598[i];
+        gCurrentPlayerGraph = gCurrentPlayerWheel = &gMiniHudScoreWheels[i];
 
         if (gCurrentPlayerGraph->unk_000.unk_024.y > 140.0f) {
             gCurrentPlayerGraph->unk_000.unk_024.y -= 2.0f;
@@ -738,7 +738,7 @@ void MagikarpGame_ResetPlayerState(s32 arg0) {
 
 void MagikarpGame_UpdatePlayerState(s32 arg0) {
     D_86003B5C = &gMiniHudPlayerStates[arg0];
-    gCurrentPlayerWheel = &D_86003598[arg0];
+    gCurrentPlayerWheel = &gMiniHudScoreWheels[arg0];
     gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
     if (gResultMenuVisible != 1) {
@@ -981,15 +981,15 @@ void MagikarpGame_ShowWinnerSequence(void) {
     gMiniHudMaxWheelValue = 0;
 
     for (i = 0; i < 4; i++) {
-        if (D_86003598[i].unk_16A >= gMiniHudMaxWheelValue) {
-            gMiniHudMaxWheelValue = D_86003598[i].unk_16A;
+        if (gMiniHudScoreWheels[i].unk_16A >= gMiniHudMaxWheelValue) {
+            gMiniHudMaxWheelValue = gMiniHudScoreWheels[i].unk_16A;
         }
     }
 
     gMiniHudWinnerCount = 0;
 
     for (i = 0; i < 4; i++) {
-        if ((gMiniHudMaxWheelValue == D_86003598[i].unk_16A) && (gMiniHudMaxWheelValue != 0)) {
+        if ((gMiniHudMaxWheelValue == gMiniHudScoreWheels[i].unk_16A) && (gMiniHudMaxWheelValue != 0)) {
             Widget_PauseMenuRecordWin(i);
             gMiniHudWinnerCount++;
         }
@@ -998,7 +998,7 @@ void MagikarpGame_ShowWinnerSequence(void) {
     for (i = 0; i < 4; i++) {
         D_86003B5C = &gMiniHudPlayerStates[i];
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
-        if ((gMiniHudMaxWheelValue == D_86003598[i].unk_16A) && (gMiniHudMaxWheelValue > 0)) {
+        if ((gMiniHudMaxWheelValue == gMiniHudScoreWheels[i].unk_16A) && (gMiniHudMaxWheelValue > 0)) {
             D_86003B5C->unk_004.unk_168 = 1;
             ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 7);
             gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
@@ -1111,12 +1111,12 @@ void MagikarpGame_InitActors(void) {
     MemoryBlock* temp_v0;
 
     temp_v0 = (MemoryBlock*)MainPool_AllocState(main_pool_get_available(), 0);
-    gMiniHudMainGraph = (unk_D_86002F34*)process_geo_layout(temp_v0, gMiniHudGeoLayout);
+    gMiniHudMainGraph = (MiniHudMainGraph*)process_geo_layout(temp_v0, gMiniHudGeoLayout);
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
     PokeIcon_OpenModelArchives();
     gMiniHudAlpha = 0xFF;
-    gMiniHudGeoLayoutObj = (unk_D_86002F30*)Model_LoadByArchiveIndex(0xAD);
+    gMiniHudGeoLayoutObj = (ModelData*)Model_LoadByArchiveIndex(0xAD);
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &gMiniHudPlayerStates[i];
@@ -1151,10 +1151,10 @@ void MagikarpGame_InitActors(void) {
         gCurrentPlayerGraph->unk_000.unk_01E.y = -0x2800;
     }
 
-    gMiniHudGeoLayoutObj = (unk_D_86002F30*)Model_LoadByArchiveIndex(0xAE);
+    gMiniHudGeoLayoutObj = (ModelData*)Model_LoadByArchiveIndex(0xAE);
 
     for (i = 0; i < 4; i++) {
-        gCurrentPlayerWheel = &D_86003598[i];
+        gCurrentPlayerWheel = &gMiniHudScoreWheels[i];
         gCurrentPlayerGraph = gCurrentPlayerWheel;
 
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
