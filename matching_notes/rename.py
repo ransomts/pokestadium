@@ -525,19 +525,20 @@ class Rewriter:
         if self._member_map or path in self._member_scopes:
             mmap = dict(self._member_map)
             mmap.update(self._member_scopes.get(path, {}))
+            if mmap:  # merged map may be empty for files outside all scopes
+                def mrepl(m):
+                    return m.group(1) + mmap[m.group(2)]
 
-            def mrepl(m):
-                return m.group(1) + mmap[m.group(2)]
-
-            for pre in (r"(\.)", r"(->)"):
-                pat = re.compile(pre + "(" + self._alt(self._member_map) + r")(?![A-Za-z0-9_])")
-                text, k = pat.subn(mrepl, text)
-                changed |= bool(k)
-            if path.endswith(".h"):
-                pat = re.compile(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s*\**\s*)("
-                                 + self._alt(self._member_map) + r")((?:\[[^\]]*\])*)\s*;", re.M)
-                text, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3) + ";", text)
-                changed |= bool(k)
+                alt = self._alt(mmap)
+                for pre in (r"(\.)", r"(->)"):
+                    pat = re.compile(pre + "(" + alt + r")(?![A-Za-z0-9_])")
+                    text, k = pat.subn(mrepl, text)
+                    changed |= bool(k)
+                if path.endswith(".h"):
+                    pat = re.compile(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s*\**\s*)("
+                                     + alt + r")((?:\[[^\]]*\])*)\s*;", re.M)
+                    text, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3) + ";", text)
+                    changed |= bool(k)
         if changed:
             self._save(path, text)
         return changed
