@@ -90,7 +90,7 @@ typedef struct TradeInfoBoxState {
     /* 0x18 */ PickerState* unk_18;
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ AssetManager* unk_20;
-    /* 0x24 */ unk_func_8001B1FC* unk_24;
+    /* 0x24 */ ModelPreview* unk_24;
 } TradeInfoBoxState; // size >= 0x28
 
 typedef struct PanelRect {
@@ -218,7 +218,7 @@ typedef struct TradeEvoState {
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ PokemonData* unk_24;
     /* 0x28 */ AssetManager* unk_28;
-    /* 0x2C */ unk_func_8001B1FC* unk_2C;
+    /* 0x2C */ ModelPreview* unk_2C;
     /* 0x30 */ PanelRect unk_30;
 } TradeEvoState; // size = 0x38
 

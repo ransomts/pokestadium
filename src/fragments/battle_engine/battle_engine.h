@@ -384,10 +384,10 @@ typedef struct BattleMessageBuffers {
     /* 0x4C8 */ unk_D_843901A0_4C8 unk_4C8;
 } BattleMessageBuffers; // size = 0x4F4
 
-typedef struct unk_D_84385790 {
+typedef struct StatusColor {
     /* 0x00 */ s32 posX;
     /* 0x04 */ Color_RGBA8 rotation;
-} unk_D_84385790; // size = 0x8
+} StatusColor; // size = 0x8
 
 typedef struct arg1_func_84344CE8 {
     /* 0x00 */ char unk00[0x14];
@@ -1240,7 +1240,7 @@ void BattleScene_ComputeParticipantModelOffset(BattlePlayerEntity* arg0, Vec3f* 
 void BattleScene_GetParticipantAuxiliaryModelPosition(BattlePlayerEntity* arg0, Vec3f* arg1);
 f32 BattleAnim_GetOwnerModelHeight(BattlePlayerEntity* arg0);
 f32 BattleScene_GetParticipantModelRadiusScaled(BattlePlayerEntity* arg0);
-unk_D_86002F58_004_000_004* Battle_GetMoveEffectListEntry(BattlePlayerEntity* arg0, s32 arg1);
+ModelRootNode* Battle_GetMoveEffectListEntry(BattlePlayerEntity* arg0, s32 arg1);
 s32 Battle_GetTrainerId(BattlePlayerEntity* arg0, UNUSED s32 arg1);
 char* Battle_GetActiveMoveName(BattlePlayerEntity* arg0);
 u8* Battle_GetActiveMonNickname(BattlePlayerEntity* arg0);
@@ -1435,7 +1435,7 @@ void BattleHud_DrawHpFractionText(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void BattleHud_DrawSpeciesNameLabel(s16 arg0, s16 arg1, s32 arg2, char* arg3, s32 arg4);
 void BattleHud_DrawSpeciesNameLabelBlink(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5);
 void BattleHud_DrawSpeciesNameLabelAuto(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6);
-void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA);
+void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, StatusColor* arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA);
 s32 BattleHud_DrawBorderTile(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4);
 void func_84311420(void);
 void BattleHud_DrawBoxBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3);

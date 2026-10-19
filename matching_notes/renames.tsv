@@ -17364,3 +17364,39 @@ unk_D_800AB970	ScaleStack	w5		unk_D_800AB970:ScaleStack stores a stack of Vec3f 
 unk_D_800ABB10	RenderState	w5		unk_D_800ABB10:RenderState tracks current material parameters like colors, fog, and combine modes	applied@50856224
 unk_D_800ABB28	LayerState	w5		unk_D_800ABB28:LayerState is used in gLayerStates array to manage rendering states per layer	applied@50856224
 unk_D_86002F34_alt11_018	TextureInfo	w5		struct containing texture format, image, and address used in GeoRender_BindTexture	applied@50856224
+D_8007C538	gAtan2ScaleNumA	w6		Multiplied with MathUtil_Atan2s result in angle conversion, serving as a scaling numerator constant	applied@d684cf7d
+D_8007C540	gAtan2ScaleDenA	w6		Divides the product of MathUtil_Atan2s and gAtan2ScaleNumA, acting as the scaling denominator constant	applied@d684cf7d
+D_8007C548	gAtan2ScaleNumB	w6		Used alongside MathUtil_Atan2s for the second angle conversion, providing the numerator scaling factor	applied@d684cf7d
+D_8007C550	gAtan2ScaleDenB	w6		Divides the product involving gAtan2ScaleNumB, serving as the denominator for the second angle conversion	applied@d684cf7d
+D_8007C558	gAtan2ScaleNumC	w6		Appears in the second billboard matrix function as the numerator for atan2 scaling	applied@d684cf7d
+D_8007C560	gAtan2ScaleDenC	w6		Divides the product with gAtan2ScaleNumC in the same function, acting as the denominator	applied@d684cf7d
+D_8007C568	gAtan2ScaleNumD	w6		Used in the third billboard matrix function as the numerator scaling constant for atan2	applied@d684cf7d
+D_8007C570	gAtan2ScaleDenD	w6		Divides the product with gAtan2ScaleNumD, providing the denominator for that angle conversion	applied@d684cf7d
+D_8439010C	gSplineE_CB	w6		static float used in Battle_ComputeSplineWeightsVariantE to store CB(arg1)	applied@d684cf7d
+D_84390110	gSplineE_InvT	w6		static float used in Battle_ComputeSplineWeightsVariantE to store 1.0f - arg1	applied@d684cf7d
+D_84390114	gSplineE_T2	w6		static float used in Battle_ComputeSplineWeightsVariantE to store SQ(InvT)	applied@d684cf7d
+D_84390118	gSplineE_T3	w6		static float used in Battle_ComputeSplineWeightsVariantE to store InvT^3	applied@d684cf7d
+unk_D_84385790	StatusColor	w6		struct containing a color ID and RGB values used in BattleHud_DrawMonInfoPanel	applied@d684cf7d
+func_8001B6BC	PokeIcon_UpdatePreviewAutoMotion	w6		returns 0, called in PokeIcon_UpdatePreview as a fallback when no user input is detected	applied@d684cf7d
+unk_func_8001A024_008	SpriteSlot	w6		struct used in an array within SpriteDisplay to track individual rendered Pokemon icons	applied@d684cf7d
+unk_func_8001B1FC	ModelPreview	w6		struct managing the 3D preview scene, including camera, target Pokemon, and render targets	applied@d684cf7d
+unk_D_86002F58_004_000_004	ModelRootNode	w6		typedef for the root node structure used in Model_InitDisplayObject	applied@d684cf7d
+unk_D_800AC910	PlayerSaveState	w6		main structure for gPlayerSaveData tracking port status and save buffers	applied@d684cf7d
+unk_D_800AC910_050	GbSaveMainData	w6		structure for the main save block, contains mapId, pokedexFlags, and bag/pc items	applied@d684cf7d
+unk_D_800AC910_054	GbSaveBoxData	w6		structure for the box save data, containing multiple box banks	applied@d684cf7d
+D_800ADA38	gSaveBuffer	w6		unreferenced BSS buffer of size 0xAA8, likely used for save operations	applied@d684cf7d
+unk_D_800AC910_050_B40	GbSaveBoxEntry	w6		structure for a single box entry, used in GbSave_GetBoxEntry	applied@d684cf7d
+unk_D_800AC910_050_9AC	GbSavePartyData	w6		structure for the party Pokemon in the main save block, used in GbSave_LoadMainPokemon	applied@d684cf7d
+unk_D_800AC910_050_FA0	GbSaveChecksumBlock	w6		small structure used in GbSave_InvalidateMainDataChecksum to write the checksum	applied@d684cf7d
+func_8002667C	Save_NoOp	w6		empty function in save_data.c	applied@d684cf7d
+unk_D_800AE4E8_004_1_000	SaveBank_PokemonRecord	w6		structure used in GbSave_LoadBattleMonRecord and Deck_GetSaveEntryName	applied@d684cf7d
+unk_D_800AE4E8_004_3_0000	SaveBank_TrainerRecord	w6		structure used in Save_LoadWithRepair case 17 and Deck_GetSaveEntryName	applied@d684cf7d
+unk_D_800AE4E8_004_3_34E0	SaveBank_ItemBoxRecord	w6		structure used in Save_LoadWithRepair case 18 and Deck_GetSaveEntryCount	applied@d684cf7d
+unk_D_800AE4E8_004_2_0DC0	SaveBank_VictoryPalaceRecord	w6		structure used in Save_LoadWithRepair case 19 and Deck_ReadSaveEntry	applied@d684cf7d
+unk_D_800AE4E8_004_2_1EA0	SaveBank_OptionsRecord	w6		structure used in Save_LoadWithRepair case 20 and Save_GetOptions	applied@d684cf7d
+unk_D_800AE4E8_004_2_1D20	SaveBank_ContinueRecord	w6		structure used in Session_SaveContinueRecord and Save_ContinueRecordExists	applied@d684cf7d
+unk_D_800AE4E8_004_2_1EC8	SaveBank_GalleryRecord	w6		structure used in Save_LoadWithRepair case 22/23 and Deck_ReadSaveEntry	applied@d684cf7d
+unk_D_800AE4E8_004_1_000_010	SaveBank_PokemonData	w6		structure passed to Pokemon_FromGbRecord and Pokemon_ToGbRecord	applied@d684cf7d
+unk_D_800AE4E8_004_3_34E0_010	SaveBank_ItemBoxEntry	w6		structure used in Deck_ReadSaveEntry case 18	applied@d684cf7d
+unk_D_800AE4E8_004_2_0DC0_002	SaveBank_VictoryPalaceEntry	w6		structure used in Deck_ReadSaveEntry case 19	applied@d684cf7d
+unk_D_800AE4E8_004_2_1EC8_0002	SaveBank_GalleryEntry	w6		structure used in Deck_ReadSaveEntry case 22/23	applied@d684cf7d

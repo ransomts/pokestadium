@@ -55,7 +55,7 @@ SpriteDisplay* PokeIcon_CreateRenderList(AssetManager* arg0, s16 arg1, s16 arg2,
         temp_v0->posY = 0;
         temp_v0->unk_03 = -1;
         temp_v0->unk_01 = arg1;
-        temp_v0->unk_08 = main_pool_alloc(arg1 * sizeof(unk_func_8001A024_008), 0);
+        temp_v0->unk_08 = main_pool_alloc(arg1 * sizeof(SpriteSlot), 0);
         temp_v0->rotation = arg0;
         temp_v0->unk_14 = NULL;
         temp_v0->unk_18 = gSpeciesDisplayTable;
@@ -99,7 +99,7 @@ void PokeIcon_ResetRenderList(SpriteDisplay* arg0) {
     s32 i;
     u16 w;
     u16 h;
-    unk_func_8001A024_008* tempImg_p;
+    SpriteSlot* tempImg_p;
     FramebufferImage* tempDepth_p;
 
     if (arg0->posX & 1) {
@@ -207,8 +207,8 @@ void PokeIcon_AdjustImageColorBuffer(FramebufferImage* arg0, arg1_func_80010CA8 
 void PokeIcon_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
     Vec3s sp38;
     CameraStruct* sp34;
-    unk_func_8001A024_008* temp_s1;
-    unk_D_86002F58_004_000_004* sp2C;
+    SpriteSlot* temp_s1;
+    ModelRootNode* sp2C;
 
     sp34 = arg0->unk_0C->unk_0C;
     temp_s1 = &arg0->unk_08[arg1];
@@ -251,7 +251,7 @@ s32 PokeIcon_ProcessNextSlot(SpriteDisplay* arg0, s32 arg1) {
     s32 var_v0;
     s32 sp24;
     s32 sp20;
-    unk_func_8001A024_008* temp_v0_2;
+    SpriteSlot* temp_v0_2;
 
     sp24 = -1;
     sp20 = arg0->posY;
@@ -300,8 +300,8 @@ s32 PokeIcon_ProcessAllSlots(SpriteDisplay* arg0, s32 arg1) {
     arg1_func_80010CA8 sp48;
     s32 sp44;
     s32 var_s1;
-    unk_func_8001A024_008* temp_s0;
-    unk_func_8001A024_008* temp_s1;
+    SpriteSlot* temp_s0;
+    SpriteSlot* temp_s1;
     s32 i;
 
     sp44 = -1;
@@ -357,8 +357,8 @@ s32 PokeIcon_RenderNextSlotBlocking(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
     s32 var_a2;
     s32 var_s0;
-    unk_func_8001A024_008* temp_a0;
-    unk_func_8001A024_008* temp_s1;
+    SpriteSlot* temp_a0;
+    SpriteSlot* temp_s1;
     
     var_a2 = -1;
     var_s0 = arg0->posY;
@@ -470,7 +470,7 @@ s32 PokeIcon_CapturePreviewGeoNode(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void PokeIcon_InitPreviewScene(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void PokeIcon_InitPreviewScene(ModelPreview* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     static u32 sSpriteCameraGeoLayoutCommands[] = {
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x010000E0, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D013B, 0xFFFFFF32, 0x14000000, 0xFFD30087, 0x80808032, 0x16646464,
@@ -488,9 +488,9 @@ void PokeIcon_InitPreviewScene(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 
     GeoCamera_SetPerspective(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
 }
 
-unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
+ModelPreview* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
                                  s16 arg6, u8* arg7) {
-    unk_func_8001B1FC* temp_v0 = main_pool_alloc(sizeof(unk_func_8001B1FC), 0);
+    ModelPreview* temp_v0 = main_pool_alloc(sizeof(ModelPreview), 0);
 
     if (temp_v0 != NULL) {
         temp_v0->posX = 6;
@@ -509,7 +509,7 @@ unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16
     return temp_v0;
 }
 
-void PokeIcon_SetPreviewMon(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2) {
+void PokeIcon_SetPreviewMon(ModelPreview* arg0, PokemonData* arg1, u16 arg2) {
     arg1_func_80010CA8 sp2C;
     s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1->posX.posX - 1].unk_14 >> 0x10) >> 6;
     s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1->posX.posX - 1].unk_14 >> 6) >> 4;
@@ -537,7 +537,7 @@ void PokeIcon_SetPreviewMon(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2
     arg0->unk_24->unk_000.posY |= 0x80;
 }
 
-void PokeIcon_SetPreviewSpecies(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
+void PokeIcon_SetPreviewSpecies(ModelPreview* arg0, s32 arg1, u16 arg2) {
     arg1_func_80010CA8 sp34;
     s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 >> 0x10) >> 6;
     s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 >> 6) >> 4;
@@ -591,11 +591,11 @@ s32 PokeIcon_HandlePreviewInput(Vec3s* arg0) {
     return var_v1;
 }
 
-s32 func_8001B6BC(Vec3s* arg0) {
+s32 PokeIcon_UpdatePreviewAutoMotion(Vec3s* arg0) {
     return 0;
 }
 
-void PokeIcon_AdvancePreviewMotion(unk_func_8001B1FC* arg0) {
+void PokeIcon_AdvancePreviewMotion(ModelPreview* arg0) {
     s32 var_a0;
     Vec3s* sp18 = &arg0->unk_24->unk_01E;
     s16 var_a2;
@@ -624,7 +624,7 @@ void PokeIcon_AdvancePreviewMotion(unk_func_8001B1FC* arg0) {
     sp18->x = Math_StepToS(sp18->x, 0, var_a2);
 }
 
-void PokeIcon_UpdatePreview(unk_func_8001B1FC* arg0) {
+void PokeIcon_UpdatePreview(ModelPreview* arg0) {
     f32 temp_fv0;
     s16 temp_v0_2;
     s32 temp_v0;
@@ -634,7 +634,7 @@ void PokeIcon_UpdatePreview(unk_func_8001B1FC* arg0) {
     if (arg0->posX & 2) {
         var_v1 = PokeIcon_HandlePreviewInput(&arg0->unk_24->unk_01E);
         if (var_v1 == 0) {
-            var_v1 = func_8001B6BC(&arg0->unk_24->unk_01E);
+            var_v1 = PokeIcon_UpdatePreviewAutoMotion(&arg0->unk_24->unk_01E);
         }
     }
 
@@ -652,7 +652,7 @@ void PokeIcon_UpdatePreview(unk_func_8001B1FC* arg0) {
     Vec3f_SetComponentsDuplicate(&gCameraNode->unk_030, arg0->unk_18, arg0->unk_18, arg0->unk_18);
 }
 
-void PokeIcon_DrawPreview(unk_func_8001B1FC* arg0) {
+void PokeIcon_DrawPreview(ModelPreview* arg0) {
     s32 var_v0;
     s32 var_s2;
     s32 i;
@@ -684,7 +684,7 @@ void PokeIcon_DrawPreview(unk_func_8001B1FC* arg0) {
     GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, arg0->unk_08, arg0->unk_0A);
 }
 
-u8* PokeIcon_RenderPreview(unk_func_8001B1FC* arg0) {
+u8* PokeIcon_RenderPreview(ModelPreview* arg0) {
     PokeIcon_UpdatePreview(arg0);
     GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_28);
     PokeIcon_DrawPreview(arg0);

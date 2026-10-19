@@ -1939,7 +1939,7 @@ void BattleScene_InitializeParticipantController(BattlePlayerEntity* arg0) {
 
 void BattleScene_InitializeParticipantModel(BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
-    unk_D_86002F58_004_000_004* sp24;
+    ModelRootNode* sp24;
     s16 sp22;
 
     BattleScene_GetParticipantSideIndex(arg0);
@@ -1976,7 +1976,7 @@ void BattleScene_InitializeParticipantModel(BattlePlayerEntity* arg0) {
 
 void BattleScene_InitializeParticipantOwnerModel(BattlePlayerEntity* arg0) {
     unk_D_84390010_728* ptr = &arg0->ownerModel;
-    unk_D_86002F58_004_000_004* sp28;
+    ModelRootNode* sp28;
     s16 sp26;
 
     sp28 = Battle_GetMoveEffectListEntry(arg0, 0);
@@ -1998,7 +1998,7 @@ void BattleScene_InitializeParticipantOwnerModel(BattlePlayerEntity* arg0) {
 }
 
 void BattleScene_InitializeParticipantSecondaryModels(BattlePlayerEntity* arg0, s32* arg1) {
-    unk_D_86002F58_004_000_004* sp44;
+    ModelRootNode* sp44;
     s16 sp42;
     s32 i;
     unk_D_84390010_168* ptr;
@@ -2034,7 +2034,7 @@ void BattleScene_InitializeParticipantSecondaryModels(BattlePlayerEntity* arg0, 
 
 void BattleScene_InitializeParticipantAuxiliaryModel(BattlePlayerEntity* arg0) {
     Fragment2_1GraphNode* ptr = &arg0->effectGraphNode;
-    unk_D_86002F58_004_000_004* sp20 = arg0->pokemonAnimation->unk_18;
+    ModelRootNode* sp20 = arg0->pokemonAnimation->unk_18;
 
     ModelRenderer_AttachDisplayObject(ptr);
     ptr->modelPhase = 0xFF;

@@ -604,7 +604,7 @@ s32 LabPC_DrawStatWidget(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg
 }
 
 void LabPC_InitMonPreviewWidget(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5,
-                   unk_func_8001B1FC* arg6) {
+                   ModelPreview* arg6) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_050));
     arg0->posX.unk_18 = LabPC_DrawMonPreviewWidget;
     arg0->posX.unk_10.posX = arg1;
@@ -1023,7 +1023,7 @@ s32 LabPC_HandleMoveGridInput(unk_func_88205880_0098_008_070* arg0, Controller* 
     return var_v1;
 }
 
-void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, unk_func_8001B1FC* arg3,
+void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, ModelPreview* arg3,
                    unk_func_88001300_000* arg4, MemoryPool* arg5) {
     static Color_RGBA8 gDetailPanelFrameColor1 = { 0x80, 0x18, 0x18, 0xFF };
     static Color_RGBA8 gDetailPanelFrameColor2 = { 0x38, 0x38, 0x80, 0xFF };
@@ -1459,7 +1459,7 @@ s32 LabPC_RunDetailPanel(LabPC_DetailPanel* arg0) {
 
 LabPC_DetailPanel* LabPC_CreateMonDetailPanel(LabPC_DetailPanelParams* arg0) {
     UNUSED s32 pad;
-    unk_func_8001B1FC* sp38;
+    ModelPreview* sp38;
     LabPC_DetailPanel* sp34;
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);

@@ -456,7 +456,7 @@ typedef struct unk_func_88205880_0098_008_050 {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ PokemonData* unk_30;
-    /* 0x34 */ unk_func_8001B1FC* unk_34;
+    /* 0x34 */ ModelPreview* unk_34;
 } unk_func_88205880_0098_008_050; // size = 0x38
 
 typedef struct unk_func_88205880_0098_008_054 {

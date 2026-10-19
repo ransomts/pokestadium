@@ -23,7 +23,7 @@ typedef struct unk_D_8423D3A8 {
     /* 0x16 */ ClipRect unk_16;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ AssetManager* unk_24;
-    /* 0x28 */ unk_func_8001B1FC* unk_28;
+    /* 0x28 */ ModelPreview* unk_28;
     /* 0x2C */ unk_D_838067F0_0168_0000* unk_2C;
 } unk_D_8423D3A8; // size >= 0x30
 

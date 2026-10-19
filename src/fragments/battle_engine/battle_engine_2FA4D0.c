@@ -14,7 +14,7 @@
 
 Vec3f gCameraPosition;
 
-static unk_D_84385790 gStatusColors[] = {
+static StatusColor gStatusColors[] = {
     {
         0x00000000,
         {
@@ -424,7 +424,7 @@ void BattleHud_DrawSpeciesNameLabelAuto(BattlePlayerEntity* arg0, BattleAI_TeamC
     }
 }
 
-void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
+void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, StatusColor* arg2, s32 arg3, s32 arg4,
                    s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA) {
     s32 sp34;
     s32 temp_a2;

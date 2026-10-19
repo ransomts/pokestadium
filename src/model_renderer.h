@@ -25,7 +25,7 @@ typedef struct unk_func_8001C248 {
 void ModelRenderer_InitDisplayRoots(void);
 void ModelRenderer_AttachDisplayObject(Fragment2_1GraphNode* arg0);
 void ModelRenderer_AttachSecondaryDisplayObject(Fragment2_1GraphNode* arg0);
-void Model_InitDisplayObject(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3);
+void Model_InitDisplayObject(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, ModelRootNode* arg3);
 void ModelRenderer_ClearDisplayObject(Fragment2_1GraphNode* arg0);
 s32 ModelAnim_SetAnimation(Fragment2_1GraphNode* arg0, s32 arg1);
 s32 ModelAnim_SetEventTrack(Fragment2_1GraphNode* arg0, s32 arg1);

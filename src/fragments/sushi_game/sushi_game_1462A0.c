@@ -87,7 +87,7 @@ SushiPlayerEntity gSushiEntities[4];
 s32 gSushiInstanceIds[4];
 static s32 gSushiActiveCount;
 static Controller gSushiDefaultController;
-static unk_D_86002F58_004_000_004* gSushiGraphNode;
+static ModelRootNode* gSushiGraphNode;
 static s16 gSushiFirstEntityId;
 static s16 gSushiEntityIndex;
 static s16 gSushiTotalEntities;
@@ -1651,7 +1651,7 @@ void SushiGame_InitPlayerSlots(s32 arg0) {
     gSushiGraphData = Model_LoadByArchiveIndex(0xA0);
 
     temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
-    gSushiGraphNode = (unk_D_86002F58_004_000_004*)process_geo_layout(temp_v0, &gSushiNameTagDLData);
+    gSushiGraphNode = (ModelRootNode*)process_geo_layout(temp_v0, &gSushiNameTagDLData);
     MainPool_FinalizeAllocation(temp_v0);
     gSushiEntityIndex = 0;
     gSushiMaxEntities = 4 - gMenuCursorY;

@@ -52,7 +52,7 @@ typedef struct ItemPairState {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
-    /* 0x16C */ unk_D_86002F58_004_000_004* unk_16C;
+    /* 0x16C */ ModelRootNode* unk_16C;
 } ItemPairState; // size = 0x170
 
 void ClefairyGame_DespawnPatternIcons(void);

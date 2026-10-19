@@ -41,7 +41,7 @@ typedef unk_D_86002F58_004_000_00C_028* (*unk_D_86002F58_004_000_00C_028_func)(s
 typedef struct unk_D_86002F58_004_000_010_024 {
     /* 0x00 */ u16 posX;
     /* 0x02 */ char unk02[0x6];
-    /* 0x08 */ struct unk_D_86002F58_004_000_004* unk_08;
+    /* 0x08 */ struct ModelRootNode* unk_08;
 } unk_D_86002F58_004_000_010_024; // size >= 0xC
 
 typedef struct AssetManager {
@@ -64,14 +64,14 @@ typedef struct AssetManager {
     /* 0x6C */ char pad6C[0x4];
 } AssetManager; // size = 0x70
 
-typedef struct unk_D_86002F58_004_000_004 {
-    /* 0x00 */ struct unk_D_86002F58_004_000_004* posX[4];
+typedef struct ModelRootNode {
+    /* 0x00 */ struct ModelRootNode* posX[4];
     /* 0x10 */ struct unk_D_86002F58_004_000_00C* unk_10;
     /* 0x14 */ AssetManager* unk_14;
-} unk_D_86002F58_004_000_004; // size >= 0x18
+} ModelRootNode; // size >= 0x18
 
 typedef struct unk_D_86002F58_004_000_00C {
-    /* 0x00 */ unk_D_86002F58_004_000_004 posX;
+    /* 0x00 */ ModelRootNode posX;
     /* 0x18 */ char unk_18[0x10];
     /* 0x28 */ unk_D_86002F58_004_000_00C_028_func unk_28;
 } unk_D_86002F58_004_000_00C; // size >= 0x2C
@@ -458,7 +458,7 @@ typedef struct MiniHudMainGraph {
 // Are ModelData and unk_D_800AC840 the same?
 typedef struct ModelData {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ unk_D_86002F58_004_000_004* unk_08;
+    /* 0x08 */ ModelRootNode* unk_08;
 } ModelData; // size = 0x18 ??
 
 typedef struct UnkInputStruct8000D738 {

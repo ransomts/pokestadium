@@ -6,7 +6,7 @@
 #include "src/matrix.h"
 #include "src/game_state.h"
 
-typedef struct unk_func_8001B1FC {
+typedef struct ModelPreview {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ s16 rotation;
@@ -23,7 +23,7 @@ typedef struct unk_func_8001B1FC {
     /* 0x24 */ Fragment2_1GraphNode* unk_24;
     /* 0x28 */ FramebufferImage* unk_28;
     /* 0x2C */ FramebufferImage* unk_2C;
-} unk_func_8001B1FC; // size = 0x30
+} ModelPreview; // size = 0x30
 
 typedef union unk_func_8001A024_008_014 {
     struct {
@@ -34,7 +34,7 @@ typedef union unk_func_8001A024_008_014 {
     u32 raw;
 } unk_func_8001A024_008_014; // size = 0x4
 
-typedef struct unk_func_8001A024_008 {
+typedef struct SpriteSlot {
     /* 0x00 */ s16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ s16 rotation;
@@ -42,7 +42,7 @@ typedef struct unk_func_8001A024_008 {
     /* 0x0C */ FramebufferImage* unk_0C;
     /* 0x10 */ arg1_func_80010CA8 unk_10;
     /* 0x14 */ unk_func_8001A024_008_014 unk_14;
-} unk_func_8001A024_008; // size = 0x18
+} SpriteSlot; // size = 0x18
 
 typedef struct SpriteDisplay {
     /* 0x00 */ u8 posX;
@@ -50,7 +50,7 @@ typedef struct SpriteDisplay {
     /* 0x02 */ s8 posY;
     /* 0x03 */ s8 unk_03;
     /* 0x04 */ AssetManager* rotation;
-    /* 0x08 */ unk_func_8001A024_008* unk_08;
+    /* 0x08 */ SpriteSlot* unk_08;
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ Fragment2_1GraphNode* unk_10;
     /* 0x14 */ FramebufferImage* unk_14;
@@ -87,9 +87,9 @@ u8* PokeIcon_GetImage(SpriteDisplay*, s32);
 s32 PokeIcon_AreSlotsIdle(SpriteDisplay*);
 void PokeIcon_OpenModelArchive(void);
 void PokeIcon_LoadModelTextureForMon(u16*, s32, PokemonData*);
-unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager*, s16, s16, s16, s16, s16, s16, u8*);
-void PokeIcon_SetPreviewMon(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2);
-void PokeIcon_SetPreviewSpecies(unk_func_8001B1FC*, s32, u16);
-u8* PokeIcon_RenderPreview(unk_func_8001B1FC*);
+ModelPreview* PokeIcon_CreateModelPreview(AssetManager*, s16, s16, s16, s16, s16, s16, u8*);
+void PokeIcon_SetPreviewMon(ModelPreview* arg0, PokemonData* arg1, u16 arg2);
+void PokeIcon_SetPreviewSpecies(ModelPreview*, s32, u16);
+u8* PokeIcon_RenderPreview(ModelPreview*);
 
 #endif // _1AB70_H_

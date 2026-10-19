@@ -261,7 +261,7 @@ f32 BattleScene_GetParticipantModelRadiusScaled(BattlePlayerEntity* arg0) {
     return BattleScene_GetParticipantModelRadius(arg0) * arg0->unk_000.unk_030.y;
 }
 
-unk_D_86002F58_004_000_004* Battle_GetMoveEffectListEntry(BattlePlayerEntity* arg0, s32 arg1) {
+ModelRootNode* Battle_GetMoveEffectListEntry(BattlePlayerEntity* arg0, s32 arg1) {
     return arg0->pokemonAnimation->unk_14->posX[2]->posX[arg1];
 }
 
@@ -455,7 +455,7 @@ s32 BattleScene_GetParticipantDisplayPlayerNumber(BattlePlayerEntity* arg0) {
 
 void BattleScene_ReinitParticipantBodyModel(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad;
-    unk_D_86002F58_004_000_004* sp20 = Battle_GetMoveEffectListEntry(arg0, 0);
+    ModelRootNode* sp20 = Battle_GetMoveEffectListEntry(arg0, 0);
 
     BattleScene_GetParticipantSideIndex(arg0);
     ModelRenderer_ClearDisplayObject(&arg1->unk_000);
@@ -489,7 +489,7 @@ void BattleScene_ReinitParticipantBodyModel(BattlePlayerEntity* arg0, BattlePlay
 }
 
 void BattleScene_ReinitParticipantOwnerModel(BattlePlayerEntity* arg0, unk_D_84390010_728* arg1, s16 arg2) {
-    unk_D_86002F58_004_000_004* sp24;
+    ModelRootNode* sp24;
 
     sp24 = Battle_GetMoveEffectListEntry(arg0, 0);
     ModelRenderer_ClearDisplayObject(&arg1->unk_000);
@@ -513,7 +513,7 @@ void BattleScene_ReinitParticipantOwnerModel(BattlePlayerEntity* arg0, unk_D_843
 
 void BattleScene_ReinitParticipantSecondaryModels(BattlePlayerEntity* arg0, s16 arg1) {
     s32 i;
-    unk_D_86002F58_004_000_004* sp58;
+    ModelRootNode* sp58;
     unk_D_84390010_168* var_s0;
 
     sp58 = Battle_GetMoveEffectListEntry(arg0, 0);

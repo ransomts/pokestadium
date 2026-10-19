@@ -74,14 +74,14 @@ s32 gCamTextWidth = 0;
 u32 gCamGeoLayoutCmdTable[115] = { 0xC00FFFF, 0x5000000, 0xB00001E, 0, 0x14000F0, 0xF, 0, 0, 0x8000000, (u32)&Gallery_ConfigurePhotoCamera, 0, 0x5000000, 0xD000000, 0x5000000, 0x13FFFFFF, 0x3C003E8, 0x8000000, (u32)&Gallery_SetSceneRenderState, 0, 0x14000000, 0x2D0019, 0xFFFFFF28, 0x8000000, (u32)&Gallery_SetCameraAngleOffsets, 0, 0x14000000, 0x2D0019, 0x80808028, 0x8000000, (u32)&Gallery_SetCameraAngleOffsetsAlternate, 0, 0x16646464, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Gallery_SetSceneGraphNode, 0, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Gallery_SetSceneGraphNode, 1, 0x6000000, 0x6000000, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Gallery_SetSceneGraphNode, 2, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F000000, 0, 0, 0xFF060000, 0x640064, 0x640000, 0x8000000, (u32)&Gallery_SetSceneModelNode, 0, 0x6000000, 0x6000000, 0x6000000, 0xB00002D, 0, 0x14000F0, 0, 0xFDBD0000, 0x243, 0x8000000, (u32)&Gallery_SetScenePoseCamera, 0, 0x5000000, 0xD000000, 0x5000000, 0xF000002, 0x5000000, 0x22010000, 0, 0x8000000, (u32)&Cam_RenderView, 0, 0x6000000, 0x6000000, 0x6000000, 0x6000000, 0x1000000 };
 u32 gCamGeoLayoutIndices[17] = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF, 0x11, 0 };
 CamQuadVertex gCamQuadVertices[12] = { { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 } };
-extern f64 D_8007C538;
-extern f64 D_8007C540;
-extern f64 D_8007C548;
-extern f64 D_8007C550;
-extern f64 D_8007C558;
-extern f64 D_8007C560;
-extern f64 D_8007C568;
-extern f64 D_8007C570;
+extern f64 gAtan2ScaleNumA;
+extern f64 gAtan2ScaleDenA;
+extern f64 gAtan2ScaleNumB;
+extern f64 gAtan2ScaleDenB;
+extern f64 gAtan2ScaleNumC;
+extern f64 gAtan2ScaleDenC;
+extern f64 gAtan2ScaleNumD;
+extern f64 gAtan2ScaleDenD;
 
 void Gallery_ClearActiveScene(void);
 void Gallery_Terminate(void);
@@ -822,8 +822,8 @@ void Mtx_BuildDirectionRotation(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4
 
     temp_fa1 = arg4 - arg1;
     temp_fa0 = arg6 - arg3;
-    sp140 = (f32) (((f64) (f32) MathUtil_Atan2s(temp_fa0, temp_fa1) * D_8007C538) / D_8007C540);
-    sp144 = (f32) (((f64) (f32) MathUtil_Atan2s(arg5 - arg2, sqrtf((temp_fa1 * temp_fa1) + (temp_fa0 * temp_fa0))) * D_8007C548) / D_8007C550);
+    sp140 = (f32) (((f64) (f32) MathUtil_Atan2s(temp_fa0, temp_fa1) * gAtan2ScaleNumA) / gAtan2ScaleDenA);
+    sp144 = (f32) (((f64) (f32) MathUtil_Atan2s(arg5 - arg2, sqrtf((temp_fa1 * temp_fa1) + (temp_fa0 * temp_fa0))) * gAtan2ScaleNumB) / gAtan2ScaleDenB);
     guRotate(&spB0, sp140, 0.0f, 1.0f, 0.0f);
     guRotate(&sp70, sp144, 0.0f, 0.0f, 1.0f);
     guMtxCatL(&spB0, &sp70, &spF0);
@@ -913,8 +913,8 @@ void Mtx_BuildTranslatedDirectionRotation(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3
 
     temp_fa1 = arg4 - arg1;
     temp_fv0 = arg6 - arg3;
-    sp108 = (f32) (((f64) (f32) MathUtil_Atan2s(-temp_fv0, temp_fa1) * D_8007C558) / D_8007C560);
-    sp10C = (f32) (((f64) (f32) MathUtil_Atan2s(-(arg5 - arg2), sqrtf((temp_fa1 * temp_fa1) + (temp_fv0 * temp_fv0))) * D_8007C568) / D_8007C570);
+    sp108 = (f32) (((f64) (f32) MathUtil_Atan2s(-temp_fv0, temp_fa1) * gAtan2ScaleNumC) / gAtan2ScaleDenC);
+    sp10C = (f32) (((f64) (f32) MathUtil_Atan2s(-(arg5 - arg2), sqrtf((temp_fa1 * temp_fa1) + (temp_fv0 * temp_fv0))) * gAtan2ScaleNumD) / gAtan2ScaleDenD);
     guTranslate(&spB8, arg1, arg2, arg3);
     guRotate(&sp78, sp108, 0.0f, -1.0f, 0.0f);
     guMtxCatL(&sp78, &spB8, &spB8);

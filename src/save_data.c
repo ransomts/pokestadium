@@ -181,7 +181,7 @@ void Save_LoadWithRepair(s32 arg0, s32 arg1) {
     }
 }
 
-void GbSave_LoadBattleMonRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
+void GbSave_LoadBattleMonRecord(PokemonData* arg0, SaveBank_PokemonData* arg1) {
     Pokemon_FromGbRecord(arg0, arg1);
     Pokemon_RecalcStats(arg0);
 
@@ -194,7 +194,7 @@ void GbSave_LoadBattleMonRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010*
     Text_UntranscodeFixedName(arg0->unk_3B, arg1->unk_2C);
 }
 
-void GbSave_SaveBattleMonRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010* arg1) {
+void GbSave_SaveBattleMonRecord(PokemonData* arg0, SaveBank_PokemonData* arg1) {
     arg0->rotation = arg0->unk_24;
 
     Pokemon_ToGbRecord(arg0, &arg1->posX);
@@ -284,7 +284,7 @@ void Save_MarkRecordDirty(s32 arg0, s32 arg1, s16 arg2) {
     }
 }
 
-void func_8002667C(void) {
+void Save_NoOp(void) {
 }
 
 void Save_CommitTypedRecord(s32 arg0, s32 arg1) {
@@ -406,13 +406,13 @@ void Save_RestoreTypedRecord(s32 arg0, s32 arg1) {
 
 void Save_ClearTypedRecord(s32 arg0, s32 arg1) {
     UNUSED s32 pad;
-    unk_D_800AE4E8_004_1_000* sp38;
-    unk_D_800AE4E8_004_3_0000* sp34;
-    unk_D_800AE4E8_004_3_34E0* sp30;
-    unk_D_800AE4E8_004_2_0DC0* sp2C;
-    unk_D_800AE4E8_004_2_1EA0* sp28;
-    unk_D_800AE4E8_004_2_1D20* sp24;
-    unk_D_800AE4E8_004_2_1EC8* sp20;
+    SaveBank_PokemonRecord* sp38;
+    SaveBank_TrainerRecord* sp34;
+    SaveBank_ItemBoxRecord* sp30;
+    SaveBank_VictoryPalaceRecord* sp2C;
+    SaveBank_OptionsRecord* sp28;
+    SaveBank_ContinueRecord* sp24;
+    SaveBank_GalleryRecord* sp20;
     unk_D_800AE4E8_004_2_3280* sp1C;
     s16 idx1 = gCurrentBankSlot / 4;
     s16 idx2 = gCurrentBankSlot % 4;
@@ -665,9 +665,9 @@ void Deck_GetSaveEntryNameWrapper(s32 arg0, s32 arg1, char* arg2) {
 }
 
 void Deck_SetSaveEntryTrainerIdAndName(s32 arg0, s32 arg1, s32 arg2, char* arg3, u16 arg4) {
-    unk_D_800AE4E8_004_1_000* temp_v0;
-    unk_D_800AE4E8_004_3_0000* temp_v0_2;
-    unk_D_800AE4E8_004_3_34E0* temp_v0_3;
+    SaveBank_PokemonRecord* temp_v0;
+    SaveBank_TrainerRecord* temp_v0_2;
+    SaveBank_ItemBoxRecord* temp_v0_3;
     s16 idx1 = gCurrentBankSlot / 4;
     s16 idx2 = gCurrentBankSlot % 4;
 
@@ -813,21 +813,21 @@ s32 Deck_ReadSaveEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
                 break;
 
             case 18:
-                *(unk_D_800AE4E8_004_3_34E0_010*)arg3 = gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].unk_10[arg2];
+                *(SaveBank_ItemBoxEntry*)arg3 = gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].unk_10[arg2];
                 break;
 
             case 19:
-                *(unk_D_800AE4E8_004_2_0DC0_002*)arg3 = gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_002[arg2];
+                *(SaveBank_VictoryPalaceEntry*)arg3 = gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_002[arg2];
                 break;
 
             case 22:
                 _bcopy(&gGbsSaveBanks[2].rotation.unk2->galleryPhotos.unk_0002[arg2], arg3,
-                       sizeof(unk_D_800AE4E8_004_2_1EC8_0002));
+                       sizeof(SaveBank_GalleryEntry));
                 break;
 
             case 23:
                 _bcopy(&gGbsSaveBanks[2].rotation.unk2->galleryCameras.unk_0002[arg2], arg3,
-                       sizeof(unk_D_800AE4E8_004_2_1EC8_0002));
+                       sizeof(SaveBank_GalleryEntry));
                 break;
         }
         sp2C = 1;
@@ -852,10 +852,10 @@ s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
                 GbSave_SaveBattleMonRecord(arg3, &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_010[arg2]);
                 break;
             case 18:
-                gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].unk_10[arg2] = *(unk_D_800AE4E8_004_3_34E0_010*)arg3;
+                gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].unk_10[arg2] = *(SaveBank_ItemBoxEntry*)arg3;
                 break;
             case 19:
-                gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_002[arg2] = *(unk_D_800AE4E8_004_2_0DC0_002*)arg3;
+                gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_002[arg2] = *(SaveBank_VictoryPalaceEntry*)arg3;
                 break;
             case 22:
                 _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->galleryPhotos.unk_0002[arg2], 0x8C);
@@ -953,7 +953,7 @@ void Save_SetSelectedPokemonId(u8 arg0, u8 arg1) {
 }
 
 void Session_SaveContinueRecord(ContinueRecord* arg0, PokemonData* arg1, s32 arg2) {
-    unk_D_800AE4E8_004_2_1D20* temp_v0;
+    SaveBank_ContinueRecord* temp_v0;
     s32 i;
 
     if (gGbsSaveBanks[2].posX & 1) {
@@ -973,7 +973,7 @@ void Session_SaveContinueRecord(ContinueRecord* arg0, PokemonData* arg1, s32 arg
 
 s32 Session_LoadContinueRecord(ContinueRecord* arg0, PokemonData* arg1) {
     s16 var_s5 = -1;
-    unk_D_800AE4E8_004_2_1D20* temp_v0;
+    SaveBank_ContinueRecord* temp_v0;
     s32 i;
 
     if (gGbsSaveBanks[2].posX & 1) {
@@ -998,7 +998,7 @@ s32 Save_ContinueRecordExists(void) {
     s32 var_v1 = 0;
 
     if (gGbsSaveBanks[2].posX & 1) {
-        unk_D_800AE4E8_004_2_1D20* temp_v0 = &gGbsSaveBanks[2].rotation.unk2->continueRecord;
+        SaveBank_ContinueRecord* temp_v0 = &gGbsSaveBanks[2].rotation.unk2->continueRecord;
 
         var_v1 = (temp_v0->unk_000 & 1) != 0;
     }
@@ -1214,7 +1214,7 @@ s32 Save_SetActiveRecordBank(s16 arg0) {
     return tmp;
 }
 
-s32 RegisteredTeam_ReadSlot(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
+s32 RegisteredTeam_ReadSlot(SaveBank_PokemonRecord* arg0, s32 arg1) {
     s32 var_v1 = 0;
     s32 idx1 = gCurrentBankSlot / 4;
     s32 idx2 = gCurrentBankSlot % 4;
@@ -1226,7 +1226,7 @@ s32 RegisteredTeam_ReadSlot(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 RegisteredTeam_WriteSlot(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
+s32 RegisteredTeam_WriteSlot(SaveBank_PokemonRecord* arg0, s32 arg1) {
     s32 var_v1 = 0;
     s32 idx1 = gCurrentBankSlot / 4;
     s32 idx2 = gCurrentBankSlot % 4;
@@ -1252,7 +1252,7 @@ s32 Deck_FindFirstFreeTeamSlot(void) {
 }
 
 void Deck_CompactRegisteredTeams(void) {
-    unk_D_800AE4E8_004_1_000 sp40;
+    SaveBank_PokemonRecord sp40;
     s32 i;
     s32 j;
 

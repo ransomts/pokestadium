@@ -24,8 +24,8 @@ typedef struct PlayerSlotData {
 } PlayerSlotData; // size = 0x14
 
 static GraphNode* gSnapSelectRoot;
-static unk_D_86002F58_004_000_004* gSnapSelectNodes[6];
-static unk_D_86002F58_004_000_004* gSnapSelectRentalNode;
+static ModelRootNode* gSnapSelectNodes[6];
+static ModelRootNode* gSnapSelectRentalNode;
 static Fragment2_1GraphNode gPlayerIconNodes[2][6];
 static PlayerSlotData gPlayerSlotData[4];
 static u8* gPlayerIconTextures[4];
@@ -369,7 +369,7 @@ void Gallery_RentalViewerUpdatePortIcons(void) {
 void Gallery_RentalViewerInitScene(void) {
     MemoryBlock* temp_s1;
     s32 i;
-    unk_D_86002F58_004_000_004* temp_v0_2;
+    ModelRootNode* temp_v0_2;
     Fragment2_1GraphNode* ptr;
 
     temp_s1 = MainPool_AllocState(main_pool_get_available(), 0);

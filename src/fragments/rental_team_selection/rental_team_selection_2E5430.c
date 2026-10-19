@@ -42,7 +42,7 @@ s32 RegisteredTeam_SaveToSlot(unk_D_84229EB0_00024* arg0) {
 }
 
 void RegisteredTeam_DeleteAndCompact(unk_D_84229EB0_00024* arg0) {
-    unk_D_800AE4E8_004_1_000 sp30;
+    SaveBank_PokemonRecord sp30;
     s16 tmp = arg0->teamIndex;
     s16 i;
 

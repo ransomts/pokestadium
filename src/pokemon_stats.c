@@ -22,12 +22,12 @@ extern u8 D_80073267[];
 extern u8 D_800732FF[];
 
 static char gNameSlots[4][0x20];
-static unk_D_800AC910 gPlayerSaveData[4];
+static PlayerSaveState gPlayerSaveData[4];
 static u32 gActivePlayerMask;
 static u8 gControllerPortMask;
 static u8 gControllerPortStatus;
-static unk_D_800AC910_050 gSaveHeader;
-static u8 D_800ADA38[0xAA8]; // unreferenced bss
+static GbSaveMainData gSaveHeader;
+static u8 gSaveBuffer[0xAA8]; // unreferenced bss
 
 u16 Pokemon_LevelFromExp(s32 arg0, u32 arg1) {
     s32 i;
@@ -92,7 +92,7 @@ s32 VictoryPalace_LoadSpeciesRecord(SpeciesRecord* arg0, u16 arg1) {
 }
 
 void VictoryPalace_SaveSpeciesRecord(PokemonData* arg0, s16 arg1, u8 arg2) {
-    unk_D_800AE4E8_004_2_0DC0_002 sp24;
+    SaveBank_VictoryPalaceEntry sp24;
 
     if (arg2) {
         sp24.posX = arg1 + 0x80;
@@ -468,7 +468,7 @@ s32 GbSave_CheckMainDataUnchanged(s32 arg0) {
     UNUSED s32 pad;
     s32 sp18 = 0;
 
-    if ((GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
+    if ((GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(GbSaveMainData)) == 0) &&
         (GbSave_VerifyChecksum(&gSaveHeader.unk_018, &gSaveHeader.checksumData.unk_03) != 0)) {
         sp18 = gSaveHeader.checksumData.unk_03 == gPlayerSaveData[arg0].rotation;
     }
@@ -478,11 +478,11 @@ s32 GbSave_CheckMainDataUnchanged(s32 arg0) {
 s32 GbSave_ReadMainData(s32 arg0) {
     s32 i;
     s32 sp30;
-    unk_D_800AC910_050* temp_s4 = gPlayerSaveData[arg0].unk_50;
+    GbSaveMainData* temp_s4 = gPlayerSaveData[arg0].unk_50;
 
     sp30 = NULL;
 
-    if (GbPak_MbcRead(arg0, temp_s4, 0x2580, sizeof(unk_D_800AC910_050)) == 0) {
+    if (GbPak_MbcRead(arg0, temp_s4, 0x2580, sizeof(GbSaveMainData)) == 0) {
         for (i = 0; i < 3; i++) {
             sp30 = GbSave_VerifyChecksum(&temp_s4->unk_018, &temp_s4->checksumData.unk_03);
             if (sp30 != 0) {
@@ -502,16 +502,16 @@ s32 GbSave_ReadMainData(s32 arg0) {
 
 s32 GbSave_WriteMainData(s32 arg0) {
     s32 i;
-    unk_D_800AC910* temp_s3;
-    unk_D_800AC910_050* temp_s1 = gPlayerSaveData[arg0].unk_50;
+    PlayerSaveState* temp_s3;
+    GbSaveMainData* temp_s1 = gPlayerSaveData[arg0].unk_50;
 
     GbSave_ComputeChecksum(temp_s1->unk_018, &temp_s1->checksumData.unk_03);
     gPlayerSaveData[arg0].rotation = temp_s1->checksumData.unk_03;
 
     for (i = 0; i < 4; i++) {
-        if ((GbPak_MbcWrite(arg0, temp_s1, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
-            (GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
-            (GbSave_VerifyWriteback(temp_s1, sizeof(unk_D_800AC910_050)) != 0)) {
+        if ((GbPak_MbcWrite(arg0, temp_s1, 0x2580, sizeof(GbSaveMainData)) == 0) &&
+            (GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(GbSaveMainData)) == 0) &&
+            (GbSave_VerifyWriteback(temp_s1, sizeof(GbSaveMainData)) != 0)) {
             return 1;
         }
     }
@@ -519,16 +519,16 @@ s32 GbSave_WriteMainData(s32 arg0) {
 }
 
 s32 GbSave_InvalidateMainDataChecksum(s32 arg0) {
-    unk_D_800AC910_050* temp_s3 = gPlayerSaveData[arg0].unk_50;
+    GbSaveMainData* temp_s3 = gPlayerSaveData[arg0].unk_50;
     s32 i;
 
     GbSave_ComputeChecksum(&temp_s3->unk_018, &temp_s3->checksumData.unk_03);
     temp_s3->checksumData.unk_03 ^= 0xFF;
 
     for (i = 0; i < 4; i++) {
-        if ((GbPak_MbcWrite(arg0, &temp_s3->checksumData, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
-            (GbPak_MbcRead(arg0, &gSaveHeader, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
-            (GbSave_VerifyWriteback(&temp_s3->checksumData, sizeof(unk_D_800AC910_050_FA0)) != 0)) {
+        if ((GbPak_MbcWrite(arg0, &temp_s3->checksumData, 0x3520, sizeof(GbSaveChecksumBlock)) == 0) &&
+            (GbPak_MbcRead(arg0, &gSaveHeader, 0x3520, sizeof(GbSaveChecksumBlock)) == 0) &&
+            (GbSave_VerifyWriteback(&temp_s3->checksumData, sizeof(GbSaveChecksumBlock)) != 0)) {
             return 1;
         }
     }
@@ -565,7 +565,7 @@ s32 GbSave_WriteBoxBank(s32 arg0, s32 arg1) {
 }
 
 void GbSave_ReleasePortBuffers(UNUSED MainPoolBlock* arg0, u32 arg1) {
-    unk_D_800AC910* ptr;
+    PlayerSaveState* ptr;
 
     if ((arg1 >= 'DAT0') && (arg1 < 'DAT4')) {
         ptr = gPlayerSaveData + (arg1 - 'DAT0');
@@ -653,7 +653,7 @@ s32 GbSave_OpenBoxData(s32 arg0) {
         return 1;
     }
 
-    gPlayerSaveData[arg0].unk_54 = main_pool_alloc_with_func(sizeof(unk_D_800AC910_054), 0, arg0 + 'BOX0', GbSave_ReleasePortBuffers);
+    gPlayerSaveData[arg0].unk_54 = main_pool_alloc_with_func(sizeof(GbSaveBoxData), 0, arg0 + 'BOX0', GbSave_ReleasePortBuffers);
 
     if (gPlayerSaveData[arg0].unk_54 != NULL) {
         gPlayerSaveData[arg0].posX |= 2;
@@ -674,7 +674,7 @@ s32 GbSave_OpenBoxData(s32 arg0) {
                 main_pool_try_free(gPlayerSaveData[arg0].unk_54);
             }
         } else {
-            HAL_Memset(gPlayerSaveData[arg0].unk_54, 0xFF, sizeof(unk_D_800AC910_054));
+            HAL_Memset(gPlayerSaveData[arg0].unk_54, 0xFF, sizeof(GbSaveBoxData));
 
             for (i = 0; i < 6; i++) {
                 gPlayerSaveData[arg0].unk_54->unk_0000[0].unk_0000[i].unk_000.unk_000 = 0;
@@ -791,7 +791,7 @@ s32 GbSave_ScanAllPorts(void) {
     gActivePlayerMask = 0;
 
     for (i = 0; i < 4; i++) {
-        unk_D_800AC910* var_s0 = &gPlayerSaveData[i];
+        PlayerSaveState* var_s0 = &gPlayerSaveData[i];
         u64* temp;
 
         var_s0->posX = 0x20;
@@ -929,7 +929,7 @@ unk_D_800AC910_050_B40_000* GbSave_GetBoxEntry(s32 arg0, s32 arg1) {
 }
 
 void GbSave_LoadMainPokemon(PokemonData* arg0, s32 arg1, s32 arg2) {
-    unk_D_800AC910_050_9AC* ptr2 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
+    GbSavePartyData* ptr2 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
 
     Pokemon_FromGbRecordExt(arg0, &ptr2->unk_008[arg2]);
     Pokemon_RecalcStats(arg0);
@@ -944,7 +944,7 @@ void GbSave_LoadMainPokemon(PokemonData* arg0, s32 arg1, s32 arg2) {
 }
 
 void GbSave_SaveMainPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
-    unk_D_800AC910_050_9AC* sp24 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
+    GbSavePartyData* sp24 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
 
     Pokemon_ToGbRecordExt(arg0, &sp24->unk_008[arg2]);
     Text_TranscodeName(sp24->nicknames[arg2], arg0->unk_000[0].unk_30);
@@ -953,7 +953,7 @@ void GbSave_SaveMainPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
 }
 
 void GbSave_LoadBoxPokemon(PokemonData* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    unk_D_800AC910_050_B40* sp2C = (unk_D_800AC910_050_B40*)GbSave_GetBoxEntry(arg1, arg2);
+    GbSaveBoxEntry* sp2C = (GbSaveBoxEntry*)GbSave_GetBoxEntry(arg1, arg2);
 
     if (sp2C != NULL) {
         Pokemon_FromGbRecord(arg0, &sp2C->unk_016[arg3]);
@@ -970,7 +970,7 @@ void GbSave_LoadBoxPokemon(PokemonData* arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void GbSave_SaveBoxPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    unk_D_800AC910_050_B40* sp2C = GbSave_GetBoxEntry(arg1, arg2);
+    GbSaveBoxEntry* sp2C = GbSave_GetBoxEntry(arg1, arg2);
 
     if (sp2C != NULL) {
         arg0->unk_000[0].rotation = arg0->unk_000[0].unk_24;
@@ -1046,7 +1046,7 @@ s32 Deck_GetEntrySize(s32 arg0) {
 
 s32 Deck_GetCount(s32 arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
-    unk_D_800AC910_050* ptr = gPlayerSaveData[arg1].unk_50;
+    GbSaveMainData* ptr = gPlayerSaveData[arg1].unk_50;
 
     switch (arg0) {
         case 32:
@@ -1069,7 +1069,7 @@ s32 Deck_GetCount(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void Deck_DeleteEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    unk_D_800AC910_050* sp1C = gPlayerSaveData[arg1].unk_50;
+    GbSaveMainData* sp1C = gPlayerSaveData[arg1].unk_50;
 
     if (arg3 < Deck_GetCount(arg0, arg1, arg2)) {
         switch (arg0) {
@@ -1096,7 +1096,7 @@ void Deck_DeleteEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void Deck_AppendEntry(s32 arg0, s32 arg1, s32 arg2) {
-    unk_D_800AC910_050* sp1C = gPlayerSaveData[arg1].unk_50;
+    GbSaveMainData* sp1C = gPlayerSaveData[arg1].unk_50;
     s32 sp18 = Deck_GetCount(arg0, arg1, arg2);
 
     if (sp18 < Deck_GetCapacity(arg0)) {
@@ -1129,7 +1129,7 @@ s32 Deck_ReadEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, PokemonData* arg4) {
     s32 sp1C = 0;
 
     if (arg3 < Deck_GetCount(arg0, arg1, arg2)) {
-        unk_D_800AC910_050* temp_v0 = gPlayerSaveData[arg1].unk_50;
+        GbSaveMainData* temp_v0 = gPlayerSaveData[arg1].unk_50;
 
         switch (arg0) {
             case 32:
@@ -1159,7 +1159,7 @@ s32 Deck_WriteEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88205880_00
     s32 sp24 = Deck_GetCount(arg0, arg1, arg2);
 
     if ((arg3 < sp24) || ((arg3 == sp24) && (arg3 < sp28))) {
-        unk_D_800AC910_050* ptr = gPlayerSaveData[arg1].unk_50;
+        GbSaveMainData* ptr = gPlayerSaveData[arg1].unk_50;
 
         switch (arg0) {
             case 32:
@@ -1321,7 +1321,7 @@ s32 GbSave_CopyPortSnapshot(s32 arg0, func_800253F4_arg1* arg1) {
         arg1->unk_002 = gPlayerSaveData[arg0].unk_40.posX;
 
         _bcopy(gPlayerSaveData[arg0].unk_40.posY, arg1->unk_004, sizeof(arg1->unk_004));
-        _bcopy(&gPlayerSaveData[arg0].unk_50->unk_9AC, (u8*)arg1 + 0xF, sizeof(unk_D_800AC910_050_9AC));
+        _bcopy(&gPlayerSaveData[arg0].unk_50->unk_9AC, (u8*)arg1 + 0xF, sizeof(GbSavePartyData));
     }
     return temp_v1;
 }
@@ -1343,8 +1343,8 @@ void GbSave_MarkSeenBits(char* arg0, s32 arg1, u8* arg2) {
 }
 
 void GbSave_RebuildSeenBitfield(s32 arg0) {
-    unk_D_800AC910* ptr = &gPlayerSaveData[arg0];
-    unk_D_800AC910_050* temp_s0 = ptr->unk_50;
+    PlayerSaveState* ptr = &gPlayerSaveData[arg0];
+    GbSaveMainData* temp_s0 = ptr->unk_50;
     u8* ptr6 = ptr->unk_06;
     unk_D_800AC910_054_000* ptr541 = &ptr->unk_54->unk_0000[0];
     unk_D_800AC910_054_000* ptr542 = &ptr->unk_54->unk_0000[1];

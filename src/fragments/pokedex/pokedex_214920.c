@@ -34,7 +34,7 @@ static char** gSpeciesDexMsgBank;
 static char** gSpeciesTypeMsgBank;
 static char** gSpeciesCategoryMsgBank;
 static Fragment2_1GraphNode gTrainerCardGraphNode;
-static unk_func_8001B1FC* gTrainerCardSpriteMgr;
+static ModelPreview* gTrainerCardSpriteMgr;
 static Stage* gTrainerCardStage;
 static Stage* gNextStage;
 static AssetManager* gTrainerCardAssetManager;

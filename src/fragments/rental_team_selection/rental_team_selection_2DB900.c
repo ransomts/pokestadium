@@ -28,8 +28,8 @@ typedef struct TrainerSlotSaveData {
 
 GraphNode* gMenuGraphRoot;
 Fragment2_1GraphNode gMenuModelNodes[2][6];
-unk_D_86002F58_004_000_004* gMenuGeoLayouts[6];
-unk_D_86002F58_004_000_004* gMenuCommonGeoLayout;
+ModelRootNode* gMenuGeoLayouts[6];
+ModelRootNode* gMenuCommonGeoLayout;
 u8* gMenuTextureSegments[4];
 TrainerSlotSaveData gTrainerSlotData[4];
 s16 gSelectedIconIndex;

@@ -80,11 +80,11 @@ typedef struct unk_D_800AE4E8_004_1_000_010_000 {
     /* 0x1D */ u8 unk_1D[4];
 } unk_D_800AE4E8_004_1_000_010_000; // size = 0x21
 
-typedef struct unk_D_800AE4E8_004_1_000_010 {
+typedef struct SaveBank_PokemonData {
     /* 0x00 */ unk_D_800AE4E8_004_1_000_010_000 posX;
     /* 0x21 */ u8 unk_21[11];
     /* 0x2C */ u8 unk_2C[11];
-} unk_D_800AE4E8_004_1_000_010; // size = 0x37
+} SaveBank_PokemonData; // size = 0x37
 
 typedef struct unk_D_800AC910_050_9AC_008 {
     /* 0x00 */ unk_D_800AE4E8_004_1_000_010_000 posX;
@@ -108,14 +108,14 @@ typedef struct DeckHandle {
     /* 0x0A */ s16 unk_0A;
 } DeckHandle; // size = 0xC
 
-typedef struct unk_D_800AC910_050_9AC {
+typedef struct GbSavePartyData {
     /* 0x000 */ u8 unk_000;
     /* 0x001 */ u8 unk_001[1];
     /* 0x002 */ char unk002[6];
     /* 0x008 */ unk_D_800AC910_050_9AC_008 unk_008[6];
     /* 0x110 */ char otNames[6][11];
     /* 0x152 */ char nicknames[6][11];
-} unk_D_800AC910_050_9AC; // size = 0x194
+} GbSavePartyData; // size = 0x194
 
 typedef struct unk_D_800AC910_050_B40_000 {
     /* 0x000 */ u8 unk_000;
@@ -123,7 +123,7 @@ typedef struct unk_D_800AC910_050_B40_000 {
     /* 0x002 */ char unk002[0x12];
 } unk_D_800AC910_050_B40_000; // size = 0x14
 
-typedef struct unk_D_800AC910_050_B40 {
+typedef struct GbSaveBoxEntry {
     /* 0x000 */ unk_D_800AC910_050_B40_000 unk_000;
     /* 0x014 */ char unk014[0x2];
     /* 0x016 */ unk_D_800AE4E8_004_1_000_010_000 unk_016[1];
@@ -131,17 +131,17 @@ typedef struct unk_D_800AC910_050_B40 {
     /* 0x2AA */ char unk_2AA[1][11];
     /* 0x2B5 */ char unk2B5[0xD1];
     /* 0x386 */ char nicknames[1][11];
-} unk_D_800AC910_050_B40; // size >= 0x391
+} GbSaveBoxEntry; // size >= 0x391
 
-typedef struct unk_D_800AC910_050_FA0 {
+typedef struct GbSaveChecksumBlock {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ char unk02[0x1];
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ char unk04[0x1C];
-} unk_D_800AC910_050_FA0; // size = 0x20
+} GbSaveChecksumBlock; // size = 0x20
 
-typedef struct unk_D_800AC910_050 {
+typedef struct GbSaveMainData {
     /* 0x000 */ u8 unk_000[1];
     /* 0x001 */ char unk001[0x17];
     /* 0x018 */ u8 unk_018[11];
@@ -169,11 +169,11 @@ typedef struct unk_D_800AC910_050 {
     /* 0x478 */ char unk478[0xA5];
     /* 0x51D */ s8 unk_51D;
     /* 0x51E */ char unk51E[0x48E];
-    /* 0x9AC */ unk_D_800AC910_050_9AC unk_9AC;
-    /* 0xB40 */ unk_D_800AC910_050_B40 currentBox;
+    /* 0x9AC */ GbSavePartyData unk_9AC;
+    /* 0xB40 */ GbSaveBoxEntry currentBox;
     /* 0xED1 */ char unkED1[0xCF];
-    /* 0xFA0 */ unk_D_800AC910_050_FA0 checksumData;
-} unk_D_800AC910_050; // size = 0xFC0
+    /* 0xFA0 */ GbSaveChecksumBlock checksumData;
+} GbSaveMainData; // size = 0xFC0
 
 typedef struct unk_D_800AC910_054_000_000 {
     /* 0x000 */ unk_D_800AC910_050_B40_000 unk_000;
@@ -186,9 +186,9 @@ typedef struct unk_D_800AC910_054_000 {
     /* 0x1A4C */ char unk1A4C[0x14];
 } unk_D_800AC910_054_000; // size = 0x1A60
 
-typedef struct unk_D_800AC910_054 {
+typedef struct GbSaveBoxData {
     /* 0x0000 */ unk_D_800AC910_054_000 unk_0000[2];
-} unk_D_800AC910_054; // size = 0x34C0
+} GbSaveBoxData; // size = 0x34C0
 
 typedef struct Gen1StringDecodeBuffer {
     /* 0x00 */ u16 posX;
@@ -197,7 +197,7 @@ typedef struct Gen1StringDecodeBuffer {
     /* 0x0F */ char unkF[0x1];
 } Gen1StringDecodeBuffer; // size = 0x10
 
-typedef struct unk_D_800AC910 {
+typedef struct PlayerSaveState {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
@@ -207,9 +207,9 @@ typedef struct unk_D_800AC910 {
     /* 0x19 */ u8 unk_19[0x20];
     /* 0x39 */ char unk39[0x7];
     /* 0x40 */ Gen1StringDecodeBuffer unk_40;
-    /* 0x50 */ unk_D_800AC910_050* unk_50;
-    /* 0x54 */ unk_D_800AC910_054* unk_54;
-} unk_D_800AC910; // size = 0x58
+    /* 0x50 */ GbSaveMainData* unk_50;
+    /* 0x54 */ GbSaveBoxData* unk_54;
+} PlayerSaveState; // size = 0x58
 
 u16 GbData_ReadU16BE(u8* arg0);
 u32 GbData_ReadU24BE(u8* arg0);

@@ -20,7 +20,7 @@ typedef struct func_800253F4_arg1 {
     /* 0x001 */ u8 unk_001;
     /* 0x002 */ u16 unk_002;
     /* 0x004 */ char unk_004[11];
-    /* 0x00F */ unk_D_800AC910_050_9AC partyData;
+    /* 0x00F */ GbSavePartyData partyData;
 } func_800253F4_arg1; // size >= 0x1A3
 
 typedef struct SpeciesRecord {

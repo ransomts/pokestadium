@@ -33,7 +33,7 @@ void ModelRenderer_AttachSecondaryDisplayObject(Fragment2_1GraphNode* arg0) {
     arg0->unk_000.unk_01 &= ~1;
 }
 
-void Model_InitDisplayObject(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3) {
+void Model_InitDisplayObject(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, ModelRootNode* arg3) {
     GraphNode_AppendChild(&arg0->unk_000, arg3);
     MtxF_Identity(&arg0->unk_060);
     arg0->unk_018 = arg1;
