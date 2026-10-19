@@ -378,6 +378,31 @@ reorg.py, each committed):
 8. mixed build/ state lies (stale ld/objects) - when in doubt: nuke build/, extract,
    full make; trust only from-scratch gates.
 
+## TIER C ROUNDS 2-3 + TAIL WAVES COMPLETE (2026-10-19 late night)
+
+- TAIL WAVES (10, gemma): 323 symbols - the placeholder queue is DRAINED; what
+  remains is parked classes (undef-ld 141, VRAM anchors, dead-code write-onlys,
+  the michiiik-nameless overlap). One new guard: preflight address-collision
+  check (the gBssStart/text_bss_VRAM lesson - bss anchors live in symbol_addrs).
+- TIER C R2 (c4, 8 fields): the shared-name class UNLOCKED via struct-scoped
+  member rewrites. R3 (c5, 109 fields): 8 sub-agents over the shared-name
+  inventory (655 instances, 51 structs) - incl. the battle message text bank
+  cross-reference (proposals cite actual in-game strings) and pokered-verified
+  Gen 1 save layouts.
+- THE SHARED-NAME TOOLING LEDGER (each a failed gate turned into a guard):
+  1. merged-map patterns (all-scoped batches crashed on the empty alternation)
+  2. include-transitive scopes (.c files pass structs via params and never name
+     the typedef - flat-name reach missed every param-style user; gsm_decoder)
+  3. owner-known rule: every user file must reach exactly ONE sharing type
+     (unknown-owner names park - 174 of 227)
+  4. per-NAME safety, not per-type (same-header structs always overlap - the
+     spinRate contamination: WaterParticleSystem's name applied to RibbonEmitter)
+  5. .c-local struct decls need block-scoped decl rewrites (HPHistoryEntry)
+  Final shared-name math: 227 names - 174 unknown-owner - same-header overlaps
+  => 138 safe (type, name) pairs => 35 scoped types. The rest genuinely needs
+  type-aware parsing (pycparser-class) or stays parked.
+- LEDGER: 17,803 applied rows. ROM byte-identical through every gate.
+
 ## SESSION CLOSE (2026-10-19 night) - statics tail + Tier C shipped
 
 Batches this session (all gated, ROM byte-identical throughout):
