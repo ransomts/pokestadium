@@ -189,7 +189,7 @@ void RibbonMesh_Init(void) {
 void RibbonMesh_Configure(RibbonEmitter* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8,
                    s32 arg9) {
     arg0->unk_028 = arg1;
-    arg0->unk_02C = arg2;
+    arg0->primColorG = arg2;
     arg0->unk_030 = arg3;
     arg0->unk_038 = arg4;
     arg0->unk_03C = arg5;
@@ -406,7 +406,7 @@ s32 RibbonMesh_Update(RibbonEmitter* arg0) {
     temp_s6 = arg0->unk_01C;
     sp84 = arg0->unk_020 * tmp;
 
-    var_s2 = &arg0->unk_050[0];
+    var_s2 = &arg0->verts[0];
     RibbonMesh_UpdateEnvAlpha(arg0);
 
     var_s5 = 0;
@@ -550,7 +550,7 @@ Gfx* RibbonMesh_Draw(Gfx* arg0, RibbonEmitter* arg1) {
     s32 i;
     Vtx* temp_v0 = Gfx_AllocDisplayList(sizeof(Vtx) * 62);
     Vtx* vtx = temp_v0;
-    Vtx* var_a0 = &arg1->unk_050[0];
+    Vtx* var_a0 = &arg1->verts[0];
 
     for (i = 0; i < 31; i++) {
         *vtx++ = *var_a0++;
@@ -624,7 +624,7 @@ Gfx* RibbonMesh_DrawPool(Gfx* arg0) {
 
     for (i = 0; i < 4; i++, ptr++) {
         if (ptr->unk_000 == 1) {
-            gDPSetPrimColor(arg0++, 0, ptr->unk_024, ptr->unk_028, ptr->unk_02C, ptr->unk_030, ptr->unk_034);
+            gDPSetPrimColor(arg0++, 0, ptr->unk_024, ptr->unk_028, ptr->primColorG, ptr->unk_030, ptr->unk_034);
             gDPSetEnvColor(arg0++, ptr->unk_038, ptr->unk_03C, ptr->unk_040, ptr->unk_044);
 
             gSPClearGeometryMode(arg0++, G_CULL_BACK);

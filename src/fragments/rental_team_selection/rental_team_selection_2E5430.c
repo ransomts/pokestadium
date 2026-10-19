@@ -124,7 +124,7 @@ void TeamSelection_RegisteredTeam_DrawCard(RegisteredTeamMenu* arg0, s16 arg1, s
         if (arg3->unk_0000[var_s1].raw != 0) {
             temp_s2 = gTeamCardXOffsets[var_s1] + arg1 + 2;
             temp_s3 = gTeamCardYOffsets[var_s1] + arg2 + 2;
-            Gfx_DrawTextureRgba16(temp_s2, temp_s3, 0x28, 0x28, arg3->unk_0000[var_s1].unk_058, 0x28, 0);
+            Gfx_DrawTextureRgba16(temp_s2, temp_s3, 0x28, 0x28, arg3->unk_0000[var_s1].iconTexture, 0x28, 0);
             if (arg3->unk_0000[var_s1].raw & 0x80000000) {
                 u8* ptr = gTeamCardIcons[arg3->unk_0000[var_s1].raw & 7];
 
@@ -421,7 +421,7 @@ s32 TeamSelection_RegisteredTeam_Load(unk_D_84229EB0_00024* arg0, s16 arg1) {
     }
 
     for (i = 0; i < var_s4; i++) {
-        PokeIcon_LoadModelTextureForMon(arg0->unk_0000[i].unk_058, 0, &arg0->unk_0000[i].unk_004);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_0000[i].iconTexture, 0, &arg0->unk_0000[i].unk_004);
         arg0->unk_0000[i].unk_000 = 4;
         arg0->unk_0000[i].unk_001 = arg1;
         arg0->unk_0000[i].unk_002 = i;
@@ -856,7 +856,7 @@ void TeamSelection_RegisteredTeam_EditTeam(RegisteredTeamMenu* arg0) {
 
         if (temp_hi == 4) {
             temp_v0->unk_0000[temp_lo].unk_004.posX.posX = 0;
-            PokeIcon_LoadModelTextureForMon(temp_v0->unk_0000[temp_lo].unk_058, 0x84, NULL);
+            PokeIcon_LoadModelTextureForMon(temp_v0->unk_0000[temp_lo].iconTexture, 0x84, NULL);
             Audio_PlaySoundEffectById(0x01100010);
         }
     }
@@ -908,8 +908,8 @@ void RegisteredTeam_SaveFromTray(RegisteredTeamMenu* arg0) {
 
         if (temp_hi == 4) {
             temp_a3->unk_0000[temp_lo].unk_004.posX.posX = temp_v0->unk_0000[temp_lo].unk_004.posX.posX;
-            _bcopy(temp_v0->unk_0000[temp_lo].unk_058, temp_a3->unk_0000[temp_lo].unk_058,
-                   sizeof(temp_v0->unk_0000[temp_lo].unk_058));
+            _bcopy(temp_v0->unk_0000[temp_lo].iconTexture, temp_a3->unk_0000[temp_lo].iconTexture,
+                   sizeof(temp_v0->unk_0000[temp_lo].iconTexture));
             Audio_PlaySoundEffectById(0x01100010);
         }
     }
@@ -1142,7 +1142,7 @@ s32 RegistrationManager_Initialize(RegisteredTeamMenu* arg0, u16 arg1, char* arg
         if (ptr->unk_0000[i].unk_004.posX.posX != 0) {
             ptr->unk_0000[i].unk_004.posX.posX = 0;
             ptr->unk_0000[i].raw = 1;
-            PokeIcon_LoadModelTextureForMon(ptr->unk_0000[i].unk_058, 0x84, NULL);
+            PokeIcon_LoadModelTextureForMon(ptr->unk_0000[i].iconTexture, 0x84, NULL);
         } else {
             ptr->unk_0000[i].raw = 0;
         }

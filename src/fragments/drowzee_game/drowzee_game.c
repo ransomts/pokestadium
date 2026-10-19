@@ -158,7 +158,7 @@ void DrowzeeGame_UpdatePlayerAnimations(void) {
             gCurrentHudState = &gPlayerHudStates[i];
 
             if ((ModelAnim_IsFinished(&gCurrentHudState->unk_028) != 0) ||
-                ((gCurrentHudState->unk_010 == 0) && (gCurrentHudState->unk_012 > 0)) ||
+                ((gCurrentHudState->unk_010 == 0) && (gCurrentHudState->prevRoundHealth > 0)) ||
                 ((gDrowzeeGameIsOver != 0) && (gCurrentHudState->unk_00C == 1) && (gDrowzeeGameTimer == 0x3C) && (gDrowzeeWinnerCount == 1))) {
                 temp_s1 = gCurrentHudState->unk_004;
 
@@ -166,7 +166,7 @@ void DrowzeeGame_UpdatePlayerAnimations(void) {
                     ((gDrowzeeGameTimer == 0x3C) || (gCurrentHudState->unk_004 == 6))) {
                     gCurrentHudState->unk_004 = 6;
                 } else {
-                    temp_fv0 = (gCurrentHudState->unk_010 * 100.0f) / gCurrentHudState->unk_00E;
+                    temp_fv0 = (gCurrentHudState->unk_010 * 100.0f) / gCurrentHudState->maxHealth;
                     if (temp_fv0 > 0.0f) {
                         var_fv1 = 0.5f;
                     } else {
@@ -227,7 +227,7 @@ void DrowzeeGame_ProcessElimination(u8 arg0) {
         if (i != arg0) {
             gCurrentHudState = &gPlayerHudStates[i];
 
-            if ((gCurrentHudState->unk_010 <= 0) && (gCurrentHudState->unk_012 > 0)) {
+            if ((gCurrentHudState->unk_010 <= 0) && (gCurrentHudState->prevRoundHealth > 0)) {
                 D_864029B4--;
                 sp40[i] = 1;
             }
@@ -290,7 +290,7 @@ void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
         gCurrentHudState = &gPlayerHudStates[i];
 
         temp_v0 = Gfx_AllocDisplayList(0x80);
-        gCurrentHudState->unk_190->unk_18 = temp_v0;
+        gCurrentHudState->overlayNode->unk_18 = temp_v0;
 
         if ((gCurrentHudState->unk_010 == 0) || (gCurrentHudState->unk_00C == 1)) {
             temp_a3 = gCurrentHudState->unk_028.unk_040.RentalSlotAnimData_PosePhase >> 0x10;
@@ -307,7 +307,7 @@ void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
                         Audio_DispatchSoundBankCommand(0x70005, i + 1, 0);
                     }
                 }
-                gCurrentHudState->unk_190->unk_28 = temp_fs0;
+                gCurrentHudState->overlayNode->unk_28 = temp_fs0;
             } else if ((gCurrentHudState->unk_00C == 1) && (gCurrentHudState->unk_004 == 6) && (temp_a3 >= 0x77)) {
                 if (gCurrentHudState->alertSoundPlayed == 0) {
                     gCurrentHudState->alertSoundPlayed = 1;
@@ -315,9 +315,9 @@ void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
                         Audio_DispatchSoundBankCommand(0x70006, i + 1, 0);
                     }
                 }
-                gCurrentHudState->unk_190->unk_28 = temp_fs0;
+                gCurrentHudState->overlayNode->unk_28 = temp_fs0;
             } else {
-                gCurrentHudState->unk_190->unk_28 = 0.0f;
+                gCurrentHudState->overlayNode->unk_28 = 0.0f;
             }
         } else {
             gSPDisplayList(temp_v0++, gHealthBarQuadDL);
@@ -325,32 +325,32 @@ void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
             if (gCurrentHudState->unk_018 == 2) {
                 switch (gCurrentHudState->unk_01C) {
                     default:
-                        gCurrentHudState->unk_190->unk_28 = 0.5f;
+                        gCurrentHudState->overlayNode->unk_28 = 0.5f;
                         break;
 
                     case 20:
-                        gCurrentHudState->unk_190->unk_28 = temp_fs0;
+                        gCurrentHudState->overlayNode->unk_28 = temp_fs0;
                         if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                             Audio_DispatchSoundBankCommand(0x70004, i + 1, 0);
                         }
                         break;
 
                     case 19:
-                        gCurrentHudState->unk_190->unk_28 = 0.2f;
+                        gCurrentHudState->overlayNode->unk_28 = 0.2f;
                         break;
 
                     case 18:
-                        gCurrentHudState->unk_190->unk_28 = 0.3f;
+                        gCurrentHudState->overlayNode->unk_28 = 0.3f;
                         break;
                 }
             } else {
-                gCurrentHudState->unk_190->unk_28 = 0.0f;
+                gCurrentHudState->overlayNode->unk_28 = 0.0f;
             }
         }
 
         gSPEndDisplayList(temp_v0++);
 
-        gCurrentHudState->unk_190->unk_1C = gCurrentHudState->unk_028.unk_0A8[0].rotation;
+        gCurrentHudState->overlayNode->unk_1C = gCurrentHudState->unk_028.unk_0A8[0].rotation;
     }
 }
 
@@ -396,7 +396,7 @@ void DrowzeeGame_UpdateRoundTick(s32 arg0) {
             for (i = 0; i < 4; i++) {
                 gCurrentHudState = &gPlayerHudStates[i];
 
-                gCurrentHudState->unk_012 = gCurrentHudState->unk_010;
+                gCurrentHudState->prevRoundHealth = gCurrentHudState->unk_010;
 
                 if ((gDrowzeeGameIsOver != 0) && (gCurrentHudState->unk_00C == 1) && (gDrowzeeGameTimer >= 0x3C) && (gDrowzeeWinnerCount == 1) &&
                     (D_864029C0 < 0x10)) {
@@ -460,9 +460,9 @@ void DrowzeeGame_JudgePlayerTiming(void) {
 
                 if ((gCurrentHudState->pressedThisRound == 0) && (gCurrentHudState->unk_010 > 0)) {
                     if (gDrowzeeGameStatePtr->previousHealthState != 0) {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_001][7]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_001][7]++;
                     } else {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][7]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][7]++;
                     }
                 } else {
                     gCurrentHudState->pressedThisRound = 0;
@@ -473,7 +473,7 @@ void DrowzeeGame_JudgePlayerTiming(void) {
         for (i = 0; i < 4; i++) {
             gCurrentHudState = &gPlayerHudStates[i];
 
-            if (gCurrentHudState->unk_012 != 0) {
+            if (gCurrentHudState->prevRoundHealth != 0) {
                 if (gCurrentHudState->unk_01C >= 2) {
                     gCurrentHudState->unk_01C--;
                 } else {
@@ -526,19 +526,19 @@ void DrowzeeGame_JudgePlayerTiming(void) {
                     }
 
                     if ((gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] - 3) >= gCurrentHealthSegment) {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][0]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][0]++;
                     } else if ((gCurrentHealthSegment + 2) == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][1]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][1]++;
                     } else if ((gCurrentHealthSegment + 1) == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][2]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][2]++;
                     } else if (gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][3]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][3]++;
                     } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 1)) {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][4]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][4]++;
                     } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 2)) {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][5]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][5]++;
                     } else if (gCurrentHealthSegment >= (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 3)) {
-                        gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][6]++;
+                        gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][6]++;
                     }
                 }
 
@@ -567,7 +567,7 @@ void DrowzeeGame_JudgePlayerTiming(void) {
 
             if (gCurrentHudState->unk_010 <= 0) {
                 gCurrentHudState->unk_010 = 0;
-                if ((gCurrentHudState->unk_012 > 0) && (gCurrentHudState->unk_00C == 0)) {
+                if ((gCurrentHudState->prevRoundHealth > 0) && (gCurrentHudState->unk_00C == 0)) {
                     DrowzeeGame_ProcessElimination(i);
                 }
             }
@@ -834,8 +834,8 @@ void DrowzeeGame_InitPlayerOverlays(void) {
 
     for (i = 0; i < 4; i++) {
         gCurrentHudState = &gPlayerHudStates[i];
-        gCurrentHudState->unk_190 = GeoNode_CreateScale(temp_s5, NULL, 4, NULL, &gRootNodePosition, 0.0f);
-        GraphNode_AppendChild(&gGraphRoot0, &gCurrentHudState->unk_190->posX);
+        gCurrentHudState->overlayNode = GeoNode_CreateScale(temp_s5, NULL, 4, NULL, &gRootNodePosition, 0.0f);
+        GraphNode_AppendChild(&gGraphRoot0, &gCurrentHudState->overlayNode->posX);
     }
 
     MainPool_FinalizeAllocation(temp_s5);
@@ -882,8 +882,8 @@ void DrowzeeGame_LoadAssets(void) {
         gCurrentGraphNode->unk_01E.z = gPlayerSpawnInfo[i].unk_1C;
 
         gCurrentHudState->unk_00C = 0;
-        gCurrentHudState->unk_00E = 0x14A;
-        gCurrentHudState->unk_010 = gCurrentHudState->unk_00E;
+        gCurrentHudState->maxHealth = 0x14A;
+        gCurrentHudState->unk_010 = gCurrentHudState->maxHealth;
         gCurrentHudState->unk_014 = 0;
         gCurrentHudState->alertSoundPlayed = 0;
 
@@ -891,7 +891,7 @@ void DrowzeeGame_LoadAssets(void) {
 
         for (x = 0; x < 14; x++) {
             for (y = 0; y < 8; y++) {
-                gCurrentHudState->unk_194[x][y] = 0;
+                gCurrentHudState->timingStats[x][y] = 0;
             }
         }
 

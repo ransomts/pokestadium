@@ -102,7 +102,7 @@ s32 metapodRockCollisionCheck(MiniActor* fallingRock, MiniActor* metapod) {
 void miniChangeActorAnim(MiniActor* poke, s16 anim, s16 arg2, s16 arg3) {
     poke->unk_248 = 1;
     poke->unk_24A = anim;
-    poke->unk_24C = arg2;
+    poke->eventTrack = arg2;
     poke->unk_26A = arg3;
     poke->unk_26C = 0;
     poke->unk_26E = 0;
@@ -112,7 +112,7 @@ void miniChangeActorAnim(MiniActor* poke, s16 anim, s16 arg2, s16 arg3) {
 void miniChangeActorAnim_alt1(MiniActor* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_248 = 1;
     arg0->unk_24A = arg1;
-    arg0->unk_24C = arg2;
+    arg0->eventTrack = arg2;
     arg0->unk_26A = arg3;
     arg0->unk_26C = 0;
     arg0->unk_26E = arg4;
@@ -121,7 +121,7 @@ void miniChangeActorAnim_alt1(MiniActor* arg0, s16 arg1, s16 arg2, s16 arg3, s16
 void miniChangeActorAnim_alt2(MiniActor* diglett, s16 anim, s16 arg2, s16 arg3) {
     diglett->unk_248 = 1;
     diglett->unk_24A = anim;
-    diglett->unk_24C = arg2;
+    diglett->eventTrack = arg2;
     diglett->unk_26A = arg3;
     diglett->unk_26C = 1;
 }
@@ -146,8 +146,8 @@ void MiniActor_UpdateAnimation(MiniActor* poke) {
                 ModelAnim_BindTransformCurve(&poke->unk_000, 0, poke->unk_000.unk_040.rotation, 0x10000);
                 ModelAnim_SetFrame(&poke->unk_000, poke->unk_26E);
                 ModelAnim_ClearEventTrack(&poke->unk_000);
-                if (poke->unk_24C != -1) {
-                    ModelAnim_SetEventTrack(&poke->unk_000, poke->unk_24C);
+                if (poke->eventTrack != -1) {
+                    ModelAnim_SetEventTrack(&poke->unk_000, poke->eventTrack);
                     ModelAnim_SetEventFrame(&poke->unk_000, poke->unk_26E);
                 }
             }

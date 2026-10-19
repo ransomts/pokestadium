@@ -521,7 +521,7 @@ void EventBattle_DrawTeamPanel(TrainerCard* arg0, s16 arg1, s16 arg2) {
         tmp1 = arg0->unk_0001;
         tmp2 = gIconXOffsets[i] + arg1;
         tmp3 = gIconYOffsets[i] + arg2;
-        EventBattle_DrawMonCell(tmp1, tmp2, tmp3, arg0->unk_0020[i].unk_25);
+        EventBattle_DrawMonCell(tmp1, tmp2, tmp3, arg0->party[i].unk_25);
     }
 }
 
@@ -590,7 +590,7 @@ void EventBattle_DrawTrainerCard(TrainerCard* arg0) {
         for (i = 0; i < 6; i++) {
             tmp1 = gIconXOffsets[i] + sp58 + 0x2C;
             tmp2 = gIconYOffsets[i] + sp56 + 5;
-            Font_Printf(tmp1, tmp2, arg0->unk_0020[i].unk_30);
+            Font_Printf(tmp1, tmp2, arg0->party[i].unk_30);
         }
 
         Font_SetActive(4, 0);
@@ -598,7 +598,7 @@ void EventBattle_DrawTrainerCard(TrainerCard* arg0) {
         for (i = 0; i < 6; i++) {
             tmp3 = gIconXOffsets[i] + sp58 + 0x2C;
             tmp4 = gIconYOffsets[i] + sp56 + 0x17;
-            Font_Printf(tmp3, tmp4, "%s%d", Text_GetString(NULL, 0, gMessageBankSecondary, 0x15), arg0->unk_0020[i].unk_24);
+            Font_Printf(tmp3, tmp4, "%s%d", Text_GetString(NULL, 0, gMessageBankSecondary, 0x15), arg0->party[i].unk_24);
         }
 
         Font_EndTexturedTextRendering();
@@ -609,28 +609,28 @@ void EventBattle_DrawTrainerCard(TrainerCard* arg0) {
 void EventBattle_UpdateTrainerCardSlide(TrainerCard* arg0) {
     switch (arg0->unk_0000) {
         case 2:
-            arg0->unk_0006 -= 1;
-            if (arg0->unk_0006 == 0) {
+            arg0->slideProgress -= 1;
+            if (arg0->slideProgress == 0) {
                 arg0->unk_0000 = 1;
             }
 
             if (arg0->unk_0001 == 0) {
-                arg0->unk_000C = arg0->unk_0008 - (arg0->unk_0006 << 6);
+                arg0->unk_000C = arg0->unk_0008 - (arg0->slideProgress << 6);
             } else {
-                arg0->unk_000C = arg0->unk_0008 + (arg0->unk_0006 << 6);
+                arg0->unk_000C = arg0->unk_0008 + (arg0->slideProgress << 6);
             }
             break;
 
         case 3:
-            arg0->unk_0006 += 1;
-            if (arg0->unk_0006 == 0xA) {
+            arg0->slideProgress += 1;
+            if (arg0->slideProgress == 0xA) {
                 arg0->unk_0000 = 0;
             }
 
             if (arg0->unk_0001 == 0) {
-                arg0->unk_000C = arg0->unk_0008 - (arg0->unk_0006 << 6);
+                arg0->unk_000C = arg0->unk_0008 - (arg0->slideProgress << 6);
             } else {
-                arg0->unk_000C = arg0->unk_0008 + (arg0->unk_0006 << 6);
+                arg0->unk_000C = arg0->unk_0008 + (arg0->slideProgress << 6);
             }
             break;
     }
@@ -641,17 +641,17 @@ void EventBattle_InitTrainerCard(TrainerCard* arg0, s16 arg1, s16 arg2, s16 arg3
 
     arg0->unk_0000 = 0;
     arg0->unk_0001 = arg3;
-    arg0->unk_0006 = 0xA;
+    arg0->slideProgress = 0xA;
     arg0->unk_0008 = arg1;
-    arg0->unk_000A = arg2;
+    arg0->baseY = arg2;
     arg0->unk_000C = arg1;
     arg0->unk_000E = arg2;
     arg0->unk_0012 = GbSave_GetTrainerId(arg3);
     GbSave_GetPlayerName(arg3, arg0->unk_0014);
 
     for (i = 0; i < 6; i++) {
-        Deck_ReadEntry(0x20, arg3, 0, i, &arg0->unk_0020[i]);
-        PokeIcon_LoadModelTextureForMon(arg0->iconTextures[i], 0, &arg0->unk_0020[i]);
+        Deck_ReadEntry(0x20, arg3, 0, i, &arg0->party[i]);
+        PokeIcon_LoadModelTextureForMon(arg0->iconTextures[i], 0, &arg0->party[i]);
     }
 }
 
@@ -679,7 +679,7 @@ u8 EventBattle_CheckTeamLegality(TrainerCard* arg0, s16 arg1) {
     s16 i;
     s16 j;
 
-    var_s1 = arg0->unk_0020;
+    var_s1 = arg0->party;
 
     for (i = 0; i < 3; i++) {
         sp54[i] = 999;
@@ -698,9 +698,9 @@ u8 EventBattle_CheckTeamLegality(TrainerCard* arg0, s16 arg1) {
                 }
 
                 for (j = 0; j < i; j++) {
-                    if (var_s1->posX.posX == arg0->unk_0020[j].posX.posX) {
+                    if (var_s1->posX.posX == arg0->party[j].posX.posX) {
                         var_s1->unk_25 = 1;
-                        arg0->unk_0020[j].unk_25 = 1;
+                        arg0->party[j].unk_25 = 1;
                     }
                 }
             }
@@ -722,7 +722,7 @@ u8 EventBattle_CheckTeamLegality(TrainerCard* arg0, s16 arg1) {
     }
 
     for (i = 0, j = 0; i < 6; i++) {
-        if (arg0->unk_0020[i].unk_25 == 0) {
+        if (arg0->party[i].unk_25 == 0) {
             j++;
         }
     }
@@ -1378,8 +1378,8 @@ void EventBattle_BuildTrainerFromCard(TrainerCard* arg0) {
     BattleAI_TeamContext* temp_s4 = Trainer_Create(arg0->unk_0001, arg0->unk_0012, arg0->unk_0014, Text_GetPlayerLabel(1));
 
     for (i = 0; i < 6; i++) {
-        EventBattle_MarkPartnerPikachu(&arg0->unk_0020[i], arg0->unk_0001);
-        Trainer_AddPokemon(temp_s4, &arg0->unk_0020[i]);
+        EventBattle_MarkPartnerPikachu(&arg0->party[i], arg0->unk_0001);
+        Trainer_AddPokemon(temp_s4, &arg0->party[i]);
     }
 
     Team_AddTrainer(arg0->unk_0001, temp_s4);

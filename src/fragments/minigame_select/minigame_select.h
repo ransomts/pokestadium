@@ -59,11 +59,11 @@ typedef struct UIElement {
     /* 0x008 */ s16 unk_008;
     /* 0x00A */ s16 unk_00A;
     /* 0x00C */ s16 unk_00C;
-    /* 0x00E */ s16 unk_00E[4];
+    /* 0x00E */ s16 fadeChannels[4];
     /* 0x018 */ f32 unk_018;
     /* 0x01C */ f32 unk_01C;
     /* 0x020 */ Vec3f unk_020;
-    /* 0x02C */ UIWidget* unk_02C;
+    /* 0x02C */ UIWidget* returnWidget;
     /* 0x030 */ UIWidget* unk_030;
     /* 0x034 */ s32 unk_034;
     /* 0x034 */ s32 unk_038;

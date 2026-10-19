@@ -46,7 +46,7 @@ void Rental_DrawTeamTrayFrame(gItemPanel* arg0, s16 arg1, s16 arg2) {
 
 void Rental_DrawTeamCursor(gItemPanel* arg0) {
     s16 temp_s0 = arg0->unk_0018 + (arg0->unk_0010 * 0x84) + 0x78;
-    s16 temp_a1 = arg0->unk_001A + (arg0->unk_0012 * 0x2C) + 4;
+    s16 temp_a1 = arg0->unk_001A + (arg0->cursorRow * 0x2C) + 4;
 
     if (arg0->unk_0001 == 0xD) {
         if (arg0->unk_000C > 0) {
@@ -89,7 +89,7 @@ void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1) {
                 s16 tmp1 = gSlotPosXOffsets[i] + arg0->unk_0018 + 2;
                 s16 tmp2 = gSlotPosYOffsets[i] + arg0->unk_001A + 2;
 
-                Gfx_DrawTextureRgba16(tmp1, tmp2, 0x28, 0x28, arg0->unk_0030[i].unk_058, 0x28, 0);
+                Gfx_DrawTextureRgba16(tmp1, tmp2, 0x28, 0x28, arg0->unk_0030[i].iconTexture, 0x28, 0);
             }
         }
 
@@ -168,7 +168,7 @@ void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1) {
 }
 
 void Rental_ClearTeamSlot(gItemPanel* arg0) {
-    s16 temp_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
+    s16 temp_v0 = arg0->unk_0010 + (arg0->cursorRow * 3);
 
     if (arg0->unk_0030[temp_v0].unk_004.posX.posX != 0) {
         arg0->unk_0030[temp_v0].unk_004.posX.posX = 0;
@@ -178,7 +178,7 @@ void Rental_ClearTeamSlot(gItemPanel* arg0) {
 }
 
 void Rental_BeginSlotReplace(gItemPanel* arg0) {
-    s16 sp1E = arg0->unk_0010 + (arg0->unk_0012 * 3);
+    s16 sp1E = arg0->unk_0010 + (arg0->cursorRow * 3);
 
     if (Rental_CarouselResumeInput(arg0->pokemonPanel) != 0) {
         if (arg0->unk_0030[sp1E].unk_004.posX.posX != 0) {
@@ -265,12 +265,12 @@ s32 Rental_CheckTeamLevelCap(gItemPanel* arg0) {
 
 void Rental_TeamTrayHide(gItemPanel* arg0) {
     arg0->unk_0018 = arg0->unk_0014 + 0x280;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
 }
 
 void Rental_TeamTrayShow(gItemPanel* arg0) {
     arg0->unk_0018 = arg0->unk_0014;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
 }
 
 void Rental_OpenSlotAssignmentDialog(gItemPanel* a0) {
@@ -281,22 +281,22 @@ void Rental_OpenSlotAssignmentDialog(gItemPanel* a0) {
 
     TeamSelection_RulePrompt_BeginClose(1);
     if (TeamSelection_RulePrompt_TryFinish(1) >= 0) {
-        tmp = a0->unk_0010 + a0->unk_0012 * 3;
+        tmp = a0->unk_0010 + a0->cursorRow * 3;
 
         temp_v0 = a0->unk_0014 + (a0->unk_0010 * 0x84) + 0x74;
-        temp_v1 = a0->unk_0016 + (a0->unk_0012 * 0x2C);
+        temp_v1 = a0->baseY + (a0->cursorRow * 0x2C);
 
         arg0->unk_0030[tmp].raw |= 0x80000000;
         TeamSelection_Preview_StartFull(a0->moveScreen, a0->unk_0002, 0x30, 0xEC, temp_v0, temp_v1, &a0->unk_0030[tmp], 2);
         a0->unk_0001 = 6;
     }
     a0->unk_0018 = a0->unk_0014;
-    a0->unk_001A = a0->unk_0016;
+    a0->unk_001A = a0->baseY;
     a0->unk_0003 = 2;
 }
 
 void Rental_ResolveSlotPick(gItemPanel* arg0) {
-    s16 sp26 = arg0->unk_0010 + (arg0->unk_0012 * 3);
+    s16 sp26 = arg0->unk_0010 + (arg0->cursorRow * 3);
     s32 temp_v0 = TeamSelection_Preview_GetSelectionState(arg0->moveScreen);
 
     if (temp_v0 == 1) {
@@ -310,7 +310,7 @@ void Rental_ResolveSlotPick(gItemPanel* arg0) {
         arg0->unk_0001 = 8;
     }
     arg0->unk_0018 = arg0->unk_0014;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
 }
 
 void Rental_TeamTraySlideIn(gItemPanel* arg0) {
@@ -333,7 +333,7 @@ void Rental_TeamTraySlideIn(gItemPanel* arg0) {
         arg0->unk_0018 = (arg0->unk_0014 - (arg0->unk_000A << 6)) + 0x280;
         arg0->unk_0003 = 2;
     }
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
 }
 
 void Rental_TeamTraySlideOut(gItemPanel* arg0) {
@@ -345,14 +345,14 @@ void Rental_TeamTraySlideOut(gItemPanel* arg0) {
     } else {
         arg0->unk_0018 = arg0->unk_0014 - (arg0->unk_000A << 6);
     }
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
     arg0->unk_0003 = 2;
 }
 
 void Rental_BeginSlotReplacement(gItemPanel* arg0) {
     Rental_BeginSlotReplace(arg0);
     arg0->unk_0018 = arg0->unk_0014;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
     arg0->unk_0003 = 2;
 }
 
@@ -360,7 +360,7 @@ void Rental_TeamCursorLeft(gItemPanel* arg0) {
     if (arg0->unk_0010 > 0) {
         arg0->unk_0010--;
         arg0->unk_000C = -1;
-        arg0->unk_000E = -4;
+        arg0->cursorSlideTarget = -4;
         arg0->unk_0001 = 0xC;
         Audio_PlaySoundEffectById(1);
     }
@@ -370,27 +370,27 @@ void Rental_TeamCursorRight(gItemPanel* arg0) {
     if (arg0->unk_0010 < 2) {
         arg0->unk_0010++;
         arg0->unk_000C = 1;
-        arg0->unk_000E = 4;
+        arg0->cursorSlideTarget = 4;
         arg0->unk_0001 = 0xC;
         Audio_PlaySoundEffectById(1);
     }
 }
 
 void Rental_TeamCursorUp(gItemPanel* arg0) {
-    if (arg0->unk_0012 > 0) {
-        arg0->unk_0012--;
+    if (arg0->cursorRow > 0) {
+        arg0->cursorRow--;
         arg0->unk_000C = -1;
-        arg0->unk_000E = -4;
+        arg0->cursorSlideTarget = -4;
         arg0->unk_0001 = 0xD;
         Audio_PlaySoundEffectById(1);
     }
 }
 
 void Rental_TeamCursorDown(gItemPanel* arg0) {
-    if (arg0->unk_0012 <= 0) {
-        arg0->unk_0012++;
+    if (arg0->cursorRow <= 0) {
+        arg0->cursorRow++;
         arg0->unk_000C = 1;
-        arg0->unk_000E = 4;
+        arg0->cursorSlideTarget = 4;
         arg0->unk_0001 = 0xD;
         Audio_PlaySoundEffectById(1);
     }
@@ -402,7 +402,7 @@ void Rental_TeamGridHandleInput(gItemPanel* arg0) {
     if (arg0->unk_000A < 8) {
         arg0->unk_000A++;
     } else if (BTN_IS_PRESSED(cont, BTN_A)) {
-        s32 temp_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
+        s32 temp_v0 = arg0->unk_0010 + (arg0->cursorRow * 3);
 
         if (arg0->unk_0030[temp_v0].unk_004.posX.posX != 0) {
             Audio_PlaySoundEffectById(2);
@@ -422,7 +422,7 @@ void Rental_TeamGridHandleInput(gItemPanel* arg0) {
     }
 
     arg0->unk_0018 = arg0->unk_0014;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
     arg0->unk_0003 = 2;
 }
 
@@ -453,7 +453,7 @@ void Rental_HandleTeamConfirmation(gItemPanel* arg0) {
                 i--;
             }
             arg0->unk_0010 = i % 3;
-            arg0->unk_0012 = i / 3;
+            arg0->cursorRow = i / 3;
             arg0->unk_0008 = 6;
             arg0->unk_0001 = 2;
             break;
@@ -475,7 +475,7 @@ void Rental_HandleTeamConfirmation(gItemPanel* arg0) {
         case 3:
             TeamSelection_RulePrompt_Open(1, NULL);
             arg0->unk_0010 = 0;
-            arg0->unk_0012 = 0;
+            arg0->cursorRow = 0;
             arg0->unk_000A = 0;
             arg0->unk_0001 = 8;
             break;
@@ -490,13 +490,13 @@ void Rental_HandleTeamConfirmation(gItemPanel* arg0) {
 
             arg0->unk_0006 = 0;
             arg0->unk_0010 = 0;
-            arg0->unk_0012 = 0;
+            arg0->cursorRow = 0;
             arg0->unk_0008 = 6;
             arg0->unk_0001 = 2;
             break;
     }
     arg0->unk_0018 = arg0->unk_0014;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
 }
 
 void Rental_HandleRegisteredTeamConfirmation(gItemPanel* arg0) {
@@ -511,7 +511,7 @@ void Rental_HandleRegisteredTeamConfirmation(gItemPanel* arg0) {
                 i--;
             }
             arg0->unk_0010 = i % 3;
-            arg0->unk_0012 = i / 3;
+            arg0->cursorRow = i / 3;
             arg0->unk_0008 = 6;
             arg0->unk_0001 = 2;
             break;
@@ -525,7 +525,7 @@ void Rental_HandleRegisteredTeamConfirmation(gItemPanel* arg0) {
         case 2:
             TeamSelection_RulePrompt_Open(1, NULL);
             arg0->unk_0010 = 0;
-            arg0->unk_0012 = 0;
+            arg0->cursorRow = 0;
             arg0->unk_000A = 0;
             arg0->unk_0001 = 8;
             break;
@@ -540,14 +540,14 @@ void Rental_HandleRegisteredTeamConfirmation(gItemPanel* arg0) {
 
             arg0->unk_0006 = 0;
             arg0->unk_0010 = 0;
-            arg0->unk_0012 = 0;
+            arg0->cursorRow = 0;
             arg0->unk_0008 = 6;
             arg0->unk_0001 = 2;
             break;
     }
 
     arg0->unk_0018 = arg0->unk_0014;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
 }
 
 void Rental_HandleLevelCapWarning(gItemPanel* arg0) {
@@ -575,20 +575,20 @@ void Rental_HandleLevelCapWarning(gItemPanel* arg0) {
     if (temp_v0_2 != -1) {
         if (temp_v0_2 == 0) {
             arg0->unk_0010 = 2;
-            arg0->unk_0012 = 1;
+            arg0->cursorRow = 1;
             arg0->unk_0008 = 6;
             arg0->unk_0001 = 2;
         } else {
             TeamSelection_RulePrompt_Open(1, NULL);
             arg0->unk_0010 = 0;
-            arg0->unk_0012 = 0;
+            arg0->cursorRow = 0;
             arg0->unk_000A = 0;
             arg0->unk_0001 = 8;
         }
     }
 
     arg0->unk_0018 = arg0->unk_0014;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
 }
 
 void Rental_HandleTeamSaveResult(gItemPanel* arg0) {
@@ -612,19 +612,19 @@ void Rental_HandleTeamCancel(gItemPanel* arg0) {
 }
 
 void Rental_TeamTraySlideTick(gItemPanel* arg0) {
-    if (arg0->unk_000E > 0) {
+    if (arg0->cursorSlideTarget > 0) {
         arg0->unk_000C++;
-        if (arg0->unk_000C >= arg0->unk_000E) {
+        if (arg0->unk_000C >= arg0->cursorSlideTarget) {
             arg0->unk_0001 = 8;
         }
     } else {
         arg0->unk_000C--;
-        if (arg0->unk_000E >= arg0->unk_000C) {
+        if (arg0->cursorSlideTarget >= arg0->unk_000C) {
             arg0->unk_0001 = 8;
         }
     }
     arg0->unk_0018 = arg0->unk_0014;
-    arg0->unk_001A = arg0->unk_0016;
+    arg0->unk_001A = arg0->baseY;
     arg0->unk_0003 = 2;
 }
 
@@ -717,9 +717,9 @@ s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* 
     arg0->unk_0008 = 6;
     arg0->unk_000A = 0;
     arg0->unk_0010 = 0;
-    arg0->unk_0012 = 0;
+    arg0->cursorRow = 0;
     arg0->unk_0014 = arg7;
-    arg0->unk_0016 = arg8;
+    arg0->baseY = arg8;
     arg0->unk_0018 = arg7 + 0x280;
     arg0->unk_001A = arg8;
     arg0->unk_001C = arg5;
@@ -771,7 +771,7 @@ s32 Rental_ResetTeamSlots(gItemPanel* arg0) {
     arg0->unk_0006 = 0;
     arg0->unk_0008 = 6;
     arg0->unk_0010 = 0;
-    arg0->unk_0012 = 0;
+    arg0->cursorRow = 0;
     arg0->unk_0001 = 2;
     return 1;
 }
@@ -780,7 +780,7 @@ s32 Rental_RemoveHighlightedSlot(gItemPanel* arg0) {
     s32 temp_v0;
     s32 temp_v1;
 
-    temp_v1 = arg0->unk_0010 + (arg0->unk_0012 * 3);
+    temp_v1 = arg0->unk_0010 + (arg0->cursorRow * 3);
 
     if (arg0->unk_0001 == 3) {
         if (arg0->unk_0006 == 0) {
@@ -794,7 +794,7 @@ s32 Rental_RemoveHighlightedSlot(gItemPanel* arg0) {
         if (arg0->unk_0030[temp_v1].raw == 0) {
             temp_v0 = temp_v1 - 1;
             arg0->unk_0010 = temp_v0 % 3;
-            arg0->unk_0012 = temp_v0 / 3;
+            arg0->cursorRow = temp_v0 / 3;
             Rental_ClearTeamSlot(arg0);
             arg0->unk_0001 = 2;
         } else {
@@ -809,7 +809,7 @@ s32 Rental_RemoveHighlightedSlot(gItemPanel* arg0) {
 }
 
 s32 Rental_AssignMonToSlot(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
-    s32 var_v0 = arg0->unk_0010 + (arg0->unk_0012 * 3);
+    s32 var_v0 = arg0->unk_0010 + (arg0->cursorRow * 3);
 
     if (arg0->unk_0001 != 3) {
         return 0;
@@ -836,14 +836,14 @@ s32 Rental_AssignMonToSlot(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
             var_v0 = (var_v0 + 1) % 6;
         } while (arg0->unk_0030[var_v0].unk_004.posX.posX != 0);
         arg0->unk_0010 = var_v0 % 3;
-        arg0->unk_0012 = var_v0 / 3;
+        arg0->cursorRow = var_v0 / 3;
         arg0->unk_0001 = 2;
     }
     return 1;
 }
 
 s32 Rental_ClearCurrentSlotSelection(gItemPanel* arg0) {
-    s32 idx = (arg0->unk_0010 + (arg0->unk_0012 * 3));
+    s32 idx = (arg0->unk_0010 + (arg0->cursorRow * 3));
 
     if (arg0->unk_0001 != 3) {
         return 0;
@@ -930,7 +930,7 @@ void Rental_CopyRosterToTeam(gItemPanel* arg0, PokemonData* arg1, s16 arg2) {
     arg0->unk_0008 = arg2;
 
     for (i = 0; i < arg2; i++) {
-        PokeIcon_LoadModelTextureForMon(arg0->unk_0030[i].unk_058, 0, &arg1[i]);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_0030[i].iconTexture, 0, &arg1[i]);
 
         arg0->unk_0030[i].unk_004 = arg1[i];
 

@@ -11,7 +11,7 @@ typedef struct RaceObstacle {
     /* 0x170 */ s16 unk_170;
     /* 0x172 */ s8 unk_172[6];
     /* 0x178 */ s16 unk_178;
-    /* 0x17A */ u16 unk_17A;
+    /* 0x17A */ u16 flickerTimer;
 } RaceObstacle; // size = 0x17C
 
 typedef struct RacePlayerState {
@@ -25,25 +25,25 @@ typedef struct RacePlayerState {
     /* 0x178 */ f32 unk_178;
     /* 0x17C */ f32 unk_17C;
     /* 0x180 */ f32 unk_180;
-    /* 0x184 */ f32 unk_184;
+    /* 0x184 */ f32 boostSpeed;
     /* 0x188 */ f32 unk_188;
-    /* 0x18C */ f32 unk_18C;
-    /* 0x190 */ f32 unk_190;
-    /* 0x194 */ f32 unk_194;
+    /* 0x18C */ f32 prevProgress;
+    /* 0x190 */ f32 progress;
+    /* 0x194 */ f32 zProgress;
     /* 0x198 */ f32 finishTime;
     /* 0x19C */ s16 animState;
     /* 0x19E */ s16 finishState;
     /* 0x1A0 */ s16 rankPending;
     /* 0x1A2 */ s16 unk_1A2;
     /* 0x1A4 */ f32 hurdlePos;
-    /* 0x1A8 */ f32 unk_1A8;
+    /* 0x1A8 */ f32 aiJumpZ;
     /* 0x1AC */ s16 hurdleHitCount;
     /* 0x1AE */ s16 unk_1AE;
     /* 0x1B0 */ s16 unk_1B0;
     /* 0x1B2 */ s16 finishRank;
     /* 0x1B4 */ s16 unk_1B4;
     /* 0x1B6 */ char pad1B6[0x12];
-    /* 0x1C8 */ u16 unk_1C8;
+    /* 0x1C8 */ u16 isWinner;
     /* 0x1CA */ char pad1CA[6];
 } RacePlayerState; // size = 0x1D0
 

@@ -33,7 +33,7 @@ void DoubleTextureTrail_InitPool(void) {
         var_v0->unk_002 = 0;
         var_v0->unk_004 = 0;
 
-        var_a0 = &var_v0->unk_0B0[0];
+        var_a0 = &var_v0->points[0];
         for (j = 0; j < 10; j++, var_a0++) {
             var_a0->posX = 0;
             var_a0->rotation = 0;
@@ -82,30 +82,30 @@ void DoubleTextureTrail_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
             var_v0->unk_01C = argC;
             var_v0->unk_020 = argD;
 
-            var_v0->unk_064.posX = 0;
-            var_v0->unk_064.posY = 0;
-            var_v0->unk_070.posX = 0;
-            var_v0->unk_070.posY = 0;
+            var_v0->texture0Tile.posX = 0;
+            var_v0->texture0Tile.posY = 0;
+            var_v0->texture1Tile.posX = 0;
+            var_v0->texture1Tile.posY = 0;
 
-            var_v0->unk_064.rotation = argE;
-            var_v0->unk_064.unk_06 = argF;
-            var_v0->unk_070.rotation = arg12;
-            var_v0->unk_070.unk_06 = arg13;
+            var_v0->texture0Tile.rotation = argE;
+            var_v0->texture0Tile.unk_06 = argF;
+            var_v0->texture1Tile.rotation = arg12;
+            var_v0->texture1Tile.unk_06 = arg13;
 
-            var_v0->unk_064.RentalSlotAnimData_PosePhase = arg10;
-            var_v0->unk_064.unk_0A = arg11;
-            var_v0->unk_070.RentalSlotAnimData_PosePhase = arg14;
-            var_v0->unk_070.unk_0A = arg15;
+            var_v0->texture0Tile.RentalSlotAnimData_PosePhase = arg10;
+            var_v0->texture0Tile.unk_0A = arg11;
+            var_v0->texture1Tile.RentalSlotAnimData_PosePhase = arg14;
+            var_v0->texture1Tile.unk_0A = arg15;
 
             var_v0->unk_024 = *arg16;
             var_v0->unk_044 = *arg17;
 
-            var_v0->unk_07C.posX.r = arg18;
-            var_v0->unk_07C.posX.g = arg19;
-            var_v0->unk_07C.posX.b = arg1A;
-            var_v0->unk_07C.posX.a = arg1B;
+            var_v0->primColorBlend.posX.r = arg18;
+            var_v0->primColorBlend.posX.g = arg19;
+            var_v0->primColorBlend.posX.b = arg1A;
+            var_v0->primColorBlend.posX.a = arg1B;
 
-            var_v0->unk_07C.rotation = arg1C;
+            var_v0->primColorBlend.rotation = arg1C;
 
             var_v0->envColorBlend.posX.r = arg1D;
             var_v0->envColorBlend.posX.g = arg1E;
@@ -117,11 +117,11 @@ void DoubleTextureTrail_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
             var_v0->lineColor.b = arg23;
             var_v0->lineColor.a = arg24;
 
-            var_v0->unk_08C = 1.0f;
-            var_v0->unk_090 = 1.0f;
-            var_v0->unk_094 = 0x41;
+            var_v0->primFadeScale = 1.0f;
+            var_v0->envFadeScale = 1.0f;
+            var_v0->fadeStartAge = 0x41;
 
-            var_a0 = &var_v0->unk_0B0[0];
+            var_a0 = &var_v0->points[0];
             for (j = 0; j < 10; j++, var_a0++) {
                 var_a0->posX = j;
                 var_a0->rotation = 0xFF;
@@ -163,7 +163,7 @@ void DoubleTextureTrail_Update(WaterParticleSystem* arg0) {
         sp4C.y = 200.0f;
     }
 
-    var_v0 = &arg0->unk_0B0[0];
+    var_v0 = &arg0->points[0];
     for (i = 0; i < 10; i++, var_v0++) {
         if (arg0->unk_002 < arg0->unk_004) {
             temp_fa1 = ((f32)arg0->unk_002 * i) / 9.0f;
@@ -237,34 +237,34 @@ Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 
     u8 a2;
     s16 tmp;
 
-    temp_v1 = &arg1->unk_07C;
+    temp_v1 = &arg1->primColorBlend;
     temp_v0 = &arg1->envColorBlend;
 
     if (BattleAnim_GetMoveFailedFlag() == 1) {
-        if (arg1->unk_094 >= arg1->unk_002) {
-            arg1->unk_002 = arg1->unk_094 + 1;
+        if (arg1->fadeStartAge >= arg1->unk_002) {
+            arg1->unk_002 = arg1->fadeStartAge + 1;
         }
     }
 
     if (arg3 == 0) {
-        if (arg1->unk_094 < arg1->unk_002) {
-            tmp = arg1->unk_002 - arg1->unk_094;
+        if (arg1->fadeStartAge < arg1->unk_002) {
+            tmp = arg1->unk_002 - arg1->fadeStartAge;
 
-            arg1->unk_08C = 1.0f - tmp * 0.1f;
-            arg1->unk_090 = 1.0f - tmp * 0.1f;
+            arg1->primFadeScale = 1.0f - tmp * 0.1f;
+            arg1->envFadeScale = 1.0f - tmp * 0.1f;
 
             if (tmp * 0.1f > 1.0f) {
-                arg1->unk_08C = 0.0f;
+                arg1->primFadeScale = 0.0f;
             }
 
-            if (arg1->unk_090 < 0.0f) {
-                arg1->unk_090 = 0.0f;
+            if (arg1->envFadeScale < 0.0f) {
+                arg1->envFadeScale = 0.0f;
             }
         }
     }
 
-    a1 = temp_v1->posX.a * arg1->unk_08C;
-    a2 = temp_v0->posX.a * arg1->unk_090;
+    a1 = temp_v1->posX.a * arg1->primFadeScale;
+    a2 = temp_v0->posX.a * arg1->envFadeScale;
 
     gDPSetPrimColor(arg0++, 0, temp_v1->rotation, temp_v1->posX.r, temp_v1->posX.g, temp_v1->posX.b, a1);
     gDPSetEnvColor(arg0++, temp_v0->posX.r, temp_v0->posX.g, temp_v0->posX.b, a2);
@@ -284,12 +284,12 @@ Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 
 Gfx* DoubleTextureTrail_LoadTextures(Gfx* arg0, WaterParticleSystem* arg1) {
     TextureTileInfo* ptr;
 
-    ptr = &arg1->unk_064;
+    ptr = &arg1->texture0Tile;
     gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_01C], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0A);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, ptr->posX, ptr->posY, (ptr->posX + 31) << 2, (ptr->posY + 31) << 2);
 
-    ptr = &arg1->unk_070;
+    ptr = &arg1->texture1Tile;
     gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_020], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0A);
     gDPSetTileSize(arg0++, 1, ptr->posX, ptr->posY, (ptr->posX + 31) << 2, (ptr->posY + 31) << 2);
@@ -317,13 +317,13 @@ Gfx* DoubleTextureTrail_DrawAll(Gfx* arg0) {
     for (i = 0; i < 4; i++, var_fp++) {
         if (var_fp->unk_000 == 1) {
             if (ModelPhase_IsIdle() == 0) {
-                var_fp->unk_064.posX += var_fp->unk_064.rotation;
-                var_fp->unk_064.posY += var_fp->unk_064.unk_06;
-                var_fp->unk_070.posX += var_fp->unk_070.rotation;
-                var_fp->unk_070.posY += var_fp->unk_070.unk_06;
+                var_fp->texture0Tile.posX += var_fp->texture0Tile.rotation;
+                var_fp->texture0Tile.posY += var_fp->texture0Tile.unk_06;
+                var_fp->texture1Tile.posX += var_fp->texture1Tile.rotation;
+                var_fp->texture1Tile.posY += var_fp->texture1Tile.unk_06;
             }
 
-            var_s2 = &var_fp->unk_0B0[0];
+            var_s2 = &var_fp->points[0];
 
             var_fp->unk_018 = Gfx_AllocDisplayList(sizeof(Vtx) * 90);
 
@@ -348,13 +348,13 @@ Gfx* DoubleTextureTrail_DrawAll(Gfx* arg0) {
             }
 
             if ((var_fp->lineColor.r | var_fp->lineColor.g | var_fp->lineColor.b | var_fp->lineColor.a) != 0) {
-                spE8 = var_fp->unk_0B0[9].unk_10;
-                spF4 = var_fp->unk_0B0[0].unk_10;
+                spE8 = var_fp->points[9].unk_10;
+                spF4 = var_fp->points[0].unk_10;
                 spDC.x = spD8->unk_60.eye.x;
                 spDC.y = spD8->unk_60.eye.y;
                 spDC.z = spD8->unk_60.eye.z;
                 arg0 = Gfx_DrawThickLine(arg0, &spF4, &spE8, &spDC, 20.0f, var_fp->lineColor.r, var_fp->lineColor.g,
-                                     var_fp->lineColor.b, var_fp->lineColor.a * var_fp->unk_08C);
+                                     var_fp->lineColor.b, var_fp->lineColor.a * var_fp->primFadeScale);
             }
 
             gSPDisplayList(arg0++, gWaterParticleDisplayList);
@@ -367,8 +367,8 @@ Gfx* DoubleTextureTrail_DrawAll(Gfx* arg0) {
 
             arg0 = DoubleTextureTrail_LoadTextures(arg0, var_fp);
 
-            gDPSetPrimColor(arg0++, 0, var_fp->unk_07C.rotation, var_fp->unk_07C.posX.r, var_fp->unk_07C.posX.g,
-                            var_fp->unk_07C.posX.b, var_fp->unk_07C.posX.a);
+            gDPSetPrimColor(arg0++, 0, var_fp->primColorBlend.rotation, var_fp->primColorBlend.posX.r, var_fp->primColorBlend.posX.g,
+                            var_fp->primColorBlend.posX.b, var_fp->primColorBlend.posX.a);
             gDPSetEnvColor(arg0++, var_fp->envColorBlend.posX.r, var_fp->envColorBlend.posX.g, var_fp->envColorBlend.posX.b,
                            var_fp->envColorBlend.posX.a);
             gSPClearGeometryMode(arg0++, G_CULL_BOTH);

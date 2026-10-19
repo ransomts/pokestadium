@@ -83,16 +83,16 @@ DynamoHealthBarEffect* gHealthBarEffectData;
 
 void DynamoGame_ComputeAIChargeDelta(DynamoHealthBar* arg0, u8 arg1) {
     if (arg0->unk_000 == 4) {
-        arg0->unk_00D = 0;
+        arg0->chargeDelta = 0;
         return;
     }
 
     if (arg1 == 0) {
-        arg0->unk_00D = MiniGame_RandomRange(3);
+        arg0->chargeDelta = MiniGame_RandomRange(3);
     } else if ((gHealthBarTimer + 1) == gHealthBarDuration) {
-        arg0->unk_00D = DynamoGame_RollAIChargeBias(arg0->unk_000, 1);
+        arg0->chargeDelta = DynamoGame_RollAIChargeBias(arg0->unk_000, 1);
     } else {
-        arg0->unk_00D = DynamoGame_RollAIChargeBias(arg0->unk_000, 0);
+        arg0->chargeDelta = DynamoGame_RollAIChargeBias(arg0->unk_000, 0);
     }
 }
 
@@ -190,14 +190,14 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                             ((gHealthBarAnimFlagB != 0) && ((gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x5E)))) {
                     var_s1 = 1;
                 }
-            } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->unk_00E >= 3) &&
+            } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->lastChargeDelta >= 3) &&
                        ((gCurrentHealthBar->unk_008 == 0) || (gCurrentHealthBar->unk_008 == 3))) {
                 gCurrentHealthBar->unk_008 = 1;
                 var_s1 = 1;
                 if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                     Audio_DispatchSoundBankCommand(0x80001, i, 0);
                 }
-            } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->unk_00E < 3) && (gCurrentHealthBar->unk_008 == 2)) {
+            } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->lastChargeDelta < 3) && (gCurrentHealthBar->unk_008 == 2)) {
                 gCurrentHealthBar->unk_008 = 3;
                 var_s1 = 1;
                 if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
@@ -205,7 +205,7 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                 }
             } else {
                 if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
-                    temp_ft2 = ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->unk_012);
+                    temp_ft2 = ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->chargeTarget);
 
                     if (temp_ft2 >= 0x4B) {
                         var_s0_2 = 4;
@@ -328,7 +328,7 @@ void DynamoGame_DetermineWinners(void) {
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
 
-        if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) && (var_s4 < gCurrentHealthBar->unk_010)) {
+        if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->chargeTarget) && (var_s4 < gCurrentHealthBar->unk_010)) {
             var_s4 = gCurrentHealthBar->unk_010;
         }
     }
@@ -336,7 +336,7 @@ void DynamoGame_DetermineWinners(void) {
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
 
-        if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) && (var_s4 == gCurrentHealthBar->unk_010)) {
+        if ((gCurrentHealthBar->unk_010 >= gCurrentHealthBar->chargeTarget) && (var_s4 == gCurrentHealthBar->unk_010)) {
             gCurrentHealthBar->unk_00C = 1;
             Widget_PauseMenuRecordWin(i);
 
@@ -351,11 +351,11 @@ void DynamoGame_DetermineWinners(void) {
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
 
-        if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) {
+        if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->chargeTarget) {
             if (gCurrentHealthBar->unk_00C == 1) {
-                gCurrentHealthBar->unk_010 = gCurrentHealthBar->unk_012 + 1;
+                gCurrentHealthBar->unk_010 = gCurrentHealthBar->chargeTarget + 1;
             } else {
-                gCurrentHealthBar->unk_010 = gCurrentHealthBar->unk_012;
+                gCurrentHealthBar->unk_010 = gCurrentHealthBar->chargeTarget;
             }
         }
     }
@@ -379,19 +379,19 @@ void DynamoGame_ReadPlayerCrankInput(void) {
         if (gCurrentHealthBar->unk_000 == 4) {
             if ((gHealthBarPaletteIndex == 1) || (gHealthBarPaletteIndex == 3) || ((gHealthBarPaletteIndex == 0) && (gHealthBarMode == 1))) {
                 if (gControllers[i].buttonPressed & 0x8000) {
-                    gCurrentHealthBar->unk_00D += 1;
+                    gCurrentHealthBar->chargeDelta += 1;
                 }
 
                 if (gControllers[i].buttonPressed & 0x4000) {
-                    gCurrentHealthBar->unk_00D -= 2;
+                    gCurrentHealthBar->chargeDelta -= 2;
                 }
             } else if ((gHealthBarPaletteIndex == 2) || (gHealthBarPaletteIndex == 4) || ((gHealthBarPaletteIndex == 0) && (gHealthBarMode == 2))) {
                 if (gControllers[i].buttonPressed & 0x8000) {
-                    gCurrentHealthBar->unk_00D -= 2;
+                    gCurrentHealthBar->chargeDelta -= 2;
                 }
 
                 if (gControllers[i].buttonPressed & 0x4000) {
-                    gCurrentHealthBar->unk_00D += 1;
+                    gCurrentHealthBar->chargeDelta += 1;
                 }
             }
         }
@@ -470,7 +470,7 @@ void DynamoGame_DrawTutorialScreen(s32 arg0) {
         for (i = 0; i < 4; i++) {
             gCurrentHealthBar = &gHealthBarData[i];
 
-            Widget_DrawProgressBar((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->unk_010, gCurrentHealthBar->unk_012 + 1);
+            Widget_DrawProgressBar((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->unk_010, gCurrentHealthBar->chargeTarget + 1);
         }
     }
 
@@ -552,13 +552,13 @@ void DynamoGame_DrawFrame(s32 arg0) {
                     for (i = 0; i < 4; i++) {
                         gCurrentHealthBar = &gHealthBarData[i];
 
-                        gCurrentHealthBar->unk_010 += gCurrentHealthBar->unk_00D;
+                        gCurrentHealthBar->unk_010 += gCurrentHealthBar->chargeDelta;
                         if (gCurrentHealthBar->unk_010 < 0) {
                             gCurrentHealthBar->unk_010 = 0;
-                        } else if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->unk_012) {
+                        } else if (gCurrentHealthBar->unk_010 >= gCurrentHealthBar->chargeTarget) {
                             gDrowzeeGameIsOver = 1;
                         }
-                        gCurrentHealthBar->unk_00E = gCurrentHealthBar->unk_00D;
+                        gCurrentHealthBar->lastChargeDelta = gCurrentHealthBar->chargeDelta;
                         DynamoGame_ComputeAIChargeDelta(gCurrentHealthBar, 1);
                     }
 
@@ -782,12 +782,12 @@ void DynamoGame_LoadAssets(void) {
                 gCurrentHealthBarNode->unk_01E.z = gHealthBarPositions[j].unk_1C;
 
                 gCurrentHealthBar->unk_00C = 0;
-                gCurrentHealthBar->unk_00E = 0;
+                gCurrentHealthBar->lastChargeDelta = 0;
 
                 DynamoGame_ComputeAIChargeDelta(gCurrentHealthBar, 0);
 
                 gCurrentHealthBar->unk_010 = 0;
-                gCurrentHealthBar->unk_012 = 0x28;
+                gCurrentHealthBar->chargeTarget = 0x28;
             }
         }
     }

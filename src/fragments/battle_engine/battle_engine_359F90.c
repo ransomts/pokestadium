@@ -254,17 +254,17 @@ void Battle_ResetEntityState(BattlePlayerEntity* arg0) {
     }
 
     if (var_v0 == 0) {
-        Battle_QueueMessage(gBattleMessageQueues->unk_1C8, 0x25);
+        Battle_QueueMessage(gBattleMessageQueues->recallMessage, 0x25);
     } else if (var_v0 < 0x1E) {
-        Battle_QueueMessage(gBattleMessageQueues->unk_1C8, 0x26);
+        Battle_QueueMessage(gBattleMessageQueues->recallMessage, 0x26);
     } else if (var_v0 < 0x46) {
-        Battle_QueueMessage(gBattleMessageQueues->unk_1C8, 0x27);
+        Battle_QueueMessage(gBattleMessageQueues->recallMessage, 0x27);
     } else {
-        Battle_QueueMessage(gBattleMessageQueues->unk_1C8, 0x28);
+        Battle_QueueMessage(gBattleMessageQueues->recallMessage, 0x28);
     }
 
     if (sp1C->unk_2D == 0x10) {
-        Battle_QueueMessage(gBattleMessageQueues->unk_1C8, 0);
+        Battle_QueueMessage(gBattleMessageQueues->recallMessage, 0);
     }
 }
 
@@ -1403,7 +1403,7 @@ s32 Battle_CheckMonCanAct(void) {
         }
         gBattleUser->unk_4C &= 0xFFFE;
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
-        Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x11);
+        Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x11);
         gBattleUser->unk_44.posY = 1;
 
         gBattleDamage = gBattleUser->unk_54 * 2;
@@ -1423,7 +1423,7 @@ s32 Battle_CheckMonCanAct(void) {
     if (gBattleUser->unk_4C & 2) {
         gBattleUser->unk_44.posX = 0x25;
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
-        Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x12);
+        Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x12);
         gBattleUser->multiTurnCounter -= 1;
         if (gBattleUser->multiTurnCounter != 0) {
             return 4;
@@ -1438,7 +1438,7 @@ s32 Battle_CheckMonCanAct(void) {
 
     if (gBattleUser->unk_4C & 0x20) {
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
-        Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x13);
+        Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x13);
         gBattleUser->multiTurnCounter -= 1;
         return 6;
     }

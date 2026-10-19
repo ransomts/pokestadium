@@ -11,14 +11,14 @@ typedef struct unk_D_83101F00 {
     /* 0x16C */ s16 unk_16C;
     /* 0x16E */ s16 unk_16E;
     /* 0x170 */ s16 unk_170;
-    /* 0x172 */ s16 unk_172;
+    /* 0x172 */ s16 primR;
     /* 0x174 */ s16 unk_174;
     /* 0x176 */ s16 primColorB;
     /* 0x178 */ s16 unk_178;
-    /* 0x17A */ s16 unk_17A;
+    /* 0x17A */ s16 envG;
     /* 0x17C */ s16 unk_17C;
     /* 0x180 */ f32 unk_180;
-    /* 0x184 */ f32 unk_184;
+    /* 0x184 */ f32 sweepVel;
 } unk_D_83101F00; // size = 0x188
 
 void Glc_UpdateSweepObject(Fragment2_1GraphNode* arg0);

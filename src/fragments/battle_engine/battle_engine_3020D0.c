@@ -27,16 +27,16 @@ static u8 gMoveCat_Other[] = {
 void Battle_ClearAllMessageQueues(void) {
     gBattleMessageQueues->unk_088[0] = 0;
     gBattleMessageQueues->unk_088[1] = 0;
-    gBattleMessageQueues->unk_0C8[0] = 0;
-    gBattleMessageQueues->unk_0C8[1] = 0;
+    gBattleMessageQueues->moveUsedMessage[0] = 0;
+    gBattleMessageQueues->moveUsedMessage[1] = 0;
     gBattleMessageQueues->unk_108[0] = 0;
     gBattleMessageQueues->unk_108[1] = 0;
     gBattleMessageQueues->secondaryMessage[0] = 0;
     gBattleMessageQueues->secondaryMessage[1] = 0;
     gBattleMessageQueues->unk_188[0] = 0;
     gBattleMessageQueues->unk_188[1] = 0;
-    gBattleMessageQueues->unk_1C8[0] = 0;
-    gBattleMessageQueues->unk_1C8[1] = 0;
+    gBattleMessageQueues->recallMessage[0] = 0;
+    gBattleMessageQueues->recallMessage[1] = 0;
     gBattleMessageQueues->unk_448[0][0] = 0;
     gBattleMessageQueues->unk_448[0][1] = 0;
     gBattleMessageQueues->unk_448[1][0] = 0;
@@ -182,23 +182,23 @@ void Battle_QueueMoveCategoryUsedMessage(void) {
 
         switch (sp1C) {
             case 0:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x14);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x14);
                 break;
 
             case 1:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x15);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x15);
                 break;
 
             case 2:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x16);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x16);
                 break;
 
             case 3:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x17);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x17);
                 break;
 
             case 4:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x18);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x18);
                 break;
         }
     }
@@ -226,23 +226,23 @@ void Battle_QueueMoveCategoryMessage(void) {
 
     switch (sp24) {
         case 0:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x14);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x14);
             break;
 
         case 1:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x15);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x15);
             break;
 
         case 2:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x16);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x16);
             break;
 
         case 3:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x17);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x17);
             break;
 
         case 4:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x18);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x18);
             break;
     }
 }
@@ -278,23 +278,23 @@ void Battle_QueueMetronomeMoveMessage(void) {
 
         switch (sp2C) {
             case 0:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x14);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x14);
                 break;
 
             case 1:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x15);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x15);
                 break;
 
             case 2:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x16);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x16);
                 break;
 
             case 3:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x17);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x17);
                 break;
 
             case 4:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x18);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x18);
                 break;
         }
 
@@ -330,23 +330,23 @@ void Battle_QueueMetronomeMoveMessage(void) {
 
         switch (sp2C) {
             case 0:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x14);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x14);
                 break;
 
             case 1:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x15);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x15);
                 break;
 
             case 2:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x16);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x16);
                 break;
 
             case 3:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x17);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x17);
                 break;
 
             case 4:
-                Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x18);
+                Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, 0x18);
                 break;
         }
     }
@@ -409,7 +409,7 @@ void BattleBox_DrawMessage(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
                 arg0->unk_10 += 1;
             }
 
-            if (Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->unk_0C8[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
+            if (Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->moveUsedMessage[1], arg1 + 4, arg2 + (arg0->unk_10 * 0xC) + 3) != 0) {
                 arg0->unk_10 += 1;
             }
 
@@ -488,7 +488,7 @@ void BattleBox_DrawMessage(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
         case 9:
         case 10:
-            Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->unk_1C8[1], arg1 + 4, arg2 + 3);
+            Battle_DrawTextIfNonEmpty(&gBattleMessageQueues->recallMessage[1], arg1 + 4, arg2 + 3);
             break;
 
         case 11:
@@ -524,14 +524,14 @@ s32 BattleBox_SelectMessage(unk_D_843901A0_4C8* arg0) {
 
     switch (arg0->rotation) {
         case 0:
-            if ((gBattleMessageQueues->unk_0C8[1] == 0) && (gBattleMessageQueues->unk_388[1] == 0) && (gBattleMessageQueues->unk_188[1] == 0)) {
+            if ((gBattleMessageQueues->moveUsedMessage[1] == 0) && (gBattleMessageQueues->unk_388[1] == 0) && (gBattleMessageQueues->unk_188[1] == 0)) {
                 arg0->posX = 0xFF;
                 return 1;
             }
 
             arg0->unk_0C = gBattleScene.posX->unk_2C;
-            if (gBattleMessageQueues->unk_0C8[1] != 0) {
-                BattleBox_PlayTextBlip(gBattleMessageQueues->unk_0C8);
+            if (gBattleMessageQueues->moveUsedMessage[1] != 0) {
+                BattleBox_PlayTextBlip(gBattleMessageQueues->moveUsedMessage);
             }
 
             if (gBattleMessageQueues->unk_388[1] != 0) {

@@ -61,7 +61,7 @@ void Trade_UpdateInfoBoxChoose(TradeInfoBoxState* arg0) {
     Controller* temp_a3;
 
     arg0->unk_1C = PokeIcon_RenderPreview(arg0->unk_24);
-    temp_a3 = *gTradeControllerList[arg0->unk_18->unk_000E];
+    temp_a3 = *gTradeControllerList[arg0->unk_18->playerIndex];
     var_t0 = 0;
     tmp = gResultOptionIndex;
 
@@ -97,10 +97,10 @@ void Trade_UpdateInfoBoxChoose(TradeInfoBoxState* arg0) {
         arg0->unk_10 = 6;
         arg0->unk_1C = 0;
         if (gResultOptionIndex == 0) {
-            arg0->unk_18->unk_0020 = 1;
+            arg0->unk_18->pickConfirmed = 1;
             Audio_PlaySoundEffectById(2);
         } else {
-            arg0->unk_18->unk_0020 = 0;
+            arg0->unk_18->pickConfirmed = 0;
             Audio_PlaySoundEffectById(3);
         }
     }

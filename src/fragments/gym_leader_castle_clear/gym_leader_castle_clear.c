@@ -127,21 +127,21 @@ void Glc_UpdateSweepObject(Fragment2_1GraphNode* arg0) {
     switch (ptr->unk_16A) {
         case 1:
             if (ptr->unk_180 >= 0.0f) {
-                ptr->unk_184 -= 0.065f;
+                ptr->sweepVel -= 0.065f;
             } else {
-                ptr->unk_184 += 0.065f;
+                ptr->sweepVel += 0.065f;
             }
 
             sp1C = 0;
             temp_fv0 = ptr->unk_180;
-            ptr->unk_180 += ptr->unk_184;
+            ptr->unk_180 += ptr->sweepVel;
 
-            if (((ptr->unk_180 * temp_fv0) < 0.0f) && (fabsf(ptr->unk_184) < 0.13f)) {
+            if (((ptr->unk_180 * temp_fv0) < 0.0f) && (fabsf(ptr->sweepVel) < 0.13f)) {
                 sp1C = 1;
             }
 
             if (sp1C == 0) {
-                ptr->unk_184 *= 0.75f;
+                ptr->sweepVel *= 0.75f;
                 var_fv0 = (ptr->unk_180 * -520.0f) + 320.0f;
             } else {
                 ptr->unk_16A = 2;
@@ -194,12 +194,12 @@ void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
             ptr1 = &gNodeColorScaleTable[arg0->unk_170];
             ptr2 = &gNodeColorScaleTable[arg0->unk_170 + 1];
 
-            arg0->unk_172 = ptr2->RentalSlotAnimData_PosePhase + (((ptr1->RentalSlotAnimData_PosePhase - ptr2->RentalSlotAnimData_PosePhase) * arg0->unk_16C) / arg0->unk_16E);
+            arg0->primR = ptr2->RentalSlotAnimData_PosePhase + (((ptr1->RentalSlotAnimData_PosePhase - ptr2->RentalSlotAnimData_PosePhase) * arg0->unk_16C) / arg0->unk_16E);
             arg0->unk_174 = ptr2->unk_0A + (((ptr1->unk_0A - ptr2->unk_0A) * arg0->unk_16C) / arg0->unk_16E);
             arg0->primColorB = ptr2->unk_0C + (((ptr1->unk_0C - ptr2->unk_0C) * arg0->unk_16C) / arg0->unk_16E);
 
             arg0->unk_178 = ptr2->unk_0E + (((ptr1->unk_0E - ptr2->unk_0E) * arg0->unk_16C) / arg0->unk_16E);
-            arg0->unk_17A = ptr2->unk_10 + (((ptr1->unk_10 - ptr2->unk_10) * arg0->unk_16C) / arg0->unk_16E);
+            arg0->envG = ptr2->unk_10 + (((ptr1->unk_10 - ptr2->unk_10) * arg0->unk_16C) / arg0->unk_16E);
             arg0->unk_17C = ptr2->unk_12 + (((ptr1->unk_12 - ptr2->unk_12) * arg0->unk_16C) / arg0->unk_16E);
 
             var_fv1 = ptr2->rotation + (((ptr1->rotation - ptr2->rotation) * arg0->unk_16C) / arg0->unk_16E);
@@ -209,11 +209,11 @@ void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
                 ptr1 = &gNodeColorScaleTable[arg0->unk_170];
 
                 arg0->unk_16C = arg0->unk_16E = ptr1->posX;
-                arg0->unk_172 = ptr1->RentalSlotAnimData_PosePhase;
+                arg0->primR = ptr1->RentalSlotAnimData_PosePhase;
                 arg0->unk_174 = ptr1->unk_0A;
                 arg0->primColorB = ptr1->unk_0C;
                 arg0->unk_178 = ptr1->unk_0E;
-                arg0->unk_17A = ptr1->unk_10;
+                arg0->envG = ptr1->unk_10;
                 arg0->unk_17C = ptr1->unk_12;
 
                 var_fv1 = ptr1->rotation;
@@ -250,8 +250,8 @@ s32 Glc_GeoSpriteCallback(s32 arg0, GraphNode* arg1) {
             gDPPipeSync(gDisplayListHead++);
 
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_30015E0));
-            gDPSetPrimColor(gDisplayListHead++, 0, 0, ptr->unk_172, ptr->unk_174, ptr->primColorB, 0xFF);
-            gDPSetEnvColor(gDisplayListHead++, ptr->unk_178, ptr->unk_17A, ptr->unk_17C, 0xFF);
+            gDPSetPrimColor(gDisplayListHead++, 0, 0, ptr->primR, ptr->unk_174, ptr->primColorB, 0xFF);
+            gDPSetEnvColor(gDisplayListHead++, ptr->unk_178, ptr->envG, ptr->unk_17C, 0xFF);
             gSPDisplayList(gDisplayListHead++, gClearScreenDL2);
 
             GeoRender_ApplyMaterialState();
@@ -459,7 +459,7 @@ void Glc_InitObjectAnimation(unk_D_83101F00* arg0, s16 arg1) {
     if (arg0->unk_16A == 1) {
         switch (arg0->unk_168) {
             case 1:
-                arg0->unk_184 = 0.0f;
+                arg0->sweepVel = 0.0f;
                 arg0->unk_180 = 1.0f;
                 break;
 
@@ -468,11 +468,11 @@ void Glc_InitObjectAnimation(unk_D_83101F00* arg0, s16 arg1) {
                 ptr = &gNodeColorScaleTable[arg0->unk_170];
 
                 arg0->unk_16C = arg0->unk_16E = ptr->posX;
-                arg0->unk_172 = ptr->RentalSlotAnimData_PosePhase;
+                arg0->primR = ptr->RentalSlotAnimData_PosePhase;
                 arg0->unk_174 = ptr->unk_0A;
                 arg0->primColorB = ptr->unk_0C;
                 arg0->unk_178 = ptr->unk_0E;
-                arg0->unk_17A = ptr->unk_10;
+                arg0->envG = ptr->unk_10;
                 arg0->unk_17C = ptr->unk_12;
 
                 Vec3f_SetComponentsDuplicate(&arg0->unk_000.unk_030, ptr->rotation, ptr->rotation, ptr->rotation);
@@ -604,15 +604,15 @@ void Glc_ClearInitGraphics(void) {
 
         ModelRenderer_AttachDisplayObject(&ptr->unk_000);
 
-        ptr->unk_172 = ptr->unk_174 = ptr->primColorB = 0;
-        ptr->unk_178 = ptr->unk_17A = ptr->unk_17C = 0;
+        ptr->primR = ptr->unk_174 = ptr->primColorB = 0;
+        ptr->unk_178 = ptr->envG = ptr->unk_17C = 0;
         ptr->unk_168 = 0;
         ptr->unk_16A = 0;
         ptr->unk_16C = 0;
         ptr->unk_16E = 0;
         ptr->unk_170 = 0;
         ptr->unk_180 = 0.0f;
-        ptr->unk_184 = 0.0f;
+        ptr->sweepVel = 0.0f;
 
         switch (i) {
             case 0:

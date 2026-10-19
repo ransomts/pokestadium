@@ -24,7 +24,7 @@ typedef struct unk_D_838067F0_0168_0000 {
         s32 raw;
     };
     /* 0x004 */ PokemonData unk_004;
-    /* 0x058 */ u16 unk_058[0x640];
+    /* 0x058 */ u16 iconTexture[0x640];
 } unk_D_838067F0_0168_0000; // size = 0xCD8
 
 typedef struct unk_D_838067F0_0168 {
@@ -51,9 +51,9 @@ typedef struct unk_D_838067F0 {
     /* 0x0014 */ s32 unk_0014;
     /* 0x0018 */ s32 unk_0018;
     /* 0x001C */ s32 unk_001C;
-    /* 0x0020 */ s32 unk_0020;
+    /* 0x0020 */ s32 topRowIndex;
     /* 0x0024 */ s32 cursorColumn;
-    /* 0x0028 */ s32 unk_0028;
+    /* 0x0028 */ s32 cursorRow;
     /* 0x002C */ s32 unk_002C;
     /* 0x0030 */ s32 unk_0030;
     /* 0x0034 */ s32 repeatDelay;

@@ -1155,7 +1155,7 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
         if ((gDrowzeeGameIsOver == 0) || ((gCurrentHealthBar->unk_00C == 1) && (gCurrentHealthBar->unk_008 != 6))) {
             if (gDrowzeeGameIsOver == 0) {
                 gCurrentHealthBar->unk_17C->unk_28 =
-                    (s32)ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->unk_012) / 250.0f;
+                    (s32)ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->chargeTarget) / 250.0f;
 
                 if (gCurrentHealthBar->unk_004 == 0) {
                     gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.anchor4Position;

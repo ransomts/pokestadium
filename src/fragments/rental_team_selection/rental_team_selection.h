@@ -53,11 +53,11 @@ typedef struct gItemPanel {
     /* 0x0008 */ s16 unk_0008;
     /* 0x000A */ s16 unk_000A;
     /* 0x000C */ s16 unk_000C;
-    /* 0x000E */ s16 unk_000E;
+    /* 0x000E */ s16 cursorSlideTarget;
     /* 0x0010 */ s16 unk_0010;
-    /* 0x0012 */ s16 unk_0012;
+    /* 0x0012 */ s16 cursorRow;
     /* 0x0014 */ s16 unk_0014;
-    /* 0x0016 */ s16 unk_0016;
+    /* 0x0016 */ s16 baseY;
     /* 0x0018 */ s16 unk_0018;
     /* 0x001A */ s16 unk_001A;
     /* 0x001C */ u16 unk_001C;

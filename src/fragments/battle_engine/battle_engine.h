@@ -24,7 +24,7 @@ typedef struct unk_D_84390010_168 {
     /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ char unk168[0x1];
     /* 0x169 */ u8 unk_169;
-    /* 0x16A */ s16 unk_16A;
+    /* 0x16A */ s16 orbitAngle;
     /* 0x16C */ s16 unk_16C;
     /* 0x16E */ char unk16E[0x2];
 } unk_D_84390010_168; // size = 0x170
@@ -86,12 +86,12 @@ typedef struct unk_D_84390010_728 {
     /* 0x178 */ s32 unk_178;
     /* 0x17C */ s32 unk_17C;
     /* 0x180 */ s32 unk_180;
-    /* 0x184 */ s16 unk_184;
+    /* 0x184 */ s16 cameraPitch;
     /* 0x186 */ s16 cameraYaw;
     /* 0x188 */ f32 unk_188;
-    /* 0x18C */ s32 unk_18C;
-    /* 0x190 */ f32 unk_190;
-    /* 0x194 */ f32 unk_194;
+    /* 0x18C */ s32 modelReadyFlag;
+    /* 0x190 */ f32 cameraAtOffsetX;
+    /* 0x194 */ f32 cameraAtOffsetY;
     /* 0x198 */ char unk198[0x4];
 } unk_D_84390010_728; // size = 0x19C
 
@@ -366,11 +366,11 @@ typedef struct BattleMessageBuffers {
     /* 0x00C */ char unk00C[0x3C];
     /* 0x048 */ u8 unk_048[64];
     /* 0x088 */ s8 unk_088[64];
-    /* 0x0C8 */ s8 unk_0C8[64];
+    /* 0x0C8 */ s8 moveUsedMessage[64];
     /* 0x148 */ s8 unk_108[64];
     /* 0x148 */ s8 secondaryMessage[64];
     /* 0x188 */ s8 unk_188[64];
-    /* 0x1C8 */ s8 unk_1C8[64];
+    /* 0x1C8 */ s8 recallMessage[64];
     /* 0x208 */ s8 unk_208[64];
     /* 0x248 */ s8 unk_248[64];
     /* 0x288 */ s8 unk_288[64];
@@ -427,7 +427,7 @@ typedef struct RibbonEmitter {
     /* 0x020 */ f32 unk_020;
     /* 0x024 */ s32 unk_024;
     /* 0x028 */ s32 unk_028;
-    /* 0x02C */ s32 unk_02C;
+    /* 0x02C */ s32 primColorG;
     /* 0x030 */ s32 unk_030;
     /* 0x034 */ s32 unk_034;
     /* 0x038 */ s32 unk_038;
@@ -435,7 +435,7 @@ typedef struct RibbonEmitter {
     /* 0x040 */ s32 unk_040;
     /* 0x044 */ s32 unk_044;
     /* 0x048 */ char unk048[0x8];
-    /* 0x050 */ Vtx unk_050[31 * 2];
+    /* 0x050 */ Vtx verts[31 * 2];
     /* 0x430 */ unk_D_843925E0_430 vertexStates[31 * 2];
 } RibbonEmitter; // size = 0xAF8
 
@@ -469,7 +469,7 @@ typedef struct RadialNode {
     /* 0x006 */ s16 unk_006;
     /* 0x008 */ s16 unk_008;
     /* 0x00A */ Color_RGBA8 unk_00A;
-    /* 0x00E */ Color_RGB8 unk_00E;
+    /* 0x00E */ Color_RGB8 envColor;
     /* 0x014 */ f32 unk_014;
     /* 0x018 */ f32 unk_018;
     /* 0x01C */ Vtx* unk_01C;
@@ -706,16 +706,16 @@ typedef struct WaterParticleSystem {
     /* 0x020 */ s32 unk_020;
     /* 0x024 */ CombineParams unk_024;
     /* 0x044 */ CombineParams unk_044;
-    /* 0x064 */ TextureTileInfo unk_064;
-    /* 0x070 */ TextureTileInfo unk_070;
-    /* 0x07C */ ColorBlendInfo unk_07C;
+    /* 0x064 */ TextureTileInfo texture0Tile;
+    /* 0x070 */ TextureTileInfo texture1Tile;
+    /* 0x07C */ ColorBlendInfo primColorBlend;
     /* 0x081 */ ColorBlendInfo envColorBlend;
     /* 0x086 */ Color_RGBA8 lineColor;
-    /* 0x08C */ f32 unk_08C;
-    /* 0x090 */ f32 unk_090;
-    /* 0x094 */ s16 unk_094;
+    /* 0x08C */ f32 primFadeScale;
+    /* 0x090 */ f32 envFadeScale;
+    /* 0x094 */ s16 fadeStartAge;
     /* 0x096 */ char unk096[0x1A];
-    /* 0x0B0 */ WaterParticleVertex unk_0B0[10];
+    /* 0x0B0 */ WaterParticleVertex points[10];
 } WaterParticleSystem; // size = 0x240
 
 typedef struct Particle {
@@ -755,13 +755,13 @@ typedef struct unk_D_843C3508 {
     /* 0x024 */ s32 unk_024;
     /* 0x028 */ CombineParams unk_028;
     /* 0x048 */ CombineParams unk_048;
-    /* 0x068 */ TextureTileInfo unk_068;
-    /* 0x074 */ TextureTileInfo unk_074;
-    /* 0x080 */ f32 unk_080;
-    /* 0x084 */ f32 unk_084;
+    /* 0x068 */ TextureTileInfo texture0Tile;
+    /* 0x074 */ TextureTileInfo texture1Tile;
+    /* 0x080 */ f32 maxRadius;
+    /* 0x084 */ f32 spinRate;
     /* 0x088 */ Vtx* unk_088;
     /* 0x08C */ char unk08C[0x18];
-    /* 0x0A4 */ unk_D_843C3508_0A4 unk_0A4[20];
+    /* 0x0A4 */ unk_D_843C3508_0A4 points[20];
 } unk_D_843C3508; // size = 0x374
 
 typedef struct StatStageMultiplier {

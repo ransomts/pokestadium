@@ -215,7 +215,7 @@ void Rental_DrawBoxMonRow(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067
 
     for (i = 0; i < 3; i++) {
         if (arg3->unk_0000[i].unk_004.posX.posX != 0) {
-            Gfx_DrawTextureRgba16(arg1 + (i * 0x84) + 2, arg2 + 2, 0x28, 0x28, arg3->unk_0000[i].unk_058, 0x28, 0);
+            Gfx_DrawTextureRgba16(arg1 + (i * 0x84) + 2, arg2 + 2, 0x28, 0x28, arg3->unk_0000[i].iconTexture, 0x28, 0);
         }
     }
 
@@ -450,7 +450,7 @@ s32 Rental_FillPageFromRoster(unk_D_842168A0* arg0, unk_D_838067F0_0168* arg1, s
     }
 
     for (i = 0; i < var_s3; i++) {
-        PokeIcon_LoadModelTextureForMon(arg1->unk_0000[i].unk_058, 0, &arg1->unk_0000[i].unk_004);
+        PokeIcon_LoadModelTextureForMon(arg1->unk_0000[i].iconTexture, 0, &arg1->unk_0000[i].unk_004);
 
         arg1->unk_0000[i].unk_000 = arg0->unk_00004;
         arg1->unk_0000[i].unk_001 = arg0->unk_00005;

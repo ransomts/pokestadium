@@ -677,19 +677,19 @@ void Battle_Effect_TwoTurnMove(void) {
 
     switch (gBattleUser->unk_44.posX) {
         case 0xD:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, -0x51);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, -0x51);
             break;
 
         case 0x4C:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, -0x50);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, -0x50);
             break;
 
         case 0x82:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, -0x4F);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, -0x4F);
             break;
 
         case 0x8F:
-            Battle_QueueMessage(gBattleMessageQueues->unk_0C8, -0x4E);
+            Battle_QueueMessage(gBattleMessageQueues->moveUsedMessage, -0x4E);
             break;
 
         case 0x13:

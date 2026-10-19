@@ -74,7 +74,7 @@ void BattleScene_ApplyOwnerCameraFraming(BattlePlayerEntity* arg0) {
     sp30 = arg0->ownerModel.unk_168;
     temp_v0 = BattleScene_GetParticipantSideIndex(arg0);
 
-    arg0->ownerModel.unk_184 = gAnimDataSetB[temp_v0]->unk_0C;
+    arg0->ownerModel.cameraPitch = gAnimDataSetB[temp_v0]->unk_0C;
     if (gAnimDataSetB[temp_v0]->unk_10 == 0xFF) {
         arg0->ownerModel.cameraYaw = gAnimDataSetB[temp_v0]->unk_0E * arg0->ownerModel.unk_178;
         tmp = gAnimDataSetB[temp_v0]->posX.z * arg0->ownerModel.unk_178;
@@ -83,14 +83,14 @@ void BattleScene_ApplyOwnerCameraFraming(BattlePlayerEntity* arg0) {
         tmp = gAnimDataSetB[temp_v0]->posX.z;
     }
 
-    arg0->ownerModel.unk_190 = tmp;
+    arg0->ownerModel.cameraAtOffsetX = tmp;
     arg0->ownerModel.unk_188 = gAnimDataSetB[temp_v0]->posX.x;
     arg0->ownerModel.unk_180 = gAnimDataSetB[temp_v0]->unk_12;
     tmp2 = gAnimDataSetB[temp_v0]->posX.y;
-    arg0->ownerModel.unk_194 = tmp2;
+    arg0->ownerModel.cameraAtOffsetY = tmp2;
 
-    BattleScene_SetCameraAtAndEyeFromAngles(sp30, arg0->ownerModel.unk_000.unk_024.x + arg0->ownerModel.unk_190, arg0->ownerModel.unk_000.unk_024.y + tmp2,
-                  arg0->ownerModel.unk_000.unk_024.z, arg0->ownerModel.unk_188, arg0->ownerModel.unk_184, arg0->ownerModel.cameraYaw);
+    BattleScene_SetCameraAtAndEyeFromAngles(sp30, arg0->ownerModel.unk_000.unk_024.x + arg0->ownerModel.cameraAtOffsetX, arg0->ownerModel.unk_000.unk_024.y + tmp2,
+                  arg0->ownerModel.unk_000.unk_024.z, arg0->ownerModel.unk_188, arg0->ownerModel.cameraPitch, arg0->ownerModel.cameraYaw);
 }
 
 void BattleScene_TickOwnerCameraFraming(BattlePlayerEntity* arg0) {
@@ -117,8 +117,8 @@ void BattleScene_TickOwnerSlideIn(BattlePlayerEntity* arg0, s32 arg1) {
             BattleScene_TriggerOwnerModelAnimation(arg0);
         }
 
-        if ((ModelRenderer_IsReady(0) != 0) && (arg0->ownerModel.unk_18C == 0)) {
-            arg0->ownerModel.unk_18C = 2;
+        if ((ModelRenderer_IsReady(0) != 0) && (arg0->ownerModel.modelReadyFlag == 0)) {
+            arg0->ownerModel.modelReadyFlag = 2;
             ModelRenderer_OnSlotReady(0);
         }
         arg0->ownerModel.unk_168->unk_1C = Math_StepToS32(arg0->ownerModel.unk_168->unk_1C, 0x17, arg1, arg1);
@@ -129,8 +129,8 @@ void BattleScene_TickOwnerSlideIn(BattlePlayerEntity* arg0, s32 arg1) {
 
         arg0->ownerModel.unk_168->unk_1C = Math_StepToS32(arg0->ownerModel.unk_168->unk_1C, 0x103, arg1, arg1);
 
-        if ((ModelRenderer_IsReady(1) != 0) && (arg0->ownerModel.unk_18C == 0)) {
-            arg0->ownerModel.unk_18C = 2;
+        if ((ModelRenderer_IsReady(1) != 0) && (arg0->ownerModel.modelReadyFlag == 0)) {
+            arg0->ownerModel.modelReadyFlag = 2;
             ModelRenderer_OnSlotReady(1);
         }
     }
@@ -138,14 +138,14 @@ void BattleScene_TickOwnerSlideIn(BattlePlayerEntity* arg0, s32 arg1) {
 
 void BattleScene_TickOwnerSlideOut(BattlePlayerEntity* arg0, s32 arg1) {
     if (arg0->ownerModel.unk_178 == 1) {
-        arg0->ownerModel.unk_18C = 0;
+        arg0->ownerModel.modelReadyFlag = 0;
         arg0->ownerModel.unk_168->unk_1C = Math_StepToS32(arg0->ownerModel.unk_168->unk_1C, -0x48, arg1, arg1);
         if (arg0->ownerModel.unk_168->unk_1C == -0x48) {
             arg0->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort &= ~1;
             arg0->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
         }
     } else {
-        arg0->ownerModel.unk_18C = 0;
+        arg0->ownerModel.modelReadyFlag = 0;
         arg0->ownerModel.unk_168->unk_1C = Math_StepToS32(arg0->ownerModel.unk_168->unk_1C, 0x15F, arg1, arg1);
         if (arg0->ownerModel.unk_168->unk_1C == 0x15F) {
             arg0->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort &= ~1;

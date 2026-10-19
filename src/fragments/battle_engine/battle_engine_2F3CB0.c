@@ -103,7 +103,7 @@ void BattleScene_ShowSecondaryModelsAtMainTransform(BattlePlayerEntity* arg0) {
 
     for (i = 0; i < 2; i++) {
         arg0->unk_168[i].unk_16C = 0;
-        arg0->unk_168[i].unk_16A = sp64[i];
+        arg0->unk_168[i].orbitAngle = sp64[i];
         arg0->unk_168[i].unk_000.unk_01D = 0;
         arg0->unk_168[i].unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
         BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
@@ -122,9 +122,9 @@ void BattleScene_UpdateSecondaryModelOrbit(BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_000.unk_01D = Math_StepToS32(arg0->unk_168[i].unk_000.unk_01D, 0x3C, 5, 5);
         arg0->unk_168[i].unk_16C = Math_StepToS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
         arg0->unk_168[i].unk_16C = Math_StepToS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
-        arg0->unk_168[i].unk_16A += arg0->unk_168[i].unk_16C;
+        arg0->unk_168[i].orbitAngle += arg0->unk_168[i].unk_16C;
 
-        tmp = SINS(arg0->unk_168[i].unk_16A) * (BattleScene_GetParticipantModelRadiusScaled(arg0) * sp4C[i]);
+        tmp = SINS(arg0->unk_168[i].orbitAngle) * (BattleScene_GetParticipantModelRadiusScaled(arg0) * sp4C[i]);
         BattleAnim_Vec3fSetPolarXZ(&sp5C, tmp, arg0->unk_000.unk_01E.y);
 
         arg0->unk_168[i].unk_000.unk_024.x = arg0->unk_000.unk_024.x + sp5C.x;

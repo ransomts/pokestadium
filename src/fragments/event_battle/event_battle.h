@@ -52,16 +52,16 @@ typedef struct TrainerCard {
     /* 0x0002 */ u8 unk_0002;
     /* 0x0003 */ u8 unk_0003;
     /* 0x0004 */ s16 unk_0004;
-    /* 0x0006 */ s16 unk_0006;
+    /* 0x0006 */ s16 slideProgress;
     /* 0x0008 */ s16 unk_0008;
-    /* 0x000A */ s16 unk_000A;
+    /* 0x000A */ s16 baseY;
     /* 0x000C */ s16 unk_000C;
     /* 0x000E */ s16 unk_000E;
     /* 0x0010 */ s16 unk_0010;
     /* 0x0012 */ u16 unk_0012;
     /* 0x0014 */ char unk_0014[4];
     /* 0x0018 */ char unk0018[0x8];
-    /* 0x0020 */ PokemonData unk_0020[6];
+    /* 0x0020 */ PokemonData party[6];
     /* 0x0218 */ u8 iconTextures[6][0xC80];
 } TrainerCard; // size = 0x4D18
 

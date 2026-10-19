@@ -58,7 +58,7 @@ typedef struct MiniActor {
     /* 0x246 */ char unk246[0x2];	//	unused
     /* 0x248 */ s16 unk_248;		//	animation something 0,1,2
     /* 0x24A */ s16 unk_24A;		//	animation id or state?
-    /* 0x24C */ s16 unk_24C;		//	texture animation ?
+    /* 0x24C */ s16 eventTrack;		//	texture animation ?
     /* 0x24E */ char unk24E[0x6];	//	unused
     /* 0x254 */ s32 unk_254;		//	always zero
     /* 0x258 */ s16 miniHealth;

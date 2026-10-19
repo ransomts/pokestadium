@@ -11,9 +11,9 @@ typedef struct HudState {
     /* 0x008 */ s16 unk_008;
     /* 0x00A */ s16 unk_00A;
     /* 0x00C */ u8 unk_00C;
-    /* 0x00E */ s16 unk_00E;
+    /* 0x00E */ s16 maxHealth;
     /* 0x010 */ s16 unk_010;
-    /* 0x012 */ s16 unk_012;
+    /* 0x012 */ s16 prevRoundHealth;
     /* 0x014 */ u8 unk_014;
     /* 0x015 */ u8 alertSoundPlayed;
     /* 0x016 */ char unk016[0x2];
@@ -22,8 +22,8 @@ typedef struct HudState {
     /* 0x020 */ s32 unk_020;
     /* 0x024 */ u8 unk_024;
     /* 0x028 */ Fragment2_1GraphNode unk_028;
-    /* 0x190 */ unk_D_86002F34_alt9* unk_190;
-    /* 0x194 */ u16 unk_194[14][8];
+    /* 0x190 */ unk_D_86002F34_alt9* overlayNode;
+    /* 0x194 */ u16 timingStats[14][8];
     /* 0x274 */ u8 pressedThisRound;
 } HudState; // size = 0x278
 

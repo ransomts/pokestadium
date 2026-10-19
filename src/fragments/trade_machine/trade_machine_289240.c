@@ -25,9 +25,9 @@ s16 Trade_ReadDeckEntries(PickerState* arg0, s16 arg1) {
 
     sp34->unk_000 = 0;
     if (arg1 == 0) {
-        var_v0 = Deck_Open(0x20, arg0->unk_000E, 0, 0);
+        var_v0 = Deck_Open(0x20, arg0->playerIndex, 0, 0);
     } else {
-        var_v0 = Deck_Open(0x21, arg0->unk_000E, arg1 - 1, 0);
+        var_v0 = Deck_Open(0x21, arg0->playerIndex, arg1 - 1, 0);
     }
 
     if (var_v0 != NULL) {
@@ -71,18 +71,18 @@ void Trade_InitPickScreen(s32 arg0, s16 arg1) {
     temp_s1->unk_0004 = 0x140;
     temp_s1->unk_0006 = 0xA0;
     temp_s1->unk_0008 = 0;
-    temp_s1->unk_000A = 0;
+    temp_s1->height = 0;
     temp_s1->unk_000C = 0xA;
     temp_s1->unk_0010 = 0;
-    temp_s1->unk_0012 = 0;
+    temp_s1->targetPage = 0;
     temp_s1->unk_0014 = 0;
-    temp_s1->unk_0016 = 0;
+    temp_s1->iconBufferIndex = 0;
     temp_s1->unk_0018 = 0;
-    temp_s1->unk_001A = 0;
+    temp_s1->cursorRow = 0;
     temp_s1->unk_001C = 0;
-    temp_s1->unk_001E = 0;
-    temp_s1->unk_0020 = 0;
-    temp_s1->unk_000E = arg1;
+    temp_s1->prevCursorRow = 0;
+    temp_s1->pickConfirmed = 0;
+    temp_s1->playerIndex = arg1;
 
     var_s2 = 0;
 
@@ -136,9 +136,9 @@ void Trade_InitPickScreen(s32 arg0, s16 arg1) {
         temp_a3 = &temp_s1->pokemonGroups[temp_s1->unk_0010].unk_00C[i];
 
         if (((temp_a3->posX <= 0) || (temp_a3->posX >= 0x98) ? 1 : 0)) {
-            PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, temp_s1->unk_0016, i), 0x98, NULL);
+            PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, temp_s1->iconBufferIndex, i), 0x98, NULL);
         } else {
-            PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, temp_s1->unk_0016, i), 0, temp_a3);
+            PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, temp_s1->iconBufferIndex, i), 0, temp_a3);
         }
     }
 
@@ -157,7 +157,7 @@ void Trade_UpdatePickScreenOpen(PickerState* arg0) {
     arg0->unk_0004 = 0x64 - ((arg0->unk_000C * -0xDC) / 10);
     arg0->unk_0006 = 0x70 - ((arg0->unk_000C * -0x30) / 10);
     arg0->unk_0008 = 0x1B8 - ((arg0->unk_000C * 0x1B8) / 10);
-    arg0->unk_000A = 0x10C - ((arg0->unk_000C * 0x10C) / 10);
+    arg0->height = 0x10C - ((arg0->unk_000C * 0x10C) / 10);
 
     if (arg0->unk_000C <= 0) {
         arg0->unk_0000 = 2;
@@ -184,7 +184,7 @@ void Trade_UpdatePickScreenInput(PickerState* arg0) {
         if (arg0->unk_000C <= 0) {
             arg0->unk_000C = 0;
             arg0->unk_001C = arg0->unk_0018;
-            arg0->unk_001E = arg0->unk_001A;
+            arg0->prevCursorRow = arg0->cursorRow;
         } else {
             return;
         }
@@ -207,26 +207,26 @@ void Trade_UpdatePickScreenInput(PickerState* arg0) {
     }
 
     if (temp_v0 & 0x800) {
-        arg0->unk_001A--;
-        if (arg0->unk_001A < 0) {
-            arg0->unk_001A = 0;
+        arg0->cursorRow--;
+        if (arg0->cursorRow < 0) {
+            arg0->cursorRow = 0;
         }
     }
 
     if (temp_v0 & 0x400) {
-        arg0->unk_001A++;
-        if (arg0->unk_001A >= 4) {
-            arg0->unk_001A = 3;
+        arg0->cursorRow++;
+        if (arg0->cursorRow >= 4) {
+            arg0->cursorRow = 3;
         }
     }
 
-    if ((arg0->unk_0018 != arg0->unk_001C) || (arg0->unk_001A != arg0->unk_001E)) {
+    if ((arg0->unk_0018 != arg0->unk_001C) || (arg0->cursorRow != arg0->prevCursorRow)) {
         arg0->unk_000C = 4;
         Audio_PlaySoundEffectById(1);
         return;
     }
 
-    temp_v1_3 = (arg0->unk_001A * 5) + arg0->unk_0018;
+    temp_v1_3 = (arg0->cursorRow * 5) + arg0->unk_0018;
     temp_a1 = &arg0->pokemonGroups[arg0->unk_0010].unk_00C[temp_v1_3];
 
     if (BTN_IS_PRESSED(controller, BTN_A) && (temp_v1_3 < arg0->pokemonGroups[arg0->unk_0010].unk_000)) {
@@ -241,7 +241,7 @@ void Trade_UpdatePickScreenInput(PickerState* arg0) {
             arg0->unk_000C = 0;
             arg0->unk_0002 = 0xA;
             Trade_OpenInfoBox(arg0, temp_a1, arg0->unk_0004 + (arg0->unk_0018 * 0x58) + 0x2C,
-                          arg0->unk_0006 + (arg0->unk_001A * 0x3C) + 0x3A);
+                          arg0->unk_0006 + (arg0->cursorRow * 0x3C) + 0x3A);
             Audio_PlaySoundEffectById(2);
         } else {
             goto block_25;
@@ -255,11 +255,11 @@ void Trade_UpdatePickScreenInput(PickerState* arg0) {
         } else if (BTN_IS_PRESSED(controller, BTN_R) && (temp_a2->unk_008 != NULL)) {
             arg0->unk_0000 = 3;
             arg0->unk_000C = 0xA;
-            arg0->unk_0012 = temp_a2->unk_008 - &arg0->pokemonGroups[0];
+            arg0->targetPage = temp_a2->unk_008 - &arg0->pokemonGroups[0];
             arg0->unk_0014 = 1;
 
-            for (i = 0; i < arg0->pokemonGroups[arg0->unk_0012].unk_000; i++) {
-                temp_a3 = &arg0->pokemonGroups[arg0->unk_0012].unk_00C[i];
+            for (i = 0; i < arg0->pokemonGroups[arg0->targetPage].unk_000; i++) {
+                temp_a3 = &arg0->pokemonGroups[arg0->targetPage].unk_00C[i];
 
                 temp_t1 = temp_a3->posX;
                 if ((temp_t1 <= 0) || (temp_t1 >= 0x98)) {
@@ -269,19 +269,19 @@ void Trade_UpdatePickScreenInput(PickerState* arg0) {
                 }
 
                 if (var_v0 != 0) {
-                    PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0x98, NULL);
+                    PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->iconBufferIndex ^ 1, i), 0x98, NULL);
                 } else {
-                    PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0, temp_a3);
+                    PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->iconBufferIndex ^ 1, i), 0, temp_a3);
                 }
             }
         } else if (BTN_IS_PRESSED(controller, BTN_L) && (temp_a2->unk_004 != NULL)) {
             arg0->unk_0000 = 3;
             arg0->unk_000C = 0xA;
-            arg0->unk_0012 = temp_a2->unk_004 - &arg0->pokemonGroups[0];
+            arg0->targetPage = temp_a2->unk_004 - &arg0->pokemonGroups[0];
             arg0->unk_0014 = -1;
 
-            for (i = 0; i < arg0->pokemonGroups[arg0->unk_0012].unk_000; i++) {
-                temp_a3_2 = &arg0->pokemonGroups[arg0->unk_0012].unk_00C[i];
+            for (i = 0; i < arg0->pokemonGroups[arg0->targetPage].unk_000; i++) {
+                temp_a3_2 = &arg0->pokemonGroups[arg0->targetPage].unk_00C[i];
 
                 if ((temp_a3_2->posX <= 0) || (temp_a3_2->posX >= 0x98)) {
                     var_v0 = 1;
@@ -290,9 +290,9 @@ void Trade_UpdatePickScreenInput(PickerState* arg0) {
                 }
 
                 if (var_v0 != 0) {
-                    PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0x98, NULL);
+                    PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->iconBufferIndex ^ 1, i), 0x98, NULL);
                 } else {
-                    PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0, temp_a3_2);
+                    PokeIcon_LoadModelTextureForMon(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->iconBufferIndex ^ 1, i), 0, temp_a3_2);
                 }
             }
         }
@@ -313,10 +313,10 @@ void Trade_UpdatePickScreenPageSwipe(PickerState* arg0) {
 
     if (arg0->unk_000C <= 0) {
         arg0->unk_0000 = 2;
-        arg0->unk_0010 = arg0->unk_0012;
+        arg0->unk_0010 = arg0->targetPage;
         arg0->unk_000C = 0;
         arg0->unk_0014 = 0;
-        arg0->unk_0016 ^= 1;
+        arg0->iconBufferIndex ^= 1;
         arg0->unk_0004 = 0x64;
         TradeCable_SetSequenceTimer(2);
     }
@@ -332,10 +332,10 @@ void Trade_ConfirmPickSelection(PickerState* arg0) {
             }
             TradeCable_SetSequenceTimer(-1);
         }
-    } else if (arg0->unk_0020 != 0) {
+    } else if (arg0->pickConfirmed != 0) {
         arg0->unk_0000 = 5;
         arg0->unk_000C = 0xA;
-        _bcopy(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->unk_0016, (arg0->unk_001A * 5) + arg0->unk_0018), arg0->unk_0028, 0xC80);
+        _bcopy(Trade_GetPickBufferSlot(gPickerSpriteBuffer, arg0->iconBufferIndex, (arg0->cursorRow * 5) + arg0->unk_0018), arg0->pickBuffer, 0xC80);
     } else {
         arg0->unk_0000 = 2;
         arg0->unk_000C = 0;
@@ -347,7 +347,7 @@ void Trade_UpdatePickScreenClose(PickerState* arg0) {
     arg0->unk_0004 = 0x140 - ((arg0->unk_000C * 0xDC) / 10);
     arg0->unk_0006 = 0xA0 - ((arg0->unk_000C * 0x30) / 10);
     arg0->unk_0008 = (arg0->unk_000C * 0x1B8) / 10;
-    arg0->unk_000A = (arg0->unk_000C * 0x10C) / 10;
+    arg0->height = (arg0->unk_000C * 0x10C) / 10;
     if (arg0->unk_000C <= 0) {
         arg0->unk_0000 = 0;
         main_pool_pop_state('PICK');
@@ -675,7 +675,7 @@ void Trade_DrawPortInfoPanel(s16 arg0, s16 arg1, s16 arg2) {
     static s16 D_82F13C08[] = { 8, 0x2C };
 
     UNUSED s32 pad;
-    PlayerTradeInfo* sp40 = &gPlayerInfo[gPickerState[arg0].unk_000E];
+    PlayerTradeInfo* sp40 = &gPlayerInfo[gPickerState[arg0].playerIndex];
     u8* sp3C;
 
     Trade_DrawRoundedFrameSmall(arg1, arg2, 0x104, 0x28, 0x1E, 0x1E, 0x82, 0xFF);
@@ -767,16 +767,16 @@ void UpdateAndRenderPicker(PickerState* arg0) {
 
             if (spF8 == 0) {
                 var_s2 = arg0->unk_0010;
-                spE8 = arg0->unk_0016;
+                spE8 = arg0->iconBufferIndex;
             } else {
-                var_s2 = arg0->unk_0012;
-                spE8 = arg0->unk_0016 ^ 1;
+                var_s2 = arg0->targetPage;
+                spE8 = arg0->iconBufferIndex ^ 1;
             }
 
             sp64 = &arg0->pokemonGroups[var_s2];
-            Trade_DrawPickScreenFrame((s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006, arg0->unk_0008, arg0->unk_000A);
+            Trade_DrawPickScreenFrame((s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006, arg0->unk_0008, arg0->height);
 
-            if ((arg0->unk_0008 == 0x1B8) && (arg0->unk_000A == 0x10C)) {
+            if ((arg0->unk_0008 == 0x1B8) && (arg0->height == 0x10C)) {
                 PickerPokemonEntry* ptr;
 
                 Trade_DrawPlayerBanner(var_s2, (s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006);
@@ -869,10 +869,10 @@ void UpdateAndRenderPicker(PickerState* arg0) {
 
                 if (arg0->unk_0000 == 2) {
                     temp_s3 = (arg0->unk_0004 + (arg0->unk_001C * 0x58));
-                    temp_lo = (arg0->unk_0006 + (arg0->unk_001E * 0x3C) + 0x1C);
+                    temp_lo = (arg0->unk_0006 + (arg0->prevCursorRow * 0x3C) + 0x1C);
 
                     temp_t0 = arg0->unk_0004 + (arg0->unk_0018 * 0x58);
-                    temp_t1 = arg0->unk_0006 + (arg0->unk_001A * 0x3C) + 0x1C;
+                    temp_t1 = arg0->unk_0006 + (arg0->cursorRow * 0x3C) + 0x1C;
 
                     Trade_DrawSelectionCorners(temp_t0 - (((temp_t0 - temp_s3) * arg0->unk_000C) / 4),
                                   temp_t1 - (((temp_t1 - temp_lo) * arg0->unk_000C) / 4), 0x58, 0x3C);
@@ -884,7 +884,7 @@ void UpdateAndRenderPicker(PickerState* arg0) {
         } while (spF8 < spF4);
     }
 
-    if ((arg0->unk_0008 == 0x1B8) && (arg0->unk_000A == 0x10C)) {
+    if ((arg0->unk_0008 == 0x1B8) && (arg0->height == 0x10C)) {
         if (spE4 != 0) {
             Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         }
@@ -908,15 +908,15 @@ void Trade_ResetPickScreens(void) {
 
     ptr = &gPickerState[0];
     for (i = 0; i < 2; i++, ptr++) {
-        ptr->unk_0018 = ptr->unk_001A = 0;
-        ptr->unk_001C = ptr->unk_001E = 0;
+        ptr->unk_0018 = ptr->cursorRow = 0;
+        ptr->unk_001C = ptr->prevCursorRow = 0;
         ptr->unk_0000 = 0;
         ptr->unk_0004 = 0;
         ptr->unk_0006 = 0;
         ptr->unk_0008 = 0;
-        ptr->unk_000A = 0;
+        ptr->height = 0;
         ptr->unk_000C = 0;
-        ptr->unk_000E = 0;
+        ptr->playerIndex = 0;
     }
 
     Trade_ResetInfoBox();
@@ -979,20 +979,20 @@ void Trade_DrawPickScreens(void) {
 }
 
 u16* Trade_GetPickBuffer(s32 arg0) {
-    return gPickerState[arg0].unk_0028;
+    return gPickerState[arg0].pickBuffer;
 }
 
 void Trade_SwapPickBuffers(void) {
     UNUSED s32 pad[2];
     u16 sp18[0x640];
 
-    _bcopy(gPickerState[0].unk_0028, sp18, sizeof(gPickerState[0].unk_0028));
-    _bcopy(gPickerState[1].unk_0028, gPickerState[0].unk_0028, sizeof(gPickerState[0].unk_0028));
-    _bcopy(sp18, gPickerState[1].unk_0028, sizeof(gPickerState[0].unk_0028));
+    _bcopy(gPickerState[0].pickBuffer, sp18, sizeof(gPickerState[0].pickBuffer));
+    _bcopy(gPickerState[1].pickBuffer, gPickerState[0].pickBuffer, sizeof(gPickerState[0].pickBuffer));
+    _bcopy(sp18, gPickerState[1].pickBuffer, sizeof(gPickerState[0].pickBuffer));
 }
 
 void Trade_LoadPickBufferIcon(s16 arg0, PokemonData* arg1) {
-    PokeIcon_LoadModelTextureForMon(gPickerState[arg0].unk_0028, 0, arg1);
+    PokeIcon_LoadModelTextureForMon(gPickerState[arg0].pickBuffer, 0, arg1);
 }
 
 s32 Trade_GetPickScreenSnapshot(s32 arg0, RentalItemInfo* arg1) {
@@ -1001,10 +1001,10 @@ s32 Trade_GetPickScreenSnapshot(s32 arg0, RentalItemInfo* arg1) {
 
     if (arg1 != NULL) {
         ptr = &gPickerState[arg0];
-        arg1->posX = ptr->unk_0020;
-        arg1->posY = ptr->unk_000E;
+        arg1->posX = ptr->pickConfirmed;
+        arg1->posY = ptr->playerIndex;
         arg1->rotation = ptr->unk_0010;
-        arg1->unk_06 = (ptr->unk_001A * 5) + ptr->unk_0018;
+        arg1->unk_06 = (ptr->cursorRow * 5) + ptr->unk_0018;
         arg1->RentalSlotAnimData_PosePhase = ptr->pokemonGroups[ptr->unk_0010].unk_000;
         arg1->unk_0C = &ptr->pokemonGroups[ptr->unk_0010].unk_00C;
         ret = 1;

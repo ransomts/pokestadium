@@ -238,7 +238,7 @@ void RattataGame_UpdateAIInput(void) {
                     }
 
                     if (Rand_Range(0x64) < temp_s0->unk_06) {
-                        temp_fv0 = gRacePlayerState->unk_1A8;
+                        temp_fv0 = gRacePlayerState->aiJumpZ;
                         temp_fv1 = gRacePlayerState->hurdlePos;
                         if (((temp_fv0 + 10.0f) < temp_fv1) && (temp_fv1 < (temp_fv0 + 20.0f))) {
                             gRacePlayerState->unk_170 |= 0x800;
@@ -470,7 +470,7 @@ void RattataGame_DrawFrame(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        gRacePlayerScreenY[i] = gRacePlayerStates[i].unk_190 * 36.0f;
+        gRacePlayerScreenY[i] = gRacePlayerStates[i].progress * 36.0f;
     }
 
     BgStage_DrawFrame();
@@ -610,20 +610,20 @@ void RattataGame_SyncRacerZPosition(RacePlayerState* arg0) {
     f32 temp_fv0 = arg0->unk_178 - 30.0f;
 
     arg0->unk_008.unk_024.z = temp_fv0;
-    arg0->unk_194 = temp_fv0 / 3.0f;
+    arg0->zProgress = temp_fv0 / 3.0f;
 }
 
 void RattataGame_ResetRacerState(RacePlayerState* arg0) {
     arg0->animState = 0;
     arg0->unk_180 = 30.0f;
-    arg0->unk_184 = 30.0f;
+    arg0->boostSpeed = 30.0f;
     arg0->unk_17C = 5.0f;
     arg0->unk_188 = 3.0f;
     arg0->unk_174 = 0.0f;
     arg0->unk_178 = 0.0f;
     arg0->finishTime = -1.0f;
     RattataGame_SyncRacerZPosition(arg0);
-    arg0->unk_190 = 0.0f - arg0->unk_194;
+    arg0->progress = 0.0f - arg0->zProgress;
 }
 
 s32 RattataGame_CheckHurdleCollision(RacePlayerState* arg0, RaceObstacle* arg1) {
@@ -639,7 +639,7 @@ s32 RattataGame_CheckHurdleCollision(RacePlayerState* arg0, RaceObstacle* arg1) 
     temp_fv0 = 30.0f - (arg1->unk_004.unk_040.RentalSlotAnimData_PosePhase / 111411.2f);
     temp_fv1 = arg0->unk_008.unk_024.z / 3.0f;
 
-    arg0->unk_1A8 = temp_fv1;
+    arg0->aiJumpZ = temp_fv1;
     arg0->hurdlePos = temp_fv0;
 
     if ((temp_fv0 <= temp_fv1 - 3.0f) && (arg0->animState == 1) && (arg0->unk_008.unk_040.RentalSlotAnimData_PosePhase >= 0xC0001) &&
@@ -708,7 +708,7 @@ void RattataGame_UpdateHurdleMarkers(RacePlayerState* arg0) {
         gRaceObstaclePtr = &gRaceObstacles[arg0_unk000][i];
         temp_s1 = &gRaceObstaclePtr->unk_004;
         gRaceObstaclePtr->unk_000 = 0;
-        unk_190 = arg0->unk_190;
+        unk_190 = arg0->progress;
         temp_fs1 = gLaneBaseY[gRaceLaneIndex][i] * 10.44f * 1.7f;
 
         if (((temp_fs1 - 30.0f) <= unk_190) && (unk_190 <= ((temp_fs1 - 30.0f) + 67.64706f))) {
@@ -722,17 +722,17 @@ void RattataGame_UpdateHurdleMarkers(RacePlayerState* arg0) {
                     break;
 
                 case 2:
-                    gRaceObstaclePtr->unk_17A++;
-                    if (gRaceObstaclePtr->unk_17A >= 5) {
-                        gRaceObstaclePtr->unk_17A = 0;
+                    gRaceObstaclePtr->flickerTimer++;
+                    if (gRaceObstaclePtr->flickerTimer >= 5) {
+                        gRaceObstaclePtr->flickerTimer = 0;
                         gRaceObstaclePtr->unk_002 = 3;
                     }
                     break;
 
                 case 3:
-                    gRaceObstaclePtr->unk_17A++;
-                    if (gRaceObstaclePtr->unk_17A >= 5) {
-                        gRaceObstaclePtr->unk_17A = 0;
+                    gRaceObstaclePtr->flickerTimer++;
+                    if (gRaceObstaclePtr->flickerTimer >= 5) {
+                        gRaceObstaclePtr->flickerTimer = 0;
                         gRaceObstaclePtr->unk_002 = 2;
                     }
                     break;
@@ -812,8 +812,8 @@ s16 RattataGame_UpdateRacers(void) {
                     } else {
                         if (gRacePlayerState->unk_170 & 0x8000) {
                             gRacePlayerState->unk_174 += gRacePlayerState->unk_188;
-                            if (gRacePlayerState->unk_174 < gRacePlayerState->unk_184) {
-                                gRacePlayerState->unk_174 = gRacePlayerState->unk_184;
+                            if (gRacePlayerState->unk_174 < gRacePlayerState->boostSpeed) {
+                                gRacePlayerState->unk_174 = gRacePlayerState->boostSpeed;
                             }
                         }
 
@@ -857,14 +857,14 @@ s16 RattataGame_UpdateRacers(void) {
                 case 3:
                     gRacePlayerState->unk_174 = 0.0f;
                     if (gRacePlayerState->unk_170 & 0x8000) {
-                        gRacePlayerState->unk_174 = gRacePlayerState->unk_184;
+                        gRacePlayerState->unk_174 = gRacePlayerState->boostSpeed;
                         RattataGame_SetRacerAnimState(gRacePlayerState, 0);
                     }
                     break;
             }
 
-            gRacePlayerState->unk_18C = gRacePlayerState->unk_190;
-            gRacePlayerState->unk_190 += gRacePlayerState->unk_178 * 0.05f;
+            gRacePlayerState->prevProgress = gRacePlayerState->progress;
+            gRacePlayerState->progress += gRacePlayerState->unk_178 * 0.05f;
 
             RattataGame_SyncRacerZPosition(gRacePlayerState);
 
@@ -874,15 +874,15 @@ s16 RattataGame_UpdateRacers(void) {
                 if ((gRaceObstaclePtr->unk_002 == 1) && (RattataGame_CheckHurdleCollision(gRacePlayerState, gRaceObstaclePtr) != 0)) {
                     RattataGame_SetRacerAnimState(gRacePlayerState, 2);
                     gRaceObstaclePtr->unk_002 = 2;
-                    gRaceObstaclePtr->unk_17A = 0;
+                    gRaceObstaclePtr->flickerTimer = 0;
                     gRacePlayerState->hurdleHitCount += 1;
                 }
             }
 
-            if (gRacePlayerState->unk_190 + gRacePlayerState->unk_194 >= 885.0f) {
+            if (gRacePlayerState->progress + gRacePlayerState->zProgress >= 885.0f) {
                 var_fa0 = 0.0f;
                 if (gRacePlayerState->unk_178 > 0.0f) {
-                    f32 var_fa1 = (885.0f - gRacePlayerState->unk_18C);
+                    f32 var_fa1 = (885.0f - gRacePlayerState->prevProgress);
 
                     var_fa0 = var_fa1 / (gRacePlayerState->unk_178 * 0.05f);
                 }
@@ -914,13 +914,13 @@ s16 RattataGame_UpdateRacers(void) {
                 gRacePlayerState->rankPending = 1;
                 sp86++;
             } else {
-                gRacePlayerState->unk_18C = gRacePlayerState->unk_190 + gRacePlayerState->unk_194;
+                gRacePlayerState->prevProgress = gRacePlayerState->progress + gRacePlayerState->zProgress;
             }
         } else {
-            gRacePlayerState->unk_190 += gRacePlayerState->unk_178 * 0.05f;
+            gRacePlayerState->progress += gRacePlayerState->unk_178 * 0.05f;
 
-            if (gRacePlayerState->unk_190 > 910.0f) {
-                gRacePlayerState->unk_190 = 910.0f;
+            if (gRacePlayerState->progress > 910.0f) {
+                gRacePlayerState->progress = 910.0f;
                 gRacePlayerState->finishState = 2;
             }
 
@@ -945,9 +945,9 @@ void RattataGame_AdvanceFinishLineApproach(void) {
         gRacePlayerGraphNode = &gRacePlayerState->unk_008;
 
         if (gRacePlayerState->finishState == 1) {
-            gRacePlayerState->unk_190 += gRacePlayerState->unk_178 * 0.05f;
-            if (gRacePlayerState->unk_190 > 910.0f) {
-                gRacePlayerState->unk_190 = 910.0f;
+            gRacePlayerState->progress += gRacePlayerState->unk_178 * 0.05f;
+            if (gRacePlayerState->progress > 910.0f) {
+                gRacePlayerState->progress = 910.0f;
                 gRacePlayerState->finishState = 2;
             }
 
@@ -986,7 +986,7 @@ void RattataGame_MainLoop(void) {
         ModelAnim_ClearEventTrack(var_s2);
         var_s2->unk_040.RentalSlotAnimData_PosePhase = (Rand_Range(5) * 0x3) << 0x10;
         RattataGame_ResetRacerState(temp_s1);
-        temp_s1->unk_1C8 = 0;
+        temp_s1->isWinner = 0;
         temp_s1->finishRank = 4;
         temp_s1->finishState = 0;
         temp_s1->finishTime = -1.0f;
@@ -1143,7 +1143,7 @@ void RattataGame_MainLoop(void) {
         if ((temp_s1->finishState > 0) && (temp_s1->finishRank == 0)) {
             Widget_PauseMenuRecordWin(i);
             gRaceWinnersCount++;
-            temp_s1->unk_1C8 = 1;
+            temp_s1->isWinner = 1;
             if (temp_s1->unk_002 == 0) {
                 var_s3 = 1;
             }
@@ -1166,7 +1166,7 @@ void RattataGame_UpdatePostRaceIdleAnim(void) {
         gRacePlayerState = &gRacePlayerStates[i];
         gRacePlayerGraphNode = &gRacePlayerState->unk_008;
 
-        if ((gRacePlayerState->finishState > 0) && (gRacePlayerState->unk_1C8 == 1)) {
+        if ((gRacePlayerState->finishState > 0) && (gRacePlayerState->isWinner == 1)) {
             continue;
         }
 
@@ -1185,7 +1185,7 @@ void RattataGame_PlayResultAnimation(void) {
     for (i = 0; i < 4; i++) {
         gRacePlayerState = &gRacePlayerStates[i];
         gRacePlayerGraphNode = &gRacePlayerState->unk_008;
-        if ((gRacePlayerState->finishState > 0) && (gRacePlayerState->unk_1C8 == 1)) {
+        if ((gRacePlayerState->finishState > 0) && (gRacePlayerState->isWinner == 1)) {
             ModelAnim_SetAnimation(gRacePlayerGraphNode, 4);
             gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
         } else {

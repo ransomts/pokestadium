@@ -1184,13 +1184,13 @@ void MiniGameSelect_ClearWidgetSlot(UIElement* arg0) {
     arg0->unk_004 = 0;
     arg0->unk_006 = 0;
     arg0->unk_008 = 0;
-    arg0->unk_00E[0] = 0;
-    arg0->unk_00E[1] = 0;
-    arg0->unk_00E[2] = 0;
-    arg0->unk_00E[3] = 0;
+    arg0->fadeChannels[0] = 0;
+    arg0->fadeChannels[1] = 0;
+    arg0->fadeChannels[2] = 0;
+    arg0->fadeChannels[3] = 0;
     arg0->unk_034 = 0;
     arg0->unk_030 = NULL;
-    arg0->unk_02C = NULL;
+    arg0->returnWidget = NULL;
     arg0->unk_038 = 0;
     arg0->unk_00A = arg0->unk_00C;
 }
@@ -1491,10 +1491,10 @@ void MiniGameSelect_UpdateWidgetFade(UIElement* arg0) {
     s32 i;
 
     arg0->unk_008 -= 1;
-    arg0->unk_00E[0] = (arg0->unk_008 * 0xFF) / 6;
+    arg0->fadeChannels[0] = (arg0->unk_008 * 0xFF) / 6;
 
     for (i = 1; i < 4; i++) {
-        arg0->unk_00E[i] = arg0->unk_00E[0];
+        arg0->fadeChannels[i] = arg0->fadeChannels[0];
     }
 
     if (arg0->unk_008 <= 0) {
@@ -1541,7 +1541,7 @@ s32 MiniGameSelect_StaggerWidgetFade(UIElement* arg0) {
             var_v0 = 0xA;
         }
 
-        arg0->unk_00E[var_a1] = (var_v0 * 0xFF) / 10;
+        arg0->fadeChannels[var_a1] = (var_v0 * 0xFF) / 10;
     }
 
     if (MiniGameSelect_CountWidgetChannels(arg0, 0) >= 2) {
@@ -1658,8 +1658,8 @@ void MiniGameSelect_UpdateWidgets(void) {
                     var_s0->unk_002 = 0;
                     var_s0->unk_008 = 0;
                     temp_v0->TrainerSlotSaveData_GamePort &= ~1;
-                    if (var_s0->unk_02C != NULL) {
-                        SetUIElementState(var_s0->unk_02C, 7);
+                    if (var_s0->returnWidget != NULL) {
+                        SetUIElementState(var_s0->returnWidget, 7);
                     }
                 }
                 break;

@@ -13,9 +13,9 @@ static unk_D_838067F0 D_838067F0;
 
 void Gallery_RentalViewerSaveBoxCursor(GallerySelection* arg0) {
     arg0->posY = D_838067F0.unk_001C;
-    arg0->rotation = D_838067F0.unk_0020;
+    arg0->rotation = D_838067F0.topRowIndex;
     arg0->unk_06 = D_838067F0.cursorColumn;
-    arg0->RentalSlotAnimData_PosePhase = D_838067F0.unk_0028;
+    arg0->RentalSlotAnimData_PosePhase = D_838067F0.cursorRow;
 }
 
 s32 Gallery_RentalViewerGetLoadState(void) {
@@ -138,7 +138,7 @@ s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1
     }
 
     for (i = 0; i < var_s4; i++) {
-        PokeIcon_LoadModelTextureForMon(arg1->unk_0000[i].unk_058, 0, &arg1->unk_0000[i].unk_004);
+        PokeIcon_LoadModelTextureForMon(arg1->unk_0000[i].iconTexture, 0, &arg1->unk_0000[i].unk_004);
 
         arg1->unk_0000[i].unk_000 = arg0->unk_0018;
         arg1->unk_0000[i].unk_001 = arg0->unk_001C;
@@ -178,14 +178,14 @@ s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, GallerySelection* arg1) {
 
     if (arg1 != NULL) {
         ptr->unk_001C = arg1->posY;
-        ptr->unk_0020 = arg1->rotation;
+        ptr->topRowIndex = arg1->rotation;
         ptr->cursorColumn = arg1->unk_06;
-        ptr->unk_0028 = arg1->RentalSlotAnimData_PosePhase;
+        ptr->cursorRow = arg1->RentalSlotAnimData_PosePhase;
     } else {
         ptr->unk_001C = 0xD;
-        ptr->unk_0020 = 0;
+        ptr->topRowIndex = 0;
         ptr->cursorColumn = 0;
-        ptr->unk_0028 = 0;
+        ptr->cursorRow = 0;
     }
 
     ptr->unk_002C = 0;
@@ -208,7 +208,7 @@ s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, GallerySelection* arg1) {
 
     ptr2 = ptr->currentPage;
     for (i = 0; i < 6; i++) {
-        Gallery_RentalViewerFillPage(&D_838067F0, ptr2, ptr->unk_0020 + i, ptr->teamData);
+        Gallery_RentalViewerFillPage(&D_838067F0, ptr2, ptr->topRowIndex + i, ptr->teamData);
         ptr2 = ptr2->nextPage;
     }
 
@@ -238,7 +238,7 @@ unk_D_838067F0_0168* Gallery_RentalViewerGetPage(unk_D_838067F0_0168* arg0, s32 
 }
 
 void Gallery_RentalViewerConfirmMonSelect(unk_D_838067F0* arg0) {
-    unk_D_838067F0_0168* ptr = Gallery_RentalViewerGetPage(arg0->currentPage, arg0->unk_0028);
+    unk_D_838067F0_0168* ptr = Gallery_RentalViewerGetPage(arg0->currentPage, arg0->cursorRow);
     PokemonData* temp_a1 = &ptr->unk_0000[arg0->cursorColumn].unk_004;
 
     if (temp_a1->posX.posX != 0) {
@@ -274,11 +274,11 @@ void Gallery_RentalViewerNextBox(unk_D_838067F0* arg0) {
         Audio_PlaySoundEffectById(0x27);
         arg0->unk_001C = var_s0;
         arg0->currentPage = Gallery_RentalViewerGetPage(arg0->currentPage, 6);
-        arg0->unk_0020 = 0;
+        arg0->topRowIndex = 0;
 
         var_s1 = arg0->currentPage;
         for (i = 0; i < 6; i++) {
-            Gallery_RentalViewerFillPage(arg0, var_s1, arg0->unk_0020 + i, arg0->teamData);
+            Gallery_RentalViewerFillPage(arg0, var_s1, arg0->topRowIndex + i, arg0->teamData);
             var_s1 = var_s1->nextPage;
         }
 
@@ -302,11 +302,11 @@ void Gallery_RentalViewerPrevBox(unk_D_838067F0* arg0) {
         Audio_PlaySoundEffectById(0x27);
         arg0->unk_001C = var_s0;
         arg0->currentPage = Gallery_RentalViewerGetPage(arg0->currentPage, 6);
-        arg0->unk_0020 = 0;
+        arg0->topRowIndex = 0;
 
         var_s1 = arg0->currentPage;
         for (i = 0; i < 6; i++) {
-            Gallery_RentalViewerFillPage(arg0, var_s1, arg0->unk_0020 + i, arg0->teamData);
+            Gallery_RentalViewerFillPage(arg0, var_s1, arg0->topRowIndex + i, arg0->teamData);
             var_s1 = var_s1->nextPage;
         }
 
@@ -346,15 +346,15 @@ void Gallery_RentalViewerBoxPickerMoveRight(unk_D_838067F0* arg0) {
 
 void Gallery_RentalViewerBoxPickerMoveUp(unk_D_838067F0* arg0) {
     if (arg0->repeatTimer == 0) {
-        if (arg0->unk_0028 != 0) {
-            arg0->unk_0028--;
+        if (arg0->cursorRow != 0) {
+            arg0->cursorRow--;
             arg0->unk_002C = -1;
             arg0->unk_0030 = -4;
             arg0->unk_0000 = 6;
             Audio_PlaySoundEffectById(1);
-        } else if ((arg0->unk_0020 > 0) &&
-                   (Gallery_RentalViewerFillPage(arg0, arg0->currentPage->prevPage, arg0->unk_0020 - 1, arg0->teamData) != 0)) {
-            arg0->unk_0020 -= 1;
+        } else if ((arg0->topRowIndex > 0) &&
+                   (Gallery_RentalViewerFillPage(arg0, arg0->currentPage->prevPage, arg0->topRowIndex - 1, arg0->teamData) != 0)) {
+            arg0->topRowIndex -= 1;
             arg0->currentPage = arg0->currentPage->prevPage;
             arg0->unk_002C = -1;
             arg0->unk_0030 = -4;
@@ -368,14 +368,14 @@ void Gallery_RentalViewerBoxPickerMoveUp(unk_D_838067F0* arg0) {
 
 void Gallery_RentalViewerBoxPickerMoveDown(unk_D_838067F0* arg0) {
     if (arg0->repeatTimer == 0) {
-        if (arg0->unk_0028 != 5) {
-            arg0->unk_0028++;
+        if (arg0->cursorRow != 5) {
+            arg0->cursorRow++;
             arg0->unk_002C = 1;
             arg0->unk_0030 = 4;
             arg0->unk_0000 = 6;
             Audio_PlaySoundEffectById(1);
-        } else if (Gallery_RentalViewerFillPage(arg0, Gallery_RentalViewerGetPage(arg0->currentPage, 6), arg0->unk_0020 + 6, arg0->teamData) != 0) {
-            arg0->unk_0020++;
+        } else if (Gallery_RentalViewerFillPage(arg0, Gallery_RentalViewerGetPage(arg0->currentPage, 6), arg0->topRowIndex + 6, arg0->teamData) != 0) {
+            arg0->topRowIndex++;
             arg0->currentPage = arg0->currentPage->nextPage;
             arg0->unk_002C = 1;
             arg0->unk_0030 = 4;
@@ -536,7 +536,7 @@ void Gallery_RentalViewerDrawScrollbar(s32 arg0, s32 arg1, unk_D_838067F0* arg2)
     s32 temp_a3;
     s32 var_v1;
 
-    temp_a3 = arg2->unk_0020 + arg2->unk_0028;
+    temp_a3 = arg2->topRowIndex + arg2->cursorRow;
     if (arg2->unk_001C < ARRAY_COUNT(arg2->boxEntries)) {
         var_v1 = (arg2->boxEntries[arg2->unk_001C].posX + 2) / 3;
     } else {
@@ -679,7 +679,7 @@ void Gallery_RentalViewerDrawMonRow(s32 arg0, s32 arg1, unk_D_838067F0_0168* arg
 
     for (i = 0; i < 3; i++) {
         if (arg2->unk_0000[i].unk_004.posX.posX != 0) {
-            Gfx_DrawTextureRgba16(arg0 + (i * 0x84) + 2, arg1 + 2, 0x28, 0x28, &arg2->unk_0000[i].unk_058, 0x28, 0);
+            Gfx_DrawTextureRgba16(arg0 + (i * 0x84) + 2, arg1 + 2, 0x28, 0x28, &arg2->unk_0000[i].iconTexture, 0x28, 0);
         }
     }
 
@@ -792,7 +792,7 @@ void SnapSelect_UpdateCameraState(s32 arg0)
   if (ptr->unk_0000 == 6)
   {
     s32 var_v0 = (ptr->cursorColumn * 0x84) + arg0;
-    s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
+    s32 var_v1 = (ptr->cursorRow * 0x2C) + 0x20;
     if (ptr->unk_002C > 0)
     {
       var_v1 += ((ptr->unk_002C * 0x2C) / 4) - 0x2C;
@@ -807,7 +807,7 @@ void SnapSelect_UpdateCameraState(s32 arg0)
     if (ptr->unk_0000 == 5)
   {
     s32 var_v0 = (ptr->cursorColumn * 0x84) + arg0;
-    s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
+    s32 var_v1 = (ptr->cursorRow * 0x2C) + 0x20;
     if (ptr->unk_002C > 0)
     {
       var_v0 += ((ptr->unk_002C * 0x84) / 4) - 0x84;
@@ -821,7 +821,7 @@ void SnapSelect_UpdateCameraState(s32 arg0)
   else
   {
     unsigned long var_v0 = (ptr->cursorColumn * 0x84) + arg0;
-    s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
+    s32 var_v1 = (ptr->cursorRow * 0x2C) + 0x20;
     TeamSelection_DrawAnimatedGoldCorners(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
   }
 }

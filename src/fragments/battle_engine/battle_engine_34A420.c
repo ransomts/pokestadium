@@ -447,9 +447,9 @@ void Radial20_VariantC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             var_v0->unk_00A.g = arg8;
             var_v0->unk_00A.b = arg9;
             var_v0->unk_00A.a = argA;
-            var_v0->unk_00E.r = argB;
-            var_v0->unk_00E.g = argC;
-            var_v0->unk_00E.b = argD;
+            var_v0->envColor.r = argB;
+            var_v0->envColor.g = argC;
+            var_v0->envColor.b = argD;
             var_v0->unk_014 = arg10;
             var_v0->unk_018 = argE;
 
@@ -518,9 +518,9 @@ void Radial20_VariantD(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             var_v0->unk_00A.g = arg8;
             var_v0->unk_00A.b = arg9;
             var_v0->unk_00A.a = argA;
-            var_v0->unk_00E.r = argB;
-            var_v0->unk_00E.g = argC;
-            var_v0->unk_00E.b = argD;
+            var_v0->envColor.r = argB;
+            var_v0->envColor.g = argC;
+            var_v0->envColor.b = argD;
             var_v0->unk_014 = arg10;
             var_v0->unk_018 = argE;
 
@@ -1081,7 +1081,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         gSPDisplayList(arg0++, gRadialNodeDrawDL);
                         gDPSetPrimColor(arg0++, 0, 0, sp1B4->unk_00A.r, sp1B4->unk_00A.g, sp1B4->unk_00A.b,
                                         sp1B4->unk_00A.a);
-                        gDPSetEnvColor(arg0++, sp1B4->unk_00E.r, sp1B4->unk_00E.g, sp1B4->unk_00E.b, 0);
+                        gDPSetEnvColor(arg0++, sp1B4->envColor.r, sp1B4->envColor.g, sp1B4->envColor.b, 0);
                         gSPVertex(arg0++, vtx, 4, 0);
                         gSP2Triangles(arg0++, 0, 2, 1, 0, 2, 3, 1, 0);
                         vtx += 2;

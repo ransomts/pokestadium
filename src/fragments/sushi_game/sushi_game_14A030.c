@@ -456,7 +456,7 @@ void SushiGame_SetPlateState(SushiPlate* arg0, s32 arg1, SushiPlayerEntity* arg2
             temp_v0->unk_008 = 0;
             temp_v0->unk_002 = 0x78;
             arg0->unk_38 = arg2;
-            arg0->rotation = arg0->unk_06 = arg2->unk_0CC;
+            arg0->rotation = arg0->unk_06 = arg2->eatAnimFrameEvent;
             break;
 
         case 0:

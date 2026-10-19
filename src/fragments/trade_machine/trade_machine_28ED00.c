@@ -250,8 +250,8 @@ void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1) {
 
             arg0->unk_010 = 0;
             arg0->unk_00C = 0;
-            arg0->unk_00E = 0;
-            arg0->unk_012 = 0;
+            arg0->scalePhase = 0;
+            arg0->rotZ = 0;
 
             if (arg0->unk_004 != 0) {
                 arg0->unk_014 = 0x80;
@@ -271,8 +271,8 @@ void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1) {
             arg0->unk_00A = arg0->unk_006;
             arg0->unk_010 = 0xA;
             arg0->unk_00C = 0;
-            arg0->unk_00E = 0;
-            arg0->unk_012 = 0;
+            arg0->scalePhase = 0;
+            arg0->rotZ = 0;
 
             if (arg0->unk_004 != 0) {
                 arg0->unk_014 = 0x80;
@@ -296,7 +296,7 @@ void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1) {
                 arg0->unk_00C = 0;
             }
 
-            arg0->unk_00E = arg0->unk_00C;
+            arg0->scalePhase = arg0->unk_00C;
             arg0->unk_018 = 1.0f;
             break;
 
@@ -305,8 +305,8 @@ void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1) {
             arg0->unk_008 = 0x17C;
             arg0->unk_010 = 0xA;
             arg0->unk_00C = 0;
-            arg0->unk_00E = 0;
-            arg0->unk_012 = 0;
+            arg0->scalePhase = 0;
+            arg0->rotZ = 0;
             arg0->unk_01C = 1.0f;
             arg0->unk_020 = 1.0f;
             break;
@@ -352,12 +352,12 @@ void Trade_UpdateBoxSlotBob(TradeSlotInfo* arg0) {
 
     arg0->unk_006 = arg0->unk_00A - (SINS(arg0->unk_00C) * (6.0f * var_fv0));
 
-    arg0->unk_012 = SINS(arg0->unk_00C) * (1536.0f * var_fv0);
-    arg0->unk_01C = (SINS(arg0->unk_00E) * var_fv1) + 1.0f;
-    arg0->unk_020 = (COSS(arg0->unk_00E) * var_fv1) + 1.0f;
+    arg0->rotZ = SINS(arg0->unk_00C) * (1536.0f * var_fv0);
+    arg0->unk_01C = (SINS(arg0->scalePhase) * var_fv1) + 1.0f;
+    arg0->unk_020 = (COSS(arg0->scalePhase) * var_fv1) + 1.0f;
 
     arg0->unk_00C += var_a2;
-    arg0->unk_00E += var_a3 + ((MathUtil_Random16() & 0xF) * 0x10);
+    arg0->scalePhase += var_a3 + ((MathUtil_Random16() & 0xF) * 0x10);
 }
 
 void Trade_UpdateBoxSlotBobIdle(TradeSlotInfo* arg0) {
@@ -427,7 +427,7 @@ void Trade_UpdateBoxSlotTransforms(void) {
             Fragment2_1GraphNode* ptr = &var_s0->unk_028;
 
             Vec3f_SetComponentsDuplicate(&ptr->unk_024, var_s0->unk_006 - 320.0f, 240.0f - var_s0->unk_008, -579.0f);
-            ptr->unk_01E.z = var_s0->unk_012;
+            ptr->unk_01E.z = var_s0->rotZ;
             ptr->unk_01D = var_s0->unk_014;
             ptr->unk_030.x = var_s0->unk_01C * var_s0->unk_018;
             ptr->unk_030.y = var_s0->unk_020 * var_s0->unk_018;
