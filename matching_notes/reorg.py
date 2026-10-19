@@ -121,6 +121,11 @@ def apply_group(group, no_gate):
     # e.g. our 3D140_2 data-entry -> michiiik's "3D140" while our 3D140.c
     # exists (they attach that data range to a different file boundary).
     # Renaming the yaml path there drops the .c's symbols from the link.
+    # ALSO park MERGE cases: multiple of our files mapping to one michiiik
+    # file (their gb_data.c = our data_71BA0.c + 22630.c) - a path rename
+    # cannot express a file merge.
+    from collections import Counter as _C
+    tp_count = _C(tp for _op, tp, _on, _tn in sub_ren)
     kept = []
     for op, tp, oname, tname in sub_ren:
         collide = [ext for ext in (".c", ".h")
@@ -129,6 +134,10 @@ def apply_group(group, no_gate):
         if collide:
             problems.append(f"parked {op} -> {tp}: file collision on {op}{collide[0]}"
                             f" (michiiik attaches the range differently)")
+            continue
+        if tp_count[tp] > 1:
+            problems.append(f"parked {op} -> {tp}: michiiik merged these files"
+                            f" ({tp_count[tp]} of ours map there)")
             continue
         kept.append((op, tp, oname, tname))
     sub_ren = kept
