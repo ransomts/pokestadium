@@ -87,7 +87,7 @@ typedef struct unk_D_84390010_728 {
     /* 0x17C */ s32 unk_17C;
     /* 0x180 */ s32 unk_180;
     /* 0x184 */ s16 cameraPitch;
-    /* 0x186 */ s16 cameraYaw;
+    /* 0x186 */ s16 cameraRotationY;
     /* 0x188 */ f32 unk_188;
     /* 0x18C */ s32 modelReadyFlag;
     /* 0x190 */ f32 cameraAtOffsetX;
@@ -3207,7 +3207,7 @@ s32 BattleAI_IsRestrictedRandomMove(u8 arg0);
 s32 BattleAI_IsMoveExcludedForSpecies(PokemonAudioInfo* arg0, s32 arg1, u8 arg2, u8 arg3);
 s32 BattleAI_IsMoveIneffective(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2);
 void BattleAI_SyncTeamStateFromRuntime(void);
-s32 BattleAI_InitializeBattle(BattleAI_TeamContext* arg0, BattleAI_TeamContext* arg1, BattleAI_TeamContext* arg2, s32 arg3, u8* arg4, s32 arg5, s32 arg6);
+s32 BattleAi_InitializeBattle(BattleAI_TeamContext* arg0, BattleAI_TeamContext* arg1, BattleAI_TeamContext* arg2, s32 arg3, u8* arg4, s32 arg5, s32 arg6);
 void BattleAI_RecordUsedMove(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2);
 s32 BattleAI_ChooseAction(UNUSED s32 arg0);
 void BattleAI_InitTrainerRecords(void);

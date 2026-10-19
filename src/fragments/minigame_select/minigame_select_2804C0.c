@@ -221,7 +221,7 @@ void KidsClub_InitRoundBanner(char** arg0) {
     }
 }
 
-void KidsClub_NoOp(void) {
+void Minigames_NoOp(void) {
 }
 
 void KidsClub_SetRoundBannerLabel(s16 arg0) {

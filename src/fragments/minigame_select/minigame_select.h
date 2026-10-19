@@ -169,7 +169,7 @@ void KidsClub_DrawRoundedFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, 
 void KidsClub_DrawWavyText(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4);
 void KidsClub_DrawMatchBanner(void);
 void KidsClub_InitRoundBanner(char** arg0);
-void KidsClub_NoOp(void);
+void Minigames_NoOp(void);
 void KidsClub_SetRoundBannerLabel(s16 arg0);
 void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1);
 void KidsClub_AdvanceRoundBannerOpen(RoundBanner* arg0);

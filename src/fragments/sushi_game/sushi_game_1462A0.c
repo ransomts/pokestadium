@@ -945,7 +945,7 @@ f32 SushiGame_ComputeEatFadeEnvelope(s16 arg0, s32 arg1) {
     return ret;
 }
 
-void Sushi_UpdateAI(SushiPlayerEntity* arg0) {
+void Sushi_UpdateAi(SushiPlayerEntity* arg0) {
     s32 pad;
     s32 pad1;
     SushiWorldBasis* ptr = &gSushiWorldOrientation;
@@ -1686,7 +1686,7 @@ void SushiGame_UpdatePlayers(void) {
             case 0:
             case 2:
             case 3:
-                Sushi_UpdateAI(var_s0);
+                Sushi_UpdateAi(var_s0);
                 break;
 
             case 1:

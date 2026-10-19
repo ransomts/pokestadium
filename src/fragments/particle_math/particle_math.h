@@ -236,9 +236,9 @@ typedef struct ParticleCameraInfo {
     /* 0x58 */ Vec3f unk_58;
     /* 0x64 */ Vec3f unk_64;
     /* 0x70 */ s16 unk_70;
-    /* 0x72 */ s16 lookYaw;
+    /* 0x72 */ s16 lookRotationY;
     /* 0x74 */ char unk74[0x2];
-    /* 0x76 */ s16 eyePitch;
+    /* 0x76 */ s16 eyeRotationX;
     /* 0x78 */ s16 unk_78;
 } ParticleCameraInfo; // size = 0x7C
 

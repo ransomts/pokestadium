@@ -15,8 +15,8 @@ extern ModelData* gDrowzeeModelTemp;
 extern MiniHudMainGraph* gDrowzeeStageRoot;
 extern CameraStruct* gDrowzeeCamera;
 extern s16 gDrowzeeCamDist;
-extern s16 gDrowzeeCamYaw;
-extern s16 gDrowzeeCamPitch;
+extern s16 gDrowzeeCamRotationY;
+extern s16 gDrowzeeCamRotationX;
 
 void MenuInput_FrameUpdate(void);
 u32 MiniGame_RandomRange(u32);

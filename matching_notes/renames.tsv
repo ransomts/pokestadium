@@ -17833,3 +17833,16 @@ MiniActor.unk_168	MiniActor.modelData	c6		Assigned Model_LoadByArchiveIndex(0xAB
 UnkStruct80083CA0_2.unk_9E8	UnkStruct80083CA0_2.doneMessage	c6		DisplayWorker_Initialize does osCreateMesgQueue(&unk_A04, &unk_9E8, 1); it is the single OSMesg backing the completion queue unk_A04 (same buffer/queue pattern as GbAudioChannelState dmaMessage/dmaQueue).	applied@97514801
 UnkStruct80083CA0_2.unk_A04	UnkStruct80083CA0_2.doneQueue	c6		DisplayWorker_ThreadMain sends 'DONE' to it after each processed frame and Display_WaitForCompletion receives from it, so the main thread can wait for the display worker to finish a frame.	applied@97514801
 unk_D_800ABE10.unk_A04	unk_D_800ABE10.modelArchives	c6		PokeIcon_OpenModelArchives fills it: two BinArchive_Open handles (ROM 0x920000 pokemon icon models, 0x8CC000 models) plus a 0x28000 load buffer; PokeIcon_LoadModelArchive/LoadMultipleModels and Model_Load* read the archives and buffer from it via BinArchive_LoadFileToPool.	applied@97514801
+gDrowzeeCamYaw	gDrowzeeCamRotationY	c7		upstream-convergence corrective: their terminology guide mandates rotationX/Y/Z over yaw/pitch (world-relative rotations)	applied@2294b485
+gDrowzeeCamPitch	gDrowzeeCamRotationX	c7		upstream-convergence corrective: rotationX over pitch	applied@2294b485
+VictoryPalace_EmptyFunc1	HallOfFame_EmptyFunc1	c7		upstream-convergence corrective: their area-name table (Victory Palace -> Hall of Fame)	applied@2294b485
+VictoryPalace_EmptyFunc3	HallOfFame_EmptyFunc3	c7		upstream-convergence corrective: their area-name table	applied@2294b485
+VictoryPalace_EmptyFunc7	HallOfFame_EmptyFunc7	c7		upstream-convergence corrective: their area-name table	applied@2294b485
+KidsClub_NoOp	Minigames_NoOp	c7		upstream-convergence corrective: their area-name table (Kid's Club -> Minigames)	applied@2294b485
+unk_D_800AE4E8_004_2.victoryPalace	unk_D_800AE4E8_004_2.hallOfFame	c7		upstream-convergence corrective: their area-name table	applied@2294b485
+unk_D_84390010_728.cameraYaw	unk_D_84390010_728.cameraRotationY	c7		upstream-convergence corrective: rotationY over yaw	applied@2294b485
+ParticleCameraInfo.lookYaw	ParticleCameraInfo.lookRotationY	c7		upstream-convergence corrective: rotationY over yaw	applied@2294b485
+ParticleCameraInfo.eyePitch	ParticleCameraInfo.eyeRotationX	c7		upstream-convergence corrective: rotationX over pitch	applied@2294b485
+BattleAI_InitializeBattle	BattleAi_InitializeBattle	c7		upstream-convergence corrective: their empirical BattleAi domain casing (80 uses in their tree)	applied@2294b485
+gBattleAI_MoveScores	gBattleAiMoveScores	c7		upstream-convergence corrective: BattleAi domain casing	applied@2294b485
+Sushi_UpdateAI	Sushi_UpdateAi	c7		upstream-convergence corrective: Ai casing per their BattleAi convention	applied@2294b485

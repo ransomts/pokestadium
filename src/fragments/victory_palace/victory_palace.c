@@ -1817,7 +1817,7 @@ s32 VictoryPalace_UpdateRightPillarGlow(s32 arg0, PillarGlowParams* arg1) {
     return 0;
 }
 
-void VictoryPalace_EmptyFunc1(void) {
+void HallOfFame_EmptyFunc1(void) {
 }
 
 void VictoryPalace_EmptyFunc2(void) {
@@ -1838,7 +1838,7 @@ void VictoryPalace_InitCamera(void) {
     gCurrentCameraNode = gFragment50Camera;
 }
 
-void VictoryPalace_EmptyFunc3(void) {
+void HallOfFame_EmptyFunc3(void) {
 }
 
 void VictoryPalace_PollInput(void) {
@@ -2186,7 +2186,7 @@ void VictoryPalace_SetBackgroundPositionX(f32 arg0) {
     gFragment50GraphNodeB.unk_024.x = arg0;
 }
 
-void VictoryPalace_EmptyFunc7(void) {
+void HallOfFame_EmptyFunc7(void) {
 }
 
 void VictoryPalace_UpdateCarouselModelRotation(void) {

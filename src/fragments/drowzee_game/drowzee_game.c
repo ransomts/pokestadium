@@ -816,8 +816,8 @@ void DrowzeeGame_InitCamera(void) {
     gDrowzeeCamera = gDrowzeeStageRoot->posX.unk_0C;
 
     gDrowzeeCamDist = 0x900;
-    gDrowzeeCamYaw = 0;
-    gDrowzeeCamPitch = 0x190;
+    gDrowzeeCamRotationY = 0;
+    gDrowzeeCamRotationX = 0x190;
 
     gDrowzeeCamera->unk_24.near = 50.0f;
     gDrowzeeCamera->unk_24.far = 6400.0f;
@@ -825,7 +825,7 @@ void DrowzeeGame_InitCamera(void) {
 
     gDrowzeeCamera->unk_60.at.y = 25.0f;
 
-    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamPitch, gDrowzeeCamDist, gDrowzeeCamYaw);
+    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamRotationX, gDrowzeeCamDist, gDrowzeeCamRotationY);
 }
 
 void DrowzeeGame_InitPlayerOverlays(void) {

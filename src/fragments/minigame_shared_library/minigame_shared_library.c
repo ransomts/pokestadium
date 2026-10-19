@@ -14,8 +14,8 @@ ModelData* gDrowzeeModelTemp;
 MiniHudMainGraph* gDrowzeeStageRoot;
 CameraStruct* gDrowzeeCamera;
 s16 gDrowzeeCamDist;
-s16 gDrowzeeCamYaw;
-s16 gDrowzeeCamPitch;
+s16 gDrowzeeCamRotationY;
+s16 gDrowzeeCamRotationX;
 
 void MenuInput_FrameUpdate(void) {
     Cont_StartReadInputs();

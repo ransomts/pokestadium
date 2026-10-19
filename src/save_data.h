@@ -110,7 +110,7 @@ typedef struct unk_D_800AE4E8_004_2_3280 {
 
 typedef struct unk_D_800AE4E8_004_2 {
     /* 0x0000 */ char unk0000[0xDC0];
-    /* 0x0DC0 */ SaveBank_VictoryPalaceRecord victoryPalace;
+    /* 0x0DC0 */ SaveBank_VictoryPalaceRecord hallOfFame;
     /* 0x1D20 */ SaveBank_ContinueRecord continueRecord;
     /* 0x1EA0 */ SaveBank_OptionsRecord options;
     /* 0x1EC8 */ SaveBank_GalleryRecord galleryPhotos;

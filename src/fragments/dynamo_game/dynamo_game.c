@@ -715,8 +715,8 @@ void DynamoGame_InitCamera(void) {
     gDrowzeeCamera = gDrowzeeStageRoot->posX.unk_0C;
 
     gDrowzeeCamDist = -0x200;
-    gDrowzeeCamYaw = 0;
-    gDrowzeeCamPitch = 0xBE;
+    gDrowzeeCamRotationY = 0;
+    gDrowzeeCamRotationX = 0xBE;
 
     gDrowzeeCamera->unk_24.near = 50.0f;
     gDrowzeeCamera->unk_24.far = 6400.0f;
@@ -724,7 +724,7 @@ void DynamoGame_InitCamera(void) {
 
     gDrowzeeCamera->unk_60.at.y = 51.0f;
 
-    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamPitch, gDrowzeeCamDist, gDrowzeeCamYaw);
+    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamRotationX, gDrowzeeCamDist, gDrowzeeCamRotationY);
 }
 
 void DynamoGame_LoadAssets(void) {

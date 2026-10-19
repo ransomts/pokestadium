@@ -133,8 +133,8 @@ void Save_LoadWithRepair(s32 arg0, s32 arg1) {
         case 19:
             sp30 = 2;
             sp34 = 0xF60;
-            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace;
-            sp20 = (u8*)&gGbsSaveBanks[2].RentalSlotAnimData_PosePhase.unk2->victoryPalace;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->hallOfFame;
+            sp20 = (u8*)&gGbsSaveBanks[2].RentalSlotAnimData_PosePhase.unk2->hallOfFame;
             break;
 
         case 20:
@@ -222,7 +222,7 @@ s32 Save_IsTypedRecordFlagSet(s32 arg0, s32 arg1, s16 arg2) {
             break;
 
         case 19:
-            var_v1 = (gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->hallOfFame.unk_000 & arg2) != 0;
             break;
 
         case 20:
@@ -263,7 +263,7 @@ void Save_MarkRecordDirty(s32 arg0, s32 arg1, s16 arg2) {
             break;
 
         case 19:
-            gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->hallOfFame.unk_000 |= arg2;
             break;
 
         case 20:
@@ -305,7 +305,7 @@ void Save_CommitTypedRecord(s32 arg0, s32 arg1) {
             break;
 
         case 19:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace, 0xF60, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->hallOfFame, 0xF60, 2);
             break;
 
         case 20:
@@ -344,7 +344,7 @@ void Save_InvalidateTypedRecord(s32 arg0, s32 arg1) {
             break;
 
         case 19:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace, 0xF60, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->hallOfFame, 0xF60, 2);
             break;
 
         case 20:
@@ -383,7 +383,7 @@ void Save_RestoreTypedRecord(s32 arg0, s32 arg1) {
             break;
 
         case 19:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace, 0xF60, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->hallOfFame, 0xF60, 2);
             break;
 
         case 20:
@@ -437,7 +437,7 @@ void Save_ClearTypedRecord(s32 arg0, s32 arg1) {
             break;
 
         case 19:
-            sp2C = &gGbsSaveBanks[2].rotation.unk2->victoryPalace;
+            sp2C = &gGbsSaveBanks[2].rotation.unk2->hallOfFame;
             Save_ClearRecord(sp2C, 0xF60, 2);
             sp2C->unk_000 |= 1;
             break;
@@ -817,7 +817,7 @@ s32 Deck_ReadSaveEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
                 break;
 
             case 19:
-                *(SaveBank_VictoryPalaceEntry*)arg3 = gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_002[arg2];
+                *(SaveBank_VictoryPalaceEntry*)arg3 = gGbsSaveBanks[2].rotation.unk2->hallOfFame.unk_002[arg2];
                 break;
 
             case 22:
@@ -855,7 +855,7 @@ s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
                 gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].unk_10[arg2] = *(SaveBank_ItemBoxEntry*)arg3;
                 break;
             case 19:
-                gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_002[arg2] = *(SaveBank_VictoryPalaceEntry*)arg3;
+                gGbsSaveBanks[2].rotation.unk2->hallOfFame.unk_002[arg2] = *(SaveBank_VictoryPalaceEntry*)arg3;
                 break;
             case 22:
                 _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->galleryPhotos.unk_0002[arg2], 0x8C);

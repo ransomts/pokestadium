@@ -5062,8 +5062,8 @@ void BattleAnim_UpdateCamera(CameraStruct* arg0) {
     MtxF_Copy(&gParticleCameraInfo->posX, &arg0->unk_60.mtxf);
     ParticleMath_CopyVec3f(&gParticleCameraInfo->unk_40, &arg0->unk_60.eye);
     ParticleMath_CopyVec3f(&gParticleCameraInfo->unk_4C, &arg0->unk_60.at);
-    BattleAnim_GetCameraLookAngles(&gParticleCameraInfo->unk_70, &gParticleCameraInfo->lookYaw);
-    BattleAnim_GetCameraEyeAngles(&gParticleCameraInfo->eyePitch, &gParticleCameraInfo->unk_78);
+    BattleAnim_GetCameraLookAngles(&gParticleCameraInfo->unk_70, &gParticleCameraInfo->lookRotationY);
+    BattleAnim_GetCameraEyeAngles(&gParticleCameraInfo->eyeRotationX, &gParticleCameraInfo->unk_78);
     ParticleMath_NormalizedDirection(&gParticleCameraInfo->unk_58, gParticleCameraInfo->unk_40, gParticleCameraInfo->unk_4C);
     ParticleMath_NormalizedDirection(&gParticleCameraInfo->unk_64, gParticleCameraInfo->unk_4C, gParticleCameraInfo->unk_40);
 }
@@ -5186,7 +5186,7 @@ void BattleAnim_GetCameraLookYaw(s16* arg0) {
 }
 
 void BattleAnim_GetCameraStoredAngles76(s16* arg0, s16* arg1) {
-    *arg0 = gParticleCameraInfo->eyePitch;
+    *arg0 = gParticleCameraInfo->eyeRotationX;
     *arg1 = gParticleCameraInfo->unk_78;
 }
 
@@ -5196,9 +5196,9 @@ void BattleAnim_GetCameraStoredYaw78(s16* arg0) {
 
 void BattleAnim_GetCameraStoredAngles70(s16* arg0, s16* arg1) {
     *arg0 = gParticleCameraInfo->unk_70;
-    *arg1 = gParticleCameraInfo->lookYaw;
+    *arg1 = gParticleCameraInfo->lookRotationY;
 }
 
 void BattleAnim_GetCameraStoredYaw72(s16* arg0) {
-    *arg0 = gParticleCameraInfo->lookYaw;
+    *arg0 = gParticleCameraInfo->lookRotationY;
 }

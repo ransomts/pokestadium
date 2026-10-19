@@ -461,14 +461,14 @@ void Battle_SelectComRoster(void) {
             } else {
                 var_s1 = 3;
             }
-            BattleAI_InitializeBattle(temp_s1, temp_s2, temp_s0, gSessionContext.aiDifficulty, sp48, gSessionContext.unk_0001, var_s1);
+            BattleAi_InitializeBattle(temp_s1, temp_s2, temp_s0, gSessionContext.aiDifficulty, sp48, gSessionContext.unk_0001, var_s1);
         } else {
             if (gSessionContext.unk_0001 == 8) {
                 var_s1 = temp_s0->trainerData->unk_002;
             } else {
                 var_s1 = 3;
             }
-            BattleAI_InitializeBattle(temp_s1, NULL, temp_s0, temp_s0->unk_018 & 0xFF, sp48, gSessionContext.unk_0001, var_s1);
+            BattleAi_InitializeBattle(temp_s1, NULL, temp_s0, temp_s0->unk_018 & 0xFF, sp48, gSessionContext.unk_0001, var_s1);
         }
         Battle_CompleteRosterOrder(sp48, var_s1);
         temp_s0->unk_002 = var_s1;
