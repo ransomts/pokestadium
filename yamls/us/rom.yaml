@@ -832,12 +832,12 @@
     start: 0x1329E0
     vram: 0x86300000
     subsegments:
-    - [0x1329E0, textbin,   fragments/9/fragment9_header]
-    - [0x132A00, c,      fragments/9/fragment9]
-    - [0x133FE0, .data,   fragments/9/fragment9]
-    - [0x1340A0, .rodata, fragments/9/fragment9]
+    - [0x1329E0, textbin,   fragments/jigglypuff_doodle/jigglypuff_doodle_header]
+    - [0x132A00, c,      fragments/jigglypuff_doodle/jigglypuff_doodle]
+    - [0x133FE0, .data,   fragments/jigglypuff_doodle/jigglypuff_doodle]
+    - [0x1340A0, .rodata, fragments/jigglypuff_doodle/jigglypuff_doodle]
 
-    - {vram: 0x86301710, type:  .bss, name: fragments/9/fragment9}
+    - {vram: 0x86301710, type:  .bss, name: fragments/jigglypuff_doodle/jigglypuff_doodle}
 
   - name: fragment9_relocs
     type: code
