@@ -222,3 +222,8 @@ Check "committed" lines in the log; run waves 7-13 with the same command if need
 Open items: michiiik toolchain pin (ask them; then statics address-join), reorg
 residuals (groups 5/6/7/8/61, 1/31/77, main segment, un-joined yaml entries),
 michiiik-nameless tail after all waves. Ledger 16,435 + wave commits as they land.
+
+CORRECTION: statics waves STOPPED at w5 - post-rewrite check failure (rows pending in
+ledger, auto-reverted, no damage). Next session: read the failure block above the STOP
+in scratch/rename_waves/driver_statics.log (likely an old-name-still-present or orphan
+class specific to statics rows), fix, re-run `run 1 6`.
