@@ -1,6 +1,6 @@
 #include "battle_engine.h"
-#include "src/12D80.h"
-#include "src/F420.h"
+#include "src/geo_render.h"
+#include "src/matrix.h"
 
 unk_D_843901B0 gCameraPreset;
 f32 gCameraDistTarget;

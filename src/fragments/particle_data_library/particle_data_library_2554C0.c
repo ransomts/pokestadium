@@ -1,8 +1,8 @@
 #include "src/fragments/particle_data_library/particle_data_library.h"
-#include "src/6A40.h"
-#include "src/12D80.h"
-#include "src/32D10.h"
-#include "src/334D0.h"
+#include "src/gfx_buffer.h"
+#include "src/geo_render.h"
+#include "src/battle_hud.h"
+#include "src/model_renderer_callbacks.h"
 
 const char gDummyNameString[0xC] = "DUMMY NAME";
 const char gEmptyString[0x4] = "";

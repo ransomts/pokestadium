@@ -1,6 +1,6 @@
 #include "battle_prep.h"
-#include "src/1CF30.h"
-#include "src/6A40.h"
+#include "src/graphics_textures.h"
+#include "src/gfx_buffer.h"
 #include "src/math_util.h"
 
 s16 BattlePrep_RandomStarOffset(void) {

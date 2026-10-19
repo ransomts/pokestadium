@@ -1,11 +1,11 @@
 #include "trade_machine.h"
-#include "src/19840.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
+#include "src/display_object_textures.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
 #include "src/225A0.h"
 #include "src/22630.h"
-#include "src/2E110.h"
-#include "src/49790.h"
+#include "src/text_system.h"
+#include "src/audio_sfx.h"
 #include "src/memory.h"
 
 static TradeInfoBoxState gBattleResultScreenState;

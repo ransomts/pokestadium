@@ -2,7 +2,7 @@
 #define _FRAGMENT64_H_
 
 #include "global.h"
-#include "src/29BA0.h"
+#include "src/game_state.h"
 
 typedef struct unk_D_84803760 {
     /* 0x00 */ s8 posX;

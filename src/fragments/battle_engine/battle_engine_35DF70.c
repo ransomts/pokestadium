@@ -1,5 +1,5 @@
 #include "battle_engine.h"
-#include "src/2E110.h"
+#include "src/text_system.h"
 
 typedef void (*func_D_8438AE50)(void);
 

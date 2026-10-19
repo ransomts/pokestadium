@@ -1,6 +1,6 @@
 #include "global.h"
 #include "reset.h"
-#include "5580.h"
+#include "src/scheduler.h"
 
 // this file handles the soft reset effect.
 typedef struct UnkStruct800A6D20 {

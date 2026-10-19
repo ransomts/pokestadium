@@ -1,6 +1,6 @@
 #include "src/fragments/minigame_select/minigame_select.h"
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
-#include "26820.h"
+#include "src/save_data.h"
 
 void KidsClub_LoadDifficultySetting(void) {
     gMenuRandomSeed = Save_GetOptionsField1E() & 0xFF;

@@ -5,9 +5,9 @@
 #include "src/memory.h"
 #include "src/memmap.h"
 #include "src/controller.h"
-#include "src/29BA0.h"
-#include "src/1AB70.h"
-#include "src/2D340.h"
+#include "src/game_state.h"
+#include "src/poke_icon.h"
+#include "src/table_view.h"
 #include "src/fragments/pokemon_lab_support/pokemon_lab_support.h"
 
 struct unk_func_88001300;

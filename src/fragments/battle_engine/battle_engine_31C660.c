@@ -1,5 +1,5 @@
 #include "battle_engine.h"
-#include "src/1C720.h"
+#include "src/model_renderer.h"
 
 void BattleAnim_SetupGlobalTintColorFadeDetach(ParticleEffectInstance* arg0) {
     BattleAnim_LoadGlobalTintToParticle(arg0);

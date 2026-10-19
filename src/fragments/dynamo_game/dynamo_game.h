@@ -2,7 +2,7 @@
 #define _FRAGMENT11_H_
 
 #include "global.h"
-#include "src/11BA0.h"
+#include "src/geo_node.h"
 
 typedef struct DynamoHealthBar {
     /* 0x000 */ s32 unk_000;

@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "src/3FB0.h"
-#include "src/1AB70.h"
+#include "src/poke_icon.h"
 #include "src/geo_layout.h"
 
 typedef struct unk_D_84B19910_002 {

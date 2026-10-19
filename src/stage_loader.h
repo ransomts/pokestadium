@@ -2,7 +2,7 @@
 #define _STAGE_LOADER_H_
 
 #include "global.h"
-#include "src/6BC0.h"
+#include "src/gfx_rect.h"
 
 typedef struct unk_D_800A7450 {
     /* 0x00 */ u8 posX;

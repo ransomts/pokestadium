@@ -2,7 +2,7 @@
 #define _FRAGMENT60_H_
 
 #include "global.h"
-#include "src/11BA0.h"
+#include "src/geo_node.h"
 
 void CupSelect_PollController(void);
 void CupSelect_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);

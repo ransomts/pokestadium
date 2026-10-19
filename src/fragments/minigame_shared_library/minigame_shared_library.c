@@ -1,5 +1,5 @@
 #include "src/fragments/minigame_shared_library/minigame_shared_library.h"
-#include "src/20330.h"
+#include "src/input.h"
 #include "src/controller.h"
 
 u16 gDrowzeeFrameCounter = 0;

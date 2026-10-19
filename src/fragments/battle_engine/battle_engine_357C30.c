@@ -1,8 +1,8 @@
 #include "battle_engine.h"
-#include "6A40.h"
-#include "12D80.h"
-#include "30640.h"
-#include "32D10.h"
+#include "src/gfx_buffer.h"
+#include "src/geo_render.h"
+#include "src/gallery.h"
+#include "src/battle_hud.h"
 
 static s16 gWaterEffectFrameCounter;
 static unk_D_843C3508 gWaterEffects[6];

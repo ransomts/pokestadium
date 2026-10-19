@@ -1,6 +1,6 @@
 #include "global.h"
 #include "profiler.h"
-#include "5580.h"
+#include "src/scheduler.h"
 
 struct Profiler gProfiler;
 

@@ -269,7 +269,7 @@ build/src/boot/libu64/%.o: OPTFLAGS := -O2
 
 build/src/boot/fault.o: CFLAGS += -trapuv
 build/src/boot/fault_drawer.o: CFLAGS += -trapuv
-build/src/C030.o: OPTFLAGS += -Wo,-loopunroll,0
+build/src/controller_ram.o: OPTFLAGS += -Wo,-loopunroll,0
 build/src/hal_libc.o: CFLAGS += -signed
 
 build/src/libleo/%.o: CC := $(CC_OLD)

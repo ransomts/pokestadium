@@ -1,7 +1,7 @@
 #include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
-#include "src/49790.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
+#include "src/audio_sfx.h"
 #include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 
 static s16 D_83407C00;

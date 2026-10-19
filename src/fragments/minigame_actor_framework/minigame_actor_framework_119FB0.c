@@ -1,8 +1,8 @@
 #include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
-#include "src/6A40.h"
+#include "src/gfx_buffer.h"
 #include "src/math_util.h"
 #include "src/memory.h"
-#include "src/12D80.h"
+#include "src/geo_render.h"
 
 void MiniFx_Init(void) {
     gParticlePool = main_pool_alloc(sizeof(ParticleEffectInstance) * 300, 0);

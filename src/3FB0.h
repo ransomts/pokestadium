@@ -2,7 +2,7 @@
 #define _3FB0_H_
 
 #include "global.h"
-#include "5580.h"
+#include "src/scheduler.h"
 #include "jpegutils.h"
 #include "jpeg_decoder.h"
 #include "src/memmap.h"

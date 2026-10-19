@@ -2,7 +2,7 @@
 #define _FRAGMENT25_H_
 
 #include "global.h"
-#include "29BA0.h"
+#include "src/game_state.h"
 
 typedef struct PaletteColor {
     /* 0x00 */ s32 posX;

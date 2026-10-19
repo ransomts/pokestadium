@@ -2,7 +2,7 @@
 #define _FRAGMENT47_H_
 
 #include "global.h"
-#include "src/30640.h"
+#include "src/gallery.h"
 #include "src/geo_layout.h"
 #include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 

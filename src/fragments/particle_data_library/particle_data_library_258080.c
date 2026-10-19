@@ -2,9 +2,9 @@
 #include "src/fragments/clefairy_game/clefairy_game.h"
 #include "src/fragments/rattata_game/rattata_game.h"
 #include "src/fragments/victory_palace/victory_palace.h"
-#include "src/6A40.h"
-#include "src/12D80.h"
-#include "src/32D10.h"
+#include "src/gfx_buffer.h"
+#include "src/geo_render.h"
+#include "src/battle_hud.h"
 
 typedef struct {
     /* 0x00 */ u8 rgb0[3];      // start color

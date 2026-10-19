@@ -2,7 +2,7 @@
 #define _FRAGMENT10_H_
 
 #include "global.h"
-#include "src/11BA0.h"
+#include "src/geo_node.h"
 #include "src/fragments/minigame_shared_library/minigame_shared_library.h"
 
 typedef struct HudState {

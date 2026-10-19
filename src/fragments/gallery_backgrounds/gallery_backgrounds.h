@@ -2,7 +2,7 @@
 #define _FRAGMENT43_H_
 
 #include "global.h"
-#include "30640.h"
+#include "src/gallery.h"
 
 typedef struct MenuPanelInfo {
     /* 0x00 */ s16 posX;

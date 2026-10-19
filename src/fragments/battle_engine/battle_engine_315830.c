@@ -1,7 +1,7 @@
 #include "battle_engine.h"
-#include "src/17300.h"
-#include "src/18140.h"
-#include "src/1C720.h"
+#include "src/model_animation.h"
+#include "src/model_animation_events.h"
+#include "src/model_renderer.h"
 
 void BattleAnim_StartFreezeStatusAnimation(BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];

@@ -2,9 +2,9 @@
 #define _FRAGMENT62_H_
 
 #include "global.h"
-#include "src/29BA0.h"
+#include "src/game_state.h"
 #include "src/3D140.h"
-#include "src/6BC0.h"
+#include "src/gfx_rect.h"
 #include "src/stage_loader.h"
 #include "src/fragments/demo_scenes/demo_scenes.h"
 #include "src/fragments/particle_math/particle_math.h"

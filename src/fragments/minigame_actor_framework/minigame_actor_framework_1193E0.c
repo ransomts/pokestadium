@@ -1,7 +1,7 @@
 #include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
-#include "src/F420.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
+#include "src/matrix.h"
 
 s16 miniInputLockTimer;
 s16 gMiniGameIdleTimer;

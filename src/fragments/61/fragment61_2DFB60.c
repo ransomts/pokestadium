@@ -1,11 +1,11 @@
 #include "src/fragments/rental_team_selection/rental_team_selection.h"
-#include "src/1AB70.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
-#include "src/232C0.h"
-#include "src/2E110.h"
-#include "src/49790.h"
-#include "src/6BC0.h"
+#include "src/poke_icon.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
+#include "src/pokemon_stats.h"
+#include "src/text_system.h"
+#include "src/audio_sfx.h"
+#include "src/gfx_rect.h"
 
 void Rental_DrawBoxTabFrame(s16 arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);

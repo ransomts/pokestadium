@@ -1,5 +1,5 @@
 #include "src/fragments/demo_scenes/demo_scenes.h"
-#include "29BA0.h"
+#include "src/game_state.h"
 
 s32 Stage_DispatchDemoScene(UNUSED s32 arg0, UNUSED s32 arg1) {
     switch (gSessionContext.unk_0000) {

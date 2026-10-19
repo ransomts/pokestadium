@@ -1,6 +1,6 @@
 #include "battle_engine.h"
-#include "src/17300.h"
-#include "src/F420.h"
+#include "src/model_animation.h"
+#include "src/matrix.h"
 
 typedef struct CameraPreset {
     /* 0x00 */ u8 posX;

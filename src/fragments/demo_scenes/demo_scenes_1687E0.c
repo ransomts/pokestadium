@@ -1,6 +1,6 @@
 #include "src/fragments/demo_scenes/demo_scenes.h"
-#include "src/1CF30.h"
-#include "src/6BC0.h"
+#include "src/graphics_textures.h"
+#include "src/gfx_rect.h"
 
 static Gfx gGfxSetup_ScrollBar[] = {
     gsDPPipeSync(),

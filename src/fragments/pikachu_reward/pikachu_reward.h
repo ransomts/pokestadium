@@ -2,7 +2,7 @@
 #define _FRAGMENT66_H_
 
 #include "global.h"
-#include "src/29BA0.h"
+#include "src/game_state.h"
 
 typedef struct TextFadeState {
     /* 0x000 */ s32 posX;

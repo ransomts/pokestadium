@@ -1,9 +1,9 @@
 #include "src/fragments/rental_team_selection/rental_team_selection.h"
-#include "src/1AB70.h"
-#include "src/1CF30.h"
-#include "src/232C0.h"
-#include "src/26820.h"
-#include "src/49790.h"
+#include "src/poke_icon.h"
+#include "src/graphics_textures.h"
+#include "src/pokemon_stats.h"
+#include "src/save_data.h"
+#include "src/audio_sfx.h"
 #include "src/hal_libc.h"
 
 s16 gSlotPosXOffsets[] = { 0x78, 0xFC, 0x180, 0x78, 0xFC, 0x180 };

@@ -1,5 +1,5 @@
 #include "battle_engine.h"
-#include "src/6A40.h"
+#include "src/gfx_buffer.h"
 
 static WaterParticleEmitter gWaterParticleEmitters[4];
 

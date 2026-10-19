@@ -1,5 +1,5 @@
 #include "battle_engine.h"
-#include "src/1C720.h"
+#include "src/model_renderer.h"
 
 void BattleAnim_CallbackStartEffects23And35And84Descriptor4FColorCycleScaleFade_InitParticle(ParticleEffectInstance* arg0, s16 arg1) {
     UNUSED s32 pad[3];

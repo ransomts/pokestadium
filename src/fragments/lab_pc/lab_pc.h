@@ -4,9 +4,9 @@
 #include "global.h"
 #include "src/fragments/widget_tree/widget_tree.h"
 #include "src/fragments/lab_ui_support/lab_ui_support.h"
-#include "src/2D340.h"
+#include "src/table_view.h"
 #include "src/22630.h"
-#include "src/2E460.h"
+#include "src/gb_save.h"
 
 struct unk_func_8821421C_038_04C_000;
 struct unk_func_8820B12C_02C;

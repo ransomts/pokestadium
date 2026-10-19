@@ -2,8 +2,8 @@
 #define _FRAGMENT61_H_
 
 #include "global.h"
-#include "src/11BA0.h"
-#include "src/1AB70.h"
+#include "src/geo_node.h"
+#include "src/poke_icon.h"
 #include "src/fragments/gallery_rental_viewer/gallery_rental_viewer.h"
 
 struct unk_D_842168A0;

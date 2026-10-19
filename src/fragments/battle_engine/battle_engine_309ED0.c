@@ -1,12 +1,12 @@
 #include "battle_engine.h"
-#include "src/17300.h"
-#include "src/1C720.h"
-#include "src/373A0.h"
+#include "src/model_animation.h"
+#include "src/model_renderer.h"
+#include "src/audio_commands.h"
 #include "src/3D140.h"
-#include "src/485C0.h"
-#include "src/4BDC0.h"
-#include "src/4F410.h"
-#include "src/F420.h"
+#include "src/audio_fade.h"
+#include "src/audio_loop_point.h"
+#include "src/cry.h"
+#include "src/matrix.h"
 
 BattlePlayerEntity* gOpponentPlayer;
 BattlePlayerEntity* gCurrentPlayer;

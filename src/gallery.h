@@ -1,0 +1,155 @@
+#ifndef _30640_H_
+#define _30640_H_
+
+#include "global.h"
+#include "src/model_renderer.h"
+#include "src/gfx_rect.h"
+
+typedef struct PhotoMonSpecies {
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u8 posY;
+    /* 0x03 */ s8 unk_03[11];
+    /* 0x0E */ s8 unk_0E[11];
+} PhotoMonSpecies; // size >= 0x1A
+
+typedef struct PhotoMonData {
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ u8 posY;
+    /* 0x03 */ u8 unk_03[11];
+    /* 0x0E */ u8 unk_0E[11];
+    /* 0x19 */ char unk19[0x1];
+} PhotoMonData; // size = 0x1A
+
+typedef struct unk_D_83402EE0_00A {
+    /* 0x00 */ u8 posX[7];
+} unk_D_83402EE0_00A; // size = 0x7
+
+typedef struct unk_D_83402EE0 {
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ u8 rotation;
+    /* 0x05 */ u8 unk_05;
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ u8 unk_08;
+    /* 0x09 */ u8 unk_09;
+    /* 0x0A */ unk_D_83402EE0_00A unk_0A[10];
+    /* 0x50 */ Vec3f unk_50;
+    /* 0x5C */ Vec3f unk_5C;
+    /* 0x68 */ u32 unk_68;
+    /* 0x6C */ u8 unk_6C;
+    /* 0x6D */ char unk6D[3];
+    /* 0x70 */ PhotoMonData unk_70;
+} unk_D_83402EE0; // size = 0x8C
+
+typedef struct PhotoSceneData {
+    /* 0x00 */ PokemonData posX;
+    /* 0x54 */ char unk54[0x18];
+    /* 0x6C */ u8 unk_6C;
+    /* 0x6D */ char unk6D[0x3];
+    /* 0x70 */ PhotoMonSpecies unk_70;
+    /* 0x8A */ char unk8A[0x2];
+} PhotoSceneData; // size = 0x8C
+
+typedef struct unk_D_83403C60_050_00C {
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 unk_08;
+} unk_D_83403C60_050_00C; // size = 0xC
+
+typedef struct PhotoSceneControl {
+    /* 0x00 */ char unk00[0x6C];
+    /* 0x6C */ u8 unk_6C;
+    /* 0x6D */ char unk6D[0x1F];
+} PhotoSceneControl; // size = 0x8C
+
+typedef struct GalleryCursor {
+    /* 0x00 */ union {
+                    struct {
+                        s16 unk_00s;
+                        s16 unk_02s;
+                    };
+                    s32 posX;
+                };
+    /* 0x04 */ union {
+                    struct {
+                        s16 unk_04s;
+                        s16 unk_06s;
+                    };
+                    s32 rotation;
+                };
+} GalleryCursor; // size = 0x8
+
+typedef struct unk_func_800314BC_temp_v4 {
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s32 rotation;
+} unk_func_800314BC_temp_v4; // size = 0x8
+
+typedef struct unk_func_80031270_024 {
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 unk_01;
+    /* 0x02 */ char pad2[0x12];
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s16 unk_18;
+    /* 0x1A */ s16 unk_1A;
+    /* 0x1C */ s32 unk_1C;
+} unk_func_80031270_024; // size = 0x20
+
+typedef struct Camera {
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
+    /* 0x06 */ s16 unk_06;
+    /* 0x08 */ FramebufferImage* unk_08;
+    /* 0x0C */ FramebufferImage* unk_0C;
+    /* 0x10 */ AssetManager* unk_10;
+    /* 0x14 */ BinArchive* unk_14;
+    /* 0x18 */ PhotoSceneData* unk_18;
+    /* 0x1C */ GraphNode* unk_1C;
+    /* 0x20 */ Fragment2_1GraphNode* unk_20;
+    /* 0x24 */ unk_func_80031270_024* unk_24;
+    /* 0x28 */ GraphNode* unk_28;
+    /* 0x2C */ GraphNode* unk_2C;
+    /* 0x30 */ GraphNode* unk_30;
+    /* 0x34 */ s32 unk_34;
+} Camera; // size = 0x38
+
+typedef struct unk_D_83407B38_0B0 {
+    /* 0x00 */ s32 posX;
+    /* 0x00 */ s32 unk_08;
+} unk_D_83407B38_0B0; // size >= 0xC
+
+typedef struct GallerySceneGrid {
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 unk_08;
+    /* 0x0C */ s32 unk_0C;
+    /* 0x10 */ s32 unk_10;
+    /* 0x14 */ s32 unk_14;
+    /* 0x18 */ s32 unk_18;
+    /* 0x1C */ s32 unk_1C;
+    /* 0x20 */ Camera* unk_20[36];
+    /* 0xB0 */ Camera* unk_B0;
+} GallerySceneGrid; // size = 0xB4
+
+extern GalleryCursor gGalleryMainSelection;
+
+void Gallery_Dispatch(void);
+void Gallery_ResetActiveScene(void);
+void Gallery_ClearPhotoRenderTarget(void);
+void Gallery_CopyPhotoMonFromBattleMon(PhotoMonData*, PokemonData*);
+void Gallery_CopyBattleMonFromPhotoMon(PokemonData*, PhotoMonSpecies*);
+Camera* Geo_CreateSceneInstance(s16, s16, FramebufferImage*, FramebufferImage*, AssetManager*, BinArchive*, PhotoSceneData*);
+u8* Gallery_ProcessSceneInstance(Camera*);
+s32 Gallery_IsSceneReady(Camera*);
+s32 Gallery_FindReadyScene(Camera**, s32);
+Camera* Gallery_GetActiveScene(void);
+void Gallery_ClearActiveScene(void);
+s32 Gallery_IsPhotoSpeciesValid(PhotoSceneData*);
+f32 Math_AbsF32(f32);
+void Vec3f_CrossProductComponents(f32, f32, f32, f32, f32, f32, f32*, f32*, f32*);
+void Vec3f_NormalizeComponents(f32*, f32*, f32*);
+void Mtx_BuildTranslatedDirectionRotation(Mtx*, f32, f32, f32, f32, f32, f32);
+void MtxF_ExtractScale(MtxF*, MtxF*);
+void MtxF_GetScaleVector(MtxF* arg0, Vec3f* arg1);
+
+#endif // _30640_H_

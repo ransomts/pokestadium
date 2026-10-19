@@ -2,7 +2,7 @@
 #define _FRAGMENT39_H_
 
 #include "global.h"
-#include "6BC0.h"
+#include "src/gfx_rect.h"
 
 typedef struct unk_D_82508B00 {
     /* 0x00 */ u16 posX;

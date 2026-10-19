@@ -1,5 +1,5 @@
 #include "battle_engine.h"
-#include "src/6A40.h"
+#include "src/gfx_buffer.h"
 #include "src/math_util.h"
 
 static ParticleEmitter gOwnerLinkedFourStreams[4];

@@ -2,7 +2,7 @@
 #define _FRAGMENT54_H_
 
 #include "global.h"
-#include "src/26820.h"
+#include "src/save_data.h"
 
 void RentalHub_DrawHeaderIcon(s16 arg0, s16 arg1);
 void RentalHub_DrawHeaderBar(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4);

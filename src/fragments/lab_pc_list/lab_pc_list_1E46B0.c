@@ -1,9 +1,9 @@
 #include "src/fragments/lab_pc_list/lab_pc_list.h"
 #include "src/22630.h"
-#include "src/26820.h"
-#include "src/29BA0.h"
-#include "src/2D340.h"
-#include "src/2E460.h"
+#include "src/save_data.h"
+#include "src/game_state.h"
+#include "src/table_view.h"
+#include "src/gb_save.h"
 #include "src/hal_libc.h"
 #include "src/memory.h"
 

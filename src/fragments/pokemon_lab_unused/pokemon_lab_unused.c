@@ -1,4 +1,4 @@
-#include "src/29BA0.h"
+#include "src/game_state.h"
 #include "pokemon_lab_unused.h"
 
 static u8 sFragment30Buffer[0x10];

@@ -1,5 +1,5 @@
 #include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
-#include "src/2E110.h"
+#include "src/text_system.h"
 
 static char** gMessageBank_2C;
 static char** gMessageBank_1A;

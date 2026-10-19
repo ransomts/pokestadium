@@ -1,6 +1,6 @@
 #include "lab_pc.h"
-#include "src/1CF30.h"
-#include "src/29BA0.h"
+#include "src/graphics_textures.h"
+#include "src/game_state.h"
 #include "src/3FB0.h"
 #include "src/memory.h"
 #include "src/stage_loader.h"

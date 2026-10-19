@@ -1,7 +1,7 @@
 #include "battle_engine.h"
 #include "src/22630.h"
-#include "src/2E110.h"
-#include "src/F420.h"
+#include "src/text_system.h"
+#include "src/matrix.h"
 
 typedef struct unk_D_843C4DA0 {
     /* 0x00 */ u16 posX;

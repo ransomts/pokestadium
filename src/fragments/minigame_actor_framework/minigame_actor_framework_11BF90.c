@@ -1,7 +1,7 @@
 #include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
-#include "src/19840.h"
-#include "src/1C720.h"
-#include "src/12D80.h"
+#include "src/display_object_textures.h"
+#include "src/model_renderer.h"
+#include "src/geo_render.h"
 #include "src/memory.h"
 
 static MiniActor* gMiniActorArray;

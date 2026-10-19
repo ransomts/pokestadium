@@ -1,5 +1,5 @@
 #include "debug_menu_slot69.h"
-#include "src/29BA0.h"
+#include "src/game_state.h"
 
 s32 DebugMenu_ForwardSlot69(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     FRAGMENT_LOAD_AND_CALL2(fragment67, 0, 0);

@@ -1,5 +1,5 @@
 #include "2FEA0.h"
-#include "src/29BA0.h"
+#include "src/game_state.h"
 #include "src/3FB0.h"
 #include "src/memory.h"
 

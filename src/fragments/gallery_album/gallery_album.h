@@ -2,7 +2,7 @@
 #define _FRAGMENT44_H_
 
 #include "global.h"
-#include "src/30640.h"
+#include "src/gallery.h"
 
 s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0);
 void Gallery_AlbumInit(s32 arg0, s32 arg1);

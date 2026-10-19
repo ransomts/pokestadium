@@ -1,6 +1,6 @@
 #include "geo_layout.h"
-#include "src/11BA0.h"
-#include "src/F420.h"
+#include "src/geo_node.h"
+#include "src/matrix.h"
 #include "src/util.h"
 
 static GeoLayoutCommandProc GeoLayoutJumpTable[] = {

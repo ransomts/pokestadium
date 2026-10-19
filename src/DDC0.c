@@ -2,14 +2,14 @@
 #include "global.h"
 #include "dp_intro.h"
 #include "profiler.h"
-#include "4BDC0.h"
-#include "5580.h"
-#include "E1C0.h"
-#include "373A0.h"
-#include "src/50860.h"
-#include "src/490A0.h"
-#include "src/4BA90.h"
-#include "src/4BDC0.h"
+#include "src/audio_loop_point.h"
+#include "src/scheduler.h"
+#include "src/gb_tower_audio.h"
+#include "src/audio_commands.h"
+#include "src/audio_category_fade.h"
+#include "src/audio_sound_state.h"
+#include "src/audio_channel.h"
+#include "src/audio_loop_point.h"
 
 typedef struct AudioThreadData {
   /* 0x0000 */ OSThread thread;

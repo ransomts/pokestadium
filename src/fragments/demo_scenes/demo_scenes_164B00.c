@@ -1,7 +1,7 @@
 #include "src/fragments/demo_scenes/demo_scenes.h"
-#include "src/1CF30.h"
-#include "src/6A40.h"
-#include "src/6BC0.h"
+#include "src/graphics_textures.h"
+#include "src/gfx_buffer.h"
+#include "src/gfx_rect.h"
 
 void UI_DrawSplitGradientPanel(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 width, u8 height, u8 uls, u8 ult, u8 lrs,
                    u8 lrt, u8 argB, u8 argC, GfxTileParams* argD, s32 argE) {

@@ -1,6 +1,6 @@
 #include "rental_rules.h"
-#include "src/1CF30.h"
-#include "src/49790.h"
+#include "src/graphics_textures.h"
+#include "src/audio_sfx.h"
 
 static s16 gDialogState;
 static s16 gDialogTimer;

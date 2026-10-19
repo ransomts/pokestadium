@@ -2,7 +2,7 @@
 #define _FRAGMENT31_H_
 
 #include "global.h"
-#include "30640.h"
+#include "src/gallery.h"
 
 typedef struct DisplayListAddresses {
     /* 0x00 */ u32 segments[2];

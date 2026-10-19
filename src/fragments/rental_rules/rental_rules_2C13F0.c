@@ -1,11 +1,11 @@
 #include "rental_rules.h"
-#include "src/1AB70.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
+#include "src/poke_icon.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
 #include "src/22630.h"
-#include "src/2E110.h"
-#include "src/49790.h"
-#include "src/6BC0.h"
+#include "src/text_system.h"
+#include "src/audio_sfx.h"
+#include "src/gfx_rect.h"
 
 static u16 gPokemonIconTextures[151][0x640];
 static QualifyingSpeciesWindow gQualifyingSpeciesWindow;

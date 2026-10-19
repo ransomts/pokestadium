@@ -2,7 +2,7 @@
 #define _FRAGMENT42_H_
 
 #include "global.h"
-#include "src/30640.h"
+#include "src/gallery.h"
 
 void Gallery_SnapDrawRoundedFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
 GallerySceneGrid* Gallery_SnapGetActiveGrid(void);

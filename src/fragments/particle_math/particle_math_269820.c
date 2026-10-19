@@ -1,5 +1,5 @@
 #include "src/fragments/particle_math/particle_math.h"
-#include "src/12D80.h"
+#include "src/geo_render.h"
 
 ParticleEffectData gParticleDefaultCallback = { 3, Particle_NoopDraw };
 

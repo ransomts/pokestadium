@@ -1,8 +1,8 @@
 #include "global.h"
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
-#include "src/6A40.h"
-#include "src/11BA0.h"
-#include "src/1C720.h"
+#include "src/gfx_buffer.h"
+#include "src/geo_node.h"
+#include "src/model_renderer.h"
 #include "src/math_util.h"
 
 static Gfx gFragment2_1EmptyDL[] = {

@@ -1,14 +1,14 @@
 #include "src/fragments/widget_tree/widget_tree.h"
-#include "src/1CF30.h"
-#include "src/20330.h"
+#include "src/graphics_textures.h"
+#include "src/input.h"
 #include "src/22630.h"
-#include "src/2D340.h"
-#include "src/2E110.h"
-#include "src/2E460.h"
-#include "src/49790.h"
+#include "src/table_view.h"
+#include "src/text_system.h"
+#include "src/gb_save.h"
+#include "src/audio_sfx.h"
 #include "src/memmap.h"
 #include "src/memory.h"
-#include "src/232C0.h"
+#include "src/pokemon_stats.h"
 
 static Color_RGBA8 gDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 

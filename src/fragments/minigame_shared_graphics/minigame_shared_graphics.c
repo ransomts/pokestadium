@@ -1,7 +1,7 @@
 #include "src/fragments/minigame_shared_graphics/minigame_shared_graphics.h"
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
-#include "src/6A40.h"
-#include "src/4CBC0.h"
+#include "src/gfx_buffer.h"
+#include "src/audio_commands_category2.h"
 
 u32 gTextTable_StageNames[] = {
     0xA5B2A1BC, 0xA5E0A4CE, 0xA4BBA4C4, 0xA4E1A4A4, 0x00000000, 0xA3C1A5DC, 0xA5BFA5F3, 0x00000000, 0xA4B8A4E5,

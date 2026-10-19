@@ -2,8 +2,8 @@
 #define _FRAGMENT41_H_
 
 #include "global.h"
-#include "src/1AB70.h"
-#include "src/29BA0.h"
+#include "src/poke_icon.h"
+#include "src/game_state.h"
 
 typedef struct PickerPokemonEntry {
     /* 0x00 */ u8 posX;

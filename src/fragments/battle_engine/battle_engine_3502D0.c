@@ -1,7 +1,7 @@
 #include "battle_engine.h"
 #include "include/math.h"
-#include "src/30640.h"
-#include "src/6A40.h"
+#include "src/gallery.h"
+#include "src/gfx_buffer.h"
 
 static WaterSurfaceData D_843A06A0;
 

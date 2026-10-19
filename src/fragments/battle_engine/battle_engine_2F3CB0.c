@@ -1,7 +1,7 @@
 #include "battle_engine.h"
-#include "src/17300.h"
-#include "src/1C720.h"
-#include "src/F420.h"
+#include "src/model_animation.h"
+#include "src/model_renderer.h"
+#include "src/matrix.h"
 
 static f32 gDefaultScales[] = { 1.0f, 2.0f };
 

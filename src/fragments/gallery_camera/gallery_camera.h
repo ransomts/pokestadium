@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "src/controller.h"
-#include "src/1C720.h"
+#include "src/model_renderer.h"
 
 typedef struct GalleryCameraConfigState {
     /* 0x00 */ f32 posX;

@@ -1,7 +1,7 @@
 #include "global.h"
 #include "33FE0.h"
-#include "12D80.h"
-#include "32D10.h"
+#include "src/geo_render.h"
+#include "src/battle_hud.h"
 #include "memmap.h"
 
 // .data

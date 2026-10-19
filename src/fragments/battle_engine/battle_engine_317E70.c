@@ -1,7 +1,7 @@
 #include "battle_engine.h"
-#include "src/12D80.h"
-#include "src/1C720.h"
-#include "src/F420.h"
+#include "src/geo_render.h"
+#include "src/model_renderer.h"
+#include "src/matrix.h"
 #include "src/fragments/particle_math/particle_math.h"
 #include "src/memory.h"
 

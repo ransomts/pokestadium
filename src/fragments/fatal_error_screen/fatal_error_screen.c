@@ -1,9 +1,9 @@
 #include "fatal_error_screen.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
-#include "src/2E110.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
+#include "src/text_system.h"
 #include "src/3FB0.h"
-#include "src/6A40.h"
+#include "src/gfx_buffer.h"
 #include "src/memory.h"
 #include "src/stage_loader.h"
 

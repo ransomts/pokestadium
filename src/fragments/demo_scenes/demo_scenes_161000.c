@@ -1,5 +1,5 @@
 #include "src/fragments/demo_scenes/demo_scenes.h"
-#include "src/F420.h"
+#include "src/matrix.h"
 
 u16 Diorama_IsModelInCameraCone(CameraStruct* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
     UNUSED s32 pad[6];

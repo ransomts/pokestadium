@@ -2,7 +2,7 @@
 #define _FRAGMENT1_H_
 
 #include "global.h"
-#include "src/E1C0.h"
+#include "src/gb_tower_audio.h"
 
 void GbEmu_Init(GbEmuState*);
 void GbEmu_RunFrame(GbEmuState*);

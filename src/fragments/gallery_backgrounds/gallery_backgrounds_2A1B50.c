@@ -1,10 +1,10 @@
 #include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
 #include "src/22630.h"
-#include "src/26820.h"
-#include "src/6BC0.h"
-#include "src/C030.h"
+#include "src/save_data.h"
+#include "src/gfx_rect.h"
+#include "src/controller_ram.h"
 #include "src/memory.h"
 
 unk_D_83402EE0 gDisplayableMonIndices[24];

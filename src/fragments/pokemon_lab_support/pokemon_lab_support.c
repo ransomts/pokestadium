@@ -1,5 +1,5 @@
 #include "src/fragments/pokemon_lab_support/pokemon_lab_support.h"
-#include "src/2E460.h"
+#include "src/gb_save.h"
 
 PaletteColor gUiColorPalette[] = {
     { 0x00000000, { 0xFF, 0xFF, 0xFF, 0xFF } },

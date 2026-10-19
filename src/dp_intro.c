@@ -1,8 +1,8 @@
 #include "global.h"
 #include <PR/os_internal_reg.h>
 #include "dp_intro.h"
-#include "5580.h"
-#include "6BC0.h"
+#include "src/scheduler.h"
+#include "src/gfx_rect.h"
 #include "crash_screen.h"
 #include "profiler.h"
 #include "memory.h"

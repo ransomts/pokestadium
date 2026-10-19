@@ -1,6 +1,6 @@
 #include "dynamo_game.h"
-#include "src/49790.h"
-#include "src/6A40.h"
+#include "src/audio_sfx.h"
+#include "src/gfx_buffer.h"
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
 #include "src/fragments/minigame_shared_library/minigame_shared_library.h"
 

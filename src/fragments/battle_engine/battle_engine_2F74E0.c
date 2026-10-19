@@ -1,8 +1,8 @@
 #include "battle_engine.h"
-#include "src/373A0.h"
+#include "src/audio_commands.h"
 #include "src/3D140.h"
-#include "src/49790.h"
-#include "src/4BDC0.h"
+#include "src/audio_sfx.h"
+#include "src/audio_loop_point.h"
 
 static f32 gBattleTimer;
 f32 gHPBarTimer;

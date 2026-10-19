@@ -2,9 +2,9 @@
 #define _FRAGMENT57_H_
 
 #include "global.h"
-#include "src/6BC0.h"
-#include "src/11BA0.h"
-#include "src/26820.h"
+#include "src/gfx_rect.h"
+#include "src/geo_node.h"
+#include "src/save_data.h"
 
 typedef struct unk_D_82D0AB38 {
     /* 0x00 */ u8 posX;

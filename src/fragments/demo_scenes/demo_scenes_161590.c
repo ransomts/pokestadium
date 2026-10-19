@@ -1,8 +1,8 @@
 #include "src/fragments/demo_scenes/demo_scenes.h"
-#include "src/1CF30.h"
-#include "src/2E110.h"
-#include "src/6A40.h"
-#include "src/6BC0.h"
+#include "src/graphics_textures.h"
+#include "src/text_system.h"
+#include "src/gfx_buffer.h"
+#include "src/gfx_rect.h"
 #include "src/controller.h"
 
 void Diorama_DrawEndBackgroundTiles(u8* arg0) {

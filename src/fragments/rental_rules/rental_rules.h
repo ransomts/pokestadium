@@ -2,7 +2,7 @@
 #define _FRAGMENT55_H_
 
 #include "global.h"
-#include "src/29BA0.h"
+#include "src/game_state.h"
 
 typedef struct unk_D_83003CE0 {
     /* 0x00 */ char* posX[29];

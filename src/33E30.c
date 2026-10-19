@@ -1,7 +1,7 @@
 #include "33E30.h"
-#include "src/30640.h"
-#include "src/6A40.h"
-#include "src/12D80.h"
+#include "src/gallery.h"
+#include "src/gfx_buffer.h"
+#include "src/geo_render.h"
 
 static Gfx gEmptyDisplayList[] = {
     gsSPEndDisplayList(),

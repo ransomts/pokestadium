@@ -1,6 +1,6 @@
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
-#include "src/1CF30.h"
-#include "src/2E110.h"
+#include "src/graphics_textures.h"
+#include "src/text_system.h"
 #include "src/controller.h"
 
 extern u32 gResultCubeTex_0[];

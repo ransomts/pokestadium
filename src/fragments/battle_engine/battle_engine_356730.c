@@ -1,6 +1,6 @@
 #include "battle_engine.h"
-#include "src/32D10.h"
-#include "src/6A40.h"
+#include "src/battle_hud.h"
+#include "src/gfx_buffer.h"
 
 static WaterParticleSystem D_843C2C00[4];
 

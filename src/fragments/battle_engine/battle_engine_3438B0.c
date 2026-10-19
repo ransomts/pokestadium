@@ -1,5 +1,5 @@
 #include "battle_engine.h"
-#include "src/6A40.h"
+#include "src/gfx_buffer.h"
 
 void BattleAnim_RenderNop1(void) {
 }

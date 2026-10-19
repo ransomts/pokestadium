@@ -1,9 +1,9 @@
 #include "battle_engine.h"
-#include "src/17300.h"
-#include "src/18140.h"
-#include "src/1C720.h"
-#include "src/2E110.h"
-#include "src/F420.h"
+#include "src/model_animation.h"
+#include "src/model_animation_events.h"
+#include "src/model_renderer.h"
+#include "src/text_system.h"
+#include "src/matrix.h"
 
 s32 BattleScene_ByteArrayContains(u8 arg0, u8* arg1, s32 arg2) {
     while (arg2--) {

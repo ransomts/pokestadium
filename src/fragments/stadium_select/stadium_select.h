@@ -2,8 +2,8 @@
 #define _FRAGMENT59_H_
 
 #include "global.h"
-#include "src/6BC0.h"
-#include "src/11BA0.h"
+#include "src/gfx_rect.h"
+#include "src/geo_node.h"
 
 void AnimateRectangle(s16 arg0, s16 arg1, s16 arg2);
 void StadiumSelect_UpdateSparkles(s16 arg0);

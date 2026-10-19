@@ -1,8 +1,8 @@
 #include "battle_engine.h"
-#include "src/17300.h"
-#include "src/12D80.h"
-#include "src/6A40.h"
-#include "src/F420.h"
+#include "src/model_animation.h"
+#include "src/geo_render.h"
+#include "src/gfx_buffer.h"
+#include "src/matrix.h"
 #include "src/math_util.h"
 
 void BattleAnim_CallbackSharedDescriptor29ScaleAnimFade_InitParticle(ParticleEffectInstance* arg0) {

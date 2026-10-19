@@ -5,7 +5,7 @@
 #include "src/fragments/pokemon_lab_support/pokemon_lab_support.h"
 #include "src/fragments/widget_tree/widget_tree.h"
 #include "src/fragments/lab_ui_support/lab_ui_support.h"
-#include "src/2E460.h"
+#include "src/gb_save.h"
 
 typedef struct unk_func_8830867C_02C_04C_018 {
     /* 0x00 */ char unk00[0x8];

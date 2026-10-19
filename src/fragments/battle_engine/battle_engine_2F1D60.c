@@ -1,8 +1,8 @@
 #include "battle_engine.h"
-#include "src/17300.h"
-#include "src/1C720.h"
-#include "src/334D0.h"
-#include "src/F420.h"
+#include "src/model_animation.h"
+#include "src/model_renderer.h"
+#include "src/model_renderer_callbacks.h"
+#include "src/matrix.h"
 
 void BattleScene_TriggerOwnerModelAnimation(BattlePlayerEntity* arg0) {
     ModelAnim_SetFrame(&arg0->ownerModel.unk_000, arg0->ownerModel.unk_180);

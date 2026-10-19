@@ -3,8 +3,8 @@
 
 #include "global.h"
 #include "memory.h"
-#include "29BA0.h"
-#include "2D340.h"
+#include "src/game_state.h"
+#include "src/table_view.h"
 
 #define STAT_HP 1
 #define STAT_SPECIAL 2

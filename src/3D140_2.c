@@ -1,14 +1,14 @@
 #include "3D140.h"
 #include "lib/ultralib/include/PR/leo.h"
-#include "src/373A0.h"
+#include "src/audio_commands.h"
 #include "src/libnumus/player.h"
 #include "src/3D140.h"
-#include "src/435D0.h"
+#include "src/gb_audio.h"
 #include "src/libnaudio/n_libaudio_sc.h"
 #include "src/libnaudio/n_libaudio_sn_sc.h"
-#include "src/45720.h"
-#include "src/4A3E0.h"
-#include "src/4BDC0.h"
+#include "src/audio_stream.h"
+#include "src/gb_audio_render.h"
+#include "src/audio_loop_point.h"
 
 typedef union {
     struct {

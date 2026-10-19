@@ -1,9 +1,9 @@
 #include "trade_machine.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
-#include "src/232C0.h"
-#include "src/2E110.h"
-#include "src/49790.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
+#include "src/pokemon_stats.h"
+#include "src/text_system.h"
+#include "src/audio_sfx.h"
 
 static RentalMenuState gRentalMenuState;
 static PickerPokemonEntry* gRentalItemPtrs[2];

@@ -1,6 +1,6 @@
 #include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
-#include "src/1CF30.h"
+#include "src/graphics_textures.h"
 
 void ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32();
 void ParticleGfx_DrawBillboardPrimEnvQuad();

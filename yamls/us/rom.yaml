@@ -29,11 +29,11 @@
     - [0x3640, c, memory] # memory_pool
     - [0x3A80, c, util]
     - [0x3FB0, c] # PRES-JPEG decoder
-    - [0x5580, c] # there's a split here according to PAL
+    - [0x5580, c, scheduler] # there's a split here according to PAL
     - [0x60A0, c, reset] # soft reset effect
     - [0x6430, c, controller] # controller code
-    - [0x6A40, c]
-    - [0x6BC0, c, 6BC0] # 
+    - [0x6A40, c, gfx_buffer]
+    - [0x6BC0, c, gfx_rect] # 
     - [0x75F0, c, stage_loader] # stage loader
     - [0x8EB0, pad]
     - [0x8EC0, c, crash_screen] # crash handler
@@ -41,7 +41,7 @@
     - [0xAF00, c, math_util]
     - [0xB130, c, hal_libc]
     - [0xB230, c, gb_tower]
-    - [0xC030, c] # extra sprites loader
+    - [0xC030, c, controller_ram] # extra sprites loader
     - [0xC3D0, asm, exception_set] # exception functions
     - [0xC3F0, hasm, yay0] # Yay0 decoder
     - [0xC4A0, hasm, abs] # fabsf function
@@ -51,39 +51,39 @@
     - [0xCE80, c, jpeg_decoder]
     - [0xD470, c, flash] #
     - [0xDDC0, c]
-    - [0xE1C0, c] # load gb emulator (fragment 1)
+    - [0xE1C0, c, gb_tower_audio] # load gb emulator (fragment 1)
     - [0xE570, c, gb_mbc] # gameboy memory bank controller
-    - [0xE890, c] #
-    - [0xF420, c] #
-    - [0x11BA0, c] #  
-    - [0x12D80, c] # 
-    - [0x17300, c, 17300] #
-    - [0x18140, c] # dp model animations
+    - [0xE890, c, leo] #
+    - [0xF420, c, matrix] #
+    - [0x11BA0, c, geo_node] #  
+    - [0x12D80, c, geo_render] # 
+    - [0x17300, c, model_animation] #
+    - [0x18140, c, model_animation_events] # dp model animations
     - [0x18480, c, geo_layout] # dp model animations
-    - [0x19840, c] # alternative pkm textures
-    - [0x1AB70, c] # vs screen code
-    - [0x1C720, c] #
-    - [0x1CF30, c] # dp list code
-    - [0x20330, c] # some cache cleaner
-    - [0x20470, c] # dp list for UI and icons
+    - [0x19840, c, display_object_textures] # alternative pkm textures
+    - [0x1AB70, c, poke_icon] # vs screen code
+    - [0x1C720, c, model_renderer] #
+    - [0x1CF30, c, graphics_textures] # dp list code
+    - [0x20330, c, input] # some cache cleaner
+    - [0x20470, c, ui_graphics] # dp list for UI and icons
     - [0x225A0, c] #
     - [0x22630, c] # registered pkm stats
-    - [0x232C0, c, 232C0] # 
-    - [0x26820, c] # save data code
+    - [0x232C0, c, pokemon_stats] # 
+    - [0x26820, c, save_data] # save data code
     - [0x29B90, pad]
-    - [0x29BA0, c] # scenary code
-    - [0x2C1C0, c] # scenary cache cleaner
-    - [0x2D340, c] # pkm lab pc code
-    - [0x2E110, c] # stack cleaner
-    - [0x2E460, c] # pkm lab pokedex code
+    - [0x29BA0, c, game_state] # scenary code
+    - [0x2C1C0, c, session] # scenary cache cleaner
+    - [0x2D340, c, table_view] # pkm lab pc code
+    - [0x2E110, c, text_system] # stack cleaner
+    - [0x2E460, c, gb_save] # pkm lab pokedex code
     - [0x2FEA0, c] # minigames code
-    - [0x30640, c] # gallery code
-    - [0x32D10, c]
-    - [0x334D0, c]
+    - [0x30640, c, gallery] # gallery code
+    - [0x32D10, c, battle_hud]
+    - [0x334D0, c, model_renderer_callbacks]
     - [0x33E30, c]
     - [0x33FE0, c]
-    - [0x37370, c]
-    - [0x373A0, c]  # battle code
+    - [0x37370, c, audio_sfx_wrapper]
+    - [0x373A0, c, audio_commands]  # battle code
     - [0x38BB0, c, libnumus/player]
     - [0x3D140, c]  # music code
     - [0x3E170, c, 3D140_2]  # music code
@@ -91,25 +91,25 @@
     # libnaudiosc. Why are there so many gaps?
     - [0x43520, c, libnaudio/n_sl]
     - [0x435B0, c, libnaudio/n_synsetpriority]
-    - [0x435D0, c]  # pkm lab cries code
-    - [0x45720, c]  # music code
-    - [0x46680, c]  # speech code
+    - [0x435D0, c, gb_audio]  # pkm lab cries code
+    - [0x45720, c, audio_stream]  # music code
+    - [0x46680, c, gsm_decoder]  # speech code
     - [0x47AF0, c, libnaudio/n_synstopvoice]
     - [0x47B60, c, libnaudio/n_env]  # sound code
-    - [0x485C0, c]  # moves code 
-    - [0x48C60, c]  # move effects code
-    - [0x490A0, c]  # audio functions to 0x50C00
-    - [0x49190, hasm]
-    - [0x49790, c]
+    - [0x485C0, c, audio_fade]  # moves code 
+    - [0x48C60, c, audio_stored_fade]  # move effects code
+    - [0x490A0, c, audio_sound_state]  # audio functions to 0x50C00
+    - [0x49190, hasm, libgsm]
+    - [0x49790, c, audio_sfx]
     - [0x49BA0, c, libnaudio/n_synallocvoice]
     - [0x49DC0, c, libnaudio/n_synthesizer]
     - [0x4A360, c, libnaudio/n_synsetpan]
-    - [0x4A3E0, c]
-    - [0x4B940, c, 4B940]
-    - [0x4BA90, c, 4BA90]
-    - [0x4BDC0, c, 4BDC0]
-    - [0x4CBC0, c, 4CBC0]
-    - [0x4F410, c]
+    - [0x4A3E0, c, gb_audio_render]
+    - [0x4B940, c, rom_device]
+    - [0x4BA90, c, audio_channel]
+    - [0x4BDC0, c, audio_loop_point]
+    - [0x4CBC0, c, audio_commands_category2]
+    - [0x4F410, c, cry]
     - [0x4F7F0, c, libnaudio/n_synsetpitch]
     - [0x4F870, c, libnaudio/n_drvrNew]
     - [0x4FDB0, c, libnaudio/n_auxbus]
@@ -117,14 +117,14 @@
     - [0x4FEF0, c, libnaudio/n_synaddplayer]
     - [0x4FF50, c, libnaudio/n_resample]
     - [0x50120, c, libnaudio/n_load]
-    - [0x50860, c]
+    - [0x50860, c, audio_category_fade]
     - [0x50990, c, libnaudio/n_syndelete]
     - [0x509A0, c, libnaudio/n_synallocfx]
-    - [0x50A00, c]
+    - [0x50A00, c, audio_data]
     - [0x50B40, c, libnaudio/n_synstartvoiceparam]
     - [0x50C20, c, libnaudio/n_synfreevoice]
     - [0x50CC0, c, libnaudio/n_reverb]
-    - [0x51740, c]
+    - [0x51740, c, audio_cache]
     - [0x517A0, hasm] # yay0 audio decoder
     - [0x51850, c, libnaudio/n_save]
     - [0x518A0, c, libnaudio/n_mainbus]
@@ -336,49 +336,49 @@
     - [0x69770, .data, dp_intro]
     - [0x69790, .data, util]
     - [0x697A0, .data, controller]
-    - [0x697B0, .data, 6BC0]
+    - [0x697B0, .data, gfx_rect]
     - [0x697C0, .data, stage_loader]
     - [0x6A1B0, .data, crash_screen]
     - [0x6A3B0, .data, profiler]
     - [0x6A3D0, .data, gb_tower]
-    - [0x6A3E0, .data, C030]
+    - [0x6A3E0, .data, controller_ram]
     - [0x6A3F0, .data, math_util]
-    - [0x6FC00, .data, E890]
-    - [0x6FC10, .data, F420]
-    - [0x6FC80, .data, 12D80]
+    - [0x6FC00, .data, leo]
+    - [0x6FC10, .data, matrix]
+    - [0x6FC80, .data, geo_render]
     - [0x6FEB0, .data, geo_layout]
-    - [0x6FF50, .data, 1AB70]
-    - [0x70070, .data, 20470]
+    - [0x6FF50, .data, poke_icon]
+    - [0x70070, .data, ui_graphics]
     - [0x71BA0, .data, data_71BA0]
     - [0x72950, .data, data_72950]
     - [0x72A10, .data, data_72A10]
     - [0x73700, .data, data_73700]
-    - [0x73E30, .data, 232C0]
-    - [0x74250, .data, 26820]
-    - [0x74260, .data, 29BA0]
-    - [0x76280, .data, 2C1C0]
-    - [0x76290, .data, 2D340]
-    - [0x764A0, .data, 2E460]
-    - [0x76A40, .data, 30640]
-    - [0x76E70, .data, 334D0]
+    - [0x73E30, .data, pokemon_stats]
+    - [0x74250, .data, save_data]
+    - [0x74260, .data, game_state]
+    - [0x76280, .data, session]
+    - [0x76290, .data, table_view]
+    - [0x764A0, .data, gb_save]
+    - [0x76A40, .data, gallery]
+    - [0x76E70, .data, model_renderer_callbacks]
     - [0x76EF0, .data, 33E30]
     - [0x76FB0, .data, 33FE0]
-    - [0x78220, .data, 37370]
-    - [0x78570, .data, 373A0]
+    - [0x78220, .data, audio_sfx_wrapper]
+    - [0x78570, .data, audio_commands]
     - [0x78890, .data, libnumus/player]
     - [0x78990, .data, 3D140_2]
     - [0x79180, .data, libnaudio/n_sl]
-    - [0x79190, .data, 435D0]
-    - [0x791F0, .data, 45720]
+    - [0x79190, .data, gb_audio]
+    - [0x791F0, .data, audio_stream]
     - [0x79200, .data, libnaudio/n_env]
-    - [0x79300, .data, 485C0]
-    - [0x79610, .data, 48C60]
-    - [0x79630, .data, 49790]
-    - [0x79660, .data, 4A3E0]
-    - [0x79A60, .data, 4BA90]
-    - [0x79A70, .data, 4BDC0]
-    - [0x79AE0, .data, 4CBC0]
-    - [0x79C70, .data, 4F410]
+    - [0x79300, .data, audio_fade]
+    - [0x79610, .data, audio_stored_fade]
+    - [0x79630, .data, audio_sfx]
+    - [0x79660, .data, gb_audio_render]
+    - [0x79A60, .data, audio_channel]
+    - [0x79A70, .data, audio_loop_point]
+    - [0x79AE0, .data, audio_commands_category2]
+    - [0x79C70, .data, cry]
     - [0x79F70, .data, libnaudio/n_drvrNew]
     - [0x7A100, .data, libnaudio/n_reverb]
     - [0x7A110, .data, libleo/leofunc]
@@ -428,43 +428,43 @@
     - [0x7BB10, .rodata, dp_intro]
     - [0x7BB20, .rodata, util]
     - [0x7BB50, .rodata, 3FB0]
-    - [0x7BBC0, .rodata, 5580]
+    - [0x7BBC0, .rodata, scheduler]
     - [0x7BBE0, .rodata, crash_screen]
     - [0x7BFA0, .rodata, profiler]
     - [0x7BFC0, .rodata, gb_tower]
-    - [0x7C000, .rodata, E890]
-    - [0x7C180, .rodata, F420]
-    - [0x7C190, .rodata, 1AB70]
+    - [0x7C000, .rodata, leo]
+    - [0x7C180, .rodata, matrix]
+    - [0x7C190, .rodata, poke_icon]
     - [0x7C1C0, .rodata, data_72950]
     - [0x7C220, .rodata, data_72A10]
     - [0x7C750, .rodata, data_73700]
     - [0x7CCA0, .rodata, 22630]
-    - [0x7CD10, .rodata, 232C0]
-    - [0x7CD40, .rodata, 26820]
-    - [0x7CEC0, .rodata, 29BA0]
-    - [0x7CFD0, .rodata, 2C1C0]
-    - [0x7D030, .rodata, 2E110]
-    - [0x7D040, .rodata, 2E460]
+    - [0x7CD10, .rodata, pokemon_stats]
+    - [0x7CD40, .rodata, save_data]
+    - [0x7CEC0, .rodata, game_state]
+    - [0x7CFD0, .rodata, session]
+    - [0x7D030, .rodata, text_system]
+    - [0x7D040, .rodata, gb_save]
     - [0x7D090, .rodata, 2FEA0]
-    - [0x7D0F0, .rodata, 30640]
+    - [0x7D0F0, .rodata, gallery]
     - [0x7D110, rodata, rom_rodata_7D110]
     - [0x7D1B0, .rodata, 33FE0]
-    - [0x7D230, .rodata, 373A0]
+    - [0x7D230, .rodata, audio_commands]
     - [0x7D340, .rodata, libnumus/player]
     - [0x7D3C0, .rodata, 3D140]
     - [0x7D3E0, .rodata, 3D140_2]
-    - [0x7D800, .rodata, 435D0]
-    - [0x7D860, .rodata, 45720]
+    - [0x7D800, .rodata, gb_audio]
+    - [0x7D860, .rodata, audio_stream]
     - [0x7D880, .rodata, libnaudio/n_env]
-    - [0x7D8D0, .rodata, 485C0]
-    - [0x7DF80, .rodata, 48C60]
-    - [0x7DFD0, .rodata, 49790]
+    - [0x7D8D0, .rodata, audio_fade]
+    - [0x7DF80, .rodata, audio_stored_fade]
+    - [0x7DFD0, .rodata, audio_sfx]
     - [0x7E0C0, .rodata, libnaudio/n_synthesizer]
     - [0x7E0D0, rodata, rom_rodata_7E0D0]
-    - [0x7E0E0, .rodata, 4BA90]
-    - [0x7E110, .rodata, 4BDC0]
-    - [0x7E2F0, .rodata, 4CBC0]
-    - [0x7E560, .rodata, 4F410]
+    - [0x7E0E0, .rodata, audio_channel]
+    - [0x7E110, .rodata, audio_loop_point]
+    - [0x7E2F0, .rodata, audio_commands_category2]
+    - [0x7E560, .rodata, cry]
     - [0x7E5D0, .rodata, libnaudio/n_drvrNew]
     - [0x7E5F0, .rodata, libnaudio/n_resample]
     - [0x7E600, .rodata, libnaudio/n_reverb]
@@ -510,47 +510,47 @@
     - {vram: 0x800A6070, type: .bss, name: memory_main}
     - {vram: 0x800A60B0, type: .bss, name: util}
     - {vram: 0x800A60C0, type: .bss, name: 3FB0}
-    - {vram: 0x800A62E0, type: .bss, name: 5580}
+    - {vram: 0x800A62E0, type: .bss, name: scheduler}
     - {vram: 0x800A6D20, type: .bss, name: reset}
     - {vram: 0x800A7320, type: .bss, name: controller}
-    - {vram: 0x800A7420, type: .bss, name: 6A40}
+    - {vram: 0x800A7420, type: .bss, name: gfx_buffer}
     - {vram: 0x800A7450, type: .bss, name: stage_loader}
     - {vram: 0x800A74C0, type: .bss, name: crash_screen}
     - {vram: 0x800A7EA0, type: .bss, name: profiler}
     - {vram: 0x800A8100, type: .bss, name: gb_tower}
-    - {vram: 0x800A82B0, type: .bss, name: C030}
+    - {vram: 0x800A82B0, type: .bss, name: controller_ram}
     - {vram: 0x800A82D0, type: .bss, name: jpeg_decoder}
     - {vram: 0x800A82E0, type: .bss, name: flash}
     - {vram: 0x800A83A0, type: .bss, name: DDC0}
-    - {vram: 0x800AA660, type: .bss, name: E1C0}
+    - {vram: 0x800AA660, type: .bss, name: gb_tower_audio}
     - {vram: 0x800AA670, type: .bss, name: gb_mbc}
-    - {vram: 0x800AA680, type: .bss, name: E890}
-    - {vram: 0x800AA6C0, type: .bss, name: 12D80}
-    - {vram: 0x800ABCC0, type: .bss, name: 17300}
-    - {vram: 0x800ABD00, type: .bss, name: 18140}
+    - {vram: 0x800AA680, type: .bss, name: leo}
+    - {vram: 0x800AA6C0, type: .bss, name: geo_render}
+    - {vram: 0x800ABCC0, type: .bss, name: model_animation}
+    - {vram: 0x800ABD00, type: .bss, name: model_animation_events}
     - {vram: 0x800ABD30, type: .bss, name: geo_layout}
-    - {vram: 0x800ABE10, type: .bss, name: 19840}
-    - {vram: 0x800AC830, type: .bss, name: 1AB70}
-    - {vram: 0x800AC840, type: .bss, name: 1C720}
-    - {vram: 0x800AC870, type: .bss, name: 1CF30}
-    - {vram: 0x800AC880, type: .bss, name: 20330}
-    - {vram: 0x800AC890, type: .bss, name: 232C0}
-    - {vram: 0x800AE4E0, type: .bss, name: 26820}
-    - {vram: 0x800AE520, type: .bss, name: 29BA0}
-    - {vram: 0x800AF740, type: .bss, name: 2E110}
-    - {vram: 0x800AF750, type: .bss, name: 2E460}
-    - {vram: 0x800AF770, type: .bss, name: 32D10}
-    - {vram: 0x800AF7C0, type: .bss, name: 334D0}
+    - {vram: 0x800ABE10, type: .bss, name: display_object_textures}
+    - {vram: 0x800AC830, type: .bss, name: poke_icon}
+    - {vram: 0x800AC840, type: .bss, name: model_renderer}
+    - {vram: 0x800AC870, type: .bss, name: graphics_textures}
+    - {vram: 0x800AC880, type: .bss, name: input}
+    - {vram: 0x800AC890, type: .bss, name: pokemon_stats}
+    - {vram: 0x800AE4E0, type: .bss, name: save_data}
+    - {vram: 0x800AE520, type: .bss, name: game_state}
+    - {vram: 0x800AF740, type: .bss, name: text_system}
+    - {vram: 0x800AF750, type: .bss, name: gb_save}
+    - {vram: 0x800AF770, type: .bss, name: battle_hud}
+    - {vram: 0x800AF7C0, type: .bss, name: model_renderer_callbacks}
     - {vram: 0x800B2F50, type: .bss, name: 33FE0}
-    - {vram: 0x800B32A0, type: .bss, name: 373A0}
+    - {vram: 0x800B32A0, type: .bss, name: audio_commands}
     - {vram: 0x800FC7A0, type: .bss, name: libnumus/player}
     - {vram: 0x800FC820, type: .bss, name: 3D140}
-    - {vram: 0x800FCD40, type: .bss, name: 435D0}
-    - {vram: 0x800FCED0, type: .bss, name: 45720}
-    - {vram: 0x800FCF60, type: .bss, name: 4A3E0}
-    - {vram: 0x800FF990, type: .bss, name: 4B940}
-    - {vram: 0x800FF9B0, type: .bss, name: 4BDC0}
-    - {vram: 0x800FF9C0, type: .bss, name: 50A00}
+    - {vram: 0x800FCD40, type: .bss, name: gb_audio}
+    - {vram: 0x800FCED0, type: .bss, name: audio_stream}
+    - {vram: 0x800FCF60, type: .bss, name: gb_audio_render}
+    - {vram: 0x800FF990, type: .bss, name: rom_device}
+    - {vram: 0x800FF9B0, type: .bss, name: audio_loop_point}
+    - {vram: 0x800FF9C0, type: .bss, name: audio_data}
   
     # libleo
     - {vram: 0x800FF9D0, type: .bss, name: libleo/leofunc}

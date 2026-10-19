@@ -1,10 +1,10 @@
 #include "src/fragments/gallery_camera/gallery_camera.h"
-#include "src/1CF30.h"
-#include "src/20470.h"
-#include "src/2E110.h"
-#include "src/6A40.h"
-#include "src/6BC0.h"
-#include "src/F420.h"
+#include "src/graphics_textures.h"
+#include "src/ui_graphics.h"
+#include "src/text_system.h"
+#include "src/gfx_buffer.h"
+#include "src/gfx_rect.h"
+#include "src/matrix.h"
 
 const char gCupNameFreeBattle[] = "FREE BATTLE";
 const char gCupNamePokeCup[] = "POK\xE9 CUP";

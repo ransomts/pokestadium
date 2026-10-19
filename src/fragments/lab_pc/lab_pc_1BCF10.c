@@ -1,5 +1,5 @@
 #include "lab_pc.h"
-#include "src/2D340.h"
+#include "src/table_view.h"
 #include "src/memmap.h"
 
 typedef struct unk_func_8820BE14_02C_038_02C_02C {

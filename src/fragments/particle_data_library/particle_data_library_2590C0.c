@@ -1,6 +1,6 @@
 #include "src/fragments/particle_data_library/particle_data_library.h"
-#include "src/6A40.h"
-#include "src/12D80.h"
+#include "src/gfx_buffer.h"
+#include "src/geo_render.h"
 
 typedef struct GraphNodeRange {
     /* 0x00 */ u16 posX;

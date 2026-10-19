@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "src/memory.h"
-#include "src/11BA0.h"
+#include "src/geo_node.h"
 
 #define GEO_CMD_FLAGS_RESET 0
 #define GEO_CMD_FLAGS_SET   1

@@ -1,7 +1,7 @@
 #include "gb_tower.h"
 #include "hal_libc.h"
 #include "controller.h"
-#include "29BA0.h"
+#include "src/game_state.h"
 #include "gb_mbc.h"
 
 // gb_tower.c
