@@ -289,6 +289,25 @@ def apply_group(group, no_gate):
         n = rewrite_header_includes(variants, "src/" + tp + ".h")
         if n:
             print(f"  includes: {oldh} -> src/{tp}.h ({n})")
+        # GLOBAL_ASM pragma paths: a main-segment rename moves the file's
+        # nonmatchings dir (extract regenerates .s under the new path) - the
+        # pragmas must follow (fragment groups never hit this: segments stay
+        # numeric, only main renames change the nonmatchings dir name)
+        pragma_pat = re.compile(r'(asm/us/nonmatchings/)' + re.escape(op) + r'(?=/)')
+        pn = 0
+        for root in ("src",):
+            for dp, _d, fs in os.walk(os.path.join(REPO, root)):
+                for fn in fs:
+                    if not fn.endswith(".c"):
+                        continue
+                    p = os.path.join(dp, fn)
+                    t = open(p, errors="replace").read()
+                    t2, k = pragma_pat.subn(lambda _m, tp=tp: "asm/us/nonmatchings/" + tp, t)
+                    if k:
+                        open(p, "w").write(t2)
+                        pn += k
+        if pn:
+            print(f"  pragmas: nonmatchings/{op} -> nonmatchings/{tp} ({pn})")
 
     if no_gate:
         print("applied without gate (tree dirty - run make yourself)")
