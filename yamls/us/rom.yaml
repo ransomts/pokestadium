@@ -1782,12 +1782,12 @@
     start: 0x2A9790
     vram: 0x83600000
     subsegments:
-    - [0x2A9790, textbin,   fragments/45/fragment45_header]
-    - [0x2A97B0, c,      fragments/45/fragment45]
-    - [0x2ACA10, .data,   fragments/45/fragment45]
-    - [0x2ACA70, .rodata, fragments/45/fragment45]
+    - [0x2A9790, textbin,   fragments/gallery_film_select/gallery_film_select_header]
+    - [0x2A97B0, c,      fragments/gallery_film_select/gallery_film_select]
+    - [0x2ACA10, .data,   fragments/gallery_film_select/gallery_film_select]
+    - [0x2ACA70, .rodata, fragments/gallery_film_select/gallery_film_select]
 
-    - {vram: 0x836032F0, type:  .bss, name: fragments/45/fragment45}
+    - {vram: 0x836032F0, type:  .bss, name: fragments/gallery_film_select/gallery_film_select}
 
   - name: fragment45_relocs
     type: code
@@ -1804,11 +1804,11 @@
     start: 0x2AD270
     vram: 0x83700000
     subsegments:
-    - [0x2AD270, textbin,   fragments/46/fragment46_header]
-    - [0x2AD290, c,      fragments/46/fragment46]
-    - [0x2AD720, .data,   fragments/46/fragment46]
+    - [0x2AD270, textbin,   fragments/gallery_enlarge/gallery_enlarge_header]
+    - [0x2AD290, c,      fragments/gallery_enlarge/gallery_enlarge]
+    - [0x2AD720, .data,   fragments/gallery_enlarge/gallery_enlarge]
 
-    - {vram: 0x837004C0, type:  .bss, name: fragments/46/fragment46}
+    - {vram: 0x837004C0, type:  .bss, name: fragments/gallery_enlarge/gallery_enlarge}
 
   - name: fragment46_relocs
     type: code
