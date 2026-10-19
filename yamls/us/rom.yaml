@@ -1646,12 +1646,12 @@
     start: 0x285DC0
     vram: 0x83100000
     subsegments:
-    - [0x285DC0, textbin,   fragments/40/fragment40_header]
-    - [0x285DE0, c,      fragments/40/fragment40]
-    - [0x2879A0, .data,   fragments/40/fragment40]
-    - [0x287C80, .rodata, fragments/40/fragment40]
+    - [0x285DC0, textbin,   fragments/gym_leader_castle_clear/gym_leader_castle_clear_header]
+    - [0x285DE0, c,      fragments/gym_leader_castle_clear/gym_leader_castle_clear]
+    - [0x2879A0, .data,   fragments/gym_leader_castle_clear/gym_leader_castle_clear]
+    - [0x287C80, .rodata, fragments/gym_leader_castle_clear/gym_leader_castle_clear]
 
-    - {vram: 0x83101EE0, type:  .bss, name: fragments/40/fragment40}
+    - {vram: 0x83101EE0, type:  .bss, name: fragments/gym_leader_castle_clear/gym_leader_castle_clear}
 
   - name: fragment40_relocs
     type: code

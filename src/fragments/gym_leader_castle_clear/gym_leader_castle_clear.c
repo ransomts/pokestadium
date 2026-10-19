@@ -1,4 +1,4 @@
-#include "fragment40.h"
+#include "gym_leader_castle_clear.h"
 #include "src/12D80.h"
 #include "src/1C720.h"
 #include "src/1CF30.h"
