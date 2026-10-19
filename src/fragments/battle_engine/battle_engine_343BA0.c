@@ -71,10 +71,10 @@ void BattleAnim_ReinitAuxiliaryEffects(void) {
     AuxiliaryEffect_Init();
 }
 
-void func_843593A0(void) {
+void BattleAnim_DefaultStartEffect_Init(void) {
 }
 
-void func_843593A8(void) {
+void BattleAnim_DefaultEndEffect_Init(void) {
 }
 
 s32 BattleAnim_DefaultStartEffect_CompleteImmediately(void) {

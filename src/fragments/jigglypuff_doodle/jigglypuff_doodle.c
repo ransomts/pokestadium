@@ -124,7 +124,7 @@ void JigglypuffGame_InitCamera(void) {
     Camera_ComputeEyeFromAngles(&gCamera->unk_60.at, &gCamera->unk_60.eye, gCameraRotY, gCameraDist, gCameraRotX);
 }
 
-void func_86300230(void) {
+void JigglypuffGame_UpdateEffects(void) {
 }
 
 void JigglypuffGame_DrawHud(s32 arg0) {
@@ -459,7 +459,7 @@ void JigglypuffGame_PlayingLoop(void) {
 
     while (var_s6 != 0) {
         JigglypuffGame_ReadInputs();
-        func_86300230();
+        JigglypuffGame_UpdateEffects();
 
         if (gPlayer1Controller->buttonPressed & 0x1000) {
             var_s6 = 0;

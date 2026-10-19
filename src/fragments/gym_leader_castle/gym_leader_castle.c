@@ -504,7 +504,7 @@ void Glc_Draw(void) {
         gBgFadeAlpha = 0xFF;
     }
 
-    if (gSessionContext.unk_11F2 == 1) {
+    if (gSessionContext.inRound2 == 1) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Gfx_DrawTextureRgba16(0x22C, 0x28, 0x24, 0x24, D_3019C38, 0x24, 0);
@@ -612,7 +612,7 @@ void Glc_LoadTrainerPanels(void) {
         var_a1 = gCurrentRoomIndex + 0xA;
     }
 
-    if (gSessionContext.unk_11F2 != 0) {
+    if (gSessionContext.inRound2 != 0) {
         var_a1 += 0x1F;
     }
 
@@ -870,7 +870,7 @@ s32 GymLeaderCastle_Main(s32 arg0, UNUSED s32 arg1) {
     gGymMessageBank = Text_GetStringTable(0x19);
     gRoomMessageBank = Text_GetStringTable(0x22);
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&D_84A03180, gSessionContext.unk_11F2);
+    Save_GetModeSettings(&D_84A03180, gSessionContext.inRound2);
     gTrainerDataArchive = BinArchive_Open(0x898000, NULL, 1, 1);
     gPortraitGfxArchive = ASSET_LOAD2(battle_portraits, 1, 1);
     D_84A03170 = ASSET_LOAD2(backgrounds, 1, 1);

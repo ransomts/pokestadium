@@ -62,7 +62,7 @@ void BattleScene_SetupOwnerCameraFraming(BattlePlayerEntity* arg0, BattlePlayerE
     BattleScene_LoadOwnerCameraFramingConstants(arg1);
 }
 
-void func_84307630(void) {
+void BattleScene_OwnerCameraLifecycleNop(void) {
 }
 
 void BattleScene_ApplyOwnerCameraFraming(BattlePlayerEntity* arg0) {
@@ -176,7 +176,7 @@ void BattleScene_TickBothOwnerSlideAnimations(BattlePlayerEntity* arg0, BattlePl
 s32 BattleScene_DispatchOwnerCameraLifecycle(s32 arg0, CameraStruct* arg1, CameraStruct* arg2) {
     switch (arg0) {
         case 0:
-            func_84307630();
+            BattleScene_OwnerCameraLifecycleNop();
             break;
 
         case 1:

@@ -114,7 +114,7 @@ void RentalRules_LoadBackgroundArchive(void) {
         gBattleAssetArchive = BinArchive_Open(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
         if (gSessionContext.unk_0000 == 7) {
             Save_EnsureBankLoaded(2);
-            Save_GetModeSettings(&sp20, gSessionContext.unk_11F2);
+            Save_GetModeSettings(&sp20, gSessionContext.inRound2);
             if (sp20.rotation < 8) {
                 gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, 0xD);
             } else {
@@ -742,7 +742,7 @@ void RentalRules_Init(void) {
     gCurrentBattleModeTitle = RentalRules_GetModeLabel(gSessionContext.unk_0000);
     gCurrentBattleModeSubtitle = RentalRules_GetCategoryLabel(gSessionContext.unk_0001);
 
-    if (gSessionContext.unk_11F2 != 0) {
+    if (gSessionContext.inRound2 != 0) {
         D_83003C84 |= 1;
     }
 

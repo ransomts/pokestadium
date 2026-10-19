@@ -31,7 +31,7 @@ void Input_PollAndMenuInit(void) {
     Input_ResetRepeatState();
 }
 
-void func_82800050(u8* arg0) {
+void Minigame2SampleViewer_DrawBackgroundTiles(u8* arg0) {
     s32 i;
     s32 j;
 
@@ -55,41 +55,41 @@ void func_82800050(u8* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_828001D0(void) {
+void Minigame2SampleViewer_DrawFrame(void) {
     BgStage_DrawFrame();
-    func_82800050(gViewerTextureData);
+    Minigame2SampleViewer_DrawBackgroundTiles(gViewerTextureData);
     GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     GeoRender_AdvanceFrameCounter();
     Geo_RenderRootNode(gStageTextureNode);
     BgStage_AdvanceFrame();
 }
 
-void func_82800238(void) {
+void Minigame2SampleViewer_Loop(void) {
     s32 i;
 
     StageFade_StartFromOpaque(0x10);
 
     for (i = 0; i < 16; i++) {
         Input_PollAndMenuInit();
-        func_828001D0();
+        Minigame2SampleViewer_DrawFrame();
     }
 
     do {
         Input_PollAndMenuInit();
-        func_828001D0();
+        Minigame2SampleViewer_DrawFrame();
     } while (!(BTN_IS_PRESSED(gPlayer1Controller, BTN_A)));
 
     StageFade_StartFromTransparent(0x10);
 
     for (i = 0; i < 16; i++) {
         Input_PollAndMenuInit();
-        func_828001D0();
+        Minigame2SampleViewer_DrawFrame();
     }
 
     StageLoader_RunFrames(2);
 }
 
-void func_828002E4(void) {
+void Minigame2SampleViewer_Init(void) {
     MemoryBlock* sp1C = MainPool_AllocState(main_pool_get_available(), 0);
 
     gStageTextureNode = process_geo_layout(sp1C, gViewerGeoLayout);
@@ -117,9 +117,9 @@ s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     gViewerAssetArchive = ASSET_LOAD2(backgrounds, 1, 1);
     gViewerTextureData = BinArchive_GetFile(gViewerAssetArchive, 2);
 
-    func_828002E4();
+    Minigame2SampleViewer_Init();
     StageContext_Activate(sp24);
-    func_82800238();
+    Minigame2SampleViewer_Loop();
     StageContext_Deactivate();
     Font_Free();
     Gfx_FreeDisplayListBuffers();

@@ -1197,7 +1197,7 @@ void BattleScene_SetBothOwnerActiveFlags(void);
 void BattleScene_SetOwnerPoseFlag(unk_D_84390010_728_0168* arg0);
 void BattleScene_LoadOwnerCameraFramingConstants(BattlePlayerEntity* arg0);
 void BattleScene_SetupOwnerCameraFraming(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1);
-void func_84307630(void);
+void BattleScene_OwnerCameraLifecycleNop(void);
 void BattleScene_ApplyOwnerCameraFraming(BattlePlayerEntity* arg0);
 void BattleScene_TickOwnerCameraFraming(BattlePlayerEntity* arg0);
 void BattleScene_InitializeOwnerCameraFraming(CameraStruct* arg0, BattlePlayerEntity* arg1, CameraStruct* arg2, BattlePlayerEntity* arg3);
@@ -2744,7 +2744,7 @@ void ParticleEffect_FinalGroupSetup(void);
 
 
 void BattleAnim_RenderNop1(void);
-void func_84358FF8(void);
+void BattleAnim_RenderNop2(void);
 void BattleAnim_DrawFullScreenColorOverlay(u8, u8, u8, u8);
 void BattleAnim_RenderEffectsFrame(CameraStruct*);
 
@@ -2764,8 +2764,8 @@ void func_84359338(UNUSED s32 arg0);
 void func_84359340(void);
 void BattleAnim_DrawStoredColorOverlay(void);
 void BattleAnim_ReinitAuxiliaryEffects(void);
-void func_843593A0(void);
-void func_843593A8(void);
+void BattleAnim_DefaultStartEffect_Init(void);
+void BattleAnim_DefaultEndEffect_Init(void);
 s32 BattleAnim_DefaultStartEffect_CompleteImmediately(void);
 s32 BattleAnim_DefaultEndEffect_CompleteImmediately(void);
 void BattleAnim_DefaultStartEffect_Draw(void);

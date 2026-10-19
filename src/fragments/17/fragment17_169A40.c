@@ -149,9 +149,9 @@ s32 Stage_ShowMewtwoIntro(void) {
     FRAGMENT_LOAD(fragment31);
 
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&gSessionModeSettings, gSessionContext.unk_11F2);
+    Save_GetModeSettings(&gSessionModeSettings, gSessionContext.inRound2);
 
-    if (gSessionContext.unk_11F2 == 1) {
+    if (gSessionContext.inRound2 == 1) {
         D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
         gBackgroundTextureData = BinArchive_GetFile(D_86B10824, 2);
     } else if (gSessionModeSettings.posX & 0x100) {

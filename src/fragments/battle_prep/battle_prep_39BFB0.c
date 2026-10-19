@@ -517,7 +517,7 @@ void BattlePrepTeamIcons_DrawHpBarsSingle(gTeamIconsState* arg0, s32 arg1) {
     s32 var_s0;
 
     for (i = 0; i < 2; i++) {
-        temp_s5 = gSessionContext.unk_1194[i].unk_08[0];
+        temp_s5 = gSessionContext.battleSides[i].unk_08[0];
 
         for (j = 0; j < temp_s5->unk_002; j++) {
             temp_lo = temp_s5->unk_01C[j].unk_26 * arg1;
@@ -541,7 +541,7 @@ void BattlePrepTeamIcons_DrawHpBarsDouble(gTeamIconsState* arg0, s32 arg1) {
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
-            temp_s5 = gSessionContext.unk_1194[i].unk_08[j];
+            temp_s5 = gSessionContext.battleSides[i].unk_08[j];
 
             if (temp_s5 != NULL) {
                 for (x = 0; x < temp_s5->unk_002; x++) {
@@ -566,7 +566,7 @@ void BattlePrepTeamIcons_MarkFaintedSingle(gTeamIconsState* arg0, s32 arg1) {
     s32 j;
 
     for (i = 0; i < 2; i++) {
-        temp_s5 = gSessionContext.unk_1194[i].unk_08[0];
+        temp_s5 = gSessionContext.battleSides[i].unk_08[0];
 
         for (j = 0; j < temp_s5->unk_002; j++) {
             if (arg1 == temp_s5->unk_01C[j].unk_25) {
@@ -587,7 +587,7 @@ void BattlePrepTeamIcons_MarkFaintedDouble(gTeamIconsState* arg0, s32 arg1) {
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
-            temp_s5 = gSessionContext.unk_1194[i].unk_08[j];
+            temp_s5 = gSessionContext.battleSides[i].unk_08[j];
 
             if (temp_s5 != NULL) {
                 for (x = 0; x < temp_s5->unk_002; x++) {
@@ -801,22 +801,22 @@ void BattlePrepTeamIcons_HpDrainStepDoublePAL(gTeamIconsState* arg0, s16 arg1) {
 
 void BattlePrepTeamIcons_FinalRevealSingle(gTeamIconsState* arg0, s16 arg1) {
     s32 i;
-    PokemonData* temp_s5 = gSessionContext.unk_1194[0].unk_08[0]->unk_01C;
-    PokemonData* temp_s6 = gSessionContext.unk_1194[1].unk_08[0]->unk_01C;
+    PokemonData* temp_s5 = gSessionContext.battleSides[0].unk_08[0]->unk_01C;
+    PokemonData* temp_s6 = gSessionContext.battleSides[1].unk_08[0]->unk_01C;
 
     if (arg1 == 0) {
         BattlePrepTeamIcons_InitDisplayObjectsSingleHidden(arg0);
     }
 
     if (arg1 < 0x10) {
-        for (i = 0; i < gSessionContext.unk_1194[0].unk_08[0]->unk_002; i++) {
+        for (i = 0; i < gSessionContext.battleSides[0].unk_08[0]->unk_002; i++) {
             if (temp_s5[i].unk_25 != 0) {
                 arg0->rotation[1 + i].unk_01E.y += 0x800;
                 arg0->rotation[9 + i].unk_01E.y += 0x800;
             }
         }
 
-        for (i = 0; i < gSessionContext.unk_1194[1].unk_08[0]->unk_002; i++) {
+        for (i = 0; i < gSessionContext.battleSides[1].unk_08[0]->unk_002; i++) {
             if (temp_s6[i].unk_25 != 0) {
                 arg0->rotation[4 + i].unk_01E.y -= 0x800;
                 arg0->rotation[12 + i].unk_01E.y -= 0x800;
@@ -832,7 +832,7 @@ void BattlePrepTeamIcons_FinalRevealSingle(gTeamIconsState* arg0, s16 arg1) {
         }
 
         for (i = 0; i < 3; i++) {
-            if ((i >= gSessionContext.unk_1194[0].unk_08[0]->unk_002) || (temp_s5[i].unk_25 == 0)) {
+            if ((i >= gSessionContext.battleSides[0].unk_08[0]->unk_002) || (temp_s5[i].unk_25 == 0)) {
                 Model_InitDisplayObject(&arg0->rotation[1 + i], 0, 0, arg0->unk_08);
             } else {
                 Model_InitDisplayObject(&arg0->rotation[1 + i], 0, 0, arg0->unk_10);
@@ -840,7 +840,7 @@ void BattlePrepTeamIcons_FinalRevealSingle(gTeamIconsState* arg0, s16 arg1) {
         }
 
         for (i = 0; i < 3; i++) {
-            if ((i >= gSessionContext.unk_1194[1].unk_08[0]->unk_002) || (temp_s6[i].unk_25 == 0)) {
+            if ((i >= gSessionContext.battleSides[1].unk_08[0]->unk_002) || (temp_s6[i].unk_25 == 0)) {
                 Model_InitDisplayObject(&arg0->rotation[4 + i], 0, 0, arg0->unk_08);
             } else {
                 Model_InitDisplayObject(&arg0->rotation[4 + i], 0, 0, arg0->unk_10);
@@ -851,17 +851,17 @@ void BattlePrepTeamIcons_FinalRevealSingle(gTeamIconsState* arg0, s16 arg1) {
 
 void BattlePrepTeamIcons_FinalRevealDouble(gTeamIconsState* arg0, s16 arg1) {
     s32 i;
-    PokemonData* temp_s0 = &gSessionContext.unk_1194[0].unk_08[0]->unk_01C[0];
+    PokemonData* temp_s0 = &gSessionContext.battleSides[0].unk_08[0]->unk_01C[0];
     PokemonData* var_a3 = NULL;
-    PokemonData* temp_t1 = &gSessionContext.unk_1194[1].unk_08[0]->unk_01C[0];
+    PokemonData* temp_t1 = &gSessionContext.battleSides[1].unk_08[0]->unk_01C[0];
     PokemonData* var_t0 = NULL;
 
-    if (gSessionContext.unk_1194[0].unk_01 == 2) {
-        var_a3 = &gSessionContext.unk_1194[0].unk_08[1]->unk_01C[0];
+    if (gSessionContext.battleSides[0].unk_01 == 2) {
+        var_a3 = &gSessionContext.battleSides[0].unk_08[1]->unk_01C[0];
     }
 
-    if (gSessionContext.unk_1194[1].unk_01 == 2) {
-        var_t0 = &gSessionContext.unk_1194[1].unk_08[1]->unk_01C[0];
+    if (gSessionContext.battleSides[1].unk_01 == 2) {
+        var_t0 = &gSessionContext.battleSides[1].unk_08[1]->unk_01C[0];
     }
 
     if (arg1 == 0) {
@@ -869,14 +869,14 @@ void BattlePrepTeamIcons_FinalRevealDouble(gTeamIconsState* arg0, s16 arg1) {
     }
 
     if (arg1 < 0x10) {
-        for (i = 0; i < gSessionContext.unk_1194[0].unk_08[0]->unk_002; i++) {
+        for (i = 0; i < gSessionContext.battleSides[0].unk_08[0]->unk_002; i++) {
             if (temp_s0[i].unk_25 != 0) {
                 arg0->rotation[16 + i].unk_01E.y += 0x800;
                 arg0->rotation[28 + i].unk_01E.y += 0x800;
             }
         }
 
-        for (i = 0; i < gSessionContext.unk_1194[1].unk_08[0]->unk_002; i++) {
+        for (i = 0; i < gSessionContext.battleSides[1].unk_08[0]->unk_002; i++) {
             if (temp_t1[i].unk_25 != 0) {
                 arg0->rotation[22 + i].unk_01E.y -= 0x800;
                 arg0->rotation[34 + i].unk_01E.y -= 0x800;
@@ -884,7 +884,7 @@ void BattlePrepTeamIcons_FinalRevealDouble(gTeamIconsState* arg0, s16 arg1) {
         }
 
         if (var_a3 != NULL) {
-            for (i = 0; i < gSessionContext.unk_1194[0].unk_08[1]->unk_002; i++) {
+            for (i = 0; i < gSessionContext.battleSides[0].unk_08[1]->unk_002; i++) {
                 if (var_a3[i].unk_25 != 0) {
                     arg0->rotation[19 + i].unk_01E.y += 0x800;
                     arg0->rotation[31 + i].unk_01E.y += 0x800;
@@ -893,7 +893,7 @@ void BattlePrepTeamIcons_FinalRevealDouble(gTeamIconsState* arg0, s16 arg1) {
         }
 
         if (var_t0 != NULL) {
-            for (i = 0; i < gSessionContext.unk_1194[1].unk_08[1]->unk_002; i++) {
+            for (i = 0; i < gSessionContext.battleSides[1].unk_08[1]->unk_002; i++) {
                 if (var_t0[i].unk_25 != 0) {
                     arg0->rotation[25 + i].unk_01E.y -= 0x800;
                     arg0->rotation[37 + i].unk_01E.y -= 0x800;
@@ -1045,12 +1045,12 @@ void BattlePrepTeamIcons_LoadDexIdsSingle(gTeamIconsState* arg0) {
     temp_s0 = PokeIcon_AllocFramebuffers(5);
     PokeIcon_AttachDepthBuffer(arg0->unk_1C, temp_s0, GfxImage_Allocate(0, 2, 0x80, 0xC0, 1));
 
-    for (count = 0, i = 0; i < gSessionContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.unk_1194[0].unk_08[0]->unk_01C[i].posX.posX, 0);
+    for (count = 0, i = 0; i < gSessionContext.battleSides[0].unk_08[0]->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[0].unk_08[0]->unk_01C[i].posX.posX, 0);
     }
 
-    for (count = 3, i = 0; i < gSessionContext.unk_1194[1].unk_08[0]->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.unk_1194[1].unk_08[0]->unk_01C[i].posX.posX, 0);
+    for (count = 3, i = 0; i < gSessionContext.battleSides[1].unk_08[0]->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[1].unk_08[0]->unk_01C[i].posX.posX, 0);
     }
 }
 
@@ -1062,30 +1062,30 @@ void BattlePrepTeamIcons_LoadDexIdsDouble(gTeamIconsState* arg0) {
     temp_s0 = PokeIcon_AllocFramebuffers(5);
     PokeIcon_AttachDepthBuffer(arg0->unk_1C, temp_s0, GfxImage_Allocate(0, 2, 0x80, 0x60, 1));
 
-    for (count = 0, i = 0; i < gSessionContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.unk_1194[0].unk_08[0]->unk_01C[i].posX.posX, 0);
+    for (count = 0, i = 0; i < gSessionContext.battleSides[0].unk_08[0]->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[0].unk_08[0]->unk_01C[i].posX.posX, 0);
     }
 
-    for (count = 6, i = 0; i < gSessionContext.unk_1194[1].unk_08[0]->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.unk_1194[1].unk_08[0]->unk_01C[i].posX.posX, 0);
+    for (count = 6, i = 0; i < gSessionContext.battleSides[1].unk_08[0]->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[1].unk_08[0]->unk_01C[i].posX.posX, 0);
     }
 
-    if (gSessionContext.unk_1194[0].unk_08[1] != NULL) {
-        for (count = 3, i = 0; i < gSessionContext.unk_1194[0].unk_08[1]->unk_002; count++, i++) {
-            SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.unk_1194[0].unk_08[1]->unk_01C[i].posX.posX, 0);
+    if (gSessionContext.battleSides[0].unk_08[1] != NULL) {
+        for (count = 3, i = 0; i < gSessionContext.battleSides[0].unk_08[1]->unk_002; count++, i++) {
+            SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[0].unk_08[1]->unk_01C[i].posX.posX, 0);
         }
     }
 
-    if (gSessionContext.unk_1194[1].unk_08[1] != NULL) {
-        for (count = 9, i = 0; i < gSessionContext.unk_1194[1].unk_08[1]->unk_002; count++, i++) {
-            SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.unk_1194[1].unk_08[1]->unk_01C[i].posX.posX, 0);
+    if (gSessionContext.battleSides[1].unk_08[1] != NULL) {
+        for (count = 9, i = 0; i < gSessionContext.battleSides[1].unk_08[1]->unk_002; count++, i++) {
+            SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[1].unk_08[1]->unk_01C[i].posX.posX, 0);
         }
     }
 }
 
 void BattlePrepTeamIcons_Load(gTeamIconsState* arg0, BinArchive* arg1) {
-    u8* sp24 = BinArchive_GetFile(arg1, gSessionContext.unk_1194[0].unk_08[0]->unk_214->unk_003);
-    u8* sp20 = BinArchive_GetFile(arg1, gSessionContext.unk_1194[1].unk_08[0]->unk_214->unk_003);
+    u8* sp24 = BinArchive_GetFile(arg1, gSessionContext.battleSides[0].unk_08[0]->unk_214->unk_003);
+    u8* sp20 = BinArchive_GetFile(arg1, gSessionContext.battleSides[1].unk_08[0]->unk_214->unk_003);
 
     PokeIcon_OpenModelArchives();
 
@@ -1131,12 +1131,12 @@ void BattlePrepTeamIcons_LoadIconTexturesSingle(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
 
-    for (i = 0, count = 0; i < gSessionContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
-        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gSessionContext.unk_1194[0].unk_08[0]->unk_01C[i].posX.posX, NULL);
+    for (i = 0, count = 0; i < gSessionContext.battleSides[0].unk_08[0]->unk_002; count++, i++) {
+        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gSessionContext.battleSides[0].unk_08[0]->unk_01C[i].posX.posX, NULL);
     }
 
-    for (i = 0, count = 3; i < gSessionContext.unk_1194[1].unk_08[0]->unk_002; count++, i++) {
-        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gSessionContext.unk_1194[1].unk_08[0]->unk_01C[i].posX.posX, NULL);
+    for (i = 0, count = 3; i < gSessionContext.battleSides[1].unk_08[0]->unk_002; count++, i++) {
+        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gSessionContext.battleSides[1].unk_08[0]->unk_01C[i].posX.posX, NULL);
     }
 }
 
@@ -1144,23 +1144,23 @@ void BattlePrepTeamIcons_LoadIconTexturesDouble(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
 
-    for (i = 0, count = 0; i < gSessionContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
-        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.unk_1194[0].unk_08[0]->unk_01C[i].posX.posX, NULL);
+    for (i = 0, count = 0; i < gSessionContext.battleSides[0].unk_08[0]->unk_002; count++, i++) {
+        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[0].unk_08[0]->unk_01C[i].posX.posX, NULL);
     }
 
-    for (i = 0, count = 6; i < gSessionContext.unk_1194[1].unk_08[0]->unk_002; count++, i++) {
-        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.unk_1194[1].unk_08[0]->unk_01C[i].posX.posX, NULL);
+    for (i = 0, count = 6; i < gSessionContext.battleSides[1].unk_08[0]->unk_002; count++, i++) {
+        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[1].unk_08[0]->unk_01C[i].posX.posX, NULL);
     }
 
-    if (gSessionContext.unk_1194[0].unk_08[1] != NULL) {
-        for (i = 0, count = 3; i < gSessionContext.unk_1194[0].unk_08[1]->unk_002; count++, i++) {
-            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.unk_1194[0].unk_08[1]->unk_01C[i].posX.posX, NULL);
+    if (gSessionContext.battleSides[0].unk_08[1] != NULL) {
+        for (i = 0, count = 3; i < gSessionContext.battleSides[0].unk_08[1]->unk_002; count++, i++) {
+            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[0].unk_08[1]->unk_01C[i].posX.posX, NULL);
         }
     }
 
-    if (gSessionContext.unk_1194[1].unk_08[1] != NULL) {
-        for (i = 0, count = 9; i < gSessionContext.unk_1194[1].unk_08[1]->unk_002; count++, i++) {
-            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.unk_1194[1].unk_08[1]->unk_01C[i].posX.posX, NULL);
+    if (gSessionContext.battleSides[1].unk_08[1] != NULL) {
+        for (i = 0, count = 9; i < gSessionContext.battleSides[1].unk_08[1]->unk_002; count++, i++) {
+            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[1].unk_08[1]->unk_01C[i].posX.posX, NULL);
         }
     }
 }
@@ -1175,19 +1175,19 @@ void BattlePrepTeamIcons_Init(gTeamIconsState* arg0) {
     arg0->unk_24 = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
     arg0->unk_28 = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
 
-    if ((gSessionContext.unk_0001 == 8) && (gSessionContext.unk_1194[0].unk_08[0]->unk_002 >= 4)) {
+    if ((gSessionContext.unk_0001 == 8) && (gSessionContext.battleSides[0].unk_08[0]->unk_002 >= 4)) {
         arg0->posY = 1;
     }
 
     if (gSessionContext.unk_0001 == 0) {
-        if ((gSessionContext.unk_1194[0].unk_01 == 2) || (gSessionContext.unk_1194[1].unk_01 == 2)) {
+        if ((gSessionContext.battleSides[0].unk_01 == 2) || (gSessionContext.battleSides[1].unk_01 == 2)) {
             arg0->posY = 1;
         } else {
-            if (gSessionContext.unk_1194[0].unk_08[0]->unk_002 >= 4) {
+            if (gSessionContext.battleSides[0].unk_08[0]->unk_002 >= 4) {
                 arg0->posY = 1;
             }
 
-            if (gSessionContext.unk_1194[1].unk_08[0]->unk_002 >= 4) {
+            if (gSessionContext.battleSides[1].unk_08[0]->unk_002 >= 4) {
                 arg0->posY = 1;
             }
         }

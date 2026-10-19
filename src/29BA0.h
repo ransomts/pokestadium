@@ -108,20 +108,20 @@ typedef struct SessionContext {
     /* 0x0002 */ s8 unk_0002;
     /* 0x0003 */ s8 unk_0003;
     /* 0x0004 */ BattleAI_TeamContext unk_0004[4];
-    /* 0x0874 */ unk_D_800AE540_0874 unk_0874[4];
-    /* 0x1194 */ BattlePokemon unk_1194[2];
-    /* 0x11E4 */ u8 unk_11E4[2][4];
-    /* 0x11EC */ u8 unk_11EC;
+    /* 0x0874 */ unk_D_800AE540_0874 rosterInfo[4];
+    /* 0x1194 */ BattlePokemon battleSides[2];
+    /* 0x11E4 */ u8 opponentHistory[2][4];
+    /* 0x11EC */ u8 aiDifficulty;
     /* 0x11EC */ u8 unk_11ED;
     /* 0x11EC */ u8 unk_11EE;
     /* 0x11EC */ u8 unk_11EF;
-    /* 0x11F0 */ u8 unk_11F0;
+    /* 0x11F0 */ u8 gbStarterChoice;
     /* 0x11F1 */ char unk11F1[0x1];
-    /* 0x11F2 */ u8 unk_11F2;
-    /* 0x11F3 */ u8 unk_11F3;
+    /* 0x11F2 */ u8 inRound2;
+    /* 0x11F3 */ u8 continueCount;
     /* 0x11F4 */ u8 unk_11F4;
-    /* 0x11F5 */ u8 unk_11F5;
-    /* 0x11F6 */ u16 unk_11F6;
+    /* 0x11F5 */ u8 sessionFlags;
+    /* 0x11F6 */ u16 transitionFlags;
 } SessionContext; // size = 0x11F8
 
 extern u16 gSincosTable[16][256];

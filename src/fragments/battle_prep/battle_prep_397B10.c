@@ -1184,7 +1184,7 @@ void BattlePrep_LoadBannerGeoLayouts(gBannerState* arg0) {
     arg0->unk_24 = process_geo_layout(temp_v0, gUIBarGeoLayout);
     arg0->unk_38 = process_geo_layout(temp_v0, gUIBarMiniAltGeoLayout);
     arg0->unk_34 = process_geo_layout(temp_v0, gUIBarMidGeoLayout);
-    if (gSessionContext.unk_11F2 == 0) {
+    if (gSessionContext.inRound2 == 0) {
         arg0->unk_28 = process_geo_layout(temp_v0, gUIBarSmallTopGeoLayout);
         arg0->unk_2C = process_geo_layout(temp_v0, gUIBarSmallBottomGeoLayout);
     } else {
@@ -1626,7 +1626,7 @@ void BattlePrep_LoadBadgeTextures(gBadgeCarouselAnim* arg0, BinArchive* arg1, Bi
             break;
     }
 
-    if (gSessionContext.unk_11F2 != 0) {
+    if (gSessionContext.inRound2 != 0) {
         sp44 += 0x1F;
     }
 
@@ -1646,7 +1646,7 @@ void BattlePrep_LoadBadgeTextures(gBadgeCarouselAnim* arg0, BinArchive* arg1, Bi
     } else {
         for (i = 0; i < 8; i++) {
             if (i < gSessionContext.unk_0003) {
-                tmp = (temp_s5[gSessionContext.unk_11E4[0][i]].unk_038 >> 8) & 0xFF;
+                tmp = (temp_s5[gSessionContext.opponentHistory[0][i]].unk_038 >> 8) & 0xFF;
 
                 arg0->unk_10[i] = BattlePrep_Align64PoolBlock(BinArchive_GetFile(arg2, tmp));
                 if (i < (gSessionContext.unk_0003 - 1)) {

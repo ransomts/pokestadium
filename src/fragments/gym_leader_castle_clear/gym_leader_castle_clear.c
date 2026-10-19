@@ -507,7 +507,7 @@ void Glc_DrawTrackingIcon(void) {
 
 void Glc_ClearInitState(void) {
     gClearScreenState = 0;
-    if (gSessionContext.unk_11F2 != 0) {
+    if (gSessionContext.inRound2 != 0) {
         gShowCursorFlag = 1;
     } else {
         gShowCursorFlag = 0;

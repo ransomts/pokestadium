@@ -790,9 +790,9 @@ s32 Team_SelectTeams(void) {
                 if (var_s2 < 4) {
                     GbSave_LoadPort(var_s2);
                     GbSave_MarkBoxDataLoaded(var_s2);
-                    gSessionContext.unk_11F0 = GbSave_GetStarterChoice(var_s2);
+                    gSessionContext.gbStarterChoice = GbSave_GetStarterChoice(var_s2);
                 } else {
-                    gSessionContext.unk_11F0 = 0;
+                    gSessionContext.gbStarterChoice = 0;
                 }
 
                 TeamSelection_InitializeSlot(&gBattleSelectionSlots[(unsigned long)idx], var_s2);
@@ -876,9 +876,9 @@ s32 Team_SelectRegisteredTeams(void) {
                 if (var_s2 < 4) {
                     GbSave_LoadPort(var_s2);
                     GbSave_MarkBoxDataLoaded(var_s2);
-                    gSessionContext.unk_11F0 = GbSave_GetStarterChoice(var_s2);
+                    gSessionContext.gbStarterChoice = GbSave_GetStarterChoice(var_s2);
                 } else {
-                    gSessionContext.unk_11F0 = 0;
+                    gSessionContext.gbStarterChoice = 0;
                 }
                 TeamSelection_InitializeSlot(&gBattleSelectionSlots[(unsigned long)idx], var_s2);
                 TeamSelection_ApplySlotSelection(var_s1, var_s2);
@@ -1055,7 +1055,7 @@ void Rental_LoadRosterForMode(void) {
     if (var_a1 == 0) {
         gBattleSelectionControllerInfo = NULL;
     } else {
-        if (gSessionContext.unk_11F2 != 0) {
+        if (gSessionContext.inRound2 != 0) {
             var_a1 += 0x1F;
         }
         gBattleSelectionControllerInfo = BinArchive_GetFile(temp_a0, var_a1);
@@ -1071,7 +1071,7 @@ void Rental_LoadBackgroundImage(void) {
             gPartyScreenBackground = BinArchive_GetFile(gBattleSelectionBackgroundArchive, 0xE);
         } else {
             Save_EnsureBankLoaded(2);
-            Save_GetModeSettings(&sp20, gSessionContext.unk_11F2);
+            Save_GetModeSettings(&sp20, gSessionContext.inRound2);
             if (sp20.rotation < 8) {
                 gPartyScreenBackground = BinArchive_GetFile(gBattleSelectionBackgroundArchive, 0xD);
             } else {
@@ -1111,11 +1111,11 @@ s32 Rental_Main(s32 arg0, UNUSED s32 arg1) {
 
     if (arg0 == 1) {
         var_v1 = RegisteredTeam_Manage();
-    } else if (gSessionContext.unk_11F6 & 0x20) {
+    } else if (gSessionContext.transitionFlags & 0x20) {
         var_v1 = Team_SelectRegisteredTeams();
-        gSessionContext.unk_11F6 = gSessionContext.unk_11F6 & 0xFFDF;
+        gSessionContext.transitionFlags = gSessionContext.transitionFlags & 0xFFDF;
     } else {
-        gSessionContext.unk_11F5 &= 0xFFFD;
+        gSessionContext.sessionFlags &= 0xFFFD;
         var_v1 = Team_SelectTeams();
     }
 

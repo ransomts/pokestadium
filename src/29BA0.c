@@ -667,7 +667,7 @@ void State_RunCredits(void) {
     FRAGMENT_LOAD(fragment2);
     FRAGMENT_LOAD(fragment3);
 
-    if (gSessionContext.unk_11F2 != 0) {
+    if (gSessionContext.inRound2 != 0) {
         FRAGMENT_LOAD_AND_CALL(fragment16, 0, 0);
     } else {
         FRAGMENT_LOAD_AND_CALL(fragment16, 0, 1);
@@ -729,7 +729,7 @@ void State_TitleScreen(void) {
     }
 
     gSessionContext.unk_0002 = 0;
-    gSessionContext.unk_11F6 = 0;
+    gSessionContext.transitionFlags = 0;
     gCurrentPokemonBank = -1;
 }
 
@@ -837,17 +837,17 @@ void State_StadiumMenu(void) {
     s16 sp4E = 1;
 
     while ((sp4E > 0) && (sp4E < 5)) {
-        if (gSessionContext.unk_11F5 & 1) {
+        if (gSessionContext.sessionFlags & 1) {
             sp4E = 5;
         } else {
             sp4E = RuleWizard_StadiumMenu(sp4E);
         }
 
         if (sp4E == 5) {
-            gSessionContext.unk_11F6 = 0;
+            gSessionContext.transitionFlags = 0;
             FRAGMENT_LOAD_AND_CALL(fragment63, 1, 0);
 
-            while (!(gSessionContext.unk_11F6 & 1)) {
+            while (!(gSessionContext.transitionFlags & 1)) {
                 FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
 
                 main_pool_push_state('STAD');
@@ -860,33 +860,33 @@ void State_StadiumMenu(void) {
                 FRAGMENT_LOAD_AND_CALL(fragment63, 2, 0);
             }
 
-            if (gSessionContext.unk_11F6 & 0x20) {
+            if (gSessionContext.transitionFlags & 0x20) {
                 sp4E = 4;
             }
 
-            if (gSessionContext.unk_11F6 & 0x800) {
+            if (gSessionContext.transitionFlags & 0x800) {
                 sp4E = 4;
             }
 
-            if (gSessionContext.unk_11F6 & 2) {
+            if (gSessionContext.transitionFlags & 2) {
                 Stage_RunDemoScene(0x11);
             }
 
-            if (gSessionContext.unk_11F6 & 0x1000) {
+            if (gSessionContext.transitionFlags & 0x1000) {
                 FRAGMENT_LOAD_AND_CALL(fragment66, 0, 0);
             }
 
-            if (gSessionContext.unk_11F6 & 8) {
+            if (gSessionContext.transitionFlags & 8) {
                 Stage_RunDemoScene(0x16);
             }
 
-            if (gSessionContext.unk_11F6 & 0x10) {
+            if (gSessionContext.transitionFlags & 0x10) {
                 Stage_RunDemoScene(0x17);
             }
         }
     }
 
-    if (gSessionContext.unk_11F6 & 0x40) {
+    if (gSessionContext.transitionFlags & 0x40) {
         gCurrentGameState = STATE_TITLE_SCREEN;
     } else {
         gCurrentGameState = STATE_AREA_SELECT;
@@ -942,10 +942,10 @@ void State_FreeBattle(void) {
 
         switch (sp4E) {
             case 4:
-                gSessionContext.unk_11F6 = 0;
+                gSessionContext.transitionFlags = 0;
                 FRAGMENT_LOAD_AND_CALL(fragment63, 0, 0);
 
-                while (!(gSessionContext.unk_11F6 & 1)) {
+                while (!(gSessionContext.transitionFlags & 1)) {
                     FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
 
                     main_pool_push_state('FREE');
@@ -958,11 +958,11 @@ void State_FreeBattle(void) {
                     FRAGMENT_LOAD_AND_CALL(fragment63, 2, 0);
                 }
 
-                if (gSessionContext.unk_11F6 & 0x20) {
+                if (gSessionContext.transitionFlags & 0x20) {
                     sp4E = 3;
                 }
 
-                if (gSessionContext.unk_11F6 & 0x80) {
+                if (gSessionContext.transitionFlags & 0x80) {
                     sp4E = 1;
                 }
                 break;
@@ -1018,10 +1018,10 @@ void State_VsMewtwo(void) {
 
         switch (sp4E) {
             case 3:
-                gSessionContext.unk_11F6 = 0;
+                gSessionContext.transitionFlags = 0;
                 FRAGMENT_LOAD_AND_CALL(fragment63, 0, 0);
 
-                while (!(gSessionContext.unk_11F6 & 1)) {
+                while (!(gSessionContext.transitionFlags & 1)) {
                     FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
 
                     main_pool_push_state('STAD');
@@ -1034,11 +1034,11 @@ void State_VsMewtwo(void) {
                     FRAGMENT_LOAD_AND_CALL(fragment63, 2, 0);
                 }
 
-                if (gSessionContext.unk_11F6 & 0x20) {
+                if (gSessionContext.transitionFlags & 0x20) {
                     sp4E = 2;
                 }
 
-                if (gSessionContext.unk_11F6 & 4) {
+                if (gSessionContext.transitionFlags & 4) {
                     State_RunCredits();
                     gCurrentGameState = STATE_N64_LOGO_INTRO;
                     return;
@@ -1159,14 +1159,14 @@ void State_GymLeaderCastle(void) {
     s16 sp4E = 1;
     s16 sp4C = 0;
 
-    if (!(gSessionContext.unk_11F5 & 1)) {
+    if (!(gSessionContext.sessionFlags & 1)) {
         Session_SetMode(7, 7, 0);
         Team_AddTrainer(0, Trainer_Create(0, 0, "1P", Text_GetPlayerLabel(1)));
         Team_AddTrainer(1, Trainer_Create(-1, 0, "COM", Text_GetPlayerLabel(3)));
     }
 
     while ((sp4E > 0) && (sp4E < 4)) {
-        if (gSessionContext.unk_11F5 & 1) {
+        if (gSessionContext.sessionFlags & 1) {
             sp4E = 4;
         } else {
             sp4E = RuleWizard_GymLeaderCastle(sp4E, sp4C);
@@ -1174,11 +1174,11 @@ void State_GymLeaderCastle(void) {
 
         if (sp4E == 4) {
             sp4C = 0;
-            gSessionContext.unk_11F6 = 0;
+            gSessionContext.transitionFlags = 0;
 
             FRAGMENT_LOAD_AND_CALL(fragment63, 1, 0);
 
-            while (!(gSessionContext.unk_11F6 & 1)) {
+            while (!(gSessionContext.transitionFlags & 1)) {
                 FRAGMENT_LOAD_AND_CALL(fragment64, 0, 0);
 
                 main_pool_push_state('STAD');
@@ -1191,31 +1191,31 @@ void State_GymLeaderCastle(void) {
                 FRAGMENT_LOAD_AND_CALL(fragment63, 2, 0);
             }
 
-            if (gSessionContext.unk_11F6 & 0x200) {
+            if (gSessionContext.transitionFlags & 0x200) {
                 FRAGMENT_LOAD_AND_CALL(fragment40, 0, 0);
                 Stage_RunDemoScene(0x11);
                 Stage_RunDemoScene(0x15);
             }
 
-            if (gSessionContext.unk_11F6 & 0x20) {
+            if (gSessionContext.transitionFlags & 0x20) {
                 sp4E = 3;
             }
 
-            if (gSessionContext.unk_11F6 & 0x800) {
+            if (gSessionContext.transitionFlags & 0x800) {
                 sp4E = 3;
             }
 
-            if (gSessionContext.unk_11F6 & 0x400) {
+            if (gSessionContext.transitionFlags & 0x400) {
                 sp4C = 1;
             }
 
-            if (gSessionContext.unk_11F6 & 0x100) {
+            if (gSessionContext.transitionFlags & 0x100) {
                 sp4E = 2;
             }
         }
     }
 
-    if (gSessionContext.unk_11F6 & 0x40) {
+    if (gSessionContext.transitionFlags & 0x40) {
         gCurrentGameState = STATE_TITLE_SCREEN;
     } else {
         gCurrentGameState = STATE_AREA_SELECT;
@@ -1331,7 +1331,7 @@ void Game_Thread(UNUSED LEODiskID* arg) {
 
     main_pool_push_state('GAME');
 
-    gSessionContext.unk_11F2 = 0;
+    gSessionContext.inRound2 = 0;
 
     // is this game connected to a Sticker Station?
     if (Controller_CheckAccessoryEeprom() != 0) {

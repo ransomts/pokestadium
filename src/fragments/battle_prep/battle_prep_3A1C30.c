@@ -167,7 +167,7 @@ void BattlePrep_DrawResultPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) 
     if (arg1->unk_06 == 0x48) {
         Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Font_Printf(arg1->posX + 0x4A, arg1->posY + 0x36, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.unk_11F3);
+        Font_Printf(arg1->posX + 0x4A, arg1->posY + 0x36, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.continueCount);
     }
 
     Font_EndTexturedTextRendering();
@@ -177,8 +177,8 @@ void BattlePrep_DrawContinuePrompt(RuleWindowState* arg0, RuleWindowLayout* arg1
     s32 sp2C;
     s32 sp28;
 
-    sp2C = gSessionContext.unk_11F3 > 0;
-    sp28 = !!(gSessionContext.unk_11F5 & 2);
+    sp2C = gSessionContext.continueCount > 0;
+    sp28 = !!(gSessionContext.sessionFlags & 2);
     sp28 = !sp28;
 
     BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
@@ -191,12 +191,12 @@ void BattlePrep_DrawContinuePrompt(RuleWindowState* arg0, RuleWindowLayout* arg1
     BattlePrep_DrawRuleOption(arg0, arg1->posX + 0x1A, arg1->posY + 6, 4, 1, BattlePrep_GetString(0x31));
     Font_SetActive(1, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Font_Printf(arg1->posX + 0x4A, arg1->posY + 0x4C, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.unk_11F3);
+    Font_Printf(arg1->posX + 0x4A, arg1->posY + 0x4C, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.continueCount);
     Font_EndTexturedTextRendering();
 }
 
 void BattlePrep_DrawGiveUpPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) {
-    s32 sp2C = !!(gSessionContext.unk_11F5 & 2);
+    s32 sp2C = !!(gSessionContext.sessionFlags & 2);
 
     sp2C = !sp2C;
     BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
@@ -209,7 +209,7 @@ void BattlePrep_DrawGiveUpPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) 
 }
 
 void BattlePrep_DrawRetireStreakPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) {
-    s32 sp2C = gSessionContext.unk_1194[0].unk_1E < 0x63 && gSessionContext.unk_1194[1].unk_1E < 0x63;
+    s32 sp2C = gSessionContext.battleSides[0].unk_1E < 0x63 && gSessionContext.battleSides[1].unk_1E < 0x63;
 
     BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
     Font_BeginTranslucentTextRendering();
@@ -335,8 +335,8 @@ void BattlePrep_SetStreakColor(BattlePokemon* arg0) {
 void BattlePrep_DrawTeamPreview(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     BattlePrep_DrawBorderedRect(arg1->posX + 8, arg1->posY + 0x14, 0xA8, 0x20, 0, 0, 0, 0xFF);
     BattlePrep_DrawBorderedRect(arg1->posX + 8, arg1->posY + 0x44, 0xA8, 0x20, 0, 0, 0, 0xFF);
-    BattlePrep_DrawRankBadge(arg1->posX + 8, arg1->posY + 0x14, gSessionContext.unk_1194);
-    BattlePrep_DrawRankBadge(arg1->posX + 8, arg1->posY + 0x44, &gSessionContext.unk_1194[1]);
+    BattlePrep_DrawRankBadge(arg1->posX + 8, arg1->posY + 0x14, gSessionContext.battleSides);
+    BattlePrep_DrawRankBadge(arg1->posX + 8, arg1->posY + 0x44, &gSessionContext.battleSides[1]);
     Font_BeginTranslucentTextRendering();
     Font_EnableTwoCycleTexturing();
     Font_SetActive(4, 0);
@@ -344,10 +344,10 @@ void BattlePrep_DrawTeamPreview(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     Font_Printf(arg1->posX + 0x40, arg1->posY + 2, BattlePrep_GetString(0x38));
     Font_DisableTwoCycleTexturing();
     Font_SetActive(0x10, 0);
-    BattlePrep_SetStreakColor(&gSessionContext.unk_1194[0]);
-    Font_Printf(arg1->posX + 0x5C, arg1->posY + 0x18, "%2d", gSessionContext.unk_1194[0].unk_1E);
-    BattlePrep_SetStreakColor(&gSessionContext.unk_1194[1]);
-    Font_Printf(arg1->posX + 0x5C, arg1->posY + 0x48, "%2d", gSessionContext.unk_1194[1].unk_1E);
+    BattlePrep_SetStreakColor(&gSessionContext.battleSides[0]);
+    Font_Printf(arg1->posX + 0x5C, arg1->posY + 0x18, "%2d", gSessionContext.battleSides[0].unk_1E);
+    BattlePrep_SetStreakColor(&gSessionContext.battleSides[1]);
+    Font_Printf(arg1->posX + 0x5C, arg1->posY + 0x48, "%2d", gSessionContext.battleSides[1].unk_1E);
     Font_SetActive(4, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Font_Printf(arg1->posX + 0x82, arg1->posY + 0x1F, BattlePrep_GetString(0x39));
@@ -594,18 +594,18 @@ void BattlePrep_InitRuleWindow(RuleWindowState* arg0, s16 arg1) {
     Audio_PlaySoundEffectById(4);
 
     if (arg1 - 1 == 2) {
-        if (gSessionContext.unk_11F3 == 0) {
+        if (gSessionContext.continueCount == 0) {
             ptr->unk_0E &= ~3;
         }
-        if (gSessionContext.unk_11F5 & 2) {
+        if (gSessionContext.sessionFlags & 2) {
             ptr->unk_0E &= ~4;
         }
     } else if (arg1 - 1 == 3) {
-        if (gSessionContext.unk_11F5 & 2) {
+        if (gSessionContext.sessionFlags & 2) {
             ptr->unk_0E &= ~1;
         }
     } else if ((arg1 - 1 == 4) &&
-               ((gSessionContext.unk_1194[0].unk_1E >= 0x63) || (gSessionContext.unk_1194[1].unk_1E >= 0x63))) {
+               ((gSessionContext.battleSides[0].unk_1E >= 0x63) || (gSessionContext.battleSides[1].unk_1E >= 0x63))) {
         ptr->unk_0E &= ~1;
     }
 

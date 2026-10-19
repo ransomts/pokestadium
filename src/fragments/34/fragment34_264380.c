@@ -378,25 +378,25 @@ s32 ParticleGfx_TextureSizeLog2(s32 size) {
 void ParticleGfx_NoopStub2(void) {
 }
 
-void func_814024C8(void) {
+void ParticleGfx_NoopStub3(void) {
 }
 
-void func_814024D0(void) {
+void ParticleGfx_NoopStub4(void) {
 }
 
-void func_814024D8(void) {
+void ParticleGfx_NoopStub5(void) {
 }
 
-void func_814024E0(void) {
+void ParticleGfx_NoopStub6(void) {
 }
 
-void func_814024E8(void) {
+void ParticleGfx_NoopStub7(void) {
 }
 
-void func_814024F0(void) {
+void ParticleGfx_NoopStub8(void) {
 }
 
-void func_814024F8(void) {
+void ParticleGfx_NoopStub9(void) {
 }
 
 void ParticleGfx_LoadTextureBlock32(u8* texture, s32 fmt, s32 width, s32 height, s32 cms, s32 cmt, s32 masks, s32 maskt, s32 shifts,

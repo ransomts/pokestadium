@@ -1177,8 +1177,8 @@ void BattleMenu_CommitOrderSelection(void) {
         var_s2++;
     }
 
-    BattleMenu_RearrangeLeadPokemon(&gCurrentSessionContext->unk_1194[0], &gSelectionStates[0]);
-    BattleMenu_RearrangeLeadPokemon(&gCurrentSessionContext->unk_1194[1], &gSelectionStates[1]);
+    BattleMenu_RearrangeLeadPokemon(&gCurrentSessionContext->battleSides[0], &gSelectionStates[0]);
+    BattleMenu_RearrangeLeadPokemon(&gCurrentSessionContext->battleSides[1], &gSelectionStates[1]);
 }
 
 void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, BattleAI_TeamContext* arg2, s32 arg3, s32 arg4) {
@@ -1215,7 +1215,7 @@ void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, BattleAI_TeamContext* ar
 }
 
 void BattleMenu_InitOrderSelectPanels(SessionContext* arg0) {
-    BattlePokemon* temp_s0 = &arg0->unk_1194[0];
+    BattlePokemon* temp_s0 = &arg0->battleSides[0];
 
     gCurrentSessionContext = arg0;
     gPanelCount = 0;
@@ -1225,8 +1225,8 @@ void BattleMenu_InitOrderSelectPanels(SessionContext* arg0) {
     gInputTimerValue = 0;
     gPanelController.buttonPressed = 0;
 
-    BattleMenu_InitTeamOrderState(&gSelectionStates[0], &gCurrentSessionContext->unk_1194[0], gCurrentSessionContext->unk_0001);
-    BattleMenu_InitTeamOrderState(&gSelectionStates[1], &gCurrentSessionContext->unk_1194[1], gCurrentSessionContext->unk_0001);
+    BattleMenu_InitTeamOrderState(&gSelectionStates[0], &gCurrentSessionContext->battleSides[0], gCurrentSessionContext->unk_0001);
+    BattleMenu_InitTeamOrderState(&gSelectionStates[1], &gCurrentSessionContext->battleSides[1], gCurrentSessionContext->unk_0001);
 
     if (temp_s0->unk_01 == 1) {
         BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->unk_08[0], 0, -1);

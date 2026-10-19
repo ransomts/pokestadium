@@ -54,7 +54,7 @@ void BattlePrep_SaveVictoryPalaceRecords(void) {
     unk_D_800AE540_0874* temp_v0;
     PokemonData* var_s1;
 
-    temp_v0 = gSessionContext.unk_1194[0].unk_08[0]->unk_214;
+    temp_v0 = gSessionContext.battleSides[0].unk_08[0]->unk_214;
     temp_s0 = temp_v0->unk_002;
     var_s1 = temp_v0->unk_028;
 
@@ -67,7 +67,7 @@ void BattlePrep_SaveVictoryPalaceRecords(void) {
     }
 
     while (temp_s0-- > 0) {
-        VictoryPalace_SaveSpeciesRecord(var_s1++, gSessionContext.unk_0000, gSessionContext.unk_11F2);
+        VictoryPalace_SaveSpeciesRecord(var_s1++, gSessionContext.unk_0000, gSessionContext.inRound2);
     }
 
     Save_CommitTypedRecord(0x13, 0);
@@ -91,9 +91,9 @@ void BattlePrep_MarkFirstClearBonus(void) {
         sp20.posX++;
         Save_SetOptions(&sp20);
         if (sp20.posX == 1) {
-            gSessionContext.unk_11F6 |= 8;
+            gSessionContext.transitionFlags |= 8;
         } else {
-            gSessionContext.unk_11F6 |= 0x10;
+            gSessionContext.transitionFlags |= 0x10;
         }
     }
 }
@@ -105,9 +105,9 @@ void BattlePrep_MarkCupCleared(void) {
         gBattleProgress.posX |= (1 << gSessionContext.unk_0000);
         if (gBattleProgress.posX == 0xF8) {
             gBattleProgress.unk_07 = 1;
-            gSessionContext.unk_11F5 |= 4;
+            gSessionContext.sessionFlags |= 4;
         }
-        Save_SetModeSettings(&gBattleProgress, gSessionContext.unk_11F2);
+        Save_SetModeSettings(&gBattleProgress, gSessionContext.inRound2);
     }
 }
 
@@ -115,18 +115,18 @@ void BattlePrep_MarkNewRoundRecord(void) {
     if (gSessionContext.unk_0000 == 7) {
         if ((gSessionContext.unk_0002 >= gBattleProgress.rotation) && (gSessionContext.unk_0002 < 8)) {
             gBattleProgress.rotation = gSessionContext.unk_0002 + 1;
-            gSessionContext.unk_11F6 |= 0x400;
+            gSessionContext.transitionFlags |= 0x400;
         }
     } else if (gSessionContext.unk_0000 == 3) {
         if ((gSessionContext.unk_0002 >= gBattleProgress.unk_05) && (gSessionContext.unk_0002 < 4)) {
             gBattleProgress.unk_05 = gSessionContext.unk_0002 + 1;
-            gSessionContext.unk_11F6 |= 0x400;
+            gSessionContext.transitionFlags |= 0x400;
         }
     } else if ((gSessionContext.unk_0000 == 6) && (gSessionContext.unk_0002 >= gBattleProgress.unk_06) && (gSessionContext.unk_0002 < 4)) {
         gBattleProgress.unk_06 = gSessionContext.unk_0002 + 1;
-        gSessionContext.unk_11F6 |= 0x400;
+        gSessionContext.transitionFlags |= 0x400;
     }
-    Save_SetModeSettings(&gBattleProgress, gSessionContext.unk_11F2);
+    Save_SetModeSettings(&gBattleProgress, gSessionContext.inRound2);
 }
 
 char* BattlePrep_GetString(s32 arg0) {
@@ -228,7 +228,7 @@ void BattlePrep_DrawBorderedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4
 }
 
 void BattlePrep_DrawTrainerStatusIcon(FramebufferImage* arg0, s16 arg1, u8* arg2, u8* arg3) {
-    BattlePokemon* temp_v1 = &gSessionContext.unk_1194[arg1];
+    BattlePokemon* temp_v1 = &gSessionContext.battleSides[arg1];
 
     GfxImage_SetRenderTarget(&gDisplayListHead, arg0);
 
@@ -369,8 +369,8 @@ s32 BattlePrep_ShowSingleBattleIntro(void) {
         BattlePrep_UpdateSingleBattleIntroFrame();
     }
 
-    if (gSessionContext.unk_11F5 & 1) {
-        gSessionContext.unk_11F5 &= ~1;
+    if (gSessionContext.sessionFlags & 1) {
+        gSessionContext.sessionFlags &= ~1;
         Save_ResetAndCommitTypedRecord(0x15, 0);
         Save_FlushBank(2);
     }
@@ -448,8 +448,8 @@ s32 BattlePrep_ShowRoundIntro(void) {
         BattlePrep_UpdateRoundIntroFrame();
     }
 
-    if (gSessionContext.unk_11F5 & 1) {
-        gSessionContext.unk_11F5 &= ~1;
+    if (gSessionContext.sessionFlags & 1) {
+        gSessionContext.sessionFlags &= ~1;
         Save_ResetAndCommitTypedRecord(0x15, 0);
         Save_FlushBank(2);
     }
@@ -463,9 +463,9 @@ void BattlePrep_CheckPikachuNeedsSurf(void) {
     BattleAI_TeamContext* var_a1;
     unk_D_800AE540_0874* temp_v1;
 
-    if (!(gSessionContext.unk_11F5 & 2) && (gSessionContext.unk_11F2 == 1) && (gSessionContext.unk_0000 == 6) &&
+    if (!(gSessionContext.sessionFlags & 2) && (gSessionContext.inRound2 == 1) && (gSessionContext.unk_0000 == 6) &&
         (gSessionContext.unk_0002 == 3)) {
-        var_a1 = gSessionContext.unk_1194[0].unk_08[0];
+        var_a1 = gSessionContext.battleSides[0].unk_08[0];
         temp_v1 = var_a1->unk_214;
 
         for (i = 0; i < temp_v1->unk_002; i++) {
@@ -488,7 +488,7 @@ void BattlePrep_CheckPikachuNeedsSurf(void) {
                         return;
                     }
                 }
-                gSessionContext.unk_11F6 |= 0x1000;
+                gSessionContext.transitionFlags |= 0x1000;
                 break;
             }
         }
@@ -539,8 +539,8 @@ void BattlePrep_RunNormalRoundIntro(void) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
-    if (gSessionContext.unk_1194[1].unk_08[0]->unk_000 & 2) {
-        if (gSessionContext.unk_1194[0].unk_1C == 1) {
+    if (gSessionContext.battleSides[1].unk_08[0]->unk_000 & 2) {
+        if (gSessionContext.battleSides[0].unk_1C == 1) {
             Audio_PlayMusicIfChanged(0x32);
         } else {
             Audio_PlayMusicIfChanged(0x45);
@@ -751,7 +751,7 @@ s32 BattlePrep_ConsumeContinueToken(void) {
     }
 
     if (sp24 != 0) {
-        gSessionContext.unk_11F3--;
+        gSessionContext.continueCount--;
         Session_SaveContinueData();
         Save_FlushBank(2);
     }
@@ -761,12 +761,12 @@ s32 BattlePrep_ConsumeContinueToken(void) {
 s32 BattlePrep_ConfirmDefaultRules(void) {
     s32 var_v0;
 
-    if (gSessionContext.unk_1194[0].unk_1C == 1) {
-        gSessionContext.unk_1194[0].unk_1E += 1;
+    if (gSessionContext.battleSides[0].unk_1C == 1) {
+        gSessionContext.battleSides[0].unk_1E += 1;
     }
 
-    if (gSessionContext.unk_1194[1].unk_1C == 1) {
-        gSessionContext.unk_1194[1].unk_1E += 1;
+    if (gSessionContext.battleSides[1].unk_1C == 1) {
+        gSessionContext.battleSides[1].unk_1E += 1;
     }
 
     BattlePrep_RunNormalRoundIntro();
@@ -782,15 +782,15 @@ s32 BattlePrep_ConfirmDefaultRules(void) {
 
     switch (var_v0) {
         case 0:
-            gSessionContext.unk_11F6 |= 0x21;
+            gSessionContext.transitionFlags |= 0x21;
             break;
 
         case 1:
-            gSessionContext.unk_11F6 |= 0x81;
+            gSessionContext.transitionFlags |= 0x81;
             break;
 
         case 2:
-            gSessionContext.unk_11F6 |= 1;
+            gSessionContext.transitionFlags |= 1;
             break;
     }
 
@@ -834,8 +834,8 @@ s32 BattlePrep_ConfirmCupRules(void) {
 
     BattlePrep_RunBadgeCarouselIntro();
 
-    if (gSessionContext.unk_1194[0].unk_1C == 1) {
-        gSessionContext.unk_11F3 += gBattleGraphics.unk_0002;
+    if (gSessionContext.battleSides[0].unk_1C == 1) {
+        gSessionContext.continueCount += gBattleGraphics.unk_0002;
         if ((gBattleGraphics.unk_0002 != 0) && (gSessionContext.unk_0003 < 8)) {
             BattlePrep_StartTrophyModelShrink(&gBattleMenuState.unk_10);
         }
@@ -864,11 +864,11 @@ s32 BattlePrep_ConfirmCupRules(void) {
             BattlePrep_RunBallBurstTransition();
             BattlePrep_FadeToTransparentEnding();
             BattlePrep_CheckPikachuNeedsSurf();
-            gSessionContext.unk_11F6 |= 3;
+            gSessionContext.transitionFlags |= 3;
         } else if (BattlePrep_HandleRoundContinue() == 1) {
             BattlePrep_RunBallBurstTransition();
             BattlePrep_FadeToTransparentEnding();
-            gSessionContext.unk_11F6 |= 0x41;
+            gSessionContext.transitionFlags |= 0x41;
         } else {
             BattlePrep_RunBallBurstTransition();
             Audio_StopMusic(0x50);
@@ -890,30 +890,30 @@ s32 BattlePrep_ConfirmCupRules(void) {
             switch (var_v0) {
                 case 0:
                     sp2C = 1;
-                    gSessionContext.unk_11F3--;
+                    gSessionContext.continueCount--;
                     var_s2 = 0;
                     break;
 
                 case 1:
                     if (BattlePrep_ConsumeContinueToken() != 0) {
                         var_s2 = 0;
-                        gSessionContext.unk_11F6 |= 0x41;
+                        gSessionContext.transitionFlags |= 0x41;
                     }
                     break;
 
                 case 2:
                     var_s2 = 0;
-                    gSessionContext.unk_11F6 |= 0x21;
+                    gSessionContext.transitionFlags |= 0x21;
                     break;
 
                 case 3:
                     var_s2 = 0;
-                    gSessionContext.unk_11F6 |= 0x801;
+                    gSessionContext.transitionFlags |= 0x801;
                     break;
 
                 case 4:
                     var_s2 = 0;
-                    gSessionContext.unk_11F6 |= 1;
+                    gSessionContext.transitionFlags |= 1;
                     break;
             }
         }
@@ -940,7 +940,7 @@ s32 BattlePrep_ConfirmCastleRules(void) {
     BattlePrep_RunNormalRoundIntro();
     BattlePrep_RunBadgeCarouselIntro();
 
-    if (gSessionContext.unk_1194[0].unk_1C == 1) {
+    if (gSessionContext.battleSides[0].unk_1C == 1) {
         if ((gSessionContext.unk_0003 == 4) || (gSessionContext.unk_0002 == 9)) {
             BattlePrep_MarkCupCleared();
             BattlePrep_MarkNewRoundRecord();
@@ -960,15 +960,15 @@ s32 BattlePrep_ConfirmCastleRules(void) {
             BattlePrep_RunBallBurstTransition();
             Audio_StopMusic(0x10);
 
-            gSessionContext.unk_11F6 |= 1;
+            gSessionContext.transitionFlags |= 1;
             if (gSessionContext.unk_0002 == 8) {
-                gSessionContext.unk_11F6 |= 0x400;
+                gSessionContext.transitionFlags |= 0x400;
             }
 
             if (gSessionContext.unk_0002 == 9) {
-                gSessionContext.unk_11F6 |= 0x200;
+                gSessionContext.transitionFlags |= 0x200;
             } else {
-                gSessionContext.unk_11F6 |= 0x100;
+                gSessionContext.transitionFlags |= 0x100;
             }
             sp24 = 3;
         } else if (BattlePrep_HandleRoundContinue() == 1) {
@@ -976,7 +976,7 @@ s32 BattlePrep_ConfirmCastleRules(void) {
             Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
             BattlePrep_RunBallBurstTransition();
             BattlePrep_FadeToTransparentEnding();
-            gSessionContext.unk_11F6 |= 0x41;
+            gSessionContext.transitionFlags |= 0x41;
         } else {
             BattlePrepStarBurst_StartExit(&gUIBarA);
             Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
@@ -997,15 +997,15 @@ s32 BattlePrep_ConfirmCastleRules(void) {
 
         switch (var_v0) {
             case 0:
-                gSessionContext.unk_11F6 |= 0x21;
+                gSessionContext.transitionFlags |= 0x21;
                 break;
 
             case 1:
-                gSessionContext.unk_11F6 |= 0x801;
+                gSessionContext.transitionFlags |= 0x801;
                 break;
 
             case 2:
-                gSessionContext.unk_11F6 |= 1;
+                gSessionContext.transitionFlags |= 1;
                 break;
         }
 
@@ -1025,10 +1025,10 @@ s32 BattlePrep_ConfirmMewtwoRules(void) {
     u16 sp2A;
 
     BattlePrep_RunNormalRoundIntro();
-    if (gSessionContext.unk_1194[0].unk_1C == 1) {
+    if (gSessionContext.battleSides[0].unk_1C == 1) {
         s32 tmp1 = !!(gBattleProgress.posX & 0x100);
 
-        if ((gSessionContext.unk_11F2 == 0) & !tmp1) {
+        if ((gSessionContext.inRound2 == 0) & !tmp1) {
             Save_GetOptionsField02(&sp2A);
             sp2A |= 4;
             Save_SetOptionsField02(&sp2A);
@@ -1042,7 +1042,7 @@ s32 BattlePrep_ConfirmMewtwoRules(void) {
         Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
         BattlePrep_RunBallBurstTransition();
         BattlePrep_FadeToTransparentEnding();
-        gSessionContext.unk_11F6 |= 5;
+        gSessionContext.transitionFlags |= 5;
     } else {
         BattlePrep_InitRuleWindow(&gBattleMenuState.unk_28, 6);
 
@@ -1054,11 +1054,11 @@ s32 BattlePrep_ConfirmMewtwoRules(void) {
 
         switch (var_v0) {
             case 0:
-                gSessionContext.unk_11F6 |= 0x21;
+                gSessionContext.transitionFlags |= 0x21;
                 break;
 
             case 1:
-                gSessionContext.unk_11F6 |= 1;
+                gSessionContext.transitionFlags |= 1;
                 break;
         }
 
@@ -1076,10 +1076,10 @@ u8 BattlePrep_CheckTeamChosen(void) {
     u8 var_v1 = 0;
 
     if ((gSessionContext.unk_0000 > 0) && (gSessionContext.unk_0000 < 7)) {
-        if (gSessionContext.unk_1194[0].unk_1C == 1) {
+        if (gSessionContext.battleSides[0].unk_1C == 1) {
             var_v1 = 1;
             for (i = 0; i < 3; i++) {
-                if (gSessionContext.unk_1194[0].unk_08[0]->unk_01C[i].posY == 0) {
+                if (gSessionContext.battleSides[0].unk_08[0]->unk_01C[i].posY == 0) {
                     var_v1 = 0;
                 }
             }
@@ -1185,9 +1185,9 @@ void BattlePrep_InitScene(void) {
 
     gBattleGraphics.unk_0001 = 0;
     gBattleGraphics.unk_0003 = 0;
-    if (gSessionContext.unk_1194[0].unk_1C == gSessionContext.unk_1194[1].unk_1C) {
+    if (gSessionContext.battleSides[0].unk_1C == gSessionContext.battleSides[1].unk_1C) {
         gBattleGraphics.unk_0003 = 1;
-    } else if (gSessionContext.unk_1194[0].unk_1C == 1) {
+    } else if (gSessionContext.battleSides[0].unk_1C == 1) {
         gBattleGraphics.unk_0001 = 1;
     }
 
@@ -1216,7 +1216,7 @@ s32 BattlePrep_RunRulesScreen(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('EYEC');
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&gBattleProgress, gSessionContext.unk_11F2);
+    Save_GetModeSettings(&gBattleProgress, gSessionContext.inRound2);
     Gfx_InitDisplayListBuffers(0x18000, 0);
     sp2C = StageContext_Allocate(0, 1, 3, 1, 2, 1);
     Font_Init(0x17, 0);

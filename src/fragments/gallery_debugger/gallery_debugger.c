@@ -36,10 +36,10 @@ static Gfx gGalleryGfxList1[] = {
 void Gallery_Debugger_PostLoad(void) {
 }
 
-void func_83900028(void) {
+void GalleryDebugger_SaveControllerPak(void) {
 }
 
-void func_83900030(void) {
+void GalleryDebugger_LoadControllerPak(void) {
 }
 
 void GalleryDebugger_LoadDeckEntries(void) {
@@ -134,12 +134,12 @@ s32 GalleryDebugger_HandleMenuInput(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         switch (gGalleryMenuState.posX) {
             case 0:
-                func_83900030();
+                GalleryDebugger_LoadControllerPak();
                 var_a2 = 0;
                 break;
 
             case 1:
-                func_83900028();
+                GalleryDebugger_SaveControllerPak();
                 var_a2 = 0;
                 break;
 

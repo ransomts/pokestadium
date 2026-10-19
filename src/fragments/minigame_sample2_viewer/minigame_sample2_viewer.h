@@ -6,10 +6,10 @@
 #include "global.h"
 
 void Input_PollAndMenuInit(void);
-void func_82800050(u8* arg0);
-void func_828001D0(void);
-void func_82800238(void);
-void func_828002E4(void);
+void Minigame2SampleViewer_DrawBackgroundTiles(u8* arg0);
+void Minigame2SampleViewer_DrawFrame(void);
+void Minigame2SampleViewer_Loop(void);
+void Minigame2SampleViewer_Init(void);
 s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT52_H_

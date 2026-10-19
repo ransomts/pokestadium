@@ -450,9 +450,9 @@ void Battle_SelectComRoster(void) {
     s32 i;
     s32 var_s1;
 
-    temp_s1 = gSessionContext.unk_1194[0].unk_08[0];
-    temp_s2 = gSessionContext.unk_1194[0].unk_08[1];
-    temp_s0 = gSessionContext.unk_1194[1].unk_08[0];
+    temp_s1 = gSessionContext.battleSides[0].unk_08[0];
+    temp_s2 = gSessionContext.battleSides[0].unk_08[1];
+    temp_s0 = gSessionContext.battleSides[1].unk_08[0];
 
     if (temp_s0->unk_000 & 2) {
         if (gSessionContext.unk_0000 == 0) {
@@ -461,7 +461,7 @@ void Battle_SelectComRoster(void) {
             } else {
                 var_s1 = 3;
             }
-            BattleAI_InitializeBattle(temp_s1, temp_s2, temp_s0, gSessionContext.unk_11EC, sp48, gSessionContext.unk_0001, var_s1);
+            BattleAI_InitializeBattle(temp_s1, temp_s2, temp_s0, gSessionContext.aiDifficulty, sp48, gSessionContext.unk_0001, var_s1);
         } else {
             if (gSessionContext.unk_0001 == 8) {
                 var_s1 = temp_s0->unk_214->unk_002;
@@ -613,7 +613,7 @@ void func_84301A24(void) {
 s32 Battle_Main(s32 arg0, SessionContext* arg1) {
     Stage* sp24;
 
-    gBattlePokemonData = gSessionContext.unk_1194;
+    gBattlePokemonData = gSessionContext.battleSides;
     gBattleCompletionTimer = -2;
 
     main_pool_push_state('BATL');

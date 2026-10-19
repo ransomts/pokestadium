@@ -122,7 +122,7 @@ s32 PikachuReward_FindPikachuOnCart(void) {
     s32 i;
     BattleAI_TeamContext* var_v1;
 
-    var_v1 = gSessionContext.unk_1194[0].unk_08[0];
+    var_v1 = gSessionContext.battleSides[0].unk_08[0];
 
     for (i = 0; i < var_v1->unk_002; i++) {
         if (var_v1->unk_01C[i].posX.posX == 0x19) {
