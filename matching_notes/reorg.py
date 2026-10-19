@@ -76,6 +76,12 @@ def join_group(ours, theirs, group):
                 problems.append(f"no michiiik match for {p or hex(addr)} ({kind})")
                 continue
             tname, tp = hit
+            if not p:
+                # pathless entry (`- [0xADDR, c]`): splat derives the file itself;
+                # adding michiiik's path would point at a file we do not have.
+                # Park as a problem so it stays visible instead of corrupting.
+                problems.append(f"pathless entry at 0x{addr:X} ({kind}); michiiik has {tp}")
+                continue
             if tp and tp != p:
                 sub_ren.append((p, tp, s["name"], tname))
         for vram, kind, p in s.get("vrams", []):
@@ -123,8 +129,12 @@ def apply_group(group, no_gate):
     for oname, tname in seg_ren:
         yaml = yaml.replace(f"- name: {oname}\n", f"- name: {tname}\n")
     for op, tp, _on, _tn in sub_ren:
-        yaml = yaml.replace(f"{op}]", f"{tp}]").replace(f"{op},", f"{tp},")
-        yaml = re.sub(re.escape(op) + r"(?=[\],\s#}])", tp, yaml)
+        # MAIN-SEGMENT LESSON: main stems are short hex names (6BC0) that occur
+        # INSIDE address literals (0x6BC0) - the plain replace/lookahead forms
+        # rewrote the addresses and corrupted the yaml. Anchor on a preceding
+        # non-hex char so "0x6BC0" can never match, but ", 6BC0]" still does.
+        yaml = re.sub(r'(?<![0-9A-Fa-fx])' + re.escape(op) + r'(?=[\],\s#}])',
+                      lambda _m, tp=tp: tp, yaml)
     open(OUR_YAML, "w").write(yaml)
 
     done = []
@@ -144,14 +154,47 @@ def apply_group(group, no_gate):
     import shutil
     shutil.rmtree(os.path.join(REPO, "build/src"), ignore_errors=True)
 
-    # include rewrites: old fragment headers -> new names, everywhere
-    # (group header: fragments/N/fragmentN.h -> <their dir>/<semantic>.h; michiiik
-    # keeps segment NAMES numeric - only subsegment paths are semantic)
+    # include rewrites: michiiik's convention is ROOT-RELATIVE qualified includes
+    # ("src/fragments/<dir>/<name>.h", resolved via -Isrc / -I.) - flat basenames
+    # only resolve same-dir, which breaks partial joins (the 2026-10-19 lesson:
+    # leftover .c at old numeric paths including a moved group header).
+    def rewrite_header_includes(old_variants, new_inc):
+        n = 0
+        pats = [(re.compile(r'(#include\s+")' + re.escape(v) + r'(")'), new_inc)
+                for v in old_variants]
+        for root in ("src", "include"):
+            for dp, _d, fs in os.walk(os.path.join(REPO, root)):
+                for fn in fs:
+                    if not fn.endswith((".c", ".h")):
+                        continue
+                    p = os.path.join(dp, fn)
+                    t = open(p, errors="replace").read()
+                    t2 = t
+                    for pat, repl in pats:
+                        t2, k = pat.subn(r"\g<1>" + repl + r"\g<2>", t2)
+                        n += k
+                    if t2 != t:
+                        open(p, "w").write(t2)
+        return n
+
     header_moves = []
-    group_dirs = {tuple(op.split("/")[:-1]): tuple(tp.split("/")[:-1])
-                  for op, tp, _on, _tn in sub_ren}
-    for ourdir, theirdir in group_dirs.items():
+    # a group's files may split across SEVERAL michiiik target dirs; the group
+    # header goes to the dominant dir that has a dir-named header there
+    # (michiiik sometimes keeps numeric .c dirs but moves the header out)
+    from collections import Counter
+    dir_targets = {}
+    for op, tp, _on, _tn in sub_ren:
+        k, v = tuple(op.split("/")[:-1]), tuple(tp.split("/")[:-1])
+        dir_targets.setdefault(k, Counter())[v] += 1
+    for ourdir, targets in dir_targets.items():
+        if not ourdir:
+            continue  # main segment: bare filenames, no group header to move
         oldh_base = "fragment" + ourdir[-1] + ".h"  # fragment16.h
+        cands = [t for t in targets
+                 if os.path.exists(os.path.join(HIPPO, "src", *t, t[-1] + ".h"))]
+        if not cands:
+            continue  # their tree kept no dir-named header home for this group
+        theirdir = max(cands, key=lambda t: (targets[t], t))
         newh_base = theirdir[-1] + ".h"             # credits.h
         oldh_path = "/".join(["src"] + list(ourdir) + [oldh_base])
         newh_path = "/".join(["src"] + list(theirdir) + [newh_base])
@@ -161,23 +204,14 @@ def apply_group(group, no_gate):
         r = sh(["git", "mv", oldh_path, newh_path])
         if r.returncode != 0:
             print(f"  ! header mv failed {oldh_path}: {r.stderr.strip()}")
-        else:
-            header_moves.append((oldh_path, newh_path))
-            manifest["moves"].append((oldh_path, newh_path))
-            pat = re.compile(r'(#include\s+")' + re.escape(oldh_base) + r'(")')
-            n = 0
-            for root in ("src", "include"):
-                for dp, _d, fs in os.walk(os.path.join(REPO, root)):
-                    for fn in fs:
-                        if not fn.endswith((".c", ".h")):
-                            continue
-                        p = os.path.join(dp, fn)
-                        t = open(p, errors="replace").read()
-                        t2, k = pat.subn(r"\g<1>" + newh_base + r"\g<2>", t)
-                        if k:
-                            open(p, "w").write(t2)
-                            n += k
-            print(f"  header {oldh_base} -> {newh_base}: moved, {n} include rewrites")
+            continue
+        header_moves.append((oldh_path, newh_path))
+        manifest["moves"].append((oldh_path, newh_path))
+        variants = [oldh_base,
+                    "/".join(["src"] + list(ourdir) + [oldh_base]),
+                    "/".join(list(ourdir) + [oldh_base])]
+        n = rewrite_header_includes(variants, newh_path)
+        print(f"  header {oldh_base} -> {newh_path}: moved, {n} include rewrites")
     open(os.path.join(REPO, "scratch", "reorg_manifest.json"), "w").write(json.dumps(manifest))
 
     for op, tp, _on, _tn in sub_ren:
@@ -185,18 +219,12 @@ def apply_group(group, no_gate):
         newh = os.path.basename(tp) + ".h"
         if oldh == newh:
             continue
-        pat = re.compile(r'(#include\s+")' + re.escape(oldh) + r'(")')
-        for root in ("src", "include"):
-            for dp, _d, fs in os.walk(os.path.join(REPO, root)):
-                for fn in fs:
-                    if not fn.endswith((".c", ".h")):
-                        continue
-                    p = os.path.join(dp, fn)
-                    t = open(p, errors="replace").read()
-                    t2, k = pat.subn(r"\g<1>" + newh + r"\g<2>", t)
-                    if k:
-                        open(p, "w").write(t2)
-                        print(f"  includes: {os.path.relpath(p, REPO)}: {oldh} -> {newh} ({k})")
+        # per-file companion headers: qualified rewrite like the group header -
+        # files that stay behind (partial joins) must still resolve the include
+        variants = [oldh, "src/" + op + ".h", op + ".h"]
+        n = rewrite_header_includes(variants, "src/" + tp + ".h")
+        if n:
+            print(f"  includes: {oldh} -> src/{tp}.h ({n})")
 
     if no_gate:
         print("applied without gate (tree dirty - run make yourself)")

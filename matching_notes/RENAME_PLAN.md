@@ -311,6 +311,46 @@ JigglypuffGame_UpdateEffects). Apply as gated batch hs1 when the waves drain.
 => the statics tail is LLM-wave territory (as w5-w17 have been doing); michiiik has
 nothing more to give us for statics. Tool: matching_notes/rename_hippo_statics_gen.py.
 
+## Reorg session 2 (2026-10-19 afternoon-night)
+
+FRESH MICHIK CLONE (old one /tmp-cleaned): their tree moved upstream - the reorg's
+convergence target was stale. New joins unlocked: 24 commits landed (groups 2-8, 10,
+15, 17, 24-26, 29, 34, 39, 43, 47, 50, 51, 61 + partials 31/1/77). 102 numeric
+entries remain: 91 CONVERGED (michiiik also keeps numeric dirs) + 11 kind-mismatch
+leftovers (hasm/rodata/textbin with no (addr,kind) match in their yaml).
+
+TOOL FIXES this session (reorg.py, each the lesson of a failed gate):
+1. Qualified includes: michiiik uses root-relative "src/..." includes (1801x);
+   our flat-basename rewrites broke partial joins (leftover .c at old paths
+   including a moved group header). Now all three old forms rewrite to the
+   new qualified path.
+2. Header home for split groups: dominant target dir with a dir-named header
+   (michiiik keeps numeric .c dirs but moves headers out - e.g. group 61).
+3. Yaml path rewrite anchored on non-hex prefix: main-segment stems (6BC0)
+   occur inside address literals (0x6BC0) - the old replace corrupted the yaml.
+4. Pathless entries parked: `- [0xD470, c]`-style entries matched michiiik paths
+   with EMPTY op strings - the empty regex inserted the target at every anchor
+   (concatenated garbage). Now parked as visible problems.
+
+MAIN SEGMENT: STAGED, NOT APPLIED. 87 renames + 171 file moves ready (18 join
+problems + 75 pathless parked). BLOCKED ON D470/FLASH:
+- the D470 Makefile rule (CC_OLD 5.3 + -O0 + -mips1) can never rebuild through
+  asm-processor (its mips1 check rejects O0) - LATENT REPO BUG. Gates passed
+  historically only because they rode the farm session's build/src states.
+- the FARM SESSION (active 12:17-12:25+) decompiled flash.c (untracked WIP in the
+  tree) - michiiik's convergence: [0xD470, c, flash] + decompiled flash.c +
+  `flash.o: MIPS_VERSION := -mips1` (no CC_OLD/-O0; their ROM is checksum-OK).
+- after flash lands: flip yaml + Makefile rule + pokestadium.ld D470.o refs,
+  THEN re-run `reorg.py apply --group main` (everything else is ready).
+- also from the vram join: our bss entry {name: D470} wants name: flash.
+
+INCIDENT LOG: apply attempts #1-#4 each auto-reverted cleanly, but the index
+ended desynced (staged renames + working tree reverted + an extract run
+mid-desync regenerated 34 stub .c files). Recovery: git reset + checkout of
+src/include; farm's flash.c preserved untracked. fd.sh (farm) builds in the
+main tree - w29-class gate collisions confirmed live today.
+CROSS_SESSION_CHANNEL.md recreated with the coordination state.
+
 ## SESSION CLOSE (2026-10-19 night) - statics tail + Tier C shipped
 
 Batches this session (all gated, ROM byte-identical throughout):
