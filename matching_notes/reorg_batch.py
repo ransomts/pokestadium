@@ -109,15 +109,19 @@ def main():
             n_prob = int(rest.split("problems")[0].split(",")[-1])
             (clean if n_prob == 0 else skipped).append(int(gid))
         groups = [g for g in clean if g != 16]  # pilot done
+        yaml_text = open(f"{REPO}/yamls/us/rom.yaml").read()
+        groups = [g for g in groups if f"fragments/{g}/" in yaml_text]  # skip already-done
         if skipped:
             print(f"SKIPPING problem groups (manual follow-up): {skipped}", flush=True)
     else:
         groups = [int(g) for g in args.groups]
     print(f"groups: {groups}", flush=True)
+    failed = []
     for i in range(0, len(groups), args.batch_size):
         if not run(groups[i:i + args.batch_size]):
-            print(f"BATCH FAILED at {groups[i:i + args.batch_size]} - stopping")
-            return 1
+            print(f"batch {groups[i:i + args.batch_size]} had failures - continuing", flush=True)
+            failed.extend(groups[i:i + args.batch_size])
+    print(f"DONE. failed batches: {failed}", flush=True)
     return 0
 
 
