@@ -180,7 +180,7 @@ void ClearSlotItem(gItemPanel* arg0) {
 void MarkSlotForRemoval(gItemPanel* arg0) {
     s16 sp1E = arg0->unk_0010 + (arg0->unk_0012 * 3);
 
-    if (RequestNextPokemon(arg0->unk_4D40) != 0) {
+    if (RequestNextPokemon(arg0->pokemonPanel) != 0) {
         if (arg0->unk_0030[sp1E].unk_004.unk_00.unk_00 != 0) {
             arg0->unk_0030[sp1E].unk_004.unk_00.unk_00 = 0;
             arg0->unk_0030[sp1E].raw = 0;
@@ -287,7 +287,7 @@ void StartItemMoveAnimation(gItemPanel* a0) {
         temp_v1 = a0->unk_0016 + (a0->unk_0012 * 0x2C);
 
         arg0->unk_0030[tmp].raw |= 0x80000000;
-        MoveScreen_Start(a0->unk_4D44, a0->unk_0002, 0x30, 0xEC, temp_v0, temp_v1, &a0->unk_0030[tmp], 2);
+        MoveScreen_Start(a0->moveScreen, a0->unk_0002, 0x30, 0xEC, temp_v0, temp_v1, &a0->unk_0030[tmp], 2);
         a0->unk_0001 = 6;
     }
     a0->unk_0018 = a0->unk_0014;
@@ -297,10 +297,10 @@ void StartItemMoveAnimation(gItemPanel* a0) {
 
 void HandleItemMoveResult(gItemPanel* arg0) {
     s16 sp26 = arg0->unk_0010 + (arg0->unk_0012 * 3);
-    s32 temp_v0 = GetSelectedMoveIndex(arg0->unk_4D44);
+    s32 temp_v0 = GetSelectedMoveIndex(arg0->moveScreen);
 
     if (temp_v0 == 1) {
-        RequestNextPokemon(arg0->unk_4D40);
+        RequestNextPokemon(arg0->pokemonPanel);
         arg0->unk_0004 = 0;
         arg0->unk_0001 = 3;
     } else if (temp_v0 == 2) {
@@ -459,7 +459,7 @@ void ItemPanel_HandleMenuSelection(gItemPanel* arg0) {
             break;
 
         case 1:
-            TriggerSelectionAnim(arg0->unk_4D40);
+            TriggerSelectionAnim(arg0->pokemonPanel);
             arg0->unk_000A = 0;
             arg0->unk_0001 = 5;
             break;
@@ -486,7 +486,7 @@ void ItemPanel_HandleMenuSelection(gItemPanel* arg0) {
                 arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
             }
 
-            SetMenuActive(arg0->unk_4D40);
+            SetMenuActive(arg0->pokemonPanel);
 
             arg0->unk_0006 = 0;
             arg0->unk_0010 = 0;
@@ -517,8 +517,8 @@ void ItemPanel_HandleAltMenuSelection(gItemPanel* arg0) {
             break;
 
         case 1:
-            TriggerSelectionAnim(arg0->unk_4D40);
-            RegistrationManager_Initialize(arg0->unk_4D48, arg0->unk_001C, arg0->unk_001E, arg0->unk_0030);
+            TriggerSelectionAnim(arg0->pokemonPanel);
+            RegistrationManager_Initialize(arg0->registrationManager, arg0->unk_001C, arg0->unk_001E, arg0->unk_0030);
             arg0->unk_0001 = 3;
             break;
 
@@ -536,7 +536,7 @@ void ItemPanel_HandleAltMenuSelection(gItemPanel* arg0) {
                 arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
             }
 
-            SetMenuActive(arg0->unk_4D40);
+            SetMenuActive(arg0->pokemonPanel);
 
             arg0->unk_0006 = 0;
             arg0->unk_0010 = 0;
@@ -596,7 +596,7 @@ void ItemPanel_HandleActionSelection(gItemPanel* arg0) {
 
     TeamSelection_RulePrompt_Open(2, cont);
     if (TeamSelection_RulePrompt_TryFinish(2) >= 0) {
-        TriggerSelectionAnim(arg0->unk_4D40);
+        TriggerSelectionAnim(arg0->pokemonPanel);
         arg0->unk_000A = 0;
         arg0->unk_0001 = 5;
     }
@@ -724,9 +724,9 @@ s32 ItemPanel_Init(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2,
     arg0->unk_001A = arg8;
     arg0->unk_001C = arg5;
 
-    arg0->unk_4D40 = arg1;
-    arg0->unk_4D44 = arg2;
-    arg0->unk_4D48 = arg3;
+    arg0->pokemonPanel = arg1;
+    arg0->moveScreen = arg2;
+    arg0->registrationManager = arg3;
 
     for (i = 0; i < 6; i++) {
         arg0->unk_0030[i].raw = 0;
@@ -767,7 +767,7 @@ s32 ItemPanel_ClearAndReset(gItemPanel* arg0) {
         arg0->unk_0030[i].unk_004.unk_00.unk_00 = 0;
     }
 
-    SetMenuActive(arg0->unk_4D40);
+    SetMenuActive(arg0->pokemonPanel);
     arg0->unk_0006 = 0;
     arg0->unk_0008 = 6;
     arg0->unk_0010 = 0;

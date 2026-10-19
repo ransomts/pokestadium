@@ -49,7 +49,7 @@ void Particle_FireBurstSmall_Update(ParticleEffectInstance* arg0) {
 void Particle_FireBurstSmall_Handler(ParticleEffectInstance* arg0) {
     s16 sp2E = Particle_GetShortCF(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_FireBurstSmall(arg0, sp2E);
             break;
@@ -145,7 +145,7 @@ void Particle_FireBurstLarge_Update(ParticleEffectInstance* arg0) {
 }
 
 void Particle_FireBurstLarge_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_FireBurstLarge(arg0);
             break;
@@ -235,7 +235,7 @@ void Particle_SmokePuff_Update(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SmokePuffHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SmokePuff(arg0);
             break;
@@ -290,7 +290,7 @@ void Particle_FireBurstTiny(ParticleEffectInstance* arg0, s16 arg1) {
 void Particle_FireBurstTiny_Update(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B8) {
         case 1:
-            if (Particle_StartTimer2(arg0, arg0->unk_AE) != 0) {
+            if (Particle_StartTimer2(arg0, arg0->alpha) != 0) {
                 Particle_IncrementFlag2Counter(arg0);
             }
             break;
@@ -311,7 +311,7 @@ void Particle_FireBurstTiny_Update(ParticleEffectInstance* arg0) {
 void Particle_FireBurstTiny_Handler(ParticleEffectInstance* arg0) {
     s16 temp_v0 = Particle_GetShortCF(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_FireBurstTiny(arg0, temp_v0);
             break;
@@ -382,7 +382,7 @@ void Particle_SootPuff_Init(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SootPuff_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SootPuff_Init(arg0);
             break;
@@ -410,7 +410,7 @@ void Particle_SootPuff_Handler(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SootPuff_Handler_Alt(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SootPuff_Init(arg0);
             break;
@@ -440,7 +440,7 @@ void Particle_SootPuff_Handler_Alt(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SootPuff_Handler_Sooty(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SootPuff_Init(arg0);
             break;
@@ -487,7 +487,7 @@ void Particle_Firework(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_FireUpdate(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Firework(arg0);
             break;
@@ -532,7 +532,7 @@ void Particle_Spark(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Spark_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Spark(arg0);
             break;
@@ -568,7 +568,7 @@ void Particle_Spark_Long_Init(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Spark_Long_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 3:
             break;
 
@@ -604,7 +604,7 @@ void Particle_SmokeSoot_Init(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SmokeSoot_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SmokeSoot_Init(arg0);
             break;
@@ -632,7 +632,7 @@ void Particle_Ember_Init(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Ember_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Ember_Init(arg0);
             break;
@@ -667,7 +667,7 @@ void Particle_Dust_Init(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Dust_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Dust_Init(arg0);
             break;
@@ -707,7 +707,7 @@ void Particle_Dust_Cloud_Init(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Dust_Cloud_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Dust_Cloud_Init(arg0);
             break;
@@ -837,7 +837,7 @@ void Particle_Explosion(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Explosion_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Explosion(arg0);
             break;
@@ -851,7 +851,7 @@ void Particle_Explosion_Handler(ParticleEffectInstance* arg0) {
         case 3:
             Particle_ApproachScaleFactor2(arg0);
             Particle_AnimLoopForwardComplete(arg0, 2, 7, 1, 1, 0);
-            if (arg0->unk_C7 >= 6) {
+            if (arg0->rampValue >= 6) {
                 Particle_ApproachPrimAlpha(arg0, 0x64, 0x4E);
             }
             break;
@@ -885,7 +885,7 @@ void Particle_Firefly(ParticleEffectInstance* arg0) {
 void ParticleEffect_StateHandler_34F84(ParticleEffectInstance* arg0) {
     Particle_GetShortCE(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Firefly(arg0);
             break;
@@ -900,11 +900,11 @@ void ParticleEffect_StateHandler_34F84(ParticleEffectInstance* arg0) {
             Particle_ApproachScaleFactor2(arg0);
             Particle_AnimLoopForwardComplete(arg0, 1, 7, 1, 1, 0);
 
-            if (arg0->unk_C7 >= 6) {
+            if (arg0->rampValue >= 6) {
                 Particle_ApproachPrimAlpha(arg0, 0x64, 0x4E);
             }
 
-            if (arg0->unk_C7 >= 4) {}
+            if (arg0->rampValue >= 4) {}
             break;
 
         case 4:
@@ -940,7 +940,7 @@ void Particle_Sparkle(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Sparkle_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Sparkle(arg0);
             break;
@@ -986,7 +986,7 @@ void Particle_Glitter_Init_Alt(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Glitter_Init_Alt_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Glitter_Init_Alt(arg0);
             break;
@@ -1042,7 +1042,7 @@ void Particle_Star(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Star_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Star(arg0);
             break;
@@ -1087,7 +1087,7 @@ void Particle_Twinkle(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Twinkle_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Twinkle(arg0);
             break;
@@ -1138,7 +1138,7 @@ void Particle_Glitter(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Glitter_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Glitter(arg0);
             break;
@@ -1194,7 +1194,7 @@ void Particle_Star_Tiny_Init(ParticleEffectInstance* arg0) {
 }
 
 void Particle_Star_Tiny_Handler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_Star_Tiny_Init(arg0);
             break;
@@ -1244,13 +1244,13 @@ void Particle_FireRing(ParticleEffectInstance* arg0) {
 }
 
 void Particle_FireRingUpdate(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_FireRing(arg0);
             break;
 
         case 2:
-            if (Particle_ProcessTimer80(arg0, arg0->unk_A6) != 0) {
+            if (Particle_ProcessTimer80(arg0, arg0->initialAlpha) != 0) {
                 Particle_EnableFlag4(arg0);
             }
             break;
@@ -1260,7 +1260,7 @@ void Particle_FireRingUpdate(ParticleEffectInstance* arg0) {
             Particle_ApproachScaleFactor1(arg0, 1.0f, 0.02f);
             Particle_ApproachPrimB(arg0, 0, 0x20);
             Particle_ApproachEnvG(arg0, 0, 0x20);
-            if (arg0->unk_C7 >= 6) {
+            if (arg0->rampValue >= 6) {
                 Particle_ApproachPrimG(arg0, 0, 0x20);
                 Particle_ApproachPrimAlpha(arg0, 0x64, 0x4E);
             }
@@ -1312,7 +1312,7 @@ void Particle_ExplosionVariant(ParticleEffectInstance* arg0, s16 arg1, s16 arg2)
 void Particle_ExplosionUpdate(ParticleEffectInstance* arg0, s32 arg1) {
     s16 temp_v0 = Particle_GetShortCF(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_ExplosionVariant(arg0, arg1, temp_v0);
             break;
@@ -1418,7 +1418,7 @@ void Particle_RotationUpdate(ParticleEffectInstance* arg0) {
 }
 
 void Particle_ExplosionStateUpdate(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_ExplosionInit(arg0);
             break;
@@ -1513,7 +1513,7 @@ void Particle_SparkleRotationUpdate(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SparkleUpdate(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SparkleInit(arg0);
             break;
@@ -1571,7 +1571,7 @@ void Particle_DustInit(ParticleEffectInstance* arg0) {
 }
 
 void Particle_DustUpdate(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_DustInit(arg0);
             break;

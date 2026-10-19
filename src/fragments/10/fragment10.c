@@ -445,21 +445,21 @@ void ResultScreen_HandleInput(void) {
     UNUSED s32 pad;
 
     if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
-        D_864052CC->unk_16D = D_864052CC->unk_16C;
+        D_864052CC->previousHealthState = D_864052CC->unk_16C;
         if (gCurrentHealthSegment < (D_864052CC->unk_004.unk_040.unk_04->unk_0A / 2)) {
             D_864052CC->unk_16C = 0;
         } else {
             D_864052CC->unk_16C = 1;
         }
 
-        if (D_864052CC->unk_16C != D_864052CC->unk_16D) {
+        if (D_864052CC->unk_16C != D_864052CC->previousHealthState) {
             PlaySoundByCategory(0x70003, 1 - D_864052CC->unk_16C, 0);
 
             for (i = 0; i < 4; i++) {
                 gCurrentHudState = &gPlayerHudStates[i];
 
                 if ((gCurrentHudState->unk_274 == 0) && (gCurrentHudState->unk_010 > 0)) {
-                    if (D_864052CC->unk_16D != 0) {
+                    if (D_864052CC->previousHealthState != 0) {
                         gCurrentHudState->unk_194[D_864052CC->unk_001][7]++;
                     } else {
                         gCurrentHudState->unk_194[D_864052CC->unk_000][7]++;
@@ -916,7 +916,7 @@ void ResultScreen_InitScene(void) {
     gCurrentGraphNode->unk_01E.x = -0xB00;
 
     D_864052CC->unk_16C = 0;
-    D_864052CC->unk_16D = 0;
+    D_864052CC->previousHealthState = 0;
     D_87B000E4 = GeoLayout_LoadById(0xD2);
 
     for (i = 0; i < 4; i++) {

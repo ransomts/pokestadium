@@ -107,15 +107,15 @@ void WaterParticleSystems_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4
 
             var_v0->unk_07C.unk_04 = arg1C;
 
-            var_v0->unk_081.unk_00.r = arg1D;
-            var_v0->unk_081.unk_00.g = arg1E;
-            var_v0->unk_081.unk_00.b = arg1F;
-            var_v0->unk_081.unk_00.a = arg20;
+            var_v0->envColorBlend.unk_00.r = arg1D;
+            var_v0->envColorBlend.unk_00.g = arg1E;
+            var_v0->envColorBlend.unk_00.b = arg1F;
+            var_v0->envColorBlend.unk_00.a = arg20;
 
-            var_v0->unk_086.r = arg21;
-            var_v0->unk_086.g = arg22;
-            var_v0->unk_086.b = arg23;
-            var_v0->unk_086.a = arg24;
+            var_v0->lineColor.r = arg21;
+            var_v0->lineColor.g = arg22;
+            var_v0->lineColor.b = arg23;
+            var_v0->lineColor.a = arg24;
 
             var_v0->unk_08C = 1.0f;
             var_v0->unk_090 = 1.0f;
@@ -238,7 +238,7 @@ Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 
     s16 tmp;
 
     temp_v1 = &arg1->unk_07C;
-    temp_v0 = &arg1->unk_081;
+    temp_v0 = &arg1->envColorBlend;
 
     if (GetParticleSpecialFlag() == 1) {
         if (arg1->unk_094 >= arg1->unk_002) {
@@ -347,14 +347,14 @@ Gfx* WaterParticleSystems_Render(Gfx* arg0) {
                 }
             }
 
-            if ((var_fp->unk_086.r | var_fp->unk_086.g | var_fp->unk_086.b | var_fp->unk_086.a) != 0) {
+            if ((var_fp->lineColor.r | var_fp->lineColor.g | var_fp->lineColor.b | var_fp->lineColor.a) != 0) {
                 spE8 = var_fp->unk_0B0[9].unk_10;
                 spF4 = var_fp->unk_0B0[0].unk_10;
                 spDC.x = spD8->unk_60.eye.x;
                 spDC.y = spD8->unk_60.eye.y;
                 spDC.z = spD8->unk_60.eye.z;
-                arg0 = Gfx_DrawThickLine(arg0, &spF4, &spE8, &spDC, 20.0f, var_fp->unk_086.r, var_fp->unk_086.g,
-                                     var_fp->unk_086.b, var_fp->unk_086.a * var_fp->unk_08C);
+                arg0 = Gfx_DrawThickLine(arg0, &spF4, &spE8, &spDC, 20.0f, var_fp->lineColor.r, var_fp->lineColor.g,
+                                     var_fp->lineColor.b, var_fp->lineColor.a * var_fp->unk_08C);
             }
 
             gSPDisplayList(arg0++, D_84389C70);
@@ -369,8 +369,8 @@ Gfx* WaterParticleSystems_Render(Gfx* arg0) {
 
             gDPSetPrimColor(arg0++, 0, var_fp->unk_07C.unk_04, var_fp->unk_07C.unk_00.r, var_fp->unk_07C.unk_00.g,
                             var_fp->unk_07C.unk_00.b, var_fp->unk_07C.unk_00.a);
-            gDPSetEnvColor(arg0++, var_fp->unk_081.unk_00.r, var_fp->unk_081.unk_00.g, var_fp->unk_081.unk_00.b,
-                           var_fp->unk_081.unk_00.a);
+            gDPSetEnvColor(arg0++, var_fp->envColorBlend.unk_00.r, var_fp->envColorBlend.unk_00.g, var_fp->envColorBlend.unk_00.b,
+                           var_fp->envColorBlend.unk_00.a);
             gSPClearGeometryMode(arg0++, G_CULL_BOTH);
             gSPSetGeometryMode(arg0++, G_CULL_FRONT);
             gDPPipeSync(arg0++);

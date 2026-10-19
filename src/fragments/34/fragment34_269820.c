@@ -126,7 +126,7 @@ ParticleEffectInstance* Particle_Create(f32 arg0, Vec3f arg1, Vec3s arg2, func_u
         sp1C->unk_14 = 0;
         sp1C->unk_AC = arg5;
         sp1C->unk_CE = arg7;
-        sp1C->unk_CD = arg6;
+        sp1C->targetAlpha = arg6;
     }
     return sp1C;
 }
@@ -156,7 +156,7 @@ ParticleEffectInstance* Particle_CreateFromEntity(Fragment2_1GraphNode* arg0, fu
 
         sp1C->unk_AC = arg3;
         sp1C->unk_CE = arg5;
-        sp1C->unk_CD = arg4;
+        sp1C->targetAlpha = arg4;
     }
     return sp1C;
 }
@@ -223,7 +223,7 @@ s32 Particle_GetActiveCount(void) {
 }
 
 void Particle_Init(ParticleEffectInstance* arg0) {
-    arg0->unk_B2 = 1;
+    arg0->updateState = 1;
     arg0->unk_0C = &gParticleDefaultCallback;
     arg0->unk_08 = NULL;
     arg0->unk_10 = 0;
@@ -233,11 +233,11 @@ void Particle_Init(ParticleEffectInstance* arg0) {
 }
 
 void Particle_ClearActiveFlag(ParticleEffectInstance* arg0) {
-    arg0->unk_B2 = 0;
+    arg0->updateState = 0;
 }
 
 void Particle_ResetState(ParticleEffectInstance* arg0) {
-    arg0->unk_B2 = 0;
+    arg0->updateState = 0;
 
     arg0->unk_08 = NULL;
     arg0->unk_0C = NULL;
@@ -248,7 +248,7 @@ void Particle_ResetState(ParticleEffectInstance* arg0) {
 s32 Particle_IsInactive(ParticleEffectInstance* arg0) {
     s32 var_v1 = 0;
 
-    if (arg0->unk_B2 == 0) {
+    if (arg0->updateState == 0) {
         var_v1 = 1;
     }
     return var_v1;
@@ -257,7 +257,7 @@ s32 Particle_IsInactive(ParticleEffectInstance* arg0) {
 s32 Particle_IsActive(ParticleEffectInstance* arg0) {
     s32 var_v1 = 0;
 
-    if (arg0->unk_B2 >= 2) {
+    if (arg0->updateState >= 2) {
         var_v1 = 1;
     }
     return var_v1;
@@ -265,7 +265,7 @@ s32 Particle_IsActive(ParticleEffectInstance* arg0) {
 
 void Particle_IncrementState(ParticleEffectInstance* arg0) {
     Particle_ClearFlag(arg0, 1);
-    arg0->unk_B2++;
+    arg0->updateState++;
 }
 
 s32 Particle_StartTimer80(ParticleEffectInstance* arg0, s16 arg1) {
@@ -350,33 +350,33 @@ void Particle_HasFlag40(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SetParamC7(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_C7 = arg1;
+    arg0->rampValue = arg1;
 }
 
 s32 Particle_AnimLoopForward(ParticleEffectInstance* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
     s32 sp1C = 0;
 
     if (Particle_CanSetFlag(arg0, 1) != 0) {
-        arg0->unk_B6 = arg4;
-        arg0->unk_C7 = arg1;
-        arg0->unk_C6 = arg5;
+        arg0->rampStepTimer = arg4;
+        arg0->rampValue = arg1;
+        arg0->rampRepeatCount = arg5;
         Particle_SetFlag(arg0, 1);
     } else {
-        arg0->unk_B6--;
-        if (arg0->unk_B6 <= 0) {
-            arg0->unk_B6 = arg4;
+        arg0->rampStepTimer--;
+        if (arg0->rampStepTimer <= 0) {
+            arg0->rampStepTimer = arg4;
 
-            arg0->unk_C7 += arg3;
-            if (arg2 < arg0->unk_C7) {
-                if (arg0->unk_C6 > 0) {
-                    arg0->unk_C6--;
+            arg0->rampValue += arg3;
+            if (arg2 < arg0->rampValue) {
+                if (arg0->rampRepeatCount > 0) {
+                    arg0->rampRepeatCount--;
                 }
 
-                if (arg0->unk_C6 == 0) {
-                    arg0->unk_C7 = arg2;
+                if (arg0->rampRepeatCount == 0) {
+                    arg0->rampValue = arg2;
                     sp1C = 1;
                 } else {
-                    arg0->unk_C7 = arg1;
+                    arg0->rampValue = arg1;
                 }
             }
         }
@@ -398,26 +398,26 @@ s32 Particle_AnimLoopBackward(ParticleEffectInstance* arg0, s16 arg1, s16 arg2, 
     s32 sp1C = 0;
 
     if (Particle_CanSetFlag(arg0, 1) != 0) {
-        arg0->unk_B6 = arg4;
-        arg0->unk_C7 = arg1;
-        arg0->unk_C6 = arg5;
+        arg0->rampStepTimer = arg4;
+        arg0->rampValue = arg1;
+        arg0->rampRepeatCount = arg5;
         Particle_SetFlag(arg0, 1);
     } else {
-        arg0->unk_B6--;
-        if (arg0->unk_B6 <= 0) {
-            arg0->unk_B6 = arg4;
+        arg0->rampStepTimer--;
+        if (arg0->rampStepTimer <= 0) {
+            arg0->rampStepTimer = arg4;
 
-            arg0->unk_C7 -= arg3;
-            if (arg0->unk_C7 < arg2) {
-                if (arg0->unk_C6 > 0) {
-                    arg0->unk_C6--;
+            arg0->rampValue -= arg3;
+            if (arg0->rampValue < arg2) {
+                if (arg0->rampRepeatCount > 0) {
+                    arg0->rampRepeatCount--;
                 }
 
-                if (arg0->unk_C6 == 0) {
-                    arg0->unk_C7 = arg2;
+                if (arg0->rampRepeatCount == 0) {
+                    arg0->rampValue = arg2;
                     sp1C = 1;
                 } else {
-                    arg0->unk_C7 = arg1;
+                    arg0->rampValue = arg1;
                 }
             }
         }
@@ -439,31 +439,31 @@ s32 Particle_AnimPingPong(ParticleEffectInstance* arg0, s16 arg1, s16 arg2, s16 
     s32 sp24 = 0;
 
     if (Particle_CanSetFlag(arg0, 1) != 0) {
-        arg0->unk_B6 = arg4;
-        arg0->unk_C7 = arg1;
-        arg0->unk_C6 = arg5;
+        arg0->rampStepTimer = arg4;
+        arg0->rampValue = arg1;
+        arg0->rampRepeatCount = arg5;
         Particle_SetFlag(arg0, 1);
         Particle_ClearFlag(arg0, 0x10);
     } else {
-        arg0->unk_B6--;
-        if (arg0->unk_B6 <= 0) {
-            arg0->unk_B6 = arg4;
+        arg0->rampStepTimer--;
+        if (arg0->rampStepTimer <= 0) {
+            arg0->rampStepTimer = arg4;
 
             if (Particle_CanSetFlag(arg0, 0x10) != 0) {
-                arg0->unk_C7 += arg3;
-                if (arg0->unk_C7 >= arg2) {
-                    arg0->unk_C7 = arg2;
+                arg0->rampValue += arg3;
+                if (arg0->rampValue >= arg2) {
+                    arg0->rampValue = arg2;
                     Particle_SetFlag(arg0, 0x10);
                 }
             } else {
-                arg0->unk_C7 -= arg3;
-                if (arg1 >= arg0->unk_C7) {
-                    arg0->unk_C7 = arg1;
-                    if (arg0->unk_C6 > 0) {
-                        arg0->unk_C6--;
+                arg0->rampValue -= arg3;
+                if (arg1 >= arg0->rampValue) {
+                    arg0->rampValue = arg1;
+                    if (arg0->rampRepeatCount > 0) {
+                        arg0->rampRepeatCount--;
                     }
 
-                    if (arg0->unk_C6 == 0) {
+                    if (arg0->rampRepeatCount == 0) {
                         Particle_ClearFlag(arg0, 0x20);
                         Particle_ClearFlag(arg0, 1);
                         sp24 = 1;
@@ -492,30 +492,30 @@ s32 Particle_AnimReversePingPong(ParticleEffectInstance* arg0, s16 arg1, s16 arg
     s32 sp24 = 0;
 
     if (Particle_CanSetFlag(arg0, 1) != 0) {
-        arg0->unk_B6 = arg4;
-        arg0->unk_C7 = arg1;
-        arg0->unk_C6 = arg5;
+        arg0->rampStepTimer = arg4;
+        arg0->rampValue = arg1;
+        arg0->rampRepeatCount = arg5;
         Particle_SetFlag(arg0, 1);
         Particle_ClearFlag(arg0, 0x10);
     } else {
-        arg0->unk_B6--;
-        if (arg0->unk_B6 <= 0) {
-            arg0->unk_B6 = arg4;
+        arg0->rampStepTimer--;
+        if (arg0->rampStepTimer <= 0) {
+            arg0->rampStepTimer = arg4;
             if (Particle_CanSetFlag(arg0, 0x10) != 0) {
-                arg0->unk_C7 -= arg3;
-                if (arg2 >= arg0->unk_C7) {
-                    arg0->unk_C7 = arg2;
+                arg0->rampValue -= arg3;
+                if (arg2 >= arg0->rampValue) {
+                    arg0->rampValue = arg2;
                     Particle_SetFlag(arg0, 0x10);
                 }
             } else {
-                arg0->unk_C7 += arg3;
-                if (arg0->unk_C7 >= arg1) {
-                    arg0->unk_C7 = arg1;
-                    if (arg0->unk_C6 > 0) {
-                        arg0->unk_C6--;
+                arg0->rampValue += arg3;
+                if (arg0->rampValue >= arg1) {
+                    arg0->rampValue = arg1;
+                    if (arg0->rampRepeatCount > 0) {
+                        arg0->rampRepeatCount--;
                     }
 
-                    if (arg0->unk_C6 == 0) {
+                    if (arg0->rampRepeatCount == 0) {
                         Particle_ClearFlag(arg0, 1);
                         sp24 = 1;
                     } else {
@@ -556,11 +556,11 @@ s32 Particle_StartTimer2(ParticleEffectInstance* arg0, s16 arg1) {
 
     if (Particle_CanSetFlag(arg0, 2) != 0) {
         Particle_SetFlag(arg0, 2);
-        arg0->unk_BA = arg1;
+        arg0->durationTimer = arg1;
     }
 
-    arg0->unk_BA--;
-    if (arg0->unk_BA < 0) {
+    arg0->durationTimer--;
+    if (arg0->durationTimer < 0) {
         Particle_ClearFlag(arg0, 2);
         sp1C = 1;
     }
@@ -1138,32 +1138,32 @@ void Particle_AddRotationZ(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SetRotationDelta(ParticleEffectInstance* arg0, s16 arg1, s16 arg2, s16 arg3) {
-    arg0->unk_9A.x = arg1;
-    arg0->unk_9A.y = arg2;
-    arg0->unk_9A.z = arg3;
+    arg0->rotationDelta.x = arg1;
+    arg0->rotationDelta.y = arg2;
+    arg0->rotationDelta.z = arg3;
 }
 
 void Particle_SetRotationDeltaFromVec3s(ParticleEffectInstance* arg0, Vec3s arg1) {
-    arg0->unk_9A.x = arg1.x;
-    arg0->unk_9A.y = arg1.y;
-    arg0->unk_9A.z = arg1.z;
+    arg0->rotationDelta.x = arg1.x;
+    arg0->rotationDelta.y = arg1.y;
+    arg0->rotationDelta.z = arg1.z;
 }
 
 void Particle_SetRotationDeltaXY(ParticleEffectInstance* arg0, s16 arg1, s16 arg2) {
-    arg0->unk_9A.x = arg1;
-    arg0->unk_9A.y = arg2;
+    arg0->rotationDelta.x = arg1;
+    arg0->rotationDelta.y = arg2;
 }
 
 void Particle_SetRotationDeltaX(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_9A.x = arg1;
+    arg0->rotationDelta.x = arg1;
 }
 
 void Particle_SetRotationDeltaY(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_9A.y = arg1;
+    arg0->rotationDelta.y = arg1;
 }
 
 void Particle_SetRotationDeltaZ(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_9A.z = arg1;
+    arg0->rotationDelta.z = arg1;
 }
 
 void Particle_SetTargetRotationX(ParticleEffectInstance* arg0, s16 arg1) {
@@ -1186,21 +1186,21 @@ void Particle_CopyRotationToTarget(ParticleEffectInstance* arg0) {
 }
 
 void Particle_AddRotationDelta(ParticleEffectInstance* arg0) {
-    arg0->unk_94.x += arg0->unk_9A.x;
-    arg0->unk_94.y += arg0->unk_9A.y;
-    arg0->unk_94.z += arg0->unk_9A.z;
+    arg0->unk_94.x += arg0->rotationDelta.x;
+    arg0->unk_94.y += arg0->rotationDelta.y;
+    arg0->unk_94.z += arg0->rotationDelta.z;
 }
 
 void Particle_AddRotationDeltaX(ParticleEffectInstance* arg0) {
-    arg0->unk_94.x += arg0->unk_9A.x;
+    arg0->unk_94.x += arg0->rotationDelta.x;
 }
 
 void Particle_AddRotationDeltaY(ParticleEffectInstance* arg0) {
-    arg0->unk_94.y += arg0->unk_9A.y;
+    arg0->unk_94.y += arg0->rotationDelta.y;
 }
 
 void Particle_AddRotationDeltaZ(ParticleEffectInstance* arg0) {
-    arg0->unk_94.z += arg0->unk_9A.z;
+    arg0->unk_94.z += arg0->rotationDelta.z;
 }
 
 void Particle_AddRotationDeltaVec(ParticleEffectInstance* arg0, Vec3s arg1) {
@@ -1251,15 +1251,15 @@ void Particle_SubtractRotationDeltaZ(ParticleEffectInstance* arg0, s16 arg1) {
 }
 
 void Particle_ApproachRotationXWrap(ParticleEffectInstance* arg0) {
-    ApproachU16Wrap(&arg0->unk_94.x, arg0->unk_A0.x, arg0->unk_9A.x);
+    ApproachU16Wrap(&arg0->unk_94.x, arg0->unk_A0.x, arg0->rotationDelta.x);
 }
 
 void Particle_ApproachRotationYWrap(ParticleEffectInstance* arg0) {
-    ApproachU16Wrap(&arg0->unk_94.y, arg0->unk_A0.y, arg0->unk_9A.y);
+    ApproachU16Wrap(&arg0->unk_94.y, arg0->unk_A0.y, arg0->rotationDelta.y);
 }
 
 void Particle_ApproachRotationZWrap(ParticleEffectInstance* arg0) {
-    ApproachU16Wrap(&arg0->unk_94.z, arg0->unk_A0.z, arg0->unk_9A.z);
+    ApproachU16Wrap(&arg0->unk_94.z, arg0->unk_A0.z, arg0->rotationDelta.z);
 }
 
 void Particle_ApproachRotationAllWrap(ParticleEffectInstance* arg0) {
@@ -1606,10 +1606,10 @@ void Particle_UpdatePositionAndAccelFromYaw(ParticleEffectInstance* arg0, f32 ar
     f32 tmp1 = arg0->unk_50.x;
     f32 tmp2 = arg0->unk_50.z;
 
-    arg0->unk_9A.y += arg2;
+    arg0->rotationDelta.y += arg2;
 
-    arg0->unk_50.x = arg1 * gParticleScaleFactor.unk_00.y * SINS(arg0->unk_9A.y);
-    arg0->unk_50.z = arg1 * gParticleScaleFactor.unk_00.y * COSS(arg0->unk_9A.y);
+    arg0->unk_50.x = arg1 * gParticleScaleFactor.unk_00.y * SINS(arg0->rotationDelta.y);
+    arg0->unk_50.z = arg1 * gParticleScaleFactor.unk_00.y * COSS(arg0->rotationDelta.y);
 
     arg0->unk_7C.x = arg0->unk_50.x - tmp1;
     arg0->unk_7C.z = arg0->unk_50.z - tmp2;
@@ -1625,11 +1625,11 @@ s32 Particle_StartVerticalMotionTimer(ParticleEffectInstance* arg0, f32 arg1, f3
         arg0->unk_7C.y = arg1 * gParticleScaleFactor.unk_00.y;
         arg0->unk_94.y = arg4;
         Particle_SetVelocityXZFromRotationY(arg0);
-        arg0->unk_BA = arg5;
+        arg0->durationTimer = arg5;
     }
 
-    arg0->unk_BA--;
-    if (arg0->unk_BA < 0) {
+    arg0->durationTimer--;
+    if (arg0->durationTimer < 0) {
         sp24 = 1;
     } else {
         arg0->unk_7C.y -= arg2 * gParticleScaleFactor.unk_00.y;
@@ -1739,19 +1739,19 @@ s32 Particle_ApproachPrimAlphaWithCallback(ParticleEffectInstance* arg0, u8 arg1
 }
 
 void Particle_SetTimerA6(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_A6 = arg1;
+    arg0->initialAlpha = arg1;
 }
 
 s16 Particle_GetTimerA6(ParticleEffectInstance* arg0) {
-    return arg0->unk_A6;
+    return arg0->initialAlpha;
 }
 
 s32 Particle_DecrementTimerA6Clamp(ParticleEffectInstance* arg0, s16 arg1, s16 arg2) {
     s32 var_v1 = 0;
 
-    arg0->unk_A6 -= arg2;
-    if (arg1 >= arg0->unk_A6) {
-        arg0->unk_A6 = arg1;
+    arg0->initialAlpha -= arg2;
+    if (arg1 >= arg0->initialAlpha) {
+        arg0->initialAlpha = arg1;
         var_v1 = 1;
     }
     return var_v1;
@@ -1820,7 +1820,7 @@ s32 Particle_DecrementTimerA8ToZeroWithCallback(ParticleEffectInstance* arg0) {
 }
 
 void Particle_SetByteCA(ParticleEffectInstance* arg0, u8 arg1) {
-    arg0->unk_CA = arg1;
+    arg0->effectType = arg1;
 }
 
 void Particle_SetShortAC(ParticleEffectInstance* arg0, s16 arg1) {
@@ -1828,11 +1828,11 @@ void Particle_SetShortAC(ParticleEffectInstance* arg0, s16 arg1) {
 }
 
 void Particle_SetByteCF(ParticleEffectInstance* arg0, u8 arg1) {
-    arg0->unk_CF = arg1;
+    arg0->paletteIndex = arg1;
 }
 
 void Particle_FieldCF_SetU8Alt_0BEF8(ParticleEffectInstance* arg0, u8 arg1) {
-    arg0->unk_CF = arg1;
+    arg0->paletteIndex = arg1;
 }
 
 void Particle_SetByteCC(ParticleEffectInstance* arg0, u8 arg1) {
@@ -1840,7 +1840,7 @@ void Particle_SetByteCC(ParticleEffectInstance* arg0, u8 arg1) {
 }
 
 void Particle_SetShortAA(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_AA = arg1;
+    arg0->alphaStep = arg1;
 }
 
 void Particle_SetShortCE(ParticleEffectInstance* arg0, s16 arg1) {
@@ -1848,15 +1848,15 @@ void Particle_SetShortCE(ParticleEffectInstance* arg0, s16 arg1) {
 }
 
 void Particle_SetByteCD(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_CD = arg1;
+    arg0->targetAlpha = arg1;
 }
 
 void Particle_SetShortAE(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_AE = arg1;
+    arg0->alpha = arg1;
 }
 
 s32 Particle_ApproachShortAE(ParticleEffectInstance* arg0, s16 arg1, s16 arg2) {
-    return ApproachS16Signed(&arg0->unk_AE, arg1, arg2);
+    return ApproachS16Signed(&arg0->alpha, arg1, arg2);
 }
 
 s32 Particle_ApproachShortAEWithCallback(ParticleEffectInstance* arg0, s16 arg1, s16 arg2) {
@@ -1885,20 +1885,20 @@ s32 Particle_GetShortCE(ParticleEffectInstance* arg0) {
 }
 
 u8 Particle_GetByteCD(ParticleEffectInstance* arg0) {
-    return arg0->unk_CD;
+    return arg0->targetAlpha;
 }
 
 s16 Particle_GetShortAE(ParticleEffectInstance* arg0) {
-    return arg0->unk_AE;
+    return arg0->alpha;
 }
 
 s16 Particle_GetShortCF(ParticleEffectInstance* arg0) {
-    s32 tmp = arg0->unk_CF;
+    s32 tmp = arg0->paletteIndex;
     return tmp;
 }
 
 s16 Particle_GetShortAA(ParticleEffectInstance* arg0) {
-    return arg0->unk_AA;
+    return arg0->alphaStep;
 }
 
 void Particle_SetShortACIfValid(ParticleEffectInstance* arg0, s16 arg1) {
@@ -1933,13 +1933,13 @@ void Particle_SetByteCEIfValid(ParticleEffectInstance* arg0, u8 arg1) {
 
 void Particle_SetByteCDIfValid(ParticleEffectInstance* arg0, u8 arg1) {
     if ((u32)arg0 != -1) {
-        arg0->unk_CD = arg1;
+        arg0->targetAlpha = arg1;
     }
 }
 
 void Particle_SetShortAAIfValid(ParticleEffectInstance* arg0, s16 arg1) {
     if ((u32)arg0 != -1) {
-        arg0->unk_AA = arg1;
+        arg0->alphaStep = arg1;
     }
 }
 
@@ -1951,7 +1951,7 @@ void Particle_SetPrimAlphaIfValid(ParticleEffectInstance* arg0, u8 arg1) {
 
 void Particle_SetShortAEIfValid(ParticleEffectInstance* arg0, s16 arg1) {
     if ((u32)arg0 != -1) {
-        arg0->unk_AE = arg1;
+        arg0->alpha = arg1;
     }
 }
 
@@ -1971,7 +1971,7 @@ void Particle_UpdateForCamera(CameraStruct* arg0) {
             Particle_HandleDisplayList(var_s2);
             var_s0 = var_s2;
             while (var_s0 != NULL) {
-                if ((Particle_HasFlag(var_s0, 4) != 0) && (var_s0->unk_B2 >= 2)) {
+                if ((Particle_HasFlag(var_s0, 4) != 0) && (var_s0->updateState >= 2)) {
                     Particle_RenderWithCamera(var_s0, arg0);
                 }
                 var_s0 = var_s0->next;
@@ -1987,7 +1987,7 @@ void Particle_ProcessAllForCamera(CameraStruct* arg0) {
     for (i = 0; i < 0x12C; i++, var_s0++) {
         if ((var_s0->unk_D0 != 0) && (Particle_HasFlag(var_s0, 8) != 0)) {
             Particle_HandleDisplayList(var_s0);
-            if ((Particle_HasFlag(var_s0, 4) != 0) && (var_s0->unk_B2 >= 2)) {
+            if ((Particle_HasFlag(var_s0, 4) != 0) && (var_s0->updateState >= 2)) {
                 Particle_RenderWithCamera(var_s0, arg0);
             }
         }

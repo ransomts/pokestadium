@@ -45,7 +45,7 @@ typedef struct PickerState {
     /* 0x0020 */ s16 unk_0020;
     /* 0x0022 */ char unk0022[0x6];
     /* 0x0028 */ u16 unk_0028[0x640];
-    /* 0x0CA8 */ PickerPokemonGroup unk_0CA8[13];
+    /* 0x0CA8 */ PickerPokemonGroup pokemonGroups[13];
     /* 0x6294 */ char unk6294[0x4];
 } PickerState; // size = 0x6298
 

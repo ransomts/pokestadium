@@ -49,7 +49,7 @@ void LoadTexture_RGBA16_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) 
 }
 
 void LoadTexture_IA8_32x32_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->unk_C7 * 32 * 32], 32, 32);
+    Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->rampValue * 32 * 32], 32, 32);
 }
 
 void LoadTexture_IA8_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
@@ -57,7 +57,7 @@ void LoadTexture_IA8_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
 }
 
 void LoadTexture_IA8_32x64_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->unk_C7 * 32 * 64], 32, 64);
+    Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->rampValue * 32 * 64], 32, 64);
 }
 
 void LoadTexture_CI4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
@@ -65,7 +65,7 @@ void LoadTexture_CI4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
 }
 
 void LoadTexture_CI4_32x32_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->unk_C7 * (32 * 32 / 2)], 32, 32);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->rampValue * (32 * 32 / 2)], 32, 32);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
@@ -89,7 +89,7 @@ void ParticleGfx_LoadTextureCallbackI4TileFrameDiv2Mod8_24x24(UNUSED ParticleEff
 }
 
 void LoadTexture_CI4_24x24_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureTileI4b_ClampWrapper(&texture[arg0->unk_C7 * (24 * 24 / 2)], 24, 24);
+    Gfx_LoadTextureTileI4b_ClampWrapper(&texture[arg0->rampValue * (24 * 24 / 2)], 24, 24);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
@@ -97,7 +97,7 @@ void ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64(UNUSED ParticleEffectInst
 }
 
 void LoadTexture_CI4_32x64_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->unk_C7 * (32 * 64 / 2)], 32, 64);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->rampValue * (32 * 64 / 2)], 32, 64);
 }
 
 void ParticleGfx_LoadTextureCallbackI4_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
@@ -113,7 +113,7 @@ void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_64x64(UNUSED ParticleEffectI
 }
 
 void LoadTexture_CI4_64x64_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->unk_C7 * (64 * 64 / 2)], 64, 64);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->rampValue * (64 * 64 / 2)], 64, 64);
 }
 
 void ParticleGfx_LoadTextureCallbackI4WrapST_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {

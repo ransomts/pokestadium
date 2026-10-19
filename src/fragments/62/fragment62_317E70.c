@@ -63,7 +63,7 @@ void ParticleNode_Init(ParticleEffectInstance* arg0, Vec3f arg1, Vec3s arg2, s32
         arg0->unk_0C = arg4;
         arg0->unk_10 = 0;
         arg0->unk_14 = 0;
-        arg0->unk_CD = 0xFF;
+        arg0->targetAlpha = 0xFF;
 
         arg0 = arg0->next;
     }
@@ -74,10 +74,10 @@ void ParticleNode_CopyFrom(ParticleEffectInstance* arg0, ParticleEffectInstance*
     arg0->unk_08 = arg2;
     arg0->unk_0C = arg3;
     arg0->unk_10 = arg1->unk_10;
-    arg0->unk_CF = arg1->unk_CF;
-    arg0->unk_CA = arg1->unk_CA;
+    arg0->paletteIndex = arg1->paletteIndex;
+    arg0->effectType = arg1->effectType;
     arg0->unk_CC = 0x1C;
-    arg0->unk_CD = 0xFF;
+    arg0->targetAlpha = 0xFF;
     arg0->unk_CE = arg1->unk_CE;
     arg0->unk_CB = arg1->unk_CB;
     arg0->unk_74 = arg1->unk_74;
@@ -89,10 +89,10 @@ void ParticleNode_CopyFrom(ParticleEffectInstance* arg0, ParticleEffectInstance*
     Vec3f_Copy(&arg0->unk_68, &arg1->unk_68);
     Vec3f_Copy(&arg0->unk_7C, &arg1->unk_7C);
     Vec3s_CopyTo(&arg0->unk_94, &arg1->unk_94);
-    Vec3s_CopyTo(&arg0->unk_9A, &arg1->unk_9A);
+    Vec3s_CopyTo(&arg0->rotationDelta, &arg1->rotationDelta);
 
-    if (arg1->unk_CA == 4) {
-        arg0->unk_CA = 0;
+    if (arg1->effectType == 4) {
+        arg0->effectType = 0;
     }
 }
 
@@ -121,7 +121,7 @@ void Particle_CreateChildParticles(ParticleEffectInstance* arg0, func_unk_D_8140
         }
         ParticleNode_CopyFrom(temp_v0, arg0, arg1, arg2, i);
         temp_v0->unk_CE = arg5;
-        temp_v0->unk_CF = arg4;
+        temp_v0->paletteIndex = arg4;
     }
 }
 
@@ -224,11 +224,11 @@ void ParticleNode_UpdateBehavior(ParticleEffectInstance* arg0) {
             break;
 
         case 17:
-            Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, arg0->targetAlpha, &arg0->unk_68);
             break;
 
         case 19:
-            Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, arg0->targetAlpha, &arg0->unk_68);
             GetEntityRotation(arg0->unk_10, &sp28);
             GetEntityScaleDimensions(arg0->unk_10, &sp30);
             Vec3f_SetPolarXZ(&sp3C, sp30.x * 25.0f, sp28.y);
@@ -297,11 +297,11 @@ void ParticleNode_UpdateBehaviorAlt(ParticleEffectInstance* arg0) {
             break;
 
         case 16:
-            Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, arg0->targetAlpha, &arg0->unk_68);
             break;
 
         case 18:
-            Model_GetNodePosition(arg0->unk_10, arg0->unk_CD, &arg0->unk_68);
+            Model_GetNodePosition(arg0->unk_10, arg0->targetAlpha, &arg0->unk_68);
             break;
 
         case 29:
@@ -361,14 +361,14 @@ void ParticleInstance_Configure(ParticleEffectInstance* arg0, unk_BattlePlayerEn
         arg0->unk_AC = arg3++;
         arg0->unk_08 = arg2->unk_00;
         arg0->unk_0C = arg2->unk_04;
-        arg0->unk_CD = arg2->unk_19;
+        arg0->targetAlpha = arg2->unk_19;
         arg0->unk_CE = arg2->unk_1A;
-        arg0->unk_AA = arg2->unk_12;
-        arg0->unk_CF = arg2->unk_1B;
-        arg0->unk_CA = arg2->unk_17;
+        arg0->alphaStep = arg2->unk_12;
+        arg0->paletteIndex = arg2->unk_1B;
+        arg0->effectType = arg2->unk_17;
         arg0->unk_CC = arg2->unk_16;
         arg0->unk_CB = arg2->unk_18;
-        arg0->unk_A6 = arg2->unk_10;
+        arg0->initialAlpha = arg2->unk_10;
 
         if (arg1 != NULL) {
             ParticleNode_UpdateBehavior(arg0);
@@ -376,7 +376,7 @@ void ParticleInstance_Configure(ParticleEffectInstance* arg0, unk_BattlePlayerEn
         }
 
         if ((arg2->unk_16 & 0xFFFFu) == 0x12) {
-            arg0->unk_A6 = arg2->unk_10 * arg3;
+            arg0->initialAlpha = arg2->unk_10 * arg3;
         }
 
         arg0 = arg0->next;
@@ -509,7 +509,7 @@ void ParticleSystem_ResetKeepSpecial(void) {
 
     for (i = 0; i < 300; i++, var_s2++) {
         if (var_s2->unk_D0 != 0) {
-            if ((var_s2->unk_CA != 4) && (var_s2->unk_CA != 7)) {
+            if ((var_s2->effectType != 4) && (var_s2->effectType != 7)) {
                 ParticleNode_Destroy(var_s2);
             }
         }
@@ -528,7 +528,7 @@ void ParticleSystem_ResetKeepType4(void) {
     }
 
     for (i = 0; i < 300; i++, var_s2++) {
-        if ((var_s2->unk_D0 != 0) && (var_s2->unk_CA != 4)) {
+        if ((var_s2->unk_D0 != 0) && (var_s2->effectType != 4)) {
             ParticleNode_Destroy(var_s2);
         }
     }
@@ -613,7 +613,7 @@ void ParticleNode_TriggerByEntity(u8 arg0, unk_BattlePlayerEntity* arg1) {
     ParticleEffectInstance* var_s0 = gParticleInstances;
 
     for (i = 0; i < 300; i++, var_s0++) {
-        if ((var_s0->unk_D0 != 0) && (var_s0->unk_CA == 4) && (var_s0->unk_CB == arg0) && (arg1 == var_s0->unk_10)) {
+        if ((var_s0->unk_D0 != 0) && (var_s0->effectType == 4) && (var_s0->unk_CB == arg0) && (arg1 == var_s0->unk_10)) {
             Particle_SetFlag(var_s0, 0x1000);
             Particle_IncrementState(var_s0);
         }
@@ -914,9 +914,9 @@ ParticleEffectInstance* ParticleNode_CreateWhiteFlash(Vec3f arg0, u8 arg1) {
         Particle_SetWhiteFlashHandler(sp1C, arg1);
         sp1C->unk_10 = gParticleEffectData_42;
         sp1C->unk_14 = NULL;
-        sp1C->unk_CD = 0xFF;
+        sp1C->targetAlpha = 0xFF;
         sp1C->unk_CC = 0x15;
-        sp1C->unk_CA = 0;
+        sp1C->effectType = 0;
     }
     return sp1C;
 }

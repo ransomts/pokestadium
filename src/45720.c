@@ -273,7 +273,7 @@ void AudioChannel_Update(GbAudioChannelState* arg0) {
         if (arg0->bitstreamWriteOffset == 0) {
             arg0->framesRemaining = (arg0->bitstreamRingBuffer[0].unk_04 >> 0x10) & 0xFFFF;
             arg0->unk_259A = arg0->bitstreamRingBuffer[0].unk_04 & 0xFFFF;
-            arg0->inputWordsRemaining = arg0->unk_15A0 & 0xFFFFFF;
+            arg0->inputWordsRemaining = arg0->inputWordCount & 0xFFFFFF;
             arg0->bitReadPosition = 0x60;
         }
 

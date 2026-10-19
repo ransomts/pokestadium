@@ -29,7 +29,7 @@ typedef struct GbAudioChannelState {
     /* 0x0194 */ s32 sourceBaseAddress;
     /* 0x0198 */ unk_D_800FCED8_0198 pcmRingBuffer;
     /* 0x1598 */ unk_D_800FCED8_01598 bitstreamRingBuffer[1];
-    /* 0x15A0 */ u32 unk_15A0;
+    /* 0x15A0 */ u32 inputWordCount;
     /* 0x15A4 */ char unk_15A4[0xFF4];
     /* 0x2598 */ u16 framesRemaining;
     /* 0x259A */ u16 unk_259A;

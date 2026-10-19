@@ -383,7 +383,7 @@ void ParticleEffect_ConfigureState(ParticleEffectInstance* arg0, s32 arg1) {
 }
 
 void ParticleEffect_StateHandlerA(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             break;
@@ -397,25 +397,25 @@ void ParticleEffect_StateHandlerA(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandlerB(ParticleEffectInstance* arg0) {
-    if (arg0->unk_B2 == 1) {
+    if (arg0->updateState == 1) {
         ParticleEffect_ConfigureState(arg0, 0);
     }
 }
 
 void ParticleEffect_StateHandlerC(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             break;
 
         case 2:
-            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->unk_A6, Particle_GetShortCE(arg0));
+            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->initialAlpha, Particle_GetShortCE(arg0));
             break;
     }
 }
 
 void ParticleEffect_StateHandlerD(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 1);
             break;
@@ -433,19 +433,19 @@ void ParticleEffect_StateHandlerD(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandlerE(ParticleEffectInstance* arg0) {
-    if (arg0->unk_B2 == 1) {
+    if (arg0->updateState == 1) {
         ParticleEffect_ConfigureState(arg0, 2);
     }
 }
 
 void ParticleEffect_StateHandlerF(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
             break;
 
         case 2:
-            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->unk_A6, Particle_GetShortCE(arg0));
+            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->initialAlpha, Particle_GetShortCE(arg0));
             break;
     }
 }
@@ -589,7 +589,7 @@ void ParticleEffect_ConfigDefaultParameters(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateMachineHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigDefaultParameters(arg0);
             break;
@@ -730,7 +730,7 @@ void ParticleEffect_ConfigByMoveId(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_HandleStateTransitions(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigByMoveId(arg0);
             break;
@@ -886,7 +886,7 @@ void ParticleEffect_StartWithParams(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_StartWithParams(arg0);
             break;
@@ -1071,7 +1071,7 @@ void ParticleEffect_CreateBurstWithRotation(ParticleEffectInstance* arg0, s16 ar
 void ParticleEffect_HandleBurstState(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortAC(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SetTimerA6(arg0, sp26 * 8);
             Particle_IncrementState(arg0);
@@ -1524,7 +1524,7 @@ void ParticleEffect_Start(ParticleEffectInstance* arg0, UNUSED s16 arg1) {
 void ParticleEffect_UpdateState(ParticleEffectInstance* arg0) {
     s16 temp_a1 = Particle_GetShortAC(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_Start(arg0, temp_a1);
             break;
@@ -1606,7 +1606,7 @@ void ParticleEffect_SetPaletteColors(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_PaletteFadeHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SetPaletteColors(arg0);
             break;
@@ -1635,7 +1635,7 @@ void ParticleEffect_SetPrimEnvFromPair(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler2(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SetPrimEnvFromPair(arg0);
             break;
@@ -1669,7 +1669,7 @@ void ParticleEffect_InitializeSmall(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_SmallStateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitializeSmall(arg0);
             break;
@@ -1699,7 +1699,7 @@ void ParticleEffect_FireworksInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_FireworksState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_FireworksInit(arg0);
             break;
@@ -1759,7 +1759,7 @@ void ParticleEffect_RotatingInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_RotatingState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SetTimerA6(arg0, RandomMod(0x18));
             Particle_IncrementState(arg0);
@@ -1768,7 +1768,7 @@ void ParticleEffect_RotatingState(ParticleEffectInstance* arg0) {
         case 2:
             if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
                 ParticleEffect_RotatingInit(arg0);
-                ParticleDef_CreateQuick(0, Particle_HandleState_Complex, &gParticleEffectData[0x42], 0, 1, 0x10, arg0->unk_CD, 0x17, 4);
+                ParticleDef_CreateQuick(0, Particle_HandleState_Complex, &gParticleEffectData[0x42], 0, 1, 0x10, arg0->targetAlpha, 0x17, 4);
             }
             break;
 
@@ -1789,7 +1789,7 @@ void ParticleEffect_RegisterMultiple(void) {
     s32 i;
     s32 var_s2 = 0;
     s32 tmp;
-    s32 end = gParticleEffectEntityA->unk_000.unk_0A7;
+    s32 end = gParticleEffectEntityA->unk_000.transformEntryCount;
 
     if (end != 0) {
         for (i = 0; i < end; i++) {
@@ -1835,7 +1835,7 @@ void ParticleEffect_ExplosionInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_ExplosionState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ExplosionInit(arg0);
             break;
@@ -1874,7 +1874,7 @@ void ParticleEffect_SparkleInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_SparkleState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SparkleInit(arg0);
             break;
@@ -2054,7 +2054,7 @@ void ParticleEffect_ConfigureFromPalette(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_PaletteState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureFromPalette(arg0);
             break;
@@ -2113,7 +2113,7 @@ void ParticleEffect_SetupColorAndAnim(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_ColorAnimState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SetupColorAndAnim(arg0);
             break;
@@ -2131,7 +2131,7 @@ void ParticleEffect_ColorAnimState(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_ColorAnimStateAlt(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SetupColorAndAnim(arg0);
             break;
@@ -2202,7 +2202,7 @@ void ParticleEffect_LargeExplosionInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_LargeExplosionState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_LargeExplosionInit(arg0);
             break;
@@ -2239,7 +2239,7 @@ void ParticleEffect_LargeExplosionInitDup(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_LargeExplosionStateDup(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_LargeExplosionInitDup(arg0);
             break;
@@ -2323,7 +2323,7 @@ void ParticleEffect_SetAnimByPalette(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_AnimState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SetAnimByPalette(arg0);
             break;
@@ -2392,7 +2392,7 @@ void ParticleEffect_SetOffsetsByPalette(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_OffsetState(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SetOffsetsByPalette(arg0);
             break;
@@ -2486,7 +2486,7 @@ void ParticleEffect_InitWithResource(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_4669C(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitWithResource(arg0);
             break;
@@ -2618,7 +2618,7 @@ void ParticleEffect_InitLargeScale(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_47108(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitLargeScale(arg0);
             break;
@@ -2745,13 +2745,13 @@ void ParticleEffect_AdjustParametersByAnimId(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_47670(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             break;
 
         case 2:
-            Particle_ProcessTimer80(arg0, arg0->unk_A6);
+            Particle_ProcessTimer80(arg0, arg0->initialAlpha);
             break;
 
         case 3:
@@ -2771,7 +2771,7 @@ void ParticleEffect_InitStandard(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_4775C(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitStandard(arg0);
             break;
@@ -2816,7 +2816,7 @@ void ParticleEffect_InitRandomized(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_47904(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitRandomized(arg0);
             break;
@@ -2864,7 +2864,7 @@ void ParticleEffect_InitVariantA(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_47AF0(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitVariantA(arg0);
             break;
@@ -2917,7 +2917,7 @@ void Particle_CreateDisplayList_CustomColors(s32 arg0, arg1_func_84344CE8* arg1)
 void ParticleEffect_StateHandler_47D74(ParticleEffectInstance* arg0) {
     Particle_GetShortCE(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
             Particle_SetScaleFactor1(arg0, 0.5f);
@@ -2951,7 +2951,7 @@ void ParticleEffect_StateHandler_47D74(ParticleEffectInstance* arg0) {
 void ParticleEffect_StateHandler_47E9C(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortCE(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
             Particle_SetScaleFactor1(arg0, 0.5f);
@@ -3003,7 +3003,7 @@ void ParticleEffect_StateHandler_47E9C(ParticleEffectInstance* arg0) {
 void ParticleEffect_StateHandler_48058(ParticleEffectInstance* arg0) {
     Particle_GetShortCE(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
             Particle_SetScaleFactor1(arg0, 0.25f);
@@ -3058,7 +3058,7 @@ void ParticleEffect_InitComplex_48194(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_482D4(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitComplex_48194(arg0);
             break;
@@ -3112,7 +3112,7 @@ void ParticleEffect_InitComplex_483D4(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_48514(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitComplex_483D4(arg0);
             break;
@@ -3216,7 +3216,7 @@ void ParticleEffect_StateHandler_48D4C(ParticleEffectInstance* arg0) {
     s32 sp20 = 0;
     f32 var_fv0;
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitSparkle(arg0);
             break;
@@ -3365,7 +3365,7 @@ f32 ParticleEffect_GetScaleFactorByAnimId(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_494AC(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             break;
@@ -3475,7 +3475,7 @@ void ParticleEffect_InitWithResource_A70(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_49AE8(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitWithResource_A70(arg0);
             break;
@@ -3521,7 +3521,7 @@ void ParticleEffect_InitWithOffsets_B50(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_StateHandler_49C74(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_InitWithOffsets_B50(arg0);
             break;
@@ -4047,7 +4047,7 @@ void ParticleEffect_PaletteInit(ParticleEffectInstance* arg0) {
 void ParticleEffect_PaletteStateHandler(ParticleEffectInstance* arg0) {
     u32 temp_v0 = Particle_GetByteCD(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_PaletteInit(arg0);
             break;
@@ -4385,7 +4385,7 @@ void ParticleEffect_WaterAnimInit(ParticleEffectInstance* arg0) {
 void ParticleEffect_WaterAnimStateHandler(ParticleEffectInstance* arg0) {
     s16 sp26;
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_WaterAnimInit(arg0);
             break;
@@ -4417,7 +4417,7 @@ void ParticleEffect_WaterAnimInit2(ParticleEffectInstance* arg0) {
 void ParticleEffect_WaterAnimStateHandler2(ParticleEffectInstance* arg0) {
     s16 sp1E;
 
-    if (arg0->unk_B2 == 1) {
+    if (arg0->updateState == 1) {
         ParticleEffect_WaterAnimInit2(arg0);
     }
     GetCameraYawFromEyeToAt(&sp1E);
@@ -4435,7 +4435,7 @@ void Gfx_WaterAnimPrimEnvDL(Gfx* arg0, u8 arg1, UNUSED u16 arg2) {
 
         case 1:
             gDPPipeSync(arg0++);
-            gDPSetPrimColor(arg0++, 0, 0, temp_v0->prim_r, temp_v0->prim_g, temp_v0->prim_b, temp_v0->unk_AE);
+            gDPSetPrimColor(arg0++, 0, 0, temp_v0->prim_r, temp_v0->prim_g, temp_v0->prim_b, temp_v0->alpha);
             break;
     }
 
@@ -4566,7 +4566,7 @@ void ParticleEffect_SimpleStateInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_SimpleStateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SimpleStateInit(arg0);
             break;
@@ -4594,7 +4594,7 @@ void ParticleEffect_RotationInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_RotationStateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_RotationInit(arg0);
             break;
@@ -4649,7 +4649,7 @@ void ParticleEffect_FireworkInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_FireworkStateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_FireworkInit(arg0);
             break;
@@ -4689,7 +4689,7 @@ void ParticleEffect_SimpleNodeInit(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_SimpleNodeStateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_SimpleNodeInit(arg0);
             break;
@@ -4745,13 +4745,13 @@ void ParticleEffect_SimpleNodeBurst(void) {
 }
 
 void ParticleEffect_AlphaStateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 2);
             break;
 
         case 2:
-            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->unk_A6, Particle_GetShortCE(arg0));
+            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->initialAlpha, Particle_GetShortCE(arg0));
             break;
 
         case 3:
@@ -4988,7 +4988,7 @@ void ParticleEffect_TriggerSpecial(void) {
 }
 
 void ParticleEffect_AlphaFadeHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             Particle_SetTimerA6(arg0, 2);
@@ -5035,7 +5035,7 @@ void ParticleEffect_TriggerDefault4(void) {
 void ParticleEffect_ColorStateHandler(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortCE(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             if (sp26 == 1) {
@@ -5069,7 +5069,7 @@ void ParticleEffect_CreateCallback(void) {
 }
 
 void ParticleEffect_ColorStateHandler2(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureState(arg0, 0);
             break;
@@ -5123,7 +5123,7 @@ void ParticleEffect_ConfigureParameters(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_MainStateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureParameters(arg0);
             break;
@@ -5199,7 +5199,7 @@ void ParticleEffect_ConfigureParameters_Slow(ParticleEffectInstance* arg0) {
 }
 
 void BattleAnim_CallbackStartEffect132Descriptor39DelayedRiseFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             ParticleEffect_ConfigureParameters_Slow(arg0);
             break;

@@ -9,7 +9,7 @@ void Particle_WhiteFlashInit(ParticleEffectInstance* arg0) {
 }
 
 void Particle_WhiteFlashUpdate(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_WhiteFlashInit(arg0);
             break;
@@ -38,7 +38,7 @@ void Particle_WhiteFlashAltInit(ParticleEffectInstance* arg0) {
 }
 
 void Particle_WhiteFlashAltUpdate(ParticleEffectInstance* arg0) {
-    if (arg0->unk_B2 == 1) {
+    if (arg0->updateState == 1) {
         Particle_WhiteFlashAltInit(arg0);
     }
 

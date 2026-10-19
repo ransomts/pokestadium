@@ -32,7 +32,7 @@ typedef struct ResultGameState {
     /* 0x001 */ u8 unk_001;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ u8 unk_16C;
-    /* 0x16D */ u8 unk_16D;
+    /* 0x16D */ u8 previousHealthState;
 } ResultGameState; // size = 0x170
 
 extern u8 gUseAlphaBlend;

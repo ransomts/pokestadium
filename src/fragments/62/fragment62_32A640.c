@@ -7,7 +7,7 @@ void Particle_SetWhiteColor(ParticleEffectInstance* arg0) {
 }
 
 void Particle_StateHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 0:
             break;
 
@@ -49,7 +49,7 @@ void Particle_InitializeBasic(ParticleEffectInstance* arg0) {
 }
 
 void Particle_UpdateStateAndScale(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_InitializeBasic(arg0);
             break;
@@ -109,7 +109,7 @@ void Particle_SetPaletteColors24(ParticleEffectInstance* arg0) {
 }
 
 void Particle_HandleCollisionAndFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_SetPaletteColors24(arg0);
             break;
@@ -155,7 +155,7 @@ void Particle_InitializeTwirl(ParticleEffectInstance* arg0) {
 }
 
 void Particle_UpdateComplexMovement(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_InitializeTwirl(arg0);
             break;
@@ -202,13 +202,13 @@ void Particle_UpdateComplexMovement(ParticleEffectInstance* arg0) {
         case 1:
             Particle_ApproachSpeedScaled(arg0, 20.0f, 0.5f);
             Particle_AddScaledVelocityY(arg0, arg0->unk_7C.y);
-            Particle_UpdatePositionAndAccelFromYaw(arg0, arg0->unk_74, arg0->unk_AE);
+            Particle_UpdatePositionAndAccelFromYaw(arg0, arg0->unk_74, arg0->alpha);
             break;
 
         case 2:
             Particle_ApproachShortAE(arg0, 0, 0x200);
             Particle_AddScaledVelocityY(arg0, arg0->unk_7C.y);
-            Particle_UpdatePositionAndAccelFromYaw(arg0, arg0->unk_74, arg0->unk_AE);
+            Particle_UpdatePositionAndAccelFromYaw(arg0, arg0->unk_74, arg0->alpha);
             break;
 
         case 3:
@@ -266,7 +266,7 @@ void Particle_InitializeBurst(ParticleEffectInstance* arg0) {
 void Particle_UpdateBurstState(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortCE(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             Particle_InitializeBurst(arg0);
             break;

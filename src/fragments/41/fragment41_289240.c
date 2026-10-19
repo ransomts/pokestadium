@@ -21,7 +21,7 @@ s16 LoadPokemonFromGbsBlock(PickerState* arg0, s16 arg1) {
     UNUSED s32 pad;
     unk_func_80022C28_ret* var_v0;
     PickerPokemonEntry sp3C;
-    PickerPokemonGroup* sp34 = &arg0->unk_0CA8[arg1];
+    PickerPokemonGroup* sp34 = &arg0->pokemonGroups[arg1];
 
     sp34->unk_000 = 0;
     if (arg1 == 0) {
@@ -91,19 +91,19 @@ void InitPokemonPicker(s32 arg0, s16 arg1) {
             temp_s1->unk_0010 = i;
             var_s2++;
         }
-        temp_s1->unk_0CA8[i].unk_008 = NULL;
-        temp_s1->unk_0CA8[i].unk_004 = NULL;
+        temp_s1->pokemonGroups[i].unk_008 = NULL;
+        temp_s1->pokemonGroups[i].unk_004 = NULL;
     }
 
     for (i = temp_s1->unk_0010; i < 13; i++) {
-        ptr1 = &temp_s1->unk_0CA8[i];
+        ptr1 = &temp_s1->pokemonGroups[i];
 
         if (ptr1->unk_000 <= 0) {
             continue;
         }
 
         for (j = i + 1; j < 13; j++) {
-            ptr2 = &temp_s1->unk_0CA8[j];
+            ptr2 = &temp_s1->pokemonGroups[j];
 
             if (ptr2->unk_000 > 0) {
                 ptr1->unk_008 = ptr2;
@@ -114,12 +114,12 @@ void InitPokemonPicker(s32 arg0, s16 arg1) {
     }
 
     if (var_s2 >= 2) {
-        ptr1 = &temp_s1->unk_0CA8[0];
+        ptr1 = &temp_s1->pokemonGroups[0];
         while (ptr1->unk_000 <= 0) {
             ptr1++;
         }
 
-        ptr2 = &temp_s1->unk_0CA8[12];
+        ptr2 = &temp_s1->pokemonGroups[12];
         while (ptr2->unk_000 <= 0) {
             ptr2--;
         }
@@ -132,8 +132,8 @@ void InitPokemonPicker(s32 arg0, s16 arg1) {
     gPickerSpriteBuffer = state_pool_alloc_aligned(temp_v0_2, sizeof(PickerSpriteBuffer), 8);
     mem_pool_resize_block(temp_v0_2);
 
-    for (i = 0; i < temp_s1->unk_0CA8[temp_s1->unk_0010].unk_000; i++) {
-        temp_a3 = &temp_s1->unk_0CA8[temp_s1->unk_0010].unk_00C[i];
+    for (i = 0; i < temp_s1->pokemonGroups[temp_s1->unk_0010].unk_000; i++) {
+        temp_a3 = &temp_s1->pokemonGroups[temp_s1->unk_0010].unk_00C[i];
 
         if (((temp_a3->unk_00 <= 0) || (temp_a3->unk_00 >= 0x98) ? 1 : 0)) {
             PokeIcon_LoadModelTextureForMon(GetSpriteDataPtr(gPickerSpriteBuffer, temp_s1->unk_0016, i), 0x98, NULL);
@@ -190,7 +190,7 @@ void HandlePickerInput(PickerState* arg0) {
         }
     }
 
-    temp_a2 = &arg0->unk_0CA8[arg0->unk_0010];
+    temp_a2 = &arg0->pokemonGroups[arg0->unk_0010];
 
     if (temp_v0 & 0x200) {
         arg0->unk_0018--;
@@ -227,9 +227,9 @@ void HandlePickerInput(PickerState* arg0) {
     }
 
     temp_v1_3 = (arg0->unk_001A * 5) + arg0->unk_0018;
-    temp_a1 = &arg0->unk_0CA8[arg0->unk_0010].unk_00C[temp_v1_3];
+    temp_a1 = &arg0->pokemonGroups[arg0->unk_0010].unk_00C[temp_v1_3];
 
-    if (BTN_IS_PRESSED(controller, BTN_A) && (temp_v1_3 < arg0->unk_0CA8[arg0->unk_0010].unk_000)) {
+    if (BTN_IS_PRESSED(controller, BTN_A) && (temp_v1_3 < arg0->pokemonGroups[arg0->unk_0010].unk_000)) {
         if ((temp_a1->unk_00 <= 0) || (temp_a1->unk_00 >= 0x98)) {
             var_v0 = 1;
         } else {
@@ -255,11 +255,11 @@ void HandlePickerInput(PickerState* arg0) {
         } else if (BTN_IS_PRESSED(controller, BTN_R) && (temp_a2->unk_008 != NULL)) {
             arg0->unk_0000 = 3;
             arg0->unk_000C = 0xA;
-            arg0->unk_0012 = temp_a2->unk_008 - &arg0->unk_0CA8[0];
+            arg0->unk_0012 = temp_a2->unk_008 - &arg0->pokemonGroups[0];
             arg0->unk_0014 = 1;
 
-            for (i = 0; i < arg0->unk_0CA8[arg0->unk_0012].unk_000; i++) {
-                temp_a3 = &arg0->unk_0CA8[arg0->unk_0012].unk_00C[i];
+            for (i = 0; i < arg0->pokemonGroups[arg0->unk_0012].unk_000; i++) {
+                temp_a3 = &arg0->pokemonGroups[arg0->unk_0012].unk_00C[i];
 
                 temp_t1 = temp_a3->unk_00;
                 if ((temp_t1 <= 0) || (temp_t1 >= 0x98)) {
@@ -277,11 +277,11 @@ void HandlePickerInput(PickerState* arg0) {
         } else if (BTN_IS_PRESSED(controller, BTN_L) && (temp_a2->unk_004 != NULL)) {
             arg0->unk_0000 = 3;
             arg0->unk_000C = 0xA;
-            arg0->unk_0012 = temp_a2->unk_004 - &arg0->unk_0CA8[0];
+            arg0->unk_0012 = temp_a2->unk_004 - &arg0->pokemonGroups[0];
             arg0->unk_0014 = -1;
 
-            for (i = 0; i < arg0->unk_0CA8[arg0->unk_0012].unk_000; i++) {
-                temp_a3_2 = &arg0->unk_0CA8[arg0->unk_0012].unk_00C[i];
+            for (i = 0; i < arg0->pokemonGroups[arg0->unk_0012].unk_000; i++) {
+                temp_a3_2 = &arg0->pokemonGroups[arg0->unk_0012].unk_00C[i];
 
                 if ((temp_a3_2->unk_00 <= 0) || (temp_a3_2->unk_00 >= 0x98)) {
                     var_v0 = 1;
@@ -645,7 +645,7 @@ void DrawPokemonListUI(PickerState* arg0, s16 arg1, s16 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 13; i++) {
-        Picker_DrawListSlot(arg1 + i * 0x24, arg2, D_82F13BD0[i], arg0->unk_0CA8[i].unk_000);
+        Picker_DrawListSlot(arg1 + i * 0x24, arg2, D_82F13BD0[i], arg0->pokemonGroups[i].unk_000);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -773,7 +773,7 @@ void UpdateAndRenderPicker(PickerState* arg0) {
                 spE8 = arg0->unk_0016 ^ 1;
             }
 
-            sp64 = &arg0->unk_0CA8[var_s2];
+            sp64 = &arg0->pokemonGroups[var_s2];
             Picker_DrawFrame((s16)(spEE * spF8) + arg0->unk_0004, arg0->unk_0006, arg0->unk_0008, arg0->unk_000A);
 
             if ((arg0->unk_0008 == 0x1B8) && (arg0->unk_000A == 0x10C)) {
@@ -1005,8 +1005,8 @@ s32 Picker_GetSelectionInfo(s32 arg0, RentalItemInfo* arg1) {
         arg1->unk_02 = ptr->unk_000E;
         arg1->unk_04 = ptr->unk_0010;
         arg1->unk_06 = (ptr->unk_001A * 5) + ptr->unk_0018;
-        arg1->unk_08 = ptr->unk_0CA8[ptr->unk_0010].unk_000;
-        arg1->unk_0C = &ptr->unk_0CA8[ptr->unk_0010].unk_00C;
+        arg1->unk_08 = ptr->pokemonGroups[ptr->unk_0010].unk_000;
+        arg1->unk_0C = &ptr->pokemonGroups[ptr->unk_0010].unk_00C;
         ret = 1;
     }
 

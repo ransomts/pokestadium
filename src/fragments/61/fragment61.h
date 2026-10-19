@@ -64,9 +64,9 @@ typedef struct gItemPanel {
     /* 0x001E */ char unk_001E[2];
     /* 0x0020 */ char unk0020[0x10];
     /* 0x0030 */ unk_D_838067F0_0168_0000 unk_0030[6];
-    /* 0x4D40 */ struct unk_D_842168A0* unk_4D40;
-    /* 0x4D44 */ unk_D_8423D3A8* unk_4D44;
-    /* 0x4D48 */ struct unk_D_84229EB0* unk_4D48;
+    /* 0x4D40 */ struct unk_D_842168A0* pokemonPanel;
+    /* 0x4D44 */ unk_D_8423D3A8* moveScreen;
+    /* 0x4D48 */ struct unk_D_84229EB0* registrationManager;
 } gItemPanel; // size = 0x4D4C
 
 typedef struct unk_D_842168A0_0013C {

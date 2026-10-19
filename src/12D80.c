@@ -771,7 +771,7 @@ void Graph_RenderComplexObject(GraphNode* arg0) {
     Fragment2_1GraphNode* arg = (Fragment2_1GraphNode*)arg0;
 
     if (gCurrentLightNode->unk_18 == arg->unk_018) {
-        arg->unk_0A7 = 0;
+        arg->transformEntryCount = 0;
         Anim_StartChannel(&arg->unk_040, gAnimationFrame, (arg->unk_000.unk_02 & 0x20) != 0);
         PushAnimStackEntry(&arg->unk_054, gAnimationFrame, (arg->unk_000.unk_02 & 0x20) != 0);
 
@@ -908,8 +908,8 @@ void Graph_RecordNodePosition(s32 arg0) {
     unk_D_86002F58_004_000_0A8* ptr;
 
     if (gDefaultGraphRoot != NULL) {
-        if (gDefaultGraphRoot->unk_0A7 < 0xC) {
-            ptr = &gDefaultGraphRoot->unk_0A8[gDefaultGraphRoot->unk_0A7++];
+        if (gDefaultGraphRoot->transformEntryCount < 0xC) {
+            ptr = &gDefaultGraphRoot->unk_0A8[gDefaultGraphRoot->transformEntryCount++];
             temp_a1 = &gMatrixStack.unk_0000[gMatrixStack.unk_10A0];
 
             ptr->unk_00 = arg0;
@@ -1090,7 +1090,7 @@ Vec3f* Graph_GetRecordedPosition(Fragment2_1GraphNode* arg0, s16 arg1, Vec3f* ar
     u8 temp_v1;
     Fragment2_1GraphNode* var_a2;
 
-    for (i = 0; i < arg0->unk_0A7; i++) {
+    for (i = 0; i < arg0->transformEntryCount; i++) {
         if (arg1 == arg0->unk_0A8[i].unk_00) {
             if (arg2 != NULL) {
                 *arg2 = arg0->unk_0A8[i].unk_04;

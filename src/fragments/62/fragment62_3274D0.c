@@ -18,7 +18,7 @@ void BattleAnim_SetupStartEffects18And73Descriptor11ScatterRiseFade(ParticleEffe
 }
 
 void ParticleEffect_CollisionHandler(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupStartEffects18And73Descriptor11ScatterRiseFade(arg0);
             break;
@@ -86,7 +86,7 @@ void BattleAnim_SetupStartEffect18MoveKeyedRadialPulse(ParticleEffectInstance* a
 }
 
 void BattleAnim_CallbackStartEffect18MoveKeyedRadialPulse(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupStartEffect18MoveKeyedRadialPulse(arg0);
             break;
@@ -124,7 +124,7 @@ void BattleAnim_SetupSharedDescriptor0FDelayedRisingColumnFade(ParticleEffectIns
 }
 
 void BattleAnim_CallbackSharedDescriptor0FDelayedRisingColumnFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupSharedDescriptor0FDelayedRisingColumnFade(arg0);
             break;
@@ -170,7 +170,7 @@ void BattleAnim_SetupSharedDescriptor0FDelayedRisingColumnRandomScale(ParticleEf
 }
 
 void BattleAnim_CallbackSharedDescriptor0FDelayedRisingColumnRandomScale(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupSharedDescriptor0FDelayedRisingColumnRandomScale(arg0);
             break;
@@ -214,7 +214,7 @@ void BattleAnim_SetupSharedDirectionalSprayFade(ParticleEffectInstance* arg0) {
 }
 
 void BattleAnim_CallbackSharedDirectionalSprayFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupSharedDirectionalSprayFade(arg0);
             break;
@@ -253,7 +253,7 @@ void BattleAnim_SetupSharedDescriptor13DirectionalSprayScaledFade(ParticleEffect
 }
 
 void BattleAnim_CallbackSharedDescriptor13DirectionalSprayScaledFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupSharedDescriptor13DirectionalSprayScaledFade(arg0);
             break;
@@ -297,7 +297,7 @@ void BattleAnim_SetupStartEffect59EndEffect28DirectionalStreamFade(ParticleEffec
 }
 
 void BattleAnim_CallbackStartEffect59EndEffect28DirectionalStreamFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupStartEffect59EndEffect28DirectionalStreamFade(arg0);
             break;
@@ -341,7 +341,7 @@ void BattleAnim_SetupUnregisteredStraightDirectionalStreamFade(ParticleEffectIns
 }
 
 void BattleAnim_CallbackUnregisteredStraightDirectionalStreamFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupUnregisteredStraightDirectionalStreamFade(arg0);
             break;
@@ -385,7 +385,7 @@ void BattleAnim_SetupEndEffect28Descriptor10UpwardBurstFade(ParticleEffectInstan
 }
 
 void BattleAnim_CallbackEndEffect28Descriptor10UpwardBurstFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupEndEffect28Descriptor10UpwardBurstFade(arg0);
             break;
@@ -426,7 +426,7 @@ void BattleAnim_SetupEndEffect28Descriptor10WideScatterBurstFade(ParticleEffectI
 }
 
 void BattleAnim_CallbackEndEffect28Descriptor10WideScatterBurstFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_SetupEndEffect28Descriptor10WideScatterBurstFade(arg0);
             break;

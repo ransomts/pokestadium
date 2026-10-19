@@ -192,9 +192,9 @@ void ShowDamageMessage(s32 arg0, s32 arg1) {
     unk_BattlePlayerAnimState* temp_v1;
     s32 sp18;
 
-    temp_v1 = &sActivePokemon[arg0]->unk_654;
-    temp_a2_2 = &sActivePokemon[arg1]->unk_654.unk_38;
-    temp_a3 = sActivePokemon[arg0]->unk_720->unk_08[temp_v1->unk_2C];
+    temp_v1 = &sActivePokemon[arg0]->animationState;
+    temp_a2_2 = &sActivePokemon[arg1]->animationState.unk_38;
+    temp_a3 = sActivePokemon[arg0]->pokemonAnimation->unk_08[temp_v1->unk_2C];
 
     if (temp_a2_2->unk_0C == 0) {
         MessageBank_SetPointer_0x14_0x2A(0x19, temp_a3->unk_01C[temp_v1->unk_18].unk_30);
@@ -219,8 +219,8 @@ void ShowDamageMessage(s32 arg0, s32 arg1) {
 }
 
 void ResetBattleAfterMove(s32 arg0, s32 arg1) {
-    PokemonAudioInfo* sp1C = &sActivePokemon[arg0]->unk_654.unk_38;
-    PokemonAudioInfo* sp18 = &sActivePokemon[arg1]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[arg0]->animationState.unk_38;
+    PokemonAudioInfo* sp18 = &sActivePokemon[arg1]->animationState.unk_38;
 
     ShowDamageMessage(arg0, arg1);
     gMoveEffectIndex = 0;
@@ -241,10 +241,10 @@ void ResetBattleAfterMove(s32 arg0, s32 arg1) {
 }
 
 void func_8436FA80(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->unk_654;
-    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->unk_654;
-    PokemonAudioInfo* temp_a1 = &sActivePokemon[0]->unk_654.unk_38;
-    PokemonAudioInfo* temp_a2 = &sActivePokemon[1]->unk_654.unk_38;
+    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->animationState;
+    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->animationState;
+    PokemonAudioInfo* temp_a1 = &sActivePokemon[0]->animationState.unk_38;
+    PokemonAudioInfo* temp_a2 = &sActivePokemon[1]->animationState.unk_38;
     s32 var_v0;
 
     if (arg0 == sActivePokemon[0]) {
@@ -281,8 +281,8 @@ void ApplyDamageRandomFactor(void) {
 }
 
 u16 CompareMovePriority(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    PokemonAudioInfo* ptr1 = &arg0->unk_654.unk_38;
-    PokemonAudioInfo* ptr2 = &arg1->unk_654.unk_38;
+    PokemonAudioInfo* ptr1 = &arg0->animationState.unk_38;
+    PokemonAudioInfo* ptr2 = &arg1->animationState.unk_38;
 
     if (ptr1->unk_5A == 0x62) {
         if (ptr2->unk_5A != 0x62) {
@@ -581,8 +581,8 @@ void DecrementMovePP(s32 arg0) {
     unk_BattlePlayerAnimState* temp_a1;
     PokemonData* temp_a2;
 
-    temp_v0 = &sActivePokemon[arg0]->unk_654.unk_38;
-    temp_a1 = &sActivePokemon[arg0]->unk_654;
+    temp_v0 = &sActivePokemon[arg0]->animationState.unk_38;
+    temp_a1 = &sActivePokemon[arg0]->animationState;
     temp_a2 = &sActivePokemon[arg0]->unk_724->unk_01C[temp_a1->unk_08];
 
     if ((temp_v0->unk_5A != 0xA5) && !(temp_v0->unk_4C & 7) && !(temp_v0->unk_4D & 0x40)) {
@@ -685,15 +685,15 @@ void HandleMoveEffectFlags(void) {
 }
 
 void Battle_ApplyAnimStateEffects(unk_BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
 
-    ptr->unk_05 = arg0->unk_654.unk_38.unk_15;
+    ptr->unk_05 = arg0->animationState.unk_38.unk_15;
 }
 
 void ApplyParalysisSpeedCut(unk_BattlePlayerEntity* arg0) {
-    PokemonAudioInfo* temp_v0 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* temp_v0 = &arg0->animationState.unk_38;
 
-    if (arg0->unk_654.unk_38.unk_15 & 0x40) {
+    if (arg0->animationState.unk_38.unk_15 & 0x40) {
         temp_v0->unk_2E >>= 2;
         if (temp_v0->unk_2E == 0) {
             temp_v0->unk_2E = 1;
@@ -702,9 +702,9 @@ void ApplyParalysisSpeedCut(unk_BattlePlayerEntity* arg0) {
 }
 
 void ApplyBurnAttackCut(unk_BattlePlayerEntity* arg0) {
-    PokemonAudioInfo* temp_v0 = &arg0->unk_654.unk_38;
+    PokemonAudioInfo* temp_v0 = &arg0->animationState.unk_38;
 
-    if (arg0->unk_654.unk_38.unk_15 & 0x10) {
+    if (arg0->animationState.unk_38.unk_15 & 0x10) {
         temp_v0->unk_2A >>= 1;
         if (temp_v0->unk_2A == 0) {
             temp_v0->unk_2A = 1;
@@ -719,9 +719,9 @@ void func_84370B7C(unk_BattlePlayerEntity* arg0) {
     s32 i;
     s32 j;
 
-    sp28 = &arg0->unk_654;
-    sp24 = &arg0->unk_654.unk_38;
-    sp34 = &arg0->unk_720->unk_08[sp28->unk_2C]->unk_01C[sp28->unk_18];
+    sp28 = &arg0->animationState;
+    sp24 = &arg0->animationState.unk_38;
+    sp34 = &arg0->pokemonAnimation->unk_08[sp28->unk_2C]->unk_01C[sp28->unk_18];
 
     sp24->unk_14 = sp28->unk_08;
     sp24->unk_0B = sp34->unk_00.unk_00;
@@ -790,7 +790,7 @@ void func_84370B7C(unk_BattlePlayerEntity* arg0) {
 }
 
 s32 Battle_IsPartyMemberAlive(unk_BattlePlayerEntity* arg0) {
-    if (arg0->unk_724->unk_01C[arg0->unk_654.unk_18 - 1].unk_02 != 0) {
+    if (arg0->unk_724->unk_01C[arg0->animationState.unk_18 - 1].unk_02 != 0) {
         return 1;
     }
     return 0;
@@ -842,7 +842,7 @@ void func_84371010(void) {
 }
 
 void func_84371080(void) {
-    PokemonAudioInfo* sp1C = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[!gBattleState.unk_00->unk_2C]->animationState.unk_38;
 
     switch (gBattleEffectType) {
         case 1:
@@ -962,10 +962,10 @@ void func_843714D8(void) {
     PokemonData* temp_a0;
     unk_BattlePlayerAnimState* temp_a1;
 
-    ptr = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    ptr = &sActivePokemon[gBattleState.unk_00->unk_2C]->animationState.unk_38;
     temp_a0 =
-        &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_724->unk_01C[sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_08];
-    temp_a1 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654;
+        &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_724->unk_01C[sActivePokemon[gBattleState.unk_00->unk_2C]->animationState.unk_08];
+    temp_a1 = &sActivePokemon[gBattleState.unk_00->unk_2C]->animationState;
 
     gCurrentBattleEntity->unk_32[temp_a1->unk_0C]++;
     if (!(ptr->unk_4E & 8)) {
@@ -1264,8 +1264,8 @@ s32 ProcessBattleEntityStatus(void) {
     u8 sp25;
     PokemonAudioInfo* temp_v1;
 
-    temp_v0 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654;
-    temp_v1 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    temp_v0 = &sActivePokemon[gBattleState.unk_00->unk_2C]->animationState;
+    temp_v1 = &sActivePokemon[gBattleState.unk_00->unk_2C]->animationState.unk_38;
 
     if (gCurrentBattleEntity->unk_15 & 7) {
         gCurrentBattleEntity->unk_15 = (gCurrentBattleEntity->unk_15 & 7) - 1;
@@ -1618,9 +1618,9 @@ void ResetBattleEntityStatus(unk_BattlePlayerEntity* arg0) {
     PokemonAudioInfo* temp_a11;
     PokemonAudioInfo* temp_a01;
 
-    temp_a10 = &sActivePokemon[sp1C]->unk_654;
-    temp_a11 = &sActivePokemon[sp1C]->unk_654.unk_38;
-    temp_a01 = &sActivePokemon[!sp1C]->unk_654.unk_38;
+    temp_a10 = &sActivePokemon[sp1C]->animationState;
+    temp_a11 = &sActivePokemon[sp1C]->animationState.unk_38;
+    temp_a01 = &sActivePokemon[!sp1C]->animationState.unk_38;
 
     temp_a01->unk_54 = 0;
     temp_a01->unk_58 = 0;
@@ -1646,23 +1646,23 @@ void ResetBattleEntityStatus(unk_BattlePlayerEntity* arg0) {
 }
 
 void CheckAllPartyFainted_HP(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         if (i == ptr1->unk_08) {
-            var_s2 += arg0->unk_654.unk_38.unk_0E;
+            var_s2 += arg0->animationState.unk_38.unk_0E;
         } else {
             temp_v0 = &arg0->unk_724->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
     }
 
-    if (arg0->unk_720->unk_01 == 2) {
+    if (arg0->pokemonAnimation->unk_01 == 2) {
         for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
-            temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
+            temp_v0 = &arg0->pokemonAnimation->unk_08[!ptr1->unk_2B]->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
     }
@@ -1676,23 +1676,23 @@ void CheckAllPartyFainted_HP(unk_BattlePlayerEntity* arg0) {
 }
 
 void CheckAllPartyFainted_Status(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         if (i == ptr1->unk_08) {
-            var_s2 += arg0->unk_654.unk_38.unk_10;
+            var_s2 += arg0->animationState.unk_38.unk_10;
         } else {
             temp_v0 = &arg0->unk_724->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
     }
 
-    if (arg0->unk_720->unk_01 == 2) {
+    if (arg0->pokemonAnimation->unk_01 == 2) {
         for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
-            temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
+            temp_v0 = &arg0->pokemonAnimation->unk_08[!ptr1->unk_2B]->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
     }
@@ -1706,23 +1706,23 @@ void CheckAllPartyFainted_Status(unk_BattlePlayerEntity* arg0) {
 }
 
 void CheckAllPartyFainted_PP(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         if (i == ptr1->unk_08) {
-            var_s2 += arg0->unk_654.unk_38.unk_12;
+            var_s2 += arg0->animationState.unk_38.unk_12;
         } else {
             temp_v0 = &arg0->unk_724->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
     }
 
-    if (arg0->unk_720->unk_01 == 2) {
+    if (arg0->pokemonAnimation->unk_01 == 2) {
         for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
-            temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
+            temp_v0 = &arg0->pokemonAnimation->unk_08[!ptr1->unk_2B]->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
     }
@@ -1736,23 +1736,23 @@ void CheckAllPartyFainted_PP(unk_BattlePlayerEntity* arg0) {
 }
 
 void CheckAllPartyFainted_Level(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         if (i == ptr1->unk_08) {
-            var_s2 += arg0->unk_654.unk_38.unk_0C;
+            var_s2 += arg0->animationState.unk_38.unk_0C;
         } else {
             temp_v0 = &arg0->unk_724->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
     }
 
-    if (arg0->unk_720->unk_01 == 2) {
+    if (arg0->pokemonAnimation->unk_01 == 2) {
         for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
-            temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
+            temp_v0 = &arg0->pokemonAnimation->unk_08[!ptr1->unk_2B]->unk_01C[i];
             var_s2 += temp_v0->unk_02;
         }
     }
@@ -1766,22 +1766,22 @@ void CheckAllPartyFainted_Level(unk_BattlePlayerEntity* arg0) {
 }
 
 s32 CheckBattleEntityFaintStatus(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2;
 
-    if (arg0->unk_654.unk_38.unk_15 & 0x18) {
+    if (arg0->animationState.unk_38.unk_15 & 0x18) {
         var_s2 = 0;
-        if (arg0->unk_654.unk_38.unk_0E == 0) {
+        if (arg0->animationState.unk_38.unk_0E == 0) {
             for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
                 temp_v0 = &arg0->unk_724->unk_01C[i];
                 var_s2 += temp_v0->unk_02;
             }
 
-            if (arg0->unk_720->unk_01 == 2) {
+            if (arg0->pokemonAnimation->unk_01 == 2) {
                 for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
-                    temp_v0 = &arg0->unk_720->unk_08[!ptr1->unk_2B]->unk_01C[i];
+                    temp_v0 = &arg0->pokemonAnimation->unk_08[!ptr1->unk_2B]->unk_01C[i];
                     var_s2 += temp_v0->unk_02;
                 }
             }
@@ -1821,10 +1821,10 @@ s32 ProcessFaintChecks(void) {
 }
 
 void BeginBattleMainLoop(void) {
-    PokemonAudioInfo* sp1C = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
-    PokemonAudioInfo* sp18 = &sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_654.unk_38;
-    unk_BattlePlayerAnimState* ptr1 = &sActivePokemon[0]->unk_654;
-    unk_BattlePlayerAnimState* ptr2 = &sActivePokemon[1]->unk_654;
+    PokemonAudioInfo* sp1C = &sActivePokemon[gBattleState.unk_00->unk_2C]->animationState.unk_38;
+    PokemonAudioInfo* sp18 = &sActivePokemon[!gBattleState.unk_00->unk_2C]->animationState.unk_38;
+    unk_BattlePlayerAnimState* ptr1 = &sActivePokemon[0]->animationState;
+    unk_BattlePlayerAnimState* ptr2 = &sActivePokemon[1]->animationState;
 
     ptr1->unk_2A = 0;
     ptr2->unk_2A = 0;
@@ -1862,12 +1862,12 @@ void BeginBattleForEntity(unk_BattlePlayerEntity* arg0) {
     PokemonAudioInfo* ptr1;
     PokemonAudioInfo* ptr2;
 
-    ptr1 = &arg0->unk_654.unk_38;
+    ptr1 = &arg0->animationState.unk_38;
 
-    sp24 = &sActivePokemon[0]->unk_654;
-    sp20 = &sActivePokemon[1]->unk_654;
+    sp24 = &sActivePokemon[0]->animationState;
+    sp20 = &sActivePokemon[1]->animationState;
 
-    ptr2 = &sActivePokemon[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
+    ptr2 = &sActivePokemon[IsPrimaryEntity(arg0) == 0]->animationState.unk_38;
 
     sp24->unk_2A = 0;
     sp20->unk_2A = 0;

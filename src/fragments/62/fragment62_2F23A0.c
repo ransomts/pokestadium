@@ -17,7 +17,7 @@ s32 Array_ContainsValue(u8 arg0, u8* arg1, s32 arg2) {
 }
 
 PokemonData* GetCurrentPokemonData(unk_BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* ptr = &arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C]->unk_01C[arg0->animationState.unk_08];
 
     return ptr;
 }
@@ -97,13 +97,13 @@ void SetEntityScale(unk_BattlePlayerEntity* arg0, f32 arg1) {
 }
 
 s32 BattleScene_GetSelectedSideTeamSize(unk_BattlePlayerEntity* arg0) {
-    return arg0->unk_720->unk_08[arg0->unk_654.unk_2B]->unk_002;
+    return arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2B]->unk_002;
 }
 
 s32 GetOpponentPokemonCount(unk_BattlePlayerEntity* arg0) {
-    s32 idx = arg0->unk_654.unk_2B == 0;
+    s32 idx = arg0->animationState.unk_2B == 0;
 
-    return arg0->unk_720->unk_08[idx]->unk_002;
+    return arg0->pokemonAnimation->unk_08[idx]->unk_002;
 }
 
 s32 IsPrimaryEntity(unk_BattlePlayerEntity* arg0) {
@@ -116,7 +116,7 @@ s32 IsPrimaryEntity(unk_BattlePlayerEntity* arg0) {
 u8 Anim_GetActionScriptId(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     UNUSED s16 pad2;
-    s16 sp18 = arg0->unk_654.unk_38.unk_5A - 1;
+    s16 sp18 = arg0->animationState.unk_38.unk_5A - 1;
     unk_BattleAnimDataEntry* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp18];
 
     return ptr->unk_02;
@@ -125,7 +125,7 @@ u8 Anim_GetActionScriptId(unk_BattlePlayerEntity* arg0) {
 u8 Anim_GetActionScriptParam(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     UNUSED s16 pad2;
-    s16 sp18 = arg0->unk_654.unk_38.unk_5A - 1;
+    s16 sp18 = arg0->animationState.unk_38.unk_5A - 1;
     unk_BattleAnimDataEntry* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_000[sp18];
 
     return ptr->unk_03;
@@ -152,7 +152,7 @@ f32 GetModelHeightFactor(unk_BattlePlayerEntity* arg0) {
 }
 
 s16 GetCurrentMoveId(unk_BattlePlayerEntity* arg0) {
-    return arg0->unk_654.unk_38.unk_5A;
+    return arg0->animationState.unk_38.unk_5A;
 }
 
 void GetEntityScaleDimensions(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
@@ -168,13 +168,13 @@ void GetEntityRotation(unk_BattlePlayerEntity* arg0, Vec3s* arg1) {
 }
 
 u16 GetCurrentHP(unk_BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->unk_654.unk_08];
+    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
 
     return ptr->unk_02;
 }
 
 s16 GetPlayerSideYaw(unk_BattlePlayerEntity* arg0) {
-    return arg0->unk_4B0 << 0xE;
+    return arg0->sideSign << 0xE;
 }
 
 s32 GetSpeciesOfPlayerIndex(s32 arg0) {
@@ -203,9 +203,9 @@ void GetEntityCenterPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
         var_fs0 = Battle_GetEntityHeight(arg0) / 1.5f;
     } else if (Array_ContainsValue(arg0->unk_000.unk_01A, &gPokemonSfxId_1, 1) != 0) {
         var_fs0 = Battle_GetEntityHeight(arg0) * 0.5f;
-    } else if ((Array_ContainsValue(arg0->unk_000.unk_01A, &gPokemonSfxId_2, 1) != 0) && (arg0->unk_654.unk_34 & 0x200)) {
+    } else if ((Array_ContainsValue(arg0->unk_000.unk_01A, &gPokemonSfxId_2, 1) != 0) && (arg0->animationState.unk_34 & 0x200)) {
         var_fs0 = 2.0f * Battle_GetEntityHeight(arg0);
-    } else if ((Array_ContainsValue(arg0->unk_000.unk_01A, gPokemonSfxId_3, 2) != 0) && (arg0->unk_654.unk_34 & 0x200)) {
+    } else if ((Array_ContainsValue(arg0->unk_000.unk_01A, gPokemonSfxId_3, 2) != 0) && (arg0->animationState.unk_34 & 0x200)) {
         var_fs0 = Battle_GetEntityHeight(arg0) * 1.5f;
     }
 
@@ -245,13 +245,13 @@ void GetEntityBasePosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
 }
 
 void GetEntityOffsetPosition(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
-    arg1->x = arg0->unk_4EC.unk_024.x;
-    arg1->y = arg0->unk_4EC.unk_024.y + 2.5f;
-    arg1->z = arg0->unk_4EC.unk_024.z;
+    arg1->x = arg0->effectGraphNode.unk_024.x;
+    arg1->y = arg0->effectGraphNode.unk_024.y + 2.5f;
+    arg1->z = arg0->effectGraphNode.unk_024.z;
 }
 
 f32 Battle_GetEntityHeight(unk_BattlePlayerEntity* arg0) {
-    if (arg0->unk_4B4 == 0x10) {
+    if (arg0->animationMode == 0x10) {
         return GetModelHeight(arg0);
     }
     return GetModelHeight(arg0) * arg0->unk_000.unk_030.y;
@@ -262,24 +262,24 @@ f32 GetScaledWidth(unk_BattlePlayerEntity* arg0) {
 }
 
 unk_D_86002F58_004_000_004* GraphNode_GetModelRoot(unk_BattlePlayerEntity* arg0, s32 arg1) {
-    return arg0->unk_720->unk_14->unk_00[2]->unk_00[arg1];
+    return arg0->pokemonAnimation->unk_14->unk_00[2]->unk_00[arg1];
 }
 
 s32 GraphNode_GetModelPhase(unk_BattlePlayerEntity* arg0, UNUSED s32 arg1) {
-    return arg0->unk_720->unk_02;
+    return arg0->pokemonAnimation->unk_02;
 }
 
 char* GetPokemonMessageString(unk_BattlePlayerEntity* arg0) {
-    return GetMessageString(NULL, 0, gPokemonMessageBank, arg0->unk_654.unk_38.unk_5A - 1);
+    return GetMessageString(NULL, 0, gPokemonMessageBank, arg0->animationState.unk_38.unk_5A - 1);
 }
 
 u8* GetPokemonName(unk_BattlePlayerEntity* arg0) {
-    return arg0->unk_724->unk_01C[arg0->unk_654.unk_08].unk_30;
+    return arg0->unk_724->unk_01C[arg0->animationState.unk_08].unk_30;
 }
 
 void ApplyAnimEffectToOpponent(unk_BattlePlayerEntity* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_4B4 = arg1;
-    arg0->unk_4B8 = arg2;
+    arg0->animationMode = arg1;
+    arg0->animationSubstate = arg2;
 }
 
 void Battle_ResetEntityAnim(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
@@ -287,7 +287,7 @@ void Battle_ResetEntityAnim(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity
     unk_BattleAnimDataEntry* sp30;
     unk_BattleAnimDataEntry* sp2C;
     unk_BattleAnimDataEntry* sp28;
-    unk_BattlePlayerAnimState* sp20 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* sp20 = &arg0->animationState;
 
     idx = IsPrimaryEntity(arg0);
     sp30 = &gAnimDataByPlayer[idx]->unk_A50;
@@ -328,7 +328,7 @@ void Battle_ApplyAnimEffect(unk_BattlePlayerEntity* arg0) {
     unk_BattleAnimDataEntry* sp30;
     unk_BattleAnimDataEntry* sp2C;
 
-    sp24 = &arg0->unk_654;
+    sp24 = &arg0->animationState;
     idx = IsPrimaryEntity(arg0);
     sp34 = &gAnimDataByPlayer[idx]->unk_A50;
     idx = IsPrimaryEntity(arg0);
@@ -366,19 +366,19 @@ void Battle_TriggerOpponentAnim(unk_BattlePlayerEntity* arg0) {
 }
 
 void Entity_InitController(unk_BattlePlayerEntity* arg0, s32 arg1) {
-    arg0->unk_724 = arg0->unk_720->unk_08[arg1];
+    arg0->unk_724 = arg0->pokemonAnimation->unk_08[arg1];
 }
 
 void Entity_InitPhysics(unk_BattlePlayerEntity* arg0, s32 arg1) {
-    arg0->unk_654.unk_2B = arg1;
+    arg0->animationState.unk_2B = arg1;
 }
 
 void Entity_BindController(unk_BattlePlayerEntity* arg0, Controller* arg1) {
-    arg0->unk_654.unk_C8 = arg1;
+    arg0->animationState.controller = arg1;
 }
 
 void Entity_SetupBattleState(unk_BattlePlayerEntity* arg0, s32 arg1) {
-    unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
+    unk_BattlePlayerAnimState* temp_v0 = &arg0->animationState;
 
     Entity_InitController(arg0, arg1);
     Entity_InitPhysics(arg0, arg1);
@@ -391,20 +391,20 @@ s32 Battle_HasStatusEffect(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_s0;
     PokemonData* ptr;
 
-    temp_s0 = &arg0->unk_654;
+    temp_s0 = &arg0->animationState;
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         ptr = &arg0->unk_724->unk_01C[i];
-        if ((ptr->unk_05 & 0x20) && (arg0->unk_654.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
+        if ((ptr->unk_05 & 0x20) && (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
             return 1;
         }
     }
 
-    if (arg0->unk_720->unk_01 == 2) {
+    if (arg0->pokemonAnimation->unk_01 == 2) {
         for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
-            ptr = &arg0->unk_720->unk_08[temp_s0->unk_2B == 0]->unk_01C[i];
+            ptr = &arg0->pokemonAnimation->unk_08[temp_s0->unk_2B == 0]->unk_01C[i];
             if ((ptr->unk_05 & 0x20) &&
-                (arg0->unk_654.unk_38.unk_16[temp_s0->unk_08 + (temp_s0->unk_2B == 0) * 3] == 0)) {
+                (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + (temp_s0->unk_2B == 0) * 3] == 0)) {
                 return 1;
             }
         }
@@ -418,19 +418,19 @@ s32 Battle_HasAbilityEffect(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_s0;
     PokemonData* ptr;
 
-    temp_s0 = &arg0->unk_654;
+    temp_s0 = &arg0->animationState;
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         ptr = &arg0->unk_724->unk_01C[i];
-        if ((ptr->unk_05 & 7) && (arg0->unk_654.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
+        if ((ptr->unk_05 & 7) && (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
             return 1;
         }
     }
 
-    if (arg0->unk_720->unk_01 == 2) {
+    if (arg0->pokemonAnimation->unk_01 == 2) {
         for (i = 0; i < GetOpponentPokemonCount(arg0); i++) {
-            ptr = &arg0->unk_720->unk_08[temp_s0->unk_2B == 0]->unk_01C[i];
-            if ((ptr->unk_05 & 7) && (arg0->unk_654.unk_38.unk_16[temp_s0->unk_08 + (temp_s0->unk_2B == 0) * 3] == 0)) {
+            ptr = &arg0->pokemonAnimation->unk_08[temp_s0->unk_2B == 0]->unk_01C[i];
+            if ((ptr->unk_05 & 7) && (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + (temp_s0->unk_2B == 0) * 3] == 0)) {
                 return 1;
             }
         }
@@ -439,10 +439,10 @@ s32 Battle_HasAbilityEffect(unk_BattlePlayerEntity* arg0) {
 }
 
 s32 GetTotalPokemonCount(unk_BattlePlayerEntity* arg0) {
-    if (arg0->unk_720->unk_01 != 2) {
-        return arg0->unk_720->unk_08[0]->unk_002;
+    if (arg0->pokemonAnimation->unk_01 != 2) {
+        return arg0->pokemonAnimation->unk_08[0]->unk_002;
     }
-    return arg0->unk_720->unk_08[1]->unk_002 + arg0->unk_720->unk_08[0]->unk_002;
+    return arg0->pokemonAnimation->unk_08[1]->unk_002 + arg0->pokemonAnimation->unk_08[0]->unk_002;
 }
 
 u8 GetPokemonType(unk_D_800AE540_0004* arg0) {
@@ -450,7 +450,7 @@ u8 GetPokemonType(unk_D_800AE540_0004* arg0) {
 }
 
 s32 GetPlayerDefeatMessageId(unk_BattlePlayerEntity* arg0) {
-    return arg0->unk_720->unk_08[arg0->unk_728.unk_16C]->unk_001 + 1;
+    return arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C]->unk_001 + 1;
 }
 
 void Battle_InitModelAnimation(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
@@ -477,7 +477,7 @@ void Battle_InitModelAnimation(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEnt
         arg1->unk_000.unk_000.unk_02 |= 0x40;
     }
 
-    if (!(arg0->unk_654.unk_34 & 0x200)) {
+    if (!(arg0->animationState.unk_34 & 0x200)) {
         if (arg0 == sActivePokemon[0]) {
             UpdateEntityBasePosition(arg0);
             arg1->unk_000.unk_01E.y = 0x4000;
@@ -547,17 +547,17 @@ void Battle_InitEffectModels(unk_BattlePlayerEntity* arg0, s16 arg1) {
 }
 
 void Battle_PlayAnimSound(unk_BattlePlayerEntity* arg0) {
-    if (arg0->unk_654.unk_34 & 1) {
+    if (arg0->animationState.unk_34 & 1) {
         TryPlayAnimSoundAndSetState(arg0, 0xAF, 2);
     } else {
-        arg0->unk_654.unk_36 = 0;
+        arg0->animationState.unk_36 = 0;
         SetAnimStateIndex(&arg0->unk_000, 0);
         GraphNode_TriggerSound(&arg0->unk_000, -1);
     }
 }
 
 void Pokemon_ResetToDefaultState(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
+    unk_BattlePlayerAnimState* ptr = &arg0->animationState;
     UNUSED s32 pad[3];
     s16 sp26;
 
@@ -572,7 +572,7 @@ void Pokemon_ResetToDefaultState(unk_BattlePlayerEntity* arg0) {
 }
 
 void Pokemon_ApplyFaintTransform(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
+    unk_BattlePlayerAnimState* ptr = &arg0->animationState;
     UNUSED s32 pad[3];
     s16 sp26;
 
@@ -588,8 +588,8 @@ void Pokemon_ApplyFaintTransform(unk_BattlePlayerEntity* arg0) {
 }
 
 void Pokemon_ClearFaintTransform(unk_BattlePlayerEntity* arg0) {
-    GraphNode_SetColorRGBA(&arg0->unk_000, 0xFF, 0xFF, 0xFF, arg0->unk_654.unk_2E = 0xFF);
-    arg0->unk_654.unk_BC = arg0->unk_000.unk_01A;
+    GraphNode_SetColorRGBA(&arg0->unk_000, 0xFF, 0xFF, 0xFF, arg0->animationState.unk_2E = 0xFF);
+    arg0->animationState.unk_BC = arg0->unk_000.unk_01A;
     Battle_InitModelAnimation(arg0, arg0, 0x98, 0);
     Battle_InitEffectModels(arg0, 0x98);
     Battle_PlayAnimSound(arg0);
@@ -603,7 +603,7 @@ void Pokemon_ResetAnimations(unk_BattlePlayerEntity* arg0) {
 
 void Pokemon_RestoreVisuals(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[3];
-    unk_BattlePlayerAnimState* ptr = &arg0->unk_654;
+    unk_BattlePlayerAnimState* ptr = &arg0->animationState;
     s16 sp2E = GraphNode_GetModelPhase(arg0, 0);
 
     ptr->unk_2E = 0xFF;

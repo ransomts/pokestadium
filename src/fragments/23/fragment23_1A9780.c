@@ -1540,8 +1540,8 @@ void BoxPC_InitScreen(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, M
         arg0->unk_A000[i] = &arg0->unk_5050[i];
     }
 
-    PtrArray_Init(&arg0->unk_A030[0], arg0->unk_9FD0, 0xC, 0xC);
-    PtrArray_Init(&arg0->unk_A030[1], arg0->unk_A000, 0xC, 0xC);
+    PtrArray_Init(&arg0->boxPointerArrays[0], arg0->unk_9FD0, 0xC, 0xC);
+    PtrArray_Init(&arg0->boxPointerArrays[1], arg0->unk_A000, 0xC, 0xC);
 
     sp7C = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
     ((func885031E8)Memmap_GetFragmentVaddr(UIElementBase_Create))(sp7C, 0, 0, 0x280, 0x1E0);
@@ -1576,31 +1576,31 @@ void BoxPC_InitScreen(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, M
 
     sp70 = FRAGMENT_LOAD(fragment27);
 
-    arg0->unk_0098.unk_04 = arg4;
+    arg0->boxListConfig.unk_04 = arg4;
     // clang-format off
-    arg0->unk_0098.unk_00 = 0x38; arg0->unk_0098.unk_02 = 0x52;
+    arg0->boxListConfig.unk_00 = 0x38; arg0->boxListConfig.unk_02 = 0x52;
     // clang-format on
-    arg0->unk_0098.unk_14 = sp74;
-    arg0->unk_0098.unk_18 = NULL;
-    arg0->unk_0098.unk_1C = arg6;
-    arg0->unk_0098.unk_20 = arg7;
-    arg0->unk_0098.unk_24 = arg8;
-    arg0->unk_0098.unk_28 = arg9;
-    arg0->unk_0098.unk_2C = argA;
-    arg0->unk_0098.unk_30 = argB;
-    arg0->unk_0098.unk_34 = argC;
+    arg0->boxListConfig.unk_14 = sp74;
+    arg0->boxListConfig.unk_18 = NULL;
+    arg0->boxListConfig.unk_1C = arg6;
+    arg0->boxListConfig.unk_20 = arg7;
+    arg0->boxListConfig.unk_24 = arg8;
+    arg0->boxListConfig.unk_28 = arg9;
+    arg0->boxListConfig.unk_2C = argA;
+    arg0->boxListConfig.unk_30 = argB;
+    arg0->boxListConfig.unk_34 = argC;
 
-    sp70(0, &arg0->unk_0098);
+    sp70(0, &arg0->boxListConfig);
 
-    arg0->unk_0094 = mem_pool_alloc(arg4, sizeof(unk_func_88201DA0));
-    BoxList_Init(arg0->unk_0094, 0x37, 0x52, sp78, sp70, &arg0->unk_0098, arg4);
+    arg0->boxList = mem_pool_alloc(arg4, sizeof(unk_func_88201DA0));
+    BoxList_Init(arg0->boxList, 0x37, 0x52, sp78, sp70, &arg0->boxListConfig, arg4);
 
     arg0->unk_002C = mem_pool_alloc(arg4, sizeof(unk_func_88203ED8));
-    BoxPCMenu_Init(arg0->unk_002C, 0x2C, 0x4C, &arg0->unk_A030, sp7C, arg0->unk_0094, arg3, arg5, arg4);
+    BoxPCMenu_Init(arg0->unk_002C, 0x2C, 0x4C, &arg0->boxPointerArrays, sp7C, arg0->boxList, arg3, arg5, arg4);
 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp78, arg0->unk_002C);
-    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp74, arg0->unk_0094);
-    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_0098.unk_08);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp74, arg0->boxList);
+    ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->boxListConfig.unk_08);
 }
 
 s32 BoxPC_HandleInput(BoxPCScreen* arg0, Controller* arg1) {

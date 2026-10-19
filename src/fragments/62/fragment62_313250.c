@@ -10,7 +10,7 @@
 void Intro_SetupCamera(CameraStruct* arg0) {
     Battle_FinishTurn();
     Camera_SetClippingPlanes(arg0, 20.0f, 12800.0f);
-    SetMessageFromAltTable(sActivePokemon[0]->unk_720, 3);
+    SetMessageFromAltTable(sActivePokemon[0]->pokemonAnimation, 3);
     arg0->unk_24.fovy = 40.0f;
     sActivePokemon[0]->unk_000.unk_000.unk_01 &= ~1;
     sActivePokemon[1]->unk_000.unk_000.unk_01 &= ~1;
@@ -35,7 +35,7 @@ void Intro_CheckPlayerReady(UNUSED CameraStruct* arg0) {
 void Intro_PlayerEnter(UNUSED CameraStruct* arg0) {
     sActivePokemon[0]->unk_000.unk_000.unk_01 &= ~1;
     sActivePokemon[1]->unk_000.unk_000.unk_01 &= ~1;
-    if (sActivePokemon[0]->unk_4EC.unk_024.y == 0.0f) {
+    if (sActivePokemon[0]->effectGraphNode.unk_024.y == 0.0f) {
         ProcessBattleMenuSelection();
         Audio_PlaySoundEffect(1, 1, 0);
         ApplyAnimEffectToOpponent(sActivePokemon[1], 1, 0);
@@ -50,7 +50,7 @@ void Intro_OpponentEnter(CameraStruct* arg0) {
     sActivePokemon[0]->unk_000.unk_000.unk_01 &= ~1;
     sActivePokemon[1]->unk_000.unk_000.unk_01 &= ~1;
 
-    if (sActivePokemon[1]->unk_4EC.unk_024.y == 0.0f) {
+    if (sActivePokemon[1]->effectGraphNode.unk_024.y == 0.0f) {
         arg0->unk_24.fovy = 30.0f;
         ApplyAnimEffectToOpponent(sActivePokemon[0], 2, 0);
         InitActionScriptMode3(0xB, sActivePokemon[0], sActivePokemon[0], 0xFF, 0xFF);
@@ -71,9 +71,9 @@ void Intro_CameraPanAndZoom(CameraStruct* arg0) {
     Math_StepTowards(&gBattleState.unk_00->unk_56, 0xB6, 0x1E);
     Camera_SetEyePositionOffset(arg0, sp2C, gBattleState.unk_00->unk_56, 0x4000, gBattleState.unk_00->unk_84, 0.0f);
 
-    if ((gBattleState.unk_00->unk_56 >= 0x2E) && (sActivePokemon[0]->unk_4EC.unk_024.y == 2.5f)) {
+    if ((gBattleState.unk_00->unk_56 >= 0x2E) && (sActivePokemon[0]->effectGraphNode.unk_024.y == 2.5f)) {
         Audio_PlaySoundEffect(2, 0, 0);
-        sActivePokemon[0]->unk_4EC.unk_000.unk_02 |= 0x20;
+        sActivePokemon[0]->effectGraphNode.unk_000.unk_02 |= 0x20;
         gBattleState.unk_00->unk_20 += 1;
     }
 }
@@ -81,14 +81,14 @@ void Intro_CameraPanAndZoom(CameraStruct* arg0) {
 void Intro_WaitForAnimCompletion(UNUSED CameraStruct* arg0) {
     sActivePokemon[0]->unk_000.unk_000.unk_01 &= ~1;
     sActivePokemon[1]->unk_000.unk_000.unk_01 &= ~1;
-    if (GraphNode_IsAnimationFinished(&sActivePokemon[0]->unk_4EC) == 1) {
+    if (GraphNode_IsAnimationFinished(&sActivePokemon[0]->effectGraphNode) == 1) {
         gBattleState.unk_00->unk_20 += 1;
     }
 }
 
 void Intro_DisplayPokemonInfo(CameraStruct* arg0) {
-    unk_BattlePlayerAnimState* sp2C = &sActivePokemon[0]->unk_654;
-    unk_D_800AE540_0004* sp28 = sActivePokemon[0]->unk_720->unk_08[sp2C->unk_2C];
+    unk_BattlePlayerAnimState* sp2C = &sActivePokemon[0]->animationState;
+    unk_D_800AE540_0004* sp28 = sActivePokemon[0]->pokemonAnimation->unk_08[sp2C->unk_2C];
 
     sActivePokemon[0]->unk_728.unk_168->unk_00.unk_01 |= 1;
     sActivePokemon[0]->unk_728.unk_000.unk_000.unk_01 |= 1;
@@ -97,7 +97,7 @@ void Intro_DisplayPokemonInfo(CameraStruct* arg0) {
     sActivePokemon[1]->unk_000.unk_000.unk_01 &= ~1;
     InitActionScriptMode3(3, sActivePokemon[0], sActivePokemon[0], 0xFF, 0xFF);
     sActivePokemon[0]->unk_000.unk_000.unk_01 |= 1;
-    sActivePokemon[0]->unk_4EC.unk_000.unk_01 &= ~1;
+    sActivePokemon[0]->effectGraphNode.unk_000.unk_01 &= ~1;
     Battle_PlayMoveEffect(sActivePokemon[0], arg0, 3);
     ExecuteAnimStateHandlers(sActivePokemon[0], 0x10);
     gBattleState.unk_00->unk_2C = 0;
@@ -125,8 +125,8 @@ void Intro_PostInfoDelay(CameraStruct* arg0) {
 }
 
 void Opponent_DisplayPokemonInfo(CameraStruct* arg0) {
-    unk_BattlePlayerAnimState* sp2C = &sActivePokemon[1]->unk_654;
-    unk_D_800AE540_0004* sp28 = sActivePokemon[1]->unk_720->unk_08[sp2C->unk_2C];
+    unk_BattlePlayerAnimState* sp2C = &sActivePokemon[1]->animationState;
+    unk_D_800AE540_0004* sp28 = sActivePokemon[1]->pokemonAnimation->unk_08[sp2C->unk_2C];
 
     sActivePokemon[1]->unk_728.unk_168->unk_00.unk_01 |= 1;
     sActivePokemon[1]->unk_728.unk_000.unk_000.unk_01 |= 1;

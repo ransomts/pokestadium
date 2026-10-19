@@ -4215,7 +4215,7 @@ void PlayHeightBasedSoundEffect(unk_BattlePlayerEntity* arg0) {
 }
 
 void ProcessEntityAudioInfo(unk_BattlePlayerEntity* arg0) {
-    ProcessAudioInfo(GetPlayerDefeatMessageId(arg0), &arg0->unk_654.unk_38);
+    ProcessAudioInfo(GetPlayerDefeatMessageId(arg0), &arg0->animationState.unk_38);
 }
 
 void TriggerMoveEvent(unk_BattlePlayerEntity* arg0, PokemonAudioInfo* arg1, s32 arg2) {
@@ -4234,13 +4234,13 @@ void SetPlayerSidesFromActivePokemons(void) {
     sp20[2] = 0xA;
     sp20[3] = 0xA;
 
-    sp20[ptr1->unk_720->unk_08[0]->unk_001] = 1;
-    if (ptr1->unk_720->unk_01 == 2) {
-        sp20[ptr1->unk_720->unk_08[1]->unk_001] = 1;
+    sp20[ptr1->pokemonAnimation->unk_08[0]->unk_001] = 1;
+    if (ptr1->pokemonAnimation->unk_01 == 2) {
+        sp20[ptr1->pokemonAnimation->unk_08[1]->unk_001] = 1;
     }
-    sp20[ptr2->unk_720->unk_08[0]->unk_001] = 2;
-    if (ptr2->unk_720->unk_01 == 2) {
-        sp20[ptr2->unk_720->unk_08[1]->unk_001] = 2;
+    sp20[ptr2->pokemonAnimation->unk_08[0]->unk_001] = 2;
+    if (ptr2->pokemonAnimation->unk_01 == 2) {
+        sp20[ptr2->pokemonAnimation->unk_08[1]->unk_001] = 2;
     }
 
     for (i = 0; i < 4; i++) {
@@ -4262,14 +4262,14 @@ void SetTeamScoresFromActivePokemons(void) {
     sp24[2] = 0;
     sp24[3] = 0;
 
-    sp24[ptr1->unk_720->unk_08[0]->unk_001] = GetPokemonType(ptr1->unk_720->unk_08[0]);
-    if (ptr1->unk_720->unk_01 == 2) {
-        sp24[ptr1->unk_720->unk_08[1]->unk_001] = GetPokemonType(ptr1->unk_720->unk_08[1]);
+    sp24[ptr1->pokemonAnimation->unk_08[0]->unk_001] = GetPokemonType(ptr1->pokemonAnimation->unk_08[0]);
+    if (ptr1->pokemonAnimation->unk_01 == 2) {
+        sp24[ptr1->pokemonAnimation->unk_08[1]->unk_001] = GetPokemonType(ptr1->pokemonAnimation->unk_08[1]);
     }
 
-    sp24[ptr2->unk_720->unk_08[0]->unk_001] = GetPokemonType(ptr2->unk_720->unk_08[0]);
-    if (ptr2->unk_720->unk_01 == 2) {
-        sp24[ptr2->unk_720->unk_08[1]->unk_001] = GetPokemonType(ptr2->unk_720->unk_08[1]);
+    sp24[ptr2->pokemonAnimation->unk_08[0]->unk_001] = GetPokemonType(ptr2->pokemonAnimation->unk_08[0]);
+    if (ptr2->pokemonAnimation->unk_01 == 2) {
+        sp24[ptr2->pokemonAnimation->unk_08[1]->unk_001] = GetPokemonType(ptr2->pokemonAnimation->unk_08[1]);
     }
     SetTeamScores(sp24[0], sp24[1], sp24[2], sp24[3]);
 }

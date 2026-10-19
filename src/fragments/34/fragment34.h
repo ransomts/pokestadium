@@ -82,19 +82,19 @@ typedef struct ParticleEffectInstance {
     /* 0x7C */ Vec3f unk_7C;
     /* 0x88 */ char unk88[0xC];
     /* 0x94 */ Vec3s unk_94;
-    /* 0x9A */ Vec3s unk_9A;
+    /* 0x9A */ Vec3s rotationDelta;
     /* 0xA0 */ Vec3s unk_A0;
-    /* 0xA6 */ s16 unk_A6;
+    /* 0xA6 */ s16 initialAlpha;
     /* 0xA8 */ s16 unk_A8;
-    /* 0xAA */ s16 unk_AA;
+    /* 0xAA */ s16 alphaStep;
     /* 0xAC */ s16 unk_AC;
-    /* 0xAE */ s16 unk_AE;
+    /* 0xAE */ s16 alpha;
     /* 0xB0 */ s16 unk_B0;
-    /* 0xB2 */ s16 unk_B2;
+    /* 0xB2 */ s16 updateState;
     /* 0xB4 */ char unkB4[0x2];
-    /* 0xB6 */ s16 unk_B6;
+    /* 0xB6 */ s16 rampStepTimer;
     /* 0xB8 */ s16 unk_B8;
-    /* 0xBA */ s16 unk_BA;
+    /* 0xBA */ s16 durationTimer;
     /* 0xBC */ s16 unk_BC;
     /* 0xBE */ u8 prim_r;
     /* 0xBF */ u8 prim_g;
@@ -104,15 +104,15 @@ typedef struct ParticleEffectInstance {
     /* 0xC3 */ u8 env_b;
     /* 0xC4 */ u8 prim_a;
     /* 0xC5 */ char unkC5[0x1];
-    /* 0xC6 */ s8 unk_C6;
-    /* 0xC7 */ s8 unk_C7;
+    /* 0xC6 */ s8 rampRepeatCount;
+    /* 0xC7 */ s8 rampValue;
     /* 0xC8 */ char unkC8[0x2];
-    /* 0xCA */ u8 unk_CA;
+    /* 0xCA */ u8 effectType;
     /* 0xCB */ u8 unk_CB;
     /* 0xCC */ u8 unk_CC;
-    /* 0xCD */ u8 unk_CD;
+    /* 0xCD */ u8 targetAlpha;
     /* 0xCE */ u8 unk_CE;
-    /* 0xCF */ u8 unk_CF;
+    /* 0xCF */ u8 paletteIndex;
     /* 0xD0 */ s8 unk_D0;
 } ParticleEffectInstance; // size = 0xD4
 

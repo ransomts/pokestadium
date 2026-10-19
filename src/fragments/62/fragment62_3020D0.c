@@ -111,11 +111,11 @@ void WriteMessageCharOrString(s8* arg0, s8 arg1) {
 
 void InitDialogHeader(char* arg0, s32 arg1) {
     UNUSED s32 pad[3];
-    unk_BattlePlayerAnimState* sp28 = &sActivePokemon[arg1]->unk_654;
+    unk_BattlePlayerAnimState* sp28 = &sActivePokemon[arg1]->animationState;
     UNUSED s32 pad2[2];
 
     ResetMessageIndices();
-    gBattleMessageBuffers->unk_000 = sActivePokemon[arg1]->unk_720->unk_08[sp28->unk_2B]->unk_001;
+    gBattleMessageBuffers->unk_000 = sActivePokemon[arg1]->pokemonAnimation->unk_08[sp28->unk_2B]->unk_001;
     SimpleStringFormat(gBattleMessageBuffers->unk_048, arg0 + 1);
     *arg0 = 0;
 }
@@ -128,14 +128,14 @@ void InitBattleDialogParameters(void) {
     unk_BattlePlayerEntity* ptr2 = sActivePokemon[1];
 
     if ((gBattleContext.unk_0000 != 0x10) && (gBattleState.unk_00->unk_30 == 0)) {
-        BattleHud_DrawCompactMonStatusBox(ptr1, 0x15, 0xF, ptr1->unk_720->unk_08[ptr1->unk_728.unk_16C]->unk_001);
-        BattleHud_DrawCompactMonStatusBox(ptr2, 0xE1, 0xF, ptr2->unk_720->unk_08[ptr2->unk_728.unk_16C]->unk_001);
+        BattleHud_DrawCompactMonStatusBox(ptr1, 0x15, 0xF, ptr1->pokemonAnimation->unk_08[ptr1->unk_728.unk_16C]->unk_001);
+        BattleHud_DrawCompactMonStatusBox(ptr2, 0xE1, 0xF, ptr2->pokemonAnimation->unk_08[ptr2->unk_728.unk_16C]->unk_001);
     }
 }
 
 void DetermineMessageCategoryAndDisplay(void) {
     u32 sp1C;
-    PokemonAudioInfo* sp18 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* sp18 = &sActivePokemon[gBattleState.unk_00->unk_2C]->animationState.unk_38;
 
     sp18->unk_58 = sp18->unk_44.unk_00;
 
@@ -207,7 +207,7 @@ void DetermineMessageCategoryAndDisplay(void) {
 void Battle_QueueMoveCategoryMessage(void) {
     u32 sp24;
     UNUSED s32 pad;
-    PokemonAudioInfo* sp1C = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    PokemonAudioInfo* sp1C = &sActivePokemon[gBattleState.unk_00->unk_2C]->animationState.unk_38;
 
     if (Array_ContainsValue(sp1C->unk_5A, gMoveCat_Physical, 2) != 0) {
         sp24 = 0;
@@ -252,7 +252,7 @@ void Battle_QueueMetronomeMoveMessage(void) {
     s32 tmp;
     PokemonAudioInfo* sp24;
 
-    sp24 = &sActivePokemon[gBattleState.unk_00->unk_2C]->unk_654.unk_38;
+    sp24 = &sActivePokemon[gBattleState.unk_00->unk_2C]->animationState.unk_38;
 
     if (Array_ContainsValue(sp24->unk_5A, gMoveCat_Physical, 2) != 0) {
         sp2C = 0;
@@ -696,14 +696,14 @@ void Battle_SetEntityPosition(unk_BattlePlayerEntity* arg0) {
 }
 
 void BattleScene_BuildParticipantMessage(unk_BattlePlayerEntity* arg0, s32 arg1) {
-    gBattleMessageBuffers->unk_000 = arg0->unk_720->unk_08[arg0->unk_654.unk_2C]->unk_001;
+    gBattleMessageBuffers->unk_000 = arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C]->unk_001;
     arg0->unk_8C4.unk_00 = 1;
-    MessageBank_SetPointer_0x14_0x2A(0x19, arg0->unk_724->unk_01C[arg0->unk_654.unk_08].unk_30);
+    MessageBank_SetPointer_0x14_0x2A(0x19, arg0->unk_724->unk_01C[arg0->animationState.unk_08].unk_30);
     GetMessageString(arg0->unk_8C4.unk_48, 0x40, gMessageBank_0x1E, arg1);
 }
 
 void BattleScene_RevealParticipantMessageChars(unk_BattlePlayerEntity* arg0) {
-    unk_D_800AE540_0004* temp_t0 = arg0->unk_720->unk_08[arg0->unk_654.unk_2C];
+    unk_D_800AE540_0004* temp_t0 = arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C];
 
     if (arg0->unk_8C4.unk_48[arg0->unk_8C4.unk_04] != '\x00') {
         arg0->unk_8C4.unk_08[arg0->unk_8C4.unk_04] = arg0->unk_8C4.unk_48[arg0->unk_8C4.unk_04];
@@ -727,8 +727,8 @@ void BattleScene_RevealParticipantMessageChars(unk_BattlePlayerEntity* arg0) {
 }
 
 void BattleScene_TickHudTimers(void) {
-    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->unk_654;
-    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->animationState;
+    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->animationState;
 
     if ((gBattleContext.unk_11ED != 0) && (sActivePokemon[1]->unk_728.unk_168->unk_1C == 0x103) &&
         (sActivePokemon[0]->unk_728.unk_168->unk_1C == 0x17)) {
@@ -757,8 +757,8 @@ void Battle_InitCamera(void) {
 }
 
 void Battle_InitBattleEffects(void) {
-    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->unk_654;
-    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->animationState;
+    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->animationState;
 
     if (1) {}
 

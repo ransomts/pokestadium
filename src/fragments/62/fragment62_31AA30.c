@@ -8,7 +8,7 @@ s32 RenderPanelBackground(ParticleEffectInstance* arg0, CameraStruct* arg1) {
 }
 
 void RenderIconMasked(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_LoadTextureBlockIA8_Clamp(gWaterTexture[0x76] + (arg0->unk_C7 << 0xB), 0x20, 0x40);
+    Gfx_LoadTextureBlockIA8_Clamp(gWaterTexture[0x76] + (arg0->rampValue << 0xB), 0x20, 0x40);
     Gfx_LoadMultiBlockI4b_WrapCustom(gWaterTexture[0x77], 0x40, 0x40, 2, 1);
     Gfx_ScrollTexture1(0, 0xA, 0x40, 0x40);
     Gfx_SetPrimAndEnvColorLODSimple(0x80, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a, arg0->env_r, arg0->env_g, arg0->env_b);
@@ -121,7 +121,7 @@ void BattleAnim_DrawAsset1AFrameI4Quad(ParticleEffectInstance* arg0, UNUSED Came
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x1A] + (arg0->unk_C7 << 9), 0x20, 0x20);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x1A] + (arg0->rampValue << 9), 0x20, 0x20);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gMatrix_UITransform);
 
@@ -281,7 +281,7 @@ void BattleAnim_DrawAsset13FrameDiv2I4Quad(ParticleEffectInstance* arg0, UNUSED 
 void BattleAnim_DrawAsset18FrameI4ModelQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
-    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x18] + (arg0->unk_C7 << 9), 0x20, 0x20);
+    Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x18] + (arg0->rampValue << 9), 0x20, 0x20);
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadBillboardRoll(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
 }

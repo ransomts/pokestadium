@@ -9,7 +9,7 @@ void BattleAnim_InitStartEffect135Descriptor1CRisingScale(ParticleEffectInstance
     Particle_SetScaleFactor1(arg0, 0.065789476f);
     Particle_SetSpeed(arg0, 0.0f);
     sp28.x = RandomRangeSigned(0x5000);
-    sp28.y = sp24 * (0x10000 / arg0->unk_AA);
+    sp28.y = sp24 * (0x10000 / arg0->alphaStep);
     sp28.z = 0;
     Particle_AddRotationDeltaVec(arg0, sp28);
     SetPrimColorFromPalette(arg0, sp26);
@@ -19,7 +19,7 @@ void BattleAnim_InitStartEffect135Descriptor1CRisingScale(ParticleEffectInstance
 }
 
 void BattleAnim_CallbackStartEffect135Descriptor1CRisingScaleFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_InitStartEffect135Descriptor1CRisingScale(arg0);
             break;
@@ -59,7 +59,7 @@ void BattleAnim_InitStartEffect135ExpandingFlash(ParticleEffectInstance* arg0) {
 }
 
 void BattleAnim_CallbackStartEffect135ExpandingFlashFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_InitStartEffect135ExpandingFlash(arg0);
             break;
@@ -97,7 +97,7 @@ void BattleAnim_InitStartEffect139Descriptor42FallingScale(ParticleEffectInstanc
 }
 
 void BattleAnim_CallbackStartEffect139Descriptor42FallingScaleFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_InitStartEffect139Descriptor42FallingScale(arg0);
             break;
@@ -144,7 +144,7 @@ void BattleAnim_InitStartEffect139Descriptor22SpinFade(ParticleEffectInstance* a
 }
 
 void BattleAnim_CallbackStartEffect139Descriptor22SpinFadeSpark(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_InitStartEffect139Descriptor22SpinFade(arg0);
             break;
@@ -185,7 +185,7 @@ void BattleAnim_InitStartEffect141Descriptor1CGridRise(ParticleEffectInstance* a
 }
 
 void BattleAnim_CallbackStartEffect141Descriptor1CGridRiseFade(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_InitStartEffect141Descriptor1CGridRise(arg0);
             break;
@@ -268,7 +268,7 @@ void BattleAnim_InitStartEffects133And134And143Descriptor44ModeOrbit(ParticleEff
 void BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl(ParticleEffectInstance* arg0) {
     Particle_GetShortCE(arg0);
 
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_InitStartEffects133And134And143Descriptor44ModeOrbit(arg0);
             break;
@@ -303,13 +303,13 @@ void BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl(Pa
         switch (arg0->unk_B8) {
             case 1:
                 Particle_AddRotationDeltaX(arg0);
-                Particle_SetVelocityFromComplexDir(arg0, arg0->unk_AE);
+                Particle_SetVelocityFromComplexDir(arg0, arg0->alpha);
                 break;
 
             case 2:
                 Particle_AddRotationDeltaX(arg0);
                 Particle_ApproachShortAE(arg0, 0, arg0->unk_B0);
-                Particle_SetVelocityFromComplexDir(arg0, arg0->unk_AE);
+                Particle_SetVelocityFromComplexDir(arg0, arg0->alpha);
                 break;
         }
     }
@@ -328,7 +328,7 @@ void BattleAnim_InitStartEffects133And134And143Descriptor38MetadataBurst(Particl
 }
 
 void BattleAnim_CallbackStartEffects133And134And143Descriptor38MetadataBurstEmitter(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             BattleAnim_InitStartEffects133And134And143Descriptor38MetadataBurst(arg0);
             break;

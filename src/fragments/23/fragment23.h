@@ -41,13 +41,13 @@ typedef struct BoxPCScreen {
     /* 0x0000 */ unk_func_88001300_000 unk_0000;
     /* 0x002C */ unk_func_88203ED8* unk_002C;
     /* 0x0030 */ char unk0030[0x64];
-    /* 0x0094 */ unk_func_88201DA0* unk_0094;
-    /* 0x0098 */ unk_func_88205880_0098 unk_0098;
+    /* 0x0094 */ unk_func_88201DA0* boxList;
+    /* 0x0098 */ unk_func_88205880_0098 boxListConfig;
     /* 0x00D0 */ unk_func_88205880_00D0 unk_00D0[12];
     /* 0x5050 */ unk_func_88205880_00D0 unk_5050[12];
     /* 0x9FD0 */ unk_func_88205880_00D0* unk_9FD0[12];
     /* 0xA000 */ unk_func_88205880_00D0* unk_A000[12];
-    /* 0xA030 */ unk_func_88205880_A030 unk_A030[2];
+    /* 0xA030 */ unk_func_88205880_A030 boxPointerArrays[2];
 } BoxPCScreen; // size = 0xA048
 
 typedef struct unk_func_882062E4 {

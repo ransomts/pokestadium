@@ -113,7 +113,7 @@ void UpdatePokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
     arg0->unk_728.unk_000.unk_000.unk_01 |= 1;
 
     if (arg0->unk_728.unk_178 == 1) {
-        if ((arg0->unk_728.unk_168->unk_1C == -0x48) && !(arg0->unk_654.unk_34 & 0x800)) {
+        if ((arg0->unk_728.unk_168->unk_1C == -0x48) && !(arg0->animationState.unk_34 & 0x800)) {
             TriggerPokemonAnimAndAction(arg0);
         }
 
@@ -123,7 +123,7 @@ void UpdatePokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
         }
         arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x17, arg1, arg1);
     } else {
-        if ((arg0->unk_728.unk_168->unk_1C == 0x15F) && !(arg0->unk_654.unk_34 & 0x800)) {
+        if ((arg0->unk_728.unk_168->unk_1C == 0x15F) && !(arg0->animationState.unk_34 & 0x800)) {
             TriggerPokemonAnimAndAction(arg0);
         }
 

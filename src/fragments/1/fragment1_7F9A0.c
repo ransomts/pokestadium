@@ -210,9 +210,9 @@ s32 GbPak_Initialize(GbPakDeviceState* arg0) {
   if (!(ret = GbPak_WriteRegister(arg0, 0, 0xA))    && !(ret = GbPak_WriteRegister(arg0, 0x6000, 1))
    && !(ret = GbPak_WriteRegister(arg0, 0x4000, 0)) && !(ret = GbPak_WriteRegister(arg0, 0x6000, 0))
    && !(ret = GbPak_WriteRegister(arg0, 0x4000, 0)) && !(ret = GbPak_WriteRegister(arg0, 0x2100, 1))) {
-      arg0->unk_5DA2 = 1;
-      arg0->unk_5DCE = 0;
-      arg0->unk_5DCF = 0;
+      arg0->romBank = 1;
+      arg0->ramBank = 0;
+      arg0->bankingMode = 0;
   }
   
   return ret;
@@ -233,26 +233,26 @@ s32 GbPak_SetReadBank(GbPakDeviceState* arg0, s32 arg1) {
   s32 var_v1;
 
   var_v1 = 0;
-  arg0->unk_5DCE = 0xFF;
-  if (arg0->unk_5DCF != 0) {
-      arg0->unk_5DA2 = 0xFFFFU;
+  arg0->ramBank = 0xFF;
+  if (arg0->bankingMode != 0) {
+      arg0->romBank = 0xFFFFU;
       var_v1 = GbPak_WriteRegister(arg0, 0x6000, 0);
       if (var_v1 == 0) {
-          arg0->unk_5DCF = 0U;
+          arg0->bankingMode = 0U;
       }
   }
   if (var_v1 == 0) {
-      if (arg1 != arg0->unk_5DA2) {
+      if (arg1 != arg0->romBank) {
           temp_a2 = arg1 / 32;
-          if (temp_a2 != ((s32) arg0->unk_5DA2 / 32)) {
-              arg0->unk_5DA2 = 0xFFFEU;
+          if (temp_a2 != ((s32) arg0->romBank / 32)) {
+              arg0->romBank = 0xFFFEU;
               var_v1 = GbPak_WriteRegister(arg0, 0x4000, temp_a2);
           }
           if (var_v1 == 0) {
-              arg0->unk_5DA2 = 0xFFFDU;
+              arg0->romBank = 0xFFFDU;
               var_v1 = GbPak_WriteRegister(arg0, 0x2100, arg1);
               if (var_v1 == 0) {
-                  arg0->unk_5DA2 = (u16) arg1;
+                  arg0->romBank = (u16) arg1;
               }
           }
       }
@@ -264,18 +264,18 @@ s32 GbPak_SetWriteBank(GbPakDeviceState* arg0, s32 arg1) {
   s32 var_v1;
 
   var_v1 = 0;
-  arg0->unk_5DA2 = 0xFFFF;
-  if (arg0->unk_5DCF != 1) {
-      arg0->unk_5DCE = 0xFFU;
+  arg0->romBank = 0xFFFF;
+  if (arg0->bankingMode != 1) {
+      arg0->ramBank = 0xFFU;
       var_v1 = GbPak_WriteRegister(arg0, 0x6000, 1);
       if (var_v1 == 0) {
-          arg0->unk_5DCF = 1U;
+          arg0->bankingMode = 1U;
       }
   }
-  if ((var_v1 == 0) && (arg1 != arg0->unk_5DCE)) {
+  if ((var_v1 == 0) && (arg1 != arg0->ramBank)) {
       var_v1 = GbPak_WriteRegister(arg0, 0x4000, arg1);
       if (var_v1 == 0) {
-          arg0->unk_5DCE = arg1;
+          arg0->ramBank = arg1;
       }
   }
   return var_v1;
@@ -357,7 +357,7 @@ s32 GbPak_Init(GbPakDeviceState* arg0) {
           if (ret == 0) {
             ret = osGbpakReadId(&arg0->pfs, &arg0->gbpakId, &arg0->status);
               if (ret == 0) {
-                ret = bcmp(&arg0->unk_5C5C, &arg0->gbpakId, sizeof(arg0->unk_5C5C));
+                ret = bcmp(&arg0->detectedGbpakId, &arg0->gbpakId, sizeof(arg0->detectedGbpakId));
                   if ((ret == 0) && (arg0->unk_5DC4 != 0)) {
                       arg0->unk_5DC4 = 0U;
                       ret = GbPak_VerifyChecksum(arg0);
@@ -531,8 +531,8 @@ void GbPak_ThreadMain(s32 arg0) {
             osDestroyThread(NULL);
         }
         emu->unk_5DC8 = 1;
-        if ((emu->unk_5DCA == 0) && (emu->unk_5DCC < 4)) {
-            emu->unk_5DC7 = 0;
+        if ((emu->unk_5DCA == 0) && (emu->controllerChannel < 4)) {
+            emu->command = 0;
             emu->unk_5DC8 = 0;
             continue;
         }
@@ -546,14 +546,14 @@ void GbPak_ThreadMain(s32 arg0) {
         switch (emu->unk_5DC9) {
             case 0:
                 emu->unk_5DC9 = 1;
-                bzero(&emu->unk_5C5C, sizeof(emu->unk_5C5C));
+                bzero(&emu->detectedGbpakId, sizeof(emu->detectedGbpakId));
                 /* fallthrough */
             case 1:
                 emu->unk_5DCD -= 9;
-                if (osGbpakInit(Ptr_GbPakMsgQueue, (OSPfs*)&emu->pfs, emu->unk_5DCC) != 0) {
+                if (osGbpakInit(Ptr_GbPakMsgQueue, (OSPfs*)&emu->pfs, emu->controllerChannel) != 0) {
                     goto retry;
                 }
-                if (osGbpakReadId((OSPfs*)&emu->pfs, &emu->unk_5C5C, &emu->status) != 0) {
+                if (osGbpakReadId((OSPfs*)&emu->pfs, &emu->detectedGbpakId, &emu->status) != 0) {
                     goto retry;
                 }
                 if (GbPak_CheckConnector(emu) != 0) {
@@ -562,7 +562,7 @@ void GbPak_ThreadMain(s32 arg0) {
                 if (GbPak_Initialize(emu) != 0) {
                     goto retry;
                 }
-                emu->transferBuffer = emu->unk_5DA4;
+                emu->transferBuffer = emu->romSignature;
                 emu->gbAddress = 0x9C000;
                 emu->transferSize = 0x20;
                 if (GbPak_ReadDataAndAccumulate(emu) != 0) {
@@ -571,11 +571,11 @@ void GbPak_ThreadMain(s32 arg0) {
                 if (!(emu->status & 1)) {
                     goto retry;
                 }
-                emu->unk_5DC5 = GbPak_FindMatchingHeader((GbPakHeader*)&emu->unk_5C5C);
+                emu->headerMatchIndex = GbPak_FindMatchingHeader((GbPakHeader*)&emu->detectedGbpakId);
                 emu->unk_5DC9 = 2;
                 /* fallthrough */
             case 2:
-                switch (emu->unk_5DC7) {
+                switch (emu->command) {
                     case 1:
                         emu->unk_5DCD -= 0x17;
                         if (GbPak_ReadDataAndAccumulate(emu) != 0) {
@@ -600,8 +600,8 @@ void GbPak_ThreadMain(s32 arg0) {
                         if ((GbPak_ReadWriteLoop(emu, 1) == 0) &&
                             (emu->transferBuffer = Buffer_GbPakRead2, GbPak_ReadWriteLoop(emu, 0) == 0) &&
                             (bcmp(Buffer_GbPakRead1, Buffer_GbPakRead2, 0x100) == 0)) {
-                            if (emu->unk_5A2C[emu->gbAddress >> 8] != 0) {
-                                emu->unk_5A2C[emu->gbAddress >> 8] = 2;
+                            if (emu->blockReadStatus[emu->gbAddress >> 8] != 0) {
+                                emu->blockReadStatus[emu->gbAddress >> 8] = 2;
                             }
                             break;
                         }
@@ -629,7 +629,7 @@ void GbPak_ThreadMain(s32 arg0) {
                             } else {
                                 if (emu->unk_549C[*entry] == 0) {
                                     emu->gbAddress = value << 14;
-                                    emu->transferBuffer = (u8*)emu->unk_53BC + emu->gbAddress;
+                                    emu->transferBuffer = (u8*)emu->romImage + emu->gbAddress;
                                     emu->transferSize = 0x4000;
                                     if (GbPak_ReadDataAndAccumulate(emu) != 0) {
                                         goto retry;
@@ -682,11 +682,11 @@ void GbPak_ThreadMain(s32 arg0) {
                     default:
                         break;
                 }
-                emu->unk_5DC7 = 0;
+                emu->command = 0;
                 break;
             case 8:
             case 11:
-                if (emu->unk_5DC7 != 7) {
+                if (emu->command != 7) {
                     break;
                 }
                 if (GbPak_GetStatus(emu) != 0) {
@@ -699,7 +699,7 @@ void GbPak_ThreadMain(s32 arg0) {
                 }
                 break;
             case 9:
-                if (osGbpakInit(Ptr_GbPakMsgQueue, (OSPfs*)&emu->pfs, emu->unk_5DCC) != 0) {
+                if (osGbpakInit(Ptr_GbPakMsgQueue, (OSPfs*)&emu->pfs, emu->controllerChannel) != 0) {
                     retries = 5;
                 } else {
                     if (GbPak_GetStatus(emu) == 0) {
@@ -721,11 +721,11 @@ void GbPak_ThreadMain(s32 arg0) {
                 if ((GbPak_ReadWriteLoop(emu, 1) == 0) &&
                     (emu->transferBuffer = Buffer_GbPakRead2, GbPak_ReadWriteLoop(emu, 0) == 0) &&
                     (bcmp(Buffer_GbPakRead1, Buffer_GbPakRead2, 0x100) == 0)) {
-                    if (emu->unk_5A2C[emu->gbAddress >> 8] != 0) {
-                        emu->unk_5A2C[emu->gbAddress >> 8] = 2;
+                    if (emu->blockReadStatus[emu->gbAddress >> 8] != 0) {
+                        emu->blockReadStatus[emu->gbAddress >> 8] = 2;
                     }
                     emu->unk_5DC9 = 2;
-                    emu->unk_5DC7 = 0;
+                    emu->command = 0;
                     break;
                 }
             power_off:
@@ -1016,7 +1016,7 @@ void DrawStadiumScreen(s32 arg0, s32 arg1) {
     bzero(FramebufferImages[arg0], 0x2800);
     fb += 0xAA;
 
-    i = GbPakDevice->unk_5DC5;
+    i = GbPakDevice->headerMatchIndex;
     if (i != 0) {
         i--;
     }
@@ -1039,7 +1039,7 @@ void DrawStadiumScreen(s32 arg0, s32 arg1) {
 
     BlendRect((u16*) (fb + 0x7FE), (u16*) (DataStruct_TileAssets + 0xAD18), 0, 0x10, 0xA);
 
-    i = GbPakDevice->unk_5DC5;
+    i = GbPakDevice->headerMatchIndex;
     if (i != 0) {
         i--;
     }
@@ -1058,7 +1058,7 @@ void DrawStadiumUI(void) {
     s32 var_s4;
     u16 temp_v1;
 
-    temp_v1 = GbPakDevice->unk_5DC5;
+    temp_v1 = GbPakDevice->headerMatchIndex;
     temp_s0 = ScreenBasePtr - 0x14;
     temp_v1 = Palette_StageColors[(temp_v1 != 0) ? (temp_v1 - 1) : 0];
     switch (ScreenMode_Current) {
@@ -1321,19 +1321,19 @@ void EmuInitBuffers(GbPakDeviceState* arg0) {
   bzero(arg0->unk_208, 0x40);
   bzero(arg0->unk_248, 0x40);
   bzero(arg0->unk_388, 0x400);
-  bzero(arg0->unk_788, 0x4000);
+  bzero(arg0->uiMap, 0x4000);
   bzero(arg0->unk_549C, 0x100);
   bzero(arg0->unk_559C, 0x10);
   bzero(arg0->unk_55AC, 0x40);
   bzero(arg0->unk_55EC, 0x40);
   bzero(arg0->unk_582C, 0x200);
-  bzero(arg0->unk_5A2C, 0x200);
+  bzero(arg0->blockReadStatus, 0x200);
   bzero(arg0->unk_562C, 0x200);
   bzero(arg0->unk_53B4, 0x6000);
 
   for (i = 0; i < 0x80; i++) {
       arg0->unk_582C[i] = 0xFE;
-      arg0->unk_5A2C[i] = 0xFF;
+      arg0->blockReadStatus[i] = 0xFF;
   }
 
   for (i = 0; i < 0x400; i++) {
@@ -1342,17 +1342,17 @@ void EmuInitBuffers(GbPakDeviceState* arg0) {
 
   var_a0 = 0;
   for (i = 0x10; i < 0x1A0; i += 2) {
-      arg0->unk_788[i] = gStadiumUIMap[var_a0];
+      arg0->uiMap[i] = gStadiumUIMap[var_a0];
       var_a0++;
   }
 
   var_a0 = 1;
   for (i = 0x1904; i < 0x1910; i++) {
-      arg0->unk_788[i] = var_a0;
-      arg0->unk_788[i + 32] = var_a0 + 0xC;
+      arg0->uiMap[i] = var_a0;
+      arg0->uiMap[i + 32] = var_a0 + 0xC;
       var_a0 += 1;
   }
-  arg0->unk_788[i] = 0x19;
+  arg0->uiMap[i] = 0x19;
 
   for (i = 1; i < 0x1A; i++) {
       arg0->unk_388[i] = 0;
@@ -1369,10 +1369,10 @@ void EmuInitBuffers(GbPakDeviceState* arg0) {
   arg0->unk_53FE = 0x30;
   arg0->unk_53F0 = 0x7C;
   arg0->unk_5485 = 1;
-  arg0->unk_5390 = 0;
-  arg0->unk_548E = 1;
-  arg0->unk_5394 = 0x8000;
-  arg0->unk_5398 = 0x8000;
+  arg0->mapperType = 0;
+  arg0->audioMode = 1;
+  arg0->romSize = 0x8000;
+  arg0->ramSize = 0x8000;
 
   UpdateAudioParameters(arg0);
 }
@@ -1462,17 +1462,17 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
             TempScreenBufferPtr += 0x4D40;
             emu->unk_5388 = 0x400;
             if (i == 0) {
-                emu->unk_53BC = TempScreenBufferPtr;
+                emu->romImage = TempScreenBufferPtr;
                 TempScreenBufferPtr += 0x100000;
             } else {
-                emu->unk_53BC = GbPakDevice->unk_53BC;
+                emu->romImage = GbPakDevice->romImage;
             }
             EmuInitBuffers(emu);
             if ((i == 0) && (arg1 >= 0)) {
                 if (arg1 < 4) {
                     emu->unk_5DCA = 1;
                 }
-                emu->unk_5DCC = arg1;
+                emu->controllerChannel = arg1;
                 osSendMesg(&MsgQueue_GbPakControl, emu, OS_MESG_BLOCK);
             }
         }
@@ -1482,7 +1482,7 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     Yay0_Decompress((void*)((u32)TempScreenBufferPtr + 0xC5C0), TempScreenBufferPtr);
     DataStruct_TileAssets = TempScreenBufferPtr;
     TempScreenBufferPtr += 0xC5C0;
-    GbPakDevice->unk_5C58 = DataStruct_TileAssets;
+    GbPakDevice->tileAssets = DataStruct_TileAssets;
     Ptr_TempScreenBuffer = 0;
 
     for (i = 0; i < 2; i++) {
@@ -1545,7 +1545,7 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     emu = GbPakDevice;
     if (emu->unk_5DCA != 0) {
         while (emu->unk_5DC8 != 0) {}
-        for (i = ((emu->unk_5DC5 != 0) ? 0x500 : 0) / 256; i < 0x80; i++) {
+        for (i = ((emu->headerMatchIndex != 0) ? 0x500 : 0) / 256; i < 0x80; i++) {
             emu->unk_582C[i] = 0;
         }
         if (emu->unk_5DCA == 0) {
@@ -1558,15 +1558,15 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
         DrawStadiumScreen(0, 1);
         DrawStadiumScreen(1, 1);
         DrawStadiumUI();
-        if ((emu->unk_5DC5 == 0) || (emu->unk_5DC5 == 2)) {
+        if ((emu->headerMatchIndex == 0) || (emu->headerMatchIndex == 2)) {
             GbPakRetryCounter = 1;
             UnknownFlag = 1;
             ClearFramebuffers();
             return;
         }
         GbPakRetryCounter = 5;
-        DrawFullScreenBackground((u16*)FramebufferImage0->img_p, arg5, arg1, (emu->unk_5DC5 != 0) ? emu->unk_5DC5 - 1 : 0);
-        DrawFullScreenBackground((u16*)FramebufferImage1->img_p, arg5, arg1, (emu->unk_5DC5 != 0) ? emu->unk_5DC5 - 1 : 0);
+        DrawFullScreenBackground((u16*)FramebufferImage0->img_p, arg5, arg1, (emu->headerMatchIndex != 0) ? emu->headerMatchIndex - 1 : 0);
+        DrawFullScreenBackground((u16*)FramebufferImage1->img_p, arg5, arg1, (emu->headerMatchIndex != 0) ? emu->headerMatchIndex - 1 : 0);
     }
 
     gStadiumTimer = osGetCount();
@@ -1593,16 +1593,16 @@ void LoadCompressedBank(GbPakDeviceState* arg0) {
         do {
             bank = *list & 0xFF;
             count = *list / 256;
-            DmaCopyAsyncRange((u32) arg0->unk_53BC + 0xEC000, rom, list[1] + rom, 0);
+            DmaCopyAsyncRange((u32) arg0->romImage + 0xEC000, rom, list[1] + rom, 0);
             rom += list[1];
             list += 2;
-            Yay0_Decompress((void*) ((u32) arg0->unk_53BC + 0xEC000), (void*) ((u32) arg0->unk_53BC + (bank << 14)));
+            Yay0_Decompress((void*) ((u32) arg0->romImage + 0xEC000), (void*) ((u32) arg0->romImage + (bank << 14)));
             for (i = 0; i < count; i++) {
                 if (i + 1 >= arg0->unk_5DC6) {
-                    DmaCopyAsyncRange((u32) arg0->unk_53BC + 0xF0000, rom, *list + rom, 0);
-                    Yay0_Decompress((void*) ((u32) arg0->unk_53BC + 0xF0000), (void*) ((u32) arg0->unk_53BC + 0xEC000));
-                    src = (u8*) ((u32) arg0->unk_53BC + 0xEC000);
-                    dst = (u8*) ((u32) arg0->unk_53BC + (bank << 14));
+                    DmaCopyAsyncRange((u32) arg0->romImage + 0xF0000, rom, *list + rom, 0);
+                    Yay0_Decompress((void*) ((u32) arg0->romImage + 0xF0000), (void*) ((u32) arg0->romImage + 0xEC000));
+                    src = (u8*) ((u32) arg0->romImage + 0xEC000);
+                    dst = (u8*) ((u32) arg0->romImage + (bank << 14));
                     for (j = 0; j < 0x1000; j++) {
                         dst[j] ^= src[j];
                     }
@@ -1668,7 +1668,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                 return;
             }
             if (Flag_GbPakInitialized == 0) {
-                if ((gPlayer1Controller->buttonPressed & 8) && (arg0->unk_5DD0 == 0) && (Msg_GbPakStatus == 0x40)) {
+                if ((gPlayer1Controller->buttonPressed & 8) && (arg0->inputCooldown == 0) && (Msg_GbPakStatus == 0x40)) {
                     arg0->unk_53FD = 0x40;
                     GbAudio_SetMode(1);
                     GbAudio_PlayStream(1);
@@ -2372,52 +2372,52 @@ s32 EmuMainLoop(s32 arg0) {
                 Cont_StartReadInputs();
                 i = 0;
                 if (emu->unk_5DC9 == 2) {
-                    for (; i < (emu->unk_5398 >> 8); i++) {
-                        if ((emu->unk_5A2C[i] < 2) && (emu->unk_582C[i] == 0)) {
+                    for (; i < (emu->ramSize >> 8); i++) {
+                        if ((emu->blockReadStatus[i] < 2) && (emu->unk_582C[i] == 0)) {
                             _bcopy((u8*) emu + (i << 8) + 0x12DF0, Buffer_GbPakRead1, 0x100);
                             emu->gbAddress = i << 8;
-                            emu->unk_5A2C[i] = 1;
+                            emu->blockReadStatus[i] = 1;
                             i = 0xFFFF;
                             break;
                         }
                     }
                 }
                 Cont_ReadInputs();
-                emu->unk_53F2 = (gPlayer1Controller->buttonDown & 0xCFFF) |
+                emu->buttonsHeld = (gPlayer1Controller->buttonDown & 0xCFFF) |
                                 ((gPlayer1Controller->buttonDown & gAudioModeIndex0) ? 0x1000 : 0) |
                                 ((gPlayer1Controller->buttonDown & gAudioModeIndex1) ? 0x2000 : 0);
-                emu->unk_53F6 = gPlayer1Controller->buttonPressed;
+                emu->buttonsPressed = gPlayer1Controller->buttonPressed;
                 if (emu->unk_5DCA != 0) {
                     if (i == 0xFFFF) {
-                        emu->unk_5DC7 = 5;
+                        emu->command = 5;
                         osSendMesg(&MsgQueue_GbPakControl, emu, 1);
-                        emu->unk_5DD0 = 8;
-                        emu->unk_53F6 &= 0xDFF7;
+                        emu->inputCooldown = 8;
+                        emu->buttonsPressed &= 0xDFF7;
                     } else {
-                        if (((emu->unk_5DD0 == 0) || (emu->unk_5DC9 != 2)) && (Flag_GbPakInitialized != 0xE) && (Flag_GbPakInitialized != 0xF)) {
-                            emu->unk_5DC7 = 7;
+                        if (((emu->inputCooldown == 0) || (emu->unk_5DC9 != 2)) && (Flag_GbPakInitialized != 0xE) && (Flag_GbPakInitialized != 0xF)) {
+                            emu->command = 7;
                             osSendMesg(&MsgQueue_GbPakControl, emu, 1);
                         } else {
-                            if (emu->unk_5DD0 != 0) {
-                                emu->unk_5DD0 = emu->unk_5DD0 - 1;
-                                if (emu->unk_5DD0 == 0) {
-                                    emu->unk_5DC7 = 4;
+                            if (emu->inputCooldown != 0) {
+                                emu->inputCooldown = emu->inputCooldown - 1;
+                                if (emu->inputCooldown == 0) {
+                                    emu->command = 4;
                                     osSendMesg(&MsgQueue_GbPakControl, emu, 1);
                                 }
                             }
-                            emu->unk_53F6 &= 0xDFF7;
+                            emu->buttonsPressed &= 0xDFF7;
                         }
                     }
                 }
             }
             if (emu->unk_5DC9 == 2) {
-                if (emu->unk_5DD0 != 0) {
+                if (emu->inputCooldown != 0) {
                     gCurrentBufferIndex ^= 1;
                     Flag_ScreenRefreshPending++;
                     if (Flag_ScreenRefreshPending >= 11) {
                         Flag_ScreenRefreshPending = 0;
                     }
-                    DrawVerticalMarker((u16*) ((u8*) FramebufferImages[gCurrentBufferIndex] + 0x9C), emu->unk_5DD0, Flag_ScreenRefreshPending);
+                    DrawVerticalMarker((u16*) ((u8*) FramebufferImages[gCurrentBufferIndex] + 0x9C), emu->inputCooldown, Flag_ScreenRefreshPending);
                     GbPakThreadData[UnknownCounterB].unk_3C = 0x1010;
                     GbPakThreadData[UnknownCounterB].unk_38 = (s32) FramebufferImages[gCurrentBufferIndex];
                 } else {
@@ -2442,15 +2442,15 @@ s32 EmuMainLoop(s32 arg0) {
                 goto stop;
             }
             if (emu->unk_5DC4 == 0) {
-                emu->unk_5DC7 = 8;
+                emu->command = 8;
                 emu->unk_5DA0 = 0;
                 osSendMesg(&MsgQueue_GbPakControl, emu, 1);
                 return 0;
             }
             emu->unk_5D70[0] = 0;
-            emu->unk_5DC7 = 1;
+            emu->command = 1;
             emu->gbAddress = 0;
-            emu->transferBuffer = emu->unk_53BC;
+            emu->transferBuffer = emu->romImage;
             emu->transferSize = 0x4000;
             osSendMesg(&MsgQueue_GbPakControl, emu, 1);
             GbPakRetryCounter = 3;
@@ -2462,40 +2462,40 @@ s32 EmuMainLoop(s32 arg0) {
                 emu->unk_549C[emu->gbAddress >> 14] = 0xFF;
                 emu->gbAddress += 0x4000;
                 if (emu->gbAddress == 0x100000) {
-                    emu->unk_5D70[0] -= (emu->unk_5C5C.sum / 256) + (emu->unk_5C5C.sum & 0xFF);
-                    if (emu->unk_5C5C.sum != (emu->unk_5D70[0] & 0xFFFF)) {
+                    emu->unk_5D70[0] -= (emu->detectedGbpakId.sum / 256) + (emu->detectedGbpakId.sum & 0xFF);
+                    if (emu->detectedGbpakId.sum != (emu->unk_5D70[0] & 0xFFFF)) {
                         UnknownFlag = 1;
                         goto stop;
                     }
-                    if (((u8*) emu->unk_53BC)[0x143] & 0x80) {
+                    if (((u8*) emu->romImage)[0x143] & 0x80) {
                         emu->unk_5485 = 0;
                     } else {
                         emu->unk_5485 = 1;
                     }
-                    emu->unk_5390 = gItemEffectTable[((u8*) emu->unk_53BC)[0x147]];
-                    if (((u8*) emu->unk_53BC)[0x148] < 8U) {
-                        emu->unk_5394 = gPowerOfTwoTable[((u8*) emu->unk_53BC)[0x148]];
+                    emu->mapperType = gItemEffectTable[((u8*) emu->romImage)[0x147]];
+                    if (((u8*) emu->romImage)[0x148] < 8U) {
+                        emu->romSize = gPowerOfTwoTable[((u8*) emu->romImage)[0x148]];
                     } else {
-                        emu->unk_5394 = 0x8000;
+                        emu->romSize = 0x8000;
                     }
-                    if (((u8*) emu->unk_53BC)[0x149] < 5U) {
-                        emu->unk_5398 = gRandomSeedTable[((u8*) emu->unk_53BC)[0x149]];
+                    if (((u8*) emu->romImage)[0x149] < 5U) {
+                        emu->ramSize = gRandomSeedTable[((u8*) emu->romImage)[0x149]];
                     } else {
-                        emu->unk_5398 = 0;
+                        emu->ramSize = 0;
                     }
                     UpdateAudioParameters(emu);
-                    emu->unk_5DC7 = 2;
-                    if (emu->unk_5DC5 != 0) {
+                    emu->command = 2;
+                    if (emu->headerMatchIndex != 0) {
                         emu->gbAddress = 0x500;
                     } else {
                         emu->gbAddress = 0;
                     }
                     emu->transferBuffer = (u8*) emu + emu->gbAddress + 0x12DF0;
-                    emu->transferSize = emu->unk_5398 - emu->gbAddress;
+                    emu->transferSize = emu->ramSize - emu->gbAddress;
                     GbPakRetryCounter = 4;
                 } else {
                     emu->transferBuffer += 0x4000;
-                    emu->unk_5DC7 = 1;
+                    emu->command = 1;
                 }
                 osSendMesg(&MsgQueue_GbPakControl, emu, 1);
             }
@@ -2504,7 +2504,7 @@ s32 EmuMainLoop(s32 arg0) {
         case 4:
             if ((emu->unk_5DC8 == 0) && (emu->unk_5DCA != 0)) {
                 emu->unk_559C[0] = emu->unk_559C[1] = emu->unk_559C[2] = emu->unk_559C[3] = 0xFF;
-                emu->unk_5DD0 = 1;
+                emu->inputCooldown = 1;
                 ClearFramebuffers();
                 if (osTvType == OS_TV_PAL) {
                     DelayMs(25);
@@ -2535,56 +2535,56 @@ s32 EmuMainLoop(s32 arg0) {
                 goto stop;
             }
             if (emu->unk_5DC4 == 0) {
-                emu->unk_5DC7 = 8;
+                emu->command = 8;
                 emu->unk_5DA0 = 0;
                 osSendMesg(&MsgQueue_GbPakControl, emu, 1);
                 return 0;
             }
             emu->unk_5D70[0] = 0;
-            emu->unk_5DC7 = 6;
+            emu->command = 6;
             emu->unk_5D70[2] = 0;
-            switch (emu->unk_5DC5) {
+            switch (emu->headerMatchIndex) {
                 case 1:
-                    if ((emu->unk_5C5C.version != 0) || (emu->unk_5C5C.sum != 0x91E6) ||
-                        (emu->unk_5DA4[1] != 0x80) || (emu->unk_5DA4[2] != 0x7F) || (emu->unk_5DA4[3] != 0xAB) ||
-                        (emu->unk_5DA4[4] != 0xA8)) {
+                    if ((emu->detectedGbpakId.version != 0) || (emu->detectedGbpakId.sum != 0x91E6) ||
+                        (emu->romSignature[1] != 0x80) || (emu->romSignature[2] != 0x7F) || (emu->romSignature[3] != 0xAB) ||
+                        (emu->romSignature[4] != 0xA8)) {
                         goto case2;
                     }
                     emu->unk_5D70[1] = (u32) gItemDataTable;
                     emu->unk_5D70[3] = 0;
                     emu->unk_5D70[2] = (u32) gAudioConfigTable;
                     emu->unk_5DC6 = 1;
-                    bzero((u8*) emu->unk_53BC + 0xB4000, 0x4C000);
+                    bzero((u8*) emu->romImage + 0xB4000, 0x4C000);
                     for (i = 0x2D; i < 0x40; i++) {
                         emu->unk_549C[i] = 0xFF;
                     }
                     break;
                 case 3:
-                    if ((emu->unk_5C5C.version != 0) || (emu->unk_5C5C.sum != 0x9D0A) ||
-                        (emu->unk_5DA4[1] != 0x80) || (emu->unk_5DA4[2] != 0x7F) || (emu->unk_5DA4[3] != 0xAB) ||
-                        (emu->unk_5DA4[4] != 0xA8)) {
+                    if ((emu->detectedGbpakId.version != 0) || (emu->detectedGbpakId.sum != 0x9D0A) ||
+                        (emu->romSignature[1] != 0x80) || (emu->romSignature[2] != 0x7F) || (emu->romSignature[3] != 0xAB) ||
+                        (emu->romSignature[4] != 0xA8)) {
                         goto case2;
                     }
                     emu->unk_5D70[1] = (u32) gItemDataTableAlt;
                     emu->unk_5D70[3] = 0;
                     emu->unk_5D70[2] = (u32) gAudioConfigTable;
                     emu->unk_5DC6 = 0;
-                    bzero((u8*) emu->unk_53BC + 0xB4000, 0x4C000);
+                    bzero((u8*) emu->romImage + 0xB4000, 0x4C000);
                     for (i = 0x2D; i < 0x40; i++) {
                         emu->unk_549C[i] = 0xFF;
                     }
                     break;
                 case 4:
-                    if ((emu->unk_5C5C.version != 0) || (emu->unk_5C5C.sum != 0x47C) ||
-                        (emu->unk_5DA4[1] != 0x8F) || (emu->unk_5DA4[2] != 0x91) || (emu->unk_5DA4[3] != 0x84) ||
-                        (emu->unk_5DA4[4] != 0x92)) {
+                    if ((emu->detectedGbpakId.version != 0) || (emu->detectedGbpakId.sum != 0x47C) ||
+                        (emu->romSignature[1] != 0x8F) || (emu->romSignature[2] != 0x91) || (emu->romSignature[3] != 0x84) ||
+                        (emu->romSignature[4] != 0x92)) {
                         goto case2;
                     }
                     emu->unk_5D70[1] = (u32) gAudioSampleTable;
                     emu->unk_5D70[3] = 0xD938;
                     emu->unk_5D70[2] = (u32) gAudioVolumeTable;
                     emu->unk_5DC6 = 0;
-                    bzero((u8*) emu->unk_53BC + 0xEC000, 0x4000);
+                    bzero((u8*) emu->romImage + 0xEC000, 0x4000);
                     emu->unk_549C[0x3B] = 0xFF;
                     break;
                 default:
@@ -2626,7 +2626,7 @@ s32 EmuMainLoop(s32 arg0) {
             } else {
                 GbPakThreadData[UnknownCounterB].unk_3C = 0x1010;
                 GbPakThreadData[UnknownCounterB].unk_38 = ScreenBasePtr;
-                if ((emu->unk_5DC7 == 0) && (emu->unk_5DCA != 0)) {
+                if ((emu->command == 0) && (emu->unk_5DCA != 0)) {
                     GbPakRetryCounter = 0;
                 }
             }
@@ -2642,13 +2642,13 @@ s32 EmuMainLoop(s32 arg0) {
                 }
                 gGbBankLoadedFlag = 1;
                 LoadCompressedBank(emu);
-                if (((u8*) emu->unk_53BC)[0x143] & 0x80) {
+                if (((u8*) emu->romImage)[0x143] & 0x80) {
                     emu->unk_5485 = 0;
                 } else {
                     emu->unk_5485 = 1;
                 }
-                emu->unk_5390 = gItemEffectTable[((u8*) emu->unk_53BC)[0x147]];
-                emu->unk_5394 = 0x100000;
+                emu->mapperType = gItemEffectTable[((u8*) emu->romImage)[0x147]];
+                emu->romSize = 0x100000;
                 UpdateAudioParameters(emu);
             }
             break;
@@ -2656,9 +2656,9 @@ s32 EmuMainLoop(s32 arg0) {
 stop:
         while (emu->unk_5DC8 != 0) {}
         if (emu->unk_5DCA != 0) {
-            emu->unk_5DC7 = 4;
+            emu->command = 4;
             osSendMesg(&MsgQueue_GbPakControl, emu, 1);
-            while ((emu->unk_5DCA != 0) && ((emu->unk_5DC8 != 0) || (emu->unk_5DC7 != 0))) {}
+            while ((emu->unk_5DCA != 0) && ((emu->unk_5DC8 != 0) || (emu->command != 0))) {}
         }
         while (emu->unk_5DC8 != 0) {}
         osSendMesg(&MsgQueue_GbPakControl, NULL, 1);
@@ -2679,9 +2679,9 @@ reset:
     emu->unk_00[0x126] = GbAudio_ReadReg(0xFF26);
     SetAudioVolume(emu->unk_00[0x14D] >> 7);
     emu->unk_53C0 = 0;
-    emu->unk_5490 = emu->unk_548E;
+    emu->unk_5490 = emu->audioMode;
     if (Flag_GbPakInitialized == 0) {
-        gAudioBufferPtr = AllocateAudioBuffer(emu, emu->unk_548E * 154);
+        gAudioBufferPtr = AllocateAudioBuffer(emu, emu->audioMode * 154);
     } else if (UnknownCounter != 0) {
         while (!(IO_READ(SP_STATUS_REG) & 0x400)) {}
         IO_WRITE(SP_STATUS_REG, 0x8000);
@@ -2695,18 +2695,18 @@ reset:
             Msg_GbPakStatus = -0x40;
         }
     }
-    if ((Flag_GbPakInitialized == 0) && (emu->unk_5DD0 == 0)) {
-        btn = emu->unk_53F6;
+    if ((Flag_GbPakInitialized == 0) && (emu->inputCooldown == 0)) {
+        btn = emu->buttonsPressed;
         if ((btn & 0x2000) && (Msg_GbPakStatus == 0x40) && (gAudioInitialized != 0) && (ScreenMode_Current != 0)) {
             gAnimDelayCounter = gDataSetLoadResult + 1;
             if (gPrevDataSetIndex < gAnimDelayCounter) {
                 gAnimDelayCounter = 0;
             }
             Msg_GbPakStatus = -0x40;
-            btn = emu->unk_53F6;
+            btn = emu->buttonsPressed;
         }
         if (btn & 1) {
-            i = emu->unk_548E;
+            i = emu->audioMode;
             switch (i) {
                 case 1:
                 default:
@@ -2729,8 +2729,8 @@ reset:
                     i = 1;
                     break;
             }
-            if (i != emu->unk_548E) {
-                emu->unk_548E = i;
+            if (i != emu->audioMode) {
+                emu->audioMode = i;
                 switch (ScreenMode_Current) {
                     case 2:
                         BlendRect((u16*) (ScreenBasePtr + 0x5D4), (u16*) (DataStruct_TileAssets + ((i >= 2) ? 0xAC58 : 0xACB8)), 0, 8, 6);
@@ -2755,13 +2755,13 @@ reset:
     }
     if ((GbPakRetryCounter == 0xFF) && (gGbBankLoadedFlag == 0) && (emu->unk_53E8 == 0x100)) {
         gGbBankLoadedFlag = 1;
-        emu->unk_5390 = gItemEffectTable[((u8*) emu->unk_53BC)[0x147]];
-        emu->unk_5394 = (((u8*) emu->unk_53BC)[0x148] < 8U) ? gPowerOfTwoTable[((u8*) emu->unk_53BC)[0x148]] : 0x8000;
-        emu->unk_5398 = (((u8*) emu->unk_53BC)[0x149] < 5U) ? gRandomSeedTable[((u8*) emu->unk_53BC)[0x149]] : 0;
+        emu->mapperType = gItemEffectTable[((u8*) emu->romImage)[0x147]];
+        emu->romSize = (((u8*) emu->romImage)[0x148] < 8U) ? gPowerOfTwoTable[((u8*) emu->romImage)[0x148]] : 0x8000;
+        emu->ramSize = (((u8*) emu->romImage)[0x149] < 5U) ? gRandomSeedTable[((u8*) emu->romImage)[0x149]] : 0;
         UpdateAudioParameters(emu);
     }
-    if ((emu->unk_5DC8 != 0) && (emu->unk_5DC7 == 7)) {
-        while ((emu->unk_5DC8 != 0) && (emu->unk_5DCA != 0) && (emu->unk_5DC7 != 0)) {}
+    if ((emu->unk_5DC8 != 0) && (emu->command == 7)) {
+        while ((emu->unk_5DC8 != 0) && (emu->unk_5DCA != 0) && (emu->command != 0)) {}
     }
     if (emu->unk_5DCA == 0) {
         UnknownFlag = 1;

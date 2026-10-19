@@ -116,10 +116,10 @@ void ParticleInstance_PopulateFromEmitter(ParticleEffectInstance* arg0, Particle
             arg0->unk_08 = arg1->unk_18;
             arg0->unk_0C = arg1->unk_1C;
 
-            arg0->unk_CD = arg1->unk_2F;
+            arg0->targetAlpha = arg1->unk_2F;
             arg0->unk_CE = arg1->unk_2D;
-            arg0->unk_AA = arg1->unk_24;
-            arg0->unk_CF = arg1->unk_2E;
+            arg0->alphaStep = arg1->unk_24;
+            arg0->paletteIndex = arg1->unk_2E;
 
             arg0 = arg0->next;
         };
@@ -238,7 +238,7 @@ void MiniFx_InitRandomVelocityGravityParticle(ParticleEffectInstance* arg0) {
 }
 
 void MiniFx_UpdateRandomVelocityGravityParticle(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             MiniFx_InitRandomVelocityGravityParticle(arg0);
             break;
@@ -268,7 +268,7 @@ void MiniFx_InitPalette10FastRiseFadeParticle(ParticleEffectInstance* arg0) {
 }
 
 void MiniFx_UpdatePalette10FastRiseFadeParticle(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             MiniFx_InitPalette10FastRiseFadeParticle(arg0);
             break;
@@ -305,7 +305,7 @@ void MiniFx_InitPalette10SlowRiseFadeParticle(ParticleEffectInstance* arg0) {
 }
 
 void MiniFx_UpdatePalette10SlowRiseFadeParticle(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             MiniFx_InitPalette10SlowRiseFadeParticle(arg0);
             break;
@@ -343,7 +343,7 @@ void MiniFx_InitRandomOffsetPalette10RiseFadeParticle(ParticleEffectInstance* ar
 }
 
 void MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             MiniFx_InitRandomOffsetPalette10RiseFadeParticle(arg0);
             break;
@@ -387,7 +387,7 @@ void MiniFx_InitSurfaceCrossingGravityParticle(ParticleEffectInstance* arg0) {
 }
 
 void MiniFx_UpdateSurfaceCrossingGravityParticle(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             MiniFx_InitSurfaceCrossingGravityParticle(arg0);
             break;
@@ -436,7 +436,7 @@ void MiniFx_InitPalette17DelayedRevealFallParticle(ParticleEffectInstance* arg0)
 }
 
 void MiniFx_UpdatePalette17DelayedRevealFallParticle(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             MiniFx_InitPalette17DelayedRevealFallParticle(arg0);
             break;
@@ -494,7 +494,7 @@ void MiniFx_InitPalette17SmallDelayedRevealFallParticle(ParticleEffectInstance* 
 }
 
 void MiniFx_UpdatePalette17SmallDelayedRevealFallParticle(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             MiniFx_InitPalette17SmallDelayedRevealFallParticle(arg0);
             break;
@@ -549,7 +549,7 @@ void MiniFx_InitCoolGravityParticle(ParticleEffectInstance* arg0) {
 }
 
 void MiniFx_UpdateCoolGravityParticle(ParticleEffectInstance* arg0) {
-    switch (arg0->unk_B2) {
+    switch (arg0->updateState) {
         case 1:
             MiniFx_InitCoolGravityParticle(arg0);
             break;

@@ -57,8 +57,8 @@ typedef struct unk_BattlePlayerAnimState {
     /* 0xBC */ s16 unk_BC;
     /* 0xBE */ s16 unk_BE;
     /* 0xC0 */ char unkC0[1];
-    /* 0xC1 */ u8 unk_C1[4];
-    /* 0xC8 */ Controller* unk_C8;
+    /* 0xC1 */ u8 statFlags[4];
+    /* 0xC8 */ Controller* controller;
 } unk_BattlePlayerAnimState; // size = 0xCC
 
 typedef struct unk_D_84390010_728_0168 {
@@ -135,28 +135,28 @@ typedef struct unk_BattlePlayerEntity {
     /* 0x000 */ Fragment2_1GraphNode unk_000;
     /* 0x168 */ unk_D_84390010_168 unk_168[2];
     /* 0x448 */ unk_D_84390010_448 unk_448;
-    /* 0x498 */ f32 unk_498;
+    /* 0x498 */ f32 launchSpeed;
     /* 0x49C */ f32 unk_49C;
-    /* 0x4A0 */ f32 unk_4A0;
+    /* 0x4A0 */ f32 oscillationAmplitude;
     /* 0x4A4 */ s16 unk_4A4;
     /* 0x4A6 */ s16 unk_4A6;
-    /* 0x4A8 */ s16 unk_4A8;
-    /* 0x4AC */ s32 unk_4AC;
-    /* 0x4B0 */ s32 unk_4B0;
-    /* 0x4B4 */ s32 unk_4B4;
-    /* 0x4B8 */ s32 unk_4B8;
+    /* 0x4A8 */ s16 tiltAngle;
+    /* 0x4AC */ s32 frameCounter;
+    /* 0x4B0 */ s32 sideSign;
+    /* 0x4B4 */ s32 animationMode;
+    /* 0x4B8 */ s32 animationSubstate;
     /* 0x4BC */ char unk4BC[0x4];
-    /* 0x4C0 */ s32 unk_4C0;
-    /* 0x4C4 */ s32 unk_4C4;
+    /* 0x4C0 */ s32 moveAnimIndex;
+    /* 0x4C4 */ s32 animationStateIndex;
     /* 0x4C8 */ s32 unk_4C8;
     /* 0x4CC */ Vec3f unk_4CC;
-    /* 0x4D8 */ Vec3f unk_4D8;
-    /* 0x4E4 */ f32 unk_4E4;
-    /* 0x4E8 */ u8 unk_4E8;
-    /* 0x4E9 */ u8 unk_4E9;
-    /* 0x4EC */ Fragment2_1GraphNode unk_4EC;
-    /* 0x654 */ unk_BattlePlayerAnimState unk_654;
-    /* 0x720 */ unk_D_800AE540_1194* unk_720;
+    /* 0x4D8 */ Vec3f secondarySwayOffset;
+    /* 0x4E4 */ f32 swayMagnitude;
+    /* 0x4E8 */ u8 secondaryStatusId;
+    /* 0x4E9 */ u8 secondaryStatusState;
+    /* 0x4EC */ Fragment2_1GraphNode effectGraphNode;
+    /* 0x654 */ unk_BattlePlayerAnimState animationState;
+    /* 0x720 */ unk_D_800AE540_1194* pokemonAnimation;
     /* 0x724 */ unk_D_800AE540_0004* unk_724;
     /* 0x728 */ unk_D_84390010_728 unk_728;
     /* 0x8C4 */ unk_D_84390010_8C4 unk_8C4;
@@ -709,8 +709,8 @@ typedef struct WaterParticleSystem {
     /* 0x064 */ TextureTileInfo unk_064;
     /* 0x070 */ TextureTileInfo unk_070;
     /* 0x07C */ ColorBlendInfo unk_07C;
-    /* 0x081 */ ColorBlendInfo unk_081;
-    /* 0x086 */ Color_RGBA8 unk_086;
+    /* 0x081 */ ColorBlendInfo envColorBlend;
+    /* 0x086 */ Color_RGBA8 lineColor;
     /* 0x08C */ f32 unk_08C;
     /* 0x090 */ f32 unk_090;
     /* 0x094 */ s16 unk_094;

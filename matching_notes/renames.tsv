@@ -11141,3 +11141,64 @@ unk_D_800ABE00_cmd23	GeoCmd_CreateShadowTex	w30		used in geo_layout_cmd_create_s
 unk_D_800ABE00_cmd24	GeoCmd_CreateAnchor	w30		used in geo_layout_cmd_create_anchor to create an anchor node	applied@540feb7
 unk_D_800ABE00_cmd25	GeoCmd_SetNodeFlag4	w30		used in geo_layout_cmd_set_node_flag4 to set flag 4 on the current node	applied@540feb7
 unk_D_800ABE00_cmd26	GeoCmd_CreateGroup	w30		used in geo_layout_cmd_create_group to create a group node	applied@540feb7
+GbAudioChannelState.unk_15A0	GbAudioChannelState.inputWordCount	c2		Its low 24 bits are loaded into inputWordsRemaining when bitstream decoding is initialized.	applied@e957f20
+ResultGameState.unk_16D	ResultGameState.previousHealthState	c2		copied from unk_16C before the current health segment is compared with half maximum health, then compared against unk_16C to detect a state change	applied@e957f20
+BoxPCScreen.unk_0094	BoxPCScreen.boxList	c2		allocated as an unk_func_88201DA0, initialized by BoxList_Init, attached as a child, and passed to BoxPCMenu_Init	applied@e957f20
+BoxPCScreen.unk_0098	BoxPCScreen.boxListConfig	c2		its coordinates and callback-related fields are populated before its address is passed to BoxList_Init	applied@e957f20
+BoxPCScreen.unk_A030	BoxPCScreen.boxPointerArrays	c2		its two elements are initialized by PtrArray_Init from the two 12-element box pointer arrays and then passed to BoxPCMenu_Init	applied@e957f20
+ParticleEffectInstance.unk_9A	ParticleEffectInstance.rotationDelta	c2		Particle_SetRotationDelta and its vector variants store all three rotation delta components in this field.	applied@e957f20
+ParticleEffectInstance.unk_A6	ParticleEffectInstance.initialAlpha	c2		This field is copied into unk_AE before the effect begins, and unk_AE is then passed as the alpha argument to GraphNode_SetColorRGBA.	applied@e957f20
+ParticleEffectInstance.unk_AA	ParticleEffectInstance.alphaStep	c2		This field is passed as the step argument to Particle_ApproachShortAE while unk_AE approaches the target alpha in unk_CD.	applied@e957f20
+ParticleEffectInstance.unk_AE	ParticleEffectInstance.alpha	c2		This field is passed as the alpha argument to GraphNode_SetColorRGBA and is modified with ApproachS16Signed.	applied@e957f20
+ParticleEffectInstance.unk_B2	ParticleEffectInstance.updateState	c2		Multiple particle update functions switch on this field to select their current update phase.	applied@e957f20
+ParticleEffectInstance.unk_B6	ParticleEffectInstance.rampStepTimer	c2		This field is initialized from arg4, decremented each update, and reset from arg4 when it reaches zero before unk_C7 changes.	applied@e957f20
+ParticleEffectInstance.unk_BA	ParticleEffectInstance.durationTimer	c2		This field is initialized to a duration, decremented every update, and triggers flag clearing or completion when it becomes negative.	applied@e957f20
+ParticleEffectInstance.unk_C6	ParticleEffectInstance.rampRepeatCount	c2		This field is initialized from arg5 and decremented whenever the unk_C7 ramp passes its endpoint until zero signals completion.	applied@e957f20
+ParticleEffectInstance.unk_C7	ParticleEffectInstance.rampValue	c2		This field is initialized to a start value, repeatedly incremented or decremented, and clamped to an endpoint when the ramp completes.	applied@e957f20
+ParticleEffectInstance.unk_CA	ParticleEffectInstance.effectType	c2		This field is compared against effect type values 4 and 7 to select which active particle instances are destroyed or retained.	applied@e957f20
+ParticleEffectInstance.unk_CD	ParticleEffectInstance.targetAlpha	c2		This field is passed as the target to Particle_ApproachShortAE while unk_AE, which supplies graph node alpha, approaches it.	applied@e957f20
+ParticleEffectInstance.unk_CF	ParticleEffectInstance.paletteIndex	c2		This field is passed to SetPrimColorFromPalette and IsPrimColorSupported to select a primitive color palette entry.	applied@e957f20
+PickerState.unk_0CA8	PickerState.pokemonGroups	c2		declared as an array of 13 PickerPokemonGroup elements and indexed to access each group's Pokemon entries	applied@e957f20
+gItemPanel.unk_4D40	gItemPanel.pokemonPanel	c2		RequestNextPokemon, TriggerSelectionAnim, and SetMenuActive all consume this pointer to control the Pokemon selection panel.	applied@e957f20
+gItemPanel.unk_4D44	gItemPanel.moveScreen	c2		MoveScreen_Start and GetSelectedMoveIndex both consume this pointer as the move selection screen.	applied@e957f20
+gItemPanel.unk_4D48	gItemPanel.registrationManager	c2		This pointer is passed as the manager argument to RegistrationManager_Initialize.	applied@e957f20
+WaterParticleSystem.unk_081	WaterParticleSystem.envColorBlend	c2		RGBA values are stored in this ColorBlendInfo and its current color is passed to gDPSetEnvColor during rendering	applied@e957f20
+WaterParticleSystem.unk_086	WaterParticleSystem.lineColor	c2		RGBA values are stored directly and passed to Gfx_DrawThickLine after a nonzero color check	applied@e957f20
+unk_BattlePlayerAnimState.unk_C1	unk_BattlePlayerAnimState.statFlags	c2		ResetAllStatFlags sets all four elements to 1 and type-based checks clear individual elements to 0	applied@e957f20
+unk_BattlePlayerAnimState.unk_C8	unk_BattlePlayerAnimState.controller	c2		Entity_BindController stores a Controller pointer here and input handlers read buttonPressed or pass it to move selection functions	applied@e957f20
+unk_BattlePlayerEntity.unk_498	unk_BattlePlayerEntity.launchSpeed	c2		Entity_SetLaunchVelocity stores the speed argument here and uses the same value to calculate the entity velocity components	applied@e957f20
+unk_BattlePlayerEntity.unk_4A0	unk_BattlePlayerEntity.oscillationAmplitude	c2		The value approaches 50 or 0 and is multiplied by SINS of unk_4A6 to produce an oscillating positional offset	applied@e957f20
+unk_BattlePlayerEntity.unk_4A8	unk_BattlePlayerEntity.tiltAngle	c2		The field is stepped toward -0x8000 and consumed by SINS and COSS when calculating the camera up vector	applied@e957f20
+unk_BattlePlayerEntity.unk_4AC	unk_BattlePlayerEntity.frameCounter	c2		The field is initialized to 0, incremented once per animation update, and compared against 0x3C	applied@e957f20
+unk_BattlePlayerEntity.unk_4B0	unk_BattlePlayerEntity.sideSign	c2		The value is multiplied by horizontal offsets and shifted left 14 bits by GetPlayerSideYaw to select the entity side orientation	applied@e957f20
+unk_BattlePlayerEntity.unk_4B4	unk_BattlePlayerEntity.animationMode	c2		UpdateEntityStateByMode switches on this field and ApplyAnimEffectToOpponent stores its mode argument here	applied@e957f20
+unk_BattlePlayerEntity.unk_4B8	unk_BattlePlayerEntity.animationSubstate	c2		Animation state-machine functions switch on this field and increment it to advance between substates	applied@e957f20
+unk_BattlePlayerEntity.unk_4C0	unk_BattlePlayerEntity.moveAnimIndex	c2		The field is repeatedly loaded as an index into gMoveAnimData and is assigned by ExecuteAnimStateHandlers	applied@e957f20
+unk_BattlePlayerEntity.unk_4C4	unk_BattlePlayerEntity.animationStateIndex	c2		The field is assigned from gCurrentAnimChannel->unk_0B immediately after that value is passed to SetAnimStateIndex	applied@e957f20
+unk_BattlePlayerEntity.unk_4D8	unk_BattlePlayerEntity.secondarySwayOffset	c2		BattleAnim_InitSecondarySwayOffset initializes its Y and Z components from a magnitude and angle and later updates and copies them into an offset vector	applied@e957f20
+unk_BattlePlayerEntity.unk_4E4	unk_BattlePlayerEntity.swayMagnitude	c2		BattleAnim_InitSecondarySwayOffset stores its magnitude argument here while using the same argument to initialize the sway offset vector	applied@e957f20
+unk_BattlePlayerEntity.unk_4E8	unk_BattlePlayerEntity.secondaryStatusId	c2		BattleAnim_SetOwnerSecondaryStatusFlags stores the status argument here and dispatch checks it against secondary status value 0xB	applied@e957f20
+unk_BattlePlayerEntity.unk_4E9	unk_BattlePlayerEntity.secondaryStatusState	c2		The field is cleared with the secondary status, incremented during setup, and switched on by BattleAnim_SecondaryStatusCaseB	applied@e957f20
+unk_BattlePlayerEntity.unk_4EC	unk_BattlePlayerEntity.effectGraphNode	c2		InitEntityFragmentNode initializes this Fragment2_1GraphNode and effect routines use its position and graph flags for launched entities	applied@e957f20
+unk_BattlePlayerEntity.unk_654	unk_BattlePlayerEntity.animationState	c2		The declaration type is unk_BattlePlayerAnimState and its members provide animation indices, audio information, flags, and controller state	applied@e957f20
+unk_BattlePlayerEntity.unk_720	unk_BattlePlayerEntity.pokemonAnimation	c2		The pointer is passed to FinishPokemonAnimation and ResetWaterEffect and its flags and transform pointer are manipulated by animation-channel routines	applied@e957f20
+Fragment2_1GraphNode.unk_0A7	Fragment2_1GraphNode.transformEntryCount	c2		used as the count and insertion index for unk_0A8 entries, capped at 12 while capturing the current matrix stack entry	applied@e957f20
+GbPakDeviceState.unk_5390	GbPakDeviceState.mapperType	c2		loaded through a lookup using cartridge header byte 0x147, which identifies the Game Boy cartridge hardware type	applied@e957f20
+GbPakDeviceState.unk_5394	GbPakDeviceState.romSize	c2		loaded from a power-of-two lookup using Game Boy cartridge header byte 0x148, which encodes ROM size	applied@e957f20
+GbPakDeviceState.unk_5398	GbPakDeviceState.ramSize	c2		loaded from Game Boy cartridge header byte 0x149 and used to bound 256-byte block processing and calculate transferSize	applied@e957f20
+GbPakDeviceState.unk_53BC	GbPakDeviceState.romImage	c2		allocated as a 0x100000-byte region and addressed in 0x4000-byte banks for DMA, decompression, and transferBuffer selection	applied@e957f20
+GbPakDeviceState.unk_53F2	GbPakDeviceState.buttonsHeld	c2		assigned from gPlayer1Controller->buttonDown with audio-mode button remapping	applied@e957f20
+GbPakDeviceState.unk_53F6	GbPakDeviceState.buttonsPressed	c2		assigned from gPlayer1Controller->buttonPressed and later filtered and tested for individual button presses	applied@e957f20
+GbPakDeviceState.unk_548E	GbPakDeviceState.audioMode	c2		used as a switch selector for audio mode changes and as the multiplier passed to AllocateAudioBuffer	applied@e957f20
+GbPakDeviceState.unk_5A2C	GbPakDeviceState.blockReadStatus	c2		indexed by gbAddress shifted by 8, set to 1 when a 256-byte block read starts, and set to 2 when duplicate reads match	applied@e957f20
+GbPakDeviceState.unk_5C58	GbPakDeviceState.tileAssets	c2		assigned directly from DataStruct_TileAssets during device setup	applied@e957f20
+GbPakDeviceState.unk_5C5C	GbPakDeviceState.detectedGbpakId	c2		filled by osGbpakReadId and compared against the adjacent gbpakId field to detect an ID match	applied@e957f20
+GbPakDeviceState.unk_5DA2	GbPakDeviceState.romBank	c2		caches arg1 while register 0x4000 receives its high bank bits and register 0x2100 receives the selected ROM bank value	applied@e957f20
+GbPakDeviceState.unk_5DA4	GbPakDeviceState.romSignature	c2		used as the transfer buffer for address 0x9C000 and checked against fixed byte signatures to identify supported cartridge data	applied@e957f20
+GbPakDeviceState.unk_5DC5	GbPakDeviceState.headerMatchIndex	c2		assigned from GbPak_FindMatchingHeader and used to select cartridge-specific data offsets and background variants	applied@e957f20
+GbPakDeviceState.unk_5DC7	GbPakDeviceState.command	c2		switched on by the GbPak worker and assigned operation codes immediately before sending the device through MsgQueue_GbPakControl	applied@e957f20
+GbPakDeviceState.unk_5DCC	GbPakDeviceState.controllerChannel	c2		assigned from the setup argument and passed as the controller channel argument to osGbpakInit	applied@e957f20
+GbPakDeviceState.unk_5DCE	GbPakDeviceState.ramBank	c2		caches arg1 after arg1 is written to cartridge register 0x4000 while RAM banking mode is selected	applied@e957f20
+GbPakDeviceState.unk_5DCF	GbPakDeviceState.bankingMode	c2		tracks whether cartridge register 0x6000 has been written with banking mode 0 or 1	applied@e957f20
+GbPakDeviceState.unk_5DD0	GbPakDeviceState.inputCooldown	c2		set to 8 after handling an input, decremented once per update, and required to reach zero before related inputs are accepted again	applied@e957f20
+GbPakDeviceState.unk_788	GbPakDeviceState.uiMap	c2		cleared as a 0x4000-byte region and populated with entries from gStadiumUIMap plus additional UI map values	applied@e957f20

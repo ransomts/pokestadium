@@ -386,20 +386,20 @@ void ClearEntityFlagIfInState(void) {
     unk_BattlePlayerEntity* ptr1 = sActivePokemon[0];
     unk_BattlePlayerEntity* ptr2 = sActivePokemon[1];
 
-    if ((ptr1->unk_654.unk_2D == 0x10) || ((ptr1 = sActivePokemon[0])->unk_654.unk_2D == 0x13)) {
+    if ((ptr1->animationState.unk_2D == 0x10) || ((ptr1 = sActivePokemon[0])->animationState.unk_2D == 0x13)) {
         ptr1->unk_000.unk_000.unk_01 &= ~1;
     }
 
-    if ((ptr2->unk_654.unk_2D == 0x10) || (ptr2->unk_654.unk_2D == 0x13)) {
+    if ((ptr2->animationState.unk_2D == 0x10) || (ptr2->animationState.unk_2D == 0x13)) {
         ptr2->unk_000.unk_000.unk_01 &= ~1;
     }
 }
 
 void ProcessBattleState(CameraStruct* arg0) {
     UNUSED s32 pad;
-    unk_BattlePlayerAnimState* sp40 = &gCurrentPlayer->unk_654;
+    unk_BattlePlayerAnimState* sp40 = &gCurrentPlayer->animationState;
     s32 temp_lo;
-    unk_BattlePlayerAnimState* sp38 = &gOpponentPlayer->unk_654;
+    unk_BattlePlayerAnimState* sp38 = &gOpponentPlayer->animationState;
     f32 sp34;
     s16 sp32;
     s16 sp30;
