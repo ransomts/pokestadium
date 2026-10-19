@@ -106,32 +106,32 @@ static Gfx gColoredQuadDisplayList[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B16948[] = {
+static u32 gGeoLayout_GlowFade[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gColoredQuadVertices, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, BattlePrepBadgeAward_DrawGlowFade, gColoredQuadDisplayList, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84B16980[] = {
+static Vtx gGlowFadeVertices[] = {
     VTX(-16, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, -16, 0, 1024, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, 16, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B169C0[] = {
+static Gfx gGlowFadeDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, COMBINED, 0, 0, 0,
                        COMBINED),
     gsDPSetEnvColor(255, 255, 0, 255),
     gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16980, 4, 0),
+    gsSPVertex(gGlowFadeVertices, 4, 0),
     gsDPLoadTextureBlock(D_2022E40, G_IM_FMT_IA, G_IM_SIZ_8b, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, 5, 5, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B16A38[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B16980, 0x05000000,
-    0x22050000, D_84B169C0, 0x25000000, 0x06000000, 0x01000000,
+static u32 gGeoLayout_GlowFadeAlt[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gGlowFadeVertices, 0x05000000,
+    0x22050000, gGlowFadeDisplayList, 0x25000000, 0x06000000, 0x01000000,
 };
 
 s32 BattlePrepBadgeAward_DrawBadgeIcon(s32 arg0, SimpleGfxNode* arg1) {
@@ -363,8 +363,8 @@ void BattlePrepBadgeAward_UpdateSparkleStep(gBadgeAwardState* arg0) {
 }
 
 void BattlePrepBadgeAward_ScatterStep(gBadgeAwardState* arg0) {
-    static s16 D_84B16A64[] = { 0x300, 0x150, -0x150, -0x300, -0x300, -0x150, 0x150, 0x300 };
-    static f32 D_84B16A74[] = { -3.0f, -2.0f, 2.0f, 3.0f, -3.0f, -2.0f, 2.0f, 3.0f };
+    static s16 gScatterXOffsets[] = { 0x300, 0x150, -0x150, -0x300, -0x300, -0x150, 0x150, 0x300 };
+    static f32 gScatterXVelocities[] = { -3.0f, -2.0f, 2.0f, 3.0f, -3.0f, -2.0f, 2.0f, 3.0f };
 
     s32 i;
 
@@ -383,11 +383,11 @@ void BattlePrepBadgeAward_ScatterStep(gBadgeAwardState* arg0) {
         }
 
         for (i = 0; i < 8; i++) {
-            arg0->rotation[0 + i].unk_01E.z += D_84B16A64[i];
-            arg0->rotation[8 + i].unk_01E.z += D_84B16A64[i];
+            arg0->rotation[0 + i].unk_01E.z += gScatterXOffsets[i];
+            arg0->rotation[8 + i].unk_01E.z += gScatterXOffsets[i];
 
-            arg0->rotation[0 + i].unk_024.x += (arg0->unk_01 * D_84B16A74[i] * 0.5f);
-            arg0->rotation[8 + i].unk_024.x += (arg0->unk_01 * D_84B16A74[i] * 0.5f);
+            arg0->rotation[0 + i].unk_024.x += (arg0->unk_01 * gScatterXVelocities[i] * 0.5f);
+            arg0->rotation[8 + i].unk_024.x += (arg0->unk_01 * gScatterXVelocities[i] * 0.5f);
         }
     } else {
         arg0->unk_01 = 0;
@@ -463,8 +463,8 @@ void BattlePrepBadgeAward_Init(gBadgeAwardState* arg0) {
     arg0->unk_08 = process_geo_layout(temp_v0, gGeoLayout_BattleBackground);
     arg0->unk_0C = process_geo_layout(temp_v0, gGeoLayout_Panel);
     arg0->unk_10 = process_geo_layout(temp_v0, gGeoLayout_Icon);
-    arg0->unk_14 = process_geo_layout(temp_v0, D_84B16948);
-    arg0->unk_18 = process_geo_layout(temp_v0, D_84B16A38);
+    arg0->unk_14 = process_geo_layout(temp_v0, gGeoLayout_GlowFade);
+    arg0->unk_18 = process_geo_layout(temp_v0, gGeoLayout_GlowFadeAlt);
 
     MainPool_FinalizeAllocation(temp_v0);
 }

@@ -168,7 +168,7 @@ s32 BattlePrepRoster_ScrollBackgroundTexture(s32 arg0, SimpleGfxNode* arg1) {
     }
 }
 
-static Vtx D_84B12498[] = {
+static Vtx gShimmerMeshVerts[] = {
     VTX(-1, -38, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF), VTX(-31, 28, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF),
     VTX(-21, 35, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF), VTX(0, -11, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF),
     VTX(23, 36, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF),  VTX(34, 31, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF),
@@ -186,7 +186,7 @@ static Vtx D_84B12498[] = {
     VTX(-21, 35, -25, 0, 0, 0xD1, 0x46, 0xAC, 0xFF), VTX(-31, 28, -25, 0, 0, 0xD1, 0x46, 0xAC, 0xFF),
     VTX(-37, 29, -19, 0, 0, 0xD1, 0x46, 0xAC, 0xFF),
 };
-static Vtx D_84B12688[] = {
+static Vtx gShimmerMeshVertsBack[] = {
     VTX(-37, 29, -19, 0, 0, 0xB3, 0xDD, 0xAC, 0xFF), VTX(-31, 28, -25, 0, 0, 0xB3, 0xDD, 0xAC, 0xFF),
     VTX(-1, -38, -25, 0, 0, 0xB3, 0xDD, 0xAC, 0xFF), VTX(-4, -43, -19, 0, 0, 0xB3, 0xDD, 0xAC, 0xFF),
     VTX(-4, -43, 19, 0, 0, 0xF7, 0x89, 0x00, 0xFF),  VTX(-4, -43, -19, 0, 0, 0xF7, 0x89, 0x00, 0xFF),
@@ -227,7 +227,7 @@ static Vtx D_84B12A88[] = {
     VTX(-21, 35, 25, 0, 0, 0x00, 0x00, 0x78, 0xFF), VTX(-31, 28, 25, 0, 0, 0x00, 0x00, 0x78, 0xFF),
     VTX(-1, -38, 25, 0, 0, 0x00, 0x00, 0x78, 0xFF),
 };
-static Vtx D_84B12AD8[] = {
+static Vtx gPowerGaugeVerts0[] = {
     VTX(0, 33, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF),   VTX(8, 36, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF),
     VTX(12, 30, -25, 0, 0, 0x0D, 0xD5, 0x92, 0xFF),  VTX(12, 30, -25, 0, 0, 0x13, 0xC7, 0x99, 0xFF),
     VTX(8, 28, -25, 0, 0, 0x00, 0x00, 0x88, 0xFF),   VTX(23, -12, -19, 0, 0, 0x51, 0x02, 0xA8, 0xFF),
@@ -377,7 +377,7 @@ static Vtx D_84B13AD8[] = {
     VTX(-10, 1, 25, 0, 0, 0x00, 0x00, 0x78, 0xFF),  VTX(0, 8, 25, 0, 0, 0x00, 0x00, 0x78, 0xFF),
 };
 static Gfx gShimmerMeshDL[] = {
-    gsSPVertex(D_84B12498, 32, 0),
+    gsSPVertex(gShimmerMeshVerts, 32, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(0, 3, 4, 0, 0, 4, 5, 0),
@@ -388,7 +388,7 @@ static Gfx gShimmerMeshDL[] = {
     gsSP2Triangles(19, 21, 22, 0, 23, 24, 25, 0),
     gsSP2Triangles(23, 25, 26, 0, 27, 28, 29, 0),
     gsSP1Triangle(27, 29, 30, 0),
-    gsSPVertex(D_84B12688, 32, 0),
+    gsSPVertex(gShimmerMeshVertsBack, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
@@ -412,7 +412,7 @@ static Gfx gShimmerMeshDL[] = {
     gsSPEndDisplayList(),
 };
 static Gfx gPowerGaugeMeshDL[] = {
-    gsSPVertex(D_84B12AD8, 32, 0),
+    gsSPVertex(gPowerGaugeVerts0, 32, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(0, 3, 4, 0, 5, 6, 7, 0),
@@ -532,7 +532,7 @@ static u32 gPowerGaugeAnimDL[] = {
     0x22010000, gPowerGaugeMeshDL,    0x06000000, 0x1B000000, 0x00000000, 0x0000FFD2, 0x00010000, 0x05000000,
     0x22010000, gShimmerMeshDL,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84B14040[] = {
+static Vtx gGaugeSegmentVerts[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -544,7 +544,7 @@ static Gfx gGaugeSegmentDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGB, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B14040, 12, 0),
+    gsSPVertex(gGaugeSegmentVerts, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -557,16 +557,16 @@ static Gfx gGaugeSegmentDL[] = {
     gsSPEndDisplayList(),
 };
 static u32 gGaugeLeftLayout[] = {
-    0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14040, 0x05000000, 0x1B000000,
+    0x17000000,    0x00000000, 0x00000000, 0x00000000, gGaugeSegmentVerts, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0xFFD00000, 0x05000000, 0x22010000, 0x00000000, 0x08000000,
     BattlePrepRoster_DrawTrainerBadge, gGaugeSegmentDL, 0x06000000, 0x06000000, 0x01000000,
 };
 static u32 gGaugeRightLayout[] = {
-    0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14040, 0x05000000, 0x1B000000,
+    0x17000000,    0x00000000, 0x00000000, 0x00000000, gGaugeSegmentVerts, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00300000, 0x05000000, 0x22010000, 0x00000000, 0x08000000,
     BattlePrepRoster_DrawTrainerBadge, gGaugeSegmentDL, 0x06000000, 0x06000000, 0x01000000,
 };
-static Vtx D_84B14280[] = {
+static Vtx gGaugeFillVerts0[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 0, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(32, 24, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -24, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -594,7 +594,7 @@ static Gfx gGaugeFillDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B14280, 8, 0),
+    gsSPVertex(gGaugeFillVerts0, 8, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -625,18 +625,18 @@ static Gfx gGaugeFillDL[] = {
     gsSPEndDisplayList(),
 };
 static u32 gHealthBarLeftLayout[] = {
-    0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14280, 0x05000000,    0x1B000000, 0x00000000, 0x00000000,
+    0x17000000,    0x00000000, 0x00000000, 0x00000000, gGaugeFillVerts0, 0x05000000,    0x1B000000, 0x00000000, 0x00000000,
     0xFFE80000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepRoster_DrawIconVariantA, 0x00000000, 0x22050000, gGaugeFillDL,
     0x06000000,    0x1B000000, 0x00000000, 0x00000000, 0xFFB80000, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
     BattlePrepRoster_DrawIconVariantA, 0x00000001, 0x22050000, gGaugeFillDL, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
 };
 static u32 gHealthBarRightLayout[] = {
-    0x17000000,    0x00000000, 0x00000000, 0x00000000, D_84B14280, 0x05000000,    0x1B000000, 0x00000000, 0x00000000,
+    0x17000000,    0x00000000, 0x00000000, 0x00000000, gGaugeFillVerts0, 0x05000000,    0x1B000000, 0x00000000, 0x00000000,
     0x00480000,    0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepRoster_DrawIconVariantA, 0x00000000, 0x22050000, gGaugeFillDL,
     0x06000000,    0x1B000000, 0x00000000, 0x00000000, 0x00180000, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
     BattlePrepRoster_DrawIconVariantA, 0x00000001, 0x22050000, gGaugeFillDL, 0x25000000, 0x06000000,    0x06000000, 0x01000000,
 };
-static Vtx D_84B147D8[] = {
+static Vtx gPowerGaugeFillVerts0[] = {
     VTX(-24, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-24, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(24, -16, 0, 1536, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -658,7 +658,7 @@ static Gfx gPowerGaugeFillDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B147D8, 4, 0),
+    gsSPVertex(gPowerGaugeFillVerts0, 4, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -679,7 +679,7 @@ static Gfx gPowerGaugeFillDL[] = {
     gsSPEndDisplayList(),
 };
 static u32 gPowerGaugeLeftLayoutDouble[] = {
-    0x17000000,    0x00000000, 0x00000000, 0x00000000,    D_84B147D8, 0x05000000, 0x1B000000,    0x00000000,
+    0x17000000,    0x00000000, 0x00000000, 0x00000000,    gPowerGaugeFillVerts0, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000,    0xFFF00000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, BattlePrepRoster_DrawIconVariantB, 0x00000000,
     0x22050000,    gPowerGaugeFillDL, 0x06000000, 0x1B000000,    0x00000000, 0x00000000, 0xFFD00000,    0x05000000,
     0x22050000,    0x00000000, 0x08000000, BattlePrepRoster_DrawIconVariantB, 0x00000001, 0x22050000, gPowerGaugeFillDL,    0x06000000,
@@ -687,7 +687,7 @@ static u32 gPowerGaugeLeftLayoutDouble[] = {
     BattlePrepRoster_DrawIconVariantB, 0x00000002, 0x22050000, gPowerGaugeFillDL,    0x25000000, 0x06000000, 0x06000000,    0x01000000,
 };
 static u32 gPowerGaugeRightLayoutDouble[] = {
-    0x17000000,    0x00000000, 0x00000000, 0x00000000,    D_84B147D8, 0x05000000, 0x1B000000,    0x00000000,
+    0x17000000,    0x00000000, 0x00000000, 0x00000000,    gPowerGaugeFillVerts0, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000,    0x00500000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, BattlePrepRoster_DrawIconVariantB, 0x00000000,
     0x22050000,    gPowerGaugeFillDL, 0x06000000, 0x1B000000,    0x00000000, 0x00000000, 0x00300000,    0x05000000,
     0x22050000,    0x00000000, 0x08000000, BattlePrepRoster_DrawIconVariantB, 0x00000001, 0x22050000, gPowerGaugeFillDL,    0x06000000,

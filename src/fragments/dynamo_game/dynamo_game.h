@@ -4,7 +4,7 @@
 #include "global.h"
 #include "src/11BA0.h"
 
-typedef struct unk_D_8650A528 {
+typedef struct DynamoHealthBar {
     /* 0x000 */ s32 unk_000;
     /* 0x004 */ s32 unk_004;
     /* 0x008 */ s32 unk_008;
@@ -15,7 +15,7 @@ typedef struct unk_D_8650A528 {
     /* 0x010 */ s16 unk_012;
     /* 0x014 */ Fragment2_1GraphNode unk_014;
     /* 0x17C */ unk_D_86002F34_alt9* unk_17C;
-} unk_D_8650A528; // size = 0x180
+} DynamoHealthBar; // size = 0x180
 
 typedef struct unk_D_8650AB30_000 {
     /* 0x00 */ s8 posX;
@@ -23,18 +23,18 @@ typedef struct unk_D_8650AB30_000 {
     /* 0x08 */ f32 unk_08;
 } unk_D_8650AB30_000; // size = 0xC
 
-typedef struct unk_D_8650AB30 {
+typedef struct DynamoHealthBarEffect {
     /* 0x00 */ unk_D_8650AB30_000 posX[12];
-} unk_D_8650AB30; // size = 0x90
+} DynamoHealthBarEffect; // size = 0x90
 
 extern s32 gHealthBarPaletteIndex;
 extern s32 gHealthBarMode;
 extern u8 gHealthBarTimer;
 extern u8 gHealthBarDuration;
-extern unk_D_8650A528 gHealthBarData[4];
-extern unk_D_8650A528* gCurrentHealthBar;
-extern unk_D_8650AB30 D_8650AB30[4];
-extern unk_D_8650AB30* gHealthBarEffectData;
+extern DynamoHealthBar gHealthBarData[4];
+extern DynamoHealthBar* gCurrentHealthBar;
+extern DynamoHealthBarEffect D_8650AB30[4];
+extern DynamoHealthBarEffect* gHealthBarEffectData;
 extern u32 HealthBarPalette0[];
 extern u32 HealthBarPalette1[];
 extern u32 HealthBarPalette2[];

@@ -523,7 +523,7 @@ void Team_BuildQuickBattleTeams(s16 arg0) {
 }
 
 void Session_SaveContinueData(void) {
-    unk_func_800281D4 sp20;
+    ContinueRecord sp20;
     unk_D_800AE540_0874* sp1C = gSessionContext.unk_1194[0].unk_08[0]->unk_214;
 
     sp20.posX = gSessionContext.unk_0000;
@@ -542,7 +542,7 @@ void Session_SaveContinueData(void) {
 }
 
 s32 Session_LoadContinueData(void) {
-    unk_func_800281D4 sp250;
+    ContinueRecord sp250;
     PokemonData sp58[6];
     s32 i;
     char sp44[0x10];

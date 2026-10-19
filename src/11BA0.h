@@ -9,15 +9,15 @@ typedef struct SimpleGfxNode {
     /* 0x18 */ Gfx* unk_18;
 } SimpleGfxNode; // size = 0x1C
 
-typedef struct unk_D_8690A610_018 {
+typedef struct CreditsSceneData {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ Color_RGBA8_u32 rotation;
-} unk_D_8690A610_018; // size = 0x8
+} CreditsSceneData; // size = 0x8
 
 typedef struct FogRect {
     /* 0x00 */ GraphRootNode posX;
-    /* 0x18 */ unk_D_8690A610_018 unk_18;
+    /* 0x18 */ CreditsSceneData unk_18;
 } FogRect; // size = 0x20
 
 void GeoNode_Init(GraphNode* arg0, u8 arg1);

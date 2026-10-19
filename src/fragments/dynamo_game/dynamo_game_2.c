@@ -31,7 +31,7 @@ static u32* gHealthBarPalettes[] = {
     HealthBarPalette0, HealthBarPalette1, HealthBarPalette2, HealthBarPalette3, HealthBarPalette4,
 };
 
-const char D_865092C0[] = "%d : TIME = %d\n";
+const char gDynamoTimeFormatString[] = "%d : TIME = %d\n";
 
 static SimpleGfxNode* gHealthBarNode;
 u8 gHealthBarTimer;

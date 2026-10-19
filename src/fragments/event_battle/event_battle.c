@@ -18,13 +18,13 @@
 
 static char** gMessageBankMain;
 static char** gMessageBankSecondary;
-static unk_D_82305A28 D_82305A28;
-static unk_D_82305A30 gPanelAnimState;
-static unk_D_82305A30 gStatBarAnimState;
-static unk_D_82305A40 gBattleSettingsState;
-static unk_D_82305A50 gMenuItems[6];
-static unk_D_82305AF8 gTrainerPanels[2];
-static unk_D_8230F528 gResultPanels[3];
+static unk_D_82305A28 gModeSelectState;
+static AnimState gPanelAnimState;
+static AnimState gStatBarAnimState;
+static BattleSettings gBattleSettingsState;
+static RuleCard gMenuItems[6];
+static TrainerCard gTrainerPanels[2];
+static OptionLabel gResultPanels[3];
 
 static unk_D_82305920 gEventBattleModes[] = {
     {
@@ -84,7 +84,7 @@ static unk_D_82305920 gEventBattleModes[] = {
         2,
     },
 };
-static s16 D_82305970[] = {
+static s16 gEventBattleModeOffsets[] = {
     0x0198, 0x0181, 0x0098, 0x0030, 0, 0,
 };
 static unk_D_82305978 gStatThresholds[] = {
@@ -127,9 +127,9 @@ static unk_D_82305978 gStatThresholds[] = {
 };
 
 void EventBattle_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    static s16 D_823059AC = 0;
+    static s16 gSelectionCornerAnim = 0;
 
-    s16 temp_ft3 = SINS(D_823059AC) * 2;
+    s16 temp_ft3 = SINS(gSelectionCornerAnim) * 2;
     UNUSED s32 pad[2];
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -142,7 +142,7 @@ void EventBattle_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    D_823059AC += 0x2000;
+    gSelectionCornerAnim += 0x2000;
 }
 
 void EventBattle_DrawPanelFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -337,7 +337,7 @@ void EventBattle_DrawTitleBar(void) {
     Font_EndTexturedTextRendering();
 }
 
-void EventBattle_DrawInfoBox(unk_D_82305A30* arg0) {
+void EventBattle_DrawInfoBox(AnimState* arg0) {
     s16 tmp1;
     s16 tmp2;
     s16 sp3A;
@@ -348,18 +348,18 @@ void EventBattle_DrawInfoBox(unk_D_82305A30* arg0) {
         sp3A = arg0->unk_06 + ((0x3C - tmp1) / 2);
 
         EventBattle_DrawThinSlicedFrame(tmp2, sp3A, 0x210, tmp1, 0x1E, 0x1E, 0x82, 0x96);
-        if (((0x3C - tmp1) == 0) && (D_82305A28.posY < 8)) {
+        if (((0x3C - tmp1) == 0) && (gModeSelectState.posY < 8)) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(8, 0);
             Font_SetLineHeight(0x18);
             Font_Printf(tmp2 + 0x20, sp3A + 8,
-                          Text_GetString(NULL, 0, gMessageBankMain, gMenuItems[D_82305A28.posY].unk_18));
+                          Text_GetString(NULL, 0, gMessageBankMain, gMenuItems[gModeSelectState.posY].unk_18));
             Font_EndTexturedTextRendering();
         }
     }
 }
 
-void EventBattle_UpdateInfoBox(unk_D_82305A30* arg0) {
+void EventBattle_UpdateInfoBox(AnimState* arg0) {
     switch (arg0->posX) {
         case 1:
             arg0->posY += 6;
@@ -377,14 +377,14 @@ void EventBattle_UpdateInfoBox(unk_D_82305A30* arg0) {
     }
 }
 
-void EventBattle_InitInfoBox(unk_D_82305A30* arg0, s16 arg1, s16 arg2) {
+void EventBattle_InitInfoBox(AnimState* arg0, s16 arg1, s16 arg2) {
     arg0->posX = 0;
     arg0->posY = 0;
     arg0->rotation = arg1;
     arg0->unk_06 = arg2;
 }
 
-void EventBattle_DrawRuleCard(unk_D_82305A50* arg0) {
+void EventBattle_DrawRuleCard(RuleCard* arg0) {
     s16 temp_s1;
     s16 temp_s2;
 
@@ -439,7 +439,7 @@ void EventBattle_DrawRuleCard(unk_D_82305A50* arg0) {
     }
 }
 
-void EventBattle_UpdateRuleCardSlide(unk_D_82305A50* arg0) {
+void EventBattle_UpdateRuleCardSlide(RuleCard* arg0) {
     switch (arg0->posX) {
         case 2:
             arg0->posY -= 1;
@@ -469,7 +469,7 @@ void EventBattle_UpdateRuleCardSlide(unk_D_82305A50* arg0) {
     }
 }
 
-void EventBattle_InitRuleCard(unk_D_82305A50* arg0, s16 arg1, s16 arg2, u8* arg3, s8* arg4, s16 arg5, s16 arg6) {
+void EventBattle_InitRuleCard(RuleCard* arg0, s16 arg1, s16 arg2, u8* arg3, s8* arg4, s16 arg5, s16 arg6) {
     arg0->posX = 0;
     arg0->posY = 0xA;
     arg0->rotation = arg1;
@@ -504,7 +504,7 @@ void EventBattle_DrawMonCell(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
 static s16 gIconXOffsets[] = { 0x78, 0xFC, 0x180, 0x78, 0xFC, 0x180 };
 static s16 gIconYOffsets[] = { 4, 4, 4, 0x30, 0x30, 0x30 };
 
-void EventBattle_DrawTeamPanel(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
+void EventBattle_DrawTeamPanel(TrainerCard* arg0, s16 arg1, s16 arg2) {
     s16 i;
     s16 tmp1;
     s16 tmp2;
@@ -525,7 +525,7 @@ void EventBattle_DrawTeamPanel(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void EventBattle_DrawRuleNotice(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
+void EventBattle_DrawRuleNotice(TrainerCard* arg0, s16 arg1, s16 arg2) {
     char sp40[256];
     s16 sp3E;
 
@@ -545,7 +545,7 @@ void EventBattle_DrawRuleNotice(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void EventBattle_DrawTrainerCard(unk_D_82305AF8* arg0) {
+void EventBattle_DrawTrainerCard(TrainerCard* arg0) {
     u8* var_s0;
     s16 i;
     s16 sp58;
@@ -606,7 +606,7 @@ void EventBattle_DrawTrainerCard(unk_D_82305AF8* arg0) {
     }
 }
 
-void EventBattle_UpdateTrainerCardSlide(unk_D_82305AF8* arg0) {
+void EventBattle_UpdateTrainerCardSlide(TrainerCard* arg0) {
     switch (arg0->unk_0000) {
         case 2:
             arg0->unk_0006 -= 1;
@@ -636,7 +636,7 @@ void EventBattle_UpdateTrainerCardSlide(unk_D_82305AF8* arg0) {
     }
 }
 
-void EventBattle_InitTrainerCard(unk_D_82305AF8* arg0, s16 arg1, s16 arg2, s16 arg3) {
+void EventBattle_InitTrainerCard(TrainerCard* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s16 i;
 
     arg0->unk_0000 = 0;
@@ -672,7 +672,7 @@ s32 EventBattle_HasLegalMoves(PokemonData* arg0) {
     return var_v1;
 }
 
-u8 EventBattle_CheckTeamLegality(unk_D_82305AF8* arg0, s16 arg1) {
+u8 EventBattle_CheckTeamLegality(TrainerCard* arg0, s16 arg1) {
     unk_D_82305978* ptr1;
     s16 sp54[3];
     PokemonData* var_s1;
@@ -736,14 +736,14 @@ u8 EventBattle_CheckTeamLegality(unk_D_82305AF8* arg0, s16 arg1) {
     return arg0->unk_0002;
 }
 
-u8 EventBattle_ValidateTeamForRule(unk_D_82305AF8* arg0, s16 arg1) {
+u8 EventBattle_ValidateTeamForRule(TrainerCard* arg0, s16 arg1) {
     arg0->unk_0004 = arg1;
     arg0->unk_0010 = 0;
     arg0->unk_0000 = 2;
     return EventBattle_CheckTeamLegality(arg0, arg1);
 }
 
-void EventBattle_DrawNoticeBanner(unk_D_82305A30* arg0) {
+void EventBattle_DrawNoticeBanner(AnimState* arg0) {
     s16 temp_s3;
     s16 temp_s2;
     s16 i;
@@ -780,7 +780,7 @@ void EventBattle_DrawNoticeBanner(unk_D_82305A30* arg0) {
     }
 }
 
-void EventBattle_UpdateNoticeBanner(unk_D_82305A30* arg0) {
+void EventBattle_UpdateNoticeBanner(AnimState* arg0) {
     switch (arg0->posX) {
         case 1:
             arg0->posY += 7;
@@ -801,19 +801,19 @@ void EventBattle_UpdateNoticeBanner(unk_D_82305A30* arg0) {
     }
 }
 
-void EventBattle_InitNoticeBanner(unk_D_82305A30* arg0, s16 arg1, s16 arg2) {
+void EventBattle_InitNoticeBanner(AnimState* arg0, s16 arg1, s16 arg2) {
     arg0->posX = 0;
     arg0->posY = 0;
     arg0->rotation = arg1;
     arg0->unk_06 = arg2;
 }
 
-void EventBattle_ShowNoticeBanner(unk_D_82305A30* arg0, s32 arg1) {
+void EventBattle_ShowNoticeBanner(AnimState* arg0, s32 arg1) {
     arg0->unk_01 = arg1;
     arg0->posX = 1;
 }
 
-void EventBattle_DrawOptionLabel(unk_D_8230F528* arg0) {
+void EventBattle_DrawOptionLabel(OptionLabel* arg0) {
     UNUSED s32 pad;
     s16 sp3A;
     s16 sp38;
@@ -840,7 +840,7 @@ void EventBattle_DrawOptionLabel(unk_D_8230F528* arg0) {
     }
 }
 
-void EventBattle_UpdateOptionLabel(unk_D_8230F528* arg0) {
+void EventBattle_UpdateOptionLabel(OptionLabel* arg0) {
     switch (arg0->posX) {
         case 1:
             arg0->posY += 6;
@@ -858,7 +858,7 @@ void EventBattle_UpdateOptionLabel(unk_D_8230F528* arg0) {
     }
 }
 
-void EventBattle_InitOptionLabel(unk_D_8230F528* arg0, s16 arg1, s16 arg2, s8* arg3) {
+void EventBattle_InitOptionLabel(OptionLabel* arg0, s16 arg1, s16 arg2, s8* arg3) {
     arg0->posX = 0;
     arg0->posY = 6;
     arg0->rotation = arg1;
@@ -866,7 +866,7 @@ void EventBattle_InitOptionLabel(unk_D_8230F528* arg0, s16 arg1, s16 arg2, s8* a
     arg0->unk_08 = arg3;
 }
 
-void EventBattle_DrawSettingLine(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void EventBattle_DrawSettingLine(BattleSettings* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     char sp30[64];
     UNUSED s32 pad;
 
@@ -901,9 +901,9 @@ void EventBattle_DrawSettingBar(s16 arg0, s16 arg1, s16 arg2) {
 }
 
 void EventBattle_DrawSpinnerArrows(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    static s16 D_823059C8 = 0;
+    static s16 gSpinnerArrowAnim = 0;
 
-    s16 sp36 = SINS(D_823059C8) * 2;
+    s16 sp36 = SINS(gSpinnerArrowAnim) * 2;
 
     if (arg2 == 1) {
         if (arg3 >= 6) {
@@ -922,10 +922,10 @@ void EventBattle_DrawSpinnerArrows(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
             Gfx_DrawTextureRgba16(arg0 + sp36 + 0x94, arg1 + (arg2 * 0x21), 0x14, 0x20, D_30300C0, 0x14, 0);
         }
     }
-    D_823059C8 += 0x2000;
+    gSpinnerArrowAnim += 0x2000;
 }
 
-void EventBattle_DrawSettingsPanel(unk_D_82305A40* arg0) {
+void EventBattle_DrawSettingsPanel(BattleSettings* arg0) {
     char* sp54;
     s16 var_a3;
     s16 temp_s1;
@@ -985,7 +985,7 @@ void EventBattle_DrawSettingsPanel(unk_D_82305A40* arg0) {
     }
 }
 
-void EventBattle_UpdateSettingsPanel(unk_D_82305A40* arg0) {
+void EventBattle_UpdateSettingsPanel(BattleSettings* arg0) {
     s32 temp_v0_2;
 
     switch (arg0->posX) {
@@ -1072,7 +1072,7 @@ void EventBattle_UpdateSettingsPanel(unk_D_82305A40* arg0) {
     }
 }
 
-void EventBattle_InitSettingsPanel(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void EventBattle_InitSettingsPanel(BattleSettings* arg0, s16 arg1, s16 arg2, s32 arg3) {
     arg0->posX = 0;
     arg0->unk_06 = 0xA;
     arg0->unk_08 = arg1;
@@ -1086,7 +1086,7 @@ void EventBattle_InitSettingsPanel(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s32
     }
 }
 
-void EventBattle_OpenSettingsPanel(unk_D_82305A40* arg0) {
+void EventBattle_OpenSettingsPanel(BattleSettings* arg0) {
     Audio_PlaySoundEffectById(4);
     arg0->posX = 2;
     arg0->unk_0C = 0;
@@ -1373,7 +1373,7 @@ void EventBattle_MarkPartnerPikachu(PokemonData* arg0, s16 arg1) {
     }
 }
 
-void EventBattle_BuildTrainerFromCard(unk_D_82305AF8* arg0) {
+void EventBattle_BuildTrainerFromCard(TrainerCard* arg0) {
     s16 i;
     BattleAI_TeamContext* temp_s4 = Trainer_Create(arg0->unk_0001, arg0->unk_0012, arg0->unk_0014, Text_GetPlayerLabel(1));
 
@@ -1629,15 +1629,15 @@ s16 EventBattle_ShowSelect(void) {
     GbSave_EnsureMainDataLoaded(0);
     GbSave_EnsureMainDataLoaded(1);
     StageLoader_UpdateSegments();
-    EventBattle_InitSelect(&D_82305A28, D_823059CC);
-    EventBattle_RunSelect(&D_82305A28);
-    D_823059CC = D_82305A28.posY;
+    EventBattle_InitSelect(&gModeSelectState, D_823059CC);
+    EventBattle_RunSelect(&gModeSelectState);
+    D_823059CC = gModeSelectState.posY;
     StageLoader_WaitForRetrace();
     Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('EVSL');
 
-    return D_82305A28.unk_06;
+    return gModeSelectState.unk_06;
 }
 
 s32 EventBattle_Main(UNUSED s32 arg0, UNUSED s32 arg1) {

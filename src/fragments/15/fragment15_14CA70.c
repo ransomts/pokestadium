@@ -460,7 +460,7 @@ void Gallery_LoadBackgroundSet(s32 arg0) {
     MemoryBlock* sp1C;
     FragmentEntry sp18;
     u32* temp_v0;
-    unk_D_8690A610_018* temp_v1;
+    CreditsSceneData* temp_v1;
 
     main_pool_push_state('BACK');
 

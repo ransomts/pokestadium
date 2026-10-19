@@ -939,7 +939,7 @@ void Stage_LoadModels(void) {
     UNUSED s32 pad;
     FragmentEntry sp2C;
     void* temp_v0_3;
-    unk_D_8690A610_018* temp_v0_6;
+    CreditsSceneData* temp_v0_6;
 
     gCurrentMonsterModelId = gMonsterModelIds[gSessionContext.unk_0001];
     if (gSessionContext.unk_0001 == 7) {

@@ -137,7 +137,7 @@ void Credits_LoadBackgroundScene(s8 arg0, u8 arg1) {
     MemoryBlock* sp2C;
     FragmentEntry sp28;
     u32* temp_v0;
-    unk_D_8690A610_018* temp_v0_4;
+    CreditsSceneData* temp_v0_4;
 
     while (Display_IsFrameReady() == 0) {}
 
@@ -308,7 +308,7 @@ void Credits_IntroLoop(void) {
 }
 
 void Credits_MainLoop(s32 arg0) {
-    static u8 D_86A026F8 = 0;
+    static u8 gCreditsSceneSubIndex = 0;
 
     s32 var_s6 = 1;
 
@@ -362,11 +362,11 @@ void Credits_MainLoop(s32 arg0) {
                         main_pool_pop_state('BACK');
                     }
                 }
-            } else if ((gCurrentPhaseIndex == 3) && (D_86A026F8 < 2) &&
-                       (gCreditsShotTimer >= (((gStagePhases[gCurrentPhaseIndex].posY * (D_86A026F8 + 1)) / 3) - 1))) {
+            } else if ((gCurrentPhaseIndex == 3) && (gCreditsSceneSubIndex < 2) &&
+                       (gCreditsShotTimer >= (((gStagePhases[gCurrentPhaseIndex].posY * (gCreditsSceneSubIndex + 1)) / 3) - 1))) {
                 Credits_SelectNextScene(&gCurrentStageId, &gCurrentSubStageId);
                 Credits_LoadBackgroundScene(gCurrentStageId, 0xFF);
-                D_86A026F8++;
+                gCreditsSceneSubIndex++;
             }
         }
 
@@ -445,11 +445,11 @@ StageFadePalette gStageFadePalettes[] = {
 static MessageDecompressEntry gMessageDecompressTable[] = {
     {
         0,
-        { &gMessageDecompressBuffer, &D_86A05B64 },
+        { &gMessageDecompressBuffer, &gCreditsMessageTable },
     },
     {
         1,
-        { &D_86A05B68, &D_86A05B6C },
+        { &gCreditsString01, &gCreditsString01Len },
     },
     {
         0,

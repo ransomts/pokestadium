@@ -22,7 +22,7 @@ typedef struct StageCameraConfig {
     /* 0x08 */ MessageDecompressEntry* unk_08;
 } StageCameraConfig; // size = 0xC
 
-typedef struct unk_D_86A03170 {
+typedef struct CameraPosition {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s8 rotation;
@@ -32,7 +32,7 @@ typedef struct unk_D_86A03170 {
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
     /* 0x18 */ f32 unk_18;
-} unk_D_86A03170; // size = 0x1C
+} CameraPosition; // size = 0x1C
 
 typedef struct CreditsMovingCamera {
     /* 0x00 */ Vec3f posX;
@@ -47,13 +47,13 @@ typedef struct CreditsMovingCamera {
     /* 0x34 */ f32 unk_34;
 } CreditsMovingCamera; // size = 0x38
 
-extern unk_D_86A03170 gStageCameraPositions[17][6];
+extern CameraPosition gStageCameraPositions[17][6];
 
 extern u16 gBorderFadeCycleCount;
 extern char gMessageDecompressBuffer;
-extern char D_86A05B64;
-extern char D_86A05B68;
-extern char D_86A05B6C;
+extern char gCreditsMessageTable;
+extern char gCreditsString01;
+extern char gCreditsString01Len;
 extern char D_86A05B70;
 extern char D_86A05B74;
 extern char D_86A05B78;

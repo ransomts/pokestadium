@@ -1698,7 +1698,7 @@ void PakUi_DrawRulesPanel(s16 arg0, s16 arg1) {
     }
 }
 
-void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
+void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, ContinueRecord* arg2, s32 arg3) {
     char sp50[0x100];
     UNUSED s32 pad;
     s16 sp34 = (arg0 * 0x2C) + 2;
@@ -1772,7 +1772,7 @@ void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32
     }
 }
 
-void PakUi_UpdateConfirmDisplayFrame(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s16 arg3, s16 arg4) {
+void PakUi_UpdateConfirmDisplayFrame(s16 arg0, s16 arg1, ContinueRecord* arg2, s16 arg3, s16 arg4) {
     BgStage_DrawFrame();
     PakUi_DrawMenuBackdrop();
     PakUi_DrawDataSummaryPanel(arg0, arg1, arg2, arg3 == 0);
@@ -1780,7 +1780,7 @@ void PakUi_UpdateConfirmDisplayFrame(s16 arg0, s16 arg1, unk_func_800281D4* arg2
     BgStage_AdvanceFrame();
 }
 
-s32 TransferPak_ConfirmPrompt(unk_func_800281D4* arg0) {
+s32 TransferPak_ConfirmPrompt(ContinueRecord* arg0) {
     s16 i;
     s16 var_s2 = 1;
     s16 var_s1 = 1;
@@ -1818,7 +1818,7 @@ s32 TransferPak_ConfirmPrompt(unk_func_800281D4* arg0) {
     return var_s1 == 0;
 }
 
-s16 TransferPak_MainMenu(unk_func_800281D4* arg0) {
+s16 TransferPak_MainMenu(ContinueRecord* arg0) {
     s16 i;
     s16 var_s1;
     UNUSED s32 pad;
@@ -2792,7 +2792,7 @@ s32 TransferPak_CheckMain(s32 arg0, s32 arg1) {
     s16 sp50 = 2;
     s32 sp4C = 1;
     s16 temp_v0_3;
-    unk_func_800281D4 sp28;
+    ContinueRecord sp28;
 
     main_pool_push_state('GBCK');
 

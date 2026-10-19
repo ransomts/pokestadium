@@ -494,7 +494,7 @@ void BattleScene_Init(Stage* arg0) {
     MemoryBlock* sp44;
     u32* temp_v0_4;
     FragmentEntry sp3C;
-    unk_D_8690A610_018* temp_v0_7;
+    CreditsSceneData* temp_v0_7;
     s32 pad;
     s16 sp32;
     FramebufferImage* sp2C;

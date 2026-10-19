@@ -10,7 +10,7 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static unk_D_84B17550 gBattlePrepRuleWindowLayouts[] = {
+static RuleWindowLayout gBattlePrepRuleWindowLayouts[] = {
     {
         78,
         84,
@@ -123,13 +123,13 @@ static unk_D_84B17550 gBattlePrepRuleWindowLayouts[] = {
     },
 };
 
-void BattlePrep_DrawCursorArrow(unk_D_84B2665C* arg0, s16 arg1, s16 arg2) {
-    static s16 D_84B17604 = 0;
+void BattlePrep_DrawCursorArrow(RuleWindowState* arg0, s16 arg1, s16 arg2) {
+    static s16 gCursorArrowAnimFrame = 0;
 
-    if (D_84B17604 < 6) {
-        arg1 = (arg1 + (D_84B17604 / 2));
+    if (gCursorArrowAnimFrame < 6) {
+        arg1 = (arg1 + (gCursorArrowAnimFrame / 2));
     } else {
-        arg1 = ((arg1 - (D_84B17604 / 2)) + 6);
+        arg1 = ((arg1 - (gCursorArrowAnimFrame / 2)) + 6);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -142,10 +142,10 @@ void BattlePrep_DrawCursorArrow(unk_D_84B2665C* arg0, s16 arg1, s16 arg2) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    D_84B17604 = (D_84B17604 + 1) % 12;
+    gCursorArrowAnimFrame = (gCursorArrowAnimFrame + 1) % 12;
 }
 
-void BattlePrep_DrawRuleOption(unk_D_84B2665C* arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s8* arg5) {
+void BattlePrep_DrawRuleOption(RuleWindowState* arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s8* arg5) {
     if (arg4 == 0) {
         Text_SetEnvColor(0x64, 0x64, 0x64, 0xFF);
     } else if (arg3 == arg0->rotation) {
@@ -156,7 +156,7 @@ void BattlePrep_DrawRuleOption(unk_D_84B2665C* arg0, s16 arg1, s16 arg2, s16 arg
     Font_Printf(arg1, arg2 + (arg3 * 0xE), arg5);
 }
 
-void BattlePrep_DrawResultPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawResultPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     BattlePrep_DrawCursorArrow(arg0, arg1->posX + 0xC, arg1->posY + 0x18);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
@@ -173,7 +173,7 @@ void BattlePrep_DrawResultPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_DrawContinuePrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawContinuePrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     s32 sp2C;
     s32 sp28;
 
@@ -195,7 +195,7 @@ void BattlePrep_DrawContinuePrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_DrawGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawGiveUpPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     s32 sp2C = !!(gSessionContext.unk_11F5 & 2);
 
     sp2C = !sp2C;
@@ -208,7 +208,7 @@ void BattlePrep_DrawGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_DrawRetireStreakPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawRetireStreakPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     s32 sp2C = gSessionContext.unk_1194[0].unk_1E < 0x63 && gSessionContext.unk_1194[1].unk_1E < 0x63;
 
     BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
@@ -220,7 +220,7 @@ void BattlePrep_DrawRetireStreakPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_DrawQuitPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawQuitPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     BattlePrep_DrawCursorArrow(arg0, arg1->posX + 5, arg1->posY + 6);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
@@ -229,7 +229,7 @@ void BattlePrep_DrawQuitPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_DrawCupRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawCupRuleSummary(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     char* temp_v0;
 
     Font_BeginTranslucentTextRendering();
@@ -255,7 +255,7 @@ void BattlePrep_DrawCupRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_DrawCastleRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawCastleRuleSummary(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     s32 sp12C;
     char sp2C[0x100];
 
@@ -322,17 +322,17 @@ void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, BattlePokemon* arg2) {
 }
 
 void BattlePrep_SetStreakColor(BattlePokemon* arg0) {
-    static s16 D_84B17618 = 0;
+    static s16 gStreakColorAnimFrame = 0;
 
     if (arg0->unk_1C == 1) {
-        Text_SetEnvColor(0xFF, (SINS((s32)(SINS(D_84B17618) * 16384.0f)) * 100.0f) + 155.0f, 0x37, 0xFF);
-        D_84B17618 += 0x400;
+        Text_SetEnvColor(0xFF, (SINS((s32)(SINS(gStreakColorAnimFrame) * 16384.0f)) * 100.0f) + 155.0f, 0x37, 0xFF);
+        gStreakColorAnimFrame += 0x400;
     } else {
         Text_SetEnvColor(0xFF, 0x37, 0x37, 0xFF);
     }
 }
 
-void BattlePrep_DrawTeamPreview(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawTeamPreview(RuleWindowState* arg0, RuleWindowLayout* arg1) {
     BattlePrep_DrawBorderedRect(arg1->posX + 8, arg1->posY + 0x14, 0xA8, 0x20, 0, 0, 0, 0xFF);
     BattlePrep_DrawBorderedRect(arg1->posX + 8, arg1->posY + 0x44, 0xA8, 0x20, 0, 0, 0, 0xFF);
     BattlePrep_DrawRankBadge(arg1->posX + 8, arg1->posY + 0x14, gSessionContext.unk_1194);
@@ -355,8 +355,8 @@ void BattlePrep_DrawTeamPreview(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_DrawStreakGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    unk_func_800281D4 sp50;
+void BattlePrep_DrawStreakGiveUpPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1) {
+    ContinueRecord sp50;
     UNUSED s32 pad;
     s32 sp48;
     s32 temp_v0;
@@ -421,8 +421,8 @@ void BattlePrep_DrawStreakGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg
     }
 }
 
-void BattlePrep_DrawRuleWindow(unk_D_84B2665C* arg0) {
-    unk_D_84B17550* temp_s0;
+void BattlePrep_DrawRuleWindow(RuleWindowState* arg0) {
+    RuleWindowLayout* temp_s0;
     s16 temp_a1;
     s16 var_a3;
 
@@ -494,8 +494,8 @@ void BattlePrep_DrawRuleWindow(unk_D_84B2665C* arg0) {
     }
 }
 
-void BattlePrep_RunQuitMenu(unk_D_84B2665C* arg0) {
-    unk_D_84B17550* sp24;
+void BattlePrep_RunQuitMenu(RuleWindowState* arg0) {
+    RuleWindowLayout* sp24;
     s16 sp22;
     s32 tmp;
 
@@ -549,7 +549,7 @@ void BattlePrep_RunQuitMenu(unk_D_84B2665C* arg0) {
     }
 }
 
-void BattlePrep_RuleWindowExpanding(unk_D_84B2665C* arg0) {
+void BattlePrep_RuleWindowExpanding(RuleWindowState* arg0) {
     arg0->posY++;
     if (arg0->posY >= 5) {
         arg0->posY = 4;
@@ -557,7 +557,7 @@ void BattlePrep_RuleWindowExpanding(unk_D_84B2665C* arg0) {
     }
 }
 
-void BattlePrep_RuleWindowCollapsing(unk_D_84B2665C* arg0) {
+void BattlePrep_RuleWindowCollapsing(RuleWindowState* arg0) {
     arg0->posY--;
     if (arg0->posY < 0) {
         arg0->posY = 0;
@@ -565,7 +565,7 @@ void BattlePrep_RuleWindowCollapsing(unk_D_84B2665C* arg0) {
     }
 }
 
-void BattlePrep_UpdateRuleWindow(unk_D_84B2665C* arg0) {
+void BattlePrep_UpdateRuleWindow(RuleWindowState* arg0) {
     switch (arg0->posX) {
         case 1:
             BattlePrep_RuleWindowExpanding(arg0);
@@ -581,8 +581,8 @@ void BattlePrep_UpdateRuleWindow(unk_D_84B2665C* arg0) {
     }
 }
 
-void BattlePrep_InitRuleWindow(unk_D_84B2665C* arg0, s16 arg1) {
-    unk_D_84B17550* ptr = &gBattlePrepRuleWindowLayouts[arg1 - 1];
+void BattlePrep_InitRuleWindow(RuleWindowState* arg0, s16 arg1) {
+    RuleWindowLayout* ptr = &gBattlePrepRuleWindowLayouts[arg1 - 1];
 
     arg0->unk_01 = arg1;
     arg0->posY = 0;
@@ -614,13 +614,13 @@ void BattlePrep_InitRuleWindow(unk_D_84B2665C* arg0, s16 arg1) {
     }
 }
 
-void BattlePrep_CloseRuleWindow(unk_D_84B2665C* arg0) {
+void BattlePrep_CloseRuleWindow(RuleWindowState* arg0) {
     arg0->posX = 0;
     arg0->unk_01 = 0;
     arg0->posY = 0;
 }
 
-s32 BattlePrep_PollRuleWindow(unk_D_84B2665C* arg0) {
+s32 BattlePrep_PollRuleWindow(RuleWindowState* arg0) {
     if (arg0->posX == 4) {
         arg0->posX = 0;
         return arg0->rotation;

@@ -42,7 +42,7 @@ static BinArchive* D_84002D08;
 static u8* gMenuBackgroundAtlas;
 static s32 pad_D_84002D10;
 static s16 D_84002D14;
-static s16 D_84002D16;
+static s16 gRuleMenuState;
 static MenuSelection gMenuSelection;
 static s32 pad_D_84002D1C;
 static s16 gSelectedRuleOption;
@@ -191,9 +191,9 @@ void FreeBattle_DrawTitleBar(void) {
 }
 
 void FreeBattle_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    static s16 D_84002CA4 = 0;
+    static s16 gSelectionCornerAnimTimer = 0;
 
-    s16 sp56 = SINS(D_84002CA4) * 2;
+    s16 sp56 = SINS(gSelectionCornerAnimTimer) * 2;
     UNUSED s32 pad[2];
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -206,7 +206,7 @@ void FreeBattle_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    D_84002CA4 += 0x2000;
+    gSelectionCornerAnimTimer += 0x2000;
 }
 
 void FreeBattle_DrawPanelFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -293,13 +293,13 @@ s32 FreeBattle_IsRuleAvailable(s16 arg0) {
     s32 var_v1 = 0;
 
     if (arg0 < 4) {
-        if (D_84002D16 >= 2) {
+        if (gRuleMenuState >= 2) {
             var_v1 = arg0 == gMenuSelection.posX;
         } else {
             var_v1 = ptr->posX == (ptr->posX & D_84002D14);
         }
     } else if (arg0 < 11) {
-        if (D_84002D16 >= 3) {
+        if (gRuleMenuState >= 3) {
             var_v1 = arg0 == (gMenuSelection.posY + 4);
         } else {
             s16 tmp = (~gMenuEntries[gMenuSelection.posX].posX & D_84002D14);
@@ -364,7 +364,7 @@ void FreeBattle_DrawRuleGrid(void) {
 
     Font_SetActive(0x10, 0);
 
-    if ((D_84002D16 == 1) || (D_84002D16 == 2)) {
+    if ((gRuleMenuState == 1) || (gRuleMenuState == 2)) {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     } else {
         Text_SetEnvColor(0x78, 0x78, 0xC8, 0xFF);
@@ -373,12 +373,12 @@ void FreeBattle_DrawRuleGrid(void) {
     Font_Printf(0x64, 0x5A, Text_GetString(NULL, 0, gRuleMessageBank, 1));
     Font_EndTexturedTextRendering();
 
-    if (D_84002D16 == 1) {
+    if (gRuleMenuState == 1) {
         ptr = &gMenuEntries[gMenuSelection.posX];
         tmp1 = ptr->rotation + 0x64;
         tmp2 = ptr->unk_06 + 0x72;
         FreeBattle_DrawSelectionCorners(tmp1 - 4, tmp2 - 2, ((ptr->unk_0C == NULL) ? 0x24 : 0x54) + 8, 0x1E);
-    } else if (D_84002D16 == 2) {
+    } else if (gRuleMenuState == 2) {
         ptr = &gMenuEntries[gMenuSelection.posY];
         tmp1 = ptr[4].rotation + 0x64;
         tmp2 = ptr[4].unk_06 + 0x72;
@@ -395,10 +395,10 @@ void FreeBattle_UpdateRuleRowSelect(void) {
         while (FreeBattle_IsRuleAvailable(gMenuSelection.posY + 4) == 0) {
             gMenuSelection.posY++;
         }
-        D_84002D16 = 2;
+        gRuleMenuState = 2;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         Audio_PlaySoundEffectById(3);
-        D_84002D16 = 8;
+        gRuleMenuState = 8;
     } else {
         do {
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
@@ -424,10 +424,10 @@ void FreeBattle_UpdateRuleOptionSelect(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         Audio_PlaySoundEffectById(2);
         if (gMenuSelection.posY == 3) {
-            D_84002D16 = 5;
+            gRuleMenuState = 5;
         } else {
             gSelectedRuleOption = 0;
-            D_84002D16 = 3;
+            gRuleMenuState = 3;
         }
         return;
     }
@@ -436,7 +436,7 @@ void FreeBattle_UpdateRuleOptionSelect(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         Audio_PlaySoundEffectById(3);
         gMenuSelection.posY = -1;
-        D_84002D16 = 1;
+        gRuleMenuState = 1;
         return;
     }
 
@@ -534,7 +534,7 @@ void FreeBattle_DrawLevelSelectPanel(void) {
 
     Font_SetActive(0x10, 0);
 
-    if (D_84002D16 == 3) {
+    if (gRuleMenuState == 3) {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     } else {
         Text_SetEnvColor(0x78, 0x78, 0xC8, 0xFF);
@@ -543,7 +543,7 @@ void FreeBattle_DrawLevelSelectPanel(void) {
     Font_Printf(0x64, 0xF4, Text_GetString(NULL, 0, gRuleMessageBank, 9));
     Font_EndTexturedTextRendering();
 
-    if (D_84002D16 == 3) {
+    if (gRuleMenuState == 3) {
         Ui_DrawAnimatedTextureMarker(0x6C, (gSelectedRuleOption * 0x18) + 0x114);
     }
 }
@@ -551,11 +551,11 @@ void FreeBattle_DrawLevelSelectPanel(void) {
 void FreeBattle_UpdateLevelSelect(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         Audio_PlaySoundEffectById(0x26);
-        D_84002D16 = 7;
+        gRuleMenuState = 7;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         Audio_PlaySoundEffectById(3);
         gSelectedRuleOption = -1;
-        D_84002D16 = 2;
+        gRuleMenuState = 2;
     } else if (FreeBattle_SelectionHasSubrule() == 0) {
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
             Audio_PlaySoundEffectById(1);
@@ -615,7 +615,7 @@ void FreeBattle_OpenConfirmPanel(void) {
     gWindowAnimTimer = 2;
     gRuleOptionWindow.rotation++;
     if (gRuleOptionWindow.rotation == 8) {
-        D_84002D16 = 4;
+        gRuleMenuState = 4;
     }
 }
 
@@ -623,7 +623,7 @@ void FreeBattle_CloseConfirmPanel(void) {
     gWindowAnimTimer = 2;
     gRuleOptionWindow.rotation--;
     if (gRuleOptionWindow.rotation == 0) {
-        D_84002D16 = gRuleOptionWindow.unk_06;
+        gRuleMenuState = gRuleOptionWindow.unk_06;
     }
 }
 
@@ -632,11 +632,11 @@ void FreeBattle_UpdateConfirmDialog(void) {
         gSelectedRuleValue = gRuleOptionWindow.unk_08;
         gRuleOptionWindow.unk_06 = 3;
         gSelectedRuleOption = 0;
-        D_84002D16 = 6;
+        gRuleMenuState = 6;
         Audio_PlaySoundEffectById(2);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         gRuleOptionWindow.unk_06 = 2;
-        D_84002D16 = 6;
+        gRuleMenuState = 6;
         Audio_PlaySoundEffectById(3);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
         Audio_PlaySoundEffectById(1);
@@ -776,19 +776,19 @@ void FreeBattle_ApplyRuleSelection(void) {
 }
 
 s32 FreeBattle_RuleSelectLoop(void) {
-    D_84002D16 = 0;
+    gRuleMenuState = 0;
     Audio_PlayMusicIfChanged(0x2D);
     FreeBattle_ClearRuleSelection();
     FreeBattle_ClearLevelSelection();
     FreeBattle_InitConfirmPanel();
     FreeBattle_FadeIn();
     FreeBattle_SlideInPanel();
-    D_84002D16 = 1;
+    gRuleMenuState = 1;
     gMenuSelection.posX = 0;
 
-    while ((D_84002D16 != 7) && (D_84002D16 != 8)) {
+    while ((gRuleMenuState != 7) && (gRuleMenuState != 8)) {
         FreeBattle_PollInputs();
-        switch (D_84002D16) {
+        switch (gRuleMenuState) {
             case 1:
                 FreeBattle_UpdateRuleRowSelect();
                 break;
@@ -811,7 +811,7 @@ s32 FreeBattle_RuleSelectLoop(void) {
         FreeBattle_DrawFrame();
     }
 
-    if (D_84002D16 == 8) {
+    if (gRuleMenuState == 8) {
         FreeBattle_SlideOutPanel();
         FreeBattle_FadeOut();
         return 0;

@@ -16872,3 +16872,42 @@ unk_D_84B259E8	gBadgeCarouselAnim	w12		passed to BattlePrep_InitBadgeCarouselSce
 unk_D_84B25A58	gTeamIconsState	w12		passed to BattlePrepTeamIcons_Init, Load, and Update	applied@f776ada7
 unk_D_84B25A90	gBadgeAwardState	w12		passed to BattlePrepBadgeAward_Init and Update	applied@f776ada7
 unk_D_84B25AC0	gStarBurstState	w12		passed to BattlePrepStarBurst_Init and Update	applied@f776ada7
+D_84B12498	gShimmerMeshVerts	w13		vertex data for the shimmer effect mesh	applied@4eb7ee20
+D_84B12688	gShimmerMeshVertsBack	w13		vertex data for the back side of the shimmer effect mesh	applied@4eb7ee20
+D_84B12AD8	gPowerGaugeVerts0	w13		vertex data for the first segment of the power gauge mesh	applied@4eb7ee20
+D_84B14040	gGaugeSegmentVerts	w13		vertex data for the gauge segment rectangles	applied@4eb7ee20
+D_84B14280	gGaugeFillVerts0	w13		vertex data for the first segment of the gauge fill bar	applied@4eb7ee20
+D_84B147D8	gPowerGaugeFillVerts0	w13		vertex data for the first segment of the power gauge fill bar	applied@4eb7ee20
+D_84B16948	gGeoLayout_GlowFade	w13		geo layout for BattlePrepBadgeAward_DrawGlowFade	applied@4eb7ee20
+D_84B16980	gGlowFadeVertices	w13		vertices used by D_84B169C0 (GlowFade display list)	applied@4eb7ee20
+D_84B169C0	gGlowFadeDisplayList	w13		display list for the glow fade effect	applied@4eb7ee20
+D_84B16A38	gGeoLayout_GlowFadeAlt	w13		geo layout for the alternative glow fade effect	applied@4eb7ee20
+D_84B16A64	gScatterXOffsets	w13		X-axis offsets used in BattlePrepBadgeAward_ScatterStep	applied@4eb7ee20
+D_84B16A74	gScatterXVelocities	w13		X-axis velocity multipliers used in BattlePrepBadgeAward_ScatterStep	applied@4eb7ee20
+unk_D_84B17550	RuleWindowLayout	w13		struct containing layout data (posX, posY, width, height, etc) for rule windows	applied@4eb7ee20
+D_84B17604	gCursorArrowAnimFrame	w13		static counter used to animate the cursor arrow offset in BattlePrep_DrawCursorArrow	applied@4eb7ee20
+D_84B17618	gStreakColorAnimFrame	w13		static counter used for the sine-wave color animation in BattlePrep_SetStreakColor	applied@4eb7ee20
+unk_D_84B2665C	RuleWindowState	w13		struct tracking current window index, animation state, and cursor selection	applied@4eb7ee20
+unk_func_800281D4	ContinueRecord	w13		struct passed to Session_LoadContinueRecord to store player progress/rank data	applied@4eb7ee20
+D_86A026F8	gCreditsSceneSubIndex	w13		tracks the sub-scene index specifically for the logic in phase 3 of the credits	applied@4eb7ee20
+D_86A05B64	gCreditsMessageTable	w13		start of the table containing compressed strings for the credits role list	applied@4eb7ee20
+unk_D_8690A610_018	CreditsSceneData	w13		structure containing position and rotation data for a credits background scene	applied@4eb7ee20
+D_86A05B68	gCreditsString01	w13		compressed string data for a credits role entry	applied@4eb7ee20
+D_86A05B6C	gCreditsString01Len	w13		length or offset for the corresponding compressed credits string	applied@4eb7ee20
+unk_D_86A03170	CameraPosition	w13		defines a structure containing camera coordinates, rotation, and distance for the credits sequence	applied@4eb7ee20
+D_86A06234	gCreditsCameraFovStep	w13		float used in camera interpolation, likely a temporary storage for the FOV change per frame	applied@4eb7ee20
+D_82E023A0	gCupSelectModeSettings	w13		SessionModeSettings used to determine gCupSelectMaxIndex via Save_GetModeSettings	applied@4eb7ee20
+unk_D_8650A528	DynamoHealthBar	w13		struct containing charge values (unk_010, unk_012), team ID (unk_004), and animation state (unk_008)	applied@4eb7ee20
+unk_D_8650AB30	DynamoHealthBarEffect	w13		data used for health bar visual effects	applied@4eb7ee20
+D_865092C0	gDynamoTimeFormatString	w13		contains format string for time and a value, likely used for the Dynamo mini-game timer display	applied@4eb7ee20
+D_82305970	gEventBattleModeOffsets	w13		array of s16 offsets used for positioning battle mode elements	applied@4eb7ee20
+D_82305A28	gModeSelectState	w13		tracks the current state and selection index of the battle mode menu	applied@4eb7ee20
+unk_D_82305A30	AnimState	w13		structure used for UI elements that slide or rotate (posX, posY, rotation, offset)	applied@4eb7ee20
+unk_D_82305A40	BattleSettings	w13		structure for battle settings panel (timer limits, current selection, animation state)	applied@4eb7ee20
+unk_D_82305A50	RuleCard	w13		structure for rule cards including text, icon, and legality status	applied@4eb7ee20
+unk_D_82305AF8	TrainerCard	w13		structure for trainer info panels including team data and trainer ID	applied@4eb7ee20
+unk_D_8230F528	OptionLabel	w13		structure for result/option labels (text, position, animation state)	applied@4eb7ee20
+D_823059AC	gSelectionCornerAnim	w13		static counter used to calculate SINS for the selection corner pulsing effect	applied@4eb7ee20
+D_823059C8	gSpinnerArrowAnim	w13		static counter used to calculate SINS for the spinner arrow pulsing effect	applied@4eb7ee20
+D_84002D16	gRuleMenuState	w13		state machine variable controlling RuleSelectLoop (1:RowSelect, 2:OptionSelect, 3:LevelSelect, etc)	applied@4eb7ee20
+D_84002CA4	gSelectionCornerAnimTimer	w13		static variable used in FreeBattle_DrawSelectionCorners to animate corners via SINS	applied@4eb7ee20

@@ -1,7 +1,7 @@
 #include "credits.h"
 #include "src/F420.h"
 
-unk_D_86A03170 gStageCameraPositions[17][6] = {
+CameraPosition gStageCameraPositions[17][6] = {
     {
         {
             0xAB00,
@@ -1160,7 +1160,7 @@ unk_D_86A03170 gStageCameraPositions[17][6] = {
     },
 };
 
-static unk_D_86A03170 D_86A03C98[2][3] = {
+static CameraPosition D_86A03C98[2][3] = {
     {
         {
             256,
@@ -1232,7 +1232,7 @@ static unk_D_86A03170 D_86A03C98[2][3] = {
         },
     },
 };
-static unk_D_86A03170 sCreditsPivotCameras[18][3] = {
+static CameraPosition sCreditsPivotCameras[18][3] = {
     {
         {
             0,
@@ -3203,7 +3203,7 @@ static CreditsMovingCamera sCreditsMovingCameras[18][6] = {
 static u16 sCameraElapsed;
 static u16 sCameraDuration;
 static Vec3f sCameraEyeStep;
-static f32 D_86A06234;
+static f32 gCreditsCameraFovStep;
 static Vec3f sCameraAtStep;
 static f32 sCameraFovStep;
 Vec3f gCreditsCameraPivot;

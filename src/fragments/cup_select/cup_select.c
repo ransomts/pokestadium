@@ -20,7 +20,7 @@ static GraphNode* gOverlayGraphNode;
 static GraphNode* gUIGraphNode;
 static Fragment2_1GraphNode gCupSelectNodesA[4];
 static Fragment2_1GraphNode gCupSelectNodesB[3];
-static SessionModeSettings D_82E023A0;
+static SessionModeSettings gCupSelectModeSettings;
 static s16 gCupSelectCursor;
 static s16 gCupSelectMaxIndex;
 
@@ -456,11 +456,11 @@ s32 CupSelect_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
 
         Font_Init(0x10, 0);
         Save_EnsureBankLoaded(2);
-        Save_GetModeSettings(&D_82E023A0, gSessionContext.unk_11F2);
+        Save_GetModeSettings(&gCupSelectModeSettings, gSessionContext.unk_11F2);
         if (gSessionContext.unk_0000 == 3) {
-            gCupSelectMaxIndex = D_82E023A0.unk_05;
+            gCupSelectMaxIndex = gCupSelectModeSettings.unk_05;
         } else {
-            gCupSelectMaxIndex = D_82E023A0.unk_06;
+            gCupSelectMaxIndex = gCupSelectModeSettings.unk_06;
         }
         if (gCupSelectMaxIndex == 4) {
             gCupSelectMaxIndex -= 1;

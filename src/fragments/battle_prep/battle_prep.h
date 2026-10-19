@@ -31,13 +31,13 @@ typedef struct unk_D_84B1A598 {
     /* 0xB40C */ BinArchive* unk_B40C;
 } unk_D_84B1A598; // size >= 0xB410
 
-typedef struct unk_D_84B2665C {
+typedef struct RuleWindowState {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ char unk06[0x2];
-} unk_D_84B2665C; // size >= 0x8
+} RuleWindowState; // size >= 0x8
 
 typedef struct gBannerState {
     /* 0x00 */ u8 posX;
@@ -147,8 +147,8 @@ typedef struct unk_D_84B26640 {
     /* 0x00 */ BarState posX;
     /* 0x00 */ char unk0C[0x4];
     /* 0x00 */ BarState unk_10;
-    /* 0x00 */ unk_D_84B2665C unk_1C;
-    /* 0x00 */ unk_D_84B2665C unk_28;
+    /* 0x00 */ RuleWindowState unk_1C;
+    /* 0x00 */ RuleWindowState unk_28;
 } unk_D_84B26640; // size = 0x30
 
 typedef struct unk_func_84B067B4 {
@@ -159,7 +159,7 @@ typedef struct unk_func_84B067B4 {
     /* 0x03A */ char unk03A[0x1F6];
 } unk_func_84B067B4; // size = 0x230
 
-typedef struct unk_D_84B17550 {
+typedef struct RuleWindowLayout {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -169,7 +169,7 @@ typedef struct unk_D_84B17550 {
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
-} unk_D_84B17550; // size = 0x12
+} RuleWindowLayout; // size = 0x12
 
 extern SpeciesDisplayParams gSpeciesDisplayParamsFront[];
 extern SpeciesDisplayParams gSpeciesDisplayParamsBack[];
@@ -363,27 +363,27 @@ void BattlePrep_UpdateTrophyModel(BarState* arg0);
 void BattlePrep_StartTrophyModelGrow(BarState* arg0, Fragment2_1GraphNode* arg1);
 void BattlePrep_StartTrophyModelShrink(BarState* arg0);
 void BattlePrep_InitTrophyModel(BarState* arg0, u8 arg1);
-void BattlePrep_DrawCursorArrow(unk_D_84B2665C* arg0, s16 arg1, s16 arg2);
-void BattlePrep_DrawRuleOption(unk_D_84B2665C* arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s8* arg5);
-void BattlePrep_DrawResultPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
-void BattlePrep_DrawContinuePrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
-void BattlePrep_DrawGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
-void BattlePrep_DrawRetireStreakPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
-void BattlePrep_DrawQuitPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
-void BattlePrep_DrawCupRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
-void BattlePrep_DrawCastleRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
+void BattlePrep_DrawCursorArrow(RuleWindowState* arg0, s16 arg1, s16 arg2);
+void BattlePrep_DrawRuleOption(RuleWindowState* arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s8* arg5);
+void BattlePrep_DrawResultPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1);
+void BattlePrep_DrawContinuePrompt(RuleWindowState* arg0, RuleWindowLayout* arg1);
+void BattlePrep_DrawGiveUpPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1);
+void BattlePrep_DrawRetireStreakPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1);
+void BattlePrep_DrawQuitPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1);
+void BattlePrep_DrawCupRuleSummary(RuleWindowState* arg0, RuleWindowLayout* arg1);
+void BattlePrep_DrawCastleRuleSummary(RuleWindowState* arg0, RuleWindowLayout* arg1);
 void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, BattlePokemon* arg2);
 void BattlePrep_SetStreakColor(BattlePokemon* arg0);
-void BattlePrep_DrawTeamPreview(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
-void BattlePrep_DrawStreakGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1);
-void BattlePrep_DrawRuleWindow(unk_D_84B2665C* arg0);
-void BattlePrep_RunQuitMenu(unk_D_84B2665C* arg0);
-void BattlePrep_RuleWindowExpanding(unk_D_84B2665C* arg0);
-void BattlePrep_RuleWindowCollapsing(unk_D_84B2665C* arg0);
-void BattlePrep_UpdateRuleWindow(unk_D_84B2665C* arg0);
-void BattlePrep_InitRuleWindow(unk_D_84B2665C* arg0, s16 arg1);
-void BattlePrep_CloseRuleWindow(unk_D_84B2665C* arg0);
-s32 BattlePrep_PollRuleWindow(unk_D_84B2665C* arg0);
+void BattlePrep_DrawTeamPreview(RuleWindowState* arg0, RuleWindowLayout* arg1);
+void BattlePrep_DrawStreakGiveUpPrompt(RuleWindowState* arg0, RuleWindowLayout* arg1);
+void BattlePrep_DrawRuleWindow(RuleWindowState* arg0);
+void BattlePrep_RunQuitMenu(RuleWindowState* arg0);
+void BattlePrep_RuleWindowExpanding(RuleWindowState* arg0);
+void BattlePrep_RuleWindowCollapsing(RuleWindowState* arg0);
+void BattlePrep_UpdateRuleWindow(RuleWindowState* arg0);
+void BattlePrep_InitRuleWindow(RuleWindowState* arg0, s16 arg1);
+void BattlePrep_CloseRuleWindow(RuleWindowState* arg0);
+s32 BattlePrep_PollRuleWindow(RuleWindowState* arg0);
 
 
 #endif // _FRAGMENT63_H_

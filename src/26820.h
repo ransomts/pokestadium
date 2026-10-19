@@ -19,7 +19,7 @@ typedef struct SessionModeSettings {
     /* 0x07 */ u8 unk_07;
 } SessionModeSettings; // size = 0x8
 
-typedef struct unk_func_800281D4 {
+typedef struct ContinueRecord {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
@@ -29,7 +29,7 @@ typedef struct unk_func_800281D4 {
     /* 0x0D */ u8 unk_0D;
     /* 0x0E */ u16 unk_0E;
     /* 0x10 */ char unk_10[16];
-} unk_func_800281D4; // size = 0x20
+} ContinueRecord; // size = 0x20
 
 typedef struct unk_D_800AE4E8_004_1_000_000 {
     /* 0x00 */ u8 posX;
@@ -82,7 +82,7 @@ typedef struct unk_D_800AE4E8_004_2_1D20_024 {
 
 typedef struct unk_D_800AE4E8_004_2_1D20 {
     /* 0x000 */ u8 unk_000;
-    /* 0x002 */ unk_func_800281D4 unk_002;
+    /* 0x002 */ ContinueRecord unk_002;
     /* 0x022 */ s16 unk_022;
     /* 0x024 */ unk_D_800AE4E8_004_2_1D20_024 unk_024[6];
     /* 0x16E */ u8 unk_16E[6];
@@ -199,8 +199,8 @@ s32 Save_GetOptionsField1F(void);
 void Save_SetOptionsField1F(u8 arg0);
 s32 Save_GetSelectedPokemonId(void);
 void Save_SetSelectedPokemonId(u8 arg0, u8 arg1);
-void Session_SaveContinueRecord(unk_func_800281D4* arg0, PokemonData* arg1, s32 arg2);
-s32 Session_LoadContinueRecord(unk_func_800281D4* arg0, PokemonData* arg1);
+void Session_SaveContinueRecord(ContinueRecord* arg0, PokemonData* arg1, s32 arg2);
+s32 Session_LoadContinueRecord(ContinueRecord* arg0, PokemonData* arg1);
 s32 Save_ContinueRecordExists(void);
 s32 Save_FlushBank(s16 arg0);
 s32 Save_FlushDirtyBanks(void);

@@ -952,7 +952,7 @@ void Save_SetSelectedPokemonId(u8 arg0, u8 arg1) {
     }
 }
 
-void Session_SaveContinueRecord(unk_func_800281D4* arg0, PokemonData* arg1, s32 arg2) {
+void Session_SaveContinueRecord(ContinueRecord* arg0, PokemonData* arg1, s32 arg2) {
     unk_D_800AE4E8_004_2_1D20* temp_v0;
     s32 i;
 
@@ -971,7 +971,7 @@ void Session_SaveContinueRecord(unk_func_800281D4* arg0, PokemonData* arg1, s32 
     }
 }
 
-s32 Session_LoadContinueRecord(unk_func_800281D4* arg0, PokemonData* arg1) {
+s32 Session_LoadContinueRecord(ContinueRecord* arg0, PokemonData* arg1) {
     s16 var_s5 = -1;
     unk_D_800AE4E8_004_2_1D20* temp_v0;
     s32 i;

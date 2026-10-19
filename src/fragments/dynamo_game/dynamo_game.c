@@ -75,13 +75,13 @@ static u32 gResultScreenGeoLayoutData[] = {
 static u8 gHealthBarAnimFlagA = 0;
 static u8 gHealthBarAnimFlagB = 0;
 
-unk_D_8650A528 gHealthBarData[4];
-unk_D_8650A528* gCurrentHealthBar;
+DynamoHealthBar gHealthBarData[4];
+DynamoHealthBar* gCurrentHealthBar;
 static Fragment2_1GraphNode* gCurrentHealthBarNode;
-unk_D_8650AB30 D_8650AB30[4];
-unk_D_8650AB30* gHealthBarEffectData;
+DynamoHealthBarEffect D_8650AB30[4];
+DynamoHealthBarEffect* gHealthBarEffectData;
 
-void DynamoGame_ComputeAIChargeDelta(unk_D_8650A528* arg0, u8 arg1) {
+void DynamoGame_ComputeAIChargeDelta(DynamoHealthBar* arg0, u8 arg1) {
     if (arg0->unk_000 == 4) {
         arg0->unk_00D = 0;
         return;
