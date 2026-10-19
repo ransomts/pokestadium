@@ -1760,12 +1760,12 @@
     start: 0x2A4DF0
     vram: 0x83500000
     subsegments:
-    - [0x2A4DF0, textbin,   fragments/44/fragment44_header]
-    - [0x2A4E10, c,      fragments/44/fragment44]
-    - [0x2A8C60, .data, fragments/44/fragment44]
-    - [0x2A8D60, .rodata, fragments/44/fragment44]
+    - [0x2A4DF0, textbin,   fragments/gallery_album/gallery_album_header]
+    - [0x2A4E10, c,      fragments/gallery_album/gallery_album]
+    - [0x2A8C60, .data, fragments/gallery_album/gallery_album]
+    - [0x2A8D60, .rodata, fragments/gallery_album/gallery_album]
 
-    - {vram: 0x83503FC0, type:  .bss, name: fragments/44/fragment44}
+    - {vram: 0x83503FC0, type:  .bss, name: fragments/gallery_album/gallery_album}
 
   - name: fragment44_relocs
     type: code
