@@ -4219,8 +4219,8 @@ void Battle_TriggerTrainerPresentationCue(BattlePlayerEntity* arg0) {
 }
 
 void BattleAnim_PlaySpeciesReactionSound(BattlePlayerEntity* arg0, PokemonAudioInfo* arg1, s32 arg2) {
-    Effect_TriggerMoveVisual(arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
-    HandleMoveEvent(arg1, arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
+    Effect_TriggerMoveVisual(arg1->currentMoveId, arg0->unk_000.unk_01A, arg2);
+    HandleMoveEvent(arg1, arg1->currentMoveId, arg0->unk_000.unk_01A, arg2);
 }
 
 void BattleScene_ConfigureAudioChannelGroupsByTeam(void) {

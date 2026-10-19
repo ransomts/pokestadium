@@ -284,19 +284,19 @@ u16 Battle_DetermineMoveOrder(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1
     PokemonAudioInfo* ptr1 = &arg0->animationState.unk_38;
     PokemonAudioInfo* ptr2 = &arg1->animationState.unk_38;
 
-    if (ptr1->unk_5A == 0x62) {
-        if (ptr2->unk_5A != 0x62) {
+    if (ptr1->currentMoveId == 0x62) {
+        if (ptr2->currentMoveId != 0x62) {
             return 0;
         }
-    } else if (ptr2->unk_5A == 0x62) {
+    } else if (ptr2->currentMoveId == 0x62) {
         return 1;
     }
 
-    if (ptr1->unk_5A == 0x44) {
-        if (ptr2->unk_5A != 0x44) {
+    if (ptr1->currentMoveId == 0x44) {
+        if (ptr2->currentMoveId != 0x44) {
             return 1;
         }
-    } else if (ptr2->unk_5A == 0x44) {
+    } else if (ptr2->currentMoveId == 0x44) {
         return 0;
     }
 
@@ -326,7 +326,7 @@ s32 IsByteInArray(u8 arg0, u8* arg1, s32 arg2) {
 }
 
 void Battle_SetActiveMoveFromSlotIndex(void) {
-    gBattleTempEntities[0].unk_5A = gBattleTempEntities[0].unk_1F[gMoveEffectIndex];
+    gBattleTempEntities[0].currentMoveId = gBattleTempEntities[0].unk_1F[gMoveEffectIndex];
 }
 
 s32 Battle_CheckMoveSuccess(void) {
@@ -585,7 +585,7 @@ void Battle_DecrementPP(s32 arg0) {
     temp_a1 = &sActivePokemon[arg0]->animationState;
     temp_a2 = &sActivePokemon[arg0]->boundRoster->unk_01C[temp_a1->RentalSlotAnimData_PosePhase];
 
-    if ((temp_v0->unk_5A != 0xA5) && !(temp_v0->unk_4C & 7) && !(temp_v0->statusFlags2 & 0x40)) {
+    if ((temp_v0->currentMoveId != 0xA5) && !(temp_v0->unk_4C & 7) && !(temp_v0->statusFlags2 & 0x40)) {
         temp_v0->unk_32[temp_a1->unk_0C]--;
         if (!(temp_v0->unk_4E & 8)) {
             temp_a2->unk_20[temp_a1->unk_0C] -= 1;
@@ -803,12 +803,12 @@ void Battle_ResetEffectState(void) {
 }
 
 void Battle_ExecuteMoveAnimation(void) {
-    gBattleUser->unk_44.posX = gMoveData[gBattleUser->unk_5A - 1].posX;
-    gBattleUser->unk_44.TrainerSlotSaveData_GamePort = gMoveData[gBattleUser->unk_5A - 1].TrainerSlotSaveData_GamePort;
-    gBattleUser->unk_44.posY = gMoveData[gBattleUser->unk_5A - 1].posY;
-    gBattleUser->unk_44.unk_03 = gMoveData[gBattleUser->unk_5A - 1].unk_03;
-    gBattleUser->unk_44.rotation = gMoveData[gBattleUser->unk_5A - 1].rotation;
-    gBattleUser->unk_44.unk_05 = gMoveData[gBattleUser->unk_5A - 1].unk_05;
+    gBattleUser->unk_44.posX = gMoveData[gBattleUser->currentMoveId - 1].posX;
+    gBattleUser->unk_44.TrainerSlotSaveData_GamePort = gMoveData[gBattleUser->currentMoveId - 1].TrainerSlotSaveData_GamePort;
+    gBattleUser->unk_44.posY = gMoveData[gBattleUser->currentMoveId - 1].posY;
+    gBattleUser->unk_44.unk_03 = gMoveData[gBattleUser->currentMoveId - 1].unk_03;
+    gBattleUser->unk_44.rotation = gMoveData[gBattleUser->currentMoveId - 1].rotation;
+    gBattleUser->unk_44.unk_05 = gMoveData[gBattleUser->currentMoveId - 1].unk_05;
 }
 
 void Battle_ApplyRageContinuation(void) {
@@ -982,7 +982,7 @@ s32 Battle_Effect_Metronome(void) {
             temp_v0 = Battle_Random();
         } while (temp_v0 == 0 || temp_v0 >= 0xA5);
     } while (temp_v0 == 0x76);
-    gBattleUser->unk_5A = temp_v0;
+    gBattleUser->currentMoveId = temp_v0;
     Battle_ExecuteMoveAnimation();
     return 1;
 }
@@ -1092,7 +1092,7 @@ s32 Battle_TryLoadFollowupMoveFromTarget(void) {
         return 0;
     }
 
-    gBattleUser->unk_5A = gBattleTarget->unk_58;
+    gBattleUser->currentMoveId = gBattleTarget->unk_58;
     Battle_IncrementMoveUsage();
     Battle_ExecuteMoveAnimation();
     return 1;
@@ -1161,13 +1161,13 @@ void Battle_ApplyTypeEffectAndSTAB(void) {
 }
 
 s32 Battle_Effect_Counter(void) {
-    if (gBattleUser->unk_5A != 0x44) {
+    if (gBattleUser->currentMoveId != 0x44) {
         return 1;
     }
 
     gBattleMoveFailed = 1;
 
-    if (gBattleTarget->unk_5A == 0x44) {
+    if (gBattleTarget->currentMoveId == 0x44) {
         return 0;
     }
 
@@ -1372,9 +1372,9 @@ s32 Battle_CheckMonCanAct(void) {
         }
     }
 
-    if ((gBattleUser->disabledMoveId != 0) && (gBattleUser->disabledMoveId == gBattleUser->unk_5A)) {
+    if ((gBattleUser->disabledMoveId != 0) && (gBattleUser->disabledMoveId == gBattleUser->currentMoveId)) {
         gBattleUser->unk_4C &= 0xFFEF;
-        Text_SetStringToken(0x1D, (u32)gMoveDisplayInfo[gBattleUser->unk_5A - 1].rotation);
+        Text_SetStringToken(0x1D, (u32)gMoveDisplayInfo[gBattleUser->currentMoveId - 1].rotation);
         Battle_QueueMessage(gBattleMessageQueues->unk_088, 0xF);
         gBattleScene.posX->unk_48 = 0x11;
         return 0;
@@ -1457,7 +1457,7 @@ void ProcessBattleTurn(void) {
     UNUSED s32 pad;
     char sp2C[8];
 
-    if (gBattleUser->unk_5A != 0xFF) {
+    if (gBattleUser->currentMoveId != 0xFF) {
         gBattleMoveFailed = 0;
         gBattleUnusedFlag15 = 0;
         gBattleUnusedFlag4 = 0;
@@ -1478,7 +1478,7 @@ void ProcessBattleTurn(void) {
                                 gBattleDamage = 0;
                             }
                             Battle_ExecuteMoveEffect();
-                            gBattleUser->unk_58 = gBattleUser->unk_5A;
+                            gBattleUser->unk_58 = gBattleUser->currentMoveId;
                             return;
                     }
                 }
@@ -1516,7 +1516,7 @@ void ProcessBattleTurn(void) {
                 }
 
                 if (gBattleRuleFlags[0] == 1) {
-                    gBattleUser->unk_44.rotation = gMoveData[gBattleUser->unk_5A - 1].rotation;
+                    gBattleUser->unk_44.rotation = gMoveData[gBattleUser->currentMoveId - 1].rotation;
                 }
                 HandleMoveEffectFlags();
 

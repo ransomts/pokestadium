@@ -1320,11 +1320,11 @@ s32 BattleAI_ScoreAllCandidateMoves(BattleAI_MonData* arg0, BattleAI_MonData* ar
         }
     } else if (temp_s2->unk_4C & 2) {
         i = (arg0 == gBattleAI_PlayerMon) ? gBattleAI_ActivePokemon->unk_000 : 1 - gBattleAI_ActivePokemon->unk_000;
-        *arg2 = sActivePokemon[i]->animationState.unk_38.unk_5A;
+        *arg2 = sActivePokemon[i]->animationState.unk_38.currentMoveId;
         spD6 = BattleAI_ScoreMove(temp_s2, &arg1->unk_12, *arg2);
     } else if ((temp_s2->unk_4C & 0x10) || (temp_s2->unk_4C & 0x20) || (temp_s2->unk_4C & 0x40)) {
         i = (arg0 == gBattleAI_PlayerMon) ? gBattleAI_ActivePokemon->unk_000 : 1 - gBattleAI_ActivePokemon->unk_000;
-        *arg2 = sActivePokemon[i]->animationState.unk_38.unk_5A;
+        *arg2 = sActivePokemon[i]->animationState.unk_38.currentMoveId;
         spD6 = BattleAI_ScoreMove(temp_s2, &arg1->unk_12, *arg2);
 
         if (arg3 == 0xC) {
@@ -5369,7 +5369,7 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
         _bcopy(temp_s2->unk_1F, temp_s0->unk_1F, 4);
         _bcopy(temp_s2->unk_5C, temp_s0->unk_5C, 6);
 
-        if ((temp_s2->unk_4E & 8) && (temp_s2->unk_5A == 0x90)) {
+        if ((temp_s2->unk_4E & 8) && (temp_s2->currentMoveId == 0x90)) {
             gBattleAI_ActivePokemon[1 - i].unk_016[gBattleAI_ActivePokemon[1 - i].unk_012].TrainerSlotSaveData_GamePort = 15;
 
             temp_s0->unk_2A = temp_s2->unk_2A;
@@ -5589,8 +5589,8 @@ s32 BattleAI_InitializeBattle(BattleAI_TeamContext* arg0, BattleAI_TeamContext* 
 void BattleAI_RecordUsedMove(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2) {
     u8 i;
 
-    gBattleAI_PlayerMon->posY = sActivePokemon[gBattleAI_ActivePokemon->unk_000]->animationState.unk_38.unk_5A;
-    gBattleAI_OpponentMon->posY = sActivePokemon[1 - gBattleAI_ActivePokemon->unk_000]->animationState.unk_38.unk_5A;
+    gBattleAI_PlayerMon->posY = sActivePokemon[gBattleAI_ActivePokemon->unk_000]->animationState.unk_38.currentMoveId;
+    gBattleAI_OpponentMon->posY = sActivePokemon[1 - gBattleAI_ActivePokemon->unk_000]->animationState.unk_38.currentMoveId;
 
     for (i = 0; i < 4; i++) {
         if (gBattleAI_OpponentMon->posY == gBattleAI_DefaultMon->unk_1F[i]) {
@@ -5653,7 +5653,7 @@ void BattleAI_RecordUsedMove(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2) {
     }
 
     for (i = 0; i < 2; i++) {
-        if (sActivePokemon[i]->animationState.unk_38.unk_5A == 0x44) {
+        if (sActivePokemon[i]->animationState.unk_38.currentMoveId == 0x44) {
             gBattleAI_ActivePokemon[i].unk_016[gBattleAI_ActivePokemon[i].unk_012].unk_03 = 2;
         }
     }

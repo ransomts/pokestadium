@@ -7,7 +7,7 @@ typedef struct unk_D_800FCED8_0000 {
     /* 0x000 */ char unk000[0x166];
     /* 0x166 */ s16 longTermLag;
     /* 0x168 */ char unk168[0x22];
-    /* 0x18A */ s16 unk_18A;
+    /* 0x18A */ s16 voicedFramesRemaining;
     /* 0x18C */ s16 unk_18C;
     /* 0x18E */ s16 unk18E;
 } unk_D_800FCED8_0000; // size = 0x190

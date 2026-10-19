@@ -600,7 +600,7 @@ s32 BattleScene_CollectCpuAction(BattlePlayerEntity* arg0, BattlePlayerEntity* a
                 if (!(sp34->unk_4C & 0x21)) {
                     if (sp30->unk_4C & 0x20) {
                         BattleScene_CompleteCpuMoveAction(arg0, arg1);
-                        sp34->unk_5A = 0xFF;
+                        sp34->currentMoveId = 0xFF;
                     } else if (BattleScene_ApplyForcedActionDelay(arg0) != 0) {
                         return 0;
                     } else {
@@ -680,7 +680,7 @@ void BattleScene_CommitPlayerSwitchAction(BattlePlayerEntity* arg0) {
     PokemonAudioInfo* temp_v1 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState.unk_38;
 
     if (temp_v1->unk_4C & 0x20) {
-        arg0->animationState.unk_38.unk_5A = 0xFF;
+        arg0->animationState.unk_38.currentMoveId = 0xFF;
     }
 
     if (temp_v0->unk_2D != 0x10) {
@@ -839,7 +839,7 @@ void BattleScene_CommitSelectedMoveAction(BattlePlayerEntity* arg0) {
     if (arg0->animationState.unk_14 != 4) {
         temp_v0->unk_0C = temp_v0->unk_14;
         if (temp_v0->unk_2A == 0) {
-            temp_v1->unk_5A = temp_v1->unk_1F[temp_v0->unk_0C];
+            temp_v1->currentMoveId = temp_v1->unk_1F[temp_v0->unk_0C];
         }
     } else {
         if (temp_v1->unk_4C & 0x20) {
@@ -847,7 +847,7 @@ void BattleScene_CommitSelectedMoveAction(BattlePlayerEntity* arg0) {
         } else {
             temp_v0->unk_14 = 0;
             temp_v0->unk_0C = 0;
-            temp_v1->unk_5A = 0xA5;
+            temp_v1->currentMoveId = 0xA5;
         }
     }
 
@@ -1199,11 +1199,11 @@ void BattleScene_TickAttractModeInput(void) {
         sp20->rotation = 0;
 
         if (sp24->unk_2A == 0) {
-            sp1C->unk_5A = BattleAI_ResolveRandomMove(0, 0);
+            sp1C->currentMoveId = BattleAI_ResolveRandomMove(0, 0);
         }
 
         if (sp20->unk_2A == 0) {
-            sp18->unk_5A = BattleAI_ResolveRandomMove(1, 0);
+            sp18->currentMoveId = BattleAI_ResolveRandomMove(1, 0);
         }
 
         sp24->unk_10 = 3;
@@ -1241,7 +1241,7 @@ void BattleScene_CollectPlayerAction(BattlePlayerEntity* arg0, BattlePlayerEntit
                         if (!(sp20->unk_4C & 0x21)) {
                             if (sp1C->unk_4C & 0x20) {
                                 BattleScene_HandlePlayerMoveSelectionLocked(arg0, arg0->animationState.controller);
-                                sp20->unk_5A = 0xFF;
+                                sp20->currentMoveId = 0xFF;
                             } else {
                                 BattleScene_HandlePlayerMoveSelection(arg0);
                             }

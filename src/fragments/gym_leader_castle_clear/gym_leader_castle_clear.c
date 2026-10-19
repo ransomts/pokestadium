@@ -196,7 +196,7 @@ void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
 
             arg0->unk_172 = ptr2->RentalSlotAnimData_PosePhase + (((ptr1->RentalSlotAnimData_PosePhase - ptr2->RentalSlotAnimData_PosePhase) * arg0->unk_16C) / arg0->unk_16E);
             arg0->unk_174 = ptr2->unk_0A + (((ptr1->unk_0A - ptr2->unk_0A) * arg0->unk_16C) / arg0->unk_16E);
-            arg0->unk_176 = ptr2->unk_0C + (((ptr1->unk_0C - ptr2->unk_0C) * arg0->unk_16C) / arg0->unk_16E);
+            arg0->primColorB = ptr2->unk_0C + (((ptr1->unk_0C - ptr2->unk_0C) * arg0->unk_16C) / arg0->unk_16E);
 
             arg0->unk_178 = ptr2->unk_0E + (((ptr1->unk_0E - ptr2->unk_0E) * arg0->unk_16C) / arg0->unk_16E);
             arg0->unk_17A = ptr2->unk_10 + (((ptr1->unk_10 - ptr2->unk_10) * arg0->unk_16C) / arg0->unk_16E);
@@ -211,7 +211,7 @@ void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
                 arg0->unk_16C = arg0->unk_16E = ptr1->posX;
                 arg0->unk_172 = ptr1->RentalSlotAnimData_PosePhase;
                 arg0->unk_174 = ptr1->unk_0A;
-                arg0->unk_176 = ptr1->unk_0C;
+                arg0->primColorB = ptr1->unk_0C;
                 arg0->unk_178 = ptr1->unk_0E;
                 arg0->unk_17A = ptr1->unk_10;
                 arg0->unk_17C = ptr1->unk_12;
@@ -250,7 +250,7 @@ s32 Glc_GeoSpriteCallback(s32 arg0, GraphNode* arg1) {
             gDPPipeSync(gDisplayListHead++);
 
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_30015E0));
-            gDPSetPrimColor(gDisplayListHead++, 0, 0, ptr->unk_172, ptr->unk_174, ptr->unk_176, 0xFF);
+            gDPSetPrimColor(gDisplayListHead++, 0, 0, ptr->unk_172, ptr->unk_174, ptr->primColorB, 0xFF);
             gDPSetEnvColor(gDisplayListHead++, ptr->unk_178, ptr->unk_17A, ptr->unk_17C, 0xFF);
             gSPDisplayList(gDisplayListHead++, gClearScreenDL2);
 
@@ -470,7 +470,7 @@ void Glc_InitObjectAnimation(unk_D_83101F00* arg0, s16 arg1) {
                 arg0->unk_16C = arg0->unk_16E = ptr->posX;
                 arg0->unk_172 = ptr->RentalSlotAnimData_PosePhase;
                 arg0->unk_174 = ptr->unk_0A;
-                arg0->unk_176 = ptr->unk_0C;
+                arg0->primColorB = ptr->unk_0C;
                 arg0->unk_178 = ptr->unk_0E;
                 arg0->unk_17A = ptr->unk_10;
                 arg0->unk_17C = ptr->unk_12;
@@ -604,7 +604,7 @@ void Glc_ClearInitGraphics(void) {
 
         ModelRenderer_AttachDisplayObject(&ptr->unk_000);
 
-        ptr->unk_172 = ptr->unk_174 = ptr->unk_176 = 0;
+        ptr->unk_172 = ptr->unk_174 = ptr->primColorB = 0;
         ptr->unk_178 = ptr->unk_17A = ptr->unk_17C = 0;
         ptr->unk_168 = 0;
         ptr->unk_16A = 0;

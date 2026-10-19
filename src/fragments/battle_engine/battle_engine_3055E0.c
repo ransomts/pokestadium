@@ -643,7 +643,7 @@ s32 BattleScene_FrameCamera(CameraStruct* arg0, BattlePlayerEntity* arg1) {
         return 1;
     }
 
-    if (temp_v1->unk_5A == 0x53) {
+    if (temp_v1->currentMoveId == 0x53) {
         BattleScene_SelectCameraShot(arg1, arg0, 4);
         return 1;
     }

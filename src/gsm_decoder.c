@@ -166,14 +166,14 @@ s32 Gsm_Decode_Stream(GbAudioChannelState* arg0, void* arg1) {
     bits = ((u32*)arg0->bitstreamRingBuffer)[(pos >> 5) & 0x3FF] >> (pos & 0x1F);
     left = 32 - (pos & 0x1F);
 
-    if ((arg0->unk_0000.unk_18A == 0) && (arg0->unk_0000.unk_18C == 0)) {
+    if ((arg0->unk_0000.voicedFramesRemaining == 0) && (arg0->unk_0000.unk_18C == 0)) {
         READ_BITS(i, 1);
         if (i) {
             READ_BITS(arg0->unk_0000.unk_18C, 4);
             arg0->unk_0000.unk_18C++;
         } else {
-            READ_BITS(arg0->unk_0000.unk_18A, 7);
-            arg0->unk_0000.unk_18A++;
+            READ_BITS(arg0->unk_0000.voicedFramesRemaining, 7);
+            arg0->unk_0000.voicedFramesRemaining++;
         }
     }
 
@@ -208,7 +208,7 @@ s32 Gsm_Decode_Stream(GbAudioChannelState* arg0, void* arg1) {
             READ_BITS(sp60[i].unkC, 3);
             READ_BITS(sp60[i].unkD, 3);
         }
-        arg0->unk_0000.unk_18A--;
+        arg0->unk_0000.voicedFramesRemaining--;
         Gsm_Decoder((AnimProcessor*)arg0, &header, spE0, spD0, spD8, spC8, sp60, (s32)arg1);
     }
 

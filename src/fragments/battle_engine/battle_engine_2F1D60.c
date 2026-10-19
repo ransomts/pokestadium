@@ -76,10 +76,10 @@ void BattleScene_ApplyOwnerCameraFraming(BattlePlayerEntity* arg0) {
 
     arg0->ownerModel.unk_184 = gAnimDataSetB[temp_v0]->unk_0C;
     if (gAnimDataSetB[temp_v0]->unk_10 == 0xFF) {
-        arg0->ownerModel.unk_186 = gAnimDataSetB[temp_v0]->unk_0E * arg0->ownerModel.unk_178;
+        arg0->ownerModel.cameraYaw = gAnimDataSetB[temp_v0]->unk_0E * arg0->ownerModel.unk_178;
         tmp = gAnimDataSetB[temp_v0]->posX.z * arg0->ownerModel.unk_178;
     } else {
-        arg0->ownerModel.unk_186 = gAnimDataSetB[temp_v0]->unk_0E;
+        arg0->ownerModel.cameraYaw = gAnimDataSetB[temp_v0]->unk_0E;
         tmp = gAnimDataSetB[temp_v0]->posX.z;
     }
 
@@ -90,7 +90,7 @@ void BattleScene_ApplyOwnerCameraFraming(BattlePlayerEntity* arg0) {
     arg0->ownerModel.unk_194 = tmp2;
 
     BattleScene_SetCameraAtAndEyeFromAngles(sp30, arg0->ownerModel.unk_000.unk_024.x + arg0->ownerModel.unk_190, arg0->ownerModel.unk_000.unk_024.y + tmp2,
-                  arg0->ownerModel.unk_000.unk_024.z, arg0->ownerModel.unk_188, arg0->ownerModel.unk_184, arg0->ownerModel.unk_186);
+                  arg0->ownerModel.unk_000.unk_024.z, arg0->ownerModel.unk_188, arg0->ownerModel.unk_184, arg0->ownerModel.cameraYaw);
 }
 
 void BattleScene_TickOwnerCameraFraming(BattlePlayerEntity* arg0) {

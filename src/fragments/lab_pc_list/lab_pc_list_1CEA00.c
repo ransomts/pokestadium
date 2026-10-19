@@ -819,7 +819,7 @@ void LabPCList_SwitchColumnPage(unk_func_8830867C_02C* arg0) {
     switch (arg0->unk_038->unk_2C) {
         case 0:
             ptr = arg0->columnMenu;
-            ptr->unk_18->RentalSlotAnimData_PosePhase = arg0->unk_058;
+            ptr->unk_18->RentalSlotAnimData_PosePhase = arg0->nicknameHeader;
 
             ptr = arg0->columnMenu;
             ptr->unk_18->unk_0C = arg0->unk_05C;
@@ -1016,9 +1016,9 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     sp68->unk_10.posY = 0;
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_038, sp68);
 
-    arg0->unk_058 = mem_pool_alloc(argF, sizeof(unk_func_88001300_000));
-    LabPCList_DrawHeaderNickname(arg0->unk_058, 0x84, 0);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp68, arg0->unk_058);
+    arg0->nicknameHeader = mem_pool_alloc(argF, sizeof(unk_func_88001300_000));
+    LabPCList_DrawHeaderNickname(arg0->nicknameHeader, 0x84, 0);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp68, arg0->nicknameHeader);
 
     arg0->unk_05C = mem_pool_alloc(argF, sizeof(unk_func_88001300_000));
     LabPCList_DrawHeaderID(arg0->unk_05C, 0xE0, 0);
@@ -2799,7 +2799,7 @@ s32 LabPCList_HandleColumnMenuInput(ChildSelectionProxy* arg0, Controller* arg1,
 
                 case 2:
                     Audio_PlaySoundEffectById(2);
-                    LabPCList_HandleColumnHeaderClick(arg0->unk_24, arg0->unk_24->unk_058, sp34, arg1);
+                    LabPCList_HandleColumnHeaderClick(arg0->unk_24, arg0->unk_24->nicknameHeader, sp34, arg1);
                     arg2 = 1;
                     break;
 

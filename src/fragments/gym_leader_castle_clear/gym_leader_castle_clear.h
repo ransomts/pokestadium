@@ -13,7 +13,7 @@ typedef struct unk_D_83101F00 {
     /* 0x170 */ s16 unk_170;
     /* 0x172 */ s16 unk_172;
     /* 0x174 */ s16 unk_174;
-    /* 0x176 */ s16 unk_176;
+    /* 0x176 */ s16 primColorB;
     /* 0x178 */ s16 unk_178;
     /* 0x17A */ s16 unk_17A;
     /* 0x17C */ s16 unk_17C;

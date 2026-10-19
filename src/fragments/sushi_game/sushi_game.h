@@ -97,7 +97,7 @@ typedef struct SushiPlayerEntity {
     /* 0x0E0 */ s16 unk_0E0;
     /* 0x0E2 */ s16 pulsePhase;
     /* 0x0E4 */ Fragment2_1GraphNode unk_0E4;
-    /* 0x24C */ Fragment2_1GraphNode unk_24C;
+    /* 0x24C */ Fragment2_1GraphNode nameTagNode;
     /* 0x3B4 */ u32* nameTagTexture;
 } SushiPlayerEntity; // size = 0x3B8
 

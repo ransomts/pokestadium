@@ -209,13 +209,13 @@ void Battle_QueueMoveCategoryMessage(void) {
     UNUSED s32 pad;
     PokemonAudioInfo* sp1C = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
 
-    if (BattleScene_ByteArrayContains(sp1C->unk_5A, gMoveCat_Physical, 2) != 0) {
+    if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveCat_Physical, 2) != 0) {
         sp24 = 0;
-    } else if (BattleScene_ByteArrayContains(sp1C->unk_5A, gMoveCat_Special, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveCat_Special, 5) != 0) {
         sp24 = 1;
-    } else if (BattleScene_ByteArrayContains(sp1C->unk_5A, gMoveCat_Status, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveCat_Status, 5) != 0) {
         sp24 = 2;
-    } else if (BattleScene_ByteArrayContains(sp1C->unk_5A, gMoveCat_Other, 0x2E) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveCat_Other, 0x2E) != 0) {
         sp24 = 3;
     } else {
         sp24 = 4;
@@ -254,24 +254,24 @@ void Battle_QueueMetronomeMoveMessage(void) {
 
     sp24 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
 
-    if (BattleScene_ByteArrayContains(sp24->unk_5A, gMoveCat_Physical, 2) != 0) {
+    if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveCat_Physical, 2) != 0) {
         sp2C = 0;
-    } else if (BattleScene_ByteArrayContains(sp24->unk_5A, gMoveCat_Special, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveCat_Special, 5) != 0) {
         sp2C = 1;
-    } else if (BattleScene_ByteArrayContains(sp24->unk_5A, gMoveCat_Status, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveCat_Status, 5) != 0) {
         sp2C = 2;
-    } else if (BattleScene_ByteArrayContains(sp24->unk_5A, gMoveCat_Other, 0x2E) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveCat_Other, 0x2E) != 0) {
         sp2C = 3;
     } else {
         sp2C = 4;
     }
 
-    if (sp24->unk_5A == 0x76) {
+    if (sp24->currentMoveId == 0x76) {
         do {
             tmp = Battle_Random();
         } while ((tmp == 0) || (tmp >= 0xA5) || tmp == 0x76);
 
-        sp24->unk_5A = tmp;
+        sp24->currentMoveId = tmp;
 
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
         Text_SetStringToken(0x1D, Battle_GetActiveMoveName(sActivePokemon[gBattleScene.posX->unk_2C]));
@@ -298,7 +298,7 @@ void Battle_QueueMetronomeMoveMessage(void) {
                 break;
         }
 
-        sp24->unk_5A = 0x76;
+        sp24->currentMoveId = 0x76;
 
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
         Text_SetStringToken(0x1D, Battle_GetActiveMoveName(sActivePokemon[gBattleScene.posX->unk_2C]));

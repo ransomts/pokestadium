@@ -59,7 +59,7 @@ typedef struct PokemonAudioInfo {
     /* 0x57 */ u8 disabledMoveId;
     /* 0x58 */ u8 unk_58;
     /* 0x59 */ u8 substituteHp;
-    /* 0x5A */ u8 unk_5A;
+    /* 0x5A */ u8 currentMoveId;
     /* 0x5B */ u8 battleEffectType;
     /* 0x5C */ u8 unk_5C[6];
     /* 0x62 */ char unk62[0x2];

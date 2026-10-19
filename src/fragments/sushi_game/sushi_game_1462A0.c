@@ -98,7 +98,7 @@ static CameraStruct* gSushiCamera;
 SushiWorldBasis gSushiWorldOrientation;
 
 void SushiGame_UpdateNameTagPulse(SushiPlayerEntity* arg0) {
-    Fragment2_1GraphNode* ptr = &arg0->unk_24C;
+    Fragment2_1GraphNode* ptr = &arg0->nameTagNode;
 
     if (arg0->unk_0DC != 0) {
         ptr->unk_030.x = (SINS(arg0->pulsePhase + 0x0000) * 0.3f) + 1.0f;
@@ -358,19 +358,19 @@ void SushiGame_InitPlayerSlot(SushiPlayerEntity* arg0, s32 arg1, s32 arg2) {
 
     sp24 = &arg0->unk_0E4;
     ModelRenderer_AttachDisplayObject(sp24);
-    ModelRenderer_AttachDisplayObject(&arg0->unk_24C);
+    ModelRenderer_AttachDisplayObject(&arg0->nameTagNode);
 
-    arg0->unk_24C.unk_000.unk_14 = arg0->unk_000;
+    arg0->nameTagNode.unk_000.unk_14 = arg0->unk_000;
 
     Model_InitDisplayObject(sp24, 0, 0xA0, gSushiGraphData->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(sp24, arg0->unk_0C0);
 
     sp24->unk_040.RentalSlotAnimData_PosePhase = Rand_Range(0x1E) << 0x10;
 
-    Model_InitDisplayObject(&arg0->unk_24C, 0, 0, gSushiGraphNode);
+    Model_InitDisplayObject(&arg0->nameTagNode, 0, 0, gSushiGraphNode);
 
-    arg0->unk_24C.unk_000.TrainerSlotSaveData_GamePort |= 1;
-    arg0->unk_24C.unk_000.posY |= 8;
+    arg0->nameTagNode.unk_000.TrainerSlotSaveData_GamePort |= 1;
+    arg0->nameTagNode.unk_000.posY |= 8;
 
     if (arg2 != 0) {
         arg0->nameTagTexture = gPositiveTextureBank[arg0->unk_000];
@@ -501,7 +501,7 @@ void SushiGame_SetPlayerEatState(SushiPlayerEntity* arg0, u32 arg1) {
             arg0->tintColor.rgba = -0x100;
             if ((arg0->unk_028 != 1) || (arg0->unk_018 == 0)) {
                 arg0->unk_0C0 = 9;
-                arg0->unk_24C.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+                arg0->nameTagNode.unk_000.TrainerSlotSaveData_GamePort &= ~1;
             }
             arg0->unk_074.x = arg0->unk_074.z = 0.0f;
             arg0->unk_0C8 = 1.0f;

@@ -415,7 +415,7 @@ typedef struct unk_func_8830867C_02C {
     /* 0x04C */ unk_func_8830867C_02C_04C* columnMenu;
     /* 0x050 */ unk_func_8830867C_02C_050* unk_050;
     /* 0x054 */ unk_func_88001300_000* unk_054;
-    /* 0x058 */ unk_func_88001300_000* unk_058;
+    /* 0x058 */ unk_func_88001300_000* nicknameHeader;
     /* 0x05C */ unk_func_88001300_000* unk_05C;
     /* 0x060 */ unk_func_88001300_000* unk_060;
     /* 0x064 */ unk_func_88001300_000* unk_064;

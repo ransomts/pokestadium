@@ -209,11 +209,11 @@ void Battle_Effect_SecondaryStatusChance(void) {
         if ((gBattleTarget->unk_15 & 0x20) && (gBattleUser->unk_44.unk_03 == 0x14)) {
             gBattleTarget->unk_15 = 0;
             if (temp_a0->unk_14 != 4) {
-                temp_a2->unk_5A = temp_a2->unk_1F[temp_a0->unk_0C];
+                temp_a2->currentMoveId = temp_a2->unk_1F[temp_a0->unk_0C];
             } else {
                 temp_a0->unk_14 = 0;
                 temp_a0->unk_0C = 0;
-                temp_a2->unk_5A = 0xA5;
+                temp_a2->currentMoveId = 0xA5;
             }
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
             Battle_QueueMessage(gBattleMessageQueues->unk_088, -0x77);
@@ -969,7 +969,7 @@ void Battle_Effect_Haze(void) {
     temp_a3->unk_30 = temp_a3->unk_3E;
 
     if ((gBattleTarget->unk_15 & 0x27) && !(gBattleTarget->unk_4C & 0x10)) {
-        gBattleTarget->unk_5A = 0xFE;
+        gBattleTarget->currentMoveId = 0xFE;
     }
 
     gBattleTarget->unk_15 = 0;

@@ -116,7 +116,7 @@ s32 BattleScene_GetParticipantSideIndex(BattlePlayerEntity* arg0) {
 u8 Battle_GetCameraShotFieldB(BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     UNUSED s16 pad2;
-    s16 sp18 = arg0->animationState.unk_38.unk_5A - 1;
+    s16 sp18 = arg0->animationState.unk_38.currentMoveId - 1;
     BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_000[sp18];
 
     return ptr->posY;
@@ -125,7 +125,7 @@ u8 Battle_GetCameraShotFieldB(BattlePlayerEntity* arg0) {
 u8 Battle_GetCameraShotFieldC(BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     UNUSED s16 pad2;
-    s16 sp18 = arg0->animationState.unk_38.unk_5A - 1;
+    s16 sp18 = arg0->animationState.unk_38.currentMoveId - 1;
     BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_000[sp18];
 
     return ptr->unk_03;
@@ -152,7 +152,7 @@ f32 Battle_GetScaleRatio(BattlePlayerEntity* arg0) {
 }
 
 s16 BattleScene_GetActiveAnimRowId(BattlePlayerEntity* arg0) {
-    return arg0->animationState.unk_38.unk_5A;
+    return arg0->animationState.unk_38.currentMoveId;
 }
 
 void BattleScene_GetParticipantModelBoundsScaled(BattlePlayerEntity* arg0, Vec3f* arg1) {
@@ -270,7 +270,7 @@ s32 Battle_GetTrainerId(BattlePlayerEntity* arg0, UNUSED s32 arg1) {
 }
 
 char* Battle_GetActiveMoveName(BattlePlayerEntity* arg0) {
-    return Text_GetString(NULL, 0, gPokemonMessageBank, arg0->animationState.unk_38.unk_5A - 1);
+    return Text_GetString(NULL, 0, gPokemonMessageBank, arg0->animationState.unk_38.currentMoveId - 1);
 }
 
 u8* Battle_GetActiveMonNickname(BattlePlayerEntity* arg0) {
