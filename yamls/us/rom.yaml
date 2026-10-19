@@ -1086,12 +1086,12 @@
     start: 0x1708B0
     vram: 0x86C00000
     subsegments:
-    - [0x1708B0, textbin,   fragments/18/fragment18_header]
-    - [0x1708D0, c,      fragments/18/fragment18]
-    - [0x1750F0, .data,   fragments/18/fragment18]
-    - [0x17EC60, .rodata, fragments/18/fragment18]
+    - [0x1708B0, textbin,   fragments/ekans_game/ekans_game_header]
+    - [0x1708D0, c,      fragments/ekans_game/ekans_game]
+    - [0x1750F0, .data,   fragments/ekans_game/ekans_game]
+    - [0x17EC60, .rodata, fragments/ekans_game/ekans_game]
 
-    - {vram: 0x86C0E480, type:  .bss, name: fragments/18/fragment18}
+    - {vram: 0x86C0E480, type:  .bss, name: fragments/ekans_game/ekans_game}
 
   - name: fragment18_relocs
     type: code
@@ -1107,12 +1107,12 @@
     start: 0x17FB40
     vram: 0x86D00000
     subsegments:
-    - [0x17FB40, textbin,   fragments/19/fragment19_header]
-    - [0x17FB60, c,      fragments/19/fragment19]
-    - [0x180070, .data,   fragments/19/fragment19]
-    - [0x180100, .rodata, fragments/19/fragment19]
+    - [0x17FB40, textbin,   fragments/ranking_debug_test/ranking_debug_test_header]
+    - [0x17FB60, c,      fragments/ranking_debug_test/ranking_debug_test]
+    - [0x180070, .data,   fragments/ranking_debug_test/ranking_debug_test]
+    - [0x180100, .rodata, fragments/ranking_debug_test/ranking_debug_test]
 
-    - {vram: 0x86D005D0, type:  .bss, name: fragments/19/fragment19}
+    - {vram: 0x86D005D0, type:  .bss, name: fragments/ranking_debug_test/ranking_debug_test}
 
   - name: fragment19_relocs
     type: code
