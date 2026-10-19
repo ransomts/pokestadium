@@ -1957,11 +1957,11 @@
     start: 0x2BD6E0
     vram: 0x82A00000
     subsegments:
-    - [0x2BD6E0, textbin, fragments/53/fragment53_header]
-    - [0x2BD700, c,    fragments/53/fragment53]
-    - [0x2BDA40, .data, fragments/53/fragment53]
+    - [0x2BD6E0, textbin, fragments/gb_tower_team_prep/gb_tower_team_prep_header]
+    - [0x2BD700, c,    fragments/gb_tower_team_prep/gb_tower_team_prep]
+    - [0x2BDA40, .data, fragments/gb_tower_team_prep/gb_tower_team_prep]
 
-    - {vram: 0x82A00370, type:  .bss, name: fragments/53/fragment53}
+    - {vram: 0x82A00370, type:  .bss, name: fragments/gb_tower_team_prep/gb_tower_team_prep}
 
   - name: fragment53_relocs
     type: code
@@ -1978,11 +1978,11 @@
     start: 0x2BDAC0
     vram: 0x82B00000
     subsegments:
-    - [0x2BDAC0, textbin,  fragments/54/fragment54_header]
-    - [0x2BDAE0, c,    fragments/54/fragment54]
-    - [0x2BEBE0, .data, fragments/54/fragment54]
+    - [0x2BDAC0, textbin,  fragments/rental_hub/rental_hub_header]
+    - [0x2BDAE0, c,    fragments/rental_hub/rental_hub]
+    - [0x2BEBE0, .data, fragments/rental_hub/rental_hub]
 
-    - {vram: 0x82B01140, type:  .bss, name: fragments/54/fragment54}
+    - {vram: 0x82B01140, type:  .bss, name: fragments/rental_hub/rental_hub}
 
   - name: fragment54_relocs
     type: code
@@ -1999,18 +1999,18 @@
     start: 0x2BED20
     vram: 0x83000000
     subsegments:
-    - [0x2BED20, textbin,   fragments/55/fragment55_header]
-    - [0x2BED40, c,      fragments/55/fragment55_2BED40]
-    - [0x2C0F90, c,      fragments/55/fragment55_2C0F90]
-    - [0x2C13F0, c,      fragments/55/fragment55_2C13F0]
-    - [0x2C26E0, .data,   fragments/55/fragment55_2BED40]
-    - [0x2C2890, .data,   fragments/55/fragment55_2C13F0]
-    - [0x2C28A0, .rodata, fragments/55/fragment55_2BED40]
-    - [0x2C2970, .rodata, fragments/55/fragment55_2C13F0]
+    - [0x2BED20, textbin,   fragments/rental_rules/rental_rules_header]
+    - [0x2BED40, c,      fragments/rental_rules/rental_rules_2BED40]
+    - [0x2C0F90, c,      fragments/rental_rules/rental_rules_2C0F90]
+    - [0x2C13F0, c,      fragments/rental_rules/rental_rules_2C13F0]
+    - [0x2C26E0, .data,   fragments/rental_rules/rental_rules_2BED40]
+    - [0x2C2890, .data,   fragments/rental_rules/rental_rules_2C13F0]
+    - [0x2C28A0, .rodata, fragments/rental_rules/rental_rules_2BED40]
+    - [0x2C2970, .rodata, fragments/rental_rules/rental_rules_2C13F0]
 
-    - {vram: 0x83003C80, type:  .bss, name: fragments/55/fragment55_2BED40}
-    - {vram: 0x83003EE0, type:  .bss, name: fragments/55/fragment55_2C0F90}
-    - {vram: 0x83003EF0, type:  .bss, name: fragments/55/fragment55_2C13F0}
+    - {vram: 0x83003C80, type:  .bss, name: fragments/rental_rules/rental_rules_2BED40}
+    - {vram: 0x83003EE0, type:  .bss, name: fragments/rental_rules/rental_rules_2C0F90}
+    - {vram: 0x83003EF0, type:  .bss, name: fragments/rental_rules/rental_rules_2C13F0}
 
   - name: fragment55_relocs
     type: code
@@ -2027,10 +2027,10 @@
     start: 0x2C3220
     vram: 0x82C00000
     subsegments:
-    - [0x2C3220, textbin, fragments/56/fragment56_header]
-    - [0x2C3240, c,    fragments/56/fragment56]
+    - [0x2C3220, textbin, fragments/options/options_header]
+    - [0x2C3240, c,    fragments/options/options]
 
-    - {vram: 0x82C01660, type:  .bss, name: fragments/56/fragment56}
+    - {vram: 0x82C01660, type:  .bss, name: fragments/options/options}
 
   - name: fragment56_relocs
     type: code
@@ -2047,12 +2047,12 @@
     start: 0x2C49D0
     vram: 0x82D00000
     subsegments:
-    - [0x2C49D0, textbin,   fragments/57/fragment57_header]
-    - [0x2C49F0, c,      fragments/57/fragment57]
-    - [0x2CB970, .data,   fragments/57/fragment57]
-    - [0x2CE950, .rodata, fragments/57/fragment57]
+    - [0x2C49D0, textbin,   fragments/transfer_pak_check/transfer_pak_check_header]
+    - [0x2C49F0, c,      fragments/transfer_pak_check/transfer_pak_check]
+    - [0x2CB970, .data,   fragments/transfer_pak_check/transfer_pak_check]
+    - [0x2CE950, .rodata, fragments/transfer_pak_check/transfer_pak_check]
 
-    - {vram: 0x82D09FF0, type:  .bss, name: fragments/57/fragment57}
+    - {vram: 0x82D09FF0, type:  .bss, name: fragments/transfer_pak_check/transfer_pak_check}
 
   - name: fragment57_relocs
     type: code
@@ -2069,12 +2069,12 @@
     start: 0x2CF350
     vram: 0x84000000
     subsegments:
-    - [0x2CF350, textbin,   fragments/58/fragment58_header]
-    - [0x2CF370, c,      fragments/58/fragment58]
-    - [0x2D1F30, .data,   fragments/58/fragment58]
-    - [0x2D2000, .rodata, fragments/58/fragment58]
+    - [0x2CF350, textbin,   fragments/free_battle_rules/free_battle_rules_header]
+    - [0x2CF370, c,      fragments/free_battle_rules/free_battle_rules]
+    - [0x2D1F30, .data,   fragments/free_battle_rules/free_battle_rules]
+    - [0x2D2000, .rodata, fragments/free_battle_rules/free_battle_rules]
 
-    - {vram: 0x84002D00, type:  .bss, name: fragments/58/fragment58}
+    - {vram: 0x84002D00, type:  .bss, name: fragments/free_battle_rules/free_battle_rules}
 
   - name: fragment58_relocs
     type: code
@@ -2091,12 +2091,12 @@
     start: 0x2D24C0
     vram: 0x84100000
     subsegments:
-    - [0x2D24C0, textbin,   fragments/59/fragment59_header]
-    - [0x2D24E0, c,      fragments/59/fragment59]
-    - [0x2D48F0, .data,   fragments/59/fragment59]
-    - [0x2D58F0, .rodata, fragments/59/fragment59]
+    - [0x2D24C0, textbin,   fragments/stadium_select/stadium_select_header]
+    - [0x2D24E0, c,      fragments/stadium_select/stadium_select]
+    - [0x2D48F0, .data,   fragments/stadium_select/stadium_select]
+    - [0x2D58F0, .rodata, fragments/stadium_select/stadium_select]
 
-    - {vram: 0x84103440, type:  .bss, name: fragments/59/fragment59}
+    - {vram: 0x84103440, type:  .bss, name: fragments/stadium_select/stadium_select}
 
   - name: fragment59_relocs
     type: code
@@ -2113,12 +2113,12 @@
     start: 0x2D5CB0
     vram: 0x82E00000
     subsegments:
-    - [0x2D5CB0, textbin,   fragments/60/fragment60_header]
-    - [0x2D5CD0, c,      fragments/60/fragment60]
-    - [0x2D6DC0, .data,   fragments/60/fragment60]
-    - [0x2D7650, .rodata, fragments/60/fragment60]
+    - [0x2D5CB0, textbin,   fragments/cup_select/cup_select_header]
+    - [0x2D5CD0, c,      fragments/cup_select/cup_select]
+    - [0x2D6DC0, .data,   fragments/cup_select/cup_select]
+    - [0x2D7650, .rodata, fragments/cup_select/cup_select]
 
-    - {vram: 0x82E019B0, type:  .bss, name: fragments/60/fragment60}
+    - {vram: 0x82E019B0, type:  .bss, name: fragments/cup_select/cup_select}
 
   - name: fragment60_relocs
     type: code

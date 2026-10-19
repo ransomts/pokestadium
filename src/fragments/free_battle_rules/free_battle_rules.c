@@ -1,4 +1,4 @@
-#include "fragment58.h"
+#include "free_battle_rules.h"
 #include "src/1CF30.h"
 #include "src/20330.h"
 #include "src/20470.h"

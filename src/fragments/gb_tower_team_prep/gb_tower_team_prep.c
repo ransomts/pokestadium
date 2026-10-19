@@ -1,4 +1,4 @@
-#include "fragment53.h"
+#include "gb_tower_team_prep.h"
 #include "src/19840.h"
 #include "src/1AB70.h"
 #include "src/232C0.h"
