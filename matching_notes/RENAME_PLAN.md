@@ -311,11 +311,27 @@ JigglypuffGame_UpdateEffects). Apply as gated batch hs1 when the waves drain.
 => the statics tail is LLM-wave territory (as w5-w17 have been doing); michiiik has
 nothing more to give us for statics. Tool: matching_notes/rename_hippo_statics_gen.py.
 
-## Tier C status (2026-10-19 late evening)
-Field cross-ref via michiiik (rename_hippo_field_gen.py): DEAD END - their headers are
-also unk_-dominated (deterministic join yields ~12 rows, not worth a batch alone; could
-fold into hs1). Real path = smart-subagent analysis: inventory regenerated post-reorg
-(258 safe fields / 55 typedefs, matching_notes/rename_fields_inventory.tsv), 11
-subagents launched over all 26 headers (scratch/tierc/*.tsv, batch c3). First result:
-fragment61 22/22 fields proposed with evidence (RegisteredTeamMenu cursor/repeat/paging
-semantics, deck-card ring cache, carousel). Apply gated after w17.
+## SESSION CLOSE (2026-10-19 night) - statics tail + Tier C shipped
+
+Batches this session (all gated, ROM byte-identical throughout):
+- w5-w17: 1,159 symbol renames in 13 commits (gemma statics waves; w5/w10 needed the
+  two also-pair tool fixes, w16 recovered from a server-restart mid-apply via the
+  idempotent redo).
+- hs1 (115ebc66): 27 deterministic michiiik cross-ref rows (map-local statics by
+  address + SessionContext fields by typedef+offset).
+- c3 (54c319a4): 202 Tier C struct fields from 11 sub-agents over the regenerated
+  258-field globally-unique inventory. 222 proposals -> 9 ceded to michiiik names,
+  11 dropped as shared-name (parked, see rename_parked.md), ~34 agent-skipped as
+  unprovable.
+Tool fixes this session (each committed): also-pair collision order + keyword-source
+blocklist (w5/w10 lessons); function-definition recognition in the def-classifier;
+field-row placeholder check on the FIELD half.
+michiiik cross-ref: BUILD SOLVED (extract-first; no toolchain pin), statics join
+EXECUTED (18 rows; their statics tail is as nameless as ours - the 1,400-symbol theory
+is dead, LLM waves were the right tool); field join executed (12 rows, folded into hs1).
+
+Remaining (next session): reorg residuals (groups 5/6/7/8/61, 1/31/77, main segment,
+un-joined yaml entries), the 11 shared-name Tier C fields + pycparser scoping for the
+wider shared-name class, michiiik-nameless tail (~LLM passes), 21 re-resolvable
+collisions, PokemonStats owner call, parked-report final refresh (P5), upstream fold
+to michiiik (credit Team Hippodrome for hs1 rows; NO PUSH without owner approval).
