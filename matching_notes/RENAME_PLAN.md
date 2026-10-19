@@ -214,3 +214,11 @@ Re-cloned hippo (symlinked our baserom + reused our .venv python + our tools/ido
 build FAILS with our toolchain (6 errors, see /tmp/opencode/hippo_build.log; likely an
 IDO/binutils version pin - check their ci/ config or ask them). Next session options:
 fix the toolchain match, or fall back to gemma LLM waves for the statics tail.
+
+## CURRENT STATE (2026-10-19 afternoon, latest)
+Statics-tail waves 1-6 RUNNING (driver PID 2131856, gemma-4-31b, log
+scratch/rename_waves/driver_statics.log; queue regenerated: 170 files, 13 waves).
+Check "committed" lines in the log; run waves 7-13 with the same command if needed.
+Open items: michiiik toolchain pin (ask them; then statics address-join), reorg
+residuals (groups 5/6/7/8/61, 1/31/77, main segment, un-joined yaml entries),
+michiiik-nameless tail after all waves. Ledger 16,435 + wave commits as they land.
