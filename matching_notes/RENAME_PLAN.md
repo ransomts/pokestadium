@@ -111,3 +111,35 @@ Cross-session: the farm/matching session (farm11) runs concurrently; its uncommi
 NOTES.md/focus work is left alone (driver commits only rename outputs). Messages:
 /tmp/opencode/FROM_RENAME_SESSION.md. farm11-c pools saved pre-w26 reference old names;
 farm11-a/b (submitted after w26) import post-rename source cleanly.
+
+## Round 12 final addendum (2026-10-18 ~20:40)
+
+Post-resume batches: w27 (1,479) + w28 (1,100) + w29 (463) + w30 (219) + **hp1 (1,438:
+michiiik/pokestadium cross-reference - deterministic address join against Team Hippodrome's
+complete decomp of the same ROM; generator matching_notes/rename_hippo_gen.py; their clone
+at /tmp/opencode/hippo, re-clone shallow from github)** + c2 (61 struct fields).
+**Ledger total: 11,201 applied; 2,306 placeholders remain in src/.**
+
+Pipeline speed (user question "make it faster"):
+- batched single-pass rewrites + post-checks: 300-row apply 237s -> 27s; -j24 gate;
+  batched map check. Waves of 1,000-1,500 rows now ~10-12 min end-to-end.
+- openweight models (user directive: unlimited tokens): benchmarked on
+  fragment62_32B680.c --max 100: gpt-4.1 112 rows/47s (proprietary, metered);
+  **gemma-4-31b 116 rows/2m46s (chosen)**; qwen3.6-35b-a3b 116/4m57s; qwen3.6-27b
+  117/15m42s; gptoss-120b 64/2m14s; glm-5.3 starved at 16k tokens.
+- the REAL accelerator was the michiiik cross-reference: no LLM, one gate cycle, 1,438 rows.
+- reasoning models (gpt-5.6-*) need max_completion_tokens + no temperature.
+
+Bug ledger this stretch: batched header-decl member rewrite dropped semicolons (c2);
+has_c_definition vs extern declarations (w29 phantoms); farm-merge closure LIFTED (all
+five functions matched - 9b0aa38, code complete); progress expectation now 98.8837.
+Cross-session incidents: e7dfcab swept w29's files mid-flight (marked applied@e7dfcab);
+w29's first gate failure was a concurrent-make collision (their fd.sh builds in the main
+tree) - the gate self-heals on retry.
+
+Remaining 2,306: mostly C statics in fragment files (their tree is semantically
+reorganized - a statics cross-ref needs structural matching, not worth it), the
+michiiik-nameless overlap (~498), undefined_syms.ld-blocked (~530), weak evidence.
+Next: another LLM wave pass on the tail, Tier C shared-name field scoping (pycparser),
+and the F5 upstream fold (rename commits are cherry-pickable; credit Team Hippodrome for
+hp1 rows in PRs).
