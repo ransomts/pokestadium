@@ -8,7 +8,7 @@
 #include "src/6A40.h"
 #include "src/6BC0.h"
 #include "src/controller.h"
-#include "src/fragments/51/fragment51.h"
+#include "src/fragments/gb_tower_unused/gb_tower_unused.h"
 #include "src/geo_layout.h"
 #include "src/memory.h"
 #include "src/stage_loader.h"

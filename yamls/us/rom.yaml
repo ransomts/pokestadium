@@ -1920,8 +1920,8 @@
     start: 0x2BD0A0
     vram: 0x82800000 # unknown vram due to being unused, but based on the patterns before hand, this is probably 82800000.
     subsegments:
-    - [0x2BD0A0, textbin,    fragments/51/fragment51_header]
-    - [0x2BD0C0, c,      fragments/51/fragment51]
+    - [0x2BD0A0, textbin,    fragments/gb_tower_unused/gb_tower_unused_header]
+    - [0x2BD0C0, c,      fragments/gb_tower_unused/gb_tower_unused]
 
   - name: fragment51_relocs
     type: code
