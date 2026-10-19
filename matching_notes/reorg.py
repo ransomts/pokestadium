@@ -117,6 +117,21 @@ def apply_group(group, no_gate):
     if sub_ren is None:
         print("\n".join(problems))
         return 1
+    # park renames whose file move would land on an existing DIFFERENT file:
+    # e.g. our 3D140_2 data-entry -> michiiik's "3D140" while our 3D140.c
+    # exists (they attach that data range to a different file boundary).
+    # Renaming the yaml path there drops the .c's symbols from the link.
+    kept = []
+    for op, tp, oname, tname in sub_ren:
+        collide = [ext for ext in (".c", ".h")
+                   if os.path.exists(os.path.join(REPO, "src", op + ext))
+                   and os.path.exists(os.path.join(REPO, "src", tp + ext))]
+        if collide:
+            problems.append(f"parked {op} -> {tp}: file collision on {op}{collide[0]}"
+                            f" (michiiik attaches the range differently)")
+            continue
+        kept.append((op, tp, oname, tname))
+    sub_ren = kept
     moves = plan_files(sub_ren)
     print(f"group {group}: {len(sub_ren)} subsegment renames, {len(moves)} file moves, "
           f"{len(seg_ren)} segment renames, {len(problems)} problems")
@@ -160,8 +175,14 @@ def apply_group(group, no_gate):
     # leftover .c at old numeric paths including a moved group header).
     def rewrite_header_includes(old_variants, new_inc):
         n = 0
+        new_base = new_inc.rsplit("/", 1)[-1]
         pats = [(re.compile(r'(#include\s+")' + re.escape(v) + r'(")'), new_inc)
                 for v in old_variants]
+        # relative-path includes ("../45720.h" from src/libnaudio/): swap the
+        # basename, keep the relative prefix (michiiik's own convention)
+        bases = {v.rsplit("/", 1)[-1] for v in old_variants}
+        rel_pat = re.compile(r'(#include\s+"[^"]*/)(' + "|".join(
+            re.escape(b) for b in bases) + r')(")')
         for root in ("src", "include"):
             for dp, _d, fs in os.walk(os.path.join(REPO, root)):
                 for fn in fs:
@@ -173,6 +194,9 @@ def apply_group(group, no_gate):
                     for pat, repl in pats:
                         t2, k = pat.subn(r"\g<1>" + repl + r"\g<2>", t2)
                         n += k
+                    t2, k = rel_pat.subn(
+                        lambda m: m.group(1) + new_base + m.group(3), t2)
+                    n += k
                     if t2 != t:
                         open(p, "w").write(t2)
         return n
