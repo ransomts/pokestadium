@@ -351,6 +351,33 @@ src/include; farm's flash.c preserved untracked. fd.sh (farm) builds in the
 main tree - w29-class gate collisions confirmed live today.
 CROSS_SESSION_CHANNEL.md recreated with the coordination state.
 
+## REORG COMPLETE (2026-10-19 night, ~13:30)
+
+MAIN SEGMENT LANDED (976cc60f): 86 renames, 90 files, ROM byte-identical. With the
+fragment groups earlier today (24 commits) + the flash landing (932f1cf0), the tree now
+sits on michiiik's layout end to end. Remaining yaml residue: ~102 numeric-path entries
+= michiiik's own numeric dirs (converged) + parked classes (merges: gb_data/
+minigame_dispatch/jpeg_stream/3D140_2; kind-mismatches; michiiik-pathless overlap).
+
+THE COMPLETE LESSON LEDGER from the 12 apply attempts (all now structural guards in
+reorg.py, each committed):
+1. yaml corruption: empty-op pathless renames + short stems matching inside address
+   literals -> pathless convergence via PATH-ADDING + hex-anchored rewrite.
+2. D470 asm-processor rule conflict (latent repo bug) -> flash landing (decompiled
+   driver, farm session's work, ROM-verified).
+3. flat include rewrites break partial joins -> qualified (michiiik) + relative-path
+   passes; group headers go to the dominant dir with a dir-named header.
+4. file-boundary differences: merges (their gb_data.c = our 2 files) and range
+   attachments (3D140_2) -> parked, visible as problems.
+5. GLOBAL_ASM pragma paths must follow the renamed nonmatchings dirs.
+6. per-file Makefile rules must retarget with their files (C030 -Wo,-loopunroll,0).
+7. PROCESS: a failed revert leaves STAGED renames -> any later git add+commit sweeps
+   them (df9f2cde/97e70151 contaminated; repaired via per-file git-native checks -
+   comm-based file comparison was buggy and flagged real files); pre-apply index
+   guard + self-healing revert (index reset + leftover clean) now enforce this.
+8. mixed build/ state lies (stale ld/objects) - when in doubt: nuke build/, extract,
+   full make; trust only from-scratch gates.
+
 ## SESSION CLOSE (2026-10-19 night) - statics tail + Tier C shipped
 
 Batches this session (all gated, ROM byte-identical throughout):
