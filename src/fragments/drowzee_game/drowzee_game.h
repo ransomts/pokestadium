@@ -3,7 +3,7 @@
 
 #include "global.h"
 #include "src/11BA0.h"
-#include "src/fragments/5/fragment5.h"
+#include "src/fragments/minigame_shared_library/minigame_shared_library.h"
 
 typedef struct HudState {
     /* 0x000 */ s32 unk_000;

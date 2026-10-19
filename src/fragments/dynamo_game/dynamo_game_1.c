@@ -2,8 +2,8 @@
 #include "src/49790.h"
 #include "src/6A40.h"
 #include "src/F420.h"
-#include "src/fragments/2/fragment2.h"
-#include "src/fragments/5/fragment5.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
+#include "src/fragments/minigame_shared_library/minigame_shared_library.h"
 
 static u8 HealthBarTextureData[0x3000] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

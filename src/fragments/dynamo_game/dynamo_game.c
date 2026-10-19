@@ -15,8 +15,8 @@
 #include "src/6A40.h"
 #include "src/6BC0.h"
 #include "src/F420.h"
-#include "src/fragments/2/fragment2.h"
-#include "src/fragments/5/fragment5.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
+#include "src/fragments/minigame_shared_library/minigame_shared_library.h"
 #include "src/stage_loader.h"
 #include "src/controller.h"
 

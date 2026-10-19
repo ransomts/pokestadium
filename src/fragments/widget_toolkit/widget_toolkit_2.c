@@ -1,5 +1,5 @@
 #include "global.h"
-#include "fragment2.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 #include "src/49790.h"
 #include "src/4CBC0.h"
 #include "src/4BDC0.h"

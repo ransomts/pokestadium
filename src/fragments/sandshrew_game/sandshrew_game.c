@@ -15,7 +15,7 @@
 #include "src/50860.h"
 #include "src/6A40.h"
 #include "src/6BC0.h"
-#include "src/fragments/2/fragment2.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 #include "src/fragments/34/fragment34.h"
 #include "src/geo_layout.h"
 #include "src/memory.h"

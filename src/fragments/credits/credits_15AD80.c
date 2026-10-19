@@ -1,5 +1,5 @@
 #include "credits.h"
-#include "src/fragments/2/fragment2.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 
 u16 gBorderFadeCycleCount = 0;
 

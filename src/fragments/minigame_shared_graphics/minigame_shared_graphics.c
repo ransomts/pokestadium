@@ -1,5 +1,5 @@
-#include "fragment4.h"
-#include "src/fragments/2/fragment2.h"
+#include "src/fragments/minigame_shared_graphics/minigame_shared_graphics.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 #include "src/6A40.h"
 #include "src/4CBC0.h"
 

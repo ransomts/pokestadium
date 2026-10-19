@@ -1,4 +1,4 @@
-#include "fragment10.h"
+#include "src/fragments/drowzee_game/drowzee_game.h"
 
 u16 gGaugeSegmentLengths[4][14][8] = {
     {

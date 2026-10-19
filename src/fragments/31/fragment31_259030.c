@@ -1,6 +1,6 @@
 #include "fragment31.h"
 #include "src/6A40.h"
-#include "src/fragments/10/fragment10.h"
+#include "src/fragments/drowzee_game/drowzee_game.h"
 
 void DisplayList_InitToggledBlendModeSegment(s32 arg0, DisplayListState* state) {
     Gfx* gfx;

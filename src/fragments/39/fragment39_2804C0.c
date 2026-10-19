@@ -1,7 +1,7 @@
 #include "fragment39.h"
 #include "src/1CF30.h"
 #include "src/2E110.h"
-#include "src/fragments/2/fragment2.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 
 static MatchBanner gMessageBox;
 static RoundBanner gOptionMenu;

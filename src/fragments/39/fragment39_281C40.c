@@ -1,5 +1,5 @@
 #include "fragment39.h"
-#include "src/fragments/2/fragment2.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 #include "26820.h"
 
 void KidsClub_LoadDifficultySetting(void) {

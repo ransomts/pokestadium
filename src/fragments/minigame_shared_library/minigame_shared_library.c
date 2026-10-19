@@ -1,4 +1,4 @@
-#include "fragment5.h"
+#include "src/fragments/minigame_shared_library/minigame_shared_library.h"
 #include "src/20330.h"
 #include "src/controller.h"
 

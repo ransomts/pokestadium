@@ -1,4 +1,4 @@
-#include "fragment3.h"
+#include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
 #include "include/math.h"
 #include "src/17300.h"
 #include "src/18140.h"
@@ -6,7 +6,7 @@
 #include "src/20330.h"
 // #include "src/3FB0.h"
 #include "src/controller.h"
-#include "src/fragments/2/fragment2.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 
 s16 minigameState = 0;
 s16 minigameInputLock = 0;

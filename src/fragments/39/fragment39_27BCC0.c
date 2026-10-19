@@ -12,7 +12,7 @@
 #include "src/6A40.h"
 #include "src/F420.h"
 #include "src/controller.h"
-#include "src/fragments/2/fragment2.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 #include "src/geo_layout.h"
 #include "src/memmap.h"
 #include "src/memory.h"

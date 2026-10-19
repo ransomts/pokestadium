@@ -1,4 +1,4 @@
-#include "fragment3.h"
+#include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
 #include "src/6A40.h"
 #include "src/math_util.h"
 #include "src/memory.h"

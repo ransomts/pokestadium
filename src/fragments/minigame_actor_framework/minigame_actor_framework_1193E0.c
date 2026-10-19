@@ -1,4 +1,4 @@
-#include "fragment3.h"
+#include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
 #include "src/1CF30.h"
 #include "src/20470.h"
 #include "src/F420.h"

@@ -1,8 +1,8 @@
 #include "dynamo_game.h"
 #include "src/49790.h"
 #include "src/6A40.h"
-#include "src/fragments/2/fragment2.h"
-#include "src/fragments/5/fragment5.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
+#include "src/fragments/minigame_shared_library/minigame_shared_library.h"
 
 static Vtx gHealthBarVertices[] = {
     VTX(-1, 545, -834, 0, 1024, 0x00, 0x00, 0x78, 0xFF),

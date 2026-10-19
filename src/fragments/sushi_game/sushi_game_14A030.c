@@ -5,7 +5,7 @@
 #include "src/4CBC0.h"
 #include "src/6A40.h"
 #include "src/F420.h"
-#include "src/fragments/2/fragment2.h"
+#include "src/fragments/widget_toolkit/widget_toolkit.h"
 #include "src/memory.h"
 
 static const u32 gSushiName_Agari[] = { 0xA4A2A4AC, 0xA4EA0000 }; // "あがり"

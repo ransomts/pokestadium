@@ -1,5 +1,5 @@
 #include "fragment15.h"
-#include "src/fragments/3/fragment3.h"
+#include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
 #include "src/fragments/31/fragment31.h"
 #include "src/fragments/34/fragment34.h"
 #include "src/fragments/43/fragment43.h"
