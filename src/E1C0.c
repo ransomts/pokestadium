@@ -7,7 +7,7 @@
 #include "3FB0.h"
 #include "5580.h"
 #include "util.h"
-#include "src/fragments/1/fragment1.h"
+#include "src/fragments/gb_tower_emulator/gb_tower_emulator.h"
 
 GbEmuState* gGbEmuState;
 GbEmuThreadInfo* gGbEmuThreadInfo;

@@ -607,25 +607,25 @@
     vram: 0x81200000
     subsegments:
     - [0x7F980,  hasm,   fragments/1/fragment1_header]
-    - [0x7F9A0,  c,      fragments/1/fragment1_7F9A0]
-    - [0x86920,  c,      fragments/1/fragment1_86920]
-    - [0x86C30,  c,      fragments/1/fragment1_86C30]
-    - [0x86CB0,  c,      fragments/1/fragment1_86CB0]
+    - [0x7F9A0,  c,      fragments/gb_tower_emulator/gb_tower_emulator_7F9A0]
+    - [0x86920,  c,      fragments/gb_tower_emulator/gb_tower_emulator_86920]
+    - [0x86C30,  c,      fragments/gb_tower_emulator/gb_tower_emulator_86C30]
+    - [0x86CB0,  c,      fragments/gb_tower_emulator/gb_tower_emulator_86CB0]
     - [0x89010,  c,      fragments/1/fragment1_89010]
-    - [0x89020,  hasm,   fragments/1/fragment1_code_asm]
-    - [0x8D1A0, .data, fragments/1/fragment1_7F9A0]
-    - [0x8E3D0, .data,   fragments/1/fragment1_86C30]
-    - [0x8E3E0, .data, fragments/1/fragment1_86CB0]
+    - [0x89020,  hasm,   fragments/gb_tower_emulator/gb_tower_emulator_code_asm]
+    - [0x8D1A0, .data, fragments/gb_tower_emulator/gb_tower_emulator_7F9A0]
+    - [0x8E3D0, .data,   fragments/gb_tower_emulator/gb_tower_emulator_86C30]
+    - [0x8E3E0, .data, fragments/gb_tower_emulator/gb_tower_emulator_86CB0]
     - [0xA8020,  data,   fragments/1/fragment1_data_A8020]
     - [0xA80F0,  data,   fragments/1/fragment1_data_asm]
     - [0xA8E80,  rodata, fragments/1/fragment1_rodata_A8E80]
     - [0xA8F00,  rodata, fragments/1/fragment1_rodata_A8F00]
     - [0xA9140,  rodata, fragments/1/fragment1_rodata_A9140]
     - [0xA9BE0,  rodata, fragments/1/fragment1_rodata_A9BE0]
-    - [0xAA6D0,  .rodata, fragments/1/fragment1_7F9A0]
-    - [0xAA8F0, .rodata, fragments/1/fragment1_86920]
+    - [0xAA6D0,  .rodata, fragments/gb_tower_emulator/gb_tower_emulator_7F9A0]
+    - [0xAA8F0, .rodata, fragments/gb_tower_emulator/gb_tower_emulator_86920]
     - [0xAA900,  rodata, fragments/1/fragment1_rodata_AA900]
-    - [0xAAA20,  .rodata, fragments/1/fragment1_86CB0]
+    - [0xAAA20,  .rodata, fragments/gb_tower_emulator/gb_tower_emulator_86CB0]
 
     - {vram: 0x8122B1E0, type:  bss, name: fragments/1/fragment1_bss}
 
@@ -643,11 +643,11 @@
     start: 0xADC80
     vram: 0x81800000 # unknown VRAM, need a value here to stop linker complaints
     subsegments:
-    - [0xADC80,  bin,    fragments/1/fragment1_yay0_0]
-    - [0xF4920,  bin,    fragments/1/fragment1_yay0_1]
-    - [0xF5450,  bin,    fragments/1/fragment1_yay0_2]
-    - [0xFDE40,  bin,    fragments/1/fragment1_yay0_3]
-    - [0x102BA0, bin,    fragments/1/fragment1_yay0_4]
+    - [0xADC80,  bin,    fragments/gb_tower_emulator/gb_tower_emulator_yay0_0]
+    - [0xF4920,  bin,    fragments/gb_tower_emulator/gb_tower_emulator_yay0_1]
+    - [0xF5450,  bin,    fragments/gb_tower_emulator/gb_tower_emulator_yay0_2]
+    - [0xFDE40,  bin,    fragments/gb_tower_emulator/gb_tower_emulator_yay0_3]
+    - [0x102BA0, bin,    fragments/gb_tower_emulator/gb_tower_emulator_yay0_4]
 
 # text code
   - name: fragment2

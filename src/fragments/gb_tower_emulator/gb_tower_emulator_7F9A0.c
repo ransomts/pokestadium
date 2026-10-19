@@ -1,5 +1,5 @@
 #include "global.h"
-#include "fragment1.h"
+#include "src/fragments/gb_tower_emulator/gb_tower_emulator.h"
 #include "src/29BA0.h"
 #include "src/3FB0.h"
 #include "src/5580.h"
