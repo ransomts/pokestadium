@@ -8,7 +8,7 @@
 #include "src/6BC0.h"
 
 static u16 gPokemonIconTextures[151][0x640];
-static unk_D_83079E70 D_83079E70;
+static QualifyingSpeciesWindow gQualifyingSpeciesWindow;
 
 s32 RentalRules_SpeciesMatchesCategory(s16 arg0, s16 arg1) {
     s32 var_v1;
@@ -80,7 +80,7 @@ s16 RentalRules_CountMatchingSpecies(s16 arg0) {
     return var_s1;
 }
 
-s32 RentalRules_BuildSpeciesPage(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2) {
+s32 RentalRules_BuildSpeciesPage(SpeciesPage* arg0, s16 arg1, s16 arg2) {
     s32 i;
     s16 var_a0;
     s32 var_s1;
@@ -112,7 +112,7 @@ s32 RentalRules_BuildSpeciesPage(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2) {
     return var_s3;
 }
 
-unk_D_83079E70_000* RentalRules_AdvancePageNode(unk_D_83079E70_000* arg0, s32 arg1) {
+SpeciesPage* RentalRules_AdvancePageNode(SpeciesPage* arg0, s32 arg1) {
     while (arg1-- > 0) {
         arg0 = arg0->unk_18;
     }
@@ -120,7 +120,7 @@ unk_D_83079E70_000* RentalRules_AdvancePageNode(unk_D_83079E70_000* arg0, s32 ar
     return arg0;
 }
 
-s32 RentalRules_ScrollPageUp(unk_D_83079E70* arg0) {
+s32 RentalRules_ScrollPageUp(QualifyingSpeciesWindow* arg0) {
     s32 sp1C = 0;
 
     if (RentalRules_BuildSpeciesPage(arg0->unk_10->unk_1C, arg0->unk_08 - 1, gSessionContext.unk_0001) > 0) {
@@ -137,7 +137,7 @@ s32 RentalRules_ScrollPageUp(unk_D_83079E70* arg0) {
     return sp1C;
 }
 
-s32 RentalRules_ScrollPageDown(unk_D_83079E70* arg0) {
+s32 RentalRules_ScrollPageDown(QualifyingSpeciesWindow* arg0) {
     s32 sp1C = 0;
 
     if (RentalRules_BuildSpeciesPage(RentalRules_AdvancePageNode(arg0->unk_10, 5), arg0->unk_08 + 5, gSessionContext.unk_0001) > 0) {
@@ -154,7 +154,7 @@ s32 RentalRules_ScrollPageDown(unk_D_83079E70* arg0) {
     return sp1C;
 }
 
-void RentalRules_QualifyingSpeciesWindowUpdateOpen(unk_D_83079E70* arg0) {
+void RentalRules_QualifyingSpeciesWindowUpdateOpen(QualifyingSpeciesWindow* arg0) {
     arg0->posY--;
     arg0->rotation = ((5 - arg0->posY) << 0xA) / 5;
     if (arg0->posY <= 0) {
@@ -164,7 +164,7 @@ void RentalRules_QualifyingSpeciesWindowUpdateOpen(unk_D_83079E70* arg0) {
     }
 }
 
-void RentalRules_QualifyingSpeciesWindowUpdateShown(unk_D_83079E70* arg0) {
+void RentalRules_QualifyingSpeciesWindowUpdateShown(QualifyingSpeciesWindow* arg0) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
         arg0->posX = 4;
         arg0->posY = 5;
@@ -177,7 +177,7 @@ void RentalRules_QualifyingSpeciesWindowUpdateShown(unk_D_83079E70* arg0) {
     }
 }
 
-void RentalRules_QualifyingSpeciesWindowUpdateScrolling(unk_D_83079E70* arg0) {
+void RentalRules_QualifyingSpeciesWindowUpdateScrolling(QualifyingSpeciesWindow* arg0) {
     s32 var_v1;
 
     arg0->posY--;
@@ -197,7 +197,7 @@ void RentalRules_QualifyingSpeciesWindowUpdateScrolling(unk_D_83079E70* arg0) {
     }
 }
 
-void RentalRules_QualifyingSpeciesWindowUpdateClose(unk_D_83079E70* arg0) {
+void RentalRules_QualifyingSpeciesWindowUpdateClose(QualifyingSpeciesWindow* arg0) {
     arg0->posY--;
     arg0->rotation = (arg0->posY << 0xA) / 5;
     if (arg0->posY <= 0) {
@@ -207,7 +207,7 @@ void RentalRules_QualifyingSpeciesWindowUpdateClose(unk_D_83079E70* arg0) {
     }
 }
 
-void RentalRules_DrawScrollbar(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
+void RentalRules_DrawScrollbar(s16 arg0, s16 arg1, QualifyingSpeciesWindow* arg2) {
     static s16 D_83003B70 = 0;
 
     s16 temp_t0;
@@ -251,7 +251,7 @@ void RentalRules_DrawEligibilityPanelLegend(s16 arg0, s16 arg1) {
     Gfx_DrawTextureI4(arg0, arg1, 0x20, 0x14, D_4000DD0, 0x20, 0);
 }
 
-void RentalRules_DrawSpeciesPage(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
+void RentalRules_DrawSpeciesPage(s16 arg0, s16 arg1, SpeciesPage* arg2) {
     UNUSED s32 pad;
     s32 i;
     Color_RGB8* var_v0;
@@ -299,7 +299,7 @@ void RentalRules_DrawSpeciesPage(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
 }
 
 void RentalRules_QualifyingSpeciesWindowInit(s32 arg0) {
-    unk_D_83079E70* ptr = &D_83079E70;
+    QualifyingSpeciesWindow* ptr = &gQualifyingSpeciesWindow;
     s32 i;
 
     ptr->posX = 0;
@@ -318,24 +318,24 @@ void RentalRules_QualifyingSpeciesWindowInit(s32 arg0) {
 }
 
 void RentalRules_QualifyingSpeciesWindowUpdate(void) {
-    unk_D_83079E70* ptr = &D_83079E70;
+    QualifyingSpeciesWindow* ptr = &gQualifyingSpeciesWindow;
 
     if (ptr->posX != 0) {
         switch (ptr->posX) {
             case 1:
-                RentalRules_QualifyingSpeciesWindowUpdateOpen(&D_83079E70);
+                RentalRules_QualifyingSpeciesWindowUpdateOpen(&gQualifyingSpeciesWindow);
                 break;
 
             case 2:
-                RentalRules_QualifyingSpeciesWindowUpdateShown(&D_83079E70);
+                RentalRules_QualifyingSpeciesWindowUpdateShown(&gQualifyingSpeciesWindow);
                 break;
 
             case 3:
-                RentalRules_QualifyingSpeciesWindowUpdateScrolling(&D_83079E70);
+                RentalRules_QualifyingSpeciesWindowUpdateScrolling(&gQualifyingSpeciesWindow);
                 break;
 
             case 4:
-                RentalRules_QualifyingSpeciesWindowUpdateClose(&D_83079E70);
+                RentalRules_QualifyingSpeciesWindowUpdateClose(&gQualifyingSpeciesWindow);
                 break;
         }
     }
@@ -344,7 +344,7 @@ void RentalRules_QualifyingSpeciesWindowUpdate(void) {
 void RentalRules_QualifyingSpeciesWindowDraw(void) {
     s16 spA6;
     s16 spA4;
-    unk_D_83079E70* ptr = &D_83079E70;
+    QualifyingSpeciesWindow* ptr = &gQualifyingSpeciesWindow;
 
     if (ptr->rotation == 0) {
         return;
@@ -357,7 +357,7 @@ void RentalRules_QualifyingSpeciesWindowDraw(void) {
     if (ptr->rotation >= 0x400) {
         UNUSED s32 pad;
         s32 i;
-        unk_D_83079E70_000* var_s0;
+        SpeciesPage* var_s0;
 
         RentalRules_DrawFilledPanel(spA6, spA4, 0x210, 0x24, 0x1E, 0x64, 0x64);
         RentalRules_DrawFilledPanel(spA6, spA4 + 0x24, 0x18, 0x12C, 0x1E, 0x1E, 0x64);
@@ -375,7 +375,7 @@ void RentalRules_QualifyingSpeciesWindowDraw(void) {
         Text_SetNumberToken(3, ptr->unk_06);
         {
             char sp4C[64];
-            Font_Printf(spA6 + 0x2C, spA4 + 8, Text_GetString(sp4C, sizeof(sp4C), D_830039C0, 3));
+            Font_Printf(spA6 + 0x2C, spA4 + 8, Text_GetString(sp4C, sizeof(sp4C), gQualifyingSpeciesCountString, 3));
         }
         Font_EndTexturedTextRendering();
 
@@ -417,7 +417,7 @@ void RentalRules_QualifyingSpeciesWindowDraw(void) {
 }
 
 void RentalRules_QualifyingSpeciesWindowOpen(void) {
-    unk_D_83079E70* ptr = &D_83079E70;
+    QualifyingSpeciesWindow* ptr = &gQualifyingSpeciesWindow;
     s32 i;
 
     ptr->posX = 1;
@@ -437,7 +437,7 @@ void RentalRules_QualifyingSpeciesWindowOpen(void) {
 s32 RentalRules_QualifyingSpeciesWindowIsActive(void) {
     s32 ret;
 
-    if (D_83079E70.posX != 0) {
+    if (gQualifyingSpeciesWindow.posX != 0) {
         ret = 1;
     } else {
         ret = 0;
@@ -446,5 +446,5 @@ s32 RentalRules_QualifyingSpeciesWindowIsActive(void) {
 }
 
 s32 RentalRules_GetQualifyingSpeciesDisplayOpeningProgress(void) {
-    return D_83079E70.rotation;
+    return gQualifyingSpeciesWindow.rotation;
 }

@@ -15,11 +15,11 @@
 
 static ModelData* gGeoLayout_StageBackground;
 static GraphNode* gStageTextureNode;
-static Fragment2_1GraphNode D_82800538;
-static BinArchive* D_828006A0;
-static u8* D_828006A4;
+static Fragment2_1GraphNode gViewerGraphNode;
+static BinArchive* gViewerAssetArchive;
+static u8* gViewerTextureData;
 
-static u32 D_828004D0[] = {
+static u32 gViewerGeoLayout[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,  0x00000000, 0x014000F0, 0x00000032, 0x00000000, 0x00000118,
     0x05000000, 0x0D000000, 0x05000000,  0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
     0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
@@ -57,7 +57,7 @@ void func_82800050(u8* arg0) {
 
 void func_828001D0(void) {
     BgStage_DrawFrame();
-    func_82800050(D_828006A4);
+    func_82800050(gViewerTextureData);
     GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     GeoRender_AdvanceFrameCounter();
     Geo_RenderRootNode(gStageTextureNode);
@@ -92,14 +92,14 @@ void func_82800238(void) {
 void func_828002E4(void) {
     MemoryBlock* sp1C = MainPool_AllocState(main_pool_get_available(), 0);
 
-    gStageTextureNode = process_geo_layout(sp1C, D_828004D0);
+    gStageTextureNode = process_geo_layout(sp1C, gViewerGeoLayout);
     MainPool_FinalizeAllocation(sp1C);
     ModelRenderer_InitDisplayRoots();
-    ModelRenderer_AttachDisplayObject(&D_82800538);
+    ModelRenderer_AttachDisplayObject(&gViewerGraphNode);
     PokeIcon_OpenModelArchives();
     gGeoLayout_StageBackground = Model_LoadByArchiveIndex(0x96);
-    Model_InitDisplayObject(&D_82800538, 0, 0x96, gGeoLayout_StageBackground->unk_08->posX[0]);
-    ModelAnim_SetAnimation(&D_82800538, 0);
+    Model_InitDisplayObject(&gViewerGraphNode, 0, 0x96, gGeoLayout_StageBackground->unk_08->posX[0]);
+    ModelAnim_SetAnimation(&gViewerGraphNode, 0);
 }
 
 s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
@@ -114,8 +114,8 @@ s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    D_828006A0 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_828006A4 = BinArchive_GetFile(D_828006A0, 2);
+    gViewerAssetArchive = ASSET_LOAD2(backgrounds, 1, 1);
+    gViewerTextureData = BinArchive_GetFile(gViewerAssetArchive, 2);
 
     func_828002E4();
     StageContext_Activate(sp24);

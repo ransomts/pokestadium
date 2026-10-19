@@ -92,11 +92,11 @@ typedef struct unk_func_88001300_03C_00C {
     /* 0x18 */ char unk18[0x14];
 } unk_func_88001300_03C_00C; // size = 0x2C
 
-typedef struct unk_func_88001300_03C_01C {
+typedef struct WidgetAnimatedFrame {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ Color_RGBA8 unk_2C;
     /* 0x30 */ s32 unk_30;
-} unk_func_88001300_03C_01C; // size = 0x34
+} WidgetAnimatedFrame; // size = 0x34
 
 typedef s32 (*unk_func_88001300_03C_010)(struct GridMenu*, Controller*);
 typedef void (*unk_func_88001300_03C_014)(struct GridMenu*, s32);
@@ -107,7 +107,7 @@ typedef struct GridMenu {
     /* 0x10 */ unk_func_88001300_03C_010 unk_10;
     /* 0x14 */ unk_func_88001300_03C_014 unk_14;
     /* 0x18 */ unk_func_88001300_000** unk_18;
-    /* 0x1C */ unk_func_88001300_03C_01C* unk_1C;
+    /* 0x1C */ WidgetAnimatedFrame* unk_1C;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ s32 unk_28;
@@ -196,11 +196,11 @@ typedef struct unk_func_885012A4 {
     /* 0x2C */ Color_RGBA8 unk_2C;
 } unk_func_885012A4; // size = 0x30
 
-typedef struct unk_func_88503298 {
+typedef struct WidgetVisibilityGate {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_8850878C* unk_30;
-} unk_func_88503298; // size = 0x34
+} WidgetVisibilityGate; // size = 0x34
 
 typedef void (*unk_func_88200FA0_030_030_040)(s32, s32, char*, s32, s32, struct unk_func_88200FA0_030_030*);
 
@@ -213,7 +213,7 @@ typedef struct unk_func_88200FA0_030_030 {
     /* 0x3C */ s16 unk_3C;
     /* 0x3E */ s16 unk_3E;
     /* 0x40 */ unk_func_88200FA0_030_030_040 unk_40;
-    /* 0x44 */ unk_func_88001300_03C_01C* unk_44;
+    /* 0x44 */ WidgetAnimatedFrame* unk_44;
     /* 0x48 */ s16 unk_48;
     /* 0x4A */ s16 unk_4A;
     /* 0x4C */ s16 unk_4C;
@@ -232,7 +232,7 @@ typedef struct unk_func_88200FA0_030_030_1AE680 {
     /* 0x3C */ s16 unk_3C;
     /* 0x3E */ s16 unk_3E;
     /* 0x40 */ unk_func_88200FA0_030_030_040 unk_40;
-    /* 0x44 */ unk_func_88001300_03C_01C* unk_44;
+    /* 0x44 */ WidgetAnimatedFrame* unk_44;
     /* 0x48 */ s16 unk_48;
     /* 0x4A */ s16 unk_4A;
     /* 0x4C */ s16 unk_4C;
@@ -251,7 +251,7 @@ typedef struct unk_func_88200FA0_030_030_1CEA00 {
     /* 0x3C */ s16 unk_3C;
     /* 0x3E */ s16 unk_3E;
     /* 0x40 */ unk_func_88200FA0_030_030_040 unk_40;
-    /* 0x44 */ unk_func_88001300_03C_01C* unk_44;
+    /* 0x44 */ WidgetAnimatedFrame* unk_44;
     /* 0x48 */ s16 unk_48;
     /* 0x4A */ s16 unk_4A;
     /* 0x4C */ s16 unk_4C;
@@ -366,7 +366,7 @@ typedef struct unk_func_882025E0_024 {
     /* 0x3C */ s16 unk_3C;
     /* 0x3E */ s16 unk_3E;
     /* 0x40 */ unk_func_88200FA0_030_030_040 unk_40;
-    /* 0x44 */ unk_func_88001300_03C_01C* unk_44;
+    /* 0x44 */ WidgetAnimatedFrame* unk_44;
     /* 0x48 */ s16 unk_48;
     /* 0x4A */ s16 unk_4A;
     /* 0x4C */ s16 unk_4C;
@@ -474,7 +474,7 @@ typedef struct unk_func_88205880_0098_008_070 {
     /* 0x40 */ s32 unk_40;
 } unk_func_88205880_0098_008_070; // size = 0x44
 
-typedef struct unk_func_88205880_0098_008 {
+typedef struct LabPC_DetailPanel {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_88001300_02C* unk_30;
@@ -501,13 +501,13 @@ typedef struct unk_func_88205880_0098_008 {
     /* 0x84 */ s32 unk_84;
     /* 0x88 */ s32 unk_88;
     /* 0x8C */ s32 unk_8C;
-} unk_func_88205880_0098_008; // size = 0x90
+} LabPC_DetailPanel; // size = 0x90
 
-typedef struct unk_func_88205880_0098 {
+typedef struct LabPC_DetailPanelParams {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ MemoryPool* rotation;
-    /* 0x08 */ unk_func_88205880_0098_008* unk_08;
+    /* 0x08 */ LabPC_DetailPanel* unk_08;
     /* 0x0C */ PokemonData* unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ unk_func_88001300_000* unk_14;
@@ -519,7 +519,7 @@ typedef struct unk_func_88205880_0098 {
     /* 0x2C */ char** unk_2C;
     /* 0x30 */ char** unk_30;
     /* 0x34 */ char** unk_34;
-} unk_func_88205880_0098; // size = 0x38
+} LabPC_DetailPanelParams; // size = 0x38
 
 typedef struct unk_func_88201DA0 {
     /* 0x00 */ unk_func_88001300_000 posX;
@@ -528,7 +528,7 @@ typedef struct unk_func_88201DA0 {
     /* 0x34 */ unk_func_88201DA0_034* unk_34;
     /* 0x38 */ unk_func_88201DA0_038 unk_38;
     /* 0x48 */ FragmentEntry unk_48;
-    /* 0x4C */ unk_func_88205880_0098* unk_4C;
+    /* 0x4C */ LabPC_DetailPanelParams* unk_4C;
     /* 0x50 */ unk_func_8850878C* unk_50;
     /* 0x54 */ char* unk_54;
     /* 0x58 */ unk_func_8850182C* unk_58;
@@ -739,10 +739,10 @@ typedef void (*func88502274)(unk_func_88001300_038*, s32, s32, s32, s32);
 typedef void (*func88502C98)(unk_func_88001300_038*);
 typedef void (*func88503118)(unk_func_88001300_02C*, s32, s32, s32, s32);
 typedef void (*func885031E8)(unk_func_88001300_000*, s32, s32, s32, s32);
-typedef void (*func88503298)(unk_func_88503298*, unk_func_88001300_038*, unk_func_88001300_000*);
-typedef void (*func88503340)(unk_func_88001300_03C_01C*, s32, s32, s32, s32, Color_RGBA8);
-typedef void (*func88503BAC)(unk_func_88001300_03C_01C*, s32, s32, s32, s32, Color_RGBA8);
-typedef void (*func88504570)(unk_func_88001300_03C_01C*, s32, s32, s32, s32, Color_RGBA8);
+typedef void (*func88503298)(WidgetVisibilityGate*, unk_func_88001300_038*, unk_func_88001300_000*);
+typedef void (*func88503340)(WidgetAnimatedFrame*, s32, s32, s32, s32, Color_RGBA8);
+typedef void (*func88503BAC)(WidgetAnimatedFrame*, s32, s32, s32, s32, Color_RGBA8);
+typedef void (*func88504570)(WidgetAnimatedFrame*, s32, s32, s32, s32, Color_RGBA8);
 typedef void (*func88504F98)(unk_func_8820E99C_030_044*, s32, s32, s32, s32);
 typedef void (*func885054D8)(unk_func_88001300_030*, s32, s32, s32, s32, Color_RGBA8);
 typedef void (*func88505E2C)(unk_func_88001300_034*, s32, s32, s32, s32, s32, Color_RGBA8, TextObject*);
@@ -830,20 +830,20 @@ s32 WidgetTree_UpdateDelayedWidget(unk_func_88001300_02C*);
 void WidgetTree_InitVisibilityGate(unk_func_88001300_000*, s32, s32, s32, s32);
 s32 WidgetTree_ClearVisibilityGateFlags(unk_func_88001300_000*);
 s32 WidgetTree_DrawVisibilityGate(unk_func_88001300_000*, s32, s32);
-void WidgetTree_InitVisibilityGateBridge(unk_func_88503298*, unk_func_88001300_038*, unk_func_88001300_000*);
-s32 WidgetTree_UpdateVisibilityGateBridge(unk_func_88503298*);
-void WidgetTree_InitAnimatedFrameVariantA(unk_func_88001300_03C_01C*, s32, s32, s32, s32, Color_RGBA8);
-s32 WidgetTree_UpdateAnimatedFrameVariantA(unk_func_88001300_03C_01C*);
-s32 WidgetTree_DrawAnimatedFrameVariantA(unk_func_88001300_03C_01C*, s32, s32);
-void WidgetTree_SetAnimatedFrameVariantAState(unk_func_88001300_03C_01C*, s32);
-void WidgetTree_InitAnimatedFrameVariantB(unk_func_88001300_03C_01C*, s32, s32, s32, s32, Color_RGBA8);
-s32 WidgetTree_UpdateAnimatedFrameVariantB(unk_func_88001300_03C_01C*);
-s32 WidgetTree_DrawAnimatedFrameVariantB(unk_func_88001300_03C_01C*, s32, s32);
-void WidgetTree_SetAnimatedFrameVariantBState(unk_func_88001300_03C_01C*, s32);
-void WidgetTree_InitAnimatedFrameVariantC(unk_func_88001300_03C_01C*, s32, s32, s32, s32, Color_RGBA8);
-s32 WidgetTree_UpdateAnimatedFrameVariantC(unk_func_88001300_03C_01C*);
-s32 WidgetTree_DrawAnimatedFrameVariantC(unk_func_88001300_03C_01C*, s32, s32);
-void WidgetTree_SetAnimatedFrameVariantCState(unk_func_88001300_03C_01C*, s32);
+void WidgetTree_InitVisibilityGateBridge(WidgetVisibilityGate*, unk_func_88001300_038*, unk_func_88001300_000*);
+s32 WidgetTree_UpdateVisibilityGateBridge(WidgetVisibilityGate*);
+void WidgetTree_InitAnimatedFrameVariantA(WidgetAnimatedFrame*, s32, s32, s32, s32, Color_RGBA8);
+s32 WidgetTree_UpdateAnimatedFrameVariantA(WidgetAnimatedFrame*);
+s32 WidgetTree_DrawAnimatedFrameVariantA(WidgetAnimatedFrame*, s32, s32);
+void WidgetTree_SetAnimatedFrameVariantAState(WidgetAnimatedFrame*, s32);
+void WidgetTree_InitAnimatedFrameVariantB(WidgetAnimatedFrame*, s32, s32, s32, s32, Color_RGBA8);
+s32 WidgetTree_UpdateAnimatedFrameVariantB(WidgetAnimatedFrame*);
+s32 WidgetTree_DrawAnimatedFrameVariantB(WidgetAnimatedFrame*, s32, s32);
+void WidgetTree_SetAnimatedFrameVariantBState(WidgetAnimatedFrame*, s32);
+void WidgetTree_InitAnimatedFrameVariantC(WidgetAnimatedFrame*, s32, s32, s32, s32, Color_RGBA8);
+s32 WidgetTree_UpdateAnimatedFrameVariantC(WidgetAnimatedFrame*);
+s32 WidgetTree_DrawAnimatedFrameVariantC(WidgetAnimatedFrame*, s32, s32);
+void WidgetTree_SetAnimatedFrameVariantCState(WidgetAnimatedFrame*, s32);
 void WidgetTree_InitDirectionalIndicator(unk_func_8820E99C_030_044*, s32, s32, s32, s32);
 s32 WidgetTree_UpdateDirectionalIndicator(unk_func_8820E99C_030_044*);
 s32 WidgetTree_DrawDirectionalIndicator(unk_func_8820E99C_030_044*, s32, s32);

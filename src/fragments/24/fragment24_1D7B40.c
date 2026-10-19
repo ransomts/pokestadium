@@ -602,10 +602,10 @@ void BattleInfoWidget_Build(unk_func_8830867C_034* arg0, s32 arg1, s32 arg2, unk
     char* sp68;
     s32 sp64;
     s32 sp60;
-    unk_func_88001300_03C_01C* sp5C;
+    WidgetAnimatedFrame* sp5C;
     unk_func_8850BD40* sp58;
     unk_func_8850BD40* sp54;
-    unk_func_88503298* sp50;
+    WidgetVisibilityGate* sp50;
 
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_034));
 
@@ -675,7 +675,7 @@ void BattleInfoWidget_Build(unk_func_8830867C_034* arg0, s32 arg1, s32 arg2, unk
     ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(arg0->unk_40, (sp60 - sp64) / 2, 2, sp68, 8);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp6C, arg0->unk_40);
 
-    sp5C = mem_pool_alloc(arg4, sizeof(unk_func_88001300_03C_01C));
+    sp5C = mem_pool_alloc(arg4, sizeof(WidgetAnimatedFrame));
     ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(sp5C, -3, -3, sp6C->unk_14.posX + 6,
                                                            sp6C->unk_14.posY + 6, gMenuHighlightColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp6C, sp5C);
@@ -692,7 +692,7 @@ void BattleInfoWidget_Build(unk_func_8830867C_034* arg0, s32 arg1, s32 arg2, unk
     ((func8850BD40)Memmap_GetFragmentVaddr(WidgetTree_InitScrollableGridInputProxy))(sp54, arg0->unk_3C);
     ((func8850CC74)Memmap_GetFragmentVaddr(WidgetTree_AppendChildSelectionProxyItem))(arg0->unk_38, sp54);
 
-    sp50 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
+    sp50 = mem_pool_alloc(arg4, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(sp50, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, sp50);
 }
@@ -891,7 +891,7 @@ void BattleInfoWidget_DrawLabel(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 ar
 void BattleInfoWidget_InitDropdownMenu(unk_func_8830867C_030* arg0, unk_func_88001300_000* arg1, MemoryPool* arg2) {
     static Color_RGBA8 gSubMenuBackgroundColor = { 0xA0, 0x96, 0x64, 0xFF };
 
-    unk_func_88503298* sp44;
+    WidgetVisibilityGate* sp44;
 
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_030));
 
@@ -917,7 +917,7 @@ void BattleInfoWidget_InitDropdownMenu(unk_func_8830867C_030* arg0, unk_func_880
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, arg0->unk_3C);
 
     if (arg1 != NULL) {
-        sp44 = mem_pool_alloc(arg2, sizeof(unk_func_88503298));
+        sp44 = mem_pool_alloc(arg2, sizeof(WidgetVisibilityGate));
         ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(sp44, arg0->unk_2C, arg1);
         ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, sp44);
     }
@@ -1102,7 +1102,7 @@ void BattleInfoWidget_BuildStatusMenu(unk_func_8830867C_038* arg0, s32 arg1, s32
     s32 temp_v0_6;
     s32 temp_v0_7;
     unk_func_885012A4* temp_s0_2;
-    unk_func_88503298* temp_s0_3;
+    WidgetVisibilityGate* temp_s0_3;
     DashedBorderFrame* sp70;
     char* sp6C;
     unk_func_8850878C* sp68;
@@ -1155,7 +1155,7 @@ void BattleInfoWidget_BuildStatusMenu(unk_func_8830867C_038* arg0, s32 arg1, s32
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, temp_s0_2);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s0_2, arg0->unk_30);
 
-    temp_s0_3 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
+    temp_s0_3 = mem_pool_alloc(arg4, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(temp_s0_3, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_3);
 
@@ -1398,7 +1398,7 @@ void BattleInfoWidget_BuildLevelRangeMenu(unk_func_8830867C_044* arg0, s32 arg1,
     s32 sp90;
     s32 sp8C;
     unk_func_8850878C* temp_s0_5;
-    unk_func_88001300_03C_01C* temp_s0_6;
+    WidgetAnimatedFrame* temp_s0_6;
     DashedBorderFrame* sp80;
     GridMenu* ptr;
     unk_func_885012A4* sp78;
@@ -1411,7 +1411,7 @@ void BattleInfoWidget_BuildLevelRangeMenu(unk_func_8830867C_044* arg0, s32 arg1,
     unk_func_8850878C* temp_s0_4;
     s32 sp58;
     s32 tmp;
-    unk_func_88503298* temp_s0_7;
+    WidgetVisibilityGate* temp_s0_7;
 
     sp94 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMoveListMessageTable, 0x48));
     sp90 = (Font_MeasureTextExtent(8, 0, "0") * 3) + 6;
@@ -1509,12 +1509,12 @@ void BattleInfoWidget_BuildLevelRangeMenu(unk_func_8830867C_044* arg0, s32 arg1,
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_34, arg0->unk_30);
     ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(arg0->unk_44);
 
-    temp_s0_6 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_03C_01C));
+    temp_s0_6 = mem_pool_alloc(arg4, sizeof(WidgetAnimatedFrame));
     ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(temp_s0_6, 0, 0, 0x10, 0x10, gColor_YellowAccent);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp78, temp_s0_6);
     arg0->unk_44->unk_1C = temp_s0_6;
 
-    temp_s0_7 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
+    temp_s0_7 = mem_pool_alloc(arg4, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(temp_s0_7, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_7);
 }
@@ -1783,9 +1783,9 @@ void BattleInfoWidget_BuildTypePanel(unk_func_8830867C_03C* arg0, s32 arg1, s32 
     s32 var_v1;
     s32 var_v1_2;
     unk_func_8850878C* temp_s0;
-    unk_func_88001300_03C_01C* temp_s0_2;
+    WidgetAnimatedFrame* temp_s0_2;
     unk_func_8850BD40* temp_s0_3;
-    unk_func_88503298* temp_s0_4;
+    WidgetVisibilityGate* temp_s0_4;
     DashedBorderFrame* temp_s1;
     unk_func_88001300_000* temp_s1_4;
     GridMenu* ptr;
@@ -1877,7 +1877,7 @@ void BattleInfoWidget_BuildTypePanel(unk_func_8830867C_03C* arg0, s32 arg1, s32 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_48, arg0->unk_40);
     ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(arg0->unk_50);
 
-    temp_s0_2 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_03C_01C));
+    temp_s0_2 = mem_pool_alloc(arg4, sizeof(WidgetAnimatedFrame));
     ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(temp_s0_2, 0, 0, 0x10, 0x10, gColor_ListAccent);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(spA0, temp_s0_2);
     arg0->unk_50->unk_1C = temp_s0_2;
@@ -1913,7 +1913,7 @@ void BattleInfoWidget_BuildTypePanel(unk_func_8830867C_03C* arg0, s32 arg1, s32 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s1_4, sp6C[1]);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s1_4, arg0->unk_54);
 
-    temp_s0_4 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
+    temp_s0_4 = mem_pool_alloc(arg4, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(temp_s0_4, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_4);
 }
@@ -2188,9 +2188,9 @@ void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 
     s32 i;
     s32 spC4;
     unk_func_8850878C* temp_s0;
-    unk_func_88001300_03C_01C* temp_s0_2;
+    WidgetAnimatedFrame* temp_s0_2;
     unk_func_8850BD40* temp_s0_3;
-    unk_func_88503298* temp_s0_4;
+    WidgetVisibilityGate* temp_s0_4;
     s32 spB0;
     s32 temp_s1_2;
     s32 temp_s1_3;
@@ -2290,7 +2290,7 @@ void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_58, arg0->unk_50);
     ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(arg0->unk_60);
 
-    temp_s0_2 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_03C_01C));
+    temp_s0_2 = mem_pool_alloc(arg4, sizeof(WidgetAnimatedFrame));
     ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(temp_s0_2, 0, 0, 0x10, 0x10, gColor_PokemonListAccent);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(spA0, temp_s0_2);
     arg0->unk_60->unk_1C = temp_s0_2;
@@ -2327,7 +2327,7 @@ void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s1_4, sp68[1]);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s1_4, arg0->unk_64);
 
-    temp_s0_4 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
+    temp_s0_4 = mem_pool_alloc(arg4, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(temp_s0_4, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_4);
 }
@@ -2792,7 +2792,7 @@ void BattleInfoWidget_BuildItemMenu(unk_func_8830867C_04C* arg0, s32 arg1, s32 a
     ((func8850BD40)Memmap_GetFragmentVaddr(WidgetTree_InitScrollableGridInputProxy))(sp4C, arg0->unk_7C);
     ((func8850BF80)Memmap_GetFragmentVaddr(WidgetTree_AppendVerticalMenuItem))(arg0->unk_80, sp4C);
 
-    arg0->unk_90 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
+    arg0->unk_90 = mem_pool_alloc(arg4, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(arg0->unk_90, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_90);
 }
@@ -3608,7 +3608,7 @@ void BattleInfoWidget_BuildMoveDestinationMenu(unk_func_8830867C_048* arg0, s32 
     unk_func_88001300_000* sp74;
     unk_func_8850BD40* sp70;
     unk_func_8850BD40* sp6C;
-    unk_func_88503298* sp68;
+    WidgetVisibilityGate* sp68;
 
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_048));
 
@@ -3752,7 +3752,7 @@ void BattleInfoWidget_BuildMoveDestinationMenu(unk_func_8830867C_048* arg0, s32 
     ((func8850BD40)Memmap_GetFragmentVaddr(WidgetTree_InitScrollableGridInputProxy))(sp6C, arg0->unk_38[1]);
     ((func8850CC74)Memmap_GetFragmentVaddr(WidgetTree_AppendChildSelectionProxyItem))(arg0->unk_4C, sp6C);
 
-    sp68 = mem_pool_alloc(arg4, sizeof(unk_func_88503298));
+    sp68 = mem_pool_alloc(arg4, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(sp68, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, sp68);
 }

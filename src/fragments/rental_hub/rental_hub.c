@@ -63,9 +63,9 @@ void RentalHub_DrawHeader(void) {
 }
 
 void RentalHub_DrawSelectionCursor(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    static s16 D_82B01138 = 0;
+    static s16 gCursorAnimTimer = 0;
 
-    s16 sp56 = SINS(D_82B01138) * 2;
+    s16 sp56 = SINS(gCursorAnimTimer) * 2;
     UNUSED s32 pad[2];
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -78,7 +78,7 @@ void RentalHub_DrawSelectionCursor(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    D_82B01138 += 0x2000;
+    gCursorAnimTimer += 0x2000;
 }
 
 void RentalHub_DrawMenuItemBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {

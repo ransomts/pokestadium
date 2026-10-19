@@ -41,7 +41,7 @@ static char* gBattleModeSubtitle_8;
 unk_D_83003CE0 gMenuStaticStrings;
 unk_D_83003CE0 gMenuOptionStrings;
 
-char** D_830039C0 = NULL;
+char** gQualifyingSpeciesCountString = NULL;
 static char** gBattleModeMessageBank = NULL;
 static u8 gBattleModeAssetIndices[] = {
     0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0F,
@@ -505,7 +505,7 @@ void RentalRules_DrawHeaderBanner(void) {
 
             Text_SetEnvColor(0, 0, 0, 0xFF);
             Text_SetStringToken(0x26, gCurrentBattleModeTitle);
-            temp_v0_21 = Text_GetString(sp48, sizeof(sp48), D_830039C0, 0);
+            temp_v0_21 = Text_GetString(sp48, sizeof(sp48), gQualifyingSpeciesCountString, 0);
             Font_Printf(0x6A, temp_s1 + 4, temp_v0_21);
             Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
             Font_Printf(0x68, temp_s1 + 2, temp_v0_21);
@@ -571,13 +571,13 @@ void RentalRules_DrawRuleListText(s16 arg0, s16 arg1) {
     if (gCurrentBattleModeSubtitle != NULL) {
         if (gCurrentBattleModeSubtitle != gBattleModeSubtitle_0) {
             Text_SetStringToken(0x27, gCurrentBattleModeSubtitle);
-            Font_Printf(arg0 + 0x10, arg1 + 4, Text_GetString(sp48, sizeof(sp48), D_830039C0, 1));
+            Font_Printf(arg0 + 0x10, arg1 + 4, Text_GetString(sp48, sizeof(sp48), gQualifyingSpeciesCountString, 1));
         } else {
             Font_Printf(arg0 + 0x10, arg1 + 4, gCurrentBattleModeSubtitle);
         }
     }
 
-    Font_Printf(arg0 + 0x30, arg1 + 0x134, Text_GetString(NULL, 0, D_830039C0, 2));
+    Font_Printf(arg0 + 0x30, arg1 + 0x134, Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 2));
     Font_SetActive(8, 0);
 
     for (i = 0; i < gCurrentMenuOptionCount; i++) {
@@ -662,7 +662,7 @@ void RentalRules_LoadCategoryStrings(void) {
     s32 i;
 
     for (i = 0; i < 29; i++) {
-        gMenuStaticStrings.posX[i] = Text_GetString(NULL, 0, D_830039C0, i + 4);
+        gMenuStaticStrings.posX[i] = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, i + 4);
     }
 
     gMenuStaticStrings.unk_74 = gMenuStaticStrings.posX[2];
@@ -671,10 +671,10 @@ void RentalRules_LoadCategoryStrings(void) {
     gMenuStaticStrings.unk_80 = gMenuStaticStrings.posX[15];
     gMenuStaticStrings.unk_84 = gMenuStaticStrings.posX[22];
     gMenuStaticStrings.unk_88 = gMenuStaticStrings.posX[27];
-    gMenuStaticStrings.unk_8C = Text_GetString(NULL, 0, D_830039C0, 0x21);
+    gMenuStaticStrings.unk_8C = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x21);
     gMenuStaticStrings.unk_90 = gMenuStaticStrings.posX[20];
     gMenuStaticStrings.unk_94 = gMenuStaticStrings.posX[4];
-    gMenuStaticStrings.unk_98 = Text_GetString(NULL, 0, D_830039C0, 0x22);
+    gMenuStaticStrings.unk_98 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x22);
 }
 
 void RentalRules_LoadDescriptionStrings(void) {
@@ -692,7 +692,7 @@ void RentalRules_LoadDescriptionStrings(void) {
                 break;
 
             default:
-                gMenuOptionStrings.posX[i] = Text_GetString(NULL, 0, D_830039C0, var_s2 + 0x23);
+                gMenuOptionStrings.posX[i] = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, var_s2 + 0x23);
                 var_s2++;
                 break;
         }
@@ -723,18 +723,18 @@ void RentalRules_Init(void) {
     RentalRules_LoadCategoryStrings();
     RentalRules_LoadDescriptionStrings();
 
-    gBattleModeTitle_Default = Text_GetString(NULL, 0, D_830039C0, 0x46);
-    gBattleModeTitle_0 = Text_GetString(NULL, 0, D_830039C0, 0x45);
-    gBattleModeTitle_10 = Text_GetString(NULL, 0, D_830039C0, 0x49);
-    gBattleModeTitle_7 = Text_GetString(NULL, 0, D_830039C0, 0x47);
-    gBattleModeTitle_8 = Text_GetString(NULL, 0, D_830039C0, 0x48);
-    gBattleModeSubtitle_0 = Text_GetString(NULL, 0, D_830039C0, 0x4A);
-    gBattleModeSubtitle_1 = Text_GetString(NULL, 0, D_830039C0, 0x4D);
-    gBattleModeSubtitle_2 = Text_GetString(NULL, 0, D_830039C0, 0x4C);
-    gBattleModeSubtitle_3 = Text_GetString(NULL, 0, D_830039C0, 0x4B);
-    gBattleModeSubtitle_4 = Text_GetString(NULL, 0, D_830039C0, 0x4E);
-    gBattleModeSubtitle_5 = Text_GetString(NULL, 0, D_830039C0, 0x4F);
-    gBattleModeSubtitle_6 = Text_GetString(NULL, 0, D_830039C0, 0x50);
+    gBattleModeTitle_Default = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x46);
+    gBattleModeTitle_0 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x45);
+    gBattleModeTitle_10 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x49);
+    gBattleModeTitle_7 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x47);
+    gBattleModeTitle_8 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x48);
+    gBattleModeSubtitle_0 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4A);
+    gBattleModeSubtitle_1 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4D);
+    gBattleModeSubtitle_2 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4C);
+    gBattleModeSubtitle_3 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4B);
+    gBattleModeSubtitle_4 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4E);
+    gBattleModeSubtitle_5 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4F);
+    gBattleModeSubtitle_6 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x50);
 
     gBattleModeSubtitle_7 = gBattleModeTitle_7;
     gBattleModeSubtitle_8 = gBattleModeTitle_8;
@@ -813,7 +813,7 @@ s32 RentalRules_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     RentalRules_LoadBackgroundArchive();
     PokeIcon_OpenModelArchive();
     Text_InitStringTables();
-    D_830039C0 = Text_GetStringTable(0x20);
+    gQualifyingSpeciesCountString = Text_GetStringTable(0x20);
     gBattleModeMessageBank = Text_GetStringTable(0x24);
     StageLoader_UpdateSegments();
     RentalRules_Loop();

@@ -16924,3 +16924,116 @@ unk_D_83102224	Glc_FadeAnimState	w14		tracks the state, timer, and alpha/brightn
 D_83101F00	gClearScreenNodes	w14		array of two animation state structures for the clear screen's graphical nodes	applied@301c2ae5
 D_88218230	gGridBorderTextures	w14		Table of textures used for the scrollable grid borders	applied@301c2ae5
 D_88218238	gModeToggleColors	w14		Table of colors used for the mode toggle icon arrows	applied@301c2ae5
+D_88218240	gPanelDlEnd	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_88218FC8	gPanelDlEnd2	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_88219D50	gPanelDlEnd3	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_8821AAD8	gPanelDlEnd4	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_8821B860	gPanelDlEnd5	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_8821C5E8	gPanelDlEnd6	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_8821D370	gPanelDlEnd7	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_8821EE80	gPanelDlEnd8	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_88220CC8	gPanelDlEnd9	w15		gsSPEndDisplayList call indicates this is a display list terminator	applied@c54c53b4
+D_88220CD0	gPanelVertexData	w15		Table of 32-bit values used as vertex/coordinate data for the PC panels	applied@c54c53b4
+D_882220D0	Gfx_MoveTargetSmall_DL1	w15		ends a display list for the small move target texture	applied@c54c53b4
+D_882225B8	Gfx_MoveTargetSmall_DL2	w15		ends a display list for the small move target texture	applied@c54c53b4
+D_88222AA0	Gfx_MoveTargetSmall_DL3	w15		ends a display list for the small move target texture	applied@c54c53b4
+D_88222F88	Gfx_MoveTargetSmall_DL4	w15		ends a display list for the small move target texture	applied@c54c53b4
+D_88223480	Gfx_MoveTargetLarge_DL	w15		ends a display list for the large move target texture	applied@c54c53b4
+D_882220D8	gTexture_MoveTargetSmall_0	w15		texture data for the first small move target variant	applied@c54c53b4
+D_882225C0	gTexture_MoveTargetSmall_1	w15		texture data for the second small move target variant	applied@c54c53b4
+D_88222AA8	gTexture_MoveTargetSmall_2	w15		texture data for the third small move target variant	applied@c54c53b4
+D_88222F90	gTexture_MoveTargetSmall_3	w15		texture data for the fourth small move target variant	applied@c54c53b4
+D_88605B00	LabPC_PosTable	w15	unk_D_88605B00:PosTable	struct with posX and posY used for widget placement	applied@c54c53b4
+D_88605ACC	gSummaryTextColorDefault	w15		Color_RGBA8 used in LabPC_DrawArrowLabelB	applied@c54c53b4
+D_88605AD0	gSummaryTextColorGreen1	w15		Color_RGBA8 used in LabPC_DrawArrowLabelB	applied@c54c53b4
+D_88605AD4	gSummaryTextColorGreen2	w15		Color_RGBA8 used in LabPC_DrawArrowLabelB	applied@c54c53b4
+D_88605AD8	gCenteredLabelColor	w15		Color_RGBA8 used in LabPC_DrawCenteredLabel	applied@c54c53b4
+D_88605ADC	gIconWidgetTextures	w15		array of texture pointers used in LabPC_DrawIconWidget	applied@c54c53b4
+D_88605AEC	gIconWidgetColor	w15		Color_RGBA8 used in LabPC_DrawIconWidget	applied@c54c53b4
+D_88605AF4	gTypeListTextColor	w15		Color_RGBA8 used in LabPC_DrawTypeListWidget	applied@c54c53b4
+D_88605AF8	gStatWidgetTextColor	w15		Color_RGBA8 used in LabPC_DrawStatWidget	applied@c54c53b4
+D_88605AFC	gStatWidgetEmptyStr	w15		string "?" used when PokemonData is invalid in LabPC_DrawStatWidget	applied@c54c53b4
+D_88605B44	gTrainerInfoTextColor	w15		Color_RGBA8 used in LabPC_DrawTrainerInfoWidget	applied@c54c53b4
+D_88605B4C	gMoveDetailTextColor	w15		Color_RGBA8 used in LabPC_DrawMoveDetailWidget	applied@c54c53b4
+D_88605B50	gDetailPanelFrameColor1	w15		Color_RGBA8 used for CornerFrame in LabPC_BuildMonDetailPanel	applied@c54c53b4
+D_88605B54	gDetailPanelFrameColor2	w15		Color_RGBA8 used for CornerFrame in LabPC_BuildMonDetailPanel	applied@c54c53b4
+unk_func_88205880_0098_008	LabPC_DetailPanel	w15		This struct is the primary context for all LabPC_SetDetailPanel* and LabPC_HandleDetailPanel* functions.	applied@c54c53b4
+unk_func_88205880_0098	LabPC_DetailPanelParams	w15		Passed as the argument to LabPC_CreateMonDetailPanel to initialize the panel.	applied@c54c53b4
+unk_func_88001300_03C_01C	WidgetAnimatedFrame	w15		Used as the size for mem_pool_alloc when calling WidgetTree_InitAnimatedFrameVariantC.	applied@c54c53b4
+unk_func_88503298	WidgetVisibilityGate	w15		Used as the size for mem_pool_alloc when calling WidgetTree_InitVisibilityGateBridge.	applied@c54c53b4
+D_88605B7C	gWidgetFrameTex	w15		Texture passed to WidgetTree_InitAnimatedFrameVariantC.	applied@c54c53b4
+D_8860A6D0	gMonPreviewModel	w15		Texture/Model asset passed to PokeIcon_CreateModelPreview.	applied@c54c53b4
+D_886096C8	gMoveTypeIconTex0	w15		is a texture used in gMoveTypeIconTextures array	applied@c54c53b4
+D_886099F0	gMoveTypeIconTex1	w15		is a texture used in gMoveTypeIconTextures array	applied@c54c53b4
+D_88609D18	gMoveTypeIconTex2	w15		is a texture used in gMoveTypeIconTextures array	applied@c54c53b4
+D_8860A040	gMoveTypeIconTex3	w15		is a texture used in gMoveTypeIconTextures array	applied@c54c53b4
+D_8860A368	gMoveTypeIconTex4	w15		is a texture used in gMoveTypeIconTextures array	applied@c54c53b4
+D_86E08E40	gMetapodGameTimer	w15		static s16 used in metapod_game.c, likely a game-state timer	applied@c54c53b4
+D_86E08E44	gMetapodTextObject	w15		static TextObject pointer used for game UI/text	applied@c54c53b4
+D_86E04B28	gMetapodWaveTimer	w15		static s16 used alongside gRockWaveIndex for rock spawning timing	applied@c54c53b4
+D_8790604A	gMetapodAudioMuted	w15		global flag checked in MetapodGame_PlaySoundEventGuarded to mute audio	applied@c54c53b4
+func_86E01EB0	MetapodGame_UpdateMetapodStates	w15		iterates through the 4 metapod actors in the miniMetapods array	applied@c54c53b4
+func_86E0296C	MetapodGame_NoOp	w15		empty function called during minigame sequence	applied@c54c53b4
+D_87906042	gMiniGameIdleTimer	w15		incremented in MetapodGame_MainLoop when minigameState is 0	applied@c54c53b4
+D_82800538	gViewerGraphNode	w15		Fragment2_1GraphNode used in ModelRenderer_AttachDisplayObject and Model_InitDisplayObject	applied@c54c53b4
+D_828006A0	gViewerAssetArchive	w15		BinArchive loaded from backgrounds asset via ASSET_LOAD2	applied@c54c53b4
+D_828006A4	gViewerTextureData	w15		u8 pointer to file 2 of the background archive, passed to Gfx_DrawTextureGrid	applied@c54c53b4
+D_828004D0	gViewerGeoLayout	w15		u32 array passed to process_geo_layout to create gStageTextureNode	applied@c54c53b4
+D_86600948	gMiniGameCamera	w15		Assigned from D_86600944->unk_0C and used in Camera_ComputeEyeFromAngles	applied@c54c53b4
+D_86700930	gMiniGameModelData	w15		Model_LoadByArchiveIndex(0x19) returns ModelData, assigned to this global.	applied@c54c53b4
+D_86700940	gMiniGameDisplayObject	w15		Passed to ModelRenderer_AttachDisplayObject and ModelAnim_SetAnimation.	applied@c54c53b4
+unk_D_832025C8	TextFadeState	w15		tracks the animation frame for the blinking star icon in PikachuReward_DrawBlinkingStarIcon	applied@c54c53b4
+unk_D_832027C8	PikachuSession	w15		stores the current Pikachu's PokemonData and cartridge location (port, deck, index)	applied@c54c53b4
+unk_func_888044BC	PokedexMenu	w15		gTrainerCardMenu = mem_pool_alloc(sp2C, sizeof(unk_func_888044BC))	applied@c54c53b4
+D_88820D28	gPokedexPosTable	w15		array of pointers to coordinate tables for Pokedex entries	applied@c54c53b4
+D_888218FC	gPokedexPosTableAlt	w15		alternative array of pointers to coordinate tables for Pokedex entries	applied@c54c53b4
+D_888224D0	gPokedexPosTableExtra	w15		extended array of pointers to coordinate tables for Pokedex entries	applied@c54c53b4
+D_88820250	PokedexPos_0	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_88820268	PokedexPos_1	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_88820288	PokedexPos_2	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_888202B0	PokedexPos_3	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_888202E0	PokedexPos_4	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_88820300	PokedexPos_5	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_88820328	PokedexPos_6	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_88820350	PokedexPos_7	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_88820378	PokedexPos_8	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_88820398	PokedexPos_9	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_888203C8	PokedexPos_10	w15		coordinate data for a specific Pokedex entry	applied@c54c53b4
+D_88823AB0	gPokedexLocationTexture	w15		Texture data for Pokedex location backgrounds	applied@c54c53b4
+D_888246B8	gPokedexLocationIcon	w15		Texture data for Pokedex location icons	applied@c54c53b4
+D_88825AE8	gPokedexLocationStrings	w15		Japanese strings for Pokedex location descriptions	applied@c54c53b4
+D_88825B60	gPokedexRarityStrings	w15		Japanese strings for Pokemon encounter rarity	applied@c54c53b4
+D_88825BFC	gPokedexAreaNames	w15		Table of Japanese area names (e.g., Route 1, Viridian Forest)	applied@c54c53b4
+D_88825ECC	gPokedexSubAreaNames	w15		Table of Japanese sub-area names and floor levels	applied@c54c53b4
+unk_D_88825ECC	PokedexSubArea	w15		typedef for sub-area name and index struct	applied@c54c53b4
+D_88825208	gPokedexBgVertices	w15		Vertices for the Pokedex background quad	applied@c54c53b4
+D_88825248	gPokedexBgTextureDL	w15		Display list to load the background texture	applied@c54c53b4
+D_888252B0	gPokedexBgVertexDL	w15		Display list to draw the background quad	applied@c54c53b4
+D_888252E0	gPokedexIconVertices	w15		Vertices for the Pokedex location icon quad	applied@c54c53b4
+D_88825320	gPokedexIconTextureDL	w15		Display list to load the location icon texture	applied@c54c53b4
+D_88825388	gPokedexIconVertexDL	w15		Display list to draw the location icon quad	applied@c54c53b4
+D_888255B8	gPokedexSmallIconTextureDL	w15		Display list to load a small 8x8 texture tile	applied@c54c53b4
+D_88825648	gPokedexTextureTileDL	w15		Display list that loads multiple texture tiles via gsDPLoadTextureTile	applied@c54c53b4
+func_88805AEC	Pokedex_DrawMapLabelBox	w15		draws a textured box with a border and optional background color based on D_88826A56 (category) and arg5 (style)	applied@c54c53b4
+D_88826A4E	gCurrentMapAreaId	w15		index used to access map area data in D_8882651C and Text_GetString	applied@c54c53b4
+D_88826A52	gMapZoomMode	w15		0 for overview, 1 for zoomed-in view; controls camera target and label rendering	applied@c54c53b4
+D_88826A80	gCameraIsMoving	w15		flag set in Pokedex_EaseVec3Toward to indicate if camera is still interpolating	applied@c54c53b4
+D_88826A4C	gMapPinToggle	w15		toggled by button press in Pokedex_CheckAreaMapExit to switch pin display mode	applied@c54c53b4
+D_88826A54	gMapLabelState	w15		controls whether specific map labels or background rectangles are drawn	applied@c54c53b4
+D_88826CD8	gCameraEaseSpeed	w15		f32 value decremented in Pokedex_UpdateCameraEaseSpeed to smooth camera movement	applied@c54c53b4
+D_88826CDC	gCameraEaseFrames	w15		counter incremented when gCameraEaseSpeed reaches 1.0f	applied@c54c53b4
+D_88826CF0	gMapAreaMarkers	w15		array of structs containing marker positions and lists of associated Pokemon	applied@c54c53b4
+D_88826A3C	gPokedexTextBank	w15		pointer to the string bank used for map area and Pokemon names	applied@c54c53b4
+D_88826A60	gCurrentAreaNameBuf	w15		buffer storing the name of the currently viewed map area	applied@c54c53b4
+D_88826CE0	gTextLabelCount	w15		string used in sprintf for "Count: %d" labels	applied@c54c53b4
+D_88826CE4	gTextLabelSeparator	w15		string used as a separator between two count values in labels	applied@c54c53b4
+D_88826A56	gCurrentGameCategory	w15		index retrieved via GbSave_GameToCategoryIndex to determine label colors	applied@c54c53b4
+D_88013058	gFragment22GfxDL0	w15		empty display list for fragment 22 gfx data 0	applied@c54c53b4
+D_88013600	gFragment22GfxDL1	w15		empty display list for fragment 22 gfx data 1	applied@c54c53b4
+D_88013860	gFragment22GfxDL2	w15		empty display list for fragment 22 gfx data 2	applied@c54c53b4
+D_88013AC0	gFragment22GfxDL3	w15		empty display list for fragment 22 gfx data 3	applied@c54c53b4
+D_88013F90	gFragment22GfxDL4	w15		empty display list for fragment 22 gfx data 4	applied@c54c53b4
+D_82B01138	gCursorAnimTimer	w15		static variable used with SINS to animate the selection cursor size	applied@c54c53b4
+D_83079E70	gQualifyingSpeciesWindow	w15	unk_D_83079E70:QualifyingSpeciesWindow	global state for the qualifying species window, tracks animation and page state	applied@c54c53b4
+unk_D_83079E70_000	SpeciesPage	w15		struct representing a page of species, contains an array of species IDs and eligibility flags	applied@c54c53b4
+D_830039C0	gQualifyingSpeciesCountString	w15		string literal used in Font_Printf to display the number of qualifying species	applied@c54c53b4

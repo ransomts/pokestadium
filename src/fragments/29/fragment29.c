@@ -88,7 +88,7 @@ void LabUI_BuildConfirmDialog(unk_func_889000C4* arg0, s32 arg1, unk_func_880013
     unk_func_8850878C* temp_s0_4;
     char* sp60;
     unk_func_885012A4* temp_s0_5;
-    unk_func_88503298* temp_s0_6;
+    WidgetVisibilityGate* temp_s0_6;
 
     var_s1 = 0;
     for (i = 0; i < 6; i++) {
@@ -161,7 +161,7 @@ void LabUI_BuildConfirmDialog(unk_func_889000C4* arg0, s32 arg1, unk_func_880013
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&temp_s0_5->posX.posX, &arg0->unk_30->posX.posX);
 
     if (arg3 != NULL) {
-        temp_s0_6 = mem_pool_alloc(arg5, sizeof(unk_func_88503298));
+        temp_s0_6 = mem_pool_alloc(arg5, sizeof(WidgetVisibilityGate));
         ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(temp_s0_6, arg0->unk_2C, arg3);
         ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &temp_s0_6->posX.posX);
     }

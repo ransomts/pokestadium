@@ -918,11 +918,11 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     unk_func_88001300_000* sp6C;
     unk_func_88001300_000* sp68;
     unk_func_88001300_000* sp64;
-    unk_func_88001300_03C_01C* sp60;
+    WidgetAnimatedFrame* sp60;
     unk_func_8850BD40* sp5C;
     unk_func_88507D4C* sp58;
     unk_func_88507D4C* sp54;
-    unk_func_88503298* sp50;
+    WidgetVisibilityGate* sp50;
 
     LabPCList_InitDeckSlots(arg0, argF);
     PointerList_Allocate(&arg0->unk_03C, 0x1E6, argF);
@@ -1070,7 +1070,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     LabPCList_DrawHeaderSpecial(arg0->unk_084, 0x1E2, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp64, arg0->unk_084);
 
-    sp60 = mem_pool_alloc(argF, sizeof(unk_func_88001300_03C_01C));
+    sp60 = mem_pool_alloc(argF, sizeof(WidgetAnimatedFrame));
     ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(sp60, 0, 0, 0x10, 0x10, D_88317274);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_050, sp60);
     arg0->unk_04C->unk_1C = sp60;
@@ -1103,7 +1103,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_02C, arg0->unk_050);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_02C, arg0->unk_034);
 
-    sp50 = mem_pool_alloc(argF, sizeof(unk_func_88503298));
+    sp50 = mem_pool_alloc(argF, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(sp50, arg0->unk_02C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, sp50);
 

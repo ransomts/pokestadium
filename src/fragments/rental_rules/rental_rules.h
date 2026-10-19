@@ -24,13 +24,13 @@ typedef struct unk_D_83079E70_014_000 {
     /* 0x02 */ s16 posY;
 } unk_D_83079E70_014_000; // size = 0x4
 
-typedef struct unk_D_83079E70_000 {
+typedef struct SpeciesPage {
     /* 0x00 */ unk_D_83079E70_014_000 posX[6];
-    /* 0x18 */ struct unk_D_83079E70_000* unk_18;
-    /* 0x1C */ struct unk_D_83079E70_000* unk_1C;
-} unk_D_83079E70_000; // size = 0x20
+    /* 0x18 */ struct SpeciesPage* unk_18;
+    /* 0x1C */ struct SpeciesPage* unk_1C;
+} SpeciesPage; // size = 0x20
 
-typedef struct unk_D_83079E70 {
+typedef struct QualifyingSpeciesWindow {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -38,14 +38,14 @@ typedef struct unk_D_83079E70 {
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
-    /* 0x10 */ unk_D_83079E70_000* unk_10;
-    /* 0x14 */ unk_D_83079E70_000 unk_14[6];
-} unk_D_83079E70; // size = 0xD4
+    /* 0x10 */ SpeciesPage* unk_10;
+    /* 0x14 */ SpeciesPage unk_14[6];
+} QualifyingSpeciesWindow; // size = 0xD4
 
 extern unk_D_83003CE0 gMenuStaticStrings;
 extern unk_D_83003CE0 gMenuOptionStrings;
 
-extern char** D_830039C0;
+extern char** gQualifyingSpeciesCountString;
 
 char* RentalRules_GetPokemonName(s32 arg0);
 void RentalRules_LoadBackgroundArchive(void);
@@ -87,17 +87,17 @@ s32 RentalRules_PopupGetProgress(void);
 
 s32 RentalRules_SpeciesMatchesCategory(s16 arg0, s16 arg1);
 s16 RentalRules_CountMatchingSpecies(s16 arg0);
-s32 RentalRules_BuildSpeciesPage(unk_D_83079E70_000* arg0, s16 arg1, s16 arg2);
-unk_D_83079E70_000* RentalRules_AdvancePageNode(unk_D_83079E70_000* arg0, s32 arg1);
-s32 RentalRules_ScrollPageUp(unk_D_83079E70* arg0);
-s32 RentalRules_ScrollPageDown(unk_D_83079E70* arg0);
-void RentalRules_QualifyingSpeciesWindowUpdateOpen(unk_D_83079E70* arg0);
-void RentalRules_QualifyingSpeciesWindowUpdateShown(unk_D_83079E70* arg0);
-void RentalRules_QualifyingSpeciesWindowUpdateScrolling(unk_D_83079E70* arg0);
-void RentalRules_QualifyingSpeciesWindowUpdateClose(unk_D_83079E70* arg0);
-void RentalRules_DrawScrollbar(s16 arg0, s16 arg1, unk_D_83079E70* arg2);
+s32 RentalRules_BuildSpeciesPage(SpeciesPage* arg0, s16 arg1, s16 arg2);
+SpeciesPage* RentalRules_AdvancePageNode(SpeciesPage* arg0, s32 arg1);
+s32 RentalRules_ScrollPageUp(QualifyingSpeciesWindow* arg0);
+s32 RentalRules_ScrollPageDown(QualifyingSpeciesWindow* arg0);
+void RentalRules_QualifyingSpeciesWindowUpdateOpen(QualifyingSpeciesWindow* arg0);
+void RentalRules_QualifyingSpeciesWindowUpdateShown(QualifyingSpeciesWindow* arg0);
+void RentalRules_QualifyingSpeciesWindowUpdateScrolling(QualifyingSpeciesWindow* arg0);
+void RentalRules_QualifyingSpeciesWindowUpdateClose(QualifyingSpeciesWindow* arg0);
+void RentalRules_DrawScrollbar(s16 arg0, s16 arg1, QualifyingSpeciesWindow* arg2);
 void RentalRules_DrawEligibilityPanelLegend(s16 arg0, s16 arg1);
-void RentalRules_DrawSpeciesPage(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2);
+void RentalRules_DrawSpeciesPage(s16 arg0, s16 arg1, SpeciesPage* arg2);
 void RentalRules_QualifyingSpeciesWindowInit(s32 arg0);
 void RentalRules_QualifyingSpeciesWindowUpdate(void);
 void RentalRules_QualifyingSpeciesWindowDraw(void);

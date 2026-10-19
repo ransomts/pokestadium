@@ -1977,7 +1977,7 @@ static u32 gFragment22GfxData9[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x01111111, 0x11111111, 0x11110000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
-static Gfx D_88013058[] = {
+static Gfx gFragment22GfxDL0[] = {
     gsSPEndDisplayList(),
 };
 static u32 gFragment22GfxData10[] = {
@@ -2022,7 +2022,7 @@ static u32 gFragment22GfxData10[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x01111111, 0x11110000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
-static Gfx D_88013600[] = {
+static Gfx gFragment22GfxDL1[] = {
     gsSPEndDisplayList(),
 };
 static u32 gFragment22MonIconPalette0[] = {
@@ -2044,7 +2044,7 @@ static u32 gFragment22MonIconPalette0[] = {
     0x841F9CE5, 0xAD69BE2B, 0xB5A9AD69, 0x841F9CE5, 0xBE2B8C61, 0x841F83DF, 0x94E3AD67, 0x9CE5841F, 0x841F8CA1,
     0x9CE5A527, 0xAD679D27, 0xA5259CE5, 0x8C618C61, 0x9CE59D25, 0x845FBDEF,
 };
-static Gfx D_88013860[] = {
+static Gfx gFragment22GfxDL2[] = {
     gsSPEndDisplayList(),
 };
 static u32 gFragment22MonIconPalette1[] = {
@@ -2066,7 +2066,7 @@ static u32 gFragment22MonIconPalette1[] = {
     0x841F9CE5, 0xAD69BE2B, 0xB5A9AD69, 0x841F9CE5, 0xBE2B8C61, 0x841F83DF, 0x94E3AD67, 0x9CE5841F, 0x841F8CA1,
     0x9CE5A527, 0xAD679D27, 0xA5259CE5, 0x8C618C61, 0x9CE59D25, 0x845FBDEF,
 };
-static Gfx D_88013AC0[] = {
+static Gfx gFragment22GfxDL3[] = {
     gsSPEndDisplayList(),
 };
 static u32 gFragment22MonIconPalette2[] = {
@@ -2116,7 +2116,7 @@ static u8* gFragment22MonIconPalettes[] = {
     gFragment22MonIconPalette2,
     gFragment22MonIconPalette3,
 };
-static Gfx D_88013F90[] = {
+static Gfx gFragment22GfxDL4[] = {
     gsSPEndDisplayList(),
 };
 
@@ -2688,7 +2688,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
                    MemoryPool* arg6) {
     s32 i;
     unk_func_88500E34* sp78;
-    unk_func_88001300_03C_01C* temp_s0_3;
+    WidgetAnimatedFrame* temp_s0_3;
     unk_func_88001300_000* temp_s0;
     unk_func_88000CC8* temp_v0_16;
     unk_func_88509A2C* sp68;
@@ -2809,7 +2809,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
         tmp3C->unk_18[3] = &temp_s0->posX;
     }
 
-    temp_s0_3 = mem_pool_alloc(arg6, sizeof(unk_func_88001300_03C_01C));
+    temp_s0_3 = mem_pool_alloc(arg6, sizeof(WidgetAnimatedFrame));
     ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(temp_s0_3, 0, 0, 0x10, 0x10, gHpBarColorOrange);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_3);
     arg0->unk_3C->unk_1C = temp_s0_3;

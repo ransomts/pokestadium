@@ -27,7 +27,7 @@ typedef struct unk_func_88200FA0_030 {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_88200FA0_030_030* unk_30;
-    /* 0x34 */ unk_func_88503298* unk_34;
+    /* 0x34 */ WidgetVisibilityGate* unk_34;
     /* 0x38 */ unk_func_88200FA0_030_038 unk_38;
 } unk_func_88200FA0_030; // size = 0x44
 
@@ -42,7 +42,7 @@ typedef struct LabPC_BuildBoxScreenWidget {
     /* 0x002C */ unk_func_88203ED8* unk_002C;
     /* 0x0030 */ char unk0030[0x64];
     /* 0x0094 */ unk_func_88201DA0* boxList;
-    /* 0x0098 */ unk_func_88205880_0098 boxListConfig;
+    /* 0x0098 */ LabPC_DetailPanelParams boxListConfig;
     /* 0x00D0 */ unk_func_88205880_00D0 unk_00D0[12];
     /* 0x5050 */ unk_func_88205880_00D0 unk_5050[12];
     /* 0x9FD0 */ unk_func_88205880_00D0* unk_9FD0[12];
@@ -453,10 +453,10 @@ extern u32 gPanelBackgroundTexture4[];
 extern u32 gTexture_PanelB[];
 extern u32 gPanelTexture_S1[];
 extern u32 gSwapArrowsTexture[];
-extern u32 D_882220D8[];
-extern u32 D_882225C0[];
-extern u32 D_88222AA8[];
-extern u32 D_88222F90[];
+extern u32 gTexture_MoveTargetSmall_0[];
+extern u32 gTexture_MoveTargetSmall_1[];
+extern u32 gTexture_MoveTargetSmall_2[];
+extern u32 gTexture_MoveTargetSmall_3[];
 extern u32* gTexture_MoveTargetSmall[];
 extern u32 gTexture_MoveTargetLarge[];
 extern u32 gPcBackdropTile[];
@@ -466,8 +466,8 @@ void LabPC_Exit(void);
 s32 LabPC_ExitToLabMain(UNUSED s32 arg0, UNUSED s32 arg1);
 s32 LabPC_Dispatch(s32 arg0, s32 arg1);
 
-void LabPC_BuildMenuTitleLabel(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
-void LabPC_MenuTitleLabel_SetText(unk_func_88503298* arg0, s8* arg1);
+void LabPC_BuildMenuTitleLabel(WidgetVisibilityGate* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
+void LabPC_MenuTitleLabel_SetText(WidgetVisibilityGate* arg0, s8* arg1);
 void LabPC_BuildMenuGridWidget(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, MemoryPool* arg4);
 void LabPC_MenuGridWidget_RefreshTitle(unk_func_88200FA0_030* arg0, s32 arg1);
 void LabPC_DrawMenuGridCell(s32 arg0, s32 arg1, char* arg2, s32 arg3);

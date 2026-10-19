@@ -39,8 +39,8 @@ typedef struct MiniRockInfo {
 
 static MiniActor miniMetapods[4];
 static MiniActor miniMetapodRocks[20];
-static s16 D_86E08E40;
-static TextObject* D_86E08E44;
+static s16 gMetapodGameTimer;
+static TextObject* gMetapodTextObject;
 
 static u32 gMetapodTextureData1[] = {
     0xE8E0CBB4, 0xAAAAAFB6, 0xB6AEABBC, 0xD6BBA5A5, 0xA6BCC4C9, 0xC3B5BBBB, 0xB8B5B9C0, 0xBDB9C3D7, 0xDED2CBBD,
@@ -454,7 +454,7 @@ static u32 gMetapodGfxRoot[] = {
 
 static s16 gRockWaveIndex = 0;
 static s16 gRocksPerWave = 1;
-static s16 D_86E04B28 = 0;
+static s16 gMetapodWaveTimer = 0;
 static MiniActor* miniMetapodPtr = miniMetapods;
 static MiniActor* miniRockPtr = miniMetapodRocks;
 static u32 gMetapodSceneGraph[] = {
@@ -544,7 +544,7 @@ void MetapodGame_PlaySoundEvent(s16 arg0, s16 arg1) {
         case 14:
             Audio_FadeCategories(1, arg1);
             Audio_FadeCategories(2, arg1);
-            D_8790604A = 1;
+            gMetapodAudioMuted = 1;
             break;
 
         case 15:
@@ -563,7 +563,7 @@ void MetapodGame_PlaySoundEvent(s16 arg0, s16 arg1) {
 }
 
 void MetapodGame_PlaySoundEventGuarded(s16 arg0, s16 arg1) {
-    if (D_8790604A == 0) {
+    if (gMetapodAudioMuted == 0) {
         MetapodGame_PlaySoundEvent(arg0, arg1);
     }
 }
@@ -1323,10 +1323,10 @@ void MetapodGame_UpdateRockWaveScheduler(void) {
     s32 var_a2;
 
     miniRockPtr = miniMetapodRocks;
-    switch (D_86E04B28) {
+    switch (gMetapodWaveTimer) {
         case 1:
             MetapodGame_ScheduleRockWave();
-            D_86E04B28++;
+            gMetapodWaveTimer++;
             break;
 
         case 2:
@@ -1341,11 +1341,11 @@ void MetapodGame_UpdateRockWaveScheduler(void) {
 
             if (var_a2 != 0) {
                 if (gMiniGameTimer1 != 0) {
-                    D_86E04B28 = 0;
+                    gMetapodWaveTimer = 0;
                     return;
                 }
 
-                D_86E04B28 = 1;
+                gMetapodWaveTimer = 1;
                 gRockWaveIndex++;
                 if (gRockWaveIndex >= 5) {
                     gRockWaveIndex = 0;
@@ -1466,7 +1466,7 @@ s32 MetapodGame_PlayWinnerAnimations(void) {
     return var_s3;
 }
 
-void func_86E01EB0(void) {
+void MetapodGame_UpdateMetapodStates(void) {
     s32 i;
 
     miniMetapodPtr = miniMetapods;
@@ -1526,7 +1526,7 @@ void miniMetapodMinigameStateMachine(void) {
 
         case 3:
             if (MetapodGame_UpdateStartCountdown() != 0) {
-                D_86E04B28 = 1;
+                gMetapodWaveTimer = 1;
                 minigameInputLock = 1;
                 miniTutoScreenState = 0;
                 minigameState++;
@@ -1568,7 +1568,7 @@ void miniMetapodMinigameStateMachine(void) {
     }
 
     Widget_CountdownUpdate();
-    func_86E01EB0();
+    MetapodGame_UpdateMetapodStates();
 }
 
 void MetapodGame_UpdateParticleFx(void) {
@@ -1614,7 +1614,7 @@ void MetapodGame_DrawTutorialText(void) {
     Font_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Font_Printf(0xA0 - (Text_MeasureStringWidth(D_86E08E44, Text_GetString(NULL, 0, gItemNamesBank, 0x44)) / 2), 0x20,
+    Font_Printf(0xA0 - (Text_MeasureStringWidth(gMetapodTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0x44)) / 2), 0x20,
                   Text_GetString(NULL, 0, gItemNamesBank, 0x44));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -1718,7 +1718,7 @@ void metapodMinigameInit(void) {
     miniDifficulty = gMenuState;
 }
 
-void func_86E0296C(void) {
+void MetapodGame_NoOp(void) {
 }
 
 void miniMetapodTutoScreenControls(void) {
@@ -1755,9 +1755,9 @@ void MetapodGame_MainLoop(void) {
         MiniActor_ReadControllerInputs();
 
         if (minigameState == 0) {
-            D_87906042 += 1;
-            if (D_87906042 < 0) {
-                D_87906042 = 0;
+            gMiniGameIdleTimer += 1;
+            if (gMiniGameIdleTimer < 0) {
+                gMiniGameIdleTimer = 0;
             }
         }
 
@@ -1789,7 +1789,7 @@ void MetapodGame_ShowResultText(void) {
     s32 i;
 
     StageFade_StartFromTransparent(0x1E);
-    if (D_86E08E40 != 0) {
+    if (gMetapodGameTimer != 0) {
         MetapodGame_PlaySoundEventGuarded(0xF, 0x1E);
     } else {
         MetapodGame_PlaySoundEventGuarded(0xE, 0x1E);
@@ -1864,16 +1864,16 @@ s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     if (arg0 == 1) {
-        D_86E08E40 = 1;
+        gMetapodGameTimer = 1;
     } else {
-        D_86E08E40 = 0;
+        gMetapodGameTimer = 0;
     }
 
     main_pool_push_state('MINI');
 
     Gfx_InitDisplayListBuffers(0x40000, 0);
     sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
-    D_86E08E44 = Font_Init(0x16, 0);
+    gMetapodTextObject = Font_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);

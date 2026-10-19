@@ -28,8 +28,8 @@ static ModelData* gPikachuModelData;
 static char** gMoveNameBank;
 static char** gStadiumMessageBank;
 static Fragment2_1GraphNode gPikachuNodes[4];
-static unk_D_832025C8 gTextFadeState;
-static unk_D_832027C8 gPikachuSession;
+static TextFadeState gTextFadeState;
+static PikachuSession gPikachuSession;
 
 static s32 gPikachuActive = 0;
 static s32 gPikachuVisibilityState = -1;

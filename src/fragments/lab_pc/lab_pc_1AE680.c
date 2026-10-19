@@ -1495,10 +1495,10 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     char* temp_v0_10;
     unk_func_88001300_02C* temp_s0;
     unk_func_8850878C* spB4[8];
-    unk_func_88001300_03C_01C* temp_s0_2;
+    WidgetAnimatedFrame* temp_s0_2;
     unk_func_8850143C* temp_s0_3;
     unk_func_8850878C* temp_s0_4;
-    unk_func_88503298* temp_s0_6;
+    WidgetVisibilityGate* temp_s0_6;
     char* spA0;
     s32 sp9C;
     unk_func_88507D4C* sp94[2];
@@ -1619,7 +1619,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
 
     ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(arg0->unk_74->unk_28, 2);
 
-    temp_s0_2 = mem_pool_alloc(argA, sizeof(unk_func_88001300_03C_01C));
+    temp_s0_2 = mem_pool_alloc(argA, sizeof(WidgetAnimatedFrame));
     ((func88503340)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantA))(temp_s0_2, 0, 0, 0x10, 0x10, gDialogTitleColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, temp_s0_2);
     arg0->unk_74->unk_28->unk_1C = temp_s0_2;
@@ -1772,7 +1772,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     LabPC_InitBoxTypeSelector(arg0->unk_78[1], 0x154, 0x2A, 0xCC, arg0->unk_8C, 1, argA);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, arg0->unk_78[1]);
 
-    temp_s0_6 = mem_pool_alloc(argA, sizeof(unk_func_88503298));
+    temp_s0_6 = mem_pool_alloc(argA, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(temp_s0_6, arg0->unk_2C, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_6);
 

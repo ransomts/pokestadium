@@ -1693,7 +1693,7 @@ void EkansGame_PlaySoundEvent(s16 arg0, s16 arg1) {
         case 18:
             Audio_FadeCategories(1, arg1);
             Audio_FadeCategories(2, arg1);
-            D_8790604A = 1;
+            gMetapodAudioMuted = 1;
             break;
 
         case 19:
@@ -1712,7 +1712,7 @@ void EkansGame_PlaySoundEvent(s16 arg0, s16 arg1) {
 }
 
 void EkansGame_PlaySoundEventGuarded(s16 arg0, s16 arg1) {
-    if (D_8790604A == 0) {
+    if (gMetapodAudioMuted == 0) {
         EkansGame_PlaySoundEvent(arg0, arg1);
     }
 }

@@ -206,11 +206,11 @@ void func_88201488(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s
 }
 
 void BoxList_Init(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, FragmentEntry arg4,
-                   unk_func_88205880_0098* arg5, MemoryPool* arg6) {
+                   LabPC_DetailPanelParams* arg5, MemoryPool* arg6) {
     static Color_RGBA8 gBoxListHeaderColor = { 0x32, 0x64, 0x64, 0xFF };
 
     UNUSED s32 pad[2];
-    unk_func_88503298* sp44;
+    WidgetVisibilityGate* sp44;
 
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88201DA0));
 
@@ -247,7 +247,7 @@ void BoxList_Init(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_88001300
     ((func88506238)Memmap_GetFragmentVaddr(WidgetTree_AllocateEntryFlags))(arg0->unk_30, 0x14, arg6);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, arg0->unk_30);
 
-    sp44 = mem_pool_alloc(arg6, sizeof(unk_func_88503298));
+    sp44 = mem_pool_alloc(arg6, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(sp44, arg0->unk_2C, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, sp44);
 
@@ -948,10 +948,10 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     unk_func_88001300_000* sp90;
     unk_func_8850143C* sp8C;
     unk_func_8850143C* sp88;
-    unk_func_88001300_03C_01C* temp_s0;
+    WidgetAnimatedFrame* temp_s0;
     unk_func_8850143C* temp_s0_2;
     unk_func_8850878C* temp_s0_3;
-    unk_func_88503298* temp_s0_4;
+    WidgetVisibilityGate* temp_s0_4;
     UNUSED s32 pad2[4];
 
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88203ED8));
@@ -1043,7 +1043,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
 
     ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(arg0->unk_68, 0);
 
-    temp_s0 = mem_pool_alloc(arg8, sizeof(unk_func_88001300_03C_01C));
+    temp_s0 = mem_pool_alloc(arg8, sizeof(WidgetAnimatedFrame));
     ((func88503340)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantA))(temp_s0, 0, 0, 0x10, 0x10, gFlashingElementColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, temp_s0);
     arg0->unk_68->unk_1C = temp_s0;
@@ -1107,7 +1107,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
         arg0->unk_70->unk_1C[i] = arg0->unk_74[i];
     }
 
-    temp_s0_4 = mem_pool_alloc(arg8, sizeof(unk_func_88503298));
+    temp_s0_4 = mem_pool_alloc(arg8, sizeof(WidgetVisibilityGate));
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(temp_s0_4, arg0->unk_2C, arg4);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_4);
 

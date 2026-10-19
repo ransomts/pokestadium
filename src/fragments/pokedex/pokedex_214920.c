@@ -42,7 +42,7 @@ static s32 gTrainerCardState;
 static s32 gTrainerCardSubstate;
 static s32 gTrainerCardSaveSlot;
 static s32 gTrainerCardSpeciesIndex;
-static unk_func_888044BC* gTrainerCardMenu;
+static PokedexMenu* gTrainerCardMenu;
 static u8 pad_D_88826948[0x58];
 static s32 gTrainerCardUnusedInt;
 static u32 pad_D_888269A4;
@@ -713,14 +713,14 @@ void Pokedex_BuildPreviewPanel(unk_func_888044BC_04C* arg0, s32 arg1, s32 arg2, 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_2C->posX.posX);
 }
 
-void Pokedex_BuildRootWidget(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, MemoryPool* arg4) {
+void Pokedex_BuildRootWidget(PokedexMenu* arg0, s32 arg1, s32 arg2, u8* arg3, MemoryPool* arg4) {
     unk_func_88500E34* sp4C;
     s32 sp48;
     unk_func_88001300_000* sp44;
     unk_func_88001300_000* sp40;
 
     sp48 = GbSave_GetActivePort();
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_888044BC));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(PokedexMenu));
     arg0->posX.unk_10.posX = arg1;
     arg0->posX.unk_10.posY = arg2;
 
@@ -6329,7 +6329,7 @@ s32 Pokedex_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
         GbSave_BuildPortSummary(&gTrainerCardGfxState, gTrainerCardUnusedInt);
     }
 
-    gTrainerCardMenu = mem_pool_alloc(sp2C, sizeof(unk_func_888044BC));
+    gTrainerCardMenu = mem_pool_alloc(sp2C, sizeof(PokedexMenu));
     Pokedex_BuildRootWidget(gTrainerCardMenu, 0, 0, sp28, sp2C);
     StageLoader_UpdateSegments();
     ModelRenderer_InitDisplayRoots();

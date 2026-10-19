@@ -23,7 +23,7 @@ typedef struct unk_func_8830867C_02C_04C {
     /* 0x10 */ unk_func_88001300_03C_010 unk_10;
     /* 0x14 */ unk_func_88001300_03C_014 unk_14;
     /* 0x18 */ unk_func_8830867C_02C_04C_018* unk_18;
-    /* 0x1C */ unk_func_88001300_03C_01C* unk_1C;
+    /* 0x1C */ WidgetAnimatedFrame* unk_1C;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ s32 unk_28;
@@ -303,7 +303,7 @@ typedef struct unk_func_8830867C_04C_078_030 {
     /* 0x3C */ s16 unk_3C;
     /* 0x3E */ s16 unk_3E;
     /* 0x40 */ unk_func_8830867C_04C_078_030_040 unk_40;
-    /* 0x44 */ unk_func_88001300_03C_01C* unk_44;
+    /* 0x44 */ WidgetAnimatedFrame* unk_44;
     /* 0x48 */ s16 unk_48;
     /* 0x4A */ s16 unk_4A;
     /* 0x4C */ s16 unk_4C;
@@ -345,7 +345,7 @@ typedef struct unk_func_8830867C_04C {
     /* 0x84 */ s32 unk_84;
     /* 0x88 */ PokemonData* unk_88; // maybe unk_func_8830867C_02C_0CC_000_008
     /* 0x8C */ s32 unk_8C;
-    /* 0x90 */ unk_func_88503298* unk_90;
+    /* 0x90 */ WidgetVisibilityGate* unk_90;
 } unk_func_8830867C_04C; // size = 0x94
 
 typedef struct unk_func_8830867C_02C_C54_014 {

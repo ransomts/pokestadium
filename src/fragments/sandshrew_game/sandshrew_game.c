@@ -1562,7 +1562,7 @@ void SandshrewGame_PlaySoundEvent(s16 arg0, s16 arg1) {
         case 9:
             Audio_FadeCategories(1, arg1);
             Audio_FadeCategories(2, arg1);
-            D_8790604A = 1;
+            gMetapodAudioMuted = 1;
             break;
 
         case 10:
@@ -1585,7 +1585,7 @@ void SandshrewGame_PlaySoundEvent(s16 arg0, s16 arg1) {
 }
 
 void SandshrewGame_PlaySoundEventGuarded(s16 arg0, s16 arg1) {
-    if (D_8790604A == 0) {
+    if (gMetapodAudioMuted == 0) {
         SandshrewGame_PlaySoundEvent(arg0, arg1);
     }
 }
@@ -2384,9 +2384,9 @@ void SandshrewGame_MainLoop(void) {
         MiniActor_ReadControllerInputs();
 
         if (minigameState == 0) {
-            D_87906042 += 1;
-            if (D_87906042 < 0) {
-                D_87906042 = 0;
+            gMiniGameIdleTimer += 1;
+            if (gMiniGameIdleTimer < 0) {
+                gMiniGameIdleTimer = 0;
             }
         }
 

@@ -155,11 +155,11 @@ extern Gfx_TextureNode gMiniTutoScreenNode1;
 extern Gfx_TextureNode gMiniTutoScreenNode2;
 extern Gfx_TextureNode gMiniTutoScreenNode3;
 extern s16 miniInputLockTimer;
-extern s16 D_87906042;
+extern s16 gMiniGameIdleTimer;
 extern s16 miniShowHUB;
 extern s16 miniDifficulty;
 extern s16 D_87906048;
-extern s16 D_8790604A;
+extern s16 gMetapodAudioMuted;
 extern CameraStruct* gMiniCameraStruct;      // geo layout
 extern CameraStruct* gMiniCameraPtr;
 extern s16 miniCameraXRot;

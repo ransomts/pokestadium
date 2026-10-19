@@ -4,11 +4,11 @@
 #include "src/F420.h"
 
 s16 miniInputLockTimer;
-s16 D_87906042;
+s16 gMiniGameIdleTimer;
 s16 miniShowHUB;
 s16 miniDifficulty;
 s16 D_87906048; //  unused?
-s16 D_8790604A;
+s16 gMetapodAudioMuted;
 s32 pad_D_8790604C; //	unused?
 CameraStruct* gMiniCameraStruct;
 CameraStruct* gMiniCameraPtr;

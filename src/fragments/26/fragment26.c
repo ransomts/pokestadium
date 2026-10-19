@@ -727,14 +727,14 @@ s32 WidgetTree_DrawVisibilityGate(unk_func_88001300_000* arg0, s32 arg1, s32 arg
     return ((arg0->unk_28 & 0x100) || !(arg0->unk_28 & 0x200)) ? 0 : 1;
 }
 
-void WidgetTree_InitVisibilityGateBridge(unk_func_88503298* arg0, unk_func_88001300_038* arg1, unk_func_88001300_000* arg2) {
-    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88503298));
+void WidgetTree_InitVisibilityGateBridge(WidgetVisibilityGate* arg0, unk_func_88001300_038* arg1, unk_func_88001300_000* arg2) {
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetVisibilityGate));
     arg0->posX.unk_1C = WidgetTree_UpdateVisibilityGateBridge;
     arg0->unk_2C = arg1;
     arg0->unk_30 = arg2;
 }
 
-s32 WidgetTree_UpdateVisibilityGateBridge(unk_func_88503298* arg0) {
+s32 WidgetTree_UpdateVisibilityGateBridge(WidgetVisibilityGate* arg0) {
     if (!(arg0->unk_2C->posX.unk_28 & 1)) {
         return 0;
     }
@@ -748,8 +748,8 @@ s32 WidgetTree_UpdateVisibilityGateBridge(unk_func_88503298* arg0) {
     return 0;
 }
 
-void WidgetTree_InitAnimatedFrameVariantA(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88001300_03C_01C));
+void WidgetTree_InitAnimatedFrameVariantA(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetAnimatedFrame));
     arg0->posX.unk_18 = WidgetTree_DrawAnimatedFrameVariantA;
     arg0->posX.unk_1C = WidgetTree_UpdateAnimatedFrameVariantA;
     arg0->posX.unk_24 = WidgetTree_SetAnimatedFrameVariantAState;
@@ -761,13 +761,13 @@ void WidgetTree_InitAnimatedFrameVariantA(unk_func_88001300_03C_01C* arg0, s32 a
     arg0->unk_30 = 0;
 }
 
-s32 WidgetTree_UpdateAnimatedFrameVariantA(unk_func_88001300_03C_01C* arg0) {
+s32 WidgetTree_UpdateAnimatedFrameVariantA(WidgetAnimatedFrame* arg0) {
     arg0->unk_30++;
     arg0->unk_30 &= 7;
     return 0;
 }
 
-s32 WidgetTree_DrawAnimatedFrameVariantA(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
+s32 WidgetTree_DrawAnimatedFrameVariantA(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2) {
     s32 sp104;
     s32 sp100;
     s32 spFC;
@@ -836,13 +836,13 @@ s32 WidgetTree_DrawAnimatedFrameVariantA(unk_func_88001300_03C_01C* arg0, s32 ar
     return 0;
 }
 
-void WidgetTree_SetAnimatedFrameVariantAState(unk_func_88001300_03C_01C* arg0, s32 arg1) {
+void WidgetTree_SetAnimatedFrameVariantAState(WidgetAnimatedFrame* arg0, s32 arg1) {
     arg0->posX.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
-void WidgetTree_InitAnimatedFrameVariantB(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88001300_03C_01C));
+void WidgetTree_InitAnimatedFrameVariantB(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetAnimatedFrame));
     arg0->posX.unk_18 = WidgetTree_DrawAnimatedFrameVariantB;
     arg0->posX.unk_1C = WidgetTree_UpdateAnimatedFrameVariantB;
     arg0->posX.unk_24 = WidgetTree_SetAnimatedFrameVariantBState;
@@ -854,13 +854,13 @@ void WidgetTree_InitAnimatedFrameVariantB(unk_func_88001300_03C_01C* arg0, s32 a
     arg0->unk_30 = 0;
 }
 
-s32 WidgetTree_UpdateAnimatedFrameVariantB(unk_func_88001300_03C_01C* arg0) {
+s32 WidgetTree_UpdateAnimatedFrameVariantB(WidgetAnimatedFrame* arg0) {
     arg0->unk_30++;
     arg0->unk_30 &= 7;
     return 0;
 }
 
-s32 WidgetTree_DrawAnimatedFrameVariantB(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
+s32 WidgetTree_DrawAnimatedFrameVariantB(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2) {
     s32 sp10C;
     s32 sp108;
     s32 sp104;
@@ -929,13 +929,13 @@ s32 WidgetTree_DrawAnimatedFrameVariantB(unk_func_88001300_03C_01C* arg0, s32 ar
     return 0;
 }
 
-void WidgetTree_SetAnimatedFrameVariantBState(unk_func_88001300_03C_01C* arg0, s32 arg1) {
+void WidgetTree_SetAnimatedFrameVariantBState(WidgetAnimatedFrame* arg0, s32 arg1) {
     arg0->posX.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
-void WidgetTree_InitAnimatedFrameVariantC(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88001300_03C_01C));
+void WidgetTree_InitAnimatedFrameVariantC(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetAnimatedFrame));
     arg0->posX.unk_18 = WidgetTree_DrawAnimatedFrameVariantC;
     arg0->posX.unk_1C = WidgetTree_UpdateAnimatedFrameVariantC;
     arg0->posX.unk_24 = WidgetTree_SetAnimatedFrameVariantCState;
@@ -947,13 +947,13 @@ void WidgetTree_InitAnimatedFrameVariantC(unk_func_88001300_03C_01C* arg0, s32 a
     arg0->unk_30 = 0;
 }
 
-s32 WidgetTree_UpdateAnimatedFrameVariantC(unk_func_88001300_03C_01C* arg0) {
+s32 WidgetTree_UpdateAnimatedFrameVariantC(WidgetAnimatedFrame* arg0) {
     arg0->unk_30++;
     arg0->unk_30 &= 7;
     return 0;
 }
 
-s32 WidgetTree_DrawAnimatedFrameVariantC(unk_func_88001300_03C_01C* arg0, s32 arg1, s32 arg2) {
+s32 WidgetTree_DrawAnimatedFrameVariantC(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2) {
     s32 spFC;
     s32 spF8;
     s32 spF4;
@@ -1022,7 +1022,7 @@ s32 WidgetTree_DrawAnimatedFrameVariantC(unk_func_88001300_03C_01C* arg0, s32 ar
     return 0;
 }
 
-void WidgetTree_SetAnimatedFrameVariantCState(unk_func_88001300_03C_01C* arg0, s32 arg1) {
+void WidgetTree_SetAnimatedFrameVariantCState(WidgetAnimatedFrame* arg0, s32 arg1) {
     arg0->posX.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
@@ -1324,7 +1324,7 @@ void WidgetTree_InitPagedGrid(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg
     static Color_RGBA8 Color_Yellow = { 255, 255, 0, 255 };
 
     s32 var_v0;
-    unk_func_88001300_03C_01C* temp_v0;
+    WidgetAnimatedFrame* temp_v0;
 
     WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88200FA0_030_030));
 
@@ -1358,7 +1358,7 @@ void WidgetTree_InitPagedGrid(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg
         arg0->unk_50 = -3;    }    arg0->unk_52 = -3;
     // clang-format on
 
-    arg0->unk_44 = mem_pool_alloc(arg8, sizeof(unk_func_88001300_03C_01C));
+    arg0->unk_44 = mem_pool_alloc(arg8, sizeof(WidgetAnimatedFrame));
 
     if (arg7 == 1) {
         var_v0 = 0;
