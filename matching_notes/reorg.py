@@ -45,7 +45,11 @@ def parse_yaml(path):
 
 
 def join_group(ours, theirs, group):
-    """(segment_renames, subseg_renames, problems) for one group of ours."""
+    """(segment_renames, subseg_renames, problems) for one group of ours.
+    Also fills the module-level _LAST_PATHLESS with (derived_name, their_path,
+    addr, kind) for pathless entries michiiik has pathed."""
+    global _LAST_PATHLESS
+    _LAST_PATHLESS = []
     if group == "main":
         my_segs = [s for s in ours if s["name"] == "text"]
         their_segs = [s for s in theirs if s["name"] == "text"]
@@ -77,10 +81,10 @@ def join_group(ours, theirs, group):
                 continue
             tname, tp = hit
             if not p:
-                # pathless entry (`- [0xADDR, c]`): splat derives the file itself;
-                # adding michiiik's path would point at a file we do not have.
-                # Park as a problem so it stays visible instead of corrupting.
-                problems.append(f"pathless entry at 0x{addr:X} ({kind}); michiiik has {tp}")
+                # pathless entry (`- [0xADDR, c]`): splat derives the file name
+                # from the address. michiiik's entry is PATHED - converge by
+                # ADDING the path (the flash landing proved this pattern).
+                _LAST_PATHLESS.append((f"{addr:X}", tp, addr, kind))
                 continue
             if tp and tp != p:
                 sub_ren.append((p, tp, s["name"], tname))
@@ -126,6 +130,12 @@ def apply_group(group, no_gate):
     if sub_ren is None:
         print("\n".join(problems))
         return 1
+    # converge pathless entries (`- [0xADDR, c]` -> `- [0xADDR, c, flash]`):
+    # splat derives the file name from the address, so the derived file renames
+    # like any other (the flash landing proved this pattern). The pairs join
+    # sub_ren FIRST so the collision/merge guards apply to them uniformly.
+    pathless = [(d, tp) for d, tp, _a, _k in _LAST_PATHLESS]
+    sub_ren.extend((d, tp, "text", "text") for d, tp in pathless)
     # park renames whose file move would land on an existing DIFFERENT file:
     # e.g. our 3D140_2 data-entry -> michiiik's "3D140" while our 3D140.c
     # exists (they attach that data range to a different file boundary).
@@ -161,6 +171,16 @@ def apply_group(group, no_gate):
     open(os.path.join(REPO, "scratch", "reorg_manifest.json"), "w").write(json.dumps(manifest))
 
     yaml = open(OUR_YAML).read()
+    # surviving pathless pairs: ADD the path to the entry (`[0xADDR, c]` ->
+    # `[0xADDR, c, flash]`) - these have no old path string to replace
+    for d, tp, addr, kind in _LAST_PATHLESS:
+        if (d, tp) not in {(o, t) for o, t, _on, _tn in sub_ren}:
+            continue  # parked by the guards above
+        old_entry = f"0x{addr:X}, {kind}]"
+        if old_entry in yaml:
+            yaml = yaml.replace(old_entry, f"0x{addr:X}, {kind}, {tp}]")
+        else:
+            problems.append(f"pathless 0x{addr:X}: entry shape not found")
     for oname, tname in seg_ren:
         yaml = yaml.replace(f"- name: {oname}\n", f"- name: {tname}\n")
     for op, tp, _on, _tn in sub_ren:
