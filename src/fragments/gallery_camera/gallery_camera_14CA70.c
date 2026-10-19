@@ -1,6 +1,6 @@
 #include "src/fragments/gallery_camera/gallery_camera.h"
 #include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
-#include "src/fragments/31/fragment31.h"
+#include "src/fragments/particle_data_library/particle_data_library.h"
 #include "src/fragments/particle_math/particle_math.h"
 #include "src/fragments/gallery_backgrounds/gallery_backgrounds.h"
 #include "src/11BA0.h"

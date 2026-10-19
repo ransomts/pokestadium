@@ -3,7 +3,7 @@
 #include "12D80.h"
 #include "src/util.h"
 #include "src/memmap.h"
-#include "src/fragments/31/fragment31.h"
+#include "src/fragments/particle_data_library/particle_data_library.h"
 
 // .bss
 u8 gPillarGlowValues[8];
