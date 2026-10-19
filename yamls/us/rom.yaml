@@ -1937,11 +1937,11 @@
     start: 0x2BD130
     vram: 0x82800000 # unknown vram due to being unused, but based on the patterns before hand, this is probably 82900000.
     subsegments:
-    - [0x2BD130, textbin,  fragments/52/fragment52_header]
-    - [0x2BD150, c,    fragments/52/fragment52]
-    - [0x2BD600, .data, fragments/52/fragment52]
+    - [0x2BD130, textbin,  fragments/minigame_sample2_viewer/minigame_sample2_viewer_header]
+    - [0x2BD150, c,    fragments/minigame_sample2_viewer/minigame_sample2_viewer]
+    - [0x2BD600, .data, fragments/minigame_sample2_viewer/minigame_sample2_viewer]
 
-    - {vram: 0x82800530, type:  .bss, name: fragments/52/fragment52}
+    - {vram: 0x82800530, type:  .bss, name: fragments/minigame_sample2_viewer/minigame_sample2_viewer}
 
   - name: fragment52_relocs
     type: code

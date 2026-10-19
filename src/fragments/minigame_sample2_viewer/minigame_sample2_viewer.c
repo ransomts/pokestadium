@@ -1,4 +1,4 @@
-#include "fragment52.h"
+#include "minigame_sample2_viewer.h"
 #include "src/12D80.h"
 #include "src/19840.h"
 #include "src/1C720.h"
