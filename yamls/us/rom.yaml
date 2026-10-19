@@ -1857,12 +1857,12 @@
     start: 0x2B3F70
     vram: 0x83900000 # apparently not used either, but VRAM is an estimate based on the patterns around this fragment.
     subsegments:
-    - [0x2B3F70, textbin,   fragments/48/fragment48_header]
-    - [0x2B3F90, c,      fragments/48/fragment48]
-    - [0x2B45A0, .data,   fragments/48/fragment48]
-    - [0x2B45C0, .rodata, fragments/48/fragment48]
+    - [0x2B3F70, textbin,   fragments/gallery_debugger/gallery_debugger_header]
+    - [0x2B3F90, c,      fragments/gallery_debugger/gallery_debugger]
+    - [0x2B45A0, .data,   fragments/gallery_debugger/gallery_debugger]
+    - [0x2B45C0, .rodata, fragments/gallery_debugger/gallery_debugger]
 
-    - {vram: 0x839006B0, type:  .bss, name: fragments/48/fragment48}
+    - {vram: 0x839006B0, type:  .bss, name: fragments/gallery_debugger/gallery_debugger}
 
   - name: fragment48_relocs
     type: code

@@ -1,4 +1,4 @@
-#include "fragment48.h"
+#include "gallery_debugger.h"
 #include "src/1CF30.h"
 #include "src/20330.h"
 #include "src/26820.h"
