@@ -102,7 +102,7 @@ typedef struct unk_D_800AE540_1194 {
     /* 0x24 */ arg1_func_80019420* unk_24;
 } unk_D_800AE540_1194; // size = 0x28
 
-typedef struct unk_D_800AE540 {
+typedef struct SessionContext {
     /* 0x0000 */ s8 unk_0000;
     /* 0x0001 */ s8 unk_0001;
     /* 0x0002 */ s8 unk_0002;
@@ -122,12 +122,12 @@ typedef struct unk_D_800AE540 {
     /* 0x11F4 */ u8 unk_11F4;
     /* 0x11F5 */ u8 unk_11F5;
     /* 0x11F6 */ u16 unk_11F6;
-} unk_D_800AE540; // size = 0x11F8
+} SessionContext; // size = 0x11F8
 
-extern u16 D_80073660[16][256];
+extern u16 gSincosTable[16][256];
 extern s32 gCurrentGameState;
 extern FragmentCallContext gFragmentCallContext;
-extern unk_D_800AE540 gSessionContext;
+extern SessionContext gSessionContext;
 extern BinArchive* gBattleArchive;
 
 s32 Game_DoCopyProtection(s32 state);

@@ -46,7 +46,7 @@ static unk_func_888044BC* gTrainerCardMenu;
 static u8 pad_D_88826948[0x58];
 static s32 gTrainerCardUnusedInt;
 static u32 pad_D_888269A4;
-static unk_func_8002D860 gTrainerCardGfxState;
+static PortSummary gTrainerCardGfxState;
 
 extern u8 gTrainerCardSpriteTileData[];
 
@@ -666,13 +666,13 @@ void Pokedex_SetPreviewSpecies(unk_func_888044BC_04C_02C* arg0, s32 arg1) {
 }
 
 s32 Pokedex_DrawPreview(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
-    static unk_func_88500020 gTrainerCardSpriteTileParams = { 256, 192, 248, gTrainerCardSpriteTileData };
+    static TiledTexture gTrainerCardSpriteTileParams = { 256, 192, 248, gTrainerCardSpriteTileData };
     UNUSED static u32 gTrainerCardUnusedGfxArray[] = { 0, 0, 0 };
     UNUSED static Gfx gTrainerCardUnusedGfxDL[] = {
         gsSPEndDisplayList(),
     };
 
-    unk_func_88500020 sp58;
+    TiledTexture sp58;
     // clang-format off
     sp58.unk_00 = 0x100; sp58.unk_04 = 0xC0; sp58.unk_08 = 0xF8;
     // clang-format on

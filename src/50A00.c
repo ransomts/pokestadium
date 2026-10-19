@@ -17,14 +17,14 @@ s32 Audio_LoadWaveTablesAndMusic(u8* arg0) {
 
     if (1) {}
 
-    Rom_DmaRead(D_800FC6E4->offset1, gMoveSoundTempBuffer, D_800FC6E4->wave_tables_offset - D_800FC6E4->offset1);
+    Rom_DmaRead(gSfxArchiveHeader->offset1, gMoveSoundTempBuffer, gSfxArchiveHeader->wave_tables_offset - gSfxArchiveHeader->offset1);
     Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gSfxBankSpecial, 0x4120);
-    Rom_DmaRead(D_800FC6E4->wave_tables_offset, sp1C, D_800FC6E4->files[0] - D_800FC6E4->wave_tables_offset);
+    Rom_DmaRead(gSfxArchiveHeader->wave_tables_offset, sp1C, gSfxArchiveHeader->files[0] - gSfxArchiveHeader->wave_tables_offset);
     MusBankInitialize(gSfxBankSpecial, sp1C);
     gAudioDMAFlags |= 0x80000000;
-    Rom_DmaRead(D_800FC6E4->files[0], gMoveSoundTempBuffer, D_800FC6E4->files[1] - D_800FC6E4->files[0]);
-    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, D_800FC680, 0x98D8);
-    gMusicHandle = MusLoadSong(gSfxBankSpecial, D_800FC680);
+    Rom_DmaRead(gSfxArchiveHeader->files[0], gMoveSoundTempBuffer, gSfxArchiveHeader->files[1] - gSfxArchiveHeader->files[0]);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gSfxWaveTableBuffer, 0x98D8);
+    gMusicHandle = MusLoadSong(gSfxBankSpecial, gSfxWaveTableBuffer);
     MusSetVolumeScale(gMusicHandle, 0x70);
 
     return gMusicHandle;

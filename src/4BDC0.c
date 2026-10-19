@@ -453,21 +453,21 @@ s32 Audio_StartMusicTrack(s32 arg0) {
             return 0;
     }
 
-    if (sp2C < D_800FC6E4->num_files - 1) {
-        var_a2 = D_800FC6E4->files[sp2C + 1] - D_800FC6E4->files[sp2C];
-    } else if (sp2C == D_800FC6E4->num_files - 1) {
-        var_a2 = D_800FC6E0[2] - D_800FC6E4->files[sp2C];
+    if (sp2C < gSfxArchiveHeader->num_files - 1) {
+        var_a2 = gSfxArchiveHeader->files[sp2C + 1] - gSfxArchiveHeader->files[sp2C];
+    } else if (sp2C == gSfxArchiveHeader->num_files - 1) {
+        var_a2 = gAudioArchiveOffsets[2] - gSfxArchiveHeader->files[sp2C];
     } else {
         return 0;
     }
 
-    Rom_DmaRead(D_800FC6E4->files[sp2C], gMoveSoundTempBuffer, var_a2);
-    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, D_800FC680, 0x98D8);
+    Rom_DmaRead(gSfxArchiveHeader->files[sp2C], gMoveSoundTempBuffer, var_a2);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gSfxWaveTableBuffer, 0x98D8);
 
     if (gMusicFadeDuration <= 0) {
-        gMusicHandle = MusLoadSong(D_800FC684, D_800FC680);
+        gMusicHandle = MusLoadSong(gSfxWaveTable, gSfxWaveTableBuffer);
     } else {
-        gMusicHandle = MusLoadSongWithFade(D_800FC684, D_800FC680, gMusicFadeDuration ^ 0);
+        gMusicHandle = MusLoadSongWithFade(gSfxWaveTable, gSfxWaveTableBuffer, gMusicFadeDuration ^ 0);
     }
 
     gMusicFadeDuration = -1;

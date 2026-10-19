@@ -229,7 +229,7 @@ void Gallery_AlbumInit(s32 arg0, s32 arg1) {
     }
 
     for (i = 0; i < 36; i++) {
-        unk_D_83403C60* ptr = &gGalleryEntries[i];
+        PhotoSceneData* ptr = &gGalleryEntries[i];
 
         gSlotStatusFlags[i] = 0;
         if (Gallery_IsPhotoSpeciesValid(ptr) != 0) {

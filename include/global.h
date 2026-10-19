@@ -519,12 +519,12 @@ typedef struct TextObjectThreadData {
     /* 0x1B0 */ char unk1B0[0x10];
 } TextObjectThreadData; // size = 0x1C0
 
-typedef struct unk_func_88500020 {
+typedef struct TiledTexture {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ u8* unk_0C;
-} unk_func_88500020; // size = 0x10
+} TiledTexture; // size = 0x10
 
 // offset 0x898000 in the rom
 typedef struct TrainerData {

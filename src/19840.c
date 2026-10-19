@@ -109,7 +109,7 @@ Fragment* Fragment_LoadFromRomRange(MainPoolState* arg0, s32 start, s32 end, PER
     return var_v1;
 }
 
-Fragment* Fragment_LoadFromLbaRange(MainPoolState* arg0, unk_func_800041C0* arg1, PERSSZP* arg2, u32 arg3) {
+Fragment* Fragment_LoadFromLbaRange(MainPoolState* arg0, StorageRange* arg1, PERSSZP* arg2, u32 arg3) {
     s32 sp3C;
     Fragment* sp38;
     PERSSZP* temp_s1;
@@ -147,7 +147,7 @@ Fragment* BinArchive_LoadFileFromRomRange(MainPoolState* arg0, BinArchive* arg1,
 }
 
 Fragment* BinArchive_LoadFileFromLbaRange(MainPoolState* arg0, BinArchive* arg1, BinArchiveFile* arg2, u32 arg3, s32 arg4) {
-    unk_func_800041C0 sp1C;
+    StorageRange sp1C;
 
     Storage_SetByteRange(&sp1C, arg1->unk_04, arg2->offset, arg2->size);
     return Fragment_LoadFromLbaRange(arg0, &sp1C, arg3, arg4);

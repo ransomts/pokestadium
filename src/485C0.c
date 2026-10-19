@@ -328,17 +328,17 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
     gBankRemapIndex %= 3;
 
     arg0--;
-    if (arg0 < (D_800FC6F0->num_files - 1)) {
-        romAddr = ((u32*)D_800FC6F0)[arg0 + 3];
-        size = ((u32*)D_800FC6F0)[arg0 + 4] - romAddr;
+    if (arg0 < (gSfxSubHeader2->num_files - 1)) {
+        romAddr = ((u32*)gSfxSubHeader2)[arg0 + 3];
+        size = ((u32*)gSfxSubHeader2)[arg0 + 4] - romAddr;
     } else {
-        romAddr = ((u32*)D_800FC6F0)[arg0 + 3];
+        romAddr = ((u32*)gSfxSubHeader2)[arg0 + 3];
         size = gMoveSoundSeqInfo->seqArray[2].offset - romAddr;
     }
     Rom_DmaRead(romAddr, gMoveSoundTempBuffer, size);
-    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, D_800FC698[gBankRemapIndex], 0x258);
-    RemapBankPointers((bank_remap_descriptor_t*)D_800FC698[gBankRemapIndex]);
-    result = MusStartSoundEffect((SoundBank*)D_800FC690, D_800FC698[gBankRemapIndex], sound + 1, 0x70, 0x80, -1);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gSfxBankScratch[gBankRemapIndex], 0x258);
+    RemapBankPointers((bank_remap_descriptor_t*)gSfxBankScratch[gBankRemapIndex]);
+    result = MusStartSoundEffect((SoundBank*)gSfxBankSecondary, gSfxBankScratch[gBankRemapIndex], sound + 1, 0x70, 0x80, -1);
 
     if (arg2 != 0xFF) {
         gActiveSoundHandle = result;

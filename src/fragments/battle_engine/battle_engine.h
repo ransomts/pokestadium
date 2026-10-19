@@ -1064,7 +1064,7 @@ void Battle_SelectComRoster(void);
 void BattleScene_InitializeParticipantPresentation(unk_D_800AE540_1194* arg0, unk_D_86002F30* arg1);
 void BattleScene_Init(Stage* arg0);
 void func_84301A24(void);
-s32 Battle_Main(s32 arg0, unk_D_800AE540* arg1);
+s32 Battle_Main(s32 arg0, SessionContext* arg1);
 
 void BattleScene_ClearStateTickCallbacks(void);
 void BattleScene_QueueRowEffectList3(unk_BattlePlayerEntity* arg0, s32 arg1);

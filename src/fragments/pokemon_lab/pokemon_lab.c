@@ -17,14 +17,14 @@ typedef void (*func88000020)(unk_func_88001300_000*, s32, s32);
 typedef void (*func8800071C)(unk_func_8800071C*, s32, s32, s32, s32, u8*, u8*, Color_RGBA8, Color_RGBA8);
 typedef void (*func88000830)(unk_func_88000830*, s32, s32, s32, s32, s32, u8**);
 typedef void (*func88000C18)(unk_func_88000C18*, s32, s32, s32, s32, Color_RGBA8);
-typedef void (*func88000CC8)(unk_func_88000CC8*, s32, s32, unk_func_88500020*, u8*, u8*, u8*, u8*, u8*,
+typedef void (*func88000CC8)(unk_func_88000CC8*, s32, s32, TiledTexture*, u8*, u8*, u8*, u8*, u8*,
                              unk_func_88001300_034*);
 typedef void (*func88001CBC)(unk_func_88001300*, s32);
 typedef void (*func88001D0C)(unk_func_88001300*);
 
 extern u32 gFragment22MonIconTiles[];
 
-static unk_func_88500020 gHpBarPalette = {
+static TiledTexture gHpBarPalette = {
     0x0000004C,
     0x0000004C,
     0x0000004C,
@@ -1199,7 +1199,7 @@ static u32 gHpBarPixelData[] = {
     0xD73FE77D, 0xF7BFF7FF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
     0xEFBF4A55, 0x0003BE33, 0xE77FFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xF7FF314B, 0x00010000, 0x00000000
 };
-static unk_func_88500020 gFragment22HpBarConfig = {
+static TiledTexture gFragment22HpBarConfig = {
     0x00000090,
     0x00000090,
     0x00000090,
@@ -2586,7 +2586,7 @@ void Lab_SetFrameTimerState(unk_func_88001300* arg0, s32 arg1) {
     arg0->unk_00.unk_2A = arg1;
 }
 
-void Lab_InitAnimatedIconWidget(unk_func_88000CC8* arg0, s32 arg1, s32 arg2, unk_func_88500020* arg3, u8* arg4, u8* arg5, u8* arg6,
+void Lab_InitAnimatedIconWidget(unk_func_88000CC8* arg0, s32 arg1, s32 arg2, TiledTexture* arg3, u8* arg4, u8* arg5, u8* arg6,
                    u8* arg7, u8* arg8, unk_func_88001300_034* arg9) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88000CC8));
 

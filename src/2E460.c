@@ -23,14 +23,14 @@ static u32 gDigitTextureIds[] = {
     D_04001B58, D_04001BC0, D_04001C28, 0x10,       0x10,       0x10,       D_4001010,
 };
 
-unk_func_88500020 gMenuTextureInfo_Default = {
+TiledTexture gMenuTextureInfo_Default = {
     0x00000014,
     0x00000014,
     0x00000014,
     D_4001C90,
 };
 
-unk_func_88500020 gMenuTextureInfo_Alternates[] = {
+TiledTexture gMenuTextureInfo_Alternates[] = {
     {
         0x00000014,
         0x00000014,
@@ -45,7 +45,7 @@ unk_func_88500020 gMenuTextureInfo_Alternates[] = {
     },
 };
 
-void GbSave_BuildPortSummary(unk_func_8002D860* arg0, s32 arg1) {
+void GbSave_BuildPortSummary(PortSummary* arg0, s32 arg1) {
     if (GbSave_GetSaveState(arg1) != 0) {
         arg0->unk_00 = 1;
     } else {
@@ -56,7 +56,7 @@ void GbSave_BuildPortSummary(unk_func_8002D860* arg0, s32 arg1) {
     arg0->unk_04 = GbSave_GetPortGame(arg1);
 }
 
-void Gfx_DrawTiledTextureStrip(unk_func_88500020* arg0, s32 arg1, s32 a2) {
+void Gfx_DrawTiledTextureStrip(TiledTexture* arg0, s32 arg1, s32 a2) {
     s32 temp_lo;
     s32 var_t0;
     u8* var_s2;
@@ -97,7 +97,7 @@ void Gfx_DrawTiledTextureStrip(unk_func_88500020* arg0, s32 arg1, s32 a2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 }
 
-s32 Ui_AdjustVerticalSelection(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
+s32 Ui_AdjustVerticalSelection(VerticalSelection* arg0, s32 arg1) {
     s32 ret = 0;
 
     switch (arg1) {
@@ -130,7 +130,7 @@ s32 Ui_HandleVerticalSelectionInput(s32 arg0) {
     return sp1C;
 }
 
-s32 Ui_AdjustHorizontalSelection(unk_func_8002DD98_arg0* arg0, s32 arg1) {
+s32 Ui_AdjustHorizontalSelection(HorizontalSelection* arg0, s32 arg1) {
     s32 ret = 0;
 
     switch (arg1) {
@@ -156,14 +156,14 @@ s32 Ui_AdjustHorizontalSelection(unk_func_8002DD98_arg0* arg0, s32 arg1) {
     return ret;
 }
 
-s32 Ui_HandleHorizontalSelectionInput(unk_func_8002DD98_arg0* arg0) {
+s32 Ui_HandleHorizontalSelectionInput(HorizontalSelection* arg0) {
     s32 sp1C = Input_GetRepeatedDPad() & 0xFFFF;
 
     Ui_AdjustHorizontalSelection(arg0, sp1C);
     return sp1C;
 }
 
-void Ui_AdjustSteppedScrollSelection(unk_func_8002DE78_arg0* arg0) {
+void Ui_AdjustSteppedScrollSelection(SteppedScrollSelection* arg0) {
     s32 temp_v0 = Input_GetRepeatedDPad();
     s32 sp18 = arg0->unk_0C;
 
@@ -192,7 +192,7 @@ void Ui_AdjustSteppedScrollSelection(unk_func_8002DE78_arg0* arg0) {
     }
 }
 
-s32 Ui_AdjustNumericSelection(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
+s32 Ui_AdjustNumericSelection(NumericSelection* arg0, s32 arg1) {
     s32 temp_v0;
     s32 var_a2;
     s32 var_t1;
@@ -266,7 +266,7 @@ s32 Ui_HandleNumericSelectionInput(unk_func_8820E99C_030_030* arg0) {
     return sp1C;
 }
 
-s32 Ui_AdjustSteppedRangeSelection(unk_func_8002E128_arg0* arg0) {
+s32 Ui_AdjustSteppedRangeSelection(SteppedRangeSelection* arg0) {
     s32 sp1C = Input_GetRepeatedDPad() & 0xFFFF;
     s32 sp18 = arg0->unk_0C;
 
@@ -385,7 +385,7 @@ void Gfx_DrawNumberDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-s32 Ui_GetSelectionDirection(unk_func_8002EBD8_arg0* arg0) {
+s32 Ui_GetSelectionDirection(SelectionDirection* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_08 & 0x4000) {
@@ -573,15 +573,15 @@ void State_PokemonLab(void) {
 }
 
 s32 LabItem_IsQuantitylessItem(s32 arg0) {
-    static u8 D_80075950[] = {
+    static u8 gQuantitylessItems[] = {
         5,    6,    8,    9,    0x1F, 0x29, 0x2A, 0x2B, 0x2D, 0x30, 0x3F, 0x40, 0x45,
         0x46, 0x47, 0x48, 0x49, 0x4A, 0x4C, 0x4D, 0x4E, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8,
     };
 
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_80075950); i++) {
-        if (arg0 == D_80075950[i]) {
+    for (i = 0; i < ARRAY_COUNT(gQuantitylessItems); i++) {
+        if (arg0 == gQuantitylessItems[i]) {
             return 1;
         }
     }
@@ -598,7 +598,7 @@ s32 LabItem_IsQuantitylessItemForOperation(s32 arg0) {
     return sp1C;
 }
 
-unk_D_8007596C gMenuItemCoords[] = {
+MenuItemCoord gMenuItemCoords[] = {
     { 0x0000, 0x0000 }, { 0x00CC, 0x0096 }, { 0x012F, 0x0122 }, { 0x025F, 0x08A2 }, { 0x00C8, 0x00BE },
     { 0x0133, 0x01A4 }, { 0x01FB, 0x07D0 }, { 0x006C, 0x00C8 }, { 0x012F, 0x01F4 }, { 0x01F7, 0x0762 },
     { 0x0064, 0x003C }, { 0x00CC, 0x00DC }, { 0x0133, 0x02C6 }, { 0x0064, 0x0046 }, { 0x00C8, 0x00DC },

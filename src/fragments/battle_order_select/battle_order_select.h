@@ -81,7 +81,7 @@ void BattleMenu_RearrangeLeadPokemon(unk_D_800AE540_1194* arg0, unk_D_84803760* 
 void BattleMenu_FillDefaultOrder(s8* arg0, s32 arg1);
 void BattleMenu_CommitOrderSelection(void);
 void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4);
-void BattleMenu_InitOrderSelectPanels(unk_D_800AE540* arg0);
+void BattleMenu_InitOrderSelectPanels(SessionContext* arg0);
 s32 BattleMenu_RunOrderSelectScreen(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT64_H_

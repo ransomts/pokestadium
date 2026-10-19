@@ -668,7 +668,7 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // sample in a0 (v0 copy); NR42&8 andi sits in the unk_20 beqz delay slot (ours is late); pos split into
 // v0 in the unk_24 test (target reloads unk_20 into v0 in a beqzl slot); li 1 / D_8007D4D0 order.
 // Dead ends (all worse or equal): other 0/0.0f literal mixes, nr as full byte or `dir`, NR42 read before
-// pos, u8* access, &= 0xF7, ternary +0x10, comma-expr unk_0C, D_800FC6CC[sample] in the call (2865 but
+// pos, u8* access, &= 0xF7, ternary +0x10, comma-expr unk_0C, gAudioSeqTOC[sample] in the call (2865 but
 // loses the target's andi 0xFF re-read), entry pointer variable, u16/s32 `col` local (back to 2985),
 // NR42&8 into any local (dir/idx/len/i/nr/flags, before or after the unk_20 test: 3235+), idx re-read
 // from D_800FD008 instead of a local, reusing idx for dir / sample for len, s32/u16 value/sample/idx,
@@ -681,7 +681,7 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // Round 8 pass 4 (agent-14): 955 -> 345: `f32 fv = D_8007D4D0` right after `if (flags & 0x80) {` used for unk_14 and
 // unk_18 (farm candidate t, 470 -> 345: fixes the li 1 / lwc1 order); before that 955 -> 470: `(u8)(nr & 0xF0) * D_8007D4D0` for unk_14 (810 -> 695) and NR41 read inline
 // in the unk_24 length (no sample local there: 695 -> 470; into nr/value 625, i 930, via p 690), on top of
-// (a) + (b) below + the call index written `D_800FC6CC[D_800FCFD8.unk_04 & 0xFF]`
+// (a) + (b) below + the call index written `gAudioSeqTOC[D_800FCFD8.unk_04 & 0xFF]`
 // (both args; the extra and consumes the target's missing ring temp t6, like the (u8) trick in func_80049DF0;
 // (u8)/(u16)/(s8)/(s16) casts there: 1045-1655). Leads (see func_80049DF0's notes):
 // (a) the target's col is a REAL variable (a2: andi/sra/andi 0xffff in place, no ring temps), which shifts
@@ -694,7 +694,7 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // variable with the target's tail shape (lui/lbu/andi into dir): 1045, but dir lands in a2 and flags in a1
 // (target dir a1, flags a2, pos a2). Tail pos into flags/k/i instead of nr: 1095-1400 (860 at 810).
 // Remaining at 345: top idx a0 / row a1 / sample v0 / load temp a3 (target a1/a3/a0/v0); tail sample a3 and
-// no `move t5,a0` copy before the value lh (target a0 + copy). `ent2 = &D_800FC6CC[(u8)value]` with value =
+// no `move t5,a0` copy before the value lh (target a0 + copy). `ent2 = &gAudioSeqTOC[(u8)value]` with value =
 // unk_04 materialises the copy early (andi instead of move): 375. One-element arrays (the func_80049DF0
 // fix) for dir/sample/idx/col/flags/nr/ent2: 640-2390.
 // Remaining at 810: col/row ptr a3/a2 (target a2/a3), dir/flags a2/a1 (target a1/a2), pos a3 (target a2),
@@ -744,8 +744,8 @@ s16 func_8004A89C(void) {
         D_800FCFD8.unk_0C = D_80078A60[nr43 & 7][col].unk_04;
         if (sampleId != D_800FCFD8.unk_04) {
             D_800FCFD8.unk_04 = sampleId;
-            ent = (unk_D_800FC6CC*)((u32*)D_800FC6CC + (D_800FCFD8.unk_04 << 1));
-            Rom_DmaRead(ent->unk_00, (u32)D_800FC6D0, ent->unk_04);
+            ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (D_800FCFD8.unk_04 << 1));
+            Rom_DmaRead(ent->unk_00, (u32)gAudioSfxDataBuffer, ent->unk_04);
         }
 
         D_800FCFD8.unk_08 = 0;
@@ -804,9 +804,9 @@ s16 func_8004A89C(void) {
         D_800FCFD8.unk_14 += D_800FCFD8.unk_18;
     }
 
-    ent = (unk_D_800FC6CC*)((u32*)D_800FC6CC + (D_800FCFD8.unk_04 << 1));
+    ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (D_800FCFD8.unk_04 << 1));
     if (1) {}
-    sample = ((s16*)D_800FC6D0)[D_800FCFD8.unk_08];
+    sample = ((s16*)gAudioSfxDataBuffer)[D_800FCFD8.unk_08];
     D_800FCFD8.unk_10 += 1.0f;
     if (D_800FCFD8.unk_0C <= D_800FCFD8.unk_10) {
         D_800FCFD8.unk_08++;

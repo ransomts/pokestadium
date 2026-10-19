@@ -18,14 +18,14 @@ typedef enum {
 } JpegStreamMarker;
 
 static u8 gJpegYieldBuffer[0x200];
-static OSMesgQueue D_800A62C0;
-static OSMesg D_800A62D8;
+static OSMesgQueue gDmaCompletionQueue;
+static OSMesg gDmaCompletionMsg;
 
 s32 Jpeg_ReadBigEndianU16(u8* arg0) {
     return ((arg0[0] << 8) | arg0[1]) & 0xFFFF;
 }
 
-void Jpeg_ParseStreamMarkers(unk_func_80003680_sp300* arg0, u8* arg1) {
+void Jpeg_ParseStreamMarkers(JpegStreamInfo* arg0, u8* arg1) {
     s32 temp_v0_2;
     s32 var_s2;
     s32 var_v0;
@@ -98,7 +98,7 @@ void Jpeg_ParseStreamMarkers(unk_func_80003680_sp300* arg0, u8* arg1) {
 extern u64 njpgdspMainTextStart[];
 extern u64 njpgdspMainDataStart[];
 
-void Jpeg_InitializeDspTask(UnkStruct80001380* arg0, unk_func_80003680_sp90* arg1) {
+void Jpeg_InitializeDspTask(UnkStruct80001380* arg0, JpegDspTaskData* arg1) {
     arg0->task.t.type = 4;
     arg0->task.t.flags = 0;
     arg0->task.t.ucode_boot = rspbootTextStart;
@@ -119,7 +119,7 @@ void Jpeg_InitializeDspTask(UnkStruct80001380* arg0, unk_func_80003680_sp90* arg
     osCreateMesgQueue(&arg0->queue, &arg0->mesg, 1);
 }
 
-void Jpeg_BuildDspInput(JpegDecoder* decoder, JpegHuffmanTable* hTable, unk_func_80003680_sp300* arg2) {
+void Jpeg_BuildDspInput(JpegDecoder* decoder, JpegHuffmanTable* hTable, JpegStreamInfo* arg2) {
     decoder->imageData = arg2->start_of_scan;
     decoder->mode = arg2->unk_00;
     decoder->unk_05 = 2;
@@ -130,7 +130,7 @@ void Jpeg_BuildDspInput(JpegDecoder* decoder, JpegHuffmanTable* hTable, unk_func
     decoder->unk_18 = arg2->unk_01;
 }
 
-void Jpeg_BuildDspOutput(unk_func_80003680_sp90* arg0, u8(arg1)[2][0x80], unk_func_80003680_sp300* arg2) {
+void Jpeg_BuildDspOutput(JpegDspTaskData* arg0, u8(arg1)[2][0x80], JpegStreamInfo* arg2) {
     arg0->unk_00 = 0;
     arg0->unk_08 = arg2->unk_00;
     arg0->unk_04 = 1;
@@ -141,12 +141,12 @@ void Jpeg_BuildDspOutput(unk_func_80003680_sp90* arg0, u8(arg1)[2][0x80], unk_fu
 
 s32 Jpeg_DecodeImage(u32 addr, s32 arg1, u8* arg2) {
     UnkStruct80001380 sp318;
-    unk_func_80003680_sp300 sp300;
+    JpegStreamInfo sp300;
     u8 sp200[2][0x80];
     JpegHuffmanTable spB0[4];
     u16* temp_s0;
     u8* temp_s3;
-    unk_func_80003680_sp90 sp90;
+    JpegDspTaskData sp90;
     JpegDecoder sp74;
     JpegDecoderState sp60;
     u32 var_s1;
@@ -195,7 +195,7 @@ s32 Jpeg_DecodeImage(u32 addr, s32 arg1, u8* arg2) {
 }
 
 void Dma_InitializeCompletionQueue(void) {
-    osCreateMesgQueue(&D_800A62C0, &D_800A62D8, 1);
+    osCreateMesgQueue(&gDmaCompletionQueue, &gDmaCompletionMsg, 1);
 }
 
 void Yay0_DecompressAndRelocate(u8* in_header, u8* memory) {
@@ -225,7 +225,7 @@ void Yay0_DecompressAndRelocate(u8* in_header, u8* memory) {
 
 void Dma_ReadChunks(u8* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 var_s0;
-    OSMesgQueue* mesq = &D_800A62C0;
+    OSMesgQueue* mesq = &gDmaCompletionQueue;
 
     for (; arg2 > 0; arg2 -= var_s0) {
         if (arg2 >= 0x1000) {
@@ -244,7 +244,7 @@ void Dma_ReadChunks(u8* arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 s32 Flash_ProgramPages(u8* arg0, s16 arg1, s16 arg2, s32 arg3) {
     OSMesg sp44;
-    OSMesgQueue* mesq = &D_800A62C0;
+    OSMesgQueue* mesq = &gDmaCompletionQueue;
 
     for (; arg2 > 0;) {
         Storage_QueueFlashTransfer(arg3, arg0, arg1, mesq, 0);
@@ -269,7 +269,7 @@ s32 Flash_EraseSectorByIndex(s16 arg0) {
 void Dma_WriteChunks(u32 arg0, u32 arg1, u32 arg2, s32 arg3) {
     s32 var_s0;
     s32 var_s1;
-    OSMesgQueue* mesq = &D_800A62C0;
+    OSMesgQueue* mesq = &gDmaCompletionQueue;
 
     for (var_s1 = arg2 - arg1; var_s1 > 0; var_s1 -= var_s0) {
         if (var_s1 >= 0x1000) {
@@ -289,7 +289,7 @@ void Dma_WriteChunks(u32 arg0, u32 arg1, u32 arg2, s32 arg3) {
 void Dma_CopyChunks(u8* arg0, u8* arg1, u8* arg2) {
     s32 var_s0;
     s32 var_s1;
-    OSMesgQueue* mesq = &D_800A62C0;
+    OSMesgQueue* mesq = &gDmaCompletionQueue;
 
     for (var_s1 = arg2 - arg1; var_s1 > 0; var_s1 -= var_s0) {
         if (var_s1 >= 0x1000) {
@@ -386,7 +386,7 @@ void* Asset_LoadCompressed(u8* romStart, u8* romEnd, s32 arg2, s32 arg3) {
     return ret;
 }
 
-void* Storage_LoadAssetByLbaRange(unk_func_800041C0* arg0, s32 arg1) {
+void* Storage_LoadAssetByLbaRange(StorageRange* arg0, s32 arg1) {
     s32 sp44;
     u32* sp40;
     PERSSZP* temp_s0;
@@ -407,8 +407,8 @@ void* Storage_LoadAssetByLbaRange(unk_func_800041C0* arg0, s32 arg1) {
     if (temp_v0 != NULL) {
         temp_s0 = arg0->unk_04 + temp_v0;
 
-        Storage_QueueDiskTransfer(0, temp_v0, arg0->unk_00, arg0->unk_02, &D_800A62C0, 0);
-        osRecvMesg(&D_800A62C0, NULL, 1);
+        Storage_QueueDiskTransfer(0, temp_v0, arg0->unk_00, arg0->unk_02, &gDmaCompletionQueue, 0);
+        osRecvMesg(&gDmaCompletionQueue, NULL, 1);
 
         if (((u32*)temp_s0->magic)[0] == 'PERS' && (((u32*)temp_s0->magic)[1] == '-SZP')) {
             sp40 = Yay0_LoadDecompressedAsset(temp_v0, temp_s0, arg1);
@@ -422,7 +422,7 @@ void* Storage_LoadAssetByLbaRange(unk_func_800041C0* arg0, s32 arg1) {
     return sp40;
 }
 
-unk_func_800041C0* Storage_SetLbaRange(unk_func_800041C0* arg0, s32 arg1, s32 arg2) {
+StorageRange* Storage_SetLbaRange(StorageRange* arg0, s32 arg1, s32 arg2) {
     arg0->unk_00 = arg1;
     arg0->unk_02 = arg2 - arg1;
     arg0->unk_04 = 0;
@@ -432,7 +432,7 @@ unk_func_800041C0* Storage_SetLbaRange(unk_func_800041C0* arg0, s32 arg1, s32 ar
     return arg0;
 }
 
-unk_func_800041C0* Storage_SetByteRange(unk_func_800041C0* arg0, u32 arg1, u32 offset, u32 size) {
+StorageRange* Storage_SetByteRange(StorageRange* arg0, u32 arg1, u32 offset, u32 size) {
     s32 sp2C;
     s32 sp28;
     s32 sp24;
@@ -457,7 +457,7 @@ unk_func_800041C0* Storage_SetByteRange(unk_func_800041C0* arg0, u32 arg1, u32 o
 }
 
 void Storage_PrefetchLbaRange(s32 arg0, s32 arg1, s32 arg2) {
-    unk_func_800041C0 sp1C;
+    StorageRange sp1C;
 
     Storage_SetLbaRange(&sp1C, arg0, arg1);
     Storage_LoadAssetByLbaRange(&sp1C, arg2);
@@ -484,7 +484,7 @@ u8* Asset_LoadToSegment(s32 id, u8* rom_start, u8* rom_end, s32 arg3) {
 
 MainPoolBlock* Asset_LoadToSegmentByLbaRange(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad;
-    unk_func_800041C0 sp28;
+    StorageRange sp28;
     MainPoolBlock* temp_v0 = Storage_LoadAssetByLbaRange(Storage_SetLbaRange(&sp28, arg1, arg2), arg3);
 
     if ((temp_v0 != NULL) && (arg0 > 0)) {
@@ -533,7 +533,7 @@ ret_func_80004454 Fragment_Load(s32 arg0, u8* romStart, u8* romEnd) {
 
 void* Fragment_LoadByLbaRange(s32 arg0, s32 arg1, s32 arg2) {
     Fragment* sp2C;
-    unk_func_800041C0 sp20;
+    StorageRange sp20;
 
     sp2C = Storage_LoadAssetByLbaRange(Storage_SetLbaRange(&sp20, arg1, arg2), 0);
     if (sp2C != NULL) {
@@ -598,7 +598,7 @@ BinArchive* BinArchive_Open(u8* romStart, u8* romEnd, s32 arg2, s32 arg3) {
 
 void* BinArchive_LoadByLbaRange(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     BinArchive* var_a0;
-    unk_func_800041C0 sp20;
+    StorageRange sp20;
 
     switch (arg2) {
         default:
@@ -653,7 +653,7 @@ Fragment* BinArchive_LoadFileFromRom(BinArchive* arg0, BinArchiveFile* arg1) {
 }
 
 void* BinArchive_LoadFileBuffered(BinArchive* arg0, BinArchiveFile* arg1) {
-    unk_func_800041C0 sp1C;
+    StorageRange sp1C;
 
     Storage_SetByteRange(&sp1C, arg0->unk_04, arg1->offset, arg1->size);
     return Storage_LoadAssetByLbaRange(&sp1C, 0);

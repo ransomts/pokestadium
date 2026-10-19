@@ -936,7 +936,7 @@ void LabPCList_InitDeckCategories(unk_func_8830867C_02C_154* arg0, MemoryPool* a
     UNUSED s32 pad;
     s32 temp_s1;
     char sp54[4];
-    unk_func_8002D860 sp48;
+    PortSummary sp48;
     char sp38[16];
     s32 i;
 

@@ -9,14 +9,14 @@
 
 unk_D_83402EE0 gDisplayableMonIndices[24];
 s32 gMonSelectionFlags[24];
-unk_D_83403C60 gGalleryEntries[36];
-static unk_D_83403C60 gGalleryEntriesBackup[36];
-unk_D_83403C60 gGalleryCamEntries[21];
-static unk_D_83403C60 gGalleryCamEntriesBackup[21];
-unk_D_83403C60* gCurrentCamEntry;
-unk_D_83403C60* gCurrentCamEntryPage;
+PhotoSceneData gGalleryEntries[36];
+static PhotoSceneData gGalleryEntriesBackup[36];
+PhotoSceneData gGalleryCamEntries[21];
+static PhotoSceneData gGalleryCamEntriesBackup[21];
+PhotoSceneData* gCurrentCamEntry;
+PhotoSceneData* gCurrentCamEntryPage;
 static unk_D_83406EB0* gCurrentCamEntrySpecial;
-unk_D_83407AC8 D_83407AC8;
+PhotoMonSpecies D_83407AC8;
 s32 gGallerySpecialUnlocked;
 s32 gGallerySpecialViewed;
 s32 gGalleryAudioStateFlag;
@@ -32,7 +32,7 @@ unk_D_83407B38 gGalleryCamList;
 s32 D_83402E20 = 0;
 s32 D_83402E24 = 1;
 s32 D_83402E28 = 0;
-unk_D_83403C60* gCurrentGalleryEntryPtr = NULL;
+PhotoSceneData* gCurrentGalleryEntryPtr = NULL;
 
 void Gallery_LoadUnlockedBackgrounds(void) {
     s32 i;
@@ -40,16 +40,16 @@ void Gallery_LoadUnlockedBackgrounds(void) {
     main_pool_push_state('bkgl');
 
     Save_EnsureBankLoaded(2);
-    bzero(gGalleryEntries, sizeof(unk_D_83403C60) * 36);
-    bzero(gGalleryEntriesBackup, sizeof(unk_D_83403C60) * 36);
-    bzero(&gGalleryCamEntries, sizeof(unk_D_83403C60) * 21);
-    bzero(&gGalleryCamEntriesBackup, sizeof(unk_D_83403C60) * 21);
+    bzero(gGalleryEntries, sizeof(PhotoSceneData) * 36);
+    bzero(gGalleryEntriesBackup, sizeof(PhotoSceneData) * 36);
+    bzero(&gGalleryCamEntries, sizeof(PhotoSceneData) * 21);
+    bzero(&gGalleryCamEntriesBackup, sizeof(PhotoSceneData) * 21);
 
     for (i = 0; i < 36; i++) {
         Deck_ReadSaveEntry(0x16, 0, i, &gGalleryEntries[i]);
     }
 
-    _bcopy(&gGalleryEntries, &gGalleryEntriesBackup, sizeof(unk_D_83403C60) * 36);
+    _bcopy(&gGalleryEntries, &gGalleryEntriesBackup, sizeof(PhotoSceneData) * 36);
 
     for (i = 0; i < 21; i++) {
         Deck_ReadSaveEntry(0x17, 0, i, &gGalleryCamEntries[i]);
@@ -86,7 +86,7 @@ void Gallery_LoadUnlockedBackgrounds(void) {
         gGallerySpecialViewed = 0;
     }
 
-    _bcopy(&gGalleryCamEntries, &gGalleryCamEntriesBackup, sizeof(unk_D_83403C60) * 21);
+    _bcopy(&gGalleryCamEntries, &gGalleryCamEntriesBackup, sizeof(PhotoSceneData) * 21);
 
     main_pool_pop_state('bkgl');
 
@@ -117,7 +117,7 @@ s32 Gallery_ControlRecordIsDirty(unk_D_83406EB0* arg0) {
     return var_v1;
 }
 
-s32 Gallery_ArraysDiffer(unk_D_83403C60* arg0, unk_D_83403C60* arg1, s32 arg2) {
+s32 Gallery_ArraysDiffer(PhotoSceneData* arg0, PhotoSceneData* arg1, s32 arg2) {
     s32 sp1C = 0;
 
     if (bcmp(arg0, arg1, arg2) != 0) {
@@ -196,33 +196,33 @@ void Gallery_ResetPhotoPool(void) {
     Gallery_ClearSavedPosition(&gGallerySelection);
 }
 
-void Gallery_ClearPhotoRecord(unk_D_83403C60* arg0) {
-    bzero(arg0, sizeof(unk_D_83403C60));
+void Gallery_ClearPhotoRecord(PhotoSceneData* arg0) {
+    bzero(arg0, sizeof(PhotoSceneData));
 }
 
-void Gallery_SwapPhotoRecords(unk_D_83403C60* arg0, unk_D_83403C60* arg1) {
-    unk_D_83403C60 sp4;
+void Gallery_SwapPhotoRecords(PhotoSceneData* arg0, PhotoSceneData* arg1) {
+    PhotoSceneData sp4;
 
     sp4 = *arg0;
     *arg0 = *arg1;
     *arg1 = sp4;
 }
 
-s32 Gallery_PhotoRecordsEqual(unk_D_83403C60* arg0, unk_D_83403C60* arg1) {
+s32 Gallery_PhotoRecordsEqual(PhotoSceneData* arg0, PhotoSceneData* arg1) {
     s32 sp1C = 0;
 
-    if (bcmp(arg0, arg1, sizeof(unk_D_83403C60)) == 0) {
+    if (bcmp(arg0, arg1, sizeof(PhotoSceneData)) == 0) {
         sp1C = 1;
     }
     return sp1C;
 }
 
-void Gallery_SetEnlargeTarget(unk_D_83403C60* arg0) {
+void Gallery_SetEnlargeTarget(PhotoSceneData* arg0) {
     gCurrentGalleryEntryPtr = arg0;
 }
 
-unk_D_83403C60* Gallery_GetEnlargeTarget(s32 arg0) {
-    unk_D_83403C60* ret = gCurrentGalleryEntryPtr;
+PhotoSceneData* Gallery_GetEnlargeTarget(s32 arg0) {
+    PhotoSceneData* ret = gCurrentGalleryEntryPtr;
 
     if (arg0 != 0) {
         gCurrentGalleryEntryPtr = NULL;
@@ -249,7 +249,7 @@ s32 Gallery_CountTextLines(s8* arg0) {
     return var_v1;
 }
 
-s32 Gallery_CountValidPhotos(unk_D_83403C60* arg0, s32 arg1, s32 arg2) {
+s32 Gallery_CountValidPhotos(PhotoSceneData* arg0, s32 arg1, s32 arg2) {
     s32 var_s0 = 0;
     s32 i;
 
@@ -266,7 +266,7 @@ s32 Gallery_CountValidPhotos(unk_D_83403C60* arg0, s32 arg1, s32 arg2) {
     return var_s0;
 }
 
-s32 Gallery_FindNthEmptySlot(unk_D_83403C60* arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 Gallery_FindNthEmptySlot(PhotoSceneData* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 var_s0 = arg2;
     s32 var_s1 = -1;
 
@@ -284,7 +284,7 @@ s32 Gallery_FindNthEmptySlot(unk_D_83403C60* arg0, s32 arg1, s32 arg2, s32 arg3)
     return var_s0;
 }
 
-s32 Gallery_FindFirstEmptySlot(unk_D_83403C60* arg0, s32 arg1) {
+s32 Gallery_FindFirstEmptySlot(PhotoSceneData* arg0, s32 arg1) {
     s32 i;
     s32 sp28 = -1;
 
@@ -475,7 +475,7 @@ void Gallery_DrawStatusIcon(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void Gallery_InitSceneGrid(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, AssetManager* arg5,
-                   BinArchive* arg6, unk_D_83403C60* arg7, s32 arg8, s32 arg9) {
+                   BinArchive* arg6, PhotoSceneData* arg7, s32 arg8, s32 arg9) {
     UNUSED s32 pad;
     FramebufferImage* sp168;
     FramebufferImage* sp68[64];

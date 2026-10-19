@@ -227,7 +227,7 @@ typedef struct unk_func_8830867C_040 {
 typedef struct unk_func_8830867C_044_038 {
     /* 0x00 */ unk_func_88001300_000 unk_00;
     /* 0x2C */ char unk2C[0x4];
-    /* 0x30 */ unk_func_8830867C_044_038_030 unk_30;
+    /* 0x30 */ NumericSelection unk_30;
     /* 0x44 */ unk_func_8820E99C_030_044* unk_44;
 } unk_func_8830867C_044_038; // size = 0x48
 

@@ -71,7 +71,7 @@ s32 Snap_PrintClubPrintSeals(s32 arg0, s32 arg1) {
     s32 i;
     AssetManager* temp_s0;
     Stage* temp_v0;
-    unk_D_83403C60* sp60 = (gGallerySpecialUnlocked != 0) ? gCurrentCamEntryPage : gCurrentCamEntry;
+    PhotoSceneData* sp60 = (gGallerySpecialUnlocked != 0) ? gCurrentCamEntryPage : gCurrentCamEntry;
     u8 sp50[] = {
         0x00, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01, 0x01, 0x02, 0x02, 0x03, 0x03, 0x02, 0x02, 0x03, 0x03,
     };

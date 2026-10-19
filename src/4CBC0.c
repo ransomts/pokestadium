@@ -1008,7 +1008,7 @@ s32 Audio_PlayPersistentSoundCommand(s32 arg0, u32 arg1) {
     return temp_v0;
 }
 
-u32 D_80079014 = 0xFFFFFFFF;
+u32 gCurrentSfxBankId = 0xFFFFFFFF;
 static s32 D_80079018 = 0x00000000;
 
 s32 Audio_DispatchSoundBankCommand(s32 arg0, s32 arg1, s32 arg2) {
@@ -1035,20 +1035,20 @@ s32 Audio_DispatchSoundBankCommand(s32 arg0, s32 arg1, s32 arg2) {
             return 0;
     }
 
-    if (temp_v1 != D_80079014) {
-        sp24 = D_800FC6F8->seqArray[(temp_v1 >> 0x10) - 2].offset;
+    if (temp_v1 != gCurrentSfxBankId) {
+        sp24 = gAudioSeqHeader2->seqArray[(temp_v1 >> 0x10) - 2].offset;
 
-        Rom_DmaRead(sp24, (u32)D_800FC798, 0xC);
-        Audio_RelocateOffsets((u32)D_800FC798, sp24, 3);
-        Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
+        Rom_DmaRead(sp24, (u32)gAudioHeaderTemp, 0xC);
+        Audio_RelocateOffsets((u32)gAudioHeaderTemp, sp24, 3);
+        Rom_DmaRead(gAudioHeaderTemp[0], gMoveSoundTempBuffer, gAudioHeaderTemp[1] - gAudioHeaderTemp[0]);
         Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
-        Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
+        Rom_DmaRead(gAudioHeaderTemp[1], gMoveSoundTempBuffer, gAudioHeaderTemp[2] - gAudioHeaderTemp[1]);
         Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
-        MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
+        MusBankInitialize(gAudioSfxBank, gAudioHeaderTemp[2]);
     }
 
-    D_80079014 = temp_v1;
+    gCurrentSfxBankId = temp_v1;
 
     switch (temp_v1) {
         case 0x20000:
@@ -1144,22 +1144,22 @@ s32 Audio_PlayDirectSoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     sp28 = arg0 & 0xFFFF0000;
     sp2C = arg0 & 0xFFFF;
 
-    if (sp28 != D_80079014) {
-        sp34 = D_800FC6F4->seqArray[2].offset;
+    if (sp28 != gCurrentSfxBankId) {
+        sp34 = gAudioSeqHeader1->seqArray[2].offset;
 
-        Rom_DmaRead(sp34, &D_800FC798[0], 0xC);
-        Audio_RelocateOffsets(D_800FC798, sp34, 3);
-        sp34 = D_800FC798[1] - D_800FC798[0];
-        Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, sp34);
+        Rom_DmaRead(sp34, &gAudioHeaderTemp[0], 0xC);
+        Audio_RelocateOffsets(gAudioHeaderTemp, sp34, 3);
+        sp34 = gAudioHeaderTemp[1] - gAudioHeaderTemp[0];
+        Rom_DmaRead(gAudioHeaderTemp[0], gMoveSoundTempBuffer, sp34);
         Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
-        sp34 = D_800FC798[2] - D_800FC798[1];
-        Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, sp34);
+        sp34 = gAudioHeaderTemp[2] - gAudioHeaderTemp[1];
+        Rom_DmaRead(gAudioHeaderTemp[1], gMoveSoundTempBuffer, sp34);
         Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
-        MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
+        MusBankInitialize(gAudioSfxBank, gAudioHeaderTemp[2]);
     }
 
-    D_80079014 = sp28;
+    gCurrentSfxBankId = sp28;
 
     switch (arg0) {
         case 0x1000001:
@@ -1171,7 +1171,7 @@ s32 Audio_PlayDirectSoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
             break;
 
         case 0x1000003:
-            var_v0 = MusStartSoundEffect(D_800FC684, gAudioSfxInstBank, sp2C, 0xA0, 0x80, -1);
+            var_v0 = MusStartSoundEffect(gSfxWaveTable, gAudioSfxInstBank, sp2C, 0xA0, 0x80, -1);
             break;
 
         default:
@@ -1209,20 +1209,20 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     sp38 = 0x80;
     sp34 = 0x80;
 
-    if (sp20 != D_80079014) {
-        sp2C = D_800FC6F4->seqArray[3].offset;
+    if (sp20 != gCurrentSfxBankId) {
+        sp2C = gAudioSeqHeader1->seqArray[3].offset;
 
-        Rom_DmaRead(sp2C, (u32)D_800FC798, 0xC);
-        Audio_RelocateOffsets((u32)D_800FC798, sp2C, 3);
-        Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
+        Rom_DmaRead(sp2C, (u32)gAudioHeaderTemp, 0xC);
+        Audio_RelocateOffsets((u32)gAudioHeaderTemp, sp2C, 3);
+        Rom_DmaRead(gAudioHeaderTemp[0], gMoveSoundTempBuffer, gAudioHeaderTemp[1] - gAudioHeaderTemp[0]);
         Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
-        Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
+        Rom_DmaRead(gAudioHeaderTemp[1], gMoveSoundTempBuffer, gAudioHeaderTemp[2] - gAudioHeaderTemp[1]);
         Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
-        MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
+        MusBankInitialize(gAudioSfxBank, gAudioHeaderTemp[2]);
     }
 
-    D_80079014 = sp20;
+    gCurrentSfxBankId = sp20;
 
     sp40 = arg0 & 0xFFFF;
     switch (arg0) {
@@ -1339,20 +1339,20 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
     u32 sp24;
 
     sp24 = arg0 & 0xFFFF0000;
-    if (sp24 != D_80079014) {
-        sp3C = D_800FC6F4->seqArray[4].offset;
+    if (sp24 != gCurrentSfxBankId) {
+        sp3C = gAudioSeqHeader1->seqArray[4].offset;
 
-        Rom_DmaRead(sp3C, (u32)D_800FC798, 0xC);
-        Audio_RelocateOffsets((u32)D_800FC798, sp3C, 3);
-        Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
+        Rom_DmaRead(sp3C, (u32)gAudioHeaderTemp, 0xC);
+        Audio_RelocateOffsets((u32)gAudioHeaderTemp, sp3C, 3);
+        Rom_DmaRead(gAudioHeaderTemp[0], gMoveSoundTempBuffer, gAudioHeaderTemp[1] - gAudioHeaderTemp[0]);
         Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
-        Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
+        Rom_DmaRead(gAudioHeaderTemp[1], gMoveSoundTempBuffer, gAudioHeaderTemp[2] - gAudioHeaderTemp[1]);
         Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
-        MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
+        MusBankInitialize(gAudioSfxBank, gAudioHeaderTemp[2]);
     }
 
-    D_80079014 = sp24;
+    gCurrentSfxBankId = sp24;
 
     switch (arg0) {
         case 0x1200001:

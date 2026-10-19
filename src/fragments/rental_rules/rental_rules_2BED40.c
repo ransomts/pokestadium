@@ -132,7 +132,7 @@ void RentalRules_PollInput(void) {
     Input_ResetRepeatState();
 }
 
-s16* RentalRules_GetRuleIdList(unk_D_800AE540* arg0) {
+s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
     s16* var_v1 = NULL;
 
     switch (arg0->unk_0001) {

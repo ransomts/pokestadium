@@ -719,8 +719,8 @@ typedef struct unk_func_8830867C_048_048 {
     /* 0x24 */ struct unk_func_8830867C_048* unk_24;
 } unk_func_8830867C_048_048; // size = 0x28
 
-typedef void (*func88500020)(unk_func_88500020*, s32, s32);
-typedef void (*func88500338)(unk_func_88500020* arg0, s32 arg1, s32 arg2, s32 arg3);
+typedef void (*func88500020)(TiledTexture*, s32, s32);
+typedef void (*func88500338)(TiledTexture* arg0, s32 arg1, s32 arg2, s32 arg3);
 typedef void (*func88500668)(unk_func_882025E0*, s32);
 typedef void (*func8850068C)(unk_func_88001300_000_000*, unk_func_88001300_000_000*);
 typedef void (*func885007CC)(unk_func_88001300_000*, s32);
@@ -796,8 +796,8 @@ typedef void (*func8850CD24)(unk_func_8830867C_02C_048*, s32);
 typedef void (*func8850CD44)(unk_func_8850CD44*, s32, MemoryPool*);
 typedef void (*func8850CF00)(unk_func_8850CD44*, Controller*);
 
-void WidgetTree_DrawTiledTexture(unk_func_88500020*, s32, s32);
-void WidgetTree_DrawTiledTextureFmt(unk_func_88500020* arg0, s32 arg1, s32 arg2, s32 arg3);
+void WidgetTree_DrawTiledTexture(TiledTexture*, s32, s32);
+void WidgetTree_DrawTiledTextureFmt(TiledTexture* arg0, s32 arg1, s32 arg2, s32 arg3);
 void WidgetTree_InitNode(unk_func_88001300_000_000*, s32);
 void WidgetTree_AppendChild(unk_func_88001300_000_000*, unk_func_88001300_000_000*);
 void WidgetTree_InitWidget(unk_func_88001300_000*, s32);

@@ -4,42 +4,42 @@
 #include "global.h"
 #include "29BA0.h"
 
-typedef struct unk_func_8002EBD8_arg0 {
+typedef struct SelectionDirection {
     /* 0x00 */ char unk00[0x8];
     /* 0x08 */ u16 unk_08;
-} unk_func_8002EBD8_arg0; // size >= 0xA
+} SelectionDirection; // size >= 0xA
 
-typedef struct unk_func_8002E128_arg0 {
+typedef struct SteppedRangeSelection {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
-} unk_func_8002E128_arg0; // size >= 0x10
+} SteppedRangeSelection; // size >= 0x10
 
-typedef struct unk_func_8002DCB8_arg0 {
+typedef struct VerticalSelection {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
-} unk_func_8002DCB8_arg0; // size >= 0xC
+} VerticalSelection; // size >= 0xC
 
-typedef struct unk_func_8002DD98_arg0 {
+typedef struct HorizontalSelection {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
-} unk_func_8002DD98_arg0; // size >= 0xC
+} HorizontalSelection; // size >= 0xC
 
-typedef struct unk_func_8002DE78_arg0 {
+typedef struct SteppedScrollSelection {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
-} unk_func_8002DE78_arg0; // size >= 0x10
+} SteppedScrollSelection; // size >= 0x10
 
-typedef struct unk_func_8002D860 {
+typedef struct PortSummary {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
-} unk_func_8002D860; // size = 0xC
+} PortSummary; // size = 0xC
 
 typedef struct ret_func_8002ED08 {
     /* 0x00 */ u8 unk_00[12];
@@ -53,38 +53,38 @@ typedef struct unk_func_8820E99C_030_030 {
     /* 0x10 */ s32 unk_10;
 } unk_func_8820E99C_030_030; // size = 0x14
 
-typedef struct unk_func_8830867C_044_038_030 {
+typedef struct NumericSelection {
     /* 0x00 */ s32 unk_00;
     /* 0x04 */ s32 unk_04;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
-} unk_func_8830867C_044_038_030; // size = 0x14
+} NumericSelection; // size = 0x14
 
-typedef struct unk_D_8007596C {
+typedef struct MenuItemCoord {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u16 unk_02;
-} unk_D_8007596C; // size = 0x4
+} MenuItemCoord; // size = 0x4
 
-extern unk_func_88500020 gMenuTextureInfo_Default;
-extern unk_func_88500020 gMenuTextureInfo_Alternates[];
-extern unk_D_8007596C gMenuItemCoords[];
+extern TiledTexture gMenuTextureInfo_Default;
+extern TiledTexture gMenuTextureInfo_Alternates[];
+extern MenuItemCoord gMenuItemCoords[];
 extern s32 gStageRomOffsets[];
 
-void GbSave_BuildPortSummary(unk_func_8002D860* arg0, s32 arg1);
-void Gfx_DrawTiledTextureStrip(unk_func_88500020* arg0, s32 arg1, s32 a2);
-s32 Ui_AdjustVerticalSelection(unk_func_8002DCB8_arg0* arg0, s32 arg1);
+void GbSave_BuildPortSummary(PortSummary* arg0, s32 arg1);
+void Gfx_DrawTiledTextureStrip(TiledTexture* arg0, s32 arg1, s32 a2);
+s32 Ui_AdjustVerticalSelection(VerticalSelection* arg0, s32 arg1);
 s32 Ui_HandleVerticalSelectionInput(s32 arg0);
-s32 Ui_AdjustHorizontalSelection(unk_func_8002DD98_arg0* arg0, s32 arg1);
-s32 Ui_HandleHorizontalSelectionInput(unk_func_8002DD98_arg0* arg0);
-void Ui_AdjustSteppedScrollSelection(unk_func_8002DE78_arg0* arg0);
-s32 Ui_AdjustNumericSelection(unk_func_8830867C_044_038_030* arg0, s32 arg1);
+s32 Ui_AdjustHorizontalSelection(HorizontalSelection* arg0, s32 arg1);
+s32 Ui_HandleHorizontalSelectionInput(HorizontalSelection* arg0);
+void Ui_AdjustSteppedScrollSelection(SteppedScrollSelection* arg0);
+s32 Ui_AdjustNumericSelection(NumericSelection* arg0, s32 arg1);
 s32 Ui_HandleNumericSelectionInput(unk_func_8820E99C_030_030* arg0);
-s32 Ui_AdjustSteppedRangeSelection(unk_func_8002E128_arg0* arg0);
+s32 Ui_AdjustSteppedRangeSelection(SteppedRangeSelection* arg0);
 void Gfx_DrawNumber(s32 arg0, s32 arg1, s32 arg2);
 void Gfx_DrawNumberFixedWidth(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void Gfx_DrawNumberDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-s32 Ui_GetSelectionDirection(unk_func_8002EBD8_arg0* arg0);
+s32 Ui_GetSelectionDirection(SelectionDirection* arg0);
 s32 GbSave_GameToCategoryIndex(s32 arg0);
 Color_RGBA8 Color_InterpolateFromGray(Color_RGBA8 arg0, f32 arg1);
 s32 BattleMon_CountMoves(PokemonData* arg0);

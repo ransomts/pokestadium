@@ -50,7 +50,7 @@ extern char** D_830039C0;
 char* RentalRules_GetPokemonName(s32 arg0);
 void RentalRules_LoadBackgroundArchive(void);
 void RentalRules_PollInput(void);
-s16* RentalRules_GetRuleIdList(unk_D_800AE540* arg0);
+s16* RentalRules_GetRuleIdList(SessionContext* arg0);
 char* RentalRules_GetModeLabel(s8 arg0);
 char* RentalRules_GetCategoryLabel(s8 arg0);
 s32 RentalRules_RuleListHasEmptyEntry(s16* arg0);

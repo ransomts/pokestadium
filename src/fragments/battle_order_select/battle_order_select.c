@@ -26,7 +26,7 @@ static s16 gTransferPakErrorTimer;
 static s16 gTransferPakScrollPos;
 static s32 gPanelCount;
 static unk_D_848037A0 gPanels[4];
-static unk_D_800AE540* D_84816420;
+static SessionContext* D_84816420;
 static Controller gPanelController;
 static s32 gInputTimerIndex;
 static s32 gInputTimerValue;
@@ -1214,7 +1214,7 @@ void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg
     gPanelCount++;
 }
 
-void BattleMenu_InitOrderSelectPanels(unk_D_800AE540* arg0) {
+void BattleMenu_InitOrderSelectPanels(SessionContext* arg0) {
     unk_D_800AE540_1194* temp_s0 = &arg0->unk_1194[0];
 
     D_84816420 = arg0;

@@ -28,7 +28,7 @@ s32 gCursorCanMoveDown;
 void Gallery_FilmSelectCommitPhotos(unk_D_83407B38* arg0) {
     s32 i;
     s32 sp40;
-    unk_D_83403C60* temp_s0;
+    PhotoSceneData* temp_s0;
     s32 temp_v0;
     s32 idx;
 

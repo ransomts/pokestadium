@@ -610,7 +610,7 @@ void BattleScene_Init(Stage* arg0) {
 void func_84301A24(void) {
 }
 
-s32 Battle_Main(s32 arg0, unk_D_800AE540* arg1) {
+s32 Battle_Main(s32 arg0, SessionContext* arg1) {
     Stage* sp24;
 
     gBattlePokemonData = gSessionContext.unk_1194;

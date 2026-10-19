@@ -12,7 +12,7 @@
 
 static Color_RGBA8 gDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
-void WidgetTree_DrawTiledTexture(unk_func_88500020* arg0, s32 arg1, s32 arg2) {
+void WidgetTree_DrawTiledTexture(TiledTexture* arg0, s32 arg1, s32 arg2) {
     s32 temp_lo = 0x1000 / (arg0->unk_00 * 2);
     s32 var_t3 = arg0->unk_04;
     u8* var_s2 = arg0->unk_0C;
@@ -39,7 +39,7 @@ void WidgetTree_DrawTiledTexture(unk_func_88500020* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void WidgetTree_DrawTiledTextureFmt(unk_func_88500020* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void WidgetTree_DrawTiledTextureFmt(TiledTexture* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 temp_lo = 0x1000 / (arg0->unk_00 * 2);
     s32 var_t0;
     s32 var_t3 = arg0->unk_04;

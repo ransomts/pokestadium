@@ -25,7 +25,7 @@
 #include "lib/ultralib/include/PR/os_internal_reg.h"
 
 // .data
-u16 D_80073660[16][256] = {
+u16 gSincosTable[16][256] = {
     {
         0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0002, 0x0003, 0x0005,
         0x0008, 0x000A, 0x000E, 0x0012, 0x0017, 0x001C, 0x0022, 0x0029,
@@ -583,7 +583,7 @@ static s16 gTitleScreenState = 0;
 
 FragmentCallContext gFragmentCallContext;
 s32 pad_D_800AE534[2];
-unk_D_800AE540 gSessionContext;
+SessionContext gSessionContext;
 BinArchive* gBattleArchive;
 
 s32 Game_DoCopyProtection(s32 state) {

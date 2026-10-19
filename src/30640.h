@@ -5,20 +5,20 @@
 #include "1C720.h"
 #include "src/6BC0.h"
 
-typedef struct unk_D_83407AC8 {
+typedef struct PhotoMonSpecies {
     /* 0x00 */ u16 unk_00;
     /* 0x02 */ u8 unk_02;
     /* 0x03 */ s8 unk_03[11];
     /* 0x0E */ s8 unk_0E[11];
-} unk_D_83407AC8; // size >= 0x1A
+} PhotoMonSpecies; // size >= 0x1A
 
-typedef struct unk_D_83402EE0_070 {
+typedef struct PhotoMonData {
     /* 0x00 */ s16 unk_00;
     /* 0x02 */ u8 unk_02;
     /* 0x03 */ u8 unk_03[11];
     /* 0x0E */ u8 unk_0E[11];
     /* 0x19 */ char unk19[0x1];
-} unk_D_83402EE0_070; // size = 0x1A
+} PhotoMonData; // size = 0x1A
 
 typedef struct unk_D_83402EE0_00A {
     /* 0x00 */ u8 unk_00[7];
@@ -37,17 +37,17 @@ typedef struct unk_D_83402EE0 {
     /* 0x68 */ u32 unk_68;
     /* 0x6C */ u8 unk_6C;
     /* 0x6D */ char unk6D[3];
-    /* 0x70 */ unk_D_83402EE0_070 unk_70;
+    /* 0x70 */ PhotoMonData unk_70;
 } unk_D_83402EE0; // size = 0x8C
 
-typedef struct unk_D_83403C60 {
+typedef struct PhotoSceneData {
     /* 0x00 */ PokemonData unk_00;
     /* 0x54 */ char unk54[0x18];
     /* 0x6C */ u8 unk_6C;
     /* 0x6D */ char unk6D[0x3];
-    /* 0x70 */ unk_D_83407AC8 unk_70;
+    /* 0x70 */ PhotoMonSpecies unk_70;
     /* 0x8A */ char unk8A[0x2];
-} unk_D_83403C60; // size = 0x8C
+} PhotoSceneData; // size = 0x8C
 
 typedef struct unk_D_83403C60_050_00C {
     /* 0x00 */ s32 unk_00;
@@ -103,7 +103,7 @@ typedef struct Camera {
     /* 0x0C */ FramebufferImage* unk_0C;
     /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ BinArchive* unk_14;
-    /* 0x18 */ unk_D_83403C60* unk_18;
+    /* 0x18 */ PhotoSceneData* unk_18;
     /* 0x1C */ GraphNode* unk_1C;
     /* 0x20 */ Fragment2_1GraphNode* unk_20;
     /* 0x24 */ unk_func_80031270_024* unk_24;
@@ -136,15 +136,15 @@ extern unk_D_83407B00 gGalleryMainSelection;
 void Gallery_Dispatch(void);
 void Gallery_ResetActiveScene(void);
 void Gallery_ClearPhotoRenderTarget(void);
-void Gallery_CopyPhotoMonFromBattleMon(unk_D_83402EE0_070*, PokemonData*);
-void Gallery_CopyBattleMonFromPhotoMon(PokemonData*, unk_D_83407AC8*);
-Camera* Geo_CreateSceneInstance(s16, s16, FramebufferImage*, FramebufferImage*, AssetManager*, BinArchive*, unk_D_83403C60*);
+void Gallery_CopyPhotoMonFromBattleMon(PhotoMonData*, PokemonData*);
+void Gallery_CopyBattleMonFromPhotoMon(PokemonData*, PhotoMonSpecies*);
+Camera* Geo_CreateSceneInstance(s16, s16, FramebufferImage*, FramebufferImage*, AssetManager*, BinArchive*, PhotoSceneData*);
 u8* Gallery_ProcessSceneInstance(Camera*);
 s32 Gallery_IsSceneReady(Camera*);
 s32 Gallery_FindReadyScene(Camera**, s32);
 Camera* Gallery_GetActiveScene(void);
 void Gallery_ClearActiveScene(void);
-s32 Gallery_IsPhotoSpeciesValid(unk_D_83403C60*);
+s32 Gallery_IsPhotoSpeciesValid(PhotoSceneData*);
 f32 Math_AbsF32(f32);
 void Vec3f_CrossProductComponents(f32, f32, f32, f32, f32, f32, f32*, f32*, f32*);
 void Vec3f_NormalizeComponents(f32*, f32*, f32*);

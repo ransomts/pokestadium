@@ -921,7 +921,7 @@ u16 Color_AdjustRGB5551(u16 arg0, arg1_func_80010CA8 arg1) {
                 b = arg1.unk_03 + 8;
             }
 
-            sp24.z = (2.0f * (D_80073660[b][a] / 65535.0f)) - 1.0f;
+            sp24.z = (2.0f * (gSincosTable[b][a] / 65535.0f)) - 1.0f;
         }
 
         arg0 = Color_HSVToRGB5551(&sp24);
@@ -961,7 +961,7 @@ u32 Color_AdjustRGBA8(u32 arg0, arg1_func_80010CA8 arg1) {
                 b = arg1.unk_03 + 8;
             }
 
-            sp2C.z = (2.0f * (D_80073660[b][a] / 65535.0f)) - 1.0f;
+            sp2C.z = (2.0f * (gSincosTable[b][a] / 65535.0f)) - 1.0f;
         }
 
         Color_HSVToRGBA8(&arg, &sp2C, arg.a);

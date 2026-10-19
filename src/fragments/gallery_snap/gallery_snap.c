@@ -40,7 +40,7 @@ static s32 gMenuStep;
 static unk_D_83407B38 gMenuActiveData;
 static BinArchive* gMenuAssetArchive;
 static s32 gMenuDirty;
-static unk_D_83403C60 gSwapTempPokemon;
+static PhotoSceneData gSwapTempPokemon;
 static s32 gMenuConfirmState;
 static s32 gBackgroundFadeTimer;
 static s32 gStickerStationConnected;

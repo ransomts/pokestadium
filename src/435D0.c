@@ -87,21 +87,21 @@ s32 GbMusic_StartTableSequence(u16 arg0) {
         return 0;
     }
 
-    Music_ResolveTrackOffsets(D_800FC6D4);
+    Music_ResolveTrackOffsets(gAudioSfxBankExtra);
 
-    if (D_800FC6D4->num_entries < arg0) {
+    if (gAudioSfxBankExtra->num_entries < arg0) {
         return 0;
     }
 
-    offset = D_800FC6D4->offset;
+    offset = gAudioSfxBankExtra->offset;
     GbMusic_ResetApu();
 
     arg0--;
 
-    a = D_800FC6D4->entries[arg0].unk_00;
+    a = gAudioSfxBankExtra->entries[arg0].unk_00;
     gCurrentTrackId = a;
-    gTrackPitchOffset = D_800FC6D4->entries[arg0].unk_02;
-    gTrackBpmOffset = D_800FC6D4->entries[arg0].unk_03;
+    gTrackPitchOffset = gAudioSfxBankExtra->entries[arg0].unk_02;
+    gTrackBpmOffset = gAudioSfxBankExtra->entries[arg0].unk_03;
     gCurrentTrackData = offset + a * 0x18;
 
     GbMusic_StartSfx(a);
