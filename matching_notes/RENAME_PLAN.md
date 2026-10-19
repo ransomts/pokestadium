@@ -208,3 +208,9 @@ in maps as local symbols). Our map has the same addresses for the same ROM -> a
 deterministic address join renames our placeholder statics (incl. D_-named ones the LLM
 waves skipped). Then: LLM/gemma tail pass for whatever remains + the reorg residual
 cleanup (failed groups 5/6/7/8/61, problem groups 1/31/77, main segment).
+
+## Statics cross-ref attempt (2026-10-19 midday)
+Re-cloned hippo (symlinked our baserom + reused our .venv python + our tools/ido) - their
+build FAILS with our toolchain (6 errors, see /tmp/opencode/hippo_build.log; likely an
+IDO/binutils version pin - check their ci/ config or ask them). Next session options:
+fix the toolchain match, or fall back to gemma LLM waves for the statics tail.
