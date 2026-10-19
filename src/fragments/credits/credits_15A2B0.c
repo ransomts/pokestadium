@@ -1,4 +1,4 @@
-#include "fragment16.h"
+#include "credits.h"
 #include "src/F420.h"
 
 unk_D_86A03170 gStageCameraPositions[17][6] = {

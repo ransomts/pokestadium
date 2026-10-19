@@ -1,4 +1,4 @@
-#include "fragment16.h"
+#include "credits.h"
 #include "src/fragments/2/fragment2.h"
 
 u16 gBorderFadeCycleCount = 0;
