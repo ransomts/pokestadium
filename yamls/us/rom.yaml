@@ -1534,10 +1534,10 @@
     start: 0x271260
     vram: 0x82000000
     subsegments:
-    - [0x271260, textbin,   fragments/35/fragment35_header]
-    - [0x271280, c,      fragments/35/fragment35]
+    - [0x271260, textbin,   fragments/n64_logo/n64_logo_header]
+    - [0x271280, c,      fragments/n64_logo/n64_logo]
 
-    - {vram: 0x82000560, type: .bss, name: fragments/35/fragment35}
+    - {vram: 0x82000560, type: .bss, name: fragments/n64_logo/n64_logo}
 
   - name: fragment35_relocs
     type: code
@@ -1554,12 +1554,12 @@
     start: 0x2717E0
     vram: 0x82100000
     subsegments:
-    - [0x2717E0, textbin,   fragments/36/fragment36_header]
-    - [0x271800, c,      fragments/36/fragment36]
-    - [0x2725A0, .data,   fragments/36/fragment36]
-    - [0x272660, .rodata, fragments/36/fragment36]
+    - [0x2717E0, textbin,   fragments/title_screen/title_screen_header]
+    - [0x271800, c,      fragments/title_screen/title_screen]
+    - [0x2725A0, .data,   fragments/title_screen/title_screen]
+    - [0x272660, .rodata, fragments/title_screen/title_screen]
 
-    - {vram: 0x82100EA0, type:  .bss, name: fragments/36/fragment36}
+    - {vram: 0x82100EA0, type:  .bss, name: fragments/title_screen/title_screen}
 
   - name: fragment36_relocs
     type: code
