@@ -1878,11 +1878,11 @@
     start: 0x2B46F0
     vram: 0x83A00000
     subsegments:
-    - [0x2B46F0, textbin,   fragments/49/fragment49_header]
-    - [0x2B4710, c,      fragments/49/fragment49]
-    - [0x2B5240, .data,   fragments/49/fragment49]
+    - [0x2B46F0, textbin,   fragments/snap_print_club_background_select/snap_print_club_background_select_header]
+    - [0x2B4710, c,      fragments/snap_print_club_background_select/snap_print_club_background_select]
+    - [0x2B5240, .data,   fragments/snap_print_club_background_select/snap_print_club_background_select]
 
-    - {vram: 0x83A00B70, type:  .bss, name: fragments/49/fragment49}
+    - {vram: 0x83A00B70, type:  .bss, name: fragments/snap_print_club_background_select/snap_print_club_background_select}
 
   - name: fragment49_relocs
     type: code
