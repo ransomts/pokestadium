@@ -13,8 +13,8 @@ void BattleAnim_StartFreezeStatusAnimation(BattlePlayerEntity* arg0) {
 
     sp28 = &arg0->animationState.unk_38;
     sp2C = &arg0->animationState;
-    ptr = &arg0->unk_724->unk_01C[sp2C->unk_08];
-    sp20 = &gAnimDataByPlayer[idx]->unk_A80;
+    ptr = &arg0->boundRoster->unk_01C[sp2C->unk_08];
+    sp20 = &gAnimDataByPlayer[idx]->statusAnimChannel;
 
     if ((ptr->unk_05 & 0x20) && (sp2C->unk_34 & 2)) {
         arg0->unk_000.unk_000.posY &= ~0x20;
@@ -34,7 +34,7 @@ void BattleAnim_StartFreezeStatusAnimation(BattlePlayerEntity* arg0) {
 }
 
 void BattleAnim_RestoreBaseModelAnimation(BattlePlayerEntity* arg0) {
-    BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_A50;
+    BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->idleAnimChannel;
 
     ModelAnim_SetAnimation(&arg0->unk_000, ptr->posX);
 }
@@ -49,7 +49,7 @@ void BattleAnim_ClearFreezeStatusAnimation(BattlePlayerEntity* arg0) {
 }
 
 void BattleAnim_ResetFreezeStatusAndRestoreAnimation(BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
+    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
 
     if (arg0->animationState.unk_34 & 2) {
         ptr->unk_05 = 0;
@@ -72,7 +72,7 @@ void BattleAnim_ClearFreezeStatusAnimationIfThawed(BattlePlayerEntity* arg0) {
 void BattleAnim_UpdateSleepStatusAnimation(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* sp24 = &arg0->animationState;
     PokemonAudioInfo* sp28 = &sp24->unk_38;
-    PokemonData* sp2C = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
+    PokemonData* sp2C = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
 
     if ((gBattleScene.posX->unk_38 != 0xB) || (gBattleScene.posX->unk_20 >= 6)) {
         if ((sp2C->unk_05 & 7) && (sp28->unk_15 & 7) && !(arg0->animationState.unk_34 & 1)) {
@@ -96,7 +96,7 @@ void BattleAnim_UpdateSleepStatusAnimation(BattlePlayerEntity* arg0) {
 }
 
 void BattleAnim_EndSleepStatusAnimation(BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
+    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
 
     if (arg0->animationState.unk_34 & 1) {
         ptr->unk_05 = 0;

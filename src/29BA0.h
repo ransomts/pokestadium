@@ -82,7 +82,7 @@ typedef struct BattleAI_TeamContext {
     /* 0x00C */ char unk00C[0xC];
     /* 0x018 */ s32 unk_018;
     /* 0x01C */ PokemonData unk_01C[6];
-    /* 0x214 */ unk_D_800AE540_0874* unk_214;
+    /* 0x214 */ unk_D_800AE540_0874* trainerData;
     /* 0x218 */ char unk218[0x4];
 } BattleAI_TeamContext; // size = 0x21C
 
@@ -112,9 +112,9 @@ typedef struct SessionContext {
     /* 0x1194 */ BattlePokemon battleSides[2];
     /* 0x11E4 */ u8 opponentHistory[2][4];
     /* 0x11EC */ u8 aiDifficulty;
-    /* 0x11EC */ u8 unk_11ED;
-    /* 0x11EC */ u8 unk_11EE;
-    /* 0x11EC */ u8 unk_11EF;
+    /* 0x11EC */ u8 timerEnabled;
+    /* 0x11EC */ u8 battleTimeLimitMinutes;
+    /* 0x11EC */ u8 turnTimeLimitSeconds;
     /* 0x11F0 */ u8 gbStarterChoice;
     /* 0x11F1 */ char unk11F1[0x1];
     /* 0x11F2 */ u8 inRound2;

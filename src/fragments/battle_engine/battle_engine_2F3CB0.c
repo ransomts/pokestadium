@@ -9,7 +9,7 @@ void BattleAnim_InitSwayOffset(BattlePlayerEntity* arg0, f32 arg1, s16 arg2) {
     arg0->launchSpeed = arg1;
     arg0->unk_448.unk_0C.z = COSS(arg2) * arg1;
     arg0->unk_448.unk_0C.y = SINS(arg2) * arg1;
-    arg0->unk_49C = 0.01f;
+    arg0->swayDamping = 0.01f;
 }
 
 void BattleAnim_UpdateSwayPhysicsToOwner(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1, f32 arg2, f32 arg3, s32 arg4) {
@@ -23,7 +23,7 @@ void BattleAnim_UpdateSwayPhysicsToOwner(BattlePlayerEntity* arg0, BattlePlayerE
     f32 temp_fa2;
     f32 var_fa0;
 
-    sp54 = arg1->unk_49C;
+    sp54 = arg1->swayDamping;
     sp50 = arg1->launchSpeed;
     sp4C = 18.0f;
     arg1->launchSpeed = Math_StepToF(sp50, arg2, arg3, arg3);
@@ -61,7 +61,7 @@ void BattleAnim_UpdateSwayPhysicsToTarget(UNUSED BattlePlayerEntity* arg0, Battl
     f32 temp_fa2;
     f32 var_fa0;
 
-    sp54 = arg1->unk_49C;
+    sp54 = arg1->swayDamping;
     sp50 = arg1->launchSpeed;
     sp4C = 20.0f;
     arg1->launchSpeed = Math_StepToF(sp50, arg2, arg3, arg3);
@@ -372,20 +372,20 @@ s32 BattleAnim_ApproachAngleAndCheckThreshold(BattlePlayerEntity* arg0, s16 arg1
 
 void BattleAnim_StatusIdleCase4Sub0(UNUSED BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
     BattleScene_ShowSecondaryModelsStaggeredFrame(arg1);
-    arg1->unk_4A6 = 0;
-    arg1->unk_4A4 = 0;
+    arg1->swingAngle = 0;
+    arg1->tiltAnimAngle = 0;
     arg1->moveAnimIndex = 0;
     arg1->animationSubstate++;
 }
 
 void BattleAnim_StatusIdleCase4Sub1(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
-    arg1->unk_4A6 = Math_StepToS32(arg1->unk_4A6, 0x3330, 0x16C, 0x16C);
+    arg1->swingAngle = Math_StepToS32(arg1->swingAngle, 0x3330, 0x16C, 0x16C);
 
-    if (BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->sideSign << 0xE) != 0) {
+    if (BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->swingAngle, arg1->sideSign << 0xE) != 0) {
         arg1->moveAnimIndex += 1;
     }
 
-    BattleScene_UpdateSecondaryModelTrailPosition(arg1, arg1->unk_4A6);
+    BattleScene_UpdateSecondaryModelTrailPosition(arg1, arg1->swingAngle);
 
     if (arg1->moveAnimIndex == 3) {
         arg1->animationSubstate += 1;
@@ -403,7 +403,7 @@ void BattleAnim_StatusIdleCase4Sub2(BattlePlayerEntity* arg0, BattlePlayerEntity
         var_fa1 -= 1.0f;
     }
 
-    sp26 = (arg1->unk_4A6 * var_fa1) * 0.8;
+    sp26 = (arg1->swingAngle * var_fa1) * 0.8;
     if (sp26 < 0xE38) {
         sp26 = 0xE38;
     }
@@ -433,16 +433,16 @@ void BattleAnim_StatusIdleCase4(BattlePlayerEntity* arg0, BattlePlayerEntity* ar
 }
 
 void BattleAnim_StatusIdleCase5Sub0(UNUSED BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
-    arg1->unk_4A6 = 0;
-    arg1->unk_4A4 = 0;
+    arg1->swingAngle = 0;
+    arg1->tiltAnimAngle = 0;
     arg1->moveAnimIndex = 0;
     arg1->animationSubstate++;
 }
 
 void BattleAnim_StatusIdleCase5Sub1(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
-    arg1->unk_4A6 = Math_StepToS32(arg1->unk_4A6, 0x3FFC, 0x16C, 0x16C);
+    arg1->swingAngle = Math_StepToS32(arg1->swingAngle, 0x3FFC, 0x16C, 0x16C);
 
-    if (BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->sideSign << 0xE) != 0) {
+    if (BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->swingAngle, arg1->sideSign << 0xE) != 0) {
         arg1->moveAnimIndex += 1;
     }
 
@@ -459,7 +459,7 @@ void BattleAnim_StatusIdleCase5Sub2(BattlePlayerEntity* arg0, BattlePlayerEntity
     UNUSED s16 pad;
     u8 sp28[] = { 0x5F, 0x92 }; // D_84384650
 
-    BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->sideSign << 0xE);
+    BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->swingAngle, arg1->sideSign << 0xE);
 
     if (BattleScene_ByteArrayContains(arg1->unk_000.unk_01A, sp28, sizeof(sp28)) != 0) {
         sp30 = 10.3f;
@@ -471,7 +471,7 @@ void BattleAnim_StatusIdleCase5Sub2(BattlePlayerEntity* arg0, BattlePlayerEntity
         sp2C = 0.045f;
     }
 
-    BattleScene_UpdateSecondaryModelTrailPosition(arg1, arg1->unk_4A6);
+    BattleScene_UpdateSecondaryModelTrailPosition(arg1, arg1->swingAngle);
     BattleAnim_ApproachF(&arg0->unk_000.unk_024.y, -(BattleAnim_GetOwnerModelHeight(arg1) * sp30), sp2C);
 
     if (arg0->unk_000.unk_024.y <= -(BattleAnim_GetOwnerModelHeight(arg1) * sp34)) {
@@ -497,8 +497,8 @@ void BattleAnim_StatusIdleCase5(BattlePlayerEntity* arg0, BattlePlayerEntity* ar
 }
 
 void BattleAnim_StatusIdleCase6Sub0(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
-    arg1->unk_4A6 = 0;
-    arg1->unk_4A4 = 0;
+    arg1->swingAngle = 0;
+    arg1->tiltAnimAngle = 0;
     arg1->moveAnimIndex = 0;
     arg1->oscillationAmplitude = 0.0f;
     BattleScene_PositionParticipantModel(arg1);
@@ -512,8 +512,8 @@ void BattleAnim_StatusIdleCase6Sub1(BattlePlayerEntity* arg0, BattlePlayerEntity
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f }; // D_84384654
 
     BattleAnim_ApproachF(&arg1->oscillationAmplitude, 50.0f, 0.1f);
-    arg1->unk_4A6 += 0xE38;
-    tmp = SINS(arg1->unk_4A6) * arg1->oscillationAmplitude;
+    arg1->swingAngle += 0xE38;
+    tmp = SINS(arg1->swingAngle) * arg1->oscillationAmplitude;
     BattleAnim_Vec3fSetPolarXZ(&sp20, tmp, arg0->unk_000.unk_01E.y);
     BattleScene_PositionParticipantModel(arg1);
     Vec3f_AddInPlace(&arg0->unk_000.unk_024, &sp20);
@@ -529,9 +529,9 @@ void BattleAnim_StatusIdleCase6Sub2(BattlePlayerEntity* arg0, BattlePlayerEntity
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f };
 
     BattleAnim_ApproachF(&arg1->oscillationAmplitude, 0.0f, 0.1f);
-    arg1->unk_4A6 += 0xE38;
+    arg1->swingAngle += 0xE38;
 
-    tmp = SINS(arg1->unk_4A6) * arg1->oscillationAmplitude;
+    tmp = SINS(arg1->swingAngle) * arg1->oscillationAmplitude;
     BattleAnim_Vec3fSetPolarXZ(&sp20, tmp, arg0->unk_000.unk_01E.y);
 
     BattleScene_PositionParticipantModel(arg1);
@@ -591,7 +591,7 @@ void BattleAnim_StatusIdleCase7(BattlePlayerEntity* arg0, BattlePlayerEntity* ar
 
 void BattleAnim_ResetOwnerFacingAndExitStatusIdle(BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
-    CameraStruct* sp18 = gBattleScene.posX->unk_DC;
+    CameraStruct* sp18 = gBattleScene.posX->camera;
 
     BattleScene_PositionParticipantModel(arg0);
     Vec3s_SetComponents(&arg0->unk_000.unk_01E, 0, arg0->sideSign << 0xE, 0);
@@ -600,9 +600,9 @@ void BattleAnim_ResetOwnerFacingAndExitStatusIdle(BattlePlayerEntity* arg0) {
 }
 
 void BattleAnim_StatusIdleCase8Sub0(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
-    arg1->unk_4A6 = 0;
+    arg1->swingAngle = 0;
     arg1->tiltAngle = 0;
-    arg1->unk_4A4 = 0;
+    arg1->tiltAnimAngle = 0;
     arg1->moveAnimIndex = 0;
     arg1->oscillationAmplitude = 0.0f;
     BattleScene_PositionParticipantModel(arg1);
@@ -611,7 +611,7 @@ void BattleAnim_StatusIdleCase8Sub0(BattlePlayerEntity* arg0, BattlePlayerEntity
 }
 
 void BattleAnim_StatusIdleCase8Sub1(UNUSED BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
-    CameraStruct* temp_s0 = gBattleScene.posX->unk_DC;
+    CameraStruct* temp_s0 = gBattleScene.posX->camera;
     f32 temp_fa0;
     f32 temp_fa1_2;
     f32 temp_ft4;
@@ -621,8 +621,8 @@ void BattleAnim_StatusIdleCase8Sub1(UNUSED BattlePlayerEntity* arg0, BattlePlaye
     f32 temp_fv0_2;
     f32 temp_fv1_2;
 
-    BattleAnim_StepToS16(&arg1->unk_4A4, 0x5B0, 0x3C);
-    BattleAnim_StepToS16(&arg1->tiltAngle, -0x8000, arg1->unk_4A4);
+    BattleAnim_StepToS16(&arg1->tiltAnimAngle, 0x5B0, 0x3C);
+    BattleAnim_StepToS16(&arg1->tiltAngle, -0x8000, arg1->tiltAnimAngle);
 
     sp2C = temp_s0->unk_60.at.x - temp_s0->unk_60.eye.x;
     sp28 = temp_s0->unk_60.at.y - temp_s0->unk_60.eye.y;
@@ -718,8 +718,8 @@ void BattleAnim_StatusIdleCase12(BattlePlayerEntity* arg0, BattlePlayerEntity* a
 }
 
 void BattleAnim_StatusIdleCase13Sub0(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
-    arg1->unk_4A4 = 0x16C;
-    arg1->unk_4A6 = 0;
+    arg1->tiltAnimAngle = 0x16C;
+    arg1->swingAngle = 0;
     arg1->tiltAngle = 0;
     arg1->oscillationAmplitude = 0.4f;
     arg1->unk_448.unk_0C.x = arg0->unk_000.unk_030.x;
@@ -732,13 +732,13 @@ void BattleAnim_StatusIdleCase13Sub1(BattlePlayerEntity* arg0, BattlePlayerEntit
     f32 var_fv0;
 
     // clang-format off
-    if ((arg1->unk_4A4 >= 0) && (arg1->unk_4A4 <= 0x8000)) { arg1->unk_4A4 += 0x2D; }
+    if ((arg1->tiltAnimAngle >= 0) && (arg1->tiltAnimAngle <= 0x8000)) { arg1->tiltAnimAngle += 0x2D; }
     // clang-format on
 
-    arg1->tiltAngle = SINS(arg1->unk_4A4) * 182.0f * 15.0f;
+    arg1->tiltAngle = SINS(arg1->tiltAnimAngle) * 182.0f * 15.0f;
 
-    if ((arg1->unk_4A6 >= 0) && (arg1->unk_4A6 <= 0x4000)) {
-        arg1->unk_4A6 += arg1->tiltAngle;
+    if ((arg1->swingAngle >= 0) && (arg1->swingAngle <= 0x4000)) {
+        arg1->swingAngle += arg1->tiltAngle;
     }
 
     if (arg1->animationState.unk_38.unk_56 == 0) {
@@ -747,11 +747,11 @@ void BattleAnim_StatusIdleCase13Sub1(BattlePlayerEntity* arg0, BattlePlayerEntit
         var_fv0 = 0.8f;
     }
 
-    arg0->unk_000.unk_030.x = var_fv0 - (SINS(arg1->unk_4A6) * arg1->oscillationAmplitude);
-    arg0->unk_000.unk_030.y = (SINS(arg1->unk_4A6) * arg1->oscillationAmplitude) + var_fv0;
-    arg0->unk_000.unk_030.z = var_fv0 - (SINS(arg1->unk_4A6) * arg1->oscillationAmplitude);
+    arg0->unk_000.unk_030.x = var_fv0 - (SINS(arg1->swingAngle) * arg1->oscillationAmplitude);
+    arg0->unk_000.unk_030.y = (SINS(arg1->swingAngle) * arg1->oscillationAmplitude) + var_fv0;
+    arg0->unk_000.unk_030.z = var_fv0 - (SINS(arg1->swingAngle) * arg1->oscillationAmplitude);
 
-    if ((arg1->unk_4A6 >= 0x4000) && (arg1->unk_4A6 >= 0x4000)) {
+    if ((arg1->swingAngle >= 0x4000) && (arg1->swingAngle >= 0x4000)) {
         arg1->tiltAngle = 0x1554;
         arg1->animationSubstate++;
     }
@@ -761,13 +761,13 @@ void BattleAnim_StatusIdleCase13Sub2(BattlePlayerEntity* arg0, BattlePlayerEntit
     f32 var_fv0;
     f32 var_fv1;
 
-    arg1->unk_4A6 += arg1->tiltAngle;
-    var_fv1 = SINS(arg1->unk_4A6) * arg1->oscillationAmplitude;
+    arg1->swingAngle += arg1->tiltAngle;
+    var_fv1 = SINS(arg1->swingAngle) * arg1->oscillationAmplitude;
     if (var_fv1 <= 0.01f) {
         arg1->tiltAngle += 0x444;
         arg1->oscillationAmplitude *= 0.8f;
         if (1) {}
-        var_fv1 = SINS(arg1->unk_4A6) * arg1->oscillationAmplitude;
+        var_fv1 = SINS(arg1->swingAngle) * arg1->oscillationAmplitude;
     }
 
     if (arg1->animationState.unk_38.unk_56 == 0) {
@@ -777,8 +777,8 @@ void BattleAnim_StatusIdleCase13Sub2(BattlePlayerEntity* arg0, BattlePlayerEntit
     }
 
     arg0->unk_000.unk_030.x = var_fv0 - var_fv1;
-    arg0->unk_000.unk_030.y = (SINS(arg1->unk_4A6) * arg1->oscillationAmplitude) + var_fv0;
-    arg0->unk_000.unk_030.z = var_fv0 - (SINS(arg1->unk_4A6) * arg1->oscillationAmplitude);
+    arg0->unk_000.unk_030.y = (SINS(arg1->swingAngle) * arg1->oscillationAmplitude) + var_fv0;
+    arg0->unk_000.unk_030.z = var_fv0 - (SINS(arg1->swingAngle) * arg1->oscillationAmplitude);
 
     if (arg1->oscillationAmplitude <= 0.01f) {
         arg0->unk_000.unk_030.x = var_fv0;

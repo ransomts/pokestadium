@@ -40,9 +40,9 @@ typedef struct unk_D_800ABE10_A04 {
 typedef struct unk_D_800ABE10 {
     /* 0x000 */ OSThread unk_000;
     /* 0x1B0 */ char unk1B0[0x800];
-    /* 0x9B0 */ OSMesg unk_9B0;
+    /* 0x9B0 */ OSMesg requestMessage;
     /* 0x9B4 */ char unk9B4[0x1C];
-    /* 0x9D0 */ OSMesgQueue unk_9D0;
+    /* 0x9D0 */ OSMesgQueue requestQueue;
     /* 0x9E8 */ OSMesg unk_9E8;
     /* 0x9EC */ OSMesgQueue unk_9EC;
     /* 0xA04 */ unk_D_800ABE10_A04 unk_A04;

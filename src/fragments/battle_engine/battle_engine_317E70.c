@@ -78,8 +78,8 @@ void BattleAnim_CloneParticleState(ParticleEffectInstance* arg0, ParticleEffectI
     arg0->effectType = arg1->effectType;
     arg0->unk_CC = 0x1C;
     arg0->targetAlpha = 0xFF;
-    arg0->unk_CE = arg1->unk_CE;
-    arg0->unk_CB = arg1->unk_CB;
+    arg0->metadata = arg1->metadata;
+    arg0->category = arg1->category;
     arg0->unk_74 = arg1->unk_74;
 
     Particle_FieldAC_SetS16_0BED8(arg0, arg4);
@@ -120,7 +120,7 @@ void BattleAnim_EmitParticleBurstWithMetadata(ParticleEffectInstance* arg0, func
             break;
         }
         BattleAnim_CloneParticleState(temp_v0, arg0, arg1, arg2, i);
-        temp_v0->unk_CE = arg5;
+        temp_v0->metadata = arg5;
         temp_v0->paletteIndex = arg4;
     }
 }
@@ -362,12 +362,12 @@ void BattleAnim_InitializeParticleFromEffect(ParticleEffectInstance* arg0, Battl
         arg0->unk_08 = arg2->posX;
         arg0->unk_0C = arg2->rotation;
         arg0->targetAlpha = arg2->unk_19;
-        arg0->unk_CE = arg2->unk_1A;
+        arg0->metadata = arg2->unk_1A;
         arg0->alphaStep = arg2->unk_12;
         arg0->paletteIndex = arg2->unk_1B;
         arg0->effectType = arg2->unk_17;
         arg0->unk_CC = arg2->unk_16;
-        arg0->unk_CB = arg2->unk_18;
+        arg0->category = arg2->unk_18;
         arg0->initialAlpha = arg2->unk_10;
 
         if (arg1 != NULL) {
@@ -613,7 +613,7 @@ void BattleAnim_StopParticlesForOwnerCategory(u8 arg0, BattlePlayerEntity* arg1)
     ParticleEffectInstance* var_s0 = gParticlePool;
 
     for (i = 0; i < 300; i++, var_s0++) {
-        if ((var_s0->unk_D0 != 0) && (var_s0->effectType == 4) && (var_s0->unk_CB == arg0) && (arg1 == var_s0->unk_10)) {
+        if ((var_s0->unk_D0 != 0) && (var_s0->effectType == 4) && (var_s0->category == arg0) && (arg1 == var_s0->unk_10)) {
             Particle_SetFlags(var_s0, 0x1000);
             Particle_AdvanceLifecycle(var_s0);
         }

@@ -202,7 +202,7 @@ typedef struct unk_func_8830867C_03C {
     /* 0x54 */ unk_func_8821421C_038_034* unk_54;
     /* 0x58 */ unk_func_8830867C_03C_058 unk_58[15];
     /* 0xD0 */ unk_func_8830867C_03C_0D0 unk_D0;
-    /* 0xE0 */ u16 unk_E0;
+    /* 0xE0 */ u16 typeLabelWidth;
 } unk_func_8830867C_03C; // size = 0xE4
 
 typedef struct unk_func_8830867C_040_030 {
@@ -412,7 +412,7 @@ typedef struct unk_func_8830867C_02C {
     /* 0x038 */ unk_func_88500994* unk_038;
     /* 0x03C */ unk_func_88200FA0_030_038 unk_03C;
     /* 0x048 */ ChildSelectionProxy* unk_048;
-    /* 0x04C */ unk_func_8830867C_02C_04C* unk_04C;
+    /* 0x04C */ unk_func_8830867C_02C_04C* columnMenu;
     /* 0x050 */ unk_func_8830867C_02C_050* unk_050;
     /* 0x054 */ unk_func_88001300_000* unk_054;
     /* 0x058 */ unk_func_88001300_000* unk_058;
@@ -420,10 +420,10 @@ typedef struct unk_func_8830867C_02C {
     /* 0x060 */ unk_func_88001300_000* unk_060;
     /* 0x064 */ unk_func_88001300_000* unk_064;
     /* 0x068 */ unk_func_88001300_000* unk_068;
-    /* 0x06C */ unk_func_88001300_000* unk_06C;
+    /* 0x06C */ unk_func_88001300_000* movesHeader;
     /* 0x070 */ unk_func_88001300_000* unk_070;
     /* 0x074 */ unk_func_88001300_000* unk_074;
-    /* 0x078 */ unk_func_88001300_000* unk_078;
+    /* 0x078 */ unk_func_88001300_000* attackHeader;
     /* 0x07C */ unk_func_88001300_000* unk_07C;
     /* 0x080 */ unk_func_88001300_000* unk_080;
     /* 0x084 */ unk_func_88001300_000* unk_084;
@@ -432,14 +432,14 @@ typedef struct unk_func_8830867C_02C {
     /* 0x090 */ WidgetTree_InitMessagePanel* unk_090;
     /* 0x094 */ unk_func_8830867C_034* unk_094;
     /* 0x098 */ unk_func_8830867C_038* unk_098;
-    /* 0x09C */ unk_func_8830867C_03C* unk_09C;
+    /* 0x09C */ unk_func_8830867C_03C* typePanel;
     /* 0x0A0 */ unk_func_8830867C_040* unk_0A0;
     /* 0x0A4 */ unk_func_8830867C_044* unk_0A4;
     /* 0x0A8 */ unk_func_8830867C_048* unk_0A8;
-    /* 0x0AC */ unk_func_8830867C_04C* unk_0AC;
+    /* 0x0AC */ unk_func_8830867C_04C* itemMenu;
     /* 0x0B0 */ unk_func_889000C4* unk_0B0;
-    /* 0x0B4 */ YesNoDialog* unk_0B4;
-    /* 0x0B8 */ ChildWidgetGroup* unk_0B8;
+    /* 0x0B4 */ YesNoDialog* saveConfirmDialog;
+    /* 0x0B8 */ ChildWidgetGroup* cellAnimGroup;
     /* 0x0BC */ unk_func_882173EC* unk_0BC;
     /* 0x0C0 */ PpChangeBanner* unk_0C0;
     /* 0x0C4 */ unk_func_882173EC* unk_0C4;
@@ -449,25 +449,25 @@ typedef struct unk_func_8830867C_02C {
     /* 0x0DC */ unk_func_8830867C_02C_0DC* unk_0DC;
     /* 0x0E0 */ s32 unk_0E0;
     /* 0x0E4 */ unk_func_8830867C_02C_0E4 unk_0E4[3];
-    /* 0x144 */ unk_func_8830867C_02C_144 unk_144;
+    /* 0x144 */ unk_func_8830867C_02C_144 boxTable;
     /* 0x150 */ char unk150[0x4];
-    /* 0x154 */ unk_func_8830867C_02C_154 unk_154[3];
+    /* 0x154 */ unk_func_8830867C_02C_154 deckCategories[3];
     /* 0x1A8 */ unk_func_8830867C_02C_1A8 unk_1A8[3];
     /* 0x1D8 */ char unk1D8[0xA70];
-    /* 0xC48 */ unk_func_88200FA0_030_038 unk_C48;
-    /* 0xC54 */ unk_func_8830867C_02C_C54 unk_C54;
-    /* 0xC84 */ unk_func_8830867C_02C_C54 unk_C84;
-    /* 0xCB4 */ s32 unk_CB4;
-    /* 0xCB8 */ s32 unk_CB8;
-    /* 0xCBC */ s32 unk_CBC;
-    /* 0xCC0 */ s32 unk_CC0;
-    /* 0xCC4 */ s32 unk_CC4;
-    /* 0xCC8 */ s32 unk_CC8;
-    /* 0xCCC */ unk_func_8850878C* unk_CCC;
-    /* 0xCD0 */ s32 unk_CD0;
-    /* 0xCD4 */ s32* unk_CD4;
-    /* 0xCD8 */ FragmentEntry unk_CD8;
-    /* 0xCDC */ unk_func_8830867C_054* unk_CDC;
+    /* 0xC48 */ unk_func_88200FA0_030_038 tmHmList;
+    /* 0xC54 */ unk_func_8830867C_02C_C54 filterState;
+    /* 0xC84 */ unk_func_8830867C_02C_C54 filterBackup;
+    /* 0xCB4 */ s32 hasFilterBackup;
+    /* 0xCB8 */ s32 filtersChanged;
+    /* 0xCBC */ s32 backupSelIndex;
+    /* 0xCC0 */ s32 backupScrollOffset;
+    /* 0xCC4 */ s32 listMenuIndex;
+    /* 0xCC8 */ s32 rowMenuIndex;
+    /* 0xCCC */ unk_func_8850878C* messageLabel;
+    /* 0xCD0 */ s32 columnPage;
+    /* 0xCD4 */ s32* pageColumnStarts;
+    /* 0xCD8 */ FragmentEntry monInfoFragmentEntry;
+    /* 0xCDC */ unk_func_8830867C_054* monInfoContext;
 } unk_func_8830867C_02C; // size = 0xCE0
 
 typedef struct unk_func_8830867C {

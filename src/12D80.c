@@ -717,11 +717,11 @@ void Geo_NodeAnimatedPart(GraphNode* arg0) {
     Vec3f_FromVec3s(&sp84, &arg->unk_18);
     ModelAnim_EvaluateJointTransform(&sp84, &sp90, &sp78, arg->unk_32 * 3);
 
-    if (arg->unk_31 & 2) {
+    if (arg->transformMode & 2) {
         MtxF_BuildTransform(&sp38, &sp84, &sp90, &sp78, &gCurrentCameraNode->unk_60.mtxf, &gMatrixStack.unk_0000[gMatrixStack.unk_10A0]);
         gMatrixStack.unk_10A0++;
         GeoRender_SetMatrix(&sp38);
-    } else if (arg->unk_31 & 1) {
+    } else if (arg->transformMode & 1) {
         MtxF_SetRotationScaleTranslation(&sp38, &sp84, &sp90, &sp78);
         GeoRender_PushMultipliedMatrix(&sp38);
     } else {
@@ -1148,7 +1148,7 @@ void GeoRender_ApplyMaterialState(void) {
     gCurrentRenderState->unk_18 = NULL;
     gCurrentRenderState->unk_1C = NULL;
     gCurrentRenderState->unk_0C = NULL;
-    gCurrentRenderState->unk_27 = 0;
+    gCurrentRenderState->texGenActive = 0;
     gPipeSynced = 1;
 
     gDPPipeSync(gDisplayListHead++);
@@ -1260,7 +1260,7 @@ void GeoRender_BindTexture(unk_D_800ABB10* arg0) {
 }
 
 void GeoRender_EnableTextureGeneration(UNUSED unk_D_800ABB10* arg0) {
-    if (gCurrentRenderState->unk_27 == 0) {
+    if (gCurrentRenderState->texGenActive == 0) {
         gDPLoadTextureBlock(gDisplayListHead++, D_1001800, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
         gSPTexture(gDisplayListHead++, 0x1194, 0x1194, 0, G_TX_RENDERTILE, G_ON);
@@ -1269,7 +1269,7 @@ void GeoRender_EnableTextureGeneration(UNUSED unk_D_800ABB10* arg0) {
         gSPClearGeometryMode(gDisplayListHead++, G_TEXTURE_GEN_LINEAR);
         gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEIDECALA, G_CC_PASS2);
 
-        gCurrentRenderState->unk_27 = 1;
+        gCurrentRenderState->texGenActive = 1;
     }
 }
 
@@ -1344,7 +1344,7 @@ void GeoRender_SubmitMaterial(s16 arg0, MtxF* arg1) {
         if (gRenderState.unk_03 != 0) {
             GeoRender_EnableTextureGeneration(&gRenderState);
         } else {
-            if (gCurrentRenderState->unk_27 == 1) {
+            if (gCurrentRenderState->texGenActive == 1) {
                 GeoRender_ApplyMaterialState();
             }
 
@@ -1425,7 +1425,7 @@ void GeoRender_InitMaterialState(s32 arg0, s32 arg1) {
 
         ptr->unk_24 = i;
         ptr->unk_25 = 0;
-        ptr->unk_27 = 0;
+        ptr->texGenActive = 0;
         ptr->unk_26 = 0xFF;
     }
 

@@ -125,7 +125,7 @@ ParticleEffectInstance* Particle_CreateAtTransform(f32 arg0, Vec3f arg1, Vec3s a
         sp1C->unk_10 = 0;
         sp1C->unk_14 = 0;
         sp1C->unk_AC = arg5;
-        sp1C->unk_CE = arg7;
+        sp1C->metadata = arg7;
         sp1C->targetAlpha = arg6;
     }
     return sp1C;
@@ -155,7 +155,7 @@ ParticleEffectInstance* Particle_CreateFromObjectTransform(Fragment2_1GraphNode*
         sp1C->unk_14 = 0;
 
         sp1C->unk_AC = arg3;
-        sp1C->unk_CE = arg5;
+        sp1C->metadata = arg5;
         sp1C->targetAlpha = arg4;
     }
     return sp1C;
@@ -1844,7 +1844,7 @@ void Particle_FieldAA_SetS16_0BF10(ParticleEffectInstance* arg0, s16 arg1) {
 }
 
 void Particle_FieldCE_SetS16_0BF24(ParticleEffectInstance* arg0, s16 arg1) {
-    arg0->unk_CE = arg1;
+    arg0->metadata = arg1;
 }
 
 void Particle_FieldCD_SetS16_0BF38(ParticleEffectInstance* arg0, s16 arg1) {
@@ -1881,7 +1881,7 @@ s16 Particle_FieldAC_GetS16_0C038(ParticleEffectInstance* arg0) {
 }
 
 s32 Particle_FieldCE_GetS32_0C040(ParticleEffectInstance* arg0) {
-    return arg0->unk_CE;
+    return arg0->metadata;
 }
 
 u8 Particle_FieldCD_GetU8_0C048(ParticleEffectInstance* arg0) {
@@ -1927,7 +1927,7 @@ void Particle_SetFieldOffsetA8IfNotSentinel(ParticleEffectInstance* arg0, s16 ar
 
 void Particle_SetFieldOffsetCEIfNotSentinel(ParticleEffectInstance* arg0, u8 arg1) {
     if ((u32)arg0 != -1) {
-        arg0->unk_CE = arg1;
+        arg0->metadata = arg1;
     }
 }
 

@@ -33,13 +33,13 @@ typedef struct unk_D_842168A0_13608 {
 
 typedef struct unk_D_84229EB0_00024 {
     /* 0x0000 */ unk_D_838067F0_0168_0000 unk_0000[6];
-    /* 0x4D10 */ u16 unk_4D10;
-    /* 0x4D12 */ char unk_4D12[2];
+    /* 0x4D10 */ u16 trainerId;
+    /* 0x4D12 */ char trainerName[2];
     /* 0x4D14 */ char unk4D14[0xA];
-    /* 0x4D1E */ s16 unk_4D1E;
-    /* 0x4D20 */ s16 unk_4D20;
-    /* 0x4D24 */ struct unk_D_84229EB0_00024* unk_4D24;
-    /* 0x4D28 */ struct unk_D_84229EB0_00024* unk_4D28;
+    /* 0x4D1E */ s16 teamIndex;
+    /* 0x4D20 */ s16 monCount;
+    /* 0x4D24 */ struct unk_D_84229EB0_00024* nextPage;
+    /* 0x4D28 */ struct unk_D_84229EB0_00024* prevPage;
     /* 0x4D2C */ char unk4D2C[0x4];
 } unk_D_84229EB0_00024; // size = 0x4D30
 
@@ -82,9 +82,9 @@ typedef struct unk_D_842168A0 {
     /* 0x00004 */ u8 unk_00004;
     /* 0x00005 */ u8 unk_00005;
     /* 0x00006 */ u8 unk_00006;
-    /* 0x00007 */ u8 unk_00007;
+    /* 0x00007 */ u8 repeatDelay;
     /* 0x00008 */ u8 unk_00008;
-    /* 0x00009 */ u8 unk_00009;
+    /* 0x00009 */ u8 redrawTimer;
     /* 0x0000A */ s16 unk_0000A;
     /* 0x0000C */ s16 unk_0000C;
     /* 0x0000E */ s16 unk_0000E;
@@ -96,12 +96,12 @@ typedef struct unk_D_842168A0 {
     /* 0x0001A */ s16 unk_0001A;
     /* 0x0001C */ unk_D_838067F0_003C unk_0001C[13];
     /* 0x0013A */ char unk0013A[0x2];
-    /* 0x0013C */ unk_D_842168A0_0013C* unk_0013C;
-    /* 0x00140 */ unk_D_838067F0_0168* unk_00140;
+    /* 0x0013C */ unk_D_842168A0_0013C* roster;
+    /* 0x00140 */ unk_D_838067F0_0168* currentPage;
     /* 0x00144 */ char unk00144[0x4];
-    /* 0x00148 */ unk_D_838067F0_0168 unk_00148[8];
-    /* 0x13608 */ gItemPanel* unk_13608;
-    /* 0x1360C */ unk_D_8423D3A8* unk_1360C;
+    /* 0x00148 */ unk_D_838067F0_0168 pages[8];
+    /* 0x13608 */ gItemPanel* teamTray;
+    /* 0x1360C */ unk_D_8423D3A8* moveScreen;
 } unk_D_842168A0; // size = 0x13610
 
 typedef struct RegisteredTeamMenu {
@@ -115,7 +115,7 @@ typedef struct RegisteredTeamMenu {
     /* 0x00008 */ s16 unk_00008;
     /* 0x0000A */ s16 unk_0000A;
     /* 0x0000C */ u8 unk_0000C;
-    /* 0x0000D */ u8 unk_0000D;
+    /* 0x0000D */ u8 selectedTeamIndex;
     /* 0x0000E */ s16 unk_0000E;
     /* 0x00010 */ s16 unk_00010;
     /* 0x00012 */ s16 unk_00012;
@@ -124,15 +124,15 @@ typedef struct RegisteredTeamMenu {
     /* 0x00018 */ s16 unk_00018;
     /* 0x0001A */ s16 unk_0001A;
     /* 0x0001C */ s16 unk_0001C;
-    /* 0x0001E */ u8 unk_0001E;
-    /* 0x0001F */ u8 unk_0001F;
-    /* 0x00020 */ u8 unk_00020;
-    /* 0x00024 */ unk_D_84229EB0_00024* unk_00024;
-    /* 0x00028 */ unk_D_84229EB0_00024 unk_00028[3];
+    /* 0x0001E */ u8 repeatDelay;
+    /* 0x0001F */ u8 nextRepeatDelay;
+    /* 0x00020 */ u8 cancelled;
+    /* 0x00024 */ unk_D_84229EB0_00024* currentPage;
+    /* 0x00028 */ unk_D_84229EB0_00024 pages[3];
     /* 0x0E7B8 */ char unk0E7B8[0x4D30];
-    /* 0x134E8 */ gItemPanel* unk_134E8;
-    /* 0x134EC */ unk_D_842168A0* unk_134EC;
-    /* 0x134F0 */ unk_D_8423D3A8* unk_134F0;
+    /* 0x134E8 */ gItemPanel* teamTray;
+    /* 0x134EC */ unk_D_842168A0* pokemonPanel;
+    /* 0x134F0 */ unk_D_8423D3A8* moveScreen;
     /* 0x134F4 */ char unk134F4[0x4];
 } RegisteredTeamMenu; // size = 0x134F8
 

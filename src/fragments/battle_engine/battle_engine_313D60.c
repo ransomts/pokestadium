@@ -68,7 +68,7 @@ void BattleScene_RunFinalPresentation(CameraStruct* arg0, UNUSED BattlePlayerEnt
             BattleScene_IntroSetupCamera(arg0);
             break;
     }
-    gBattleScene.posX->unk_DC = arg0;
+    gBattleScene.posX->camera = arg0;
 }
 
 void BattleScene_AllocateMemory(void) {
@@ -102,7 +102,7 @@ void BattleScene_TickCameraSubstateDefault(CameraStruct* arg0) {
             break;
 
         case 2:
-            if (sActivePokemon[0]->unk_728.unk_168->unk_1C == -0x48) {
+            if (sActivePokemon[0]->ownerModel.unk_168->unk_1C == -0x48) {
                 gBattleScene.posX->unk_30++;
             }
             break;
@@ -170,7 +170,7 @@ void BattleScene_TickCameraSubstateStripWipe(CameraStruct* arg0) {
             break;
 
         case 2:
-            if (sActivePokemon[0]->unk_728.unk_168->unk_1C == -0x48) {
+            if (sActivePokemon[0]->ownerModel.unk_168->unk_1C == -0x48) {
                 gBattleScene.posX->unk_30++;
             }
             break;
@@ -445,7 +445,7 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
                             if ((sp40->unk_2D == 0xF) && (gBattleScene.posX->unk_34 == 1)) {
                                 BattleScene_HideActiveOwner();
                             } else {
-                                Vec3f_CalculateDistanceAngles(&gBattleScene.posX->unk_B8, &gBattleScene.posX->unk_C4, &sp34, &sp32,
+                                Vec3f_CalculateDistanceAngles(&gBattleScene.posX->unk_B8, &gBattleScene.posX->cameraEye, &sp34, &sp32,
                                               &sp30);
                                 temp_lo = sp30 / 182;
                                 if (((temp_lo == 0x5A) || (temp_lo == -0x5A)) && (gBattleScene.posX->unk_34 == 1)) {

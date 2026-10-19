@@ -1559,7 +1559,7 @@ void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2) {
 u32 gPrevRspCounter;
 
 void Stage_UpdateLogic(void) {
-    u32 v0 = gRspTaskManager.unk_A34;
+    u32 v0 = gRspTaskManager.frameCount;
 
     if (gUnusedTimer2 == 0) {
         gUnusedTimer2 = 1;

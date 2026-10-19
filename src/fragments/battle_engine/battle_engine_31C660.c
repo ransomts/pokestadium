@@ -56,7 +56,7 @@ void BattleAnim_CallbackOwnerModelTintRampDetach(ParticleEffectInstance* arg0) {
 
 void BattleAnim_SetupOwnerModelTintPulseDetach(ParticleEffectInstance* arg0) {
     ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
-    Particle_FieldAE_SetS16_0BF4C(arg0, arg0->unk_CE);
+    Particle_FieldAE_SetS16_0BF4C(arg0, arg0->metadata);
     Particle_AdvanceLifecycle(arg0);
 }
 
@@ -191,7 +191,7 @@ void BattleAnim_CallbackOwnerModelTintPaletteCycle(ParticleEffectInstance* arg0)
             break;
 
         case 2:
-            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, arg0->initialAlpha, arg0->unk_CE);
+            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, arg0->initialAlpha, arg0->metadata);
             break;
 
         case 3:
@@ -201,7 +201,7 @@ void BattleAnim_CallbackOwnerModelTintPaletteCycle(ParticleEffectInstance* arg0)
             break;
 
         case 4:
-            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, 0, arg0->unk_CE);
+            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, 0, arg0->metadata);
             break;
 
         case 5:
@@ -233,7 +233,7 @@ void BattleAnim_CallbackOwnerModelTintPaletteApproachRampDown(ParticleEffectInst
             break;
 
         case 3:
-            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, 0, arg0->unk_CE);
+            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, 0, arg0->metadata);
             break;
 
         case 4:
@@ -259,7 +259,7 @@ void BattleAnim_CallbackOwnerModelTintPaletteFade(ParticleEffectInstance* arg0) 
             break;
 
         case 2:
-            if (Particle_FieldAE_Approach_0BF60(arg0, arg0->initialAlpha, arg0->unk_CE) != 0) {
+            if (Particle_FieldAE_Approach_0BF60(arg0, arg0->initialAlpha, arg0->metadata) != 0) {
                 Particle_AdvanceLifecycle(arg0);
             }
             break;

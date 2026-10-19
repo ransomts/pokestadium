@@ -43,7 +43,7 @@ void LabPC_MarkBoxSeen(unk_func_88205880_00D0* arg0) {
 
     temp_s3 = GbSave_GetActivePort();
 
-    for (i = 0; i < arg0->unk_690; i++, tmp++) {
+    for (i = 0; i < arg0->count; i++, tmp++) {
         if ((tmp->posX.posX > 0) && (tmp->posX.posX < 0x98)) {
             GbSave_SetSeenOwnedBits(temp_s3, tmp->posX.posX, 3);
         }
@@ -53,7 +53,7 @@ void LabPC_MarkBoxSeen(unk_func_88205880_00D0* arg0) {
 void LabPC_WriteBoxEntries(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
     DeckHandle* sp1C = Deck_Open(arg0, arg1, arg2, 1);
 
-    Deck_WriteEntries(arg3, arg3->unk_690, sp1C);
+    Deck_WriteEntries(arg3, arg3->count, sp1C);
 
     if ((arg0 == 0x10) || (arg0 == 0x11) || (arg0 == 0x12)) {
         Deck_CloseAndFlushBox(sp1C);
@@ -81,10 +81,10 @@ void LabPC_LoadAllBoxes(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 ar
 
     for (i = 0; i < arg3; i++, arg0++) {
         bzero(arg0->unk_000, sizeof(PokemonData) * 20);
-        arg0->unk_690 = LabPC_ReadBoxEntries(arg1, arg2, i, arg0, 0x14);
-        arg0->unk_694 = arg1;
-        arg0->unk_698 = i;
-        arg0->unk_69C = 0;
+        arg0->count = LabPC_ReadBoxEntries(arg1, arg2, i, arg0, 0x14);
+        arg0->deckType = arg1;
+        arg0->boxIndex = i;
+        arg0->dirty = 0;
     }
 }
 
@@ -93,7 +93,7 @@ s32 LabPC_NoEmptyBoxAvailable(unk_func_88205880_A030* arg0) {
     unk_func_88205880_00D0** var_a0 = arg0->posX;
 
     for (i = 0; i < arg0->unk_08; i++) {
-        if (var_a0[i]->unk_690 == 0) {
+        if (var_a0[i]->count == 0) {
             return 0;
         }
     }
@@ -106,7 +106,7 @@ s32 LabPC_AllBoxesEmpty(unk_func_88205880_A030* arg0) {
     unk_func_88205880_00D0** var_a0 = arg0->posX;
 
     for (i = 0; i < arg0->unk_08; i++) {
-        if (var_a0[i]->unk_690 > 0) {
+        if (var_a0[i]->count > 0) {
             return 0;
         }
     }
@@ -277,12 +277,12 @@ void LabPC_CheckBox_ShowBox(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg
     arg0->unk_5C = arg1;
     arg0->unk_60 = arg2;
 
-    for (i = 0; i < arg1->unk_690; i++, ptr++) {
+    for (i = 0; i < arg1->count; i++, ptr++) {
         arg0->unk_34[i].unk_000 = ptr;
         PokeIcon_LoadModelTextureForMon(&arg0->unk_34[i].unk_008, 0, ptr);
     }
 
-    TableView_Initialize(&arg0->unk_38, arg0->unk_34, 0xC88, 0x14, arg1->unk_690);
+    TableView_Initialize(&arg0->unk_38, arg0->unk_34, 0xC88, 0x14, arg1->count);
 
     ((func885063B8)Memmap_GetFragmentVaddr(WidgetTree_BindPagedGridStridedData))(arg0->unk_30, &arg0->unk_38);
 
@@ -312,7 +312,7 @@ s32 LabPC_CheckBox_HandleInput(unk_func_88201DA0* arg0, Controller* arg1) {
 
                 arg0->unk_30->posX.unk_24(arg0->unk_30, 0x100);
                 if (arg0->unk_48(4, arg0->unk_4C) == 1) {
-                    arg0->unk_5C->unk_69C = 1;
+                    arg0->unk_5C->dirty = 1;
                 }
                 arg0->unk_30->posX.unk_24(arg0->unk_30, 1);
                 var_v1 = 1;
@@ -352,10 +352,10 @@ void LabPC_DrawBoxCount(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(4, 0);
     Text_SetEnvColor(gItemCountTextColor.r, gItemCountTextColor.g, gItemCountTextColor.b, gItemCountTextColor.a);
-    sprintf(sp28, "%d", arg0->unk_690);
+    sprintf(sp28, "%d", arg0->count);
     Font_Printf(((arg1 + sp24) - Font_MeasureTextExtent(0, 0, sp28)) + 0x1C, arg2 + 4, sp28);
     Font_EndTexturedTextRendering();
-    if (arg0->unk_690 > 0) {
+    if (arg0->count > 0) {
         Gfx_DrawTiledTextureStrip(&gMenuTextureInfo_Default, arg1, arg2 + 2);
     }
 }
@@ -489,7 +489,7 @@ void LabPC_DisableEmptyBoxes(unk_func_88200FA0_030_030* arg0) {
     unk_func_88205880_00D0** temp_v0 = arg0->unk_2C->posX;
 
     for (i = 0; i < count; i++) {
-        if (temp_v0[i]->unk_690 == 0) {
+        if (temp_v0[i]->count == 0) {
             arg0->unk_34[i] |= 4;
         }
     }
@@ -503,7 +503,7 @@ void LabPC_DisableNonEmptyBoxes(unk_func_88200FA0_030_030* arg0) {
     unk_func_88205880_00D0** temp_v0 = arg0->unk_2C->posX;
 
     for (i = 0; i < count; i++) {
-        if (temp_v0[i]->unk_690 > 0) {
+        if (temp_v0[i]->count > 0) {
             arg0->unk_34[i] |= 4;
         }
     }
@@ -1203,7 +1203,7 @@ u32 LabPC_BoxHasUnsavedChanges(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2,
     }
 
     var_s1 = arg0->unk_000;
-    for (i = 0; i < arg0->unk_690; i++, var_s1++) {
+    for (i = 0; i < arg0->count; i++, var_s1++) {
         bzero(&sp34, sizeof(PokemonData));
         Deck_ReadEntries(&sp34, 1, temp_v0);
         if (bcmp(&sp34, var_s1, sizeof(PokemonData)) != 0) {
@@ -1226,14 +1226,14 @@ s32 LabPC_GetDirtyBoxMask(unk_func_88203ED8* arg0) {
     var_s1 = arg0->unk_38->unk_2C->posX;
 
     for (i = 0; i < 12; i++) {
-        if ((var_s1[i]->unk_694 != 0x21) || (i != var_s1[i]->unk_698)) {
-            if ((var_s1[i]->unk_690 != 0) || (Deck_GetEntryCountForType(0x21, temp_s3, i) != 0)) {
+        if ((var_s1[i]->deckType != 0x21) || (i != var_s1[i]->boxIndex)) {
+            if ((var_s1[i]->count != 0) || (Deck_GetEntryCountForType(0x21, temp_s3, i) != 0)) {
                 var_s2 |= 2;
-                var_s1[i]->unk_69C = 1;
+                var_s1[i]->dirty = 1;
             }
-        } else if (var_s1[i]->unk_69C != 0) {
+        } else if (var_s1[i]->dirty != 0) {
             temp_v0 = LabPC_BoxHasUnsavedChanges(var_s1[i], 0x21, temp_s3, i);
-            var_s1[i]->unk_69C = temp_v0;
+            var_s1[i]->dirty = temp_v0;
             if (temp_v0 != 0) {
                 var_s2 |= 2;
             }
@@ -1243,14 +1243,14 @@ s32 LabPC_GetDirtyBoxMask(unk_func_88203ED8* arg0) {
     var_s1 = arg0->unk_3C->unk_2C->posX;
 
     for (i = 0; i < 12; i++) {
-        if ((var_s1[i]->unk_694 != 0x11) || (i != var_s1[i]->unk_698)) {
-            if ((var_s1[i]->unk_690 != 0) || (Deck_GetEntryCountForType(0x11, 0, i) != 0)) {
+        if ((var_s1[i]->deckType != 0x11) || (i != var_s1[i]->boxIndex)) {
+            if ((var_s1[i]->count != 0) || (Deck_GetEntryCountForType(0x11, 0, i) != 0)) {
                 var_s2 |= 4;
-                var_s1[i]->unk_69C = 1;
+                var_s1[i]->dirty = 1;
             }
-        } else if (var_s1[i]->unk_69C != 0) {
+        } else if (var_s1[i]->dirty != 0) {
             temp_v0 = LabPC_BoxHasUnsavedChanges(var_s1[i], 0x11, 0, i);
-            var_s1[i]->unk_69C = temp_v0;
+            var_s1[i]->dirty = temp_v0;
             if (temp_v0 != 0) {
                 var_s2 |= 4;
             }
@@ -1271,7 +1271,7 @@ void LabPC_SaveModifiedBoxes(unk_func_88203ED8* arg0, s32 arg1) {
     var_s1 = arg0->unk_38->unk_2C->posX;
 
     for (i = 0; i < 12; i++) {
-        if (var_s1[i]->unk_69C != 0) {
+        if (var_s1[i]->dirty != 0) {
             LabPC_WriteBoxEntries(0x21, temp_s3, i, var_s1[i]);
             LabPC_MarkBoxSeen(var_s1[i]);
         }
@@ -1280,7 +1280,7 @@ void LabPC_SaveModifiedBoxes(unk_func_88203ED8* arg0, s32 arg1) {
     var_s1 = arg0->unk_3C->unk_2C->posX;
 
     for (i = 0; i < 12; i++) {
-        if (var_s1[i]->unk_69C != 0) {
+        if (var_s1[i]->dirty != 0) {
             LabPC_WriteBoxEntries(0x11, 0, i, var_s1[i]);
         }
     }
@@ -1529,19 +1529,19 @@ void BoxPC_InitScreen(LabPC_BuildBoxScreenWidget* arg0, s32 arg1, s32 arg2, Text
         GbSave_MarkBoxDataLoaded(sp60);
     }
 
-    LabPC_LoadAllBoxes(arg0->unk_00D0, 0x21, sp60, 0xC);
-    LabPC_LoadAllBoxes(arg0->unk_5050, 0x11, 0, 0xC);
+    LabPC_LoadAllBoxes(arg0->gbBoxes, 0x21, sp60, 0xC);
+    LabPC_LoadAllBoxes(arg0->gamePakBoxes, 0x11, 0, 0xC);
 
     for (i = 0; i < 12; i++) {
-        arg0->unk_9FD0[i] = &arg0->unk_00D0[i];
+        arg0->gbBoxPtrs[i] = &arg0->gbBoxes[i];
     }
 
     for (i = 0; i < 12; i++) {
-        arg0->unk_A000[i] = &arg0->unk_5050[i];
+        arg0->gamePakBoxPtrs[i] = &arg0->gamePakBoxes[i];
     }
 
-    PointerList_Initialize(&arg0->boxPointerArrays[0], arg0->unk_9FD0, 0xC, 0xC);
-    PointerList_Initialize(&arg0->boxPointerArrays[1], arg0->unk_A000, 0xC, 0xC);
+    PointerList_Initialize(&arg0->boxPointerArrays[0], arg0->gbBoxPtrs, 0xC, 0xC);
+    PointerList_Initialize(&arg0->boxPointerArrays[1], arg0->gamePakBoxPtrs, 0xC, 0xC);
 
     sp7C = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
     ((func885031E8)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGate))(sp7C, 0, 0, 0x280, 0x1E0);

@@ -101,17 +101,17 @@ void SushiGame_UpdateNameTagPulse(SushiPlayerEntity* arg0) {
     Fragment2_1GraphNode* ptr = &arg0->unk_24C;
 
     if (arg0->unk_0DC != 0) {
-        ptr->unk_030.x = (SINS(arg0->unk_0E2 + 0x0000) * 0.3f) + 1.0f;
-        ptr->unk_030.y = (SINS(arg0->unk_0E2 + 0x3200) * 0.3f) + 1.0f;
+        ptr->unk_030.x = (SINS(arg0->pulsePhase + 0x0000) * 0.3f) + 1.0f;
+        ptr->unk_030.y = (SINS(arg0->pulsePhase + 0x3200) * 0.3f) + 1.0f;
     } else {
         ptr->unk_030.y = 1.0f;
         ptr->unk_030.x = 1.0f;
     }
 
-    ptr->unk_024 = arg0->unk_0E4.unk_0FC;
+    ptr->unk_024 = arg0->unk_0E4.anchor5Position;
 
     if (gResultMenuVisible == 0) {
-        arg0->unk_0E2 += 0x1800;
+        arg0->pulsePhase += 0x1800;
     }
 }
 
@@ -127,7 +127,7 @@ void SushiGame_NameTagGeoCallback(s32 arg0, UNUSED s32 arg1) {
 
         case 5:
             idx = gDefaultGraphRoot->unk_000.unk_14;
-            gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(gSushiEntities[idx].unk_3B4));
+            gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(gSushiEntities[idx].nameTagTexture));
 
             gDPPipeSync(gDisplayListHead++);
 
@@ -299,14 +299,14 @@ void SushiGame_InitPlayerSlot(SushiPlayerEntity* arg0, s32 arg1, s32 arg2) {
     arg0->unk_020 = 0;
     arg0->unk_024 = 0;
     arg0->unk_028 = 0;
-    arg0->unk_02A = 0;
+    arg0->platesEaten = 0;
 
     for (i = 0; i < 9; i++) {
         arg0->unk_02C[i] = 0;
     }
 
     arg0->unk_05C = 0;
-    arg0->unk_03E = 1;
+    arg0->comboMultiplier = 1;
 
     SushiGame_ResetPlayerSubState(&arg0->unk_040);
     arg0->unk_060 = 0;
@@ -348,13 +348,13 @@ void SushiGame_InitPlayerSlot(SushiPlayerEntity* arg0, s32 arg1, s32 arg2) {
     arg0->unk_0C0 = 0;
     arg0->unk_0C4 = 0;
     arg0->unk_0CC = 0;
-    arg0->unk_0D0.rgba = -0x100;
+    arg0->tintColor.rgba = -0x100;
     arg0->unk_0C8 = 1.0f;
-    arg0->unk_0D4 = SushiGame_ClassifyDifficultyTier(arg0->unk_004);
+    arg0->chewCount = SushiGame_ClassifyDifficultyTier(arg0->unk_004);
     arg0->unk_0D8 = SushiGame_ScaleAnimSpeed(arg0->unk_004);
     arg0->unk_0DC = 0;
     arg0->unk_0E0 = 0;
-    arg0->unk_0E2 = 0;
+    arg0->pulsePhase = 0;
 
     sp24 = &arg0->unk_0E4;
     ModelRenderer_AttachDisplayObject(sp24);
@@ -373,11 +373,11 @@ void SushiGame_InitPlayerSlot(SushiPlayerEntity* arg0, s32 arg1, s32 arg2) {
     arg0->unk_24C.unk_000.posY |= 8;
 
     if (arg2 != 0) {
-        arg0->unk_3B4 = gPositiveTextureBank[arg0->unk_000];
+        arg0->nameTagTexture = gPositiveTextureBank[arg0->unk_000];
     } else if (arg0->unk_002 & 4) {
-        arg0->unk_3B4 = gNegativeTextureBank[arg0->unk_000];
+        arg0->nameTagTexture = gNegativeTextureBank[arg0->unk_000];
     } else {
-        arg0->unk_3B4 = gPositiveTextureBank[arg0->unk_000];
+        arg0->nameTagTexture = gPositiveTextureBank[arg0->unk_000];
     }
 }
 
@@ -465,7 +465,7 @@ void SushiGame_SetPlayerEatState(SushiPlayerEntity* arg0, u32 arg1) {
     switch (arg1) {
         case 0:
             arg0->unk_006 = 0;
-            arg0->unk_0D0.rgba = -0x100;
+            arg0->tintColor.rgba = -0x100;
             arg0->unk_0DC = 0;
             arg0->unk_0C0 = 0;
             arg0->unk_0C8 = 1.0f;
@@ -498,7 +498,7 @@ void SushiGame_SetPlayerEatState(SushiPlayerEntity* arg0, u32 arg1) {
 
         case 4:
             arg0->unk_006 = 0;
-            arg0->unk_0D0.rgba = -0x100;
+            arg0->tintColor.rgba = -0x100;
             if ((arg0->unk_028 != 1) || (arg0->unk_018 == 0)) {
                 arg0->unk_0C0 = 9;
                 arg0->unk_24C.unk_000.unk_01 &= ~1;
@@ -641,7 +641,7 @@ unk_D_868084D8* SushiGame_FindHighestValuePlate(SushiPlayerEntity* arg0) {
 
         var_v1 = SushiGame_GetPlateValue(var_s0);
         if (var_s0->unk_0C == arg0->unk_05C) {
-            var_a0 = arg0->unk_03E;
+            var_a0 = arg0->comboMultiplier;
             if (var_a0 < 5) {
                 var_a0++;
             }
@@ -1008,12 +1008,12 @@ void Sushi_UpdateAI(SushiPlayerEntity* arg0) {
             spB8 = 1.0f - spB8;
 
             if (arg0->unk_060 == 2) {
-                arg0->unk_0D0.g = arg0->unk_0D0.b = 255.0f * spB8;
+                arg0->tintColor.g = arg0->tintColor.b = 255.0f * spB8;
                 if (!(arg0->unk_006 & 0xF)) {
-                    Particle_EmitBurstAtTransform(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0, 4);
+                    Particle_EmitBurstAtTransform(1.0f, arg0->unk_0E4.anchor5Position, gSpriteAnimUpdateFunc, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0, 4);
                 }
             } else {
-                arg0->unk_0D0.r = arg0->unk_0D0.b = 255.0f * spB8;
+                arg0->tintColor.r = arg0->tintColor.b = 255.0f * spB8;
             }
             break;
     }
@@ -1138,7 +1138,7 @@ unk_D_868084D8* Sushi_FindNearbyInstance(SushiPlayerEntity* arg0) {
     f32 dz;
     unk_D_868084D8* var_v1;
 
-    sp14 = arg0->unk_0E4.unk_0EC;
+    sp14 = arg0->unk_0E4.anchor4Position;
 
     for (i = 0, var_v1 = gSushiInstances; i < 12; i++, var_v1++) {
         if (!(var_v1->posY & 1)) {
@@ -1179,7 +1179,7 @@ s32 SushiGame_CheckEatInterrupt(SushiPlayerEntity* arg0) {
         return 2;
     }
 
-    sp2C = arg0->unk_0E4.unk_0EC;
+    sp2C = arg0->unk_0E4.anchor4Position;
 
     for (i = 0, var_v0 = gSushiEntities; i < 4; i++, var_v0++) {
         if (arg0 == var_v0) {
@@ -1210,17 +1210,17 @@ void SushiGame_ConsumePlate(SushiPlayerEntity* arg0) {
 
     sp20 = arg0->unk_0DC->unk_0C;
     if (sp20 == arg0->unk_05C) {
-        if (arg0->unk_03E < 5) {
-            arg0->unk_03E++;
+        if (arg0->comboMultiplier < 5) {
+            arg0->comboMultiplier++;
         }
         arg0->unk_040.posX = 1;
     } else {
-        arg0->unk_03E = 1;
+        arg0->comboMultiplier = 1;
     }
     arg0->unk_05C = sp20;
 
-    arg0->unk_018 += SushiGame_GetPlateValue(arg0->unk_0DC) * arg0->unk_03E;
-    arg0->unk_02A++;
+    arg0->unk_018 += SushiGame_GetPlateValue(arg0->unk_0DC) * arg0->comboMultiplier;
+    arg0->platesEaten++;
     arg0->unk_02C[sp20]++;
 
     SushiGame_SetPlateState(arg0->unk_0DC, 0, NULL);
@@ -1271,7 +1271,7 @@ void SushiGame_UpdateEatingState(SushiPlayerEntity* arg0) {
                     arg0->unk_0C0 = 4;
                 } else if (arg0->unk_0DC->unk_0C != 1) {
                     arg0->unk_0C0 = 5;
-                    arg0->unk_006 = arg0->unk_0D4;
+                    arg0->unk_006 = arg0->chewCount;
                 } else {
                     SushiGame_ConsumePlate(arg0);
                 }
@@ -1425,7 +1425,7 @@ void SushiGame_UpdatePlayerModelTransform(SushiPlayerEntity* arg0) {
     }
     ptr->unk_01E.y = (s32)var_fv0 & 0xFFFF;
 
-    ptr->unk_03C.rgba = arg0->unk_0D0.rgba;
+    ptr->unk_03C.rgba = arg0->tintColor.rgba;
 
     if (arg0->unk_0C4 != arg0->unk_0C0) {
         ModelAnim_SetAnimation(&arg0->unk_0E4, arg0->unk_0C0);

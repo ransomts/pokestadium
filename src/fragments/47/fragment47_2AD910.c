@@ -161,7 +161,7 @@ s32 Gallery_RentalViewerHandleInput(void) {
 
                 case 5:
                     sp78 = 1;
-                    _bcopy(&gSnapSelectBgData->unk_7E4, &sp20, sizeof(PokemonData));
+                    _bcopy(&gSnapSelectBgData->battleMon, &sp20, sizeof(PokemonData));
                     Gallery_CopyPhotoMonFromBattleMon(&gGallerySpecialSpecies, &sp20);
                     break;
             }

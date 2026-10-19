@@ -231,10 +231,10 @@ void Battle_ResetTransientRuntimeState(s32 arg0, s32 arg1) {
     sp1C->unk_4A = 0;
     sp1C->unk_4B = 0;
     sp1C->unk_4C = 0;
-    sp1C->unk_4D = 0;
+    sp1C->statusFlags2 = 0;
     sp1C->unk_4E = 0;
     sp1C->unk_52 = 0;
-    sp1C->unk_57 = 0;
+    sp1C->disabledMoveId = 0;
     sp1C->unk_56 = 0;
     sp18->unk_4C &= ~0x20;
     gBattleMessageFlag = 1;
@@ -522,18 +522,18 @@ s32 Battle_CalcDamage(void) {
 }
 
 void Battle_ApplyDamage(void) {
-    if (gBattleTarget->unk_4D & 0x10) {
+    if (gBattleTarget->statusFlags2 & 0x10) {
         if (gBattleScene.posX->unk_48 == 0x14) {
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
             Battle_QueueMessage(gBattleMessageQueues->unk_208, 0x2B);
-            if (gBattleTarget->unk_59 < gBattleDamage) {
-                gBattleTarget->unk_4D &= 0xFFEF;
+            if (gBattleTarget->substituteHp < gBattleDamage) {
+                gBattleTarget->statusFlags2 &= 0xFFEF;
                 Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
                 Battle_QueueMessage(gBattleMessageQueues->unk_208, 0x2C);
 
                 if ((gBattleRuleFlags[0] == 1) && (gBattleUser->unk_44.unk_01 == 0x1D)) {
                     Battle_ExecuteMoveEffect();
-                    gBattleUser->unk_4F = 1;
+                    gBattleUser->multiTurnCounter = 1;
                 }
 
                 if ((gBattleRuleFlags[0] != 1) || (gBattleUser->unk_44.unk_01 != 7)) {
@@ -542,19 +542,19 @@ void Battle_ApplyDamage(void) {
 
                 Battle_SetRuntimeFlags(sActivePokemon[gBattleScene.posX->unk_2C], 0x1000);
             } else {
-                gBattleTarget->unk_59 -= gBattleDamage;
+                gBattleTarget->substituteHp -= gBattleDamage;
             }
         } else {
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
             Battle_QueueMessage(gBattleMessageQueues->unk_208, 0x2B);
-            if (gBattleTarget->unk_59 < gBattleDamage) {
-                gBattleTarget->unk_4D &= 0xFFEF;
+            if (gBattleTarget->substituteHp < gBattleDamage) {
+                gBattleTarget->statusFlags2 &= 0xFFEF;
                 Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
                 Battle_QueueMessage(gBattleMessageQueues->unk_208, 0x2C);
 
                 if ((gBattleRuleFlags[0] == 1) && (gBattleUser->unk_44.unk_01 == 0x1D)) {
                     Battle_ExecuteMoveEffect();
-                    gBattleUser->unk_4F = 1;
+                    gBattleUser->multiTurnCounter = 1;
                 }
 
                 if ((gBattleRuleFlags[0] != 1) || (gBattleUser->unk_44.unk_01 != 7)) {
@@ -563,7 +563,7 @@ void Battle_ApplyDamage(void) {
 
                 Battle_SetRuntimeFlags(sActivePokemon[!gBattleScene.posX->unk_2C], 0x1000);
             } else {
-                gBattleTarget->unk_59 -= gBattleDamage;
+                gBattleTarget->substituteHp -= gBattleDamage;
             }
         }
     } else if (gBattleUpdateHPFlag == 0) {
@@ -583,9 +583,9 @@ void Battle_DecrementPP(s32 arg0) {
 
     temp_v0 = &sActivePokemon[arg0]->animationState.unk_38;
     temp_a1 = &sActivePokemon[arg0]->animationState;
-    temp_a2 = &sActivePokemon[arg0]->unk_724->unk_01C[temp_a1->unk_08];
+    temp_a2 = &sActivePokemon[arg0]->boundRoster->unk_01C[temp_a1->unk_08];
 
-    if ((temp_v0->unk_5A != 0xA5) && !(temp_v0->unk_4C & 7) && !(temp_v0->unk_4D & 0x40)) {
+    if ((temp_v0->unk_5A != 0xA5) && !(temp_v0->unk_4C & 7) && !(temp_v0->statusFlags2 & 0x40)) {
         temp_v0->unk_32[temp_a1->unk_0C]--;
         if (!(temp_v0->unk_4E & 8)) {
             temp_a2->unk_20[temp_a1->unk_0C] -= 1;
@@ -633,8 +633,8 @@ void MarkAttackFailed(void) {
 
 void HandleMoveEffectFlags(void) {
     if (gBattleUser->unk_44.unk_01 == 0x50) {
-        if (!(gBattleUser->unk_4D & 0x20) && (gBattleRuleFlags[0] == 1)) {
-            gBattleUser->unk_4D |= 0x20;
+        if (!(gBattleUser->statusFlags2 & 0x20) && (gBattleRuleFlags[0] == 1)) {
+            gBattleUser->statusFlags2 |= 0x20;
         }
     }
 
@@ -643,7 +643,7 @@ void HandleMoveEffectFlags(void) {
         return;
     }
 
-    if (gBattleTarget->unk_4D & 0x10) {
+    if (gBattleTarget->statusFlags2 & 0x10) {
         if (gBattleUser->unk_44.unk_01 == 17) {
             return;
         }
@@ -662,12 +662,12 @@ void HandleMoveEffectFlags(void) {
     } else {
         if ((((gBattleUser->unk_44.unk_01 >= 0x12) && (gBattleUser->unk_44.unk_01 < 0x1A)) ||
              ((gBattleUser->unk_44.unk_01 >= 0x3A) && (gBattleUser->unk_44.unk_01 < 0x42))) &&
-            (gBattleTarget->unk_4D & 2)) {
+            (gBattleTarget->statusFlags2 & 2)) {
             MarkAttackFailed();
             return;
         }
 
-        if (!(gBattleUser->unk_4D & 1)) {
+        if (!(gBattleUser->statusFlags2 & 1)) {
             if ((gBattleRuleFlags[0] != 1) || (gBattleUser->unk_44.unk_01 != 0x11)) {
                 ApplyAccuracyStageMultipliers();
             }
@@ -685,7 +685,7 @@ void HandleMoveEffectFlags(void) {
 }
 
 void Battle_ApplyAnimStateEffects(BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
+    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
 
     ptr->unk_05 = arg0->animationState.unk_38.unk_15;
 }
@@ -790,7 +790,7 @@ void Battle_InitPokemonRuntimeState(BattlePlayerEntity* arg0) {
 }
 
 s32 Battle_IsPartyMemberAlive(BattlePlayerEntity* arg0) {
-    if (arg0->unk_724->unk_01C[arg0->animationState.unk_18 - 1].posY != 0) {
+    if (arg0->boundRoster->unk_01C[arg0->animationState.unk_18 - 1].posY != 0) {
         return 1;
     }
     return 0;
@@ -814,7 +814,7 @@ void Battle_ExecuteMoveAnimation(void) {
 void Battle_ApplyRageContinuation(void) {
     PokemonAudioInfo* sp24;
 
-    if ((gBattleTarget->unk_4D & 0x40) && ((gBattleTarget->unk_5C[0]) != 0xD)) {
+    if ((gBattleTarget->statusFlags2 & 0x40) && ((gBattleTarget->unk_5C[0]) != 0xD)) {
         sp24 = gBattleUser;
 
         gBattleUser = gBattleTarget;
@@ -822,7 +822,7 @@ void Battle_ApplyRageContinuation(void) {
         gBattleUser->unk_44.unk_01 = 10;
 
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
-        Battle_QueueMessage(gBattleMessageQueues->unk_348, 0x1F);
+        Battle_QueueMessage(gBattleMessageQueues->rageMessage, 0x1F);
         Battle_ApplyRageStatBoost();
 
         gBattleUser->unk_44.posX = 0x63;
@@ -846,15 +846,15 @@ void Battle_PlayMoveSound(void) {
 
     switch (gBattleEffectType) {
         case 1:
-            Battle_QueueMessage(gBattleMessageQueues->unk_148, 0x1D);
+            Battle_QueueMessage(gBattleMessageQueues->secondaryMessage, 0x1D);
             gBattleScene.posX->unk_1A = 2;
             break;
         case 2:
-            Battle_QueueMessage(gBattleMessageQueues->unk_148, 0x1E);
+            Battle_QueueMessage(gBattleMessageQueues->secondaryMessage, 0x1E);
             gBattleScene.posX->unk_1A = 2;
             break;
     }
-    sp1C->unk_5B = gBattleEffectType;
+    sp1C->battleEffectType = gBattleEffectType;
     gBattleEffectType = 0;
 }
 
@@ -964,7 +964,7 @@ void func_843714D8(void) {
 
     ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
     temp_a0 =
-        &sActivePokemon[gBattleScene.posX->unk_2C]->unk_724->unk_01C[sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_08];
+        &sActivePokemon[gBattleScene.posX->unk_2C]->boundRoster->unk_01C[sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_08];
     temp_a1 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
 
     gBattleUser->unk_32[temp_a1->unk_0C]++;
@@ -1068,7 +1068,7 @@ s32 Battle_ApplyResidualEffects(void) {
         gBattleTarget->unk_0E = gBattleTarget->unk_0C;
     }
 
-    if (gBattleUser->unk_4D & 0x80) {
+    if (gBattleUser->statusFlags2 & 0x80) {
         Battle_ApplyLeechSeedDamage();
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
         Battle_QueueMessage(gBattleMessageQueues->unk_288, 2);
@@ -1210,7 +1210,7 @@ s32 Battle_CheckCriticalHit(void) {
     }
 
     if (gBattleRuleFlags[0] == 1) {
-        if (gBattleUser->unk_4D & 4) {
+        if (gBattleUser->statusFlags2 & 4) {
             sp18 = (sp18 * 4) + 0xA0;
         } else {
             sp18 *= 2;
@@ -1222,7 +1222,7 @@ s32 Battle_CheckCriticalHit(void) {
             sp18 >>= 1;
         }
     } else {
-        if (gBattleUser->unk_4D & 4) {
+        if (gBattleUser->statusFlags2 & 4) {
             sp18 >>= 1;
         } else {
             sp18 *= 2;
@@ -1305,14 +1305,14 @@ s32 Battle_CheckMonCanAct(void) {
     if (gBattleUser->unk_4C & 8) {
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
         Battle_QueueMessage(gBattleMessageQueues->unk_088, 9);
-        gBattleUser->unk_4D &= 0xFFDF;
+        gBattleUser->statusFlags2 &= 0xFFDF;
         gBattleUser->unk_4C &= 0xFFF7;
         gBattleScene.posX->unk_48 = 0x1C;
         return 0;
     }
 
-    if (gBattleUser->unk_4D & 0x20) {
-        gBattleUser->unk_4D &= ~0x20;
+    if (gBattleUser->statusFlags2 & 0x20) {
+        gBattleUser->statusFlags2 &= ~0x20;
         if (gBattleRuleFlags[0] == 1) {
             gBattleDamage = 0;
         }
@@ -1326,7 +1326,7 @@ s32 Battle_CheckMonCanAct(void) {
         gBattleUser->unk_52--;
         if (!(gBattleUser->unk_52 & 0xF)) {
             gBattleUser->unk_52 = 0;
-            gBattleUser->unk_57 = 0;
+            gBattleUser->disabledMoveId = 0;
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
             Battle_QueueMessage(gBattleMessageQueues->unk_388, 0xB);
         }
@@ -1347,7 +1347,7 @@ s32 Battle_CheckMonCanAct(void) {
                 Battle_QueueMetronomeMoveMessage();
                 gBattleScene.posX->unk_48 = 0x14;
                 gBattleUser->unk_4C &= 0x80;
-                Battle_QueueMessage(gBattleMessageQueues->unk_148, 0xE);
+                Battle_QueueMessage(gBattleMessageQueues->secondaryMessage, 0xE);
 
                 sp26 = gBattleTarget->unk_2C;
                 gBattleTarget->unk_2C = gBattleUser->unk_2C;
@@ -1372,7 +1372,7 @@ s32 Battle_CheckMonCanAct(void) {
         }
     }
 
-    if ((gBattleUser->unk_57 != 0) && (gBattleUser->unk_57 == gBattleUser->unk_5A)) {
+    if ((gBattleUser->disabledMoveId != 0) && (gBattleUser->disabledMoveId == gBattleUser->unk_5A)) {
         gBattleUser->unk_4C &= 0xFFEF;
         Text_SetStringToken(0x1D, (u32)gMoveDisplayInfo[gBattleUser->unk_5A - 1].rotation);
         Battle_QueueMessage(gBattleMessageQueues->unk_088, 0xF);
@@ -1396,8 +1396,8 @@ s32 Battle_CheckMonCanAct(void) {
     if (gBattleUser->unk_4C & 1) {
         gBattleUser->unk_44.posX = 0;
         gBattleUser->unk_54 += gBattleDamage;
-        gBattleUser->unk_4F -= 1;
-        if (gBattleUser->unk_4F != 0) {
+        gBattleUser->multiTurnCounter -= 1;
+        if (gBattleUser->multiTurnCounter != 0) {
             gBattleScene.posX->unk_48 = 0x1B;
             return 0;
         }
@@ -1424,8 +1424,8 @@ s32 Battle_CheckMonCanAct(void) {
         gBattleUser->unk_44.posX = 0x25;
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
         Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x12);
-        gBattleUser->unk_4F -= 1;
-        if (gBattleUser->unk_4F != 0) {
+        gBattleUser->multiTurnCounter -= 1;
+        if (gBattleUser->multiTurnCounter != 0) {
             return 4;
         }
 
@@ -1439,11 +1439,11 @@ s32 Battle_CheckMonCanAct(void) {
     if (gBattleUser->unk_4C & 0x20) {
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
         Battle_QueueMessage(gBattleMessageQueues->unk_0C8, 0x13);
-        gBattleUser->unk_4F -= 1;
+        gBattleUser->multiTurnCounter -= 1;
         return 6;
     }
 
-    if (gBattleUser->unk_4D & 0x40) {
+    if (gBattleUser->statusFlags2 & 0x40) {
         gBattleUser->unk_44.unk_01 = 0;
         return 3;
     }
@@ -1583,14 +1583,14 @@ void ProcessBattleTurn(void) {
                 Battle_ApplyRageContinuation();
 
                 if (gBattleUser->unk_4C & 4) {
-                    gBattleUser->unk_4F -= 1;
-                    if (gBattleUser->unk_4F != 0) {
+                    gBattleUser->multiTurnCounter -= 1;
+                    if (gBattleUser->multiTurnCounter != 0) {
                         goto loop_4F;
                     }
                     gBattleUser->unk_4C &= ~4;
                     sprintf(sp2C, gFmtInt, gBattleUser->unk_54);
                     Text_SetNumberToken(2, gBattleUser->unk_54);
-                    Battle_QueueMessage(gBattleMessageQueues->unk_3C8, 4);
+                    Battle_QueueMessage(gBattleMessageQueues->hitCountMessage, 4);
                     gBattleScene.posX->unk_1A = 1;
                     gBattleUser->unk_54 = 0;
                     gBattleDamage = gAccumulatedDamage;
@@ -1629,10 +1629,10 @@ void Battle_HandleFaint(BattlePlayerEntity* arg0) {
     temp_a11->unk_4A = 0;
     temp_a11->unk_4B = 0;
     temp_a11->unk_4C = 0;
-    temp_a11->unk_4D &= 0x80;
+    temp_a11->statusFlags2 &= 0x80;
     temp_a11->unk_4E = 0;
     temp_a11->unk_52 = 0;
-    temp_a11->unk_57 = 0;
+    temp_a11->disabledMoveId = 0;
     temp_a11->unk_56 = 0;
     temp_a11->unk_58 = 0;
 
@@ -1655,7 +1655,7 @@ void CheckAllPartyFainted_HP(BattlePlayerEntity* arg0) {
         if (i == ptr1->unk_08) {
             var_s2 += arg0->animationState.unk_38.unk_0E;
         } else {
-            temp_v0 = &arg0->unk_724->unk_01C[i];
+            temp_v0 = &arg0->boundRoster->unk_01C[i];
             var_s2 += temp_v0->posY;
         }
     }
@@ -1685,7 +1685,7 @@ void CheckAllPartyFainted_Status(BattlePlayerEntity* arg0) {
         if (i == ptr1->unk_08) {
             var_s2 += arg0->animationState.unk_38.unk_10;
         } else {
-            temp_v0 = &arg0->unk_724->unk_01C[i];
+            temp_v0 = &arg0->boundRoster->unk_01C[i];
             var_s2 += temp_v0->posY;
         }
     }
@@ -1715,7 +1715,7 @@ void CheckAllPartyFainted_PP(BattlePlayerEntity* arg0) {
         if (i == ptr1->unk_08) {
             var_s2 += arg0->animationState.unk_38.unk_12;
         } else {
-            temp_v0 = &arg0->unk_724->unk_01C[i];
+            temp_v0 = &arg0->boundRoster->unk_01C[i];
             var_s2 += temp_v0->posY;
         }
     }
@@ -1745,7 +1745,7 @@ void CheckAllPartyFainted_Level(BattlePlayerEntity* arg0) {
         if (i == ptr1->unk_08) {
             var_s2 += arg0->animationState.unk_38.unk_0C;
         } else {
-            temp_v0 = &arg0->unk_724->unk_01C[i];
+            temp_v0 = &arg0->boundRoster->unk_01C[i];
             var_s2 += temp_v0->posY;
         }
     }
@@ -1775,7 +1775,7 @@ s32 Battle_CheckSideDefeatAfterResidualStatus(BattlePlayerEntity* arg0) {
         var_s2 = 0;
         if (arg0->animationState.unk_38.unk_0E == 0) {
             for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
-                temp_v0 = &arg0->unk_724->unk_01C[i];
+                temp_v0 = &arg0->boundRoster->unk_01C[i];
                 var_s2 += temp_v0->posY;
             }
 
@@ -1813,7 +1813,7 @@ s32 Battle_CheckFaintAfterMove(void) {
                (gBattleUser->unk_0E == 0)) {
         CheckAllPartyFainted_HP(sActivePokemon[gBattleScene.posX->unk_2C]);
         return 0;
-    } else if ((gBattleUser->unk_0C != 0) && (gBattleTarget->unk_0C != 0) && (gBattleUser->unk_4D & 0x80) &&
+    } else if ((gBattleUser->unk_0C != 0) && (gBattleTarget->unk_0C != 0) && (gBattleUser->statusFlags2 & 0x80) &&
                (gBattleUser->unk_10 == 0)) {
         CheckAllPartyFainted_Status(sActivePokemon[gBattleScene.posX->unk_2C]);
         return 0;

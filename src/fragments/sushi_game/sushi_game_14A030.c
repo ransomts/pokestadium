@@ -217,7 +217,7 @@ void SushiGame_SetPlateSpawnPosition(unk_D_868084D8* arg0) {
 
         case 3:
             ptr = arg0->unk_38;
-            arg0->unk_14 = ptr->unk_1D0;
+            arg0->unk_14 = ptr->carryPos;
             arg0->unk_20 = arg0->unk_14;
             break;
     }

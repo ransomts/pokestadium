@@ -62,7 +62,7 @@ typedef struct TrainerCard {
     /* 0x0014 */ char unk_0014[4];
     /* 0x0018 */ char unk0018[0x8];
     /* 0x0020 */ PokemonData unk_0020[6];
-    /* 0x0218 */ u8 unk_0218[6][0xC80];
+    /* 0x0218 */ u8 iconTextures[6][0xC80];
 } TrainerCard; // size = 0x4D18
 
 typedef struct OptionLabel {

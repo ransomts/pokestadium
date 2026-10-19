@@ -30,12 +30,12 @@ typedef struct RacePlayerState {
     /* 0x18C */ f32 unk_18C;
     /* 0x190 */ f32 unk_190;
     /* 0x194 */ f32 unk_194;
-    /* 0x198 */ f32 unk_198;
-    /* 0x19C */ s16 unk_19C;
-    /* 0x19E */ s16 unk_19E;
-    /* 0x1A0 */ s16 unk_1A0;
+    /* 0x198 */ f32 finishTime;
+    /* 0x19C */ s16 animState;
+    /* 0x19E */ s16 finishState;
+    /* 0x1A0 */ s16 rankPending;
     /* 0x1A2 */ s16 unk_1A2;
-    /* 0x1A4 */ f32 unk_1A4;
+    /* 0x1A4 */ f32 hurdlePos;
     /* 0x1A8 */ f32 unk_1A8;
     /* 0x1AC */ s16 unk_1AC;
     /* 0x1AE */ s16 unk_1AE;

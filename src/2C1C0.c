@@ -37,9 +37,9 @@ void Session_SetMode(s32 arg0, s32 arg1, s32 arg2) {
     gSessionContext.unk_0002 = arg2;
     gSessionContext.unk_0003 = 1;
 
-    gSessionContext.unk_11ED = 0;
-    gSessionContext.unk_11EE = 0;
-    gSessionContext.unk_11EF = 0;
+    gSessionContext.timerEnabled = 0;
+    gSessionContext.battleTimeLimitMinutes = 0;
+    gSessionContext.turnTimeLimitSeconds = 0;
     gSessionContext.unk_11F4 = 0;
     gSessionContext.sessionFlags = 0;
     gSessionContext.continueCount = 0;
@@ -98,7 +98,7 @@ BattleAI_TeamContext* Trainer_Create(s32 arg0, s16 arg1, char* arg2, char* arg3)
         }
 
         sp1C->unk_018 = 0;
-        sp1C->unk_214 = sp20;
+        sp1C->trainerData = sp20;
         sp1C->unk_002 = 0;
 
         sp20->unk_000 = 0;
@@ -123,7 +123,7 @@ void Team_AddTrainer(s32 arg0, BattleAI_TeamContext* arg1) {
 }
 
 void Trainer_AddPokemon(BattleAI_TeamContext* arg0, PokemonData* arg1) {
-    unk_D_800AE540_0874* ptr = arg0->unk_214;
+    unk_D_800AE540_0874* ptr = arg0->trainerData;
     s32 tmp = arg0->unk_002;
 
     if (tmp < 6) {
@@ -327,9 +327,9 @@ s16 Team_GetHighestPartyLevel(void) {
     s16 var_v1 = 0;
     PokemonData* var_v0;
 
-    var_v0 = &gSessionContext.battleSides[0].unk_08[0]->unk_214->unk_028[0];
+    var_v0 = &gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_028[0];
 
-    for (i = 0; i < gSessionContext.battleSides[0].unk_08[0]->unk_214->unk_002; i++, var_v0++) {
+    for (i = 0; i < gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_002; i++, var_v0++) {
         if (var_v1 < var_v0->unk_24) {
             var_v1 = var_v0->unk_24;
         }
@@ -348,7 +348,7 @@ void Team_ScaleOpponentToLevel(s16 arg0) {
     }
 
     var_s0 = gSessionContext.battleSides[1].unk_08[0]->unk_01C;
-    var_s1 = gSessionContext.battleSides[1].unk_08[0]->unk_214->unk_028;
+    var_s1 = gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_028;
 
     for (i = 0; i < gSessionContext.battleSides[1].unk_08[0]->unk_002; i++, var_s1++, var_s0++) {
         var_s0->unk_24 = arg0;
@@ -406,10 +406,10 @@ void Team_LoadPresetTrainer(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     }
 
     HAL_Strcpy(temp_s3->unk_008, temp_s2->posX);
-    HAL_Strcpy(temp_s3->unk_214->unk_014, temp_s2->posX);
-    HAL_Strcpy(temp_s3->unk_214->unk_220, temp_s2->unk_0C);
+    HAL_Strcpy(temp_s3->trainerData->unk_014, temp_s2->posX);
+    HAL_Strcpy(temp_s3->trainerData->unk_220, temp_s2->unk_0C);
 
-    temp_s3->unk_214->unk_003 = (temp_s2->unk_34 >> 8) & 0xFF;
+    temp_s3->trainerData->unk_003 = (temp_s2->unk_34 >> 8) & 0xFF;
 
     if (arg3 != 0) {
         Team_ScaleOpponentToLevel(Team_GetHighestPartyLevel());
@@ -524,7 +524,7 @@ void Team_BuildQuickBattleTeams(s16 arg0) {
 
 void Session_SaveContinueData(void) {
     ContinueRecord sp20;
-    unk_D_800AE540_0874* sp1C = gSessionContext.battleSides[0].unk_08[0]->unk_214;
+    unk_D_800AE540_0874* sp1C = gSessionContext.battleSides[0].unk_08[0]->trainerData;
 
     sp20.posX = gSessionContext.unk_0000;
     sp20.unk_01 = gSessionContext.unk_0002;

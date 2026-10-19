@@ -657,11 +657,11 @@ s32 Team_CommitSelectionToTrainer(unk_D_8423D3D8* arg0, s16 arg1) {
     if (arg1 == 4) {
         temp_s3 = RegisteredTeam_LoadSelected(&gPokemonData, &sp34);
         if (sp34 != NULL) {
-            arg0->rotation->unk_018 = sp34->unk_4D10;
+            arg0->rotation->unk_018 = sp34->trainerId;
             if (gSessionContext.unk_0000 != 0) {
-                HAL_Strcpy(arg0->rotation->unk_008, sp34->unk_4D12);
+                HAL_Strcpy(arg0->rotation->unk_008, sp34->trainerName);
             }
-            HAL_Strcpy(arg0->rotation->unk_214->unk_014, sp34->unk_4D12);
+            HAL_Strcpy(arg0->rotation->trainerData->unk_014, sp34->trainerName);
 
             for (i = 0; i < temp_s3; i++) {
                 Trainer_AddPokemon(arg0->rotation, &sp34->unk_0000[i].unk_004);
@@ -673,7 +673,7 @@ s32 Team_CommitSelectionToTrainer(unk_D_8423D3D8* arg0, s16 arg1) {
         if (gSessionContext.unk_0000 != 0) {
             HAL_Strcpy(arg0->rotation->unk_008, gPartyInfo.unk_001E);
         }
-        HAL_Strcpy(arg0->rotation->unk_214->unk_014, gPartyInfo.unk_001E);
+        HAL_Strcpy(arg0->rotation->trainerData->unk_014, gPartyInfo.unk_001E);
 
         if (gPartyInfo.unk_0006 > 0) {
             for (i = 0; i < gPartyInfo.unk_0006; i++) {
@@ -725,9 +725,9 @@ void TeamSelection_ApplySlotSelection(s16 arg0, s16 arg1) {
 
     if (temp_v1->unk_002 != 0) {
         if (arg1 == 4) {
-            TeamSelection_RegisteredTeam_ApplySelection(&gPokemonData, temp_v1->unk_214->unk_028[0].unk_53);
+            TeamSelection_RegisteredTeam_ApplySelection(&gPokemonData, temp_v1->trainerData->unk_028[0].unk_53);
         } else {
-            Rental_CopyRosterToTeam(&gPartyInfo, &temp_v1->unk_214->unk_028, temp_v1->unk_214->unk_002);
+            Rental_CopyRosterToTeam(&gPartyInfo, &temp_v1->trainerData->unk_028, temp_v1->trainerData->unk_002);
         }
     }
 }

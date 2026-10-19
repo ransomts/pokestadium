@@ -169,7 +169,7 @@ void DisplayWorker_ThreadMain(UNUSED void* arg) {
     DisplayTask_Initialize(&gIntroTaskState.unk_A20);
     while (1) {
         void* sp4C;
-        if (gRspTaskManager.unk_A38 > 0) {
+        if (gRspTaskManager.preNmiState > 0) {
             DisplayWorker_DrainEvents();
             continue;
         }

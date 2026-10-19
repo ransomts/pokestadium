@@ -18,17 +18,17 @@ typedef struct unk_D_800A62E0 {
     /* 0x9B0 */ u8 stack[64];
     /* 0x9F0 */ OSMesgQueue queue;
     /* 0xA08 */ u64 time;
-    /* 0xA10 */ GbEmuState* unk_A10;
-    /* 0xA14 */ UnkStruct80001380* unk_A14;
-    /* 0xA18 */ UnkStruct80001380* unk_A18;
-    /* 0xA1C */ UnkStruct80001380* unk_A1C;
+    /* 0xA10 */ GbEmuState* clients;
+    /* 0xA14 */ UnkStruct80001380* activeTask;
+    /* 0xA18 */ UnkStruct80001380* audioTask;
+    /* 0xA1C */ UnkStruct80001380* gfxTask;
     /* 0xA20 */ UnkStruct80001380* unk_A20;
-    /* 0xA24 */ UnkStruct80001380* unk_A24;
+    /* 0xA24 */ UnkStruct80001380* nextGfxTask;
     /* 0xA28 */ s32 unk_A28;
     /* 0xA2C */ s32 unk_A2C;
     /* 0xA30 */ s32 unk_A30;
-    /* 0xA34 */ s32 unk_A34;
-    /* 0xA38 */ s16 unk_A38;
+    /* 0xA34 */ s32 frameCount;
+    /* 0xA38 */ s16 preNmiState;
     /* 0xA3A */ char unkA3A[0x6];
 } unk_D_800A62E0; // size = 0xA40
 
@@ -50,7 +50,7 @@ typedef struct UnkStruct80083CA0_2 {
     /* 0x1B4 */ char unk1B4[0xC];
     /* 0x1C0 */ OSMesgQueue messageQueue;
     /* 0x1D8 */ s32 unk_1D8;
-    /* 0x1DC */ s32 unk_1DC;
+    /* 0x1DC */ s32 threadState;
     /* 0x1E0 */ u8 unk1E0[0x800];
     /* 0x9E0 */ struct FramebufferImage* framebufferImage;
     /* 0x9E4 */ OSMesg unk_9E4;

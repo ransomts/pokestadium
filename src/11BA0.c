@@ -303,7 +303,7 @@ unk_D_86002F34_alt6* GeoNode_CreateAnimatedPart(MainPoolState* arg0, unk_D_86002
         arg1->unk_1E = *arg6;
         arg1->unk_24 = *arg7;
         arg1->unk_30 = arg2;
-        arg1->unk_31 = arg3;
+        arg1->transformMode = arg3;
         arg1->unk_32 = arg4;
         GeoNode_Init(arg1, 0x14);
     }

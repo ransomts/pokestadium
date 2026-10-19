@@ -24,7 +24,7 @@ void GbTower_AudioThread(UNUSED void* arg0) {
 
     while (1) {
         Sched_WaitClientQueue(gGbEmuThreadInfo);
-        if (gRspTaskManager.unk_A38 >= 0x15) {
+        if (gRspTaskManager.preNmiState >= 0x15) {
             continue;
         }
         func(gGbEmuThreadInfo);
@@ -43,7 +43,7 @@ void GbTower_EmuThread(UNUSED void* arg0) {
 
     while (1) {
         Sched_WaitClientQueue(gGbEmuState);
-        if (gRspTaskManager.unk_A38 >= 0x15) {
+        if (gRspTaskManager.preNmiState >= 0x15) {
             continue;
         }
         func2(gGbEmuState);

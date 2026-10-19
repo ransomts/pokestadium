@@ -421,7 +421,7 @@ void Intro_SetupTextPanel(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s1
     arg0->unk_80 = arg1;
     arg0->unk_98 = arg2;
     arg0->unk_9C = arg3;
-    arg0->unk_9E = arg4;
+    arg0->width = arg4;
     arg0->unk_A0 = arg5;
 
     arg0->unk_88 = 0;
@@ -713,22 +713,22 @@ void Intro_DrawTextPanels(void) {
                 break;
 
             case 1:
-                Intro_StepPanelBounce(gUIElementHealthBar, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementHealthBar->unk_9E / 2), 1.7f);
-                UI_DrawGradientTexture(gUIElementHealthBar->unk_80, gUIElementHealthBar->unk_98, gUIElementHealthBar->unk_9C, gUIElementHealthBar->unk_9E,
+                Intro_StepPanelBounce(gUIElementHealthBar, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementHealthBar->width / 2), 1.7f);
+                UI_DrawGradientTexture(gUIElementHealthBar->unk_80, gUIElementHealthBar->unk_98, gUIElementHealthBar->unk_9C, gUIElementHealthBar->width,
                               gUIElementHealthBar->unk_A0, &gUIElementHealthBar->unk_B0);
                 gUIElementHealthFill->unk_84 =
-                    Intro_StepPanelBounce(gUIElementHealthFill, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementHealthFill->unk_9E / 2), 1.7f);
-                UI_DrawGradientTexture(gUIElementHealthFill->unk_80, gUIElementHealthFill->unk_98, gUIElementHealthFill->unk_9C, gUIElementHealthFill->unk_9E,
+                    Intro_StepPanelBounce(gUIElementHealthFill, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementHealthFill->width / 2), 1.7f);
+                UI_DrawGradientTexture(gUIElementHealthFill->unk_80, gUIElementHealthFill->unk_98, gUIElementHealthFill->unk_9C, gUIElementHealthFill->width,
                               gUIElementHealthFill->unk_A0, &gUIElementHealthBar->unk_B0);
 
                 if (gSessionContext.inRound2 == 1) {
-                    UI_DrawTextureRgba16(gUIElementBorder->unk_80, (s16)gUIElementHealthFill->unk_98 + gUIElementHealthFill->unk_9E,
-                                  gUIElementHealthFill->unk_9C - 2, gUIElementBorder->unk_9E, gUIElementBorder->unk_A0);
+                    UI_DrawTextureRgba16(gUIElementBorder->unk_80, (s16)gUIElementHealthFill->unk_98 + gUIElementHealthFill->width,
+                                  gUIElementHealthFill->unk_9C - 2, gUIElementBorder->width, gUIElementBorder->unk_A0);
                 }
 
                 if ((gCurrentMonsterSpawnIdx != 4) && (gCurrentMonsterSpawnIdx != 5)) {
-                    Intro_StepPanelBounce(gUIElementStatus, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementStatus->unk_9E / 2), 1.7f);
-                    UI_DrawGradientTexture(gUIElementStatus->unk_80, gUIElementStatus->unk_98, gUIElementStatus->unk_9C, gUIElementStatus->unk_9E,
+                    Intro_StepPanelBounce(gUIElementStatus, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementStatus->width / 2), 1.7f);
+                    UI_DrawGradientTexture(gUIElementStatus->unk_80, gUIElementStatus->unk_98, gUIElementStatus->unk_9C, gUIElementStatus->width,
                                   gUIElementStatus->unk_A0, &gUIElementHealthBar->unk_B0);
                 }
 
@@ -767,18 +767,18 @@ void Intro_DrawTextPanels(void) {
                 break;
 
             case 2:
-                UI_DrawGradientTexture(gUIElementHealthBar->unk_80, gUIElementHealthBar->unk_98, gUIElementHealthBar->unk_9C, gUIElementHealthBar->unk_9E,
+                UI_DrawGradientTexture(gUIElementHealthBar->unk_80, gUIElementHealthBar->unk_98, gUIElementHealthBar->unk_9C, gUIElementHealthBar->width,
                               gUIElementHealthBar->unk_A0, gUIElementColorFlat);
-                UI_DrawGradientTexture(gUIElementHealthFill->unk_80, gUIElementHealthFill->unk_98, gUIElementHealthFill->unk_9C, gUIElementHealthFill->unk_9E,
+                UI_DrawGradientTexture(gUIElementHealthFill->unk_80, gUIElementHealthFill->unk_98, gUIElementHealthFill->unk_9C, gUIElementHealthFill->width,
                               gUIElementHealthFill->unk_A0, gUIElementColorFlat);
 
                 if (gSessionContext.inRound2 == 1) {
-                    UI_DrawTextureRgba16(gUIElementBorder->unk_80, (s16)gUIElementHealthFill->unk_98 + gUIElementHealthFill->unk_9E,
-                                  gUIElementHealthFill->unk_9C - 2, gUIElementBorder->unk_9E, gUIElementBorder->unk_A0);
+                    UI_DrawTextureRgba16(gUIElementBorder->unk_80, (s16)gUIElementHealthFill->unk_98 + gUIElementHealthFill->width,
+                                  gUIElementHealthFill->unk_9C - 2, gUIElementBorder->width, gUIElementBorder->unk_A0);
                 }
 
                 if ((gCurrentMonsterSpawnIdx != 4) && (gCurrentMonsterSpawnIdx != 5)) {
-                    UI_DrawGradientTexture(gUIElementStatus->unk_80, gUIElementStatus->unk_98, gUIElementStatus->unk_9C, gUIElementStatus->unk_9E,
+                    UI_DrawGradientTexture(gUIElementStatus->unk_80, gUIElementStatus->unk_98, gUIElementStatus->unk_9C, gUIElementStatus->width,
                                   gUIElementStatus->unk_A0, gUIElementColorFlat);
                 }
                 break;

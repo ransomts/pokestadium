@@ -287,7 +287,7 @@ void DynamoGame_SyncChainLinkAnimations(void) {
                 if (gHealthBarData[i - 1].unk_00C != 1) {
                     var_a0 = 1;
                     if (gHealthBarData[i - 1].unk_004 == 0) {
-                        gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.unk_0EC;
+                        gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.anchor4Position;
                     } else if (gHealthBarData[i - 1].unk_004 == 1) {
                         gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.unk_0DC;
                     }

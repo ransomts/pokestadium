@@ -124,7 +124,7 @@ s32 BattlePrepStarBurst_DrawStarIcon(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_a0 = (gStarBurstState*)gDefaultGraphRoot->unk_000.unk_14;
-        if (temp_a0->unk_5A2 != 0) {
+        if (temp_a0->variant != 0) {
             var_a0 = D_3018800;
         } else {
             var_a0 = D_301C800;
@@ -356,9 +356,9 @@ void BattlePrepStarBurst_UpdateBurstEffect(gStarBurstState* arg0) {
     s32 i;
     s32 j;
 
-    arg0->unk_5A1++;
-    if (arg0->unk_5A1 < 0x25) {
-        if (arg0->unk_5A2 != 0) {
+    arg0->timer++;
+    if (arg0->timer < 0x25) {
+        if (arg0->variant != 0) {
             for (i = 0; i < 10; i++) {
                 for (j = 0; j < 8; j++) {
                     if (arg0->unk_0A0[i][j].unk_06 >= 0) {
@@ -374,8 +374,8 @@ void BattlePrepStarBurst_UpdateBurstEffect(gStarBurstState* arg0) {
             }
         }
     } else {
-        arg0->unk_5A1 = 0;
-        arg0->unk_5A0 = 0;
+        arg0->timer = 0;
+        arg0->state = 0;
     }
 }
 
@@ -383,55 +383,55 @@ void BattlePrepStarBurst_UpdateFlightArc(gStarBurstState* arg0) {
     s16 i;
     s16 var_s2;
 
-    arg0->unk_5A1++;
-    if (arg0->unk_5A1 > 0) {
-        arg0->unk_5A8->unk_000.unk_01 |= 1;
-        arg0->unk_5A8->unk_024.z -= 8.0f;
-        if (arg0->unk_5A3 != 0) {
-            arg0->unk_5A8->unk_01E.z += 0x400;
-            arg0->unk_5A8->unk_024.x = (COSS(arg0->unk_5A8->unk_01E.z + 0x6000) * 70.71f) + 82.0f;
-            arg0->unk_5A8->unk_024.y = (SINS(arg0->unk_5A8->unk_01E.z + 0x6000) * 70.71f) + -2.0f;
+    arg0->timer++;
+    if (arg0->timer > 0) {
+        arg0->barNode->unk_000.unk_01 |= 1;
+        arg0->barNode->unk_024.z -= 8.0f;
+        if (arg0->side != 0) {
+            arg0->barNode->unk_01E.z += 0x400;
+            arg0->barNode->unk_024.x = (COSS(arg0->barNode->unk_01E.z + 0x6000) * 70.71f) + 82.0f;
+            arg0->barNode->unk_024.y = (SINS(arg0->barNode->unk_01E.z + 0x6000) * 70.71f) + -2.0f;
         } else {
-            arg0->unk_5A8->unk_01E.z -= 0x400;
-            arg0->unk_5A8->unk_024.x = (COSS(arg0->unk_5A8->unk_01E.z + 0x2000) * 70.71f) + -82.0f;
-            arg0->unk_5A8->unk_024.y = (SINS(arg0->unk_5A8->unk_01E.z + 0x2000) * 70.71f) + -98.0f;
+            arg0->barNode->unk_01E.z -= 0x400;
+            arg0->barNode->unk_024.x = (COSS(arg0->barNode->unk_01E.z + 0x2000) * 70.71f) + -82.0f;
+            arg0->barNode->unk_024.y = (SINS(arg0->barNode->unk_01E.z + 0x2000) * 70.71f) + -98.0f;
         }
 
-        if (arg0->unk_5A1 == 0x10) {
-            if (arg0->unk_5A2 != 0) {
+        if (arg0->timer == 0x10) {
+            if (arg0->variant != 0) {
                 var_s2 = 0x2000;
                 for (i = 0; i < 5; i++, var_s2 += 0x3000) {
-                    BattlePrepStarBurst_InitRainbowParticle(&arg0->unk_0A0[i], arg0->unk_5B8, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
+                    BattlePrepStarBurst_InitRainbowParticle(&arg0->unk_0A0[i], arg0->rainbowGraph, arg0->barNode->unk_024.x, arg0->barNode->unk_024.y,
                                   var_s2);
                     BattlePrepStarBurst_UpdateRainbowParticle(&arg0->unk_0A0[i]);
                 }
 
                 var_s2 = 0x6000;
                 for (i = 5; i < 10; i++, var_s2 -= 0x3000) {
-                    BattlePrepStarBurst_InitRainbowParticle(&arg0->unk_0A0[i], arg0->unk_5B8, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
+                    BattlePrepStarBurst_InitRainbowParticle(&arg0->unk_0A0[i], arg0->rainbowGraph, arg0->barNode->unk_024.x, arg0->barNode->unk_024.y,
                                   var_s2);
                     BattlePrepStarBurst_UpdateRainbowParticle(&arg0->unk_0A0[i]);
                 }
 
-                arg0->unk_5A1 = 0;
-                arg0->unk_5A0 = 1;
+                arg0->timer = 0;
+                arg0->state = 1;
             } else {
                 var_s2 = 0x3000;
                 for (i = 0; i < 5; i++, var_s2 += 0x2800) {
-                    BattlePrepStarBurst_InitSparkSlot(&arg0->unk_000[i], arg0->unk_5B4, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
+                    BattlePrepStarBurst_InitSparkSlot(&arg0->unk_000[i], arg0->sparkGraph, arg0->barNode->unk_024.x, arg0->barNode->unk_024.y,
                                   var_s2);
                     BattlePrepStarBurst_UpdateSparkSlot(&arg0->unk_000[i]);
                 }
 
                 var_s2 = 0x5000;
                 for (i = 5; i < 10; i++, var_s2 -= 0x2800) {
-                    BattlePrepStarBurst_InitSparkSlot(&arg0->unk_000[i], arg0->unk_5B4, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
+                    BattlePrepStarBurst_InitSparkSlot(&arg0->unk_000[i], arg0->sparkGraph, arg0->barNode->unk_024.x, arg0->barNode->unk_024.y,
                                   var_s2);
                     BattlePrepStarBurst_UpdateSparkSlot(&arg0->unk_000[i]);
                 }
 
-                arg0->unk_5A1 = 0;
-                arg0->unk_5A0 = 1;
+                arg0->timer = 0;
+                arg0->state = 1;
             }
         }
     }
@@ -441,17 +441,17 @@ void BattlePrepStarBurst_UpdateRainbowAftermath(gStarBurstState* arg0) {
     s32 i;
     s32 j;
 
-    arg0->unk_5A1++;
-    if (arg0->unk_5A1 >= 4) {
-        arg0->unk_5A8->unk_024.y += arg0->unk_5A4;
-        arg0->unk_5A4 -= 0.5f;
-        arg0->unk_5A8->unk_024.x -= 20.0f;
-        arg0->unk_5A8->unk_01E.z += 0x400;
+    arg0->timer++;
+    if (arg0->timer >= 4) {
+        arg0->barNode->unk_024.y += arg0->yVelocity;
+        arg0->yVelocity -= 0.5f;
+        arg0->barNode->unk_024.x -= 20.0f;
+        arg0->barNode->unk_01E.z += 0x400;
 
-        if (arg0->unk_5A1 < 0xE) {
+        if (arg0->timer < 0xE) {
             for (i = 0; i < 4; i++) {
-                BattlePrepStarBurst_SpawnScatterParticle(&arg0->unk_0A0[arg0->unk_5A1 - 4][0 + i], arg0->unk_5B8, &arg0->unk_5A8->unk_024);
-                BattlePrepStarBurst_SpawnScatterParticle(&arg0->unk_0A0[arg0->unk_5A1 - 4][4 + i], arg0->unk_5B8, &arg0->unk_5A8->unk_024);
+                BattlePrepStarBurst_SpawnScatterParticle(&arg0->unk_0A0[arg0->timer - 4][0 + i], arg0->rainbowGraph, &arg0->barNode->unk_024);
+                BattlePrepStarBurst_SpawnScatterParticle(&arg0->unk_0A0[arg0->timer - 4][4 + i], arg0->rainbowGraph, &arg0->barNode->unk_024);
             }
         }
 
@@ -463,65 +463,65 @@ void BattlePrepStarBurst_UpdateRainbowAftermath(gStarBurstState* arg0) {
             }
         }
 
-        if (arg0->unk_5A1 == 0x22) {
-            BattlePrep_ResetDisplayObject(arg0->unk_5A8);
-            arg0->unk_5A0 = 0;
+        if (arg0->timer == 0x22) {
+            BattlePrep_ResetDisplayObject(arg0->barNode);
+            arg0->state = 0;
         }
     }
 }
 
 void BattlePrepStarBurst_UpdateSparkAftermath(gStarBurstState* arg0) {
-    arg0->unk_5A1++;
-    if (arg0->unk_5A1 >= 4) {
-        arg0->unk_5A8->unk_024.y += arg0->unk_5A4;
-        arg0->unk_5A4 -= 1.0f;
-        if (arg0->unk_5A2 != 0) {
-            arg0->unk_5A8->unk_024.x -= 10.0f;
-            arg0->unk_5A8->unk_01E.z += 0x400;
+    arg0->timer++;
+    if (arg0->timer >= 4) {
+        arg0->barNode->unk_024.y += arg0->yVelocity;
+        arg0->yVelocity -= 1.0f;
+        if (arg0->variant != 0) {
+            arg0->barNode->unk_024.x -= 10.0f;
+            arg0->barNode->unk_01E.z += 0x400;
         } else {
-            arg0->unk_5A8->unk_01E.z -= 0x400;
+            arg0->barNode->unk_01E.z -= 0x400;
         }
 
-        if (arg0->unk_5A1 == 0x20) {
-            BattlePrep_ResetDisplayObject(arg0->unk_5A8);
-            arg0->unk_5A0 = 0;
+        if (arg0->timer == 0x20) {
+            BattlePrep_ResetDisplayObject(arg0->barNode);
+            arg0->state = 0;
         }
     }
 }
 
 void BattlePrepStarBurst_UpdateExitSlide(gStarBurstState* arg0) {
-    if ((arg0->unk_5A1 < 0x14) && (arg0->unk_5A3 != 0) && (arg0->unk_5A1 < 7)) {
-        arg0->unk_5A8->unk_024.x += 40.0f;
+    if ((arg0->timer < 0x14) && (arg0->side != 0) && (arg0->timer < 7)) {
+        arg0->barNode->unk_024.x += 40.0f;
     }
 
-    arg0->unk_5A1++;
-    if (arg0->unk_5A1 == 0x2C) {
-        arg0->unk_5A1 = 0;
-        arg0->unk_5A0 = 0;
+    arg0->timer++;
+    if (arg0->timer == 0x2C) {
+        arg0->timer = 0;
+        arg0->state = 0;
     }
 }
 
 void BattlePrepStarBurst_UpdateFirstClearExit(gStarBurstState* arg0) {
     s32 tmp;
 
-    if (arg0->unk_5A3 != 0) {
-        if (arg0->unk_5A1 >= 0) {
-            arg0->unk_5A8->unk_024.x += 40.0f;
+    if (arg0->side != 0) {
+        if (arg0->timer >= 0) {
+            arg0->barNode->unk_024.x += 40.0f;
         }
-        tmp = arg0->unk_5A1;
+        tmp = arg0->timer;
     } else {
-        tmp = arg0->unk_5A1;
+        tmp = arg0->timer;
     }
 
-    arg0->unk_5A1++;
-    if (arg0->unk_5A1 == 0xB) {
-        arg0->unk_5A1 = 0;
-        arg0->unk_5A0 = 0;
+    arg0->timer++;
+    if (arg0->timer == 0xB) {
+        arg0->timer = 0;
+        arg0->state = 0;
     }
 }
 
 void BattlePrepStarBurst_Update(gStarBurstState* arg0) {
-    switch (arg0->unk_5A0) {
+    switch (arg0->state) {
         case 1:
             BattlePrepStarBurst_UpdateBurstEffect(arg0);
             break;
@@ -552,36 +552,36 @@ void BattlePrepStarBurst_Launch(gStarBurstState* arg0, Fragment2_1GraphNode* arg
     s32 i;
     s32 j;
 
-    arg0->unk_5A8 = arg1;
-    arg0->unk_5AC = arg2;
-    Model_InitDisplayObject(arg1, 1, 0, arg0->unk_5B0);
-    arg0->unk_5A8->unk_000.unk_14 = arg0;
+    arg0->barNode = arg1;
+    arg0->particleNodeBase = arg2;
+    Model_InitDisplayObject(arg1, 1, 0, arg0->barGraph);
+    arg0->barNode->unk_000.unk_14 = arg0;
 
-    if (arg0->unk_5A2 == -1) {
-        arg0->unk_5A1 = 0;
-        arg0->unk_5A0 = 5;
-        if (arg0->unk_5A3 != 0) {
-            Vec3f_SetComponentsDuplicate(&arg0->unk_5A8->unk_024, -280.0f, 0.0f, -289.0f);
+    if (arg0->variant == -1) {
+        arg0->timer = 0;
+        arg0->state = 5;
+        if (arg0->side != 0) {
+            Vec3f_SetComponentsDuplicate(&arg0->barNode->unk_024, -280.0f, 0.0f, -289.0f);
         } else {
-            Vec3f_SetComponentsDuplicate(&arg0->unk_5A8->unk_024, -372.0f, 0.0f, -289.0f);
+            Vec3f_SetComponentsDuplicate(&arg0->barNode->unk_024, -372.0f, 0.0f, -289.0f);
         }
         return;
     }
 
-    if (arg0->unk_5A2 != 0) {
-        arg0->unk_5A1 = 0;
+    if (arg0->variant != 0) {
+        arg0->timer = 0;
     } else {
-        arg0->unk_5A1 = -6;
+        arg0->timer = -6;
     }
 
-    arg0->unk_5A0 = 2;
-    arg0->unk_5A8->unk_000.unk_01 &= ~1;
-    if (arg0->unk_5A3 != 0) {
-        Vec3f_SetComponentsDuplicate(&arg0->unk_5A8->unk_024, 32.0f, 48.0f, -161.0f);
-        arg0->unk_5A8->unk_01E.z = -0x4000;
+    arg0->state = 2;
+    arg0->barNode->unk_000.unk_01 &= ~1;
+    if (arg0->side != 0) {
+        Vec3f_SetComponentsDuplicate(&arg0->barNode->unk_024, 32.0f, 48.0f, -161.0f);
+        arg0->barNode->unk_01E.z = -0x4000;
     } else {
-        Vec3f_SetComponentsDuplicate(&arg0->unk_5A8->unk_024, -32.0f, -48.0f, -161.0f);
-        arg0->unk_5A8->unk_01E.z = 0x4000;
+        Vec3f_SetComponentsDuplicate(&arg0->barNode->unk_024, -32.0f, -48.0f, -161.0f);
+        arg0->barNode->unk_01E.z = 0x4000;
     }
 
     for (i = 0; i < 10; i++) {
@@ -597,24 +597,24 @@ void BattlePrepStarBurst_Launch(gStarBurstState* arg0, Fragment2_1GraphNode* arg
 }
 
 void BattlePrepStarBurst_StartExit(gStarBurstState* arg0) {
-    arg0->unk_5A1 = 0;
-    if (arg0->unk_5A2 == -1) {
-        arg0->unk_5A0 = 7;
-    } else if (arg0->unk_5A3 != 0) {
-        if (arg0->unk_5A2 != 0) {
-            arg0->unk_5A4 = 10.0f;
-            arg0->unk_5A0 = 3;
+    arg0->timer = 0;
+    if (arg0->variant == -1) {
+        arg0->state = 7;
+    } else if (arg0->side != 0) {
+        if (arg0->variant != 0) {
+            arg0->yVelocity = 10.0f;
+            arg0->state = 3;
         } else {
-            arg0->unk_5A4 = -10.0f;
-            arg0->unk_5A0 = 4;
+            arg0->yVelocity = -10.0f;
+            arg0->state = 4;
         }
     } else {
-        if (arg0->unk_5A2 != 0) {
-            arg0->unk_5A4 = 20.0f;
+        if (arg0->variant != 0) {
+            arg0->yVelocity = 20.0f;
         } else {
-            arg0->unk_5A4 = -10.0f;
+            arg0->yVelocity = -10.0f;
         }
-        arg0->unk_5A0 = 4;
+        arg0->state = 4;
     }
 }
 
@@ -622,18 +622,18 @@ void BattlePrepStarBurst_Init(gStarBurstState* arg0, s8 arg1, s8 arg2) {
     GraphNode* var_v0;
     MemoryBlock* temp_v0;
 
-    arg0->unk_5A0 = 0;
-    arg0->unk_5A1 = 0;
-    arg0->unk_5A3 = arg1;
-    arg0->unk_5A2 = arg2;
+    arg0->state = 0;
+    arg0->timer = 0;
+    arg0->side = arg1;
+    arg0->variant = arg2;
 
     temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     if (arg2 == -1) {
-        arg0->unk_5B0 = process_geo_layout(temp_v0, gFragment63_GeoLayoutBarB);
+        arg0->barGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutBarB);
     } else {
-        arg0->unk_5B0 = process_geo_layout(temp_v0, gFragment63_GeoLayoutBarA);
+        arg0->barGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutBarA);
     }
-    arg0->unk_5B4 = process_geo_layout(temp_v0, gFragment63_GeoLayoutSmallQuad);
-    arg0->unk_5B8 = process_geo_layout(temp_v0, gFragment63_GeoLayoutIcon);
+    arg0->sparkGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutSmallQuad);
+    arg0->rainbowGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutIcon);
     MainPool_FinalizeAllocation(temp_v0);
 }

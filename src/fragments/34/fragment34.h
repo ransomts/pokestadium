@@ -108,10 +108,10 @@ typedef struct ParticleEffectInstance {
     /* 0xC7 */ s8 rampValue;
     /* 0xC8 */ char unkC8[0x2];
     /* 0xCA */ u8 effectType;
-    /* 0xCB */ u8 unk_CB;
+    /* 0xCB */ u8 category;
     /* 0xCC */ u8 unk_CC;
     /* 0xCD */ u8 targetAlpha;
-    /* 0xCE */ u8 unk_CE;
+    /* 0xCE */ u8 metadata;
     /* 0xCF */ u8 paletteIndex;
     /* 0xD0 */ s8 unk_D0;
 } ParticleEffectInstance; // size = 0xD4
@@ -236,9 +236,9 @@ typedef struct ParticleCameraInfo {
     /* 0x58 */ Vec3f unk_58;
     /* 0x64 */ Vec3f unk_64;
     /* 0x70 */ s16 unk_70;
-    /* 0x72 */ s16 unk_72;
+    /* 0x72 */ s16 lookYaw;
     /* 0x74 */ char unk74[0x2];
-    /* 0x76 */ s16 unk_76;
+    /* 0x76 */ s16 eyePitch;
     /* 0x78 */ s16 unk_78;
 } ParticleCameraInfo; // size = 0x7C
 
@@ -251,7 +251,7 @@ typedef struct unk_D_8140E634 {
 typedef struct gMatrixBufferStruct {
     /* 0x0000 */ MtxF unk_0000[364];
     /* 0x5B00 */ char unk5B00[0x80];
-    /* 0x5B80 */ Mtx unk_5B80;
+    /* 0x5B80 */ Mtx orthoProjection;
     /* 0x5BC0 */ char unk5BC0[0x20];
 } gMatrixBufferStruct; // size = 0x5BE0
 

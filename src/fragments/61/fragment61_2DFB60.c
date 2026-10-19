@@ -74,7 +74,7 @@ s32 Rental_CountAvailableBoxes(unk_D_842168A0* arg0) {
 s32 Rental_GetBoxNameColorIndex(unk_D_838067F0_0168* arg0) {
     s32 ret;
 
-    switch (arg0->unk_2692) {
+    switch (arg0->boxIndex) {
         case 0:
             ret = 0;
             break;
@@ -123,7 +123,7 @@ void Rental_DrawBoxNameBanner(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
 
-    switch (arg2->unk_2692) {
+    switch (arg2->boxIndex) {
         case 0:
             sp54 = TeamSelection_GetLabelText(0x12);
             break;
@@ -133,7 +133,7 @@ void Rental_DrawBoxNameBanner(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
             break;
 
         default:
-            Text_SetNumberToken(1, arg2->unk_2692);
+            Text_SetNumberToken(1, arg2->boxIndex);
             sp54 = TeamSelection_FormatText(sp58, 0x100, 0x14);
             break;
     }
@@ -154,7 +154,7 @@ void Rental_DrawCarouselScrollbar(s16 arg0, s16 arg1, unk_D_842168A0* arg2) {
     if (arg2->unk_00005 < 0xD) {
         var_v1 = ((arg2->unk_0001C[arg2->unk_00005].posX + 2) / 3);
     } else {
-        var_v1 = ((arg2->unk_0013C->posX + 2) / 3);
+        var_v1 = ((arg2->roster->posX + 2) / 3);
     }
 
     if (var_v1 < 4) {
@@ -204,7 +204,7 @@ void Rental_DrawBoxMonRow(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067
 
     for (i = 0; i < 3; i++) {
         if ((arg3->unk_0000[i].unk_004.posX.posX != 0) &&
-            (Rental_CanAddMonToTeam(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0)) {
+            (Rental_CanAddMonToTeam(arg0->teamTray, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0)) {
             TeamSelection_DrawColoredFrame(arg1 + i * 0x84, arg2, 0x84, 0x2C, 0x64, 0x64, 0xC8, 0xFF);
         } else {
             TeamSelection_DrawColoredFrame(arg1 + i * 0x84, arg2, 0x84, 0x2C, 0x3C, 0x3C, 0xA0, 0xFF);
@@ -225,7 +225,7 @@ void Rental_DrawBoxMonRow(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 40, 100, 220, 255);
 
     for (i = 0; i < 3; i++) {
-        if (Rental_TeamContainsMon(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
+        if (Rental_TeamContainsMon(arg0->teamTray, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
             Gfx_DrawTextureIa8(arg1 + (i * 0x84) + 0x2E, arg2 + 0xB, 0x48, 0x1C, D_200AC00, 0x48, 0);
         }
     }
@@ -236,8 +236,8 @@ void Rental_DrawBoxMonRow(unk_D_842168A0* arg0, s16 arg1, s16 arg2, unk_D_838067
 
     for (i = 0; i < 3; i++) {
         if ((arg3->unk_0000[i].unk_004.posX.posX != 0) &&
-            (Rental_TeamContainsMon(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) == 0)) {
-            if (Rental_CanAddMonToTeam(arg0->unk_13608, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
+            (Rental_TeamContainsMon(arg0->teamTray, &arg3->unk_0000[i & 0xFFFFFFFF]) == 0)) {
+            if (Rental_CanAddMonToTeam(arg0->teamTray, &arg3->unk_0000[i & 0xFFFFFFFF]) != 0) {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
                 Text_SetEnvColor(0x32, 0x32, 0xC8, 0x80);
@@ -263,7 +263,7 @@ void Rental_CarouselDraw(unk_D_842168A0* arg0, s32 arg1) {
     spB0 = arg0->unk_00014;
     temp_s7 = arg0->unk_00016;
 
-    if ((arg0->unk_00001 != 1) && (arg0->unk_00001 != 2) && ((arg1 != 0) || (arg0->unk_00009 != 0))) {
+    if ((arg0->unk_00001 != 1) && (arg0->unk_00001 != 2) && ((arg1 != 0) || (arg0->redrawTimer != 0))) {
         Rental_DrawBoxTabs(arg0);
 
         TeamSelection_DrawCornerFrame(spB0, temp_s7, 0x1B4, 0xD4);
@@ -290,8 +290,8 @@ void Rental_CarouselDraw(unk_D_842168A0* arg0, s32 arg1) {
             s32 pad;
 
             Gfx_SetScissorRect(&gDisplayListHead, spB0 + 0x24, temp_s7 + 4, 0x18C, 0xCC);
-            Rental_DrawBoxNameBanner(sp9E + 0x24, temp_s7 + 4, arg0->unk_00140->unk_268C);
-            Rental_DrawBoxNameBanner(tmp3 + 0x24, temp_s7 + 4, arg0->unk_00140);
+            Rental_DrawBoxNameBanner(sp9E + 0x24, temp_s7 + 4, arg0->currentPage->prevPage);
+            Rental_DrawBoxNameBanner(tmp3 + 0x24, temp_s7 + 4, arg0->currentPage);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
             gDPLoadTextureBlock(gDisplayListHead++, D_2000C40, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 4, 0,
@@ -303,43 +303,43 @@ void Rental_CarouselDraw(unk_D_842168A0* arg0, s32 arg1) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-            var_s1_2 = arg0->unk_00140;
+            var_s1_2 = arg0->currentPage;
             for (i = 0; i < 4; i++) {
                 Rental_DrawBoxMonRow(arg0, tmp3 + 0x24, temp_s7 + (i * 0x2C) + 0x20, var_s1_2);
-                var_s1_2 = var_s1_2->unk_2688;
+                var_s1_2 = var_s1_2->nextPage;
             }
 
             for (i = 0; i < 4; i++) {
                 Rental_DrawBoxMonRow(arg0, sp9E + 0x24, temp_s7 + (i * 0x2C) + 0x20, var_s1_2);
-                var_s1_2 = var_s1_2->unk_2688;
+                var_s1_2 = var_s1_2->nextPage;
             }
 
             Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         } else if (arg0->unk_00001 == 8) {
             temp_s3_3 = temp_s7 - ((arg0->unk_00018 * 0x2C) / 4);
-            Rental_DrawBoxNameBanner(spB0 + 0x24, temp_s7 + 4, arg0->unk_00140);
+            Rental_DrawBoxNameBanner(spB0 + 0x24, temp_s7 + 4, arg0->currentPage);
             Gfx_SetScissorRect(&gDisplayListHead, spB0 + 0x24, temp_s7 + 0x20, 0x18C, 0xB0);
             if (arg0->unk_0001A > 0) {
-                var_s1_2 = arg0->unk_00140->unk_268C;
+                var_s1_2 = arg0->currentPage->prevPage;
                 for (i = 0; i < 5; i++) {
                     Rental_DrawBoxMonRow(arg0, spB0 + 0x24, temp_s3_3 + (i * 0x2C) + 0x20, var_s1_2);
-                    var_s1_2 = var_s1_2->unk_2688;
+                    var_s1_2 = var_s1_2->nextPage;
                 }
             } else {
-                var_s1_2 = arg0->unk_00140;
+                var_s1_2 = arg0->currentPage;
                 for (i = 0; i < 5; i++) {
                     Rental_DrawBoxMonRow(arg0, spB0 + 0x24, (temp_s3_3 + (i * 0x2C)) - 0xC, var_s1_2);
-                    var_s1_2 = var_s1_2->unk_2688;
+                    var_s1_2 = var_s1_2->nextPage;
                 }
             }
             Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         } else {
-            Rental_DrawBoxNameBanner(spB0 + 0x24, temp_s7 + 4, arg0->unk_00140);
-            var_s1_2 = arg0->unk_00140;
+            Rental_DrawBoxNameBanner(spB0 + 0x24, temp_s7 + 4, arg0->currentPage);
+            var_s1_2 = arg0->currentPage;
 
             for (i = 0; i < 4; i++) {
                 Rental_DrawBoxMonRow(arg0, spB0 + 0x24, temp_s7 + (i * 0x2C) + 0x20, var_s1_2);
-                var_s1_2 = var_s1_2->unk_2688;
+                var_s1_2 = var_s1_2->nextPage;
             }
         }
 
@@ -370,8 +370,8 @@ void Rental_CarouselDraw(unk_D_842168A0* arg0, s32 arg1) {
             TeamSelection_DrawAnimatedGoldCorners(spB0 + tmp1, temp_s7 + tmp2, 0x84, 0x2C);
         }
 
-        if (arg0->unk_00009 > 0) {
-            arg0->unk_00009--;
+        if (arg0->redrawTimer > 0) {
+            arg0->redrawTimer--;
         }
     }
 }
@@ -381,7 +381,7 @@ void func_84209CEC(void) {
 
 unk_D_838067F0_0168* Rental_GetPage(unk_D_838067F0_0168* arg0, s32 arg1) {
     while (arg1-- > 0) {
-        arg0 = arg0->unk_2688;
+        arg0 = arg0->nextPage;
     }
 
     return arg0;
@@ -408,8 +408,8 @@ s32 Rental_FillPageFromRoster(unk_D_842168A0* arg0, unk_D_838067F0_0168* arg1, s
     unk_D_838067F0_003C* temp_s5;
     DeckHandle* var_v0;
 
-    arg1->unk_2690 = arg0->unk_00004;
-    arg1->unk_2692 = arg0->unk_00005;
+    arg1->gbPort = arg0->unk_00004;
+    arg1->boxIndex = arg0->unk_00005;
     var_s3 = 0;
 
     for (i = 0; i < 3; i++) {
@@ -484,12 +484,12 @@ void Rental_CarouselConfirmDialogTick(unk_D_842168A0* arg0) {
     unk_D_838067F0_0168* sp2C;
     s32 temp_v0;
 
-    sp2C = Rental_GetPage(arg0->unk_00140, arg0->unk_0000E);
-    temp_v0 = TeamSelection_Preview_GetSelectionState(arg0->unk_1360C);
+    sp2C = Rental_GetPage(arg0->currentPage, arg0->unk_0000E);
+    temp_v0 = TeamSelection_Preview_GetSelectionState(arg0->moveScreen);
 
     if (temp_v0 == 1) {
-        if (Rental_AssignMonToSlot(arg0->unk_13608, &sp2C->unk_0000[arg0->unk_0000C]) != 0) {
-            arg0->unk_00009 = 2;
+        if (Rental_AssignMonToSlot(arg0->teamTray, &sp2C->unk_0000[arg0->unk_0000C]) != 0) {
+            arg0->redrawTimer = 2;
             arg0->unk_00001 = 4;
         }
     } else if ((s16)temp_v0 == 2) {
@@ -512,7 +512,7 @@ void Rental_CarouselSlideInTick(unk_D_842168A0* arg0) {
         arg0->unk_00016 = (arg0->unk_00012 - (arg0->unk_0000A * 0x30)) + 0x1E0;
     }
     arg0->unk_00014 = arg0->unk_00010;
-    arg0->unk_00009 = 2;
+    arg0->redrawTimer = 2;
 }
 
 void Rental_CarouselSlideOutTick(unk_D_842168A0* arg0) {
@@ -525,16 +525,16 @@ void Rental_CarouselSlideOutTick(unk_D_842168A0* arg0) {
         arg0->unk_00016 = arg0->unk_00012 + (arg0->unk_0000A * 0x30);
     }
     arg0->unk_00014 = arg0->unk_00010;
-    arg0->unk_00009 = 2;
+    arg0->redrawTimer = 2;
 }
 
 void Rental_CarouselConfirmMon(unk_D_842168A0* arg0) {
-    unk_D_838067F0_0168* sp3C = Rental_GetPage(arg0->unk_00140, arg0->unk_0000E);
+    unk_D_838067F0_0168* sp3C = Rental_GetPage(arg0->currentPage, arg0->unk_0000E);
     s32 var_t1;
     s16 tmp1;
     s16 tmp2;
 
-    if (Rental_CanAddMonToTeam(arg0->unk_13608, &sp3C->unk_0000[arg0->unk_0000C]) != 0) {
+    if (Rental_CanAddMonToTeam(arg0->teamTray, &sp3C->unk_0000[arg0->unk_0000C]) != 0) {
         if (arg0->unk_00000 == 0) {
             var_t1 = 1;
         } else {
@@ -543,7 +543,7 @@ void Rental_CarouselConfirmMon(unk_D_842168A0* arg0) {
 
         tmp1 = arg0->unk_00010 + (arg0->unk_0000C * 0x84) + 0x20;
         tmp2 = arg0->unk_00012 + (arg0->unk_0000E * 0x2C) + 0x1C;
-        tmp1 = TeamSelection_Preview_StartFull(arg0->unk_1360C, arg0->unk_00003, 0x30, 0xEC, tmp1, tmp2, &sp3C->unk_0000[arg0->unk_0000C],
+        tmp1 = TeamSelection_Preview_StartFull(arg0->moveScreen, arg0->unk_00003, 0x30, 0xEC, tmp1, tmp2, &sp3C->unk_0000[arg0->unk_0000C],
                              var_t1);
 
         if (tmp1 != 0) {
@@ -556,7 +556,7 @@ void Rental_CarouselConfirmMon(unk_D_842168A0* arg0) {
 }
 
 void Rental_CarouselCursorUp(unk_D_842168A0* arg0) {
-    if (arg0->unk_00007 == 0) {
+    if (arg0->repeatDelay == 0) {
         if (arg0->unk_0000E != 0) {
             arg0->unk_0000E--;
             arg0->unk_00018 = -1;
@@ -564,43 +564,43 @@ void Rental_CarouselCursorUp(unk_D_842168A0* arg0) {
             arg0->unk_00001 = 0xA;
             Audio_PlaySoundEffectById(1);
         } else if ((arg0->unk_00006 > 0) &&
-                   (Rental_FillPageFromRoster(arg0, arg0->unk_00140->unk_268C, arg0->unk_00006 - 1, arg0->unk_0013C) != 0)) {
+                   (Rental_FillPageFromRoster(arg0, arg0->currentPage->prevPage, arg0->unk_00006 - 1, arg0->roster) != 0)) {
             arg0->unk_00006--;
-            arg0->unk_00140 = arg0->unk_00140->unk_268C;
+            arg0->currentPage = arg0->currentPage->prevPage;
             arg0->unk_00018 = -1;
             arg0->unk_0001A = -4;
             arg0->unk_00001 = 8;
             Audio_PlaySoundEffectById(1);
         }
 
-        arg0->unk_00007 = arg0->unk_00008;
+        arg0->repeatDelay = arg0->unk_00008;
         arg0->unk_00008 = 2;
     }
 }
 
 void Rental_CarouselCursorDown(unk_D_842168A0* arg0) {
-    if (arg0->unk_00007 == 0) {
+    if (arg0->repeatDelay == 0) {
         if (arg0->unk_0000E != 3) {
             arg0->unk_0000E++;
             arg0->unk_00018 = 1;
             arg0->unk_0001A = 4;
             arg0->unk_00001 = 0xA;
             Audio_PlaySoundEffectById(1);
-        } else if (Rental_FillPageFromRoster(arg0, Rental_GetPage(arg0->unk_00140, 4), arg0->unk_00006 + 4, arg0->unk_0013C) != 0) {
+        } else if (Rental_FillPageFromRoster(arg0, Rental_GetPage(arg0->currentPage, 4), arg0->unk_00006 + 4, arg0->roster) != 0) {
             arg0->unk_00006++;
-            arg0->unk_00140 = arg0->unk_00140->unk_2688;
+            arg0->currentPage = arg0->currentPage->nextPage;
             arg0->unk_00018 = 1;
             arg0->unk_0001A = 4;
             arg0->unk_00001 = 8;
             Audio_PlaySoundEffectById(1);
         }
-        arg0->unk_00007 = arg0->unk_00008;
+        arg0->repeatDelay = arg0->unk_00008;
         arg0->unk_00008 = 2;
     }
 }
 
 void Rental_CarouselCursorLeft(unk_D_842168A0* arg0) {
-    if (arg0->unk_00007 == 0) {
+    if (arg0->repeatDelay == 0) {
         if (arg0->unk_0000C > 0) {
             arg0->unk_0000C--;
             arg0->unk_00018 = -1;
@@ -608,13 +608,13 @@ void Rental_CarouselCursorLeft(unk_D_842168A0* arg0) {
             arg0->unk_00001 = 9;
             Audio_PlaySoundEffectById(1);
         }
-        arg0->unk_00007 = arg0->unk_00008;
+        arg0->repeatDelay = arg0->unk_00008;
         arg0->unk_00008 = 2;
     }
 }
 
 void Rental_CarouselCursorRight(unk_D_842168A0* arg0) {
-    if (arg0->unk_00007 == 0) {
+    if (arg0->repeatDelay == 0) {
         if (arg0->unk_0000C < 2) {
             arg0->unk_0000C++;
             arg0->unk_00018 = 1;
@@ -622,7 +622,7 @@ void Rental_CarouselCursorRight(unk_D_842168A0* arg0) {
             arg0->unk_00001 = 9;
             Audio_PlaySoundEffectById(1);
         }
-        arg0->unk_00007 = arg0->unk_00008;
+        arg0->repeatDelay = arg0->unk_00008;
         arg0->unk_00008 = 2;
     }
 }
@@ -640,13 +640,13 @@ void Rental_CarouselNextBox(unk_D_842168A0* arg0) {
     if (var_s0 != arg0->unk_00005) {
         Audio_PlaySoundEffectById(0x27);
         arg0->unk_00005 = var_s0;
-        arg0->unk_00140 = Rental_GetPage(arg0->unk_00140, 4);
+        arg0->currentPage = Rental_GetPage(arg0->currentPage, 4);
         arg0->unk_00006 = 0;
 
-        var_s1 = arg0->unk_00140;
+        var_s1 = arg0->currentPage;
         for (i = 0; i < 4; i++) {
-            Rental_FillPageFromRoster(arg0, var_s1, arg0->unk_00006 + i, arg0->unk_0013C);
-            var_s1 = var_s1->unk_2688;
+            Rental_FillPageFromRoster(arg0, var_s1, arg0->unk_00006 + i, arg0->roster);
+            var_s1 = var_s1->nextPage;
         }
 
         arg0->unk_00018 = 0;
@@ -668,13 +668,13 @@ void Rental_CarouselPrevBox(unk_D_842168A0* arg0) {
     if (var_s0 != arg0->unk_00005) {
         Audio_PlaySoundEffectById(0x27);
         arg0->unk_00005 = var_s0;
-        arg0->unk_00140 = Rental_GetPage(arg0->unk_00140, 4);
+        arg0->currentPage = Rental_GetPage(arg0->currentPage, 4);
         arg0->unk_00006 = 0;
 
-        var_s1 = arg0->unk_00140;
+        var_s1 = arg0->currentPage;
         for (i = 0; i < 4; i++) {
-            Rental_FillPageFromRoster(arg0, var_s1, arg0->unk_00006 + i, arg0->unk_0013C);
-            var_s1 = var_s1->unk_2688;
+            Rental_FillPageFromRoster(arg0, var_s1, arg0->unk_00006 + i, arg0->roster);
+            var_s1 = var_s1->nextPage;
         }
 
         arg0->unk_00018 = 0;
@@ -684,16 +684,16 @@ void Rental_CarouselPrevBox(unk_D_842168A0* arg0) {
 }
 
 void Rental_CarouselCancel(unk_D_842168A0* arg0) {
-    s32 temp_v0 = Rental_RemoveHighlightedSlot(arg0->unk_13608);
+    s32 temp_v0 = Rental_RemoveHighlightedSlot(arg0->teamTray);
 
     if (temp_v0 != -1) {
         if (temp_v0 == 1) {
-            arg0->unk_00009 = 2;
+            arg0->redrawTimer = 2;
             arg0->unk_00001 = 4;
             Audio_PlaySoundEffectById(3);
         }
     } else {
-        arg0->unk_00009 = 2;
+        arg0->redrawTimer = 2;
         arg0->unk_0000A = 0;
         arg0->unk_00001 = 6;
         Audio_PlaySoundEffectById(3);
@@ -701,8 +701,8 @@ void Rental_CarouselCancel(unk_D_842168A0* arg0) {
 }
 
 void Rental_CarouselStartPressed(unk_D_842168A0* arg0) {
-    if (Rental_ClearCurrentSlotSelection(arg0->unk_13608) != 0) {
-        arg0->unk_00009 = 2;
+    if (Rental_ClearCurrentSlotSelection(arg0->teamTray) != 0) {
+        arg0->redrawTimer = 2;
         arg0->unk_00001 = 4;
         Audio_PlaySoundEffectById(2);
     }
@@ -731,12 +731,12 @@ void Rental_CarouselHandleInput(unk_D_842168A0* arg0) {
         Rental_CarouselCursorDown(arg0);
     } else {
         arg0->unk_00008 = 8;
-        arg0->unk_00007 = 0;
+        arg0->repeatDelay = 0;
     }
 
     arg0->unk_00014 = arg0->unk_00010;
     arg0->unk_00016 = arg0->unk_00012;
-    arg0->unk_00009 = 2;
+    arg0->redrawTimer = 2;
 }
 
 void Rental_CarouselScrollTick(unk_D_842168A0* arg0) {
@@ -753,7 +753,7 @@ void Rental_CarouselScrollTick(unk_D_842168A0* arg0) {
     }
     arg0->unk_00014 = arg0->unk_00010;
     arg0->unk_00016 = arg0->unk_00012;
-    arg0->unk_00009 = 2;
+    arg0->redrawTimer = 2;
 }
 
 s32 Rental_MonHasLegalMoveset(PokemonData* arg0) {
@@ -868,7 +868,7 @@ s32 Rental_PrimeCarousel(unk_D_842168A0* arg0, gItemPanel* arg1, unk_D_8423D3A8*
     arg0->unk_00004 = arg7;
     arg0->unk_00005 = 0xD;
     arg0->unk_00006 = 0;
-    arg0->unk_00007 = 0;
+    arg0->repeatDelay = 0;
     arg0->unk_00008 = 8;
     arg0->unk_0000A = 0;
     arg0->unk_0000C = 0;
@@ -877,14 +877,14 @@ s32 Rental_PrimeCarousel(unk_D_842168A0* arg0, gItemPanel* arg1, unk_D_8423D3A8*
     arg0->unk_00010 = arg4;
     arg0->unk_00014 = arg4;
     arg0->unk_00012 = arg5;
-    arg0->unk_0013C = arg8;
-    arg0->unk_13608 = arg1;
-    arg0->unk_1360C = arg2;
-    arg0->unk_00140 = &arg0->unk_00148[0];
+    arg0->roster = arg8;
+    arg0->teamTray = arg1;
+    arg0->moveScreen = arg2;
+    arg0->currentPage = &arg0->pages[0];
 
     for (i = 0; i < 8; i++) {
-        arg0->unk_00148[i].unk_2688 = &arg0->unk_00148[(i + 1) & 7];
-        arg0->unk_00148[i].unk_268C = &arg0->unk_00148[(i - 1) & 7];
+        arg0->pages[i].nextPage = &arg0->pages[(i + 1) & 7];
+        arg0->pages[i].prevPage = &arg0->pages[(i - 1) & 7];
     }
 
     for (i = 12; i >= 0; i--) {
@@ -894,7 +894,7 @@ s32 Rental_PrimeCarousel(unk_D_842168A0* arg0, gItemPanel* arg1, unk_D_8423D3A8*
     }
 
     for (i = 0; i < 4; i++) {
-        Rental_FillPageFromRoster(arg0, &arg0->unk_00148[i], i, arg0->unk_0013C);
+        Rental_FillPageFromRoster(arg0, &arg0->pages[i], i, arg0->roster);
     }
 
     return 2;
@@ -903,8 +903,8 @@ s32 Rental_PrimeCarousel(unk_D_842168A0* arg0, gItemPanel* arg1, unk_D_8423D3A8*
 s32 Rental_CarouselTick(unk_D_842168A0* arg0) {
     s32 sp1C = 0;
 
-    if (arg0->unk_00007 > 0) {
-        arg0->unk_00007--;
+    if (arg0->repeatDelay > 0) {
+        arg0->repeatDelay--;
     }
 
     switch (arg0->unk_00001) {
@@ -985,15 +985,15 @@ s32 Rental_CarouselAcknowledgeAssign(unk_D_842168A0* arg0) {
 }
 
 void Rental_CarouselRequestRedraw(unk_D_842168A0* arg0) {
-    arg0->unk_00009 = 2;
+    arg0->redrawTimer = 2;
 }
 
 void Rental_CarouselSkipToSelectableMon(unk_D_842168A0* arg0) {
     s32 i;
 
     for (i = 0; i < 12; i++) {
-        if (Rental_CanAddMonToTeam(arg0->unk_13608,
-                          &Rental_GetPage(arg0->unk_00140, arg0->unk_0000E)->unk_0000[arg0->unk_0000C]) != 0) {
+        if (Rental_CanAddMonToTeam(arg0->teamTray,
+                          &Rental_GetPage(arg0->currentPage, arg0->unk_0000E)->unk_0000[arg0->unk_0000C]) != 0) {
             break;
         }
 

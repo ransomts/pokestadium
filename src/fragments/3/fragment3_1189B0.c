@@ -272,7 +272,7 @@ void miniActorAllToZero(MiniActor* actor) {
     actor->stickMagnitude2 = 0.0f;
     actor->unk_280 = 0.0f;
     actor->diggingAccel2 = 0.0f;
-    actor->unk_274 = 0.0f;
+    actor->pressedThisRound = 0.0f;
 
     actor->midAirState = actor->ekansIsMidAir = actor->unk_264 = actor->collidingActorId = 0;
     actor->unk_290 = actor->unk_292 = actor->unk_294 = 0;

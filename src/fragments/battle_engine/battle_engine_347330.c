@@ -263,7 +263,7 @@ void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5
             break;
     }
 
-    ptr1 = &ptr->unk_430[0];
+    ptr1 = &ptr->vertexStates[0];
     for (i = 0; i < 31; i++) {
         ptr2 = ptr1++;
         ptr3 = ptr1++;
@@ -393,7 +393,7 @@ s32 RibbonMesh_Update(RibbonEmitter* arg0) {
     Vtx* var_s2;
     s32 tmp;
 
-    ptr = &arg0->unk_430[0];
+    ptr = &arg0->vertexStates[0];
 
     arg0->unk_018++;
     tmp = arg0->unk_018;

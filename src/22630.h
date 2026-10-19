@@ -113,8 +113,8 @@ typedef struct unk_D_800AC910_050_9AC {
     /* 0x001 */ u8 unk_001[1];
     /* 0x002 */ char unk002[6];
     /* 0x008 */ unk_D_800AC910_050_9AC_008 unk_008[6];
-    /* 0x110 */ char unk_110[6][11];
-    /* 0x152 */ char unk_152[6][11];
+    /* 0x110 */ char otNames[6][11];
+    /* 0x152 */ char nicknames[6][11];
 } unk_D_800AC910_050_9AC; // size = 0x194
 
 typedef struct unk_D_800AC910_050_B40_000 {
@@ -130,7 +130,7 @@ typedef struct unk_D_800AC910_050_B40 {
     /* 0x037 */ char unk037[0x273];
     /* 0x2AA */ char unk_2AA[1][11];
     /* 0x2B5 */ char unk2B5[0xD1];
-    /* 0x386 */ char unk_386[1][11];
+    /* 0x386 */ char nicknames[1][11];
 } unk_D_800AC910_050_B40; // size >= 0x391
 
 typedef struct unk_D_800AC910_050_FA0 {
@@ -145,34 +145,34 @@ typedef struct unk_D_800AC910_050 {
     /* 0x000 */ u8 unk_000[1];
     /* 0x001 */ char unk001[0x17];
     /* 0x018 */ u8 unk_018[11];
-    /* 0x023 */ u8 unk_023[1];
+    /* 0x023 */ u8 pokedexOwned[1];
     /* 0x024 */ char unk024[0x12];
-    /* 0x036 */ u8 unk_036[1];
+    /* 0x036 */ u8 pokedexSeen[1];
     /* 0x037 */ char unk037[0x12];
-    /* 0x049 */ u8 unk_049;
-    /* 0x04A */ unk_func_80026268_arg0_000 unk_04A[1];
+    /* 0x049 */ u8 bagItemCount;
+    /* 0x04A */ unk_func_80026268_arg0_000 bagItems[1];
     /* 0x04C */ char unk04C[0x2A];
-    /* 0x076 */ u8 unk_076;
+    /* 0x076 */ u8 rivalName;
     /* 0x077 */ char unk077[0xE];
-    /* 0x085 */ u8 unk_085;
+    /* 0x085 */ u8 trainerId;
     /* 0x086 */ char unk086[0x4];
-    /* 0x08A */ u8 unk_08A;
+    /* 0x08A */ u8 mapId;
     /* 0x08B */ char unk08B[0x1DB];
-    /* 0x266 */ u8 unk_266;
-    /* 0x267 */ unk_func_80026268_arg0_000 unk_267[1];
+    /* 0x266 */ u8 pcItemCount;
+    /* 0x267 */ unk_func_80026268_arg0_000 pcItems[1];
     /* 0x269 */ char unk269[0x63];
-    /* 0x2CC */ s8 unk_2CC;
+    /* 0x2CC */ s8 currentBoxNum;
     /* 0x2CD */ char unk2CD[0x174];
-    /* 0x441 */ u8 unk_441;
+    /* 0x441 */ u8 rivalStarter;
     /* 0x442 */ char unk442[0x35];
-    /* 0x477 */ s8 unk_477;
+    /* 0x477 */ s8 pokedexFlags;
     /* 0x478 */ char unk478[0xA5];
     /* 0x51D */ s8 unk_51D;
     /* 0x51E */ char unk51E[0x48E];
     /* 0x9AC */ unk_D_800AC910_050_9AC unk_9AC;
-    /* 0xB40 */ unk_D_800AC910_050_B40 unk_B40;
+    /* 0xB40 */ unk_D_800AC910_050_B40 currentBox;
     /* 0xED1 */ char unkED1[0xCF];
-    /* 0xFA0 */ unk_D_800AC910_050_FA0 unk_FA0;
+    /* 0xFA0 */ unk_D_800AC910_050_FA0 checksumData;
 } unk_D_800AC910_050; // size = 0xFC0
 
 typedef struct unk_D_800AC910_054_000_000 {

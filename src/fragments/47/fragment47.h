@@ -10,7 +10,7 @@ typedef struct RentalViewerBgData {
     /* 0x000 */ u32 unk_000;
     /* 0x004 */ PokemonData unk_004[3];
     /* 0x100 */ char unk100[0x6E4];
-    /* 0x7E4 */ PokemonData unk_7E4;
+    /* 0x7E4 */ PokemonData battleMon;
 } RentalViewerBgData; // size >= 0x838
 
 typedef struct unk_D_838067F0_0168_0000 {
@@ -29,10 +29,10 @@ typedef struct unk_D_838067F0_0168_0000 {
 
 typedef struct unk_D_838067F0_0168 {
     /* 0x0000 */ unk_D_838067F0_0168_0000 unk_0000[3];
-    /* 0x2688 */ struct unk_D_838067F0_0168* unk_2688;
-    /* 0x268C */ struct unk_D_838067F0_0168* unk_268C;
-    /* 0x2690 */ s16 unk_2690;
-    /* 0x2692 */ s16 unk_2692;
+    /* 0x2688 */ struct unk_D_838067F0_0168* nextPage;
+    /* 0x268C */ struct unk_D_838067F0_0168* prevPage;
+    /* 0x2690 */ s16 gbPort;
+    /* 0x2692 */ s16 boxIndex;
     /* 0x2694 */ char unk2694[0x4];
 } unk_D_838067F0_0168; // size = 0x2698
 
@@ -52,17 +52,17 @@ typedef struct unk_D_838067F0 {
     /* 0x0018 */ s32 unk_0018;
     /* 0x001C */ s32 unk_001C;
     /* 0x0020 */ s32 unk_0020;
-    /* 0x0024 */ s32 unk_0024;
+    /* 0x0024 */ s32 cursorColumn;
     /* 0x0028 */ s32 unk_0028;
     /* 0x002C */ s32 unk_002C;
     /* 0x0030 */ s32 unk_0030;
-    /* 0x0034 */ s32 unk_0034;
-    /* 0x0038 */ s32 unk_0038;
-    /* 0x003C */ unk_D_838067F0_003C unk_003C[13];
-    /* 0x015C */ RentalViewerBgData* unk_015C;
-    /* 0x0160 */ unk_D_838067F0_0168* unk_0160;
+    /* 0x0034 */ s32 repeatDelay;
+    /* 0x0038 */ s32 repeatTimer;
+    /* 0x003C */ unk_D_838067F0_003C boxEntries[13];
+    /* 0x015C */ RentalViewerBgData* teamData;
+    /* 0x0160 */ unk_D_838067F0_0168* currentPage;
     /* 0x0164 */ char unk0164[0x4];
-    /* 0x0168 */ unk_D_838067F0_0168 unk_0168[12];
+    /* 0x0168 */ unk_D_838067F0_0168 pages[12];
 } unk_D_838067F0; // size = 0x1D088
 
 typedef struct RentalSlotAnimData {

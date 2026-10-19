@@ -469,8 +469,8 @@ s32 GbSave_CheckMainDataUnchanged(s32 arg0) {
     s32 sp18 = 0;
 
     if ((GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
-        (GbSave_VerifyChecksum(&gSaveHeader.unk_018, &gSaveHeader.unk_FA0.unk_03) != 0)) {
-        sp18 = gSaveHeader.unk_FA0.unk_03 == gPlayerSaveData[arg0].rotation;
+        (GbSave_VerifyChecksum(&gSaveHeader.unk_018, &gSaveHeader.checksumData.unk_03) != 0)) {
+        sp18 = gSaveHeader.checksumData.unk_03 == gPlayerSaveData[arg0].rotation;
     }
     return sp18;
 }
@@ -484,13 +484,13 @@ s32 GbSave_ReadMainData(s32 arg0) {
 
     if (GbPak_MbcRead(arg0, temp_s4, 0x2580, sizeof(unk_D_800AC910_050)) == 0) {
         for (i = 0; i < 3; i++) {
-            sp30 = GbSave_VerifyChecksum(&temp_s4->unk_018, &temp_s4->unk_FA0.unk_03);
+            sp30 = GbSave_VerifyChecksum(&temp_s4->unk_018, &temp_s4->checksumData.unk_03);
             if (sp30 != 0) {
                 if (gPlayerSaveData[arg0].posX & 0x20) {
-                    gPlayerSaveData[arg0].rotation = temp_s4->unk_FA0.unk_03;
+                    gPlayerSaveData[arg0].rotation = temp_s4->checksumData.unk_03;
                     gPlayerSaveData[arg0].posX = gPlayerSaveData[arg0].posX & ~0x20;
                 } else {
-                    sp30 = gPlayerSaveData[arg0].rotation == temp_s4->unk_FA0.unk_03;
+                    sp30 = gPlayerSaveData[arg0].rotation == temp_s4->checksumData.unk_03;
                 }
                 return sp30;
             }
@@ -505,8 +505,8 @@ s32 GbSave_WriteMainData(s32 arg0) {
     unk_D_800AC910* temp_s3;
     unk_D_800AC910_050* temp_s1 = gPlayerSaveData[arg0].unk_50;
 
-    GbSave_ComputeChecksum(temp_s1->unk_018, &temp_s1->unk_FA0.unk_03);
-    gPlayerSaveData[arg0].rotation = temp_s1->unk_FA0.unk_03;
+    GbSave_ComputeChecksum(temp_s1->unk_018, &temp_s1->checksumData.unk_03);
+    gPlayerSaveData[arg0].rotation = temp_s1->checksumData.unk_03;
 
     for (i = 0; i < 4; i++) {
         if ((GbPak_MbcWrite(arg0, temp_s1, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
@@ -522,13 +522,13 @@ s32 GbSave_InvalidateMainDataChecksum(s32 arg0) {
     unk_D_800AC910_050* temp_s3 = gPlayerSaveData[arg0].unk_50;
     s32 i;
 
-    GbSave_ComputeChecksum(&temp_s3->unk_018, &temp_s3->unk_FA0.unk_03);
-    temp_s3->unk_FA0.unk_03 ^= 0xFF;
+    GbSave_ComputeChecksum(&temp_s3->unk_018, &temp_s3->checksumData.unk_03);
+    temp_s3->checksumData.unk_03 ^= 0xFF;
 
     for (i = 0; i < 4; i++) {
-        if ((GbPak_MbcWrite(arg0, &temp_s3->unk_FA0, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
+        if ((GbPak_MbcWrite(arg0, &temp_s3->checksumData, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
             (GbPak_MbcRead(arg0, &gSaveHeader, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
-            (GbSave_VerifyWriteback(&temp_s3->unk_FA0, sizeof(unk_D_800AC910_050_FA0)) != 0)) {
+            (GbSave_VerifyWriteback(&temp_s3->checksumData, sizeof(unk_D_800AC910_050_FA0)) != 0)) {
             return 1;
         }
     }
@@ -584,7 +584,7 @@ void GbSave_CheckLocationFlag(s32 arg0) {
     extern u8 gValidSaveFlags[12];
 
     s32 i;
-    s32 temp_t1 = gPlayerSaveData[arg0].unk_50->unk_08A;
+    s32 temp_t1 = gPlayerSaveData[arg0].unk_50->mapId;
 
     gPlayerSaveData[arg0].posX &= ~0x4000;
 
@@ -760,7 +760,7 @@ void GbSave_RefreshPortState(s32 arg0) {
         GbSave_CheckLocationFlag(arg0);
         gPlayerSaveData[arg0].unk_05 = gPlayerSaveData[arg0].unk_50->unk_9AC.unk_000;
 
-        if (gPlayerSaveData[arg0].unk_50->unk_477 & 0x20) {
+        if (gPlayerSaveData[arg0].unk_50->pokedexFlags & 0x20) {
             gPlayerSaveData[arg0].posX |= 0x2000;
         }
 
@@ -827,10 +827,10 @@ s32 GbSave_ScanAllPorts(void) {
 }
 
 void GbSave_MarkBoxDataLoaded(s32 arg0) {
-    u16 temp_v0 = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->unk_2CC);
+    u16 temp_v0 = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->currentBoxNum);
 
     if (!(temp_v0 & 0x8000)) {
-        GbData_WriteU16BE(&gPlayerSaveData[arg0].unk_50->unk_2CC, temp_v0 | 0x8000);
+        GbData_WriteU16BE(&gPlayerSaveData[arg0].unk_50->currentBoxNum, temp_v0 | 0x8000);
     }
 }
 
@@ -918,7 +918,7 @@ unk_D_800AC910_050_B40_000* GbSave_GetBoxEntry(s32 arg0, s32 arg1) {
 
     if (temp_v0 > 0) {
         if (arg1 == (temp_v0 - 1)) {
-            sp1C = &gPlayerSaveData[arg0].unk_50[0].unk_B40;
+            sp1C = &gPlayerSaveData[arg0].unk_50[0].currentBox;
         } else if (arg1 < 6) {
             sp1C = &gPlayerSaveData[arg0].unk_54->unk_0000[0].unk_0000[arg1].unk_000;
         } else {
@@ -938,17 +938,17 @@ void GbSave_LoadMainPokemon(PokemonData* arg0, s32 arg1, s32 arg2) {
     arg0->unk_53 = 0;
     arg0->unk_25 = 0;
 
-    _bcopy(ptr2->unk_110[arg2], arg0->unk_46, 0xB);
-    Text_UntranscodeFixedName(arg0->unk_30, ptr2->unk_152[arg2]);
-    Text_UntranscodeFixedName(arg0->unk_3B, ptr2->unk_110[arg2]);
+    _bcopy(ptr2->otNames[arg2], arg0->unk_46, 0xB);
+    Text_UntranscodeFixedName(arg0->unk_30, ptr2->nicknames[arg2]);
+    Text_UntranscodeFixedName(arg0->unk_3B, ptr2->otNames[arg2]);
 }
 
 void GbSave_SaveMainPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     unk_D_800AC910_050_9AC* sp24 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
 
     Pokemon_ToGbRecordExt(arg0, &sp24->unk_008[arg2]);
-    Text_TranscodeName(sp24->unk_152[arg2], arg0->unk_000[0].unk_30);
-    _bcopy(arg0->unk_000[0].unk_46, sp24->unk_110[arg2], 0xB);
+    Text_TranscodeName(sp24->nicknames[arg2], arg0->unk_000[0].unk_30);
+    _bcopy(arg0->unk_000[0].unk_46, sp24->otNames[arg2], 0xB);
     sp24->unk_001[arg2] = sp24->unk_008[arg2].posX.posX;
 }
 
@@ -964,7 +964,7 @@ void GbSave_LoadBoxPokemon(PokemonData* arg0, s32 arg1, s32 arg2, s32 arg3) {
         arg0->unk_25 = 0;
 
         _bcopy(sp2C->unk_2AA[arg3], arg0->unk_46, 0xB);
-        Text_UntranscodeFixedName(arg0->unk_30, sp2C->unk_386[arg3]);
+        Text_UntranscodeFixedName(arg0->unk_30, sp2C->nicknames[arg3]);
         Text_UntranscodeFixedName(arg0->unk_3B, sp2C->unk_2AA[arg3]);
     }
 }
@@ -975,7 +975,7 @@ void GbSave_SaveBoxPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32
     if (sp2C != NULL) {
         arg0->unk_000[0].rotation = arg0->unk_000[0].unk_24;
         Pokemon_ToGbRecord(arg0->unk_000, &sp2C->unk_016[arg3]);
-        Text_TranscodeNameWrapper(sp2C->unk_386[arg3], arg0->unk_000[0].unk_30);
+        Text_TranscodeNameWrapper(sp2C->nicknames[arg3], arg0->unk_000[0].unk_30);
         _bcopy(arg0->unk_000[0].unk_46, sp2C->unk_2AA[arg3], 0xB);
         sp2C->unk_000.unk_001[arg3] = sp2C->unk_016[arg3].posX;
     }
@@ -1058,11 +1058,11 @@ s32 Deck_GetCount(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 34:
-            var_v1 = ptr->unk_266;
+            var_v1 = ptr->pcItemCount;
             break;
 
         case 35:
-            var_v1 = ptr->unk_049;
+            var_v1 = ptr->bagItemCount;
             break;
     }
     return var_v1;
@@ -1083,13 +1083,13 @@ void Deck_DeleteEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
                 break;
 
             case 34:
-                sp1C->unk_266 = arg3;
-                sp1C->unk_267[arg3].posX = 0xFF;
+                sp1C->pcItemCount = arg3;
+                sp1C->pcItems[arg3].posX = 0xFF;
                 break;
 
             case 35:
-                sp1C->unk_049 = arg3;
-                sp1C->unk_04A[arg3].posX = 0xFF;
+                sp1C->bagItemCount = arg3;
+                sp1C->bagItems[arg3].posX = 0xFF;
                 break;
         }
     }
@@ -1113,13 +1113,13 @@ void Deck_AppendEntry(s32 arg0, s32 arg1, s32 arg2) {
                 break;
 
             case 34:
-                sp1C->unk_266 = sp18;
-                sp1C->unk_267[sp18].posX = 0xFF;
+                sp1C->pcItemCount = sp18;
+                sp1C->pcItems[sp18].posX = 0xFF;
                 break;
 
             case 35:
-                sp1C->unk_049 = sp18;
-                sp1C->unk_04A[sp18].posX = 0xFF;
+                sp1C->bagItemCount = sp18;
+                sp1C->bagItems[sp18].posX = 0xFF;
                 break;
         }
     }
@@ -1141,11 +1141,11 @@ s32 Deck_ReadEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, PokemonData* arg4) {
                 break;
 
             case 35:
-                arg4->posX = temp_v0->unk_04A[arg3];
+                arg4->posX = temp_v0->bagItems[arg3];
                 break;
 
             case 34:
-                arg4->posX = temp_v0->unk_267[arg3];
+                arg4->posX = temp_v0->pcItems[arg3];
                 break;
         }
         sp1C = 1;
@@ -1171,11 +1171,11 @@ s32 Deck_WriteEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88205880_00
                 break;
 
             case 35:
-                ptr->unk_04A[arg3] = arg4->unk_000[0].posX;
+                ptr->bagItems[arg3] = arg4->unk_000[0].posX;
                 break;
 
             case 34:
-                ptr->unk_267[arg3] = arg4->unk_000[0].posX;
+                ptr->pcItems[arg3] = arg4->unk_000[0].posX;
                 break;
         }
 
@@ -1223,7 +1223,7 @@ s32 GbSave_RefreshPlayerIdentity(s32 arg0) {
         return 0;
     }
 
-    gPlayerSaveData[arg0].unk_40.posX = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->unk_085);
+    gPlayerSaveData[arg0].unk_40.posX = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->trainerId);
     _bcopy(&gPlayerSaveData[arg0].unk_50->unk_018, &gPlayerSaveData[arg0].unk_40.posY, 0xB);
     bzero(gPlayerSaveData[arg0].unk_40.unk_0D, 3);
     return 1;
@@ -1241,12 +1241,12 @@ s32 GbSave_GetTrainerId(s32 arg0) {
     if (!(gPlayerSaveData[arg0].posX & 1)) {
         return -1;
     }
-    return GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->unk_085);
+    return GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->trainerId);
 }
 
 void GbSave_SetTrainerId(s32 arg0, u16 arg1) {
     if (gPlayerSaveData[arg0].posX & 1) {
-        GbData_WriteU16BE(&gPlayerSaveData[arg0].unk_50->unk_085, arg1);
+        GbData_WriteU16BE(&gPlayerSaveData[arg0].unk_50->trainerId, arg1);
     }
 }
 
@@ -1255,7 +1255,7 @@ s32 GbSave_GetBoxCount(s32 arg0) {
     s32 phi_v1 = -1;
 
     if (gPlayerSaveData[arg0].posX & 1) {
-        temp_a0 = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->unk_2CC) >> 8;
+        temp_a0 = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->currentBoxNum) >> 8;
         if (temp_a0 & 0x80) {
             phi_v1 = (temp_a0 & 0x7F) + 1;
         } else {
@@ -1283,21 +1283,21 @@ char* GbSave_GetSecondaryName(s32 arg0, char* arg1) {
     if (!(gPlayerSaveData[arg0].posX & 1)) {
         return NULL;
     }
-    return Text_UntranscodeFixedName(arg1, &gPlayerSaveData[arg0].unk_50->unk_076);
+    return Text_UntranscodeFixedName(arg1, &gPlayerSaveData[arg0].unk_50->rivalName);
 }
 
 char* GbSave_SetSecondaryName(s32 arg0, char* arg1) {
     if (!(gPlayerSaveData[arg0].posX & 1)) {
         return NULL;
     }
-    return Text_TranscodeName(&gPlayerSaveData[arg0].unk_50->unk_076, arg1);
+    return Text_TranscodeName(&gPlayerSaveData[arg0].unk_50->rivalName, arg1);
 }
 
 s32 GbSave_GetStarterChoice(s32 arg0) {
     if (!(gPlayerSaveData[arg0].posX & 1)) {
         return -1;
     }
-    return gPlayerSaveData[arg0].unk_50->unk_441;
+    return gPlayerSaveData[arg0].unk_50->rivalStarter;
 }
 
 s32 GbSave_SavedAtPokemonCenter(s32 arg0) {
@@ -1355,7 +1355,7 @@ void GbSave_RebuildSeenBitfield(s32 arg0) {
     }
 
     GbSave_MarkSeenBits(ptr6, temp_s0->unk_9AC.unk_000, temp_s0->unk_9AC.unk_001);
-    GbSave_MarkSeenBits(ptr6, temp_s0->unk_B40.unk_000.unk_000, temp_s0->unk_B40.unk_000.unk_001);
+    GbSave_MarkSeenBits(ptr6, temp_s0->currentBox.unk_000.unk_000, temp_s0->currentBox.unk_000.unk_001);
 
     for (i = 0; i < 6; i++) {
         GbSave_MarkSeenBits(ptr6, ptr541->unk_0000[i].unk_000.unk_000, ptr541->unk_0000[i].unk_000.unk_001);
@@ -1370,8 +1370,8 @@ s32 GbSave_GetSpeciesProgressLevel(s32 arg0, s32 arg1) {
     u8* ptr36;
 
     if ((arg1 > 0) && (arg1 < 0x98)) {
-        ptr23 = gPlayerSaveData[arg0].unk_50->unk_023;
-        ptr36 = gPlayerSaveData[arg0].unk_50->unk_036;
+        ptr23 = gPlayerSaveData[arg0].unk_50->pokedexOwned;
+        ptr36 = gPlayerSaveData[arg0].unk_50->pokedexSeen;
 
         temp_t1 = (arg1 - 1) / 8;
         temp_t2 = (arg1 - 1) % 8;
@@ -1390,8 +1390,8 @@ void GbSave_SetSeenOwnedBits(s32 arg0, s32 arg1, s32 arg2) {
     u8* temp_v1;
 
     if ((arg1 > 0) && (arg1 < 0x98)) {
-        temp_v0 = gPlayerSaveData[arg0].unk_50->unk_023;
-        temp_a3 = gPlayerSaveData[arg0].unk_50->unk_036;
+        temp_v0 = gPlayerSaveData[arg0].unk_50->pokedexOwned;
+        temp_a3 = gPlayerSaveData[arg0].unk_50->pokedexSeen;
         temp_v1 = &gPlayerSaveData[arg0].unk_06;
 
         var_a2 = (arg1 - 1) / 8;
@@ -1422,7 +1422,7 @@ s32 GbSave_CountSpeciesProgressField036(s32 arg0) {
     s32 temp_v1 = 0;
 
     for (i = 0; i < 0x97; i++) {
-        temp_v1 += (gPlayerSaveData[arg0].unk_50->unk_036[i / 8] >> (i % 8)) & 1;
+        temp_v1 += (gPlayerSaveData[arg0].unk_50->pokedexSeen[i / 8] >> (i % 8)) & 1;
     }
 
     return temp_v1;
@@ -1433,7 +1433,7 @@ s32 GbSave_CountSpeciesProgressField023(s32 arg0) {
     s32 temp_v1 = 0;
 
     for (i = 0; i < 0x97; i++) {
-        temp_v1 += (gPlayerSaveData[arg0].unk_50->unk_023[i / 8] >> (i % 8)) & 1;
+        temp_v1 += (gPlayerSaveData[arg0].unk_50->pokedexOwned[i / 8] >> (i % 8)) & 1;
     }
 
     return temp_v1;

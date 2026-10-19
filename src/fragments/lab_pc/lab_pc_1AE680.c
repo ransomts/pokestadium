@@ -1276,7 +1276,7 @@ s32 LabPC_DrawPokemonInfoCard(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg
 
     spB0 = BattleMon_CountMoves(ptr);
 
-    i = (u32)arg0->unk_0039[arg0->unk_0030] & ~7;
+    i = (u32)arg0->iconTextures[arg0->unk_0030] & ~7;
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -1348,7 +1348,7 @@ void LabPC_InfoCard_SetMon(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00
     arg0->unk_002C = arg1;
     if (arg1 != NULL) {
         arg0->unk_0030 = (arg0->unk_0030 + 1) & 1;
-        PokeIcon_LoadModelTextureForMon((u32)arg0->unk_0039[arg0->unk_0030] & ~7, 0, arg0->unk_002C);
+        PokeIcon_LoadModelTextureForMon((u32)arg0->iconTextures[arg0->unk_0030] & ~7, 0, arg0->unk_002C);
     }
 }
 

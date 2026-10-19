@@ -83,7 +83,7 @@ typedef struct unk_D_800AE4E8_004_2_1D20_024 {
 typedef struct unk_D_800AE4E8_004_2_1D20 {
     /* 0x000 */ u8 unk_000;
     /* 0x002 */ ContinueRecord unk_002;
-    /* 0x022 */ s16 unk_022;
+    /* 0x022 */ s16 partyCount;
     /* 0x024 */ unk_D_800AE4E8_004_2_1D20_024 unk_024[6];
     /* 0x16E */ u8 unk_16E[6];
     /* 0x174 */ u8 unk_174[6];
@@ -110,11 +110,11 @@ typedef struct unk_D_800AE4E8_004_2_3280 {
 
 typedef struct unk_D_800AE4E8_004_2 {
     /* 0x0000 */ char unk0000[0xDC0];
-    /* 0x0DC0 */ unk_D_800AE4E8_004_2_0DC0 unk_0DC0;
-    /* 0x1D20 */ unk_D_800AE4E8_004_2_1D20 unk_1D20;
-    /* 0x1EA0 */ unk_D_800AE4E8_004_2_1EA0 unk_1EA0;
-    /* 0x1EC8 */ unk_D_800AE4E8_004_2_1EC8 unk_1EC8;
-    /* 0x3280 */ unk_D_800AE4E8_004_2_3280 unk_3280;
+    /* 0x0DC0 */ unk_D_800AE4E8_004_2_0DC0 victoryPalace;
+    /* 0x1D20 */ unk_D_800AE4E8_004_2_1D20 continueRecord;
+    /* 0x1EA0 */ unk_D_800AE4E8_004_2_1EA0 options;
+    /* 0x1EC8 */ unk_D_800AE4E8_004_2_1EC8 galleryPhotos;
+    /* 0x3280 */ unk_D_800AE4E8_004_2_3280 galleryCameras;
     /* 0x3E04 */ char unk3E04[0x17C];
 } unk_D_800AE4E8_004_2; // size = 0x3F80
 
@@ -137,7 +137,7 @@ typedef struct unk_D_800AE4E8_004_3_34E0 {
 
 typedef struct unk_D_800AE4E8_004_3 {
     /* 0x0000 */ unk_D_800AE4E8_004_3_0000 unk_0000[12];
-    /* 0x34E0 */ unk_D_800AE4E8_004_3_34E0 unk_34E0[4];
+    /* 0x34E0 */ unk_D_800AE4E8_004_3_34E0 gamePakItemBoxes[4];
     /* 0x3860 */ char unk_3860[0x20];
 } unk_D_800AE4E8_004_3; // size = 0x3880
 

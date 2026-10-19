@@ -55,7 +55,7 @@ typedef struct BattlePlayerAnimState {
     /* 0x9C */ unk_D_84390010_654_09C unk_9C;
     /* 0xAC */ unk_D_84390010_654_0AC unk_AC;
     /* 0xBC */ s16 unk_BC;
-    /* 0xBE */ s16 unk_BE;
+    /* 0xBE */ s16 transformedSpecies;
     /* 0xC0 */ char unkC0[1];
     /* 0xC1 */ u8 statFlags[4];
     /* 0xC8 */ Controller* controller;
@@ -136,10 +136,10 @@ typedef struct BattlePlayerEntity {
     /* 0x168 */ unk_D_84390010_168 unk_168[2];
     /* 0x448 */ unk_D_84390010_448 unk_448;
     /* 0x498 */ f32 launchSpeed;
-    /* 0x49C */ f32 unk_49C;
+    /* 0x49C */ f32 swayDamping;
     /* 0x4A0 */ f32 oscillationAmplitude;
-    /* 0x4A4 */ s16 unk_4A4;
-    /* 0x4A6 */ s16 unk_4A6;
+    /* 0x4A4 */ s16 tiltAnimAngle;
+    /* 0x4A6 */ s16 swingAngle;
     /* 0x4A8 */ s16 tiltAngle;
     /* 0x4AC */ s32 frameCounter;
     /* 0x4B0 */ s32 sideSign;
@@ -157,9 +157,9 @@ typedef struct BattlePlayerEntity {
     /* 0x4EC */ Fragment2_1GraphNode effectGraphNode;
     /* 0x654 */ BattlePlayerAnimState animationState;
     /* 0x720 */ BattlePokemon* pokemonAnimation;
-    /* 0x724 */ BattleAI_TeamContext* unk_724;
-    /* 0x728 */ unk_D_84390010_728 unk_728;
-    /* 0x8C4 */ unk_D_84390010_8C4 unk_8C4;
+    /* 0x724 */ BattleAI_TeamContext* boundRoster;
+    /* 0x728 */ unk_D_84390010_728 ownerModel;
+    /* 0x8C4 */ unk_D_84390010_8C4 messageBuffer;
     /* 0x94C */ unk_D_84390010_94C unk_94C;
     /* 0x96C */ unk_D_84390010_94C unk_96C;
     /* 0x98C */ unk_D_84390010_94C unk_98C;
@@ -189,14 +189,14 @@ typedef struct BattleAnimDataEntry {
 
 typedef struct unk_D_8438E7B0 {
     /* 0x000 */ BattleAnimDataEntry unk_000[165];
-    /* 0xA50 */ BattleAnimDataEntry unk_A50;
+    /* 0xA50 */ BattleAnimDataEntry idleAnimChannel;
     /* 0xA60 */ char unkA60[0x10];
-    /* 0xA70 */ BattleAnimDataEntry unk_A70;
-    /* 0xA80 */ BattleAnimDataEntry unk_A80;
+    /* 0xA70 */ BattleAnimDataEntry sendOutAnimChannel;
+    /* 0xA80 */ BattleAnimDataEntry statusAnimChannel;
     /* 0xA90 */ char unkA90[0x60];
     /* 0xAF0 */ BattleAnimDataEntry unk_AF0;
-    /* 0xB00 */ BattleAnimDataEntry unk_B00;
-    /* 0xB10 */ BattleAnimDataEntry unk_B10;
+    /* 0xB00 */ BattleAnimDataEntry faintedAnimChannel;
+    /* 0xB10 */ BattleAnimDataEntry followupSendOutAnimChannel;
     /* 0xB20 */ BattleAnimDataEntry unk_B20;
     /* 0xB30 */ char unkB30[0x51];
     /* 0xB81 */ u8 unk_B81;
@@ -239,7 +239,7 @@ typedef struct unk_D_84390240_000 {
     /* 0x70 */ f32 unk_70;
     /* 0x74 */ f32 unk_74;
     /* 0x78 */ u8 unk_78;
-    /* 0x7A */ s16 unk_7A;
+    /* 0x7A */ s16 cameraShakePhase;
     /* 0x7C */ char unk7C[0x8];
     /* 0x84 */ f32 unk_84;
     /* 0x88 */ char unk88[0xC];
@@ -247,9 +247,9 @@ typedef struct unk_D_84390240_000 {
     /* 0xA0 */ Vec3f unk_A0;
     /* 0xAC */ char unkAC[0xC];
     /* 0xB8 */ Vec3f unk_B8;
-    /* 0xC4 */ Vec3f unk_C4;
+    /* 0xC4 */ Vec3f cameraEye;
     /* 0xD0 */ Vec3f unk_D0;
-    /* 0xDC */ CameraStruct* unk_DC;
+    /* 0xDC */ CameraStruct* camera;
 } unk_D_84390240_000; // size = 0xE0
 
 typedef struct unk_D_84390240 {
@@ -368,18 +368,18 @@ typedef struct BattleMessageBuffers {
     /* 0x088 */ s8 unk_088[64];
     /* 0x0C8 */ s8 unk_0C8[64];
     /* 0x148 */ s8 unk_108[64];
-    /* 0x148 */ s8 unk_148[64];
+    /* 0x148 */ s8 secondaryMessage[64];
     /* 0x188 */ s8 unk_188[64];
     /* 0x1C8 */ s8 unk_1C8[64];
     /* 0x208 */ s8 unk_208[64];
     /* 0x248 */ s8 unk_248[64];
     /* 0x288 */ s8 unk_288[64];
-    /* 0x2C8 */ s8 unk_2C8[64];
+    /* 0x2C8 */ s8 statChangeMessage[64];
     /* 0x2C8 */ s8 unk_308[64];
-    /* 0x348 */ s8 unk_348[64];
+    /* 0x348 */ s8 rageMessage[64];
     /* 0x388 */ s8 unk_388[64];
-    /* 0x3C8 */ s8 unk_3C8[64];
-    /* 0x408 */ s8 unk_408[64];
+    /* 0x3C8 */ s8 hitCountMessage[64];
+    /* 0x408 */ s8 recoilMessage[64];
     /* 0x448 */ s8 unk_448[2][64];
     /* 0x4C8 */ unk_D_843901A0_4C8 unk_4C8;
 } BattleMessageBuffers; // size = 0x4F4
@@ -436,7 +436,7 @@ typedef struct RibbonEmitter {
     /* 0x044 */ s32 unk_044;
     /* 0x048 */ char unk048[0x8];
     /* 0x050 */ Vtx unk_050[31 * 2];
-    /* 0x430 */ unk_D_843925E0_430 unk_430[31 * 2];
+    /* 0x430 */ unk_D_843925E0_430 vertexStates[31 * 2];
 } RibbonEmitter; // size = 0xAF8
 
 typedef struct WaterCameraBounds {
@@ -624,7 +624,7 @@ typedef struct unk_D_843ACA10 {
     /* 0x014 */ Vtx* unk_014;
     /* 0x018 */ ParticleEffectInstance* unk_018;
     /* 0x01C */ unk_D_843ACA10_01C unk_01C[15];
-    /* 0x418 */ f32 unk_418;
+    /* 0x418 */ f32 renderScale;
 } unk_D_843ACA10; // size = 0x41C
 
 typedef struct unk_D_843ADA80_040 {
@@ -810,9 +810,9 @@ typedef struct unk_D_843C5568 {
     /* 0x002 */ u8 unk_002;
     /* 0x003 */ u8 unk_003;
     /* 0x004 */ u8 unk_004;
-    /* 0x005 */ u8 unk_005;
+    /* 0x005 */ u8 rosterSize;
     /* 0x006 */ u8 unk_006;
-    /* 0x007 */ u8 unk_007;
+    /* 0x007 */ u8 partnerTeamSize;
     /* 0x008 */ u8 unk_008;
     /* 0x009 */ char unk009[0x3];
     /* 0x00C */ u8 unk_00C[1];

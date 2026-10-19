@@ -117,7 +117,7 @@ void MiniFx_ApplyEmitterToParticle(ParticleEffectInstance* arg0, ParticleSpawner
             arg0->unk_0C = arg1->unk_1C;
 
             arg0->targetAlpha = arg1->unk_2F;
-            arg0->unk_CE = arg1->unk_2D;
+            arg0->metadata = arg1->unk_2D;
             arg0->alphaStep = arg1->unk_24;
             arg0->paletteIndex = arg1->unk_2E;
 

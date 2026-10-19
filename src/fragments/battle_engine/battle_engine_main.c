@@ -457,14 +457,14 @@ void Battle_SelectComRoster(void) {
     if (temp_s0->unk_000 & 2) {
         if (gSessionContext.unk_0000 == 0) {
             if (gSessionContext.unk_0001 == 0) {
-                var_s1 = temp_s0->unk_214->unk_002;
+                var_s1 = temp_s0->trainerData->unk_002;
             } else {
                 var_s1 = 3;
             }
             BattleAI_InitializeBattle(temp_s1, temp_s2, temp_s0, gSessionContext.aiDifficulty, sp48, gSessionContext.unk_0001, var_s1);
         } else {
             if (gSessionContext.unk_0001 == 8) {
-                var_s1 = temp_s0->unk_214->unk_002;
+                var_s1 = temp_s0->trainerData->unk_002;
             } else {
                 var_s1 = 3;
             }
@@ -473,8 +473,8 @@ void Battle_SelectComRoster(void) {
         Battle_CompleteRosterOrder(sp48, var_s1);
         temp_s0->unk_002 = var_s1;
 
-        for (i = 0; i < temp_s0->unk_214->unk_002; i++) {
-            temp_s0->unk_01C[i] = temp_s0->unk_214->unk_028[sp48[i]];
+        for (i = 0; i < temp_s0->trainerData->unk_002; i++) {
+            temp_s0->unk_01C[i] = temp_s0->trainerData->unk_028[sp48[i]];
         }
     }
 }

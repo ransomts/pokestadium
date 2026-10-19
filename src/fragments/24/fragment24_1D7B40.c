@@ -1756,7 +1756,7 @@ void BattleInfoWidget_DrawStatusListEntry(s32 arg0, s32 arg1, unk_func_88309C38_
 }
 
 void BattleInfoWidget_CenterLabel(unk_func_8830867C_03C* arg0, unk_func_8850878C* arg1, char* arg2) {
-    arg1->posX.unk_10.posX = ((arg0->unk_E0 - Font_MeasureTextExtent(8, 0, arg2)) / 2) + 6;
+    arg1->posX.unk_10.posX = ((arg0->typeLabelWidth - Font_MeasureTextExtent(8, 0, arg2)) / 2) + 6;
     arg1->unk_40 = arg2;
 }
 
@@ -1792,8 +1792,8 @@ void BattleInfoWidget_BuildTypePanel(unk_func_8830867C_03C* arg0, s32 arg1, s32 
     unk_func_88507D4C* sp6C[2];
     unk_func_88001300_000* temp_s2_2;
 
-    arg0->unk_E0 = Font_MeasureTextExtent(8, 0, "WWWWWWWW");
-    spC4 = Font_MeasureTextExtent(4, 0, "00") + arg0->unk_E0 + 0x18;
+    arg0->typeLabelWidth = Font_MeasureTextExtent(8, 0, "WWWWWWWW");
+    spC4 = Font_MeasureTextExtent(4, 0, "00") + arg0->typeLabelWidth + 0x18;
     spB0 = 0;
 
     for (i = 0; i < 2; i++) {
@@ -1803,7 +1803,7 @@ void BattleInfoWidget_BuildTypePanel(unk_func_8830867C_03C* arg0, s32 arg1, s32 
         }
     }
 
-    spCC = ((arg0->unk_E0 < spB0) ? spB0 : arg0->unk_E0) + spC4 + 0x30;
+    spCC = ((arg0->typeLabelWidth < spB0) ? spB0 : arg0->typeLabelWidth) + spC4 + 0x30;
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_03C));
 
     arg0->posX.unk_20 = BattleInfoWidget_HandleTypePanelInput;
@@ -1840,7 +1840,7 @@ void BattleInfoWidget_BuildTypePanel(unk_func_8830867C_03C* arg0, s32 arg1, s32 
 
     for (i = 0; i < 2; i++) {
         sp98[i] = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
-        ((func8850A40C)Memmap_GetFragmentVaddr(WidgetTree_InitBorderFrame))(sp98[i], 0xC, 0x1C + (i * 0x1C), arg0->unk_E0 + 0xC,
+        ((func8850A40C)Memmap_GetFragmentVaddr(WidgetTree_InitBorderFrame))(sp98[i], 0xC, 0x1C + (i * 0x1C), arg0->typeLabelWidth + 0xC,
                                                                0x18);
         ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(spA0, sp98[i]);
 
@@ -1889,7 +1889,7 @@ void BattleInfoWidget_BuildTypePanel(unk_func_8830867C_03C* arg0, s32 arg1, s32 
         arg0->unk_58[i].rotation = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(gMoveCategoryIndices[i]);
     }
 
-    var_v1_2 = ((arg0->unk_E0 < spB0) ? spB0 : arg0->unk_E0) + 0x24;
+    var_v1_2 = ((arg0->typeLabelWidth < spB0) ? spB0 : arg0->typeLabelWidth) + 0x24;
 
     temp_s1_4 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
     ((func8850AB48)Memmap_GetFragmentVaddr(WidgetTree_InitInsetBorderFrame))(temp_s1_4, var_v1_2, 0xA, spC4, 0x100);

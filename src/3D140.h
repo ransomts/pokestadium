@@ -47,20 +47,20 @@ typedef struct PokemonAudioInfo {
     /* 0x4A */ u8 unk_4A;
     /* 0x4B */ u8 unk_4B;
     /* 0x4C */ u8 unk_4C;
-    /* 0x4D */ u8 unk_4D;
+    /* 0x4D */ u8 statusFlags2;
     /* 0x4E */ u8 unk_4E;
-    /* 0x4F */ u8 unk_4F;
+    /* 0x4F */ u8 multiTurnCounter;
     /* 0x50 */ u8 unk_50;
     /* 0x51 */ u8 unk_51;
     /* 0x52 */ u8 unk_52;
     /* 0x53 */ u8 unk_53;
     /* 0x54 */ u16 unk_54;
     /* 0x56 */ u8 unk_56;
-    /* 0x57 */ u8 unk_57;
+    /* 0x57 */ u8 disabledMoveId;
     /* 0x58 */ u8 unk_58;
-    /* 0x59 */ u8 unk_59;
+    /* 0x59 */ u8 substituteHp;
     /* 0x5A */ u8 unk_5A;
-    /* 0x5B */ u8 unk_5B;
+    /* 0x5B */ u8 battleEffectType;
     /* 0x5C */ u8 unk_5C[6];
     /* 0x62 */ char unk62[0x2];
 } PokemonAudioInfo; // size = 0x64

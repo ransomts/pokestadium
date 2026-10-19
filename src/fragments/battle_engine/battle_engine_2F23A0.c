@@ -132,13 +132,13 @@ u8 Battle_GetCameraShotFieldC(BattlePlayerEntity* arg0) {
 }
 
 s16 Battle_GetSideAnimTableFieldB(BattlePlayerEntity* arg0) {
-    BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_A80;
+    BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->statusAnimChannel;
 
     return ptr->posY;
 }
 
 s32 Battle_GetSideAnimTableFieldC(BattlePlayerEntity* arg0) {
-    BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_A80;
+    BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->statusAnimChannel;
 
     return ptr->unk_03;
 }
@@ -168,7 +168,7 @@ void BattleScene_GetParticipantModelRotation(BattlePlayerEntity* arg0, Vec3s* ar
 }
 
 u16 Battle_GetActiveMonHp(BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
+    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
 
     return ptr->posY;
 }
@@ -274,7 +274,7 @@ char* Battle_GetActiveMoveName(BattlePlayerEntity* arg0) {
 }
 
 u8* Battle_GetActiveMonNickname(BattlePlayerEntity* arg0) {
-    return arg0->unk_724->unk_01C[arg0->animationState.unk_08].unk_30;
+    return arg0->boundRoster->unk_01C[arg0->animationState.unk_08].unk_30;
 }
 
 void BattleScene_SetParticipantModelFlags(BattlePlayerEntity* arg0, s32 arg1, s32 arg2) {
@@ -290,9 +290,9 @@ void Battle_AdvanceSecondaryModelAnimIfFinished(BattlePlayerEntity* arg0, Battle
     BattlePlayerAnimState* sp20 = &arg0->animationState;
 
     idx = BattleScene_GetParticipantSideIndex(arg0);
-    sp30 = &gAnimDataByPlayer[idx]->unk_A50;
+    sp30 = &gAnimDataByPlayer[idx]->idleAnimChannel;
     idx = BattleScene_GetParticipantSideIndex(arg0);
-    sp2C = &gAnimDataByPlayer[idx]->unk_B00;
+    sp2C = &gAnimDataByPlayer[idx]->faintedAnimChannel;
     idx = BattleScene_GetParticipantSideIndex(arg0);
     sp28 = &gAnimDataByPlayer[idx]->unk_AF0;
 
@@ -330,9 +330,9 @@ void Battle_ResetModelToIdleAnim(BattlePlayerEntity* arg0) {
 
     sp24 = &arg0->animationState;
     idx = BattleScene_GetParticipantSideIndex(arg0);
-    sp34 = &gAnimDataByPlayer[idx]->unk_A50;
+    sp34 = &gAnimDataByPlayer[idx]->idleAnimChannel;
     idx = BattleScene_GetParticipantSideIndex(arg0);
-    sp30 = &gAnimDataByPlayer[idx]->unk_B00;
+    sp30 = &gAnimDataByPlayer[idx]->faintedAnimChannel;
     idx = BattleScene_GetParticipantSideIndex(arg0);
     sp2C = &gAnimDataByPlayer[idx]->unk_AF0;
 
@@ -357,7 +357,7 @@ void Battle_ResetModelToIdleAnim(BattlePlayerEntity* arg0) {
 }
 
 void Battle_SetModelToStatusAnim(BattlePlayerEntity* arg0) {
-    BattleAnimDataEntry* sp1C = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_A80;
+    BattleAnimDataEntry* sp1C = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->statusAnimChannel;
 
     if (arg0->unk_000.unk_040.posX != -1) {
         ModelAnim_SetFrame(&arg0->unk_000, 0);
@@ -366,7 +366,7 @@ void Battle_SetModelToStatusAnim(BattlePlayerEntity* arg0) {
 }
 
 void BattleScene_BindParticipantRosterForSide(BattlePlayerEntity* arg0, s32 arg1) {
-    arg0->unk_724 = arg0->pokemonAnimation->unk_08[arg1];
+    arg0->boundRoster = arg0->pokemonAnimation->unk_08[arg1];
 }
 
 void BattleScene_SetParticipantSelectedSide(BattlePlayerEntity* arg0, s32 arg1) {
@@ -383,7 +383,7 @@ void BattleScene_RebindParticipantToSide(BattlePlayerEntity* arg0, s32 arg1) {
     BattleScene_BindParticipantRosterForSide(arg0, arg1);
     BattleScene_SetParticipantSelectedSide(arg0, arg1);
     temp_v0->unk_08 = temp_v0->unk_18;
-    arg0->unk_728.unk_16C = temp_v0->unk_2B;
+    arg0->ownerModel.unk_16C = temp_v0->unk_2B;
 }
 
 s32 Battle_HasUsableSleepStatusTarget(BattlePlayerEntity* arg0) {
@@ -394,7 +394,7 @@ s32 Battle_HasUsableSleepStatusTarget(BattlePlayerEntity* arg0) {
     temp_s0 = &arg0->animationState;
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
-        ptr = &arg0->unk_724->unk_01C[i];
+        ptr = &arg0->boundRoster->unk_01C[i];
         if ((ptr->unk_05 & 0x20) && (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
             return 1;
         }
@@ -421,7 +421,7 @@ s32 Battle_HasUsableMajorStatusTarget(BattlePlayerEntity* arg0) {
     temp_s0 = &arg0->animationState;
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
-        ptr = &arg0->unk_724->unk_01C[i];
+        ptr = &arg0->boundRoster->unk_01C[i];
         if ((ptr->unk_05 & 7) && (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
             return 1;
         }
@@ -450,7 +450,7 @@ u8 BattleScene_GetRosterTeamSize(BattleAI_TeamContext* arg0) {
 }
 
 s32 BattleScene_GetParticipantDisplayPlayerNumber(BattlePlayerEntity* arg0) {
-    return arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C]->unk_001 + 1;
+    return arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C]->unk_001 + 1;
 }
 
 void BattleScene_ReinitParticipantBodyModel(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
@@ -564,7 +564,7 @@ void Battle_LoadOwnerModelForSpecies(BattlePlayerEntity* arg0) {
     Battle_GetMoveEffectListEntry(arg0, 0);
     sp26 = Battle_GetTrainerId(arg0, 0);
     BattleScene_ReinitParticipantBodyModel(arg0, arg0, sp26, 0);
-    BattleScene_ReinitParticipantOwnerModel(arg0, &arg0->unk_728, sp26);
+    BattleScene_ReinitParticipantOwnerModel(arg0, &arg0->ownerModel, sp26);
     BattleScene_ReinitParticipantSecondaryModels(arg0, sp26);
     Battle_ResetEventTrack(arg0);
     ptr->unk_34 &= 0x1800;
@@ -579,7 +579,7 @@ void Battle_LoadOwnerModelForSwitchIn(BattlePlayerEntity* arg0) {
     Battle_GetMoveEffectListEntry(arg0, 0);
     sp26 = Battle_GetTrainerId(arg0, 0);
     BattleScene_ReinitParticipantBodyModel(arg0, arg0, sp26, 1);
-    BattleScene_ReinitParticipantOwnerModel(arg0, &arg0->unk_728, sp26);
+    BattleScene_ReinitParticipantOwnerModel(arg0, &arg0->ownerModel, sp26);
     BattleScene_ReinitParticipantSecondaryModels(arg0, sp26);
     Battle_ResetEventTrack(arg0);
     ptr->unk_2D = 0;

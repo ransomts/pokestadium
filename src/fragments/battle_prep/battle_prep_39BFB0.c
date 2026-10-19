@@ -1084,8 +1084,8 @@ void BattlePrepTeamIcons_LoadDexIdsDouble(gTeamIconsState* arg0) {
 }
 
 void BattlePrepTeamIcons_Load(gTeamIconsState* arg0, BinArchive* arg1) {
-    u8* sp24 = BinArchive_GetFile(arg1, gSessionContext.battleSides[0].unk_08[0]->unk_214->unk_003);
-    u8* sp20 = BinArchive_GetFile(arg1, gSessionContext.battleSides[1].unk_08[0]->unk_214->unk_003);
+    u8* sp24 = BinArchive_GetFile(arg1, gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_003);
+    u8* sp20 = BinArchive_GetFile(arg1, gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_003);
 
     PokeIcon_OpenModelArchives();
 

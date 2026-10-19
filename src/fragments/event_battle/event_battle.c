@@ -575,7 +575,7 @@ void EventBattle_DrawTrainerCard(TrainerCard* arg0) {
         for (i = 0; i < 6; i++) {
             tmp1 = gIconXOffsets[i] + sp58 + 2;
             tmp2 = gIconYOffsets[i] + sp56 + 2;
-            Gfx_DrawTextureRgba16(tmp1, tmp2, 0x28, 0x28, arg0->unk_0218[i], 0x28, 0);
+            Gfx_DrawTextureRgba16(tmp1, tmp2, 0x28, 0x28, arg0->iconTextures[i], 0x28, 0);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -651,7 +651,7 @@ void EventBattle_InitTrainerCard(TrainerCard* arg0, s16 arg1, s16 arg2, s16 arg3
 
     for (i = 0; i < 6; i++) {
         Deck_ReadEntry(0x20, arg3, 0, i, &arg0->unk_0020[i]);
-        PokeIcon_LoadModelTextureForMon(arg0->unk_0218[i], 0, &arg0->unk_0020[i]);
+        PokeIcon_LoadModelTextureForMon(arg0->iconTextures[i], 0, &arg0->unk_0020[i]);
     }
 }
 
@@ -1394,9 +1394,9 @@ void EventBattle_StartBattle(unk_D_82305A28* arg0) {
     EventBattle_BuildTrainerFromCard(&gTrainerPanels[1]);
 
     if (gBattleSettingsState.unk_01 == 1) {
-        gSessionContext.unk_11ED = gBattleSettingsState.unk_01;
-        gSessionContext.unk_11EE = gBattleSettingsState.posY;
-        gSessionContext.unk_11EF = gBattleSettingsState.rotation;
+        gSessionContext.timerEnabled = gBattleSettingsState.unk_01;
+        gSessionContext.battleTimeLimitMinutes = gBattleSettingsState.posY;
+        gSessionContext.turnTimeLimitSeconds = gBattleSettingsState.rotation;
     }
     gTrainerPanels[0].unk_0000 = 3;
     gTrainerPanels[1].unk_0000 = 3;

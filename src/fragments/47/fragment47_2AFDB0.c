@@ -14,7 +14,7 @@ static unk_D_838067F0 D_838067F0;
 void Gallery_RentalViewerSaveBoxCursor(unk_D_83407B18_008* arg0) {
     arg0->posY = D_838067F0.unk_001C;
     arg0->rotation = D_838067F0.unk_0020;
-    arg0->unk_06 = D_838067F0.unk_0024;
+    arg0->unk_06 = D_838067F0.cursorColumn;
     arg0->unk_08 = D_838067F0.unk_0028;
 }
 
@@ -37,13 +37,13 @@ void Gallery_RentalViewerInitBoxPicker(s32 arg0, s32 arg1, RentalViewerBgData* a
     D_838067F0.unk_0000 = 0;
     D_838067F0.unk_0004 = arg0;
     D_838067F0.unk_0008 = arg1;
-    D_838067F0.unk_015C = arg2;
+    D_838067F0.teamData = arg2;
 }
 
 s32 Gallery_RentalViewerLoadDeckEntries(unk_D_838067F0* arg0, s32 arg1) {
     char sp48[88];
     DeckHandle* var_v0;
-    unk_D_838067F0_003C* ptr = &arg0->unk_003C[arg1];
+    unk_D_838067F0_003C* ptr = &arg0->boxEntries[arg1];
     s32 i;
 
     i = 0;
@@ -95,8 +95,8 @@ s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1
 
     var_s4 = 0;
 
-    arg1->unk_2690 = arg0->unk_0018;
-    arg1->unk_2692 = arg0->unk_001C;
+    arg1->gbPort = arg0->unk_0018;
+    arg1->boxIndex = arg0->unk_001C;
 
     for (i = 0; i < 3; i++) {
         arg1->unk_0000[i].unk_004.posX.posX = 0;
@@ -104,7 +104,7 @@ s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1
     }
 
     if (arg0->unk_001C <= 0xC) {
-        temp_s3 = &arg0->unk_003C[arg0->unk_001C];
+        temp_s3 = &arg0->boxEntries[arg0->unk_001C];
 
         if (arg0->unk_0018 < 4) {
             if (arg0->unk_001C == 0) {
@@ -179,25 +179,25 @@ s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, unk_D_83407B18_008* arg1) {
     if (arg1 != NULL) {
         ptr->unk_001C = arg1->posY;
         ptr->unk_0020 = arg1->rotation;
-        ptr->unk_0024 = arg1->unk_06;
+        ptr->cursorColumn = arg1->unk_06;
         ptr->unk_0028 = arg1->unk_08;
     } else {
         ptr->unk_001C = 0xD;
         ptr->unk_0020 = 0;
-        ptr->unk_0024 = 0;
+        ptr->cursorColumn = 0;
         ptr->unk_0028 = 0;
     }
 
     ptr->unk_002C = 0;
     ptr->unk_0030 = 0;
-    ptr->unk_0038 = 0;
-    ptr->unk_0034 = 8;
+    ptr->repeatTimer = 0;
+    ptr->repeatDelay = 8;
 
-    ptr->unk_0160 = &ptr->unk_0168[0];
+    ptr->currentPage = &ptr->pages[0];
 
     for (i = 0; i < 12; i++) {
-        ptr->unk_0168[i].unk_2688 = &ptr->unk_0168[(i + 1) % 12];
-        ptr->unk_0168[i].unk_268C = &ptr->unk_0168[(i + 11) % 12];
+        ptr->pages[i].nextPage = &ptr->pages[(i + 1) % 12];
+        ptr->pages[i].prevPage = &ptr->pages[(i + 11) % 12];
     }
 
     for (i = 12; i >= 0; i--) {
@@ -206,10 +206,10 @@ s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, unk_D_83407B18_008* arg1) {
         }
     }
 
-    ptr2 = ptr->unk_0160;
+    ptr2 = ptr->currentPage;
     for (i = 0; i < 6; i++) {
-        Gallery_RentalViewerFillPage(&D_838067F0, ptr2, ptr->unk_0020 + i, ptr->unk_015C);
-        ptr2 = ptr2->unk_2688;
+        Gallery_RentalViewerFillPage(&D_838067F0, ptr2, ptr->unk_0020 + i, ptr->teamData);
+        ptr2 = ptr2->nextPage;
     }
 
     Audio_PlaySoundEffectById(4);
@@ -232,14 +232,14 @@ void Gallery_RentalViewerAdvanceOpenPanel(unk_D_838067F0* arg0) {
 
 unk_D_838067F0_0168* Gallery_RentalViewerGetPage(unk_D_838067F0_0168* arg0, s32 arg1) {
     while (arg1-- > 0) {
-        arg0 = arg0->unk_2688;
+        arg0 = arg0->nextPage;
     }
     return arg0;
 }
 
 void Gallery_RentalViewerConfirmMonSelect(unk_D_838067F0* arg0) {
-    unk_D_838067F0_0168* ptr = Gallery_RentalViewerGetPage(arg0->unk_0160, arg0->unk_0028);
-    PokemonData* temp_a1 = &ptr->unk_0000[arg0->unk_0024].unk_004;
+    unk_D_838067F0_0168* ptr = Gallery_RentalViewerGetPage(arg0->currentPage, arg0->unk_0028);
+    PokemonData* temp_a1 = &ptr->unk_0000[arg0->cursorColumn].unk_004;
 
     if (temp_a1->posX.posX != 0) {
         arg0->unk_0000 = 7;
@@ -266,20 +266,20 @@ void Gallery_RentalViewerNextBox(unk_D_838067F0* arg0) {
     unk_D_838067F0_0168* var_s1;
 
     var_s0 = (arg0->unk_001C + 1) % 14;
-    while (var_s0 < ARRAY_COUNT(arg0->unk_003C) && (arg0->unk_003C[var_s0].posX == 0)) {
+    while (var_s0 < ARRAY_COUNT(arg0->boxEntries) && (arg0->boxEntries[var_s0].posX == 0)) {
         var_s0 = (var_s0 + 1) % 14;
     }
 
     if (var_s0 != arg0->unk_001C) {
         Audio_PlaySoundEffectById(0x27);
         arg0->unk_001C = var_s0;
-        arg0->unk_0160 = Gallery_RentalViewerGetPage(arg0->unk_0160, 6);
+        arg0->currentPage = Gallery_RentalViewerGetPage(arg0->currentPage, 6);
         arg0->unk_0020 = 0;
 
-        var_s1 = arg0->unk_0160;
+        var_s1 = arg0->currentPage;
         for (i = 0; i < 6; i++) {
-            Gallery_RentalViewerFillPage(arg0, var_s1, arg0->unk_0020 + i, arg0->unk_015C);
-            var_s1 = var_s1->unk_2688;
+            Gallery_RentalViewerFillPage(arg0, var_s1, arg0->unk_0020 + i, arg0->teamData);
+            var_s1 = var_s1->nextPage;
         }
 
         arg0->unk_002C = 0;
@@ -293,21 +293,21 @@ void Gallery_RentalViewerPrevBox(unk_D_838067F0* arg0) {
     s32 var_s0;
     unk_D_838067F0_0168* var_s1;
 
-    var_s0 = (arg0->unk_001C + ARRAY_COUNT(arg0->unk_003C)) % 14;
-    while (var_s0 < ARRAY_COUNT(arg0->unk_003C) && (arg0->unk_003C[var_s0].posX == 0)) {
-        var_s0 = (var_s0 + ARRAY_COUNT(arg0->unk_003C)) % 14;
+    var_s0 = (arg0->unk_001C + ARRAY_COUNT(arg0->boxEntries)) % 14;
+    while (var_s0 < ARRAY_COUNT(arg0->boxEntries) && (arg0->boxEntries[var_s0].posX == 0)) {
+        var_s0 = (var_s0 + ARRAY_COUNT(arg0->boxEntries)) % 14;
     }
 
     if (var_s0 != arg0->unk_001C) {
         Audio_PlaySoundEffectById(0x27);
         arg0->unk_001C = var_s0;
-        arg0->unk_0160 = Gallery_RentalViewerGetPage(arg0->unk_0160, 6);
+        arg0->currentPage = Gallery_RentalViewerGetPage(arg0->currentPage, 6);
         arg0->unk_0020 = 0;
 
-        var_s1 = arg0->unk_0160;
+        var_s1 = arg0->currentPage;
         for (i = 0; i < 6; i++) {
-            Gallery_RentalViewerFillPage(arg0, var_s1, arg0->unk_0020 + i, arg0->unk_015C);
-            var_s1 = var_s1->unk_2688;
+            Gallery_RentalViewerFillPage(arg0, var_s1, arg0->unk_0020 + i, arg0->teamData);
+            var_s1 = var_s1->nextPage;
         }
 
         arg0->unk_002C = 0;
@@ -317,35 +317,35 @@ void Gallery_RentalViewerPrevBox(unk_D_838067F0* arg0) {
 }
 
 void Gallery_RentalViewerBoxPickerMoveLeft(unk_D_838067F0* arg0) {
-    if (arg0->unk_0038 == 0) {
-        if (arg0->unk_0024 > 0) {
-            arg0->unk_0024--;
+    if (arg0->repeatTimer == 0) {
+        if (arg0->cursorColumn > 0) {
+            arg0->cursorColumn--;
             arg0->unk_002C = -1;
             arg0->unk_0030 = -4;
             arg0->unk_0000 = 5;
             Audio_PlaySoundEffectById(1);
         }
-        arg0->unk_0038 = arg0->unk_0034;
-        arg0->unk_0034 = 2;
+        arg0->repeatTimer = arg0->repeatDelay;
+        arg0->repeatDelay = 2;
     }
 }
 
 void Gallery_RentalViewerBoxPickerMoveRight(unk_D_838067F0* arg0) {
-    if (arg0->unk_0038 == 0) {
-        if (arg0->unk_0024 < 2) {
-            arg0->unk_0024++;
+    if (arg0->repeatTimer == 0) {
+        if (arg0->cursorColumn < 2) {
+            arg0->cursorColumn++;
             arg0->unk_002C = 1;
             arg0->unk_0030 = 4;
             arg0->unk_0000 = 5;
             Audio_PlaySoundEffectById(1);
         }
-        arg0->unk_0038 = arg0->unk_0034;
-        arg0->unk_0034 = 2;
+        arg0->repeatTimer = arg0->repeatDelay;
+        arg0->repeatDelay = 2;
     }
 }
 
 void Gallery_RentalViewerBoxPickerMoveUp(unk_D_838067F0* arg0) {
-    if (arg0->unk_0038 == 0) {
+    if (arg0->repeatTimer == 0) {
         if (arg0->unk_0028 != 0) {
             arg0->unk_0028--;
             arg0->unk_002C = -1;
@@ -353,37 +353,37 @@ void Gallery_RentalViewerBoxPickerMoveUp(unk_D_838067F0* arg0) {
             arg0->unk_0000 = 6;
             Audio_PlaySoundEffectById(1);
         } else if ((arg0->unk_0020 > 0) &&
-                   (Gallery_RentalViewerFillPage(arg0, arg0->unk_0160->unk_268C, arg0->unk_0020 - 1, arg0->unk_015C) != 0)) {
+                   (Gallery_RentalViewerFillPage(arg0, arg0->currentPage->prevPage, arg0->unk_0020 - 1, arg0->teamData) != 0)) {
             arg0->unk_0020 -= 1;
-            arg0->unk_0160 = arg0->unk_0160->unk_268C;
+            arg0->currentPage = arg0->currentPage->prevPage;
             arg0->unk_002C = -1;
             arg0->unk_0030 = -4;
             arg0->unk_0000 = 4;
             Audio_PlaySoundEffectById(1);
         }
-        arg0->unk_0038 = arg0->unk_0034;
-        arg0->unk_0034 = 2;
+        arg0->repeatTimer = arg0->repeatDelay;
+        arg0->repeatDelay = 2;
     }
 }
 
 void Gallery_RentalViewerBoxPickerMoveDown(unk_D_838067F0* arg0) {
-    if (arg0->unk_0038 == 0) {
+    if (arg0->repeatTimer == 0) {
         if (arg0->unk_0028 != 5) {
             arg0->unk_0028++;
             arg0->unk_002C = 1;
             arg0->unk_0030 = 4;
             arg0->unk_0000 = 6;
             Audio_PlaySoundEffectById(1);
-        } else if (Gallery_RentalViewerFillPage(arg0, Gallery_RentalViewerGetPage(arg0->unk_0160, 6), arg0->unk_0020 + 6, arg0->unk_015C) != 0) {
+        } else if (Gallery_RentalViewerFillPage(arg0, Gallery_RentalViewerGetPage(arg0->currentPage, 6), arg0->unk_0020 + 6, arg0->teamData) != 0) {
             arg0->unk_0020++;
-            arg0->unk_0160 = arg0->unk_0160->unk_2688;
+            arg0->currentPage = arg0->currentPage->nextPage;
             arg0->unk_002C = 1;
             arg0->unk_0030 = 4;
             arg0->unk_0000 = 4;
             Audio_PlaySoundEffectById(1);
         }
-        arg0->unk_0038 = arg0->unk_0034;
-        arg0->unk_0034 = 2;
+        arg0->repeatTimer = arg0->repeatDelay;
+        arg0->repeatDelay = 2;
     }
 }
 
@@ -405,8 +405,8 @@ void Gallery_RentalViewerUpdateBoxPickerInput(unk_D_838067F0* arg0) {
     } else if (BTN_IS_DOWN(gPlayer1Controller, BTN_DDOWN)) {
         Gallery_RentalViewerBoxPickerMoveDown(arg0);
     } else {
-        arg0->unk_0038 = 0;
-        arg0->unk_0034 = 8;
+        arg0->repeatTimer = 0;
+        arg0->repeatDelay = 8;
     }
     arg0->unk_000C = arg0->unk_0004;
     arg0->unk_0010 = arg0->unk_0008;
@@ -444,8 +444,8 @@ void Gallery_RentalViewerUpdateBoxPicker(void) {
     unk_D_838067F0* ptr = &D_838067F0;
 
     if (ptr->unk_0000 != 0) {
-        if (ptr->unk_0038 > 0) {
-            ptr->unk_0038--;
+        if (ptr->repeatTimer > 0) {
+            ptr->repeatTimer--;
         }
 
         switch (ptr->unk_0000) {
@@ -508,19 +508,19 @@ void Gallery_RentalViewerDrawBoxTabBar(unk_D_838067F0* arg0) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 8, sp40 + 4, D_2001A20, arg0->unk_003C[0].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x2C, sp40 + 4, D_2002560, arg0->unk_003C[1].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x50, sp40 + 4, D_2002B00, arg0->unk_003C[2].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x74, sp40 + 4, D_20030A0, arg0->unk_003C[3].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x98, sp40 + 4, D_2003640, arg0->unk_003C[4].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0xBC, sp40 + 4, D_2003BE0, arg0->unk_003C[5].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0xE0, sp40 + 4, D_2004180, arg0->unk_003C[6].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x104, sp40 + 4, D_2004720, arg0->unk_003C[7].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x128, sp40 + 4, D_2004CC0, arg0->unk_003C[8].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x14C, sp40 + 4, D_2005260, arg0->unk_003C[9].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x170, sp40 + 4, D_2005800, arg0->unk_003C[10].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x194, sp40 + 4, D_2005DA0, arg0->unk_003C[11].posX);
-    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x1B8, sp40 + 4, D_2006340, arg0->unk_003C[12].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 8, sp40 + 4, D_2001A20, arg0->boxEntries[0].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x2C, sp40 + 4, D_2002560, arg0->boxEntries[1].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x50, sp40 + 4, D_2002B00, arg0->boxEntries[2].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x74, sp40 + 4, D_20030A0, arg0->boxEntries[3].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x98, sp40 + 4, D_2003640, arg0->boxEntries[4].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0xBC, sp40 + 4, D_2003BE0, arg0->boxEntries[5].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0xE0, sp40 + 4, D_2004180, arg0->boxEntries[6].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x104, sp40 + 4, D_2004720, arg0->boxEntries[7].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x128, sp40 + 4, D_2004CC0, arg0->boxEntries[8].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x14C, sp40 + 4, D_2005260, arg0->boxEntries[9].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x170, sp40 + 4, D_2005800, arg0->boxEntries[10].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x194, sp40 + 4, D_2005DA0, arg0->boxEntries[11].posX);
+    Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x1B8, sp40 + 4, D_2006340, arg0->boxEntries[12].posX);
     Gallery_RentalViewerDrawBoxTabIcon(temp_s0 + 0x1DC, sp40 + 4, D_2001FC0, 0x97);
 
     if (arg0->unk_0000 != 3) {
@@ -537,10 +537,10 @@ void Gallery_RentalViewerDrawScrollbar(s32 arg0, s32 arg1, unk_D_838067F0* arg2)
     s32 var_v1;
 
     temp_a3 = arg2->unk_0020 + arg2->unk_0028;
-    if (arg2->unk_001C < ARRAY_COUNT(arg2->unk_003C)) {
-        var_v1 = (arg2->unk_003C[arg2->unk_001C].posX + 2) / 3;
+    if (arg2->unk_001C < ARRAY_COUNT(arg2->boxEntries)) {
+        var_v1 = (arg2->boxEntries[arg2->unk_001C].posX + 2) / 3;
     } else {
-        var_v1 = (arg2->unk_015C->unk_000 + 2) / 3u;
+        var_v1 = (arg2->teamData->unk_000 + 2) / 3u;
     }
 
     if (var_v1 < 6) {
@@ -587,7 +587,7 @@ s32 Gallery_RentalViewerCountBoxes(unk_D_838067F0* arg0) {
     s32 var_v1 = 1;
 
     for (i = 0; i < 13; i++) {
-        if (arg0->unk_003C[i].posX != 0) {
+        if (arg0->boxEntries[i].posX != 0) {
             var_v1++;
         }
     }
@@ -598,7 +598,7 @@ s32 Gallery_RentalViewerCountBoxes(unk_D_838067F0* arg0) {
 s32 Gallery_RentalViewerGetPageFillState(unk_D_838067F0_0168* arg0) {
     s32 ret;
 
-    switch (arg0->unk_2692) {
+    switch (arg0->boxIndex) {
         case 0:
             ret = 0;
             break;
@@ -644,7 +644,7 @@ void Gallery_RentalViewerDrawPageHeader(s32 arg0, s32 arg1, unk_D_838067F0_0168*
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
 
-    switch (arg2->unk_2692) {
+    switch (arg2->boxIndex) {
         case 0:
             var_v0 = Gallery_GetUiString(0x42);
             break;
@@ -654,7 +654,7 @@ void Gallery_RentalViewerDrawPageHeader(s32 arg0, s32 arg1, unk_D_838067F0_0168*
             break;
 
         default:
-            Text_SetNumberToken(2, arg2->unk_2692);
+            Text_SetNumberToken(2, arg2->boxIndex);
             var_v0 = Gallery_CopyUiString(&sp60, 0x100, 0x43);
             break;
     }
@@ -729,22 +729,22 @@ void SnapSelect_UpdateCameraState(s32 arg0)
   Gallery_RentalViewerDrawScrollbar(spC4 + 4, spC0 + 4, &D_838067F0);
   {
     Gfx *_g = (Gfx *) (gDisplayListHead++);
- _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) gPrefDL_Border; } ; if (Gallery_RentalViewerCountBoxes(&D_838067F0) >= 2) { Gfx_DrawTextureRgba16(spC4 - 0x32, spC0 + 8, 0x30, 0x18, D_2007E00, 0x30, 0); Gfx_DrawTextureRgba16(spC4 - 0x32, spC0 + 0x20, 0x30, 0x18, D_2008700, 0x30, 0); Gfx_DrawTextureRgba16(spC4 + 0x1BA, spC0 + 8, 0x30 & 0xFFFFu, 0x18, D_2009000, 0x30, 0); Gfx_DrawTextureRgba16(spC4 + 0x1BA, spC0 + 0x20, 0x30, 0x18, D_2009900, 0x30, 0); } { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) gMenuDL_BackgroundFill; } ; Gfx_FillRectRgb(spC4 + 0x1C, spC0 + 4, 8, 0x124, 0x32, 0x32, 0x32); arg0 = 0x24; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) gPrefDL_End; } ; if (ptr->unk_0000 == 3) { s32 var_s0; s32 temp_s2_2 = spC4 - ((ptr->unk_002C * 0x194) / 8); if (ptr->unk_0030 > 0) { var_s0 = 0x194; } else { var_s0 = -0x194; } i = arg0; Gfx_SetScissorRect(&gDisplayListHead, spC4 + arg0, spC0 + 4, 0x18C, 0x124); Gallery_RentalViewerDrawPageHeader(temp_s2_2 + i, spC0 + 4, ptr->unk_0160->unk_268C); Gallery_RentalViewerDrawPageHeader((var_s0 + temp_s2_2) + arg0, spC0 + 4, ptr->unk_0160); { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((long) ((unsigned int) 0xde)) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) gPrefDL_Border; } ; { { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = ((((unsigned int) ((((unsigned int) 0xfd) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (1 - 1)) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (unsigned int) D_2000C40; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe6) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf3) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((((((8 * 4) + 0) >> 0) - 1) < 2047) ? ((((8 * 4) + 0) >> 0) - 1) : (2047))) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((((1 << 11) + ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8))) - 1) / ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8)))) & ((0x01 << 12) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe7) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (((8 * 2) + 7) >> 3)) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf2) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((8 - 1) << 2)) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((4 - 1) << 2)) & ((0x01 << 12) - 1)) << 0)); } ; } ; Gfx_DrawTexturedRectClipped(temp_s2_2 + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); Gfx_DrawTexturedRectClipped((var_s0 + temp_s2_2) + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); { Gfx *_g = (Gfx *) (gDisplayListHead++);
+ _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) gPrefDL_Border; } ; if (Gallery_RentalViewerCountBoxes(&D_838067F0) >= 2) { Gfx_DrawTextureRgba16(spC4 - 0x32, spC0 + 8, 0x30, 0x18, D_2007E00, 0x30, 0); Gfx_DrawTextureRgba16(spC4 - 0x32, spC0 + 0x20, 0x30, 0x18, D_2008700, 0x30, 0); Gfx_DrawTextureRgba16(spC4 + 0x1BA, spC0 + 8, 0x30 & 0xFFFFu, 0x18, D_2009000, 0x30, 0); Gfx_DrawTextureRgba16(spC4 + 0x1BA, spC0 + 0x20, 0x30, 0x18, D_2009900, 0x30, 0); } { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) gMenuDL_BackgroundFill; } ; Gfx_FillRectRgb(spC4 + 0x1C, spC0 + 4, 8, 0x124, 0x32, 0x32, 0x32); arg0 = 0x24; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) gPrefDL_End; } ; if (ptr->unk_0000 == 3) { s32 var_s0; s32 temp_s2_2 = spC4 - ((ptr->unk_002C * 0x194) / 8); if (ptr->unk_0030 > 0) { var_s0 = 0x194; } else { var_s0 = -0x194; } i = arg0; Gfx_SetScissorRect(&gDisplayListHead, spC4 + arg0, spC0 + 4, 0x18C, 0x124); Gallery_RentalViewerDrawPageHeader(temp_s2_2 + i, spC0 + 4, ptr->currentPage->prevPage); Gallery_RentalViewerDrawPageHeader((var_s0 + temp_s2_2) + arg0, spC0 + 4, ptr->currentPage); { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((long) ((unsigned int) 0xde)) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0)); _g->words.w1 = (unsigned int) gPrefDL_Border; } ; { { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = ((((unsigned int) ((((unsigned int) 0xfd) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (1 - 1)) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (unsigned int) D_2000C40; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe6) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf3) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 7) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((((((8 * 4) + 0) >> 0) - 1) < 2047) ? ((((8 * 4) + 0) >> 0) - 1) : (2047))) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((((1 << 11) + ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8))) - 1) / ((1 > ((8 * 2) / 8)) ? (1) : ((8 * 2) / 8)))) & ((0x01 << 12) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (unsigned int) ((((unsigned int) 0xe7) & ((0x01 << 8) - 1)) << 24); _g->words.w1 = 0; } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((((unsigned int) ((((unsigned int) 0xf5) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 21))) | ((unsigned int) ((((unsigned int) 2) & ((0x01 << 2) - 1)) << 19))) | ((unsigned int) ((((unsigned int) (((8 * 2) + 7) >> 3)) & ((0x01 << 9) - 1)) << 9))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 9) - 1)) << 0)); _g->words.w1 = ((((((((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 20))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 18))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 14))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 10))) | ((unsigned int) ((((unsigned int) (0 | 0x2)) & ((0x01 << 2) - 1)) << 8))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 4))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 4) - 1)) << 0)); } ; { Gfx *_g = (Gfx *) (gDisplayListHead++); _g->words.w0 = (((unsigned int) ((((unsigned int) 0xf2) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 12) - 1)) << 0)); _g->words.w1 = (((unsigned int) ((((unsigned int) 0) & ((0x01 << 3) - 1)) << 24)) | ((unsigned int) ((((unsigned int) ((8 - 1) << 2)) & ((0x01 << 12) - 1)) << 12))) | ((unsigned int) ((((unsigned int) ((4 - 1) << 2)) & ((0x01 << 12) - 1)) << 0)); } ; } ; Gfx_DrawTexturedRectClipped(temp_s2_2 + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); Gfx_DrawTexturedRectClipped((var_s0 + temp_s2_2) + 0x1B0, spC0 + 4, 8, 0x124, 0, 0, 0x400, 0, 0); { Gfx *_g = (Gfx *) (gDisplayListHead++);
       _g->words.w0 = (((unsigned int) ((((unsigned int) 0xde) & ((0x01 << 8) - 1)) << 24)) | ((unsigned int) ((((unsigned int) 0x00) & ((0x01 << 8) - 1)) << 16))) | ((unsigned int) ((((unsigned int) 0) & ((0x01 << 16) - 1)) << 0));
       _g->words.w1 = (unsigned int) gPrefDL_End;
     }
     ;
-    var_s2 = ptr->unk_0160;
+    var_s2 = ptr->currentPage;
     for (i = 0; i < 6; i++)
     {
       Gallery_RentalViewerDrawMonRow((var_s0 + temp_s2_2) + arg0, (spC0 + 0x20) + (i * 0x2C), var_s2);
-      var_s2 = var_s2->unk_2688;
+      var_s2 = var_s2->nextPage;
     }
 
     for (i = 0; i < 6; i++)
     {
       Gallery_RentalViewerDrawMonRow(temp_s2_2 + arg0, (spC0 + 0x20) + (i * 0x2C), var_s2);
-      var_s2 = var_s2->unk_2688;
+      var_s2 = var_s2->nextPage;
     }
 
     Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
@@ -754,25 +754,25 @@ void SnapSelect_UpdateCameraState(s32 arg0)
   {
     s32 sp80 = spC0 - ((ptr->unk_002C * 0x2C) / 4);
     s32 pad;
-    Gallery_RentalViewerDrawPageHeader(spC4 + arg0, spC0 + 4, ptr->unk_0160);
+    Gallery_RentalViewerDrawPageHeader(spC4 + arg0, spC0 + 4, ptr->currentPage);
     Gfx_SetScissorRect(&gDisplayListHead, spC4 + arg0, spC0 + 0x20, 0x18C, 0x108);
     if (ptr->unk_0030 > 0)
     {
-      var_s2 = ptr->unk_0160->unk_268C;
+      var_s2 = ptr->currentPage->prevPage;
       for (i = 0; i < 7; i++)
       {
         Gallery_RentalViewerDrawMonRow(spC4 + arg0, (sp80 + 0x20) + (i * 0x2C), var_s2);
-        var_s2 = var_s2->unk_2688;
+        var_s2 = var_s2->nextPage;
       }
 
     }
     else
     {
-      var_s2 = ptr->unk_0160;
+      var_s2 = ptr->currentPage;
       for (i = 0; i < 7; i++)
       {
         Gallery_RentalViewerDrawMonRow(spC4 + arg0, (sp80 - 0xC) + (i * 0x2C), var_s2);
-        var_s2 = var_s2->unk_2688;
+        var_s2 = var_s2->nextPage;
       }
 
     }
@@ -780,18 +780,18 @@ void SnapSelect_UpdateCameraState(s32 arg0)
   }
   else
   {
-    Gallery_RentalViewerDrawPageHeader(spC4 + arg0, spC0 + 4, ptr->unk_0160);
-    var_s2 = ptr->unk_0160;
+    Gallery_RentalViewerDrawPageHeader(spC4 + arg0, spC0 + 4, ptr->currentPage);
+    var_s2 = ptr->currentPage;
     for (i = 0; i < 6; i++)
     {
       Gallery_RentalViewerDrawMonRow(spC4 + arg0, (spC0 + 0x20) + (i * 0x2C), var_s2);
-      var_s2 = var_s2->unk_2688;
+      var_s2 = var_s2->nextPage;
     }
 
   }
   if (ptr->unk_0000 == 6)
   {
-    s32 var_v0 = (ptr->unk_0024 * 0x84) + arg0;
+    s32 var_v0 = (ptr->cursorColumn * 0x84) + arg0;
     s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
     if (ptr->unk_002C > 0)
     {
@@ -806,7 +806,7 @@ void SnapSelect_UpdateCameraState(s32 arg0)
   else
     if (ptr->unk_0000 == 5)
   {
-    s32 var_v0 = (ptr->unk_0024 * 0x84) + arg0;
+    s32 var_v0 = (ptr->cursorColumn * 0x84) + arg0;
     s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
     if (ptr->unk_002C > 0)
     {
@@ -820,7 +820,7 @@ void SnapSelect_UpdateCameraState(s32 arg0)
   }
   else
   {
-    unsigned long var_v0 = (ptr->unk_0024 * 0x84) + arg0;
+    unsigned long var_v0 = (ptr->cursorColumn * 0x84) + arg0;
     s32 var_v1 = (ptr->unk_0028 * 0x2C) + 0x20;
     TeamSelection_DrawAnimatedGoldCorners(spC4 + var_v0, spC0 + var_v1, 0x84, 0x2C);
   }

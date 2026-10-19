@@ -117,7 +117,7 @@ void BattleScene_ApplyCameraPhaseDefaults(void) {
 }
 
 void BattleScene_SetDamageShakeAmplitude(BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
+    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
 
     gBattleScene.posX->unk_68 = ((ptr->posY - arg0->animationState.unk_38.unk_0C) / 996.0f) * 1400.0f;
 
@@ -129,7 +129,7 @@ void BattleScene_SetDamageShakeAmplitude(BattlePlayerEntity* arg0) {
         gBattleScene.posX->unk_68 = 50.0f;
     }
 
-    gBattleScene.posX->unk_7A = 0;
+    gBattleScene.posX->cameraShakePhase = 0;
 
     if (gBattleUpdateHPFlag != 0) {
         gBattleScene.posX->unk_68 = 25.0f;
@@ -144,10 +144,10 @@ void BattleScene_ApplyCameraShake(CameraStruct* arg0) {
     s16 sp28;
 
     BattleAnim_CalculateDistanceAngles(&arg0->unk_60.eye, &arg0->unk_60.at, &sp30, &sp28, &sp2A);
-    gBattleScene.posX->unk_7A += 0x38E0;
+    gBattleScene.posX->cameraShakePhase += 0x38E0;
     BattleAnim_ApproachF(&gBattleScene.posX->unk_68, 0.0f, 0.18f);
 
-    temp_fv0 = COSS(gBattleScene.posX->unk_7A) * gBattleScene.posX->unk_68;
+    temp_fv0 = COSS(gBattleScene.posX->cameraShakePhase) * gBattleScene.posX->unk_68;
 
     arg0->unk_60.eye.y += temp_fv0 / 3.0f;
     arg0->unk_60.at.y += temp_fv0 / 3.0f;
@@ -157,7 +157,7 @@ void BattleScene_ApplyCameraShake(CameraStruct* arg0) {
 
 void BattleScene_StartCameraShake(UNUSED BattlePlayerEntity* arg0) {
     gBattleScene.posX->unk_68 = 30.0f;
-    gBattleScene.posX->unk_7A = 0;
+    gBattleScene.posX->cameraShakePhase = 0;
 }
 
 s32 BattleScene_IsCameraAngleSettled(s16 arg0, s16 arg1) {
@@ -308,8 +308,8 @@ void BattleScene_UpdateCameraModelOffset(BattlePlayerEntity* arg0, CameraStruct*
                   arg0->unk_448.unk_24.posX.z);
     arg0->unk_448.unk_18.y = (arg0->unk_000.unk_024.y - BattleScene_GetParticipantModelHeight(arg0)) + arg0->unk_448.unk_18.y + sp3C;
     BattleAnim_Vec3fCopy(&gBattleScene.posX->unk_B8, &arg1->unk_60.at);
-    BattleAnim_Vec3fCopy(&gBattleScene.posX->unk_C4, &arg1->unk_60.eye);
-    Vec3f_CalculateDistanceAngles(&gBattleScene.posX->unk_B8, &gBattleScene.posX->unk_C4, &gBattleScene.posX->unk_70, &sp38->unk_44,
+    BattleAnim_Vec3fCopy(&gBattleScene.posX->cameraEye, &arg1->unk_60.eye);
+    Vec3f_CalculateDistanceAngles(&gBattleScene.posX->unk_B8, &gBattleScene.posX->cameraEye, &gBattleScene.posX->unk_70, &sp38->unk_44,
                   &sp38->unk_46);
     Vec3f_CalculateDistanceAngles(&arg0->unk_448.unk_18, &arg1->unk_60.at, &sp38->unk_4C, &sp38->unk_44, &sp38->unk_46);
     gBattleScene.posX->unk_6C = 0.0f;
@@ -557,7 +557,7 @@ void BattleScene_RecomputeCameraDistance(CameraStruct* arg0, BattlePlayerEntity*
     s16 sp34;
     u8 sp2C[] = { 0x2D, 0x35, 0x79, 0x2C, 0x6E };
 
-    Vec3f_CalculateDistanceAngles(&gBattleScene.posX->unk_B8, &gBattleScene.posX->unk_C4, &sp38, &sp36, &sp34);
+    Vec3f_CalculateDistanceAngles(&gBattleScene.posX->unk_B8, &gBattleScene.posX->cameraEye, &sp38, &sp36, &sp34);
     Vec3f_CalculateDistanceAngles(&arg0->unk_60.at, &arg0->unk_60.eye, &sp44, &sp3E, &sp3C);
 
     temp_lo = sp34 / 182;

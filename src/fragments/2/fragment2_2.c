@@ -1344,7 +1344,7 @@ void Widget_PauseMenuResetWinStreak(void) {
 void UpdateDeltaTime(void) {
     static u32 gLastRspTimestamp;
 
-    u32 v0 = gRspTaskManager.unk_A34;
+    u32 v0 = gRspTaskManager.frameCount;
 
     if (gResultDeltaTimeInit == 0) {
         gResultDeltaTimeInit = 1;

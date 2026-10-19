@@ -54,7 +54,7 @@ void BattlePrep_SaveVictoryPalaceRecords(void) {
     unk_D_800AE540_0874* temp_v0;
     PokemonData* var_s1;
 
-    temp_v0 = gSessionContext.battleSides[0].unk_08[0]->unk_214;
+    temp_v0 = gSessionContext.battleSides[0].unk_08[0]->trainerData;
     temp_s0 = temp_v0->unk_002;
     var_s1 = temp_v0->unk_028;
 
@@ -261,11 +261,11 @@ void BattlePrep_DrawTrainerStatusIcon(FramebufferImage* arg0, s16 arg1, u8* arg2
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-        BattlePrep_DrawCenteredText(arg1, 0x14, temp_v1->unk_08[0]->unk_214->unk_014);
+        BattlePrep_DrawCenteredText(arg1, 0x14, temp_v1->unk_08[0]->trainerData->unk_014);
     } else {
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-        BattlePrep_DrawCenteredText(arg1, 6, temp_v1->unk_08[0]->unk_214->unk_220);
+        BattlePrep_DrawCenteredText(arg1, 6, temp_v1->unk_08[0]->trainerData->unk_220);
     }
 }
 
@@ -338,7 +338,7 @@ s32 BattlePrep_ShowSingleBattleIntro(void) {
 
     Team_LoadOpponentPreset();
     BattlePrepRoster_Init(&gUIState, gBattleGraphics.unk_0004->unk_0C);
-    BattlePrepRoster_Load(&gUIState, gBattleGraphics.unk_B40C);
+    BattlePrepRoster_Load(&gUIState, gBattleGraphics.portraitsArchive);
     Audio_PlayMusicIfChanged(0x31);
 
     for (i = 0; i < 16; i++) {
@@ -389,7 +389,7 @@ void BattlePrep_UpdateRoundIntroFrame(void) {
 
 void BattlePrep_InitRoundIntroScene(void) {
     BattlePrep_InitBannerScene(&gErrorScreenState);
-    BattlePrep_InitBadgeCarouselScene(&gErrorScreenAnim, gBattleGraphics.unk_B408, gBattleGraphics.unk_B40C);
+    BattlePrep_InitBadgeCarouselScene(&gErrorScreenAnim, gBattleGraphics.battleArchive, gBattleGraphics.portraitsArchive);
     BattlePrepRoster_Init(&gUIState, gBattleGraphics.unk_0004->unk_0C);
 }
 
@@ -405,7 +405,7 @@ s32 BattlePrep_ShowRoundIntro(void) {
 
     Team_LoadOpponentPreset();
     BattlePrep_InitRoundIntroScene();
-    BattlePrepRoster_Load(&gUIState, gBattleGraphics.unk_B40C);
+    BattlePrepRoster_Load(&gUIState, gBattleGraphics.portraitsArchive);
 
     for (i = 0; i < 16; i++) {
         BattlePrep_UpdateRoundIntroFrame();
@@ -466,7 +466,7 @@ void BattlePrep_CheckPikachuNeedsSurf(void) {
     if (!(gSessionContext.sessionFlags & 2) && (gSessionContext.inRound2 == 1) && (gSessionContext.unk_0000 == 6) &&
         (gSessionContext.unk_0002 == 3)) {
         var_a1 = gSessionContext.battleSides[0].unk_08[0];
-        temp_v1 = var_a1->unk_214;
+        temp_v1 = var_a1->trainerData;
 
         for (i = 0; i < temp_v1->unk_002; i++) {
             s32 tmp = (temp_v1->unk_028[i].unk_52 & 0x70) >> 4;
@@ -514,7 +514,7 @@ void BattlePrep_InitRoundIntroSubScenes(void) {
     s32 tmp;
 
     BattlePrepTeamIcons_Init(&gUIElementA);
-    BattlePrep_InitBadgeCarouselScene(&gErrorScreenAnim, gBattleGraphics.unk_B408, gBattleGraphics.unk_B40C);
+    BattlePrep_InitBadgeCarouselScene(&gErrorScreenAnim, gBattleGraphics.battleArchive, gBattleGraphics.portraitsArchive);
     BattlePrepBadgeAward_Init(&gUIElementB);
 
     if (gBattleGraphics.unk_0003 != 0) {
@@ -533,7 +533,7 @@ void BattlePrep_InitRoundIntroSubScenes(void) {
 void BattlePrep_RunNormalRoundIntro(void) {
     s32 i;
 
-    BattlePrepTeamIcons_Load(&gUIElementA, gBattleGraphics.unk_B40C);
+    BattlePrepTeamIcons_Load(&gUIElementA, gBattleGraphics.portraitsArchive);
 
     for (i = 0; i < 8; i++) {
         BattlePrep_UpdateRoundIntroScene();
@@ -562,7 +562,7 @@ void BattlePrep_RunNormalRoundIntro(void) {
     BattlePrepStarBurst_Launch(&gUIBarA, &gBattleGraphics.unk_0008[0x1C], &gBattleGraphics.unk_0008[0x20]);
     BattlePrepStarBurst_Launch(&gUIBarB, &gBattleGraphics.unk_0008[0x1E], &gBattleGraphics.unk_0008[0x20]);
 
-    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.unk_5A0 != 0)) {
+    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 }
@@ -570,7 +570,7 @@ void BattlePrep_RunNormalRoundIntro(void) {
 void BattlePrep_RunFinalRoundIntro(void) {
     s32 i;
 
-    BattlePrepTeamIcons_Load(&gUIElementA, gBattleGraphics.unk_B40C);
+    BattlePrepTeamIcons_Load(&gUIElementA, gBattleGraphics.portraitsArchive);
 
     for (i = 0; i < 8; i++) {
         BattlePrep_UpdateRoundIntroScene();
@@ -606,7 +606,7 @@ void BattlePrep_RunFinalRoundIntro(void) {
         Audio_PlaySoundEffectById(0x28);
     }
 
-    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.unk_5A0 != 0)) {
+    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 }
@@ -619,7 +619,7 @@ void BattlePrep_RunBadgeCarouselIntro(void) {
     tmp = gBattleGraphics.unk_0001 == 0;
     BattlePrep_InitBadgeCarousel(&gErrorScreenAnim, gBattleGraphics.unk_0008, tmp + 1);
 
-    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.unk_5A0 != 0)) {
+    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
@@ -632,7 +632,7 @@ void BattlePrep_RunBallBurstTransition(void) {
     s32 i;
     s32 j;
 
-    while ((gUIBarA.unk_5A0 != 0) || (gUIBarB.unk_5A0 != 0)) {
+    while ((gUIBarA.state != 0) || (gUIBarB.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
@@ -1229,8 +1229,8 @@ s32 BattlePrep_RunRulesScreen(s32 arg0, UNUSED s32 arg1) {
     gBattleMessageTable = Text_GetStringTable(0x1B);
     PokeIcon_OpenModelArchive();
 
-    gBattleGraphics.unk_B408 = BinArchive_Open(0x898000, NULL, 1, 1);
-    gBattleGraphics.unk_B40C = ASSET_LOAD2(battle_portraits, 1, 1);
+    gBattleGraphics.battleArchive = BinArchive_Open(0x898000, NULL, 1, 1);
+    gBattleGraphics.portraitsArchive = ASSET_LOAD2(battle_portraits, 1, 1);
 
     StageContext_Activate(sp2C);
     BattlePrep_InitScene();

@@ -114,7 +114,7 @@ typedef struct unk_D_86B0FA50 {
     /* 0x94 */ char unk94[0x4];
     /* 0x98 */ f32 unk_98;
     /* 0x9C */ s16 unk_9C;
-    /* 0x9E */ s16 unk_9E;
+    /* 0x9E */ s16 width;
     /* 0xA0 */ s16 unk_A0;
     /* 0xA4 */ f32 unk_A4;
     /* 0xA8 */ f32 unk_A8;

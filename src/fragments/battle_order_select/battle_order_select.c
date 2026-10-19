@@ -386,15 +386,15 @@ void BattleMenu_DrawOrderSelectPanel_PartyGrid(unk_D_848037A0* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(4, 0);
 
-    for (i = 0; i < arg0->unk_0017; i++) {
+    for (i = 0; i < arg0->partySize; i++) {
         temp_v0_4 = BattleMenu_IsSlotAlreadySelected(arg0, i);
-        if ((arg0->unk_0009 != 0) && (temp_v0_4 != 0)) {
+        if ((arg0->highlightSelected != 0) && (temp_v0_4 != 0)) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
         temp_s1_2 = temp_s7 + ((i % 3) * 0x9A) + 0x4C;
         temp_s2_3 = temp_fp + ((i / 3) * 0x2A) + 8;
         Font_Printf(temp_s1_2, temp_s2_3, arg0->unk_0018[i].unk_30);
-        if ((arg0->unk_0009 != 0) && (temp_v0_4 != 0)) {
+        if ((arg0->highlightSelected != 0) && (temp_v0_4 != 0)) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         }
         Font_Printf(temp_s1_2, temp_s2_3 + 0x14, "%s%d", Text_GetString(NULL, 0, gPanelStrings, 0x15),
@@ -403,13 +403,13 @@ void BattleMenu_DrawOrderSelectPanel_PartyGrid(unk_D_848037A0* arg0) {
 
     Font_EndTexturedTextRendering();
 
-    if (arg0->unk_0007 > 0) {
+    if (arg0->backdropTimer > 0) {
         if (arg0->unk_0003 == 0) {
             Gfx_DrawRgba16ImageRegion(gPanelTextureAtlas, 0xC8, 0x81, 0x15F, 0x53);
         } else {
             Gfx_DrawRgba16ImageRegion(gPanelTextureAtlas, 0x50, 0xF0, 0x15F, 0x53);
         }
-        arg0->unk_0007 -= 1;
+        arg0->backdropTimer -= 1;
     }
 }
 
@@ -452,7 +452,7 @@ void BattleMenu_DrawOrderSelectPanel_ConfirmPrompt(unk_D_848037A0* arg0) {
         Font_Printf(var_s1 + 0x4F, var_s2 + 0x30, Text_GetString(NULL, 0, gMsgBank_Common, 5));
         Font_Printf(var_s1 + 0xAF, var_s2 + 0x30, Text_GetString(NULL, 0, gMsgBank_Common, 6));
         Font_EndTexturedTextRendering();
-        arg0->unk_0007 = 2;
+        arg0->backdropTimer = 2;
     } else {
         var_s1 = arg0->unk_0012;
         var_s2 = arg0->unk_0014;
@@ -511,7 +511,7 @@ void BattleMenu_DrawOrderSelectPanel_LevelCapNotice(unk_D_848037A0* arg0) {
         Text_SetNumberToken(3, sp2C);
         Font_Printf(sp34 + 0x10, sp30 + 0xB, Text_GetString(sp38, sizeof(sp38), gMsgBank_Common, 7));
         Font_EndTexturedTextRendering();
-        arg0->unk_0007 = 2;
+        arg0->backdropTimer = 2;
     } else {
         sp34 = arg0->unk_0012;
         sp30 = arg0->unk_0014;
@@ -542,7 +542,7 @@ void BattleMenu_DrawOrderSelectPanel_Ready(unk_D_848037A0* arg0) {
             sp3C = 0x50; sp38 = 0xF0;
         }
         // clang-format on
-        arg0->unk_0007 = 0;
+        arg0->backdropTimer = 0;
         BattleMenu_DrawOrderSelectPanel_PartyGrid(arg0);
         BattleMenu_DrawBorderedPanel(sp3C, sp38, 0x15F, 0x53, arg0->unk_0001);
         Font_BeginTranslucentTextRendering();
@@ -669,13 +669,13 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    if (arg0->unk_0007 > 0) {
+    if (arg0->backdropTimer > 0) {
         if (arg0->unk_0003 == 0) {
             Gfx_DrawRgba16ImageRegion(gPanelTextureAtlas, 0xC8, 0x81, 0x15F, 0x53);
         } else {
             Gfx_DrawRgba16ImageRegion(gPanelTextureAtlas, 0x50, 0xF0, 0x15F, 0x53);
         }
-        arg0->unk_0007--;
+        arg0->backdropTimer--;
     }
 }
 
@@ -706,7 +706,7 @@ void BattleMenu_DrawOrderSelectPanel(unk_D_848037A0* arg0) {
             BattleMenu_DrawConfirmButtonLabel(arg0);
         }
 
-        switch (arg0->unk_0005) {
+        switch (arg0->mode) {
             case 0:
                 BattleMenu_DrawOrderSelectPanel_PartyGrid(arg0);
                 break;
@@ -731,7 +731,7 @@ void BattleMenu_DrawOrderSelectPanel(unk_D_848037A0* arg0) {
         if (arg0->unk_0006 != 0) {
             arg0->unk_0006--;
         }
-    } else if (arg0->unk_0005 == 3) {
+    } else if (arg0->mode == 3) {
         BattleMenu_DrawOrderSelectPanel_Ready(arg0);
     }
 }
@@ -751,7 +751,7 @@ void BattleMenu_UpdateComPanelAutoInput(void) {
         if ((gCurrentSessionContext->unk_0001 != 0) && (gCurrentSessionContext->unk_0001 != 8)) {
             var_v0 = 3;
         } else {
-            var_v0 = gPanels[i].unk_0017;
+            var_v0 = gPanels[i].partySize;
         }
         gPanelController.buttonPressed = 0;
         if (gInputTimerValue == 0) {
@@ -775,7 +775,7 @@ s32 BattleMenu_IsSlotAlreadySelected(unk_D_848037A0* arg0, s8 arg1) {
     s8 temp_v1;
     unk_D_848037A0* var_a2;
 
-    for (i = 0; i < arg0->unk_000B; i++) {
+    for (i = 0; i < arg0->selectedCount; i++) {
         if (arg1 == arg0->unk_000C[i]) {
             return 1;
         }
@@ -789,32 +789,32 @@ s32 BattleMenu_PicksExceedLevelCap(unk_D_848037A0* arg0) {
     s32 var_v0 = 0;
 
     if (!(arg0->unk_001C->unk_000 & 2)) {
-        for (i = 0; i < arg0->unk_000B; i++) {
+        for (i = 0; i < arg0->selectedCount; i++) {
             var_v0 += arg0->unk_0018[arg0->unk_000C[i]].unk_24;
         }
 
         if (gCurrentSessionContext->unk_0001 == 3) {
-            if ((arg0->unk_000B == 2) && (var_v0 >= 0x6A)) {
+            if ((arg0->selectedCount == 2) && (var_v0 >= 0x6A)) {
                 return 1;
             }
 
-            if ((arg0->unk_000B == 3) && (var_v0 >= 0x9C)) {
+            if ((arg0->selectedCount == 3) && (var_v0 >= 0x9C)) {
                 return 1;
             }
         } else if (gCurrentSessionContext->unk_0001 == 4) {
-            if ((arg0->unk_000B == 2) && (var_v0 >= 0x38)) {
+            if ((arg0->selectedCount == 2) && (var_v0 >= 0x38)) {
                 return 1;
             }
 
-            if ((arg0->unk_000B == 3) && (var_v0 >= 0x51)) {
+            if ((arg0->selectedCount == 3) && (var_v0 >= 0x51)) {
                 return 1;
             }
         } else if (gCurrentSessionContext->unk_0001 == 5) {
-            if ((arg0->unk_000B == 2) && (var_v0 >= 0x24)) {
+            if ((arg0->selectedCount == 2) && (var_v0 >= 0x24)) {
                 return 1;
             }
 
-            if ((arg0->unk_000B == 3) && (var_v0 >= 0x33)) {
+            if ((arg0->selectedCount == 3) && (var_v0 >= 0x33)) {
                 return 1;
             }
         }
@@ -829,26 +829,26 @@ s32 BattleMenu_IsOrderSelectionComplete(unk_D_848037A0* arg0) {
     if ((gCurrentSessionContext->unk_0001 != 0) && (gCurrentSessionContext->unk_0001 != 8)) {
         var_v1 = 3;
     } else if (arg0->unk_001C->unk_000 & 2) {
-        var_v1 = arg0->unk_0017;
+        var_v1 = arg0->partySize;
     } else {
-        var_v1 = arg0->unk_0017;
+        var_v1 = arg0->partySize;
         if ((arg0->unk_0002 != -1) && (var_v1 >= 4)) {
             var_v1 = 3;
         }
     }
 
-    return arg0->unk_000B >= var_v1;
+    return arg0->selectedCount >= var_v1;
 }
 
 void BattleMenu_SelectOrderSlot(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
-    if (arg1 >= arg0->unk_0017) {
+    if (arg1 >= arg0->partySize) {
         Audio_PlaySoundEffectById(8);
         return;
     }
 
     if (arg2 != 0) {
         Audio_PlaySoundEffectById(1);
-        arg0->unk_0005 = 4;
+        arg0->mode = 4;
         arg0->unk_0006 = 2;
         arg0->unk_0016 = arg1;
         return;
@@ -859,24 +859,24 @@ void BattleMenu_SelectOrderSlot(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
         return;
     }
 
-    arg0->unk_000C[arg0->unk_000B] = arg1;
-    arg0->unk_000B++;
+    arg0->unk_000C[arg0->selectedCount] = arg1;
+    arg0->selectedCount++;
     BattleMenu_AppendOrderSlotIcon(arg0->unk_0003, arg0->unk_0001);
 
-    if (arg0->unk_0009 != 0) {
+    if (arg0->highlightSelected != 0) {
         arg0->unk_0006 = 2;
     }
 
     if (BattleMenu_PicksExceedLevelCap(arg0) != 0) {
         Audio_PlaySoundEffectById(8);
-        arg0->unk_0005 = 2;
+        arg0->mode = 2;
         arg0->unk_0006 = 2;
         return;
     }
 
     Audio_PlaySoundEffectById(2);
     if (BattleMenu_IsOrderSelectionComplete(arg0) != 0) {
-        arg0->unk_0005 = 1;
+        arg0->mode = 1;
         arg0->unk_000A = 0;
         arg0->unk_0006 = 2;
     }
@@ -885,12 +885,12 @@ void BattleMenu_SelectOrderSlot(unk_D_848037A0* arg0, s8 arg1, s32 arg2) {
 void BattleMenu_UndoLastOrderSelection(unk_D_848037A0* arg0) {
     unk_D_848037A0* temp_v0;
 
-    if (arg0->unk_000B > 0) {
-        arg0->unk_000B = 0;
+    if (arg0->selectedCount > 0) {
+        arg0->selectedCount = 0;
 
         BattleMenu_ResetOrderSlotIcons(arg0->unk_0003);
 
-        if (arg0->unk_0009 != 0) {
+        if (arg0->highlightSelected != 0) {
             arg0->unk_0006 = 2;
         }
 
@@ -898,9 +898,9 @@ void BattleMenu_UndoLastOrderSelection(unk_D_848037A0* arg0) {
 
         if (arg0->unk_0002 != -1) {
             temp_v0 = &gPanels[arg0->unk_0002];
-            temp_v0->unk_0005 = 0;
-            temp_v0->unk_000B = 0;
-            temp_v0->unk_0009 = 0;
+            temp_v0->mode = 0;
+            temp_v0->selectedCount = 0;
+            temp_v0->highlightSelected = 0;
             temp_v0->unk_0006 = 2;
         }
     }
@@ -911,12 +911,12 @@ void BattleMenu_HandleOrderSelectPanel_PartyInput(Controller* arg0, unk_D_848037
 
     if (BTN_IS_PRESSED(arg0, BTN_R)) {
         // clang-format off
-        arg1->unk_0009 = 1; arg1->unk_0006 = 2;
+        arg1->highlightSelected = 1; arg1->unk_0006 = 2;
         // clang-format on
     }
 
     if (arg0->unk_0A & 0x10) {
-        arg1->unk_0009 = 0;
+        arg1->highlightSelected = 0;
         arg1->unk_0006 = 2;
     }
 
@@ -941,11 +941,11 @@ void BattleMenu_HandleOrderSelectPanel_ConfirmInput(Controller* arg0, unk_D_8480
     unk_D_848037A0* temp_v0_2;
 
     if (BTN_IS_PRESSED(arg0, BTN_R)) {
-        arg1->unk_0009 = 1;
+        arg1->highlightSelected = 1;
         arg1->unk_0006 = 2;
     }
     if (arg0->unk_0A & 0x10) {
-        arg1->unk_0009 = 0;
+        arg1->highlightSelected = 0;
         arg1->unk_0006 = 2;
     }
 
@@ -956,21 +956,21 @@ void BattleMenu_HandleOrderSelectPanel_ConfirmInput(Controller* arg0, unk_D_8480
     } else if (BTN_IS_PRESSED(arg0, BTN_A)) {
         if (arg1->unk_000A == 0) {
             arg1->unk_0006 = 2;
-            arg1->unk_0005 = 3;
+            arg1->mode = 3;
             arg1->unk_0008 = 0;
             Audio_PlaySoundEffectById(9);
         } else {
             arg1->unk_0006 = 2;
-            arg1->unk_0005 = 0;
-            arg1->unk_000B = 0;
-            arg1->unk_0009 = 0;
+            arg1->mode = 0;
+            arg1->selectedCount = 0;
+            arg1->highlightSelected = 0;
             BattleMenu_ResetOrderSlotIcons(arg1->unk_0003);
             Audio_PlaySoundEffectById(3);
             if (arg1->unk_0002 != -1) {
                 temp_v0_2 = &gPanels[arg1->unk_0002];
-                temp_v0_2->unk_0005 = 0;
-                temp_v0_2->unk_000B = 0;
-                temp_v0_2->unk_0009 = 0;
+                temp_v0_2->mode = 0;
+                temp_v0_2->selectedCount = 0;
+                temp_v0_2->highlightSelected = 0;
                 temp_v0_2->unk_0006 = 2;
             }
         }
@@ -980,9 +980,9 @@ void BattleMenu_HandleOrderSelectPanel_ConfirmInput(Controller* arg0, unk_D_8480
 
 void BattleMenu_HandleOrderSelectPanel_LevelCapNoticeInput(Controller* arg0, unk_D_848037A0* arg1) {
     if (BTN_IS_PRESSED(arg0, BTN_A | BTN_B)) {
-        arg1->unk_0005 = 0;
-        arg1->unk_000B = 0;
-        arg1->unk_0009 = 0;
+        arg1->mode = 0;
+        arg1->selectedCount = 0;
+        arg1->highlightSelected = 0;
         arg1->unk_0006 = 2;
         BattleMenu_ResetOrderSlotIcons(arg1->unk_0003);
         Audio_PlaySoundEffectById(3);
@@ -1032,9 +1032,9 @@ void BattleMenu_HandleOrderSelectPanel_MonDetailInput(Controller* arg0, unk_D_84
 
     if (var_v0 != 0) {
         if (!(arg0->buttonDown & 0x10)) {
-            arg1->unk_0009 = 0;
+            arg1->highlightSelected = 0;
         }
-        arg1->unk_0005 = 0;
+        arg1->mode = 0;
         arg1->unk_0006 = 2;
     }
 }
@@ -1050,7 +1050,7 @@ s32 BattleMenu_UpdateOrderSelectPanel(s32 arg0, unk_D_848037A0* arg1) {
     }
 
     if (arg0 == 0) {
-        switch (arg1->unk_0005) {
+        switch (arg1->mode) {
             case 0:
                 BattleMenu_HandleOrderSelectPanel_PartyInput(var_a0, arg1);
                 break;
@@ -1164,13 +1164,13 @@ void BattleMenu_CommitOrderSelection(void) {
     while (var_s4-- > 0) {
         temp_s1 = var_s2->unk_001C;
         if (temp_s1->unk_000 & 2) {
-            temp_s1->unk_002 = temp_s1->unk_214->unk_002;
-            _bcopy(temp_s1->unk_214->unk_028, temp_s1->unk_01C, 0x1F8);
+            temp_s1->unk_002 = temp_s1->trainerData->unk_002;
+            _bcopy(temp_s1->trainerData->unk_028, temp_s1->unk_01C, 0x1F8);
         } else {
-            BattleMenu_FillDefaultOrder(var_s2->unk_000C, var_s2->unk_000B);
-            temp_s1->unk_002 = var_s2->unk_000B;
+            BattleMenu_FillDefaultOrder(var_s2->unk_000C, var_s2->selectedCount);
+            temp_s1->unk_002 = var_s2->selectedCount;
 
-            for (i = 0; i < temp_s1->unk_214->unk_002; i++) {
+            for (i = 0; i < temp_s1->trainerData->unk_002; i++) {
                 temp_s1->unk_01C[i] = var_s2->unk_0018[var_s2->unk_000C[i]];
             }
         }
@@ -1191,20 +1191,20 @@ void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, BattleAI_TeamContext* ar
     temp_v1->unk_0001 = arg2->unk_001;
     temp_v1->unk_0002 = arg4;
     temp_v1->unk_0003 = arg3;
-    temp_v1->unk_0005 = 0;
-    temp_v1->unk_000B = 0;
+    temp_v1->mode = 0;
+    temp_v1->selectedCount = 0;
     temp_v1->unk_0006 = 2;
-    temp_v1->unk_0007 = 0;
-    temp_v1->unk_0009 = 0;
+    temp_v1->backdropTimer = 0;
+    temp_v1->highlightSelected = 0;
     temp_v1->unk_000A = 0;
     temp_v1->unk_0012 = arg0;
     temp_v1->unk_0014 = arg1;
-    temp_v1->unk_0017 = arg2->unk_214->unk_002;
-    temp_v1->unk_0018 = arg2->unk_214->unk_028;
+    temp_v1->partySize = arg2->trainerData->unk_002;
+    temp_v1->unk_0018 = arg2->trainerData->unk_028;
     temp_v1->unk_001C = arg2;
 
-    for (i = 0; i < arg2->unk_214->unk_002; i++) {
-        temp_s0 = &arg2->unk_214->unk_028[i];
+    for (i = 0; i < arg2->trainerData->unk_002; i++) {
+        temp_s0 = &arg2->trainerData->unk_028[i];
         Pokemon_PrepareBattleMon(temp_s0);
         temp_s0->unk_06 = gSpeciesBaseStats[temp_s0->posX.posX - 1].unk_06;
         temp_s0->unk_07 = gSpeciesBaseStats[temp_s0->posX.posX - 1].unk_07;

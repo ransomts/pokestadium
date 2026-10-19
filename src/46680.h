@@ -5,7 +5,7 @@
 
 typedef struct unk_D_800FCED8_0000 {
     /* 0x000 */ char unk000[0x166];
-    /* 0x166 */ s16 unk_166;
+    /* 0x166 */ s16 longTermLag;
     /* 0x168 */ char unk168[0x22];
     /* 0x18A */ s16 unk_18A;
     /* 0x18C */ s16 unk_18C;
@@ -30,7 +30,7 @@ typedef struct GbAudioChannelState {
     /* 0x0198 */ unk_D_800FCED8_0198 pcmRingBuffer;
     /* 0x1598 */ unk_D_800FCED8_01598 bitstreamRingBuffer[1];
     /* 0x15A0 */ u32 inputWordCount;
-    /* 0x15A4 */ char unk_15A4[0xFF4];
+    /* 0x15A4 */ char bitstreamRingBufferTail[0xFF4];
     /* 0x2598 */ u16 framesRemaining;
     /* 0x259A */ u16 unk_259A;
     /* 0x259C */ u32 inputWordsRemaining;

@@ -197,7 +197,7 @@ void SushiGame_DrawAllPlateStacks(void) {
     SushiPlayerEntity* ptr;
 
     for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
-        var_s4 = SushiGame_DrawPlateStack(var_s4, i / 2, gPanelColumnX[i], gPanelColumnY[i], ptr->unk_02A);
+        var_s4 = SushiGame_DrawPlateStack(var_s4, i / 2, gPanelColumnX[i], gPanelColumnY[i], ptr->platesEaten);
     }
 
     gDisplayListHead = var_s4;
@@ -380,7 +380,7 @@ void RenderSushiGoRoundUI(void) {
                             var_s4 = 0x1E;
                         }
 
-                        if (ptr->unk_03E < 5) {
+                        if (ptr->comboMultiplier < 5) {
                             Text_SetEnvColor(0xFF, 0xFF, 0xFF, ptr->unk_040.unk_18);
                             Text_SetPrimColor(gPanelTextColors[i].r, gPanelTextColors[i].g, gPanelTextColors[i].b,
                                           ptr->unk_040.unk_18);
@@ -392,7 +392,7 @@ void RenderSushiGoRoundUI(void) {
 
                         Font_Printf((s16)ptr->unk_040.unk_08 + (gPanelColumnX[i] + var_s7),
                                       (gPanelColumnY[i] + var_s4) - (s16)ptr->unk_040.unk_0C, "x%d",
-                                      ptr->unk_03E);
+                                      ptr->comboMultiplier);
                     }
                 }
             }

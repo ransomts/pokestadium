@@ -12,7 +12,7 @@ typedef struct SushiPlateNode {
     /* 0x008 */ struct SushiPlateNode* unk_008;
     /* 0x00C */ Vec3f unk_00C;
     /* 0x018 */ char unk018[0x1B8];
-    /* 0x1D0 */ Vec3f unk_1D0;
+    /* 0x1D0 */ Vec3f carryPos;
 } SushiPlateNode; // size >= 0x1DC
 
 typedef struct unk_D_868084D8_040 {
@@ -72,9 +72,9 @@ typedef struct SushiPlayerEntity {
     /* 0x020 */ s32 unk_020;
     /* 0x024 */ s32 unk_024;
     /* 0x028 */ s16 unk_028;
-    /* 0x02A */ s16 unk_02A;
+    /* 0x02A */ s16 platesEaten;
     /* 0x02C */ s16 unk_02C[9];
-    /* 0x03E */ s16 unk_03E;
+    /* 0x03E */ s16 comboMultiplier;
     /* 0x040 */ SushiNameTag unk_040;
     /* 0x05C */ s32 unk_05C;
     /* 0x060 */ s32 unk_060;
@@ -90,15 +90,15 @@ typedef struct SushiPlayerEntity {
     /* 0x0C4 */ s32 unk_0C4;
     /* 0x0C8 */ f32 unk_0C8;
     /* 0x0CC */ s16 unk_0CC;
-    /* 0x0D0 */ Color_RGBA8_u32 unk_0D0;
-    /* 0x0D4 */ s16 unk_0D4;
+    /* 0x0D0 */ Color_RGBA8_u32 tintColor;
+    /* 0x0D4 */ s16 chewCount;
     /* 0x0D8 */ f32 unk_0D8;
     /* 0x0DC */ unk_D_868084D8* unk_0DC;
     /* 0x0E0 */ s16 unk_0E0;
-    /* 0x0E2 */ s16 unk_0E2;
+    /* 0x0E2 */ s16 pulsePhase;
     /* 0x0E4 */ Fragment2_1GraphNode unk_0E4;
     /* 0x24C */ Fragment2_1GraphNode unk_24C;
-    /* 0x3B4 */ u32* unk_3B4;
+    /* 0x3B4 */ u32* nameTagTexture;
 } SushiPlayerEntity; // size = 0x3B8
 
 typedef struct SushiWorldBasis {

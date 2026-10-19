@@ -126,43 +126,43 @@ void Save_LoadWithRepair(s32 arg0, s32 arg1) {
         case 18:
             sp30 = 3;
             sp34 = 0xE0;
-            sp24 = (u8*)&gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1];
-            sp20 = (u8*)&gGbsSaveBanks[3].unk_08.unk3->unk_34E0[arg1];
+            sp24 = (u8*)&gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1];
+            sp20 = (u8*)&gGbsSaveBanks[3].unk_08.unk3->gamePakItemBoxes[arg1];
             break;
 
         case 19:
             sp30 = 2;
             sp34 = 0xF60;
-            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_0DC0;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_0DC0;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace;
+            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->victoryPalace;
             break;
 
         case 20:
             sp30 = 2;
             sp34 = 0x28;
-            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EA0;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_1EA0;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->options;
+            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->options;
             break;
 
         case 21:
             sp30 = 2;
             sp34 = 0x180;
-            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1D20;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_1D20;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->continueRecord;
+            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->continueRecord;
             break;
 
         case 22:
             sp30 = 2;
             sp34 = 0x13B8;
-            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EC8;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_1EC8;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->galleryPhotos;
+            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->galleryPhotos;
             break;
 
         case 23:
             sp30 = 2;
             sp34 = 0xB84;
-            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->unk_3280;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->unk_3280;
+            sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->galleryCameras;
+            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->galleryCameras;
             break;
     }
 
@@ -218,27 +218,27 @@ s32 Save_IsTypedRecordFlagSet(s32 arg0, s32 arg1, s16 arg2) {
             break;
 
         case 18:
-            var_v1 = (gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.posX & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.posX & arg2) != 0;
             break;
 
         case 19:
-            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_0DC0.unk_000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_000 & arg2) != 0;
             break;
 
         case 20:
-            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_1EA0.posX & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->options.posX & arg2) != 0;
             break;
 
         case 21:
-            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_1D20.unk_000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->continueRecord.unk_000 & arg2) != 0;
             break;
 
         case 22:
-            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_1EC8.unk_0000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->galleryPhotos.unk_0000 & arg2) != 0;
             break;
 
         case 23:
-            var_v1 = (gGbsSaveBanks[2].rotation.unk2->unk_3280.unk_0000 & arg2) != 0;
+            var_v1 = (gGbsSaveBanks[2].rotation.unk2->galleryCameras.unk_0000 & arg2) != 0;
             break;
     }
 
@@ -259,27 +259,27 @@ void Save_MarkRecordDirty(s32 arg0, s32 arg1, s16 arg2) {
             break;
 
         case 18:
-            gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.posX |= arg2;
+            gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.posX |= arg2;
             break;
 
         case 19:
-            gGbsSaveBanks[2].rotation.unk2->unk_0DC0.unk_000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_000 |= arg2;
             break;
 
         case 20:
-            gGbsSaveBanks[2].rotation.unk2->unk_1EA0.posX |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->options.posX |= arg2;
             break;
 
         case 21:
-            gGbsSaveBanks[2].rotation.unk2->unk_1D20.unk_000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->continueRecord.unk_000 |= arg2;
             break;
 
         case 22:
-            gGbsSaveBanks[2].rotation.unk2->unk_1EC8.unk_0000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->galleryPhotos.unk_0000 |= arg2;
             break;
 
         case 23:
-            gGbsSaveBanks[2].rotation.unk2->unk_3280.unk_0000 |= arg2;
+            gGbsSaveBanks[2].rotation.unk2->galleryCameras.unk_0000 |= arg2;
             break;
     }
 }
@@ -301,27 +301,27 @@ void Save_CommitTypedRecord(s32 arg0, s32 arg1) {
             break;
 
         case 18:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1], 0xE0, 3);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1], 0xE0, 3);
             break;
 
         case 19:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_0DC0, 0xF60, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace, 0xF60, 2);
             break;
 
         case 20:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EA0, 0x28, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->options, 0x28, 2);
             break;
 
         case 21:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1D20, 0x180, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->continueRecord, 0x180, 2);
             break;
 
         case 22:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EC8, 0x13B8, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->galleryPhotos, 0x13B8, 2);
             break;
 
         case 23:
-            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_3280, 0xB84, 2);
+            Save_CommitRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->galleryCameras, 0xB84, 2);
             break;
     }
 }
@@ -340,27 +340,27 @@ void Save_InvalidateTypedRecord(s32 arg0, s32 arg1) {
             break;
 
         case 18:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1], 0xE0, 3);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1], 0xE0, 3);
             break;
 
         case 19:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_0DC0, 0xF60, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace, 0xF60, 2);
             break;
 
         case 20:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EA0, 0x28, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->options, 0x28, 2);
             break;
 
         case 21:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1D20, 0x180, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->continueRecord, 0x180, 2);
             break;
 
         case 22:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EC8, 0x13B8, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->galleryPhotos, 0x13B8, 2);
             break;
 
         case 23:
-            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_3280, 0xB84, 2);
+            Save_InvalidateRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->galleryCameras, 0xB84, 2);
             break;
     }
 }
@@ -379,27 +379,27 @@ void Save_RestoreTypedRecord(s32 arg0, s32 arg1) {
             break;
 
         case 18:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1], 0xE0, 3);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1], 0xE0, 3);
             break;
 
         case 19:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_0DC0, 0xF60, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace, 0xF60, 2);
             break;
 
         case 20:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EA0, 0x28, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->options, 0x28, 2);
             break;
 
         case 21:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1D20, 0x180, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->continueRecord, 0x180, 2);
             break;
 
         case 22:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_1EC8, 0x13B8, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->galleryPhotos, 0x13B8, 2);
             break;
 
         case 23:
-            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->unk_3280, 0xB84, 2);
+            Save_RestoreRecord((u8*)&gGbsSaveBanks[2].rotation.unk2->galleryCameras, 0xB84, 2);
             break;
     }
 }
@@ -431,36 +431,36 @@ void Save_ClearTypedRecord(s32 arg0, s32 arg1) {
             break;
 
         case 18:
-            sp30 = &gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1];
+            sp30 = &gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1];
             Save_ClearRecord(sp30, 0xE0, 3);
             sp30->posX.unk_01 = 0x50;
             break;
 
         case 19:
-            sp2C = &gGbsSaveBanks[2].rotation.unk2->unk_0DC0;
+            sp2C = &gGbsSaveBanks[2].rotation.unk2->victoryPalace;
             Save_ClearRecord(sp2C, 0xF60, 2);
             sp2C->unk_000 |= 1;
             break;
 
         case 20:
-            sp28 = &gGbsSaveBanks[2].rotation.unk2->unk_1EA0;
+            sp28 = &gGbsSaveBanks[2].rotation.unk2->options;
             Save_ClearRecord(sp28, 0x28, 2);
             sp28->posX |= 1;
             break;
 
         case 21:
-            sp24 = &gGbsSaveBanks[2].rotation.unk2->unk_1D20;
+            sp24 = &gGbsSaveBanks[2].rotation.unk2->continueRecord;
             Save_ClearRecord(sp24, 0x180, 2);
             break;
 
         case 22:
-            sp20 = &gGbsSaveBanks[2].rotation.unk2->unk_1EC8;
+            sp20 = &gGbsSaveBanks[2].rotation.unk2->galleryPhotos;
             Save_ClearRecord(sp20, 0x13B8, 2);
             sp20->unk_0000 |= 1;
             break;
 
         case 23:
-            sp1C = &gGbsSaveBanks[2].rotation.unk2->unk_3280;
+            sp1C = &gGbsSaveBanks[2].rotation.unk2->galleryCameras;
             Save_ClearRecord(sp1C, 0xB84, 2);
             sp1C->unk_0000 |= 1;
             break;
@@ -619,7 +619,7 @@ s32 Deck_GetSaveEntryTrainerId(s32 arg0, s32 arg1) {
                 break;
 
             case 18:
-                sp1C = gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_0C;
+                sp1C = gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.unk_0C;
                 break;
         }
     }
@@ -648,7 +648,7 @@ char* Deck_GetSaveEntryName(s32 arg0, s32 arg1, char* arg2) {
                 break;
 
             case 18:
-                var_a1 = &gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_01;
+                var_a1 = &gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.unk_01;
                 break;
         }
 
@@ -699,7 +699,7 @@ void Deck_SetSaveEntryTrainerIdAndName(s32 arg0, s32 arg1, s32 arg2, char* arg3,
             break;
 
         case 18:
-            temp_v0_3 = &gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1];
+            temp_v0_3 = &gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1];
             if (arg4 >= 0) {
                 temp_v0_3->posX.unk_0C = arg4;
             }
@@ -728,7 +728,7 @@ s16 Deck_GetSaveEntryCount(s32 arg0, s32 arg1) {
             break;
 
         case 18:
-            var_v1 = gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_0E;
+            var_v1 = gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.unk_0E;
             break;
 
         case 19:
@@ -762,7 +762,7 @@ void Deck_SetSaveEntryCount(s32 arg0, s32 arg1, s32 arg2) {
                 break;
 
             case 18:
-                gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_0E = arg2;
+                gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.unk_0E = arg2;
                 break;
         }
 
@@ -790,7 +790,7 @@ void Deck_IncrementSaveEntryCount(s32 arg0, s32 arg1) {
                 break;
 
             case 18:
-                gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].posX.unk_0E = sp1C + 1;
+                gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.unk_0E = sp1C + 1;
                 break;
         }
         Save_MarkRecordDirty(arg0, arg1, 2);
@@ -813,20 +813,20 @@ s32 Deck_ReadSaveEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
                 break;
 
             case 18:
-                *(unk_D_800AE4E8_004_3_34E0_010*)arg3 = gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].unk_10[arg2];
+                *(unk_D_800AE4E8_004_3_34E0_010*)arg3 = gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].unk_10[arg2];
                 break;
 
             case 19:
-                *(unk_D_800AE4E8_004_2_0DC0_002*)arg3 = gGbsSaveBanks[2].rotation.unk2->unk_0DC0.unk_002[arg2];
+                *(unk_D_800AE4E8_004_2_0DC0_002*)arg3 = gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_002[arg2];
                 break;
 
             case 22:
-                _bcopy(&gGbsSaveBanks[2].rotation.unk2->unk_1EC8.unk_0002[arg2], arg3,
+                _bcopy(&gGbsSaveBanks[2].rotation.unk2->galleryPhotos.unk_0002[arg2], arg3,
                        sizeof(unk_D_800AE4E8_004_2_1EC8_0002));
                 break;
 
             case 23:
-                _bcopy(&gGbsSaveBanks[2].rotation.unk2->unk_3280.unk_0002[arg2], arg3,
+                _bcopy(&gGbsSaveBanks[2].rotation.unk2->galleryCameras.unk_0002[arg2], arg3,
                        sizeof(unk_D_800AE4E8_004_2_1EC8_0002));
                 break;
         }
@@ -852,16 +852,16 @@ s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
                 GbSave_SaveBattleMonRecord(arg3, &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_010[arg2]);
                 break;
             case 18:
-                gGbsSaveBanks[3].rotation.unk3->unk_34E0[arg1].unk_10[arg2] = *(unk_D_800AE4E8_004_3_34E0_010*)arg3;
+                gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].unk_10[arg2] = *(unk_D_800AE4E8_004_3_34E0_010*)arg3;
                 break;
             case 19:
-                gGbsSaveBanks[2].rotation.unk2->unk_0DC0.unk_002[arg2] = *(unk_D_800AE4E8_004_2_0DC0_002*)arg3;
+                gGbsSaveBanks[2].rotation.unk2->victoryPalace.unk_002[arg2] = *(unk_D_800AE4E8_004_2_0DC0_002*)arg3;
                 break;
             case 22:
-                _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->unk_1EC8.unk_0002[arg2], 0x8C);
+                _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->galleryPhotos.unk_0002[arg2], 0x8C);
                 break;
             case 23:
-                _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->unk_3280.unk_0002[arg2], 0x8C);
+                _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->galleryCameras.unk_0002[arg2], 0x8C);
                 break;
         }
 
@@ -877,77 +877,77 @@ s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
 }
 
 void Save_GetOptions(PlayerName* arg0) {
-    *arg0 = gGbsSaveBanks[2].rotation.unk2->unk_1EA0.rotation;
+    *arg0 = gGbsSaveBanks[2].rotation.unk2->options.rotation;
 }
 
 void Save_SetOptions(PlayerName* arg0) {
-    if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->unk_1EA0.rotation, 8) != 0) {
-        gGbsSaveBanks[2].rotation.unk2->unk_1EA0.rotation = *arg0;
+    if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->options.rotation, 8) != 0) {
+        gGbsSaveBanks[2].rotation.unk2->options.rotation = *arg0;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
 
 void Save_GetModeSettings(SessionModeSettings* arg0, s16 arg1) {
-    *arg0 = gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1];
+    *arg0 = gGbsSaveBanks[2].rotation.unk2->options.unk_0C[arg1];
 }
 
 void Save_SetModeSettings(SessionModeSettings* arg0, s16 arg1) {
-    if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1], sizeof(SessionModeSettings)) != 0) {
-        gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_0C[arg1] = *arg0;
+    if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->options.unk_0C[arg1], sizeof(SessionModeSettings)) != 0) {
+        gGbsSaveBanks[2].rotation.unk2->options.unk_0C[arg1] = *arg0;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
 
 void Save_GetOptionsField02(u16* arg0) {
-    *arg0 = gGbsSaveBanks[2].rotation.unk2->unk_1EA0.posY;
+    *arg0 = gGbsSaveBanks[2].rotation.unk2->options.posY;
 }
 
 void Save_SetOptionsField02(u16* arg0) {
     u16 tmp = *arg0;
     unk_D_800AE4E8_004_2* temp_v1 = gGbsSaveBanks[2].rotation.unk2;
 
-    if (temp_v1->unk_1EA0.posY != tmp) {
-        temp_v1->unk_1EA0.posY = tmp;
+    if (temp_v1->options.posY != tmp) {
+        temp_v1->options.posY = tmp;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
 
 s32 Save_GetOptionsField1E(void) {
-    return gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_1E;
+    return gGbsSaveBanks[2].rotation.unk2->options.unk_1E;
 }
 
 void Save_SetOptionsField1E(u8 arg0) {
     unk_D_800AE4E8_004_2* temp_v0 = gGbsSaveBanks[2].rotation.unk2;
 
-    if (temp_v0->unk_1EA0.unk_1E != arg0) {
-        temp_v0->unk_1EA0.unk_1E = arg0;
+    if (temp_v0->options.unk_1E != arg0) {
+        temp_v0->options.unk_1E = arg0;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
 
 s32 Save_GetOptionsField1F(void) {
-    return gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_1F;
+    return gGbsSaveBanks[2].rotation.unk2->options.unk_1F;
 }
 
 void Save_SetOptionsField1F(u8 arg0) {
     unk_D_800AE4E8_004_2* temp_v0 = gGbsSaveBanks[2].rotation.unk2;
 
-    if (temp_v0->unk_1EA0.unk_1F != arg0) {
-        temp_v0->unk_1EA0.unk_1F = arg0;
+    if (temp_v0->options.unk_1F != arg0) {
+        temp_v0->options.unk_1F = arg0;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
 
 s32 Save_GetSelectedPokemonId(void) {
-    return gGbsSaveBanks[2].rotation.unk2->unk_1EA0.unk_1C;
+    return gGbsSaveBanks[2].rotation.unk2->options.unk_1C;
 }
 
 void Save_SetSelectedPokemonId(u8 arg0, u8 arg1) {
     s32 temp_v0 = (((arg1 & 1) << 8) | arg0) & 0xFFFF;
     unk_D_800AE4E8_004_2* temp_v1 = gGbsSaveBanks[2].rotation.unk2;
 
-    if (temp_v1->unk_1EA0.unk_1C != temp_v0) {
-        temp_v1->unk_1EA0.unk_1C = temp_v0;
+    if (temp_v1->options.unk_1C != temp_v0) {
+        temp_v1->options.unk_1C = temp_v0;
         Save_MarkRecordDirty(0x14, 0, 2);
     }
 }
@@ -957,11 +957,11 @@ void Session_SaveContinueRecord(ContinueRecord* arg0, PokemonData* arg1, s32 arg
     s32 i;
 
     if (gGbsSaveBanks[2].posX & 1) {
-        temp_v0 = &gGbsSaveBanks[2].rotation.unk2->unk_1D20;
+        temp_v0 = &gGbsSaveBanks[2].rotation.unk2->continueRecord;
 
         temp_v0->unk_000 |= 3;
         temp_v0->unk_002 = *arg0;
-        temp_v0->unk_022 = arg2;
+        temp_v0->partyCount = arg2;
 
         for (i = 0; i < arg2; i++) {
             GbSave_SaveBattleMonRecord(&arg1[i], &temp_v0->unk_024[i]);
@@ -977,11 +977,11 @@ s32 Session_LoadContinueRecord(ContinueRecord* arg0, PokemonData* arg1) {
     s32 i;
 
     if (gGbsSaveBanks[2].posX & 1) {
-        temp_v0 = &gGbsSaveBanks[2].rotation.unk2->unk_1D20;
+        temp_v0 = &gGbsSaveBanks[2].rotation.unk2->continueRecord;
 
         if (temp_v0->unk_000 & 1) {
             *arg0 = temp_v0->unk_002;
-            var_s5 = temp_v0->unk_022;
+            var_s5 = temp_v0->partyCount;
             if (arg1 != NULL) {
                 for (i = 0; i < var_s5; i++) {
                     GbSave_LoadBattleMonRecord(&arg1[i], &temp_v0->unk_024[i]);
@@ -998,7 +998,7 @@ s32 Save_ContinueRecordExists(void) {
     s32 var_v1 = 0;
 
     if (gGbsSaveBanks[2].posX & 1) {
-        unk_D_800AE4E8_004_2_1D20* temp_v0 = &gGbsSaveBanks[2].rotation.unk2->unk_1D20;
+        unk_D_800AE4E8_004_2_1D20* temp_v0 = &gGbsSaveBanks[2].rotation.unk2->continueRecord;
 
         var_v1 = (temp_v0->unk_000 & 1) != 0;
     }

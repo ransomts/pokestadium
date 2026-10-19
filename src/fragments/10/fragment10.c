@@ -301,16 +301,16 @@ void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
             gSPDisplayList(temp_v0++, gHealthBarDL);
 
             if ((gCurrentHudState->unk_004 == 5) && (temp_a3 >= 0x18)) {
-                if (gCurrentHudState->unk_015 == 0) {
-                    gCurrentHudState->unk_015 = 1;
+                if (gCurrentHudState->alertSoundPlayed == 0) {
+                    gCurrentHudState->alertSoundPlayed = 1;
                     if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                         Audio_DispatchSoundBankCommand(0x70005, i + 1, 0);
                     }
                 }
                 gCurrentHudState->unk_190->unk_28 = temp_fs0;
             } else if ((gCurrentHudState->unk_00C == 1) && (gCurrentHudState->unk_004 == 6) && (temp_a3 >= 0x77)) {
-                if (gCurrentHudState->unk_015 == 0) {
-                    gCurrentHudState->unk_015 = 1;
+                if (gCurrentHudState->alertSoundPlayed == 0) {
+                    gCurrentHudState->alertSoundPlayed = 1;
                     if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
                         Audio_DispatchSoundBankCommand(0x70006, i + 1, 0);
                     }
@@ -458,14 +458,14 @@ void DrowzeeGame_JudgePlayerTiming(void) {
             for (i = 0; i < 4; i++) {
                 gCurrentHudState = &gPlayerHudStates[i];
 
-                if ((gCurrentHudState->unk_274 == 0) && (gCurrentHudState->unk_010 > 0)) {
+                if ((gCurrentHudState->pressedThisRound == 0) && (gCurrentHudState->unk_010 > 0)) {
                     if (gDrowzeeGameStatePtr->previousHealthState != 0) {
                         gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_001][7]++;
                     } else {
                         gCurrentHudState->unk_194[gDrowzeeGameStatePtr->unk_000][7]++;
                     }
                 } else {
-                    gCurrentHudState->unk_274 = 0;
+                    gCurrentHudState->pressedThisRound = 0;
                 }
             }
         }
@@ -518,7 +518,7 @@ void DrowzeeGame_JudgePlayerTiming(void) {
                         }
                     }
 
-                    gCurrentHudState->unk_274 = 1;
+                    gCurrentHudState->pressedThisRound = 1;
                     if (gDrowzeeGameStatePtr->unk_16C == 0) {
                         var_a2 = 2;
                     } else {
@@ -885,7 +885,7 @@ void DrowzeeGame_LoadAssets(void) {
         gCurrentHudState->unk_00E = 0x14A;
         gCurrentHudState->unk_010 = gCurrentHudState->unk_00E;
         gCurrentHudState->unk_014 = 0;
-        gCurrentHudState->unk_015 = 0;
+        gCurrentHudState->alertSoundPlayed = 0;
 
         DrowzeeGame_SetPlayerState(gCurrentHudState, 0, 0, 0, 0);
 
@@ -895,7 +895,7 @@ void DrowzeeGame_LoadAssets(void) {
             }
         }
 
-        gCurrentHudState->unk_274 = 0;
+        gCurrentHudState->pressedThisRound = 0;
     }
 
     gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xC3);

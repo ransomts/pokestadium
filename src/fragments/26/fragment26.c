@@ -1228,7 +1228,7 @@ void WidgetTree_InitTextList(unk_func_88001300_034* arg0, s32 arg1, s32 arg2, s3
     arg0->posX.unk_10.posX = arg1;
     arg0->posX.unk_10.posY = arg2;
     arg0->unk_34 = arg3;
-    arg0->unk_35 = arg4;
+    arg0->charSpacing = arg4;
     arg0->unk_36 = arg5;
     arg0->unk_38 = arg6;
     arg0->unk_3C = arg7;
@@ -1262,7 +1262,7 @@ s32 WidgetTree_DrawTextList(unk_func_88001300_034* arg0, s32 arg1, s32 arg2) {
     temp_fp = ((arg0->unk_40 * 0xF) / 5) + 1;
 
     Font_BeginTranslucentTextRendering();
-    Font_SetActive(arg0->unk_34, arg0->unk_35);
+    Font_SetActive(arg0->unk_34, arg0->charSpacing);
     Text_SetEnvColor(arg0->unk_38.r, arg0->unk_38.g, arg0->unk_38.b, arg0->unk_38.a);
     var_s3 = 0;
     if (temp_fp > 0) {
@@ -1280,7 +1280,7 @@ s32 WidgetTree_DrawTextList(unk_func_88001300_034* arg0, s32 arg1, s32 arg2) {
                 } else {
                     var_v1 = temp_v0_3 - 1;
                 }
-                var_s2 += var_v1 + arg0->unk_35;
+                var_s2 += var_v1 + arg0->charSpacing;
             }
 
             var_s3++;

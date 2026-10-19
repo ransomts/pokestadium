@@ -15,7 +15,7 @@ typedef struct HudState {
     /* 0x010 */ s16 unk_010;
     /* 0x012 */ s16 unk_012;
     /* 0x014 */ u8 unk_014;
-    /* 0x015 */ u8 unk_015;
+    /* 0x015 */ u8 alertSoundPlayed;
     /* 0x016 */ char unk016[0x2];
     /* 0x018 */ s32 unk_018;
     /* 0x01C */ u8 unk_01C;
@@ -24,7 +24,7 @@ typedef struct HudState {
     /* 0x028 */ Fragment2_1GraphNode unk_028;
     /* 0x190 */ unk_D_86002F34_alt9* unk_190;
     /* 0x194 */ u16 unk_194[14][8];
-    /* 0x274 */ u8 unk_274;
+    /* 0x274 */ u8 pressedThisRound;
 } HudState; // size = 0x278
 
 typedef struct ResultGameState {

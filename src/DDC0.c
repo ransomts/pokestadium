@@ -112,7 +112,7 @@ void Audio_ThreadMain(void* unused) {
     while (1) {
         Sched_WaitClientQueue(&gAudioThreadData.thread);
         profiler_log_thread4_time();
-        if ((gAudioThreadEnabled != 0) && (gRspTaskManager.unk_A38 < 0x15)) {
+        if ((gAudioThreadEnabled != 0) && (gRspTaskManager.preNmiState < 0x15)) {
             Audio_CreateFrameTaskWrapper(&gAudioMessageQueues[gAudioTaskBufferIndex].task);
             Sched_SubmitTask(&gAudioMessageQueues[gAudioTaskBufferIndex], 0);
         }

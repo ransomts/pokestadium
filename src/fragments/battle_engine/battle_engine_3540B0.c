@@ -27,7 +27,7 @@ void OwnerAnchoredFourStream_Init(void) {
         var_v0->unk_000 = 0;
         var_v0->unk_002 = 0;
         var_v0->unk_004 = 0;
-        var_v0->unk_418 = 0.16f;
+        var_v0->renderScale = 0.16f;
 
         var_a0 = &var_v0->unk_01C[0];
         for (j = 0; j < 15; j++, var_a0++) {
@@ -72,10 +72,10 @@ void OwnerAnchoredFourStream_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
             var_v1->unk_010 = argA;
 
             if (BattleAnim_GetSecondaryOwnerSpecies() == 0xD) {
-                var_v1->unk_418 = 0.08f;
+                var_v1->renderScale = 0.08f;
                 var_v1->unk_00C = argC * 0.5f;
             } else {
-                var_v1->unk_418 = 0.16f;
+                var_v1->renderScale = 0.16f;
                 var_v1->unk_00C = argC;
             }
 
@@ -200,7 +200,7 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
                 guRotateRPY(&sp100, (temp_s0->unk_08 * -360.0f * var_s5->unk_006) / 6.2831854820251465,
                             0x5A - (var_s5->unk_006 * 0x5A), 0.0f);
                 guMtxCatL(&sp100, temp_v0, temp_v0);
-                guScale(&spC0, var_s5->unk_418, var_s5->unk_418, var_s5->unk_418);
+                guScale(&spC0, var_s5->renderScale, var_s5->renderScale, var_s5->renderScale);
                 guMtxCatL(&spC0, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);

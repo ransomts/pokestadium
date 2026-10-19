@@ -76,7 +76,7 @@ typedef struct MiniActor {
     /* 0x270 */ s16 unk_270;		//	???								**	metapod only
     /* 0x272 */ s16 unk_272;        //  colliding with a rock on metapod's minigame ? ;
     /* 0x274 */ union{
-    			f32 unk_274;
+    			f32 pressedThisRound;
     			f32 diggingSpeed;
     			f32 launchForce;
     		};

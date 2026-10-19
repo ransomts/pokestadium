@@ -1158,7 +1158,7 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
                     (s32)ROUND_MAX((gCurrentHealthBar->unk_010 * 100.0f) / gCurrentHealthBar->unk_012) / 250.0f;
 
                 if (gCurrentHealthBar->unk_004 == 0) {
-                    gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.unk_0EC;
+                    gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.anchor4Position;
                 } else if (gCurrentHealthBar->unk_004 == 1) {
                     gCurrentHealthBar->unk_17C->unk_28 *= 1.2f;
                     gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.unk_0DC;
@@ -1175,7 +1175,7 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
                         }
                     }
 
-                    gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.unk_0EC;
+                    gCurrentHealthBar->unk_17C->unk_1C = gCurrentHealthBar->unk_014.anchor4Position;
                 } else if (gCurrentHealthBar->unk_004 == 1) {
                     if (gResultMenuVisible == 0) {
                         if (gCurrentHealthBar->unk_17C->unk_28 > 0.0f) {

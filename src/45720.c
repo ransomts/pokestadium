@@ -240,7 +240,7 @@ void AudioStream_DmaReadChunk(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
 void AudioStream_OpenChannel(GbAudioChannelState* arg0, s32 arg1, s32 arg2) {
     bzero(&arg0->unk_0000, sizeof(unk_D_800FCED8_0000));
 
-    arg0->unk_0000.unk_166 = 0x28;
+    arg0->unk_0000.longTermLag = 0x28;
     arg0->dmaCallback = arg2;
     arg0->sourceBaseAddress = arg1;
 

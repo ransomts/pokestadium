@@ -7,10 +7,10 @@
 
 typedef struct unk_func_88205880_00D0 {
     /* 0x000 */ PokemonData unk_000[20];
-    /* 0x690 */ s32 unk_690;
-    /* 0x694 */ s32 unk_694;
-    /* 0x698 */ s32 unk_698;
-    /* 0x69C */ u32 unk_69C;
+    /* 0x690 */ s32 count;
+    /* 0x694 */ s32 deckType;
+    /* 0x698 */ s32 boxIndex;
+    /* 0x69C */ u32 dirty;
 } unk_func_88205880_00D0; // size = 0x6A0
 
 typedef struct unk_func_88200FA0_030_038 {

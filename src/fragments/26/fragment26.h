@@ -76,7 +76,7 @@ typedef struct unk_func_88001300_034 {
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ u8 unk_34;
-    /* 0x35 */ s8 unk_35;
+    /* 0x35 */ s8 charSpacing;
     /* 0x36 */ u8 unk_36;
     /* 0x38 */ Color_RGBA8 unk_38;
     /* 0x3C */ TextObject* unk_3C;

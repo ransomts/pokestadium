@@ -105,7 +105,7 @@ void SoftReset_Thread(void* unused) {
     // thread loop
     while (1) {
         Sched_WaitClientQueue(&gSoftResetThread.thread); // hangs here until gets a soft reset.
-        if (gRspTaskManager.unk_A38 == 0) {
+        if (gRspTaskManager.preNmiState == 0) {
             continue;
         }
 

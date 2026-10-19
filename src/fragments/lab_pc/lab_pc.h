@@ -43,10 +43,10 @@ typedef struct LabPC_BuildBoxScreenWidget {
     /* 0x0030 */ char unk0030[0x64];
     /* 0x0094 */ unk_func_88201DA0* boxList;
     /* 0x0098 */ LabPC_DetailPanelParams boxListConfig;
-    /* 0x00D0 */ unk_func_88205880_00D0 unk_00D0[12];
-    /* 0x5050 */ unk_func_88205880_00D0 unk_5050[12];
-    /* 0x9FD0 */ unk_func_88205880_00D0* unk_9FD0[12];
-    /* 0xA000 */ unk_func_88205880_00D0* unk_A000[12];
+    /* 0x00D0 */ unk_func_88205880_00D0 gbBoxes[12];
+    /* 0x5050 */ unk_func_88205880_00D0 gamePakBoxes[12];
+    /* 0x9FD0 */ unk_func_88205880_00D0* gbBoxPtrs[12];
+    /* 0xA000 */ unk_func_88205880_00D0* gamePakBoxPtrs[12];
     /* 0xA030 */ unk_func_88205880_A030 boxPointerArrays[2];
 } LabPC_BuildBoxScreenWidget; // size = 0xA048
 
@@ -150,7 +150,7 @@ typedef struct unk_func_8820BE14_02C_070 {
     /* 0x002C */ unk_func_88205880_00D0* unk_002C;
     /* 0x0030 */ s16 unk_0030;
     /* 0x0032 */ char unk0032[0x7];
-    /* 0x0039 */ u8 unk_0039[2][0xC80];
+    /* 0x0039 */ u8 iconTextures[2][0xC80];
 } unk_func_8820BE14_02C_070; // size = 0x193C
 
 typedef struct unk_func_8820BE14_02C_078_034 {

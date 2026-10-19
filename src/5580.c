@@ -122,7 +122,7 @@ void Sched_HandleRdpCompletion(UnkStruct80001380* arg0) {
 }
 
 void Sched_InitClientQueue(UnkStruct80083CA0_2* arg0, s32 arg1, s32 arg2) {
-    arg0->unk_1DC = arg1;
+    arg0->threadState = arg1;
     arg0->unk_1D8 = 0;
     osCreateMesgQueue(&arg0->messageQueue, &arg0->unk_1B0, arg2);
 }
@@ -145,14 +145,14 @@ s32 Sched_TryReceiveClientQueue(UnkStruct80083CA0_2* arg0) {
 }
 
 void Sched_PromotePendingTasks(void) {
-    if ((gRspTaskManager.unk_A18 == NULL) && (gRspTaskManager.unk_A20 != NULL)) {
-        gRspTaskManager.unk_A18 = gRspTaskManager.unk_A20;
+    if ((gRspTaskManager.audioTask == NULL) && (gRspTaskManager.unk_A20 != NULL)) {
+        gRspTaskManager.audioTask = gRspTaskManager.unk_A20;
         gRspTaskManager.unk_A20 = NULL;
     }
 
-    if ((gRspTaskManager.unk_A1C == NULL) && (gRspTaskManager.unk_A24 != NULL)) {
-        gRspTaskManager.unk_A1C = gRspTaskManager.unk_A24;
-        gRspTaskManager.unk_A24 = NULL;
+    if ((gRspTaskManager.gfxTask == NULL) && (gRspTaskManager.nextGfxTask != NULL)) {
+        gRspTaskManager.gfxTask = gRspTaskManager.nextGfxTask;
+        gRspTaskManager.nextGfxTask = NULL;
     }
 }
 
@@ -160,10 +160,10 @@ void Sched_NoOp(void) {
 }
 
 void Sched_NotifyClients(u32 arg0) {
-    GbEmuState* var_s0 = gRspTaskManager.unk_A10;
+    GbEmuState* var_s0 = gRspTaskManager.clients;
 
     while (var_s0 != NULL) {
-        if (gRspTaskManager.unk_A38 == 0) {
+        if (gRspTaskManager.preNmiState == 0) {
             if (var_s0->threadState != 2) {
                 osSendMesg(&var_s0->queue1, arg0, 0);
             }
@@ -184,23 +184,23 @@ UnkStruct80001380* Sched_TryStartTask(UnkStruct80001380* arg0) {
 }
 
 void Sched_StartPendingTask(void) {
-    if (gRspTaskManager.unk_A14 == NULL) {
-        gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A1C);
+    if (gRspTaskManager.activeTask == NULL) {
+        gRspTaskManager.activeTask = Sched_TryStartTask(gRspTaskManager.gfxTask);
     }
 }
 
 s32 Sched_TryYieldActiveTask(void) {
     s32 ret = 0;
 
-    if (gRspTaskManager.unk_A14 != NULL) {
-        ret = Sched_RequestTaskYield(gRspTaskManager.unk_A14);
+    if (gRspTaskManager.activeTask != NULL) {
+        ret = Sched_RequestTaskYield(gRspTaskManager.activeTask);
     }
 
     return ret;
 }
 
 void Sched_HandlePreNMI(void) {
-    GbEmuState* var_s0 = gRspTaskManager.unk_A10;
+    GbEmuState* var_s0 = gRspTaskManager.clients;
 
     while (var_s0 != NULL) {
         if (var_s0->threadState == 0) {
@@ -208,7 +208,7 @@ void Sched_HandlePreNMI(void) {
         }
         var_s0 = var_s0->next;
     }
-    gRspTaskManager.unk_A38 = 1;
+    gRspTaskManager.preNmiState = 1;
     Audio_FadeOutForShutdown();
     Game_ResetStorageDevice();
 }
@@ -217,11 +217,11 @@ void Sched_HandleRetrace(void) {
     UnkStruct80001380* var_v0;
 
     gRspTaskManager.time = osGetTime();
-    gRspTaskManager.unk_A34++;
+    gRspTaskManager.frameCount++;
 
-    if ((gRspTaskManager.unk_A38 > 0) && (gRspTaskManager.unk_A38 < 0x1E)) {
-        gRspTaskManager.unk_A38++;
-        if (gRspTaskManager.unk_A38 == 0x1A) {
+    if ((gRspTaskManager.preNmiState > 0) && (gRspTaskManager.preNmiState < 0x1E)) {
+        gRspTaskManager.preNmiState++;
+        if (gRspTaskManager.preNmiState == 0x1A) {
             while (osAfterPreNMI() != 0) {
                 IO_WRITE(SP_STATUS_REG, 0x8000);
             }
@@ -231,46 +231,46 @@ void Sched_HandleRetrace(void) {
     Sched_PromotePendingTasks();
     Sched_NoOp();
 
-    if (gRspTaskManager.unk_A18 != NULL) {
-        if (gRspTaskManager.unk_A14 == NULL) {
-            gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A18);
+    if (gRspTaskManager.audioTask != NULL) {
+        if (gRspTaskManager.activeTask == NULL) {
+            gRspTaskManager.activeTask = Sched_TryStartTask(gRspTaskManager.audioTask);
         } else {
             Sched_TryYieldActiveTask();
         }
-    } else if ((gRspTaskManager.unk_A1C != NULL) && (gRspTaskManager.unk_A14 == NULL)) {
-        gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A1C);
+    } else if ((gRspTaskManager.gfxTask != NULL) && (gRspTaskManager.activeTask == NULL)) {
+        gRspTaskManager.activeTask = Sched_TryStartTask(gRspTaskManager.gfxTask);
     }
 
     Sched_NotifyClients('VTRE');
 }
 
 void Sched_HandleRspEvent(void) {
-    UnkStruct80001380* sp24 = gRspTaskManager.unk_A14;
-    s32 tmp = Sched_HandleRspCompletion(gRspTaskManager.unk_A14);
+    UnkStruct80001380* sp24 = gRspTaskManager.activeTask;
+    s32 tmp = Sched_HandleRspCompletion(gRspTaskManager.activeTask);
 
-    gRspTaskManager.unk_A14 = NULL;
+    gRspTaskManager.activeTask = NULL;
 
     if (tmp) {
-        gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A18);
+        gRspTaskManager.activeTask = Sched_TryStartTask(gRspTaskManager.audioTask);
     }
 
     if (sp24->unk_1C == 3) {
         switch (sp24->task.t.type) {
             case M_AUDTASK:
-                gRspTaskManager.unk_A18 = 0;
+                gRspTaskManager.audioTask = 0;
                 gRspTaskManager.unk_A28 = 0;
-                gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A1C);
+                gRspTaskManager.activeTask = Sched_TryStartTask(gRspTaskManager.gfxTask);
                 break;
 
             case M_GFXTASK:
-                if (gRspTaskManager.unk_A1C->unk_1E == 2) {
-                    gRspTaskManager.unk_A1C = NULL;
+                if (gRspTaskManager.gfxTask->unk_1E == 2) {
+                    gRspTaskManager.gfxTask = NULL;
                     gRspTaskManager.unk_A2C = 0;
                 }
                 break;
 
             case 4:
-                gRspTaskManager.unk_A1C = NULL;
+                gRspTaskManager.gfxTask = NULL;
                 gRspTaskManager.unk_A30 = 0;
                 break;
         }
@@ -278,9 +278,9 @@ void Sched_HandleRspEvent(void) {
 }
 
 void Sched_HandleRdpEvent(void) {
-    Sched_HandleRdpCompletion(gRspTaskManager.unk_A1C);
-    if (gRspTaskManager.unk_A1C->unk_1C == 3) {
-        gRspTaskManager.unk_A1C = NULL;
+    Sched_HandleRdpCompletion(gRspTaskManager.gfxTask);
+    if (gRspTaskManager.gfxTask->unk_1C == 3) {
+        gRspTaskManager.gfxTask = NULL;
         gRspTaskManager.unk_A2C = 0;
     }
 }
@@ -323,12 +323,12 @@ void Sched_ThreadEntry(void* arg0) {
 }
 
 void Sched_Init(void) {
-    gRspTaskManager.unk_A10 = NULL;
-    gRspTaskManager.unk_A14 = NULL;
-    gRspTaskManager.unk_A18 = 0;
-    gRspTaskManager.unk_A1C = NULL;
+    gRspTaskManager.clients = NULL;
+    gRspTaskManager.activeTask = NULL;
+    gRspTaskManager.audioTask = 0;
+    gRspTaskManager.gfxTask = NULL;
     gRspTaskManager.unk_A20 = NULL;
-    gRspTaskManager.unk_A24 = NULL;
+    gRspTaskManager.nextGfxTask = NULL;
     gRspTaskManager.unk_A28 = 0;
     gRspTaskManager.unk_A2C = 0;
     osCreateThread(&gRspTaskManager.thread, 3, Sched_ThreadEntry, NULL, gRspTaskManager.stack, 0x64);
@@ -339,10 +339,10 @@ void Sched_AddClient(GbEmuState* arg0) {
     GbEmuState* var_v1;
     GbEmuState* var_a1;
 
-    if (gRspTaskManager.unk_A10 == NULL) {
-        gRspTaskManager.unk_A10 = arg0;
+    if (gRspTaskManager.clients == NULL) {
+        gRspTaskManager.clients = arg0;
     } else {
-        var_v1 = gRspTaskManager.unk_A10;
+        var_v1 = gRspTaskManager.clients;
         var_a1 = var_v1->next;
 
         while (var_a1 != NULL) {
@@ -355,8 +355,8 @@ void Sched_AddClient(GbEmuState* arg0) {
 }
 
 void Sched_RemoveClient(GbEmuState* arg0) {
-    GbEmuState** var_v0 = &gRspTaskManager.unk_A10;
-    GbEmuState* var_v1 = gRspTaskManager.unk_A10;
+    GbEmuState** var_v0 = &gRspTaskManager.clients;
+    GbEmuState* var_v1 = gRspTaskManager.clients;
 
     while (var_v1 != NULL) {
         if (var_v1 == arg0) {
@@ -378,19 +378,19 @@ void Sched_SubmitTask(UnkStruct80001380* arg0, s32 arg1) {
                 break;
 
             case 1:
-                if ((arg1 != 0) && (gRspTaskManager.unk_A1C == NULL)) {
-                    gRspTaskManager.unk_A1C = arg0;
-                    gRspTaskManager.unk_A24 = NULL;
+                if ((arg1 != 0) && (gRspTaskManager.gfxTask == NULL)) {
+                    gRspTaskManager.gfxTask = arg0;
+                    gRspTaskManager.nextGfxTask = NULL;
                     osSendMesg(&gRspTaskManager.queue, 0x67, 0);
                 } else {
-                    gRspTaskManager.unk_A24 = arg0;
+                    gRspTaskManager.nextGfxTask = arg0;
                 }
                 break;
 
             case 4:
-                if (gRspTaskManager.unk_A1C == NULL) {
-                    gRspTaskManager.unk_A1C = arg0;
-                    gRspTaskManager.unk_A24 = NULL;
+                if (gRspTaskManager.gfxTask == NULL) {
+                    gRspTaskManager.gfxTask = arg0;
+                    gRspTaskManager.nextGfxTask = NULL;
                     osSendMesg(&gRspTaskManager.queue, 0x67, 0);
                 }
                 break;

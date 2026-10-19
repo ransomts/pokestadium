@@ -29,7 +29,7 @@ typedef struct unk_D_800ABB28 {
     /* 0x24 */ u8 unk_24;
     /* 0x24 */ u8 unk_25;
     /* 0x24 */ u8 unk_26;
-    /* 0x24 */ u8 unk_27;
+    /* 0x24 */ u8 texGenActive;
 } unk_D_800ABB28; // size = 0x28
 
 typedef struct unk_D_800ABB10 {

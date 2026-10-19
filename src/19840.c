@@ -267,7 +267,7 @@ void PokeIcon_ThreadMain(UNUSED void* arg0) {
     __osSetFpcCsr(0x01000C01);
 
     while (true) {
-        osRecvMesg(&gAssetManager.unk_9D0, &sp34, 1);
+        osRecvMesg(&gAssetManager.requestQueue, &sp34, 1);
 
         switch (sp34->posX) {
             case 1:
@@ -286,9 +286,9 @@ void PokeIcon_ThreadMain(UNUSED void* arg0) {
 }
 
 void PokeIcon_StartThread(void) {
-    osCreateMesgQueue(&gAssetManager.unk_9D0, &gAssetManager.unk_9B0, 8);
+    osCreateMesgQueue(&gAssetManager.requestQueue, &gAssetManager.requestMessage, 8);
     osCreateMesgQueue(&gAssetManager.unk_9EC, &gAssetManager.unk_9E8, 1);
-    osCreateThread(&gAssetManager.unk_000, 7, PokeIcon_ThreadMain, NULL, &gAssetManager.unk_9B0, 0xA);
+    osCreateThread(&gAssetManager.unk_000, 7, PokeIcon_ThreadMain, NULL, &gAssetManager.requestMessage, 0xA);
     osStartThread(&gAssetManager.unk_000);
 }
 
@@ -357,7 +357,7 @@ s32 PokeIcon_RequestFrameLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 a
             if ((arg0->unk_24 != NULL) && (arg0->unk_24->posX == arg1) && (arg0->unk_2C.raw == sp18->unk_18.raw)) {
                 osSendMesg(sp18->rotation, sp18, 1);
             } else {
-                osSendMesg(&gAssetManager.unk_9D0, sp18, 1);
+                osSendMesg(&gAssetManager.requestQueue, sp18, 1);
             }
 
             arg0->unk_01 |= 1;
@@ -391,7 +391,7 @@ s32 PokeIcon_RequestBackgroundLoad(AssetManager* arg0, s32 arg1, s32 arg2) {
             temp_v0->unk_10 = arg0->unk_18;
             temp_v0->unk_14 = 0x18000;
 
-            osSendMesg(&gAssetManager.unk_9D0, temp_v0, 1);
+            osSendMesg(&gAssetManager.requestQueue, temp_v0, 1);
 
             sp1C = 1;
             arg0->unk_01 |= 2;

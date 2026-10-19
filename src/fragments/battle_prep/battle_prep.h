@@ -27,8 +27,8 @@ typedef struct unk_D_84B1A598 {
     /* 0x0003 */ u8 unk_0003;
     /* 0x0004 */ GraphNode* unk_0004;
     /* 0x0008 */ Fragment2_1GraphNode unk_0008[128];
-    /* 0xB408 */ BinArchive* unk_B408;
-    /* 0xB40C */ BinArchive* unk_B40C;
+    /* 0xB408 */ BinArchive* battleArchive;
+    /* 0xB40C */ BinArchive* portraitsArchive;
 } unk_D_84B1A598; // size >= 0xB410
 
 typedef struct RuleWindowState {
@@ -122,16 +122,16 @@ typedef struct unk_D_84B25AC0_0A0 {
 typedef struct gStarBurstState {
     /* 0x000 */ unk_D_84B25AC0_000 unk_000[10];
     /* 0x0A0 */ unk_D_84B25AC0_0A0 unk_0A0[10][8];
-    /* 0x5A0 */ u8 unk_5A0;
-    /* 0x5A1 */ s8 unk_5A1;
-    /* 0x5A2 */ s8 unk_5A2;
-    /* 0x5A3 */ s8 unk_5A3;
-    /* 0x5A4 */ f32 unk_5A4;
-    /* 0x5A8 */ Fragment2_1GraphNode* unk_5A8;
-    /* 0x5AC */ Fragment2_1GraphNode* unk_5AC;
-    /* 0x5B0 */ MiniHudMainGraph* unk_5B0;
-    /* 0x5B4 */ MiniHudMainGraph* unk_5B4;
-    /* 0x5B8 */ MiniHudMainGraph* unk_5B8;
+    /* 0x5A0 */ u8 state;
+    /* 0x5A1 */ s8 timer;
+    /* 0x5A2 */ s8 variant;
+    /* 0x5A3 */ s8 side;
+    /* 0x5A4 */ f32 yVelocity;
+    /* 0x5A8 */ Fragment2_1GraphNode* barNode;
+    /* 0x5AC */ Fragment2_1GraphNode* particleNodeBase;
+    /* 0x5B0 */ MiniHudMainGraph* barGraph;
+    /* 0x5B4 */ MiniHudMainGraph* sparkGraph;
+    /* 0x5B8 */ MiniHudMainGraph* rainbowGraph;
     /* 0x5BC */ char unk5BC[0x4];
 } gStarBurstState; // size = 0x5C0
 
