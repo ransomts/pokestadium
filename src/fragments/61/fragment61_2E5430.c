@@ -24,7 +24,7 @@ s32 RegisteredTeam_SaveToSlot(unk_D_84229EB0_00024* arg0) {
     s16 temp_v0;
     s16 i;
     s32 ret = 0;
-    unk_func_80022C28_ret* temp_s3;
+    DeckHandle* temp_s3;
 
     temp_v0 = Deck_FindFirstFreeTeamSlot();
     if (temp_v0 < 0xA) {
@@ -399,7 +399,7 @@ unk_D_84229EB0_00024* GetNextPage(unk_D_84229EB0_00024* arg0, s32 arg1) {
 s32 TeamSelection_RegisteredTeam_Load(unk_D_84229EB0_00024* arg0, s16 arg1) {
     s16 i;
     s16 var_s4;
-    unk_func_80022C28_ret* temp_v0;
+    DeckHandle* temp_v0;
 
     var_s4 = 0;
     arg0->unk_4D10 = 0;

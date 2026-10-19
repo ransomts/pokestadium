@@ -225,7 +225,7 @@ void Session_SetupDemoBattle(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 void Team_AddDeckTrainer(s32 arg0, s32 arg1, s32 arg2) {
     s32 i;
     PokemonData sp48;
-    unk_func_80022C28_ret* temp_v0;
+    DeckHandle* temp_v0;
     BattleAI_TeamContext* temp_s4;
     char sp34[11];
 

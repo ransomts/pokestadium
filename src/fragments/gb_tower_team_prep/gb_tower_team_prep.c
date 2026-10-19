@@ -10,7 +10,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static AssetManager* D_82A00370;
+static AssetManager* gPokeIconFramebuffers;
 static SpriteDisplay* gSpriteDisplay;
 static PokemonData gLoadedPokemon[6];
 
@@ -18,7 +18,7 @@ static s32 gLoadedPokemonCount = 0;
 
 void GbTower_LoadPartyFromDeck(s32 arg0) {
     s32 i;
-    unk_func_80022C28_ret* temp_v0;
+    DeckHandle* temp_v0;
 
     if (GbSave_EnsureMainDataLoaded(arg0) != 0) {
         temp_v0 = Deck_Open(0x20, arg0, 0, 0);
@@ -70,8 +70,8 @@ s32 GbTower_TeamPrep(s32 arg0, UnkInputStruct8000D738* arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    D_82A00370 = PokeIcon_AllocFramebuffers(1);
-    gSpriteDisplay = PokeIcon_CreateRenderList(D_82A00370, 6, 0x28, 0x28);
+    gPokeIconFramebuffers = PokeIcon_AllocFramebuffers(1);
+    gSpriteDisplay = PokeIcon_CreateRenderList(gPokeIconFramebuffers, 6, 0x28, 0x28);
     PokeIcon_OpenModelArchives();
     GbTower_LoadPartyFromDeck(arg0);
     Save_EnsureBankLoaded(2);

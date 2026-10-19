@@ -406,7 +406,7 @@ s32 Rental_FillPageFromRoster(unk_D_842168A0* arg0, unk_D_838067F0_0168* arg1, s
     s16 j;
     s16 var_s3;
     unk_D_838067F0_003C* temp_s5;
-    unk_func_80022C28_ret* var_v0;
+    DeckHandle* var_v0;
 
     arg1->unk_2690 = arg0->unk_00004;
     arg1->unk_2692 = arg0->unk_00005;
@@ -792,7 +792,7 @@ s32 Rental_BuildBoxFilterIndex(unk_D_842168A0* arg0, s16 arg1, s16 arg2) {
     s32 var_s0;
     s16 var_s2;
     unk_D_838067F0_003C* temp_v0;
-    unk_func_80022C28_ret* var_v0;
+    DeckHandle* var_v0;
 
     ptr->posX = 0;
     var_s2 = 0;

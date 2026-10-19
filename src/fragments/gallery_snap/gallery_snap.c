@@ -35,7 +35,7 @@ typedef struct MenuSubPanelItem {
     /* 0x08 */ s16 unk_08;
 } MenuSubPanelItem; // size = 0xC
 
-static s32 D_833032E0;
+static s32 gGalleryMenuMode;
 static s32 gMenuStep;
 static GallerySceneGrid gMenuActiveData;
 static BinArchive* gMenuAssetArchive;
@@ -58,7 +58,7 @@ static s16 D_833031A8[] = { 0x12 };
 static s16 D_833031AC[] = { 0x13 };
 static s16 D_833031B0[] = { -1, 0x15 };
 
-static MenuItem D_833031B4[] = {
+static MenuItem gGalleryMenuItems[] = {
     {
         D_03001000,
         48,
@@ -198,7 +198,7 @@ void Gallery_SnapUpdateMenuIconStates(void) {
         sp18 = D_3005260;
     }
 
-    ptr = &D_833031B4[0];
+    ptr = &gGalleryMenuItems[0];
 
     for (i = 0; i < 7; i++, ptr++) {
         switch (i) {
@@ -295,7 +295,7 @@ s32 Gallery_SnapUpdateMenuInput(void) {
         Audio_PlaySoundEffectById(1);
     }
 
-    sp24 = &D_833031B4[gGalleryPhotoPoolMax];
+    sp24 = &gGalleryMenuItems[gGalleryPhotoPoolMax];
 
     if (sp1C != gGalleryPhotoPoolMax) {
         gMenuDirty = 0;
@@ -328,7 +328,7 @@ s32 Gallery_SnapUpdateMenuInput(void) {
                     break;
 
                 case 3:
-                    D_833032E0 = 2;
+                    gGalleryMenuMode = 2;
                     gMenuStep = 3;
                     break;
 
@@ -365,7 +365,7 @@ s32 Gallery_SnapUpdateMenuInput(void) {
 }
 
 void Gallery_SnapResetToMenu(void) {
-    D_833032E0 = 0;
+    gGalleryMenuMode = 0;
     gMenuStep = 1;
     Gallery_InitPageCursor(&gGalleryMainSelection);
 }
@@ -461,12 +461,12 @@ s32 Gallery_SnapUpdateGridInput(GallerySceneGrid* arg0) {
         }
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         if (arg0->rotation == -1) {
-            D_833032E0 = 0;
+            gGalleryMenuMode = 0;
             gMenuStep = 1;
         } else {
             if (arg0->rotation >= 4) {
                 Gallery_InitPageCursor(&gGalleryMainSelection);
-                D_833032E0 = 0;
+                gGalleryMenuMode = 0;
                 gMenuStep = 1;
             }
             arg0->rotation = -1;
@@ -535,9 +535,9 @@ void DrawMenuScreen(void) {
     gBackgroundAnimPhase += 0x2000;
 
     for (i = 0; i < 7; i++) {
-        tmp = (D_833031B4[i].unk_12 == 0) ? 0xFF : 0x40;
+        tmp = (gGalleryMenuItems[i].unk_12 == 0) ? 0xFF : 0x40;
 
-        if (D_833031B4[i].unk_10 == 1) {
+        if (gGalleryMenuItems[i].unk_10 == 1) {
             Gallery_SnapDrawRoundedFrame(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x1E, 0x82, tmp);
         } else {
             Gallery_SnapDrawRoundedFrame(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x64, 0x1E, tmp);
@@ -549,25 +549,25 @@ void DrawMenuScreen(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 7; i++) {
-        temp_t0 = -D_833031B4[i].rotation + 0xC;
+        temp_t0 = -gGalleryMenuItems[i].rotation + 0xC;
 
-        if (D_833031B4[i].unk_12 == 0) {
+        if (gGalleryMenuItems[i].unk_12 == 0) {
             r = 0xFF;
         } else {
             r = 0x40;
         }
 
-        if (D_833031B4[i].posX != NULL) {
+        if (gGalleryMenuItems[i].posX != NULL) {
             gDPPipeSync(gDisplayListHead++);
 
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, r);
 
-            if ((i == gGalleryPhotoPoolMax) && (D_833031B4[i].unk_12 == 0)) {
-                Gallery_SnapDrawScaledImage(D_833031B4[i].posX, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].rotation,
-                              D_833031B4[i].unk_06, temp_fs0, temp_fs1);
+            if ((i == gGalleryPhotoPoolMax) && (gGalleryMenuItems[i].unk_12 == 0)) {
+                Gallery_SnapDrawScaledImage(gGalleryMenuItems[i].posX, temp_t0 + 0x46, (i * 0x36) + 0x48, gGalleryMenuItems[i].rotation,
+                              gGalleryMenuItems[i].unk_06, temp_fs0, temp_fs1);
             } else {
-                Gallery_DrawImageStrips(D_833031B4[i].posX, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].rotation,
-                              D_833031B4[i].unk_06, 0);
+                Gallery_DrawImageStrips(gGalleryMenuItems[i].posX, temp_t0 + 0x46, (i * 0x36) + 0x48, gGalleryMenuItems[i].rotation,
+                              gGalleryMenuItems[i].unk_06, 0);
             }
         }
     }
@@ -576,9 +576,9 @@ void DrawMenuScreen(void) {
     Font_SetActive(8, 0);
 
     for (i = 0; i < 7; i++) {
-        temp_v0_4 = Gallery_GetUiString(D_833031B4[i].unk_08);
+        temp_v0_4 = Gallery_GetUiString(gGalleryMenuItems[i].unk_08);
         temp_s2 = ((0x73 - Font_MeasureTextExtent(0, 0, temp_v0_4)) / 2) + 0xC;
-        tmp2 = (D_833031B4[i].unk_12 == 0) ? 0xFFu : 0x40u;
+        tmp2 = (gGalleryMenuItems[i].unk_12 == 0) ? 0xFFu : 0x40u;
 
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp2);
         Font_Printf(temp_s2 + 0x46, 0x50 + i * 0x36, temp_v0_4);
@@ -597,7 +597,7 @@ void Gallery_SnapDrawTitleBar(s32 arg0, s32 arg1, s32 arg2) {
 
     Gallery_DrawHeaderBar(arg0, arg1, 0x186, &sp30, &sp2C);
 
-    if ((D_833032E0 != 0) && (D_833032E0 != 2)) {
+    if ((gGalleryMenuMode != 0) && (gGalleryMenuMode != 2)) {
         sp20 = &gSubPanelItems[arg2];
     } else if (gGallerySpecialUnlocked == 0) {
         sp20 = &gSubPanelItems[arg2];
@@ -627,10 +627,10 @@ void Gallery_SnapDrawTitleBar(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void Gallery_SnapDrawHintBox(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
-    MenuItem* temp_v1 = &D_833031B4[gGalleryPhotoPoolMax];
+    MenuItem* temp_v1 = &gGalleryMenuItems[gGalleryPhotoPoolMax];
     char* sp18 = NULL;
 
-    switch (D_833032E0) {
+    switch (gGalleryMenuMode) {
         case 0:
             if (gMenuStep == 5) {
                 switch (gMenuConfirmState) {
@@ -690,15 +690,15 @@ void Gallery_SnapInit(s32 arg0, s32 arg1) {
 
     switch (arg0) {
         case 1:
-            D_833032E0 = 1;
+            gGalleryMenuMode = 1;
             break;
 
         case 2:
-            D_833032E0 = 2;
+            gGalleryMenuMode = 2;
             break;
 
         default:
-            D_833032E0 = 0;
+            gGalleryMenuMode = 0;
             break;
     }
 
@@ -728,12 +728,12 @@ void Gallery_SnapInit(s32 arg0, s32 arg1) {
     Gallery_InitSceneGrid(&gMenuActiveData, 0x3C, 0x2D, 4, 2, sp30, gMenuAssetArchive, gCurrentCamEntry, 4, 1);
     Gallery_RebindSceneGridResources(&gGalleryCamList, sp30, gMenuAssetArchive);
 
-    if (D_833032E0 == 1) {
+    if (gGalleryMenuMode == 1) {
         temp_v0_2 = Gallery_SnapGetActiveGrid();
         temp_v0_2->rotation = 0x400;
         temp_v0_2->unk_B0->unk_18 = &gGalleryEntries[gGalleryMainSelection.rotation];
         temp_v0_2->unk_B0->posX = 0;
-    } else if (D_833032E0 == 2) {
+    } else if (gGalleryMenuMode == 2) {
         Gallery_RestorePosition(&gMenuActiveData, &gGalleryMainSelectionCam);
         Gallery_RestorePosition(&gGalleryCamList, &gGallerySubSelection);
     }
@@ -892,7 +892,7 @@ void Gallery_SnapDrawCursor(GallerySceneGrid* arg0) {
     temp_s0 = arg0->unk_B0;
     Gallery_IndexToGridPos(arg0, &sp58, &sp54, arg0->posX);
 
-    switch (D_833032E0) {
+    switch (gGalleryMenuMode) {
         case 0:
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
             Gallery_DrawSelectionCorners(0x3E, (gGalleryPhotoPoolMax * 0x36) + 0x46, 0x8F, 0x28);
@@ -957,11 +957,11 @@ void Gallery_SnapDrawFrame(void) {
 
     BgStage_DrawFrame();
     Gallery_SnapDrawBackgroundWipe();
-    Gallery_SnapDrawTitleBar(0xD5, 0x24, D_833032E0);
+    Gallery_SnapDrawTitleBar(0xD5, 0x24, gGalleryMenuMode);
     DrawPokemonGrid(sp18);
     DrawMenuScreen();
 
-    if ((D_833032E0 == 2) && (sp18->rotation == -1)) {
+    if ((gGalleryMenuMode == 2) && (sp18->rotation == -1)) {
         Gallery_SnapDrawBackPrompt(0x158);
     }
 
@@ -1088,14 +1088,14 @@ s32 Gallery_SnapUpdate(void) {
     sp28 = 1;
     sp24 = gMenuStep;
     sp20 = gGallerySpecialUnlocked;
-    sp1C = &D_833031B4[gGalleryPhotoPoolMax];
+    sp1C = &gGalleryMenuItems[gGalleryPhotoPoolMax];
 
     switch (gMenuStep) {
         case 0:
             if (StageContext_GetFadeMode() == 0) {
                 gInitialDelayCounter--;
                 if (gInitialDelayCounter <= 0) {
-                    switch (D_833032E0) {
+                    switch (gGalleryMenuMode) {
                         case 0:
                             if (gGallerySpecialViewed != 0) {
                                 if (sp1C->unk_12 == 0) {
@@ -1193,7 +1193,7 @@ void Gallery_SnapReadInput(void) {
 void Gallery_SnapLoop(void) {
     s32 var_a0;
 
-    if (D_833032E0 == 2) {
+    if (gGalleryMenuMode == 2) {
         var_a0 = 1;
     } else {
         var_a0 = 7;

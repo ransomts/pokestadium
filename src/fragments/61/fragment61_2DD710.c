@@ -196,7 +196,7 @@ s32 Rental_SaveTeamToDeck(gItemPanel* arg0) {
     s16 i;
     s16 temp_v0;
     s32 var_s0 = 0;
-    unk_func_80022C28_ret* temp_s3;
+    DeckHandle* temp_s3;
 
     temp_v0 = Deck_FindFirstFreeTeamSlot();
     if (temp_v0 < 0xA) {

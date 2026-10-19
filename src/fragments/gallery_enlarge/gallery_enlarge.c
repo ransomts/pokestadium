@@ -27,7 +27,7 @@ void Gallery_EnlargeInit(void) {
     gFragment46_Camera = Geo_CreateSceneInstance(0x280, 0x1E0, NULL, gFragment46_Stage->unk_18[0], sp28, gStadiumModelsArchive, Gallery_GetEnlargeTarget(1));
 }
 
-void func_83700090(void) {
+void Gallery_EnlargeEmptyHandler(void) {
 }
 
 void Gallery_EnlargeDraw(void) {

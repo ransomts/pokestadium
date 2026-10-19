@@ -441,8 +441,8 @@ extern Color_RGBA8 gTexture_MainMenuOption1[2];
 extern Color_RGBA8 gTexture_MainMenuOption2[2];
 extern Color_RGBA8 gPanelTexture_S2[2];
 extern Color_RGBA8 gPanelTextureDefault[2];
-extern Color_RGBA8 D_88218230[2];
-extern Color_RGBA8 D_88218238[2];
+extern Color_RGBA8 gGridBorderTextures[2];
+extern Color_RGBA8 gModeToggleColors[2];
 
 extern u32 gPanelIconTexture[];
 extern u32 gPanelBackgroundTexture1[];

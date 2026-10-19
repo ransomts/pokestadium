@@ -19,7 +19,7 @@ static s16 gPickerActivePlayer;
 
 s16 Trade_ReadDeckEntries(PickerState* arg0, s16 arg1) {
     UNUSED s32 pad;
-    unk_func_80022C28_ret* var_v0;
+    DeckHandle* var_v0;
     PickerPokemonEntry sp3C;
     PickerPokemonGroup* sp34 = &arg0->pokemonGroups[arg1];
 

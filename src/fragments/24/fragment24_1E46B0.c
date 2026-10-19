@@ -751,7 +751,7 @@ void LabPCList_LoadAllBoxes(unk_func_8830867C_02C_144* arg0) {
     s32 i;
     s32 j;
     s32 var_s1;
-    unk_func_80022C28_ret* temp_v0;
+    DeckHandle* temp_v0;
     unk_func_8830867C_02C_0CC_000_000* var_s3;
     unk_func_8830867C_02C_0CC_000_000_010_000* var_s0;
     unk_func_8830867C_02C_144_000* var_s5;
@@ -845,7 +845,7 @@ s32 LabPCList_CheckDirtyBoxes(unk_func_8830867C_02C_144* arg0) {
     s32 j;
     s32 x;
     s32 i;
-    unk_func_80022C28_ret* temp_v0;
+    DeckHandle* temp_v0;
     unk_func_8830867C_02C_0CC_000_000* var_s3;
     unk_func_8830867C_02C_0CC_000_000_010_000* var_s0;
     unk_func_8830867C_02C_144_000* var_s5 = arg0->posX;
@@ -892,7 +892,7 @@ void LabPCList_SaveDirtyBoxes(unk_func_8830867C_02C_144* arg0, s32 arg1) {
     s32 j;
     s32 x;
     s32 var_s7;
-    unk_func_80022C28_ret* temp_s3;
+    DeckHandle* temp_s3;
     unk_func_8830867C_02C_0CC_000_000* var_s4;
     unk_func_8830867C_02C_0CC_000_000_010_000* var_s0;
     unk_func_8830867C_02C_144_000* var_s2;
@@ -977,7 +977,7 @@ void LabPCList_InitDeckCategories(unk_func_8830867C_02C_154* arg0, MemoryPool* a
 }
 
 void LabPCList_ReadDeckCategory(unk_func_8830867C_02C_154* arg0) {
-    unk_func_80022C28_ret* sp24;
+    DeckHandle* sp24;
 
     sp24 = Deck_Open(arg0->posX, arg0->unk_01, arg0->posY, 0);
     arg0->unk_14 = Deck_ReadEntries(arg0->unk_0C, arg0->unk_10, sp24);
@@ -986,7 +986,7 @@ void LabPCList_ReadDeckCategory(unk_func_8830867C_02C_154* arg0) {
 }
 
 void LabPCList_WriteDeckCategory(unk_func_8830867C_02C_154* arg0) {
-    unk_func_80022C28_ret* sp24 = Deck_Open(arg0->posX, arg0->unk_01, arg0->posY, 1);
+    DeckHandle* sp24 = Deck_Open(arg0->posX, arg0->unk_01, arg0->posY, 1);
 
     Deck_WriteEntries(arg0->unk_0C, arg0->unk_14, sp24);
     Deck_CloseAndFlush(sp24);

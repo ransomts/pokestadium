@@ -12,7 +12,7 @@ static s32 gRentalMenuSaveDirection;
 static s32 gRentalMenuSaveSlotIndex;
 
 s32 Trade_WriteDeckAndCommitCart(RentalItemInfo* arg0) {
-    unk_func_80022C28_ret* sp24;
+    DeckHandle* sp24;
     s32 var_v1;
 
     if (arg0->rotation == 0) {

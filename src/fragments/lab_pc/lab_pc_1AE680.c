@@ -178,7 +178,7 @@ void InitMonData(PokemonData* arg0) {
 
 s32 LabPC_ReadDeckEntries(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 sp1C = 0;
-    unk_func_80022C28_ret* sp18;
+    DeckHandle* sp18;
 
     sp18 = Deck_Open(arg2, arg3, arg4, 0);
     if (sp18 != NULL) {
@@ -1873,7 +1873,7 @@ void LabPC_InitSwapController(unk_func_8820B12C* arg0, TextObjectRenderer* arg1)
 s32 LabPC_DeckHasChanged(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     s32 sp90;
-    unk_func_80022C28_ret* temp_v0;
+    DeckHandle* temp_v0;
     unk_func_88205880_00D0** var_s1;
     PokemonData sp34;
 
@@ -1954,7 +1954,7 @@ s32 LabPC_IsPrizeDeckEmpty(TextObjectRenderer* arg0) {
 void LabPC_WriteDeckBack(s32 arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_038* arg3) {
     s32 i;
     unk_func_88205880_00D0** sp28;
-    unk_func_80022C28_ret* temp_s3;
+    DeckHandle* temp_s3;
 
     sp28 = arg3->posX;
     temp_s3 = Deck_Open(arg0, arg1, arg2, 1);

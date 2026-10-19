@@ -51,7 +51,7 @@ void LabPC_MarkBoxSeen(unk_func_88205880_00D0* arg0) {
 }
 
 void LabPC_WriteBoxEntries(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
-    unk_func_80022C28_ret* sp1C = Deck_Open(arg0, arg1, arg2, 1);
+    DeckHandle* sp1C = Deck_Open(arg0, arg1, arg2, 1);
 
     Deck_WriteEntries(arg3, arg3->unk_690, sp1C);
 
@@ -64,7 +64,7 @@ void LabPC_WriteBoxEntries(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0*
 
 s32 LabPC_ReadBoxEntries(s32 arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3, s32 arg4) {
     s32 sp1C;
-    unk_func_80022C28_ret* sp18;
+    DeckHandle* sp18;
 
     sp18 = Deck_Open(arg0, arg1, arg2, 0);
     if (sp18 == 0) {
@@ -1194,7 +1194,7 @@ void LabPC_BoxMenu_InitFocusNode(unk_func_88203ED8_064* arg0, unk_func_88203ED8*
 u32 LabPC_BoxHasUnsavedChanges(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     u32 sp90 = 0;
-    unk_func_80022C28_ret* temp_v0 = Deck_Open(arg1, arg2, arg3, 0);
+    DeckHandle* temp_v0 = Deck_Open(arg1, arg2, arg3, 0);
     PokemonData* var_s1;
     PokemonData sp34;
 

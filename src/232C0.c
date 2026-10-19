@@ -163,7 +163,7 @@ s32 GetPokemonGrowthRate(s32 arg0) {
     return D_80073597[arg0] + 1;
 }
 
-void Deck_InitializeSaveBackend(unk_func_80022C28_ret* arg0) {
+void Deck_InitializeSaveBackend(DeckHandle* arg0) {
     if (arg0->posX == 1) {
         arg0->rotation |= 1;
         Deck_SetSaveEntryCount(arg0->unk_01, arg0->unk_03, 0);
@@ -180,7 +180,7 @@ void Deck_InitializeSaveBackend(unk_func_80022C28_ret* arg0) {
     }
 }
 
-void Deck_InitializeBoxBackend(unk_func_80022C28_ret* arg0) {
+void Deck_InitializeBoxBackend(DeckHandle* arg0) {
     if (arg0->posX == 1) {
         arg0->rotation |= 1;
         Deck_DeleteEntry(arg0->unk_01, arg0->posY, arg0->unk_03, 0);
@@ -197,10 +197,10 @@ void Deck_InitializeBoxBackend(unk_func_80022C28_ret* arg0) {
     }
 }
 
-unk_func_80022C28_ret* Deck_Open(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    unk_func_80022C28_ret* sp1C;
+DeckHandle* Deck_Open(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+    DeckHandle* sp1C;
 
-    sp1C = Util_Malloc(sizeof(unk_func_80022C28_ret));
+    sp1C = Util_Malloc(sizeof(DeckHandle));
     if (sp1C != NULL) {
         sp1C->posX = arg3;
         sp1C->unk_01 = arg0;
@@ -222,10 +222,10 @@ unk_func_80022C28_ret* Deck_Open(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return sp1C;
 }
 
-unk_func_80022C28_ret* Deck_OpenAndSetName(s32 arg0, s32 arg1, s32 arg2, s32 arg3, char* arg4, u16 arg5) {
-    unk_func_80022C28_ret* sp24;
-    unk_func_80022C28_ret* temp_v0;
-    unk_func_80022C28_ret* var_v1;
+DeckHandle* Deck_OpenAndSetName(s32 arg0, s32 arg1, s32 arg2, s32 arg3, char* arg4, u16 arg5) {
+    DeckHandle* sp24;
+    DeckHandle* temp_v0;
+    DeckHandle* var_v1;
 
     sp24 = Deck_Open(arg0, arg1, arg2, 1);
     if ((sp24 != NULL) && (arg0 & 0xF0)) {
@@ -234,7 +234,7 @@ unk_func_80022C28_ret* Deck_OpenAndSetName(s32 arg0, s32 arg1, s32 arg2, s32 arg
     return sp24;
 }
 
-s32 Deck_CloseAndFlushBox(unk_func_80022C28_ret* arg0) {
+s32 Deck_CloseAndFlushBox(DeckHandle* arg0) {
     s32 sp1C = 0;
 
     if ((arg0->unk_01 & 0x10) && (arg0->rotation & 1)) {
@@ -247,7 +247,7 @@ s32 Deck_CloseAndFlushBox(unk_func_80022C28_ret* arg0) {
     return sp1C;
 }
 
-s32 Deck_CloseAndFlush(unk_func_80022C28_ret* arg0) {
+s32 Deck_CloseAndFlush(DeckHandle* arg0) {
     s32 sp1C = 0;
 
     if ((arg0->unk_01 & 0x10) && (arg0->rotation & 1)) {
@@ -260,7 +260,7 @@ s32 Deck_CloseAndFlush(unk_func_80022C28_ret* arg0) {
     return sp1C;
 }
 
-s32 Deck_SetCursor(unk_func_80022C28_ret* arg0, s32 arg1) {
+s32 Deck_SetCursor(DeckHandle* arg0, s32 arg1) {
     s32 var_v1;
 
     var_v1 = 0;
@@ -271,7 +271,7 @@ s32 Deck_SetCursor(unk_func_80022C28_ret* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 Deck_ReadEntries(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
+s32 Deck_ReadEntries(u8* arg0, s32 arg1, DeckHandle* arg2) {
     s32 var_s3;
     s32 var_s4;
     s32 var_v1;
@@ -314,7 +314,7 @@ s32 Deck_ReadEntries(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
     return var_s4;
 }
 
-s32 Deck_WriteEntries(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
+s32 Deck_WriteEntries(u8* arg0, s32 arg1, DeckHandle* arg2) {
     s32 var_s2;
     s32 var_s4;
     s32 var_s5;

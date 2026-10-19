@@ -16,7 +16,7 @@
 s32 Glc_GeoSpriteCallback(s32, GraphNode*);
 s32 Glc_GeoBannerCallback(s32, GraphNode*);
 
-typedef struct unk_D_83101E6C {
+typedef struct Glc_ColorKeyframe {
     /* 0x00 */ s16 posX;
     /* 0x04 */ f32 rotation;
     /* 0x08 */ s16 unk_08;
@@ -25,23 +25,23 @@ typedef struct unk_D_83101E6C {
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
-} unk_D_83101E6C; // size = 0x14
+} Glc_ColorKeyframe; // size = 0x14
 
-typedef struct unk_D_83102218 {
+typedef struct Glc_CircleWipeState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x08 */ f32 unk_08;
-} unk_D_83102218; // size = 0xC
+} Glc_CircleWipeState; // size = 0xC
 
-typedef struct unk_D_83102224 {
+typedef struct Glc_FadeAnimState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
-} unk_D_83102224; // size = 0x8
+} Glc_FadeAnimState; // size = 0x8
 
-static BinArchive* D_83101EE0;
-static u8* D_83101EE4;
+static BinArchive* gClearScreenBgArchive;
+static u8* gClearScreenBgImage;
 static s16 gClearScreenState;
 static s16 gClearScreenTimer;
 static s16 gShowCursorFlag;
@@ -50,11 +50,11 @@ static s16 gCursorY;
 static GraphNode* gClearScreenRoot;
 static GraphNode* gClearScreenNode1;
 static GraphNode* gClearScreenNode2;
-static unk_D_83101F00 D_83101F00[2];
+static unk_D_83101F00 gClearScreenNodes[2];
 static unk_D_83101F00* gNode1State;
 static unk_D_83101F00* gNode2State;
-static unk_D_83102218 gBorderAnimState;
-static unk_D_83102224 gFadeAnimState;
+static Glc_CircleWipeState gBorderAnimState;
+static Glc_FadeAnimState gFadeAnimState;
 
 static Vtx gClearScreenVerts1[] = {
     VTX(-100, 14, 0, 0, 0, 0x78, 0x32, 0xFF, 0xFF),      VTX(-100, 0, 0, 0, 448, 0xBB, 0x28, 0x8E, 0xFF),
@@ -111,7 +111,7 @@ static u32 gClearScreenRootGeo[] = {
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-static unk_D_83101E6C gNodeColorScaleTable[] = {
+static Glc_ColorKeyframe gNodeColorScaleTable[] = {
     { 0xC, 0.0f, 0, 0, 0, 0, 0, 0 },
     { 4, 2.4f, 0xFF, 0, 0, 0, 0, 0 },
     { 4, 2.0f, 0xFF, 0xFF, 0xFF, 0xC8, 0x64, 0 },
@@ -184,8 +184,8 @@ s32 Glc_GeoBannerCallback(s32 arg0, UNUSED GraphNode* arg1) {
 }
 
 void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
-    unk_D_83101E6C* ptr1;
-    unk_D_83101E6C* ptr2;
+    Glc_ColorKeyframe* ptr1;
+    Glc_ColorKeyframe* ptr2;
     f32 var_fv1;
 
     switch (arg0->unk_16A) {
@@ -431,9 +431,9 @@ void Glc_DrawFadedBackground(u8* arg0, s16 arg1) {
 
 void Glc_DrawBackground(void) {
     if (gFadeAnimState.rotation < 0xFF) {
-        Glc_DrawFadedBackground(D_83101EE4, gFadeAnimState.rotation);
+        Glc_DrawFadedBackground(gClearScreenBgImage, gFadeAnimState.rotation);
     } else {
-        Gfx_DrawTiledRgba16Image(D_83101EE4);
+        Gfx_DrawTiledRgba16Image(gClearScreenBgImage);
     }
 }
 
@@ -452,7 +452,7 @@ void Glc_ReadInputs(void) {
 }
 
 void Glc_InitObjectAnimation(unk_D_83101F00* arg0, s16 arg1) {
-    unk_D_83101E6C* ptr;
+    Glc_ColorKeyframe* ptr;
 
     arg0->unk_16A = arg1;
 
@@ -600,7 +600,7 @@ void Glc_ClearInitGraphics(void) {
     ModelRenderer_InitDisplayRoots();
 
     for (i = 0; i < 2; i++) {
-        ptr = &D_83101F00[i];
+        ptr = &gClearScreenNodes[i];
 
         ModelRenderer_AttachDisplayObject(&ptr->unk_000);
 
@@ -645,8 +645,8 @@ s32 GymLeaderCastleClear_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gym_leader_castle_clear_gfx, 0);
-    D_83101EE0 = ASSET_LOAD2(backgrounds, 1, 1);
-    D_83101EE4 = BinArchive_GetFile(D_83101EE0, 0xE);
+    gClearScreenBgArchive = ASSET_LOAD2(backgrounds, 1, 1);
+    gClearScreenBgImage = BinArchive_GetFile(gClearScreenBgArchive, 0xE);
 
     Glc_ClearInitGraphics();
     StageContext_Activate(sp24);

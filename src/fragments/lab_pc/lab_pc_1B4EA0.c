@@ -35,14 +35,14 @@ static char** gStageNames;
 static char** gMessageBank_0xC;
 
 void LabItem_ReadDeckEntries(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3) {
-    unk_func_80022C28_ret* sp1C = Deck_Open(arg0, arg1, arg2, 0);
+    DeckHandle* sp1C = Deck_Open(arg0, arg1, arg2, 0);
 
     arg3->unk_08 = Deck_ReadEntries(arg3->posX, arg3->rotation, sp1C);
     Deck_CloseAndFlush(sp1C);
 }
 
 void LabItem_WriteDeckBack(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3, s32 arg4, char* arg5, s32 arg6) {
-    unk_func_80022C28_ret* sp2C;
+    DeckHandle* sp2C;
 
     if (arg6 != -1) {
         if (1) {}
@@ -2590,7 +2590,7 @@ void LabItem_InitMenuController(unk_func_8821421C_02C_06C* arg0, unk_func_882142
 s32 LabItem_DeckHasChanged(unk_func_8821421C_03C* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     s32 sp40;
-    unk_func_80022C28_ret* temp_v0;
+    DeckHandle* temp_v0;
     unk_func_8821421C_02C_06C_02C_060_02C_000* var_s0;
     unk_func_8821421C_02C_06C_02C_060_02C_000 sp34;
 

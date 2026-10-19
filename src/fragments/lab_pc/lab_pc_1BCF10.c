@@ -147,7 +147,7 @@ void LabPC_SetGridBorderActive(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     } else {
         var_v0 = 1;
     }
-    arg0->unk_44->unk_2C = D_88218230[var_v0];
+    arg0->unk_44->unk_2C = gGridBorderTextures[var_v0];
 }
 
 void LabPC_BoxGrid_BindMessagePanel(unk_func_8820BE14_02C_038* arg0, unk_func_88507D4C* arg1) {
@@ -779,13 +779,13 @@ s32 LabPC_ModeToggleIcon_Draw(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
     gDPLoadTextureBlock(gDisplayListHead++, gSwapArrowsTexture, G_IM_FMT_IA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    sp6C = D_88218238[(arg0->unk_2C != 0) ? 0 : 1];
+    sp6C = gModeToggleColors[(arg0->unk_2C != 0) ? 0 : 1];
 
     gDPSetPrimColor(gDisplayListHead++, 0, 0, sp6C.r, sp6C.g, sp6C.b, sp6C.a);
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg1 + 0x20) << 2, (arg2 + 0x14) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
-    sp6C = D_88218238[(arg0->unk_2C == 0) ? 0 : 1];
+    sp6C = gModeToggleColors[(arg0->unk_2C == 0) ? 0 : 1];
 
     gDPPipeSync(gDisplayListHead++);
 

@@ -16911,3 +16911,16 @@ D_823059AC	gSelectionCornerAnim	w13		static counter used to calculate SINS for t
 D_823059C8	gSpinnerArrowAnim	w13		static counter used to calculate SINS for the spinner arrow pulsing effect	applied@4eb7ee20
 D_84002D16	gRuleMenuState	w13		state machine variable controlling RuleSelectLoop (1:RowSelect, 2:OptionSelect, 3:LevelSelect, etc)	applied@4eb7ee20
 D_84002CA4	gSelectionCornerAnimTimer	w13		static variable used in FreeBattle_DrawSelectionCorners to animate corners via SINS	applied@4eb7ee20
+func_83700090	Gallery_EnlargeEmptyHandler	w14		is an empty function within the Gallery_Enlarge domain	applied@301c2ae5
+D_833032E0	gGalleryMenuMode	w14		tracks the current menu mode (0: Main, 1: Grid, 2: Special) used in DrawTitleBar and Gallery_SnapInit	applied@301c2ae5
+D_833031B4	gGalleryMenuItems	w14		table of MenuItem structs defining the layout, icons, and strings for the main gallery menu	applied@301c2ae5
+D_82A00370	gPokeIconFramebuffers	w14		PokeIcon_AllocFramebuffers(1) is assigned to this variable.	applied@301c2ae5
+unk_func_80022C28_ret	DeckHandle	w14		Returned by Deck_Open and passed to Deck_ReadEntries and Deck_CloseAndFlush.	applied@301c2ae5
+unk_D_83101E6C	Glc_ColorKeyframe	w14		defines a color keyframe with duration (posX), scale (rotation), and RGB components	applied@301c2ae5
+D_83101EE0	gClearScreenBgArchive	w14		BinArchive containing the background assets for the clear screen, loaded from 'backgrounds'	applied@301c2ae5
+D_83101EE4	gClearScreenBgImage	w14		pointer to the specific background image extracted from gClearScreenBgArchive	applied@301c2ae5
+unk_D_83102218	Glc_CircleWipeState	w14		tracks the state, timer, and current radius/scale of the circle wipe effect	applied@301c2ae5
+unk_D_83102224	Glc_FadeAnimState	w14		tracks the state, timer, and alpha/brightness of the background fade	applied@301c2ae5
+D_83101F00	gClearScreenNodes	w14		array of two animation state structures for the clear screen's graphical nodes	applied@301c2ae5
+D_88218230	gGridBorderTextures	w14		Table of textures used for the scrollable grid borders	applied@301c2ae5
+D_88218238	gModeToggleColors	w14		Table of colors used for the mode toggle icon arrows	applied@301c2ae5

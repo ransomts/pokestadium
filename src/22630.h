@@ -96,7 +96,7 @@ typedef struct unk_D_800AC910_050_9AC_008 {
     /* 0x2A */ u16 unk_2A;
 } unk_D_800AC910_050_9AC_008; // size = 0x2C
 
-typedef struct unk_func_80022C28_ret {
+typedef struct DeckHandle {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
@@ -106,7 +106,7 @@ typedef struct unk_func_80022C28_ret {
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
-} unk_func_80022C28_ret; // size = 0xC
+} DeckHandle; // size = 0xC
 
 typedef struct unk_D_800AC910_050_9AC {
     /* 0x000 */ u8 unk_000;

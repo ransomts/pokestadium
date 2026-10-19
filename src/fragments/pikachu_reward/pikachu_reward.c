@@ -85,7 +85,7 @@ s32 PikachuReward_SearchDeckForPikachu(s16 arg0, s16 arg1, s16 arg2) {
     UNUSED s32 pad[22];
     s32 sp34;
     s16 var_s3;
-    unk_func_80022C28_ret* var_v0;
+    DeckHandle* var_v0;
     PokemonData* ptr = &gPikachuSession.rotation;
 
     sp34 = 0;
@@ -645,7 +645,7 @@ void PikachuReward_ShowSaveStatusScreen(s32 arg0) {
 void PikachuReward_SaveToCartridge(void) {
     s32 var_s0;
     s32 temp_v0;
-    unk_func_80022C28_ret* var_v0;
+    DeckHandle* var_v0;
 
     if (gPikachuSession.unk_01 == 0) {
         var_v0 = Deck_Open(0x20, gPikachuSession.posX, 0, 2);

@@ -42,7 +42,7 @@ void Gallery_RentalViewerInitBoxPicker(s32 arg0, s32 arg1, RentalViewerBgData* a
 
 s32 Gallery_RentalViewerLoadDeckEntries(unk_D_838067F0* arg0, s32 arg1) {
     char sp48[88];
-    unk_func_80022C28_ret* var_v0;
+    DeckHandle* var_v0;
     unk_D_838067F0_003C* ptr = &arg0->unk_003C[arg1];
     s32 i;
 
@@ -91,7 +91,7 @@ s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1
     unk_D_838067F0_003C* temp_s3;
     s32 var_s4;
     u32 var_s1_3;
-    unk_func_80022C28_ret* var_v0;
+    DeckHandle* var_v0;
 
     var_s4 = 0;
 
