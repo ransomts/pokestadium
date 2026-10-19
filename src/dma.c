@@ -101,7 +101,7 @@ s32 Storage_QueueDiskIdRead(s32 arg0, s32 arg1) {
     temp_v0 = Util_Malloc(0x2C);
     if (temp_v0 != NULL) {
         temp_v0->unk0 = 0xC;
-        temp_v0->unk20 = &D_800818E0;
+        temp_v0->unk20 = &gLeoDiskId;
         temp_v0->unk28 = arg0;
         Storage_QueueRequest(temp_v0, arg1);
     }

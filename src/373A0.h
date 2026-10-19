@@ -50,7 +50,7 @@ typedef struct unk_D_800FC6D4_008 {
     /* 0x04 */ u8 unk_04;
 } unk_D_800FC6D4_008; // size = 0x5
 
-typedef struct unk_D_800FC6D4 {
+typedef struct GbTrackHeader {
     /* 0x00 */ u16 flags;
     /* 0x02 */ u16 num_entries;
     /* 0x04 */ u16 unk_04;
@@ -58,7 +58,7 @@ typedef struct unk_D_800FC6D4 {
     /* 0x08 */ unk_D_800FC6D4_008* offset;
     /* 0x0C */ char unk_0C[0x4];
     /* 0x10 */ unk_D_800FC6D4_entry entries[ENTRY_SIZE];
-} unk_D_800FC6D4; // size = 0x10
+} GbTrackHeader; // size = 0x10
 
 typedef struct MoveSoundEntry {
     u8 unk0[0x6];
@@ -83,7 +83,7 @@ extern u8* gMoveSoundBankData[3];
 extern MoveSoundTable* gMoveSoundTables[3];
 extern unk_D_800FC6CC* gAudioSeqTOC;
 extern u8* gAudioSfxDataBuffer;
-extern unk_D_800FC6D4* gAudioSfxBankExtra;
+extern GbTrackHeader* gAudioSfxBankExtra;
 extern s16* gMusicFadeBuffer;
 extern u8* gMoveSoundTempBuffer;
 extern u32* gAudioArchiveOffsets;

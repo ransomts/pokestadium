@@ -11,27 +11,27 @@
 #include "src/4BA90.h"
 #include "src/4BDC0.h"
 
-typedef struct unk_D_800A8480 {
+typedef struct AudioThreadData {
   /* 0x0000 */ OSThread thread;
   /* 0x01B0 */ char unk01B0[0x2030];
-} unk_D_800A8480; // size = 0x21E0
+} AudioThreadData; // size = 0x21E0
 
 static s32 gAudioThreadEnabled;
 static UnkStruct80001380 gAudioMessageQueues[2];
 static s32 gAudioTaskBufferIndex;
 static s32 gCurrentMusicId;
-static unk_D_800A8480 gAudioThreadData;
+static AudioThreadData gAudioThreadData;
 
-void func_8000D1C0(void) {
+void Audio_Stub1(void) {
 }
 
-void func_8000D1C8(void) {
+void Audio_Stub2(void) {
 }
 
-void func_8000D1D0(void) {
+void Audio_Stub3(void) {
 }
 
-void func_8000D1D8(void) {
+void Audio_Stub4(void) {
 }
 
 void Audio_ResetCurrentMusic(void) {

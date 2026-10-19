@@ -16481,3 +16481,47 @@ D_800A62D8	gDmaCompletionMsg	w5		Used as the message object for gDmaCompletionQu
 unk_func_80003680_sp300	JpegStreamInfo	w5		Contains JPEG markers like quantization_table, huffman_table, start_of_frame, and start_of_scan.	applied@2507b9a1
 unk_func_80003680_sp90	JpegDspTaskData	w5		Passed to Jpeg_InitializeDspTask and Jpeg_BuildDspOutput to configure DSP task parameters.	applied@2507b9a1
 unk_func_800041C0	StorageRange	w5		Used in Storage_SetLbaRange and Storage_SetByteRange to define a range of data to be loaded from storage.	applied@2507b9a1
+D_800785BC	gChannelRegisters	w6		table of base register addresses for the 8 GB APU channels (0xFF10, 0xFF15, 0xFF1A, 0xFF1F repeated)	applied@8d175d87
+unk_D_800FC6D4	GbTrackHeader	w6		struct used in GbMusic_BindSequenceTracks to define track channel assignments and data pointers	applied@8d175d87
+unk_80044A50_008	GbTrackEntry	w6		struct containing a pointer and a flag/value, used in Music_ResolveTrackOffsets	applied@8d175d87
+D_800FCF24	gCartRomHandle	w6		initialized via osCartRomInit and used as the handle for osEPiStartDma	applied@8d175d87
+unk_D_800FCF28	AudioBuffer	w6		allocated via alHeapDBAlloc and accessed as a buffer for PCM samples in Audio_ProcessChannels	applied@8d175d87
+D_80078E80_tail	gBgmCategoryTableExtra	w6		adjacent to gBgmCategoryTable0 and used as a data block	applied@8d175d87
+D_80078FAC	gBattleMusicSequenceState	w6		tracks state for the 0x90001 sequence in Audio_PlayCategory9SoundCommand	applied@8d175d87
+D_80078FB0	gCatASoundVolumeDelta	w6		volume offsets used in Audio_PlayCategoryASoundCommand based on arg1	applied@8d175d87
+D_80078FC0	gCatASoundVolMod	w6		volume modifiers used in Audio_PlayCategoryASoundCommand based on arg2	applied@8d175d87
+D_80078FCC	gCatASoundVolScale	w6		volume scales used in Audio_PlayCategoryASoundCommand based on arg2	applied@8d175d87
+D_80078FD8	gCatASoundPitchDelta	w6		pitch offsets used in Audio_PlayCategoryASoundCommand based on arg1	applied@8d175d87
+D_80078FE8	gCatASoundFreqOffset1	w6		frequency offsets used in Audio_PlayCategoryASoundCommand based on arg2	applied@8d175d87
+D_80078FF8	gCatASoundFreqOffset2	w6		frequency offsets used in Audio_PlayCategoryASoundCommand based on arg2	applied@8d175d87
+D_80079008	gPersistentSfxHandle1	w6		stores sound handle for persistent SFX id 18	applied@8d175d87
+D_8007900C	gPersistentSfxHandle2	w6		stores sound handle for persistent SFX id 20	applied@8d175d87
+D_80079010	gPersistentSfxHandle3	w6		stores sound handle for persistent SFX id 21	applied@8d175d87
+D_80079018	gLastPlayedSfxHandle	w6		updated at the end of Audio_DispatchSoundBankCommand and Audio_PlayDirectSoundCommand	applied@8d175d87
+D_8007901C	gCat11SfxHandle1	w6		static handle for Category 11 sounds	applied@8d175d87
+D_80079020	gCat11SfxHandle2	w6		static handle for Category 11 sounds	applied@8d175d87
+D_80079024	gCat11SfxHandle3	w6		static handle for Category 11 sounds	applied@8d175d87
+D_80079028	gCat11SfxHandle4	w6		static handle for Category 11 sounds	applied@8d175d87
+D_8007902C	gSfxPitchTable1	w6		table used to set sp38 (pitch/volume) for command 0x110000B when arg2 is 0	applied@8d175d87
+D_80079034	gSfxPitchTable2	w6		table used to set sp38 (pitch/volume) for command 0x110000B when arg2 is not 0	applied@8d175d87
+D_80079040	gSfxPitchTable3	w6		table used to set sp38 for commands 0x1100014 and 0x110000E	applied@8d175d87
+D_8007904C	gCat12SfxHandle1	w6		static handle for sound effect in Audio_PlayCategory12SoundCommand case 0x1200001	applied@8d175d87
+D_80079050	gCat12SfxHandle2	w6		static handle for sound effect in Audio_PlayCategory12SoundCommand case 0x1200002	applied@8d175d87
+D_80079054	gCat12SfxHandle3	w6		static handle for sound effect in Audio_PlayCategory12SoundCommand case 0x1200004	applied@8d175d87
+D_80079058	gCat12SfxHandle4	w6		static handle for sound effect in Audio_PlayCategory12SoundCommand case 0x1200005	applied@8d175d87
+D_8007905C	gCat12SfxHandle5	w6		static handle for sound effect in Audio_PlayCategory12SoundCommand case 0x1200007	applied@8d175d87
+D_80079060	gCat12SfxState1	w6		static state flag used to determine frequency offset in Audio_PlayCategory12SoundCommand case 0x1200004	applied@8d175d87
+func_80050BA0	Audio_CopyData	w6		called by Audio_CopyDataWithCacheSync to perform the actual data transfer after cache invalidation	applied@8d175d87
+func_80004DB4	Sched_NoOp	w6		called in Sched_HandleRetrace but is empty	applied@8d175d87
+unk_D_800A8480	AudioThreadData	w6		contains OSThread and a large buffer used in Audio_ThreadMain and Audio_StartThread	applied@8d175d87
+func_8000D1C0	Audio_Stub1	w6		empty function in audio domain	applied@8d175d87
+func_8000D1C8	Audio_Stub2	w6		empty function in audio domain	applied@8d175d87
+func_8000D1D0	Audio_Stub3	w6		empty function in audio domain	applied@8d175d87
+func_8000D1D8	Audio_Stub4	w6		empty function in audio domain	applied@8d175d87
+D_81200000	gGbEmuRomBank	w6		mapped to the start of the GB emulator memory region	applied@8d175d87
+unk_D_800AA680	LeoDiskDescriptor	w6		contains a magic 'POKE' identifier and disk transfer offsets/sizes used in Leo_AcceptPokemonDiskDescriptor and Leo_QueueDiskPayloadRead	applied@8d175d87
+unk_D_800AA690	LeoBootState	w6		state machine tracking structure containing current state (unk_00), error codes, and retry counts	applied@8d175d87
+D_8006F000	gLeoBootIdMagic	w6		string literal "P2J" used to validate the boot disk ID in Leo_ValidateBootDiskId	applied@8d175d87
+D_8006F004	gLeoBootIdCompany	w6		string literal "01" used to validate the company ID in Leo_ValidateBootDiskId	applied@8d175d87
+D_800818E0	gLeoDiskId	w6		global structure containing disk metadata (company, gameName, diskNumber) read from the disk	applied@8d175d87
+D_8006F070	gRootNodeScaleDefault	w6		initialized to {1, 1, 1}, likely the default scale for the root node	applied@8d175d87

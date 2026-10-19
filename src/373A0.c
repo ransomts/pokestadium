@@ -80,7 +80,7 @@ u8* gMoveSoundBankData[3];
 MoveSoundTable* gMoveSoundTables[3];
 unk_D_800FC6CC* gAudioSeqTOC;
 u8* gAudioSfxDataBuffer;
-unk_D_800FC6D4* gAudioSfxBankExtra;
+GbTrackHeader* gAudioSfxBankExtra;
 s16* gMusicFadeBuffer;
 u8* gMoveSoundTempBuffer;
 u32* gAudioArchiveOffsets;

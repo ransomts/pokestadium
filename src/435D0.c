@@ -735,10 +735,10 @@ u8 GbMusic_ReadStreamByte(u32 arg0) {
 
 u16 GbMusic_GetChannelRegister(u32 arg0, s32 arg1) {
     UNUSED s32 pad;
-    u16 D_800785BC[] = {
+    u16 gChannelRegisters[] = {
         0xFF10, 0XFF15, 0xFF1A, 0XFF1F, 0xFF10, 0XFF15, 0xFF1A, 0XFF1F,
     };
-    s32 ret = D_800785BC[arg0] + arg1;
+    s32 ret = gChannelRegisters[arg0] + arg1;
 
     return ret;
 }
@@ -939,17 +939,17 @@ s32 GbMusic_CountActiveHighChannels(void) {
     return ret;
 }
 
-typedef struct unk_80044A50_008 {
+typedef struct GbTrackEntry {
     /* 0x00 */ u32 unk_00;
     /* 0x04 */ u32 unk_04;
-} unk_80044A50_008; // size = 0x8
+} GbTrackEntry; // size = 0x8
 
-void Music_ResolveTrackOffsets(unk_D_800FC6D4* arg0) {
+void Music_ResolveTrackOffsets(GbTrackHeader* arg0) {
     s32 i;
     s32 end;
     u32 base;
     u8* temp_v1;
-    unk_80044A50_008* temp_v0;
+    GbTrackEntry* temp_v0;
 
     if (arg0->flags != 0) {
         return;
@@ -962,7 +962,7 @@ void Music_ResolveTrackOffsets(unk_D_800FC6D4* arg0) {
     arg0->offset = (u32)temp_v1;
 
     for (i = 0; i != (end * 3); i++) {
-        temp_v0 = (unk_80044A50_008*)((u32)i * 8 + (u32)temp_v1);
+        temp_v0 = (GbTrackEntry*)((u32)i * 8 + (u32)temp_v1);
         // IDO needs the separate += 0 to match the og register allocation
         temp_v0 += 0;
         temp_v0->unk_00 += base;

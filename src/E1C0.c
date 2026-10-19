@@ -13,7 +13,7 @@ GbEmuState* gGbEmuState;
 GbEmuThreadInfo* gGbEmuThreadInfo;
 static char gGbEmuThreadId;
 
-extern u8 D_81200000[];
+extern u8 gGbEmuRomBank[];
 
 void GbTower_AudioThread(UNUSED void* arg0) {
     void (*func)(void*) = Util_ConvertAddrToVirtAddr(&GbEmu_AudioVideoTick);

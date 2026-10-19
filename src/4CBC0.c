@@ -682,7 +682,7 @@ void Audio_StopCategory8SoundCommand(s32 arg0, s32 arg1, UNUSED s32 arg2) {
 s32 gBattleMusicHandle = 0;
 
 s32 Audio_PlayCategory9SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
-    static s32 D_80078FAC = 0;
+    static s32 gBattleMusicSequenceState = 0;
 
     s32 sp3C;
     s32 sp38;
@@ -697,21 +697,21 @@ s32 Audio_PlayCategory9SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) 
 
     switch (arg0) {
         case 0x90001:
-            if (D_80078FAC == 0) {
+            if (gBattleMusicSequenceState == 0) {
                 gSpecialSequenceState = 0;
                 gSequenceMusicHandle1 = 0;
                 gSequenceMusicHandle2 = 0;
                 sp38 = 2;
-                D_80078FAC++;
+                gBattleMusicSequenceState++;
                 Audio_UpdateSpecialSequence(0x1E, 0);
-            } else if (D_80078FAC == 1) {
-                D_80078FAC++;
+            } else if (gBattleMusicSequenceState == 1) {
+                gBattleMusicSequenceState++;
                 var_fv1 -= 4.0f;
-            } else if (D_80078FAC == 2) {
-                D_80078FAC++;
+            } else if (gBattleMusicSequenceState == 2) {
+                gBattleMusicSequenceState++;
                 var_fv1 -= 2.0f;
-            } else if (D_80078FAC == 3) {
-                D_80078FAC = 0;
+            } else if (gBattleMusicSequenceState == 3) {
+                gBattleMusicSequenceState = 0;
                 var_fv1 -= 9.0f;
             }
             break;
@@ -770,35 +770,35 @@ void Audio_StopCategory9SoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s3
 }
 
 s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
-    static s32 D_80078FB0[4] = {
+    static s32 gCatASoundVolumeDelta[4] = {
         0xFFFFFF88,
         0xFFFFFFD8,
         0x00000028,
         0x00000078,
     };
-    static s32 D_80078FC0[3] = {
+    static s32 gCatASoundVolMod[3] = {
         0xFFFFFF8D,
         0x00000000,
         0x00000073,
     };
-    static f32 D_80078FCC[3] = {
+    static f32 gCatASoundVolScale[3] = {
         1.0f,
         0.8000000119f,
         0.6000000238f,
     };
-    static f32 D_80078FD8[4] = {
+    static f32 gCatASoundPitchDelta[4] = {
         -0.6000000238f,
         1.0f,
         -1.0f,
         0.6000000238f,
     };
-    static f32 D_80078FE8[4] = {
+    static f32 gCatASoundFreqOffset1[4] = {
         0.0f,
         0.0f,
         2.0f,
         2.0f,
     };
-    static f32 D_80078FF8[4] = {
+    static f32 gCatASoundFreqOffset2[4] = {
         0.0f,
         4.0f,
         8.0f,
@@ -844,11 +844,11 @@ s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
                     break;
             }
 
-            var_fv0 += D_80078FD8[arg1];
-            var_fv0 += D_80078FE8[arg2];
-            var_t0 = D_80078FB0[arg1] + 0x7F;
+            var_fv0 += gCatASoundPitchDelta[arg1];
+            var_fv0 += gCatASoundFreqOffset1[arg2];
+            var_t0 = gCatASoundVolumeDelta[arg1] + 0x7F;
             var_a3 = 240.0f;
-            var_a3 += D_80078FF8[arg2];
+            var_a3 += gCatASoundFreqOffset2[arg2];
 
             if (var_t0 >= 0x100) {
                 var_t0 = 0xFF;
@@ -885,7 +885,7 @@ s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             }
 
             var_t0 = arg2 + 0x7F;
-            var_fv0 += D_80078FD8[arg1];
+            var_fv0 += gCatASoundPitchDelta[arg1];
             break;
 
         case 0xA0008:
@@ -899,11 +899,11 @@ s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
                 return 0;
             }
 
-            var_t0 = (s32)(D_80078FCC[(arg2 & 0xC) >> 2] * (f32)D_80078FC0[arg2 & 3]) + 0x7F;
+            var_t0 = (s32)(gCatASoundVolScale[(arg2 & 0xC) >> 2] * (f32)gCatASoundVolMod[arg2 & 3]) + 0x7F;
             break;
 
         case 0xA000A:
-            var_t0 = (s32)((0.8 * (f32)D_80078FC0[arg2 & 3]) * D_80078FCC[(arg2 & 0xC) >> 2]) + (0, 0x7F);
+            var_t0 = (s32)((0.8 * (f32)gCatASoundVolMod[arg2 & 3]) * gCatASoundVolScale[(arg2 & 0xC) >> 2]) + (0, 0x7F);
             break;
 
         case 0xA000B:
@@ -912,7 +912,7 @@ s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             } else if (arg1 != 0) {
                 return 0;
             }
-            var_t0 = (s32)(0.8 * (f32)D_80078FC0[arg2 & 3] * D_80078FCC[(arg2 & 0xC) >> 2]) + (0, 0x7F);
+            var_t0 = (s32)(0.8 * (f32)gCatASoundVolMod[arg2 & 3] * gCatASoundVolScale[(arg2 & 0xC) >> 2]) + (0, 0x7F);
             break;
 
         case 0xA000E:
@@ -931,7 +931,7 @@ s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             } else if (arg1 != 0) {
                 return 0;
             }
-            var_t0 = (s32)(0.8 * (f32)D_80078FC0[arg2 & 3] * D_80078FCC[(arg2 & 0xC) >> 2]) + (0, 0x7F);
+            var_t0 = (s32)(0.8 * (f32)gCatASoundVolMod[arg2 & 3] * gCatASoundVolScale[(arg2 & 0xC) >> 2]) + (0, 0x7F);
             break;
 
         default:
@@ -953,15 +953,15 @@ void Audio_StopCategoryASoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s3
 }
 
 s32 Audio_PlayPersistentSoundCommand(s32 arg0, u32 arg1) {
-    static s32 D_80079008 = 0x00000000;
-    static s32 D_8007900C = 0x00000000;
-    static s32 D_80079010 = 0x00000000;
+    static s32 gPersistentSfxHandle1 = 0x00000000;
+    static s32 gPersistentSfxHandle2 = 0x00000000;
+    static s32 gPersistentSfxHandle3 = 0x00000000;
 
     s32 temp_v0;
 
     switch (arg0) {
         case 19:
-            MusSetDurationScale(D_80079008, 1);
+            MusSetDurationScale(gPersistentSfxHandle1, 1);
             break;
 
         case 18:
@@ -971,13 +971,13 @@ s32 Audio_PlayPersistentSoundCommand(s32 arg0, u32 arg1) {
         case 21:
             switch (arg1) {
                 case 0:
-                    if (MusHandleAsk(D_80079010) != 0) {
+                    if (MusHandleAsk(gPersistentSfxHandle3) != 0) {
                         return 0;
                     }
                     break;
 
                 case 1:
-                    MusSetDurationScale(D_8007900C, 0x19);
+                    MusSetDurationScale(gPersistentSfxHandle2, 0x19);
                     break;
             }
             break;
@@ -987,21 +987,21 @@ s32 Audio_PlayPersistentSoundCommand(s32 arg0, u32 arg1) {
     }
 
     if (arg0 == 0x15) {
-        MusSetDurationScale(D_80079010, 0xA);
+        MusSetDurationScale(gPersistentSfxHandle3, 0xA);
     }
 
     temp_v0 = MusStartSoundEffect(gSfxBankStandard, gSfxTable, arg0, 0x80, 0x80, -1);
     switch (arg0) {
         case 18:
-            D_80079008 = temp_v0;
+            gPersistentSfxHandle1 = temp_v0;
             break;
 
         case 20:
-            D_8007900C = temp_v0;
+            gPersistentSfxHandle2 = temp_v0;
             break;
 
         case 21:
-            D_80079010 = temp_v0;
+            gPersistentSfxHandle3 = temp_v0;
             break;
     }
 
@@ -1009,7 +1009,7 @@ s32 Audio_PlayPersistentSoundCommand(s32 arg0, u32 arg1) {
 }
 
 u32 gCurrentSfxBankId = 0xFFFFFFFF;
-static s32 D_80079018 = 0x00000000;
+static s32 gLastPlayedSfxHandle = 0x00000000;
 
 s32 Audio_DispatchSoundBankCommand(s32 arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[5];
@@ -1091,7 +1091,7 @@ s32 Audio_DispatchSoundBankCommand(s32 arg0, s32 arg1, s32 arg2) {
             return 0;
     }
 
-    D_80079018 = var_v0;
+    gLastPlayedSfxHandle = var_v0;
 }
 
 void Audio_DispatchSoundBankStopCommand(s32 arg0, s32 arg1, s32 arg2) {
@@ -1178,21 +1178,21 @@ s32 Audio_PlayDirectSoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
             return 0;
     }
 
-    D_80079018 = var_v0;
+    gLastPlayedSfxHandle = var_v0;
 }
 
 s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
-    static s32 D_8007901C = 0x00000000;
-    static s32 D_80079020 = 0x00000000;
-    static s32 D_80079024 = 0x00000000;
-    static s32 D_80079028 = 0;
-    static u8 D_8007902C[] = {
+    static s32 gCat11SfxHandle1 = 0x00000000;
+    static s32 gCat11SfxHandle2 = 0x00000000;
+    static s32 gCat11SfxHandle3 = 0x00000000;
+    static s32 gCat11SfxHandle4 = 0;
+    static u8 gSfxPitchTable1[] = {
         0x60, 0xA0, 0xE0, 0x20, 0x60, 0xA0,
     };
-    static u8 D_80079034[] = {
+    static u8 gSfxPitchTable2[] = {
         0x60, 0xA0, 0xE0, 0x60, 0xA0, 0xE0, 0x20, 0x60, 0xA0, 0x20, 0x60, 0xA0,
     };
-    static u8 D_80079040[] = {
+    static u8 gSfxPitchTable3[] = {
         0x20, 0x60, 0xA0, 0xE0, 0x20, 0x60, 0xA0, 0xE0, 0x20, 0x60, 0xA0, 0xE0,
     };
 
@@ -1258,12 +1258,12 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x1100004:
-            MusSetDurationScale(D_8007901C, 5);
+            MusSetDurationScale(gCat11SfxHandle1, 5);
             break;
 
         case 0x1100008:
-            MusSetDurationScale(D_80079020, 5);
-            MusSetDurationScale(D_80079024, 5);
+            MusSetDurationScale(gCat11SfxHandle2, 5);
+            MusSetDurationScale(gCat11SfxHandle3, 5);
             break;
 
         case 0x110000B:
@@ -1271,14 +1271,14 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
                 if ((arg1 <= 0) || (arg1 >= 7)) {
                     return 0;
                 }
-                sp38 = D_8007902C[arg1 - 1];
+                sp38 = gSfxPitchTable1[arg1 - 1];
             } else {
                 if ((arg1 <= 0) || (arg1 >= 0xD)) {
                     return 0;
                 }
-                sp38 = D_80079034[arg1 - 1];
+                sp38 = gSfxPitchTable2[arg1 - 1];
             }
-            MusSetDurationScale(D_80079028, 0xA);
+            MusSetDurationScale(gCat11SfxHandle4, 0xA);
             break;
 
         case 0x1100014:
@@ -1286,7 +1286,7 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             if (arg2 == 1) {
                 sp38 = 0x7F;
             } else {
-                sp38 = D_80079040[(arg1 - 1) % 4];
+                sp38 = gSfxPitchTable3[(arg1 - 1) % 4];
             }
             break;
 
@@ -1294,7 +1294,7 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             if ((arg1 < 0) || (arg1 >= 9)) {
                 return 0;
             }
-            sp38 = D_80079040[3 + arg1];
+            sp38 = gSfxPitchTable3[3 + arg1];
             break;
 
         default:
@@ -1304,31 +1304,31 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     temp_v0_2 = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, sp40, sp34, sp38, -1);
     switch (arg0) {
         case 0x1100003:
-            D_8007901C = temp_v0_2;
+            gCat11SfxHandle1 = temp_v0_2;
             break;
 
         case 0x1100006:
-            D_80079020 = temp_v0_2;
+            gCat11SfxHandle2 = temp_v0_2;
             break;
 
         case 0x1100007:
-            D_80079024 = temp_v0_2;
+            gCat11SfxHandle3 = temp_v0_2;
             break;
 
         case 0x110000B:
-            D_80079028 = temp_v0_2;
+            gCat11SfxHandle4 = temp_v0_2;
             break;
     }
-    D_80079018 = temp_v0_2;
+    gLastPlayedSfxHandle = temp_v0_2;
 }
 
 s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
-    static s32 D_8007904C = 0x00000000;
-    static s32 D_80079050 = 0x00000000;
-    static s32 D_80079054 = 0x00000000;
-    static s32 D_80079058 = 0x00000000;
-    static s32 D_8007905C = 0x00000000;
-    static u8 D_80079060 = 0;
+    static s32 gCat12SfxHandle1 = 0x00000000;
+    static s32 gCat12SfxHandle2 = 0x00000000;
+    static s32 gCat12SfxHandle3 = 0x00000000;
+    static s32 gCat12SfxHandle4 = 0x00000000;
+    static s32 gCat12SfxHandle5 = 0x00000000;
+    static u8 gCat12SfxState1 = 0;
     static u8 D_80079064 = 0;
 
     UNUSED s32 pad[2];
@@ -1356,57 +1356,57 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
 
     switch (arg0) {
         case 0x1200001:
-            MusSetDurationScale(D_8007904C, 1);
+            MusSetDurationScale(gCat12SfxHandle1, 1);
             var_fv1 = __ull_to_f(__ull_rem(osGetTime(), 8)) - 4.0f;
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 7, 0x80, 0x80, -1);
             MusSetFrequencyOffset(sp4C, var_fv1);
-            D_8007904C = sp4C;
+            gCat12SfxHandle1 = sp4C;
             break;
 
         case 0x1200002:
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 1, 0x80, 0x80, -1);
-            D_80079050 = sp4C;
+            gCat12SfxHandle2 = sp4C;
             D_80079064 = 0;
             break;
 
         case 0x1200003:
-            MusSetDurationScale(D_80079050, 0x3C);
-            MusSetDurationScale(D_80079054, 0x3C);
-            D_80079060 = 0;
+            MusSetDurationScale(gCat12SfxHandle2, 0x3C);
+            MusSetDurationScale(gCat12SfxHandle3, 0x3C);
+            gCat12SfxState1 = 0;
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 3, 0x80, 0x80, -1);
             break;
 
         case 0x1200004:
-            if (D_80079060 == 0) {
+            if (gCat12SfxState1 == 0) {
                 sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 2, 0x80, 0x80, -1);
-                D_80079054 = sp4C;
+                gCat12SfxHandle3 = sp4C;
                 var_fv1 = 2.0f;
-                D_80079060 = 1;
+                gCat12SfxState1 = 1;
             } else {
                 var_fv1 = 4.0f;
             }
-            MusSetFrequencyOffset(D_80079054, var_fv1);
+            MusSetFrequencyOffset(gCat12SfxHandle3, var_fv1);
             break;
 
         case 0x1200005:
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 4, 0x80, 0x80, -1);
-            D_80079058 = sp4C;
+            gCat12SfxHandle4 = sp4C;
             break;
 
         case 0x1200006:
-            MusSetDurationScale(D_80079054, 0x5A);
-            MusSetDurationScale(D_80079058, 1);
+            MusSetDurationScale(gCat12SfxHandle3, 0x5A);
+            MusSetDurationScale(gCat12SfxHandle4, 1);
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 5, 0x80, 0x80, -1);
             break;
 
         case 0x1200007:
-            D_8007905C = sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 6, 0x80, 0x80, -1);
+            gCat12SfxHandle5 = sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 6, 0x80, 0x80, -1);
             Audio_FadeOutAll(0x78);
             D_80079064 = 1;
             break;
 
         case 0x1200008:
-            MusSetDurationScale(D_8007905C, 6);
+            MusSetDurationScale(gCat12SfxHandle5, 6);
             Audio_StartMusicTrack(0x13);
             D_80079064 = 1;
             break;
@@ -1428,15 +1428,15 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
             break;
 
         case 0x120000E:
-            MusSetDurationScale(D_8007904C, 1);
+            MusSetDurationScale(gCat12SfxHandle1, 1);
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 7, 0x80, 0x80, -1);
             MusSetFrequencyOffset(sp4C, -5.0f);
-            D_8007904C = sp4C;
+            gCat12SfxHandle1 = sp4C;
             break;
 
         default:
             return 0;
     }
 
-    D_80079018 = sp4C;
+    gLastPlayedSfxHandle = sp4C;
 }

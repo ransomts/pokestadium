@@ -4,11 +4,11 @@
 #include "global.h"
 #include "src/46680.h"
 
-typedef struct unk_D_800FCF28 {
+typedef struct AudioBuffer {
     /* 0x000 */ s16 unk_000[0x8A0];
-} unk_D_800FCF28; // size = 0x1140
+} AudioBuffer; // size = 0x1140
 
-extern unk_D_800FCF28* gAudioChannelBuffer[2];
+extern AudioBuffer* gAudioChannelBuffer[2];
 extern u32 gAudioChannelReadPos[2];
 
 void AudioStream_Init(ALHeap*, u32, u32);

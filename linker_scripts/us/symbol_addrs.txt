@@ -2501,3 +2501,7 @@ gSfxSubHeader2 = 0x800FC6F0; // defined:true
 gAudioSeqHeader1 = 0x800FC6F4; // defined:true
 gAudioSeqHeader2 = 0x800FC6F8; // defined:true
 gAudioHeaderTemp = 0x800FC798; // defined:true
+gCartRomHandle = 0x800FCF24; // defined:true
+gGbEmuRomBank = 0x81200000;
+gLeoDiskId = 0x800818E0; // defined:true
+gRootNodeScaleDefault = 0x8006F070; // defined:true

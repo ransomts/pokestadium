@@ -2,44 +2,44 @@
 #include "PR/leo.h"
 #include "src/dma.h"
 
-unk_D_800AA680 gBootIDData;
-static unk_D_800AA690 gBootState;
+LeoDiskDescriptor gBootIDData;
+static LeoBootState gBootState;
 static OSMesgQueue gBootMsgQueue;
 static OSMesg gBootMsgBuffer;
 
 s32 Leo_ValidateBootDiskId(void) {
-    static char D_8006F000[] = "P2J";
-    static char D_8006F004[] = "01";
+    static char gLeoBootIdMagic[] = "P2J";
+    static char gLeoBootIdCompany[] = "01";
 
     if (osMemSize < 0x800000) {
         return 2;
     }
 
-    if (bcmp(D_800818E0.company, D_8006F004, sizeof(D_800818E0.company)) != 0) {
+    if (bcmp(gLeoDiskId.company, gLeoBootIdCompany, sizeof(gLeoDiskId.company)) != 0) {
         return 1;
     }
 
-    if (bcmp(&D_800818E0.gameName[1], D_8006F000, 3) != 0) {
+    if (bcmp(&gLeoDiskId.gameName[1], gLeoBootIdMagic, 3) != 0) {
         return 1;
     }
 
-    if (D_800818E0.gameName[0] < 'E') {
+    if (gLeoDiskId.gameName[0] < 'E') {
         return 1;
     }
 
-    if (D_800818E0.gameName[0] > 'Z') {
+    if (gLeoDiskId.gameName[0] > 'Z') {
         return 1;
     }
 
-    if (D_800818E0.diskNumber != 1) {
+    if (gLeoDiskId.diskNumber != 1) {
         return 1;
     }
 
-    _bcopy(&D_800818E0, &leoBootID, sizeof(LEODiskID));
+    _bcopy(&gLeoDiskId, &leoBootID, sizeof(LEODiskID));
     return 0;
 }
 
-s32 Leo_AcceptPokemonDiskDescriptor(unk_D_800AA680* arg0) {
+s32 Leo_AcceptPokemonDiskDescriptor(LeoDiskDescriptor* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_00 == 'POKE') {
@@ -62,7 +62,7 @@ s32 Leo_QueueDiskReset(void) {
     return 0;
 }
 
-s32 Leo_QueueBootBlockRead(unk_D_800AA680* arg0) {
+s32 Leo_QueueBootBlockRead(LeoDiskDescriptor* arg0) {
     Storage_QueueDiskTransfer(0, arg0, 0x230, 1, &gBootMsgQueue, 1);
     gBootState.unk_04 = 0;
     gBootState.unk_02 = 0;
@@ -205,7 +205,7 @@ s32 Leo_HandleResetCompletion(void) {
     return 0;
 }
 
-s32 Leo_HandleBootBlockCompletion(unk_D_800AA680* arg0) {
+s32 Leo_HandleBootBlockCompletion(LeoDiskDescriptor* arg0) {
     s32 sp24;
     UNUSED s32 pad;
 
@@ -347,7 +347,7 @@ s32 Leo_PollDiskReady(void) {
 void func_8000E5B4(void) {
 }
 
-s32 Leo_RunBootStateMachine(unk_D_800AA680* arg0) {
+s32 Leo_RunBootStateMachine(LeoDiskDescriptor* arg0) {
     s32 sp24 = 1;
 
     if (Storage_GetDiskStatus() != 0) {

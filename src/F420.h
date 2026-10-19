@@ -6,7 +6,7 @@
 extern Vec3f gRootNodePosition;
 extern Vec3s gSpriteAnimUpdateFunc;
 extern Vec3f gRootNodeScale;
-extern u16 D_8006F070[];
+extern u16 gRootNodeScaleDefault[];
 
 Color_RGBA8* Color_SetRGB(Color_RGBA8* arg0, u8 r, u8 g, u8 b);
 Color_RGBA8* Color_SetRGBA(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);

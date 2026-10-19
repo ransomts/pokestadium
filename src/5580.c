@@ -156,7 +156,7 @@ void Sched_PromotePendingTasks(void) {
     }
 }
 
-void func_80004DB4(void) {
+void Sched_NoOp(void) {
 }
 
 void Sched_NotifyClients(u32 arg0) {
@@ -229,7 +229,7 @@ void Sched_HandleRetrace(void) {
     }
 
     Sched_PromotePendingTasks();
-    func_80004DB4();
+    Sched_NoOp();
 
     if (gRspTaskManager.unk_A18 != NULL) {
         if (gRspTaskManager.unk_A14 == NULL) {

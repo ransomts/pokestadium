@@ -832,7 +832,7 @@ extern u8 D_3008018[];
 extern u8 D_3007BE0[];
 extern u8 D_3007D48[];
 
-extern LEODiskID D_800818E0;
+extern LEODiskID gLeoDiskId;
 
 extern Gfx gPrefDL_Border[];
 extern Gfx gPrefDL_End[];

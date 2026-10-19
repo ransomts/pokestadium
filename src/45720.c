@@ -15,8 +15,8 @@ s32 gAudioChannelLoopCount[2];
 s32 pad_D_800FCF18;
 s16 gAudioChannelVolumeFadeStep[2];
 u8 gAudioChannelStopFlag[2];
-OSPiHandle* D_800FCF24;
-unk_D_800FCF28* gAudioChannelBuffer[2];
+OSPiHandle* gCartRomHandle;
+AudioBuffer* gAudioChannelBuffer[2];
 u32 gAudioChannelReadPos[2];
 u32 gAudioChannelWritePos[2];
 OSMesgQueue gAudioDmaQueue;
@@ -44,7 +44,7 @@ void AudioStream_Init(ALHeap* arg0, u32 arg1, u32 arg2) {
         gAudioChannelStopFlag[i] = 0;
     }
 
-    D_800FCF24 = osCartRomInit();
+    gCartRomHandle = osCartRomInit();
     osCreateMesgQueue(&gAudioDmaQueue, &gAudioDmaMsg, 1);
     gAudioTransferPending = 0;
     gAudioPaused = 0;
@@ -226,7 +226,7 @@ void AudioStream_DmaReadChunk(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
         sp48.size = var_s1;
 
         osInvalDCache(arg1, arg2);
-        osEPiStartDma(D_800FCF24, &sp48, 0);
+        osEPiStartDma(gCartRomHandle, &sp48, 0);
         osRecvMesg(&gAudioDmaQueue, NULL, 1);
 
         arg2 -= var_s1;

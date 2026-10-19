@@ -32,7 +32,7 @@ Mtx gCamProjectionMatrix = { {
 Vec3f gRootNodePosition = { 0.0f, 0.0f, 0.0f };
 Vec3s gSpriteAnimUpdateFunc = { 0, 0, 0 };
 Vec3f gRootNodeScale = { 1.0f, 1.0f, 1.0f };
-u16 D_8006F070[] = { 1, 1, 1 };
+u16 gRootNodeScaleDefault[] = { 1, 1, 1 };
 
 Color_RGBA8* Color_SetRGB(Color_RGBA8* arg0, u8 r, u8 g, u8 b) {
     arg0->r = r;
