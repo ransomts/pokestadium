@@ -804,7 +804,7 @@ typedef struct BattleAI_TeamState {
     /* 0x14 */ BattleAI_MonData unk_14[1];
 } BattleAI_TeamState; // size >= 0x8A
 
-typedef struct unk_D_843C5568 {
+typedef struct BattleAI_ActivePokemonStruct {
     /* 0x000 */ u8 unk_000;
     /* 0x001 */ u8 unk_001;
     /* 0x002 */ u8 unk_002;
@@ -821,7 +821,7 @@ typedef struct unk_D_843C5568 {
     /* 0x013 */ char unk013[0x3];
     /* 0x016 */ BattleAI_MonData unk_016[1];
     /* 0x08C */ char unk08C[0x510];
-} unk_D_843C5568; // size = 0x59C
+} BattleAI_ActivePokemonStruct; // size = 0x59C
 
 typedef struct MoveCandidateScore {
     /* 0x00 */ u8 posX;
@@ -849,22 +849,22 @@ typedef struct MoveCandidateScore {
     /* 0x28 */ s32 unk_28;
 } MoveCandidateScore; // size = 0x2C
 
-typedef struct unk_D_843C5310 {
+typedef struct AiSpeciesAnimRecord {
     /* 0x00 */ u8 posX[1];
     /* 0x01 */ char unk01[9];
     /* 0x0A */ u8 unk_0A[1];
     /* 0x0B */ char unk0B[0x15];
-} unk_D_843C5310; // size = 0x20
+} AiSpeciesAnimRecord; // size = 0x20
 
-typedef struct unk_D_843C60C0 {
+typedef struct BattleAI_MoveScoreStruct {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
     /* 0x04 */ s32 rotation[1];
     /* 0x08 */ char unk08[0xC];
-} unk_D_843C60C0; // size = 0x14
+} BattleAI_MoveScoreStruct; // size = 0x14
 
-typedef struct unk_D_843C60F0_00C {
+typedef struct BattleAI_StateStruct {
     /* 0x00 */ s32 posX;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
@@ -880,17 +880,17 @@ typedef struct unk_D_843C60F0_00C {
     /* 0x0F */ u8 unk_0F;
     /* 0x10 */ u8 unk_10;
     /* 0x11 */ char unk11[0x3];
-} unk_D_843C60F0_00C; // size = 0x14
+} BattleAI_StateStruct; // size = 0x14
 
-typedef struct unk_D_843C60F0 {
+typedef struct BattleAI_ConfigStruct {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
     /* 0x03 */ char unk03[0x9];
-    /* 0x0C */ unk_D_843C60C0 unk_0C[3];
-} unk_D_843C60F0; // size >= 0x48
+    /* 0x0C */ BattleAI_MoveScoreStruct unk_0C[3];
+} BattleAI_ConfigStruct; // size >= 0x48
 
-typedef struct unk_D_843C6148 {
+typedef struct BattleAI_CurrentMoveStruct {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
@@ -898,7 +898,7 @@ typedef struct unk_D_843C6148 {
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ char unk06[0x2];
-} unk_D_843C6148; // size <= 0x8
+} BattleAI_CurrentMoveStruct; // size <= 0x8
 
 typedef struct BattleAI_TargetScoreContext {
     /* 0x00 */ u8 posX;
@@ -3010,9 +3010,9 @@ void AuxiliaryEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32
 void AuxiliaryEffect_Update(s16 arg0);
 Gfx* AuxiliaryEffect_DrawOne(Gfx* arg0, Particle* arg1, MtxF* arg2);
 Gfx* AuxiliaryEffect_Draw(s16 arg0, Gfx* arg1);
-void func_8436EED4(void);
-void func_8436EEDC(void);
-s32 func_8436EEE4(s32 arg0);
+void AuxEffect_None(void);
+void AuxEffect_None2(void);
+s32 AuxEffect_GetId(s32 arg0);
 
 
 void BattleScene_SetStripWipeState(s32 arg0, s32 arg1);
@@ -3035,7 +3035,7 @@ void Battle_ApplyDamageRandomFactor(void);
 u16 Battle_DetermineMoveOrder(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1);
 s32 IsByteInArray(u8 arg0, u8* arg1, s32 arg2);
 void Battle_SetActiveMoveFromSlotIndex(void);
-s32 func_8436FDBC(void);
+s32 Battle_CheckMoveSuccess(void);
 void ComputePokemonStat(s32 arg0, PokemonData* arg1);
 void ComputeAllPokemonStats(PokemonData* arg0);
 void InitBattleParameters(void);
@@ -3050,20 +3050,20 @@ void ApplyParalysisSpeedCut(BattlePlayerEntity* arg0);
 void ApplyBurnAttackCut(BattlePlayerEntity* arg0);
 void Battle_InitPokemonRuntimeState(BattlePlayerEntity* arg0);
 s32 Battle_IsPartyMemberAlive(BattlePlayerEntity* arg0);
-void func_84370E70(void);
-void func_84370E78(void);
+void Battle_InitEffectState(void);
+void Battle_ResetEffectState(void);
 void Battle_ExecuteMoveAnimation(void);
 void Battle_ApplyRageContinuation(void);
 void Battle_UpdateBattleLog(void);
 void Battle_PlayMoveSound(void);
 void Battle_ApplyDamageAnimation(void);
 void Battle_QueueMoveFailureAndApplyRecoil(void);
-void func_843714D8(void);
+void Battle_IncrementMoveUsage(void);
 s32 Battle_Effect_Metronome(void);
 void Battle_ApplyPoisonOrBurnDamage(void);
 void Battle_ApplyLeechSeedDamage(void);
 s32 Battle_ApplyResidualEffects(void);
-void func_843718DC(void);
+void Battle_ClearEffectState(void);
 s32 Battle_TryLoadFollowupMoveFromTarget(void);
 void Battle_ApplyTypeEffectAndSTAB(void);
 s32 Battle_Effect_Counter(void);
@@ -3151,7 +3151,7 @@ s32 BattleAI_IsPriorityTableMove(u8 arg0, u8 arg1);
 u8 BattleAI_ScoreCategorySetLowPP(BattleAI_MonData* arg0, BattleAI_MonData* arg1);
 u8 BattleAI_ScoreCategorySetReady(BattleAI_MonData* arg0, BattleAI_MonData* arg1);
 u8 BattleAI_HasExactlyOneUsableCandidate(BattleAI_TeamState* arg0);
-void BattleAI_InitializeOrderCandidates(BattleAI_TeamContext* arg0, BattleAI_TeamContext* arg1, BattleAI_TeamContext* arg2, unk_D_843C5568* arg3, s32 arg4);
+void BattleAI_InitializeOrderCandidates(BattleAI_TeamContext* arg0, BattleAI_TeamContext* arg1, BattleAI_TeamContext* arg2, BattleAI_ActivePokemonStruct* arg3, s32 arg4);
 void BattleAI_UpdateRememberedMoveCandidate(BattleAI_MonData* arg0, u8 arg1);
 u16 BattleAI_ScoreMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2);
 void BattleAI_PickBestMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u16* arg2, u8* arg3, u8 arg4, u8 arg5);
@@ -3165,7 +3165,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
 s32 BattleAI_HasScoredMoveAtValue(MoveCandidateScore* arg0, u8 arg1, u8 arg2);
 s32 BattleAI_IsCandidateScoreBelowPeers(MoveCandidateScore* arg0, u8 arg1, u8 arg2, u8 arg3);
 u8 BattleAI_HasOtherCandidateAtLeastScore(MoveCandidateScore* arg0, u8 arg1, u8 arg2, u8 arg3);
-void func_8437B0CC(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1, u8 arg2, MoveCandidateScore* arg3, u8 arg4);
+void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1, u8 arg2, MoveCandidateScore* arg3, u8 arg4);
 s32 BattleAI_IsScoreBetter(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 s32 BattleAI_SelectBestScoredMove(BattleAI_MonData* arg0, UNUSED BattleAI_MonData* arg1, u8 arg2, MoveCandidateScore* arg3);
 s32 BattleAI_ChooseMoveForCandidate(void);

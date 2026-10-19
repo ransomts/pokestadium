@@ -56,7 +56,7 @@ void RattataGame_UpdateAIInput(void);
 void RattataGame_PollInput(void);
 void RattataGame_InitCamera(void);
 void RattataGame_UpdateCamera(void);
-void func_86200938(void);
+void RattataGame_Stub(void);
 void RattataGame_DrawTutorialScreen(s32 arg0);
 void RattataGame_DrawFrame(s32 arg0);
 s32 RattataGame_WaitForStart(void);

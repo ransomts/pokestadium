@@ -3,7 +3,7 @@
 #include "src/text_system.h"
 #include "src/matrix.h"
 
-typedef struct unk_D_843C4DA0 {
+typedef struct BattleMoveData {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
@@ -25,7 +25,7 @@ typedef struct unk_D_843C4DA0 {
     /* 0x2A */ u16 unk_2A;
     /* 0x2C */ u16 unk_2C;
     /* 0x2E */ char unk2E[0x1E];
-} unk_D_843C4DA0; // size = 0x4C
+} BattleMoveData; // size = 0x4C
 
 static u16 gAccumulatedDamage;
 static u8 gAccuracyCheckRandom;
@@ -329,7 +329,7 @@ void Battle_SetActiveMoveFromSlotIndex(void) {
     gBattleTempEntities[0].unk_5A = gBattleTempEntities[0].unk_1F[gMoveEffectIndex];
 }
 
-s32 func_8436FDBC(void) {
+s32 Battle_CheckMoveSuccess(void) {
     Battle_ExecuteMoveEffect();
 
     if (gBattleMoveFailed == 1) {
@@ -504,7 +504,7 @@ s32 Battle_CalcDamage(void) {
 
     if ((temp_v0 != 0x1D) && (temp_v0 != 0x1E)) {
         if (temp_v0 == 0x26) {
-            return func_8436FDBC();
+            return Battle_CheckMoveSuccess();
         }
 
         if (gMovePower == 0) {
@@ -796,10 +796,10 @@ s32 Battle_IsPartyMemberAlive(BattlePlayerEntity* arg0) {
     return 0;
 }
 
-void func_84370E70(void) {
+void Battle_InitEffectState(void) {
 }
 
-void func_84370E78(void) {
+void Battle_ResetEffectState(void) {
 }
 
 void Battle_ExecuteMoveAnimation(void) {
@@ -957,7 +957,7 @@ void Battle_QueueMoveFailureAndApplyRecoil(void) {
     }
 }
 
-void func_843714D8(void) {
+void Battle_IncrementMoveUsage(void) {
     PokemonAudioInfo* ptr;
     PokemonData* temp_a0;
     BattlePlayerAnimState* temp_a1;
@@ -976,7 +976,7 @@ void func_843714D8(void) {
 s32 Battle_Effect_Metronome(void) {
     s32 temp_v0;
 
-    func_843714D8();
+    Battle_IncrementMoveUsage();
     do {
         do {
             temp_v0 = Battle_Random();
@@ -1080,7 +1080,7 @@ s32 Battle_ApplyResidualEffects(void) {
     return 1;
 }
 
-void func_843718DC(void) {
+void Battle_ClearEffectState(void) {
 }
 
 s32 Battle_TryLoadFollowupMoveFromTarget(void) {
@@ -1093,7 +1093,7 @@ s32 Battle_TryLoadFollowupMoveFromTarget(void) {
     }
 
     gBattleUser->unk_5A = gBattleTarget->unk_58;
-    func_843714D8();
+    Battle_IncrementMoveUsage();
     Battle_ExecuteMoveAnimation();
     return 1;
 }

@@ -21,7 +21,7 @@ static Vtx gHealthBarQuadVtx[] = {
     VTX(-32, -16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, -48, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -48, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B14CE0[] = {
+static Gfx gHealthBarBadgeDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, SHADE, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -39,7 +39,7 @@ static Gfx D_84B14CE0[] = {
 };
 static u32 gHealthBarNodeData[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gHealthBarQuadVtx, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, BattlePrepTeamIcons_DrawActiveTeamBadge, D_84B14CE0, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, BattlePrepTeamIcons_DrawActiveTeamBadge, gHealthBarBadgeDL, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gHealthBarVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),

@@ -17432,3 +17432,42 @@ D_84389B60	gTrail50EffectAlt_GfxSetup	w7		sets up rendering state for the trail 
 D_84389BB0	gWaterParticleVertices	w7		defines a quad of 4 vertices for the water particle texture	applied@32fb0b79
 unk_D_843ADA80	Trail50EffectAltInstance	w7		structure representing a single instance of the trail effect, containing state and nodes	applied@32fb0b79
 unk_D_843ADA80_040	Trail50EffectAltNode	w7		structure for a single node in the trail, containing position, rotation, and velocity	applied@32fb0b79
+D_84389DA0	gParticleEndDL	w8		contains only gsSPEndDisplayList() and is used as a terminator for particle-related display lists	applied@8f9ce8a1
+D_8438A640	gAuxEffectEndDL	w8		contains only gsSPEndDisplayList() and is located near AuxiliaryEffect functions	applied@8f9ce8a1
+func_8436EED4	AuxEffect_None	w8		empty function in the AuxiliaryEffect domain	applied@8f9ce8a1
+func_8436EEDC	AuxEffect_None2	w8		empty function in the AuxiliaryEffect domain	applied@8f9ce8a1
+func_8436EEE4	AuxEffect_GetId	w8		returns the passed argument, likely a getter for an effect instance ID	applied@8f9ce8a1
+D_8438A850	gTransitionDefaultSpeed	w8		30.0f is used as a default speed for the strip wipe transition logic.	applied@8f9ce8a1
+D_8438AA60	gTransitionEmptyDL	w8		Contains only gsSPEndDisplayList(), acting as a null or empty display list.	applied@8f9ce8a1
+func_8436FDBC	Battle_CheckMoveSuccess	w8		calls Battle_ExecuteMoveEffect and checks gBattleMoveFailed to determine if the move should proceed	applied@8f9ce8a1
+func_843714D8	Battle_IncrementMoveUsage	w8		increments move usage count in PokemonAudioInfo and the bound roster PokemonData	applied@8f9ce8a1
+func_843718DC	Battle_ClearEffectState	w8		empty function likely used to reset effect state between move executions	applied@8f9ce8a1
+func_84370E70	Battle_InitEffectState	w8		empty function likely used to initialize effect state before move execution	applied@8f9ce8a1
+func_84370E78	Battle_ResetEffectState	w8		empty function likely used to reset effect state after move execution	applied@8f9ce8a1
+unk_D_843C4DA0	BattleMoveData	w8		struct containing move properties like power, accuracy, and type used in Battle_ExecuteMoveAnimation	applied@8f9ce8a1
+D_8438AE54	gMoveEffectFunctions	w8		array of function pointers to Battle_Effect_* functions indexed by move ID	applied@8f9ce8a1
+D_8438B0BC	gAiMoveList_0	w8		{0x32, 0x75, 0x66, 0x76, 0x82}	applied@8f9ce8a1
+D_8438B0C4	gAiMoveList_1	w8		{0x63, 0x68, 0x80, 0x78, 0x14, 0x26, 0x99, 0x64, 0x5C, 0x24, 0x9C, 0x22, 0x3F, 0x53, 0x23, 0xA4, 0x66}	applied@8f9ce8a1
+D_8438B0D8	gAiMoveList_2	w8		{0xA, 0xB, 0xC, 0xD, 0xE, 0xF, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40, 0x41}	applied@8f9ce8a1
+unk_D_843C5310	AiSpeciesAnimRecord	w8		gAiSpeciesAnimRecords is an array of these records used in Battle_DmaLoadAnimRecord	applied@8f9ce8a1
+unk_D_843C60F0_00C	BattleAI_StateStruct	w8		gBattleAI_State is a pointer to this struct, accessed for flags in BattleAI_PredictDamage	applied@8f9ce8a1
+unk_D_843C5568	BattleAI_ActivePokemonStruct	w8		gBattleAI_ActivePokemon is an array of these, used to track active combatants	applied@8f9ce8a1
+unk_D_843C60C0	BattleAI_MoveScoreStruct	w8		gBattleAI_MoveScores is an array of these used to store AI move evaluations	applied@8f9ce8a1
+unk_D_843C60F0	BattleAI_ConfigStruct	w8		gAiConfig is a global instance of this configuration struct	applied@8f9ce8a1
+unk_D_843C6148	BattleAI_CurrentMoveStruct	w8		gAiCurrentMove stores move data (power, type, etc) during damage calculation	applied@8f9ce8a1
+func_8437B0CC	BattleAI_ApplyTypeResistance	w8		applies type resistance modifiers to move candidate scores using gBattleAI_TypeResistance	applied@8f9ce8a1
+D_8438B0F4	gAiDiscouragedRepeatCategories	w8		Used in BattleAI_IsDiscouragedRepeatCategory to identify move categories that should not be repeated.	applied@8f9ce8a1
+D_84803548	gInputTimingTable_0	w8		unk_D_84803548:InputTiming	applied@8f9ce8a1
+D_8480367C	gSidebarGradStart	w8		D_8480367C:gSidebarGradStart	applied@8f9ce8a1
+D_84803680	gSidebarGradEnd	w8		D_84803680:gSidebarGradEnd	applied@8f9ce8a1
+D_84803684	gLeadIconTextures	w8		D_84803684:gLeadIconTextures	applied@8f9ce8a1
+D_84803690	gLeadIconTextures_Alt1	w8		D_84803690:gLeadIconTextures_Alt1	applied@8f9ce8a1
+D_84803698	gLeadIconTextures_Alt2	w8		D_84803698:gLeadIconTextures_Alt2	applied@8f9ce8a1
+D_8480369C	gTypeIconTextures	w8		D_8480369C:gTypeIconTextures	applied@8f9ce8a1
+D_848036D8	gLeadIconDefault	w8		D_848036D8:gLeadIconDefault	applied@8f9ce8a1
+D_84B14CE0	gHealthBarBadgeDL	w8		Display list for the active team badge, using gHealthBarQuadVtx and textures at 0x0F000000/1000/2000	applied@8f9ce8a1
+func_84B0B054	BattlePrepBadgeAward_NoOp	w8		unused function in badge award sequence	applied@8f9ce8a1
+func_86100C28	ClefairyGame_NoOp	w8		void function that does nothing	applied@8f9ce8a1
+D_86105496	gGameFrameCounter	w8		incremented every frame in ClefairyGame_DrawFrame	applied@8f9ce8a1
+func_8690232C	GalleryCamera_NullUpdate	w8		no-op function in gallery camera logic	applied@8f9ce8a1
+func_86200938	RattataGame_Stub	w8		unused function in RattataGame domain	applied@8f9ce8a1

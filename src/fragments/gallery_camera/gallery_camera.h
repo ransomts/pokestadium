@@ -151,7 +151,7 @@ s32 Gallery_CameraMain(s32 arg0, UNUSED s32 arg1);
 f32 GalleryCamera_Distance3D(Vec3f arg0, Vec3f arg1);
 f32 GalleryCamera_ComputeZoomDistance(f32 arg0);
 f32 GalleryCamera_DistanceXZ(Vec3f arg0, Vec3f arg1);
-void func_8690232C(void);
+void GalleryCamera_NullUpdate(void);
 void GalleryCamera_InitFreeView(void);
 void GalleryCamera_DebugAdjustZoomOffset(void);
 void GalleryCamera_ResetFreeView(void);

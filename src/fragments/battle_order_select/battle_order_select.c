@@ -33,7 +33,7 @@ static s32 gInputTimerValue;
 static s16 gStatusIconFrames[4];
 
 static u16 gPanelColors[] = { 0x1D, 0x341, 0x6947, 0x6A41 };
-static unk_D_84803548 D_84803548[] = {
+static unk_D_84803548 gInputTimingTable_0[] = {
     { 0x001E, 0x0000 },
     { 0x001E, 0x4000 },
     { 0x0001, 0x8000 },
@@ -59,7 +59,7 @@ static unk_D_84803548 D_848035C0[] = {
     { 0x000A, 0x8000 }, { 0x000A, 0x0004 }, { 0x001E, 0x0001 }, { 0x0001, 0x8000 },
 };
 static unk_D_84803548* gInputTimingTable[] = {
-    NULL, D_84803548, D_84803558, D_8480356C, D_84803584, D_848035A0, D_848035C0,
+    NULL, gInputTimingTable_0, D_84803558, D_8480356C, D_84803584, D_848035A0, D_848035C0,
 };
 static unk_D_848035FC gModeColors[] = {
     { { 0xF0, 0xF0, 0xF0 }, D_2017740 }, { { 0xF0, 0x96, 0x32 }, D_2019040 }, { { 0x50, 0x96, 0xF0 }, D_20199A0 },
@@ -69,12 +69,12 @@ static unk_D_848035FC gModeColors[] = {
     { { 0xF0, 0xF0, 0x32 }, D_20186E0 }, { { 0xF0, 0x8C, 0xB4 }, D_2019CC0 }, { { 0xB4, 0xF0, 0xF0 }, D_20180A0 },
     { { 0x64, 0xDC, 0xC8 }, D_201A300 },
 };
-static Color_RGB8 D_8480367C = { 0x00, 0x0A, 0x41 };
-static Color_RGB8 D_84803680 = { 0x00, 0x00, 0xD2 };
-static u8* D_84803684[] = { D_3008FD0, D_3009720, D_3009E70 };
-static u8* D_84803690[] = { D_300A5C0, D_300AD10 };
-static u8* D_84803698[] = { D_300B9B8 };
-static u8* D_8480369C[][3] = {
+static Color_RGB8 gSidebarGradStart = { 0x00, 0x0A, 0x41 };
+static Color_RGB8 gSidebarGradEnd = { 0x00, 0x00, 0xD2 };
+static u8* gLeadIconTextures[] = { D_3008FD0, D_3009720, D_3009E70 };
+static u8* gLeadIconTextures_Alt1[] = { D_300A5C0, D_300AD10 };
+static u8* gLeadIconTextures_Alt2[] = { D_300B9B8 };
+static u8* gTypeIconTextures[][3] = {
     {
         D_300C660,
         D_300D308,
@@ -101,7 +101,7 @@ static u8* D_8480369C[][3] = {
         D_3008100,
     },
 };
-static u8* D_848036D8 = D_30084C0;
+static u8* gLeadIconDefault = D_30084C0;
 
 void BattleMenu_DrawBottomActionButtons(void) {
     Gfx_DrawTiledRgba16Image(gPanelTextureAtlas);
@@ -135,8 +135,8 @@ void BattleMenu_DrawScrollingRulesText(void) {
     var_s4 = 0x30 - (gTransferPakScrollPos % 24);
     var_s2 = gTransferPakScrollPos / 24;
     sp58 = StageContext_GetCurrentImage();
-    sp54 = D_8480367C;
-    sp50 = D_84803680;
+    sp54 = gSidebarGradStart;
+    sp50 = gSidebarGradEnd;
     Ui_DrawGradientPanel(0x228, 0x20, 0x2E, 0x186, &sp54, &sp50);
 
     gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 563, 48, 587, 408);
@@ -208,20 +208,20 @@ void BattleMenu_DrawSidebarLeadIcon(s32 arg0, s32 arg1, unk_D_84803760* arg2) {
         if (arg2->unk_01 != 0) {
             Gfx_DrawTextureRgba16(arg0, arg1, 0x24, 0x1A, D_3008880, 0x24, 0x200000);
         } else {
-            Gfx_DrawTextureRgba16(arg0, arg1, 0x24, 0x1A, D_84803684[arg2->unk_0E], 0x24, 0x200000);
+            Gfx_DrawTextureRgba16(arg0, arg1, 0x24, 0x1A, gLeadIconTextures[arg2->unk_0E], 0x24, 0x200000);
         }
     } else {
         switch (arg2->unk_0E) {
             case 0:
-                sp2C = D_84803690[arg2->unk_0F];
+                sp2C = gLeadIconTextures_Alt1[arg2->unk_0F];
                 break;
 
             case 1:
-                sp2C = D_84803698[arg2->unk_0F];
+                sp2C = gLeadIconTextures_Alt2[arg2->unk_0F];
                 break;
 
             case 2:
-                sp2C = D_8480369C[0][arg2->unk_0F];
+                sp2C = gTypeIconTextures[0][arg2->unk_0F];
                 break;
         }
         Gfx_DrawTextureRgba16(arg0, arg1, 0x24, 0x2D, sp2C, 0x24, 0x200000);
@@ -248,7 +248,7 @@ s32 BattleMenu_DrawSidebarRowTypeIcon(s32 arg0, s32 arg1, s8 arg2, s8 arg3) {
             }
 
             if (sp30 > 0) {
-                Gfx_DrawTextureRgba16(arg0 + 6, arg1, 0x18, 0x14, D_8480369C[sp34][sp30], 0x18, 0x200000);
+                Gfx_DrawTextureRgba16(arg0 + 6, arg1, 0x18, 0x14, gTypeIconTextures[sp34][sp30], 0x18, 0x200000);
                 arg2 = (sp34 * 0x10) | sp30;
             } else {
                 arg2 = 0;

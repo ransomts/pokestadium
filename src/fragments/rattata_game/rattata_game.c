@@ -372,7 +372,7 @@ void RattataGame_UpdateCamera(void) {
     Camera_ComputeEyeFromAngles(&gRaceCamera->unk_60.at, &gRaceCamera->unk_60.eye, gRaceCameraPitch, gRaceCameraDist, gRaceCameraYaw);
 }
 
-void func_86200938(void) {
+void RattataGame_Stub(void) {
 }
 
 void RattataGame_DrawTutorialScreen(s32 arg0) {

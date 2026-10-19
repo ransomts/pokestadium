@@ -25,7 +25,7 @@ static const char D_8438DDAC[] = "!!!! SPATTACK Num %d!!!!\n";
 static const char D_8438DDC8[] = "******** spAttackMainEnd ********\n";
 
 static char* D_8438AE50 = D_8438DC80;
-static func_D_8438AE50 D_8438AE54[] = {
+static func_D_8438AE50 gMoveEffectFunctions[] = {
     Battle_Effect_Sleep, Battle_Effect_Poison, Battle_Effect_DrainHP, Battle_Effect_SecondaryStatusChance, Battle_Effect_SecondaryStatusChance, Battle_Effect_SecondaryStatusChance, Battle_Effect_Explosion,
     Battle_Effect_DrainHP, NULL,          Battle_Effect_RaiseOwnStat, Battle_Effect_RaiseOwnStat, Battle_Effect_RaiseOwnStat, Battle_Effect_RaiseOwnStat, Battle_Effect_RaiseOwnStat,
     Battle_Effect_RaiseOwnStat, Battle_Effect_PayDay, NULL,          Battle_Effect_LowerStat, Battle_Effect_LowerStat, Battle_Effect_LowerStat, Battle_Effect_LowerStat,
@@ -1126,8 +1126,8 @@ void Battle_RunMoveEffect(void) {
     PokemonAudioInfo* ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
     s32 idx = ptr->unk_44.unk_01;
 
-    if (D_8438AE54[idx - 1] != NULL) {
-        D_8438AE54[idx - 1]();
+    if (gMoveEffectFunctions[idx - 1] != NULL) {
+        gMoveEffectFunctions[idx - 1]();
     }
 }
 

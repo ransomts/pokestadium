@@ -301,7 +301,7 @@ static ModelData* gFragment7Struct3;
 static s16 gCameraX;
 static s16 gCameraY;
 static s16 gCameraZ;
-static u16 D_86105496;
+static u16 gGameFrameCounter;
 static s32 gResultScreenState;
 static s32 gResultScreenTimer;
 static s16 gPlayerItemCount;
@@ -542,7 +542,7 @@ void ClefairyGame_InitCamera(void) {
     gFragment7Camera->unk_60.eye.z = 2659.0f;
 }
 
-void func_86100C28(void) {
+void ClefairyGame_NoOp(void) {
 }
 
 void ClefairyGame_DrawOverlay(s32 arg0) {
@@ -780,7 +780,7 @@ void ClefairyGame_DrawFrame(s32 arg0) {
 
     Widget_PauseMenuUpdate();
     BgStage_AdvanceFrame();
-    D_86105496 += 1;
+    gGameFrameCounter += 1;
 }
 
 s32 ClefairyGame_WaitForStart(void) {

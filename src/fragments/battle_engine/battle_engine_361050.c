@@ -3,10 +3,10 @@
 #include "src/3FB0.h"
 #include "src/22630.h"
 
-unk_D_843C5310 gAiSpeciesAnimRecords[18];
+AiSpeciesAnimRecord gAiSpeciesAnimRecords[18];
 u8 gAiSpeciesList[0x14];
-unk_D_843C60F0_00C* gBattleAI_State;
-unk_D_843C5568 gBattleAI_ActivePokemon[2];
+BattleAI_StateStruct* gBattleAI_State;
+BattleAI_ActivePokemonStruct gBattleAI_ActivePokemon[2];
 s32 pad_D_843C60A0;
 BattleAI_TeamState* gBattleAI_MonContext;
 BattleAI_TeamState* gBattleAI_TypeResistance;
@@ -15,9 +15,9 @@ BattleAI_MonData* gBattleAI_OpponentMon;
 PokemonAudioInfo* gBattleAIStatsContext;
 PokemonAudioInfo* gBattleAI_DefaultMon;
 s32 gBattleAI_ForceRandom;
-unk_D_843C60C0 gBattleAI_MoveScores[2];
+BattleAI_MoveScoreStruct gBattleAI_MoveScores[2];
 u8 gBattleAI_CurrentMoveCount;
-unk_D_843C60F0 gAiConfig;
+BattleAI_ConfigStruct gAiConfig;
 u8 gAiLastMoveCategory[2];
 u16 gAiCurrentDamage;
 u16 gAiMovePower;
@@ -25,7 +25,7 @@ u16 gAiAttackStat;
 u16 gAiDefenseStat;
 u16 gAiAttackModifier;
 u8 gAiIsCritical;
-unk_D_843C6148 gAiCurrentMove;
+BattleAI_CurrentMoveStruct gAiCurrentMove;
 s32 gAiRandomState;
 u32 gAiRandomSeed;
 
@@ -52,19 +52,19 @@ static u8 gAiThresholdTable[] = {
     0x00, 0x02, 0x01, 0x00, 0x03, 0x02, 0x03, 0x01, 0x03, 0x03, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x02,
     0x00, 0x01, 0x01, 0x03, 0x02, 0x02, 0x03, 0x02, 0x03, 0x03, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
-static u8 D_8438B0BC[] = {
+static u8 gAiMoveList_0[] = {
     0x32, 0x75, 0x66, 0x76, 0x82,
 };
 
-static u8 D_8438B0C4[] = {
+static u8 gAiMoveList_1[] = {
     0x63, 0x68, 0x80, 0x78, 0x14, 0x26, 0x99, 0x64, 0x5C, 0x24, 0x9C, 0x22, 0x3F, 0x53, 0x23, 0xA4, 0x66,
 };
 
-static u8 D_8438B0D8[] = {
+static u8 gAiMoveList_2[] = {
     0xA,  0xB,  0xC,  0xD,  0xE,  0xF,  0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x32,
     0x33, 0x34, 0x35, 0x36, 0x37, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40, 0x41,
 };
-static u8 D_8438B0F4[] = { 0x27, 0x2B };
+static u8 gAiDiscouragedRepeatCategories[] = { 0x27, 0x2B };
 
 void BattleAI_LoadConfiguration(s32 arg0, u32 arg1) {
     u32 temp_a1 = (u32)_7820E0_ROM_START + arg0 * 0x48;
@@ -1039,7 +1039,7 @@ u8 BattleAI_HasExactlyOneUsableCandidate(BattleAI_TeamState* arg0) {
 }
 
 void BattleAI_InitializeOrderCandidates(BattleAI_TeamContext* arg0, BattleAI_TeamContext* arg1, BattleAI_TeamContext* arg2,
-                   unk_D_843C5568* arg3, s32 arg4) {
+                   BattleAI_ActivePokemonStruct* arg3, s32 arg4) {
     s32 i;
 
     switch (arg4) {
@@ -2175,7 +2175,7 @@ u8 BattleAI_HasOtherCandidateAtLeastScore(MoveCandidateScore* arg0, u8 arg1, u8 
     return var_v1;
 }
 
-// func_8437B0CC: full-diff score 7809 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
+// BattleAI_ApplyTypeResistance: full-diff score 7809 (asm-differ --max-size 20000; fd.sh truncates), 3259 vs 3258 insns.
 // Round 8 pass 4 (agent-17): BattleAI_HasExactlyOneUsableCandidate returns u8, not s32 (its own code is identical). With the
 // s32 return, uopt copy-propagated `var_s0 = spB7` into the first multiply (spB7's load temp stayed
 // live across the call in v1/0x68); a u8-returning call (any of them: experiment with
@@ -2306,7 +2306,7 @@ u8 BattleAI_HasOtherCandidateAtLeastScore(MoveCandidateScore* arg0, u8 arg1, u8 
 // the single mask is the optimum in that dimension. The old X-copy model (below) still stands;
 // agent-17's shapes were tested on the 7809 base, BEFORE the candidate's edits changed the temp
 // structure - re-test them on this base.
-void func_8437B0CC(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1, u8 arg2, MoveCandidateScore* arg3, u8 arg4) {
+void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1, u8 arg2, MoveCandidateScore* arg3, u8 arg4) {
     u8 i;
     u8 j;
     u8 pad1;
@@ -3644,7 +3644,7 @@ s32 BattleAI_ChooseMoveForCandidate(void) {
     for (i = 0; i < 4 && gBattleAIStatsContext->unk_1F[i] != 0; i++) {}
 
     BattleAI_BuildMoveCandidateScores(gBattleAI_PlayerMon, gBattleAI_OpponentMon, 0, 0, i, sp2C);
-    func_8437B0CC(gBattleAI_MonContext, gBattleAI_TypeResistance, i, sp2C, 1);
+    BattleAI_ApplyTypeResistance(gBattleAI_MonContext, gBattleAI_TypeResistance, i, sp2C, 1);
     return BattleAI_SelectBestScoredMove(gBattleAI_PlayerMon, gBattleAI_OpponentMon, i, sp2C);
 }
 
@@ -4009,7 +4009,7 @@ s32 BattleAI_ScoreAllTeamCandidates(BattleAI_TeamState* arg0, BattleAI_TeamState
                     }
 
                     BattleAI_BuildMoveCandidateScores(temp_s7, &arg1->unk_14[tmp], 0, 0, var_s0, sp74);
-                    func_8437B0CC(arg0, arg1, var_s0, sp74, 0);
+                    BattleAI_ApplyTypeResistance(arg0, arg1, var_s0, sp74, 0);
 
                     var_v0 = 0;
                     for (m = 0; m < var_s2; m++) {
@@ -4038,7 +4038,7 @@ s32 BattleAI_ScoreAllTeamCandidates(BattleAI_TeamState* arg0, BattleAI_TeamState
                         }
 
                         BattleAI_BuildMoveCandidateScores(temp_s7, &arg1->unk_14[tmp], 0, 0, var_s0, sp74);
-                        func_8437B0CC(arg0, arg1, var_s0, sp74, 0);
+                        BattleAI_ApplyTypeResistance(arg0, arg1, var_s0, sp74, 0);
 
                         var_v0 = 0;
                         for (m = 0; m < var_s2; m++) {
@@ -4366,7 +4366,7 @@ s32 BattleAI_SelectLeadFromScoredGroup(BattleAI_TeamState* arg0, BattleAI_TeamSt
 
             if (var_s1) {
                 BattleAI_BuildMoveCandidateScores(temp_s6, temp_s7, 0, 0, var_s1, sp6C);
-                func_8437B0CC(arg0, arg1, var_s1, sp6C, 0);
+                BattleAI_ApplyTypeResistance(arg0, arg1, var_s1, sp6C, 0);
 
                 var_v0 = 0;
                 for (j = 0; j < var_s1; j++) {
@@ -5040,7 +5040,7 @@ void BattleAI_RefineAllCandidateMoveScores(BattleAI_TargetScoreContext* arg0) {
         temp_s1->unk_B8 = 0x80000002;
 
         if (gBattleAI_MonContext->unk_14[i].unk_12.unk_0C > 0) {
-            func_8437B0CC(gBattleAI_MonContext, gBattleAI_TypeResistance, temp_s1->posX, temp_s1->rotation, 1);
+            BattleAI_ApplyTypeResistance(gBattleAI_MonContext, gBattleAI_TypeResistance, temp_s1->posX, temp_s1->rotation, 1);
 
             for (j = 0; j < temp_s1->posX; j++) {
                 if (temp_s1->unk_B8 < temp_s1->rotation[j].unk_28) {
@@ -5164,8 +5164,8 @@ s32 BattleAI_MatchesLastMoveCategory(u8 arg0, u8 arg1) {
         return 1;
     }
 
-    if ((IsByteInArray(gMoveData[arg1 - 1].unk_01, D_8438B0D8, 0x1A) != 0) &&
-        (IsByteInArray(sp18->unk_01, D_8438B0D8, 0x1A) != 0)) {
+    if ((IsByteInArray(gMoveData[arg1 - 1].unk_01, gAiMoveList_2, 0x1A) != 0) &&
+        (IsByteInArray(sp18->unk_01, gAiMoveList_2, 0x1A) != 0)) {
         return 1;
     }
     return 0;
@@ -5176,21 +5176,21 @@ s32 BattleAI_IsDiscouragedRepeatCategory(u8 arg0, u8 arg1) {
         return 0;
     }
 
-    if (IsByteInArray(gMoveData[arg1 - 1].unk_01, D_8438B0F4, 2) != 0) {
+    if (IsByteInArray(gMoveData[arg1 - 1].unk_01, gAiDiscouragedRepeatCategories, 2) != 0) {
         return 1;
     }
     return 0;
 }
 
 s32 BattleAI_IsBannedRandomMove(u8 arg0) {
-    if (IsByteInArray(arg0, D_8438B0BC, 5) != 0) {
+    if (IsByteInArray(arg0, gAiMoveList_0, 5) != 0) {
         return 1;
     }
     return 0;
 }
 
 s32 BattleAI_IsRestrictedRandomMove(u8 arg0) {
-    if ((IsByteInArray(arg0, D_8438B0C4, 0x11) != 0) && (BattleAI_RandomBelowInclusive(0xF) != 0)) {
+    if ((IsByteInArray(arg0, gAiMoveList_1, 0x11) != 0) && (BattleAI_RandomBelowInclusive(0xF) != 0)) {
         return 1;
     }
     return 0;
@@ -5334,7 +5334,7 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
     u8 var_v1;
     PokemonAudioInfo* temp_s2;
     PokemonAudioInfo* temp_s0;
-    unk_D_843C5568* var_s3;
+    BattleAI_ActivePokemonStruct* var_s3;
 
     for (i = 0; i < 2; i++) {
         temp_s2 = &sActivePokemon[i]->animationState.unk_38;
@@ -5705,7 +5705,7 @@ label1:
     gBattleAI_DefaultMon = &gBattleAI_OpponentMon->unk_12;
     BattleAI_UpdateTeamAdvantageBias();
     gBattleAI_State = &gAiConfig.unk_0C[gBattleAI_MonContext->unk_13];
-    bzero(gBattleAI_MoveScores, sizeof(unk_D_843C60C0) * 2);
+    bzero(gBattleAI_MoveScores, sizeof(BattleAI_MoveScoreStruct) * 2);
     gBattleAI_CurrentMoveCount = 0;
 
     if (gBattleAI_State->posX & 0x400000) {

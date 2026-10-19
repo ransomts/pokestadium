@@ -12,7 +12,7 @@ static Vtx gParticleQuadVertices[] = {
     VTX(10, -10, 0, 0, 1984, 0x88, 0x00, 0x00, 0x80),
     VTX(10, 10, 0, 1984, 1984, 0x88, 0x00, 0x00, 0x80),
 };
-static Gfx D_84389DA0[] = {
+static Gfx gParticleEndDL[] = {
     gsSPEndDisplayList(),
 };
 static u32 gParticleTextureData[] = {
@@ -93,7 +93,7 @@ static Gfx gParticleRenderDL[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8438A640[] = {
+Gfx gAuxEffectEndDL[] = {
     gsSPEndDisplayList(),
 };
 
@@ -242,12 +242,12 @@ Gfx* AuxiliaryEffect_Draw(s16 arg0, Gfx* arg1) {
     return arg1;
 }
 
-void func_8436EED4(void) {
+void AuxEffect_None(void) {
 }
 
-void func_8436EEDC(void) {
+void AuxEffect_None2(void) {
 }
 
-s32 func_8436EEE4(s32 arg0) {
+s32 AuxEffect_GetId(s32 arg0) {
     return arg0;
 }

@@ -4,7 +4,7 @@ static s16 gTransitionState;
 static s16 gTransitionOffset;
 static s16 gTransitionSpeed;
 
-static f32 D_8438A850 = 30.0f;
+static f32 gTransitionDefaultSpeed = 30.0f;
 
 static Vtx gTransitionVertices[] = {
     VTX(1, -35, -35, 0, 0, 0x88, 0x00, 0x00, 0xFF), VTX(1, -50, 0, 0, 0, 0x88, 0x00, 0x00, 0xFF),
@@ -49,7 +49,7 @@ Gfx gParticleQuadDL[] = {
 
 static s32 pad_D_8438AA58[] = { 0, 0 };
 
-static Gfx D_8438AA60[] = {
+static Gfx gTransitionEmptyDL[] = {
     gsSPEndDisplayList(),
 };
 static u32 gTransitionMaskTexture[] = {

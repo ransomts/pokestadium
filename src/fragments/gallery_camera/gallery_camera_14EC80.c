@@ -29,7 +29,7 @@ f32 GalleryCamera_DistanceXZ(Vec3f arg0, Vec3f arg1) {
     return sqrtf(SQ(arg1.x - arg0.x) + SQ(arg1.z - arg0.z));
 }
 
-void func_8690232C(void) {
+void GalleryCamera_NullUpdate(void) {
 }
 
 void GalleryCamera_InitFreeView(void) {

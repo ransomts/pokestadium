@@ -217,7 +217,7 @@ s32 BattlePrepBadgeAward_DrawGlowFade(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void func_84B0B054(void) {
+void BattlePrepBadgeAward_NoOp(void) {
 }
 
 void BattlePrepBadgeAward_SlideInStep(gBadgeAwardState* arg0) {

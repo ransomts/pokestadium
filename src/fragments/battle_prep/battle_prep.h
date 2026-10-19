@@ -320,7 +320,7 @@ s32 BattlePrepBadgeAward_DrawBadgeIcon(s32 arg0, SimpleGfxNode* arg1);
 s32 BattlePrepBadgeAward_DrawBadgeIconAlt(s32 arg0, SimpleGfxNode* arg1);
 s32 BattlePrepBadgeAward_DrawSparkle(s32 arg0, SimpleGfxNode* arg1);
 s32 BattlePrepBadgeAward_DrawGlowFade(s32 arg0, SimpleGfxNode* arg1);
-void func_84B0B054(void);
+void BattlePrepBadgeAward_NoOp(void);
 void BattlePrepBadgeAward_SlideInStep(gBadgeAwardState* arg0);
 void BattlePrepBadgeAward_RevealStep(gBadgeAwardState* arg0);
 void BattlePrepBadgeAward_SpawnSparkleParticle(gBadgeAwardState* arg0, Fragment2_1GraphNode* arg1, s16 arg2);
