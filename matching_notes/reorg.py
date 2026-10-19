@@ -125,7 +125,9 @@ def apply_group(group, no_gate):
     # file (their gb_data.c = our data_71BA0.c + 22630.c) - a path rename
     # cannot express a file merge.
     from collections import Counter as _C
-    tp_count = _C(tp for _op, tp, _on, _tn in sub_ren)
+    tp_ops = {}
+    for _op, _tp, _on, _tn in sub_ren:
+        tp_ops.setdefault(_tp, set()).add(_op)
     kept = []
     for op, tp, oname, tname in sub_ren:
         collide = [ext for ext in (".c", ".h")
@@ -135,9 +137,9 @@ def apply_group(group, no_gate):
             problems.append(f"parked {op} -> {tp}: file collision on {op}{collide[0]}"
                             f" (michiiik attaches the range differently)")
             continue
-        if tp_count[tp] > 1:
+        if len(tp_ops[tp]) > 1:
             problems.append(f"parked {op} -> {tp}: michiiik merged these files"
-                            f" ({tp_count[tp]} of ours map there)")
+                            f" ({len(tp_ops[tp])} of ours map there)")
             continue
         kept.append((op, tp, oname, tname))
     sub_ren = kept
