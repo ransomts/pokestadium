@@ -110,6 +110,7 @@ def main():
             type_reach[tn].add(rel)
 
     scopes = {}
+    safe_names = set()  # (typedef, field name) pairs that passed BOTH checks
     parked_unknown_owner = []
     # users(X): files with `.X`/`->X` accesses - the owner is knowable only if
     # the file's include-closure reaches EXACTLY ONE of the sharing typedefs
@@ -133,16 +134,22 @@ def main():
             per_type[tn] |= type_reach.get(tn, set())
         sets = list(per_type.values())
         if all(not (a & b) for i, a in enumerate(sets) for b in sets[i + 1:]):
+            for tn in per_type:
+                safe_names.add((tn, fname))
             for tn, fs in per_type.items():
                 if len(fs) >= args.min_files:
                     scopes[tn] = sorted(set(fs) | set(scopes.get(tn, [])))
     with open(OUT, "w") as f:
         for tn in sorted(scopes):
             f.write(f"{tn}\t{','.join(scopes[tn])}\n")
+    with open(OUT.replace("field_scopes.tsv", "field_safe_names.tsv"), "w") as f:
+        for tn, fn in sorted(safe_names):
+            f.write(f"{tn}\t{fn}\n")
     n_fields = sum(len(v) for v in shared.values())
     print(f"shared unk_ names: {len(shared)} ({n_fields} fields); "
           f"parked (unknown owner): {len(parked_unknown_owner)}; "
-          f"scopes written for {len(scopes)} struct types -> {OUT}")
+          f"scopes written for {len(scopes)} struct types; "
+          f"safe (type, name) pairs: {len(safe_names)} -> {OUT}")
 
 
 if __name__ == "__main__":
