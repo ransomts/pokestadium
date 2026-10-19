@@ -1,4 +1,4 @@
-#include "fragment76.h"
+#include "debug_menu_slot76.h"
 #include "src/29BA0.h"
 
 s32 Fragment76_CallFragment67(UNUSED s32 arg0, UNUSED s32 arg1) {

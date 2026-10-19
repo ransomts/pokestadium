@@ -2496,8 +2496,8 @@
     start: 0x3B8600
     vram: 0x8F200000 # unknown vram. Another unused one? Might be 8F200000?
     subsegments:
-    - [0x3B8600, textbin,   fragments/69/fragment69_header]
-    - [0x3B8620, c,      fragments/69/fragment69]
+    - [0x3B8600, textbin,   fragments/debug_menu_slot69/debug_menu_slot69_header]
+    - [0x3B8620, c,      fragments/debug_menu_slot69/debug_menu_slot69]
 
   - name: fragment69_relocs
     type: code
@@ -2513,8 +2513,8 @@
     start: 0x3B8690
     vram: 0x8F300000 # unknown vram. Another unused one? Might be 8F300000?
     subsegments:
-    - [0x3B8690, textbin,   fragments/70/fragment70_header]
-    - [0x3B86B0, c,      fragments/70/fragment70]
+    - [0x3B8690, textbin,   fragments/debug_menu_slot70/debug_menu_slot70_header]
+    - [0x3B86B0, c,      fragments/debug_menu_slot70/debug_menu_slot70]
 
   - name: fragment70_relocs
     type: code
@@ -2530,8 +2530,8 @@
     start: 0x3B8720
     vram: 0x8F400000 # unknown vram. Another unused one? Might be 8F400000?
     subsegments:
-    - [0x3B8720, textbin,   fragments/71/fragment71_header]
-    - [0x3B8740, c,      fragments/71/fragment71]
+    - [0x3B8720, textbin,   fragments/debug_menu_slot71/debug_menu_slot71_header]
+    - [0x3B8740, c,      fragments/debug_menu_slot71/debug_menu_slot71]
 
   - name: fragment71_relocs
     type: code
@@ -2547,8 +2547,8 @@
     start: 0x3B87B0
     vram: 0x8F500000 # unknown vram. Another unused one? Might be 8F500000?
     subsegments:
-    - [0x3B87B0, textbin, fragments/72/fragment72_header]
-    - [0x3B87D0, c,    fragments/72/fragment72]
+    - [0x3B87B0, textbin, fragments/debug_menu_slot72/debug_menu_slot72_header]
+    - [0x3B87D0, c,    fragments/debug_menu_slot72/debug_menu_slot72]
 
   - name: fragment72_relocs
     type: code
@@ -2564,8 +2564,8 @@
     start: 0x3B8840
     vram: 0x8F600000 # unknown vram. Another unused one? Might be 8F600000?
     subsegments:
-    - [0x3B8840, textbin, fragments/73/fragment73_header]
-    - [0x3B8860, c,    fragments/73/fragment73]
+    - [0x3B8840, textbin, fragments/debug_menu_slot73/debug_menu_slot73_header]
+    - [0x3B8860, c,    fragments/debug_menu_slot73/debug_menu_slot73]
 
   - name: fragment73_relocs
     type: code
@@ -2581,8 +2581,8 @@
     start: 0x3B88D0
     vram: 0x8F700000 # unknown vram. Another unused one? Might be 8F700000?
     subsegments:
-    - [0x3B88D0, textbin, fragments/74/fragment74_header]
-    - [0x3B88F0, c,    fragments/74/fragment74]
+    - [0x3B88D0, textbin, fragments/debug_menu_slot74/debug_menu_slot74_header]
+    - [0x3B88F0, c,    fragments/debug_menu_slot74/debug_menu_slot74]
 
   - name: fragment74_relocs
     type: code
@@ -2598,11 +2598,11 @@
     start: 0x3B8960
     vram: 0x8FA00000
     subsegments:
-    - [0x3B8960, textbin, fragments/75/fragment75_header]
-    - [0x3B8980, c,    fragments/75/fragment75]
-    - [0x3B9350, .data, fragments/75/fragment75]
+    - [0x3B8960, textbin, fragments/snap_print_club_print_seals/snap_print_club_print_seals_header]
+    - [0x3B8980, c,    fragments/snap_print_club_print_seals/snap_print_club_print_seals]
+    - [0x3B9350, .data, fragments/snap_print_club_print_seals/snap_print_club_print_seals]
 
-    - {vram: 0x8FA00A20, type:  .bss, name: fragments/75/fragment75}
+    - {vram: 0x8FA00A20, type:  .bss, name: fragments/snap_print_club_print_seals/snap_print_club_print_seals}
 
   - name: fragment75_relocs
     type: code
@@ -2618,8 +2618,8 @@
     start: 0x3B9590
     vram: 0x8FB00000 # unknown vram. Another unused one? Might be 8FB00000?
     subsegments:
-    - [0x3B9590, textbin, fragments/76/fragment76_header]
-    - [0x3B95B0, c,    fragments/76/fragment76]
+    - [0x3B9590, textbin, fragments/debug_menu_slot76/debug_menu_slot76_header]
+    - [0x3B95B0, c,    fragments/debug_menu_slot76/debug_menu_slot76]
 
   - name: fragment76_relocs
     type: code

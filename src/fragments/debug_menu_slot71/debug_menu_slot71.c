@@ -1,4 +1,4 @@
-#include "fragment71.h"
+#include "debug_menu_slot71.h"
 #include "src/29BA0.h"
 
 s32 DebugMenu_ForwardSlot71(UNUSED s32 arg0, UNUSED s32 arg1) {
