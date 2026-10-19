@@ -539,6 +539,19 @@ class Rewriter:
                                      + alt + r")((?:\[[^\]]*\])*)\s*;", re.M)
                     text, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3) + ";", text)
                     changed |= bool(k)
+                else:
+                    # .c-local structs (HPHistoryEntry lesson): rewrite decls
+                    # ONLY inside braced struct blocks - a bare full-file pass
+                    # would also rename same-named LOCAL variables. Reverse
+                    # order keeps earlier spans valid as text shifts.
+                    pat = re.compile(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s*\**\s*)("
+                                     + alt + r")((?:\[[^\]]*\])*)\s*;", re.M)
+                    for start, end in reversed(_struct_spans(text)):
+                        seg = text[start:end]
+                        seg, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3) + ";", seg)
+                        if k:
+                            text = text[:start] + seg + text[end:]
+                            changed = True
         if changed:
             self._save(path, text)
         return changed
@@ -615,6 +628,32 @@ def map_symbol_span(name):
 
 
 _FIELD_SCOPES_CACHE = None
+
+
+def _struct_spans(text):
+    """[(start, end)] inner-text spans of braced `struct`/`typedef struct`
+    blocks (brace-matched, naive but adequate for this codebase's headers)."""
+    out, i, n = [], 0, len(text)
+    while i < n:
+        ob = text.find("{", i)
+        if ob < 0:
+            break
+        depth, j = 0, ob
+        while j < n:
+            if text[j] == "{":
+                depth += 1
+            elif text[j] == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            j += 1
+        if j >= n:
+            break
+        head = re.sub(r"\s+", " ", text[max(0, ob - 160):ob]).strip()
+        if "struct" in head or "union" in head:
+            out.append((ob + 1, j))
+        i = j + 1
+    return out
 
 
 def _field_scopes():
