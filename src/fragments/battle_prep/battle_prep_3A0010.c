@@ -119,11 +119,11 @@ static Color_RGBA8 gFragment63_FadeColors[] = { {
                                     } };
 
 s32 BattlePrepStarBurst_DrawStarIcon(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25AC0* temp_a0;
+    gStarBurstState* temp_a0;
     u8* var_a0;
 
     if (arg0 == 5) {
-        temp_a0 = (unk_D_84B25AC0*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_a0 = (gStarBurstState*)gDefaultGraphRoot->unk_000.unk_14;
         if (temp_a0->unk_5A2 != 0) {
             var_a0 = D_3018800;
         } else {
@@ -352,7 +352,7 @@ void BattlePrepStarBurst_UpdateRainbowParticle(unk_D_84B25AC0_0A0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_UpdateBurstEffect(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateBurstEffect(gStarBurstState* arg0) {
     s32 i;
     s32 j;
 
@@ -379,7 +379,7 @@ void BattlePrepStarBurst_UpdateBurstEffect(unk_D_84B25AC0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_UpdateFlightArc(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateFlightArc(gStarBurstState* arg0) {
     s16 i;
     s16 var_s2;
 
@@ -437,7 +437,7 @@ void BattlePrepStarBurst_UpdateFlightArc(unk_D_84B25AC0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_UpdateRainbowAftermath(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateRainbowAftermath(gStarBurstState* arg0) {
     s32 i;
     s32 j;
 
@@ -470,7 +470,7 @@ void BattlePrepStarBurst_UpdateRainbowAftermath(unk_D_84B25AC0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_UpdateSparkAftermath(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateSparkAftermath(gStarBurstState* arg0) {
     arg0->unk_5A1++;
     if (arg0->unk_5A1 >= 4) {
         arg0->unk_5A8->unk_024.y += arg0->unk_5A4;
@@ -489,7 +489,7 @@ void BattlePrepStarBurst_UpdateSparkAftermath(unk_D_84B25AC0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_UpdateExitSlide(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateExitSlide(gStarBurstState* arg0) {
     if ((arg0->unk_5A1 < 0x14) && (arg0->unk_5A3 != 0) && (arg0->unk_5A1 < 7)) {
         arg0->unk_5A8->unk_024.x += 40.0f;
     }
@@ -501,7 +501,7 @@ void BattlePrepStarBurst_UpdateExitSlide(unk_D_84B25AC0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_UpdateFirstClearExit(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateFirstClearExit(gStarBurstState* arg0) {
     s32 tmp;
 
     if (arg0->unk_5A3 != 0) {
@@ -520,7 +520,7 @@ void BattlePrepStarBurst_UpdateFirstClearExit(unk_D_84B25AC0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_Update(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_Update(gStarBurstState* arg0) {
     switch (arg0->unk_5A0) {
         case 1:
             BattlePrepStarBurst_UpdateBurstEffect(arg0);
@@ -548,7 +548,7 @@ void BattlePrepStarBurst_Update(unk_D_84B25AC0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_Launch(unk_D_84B25AC0* arg0, Fragment2_1GraphNode* arg1, Fragment2_1GraphNode* arg2) {
+void BattlePrepStarBurst_Launch(gStarBurstState* arg0, Fragment2_1GraphNode* arg1, Fragment2_1GraphNode* arg2) {
     s32 i;
     s32 j;
 
@@ -596,7 +596,7 @@ void BattlePrepStarBurst_Launch(unk_D_84B25AC0* arg0, Fragment2_1GraphNode* arg1
     }
 }
 
-void BattlePrepStarBurst_StartExit(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_StartExit(gStarBurstState* arg0) {
     arg0->unk_5A1 = 0;
     if (arg0->unk_5A2 == -1) {
         arg0->unk_5A0 = 7;
@@ -618,7 +618,7 @@ void BattlePrepStarBurst_StartExit(unk_D_84B25AC0* arg0) {
     }
 }
 
-void BattlePrepStarBurst_Init(unk_D_84B25AC0* arg0, s8 arg1, s8 arg2) {
+void BattlePrepStarBurst_Init(gStarBurstState* arg0, s8 arg1, s8 arg2) {
     GraphNode* var_v0;
     MemoryBlock* temp_v0;
 

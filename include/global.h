@@ -189,13 +189,13 @@ typedef struct GraphNode {
     /* 0x14 */ void* unk_14;
 } GraphNode; // size = 0x18
 
-typedef struct unk_D_86002F34_00C_018 {
+typedef struct CameraRect {
     /* 0x00 */ Vp* vp;
     /* 0x04 */ s16 x;
     /* 0x06 */ s16 y;
     /* 0x08 */ s16 width;
     /* 0x0A */ s16 height;
-} unk_D_86002F34_00C_018; // size = 0xC
+} CameraRect; // size = 0xC
 
 typedef struct unk_D_86002F34_00C_024 {
     /* 0x00 */ Mtx* mtx;
@@ -246,7 +246,7 @@ typedef struct unk_D_86002F34_00C_0CC {
 
 typedef struct CameraStruct {
     /* 0x00 */ GraphNode posX;
-    /* 0x18 */ unk_D_86002F34_00C_018 unk_18;	//	viewPort
+    /* 0x18 */ CameraRect unk_18;	//	viewPort
     /* 0x24 */ unk_D_86002F34_00C_024 unk_24;	//	projection
     /* 0x40 */ unk_D_86002F34_00C_040 unk_40;
     /* 0x60 */ unk_D_86002F34_00C_060 unk_60;	//	camera

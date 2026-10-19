@@ -406,7 +406,7 @@ void BattleHud_DrawSpeciesNameLabelBlink(s16 arg0, s16 arg1, s32 arg2, u8* arg3,
     Font_EndTexturedTextRendering();
 }
 
-void BattleHud_DrawSpeciesNameLabelAuto(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
+void BattleHud_DrawSpeciesNameLabelAuto(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
     BattlePlayerAnimState* ptr = &arg0->animationState;
     s32 var_t0 = 0;
     s32 i;
@@ -665,7 +665,7 @@ void BattleHud_DrawPartyBallRow(BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
 
 void BattleHud_DrawMonStatusBoxPlayer(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
-    unk_D_800AE540_0004* sp80;
+    BattleAI_TeamContext* sp80;
     PokemonData* sp7C;
     Color_RGB8* temp_v0_2;
     u32 var_v1;
@@ -753,7 +753,7 @@ void BattleHud_DrawMonStatusBoxPlayer(BattlePlayerEntity* arg0, s16 arg1, s16 ar
 
 void BattleHud_DrawMonStatusBoxOpponent(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
-    unk_D_800AE540_0004* sp80;
+    BattleAI_TeamContext* sp80;
     PokemonData* sp7C;
     Color_RGB8* temp_v0;
     u32 var_v1;
@@ -1245,7 +1245,7 @@ void BattleHud_DrawPlainText(s16 arg0, s16 arg1, char* arg2) {
     Font_EndTexturedTextRendering();
 }
 
-void BattleHud_DrawDoublesRosterRow(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
+void BattleHud_DrawDoublesRosterRow(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
                    s32 arg5) {
     s32 var_t0;
 
@@ -1300,7 +1300,7 @@ void BattleHud_DrawDoublesRosterRow(BattlePlayerEntity* arg0, unk_D_800AE540_000
     }
 }
 
-void BattleHud_DrawPartyRosterRow(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
+void BattleHud_DrawPartyRosterRow(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
                    s32 arg5) {
     s32 var_t0;
 
@@ -1344,7 +1344,7 @@ void BattleHud_DrawPartyRosterRow(BattlePlayerEntity* arg0, unk_D_800AE540_0004*
     }
 }
 
-void BattleHud_DrawTeamStatusList(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4) {
+void BattleHud_DrawTeamStatusList(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, s16 arg2, s16 arg3, s32 arg4) {
     UNUSED s32 pad[2];
     Color_RGB8* sp88[] = {
         gBoxColorBlue,
@@ -1390,8 +1390,8 @@ void BattleHud_DrawTeamStatusList(BattlePlayerEntity* arg0, unk_D_800AE540_0004*
 }
 
 void BattleHud_DrawDoublesTeamStatusList(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
-    unk_D_800AE540_0004* temp_s0;
-    unk_D_800AE540_0004* temp_s1;
+    BattleAI_TeamContext* temp_s0;
+    BattleAI_TeamContext* temp_s1;
     PokemonData* ptr = &arg0->unk_724->unk_01C[0];
     s32 i;
     Color_RGB8* sp88[] = {
@@ -1522,7 +1522,7 @@ void BattleHud_DrawExpandingCaptionBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 a
     s16 sp28;
     Color_RGB8* temp_v0;
     BattlePlayerEntity* temp_v1;
-    unk_D_800AE540_0004* tmp;
+    BattleAI_TeamContext* tmp;
 
     temp_v1 = sActivePokemon[arg0->unk_0C];
     tmp = temp_v1->pokemonAnimation->unk_08[temp_v1->unk_728.unk_16C];
@@ -1775,7 +1775,7 @@ void Battle_DrawSpectatorModeScrollingText(void) {
 }
 
 void BattleHud_DrawOwnSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState* arg1) {
-    unk_D_800AE540_0004* sp34 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
+    BattleAI_TeamContext* sp34 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
     UNUSED s32 pad;
     s32 var_v1;
 
@@ -1835,7 +1835,7 @@ void BattleHud_DrawOwnSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState
 }
 
 void BattleHud_DrawOpponentSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState* arg1) {
-    unk_D_800AE540_0004* sp24 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
+    BattleAI_TeamContext* sp24 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
     s32 sp20;
 
     if (gSessionContext.unk_0000 != 0x10) {

@@ -735,7 +735,7 @@ void BattleScene_AssignActiveCoopController(BattlePlayerEntity* arg0, s32 arg1) 
 
 void BattleScene_HandlePartySlotCursorInput(BattlePlayerEntity* arg0, Controller* arg1) {
     BattlePlayerAnimState* sp1C;
-    unk_D_800AE540_0004* temp_a1;
+    BattleAI_TeamContext* temp_a1;
 
     sp1C = &arg0->animationState;
 

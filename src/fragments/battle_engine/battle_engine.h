@@ -156,8 +156,8 @@ typedef struct BattlePlayerEntity {
     /* 0x4E9 */ u8 secondaryStatusState;
     /* 0x4EC */ Fragment2_1GraphNode effectGraphNode;
     /* 0x654 */ BattlePlayerAnimState animationState;
-    /* 0x720 */ unk_D_800AE540_1194* pokemonAnimation;
-    /* 0x724 */ unk_D_800AE540_0004* unk_724;
+    /* 0x720 */ BattlePokemon* pokemonAnimation;
+    /* 0x724 */ BattleAI_TeamContext* unk_724;
     /* 0x728 */ unk_D_84390010_728 unk_728;
     /* 0x8C4 */ unk_D_84390010_8C4 unk_8C4;
     /* 0x94C */ unk_D_84390010_94C unk_94C;
@@ -500,7 +500,7 @@ typedef struct WaterSurfaceData {
     /* 0x0014 */ WaterSurfaceVertex unk_0014[16][16];
 } WaterSurfaceData; // size >= 0x1C14
 
-typedef struct unk_D_8439E680_0014 {
+typedef struct WaterNode {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
@@ -510,7 +510,7 @@ typedef struct unk_D_8439E680_0014 {
     /* 0x18 */ s16 unk_18;
     /* 0x1A */ s16 unk_1A;
     /* 0x1C */ f32 unk_1C;
-} unk_D_8439E680_0014; // size = 0x20
+} WaterNode; // size = 0x20
 
 typedef struct WaterSurface {
     /* 0x0000 */ s16 unk_0000;
@@ -519,7 +519,7 @@ typedef struct WaterSurface {
     /* 0x0008 */ f32 unk_0008;
     /* 0x000C */ Vtx* unk_000C;
     /* 0x0010 */ Mtx* unk_0010;
-    /* 0x0014 */ unk_D_8439E680_0014 unk_0014[16][16];
+    /* 0x0014 */ WaterNode unk_0014[16][16];
 } WaterSurface; // size >= 0x2014
 
 typedef struct unk_D_843A22C0_038 {
@@ -727,11 +727,11 @@ typedef struct Particle {
     /* 0x0C */ Vec3f unk_0C;
 } Particle; // size = 0x18
 
-typedef struct unk_D_843C49C0 {
+typedef struct AuxEffectInstance {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ char pad002[2];
     /* 0x004 */ Particle unk_004[20];
-} unk_D_843C49C0; // size = 0x1E4
+} AuxEffectInstance; // size = 0x1E4
 
 typedef struct unk_D_843C3508_0A4 {
     /* 0x00 */ f32 posX;
@@ -775,7 +775,7 @@ typedef struct TypeEffectivenessEntry {
     /* 0x02 */ u8 posY;
 } TypeEffectivenessEntry; // size = 0x3
 
-typedef struct unk_D_843C60AC {
+typedef struct BattleAI_MonData {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
@@ -784,9 +784,9 @@ typedef struct unk_D_843C60AC {
     /* 0x05 */ u8 unk_05[1];
     /* 0x0C */ char unk06[0xC];
     /* 0x12 */ PokemonAudioInfo unk_12;
-} unk_D_843C60AC; // size = 0x76
+} BattleAI_MonData; // size = 0x76
 
-typedef struct unk_D_843C60A4 {
+typedef struct BattleAI_TeamState {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01[2];
     /* 0x03 */ u8 unk_03;
@@ -801,8 +801,8 @@ typedef struct unk_D_843C60A4 {
     /* 0x11 */ u8 unk_11;
     /* 0x12 */ u8 unk_12;
     /* 0x13 */ u8 unk_13;
-    /* 0x14 */ unk_D_843C60AC unk_14[1];
-} unk_D_843C60A4; // size >= 0x8A
+    /* 0x14 */ BattleAI_MonData unk_14[1];
+} BattleAI_TeamState; // size >= 0x8A
 
 typedef struct unk_D_843C5568 {
     /* 0x000 */ u8 unk_000;
@@ -819,11 +819,11 @@ typedef struct unk_D_843C5568 {
     /* 0x00D */ char unk00D[0x5];
     /* 0x012 */ u8 unk_012;
     /* 0x013 */ char unk013[0x3];
-    /* 0x016 */ unk_D_843C60AC unk_016[1];
+    /* 0x016 */ BattleAI_MonData unk_016[1];
     /* 0x08C */ char unk08C[0x510];
 } unk_D_843C5568; // size = 0x59C
 
-typedef struct unk_func_843794CC {
+typedef struct MoveCandidateScore {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
@@ -847,7 +847,7 @@ typedef struct unk_func_843794CC {
     /* 0x20 */ s16 unk_20;
     /* 0x24 */ s32 unk_24;
     /* 0x28 */ s32 unk_28;
-} unk_func_843794CC; // size = 0x2C
+} MoveCandidateScore; // size = 0x2C
 
 typedef struct unk_D_843C5310 {
     /* 0x00 */ u8 posX[1];
@@ -900,17 +900,17 @@ typedef struct unk_D_843C6148 {
     /* 0x06 */ char unk06[0x2];
 } unk_D_843C6148; // size <= 0x8
 
-typedef struct unk_func_8438220C {
+typedef struct BattleAI_TargetScoreContext {
     /* 0x00 */ u8 posX;
     /* 0x01 */ char unk01[0x3];
-    /* 0x04 */ unk_func_843794CC rotation[4];
+    /* 0x04 */ MoveCandidateScore rotation[4];
     /* 0xB4 */ u8 unk_B4;
     /* 0xB8 */ s32 unk_B8;
-} unk_func_8438220C; // size = 0xBC
+} BattleAI_TargetScoreContext; // size = 0xBC
 
-typedef struct unk_func_8437F85C_arg3 {
+typedef struct BattleAI_RankedGroup {
     /* 0x00 */ u8 posX[3][3];
-} unk_func_8437F85C_arg3; // size = 0x3
+} BattleAI_RankedGroup; // size = 0x3
 
 extern unk_D_8438E7B0* gAnimDataByPlayer[];
 extern unk_D_8438FF70* gAnimDataSetB[];
@@ -954,7 +954,7 @@ extern func_D_84390320 gParticleExitCallbackTable[];
 extern Gfx gWaterParticleQuadDL[];
 extern u32 gBeamTexture[];
 extern Gfx gParticleQuadDL[];
-extern u8 D_8438AC60[];
+extern u8 gBattleRuleFlags[];
 extern StatStageMultiplier gStatStageMultipliers[];
 extern u8 gStatStageMultipliersAlt[];
 extern u8 gTypeEffectivenessTable[];
@@ -1061,7 +1061,7 @@ void Battle_UpdateCompletionGate(void);
 s32 Battle_FrameCallback(s32 arg0);
 void Battle_CompleteRosterOrder(u8* arg0, s32 arg1);
 void Battle_SelectComRoster(void);
-void BattleScene_InitializeParticipantPresentation(unk_D_800AE540_1194* arg0, ModelData* arg1);
+void BattleScene_InitializeParticipantPresentation(BattlePokemon* arg0, ModelData* arg1);
 void BattleScene_Init(Stage* arg0);
 void func_84301A24(void);
 s32 Battle_Main(s32 arg0, SessionContext* arg1);
@@ -1160,18 +1160,18 @@ void BattleScene_CleanupOpponentAnimationFlags(BattlePlayerEntity* arg0);
 void BattleScene_CleanupParticipantEffectMode(BattlePlayerEntity* arg0);
 void BattleAnim_TickParticipantStatusAnimation(BattlePlayerEntity* arg0);
 void BattleAnim_TriggerStatusAfflictionCry(BattlePlayerEntity* arg0);
-void BattleScene_AllocateParticipantRecord(unk_D_800AE540_1194* arg0, s32 arg1);
-void BattleScene_AllocateParticipants(unk_D_800AE540_1194* arg0);
+void BattleScene_AllocateParticipantRecord(BattlePokemon* arg0, s32 arg1);
+void BattleScene_AllocateParticipants(BattlePokemon* arg0);
 void BattleScene_InitializeParticipantController(BattlePlayerEntity* arg0);
 void BattleScene_InitializeParticipantModel(BattlePlayerEntity* arg0);
 void BattleScene_InitializeParticipantOwnerModel(BattlePlayerEntity* arg0);
 void BattleScene_InitializeParticipantSecondaryModels(BattlePlayerEntity* arg0, s32* arg1);
 void BattleScene_InitializeParticipantAuxiliaryModel(BattlePlayerEntity* arg0);
-void BattleScene_InitializePresentation(unk_D_800AE540_1194* arg0);
+void BattleScene_InitializePresentation(BattlePokemon* arg0);
 void BattleScene_ResetParticipantAuxTransform(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1, s32 arg2);
-void BattleScene_InitializeRuntime(unk_D_800AE540_1194* arg0);
+void BattleScene_InitializeRuntime(BattlePokemon* arg0);
 void BattleScene_UpdateParticipantsAndQueueEffects(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1);
-s32 BattleScene_DispatchLifecycle(s32 arg0, unk_D_800AE540_1194* arg1);
+s32 BattleScene_DispatchLifecycle(s32 arg0, BattlePokemon* arg1);
 void AnimHandler_Idle(BattlePlayerEntity* arg0);
 void BattleScene_StateRow56EnterNop(BattlePlayerEntity* arg0);
 void BattleScene_StateRow5Slot3Nop(BattlePlayerEntity* arg0);
@@ -1255,7 +1255,7 @@ void BattleScene_RebindParticipantToSide(BattlePlayerEntity* arg0, s32 arg1);
 s32 Battle_HasUsableSleepStatusTarget(BattlePlayerEntity* arg0);
 s32 Battle_HasUsableMajorStatusTarget(BattlePlayerEntity* arg0);
 s32 BattleScene_GetCombinedTeamSize(BattlePlayerEntity* arg0);
-u8 BattleScene_GetRosterTeamSize(unk_D_800AE540_0004* arg0);
+u8 BattleScene_GetRosterTeamSize(BattleAI_TeamContext* arg0);
 s32 BattleScene_GetParticipantDisplayPlayerNumber(BattlePlayerEntity* arg0);
 void BattleScene_ReinitParticipantBodyModel(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1, s32 arg2, s32 arg3);
 void BattleScene_ReinitParticipantOwnerModel(BattlePlayerEntity* arg0, unk_D_84390010_728* arg1, s16 arg2);
@@ -1434,7 +1434,7 @@ void BattleHud_DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2);
 void BattleHud_DrawHpFractionText(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void BattleHud_DrawSpeciesNameLabel(s16 arg0, s16 arg1, s32 arg2, char* arg3, s32 arg4);
 void BattleHud_DrawSpeciesNameLabelBlink(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5);
-void BattleHud_DrawSpeciesNameLabelAuto(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6);
+void BattleHud_DrawSpeciesNameLabelAuto(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6);
 void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA);
 s32 BattleHud_DrawBorderTile(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4);
 void func_84311420(void);
@@ -1453,9 +1453,9 @@ s32 BattleHud_DrawMovePpTextRTL(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3);
 void BattleHud_DrawForfeitConfirmDialog(s16 arg0, s16 arg1, s16 arg2, s32 arg3);
 void BattleHud_DrawPlainText(s16 arg0, s16 arg1, char* arg2);
-void BattleHud_DrawDoublesRosterRow(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4, s32 arg5);
-void BattleHud_DrawPartyRosterRow(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4, s32 arg5);
-void BattleHud_DrawTeamStatusList(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4);
+void BattleHud_DrawDoublesRosterRow(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, PokemonData* arg2, s32 arg3, s32 arg4, s32 arg5);
+void BattleHud_DrawPartyRosterRow(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, PokemonData* arg2, s32 arg3, s32 arg4, s32 arg5);
+void BattleHud_DrawTeamStatusList(BattlePlayerEntity* arg0, BattleAI_TeamContext* arg1, s16 arg2, s16 arg3, s32 arg4);
 void BattleHud_DrawDoublesTeamStatusList(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3);
 void BattleHud_DrawCompactMonStatusBox(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3);
 void BattleHud_DrawMessageBox(s32 arg0, s16 arg1, s16 arg2, char* arg3);
@@ -1819,10 +1819,10 @@ void BattleAnim_StopOwnerCategoryParticles(u8 arg0, BattlePlayerEntity* arg1);
 void BattleAnim_RegisterAssetTable(arg1_func_80019420* arg0);
 void BattleAnim_ResetAssetTable(void);
 void BattleAnim_BuildResourceListForMove(s16 arg0);
-void BattleAnim_LoadMoveResourceList(unk_D_800AE540_1194* arg0, s16 arg1);
-void BattleAnim_LoadModeResourceList(unk_D_800AE540_1194* arg0, s16 arg1);
+void BattleAnim_LoadMoveResourceList(BattlePokemon* arg0, s16 arg1);
+void BattleAnim_LoadModeResourceList(BattlePokemon* arg0, s16 arg1);
 void BattleAnim_RegisterAllAssetTables(void);
-void BattleAnim_RegisterAssetTablesForSession(unk_D_800AE540_1194* arg0);
+void BattleAnim_RegisterAssetTablesForSession(BattlePokemon* arg0);
 void BattleAnim_ResetDisplayContexts(void);
 ParticleEffectInstance* BattleAnim_GetOwnerContextParticle(Fragment2_1GraphNode* arg0);
 Fragment2_1GraphNode* BattleAnim_AllocOwnerDisplayContext(ParticleEffectInstance* arg0);
@@ -2920,7 +2920,7 @@ Gfx* Trail40_Draw(Gfx* arg0);
 void Trail40Variant_ApplyRippleAtPoint(s16 arg0, s16 arg1);
 void Trail40Variant_InitPool(s16 arg0);
 void Trail40Variant_UpdateNodes(s32 arg0, s32 arg1);
-void Trail40Variant_WriteVertex(unk_D_8439E680_0014* arg0, Vtx* arg1);
+void Trail40Variant_WriteVertex(WaterNode* arg0, Vtx* arg1);
 s32 Trail40Variant_AdvanceTimer(void);
 void Trail40Variant_SetupCameraTransform(void);
 Gfx* Trail40Variant_BuildGfx(Gfx* arg0);
@@ -3030,7 +3030,7 @@ u8 Battle_Random(void);
 u8 Battle_RandomAccuracy(void);
 void ShowDamageMessage(s32 arg0, s32 arg1);
 void Battle_ResetTransientRuntimeState(s32 arg0, s32 arg1);
-void func_8436FA80(BattlePlayerEntity* arg0);
+void Battle_ResetEntityState(BattlePlayerEntity* arg0);
 void Battle_ApplyDamageRandomFactor(void);
 u16 Battle_DetermineMoveOrder(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1);
 s32 IsByteInArray(u8 arg0, u8* arg1, s32 arg2);
@@ -3052,11 +3052,11 @@ void Battle_InitPokemonRuntimeState(BattlePlayerEntity* arg0);
 s32 Battle_IsPartyMemberAlive(BattlePlayerEntity* arg0);
 void func_84370E70(void);
 void func_84370E78(void);
-void func_84370E80(void);
+void Battle_ExecuteMoveAnimation(void);
 void Battle_ApplyRageContinuation(void);
-void func_84371010(void);
-void func_84371080(void);
-void func_8437114C(void);
+void Battle_UpdateBattleLog(void);
+void Battle_PlayMoveSound(void);
+void Battle_ApplyDamageAnimation(void);
 void Battle_QueueMoveFailureAndApplyRecoil(void);
 void func_843714D8(void);
 s32 Battle_Effect_Metronome(void);
@@ -3132,72 +3132,72 @@ void BattleAI_ApplyTypeEffectAndStab(PokemonAudioInfo* arg0, PokemonAudioInfo* a
 void BattleAI_PrepareDamageCalcState(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2);
 void BattleAI_CalcDamage(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1);
 u16 BattleAI_PredictDamage(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3);
-void BattleAI_ResetTeamState(unk_D_843C60AC* arg0);
+void BattleAI_ResetTeamState(BattleAI_MonData* arg0);
 s32 BattleAI_ScaleSignedRatio(s32 arg0, s32 arg1);
-void BattleAI_AppendTrainerTeamSpecies(unk_D_800AE540_0004* arg0);
+void BattleAI_AppendTrainerTeamSpecies(BattleAI_TeamContext* arg0);
 s32 BattleAI_FindSpeciesIndex(s32 arg0);
 s32 BattleAI_IsThresholdMet(u8 arg0, u8 arg1);
 u16 BattleAI_ScaleStatHigh(PokemonAudioInfo* arg0);
 u16 BattleAI_ScaleStatLow(PokemonAudioInfo* arg0);
 f32 Battle_GetTypeEffectiveness(u8 arg0, PokemonAudioInfo* arg1);
-s32 BattleAI_AllCandidatesResistType(u8 arg0, unk_D_843C60A4* arg1);
+s32 BattleAI_AllCandidatesResistType(u8 arg0, BattleAI_TeamState* arg1);
 s32 BattleAI_IsTypeMatchupAllowed(u8 arg0, u8 arg1);
-s32 BattleAI_HasCandidateStatusMask(unk_D_843C60A4* arg0, u8 arg1);
-u8 BattleAI_ClassifyMoveAvailability(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8 arg2);
+s32 BattleAI_HasCandidateStatusMask(BattleAI_TeamState* arg0, u8 arg1);
+u8 BattleAI_ClassifyMoveAvailability(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8 arg2);
 void func_843779C0(void);
-u8 BattleAI_FindHeuristicMove(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8 arg2, u8* arg3);
-u8 BattleAI_SelectBestHeuristicCandidate(unk_D_843C60AC* arg0, unk_D_843C60A4* arg1, u8* arg2, u8 arg3, u8* arg4);
+u8 BattleAI_FindHeuristicMove(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8 arg2, u8* arg3);
+u8 BattleAI_SelectBestHeuristicCandidate(BattleAI_MonData* arg0, BattleAI_TeamState* arg1, u8* arg2, u8 arg3, u8* arg4);
 s32 BattleAI_IsPriorityTableMove(u8 arg0, u8 arg1);
-u8 BattleAI_ScoreCategorySetLowPP(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1);
-u8 BattleAI_ScoreCategorySetReady(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1);
-u8 BattleAI_HasExactlyOneUsableCandidate(unk_D_843C60A4* arg0);
-void BattleAI_InitializeOrderCandidates(unk_D_800AE540_0004* arg0, unk_D_800AE540_0004* arg1, unk_D_800AE540_0004* arg2, unk_D_843C5568* arg3, s32 arg4);
-void BattleAI_UpdateRememberedMoveCandidate(unk_D_843C60AC* arg0, u8 arg1);
+u8 BattleAI_ScoreCategorySetLowPP(BattleAI_MonData* arg0, BattleAI_MonData* arg1);
+u8 BattleAI_ScoreCategorySetReady(BattleAI_MonData* arg0, BattleAI_MonData* arg1);
+u8 BattleAI_HasExactlyOneUsableCandidate(BattleAI_TeamState* arg0);
+void BattleAI_InitializeOrderCandidates(BattleAI_TeamContext* arg0, BattleAI_TeamContext* arg1, BattleAI_TeamContext* arg2, unk_D_843C5568* arg3, s32 arg4);
+void BattleAI_UpdateRememberedMoveCandidate(BattleAI_MonData* arg0, u8 arg1);
 u16 BattleAI_ScoreMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2);
 void BattleAI_PickBestMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u16* arg2, u8* arg3, u8 arg4, u8 arg5);
-s32 BattleAI_ScoreAllCandidateMoves(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8* arg2, u8 arg3);
-s32 BattleAI_ScoreAllCandidateMovesRatioToMaxHp(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8* arg2, u8 arg3);
-s32 BattleAI_ScoreAllCandidateMovesRatioToCurrentHp(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8* arg2, u8 arg3);
+s32 BattleAI_ScoreAllCandidateMoves(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8* arg2, u8 arg3);
+s32 BattleAI_ScoreAllCandidateMovesRatioToMaxHp(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8* arg2, u8 arg3);
+s32 BattleAI_ScoreAllCandidateMovesRatioToCurrentHp(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8* arg2, u8 arg3);
 void func_8437921C(void);
 u8 BattleAI_CalcStagedMovePower(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3);
 void BattleAI_ApplyInverseWeightScale(u8 arg0, u8* arg1);
-void BattleAI_BuildMoveCandidateScores(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, s32 arg2, u8 arg3, u8 arg4, unk_func_843794CC* arg5);
-s32 BattleAI_HasScoredMoveAtValue(unk_func_843794CC* arg0, u8 arg1, u8 arg2);
-s32 BattleAI_IsCandidateScoreBelowPeers(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3);
-u8 BattleAI_HasOtherCandidateAtLeastScore(unk_func_843794CC* arg0, u8 arg1, u8 arg2, u8 arg3);
-void func_8437B0CC(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8 arg2, unk_func_843794CC* arg3, u8 arg4);
+void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData* arg1, s32 arg2, u8 arg3, u8 arg4, MoveCandidateScore* arg5);
+s32 BattleAI_HasScoredMoveAtValue(MoveCandidateScore* arg0, u8 arg1, u8 arg2);
+s32 BattleAI_IsCandidateScoreBelowPeers(MoveCandidateScore* arg0, u8 arg1, u8 arg2, u8 arg3);
+u8 BattleAI_HasOtherCandidateAtLeastScore(MoveCandidateScore* arg0, u8 arg1, u8 arg2, u8 arg3);
+void func_8437B0CC(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1, u8 arg2, MoveCandidateScore* arg3, u8 arg4);
 s32 BattleAI_IsScoreBetter(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-s32 BattleAI_SelectBestScoredMove(unk_D_843C60AC* arg0, UNUSED unk_D_843C60AC* arg1, u8 arg2, unk_func_843794CC* arg3);
+s32 BattleAI_SelectBestScoredMove(BattleAI_MonData* arg0, UNUSED BattleAI_MonData* arg1, u8 arg2, MoveCandidateScore* arg3);
 s32 BattleAI_ChooseMoveForCandidate(void);
 u16 BattleAI_ComputeDifficultyThreshold(u8 arg0, u8 arg1);
 u8 BattleAI_GetPpWeight(u8 arg0);
-void BattleAI_InitTeamContext(unk_D_800AE540_0004* arg0, unk_D_800AE540_0004* arg1, unk_D_843C60A4* arg2, u8 arg3);
-s32 BattleAI_IsSpeciesUnselected(unk_D_843C60A4* arg0, u8* arg1, u8 arg2);
-s32 BattleAI_IsSpeciesInList(unk_D_843C60A4* arg0, u8* arg1, u8 arg2, u8 arg3);
-s32 BattleAI_MeetsHpBudgetConstraint(unk_D_843C60A4* arg0, u8* arg1, u8 arg2, s32 arg3);
-s32 BattleAI_IsCandidateEligible(unk_D_843C60A4* arg0, u8* arg1, u8 arg2, u8 arg3);
-s32 BattleAI_GroupSharesTypeWeakness(unk_D_843C60A4* arg0, u8* arg1, u8 arg2);
-s32 BattleAI_ScoreAllTeamCandidates(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8* arg2, s32* arg3);
-s32 BattleAI_InsertRankedCandidateGroup(unk_D_843C60A4* arg0, s32* arg1, s32 arg2, unk_func_8437F85C_arg3* arg3, u8* arg4, u8 arg5, u8 arg6);
-void BattleAI_SelectRandomFallbackOrder(unk_D_843C60A4* arg0, u8* arg1, s32 arg2);
-s32 BattleAI_SelectRandomUsableCandidate(unk_D_843C60A4* arg0);
+void BattleAI_InitTeamContext(BattleAI_TeamContext* arg0, BattleAI_TeamContext* arg1, BattleAI_TeamState* arg2, u8 arg3);
+s32 BattleAI_IsSpeciesUnselected(BattleAI_TeamState* arg0, u8* arg1, u8 arg2);
+s32 BattleAI_IsSpeciesInList(BattleAI_TeamState* arg0, u8* arg1, u8 arg2, u8 arg3);
+s32 BattleAI_MeetsHpBudgetConstraint(BattleAI_TeamState* arg0, u8* arg1, u8 arg2, s32 arg3);
+s32 BattleAI_IsCandidateEligible(BattleAI_TeamState* arg0, u8* arg1, u8 arg2, u8 arg3);
+s32 BattleAI_GroupSharesTypeWeakness(BattleAI_TeamState* arg0, u8* arg1, u8 arg2);
+s32 BattleAI_ScoreAllTeamCandidates(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1, u8* arg2, s32* arg3);
+s32 BattleAI_InsertRankedCandidateGroup(BattleAI_TeamState* arg0, s32* arg1, s32 arg2, BattleAI_RankedGroup* arg3, u8* arg4, u8 arg5, u8 arg6);
+void BattleAI_SelectRandomFallbackOrder(BattleAI_TeamState* arg0, u8* arg1, s32 arg2);
+s32 BattleAI_SelectRandomUsableCandidate(BattleAI_TeamState* arg0);
 s32 BattleAI_SelectRandomUsableMoveSlot(PokemonAudioInfo* arg0);
-s32 func_8437FD74(unk_D_843C60A4* arg0, u8* arg1, s32* arg2, u8 arg3);
-s32 BattleAI_SelectLeadFromScoredGroup(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8* arg2, u8* arg3, s32* arg4);
-s32 BattleAI_TryBuildScoredOrder(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1, u8* arg2, u8* arg3, s32 arg4);
+s32 BattleAI_SelectTeamOrder(BattleAI_TeamState* arg0, u8* arg1, s32* arg2, u8 arg3);
+s32 BattleAI_SelectLeadFromScoredGroup(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1, u8* arg2, u8* arg3, s32* arg4);
+s32 BattleAI_TryBuildScoredOrder(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1, u8* arg2, u8* arg3, s32 arg4);
 void BattleAI_UpdateTeamAdvantageBias(void);
-u8 BattleAI_SelectBestSwitchCandidateIndex(unk_D_843C60A4* arg0, unk_D_843C60A4* arg1);
-u8 BattleAI_SelectBestAttackTargetIndex(unk_D_843C60AC* arg0, s32* arg1, s32* arg2, unk_D_843C60A4* arg3, u8 arg4, s32 arg5);
-s32 BattleAI_ScoreSwitchUrgencyFromThreatMove(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, u8 arg2);
-s32 BattleAI_ComputeAttackTargetScore(unk_func_8438220C* arg0);
-s32 BattleAI_ScoreAttackOption(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, unk_D_843C60A4* arg2, u8* arg3, s32* arg4, s32* arg5, s32* arg6, s32* arg7, s32* arg8);
-s32 BattleAI_ScoreAttackOptionDoubles(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, unk_D_843C60A4* arg2, u8* arg3, unk_func_8438220C* arg4);
-u8 BattleAI_ScoreAttackVsSwitch(unk_D_843C60AC* arg0, unk_D_843C60AC* arg1, unk_D_843C60A4* arg2, unk_D_843C60A4* arg3, u8* arg4, unk_func_8438220C* arg5);
+u8 BattleAI_SelectBestSwitchCandidateIndex(BattleAI_TeamState* arg0, BattleAI_TeamState* arg1);
+u8 BattleAI_SelectBestAttackTargetIndex(BattleAI_MonData* arg0, s32* arg1, s32* arg2, BattleAI_TeamState* arg3, u8 arg4, s32 arg5);
+s32 BattleAI_ScoreSwitchUrgencyFromThreatMove(BattleAI_MonData* arg0, BattleAI_MonData* arg1, u8 arg2);
+s32 BattleAI_ComputeAttackTargetScore(BattleAI_TargetScoreContext* arg0);
+s32 BattleAI_ScoreAttackOption(BattleAI_MonData* arg0, BattleAI_MonData* arg1, BattleAI_TeamState* arg2, u8* arg3, s32* arg4, s32* arg5, s32* arg6, s32* arg7, s32* arg8);
+s32 BattleAI_ScoreAttackOptionDoubles(BattleAI_MonData* arg0, BattleAI_MonData* arg1, BattleAI_TeamState* arg2, u8* arg3, BattleAI_TargetScoreContext* arg4);
+u8 BattleAI_ScoreAttackVsSwitch(BattleAI_MonData* arg0, BattleAI_MonData* arg1, BattleAI_TeamState* arg2, BattleAI_TeamState* arg3, u8* arg4, BattleAI_TargetScoreContext* arg5);
 u16 BattleAI_ApplyStatStageModifier(u16* arg0, u16 arg1, u8 arg2);
 void BattleAI_SimulateStatBoostGuess(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3);
-void BattleAI_BuildAllCandidateMoveScores(unk_func_8438220C* arg0);
-void BattleAI_RefineAllCandidateMoveScores(unk_func_8438220C* arg0);
-u8 BattleAI_DecideFinalAction(unk_func_8438220C* arg0);
+void BattleAI_BuildAllCandidateMoveScores(BattleAI_TargetScoreContext* arg0);
+void BattleAI_RefineAllCandidateMoveScores(BattleAI_TargetScoreContext* arg0);
+u8 BattleAI_DecideFinalAction(BattleAI_TargetScoreContext* arg0);
 s32 BattleAI_DecideAction(void);
 s32 BattleAI_ResolveTiedActionChoice(s32 arg0);
 s32 BattleAI_MatchesLastMoveCategory(u8 arg0, u8 arg1);
@@ -3207,7 +3207,7 @@ s32 BattleAI_IsRestrictedRandomMove(u8 arg0);
 s32 BattleAI_IsMoveExcludedForSpecies(PokemonAudioInfo* arg0, s32 arg1, u8 arg2, u8 arg3);
 s32 BattleAI_IsMoveIneffective(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2);
 void BattleAI_SyncTeamStateFromRuntime(void);
-s32 func_843831A0(unk_D_800AE540_0004* arg0, unk_D_800AE540_0004* arg1, unk_D_800AE540_0004* arg2, s32 arg3, u8* arg4, s32 arg5, s32 arg6);
+s32 BattleAI_InitializeBattle(BattleAI_TeamContext* arg0, BattleAI_TeamContext* arg1, BattleAI_TeamContext* arg2, s32 arg3, u8* arg4, s32 arg5, s32 arg6);
 void BattleAI_RecordUsedMove(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2);
 s32 BattleAI_ChooseAction(UNUSED s32 arg0);
 void BattleAI_InitTrainerRecords(void);

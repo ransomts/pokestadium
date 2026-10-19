@@ -292,7 +292,7 @@ static GalleryScriptInput gControllerScriptInputs[] = {
     { 1, 0x1000, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
 };
 
-static unk_D_8690A610 gStagePanelRootNode;
+static FogRect gStagePanelRootNode;
 static GraphRootNode gStagePanelGraphRoot0;
 static GraphRootNode gStagePanelGraphRoot1;
 static GraphRootNode gStagePanelGraphRoot2;

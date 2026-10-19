@@ -140,7 +140,7 @@ typedef struct unk_D_8423D3D8 {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ s16 posY;
-    /* 0x04 */ unk_D_800AE540_0004* rotation;
+    /* 0x04 */ BattleAI_TeamContext* rotation;
 } unk_D_8423D3D8; // size = 0x8
 
 typedef struct RulePromptConfig {

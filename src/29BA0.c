@@ -621,7 +621,7 @@ void Fragment_QueueCall(s32 arg0, u8* arg1, u8* arg2, s32 arg3, s32 arg4) {
     gFragmentCallContext.arg1 = arg4;
 }
 
-unk_D_800AE540_0004* Trainer_GetSlots(void) {
+BattleAI_TeamContext* Trainer_GetSlots(void) {
     return gSessionContext.unk_0004;
 }
 

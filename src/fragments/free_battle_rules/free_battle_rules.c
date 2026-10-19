@@ -734,7 +734,7 @@ void FreeBattle_SlideOutPanel(void) {
 
 void FreeBattle_ApplyRuleSelection(void) {
     char sp44[12];
-    unk_D_800AE540_0004* temp_v0;
+    BattleAI_TeamContext* temp_v0;
     s32 i;
 
     Session_SetMode(0, gRuleBattleIds[gSelectedRuleOption], 0);

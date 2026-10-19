@@ -4,7 +4,7 @@
 
 static WaterParticleSystem D_843C2C00[4];
 
-static Gfx D_84389C70[] = {
+static Gfx gWaterParticleDisplayList[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -357,7 +357,7 @@ Gfx* DoubleTextureTrail_DrawAll(Gfx* arg0) {
                                      var_fp->lineColor.b, var_fp->lineColor.a * var_fp->unk_08C);
             }
 
-            gSPDisplayList(arg0++, D_84389C70);
+            gSPDisplayList(arg0++, gWaterParticleDisplayList);
 
             Gfx_SetCombineRaw(
                 arg0++, var_fp->unk_024.posX, var_fp->unk_024.rotation, var_fp->unk_024.unk_08, var_fp->unk_024.unk_0C,

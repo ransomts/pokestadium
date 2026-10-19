@@ -2,7 +2,7 @@
 #include "src/6A40.h"
 #include "src/math_util.h"
 
-static ParticleEmitter D_843AB940[4];
+static ParticleEmitter gOwnerLinkedFourStreams[4];
 
 static Gfx Gfx_ParticleRenderDL[] = {
     gsDPPipeSync(),
@@ -21,7 +21,7 @@ static Gfx Gfx_ParticleRenderDL[] = {
 void OwnerLinkedFourStream_Init(void) {
     s32 i;
     s32 j;
-    ParticleEmitter* var_a2 = &D_843AB940[0];
+    ParticleEmitter* var_a2 = &gOwnerLinkedFourStreams[0];
     ParticleState* var_v0;
 
     for (i = 0; i < 4; i++, var_a2++) {
@@ -57,7 +57,7 @@ void OwnerLinkedFourStream_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg
     sp58.y = arg4;
     sp58.z = arg5;
 
-    var_v1 = &D_843AB940[0];
+    var_v1 = &gOwnerLinkedFourStreams[0];
     for (i = 0; i < 4; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
             var_v1->unk_000 = 1;
@@ -168,7 +168,7 @@ void OwnerLinkedFourStream_UpdateNodeChain(ParticleEmitter* arg0) {
 
 s32 OwnerLinkedFourStream_IsComplete(void) {
     s32 i;
-    ParticleEmitter* var_s0 = &D_843AB940[0];
+    ParticleEmitter* var_s0 = &gOwnerLinkedFourStreams[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -199,7 +199,7 @@ Gfx* OwnerLinkedFourStream_Draw(Gfx* arg0) {
     Mtx sp90;
     UNUSED s32 pad2;
 
-    var_s5 = &D_843AB940[0];
+    var_s5 = &gOwnerLinkedFourStreams[0];
     for (i = 0; i < 4; i++, var_s5++) {
         if (var_s5->unk_000 == 1) {
             temp_s0 = &var_s5->unk_038[0];

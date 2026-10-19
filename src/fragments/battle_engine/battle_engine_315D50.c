@@ -4866,7 +4866,7 @@ void BattleAnim_BuildResourceListForMove(s16 arg0) {
     gMessageBuffer[var_v0] = -1;
 }
 
-void BattleAnim_LoadMoveResourceList(unk_D_800AE540_1194* arg0, s16 arg1) {
+void BattleAnim_LoadMoveResourceList(BattlePokemon* arg0, s16 arg1) {
     if (arg1 != 0xFF) {
         BattleAnim_BuildResourceListForMove(arg1);
         arg0->unk_1D |= 0x80;
@@ -4875,7 +4875,7 @@ void BattleAnim_LoadMoveResourceList(unk_D_800AE540_1194* arg0, s16 arg1) {
     }
 }
 
-void BattleAnim_LoadModeResourceList(unk_D_800AE540_1194* arg0, s16 arg1) {
+void BattleAnim_LoadModeResourceList(BattlePokemon* arg0, s16 arg1) {
     s32 var_v0 = 0;
     u8* var_v1 = Fragment62_SubTablePtr2D[arg1][1];
 
@@ -4905,7 +4905,7 @@ void BattleAnim_RegisterAllAssetTables(void) {
     }
 }
 
-void BattleAnim_RegisterAssetTablesForSession(unk_D_800AE540_1194* arg0) {
+void BattleAnim_RegisterAssetTablesForSession(BattlePokemon* arg0) {
     arg0->unk_1D &= ~0x10;
     BattleAnim_RegisterAllAssetTables();
 }

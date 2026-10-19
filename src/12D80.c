@@ -417,7 +417,7 @@ void Geo_NodeCamera(GraphNode* arg0) {
     unk_D_86002F34_00C_040* temp_s2 = &arg->unk_40;
     unk_D_86002F34_00C_060* temp_s1 = &arg->unk_60;
     unk_D_86002F34_00C_024* sp48 = &arg->unk_24;
-    unk_D_86002F34_00C_018* temp_s0 = &arg->unk_18;
+    CameraRect* temp_s0 = &arg->unk_18;
 
     temp_s0->vp = Gfx_AllocDisplayList(sizeof(Vp) * 1);
     temp_s2->mtx = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
@@ -531,7 +531,7 @@ void Geo_NodePerspective(GraphNode* arg0) {
 
 void Geo_NodeBackground(GraphNode* arg0) {
     unk_D_86002F34_alt2* arg = (unk_D_86002F34_alt2*)arg0;
-    unk_D_86002F34_00C_018* ptr = &gCurrentCameraNode->unk_18;
+    CameraRect* ptr = &gCurrentCameraNode->unk_18;
 
     GfxImage_FillRectangle(&gDisplayListHead, ptr->x, ptr->y, ptr->width, ptr->height, arg->unk_18);
 
@@ -540,7 +540,7 @@ void Geo_NodeBackground(GraphNode* arg0) {
 }
 
 void Geo_NodeClearDepth(UNUSED GraphNode* arg0) {
-    unk_D_86002F34_00C_018* ptr = &gCurrentCameraNode->unk_18;
+    CameraRect* ptr = &gCurrentCameraNode->unk_18;
 
     GfxImage_ClearDepthRectangle(&gDisplayListHead, ptr->x, ptr->y, ptr->width, ptr->height);
 

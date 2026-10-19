@@ -1,7 +1,7 @@
 #include "battle_engine.h"
 #include "src/6A40.h"
 
-static unk_D_843ADA80 D_843B8340[50];
+static unk_D_843ADA80 gTrail50EffectAltInstances[50];
 
 static Gfx D_84389B60[] = {
     gsDPPipeSync(),
@@ -42,7 +42,7 @@ static Gfx gWaterParticleTextureDL[] = {
 };
 
 void Trail50EffectAlt_Init(void) {
-    unk_D_843ADA80* var_v0 = &D_843B8340[0];
+    unk_D_843ADA80* var_v0 = &gTrail50EffectAltInstances[0];
     unk_D_843ADA80_040* var_a0;
     s32 i;
     s32 j;
@@ -94,7 +94,7 @@ void Trail50EffectAlt_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f3
     sp64.y = temp_fv1 * -2.0;
     sp64.z = 0.0f;
 
-    var_v1 = &D_843B8340[0];
+    var_v1 = &gTrail50EffectAltInstances[0];
 
     for (i = 0; i < 50; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
@@ -204,7 +204,7 @@ void Trail50EffectAlt_AdvanceNodes(unk_D_843ADA80* arg0) {
 
 s32 Trail50EffectAlt_IsComplete(void) {
     s32 i;
-    unk_D_843ADA80* var_s0 = &D_843B8340[0];
+    unk_D_843ADA80* var_s0 = &gTrail50EffectAltInstances[0];
 
     for (i = 0; i < 50; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -238,7 +238,7 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
     gDPLoadTextureBlock(arg0++, gBattleAnimAssetPointers[0x1C], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    var_s5 = &D_843B8340[0];
+    var_s5 = &gTrail50EffectAltInstances[0];
     for (i = 0; i < 50; i++, var_s5++) {
         if (var_s5->unk_000 == 1) {
             temp_s0 = &var_s5->unk_040[0];

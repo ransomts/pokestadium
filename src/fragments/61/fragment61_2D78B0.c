@@ -600,7 +600,7 @@ void TeamSelection_RunInputLoop(s16 arg0, s16 arg1, s16 arg2) {
 
 void TeamSelection_InitializeSlots(void) {
     s16 i;
-    unk_D_800AE540_0004* var_v0 = gSessionContext.unk_0004;
+    BattleAI_TeamContext* var_v0 = gSessionContext.unk_0004;
 
     for (i = 0; i < 4; i++) {
         gBattleSelectionSlots[i].posX = 0;
@@ -721,7 +721,7 @@ void TeamSelection_FadeIn(void) {
 }
 
 void TeamSelection_ApplySlotSelection(s16 arg0, s16 arg1) {
-    unk_D_800AE540_0004* temp_v1 = gBattleSelectionSlots[arg0].rotation;
+    BattleAI_TeamContext* temp_v1 = gBattleSelectionSlots[arg0].rotation;
 
     if (temp_v1->unk_002 != 0) {
         if (arg1 == 4) {

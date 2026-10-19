@@ -1904,7 +1904,7 @@ void BattleAnim_TriggerStatusAfflictionCry(BattlePlayerEntity* arg0) {
     }
 }
 
-void BattleScene_AllocateParticipantRecord(unk_D_800AE540_1194* arg0, s32 arg1) {
+void BattleScene_AllocateParticipantRecord(BattlePokemon* arg0, s32 arg1) {
     BattlePlayerEntity* ptr = main_pool_alloc(sizeof(BattlePlayerEntity), 0);
 
     sActivePokemon[arg1] = ptr;
@@ -1920,7 +1920,7 @@ void BattleScene_AllocateParticipantRecord(unk_D_800AE540_1194* arg0, s32 arg1) 
     sActivePokemon[arg1]->pokemonAnimation = arg0;
 }
 
-void BattleScene_AllocateParticipants(unk_D_800AE540_1194* arg0) {
+void BattleScene_AllocateParticipants(BattlePokemon* arg0) {
     BattleScene_AllocateParticipantRecord(&arg0[0], 0);
     BattleScene_AllocateParticipantRecord(&arg0[1], 1);
     Battle_InitMessageQueues();
@@ -2051,7 +2051,7 @@ void BattleScene_InitializeParticipantAuxiliaryModel(BattlePlayerEntity* arg0) {
     }
 }
 
-void BattleScene_InitializePresentation(unk_D_800AE540_1194* arg0) {
+void BattleScene_InitializePresentation(BattlePokemon* arg0) {
     gBattleInitFlag = 0;
     gBattleInitStruct.posX = 0;
 
@@ -2106,7 +2106,7 @@ void BattleScene_ResetParticipantAuxTransform(BattlePlayerEntity* arg0, BattlePl
     arg1->sideSign = arg2;
 }
 
-void BattleScene_InitializeRuntime(unk_D_800AE540_1194* arg0) {
+void BattleScene_InitializeRuntime(BattlePokemon* arg0) {
     s32 i;
 
     Text_InitStringTables();
@@ -2139,7 +2139,7 @@ void BattleScene_UpdateParticipantsAndQueueEffects(BattlePlayerEntity* arg0, Bat
     MaybeTriggerSpecialAnimEffect(sActivePokemon[1]);
 }
 
-s32 BattleScene_DispatchLifecycle(s32 arg0, unk_D_800AE540_1194* arg1) {
+s32 BattleScene_DispatchLifecycle(s32 arg0, BattlePokemon* arg1) {
     switch (arg0) {
         case 0:
             BattleScene_AllocateParticipants(arg1);

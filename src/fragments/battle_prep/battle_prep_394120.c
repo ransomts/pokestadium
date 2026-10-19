@@ -22,13 +22,13 @@ s32 BattlePrep_StarfieldGeoCallback(s32, unk_D_86002F34_alt8*);
 unk_D_84B19910 gInputBuffer[400];
 s32 pad_D_84B1A590[2];
 unk_D_84B1A598 gBattleGraphics;
-unk_D_84B259A8 gErrorScreenState;
-unk_D_84B259E8 gErrorScreenAnim;
+gBannerState gErrorScreenState;
+gBadgeCarouselAnim gErrorScreenAnim;
 BattleUiState gUIState;
-unk_D_84B25A58 gUIElementA;
-unk_D_84B25A90 gUIElementB;
-unk_D_84B25AC0 gUIBarA;
-unk_D_84B25AC0 gUIBarB;
+gTeamIconsState gUIElementA;
+gBadgeAwardState gUIElementB;
+gStarBurstState gUIBarA;
+gStarBurstState gUIBarB;
 unk_D_84B26640 gBattleMenuState;
 SessionModeSettings gBattleProgress;
 char** gBattleMessageTable;
@@ -228,7 +228,7 @@ void BattlePrep_DrawBorderedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4
 }
 
 void BattlePrep_DrawTrainerStatusIcon(FramebufferImage* arg0, s16 arg1, u8* arg2, u8* arg3) {
-    unk_D_800AE540_1194* temp_v1 = &gSessionContext.unk_1194[arg1];
+    BattlePokemon* temp_v1 = &gSessionContext.unk_1194[arg1];
 
     GfxImage_SetRenderTarget(&gDisplayListHead, arg0);
 
@@ -460,7 +460,7 @@ s32 BattlePrep_ShowRoundIntro(void) {
 void BattlePrep_CheckPikachuNeedsSurf(void) {
     s32 i;
     s32 j;
-    unk_D_800AE540_0004* var_a1;
+    BattleAI_TeamContext* var_a1;
     unk_D_800AE540_0874* temp_v1;
 
     if (!(gSessionContext.unk_11F5 & 2) && (gSessionContext.unk_11F2 == 1) && (gSessionContext.unk_0000 == 6) &&

@@ -18,7 +18,7 @@
 static unk_D_84803760 gSelectionStates[2];
 static BinArchive* gBinArchive;
 static void* gPanelTextureAtlas;
-static char** D_84803788;
+static char** gOrderSelectStrings;
 static char** gModeNames;
 static char** gMsgBank_Common;
 static char** gPanelStrings;
@@ -26,7 +26,7 @@ static s16 gTransferPakErrorTimer;
 static s16 gTransferPakScrollPos;
 static s32 gPanelCount;
 static unk_D_848037A0 gPanels[4];
-static SessionContext* D_84816420;
+static SessionContext* gCurrentSessionContext;
 static Controller gPanelController;
 static s32 gInputTimerIndex;
 static s32 gInputTimerValue;
@@ -145,7 +145,7 @@ void BattleMenu_DrawScrollingRulesText(void) {
     Font_SetActive(0x10, 0);
     Text_SetEnvColor(0xA5, 0xDE, 0x8C, 0xFF);
 
-    if ((D_84816420->unk_0001 == 0) || (D_84816420->unk_0001 == 8)) {
+    if ((gCurrentSessionContext->unk_0001 == 0) || (gCurrentSessionContext->unk_0001 == 8)) {
         var_v0 = Text_GetString(NULL, 0, gMsgBank_Common, 1);
     } else {
         var_v0 = Text_GetString(NULL, 0, gMsgBank_Common, 0);
@@ -169,7 +169,7 @@ void BattleMenu_DrawScrollingRulesText(void) {
     }
 }
 
-void BattleMenu_InitTeamOrderState(unk_D_84803760* arg0, unk_D_800AE540_1194* arg1, s32 arg2) {
+void BattleMenu_InitTeamOrderState(unk_D_84803760* arg0, BattlePokemon* arg1, s32 arg2) {
     s32 i;
 
     arg0->posX = 0;
@@ -480,7 +480,7 @@ void BattleMenu_DrawOrderSelectPanel_LevelCapNotice(unk_D_848037A0* arg0) {
     s32 sp30;
     s32 sp2C;
 
-    switch (D_84816420->unk_0001) {
+    switch (gCurrentSessionContext->unk_0001) {
         case 3:
             sp2C = 0x9B;
             break;
@@ -649,7 +649,7 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
         temp_v1 = &gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].unk_01];
         Font_SetActive(4, 0);
         Text_SetEnvColor(temp_v1->posX.r, temp_v1->posX.g, temp_v1->posX.b, 0xFF);
-        Font_Printf(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, Text_GetString(NULL, 0, D_84803788, sp78->unk_09[i] - 1));
+        Font_Printf(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, Text_GetString(NULL, 0, gOrderSelectStrings, sp78->unk_09[i] - 1));
         Font_SetActive(4, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_Printf(temp_fp + 0x1B3, (i * 0x14) + sp7C + 7, "%2d", sp78->unk_20[i] & 0x3F);
@@ -748,7 +748,7 @@ void BattleMenu_UpdateComPanelAutoInput(void) {
     }
 
     if (i < 4) {
-        if ((D_84816420->unk_0001 != 0) && (D_84816420->unk_0001 != 8)) {
+        if ((gCurrentSessionContext->unk_0001 != 0) && (gCurrentSessionContext->unk_0001 != 8)) {
             var_v0 = 3;
         } else {
             var_v0 = gPanels[i].unk_0017;
@@ -793,7 +793,7 @@ s32 BattleMenu_PicksExceedLevelCap(unk_D_848037A0* arg0) {
             var_v0 += arg0->unk_0018[arg0->unk_000C[i]].unk_24;
         }
 
-        if (D_84816420->unk_0001 == 3) {
+        if (gCurrentSessionContext->unk_0001 == 3) {
             if ((arg0->unk_000B == 2) && (var_v0 >= 0x6A)) {
                 return 1;
             }
@@ -801,7 +801,7 @@ s32 BattleMenu_PicksExceedLevelCap(unk_D_848037A0* arg0) {
             if ((arg0->unk_000B == 3) && (var_v0 >= 0x9C)) {
                 return 1;
             }
-        } else if (D_84816420->unk_0001 == 4) {
+        } else if (gCurrentSessionContext->unk_0001 == 4) {
             if ((arg0->unk_000B == 2) && (var_v0 >= 0x38)) {
                 return 1;
             }
@@ -809,7 +809,7 @@ s32 BattleMenu_PicksExceedLevelCap(unk_D_848037A0* arg0) {
             if ((arg0->unk_000B == 3) && (var_v0 >= 0x51)) {
                 return 1;
             }
-        } else if (D_84816420->unk_0001 == 5) {
+        } else if (gCurrentSessionContext->unk_0001 == 5) {
             if ((arg0->unk_000B == 2) && (var_v0 >= 0x24)) {
                 return 1;
             }
@@ -826,7 +826,7 @@ s32 BattleMenu_PicksExceedLevelCap(unk_D_848037A0* arg0) {
 s32 BattleMenu_IsOrderSelectionComplete(unk_D_848037A0* arg0) {
     s8 var_v1;
 
-    if ((D_84816420->unk_0001 != 0) && (D_84816420->unk_0001 != 8)) {
+    if ((gCurrentSessionContext->unk_0001 != 0) && (gCurrentSessionContext->unk_0001 != 8)) {
         var_v1 = 3;
     } else if (arg0->unk_001C->unk_000 & 2) {
         var_v1 = arg0->unk_0017;
@@ -1120,8 +1120,8 @@ s32 BattleMenu_UpdateOrderSelect(s32 arg0) {
     return sp30;
 }
 
-void BattleMenu_RearrangeLeadPokemon(unk_D_800AE540_1194* arg0, unk_D_84803760* arg1) {
-    unk_D_800AE540_0004* temp_v0;
+void BattleMenu_RearrangeLeadPokemon(BattlePokemon* arg0, unk_D_84803760* arg1) {
+    BattleAI_TeamContext* temp_v0;
     s32 tmp;
 
     if (arg0->unk_01 == 2) {
@@ -1155,7 +1155,7 @@ void BattleMenu_FillDefaultOrder(s8* arg0, s32 arg1) {
 void BattleMenu_CommitOrderSelection(void) {
     s32 i;
     s32 var_s4;
-    unk_D_800AE540_0004* temp_s1;
+    BattleAI_TeamContext* temp_s1;
     unk_D_848037A0* var_s2;
 
     var_s2 = gPanels;
@@ -1177,11 +1177,11 @@ void BattleMenu_CommitOrderSelection(void) {
         var_s2++;
     }
 
-    BattleMenu_RearrangeLeadPokemon(&D_84816420->unk_1194[0], &gSelectionStates[0]);
-    BattleMenu_RearrangeLeadPokemon(&D_84816420->unk_1194[1], &gSelectionStates[1]);
+    BattleMenu_RearrangeLeadPokemon(&gCurrentSessionContext->unk_1194[0], &gSelectionStates[0]);
+    BattleMenu_RearrangeLeadPokemon(&gCurrentSessionContext->unk_1194[1], &gSelectionStates[1]);
 }
 
-void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4) {
+void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, BattleAI_TeamContext* arg2, s32 arg3, s32 arg4) {
     s32 i;
     unk_D_848037A0* temp_v1;
     PokemonData* temp_s0;
@@ -1215,9 +1215,9 @@ void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg
 }
 
 void BattleMenu_InitOrderSelectPanels(SessionContext* arg0) {
-    unk_D_800AE540_1194* temp_s0 = &arg0->unk_1194[0];
+    BattlePokemon* temp_s0 = &arg0->unk_1194[0];
 
-    D_84816420 = arg0;
+    gCurrentSessionContext = arg0;
     gPanelCount = 0;
     gTransferPakErrorTimer = 2;
     gTransferPakScrollPos = 0;
@@ -1225,8 +1225,8 @@ void BattleMenu_InitOrderSelectPanels(SessionContext* arg0) {
     gInputTimerValue = 0;
     gPanelController.buttonPressed = 0;
 
-    BattleMenu_InitTeamOrderState(&gSelectionStates[0], &D_84816420->unk_1194[0], D_84816420->unk_0001);
-    BattleMenu_InitTeamOrderState(&gSelectionStates[1], &D_84816420->unk_1194[1], D_84816420->unk_0001);
+    BattleMenu_InitTeamOrderState(&gSelectionStates[0], &gCurrentSessionContext->unk_1194[0], gCurrentSessionContext->unk_0001);
+    BattleMenu_InitTeamOrderState(&gSelectionStates[1], &gCurrentSessionContext->unk_1194[1], gCurrentSessionContext->unk_0001);
 
     if (temp_s0->unk_01 == 1) {
         BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->unk_08[0], 0, -1);
@@ -1267,7 +1267,7 @@ s32 BattleMenu_RunOrderSelectScreen(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, order_select_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
-    D_84803788 = Text_GetStringTable(0x25);
+    gOrderSelectStrings = Text_GetStringTable(0x25);
     gModeNames = Text_GetStringTable(0x26);
     gMsgBank_Common = Text_GetStringTable(0x12);
     gPanelStrings = Text_GetStringTable(6);

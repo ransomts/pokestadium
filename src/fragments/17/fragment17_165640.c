@@ -120,7 +120,7 @@ static u8 gMonsterModelIds[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01,
 };
 
-static unk_D_8690A610 gBattleOverlayRect;
+static FogRect gBattleOverlayRect;
 static GraphRootNode gMiniCameraRoot0;
 static GraphRootNode gMiniCameraRoot1;
 static GraphRootNode gMiniCameraRoot2;
@@ -148,8 +148,8 @@ unk_D_86B0FA7C* gCameraState;
 static u8 gMonsterModelData[0xBE0];
 unk_70D3A0 gMonsterStageData;
 static unk_D_70B10 gMonsterStageParams;
-static unk_D_800AE540_0004* gMonsterDataPtr;
-static unk_D_800AE540_1194* gMonsterContextPtr;
+static BattleAI_TeamContext* gMonsterDataPtr;
+static BattlePokemon* gMonsterContextPtr;
 
 static u32 gMiniCameraLayout[] = {
     0x0C00FFFF, 0x05000000,    0x0B00001E,  0x00000000,    0x014000F0,  0x0000000F,  0x00000000, 0x00000000,

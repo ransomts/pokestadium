@@ -703,7 +703,7 @@ void BattleScene_BuildParticipantMessage(BattlePlayerEntity* arg0, s32 arg1) {
 }
 
 void BattleScene_RevealParticipantMessageChars(BattlePlayerEntity* arg0) {
-    unk_D_800AE540_0004* temp_t0 = arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C];
+    BattleAI_TeamContext* temp_t0 = arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C];
 
     if (arg0->unk_8C4.unk_48[arg0->unk_8C4.rotation] != '\x00') {
         arg0->unk_8C4.unk_08[arg0->unk_8C4.rotation] = arg0->unk_8C4.unk_48[arg0->unk_8C4.rotation];

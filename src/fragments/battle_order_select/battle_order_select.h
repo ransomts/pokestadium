@@ -32,7 +32,7 @@ typedef struct unk_D_848037A0 {
     /* 0x0016 */ s8 unk_0016;
     /* 0x0017 */ s8 unk_0017;
     /* 0x0018 */ PokemonData* unk_0018;
-    /* 0x001C */ unk_D_800AE540_0004* unk_001C;
+    /* 0x001C */ BattleAI_TeamContext* unk_001C;
     /* 0x0020 */ u16 unk_0020[1][0x640];
     /* 0x0CA0 */ char unk0CA0[0x3E80];
 } unk_D_848037A0; // size = 0x4B20
@@ -49,7 +49,7 @@ typedef struct unk_D_84803548 {
 
 void BattleMenu_DrawBottomActionButtons(void);
 void BattleMenu_DrawScrollingRulesText(void);
-void BattleMenu_InitTeamOrderState(unk_D_84803760* arg0, unk_D_800AE540_1194* arg1, s32 arg2);
+void BattleMenu_InitTeamOrderState(unk_D_84803760* arg0, BattlePokemon* arg1, s32 arg2);
 void BattleMenu_DrawSidebarLeadIcon(s32 arg0, s32 arg1, unk_D_84803760* arg2);
 s32 BattleMenu_DrawSidebarRowTypeIcon(s32 arg0, s32 arg1, s8 arg2, s8 arg3);
 void BattleMenu_DrawTeamOrderSidebarTeam0(void);
@@ -77,10 +77,10 @@ void BattleMenu_HandleOrderSelectPanel_LevelCapNoticeInput(Controller* arg0, unk
 void BattleMenu_HandleOrderSelectPanel_MonDetailInput(Controller* arg0, unk_D_848037A0* arg1);
 s32 BattleMenu_UpdateOrderSelectPanel(s32 arg0, unk_D_848037A0* arg1);
 s32 BattleMenu_UpdateOrderSelect(s32 arg0);
-void BattleMenu_RearrangeLeadPokemon(unk_D_800AE540_1194* arg0, unk_D_84803760* arg1);
+void BattleMenu_RearrangeLeadPokemon(BattlePokemon* arg0, unk_D_84803760* arg1);
 void BattleMenu_FillDefaultOrder(s8* arg0, s32 arg1);
 void BattleMenu_CommitOrderSelection(void);
-void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4);
+void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, BattleAI_TeamContext* arg2, s32 arg3, s32 arg4);
 void BattleMenu_InitOrderSelectPanels(SessionContext* arg0);
 s32 BattleMenu_RunOrderSelectScreen(s32 arg0, s32 arg1);
 

@@ -445,7 +445,7 @@ s32 BattleScene_GetCombinedTeamSize(BattlePlayerEntity* arg0) {
     return arg0->pokemonAnimation->unk_08[1]->unk_002 + arg0->pokemonAnimation->unk_08[0]->unk_002;
 }
 
-u8 BattleScene_GetRosterTeamSize(unk_D_800AE540_0004* arg0) {
+u8 BattleScene_GetRosterTeamSize(BattleAI_TeamContext* arg0) {
     return arg0->unk_002;
 }
 

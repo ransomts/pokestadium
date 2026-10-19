@@ -120,7 +120,7 @@ s32 PikachuReward_SearchDeckForPikachu(s16 arg0, s16 arg1, s16 arg2) {
 
 s32 PikachuReward_FindPikachuOnCart(void) {
     s32 i;
-    unk_D_800AE540_0004* var_v1;
+    BattleAI_TeamContext* var_v1;
 
     var_v1 = gSessionContext.unk_1194[0].unk_08[0];
 

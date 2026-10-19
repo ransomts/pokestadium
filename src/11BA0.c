@@ -151,9 +151,9 @@ unk_D_86002F34_alt17* GeoNode_CreateClearDepth(MainPoolState* arg0, unk_D_86002F
     return arg1;
 }
 
-unk_D_8690A610* GeoNode_CreateFog(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a) {
+FogRect* GeoNode_CreateFog(s32 arg0, FogRect* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a) {
     if (arg0 != 0) {
-        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_8690A610), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(FogRect), 4);
     }
 
     if (arg1 != NULL) {

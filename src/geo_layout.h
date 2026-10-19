@@ -67,7 +67,7 @@ typedef struct unk_D_800ABE00_cmd6 {
 
 typedef struct GeoCmd_AddNode {
     /* 0x00 */ u8 cmd;
-    /* 0x04 */ unk_D_8690A610* rotation;
+    /* 0x04 */ FogRect* rotation;
 } GeoCmd_AddNode; // size = 0x8
 
 typedef struct GeoCmd_SetCallback {

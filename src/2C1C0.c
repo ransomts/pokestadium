@@ -12,7 +12,7 @@
 u8 gBattleTimerLimits[3] = { 1, 15, 30 };
 static s16 gBattleToggleFlag = 0;
 
-void Team_ClearTrainerSlot(unk_D_800AE540_1194* arg0) {
+void Team_ClearTrainerSlot(BattlePokemon* arg0) {
     arg0->posX = 0;
     arg0->unk_01 = 0;
     arg0->posY = 0;
@@ -73,10 +73,10 @@ void Team_ResetOpponentHistory(void) {
     gSessionContext.unk_11F3 = 0;
 }
 
-unk_D_800AE540_0004* Trainer_Create(s32 arg0, s16 arg1, char* arg2, char* arg3) {
+BattleAI_TeamContext* Trainer_Create(s32 arg0, s16 arg1, char* arg2, char* arg3) {
     s32 i;
     unk_D_800AE540_0874* sp20;
-    unk_D_800AE540_0004* sp1C = NULL;
+    BattleAI_TeamContext* sp1C = NULL;
 
     for (i = 0; i < 4; i++) {
         if ((gSessionContext.unk_0004 + i)->unk_000 == 0) {
@@ -112,8 +112,8 @@ unk_D_800AE540_0004* Trainer_Create(s32 arg0, s16 arg1, char* arg2, char* arg3) 
     return sp1C;
 }
 
-void Team_AddTrainer(s32 arg0, unk_D_800AE540_0004* arg1) {
-    unk_D_800AE540_1194* temp_v0 = &gSessionContext.unk_1194[arg0];
+void Team_AddTrainer(s32 arg0, BattleAI_TeamContext* arg1) {
+    BattlePokemon* temp_v0 = &gSessionContext.unk_1194[arg0];
     u8 idx = temp_v0->unk_01;
 
     if (idx < 2) {
@@ -122,7 +122,7 @@ void Team_AddTrainer(s32 arg0, unk_D_800AE540_0004* arg1) {
     }
 }
 
-void Trainer_AddPokemon(unk_D_800AE540_0004* arg0, PokemonData* arg1) {
+void Trainer_AddPokemon(BattleAI_TeamContext* arg0, PokemonData* arg1) {
     unk_D_800AE540_0874* ptr = arg0->unk_214;
     s32 tmp = arg0->unk_002;
 
@@ -226,7 +226,7 @@ void Team_AddDeckTrainer(s32 arg0, s32 arg1, s32 arg2) {
     s32 i;
     PokemonData sp48;
     unk_func_80022C28_ret* temp_v0;
-    unk_D_800AE540_0004* temp_s4;
+    BattleAI_TeamContext* temp_s4;
     char sp34[11];
 
     GbSave_EnsureMainDataLoaded(arg2);
@@ -379,7 +379,7 @@ typedef struct unk_func_8002BFC4 {
 void Team_LoadPresetTrainer(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 i;
     s16 var_a1;
-    unk_D_800AE540_0004* temp_s3;
+    BattleAI_TeamContext* temp_s3;
     s32 var_s0;
     unk_func_8002BFC4_004* temp_s2;
     PokemonData* var_s1;

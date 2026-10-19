@@ -17,7 +17,7 @@
 #include "src/memory.h"
 
 static CameraStruct gBattleMainCamera;
-static unk_D_8690A610 gBattleColorRect;
+static FogRect gBattleColorRect;
 static GraphNode gBattleGraphNode0;
 static GraphNode gBattleGraphNode1;
 static GraphNode gBattleGraphNode2;
@@ -31,7 +31,7 @@ static GraphNode* gBattlePortraitGraph0;
 static GraphNode* gBattlePortraitGraph1;
 static FramebufferImage* gBattlePortraitFb0;
 static FramebufferImage* gBattlePortraitFb1;
-static unk_D_800AE540_1194* gBattlePokemonData;
+static BattlePokemon* gBattlePokemonData;
 static s32 gBattleSceneState;
 static s32 gPokemonSelectionIndex;
 static Color_RGBA8_u32 gBattleGlobalColor;
@@ -192,7 +192,7 @@ void Battle_DrawStageBackdrop(void) {
 
 void Battle_RenderActivePokemonThumbnail(GraphNode* arg0, FramebufferImage* arg1) {
     CameraStruct* sp2C = arg0->unk_0C;
-    unk_D_86002F34_00C_018 sp20;
+    CameraRect sp20;
 
     if (sp2C->posX.unk_01 & 0x10) {
         sp20 = sp2C->unk_18;
@@ -247,7 +247,7 @@ void Battle_FillActivePokemonThumbnail(GraphNode* arg0, FramebufferImage* arg1) 
     s32 temp_s2;
     s32 temp_s3;
     CameraStruct* temp_v1 = arg0->unk_0C;
-    unk_D_86002F34_00C_018* ptr = &arg0->unk_0C->unk_18;
+    CameraRect* ptr = &arg0->unk_0C->unk_18;
     s32 img;
 
     temp_s2 = ptr->x;
@@ -282,8 +282,8 @@ void Battle_ResetFaintBatches(void) {
     s32 i;
     s32 j;
     s32 x;
-    unk_D_800AE540_0004* temp_a2;
-    unk_D_800AE540_1194* ptr = &gBattlePokemonData[0];
+    BattleAI_TeamContext* temp_a2;
+    BattlePokemon* ptr = &gBattlePokemonData[0];
 
     for (i = 0; i < 2; i++, ptr++) {
         for (j = 0; j < ptr->unk_01; j++) {
@@ -300,8 +300,8 @@ void Battle_UpdateFaintBatches(void) {
     s32 j;
     s32 x;
     s32 var_v0 = 0;
-    unk_D_800AE540_0004* temp_a3;
-    unk_D_800AE540_1194* ptr = &gBattlePokemonData[0];
+    BattleAI_TeamContext* temp_a3;
+    BattlePokemon* ptr = &gBattlePokemonData[0];
 
     for (i = 0; i < 2; i++, ptr++) {
         for (j = 0; j < ptr->unk_01; j++) {
@@ -443,10 +443,10 @@ void Battle_CompleteRosterOrder(u8* arg0, s32 arg1) {
 }
 
 void Battle_SelectComRoster(void) {
-    unk_D_800AE540_0004* temp_s0;
-    unk_D_800AE540_0004* temp_s1;
+    BattleAI_TeamContext* temp_s0;
+    BattleAI_TeamContext* temp_s1;
     u8 sp48[8];
-    unk_D_800AE540_0004* temp_s2;
+    BattleAI_TeamContext* temp_s2;
     s32 i;
     s32 var_s1;
 
@@ -461,14 +461,14 @@ void Battle_SelectComRoster(void) {
             } else {
                 var_s1 = 3;
             }
-            func_843831A0(temp_s1, temp_s2, temp_s0, gSessionContext.unk_11EC, sp48, gSessionContext.unk_0001, var_s1);
+            BattleAI_InitializeBattle(temp_s1, temp_s2, temp_s0, gSessionContext.unk_11EC, sp48, gSessionContext.unk_0001, var_s1);
         } else {
             if (gSessionContext.unk_0001 == 8) {
                 var_s1 = temp_s0->unk_214->unk_002;
             } else {
                 var_s1 = 3;
             }
-            func_843831A0(temp_s1, NULL, temp_s0, temp_s0->unk_018 & 0xFF, sp48, gSessionContext.unk_0001, var_s1);
+            BattleAI_InitializeBattle(temp_s1, NULL, temp_s0, temp_s0->unk_018 & 0xFF, sp48, gSessionContext.unk_0001, var_s1);
         }
         Battle_CompleteRosterOrder(sp48, var_s1);
         temp_s0->unk_002 = var_s1;
@@ -479,8 +479,8 @@ void Battle_SelectComRoster(void) {
     }
 }
 
-void BattleScene_InitializeParticipantPresentation(unk_D_800AE540_1194* arg0, ModelData* arg1) {
-    unk_D_800AE540_0004* temp_v0 = arg0->unk_08[0];
+void BattleScene_InitializeParticipantPresentation(BattlePokemon* arg0, ModelData* arg1) {
+    BattleAI_TeamContext* temp_v0 = arg0->unk_08[0];
 
     arg0->unk_18 = arg1->unk_08->posX[0];
     arg0->posX |= 0xA0;

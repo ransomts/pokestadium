@@ -16814,3 +16814,61 @@ D_843890E8	gTrailDrawDL	w11		display list used to set up the rendering state for
 D_84389208	gRadialNodeDrawDL	w11		display list used for rendering the basic textured nodes (types 0 and 3)	applied@fa54a830
 D_84389290	gRadialNodeVertexDL	w11		display list used for rendering the vertex-colored nodes (types 1, 2, 4-8)	applied@fa54a830
 D_843892EC	gRadialNodeScaleTable	w11		table of scale factors used in the vertex offset calculations for node type 8	applied@fa54a830
+unk_D_8439E680_0014	WaterNode	w12		unk_D_8439E680_0014	applied@f776ada7
+D_843AB940	gOwnerLinkedFourStreams	w12		array of 4 ParticleEmitter structures used for the linked stream effect	applied@f776ada7
+D_843B8340	gTrail50EffectAltInstances	w12		unk_D_843ADA80:Trail50EffectAltInstance	applied@f776ada7
+D_84389C70	gWaterParticleDisplayList	w12		Gfx display list containing geometry mode and texture settings for water particles	applied@f776ada7
+D_843C49C0	gAuxiliaryEffectInstances	w12		unk_D_843C49C0:AuxEffectInstance	applied@f776ada7
+unk_D_843C49C0	AuxEffectInstance	w12		unk_D_843C49C0:AuxEffectInstance	applied@f776ada7
+func_84370E80	Battle_ExecuteMoveAnimation	w12		called in ProcessBattleTurn case 2 before move effect execution	applied@f776ada7
+func_8437114C	Battle_ApplyDamageAnimation	w12		called in ProcessBattleTurn case 6 after damage calculation and before HP update	applied@f776ada7
+func_84371080	Battle_PlayMoveSound	w12		called in ProcessBattleTurn case 6 alongside other move-completion functions	applied@f776ada7
+func_84371010	Battle_UpdateBattleLog	w12		called in ProcessBattleTurn case 6 after damage animation	applied@f776ada7
+func_8436FA80	Battle_ResetEntityState	w12		called in Battle_HandleFaint and BeginBattleForEntity to clear entity flags	applied@f776ada7
+D_8438AC60	gBattleRuleFlags	w12		checked throughout battle engine to determine if damage should be zeroed or rotation applied	applied@f776ada7
+D_843C6150	gAiRandomState	w12		used in BattleAI_RandomBelowInclusive and BattleAI_SeedRandomState as a PRNG state	applied@f776ada7
+D_843C6154	gAiRandomSeed	w12		used in BattleAI_RandomBelowInclusive and BattleAI_SeedRandomState as a PRNG state	applied@f776ada7
+D_843C613A	gAiCurrentDamage	w12		updated by BattleAI_CalcDamage and returned by BattleAI_ApplyMoveEffectDamageOverride	applied@f776ada7
+D_843C613C	gAiMovePower	w12		set to MoveBattleData->posY in BattleAI_PrepareDamageCalcState	applied@f776ada7
+D_843C613E	gAiAttackStat	w12		set to PokemonAudioInfo stats in BattleAI_PrepareDamageCalcState	applied@f776ada7
+D_843C6140	gAiDefenseStat	w12		set to PokemonAudioInfo stats in BattleAI_PrepareDamageCalcState	applied@f776ada7
+D_843C6142	gAiAttackModifier	w12		set to PokemonAudioInfo->unk_26 in BattleAI_PrepareDamageCalcState	applied@f776ada7
+D_843C6144	gAiIsCritical	w12		set to 1 or 0 in BattleAI_PredictDamage based on critical hit chance	applied@f776ada7
+D_843C6148	gAiCurrentMove	w12		stores MoveBattleData fields (posX, unk_01, posY, etc) in BattleAI_PrepareDamageCalcState	applied@f776ada7
+D_843C5550	gAiSpeciesList	w12		array of species IDs filled by BattleAI_AppendTrainerTeamSpecies	applied@f776ada7
+D_843C5310	gAiSpeciesAnimRecords	w12		array of records loaded via Battle_DmaLoadAnimRecord in BattleAI_AppendTrainerTeamSpecies	applied@f776ada7
+D_8438AFB4	gAiHeuristicMoveTable	w12		used in BattleAI_ClassifyMoveAvailability to check if a move is a valid heuristic match	applied@f776ada7
+D_8438AFEC	gAiPriorityMoveTable	w12		used in BattleAI_IsPriorityTableMove to check move priority	applied@f776ada7
+D_8438B084	gAiThresholdTable	w12		used in BattleAI_IsThresholdMet to compare values against a fixed table	applied@f776ada7
+unk_func_843794CC	MoveCandidateScore	w12		used in BattleAI_BuildMoveCandidateScores to store move ID, score, and power	applied@f776ada7
+D_843C60AC	gBattleAI_PlayerMon	w12		used as a base pointer for AI calculations, compared against D_843C60B0 (opponent)	applied@f776ada7
+D_843C60B0	gBattleAI_OpponentMon	w12		used in BattleAI_BuildMoveCandidateScores to distinguish between player and opponent AI	applied@f776ada7
+D_843C60B8	gBattleAI_DefaultMon	w12		used as a fallback pointer in BattleAI_ScoreAllCandidateMoves	applied@f776ada7
+D_843C60BC	gBattleAI_ForceRandom	w12		checked in BuildMoveCandidateScores to determine if random move selection logic should trigger	applied@f776ada7
+D_843C5564	gBattleAI_State	w12		global state containing flags and values used for scoring and move selection	applied@f776ada7
+D_843C5568	gBattleAI_ActivePokemon	w12		used to index into sActivePokemon to determine which Pokemon is currently acting	applied@f776ada7
+D_843C60A8	gBattleAI_TypeResistance	w12		passed to BattleAI_AllCandidatesResistType to check for type-based move filtering	applied@f776ada7
+D_843C60A4	gBattleAI_MonContext	w12		struct passed to func_8437B0CC containing Pokemon data and move candidate arrays	applied@f776ada7
+unk_D_843C60AC	BattleAI_MonData	w12		struct containing PokemonAudioInfo and AI-specific scoring flags	applied@f776ada7
+D_843C60C0	gBattleAI_MoveScores	w12		Array of structs storing move scores and metadata for the current AI decision.	applied@f776ada7
+D_843C60E8	gBattleAI_CurrentMoveCount	w12		Index/count used to track the number of moves being scored in gBattleAI_MoveScores.	applied@f776ada7
+func_8437FD74	BattleAI_SelectTeamOrder	w12		(arg0, order, scores, budget) iterates through team candidates, scores groups of 3, and selects a team order based on budget and type weaknesses	applied@f776ada7
+D_843C60B4	gBattleAIStatsContext	w12		(unk_1F, unk_28) used in BattleAI_ChooseMoveForCandidate and BattleAI_ComputeAttackTargetScore for stat scaling	applied@f776ada7
+unk_D_800AE540_0004	BattleAI_TeamContext	w12		passed to BattleAI_InitTeamContext; contains pointers to PokemonData and team size info	applied@f776ada7
+unk_D_843C60A4	BattleAI_TeamState	w12		used for gBattleAIPlayerTeam and gBattleAIEnemyTeam; contains Pokemon stats and move weights	applied@f776ada7
+unk_func_8437F85C_arg3	BattleAI_RankedGroup	w12		used in BattleAI_InsertRankedCandidateGroup to store triples of candidate indices	applied@f776ada7
+unk_func_8438220C	BattleAI_TargetScoreContext	w12		passed to BattleAI_ComputeAttackTargetScore; contains target indices and calculated weights	applied@f776ada7
+func_843831A0	BattleAI_InitializeBattle	w12		(arg3: configId, arg4: orderBuf, arg5: trainerId) initializes AI state, team contexts, and determines the battle order based on configuration D_843C60F0	applied@f776ada7
+D_843C60F0	gAiConfig	w12		(unk_D_843C60F0*) configuration table loaded by BattleAI_LoadConfiguration, contains behavior flags in unk_0C	applied@f776ada7
+D_843C6138	gAiLastMoveCategory	w12		(u8[2]) stores the category of the last move used by each trainer, checked in BattleAI_MatchesLastMoveCategory	applied@f776ada7
+D_8438AFB0	gAiTurnCounter	w12		(s32) incremented in BattleAI_ChooseAction when the active Pokemon changes, used to shift AI decision bias	applied@f776ada7
+unk_D_8690A610	FogRect	w12		used in GeoNode_CreateFog to define the fog area	applied@f776ada7
+unk_D_800AE540_1194	BattlePokemon	w12		struct containing pokemon data, used in gBattlePokemonData and Trainer_RequestPokeIcon	applied@f776ada7
+unk_D_86002F34_00C_018	CameraRect	w12		struct used for camera viewport dimensions (x, y, width, height)	applied@f776ada7
+D_84816420	gCurrentSessionContext	w12		SessionContext pointer used to track current session state in BattleMenu_InitOrderSelectPanels	applied@f776ada7
+D_84803788	gOrderSelectStrings	w12		String table 0x25 loaded during BattleMenu_RunOrderSelectScreen	applied@f776ada7
+unk_D_84B259A8	gBannerState	w12		passed to BattlePrep_InitBannerScene and BattlePrep_UpdateCarouselState	applied@f776ada7
+unk_D_84B259E8	gBadgeCarouselAnim	w12		passed to BattlePrep_InitBadgeCarouselScene and BattlePrep_UpdateBadgeCarousel	applied@f776ada7
+unk_D_84B25A58	gTeamIconsState	w12		passed to BattlePrepTeamIcons_Init, Load, and Update	applied@f776ada7
+unk_D_84B25A90	gBadgeAwardState	w12		passed to BattlePrepBadgeAward_Init and Update	applied@f776ada7
+unk_D_84B25AC0	gStarBurstState	w12		passed to BattlePrepStarBurst_Init and Update	applied@f776ada7

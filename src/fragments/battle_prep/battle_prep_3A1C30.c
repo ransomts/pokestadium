@@ -288,7 +288,7 @@ void BattlePrep_DrawCastleRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, unk_D_800AE540_1194* arg2) {
+void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, BattlePokemon* arg2) {
     static u8* sItemIconTextures[] = { D_3025950, D_30260A0, D_30267F0, D_3026F40 };
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -321,7 +321,7 @@ void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, unk_D_800AE540_1194* arg2) {
     Font_EndTexturedTextRendering();
 }
 
-void BattlePrep_SetStreakColor(unk_D_800AE540_1194* arg0) {
+void BattlePrep_SetStreakColor(BattlePokemon* arg0) {
     static s16 D_84B17618 = 0;
 
     if (arg0->unk_1C == 1) {

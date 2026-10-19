@@ -135,11 +135,11 @@ static u32 D_84B16A38[] = {
 };
 
 s32 BattlePrepBadgeAward_DrawBadgeIcon(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A90* temp_v0;
+    gBadgeAwardState* temp_v0;
     s32 tmp;
 
     if (arg0 == 5) {
-        temp_v0 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_v0 = (gBadgeAwardState*)gDefaultGraphRoot->unk_000.unk_14;
         tmp = (gDefaultGraphRoot->modelPhase - temp_v0->rotation->modelPhase) % 8;
 
         gDPPipeSync(gDisplayListHead++);
@@ -153,11 +153,11 @@ s32 BattlePrepBadgeAward_DrawBadgeIcon(s32 arg0, SimpleGfxNode* arg1) {
 }
 
 s32 BattlePrepBadgeAward_DrawBadgeIconAlt(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A90* temp_v0;
+    gBadgeAwardState* temp_v0;
     s32 tmp;
 
     if (arg0 == 5) {
-        temp_v0 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_v0 = (gBadgeAwardState*)gDefaultGraphRoot->unk_000.unk_14;
         tmp = (gDefaultGraphRoot->modelPhase - temp_v0->rotation->modelPhase) % 8;
 
         gDPPipeSync(gDisplayListHead++);
@@ -171,11 +171,11 @@ s32 BattlePrepBadgeAward_DrawBadgeIconAlt(s32 arg0, SimpleGfxNode* arg1) {
 }
 
 s32 BattlePrepBadgeAward_DrawSparkle(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A90* temp_a3;
+    gBadgeAwardState* temp_a3;
     s32 tmp;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A90*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_a3 = (gBadgeAwardState*)gDefaultGraphRoot->unk_000.unk_14;
         tmp = (gDefaultGraphRoot->modelPhase - temp_a3->rotation->modelPhase) - 0x10;
 
         if (temp_a3->unk_28[tmp] >= 0) {
@@ -220,7 +220,7 @@ s32 BattlePrepBadgeAward_DrawGlowFade(s32 arg0, SimpleGfxNode* arg1) {
 void func_84B0B054(void) {
 }
 
-void BattlePrepBadgeAward_SlideInStep(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_SlideInStep(gBadgeAwardState* arg0) {
     s32 i;
 
     if (arg0->unk_01 == 0) {
@@ -256,7 +256,7 @@ void BattlePrepBadgeAward_SlideInStep(unk_D_84B25A90* arg0) {
     }
 }
 
-void BattlePrepBadgeAward_RevealStep(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_RevealStep(gBadgeAwardState* arg0) {
     s16 i;
     s16 var_s3;
     s16 var_a0;
@@ -323,7 +323,7 @@ void BattlePrepBadgeAward_RevealStep(unk_D_84B25A90* arg0) {
     }
 }
 
-void BattlePrepBadgeAward_SpawnSparkleParticle(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
+void BattlePrepBadgeAward_SpawnSparkleParticle(gBadgeAwardState* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
     u16 sp26;
     f32 temp_fv0;
 
@@ -343,7 +343,7 @@ void BattlePrepBadgeAward_SpawnSparkleParticle(unk_D_84B25A90* arg0, Fragment2_1
     }
 }
 
-void BattlePrepBadgeAward_UpdateSparkleStep(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_UpdateSparkleStep(gBadgeAwardState* arg0) {
     s32 i;
     s32 temp_s0 = arg0->unk_01 % 4;
 
@@ -362,7 +362,7 @@ void BattlePrepBadgeAward_UpdateSparkleStep(unk_D_84B25A90* arg0) {
     arg0->unk_01 = (arg0->unk_01 + 1) % 12;
 }
 
-void BattlePrepBadgeAward_ScatterStep(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_ScatterStep(gBadgeAwardState* arg0) {
     static s16 D_84B16A64[] = { 0x300, 0x150, -0x150, -0x300, -0x300, -0x150, 0x150, 0x300 };
     static f32 D_84B16A74[] = { -3.0f, -2.0f, 2.0f, 3.0f, -3.0f, -2.0f, 2.0f, 3.0f };
 
@@ -395,7 +395,7 @@ void BattlePrepBadgeAward_ScatterStep(unk_D_84B25A90* arg0) {
     }
 }
 
-void BattlePrepBadgeAward_Update(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_Update(gBadgeAwardState* arg0) {
     switch (arg0->posX) {
         case 1:
             BattlePrepBadgeAward_SlideInStep(arg0);
@@ -415,7 +415,7 @@ void BattlePrepBadgeAward_Update(unk_D_84B25A90* arg0) {
     }
 }
 
-void BattlePrepBadgeAward_InitDisplayObjects(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1) {
+void BattlePrepBadgeAward_InitDisplayObjects(gBadgeAwardState* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
 
     arg0->rotation = arg1;
@@ -438,7 +438,7 @@ void BattlePrepBadgeAward_InitDisplayObjects(unk_D_84B25A90* arg0, Fragment2_1Gr
     Vec3f_SetComponentsDuplicate(&arg0->rotation[15].unk_024, 96.0f, -48.0f, -289.0f);
 }
 
-void BattlePrepBadgeAward_StartScatter(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_StartScatter(gBadgeAwardState* arg0) {
     s32 i;
 
     for (i = 16; i < 41; i++) {
@@ -449,7 +449,7 @@ void BattlePrepBadgeAward_StartScatter(unk_D_84B25A90* arg0) {
     arg0->posX = 4;
 }
 
-void BattlePrepBadgeAward_Init(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_Init(gBadgeAwardState* arg0) {
     MemoryBlock* temp_v0;
 
     arg0->posX = 0;

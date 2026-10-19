@@ -6,12 +6,12 @@
 
 extern u8 gBattleTimerLimits[3];
 
-void Team_ClearTrainerSlot(unk_D_800AE540_1194* arg0);
+void Team_ClearTrainerSlot(BattlePokemon* arg0);
 void Session_SetMode(s32 arg0, s32 arg1, s32 arg2);
 void Team_ResetOpponentHistory(void);
-unk_D_800AE540_0004* Trainer_Create(s32 arg0, s16 arg1, char* arg2, char* arg3);
-void Team_AddTrainer(s32 arg0, unk_D_800AE540_0004* arg1);
-void Trainer_AddPokemon(unk_D_800AE540_0004* arg0, PokemonData* arg1);
+BattleAI_TeamContext* Trainer_Create(s32 arg0, s16 arg1, char* arg2, char* arg3);
+void Team_AddTrainer(s32 arg0, BattleAI_TeamContext* arg1);
+void Trainer_AddPokemon(BattleAI_TeamContext* arg0, PokemonData* arg1);
 PokemonData* Pokemon_CreateDefault(PokemonData* arg0, u8 arg1, s16 arg2);
 void Session_SetupDemoBattle(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void Team_AddDeckTrainer(s32 arg0, s32 arg1, s32 arg2);

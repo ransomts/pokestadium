@@ -15,10 +15,10 @@ typedef struct unk_D_8690A610_018 {
     /* 0x04 */ Color_RGBA8_u32 rotation;
 } unk_D_8690A610_018; // size = 0x8
 
-typedef struct unk_D_8690A610 {
+typedef struct FogRect {
     /* 0x00 */ GraphRootNode posX;
     /* 0x18 */ unk_D_8690A610_018 unk_18;
-} unk_D_8690A610; // size = 0x20
+} FogRect; // size = 0x20
 
 void GeoNode_Init(GraphNode* arg0, u8 arg1);
 void GeoNode_SetCallback(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* arg2);
@@ -31,7 +31,7 @@ unk_D_86002F34_alt14* GeoNode_CreateOrtho(MainPoolState* arg0, unk_D_86002F34_al
 unk_D_86002F34_alt15* GeoNode_CreatePerspective(MainPoolState* arg0, unk_D_86002F34_alt15* arg1, s16 arg2);
 unk_D_86002F34_alt16* GeoNode_CreateBackground(MainPoolState* arg0, unk_D_86002F34_alt16* arg1, u8 arg2, u8 arg3, u8 arg4);
 unk_D_86002F34_alt17* GeoNode_CreateClearDepth(MainPoolState* arg0, unk_D_86002F34_alt17* arg1);
-unk_D_8690A610* GeoNode_CreateFog(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a);
+FogRect* GeoNode_CreateFog(s32 arg0, FogRect* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a);
 PillarGlowParams* GeoNode_CreateLight(MainPoolState* arg0, PillarGlowParams* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a);
 unk_D_86002F34_alt19* GeoNode_CreateAmbientLight(MainPoolState* arg0, unk_D_86002F34_alt19* arg1, u8 r, u8 g, u8 b);
 MiniHudMainGraph* GeoNode_CreateShadowContext(MainPoolState* arg0, MiniHudMainGraph* arg1, s32 arg2, 

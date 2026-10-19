@@ -73,7 +73,7 @@ typedef struct unk_D_800AE540_0874 {
     /* 0x224 */ char unk224[0x24];
 } unk_D_800AE540_0874; // size = 0x248
 
-typedef struct unk_D_800AE540_0004 {
+typedef struct BattleAI_TeamContext {
     /* 0x000 */ u8 unk_000;
     /* 0x001 */ u8 unk_001;
     /* 0x002 */ u8 unk_002;
@@ -84,14 +84,14 @@ typedef struct unk_D_800AE540_0004 {
     /* 0x01C */ PokemonData unk_01C[6];
     /* 0x214 */ unk_D_800AE540_0874* unk_214;
     /* 0x218 */ char unk218[0x4];
-} unk_D_800AE540_0004; // size = 0x21C
+} BattleAI_TeamContext; // size = 0x21C
 
-typedef struct unk_D_800AE540_1194 {
+typedef struct BattlePokemon {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ s16 posY;
-    /* 0x04 */ unk_D_800AE540_0004* rotation;
-    /* 0x08 */ unk_D_800AE540_0004* unk_08[2];
+    /* 0x04 */ BattleAI_TeamContext* rotation;
+    /* 0x08 */ BattleAI_TeamContext* unk_08[2];
     /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ unk_D_86002F58_004_000_004* unk_14;
     /* 0x18 */ unk_D_86002F58_004_000_004* unk_18;
@@ -100,16 +100,16 @@ typedef struct unk_D_800AE540_1194 {
     /* 0x1E */ u8 unk_1E;
     /* 0x20 */ s32 unk_20;
     /* 0x24 */ arg1_func_80019420* unk_24;
-} unk_D_800AE540_1194; // size = 0x28
+} BattlePokemon; // size = 0x28
 
 typedef struct SessionContext {
     /* 0x0000 */ s8 unk_0000;
     /* 0x0001 */ s8 unk_0001;
     /* 0x0002 */ s8 unk_0002;
     /* 0x0003 */ s8 unk_0003;
-    /* 0x0004 */ unk_D_800AE540_0004 unk_0004[4];
+    /* 0x0004 */ BattleAI_TeamContext unk_0004[4];
     /* 0x0874 */ unk_D_800AE540_0874 unk_0874[4];
-    /* 0x1194 */ unk_D_800AE540_1194 unk_1194[2];
+    /* 0x1194 */ BattlePokemon unk_1194[2];
     /* 0x11E4 */ u8 unk_11E4[2][4];
     /* 0x11EC */ u8 unk_11EC;
     /* 0x11EC */ u8 unk_11ED;
@@ -133,7 +133,7 @@ extern BinArchive* gBattleArchive;
 s32 Game_DoCopyProtection(s32 state);
 s32 Fragment_LoadAndCall(s32 arg0, u8* romStart, u8* romEnd, u32 arg3, u32 arg4);
 void Fragment_QueueCall(s32 arg0, u8* arg1, u8* arg2, s32 arg3, s32 arg4);
-unk_D_800AE540_0004* Trainer_GetSlots(void);
+BattleAI_TeamContext* Trainer_GetSlots(void);
 s32 GbSave_GetActivePort(void);
 void GbSave_SetActivePort(s32 arg0);
 void Controller_PollInputs(void);

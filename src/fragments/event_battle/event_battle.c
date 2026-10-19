@@ -1375,7 +1375,7 @@ void EventBattle_MarkPartnerPikachu(PokemonData* arg0, s16 arg1) {
 
 void EventBattle_BuildTrainerFromCard(unk_D_82305AF8* arg0) {
     s16 i;
-    unk_D_800AE540_0004* temp_s4 = Trainer_Create(arg0->unk_0001, arg0->unk_0012, arg0->unk_0014, Text_GetPlayerLabel(1));
+    BattleAI_TeamContext* temp_s4 = Trainer_Create(arg0->unk_0001, arg0->unk_0012, arg0->unk_0014, Text_GetPlayerLabel(1));
 
     for (i = 0; i < 6; i++) {
         EventBattle_MarkPartnerPikachu(&arg0->unk_0020[i], arg0->unk_0001);

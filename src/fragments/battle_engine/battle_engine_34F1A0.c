@@ -44,7 +44,7 @@ static Gfx gWaterSurfaceDL_Unlit[] = {
 };
 
 void Trail40Variant_ApplyRippleAtPoint(s16 arg0, s16 arg1) {
-    unk_D_8439E680_0014* var_s0 = &D_8439E680.unk_0014[0][0];
+    WaterNode* var_s0 = &D_8439E680.unk_0014[0][0];
     s32 i;
     s32 j;
 
@@ -70,7 +70,7 @@ void Trail40Variant_InitPool(s16 arg0) {
     s32 k;
     s16 tmp1;
     s16 tmp2;
-    unk_D_8439E680_0014* var_v0 = &D_8439E680.unk_0014[0][0];
+    WaterNode* var_v0 = &D_8439E680.unk_0014[0][0];
 
     D_8439E680.unk_0000 = 0;
     D_8439E680.unk_0002 = arg0;
@@ -221,7 +221,7 @@ void Trail40Variant_UpdateNodes(s32 arg0, s32 arg1) {
     }
 }
 
-void Trail40Variant_WriteVertex(unk_D_8439E680_0014* arg0, Vtx* arg1) {
+void Trail40Variant_WriteVertex(WaterNode* arg0, Vtx* arg1) {
     f32 r;
     f32 g;
     f32 b;
@@ -244,7 +244,7 @@ void Trail40Variant_WriteVertex(unk_D_8439E680_0014* arg0, Vtx* arg1) {
 }
 
 s32 Trail40Variant_AdvanceTimer(void) {
-    unk_D_8439E680_0014* var_s1;
+    WaterNode* var_s1;
     s32 i;
     s32 j;
 
@@ -341,7 +341,7 @@ void Trail40Variant_SetupCameraTransform(void) {
 Gfx* Trail40Variant_BuildGfx(Gfx* arg0) {
     s32 i;
     s32 j;
-    unk_D_8439E680_0014* var_s2;
+    WaterNode* var_s2;
     s32 var_s4;
     Vtx* vtx;
     s32 idx;

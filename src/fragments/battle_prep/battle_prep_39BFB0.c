@@ -366,11 +366,11 @@ static u32 gHPBarNodeDataAlt2[] = {
 };
 
 s32 BattlePrepTeamIcons_DrawActiveTeamBadge(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A58* temp_v1;
+    gTeamIconsState* temp_v1;
     u8* var_a3;
 
     if (arg0 == 5) {
-        temp_v1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_v1 = (gTeamIconsState*)gDefaultGraphRoot->unk_000.unk_14;
         if (temp_v1->rotation->modelPhase == gDefaultGraphRoot->modelPhase) {
             var_a3 = temp_v1->unk_24->img_p;
         } else {
@@ -387,12 +387,12 @@ s32 BattlePrepTeamIcons_DrawActiveTeamBadge(s32 arg0, SimpleGfxNode* arg1) {
 }
 
 s32 BattlePrepTeamIcons_DrawIconSingle(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A58* temp_t1;
+    gTeamIconsState* temp_t1;
     s32 temp_t2;
     u8* var_a3;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_t1 = (gTeamIconsState*)gDefaultGraphRoot->unk_000.unk_14;
         temp_t2 = gDefaultGraphRoot->modelPhase - temp_t1->rotation->modelPhase;
         if (temp_t2 < 4) {
             var_a3 = D_3006000;
@@ -417,12 +417,12 @@ s32 BattlePrepTeamIcons_DrawIconSingle(s32 arg0, SimpleGfxNode* arg1) {
 }
 
 s32 BattlePrepTeamIcons_DrawIconDouble(s32 arg0, SimpleGfxNode* arg1) {
-    unk_D_84B25A58* temp_a3;
+    gTeamIconsState* temp_a3;
     s32 temp_t0;
     u8* var_a0;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_a3 = (gTeamIconsState*)gDefaultGraphRoot->unk_000.unk_14;
         temp_t0 = (gDefaultGraphRoot->modelPhase - temp_a3->rotation->modelPhase) % 8;
         if (temp_t0 < 4) {
             var_a0 = D_3006000;
@@ -442,11 +442,11 @@ s32 BattlePrepTeamIcons_DrawIconDouble(s32 arg0, SimpleGfxNode* arg1) {
 
 s32 BattlePrepTeamIcons_DrawBadgeIconSingle(s32 arg0, SimpleGfxNode* arg1) {
     u8* var_a3;
-    unk_D_84B25A58* temp_t1;
+    gTeamIconsState* temp_t1;
     s32 temp_a1;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_t1 = (gTeamIconsState*)gDefaultGraphRoot->unk_000.unk_14;
         temp_a1 = gDefaultGraphRoot->modelPhase - temp_t1->rotation->modelPhase;
 
         if (temp_a1 >= 0x10) {
@@ -479,11 +479,11 @@ s32 BattlePrepTeamIcons_DrawBadgeIconSingle(s32 arg0, SimpleGfxNode* arg1) {
 
 s32 BattlePrepTeamIcons_DrawBadgeIconDouble(s32 arg0, SimpleGfxNode* arg1) {
     s32 temp_a3;
-    unk_D_84B25A58* temp_t1;
+    gTeamIconsState* temp_t1;
     u8* var_a0;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)gDefaultGraphRoot->unk_000.unk_14;
+        temp_t1 = (gTeamIconsState*)gDefaultGraphRoot->unk_000.unk_14;
         temp_a3 = gDefaultGraphRoot->modelPhase - temp_t1->rotation->modelPhase;
 
         if (temp_a3 >= 0x10) {
@@ -508,11 +508,11 @@ s32 BattlePrepTeamIcons_DrawBadgeIconDouble(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void BattlePrepTeamIcons_DrawHpBarsSingle(unk_D_84B25A58* arg0, s32 arg1) {
+void BattlePrepTeamIcons_DrawHpBarsSingle(gTeamIconsState* arg0, s32 arg1) {
     s32 i;
     s32 j;
     UNUSED s32 pad;
-    unk_D_800AE540_0004* temp_s5;
+    BattleAI_TeamContext* temp_s5;
     s32 temp_lo;
     s32 var_s0;
 
@@ -531,13 +531,13 @@ void BattlePrepTeamIcons_DrawHpBarsSingle(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_DrawHpBarsDouble(unk_D_84B25A58* arg0, s32 arg1) {
+void BattlePrepTeamIcons_DrawHpBarsDouble(gTeamIconsState* arg0, s32 arg1) {
     s32 i;
     s32 j;
     s32 x;
     s32 temp_lo;
     s32 var_s0;
-    unk_D_800AE540_0004* temp_s5;
+    BattleAI_TeamContext* temp_s5;
 
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 2; j++) {
@@ -558,9 +558,9 @@ void BattlePrepTeamIcons_DrawHpBarsDouble(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_MarkFaintedSingle(unk_D_84B25A58* arg0, s32 arg1) {
+void BattlePrepTeamIcons_MarkFaintedSingle(gTeamIconsState* arg0, s32 arg1) {
     UNUSED s32 pad;
-    unk_D_800AE540_0004* temp_s5;
+    BattleAI_TeamContext* temp_s5;
     s32 temp_v0;
     s32 i;
     s32 j;
@@ -578,11 +578,11 @@ void BattlePrepTeamIcons_MarkFaintedSingle(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_MarkFaintedDouble(unk_D_84B25A58* arg0, s32 arg1) {
+void BattlePrepTeamIcons_MarkFaintedDouble(gTeamIconsState* arg0, s32 arg1) {
     s32 i;
     s32 j;
     s32 x;
-    unk_D_800AE540_0004* temp_s5;
+    BattleAI_TeamContext* temp_s5;
     s32 temp_v0;
 
     for (i = 0; i < 2; i++) {
@@ -602,7 +602,7 @@ void BattlePrepTeamIcons_MarkFaintedDouble(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_InitDisplayObjectsSingleVisible(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_InitDisplayObjectsSingleVisible(gTeamIconsState* arg0) {
     s32 i;
 
     for (i = 1; i < 7; i++) {
@@ -621,7 +621,7 @@ void BattlePrepTeamIcons_InitDisplayObjectsSingleVisible(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_InitDisplayObjectsSingleHidden(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_InitDisplayObjectsSingleHidden(gTeamIconsState* arg0) {
     s32 i;
 
     for (i = 1; i < 7; i++) {
@@ -639,7 +639,7 @@ void BattlePrepTeamIcons_InitDisplayObjectsSingleHidden(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_InitDisplayObjectsDoubleVisible(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_InitDisplayObjectsDoubleVisible(gTeamIconsState* arg0) {
     s32 i;
 
     for (i = 1; i < 4; i++) {
@@ -669,7 +669,7 @@ void BattlePrepTeamIcons_InitDisplayObjectsDoubleVisible(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_InitDisplayObjectsDoubleHidden(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_InitDisplayObjectsDoubleHidden(gTeamIconsState* arg0) {
     s32 i;
 
     for (i = 1; i < 4; i++) {
@@ -700,7 +700,7 @@ void BattlePrepTeamIcons_InitDisplayObjectsDoubleHidden(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_RevealStepSingle(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_RevealStepSingle(gTeamIconsState* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == 0) {
@@ -720,7 +720,7 @@ void BattlePrepTeamIcons_RevealStepSingle(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_RevealStepDouble(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_RevealStepDouble(gTeamIconsState* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == 0) {
@@ -743,7 +743,7 @@ void BattlePrepTeamIcons_RevealStepDouble(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_HpDrainStepSingleNTSC(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_HpDrainStepSingleNTSC(gTeamIconsState* arg0, s16 arg1) {
     if (arg1 == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000A, 0, 0);
     }
@@ -757,7 +757,7 @@ void BattlePrepTeamIcons_HpDrainStepSingleNTSC(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_HpDrainStepDoubleNTSC(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_HpDrainStepDoubleNTSC(gTeamIconsState* arg0, s16 arg1) {
     if (arg1 == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000A, 0, 0);
     }
@@ -771,7 +771,7 @@ void BattlePrepTeamIcons_HpDrainStepDoubleNTSC(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_HpDrainStepSinglePAL(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_HpDrainStepSinglePAL(gTeamIconsState* arg0, s16 arg1) {
     if (arg1 == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000A, 0, 0);
     }
@@ -785,7 +785,7 @@ void BattlePrepTeamIcons_HpDrainStepSinglePAL(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_HpDrainStepDoublePAL(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_HpDrainStepDoublePAL(gTeamIconsState* arg0, s16 arg1) {
     if (arg1 == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000A, 0, 0);
     }
@@ -799,7 +799,7 @@ void BattlePrepTeamIcons_HpDrainStepDoublePAL(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_FinalRevealSingle(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_FinalRevealSingle(gTeamIconsState* arg0, s16 arg1) {
     s32 i;
     PokemonData* temp_s5 = gSessionContext.unk_1194[0].unk_08[0]->unk_01C;
     PokemonData* temp_s6 = gSessionContext.unk_1194[1].unk_08[0]->unk_01C;
@@ -849,7 +849,7 @@ void BattlePrepTeamIcons_FinalRevealSingle(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_FinalRevealDouble(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_FinalRevealDouble(gTeamIconsState* arg0, s16 arg1) {
     s32 i;
     PokemonData* temp_s0 = &gSessionContext.unk_1194[0].unk_08[0]->unk_01C[0];
     PokemonData* var_a3 = NULL;
@@ -949,7 +949,7 @@ void BattlePrepTeamIcons_FinalRevealDouble(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_UpdateStep(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_UpdateStep(gTeamIconsState* arg0) {
     if (osTvType == OS_TV_PAL) {
         if (arg0->posY == 1) {
             if (arg0->unk_01 >= 0) {
@@ -1015,7 +1015,7 @@ void BattlePrepTeamIcons_UpdateStep(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_UpdateLoadingStep(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_UpdateLoadingStep(gTeamIconsState* arg0) {
     PokeIcon_ProcessNextSlot(arg0->unk_1C, 0);
 
     arg0->unk_01++;
@@ -1025,7 +1025,7 @@ void BattlePrepTeamIcons_UpdateLoadingStep(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_Update(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_Update(gTeamIconsState* arg0) {
     switch (arg0->posX) {
         case 1:
             BattlePrepTeamIcons_UpdateLoadingStep(arg0);
@@ -1037,7 +1037,7 @@ void BattlePrepTeamIcons_Update(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_LoadDexIdsSingle(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_LoadDexIdsSingle(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
     AssetManager* temp_s0;
@@ -1054,7 +1054,7 @@ void BattlePrepTeamIcons_LoadDexIdsSingle(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_LoadDexIdsDouble(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_LoadDexIdsDouble(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
     AssetManager* temp_s0;
@@ -1083,7 +1083,7 @@ void BattlePrepTeamIcons_LoadDexIdsDouble(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_Load(unk_D_84B25A58* arg0, BinArchive* arg1) {
+void BattlePrepTeamIcons_Load(gTeamIconsState* arg0, BinArchive* arg1) {
     u8* sp24 = BinArchive_GetFile(arg1, gSessionContext.unk_1194[0].unk_08[0]->unk_214->unk_003);
     u8* sp20 = BinArchive_GetFile(arg1, gSessionContext.unk_1194[1].unk_08[0]->unk_214->unk_003);
 
@@ -1102,7 +1102,7 @@ void BattlePrepTeamIcons_Load(unk_D_84B25A58* arg0, BinArchive* arg1) {
     arg0->posX = 1;
 }
 
-s32 BattlePrepTeamIcons_InitDisplayObjects(unk_D_84B25A58* arg0, Fragment2_1GraphNode* arg1) {
+s32 BattlePrepTeamIcons_InitDisplayObjects(gTeamIconsState* arg0, Fragment2_1GraphNode* arg1) {
     if (arg0->posX == 2) {
         arg0->posX = 3;
         arg0->rotation = arg1;
@@ -1127,7 +1127,7 @@ s32 BattlePrepTeamIcons_InitDisplayObjects(unk_D_84B25A58* arg0, Fragment2_1Grap
     return arg0->posX == 3;
 }
 
-void BattlePrepTeamIcons_LoadIconTexturesSingle(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_LoadIconTexturesSingle(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
 
@@ -1140,7 +1140,7 @@ void BattlePrepTeamIcons_LoadIconTexturesSingle(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_LoadIconTexturesDouble(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_LoadIconTexturesDouble(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
 
@@ -1165,7 +1165,7 @@ void BattlePrepTeamIcons_LoadIconTexturesDouble(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_Init(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_Init(gTeamIconsState* arg0) {
     MemoryBlock* sp2C;
     s32 i;
 

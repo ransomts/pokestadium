@@ -4,7 +4,7 @@
 #include "30640.h"
 #include "32D10.h"
 
-static unk_D_843C49C0 D_843C49C0[2];
+static AuxEffectInstance gAuxiliaryEffectInstances[2];
 
 static Vtx gParticleQuadVertices[] = {
     VTX(-10, -10, 0, 0, 0, 0x88, 0x00, 0x00, 0x80),
@@ -119,17 +119,17 @@ void AuxiliaryEffect_Init(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        D_843C49C0[i].unk_000 = 0;
+        gAuxiliaryEffectInstances[i].unk_000 = 0;
     }
 }
 
 s16 AuxiliaryEffect_Alloc(void) {
-    unk_D_843C49C0* var_a0;
+    AuxEffectInstance* var_a0;
     Particle* var_v1;
     s32 i;
     s32 j;
 
-    for (i = 0, var_a0 = &D_843C49C0[0]; i < 2; i++, var_a0++) {
+    for (i = 0, var_a0 = &gAuxiliaryEffectInstances[0]; i < 2; i++, var_a0++) {
         if (var_a0->unk_000 == 0) {
             var_v1 = &var_a0->unk_004[0];
             for (j = 0; j < 20; j++, var_v1++) {
@@ -149,7 +149,7 @@ s16 AuxiliaryEffect_Alloc(void) {
 
 void AuxiliaryEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32 arg5) {
     s32 i;
-    unk_D_843C49C0* temp_v0 = &D_843C49C0[arg0];
+    AuxEffectInstance* temp_v0 = &gAuxiliaryEffectInstances[arg0];
     Particle* var_v1;
 
     if (temp_v0->unk_000 != 0) {
@@ -170,7 +170,7 @@ void AuxiliaryEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32
 }
 
 void AuxiliaryEffect_Update(s16 arg0) {
-    unk_D_843C49C0* temp_v0 = &D_843C49C0[arg0];
+    AuxEffectInstance* temp_v0 = &gAuxiliaryEffectInstances[arg0];
     Particle* var_v1;
     s32 i;
 
@@ -219,7 +219,7 @@ Gfx* AuxiliaryEffect_DrawOne(Gfx* arg0, Particle* arg1, MtxF* arg2) {
 
 Gfx* AuxiliaryEffect_Draw(s16 arg0, Gfx* arg1) {
     UNUSED s32 pad;
-    unk_D_843C49C0* temp_s3 = &D_843C49C0[arg0];
+    AuxEffectInstance* temp_s3 = &gAuxiliaryEffectInstances[arg0];
     Particle* var_s0;
     s32 i;
     MtxF sp78;

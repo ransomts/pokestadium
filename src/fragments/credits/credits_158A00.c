@@ -24,7 +24,7 @@ typedef struct StageFadePalette {
     /* 0x03 */ Color_RGB8 unk_03[4];
 } StageFadePalette; // size = 0x10
 
-static unk_D_8690A610 gStageFragmentState;
+static FogRect gStageFragmentState;
 static struct GraphNode w27;
 static struct GraphNode gStageOverlayNode;
 static struct GraphNode gStageForegroundNode;

@@ -173,10 +173,10 @@ void Model_ComputeSizeVariantFromRecord(arg1_func_80010CA8* arg0, unk_func_8001C
     Model_ComputeSizeVariant(arg0, &stack);
 }
 
-void Trainer_RequestPokeIcon(unk_D_800AE540_1194* arg0) {
+void Trainer_RequestPokeIcon(BattlePokemon* arg0) {
     arg1_func_80010CA8 sp2C;
     s16 sp2A;
-    unk_D_800AE540_0004* temp_a1;
+    BattleAI_TeamContext* temp_a1;
 
     sp2A = arg0->posY;
     sp2C.raw = 0;
