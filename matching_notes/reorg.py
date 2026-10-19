@@ -246,8 +246,12 @@ def main():
     ours = parse_yaml(OUR_YAML)
     theirs = parse_yaml(os.path.join(HIPPO, "yamls/us/rom.yaml"))
     if args.cmd == "plan":
-        groups = [args.group] if args.group else (
-            [s["name"][len("fragment"):] for s in ours if s["name"].startswith("fragment")] + ["main"])
+        ids = []
+        for s in ours:
+            m = re.fullmatch(r"fragment(\d+)(?:_.*)?", s["name"])
+            if m and int(m.group(1)) not in ids:
+                ids.append(int(m.group(1)))
+        groups = [args.group] if args.group else [str(i) for i in sorted(ids)] + ["main"]
         for g in groups:
             seg_ren, sub_ren, problems = join_group(ours, theirs, g)
             if sub_ren is None:
