@@ -288,3 +288,34 @@ commit messages count only this run's rows. Revert --batch wN must never be used
 colliding tag (it would invert old+new rows together).
 
 RELAUNCH: `run 6 8` (queue waves 6-13, batches w10-w17) - same gemma-4-31b driver.
+
+## Server-restart recovery (2026-10-19 late evening)
+Waves w10-w15 landed (66+71+58+13+113 = 321 symbols; de0c75fc..c54c53b4). The opencode
+server restarted MID-w16-apply: rewrite on disk, gate interrupted, rows pending, no
+auto-revert (that only fires on gate FAILURE). Recovery: git checkout the 28 dirty
+src/include/linker files (asm was clean; matching_notes kept), relaunch `run 12 2` -
+the driver's idempotent w16 redo reuses all agent outputs. LESSON: a killed apply leaves
+half-state; the re-run path is the recovery path.
+
+## Statics address-join EXECUTED (2026-10-19 late evening) - SMALL yield, plan corrected
+michiiik build SOLVED: no toolchain pin. Their tree builds green with our IDO 5.3/7.1 +
+binutils 2.42 + our .venv - the earlier failure was a missing `make extract` step, not
+a version mismatch (first attempt skipped it; with extract: full build, ROM OK, ~25 min
+on a /scratch/tsranso/hippo Slurm job - build off-node, never during gates).
+THE JOIN RESULT KILLS THE BIG-LEVER THEORY: of our 1,408 placeholder map locals,
+1,030 are PLACEHOLDER-NAMED IN THEIR TREE TOO (their statics tail is as unrenamed as
+ours; the "_empty" stub style and func_/D_ placeholders are theirs - we adopted them in
+ma1). Join yield: 18 clean deterministic rows, staged at scratch/hs1_rows.tsv
+(ParticleGfx_NoopStub3-9, Minigame2SampleViewer_*, GalleryDebugger_*CPak, battle nops,
+JigglypuffGame_UpdateEffects). Apply as gated batch hs1 when the waves drain.
+=> the statics tail is LLM-wave territory (as w5-w17 have been doing); michiiik has
+nothing more to give us for statics. Tool: matching_notes/rename_hippo_statics_gen.py.
+
+## Tier C status (2026-10-19 late evening)
+Field cross-ref via michiiik (rename_hippo_field_gen.py): DEAD END - their headers are
+also unk_-dominated (deterministic join yields ~12 rows, not worth a batch alone; could
+fold into hs1). Real path = smart-subagent analysis: inventory regenerated post-reorg
+(258 safe fields / 55 typedefs, matching_notes/rename_fields_inventory.tsv), 11
+subagents launched over all 26 headers (scratch/tierc/*.tsv, batch c3). First result:
+fragment61 22/22 fields proposed with evidence (RegisteredTeamMenu cursor/repeat/paging
+semantics, deck-card ring cache, carousel). Apply gated after w17.
