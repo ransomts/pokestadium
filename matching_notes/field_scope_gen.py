@@ -54,11 +54,83 @@ def main():
         for tn in types & idents:
             type_files[tn].add(rel)
 
+    # include-transitive reach: this codebase's .c files pass structs via
+    # parameters and never name the typedef - the type appears only in the
+    # headers they include (the gsm_decoder lesson). A file REACHES a type if
+    # it or its transitive includes declare/mention it.
+    INC = re.compile(r'#include\s+"([^"]+)"')
+
+    def resolve(rel, inc):
+        # resolve relative to the includer's dir (flat style), then the roots
+        base = os.path.dirname(rel)
+        cands = [os.path.normpath(os.path.join(base, inc))]
+        for root in ("", "src/", "include/"):
+            cands.append(os.path.normpath(os.path.join(root, inc)))
+        for c in cands:
+            if c in idents_per_file:
+                return c
+        for c in cands:
+            if os.path.exists(os.path.join(REPO, c)):
+                return os.path.relpath(os.path.join(REPO, c), REPO)
+        return None
+
+    direct = {}
+    texts = {}
+    for rel in idents_per_file:
+        if rel not in texts:
+            texts[rel] = open(os.path.join(REPO, rel), errors="replace").read()
+    for rel in idents_per_file:
+        incs = set()
+        for m in INC.finditer(texts[rel]):
+            r = resolve(rel, m.group(1))
+            if r and r != rel:
+                incs.add(r)
+        direct[rel] = incs
+
+    def closure(rel, _cache={}):
+        if rel in _cache:
+            return _cache[rel]
+        seen = {rel}
+        stack = list(direct.get(rel, ()))
+        while stack:
+            h = stack.pop()
+            if h in seen:
+                continue
+            seen.add(h)
+            stack.extend(direct.get(h, ()))
+        _cache[rel] = seen
+        return seen
+
+    type_reach = defaultdict(set)  # typedef -> files whose closure mentions it
+    for rel in idents_per_file:
+        cl = closure(rel)
+        cl_texts = texts[rel] + "".join(texts.get(h, "") for h in cl if h != rel)
+        cl_idents = set(IDENT.findall(cl_texts))
+        for tn in types & cl_idents:
+            type_reach[tn].add(rel)
+
     scopes = {}
+    parked_unknown_owner = []
+    # users(X): files with `.X`/`->X` accesses - the owner is knowable only if
+    # the file's include-closure reaches EXACTLY ONE of the sharing typedefs
+    user_pat = {fn: re.compile(r"[.>]" + re.escape(fn) + r"(?![A-Za-z0-9_])")
+                for fn in shared}
+    name_users = {fn: {rel for rel in idents_per_file
+                       if user_pat[fn].search(texts[rel])}
+                  for fn in shared}
     for fname, locs in sorted(shared.items()):
+        owners = {tn for tn, _ in locs}
+        unknown = set()
+        for uf in name_users[fname]:
+            hits = [tn for tn in owners if uf in type_reach.get(tn, set())]
+            if len(hits) != 1:
+                unknown.add(uf)
+        if unknown:
+            parked_unknown_owner.append(fname)
+            continue
         per_type = defaultdict(set)
         for tn, _ in locs:
-            per_type[tn] |= type_files.get(tn, set())
+            per_type[tn] |= type_reach.get(tn, set())
         sets = list(per_type.values())
         if all(not (a & b) for i, a in enumerate(sets) for b in sets[i + 1:]):
             for tn, fs in per_type.items():
@@ -69,6 +141,7 @@ def main():
             f.write(f"{tn}\t{','.join(scopes[tn])}\n")
     n_fields = sum(len(v) for v in shared.values())
     print(f"shared unk_ names: {len(shared)} ({n_fields} fields); "
+          f"parked (unknown owner): {len(parked_unknown_owner)}; "
           f"scopes written for {len(scopes)} struct types -> {OUT}")
 
 
