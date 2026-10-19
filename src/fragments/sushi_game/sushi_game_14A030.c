@@ -24,7 +24,7 @@ static f32 gSushiHeightOffset = 10.0f;
 s32 gSushiOrderIndices[] = {
     8, 5, 2, 3, 6, 7, 4, 1,
 };
-unk_D_86807180 gSushiItemDefs[9] = {
+SushiItemDef gSushiItemDefs[9] = {
     {
         0x00000000,
         NULL,
@@ -147,7 +147,7 @@ static Vtx gSushiBillboardVtx[] = {
 static s32 gSushiFirstSpawnFlag;
 static f32 gSushiRotationAngle;
 unk_D_868084D8 gSushiInstances[12];
-static unk_D_86808808 gSushiSpawners[12];
+static SushiSpawner gSushiSpawners[12];
 static s32 gSushiSpawnMode;
 static s16 gSushiTotalWeight;
 static s16 gSushiActiveCounts[9];
@@ -167,7 +167,7 @@ void SushiGame_GetConveyorSlotPosition(s16 arg0, Vec3f* arg1) {
 
 f32 SushiGame_ComputePlateDistance(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
     f32 var_fv1;
-    unk_D_868084D8_038* ptr = arg0->unk_38;
+    SushiPlateNode* ptr = arg0->unk_38;
 
     var_fv1 = (0.5f * gSushiHeightOffset) + gSushiRotationAngle + (30.0f * ptr->unk_000);
     if (var_fv1 >= 360.0f) {
@@ -180,8 +180,8 @@ f32 SushiGame_ComputePlateDistance(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg
     return SQ(arg2->x) + SQ(arg2->z);
 }
 
-void SushiGame_InitConveyorCup(unk_D_86808808* arg0, s32 arg1) {
-    unk_D_86808808_018* sp1C = &arg0->unk_018;
+void SushiGame_InitConveyorCup(SushiSpawner* arg0, s32 arg1) {
+    SushiSpawnerNode* sp1C = &arg0->unk_018;
 
     arg0->unk_000 = arg1;
     arg0->unk_002 = 0;
@@ -196,7 +196,7 @@ void SushiGame_InitConveyorCup(unk_D_86808808* arg0, s32 arg1) {
 }
 
 void SushiGame_SetPlateSpawnPosition(unk_D_868084D8* arg0) {
-    unk_D_868084D8_038* ptr;
+    SushiPlateNode* ptr;
 
     switch (arg0->unk_10) {
         case 0:
@@ -261,7 +261,7 @@ s32 SushiGame_PickRandomSushiType(void) {
     return sp1C;
 }
 
-void SushiGame_InitPlate(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038* arg3) {
+void SushiGame_InitPlate(s32 arg0, unk_D_868084D8* arg1, s32 arg2, SushiPlateNode* arg3) {
     if (arg0 == 0) {
         if (arg2 != -1) {
             arg1->posX = arg2;
@@ -326,7 +326,7 @@ unk_D_868084D8* SushiGame_FindFreePlate(void) {
     return var_v1;
 }
 
-void SushiGame_UpdateConveyorCup(unk_D_86808808* arg0) {
+void SushiGame_UpdateConveyorCup(SushiSpawner* arg0) {
     unk_D_868084D8* sp24;
 
     SushiGame_GetConveyorSlotPosition(arg0->unk_000, &arg0->unk_00C);
@@ -438,8 +438,8 @@ void SushiGame_UpdatePlate(unk_D_868084D8* arg0) {
 void func_86806860(void) {
 }
 
-void SushiGame_SetPlateState(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2) {
-    unk_D_868084D8_038* temp_v0;
+void SushiGame_SetPlateState(unk_D_868084D8* arg0, s32 arg1, SushiPlayerEntity* arg2) {
+    SushiPlateNode* temp_v0;
 
     arg0->unk_10 = arg1;
 
@@ -482,7 +482,7 @@ void SushiGame_SetGamePhase(s32 arg0) {
 
 void SushiGame_ApplyGamePhase(void) {
     s32 i;
-    unk_D_86808808* var_v1;
+    SushiSpawner* var_v1;
 
     switch (gSushiSpawnMode) {
         case 1:
@@ -506,7 +506,7 @@ void SushiGame_InitConveyorBelt(void) {
     MainPoolState* temp_s2;
     unk_D_868084D8* var_s0;
     SimpleGfxNode* temp_a1;
-    unk_D_86808808* ptr;
+    SushiSpawner* ptr;
     Gfx* gfx = gSushiEmptyDL;
 
     gSushiRotationAngle = 0.0f;
@@ -538,7 +538,7 @@ void SushiGame_InitConveyorBelt(void) {
 }
 
 void SushiGame_UpdateConveyorBelt(void) {
-    unk_D_86808808* ptr;
+    SushiSpawner* ptr;
     unk_D_868084D8* var_s0;
     s32 i;
 

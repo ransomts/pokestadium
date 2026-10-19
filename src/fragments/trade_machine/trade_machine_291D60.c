@@ -487,9 +487,9 @@ void Trade_DrawSaveSeqBoxPanels(RentalMenuState* arg0) {
             Font_SetActive(8, 0);
             Font_Printf(var_s0->posX + 0x62, var_s0->posY + 0x46, Trade_GetSpeciesName(temp_s3->posX));
             Font_SetActive(8, 0);
-            Font_Printf(var_s0->posX + 0x10, var_s0->posY + 0x5E, Text_GetString(NULL, 0, D_82F13B70, 0x14));
+            Font_Printf(var_s0->posX + 0x10, var_s0->posY + 0x5E, Text_GetString(NULL, 0, gTradeMenuStrings, 0x14));
             Font_Printf(var_s0->posX + 0x46, var_s0->posY + 0x5E, "/%s", temp_s3->unk_30);
-            Font_Printf(var_s0->posX + 0x10, var_s0->posY + 0x74, Text_GetString(NULL, 0, D_82F13B70, 0x15));
+            Font_Printf(var_s0->posX + 0x10, var_s0->posY + 0x74, Text_GetString(NULL, 0, gTradeMenuStrings, 0x15));
             Font_Printf(var_s0->posX + 0x46, var_s0->posY + 0x74, "/%s", temp_s3->unk_3B);
             Font_Printf(var_s0->posX + 0x10, var_s0->posY + 0x8A, "ID%05d", temp_s3->unk_0E);
         }
@@ -551,21 +551,21 @@ void Trade_DrawSaveSeqMenuPanel(RentalMenuState* arg0) {
         if (arg0->rotation & 1) {
             char* sp54[3];
             for (i = 0; i < 3; i++) {
-                sp54[0] = Text_GetString(NULL, 0, D_82F13B70, 0x1A);
-                sp54[1] = Text_GetString(NULL, 0, D_82F13B70, 0x1B);
-                sp54[2] = Text_GetString(NULL, 0, D_82F13B70, 0x1C);
+                sp54[0] = Text_GetString(NULL, 0, gTradeMenuStrings, 0x1A);
+                sp54[1] = Text_GetString(NULL, 0, gTradeMenuStrings, 0x1B);
+                sp54[2] = Text_GetString(NULL, 0, gTradeMenuStrings, 0x1C);
                 Font_Printf(var_s4->posX + 0x38, var_s4->posY + i * 0x1C + 0x10, sp54[i]);
             }
         } else {
-            char* temp_v0 = Text_GetString(NULL, 0, D_82F13B70, 0x16);
+            char* temp_v0 = Text_GetString(NULL, 0, gTradeMenuStrings, 0x16);
             char* sp48[2];
 
             arg2 = Font_MeasureTextExtent(0, 0, temp_v0);
             Font_Printf((var_s4->posX + (var_s4->rotation / 2)) - (arg2 / 2), var_s4->posY + 0x10, temp_v0);
 
             for (i = 0; i < 2; i++) {
-                sp48[0] = Text_GetString(NULL, 0, D_82F13B70, 0x17);
-                sp48[1] = Text_GetString(NULL, 0, D_82F13B70, 0x18);
+                sp48[0] = Text_GetString(NULL, 0, gTradeMenuStrings, 0x17);
+                sp48[1] = Text_GetString(NULL, 0, gTradeMenuStrings, 0x18);
                 if (i != gRentalMenuCursorIndex) {
                     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 } else {
@@ -592,9 +592,9 @@ void Trade_DrawSaveSeqBannerPanel(RentalMenuState* arg0) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            sp34 = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, D_82F13B70, 0x1D)) / 2;
+            sp34 = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gTradeMenuStrings, 0x1D)) / 2;
             Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - sp34, temp_s0->posY + 8,
-                          Text_GetString(NULL, 0, D_82F13B70, 0x1D));
+                          Text_GetString(NULL, 0, gTradeMenuStrings, 0x1D));
             Font_EndTexturedTextRendering();
         }
     }
@@ -615,7 +615,7 @@ void Trade_DrawSaveSeqSubBanner(RentalMenuState* arg0) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            sp40 = Text_GetString(NULL, 0, D_82F13B70, 0x1E);
+            sp40 = Text_GetString(NULL, 0, gTradeMenuStrings, 0x1E);
             Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp40) / 2),
                           temp_s0->posY + 0x10, sp40);
             Font_EndTexturedTextRendering();
@@ -657,7 +657,7 @@ void RentalMenu_DrawMessage(RentalMenuState* arg0) {
         case 0:
             Font_EnableTwoCycleTexturing();
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
-            Font_Printf(0xEC, 0xA8, (u32)(u64) Text_GetString(NULL, 0, D_82F13B70, 0x1F));
+            Font_Printf(0xEC, 0xA8, (u32)(u64) Text_GetString(NULL, 0, gTradeMenuStrings, 0x1F));
             Font_DisableTwoCycleTexturing();
             break;
 
@@ -666,14 +666,14 @@ void RentalMenu_DrawMessage(RentalMenuState* arg0) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
             Text_SetNumberToken(1, sp20.posY + 1);
-            Font_Printf(0xB0, 0x90, (u32)(u64) Text_GetString(sp38, sizeof(sp38), D_82F13B70, 0x20));
+            Font_Printf(0xB0, 0x90, (u32)(u64) Text_GetString(sp38, sizeof(sp38), gTradeMenuStrings, 0x20));
             Font_DisableTwoCycleTexturing();
             break;
 
         case 3:
             Font_EnableTwoCycleTexturing();
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
-            Font_Printf(0x80, 0x90, Text_GetString(NULL, 0, D_82F13B70, 0x21));
+            Font_Printf(0x80, 0x90, Text_GetString(NULL, 0, gTradeMenuStrings, 0x21));
             Font_DisableTwoCycleTexturing();
             break;
     }
@@ -683,7 +683,7 @@ void RentalMenu_DrawMessage(RentalMenuState* arg0) {
         Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetLineHeight(0x24);
-        Font_Printf(0x80, 0xF0, Text_GetString(NULL, 0, D_82F13B70, 0x22));
+        Font_Printf(0x80, 0xF0, Text_GetString(NULL, 0, gTradeMenuStrings, 0x22));
     }
 
     Font_EndTexturedTextRendering();

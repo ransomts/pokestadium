@@ -152,7 +152,7 @@ static u32 gMetapodTextureData3[] = {
     0x72D172D1, 0x83538B53, 0x7B116A8F, 0x624F624F, 0x6A8F72D1, 0x7AD17B11, 0x83538B95, 0x93D793D9,
 };
 
-static unk_D_86002F34_018 gMetapodTextureDefs[3] = {
+static GfxTextureInfo gMetapodTextureDefs[3] = {
     {
         0x04,
         unk_D_86002F34_018_GFX_TYPE_1,

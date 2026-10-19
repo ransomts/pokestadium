@@ -914,7 +914,7 @@ static u32 gUnusedDecorationTexture[] = {
     0x62996A99, 0x72DB831F, 0x93A5AC29, 0xB4ADC4AF, 0xC4EFCCF1, 0xCCF1CCF1, 0xCCF1CCF1, 0xCCF1CCF1,
 };
 
-static unk_D_86002F34_018 sceneTextures[] = {
+static GfxTextureInfo sceneTextures[] = {
     {
         0x00,
         unk_D_86002F34_018_GFX_TYPE_2,

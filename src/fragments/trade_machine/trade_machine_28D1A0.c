@@ -8,11 +8,11 @@
 #include "src/49790.h"
 #include "src/memory.h"
 
-static unk_D_82F20A10 gBattleResultScreenState;
+static TradeInfoBoxState gBattleResultScreenState;
 static s16 gResultOptionIndex;
 
 void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
-    unk_D_82F20A10* ptr = &gBattleResultScreenState;
+    TradeInfoBoxState* ptr = &gBattleResultScreenState;
 
     main_pool_push_state('BBRD');
 
@@ -35,7 +35,7 @@ void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
     Audio_PlaySoundEffectById(4);
 }
 
-void Trade_UpdateInfoBoxOpenIn(unk_D_82F20A10* arg0) {
+void Trade_UpdateInfoBoxOpenIn(TradeInfoBoxState* arg0) {
     arg0->unk_10--;
     arg0->rotation = 0x38 - (((0x38 - arg0->unk_08) * arg0->unk_10) / 6);
     arg0->unk_06 = 0x70 - (((0x70 - arg0->unk_0A) * arg0->unk_10) / 6);
@@ -48,7 +48,7 @@ void Trade_UpdateInfoBoxOpenIn(unk_D_82F20A10* arg0) {
     }
 }
 
-void Trade_UpdateInfoBoxChoose(unk_D_82F20A10* arg0) {
+void Trade_UpdateInfoBoxChoose(TradeInfoBoxState* arg0) {
     static Controller** D_82F13C10[] = {
         &gPlayer1Controller,
         &gPlayer1Controller,
@@ -106,7 +106,7 @@ void Trade_UpdateInfoBoxChoose(unk_D_82F20A10* arg0) {
     }
 }
 
-void Trade_UpdateInfoBoxCloseOut(unk_D_82F20A10* arg0) {
+void Trade_UpdateInfoBoxCloseOut(TradeInfoBoxState* arg0) {
     arg0->unk_10--;
     arg0->rotation = arg0->unk_08 - (((arg0->unk_08 - 0x38) * arg0->unk_10) / 6);
     arg0->unk_06 = arg0->unk_0A - (((arg0->unk_0A - 0x70) * arg0->unk_10) / 6);
@@ -205,7 +205,7 @@ s32 Trade_IsMoveInvalid(s32 arg0) {
     return var_v1;
 }
 
-void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
+void Trade_DrawInfoBox(TradeInfoBoxState* arg0) {
     static Color_RGBA8 D_82F13C48 = { 0xFF, 0xFF, 0xFF, 0xFF };
     static Color_RGB8 gColorRedDarkRGB8 = { 0x82, 0x1E, 0x1E };
     static Color_RGB8 D_82F13C50 = { 0x96, 0x64, 0x1E };
@@ -231,8 +231,8 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
     s32 var_t0;
     s32 sp80;
 
-    sp8C[0] = Text_GetString(NULL, 0, D_82F13B70, 0x12);
-    sp8C[1] = Text_GetString(NULL, 0, D_82F13B70, 0x13);
+    sp8C[0] = Text_GetString(NULL, 0, gTradeMenuStrings, 0x12);
+    sp8C[1] = Text_GetString(NULL, 0, gTradeMenuStrings, 0x13);
     sp11C = arg0->unk_14;
     Trade_DrawPickScreenFrame(arg0->rotation, arg0->unk_06, arg0->unk_0C, arg0->unk_0E);
 
@@ -301,10 +301,10 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
         Font_SetActive(0x10, 0);
         Font_Printf(arg0->rotation + 0x10, arg0->unk_06 + 6, sp11C->unk_30);
         Font_SetActive(0x10, 0);
-        Font_Printf(arg0->rotation + 0xA0, arg0->unk_06 + 6, "%s%d", Text_GetString(NULL, 0, D_82F13B74, 0x15),
+        Font_Printf(arg0->rotation + 0xA0, arg0->unk_06 + 6, "%s%d", Text_GetString(NULL, 0, gTradeMiscStrings, 0x15),
                       sp11C->unk_24);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->rotation + 0x12E, arg0->unk_06 + 8, "%s%03d", Text_GetString(NULL, 0, D_82F13B74, 0x16),
+        Font_Printf(arg0->rotation + 0x12E, arg0->unk_06 + 8, "%s%03d", Text_GetString(NULL, 0, gTradeMiscStrings, 0x16),
                       sp11C->posX.posX);
         Font_SetActive(8, 0);
         Font_Printf(arg0->rotation + 0x19C, arg0->unk_06 + 8, Trade_GetSpeciesName(sp11C->posX.posX));
@@ -313,7 +313,7 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
         temp_s1_2 = PokemonType_ToDisplayIndex(sp11C->unk_07);
 
         Font_SetActive(8, 0);
-        Font_Printf(arg0->rotation + 0xE4, arg0->unk_06 + 0x28, Text_GetString(NULL, 0, D_82F13B70, 0xC));
+        Font_Printf(arg0->rotation + 0xE4, arg0->unk_06 + 0x28, Text_GetString(NULL, 0, gTradeMenuStrings, 0xC));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_Printf(arg0->rotation + 0x120, arg0->unk_06 + 0x28, "1/");
         Text_SetEnvColor(D_80071D88[temp_s0].color.r, D_80071D88[temp_s0].color.g, D_80071D88[temp_s0].color.b, 0xFF);
@@ -329,7 +329,7 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
 
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x44, Text_GetString(NULL, 0, D_82F13B74, 8));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x44, Text_GetString(NULL, 0, gTradeMiscStrings, 8));
         Font_SetActive(8, 0);
         sprintf(sp94, "%d", sp11C->unk_26);
         Font_Printf((arg0->rotation - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x44, sp94);
@@ -341,10 +341,10 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
         sprintf(sp94, "%d", sp11C->posY);
         Font_Printf((arg0->rotation + temp_s1_3) - Font_MeasureTextExtent(0, 0, sp94), arg0->unk_06 + 0x44, sp94);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x6A, Text_GetString(NULL, 0, D_82F13B70, 0xD));
-        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x80, Text_GetString(NULL, 0, D_82F13B70, 0xE));
-        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x96, Text_GetString(NULL, 0, D_82F13B70, 0xF));
-        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0xAC, Text_GetString(NULL, 0, D_82F13B70, 0x10));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x6A, Text_GetString(NULL, 0, gTradeMenuStrings, 0xD));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x80, Text_GetString(NULL, 0, gTradeMenuStrings, 0xE));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x96, Text_GetString(NULL, 0, gTradeMenuStrings, 0xF));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0xAC, Text_GetString(NULL, 0, gTradeMenuStrings, 0x10));
         Font_SetActive(8, 0);
 
         sprintf(sp94, "%d", sp11C->unk_28);
@@ -386,7 +386,7 @@ void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
 
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(arg0->rotation + 0x10, arg0->unk_06 + 0x12A, Text_GetString(NULL, 0, D_82F13B70, 0x11));
+            Font_Printf(arg0->rotation + 0x10, arg0->unk_06 + 0x12A, Text_GetString(NULL, 0, gTradeMenuStrings, 0x11));
 
             for (i = 0; i < 2; i++) {
                 Font_Printf(arg0->rotation + D_82F13C64[i], arg0->unk_06 + 0x12A, sp8C[i]);
@@ -431,7 +431,7 @@ void Trade_ResetInfoBox(void) {
 }
 
 void Trade_UpdateInfoBox(void) {
-    unk_D_82F20A10* ptr = &gBattleResultScreenState;
+    TradeInfoBoxState* ptr = &gBattleResultScreenState;
 
     if (ptr->posX) {
         switch (ptr->posX) {

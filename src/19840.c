@@ -23,7 +23,7 @@ unk_D_800ABE10 gAssetManager;
 void GeoLayout_ConvertTextures(MiniHudMainGraph* arg0, arg1_func_80010CA8 arg1) {
     s32 i;
     s32 j;
-    unk_D_86002F34_018* var_s2 = arg0->unk_18;
+    GfxTextureInfo* var_s2 = arg0->unk_18;
     unk_D_86002F34_01C* var_s4 = arg0->unk_1C;
 
     for (i = 0; i < arg0->unk_24; i++, var_s2++) {

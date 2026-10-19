@@ -13,16 +13,16 @@ static s32 gMenuSlideShowState;
 static BinArchive* gMenuBackgroundArchive;
 static u8* gCurrentBackgroundData;
 static s32 gCurrentBackgroundIndex;
-static FramebufferImage* D_83A00B80;
+static FramebufferImage* gBackgroundRenderTarget;
 
 void Snap_PrintClubInitBackgroundSelect(void) {
     gMenuSlideShowState = 0;
-    D_83A00B80 = GfxImage_Allocate(0, 2, 0x280, 0x1E0, 0);
+    gBackgroundRenderTarget = GfxImage_Allocate(0, 2, 0x280, 0x1E0, 0);
     gCurrentBackgroundIndex = -1;
 }
 
 void Snap_PrintClubDrawBackgroundImage(s32 arg0, s32 arg1) {
-    u8* img = D_83A00B80->img_p;
+    u8* img = gBackgroundRenderTarget->img_p;
     s32 i;
 
     gDPPipeSync(gDisplayListHead++);
@@ -45,8 +45,8 @@ void Snap_PrintClubDrawBackgroundImage(s32 arg0, s32 arg1) {
 }
 
 void Snap_PrintClubDrawBackgroundMosaic(s32 arg0, u8* arg1) {
-    static s32 D_83A00B50 = 4;
-    static s32 D_83A00B54 = 6;
+    static s32 gMosaicOffsetX = 4;
+    static s32 gMosaicOffsetY = 6;
 
     UNUSED s32 pad[1];
     s32 j;
@@ -71,8 +71,8 @@ void Snap_PrintClubDrawBackgroundMosaic(s32 arg0, u8* arg1) {
     sp34 = ROUND_MAX(16.0f * divisor);
     temp_a0 = ROUND_MAX(1024.0f / divisor);
 
-    tmp2 = ((sp40 + D_83A00B50) * sp48) + ((-(sp40 * 4) - (D_83A00B50 * 3)) + 0x280) / 2;
-    tmp1 = ((sp3C + D_83A00B54) * sp44) + ((-(sp3C * 4) - (D_83A00B54 * 3)) + 0x1E0) / 2;
+    tmp2 = ((sp40 + gMosaicOffsetX) * sp48) + ((-(sp40 * 4) - (gMosaicOffsetX * 3)) + 0x280) / 2;
+    tmp1 = ((sp3C + gMosaicOffsetY) * sp44) + ((-(sp3C * 4) - (gMosaicOffsetY * 3)) + 0x1E0) / 2;
 
     for (i = 0; i < sp3C; i += sp34) {
         for (j = 0; j < sp40; j += temp_ft0) {
@@ -96,7 +96,7 @@ void Snap_PrintClubDrawBackgroundSelectFrame(void) {
         main_pool_push_state('mksl');
 
         gCurrentBackgroundData = BinArchive_GetFile(gMenuBackgroundArchive, D_83A00B58[gCurrentBackgroundIndex]);
-        GfxImage_SetRenderTarget(&gDisplayListHead, D_83A00B80);
+        GfxImage_SetRenderTarget(&gDisplayListHead, gBackgroundRenderTarget);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
         gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -123,15 +123,15 @@ s32 Snap_PrintClubCheckConfirmInput(void) {
 }
 
 s32 Snap_PrintClubUpdateBackgroundSelect(void) {
-    static s32 D_83A00B68 = 2;
+    static s32 gSlideShowDelayTimer = 2;
 
     s32 sp1C = 1;
 
     switch (gMenuSlideShowState) {
         case 0:
             if (StageContext_GetFadeMode() == 0) {
-                D_83A00B68--;
-                if (D_83A00B68 <= 0) {
+                gSlideShowDelayTimer--;
+                if (gSlideShowDelayTimer <= 0) {
                     gMenuSlideShowState = 1;
                     gCurrentBackgroundIndex = 0;
                 }
@@ -173,7 +173,7 @@ void func_83A009C0(void) {
 }
 
 void Snap_PrintClubBackgroundSelectLoop(void) {
-    GfxImage_SetRenderTarget(&gDisplayListHead, D_83A00B80);
+    GfxImage_SetRenderTarget(&gDisplayListHead, gBackgroundRenderTarget);
     GfxImage_FillRectangle(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
     BgStage_AdvanceFrame();
     StageFade_StartFromOpaque(8);

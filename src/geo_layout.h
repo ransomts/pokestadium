@@ -173,7 +173,7 @@ typedef struct GeoCmd_CreateMesh {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ unk_D_86002F34_018* unk_08;
+    /* 0x08 */ GfxTextureInfo* unk_08;
     /* 0x0C */ unk_D_86002F34_01C* unk_0C;
     /* 0x10 */ Vtx* unk_10;
 } GeoCmd_CreateMesh; // size = 0x14

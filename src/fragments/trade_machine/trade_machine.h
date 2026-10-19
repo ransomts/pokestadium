@@ -58,7 +58,7 @@ typedef struct RentalItemInfo {
     /* 0x0C */ PickerPokemonEntry* unk_0C;
 } RentalItemInfo; // size = 0x10
 
-typedef struct unk_D_82F14450 {
+typedef struct PlayerTradeInfo {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
@@ -68,15 +68,15 @@ typedef struct unk_D_82F14450 {
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ char unk_08[1];
     /* 0x09 */ char unk09[0xD];
-} unk_D_82F14450; // size = 0x16
+} PlayerTradeInfo; // size = 0x16
 
-typedef struct unk_D_82F13B78 {
+typedef struct TextMenuListEntry {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ char* rotation;
-} unk_D_82F13B78; // size = 0x8
+} TextMenuListEntry; // size = 0x8
 
-typedef struct unk_D_82F20A10 {
+typedef struct TradeInfoBoxState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -91,7 +91,7 @@ typedef struct unk_D_82F20A10 {
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ AssetManager* unk_20;
     /* 0x24 */ unk_func_8001B1FC* unk_24;
-} unk_D_82F20A10; // size >= 0x28
+} TradeInfoBoxState; // size >= 0x28
 
 typedef struct PanelRect {
     /* 0x00 */ s16 posX;
@@ -113,7 +113,7 @@ typedef struct unk_D_82F20A40 {
     /* 0x44 */ PanelRect* unk_44;
 } unk_D_82F20A40; // size = 0x48
 
-typedef struct unk_D_82F20A88 {
+typedef struct TradeSlotInfo {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ s16 unk_004;
@@ -130,7 +130,7 @@ typedef struct unk_D_82F20A88 {
     /* 0x020 */ f32 unk_020;
     /* 0x024 */ u8* unk_024;
     /* 0x028 */ Fragment2_1GraphNode unk_028;
-} unk_D_82F20A88; // size = 0x190
+} TradeSlotInfo; // size = 0x190
 
 typedef struct RentalMenuState {
     /* 0x00 */ s16 posX;
@@ -149,7 +149,7 @@ typedef struct RentalMenuState {
     /* 0x34 */ PanelRect unk_34;
 } RentalMenuState; // size = 0x3C
 
-typedef struct unk_D_82F21160 {
+typedef struct TradeCableLight {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -163,9 +163,9 @@ typedef struct unk_D_82F21160 {
     /* 0x14 */ f32 unk_14;
     /* 0x18 */ f32 unk_18;
     /* 0x1C */ f32 unk_1C;
-} unk_D_82F21160; // size = 0x20
+} TradeCableLight; // size = 0x20
 
-typedef struct unk_D_82F21140 {
+typedef struct TradeCableState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -178,7 +178,7 @@ typedef struct unk_D_82F21140 {
     /* 0x14 */ u16 unk_14;
     /* 0x16 */ u16 unk_16;
     /* 0x18 */ s16 unk_18;
-} unk_D_82F21140; // size = 0x1C
+} TradeCableState; // size = 0x1C
 
 typedef struct unk_D_82F211A0_010 {
     /* 0x00 */ s16 posX;
@@ -186,7 +186,7 @@ typedef struct unk_D_82F211A0_010 {
     /* 0x04 */ s16 rotation;
 } unk_D_82F211A0_010; // size = 0x6
 
-typedef struct unk_D_82F211A0 {
+typedef struct TradeBall {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x00 */ s16 rotation;
@@ -196,9 +196,9 @@ typedef struct unk_D_82F211A0 {
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ unk_D_82F211A0_010 unk_10[10];
-} unk_D_82F211A0; // size = 0x4C
+} TradeBall; // size = 0x4C
 
-typedef struct unk_D_82F21238 {
+typedef struct TradeEvoState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -220,13 +220,13 @@ typedef struct unk_D_82F21238 {
     /* 0x28 */ AssetManager* unk_28;
     /* 0x2C */ unk_func_8001B1FC* unk_2C;
     /* 0x30 */ PanelRect unk_30;
-} unk_D_82F21238; // size = 0x38
+} TradeEvoState; // size = 0x38
 
 extern s32 gFragment41FrameCounter;
-extern unk_D_82F14450 gPlayerInfo[4];
+extern PlayerTradeInfo gPlayerInfo[4];
 
-extern char** D_82F13B70;
-extern char** D_82F13B74;
+extern char** gTradeMenuStrings;
+extern char** gTradeMiscStrings;
 
 char* Trade_GetSpeciesName(s32 arg0);
 char* Trade_GetMoveName(s32 arg0);
@@ -237,15 +237,15 @@ void Trade_DrawFadeRect(void);
 void Trade_ResetTextPrinter(void);
 void Trade_SetTextPrinter(s16 arg0, s16 arg1, s8* arg2, s32 arg3);
 void Trade_ResetTextMenu(void);
-void Trade_ShowTextMenu(unk_D_82F13B78* arg0, s32 arg1);
-s32 Trade_IsTextMenuAtEnd(unk_D_82F13B78* arg0);
+void Trade_ShowTextMenu(TextMenuListEntry* arg0, s32 arg1);
+s32 Trade_IsTextMenuAtEnd(TextMenuListEntry* arg0);
 void Trade_UpdateTextPrinter(void);
 s32 Trade_GetTextPrinterState(void);
 void Trade_DrawTextPrinter(void);
 void Trade_ReadInput(void);
 void Trade_ScanPorts(void);
 void Trade_SwapSelections(void);
-void func_82F00960(void);
+void Trade_NoOp(void);
 void Trade_Init(void);
 void Trade_Draw(void);
 void Trade_SetState(s32 arg0);
@@ -291,30 +291,30 @@ s32 Trade_GetPickScreenSnapshot(s32 arg0, RentalItemInfo* arg1);
 
 void Trade_LoadPickBufferIcon(s16, PokemonData*);
 void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3);
-void Trade_UpdateInfoBoxOpenIn(unk_D_82F20A10* arg0);
-void Trade_UpdateInfoBoxChoose(unk_D_82F20A10* arg0);
-void Trade_UpdateInfoBoxCloseOut(unk_D_82F20A10* arg0);
+void Trade_UpdateInfoBoxOpenIn(TradeInfoBoxState* arg0);
+void Trade_UpdateInfoBoxChoose(TradeInfoBoxState* arg0);
+void Trade_UpdateInfoBoxCloseOut(TradeInfoBoxState* arg0);
 void Trade_DrawSolidFillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6);
 void Trade_DrawFilledFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6);
 void Trade_DrawMovingSheen(s16 arg0, s16 arg1, s32 arg2);
 void Trade_DrawNumberTwoDigits(s16 arg0, s16 arg1, s16 arg2);
 s32 Trade_IsMoveInvalid(s32 arg0);
-void Trade_DrawInfoBox(unk_D_82F20A10* arg0);
+void Trade_DrawInfoBox(TradeInfoBoxState* arg0);
 void Trade_ResetInfoBox(void);
 void Trade_UpdateInfoBox(void);
 void Trade_DrawInfoBoxIfActive(void);
 s32 Trade_GetInfoBoxState(void);
 
 s32 Trade_DrawBox3DModel(s32 arg0, GraphNode* arg1);
-s16 Trade_GetBoxSlotType(unk_D_82F14450* arg0);
+s16 Trade_GetBoxSlotType(PlayerTradeInfo* arg0);
 void Trade_SetupBoxSlots(s16 arg0);
-void Trade_SetBoxSlotAnimState(unk_D_82F20A88* arg0, s16 arg1);
-void Trade_UpdateBoxSlotFlyIn(unk_D_82F20A88* arg0);
-void Trade_UpdateBoxSlotBob(unk_D_82F20A88* arg0);
-void Trade_UpdateBoxSlotBobIdle(unk_D_82F20A88* arg0);
-void Trade_UpdateBoxSlotFlyOut(unk_D_82F20A88* arg0);
-void Trade_UpdateBoxSlotFadeOut(unk_D_82F20A88* arg0);
-void Trade_UpdateBoxSlotShrink(unk_D_82F20A88* arg0);
+void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1);
+void Trade_UpdateBoxSlotFlyIn(TradeSlotInfo* arg0);
+void Trade_UpdateBoxSlotBob(TradeSlotInfo* arg0);
+void Trade_UpdateBoxSlotBobIdle(TradeSlotInfo* arg0);
+void Trade_UpdateBoxSlotFlyOut(TradeSlotInfo* arg0);
+void Trade_UpdateBoxSlotFadeOut(TradeSlotInfo* arg0);
+void Trade_UpdateBoxSlotShrink(TradeSlotInfo* arg0);
 void Trade_UpdateBoxSlotTransforms(void);
 void Trade_ResetBoxMachineFlow(void);
 s32 Trade_GetSelectedBox(s16 arg0);
@@ -370,63 +370,63 @@ void Trade_DrawSaveSeq(void);
 void TradeCable_DrawScissoredTexRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8);
 void TradeCable_ResetBalls(void);
 void TradeCable_SetBallState(s32 arg0, s16 arg1);
-void TradeCable_UpdateBallFadeIn(unk_D_82F211A0* arg0);
-void TradeCable_UpdateBallSpinPulse(unk_D_82F211A0* arg0);
-void TradeCable_SpawnBallTrailGhost(unk_D_82F211A0* arg0);
-void TradeCable_UpdateBallTrailGhosts(unk_D_82F211A0* arg0);
-void TradeCable_UpdateBallTravel(unk_D_82F211A0* arg0);
+void TradeCable_UpdateBallFadeIn(TradeBall* arg0);
+void TradeCable_UpdateBallSpinPulse(TradeBall* arg0);
+void TradeCable_SpawnBallTrailGhost(TradeBall* arg0);
+void TradeCable_UpdateBallTrailGhosts(TradeBall* arg0);
+void TradeCable_UpdateBallTravel(TradeBall* arg0);
 void TradeCable_UpdateBalls(void);
 void TradeCable_DrawBalls(void);
 void TradeEvo_ResetState(void);
-void TradeEvo_CreatePreviewModel(unk_D_82F21238* arg0, s32 arg1);
+void TradeEvo_CreatePreviewModel(TradeEvoState* arg0, s32 arg1);
 void TradeEvo_BeginSequence(s16 arg0);
-void TradeEvo_UpdatePreviewModel(unk_D_82F21238* arg0);
-void TradeEvo_UpdateOpenPreview(unk_D_82F21238* arg0);
+void TradeEvo_UpdatePreviewModel(TradeEvoState* arg0);
+void TradeEvo_UpdateOpenPreview(TradeEvoState* arg0);
 s32 Trade_SpeciesEvolvesOnTransfer(s32 arg0);
-void TradeEvo_UpdateWaitForConfirm(unk_D_82F21238* arg0);
-void TradeEvo_UpdateFlashIn(unk_D_82F21238* arg0);
+void TradeEvo_UpdateWaitForConfirm(TradeEvoState* arg0);
+void TradeEvo_UpdateFlashIn(TradeEvoState* arg0);
 s32 Trade_NicknameIsSpeciesDefault(s16 arg0, s8* arg1);
 void Trade_ApplyEvolution(s16 arg0, PokemonData* arg1);
-void TradeEvo_UpdateApplyEvolution(unk_D_82F21238* arg0);
-void TradeEvo_UpdateShowCaption(unk_D_82F21238* arg0);
-void TradeEvo_UpdateClosePreview(unk_D_82F21238* arg0);
+void TradeEvo_UpdateApplyEvolution(TradeEvoState* arg0);
+void TradeEvo_UpdateShowCaption(TradeEvoState* arg0);
+void TradeEvo_UpdateClosePreview(TradeEvoState* arg0);
 void TradeEvo_Update(void);
 void TradeEvo_DrawGlowBackdrop(s16 arg0, s16 arg1, s16 arg2);
 void TradeEvo_DrawPreviewFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
-void TradeEvo_DrawPreviewStrips(unk_D_82F21238* arg0);
-void func_82F0ECA4(void);
+void TradeEvo_DrawPreviewStrips(TradeEvoState* arg0);
+void TradeCable_NullFunc(void);
 void TradeEvo_DrawEvolutionCaption(PanelRect* arg0, PokemonData* arg1);
 void TradeEvo_Draw(void);
 void TradeCable_ResetLights(void);
 void TradeCable_SetLightState(s32 arg0, s16 arg1);
-void TradeCable_UpdateLightShrinkToIdle(unk_D_82F21160* arg0);
-void TradeCable_UpdateLightIdlePulse(unk_D_82F21160* arg0);
-void TradeCable_UpdateLightSlideIn(unk_D_82F21160* arg0);
-void TradeCable_UpdateLightWaitPulse(unk_D_82F21160* arg0);
-void TradeCable_UpdateLightShrinkOut(unk_D_82F21160* arg0);
-void TradeCable_UpdateLightGrowFlash(unk_D_82F21160* arg0);
-void TradeCable_UpdateLightFlashPulse(unk_D_82F21160* arg0);
-void TradeCable_UpdateLightFadeInThenPulse(unk_D_82F21160* arg0);
+void TradeCable_UpdateLightShrinkToIdle(TradeCableLight* arg0);
+void TradeCable_UpdateLightIdlePulse(TradeCableLight* arg0);
+void TradeCable_UpdateLightSlideIn(TradeCableLight* arg0);
+void TradeCable_UpdateLightWaitPulse(TradeCableLight* arg0);
+void TradeCable_UpdateLightShrinkOut(TradeCableLight* arg0);
+void TradeCable_UpdateLightGrowFlash(TradeCableLight* arg0);
+void TradeCable_UpdateLightFlashPulse(TradeCableLight* arg0);
+void TradeCable_UpdateLightFadeInThenPulse(TradeCableLight* arg0);
 void TradeCable_UpdateLights(void);
 void TradeCable_DrawLightSpark(s16 arg0, s16 arg1, f32 arg2, s16 arg3);
 void TradeCable_DrawLights(void);
 s32 TradeCable_IsSequenceActive(void);
 void TradeCable_SetSequenceState(s16 arg0);
-void TradeCable_UpdateSequenceIdle(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceOpen(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceSlideVertical(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceWaitLight0(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceSlideHorizontal(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceWaitLight1(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceSlideBack(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceLaunchBalls(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceWaitBallsArrived(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceSlideToEvoSlot0(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceWaitEvoSlot0(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceSlideToEvoSlot1(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceWaitEvoSlot1(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceFinishEvo(unk_D_82F21140* arg0);
-void TradeCable_UpdateSequenceClose(unk_D_82F21140* arg0);
+void TradeCable_UpdateSequenceIdle(TradeCableState* arg0);
+void TradeCable_UpdateSequenceOpen(TradeCableState* arg0);
+void TradeCable_UpdateSequenceSlideVertical(TradeCableState* arg0);
+void TradeCable_UpdateSequenceWaitLight0(TradeCableState* arg0);
+void TradeCable_UpdateSequenceSlideHorizontal(TradeCableState* arg0);
+void TradeCable_UpdateSequenceWaitLight1(TradeCableState* arg0);
+void TradeCable_UpdateSequenceSlideBack(TradeCableState* arg0);
+void TradeCable_UpdateSequenceLaunchBalls(TradeCableState* arg0);
+void TradeCable_UpdateSequenceWaitBallsArrived(TradeCableState* arg0);
+void TradeCable_UpdateSequenceSlideToEvoSlot0(TradeCableState* arg0);
+void TradeCable_UpdateSequenceWaitEvoSlot0(TradeCableState* arg0);
+void TradeCable_UpdateSequenceSlideToEvoSlot1(TradeCableState* arg0);
+void TradeCable_UpdateSequenceWaitEvoSlot1(TradeCableState* arg0);
+void TradeCable_UpdateSequenceFinishEvo(TradeCableState* arg0);
+void TradeCable_UpdateSequenceClose(TradeCableState* arg0);
 void MenuPanel_DrawMainBG(s16 arg0, s16 arg1, f32 arg2);
 void TradeCable_DrawTubeRailBar(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5);
 void TradeCable_DrawTubeCenterBar(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5);

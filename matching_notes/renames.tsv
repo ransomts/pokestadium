@@ -17037,3 +17037,71 @@ D_82B01138	gCursorAnimTimer	w15		static variable used with SINS to animate the s
 D_83079E70	gQualifyingSpeciesWindow	w15	unk_D_83079E70:QualifyingSpeciesWindow	global state for the qualifying species window, tracks animation and page state	applied@c54c53b4
 unk_D_83079E70_000	SpeciesPage	w15		struct representing a page of species, contains an array of species IDs and eligibility flags	applied@c54c53b4
 D_830039C0	gQualifyingSpeciesCountString	w15		string literal used in Font_Printf to display the number of qualifying species	applied@c54c53b4
+unk_D_86002F34_018	GfxTextureInfo	w16		structure defining texture dimensions and format for GfxSetup	applied@64260372
+D_83A00B80	gBackgroundRenderTarget	w16		FramebufferImage* used as render target for background images and mosaics	applied@64260372
+D_83A00B50	gMosaicOffsetX	w16		static s32 used in Snap_PrintClubDrawBackgroundMosaic for X coordinate calculation	applied@64260372
+D_83A00B54	gMosaicOffsetY	w16		static s32 used in Snap_PrintClubDrawBackgroundMosaic for Y coordinate calculation	applied@64260372
+D_83A00B68	gSlideShowDelayTimer	w16		static s32 decremented in Snap_PrintClubUpdateBackgroundSelect case 0 to trigger slideshow	applied@64260372
+D_8FA00A28	gModelArchive	w16		Loaded from 'stadium_models' asset, passed to Geo_CreateSceneInstance	applied@64260372
+D_8FA00A2C	gPrintClubStage	w16		Allocated via StageContext_Allocate and activated via StageContext_Activate	applied@64260372
+D_8FA00A00	gPrintClubCamera	w16		Created via Geo_CreateSceneInstance and used in Gallery_ProcessSceneInstance	applied@64260372
+unk_D_86806E20	SushiPanelTexture	w16		contains texture pointer, width, and height for UI panel segments	applied@64260372
+unk_D_86807558	SushiPlayerEntity	w16		tracked in gSushiEntities, contains plate count (unk_03E) and position data (unk_040)	applied@64260372
+D_86806FC4	gSushiMagicConstant	w16		floating point constant used in sushi game logic	applied@64260372
+D_86806FC8	gSushiNameTagText	w16		string literal " Mie" used for name tags	applied@64260372
+D_86806FD0	gSushiNameTagVerts	w16		vertex array for the name tag quad	applied@64260372
+D_86807078	gSushiNameTagDLData	w16		raw data for the name tag display list	applied@64260372
+unk_D_86808498	SushiWorldBasis	w16		structure containing world orientation vectors	applied@64260372
+D_8680712C	gSushiPhaseBitmask	w16		static array {1, 2, 4, 8} used in SushiGame_BroadcastPlayerPhase to map player indices to bitmasks	applied@64260372
+unk_D_86807558_040	SushiNameTag	w16		struct used in SushiGame_UpdateNameTagSpringEffect for name tag animation (posX, posY, rotation)	applied@64260372
+unk_D_86807180	SushiItemDef	w16		definition for sushi types including name, texture offset, and weight (unk_12)	applied@64260372
+unk_D_86808808	SushiSpawner	w16		data for conveyor belt slots that spawn plates	applied@64260372
+unk_D_868084D8_038	SushiPlateNode	w16		sub-structure of SushiPlate containing position and conveyor slot reference	applied@64260372
+unk_D_86808808_018	SushiSpawnerNode	w16		sub-structure of SushiSpawner containing the display object and scale	applied@64260372
+func_82100028	Title_DrawMenuOption	w16		called by Title_DrawFrame with coordinates (0x64, 0x50) to render the current menu selection	applied@64260372
+D_82100DC0	gStartPressState	w16		static variable in Title_ResolveStartPressState tracking the start button press state	applied@64260372
+D_82100DC4	gBlinkTimer	w16		static variable in Title_DrawPressStartBlink used to calculate alpha for the blinking effect	applied@64260372
+D_82100DC8	gNoControllerScrollPos	w16		static variable in Title_DrawNoControllerWarning used to scroll the warning text	applied@64260372
+D_82100E6C	gDemoBattlePresets	w16		table of demo battle parameters used by Title_StartAttractDemo	applied@64260372
+D_82100E7C	gAttractDemoTimer	w16		static variable in Title_ShouldStartAttractDemo tracking time before a demo starts	applied@64260372
+func_821009AC	Title_CheckExitCondition	w16		called in Title_Loop to determine if the loop should terminate based on input or state	applied@64260372
+D_82100EA8	gTitleSessionSettings	w16		initialized via Save_GetModeSettings and used to determine background asset loading	applied@64260372
+D_82100EB8	gTitleScratchBuffer	w16		buffer allocated via main_pool_alloc(0x4510, 0) during asset loading	applied@64260372
+func_82F00960	Trade_NoOp	w16		empty function called in Trade_Draw loop	applied@64260372
+D_82F144C4	gSpeciesNames	w16		used in Trade_GetSpeciesName via Text_GetString	applied@64260372
+D_82F144CC	gTypeNames	w16		used in Trade_GetTypeName via Text_GetString	applied@64260372
+D_82F13B70	gTradeMenuStrings	w16		string table loaded in Trade_Init and used for main menu text	applied@64260372
+D_82F13B74	gTradeMiscStrings	w16		string table loaded in Trade_Init	applied@64260372
+D_82F13B88	gTextRainbowTimer	w16		incremented in Trade_DrawTextPrinter and used to calculate color cycle	applied@64260372
+unk_D_82F14438	TextPrinterState	w16		struct containing posX, posY, rotation, and string pointer used by Trade_SetTextPrinter	applied@64260372
+unk_D_82F144B0	FadeRectState	w16		struct containing posX, posY, rotation, width, and height used in Trade_DrawFadeRect	applied@64260372
+unk_D_82F14450	PlayerTradeInfo	w16		struct containing player identity, save state, and party count used in Trade_ScanPorts	applied@64260372
+unk_D_82F13B78	TextMenuListEntry	w16		struct with posX, posY, and string pointer used in Trade_ShowTextMenu	applied@64260372
+D_82F13B78	gTradeMenuEntries	w16		array of TextMenuListEntry used to sequence main menu text	applied@64260372
+unk_D_82F20A10	TradeInfoBoxState	w16		TradeInfoBoxState	applied@64260372
+D_82F13CB0	gBoxModelVertices	w16		Vertex data for the 3D box model used in the trade machine interface	applied@64260372
+D_82F13D70	gBoxModelDisplayList	w16		Gfx display list for rendering the 3D box model, including texture blocks	applied@64260372
+D_82F13E58	gBoxModelGeoLayout	w16		Geo layout data for the box 3D model overlay node	applied@64260372
+D_82F13E8C	gBoxMenuGeoLayout	w16		Geo layout data for the main trade machine menu root node	applied@64260372
+D_82F20A40	gTradeMachineState	w16		Global state structure tracking the current flow, animation timers, and panel positions	applied@64260372
+unk_D_82F20A88	TradeSlotInfo	w16		Structure containing animation state, 3D transforms, and player index for a trade slot	applied@64260372
+D_82F13EEC	gBannerPos_Type1_Start	w16		PanelRect coordinates for the banner animation start position (Type 1)	applied@64260372
+D_82F13EF4	gBannerPos_Type1_End	w16		PanelRect coordinates for the banner animation end position (Type 1)	applied@64260372
+D_82F13EFC	gBannerPos_Type2_Start	w16		PanelRect coordinates for the banner animation start position (Type 2)	applied@64260372
+D_82F13F04	gBannerPos_Type2_End	w16		PanelRect coordinates for the banner animation end position (Type 2)	applied@64260372
+D_82F13F0C	gBannerPos_Type3_Start	w16		PanelRect coordinates for the banner animation start position (Type 3)	applied@64260372
+D_82F13F14	gBannerPos_Type3_End	w16		PanelRect coordinates for the banner animation end position (Type 3)	applied@64260372
+D_82F13F1C	gBannerPos_Type4_Start	w16		PanelRect coordinates for the banner animation start position (Type 4)	applied@64260372
+D_82F13F24	gBannerPos_Type4_End	w16		PanelRect coordinates for the banner animation end position (Type 4)	applied@64260372
+D_82F13F2C	gBoxModelTextures	w16		Table of texture pointers used by Trade_DrawBox3DModel based on slot type	applied@64260372
+func_82F0ECA4	TradeCable_NullFunc	w16		empty function in trade_machine_2942C0.c	applied@64260372
+D_82F21140	gTradeCableState	w16		used in TradeCable_SetSequenceState and TradeCable_IsSequenceActive to track cable animation state	applied@64260372
+D_82F211A0	gTradeBalls	w16		array of 2 structs updated by TradeCable_UpdateBalls and drawn by TradeCable_DrawBalls	applied@64260372
+unk_D_82F21140	TradeCableState	w16		typedef for gTradeCableState struct	applied@64260372
+unk_D_82F211A0	TradeBall	w16		typedef for gTradeBalls struct, contains posX (state), posY, rotation, and trail ghosts	applied@64260372
+unk_D_82F21160	TradeCableLight	w16		typedef for gMenuPanels struct, used in TradeCable_UpdateLights and TradeCable_DrawLights	applied@64260372
+unk_D_82F21238	TradeEvoState	w16		typedef for gTradeEvoTransition struct, manages evolution preview and captions	applied@64260372
+D_82F13F90	gTradeEvoGlowDL	w16		display list for the glow backdrop in TradeEvo_DrawGlowBackdrop	applied@64260372
+D_82F13FD0	gTradeCableLightXPos	w16		table of X positions for cable lights in TradeCable_SetLightState	applied@64260372
+D_82F13FD4	gTradeCableLightYPos	w16		table of Y positions for cable lights in TradeCable_SetLightState	applied@64260372
+D_82F13FE0	gTradeCableSparkTex	w16		array of texture pointers for sparks in TradeCable_DrawLightSpark	applied@64260372

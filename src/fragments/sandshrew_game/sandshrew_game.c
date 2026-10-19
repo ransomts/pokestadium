@@ -797,7 +797,7 @@ static u32 gFragment21Texture8[1024] = {
     0x73C573C5, 0x73C573C5, 0x73C573C5, 0x73C573C5, 0x73C573C5, 0x73C573C5, 0x73C573C5
 };
 
-static unk_D_86002F34_018 gFragment21TextureInfoTable[9] = {
+static GfxTextureInfo gFragment21TextureInfoTable[9] = {
     {
         0x00,
         unk_D_86002F34_018_GFX_TYPE_2,

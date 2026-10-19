@@ -200,7 +200,7 @@ unk_D_86002F34_alt19* GeoNode_CreateAmbientLight(MainPoolState* arg0, unk_D_8600
     return arg1;
 }
 
-MiniHudMainGraph* GeoNode_CreateShadowContext(MainPoolState* arg0, MiniHudMainGraph* arg1, s32 arg2, unk_D_86002F34_018* arg3, s32 arg4,
+MiniHudMainGraph* GeoNode_CreateShadowContext(MainPoolState* arg0, MiniHudMainGraph* arg1, s32 arg2, GfxTextureInfo* arg3, s32 arg4,
                               unk_D_86002F34_01C* arg5, s32 arg6, Vtx* arg7) {
     if (arg0 != NULL) {
         arg1 = MainPool_AllocAligned(arg0, sizeof(MiniHudMainGraph), 4);

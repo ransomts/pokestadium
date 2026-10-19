@@ -18,10 +18,10 @@
 
 static char** gMessageBank14;
 static s32 pad_D_82100EA4;
-static SessionModeSettings D_82100EA8;
+static SessionModeSettings gTitleSessionSettings;
 static BinArchive* D_82100EB0;
 static u8* D_82100EB4;
-static void* D_82100EB8;
+static void* gTitleScratchBuffer;
 static void* gAudioBankBuffer;
 static u16 gMenuOption;
 static s16* gMenuStatePtr;
@@ -30,7 +30,7 @@ static s32 gBorderEnabled;
 void func_82100020(void) {
 }
 
-void func_82100028(UNUSED s32 arg0, UNUSED s32 arg1) {
+void Title_DrawMenuOption(UNUSED s32 arg0, UNUSED s32 arg1) {
 }
 
 void Title_PollDPad(void) {
@@ -38,11 +38,11 @@ void Title_PollDPad(void) {
 }
 
 s32 Title_ResolveStartPressState(void) {
-    static s32 D_82100DC0 = 0;
+    static s32 gStartPressState = 0;
 
     s32 var_v1 = 4;
 
-    if (D_82100DC0 != 0) {
+    if (gStartPressState != 0) {
         switch (gMenuOption) {
             case 0:
                 break;
@@ -77,9 +77,9 @@ s32 Title_ResolveStartPressState(void) {
 }
 
 void Title_DrawPressStartBlink(s16 arg0, s16 arg1) {
-    static s32 D_82100DC4 = 0x40;
+    static s32 gBlinkTimer = 0x40;
 
-    s32 temp_v0 = D_82100DC4 - 0x30;
+    s32 temp_v0 = gBlinkTimer - 0x30;
     s32 var_s0 = 0;
 
     if (temp_v0 >= 0) {
@@ -92,9 +92,9 @@ void Title_DrawPressStartBlink(s16 arg0, s16 arg1) {
         }
     }
 
-    D_82100DC4++;
-    if (D_82100DC4 > 0x6C) {
-        D_82100DC4 = 0x30;
+    gBlinkTimer++;
+    if (gBlinkTimer > 0x6C) {
+        gBlinkTimer = 0x30;
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -110,14 +110,14 @@ void Title_DrawPressStartBlink(s16 arg0, s16 arg1) {
 }
 
 void Title_DrawNoControllerWarning(void) {
-    static s32 D_82100DC8 = 0;
+    static s32 gNoControllerScrollPos = 0;
 
     s32 sp24;
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
         sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMessageBank14, 0));
-        temp_s0 = 0x50 - D_82100DC8;
+        temp_s0 = 0x50 - gNoControllerScrollPos;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
@@ -134,9 +134,9 @@ void Title_DrawNoControllerWarning(void) {
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 
-        D_82100DC8++;
-        if (D_82100DC8 >= (sp24 + 0x50)) {
-            D_82100DC8 = 0x32;
+        gNoControllerScrollPos++;
+        if (gNoControllerScrollPos >= (sp24 + 0x50)) {
+            gNoControllerScrollPos = 0x32;
         }
     }
 }
@@ -169,7 +169,7 @@ void Title_DrawFrame(void) {
         Title_DrawPressStartBlink(0x6E, 0xAF);
     }
     Title_DrawNoControllerWarning();
-    func_82100028(0x64, 0x50);
+    Title_DrawMenuOption(0x64, 0x50);
     BgStage_AdvanceFrame();
 }
 
@@ -238,7 +238,7 @@ static u8 gTwoPlayerBattlePresets[2][4] = {
     { 5, 0, 2, 9 },
 };
 
-static u8 D_82100E6C[4][4] = {
+static u8 gDemoBattlePresets[4][4] = {
     { 3, 3, 4, 13 },
     { 6, 3, 8, 3 },
     { 7, 4, 16, 9 },
@@ -265,21 +265,21 @@ s32 Title_StartAttractDemo(void) {
 }
 
 s32 Title_ShouldStartAttractDemo(void) {
-    static u32 D_82100E7C = 0;
+    static u32 gAttractDemoTimer = 0;
 
     s32 sp1C = 0;
 
-    if (D_82100E7C >= 0x259) {
+    if (gAttractDemoTimer >= 0x259) {
         if (Audio_GetActivityScore() == 0) {
             sp1C = 1;
         }
     } else {
-        D_82100E7C += 1;
+        gAttractDemoTimer += 1;
     }
     return sp1C;
 }
 
-s32 func_821009AC(void) {
+s32 Title_CheckExitCondition(void) {
     return 0;
 }
 
@@ -305,7 +305,7 @@ s32 Title_Loop(void) {
         } else if (Title_ShouldStartAttractDemo() != 0) {
             var_s0 = Title_StartAttractDemo();
         } else {
-            var_s0 = func_821009AC();
+            var_s0 = Title_CheckExitCondition();
             if (var_s0 == 0) {
                 Title_PollDPad();
             }
@@ -347,12 +347,12 @@ void Title_LoadAssets(void) {
     // bin contains a JP logo and press start, but this bin is loaded for the "Press Start" gfx
     ASSET_LOAD(D_2000000, title_ui, 0);
 
-    D_82100EB8 = main_pool_alloc(0x4510, 0);
+    gTitleScratchBuffer = main_pool_alloc(0x4510, 0);
     gAudioBankBuffer = main_pool_alloc(0x100000, 0);
 
     D_82100EB0 = ASSET_LOAD2(backgrounds, 1, 1);
 
-    if (D_82100EA8.posX == 0x1F8) {
+    if (gTitleSessionSettings.posX == 0x1F8) {
         D_82100EB4 = BinArchive_GetFile(D_82100EB0, 0x11);
     } else {
         D_82100EB4 = BinArchive_GetFile(D_82100EB0, 0);
@@ -376,7 +376,7 @@ s32 Title_Main(UNUSED s32 arg0, s16* arg1) {
     }
 
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&D_82100EA8, 0);
+    Save_GetModeSettings(&gTitleSessionSettings, 0);
     Font_Init(6, 0);
     Title_LoadAssets();
     Text_InitStringTables();

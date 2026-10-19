@@ -22,11 +22,11 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_86806E20 {
+typedef struct SushiPanelTexture {
     /* 0x00 */ u8* texture;
     /* 0x02 */ s16 width;
     /* 0x04 */ s16 height;
-} unk_D_86806E20; // size = 0x8
+} SushiPanelTexture; // size = 0x8
 
 static u32 gSushiGoRoundGeoLayout[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
@@ -44,21 +44,21 @@ static Controller** gPlayer4ControllerPtr = &gPlayer4Controller;
 static s16 gPanelColumnX[] = { 0x1E, 0x1E, 0x108, 0x108 };
 static s16 gPanelColumnY[] = { 0xCC, 0x10, 0x10, 0xCC };
 
-static unk_D_86806E20 gTexPanelBase = { 0x400C800, 32, 8 };
-static unk_D_86806E20 gTexPanelMid = { 0x400CA00, 32, 8 };
-static unk_D_86806E20 gTexPanelTop = { 0x400CC00, 32, 8 };
-static unk_D_86806E20 gTexPanelBottom = { 0x400CE00, 32, 4 };
-static unk_D_86806E20 gTexPanelSide = { 0x400CF00, 32, 8 };
-static unk_D_86806E20 gTexPanelCorner1 = { 0x400D100, 32, 4 };
-static unk_D_86806E20 gTexPanelCorner2 = { 0x400D200, 32, 4 };
-static unk_D_86806E20* gPanelSet0[] = { &gTexPanelMid, &gTexPanelBase, NULL };
-static unk_D_86806E20* gPanelSet1[] = { &gTexPanelBottom, &gTexPanelTop, &gTexPanelBase, NULL };
-static unk_D_86806E20* gPanelSet2[] = { &gTexPanelBottom, &gTexPanelCorner1, &gTexPanelSide, &gTexPanelBase, NULL };
-static unk_D_86806E20* gPanelSet3[] = { &gTexPanelBottom, &gTexPanelCorner1, &gTexPanelCorner2, &gTexPanelSide, &gTexPanelBase, NULL };
-static unk_D_86806E20* gPanelSet4[] = {
+static SushiPanelTexture gTexPanelBase = { 0x400C800, 32, 8 };
+static SushiPanelTexture gTexPanelMid = { 0x400CA00, 32, 8 };
+static SushiPanelTexture gTexPanelTop = { 0x400CC00, 32, 8 };
+static SushiPanelTexture gTexPanelBottom = { 0x400CE00, 32, 4 };
+static SushiPanelTexture gTexPanelSide = { 0x400CF00, 32, 8 };
+static SushiPanelTexture gTexPanelCorner1 = { 0x400D100, 32, 4 };
+static SushiPanelTexture gTexPanelCorner2 = { 0x400D200, 32, 4 };
+static SushiPanelTexture* gPanelSet0[] = { &gTexPanelMid, &gTexPanelBase, NULL };
+static SushiPanelTexture* gPanelSet1[] = { &gTexPanelBottom, &gTexPanelTop, &gTexPanelBase, NULL };
+static SushiPanelTexture* gPanelSet2[] = { &gTexPanelBottom, &gTexPanelCorner1, &gTexPanelSide, &gTexPanelBase, NULL };
+static SushiPanelTexture* gPanelSet3[] = { &gTexPanelBottom, &gTexPanelCorner1, &gTexPanelCorner2, &gTexPanelSide, &gTexPanelBase, NULL };
+static SushiPanelTexture* gPanelSet4[] = {
     &gTexPanelBottom, &gTexPanelCorner1, &gTexPanelCorner2, &gTexPanelCorner2, &gTexPanelSide, &gTexPanelBase,
 };
-static unk_D_86806E20** gPanelTextureSets[] = { NULL, gPanelSet0, gPanelSet1, gPanelSet2, gPanelSet3, gPanelSet4 };
+static SushiPanelTexture** gPanelTextureSets[] = { NULL, gPanelSet0, gPanelSet1, gPanelSet2, gPanelSet3, gPanelSet4 };
 static AnimFrame gSushiUI_TextPosA[] = {
     { 0x0303ED80, 0xE }, { 0x0303F180, 2 }, { 0x0303F580, 6 }, { 0x0303F180, 2 }, { NULL, 0 },
 };
@@ -148,7 +148,7 @@ void SushiGame_PollInput(void) {
 }
 
 Gfx* SushiGame_DrawPlateStack(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    unk_D_86806E20** var_a3;
+    SushiPanelTexture** var_a3;
     s32 var_v0;
     s32 var_v1;
     s32 var_s0;
@@ -169,7 +169,7 @@ Gfx* SushiGame_DrawPlateStack(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
 
         var_v0 = var_s0;
         while (*var_a3 != NULL) {
-            unk_D_86806E20* ptr = *var_a3;
+            SushiPanelTexture* ptr = *var_a3;
             sp34 -= (ptr->height * 3) / 4;
 
             gDPLoadTextureBlock(arg0++, ptr->texture, G_IM_FMT_RGBA, G_IM_SIZ_16b, ptr->width, ptr->height, 0,
@@ -194,7 +194,7 @@ Gfx* SushiGame_DrawPlateStack(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
 void SushiGame_DrawAllPlateStacks(void) {
     s32 i;
     Gfx* var_s4 = gDisplayListHead;
-    unk_D_86807558* ptr;
+    SushiPlayerEntity* ptr;
 
     for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
         var_s4 = SushiGame_DrawPlateStack(var_s4, i / 2, gPanelColumnX[i], gPanelColumnY[i], ptr->unk_02A);
@@ -357,7 +357,7 @@ void RenderSushiGoRoundUI(void) {
     switch (gSushiGoRoundState) {
         s32 var_s4;
         s32 var_s7;
-        unk_D_86807558* ptr;
+        SushiPlayerEntity* ptr;
 
         case 4:
             break;
@@ -534,7 +534,7 @@ s32 SushiGame_IsRoundTimeUp(void) {
 s32 UpdateSushiGoRoundState(void) {
     s32 sp1C;
     s32 sp18;
-    unk_D_86807558* ptr;
+    SushiPlayerEntity* ptr;
     s32 i;
     s32 temp_v0;
     s32 var_a0;

@@ -16,7 +16,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_82F14438 {
+typedef struct TextPrinterState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -25,45 +25,45 @@ typedef struct unk_D_82F14438 {
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ u16 unk_0C;
     /* 0x10 */ s8* unk_10;
-} unk_D_82F14438; // size = 0x14
+} TextPrinterState; // size = 0x14
 
-typedef struct unk_D_82F144B0 {
+typedef struct FadeRectState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 unk_08;
-} unk_D_82F144B0; // size = 0xA
+} FadeRectState; // size = 0xA
 
 static TextObject* gFragment41TextObject;
 s32 gFragment41FrameCounter;
 static s32 gFragment41State;
 static s16 gMessageEntryIndex;
-static unk_D_82F13B78* gCurrentMessageList;
+static TextMenuListEntry* gCurrentMessageList;
 static s32 pad_D_82F14434;
-static unk_D_82F14438 gTextBoxState;
-static unk_D_82F14438* gCurrentTextBox;
-unk_D_82F14450 gPlayerInfo[4];
+static TextPrinterState gTextBoxState;
+static TextPrinterState* gCurrentTextBox;
+PlayerTradeInfo gPlayerInfo[4];
 static s16 gActivePlayerIndex;
 static s16 gSelectedOptionId;
 static s32 pad_D_82F144AC;
-static unk_D_82F144B0 gProgressBarRect;
+static FadeRectState gProgressBarRect;
 static s32 gPoolStatePushed;
 static s32 gPollControllerFlag;
-static char** D_82F144C4;
+static char** gSpeciesNames;
 static char** D_82F144C8;
-static char** D_82F144CC;
+static char** gTypeNames;
 
-char** D_82F13B70 = NULL;
-char** D_82F13B74 = NULL;
-static unk_D_82F13B78 D_82F13B78[2] = {
+char** gTradeMenuStrings = NULL;
+char** gTradeMiscStrings = NULL;
+static TextMenuListEntry gTradeMenuEntries[2] = {
     { 0x0140, 0x0168, NULL },
     { 0x0000, 0x0000, NULL },
 };
-static u16 D_82F13B88 = 0;
+static u16 gTextRainbowTimer = 0;
 
 char* Trade_GetSpeciesName(s32 arg0) {
-    return Text_GetString(NULL, 0, D_82F144C4, arg0 - 1);
+    return Text_GetString(NULL, 0, gSpeciesNames, arg0 - 1);
 }
 
 char* Trade_GetMoveName(s32 arg0) {
@@ -71,11 +71,11 @@ char* Trade_GetMoveName(s32 arg0) {
 }
 
 char* Trade_GetTypeName(s32 arg0) {
-    return Text_GetString(NULL, 0, D_82F144CC, PokemonType_ToDisplayIndex(arg0));
+    return Text_GetString(NULL, 0, gTypeNames, PokemonType_ToDisplayIndex(arg0));
 }
 
 void Trade_SetFadeRect(s16 arg0) {
-    unk_D_82F144B0* ptr = &gProgressBarRect;
+    FadeRectState* ptr = &gProgressBarRect;
 
     switch (arg0) {
         case 0:
@@ -100,7 +100,7 @@ void Trade_ResetFade(void) {
 }
 
 void Trade_DrawFadeRect(void) {
-    unk_D_82F144B0* ptr = &gProgressBarRect;
+    FadeRectState* ptr = &gProgressBarRect;
 
     if ((ptr->posX != 0) && (TradeCable_IsSequenceActive() != 0)) {
         if (ptr->posX > 0) {
@@ -157,7 +157,7 @@ void Trade_ResetTextMenu(void) {
     gCurrentMessageList = NULL;
 }
 
-void Trade_ShowTextMenu(unk_D_82F13B78* arg0, s32 arg1) {
+void Trade_ShowTextMenu(TextMenuListEntry* arg0, s32 arg1) {
     if (arg0 != gCurrentMessageList) {
         gMessageEntryIndex = 0;
     }
@@ -165,15 +165,15 @@ void Trade_ShowTextMenu(unk_D_82F13B78* arg0, s32 arg1) {
     gCurrentMessageList = arg0;
 
     if (NULL != arg0) {
-        unk_D_82F13B78* ptr = &arg0[gMessageEntryIndex];
+        TextMenuListEntry* ptr = &arg0[gMessageEntryIndex];
 
         Trade_SetTextPrinter(ptr->posX, ptr->posY, ptr->rotation, arg1);
         gMessageEntryIndex++;
     }
 }
 
-s32 Trade_IsTextMenuAtEnd(unk_D_82F13B78* arg0) {
-    unk_D_82F13B78* ptr = &arg0[gMessageEntryIndex];
+s32 Trade_IsTextMenuAtEnd(TextMenuListEntry* arg0) {
+    TextMenuListEntry* ptr = &arg0[gMessageEntryIndex];
     s32 var_v1 = 0;
 
     if (ptr->rotation == NULL) {
@@ -235,7 +235,7 @@ void Trade_DrawTextPrinter(void) {
         Font_SetActive(0x10, 0);
 
         if (gCurrentTextBox->unk_0C & 1) {
-            s32 a = D_82F13B88;
+            s32 a = gTextRainbowTimer;
             u8 arg = a & 0xF;
 
             arg = (arg * 0xFF) / 15;
@@ -263,7 +263,7 @@ void Trade_DrawTextPrinter(void) {
             Font_Printf(gCurrentTextBox->rotation - temp_t0, gCurrentTextBox->unk_06, &sp38);
         }
         Font_EndTexturedTextRendering();
-        D_82F13B88++;
+        gTextRainbowTimer++;
     }
 }
 
@@ -275,7 +275,7 @@ void Trade_ReadInput(void) {
 
 void Trade_ScanPorts(void) {
     UNUSED s32 pad;
-    unk_D_82F14450* ptr;
+    PlayerTradeInfo* ptr;
     Gen1StringDecodeBuffer sp40;
     u8 temp_s2 = Cont_GetControllerBits();
     s32 i;
@@ -314,18 +314,18 @@ void Trade_SwapSelections(void) {
     Trade_SwapPickBuffers();
 }
 
-void func_82F00960(void) {
+void Trade_NoOp(void) {
 }
 
 void Trade_Init(void) {
     ModelRenderer_InitDisplayRoots();
     Text_InitStringTables();
-    D_82F13B70 = Text_GetStringTable(0x21);
-    D_82F13B74 = Text_GetStringTable(6);
-    D_82F144C4 = Text_GetStringTable(0x24);
+    gTradeMenuStrings = Text_GetStringTable(0x21);
+    gTradeMiscStrings = Text_GetStringTable(6);
+    gSpeciesNames = Text_GetStringTable(0x24);
     D_82F144C8 = Text_GetStringTable(0x25);
-    D_82F144CC = Text_GetStringTable(0x26);
-    D_82F13B78[0].rotation = Text_GetString(NULL, 0, D_82F13B70, 0);
+    gTypeNames = Text_GetStringTable(0x26);
+    gTradeMenuEntries[0].rotation = Text_GetString(NULL, 0, gTradeMenuStrings, 0);
     gFragment41State = 0;
     Trade_ResetTextMenu();
     gFragment41FrameCounter = 0;
@@ -350,7 +350,7 @@ void Trade_Draw(void) {
     Trade_DrawBoxMachine();
     Trade_DrawPickScreens();
     Trade_DrawSaveSeq();
-    func_82F00960();
+    Trade_NoOp();
     BgStage_AdvanceFrame();
 }
 
@@ -360,7 +360,7 @@ void Trade_SetState(s32 arg0) {
     switch (gFragment41State) {
         case 1:
             Trade_ResetTextMenu();
-            Trade_ShowTextMenu(D_82F13B78, 0);
+            Trade_ShowTextMenu(gTradeMenuEntries, 0);
             break;
 
         case 2:
@@ -404,8 +404,8 @@ void Trade_ChangeTopic(s16 arg0) {
 
 void Trade_UpdateMainMenu(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        if (Trade_IsTextMenuAtEnd(D_82F13B78) == 0) {
-            Trade_ShowTextMenu(D_82F13B78, 0);
+        if (Trade_IsTextMenuAtEnd(gTradeMenuEntries) == 0) {
+            Trade_ShowTextMenu(gTradeMenuEntries, 0);
         } else {
             Trade_SetState(2);
         }

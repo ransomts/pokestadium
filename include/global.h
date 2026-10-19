@@ -429,14 +429,14 @@ typedef void* (*func_unk_D_800ABE10)(s32, s32);
 #define unk_D_86002F34_018_GFX_TYPE_2 2 // 16-bit per texel
 #define unk_D_86002F34_018_GFX_TYPE_3 3 // 32-bit per texel
 
-typedef struct unk_D_86002F34_018 {
+typedef struct GfxTextureInfo {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 type;
     /* 0x02 */ s16 width;
     /* 0x04 */ s16 height;
     /* 0x06 */ s16 num_texels;
     /* 0x08 */ u32* texture;
-} unk_D_86002F34_018; // size = 0xC
+} GfxTextureInfo; // size = 0xC
 
 typedef struct unk_D_86002F34_01C {
     /* 0x00 */ s32 posX;
@@ -446,7 +446,7 @@ typedef struct unk_D_86002F34_01C {
 
 typedef struct MiniHudMainGraph {
     /* 0x00 */ GraphNode posX;
-    /* 0x18 */ unk_D_86002F34_018* unk_18;
+    /* 0x18 */ GfxTextureInfo* unk_18;
     /* 0x1C */ unk_D_86002F34_01C* unk_1C;
     /* 0x20 */ Vtx* unk_20;
     /* 0x24 */ u8 unk_24;

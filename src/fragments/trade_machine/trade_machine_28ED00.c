@@ -14,8 +14,8 @@
 
 s32 Trade_DrawBox3DModel(s32 arg0, GraphNode* arg1);
 
-static unk_D_82F20A40 D_82F20A40;
-static unk_D_82F20A88 gPlayerSlotInfo[4];
+static unk_D_82F20A40 gTradeMachineState;
+static TradeSlotInfo gPlayerSlotInfo[4];
 static GraphNode* gMenuRootNode;
 static GraphNode* gMenuOverlayNode;
 static s16 gActiveSlotCount;
@@ -23,7 +23,7 @@ static s16 gSelectedSlotIndex;
 static s16 gSubMenuSelection;
 static s16 gSelectedPlayerIndices[2];
 
-static Vtx D_82F13CB0[] = {
+static Vtx gBoxModelVertices[] = {
     VTX(-32, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 32, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 32, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, 64, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -32,11 +32,11 @@ static Vtx D_82F13CB0[] = {
     VTX(16, 15, 0, 1024, 768, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(16, 39, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static Gfx D_82F13D70[] = {
+static Gfx gBoxModelDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_82F13CB0, 12, 0),
+    gsSPVertex(gBoxModelVertices, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -49,65 +49,65 @@ static Gfx D_82F13D70[] = {
     gsSPEndDisplayList(),
 };
 
-static u32 D_82F13E58[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_82F13CB0, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, Trade_DrawBox3DModel, D_82F13D70, 0x06000000, 0x01000000,
+static u32 gBoxModelGeoLayout[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gBoxModelVertices, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, Trade_DrawBox3DModel, gBoxModelDisplayList, 0x06000000, 0x01000000,
 };
 
-static u32 D_82F13E8C[] = {
+static u32 gBoxMenuGeoLayout[] = {
     0x0C000000, 0x05000000, 0x0B00002D,  0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243,
     0x05000000, 0x0D000000, 0x05000000,  0x14000000, 0x002D013B, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002,
     0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static s16 D_82F13EEC[] = {
+static s16 gBannerPos_Type1_Start[] = {
     0x007E,
     0x013C,
     0x0184,
     0x0000,
 };
-static s16 D_82F13EF4[] = {
+static s16 gBannerPos_Type1_End[] = {
     0x007E,
     0x0120,
     0x0184,
     0x0038,
 };
-static s16 D_82F13EFC[] = {
+static s16 gBannerPos_Type2_Start[] = {
     0x00A1,
     0x013C,
     0x013E,
     0x0000,
 };
-static s16 D_82F13F04[] = {
+static s16 gBannerPos_Type2_End[] = {
     0x00A1,
     0x0120,
     0x013E,
     0x0038,
 };
-static s16 D_82F13F0C[] = {
+static s16 gBannerPos_Type3_Start[] = {
     0x007D,
     0x0149,
     0x0186,
     0x0000,
 };
-static s16 D_82F13F14[] = {
+static s16 gBannerPos_Type3_End[] = {
     0x007D,
     0x0120,
     0x0186,
     0x0052,
 };
-static s16 D_82F13F1C[] = {
+static s16 gBannerPos_Type4_Start[] = {
     0x00CC,
     0x013C,
     0x00E8,
     0x0000,
 };
-static s16 D_82F13F24[] = {
+static s16 gBannerPos_Type4_End[] = {
     0x00CC,
     0x0120,
     0x00E8,
     0x0038,
 };
-static u8* D_82F13F2C[] = {
+static u8* gBoxModelTextures[] = {
     D_302FAB0,
     D_302FDB0,
     D_30300B0,
@@ -123,7 +123,7 @@ s32 Trade_DrawBox3DModel(s32 arg0, GraphNode* arg1) {
 
         if (gPlayerSlotInfo[idx].unk_024 != NULL) {
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(gPlayerSlotInfo[idx].unk_024));
-            gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_82F13F2C[gPlayerSlotInfo[idx].unk_002]));
+            gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(gBoxModelTextures[gPlayerSlotInfo[idx].unk_002]));
             gSPDisplayList(gDisplayListHead++, arg1->unk_14);
         }
         GeoRender_ApplyMaterialState();
@@ -131,7 +131,7 @@ s32 Trade_DrawBox3DModel(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s16 Trade_GetBoxSlotType(unk_D_82F14450* arg0) {
+s16 Trade_GetBoxSlotType(PlayerTradeInfo* arg0) {
     s16 ret;
 
     switch (arg0->posX) {
@@ -163,7 +163,7 @@ s16 Trade_GetBoxSlotType(unk_D_82F14450* arg0) {
 
 void Trade_SetupBoxSlots(s16 arg0) {
     s16 temp_v0;
-    unk_D_82F20A88* var_s0;
+    TradeSlotInfo* var_s0;
     s32 i;
 
     var_s0 = &gPlayerSlotInfo[0];
@@ -232,7 +232,7 @@ void Trade_SetupBoxSlots(s16 arg0) {
     }
 }
 
-void Trade_SetBoxSlotAnimState(unk_D_82F20A88* arg0, s16 arg1) {
+void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1) {
     Fragment2_1GraphNode* temp_v0 = &arg0->unk_028;
 
     arg0->unk_000 = arg1;
@@ -321,7 +321,7 @@ void Trade_SetBoxSlotAnimState(unk_D_82F20A88* arg0, s16 arg1) {
     }
 }
 
-void Trade_UpdateBoxSlotFlyIn(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotFlyIn(TradeSlotInfo* arg0) {
     arg0->unk_010--;
     arg0->unk_018 = (0xA - arg0->unk_010) / 10.0f;
     if (arg0->unk_010 <= 0) {
@@ -329,7 +329,7 @@ void Trade_UpdateBoxSlotFlyIn(unk_D_82F20A88* arg0) {
     }
 }
 
-void Trade_UpdateBoxSlotBob(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotBob(TradeSlotInfo* arg0) {
     static s16 D_82F13F38[] = { 0x5C0, 0x680, 0x580 };
 
     s32 temp_lo = arg0 - &gPlayerSlotInfo[0];
@@ -360,11 +360,11 @@ void Trade_UpdateBoxSlotBob(unk_D_82F20A88* arg0) {
     arg0->unk_00E += var_a3 + ((MathUtil_Random16() & 0xF) * 0x10);
 }
 
-void Trade_UpdateBoxSlotBobIdle(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotBobIdle(TradeSlotInfo* arg0) {
     Trade_UpdateBoxSlotBob(arg0);
 }
 
-void Trade_UpdateBoxSlotFlyOut(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotFlyOut(TradeSlotInfo* arg0) {
     arg0->unk_010 -= 1;
     arg0->unk_006 = 0x208 - (((0x208 - arg0->unk_00A) * arg0->unk_010) / 10);
     arg0->unk_008 = 0xB8 - ((arg0->unk_010 * -0xC4) / 10);
@@ -374,7 +374,7 @@ void Trade_UpdateBoxSlotFlyOut(unk_D_82F20A88* arg0) {
     }
 }
 
-void Trade_UpdateBoxSlotFadeOut(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotFadeOut(TradeSlotInfo* arg0) {
     arg0->unk_010--;
     arg0->unk_014 = (arg0->unk_010 * 0xFF) / 10;
     if (arg0->unk_010 <= 0) {
@@ -383,7 +383,7 @@ void Trade_UpdateBoxSlotFadeOut(unk_D_82F20A88* arg0) {
     }
 }
 
-void Trade_UpdateBoxSlotShrink(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotShrink(TradeSlotInfo* arg0) {
     Trade_UpdateBoxSlotBob(arg0);
     arg0->unk_010--;
     arg0->unk_018 = arg0->unk_010 / 10.0f;
@@ -394,7 +394,7 @@ void Trade_UpdateBoxSlotShrink(unk_D_82F20A88* arg0) {
 
 void Trade_UpdateBoxSlotTransforms(void) {
     s32 i;
-    unk_D_82F20A88* var_s0 = &gPlayerSlotInfo[0];
+    TradeSlotInfo* var_s0 = &gPlayerSlotInfo[0];
 
     for (i = 0; i < gActiveSlotCount; i++, var_s0++) {
         switch (var_s0->unk_000) {
@@ -436,7 +436,7 @@ void Trade_UpdateBoxSlotTransforms(void) {
 }
 
 void Trade_ResetBoxMachineFlow(void) {
-    unk_D_82F20A40* ptr = &D_82F20A40;
+    unk_D_82F20A40* ptr = &gTradeMachineState;
     s32 i;
 
     ptr->posX = 1;
@@ -480,7 +480,7 @@ s32 Trade_GetSelectedBox(s16 arg0) {
 }
 
 s32 Trade_GetBoxMachineFlowState(void) {
-    return D_82F20A40.posX;
+    return gTradeMachineState.posX;
 }
 
 void Trade_UpdateBoxMachineFlowOpen(unk_D_82F20A40* arg0, s32 arg1) {
@@ -563,23 +563,23 @@ void Trade_UpdateBoxMachineFlowSelect(unk_D_82F20A40* arg0) {
 
             switch (arg0->rotation) {
                 case 1:
-                    arg0->unk_40 = &D_82F13EEC;
-                    arg0->unk_44 = &D_82F13EF4;
+                    arg0->unk_40 = &gBannerPos_Type1_Start;
+                    arg0->unk_44 = &gBannerPos_Type1_End;
                     break;
 
                 case 2:
-                    arg0->unk_40 = &D_82F13EFC;
-                    arg0->unk_44 = &D_82F13F04;
+                    arg0->unk_40 = &gBannerPos_Type2_Start;
+                    arg0->unk_44 = &gBannerPos_Type2_End;
                     break;
 
                 case 3:
-                    arg0->unk_40 = &D_82F13F0C;
-                    arg0->unk_44 = &D_82F13F14;
+                    arg0->unk_40 = &gBannerPos_Type3_Start;
+                    arg0->unk_44 = &gBannerPos_Type3_End;
                     break;
 
                 case 4:
-                    arg0->unk_40 = &D_82F13F1C;
-                    arg0->unk_44 = &D_82F13F24;
+                    arg0->unk_40 = &gBannerPos_Type4_Start;
+                    arg0->unk_44 = &gBannerPos_Type4_End;
                     break;
 
                 default:
@@ -777,7 +777,7 @@ void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0) {
     Color_RGB8* var_v0;
     PanelRect* temp_s4 = &arg0->unk_06;
     s32 i;
-    unk_D_82F14450* ptr;
+    PlayerTradeInfo* ptr;
 
     Trade_DrawPickScreenFrame(temp_s4->posX, temp_s4->posY, temp_s4->rotation, temp_s4->unk_06);
 
@@ -806,7 +806,7 @@ void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0) {
         Font_BeginTranslucentTextRendering();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetActive(0x10, 0);
-        Font_Printf(temp_s4->posX + 0x5A, temp_s4->posY + 8, Text_GetString(NULL, 0, D_82F13B70, 1));
+        Font_Printf(temp_s4->posX + 0x5A, temp_s4->posY + 8, Text_GetString(NULL, 0, gTradeMenuStrings, 1));
 
         for (i = 0; i < 2; i++) {
             if (gSelectedPlayerIndices[i] != -1) {
@@ -839,7 +839,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
     Color_RGB8* var_v0;
     s32 var_v1;
     char* var_s0_2;
-    unk_D_82F14450* var_s2;
+    PlayerTradeInfo* var_s2;
     Color_RGB8 sp88 = { 0x1E, 0x1E, 0x82 };
     Color_RGB8 sp84 = { 0x64, 0x1E, 0x1E };
     char sp68[28];
@@ -922,7 +922,7 @@ void Trade_DrawBoxMachineTitle(unk_D_82F20A40* arg0) {
         Font_BeginTranslucentTextRendering();
         Font_SetActive(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        temp_v0 = Text_GetString(NULL, 0, D_82F13B70, 2);
+        temp_v0 = Text_GetString(NULL, 0, gTradeMenuStrings, 2);
         Font_Printf((temp_s1->posX - (Font_MeasureTextExtent(0, 0, temp_v0) / 2)) + 0x108, temp_s1->posY + 8, temp_v0);
         Font_EndTexturedTextRendering();
     }
@@ -951,13 +951,13 @@ void Trade_DrawBoxMachineConfirm(unk_D_82F20A40* arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    temp_v0 = Text_GetString(NULL, 0, D_82F13B70, 3);
+    temp_v0 = Text_GetString(NULL, 0, gTradeMenuStrings, 3);
     tmp = (temp_s3->posX - (Font_MeasureTextExtent(0, 0, temp_v0) / 2)) + 0x74;
     Font_Printf(tmp, temp_s3->posY + 0x10, temp_v0);
 
     for (i = 0; i < 2; i++) {
-        sp4C[0] = Text_GetString(NULL, 0, D_82F13B70, 4);
-        sp4C[1] = Text_GetString(NULL, 0, D_82F13B70, 5);
+        sp4C[0] = Text_GetString(NULL, 0, gTradeMenuStrings, 4);
+        sp4C[1] = Text_GetString(NULL, 0, gTradeMenuStrings, 5);
         if (i != gSubMenuSelection) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         } else {
@@ -999,25 +999,25 @@ void Trade_DrawBoxMachineBanner(unk_D_82F20A40* arg0) {
 
             switch (arg0->rotation) {
                 case 1:
-                    sp48 = Text_GetString(NULL, 0, D_82F13B70, 6);
+                    sp48 = Text_GetString(NULL, 0, gTradeMenuStrings, 6);
                     Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
                                   temp_s0->posY + 0x10, sp48);
                     break;
 
                 case 2:
-                    sp48 = Text_GetString(NULL, 0, D_82F13B70, 7);
+                    sp48 = Text_GetString(NULL, 0, gTradeMenuStrings, 7);
                     Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
                                   temp_s0->posY + 0x10, sp48);
                     break;
 
                 case 3:
-                    sp48 = Text_GetString(NULL, 0, D_82F13B70, 8);
+                    sp48 = Text_GetString(NULL, 0, gTradeMenuStrings, 8);
                     Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
                                   temp_s0->posY + 0x10, sp48);
                     break;
 
                 case 4:
-                    sp48 = Text_GetString(NULL, 0, D_82F13B70, 9);
+                    sp48 = Text_GetString(NULL, 0, gTradeMenuStrings, 9);
                     Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp48) / 2),
                                   temp_s0->posY + 0x10, sp48);
                     break;
@@ -1091,13 +1091,13 @@ void Trade_InitBoxMachine(void) {
     s32 i;
     MemoryBlock* sp1C = MainPool_AllocState(main_pool_get_available(), 0);
 
-    gMenuRootNode = process_geo_layout(sp1C, D_82F13E8C);
-    gMenuOverlayNode = process_geo_layout(sp1C, D_82F13E58);
+    gMenuRootNode = process_geo_layout(sp1C, gBoxMenuGeoLayout);
+    gMenuOverlayNode = process_geo_layout(sp1C, gBoxModelGeoLayout);
     MainPool_FinalizeAllocation(sp1C);
 
-    D_82F20A40.posX = 0;
-    D_82F20A40.posY = 0;
-    D_82F20A40.rotation = 0;
+    gTradeMachineState.posX = 0;
+    gTradeMachineState.posY = 0;
+    gTradeMachineState.rotation = 0;
 
     for (i = 0; i < 2; i++) {
         gSelectedPlayerIndices[i] = -1;
@@ -1109,7 +1109,7 @@ void Trade_InitBoxMachine(void) {
 }
 
 void Trade_UpdateBoxMachine(void) {
-    unk_D_82F20A40* ptr = &D_82F20A40;
+    unk_D_82F20A40* ptr = &gTradeMachineState;
 
     if (ptr->posX == 0) {
         return;
@@ -1165,16 +1165,16 @@ void Trade_UpdateBoxMachine(void) {
 }
 
 void Trade_DrawBoxMachine(void) {
-    unk_D_82F20A40* ptr = &D_82F20A40;
+    unk_D_82F20A40* ptr = &gTradeMachineState;
 
     if (ptr->posX != 0) {
         GeoRender_AdvanceFrameCounter();
-        Trade_DrawBoxMachineTopBar(&D_82F20A40);
-        Trade_DrawBoxMachineSlots(&D_82F20A40);
-        Trade_DrawBoxMachineTitle(&D_82F20A40);
-        Trade_DrawBoxMachineConfirm(&D_82F20A40);
+        Trade_DrawBoxMachineTopBar(&gTradeMachineState);
+        Trade_DrawBoxMachineSlots(&gTradeMachineState);
+        Trade_DrawBoxMachineTitle(&gTradeMachineState);
+        Trade_DrawBoxMachineConfirm(&gTradeMachineState);
         Geo_RenderRootNode(gMenuRootNode);
         Trade_DrawBoxMachineCursor(ptr->posX);
-        Trade_DrawBoxMachineBanner(&D_82F20A40);
+        Trade_DrawBoxMachineBanner(&gTradeMachineState);
     }
 }

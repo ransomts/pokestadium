@@ -12,13 +12,13 @@
 
 static BinArchive* D_8FA00A20;
 static u8* gBackgroundData;
-static BinArchive* D_8FA00A28;
-static Stage* D_8FA00A2C;
+static BinArchive* gModelArchive;
+static Stage* gPrintClubStage;
 
 static u8 gBackgroundIndices[] = {
     0x00, 0x11, 0x01, 0x02, 0x04, 0x06, 0x03, 0x0A, 0x0B, 0x07, 0x08, 0x09, 0x0C, 0x10, 0x0F, 0x14,
 };
-static Camera* D_8FA00A00 = NULL;
+static Camera* gPrintClubCamera = NULL;
 
 void Snap_PrintClubDrawSealMargin(s32 arg0) {
     BgStage_DrawFrame();
@@ -90,7 +90,7 @@ s32 Snap_PrintClubPrintSeals(s32 arg0, s32 arg1) {
     Font_Init(0x10, 0);
     Gfx_InitDisplayListBuffers(0x10000, 0);
     temp_v0 = StageContext_Allocate(1, 0, 1, 0, 2, 1);
-    D_8FA00A2C = temp_v0;
+    gPrintClubStage = temp_v0;
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_6000000, copyright, 0);
@@ -101,10 +101,10 @@ s32 Snap_PrintClubPrintSeals(s32 arg0, s32 arg1) {
 
         PokeIcon_OpenModelArchives();
 
-        D_8FA00A28 = ASSET_LOAD2(stadium_models, 1, 1);
+        gModelArchive = ASSET_LOAD2(stadium_models, 1, 1);
         temp_s0 = PokeIcon_AllocFramebuffers(5);
         Gallery_ClearPhotoRenderTarget();
-        D_8FA00A00 = Geo_CreateSceneInstance(0x280, 0x1E0, D_8FA00A2C->unk_18[0], NULL, temp_s0, D_8FA00A28, sp60);
+        gPrintClubCamera = Geo_CreateSceneInstance(0x280, 0x1E0, gPrintClubStage->unk_18[0], NULL, temp_s0, gModelArchive, sp60);
     }
 
     StageContext_Activate(temp_v0);
@@ -129,15 +129,15 @@ s32 Snap_PrintClubPrintSeals(s32 arg0, s32 arg1) {
             }
 
             if (sp4E != var_v0) {
-                D_8FA00A00->unk_18 = &sp60[var_v0];
-                D_8FA00A00->posX = 0;
+                gPrintClubCamera->unk_18 = &sp60[var_v0];
+                gPrintClubCamera->posX = 0;
                 sp4E = var_v0;
             }
             main_pool_push_state('DRAW');
 
             do {
-                Gallery_ProcessSceneInstance(D_8FA00A00);
-            } while (D_8FA00A00->posX != 2);
+                Gallery_ProcessSceneInstance(gPrintClubCamera);
+            } while (gPrintClubCamera->posX != 2);
 
             Snap_PrintClubDrawSealMargin(i);
             main_pool_pop_state('DRAW');

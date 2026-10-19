@@ -385,7 +385,7 @@ static u32 gFragment17TileData0[] = {
     0xE4FFE4FF, 0xE5FFECFF, 0xF6FEFDFB, 0xFFDCFC6C, 0xF11DE50A, 0xD611C849, 0xC2A3C5DD, 0xCDF7D9FE,
 };
 
-static unk_D_86002F34_018 gFragment17GfxTileParams0 = {
+static GfxTextureInfo gFragment17GfxTileParams0 = {
     0x03, unk_D_86002F34_018_GFX_TYPE_2, 32, 32, 0x0400, gFragment17TileData0,
 };
 
@@ -534,7 +534,7 @@ static u32 gFragment17MaskTable1[] = {
     0x10D71919, 0x29E129ED, 0x32334AF5, 0x6BF763B3, 0x42AF29ED, 0x21AD21AB, 0x196721A7, 0x19A921A9, 0x21E929EB,
     0x29EB3A71, 0x4B357439, 0x6BF7532F, 0x532B4AA9, 0x3A273229, 0x326F3AB3, 0x2A2B195D, 0x1919299D,
 };
-static unk_D_86002F34_018 gFragment17GfxTileParams1 = {
+static GfxTextureInfo gFragment17GfxTileParams1 = {
     0x00, unk_D_86002F34_018_GFX_TYPE_2, 32, 32, 0x0400, gFragment17MaskTable1,
 };
 static Gfx gFragment17GfxSetupDL1[] = {

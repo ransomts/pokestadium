@@ -407,10 +407,10 @@ void Trade_DrawPlayerBanner(s16 arg0, s16 arg1, s16 arg2) {
     Font_SetActive(8, 0);
 
     if (arg0 == 0) {
-        var_v0 = Text_GetString(NULL, 0, D_82F13B70, 0xA);
+        var_v0 = Text_GetString(NULL, 0, gTradeMenuStrings, 0xA);
     } else {
         Text_SetNumberToken(1, arg0);
-        var_v0 = Text_GetString(sp64, ARRAY_COUNT(sp64), D_82F13B70, 0xB);
+        var_v0 = Text_GetString(sp64, ARRAY_COUNT(sp64), gTradeMenuStrings, 0xB);
     }
 
     Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, var_v0) / 2)) + 0xDC, arg2 + 4, var_v0);
@@ -675,7 +675,7 @@ void Trade_DrawPortInfoPanel(s16 arg0, s16 arg1, s16 arg2) {
     static s16 D_82F13C08[] = { 8, 0x2C };
 
     UNUSED s32 pad;
-    unk_D_82F14450* sp40 = &gPlayerInfo[gPickerState[arg0].unk_000E];
+    PlayerTradeInfo* sp40 = &gPlayerInfo[gPickerState[arg0].unk_000E];
     u8* sp3C;
 
     Trade_DrawRoundedFrameSmall(arg1, arg2, 0x104, 0x28, 0x1E, 0x1E, 0x82, 0xFF);
