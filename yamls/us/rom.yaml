@@ -2420,12 +2420,12 @@
     start: 0x3B2AE0
     vram: 0x84A00000
     subsegments:
-    - [0x3B2AE0, textbin,   fragments/65/fragment65_header]
-    - [0x3B2B00, c,      fragments/65/fragment65]
-    - [0x3B59E0, .data,   fragments/65/fragment65]
-    - [0x3B5BE0, .rodata, fragments/65/fragment65]
+    - [0x3B2AE0, textbin,   fragments/gym_leader_castle/gym_leader_castle_header]
+    - [0x3B2B00, c,      fragments/gym_leader_castle/gym_leader_castle]
+    - [0x3B59E0, .data,   fragments/gym_leader_castle/gym_leader_castle]
+    - [0x3B5BE0, .rodata, fragments/gym_leader_castle/gym_leader_castle]
 
-    - {vram: 0x84A03130, type:  .bss, name: fragments/65/fragment65}
+    - {vram: 0x84A03130, type:  .bss, name: fragments/gym_leader_castle/gym_leader_castle}
 
   - name: fragment65_relocs
     type: code
@@ -2441,11 +2441,11 @@
     start: 0x3B6130
     vram: 0x83200000
     subsegments:
-    - [0x3B6130, textbin,   fragments/66/fragment66_header]
-    - [0x3B6150, c,      fragments/66/fragment66]
-    - [0x3B8080, .data,   fragments/66/fragment66]
+    - [0x3B6130, textbin,   fragments/pikachu_reward/pikachu_reward_header]
+    - [0x3B6150, c,      fragments/pikachu_reward/pikachu_reward]
+    - [0x3B8080, .data,   fragments/pikachu_reward/pikachu_reward]
 
-    - {vram: 0x83202010, type:  .bss, name: fragments/66/fragment66}
+    - {vram: 0x83202010, type:  .bss, name: fragments/pikachu_reward/pikachu_reward}
 
   - name: fragment66_relocs
     type: code
@@ -2461,8 +2461,8 @@
     start: 0x3B8530
     vram: 0x8F000000
     subsegments:
-    - [0x3B8530, textbin,   fragments/67/fragment67_header]
-    - [0x3B8550, c,      fragments/67/fragment67]
+    - [0x3B8530, textbin,   fragments/debug_menu_exit/debug_menu_exit_header]
+    - [0x3B8550, c,      fragments/debug_menu_exit/debug_menu_exit]
 
   - name: fragment67_relocs
     type: code
@@ -2479,8 +2479,8 @@
     start: 0x3B8570
     vram: 0x8F100000 # unknown vram. Another unused one? Might be 8F100000?
     subsegments:
-    - [0x3B8570, textbin, fragments/68/fragment68_header]
-    - [0x3B8590, c,    fragments/68/fragment68]
+    - [0x3B8570, textbin, fragments/debug_menu_slot68/debug_menu_slot68_header]
+    - [0x3B8590, c,    fragments/debug_menu_slot68/debug_menu_slot68]
 
   - name: fragment68_relocs
     type: code
