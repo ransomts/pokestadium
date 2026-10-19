@@ -2635,8 +2635,8 @@
     start: 0x3B9620
     vram: 0x8FC00000 # unknown vram. Another unused one? Might be 8FC00000?
     subsegments:
-    - [0x3B9620, textbin,  fragments/77/fragment77_header]
-    - [0x3B9640, c,    fragments/77/fragment77]
+    - [0x3B9620, textbin,  fragments/debug_menu_slot77/debug_menu_slot77_header]
+    - [0x3B9640, c,    fragments/debug_menu_slot77/debug_menu_slot77]
 
   - name: fragment77_relocs
     type: code

@@ -1,4 +1,4 @@
-#include "fragment77.h"
+#include "src/fragments/debug_menu_slot77/debug_menu_slot77.h"
 #include "src/29BA0.h"
 
 s32 Fragment77_Execute(UNUSED s32 arg0, UNUSED s32 arg1) {
