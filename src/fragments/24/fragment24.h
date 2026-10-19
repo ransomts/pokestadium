@@ -198,7 +198,7 @@ typedef struct unk_func_8830867C_03C {
     /* 0x44 */ unk_func_8850878C* unk_44;
     /* 0x48 */ unk_func_88001300_000* unk_48;
     /* 0x4C */ unk_func_8830867C_03C_04C* unk_4C;
-    /* 0x50 */ unk_func_88001300_03C* unk_50;
+    /* 0x50 */ GridMenu* unk_50;
     /* 0x54 */ unk_func_8821421C_038_034* unk_54;
     /* 0x58 */ unk_func_8830867C_03C_058 unk_58[15];
     /* 0xD0 */ unk_func_8830867C_03C_0D0 unk_D0;
@@ -218,7 +218,7 @@ typedef struct unk_func_8830867C_040 {
     /* 0x54 */ unk_func_8850878C* unk_54;
     /* 0x58 */ unk_func_88001300_000* unk_58;
     /* 0x5C */ unk_func_8830867C_040_05C* unk_5C;
-    /* 0x60 */ unk_func_88001300_03C* unk_60;
+    /* 0x60 */ GridMenu* unk_60;
     /* 0x64 */ unk_func_8821421C_038_034* unk_64;
     /* 0x68 */ unk_func_88205880_A030 unk_68;
     /* 0x74 */ u16 unk_74;
@@ -239,7 +239,7 @@ typedef struct unk_func_8830867C_044 {
     /* 0x38 */ unk_func_8830867C_044_038* unk_38;
     /* 0x3C */ unk_func_8830867C_044_038* unk_3C;
     /* 0x40 */ unk_func_8830867C_044_040* unk_40;
-    /* 0x44 */ unk_func_88001300_03C* unk_44;
+    /* 0x44 */ GridMenu* unk_44;
 } unk_func_8830867C_044; // size = 0x48
 
 typedef struct unk_func_8830867C_048_04C {
@@ -407,11 +407,11 @@ typedef struct unk_func_8830867C_02C_0DC {
 typedef struct unk_func_8830867C_02C {
     /* 0x000 */ unk_func_88001300_000 unk_000;
     /* 0x02C */ unk_func_88001300_038* unk_02C;
-    /* 0x030 */ unk_func_8850B254* unk_030;
+    /* 0x030 */ DashedBorderFrame* unk_030;
     /* 0x034 */ unk_func_8830867C_02C_034* unk_034;
     /* 0x038 */ unk_func_88500994* unk_038;
     /* 0x03C */ unk_func_88200FA0_030_038 unk_03C;
-    /* 0x048 */ unk_func_8830867C_02C_048* unk_048;
+    /* 0x048 */ ChildSelectionProxy* unk_048;
     /* 0x04C */ unk_func_8830867C_02C_04C* unk_04C;
     /* 0x050 */ unk_func_8830867C_02C_050* unk_050;
     /* 0x054 */ unk_func_88001300_000* unk_054;
@@ -439,7 +439,7 @@ typedef struct unk_func_8830867C_02C {
     /* 0x0AC */ unk_func_8830867C_04C* unk_0AC;
     /* 0x0B0 */ unk_func_889000C4* unk_0B0;
     /* 0x0B4 */ YesNoDialog* unk_0B4;
-    /* 0x0B8 */ unk_func_8850CD44* unk_0B8;
+    /* 0x0B8 */ ChildWidgetGroup* unk_0B8;
     /* 0x0BC */ unk_func_882173EC* unk_0BC;
     /* 0x0C0 */ PpChangeBanner* unk_0C0;
     /* 0x0C4 */ unk_func_882173EC* unk_0C4;
@@ -682,19 +682,19 @@ s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1);
 s32 LabPCList_HandleColumnHeaderClick(unk_func_8830867C_02C* arg0, unk_func_88001300_000* arg1, s32 arg2, Controller* arg3);
 u32 LabPCList_GetColumnMenuIndex(unk_func_8830867C_02C* arg0);
 void func_88306FE4(void);
-void LabPCList_InitColumnSelectionProxy(unk_func_8830867C_02C_048* arg0, unk_func_8830867C_02C* arg1);
+void LabPCList_InitColumnSelectionProxy(ChildSelectionProxy* arg0, unk_func_8830867C_02C* arg1);
 void LabPCList_SaveAll(unk_func_8830867C_02C* arg0, s32 arg1);
 void LabPCList_MarkIneligibleEntries(unk_func_8830867C_02C* arg0);
 s32 LabPCList_IsGamePakBoxEmpty(unk_func_8830867C_02C* arg0);
 s32 LabPCList_ConfirmExit(unk_func_8830867C_02C* arg0, Controller* arg1, s32 arg2);
 void LabPCList_SetGridInteractive(unk_func_8830867C_02C* arg0, s32 arg1);
-void LabPCList_ResetGridSelection(unk_func_8830867C_02C_048* arg0);
-void LabPCList_HandleGridSelectionEntry(unk_func_8830867C_02C_048* arg0, Controller* arg1);
-s32 LabPCList_HandleBackButton(unk_func_8830867C_02C_048* arg0, Controller* arg1);
-s32 LabPCList_HandlePageSwitchInput(unk_func_8830867C_02C_048* arg0, Controller* arg1);
-s32 LabPCList_HandleGridInput(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2);
-s32 LabPCList_HandleColumnMenuInput(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2);
-s32 LabPCList_HandleTopLevelInput(unk_func_8830867C_02C_048* arg0, Controller* arg1);
+void LabPCList_ResetGridSelection(ChildSelectionProxy* arg0);
+void LabPCList_HandleGridSelectionEntry(ChildSelectionProxy* arg0, Controller* arg1);
+s32 LabPCList_HandleBackButton(ChildSelectionProxy* arg0, Controller* arg1);
+s32 LabPCList_HandlePageSwitchInput(ChildSelectionProxy* arg0, Controller* arg1);
+s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 arg2);
+s32 LabPCList_HandleColumnMenuInput(ChildSelectionProxy* arg0, Controller* arg1, s32 arg2);
+s32 LabPCList_HandleTopLevelInput(ChildSelectionProxy* arg0, Controller* arg1);
 void LabPCList_RunWidgetLoop(unk_func_8830867C* arg0);
 void LabPCList_ScreenThreadEntry(unk_func_8830867C* arg0);
 s32 LabPCList_ShowListScreen(UNUSED s32 arg0, UNUSED s32 arg1);
@@ -706,9 +706,9 @@ void BattleMoveListWidget_DisableRestrictedMoves(unk_func_8830867C_04C_078* arg0
 s32 BattleMoveListWidget_HandleInput(unk_func_8830867C_04C_078* arg0, Controller* arg1);
 void BattleMoveListWidget_Destroy(unk_func_8830867C_04C_078* arg0);
 void BattleMoveListWidget_SetCloseState(unk_func_8830867C_04C_078* arg0);
-void func_883097E4(void);
+void BattleMoveListWidget_Update(void);
 s32 BattleInfoWidget_GetEntryDisabledFlags(unk_func_8830867C_034_03C_038_02C_000* arg0);
-void func_88309808(void);
+void BattleInfoWidget_Update(void);
 void BattleInfoWidget_ApplyEntryDisabledFlags(unk_func_8830867C_034_03C* arg0);
 void BattleInfoWidget_SetActivePageFlags(unk_func_8830867C_034_03C* arg0, s32 arg1);
 void BattleInfoWidget_SyncEntrySelection(unk_func_8830867C_034_03C* arg0);

@@ -101,7 +101,7 @@ extern u8 D_400D200[];
 extern u8 D_04000000[];
 extern u8 D_04000800[];
 extern u8 D_04001000[];
-extern u8 D_04001800[];
+extern u8 gRentalIconTexEmpty[];
 extern u8 D_04002000[];
 extern u8 D_04002800[];
 extern u8 D_04003000[];

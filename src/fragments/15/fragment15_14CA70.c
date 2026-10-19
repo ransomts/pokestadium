@@ -422,8 +422,8 @@ unk_D_86002F58_004_000_010_024* Gallery_LoadSurfingPikachuIcon(PokemonData* arg0
 }
 
 void Gallery_SetupPhotoModel(void) {
-    Gallery_CopyBattleMonFromPhotoMon(&gStagePanelPlayerData, &D_83407AC8);
-    gStagePanelState->unk_16C = D_83407AC8.posY;
+    Gallery_CopyBattleMonFromPhotoMon(&gStagePanelPlayerData, &gGallerySpecialSpecies);
+    gStagePanelState->unk_16C = gGallerySpecialSpecies.posY;
 
     gCameraZoomOffset = gStageCameraConfig[gStagePanelState->unk_16C - 1].rotation;
     gStageAnimIndexA = gStageCameraConfig[gStagePanelState->unk_16C - 1].posX - 6;
@@ -525,7 +525,7 @@ void GalleryCamera_InitIntroSequence(void) {
     if (gStagePanelMode == 1) {
         gStageSnapshotCount = 0;
     } else {
-        gStageSnapshotCount = D_83402E20;
+        gStageSnapshotCount = gGalleryPhotoPoolCount;
     }
 
     gCameraParams->unk_014 = 1;
@@ -677,7 +677,7 @@ void Gallery_CapturePhoto(void) {
 
         gStageSnapshotCount++;
         if (gStagePanelMode != 1) {
-            D_83402E20 = gStageSnapshotCount;
+            gGalleryPhotoPoolCount = gStageSnapshotCount;
         }
 
         StageLoader_RunFrames(1);

@@ -3,7 +3,7 @@
 #include "12D80.h"
 #include "6A40.h"
 
-typedef struct unk_D_810047E0 {
+typedef struct Particle {
     /* 0x00 */ s16 active;
     /* 0x02 */ char unk02[0x2];
     /* 0x04 */ Vec3f position;
@@ -11,7 +11,7 @@ typedef struct unk_D_810047E0 {
     /* 0x1C */ Vec3f scale;
     /* 0x28 */ s16 misc;
     /* 0x2A */ char unk2A[0x2];
-} unk_D_810047E0; // size = 0x2C
+} Particle; // size = 0x2C
 
 typedef struct unk_arg2_func_81001D80 {
     /* 0x00 */ s32 posX;
@@ -65,7 +65,7 @@ f32 gParticleScaleTable[12] = {
 Vec3f gVecZero = { 0.0f, 0.0f, 0.0f };
 Vec3f D_81004118 = { 0.0f, 0.0f, 0.0f };
 Vec3f gVecOne = { 1.0f, 1.0f, 1.0f };
-Vec3f D_81004130 = { 2.0f, 2.0f, 2.0f };
+Vec3f gVecTwo = { 2.0f, 2.0f, 2.0f };
 Vec3f D_8100413C = { 0.0f, 10.0f, 0.0f };
 Vec3f D_81004148 = { 10000.0f, 10000.0f, 10000.0f };
 Vec3f D_81004154 = { -10000.0f, -10000.0f, -10000.0f };
@@ -73,9 +73,9 @@ Vec3f D_81004160 = { 1.0f, 1.0f, 1.0f };
 static u32 pad_D_8100416C = 0;
 
 // .bss
-static unk_D_810047E0 D_810047E0[2][10];
-static s32 D_81004B50;
-static s32 D_81004B54;
+static Particle gParticleSlots[2][10];
+static s32 gParticleRenderCount;
+static s32 gParticleFrameCounter;
 
 
 void Particle31_ResetSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
@@ -84,7 +84,7 @@ void Particle31_ResetSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
     Vec3f sp50 = gVecZero;
     Vec3f sp44 = D_81004118;
     Vec3f sp38 = gVecOne;
-    Vec3f sp2C = D_81004130;
+    Vec3f sp2C = gVecTwo;
     Vec3f sp20 = D_8100413C;
     Vec3f sp14 = D_81004148;
     Vec3f sp8 = D_81004154;
@@ -95,11 +95,11 @@ void Particle31_ResetSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
         var_v0 = 0;
     }
 
-    D_810047E0[var_v0 & 1][arg1].active = 0;
-    D_810047E0[var_v0 & 1][arg1].misc = 0;
-    D_810047E0[var_v0 & 1][arg1].position = sp50;
-    D_810047E0[var_v0 & 1][arg1].velocity = sp44;
-    D_810047E0[var_v0 & 1][arg1].scale = sp38;
+    gParticleSlots[var_v0 & 1][arg1].active = 0;
+    gParticleSlots[var_v0 & 1][arg1].misc = 0;
+    gParticleSlots[var_v0 & 1][arg1].position = sp50;
+    gParticleSlots[var_v0 & 1][arg1].velocity = sp44;
+    gParticleSlots[var_v0 & 1][arg1].scale = sp38;
 }
 
 void Particle31_ResetAllSlots(Fragment2_1GraphNode* arg0) {
@@ -111,11 +111,11 @@ void Particle31_ResetAllSlots(Fragment2_1GraphNode* arg0) {
 }
 
 void Particle31_ResetCounters(void) {
-    D_81004B50 = 0;
-    D_81004B54 = 0;
+    gParticleRenderCount = 0;
+    gParticleFrameCounter = 0;
 }
 
-void Particle31_SpawnSpeciesEffect(unk_D_810047E0* arg0) {
+void Particle31_SpawnSpeciesEffect(Particle* arg0) {
     s32 var_v0;
     Vec3f sp90;
     Vec3f sp84;
@@ -226,7 +226,7 @@ void Particle31_SpawnSpeciesEffect(unk_D_810047E0* arg0) {
     }
 }
 
-void Particle31_UpdateSpeciesEffectTrigger(unk_D_810047E0* arg0) {
+void Particle31_UpdateSpeciesEffectTrigger(Particle* arg0) {
     s32 pad[1];
     s16 temp_v1;
     s32 var_a1;
@@ -239,7 +239,7 @@ void Particle31_UpdateSpeciesEffectTrigger(unk_D_810047E0* arg0) {
     case 0x6D:
     case 0x6E:
         temp_v1 = gDefaultGraphRoot->unk_040.posX;
-        temp_a0 = gParticleConditionIndexSeq[D_81004B54 % 18];
+        temp_a0 = gParticleConditionIndexSeq[gParticleFrameCounter % 18];
         switch(temp_v1) {
         case 4:
             if (var_a1 == gParticleConditionTable[temp_a0].posY) {
@@ -303,7 +303,7 @@ void Particle31_UpdateSpeciesEffectTrigger(unk_D_810047E0* arg0) {
     }
 }
 
-Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
+Gfx* Particle_Render(Gfx* gfx, Particle* arg1, DisplayListAddresses* arg2, s16 arg3) {
     Mtx* sp294;
     Mtx sp250;
     Mtx sp210;
@@ -485,11 +485,11 @@ Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2,
         arg1->velocity.y *= 0.9f;
         arg1->velocity.z *= 0.9f;
     }
-    D_81004B50 += 1;
+    gParticleRenderCount += 1;
     return gfx;
 }
 
-Gfx* Particle31_BuildDisplayList(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
+Gfx* Particle31_BuildDisplayList(Gfx* gfx, Particle* arg1, DisplayListAddresses* arg2, s16 arg3) {
     s32 i;
 
     for (i = 0; i < 10; i++, arg1++) {
@@ -503,14 +503,14 @@ Gfx* Particle31_BuildDisplayList(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddr
 void Particle_Process(s32 arg0, DisplayListState* state) {
     s32 pad[2];
     s32 sp5C;
-    unk_D_810047E0* sp1C;
+    Particle* sp1C;
     s32 sp18;
-    unk_D_810047E0* temp_a1_3;
+    Particle* temp_a1_3;
     s32 temp_a0;
     s16 temp_a2;
     s16 temp_v0;
     s16 temp_v0_2;
-    unk_D_810047E0* temp_a1_2;
+    Particle* temp_a1_2;
     s32 temp_a1;
     Gfx* gfx;
     s32 var_a3;
@@ -520,7 +520,7 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
 
     sp5C = state->addresses;
     if (arg0 == 2) {
-        if (D_81004B54 == 0) {
+        if (gParticleFrameCounter == 0) {
             state->gfx = Gfx_AllocDisplayList(0x500);
         } else {
             state->gfx = Gfx_AllocDisplayList(0x80);
@@ -531,16 +531,16 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
             temp_v0 = gDefaultGraphRoot->unk_01A;
             switch (gDefaultGraphRoot->unk_01A) {
                 case 0x5C:
-                    Particle31_UpdateSpeciesEffectTrigger(&D_810047E0);
-                    if (D_81004B54 == 0) {
-                        gfx = Particle31_BuildDisplayList(gfx, &D_810047E0, sp5C, 0);
+                    Particle31_UpdateSpeciesEffectTrigger(&gParticleSlots);
+                    if (gParticleFrameCounter == 0) {
+                        gfx = Particle31_BuildDisplayList(gfx, &gParticleSlots, sp5C, 0);
                     }
                     break;
                 case 0x6D:
                 case 0x6E:
                     var_a3 = 0;
                     temp_v0_2 = gDefaultGraphRoot->unk_040.posX;
-                    temp_a2 = gParticleConditionIndexSeq[D_81004B54 % 18];
+                    temp_a2 = gParticleConditionIndexSeq[gParticleFrameCounter % 18];
                     temp_a1 = (s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
                     switch (temp_v0_2) {
                     case 4:
@@ -571,7 +571,7 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
                         break;
                     }
                     if (var_a3 == 1) {
-                        temp_a1_2 = &D_810047E0[0][D_81004B50];
+                        temp_a1_2 = &gParticleSlots[0][gParticleRenderCount];
                         if (temp_a1_2->active == 1) {
                             gfx = Particle_Render(gfx, temp_a1_2, sp5C, 0);
                         }
@@ -579,21 +579,21 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
                     break;
             }
         } else if (temp_v1 == 0xFE) {
-            if (D_81004B54 == 0) {
-                gfx = Particle31_BuildDisplayList(gfx, &D_810047E0, sp5C, 0);
+            if (gParticleFrameCounter == 0) {
+                gfx = Particle31_BuildDisplayList(gfx, &gParticleSlots, sp5C, 0);
             }
-        } else if (((s32) temp_v1 < 2) && (D_81004B50 >= 0) && (D_81004B50 < 0xB)) {
-            temp_a1_3 = &D_810047E0[temp_v1 & 1][0];
+        } else if (((s32) temp_v1 < 2) && (gParticleRenderCount >= 0) && (gParticleRenderCount < 0xB)) {
+            temp_a1_3 = &gParticleSlots[temp_v1 & 1][0];
             sp1C = temp_a1_3;
             sp18 = (s32) temp_v1;
             Particle31_UpdateSpeciesEffectTrigger(temp_a1_3);
-            if (D_81004B54 == 0) {
+            if (gParticleFrameCounter == 0) {
                 gfx = Particle31_BuildDisplayList(gfx, temp_a1_3, sp5C, (s16) temp_v1);
             }
         }
         gSPEndDisplayList(gfx);
     }
-    D_81004B54 += 1;
+    gParticleFrameCounter += 1;
 }
 
 void Particle31_PackSlotData(u8* arg0) {
@@ -608,15 +608,15 @@ void Particle31_PackSlotData(u8* arg0) {
     u8 var_v0;
 
     for (i = 0; i < 10; i++) {
-        if (D_810047E0[0][i].active == 1) {
+        if (gParticleSlots[0][i].active == 1) {
             var_v0 = 0x80;
-            var_a0 = D_810047E0[0][i].misc & 0x7F;
-            var_a1 = D_810047E0[0][i].position.x * 10.0f;
-            var_a2 = D_810047E0[0][i].position.y * 10.0f;
-            var_a3 = D_810047E0[0][i].position.z * 10.0f;
-            var_t0 = D_810047E0[0][i].velocity.x * 10.0f;
-            var_t1 = D_810047E0[0][i].velocity.y * 10.0f;
-            var_t2 = D_810047E0[0][i].velocity.z * 10.0f;
+            var_a0 = gParticleSlots[0][i].misc & 0x7F;
+            var_a1 = gParticleSlots[0][i].position.x * 10.0f;
+            var_a2 = gParticleSlots[0][i].position.y * 10.0f;
+            var_a3 = gParticleSlots[0][i].position.z * 10.0f;
+            var_t0 = gParticleSlots[0][i].velocity.x * 10.0f;
+            var_t1 = gParticleSlots[0][i].velocity.y * 10.0f;
+            var_t2 = gParticleSlots[0][i].velocity.z * 10.0f;
         } else {
             var_v0 = 0;
             var_a0 = 0;
@@ -643,7 +643,7 @@ void Particle31_PackSlotData(u8* arg0) {
 }
 
 void Particle31_UnpackSlotData(unk_arg0_func_81002260* arg0, u8* arg1) {
-    unk_D_810047E0* var_v1;
+    Particle* var_v1;
     f32 var_fv0;
     s16 var_a2;
     s16 var_t0;
@@ -656,7 +656,7 @@ void Particle31_UnpackSlotData(unk_arg0_func_81002260* arg0, u8* arg1) {
     s32 i;
 
     for (i = 0; i < 10; i++) {
-        var_v1 = &D_810047E0[0][i];
+        var_v1 = &gParticleSlots[0][i];
         temp_a0 = *arg1 & 0x80;
         temp_a3 = *arg1++;
         if (!temp_a0) {

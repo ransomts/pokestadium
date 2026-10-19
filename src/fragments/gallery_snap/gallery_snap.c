@@ -37,7 +37,7 @@ typedef struct MenuSubPanelItem {
 
 static s32 D_833032E0;
 static s32 gMenuStep;
-static unk_D_83407B38 gMenuActiveData;
+static GallerySceneGrid gMenuActiveData;
 static BinArchive* gMenuAssetArchive;
 static s32 gMenuDirty;
 static PhotoSceneData gSwapTempPokemon;
@@ -163,8 +163,8 @@ void Gallery_SnapDrawRoundedFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-unk_D_83407B38* Gallery_SnapGetActiveGrid(void) {
-    unk_D_83407B38* ret;
+GallerySceneGrid* Gallery_SnapGetActiveGrid(void) {
+    GallerySceneGrid* ret;
 
     if (gGallerySpecialUnlocked == 0) {
         ret = &gMenuActiveData;
@@ -270,40 +270,40 @@ s32 Gallery_SnapUpdateMenuInput(void) {
     sp2C = 0;
     sp28 = 0;
     sp20 = gGallerySpecialViewed;
-    sp1C = D_83402E28;
+    sp1C = gGalleryPhotoPoolMax;
 
     if (Gallery_FindReadyScene(Gallery_SnapGetActiveGrid()->unk_20, 0x25) != -1) {
         return 0;
     }
 
     if (gPlayer1Controller->buttonPressed & 0x800) {
-        D_83402E28--;
-        if (D_83402E28 < 0) {
-            D_83402E28 = 6;
+        gGalleryPhotoPoolMax--;
+        if (gGalleryPhotoPoolMax < 0) {
+            gGalleryPhotoPoolMax = 6;
         }
     } else if (gPlayer1Controller->buttonPressed & 0x400) {
-        D_83402E28++;
-        if (D_83402E28 >= 7) {
-            D_83402E28 = 0;
+        gGalleryPhotoPoolMax++;
+        if (gGalleryPhotoPoolMax >= 7) {
+            gGalleryPhotoPoolMax = 0;
         }
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         sp2C = 1;
-        D_83402E28 = 6;
+        gGalleryPhotoPoolMax = 6;
     }
 
-    if (sp1C != D_83402E28) {
+    if (sp1C != gGalleryPhotoPoolMax) {
         Audio_PlaySoundEffectById(1);
     }
 
-    sp24 = &D_833031B4[D_83402E28];
+    sp24 = &D_833031B4[gGalleryPhotoPoolMax];
 
-    if (sp1C != D_83402E28) {
+    if (sp1C != gGalleryPhotoPoolMax) {
         gMenuDirty = 0;
         gMenuInputLocked = 0;
     }
 
     if ((gGalleryAudioStateFlag != 0) && (gMenuInputLocked == 0)) {
-        if ((gPlayer1Controller->buttonDown & 0x20) && (gPlayer1Controller->buttonDown & 0x10) && (D_83402E28 == 5)) {
+        if ((gPlayer1Controller->buttonDown & 0x20) && (gPlayer1Controller->buttonDown & 0x10) && (gGalleryPhotoPoolMax == 5)) {
             gGallerySpecialViewed = 1;
         } else {
             gGallerySpecialViewed = 0;
@@ -322,7 +322,7 @@ s32 Gallery_SnapUpdateMenuInput(void) {
         Audio_PlaySoundEffectById(sp24->unk_14);
     } else if (gPlayer1Controller->buttonPressed & 0x8000) {
         if (sp24->unk_12 == 0) {
-            switch (D_83402E28) {
+            switch (gGalleryPhotoPoolMax) {
                 default:
                     sp28 = 1;
                     break;
@@ -353,7 +353,7 @@ s32 Gallery_SnapUpdateMenuInput(void) {
                     break;
             }
             Audio_PlaySoundEffectById(sp24->unk_14);
-        } else if ((D_83402E28 == 5) && (gGallerySpecialViewed != 0)) {
+        } else if ((gGalleryPhotoPoolMax == 5) && (gGallerySpecialViewed != 0)) {
             sp28 = 2;
             Audio_PlaySoundEffectById(sp24->unk_14);
         } else {
@@ -370,7 +370,7 @@ void Gallery_SnapResetToMenu(void) {
     Gallery_InitPageCursor(&gGalleryMainSelection);
 }
 
-s32 Gallery_SnapUpdateGridInput(unk_D_83407B38* arg0) {
+s32 Gallery_SnapUpdateGridInput(GallerySceneGrid* arg0) {
     s32 sp4C;
     s32 sp48;
     s32 sp44;
@@ -562,7 +562,7 @@ void DrawMenuScreen(void) {
 
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, r);
 
-            if ((i == D_83402E28) && (D_833031B4[i].unk_12 == 0)) {
+            if ((i == gGalleryPhotoPoolMax) && (D_833031B4[i].unk_12 == 0)) {
                 Gallery_SnapDrawScaledImage(D_833031B4[i].posX, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].rotation,
                               D_833031B4[i].unk_06, temp_fs0, temp_fs1);
             } else {
@@ -626,8 +626,8 @@ void Gallery_SnapDrawTitleBar(s32 arg0, s32 arg1, s32 arg2) {
     Font_EndTexturedTextRendering();
 }
 
-void Gallery_SnapDrawHintBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
-    MenuItem* temp_v1 = &D_833031B4[D_83402E28];
+void Gallery_SnapDrawHintBox(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
+    MenuItem* temp_v1 = &D_833031B4[gGalleryPhotoPoolMax];
     char* sp18 = NULL;
 
     switch (D_833032E0) {
@@ -685,7 +685,7 @@ void Gallery_SnapDrawHintBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
 }
 
 void Gallery_SnapInit(s32 arg0, s32 arg1) {
-    unk_D_83407B38* temp_v0_2;
+    GallerySceneGrid* temp_v0_2;
     AssetManager* sp30;
 
     switch (arg0) {
@@ -812,7 +812,7 @@ void Gallery_SnapDrawBackgroundWipe(void) {
     Gallery_SnapDrawGradientQuad(gBackgroundStartX, 0, gBackgroundEndX - gBackgroundStartX, 0x1E0, &sp80, &sp7C);
 }
 
-void DrawPokemonGrid(unk_D_83407B38* arg0) {
+void DrawPokemonGrid(GallerySceneGrid* arg0) {
     s32 temp_fp;
     s32 temp_s4;
     s32 temp_s5;
@@ -873,7 +873,7 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
     }
 }
 
-void Gallery_SnapDrawCursor(unk_D_83407B38* arg0) {
+void Gallery_SnapDrawCursor(GallerySceneGrid* arg0) {
     Camera* temp_s0;
     s32 sp58;
     s32 sp54;
@@ -895,7 +895,7 @@ void Gallery_SnapDrawCursor(unk_D_83407B38* arg0) {
     switch (D_833032E0) {
         case 0:
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
-            Gallery_DrawSelectionCorners(0x3E, (D_83402E28 * 0x36) + 0x46, 0x8F, 0x28);
+            Gallery_DrawSelectionCorners(0x3E, (gGalleryPhotoPoolMax * 0x36) + 0x46, 0x8F, 0x28);
             break;
 
         case 2:
@@ -953,7 +953,7 @@ void Gallery_SnapDrawBackPrompt(s32 arg0) {
 
 void Gallery_SnapDrawFrame(void) {
     UNUSED s32 pad;
-    unk_D_83407B38* sp18 = Gallery_SnapGetActiveGrid();
+    GallerySceneGrid* sp18 = Gallery_SnapGetActiveGrid();
 
     BgStage_DrawFrame();
     Gallery_SnapDrawBackgroundWipe();
@@ -970,7 +970,7 @@ void Gallery_SnapDrawFrame(void) {
     BgStage_AdvanceFrame();
 }
 
-void Gallery_SnapUpdatePasteConfirm(unk_D_83407B38* arg0) {
+void Gallery_SnapUpdatePasteConfirm(GallerySceneGrid* arg0) {
     s32 var_a2 = 0;
     s32 idx = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
     Camera* temp_v1 = arg0->unk_20[idx];
@@ -1054,7 +1054,7 @@ void Gallery_SnapUpdateExitConfirm(void) {
             gMenuStep = 8;
             StageContext_SetClearColor(0xFFFF);
             StageFade_StartFromTransparent(0xF);
-            if (gMenuExitFadeColors[D_83402E28] == 8) {
+            if (gMenuExitFadeColors[gGalleryPhotoPoolMax] == 8) {
                 Audio_FadeOutAll(0xF);
             }
         }
@@ -1069,7 +1069,7 @@ void Gallery_SnapUpdateExitDelay(void) {
         gMenuStep = 8;
         StageContext_SetClearColor(0xFFFF);
         StageFade_StartFromTransparent(0xF);
-        if (gMenuExitFadeColors[D_83402E28] == 8) {
+        if (gMenuExitFadeColors[gGalleryPhotoPoolMax] == 8) {
             Audio_FadeOutAll(0xF);
         }
     }
@@ -1088,7 +1088,7 @@ s32 Gallery_SnapUpdate(void) {
     sp28 = 1;
     sp24 = gMenuStep;
     sp20 = gGallerySpecialUnlocked;
-    sp1C = &D_833031B4[D_83402E28];
+    sp1C = &D_833031B4[gGalleryPhotoPoolMax];
 
     switch (gMenuStep) {
         case 0:
@@ -1136,7 +1136,7 @@ s32 Gallery_SnapUpdate(void) {
                     StageContext_SetClearColor(0xFFFF);
                 }
                 StageFade_StartFromTransparent(sp18);
-                if (gMenuExitFadeColors[D_83402E28] == 8) {
+                if (gMenuExitFadeColors[gGalleryPhotoPoolMax] == 8) {
                     Audio_FadeOutAll(sp18);
                 }
             }
@@ -1223,13 +1223,13 @@ void Gallery_SnapLoop(void) {
 }
 
 s32 Gallery_SnapGetResult(void) {
-    s32 sp1C = gMenuExitFadeColors[D_83402E28];
+    s32 sp1C = gMenuExitFadeColors[gGalleryPhotoPoolMax];
 
     if (Gallery_GetEnlargeTarget(0) != NULL) {
         sp1C = 4;
     }
 
-    if (D_83402E28 == 2) {
+    if (gGalleryPhotoPoolMax == 2) {
         gGalleryMainSelection.posX = 1;
     }
 

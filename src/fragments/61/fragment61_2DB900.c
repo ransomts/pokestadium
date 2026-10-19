@@ -42,7 +42,7 @@ s16 gMenuBackgroundHeight;
 s16 gMessageId;
 s32 D_8423E57C;
 
-unk_D_8380548C gIconConfig[] = {
+RentalSlotAnimData gIconConfig[] = {
     {
         0x01,
         0x00,

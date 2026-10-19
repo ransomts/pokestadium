@@ -16630,3 +16630,50 @@ unk_D_86104B5C	DLParam	w8		small struct used for result screen display list para
 unk_D_86203CEC	RaceAIDifficulty	w8		contains rotation and unk_06 used as probability thresholds in RattataGame_UpdateAIInput	applied@c74b3641
 unk_D_86203E50	RacePlayerState	w8		main state struct for racers, contains graph node, position, and finish order	applied@c74b3641
 unk_D_86204720	RaceObstacle	w8		struct for hurdles, contains graph node and collision state	applied@c74b3641
+unk_D_86B10BD0	SceneState	w9		unk_D_86B10BD0:SceneState	applied@1c98d55c
+unk_D_86B10BE0	DialogBoxState	w9		unk_D_86B10BE0:DialogBoxState	applied@1c98d55c
+func_883097E4	BattleMoveListWidget_Update	w9		empty function likely used as a hook or placeholder in the BattleMoveListWidget logic	applied@1c98d55c
+func_88309808	BattleInfoWidget_Update	w9		empty function likely used as a hook or placeholder in the BattleInfoWidget logic	applied@1c98d55c
+D_88317424	gMoveEntryHighlightColor	w9		RGBA8 color used in BattleInfoWidget_DrawEntry for highlighted entries	applied@1c98d55c
+D_88317434	gBattleInfoWidgetBgColor	w9		RGBA8 color used as background for the BattleInfoWidget solid color panel	applied@1c98d55c
+D_8831744C	gBattleInfoWidgetPanelColor	w9		RGBA8 color used for the main background panel in BattleInfoWidget_Build	applied@1c98d55c
+unk_func_8850B254	DashedBorderFrame	w9		structure used in WidgetTree_InitDashedBorderFrame, contains colors and dimensions	applied@1c98d55c
+unk_func_8830867C_02C_048_000	VerticalMenu	w9		structure used in WidgetTree_InitVerticalMenu, manages a list of items and a selection index	applied@1c98d55c
+unk_func_88001300_03C	GridMenu	w9		structure used in WidgetTree_InitGridMenu, manages a 2D array of widgets and selection coordinates	applied@1c98d55c
+unk_func_8830867C_02C_048	ChildSelectionProxy	w9		structure used in WidgetTree_InitChildSelectionProxy to proxy input to children	applied@1c98d55c
+unk_func_8850CD44	ChildWidgetGroup	w9		structure used in WidgetTree_InitChildWidgetGroup to group multiple widgets	applied@1c98d55c
+unk_D_88901178	LabUI_MessagePos	w9		Structure used in gDialogMessageTable to store text offsets and alignment/rotation values.	applied@1c98d55c
+D_889011B0	gDialogColorWhite	w9		Color used for text labels in the confirm dialog.	applied@1c98d55c
+D_889011B4	gDialogColorLightRed	w9		Color used for text labels in the confirm dialog.	applied@1c98d55c
+D_889011B8	gDialogColorDarkRed	w9		Color used for the solid color background section of the confirm dialog.	applied@1c98d55c
+D_889011BC	gDialogColorDarkBlue	w9		Color constant used in the dialog UI.	applied@1c98d55c
+D_889011C0	gDialogColorLightBlue	w9		Color constant used in the dialog UI.	applied@1c98d55c
+D_889011C4	gSavingWidgetBgColor	w9		Background color for the saving status widget.	applied@1c98d55c
+D_889011C8	gSavingWidgetTextColor	w9		Primary text color for the saving status widget.	applied@1c98d55c
+D_889011CC	gSavingWidgetTextHighlight	w9		Highlight/secondary text color for the saving status widget.	applied@1c98d55c
+D_889011D0	gSavingWidgetEmptyString1	w9		Empty string used as a placeholder page in the saving status widget.	applied@1c98d55c
+D_889011D4	gSavingWidgetEmptyString2	w9		Empty string used as a placeholder label in the saving status widget.	applied@1c98d55c
+D_810047E0	gParticleSlots	w9	unk_D_810047E0:Particle	array of particle state structures used for rendering and physics	applied@1c98d55c
+D_81004B50	gParticleRenderCount	w9		incremented at the end of Particle_Render	applied@1c98d55c
+D_81004B54	gParticleFrameCounter	w9		incremented at the end of Particle_Process, used for modulo timing	applied@1c98d55c
+D_81004130	gVecTwo	w9		constant vector {2.0, 2.0, 2.0} used in Particle31_ResetSlot	applied@1c98d55c
+unk_D_8250A228	UIWidget	w9		unk_D_8250A228:UIWidget	applied@1c98d55c
+unk_D_8250A480	MatchBanner	w9		used by KidsClub_InitMatchBanner and KidsClub_UpdateMatchBanner to track banner state and position	applied@1c98d55c
+unk_D_8250A498	RoundBanner	w9		used by KidsClub_InitRoundBanner and KidsClub_UpdateRoundBanner to track banner state and position	applied@1c98d55c
+func_825057A0	KidsClub_NoOp	w9		empty function within the KidsClub domain	applied@1c98d55c
+unk_D_83406EB0	PhotoSceneControl	w9		used in Gallery_ControlRecordIsPopulated and Gallery_ControlRecordIsDirty to check flags in unk_6C	applied@1c98d55c
+D_83407AC8	gGallerySpecialSpecies	w9		PhotoMonSpecies global used in the context of gallery special unlocks	applied@1c98d55c
+D_83407AF0	gGallerySessionSettings	w9		SessionModeSettings used to determine gGalleryAudioStateFlag via posX check	applied@1c98d55c
+unk_D_83407B00	GalleryCursor	w9		used in Gallery_InitPageCursor and Gallery_ClearSavedPosition to track posX and rotation	applied@1c98d55c
+unk_D_83407B38	GallerySceneGrid	w9		used in Gallery_InitSceneGrid and Gallery_ProcessSceneGrid to manage scene instances and pagination	applied@1c98d55c
+D_83402E20	gGalleryPhotoPoolCount	w9		reset to 0 in Gallery_ResetPhotoPool alongside mon indices and flags	applied@1c98d55c
+D_83402E24	gGalleryPhotoPoolMin	w9		initialized to 1 in global space, likely a boundary for the photo pool	applied@1c98d55c
+D_83402E28	gGalleryPhotoPoolMax	w9		initialized to 0 in global space, likely a boundary for the photo pool	applied@1c98d55c
+D_83402E38	gGalleryCornerAnimTimer	w9		static variable incremented by 0x2000 in Gallery_DrawSelectionCorners to animate corners	applied@1c98d55c
+D_83805660	gRentalViewerConfirmResult	w9		stores the result of Gallery_GetConfirmPromptResult(2) used in Gallery_RentalViewerUpdateLoadConfirm and Gallery_RentalViewerGetResult	applied@1c98d55c
+D_83805664	gRentalViewerSelectedSlot	w9		stores the currently selected slot index, passed to GbSave_LoadPort and Gallery_RentalViewerBeginZoomIntro	applied@1c98d55c
+D_83805668	gRentalViewerFadeCounter	w9		decremented in Gallery_RentalViewerDrawFrame and set via Gallery_RentalViewerSetFadeCounter to control UI visibility	applied@1c98d55c
+unk_D_8380565C	RentalViewerBgData	w9		struct containing PokemonData at offset 0x7E4, loaded from BinArchive	applied@1c98d55c
+D_838067D8	gRentalViewerState	w9		Used as the primary state controller for the Rental Viewer scene transitions and updates	applied@1c98d55c
+unk_D_8380548C	RentalSlotAnimData	w9		Struct containing animation offsets and properties for the 6 selectable slots	applied@1c98d55c
+D_04001800	gRentalIconTexEmpty	w9		Texture used when player index is 5 in Gallery_RentalViewerNodePostCallback	applied@1c98d55c

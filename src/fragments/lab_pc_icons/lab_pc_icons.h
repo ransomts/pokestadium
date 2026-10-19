@@ -47,7 +47,7 @@ s32 LabPC_DrawMonPreviewWidget(unk_func_88205880_0098_008_050* arg0, s32 arg1, s
 void LabPC_SetPreviewMon(unk_func_88205880_0098_008_050* arg0, PokemonData* arg1);
 void LabPC_InitMovesPanel(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
 void LabPC_SetMovesPanelMon(unk_func_88205880_0098_008_040* arg0, PokemonData* arg1);
-void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, unk_func_8850CD44* arg1, MemoryPool* arg2);
+void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, ChildWidgetGroup* arg1, MemoryPool* arg2);
 void LabPC_SwapMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2);
 void LabPC_ResetMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2);
 void LabPC_InitTrainerInfoWidget(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2);

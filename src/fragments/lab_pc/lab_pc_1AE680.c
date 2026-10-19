@@ -1607,7 +1607,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
         ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, arg0->unk_44[j]);
     }
 
-    arg0->unk_74->unk_28 = mem_pool_alloc(argA, sizeof(unk_func_88001300_03C));
+    arg0->unk_74->unk_28 = mem_pool_alloc(argA, sizeof(GridMenu));
     ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_74->unk_28, 4, 2, argA);
     ((func8850BF80)Memmap_GetFragmentVaddr(WidgetTree_AppendVerticalMenuItem))(arg0->unk_74, arg0->unk_74->unk_28);
 
@@ -1745,7 +1745,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     LabPC_InitSwapMenu(arg0->unk_74->unk_2C, arg0->unk_38[0], arg0->unk_38[1], arg0->unk_40, arg0->unk_80, arg3 != NULL, argA);
     ((func8850BF80)Memmap_GetFragmentVaddr(WidgetTree_AppendVerticalMenuItem))(arg0->unk_74, arg0->unk_74->unk_2C);
 
-    arg0->unk_74->unk_2C->unk_40 = mem_pool_alloc(argA, sizeof(unk_func_8850CD44));
+    arg0->unk_74->unk_2C->unk_40 = mem_pool_alloc(argA, sizeof(ChildWidgetGroup));
     ((func8850CD44)Memmap_GetFragmentVaddr(WidgetTree_InitChildWidgetGroup))(arg0->unk_74->unk_2C->unk_40, 2, argA);
 
     for (j = 0; j < 2; j++) {

@@ -15,23 +15,23 @@ PhotoSceneData gGalleryCamEntries[21];
 static PhotoSceneData gGalleryCamEntriesBackup[21];
 PhotoSceneData* gCurrentCamEntry;
 PhotoSceneData* gCurrentCamEntryPage;
-static unk_D_83406EB0* gCurrentCamEntrySpecial;
-PhotoMonSpecies D_83407AC8;
+static PhotoSceneControl* gCurrentCamEntrySpecial;
+PhotoMonSpecies gGallerySpecialSpecies;
 s32 gGallerySpecialUnlocked;
 s32 gGallerySpecialViewed;
 s32 gGalleryAudioStateFlag;
-static SessionModeSettings D_83407AF0;
-unk_D_83407B00 gGallerySelection;
-unk_D_83407B00 gGalleryMainSelectionCam;
-unk_D_83407B00 gGallerySubSelection;
-unk_D_83407B00 gGalleryTertiarySelection;
+static SessionModeSettings gGallerySessionSettings;
+GalleryCursor gGallerySelection;
+GalleryCursor gGalleryMainSelectionCam;
+GalleryCursor gGallerySubSelection;
+GalleryCursor gGalleryTertiarySelection;
 unk_D_83407B18 gGalleryFinalSelection;
-unk_D_83407B00 gGalleryMainSelection;
-unk_D_83407B38 gGalleryCamList;
+GalleryCursor gGalleryMainSelection;
+GallerySceneGrid gGalleryCamList;
 
-s32 D_83402E20 = 0;
-s32 D_83402E24 = 1;
-s32 D_83402E28 = 0;
+s32 gGalleryPhotoPoolCount = 0;
+s32 gGalleryPhotoPoolMin = 1;
+s32 gGalleryPhotoPoolMax = 0;
 PhotoSceneData* gCurrentGalleryEntryPtr = NULL;
 
 void Gallery_LoadUnlockedBackgrounds(void) {
@@ -55,8 +55,8 @@ void Gallery_LoadUnlockedBackgrounds(void) {
         Deck_ReadSaveEntry(0x17, 0, i, &gGalleryCamEntries[i]);
     }
 
-    Save_GetModeSettings(&D_83407AF0, 1);
-    if (D_83407AF0.posX == 0x1F8) {
+    Save_GetModeSettings(&gGallerySessionSettings, 1);
+    if (gGallerySessionSettings.posX == 0x1F8) {
         gGalleryAudioStateFlag = 1;
     } else {
         gGalleryAudioStateFlag = 0;
@@ -99,7 +99,7 @@ void Gallery_LoadUnlockedBackgrounds(void) {
     Gallery_InitSceneGrid(&gGalleryCamList, 0x3C, 0x2D, 0x10, 4, 0, 0, gCurrentCamEntryPage, 0x10, 0);
 }
 
-s32 Gallery_ControlRecordIsPopulated(unk_D_83406EB0* arg0) {
+s32 Gallery_ControlRecordIsPopulated(PhotoSceneControl* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_6C & 1) {
@@ -108,7 +108,7 @@ s32 Gallery_ControlRecordIsPopulated(unk_D_83406EB0* arg0) {
     return var_v1;
 }
 
-s32 Gallery_ControlRecordIsDirty(unk_D_83406EB0* arg0) {
+s32 Gallery_ControlRecordIsDirty(PhotoSceneControl* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_6C & 2) {
@@ -190,7 +190,7 @@ void Gallery_Terminate(void) {
 }
 
 void Gallery_ResetPhotoPool(void) {
-    D_83402E20 = 0;
+    gGalleryPhotoPoolCount = 0;
     bzero(gDisplayableMonIndices, 0xD20);
     bzero(gMonSelectionFlags, 0x60);
     Gallery_ClearSavedPosition(&gGallerySelection);
@@ -231,7 +231,7 @@ PhotoSceneData* Gallery_GetEnlargeTarget(s32 arg0) {
     return ret;
 }
 
-void Gallery_InitPageCursor(unk_D_83407B00* arg0) {
+void Gallery_InitPageCursor(GalleryCursor* arg0) {
     arg0->posX = 0;
     arg0->rotation = -1;
 }
@@ -447,9 +447,9 @@ void Gallery_DrawPhotoThumbnail(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg
 }
 
 void Gallery_DrawSelectionCorners(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    static s16 D_83402E38 = 0;
+    static s16 gGalleryCornerAnimTimer = 0;
 
-    s16 sp4E = SINS(D_83402E38) * 2;
+    s16 sp4E = SINS(gGalleryCornerAnimTimer) * 2;
     UNUSED s32 pad[4];
 
     gDPPipeSync(gDisplayListHead++);
@@ -459,7 +459,7 @@ void Gallery_DrawSelectionCorners(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     Gfx_DrawTextureIa8(sp4E + arg0, ((arg1 + arg3) - sp4E) - 0x10, 0x10, 0x10, D_300C840, 0x10, 0);
     Gfx_DrawTextureIa8(((arg0 + arg2) - sp4E) - 0x10, sp4E + arg1, 0x10, 0x10, D_300C640, 0x10, 0);
     Gfx_DrawTextureIa8(((arg0 + arg2) - sp4E) - 0x10, ((arg1 + arg3) - sp4E) - 0x10, 0x10, 0x10, D_300C740, 0x10, 0);
-    D_83402E38 += 0x2000;
+    gGalleryCornerAnimTimer += 0x2000;
 }
 
 void Gallery_DrawStatusIcon(s32 arg0, s32 arg1, s32 arg2) {
@@ -474,7 +474,7 @@ void Gallery_DrawStatusIcon(s32 arg0, s32 arg1, s32 arg2) {
     Gfx_DrawTextureRgba16(arg0, arg1, 0x40, 0x20, var_v0, 0x40, 0);
 }
 
-void Gallery_InitSceneGrid(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, AssetManager* arg5,
+void Gallery_InitSceneGrid(GallerySceneGrid* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, AssetManager* arg5,
                    BinArchive* arg6, PhotoSceneData* arg7, s32 arg8, s32 arg9) {
     UNUSED s32 pad;
     FramebufferImage* sp168;
@@ -517,7 +517,7 @@ void Gallery_InitSceneGrid(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s
     arg0->unk_B0 = Geo_CreateSceneInstance(arg1, arg2, 0, sp168, arg5, arg6, NULL);
 }
 
-void Gallery_ProcessSceneGrid(unk_D_83407B38* arg0) {
+void Gallery_ProcessSceneGrid(GallerySceneGrid* arg0) {
     s32 temp_v0 = Gallery_FindReadyScene(arg0->unk_20, 0x25);
     Camera* var_s0;
     s32 i;
@@ -552,7 +552,7 @@ void Gallery_FinishActiveScene(void) {
     }
 }
 
-s32 Gallery_CountReadyScenesOnPage(unk_D_83407B38* arg0, s32 arg1) {
+s32 Gallery_CountReadyScenesOnPage(GallerySceneGrid* arg0, s32 arg1) {
     s32 i;
     s32 idx;
     s32 var_s2 = 0;
@@ -568,33 +568,33 @@ s32 Gallery_CountReadyScenesOnPage(unk_D_83407B38* arg0, s32 arg1) {
     return var_s2;
 }
 
-void Gallery_ClearSavedPosition(unk_D_83407B00* arg0) {
+void Gallery_ClearSavedPosition(GalleryCursor* arg0) {
     arg0->posX = -1;
     arg0->rotation = -1;
 }
 
-void Gallery_SavePosition(unk_D_83407B38* arg0, unk_D_83407B00* arg1) {
+void Gallery_SavePosition(GallerySceneGrid* arg0, GalleryCursor* arg1) {
     arg1->posX = arg0->posX;
     arg1->rotation = arg0->unk_08;
 }
 
-void Gallery_RestorePosition(unk_D_83407B38* arg0, unk_D_83407B00* arg1) {
+void Gallery_RestorePosition(GallerySceneGrid* arg0, GalleryCursor* arg1) {
     if (arg1->posX != -1) {
         arg0->posX = arg1->posX;
         arg0->unk_08 = arg1->rotation;
     }
 }
 
-void Gallery_IndexToGridPos(unk_D_83407B38* arg0, s32* arg1, s32* arg2, s32 arg3) {
+void Gallery_IndexToGridPos(GallerySceneGrid* arg0, s32* arg1, s32* arg2, s32 arg3) {
     *arg1 = arg3 % arg0->unk_18;
     *arg2 = arg3 / arg0->unk_18;
 }
 
-s32 Gallery_GridPosToIndex(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+s32 Gallery_GridPosToIndex(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
     return (arg0->unk_18 * arg2) + arg1;
 }
 
-void Gallery_RebindSceneGridResources(unk_D_83407B38* arg0, AssetManager* arg1, BinArchive* arg2) {
+void Gallery_RebindSceneGridResources(GallerySceneGrid* arg0, AssetManager* arg1, BinArchive* arg2) {
     s32 i;
 
     for (i = 0; i < 37; i++) {

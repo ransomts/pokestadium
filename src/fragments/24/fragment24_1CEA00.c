@@ -913,7 +913,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     static Color_RGBA8 D_88317274 = { 0xFF, 0xFF, 0x00, 0xFF };
 
     UNUSED s32 pad[2];
-    unk_func_88001300_03C* tmp;
+    GridMenu* tmp;
     unk_func_88302D98* sp70;
     unk_func_88001300_000* sp6C;
     unk_func_88001300_000* sp68;
@@ -962,10 +962,10 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     arg0->unk_000.unk_10.posX = arg1;
     arg0->unk_000.unk_10.posY = arg2;
 
-    arg0->unk_048 = mem_pool_alloc(argF, sizeof(unk_func_8830867C_02C_048));
+    arg0->unk_048 = mem_pool_alloc(argF, sizeof(ChildSelectionProxy));
     LabPCList_InitColumnSelectionProxy(arg0->unk_048, arg0);
 
-    arg0->unk_04C = mem_pool_alloc(argF, sizeof(unk_func_88001300_03C));
+    arg0->unk_04C = mem_pool_alloc(argF, sizeof(GridMenu));
     ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_04C, 1, 8, argF);
     arg0->unk_04C->unk_28 |= 0x200;
     arg0->unk_04C->unk_38 = -4;
@@ -979,7 +979,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     arg0->unk_02C->posX.unk_28 |= 0x400;
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_02C);
 
-    arg0->unk_030 = mem_pool_alloc(argF, sizeof(unk_func_8850B254));
+    arg0->unk_030 = mem_pool_alloc(argF, sizeof(DashedBorderFrame));
     ((func8850B254)Memmap_GetFragmentVaddr(WidgetTree_InitDashedBorderFrame))(arg0->unk_030, 0, 0, 0x228, 0x20, D_8831726C, D_88317270);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_02C, arg0->unk_030);
 
@@ -1125,7 +1125,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
                                                            mem_pool_alloc(argF, sizeof(char) * 0x140), 0x10);
     arg0->unk_CCC->unk_3C = 0x20;
 
-    arg0->unk_0B8 = mem_pool_alloc(argF, sizeof(unk_func_8850CD44));
+    arg0->unk_0B8 = mem_pool_alloc(argF, sizeof(ChildWidgetGroup));
     ((func8850CD44)Memmap_GetFragmentVaddr(WidgetTree_InitChildWidgetGroup))(arg0->unk_0B8, 4, argF);
 
     arg0->unk_0BC = mem_pool_alloc(argF, sizeof(unk_func_882173EC));
@@ -2411,7 +2411,7 @@ u32 LabPCList_GetColumnMenuIndex(unk_func_8830867C_02C* arg0) {
 void func_88306FE4(void) {
 }
 
-void LabPCList_InitColumnSelectionProxy(unk_func_8830867C_02C_048* arg0, unk_func_8830867C_02C* arg1) {
+void LabPCList_InitColumnSelectionProxy(ChildSelectionProxy* arg0, unk_func_8830867C_02C* arg1) {
     ((func8850CBA8)Memmap_GetFragmentVaddr(WidgetTree_InitChildSelectionProxy))(arg0);
     arg0->posX.unk_10 = LabPCList_HandleTopLevelInput;
     arg0->unk_24 = arg1;
@@ -2520,13 +2520,13 @@ void LabPCList_SetGridInteractive(unk_func_8830867C_02C* arg0, s32 arg1) {
     }
 }
 
-void LabPCList_ResetGridSelection(unk_func_8830867C_02C_048* arg0) {
+void LabPCList_ResetGridSelection(ChildSelectionProxy* arg0) {
     ((func8850628C)Memmap_GetFragmentVaddr(WidgetTree_ClearEntryFlags))(arg0->unk_24->unk_034);
     arg0->unk_24->unk_0E0 = 0;
     ((func8850CD24)Memmap_GetFragmentVaddr(WidgetTree_SetChildSelectionProxySelection))(arg0, 1);
 }
 
-void LabPCList_HandleGridSelectionEntry(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
+void LabPCList_HandleGridSelectionEntry(ChildSelectionProxy* arg0, Controller* arg1) {
     LabPCList_SetGridInteractive(arg0->unk_24, 0);
     Ui_SendMessageAndPollInput(NULL);
     Ui_SendMessageAndPollInput(NULL);
@@ -2541,7 +2541,7 @@ void LabPCList_HandleGridSelectionEntry(unk_func_8830867C_02C_048* arg0, Control
     }
 }
 
-s32 LabPCList_HandleBackButton(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
+s32 LabPCList_HandleBackButton(ChildSelectionProxy* arg0, Controller* arg1) {
     s32 sp1C = 2;
 
     Audio_PlaySoundEffectById(3);
@@ -2558,7 +2558,7 @@ s32 LabPCList_HandleBackButton(unk_func_8830867C_02C_048* arg0, Controller* arg1
     return sp1C;
 }
 
-s32 LabPCList_HandlePageSwitchInput(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
+s32 LabPCList_HandlePageSwitchInput(ChildSelectionProxy* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
     if (gPlayer1Controller->buttonPressed & 2) {
@@ -2584,7 +2584,7 @@ s32 LabPCList_HandlePageSwitchInput(unk_func_8830867C_02C_048* arg0, Controller*
     return var_v1;
 }
 
-s32 LabPCList_HandleGridInput(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
+s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 arg2) {
     UNUSED s32 pad;
     s32 temp_v0;
     unk_func_8830867C_02C_0CC_000* sp24;
@@ -2704,7 +2704,7 @@ s32 LabPCList_HandleGridInput(unk_func_8830867C_02C_048* arg0, Controller* arg1,
     return arg2;
 }
 
-s32 LabPCList_HandleColumnMenuInput(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2) {
+s32 LabPCList_HandleColumnMenuInput(ChildSelectionProxy* arg0, Controller* arg1, s32 arg2) {
     u32 sp34;
     s32 temp_s0_11;
     s32 sp2C;
@@ -2976,10 +2976,10 @@ s32 LabPCList_HandleColumnMenuInput(unk_func_8830867C_02C_048* arg0, Controller*
     return arg2;
 }
 
-s32 LabPCList_HandleTopLevelInput(unk_func_8830867C_02C_048* arg0, Controller* arg1) {
+s32 LabPCList_HandleTopLevelInput(ChildSelectionProxy* arg0, Controller* arg1) {
     s32 i;
     s32 var_a2 = 0;
-    unk_func_8830867C_02C_048* var_a0;
+    ChildSelectionProxy* var_a0;
 
     if (arg0->posX.unk_20 > 0) {
         var_a0 = arg0->posX.posX.rotation;

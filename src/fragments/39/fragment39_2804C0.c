@@ -3,8 +3,8 @@
 #include "src/2E110.h"
 #include "src/fragments/2/fragment2.h"
 
-static unk_D_8250A480 gMessageBox;
-static unk_D_8250A498 gOptionMenu;
+static MatchBanner gMessageBox;
+static RoundBanner gOptionMenu;
 static char* gOptionMenuItems[9];
 
 void KidsClub_InitMatchBanner(char** arg0) {
@@ -18,7 +18,7 @@ s32 KidsClub_GetMatchBannerState(void) {
 }
 
 void KidsClub_SetMatchBannerState(s16 arg0) {
-    unk_D_8250A480* ptr = &gMessageBox;
+    MatchBanner* ptr = &gMessageBox;
 
     ptr->posX = arg0;
 
@@ -52,7 +52,7 @@ void KidsClub_SetMatchBannerState(s16 arg0) {
     }
 }
 
-void KidsClub_AdvanceMatchBannerOpen(unk_D_8250A480* arg0) {
+void KidsClub_AdvanceMatchBannerOpen(MatchBanner* arg0) {
     arg0->posY--;
     arg0->rotation = ((arg0->posY * -0x1B4) / 10) + 0xBC;
     arg0->unk_08 = ((arg0->posY * 0x224) / 10) + 0x5C;
@@ -61,7 +61,7 @@ void KidsClub_AdvanceMatchBannerOpen(unk_D_8250A480* arg0) {
     }
 }
 
-void KidsClub_UpdateMatchBannerIdle(unk_D_8250A480* arg0) {
+void KidsClub_UpdateMatchBannerIdle(MatchBanner* arg0) {
     arg0->posY = 0x12C;
     arg0->unk_10 = 0.0f;
     if (arg0->posY <= 0) {
@@ -73,7 +73,7 @@ void KidsClub_UpdateMatchBannerIdle(unk_D_8250A480* arg0) {
     }
 }
 
-void KidsClub_AdvanceMatchBannerClose(unk_D_8250A480* arg0) {
+void KidsClub_AdvanceMatchBannerClose(MatchBanner* arg0) {
     arg0->posY--;
     arg0->rotation = ((arg0->posY * -0x1C4) / 10) + 0x280;
     arg0->unk_08 = ((arg0->posY * 0x224) / 10) - 0x1C8;
@@ -83,7 +83,7 @@ void KidsClub_AdvanceMatchBannerClose(unk_D_8250A480* arg0) {
 }
 
 void KidsClub_UpdateMatchBanner(void) {
-    unk_D_8250A480* ptr = &gMessageBox;
+    MatchBanner* ptr = &gMessageBox;
 
     if (ptr->posX != 0) {
         switch (ptr->posX) {
@@ -188,7 +188,7 @@ void KidsClub_DrawWavyText(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
 
 void KidsClub_DrawMatchBanner(void) {
     UNUSED s32 pad;
-    unk_D_8250A480* ptr = &gMessageBox;
+    MatchBanner* ptr = &gMessageBox;
     char* sp2C = Text_GetString(NULL, 0, ptr->unk_14, 0);
     char* sp28 = Text_GetString(NULL, 0, ptr->unk_14, 1);
 
@@ -221,11 +221,11 @@ void KidsClub_InitRoundBanner(char** arg0) {
     }
 }
 
-void func_825057A0(void) {
+void KidsClub_NoOp(void) {
 }
 
 void KidsClub_SetRoundBannerLabel(s16 arg0) {
-    unk_D_8250A498* ptr = &gOptionMenu;
+    RoundBanner* ptr = &gOptionMenu;
 
     if (ptr->unk_12 != ptr->unk_10) {
         ptr->unk_10 = ptr->unk_12;
@@ -239,7 +239,7 @@ void KidsClub_SetRoundBannerLabel(s16 arg0) {
 }
 
 void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1) {
-    unk_D_8250A498* ptr = &gOptionMenu;
+    RoundBanner* ptr = &gOptionMenu;
 
     ptr->posX = arg0;
 
@@ -267,7 +267,7 @@ void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1) {
     }
 }
 
-void KidsClub_AdvanceRoundBannerOpen(unk_D_8250A498* arg0) {
+void KidsClub_AdvanceRoundBannerOpen(RoundBanner* arg0) {
     arg0->posY--;
     arg0->unk_08 = ((arg0->posY * -0x68) / 10) + 0x3C;
     arg0->unk_0A = ((arg0->posY * 0x56) / 10) + 0x18A;
@@ -276,7 +276,7 @@ void KidsClub_AdvanceRoundBannerOpen(unk_D_8250A498* arg0) {
     }
 }
 
-void KidsClub_UpdateRoundBannerCrossfade(unk_D_8250A498* arg0) {
+void KidsClub_UpdateRoundBannerCrossfade(RoundBanner* arg0) {
     if (arg0->unk_10 != arg0->unk_12) {
         arg0->posY--;
         if (arg0->posY <= 0) {
@@ -287,7 +287,7 @@ void KidsClub_UpdateRoundBannerCrossfade(unk_D_8250A498* arg0) {
     }
 }
 
-void KidsClub_AdvanceRoundBannerClose(unk_D_8250A498* arg0) {
+void KidsClub_AdvanceRoundBannerClose(RoundBanner* arg0) {
     arg0->posY--;
     arg0->unk_08 = ((arg0->posY * 0x68) / 10) - 0x2C;
     arg0->unk_0A = ((arg0->posY * -0x56) / 10) + 0x1E0;
@@ -297,7 +297,7 @@ void KidsClub_AdvanceRoundBannerClose(unk_D_8250A498* arg0) {
 }
 
 void KidsClub_UpdateRoundBanner(void) {
-    unk_D_8250A498* ptr = &gOptionMenu;
+    RoundBanner* ptr = &gOptionMenu;
 
     if (ptr->posX != 0) {
         switch (ptr->posX) {
@@ -318,7 +318,7 @@ void KidsClub_UpdateRoundBanner(void) {
 
 void KidsClub_DrawRoundBanner(void) {
     UNUSED s32 pad;
-    unk_D_8250A498* ptr = &gOptionMenu;
+    RoundBanner* ptr = &gOptionMenu;
     char* sp3C;
     s16 tmp;
     char* sp34 = Text_GetString(NULL, 0, ptr->unk_14, 0x10);

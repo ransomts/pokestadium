@@ -25,7 +25,7 @@ typedef struct unk_D_83407B18_008 {
 } unk_D_83407B18_008; // size >= 0xC
 
 typedef struct unk_D_83407B18 {
-    /* 0x00 */ unk_D_83407B00 posX;
+    /* 0x00 */ GalleryCursor posX;
     /* 0x08 */ unk_D_83407B18_008 unk_08;
     /* 0x14 */ char unk14[0x4];
 } unk_D_83407B18; // size = 0x18
@@ -36,25 +36,25 @@ extern PhotoSceneData gGalleryEntries[36];
 extern PhotoSceneData gGalleryCamEntries[21];
 extern PhotoSceneData* gCurrentCamEntry;
 extern PhotoSceneData* gCurrentCamEntryPage;
-extern PhotoMonSpecies D_83407AC8;
+extern PhotoMonSpecies gGallerySpecialSpecies;
 extern s32 gGallerySpecialUnlocked;
 extern s32 gGallerySpecialViewed;
 extern s32 gGalleryAudioStateFlag;
-extern unk_D_83407B00 gGallerySelection;
-extern unk_D_83407B00 gGalleryMainSelectionCam;
-extern unk_D_83407B00 gGallerySubSelection;
-extern unk_D_83407B00 gGalleryTertiarySelection;
+extern GalleryCursor gGallerySelection;
+extern GalleryCursor gGalleryMainSelectionCam;
+extern GalleryCursor gGallerySubSelection;
+extern GalleryCursor gGalleryTertiarySelection;
 extern unk_D_83407B18 gGalleryFinalSelection;
-extern unk_D_83407B00 gGalleryMainSelection;
-extern unk_D_83407B38 gGalleryCamList;
+extern GalleryCursor gGalleryMainSelection;
+extern GallerySceneGrid gGalleryCamList;
 
-extern s32 D_83402E20;
-extern s32 D_83402E24;
-extern s32 D_83402E28;
+extern s32 gGalleryPhotoPoolCount;
+extern s32 gGalleryPhotoPoolMin;
+extern s32 gGalleryPhotoPoolMax;
 
 void Gallery_LoadUnlockedBackgrounds(void);
-s32 Gallery_ControlRecordIsPopulated(unk_D_83406EB0* arg0);
-s32 Gallery_ControlRecordIsDirty(unk_D_83406EB0* arg0);
+s32 Gallery_ControlRecordIsPopulated(PhotoSceneControl* arg0);
+s32 Gallery_ControlRecordIsDirty(PhotoSceneControl* arg0);
 s32 Gallery_ArraysDiffer(PhotoSceneData* arg0, PhotoSceneData* arg1, s32 arg2);
 s32 Gallery_BackgroundsChanged(void);
 s32 Gallery_SaveUnlockedBackgrounds(s32 arg0, s32 arg1);
@@ -65,7 +65,7 @@ void Gallery_SwapPhotoRecords(PhotoSceneData* arg0, PhotoSceneData* arg1);
 s32 Gallery_PhotoRecordsEqual(PhotoSceneData* arg0, PhotoSceneData* arg1);
 void Gallery_SetEnlargeTarget(PhotoSceneData* arg0);
 PhotoSceneData* Gallery_GetEnlargeTarget(s32 arg0);
-void Gallery_InitPageCursor(unk_D_83407B00* arg0);
+void Gallery_InitPageCursor(GalleryCursor* arg0);
 s32 Gallery_CountTextLines(s8* arg0);
 s32 Gallery_CountValidPhotos(PhotoSceneData* arg0, s32 arg1, s32 arg2);
 s32 Gallery_FindNthEmptySlot(PhotoSceneData* arg0, s32 arg1, s32 arg2, s32 arg3);
@@ -80,17 +80,17 @@ void Gallery_DrawDropShadow(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void Gallery_DrawPhotoThumbnail(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
 void Gallery_DrawSelectionCorners(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void Gallery_DrawStatusIcon(s32 arg0, s32 arg1, s32 arg2);
-void Gallery_InitSceneGrid(unk_D_83407B38* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, AssetManager* arg5,
+void Gallery_InitSceneGrid(GallerySceneGrid* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, AssetManager* arg5,
     BinArchive* arg6, PhotoSceneData* arg7, s32 arg8, s32 arg9);
-void Gallery_ProcessSceneGrid(unk_D_83407B38* arg0);
+void Gallery_ProcessSceneGrid(GallerySceneGrid* arg0);
 void Gallery_FinishActiveScene(void);
-s32 Gallery_CountReadyScenesOnPage(unk_D_83407B38* arg0, s32 arg1);
-void Gallery_ClearSavedPosition(unk_D_83407B00* arg0);
-void Gallery_SavePosition(unk_D_83407B38* arg0, unk_D_83407B00* arg1);
-void Gallery_RestorePosition(unk_D_83407B38* arg0, unk_D_83407B00* arg1);
-void Gallery_IndexToGridPos(unk_D_83407B38* arg0, s32* arg1, s32* arg2, s32 arg3);
-s32 Gallery_GridPosToIndex(unk_D_83407B38* arg0, s32 arg1, s32 arg2);
-void Gallery_RebindSceneGridResources(unk_D_83407B38* arg0, AssetManager* arg1, BinArchive* arg2);
+s32 Gallery_CountReadyScenesOnPage(GallerySceneGrid* arg0, s32 arg1);
+void Gallery_ClearSavedPosition(GalleryCursor* arg0);
+void Gallery_SavePosition(GallerySceneGrid* arg0, GalleryCursor* arg1);
+void Gallery_RestorePosition(GallerySceneGrid* arg0, GalleryCursor* arg1);
+void Gallery_IndexToGridPos(GallerySceneGrid* arg0, s32* arg1, s32* arg2, s32 arg3);
+s32 Gallery_GridPosToIndex(GallerySceneGrid* arg0, s32 arg1, s32 arg2);
+void Gallery_RebindSceneGridResources(GallerySceneGrid* arg0, AssetManager* arg1, BinArchive* arg2);
 
 void Gallery_InitStringTables(void);
 char* Gallery_GetUiString(s32 arg0);

@@ -2587,9 +2587,9 @@ s32 WidgetTree_DrawInsetBorderFrame(unk_func_88001300_000* arg0, s32 arg1, s32 a
     return 0;
 }
 
-void WidgetTree_InitDashedBorderFrame(unk_func_8850B254* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
+void WidgetTree_InitDashedBorderFrame(DashedBorderFrame* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
                    Color_RGBA8 arg6) {
-    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_8850B254));
+    WidgetTree_InitWidget(&arg0->posX, sizeof(DashedBorderFrame));
     arg0->posX.unk_18 = ColoredBox_Draw;
     arg0->posX.unk_10.posX = arg1;
     arg0->posX.unk_10.posY = arg2;
@@ -2599,7 +2599,7 @@ void WidgetTree_InitDashedBorderFrame(unk_func_8850B254* arg0, s32 arg1, s32 arg
     arg0->unk_30 = arg6;
 }
 
-s32 ColoredBox_Draw(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
+s32 ColoredBox_Draw(DashedBorderFrame* arg0, s32 arg1, s32 arg2) {
     s32 h = 8;
     s32 w = 8;
 
@@ -2712,8 +2712,8 @@ void WidgetTree_SetScrollableGridInputProxyState(unk_func_8850BD40* arg0, s32 ar
     arg0->unk_1C->posX.posX.unk_24(&arg0->unk_1C->posX.posX, arg1);
 }
 
-void WidgetTree_InitVerticalMenu(unk_func_8830867C_02C_048_000* arg0) {
-    WidgetTree_InitNode(arg0, sizeof(unk_func_8830867C_02C_048_000));
+void WidgetTree_InitVerticalMenu(VerticalMenu* arg0) {
+    WidgetTree_InitNode(arg0, sizeof(VerticalMenu));
     arg0->unk_10 = WidgetTree_HandleVerticalMenuInput;
     arg0->unk_14 = WidgetTree_SetVerticalMenuState;
     arg0->unk_18 = 0;
@@ -2721,11 +2721,11 @@ void WidgetTree_InitVerticalMenu(unk_func_8830867C_02C_048_000* arg0) {
     arg0->unk_20 = 0;
 }
 
-s32 WidgetTree_HandleVerticalMenuInput(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
+s32 WidgetTree_HandleVerticalMenuInput(VerticalMenu* arg0, Controller* arg1) {
     s32 ret = 0;
 
     if (arg0->unk_20 > 0) {
-        unk_func_8830867C_02C_048_000* var_a0 = arg0->posX.rotation;
+        VerticalMenu* var_a0 = arg0->posX.rotation;
         s32 i;
 
         for (i = 0; i < arg0->unk_1C; i++) {
@@ -2763,22 +2763,22 @@ s32 WidgetTree_HandleVerticalMenuInput(unk_func_8830867C_02C_048_000* arg0, Cont
     return ret;
 }
 
-void WidgetTree_SetVerticalMenuState(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void WidgetTree_SetVerticalMenuState(VerticalMenu* arg0, s32 arg1) {
     arg0->unk_18 = arg1;
     WidgetTree_UpdateVerticalMenuItems(arg0);
 }
 
-void WidgetTree_AppendVerticalMenuItem(unk_func_8830867C_02C_048_000* arg0, unk_func_88001300_000_000* arg1) {
+void WidgetTree_AppendVerticalMenuItem(VerticalMenu* arg0, unk_func_88001300_000_000* arg1) {
     WidgetTree_AppendChild(&arg0->posX, arg1);
     arg0->unk_20++;
 }
 
-void WidgetTree_UpdateVerticalMenuItems(unk_func_8830867C_02C_048_000* arg0) {
+void WidgetTree_UpdateVerticalMenuItems(VerticalMenu* arg0) {
     s32 temp_s3;
     s32 temp_s4;
     s32 var_v0;
     s32 var_v1;
-    unk_func_8830867C_02C_048_000* var_s1;
+    VerticalMenu* var_s1;
     s32 i;
 
     var_s1 = arg0->posX.rotation;
@@ -2799,13 +2799,13 @@ void WidgetTree_UpdateVerticalMenuItems(unk_func_8830867C_02C_048_000* arg0) {
     }
 }
 
-void WidgetTree_SetVerticalMenuSelection(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void WidgetTree_SetVerticalMenuSelection(VerticalMenu* arg0, s32 arg1) {
     arg0->unk_1C = arg1;
     WidgetTree_UpdateVerticalMenuItems(arg0);
 }
 
-void WidgetTree_InitHorizontalMenu(unk_func_8830867C_02C_048_000* arg0) {
-    WidgetTree_InitNode(arg0, sizeof(unk_func_8830867C_02C_048_000));
+void WidgetTree_InitHorizontalMenu(VerticalMenu* arg0) {
+    WidgetTree_InitNode(arg0, sizeof(VerticalMenu));
     arg0->unk_10 = WidgetTree_HandleHorizontalMenuInput;
     arg0->unk_14 = WidgetTree_SetHorizontalMenuState;
     arg0->unk_18 = 0;
@@ -2813,11 +2813,11 @@ void WidgetTree_InitHorizontalMenu(unk_func_8830867C_02C_048_000* arg0) {
     arg0->unk_20 = 0;
 }
 
-s32 WidgetTree_HandleHorizontalMenuInput(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
+s32 WidgetTree_HandleHorizontalMenuInput(VerticalMenu* arg0, Controller* arg1) {
     s32 var_a3 = 0;
 
     if (arg0->unk_20 > 0) {
-        unk_func_8830867C_02C_048_000* var_a0 = arg0->posX.rotation;
+        VerticalMenu* var_a0 = arg0->posX.rotation;
         s32 i;
 
         for (i = 0; i < arg0->unk_1C; i++) {
@@ -2852,18 +2852,18 @@ s32 WidgetTree_HandleHorizontalMenuInput(unk_func_8830867C_02C_048_000* arg0, Co
     return var_a3;
 }
 
-void WidgetTree_SetHorizontalMenuState(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void WidgetTree_SetHorizontalMenuState(VerticalMenu* arg0, s32 arg1) {
     arg0->unk_18 = arg1;
     WidgetTree_UpdateHorizontalMenuItems(arg0);
 }
 
-void WidgetTree_AppendHorizontalMenuItem(unk_func_8830867C_02C_048_000* arg0, unk_func_88001300_000_000* arg1) {
+void WidgetTree_AppendHorizontalMenuItem(VerticalMenu* arg0, unk_func_88001300_000_000* arg1) {
     WidgetTree_AppendChild(&arg0->posX, arg1);
     arg0->unk_20++;
 }
 
-void WidgetTree_UpdateHorizontalMenuItems(unk_func_8830867C_02C_048_000* arg0) {
-    unk_func_8830867C_02C_048_000* var_s0 = arg0->posX.rotation;
+void WidgetTree_UpdateHorizontalMenuItems(VerticalMenu* arg0) {
+    VerticalMenu* var_s0 = arg0->posX.rotation;
     s32 i;
 
     for (i = 0; i < arg0->unk_20; i++) {
@@ -2877,10 +2877,10 @@ void WidgetTree_UpdateHorizontalMenuItems(unk_func_8830867C_02C_048_000* arg0) {
     }
 }
 
-void WidgetTree_InitGridMenu(unk_func_88001300_03C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
+void WidgetTree_InitGridMenu(GridMenu* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     s32 i;
 
-    WidgetTree_InitNode(arg0, sizeof(unk_func_88001300_03C));
+    WidgetTree_InitNode(arg0, sizeof(GridMenu));
     arg0->unk_10 = WidgetTree_HandleGridMenuInput;
     arg0->unk_14 = WidgetTree_SetGridMenuState;
     arg0->unk_18 = mem_pool_alloc(arg3, (arg2 * sizeof(unk_func_88001300_000*)) * arg1);
@@ -2903,7 +2903,7 @@ void WidgetTree_InitGridMenu(unk_func_88001300_03C* arg0, s32 arg1, s32 arg2, Me
     arg0->unk_3E = 6;
 }
 
-s32 WidgetTree_HandleGridMenuInput(unk_func_88001300_03C* arg0, Controller* arg1) {
+s32 WidgetTree_HandleGridMenuInput(GridMenu* arg0, Controller* arg1) {
     s32 sp5C;
     UNUSED s32 pad1;
     s32 sp54;
@@ -3051,12 +3051,12 @@ s32 WidgetTree_HandleGridMenuInput(unk_func_88001300_03C* arg0, Controller* arg1
     return sp5C;
 }
 
-void WidgetTree_SetGridMenuState(unk_func_88001300_03C* arg0, s32 arg1) {
+void WidgetTree_SetGridMenuState(GridMenu* arg0, s32 arg1) {
     arg0->unk_20 = arg1;
     WidgetTree_UpdateGridMenuItems(arg0);
 }
 
-void WidgetTree_UpdateGridMenuItems(unk_func_88001300_03C* arg0) {
+void WidgetTree_UpdateGridMenuItems(GridMenu* arg0) {
     s32 i;
 
     if (arg0->unk_1C != NULL) {
@@ -3089,7 +3089,7 @@ void WidgetTree_UpdateGridMenuItems(unk_func_88001300_03C* arg0) {
     }
 }
 
-void WidgetTree_SelectFirstEnabledGridItem(unk_func_88001300_03C* arg0) {
+void WidgetTree_SelectFirstEnabledGridItem(GridMenu* arg0) {
     s32 i;
 
     for (i = 0; i < arg0->unk_2C * arg0->unk_30; i++) {
@@ -3102,15 +3102,15 @@ void WidgetTree_SelectFirstEnabledGridItem(unk_func_88001300_03C* arg0) {
     }
 }
 
-void WidgetTree_SetGridMenuSelection(unk_func_88001300_03C* arg0, s32 arg1) {
+void WidgetTree_SetGridMenuSelection(GridMenu* arg0, s32 arg1) {
     arg0->unk_24 = arg1;
     arg0->unk_34 = arg1 % arg0->unk_2C;
     arg0->unk_36 = arg1 / arg0->unk_2C;
     WidgetTree_UpdateGridMenuItems(arg0);
 }
 
-void WidgetTree_InitChildSelectionProxy(unk_func_8830867C_02C_048_000* arg0) {
-    WidgetTree_InitNode(&arg0->posX, sizeof(unk_func_8830867C_02C_048_000));
+void WidgetTree_InitChildSelectionProxy(VerticalMenu* arg0) {
+    WidgetTree_InitNode(&arg0->posX, sizeof(VerticalMenu));
     arg0->unk_10 = WidgetTree_HandleChildSelectionProxyInput;
     arg0->unk_14 = WidgetTree_SetChildSelectionProxyState;
     arg0->unk_18 = 0;
@@ -3118,12 +3118,12 @@ void WidgetTree_InitChildSelectionProxy(unk_func_8830867C_02C_048_000* arg0) {
     arg0->unk_20 = 0;
 }
 
-s32 WidgetTree_HandleChildSelectionProxyInput(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
+s32 WidgetTree_HandleChildSelectionProxyInput(VerticalMenu* arg0, Controller* arg1) {
     s32 i;
     s32 var_v1 = 0;
 
     if (arg0->unk_20 > 0) {
-        unk_func_8830867C_02C_048_000* var_a0 = arg0->posX.rotation;
+        VerticalMenu* var_a0 = arg0->posX.rotation;
 
         for (i = 0; i < arg0->unk_1C; i++) {
             var_a0 = var_a0->posX.unk_08;
@@ -3133,20 +3133,20 @@ s32 WidgetTree_HandleChildSelectionProxyInput(unk_func_8830867C_02C_048_000* arg
     return var_v1;
 }
 
-void WidgetTree_SetChildSelectionProxyState(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void WidgetTree_SetChildSelectionProxyState(VerticalMenu* arg0, s32 arg1) {
     arg0->unk_18 = arg1;
     WidgetTree_UpdateChildSelectionProxyItems(arg0);
 }
 
-void WidgetTree_AppendChildSelectionProxyItem(unk_func_8830867C_02C_048_000* arg0, unk_func_88001300_000* arg1) {
+void WidgetTree_AppendChildSelectionProxyItem(VerticalMenu* arg0, unk_func_88001300_000* arg1) {
     WidgetTree_AppendChild(&arg0->posX.posX, &arg1->posX);
     arg0->unk_20++;
 }
 
-void WidgetTree_UpdateChildSelectionProxyItems(unk_func_8830867C_02C_048_000* arg0) {
+void WidgetTree_UpdateChildSelectionProxyItems(VerticalMenu* arg0) {
     s32 var_a1;
     s32 i;
-    unk_func_8830867C_02C_048_000* var_s0 = arg0->posX.rotation;
+    VerticalMenu* var_s0 = arg0->posX.rotation;
 
     for (i = 0; i < arg0->unk_20; i++) {
         if (i == arg0->unk_1C) {
@@ -3159,15 +3159,15 @@ void WidgetTree_UpdateChildSelectionProxyItems(unk_func_8830867C_02C_048_000* ar
     }
 }
 
-void WidgetTree_SetChildSelectionProxySelection(unk_func_8830867C_02C_048* arg0, s32 arg1) {
+void WidgetTree_SetChildSelectionProxySelection(ChildSelectionProxy* arg0, s32 arg1) {
     arg0->posX.unk_1C = arg1;
     WidgetTree_UpdateChildSelectionProxyItems(&arg0->posX);
 }
 
-void WidgetTree_InitChildWidgetGroup(unk_func_8850CD44* arg0, s32 arg1, MemoryPool* arg2) {
+void WidgetTree_InitChildWidgetGroup(ChildWidgetGroup* arg0, s32 arg1, MemoryPool* arg2) {
     s32 i;
 
-    ((func88500668)Memmap_GetFragmentVaddr(WidgetTree_InitNode))(arg0, sizeof(unk_func_8850CD44));
+    ((func88500668)Memmap_GetFragmentVaddr(WidgetTree_InitNode))(arg0, sizeof(ChildWidgetGroup));
     arg0->unk_10 = WidgetTree_HandleChildWidgetGroupInput;
     arg0->unk_14 = WidgetTree_SetChildWidgetGroupState;
     arg0->unk_18 = 0;
@@ -3179,7 +3179,7 @@ void WidgetTree_InitChildWidgetGroup(unk_func_8850CD44* arg0, s32 arg1, MemoryPo
     }
 }
 
-s32 WidgetTree_HandleChildWidgetGroupInput(unk_func_8850CD44* arg0, Controller* arg1) {
+s32 WidgetTree_HandleChildWidgetGroupInput(ChildWidgetGroup* arg0, Controller* arg1) {
     s32 i;
 
     for (i = 0; i < arg0->unk_20; i++) {
@@ -3190,7 +3190,7 @@ s32 WidgetTree_HandleChildWidgetGroupInput(unk_func_8850CD44* arg0, Controller* 
     return 4;
 }
 
-void WidgetTree_SetChildWidgetGroupState(unk_func_8850CD44* arg0, s32 arg1) {
+void WidgetTree_SetChildWidgetGroupState(ChildWidgetGroup* arg0, s32 arg1) {
     s32 i;
 
     for (i = 0; i < arg0->unk_20; i++) {
@@ -3198,7 +3198,7 @@ void WidgetTree_SetChildWidgetGroupState(unk_func_8850CD44* arg0, s32 arg1) {
     }
 }
 
-void WidgetTree_RunChildWidgetGroup(unk_func_8850CD44* arg0, Controller* arg1) {
+void WidgetTree_RunChildWidgetGroup(ChildWidgetGroup* arg0, Controller* arg1) {
     s32 temp_v0;
     s32 var_s0 = 0;
 

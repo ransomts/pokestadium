@@ -2696,7 +2696,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     unk_func_88000830* temp_v0_5;
     unk_func_88001300_000* sp5C;
     unk_func_88000C18* temp_v0_6;
-    unk_func_88001300_03C* tmp3C;
+    GridMenu* tmp3C;
 
     arg0->unk_54 = arg3;
     arg0->unk_40 = GbSave_GetActivePort();
@@ -2728,7 +2728,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     arg0->posX.unk_24 = Lab_SetSelectedMenuItem;
     arg0->posX.unk_10.posX = arg1;
     arg0->posX.unk_10.posY = arg2;
-    arg0->unk_3C = mem_pool_alloc(arg6, sizeof(unk_func_88001300_03C));
+    arg0->unk_3C = mem_pool_alloc(arg6, sizeof(GridMenu));
 
     ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_3C, 2, 4, arg6);
 

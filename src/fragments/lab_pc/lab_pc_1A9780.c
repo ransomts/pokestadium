@@ -1033,7 +1033,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
         ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, arg0->unk_44[j]);
     }
 
-    arg0->unk_68 = mem_pool_alloc(arg8, sizeof(unk_func_88001300_03C));
+    arg0->unk_68 = mem_pool_alloc(arg8, sizeof(GridMenu));
     ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_68, 5, 1, arg8);
     ((func8850BF80)Memmap_GetFragmentVaddr(WidgetTree_AppendVerticalMenuItem))(arg0->unk_64, arg0->unk_68);
 
@@ -1091,7 +1091,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     LabPC_BuildBoxPairSelector(arg0->unk_6C, arg0->unk_38, arg0->unk_3C, arg0, arg8);
     ((func8850BF80)Memmap_GetFragmentVaddr(WidgetTree_AppendVerticalMenuItem))(arg0->unk_64, arg0->unk_6C);
 
-    arg0->unk_70 = mem_pool_alloc(arg8, sizeof(unk_func_8850CD44));
+    arg0->unk_70 = mem_pool_alloc(arg8, sizeof(ChildWidgetGroup));
     ((func8850CD44)Memmap_GetFragmentVaddr(WidgetTree_InitChildWidgetGroup))(arg0->unk_70, 2, arg8);
     ((func8850CC74)Memmap_GetFragmentVaddr(WidgetTree_AppendChildSelectionProxyItem))(arg0->unk_64, arg0->unk_70);
 

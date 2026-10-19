@@ -6,12 +6,12 @@
 #include "src/geo_layout.h"
 #include "src/fragments/43/fragment43.h"
 
-typedef struct unk_D_8380565C {
+typedef struct RentalViewerBgData {
     /* 0x000 */ u32 unk_000;
     /* 0x004 */ PokemonData unk_004[3];
     /* 0x100 */ char unk100[0x6E4];
     /* 0x7E4 */ PokemonData unk_7E4;
-} unk_D_8380565C; // size >= 0x838
+} RentalViewerBgData; // size >= 0x838
 
 typedef struct unk_D_838067F0_0168_0000 {
     union {
@@ -59,13 +59,13 @@ typedef struct unk_D_838067F0 {
     /* 0x0034 */ s32 unk_0034;
     /* 0x0038 */ s32 unk_0038;
     /* 0x003C */ unk_D_838067F0_003C unk_003C[13];
-    /* 0x015C */ unk_D_8380565C* unk_015C;
+    /* 0x015C */ RentalViewerBgData* unk_015C;
     /* 0x0160 */ unk_D_838067F0_0168* unk_0160;
     /* 0x0164 */ char unk0164[0x4];
     /* 0x0168 */ unk_D_838067F0_0168 unk_0168[12];
 } unk_D_838067F0; // size = 0x1D088
 
-typedef struct unk_D_8380548C {
+typedef struct RentalSlotAnimData {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ s16 posY;
@@ -74,7 +74,7 @@ typedef struct unk_D_8380548C {
     /* 0x08 */ s16 unk_08;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
-} unk_D_8380548C; // size = 0xE
+} RentalSlotAnimData; // size = 0xE
 
 void Gallery_RentalViewerInit(s32 arg0);
 void Gallery_RentalViewerSetFadeCounter(s32 arg0);
@@ -117,10 +117,10 @@ s32 Gallery_RentalViewerGetSelectedSlot(void);
 
 void Gallery_RentalViewerSaveBoxCursor(unk_D_83407B18_008* arg0);
 s32 Gallery_RentalViewerGetLoadState(void);
-void Gallery_RentalViewerInitBoxPicker(s32 arg0, s32 arg1, unk_D_8380565C* arg2);
+void Gallery_RentalViewerInitBoxPicker(s32 arg0, s32 arg1, RentalViewerBgData* arg2);
 s32 Gallery_RentalViewerLoadDeckEntries(unk_D_838067F0* arg0, s32 arg1);
 void Gallery_RentalViewerMarkMatchingPikachu(unk_D_838067F0* arg0, PokemonData* arg1);
-s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk_D_8380565C* arg3);
+s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, RentalViewerBgData* arg3);
 s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, unk_D_83407B18_008* arg1);
 void Gallery_RentalViewerAdvanceOpenPanel(unk_D_838067F0* arg0);
 unk_D_838067F0_0168* Gallery_RentalViewerGetPage(unk_D_838067F0_0168* arg0, s32 arg1);

@@ -117,7 +117,7 @@ typedef struct unk_func_8820B12C_02C {
     /* 0x34 */ s32 unk_34;
     /* 0x38 */ unk_func_88217740* unk_38;
     /* 0x3C */ WidgetTree_InitMessagePanel* unk_3C;
-    /* 0x40 */ unk_func_8850CD44* unk_40;
+    /* 0x40 */ ChildWidgetGroup* unk_40;
     /* 0x44 */ FragmentEntry unk_44;
     /* 0x48 */ unk_func_8820BE14_030* unk_48;
     /* 0x4C */ unk_func_882173EC* unk_4C[2];
@@ -141,7 +141,7 @@ typedef struct unk_func_8820B12C_000 {
 
 typedef struct unk_func_8820B12C {
     /* 0x00 */ unk_func_8820B12C_000 posX;
-    /* 0x28 */ unk_func_88001300_03C* unk_28;
+    /* 0x28 */ GridMenu* unk_28;
     /* 0x28 */ unk_func_8820B12C_02C* unk_2C;
 } unk_func_8820B12C; // size = 0x30
 
@@ -249,7 +249,7 @@ typedef struct QuantityEntry {
 typedef struct YesNoPanel {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
-    /* 0x30 */ unk_func_88001300_03C* unk_30;
+    /* 0x30 */ GridMenu* unk_30;
     /* 0x34 */ unk_func_8850878C* unk_34;
 } YesNoPanel; // size = 0x38
 
@@ -302,7 +302,7 @@ typedef struct unk_func_8821421C_02C_06C_02C {
     /* 0x44 */ s32 unk_44;
     /* 0x48 */ unk_func_88217740* unk_48;
     /* 0x4C */ WidgetTree_InitMessagePanel* unk_4C;
-    /* 0x50 */ unk_func_8850CD44* unk_50;
+    /* 0x50 */ ChildWidgetGroup* unk_50;
     /* 0x54 */ char unk54[0x4];
     /* 0x58 */ unk_func_882173EC* unk_58[2];
     /* 0x60 */ unk_func_8821421C_02C_06C_02C_060* unk_60[2];
@@ -326,7 +326,7 @@ typedef struct unk_func_8821421C_02C_06C_000 {
 
 typedef struct unk_func_8821421C_02C_06C {
     /* 0x00 */ unk_func_8821421C_02C_06C_000 posX;
-    /* 0x28 */ unk_func_88001300_03C* unk_28;
+    /* 0x28 */ GridMenu* unk_28;
     /* 0x2C */ unk_func_8821421C_02C_06C_02C* unk_2C;
 } unk_func_8821421C_02C_06C; // size = 0x30
 
@@ -381,7 +381,7 @@ typedef struct unk_func_8821421C_038_04C_000 {
 
 typedef struct unk_func_8821421C_038_04C {
     /* 0x00 */ unk_func_8821421C_038_04C_000 posX;
-    /* 0x28 */ unk_func_88001300_03C* unk_28;
+    /* 0x28 */ GridMenu* unk_28;
 } unk_func_8821421C_038_04C; // size = 0x2C
 
 typedef struct unk_func_8821421C_03C {

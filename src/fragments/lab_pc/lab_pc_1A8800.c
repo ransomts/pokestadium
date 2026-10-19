@@ -67,7 +67,7 @@ void LabPC_BuildMenuGridWidget(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, 
     s32 temp_v0;
     s32 var_s2;
     unk_func_885012A4* temp_s0_2;
-    unk_func_8850B254* sp6C;
+    DashedBorderFrame* sp6C;
     UNUSED s32 pad1[3];
     unk_func_88503298* temp_s0_3;
     unk_func_8850878C* temp_s1;
@@ -100,7 +100,7 @@ void LabPC_BuildMenuGridWidget(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, 
     arg0->unk_2C->posX.unk_28 &= ~1;
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_2C);
 
-    sp6C = mem_pool_alloc(arg4, sizeof(unk_func_8850B254));
+    sp6C = mem_pool_alloc(arg4, sizeof(DashedBorderFrame));
     ((func8850B254)Memmap_GetFragmentVaddr(WidgetTree_InitDashedBorderFrame))(sp6C, 0, 0, var_s2, 0x18, gFragment23PanelGradientStart, gFragment23PanelGradientEnd);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, sp6C);
 

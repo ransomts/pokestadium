@@ -33,7 +33,7 @@ s32 Gallery_RentalViewerGetLoadState(void) {
     return ret;
 }
 
-void Gallery_RentalViewerInitBoxPicker(s32 arg0, s32 arg1, unk_D_8380565C* arg2) {
+void Gallery_RentalViewerInitBoxPicker(s32 arg0, s32 arg1, RentalViewerBgData* arg2) {
     D_838067F0.unk_0000 = 0;
     D_838067F0.unk_0004 = arg0;
     D_838067F0.unk_0008 = arg1;
@@ -85,7 +85,7 @@ void Gallery_RentalViewerMarkMatchingPikachu(unk_D_838067F0* arg0, PokemonData* 
     }
 }
 
-s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, unk_D_8380565C* arg3) {
+s32 Gallery_RentalViewerFillPage(unk_D_838067F0* arg0, unk_D_838067F0_0168* arg1, s32 arg2, RentalViewerBgData* arg3) {
     s32 i;
     s32 j;
     unk_D_838067F0_003C* temp_s3;
@@ -243,9 +243,9 @@ void Gallery_RentalViewerConfirmMonSelect(unk_D_838067F0* arg0) {
 
     if (temp_a1->posX.posX != 0) {
         arg0->unk_0000 = 7;
-        Gallery_CopyPhotoMonFromBattleMon(&D_83407AC8, temp_a1);
+        Gallery_CopyPhotoMonFromBattleMon(&gGallerySpecialSpecies, temp_a1);
         if ((temp_a1->posX.posX == 0x19) && (temp_a1->unk_52 & 0x80)) {
-            D_83407AC8.posY = 0x99;
+            gGallerySpecialSpecies.posY = 0x99;
         }
         Audio_PlaySoundEffectById(0x20);
     } else {

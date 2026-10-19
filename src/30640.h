@@ -55,13 +55,13 @@ typedef struct unk_D_83403C60_050_00C {
     /* 0x08 */ s32 unk_08;
 } unk_D_83403C60_050_00C; // size = 0xC
 
-typedef struct unk_D_83406EB0 {
+typedef struct PhotoSceneControl {
     /* 0x00 */ char unk00[0x6C];
     /* 0x6C */ u8 unk_6C;
     /* 0x6D */ char unk6D[0x1F];
-} unk_D_83406EB0; // size = 0x8C
+} PhotoSceneControl; // size = 0x8C
 
-typedef struct unk_D_83407B00 {
+typedef struct GalleryCursor {
     /* 0x00 */ union {
                     struct {
                         s16 unk_00s;
@@ -76,7 +76,7 @@ typedef struct unk_D_83407B00 {
                     };
                     s32 rotation;
                 };
-} unk_D_83407B00; // size = 0x8
+} GalleryCursor; // size = 0x8
 
 typedef struct unk_func_800314BC_temp_v4 {
     /* 0x00 */ s16 posX;
@@ -118,7 +118,7 @@ typedef struct unk_D_83407B38_0B0 {
     /* 0x00 */ s32 unk_08;
 } unk_D_83407B38_0B0; // size >= 0xC
 
-typedef struct unk_D_83407B38 {
+typedef struct GallerySceneGrid {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
@@ -129,9 +129,9 @@ typedef struct unk_D_83407B38 {
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ Camera* unk_20[36];
     /* 0xB0 */ Camera* unk_B0;
-} unk_D_83407B38; // size = 0xB4
+} GallerySceneGrid; // size = 0xB4
 
-extern unk_D_83407B00 gGalleryMainSelection;
+extern GalleryCursor gGalleryMainSelection;
 
 void Gallery_Dispatch(void);
 void Gallery_ResetActiveScene(void);

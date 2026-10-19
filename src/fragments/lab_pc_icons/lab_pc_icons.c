@@ -765,7 +765,7 @@ void LabPC_BindMovesPanelGrid(unk_func_88205880_0098_008_040* arg0, unk_func_880
     ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(&arg2->posX);
 }
 
-void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, unk_func_8850CD44* arg1, MemoryPool* arg2) {
+void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, ChildWidgetGroup* arg1, MemoryPool* arg2) {
     s32 i;
 
     ((func8850CD44)Memmap_GetFragmentVaddr(WidgetTree_InitChildWidgetGroup))(arg1, 8, arg2);
@@ -1039,7 +1039,7 @@ void LabPC_BuildMonDetailPanel(unk_func_88205880_0098_008* arg0, s32 arg1, s32 a
     static Color_RGBA8 D_88605B7C = { 0xFF, 0xFF, 0x00, 0xFF };
 
     UNUSED s32 pad;
-    unk_func_88001300_03C* tmp;
+    GridMenu* tmp;
     unk_func_8850182C* sp8C;
     unk_func_8850182C* sp88;
     unk_func_8850182C* sp84;
@@ -1136,7 +1136,7 @@ void LabPC_BuildMonDetailPanel(unk_func_88205880_0098_008* arg0, s32 arg1, s32 a
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_40->posX.posX, &sp80->posX.posX);
     LabPC_BindMovesPanelGrid(arg0->unk_40, sp80, arg0->unk_70);
 
-    arg0->unk_74 = mem_pool_alloc(arg5, sizeof(unk_func_8850CD44));
+    arg0->unk_74 = mem_pool_alloc(arg5, sizeof(ChildWidgetGroup));
     LabPC_GroupMovesPanelFlyWidgets(arg0->unk_40, arg0->unk_74, arg5);
 
     arg0->unk_3C = mem_pool_alloc(arg5, sizeof(unk_func_88001300_02C));
@@ -1171,7 +1171,7 @@ void LabPC_BuildMonDetailPanel(unk_func_88205880_0098_008* arg0, s32 arg1, s32 a
     LabPC_InitArrowLabelB(sp70, 0, 0, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->posX.posX, &sp70->posX);
 
-    arg0->unk_6C = mem_pool_alloc(arg5, sizeof(unk_func_88001300_03C));
+    arg0->unk_6C = mem_pool_alloc(arg5, sizeof(GridMenu));
     ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_6C, 1, 2, arg5);
 
     sp6C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));

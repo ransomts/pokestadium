@@ -29,7 +29,7 @@ static unk_D_86002F58_004_000_004* gSnapSelectRentalNode;
 static Fragment2_1GraphNode gPlayerIconNodes[2][6];
 static PlayerSlotData gPlayerSlotData[4];
 static u8* gPlayerIconTextures[4];
-static s32 D_838067D8;
+static s32 gRentalViewerState;
 static s32 gSnapSelectAnimFrame;
 static s32 gSelectedPlayerIndex;
 static s16 gBorderHeight;
@@ -154,7 +154,7 @@ static u32 gPlayerInfoPanelGeo4[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gPlayerInfoPanelVerts4, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, Gallery_RentalViewerNodePostCallback, gPlayerInfoPanelDL4, 0x06000000, 0x01000000,
 };
-static unk_D_8380548C gPlayerIconAnimData[] = {
+static RentalSlotAnimData gPlayerIconAnimData[] = {
     {
         0x01,
         0x00,
@@ -251,7 +251,7 @@ s32 Gallery_RentalViewerNodePostCallback(s32 arg0, GraphNode* arg1) {
                 break;
 
             case 5:
-                var_a0 = D_04001800;
+                var_a0 = gRentalIconTexEmpty;
                 var_a3 = NULL;
                 break;
 
@@ -373,7 +373,7 @@ void Gallery_RentalViewerInitScene(void) {
     Fragment2_1GraphNode* ptr;
 
     temp_s1 = MainPool_AllocState(main_pool_get_available(), 0);
-    D_838067D8 = 0;
+    gRentalViewerState = 0;
     gSnapSelectRoot = process_geo_layout(temp_s1, gSnapSelectLayout);
     temp_v0_2 = process_geo_layout(temp_s1, gPlayerInfoPanelGeo);
     gSnapSelectNodes[0] = temp_v0_2;
@@ -412,7 +412,7 @@ void Gallery_RentalViewerInitSlotModels(void) {
 }
 
 s32 Gallery_RentalViewerBeginZoomIntro(s32 arg0) {
-    if (D_838067D8 == 0) {
+    if (gRentalViewerState == 0) {
         Gallery_RentalViewerInitSlotModels();
         if (arg0 < 0) {
             for (gSelectedPlayerIndex = 0; gSelectedPlayerIndex < 5; gSelectedPlayerIndex++) {
@@ -423,7 +423,7 @@ s32 Gallery_RentalViewerBeginZoomIntro(s32 arg0) {
         } else {
             gSelectedPlayerIndex = arg0;
         }
-        D_838067D8 = 1;
+        gRentalViewerState = 1;
         gSnapSelectAnimFrame = 0;
         return 1;
     }
@@ -443,7 +443,7 @@ void Gallery_RentalViewerUpdateZoomIntro(void) {
 
     gSnapSelectAnimFrame++;
     if (gSnapSelectAnimFrame == 0xC) {
-        D_838067D8 = 3;
+        gRentalViewerState = 3;
     }
 }
 
@@ -530,13 +530,13 @@ void Gallery_RentalViewerUpdateSlotSelect(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         if (gPlayerIconAnimData[gSelectedPlayerIndex].unk_01 == 0) {
             Audio_PlaySoundEffectById(0x01100012);
-            D_838067D8 = 4;
+            gRentalViewerState = 4;
         } else {
             Audio_PlaySoundEffectById(8);
-            D_838067D8 = 6;
+            gRentalViewerState = 6;
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-        D_838067D8 = 5;
+        gRentalViewerState = 5;
         Audio_PlaySoundEffectById(3);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
         Gallery_RentalViewerMoveCursorUp();
@@ -567,7 +567,7 @@ void Gallery_RentalViewerBeginConfirmZoom(void) {
         }
         gBorderHeight = 0;
         gSmallBorderHeight = 0;
-        D_838067D8 = 2;
+        gRentalViewerState = 2;
     } else {
         for (i = 0; i < 6; i++) {
             if (i == gSelectedPlayerIndex) {
@@ -602,7 +602,7 @@ void Gallery_RentalViewerFinishConfirmZoom(void) {
         ModelRenderer_ClearDisplayObject(&gPlayerIconNodes[0][gSelectedPlayerIndex]);
         ModelRenderer_ClearDisplayObject(&gPlayerIconNodes[1][gSelectedPlayerIndex]);
     } else if (gSnapSelectAnimFrame == 0xE) {
-        D_838067D8 = 0;
+        gRentalViewerState = 0;
     }
     gSnapSelectAnimFrame++;
 }
@@ -620,7 +620,7 @@ void Gallery_RentalViewerCancelSelection(void) {
         gSelectedPlayerIndex = -2;
         gBorderHeight = 0;
         gSmallBorderHeight = 0;
-        D_838067D8 = 0;
+        gRentalViewerState = 0;
     } else {
         for (i = 0; i < 6; i++) {
             Gallery_RentalViewerAnimateSlotScale(i, gSnapSelectAnimFrame / 12.0f);
@@ -644,7 +644,7 @@ void Gallery_RentalViewerUpdateBusyConfirm(void) {
 
     Gallery_OpenConfirmPrompt(var_v0, gPlayer1Controller);
     if (Gallery_GetConfirmPromptResult(var_v0) != -1) {
-        D_838067D8 = 3;
+        gRentalViewerState = 3;
     }
 
     for (i = 0; i < 6; i++) {
@@ -654,7 +654,7 @@ void Gallery_RentalViewerUpdateBusyConfirm(void) {
 }
 
 void Gallery_RentalViewerUpdate(void) {
-    switch (D_838067D8) {
+    switch (gRentalViewerState) {
         case 1:
             Gallery_RentalViewerUpdateZoomIntro();
             break;
@@ -683,7 +683,7 @@ void Gallery_RentalViewerUpdate(void) {
 
 void Gallery_RentalViewerDrawCursorMarker(void) {
 
-    if (D_838067D8 == 3) {
+    if (gRentalViewerState == 3) {
         s32 tmp = gPlayerIconAnimData[gSelectedPlayerIndex].posY - (gPlayerIconAnimData[gSelectedPlayerIndex].unk_06 / 2) - 0x1E;
         s32 tmp2 = gPlayerIconAnimData[gSelectedPlayerIndex].rotation - 0x20;
 
@@ -757,7 +757,7 @@ void Gallery_RentalViewerDrawTeamList(s32 arg0) {
     s16 sp3A;
     s16 temp_s0;
 
-    if ((D_838067D8 != 0) && (arg0 != 0)) {
+    if ((gRentalViewerState != 0) && (arg0 != 0)) {
         temp_s0 = (0x38 - gBorderHeight) / 2;
         sp3A = (0x28 - gSmallBorderHeight) / 2;
         Geo_RenderRootNode(gSnapSelectRoot);
@@ -783,7 +783,7 @@ void Gallery_RentalViewerDrawTeamList(s32 arg0) {
 }
 
 s32 Gallery_RentalViewerGetSelectedSlot(void) {
-    if (D_838067D8 == 0) {
+    if (gRentalViewerState == 0) {
         return gSelectedPlayerIndex;
     }
     return -1;

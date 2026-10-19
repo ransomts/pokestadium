@@ -14,7 +14,7 @@
 #include "src/fragments/43/fragment43.h"
 
 static s32 gItemSelectState;
-static unk_D_83407B38 gItemSelectContext;
+static GallerySceneGrid gItemSelectContext;
 static s32 gItemSelectMode;
 static s32 ItemSelect_ShowResult;
 static BinArchive* gStadiumModelArchive;
@@ -23,7 +23,7 @@ static s32 ItemSelect_FadeInFlag;
 static u16 gSlotStatusFlags[0x24];
 static s32 ItemSelect_ResultAnimTimer;
 
-s32 Gallery_AlbumHandleGridInput(unk_D_83407B38* arg0) {
+s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
     s32 sp64;
     s32 sp60;
     s32 sp5C;
@@ -303,7 +303,7 @@ void Gallery_AlbumDrawCornerMarkers(s32 arg0, s32 arg1, s32 arg2) {
     Gfx_DrawTexturedRectClipped((arg0 + arg2) - 0x10, arg1, 0x10, 0x10, 0, 0, 0x400, 0x400, 0);
 }
 
-void DrawGridPageCounter(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void DrawGridPageCounter(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
     s32 temp_s1;
     s32 temp_v1;
     char* temp_v0;
@@ -500,7 +500,7 @@ void DrawResultPanelImage(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32
     }
 }
 
-void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
+void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, GallerySceneGrid* arg2) {
     UNUSED s32 pad;
     s32 temp_s3;
     s32 var_s4;
@@ -551,7 +551,7 @@ void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     }
 }
 
-void Gallery_AlbumDrawTitleBar(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void Gallery_AlbumDrawTitleBar(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_83503E8C = { 0x9A, 0x37, 0x54, 0xFF };
     static Color_RGBA8 D_83503E90 = { 0xC3, 0x54, 0x84, 0xFF };
     static s16 D_83503E94 = 0;
@@ -635,7 +635,7 @@ void Gallery_AlbumDrawEnlargeHint(s32 arg0) {
     Font_EndTexturedTextRendering();
 }
 
-void Gallery_AlbumDrawGridPanel(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
+void Gallery_AlbumDrawGridPanel(s32 arg0, s32 arg1, GallerySceneGrid* arg2) {
     s32 i;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -931,7 +931,7 @@ void Gallery_AlbumDrawExitButton(int arg0, int arg1, s32 arg2, f32 arg3) {
     Font_EndTexturedTextRendering();
 }
 
-char* Gallery_AlbumGetStatusText(unk_D_83407B38* arg0) {
+char* Gallery_AlbumGetStatusText(GallerySceneGrid* arg0) {
     s32 tmp = arg0->posX / 3;
     char* var_v0;
 
@@ -949,7 +949,7 @@ char* Gallery_AlbumGetStatusText(unk_D_83407B38* arg0) {
     return var_v0;
 }
 
-void Gallery_AlbumDrawStatusText(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void Gallery_AlbumDrawStatusText(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
     char* sp1C = Gallery_AlbumGetStatusText(arg0);
 
     Gallery_DrawBluePanel(arg1, arg2, 0x13F, 0x4C);
@@ -980,7 +980,7 @@ f32 Gallery_AlbumPulseAlpha(s32* arg0, u32* arg1, s32 arg2) {
     return tmp;
 }
 
-void Gallery_AlbumDrawCursor(unk_D_83407B38* arg0) {
+void Gallery_AlbumDrawCursor(GallerySceneGrid* arg0) {
     s32 temp_hi = arg0->posX % 3;
     s32 temp_lo = arg0->posX / 3;
     s32 var_v0;
@@ -1058,7 +1058,7 @@ void Gallery_AlbumDraw(void) {
     BgStage_AdvanceFrame();
 }
 
-void Gallery_AlbumAdvanceDeleteAnimation(unk_D_83407B38* arg0) {
+void Gallery_AlbumAdvanceDeleteAnimation(GallerySceneGrid* arg0) {
     ItemSelect_ResultAnimTimer++;
     if (ItemSelect_ResultAnimTimer >= 0x15) {
         Gallery_ClearPhotoRecord(arg0->unk_20[arg0->rotation]->unk_18);
@@ -1069,7 +1069,7 @@ void Gallery_AlbumAdvanceDeleteAnimation(unk_D_83407B38* arg0) {
     }
 }
 
-void Gallery_AlbumConfirmAndExit(unk_D_83407B38* arg0) {
+void Gallery_AlbumConfirmAndExit(GallerySceneGrid* arg0) {
     Camera* sp1C = arg0->unk_B0;
 
     if ((Gallery_IsSceneReady(sp1C) != 0) && (sp1C->posX == 2)) {
@@ -1162,7 +1162,7 @@ void Gallery_AlbumLoop(void) {
     } while (Gallery_AlbumUpdate() != 0);
 }
 
-s32 Gallery_AlbumGetResult(unk_D_83407B38* arg0) {
+s32 Gallery_AlbumGetResult(GallerySceneGrid* arg0) {
     UNUSED s32 pad[2];
     s32 sp1C;
 

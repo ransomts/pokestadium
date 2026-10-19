@@ -95,7 +95,7 @@ void Gallery_Dispatch(void) {
     u32 var_s5;
     u32 sp5C;
     s32 var_v0;
-    unk_D_83407B00* val;
+    GalleryCursor* val;
 
     val = &gGalleryMainSelection;
     var_s2 = 0;

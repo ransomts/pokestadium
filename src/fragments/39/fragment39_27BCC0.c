@@ -34,10 +34,10 @@ static s32 gSelectionFrameCounter;
 static unk_D_82508B00* gControllerInputs;
 static unk_D_82508B00 gControllerStates[4];
 static UIElement gUIElements[14];
-static unk_D_8250A228* gUIElementArray[2];
-static unk_D_8250A228* gComputerUIElements[2];
-static unk_D_8250A228* gComputerUIRoot;
-static unk_D_8250A228* gItemGridElements[9];
+static UIWidget* gUIElementArray[2];
+static UIWidget* gComputerUIElements[2];
+static UIWidget* gComputerUIRoot;
+static UIWidget* gItemGridElements[9];
 static BinArchive* gItemArchive;
 static void* gItemDataPtr;
 static s16 D_8250A26C;
@@ -1301,7 +1301,7 @@ void MiniGameSelect_RenderNumberSpinner(UIElement* arg0) {
     Font_EndTexturedTextRendering();
 }
 
-unk_D_8250A228* MiniGameSelect_FindFreeWidgetSlot(void) {
+UIWidget* MiniGameSelect_FindFreeWidgetSlot(void) {
     s32 i;
     UIElement* var_v1 = gUIElements;
 
@@ -1317,8 +1317,8 @@ unk_D_8250A228* MiniGameSelect_FindFreeWidgetSlot(void) {
     return var_v1;
 }
 
-unk_D_8250A228* MiniGameSelect_CreateMenuWidget(s16 arg0, s16 arg1, GraphNode* arg2) {
-    unk_D_8250A228* temp_v0 = MiniGameSelect_FindFreeWidgetSlot();
+UIWidget* MiniGameSelect_CreateMenuWidget(s16 arg0, s16 arg1, GraphNode* arg2) {
+    UIWidget* temp_v0 = MiniGameSelect_FindFreeWidgetSlot();
     UIElementNode* temp_s1;
 
     if (temp_v0 == NULL) {
@@ -1372,7 +1372,7 @@ unk_D_8250A228* MiniGameSelect_CreateMenuWidget(s16 arg0, s16 arg1, GraphNode* a
     return temp_v0;
 }
 
-void MiniGameSelect_LinkWidgets(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
+void MiniGameSelect_LinkWidgets(UIWidget* arg0, UIWidget* arg1) {
     if (arg0 != NULL) {
         arg0->unk_30 = arg1;
     }
@@ -1382,13 +1382,13 @@ void MiniGameSelect_LinkWidgets(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
     }
 }
 
-void MiniGameSelect_ChainWidget(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
+void MiniGameSelect_ChainWidget(UIWidget* arg0, UIWidget* arg1) {
     if (arg0 != NULL) {
         arg0->unk_34 = arg1;
     }
 }
 
-void SetUIElementState(unk_D_8250A228* arg0, s16 arg1) {
+void SetUIElementState(UIWidget* arg0, s16 arg1) {
     s32 var_v0;
     s32 i;
 
@@ -1460,7 +1460,7 @@ void SetUIElementState(unk_D_8250A228* arg0, s16 arg1) {
     }
 }
 
-void MiniGameSelect_SetWidgetTargetState(unk_D_8250A228* arg0, s16 arg1, s32 arg2) {
+void MiniGameSelect_SetWidgetTargetState(UIWidget* arg0, s16 arg1, s32 arg2) {
     if (arg2 != 0) {
         if (arg0->unk_0A != arg0->unk_0C) {
             arg0->unk_0A = arg0->unk_0C;
@@ -1470,7 +1470,7 @@ void MiniGameSelect_SetWidgetTargetState(unk_D_8250A228* arg0, s16 arg1, s32 arg
     arg0->unk_0C = arg1;
 }
 
-s32 MiniGameSelect_IsWidgetInState(unk_D_8250A228* arg0, s16 arg1) {
+s32 MiniGameSelect_IsWidgetInState(UIWidget* arg0, s16 arg1) {
     s32 ret = 0;
 
     if (arg0 == NULL) {
@@ -1502,7 +1502,7 @@ void MiniGameSelect_UpdateWidgetFade(UIElement* arg0) {
     }
 }
 
-s32 MiniGameSelect_CountWidgetChannels(unk_D_8250A228* arg0, s16 arg1) {
+s32 MiniGameSelect_CountWidgetChannels(UIWidget* arg0, s16 arg1) {
     s32 var_v1 = 0;
     s32 i;
 

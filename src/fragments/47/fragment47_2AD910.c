@@ -14,16 +14,16 @@
 static s32 gSnapSelectMode;
 static s32 gSnapSelectState;
 static void* gSnapSelectBackground;
-static unk_D_8380565C* gSnapSelectBgData;
-static s32 D_83805660;
-static s32 D_83805664;
-static s32 D_83805668;
+static RentalViewerBgData* gSnapSelectBgData;
+static s32 gRentalViewerConfirmResult;
+static s32 gRentalViewerSelectedSlot;
+static s32 gRentalViewerFadeCounter;
 
 void Gallery_RentalViewerInit(s32 arg0) {
     gSnapSelectState = 0;
     gSnapSelectMode = arg0;
-    D_83805668 = -1;
-    D_83805660 = -1;
+    gRentalViewerFadeCounter = -1;
+    gRentalViewerConfirmResult = -1;
     Text_InitStringTables();
     Gallery_InitStringTables();
     Gallery_RentalViewerInitScene();
@@ -32,7 +32,7 @@ void Gallery_RentalViewerInit(s32 arg0) {
 }
 
 void Gallery_RentalViewerSetFadeCounter(s32 arg0) {
-    D_83805668 = arg0;
+    gRentalViewerFadeCounter = arg0;
 }
 
 void Gallery_RentalViewerDrawIcon(s32 arg0, s32 arg1) {
@@ -61,7 +61,7 @@ void Gallery_RentalViewerDrawTitleBar(void) {
 
 void Gallery_RentalViewerDrawFrame(void) {
     BgStage_DrawFrame();
-    if (D_83805668 != 0) {
+    if (gRentalViewerFadeCounter != 0) {
         Gfx_DrawTiledRgba16Image(gSnapSelectBackground);
         Gallery_RentalViewerDrawTitleBar();
     }
@@ -69,8 +69,8 @@ void Gallery_RentalViewerDrawFrame(void) {
     SnapSelect_UpdateCameraState(1);
     Gallery_DrawConfirmPrompt(1);
     BgStage_AdvanceFrame();
-    if (D_83805668 > 0) {
-        D_83805668 -= 1;
+    if (gRentalViewerFadeCounter > 0) {
+        gRentalViewerFadeCounter -= 1;
     }
 }
 
@@ -80,32 +80,32 @@ void Gallery_RentalViewerLoadPort(s32 arg0) {
 
     main_pool_push_state('glpc');
 
-    if ((D_83805664 >= 0) && (D_83805664 < 4)) {
-        GbSave_LoadPort(D_83805664);
+    if ((gRentalViewerSelectedSlot >= 0) && (gRentalViewerSelectedSlot < 4)) {
+        GbSave_LoadPort(gRentalViewerSelectedSlot);
     }
 
     if (arg0 != 0) {
-        Gallery_RentalViewerOpenBoxPicker(D_83805664, &gGalleryFinalSelection.unk_08);
+        Gallery_RentalViewerOpenBoxPicker(gRentalViewerSelectedSlot, &gGalleryFinalSelection.unk_08);
     } else {
-        Gallery_RentalViewerOpenBoxPicker(D_83805664, NULL);
+        Gallery_RentalViewerOpenBoxPicker(gRentalViewerSelectedSlot, NULL);
     }
 }
 
 void Gallery_RentalViewerUpdateLoadConfirm(void) {
-    D_83805660 = Gallery_GetConfirmPromptResult(2);
+    gRentalViewerConfirmResult = Gallery_GetConfirmPromptResult(2);
 
-    if (D_83805660 != -1) {
-        if (D_83805660 == -2) {
-            D_83805660 = 2;
+    if (gRentalViewerConfirmResult != -1) {
+        if (gRentalViewerConfirmResult == -2) {
+            gRentalViewerConfirmResult = 2;
         }
 
-        if (D_83805660 != 2) {
+        if (gRentalViewerConfirmResult != 2) {
             gSnapSelectState = 4;
             StageFade_StartFromTransparent(0xF);
         } else {
             gSnapSelectState = 1;
-            Gallery_RentalViewerBeginZoomIntro(D_83805664);
-            D_83805660 = -1;
+            Gallery_RentalViewerBeginZoomIntro(gRentalViewerSelectedSlot);
+            gRentalViewerConfirmResult = -1;
         }
     }
 }
@@ -125,25 +125,25 @@ s32 Gallery_RentalViewerHandleInput(void) {
                 if (D_83804CB8 <= 0) {
                     gSnapSelectState = 1;
                     if (gSnapSelectMode == 1) {
-                        D_83805664 = gGalleryFinalSelection.unk_08.posX;
+                        gRentalViewerSelectedSlot = gGalleryFinalSelection.unk_08.posX;
                         Gallery_RentalViewerLoadPort(1);
                     } else {
                         if (gSnapSelectMode == 2) {
-                            D_83805664 = 5;
+                            gRentalViewerSelectedSlot = 5;
                         } else {
-                            D_83805664 = -1;
+                            gRentalViewerSelectedSlot = -1;
                         }
-                        Gallery_RentalViewerBeginZoomIntro(D_83805664);
+                        Gallery_RentalViewerBeginZoomIntro(gRentalViewerSelectedSlot);
                     }
                 }
             }
             break;
 
         case 1:
-            D_83805664 = Gallery_RentalViewerGetSelectedSlot();
-            switch (D_83805664) {
+            gRentalViewerSelectedSlot = Gallery_RentalViewerGetSelectedSlot();
+            switch (gRentalViewerSelectedSlot) {
                 case -2:
-                    if (D_83402E20 > 0) {
+                    if (gGalleryPhotoPoolCount > 0) {
                         gSnapSelectState = 3;
                         Gallery_OpenConfirmPrompt(2, gPlayer1Controller);
                     } else {
@@ -162,7 +162,7 @@ s32 Gallery_RentalViewerHandleInput(void) {
                 case 5:
                     sp78 = 1;
                     _bcopy(&gSnapSelectBgData->unk_7E4, &sp20, sizeof(PokemonData));
-                    Gallery_CopyPhotoMonFromBattleMon(&D_83407AC8, &sp20);
+                    Gallery_CopyPhotoMonFromBattleMon(&gGallerySpecialSpecies, &sp20);
                     break;
             }
 
@@ -177,13 +177,13 @@ s32 Gallery_RentalViewerHandleInput(void) {
             if (sp74 != 0) {
                 main_pool_pop_state('glpc');
 
-                D_83805668 = -1;
+                gRentalViewerFadeCounter = -1;
                 if (sp74 > 0) {
                     gSnapSelectState = 4;
                     StageFade_StartFromTransparent(0xF);
                 } else {
                     gSnapSelectState = 1;
-                    Gallery_RentalViewerBeginZoomIntro(D_83805664);
+                    Gallery_RentalViewerBeginZoomIntro(gRentalViewerSelectedSlot);
                 }
             }
             break;
@@ -223,12 +223,12 @@ s32 Gallery_RentalViewerGetResult(void) {
     unk_D_83407B18_008* temp_a0 = &gGalleryFinalSelection.unk_08;
     temp_a0 += 0;
 
-    if (D_83805660 == 0) {
+    if (gRentalViewerConfirmResult == 0) {
         var_v1 = 2;
-    } else if (D_83805660 == 1) {
+    } else if (gRentalViewerConfirmResult == 1) {
         var_v1 = 0;
     } else {
-        switch (D_83805664) {
+        switch (gRentalViewerSelectedSlot) {
             case -2:
                 var_v1 = 0;
                 break;
@@ -243,7 +243,7 @@ s32 Gallery_RentalViewerGetResult(void) {
         }
     }
 
-    temp_a0->posX = D_83805664;
+    temp_a0->posX = gRentalViewerSelectedSlot;
     Gallery_RentalViewerSaveBoxCursor(temp_a0);
     return var_v1;
 }

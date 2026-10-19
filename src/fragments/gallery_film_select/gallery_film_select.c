@@ -17,7 +17,7 @@
 s32 gSelectionState;
 s32 gSelectionMessageState;
 BinArchive* D_836032F8;
-unk_D_83407B38 gSelectionCamList;
+GallerySceneGrid gSelectionCamList;
 s32 gSelectedMonCount;
 s32 gMaxSelectableMonCount;
 s32 gSelectionScreenFadeType;
@@ -25,7 +25,7 @@ u16 gBackgroundGradientMask;
 s32 gCursorCanMoveUp;
 s32 gCursorCanMoveDown;
 
-void Gallery_FilmSelectCommitPhotos(unk_D_83407B38* arg0) {
+void Gallery_FilmSelectCommitPhotos(GallerySceneGrid* arg0) {
     s32 i;
     s32 sp40;
     PhotoSceneData* temp_s0;
@@ -80,7 +80,7 @@ s32 Gallery_FilmSelectHasUnsavedPhoto(void) {
     return sp28;
 }
 
-void Gallery_FilmSelectUpdatePageAvailability(unk_D_83407B38* arg0) {
+void Gallery_FilmSelectUpdatePageAvailability(GallerySceneGrid* arg0) {
     UNUSED s32 pad;
     s32 sp18 = arg0->unk_08 + 1;
 
@@ -97,7 +97,7 @@ void Gallery_FilmSelectUpdatePageAvailability(unk_D_83407B38* arg0) {
     }
 }
 
-s32 Gallery_FilmSelectHandleInput(unk_D_83407B38* arg0) {
+s32 Gallery_FilmSelectHandleInput(GallerySceneGrid* arg0) {
     s32 sp54;
     s32 sp50;
     s32 sp4C;
@@ -412,7 +412,7 @@ void Gallery_FilmSelectDrawCounterBadge(s32 arg0, s32 arg1, s16 arg2) {
     Gfx_DrawTexturedRectClipped(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
 }
 
-void Gallery_FilmSelectDrawPhotoGrid(unk_D_83407B38* arg0) {
+void Gallery_FilmSelectDrawPhotoGrid(GallerySceneGrid* arg0) {
     static s16 D_83603280 = 0;
 
     s32 temp_s0_2;
@@ -446,7 +446,7 @@ void Gallery_FilmSelectDrawPhotoGrid(unk_D_83407B38* arg0) {
     D_83603280 += 0x400;
 }
 
-void Gallery_FilmSelectDrawSelectionCursor(unk_D_83407B38* arg0) {
+void Gallery_FilmSelectDrawSelectionCursor(GallerySceneGrid* arg0) {
     s32 temp_hi = arg0->posX % 3;
     s32 temp_lo = arg0->posX / 3;
     s32 var_a0;
@@ -637,7 +637,7 @@ void Gallery_FilmSelectDrawBackgroundGradient(void) {
     }
 }
 
-char* Gallery_FilmSelectGetHelpText(unk_D_83407B38* arg0) {
+char* Gallery_FilmSelectGetHelpText(GallerySceneGrid* arg0) {
     static s32 D_836032B4[] = { 0x21, 0x24 };
 
     char* var_v0;
@@ -658,7 +658,7 @@ char* Gallery_FilmSelectGetHelpText(unk_D_83407B38* arg0) {
     return var_v0;
 }
 
-void Gallery_FilmSelectDrawHelpText(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void Gallery_FilmSelectDrawHelpText(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
     char* sp1C = Gallery_FilmSelectGetHelpText(arg0);
 
     Gallery_DrawBluePanel(arg1, arg2, 0x136, 0x4C);
@@ -858,7 +858,7 @@ void Gallery_FilmSelectRunLoop(void) {
     } while (Gallery_FilmSelectUpdate() != 0);
 }
 
-s32 Gallery_FilmSelectFinalize(unk_D_83407B38* arg0) {
+s32 Gallery_FilmSelectFinalize(GallerySceneGrid* arg0) {
     s32 temp_hi = arg0->posX % 3;
     s32 temp_lo = arg0->posX / 3;
     s32 sp1C;

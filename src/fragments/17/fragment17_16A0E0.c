@@ -16,19 +16,19 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct unk_D_86B10BD0 {
+typedef struct SceneState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
-} unk_D_86B10BD0; // size >= 0xC
+} SceneState; // size >= 0xC
 
-typedef struct unk_D_86B10BE0 {
+typedef struct DialogBoxState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
     /* 0x08 */ s32 unk_08;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
-} unk_D_86B10BE0; // size >= 0x14
+} DialogBoxState; // size >= 0x14
 
 static u32 D_86B0E2B0[] = {
     0xA4AAA4E1, 0xA4C7A4C8, 0xA4A6A1AA, 0x20A5C9A1, 0xBCA5C9A1, 0xBCA4CE0A, 0xA5B2A1BC, 0xA5E0A5DC, 0xA1BCA5A4,
@@ -57,8 +57,8 @@ static s8 D_86B10AC8[0x100];
 static s16 D_86B10BC8;
 static s16 D_86B10BCA;
 static s16 D_86B10BCC;
-static unk_D_86B10BD0 D_86B10BD0;
-static unk_D_86B10BE0 gMessageBoxState;
+static SceneState D_86B10BD0;
+static DialogBoxState gMessageBoxState;
 
 void FirstClearBonus_InitCamera(void) {
     D_86B109B8 = D_86B10848->unk_0C;
