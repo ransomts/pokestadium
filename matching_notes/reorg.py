@@ -181,6 +181,19 @@ def apply_group(group, no_gate):
             yaml = yaml.replace(old_entry, f"0x{addr:X}, {kind}, {tp}]")
         else:
             problems.append(f"pathless 0x{addr:X}: entry shape not found")
+    # per-file Makefile rules (OPTFLAGS/CC/MIPS_VERSION overrides): a rename
+    # detaches the file from its rule (the C030 lesson: -Wo,-loopunroll,0
+    # lost -> IDO unrolled a loop -> ROM mismatch)
+    mk = open(os.path.join(REPO, "Makefile")).read()
+    mk2 = mk
+    for op, tp, _on, _tn in sub_ren:
+        if op == tp:
+            continue
+        mk2 = re.sub(r'build/src/' + re.escape(op) + r'\.o:',
+                     f'build/src/{tp}.o:', mk2)
+    if mk2 != mk:
+        open(os.path.join(REPO, "Makefile"), "w").write(mk2)
+        print("  Makefile: per-file rules retargeted")
     for oname, tname in seg_ren:
         yaml = yaml.replace(f"- name: {oname}\n", f"- name: {tname}\n")
     for op, tp, _on, _tn in sub_ren:
@@ -343,7 +356,7 @@ def revert(manifest):
     for src, dst in reversed(manifest["moves"]):
         if os.path.exists(os.path.join(REPO, dst)):
             sh(["git", "mv", dst, src])
-    sh(["git", "checkout", "--", "src", "include", "yamls/us/rom.yaml"])
+    sh(["git", "checkout", "--", "src", "include", "yamls/us/rom.yaml", "Makefile"])
     # include rewrites: restore from git
     sh(["git", "reset", "-q"])  # clear the staged renames git mv left behind
     sh(["git", "clean", "-fdq", "src"])
