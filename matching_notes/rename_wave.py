@@ -39,6 +39,16 @@ ERROR_LINE_RE = re.compile(r"ledger:(\d+) \(([^)]+)\): (.+)")
 VRAM_ANCHOR_RE = re.compile(r"D_[0-9A-F]000[0-9A-F]{3}$")
 SEGMENT_ADDR_RE = re.compile(r"D_[0-9A-F]{7}$")  # 7-hex-digit = segment/VRAM space (D_4007B60 etc.)
 BATCH_OFFSET = 4  # queue wave 1 -> batch w5
+# C keywords + annotation tokens agents file as also-pair SOURCES (`typedef:Foo`,
+# `struct:Bar`) - no symbol can be named these, so the pair is always noise and
+# rewriting the word would corrupt every declaration in the tree (w10 lesson)
+ALSO_SOURCE_BLOCKLIST = {
+    "auto", "break", "case", "char", "const", "continue", "default", "do",
+    "double", "else", "enum", "extern", "float", "for", "goto", "if", "int",
+    "long", "register", "return", "short", "signed", "sizeof", "static",
+    "struct", "switch", "typedef", "union", "unsigned", "void", "volatile",
+    "while", "type", "Type", "Struct", "Union", "Enum", "Callback", "Func",
+}
 
 
 def sh(cmd, timeout, **kw):
@@ -199,16 +209,18 @@ def fixup(rows, facts, batch, log, vetoes):
         seen_old.add(old)
         seen_new.add(new)
         kept.append((old, new, batch, also, just))
-    # also-pair collision guard (w5 orphan lesson): agents file type
-    # annotations as also pairs (`old:Struct`); a pair whose old is a
-    # main-row old would clobber that row's rename in the word map.
+    # also-pair guards (w5 + w10 orphan/corruption lessons): agents file type
+    # annotations as also pairs (`old:Struct`, `typedef:Name`); a pair whose
+    # old is a main-row old would clobber that row's rename in the word map,
+    # and a pair whose old is a C keyword would rewrite the keyword itself.
     # The main row owns the symbol - drop the pair.
     main_olds = {k[0] for k in kept}
     out = []
     for old, new, b, also, just in kept:
         if also:
             pairs = [p for p in also.split(",")
-                     if p.split(":", 1)[0].strip() not in main_olds]
+                     if p.split(":", 1)[0].strip() not in main_olds
+                     and p.split(":", 1)[0].strip() not in ALSO_SOURCE_BLOCKLIST]
             also = ",".join(pairs)
         out.append((old, new, b, also, just))
     return out
@@ -378,7 +390,9 @@ def run_wave(qwave, args, facts):
         return False
 
     # 6. commit + mark + amend (scoped: only this wave's files + the ledger)
-    n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied"))
+    # count ONLY this run's rows ("applied", not "applied@<old-era-sha>"):
+    # batch tags w5+ collide with the Oct-17/18 era (w1-w30) in the ledger
+    n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5] == "applied")
     if n == 0:
         n = sum(1 for _i, p in ledger_rows() if p[2] == batch and p[5].startswith("applied"))
     short = ", ".join(os.path.basename(f) for f in files[:4]) + (", ..." if len(files) > 4 else "")

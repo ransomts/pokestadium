@@ -215,6 +215,29 @@ build FAILS with our toolchain (6 errors, see /tmp/opencode/hippo_build.log; lik
 IDO/binutils version pin - check their ci/ config or ask them). Next session options:
 fix the toolchain match, or fall back to gemma LLM waves for the statics tail.
 
+## Toolchain-pin findings (2026-10-19 evening, read-only while waves run)
+Fresh shallow clone at /tmp/opencode/hippo (old one + hippo_build.log were /tmp-cleaned).
+Compared against our tree - the "version pin" is NOT IDO and NOT python deps:
+- IDO: BOTH trees ship tools/ido/linux/{5.3,7.1} (CC=7.1, CC_OLD=5.3 for ultralib).
+- requirements.txt: identical.
+- Their CI (ci/Dockerfile): debian:bookworm-slim + binutils-mips-linux-gnu (~2.40);
+  our node has ~/local/bin mips-linux-gnu-* 2.42. Prime suspect for the 6 errors.
+- Their Makefile defaults that differ from ours: RUN_CC_CHECK=1 (host gcc syntax check),
+  KEEP_MDEBUG=1, COMPARE=1; ultralib sub-build passes COMPARE=0 + IDO_PREPROCESS
+  (windows-only) on top of our FIXUPS=1 CROSS=... shape.
+- No submodules; baseroms/us/baserom.z64 layout identical to ours.
+RETRY RECIPE (after the wave driver finishes - never during gates, CPU contention):
+cd /tmp/opencode/hippo && ln -sf ~/Code/pokestadium/baseroms/us/baserom.z64 baseroms/us/
+make -j24 PYTHON=~/Code/pokestadium/.venv/bin/python3 2>&1 | tee /tmp/opencode/hippo_build.log
+Fallbacks by failure class: RUN_CC_CHECK=0 if host-gcc syntax noise; a bookworm-era
+binutils-mips-linux-gnu (2.40) in ~/local if 2.42-only assembler behavior trips them;
+ask michiiik which binutils they pin if neither.
+STATIC-JOIN TOOL READY: matching_notes/rename_hippo_statics_gen.py (batch hs1) - like
+hp1 but joins the two trees' LINKER MAPS (file-scope statics appear as local symbols
+there, never in symbol_addrs). Our side parsed today: 1,907 map locals, 1,408 still
+placeholder-named - the addressable pool. Run it the moment their map exists; smoke-
+tested our-side parsing only (their map requires the build above).
+
 ## CURRENT STATE (2026-10-19 afternoon, latest)
 Statics-tail waves 1-6 RUNNING (driver PID 2131856, gemma-4-31b, log
 scratch/rename_waves/driver_statics.log; queue regenerated: 170 files, 13 waves).
@@ -250,8 +273,18 @@ yields 54 kept rows with clean also columns; wave-1 agent results all reusable;
 make extract + make -j24 green (ROM OK) at HEAD. Relaunch: `run 1 6 --model gemma-4-31b`.
 
 ## CURRENT STATE (2026-10-19 evening, latest)
-Statics-tail waves RE-RUNNING after the also-pair fix (log
-scratch/rename_waves/driver_statics.log; queue: 170 files, 13 waves, driver runs
-queue waves 1-6 = batches w5-w10). Open items unchanged: michiiik toolchain pin
-(ask them; then statics address-join), reorg residuals (groups 5/6/7/8/61, 1/31/77,
-main segment, un-joined yaml entries), michiiik-nameless tail after all waves.
+w5-w9 LANDED after the also-pair fix: 766 symbols in 5 gated commits (de0c75fc, 3270c92b,
+6637d5ff, 2d22aedb, e22fa23d); diff-init byte-identical at w8. w10 STOPPED on a NEW
+annotation-noise class: `typedef:Name` also-pairs (keyword SOURCE instead of `old:Struct`)
+rewrote the word `typedef` itself - geo_layout.c compile errors, build gate caught it,
+auto-reverted, rows pending. Fixes: also-pair sources are now blocklisted (C keywords +
+annotation tokens) at three layers (wave fixup drop / preflight warn / do_rewrites skip);
+row always survives with the pair dropped.
+
+NOTE: statics batch tags (w5-w17) COLLIDE with the Oct-17/18 era tags (w1-w30) in the
+ledger - benign: select_batch/mark-committed only touch status-'applied' rows, and the
+driver's symbol count now keys on exact 'applied' (old-era rows are applied@sha), so
+commit messages count only this run's rows. Revert --batch wN must never be used on a
+colliding tag (it would invert old+new rows together).
+
+RELAUNCH: `run 6 8` (queue waves 6-13, batches w10-w17) - same gemma-4-31b driver.

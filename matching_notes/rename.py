@@ -41,6 +41,16 @@ MAKE_ENV = dict(
     PATH=f"{REPO}/.venv/bin:{os.path.expanduser('~')}/local/bin:/usr/local/bin:/usr/bin:/bin",
 )
 PLACEHOLDER_PREFIXES = ("func_", "D_", "jtbl_", "pad_", "unk_D_", "unk_func_")
+# also-pair sources that can never be real symbols: C keywords + the annotation
+# tokens agents emit (`typedef:Name`). Rewriting these words would corrupt every
+# declaration in the tree (the w10 build-gate lesson).
+ALSO_PAIR_SOURCE_BLOCKLIST = {
+    "auto", "break", "case", "char", "const", "continue", "default", "do",
+    "double", "else", "enum", "extern", "float", "for", "goto", "if", "int",
+    "long", "register", "return", "short", "signed", "sizeof", "static",
+    "struct", "switch", "typedef", "union", "unsigned", "void", "volatile",
+    "while", "type", "Type", "Struct", "Union", "Enum", "Callback", "Func",
+}
 EXPECT_PROGRESS = "98.8837"
 
 
@@ -371,6 +381,9 @@ def preflight(rows, protected, named, allow_applied_skip=True):
                     errors.append(f"{tag}: malformed also-pair {pair!r} (need old:new)")
                     continue
                 a, b = pair.split(":", 1)
+                if a.strip() in ALSO_PAIR_SOURCE_BLOCKLIST:
+                    warnings.append(f"{tag}: ignoring also-pair source {a.strip()!r} - "
+                                    "C keyword (agent annotation noise); the row itself stands")
                 if sa_definitions(b.strip()) or b.strip() in named:
                     errors.append(f"{tag}: also-pair target {b.strip()!r} already named/defined")
                 if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", b.strip()):
@@ -571,10 +584,14 @@ def do_rewrites(rows, files):
     # last-writer-wins, and an agent can file a type annotation as an also
     # pair (`old:Struct`) - the main row must own that symbol's rename
     # (the w5 orphan lesson: everything became the literal word "Struct").
+    # Keyword-source pairs (`typedef:Name`, the w10 lesson) are impossible
+    # symbols - skip them so the keyword itself is never rewritten.
     for r in rows:
         if r.also:
             for pair in r.also.split(","):
                 a, b = pair.split(":")
+                if a.strip() in ALSO_PAIR_SOURCE_BLOCKLIST:
+                    continue
                 rw.rewrite_word(a.strip(), b.strip(), files)
     for r in rows:
         if r.is_field_row():
