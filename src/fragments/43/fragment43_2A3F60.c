@@ -85,7 +85,7 @@ void MenuPanel_DrawYesNo(MenuPanelInfo* arg0, s16 arg1) {
     Text_SetupDL();
 }
 
-void func_834024C4(MenuPanelInfo* arg0) {
+void Gallery_DrawSaveOptions(MenuPanelInfo* arg0) {
     char* temp_v0;
     s32 i;
     s32 tmp;
@@ -120,7 +120,7 @@ void func_834024C4(MenuPanelInfo* arg0) {
     }
 }
 
-void func_834026A4(MenuPanelInfo* arg0) {
+void Gallery_DrawDeleteOptions(MenuPanelInfo* arg0) {
     s32 i;
     s32 tmp;
     char* temp_v0;
@@ -149,7 +149,7 @@ void func_834026A4(MenuPanelInfo* arg0) {
     }
 }
 
-void func_83402834(MenuPanelInfo* arg0) {
+void Gallery_DrawMessagePrompt(MenuPanelInfo* arg0) {
     UNUSED s32 pad;
     s32 sp18 = (0xC8 - MeasureTextWidth(0x10, 0, Text_GetMessageString_Bank2C(0x41))) / 2;
 
@@ -191,22 +191,22 @@ void SnapSelect_UpdateUIState(UNUSED s32 arg0) {
                     break;
 
                 case 2:
-                    func_834024C4(temp_s0);
+                    Gallery_DrawSaveOptions(temp_s0);
                     break;
 
                 case 3:
-                    func_834026A4(temp_s0);
+                    Gallery_DrawDeleteOptions(temp_s0);
                     break;
 
                 case 4:
-                    func_83402834(temp_s0);
+                    Gallery_DrawMessagePrompt(temp_s0);
                     break;
             }
         }
     }
 }
 
-void func_83402A38(void) {
+void Gallery_UpdateConfirmPromptInput(void) {
     s32 tmpA;
     MenuPanelInfo* temp_v0;
     s16* temp_a3;
@@ -271,7 +271,7 @@ void func_83402A38(void) {
     D_83407C08 = 4;
 }
 
-void func_83402BF4(void) {
+void Gallery_AdvanceConfirmPromptOpen(void) {
     D_83407C08++;
     if (D_83407C08 >= 5) {
         D_83407C08 = 4;
@@ -279,7 +279,7 @@ void func_83402BF4(void) {
     }
 }
 
-void func_83402C34(void) {
+void Gallery_AdvanceConfirmPromptClose(void) {
     D_83407C08--;
     if (D_83407C08 < 0) {
         D_83407C08 = 0;
@@ -292,17 +292,17 @@ s32 Menu_IsExitPressed(void) {
 
     switch (D_83402E40) {
         case 2:
-            func_83402A38();
+            Gallery_UpdateConfirmPromptInput();
             sp1C = 0;
             break;
 
         case 1:
-            func_83402BF4();
+            Gallery_AdvanceConfirmPromptOpen();
             sp1C = 0;
             break;
 
         case 3:
-            func_83402C34();
+            Gallery_AdvanceConfirmPromptClose();
             sp1C = 1;
             break;
     }

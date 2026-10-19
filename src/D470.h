@@ -11,7 +11,7 @@ void Flash_ClearStatus(void);
 s32 Flash_EraseChip(void);
 s32 Flash_EraseSector(s32 arg0);
 s32 Flash_WriteBuffer(OSIoMesg* mb, s32 priority, void* dramAddr, OSMesgQueue* mq);
-s32 func_8000CFB0(s32 arg0);
+s32 Flash_ProgramPage(s32 arg0);
 s32 Flash_ReadArray(OSIoMesg* mb, s32 priority, s32 devAddr, void* dramAddr, s32 n_pages, OSMesgQueue* mq);
 
 #endif // _D470_H_

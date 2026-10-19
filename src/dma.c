@@ -4,7 +4,7 @@
 
 extern s16 gRspLeoInitSuccess;
 
-s32 func_80000E80(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+s32 Storage_QueueRomRead(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -76,7 +76,7 @@ s32 PiReadRom(s32 arg0, void* arg1, s16 arg2, s32 arg3, s32 arg4) {
     return temp_v0 == NULL;
 }
 
-s32 func_80001098(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+s32 Storage_QueueDiskTransfer(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -95,7 +95,7 @@ s32 func_80001098(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) 
     return temp_v0 == NULL;
 }
 
-s32 func_80001124(s32 arg0, s32 arg1) {
+s32 Storage_QueueDiskIdRead(s32 arg0, s32 arg1) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -108,7 +108,7 @@ s32 func_80001124(s32 arg0, s32 arg1) {
     return temp_v0 == NULL;
 }
 
-s32 func_80001184(s32 arg0, s32 arg1, s32 arg2) {
+s32 Storage_QueueDiskSeek(s32 arg0, s32 arg1, s32 arg2) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -121,7 +121,7 @@ s32 func_80001184(s32 arg0, s32 arg1, s32 arg2) {
     return temp_v0 == NULL;
 }
 
-s32 func_800011E4(s32 arg0, s32 arg1) {
+s32 Storage_QueueDiskMotorOff(s32 arg0, s32 arg1) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -134,7 +134,7 @@ s32 func_800011E4(s32 arg0, s32 arg1) {
     return temp_v0 == NULL;
 }
 
-s32 func_8000123C(s32 arg0, s32 arg1) {
+s32 Storage_QueueDiskReset(s32 arg0, s32 arg1) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -147,7 +147,7 @@ s32 func_8000123C(s32 arg0, s32 arg1) {
     return temp_v0 == NULL;
 }
 
-s32 func_80001298(void* arg0, s32 arg1, s32 arg2) {
+s32 Storage_QueueRtcWrite(void* arg0, s32 arg1, s32 arg2) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -160,11 +160,11 @@ s32 func_80001298(void* arg0, s32 arg1, s32 arg2) {
     return temp_v0 == NULL;
 }
 
-s16 func_800012F8(void) {
+s16 Storage_GetDiskStatus(void) {
     return gRspLeoInitSuccess;
 }
 
-s32 func_80001304(void* arg0, s32 arg1, s32 arg2) {
+s32 Storage_QueueRtcRead(void* arg0, s32 arg1, s32 arg2) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);

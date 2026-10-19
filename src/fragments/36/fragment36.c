@@ -33,7 +33,7 @@ void func_82100020(void) {
 void func_82100028(UNUSED s32 arg0, UNUSED s32 arg1) {
 }
 
-void func_82100034(void) {
+void Title_PollDPad(void) {
     MenuInput_ReadDirection();
 }
 
@@ -109,7 +109,7 @@ void DrawBorderOverlay(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_821002F8(void) {
+void Title_DrawNoControllerWarning(void) {
     static s32 D_82100DC8 = 0;
 
     s32 sp24;
@@ -168,7 +168,7 @@ void TitleScreen_RenderFrame(void) {
     if ((Cont_GetControllerBits() & 1) && (gBorderEnabled != 0)) {
         DrawBorderOverlay(0x6E, 0xAF);
     }
-    func_821002F8();
+    Title_DrawNoControllerWarning();
     func_82100028(0x64, 0x50);
     Stage_Advance();
 }
@@ -197,7 +197,7 @@ s32 CountFlagOccurrences(s32 arg0) {
     return var_v1;
 }
 
-s32 func_8210071C(s32 arg0, u32 arg1) {
+s32 Title_FindEligibleDemoEntry(s32 arg0, u32 arg1) {
     s32 i;
 
     for (i = 0; i < 150; i++) {
@@ -212,7 +212,7 @@ s32 func_8210071C(s32 arg0, u32 arg1) {
     return i + 1;
 }
 
-void func_82100760(u8* arg0) {
+void Title_PickDemoMatchup(u8* arg0) {
     s32 temp_s0;
     s32 sp38;
     UNUSED s32 pad[2];
@@ -230,7 +230,7 @@ void func_82100760(u8* arg0) {
         sp38 = MathUtil_Random_ZeroOne() * sp2C;
     } while (temp_s0 == sp38);
 
-    Battle_CreateTwoPlayerMatch(arg0[0], arg0[1], func_8210071C(temp_s0, arg0[2]), func_8210071C(sp38, arg0[2]));
+    Battle_CreateTwoPlayerMatch(arg0[0], arg0[1], Title_FindEligibleDemoEntry(temp_s0, arg0[2]), Title_FindEligibleDemoEntry(sp38, arg0[2]));
 }
 
 static u8 gTwoPlayerBattlePresets[2][4] = {
@@ -245,14 +245,14 @@ static u8 D_82100E6C[4][4] = {
     { 0, 0, 32, 13 },
 };
 
-s32 func_82100844(void) {
+s32 Title_StartAttractDemo(void) {
     u8 temp_a1 = (*gMenuStatePtr >> 8);
     u8 temp_a2 = *gMenuStatePtr;
     s16 mod = temp_a2 % 2;
     s16 low_index = temp_a2 / 2;
 
     if (mod == 0) {
-        func_82100760(gTwoPlayerBattlePresets[low_index]);
+        Title_PickDemoMatchup(gTwoPlayerBattlePresets[low_index]);
     } else {
         gBattleContext.unk_0000 = 0x19;
         gBattleContext.unk_0003 = gTwoPlayerBattlePresets[low_index][3];
@@ -264,7 +264,7 @@ s32 func_82100844(void) {
     return 2;
 }
 
-s32 func_82100958(void) {
+s32 Title_ShouldStartAttractDemo(void) {
     static u32 D_82100E7C = 0;
 
     s32 sp1C = 0;
@@ -283,7 +283,7 @@ s32 func_821009AC(void) {
     return 0;
 }
 
-s32 func_821009B4(void) {
+s32 Title_Loop(void) {
     s32 var_s0 = 0;
     s32 var_s2 = 30;
 
@@ -302,12 +302,12 @@ s32 func_821009B4(void) {
         if ((gPlayer1Controller->buttonPressed & 0x9000) && (gBorderEnabled != 0)) {
             PlaySoundEffect(0xF);
             var_s0 = GetMenuOptionCode();
-        } else if (func_82100958() != 0) {
-            var_s0 = func_82100844();
+        } else if (Title_ShouldStartAttractDemo() != 0) {
+            var_s0 = Title_StartAttractDemo();
         } else {
             var_s0 = func_821009AC();
             if (var_s0 == 0) {
-                func_82100034();
+                Title_PollDPad();
             }
         }
 
@@ -317,7 +317,7 @@ s32 func_821009B4(void) {
     return var_s0;
 }
 
-void func_82100AB8(void) {
+void Title_FadeIn(void) {
     if (Stage_GetFadeState() == 1) {
         Stage_FadeIn(0xA);
         while (Stage_GetFadeState() != 0) {
@@ -327,7 +327,7 @@ void func_82100AB8(void) {
     }
 }
 
-void func_82100B1C(s32 arg0) {
+void Title_FadeOut(s32 arg0) {
     if (arg0 == 3) {
         Stage_SetFillColor(1);
     } else {
@@ -342,7 +342,7 @@ void func_82100B1C(s32 arg0) {
     }
 }
 
-void func_82100B98(void) {
+void Title_LoadAssets(void) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     // bin contains a JP logo and press start, but this bin is loaded for the "Press Start" gfx
     ASSET_LOAD(D_2000000, title_ui, 0);
@@ -361,7 +361,7 @@ void func_82100B98(void) {
     gBorderEnabled = 0;
 }
 
-s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
+s32 Title_Main(UNUSED s32 arg0, s16* arg1) {
     s32 sp24;
 
     gMenuStatePtr = arg1;
@@ -378,13 +378,13 @@ s32 func_82100C98(UNUSED s32 arg0, s16* arg1) {
     GbsEnsureBankLoaded(2);
     GBAudio_ResetState(&D_82100EA8, 0);
     Text_Init(6, 0);
-    func_82100B98();
+    Title_LoadAssets();
     MessageBank_Init();
     gMessageBank14 = GetMessageBank(0x14);
     Audio_LoadBankAndSong(gAudioBankBuffer);
-    func_82100AB8();
-    sp24 = func_821009B4();
-    func_82100B1C(sp24);
+    Title_FadeIn();
+    sp24 = Title_Loop();
+    Title_FadeOut(sp24);
     Stage_Destroy();
     Audio_WaitForLoadAndFade(0);
     Audio_ClearBankDMAFlag();

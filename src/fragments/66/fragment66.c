@@ -771,7 +771,7 @@ s32 Fragment66_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
         gMoveNameBank = GetMessageBank(0x25);
         gStadiumMessageBank = GetMessageBank(0x1C);
         AssetManager_LoadArchives();
-        gPikachuModelData = func_80019D90(&gPikachuSession.unk_04);
+        gPikachuModelData = Model_LoadForPokemon(&gPikachuSession.unk_04);
         Pikachu_SetupScene();
         Stage_Set(sp20);
         Event_PikachuSequence();

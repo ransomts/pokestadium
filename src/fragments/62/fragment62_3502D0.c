@@ -42,7 +42,7 @@ static Gfx gWaterSurfaceAltDL[] = {
     gsSPEndDisplayList(),
 };
 
-void func_84365A10(s16 arg0) {
+void Trail40GridAlt_Init(s16 arg0) {
     WaterSurfaceVertex* var_v0;
     s32 i;
     s32 j;
@@ -204,7 +204,7 @@ void WaterSurface_PackVertex(WaterSurfaceVertex* arg0, Vtx* arg1) {
     arg1->v.cn[3] = D_843A06A0.unk_0004;
 }
 
-s32 func_843661D0(void) {
+s32 Trail40GridAlt_IsComplete(void) {
     WaterSurfaceVertex* var_s1;
     s32 i;
     s32 j;
@@ -251,7 +251,7 @@ s32 func_843661D0(void) {
     return 0;
 }
 
-void func_8436643C(void) {
+void Trail40GridAlt_Reset(void) {
     CameraStruct* temp_v0;
     f32 tmp1;
     f32 tmp2;
@@ -299,10 +299,10 @@ void func_8436643C(void) {
     tmp2 += temp_fa0;
     tmp3 += temp_fa1;
 
-    func_80031C6C(D_843A06A0.unk_0010, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6);
+    Mtx_BuildTranslatedDirectionRotation(D_843A06A0.unk_0010, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6);
 }
 
-Gfx* func_84366560(Gfx* arg0) {
+Gfx* Trail40GridAlt_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
     WaterSurfaceVertex* var_s2;
@@ -323,7 +323,7 @@ Gfx* func_84366560(Gfx* arg0) {
         }
     }
 
-    func_8436643C();
+    Trail40GridAlt_Reset();
 
     gDPLoadTextureBlock(arg0++, gWaterTexture[0x48], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);

@@ -17,7 +17,7 @@ Vec3f* Vec3f_Sum(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
 Vec3f* Vec3f_Subtract(Vec3f* arg0, Vec3f* arg1);
 Vec3f* func_8000E958(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
 Vec3f* GraphNode_SetPositionFromVec3s(Vec3f* arg0, Vec3s* arg1);
-Vec3f* func_8000E9D4(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3);
+Vec3f* Vec3f_CrossProductFromPoints(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3);
 Vec3f* Vec3f_CrossProduct(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
 Vec3f* Vec3f_Normalize(Vec3f* arg0);
 Vec3s* Vec3s_Set(Vec3s* arg0, s16 arg1, s16 arg2, s16 arg3);
@@ -48,15 +48,15 @@ void Camera_SetViewParameters(Vec3f* from, Vec3f* to, f32 dist, s16 pitch, s16 y
 s16 Math_ApproachS16(s16 current, s16 target, s16 inc);
 s32 Math_ApproachS32(s32 current, s32 target, s32 inc, s32 dec);
 f32 Math_ApproachF32(f32 current, f32 target, f32 inc, f32 dec);
-s16 func_80010500(s16* arg0, s32 arg1, s32 arg2);
+s16 PackedBits_ReadSigned(s16* arg0, s32 arg1, s32 arg2);
 void RGB_ToHSV(f32 arg0, f32 arg1, f32 arg2, Vec3f* arg3);
-void func_80010720(Color_RGBA8_u32 arg0, Vec3f* arg1);
-void func_80010780(u16 arg0, Vec3f* arg1);
-f32 func_800107F0(f32 arg0, f32 arg1, f32 arg2);
+void Color_RGBA8ToHSV(Color_RGBA8_u32 arg0, Vec3f* arg1);
+void Color_RGB5551ToHSV(u16 arg0, Vec3f* arg1);
+f32 Color_HSVInterpolate(f32 arg0, f32 arg1, f32 arg2);
 void HSV_ToRGB(f32* arg0, f32* arg1, f32* arg2, Vec3f* arg3);
-u16 func_80010B20(Vec3f* arg0);
-Color_RGBA8_u32* func_80010BD4(Color_RGBA8_u32* arg0, Vec3f* arg1, s32 arg2);
-u16 func_80010CA8(u16 arg0, arg1_func_80010CA8 arg1);
-u32 func_80010E20(u32 arg0, arg1_func_80010CA8 arg1);
+u16 Color_HSVToRGB5551(Vec3f* arg0);
+Color_RGBA8_u32* Color_HSVToRGBA8(Color_RGBA8_u32* arg0, Vec3f* arg1, s32 arg2);
+u16 Color_AdjustRGB5551(u16 arg0, arg1_func_80010CA8 arg1);
+u32 Color_AdjustRGBA8(u32 arg0, arg1_func_80010CA8 arg1);
 
 #endif // _F420_H_

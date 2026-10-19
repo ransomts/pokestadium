@@ -61,7 +61,7 @@ static u8 gSpeciesDisplayOrder[] = {
     0x88, 0x3A, 0x26, 0x6D, 0x5E, 0x5F, 0x3C, 0x3D, 0x01, 0x7F, 0x05, 0x95, 0x53, 0x1B, 0x19, 0x1A, 0x52, 0x51
 };
 
-void func_88800020(s32 arg0, s32 arg1, s32 arg2) {
+void Pokedex_DrawCheckboxIcon(s32 arg0, s32 arg1, s32 arg2) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
@@ -78,9 +78,9 @@ void func_88800020(s32 arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 }
 
-void func_88800274(unk_func_888044BC_050* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
+void Pokedex_BuildListScrollArrowWidget(unk_func_888044BC_050* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
                    unk_func_888044BC_038_02C* arg5) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_050));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_050));
     arg0->unk_00.unk_18 = TrainerCardDrawDexEntryBg;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -204,11 +204,11 @@ void TrainerCardDrawSpeciesListRow(s32 arg0, s32 arg1, char* arg2, UNUSED s32 ar
                      (arg1 + arg5->unk_00.unk_3E) - 1);
 
     if (sp70 == 2) {
-        func_88800020(arg0 + 0x52, arg1 + 8, 0);
+        Pokedex_DrawCheckboxIcon(arg0 + 0x52, arg1 + 8, 0);
     }
 
     if (sp70 == 3) {
-        func_88800020(arg0 + 0x52, arg1 + 8, 1);
+        Pokedex_DrawCheckboxIcon(arg0 + 0x52, arg1 + 8, 1);
     }
 
     Text_ResetState();
@@ -288,7 +288,7 @@ void TrainerCardToggleSpeciesOrder(unk_func_888044BC_038_02C* arg0) {
 }
 
 void TrainerCardInitSpeciesListFragment(unk_func_888044BC_038* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_038));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_038));
     arg0->unk_00.unk_20 = TrainerCardSpeciesListInput;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -334,7 +334,7 @@ void TrainerCardDrawRectBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB
 }
 
 void TrainerCardInitStatsBox(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_03C_02C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_03C_02C));
     arg0->unk_00.unk_18 = TrainerCardDrawStatsBox;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -388,7 +388,7 @@ void TrainerCardInitStatsFrame(unk_func_888044BC_03C* arg0, s32 arg1, s32 arg2, 
     UNUSED s32 pad[2];
     unk_func_885012A4* sp34;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_03C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_03C));
 
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -404,7 +404,7 @@ void TrainerCardInitStatsFrame(unk_func_888044BC_03C* arg0, s32 arg1, s32 arg2, 
 }
 
 void TrainerCardInitNameSelector(unk_func_888044BC_040_030* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_040_030) + 0x18);
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_040_030) + 0x18);
     arg0->unk_00.unk_18 = TrainerCardDrawNameSelector;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -483,7 +483,7 @@ void TrainerCardInitButtonList(unk_func_888044BC_040* arg0, s32 arg1, s32 arg2, 
     unk_func_885012A4* sp58;
     UNUSED s32 pad2[4];
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_040));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_040));
     arg0->unk_00.unk_20 = TrainerCardButtonListInput;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -517,7 +517,7 @@ s32 TrainerCardButtonListInput(unk_func_888044BC_040* arg0, Controller* arg1) {
 }
 
 void TrainerCardInitDexEntryBox(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_044_02C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_044_02C));
     arg0->unk_00.unk_18 = TrainerCardDrawDexEntryBox;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -603,7 +603,7 @@ void TrainerCardInitDexEntryFrame(unk_func_888044BC_044* arg0, s32 arg1, s32 arg
     UNUSED s32 pad[2];
     unk_func_885012A4* sp34;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_044));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_044));
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
@@ -622,7 +622,7 @@ void TrainerCardInitDexDescFrame(unk_func_888044BC_048* arg0, s32 arg1, s32 arg2
     UNUSED s32 pad[2];
     unk_func_885012A4* sp34;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_048));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_048));
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     // clang-format off
@@ -654,14 +654,14 @@ void TrainerCardSetDexDescText(unk_func_888044BC_048* arg0, s32 arg1, s32 arg2) 
 }
 
 void TrainerCardInitSpriteTileBox(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_04C_02C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_04C_02C));
     arg0->unk_00.unk_18 = TrainerCardDrawSpriteTileBox;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 }
 
 void TrainerCardSetSpriteTileSpecies(unk_func_888044BC_04C_02C* arg0, s32 arg1) {
-    func_8001B480(gTrainerCardSpriteMgr, arg1 + 1, 0x108D);
+    PokeIcon_SetPreviewSpecies(gTrainerCardSpriteMgr, arg1 + 1, 0x108D);
     arg0->unk_2C = SaveSlot_CheckPokemonOwned(gTrainerCardSaveSlot, arg1 + 1);
 }
 
@@ -676,7 +676,7 @@ s32 TrainerCardDrawSpriteTileBox(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 
     // clang-format off
     sp58.unk_00 = 0x100; sp58.unk_04 = 0xC0; sp58.unk_08 = 0xF8;
     // clang-format on
-    sp58.unk_0C = func_8001B9D4(gTrainerCardSpriteMgr);
+    sp58.unk_0C = PokeIcon_RenderPreview(gTrainerCardSpriteMgr);
 
     Stage_BeginDisplayList();
 
@@ -704,7 +704,7 @@ s32 TrainerCardDrawSpriteTileBox(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 
 }
 
 void TrainerCardInitSpriteTileFrame(unk_func_888044BC_04C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC_04C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC_04C));
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
@@ -720,7 +720,7 @@ void TrainerCardMenuInit(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, 
     unk_func_88001300_000* sp40;
 
     sp48 = GetCurrentPokemonBank();
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_888044BC));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_888044BC));
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
@@ -734,7 +734,7 @@ void TrainerCardMenuInit(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_34->unk_00.unk_00, &sp4C->unk_00.unk_00);
 
     arg0->unk_2C = mem_pool_alloc(arg4, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_2C, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_2C, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_34->unk_00.unk_00, &arg0->unk_2C->unk_00.unk_00);
 
     arg0->unk_3C = mem_pool_alloc(arg4, sizeof(unk_func_888044BC_03C));
@@ -742,7 +742,7 @@ void TrainerCardMenuInit(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, 
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_2C, &arg0->unk_3C->unk_00);
 
     sp44 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(sp44, sizeof(unk_func_88001300_000));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(sp44, sizeof(unk_func_88001300_000));
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_2C, sp44);
 
     arg0->unk_44 = mem_pool_alloc(arg4, sizeof(unk_func_888044BC_044));
@@ -754,11 +754,11 @@ void TrainerCardMenuInit(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp44->unk_00, &arg0->unk_48->unk_00.unk_00);
 
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_30, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_30, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
 
     sp40 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(sp40, sizeof(unk_func_88001300_000));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(sp40, sizeof(unk_func_88001300_000));
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_30, sp40);
 
     arg0->unk_38 = mem_pool_alloc(arg4, sizeof(unk_func_888044BC_038));
@@ -774,12 +774,12 @@ void TrainerCardMenuInit(unk_func_888044BC* arg0, s32 arg1, s32 arg2, u8* arg3, 
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_30, &arg0->unk_4C->unk_00);
 
     arg0->unk_50 = mem_pool_alloc(arg4, sizeof(unk_func_888044BC_050));
-    func_88800274(arg0->unk_50, arg0->unk_38->unk_00.unk_10.unk_00 + 0x94, arg0->unk_38->unk_00.unk_10.unk_02 - 0x16,
+    Pokedex_BuildListScrollArrowWidget(arg0->unk_50, arg0->unk_38->unk_00.unk_10.unk_00 + 0x94, arg0->unk_38->unk_00.unk_10.unk_02 - 0x16,
                   0x4A, 0, arg0->unk_38->unk_2C);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_50->unk_00.unk_00);
 
     arg0->unk_54 = mem_pool_alloc(arg4, sizeof(unk_func_888044BC_050));
-    func_88800274(arg0->unk_54, arg0->unk_38->unk_00.unk_10.unk_00 + 0x94,
+    Pokedex_BuildListScrollArrowWidget(arg0->unk_54, arg0->unk_38->unk_00.unk_10.unk_00 + 0x94,
                   arg0->unk_38->unk_00.unk_10.unk_02 + arg0->unk_38->unk_2C->unk_00.unk_00.unk_14.unk_02 + 6, 0x4A, 1,
                   arg0->unk_38->unk_2C);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_54->unk_00.unk_00);
@@ -922,7 +922,7 @@ void TrainerCardExportSprite(u8* arg0, s32 arg1) {
     sp1C = SpriteDisplay_Alloc(gTrainerCardAssetManager, 1, 0x50, 0x50);
     sp18 = SpriteDisplay_GetImagePtr(sp1C, 0);
     SpriteDisplay_SetupSlot(sp1C, 0, arg1, 0x9530);
-    func_8001ABAC(sp1C, 0);
+    PokeIcon_ProcessAllSlots(sp1C, 0);
     Stage_AdvanceN(2);
     osInvalDCache(sp18, 0x3200);
     _bcopy(sp18, arg0, 0x3200);
@@ -6114,7 +6114,7 @@ s32 PictureQuiz_MainLoop(void) {
     var_s1 = 3;
     temp_s0 = TrainerCardGetSelectedSpecies(gTrainerCardMenu->unk_38->unk_2C);
     main_pool_push_state('PICT');
-    gTrainerCardSpriteMgr = func_8001B1FC(gTrainerCardAssetManager, 0x100, 0xC0, 0, 0, 0xF8, 0xC0, gTrainerCardSpriteTileData);
+    gTrainerCardSpriteMgr = PokeIcon_CreateModelPreview(gTrainerCardAssetManager, 0x100, 0xC0, 0, 0, 0xF8, 0xC0, gTrainerCardSpriteTileData);
     TrainerCardSetSpriteTileSpecies(gTrainerCardMenu->unk_4C->unk_2C, temp_s0);
     TrainerCardSetDexSpecies(gTrainerCardMenu->unk_44->unk_2C, temp_s0);
     TrainerCardSetDexDescText(gTrainerCardMenu->unk_48, GetCurrentPokemonBank(), temp_s0);

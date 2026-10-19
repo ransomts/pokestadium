@@ -434,7 +434,7 @@ void InitRandomItemPairs(void) {
     }
 }
 
-void func_86100480(s16 arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
+void ClefairyGame_DrawPatternIcon(s16 arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
     Gfx* gfx = gDisplayListHead;
     f32 a;
     f32 b;
@@ -698,7 +698,7 @@ void DrawPlayerItems(void) {
                 s16 a = j % 6;
                 s16 b = j / 6;
 
-                func_86100480((a * 0xA) + (i * 0x46) + 0x1E, (b * 0xA) + 0x82, i, gCurrentPlayerState->unk_174[j], 1.0f);
+                ClefairyGame_DrawPatternIcon((a * 0xA) + (i * 0x46) + 0x1E, (b * 0xA) + 0x82, i, gCurrentPlayerState->unk_174[j], 1.0f);
             }
         }
     }
@@ -836,7 +836,7 @@ s32 RunMatchLoop(void) {
     return 0;
 }
 
-void func_86101BB4(void) {
+void ClefairyGame_UpdateStartCountdown(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -880,7 +880,7 @@ void func_86101BB4(void) {
     }
 }
 
-void func_86101D3C(void) {
+void ClefairyGame_ResetFinishedAnims(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -895,12 +895,12 @@ void func_86101D3C(void) {
     }
 }
 
-void func_86101DD4(void) {
+void ClefairyGame_BeginRound(void) {
     gResultScreenState = 2;
     gResultScreenTimer = 0;
 }
 
-void func_86101DEC(void) {
+void ClefairyGame_BeginPatternDemo(void) {
     gResultScreenState = 3;
     gResultScreenTimer = 0;
     PlaySoundIfEnabled(0x90005, 0, 0);
@@ -911,7 +911,7 @@ void func_86101DEC(void) {
     GraphNode_TriggerSound(&gResultScreenGraphNode1, 0);
 }
 
-void func_86101E70(void) {
+void ClefairyGame_BeginDemoPlayerAnims(void) {
     s32 i;
     Fragment2_1GraphNode* temp_s0;
 
@@ -931,8 +931,8 @@ void func_86101E70(void) {
     }
 }
 
-s32 func_86101F20(void) {
-    func_86101D3C();
+s32 ClefairyGame_WaitRoundStart(void) {
+    ClefairyGame_ResetFinishedAnims();
     if ((gResultScreenTimer >= 0x19) || (Anim_HasReachedEnd(&gResultScreenGraphNode1) != 0)) {
         return -1;
     }
@@ -941,8 +941,8 @@ s32 func_86101F20(void) {
     return 0;
 }
 
-s32 func_86101F88(void) {
-    func_86101D3C();
+s32 ClefairyGame_WaitDemoIntro(void) {
+    ClefairyGame_ResetFinishedAnims();
     if (gResultScreenTimer >= 0xF) {
         return -1;
     }
@@ -951,7 +951,7 @@ s32 func_86101F88(void) {
     return 0;
 }
 
-s32 func_86101FD0(void) {
+s32 ClefairyGame_UpdateDemoPlayerAnims(void) {
     s32 i;
     Fragment2_1GraphNode* temp_s0;
 
@@ -973,7 +973,7 @@ s32 func_86101FD0(void) {
     return 0;
 }
 
-void func_86102088(void) {
+void ClefairyGame_AdvancePatternDemo(void) {
     gResultScreenState = 5;
     gResultScreenTimer = 0;
     PlaySoundIfEnabled(0x90006, 0, 0);
@@ -982,7 +982,7 @@ void func_86102088(void) {
     gResultScreenGraphNode1.unk_040.unk_08 = 0;
 }
 
-void func_861020E8(void) {
+void ClefairyGame_PreparePatternIconSpawn(void) {
     gResultScreenState = 6;
     gResultScreenTimer = 0;
     GraphNode_TriggerAction(&gResultScreenGraphNode1, 0);
@@ -990,7 +990,7 @@ void func_861020E8(void) {
     gResultScreenGraphNode1.unk_040.unk_08 = 0;
 }
 
-s32 func_86102134(void) {
+s32 ClefairyGame_WaitDemoAdvance(void) {
     if ((Anim_HasReachedEnd(&gResultScreenGraphNode1) != 0) || (gResultScreenTimer >= 0x1E)) {
         return -1;
     }
@@ -999,7 +999,7 @@ s32 func_86102134(void) {
     return 0;
 }
 
-s32 func_86102184(void) {
+s32 ClefairyGame_SpawnPatternIconStep(void) {
     UNUSED s32 pad[2];
     unk_D_86106450* sp1C;
     s16 index;
@@ -1022,7 +1022,7 @@ s32 func_86102184(void) {
     return 0;
 }
 
-s32 func_8610228C(void) {
+s32 ClefairyGame_FinishPatternIconSpawn(void) {
     s32 i;
 
     if ((gPlayerItemCount * gPlayerItemRows) < gResultScreenTimer) {
@@ -1096,7 +1096,7 @@ s16 GetRandomItemDirection(s32 arg0) {
     return var_v1;
 }
 
-void func_86102510(void) {
+void ClefairyGame_BeginPatternResponse(void) {
     s32 i;
     s32 j;
 
@@ -1118,7 +1118,7 @@ void func_86102510(void) {
     SetAllPlayersAnimSpeed(0x10000);
 }
 
-void func_86102614(void) {
+void ClefairyGame_EndPatternResponse(void) {
     gResultScreenState = 9;
     gResultScreenTimer = 0;
     GraphNode_TriggerAction(&gResultScreenGraphNode1, 1);
@@ -1128,7 +1128,7 @@ void func_86102614(void) {
     PlaySoundIfEnabled(0x90003, 0, 0);
 }
 
-void func_8610268C(void) {
+void ClefairyGame_StartPlaybackTransition(void) {
     s32 i;
 
     gResultScreenState = 0xA;
@@ -1146,7 +1146,7 @@ void func_8610268C(void) {
     }
 }
 
-s32 func_86102750(void) {
+s32 ClefairyGame_UpdatePatternResponse(void) {
     s16 temp_a0;
     s32 var_s0;
     s32 i;
@@ -1265,7 +1265,7 @@ s32 CheckPlayerLoseAnimDone_Fragment7(void) {
     s32 i;
 
     if (gResultScreenTimer == 0x10) {
-        func_8004BC84(0x1F, gResultScreenFlag);
+        Audio_UpdateSpecialSequence(0x1F, gResultScreenFlag);
     }
 
     for (i = 0; i < 4; i++) {
@@ -1535,57 +1535,57 @@ s32 HandleWinAnim_Fragment7(void) {
 }
 
 void RunMatchLoop_Fragment7(void) {
-    func_86101DD4();
+    ClefairyGame_BeginRound();
     gUnusedBC = 0;
 
     while (true) {
-        func_8004BC84(0x1E, 0);
-        func_8004BC84(0x20, gUnusedBC);
+        Audio_UpdateSpecialSequence(0x1E, 0);
+        Audio_UpdateSpecialSequence(0x20, gUnusedBC);
 
         if (gResultMenuVisible == 0) {
             switch (gResultScreenState) {
                 case 2:
-                    if (func_86101F20() != 0) {
-                        func_86101DEC();
+                    if (ClefairyGame_WaitRoundStart() != 0) {
+                        ClefairyGame_BeginPatternDemo();
                     }
                     break;
 
                 case 3:
-                    if (func_86101F88() != 0) {
-                        func_86101E70();
+                    if (ClefairyGame_WaitDemoIntro() != 0) {
+                        ClefairyGame_BeginDemoPlayerAnims();
                     }
                     break;
 
                 case 4:
-                    if (func_86101FD0() != 0) {
-                        func_86102088();
+                    if (ClefairyGame_UpdateDemoPlayerAnims() != 0) {
+                        ClefairyGame_AdvancePatternDemo();
                     }
                     break;
 
                 case 5:
-                    if (func_86102134() != 0) {
-                        func_861020E8();
+                    if (ClefairyGame_WaitDemoAdvance() != 0) {
+                        ClefairyGame_PreparePatternIconSpawn();
                     }
                     break;
 
                 case 6:
-                    func_86102184();
+                    ClefairyGame_SpawnPatternIconStep();
                     break;
 
                 case 7:
-                    if (func_8610228C() != 0) {
-                        func_86102510();
+                    if (ClefairyGame_FinishPatternIconSpawn() != 0) {
+                        ClefairyGame_BeginPatternResponse();
                     }
                     break;
                 case 8:
-                    if (func_86102750() != 0) {
-                        func_86102614();
+                    if (ClefairyGame_UpdatePatternResponse() != 0) {
+                        ClefairyGame_EndPatternResponse();
                     }
                     break;
 
                 case 9:
                     if (AdvanceMatchState_Fragment7() != 0) {
-                        func_8610268C();
+                        ClefairyGame_StartPlaybackTransition();
                     }
                     break;
 
@@ -1611,7 +1611,7 @@ void RunMatchLoop_Fragment7(void) {
                     if (SetupWinAnim_Fragment7() != 0) {
                         gPlayerItemCount += 2;
                         if (gPlayerItemCount < 0xD) {
-                            func_86101DD4();
+                            ClefairyGame_BeginRound();
                             break;
                         }
                         return;
@@ -1640,9 +1640,9 @@ void ShowResultScreen_Fragment7(void) {
 
     gResultScreenState = 0xF;
 
-    while ((gResultMenuVisible != 0) || (func_8004BFB0() != 1)) {
-        func_8004BC84(0x1E, 1);
-        func_8004BC84(0x20, 0);
+    while ((gResultMenuVisible != 0) || (Audio_GetSpecialSequenceState() != 1)) {
+        Audio_UpdateSpecialSequence(0x1E, 1);
+        Audio_UpdateSpecialSequence(0x20, 0);
         UpdateFrame(gResultScreenState);
     }
 
@@ -1901,7 +1901,7 @@ void Fragment7_MainEntrypoint(UNUSED s32 arg0, UNUSED s32 arg1) {
         WaitFrames_Fragment7(5);
         gPlayerItemRows = 0xA;
         InitRandomItemPairs();
-        func_86101BB4();
+        ClefairyGame_UpdateStartCountdown();
         gPauseState = gResultMenuVisible;
         RunMatchLoop_Fragment7();
 

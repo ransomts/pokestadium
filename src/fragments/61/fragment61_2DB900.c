@@ -350,7 +350,7 @@ void DrawIconBackgroundRect(s32 arg0, s16 arg1, s16 arg2) {
 
 void UpdateSelectedIconPosition(void);
 
-void func_84204760(s32 arg0) {
+void TeamSelection_TrainerSlots_Render(s32 arg0) {
     UNUSED s32 pad;
     s16 sp32;
     s16 temp_s0;
@@ -501,7 +501,7 @@ void SelectRightIcon(void) {
     }
 }
 
-void func_84204E0C(void) {
+void TeamSelection_TrainerSlots_HandleInput(void) {
     s16 i;
 
     if (BTN_IS_PRESSED(gCurrentController, BTN_A)) {
@@ -531,7 +531,7 @@ void func_84204E0C(void) {
     }
 }
 
-void func_84204F78(void) {
+void TeamSelection_TrainerSlots_AnimateOpen(void) {
     s16 i;
 
     for (i = 0; i < 12; i++) {
@@ -548,7 +548,7 @@ void func_84204F78(void) {
     }
 }
 
-void func_842050CC(void) {
+void TeamSelection_TrainerSlots_AnimateSelected(void) {
     if (gMenuTimer++ < 12) {
         D_8423D408[0][gSelectedIconIndex].unk_030.x = D_84211574[gMenuTimer] / 100.0f;
         D_8423D408[0][gSelectedIconIndex].unk_030.y = D_8421158C[gMenuTimer] / 100.0f;
@@ -564,7 +564,7 @@ void func_842050CC(void) {
     }
 }
 
-void func_84205200(void) {
+void TeamSelection_TrainerSlots_AnimateClose(void) {
     s16 i;
 
     gMenuTimer--;
@@ -595,7 +595,7 @@ void func_84205200(void) {
     }
 }
 
-void func_8420545C(void) {
+void TeamSelection_TrainerSlots_Teardown(void) {
     s16 i;
 
     gMenuTimer--;
@@ -621,7 +621,7 @@ void func_8420545C(void) {
     }
 }
 
-void func_8420563C(void) {
+void TeamSelection_TrainerSlots_HandleRulePrompt(void) {
     s16 var_s0;
     s16 i;
 
@@ -631,9 +631,9 @@ void func_8420563C(void) {
         var_s0 = 0x12;
     }
 
-    func_8420DA28(var_s0, gCurrentController);
+    TeamSelection_RulePrompt_Open(var_s0, gCurrentController);
 
-    if (func_8420DB48(var_s0) != -1) {
+    if (TeamSelection_RulePrompt_TryFinish(var_s0) != -1) {
         D_8423E56C = 3;
     }
 
@@ -643,36 +643,36 @@ void func_8420563C(void) {
     }
 }
 
-s32 func_8420570C(void) {
+s32 TeamSelection_TrainerSlots_Update(void) {
     switch (D_8423E56C) {
         case 1:
-            func_84204F78();
+            TeamSelection_TrainerSlots_AnimateOpen();
             break;
 
         case 3:
-            func_84204E0C();
+            TeamSelection_TrainerSlots_HandleInput();
             break;
 
         case 4:
-            func_84205200();
+            TeamSelection_TrainerSlots_AnimateClose();
             break;
 
         case 2:
-            func_842050CC();
+            TeamSelection_TrainerSlots_AnimateSelected();
             break;
 
         case 5:
-            func_8420545C();
+            TeamSelection_TrainerSlots_Teardown();
             break;
 
         case 6:
-            func_8420563C();
+            TeamSelection_TrainerSlots_HandleRulePrompt();
             break;
     }
     return 1;
 }
 
-void func_842057AC(void) {
+void TeamSelection_TrainerSlots_ApplySaveStates(void) {
     s16 i;
 
     for (i = 0; i < 4; i++) {
@@ -710,7 +710,7 @@ void func_842057AC(void) {
     }
 }
 
-void func_8420594C(void) {
+void TeamSelection_TrainerSlots_InitializeModels(void) {
     s16 i;
 
     if (gMenuMode != 0) {
@@ -731,7 +731,7 @@ void func_8420594C(void) {
     }
 
     if (gMenuFlags[0] != 0) {
-        gMessageId = func_80028E68();
+        gMessageId = Deck_FindFirstFreeTeamSlot();
         if (gMessageId == 0) {
             gMenuFlags[0] = 0;
             D_8423D408[0][4].unk_01D = 0xA0;
@@ -742,7 +742,7 @@ void func_8420594C(void) {
     if (!gIconConfig) {}
 }
 
-void func_84205B3C(void) {
+void TeamSelection_TrainerSlots_PollGameBoySaves(void) {
     s32 i;
     u8 temp_s3 = Cont_GetControllerBits();
     Gen1StringDecodeBuffer sp48;
@@ -758,7 +758,7 @@ void func_84205B3C(void) {
     }
 }
 
-s32 func_84205C18(s16 arg0) {
+s32 TeamSelection_TrainerSlots_Initialize(s16 arg0) {
     s32 i;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
     Fragment2_1GraphNode* var_s2;
@@ -779,14 +779,14 @@ s32 func_84205C18(s16 arg0) {
         D_8423D408[0][i].unk_000.unk_14 = i;
     }
 
-    func_84205B3C();
-    func_842057AC();
+    TeamSelection_TrainerSlots_PollGameBoySaves();
+    TeamSelection_TrainerSlots_ApplySaveStates();
     return 8;
 }
 
 s32 Menu_Start(s16 arg0, s32 arg1) {
     if (D_8423E56C == 0) {
-        func_8420594C();
+        TeamSelection_TrainerSlots_InitializeModels();
         if (gIconConfig[arg0].unk_00 != 0) {
             gSelectedIconIndex = arg0;
         } else {

@@ -192,7 +192,7 @@ void U16Buffer_Transform(u16* arg0, s32 a1, arg1_func_80010CA8 arg2) {
     arg1 -= 2;
     // clang-format off
     while (cond != 0) {        
-        *arg0 = func_80010CA8(*arg0, arg2);        cond = arg1 >= 2;        arg1 -= 2;        
+        *arg0 = Color_AdjustRGB5551(*arg0, arg2);        cond = arg1 >= 2;        arg1 -= 2;        
         arg0++;    
     }
     // clang-format on
@@ -295,7 +295,7 @@ s32 SpriteDisplay_TryAdvance(SpriteDisplay* arg0, s32 arg1) {
     return sp24;
 }
 
-s32 func_8001ABAC(SpriteDisplay* arg0, s32 arg1) {
+s32 PokeIcon_ProcessAllSlots(SpriteDisplay* arg0, s32 arg1) {
     UNUSED s32 pad;
     arg1_func_80010CA8 sp48;
     s32 sp44;
@@ -353,7 +353,7 @@ s32 func_8001ABAC(SpriteDisplay* arg0, s32 arg1) {
     return sp44;
 }
 
-s32 func_8001AD90(SpriteDisplay* arg0, s32 arg1) {
+s32 PokeIcon_RenderNextSlotBlocking(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
     s32 var_a2;
     s32 var_s0;
@@ -439,7 +439,7 @@ void SpriteAssets_Load(void) {
     gAssetManager.unk_A04.unk_10 = Asset_Load2(0x820000, NULL, 1, 1);
 }
 
-void func_8001B088(u16* arg0, s32 arg1) {
+void PokeIcon_LoadModelTexture(u16* arg0, s32 arg1) {
     BinArchive* temp_v1;
     u8* temp_a1;
 
@@ -450,16 +450,16 @@ void func_8001B088(u16* arg0, s32 arg1) {
     }
 }
 
-void func_8001B0DC(u16* arg0, s32 arg1, PokemonData* arg2) {
+void PokeIcon_LoadModelTextureForMon(u16* arg0, s32 arg1, PokemonData* arg2) {
     arg1_func_80010CA8 sp1C;
 
     if (arg2 == NULL) {
-        func_8001B088(arg0, arg1);
+        PokeIcon_LoadModelTexture(arg0, arg1);
         return;
     }
 
     ComputeStatFromName(&sp1C, arg2);
-    func_8001B088(arg0, arg2->unk_00.unk_00);
+    PokeIcon_LoadModelTexture(arg0, arg2->unk_00.unk_00);
     U16Buffer_Transform(arg0, 0x640, sp1C);
 }
 
@@ -470,7 +470,7 @@ s32 SetCurrentCameraNode(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void func_8001B154(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void PokeIcon_InitPreviewScene(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     static u32 sSpriteCameraGeoLayoutCommands[] = {
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x010000E0, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D013B, 0xFFFFFF32, 0x14000000, 0xFFD30087, 0x80808032, 0x16646464,
@@ -488,7 +488,7 @@ void func_8001B154(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
     Perspective_SetParams(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
 }
 
-unk_func_8001B1FC* func_8001B1FC(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
+unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
                                  s16 arg6, u8* arg7) {
     unk_func_8001B1FC* temp_v0 = main_pool_alloc(sizeof(unk_func_8001B1FC), 0);
 
@@ -504,12 +504,12 @@ unk_func_8001B1FC* func_8001B1FC(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg
         temp_v0->unk_28 = FramebufferImage_Allocate(0, 2, arg1, arg2, 0);
         temp_v0->unk_2C = FramebufferImage_Allocate(0, 2, arg1, arg2, 1);
         FramebufferImage_AttachDepth(temp_v0->unk_28, temp_v0->unk_2C);
-        func_8001B154(temp_v0, arg3, arg4, arg5, arg6);
+        PokeIcon_InitPreviewScene(temp_v0, arg3, arg4, arg5, arg6);
     }
     return temp_v0;
 }
 
-void func_8001B2D8(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2) {
+void PokeIcon_SetPreviewMon(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2) {
     arg1_func_80010CA8 sp2C;
     s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 >> 0x10) >> 6;
     s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1->unk_00.unk_00 - 1].unk_14 >> 6) >> 4;
@@ -537,7 +537,7 @@ void func_8001B2D8(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2) {
     arg0->unk_24->unk_000.unk_02 |= 0x80;
 }
 
-void func_8001B480(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
+void PokeIcon_SetPreviewSpecies(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
     arg1_func_80010CA8 sp34;
     s16 tmp1 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 >> 0x10) >> 6;
     s16 tmp2 = (s16)(gSpeciesDisplayTable[arg1 - 1].unk_14 >> 6) >> 4;
@@ -565,7 +565,7 @@ void func_8001B480(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
     arg0->unk_24->unk_000.unk_02 |= 0x80;
 }
 
-s32 func_8001B610(Vec3s* arg0) {
+s32 PokeIcon_HandlePreviewInput(Vec3s* arg0) {
     s32 var_v1 = 0;
 
     if (gPlayer1Controller->buttonDown & 0x800) {
@@ -595,7 +595,7 @@ s32 func_8001B6BC(Vec3s* arg0) {
     return 0;
 }
 
-void func_8001B6C8(unk_func_8001B1FC* arg0) {
+void PokeIcon_AdvancePreviewMotion(unk_func_8001B1FC* arg0) {
     s32 var_a0;
     Vec3s* sp18 = &arg0->unk_24->unk_01E;
     s16 var_a2;
@@ -624,7 +624,7 @@ void func_8001B6C8(unk_func_8001B1FC* arg0) {
     sp18->x = Math_ApproachS16(sp18->x, 0, var_a2);
 }
 
-void func_8001B778(unk_func_8001B1FC* arg0) {
+void PokeIcon_UpdatePreview(unk_func_8001B1FC* arg0) {
     f32 temp_fv0;
     s16 temp_v0_2;
     s32 temp_v0;
@@ -632,7 +632,7 @@ void func_8001B778(unk_func_8001B1FC* arg0) {
 
     var_v1 = 0;
     if (arg0->unk_00 & 2) {
-        var_v1 = func_8001B610(&arg0->unk_24->unk_01E);
+        var_v1 = PokeIcon_HandlePreviewInput(&arg0->unk_24->unk_01E);
         if (var_v1 == 0) {
             var_v1 = func_8001B6BC(&arg0->unk_24->unk_01E);
         }
@@ -645,14 +645,14 @@ void func_8001B778(unk_func_8001B1FC* arg0) {
         if (arg0->unk_10 > 0) {
             arg0->unk_10--;
         } else {
-            func_8001B6C8(arg0);
+            PokeIcon_AdvancePreviewMotion(arg0);
         }
     }
 
     Vec3f_Set(&gCameraNode->unk_030, arg0->unk_18, arg0->unk_18, arg0->unk_18);
 }
 
-void func_8001B834(unk_func_8001B1FC* arg0) {
+void PokeIcon_DrawPreview(unk_func_8001B1FC* arg0) {
     s32 var_v0;
     s32 var_s2;
     s32 i;
@@ -684,10 +684,10 @@ void func_8001B834(unk_func_8001B1FC* arg0) {
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, arg0->unk_08, arg0->unk_0A);
 }
 
-u8* func_8001B9D4(unk_func_8001B1FC* arg0) {
-    func_8001B778(arg0);
+u8* PokeIcon_RenderPreview(unk_func_8001B1FC* arg0) {
+    PokeIcon_UpdatePreview(arg0);
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_28);
-    func_8001B834(arg0);
+    PokeIcon_DrawPreview(arg0);
     Gfx_FinishFrame();
     Graph_SetTextureState(arg0->unk_20);
 

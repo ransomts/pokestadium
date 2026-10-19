@@ -10,6 +10,6 @@ void MiniTutorial_FadeIn(void);
 void miniUnkControls(void);
 void MiniGame_ExitFadeOut(void);
 void MiniGame_Initialize(void);
-s32 func_86D003EC(s32 arg0, s32 arg1);
+s32 Minigame_RankingDebugTest(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT19_H_

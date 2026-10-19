@@ -22,8 +22,8 @@ extern unk_D_800AA680 gBootIDData;
 
 s32 Boot_ValidateAndCopy(void);
 s32 BootID_StoreIfValid(unk_D_800AA680* arg0);
-s32 func_8000DDB0(void);
-s32 func_8000DDE4(void);
+s32 Leo_QueueDiskIdRead(void);
+s32 Leo_QueueDiskReset(void);
 s32 Boot_DMAReadHeader(unk_D_800AA680* arg0);
 s32 Boot_DMAReadData(void);
 s32 Boot_ProcessMessage(void);
@@ -34,7 +34,7 @@ s32 Boot_CheckUnitReady(void);
 void func_8000E5B4(void);
 s32 Boot_MainLoop(unk_D_800AA680* arg0);
 s32 Boot_Init(void);
-void func_8000E760(void);
-void func_8000E7E4(void);
+void Leo_AbortPendingBootRequest(void);
+void Leo_ResetBootStateIfReady(void);
 
 #endif // _E890_H_

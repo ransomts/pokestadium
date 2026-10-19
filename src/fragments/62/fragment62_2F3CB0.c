@@ -208,13 +208,13 @@ void Entity_UpdateCameraFromSubObject(unk_BattlePlayerEntity* arg0, s16 arg1) {
     }
 }
 
-void func_84309F0C(unk_BattlePlayerEntity* arg0) {
+void BattleScene_ResetParticipantModelFlags(unk_BattlePlayerEntity* arg0) {
     ApplyAnimEffectToOpponent(arg0, 0, 0);
 }
 
 void Entity_LaunchProjectile(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4EC.unk_000.unk_01 |= 1;
-    if (arg1 == D_84390010[0]) {
+    if (arg1 == sActivePokemon[0]) {
         Vec3f_Set(&arg1->unk_4EC.unk_024, 35.0f, 50.0f, -250.0f);
     } else {
         Vec3f_Set(&arg1->unk_4EC.unk_024, -35.0f, 50.0f, -250.0f);
@@ -239,7 +239,7 @@ void Entity_HandleProjectileLanding(unk_BattlePlayerEntity* arg0, unk_BattlePlay
         arg1->unk_4EC.unk_000.unk_01 &= ~1;
         arg1->unk_4EC.unk_024.y = 0.0f;
         arg1->unk_448.unk_0C.y = 0.0f;
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
     }
 }
 
@@ -254,7 +254,7 @@ void Entity_StateMachine_Dispatch(unk_BattlePlayerEntity* arg0, unk_BattlePlayer
     }
 }
 
-void func_8430A0E4(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase2Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f_Set(&arg1->unk_4EC.unk_024, arg1->unk_4B0 * -150.0f, 100.0f, 0.0f);
     arg1->unk_4B8++;
     Entity_SetLaunchVelocity(arg1, 0.0f, 0x3FFC);
@@ -263,7 +263,7 @@ void func_8430A0E4(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* 
     Anim_SetChannelBase(&arg1->unk_4EC, 0);
 }
 
-void func_8430A17C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase2Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4EC.unk_01E.x += 0x1555;
     arg1->unk_4EC.unk_01E.z += 0xE38;
 
@@ -279,22 +279,22 @@ void func_8430A17C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
         }
         arg1->unk_448.unk_0C.y = 0.0f;
         arg1->unk_4EC.unk_024.y = 2.5f;
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
     }
 }
 
-void func_8430A22C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase2(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430A0E4(arg0, arg1);
+            BattleAnim_StatusIdleCase2Sub0(arg0, arg1);
 
         case 1:
-            func_8430A17C(arg0, arg1);
+            BattleAnim_StatusIdleCase2Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430A280(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase3Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
     Entity_SetLaunchVelocity(arg1, gDefaultScales[0], 0x4000);
@@ -302,35 +302,35 @@ void func_8430A280(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* 
     arg1->unk_4B8++;
 }
 
-void func_8430A308(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase3Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_UpdateMovement(arg0, arg1, 1.45f, 0.015f, 0x4000);
     Entity_UpdateCameraFromSubObject(arg1, 0);
     if (arg0->unk_000.unk_024.y >= 200.0f) {
         arg1->unk_448.unk_0C.y = 0.0f;
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
         Entity_ResetSubObjectFlags(arg1);
     }
 }
 
-void func_8430A390(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase3(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430A280(arg0, arg1);
+            BattleAnim_StatusIdleCase3Sub0(arg0, arg1);
 
         case 1:
-            func_8430A308(arg0, arg1);
+            BattleAnim_StatusIdleCase3Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430A3E4(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase14Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
     Entity_SetLaunchVelocity(arg1, gDefaultScales[0], 0x4000);
     arg1->unk_4B8++;
 }
 
-void func_8430A464(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase14Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_UpdateMovement(arg0, arg1, 2.0f, 0.002f, 0x4000);
     if ((arg0->unk_000.unk_024.y - GetModelBaseY(arg1)) >= 90.0f) {
         arg1->unk_4B8++;
@@ -341,13 +341,13 @@ void func_8430A464(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
 void func_8430A4E0(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
-void func_8430A4EC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase14(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430A3E4(arg0, arg1);
+            BattleAnim_StatusIdleCase14Sub0(arg0, arg1);
 
         case 1:
-            func_8430A464(arg0, arg1);
+            BattleAnim_StatusIdleCase14Sub1(arg0, arg1);
             break;
 
         case 2:
@@ -356,7 +356,7 @@ void func_8430A4EC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-s32 func_8430A558(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
+s32 BattleAnim_ApproachAngleAndCheckThreshold(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     arg0->unk_000.unk_01E.y -= arg1;
 
     if (arg1 > 0) {
@@ -370,7 +370,7 @@ s32 func_8430A558(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     return 0;
 }
 
-void func_8430A5D4(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase4Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_SetSubObjectCameraOffsets(arg1);
     arg1->unk_4A6 = 0;
     arg1->unk_4A4 = 0;
@@ -378,10 +378,10 @@ void func_8430A5D4(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* 
     arg1->unk_4B8++;
 }
 
-void func_8430A618(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase4Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = Math_ApproachS32(arg1->unk_4A6, 0x3330, 0x16C, 0x16C);
 
-    if (func_8430A558(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE) != 0) {
+    if (BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE) != 0) {
         arg1->unk_4C0 += 1;
     }
 
@@ -392,7 +392,7 @@ void func_8430A618(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-void func_8430A6AC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase4Sub2(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 tmp = 0x4000 - arg0->unk_000.unk_01E.y;
     f32 var_fa1;
     s16 sp26;
@@ -407,42 +407,42 @@ void func_8430A6AC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     if (sp26 < 0xE38) {
         sp26 = 0xE38;
     }
-    sp20 = func_8430A558(arg0, sp26, arg1->unk_4B0 << 0xE);
+    sp20 = BattleAnim_ApproachAngleAndCheckThreshold(arg0, sp26, arg1->unk_4B0 << 0xE);
     Entity_UpdateCameraFromSubObject(arg1, sp26);
 
     if (sp20 != 0) {
         arg0->unk_000.unk_01E.y = arg1->unk_4B0 << 0xE;
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
         Entity_ResetSubObjectFlags(arg1);
     }
 }
 
-void func_8430A7BC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase4(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430A5D4(arg0, arg1);
+            BattleAnim_StatusIdleCase4Sub0(arg0, arg1);
 
         case 1:
-            func_8430A618(arg0, arg1);
+            BattleAnim_StatusIdleCase4Sub1(arg0, arg1);
             break;
 
         case 2:
-            func_8430A6AC(arg0, arg1);
+            BattleAnim_StatusIdleCase4Sub2(arg0, arg1);
             break;
     }
 }
 
-void func_8430A828(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase5Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = 0;
     arg1->unk_4A4 = 0;
     arg1->unk_4C0 = 0;
     arg1->unk_4B8++;
 }
 
-void func_8430A848(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase5Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = Math_ApproachS32(arg1->unk_4A6, 0x3FFC, 0x16C, 0x16C);
 
-    if (func_8430A558(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE) != 0) {
+    if (BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE) != 0) {
         arg1->unk_4C0 += 1;
     }
 
@@ -452,14 +452,14 @@ void func_8430A848(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-void func_8430A8DC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase5Sub2(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
     UNUSED s16 pad;
     u8 sp28[] = { 0x5F, 0x92 }; // D_84384650
 
-    func_8430A558(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE);
+    BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->unk_4B0 << 0xE);
 
     if (Array_ContainsValue(arg1->unk_000.unk_01A, sp28, sizeof(sp28)) != 0) {
         sp30 = 10.3f;
@@ -476,27 +476,27 @@ void func_8430A8DC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
 
     if (arg0->unk_000.unk_024.y <= -(Battle_GetEntityHeight(arg1) * sp34)) {
         Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
         Entity_ResetSubObjectFlags(arg1);
     }
 }
 
-void func_8430AA18(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase5(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430A828(arg0, arg1);
+            BattleAnim_StatusIdleCase5Sub0(arg0, arg1);
 
         case 1:
-            func_8430A848(arg0, arg1);
+            BattleAnim_StatusIdleCase5Sub1(arg0, arg1);
             break;
 
         case 2:
-            func_8430A8DC(arg0, arg1);
+            BattleAnim_StatusIdleCase5Sub2(arg0, arg1);
             break;
     }
 }
 
-void func_8430AA84(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase6Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = 0;
     arg1->unk_4A4 = 0;
     arg1->unk_4C0 = 0;
@@ -507,7 +507,7 @@ void func_8430AA84(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430AB00(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase6Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 tmp;
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f }; // D_84384654
 
@@ -524,7 +524,7 @@ void func_8430AB00(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-void func_8430ABF0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase6Sub2(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 tmp;
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f };
 
@@ -541,27 +541,27 @@ void func_8430ABF0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     if (arg1->unk_4A0 <= 0.5f) {
         UpdateEntityBasePosition(arg1);
         Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->unk_4B0 << 0xE, 0);
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
         Entity_ResetSubObjectFlags(arg1);
     }
 }
 
-void func_8430AD10(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase6(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430AA84(arg0, arg1);
+            BattleAnim_StatusIdleCase6Sub0(arg0, arg1);
 
         case 1:
-            func_8430AB00(arg0, arg1);
+            BattleAnim_StatusIdleCase6Sub1(arg0, arg1);
             break;
 
         case 2:
-            func_8430ABF0(arg0, arg1);
+            BattleAnim_StatusIdleCase6Sub2(arg0, arg1);
             break;
     }
 }
 
-void func_8430AD7C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase7Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_InitSubObjects(arg1);
     arg1->unk_4AC = 0;
     UpdateEntityBasePosition(arg1);
@@ -569,37 +569,37 @@ void func_8430AD7C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430ADE8(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase7Sub1(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_AnimateSubObjects(arg1);
     arg1->unk_4AC++;
     if (arg1->unk_4AC == 0x3C) {
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
         Entity_ResetSubObjectFlags(arg1);
     }
 }
 
-void func_8430AE3C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase7(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430AD7C(arg0, arg1);
+            BattleAnim_StatusIdleCase7Sub0(arg0, arg1);
 
         case 1:
-            func_8430ADE8(arg0, arg1);
+            BattleAnim_StatusIdleCase7Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430AE90(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_ResetOwnerFacingAndExitStatusIdle(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     CameraStruct* sp18 = gBattleState.unk_00->unk_DC;
 
     UpdateEntityBasePosition(arg0);
     Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg0->unk_4B0 << 0xE, 0);
     Vec3f_Set(&sp18->unk_60.up, 0.0f, 1.0f, 0.0f);
-    func_84309F0C(arg0);
+    BattleScene_ResetParticipantModelFlags(arg0);
 }
 
-void func_8430AF08(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase8Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A6 = 0;
     arg1->unk_4A8 = 0;
     arg1->unk_4A4 = 0;
@@ -610,7 +610,7 @@ void func_8430AF08(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430AF80(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase8Sub1(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     CameraStruct* temp_s0 = gBattleState.unk_00->unk_DC;
     f32 temp_fa0;
     f32 temp_fa1_2;
@@ -645,27 +645,27 @@ void func_8430AF80(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* 
     }
 }
 
-void func_8430B104(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430AF08(arg0, arg1);
+            BattleAnim_StatusIdleCase8Sub0(arg0, arg1);
 
         case 1:
-            func_8430AF80(arg0, arg1);
+            BattleAnim_StatusIdleCase8Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430B158(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase9Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     if (arg0->unk_000.unk_030.y != 1.0f) {
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
     } else {
         Entity_ActivateSubObjects(arg1);
         arg1->unk_4B8++;
     }
 }
 
-void func_8430B1B8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase9Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 temp_fv0;
 
     temp_fv0 = Math_ApproachF32(arg0->unk_000.unk_030.x, 0.8f, 0.01f, 0.01f);
@@ -676,27 +676,27 @@ void func_8430B1B8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Entity_ScaleSubObjects(arg1);
 
     if (arg0->unk_000.unk_030.y <= 0.8) {
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
         Entity_ResetSubObjectFlags(arg1);
     }
 }
 
-void func_8430B244(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase9(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430B158(arg0, arg1);
+            BattleAnim_StatusIdleCase9Sub0(arg0, arg1);
 
         case 1:
-            func_8430B1B8(arg0, arg1);
+            BattleAnim_StatusIdleCase9Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430B298(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase12Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430B2AC(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase12Sub1(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
     arg0->unk_000.unk_030.x = Math_ApproachF32(arg0->unk_000.unk_030.x, 0.0f, 0.05f, 0.05f);
     arg0->unk_000.unk_030.y = Math_ApproachF32(arg0->unk_000.unk_030.y, 0.0f, 0.05f, 0.05f);
     arg0->unk_000.unk_030.z = Math_ApproachF32(arg0->unk_000.unk_030.z, 0.0f, 0.05f, 0.05f);
@@ -706,18 +706,18 @@ void func_8430B2AC(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* 
     }
 }
 
-void func_8430B374(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase12(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430B298(arg0, arg1);
+            BattleAnim_StatusIdleCase12Sub0(arg0, arg1);
 
         case 1:
-            func_8430B2AC(arg0, arg1);
+            BattleAnim_StatusIdleCase12Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430B3C8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase13Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A4 = 0x16C;
     arg1->unk_4A6 = 0;
     arg1->unk_4A8 = 0;
@@ -728,7 +728,7 @@ void func_8430B3C8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430B40C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase13Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 var_fv0;
 
     // clang-format off
@@ -757,7 +757,7 @@ void func_8430B40C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-void func_8430B550(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase13Sub2(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 var_fv0;
     f32 var_fv1;
 
@@ -784,26 +784,26 @@ void func_8430B550(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
         arg0->unk_000.unk_030.x = var_fv0;
         arg0->unk_000.unk_030.y = var_fv0;
         arg0->unk_000.unk_030.z = var_fv0;
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
     }
 }
 
-void func_8430B68C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase13(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430B3C8(arg0, arg1);
+            BattleAnim_StatusIdleCase13Sub0(arg0, arg1);
 
         case 1:
-            func_8430B40C(arg0, arg1);
+            BattleAnim_StatusIdleCase13Sub1(arg0, arg1);
             break;
 
         case 2:
-            func_8430B550(arg0, arg1);
+            BattleAnim_StatusIdleCase13Sub2(arg0, arg1);
             break;
     }
 }
 
-void func_8430B6F8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase15Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4A8 = 0x71C;
     arg1->unk_4A0 = 0.4f;
     arg1->unk_448.unk_0C.x = arg0->unk_000.unk_030.x;
@@ -812,7 +812,7 @@ void func_8430B6F8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4B8++;
 }
 
-void func_8430B734(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase15Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* temp_a0 = &arg1->unk_654.unk_38;
     s16 sp22;
 
@@ -841,27 +841,27 @@ void func_8430B734(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
         } else {
             Vec3f_Set(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
         }
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
     }
 }
 
-void func_8430B8FC(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase15(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430B6F8(arg0, arg1);
+            BattleAnim_StatusIdleCase15Sub0(arg0, arg1);
 
         case 1:
-            func_8430B734(arg0, arg1);
+            BattleAnim_StatusIdleCase15Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430B950(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase16Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4AC = 0;
     arg1->unk_4B8++;
 }
 
-void func_8430B968(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase16Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     unk_D_800FCB18* ptr = &arg1->unk_654.unk_38;
     UNUSED s32 pad;
     f32 temp_fs0;
@@ -879,59 +879,59 @@ void func_8430B968(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-void func_8430BAB8(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase16(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430B950(arg0, arg1);
+            BattleAnim_StatusIdleCase16Sub0(arg0, arg1);
 
         case 1:
-            func_8430B968(arg0, arg1);
+            BattleAnim_StatusIdleCase16Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430BB0C(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase10Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->unk_4C0 = 0;
     arg1->unk_4B8++;
 }
 
-void func_8430BB24(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase10Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 sp24;
     f32 sp20;
 
     arg1->unk_4C0++;
-    sp20 = func_8435E158(arg0->unk_000.unk_024.x, arg0->unk_000.unk_024.z, &sp24);
+    sp20 = TerrainGrid_SampleHeightAndSlope(arg0->unk_000.unk_024.x, arg0->unk_000.unk_024.z, &sp24);
     arg0->unk_000.unk_024.y = GetModelBaseY(arg1) + sp20;
     arg0->unk_000.unk_01E.x = (s16)sp24 * 0xB6;
 
     if (arg1->unk_4C0 == 0x12C) {
         arg0->unk_000.unk_024.y = GetModelBaseY(arg1);
         arg0->unk_000.unk_01E.x = 0;
-        func_84309F0C(arg1);
+        BattleScene_ResetParticipantModelFlags(arg1);
     }
 }
 
-void func_8430BBE4(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase10(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4B8) {
         case 0:
-            func_8430BB0C(arg0, arg1);
+            BattleAnim_StatusIdleCase10Sub0(arg0, arg1);
 
         case 1:
-            func_8430BB24(arg0, arg1);
+            BattleAnim_StatusIdleCase10Sub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430BC38(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase0(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
 void Battle_ClearAnimFlags(s32 arg0) {
-    unk_BattlePlayerEntity* temp_a1 = D_84390010[arg0];
-    unk_BattlePlayerEntity* temp_a2 = D_84390010[arg0];
+    unk_BattlePlayerEntity* temp_a1 = sActivePokemon[arg0];
+    unk_BattlePlayerEntity* temp_a2 = sActivePokemon[arg0];
 
-    switch (D_84390010[arg0]->unk_4B4) {
+    switch (sActivePokemon[arg0]->unk_4B4) {
         case 0:
-            func_8430BC38(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase0(temp_a1, temp_a2);
             break;
 
         case 1:
@@ -939,84 +939,84 @@ void Battle_ClearAnimFlags(s32 arg0) {
             break;
 
         case 2:
-            func_8430A22C(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase2(temp_a1, temp_a2);
             break;
 
         case 3:
-            func_8430A390(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase3(temp_a1, temp_a2);
             break;
 
         case 4:
-            func_8430A7BC(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase4(temp_a1, temp_a2);
             break;
 
         case 5:
-            func_8430AA18(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase5(temp_a1, temp_a2);
             break;
 
         case 6:
-            func_8430AD10(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase6(temp_a1, temp_a2);
             break;
 
         case 7:
-            func_8430AE3C(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase7(temp_a1, temp_a2);
             break;
 
         case 8:
-            func_8430B104(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase8(temp_a1, temp_a2);
             break;
 
         case 9:
-            func_8430B244(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase9(temp_a1, temp_a2);
             break;
 
         case 10:
-            func_8430BBE4(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase10(temp_a1, temp_a2);
             break;
 
         case 12:
-            func_8430B374(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase12(temp_a1, temp_a2);
             break;
 
         case 13:
-            func_8430B68C(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase13(temp_a1, temp_a2);
             break;
 
         case 14:
-            func_8430A4EC(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase14(temp_a1, temp_a2);
             break;
 
         case 15:
-            func_8430B8FC(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase15(temp_a1, temp_a2);
             break;
 
         case 16:
-            func_8430BAB8(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase16(temp_a1, temp_a2);
             break;
 
         default:
-            func_84309F0C(temp_a2);
+            BattleScene_ResetParticipantModelFlags(temp_a2);
             break;
     }
 }
 
-void func_8430BD9C(unk_BattlePlayerEntity* arg0, u8 arg1, u8 arg2) {
+void BattleAnim_SetOwnerSecondaryStatusFlags(unk_BattlePlayerEntity* arg0, u8 arg1, u8 arg2) {
     arg0->unk_4E8 = arg1;
     arg0->unk_4E9 = arg2;
 }
 
-void func_8430BDB0(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_ClearOwnerSecondaryStatusFlags(unk_BattlePlayerEntity* arg0) {
     arg0->unk_4E8 = 0;
     arg0->unk_4E9 = 0;
 }
 
-void func_8430BDBC(unk_BattlePlayerEntity* arg0, f32 arg1, s16 arg2) {
+void BattleAnim_InitSecondarySwayOffset(unk_BattlePlayerEntity* arg0, f32 arg1, s16 arg2) {
     arg0->unk_4E4 = arg1;
     arg0->unk_4D8.z = COSS(arg2) * arg1;
     arg0->unk_4D8.y = SINS(arg2) * arg1;
 }
 
-void func_8430BE08(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, UNUSED f32 arg2, UNUSED f32 arg3, UNUSED s32 arg4) {
+void BattleAnim_UpdateSecondarySwayPhysics(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, UNUSED f32 arg2, UNUSED f32 arg3, UNUSED s32 arg4) {
     f32 tmp1 = 0.01f;
     f32 tmp2 = 18.0f;
     Vec3f sp2C;
@@ -1035,44 +1035,44 @@ void func_8430BE08(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, U
     Vec3f_Add(&arg0->unk_000.unk_024, &sp2C);
 }
 
-void func_8430BEC0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_SecondaryStatusCaseBSub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     Vec3f_Set(&arg1->unk_4CC, 0.0f, 0.0f, 0.0f);
     Vec3f_Set(&arg1->unk_4D8, 0.0f, 0.0f, 0.0f);
-    func_8430BDBC(arg1, 23.0f, 0x2E36);
+    BattleAnim_InitSecondarySwayOffset(arg1, 23.0f, 0x2E36);
     arg1->unk_4E9++;
 }
 
-void func_8430BF3C(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    func_8430BE08(arg0, arg1, 0, 0, 0x2E36);
+void BattleAnim_SecondaryStatusCaseBSub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+    BattleAnim_UpdateSecondarySwayPhysics(arg0, arg1, 0, 0, 0x2E36);
     if (arg1->unk_000.unk_024.y < GetModelBaseY(arg1)) {
         arg1->unk_4D8.y = 0.0f;
         arg1->unk_000.unk_024.y = GetModelBaseY(arg1);
-        func_8430BDB0(arg1);
+        BattleAnim_ClearOwnerSecondaryStatusFlags(arg1);
     }
 }
 
-void func_8430BFB0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_SecondaryStatusCaseB(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->unk_4E9) {
         case 0:
-            func_8430BEC0(arg0, arg1);
+            BattleAnim_SecondaryStatusCaseBSub0(arg0, arg1);
 
         case 1:
-            func_8430BF3C(arg0, arg1);
+            BattleAnim_SecondaryStatusCaseBSub1(arg0, arg1);
             break;
     }
 }
 
-void func_8430C004(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
+void BattleAnim_SecondaryStatusDefault(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
-void func_8430C010(s32 arg0) {
-    unk_BattlePlayerEntity* temp_v0 = D_84390010[arg0];
-    unk_BattlePlayerEntity* temp_v1 = D_84390010[arg0];
+void BattleAnim_UpdateOwnerSecondaryStatusAnimation(s32 arg0) {
+    unk_BattlePlayerEntity* temp_v0 = sActivePokemon[arg0];
+    unk_BattlePlayerEntity* temp_v1 = sActivePokemon[arg0];
 
     if (temp_v1->unk_4E8 == 0xB) {
-        func_8430BFB0(temp_v0, temp_v1);
+        BattleAnim_SecondaryStatusCaseB(temp_v0, temp_v1);
     } else {
-        func_8430C004(temp_v0, temp_v1);
+        BattleAnim_SecondaryStatusDefault(temp_v0, temp_v1);
     }
 }
 

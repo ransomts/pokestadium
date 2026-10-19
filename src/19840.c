@@ -31,13 +31,13 @@ void GeoLayout_ConvertTextures(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1) {
             if (var_s2->type == unk_D_86002F34_018_GFX_TYPE_2) {
                 u16* var_s1 = (u16*)var_s2->texture;
                 for (j = 0; j < var_s2->num_texels; j++, var_s1++) {
-                    *var_s1 = func_80010CA8(*var_s1, arg1);
+                    *var_s1 = Color_AdjustRGB5551(*var_s1, arg1);
                 }
             }
             if (var_s2->type == unk_D_86002F34_018_GFX_TYPE_3) {
                 u32* var_s1 = var_s2->texture;
                 for (j = 0; j < var_s2->num_texels; j++, var_s1++) {
-                    *var_s1 = func_80010E20(*var_s1, arg1);
+                    *var_s1 = Color_AdjustRGBA8(*var_s1, arg1);
                 }
             }
         }
@@ -45,7 +45,7 @@ void GeoLayout_ConvertTextures(unk_D_86002F34* arg0, arg1_func_80010CA8 arg1) {
     for (i = 0; i < arg0->unk_25; i++, var_s4++) {
         u16* var_s1 = var_s4->unk_04;
         for (j = 0; j < var_s4->unk_00; j++, var_s1++) {
-            *var_s1 = func_80010CA8(*var_s1, arg1);
+            *var_s1 = Color_AdjustRGB5551(*var_s1, arg1);
         }
     }
 }
@@ -120,7 +120,7 @@ Fragment* Fragment_LoadCompressed(MainPoolState* arg0, unk_func_800041C0* arg1, 
     if (arg3 >= sp3C) {
         temp_s1 = arg1->unk_04 + (u8*)arg2;
 
-        func_80001098(0, arg2, arg1->unk_00, arg1->unk_02, &gAssetManager.unk_9EC, 0);
+        Storage_QueueDiskTransfer(0, arg2, arg1->unk_00, arg1->unk_02, &gAssetManager.unk_9EC, 0);
         osRecvMesg(&gAssetManager.unk_9EC, NULL, 1);
 
         if (((u32*)temp_s1->magic)[0] == 'PERS' && (((u32*)temp_s1->magic)[1] == '-SZP')) {
@@ -368,7 +368,7 @@ s32 AssetManager_RequestLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 ar
     return sp1C;
 }
 
-s32 func_80019A1C(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3) {
+s32 PokeIcon_RequestFrameLoadWithVariant(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3) {
     if ((arg0->unk_00 & 8) && !(arg0->unk_01 & 1)) {
         arg0->unk_02 = arg3;
         AssetManager_RequestLoad(arg0, arg1, arg2);
@@ -376,7 +376,7 @@ s32 func_80019A1C(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg
     return 0;
 }
 
-s32 func_80019A7C(AssetManager* arg0, s32 arg1, s32 arg2) {
+s32 PokeIcon_RequestBackgroundLoad(AssetManager* arg0, s32 arg1, s32 arg2) {
     s32 sp1C = 0;
     sp18_func_800198E4* temp_v0;
 
@@ -441,7 +441,7 @@ s32 AssetManager_TryProcessLoadQueue(AssetManager* arg0) {
     return sp18;
 }
 
-s32 func_80019C58(AssetManager* arg0) {
+s32 PokeIcon_PollBackgroundLoad(AssetManager* arg0) {
     OSMesg sp1C;
     s32 sp18 = 0;
 
@@ -459,7 +459,7 @@ s32 AssetManager_WaitLoadQueue(AssetManager* arg0) {
     return AssetManager_HandleRequest(arg0, sp1C);
 }
 
-s32 func_80019CE0(AssetManager* arg0) {
+s32 PokeIcon_WaitBackgroundLoad(AssetManager* arg0) {
     OSMesg sp1C;
 
     osRecvMesg(&arg0->unk_50, &sp1C, 1);
@@ -483,7 +483,7 @@ unk_D_86002F30* GeoLayout_LoadById(s32 arg0) {
     return sp24;
 }
 
-unk_D_86002F30* func_80019D90(PokemonData* arg0) {
+unk_D_86002F30* Model_LoadForPokemon(PokemonData* arg0) {
     Fragment* sp2C;
     arg1_func_80010CA8 sp28;
     unk_D_86002F30* sp24 = NULL;
@@ -499,7 +499,7 @@ unk_D_86002F30* func_80019D90(PokemonData* arg0) {
     return sp24;
 }
 
-s32 func_80019E18(s32 arg0, s32 arg1) {
+s32 Model_LoadWithScale(s32 arg0, s32 arg1) {
     Fragment* sp2C;
     arg1_func_80010CA8 sp28;
     s32 sp24 = 0;
@@ -516,7 +516,7 @@ s32 func_80019E18(s32 arg0, s32 arg1) {
     return sp24;
 }
 
-arg1_func_80019420* func_80019EA0(s32 arg0) {
+arg1_func_80019420* BattleAnim_LoadResourceTable(s32 arg0) {
     Fragment* sp24;
     arg1_func_80019420* sp20;
     MemoryBlock* sp1C;
@@ -532,7 +532,7 @@ arg1_func_80019420* func_80019EA0(s32 arg0) {
     return sp20;
 }
 
-Fragment* func_80019F0C(MainPoolState* arg0, u32 arg1, s32 arg2, s32 arg3, PERSSZP* arg4, s32 arg5) {
+Fragment* Fragment_LoadAndRelocateFromRomRange(MainPoolState* arg0, u32 arg1, s32 arg2, s32 arg3, PERSSZP* arg4, s32 arg5) {
     Fragment* sp24 = Fragment_LoadFromRange(arg0, arg2, arg3, arg4, arg5);
 
     if (sp24 != NULL) {

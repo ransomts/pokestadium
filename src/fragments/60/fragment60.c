@@ -188,7 +188,7 @@ static u32 D_82E01960[] = {
     0x00000000, 0x08000000, Overlay_DrawLayer, 0x00000000, 0x06000000, 0x01000000,
 };
 
-void func_82E00020(void) {
+void CupSelect_PollController(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
@@ -387,12 +387,12 @@ s32 Menu_RunSelection(void) {
     D_82E023A8 = D_82E023AA;
 
     for (i = 0; i < 23; i++) {
-        func_82E00020();
+        CupSelect_PollController();
         Stage_DrawFrame(0, i);
     }
 
     while (temp_v0 == 'exec') {
-        func_82E00020();
+        CupSelect_PollController();
         Stage_DrawFrame(1, 0);
         temp_v0 = Menu_HandleInput();
     }
@@ -400,14 +400,14 @@ s32 Menu_RunSelection(void) {
     temp_v1 = temp_v0 == 'slct';
     if (temp_v1) {
         for (i = 0; i < 23; i++) {
-            func_82E00020();
+            CupSelect_PollController();
             Stage_DrawFrame(2, i);
         }
     } else {
         Stage_SetFillColor(0xFFFF);
         Stage_FadeOut(8);
         while (Stage_GetFadeState() != 1) {
-            func_82E00020();
+            CupSelect_PollController();
             Stage_DrawFrame(1, 0);
         }
         Stage_AdvanceN(2);

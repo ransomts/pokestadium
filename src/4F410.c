@@ -1091,7 +1091,7 @@ void Audio_PlaySequence(u32 arg0, u32 arg1) {
     }
 
     if (gAudioSeqLoadPending == 1) {
-        func_8004ADB0(gAudioSeqBank->seqArray[0].offset, gAudioSeqBuffer, 0x4BC);
+        Rom_DmaRead(gAudioSeqBank->seqArray[0].offset, gAudioSeqBuffer, 0x4BC);
         alSeqFileNew(gAudioSeqBuffer, gAudioSeqBank->seqArray[0].offset);
         gAudioSeqLoadPending = 0;
     }

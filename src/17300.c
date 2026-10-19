@@ -44,7 +44,7 @@ s16 Anim_GetRotation(unk_D_800ABCC0* arg0, s32 arg1) {
         } else {
             var_a1 = (temp_v0->unk_06 + temp_v0->unk_01) - 1;
         }
-        var_v1 = func_80010500(arg0->unk_10, var_a1, 0xC) * 0x10;
+        var_v1 = PackedBits_ReadSigned(arg0->unk_10, var_a1, 0xC) * 0x10;
     }
     return var_v1;
 }
@@ -70,9 +70,9 @@ f32 Anim_GetPosition(unk_D_800ABCC0* arg0, s32 arg1) {
         }
 
         if (arg0->unk_01 & 4) {
-            var_fv1 = func_80010500(arg0->unk_14, var_a1, 0x10);
+            var_fv1 = PackedBits_ReadSigned(arg0->unk_14, var_a1, 0x10);
         } else {
-            var_fv1 = func_80010500(arg0->unk_14, var_a1, 0xC);
+            var_fv1 = PackedBits_ReadSigned(arg0->unk_14, var_a1, 0xC);
         }
     }
 

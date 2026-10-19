@@ -95,14 +95,14 @@ u8 D_800FF97C;
 s32 D_800FF980;
 
 void func_80049A60(u32);
-void func_8004AC9C();
-void func_8004ACD0();
+void GbAudio_ClearInterpolationHistory();
+void GbAudio_ClearOutputBuffer();
 
 void Audio_PlayMusicBuffer(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
     func_80049A60(arg2);
 }
 
-void func_8004980C(u16 arg0, u8 arg1, u16 arg2) {
+void GbAudio_QueueRegisterWrite(u16 arg0, u8 arg1, u16 arg2) {
     D_800FD068[D_800FD6AC].unk_00 = &D_800FD008[(arg0 & 0xFF) - 0x10].value;
     D_800FD068[D_800FD6AC].unk_04 = arg1;
     D_800FD068[D_800FD6AC].unk_06 = arg2 + 1;
@@ -112,7 +112,7 @@ void func_8004980C(u16 arg0, u8 arg1, u16 arg2) {
     D_800FD068[D_800FD6AC].unk_06 = 0;
 }
 
-u8 func_80049890(u16 arg0) {
+u8 GbAudio_GetRegisterValue(u16 arg0) {
     return D_800FD6A0[arg0 & 0xFF];
 }
 
@@ -170,8 +170,8 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
     D_800FCFD8.unk_28 = 0;
     D_800FCFD8.unk_04 = 0xFF;
 
-    func_8004ACD0();
-    func_8004AC9C();
+    GbAudio_ClearOutputBuffer();
+    GbAudio_ClearInterpolationHistory();
 
     D_800FF97C = arg1;
     D_800FF980 = arg2;
@@ -182,7 +182,7 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
     D_800FD6E8 = 2;
 }
 
-void func_80049D5C(u16);
+void GbAudio_ApplyQueuedWrites(u16);
 s16 func_80049DF0(void);
 s16 func_8004A474(void);
 s16 func_8004A89C(void);
@@ -211,7 +211,7 @@ void func_80049A60(u32 arg0) {
 
     for (i = 0; i < arg0; i++) {
         if (var_fs0 <= i) {
-            func_80049D5C(var_s4);
+            GbAudio_ApplyQueuedWrites(var_s4);
         }
 
         if (D_800FD008[0x16].value & 0x80) {
@@ -262,7 +262,7 @@ void func_80049A60(u32 arg0) {
     }
 }
 
-void func_80049D5C(u16 arg0) {
+void GbAudio_ApplyQueuedWrites(u16 arg0) {
     while (D_800FD068[D_800FD6A8].unk_06 >= arg0) {
         D_800FD068[D_800FD6A8].unk_00[0] = D_800FD068[D_800FD6A8].unk_04;
         D_800FD068[D_800FD6A8].unk_00[1] = 1;
@@ -745,7 +745,7 @@ s16 func_8004A89C(void) {
         if (sampleId != D_800FCFD8.unk_04) {
             D_800FCFD8.unk_04 = sampleId;
             ent = (unk_D_800FC6CC*)((u32*)D_800FC6CC + (D_800FCFD8.unk_04 << 1));
-            func_8004ADB0(ent->unk_00, (u32)D_800FC6D0, ent->unk_04);
+            Rom_DmaRead(ent->unk_00, (u32)D_800FC6D0, ent->unk_04);
         }
 
         D_800FCFD8.unk_08 = 0;
@@ -830,7 +830,7 @@ s16 func_8004A89C(void) {
     return sample;
 }
 
-void func_8004AC9C(void) {
+void GbAudio_ClearInterpolationHistory(void) {
     s32 i;
 
     for (i = 0; i < ARRAY_COUNT(D_800FD6F8); i++) {
@@ -839,7 +839,7 @@ void func_8004AC9C(void) {
     D_800FF978 = 0;
 }
 
-void func_8004ACD0(void) {
+void GbAudio_ClearOutputBuffer(void) {
     s32 i;
 
     for (i = 0; i < 0xB80; i++) {

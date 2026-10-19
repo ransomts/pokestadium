@@ -136,17 +136,17 @@ void LoadFragmentIfFlag(u16 arg0);
 s32 ProcessCameraNavigationInput(void);
 void UpdateTutorialText(void);
 s32 StageMainUpdate(void);
-s32 func_8690172C(void);
-s32 func_869017D0(void);
-s32 func_869018A0(void);
-s32 func_8690193C(void);
-s32 func_869019BC(void);
-void func_86901A44(void);
-void func_86901B28(void);
-void func_86901ECC(void);
-void func_86901FB4(void);
-void func_86902004(s32 arg0);
-s32 func_86902098(s32 arg0, UNUSED s32 arg1);
+s32 Gallery_CameraExitState_CountDown(void);
+s32 Gallery_CameraExitState_SpinOut(void);
+s32 Gallery_CameraExitState_ExpandBox(void);
+s32 Gallery_CameraExitState_FadeOut(void);
+s32 Gallery_CameraCheckExit(void);
+void Gallery_CameraDraw(void);
+void Gallery_CameraIntro(void);
+void Gallery_CameraLoop(void);
+void Gallery_CameraOutro(void);
+void Gallery_CameraInit(s32 arg0);
+s32 Gallery_CameraMain(s32 arg0, UNUSED s32 arg1);
 
 f32 ComputeDistance3D(Vec3f arg0, Vec3f arg1);
 f32 ScaleCameraDistance(f32 arg0);
@@ -170,9 +170,9 @@ void RenderMessageBox(char*);
 void RenderMainMenu(s32);
 void RenderGradientPanel(void);
 void RenderHPBar(void);
-void func_86908418(void);
-void func_86908668(void);
-void func_869089AC(void);
+void Gallery_DrawPhotoCounterReelExit(void);
+void Gallery_DrawFrameMarkers(void);
+void Gallery_DrawTutorialTextBox(void);
 
 
 #endif // _FRAGMENT15_H_

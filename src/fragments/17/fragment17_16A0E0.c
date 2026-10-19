@@ -83,7 +83,7 @@ void MessageState_Reset(void) {
 void func_86B0A81C(void) {
 }
 
-void func_86B0A824(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void FirstClearBonus_DrawDialogFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 sp48;
     s16 sp44;
     s16 var_s2;
@@ -167,7 +167,7 @@ s32 MessageState_CopyNextChars(void) {
 }
 
 void MessageBox_Draw(void) {
-    func_86B0A824(0x3C, 0xBE - (gMessageBoxState.unk_10 / 2), gMessageBoxState.unk_0C, gMessageBoxState.unk_10, 0x50, 0x50, 0xF0, 0x80);
+    FirstClearBonus_DrawDialogFrame(0x3C, 0xBE - (gMessageBoxState.unk_10 / 2), gMessageBoxState.unk_0C, gMessageBoxState.unk_10, 0x50, 0x50, 0xF0, 0x80);
 }
 
 void MessageBox_RenderText(void) {
@@ -266,7 +266,7 @@ void MessageBox_Update(void) {
     }
 }
 
-void func_86B0B498(void) {
+void FirstClearBonus_ReadControllerInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
@@ -299,7 +299,7 @@ void DrawBackgroundTiles(u8* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86B0B650(void) {
+void FirstClearBonus_RenderFrame(void) {
     Stage_BeginDisplayList();
     DrawBackgroundTiles(D_86B109C0);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
@@ -356,7 +356,7 @@ s32 BattleCutscene_Process(void) {
     return sp24;
 }
 
-void func_86B0B810(void) {
+void FirstClearBonus_RunLoop(void) {
     s32 i;
     s32 var_s2 = 1;
 
@@ -364,30 +364,30 @@ void func_86B0B810(void) {
     Stage_FadeIn(0xA);
 
     for (i = 0; i < 10; i++) {
-        func_86B0B498();
-        func_86B0B650();
+        FirstClearBonus_ReadControllerInput();
+        FirstClearBonus_RenderFrame();
     }
 
     while (var_s2 != 0) {
-        func_86B0B498();
+        FirstClearBonus_ReadControllerInput();
         if (BattleCutscene_Process() != 0) {
             var_s2 = 0;
         }
-        func_86B0B650();
+        FirstClearBonus_RenderFrame();
     }
 
     Stage_SetFillColor(0xFFFF);
     Stage_FadeOut(8);
 
     for (i = 0; i < 8; i++) {
-        func_86B0B498();
-        func_86B0B650();
+        FirstClearBonus_ReadControllerInput();
+        FirstClearBonus_RenderFrame();
     }
 
     Stage_AdvanceN(2);
 }
 
-void func_86B0B8DC(void) {
+void FirstClearBonus_InitScene(void) {
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
     D_86B10848 = process_geo_layout(temp_v0, &D_86B0E374);
@@ -440,9 +440,9 @@ s32 BattleState_Handle22Or23(void) {
         D_86B109C0 = BinArchive_GetFile(D_86B109BC, 0x13);
     }
 
-    func_86B0B8DC();
+    FirstClearBonus_InitScene();
     Stage_Set(sp24);
-    func_86B0B810();
+    FirstClearBonus_RunLoop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

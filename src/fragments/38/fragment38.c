@@ -651,7 +651,7 @@ void InitTrainerInfoPanel(unk_D_82305AF8* arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     for (i = 0; i < 6; i++) {
         ReadSaveBlockEntry(0x20, arg3, 0, i, &arg0->unk_0020[i]);
-        func_8001B0DC(arg0->unk_0218[i], 0, &arg0->unk_0020[i]);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_0218[i], 0, &arg0->unk_0020[i]);
     }
 }
 
@@ -780,7 +780,7 @@ void DrawStatBarPanel(unk_D_82305A30* arg0) {
     }
 }
 
-void func_823031B0(unk_D_82305A30* arg0) {
+void EventBattle_UpdateNoticeBanner(unk_D_82305A30* arg0) {
     switch (arg0->unk_00) {
         case 1:
             arg0->unk_02 += 7;
@@ -1112,7 +1112,7 @@ void DrawMenuBackground(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82304224(s16 arg0) {
+void EventBattle_DrawFrame(s16 arg0) {
     s16 i;
 
     Stage_BeginDisplayList();
@@ -1145,7 +1145,7 @@ void UpdateMainMenu(void) {
 
     Game_UpdateInputs();
     UpdatePanelAnimation(&gPanelAnimState);
-    func_823031B0(&gStatBarAnimState);
+    EventBattle_UpdateNoticeBanner(&gStatBarAnimState);
     UpdateBattleSettingsInput(&gBattleSettingsState);
     UpdateTrainerPanelAnimation(&gTrainerPanels[0]);
     UpdateTrainerPanelAnimation(&gTrainerPanels[1]);
@@ -1204,7 +1204,7 @@ void HandleMenuNavigation(unk_D_82305A28* arg0) {
                 PlaySoundEffect(3);
                 arg0->unk_00 = 2;
             }
-            func_82304224(arg0->unk_02);
+            EventBattle_DrawFrame(arg0->unk_02);
         } while (arg0->unk_00 == 3);
     }
     arg0->unk_06 = 4;
@@ -1219,7 +1219,7 @@ void EventBattle_EnterMenu(unk_D_82305A28* arg0) {
 
     for (i = 0; i < 6; i++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     gPanelAnimState.unk_00 = 1;
@@ -1231,7 +1231,7 @@ void EventBattle_EnterMenu(unk_D_82305A28* arg0) {
 
     for (i = 0; i < 12; i++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     arg0->unk_00 = 3;
@@ -1249,7 +1249,7 @@ void EventBattle_ExitMenu(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 6; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     Music_StopTrack(0x10);
@@ -1258,7 +1258,7 @@ void EventBattle_ExitMenu(unk_D_82305A28* arg0) {
 
     while (Stage_GetFadeState() != 1) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     arg0->unk_00 = 0;
@@ -1277,7 +1277,7 @@ void EventBattle_SelectOption(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 12; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     PlayUISfx(0x01100001, 0, 0);
@@ -1294,7 +1294,7 @@ void EventBattle_SelectOption(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 12; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     arg0->unk_00 = 4;
@@ -1316,7 +1316,7 @@ void EventBattle_ReturnToMenu(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 12; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     gPanelAnimState.unk_00 = 1;
@@ -1328,7 +1328,7 @@ void EventBattle_ReturnToMenu(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 12; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     arg0->unk_00 = 3;
@@ -1353,7 +1353,7 @@ void EventBattle_ConfirmSelection(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 12; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     arg0->unk_00 = 4;
@@ -1408,7 +1408,7 @@ void EventBattle_StartBattle(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 6; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     Music_StopTrack(0x10);
@@ -1417,7 +1417,7 @@ void EventBattle_StartBattle(unk_D_82305A28* arg0) {
 
     while (Stage_GetFadeState() != 1) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     arg0->unk_06 = 0x2A;
@@ -1464,7 +1464,7 @@ void EventBattle_HandleInput(unk_D_82305A28* arg0) {
                 arg0->unk_04 = 2;
                 arg0->unk_00 = 8;
             }
-            func_82304224(arg0->unk_04 + 6);
+            EventBattle_DrawFrame(arg0->unk_04 + 6);
         } while (arg0->unk_00 == 4);
     }
 }
@@ -1481,14 +1481,14 @@ void EventBattle_ProcessTransition(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 12; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     OpenBattleSettingsPanel(&gBattleSettingsState);
 
     while (gBattleSettingsState.unk_00 != 0) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     gPanelAnimState.unk_00 = 1;
@@ -1500,7 +1500,7 @@ void EventBattle_ProcessTransition(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 12; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     arg0->unk_00 = 3;
@@ -1522,7 +1522,7 @@ void EventBattle_CancelBattle(unk_D_82305A28* arg0) {
 
     for (j = 0; j < 12; j++) {
         UpdateMainMenu();
-        func_82304224(-1);
+        EventBattle_DrawFrame(-1);
     }
 
     arg0->unk_06 = 0x12;
@@ -1640,7 +1640,7 @@ s16 EventBattleMainLoop(void) {
     return D_82305A28.unk_06;
 }
 
-s32 func_823057E4(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 EventBattle_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     s16 temp_v0 = STATE_EVENT_BATTLE;
 
     main_pool_push_state('EBTL');

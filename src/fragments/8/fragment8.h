@@ -69,15 +69,15 @@ void SetPlayerState(unk_D_86203E50* arg0, s32 arg1);
 void UpdateObstaclesForPlayer(unk_D_86203E50* arg0);
 s16 UpdatePlayersAndCheckFinish(void);
 void UpdateFinishersAnim(void);
-void func_862023F8(void);
+void RattataGame_MainLoop(void);
 void TriggerWinnerAnim(void);
 void TriggerResultAnims(void);
-void func_86202EE4(void);
-void func_86202F3C(void);
-void func_86202FA4(s32 arg0);
-void func_86203008(void);
-void func_862030D0(void);
-void func_86203380(void);
-void func_8620369C(s32 arg0, UNUSED s32 arg1);
+void RattataGame_WaitForAudioToFinish(void);
+void RattataGame_FadeOutAndTransition(void);
+void RattataGame_PlayOutroSequence(s32 arg0);
+void RattataGame_WaitForContinue(void);
+void RattataGame_LoadAssets(void);
+void RattataGame_InitPlayerSlots(void);
+void RattataGame_Main(s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT8_H_

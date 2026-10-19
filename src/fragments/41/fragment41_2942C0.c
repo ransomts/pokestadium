@@ -256,9 +256,9 @@ void ScreenTransition_Reset(void) {
 
 void ScreenTransition_Init(unk_D_82F21238* arg0, s32 arg1) {
     arg0->unk_28 = AssetManager_Create(1);
-    arg0->unk_2C = func_8001B1FC(arg0->unk_28, 0xC0, 0xC0, 0, 0, 0xC0, 0xC0, NULL);
+    arg0->unk_2C = PokeIcon_CreateModelPreview(arg0->unk_28, 0xC0, 0xC0, 0, 0, 0xC0, 0xC0, NULL);
     arg0->unk_2C->unk_00 &= ~2;
-    func_8001B2D8(arg0->unk_2C, arg0->unk_24, 1);
+    PokeIcon_SetPreviewMon(arg0->unk_2C, arg0->unk_24, 1);
 
     if (arg1 != 0) {
         arg0->unk_06 = 2;
@@ -306,7 +306,7 @@ void ScreenTransition_UpdateAnim(unk_D_82F21238* arg0) {
         arg0->unk_2C->unk_00 |= 4;
         GraphNode_TriggerAction(sp24, arg0->unk_06);
     }
-    arg0->unk_20 = func_8001B9D4(arg0->unk_2C);
+    arg0->unk_20 = PokeIcon_RenderPreview(arg0->unk_2C);
 }
 
 void ScreenTransition_Expand(unk_D_82F21238* arg0) {
@@ -1250,8 +1250,8 @@ void MenuPanel_SetMainState(s16 arg0) {
 }
 
 void MenuPanel_UpdateState(unk_D_82F21140* arg0) {
-    if (func_82F07A74() != 0) {
-        switch (func_82F07A74()) {
+    if (Trade_GetBoxMachineFlowState() != 0) {
+        switch (Trade_GetBoxMachineFlowState()) {
             case 1:
             case 11:
                 arg0->unk_0E = -1;
@@ -1262,8 +1262,8 @@ void MenuPanel_UpdateState(unk_D_82F21140* arg0) {
                 arg0->unk_0C &= ~0x1E;
                 break;
         }
-    } else if (func_82F0C16C() != 0) {
-        switch (func_82F0C16C()) {
+    } else if (Trade_GetSaveSeqState() != 0) {
+        switch (Trade_GetSaveSeqState()) {
             case 1:
             case 8:
                 arg0->unk_0E = -1;
@@ -1401,7 +1401,7 @@ void MenuPanel_AnimateSlideOut(unk_D_82F21140* arg0) {
 }
 
 void MenuPanel_HandleBarConfirm(unk_D_82F21140* arg0) {
-    if (func_82F0C16C() == 2) {
+    if (Trade_GetSaveSeqState() == 2) {
         arg0->unk_0C &= ~0x10;
         arg0->unk_0C &= ~2;
     } else {

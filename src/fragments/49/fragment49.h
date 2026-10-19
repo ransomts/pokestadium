@@ -11,7 +11,7 @@ s32 Menu_IsConfirmPressed(void);
 s32 Menu_Update(void);
 void Menu_ProcessInput(void);
 void func_83A009C0(void);
-void func_83A009C8(void);
+void Snap_PrintClubBackgroundSelectLoop(void);
 s32 Menu_Entry(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT49_H_

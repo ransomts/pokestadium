@@ -245,10 +245,10 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
     u16 sp4C;
     s32 idx = gBattleState.unk_00->unk_2C == 0;
 
-    sp6C = &D_84390010[idx]->unk_654;
+    sp6C = &sActivePokemon[idx]->unk_654;
     sp50 = gDefaultModelId;
     sp4C = gDefaultModelParam;
-    temp_s0 = D_84390010[arg1 == 0];
+    temp_s0 = sActivePokemon[arg1 == 0];
     arg0->unk_24.fovy = 60.0f;
 
     Battle_FinishTurn();
@@ -265,7 +265,7 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
         ExecuteAnimStateHandlers(temp_s0, 1);
     }
 
-    temp_s0 = D_84390010[arg1];
+    temp_s0 = sActivePokemon[arg1];
     if (temp_s0->unk_448.unk_24.unk_0C.x == 0.0f) {
         GetEntityCenterPosition(temp_s0, &sp58);
     } else {
@@ -283,7 +283,7 @@ void SetupBattleCamera(CameraStruct* arg0, s32 arg1) {
     }
 }
 
-void func_8431B830(CameraStruct* arg0) {
+void BattleScene_ClampCameraEyeFloor(CameraStruct* arg0) {
     if (arg0->unk_60.eye.y <= 13.0f) {
         arg0->unk_60.eye.y = 13.0f;
     }
@@ -354,7 +354,7 @@ void Camera_SetAtAndPanTargets(CameraStruct* arg0, s16 arg1, s16 arg2, f32 arg3,
     arg0->unk_60.eye.y += arg4;
 }
 
-void func_8431BD10(UNUSED CameraStruct* arg0) {
+void BattleScene_CameraHelperNop(UNUSED CameraStruct* arg0) {
 }
 
 void SmoothFloatPair(f32* arg0, f32* arg1) {
@@ -637,7 +637,7 @@ s32 Battle_ProcessOpponentAction(CameraStruct* arg0, unk_BattlePlayerEntity* arg
     UNUSED s32 pad3[2];
     unk_D_800FCB18* temp_v1;
 
-    temp_v1 = &D_84390010[IsPrimaryEntity(arg1) == 0]->unk_654.unk_38;
+    temp_v1 = &sActivePokemon[IsPrimaryEntity(arg1) == 0]->unk_654.unk_38;
 
     if (arg1->unk_654.unk_34 & 0x4000) {
         return 1;
@@ -1026,8 +1026,8 @@ s32 Battle_CheckEntityHeightDiff(UNUSED CameraStruct* arg0) {
     Vec3f sp20;
     f32 var_fv0;
 
-    GetEntityCenterPosition(D_84390010[0], &sp2C);
-    GetEntityCenterPosition(D_84390010[1], &sp20);
+    GetEntityCenterPosition(sActivePokemon[0], &sp2C);
+    GetEntityCenterPosition(sActivePokemon[1], &sp20);
 
     var_fv0 = sp2C.y - sp20.y;
     if (sp2C.y < sp20.y) {
@@ -1050,13 +1050,13 @@ void Camera_SetEntityView(CameraStruct* arg0, s32 arg1) {
     Battle_ResetCameraState();
     arg0->unk_24.fovy = 30.0f;
 
-    sp40 = D_84390010[arg1];
+    sp40 = sActivePokemon[arg1];
     GetEntityCenterPosition(sp40, &sp60);
     Camera_SetEyePositionOffset(arg0, sp60, 0, sp40->unk_4B0 << 0xE, 100.0f, 0.0f);
-    GetEntityCenterPosition(D_84390010[arg1], &sp54);
+    GetEntityCenterPosition(sActivePokemon[arg1], &sp54);
 
-    GetEntityCenterPosition(D_84390010[arg1 == 0], &sp48);
-    sp40 = D_84390010[arg1 == 0];
+    GetEntityCenterPosition(sActivePokemon[arg1 == 0], &sp48);
+    sp40 = sActivePokemon[arg1 == 0];
     GetEntityCenterPosition(sp40, &sp60);
 
     if (sp48.y < sp54.y) {
@@ -1079,13 +1079,13 @@ s32 Camera_SmoothFocusOpponent(CameraStruct* arg0, s32 arg1) {
     s16 sp2C;
 
     Math_ExponentialApproach(&gBattleState.unk_00->unk_94.z, 0.1f, 0.05f);
-    GetEntityCenterPosition(D_84390010[arg1], &sp40);
-    GetEntityCenterPosition(D_84390010[!arg1], &sp34);
+    GetEntityCenterPosition(sActivePokemon[arg1], &sp40);
+    GetEntityCenterPosition(sActivePokemon[!arg1], &sp34);
 
     if (sp34.y < sp40.y) {
-        GetEntityCenterPosition(D_84390010[!arg1], &sp4C);
+        GetEntityCenterPosition(sActivePokemon[!arg1], &sp4C);
     } else {
-        GetEntityCenterPosition(D_84390010[!arg1], &sp4C);
+        GetEntityCenterPosition(sActivePokemon[!arg1], &sp4C);
         sp4C.y *= 1.3f;
     }
 

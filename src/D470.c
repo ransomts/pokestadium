@@ -157,7 +157,7 @@ s32 Flash_WriteBuffer(OSIoMesg* mb, s32 priority, void* dramAddr, OSMesgQueue* m
 }
 
 // Similar to osFlashAllErase without the timer, an arg, and different status bits
-s32 func_8000CFB0(s32 arg0) {
+s32 Flash_ProgramPage(s32 arg0) {
     u32 status;
 
     osEPiWriteIo(&gFlashHandle, gFlashHandle.baseAddress | FLASH_CMD_REG, arg0 | FLASH_CMD_PROGRAM_PAGE);

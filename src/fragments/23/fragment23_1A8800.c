@@ -35,7 +35,7 @@ void CreateInfoPanel(unk_func_88503298* arg0, s32 arg1, s32 arg2, MemoryPool* ar
     }
     var_s1 += 0x10;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88503298));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88503298));
     arg0->unk_00.unk_10.unk_00 = ((0x280 - var_s1) / 2) - arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
@@ -88,7 +88,7 @@ void CommonStringMenuCreate(unk_func_88200FA0_030* arg0, s32 arg1, s32 arg2, unk
     }
     var_s2 += 0x10;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88200FA0_030));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88200FA0_030));
     arg0->unk_00.unk_20 = MenuProcessInput;
     arg0->unk_00.unk_10.unk_00 = (0x280 - var_s2) / 2;
     arg0->unk_00.unk_10.unk_02 = arg1;
@@ -214,7 +214,7 @@ void ItemInfoScreenCreate(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3,
     unk_func_88509A2C* sp44;
     unk_func_88509E34* sp40;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, 0x34);
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, 0x34);
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 

@@ -34,7 +34,7 @@ void LoadSaveSlotSprites(s32 arg0) {
 s32 MenuStage_Frame(u8 arg0) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    func_8001ABAC(gSpriteDisplay, 0);
+    PokeIcon_ProcessAllSlots(gSpriteDisplay, 0);
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
     return 0;

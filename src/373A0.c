@@ -117,12 +117,12 @@ s32 Audio_PlaySoundEffect(u32 arg0, s32 arg1, s32 arg2) {
 
     if (sp20 != D_80079014) {
         sp40 = D_800FC6F4->seqArray[0].offset;
-        func_8004ADB0(sp40, D_800FC798, 0xC);
+        Rom_DmaRead(sp40, D_800FC798, 0xC);
         Audio_AddBaseToOffsets(D_800FC798, sp40, 3);
-        func_8004ADB0(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
+        Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
         DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
-        func_8004ADB0(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
+        Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
         DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
@@ -519,19 +519,19 @@ s32 Audio_Initialize(void) {
     D_800FC6E0 = alHeapAlloc(audio_heap, 7, 4);
 
     // Copy rom data from 0x15C0000 into D_800FC6E0
-    func_8004ADB0(&D_15C0000, D_800FC6E0, sizeof(u8*) * 7);
+    Rom_DmaRead(&D_15C0000, D_800FC6E0, sizeof(u8*) * 7);
     // Add the address 0x15C0000 to every offset (besides the first which is the total size)
     // to make absolute offsets.
     Audio_AddBaseToOffsets(&D_800FC6E0[1], &D_15C0000, 6);
     sp78 = D_800FC798;
     // Copy data from the offset at 0x15C0004 into sp78, a sub-header for this "archive,"
     // specifying the size of the header and number of files etc. Header at 0x15C0020
-    func_8004ADB0(D_800FC6E0[1], sp78, 0xC);
+    Rom_DmaRead(D_800FC6E0[1], sp78, 0xC);
     num_files = sp78->file1.num_files;
     // Allocate vram, copy rom bytes, and add address to make absolute,
     // for all of the first archive's files, including header.
     D_800FC6E4 = alHeapAlloc(audio_heap, (0xC / sizeof(u32)) + num_files, sizeof(u32));
-    func_8004ADB0(D_800FC6E0[1], D_800FC6E4, 0xC + (num_files * 4));
+    Rom_DmaRead(D_800FC6E0[1], D_800FC6E4, 0xC + (num_files * 4));
     // Update just the first 2 pointers from the header,
     // pointer to first file, and pointer to N64 wave tables.
     Audio_AddBaseToOffsets(&D_800FC6E4->offset1, D_800FC6E0[1], 2);
@@ -539,7 +539,7 @@ s32 Audio_Initialize(void) {
     Audio_AddBaseToOffsets(D_800FC6E4->files, D_800FC6E0[1], num_files);
     // Copy the first file into gMoveSoundTempBuffer. What is this?
     // Yay0 compressed at 0x15C0160
-    func_8004ADB0(D_800FC6E4->offset1, gMoveSoundTempBuffer, D_800FC6E4->wave_tables_offset - D_800FC6E4->offset1);
+    Rom_DmaRead(D_800FC6E4->offset1, gMoveSoundTempBuffer, D_800FC6E4->wave_tables_offset - D_800FC6E4->offset1);
 
     // Decompressed first file memory.
     D_800FC684 = alHeapAlloc(audio_heap, 1, 0x4120);
@@ -553,22 +553,22 @@ s32 Audio_Initialize(void) {
     D_800FC680 = alHeapAlloc(audio_heap, 1, 0x98D8);
 
     // Load second archive header at 0x16F27E0
-    func_8004ADB0(D_800FC6E0[2], sp78, 4 + 4);
+    Rom_DmaRead(D_800FC6E0[2], sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
     // Memory to hold archive toc
     gMoveSoundSeqInfo = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
     // Read the alSeqFile into gMoveSoundSeqInfo
-    func_8004ADB0(D_800FC6E0[2], gMoveSoundSeqInfo, 4 + (num_files * sizeof(ALSeqData)));
+    Rom_DmaRead(D_800FC6E0[2], gMoveSoundSeqInfo, 4 + (num_files * sizeof(ALSeqData)));
     // Initialise the memory as an alSeqFile
     alSeqFileNew(gMoveSoundSeqInfo, D_800FC6E0[2]);
 
     // Read the first archive sub header from 0x16F2804, into D_800FC6EC
     D_800FC6EC = alHeapAlloc(audio_heap, 3, 4);
-    func_8004ADB0(gMoveSoundSeqInfo->seqArray[0].offset, D_800FC6EC, sizeof(File2SubHeader1));
+    Rom_DmaRead(gMoveSoundSeqInfo->seqArray[0].offset, D_800FC6EC, sizeof(File2SubHeader1));
     Audio_AddBaseToOffsets(D_800FC6EC, gMoveSoundSeqInfo->seqArray[0].offset, sizeof(File2SubHeader1) / sizeof(u32));
 
     // Read the first file from the sub header into gMoveSoundTempBuffer (0x16F2814)
-    func_8004ADB0(D_800FC6EC->offset1, gMoveSoundTempBuffer, D_800FC6EC->offset2 - D_800FC6EC->offset1);
+    Rom_DmaRead(D_800FC6EC->offset1, gMoveSoundTempBuffer, D_800FC6EC->offset2 - D_800FC6EC->offset1);
     // Decompress the yay0 file into gSfxTable
     gSfxTable = alHeapAlloc(audio_heap, 1, 0xBB8);
     DecompressData(gMoveSoundTempBuffer, gSfxTable, 0xBB8);
@@ -576,7 +576,7 @@ s32 Audio_Initialize(void) {
     RemapBankPointers(gSfxTable);
 
     // Read the second file from the sub header into gMoveSoundTempBuffer (0x16F2BD0)
-    func_8004ADB0(D_800FC6EC->offset2, gMoveSoundTempBuffer, D_800FC6EC->wave_tables_offset - D_800FC6EC->offset2);
+    Rom_DmaRead(D_800FC6EC->offset2, gMoveSoundTempBuffer, D_800FC6EC->wave_tables_offset - D_800FC6EC->offset2);
     // Decompress the yay0 file into gSfxBankStandard
     gSfxBankStandard = alHeapAlloc(audio_heap, 1, 0x157C);
     DecompressData(gMoveSoundTempBuffer, gSfxBankStandard, 0x157C);
@@ -584,13 +584,13 @@ s32 Audio_Initialize(void) {
     MusBankInitialize(gSfxBankStandard, D_800FC6EC->wave_tables_offset);
 
     // Read archive 2 sub file 2 (0x1722F74)
-    func_8004ADB0(gMoveSoundSeqInfo->seqArray[1].offset, sp78, sizeof(File2SubHeader2));
+    Rom_DmaRead(gMoveSoundSeqInfo->seqArray[1].offset, sp78, sizeof(File2SubHeader2));
     num_files = sp78->file2sub2.num_files;
 
     D_800FC6F0 = alHeapAlloc(audio_heap, 4, (sizeof(File2SubHeader2) / sizeof(u32)) + num_files);
-    func_8004ADB0(gMoveSoundSeqInfo->seqArray[1].offset, D_800FC6F0, sizeof(File2SubHeader2) + (num_files * sizeof(u32)));
+    Rom_DmaRead(gMoveSoundSeqInfo->seqArray[1].offset, D_800FC6F0, sizeof(File2SubHeader2) + (num_files * sizeof(u32)));
     Audio_AddBaseToOffsets(&D_800FC6F0->offset1, gMoveSoundSeqInfo->seqArray[1].offset, num_files + 2);
-    func_8004ADB0(D_800FC6F0->offset1, gMoveSoundTempBuffer, D_800FC6F0->wave_tables_offset - D_800FC6F0->offset1);
+    Rom_DmaRead(D_800FC6F0->offset1, gMoveSoundTempBuffer, D_800FC6F0->wave_tables_offset - D_800FC6F0->offset1);
     // Decompress the yay0 file into gSfxTable
     D_800FC690 = alHeapAlloc(audio_heap, 1, 0x2EE0);
     DecompressData(gMoveSoundTempBuffer, D_800FC690, 0x2EE0);
@@ -602,13 +602,13 @@ s32 Audio_Initialize(void) {
     D_800FC698[2] = alHeapAlloc(audio_heap, 1, 0x258);
 
     // Read the second seq array (0x17C9C24)
-    func_8004ADB0(gMoveSoundSeqInfo->seqArray[2].offset, sp78, sizeof(File2SubHeader2));
+    Rom_DmaRead(gMoveSoundSeqInfo->seqArray[2].offset, sp78, sizeof(File2SubHeader2));
     num_files = sp78->file2sub2.num_files;
 
     gMoveSoundArchive = alHeapAlloc(audio_heap, 4, num_files + 3);
-    func_8004ADB0(gMoveSoundSeqInfo->seqArray[2].offset, gMoveSoundArchive, sizeof(File2SubHeader2) + (num_files * sizeof(u32)));
+    Rom_DmaRead(gMoveSoundSeqInfo->seqArray[2].offset, gMoveSoundArchive, sizeof(File2SubHeader2) + (num_files * sizeof(u32)));
     Audio_AddBaseToOffsets(&gMoveSoundArchive->offset1, gMoveSoundSeqInfo->seqArray[2].offset, num_files + 2);
-    func_8004ADB0(gMoveSoundArchive->offset1, gMoveSoundTempBuffer, gMoveSoundArchive->wave_tables_offset - gMoveSoundArchive->offset1);
+    Rom_DmaRead(gMoveSoundArchive->offset1, gMoveSoundTempBuffer, gMoveSoundArchive->wave_tables_offset - gMoveSoundArchive->offset1);
     gMoveSoundBankBase = alHeapAlloc(audio_heap, 1, 0x9C4);
     // Decompress
     DecompressData(gMoveSoundTempBuffer, gMoveSoundBankBase, 0x9C4);
@@ -619,38 +619,38 @@ s32 Audio_Initialize(void) {
     gMoveSoundBankData[2] = alHeapAlloc(audio_heap, 1, 0x3E8);
 
     // Read seq header from 0x17DC304
-    func_8004ADB0(gMoveSoundSeqInfo->seqArray[3].offset, sp78, 4 + 4);
+    Rom_DmaRead(gMoveSoundSeqInfo->seqArray[3].offset, sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
 
     D_800FC6F4 = alHeapAlloc(audio_heap, 4, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(gMoveSoundSeqInfo->seqArray[3].offset, D_800FC6F4, 4 + (num_files * sizeof(ALSeqData)));
+    Rom_DmaRead(gMoveSoundSeqInfo->seqArray[3].offset, D_800FC6F4, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(D_800FC6F4, gMoveSoundSeqInfo->seqArray[3].offset);
 
     // Load second seq header from 0x1850C20
-    func_8004ADB0(D_800FC6F4->seqArray[1].offset, sp78, 4 + 4);
+    Rom_DmaRead(D_800FC6F4->seqArray[1].offset, sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
 
     D_800FC6F8 = alHeapAlloc(audio_heap, 4, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(D_800FC6F4->seqArray[1].offset, D_800FC6F8, 4 + (num_files * sizeof(ALSeqData)));
+    Rom_DmaRead(D_800FC6F4->seqArray[1].offset, D_800FC6F8, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(D_800FC6F8, D_800FC6F4->seqArray[1].offset);
 
     gAudioSfxBank = alHeapAlloc(audio_heap, 1, 0x1388);
     gAudioSfxInstBank = alHeapAlloc(audio_heap, 1, 0xBB8);
 
     // load third archive from the main list, archive is at 0x1978820
-    func_8004ADB0(D_800FC6E0[3], sp78, 4 + 4);
+    Rom_DmaRead(D_800FC6E0[3], sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
 
     gMoveSoundSeqTable = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(D_800FC6E0[3], gMoveSoundSeqTable, 4 + (num_files * sizeof(ALSeqData)));
+    Rom_DmaRead(D_800FC6E0[3], gMoveSoundSeqTable, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(gMoveSoundSeqTable, D_800FC6E0[3]);
 
     // load fourth archive from the main list, archive is at 0x197C1E0
-    func_8004ADB0(D_800FC6E0[4], sp78, 4 + 4);
+    Rom_DmaRead(D_800FC6E0[4], sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
 
     gAudioSeqBank = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(D_800FC6E0[4], gAudioSeqBank, 4 + (num_files * sizeof(ALSeqData)));
+    Rom_DmaRead(D_800FC6E0[4], gAudioSeqBank, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(gAudioSeqBank, D_800FC6E0[4]);
 
     gMoveSoundTables[0] = alHeapAlloc(audio_heap, 1, 0x44C);
@@ -658,30 +658,30 @@ s32 Audio_Initialize(void) {
     gMoveSoundTables[2] = alHeapAlloc(audio_heap, 1, 0x44C);
 
     // load the fourth archive's first seq, at 0x197C1FC
-    func_8004ADB0(gAudioSeqBank->seqArray[0].offset, sp78, 4 + 4);
+    Rom_DmaRead(gAudioSeqBank->seqArray[0].offset, sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
     gAudioSeqBuffer = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(gAudioSeqBank->seqArray[0].offset, gAudioSeqBuffer, 4 + (num_files * sizeof(ALSeqData)));
+    Rom_DmaRead(gAudioSeqBank->seqArray[0].offset, gAudioSeqBuffer, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(gAudioSeqBuffer, gAudioSeqBank->seqArray[0].offset);
 
     gAudioSeqLoadPending = 0;
 
     // load the fourth archive's third seq at 0x1A2AD20
-    func_8004ADB0(gAudioSeqBank->seqArray[2].offset, sp78, 4 + 4);
+    Rom_DmaRead(gAudioSeqBank->seqArray[2].offset, sp78, 4 + 4);
     num_files = sp78->seq.seqCount;
     D_800FC714 = alHeapAlloc(audio_heap, 1, 4 + (num_files * sizeof(ALSeqData)));
-    func_8004ADB0(gAudioSeqBank->seqArray[2].offset, D_800FC714, 4 + (num_files * sizeof(ALSeqData)));
+    Rom_DmaRead(gAudioSeqBank->seqArray[2].offset, D_800FC714, 4 + (num_files * sizeof(ALSeqData)));
     alSeqFileNew(D_800FC714, gAudioSeqBank->seqArray[2].offset);
 
     gMusicFadeBuffer = alHeapAlloc(audio_heap, 0xB80, 2);
 
     // load the 5th main archive at 0x1FBA260
     D_800FC6D4 = alHeapAlloc(audio_heap, 0x1388, 1);
-    func_8004ADB0(D_800FC6E0[5], D_800FC6D4, D_800FC6E0[6] - D_800FC6E0[5]);
+    Rom_DmaRead(D_800FC6E0[5], D_800FC6D4, D_800FC6E0[6] - D_800FC6E0[5]);
 
     // load the 6th main archive at 0x1FBB220
     D_800FC6CC = alHeapAlloc(audio_heap, 0x100, 1);
-    func_8004ADB0(D_800FC6E0[6], D_800FC6CC, 0x100);
+    Rom_DmaRead(D_800FC6E0[6], D_800FC6CC, 0x100);
 
     for (i = 0; i < 32; i++) {
         D_800FC6CC[i].unk_00 += D_800FC6E0[6];

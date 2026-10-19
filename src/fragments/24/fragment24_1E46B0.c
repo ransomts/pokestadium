@@ -347,7 +347,7 @@ s32 ComparePointers(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     return (arg0 == arg1) ? 0 : (arg0 < arg1) ? -1 : 1;
 }
 
-s32 func_88315CFC(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
+s32 LabPCList_CompareBySpeciesGroup(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
     s32 var_v1 = *(s32*)&arg0->unk_00[0]->unk_08.unk_00 - *(s32*)&arg1->unk_00[0]->unk_08.unk_00;
 
     if (var_v1 == 0) {
@@ -515,8 +515,8 @@ s32 CompareByField16(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     return ret;
 }
 
-s32 func_883160BC(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
-    return func_88315CFC(arg0, arg1);
+s32 LabPCList_CompareByPokemonColumn(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
+    return LabPCList_CompareBySpeciesGroup(arg0, arg1);
 }
 
 s32 CompareByField43(PokemonListEntry* arg0, PokemonListEntry* arg1) {
@@ -581,7 +581,7 @@ s32 CompareSpeciesID(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC*
 }
 
 SortComparatorFunc gListSortComparators[] = {
-    ComparePointers, func_883160BC, CompareByField2C, CompareByField2CDescending, CompareByField2E, CompareByField2EDescending, CompareByField30,
+    ComparePointers, LabPCList_CompareByPokemonColumn, CompareByField2C, CompareByField2CDescending, CompareByField2E, CompareByField2EDescending, CompareByField30,
     CompareByField30Descending, CompareByField32, CompareByField32Descending, CompareByField34, CompareByField34Descending, CompareByField36, CompareByField36Descending,
     CompareByField16, CompareByField43, CompareByField38, CompareSpeciesOrder, CompareSpeciesID,
 };
@@ -820,7 +820,7 @@ void CollectMonEntryPtrs(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_
     arg0->unk_08 = var_v0 - arg0->unk_00;
 }
 
-s32 func_88316874(s32 arg0) {
+s32 LabPCList_GetCategoryDirtyFlag(s32 arg0) {
     s32 ret = 0;
 
     switch (arg0) {
@@ -864,7 +864,7 @@ s32 DetectGbsDataChanges(unk_func_8830867C_02C_144* arg0) {
                 var_s3->unk_0C = 0;
                 if (GetMonBankField(var_s5->unk_00, var_s5->unk_04, j) != var_s3->unk_10.unk_08) {
                     var_s3->unk_0C = 1;
-                    var_s7 |= func_88316874(var_s5->unk_00);
+                    var_s7 |= LabPCList_GetCategoryDirtyFlag(var_s5->unk_00);
                 } else {
                     var_s0 = var_s3->unk_10.unk_00;
 
@@ -873,7 +873,7 @@ s32 DetectGbsDataChanges(unk_func_8830867C_02C_144* arg0) {
                         GbsBlock_ReadPokemon(&sp4C, 1, temp_v0);
                         if (bcmp(&sp4C, &var_s0->unk_00->unk_08, sizeof(PokemonData)) != 0) {
                             var_s3->unk_0C = 1;
-                            var_s7 |= func_88316874(var_s5->unk_00);
+                            var_s7 |= LabPCList_GetCategoryDirtyFlag(var_s5->unk_00);
                             break;
                         }
                     }
@@ -993,7 +993,7 @@ void ItemSource_WriteToGbs(unk_func_8830867C_02C_154* arg0) {
     arg0->unk_08 = 0;
 }
 
-s32 func_88316E10(s32* arg0) {
+s32 LabPCList_IsTmItemId(s32* arg0) {
     if ((*arg0 >= 0xC9) && (*arg0 < 0xFB)) {
         *arg0 -= 0x65;
         return 1;
@@ -1005,7 +1005,7 @@ s32 func_88316E10(s32* arg0) {
     return 0;
 }
 
-s32 func_88316E60(s32* arg0) {
+s32 LabPCList_IsHmItemId(s32* arg0) {
     static u8 D_8831A250[] = { 0x23, 0x24, 0x25, 0x26, 0x27, 0x28 };
 
     s32 i;
@@ -1020,7 +1020,7 @@ s32 func_88316E60(s32* arg0) {
     return 0;
 }
 
-s32 func_88316F24(s32* arg0) {
+s32 LabPCList_IsSpecialTmItemId(s32* arg0) {
     static u8 D_8831A258[] = { 0x4F };
 
     s32 i;
@@ -1035,7 +1035,7 @@ s32 func_88316F24(s32* arg0) {
     return 0;
 }
 
-s32 func_88316F68(unk_func_88200FA0_030_038* arg0, unk_func_88200FA0_030_038* arg1) {
+s32 LabPCList_CompareTmHmEntries(unk_func_88200FA0_030_038* arg0, unk_func_88200FA0_030_038* arg1) {
     return (arg0->unk_08 - arg1->unk_08 != 0) ? arg0->unk_08 - arg1->unk_08 : (s32)arg0[1].unk_00 - (s32)arg1[1].unk_00;
 }
 
@@ -1063,11 +1063,11 @@ void BuildUsableItemList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_
             for (j = 0; j < var_s4->unk_14; j++, var_s2 += 2) {
                 var_s0 = 0;
                 sp50 = *var_s2;
-                if (func_88316E10(&sp50) != 0) {
+                if (LabPCList_IsTmItemId(&sp50) != 0) {
                     var_s0 = 1;
-                } else if (func_88316E60(&sp50) != 0) {
+                } else if (LabPCList_IsHmItemId(&sp50) != 0) {
                     var_s0 = 1;
-                } else if (func_88316F24(&sp50) != 0) {
+                } else if (LabPCList_IsSpecialTmItemId(&sp50) != 0) {
                     var_s0 = 1;
                 }
 
@@ -1096,7 +1096,7 @@ void BuildUsableItemList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_
     }
 
     arg0->unk_08 = ((s32)var_s1 - (s32)arg1) >> 4;
-    PtrArray_Sort(arg0, func_88316F68);
+    PtrArray_Sort(arg0, LabPCList_CompareTmHmEntries);
 }
 
 void ConsumeUsedItem(unk_func_8830867C_04C_030_02C_000* arg0) {

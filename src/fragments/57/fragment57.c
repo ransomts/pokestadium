@@ -1207,7 +1207,7 @@ s32 DrawMenuTextureC(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void func_82D0194C(s32 arg0) {
+void PakUi_DrawPartyProgressBar(s32 arg0) {
     s16 temp_lo_2;
     char* sp30;
 
@@ -1428,7 +1428,7 @@ void InitMenuOption(s32 arg0) {
     }
 }
 
-void func_82D029E0(void) {
+void PakUi_BuildIconPanel(void) {
     gMenuFramebufferImageB = FramebufferImage_Allocate(0, 2, 0x21A, 0x64, 1);
     SetupFramebufferAndFill(gMenuFramebufferImageB, 0x216, 0x60);
 
@@ -1511,7 +1511,7 @@ void UpdateMenuDisplay(s32 arg0, s16 arg1) {
     PrefBackground_Draw();
     RenderMenuBackground(arg1);
     Graph_SetTextureState(gTextureStateNode);
-    func_82D0194C(sp1C);
+    PakUi_DrawPartyProgressBar(sp1C);
     Stage_Advance();
 }
 
@@ -1525,7 +1525,7 @@ void InitializeMenuScreen(void) {
         GraphNode_InitChild(&gMenuOptionNodes[i], 0, 0, gMenuGraphNodeA);
     }
 
-    func_82D029E0();
+    PakUi_BuildIconPanel();
     GraphNode_InitChild(&gMenuOptionNodes[4], 0, 0, gMenuGraphNodeB);
     CreateTitlePanel();
     GraphNode_InitChild(&gMenuOptionNodes[5], 0, 0, gMenuGraphNodeC);
@@ -1547,7 +1547,7 @@ void CleanupMenuScreen(void) {
     main_pool_pop_state('chck');
 }
 
-s32 func_82D03174(void) {
+s32 TransferPak_ShowRulesPrompt(void) {
     s32 var_s2 = 0;
     s16 i;
     s16 j;
@@ -1661,7 +1661,7 @@ void DrawNineSlicePanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82D03B40(s16 arg0, s16 arg1, s16 arg2, s16 arg3, char* arg4) {
+void PakUi_DrawMenuOptionText(s16 arg0, s16 arg1, s16 arg2, s16 arg3, char* arg4) {
     if (arg2 == arg3) {
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
     } else {
@@ -1717,9 +1717,9 @@ void DrawDetailedInfoPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3
             Text_SetFont(0x10, 0);
             Text_Print(0x99, temp_s0 + 0xD, GetMessageString(NULL, 0, gMenuMessageBank, 0x29));
             Text_Print(0x99, temp_s0 + 0xA5, GetMessageString(NULL, 0, gMenuMessageBank, 0x2A));
-            func_82D03B40(0xC5, temp_s0 + 0xC7, 0, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2B));
-            func_82D03B40(0xC5, temp_s0 + 0xC7, 1, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2C));
-            func_82D03B40(0xC5, temp_s0 + 0xC7, 2, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2D));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 0, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2B));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 1, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2C));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 2, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2D));
             Text_SetEnvColor(0xFF, 0x64, 0x64, 0xFF);
 
             if (arg2->unk_00 == 7) {
@@ -2523,7 +2523,7 @@ void Menu_Cleanup(void) {
     main_pool_pop_state('msel');
 }
 
-s32 func_82D063E4(void) {
+s32 TransferPak_MenuHandleInput(void) {
     s16 var_a3;
     s16 sp24;
     s16 sp22;
@@ -2647,7 +2647,7 @@ s32 Menu_GetResultCode(void) {
     return sp4;
 }
 
-s16 func_82D067A0(void) {
+s16 TransferPak_MenuLoop(void) {
     s16 i;
     s16 var_s1;
     s16 var_s0;
@@ -2673,7 +2673,7 @@ s16 func_82D067A0(void) {
         while (var_s0 < 0) {
             Game_UpdateInputs();
             if (var_s0 == -1) {
-                var_s0 = func_82D063E4();
+                var_s0 = TransferPak_MenuHandleInput();
             } else {
                 var_s0 = UpdateStatPanelState(&D_82D0ABD0);
             }
@@ -2693,7 +2693,7 @@ s16 func_82D067A0(void) {
             while (var_s0 < 0) {
                 Game_UpdateInputs();
                 if (var_s0 == -1) {
-                    var_s0 = func_82D063E4();
+                    var_s0 = TransferPak_MenuHandleInput();
                 } else {
                     var_s0 = UpdateStatPanelState(&D_82D0ABD0);
                 }
@@ -2816,7 +2816,7 @@ s32 Menu_Main(s32 arg0, s32 arg1) {
     Stage_Set(sp54);
 
     if (arg1 != 0) {
-        sp4C = func_82D03174();
+        sp4C = TransferPak_ShowRulesPrompt();
     }
 
     if (sp4C != 0) {
@@ -2825,7 +2825,7 @@ s32 Menu_Main(s32 arg0, s32 arg1) {
         } else {
             gMenuAnimationFlag = 1;
         }
-        sp50 = ValidatePIStatus(func_82D067A0());
+        sp50 = ValidatePIStatus(TransferPak_MenuLoop());
         if ((sp50 == 0x10) && (gMenuAnimationFlag != 0)) {
             temp_v0_3 = HandleMainMenu(&sp28);
             if (temp_v0_3 != 4) {

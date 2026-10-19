@@ -74,7 +74,7 @@ static s16 D_86301D4E;
 static s16 D_86301D50[4];
 static Fragment2_1GraphNode D_86301D58;
 
-void func_86300020(void) {
+void JigglypuffGame_SnapshotInputs(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -99,14 +99,14 @@ void func_86300020(void) {
     D_86301730[3].unk_179 = gPlayer4Controller->rawStickY;
 }
 
-void func_8630011C(void) {
+void JigglypuffGame_ReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
-    func_86300020();
+    JigglypuffGame_SnapshotInputs();
 }
 
-void func_86300154(void) {
+void JigglypuffGame_InitCamera(void) {
     gCamera = gStageRootNode->unk_00.unk_0C;
 
     D_8630171C = 0x600;
@@ -127,7 +127,7 @@ void func_86300154(void) {
 void func_86300230(void) {
 }
 
-void func_86300238(s32 arg0) {
+void JigglypuffGame_DrawHud(s32 arg0) {
     s32 i;
     u8 sp40[] = {
         0,
@@ -202,19 +202,19 @@ void func_86300238(s32 arg0) {
     Text_SetupDL();
 }
 
-void func_863006D8(s32 arg0) {
+void JigglypuffGame_DrawFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0x53D);
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     Gfx_FinishFrame();
     Graph_SetTextureState(gStageRootNode);
-    func_86300238(arg0);
+    JigglypuffGame_DrawHud(arg0);
     ResultScreen_UpdateAndRender();
     Stage_Advance();
     gFrameCounter++;
 }
 
-s32 func_86300764(void) {
+s32 JigglypuffGame_WaitForStart(void) {
     s32 i;
     s32 var_s5;
 
@@ -236,7 +236,7 @@ s32 func_86300764(void) {
     D_86301724 = 0;
 
     while (var_s5 == 1) {
-        func_8630011C();
+        JigglypuffGame_ReadInputs();
 
         for (i = 0; i < 4; i++) {
             D_86301D44 = &D_86301730[i];
@@ -251,16 +251,16 @@ s32 func_86300764(void) {
         }
 
         for (i = 0; i < 4; i++) {
-            func_86300C50(i);
+            JigglypuffGame_UpdatePlayerPhysics(i);
         }
 
-        func_863006D8(D_86301724);
+        JigglypuffGame_DrawFrame(D_86301724);
     }
 
     return 0;
 }
 
-void func_863008C0(void) {
+void JigglypuffGame_ReadyCountdown(void) {
     s32 i;
 
     Stage_FadeIn(0x10);
@@ -288,17 +288,17 @@ void func_863008C0(void) {
             D_86301D4C = 0;
         }
 
-        func_8630011C();
+        JigglypuffGame_ReadInputs();
 
         for (i = 0; i < 4; i++) {
-            func_86300C50(i);
+            JigglypuffGame_UpdatePlayerPhysics(i);
         }
 
-        func_863006D8(D_86301724);
+        JigglypuffGame_DrawFrame(D_86301724);
     }
 }
 
-void func_863009FC(s32 arg0) {
+void JigglypuffGame_ApplySeparationForce(s32 arg0) {
     s32 i;
     UNUSED s32 pad[2];
     f32 spA0;
@@ -368,7 +368,7 @@ void func_863009FC(s32 arg0) {
     D_86301D48->unk_024.z += sp60;
 }
 
-void func_86300C50(s32 arg0) {
+void JigglypuffGame_UpdatePlayerPhysics(s32 arg0) {
     s32 temp_a0;
     s32 temp_a2;
 
@@ -406,7 +406,7 @@ void func_86300C50(s32 arg0) {
             break;
     }
 
-    func_863009FC(arg0);
+    JigglypuffGame_ApplySeparationForce(arg0);
 
     D_86301D48->unk_024.x += D_86301D44->unk_16C.x;
     D_86301D48->unk_024.y += D_86301D44->unk_16C.y;
@@ -439,7 +439,7 @@ void func_86300C50(s32 arg0) {
 void func_86300F60(void) {
 }
 
-void func_86300F68(void) {
+void JigglypuffGame_PlayingLoop(void) {
     s32 i;
     s32 var_s6 = 1;
 
@@ -458,7 +458,7 @@ void func_86300F68(void) {
     D_86301724 = 2;
 
     while (var_s6 != 0) {
-        func_8630011C();
+        JigglypuffGame_ReadInputs();
         func_86300230();
 
         if (gPlayer1Controller->buttonPressed & 0x1000) {
@@ -466,15 +466,15 @@ void func_86300F68(void) {
         }
 
         for (i = 0; i < 4; i++) {
-            func_86300C50(i);
+            JigglypuffGame_UpdatePlayerPhysics(i);
         }
 
         D_86301D40++;
-        func_863006D8(D_86301724);
+        JigglypuffGame_DrawFrame(D_86301724);
     }
 }
 
-void func_86301094(void) {
+void JigglypuffGame_ShowWinnerSequence(void) {
     s32 i;
     s32 j;
     int var = -1;
@@ -494,33 +494,33 @@ void func_86301094(void) {
     D_86301724 = 3;
 
     for (j = 0; j < 0x5A; j++) {
-        func_8630011C();
-        func_863006D8(D_86301724);
+        JigglypuffGame_ReadInputs();
+        JigglypuffGame_DrawFrame(D_86301724);
     }
 }
 
-void func_86301168(void) {
+void JigglypuffGame_FadeOutLoop(void) {
     s32 i;
 
     Stage_FadeOut(30);
 
     for (i = 0; i < 30; i++) {
-        func_8630011C();
-        func_863006D8(D_86301724);
+        JigglypuffGame_ReadInputs();
+        JigglypuffGame_DrawFrame(D_86301724);
     }
 }
 
-void func_863011C8(void) {
+void JigglypuffGame_WaitForExit(void) {
     D_86301724 = 4;
     SetResultFlag(1);
 
     while (gResultExitPending == 0) {
-        func_8630011C();
-        func_863006D8(D_86301724);
+        JigglypuffGame_ReadInputs();
+        JigglypuffGame_DrawFrame(D_86301724);
     }
 }
 
-void func_86301234(void) {
+void JigglypuffGame_Init(void) {
     s32 i;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
 
@@ -573,10 +573,10 @@ void func_86301234(void) {
     GraphNode_TriggerAction(D_86301D48, 0);
     InitAnimState(D_86301D48);
     D_86301D48->unk_040.unk_0C = 0;
-    func_86300154();
+    JigglypuffGame_InitCamera();
 }
 
-void func_86301474(UNUSED s32 arg0, UNUSED s32 arg1) {
+void Minigame_JigglypuffDoodle(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');
@@ -590,18 +590,18 @@ void func_86301474(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     Fragment_Load((((u32)&D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
-    func_86301234();
+    JigglypuffGame_Init();
     ResultScreen_Init();
     Stage_Set(sp24);
 
-    if (func_86300764() != -1) {
-        func_863008C0();
-        func_86300F68();
-        func_86301094();
-        func_863011C8();
+    if (JigglypuffGame_WaitForStart() != -1) {
+        JigglypuffGame_ReadyCountdown();
+        JigglypuffGame_PlayingLoop();
+        JigglypuffGame_ShowWinnerSequence();
+        JigglypuffGame_WaitForExit();
     }
 
-    func_86301168();
+    JigglypuffGame_FadeOutLoop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

@@ -628,7 +628,7 @@ void miniMetapodHumanControls(MiniActor* metapod) {
         case 1: // start harden
             MetapodTakeDamage(metapod);
             miniChangeActorAnim(metapod, 1, -1, 1);
-            Particle_CreateMultiple(1.0f, metapod->totalPos, metapod->totalRot, func_879029F0, &D_87903E40, 4);
+            Particle_CreateMultiple(1.0f, metapod->totalPos, metapod->totalRot, MiniFx_UpdatePalette17SmallDelayedRevealFallParticle, &D_87903E40, 4);
             metapod->mainState++;
             break;
 
@@ -857,7 +857,7 @@ void miniMetapodCompControls(MiniActor* compMetapod, s32 nPlayer) {
                         compMetapod->mainState = 1;
                         compMetapod->unk_272 = 4;
                         compMetapod->compState++;
-                        Particle_CreateMultiple(1.0f, compMetapod->totalPos, compMetapod->totalRot, func_879029F0, &D_87903E40,
+                        Particle_CreateMultiple(1.0f, compMetapod->totalPos, compMetapod->totalRot, MiniFx_UpdatePalette17SmallDelayedRevealFallParticle, &D_87903E40,
                                       4);
                     } else {
                         compMetapod->compState = 0x64;
@@ -1194,7 +1194,7 @@ void miniRockStateMachine(MiniActor* rock) {
                     rock->ySpeed = 5.0f;
                     rock->zSpeed = 1.5f;
                     DeactivateMetapodRock(rock);
-                    Particle_CreateMultiple(1.0f, rock->totalPos, rock->totalRot, func_87901F04, &gMiniTutoScreenNode1, 4);
+                    Particle_CreateMultiple(1.0f, rock->totalPos, rock->totalRot, MiniFx_UpdateRandomVelocityGravityParticle, &gMiniTutoScreenNode1, 4);
                 } else {
                     rock->mainState++;
                 }
@@ -1209,7 +1209,7 @@ void miniRockStateMachine(MiniActor* rock) {
             sp3C.y = 0.0f;
             sp3C.z = rock->totalPos.z;
 
-            Particle_CreateMultiple(1.0f, sp3C, rock->totalRot, func_87902068, &gMiniTutoScreenNode0, 4);
+            Particle_CreateMultiple(1.0f, sp3C, rock->totalRot, MiniFx_UpdatePalette10FastRiseFadeParticle, &gMiniTutoScreenNode0, 4);
             rock->mainState++;
             break;
 
@@ -1288,7 +1288,7 @@ void miniUpdateRocksPositions(void) {
     }
 }
 
-void func_86E01904(void) {
+void MetapodGame_InitCamera(void) {
     gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
 
     miniCameraXRot = -0x200;
@@ -1314,11 +1314,11 @@ void initMetapodMinigameAssets(void) {
     MiniGame_ResetState(); //	minigame variables
     miniInitRocks();
     miniInitMetapodPlayers();
-    func_86E01904(); //	camera
+    MetapodGame_InitCamera(); //	camera
     minigameInputLock = 0;
 }
 
-void func_86E019F4(void) {
+void MetapodGame_UpdateRockWaveScheduler(void) {
     s32 i;
     s32 var_a2;
 
@@ -1358,7 +1358,7 @@ void func_86E019F4(void) {
     }
 }
 
-s32 func_86E01B08(void) {
+s32 MetapodGame_CheckWinCondition(void) {
     UNUSED s32 pad[2];
     s32 i;
     s32 var_a3 = 5;
@@ -1451,7 +1451,7 @@ s32 func_86E01B08(void) {
     return var_t3;
 }
 
-s32 func_86E01E34(void) {
+s32 MetapodGame_PlayWinnerAnimations(void) {
     s32 i;
     s32 var_s3 = 0;
     MiniActor* var_s0;
@@ -1477,7 +1477,7 @@ void func_86E01EB0(void) {
     }
 }
 
-s32 func_86E01EE8(void) {
+s32 MetapodGame_UpdateStartCountdown(void) {
     s32 sp1C = 0;
     s32 temp_v0 = Fragment2_1_GetResult();
 
@@ -1495,7 +1495,7 @@ s32 func_86E01EE8(void) {
     return sp1C;
 }
 
-s32 func_86E01F50(void) {
+s32 MetapodGame_AllRocksCleared(void) {
     s32 i;
     s32 ret = 1;
     MiniActor* var_v0 = miniMetapodRocks;
@@ -1525,7 +1525,7 @@ void miniMetapodMinigameStateMachine(void) {
             break;
 
         case 3:
-            if (func_86E01EE8() != 0) {
+            if (MetapodGame_UpdateStartCountdown() != 0) {
                 D_86E04B28 = 1;
                 minigameInputLock = 1;
                 miniTutoScreenState = 0;
@@ -1536,15 +1536,15 @@ void miniMetapodMinigameStateMachine(void) {
         case 4:
             if (1) {}
 
-            if (func_86E01B08() != 0) {
+            if (MetapodGame_CheckWinCondition() != 0) {
                 minigameState++;
             } else {
-                func_86E019F4();
+                MetapodGame_UpdateRockWaveScheduler();
             }
             break;
 
         case 5:
-            if (func_86E01F50() != 0) {
+            if (MetapodGame_AllRocksCleared() != 0) {
                 miniInputLockTimer = 0xA;
                 minigameState++;
             }
@@ -1553,7 +1553,7 @@ void miniMetapodMinigameStateMachine(void) {
         case 6:
             miniInputLockTimer--;
             if (miniInputLockTimer < 0) {
-                func_86E01E34();
+                MetapodGame_PlayWinnerAnimations();
                 SetResultFlag(1);
                 minigameState++;
             }
@@ -1571,7 +1571,7 @@ void miniMetapodMinigameStateMachine(void) {
     func_86E01EB0();
 }
 
-void func_86E02150(void) {
+void MetapodGame_UpdateParticleFx(void) {
     ParticleSystem_UpdateAndRender();
 }
 
@@ -1601,7 +1601,7 @@ void miniDrawMetapodHeads(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86E02308(void) {
+void MetapodGame_DrawTutorialText(void) {
     UNUSED s32 pad;
     s32 sp38;
     s32 sp34;
@@ -1642,10 +1642,10 @@ void func_86E02308(void) {
     Text_SetupDL();
 }
 
-void func_86E026D0(void) {
+void MetapodGame_DrawTutorialScreen(void) {
     switch (D_87903DCC) {
         case 3:
-            func_86E02308();
+            MetapodGame_DrawTutorialText();
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -1667,9 +1667,9 @@ void func_86E026D0(void) {
     }
 }
 
-void func_86E027D4(void) {
+void MetapodGame_DrawTutorial(void) {
     MiniTutoScreen_Start();
-    func_86E026D0();
+    MetapodGame_DrawTutorialScreen();
 }
 
 void miniMetapodDrawPlayerHUBs(UNUSED s32 arg0) {
@@ -1678,7 +1678,7 @@ void miniMetapodDrawPlayerHUBs(UNUSED s32 arg0) {
 
     Text_ResetState();
     Text_SetFont(4, -2);
-    func_86E027D4();
+    MetapodGame_DrawTutorial();
     Text_SetupDL();
 
     if (miniShowHUB != 0) {
@@ -1687,7 +1687,7 @@ void miniMetapodDrawPlayerHUBs(UNUSED s32 arg0) {
     }
 }
 
-void func_86E02880(s32 arg0) {
+void MetapodGame_DrawFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
@@ -1735,7 +1735,7 @@ void miniMetapodTutoScreenControls(void) {
     }
 }
 
-void func_86E02A28(void) {
+void MetapodGame_LockPlayerInputOnPress(void) {
     MiniActor* metapod = miniMetapods;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A) && (metapod->mainState == 0)) {
@@ -1743,7 +1743,7 @@ void func_86E02A28(void) {
     }
 }
 
-void func_86E02A64(void) {
+void MetapodGame_MainLoop(void) {
     s32 var_s1 = 1;
 
     D_87903DBC = 0;
@@ -1771,21 +1771,21 @@ void func_86E02A64(void) {
             miniMatapodMinigameChecks();
             miniUpdateRocksPositions();
             MiniActor_SyncAllAnimTransforms(); // update metapod models?
-            func_86E02150();
+            MetapodGame_UpdateParticleFx();
             miniMetapodCameraControls();
         } else {
-            func_86E02A28();
+            MetapodGame_LockPlayerInputOnPress();
         }
 
         if ((D_87903DAC != 0) || (gResultFlag_Special != 0)) {
             var_s1 = 0;
         }
 
-        func_86E02880(1);
+        MetapodGame_DrawFrame(1);
     }
 }
 
-void func_86E02BB0(void) {
+void MetapodGame_ShowResultText(void) {
     s32 i;
 
     Stage_FadeOut(0x1E);
@@ -1797,7 +1797,7 @@ void func_86E02BB0(void) {
 
     for (i = 0; i < 30; i++) {
         MiniGame_ReadInputs();  // input reading
-        func_86E02880(2); // display text ?
+        MetapodGame_DrawFrame(2); // display text ?
     }
 
     while (Audio_CalcLoadScore() != 0) {}
@@ -1805,7 +1805,7 @@ void func_86E02BB0(void) {
     PlayAudioIfEnabled(0x10, 0);
 }
 
-void func_86E02C5C(void) {
+void MetapodGame_LoadAssets(void) {
     static s16 playerVariations[6][4] = {
         { 0x9B, 0xA, 0x23, 0 }, { 0x9E, 0xA, 0x1E, 0 }, { 0, 0x13, 0, 0x28 },
         { -1, -0x19, 0, 0 },    { 0, 0x3C, 0, 0x20 },   { 0, 6, -1, -0x14 },
@@ -1879,11 +1879,11 @@ s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
-    func_86E02C5C();
+    MetapodGame_LoadAssets();
     Stage_Set(sp24);
     metapodMinigameInit();
-    func_86E02A64(); //	tutorial screen ?
-    func_86E02BB0();
+    MetapodGame_MainLoop(); //	tutorial screen ?
+    MetapodGame_ShowResultText();
     Stage_Destroy();
     FontManager_Free(); //	main_pool_try_free(gFontManager);
     Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);

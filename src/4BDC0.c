@@ -35,7 +35,7 @@ s32 D_80078ED8 = 0;
 s32 D_80078EDC = 0;
 extern u8 D_80078EBF;
 
-void func_8004B1C0(s32 arg0) {
+void Audio_SetMusicLoopPoint(s32 arg0) {
     gMusicFadeDuration = arg0;
 }
 
@@ -461,7 +461,7 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
         return 0;
     }
 
-    func_8004ADB0(D_800FC6E4->files[sp2C], gMoveSoundTempBuffer, var_a2);
+    Rom_DmaRead(D_800FC6E4->files[sp2C], gMoveSoundTempBuffer, var_a2);
     DecompressData(gMoveSoundTempBuffer, D_800FC680, 0x98D8);
 
     if (gMusicFadeDuration <= 0) {
@@ -507,7 +507,7 @@ void Stage_SetFadeColor(s32 arg0) {
     }
 }
 
-s32 func_8004BA88(s32 arg0, s32 arg1) {
+s32 Audio_StartTrackForCategory(s32 arg0, s32 arg1) {
     s32 ret;
     gStadiumModeActive = 0;
     if ((arg0 == 0) || (arg0 == 0xFF)) {
@@ -585,7 +585,7 @@ s32 func_8004BA88(s32 arg0, s32 arg1) {
     return ret;
 }
 
-s32 func_8004BC84(s32 arg0, u32 arg1) {
+s32 Audio_UpdateSpecialSequence(s32 arg0, u32 arg1) {
     s32 var_a3;
 
     switch (arg0) {
@@ -663,7 +663,7 @@ s32 func_8004BC84(s32 arg0, u32 arg1) {
                     break;
             }
 
-            func_8004B1C0(var_a3);
+            Audio_SetMusicLoopPoint(var_a3);
             D_80078ED8 = ResultScreen_SetAnimation(0x1F);
             return D_80078ED8;
 
@@ -681,7 +681,7 @@ s32 func_8004BC84(s32 arg0, u32 arg1) {
                             D_80078ED4 = 3;
                             D_80078EDC = 0;
                         } else {
-                            func_8004B1C0(0x46);
+                            Audio_SetMusicLoopPoint(0x46);
                             D_80078ED4 = 3;
                             D_80078EDC = ResultScreen_SetAnimation(0x20);
                             return D_80078EDC;
@@ -696,6 +696,6 @@ s32 func_8004BC84(s32 arg0, u32 arg1) {
     }
 }
 
-u32 func_8004BFB0(void) {
+u32 Audio_GetSpecialSequenceState(void) {
     return D_80078ED4;
 }

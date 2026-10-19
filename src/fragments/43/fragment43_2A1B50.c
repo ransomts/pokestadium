@@ -401,7 +401,7 @@ void DrawVerticalTextureStrip(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     }
 }
 
-void func_834016C8(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gallery_FillRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 }
 
@@ -411,10 +411,10 @@ void DrawRectBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
     gDPSetFillColor(gDisplayListHead++, 0xFFFFFFFF);
 
-    func_834016C8(arg0 - arg4, arg1 - arg4, (arg4 * 2) + arg2, arg4);
-    func_834016C8(arg0 - arg4, arg1 + arg3, (arg4 * 2) + arg2, arg4);
-    func_834016C8(arg0 - arg4, arg1, arg4, arg3);
-    func_834016C8(arg0 + arg2, arg1, arg4, arg3);
+    Gallery_FillRect(arg0 - arg4, arg1 - arg4, (arg4 * 2) + arg2, arg4);
+    Gallery_FillRect(arg0 - arg4, arg1 + arg3, (arg4 * 2) + arg2, arg4);
+    Gallery_FillRect(arg0 - arg4, arg1, arg4, arg3);
+    Gallery_FillRect(arg0 + arg2, arg1, arg4, arg3);
 }
 
 void Gallery_DrawShadow(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {

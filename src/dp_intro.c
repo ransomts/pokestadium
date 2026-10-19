@@ -152,7 +152,7 @@ void IntroTask_ProcessFrame(void) {
     MessageQueue_Recv(&gIntroTaskState);
 }
 
-void func_800017E4(void) {
+void DisplayWorker_DrainEvents(void) {
     MessageQueue_Recv(&gIntroTaskState);
     while (gIntroTaskState.messageQueue.validCount > 0) {
         MessageQueue_TryRecv(&gIntroTaskState);
@@ -170,7 +170,7 @@ void IntroTask_ThreadMain(UNUSED void* arg) {
     while (1) {
         void* sp4C;
         if (gRspTaskManager.unk_A38 > 0) {
-            func_800017E4();
+            DisplayWorker_DrainEvents();
             continue;
         }
         profiler_log_thread5_time(THREAD5_START);
@@ -268,7 +268,7 @@ s32 GetFramebufferInfo(void) {
     return (s32)gIntroTaskState.previousTask.unk_0C;
 }
 
-void func_80001C64(void) {
+void Display_ApplyPendingVideoMode(void) {
     Vi_SetMode((s8)gIntroTaskState.previousTask.unk_01, (s8)gIntroTaskState.previousTask.unk_02);
 }
 
@@ -281,10 +281,10 @@ s32 RspTaskYielded(void) {
     return result;
 }
 
-void func_80001CB8(void) {
+void Display_EnableBlackout(void) {
     gForceBlackScreen = 1;
 }
 
-void func_80001CC8(void) {
+void Display_DisableBlackout(void) {
     gForceBlackScreen = 0;
 }

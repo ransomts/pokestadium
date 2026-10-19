@@ -17,7 +17,7 @@ void Menu_UpdateRender(s32 arg0, s32 arg1, f32 arg2);
 FramebufferImage* Menu_CreateBackgroundImage(u8* arg0, s16 arg1);
 FramebufferImage* Menu_CreateOptionImage(u8* arg0, s16 arg1);
 void Menu_InitializeResources(void);
-s16 func_84101D80(void);
+s16 StadiumSelect_HandleInput(void);
 void Menu_MainLoop(void);
 void Menu_GraphInit(void);
 s32 Menu_StartBattleIfSelected(void);

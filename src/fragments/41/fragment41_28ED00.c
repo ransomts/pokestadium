@@ -321,7 +321,7 @@ void SetSlotState(unk_D_82F20A88* arg0, s16 arg1) {
     }
 }
 
-void func_82F07440(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotFlyIn(unk_D_82F20A88* arg0) {
     arg0->unk_010--;
     arg0->unk_018 = (0xA - arg0->unk_010) / 10.0f;
     if (arg0->unk_010 <= 0) {
@@ -329,7 +329,7 @@ void func_82F07440(unk_D_82F20A88* arg0) {
     }
 }
 
-void func_82F07498(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotBob(unk_D_82F20A88* arg0) {
     static s16 D_82F13F38[] = { 0x5C0, 0x680, 0x580 };
 
     s32 temp_lo = arg0 - &gPlayerSlotInfo[0];
@@ -360,11 +360,11 @@ void func_82F07498(unk_D_82F20A88* arg0) {
     arg0->unk_00E += var_a3 + ((MathUtil_Random16() & 0xF) * 0x10);
 }
 
-void func_82F0761C(unk_D_82F20A88* arg0) {
-    func_82F07498(arg0);
+void Trade_UpdateBoxSlotBobIdle(unk_D_82F20A88* arg0) {
+    Trade_UpdateBoxSlotBob(arg0);
 }
 
-void func_82F0763C(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotFlyOut(unk_D_82F20A88* arg0) {
     arg0->unk_010 -= 1;
     arg0->unk_006 = 0x208 - (((0x208 - arg0->unk_00A) * arg0->unk_010) / 10);
     arg0->unk_008 = 0xB8 - ((arg0->unk_010 * -0xC4) / 10);
@@ -374,7 +374,7 @@ void func_82F0763C(unk_D_82F20A88* arg0) {
     }
 }
 
-void func_82F07728(unk_D_82F20A88* arg0) {
+void Trade_UpdateBoxSlotFadeOut(unk_D_82F20A88* arg0) {
     arg0->unk_010--;
     arg0->unk_014 = (arg0->unk_010 * 0xFF) / 10;
     if (arg0->unk_010 <= 0) {
@@ -383,8 +383,8 @@ void func_82F07728(unk_D_82F20A88* arg0) {
     }
 }
 
-void func_82F07784(unk_D_82F20A88* arg0) {
-    func_82F07498(arg0);
+void Trade_UpdateBoxSlotShrink(unk_D_82F20A88* arg0) {
+    Trade_UpdateBoxSlotBob(arg0);
     arg0->unk_010--;
     arg0->unk_018 = arg0->unk_010 / 10.0f;
     if (arg0->unk_010 <= 0) {
@@ -403,23 +403,23 @@ void UpdateAllSlots(void) {
                 break;
 
             case 2:
-                func_82F07440(var_s0);
+                Trade_UpdateBoxSlotFlyIn(var_s0);
                 break;
 
             case 4:
-                func_82F0761C(var_s0);
+                Trade_UpdateBoxSlotBobIdle(var_s0);
                 break;
 
             case 3:
-                func_82F0763C(var_s0);
+                Trade_UpdateBoxSlotFlyOut(var_s0);
                 break;
 
             case 6:
-                func_82F07784(var_s0);
+                Trade_UpdateBoxSlotShrink(var_s0);
                 break;
 
             case 5:
-                func_82F07728(var_s0);
+                Trade_UpdateBoxSlotFadeOut(var_s0);
                 break;
         }
 
@@ -435,7 +435,7 @@ void UpdateAllSlots(void) {
     }
 }
 
-void func_82F07958(void) {
+void Trade_ResetBoxMachineFlow(void) {
     unk_D_82F20A40* ptr = &D_82F20A40;
     s32 i;
 
@@ -475,15 +475,15 @@ void func_82F07958(void) {
     }
 }
 
-s32 func_82F07A54(s16 arg0) {
+s32 Trade_GetSelectedBox(s16 arg0) {
     return gSelectedPlayerIndices[arg0];
 }
 
-s32 func_82F07A74(void) {
+s32 Trade_GetBoxMachineFlowState(void) {
     return D_82F20A40.unk_00;
 }
 
-void func_82F07A80(unk_D_82F20A40* arg0, s32 arg1) {
+void Trade_UpdateBoxMachineFlowOpen(unk_D_82F20A40* arg0, s32 arg1) {
     s32 i;
 
     arg0->unk_02--;
@@ -600,7 +600,7 @@ void HandleMenuInput(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F08084(unk_D_82F20A40* arg0) {
+void Trade_UpdateBoxMachineFlowFrameMove(unk_D_82F20A40* arg0) {
     arg0->unk_02--;
     arg0->unk_36.unk_00 = arg0->unk_44->unk_00 - (((arg0->unk_44->unk_00 - arg0->unk_40->unk_00) * arg0->unk_02) / 10);
     arg0->unk_36.unk_02 = arg0->unk_44->unk_02 - (((arg0->unk_44->unk_02 - arg0->unk_40->unk_02) * arg0->unk_02) / 10);
@@ -612,14 +612,14 @@ void func_82F08084(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F081FC(unk_D_82F20A40* arg0) {
+void Trade_UpdateBoxMachineFlowConfirmWait(unk_D_82F20A40* arg0) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
         arg0->unk_00 = 5;
         arg0->unk_02 = 0xA;
     }
 }
 
-void func_82F0822C(unk_D_82F20A40* arg0) {
+void Trade_UpdateBoxMachineFlowFrameReturn(unk_D_82F20A40* arg0) {
     arg0->unk_02--;
     arg0->unk_36.unk_00 = arg0->unk_40->unk_00 - (((arg0->unk_40->unk_00 - arg0->unk_44->unk_00) * arg0->unk_02) / 10);
     arg0->unk_36.unk_02 = arg0->unk_40->unk_02 - (((arg0->unk_40->unk_02 - arg0->unk_44->unk_02) * arg0->unk_02) / 10);
@@ -634,7 +634,7 @@ void func_82F0822C(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F083B0(unk_D_82F20A40* arg0, s16 arg1, s16 arg2) {
+void Trade_UpdateBoxMachineSlots(unk_D_82F20A40* arg0, s16 arg1, s16 arg2) {
     unk_D_82F20A40_00E* ptr;
     s32 i;
     s32 tmp;
@@ -655,11 +655,11 @@ void func_82F083B0(unk_D_82F20A40* arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void func_82F084EC(unk_D_82F20A40* arg0) {
+void Trade_UpdateBoxMachineFlowPanelsFull(unk_D_82F20A40* arg0) {
     s32 i;
 
     arg0->unk_02--;
-    func_82F083B0(arg0, arg0->unk_02, 0xA);
+    Trade_UpdateBoxMachineSlots(arg0, arg0->unk_02, 0xA);
     if (arg0->unk_02 <= 0) {
         arg0->unk_00 = 7;
         arg0->unk_02 = 0xA;
@@ -673,7 +673,7 @@ void func_82F084EC(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F0856C(unk_D_82F20A40* arg0) {
+void Trade_UpdateBoxMachineFlowConfirmOpen(unk_D_82F20A40* arg0) {
     arg0->unk_02--;
     arg0->unk_2E.unk_00 = 0xCC - (arg0->unk_02 * 0) / 10;
     arg0->unk_2E.unk_02 = 0xF8 - ((arg0->unk_02 * -0x38) / 10);
@@ -686,7 +686,7 @@ void func_82F0856C(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F0866C(unk_D_82F20A40* arg0) {
+void Trade_UpdateBoxMachineFlowConfirmInput(unk_D_82F20A40* arg0) {
     s16 tmp;
     s32 var_a2;
 
@@ -728,7 +728,7 @@ void func_82F0866C(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F087F8(unk_D_82F20A40_00E* arg0, s16 arg1, s16 arg2) {
+void Trade_UpdateBoxMachineRect(unk_D_82F20A40_00E* arg0, s16 arg1, s16 arg2) {
     if ((arg0->unk_04 != 0xE8) || (arg0->unk_06 != 0)) {
         s32 tmp = (arg0->unk_00 * 0) / arg2;
 
@@ -739,12 +739,12 @@ void func_82F087F8(unk_D_82F20A40_00E* arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void func_82F088F8(unk_D_82F20A40* arg0) {
+void Trade_UpdateBoxMachineFlowConfirmDone(unk_D_82F20A40* arg0) {
     if (arg0->unk_02 > 0) {
         arg0->unk_02--;
     }
 
-    func_82F087F8(&arg0->unk_2E, arg0->unk_02, 0xA);
+    Trade_UpdateBoxMachineRect(&arg0->unk_2E, arg0->unk_02, 0xA);
 
     if ((arg0->unk_02 <= 0) && (gSelectedPlayerIndices[1] == -1)) {
         arg0->unk_00 = 0xA;
@@ -752,15 +752,15 @@ void func_82F088F8(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F08968(unk_D_82F20A40* arg0) {
+void Trade_UpdateBoxMachineFlowClose(unk_D_82F20A40* arg0) {
     arg0->unk_02--;
     arg0->unk_06.unk_00 = 0x40 - (arg0->unk_02 * 0) / 10;
     arg0->unk_06.unk_02 = 0x8C - ((arg0->unk_02 * 0x44) / 10);
     arg0->unk_06.unk_04 = 0x200 - (arg0->unk_02 * 0) / 10;
     arg0->unk_06.unk_06 = -((arg0->unk_02 * -0x88) / 10);
 
-    func_82F083B0(arg0, arg0->unk_02, 0xA);
-    func_82F087F8(&arg0->unk_2E, arg0->unk_02, 0xA);
+    Trade_UpdateBoxMachineSlots(arg0, arg0->unk_02, 0xA);
+    Trade_UpdateBoxMachineRect(&arg0->unk_2E, arg0->unk_02, 0xA);
 
     arg0->unk_26.unk_00 = 0x38 - (arg0->unk_02 * 0) / 10;
     arg0->unk_26.unk_02 = 0x1A4 - ((arg0->unk_02 * 0x14) / 10);
@@ -773,7 +773,7 @@ void func_82F08968(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F08B7C(unk_D_82F20A40* arg0) {
+void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0) {
     Color_RGB8* var_v0;
     unk_D_82F20A40_00E* temp_s4 = &arg0->unk_06;
     s32 i;
@@ -802,7 +802,7 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
                           var_v0->g, var_v0->b, 0xFF);
         }
 
-        func_82F097D8(temp_s4->unk_00 + 0xE0, temp_s4->unk_02 + 0x28);
+        Trade_DrawBoxMachineTransferArrows(temp_s4->unk_00 + 0xE0, temp_s4->unk_02 + 0x28);
         Text_ResetState();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetFont(0x10, 0);
@@ -834,7 +834,7 @@ void func_82F08B7C(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F08EB4(unk_D_82F20A40* arg0) {
+void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
     s32 i;
     Color_RGB8* var_v0;
     s32 var_v1;
@@ -912,7 +912,7 @@ void func_82F08EB4(unk_D_82F20A40* arg0) {
     Text_SetupDL();
 }
 
-void func_82F0917C(unk_D_82F20A40* arg0) {
+void Trade_DrawBoxMachineTitle(unk_D_82F20A40* arg0) {
     unk_D_82F20A40_00E* temp_s1 = &arg0->unk_26;
     char* temp_v0;
 
@@ -928,7 +928,7 @@ void func_82F0917C(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F09284(unk_D_82F20A40* arg0) {
+void Trade_DrawBoxMachineConfirm(unk_D_82F20A40* arg0) {
     char* temp_v0;
     unk_D_82F20A40_00E* temp_s3 = &arg0->unk_2E;
     s32 i;
@@ -971,7 +971,7 @@ void func_82F09284(unk_D_82F20A40* arg0) {
     Text_SetupDL();
 }
 
-void func_82F094B4(unk_D_82F20A40* arg0) {
+void Trade_DrawBoxMachineBanner(unk_D_82F20A40* arg0) {
     UNUSED s32 pad;
     char* sp48;
     unk_D_82F20A40_00E* temp_s0 = &arg0->unk_36;
@@ -1028,7 +1028,7 @@ void func_82F094B4(unk_D_82F20A40* arg0) {
     }
 }
 
-void func_82F097D8(s16 arg0, s16 arg1) {
+void Trade_DrawBoxMachineTransferArrows(s16 arg0, s16 arg1) {
     static s16 D_82F13F5C = 0;
 
     s16 sp86 = ROUND_MAX(2.0f * SINS(D_82F13F5C));
@@ -1053,7 +1053,7 @@ void func_82F097D8(s16 arg0, s16 arg1) {
     D_82F13F5C += 0x1000;
 }
 
-void func_82F09B70(s16 arg0) {
+void Trade_DrawBoxMachineCursor(s16 arg0) {
     static s16 D_82F13F60 = 0;
 
     s16 sp1E;
@@ -1117,11 +1117,11 @@ void UpdateMenuStateMachine(void) {
 
     switch (ptr->unk_00) {
         case 1:
-            func_82F07A80(ptr, 1);
+            Trade_UpdateBoxMachineFlowOpen(ptr, 1);
             break;
 
         case 10:
-            func_82F07A80(ptr, 0);
+            Trade_UpdateBoxMachineFlowOpen(ptr, 0);
             break;
 
         case 2:
@@ -1129,52 +1129,52 @@ void UpdateMenuStateMachine(void) {
             break;
 
         case 3:
-            func_82F08084(ptr);
+            Trade_UpdateBoxMachineFlowFrameMove(ptr);
             break;
 
         case 4:
-            func_82F081FC(ptr);
+            Trade_UpdateBoxMachineFlowConfirmWait(ptr);
             break;
 
         case 5:
-            func_82F0822C(ptr);
+            Trade_UpdateBoxMachineFlowFrameReturn(ptr);
             break;
 
         case 6:
-            func_82F084EC(ptr);
+            Trade_UpdateBoxMachineFlowPanelsFull(ptr);
             break;
 
         case 7:
-            func_82F0856C(ptr);
+            Trade_UpdateBoxMachineFlowConfirmOpen(ptr);
             break;
 
         case 8:
-            func_82F0866C(ptr);
+            Trade_UpdateBoxMachineFlowConfirmInput(ptr);
             break;
 
         case 9:
-            func_82F088F8(ptr);
+            Trade_UpdateBoxMachineFlowConfirmDone(ptr);
             break;
 
         case 11:
-            func_82F08968(ptr);
+            Trade_UpdateBoxMachineFlowClose(ptr);
             break;
     }
 
     UpdateAllSlots();
 }
 
-void func_82F09E30(void) {
+void Trade_DrawBoxMachine(void) {
     unk_D_82F20A40* ptr = &D_82F20A40;
 
     if (ptr->unk_00 != 0) {
         Gfx_FinishFrame();
-        func_82F08B7C(&D_82F20A40);
-        func_82F08EB4(&D_82F20A40);
-        func_82F0917C(&D_82F20A40);
-        func_82F09284(&D_82F20A40);
+        Trade_DrawBoxMachineTopBar(&D_82F20A40);
+        Trade_DrawBoxMachineSlots(&D_82F20A40);
+        Trade_DrawBoxMachineTitle(&D_82F20A40);
+        Trade_DrawBoxMachineConfirm(&D_82F20A40);
         Graph_SetTextureState(gMenuRootNode);
-        func_82F09B70(ptr->unk_00);
-        func_82F094B4(&D_82F20A40);
+        Trade_DrawBoxMachineCursor(ptr->unk_00);
+        Trade_DrawBoxMachineBanner(&D_82F20A40);
     }
 }

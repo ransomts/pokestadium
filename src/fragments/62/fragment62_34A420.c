@@ -278,7 +278,7 @@ Gfx* Trail_Render(Gfx* arg0) {
     return arg0;
 }
 
-void func_843605C0(void) {
+void Radial20_ResetPool(void) {
     s16 temp_v0;
     s32 i;
     s32 j;
@@ -481,7 +481,7 @@ void ParticleEmitter_AddRandomized(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     }
 }
 
-void func_84360EFC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
+void Radial20_VariantD(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC, u8 argD, f32 argE, f32 argF, f32 arg10, s16 arg11) {
     unk_D_84398F50* var_v0;
     unk_D_84398F50_048* var_s0;
@@ -552,7 +552,7 @@ void func_84360EFC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s
     }
 }
 
-void func_843612F8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
+void Radial20_VariantE(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, f32 argB, f32 argC, f32 argD, s16 argE) {
     unk_D_84398F50* var_v0;
     unk_D_84398F50_048* var_s0;
@@ -615,7 +615,7 @@ void func_843612F8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s
     }
 }
 
-void func_843616B0(f32 arg0, UNUSED Vec3f* arg1, Vec3f* arg2, f32 arg3, UNUSED f32 arg4, UNUSED f32 arg5,
+void Radial20_RotateVertexOffset(f32 arg0, UNUSED Vec3f* arg1, Vec3f* arg2, f32 arg3, UNUSED f32 arg4, UNUSED f32 arg5,
                    UNUSED f32 arg6) {
     UNUSED MtxF pad;
     MtxF sp30;
@@ -625,7 +625,7 @@ void func_843616B0(f32 arg0, UNUSED Vec3f* arg1, Vec3f* arg2, f32 arg3, UNUSED f
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg3, &arg2->x, &arg2->y, &arg2->z);
 }
 
-void func_84361744(unk_D_84398F50* arg0) {
+void Radial20_UpdateNode(unk_D_84398F50* arg0) {
     unk_D_84398F50_048* var_v0;
     UNUSED s32 pad;
     s32 i;
@@ -772,7 +772,7 @@ void func_84361744(unk_D_84398F50* arg0) {
     }
 }
 
-s32 func_84361FB0(void) {
+s32 Radial20_IsComplete(void) {
     s32 i;
     s32 var_s2 = 0;
     unk_D_84398F50* var_s0 = D_84398F50;
@@ -784,7 +784,7 @@ s32 func_84361FB0(void) {
                 var_s0->unk_000 = 0;
                 if (var_s0->unk_008 == 8) {}
             } else {
-                func_84361744(var_s0);
+                Radial20_UpdateNode(var_s0);
                 var_s2++;
             }
             GlowEmitter_Update(var_s0->unk_002);
@@ -867,7 +867,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
-                        func_843616B0(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
+                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
 
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
@@ -877,7 +877,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->unk_00 <= 0.0) {
-                            func_843616B0(var_s2->unk_0C + M_PI_F, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + M_PI_F, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f,
                                           0.0f);
                         }
 
@@ -896,7 +896,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
-                        func_843616B0(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
+                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
 
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
@@ -908,7 +908,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->unk_00 <= 0.0) {
-                            func_843616B0(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f,
                                           0.0f, 0.0f);
                         }
 
@@ -922,7 +922,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->unk_00 <= 0.0) {
-                            func_843616B0(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->unk_08,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->unk_08,
                                           1.0f, 0.0f, 0.0f);
                         }
 
@@ -943,7 +943,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
-                        func_843616B0(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
+                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
 
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
@@ -955,7 +955,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->unk_00 <= 0.0) {
-                            func_843616B0(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f,
                                           0.0f, 0.0f);
                         }
 
@@ -969,7 +969,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->unk_00 <= 0.0) {
-                            func_843616B0(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->unk_08,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->unk_08,
                                           1.0f, 0.0f, 0.0f);
                         }
 
@@ -992,7 +992,7 @@ Gfx* func_84362084(Gfx* arg0) {
 
                     for (j = 0; j < 20; j++, var_s2++) {
                         for (x = 0; x < 6; x++) {
-                            func_843616B0(var_s2->unk_0C + ((2.0 * x * M_PI_F) / 6.0), &var_s2->unk_1C, &sp1A0,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + ((2.0 * x * M_PI_F) / 6.0), &var_s2->unk_1C, &sp1A0,
                                           var_s2->unk_08, 1.0f, 0.0f, 0.0f);
 
                             vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
@@ -1016,7 +1016,7 @@ Gfx* func_84362084(Gfx* arg0) {
                             for (y = 0; y < 3; y++) {
                                 f32 x1, y1, z1;
 
-                                func_843616B0(var_s2->unk_0C + ((TWO_PI_F * y) / 12.0f) + ((TWO_PI_F * x) / 3.0f),
+                                Radial20_RotateVertexOffset(var_s2->unk_0C + ((TWO_PI_F * y) / 12.0f) + ((TWO_PI_F * x) / 3.0f),
                                               &var_s2->unk_1C, &sp1A0, D_843892EC[y] * var_s2->unk_08, 1.0f, 0.0f,
                                               0.0f);
 
@@ -1053,7 +1053,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     for (j = 0; j < 20; j++, var_s2++) {
                         for (x = 0; x < 15; x++) {
                             if (var_s2->unk_00 <= 0.0) {
-                                func_843616B0(var_s2->unk_0C + ((2.0 * x * M_PI_F) / 15.0), &var_s2->unk_1C, &sp1A0,
+                                Radial20_RotateVertexOffset(var_s2->unk_0C + ((2.0 * x * M_PI_F) / 15.0), &var_s2->unk_1C, &sp1A0,
                                               var_s2->unk_08, 1.0f, 0.0f, 0.0f);
                             }
 

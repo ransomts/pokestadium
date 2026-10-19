@@ -1727,7 +1727,7 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
     }
 
     SelectionState_InitDefaults();
-    func_82505FE0(gSubMenuState);
+    KidsClub_ResetTournamentState(gSubMenuState);
     gSelectionTimer = -1;
 
     switch (gSubMenuState) {
@@ -1999,7 +1999,7 @@ void SelectionUI_Reset(void) {
         D_8250A288.unk_00 = sp1C;
     }
     gSubMenuState = 0;
-    func_82505FE0(gSubMenuState);
+    KidsClub_ResetTournamentState(gSubMenuState);
 }
 
 void UI_HandleMainSelectionInput(void) {

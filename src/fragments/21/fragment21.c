@@ -1811,19 +1811,19 @@ void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
         case 0x3: //  diggin
             if (sandshrew->diggingAccel2 != 0) {
                 if (gTimerMask2 == 0) {
-                    Particle_CreateFromEntityMultiple(&sandshrew->unk_000, func_87902608, &gMiniTutoScreenNode1, 1, 1); //	perticles
-                    Particle_CreateFromEntityMultiple(&sandshrew->unk_000, func_87902608, &gMiniTutoScreenNode1, 1, 2); //	particles
+                    Particle_CreateFromEntityMultiple(&sandshrew->unk_000, MiniFx_UpdateSurfaceCrossingGravityParticle, &gMiniTutoScreenNode1, 1, 1); //	perticles
+                    Particle_CreateFromEntityMultiple(&sandshrew->unk_000, MiniFx_UpdateSurfaceCrossingGravityParticle, &gMiniTutoScreenNode1, 1, 2); //	particles
                 }
 
                 if (gTimerMask2 == 0) {
                     if (sandshrew->totalPos.y > -10.0f) {
-                        Particle_CreateMultiple(1.0f, sandshrew->totalPos, sandshrew->totalRot, func_87902224, &gMiniTutoScreenNode0,
+                        Particle_CreateMultiple(1.0f, sandshrew->totalPos, sandshrew->totalRot, MiniFx_UpdatePalette10SlowRiseFadeParticle, &gMiniTutoScreenNode0,
                                       1); //	particles
                     } else {
                         sp48.x = sandshrew->totalPos.x;
                         sp48.y = -5.0f;
                         sp48.z = sandshrew->totalPos.z;
-                        Particle_CreateMultiple(1.0f, sp48, sandshrew->totalRot, func_879023EC, &gMiniTutoScreenNode0,
+                        Particle_CreateMultiple(1.0f, sp48, sandshrew->totalRot, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0,
                                       1); //	particles
                     }
                 }
@@ -1945,7 +1945,7 @@ void initSandshrewHoles(void) {
     }
 }
 
-void func_86F00F68(MiniActor* sandshrewHole, MiniActor* sandshrewPlayer) {
+void SandshrewGame_UpdateHole(MiniActor* sandshrewHole, MiniActor* sandshrewPlayer) {
     s32 var_a1;
 
     if ((sandshrewPlayer->diggingSpeed > 300.0f) && (sandshrewHole->mainState == 0)) {
@@ -1971,7 +1971,7 @@ void MiniGame_UpdateSandshrewHoles(void) {
     miniSandshrewPtr = miniSandshrews;
 
     for (i = 0; i < 4; i++) {
-        func_86F00F68(miniSandshrewHolePtr, miniSandshrewPtr);
+        SandshrewGame_UpdateHole(miniSandshrewHolePtr, miniSandshrewPtr);
         miniActorUpdateTransform(miniSandshrewHolePtr);
         MiniActor_UpdateCollider(miniSandshrewHolePtr);
 
@@ -2020,7 +2020,7 @@ void initSandshrewGeisers(void) {
     }
 }
 
-void func_86F011E8(MiniActor* geiser) {
+void SandshrewGame_UpdateGeiser(MiniActor* geiser) {
     switch (geiser->mainState) {
         case 1:
             miniSandshewChangeAnim(geiser, 0);
@@ -2036,7 +2036,7 @@ void func_86F011E8(MiniActor* geiser) {
     }
 
     if ((geiser->mainState >= 2) && (gTimerMask2 == 0)) {
-        Particle_CreateFromEntityMultiple(&geiser->unk_000, func_87902C9C, &D_87903E58, 4, 0xA);
+        Particle_CreateFromEntityMultiple(&geiser->unk_000, MiniFx_UpdateCoolGravityParticle, &D_87903E58, 4, 0xA);
     }
 }
 
@@ -2046,7 +2046,7 @@ void MiniGame_UpdateSandshrewGeisers(void) {
     miniSandshrewGeiserPtr = miniSandshrewGeisers;
 
     for (i = 0; i < 4; i++) {
-        func_86F011E8(miniSandshrewGeiserPtr);
+        SandshrewGame_UpdateGeiser(miniSandshrewGeiserPtr);
         miniActorUpdateTransform(miniSandshrewGeiserPtr);
         MiniActor_UpdateCollider(miniSandshrewGeiserPtr);
 
@@ -2054,7 +2054,7 @@ void MiniGame_UpdateSandshrewGeisers(void) {
     }
 }
 
-void func_86F0132C(void) {
+void SandshrewGame_InitCamera(void) {
     gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
 
     miniCameraXRot = 0x1600;
@@ -2071,7 +2071,7 @@ void func_86F0132C(void) {
     miniUpdateCamera();
 }
 
-void func_86F013B8(void) {
+void SandshrewGame_UpdateWinCamera(void) {
     switch (gMiniCameraNearBackup) {
         case 1:
             MiniGame_SaveCameraState();
@@ -2092,7 +2092,7 @@ void func_86F013B8(void) {
 }
 
 void MiniGame_UpdateSandshrewHUD(void) {
-    func_86F013B8();
+    SandshrewGame_UpdateWinCamera();
     minigameDebuggModeControl();
     miniUpdateCamera();
 }
@@ -2102,7 +2102,7 @@ void sandshrewMinigameInitObjects(void) {
     initSandshrews();
     initSandshrewHoles();
     initSandshrewGeisers();
-    func_86F0132C(); // fix the camera
+    SandshrewGame_InitCamera(); // fix the camera
 }
 
 s32 MiniSandshrewGame_DetermineWinner(void) {
@@ -2143,7 +2143,7 @@ s32 MiniSandshrewGame_DetermineWinner(void) {
     return var_s7;
 }
 
-void func_86F0164C(void) {
+void SandshrewGame_ResetDigSpeeds(void) {
     s32 i;
 
     miniSandshrewPtr = miniSandshrews;
@@ -2153,7 +2153,7 @@ void func_86F0164C(void) {
     }
 }
 
-s32 func_86F016D8(void) {
+s32 SandshrewGame_UpdateStartCountdown(void) {
     s32 sp1C = 0;
     s32 sp18 = Fragment2_1_GetResult();
 
@@ -2187,7 +2187,7 @@ void MiniGame_UpdateSandshrewAI(void) {
             break;
 
         case 3: //
-            if (func_86F016D8() != 0) {
+            if (SandshrewGame_UpdateStartCountdown() != 0) {
                 minigameInputLock = true;
                 miniTutoScreenState = 0;
                 miniSandshewReangleAll(); // (???)
@@ -2197,7 +2197,7 @@ void MiniGame_UpdateSandshrewAI(void) {
 
         case 4:
             if (MiniSandshrewGame_DetermineWinner() != 0) {
-                func_86F0164C();
+                SandshrewGame_ResetDigSpeeds();
                 minigameInputLock = false;
                 gMiniCameraNearBackup = 1;
                 minigameState++;
@@ -2229,7 +2229,7 @@ void MiniGame_UpdateSandshrewScore(void) {
     ParticleSystem_UpdateAndRender();
 }
 
-void func_86F01904(void) {
+void SandshrewGame_DrawTutorialText(void) {
     UNUSED s32 pad;
     s32 sp38;
     s32 sp34;
@@ -2267,10 +2267,10 @@ void func_86F01904(void) {
     Text_SetupDL();
 }
 
-void func_86F01C40(void) {
+void SandshrewGame_DrawTutorialScreen(void) {
     switch (D_87903DCC) {
         case 3:
-            func_86F01904();
+            SandshrewGame_DrawTutorialText();
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -2316,22 +2316,22 @@ void fixSandshrewMinigameHUD(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86F01EB4(void) {
+void SandshrewGame_DrawTutorial(void) {
     MiniTutoScreen_Start();
-    func_86F01C40();
+    SandshrewGame_DrawTutorialScreen();
 
     if (miniShowHUB != 0) {
         fixSandshrewMinigameHUD();
     }
 }
 
-void func_86F01EF4(UNUSED s32 arg0) {
+void SandshrewGame_DrawPlayerHUBs(UNUSED s32 arg0) {
     UNUSED u8 sp1C[] = { 0, 0, 30 };  // D_86F0B168
     UNUSED u8 sp18[] = { 0, 0, 250 }; // D_86F0B16C
 
     Text_ResetState();
     Text_SetFont(4, -2);
-    func_86F01EB4();
+    SandshrewGame_DrawTutorial();
     Text_SetupDL();
 }
 
@@ -2355,7 +2355,7 @@ void MiniGame_WaitForFrame(s32 arg0) {
 
     if (miniDebugMode == 0) {
         if (gResultConfirmPressed == 0) {
-            func_86F01EF4(arg0);
+            SandshrewGame_DrawPlayerHUBs(arg0);
         }
         ResultScreen_UpdateAndRender();
     } else {

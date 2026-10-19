@@ -65,16 +65,16 @@ void Stage_SetFillColor(u16 arg0);
 void Stage_BeginDisplayList(void);
 FramebufferImage* Stage_GetFrameBuffer(void);
 s32 IsScreenUpscaled(void);
-void func_80007A80(void);
-void func_80007C3C(void);
-void func_80007CD8(s16 arg0, s16 arg1, s16 arg2);
-void func_80007DE4(s16 arg0, s16 arg1, s16 arg2);
-void func_80007EF0(s16 arg0, s16 arg1, s8* arg2, s32 arg3);
-void func_80007FC4(Gfx** arg0, s32 arg1);
-void func_800080E0(void);
-char* func_80008130(char* buffer, const char* data, size_t size);
+void TextRenderer_SetupGlyphState(void);
+void TextRenderer_RestoreState(void);
+void TextRenderer_DrawGlyphSmall(s16 arg0, s16 arg1, s16 arg2);
+void TextRenderer_DrawGlyphLarge(s16 arg0, s16 arg1, s16 arg2);
+void TextRenderer_DrawString(s16 arg0, s16 arg1, s8* arg2, s32 arg3);
+void TextRenderer_FlushQueuedStrings(Gfx** arg0, s32 arg1);
+void TextRenderer_ClearQueuedStrings(void);
+char* TextRenderer_FormatCopy(char* buffer, const char* data, size_t size);
 s32 HAL_Printf(s16 x, s16 y, const char* fmt, ...);
-s32 func_800081F8(s16 x, s16 y, const char* fmt, ...);
+s32 TextRenderer_QueuePersistentString(s16 x, s16 y, const char* fmt, ...);
 
 
 #endif // _STAGE_LOADER_H_

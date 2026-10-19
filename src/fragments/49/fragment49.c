@@ -172,7 +172,7 @@ void Menu_ProcessInput(void) {
 void func_83A009C0(void) {
 }
 
-void func_83A009C8(void) {
+void Snap_PrintClubBackgroundSelectLoop(void) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, D_83A00B80);
     Gfx_FillRectangle(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
     Stage_Advance();
@@ -195,7 +195,7 @@ s32 Menu_Entry(s32 arg0, s32 arg1) {
     gMenuBackgroundArchive = ASSET_LOAD2(backgrounds, 1, 1);
     Menu_Init();
     Stage_Set(sp24);
-    func_83A009C8();
+    Snap_PrintClubBackgroundSelectLoop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

@@ -1215,7 +1215,7 @@ void Particle_AddRotationDeltaXYZ(ParticleEffectInstance* arg0, s16 arg1, s16 ar
     arg0->unk_94.z += arg3;
 }
 
-void func_8140A578(ParticleEffectInstance* arg0, s16 arg1) {
+void Particle_Field94_AddX_0A578(ParticleEffectInstance* arg0, s16 arg1) {
     arg0->unk_94.x += arg1;
 }
 
@@ -1329,12 +1329,12 @@ s32 Particle_DecreaseRotationZTowards(ParticleEffectInstance* arg0, s32 arg1, s3
 }
 
 void Particle_RandomizeRotationXY(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
-    func_8140A578(arg0, RandomRangeSigned(arg1));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSigned(arg1));
     Particle_RotateY(arg0, RandomRangeSigned(arg2));
 }
 
 void Particle_RandomizeRotationXWithMaskY(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
-    func_8140A578(arg0, RandomRangeSignedPlus(arg1, 0x8000));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSignedPlus(arg1, 0x8000));
     Particle_RotateY(arg0, RandomRangeSigned(arg2));
 }
 
@@ -1347,7 +1347,7 @@ void Particle_RandomizeRotationYWithMask(ParticleEffectInstance* arg0, s32 arg1)
 }
 
 void Particle_RandomizeRotationXYFixedY(ParticleEffectInstance* arg0) {
-    func_8140A578(arg0, RandomRangeSigned(0x10000));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSigned(0x10000));
     Particle_RotateY(arg0, 0x4000);
 }
 
@@ -1519,7 +1519,7 @@ void Particle_ScaleAccelerationVector(ParticleEffectInstance* arg0, f32 arg1) {
     arg0->unk_7C.z *= arg1;
 }
 
-s32 func_8140B180(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
+s32 Particle_Field7C_ApproachY_0B180(ParticleEffectInstance* arg0, f32 arg1, f32 arg2) {
     return ApproachF32(&arg0->unk_7C.y, arg1 * gParticleScaleFactor.unk_00.y, arg2 * gParticleScaleFactor.unk_00.y);
 }
 
@@ -1831,7 +1831,7 @@ void Particle_SetByteCF(ParticleEffectInstance* arg0, u8 arg1) {
     arg0->unk_CF = arg1;
 }
 
-void func_8140BEF8(ParticleEffectInstance* arg0, u8 arg1) {
+void Particle_FieldCF_SetU8Alt_0BEF8(ParticleEffectInstance* arg0, u8 arg1) {
     arg0->unk_CF = arg1;
 }
 

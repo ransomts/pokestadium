@@ -221,7 +221,7 @@ void DrawWindowBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_8001FB40(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Ui_DrawBorderStyleB(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     DrawTileTextureRect(arg0, arg1, 8, 8, D_1002BD0);
     DrawTileTextureRect(arg0, (arg1 + arg3) - 8, 8, 8, D_1002C50);
     DrawTileTextureRect((arg0 + arg2) - 8, (arg1 + arg3) - 8, 8, 8, D_1002CD0);
@@ -353,7 +353,7 @@ void DrawPanelAlt(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (IsScreenUpscaled() != 0) {
-        func_8001FB40(arg0, arg1, arg2, arg3);
+        Ui_DrawBorderStyleB(arg0, arg1, arg2, arg3);
     } else {
         DrawWindowBorderThin(arg0, arg1, arg2, arg3);
     }
@@ -661,7 +661,7 @@ void DrawExpBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_80021920(void) {
+void Text_LoadNameTable(void) {
     char** temp_s2 = GetMessageBank(0x24);
     s32 i;
 

@@ -63,7 +63,7 @@ static Gfx gPanelDisplayList[] = {
 static u32 gGeoLayout_Panel[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, gPanelVertices, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00050000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    func_84B0AD48, gPanelDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    BattlePrepBadgeAward_DrawBadgeIconAlt, gPanelDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gIconVertices[] = {
     VTX(-16, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -83,7 +83,7 @@ static Gfx gIconDisplayList[] = {
 };
 static u32 gGeoLayout_Icon[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gIconVertices, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B0AE30, gIconDisplayList, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, BattlePrepBadgeAward_DrawSparkle, gIconDisplayList, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gColoredQuadVertices[] = {
     VTX(-32, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 0, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -108,7 +108,7 @@ static Gfx gColoredQuadDisplayList[] = {
 };
 static u32 D_84B16948[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gColoredQuadVertices, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, func_84B0AF48, gColoredQuadDisplayList, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, BattlePrepBadgeAward_DrawGlowFade, gColoredQuadDisplayList, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84B16980[] = {
     VTX(-16, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -152,7 +152,7 @@ s32 SetBattleBackgroundTexture0(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B0AD48(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrepBadgeAward_DrawBadgeIconAlt(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A90* temp_v0;
     s32 tmp;
 
@@ -170,7 +170,7 @@ s32 func_84B0AD48(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B0AE30(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrepBadgeAward_DrawSparkle(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B25A90* temp_a3;
     s32 tmp;
 
@@ -195,7 +195,7 @@ s32 func_84B0AE30(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 func_84B0AF48(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrepBadgeAward_DrawGlowFade(s32 arg0, SimpleGfxNode* arg1) {
     UNUSED s32 pad[2];
     s16 sp1E;
     f32 temp_fv0;
@@ -220,7 +220,7 @@ s32 func_84B0AF48(s32 arg0, SimpleGfxNode* arg1) {
 void func_84B0B054(void) {
 }
 
-void func_84B0B05C(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_SlideInStep(unk_D_84B25A90* arg0) {
     s32 i;
 
     if (arg0->unk_01 == 0) {
@@ -256,7 +256,7 @@ void func_84B0B05C(unk_D_84B25A90* arg0) {
     }
 }
 
-void func_84B0B228(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_RevealStep(unk_D_84B25A90* arg0) {
     s16 i;
     s16 var_s3;
     s16 var_a0;
@@ -323,7 +323,7 @@ void func_84B0B228(unk_D_84B25A90* arg0) {
     }
 }
 
-void func_84B0B6EC(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
+void BattlePrepBadgeAward_SpawnSparkleParticle(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
     u16 sp26;
     f32 temp_fv0;
 
@@ -343,12 +343,12 @@ void func_84B0B6EC(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
     }
 }
 
-void func_84B0B7F4(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_UpdateSparkleStep(unk_D_84B25A90* arg0) {
     s32 i;
     s32 temp_s0 = arg0->unk_01 % 4;
 
-    func_84B0B6EC(arg0, &arg0->unk_04[16 + arg0->unk_01], temp_s0);
-    func_84B0B6EC(arg0, &arg0->unk_04[28 + arg0->unk_01], 7 - temp_s0);
+    BattlePrepBadgeAward_SpawnSparkleParticle(arg0, &arg0->unk_04[16 + arg0->unk_01], temp_s0);
+    BattlePrepBadgeAward_SpawnSparkleParticle(arg0, &arg0->unk_04[28 + arg0->unk_01], 7 - temp_s0);
 
     for (i = 16; i < 41; i++) {
         if ((s32)arg0->unk_18 == (s32)arg0->unk_04[i].unk_000.unk_0C) {
@@ -362,7 +362,7 @@ void func_84B0B7F4(unk_D_84B25A90* arg0) {
     arg0->unk_01 = (arg0->unk_01 + 1) % 12;
 }
 
-void func_84B0B984(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_ScatterStep(unk_D_84B25A90* arg0) {
     static s16 D_84B16A64[] = { 0x300, 0x150, -0x150, -0x300, -0x300, -0x150, 0x150, 0x300 };
     static f32 D_84B16A74[] = { -3.0f, -2.0f, 2.0f, 3.0f, -3.0f, -2.0f, 2.0f, 3.0f };
 
@@ -398,19 +398,19 @@ void func_84B0B984(unk_D_84B25A90* arg0) {
 void UI_UpdateElement(unk_D_84B25A90* arg0) {
     switch (arg0->unk_00) {
         case 1:
-            func_84B0B05C(arg0);
+            BattlePrepBadgeAward_SlideInStep(arg0);
             break;
 
         case 2:
-            func_84B0B228(arg0);
+            BattlePrepBadgeAward_RevealStep(arg0);
             break;
 
         case 3:
-            func_84B0B7F4(arg0);
+            BattlePrepBadgeAward_UpdateSparkleStep(arg0);
             break;
 
         case 4:
-            func_84B0B984(arg0);
+            BattlePrepBadgeAward_ScatterStep(arg0);
             break;
     }
 }
@@ -438,7 +438,7 @@ void UI_AnimateBar(unk_D_84B25A90* arg0, Fragment2_1GraphNode* arg1) {
     Vec3f_Set(&arg0->unk_04[15].unk_024, 96.0f, -48.0f, -289.0f);
 }
 
-void func_84B0BDCC(unk_D_84B25A90* arg0) {
+void BattlePrepBadgeAward_StartScatter(unk_D_84B25A90* arg0) {
     s32 i;
 
     for (i = 16; i < 41; i++) {

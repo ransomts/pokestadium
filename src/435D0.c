@@ -158,7 +158,7 @@ void Audio_ProcessChannel(u32 arg0) {
                         sp2F += gEnvelopeState[arg0].unk_02;
                     }
                 }
-                func_8004980C(Audio_GetApuRegister(arg0, 3), sp2F, 0);
+                GbAudio_QueueRegisterWrite(Audio_GetApuRegister(arg0, 3), sp2F, 0);
             }
         }
     }
@@ -241,14 +241,14 @@ u8 Audio_Command_End(u32 arg0) {
         gChannelStatus[arg0] &= ~4;
         gChannelControl[arg0] &= ~1;
         if (arg0 == 6) {
-            func_8004980C(0xFF1A, 0, 0);
-            func_8004980C(0xFF1A, 0x80, 0);
+            GbAudio_QueueRegisterWrite(0xFF1A, 0, 0);
+            GbAudio_QueueRegisterWrite(0xFF1A, 0x80, 0);
         }
 
         if (gTrackTransitionFlag != 0) {
             gTrackTransitionFlag = 0;
         }
-        func_8004980C(0xFF25, gChannelPanHigh[arg0] & func_80049890(0xFF25), 0);
+        GbAudio_QueueRegisterWrite(0xFF25, gChannelPanHigh[arg0] & GbAudio_GetRegisterValue(0xFF25), 0);
     }
 
     gChannelActiveFlags[arg0] = 0;
@@ -257,7 +257,7 @@ u8 Audio_Command_End(u32 arg0) {
         if ((arg0 != 4) && (Audio_DecrementProgramCounter(arg0) != 0)) {
             return 1;
         } else {
-            func_8004980C(0xFF24, gMasterVolume[0], 0);
+            GbAudio_QueueRegisterWrite(0xFF24, gMasterVolume[0], 0);
             gMasterVolume[0] = 0;
             gChannelActiveFlags[arg0] = 0;
         }
@@ -400,7 +400,7 @@ u8 Audio_Command_SetSustain(u32 arg0) {
 }
 
 u8 Audio_Command_SetGlobalVol(u32 arg0) {
-    func_8004980C(0xFF24, Audio_FetchCommand(arg0), 0);
+    GbAudio_QueueRegisterWrite(0xFF24, Audio_FetchCommand(arg0), 0);
     return 0;
 }
 
@@ -442,9 +442,9 @@ s32 Audio_Command_PlayNote(u32 arg0, u8 arg1) {
         var_v1 = Audio_Command_NoteHandler(arg0, arg1);
     } else {
         sp25 = gChannelTempoValues[arg0] | Audio_CalculateNoteOffset(arg0, arg1);
-        func_8004980C(Audio_GetApuRegister(arg0, 1), sp25, 0);
+        GbAudio_QueueRegisterWrite(Audio_GetApuRegister(arg0, 1), sp25, 0);
         sp27 = Audio_FetchCommand(arg0);
-        func_8004980C(Audio_GetApuRegister(arg0, 2), sp27, 0);
+        GbAudio_QueueRegisterWrite(Audio_GetApuRegister(arg0, 2), sp27, 0);
         sp26 = Audio_FetchCommand(arg0);
         sp27 = 0;
         if (arg0 != 7) {
@@ -473,7 +473,7 @@ u8 Audio_Command_NoteHandler(u32 arg0, u8 arg1) {
         return 1;
     }
 
-    func_8004980C(0xFF10, Audio_FetchCommand(arg0), 0);
+    GbAudio_QueueRegisterWrite(0xFF10, Audio_FetchCommand(arg0), 0);
     return 0;
 }
 
@@ -528,13 +528,13 @@ s32 Audio_CalculateNoteOffset(u32 arg0, u8 arg1) {
     } else if ((arg0 < 4) && (gChannelActiveFlags[4 + arg0] != 0)) {
         return gChannelActiveFlags[4 + arg0];
     } else if ((arg0 == 2) || (arg0 == 6)) {
-        sp1F = gChannelPanHigh[arg0] | func_80049890(0xFF25);
-        func_8004980C(0xFF25, sp1F, 0);
+        sp1F = gChannelPanHigh[arg0] | GbAudio_GetRegisterValue(0xFF25);
+        GbAudio_QueueRegisterWrite(0xFF25, sp1F, 0);
         return sp1F;
     } else {
         sp20 = Audio_GetApuRegister(arg0, 2);
-        func_8004980C(sp20, 8, 0);
-        func_8004980C(sp20 + 2, 0x80, 0);
+        GbAudio_QueueRegisterWrite(sp20, 8, 0);
+        GbAudio_QueueRegisterWrite(sp20 + 2, 0x80, 0);
     }
 
     return 0x80;
@@ -559,7 +559,7 @@ s32 Audio_UpdateNotePitch(u32 arg0, u16 arg1, u16 arg2) {
         return 1;
     }
 
-    func_8004980C(Audio_GetApuRegister(arg0, 2), gChannelPitchValues[arg0], 0);
+    GbAudio_QueueRegisterWrite(Audio_GetApuRegister(arg0, 2), gChannelPitchValues[arg0], 0);
     Audio_UpdateChannelFreq(arg0);
     Audio_UpdateChannelPan(arg0);
     if (gChannelStatus[arg0] & 1) {
@@ -573,22 +573,22 @@ s32 Audio_UpdateNotePitch(u32 arg0, u16 arg1, u16 arg2) {
 s32 Audio_UpdateChannelPan(u32 arg0) {
     u8 tmp;
     u8 sp1E;
-    u8 temp_v1 = gChannelPanLow[arg0] | func_80049890(0xFF25);
+    u8 temp_v1 = gChannelPanLow[arg0] | GbAudio_GetRegisterValue(0xFF25);
 
     if ((arg0 >= 4) && (arg0 != 7)) {
-        func_8004980C(0xFF25, temp_v1, 0);
+        GbAudio_QueueRegisterWrite(0xFF25, temp_v1, 0);
         return 1;
     }
 
     if ((arg0 != 7) && (gChannelActiveFlags[4 + arg0] != 0)) {
-        func_8004980C(0xFF25, temp_v1, 0);
+        GbAudio_QueueRegisterWrite(0xFF25, temp_v1, 0);
         return 1;
     }
 
     sp1E = (gMasterVolume[1] & gChannelPanLow[arg0]);
-    tmp = gChannelPanHigh[arg0] & func_80049890(0xFF25);
+    tmp = gChannelPanHigh[arg0] & GbAudio_GetRegisterValue(0xFF25);
     tmp |= sp1E;
-    func_8004980C(0xFF25, tmp, 0);
+    GbAudio_QueueRegisterWrite(0xFF25, tmp, 0);
     return 1;
 }
 
@@ -602,7 +602,7 @@ s32 Audio_UpdateChannelFreq(u32 arg0) {
         sp1F &= 0x3F;
         sp1F |= tmp;
     }
-    func_8004980C(Audio_GetApuRegister(arg0, 1), sp1F, 0);
+    GbAudio_QueueRegisterWrite(Audio_GetApuRegister(arg0, 1), sp1F, 0);
     return 1;
 }
 
@@ -619,13 +619,13 @@ s32 Audio_WriteNoteData(u32 arg0, u16 arg1) {
         } else {
             var_s2 = 1;
         }
-        func_8004980C(0xFF1A, 0, 0);
+        GbAudio_QueueRegisterWrite(0xFF1A, 0, 0);
 
         for (i = 0; i < 16; i++) {
-            func_8004980C(i + 0x20, gCustomWaveforms[var_s2][i], 0);
+            GbAudio_QueueRegisterWrite(i + 0x20, gCustomWaveforms[var_s2][i], 0);
         }
 
-        func_8004980C(0xFF1A, 0x80, 0);
+        GbAudio_QueueRegisterWrite(0xFF1A, 0x80, 0);
     }
 
     {
@@ -636,8 +636,8 @@ s32 Audio_WriteNoteData(u32 arg0, u16 arg1) {
         sp2E[3] = new_var;
 
         temp_v0 = Audio_GetApuRegister(arg0, 3);
-        func_8004980C(temp_v0, new_var2, 0);
-        func_8004980C(temp_v0 + 1, new_var, 0);
+        GbAudio_QueueRegisterWrite(temp_v0, new_var2, 0);
+        GbAudio_QueueRegisterWrite(temp_v0 + 1, new_var, 0);
 
         if (gChannelActiveFlags[4] != 0) {
             Audio_ApplyPitchBend(sp2E[2] + (sp2E[3] << 8), temp_v0);
@@ -662,8 +662,8 @@ void Audio_ApplyPitchBend(u16 arg0, u16 arg1) {
         u16 sp18 = gTrackPitchOffset;
 
         arg0 += sp18;
-        func_8004980C(arg1, arg0 & 0xFF, 0);
-        func_8004980C(arg1 + 1, (arg0 >> 8) & 0xFF, 0);
+        GbAudio_QueueRegisterWrite(arg1, arg0 & 0xFF, 0);
+        GbAudio_QueueRegisterWrite(arg1 + 1, (arg0 >> 8) & 0xFF, 0);
     }
 }
 
@@ -701,8 +701,8 @@ void Audio_ProcessEnvelope(u32 arg0) {
     sp1F = gVibratoState[arg0].unk_00;
     sp1E = ((u16)gVibratoState[arg0].unk_00 & 0xFF00) >> 8;
     sp1C = Audio_GetApuRegister(arg0, 3);
-    func_8004980C(sp1C, sp1F, 0);
-    func_8004980C(sp1C + 1, sp1E, 0);
+    GbAudio_QueueRegisterWrite(sp1C, sp1F, 0);
+    GbAudio_QueueRegisterWrite(sp1C + 1, sp1E, 0);
 }
 
 s32 Audio_SetEnvelopeTarget(u32 arg0, u16 arg1) {
@@ -726,7 +726,7 @@ void Audio_UpdateChannelVolume(u32 arg0) {
     gChannelSustainValues[arg0] |= (sp1F >> 6);
     sp1F &= 0xC0;
     sp1C = Audio_GetApuRegister(arg0, 1);
-    func_8004980C(sp1C, (sp1F | (func_80049890(sp1C) & 0x3F) & 0xFF), 0);
+    GbAudio_QueueRegisterWrite(sp1C, (sp1F | (GbAudio_GetRegisterValue(sp1C) & 0x3F) & 0xFF), 0);
 }
 
 u8 Audio_FetchCommand(u32 arg0) {
@@ -792,12 +792,12 @@ void Audio_ResetAllChannels(u8 arg0) {
     }
 
     gMasterVolume[1] = 0xFF;
-    func_8004980C(0xFF24, 0, 0);
-    func_8004980C(0xFF10, 8, 0);
-    func_8004980C(0xFF25, 0, 0);
-    func_8004980C(0xFF1A, 0, 0);
-    func_8004980C(0xFF1A, 0x80, 0);
-    func_8004980C(0xFF24, 0x77, 0);
+    GbAudio_QueueRegisterWrite(0xFF24, 0, 0);
+    GbAudio_QueueRegisterWrite(0xFF10, 8, 0);
+    GbAudio_QueueRegisterWrite(0xFF25, 0, 0);
+    GbAudio_QueueRegisterWrite(0xFF1A, 0, 0);
+    GbAudio_QueueRegisterWrite(0xFF1A, 0x80, 0);
+    GbAudio_QueueRegisterWrite(0xFF24, 0x77, 0);
     Audio_LoadTrackData(arg0);
 }
 
@@ -848,7 +848,7 @@ void Audio_PrepareTrack(u8 arg0) {
         gChannelPitchBase[i] = 1;
 
         if (i == 4) {
-            func_8004980C(0xFF10, 8, 0);
+            GbAudio_QueueRegisterWrite(0xFF10, 8, 0);
         }
     }
 
@@ -858,18 +858,18 @@ void Audio_PrepareTrack(u8 arg0) {
 void Audio_StopAllTracks(void) {
     s32 i;
 
-    func_8004980C(0xFF26, 0x80, 0);
-    func_8004980C(0xFF1A, 0x80, 0);
-    func_8004980C(0xFF25, 0, 0);
-    func_8004980C(0xFF1C, 0, 0);
-    func_8004980C(0xFF10, 8, 0);
-    func_8004980C(0xFF12, 8, 0);
-    func_8004980C(0xFF17, 8, 0);
-    func_8004980C(0xFF21, 8, 0);
-    func_8004980C(0xFF14, 0x40, 0);
-    func_8004980C(0xFF19, 0x40, 0);
-    func_8004980C(0xFF23, 0x40, 0);
-    func_8004980C(0xFF24, 0x77, 0);
+    GbAudio_QueueRegisterWrite(0xFF26, 0x80, 0);
+    GbAudio_QueueRegisterWrite(0xFF1A, 0x80, 0);
+    GbAudio_QueueRegisterWrite(0xFF25, 0, 0);
+    GbAudio_QueueRegisterWrite(0xFF1C, 0, 0);
+    GbAudio_QueueRegisterWrite(0xFF10, 8, 0);
+    GbAudio_QueueRegisterWrite(0xFF12, 8, 0);
+    GbAudio_QueueRegisterWrite(0xFF17, 8, 0);
+    GbAudio_QueueRegisterWrite(0xFF21, 8, 0);
+    GbAudio_QueueRegisterWrite(0xFF14, 0x40, 0);
+    GbAudio_QueueRegisterWrite(0xFF19, 0x40, 0);
+    GbAudio_QueueRegisterWrite(0xFF23, 0x40, 0);
+    GbAudio_QueueRegisterWrite(0xFF24, 0x77, 0);
 
     gTrackTransitionFlag = 0;
     gTrackLoadStatus = 0;
@@ -920,8 +920,8 @@ void Audio_LoadTrackData(u8 arg0) {
         gChannelActiveFlags[7] = arg0 + 1;
         gChannelProgramCounters[6] = &gDefaultWaveform;
         if (gMasterVolume[0] == 0) {
-            gMasterVolume[0] = func_80049890(0xFF24);
-            func_8004980C(0xFF24, 0x77, 0);
+            gMasterVolume[0] = GbAudio_GetRegisterValue(0xFF24);
+            GbAudio_QueueRegisterWrite(0xFF24, 0x77, 0);
         }
     }
 }

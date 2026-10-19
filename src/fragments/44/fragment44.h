@@ -33,6 +33,6 @@ s32 ItemSelect_StateMachine(void);
 void ItemSelect_ReadInputs(void);
 void ItemSelect_Loop(void);
 s32 ItemSelect_ApplySelection(unk_D_83407B38* arg0);
-void func_83503C9C(s32 arg0, s32 arg1);
+void Gallery_AlbumMain(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT44_H_

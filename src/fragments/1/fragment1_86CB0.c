@@ -196,11 +196,11 @@ extern s16 D_812346EC[];
 void func_81207330(void) {
 }
 
-void func_81207338(void) {
+void GbApu_SetActiveFlag(void) {
     D_8120EA60 = 1;
 }
 
-void func_81207348(void) {
+void GbApu_ClearActiveFlag(void) {
     D_8120EA60 = 0;
 }
 
@@ -217,7 +217,7 @@ void SetAudioVolume(s32 arg0) {
     D_8120EAC0 = 1500.0f;
 }
 
-void func_812073A4(s32 arg0, s32 arg1) {
+void GbApu_SetNoisePeriodBounds(s32 arg0, s32 arg1) {
     D_8120EAC8 = arg0;
     D_8120EACC = arg1;
 }
@@ -243,7 +243,7 @@ u32 func_81207494(u16 arg0, u16 arg1, u16 arg2) {
     return temp;
 }
 
-u32 func_812075C0(u16 arg0) {
+u32 GbApu_FreqToStep2x(u16 arg0) {
   u32 temp;
   temp = ((131072.0f / (0x800 - arg0)) / D_8120EAC0) * 65536;
   return temp;
@@ -335,7 +335,7 @@ u16 GbAudio_StepSquare1(void) {
                 gGbAudioSquare1Channel.unk_10 = 0x7FFU;
                 gGbAudioSquare1Channel.unk_00 = 0U;
             }
-            gGbAudioSquare1Channel.unk_0C = func_812075C0(gGbAudioSquare1Channel.unk_10);
+            gGbAudioSquare1Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare1Channel.unk_10);
         }
     }
     if (gGbAudioSquare1Channel.unk_28 != 0) {
@@ -651,12 +651,12 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             break;
         case 0x13:
             gGbAudioSquare1Channel.unk_10 = GB_APU_REGS.freqLo1 | (GB_APU_REGS.freqHi1 << 8);
-            gGbAudioSquare1Channel.unk_0C = func_812075C0(gGbAudioSquare1Channel.unk_10);
+            gGbAudioSquare1Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare1Channel.unk_10);
             break;
         case 0x14:
             gGbAudioSquare1Channel.unk_18 = GB_APU_REGS.counter1;
             gGbAudioSquare1Channel.unk_10 = GB_APU_REGS.freqLo1 | (GB_APU_REGS.freqHi1 << 8);
-            gGbAudioSquare1Channel.unk_0C = func_812075C0(gGbAudioSquare1Channel.unk_10);
+            gGbAudioSquare1Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare1Channel.unk_10);
             if ((s32)GB_APU_REGS.trigger1 == 1) {
                 gGbAudioSquare1Channel.unk_14 = gGbAudioSquare1Channel.unk_1C * 200;
                 gGbAudioSquare1Channel.unk_20 = gGbEnvStepTable[gGbAudioSquare1Channel.unk_21];
@@ -687,12 +687,12 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             break;
         case 0x18:
             gGbAudioSquare2Channel.unk_10 = GB_APU_REGS.freqLo2 | (GB_APU_REGS.freqHi2 << 8);
-            gGbAudioSquare2Channel.unk_0C = func_812075C0(gGbAudioSquare2Channel.unk_10);
+            gGbAudioSquare2Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare2Channel.unk_10);
             break;
         case 0x19:
             gGbAudioSquare2Channel.unk_18 = GB_APU_REGS.counter2;
             gGbAudioSquare2Channel.unk_10 = GB_APU_REGS.freqLo2 | (GB_APU_REGS.freqHi2 << 8);
-            gGbAudioSquare2Channel.unk_0C = func_812075C0(gGbAudioSquare2Channel.unk_10);
+            gGbAudioSquare2Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare2Channel.unk_10);
             if ((s32)GB_APU_REGS.trigger2 == 1) {
                 gGbAudioSquare2Channel.unk_14 = gGbAudioSquare2Channel.unk_1C * 200;
                 gGbAudioSquare2Channel.unk_08.unk_02 = 0;

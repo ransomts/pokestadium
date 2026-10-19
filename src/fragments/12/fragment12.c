@@ -38,7 +38,7 @@ void MiniGame_PollInputs(void) {
     MenuInput_Init();
 }
 
-void func_86600050(void) {
+void Minigame_Sample7Viewer_InitCamera(void) {
     D_86600948 = D_86600944->unk_0C;
 
     D_86600AB8 = 0x100;
@@ -95,7 +95,7 @@ void MiniGame_UpdateCamera(void) {
     Camera_SetViewParameters(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
 }
 
-void func_86600264(s32 arg0) {
+void Minigame_Sample7Viewer_DrawDebugText(s32 arg0) {
     Color_RGB8 sp2C = { 0, 0, 30 };
     Color_RGB8 sp28 = { 0, 0, 250 };
 
@@ -134,27 +134,27 @@ void func_86600264(s32 arg0) {
     Text_SetupDL();
 }
 
-void func_86600438(s32 arg0) {
+void Minigame_Sample7Viewer_DrawFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
     Gfx_FinishFrame();
     Graph_SetTextureState(D_86600944);
-    func_86600264(arg0);
+    Minigame_Sample7Viewer_DrawDebugText(arg0);
     Stage_Advance();
 }
 
-void func_8660048C(void) {
+void Minigame_Sample7Viewer_OpeningLoop(void) {
     Stage_FadeIn(0x10);
     GraphNode_TriggerAction(&gMiniGameAnimNode, 8);
     if (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0) {
         do {
             MiniGame_PollInputs();
-            func_86600438(0);
+            Minigame_Sample7Viewer_DrawFrame(0);
         } while (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0);
     }
 }
 
-void func_866004F8(void) {
+void Minigame_Sample7Viewer_PlayingLoop(void) {
     s32 var_s1 = 1;
     s32 var_s0 = 0;
 
@@ -176,11 +176,11 @@ void func_866004F8(void) {
             GraphNode_TriggerSound(&gMiniGameAnimNode, 0xA);
         }
 
-        func_86600438(2);
+        Minigame_Sample7Viewer_DrawFrame(2);
     }
 }
 
-void func_866005B8(void) {
+void Minigame_Sample7Viewer_EndingLoop(void) {
     s32 i;
 
     GraphNode_TriggerAction(&gMiniGameAnimNode, 0xB);
@@ -188,18 +188,18 @@ void func_866005B8(void) {
 
     while (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0) {
         MiniGame_PollInputs();
-        func_86600438(3);
+        Minigame_Sample7Viewer_DrawFrame(3);
     }
 
     Stage_FadeOut(30);
 
     for (i = 0; i < 30; i++) {
         MiniGame_PollInputs();
-        func_86600438(3);
+        Minigame_Sample7Viewer_DrawFrame(3);
     }
 }
 
-void func_86600658(void) {
+void Minigame_Sample7Viewer_Init(void) {
     MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
 
     D_86600944 = process_geo_layout(sp1C, &gMiniGameGeoLayoutCommands);
@@ -210,10 +210,10 @@ void func_86600658(void) {
     gMiniGameGeoLayoutData = GeoLayout_LoadById(0x19);
     GraphNode_InitChild(&gMiniGameAnimNode, 0, 0x19, gMiniGameGeoLayoutData->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&gMiniGameAnimNode, 0);
-    func_86600050();
+    Minigame_Sample7Viewer_InitCamera();
 }
 
-s32 func_8660070C(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 Minigame_Sample7Viewer(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');
@@ -227,11 +227,11 @@ s32 func_8660070C(UNUSED s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
-    func_86600658();
+    Minigame_Sample7Viewer_Init();
     Stage_Set(sp24);
-    func_8660048C();
-    func_866004F8();
-    func_866005B8();
+    Minigame_Sample7Viewer_OpeningLoop();
+    Minigame_Sample7Viewer_PlayingLoop();
+    Minigame_Sample7Viewer_EndingLoop();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

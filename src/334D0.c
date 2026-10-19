@@ -53,11 +53,11 @@ static MtxBuffer gModelMtxBuffers[2];
 static StadiumModelSlot gStadiumModelSlots[2][3];
 static unk_D_800B2EA8 gModelTextureData[1];
 
-void func_800328D0(s32 arg0) {
+void ModelRenderer_OnSlotReady(s32 arg0) {
 
 }
 
-s32 func_800328D8(UNUSED s32 arg0) {
+s32 ModelRenderer_IsReady(UNUSED s32 arg0) {
     return 1;
 }
 

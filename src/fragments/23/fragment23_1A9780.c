@@ -212,7 +212,7 @@ void BoxList_Init(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_88001300
     UNUSED s32 pad[2];
     unk_func_88503298* sp44;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88201DA0));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88201DA0));
 
     arg0->unk_00.unk_20 = BoxList_HandleInput;
     arg0->unk_00.unk_24 = BoxList_UpdateSelection;
@@ -231,7 +231,7 @@ void BoxList_Init(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_88001300
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0, arg0->unk_2C);
 
     arg0->unk_58 = mem_pool_alloc(arg6, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(arg0->unk_58, 0, 0, arg0->unk_2C->unk_00.unk_14.unk_00, 0x1C,
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(arg0->unk_58, 0, 0, arg0->unk_2C->unk_00.unk_14.unk_00, 0x1C,
                                                            gBoxListHeaderColor);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_58);
 
@@ -279,7 +279,7 @@ void BoxList_SetPokemon(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u
 
     for (i = 0; i < arg1->unk_690; i++, ptr++) {
         arg0->unk_34[i].unk_000 = ptr;
-        func_8001B0DC(&arg0->unk_34[i].unk_008, 0, ptr);
+        PokeIcon_LoadModelTextureForMon(&arg0->unk_34[i].unk_008, 0, ptr);
     }
 
     SubList_Init(&arg0->unk_38, arg0->unk_34, 0xC88, 0x14, arg1->unk_690);
@@ -361,7 +361,7 @@ void DrawBoxMonCount(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
 }
 
 void BoxMonCount_Init(unk_func_8820253C* arg0, s32 arg1, s32 arg2, unk_func_88205880_00D0* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8820253C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8820253C));
 
     arg0->unk_00.unk_18 = BoxMonCount_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -809,7 +809,7 @@ void DrawBoxPanel(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_8
 }
 
 void BoxListHeader_Init(unk_func_8820399C* arg0, s32 arg1, unk_func_8850143C* arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8820399C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8820399C));
 
     arg0->unk_00.unk_18 = BoxListHeader_Draw;
     arg0->unk_00.unk_14.unk_00 = arg2->unk_00.unk_14.unk_00;
@@ -954,7 +954,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     unk_func_88503298* temp_s0_4;
     UNUSED s32 pad2[4];
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88203ED8));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88203ED8));
     arg0->unk_00.unk_1C = BoxPCMenu_UpdateContainer;
     arg0->unk_00.unk_20 = BoxPCMenu_HandleInput;
     arg0->unk_00.unk_24 = BoxPCMenu_SetSelection;
@@ -1034,7 +1034,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     }
 
     arg0->unk_68 = mem_pool_alloc(arg8, sizeof(unk_func_88001300_03C));
-    ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(arg0->unk_68, 5, 1, arg8);
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_68, 5, 1, arg8);
     ((func8850BF80)Memmap_GetFragmentVaddr(Screen_SetFragment))(arg0->unk_64, arg0->unk_68);
 
     for (j = 0; j < 5; j++) {
@@ -1053,7 +1053,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, temp_s0_2);
 
     arg0->unk_58 = mem_pool_alloc(arg8, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_58, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_58, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(temp_s0_2, arg0->unk_58);
 
     for (x = 0; x < 5; x++) {
@@ -1520,7 +1520,7 @@ void BoxPC_InitScreen(BoxPCScreen* arg0, s32 arg1, s32 arg2, TextObject* arg3, M
     unk_func_88509E34* sp50;
 
     sp60 = GetCurrentPokemonBank();
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(BoxPCScreen));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(BoxPCScreen));
     arg0->unk_0000.unk_20 = BoxPC_HandleInput;
     arg0->unk_0000.unk_10.unk_00 = arg1;
     arg0->unk_0000.unk_10.unk_02 = arg2;

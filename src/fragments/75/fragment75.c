@@ -117,7 +117,7 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
     }
 
     osViBlack(1);
-    func_80001CB8();
+    Display_EnableBlackout();
 
     sp4E = 0;
     for (i = 0; i < 16; i++) {
@@ -157,7 +157,7 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
         while (RspTaskYielded() == 0) {}
 
         osViBlack(0);
-        func_80001CC8();
+        Display_DisableBlackout();
         WaitFrames(0xC8);
         StickerStation_SetCommand(2);
 
@@ -166,7 +166,7 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
         }
 
         osViBlack(1);
-        func_80001CB8();
+        Display_EnableBlackout();
     }
 
     StickerStation_SetCommand(4);
@@ -175,7 +175,7 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
         WaitFrames(0x14);
     }
 
-    func_80001CC8();
+    Display_DisableBlackout();
     Stage_Destroy();
 
     main_pool_pop_state('SEAL');

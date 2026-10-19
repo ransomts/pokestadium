@@ -118,7 +118,7 @@ void MiniGame_Initialize(void) {
     MiniCamera_Init();
 }
 
-s32 func_86D003EC(s32 arg0, s32 arg1) {
+s32 Minigame_RankingDebugTest(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');

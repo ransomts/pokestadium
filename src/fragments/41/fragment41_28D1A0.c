@@ -29,9 +29,9 @@ void BattleResultScreen_Start(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
     ptr->unk_18 = arg0;
     ptr->unk_1C = NULL;
     ptr->unk_20 = AssetManager_Create(1);
-    ptr->unk_24 = func_8001B1FC(ptr->unk_20, 0xE4, 0xA0, 0, 0, 0xE0, 0xA0, D_3014468);
+    ptr->unk_24 = PokeIcon_CreateModelPreview(ptr->unk_20, 0xE4, 0xA0, 0, 0, 0xE0, 0xA0, D_3014468);
     ptr->unk_24->unk_00 &= ~2;
-    func_8001B2D8(ptr->unk_24, ptr->unk_14, 0x108D);
+    PokeIcon_SetPreviewMon(ptr->unk_24, ptr->unk_14, 0x108D);
     PlaySoundEffect(4);
 }
 
@@ -60,7 +60,7 @@ void BattleResultScreen_HandleInput(unk_D_82F20A10* arg0) {
     s32 var_t0;
     Controller* temp_a3;
 
-    arg0->unk_1C = func_8001B9D4(arg0->unk_24);
+    arg0->unk_1C = PokeIcon_RenderPreview(arg0->unk_24);
     temp_a3 = *D_82F13C10[arg0->unk_18->unk_000E];
     var_t0 = 0;
     tmp = gResultOptionIndex;
@@ -416,7 +416,7 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
     }
 }
 
-void func_82F06D50(void) {
+void Trade_ResetInfoBox(void) {
     gBattleResultScreenState.unk_00 = 0;
     gBattleResultScreenState.unk_04 = 0;
     gBattleResultScreenState.unk_06 = 0;
@@ -430,7 +430,7 @@ void func_82F06D50(void) {
     gBattleResultScreenState.unk_24 = NULL;
 }
 
-void func_82F06D88(void) {
+void Trade_UpdateInfoBox(void) {
     unk_D_82F20A10* ptr = &gBattleResultScreenState;
 
     if (ptr->unk_00) {
@@ -450,12 +450,12 @@ void func_82F06D88(void) {
     }
 }
 
-void func_82F06E04(void) {
+void Trade_DrawInfoBoxIfActive(void) {
     if (gBattleResultScreenState.unk_00 != 0) {
         BattleResultScreen_Draw(&gBattleResultScreenState);
     }
 }
 
-s32 func_82F06E38(void) {
+s32 Trade_GetInfoBoxState(void) {
     return gBattleResultScreenState.unk_00;
 }

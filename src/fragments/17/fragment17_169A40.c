@@ -31,7 +31,7 @@ static u8* gBackgroundTextureData;
 static u8 gStageFadeAlpha;
 static unk_func_80027FA0 D_86B10830;
 
-void func_86B0A0B0(void) {
+void MewtwoIntro_DrawOverlay(void) {
 }
 
 void Stage_SetupCamera(void) {
@@ -79,7 +79,7 @@ void Stage_RenderFrame(void) {
     Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     Gfx_FinishFrame();
     Graph_SetTextureState(gStageRootGraphNode);
-    func_86B0A0B0();
+    MewtwoIntro_DrawOverlay();
     Stage_Advance();
 }
 

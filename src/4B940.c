@@ -19,7 +19,7 @@ void Rom_SelectDevice(s32 arg0) {
     osCreateMesgQueue(&gRomDmaQueue, &gRomDmaMsg, 1);
 }
 
-void func_8004ADB0(u32 dev_addr, u32 dram_addr, u32 size) {
+void Rom_DmaRead(u32 dev_addr, u32 dram_addr, u32 size) {
     OSIoMesg msg;
     u32 dev = dev_addr;
     u32 dram = dram_addr;

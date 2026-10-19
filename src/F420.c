@@ -107,7 +107,7 @@ Vec3f* GraphNode_SetPositionFromVec3s(Vec3f* arg0, Vec3s* arg1) {
     return arg0;
 }
 
-Vec3f* func_8000E9D4(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
+Vec3f* Vec3f_CrossProductFromPoints(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3) {
     arg0->x = ((arg2->y - arg1->y) * (arg3->z - arg2->z)) - ((arg3->y - arg2->y) * (arg2->z - arg1->z));
     arg0->y = ((arg2->z - arg1->z) * (arg3->x - arg2->x)) - ((arg3->z - arg2->z) * (arg2->x - arg1->x));
     arg0->z = ((arg2->x - arg1->x) * (arg3->y - arg2->y)) - ((arg3->x - arg2->x) * (arg2->y - arg1->y));
@@ -681,7 +681,7 @@ f32 Math_ApproachF32(f32 current, f32 target, f32 inc, f32 dec) {
     return current;
 }
 
-s16 func_80010500(s16* arg0, s32 arg1, s32 arg2) {
+s16 PackedBits_ReadSigned(s16* arg0, s32 arg1, s32 arg2) {
     Vec2s_s32 spC;
     s16* temp_a3 = &arg0[(arg1 * arg2) / 16];
     s16* p_spC = &spC.x;
@@ -754,15 +754,15 @@ void RGB_ToHSV(f32 arg0, f32 arg1, f32 arg2, Vec3f* arg3) {
     }
 }
 
-void func_80010720(Color_RGBA8_u32 arg0, Vec3f* arg1) {
+void Color_RGBA8ToHSV(Color_RGBA8_u32 arg0, Vec3f* arg1) {
     RGB_ToHSV((s32)arg0.r / 255.0f, (s32)arg0.g / 255.0f, (s32)arg0.b / 255.0f, arg1);
 }
 
-void func_80010780(u16 arg0, Vec3f* arg1) {
+void Color_RGB5551ToHSV(u16 arg0, Vec3f* arg1) {
     RGB_ToHSV(((arg0 & 0xF800) >> 0xB) / 31.0f, ((arg0 & 0x7C0) >> 6) / 31.0f, ((arg0 & 0x3E) >> 1) / 31.0f, arg1);
 }
 
-f32 func_800107F0(f32 arg0, f32 arg1, f32 arg2) {
+f32 Color_HSVInterpolate(f32 arg0, f32 arg1, f32 arg2) {
     f32 ret;
 
     if (arg0 < 0.0f) {
@@ -824,12 +824,12 @@ void HSV_ToRGB(f32* arg0, f32* arg1, f32* arg2, Vec3f* arg3) {
         sp24 = temp_ft4 - sp20;
     }
 
-    *arg0 = func_800107F0(arg3->x + 120.0f, sp24, sp20);
-    *arg1 = func_800107F0(arg3->x, sp24, sp20);
-    *arg2 = func_800107F0(arg3->x - 120.0f, sp24, sp20);
+    *arg0 = Color_HSVInterpolate(arg3->x + 120.0f, sp24, sp20);
+    *arg1 = Color_HSVInterpolate(arg3->x, sp24, sp20);
+    *arg2 = Color_HSVInterpolate(arg3->x - 120.0f, sp24, sp20);
 }
 
-u16 func_80010B20(Vec3f* arg0) {
+u16 Color_HSVToRGB5551(Vec3f* arg0) {
     f32 sp2C;
     f32 sp28;
     f32 sp24;
@@ -857,7 +857,7 @@ u16 func_80010B20(Vec3f* arg0) {
     return (var_a1 << 0xB) | (var_v1 << 6) | (var_a0 * 2) | 1;
 }
 
-Color_RGBA8_u32* func_80010BD4(Color_RGBA8_u32* arg0, Vec3f* arg1, s32 arg2) {
+Color_RGBA8_u32* Color_HSVToRGBA8(Color_RGBA8_u32* arg0, Vec3f* arg1, s32 arg2) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -893,13 +893,13 @@ Color_RGBA8_u32* func_80010BD4(Color_RGBA8_u32* arg0, Vec3f* arg1, s32 arg2) {
     return arg0;
 }
 
-u16 func_80010CA8(u16 arg0, arg1_func_80010CA8 arg1) {
+u16 Color_AdjustRGB5551(u16 arg0, arg1_func_80010CA8 arg1) {
     Vec3f sp24;
     s32 a;
     s32 b;
 
     if (arg0 & 1) {
-        func_80010780(arg0, &sp24);
+        Color_RGB5551ToHSV(arg0, &sp24);
 
         if (arg1.unk_00 != 0) {
             sp24.x += (arg1.unk_00 * 0.015625f);
@@ -924,12 +924,12 @@ u16 func_80010CA8(u16 arg0, arg1_func_80010CA8 arg1) {
             sp24.z = (2.0f * (D_80073660[b][a] / 65535.0f)) - 1.0f;
         }
 
-        arg0 = func_80010B20(&sp24);
+        arg0 = Color_HSVToRGB5551(&sp24);
     }
     return arg0;
 }
 
-u32 func_80010E20(u32 arg0, arg1_func_80010CA8 arg1) {
+u32 Color_AdjustRGBA8(u32 arg0, arg1_func_80010CA8 arg1) {
     Vec3f sp2C;
     Color_RGBA8_u32 arg;
     s32 a;
@@ -938,7 +938,7 @@ u32 func_80010E20(u32 arg0, arg1_func_80010CA8 arg1) {
     arg.rgba = arg0;
 
     if (arg.a > 0) {
-        func_80010720(arg, &sp2C);
+        Color_RGBA8ToHSV(arg, &sp2C);
 
         if (arg1.unk_00 != 0) {
             sp2C.x += (arg1.unk_00 * 0.015625f);
@@ -964,7 +964,7 @@ u32 func_80010E20(u32 arg0, arg1_func_80010CA8 arg1) {
             sp2C.z = (2.0f * (D_80073660[b][a] / 65535.0f)) - 1.0f;
         }
 
-        func_80010BD4(&arg, &sp2C, arg.a);
+        Color_HSVToRGBA8(&arg, &sp2C, arg.a);
     }
 
     return arg.rgba;

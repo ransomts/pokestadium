@@ -112,7 +112,7 @@ void TileBackgroundTexture(u8* arg0, u8* arg1, u8 arg2) {
     }
 }
 
-void func_84A003BC(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8* arg5, f32 arg6) {
+void Glc_DrawScaledTextureRgba(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8* arg5, f32 arg6) {
     UNUSED s32 pad;
 
     gDPLoadTextureBlock(gDisplayListHead++, arg5, G_IM_FMT_RGBA, G_IM_SIZ_16b, (s32)(arg4 / arg6), (s32)(arg3 / arg6),
@@ -193,11 +193,11 @@ void DrawPortraitIcons(void) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-            func_84A003BC(tmp, 0xF0, 0x80, 0x40, 0x80, D_3009290, 2.0f);
-            func_84A003BC(tmp, 0x130, 0x80, 0x40, 0x80, D_300A290, 2.0f);
-            func_84A003BC(tmp, 0x170, 0x80, 0x40, 0x80, D_300B290, 2.0f);
-            func_84A003BC(tmp + 8, 0x138, 0x70, 0x38, 0x80, D_84A03138[i].unk_04 + 0x208, 2.0f);
-            func_84A003BC(tmp + 8, 0x170, 0x70, 0x38, 0x80, D_84A03138[i].unk_04 + 0x1008, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp, 0xF0, 0x80, 0x40, 0x80, D_3009290, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp, 0x130, 0x80, 0x40, 0x80, D_300A290, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp, 0x170, 0x80, 0x40, 0x80, D_300B290, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp + 8, 0x138, 0x70, 0x38, 0x80, D_84A03138[i].unk_04 + 0x208, 2.0f);
+            Glc_DrawScaledTextureRgba(tmp + 8, 0x170, 0x70, 0x38, 0x80, D_84A03138[i].unk_04 + 0x1008, 2.0f);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -350,8 +350,8 @@ void DrawDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg1);
 
-        func_84A003BC(0x1F6, 0x160, 0x60, 0x30, 0x60, arg0->unk_24, 1.5f);
-        func_84A003BC(0x1F6, 0x190, 0x60, 0x30, 0x60, arg0->unk_24 + 0x1000, 1.5f);
+        Glc_DrawScaledTextureRgba(0x1F6, 0x160, 0x60, 0x30, 0x60, arg0->unk_24, 1.5f);
+        Glc_DrawScaledTextureRgba(0x1F6, 0x190, 0x60, 0x30, 0x60, arg0->unk_24 + 0x1000, 1.5f);
 
         gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
         gDPSetEnvColor(gDisplayListHead++, arg0->unk_18.r, arg0->unk_18.g, arg0->unk_18.b, (arg2 * 0x96) / 255);
@@ -395,11 +395,11 @@ void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg1);
 
-    func_84A003BC(0x1D6, 0x13E, 0x80, 0x1A, 0x80, arg0->unk_24, 1.28f);
-    func_84A003BC(0x1D6, 0x158, 0x80, 0x1A, 0x80, arg0->unk_24 + 0xFA0, 1.28f);
-    func_84A003BC(0x1D6, 0x172, 0x80, 0x1A, 0x80, arg0->unk_24 + 0x1F40, 1.28f);
-    func_84A003BC(0x1D6, 0x18C, 0x80, 0x1A, 0x80, arg0->unk_24 + 0x2EE0, 1.28f);
-    func_84A003BC(0x1D6, 0x1A6, 0x80, 0x1A, 0x80, arg0->unk_24 + 0x3E80, 1.28f);
+    Glc_DrawScaledTextureRgba(0x1D6, 0x13E, 0x80, 0x1A, 0x80, arg0->unk_24, 1.28f);
+    Glc_DrawScaledTextureRgba(0x1D6, 0x158, 0x80, 0x1A, 0x80, arg0->unk_24 + 0xFA0, 1.28f);
+    Glc_DrawScaledTextureRgba(0x1D6, 0x172, 0x80, 0x1A, 0x80, arg0->unk_24 + 0x1F40, 1.28f);
+    Glc_DrawScaledTextureRgba(0x1D6, 0x18C, 0x80, 0x1A, 0x80, arg0->unk_24 + 0x2EE0, 1.28f);
+    Glc_DrawScaledTextureRgba(0x1D6, 0x1A6, 0x80, 0x1A, 0x80, arg0->unk_24 + 0x3E80, 1.28f);
 
     gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, arg0->unk_18.r, arg0->unk_18.g, arg0->unk_18.b, (arg2 * 0x96) / 255);
@@ -430,7 +430,7 @@ void DrawAlternateDetailPanel(unk_D_84A02F00* arg0, u8 arg1, u8 arg2) {
     Text_SetupDL();
 }
 
-void func_84A01BAC(void) {
+void Glc_UpdateRoomInfoPanelFade(void) {
     u8 sp1F;
 
     if (D_84A030E8 > 0) {
@@ -463,7 +463,7 @@ void func_84A01BAC(void) {
     }
 }
 
-void func_84A01DAC(void) {
+void Glc_UpdateMapCursor(void) {
     s16 sp1E;
     s16 sp1C;
     unk_D_84A02F00* temp_a1 = &D_84A02F00[D_84A030E0];
@@ -485,7 +485,7 @@ void func_84A01DAC(void) {
     AnimateIconOffset(sp1E - 3, sp1C);
 }
 
-void func_84A01EE0(void) {
+void Glc_Draw(void) {
     Stage_BeginDisplayList();
 
     if (D_84A030E0 < 9) {
@@ -514,8 +514,8 @@ void func_84A01EE0(void) {
 
     DrawAnimatedSprites();
     DrawMessageList();
-    func_84A01BAC();
-    func_84A01DAC();
+    Glc_UpdateRoomInfoPanelFade();
+    Glc_UpdateMapCursor();
     DrawPortraitIcons();
     AnimatePortraitScroll();
     DrawInfoPanel();
@@ -526,7 +526,7 @@ s32 func_84A02074(void) {
     return 0;
 }
 
-s32 func_84A0207C(void) {
+s32 Glc_SelectRoom(void) {
     s16 var_s4;
     s16 var_s1;
     s16 var_s3;
@@ -588,7 +588,7 @@ s32 func_84A0207C(void) {
                 Stage_FadeIn(8);
             }
         }
-        func_84A01EE0();
+        Glc_Draw();
     }
     return var_s3;
 }
@@ -627,7 +627,7 @@ void LoadTrainerPortraits(void) {
     }
 }
 
-void func_84A02410(void) {
+void Glc_ClearTrainerPanels(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -635,7 +635,7 @@ void func_84A02410(void) {
     }
 }
 
-void func_84A02434(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void Glc_AnimateTrainerPanelsIn(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 i;
 
     while (arg2-- > 0) {
@@ -643,7 +643,7 @@ void func_84A02434(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
             D_84A03138[i].unk_02 += arg3;
         }
         Game_UpdateInputs();
-        func_84A01EE0();
+        Glc_Draw();
     }
 }
 
@@ -660,22 +660,22 @@ s32 PlayIntroSequence(void) {
     for (i = 3; i >= 0; i--) {
         D_84A030E8 = i << 6;
         Game_UpdateInputs();
-        func_84A01EE0();
+        Glc_Draw();
     }
 
     Music_ChangeTrack(0x2B);
     if (D_84A030E0 == 0xB) {
-        func_84A02434(0, 0, 6, -0x40);
+        Glc_AnimateTrainerPanelsIn(0, 0, 6, -0x40);
     } else {
-        func_84A02434(0, 3, 3, -0x40);
-        func_84A02434(0, 2, 2, -0x40);
-        func_84A02434(0, 1, 2, -0x40);
-        func_84A02434(0, 0, 2, -0x40);
+        Glc_AnimateTrainerPanelsIn(0, 3, 3, -0x40);
+        Glc_AnimateTrainerPanelsIn(0, 2, 2, -0x40);
+        Glc_AnimateTrainerPanelsIn(0, 1, 2, -0x40);
+        Glc_AnimateTrainerPanelsIn(0, 0, 2, -0x40);
     }
 
     while (var_s1_2 == 0) {
         Game_UpdateInputs();
-        func_84A01EE0();
+        Glc_Draw();
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             var_s1_2 = 1;
         } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
@@ -691,28 +691,28 @@ s32 PlayIntroSequence(void) {
         PlaySoundEffect(0x1C);
         var_s1 = 0;
         if (D_84A030E0 == 0xB) {
-            func_84A02434(0, 0, 6, -0x40);
+            Glc_AnimateTrainerPanelsIn(0, 0, 6, -0x40);
         } else {
-            func_84A02434(3, 3, 2, -0x40);
-            func_84A02434(2, 3, 2, -0x40);
-            func_84A02434(1, 3, 2, -0x40);
-            func_84A02434(0, 3, 3, -0x40);
+            Glc_AnimateTrainerPanelsIn(3, 3, 2, -0x40);
+            Glc_AnimateTrainerPanelsIn(2, 3, 2, -0x40);
+            Glc_AnimateTrainerPanelsIn(1, 3, 2, -0x40);
+            Glc_AnimateTrainerPanelsIn(0, 3, 3, -0x40);
         }
-        func_84A02410();
-        func_84A01EE0();
+        Glc_ClearTrainerPanels();
+        Glc_Draw();
     } else {
         PlaySoundEffect(3);
         var_s1 = 2;
         Music_StopTrack(0x12);
         if (D_84A030E0 == 0xB) {
-            func_84A02434(0, 0, 6, 0x40);
+            Glc_AnimateTrainerPanelsIn(0, 0, 6, 0x40);
         } else {
-            func_84A02434(0, 0, 2, 0x40);
-            func_84A02434(0, 1, 2, 0x40);
-            func_84A02434(0, 2, 2, 0x40);
-            func_84A02434(0, 3, 3, 0x40);
+            Glc_AnimateTrainerPanelsIn(0, 0, 2, 0x40);
+            Glc_AnimateTrainerPanelsIn(0, 1, 2, 0x40);
+            Glc_AnimateTrainerPanelsIn(0, 2, 2, 0x40);
+            Glc_AnimateTrainerPanelsIn(0, 3, 3, 0x40);
         }
-        func_84A02410();
+        Glc_ClearTrainerPanels();
 
         if (D_84A03180.unk_04 < 8) {
             Music_ChangeTrack(0x2A);
@@ -723,7 +723,7 @@ s32 PlayIntroSequence(void) {
         for (i = 1; i < 5; i++) {
             D_84A030E8 = (i << 6) - 1;
             Game_UpdateInputs();
-            func_84A01EE0();
+            Glc_Draw();
         }
     }
 
@@ -743,12 +743,12 @@ s32 ShowBattleStartPrompt(void) {
     for (i = 1; i < 5; i++) {
         D_84A030EC = i * 0x14;
         Game_UpdateInputs();
-        func_84A01EE0();
+        Glc_Draw();
     }
 
     do {
         Game_UpdateInputs();
-        func_84A01EE0();
+        Glc_Draw();
     } while (!BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B));
 
     PlaySoundEffect(0x01100011);
@@ -767,7 +767,7 @@ s32 ShowBattleStartPrompt(void) {
     for (i = 3; i >= 0; i--) {
         D_84A030EC = i * 0x14;
         Game_UpdateInputs();
-        func_84A01EE0();
+        Glc_Draw();
     }
 
     D_84A03188 = D_84A030E0;
@@ -776,21 +776,21 @@ s32 ShowBattleStartPrompt(void) {
     return 2;
 }
 
-s16 func_84A02A34(s16 arg0) {
+s16 Glc_RunMenu(s16 arg0) {
     s16 i;
 
     if (Stage_GetFadeState() == 1) {
         Stage_FadeIn(8);
         for (i = 0; i < 9; i++) {
             Game_UpdateInputs();
-            func_84A01EE0();
+            Glc_Draw();
         }
     }
 
     while ((arg0 != 0) && (arg0 != 1)) {
         switch (arg0) {
             case 2:
-                arg0 = func_84A0207C();
+                arg0 = Glc_SelectRoom();
                 break;
 
             case 3:
@@ -812,7 +812,7 @@ s16 func_84A02A34(s16 arg0) {
     return arg0;
 }
 
-s16 func_84A02B70(s16 arg0) {
+s16 Glc_InitMenu(s16 arg0) {
     s16 i;
     s16 sp2C = 2;
     s16 var_v1 = D_84A03180.unk_04;
@@ -879,14 +879,14 @@ s32 InitializePokemonStadiumMenu(s32 arg0, UNUSED s32 arg1) {
     D_84A0317C = BinArchive_GetFile(D_84A03170, 0xE);
     Menu_SetupDisplayList();
 
-    sp1E = func_84A02B70(arg0);
+    sp1E = Glc_InitMenu(arg0);
     if (D_84A03180.unk_04 < 8) {
         Music_ChangeTrack(0x2A);
     } else {
         Music_ChangeTrack(0x27);
     }
 
-    sp1E = func_84A02A34(sp1E);
+    sp1E = Glc_RunMenu(sp1E);
     Stage_Terminate();
     FontManager_Free();
 

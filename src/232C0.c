@@ -609,12 +609,12 @@ s32 PlayerSave_InitAndLoad(s32 arg0) {
     if (gPlayerSaveData[arg0].unk_50 != NULL) {
         gPlayerSaveData[arg0].unk_00 |= 1;
         if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
-            func_8002B274(arg0, 2);
+            Game_ShutdownAndLoadFragment(arg0, 2);
         }
 
         sp28 = LoadAndVerifySave(arg0);
         if (GbPak_SetPowerState(arg0, sp2F) == 0) {
-            func_8002B274(arg0, 2);
+            Game_ShutdownAndLoadFragment(arg0, 2);
         }
 
         if (sp28 == 0) {
@@ -631,7 +631,7 @@ s32 SaveSlot_Load(s32 arg0) {
     if (((1 << arg0) & gActivePlayerMask) && (gPlayerSaveData[arg0].unk_03 == 0)) {
         sp1C = PlayerSave_InitAndLoad(arg0);
         if (sp1C == 0) {
-            func_8002B274(arg0, 2);
+            Game_ShutdownAndLoadFragment(arg0, 2);
         }
     }
 
@@ -659,7 +659,7 @@ s32 PlayerSave_LoadBoxes(s32 arg0) {
         gPlayerSaveData[arg0].unk_00 |= 2;
         if (SaveSlot_GetPokemonBall(arg0) > 0) {
             if (GbPak_InitAndTest(arg0, &sp37, gPlayerSaveData[arg0].unk_19) == 0) {
-                func_8002B274(arg0, 2);
+                Game_ShutdownAndLoadFragment(arg0, 2);
             }
 
             if (ReadSaveBoxData(arg0, 0) != 0) {
@@ -667,7 +667,7 @@ s32 PlayerSave_LoadBoxes(s32 arg0) {
             }
 
             if (GbPak_SetPowerState(arg0, sp37) == 0) {
-                func_8002B274(arg0, 2);
+                Game_ShutdownAndLoadFragment(arg0, 2);
             }
 
             if (sp2C == 0) {
@@ -694,14 +694,14 @@ s32 SnapSelect_SetCameraMode(s32 arg0) {
     if ((1 << arg0) & gActivePlayerMask) {
         if (gPlayerSaveData[arg0].unk_03 == 0) {
             if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
-                func_8002B274(arg0, 2);
+                Game_ShutdownAndLoadFragment(arg0, 2);
             }
 
             temp_s1 = SaveSlot_Load(arg0);
             temp_s1 &= PlayerSave_LoadBoxes(arg0);
 
             if (GbPak_SetPowerState(arg0, sp2F) == 0) {
-                func_8002B274(arg0, 2);
+                Game_ShutdownAndLoadFragment(arg0, 2);
             }
 
             if (temp_s1 != 0) {
@@ -811,7 +811,7 @@ s32 InitializePlayers(void) {
             if (var_s0->unk_02) {
                 gActivePlayerMask |= (1 << i);
                 if (GbPak_TestMemory(i, var_s0->unk_19) == 0) {
-                    func_8002B274(i, 2);
+                    Game_ShutdownAndLoadFragment(i, 2);
                 }
                 PlayerSave_Refresh(i);
             }
@@ -820,7 +820,7 @@ s32 InitializePlayers(void) {
     }
 
     if (gControllerPortMask != 0) {
-        func_8000B318(gActivePlayerMask);
+        GbTower_SetPollMask(gActivePlayerMask);
     }
 
     return gActivePlayerMask;
@@ -840,7 +840,7 @@ s32 PlayerSave_WriteBoxes(s32 arg0) {
 
     if (gPlayerSaveData[arg0].unk_00 & 2) {
         if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
-            func_8002B274(arg0, 2);
+            Game_ShutdownAndLoadFragment(arg0, 2);
         }
 
         sp28 = WriteAndVerifyBoxData(arg0, 0);
@@ -859,7 +859,7 @@ s32 PlayerSave_WriteHeader(s32 arg0) {
 
     if (gPlayerSaveData[arg0].unk_00 & 1) {
         if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
-            func_8002B274(arg0, 2);
+            Game_ShutdownAndLoadFragment(arg0, 2);
         }
 
         sp28 = SaveAndVerifyHeader(arg0);
@@ -878,7 +878,7 @@ s32 PlayerSave_FullSave(s32 arg0) {
     s32 sp28;
 
     if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
-        func_8002B274(arg0, 2);
+        Game_ShutdownAndLoadFragment(arg0, 2);
     }
 
     sp28 = SaveAndVerifyFooter(arg0);
@@ -898,17 +898,17 @@ void PlayerSave_VerifyPresence(s32 arg0) {
     u8 sp27;
 
     if (GbPak_InitAndTest(arg0, &sp27, gPlayerSaveData[arg0].unk_19) == 0) {
-        func_8002B274(arg0, 2);
+        Game_ShutdownAndLoadFragment(arg0, 2);
     }
 
     if (VerifySaveChecksum(arg0) == 0) {
-        func_8002B274(arg0, 1);
+        Game_ShutdownAndLoadFragment(arg0, 1);
     }
 }
 
 void PlayerSave_PowerOff(s32 arg0) {
     if (GbPak_SetPowerState(arg0, 0) == 0) {
-        func_8002B274(arg0, 2);
+        Game_ShutdownAndLoadFragment(arg0, 2);
     }
 }
 

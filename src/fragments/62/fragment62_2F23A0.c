@@ -96,7 +96,7 @@ void SetEntityScale(unk_BattlePlayerEntity* arg0, f32 arg1) {
     arg0->unk_000.unk_030.z = arg1;
 }
 
-s32 func_84307EC4(unk_BattlePlayerEntity* arg0) {
+s32 BattleScene_GetSelectedSideTeamSize(unk_BattlePlayerEntity* arg0) {
     return arg0->unk_720->unk_08[arg0->unk_654.unk_2B]->unk_002;
 }
 
@@ -178,7 +178,7 @@ s16 GetPlayerSideYaw(unk_BattlePlayerEntity* arg0) {
 }
 
 s32 GetSpeciesOfPlayerIndex(s32 arg0) {
-    return D_84390010[arg0]->unk_000.unk_01A;
+    return sActivePokemon[arg0]->unk_000.unk_01A;
 }
 
 s32 GetSpecies(unk_BattlePlayerEntity* arg0) {
@@ -393,7 +393,7 @@ s32 Battle_HasStatusEffect(unk_BattlePlayerEntity* arg0) {
 
     temp_s0 = &arg0->unk_654;
 
-    for (i = 0; i < func_84307EC4(arg0); i++) {
+    for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         ptr = &arg0->unk_724->unk_01C[i];
         if ((ptr->unk_05 & 0x20) && (arg0->unk_654.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
             return 1;
@@ -420,7 +420,7 @@ s32 Battle_HasAbilityEffect(unk_BattlePlayerEntity* arg0) {
 
     temp_s0 = &arg0->unk_654;
 
-    for (i = 0; i < func_84307EC4(arg0); i++) {
+    for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         ptr = &arg0->unk_724->unk_01C[i];
         if ((ptr->unk_05 & 7) && (arg0->unk_654.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
             return 1;
@@ -460,7 +460,7 @@ void Battle_InitModelAnimation(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEnt
     IsPrimaryEntity(arg0);
     GraphNode_ClearCallback(&arg1->unk_000);
 
-    if (arg0 == D_84390010[0]) {
+    if (arg0 == sActivePokemon[0]) {
         arg1->unk_000.modelPhase = 0;
     } else {
         arg1->unk_000.modelPhase = 1;
@@ -478,7 +478,7 @@ void Battle_InitModelAnimation(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEnt
     }
 
     if (!(arg0->unk_654.unk_34 & 0x200)) {
-        if (arg0 == D_84390010[0]) {
+        if (arg0 == sActivePokemon[0]) {
             UpdateEntityBasePosition(arg0);
             arg1->unk_000.unk_01E.y = 0x4000;
         } else {
@@ -494,13 +494,13 @@ void Battle_InitSubModelAnimation(unk_BattlePlayerEntity* arg0, unk_D_84390010_7
     sp24 = GraphNode_GetModelRoot(arg0, 0);
     GraphNode_ClearCallback(&arg1->unk_000);
 
-    if (arg0 == D_84390010[0]) {
+    if (arg0 == sActivePokemon[0]) {
         arg1->unk_000.modelPhase = 0xFF;
     } else {
         arg1->unk_000.modelPhase = 0xFF;
     }
 
-    if (arg0 == D_84390010[0]) {
+    if (arg0 == sActivePokemon[0]) {
         GraphNode_InitChild(&arg1->unk_000, 1, arg2, sp24);
     } else {
         GraphNode_InitChild(&arg1->unk_000, 2, arg2, sp24);
@@ -522,7 +522,7 @@ void Battle_InitEffectModels(unk_BattlePlayerEntity* arg0, s16 arg1) {
         var_s0 = &arg0->unk_168[i];
 
         GraphNode_ClearCallback(&var_s0->unk_000);
-        if (arg0 == D_84390010[0]) {
+        if (arg0 == sActivePokemon[0]) {
             var_s0->unk_000.modelPhase = 0xFF;
         } else {
             var_s0->unk_000.modelPhase = 0xFF;
@@ -534,7 +534,7 @@ void Battle_InitEffectModels(unk_BattlePlayerEntity* arg0, s16 arg1) {
 
         var_s0->unk_000.unk_000.unk_02 &= ~0x40;
 
-        if (arg0 == D_84390010[0]) {
+        if (arg0 == sActivePokemon[0]) {
             Vec3f_Set(&var_s0->unk_000.unk_024, -150.0f, 0.0f, 0.0f);
             var_s0->unk_000.unk_01E.y = 0x4000;
         } else {

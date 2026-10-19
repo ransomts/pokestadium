@@ -71,7 +71,7 @@ s32 GbPak_InitAndTest(s32 arg0, u8* arg1, u8* arg2) {
     }
 
     if (osGbpakReadId(&gGbPakPfs[arg0], &gbpakId, &status) != 0) {
-        func_8002B274(arg0, 1);
+        Game_ShutdownAndLoadFragment(arg0, 1);
     }
     if ((status & OS_GBPAK_RSTB_STATUS) && (osGbpakCheckConnector(&gGbPakPfs[arg0], &status) == 0)) {
         osGbmbcRamEnable(&gGbPakPfs[arg0]);
@@ -86,7 +86,7 @@ s32 GbPak_SetPowerState(s32 arg0, u8 arg1) {
     s32 temp_v1;
 
     if (osGbpakGetStatus(&gGbPakPfs[arg0], &status) != 0) {
-        func_8002B274(arg0, 1);
+        Game_ShutdownAndLoadFragment(arg0, 1);
     }
 
     temp_v1 = !((status & OS_GBPAK_RSTB_DETECTION) != 0);
@@ -97,7 +97,7 @@ s32 GbPak_SetPowerState(s32 arg0, u8 arg1) {
     return temp_v1;
 }
 
-void func_8000A924(void) {
+void GbTower_PowerOffAllPaks(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -151,7 +151,7 @@ s32 GbPak_InitAll(void) {
                 temp_v0 = osGbpakReadId(&gGbPakPfs[i], &sp4C, &status);
                 if (temp_v0 == 0) {
                     if (!(status & 8)) {
-                        func_8002B274(i, 2);
+                        Game_ShutdownAndLoadFragment(i, 2);
                     }
                     if (GbPak_IsSupportedPokemonCart(&sp4C) != 0) {
                         if (temp_v0 == 4) {
@@ -162,7 +162,7 @@ s32 GbPak_InitAll(void) {
                             gGbPakReady[i] = 1;
                             gGbPakValidMask |= (1 << i);
                         } else {
-                            func_8002B274(i, 2);
+                            Game_ShutdownAndLoadFragment(i, 2);
                         }
                     } else {
                         gGbPakValidMask |= (1 << i);
@@ -171,7 +171,7 @@ s32 GbPak_InitAll(void) {
                 } else {
                     gGbPakReady[i] = 0;
                     if (temp_v0 == 4) {
-                        func_8002B274(i, 2);
+                        Game_ShutdownAndLoadFragment(i, 2);
                     }
                 }
             }
@@ -188,7 +188,7 @@ s32 GbPak_IsCartRemoved(s32 arg0) {
     // check the error code returned (if applicable) by the osGbpakGetStatus
     // call.
     if ((ret == PFS_ERR_NOPACK) || (ret == PFS_ERR_DEVICE) || (ret == PFS_ERR_CONTRFAIL)) {
-        func_8002B274(arg0, 1);
+        Game_ShutdownAndLoadFragment(arg0, 1);
     }
     return !((status & OS_GBPAK_GBCART_ON) != 0);
 }
@@ -198,7 +198,7 @@ s32 GbPak_IsCartInserted(s32 arg0) {
     s32 ret = osGbpakGetStatus(&gGbPakPfs[arg0], &status);
 
     if ((ret == PFS_ERR_NOPACK) || (ret == PFS_ERR_DEVICE) || (ret == PFS_ERR_CONTRFAIL)) {
-        func_8002B274(arg0, 1);
+        Game_ShutdownAndLoadFragment(arg0, 1);
     }
     return ((status & OS_GBPAK_GBCART_ON) != 0);
 }
@@ -273,7 +273,7 @@ s32 GbPak_Write(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
     return var_v1;
 }
 
-int func_8000B0CC(s32 arg0, s32 arg1) {
+int GbPak_SelectRomBank(s32 arg0, s32 arg1) {
     u8 sp28[0x20];
     int i;
     int ret;
@@ -330,7 +330,7 @@ s32 GbPak_WriteDataAligned(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
             var_v1_2 = temp_v0_5;
         }
         temp_s1_2 = var_v1_2 - temp_s1;
-        ret = func_8000B0CC(arg0, temp_s1 >> 0xE);
+        ret = GbPak_SelectRomBank(arg0, temp_s1 >> 0xE);
         if (ret != 0) {
             return ret;
         }
@@ -344,7 +344,7 @@ s32 GbPak_WriteDataAligned(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
     return ret;
 }
 
-u8 func_8000B318(u8 arg0) {
+u8 GbTower_SetPollMask(u8 arg0) {
     u8 temp_v0 = gGbPakReadMask;
 
     gGbPakReadMask = arg0;
@@ -363,7 +363,7 @@ void Cont_FinishRead(void) {
                 gGbPakReadErrorCount[D_800697D0]++;
                 if (gGbPakReadErrorCount[D_800697D0] == 3) {
                     gGbPakReadErrorFlag = 1;
-                    func_8002B274(D_800697D0, 1);
+                    Game_ShutdownAndLoadFragment(D_800697D0, 1);
                 }
             }
         }

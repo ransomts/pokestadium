@@ -66,7 +66,7 @@ void GbEmu_Create(UnkInputStruct8000D738* arg0) {
     osCreateMesgQueue(&gGbEmuState->queue2, &gGbEmuState->mesg, 1);
     osCreateThread(&gGbEmuThreadInfo->thread, 10, GbAudio_ThreadMain, NULL, (u32)gGbEmuThreadInfo + 0x21E0, 0x11);
     osCreateThread(&gGbEmuState->thread, 8, GbEmu_ThreadMain, NULL, (u32)gGbEmuState + 0x21E0, 0xF);
-    gGbEmuThreadId = func_8000B318(0);
+    gGbEmuThreadId = GbTower_SetPollMask(0);
     osStartThread(&gGbEmuState->thread);
 }
 
@@ -79,9 +79,9 @@ OSMesg* GbEmu_RecvMessage(void) {
 
 void GbEmu_Shutdown(UnkInputStruct8000D738* arg0) {
     *arg0 = gGbEmuState->inputConfig;
-    func_8000B318(gGbEmuThreadId);
+    GbTower_SetPollMask(gGbEmuThreadId);
     osViBlack(1U);
-    func_80001C64();
+    Display_ApplyPendingVideoMode();
     ThreadList_Remove(gGbEmuState);
     ThreadList_Remove(gGbEmuThreadInfo);
     osDestroyThread(&gGbEmuState->thread);

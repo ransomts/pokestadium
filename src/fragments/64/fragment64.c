@@ -346,7 +346,7 @@ void SelectionState_Reset(s32 arg0) {
     ptr->unk_00 = 0;
 }
 
-void func_84800CA4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void BattleMenu_DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     DrawPanelAlt(arg0, arg1, arg2, arg3, gPanelColors[arg4]);
 }
 
@@ -361,7 +361,7 @@ void DrawPanelContents(unk_D_848037A0* arg0) {
     temp_s7 = arg0->unk_0012;
     temp_fp = arg0->unk_0014;
 
-    func_84800CA4(temp_s7, temp_fp, 0x1D7, 0x5E, arg0->unk_0001);
+    BattleMenu_DrawBorderedPanel(temp_s7, temp_fp, 0x1D7, 0x5E, arg0->unk_0001);
 
     gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
@@ -438,7 +438,7 @@ void ModeSelectionPanel_Draw(unk_D_848037A0* arg0) {
         }
 
         DrawPanelContents(arg0);
-        func_84800CA4(var_s1, var_s2, 0x15F, 0x53, arg0->unk_0001);
+        BattleMenu_DrawBorderedPanel(var_s1, var_s2, 0x15F, 0x53, arg0->unk_0001);
 
         if (arg0->unk_000A == 0) {
             StatusIcon_DrawAnimated(var_s1 + 0x26, var_s2 + 0x30, arg0->unk_0000);
@@ -503,7 +503,7 @@ void ResultMessage_Draw(unk_D_848037A0* arg0) {
         }
         // clang-format on
 
-        func_84800CA4(sp34, sp30, 0x15F, 0x53, arg0->unk_0001);
+        BattleMenu_DrawBorderedPanel(sp34, sp30, 0x15F, 0x53, arg0->unk_0001);
         Text_ResetState();
         Text_SetFont(0x10, 0);
         Text_SetEnvColor(0xFF, 0x63, 0x63, 0xFF);
@@ -544,7 +544,7 @@ void CenteredMessage_Draw(unk_D_848037A0* arg0) {
         // clang-format on
         arg0->unk_0007 = 0;
         DrawPanelContents(arg0);
-        func_84800CA4(sp3C, sp38, 0x15F, 0x53, arg0->unk_0001);
+        BattleMenu_DrawBorderedPanel(sp3C, sp38, 0x15F, 0x53, arg0->unk_0001);
         Text_ResetState();
         Text_SetFont(0x20, 0);
         Text_BeginRender();
@@ -600,7 +600,7 @@ void PokemonInfo_Draw(unk_D_848037A0* arg0) {
     sp7C = arg0->unk_0014;
     sp78 = &arg0->unk_0018[temp_s1];
 
-    func_84800CA4(temp_fp, sp7C, 0x1D7, 0x5E, arg0->unk_0001);
+    BattleMenu_DrawBorderedPanel(temp_fp, sp7C, 0x1D7, 0x5E, arg0->unk_0001);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -692,7 +692,7 @@ void DrawPanelHeader(unk_D_848037A0* arg0) {
         sp24 = 0x123;
     }
 
-    func_84800CA4(sp26, sp24, 0x76, 0x20, arg0->unk_0001);
+    BattleMenu_DrawBorderedPanel(sp26, sp24, 0x76, 0x20, arg0->unk_0001);
     Text_ResetState();
     Text_SetFont(8, 0);
     Text_Print((sp26 - (MeasureTextWidth(8, 0, arg0->unk_001C->unk_008) / 2)) + 0x3B, sp24 + 5,
@@ -1181,7 +1181,7 @@ void Panel_SyncSelectionToData(void) {
     Panel_UpdatePokemonOrder(&D_84816420->unk_1194[1], &gSelectionStates[1]);
 }
 
-void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4) {
+void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4) {
     s32 i;
     unk_D_848037A0* temp_v1;
     PokemonData* temp_s0;
@@ -1208,13 +1208,13 @@ void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 
         ApplyPPUps(temp_s0);
         temp_s0->unk_06 = gSpeciesBaseStats[temp_s0->unk_00.unk_00 - 1].unk_06;
         temp_s0->unk_07 = gSpeciesBaseStats[temp_s0->unk_00.unk_00 - 1].unk_07;
-        func_8001B0DC(temp_v1->unk_0020[i], 0, temp_s0);
+        PokeIcon_LoadModelTextureForMon(temp_v1->unk_0020[i], 0, temp_s0);
     }
 
     gPanelCount++;
 }
 
-void func_84803110(unk_D_800AE540* arg0) {
+void BattleMenu_InitOrderSelectPanels(unk_D_800AE540* arg0) {
     unk_D_800AE540_1194* temp_s0 = &arg0->unk_1194[0];
 
     D_84816420 = arg0;
@@ -1229,28 +1229,28 @@ void func_84803110(unk_D_800AE540* arg0) {
     SelectionState_Init(&gSelectionStates[1], &D_84816420->unk_1194[1], D_84816420->unk_0001);
 
     if (temp_s0->unk_01 == 1) {
-        func_84802F7C(0x50, 0x21, temp_s0->unk_08[0], 0, -1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->unk_08[0], 0, -1);
     } else if (temp_s0->unk_08[0]->unk_001 < temp_s0->unk_08[1]->unk_001) {
-        func_84802F7C(0x50, 0x21, temp_s0->unk_08[0], 0, gPanelCount + 1);
-        func_84802F7C(0x50, 0x81, temp_s0->unk_08[1], 0, gPanelCount - 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->unk_08[0], 0, gPanelCount + 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x81, temp_s0->unk_08[1], 0, gPanelCount - 1);
     } else {
-        func_84802F7C(0x50, 0x21, temp_s0->unk_08[1], 0, gPanelCount + 1);
-        func_84802F7C(0x50, 0x81, temp_s0->unk_08[0], 0, gPanelCount - 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->unk_08[1], 0, gPanelCount + 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x81, temp_s0->unk_08[0], 0, gPanelCount - 1);
     }
 
     temp_s0++;
     if (temp_s0->unk_01 == 1) {
-        func_84802F7C(0x50, 0x146, temp_s0->unk_08[0], 1, -1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->unk_08[0], 1, -1);
     } else if (temp_s0->unk_08[0]->unk_001 < temp_s0->unk_08[1]->unk_001) {
-        func_84802F7C(0x50, 0xE6, temp_s0->unk_08[0], 1, gPanelCount + 1);
-        func_84802F7C(0x50, 0x146, temp_s0->unk_08[1], 1, gPanelCount - 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0xE6, temp_s0->unk_08[0], 1, gPanelCount + 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->unk_08[1], 1, gPanelCount - 1);
     } else {
-        func_84802F7C(0x50, 0xE6, temp_s0->unk_08[1], 1, gPanelCount + 1);
-        func_84802F7C(0x50, 0x146, temp_s0->unk_08[0], 1, gPanelCount - 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0xE6, temp_s0->unk_08[1], 1, gPanelCount + 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->unk_08[0], 1, gPanelCount - 1);
     }
 }
 
-s32 func_84803368(s32 arg0, s32 arg1) {
+s32 BattleMenu_RunOrderSelectScreen(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MSEL');
@@ -1272,7 +1272,7 @@ s32 func_84803368(s32 arg0, s32 arg1) {
     gMsgBank_Common = GetMessageBank(0x12);
     gPanelStrings = GetMessageBank(6);
 
-    func_84803110(&gBattleContext);
+    BattleMenu_InitOrderSelectPanels(&gBattleContext);
     Music_ChangeTrack(7);
     Stage_Set(sp24);
     Stage_RunFadeSequence(Panel_MainLoop, 8, 8);

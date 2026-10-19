@@ -83,7 +83,7 @@ s32 NumericInput_ReadAndHandle(unk_func_8820E99C_030_030* arg0);
 s32 NumericInput_HandleDirectionStep(unk_func_8002E128_arg0* arg0);
 void DrawNumber(s32 arg0, s32 arg1, s32 arg2);
 void DrawNumberPadded(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_8002E8E4(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+void Gfx_DrawNumberDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 s32 GetInputDirectionSign(unk_func_8002EBD8_arg0* arg0);
 s32 GetMoveTargetType(s32 arg0);
 Color_RGBA8 FadeColorTowardGray(Color_RGBA8 arg0, f32 arg1);

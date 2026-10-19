@@ -21,14 +21,14 @@ void Graph_InitRoots(void) {
 }
 
 void Graph_AddToRootList0(Fragment2_1GraphNode* arg0) {
-    func_80011938(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
+    GeoNode_CreateModelPart(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
     GraphNode_AddChild(&gGraphRoot0, &arg0->unk_000);
     arg0->modelPhase = 0;
     arg0->unk_000.unk_01 &= ~1;
 }
 
 void Graph_AddToRootList1(Fragment2_1GraphNode* arg0) {
-    func_80011938(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
+    GeoNode_CreateModelPart(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
     GraphNode_AddChild(&gGraphRoot1, &arg0->unk_000);
     arg0->unk_000.unk_01 &= ~1;
 }
@@ -221,11 +221,11 @@ void UpdatePokemonStateOnExit(unk_func_8001C248* arg0) {
 
 void StartPokemonAnimation(unk_func_8001C248* arg0) {
     if (!(arg0->unk_01D & 0x40) && (arg0->unk_01D & 0x80)) {
-        func_80019A7C(arg0->unk_000.unk_10, arg0->unk_020, arg0->unk_024);
+        PokeIcon_RequestBackgroundLoad(arg0->unk_000.unk_10, arg0->unk_020, arg0->unk_024);
         arg0->unk_01D |= 0x40;
         arg0->unk_01D &= ~0x10;
         if (arg0->unk_01D & 0x20) {
-            func_80019CE0(arg0->unk_000.unk_10);
+            PokeIcon_WaitBackgroundLoad(arg0->unk_000.unk_10);
             arg0->unk_024 = arg0->unk_000.unk_10->unk_28;
             arg0->unk_01D &= ~0xE0;
         }
@@ -233,7 +233,7 @@ void StartPokemonAnimation(unk_func_8001C248* arg0) {
 }
 
 void FinishPokemonAnimation(unk_func_8001C248* arg0) {
-    if (func_80019C58(arg0->unk_000.unk_10) != 0) {
+    if (PokeIcon_PollBackgroundLoad(arg0->unk_000.unk_10) != 0) {
         arg0->unk_024 = arg0->unk_000.unk_10->unk_28;
         arg0->unk_01D &= ~0xE0;
         arg0->unk_01D |= 0x10;

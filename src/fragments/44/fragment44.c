@@ -1196,7 +1196,7 @@ s32 ItemSelect_ApplySelection(unk_D_83407B38* arg0) {
     return sp1C;
 }
 
-void func_83503C9C(s32 arg0, s32 arg1) {
+void Gallery_AlbumMain(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('ALBM');

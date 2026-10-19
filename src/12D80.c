@@ -1197,7 +1197,7 @@ void Gfx_UpdatePrimColor(unk_D_800ABB10* arg0) {
     }
 }
 
-void func_80015A44(unk_D_800ABB10* arg0) {
+void GeoRender_SetCombineTableEntry(unk_D_800ABB10* arg0) {
     if (arg0->unk_00 != gCurrentRenderState->unk_25) {
         Gfx_SyncPipe();
         Gfx_SetCombineMode(gDisplayListHead++, D_8006F1B4[arg0->unk_00]);
@@ -1355,7 +1355,7 @@ void Graph_BeginLayerRender(s16 arg0, MtxF* arg1) {
             }
 
             Gfx_UpdatePrimColor(&gRenderState);
-            func_80015A44(&gRenderState);
+            GeoRender_SetCombineTableEntry(&gRenderState);
         }
 
         if (arg1 != gCurrentRenderState->unk_0C) {

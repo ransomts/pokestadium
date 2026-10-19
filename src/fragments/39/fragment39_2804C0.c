@@ -52,7 +52,7 @@ void MessageBox_SetState(s16 arg0) {
     }
 }
 
-void func_82504930(unk_D_8250A480* arg0) {
+void KidsClub_AdvanceMatchBannerOpen(unk_D_8250A480* arg0) {
     arg0->unk_02--;
     arg0->unk_04 = ((arg0->unk_02 * -0x1B4) / 10) + 0xBC;
     arg0->unk_08 = ((arg0->unk_02 * 0x224) / 10) + 0x5C;
@@ -61,7 +61,7 @@ void func_82504930(unk_D_8250A480* arg0) {
     }
 }
 
-void func_82504A08(unk_D_8250A480* arg0) {
+void KidsClub_UpdateMatchBannerIdle(unk_D_8250A480* arg0) {
     arg0->unk_02 = 0x12C;
     arg0->unk_10 = 0.0f;
     if (arg0->unk_02 <= 0) {
@@ -73,7 +73,7 @@ void func_82504A08(unk_D_8250A480* arg0) {
     }
 }
 
-void func_82504A68(unk_D_8250A480* arg0) {
+void KidsClub_AdvanceMatchBannerClose(unk_D_8250A480* arg0) {
     arg0->unk_02--;
     arg0->unk_04 = ((arg0->unk_02 * -0x1C4) / 10) + 0x280;
     arg0->unk_08 = ((arg0->unk_02 * 0x224) / 10) - 0x1C8;
@@ -88,13 +88,13 @@ void SelectionScreen_HandleInput(void) {
     if (ptr->unk_00 != 0) {
         switch (ptr->unk_00) {
             case 1:
-                func_82504930(ptr);
+                KidsClub_AdvanceMatchBannerOpen(ptr);
                 break;
             case 2:
-                func_82504A08(ptr);
+                KidsClub_UpdateMatchBannerIdle(ptr);
                 break;
             case 3:
-                func_82504A68(ptr);
+                KidsClub_AdvanceMatchBannerClose(ptr);
                 break;
         }
     }
@@ -267,7 +267,7 @@ void OptionMenu_SetState(s16 arg0, s16 arg1) {
     }
 }
 
-void func_82505998(unk_D_8250A498* arg0) {
+void KidsClub_AdvanceRoundBannerOpen(unk_D_8250A498* arg0) {
     arg0->unk_02--;
     arg0->unk_08 = ((arg0->unk_02 * -0x68) / 10) + 0x3C;
     arg0->unk_0A = ((arg0->unk_02 * 0x56) / 10) + 0x18A;
@@ -276,7 +276,7 @@ void func_82505998(unk_D_8250A498* arg0) {
     }
 }
 
-void func_82505A70(unk_D_8250A498* arg0) {
+void KidsClub_UpdateRoundBannerCrossfade(unk_D_8250A498* arg0) {
     if (arg0->unk_10 != arg0->unk_12) {
         arg0->unk_02--;
         if (arg0->unk_02 <= 0) {
@@ -287,7 +287,7 @@ void func_82505A70(unk_D_8250A498* arg0) {
     }
 }
 
-void func_82505AB8(unk_D_8250A498* arg0) {
+void KidsClub_AdvanceRoundBannerClose(unk_D_8250A498* arg0) {
     arg0->unk_02--;
     arg0->unk_08 = ((arg0->unk_02 * 0x68) / 10) - 0x2C;
     arg0->unk_0A = ((arg0->unk_02 * -0x56) / 10) + 0x1E0;
@@ -302,15 +302,15 @@ void OptionMenu_Update(void) {
     if (ptr->unk_00 != 0) {
         switch (ptr->unk_00) {
             case 1:
-                func_82505998(ptr);
+                KidsClub_AdvanceRoundBannerOpen(ptr);
                 break;
 
             case 2:
-                func_82505A70(ptr);
+                KidsClub_UpdateRoundBannerCrossfade(ptr);
                 break;
 
             case 3:
-                func_82505AB8(ptr);
+                KidsClub_AdvanceRoundBannerClose(ptr);
                 break;
         }
     }

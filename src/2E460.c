@@ -365,7 +365,7 @@ void DrawNumberPadded(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void func_8002E8E4(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gfx_DrawNumberDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);

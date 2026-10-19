@@ -217,7 +217,7 @@ void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
         DrawGradientPanel(arg1 - 4, arg2 + 0x9C, 0x80, 0x74, &gGradientColor, &gGradientColor);
         tmp1 = arg1 + 0x28;
         tmp2 = (SINS(gMenuAnimTimer * 2) * 2) + (arg2 + 0x8C);
-        func_81300870(D_3006060, tmp1, tmp2, 0x30, 0x10, 1.0f);
+        TransferPak_DrawSpinningPakIcon(D_3006060, tmp1, tmp2, 0x30, 0x10, 1.0f);
     }
 
     Text_ResetState();
@@ -264,7 +264,7 @@ void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
     Text_SetupDL();
 }
 
-void func_81300870(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5) {
+void TransferPak_DrawSpinningPakIcon(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5) {
     UNUSED s32 pad;
     Gfx* gfx;
     u16 a1;
@@ -439,7 +439,7 @@ void RenderMenuScreen(void) {
     UpdatePulseAlpha();
 
     if (gCurrentGameState == 0x25) {
-        func_81300870(gBgTextureSequence[D_81303F3C], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
+        TransferPak_DrawSpinningPakIcon(gBgTextureSequence[D_81303F3C], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
         D_81303F3C = (D_81303F3C + 1) % 5;
         DrawTextureRectFlipped(D_30055B0, 0x98, 0xEE, 0x20, 0x23, 2.0f, 1);
         DrawTextureRectFlipped(D_3004EF0, 0xC2, 0x100, 0x28, 0x2B, 2.0f, 1);
@@ -540,7 +540,7 @@ void Menu_InitInput(void) {
     MenuInput_Init();
 }
 
-void func_813024C8(s32 arg0) {
+void TransferPak_DrawFrame(s32 arg0) {
     Stage_BeginDisplayList();
     if (gCurrentGameState == 0x25) {
         Gfx_DrawBackgroundGrid(gMenuMiscAssets);
@@ -684,7 +684,7 @@ s32 Menu_RunScreen(s32 arg0) {
     while (Stage_GetFadeState() != 0) {
         Menu_InitInput();
         Menu_UpdateEntryAnimations();
-        func_813024C8(0);
+        TransferPak_DrawFrame(0);
     }
 
     if (arg0 == 1) {
@@ -694,7 +694,7 @@ s32 Menu_RunScreen(s32 arg0) {
     while (var_s0 != 0) {
         Menu_InitInput();
         Menu_UpdateEntryAnimations();
-        func_813024C8(1);
+        TransferPak_DrawFrame(1);
 
         if (gEntryConfirmState > 0) {
             if (gPlayer1Controller->buttonPressed & 0x8000) {
@@ -710,7 +710,7 @@ s32 Menu_RunScreen(s32 arg0) {
         for (i = 0; i < 20; i++) {
             Menu_InitInput();
             Menu_UpdateEntryAnimations();
-            func_813024C8(1);
+            TransferPak_DrawFrame(1);
         }
     }
 
@@ -724,11 +724,11 @@ s32 Menu_RunScreen(s32 arg0) {
     while (Stage_GetFadeState() != 1) {
         Menu_InitInput();
         Menu_UpdateEntryAnimations();
-        func_813024C8(0);
+        TransferPak_DrawFrame(0);
     }
 
     if ((var_s1 != -1) && (gSelectedEntryIndex >= 0)) {
-        func_8002908C(gSelectedEntryIndex);
+        GbSave_SetActivePort(gSelectedEntryIndex);
     }
 
     return var_s1;

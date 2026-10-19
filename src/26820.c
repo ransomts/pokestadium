@@ -912,7 +912,7 @@ void GbsSetPlayerMoney(u16* arg0) {
     }
 }
 
-s32 func_800280C4(void) {
+s32 Save_GetOptionsField1E(void) {
     return gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_1E;
 }
 
@@ -925,11 +925,11 @@ void ResultScreen_SetRandomSeed(u8 arg0) {
     }
 }
 
-s32 func_80028118(void) {
+s32 Save_GetOptionsField1F(void) {
     return gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_1F;
 }
 
-void func_80028128(u8 arg0) {
+void Save_SetOptionsField1F(u8 arg0) {
     unk_D_800AE4E8_004_2* temp_v0 = gGbsSaveBanks[2].unk_04.unk2;
 
     if (temp_v0->unk_1EA0.unk_1F != arg0) {
@@ -938,11 +938,11 @@ void func_80028128(u8 arg0) {
     }
 }
 
-s32 func_8002816C(void) {
+s32 Save_GetSelectedPokemonId(void) {
     return gGbsSaveBanks[2].unk_04.unk2->unk_1EA0.unk_1C;
 }
 
-void func_8002817C(u8 arg0, u8 arg1) {
+void Save_SetSelectedPokemonId(u8 arg0, u8 arg1) {
     s32 temp_v0 = (((arg1 & 1) << 8) | arg0) & 0xFFFF;
     unk_D_800AE4E8_004_2* temp_v1 = gGbsSaveBanks[2].unk_04.unk2;
 
@@ -994,7 +994,7 @@ s32 DecodeBattleSaveData(unk_func_800281D4* arg0, PokemonData* arg1) {
     return var_s5;
 }
 
-s32 func_8002847C(void) {
+s32 Save_ContinueRecordExists(void) {
     s32 var_v1 = 0;
 
     if (gGbsSaveBanks[2].unk_00 & 1) {
@@ -1022,7 +1022,7 @@ s32 GbsSyncBank(s16 arg0) {
     if ((gGbsSaveBanks[arg0].unk_00 & 1) && (gGbsSaveBanks[arg0].unk_00 & 2)) {
         _bcopy(gGbsSaveBanks[arg0].unk_04.unk1, gGbsSaveBanks[arg0].unk_08.unk1, gGbsBankSizeTable[arg0]);
         var_s0 = 0;
-        while (func_80003B04(arg0) == -1) {
+        while (Flash_EraseSectorByIndex(arg0) == -1) {
             var_s0++;
             if (var_s0 == 4) {
                 return -1;
@@ -1039,7 +1039,7 @@ s32 GbsSyncBank(s16 arg0) {
         }
 
         var_s0 = 0;
-        while (func_80003B04(arg0 + 4) == -1) {
+        while (Flash_EraseSectorByIndex(arg0 + 4) == -1) {
             var_s0 += 1;
             if (var_s0 == 4) {
                 return -1;
@@ -1094,7 +1094,7 @@ s32 GbsAllocateBank(s16 arg0, u32 arg1) {
     return sp2C;
 }
 
-void func_80028840(void) {
+void Save_InitializeBank0(void) {
     s32 j;
     s32 sp28;
 
@@ -1112,7 +1112,7 @@ void func_80028840(void) {
     }
 }
 
-void func_800288F4(void) {
+void Save_InitializeBank1(void) {
     s32 i;
     s32 sp28;
 
@@ -1130,7 +1130,7 @@ void func_800288F4(void) {
     }
 }
 
-void func_800289AC(void) {
+void Save_InitializeBank2(void) {
     s32 i;
     s32 sp20;
 
@@ -1153,7 +1153,7 @@ void func_800289AC(void) {
     }
 }
 
-void func_80028A74(void) {
+void Save_InitializeBank3(void) {
     s32 i;
 
     if (GbsAllocateBank(3, 0x3880) != 0) {
@@ -1173,19 +1173,19 @@ s32 GbsEnsureBankLoaded(s16 arg0) {
     if (!((gGbsSaveBanks[arg0].unk_00 & 1) != 0)) {
         switch (arg0) {
             case 0:
-                func_80028840();
+                Save_InitializeBank0();
                 break;
 
             case 1:
-                func_800288F4();
+                Save_InitializeBank1();
                 break;
 
             case 2:
-                func_800289AC();
+                Save_InitializeBank2();
                 break;
 
             case 3:
-                func_80028A74();
+                Save_InitializeBank3();
                 break;
         }
     }
@@ -1193,7 +1193,7 @@ s32 GbsEnsureBankLoaded(s16 arg0) {
     return (gGbsSaveBanks[arg0].unk_00 & 1) != 0;
 }
 
-void func_80028BE4(void) {
+void Save_EnsureAllBanksLoaded(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -1201,11 +1201,11 @@ void func_80028BE4(void) {
     }
 }
 
-void func_80028C28(void) {
+void Save_EnsureBank3Loaded(void) {
     GbsEnsureBankLoaded(3);
 }
 
-s32 func_80028C48(s16 arg0) {
+s32 Save_SetActiveRecordBank(s16 arg0) {
     s32 tmp = gCurrentBankSlot;
 
     if ((arg0 >= 0) && (arg0 < 9)) {
@@ -1214,7 +1214,7 @@ s32 func_80028C48(s16 arg0) {
     return tmp;
 }
 
-s32 func_80028C7C(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
+s32 RegisteredTeam_ReadSlot(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     s32 var_v1 = 0;
     s32 idx1 = gCurrentBankSlot / 4;
     s32 idx2 = gCurrentBankSlot % 4;
@@ -1226,7 +1226,7 @@ s32 func_80028C7C(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 func_80028D60(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
+s32 RegisteredTeam_WriteSlot(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     s32 var_v1 = 0;
     s32 idx1 = gCurrentBankSlot / 4;
     s32 idx2 = gCurrentBankSlot % 4;
@@ -1239,7 +1239,7 @@ s32 func_80028D60(unk_D_800AE4E8_004_1_000* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 func_80028E68(void) {
+s32 Deck_FindFirstFreeTeamSlot(void) {
     s32 i;
 
     for (i = 0; i < 10; i++) {
@@ -1251,7 +1251,7 @@ s32 func_80028E68(void) {
     return i;
 }
 
-void func_80028EB8(void) {
+void Deck_CompactRegisteredTeams(void) {
     unk_D_800AE4E8_004_1_000 sp40;
     s32 i;
     s32 j;
@@ -1270,8 +1270,8 @@ void func_80028EB8(void) {
         for (i = j; i < 9; i++) {
             if (i && i) {}
 
-            func_80028C7C(&sp40, i + 1);
-            func_80028D60(&sp40, i);
+            RegisteredTeam_ReadSlot(&sp40, i + 1);
+            RegisteredTeam_WriteSlot(&sp40, i);
             GbsCommitBankBlock(0x10, i);
         }
 

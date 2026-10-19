@@ -11,29 +11,29 @@ void Particle_SetDirectionOffsets(ParticleEffectInstance* arg0) {
 
     switch (Particle_GetShortCE(arg0)) {
         case 0:
-            func_8140A578(arg0, 0x4000);
+            Particle_Field94_AddX_0A578(arg0, 0x4000);
             break;
 
         case 1:
-            func_8140A578(arg0, -0x3000);
+            Particle_Field94_AddX_0A578(arg0, -0x3000);
             Particle_RotateY(arg0, 0x4000);
             Particle_RotateX(arg0, 0x2000);
             break;
 
         case 2:
-            func_8140A578(arg0, 0x2000);
+            Particle_Field94_AddX_0A578(arg0, 0x2000);
             Particle_RotateY(arg0, 0x2000);
             Particle_RotateX(arg0, 0x2000);
             break;
 
         case 3:
-            func_8140A578(arg0, -0x8000);
+            Particle_Field94_AddX_0A578(arg0, -0x8000);
             Particle_RotateY(arg0, 0x2000);
             Particle_RotateX(arg0, 0x6000);
             break;
 
         case 4:
-            func_8140A578(arg0, -0x4000);
+            Particle_Field94_AddX_0A578(arg0, -0x4000);
             Particle_RotateY(arg0, 0x4000);
             Particle_RotateX(arg0, 0x4000);
             break;
@@ -74,35 +74,35 @@ void Particle_SetupSpecialOffsets(ParticleEffectInstance* arg0) {
 
     switch (sp26) {
         case 0:
-            func_8140A578(arg0, 0x5800);
+            Particle_Field94_AddX_0A578(arg0, 0x5800);
             Particle_RotateY(arg0, 0x5800);
             Particle_RotateX(arg0, -0x6000);
             break;
 
         case 1:
-            func_8140A578(arg0, 0x6000);
+            Particle_Field94_AddX_0A578(arg0, 0x6000);
             Particle_RotateY(arg0, 0);
             Particle_RotateX(arg0, 0x5800);
             break;
 
         case 2:
-            func_8140A578(arg0, 0x2000);
+            Particle_Field94_AddX_0A578(arg0, 0x2000);
             Particle_RotateY(arg0, 0x2000);
             Particle_RotateX(arg0, 0x2000);
             break;
 
         case 3:
-            func_8140A578(arg0, 0x6000);
+            Particle_Field94_AddX_0A578(arg0, 0x6000);
             break;
 
         case 4:
-            func_8140A578(arg0, 0);
+            Particle_Field94_AddX_0A578(arg0, 0);
             Particle_RotateY(arg0, 0);
             Particle_RotateX(arg0, 0);
             break;
 
         case 5:
-            func_8140A578(arg0, 0x6000);
+            Particle_Field94_AddX_0A578(arg0, 0x6000);
             Particle_RotateY(arg0, 0x2800);
             Particle_RotateX(arg0, 0x5800);
             break;
@@ -150,35 +150,35 @@ void Particle_SetupSpecialColorOffsets(ParticleEffectInstance* arg0) {
 
     switch (sp26) {
         case 0:
-            func_8140A578(arg0, 0x5800);
+            Particle_Field94_AddX_0A578(arg0, 0x5800);
             Particle_RotateY(arg0, 0x5800);
             Particle_RotateX(arg0, -0x6000);
             break;
 
         case 1:
-            func_8140A578(arg0, 0x6000);
+            Particle_Field94_AddX_0A578(arg0, 0x6000);
             Particle_RotateY(arg0, 0);
             Particle_RotateX(arg0, 0x5800);
             break;
 
         case 2:
-            func_8140A578(arg0, 0x2000);
+            Particle_Field94_AddX_0A578(arg0, 0x2000);
             Particle_RotateY(arg0, 0x2000);
             Particle_RotateX(arg0, 0x2000);
             break;
 
         case 3:
-            func_8140A578(arg0, 0x6000);
+            Particle_Field94_AddX_0A578(arg0, 0x6000);
             break;
 
         case 4:
-            func_8140A578(arg0, 0);
+            Particle_Field94_AddX_0A578(arg0, 0);
             Particle_RotateY(arg0, 0);
             Particle_RotateX(arg0, 0);
             break;
 
         case 5:
-            func_8140A578(arg0, 0x6000);
+            Particle_Field94_AddX_0A578(arg0, 0x6000);
             Particle_RotateY(arg0, 0x2800);
             Particle_RotateX(arg0, 0x5800);
             break;
@@ -322,10 +322,10 @@ void Particle_DirectionalInit(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 1.0f);
 
     if (sp22 == 0x42) {
-        func_8140A578(arg0, -0x2000);
+        Particle_Field94_AddX_0A578(arg0, -0x2000);
         Particle_RotateY(arg0, 0x4000);
     } else {
-        func_8140A578(arg0, 0x2000);
+        Particle_Field94_AddX_0A578(arg0, 0x2000);
         Particle_RotateY(arg0, 0x4000);
     }
 
@@ -374,10 +374,10 @@ void Particle_HandleState_Directional_Scale(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 1.0f);
 
     if (sp22 == 0x42) {
-        func_8140A578(arg0, -0x2000);
+        Particle_Field94_AddX_0A578(arg0, -0x2000);
         Particle_RotateY(arg0, 0x4000);
     } else {
-        func_8140A578(arg0, 0x2000);
+        Particle_Field94_AddX_0A578(arg0, 0x2000);
         Particle_RotateY(arg0, 0x4000);
     }
 
@@ -669,7 +669,7 @@ void ParticleEffect_StateHandler_50DAC(ParticleEffectInstance* arg0) {
             Particle_ApproachScaleFactor1(arg0, 0.8f, 0.1f);
             Particle_ApproachSpeedScaled(arg0, 1.0, 1.0f);
             if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                func_8140B180(arg0, 0.5f, 0.4f);
+                Particle_Field7C_ApproachY_0B180(arg0, 0.5f, 0.4f);
                 Particle_AddVelocityYFromTarget(arg0);
             }
             break;
@@ -1294,7 +1294,7 @@ void ParticleEffect_FireworkHandler2(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_84352620(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackEndEffect43Descriptor40DelayedAnimFade_InitParticle(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortAC(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.7f);
@@ -1309,7 +1309,7 @@ void func_84352620(ParticleEffectInstance* arg0) {
 void ParticleEffect_SparkleHandler(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_84352620(arg0);
+            BattleAnim_CallbackEndEffect43Descriptor40DelayedAnimFade_InitParticle(arg0);
             break;
 
         case 2:
@@ -2545,7 +2545,7 @@ void ParticleEffect_RandomRotation(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8435581C(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffects29And60And104And110DefaultDescriptorBurstEmitter(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_RandomRotation(arg0);
@@ -3104,13 +3104,13 @@ void ParticleEffect_MultiNodeD(void) {
 }
 
 void ParticleEffect_CreateMultipleNodes(s32 arg0) {
-    ParticleDef_CreateFull(0, 1, 4, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    ParticleDef_CreateFull(8, 1, 4, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    ParticleDef_CreateFull(0x10, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    ParticleDef_CreateFull(0x18, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    ParticleDef_CreateFull(0x20, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    ParticleDef_CreateFull(0x30, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
-    ParticleDef_CreateFull(0x3C, 1, 8, func_8435581C, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0, 1, 4, BattleAnim_CallbackStartEffects29And60And104And110DefaultDescriptorBurstEmitter, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(8, 1, 4, BattleAnim_CallbackStartEffects29And60And104And110DefaultDescriptorBurstEmitter, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x10, 1, 8, BattleAnim_CallbackStartEffects29And60And104And110DefaultDescriptorBurstEmitter, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x18, 1, 8, BattleAnim_CallbackStartEffects29And60And104And110DefaultDescriptorBurstEmitter, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x20, 1, 8, BattleAnim_CallbackStartEffects29And60And104And110DefaultDescriptorBurstEmitter, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x30, 1, 8, BattleAnim_CallbackStartEffects29And60And104And110DefaultDescriptorBurstEmitter, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
+    ParticleDef_CreateFull(0x3C, 1, 8, BattleAnim_CallbackStartEffects29And60And104And110DefaultDescriptorBurstEmitter, &gParticleDefaultCallback, 0, 1, 2, 0, arg0, 0);
 }
 
 void ParticleEffect_GroupSetupA(void) {

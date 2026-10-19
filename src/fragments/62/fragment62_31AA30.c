@@ -27,7 +27,7 @@ void RenderOverlayWithIcon(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     RenderIconMasked(arg0, arg1);
 }
 
-void func_84330388(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+void BattleAnim_DrawAsset1FAnimatedI4WithAsset20DisplayList(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     Matrix_SubmitBillboard(arg1, arg0->unk_2C, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
@@ -63,7 +63,7 @@ void RenderStatusBar(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     Gfx_DrawQuad(gPanelBgVerts);
 }
 
-void func_84330688(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAssets27And28LayeredI4QuadVariantB(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     Matrix_Submit2DRotateTranslateScale(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -89,7 +89,7 @@ void RenderMultiBlockIcon(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg
     Gfx_DrawQuad(gFullscreenQuadVtx);
 }
 
-void func_84330934(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset87AnimatedI4Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     Matrix_Submit2DRotateTranslateScale(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -100,7 +100,7 @@ void func_84330934(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     Gfx_DrawQuad(gFullscreenQuadVtx);
 }
 
-void func_84330A18(ParticleEffectInstance* arg0, u8* arg1) {
+void BattleAnim_DrawI4AtlasYScaled(ParticleEffectInstance* arg0, u8* arg1) {
     Matrix_Submit2DRotateTranslateScaleY(arg0->unk_2C.x, arg0->unk_2C.y, arg0->unk_94.z, arg0->unk_1C);
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -109,15 +109,15 @@ void func_84330A18(ParticleEffectInstance* arg0, u8* arg1) {
     Gfx_DrawTiledTextureI4b(arg1, gPanelQuadVerts, 0x40, 0x40, 0x40, 0x40);
 }
 
-void func_84330AF0(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
-    func_84330A18(arg0, gWaterTexture[0x19]);
+void BattleAnim_DrawAsset19I4AtlasYScaled(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+    BattleAnim_DrawI4AtlasYScaled(arg0, gWaterTexture[0x19]);
 }
 
-void func_84330B18(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
-    func_84330A18(arg0, gWaterTexture[0x5E]);
+void BattleAnim_DrawAsset5EI4AtlasYScaled(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+    BattleAnim_DrawI4AtlasYScaled(arg0, gWaterTexture[0x5E]);
 }
 
-void func_84330B40(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset1AFrameI4Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -128,7 +128,7 @@ void func_84330B40(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84330C70(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset1CRgba16Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -138,7 +138,7 @@ void func_84330C70(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84330D64(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset1ERgba16Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -148,7 +148,7 @@ void func_84330D64(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84330E58(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAssetC3Rgba16Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -158,7 +158,7 @@ void func_84330E58(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84330F4C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset1DRotatedI4Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     Vec3s sp40;
 
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
@@ -174,7 +174,7 @@ void func_84330F4C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331094(UNUSED ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawParticleNoop(UNUSED ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
 }
 
 void RenderTimerDigits(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
@@ -201,7 +201,7 @@ void RenderTimerDigitsAlt(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331314(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset13FrameI4YScaledQuadC(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -223,7 +223,7 @@ void RenderTimerNumber(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_8433157C(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+void BattleAnim_DrawAsset13FrameI4ModelQuadB(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -234,7 +234,7 @@ void func_8433157C(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_843316A8(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+void BattleAnim_DrawAsset13FrameI4ModelQuadC(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -245,7 +245,7 @@ void func_843316A8(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_843317D4(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset1BI4TriangleA(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -256,7 +256,7 @@ void func_843317D4(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_843318F8(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset1BI4TriangleB(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -267,7 +267,7 @@ void func_843318F8(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331A1C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAsset13FrameDiv2I4Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_BaseUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -278,7 +278,7 @@ void func_84331A1C(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331B58(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+void BattleAnim_DrawAsset18FrameI4ModelQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
 
     Gfx_LoadTextureBlockI4b_ClampWrapper(gWaterTexture[0x18] + (arg0->unk_C7 << 9), 0x20, 0x20);
@@ -286,7 +286,7 @@ void func_84331B58(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     Gfx_DrawQuadBillboardRoll(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
 }
 
-void func_84331C34(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawAssetA9I4XYScaledQuad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPDisplayList(gDisplayListHead++, gDL_OverlayUI);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
@@ -297,6 +297,6 @@ void func_84331C34(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_84331D60(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+void BattleAnim_DrawParticleFullScreenColorOverlay(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     RenderPrimColorRect(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
 }

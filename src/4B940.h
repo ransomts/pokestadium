@@ -4,6 +4,6 @@
 #include "global.h"
 
 void Rom_SelectDevice(s32);
-void func_8004ADB0(u32 dev_addr, u32 dram_addr, u32 size);
+void Rom_DmaRead(u32 dev_addr, u32 dram_addr, u32 size);
 
 #endif // _4B940_H_

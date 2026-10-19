@@ -161,9 +161,9 @@ s32 SelectionScreen_Entry(s32 arg0, s32 arg1);
 void MessageBox_SetBank(char** arg0);
 s32 MessageBox_GetState(void);
 void MessageBox_SetState(s16 arg0);
-void func_82504930(unk_D_8250A480* arg0);
-void func_82504A08(unk_D_8250A480* arg0);
-void func_82504A68(unk_D_8250A480* arg0);
+void KidsClub_AdvanceMatchBannerOpen(unk_D_8250A480* arg0);
+void KidsClub_UpdateMatchBannerIdle(unk_D_8250A480* arg0);
+void KidsClub_AdvanceMatchBannerClose(unk_D_8250A480* arg0);
 void SelectionScreen_HandleInput(void);
 void Gfx_DrawBorderedBox(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
 void Text_PrintWavy(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4);
@@ -172,15 +172,15 @@ void OptionMenu_Init(char** arg0);
 void func_825057A0(void);
 void OptionMenu_SetSelection(s16 arg0);
 void OptionMenu_SetState(s16 arg0, s16 arg1);
-void func_82505998(unk_D_8250A498* arg0);
-void func_82505A70(unk_D_8250A498* arg0);
-void func_82505AB8(unk_D_8250A498* arg0);
+void KidsClub_AdvanceRoundBannerOpen(unk_D_8250A498* arg0);
+void KidsClub_UpdateRoundBannerCrossfade(unk_D_8250A498* arg0);
+void KidsClub_AdvanceRoundBannerClose(unk_D_8250A498* arg0);
 void OptionMenu_Update(void);
 void OptionMenu_Render(void);
 
 void UpdateMenuRandomSeed(void);
 void SetCurrentMenuIndex(s16);
-void func_82505FE0(s16);
+void KidsClub_ResetTournamentState(s16);
 s16 GetRandomUnusedMenuSlot(void);
 
 #endif // _FRAGMENT39_H_

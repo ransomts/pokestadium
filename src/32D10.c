@@ -132,7 +132,7 @@ u8 GraphRoot_GetCurrentModelSlot(void) {
     return ret;
 }
 
-s16 func_800325E0(void) {
+s16 ModelRenderer_GetObjectType(void) {
     s16 ret = *(s16*)Util_ConvertAddrToVirtAddr(&gDefaultGraphRoot->unk_01A);
     return ret;
 }

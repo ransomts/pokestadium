@@ -4,14 +4,14 @@
 #include "global.h"
 
 void MiniGame_PollInputs(void);
-void func_86600050(void);
+void Minigame_Sample7Viewer_InitCamera(void);
 void MiniGame_UpdateCamera(void);
-void func_86600264(s32 arg0);
-void func_86600438(s32 arg0);
-void func_8660048C(void);
-void func_866004F8(void);
-void func_866005B8(void);
-void func_86600658(void);
-s32 func_8660070C(UNUSED s32 arg0, UNUSED s32 arg1);
+void Minigame_Sample7Viewer_DrawDebugText(s32 arg0);
+void Minigame_Sample7Viewer_DrawFrame(s32 arg0);
+void Minigame_Sample7Viewer_OpeningLoop(void);
+void Minigame_Sample7Viewer_PlayingLoop(void);
+void Minigame_Sample7Viewer_EndingLoop(void);
+void Minigame_Sample7Viewer_Init(void);
+s32 Minigame_Sample7Viewer(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT12_H_

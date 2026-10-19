@@ -252,7 +252,7 @@ void Menu_PrintItem(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
     Text_Print(arg0 + 0x3C, arg1 + (arg2 * 0x1C) + 0xC, arg3);
 }
 
-void func_8420C844(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetFour(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x15));
@@ -266,7 +266,7 @@ void func_8420C844(unk_D_84211704* arg0) {
     }
 }
 
-void func_8420C930(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetThreeA(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x19));
@@ -279,7 +279,7 @@ void func_8420C930(unk_D_84211704* arg0) {
     }
 }
 
-void func_8420CA00(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetThreeB(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x15));
@@ -292,7 +292,7 @@ void func_8420CA00(unk_D_84211704* arg0) {
     }
 }
 
-void func_8420CAD0(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetThreeC(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x1C));
@@ -305,7 +305,7 @@ void func_8420CAD0(unk_D_84211704* arg0) {
     }
 }
 
-void func_8420CBA0(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetTwo(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x1F));
@@ -317,14 +317,14 @@ void func_8420CBA0(unk_D_84211704* arg0) {
     }
 }
 
-void func_8420CC54(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawSingleLabel(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Text_Print(arg0->unk_00 + 0x2D, arg0->unk_02 + 0x38, GetMessageBank1AString(0x21));
     Text_SetupDL();
 }
 
-void func_8420CCAC(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawThreeRowPanel(unk_D_84211704* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -339,7 +339,7 @@ void func_8420CCAC(unk_D_84211704* arg0) {
     Text_SetupDL();
 }
 
-void func_8420CE24(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(unk_D_84211704* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x18, arg0->unk_02 + arg0->unk_08 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -355,7 +355,7 @@ void func_8420CE24(unk_D_84211704* arg0) {
     Text_SetupDL();
 }
 
-void func_8420CFC4(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(unk_D_84211704* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -371,7 +371,7 @@ void func_8420CFC4(unk_D_84211704* arg0) {
     Text_SetupDL();
 }
 
-void func_8420D144(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(unk_D_84211704* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteRGBA16(arg0->unk_00 + 0x10, arg0->unk_02 + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -386,7 +386,7 @@ void func_8420D144(unk_D_84211704* arg0) {
     Text_SetupDL();
 }
 
-void func_8420D2BC(unk_D_84211704* arg0) {
+void TeamSelection_RulePrompt_DrawOptionSetTwoB(unk_D_84211704* arg0) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     Menu_PrintItem(arg0->unk_00, arg0->unk_02, 0, GetMessageBank1AString(0x26));
@@ -398,7 +398,7 @@ void func_8420D2BC(unk_D_84211704* arg0) {
     }
 }
 
-void func_8420D370(unk_D_84211704* arg0, s16 arg1) {
+void TeamSelection_RulePrompt_DrawNumberAndLabel(unk_D_84211704* arg0, s16 arg1) {
     char sp28[0x100];
     s32 tmp;
     char* sp20;
@@ -416,7 +416,7 @@ void func_8420D370(unk_D_84211704* arg0, s16 arg1) {
     Text_SetupDL();
 }
 
-void func_8420D464(unk_D_84211704* arg0, s16 arg1) {
+void TeamSelection_RulePrompt_DrawBinaryLabel(unk_D_84211704* arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(0x10, 0);
     if (arg1 == 0) {
@@ -427,7 +427,7 @@ void func_8420D464(unk_D_84211704* arg0, s16 arg1) {
     Text_SetupDL();
 }
 
-void func_8420D4F8(s32 arg0) {
+void TeamSelection_RulePrompt_DrawFrame(s32 arg0) {
     s16 tmp2;
     s16 var_a3;
     unk_D_84211704* temp_s0;
@@ -446,71 +446,71 @@ void func_8420D4F8(s32 arg0) {
 
             switch (D_8423E580) {
                 case 0:
-                    func_8420C844(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetFour(temp_s0);
                     break;
                 case 1:
-                    func_8420CC54(temp_s0);
+                    TeamSelection_RulePrompt_DrawSingleLabel(temp_s0);
                     break;
                 case 2:
-                    func_8420CCAC(temp_s0);
+                    TeamSelection_RulePrompt_DrawThreeRowPanel(temp_s0);
                     break;
                 case 3:
-                    func_8420CE24(temp_s0);
+                    TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(temp_s0);
                     break;
                 case 4:
-                    func_8420C930(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetThreeA(temp_s0);
                     break;
                 case 5:
-                    func_8420C930(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetThreeA(temp_s0);
                     break;
                 case 6:
-                    func_8420CAD0(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetThreeC(temp_s0);
                     break;
                 case 7:
-                    func_8420CAD0(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetThreeC(temp_s0);
                     break;
                 case 8:
-                    func_8420CFC4(temp_s0);
+                    TeamSelection_RulePrompt_DrawSmallThreeRowPanel(temp_s0);
                     break;
                 case 9:
-                    func_8420CBA0(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetTwo(temp_s0);
                     break;
                 case 10:
-                    func_8420CA00(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetThreeB(temp_s0);
                     break;
                 case 11:
-                    func_8420D144(temp_s0);
+                    TeamSelection_RulePrompt_DrawSmallThreeRowVariant(temp_s0);
                     break;
                 case 12:
-                    func_8420D2BC(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetTwoB(temp_s0);
                     break;
                 case 13:
-                    func_8420D370(temp_s0, 0x9B);
+                    TeamSelection_RulePrompt_DrawNumberAndLabel(temp_s0, 0x9B);
                     break;
                 case 14:
-                    func_8420D370(temp_s0, 0x50);
+                    TeamSelection_RulePrompt_DrawNumberAndLabel(temp_s0, 0x50);
                     break;
                 case 15:
-                    func_8420D370(temp_s0, 0x32);
+                    TeamSelection_RulePrompt_DrawNumberAndLabel(temp_s0, 0x32);
                     break;
                 case 16:
-                    func_8420CE24(temp_s0);
+                    TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(temp_s0);
                     break;
                 case 17:
-                    func_8420D464(temp_s0, 0);
+                    TeamSelection_RulePrompt_DrawBinaryLabel(temp_s0, 0);
                     break;
                 case 18:
-                    func_8420D464(temp_s0, 1);
+                    TeamSelection_RulePrompt_DrawBinaryLabel(temp_s0, 1);
                     break;
                 case 19:
-                    func_8420CBA0(temp_s0);
+                    TeamSelection_RulePrompt_DrawOptionSetTwo(temp_s0);
                     break;
             }
         }
     }
 }
 
-void func_8420D75C(void) {
+void TeamSelection_RulePrompt_HandleInput(void) {
     s16 tmp = D_84211704[D_8423E580].unk_0A;
 
     if (D_8423E584 != NULL) {
@@ -539,7 +539,7 @@ void func_8420D75C(void) {
                     break;
 
                 case 6:
-                    if (func_80028E68() < 0xC) {
+                    if (Deck_FindFirstFreeTeamSlot() < 0xC) {
                         PlaySoundEffect(0x20);
                     } else {
                         PlaySoundEffect(8);
@@ -568,7 +568,7 @@ void func_8420D75C(void) {
     D_8423E588 = 4;
 }
 
-void func_8420D938(void) {
+void TeamSelection_RulePrompt_AdvanceOpen(void) {
     D_8423E588++;
     if (D_8423E588 >= 5) {
         D_8423E588 = 4;
@@ -576,7 +576,7 @@ void func_8420D938(void) {
     }
 }
 
-void func_8420D978(void) {
+void TeamSelection_RulePrompt_AdvanceClose(void) {
     D_8423E588--;
     if (D_8423E588 < 0) {
         D_8423E588 = 0;
@@ -584,22 +584,22 @@ void func_8420D978(void) {
     }
 }
 
-s32 func_8420D9B0(void) {
+s32 TeamSelection_RulePrompt_Update(void) {
     s32 sp1C = 0;
 
     switch (D_84211700) {
         case 2:
             sp1C = 0;
-            func_8420D75C();
+            TeamSelection_RulePrompt_HandleInput();
             break;
 
         case 1:
-            func_8420D938();
+            TeamSelection_RulePrompt_AdvanceOpen();
             sp1C = 1;
             break;
 
         case 3:
-            func_8420D978();
+            TeamSelection_RulePrompt_AdvanceClose();
             sp1C = 1;
             break;
     }
@@ -607,7 +607,7 @@ s32 func_8420D9B0(void) {
     return sp1C;
 }
 
-s32 func_8420DA28(s16 arg0, Controller* arg1) {
+s32 TeamSelection_RulePrompt_Open(s16 arg0, Controller* arg1) {
     if (D_84211700 == 0) {
         switch (arg0) {
             case 8:
@@ -628,7 +628,7 @@ s32 func_8420DA28(s16 arg0, Controller* arg1) {
     return 0;
 }
 
-s32 func_8420DAF4(s16 arg0) {
+s32 TeamSelection_RulePrompt_BeginClose(s16 arg0) {
     if ((D_84211700 == 2) && (arg0 == D_8423E580)) {
         D_8423E58A = -1;
         D_84211700 = 3;
@@ -637,7 +637,7 @@ s32 func_8420DAF4(s16 arg0) {
     return 0;
 }
 
-s16 func_8420DB48(s16 arg0) {
+s16 TeamSelection_RulePrompt_TryFinish(s16 arg0) {
     if ((D_84211700 == 4) && (arg0 == D_8423E580)) {
         D_84211700 = 0;
         return D_8423E58A + 1;

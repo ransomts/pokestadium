@@ -274,7 +274,7 @@ void Pref_ClearSaveData(void) {
     s32 j;
 
     for (i = 0; i < 9; i++) {
-        func_80028C48(i);
+        Save_SetActiveRecordBank(i);
 
         for (j = 0; j < 12; j++) {
             GbsClearAndCommitBlock(0x10, j);
@@ -423,7 +423,7 @@ s32 Pref_Entry(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     MessageBank_Init();
     gPrefMessageBank = GetMessageBank(0x15);
-    func_80028BE4();
+    Save_EnsureAllBanksLoaded();
     GbsGetPlayerMoney(&gPrefToggleFlags);
     gPrefSelectedOption = 0;
     Stage_Set(sp24);

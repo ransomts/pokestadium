@@ -337,7 +337,7 @@ void InitFragment41(void) {
     UpdateControllerInfo();
     InitMenuGraphics();
     Picker_Reset();
-    func_82F0C190();
+    Trade_ResetSaveSeq();
 }
 
 void RenderFragment41Frame(void) {
@@ -347,14 +347,14 @@ void RenderFragment41Frame(void) {
         MenuPanel_Render();
     }
     DrawTextBox();
-    func_82F09E30();
+    Trade_DrawBoxMachine();
     Picker_Render();
-    func_82F0C320();
+    Trade_DrawSaveSeq();
     func_82F00960();
     Stage_Advance();
 }
 
-void func_82F00AC8(s32 arg0) {
+void Trade_SetState(s32 arg0) {
     gFragment41State = arg0;
 
     switch (gFragment41State) {
@@ -364,7 +364,7 @@ void func_82F00AC8(s32 arg0) {
             break;
 
         case 2:
-            func_82F07958();
+            Trade_ResetBoxMachineFlow();
             SetTextBox(0, 0, 0, 0);
             break;
 
@@ -376,8 +376,8 @@ void func_82F00AC8(s32 arg0) {
                 main_pool_push_state('pmex');
                 gPoolStatePushed = 1;
             }
-            SnapSelect_SetCameraMode(func_82F07A54(gActivePlayerIndex));
-            InitPokemonPicker(gActivePlayerIndex, func_82F07A54(gActivePlayerIndex));
+            SnapSelect_SetCameraMode(Trade_GetSelectedBox(gActivePlayerIndex));
+            InitPokemonPicker(gActivePlayerIndex, Trade_GetSelectedBox(gActivePlayerIndex));
             break;
 
         case 5:
@@ -396,51 +396,51 @@ void func_82F00AC8(s32 arg0) {
     }
 }
 
-void func_82F00C14(s16 arg0) {
+void Trade_ChangeTopic(s16 arg0) {
     gSelectedOptionId = arg0;
-    func_82F00AC8(3);
+    Trade_SetState(3);
     MenuPanel_SetMainState(gSelectedOptionId);
 }
 
-void func_82F00C50(void) {
+void Trade_UpdateMainMenu(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         if (IsMessageEntryEmpty(D_82F13B78) == 0) {
             LoadNextMessageEntry(D_82F13B78, 0);
         } else {
-            func_82F00AC8(2);
+            Trade_SetState(2);
         }
         PlaySoundEffect(2);
         PlaySoundEffect(4);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-        func_82F00AC8(7);
+        Trade_SetState(7);
         PlaySoundEffect(3);
     }
 }
 
-void func_82F00CE0(void) {
+void Trade_UpdateWaitForBoxConfirm(void) {
     InitProgressBarRect(1);
-    if (func_82F07A74() == 0) {
-        if (func_82F07A54(1) == -1) {
-            func_82F00AC8(7);
+    if (Trade_GetBoxMachineFlowState() == 0) {
+        if (Trade_GetSelectedBox(1) == -1) {
+            Trade_SetState(7);
         } else {
-            func_82F00C14(1);
+            Trade_ChangeTopic(1);
         }
     }
 }
 
-void func_82F00D3C(void) {
+void Trade_UpdateWaitForCableCondition(void) {
     InitProgressBarRect(0);
 
     switch (gSelectedOptionId) {
         case 1:
             if (MenuPanel_CheckState(1) != 0) {
-                func_82F00AC8(4);
+                Trade_SetState(4);
             }
             break;
 
         case 19:
             if (MenuPanel_CheckState(2) != 0) {
-                func_82F00AC8(4);
+                Trade_SetState(4);
             }
             break;
 
@@ -448,20 +448,20 @@ void func_82F00D3C(void) {
         case 8:
         case 11:
             if (MenuPanel_CheckState(3) != 0) {
-                func_82F00AC8(2);
+                Trade_SetState(2);
             }
             break;
 
         case 20:
             if (MenuPanel_CheckState(6) != 0) {
-                func_82F00AC8(5);
+                Trade_SetState(5);
             }
             break;
 
         case 21:
             if (MenuPanel_CheckState(8) != 0) {
                 SwapPlayerSelections();
-                func_82F00C14(0xC);
+                Trade_ChangeTopic(0xC);
             }
             break;
 
@@ -475,13 +475,13 @@ void func_82F00D3C(void) {
             }
 
             if (MenuPanel_CheckState(0xA) != 0) {
-                func_82F00AC8(6);
+                Trade_SetState(6);
             }
             break;
     }
 }
 
-void func_82F00E88(void) {
+void Trade_UpdateWaitForPickSelection(void) {
     unk_func_82F00838_sp30 sp20;
 
     if (GetPickerState() == 0) {
@@ -489,27 +489,27 @@ void func_82F00E88(void) {
 
         if (sp20.unk_00 != 0) {
             if (gActivePlayerIndex == 0) {
-                func_82F00C14(0x13);
+                Trade_ChangeTopic(0x13);
             } else {
-                func_82F00C14(0x14);
+                Trade_ChangeTopic(0x14);
             }
             gActivePlayerIndex ^= 1;
         } else {
             if (gActivePlayerIndex == 0) {
                 SetTextBox(0, 0, NULL, 0);
-                func_82F00C14(4);
+                Trade_ChangeTopic(4);
                 return;
             }
-            func_82F00C14(8);
+            Trade_ChangeTopic(8);
             gActivePlayerIndex = 0;
         }
     }
 }
 
-void func_82F00F3C(void) {
+void Trade_UpdateWaitForDepositSave(void) {
     InitProgressBarRect(1);
 
-    if (func_82F0C16C() == 2) {
+    if (Trade_GetSaveSeqState() == 2) {
         if (gProgressBarRect.unk_00 == -1) {
             gProgressBarRect.unk_00 = 3;
         }
@@ -517,19 +517,19 @@ void func_82F00F3C(void) {
         gProgressBarRect.unk_00 = -1;
     }
 
-    if (func_82F0C16C() == 0) {
-        if (func_82F0C178() != 0) {
-            func_82F00C14(0x15);
+    if (Trade_GetSaveSeqState() == 0) {
+        if (Trade_GetSaveDirection() != 0) {
+            Trade_ChangeTopic(0x15);
         } else {
-            func_82F00C14(0xB);
+            Trade_ChangeTopic(0xB);
         }
     }
 }
 
-void func_82F00FD8(void) {
+void Trade_UpdateWaitForWithdrawSave(void) {
     InitProgressBarRect(1);
 
-    if (func_82F0C16C() == 2) {
+    if (Trade_GetSaveSeqState() == 2) {
         if (gProgressBarRect.unk_00 == -1) {
             gProgressBarRect.unk_00 = 3;
         }
@@ -537,53 +537,53 @@ void func_82F00FD8(void) {
         gProgressBarRect.unk_00 = -1;
     }
 
-    if (func_82F0C16C() == 7) {
+    if (Trade_GetSaveSeqState() == 7) {
         gPollControllerFlag = 0;
     } else {
         gPollControllerFlag = 1;
     }
 
-    if (func_82F0C16C() == 0) {
-        if (func_82F0C184() != 0) {
-            func_82F00AC8(2);
+    if (Trade_GetSaveSeqState() == 0) {
+        if (Trade_GetSaveSlotIndex() != 0) {
+            Trade_SetState(2);
         } else {
-            func_82F00AC8(7);
+            Trade_SetState(7);
         }
     }
 }
 
-s32 func_82F0109C(void) {
+s32 Trade_Update(void) {
     s32 sp1C = 1;
 
     switch (gFragment41State) {
         case 0:
             if (Stage_GetFadeState() == 0) {
-                func_82F00AC8(1);
+                Trade_SetState(1);
             }
             break;
 
         case 1:
-            func_82F00C50();
+            Trade_UpdateMainMenu();
             break;
 
         case 2:
-            func_82F00CE0();
+            Trade_UpdateWaitForBoxConfirm();
             break;
 
         case 3:
-            func_82F00D3C();
+            Trade_UpdateWaitForCableCondition();
             break;
 
         case 4:
-            func_82F00E88();
+            Trade_UpdateWaitForPickSelection();
             break;
 
         case 5:
-            func_82F00F3C();
+            Trade_UpdateWaitForDepositSave();
             break;
 
         case 6:
-            func_82F00FD8();
+            Trade_UpdateWaitForWithdrawSave();
             break;
 
         case 7:
@@ -595,7 +595,7 @@ s32 func_82F0109C(void) {
     return sp1C;
 }
 
-void func_82F01180(void) {
+void Trade_Loop(void) {
     Stage_FadeIn(0x10);
     ResultScreen_SetAnimation(0x10);
     MenuInput_SetController(gPlayer1Controller);
@@ -609,14 +609,14 @@ void func_82F01180(void) {
         UpdateTextBox();
         UpdateMenuStateMachine();
         Picker_Update();
-        func_82F0C254();
+        Trade_UpdateSaveSeq();
         MenuPanel_Update();
         RenderFragment41Frame();
         gFragment41FrameCounter++;
-    } while (func_82F0109C() != 0);
+    } while (Trade_Update() != 0);
 }
 
-s32 func_82F01234(s32 arg0, s32 arg1) {
+s32 Trade_Main(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('PMEX');
@@ -634,7 +634,7 @@ s32 func_82F01234(s32 arg0, s32 arg1) {
     SpriteAssets_Load();
     InitFragment41();
     Stage_Set(sp24);
-    func_82F01180();
+    Trade_Loop();
     Stage_AdvanceN(2);
     Stage_Destroy();
     FontManager_Free();

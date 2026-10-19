@@ -198,7 +198,7 @@ s32 GbsSyncItemData(gItemPanel* arg0) {
     s32 var_s0 = 0;
     unk_func_80022C28_ret* temp_s3;
 
-    temp_v0 = func_80028E68();
+    temp_v0 = Deck_FindFirstFreeTeamSlot();
     if (temp_v0 < 0xA) {
         temp_s3 = GbsBlock_CreateWithString(0x10, 0, temp_v0, arg0->unk_001E, arg0->unk_001E, arg0->unk_001C);
 
@@ -279,8 +279,8 @@ void StartItemMoveAnimation(gItemPanel* a0) {
     s16 temp_v1;
     s16 tmp;
 
-    func_8420DAF4(1);
-    if (func_8420DB48(1) >= 0) {
+    TeamSelection_RulePrompt_BeginClose(1);
+    if (TeamSelection_RulePrompt_TryFinish(1) >= 0) {
         tmp = a0->unk_0010 + a0->unk_0012 * 3;
 
         temp_v0 = a0->unk_0014 + (a0->unk_0010 * 0x84) + 0x74;
@@ -305,7 +305,7 @@ void HandleItemMoveResult(gItemPanel* arg0) {
         arg0->unk_0001 = 3;
     } else if (temp_v0 == 2) {
         arg0->unk_0030[sp26].raw &= ~0x80000000;
-        func_8420DA28(1, NULL);
+        TeamSelection_RulePrompt_Open(1, NULL);
         arg0->unk_000A = 0;
         arg0->unk_0001 = 8;
     }
@@ -427,8 +427,8 @@ void ItemPanel_HandleInput(gItemPanel* arg0) {
 }
 
 void ItemPanel_CheckModeTransition(gItemPanel* arg0) {
-    func_8420DAF4(1);
-    if (func_8420DB48(1) >= 0) {
+    TeamSelection_RulePrompt_BeginClose(1);
+    if (TeamSelection_RulePrompt_TryFinish(1) >= 0) {
         if (CheckStatThresholdForMode(arg0) != 0) {
             arg0->unk_0001 = 0xF;
         } else if (arg0->unk_0000 == 0) {
@@ -444,9 +444,9 @@ void ItemPanel_HandleMenuSelection(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
     s16 i;
 
-    func_8420DA28(0, cont);
+    TeamSelection_RulePrompt_Open(0, cont);
 
-    switch (func_8420DB48(0)) {
+    switch (TeamSelection_RulePrompt_TryFinish(0)) {
         case 0:
             i = arg0->unk_0006;
             if (i == 6) {
@@ -473,7 +473,7 @@ void ItemPanel_HandleMenuSelection(gItemPanel* arg0) {
             break;
 
         case 3:
-            func_8420DA28(1, NULL);
+            TeamSelection_RulePrompt_Open(1, NULL);
             arg0->unk_0010 = 0;
             arg0->unk_0012 = 0;
             arg0->unk_000A = 0;
@@ -503,8 +503,8 @@ void ItemPanel_HandleAltMenuSelection(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
     s16 i;
 
-    func_8420DA28(0xA, cont);
-    switch (func_8420DB48(0xA)) {
+    TeamSelection_RulePrompt_Open(0xA, cont);
+    switch (TeamSelection_RulePrompt_TryFinish(0xA)) {
         case 0:
             i = arg0->unk_0006;
             if (i == 6) {
@@ -518,12 +518,12 @@ void ItemPanel_HandleAltMenuSelection(gItemPanel* arg0) {
 
         case 1:
             TriggerSelectionAnim(arg0->unk_4D40);
-            func_84210A48(arg0->unk_4D48, arg0->unk_001C, arg0->unk_001E, arg0->unk_0030);
+            RegistrationManager_Initialize(arg0->unk_4D48, arg0->unk_001C, arg0->unk_001E, arg0->unk_0030);
             arg0->unk_0001 = 3;
             break;
 
         case 2:
-            func_8420DA28(1, NULL);
+            TeamSelection_RulePrompt_Open(1, NULL);
             arg0->unk_0010 = 0;
             arg0->unk_0012 = 0;
             arg0->unk_000A = 0;
@@ -569,9 +569,9 @@ void ItemPanel_HandleModeSpecificSelection(gItemPanel* arg0) {
             break;
     }
 
-    func_8420DA28(sp1C, cont);
+    TeamSelection_RulePrompt_Open(sp1C, cont);
 
-    temp_v0_2 = func_8420DB48(sp1C);
+    temp_v0_2 = TeamSelection_RulePrompt_TryFinish(sp1C);
     if (temp_v0_2 != -1) {
         if (temp_v0_2 == 0) {
             arg0->unk_0010 = 2;
@@ -579,7 +579,7 @@ void ItemPanel_HandleModeSpecificSelection(gItemPanel* arg0) {
             arg0->unk_0008 = 6;
             arg0->unk_0001 = 2;
         } else {
-            func_8420DA28(1, NULL);
+            TeamSelection_RulePrompt_Open(1, NULL);
             arg0->unk_0010 = 0;
             arg0->unk_0012 = 0;
             arg0->unk_000A = 0;
@@ -594,8 +594,8 @@ void ItemPanel_HandleModeSpecificSelection(gItemPanel* arg0) {
 void ItemPanel_HandleActionSelection(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
 
-    func_8420DA28(2, cont);
-    if (func_8420DB48(2) >= 0) {
+    TeamSelection_RulePrompt_Open(2, cont);
+    if (TeamSelection_RulePrompt_TryFinish(2) >= 0) {
         TriggerSelectionAnim(arg0->unk_4D40);
         arg0->unk_000A = 0;
         arg0->unk_0001 = 5;
@@ -605,8 +605,8 @@ void ItemPanel_HandleActionSelection(gItemPanel* arg0) {
 void ItemPanel_HandleCancelSelection(gItemPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
 
-    func_8420DA28(3, cont);
-    if (func_8420DB48(3) >= 0) {
+    TeamSelection_RulePrompt_Open(3, cont);
+    if (TeamSelection_RulePrompt_TryFinish(3) >= 0) {
         arg0->unk_0001 = 7;
     }
 }
@@ -798,7 +798,7 @@ s32 ItemPanel_ConfirmSelection(gItemPanel* arg0) {
             ClearSlotItem(arg0);
             arg0->unk_0001 = 2;
         } else {
-            func_8420DA28(1, NULL);
+            TeamSelection_RulePrompt_Open(1, NULL);
             arg0->unk_000A = 0;
             arg0->unk_0001 = 8;
         }
@@ -930,7 +930,7 @@ void ItemPanel_LoadItems(gItemPanel* arg0, PokemonData* arg1, s16 arg2) {
     arg0->unk_0008 = arg2;
 
     for (i = 0; i < arg2; i++) {
-        func_8001B0DC(arg0->unk_0030[i].unk_058, 0, &arg1[i]);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_0030[i].unk_058, 0, &arg1[i]);
 
         arg0->unk_0030[i].unk_004 = arg1[i];
 

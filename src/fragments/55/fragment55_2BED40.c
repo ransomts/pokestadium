@@ -392,7 +392,7 @@ void MenuInput_HandleSelection(void) {
         if (gMenuOptionStrings.unk_00[gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]] != NULL) {
             Dialog_Start(gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]);
         } else {
-            func_830038DC();
+            RentalRules_QualifyingSpeciesWindowOpen();
             PlaySoundEffect(4);
         }
 
@@ -406,7 +406,7 @@ void MenuInput_HandleSelection(void) {
 }
 
 void Menu_CheckDialogComplete(void) {
-    if ((Dialog_IsActive() == 0) && (func_83003988() == 0)) {
+    if ((Dialog_IsActive() == 0) && (RentalRules_QualifyingSpeciesWindowIsActive() == 0)) {
         D_83003C80 = 1;
     }
 }
@@ -515,7 +515,7 @@ void DrawLoadingBar(void) {
     }
 }
 
-void func_83000F10(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void RentalRules_DrawWindowFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawSpriteIA8(arg0 - 7, arg1 - 7, 8, 8, D_2000340, 8, 0);
@@ -604,13 +604,13 @@ void DrawSelectionMenu(void) {
 
     temp_s3 = (((-gMenuFadeAlpha * 0xA8) + 0x2A000) / 1024) + 0x5C;
     temp_s2 = (gMenuFadeAlpha * 0x150) / 1024;
-    func_83000F10(0x38, temp_s3, 0x210, temp_s2);
+    RentalRules_DrawWindowFrame(0x38, temp_s3, 0x210, temp_s2);
 
     if (gMenuFadeAlpha >= 0x400) {
         DrawColoredPanel(0x38, temp_s3, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
         DrawColoredPanel(0x38, temp_s3 + 0x20, 0x210, 0x110, 0x1E, 0x1E, 0x64);
         DrawColoredPanel(0x38, temp_s3 + 0x130, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
-        if ((Dialog_GetAnimProgress() == 0) && (func_830039AC() == 0)) {
+        if ((Dialog_GetAnimProgress() == 0) && (RentalRules_GetQualifyingSpeciesDisplayOpeningProgress() == 0)) {
             s16 sins = SINS(D_83003B60) * 3.0f;
 
             DrawStatusIcon(sins + 0x48, temp_s3 + (gCurrentMenuSelectedIndex * 0x18) + 0x2A);
@@ -649,7 +649,7 @@ void BattleModeMenu_Render(void) {
         }
     }
 
-    if ((Dialog_GetAnimProgress() < 0x400) && (func_830039AC() < 0x400)) {
+    if ((Dialog_GetAnimProgress() < 0x400) && (RentalRules_GetQualifyingSpeciesDisplayOpeningProgress() < 0x400)) {
         DrawSelectionMenu();
     }
 
@@ -758,7 +758,7 @@ void BattleModeMenu_Init(void) {
 
     Dialog_CloseImmediately();
 
-    func_830032D8((D_83003C84 & 2) ? 1 : 0);
+    RentalRules_QualifyingSpeciesWindowInit((D_83003C84 & 2) ? 1 : 0);
 }
 
 s32 BattleModeMenu_UpdateState(void) {
@@ -795,7 +795,7 @@ void BattleModeMenu_MainLoop(void) {
     do {
         MenuInput_Update();
         Dialog_UpdateStateMachine();
-        func_830033F0();
+        RentalRules_QualifyingSpeciesWindowUpdate();
         BattleModeMenu_Render();
     } while (BattleModeMenu_UpdateState() != 0);
 }

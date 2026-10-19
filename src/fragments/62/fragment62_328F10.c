@@ -1,6 +1,6 @@
 #include "fragment62.h"
 
-void func_8433E650(ParticleEffectInstance* arg0) {
+void BattleAnim_InitStartEffect135Descriptor1CRisingScale(ParticleEffectInstance* arg0) {
     Vec3s sp28;
     s16 sp26 = Particle_GetShortCF(arg0);
     s16 sp24 = Particle_GetShortAC(arg0);
@@ -18,10 +18,10 @@ void func_8433E650(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433E758(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffect135Descriptor1CRisingScaleFade(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433E650(arg0);
+            BattleAnim_InitStartEffect135Descriptor1CRisingScale(arg0);
             break;
 
         case 2:
@@ -48,7 +48,7 @@ void func_8433E758(ParticleEffectInstance* arg0) {
     Particle_ApplyB2B4AndAddAll(arg0);
 }
 
-void func_8433E840(ParticleEffectInstance* arg0) {
+void BattleAnim_InitStartEffect135ExpandingFlash(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortCF(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.65789473f);
@@ -58,10 +58,10 @@ void func_8433E840(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433E8A8(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffect135ExpandingFlashFade(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433E840(arg0);
+            BattleAnim_InitStartEffect135ExpandingFlash(arg0);
             break;
 
         case 2:
@@ -83,7 +83,7 @@ void func_8433E8A8(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_8433E950(ParticleEffectInstance* arg0) {
+void BattleAnim_InitStartEffect139Descriptor42FallingScale(ParticleEffectInstance* arg0) {
     s16 sp2E = Particle_GetShortCF(arg0);
     s16 sp2C = Particle_GetShortAC(arg0);
 
@@ -96,10 +96,10 @@ void func_8433E950(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433EA04(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffect139Descriptor42FallingScaleFade(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433E950(arg0);
+            BattleAnim_InitStartEffect139Descriptor42FallingScale(arg0);
             break;
 
         case 2:
@@ -130,7 +130,7 @@ void func_8433EA04(ParticleEffectInstance* arg0) {
     Particle_AddVelocityYScaled(arg0, -1.0f);
 }
 
-void func_8433EB0C(ParticleEffectInstance* arg0) {
+void BattleAnim_InitStartEffect139Descriptor22SpinFade(ParticleEffectInstance* arg0) {
     UNUSED s16 pad;
     s16 sp2C;
 
@@ -143,10 +143,10 @@ void func_8433EB0C(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433EB9C(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffect139Descriptor22SpinFadeSpark(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433EB0C(arg0);
+            BattleAnim_InitStartEffect139Descriptor22SpinFade(arg0);
             break;
 
         case 2:
@@ -162,7 +162,7 @@ void func_8433EB9C(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_8433EC40(ParticleEffectInstance* arg0) {
+void BattleAnim_InitStartEffect141Descriptor1CGridRise(ParticleEffectInstance* arg0) {
     s16 sp2E;
     s16 sp2C;
     s16 temp_v0;
@@ -184,10 +184,10 @@ void func_8433EC40(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433ED3C(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffect141Descriptor1CGridRiseFade(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433EC40(arg0);
+            BattleAnim_InitStartEffect141Descriptor1CGridRise(arg0);
             break;
 
         case 2:
@@ -213,7 +213,7 @@ void func_8433ED3C(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_8433EE10(ParticleEffectInstance* arg0) {
+void BattleAnim_InitStartEffects133And134And143Descriptor44ModeOrbit(ParticleEffectInstance* arg0) {
     s16 sp36;
     s16 sp34;
     s16 sp32 = Particle_GetShortAC(arg0);
@@ -265,12 +265,12 @@ void func_8433EE10(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433F06C(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl(ParticleEffectInstance* arg0) {
     Particle_GetShortCE(arg0);
 
     switch (arg0->unk_B2) {
         case 1:
-            func_8433EE10(arg0);
+            BattleAnim_InitStartEffects133And134And143Descriptor44ModeOrbit(arg0);
             break;
 
         case 2:
@@ -317,7 +317,7 @@ void func_8433F06C(ParticleEffectInstance* arg0) {
     Particle_AddVelocityYScaled(arg0, 10.0f);
 }
 
-void func_8433F208(ParticleEffectInstance* arg0) {
+void BattleAnim_InitStartEffects133And134And143Descriptor38MetadataBurst(ParticleEffectInstance* arg0) {
     s16 sp26 = Particle_GetShortCF(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.2f);
@@ -327,10 +327,10 @@ void func_8433F208(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433F270(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffects133And134And143Descriptor38MetadataBurstEmitter(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8433F208(arg0);
+            BattleAnim_InitStartEffects133And134And143Descriptor38MetadataBurst(arg0);
             break;
 
         case 2:
@@ -359,7 +359,7 @@ void func_8433F270(ParticleEffectInstance* arg0) {
     }
 }
 
-s16 func_8433F3B4(void) {
+s16 BattleAnim_GetSessionModeEffectParam(void) {
     s16 var_v1 = 0x3B;
 
     switch (gBattleContext.unk_0000) {
@@ -390,84 +390,84 @@ s16 func_8433F3B4(void) {
     return var_v1;
 }
 
-void func_8433F414(void) {
-    s16 sp3E = func_8433F3B4();
+void BattleAnim_StartEffect139DualRepeatingSparks(void) {
+    s16 sp3E = BattleAnim_GetSessionModeEffectParam();
 
-    ParticleDef_CreateFull(0, 1, 0x1E, func_8433EB9C, &gParticleEffectData[0x22], 0x10, 1, 0x1E, 0, sp3E, 0);
-    ParticleDef_CreateFull(0, 1, 0x1E, func_8433EA04, &gParticleEffectData[0x42], 0x10, 2, 0x1E, 0, sp3E, 0);
+    ParticleDef_CreateFull(0, 1, 0x1E, BattleAnim_CallbackStartEffect139Descriptor22SpinFadeSpark, &gParticleEffectData[0x22], 0x10, 1, 0x1E, 0, sp3E, 0);
+    ParticleDef_CreateFull(0, 1, 0x1E, BattleAnim_CallbackStartEffect139Descriptor42FallingScaleFade, &gParticleEffectData[0x42], 0x10, 2, 0x1E, 0, sp3E, 0);
 }
 
-void func_8433F4CC(void) {
-    func_8433F414();
+void BattleAnim_StartEffect140StartEffect139Alias(void) {
+    BattleAnim_StartEffect139DualRepeatingSparks();
 }
 
-void func_8433F4EC(void) {
-    ParticleDef_CreateFull(0xB, 1, 5, Particle_HandleState_Complex, &gParticleEffectData[0x42], 0, 5, 0x1E, 0, func_8433F3B4(), 8);
+void BattleAnim_StartEffect141GridRiseAndFallingBurst(void) {
+    ParticleDef_CreateFull(0xB, 1, 5, Particle_HandleState_Complex, &gParticleEffectData[0x42], 0, 5, 0x1E, 0, BattleAnim_GetSessionModeEffectParam(), 8);
     ParticleDef_Create32E6CAlt(0xA, 2, 0x16, 7, 0xFF);
     ParticleSystem_SetSpawnOffset(0x10);
-    ParticleDef_CreateQuick(0, func_8433ED3C, &gParticleEffectData[0x1C], 0, 0x40, 0x1E, 0, 0xA, 0);
+    ParticleDef_CreateQuick(0, BattleAnim_CallbackStartEffect141Descriptor1CGridRiseFade, &gParticleEffectData[0x1C], 0, 0x40, 0x1E, 0, 0xA, 0);
 }
 
-void func_8433F5B4(void) {
-    func_8433F4EC();
+void BattleAnim_StartEffect142StartEffect141Alias(void) {
+    BattleAnim_StartEffect141GridRiseAndFallingBurst();
 }
 
-void func_8433F5D4(void) {
+void BattleAnim_StartEffect135ExpandingFlashAndRisingScaleFade(void) {
     UNUSED s32 pad;
 
     ParticleDef_CreateBC20CD(0, 0, 0x10, 7);
     ParticleDef_Create31EAC(0, 0xA, 0xFF, 0xFF, 0xFF);
     ParticleDef_CreateAlphaMode(0, 0xFF, 0xFF, 0xFF);
     ParticleDef_Create31EAC(0x14, 0xA, 0xFF, 0, 8);
-    ParticleDef_CreateQuick(0, func_8433E8A8, &gParticleEffectData[0x21], 4, 1, 2, 0, 0x50, 0);
-    ParticleDef_CreateQuick(0, func_8433E8A8, &gParticleEffectData[0x23], 4, 1, 2, 0, 0x50, 0);
-    ParticleDef_CreateQuick(0, func_8433E8A8, &gParticleEffectData[0x17], 4, 1, 2, 0, 0x50, 0);
-    ParticleDef_CreateFull(0, 1, 4, func_8433E758, &gParticleEffectData[0x1C], 5, 0x10, 7, 0, 0x39, 0);
+    ParticleDef_CreateQuick(0, BattleAnim_CallbackStartEffect135ExpandingFlashFade, &gParticleEffectData[0x21], 4, 1, 2, 0, 0x50, 0);
+    ParticleDef_CreateQuick(0, BattleAnim_CallbackStartEffect135ExpandingFlashFade, &gParticleEffectData[0x23], 4, 1, 2, 0, 0x50, 0);
+    ParticleDef_CreateQuick(0, BattleAnim_CallbackStartEffect135ExpandingFlashFade, &gParticleEffectData[0x17], 4, 1, 2, 0, 0x50, 0);
+    ParticleDef_CreateFull(0, 1, 4, BattleAnim_CallbackStartEffect135Descriptor1CRisingScaleFade, &gParticleEffectData[0x1C], 5, 0x10, 7, 0, 0x39, 0);
     ParticleDef_CreateDefault(0x32, 0x10, 0xA);
 }
 
-void func_8433F758(void) {
+void BattleAnim_StartEffect134ModeOrbitAndMetadataBurst(void) {
     ParticleDef_CreateDefault(0, 8, 6);
-    ParticleDef_CreateFull(0, 4, 5, func_8433F06C, &gParticleEffectData[0x44], 0, 4, 9, 0, 0x3C, 1);
-    ParticleDef_CreateFull(0, 4, 5, func_8433F06C, &gParticleEffectData[0x44], 0, 4, 9, 0, 0x3C, 1);
-    ParticleDef_CreateFull(0x18, 1, 4, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 2);
-    ParticleDef_CreateFull(0x1E, 1, 8, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
-    ParticleDef_CreateFull(0x1E, 1, 8, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
+    ParticleDef_CreateFull(0, 4, 5, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 4, 9, 0, 0x3C, 1);
+    ParticleDef_CreateFull(0, 4, 5, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 4, 9, 0, 0x3C, 1);
+    ParticleDef_CreateFull(0x18, 1, 4, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 2);
+    ParticleDef_CreateFull(0x1E, 1, 8, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
+    ParticleDef_CreateFull(0x1E, 1, 8, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
     ParticleDef_Create31EAC(0x26, 0xA, 0, 0xFF, 4);
-    ParticleDef_CreateQuick(0x2D, func_8433F270, &gParticleEffectData[0x38], 0x1A, 1, 2, 0, 0x3C, 0);
+    ParticleDef_CreateQuick(0x2D, BattleAnim_CallbackStartEffects133And134And143Descriptor38MetadataBurstEmitter, &gParticleEffectData[0x38], 0x1A, 1, 2, 0, 0x3C, 0);
     ParticleDef_CreateAlphaMode(0x48, 0x40, 0, 0xFF);
     ParticleDef_CreateDefault(0x55, 6, 0xA);
 }
 
-void func_8433F974(void) {
+void BattleAnim_StartEffect143ModeOrbitAndMetadataBurst(void) {
     UNUSED s32 pad;
 
     ParticleDef_CreateDefault(0, 8, 6);
-    ParticleDef_CreateFull(0, 1, 4, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 2);
-    ParticleDef_CreateFull(6, 1, 8, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
-    ParticleDef_CreateFull(6, 1, 8, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
+    ParticleDef_CreateFull(0, 1, 4, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 2);
+    ParticleDef_CreateFull(6, 1, 8, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
+    ParticleDef_CreateFull(6, 1, 8, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
     ParticleDef_Create31EAC(0xE, 0xA, 0, 0xFF, 4);
-    ParticleDef_CreateQuick(0x14, func_8433F270, &gParticleEffectData[0x38], 0x1A, 1, 2, 0, 0x3C, 0);
+    ParticleDef_CreateQuick(0x14, BattleAnim_CallbackStartEffects133And134And143Descriptor38MetadataBurstEmitter, &gParticleEffectData[0x38], 0x1A, 1, 2, 0, 0x3C, 0);
     ParticleDef_CreateAlphaMode(0x2D, 0x40, 0, 0xFF);
     ParticleDef_CreateDefault(0x32, 6, 0xA);
 }
 
-void func_8433FAF8(void) {
+void BattleAnim_StartEffect133ModeOrbitBurstAndEffect135Followup(void) {
     ParticleDef_CreateDefault(0, 8, 6);
-    ParticleDef_CreateFull(0, 4, 5, func_8433F06C, &gParticleEffectData[0x44], 0, 4, 9, 0, 0x3C, 1);
-    ParticleDef_CreateFull(0, 4, 5, func_8433F06C, &gParticleEffectData[0x44], 0, 4, 9, 0, 0x3C, 1);
-    ParticleDef_CreateFull(0x18, 1, 4, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 2);
-    ParticleDef_CreateFull(0x1E, 1, 8, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
-    ParticleDef_CreateFull(0x1E, 1, 8, func_8433F06C, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
+    ParticleDef_CreateFull(0, 4, 5, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 4, 9, 0, 0x3C, 1);
+    ParticleDef_CreateFull(0, 4, 5, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 4, 9, 0, 0x3C, 1);
+    ParticleDef_CreateFull(0x18, 1, 4, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 2);
+    ParticleDef_CreateFull(0x1E, 1, 8, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
+    ParticleDef_CreateFull(0x1E, 1, 8, BattleAnim_CallbackStartEffects133And134And143Descriptor44ModeOrbitSwirl, &gParticleEffectData[0x44], 0, 8, 9, 0, 0x3C, 3);
     ParticleDef_Create31EAC(0x26, 0xA, 0, 0xFF, 8);
-    ParticleDef_CreateQuick(0x28, func_8433F270, &gParticleEffectData[0x38], 0x18, 1, 2, 0, 0x3C, 0);
+    ParticleDef_CreateQuick(0x28, BattleAnim_CallbackStartEffects133And134And143Descriptor38MetadataBurstEmitter, &gParticleEffectData[0x38], 0x18, 1, 2, 0, 0x3C, 0);
     ParticleDef_CreateBC20(0x3C, 0, 0x40, 0xA, 0xFF);
     ParticleDef_CreateAlphaMode(0x40, 0xFF, 0, 0xFF);
     ParticleSystem_SetSpawnOffset(0x50);
-    func_8433F5D4();
+    BattleAnim_StartEffect135ExpandingFlashAndRisingScaleFade();
 }
 
-void func_8433FD30(void) {
+void BattleAnim_StartEffect122GlobalAndOwnerTintFade(void) {
     ParticleDef_CreateDefault(0, 0xFF, 0);
     ParticleDef_Create31EAC(0x14, 0, 0, 0xFF, 0x10);
 }

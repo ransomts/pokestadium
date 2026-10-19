@@ -4,7 +4,7 @@
 #include "global.h"
 #include "src/11BA0.h"
 
-void func_82E00020(void);
+void CupSelect_PollController(void);
 void DrawBorderCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
 s32 Background_DrawLayer(s32 arg0, SimpleGfxNode* arg1);
 s32 Overlay_DrawLayer(s32 arg0, SimpleGfxNode* arg1);

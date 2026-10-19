@@ -5,22 +5,22 @@
 
 void func_82100020(void);
 void func_82100028(UNUSED s32 arg0, UNUSED s32 arg1);
-void func_82100034(void);
+void Title_PollDPad(void);
 s32 GetMenuOptionCode(void);
 void DrawBorderOverlay(s16 arg0, s16 arg1);
-void func_821002F8(void);
+void Title_DrawNoControllerWarning(void);
 void DrawBackgroundTextureTiles(u8* arg0);
 void TitleScreen_RenderFrame(void);
 s32 CountFlagOccurrences(s32 arg0);
-s32 func_8210071C(s32 arg0, u32 arg1);
-void func_82100760(u8* arg0);
-s32 func_82100844(void);
-s32 func_82100958(void);
+s32 Title_FindEligibleDemoEntry(s32 arg0, u32 arg1);
+void Title_PickDemoMatchup(u8* arg0);
+s32 Title_StartAttractDemo(void);
+s32 Title_ShouldStartAttractDemo(void);
 s32 func_821009AC(void);
-s32 func_821009B4(void);
-void func_82100AB8(void);
-void func_82100B1C(s32 arg0);
-void func_82100B98(void);
-s32 func_82100C98(UNUSED s32 arg0, s16* arg1);
+s32 Title_Loop(void);
+void Title_FadeIn(void);
+void Title_FadeOut(s32 arg0);
+void Title_LoadAssets(void);
+s32 Title_Main(UNUSED s32 arg0, s16* arg1);
 
 #endif // _FRAGMENT36_H_

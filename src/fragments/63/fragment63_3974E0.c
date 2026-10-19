@@ -3,7 +3,7 @@
 #include "src/6A40.h"
 #include "src/math_util.h"
 
-s16 func_84B033E0(void) {
+s16 BattlePrep_RandomStarOffset(void) {
     f32 temp_fv0 = MathUtil_Random_ZeroOne();
 
     if (temp_fv0 >= 0.5f) {
@@ -57,8 +57,8 @@ void Battle_UpdateInputBuffer(unk_D_84B19910* arg0) {
         arg0[i].unk_02.unk_04 += 0x64;
         if (arg0[i].unk_02.unk_04 > 0) {
             do {
-                temp_s0 = func_84B033E0();
-                temp_v0 = func_84B033E0();
+                temp_s0 = BattlePrep_RandomStarOffset();
+                temp_v0 = BattlePrep_RandomStarOffset();
             } while ((SQ(temp_s0) + SQ(temp_v0)) < 0x6400);
 
             arg0[i].unk_02.unk_00 = temp_s0;
@@ -75,8 +75,8 @@ void Input_UpdateBuffer(unk_D_84B19910* arg0) {
 
     for (i = 0; i < 400; i++) {
         do {
-            temp_s0 = func_84B033E0();
-            temp_v0 = func_84B033E0();
+            temp_s0 = BattlePrep_RandomStarOffset();
+            temp_v0 = BattlePrep_RandomStarOffset();
         } while ((SQ(temp_s0) + SQ(temp_v0)) < 0x6400);
 
         arg0[i].unk_02.unk_00 = temp_s0;

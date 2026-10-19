@@ -3,14 +3,14 @@
 #include "26820.h"
 
 void UpdateMenuRandomSeed(void) {
-    gMenuRandomSeed = func_800280C4() & 0xFF;
+    gMenuRandomSeed = Save_GetOptionsField1E() & 0xFF;
 }
 
 void SetCurrentMenuIndex(s16 arg0) {
     gCurrentMenuIndex = arg0;
 }
 
-void func_82505FE0(s16 arg0) {
+void KidsClub_ResetTournamentState(s16 arg0) {
     s32 i;
     s32 j;
 

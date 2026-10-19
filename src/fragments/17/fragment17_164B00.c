@@ -61,7 +61,7 @@ void Gfx_DrawTexturedRect(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 w
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_86B05944(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void UI_DrawAlphaQuad(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* sp84 = GfxAlloc(sizeof(Mtx) * 1);

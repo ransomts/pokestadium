@@ -892,7 +892,7 @@ void Menu_InitializeResources(void) {
     Vec3f_Set(&gMenuGraphNodes[5].unk_024, 100.0f, 42.0f, -579.0f);
 }
 
-s16 func_84101D80(void) {
+s16 StadiumSelect_HandleInput(void) {
     s16 var_a1 = -1;
     s16 var_v1 = -1;
 
@@ -941,7 +941,7 @@ void Menu_MainLoop(void) {
     do {
         Game_UpdateInputs();
         Menu_UpdateRender(0xA, 1, 0.0f);
-        temp_v0 = func_84101D80();
+        temp_v0 = StadiumSelect_HandleInput();
     } while (temp_v0 == -1);
 
     gSelectedMenuIndex = temp_v0;

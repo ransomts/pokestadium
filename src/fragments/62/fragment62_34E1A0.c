@@ -297,7 +297,7 @@ void WaterSurface_SetupMatrix(void) {
     tmp2 += temp_fa0;
     tmp3 += temp_fa1;
 
-    func_80031C6C(gWaterSurface.unk_0010, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6);
+    Mtx_BuildTranslatedDirectionRotation(gWaterSurface.unk_0010, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6);
 }
 
 Gfx* WaterSurface_Draw(Gfx* arg0) {

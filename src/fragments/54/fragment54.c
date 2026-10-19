@@ -32,7 +32,7 @@ void DrawPanelBorder(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_82B000F4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
+void RentalHub_DrawHeaderBar(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
     gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
 
     gDPSetEnvColor(gDisplayListHead++, arg3->r, arg3->g, arg3->b, 255);
@@ -51,7 +51,7 @@ void DrawMenuHeader(void) {
 
     GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
     GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
-    func_82B000F4(0x48, 0x28, 0x208, &sp2C, &sp28);
+    RentalHub_DrawHeaderBar(0x48, 0x28, 0x208, &sp2C, &sp28);
     DrawPanelBorder(0x30, 0x20);
     Text_ResetState();
     Text_SetFont(0x10, 0);
@@ -62,7 +62,7 @@ void DrawMenuHeader(void) {
     Text_SetupDL();
 }
 
-void func_82B003B8(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void RentalHub_DrawSelectionCursor(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     static s16 D_82B01138 = 0;
 
     s16 sp56 = SINS(D_82B01138) * 2;
@@ -159,7 +159,7 @@ void RenderMenuFrame(s16 arg0) {
     DrawMenuHeader();
     DrawMenuEntries(arg0);
     if (arg0 == 8) {
-        func_82B003B8((gMenuCursorIndex * 0xA4) + 0x50, 0x180, 0x98, 0x30);
+        RentalHub_DrawSelectionCursor((gMenuCursorIndex * 0xA4) + 0x50, 0x180, 0x98, 0x30);
     }
     Stage_Advance();
 }
@@ -279,12 +279,12 @@ s32 MenuFragment_Init(void) {
     return sp26;
 }
 
-s32 func_82B00FAC(void) {
+s32 RentalHub_LoadRentalPicker(void) {
     FRAGMENT_LOAD_AND_CALL(fragment61, 1, 0);
     return 4;
 }
 
-s32 func_82B00FFC(void) {
+s32 RentalHub_LoadRentalRules(void) {
     FRAGMENT_LOAD_AND_CALL(fragment55, 0, 0);
     return 4;
 }
@@ -300,11 +300,11 @@ s32 Fragment54_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     while (sp2E >= 2) {
         switch (sp2E) {
             case 2:
-                sp2E = func_82B00FFC();
+                sp2E = RentalHub_LoadRentalRules();
                 break;
 
             case 3:
-                sp2E = func_82B00FAC();
+                sp2E = RentalHub_LoadRentalPicker();
                 break;
 
             case 4:

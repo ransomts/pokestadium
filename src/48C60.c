@@ -64,7 +64,7 @@ s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
         romAddr = ((u32*)gMoveSoundArchive)[arg2 + 3];
         size = gMoveSoundSeqInfo->seqArray[3].offset - romAddr;
     }
-    func_8004ADB0(romAddr, gMoveSoundTempBuffer, size);
+    Rom_DmaRead(romAddr, gMoveSoundTempBuffer, size);
     DecompressData(gMoveSoundTempBuffer, gMoveSoundBankData[slot], 0x3E8);
     RemapBankPointers(gMoveSoundBankData[slot]);
     if (flag) {
@@ -74,7 +74,7 @@ s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     if (size & 1) {
         size++;
     }
-    func_8004ADB0((u32)gMoveSoundSeqTable->seqArray[arg2].offset, gMoveSoundTempBuffer, size);
+    Rom_DmaRead((u32)gMoveSoundSeqTable->seqArray[arg2].offset, gMoveSoundTempBuffer, size);
     DecompressData(gMoveSoundTempBuffer, gMoveSoundTables[slot], 0x44C);
 
 found:

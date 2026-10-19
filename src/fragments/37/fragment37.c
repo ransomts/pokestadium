@@ -416,7 +416,7 @@ void DrawAnimatedIcon(s16 arg0, s16 arg1) {
     }
 }
 
-void func_822018D4(s16 arg0, s16 arg1, s16 arg2) {
+void AreaSelect_DrawGlowCircle(s16 arg0, s16 arg1, s16 arg2) {
     if ((gAreaAudioState.unk_07 == 0) || (arg2 <= 0)) {
         return;
     }
@@ -692,7 +692,7 @@ void AreaSelect_Render(s16 arg0) {
     DrawAnimatedIcon(0x12C, 0x41);
     DrawParticleTrail();
     UpdateBackgroundFade(arg0, 0x194, 0x28);
-    func_822018D4(0x12C, 0x41, gFadeStepCounter);
+    AreaSelect_DrawGlowCircle(0x12C, 0x41, gFadeStepCounter);
     DrawTileOverlay();
 
     if ((arg0 == 1) || (arg0 == 2)) {

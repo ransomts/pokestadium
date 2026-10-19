@@ -81,7 +81,7 @@ void Particle_UpdateStateAndScale(ParticleEffectInstance* arg0) {
             Particle_ApproachSpeedScaled(arg0, 50.0f, 0.5f);
             Particle_AddScaledVelocityY(arg0, 1.0f);
             Particle_UpdatePositionAndAccelFromYaw(arg0, arg0->unk_74, 0x1000);
-            func_8140A578(arg0, 0x2000);
+            Particle_Field94_AddX_0A578(arg0, 0x2000);
             Particle_RotateX(arg0, 0x3000);
             break;
 
@@ -89,7 +89,7 @@ void Particle_UpdateStateAndScale(ParticleEffectInstance* arg0) {
             Particle_ApproachSpeedScaled(arg0, 0.0f, 1.0f);
             Particle_AddScaledVelocityY(arg0, -2.0f);
             Particle_UpdatePositionAndAccelFromYaw(arg0, arg0->unk_74, 0x1000);
-            func_8140A578(arg0, 0x2000);
+            Particle_Field94_AddX_0A578(arg0, 0x2000);
             Particle_RotateX(arg0, 0x3000);
             break;
     }

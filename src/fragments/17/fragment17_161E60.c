@@ -787,7 +787,7 @@ void BattleIntroPanel_InitAnimTables(void) {
 
     D_86B0EBDC->unk_2F0 = 0;
     GbsEnsureBankLoaded(2);
-    var_v0 = func_8002816C() & 0xFF;
+    var_v0 = Save_GetSelectedPokemonId() & 0xFF;
 
     D_86B0EBDC->unk_2E8 = var_v0;
 
@@ -860,7 +860,7 @@ void BattleIntroPanel_InitInputTables(void) {
     gFragment17TextState->unk_18 = 0;
 }
 
-void func_86B02928(void) {
+void Completion_PositionBonusModel(void) {
     Vec3f sp1C;
 
     if (Graph_GetRecordedPosition(&D_86B0EBDC->unk_008, 1, &sp1C) != NULL) {
@@ -905,7 +905,7 @@ void BattleIntroPanel_InitColorTables(void) {
     gFragment17Camera->unk_24.fovy = 41.5f;
 }
 
-s32 func_86B02B50(void) {
+s32 Completion_WrapDialogText(void) {
     if (gFragment17TextBuffer[gFragment17TextState->unk_04] == 0) {
         return 1;
     }
@@ -938,7 +938,7 @@ s32 func_86B02B50(void) {
     return 0;
 }
 
-void func_86B02C9C(s16 arg0, s16 arg1) {
+void Completion_DrawSpeciesRewardText(s16 arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
@@ -960,7 +960,7 @@ void func_86B02C9C(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86B02ED0(s16 arg0, s16 arg1) {
+void Completion_DrawWrappedDialogText(s16 arg0, s16 arg1) {
     Text_ResetState();
     Text_SetFont(2, 0);
     Text_SetLineHeight(0x10);
@@ -968,7 +968,7 @@ void func_86B02ED0(s16 arg0, s16 arg1) {
     Text_SetupDL();
 }
 
-void func_86B02F34(void) {
+void Completion_ResetDialogText(void) {
     s32 i;
 
     gFragment17TextState->unk_10 = 0;
@@ -979,14 +979,14 @@ void func_86B02F34(void) {
     // clang-format on
 }
 
-void func_86B02F8C(void) {
-    func_86B0A824(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2), gFragment17TextState->unk_08,
+void Completion_DrawDialogBox(void) {
+    FirstClearBonus_DrawDialogFrame(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2), gFragment17TextState->unk_08,
                   gFragment17TextState->unk_0C, 0x14, 0x14, 0xB4, 0x80);
-    func_86B05944(gFragment17TextState->unk_16 - 2, (gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2)) - 2, gFragment17TextState->unk_08 + 4,
+    UI_DrawAlphaQuad(gFragment17TextState->unk_16 - 2, (gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2)) - 2, gFragment17TextState->unk_08 + 4,
                   gFragment17TextState->unk_0C + 4, 0);
 }
 
-void func_86B03048(void) {
+void Completion_UpdateGiftDialogFirstTime(void) {
     s32 i;
     s32 temp_v0;
 
@@ -1009,7 +1009,7 @@ void func_86B03048(void) {
             for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
             // clang-format on
 
-            func_86B02F8C();
+            Completion_DrawDialogBox();
             gFragment17TextState->unk_00++;
             break;
 
@@ -1019,14 +1019,14 @@ void func_86B03048(void) {
             if (temp_v0 == 0x37) {
                 gFragment17TextState->unk_00++;
             }
-            func_86B02F8C();
+            Completion_DrawDialogBox();
             gFragment17TextState->unk_10 = 0;
             break;
 
         case 2:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if (func_86B02B50() != 0) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if (Completion_WrapDialogText() != 0) {
                 if (gFragment17TextState->unk_18 == 0) {
                     gFragment17TextState->unk_10 = 0;
                     gFragment17TextState->unk_04 = 0;
@@ -1043,9 +1043,9 @@ void func_86B03048(void) {
             break;
 
         case 3:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if ((func_86B02B50() != 0) && (gFragment17TextState->unk_18 == 0)) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if ((Completion_WrapDialogText() != 0) && (gFragment17TextState->unk_18 == 0)) {
                 D_86B0EBDC->unk_2F0 = 1;
                 gFragment17TextState->unk_10 = 0;
                 gFragment17TextState->unk_04 = 0;
@@ -1062,21 +1062,21 @@ void func_86B03048(void) {
             break;
 
         case 4:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if ((func_86B02B50() != 0) && (gFragment17TextState->unk_18 == 0)) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if ((Completion_WrapDialogText() != 0) && (gFragment17TextState->unk_18 == 0)) {
                 gFragment17TextState->unk_00 = 0xC;
             }
             break;
 
         case 12:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
             break;
     }
 }
 
-void func_86B034AC(void) {
+void Completion_UpdateGiftDialogWithExisting(void) {
     s32 i;
     s32 temp_v0;
 
@@ -1098,7 +1098,7 @@ void func_86B034AC(void) {
             for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
             // clang-format on
 
-            func_86B02F8C();
+            Completion_DrawDialogBox();
             gFragment17TextState->unk_00++;
             break;
 
@@ -1108,14 +1108,14 @@ void func_86B034AC(void) {
             if (temp_v0 == 0x37) {
                 gFragment17TextState->unk_00++;
             }
-            func_86B02F8C();
+            Completion_DrawDialogBox();
             gFragment17TextState->unk_10 = 0;
             break;
 
         case 2:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if (func_86B02B50() != 0) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if (Completion_WrapDialogText() != 0) {
                 if (gFragment17TextState->unk_18 == 0) {
                     gFragment17TextState->unk_10 = 0;
                     gFragment17TextState->unk_04 = 0;
@@ -1131,9 +1131,9 @@ void func_86B034AC(void) {
             break;
 
         case 3:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if (func_86B02B50() != 0) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if (Completion_WrapDialogText() != 0) {
                 if (gFragment17TextState->unk_18 == 0) {
                     gFragment17TextState->unk_10 = 0;
                     gFragment17TextState->unk_04 = 0;
@@ -1149,9 +1149,9 @@ void func_86B034AC(void) {
             break;
 
         case 4:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if (func_86B02B50() != 0) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if (Completion_WrapDialogText() != 0) {
                 if (gFragment17TextState->unk_18 == 0) {
                     gFragment17TextState->unk_10 = 0;
                     gFragment17TextState->unk_04 = 0;
@@ -1169,9 +1169,9 @@ void func_86B034AC(void) {
             break;
 
         case 5:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if (func_86B02B50() != 0) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if (Completion_WrapDialogText() != 0) {
                 if (gFragment17TextState->unk_18 == 0) {
                     gFragment17TextState->unk_10 = 0;
                     gFragment17TextState->unk_04 = 0;
@@ -1186,9 +1186,9 @@ void func_86B034AC(void) {
             break;
 
         case 6:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if (func_86B02B50() != 0) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if (Completion_WrapDialogText() != 0) {
                 if (gFragment17TextState->unk_18 == 0) {
                     gFragment17TextState->unk_10 = 0;
                     gFragment17TextState->unk_04 = 0;
@@ -1204,22 +1204,22 @@ void func_86B034AC(void) {
             break;
 
         case 7:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
-            if ((func_86B02B50() != 0) && (gFragment17TextState->unk_18 == 0)) {
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            if ((Completion_WrapDialogText() != 0) && (gFragment17TextState->unk_18 == 0)) {
                 gFragment17TextState->unk_00 = 0xC;
             }
             break;
 
         case 13:
             gFragment17TextState->unk_18 = 0;
-            func_86B02F8C();
-            func_86B02C9C(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            Completion_DrawDialogBox();
+            Completion_DrawSpeciesRewardText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
             break;
 
         case 12:
-            func_86B02F8C();
-            func_86B02ED0(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
+            Completion_DrawDialogBox();
+            Completion_DrawWrappedDialogText(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2));
             break;
     }
 }
@@ -1341,7 +1341,7 @@ s32 BattleIntro_CameraApproachAnim(void) {
     if (gFragment17Camera->unk_60.eye.z >= 85.0f) {
         D_86B0EBDC->unk_008.unk_000.unk_02 |= 0x20;
         D_86B0EBDC->unk_170.unk_000.unk_01 |= 1;
-        func_86B02928();
+        Completion_PositionBonusModel();
     }
 
     if (gFragment17Camera->unk_60.eye.z >= 190.0f) {
@@ -1381,7 +1381,7 @@ void BattleIntroPanel_HandleChoiceInput(void) {
         if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 1)) {
             PlaySoundEffect(2);
             gFragment17TextState->unk_00 = 6;
-            func_86B02F34();
+            Completion_ResetDialogText();
             MessageBank_SetPointer_0x14_0x2A(0x20, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2E8 - 1));
             MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
             GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Timeout);
@@ -1392,7 +1392,7 @@ void BattleIntroPanel_HandleChoiceInput(void) {
         if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 0)) {
             PlaySoundEffect(3);
             gFragment17TextState->unk_00 = 7;
-            func_86B02F34();
+            Completion_ResetDialogText();
             MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
             GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Extra);
             Anim_SetChannelOffset(&D_86B0EBDC->unk_008, -1);
@@ -1506,7 +1506,7 @@ s32 BattleIntroPanel_StateMachine(void) {
             break;
 
         case 6:
-            func_86B02928();
+            Completion_PositionBonusModel();
             if (GraphNode_IsAnimationFinished(&D_86B0EBDC->unk_008) != 0) {
                 D_86B0EBDC->unk_2E4 = 0;
                 D_86B0EBDC->unk_2DC++;
@@ -1521,7 +1521,7 @@ s32 BattleIntroPanel_StateMachine(void) {
 
         case 8:
             BattleIntroPanel_AnimClamp();
-            func_86B02928();
+            Completion_PositionBonusModel();
             BattleIntroPanel_HandleChoiceInput();
             if (gFragment17TextState->unk_00 == 0xC) {
                 D_86B0EBDC->unk_2DC++;
@@ -1530,7 +1530,7 @@ s32 BattleIntroPanel_StateMachine(void) {
 
         case 9:
             BattleIntroPanel_AnimClamp();
-            func_86B02928();
+            Completion_PositionBonusModel();
             if (D_86B0EBDC->unk_2E4++ == 2) {
                 return 1;
             }
@@ -1542,9 +1542,9 @@ s32 BattleIntroPanel_StateMachine(void) {
 
 void BattleIntroPanel_DrawFrame(void) {
     if (D_86B0EBDC->unk_2D8 == 1) {
-        func_86B034AC();
+        Completion_UpdateGiftDialogWithExisting();
     } else {
-        func_86B03048();
+        Completion_UpdateGiftDialogFirstTime();
     }
     Gfx_DrawBattleIntroPanels();
     BattleIntroPanel_DrawSpriteAnim();
@@ -1592,16 +1592,16 @@ void BattleIntroPanel_FadeOutSequence(void) {
     for (i = 0; i < 10; i++) {
         BattleIntroPanel_InputInit();
         BattleIntroPanel_AnimClamp();
-        func_86B02928();
+        Completion_PositionBonusModel();
         BattleIntroPanel_DrawFrameWrapper(2);
     }
 
     if (D_86B0EBDC->unk_2F0 == 1) {
         if (gBattleContext.unk_0000 == 0x1A) {
-            func_8002817C(D_86B0EBDC->unk_2EC, 1);
-            func_80028128(1);
+            Save_SetSelectedPokemonId(D_86B0EBDC->unk_2EC, 1);
+            Save_SetOptionsField1F(1);
         } else {
-            func_8002817C(D_86B0EBDC->unk_2EC, gBattleContext.unk_11F2);
+            Save_SetSelectedPokemonId(D_86B0EBDC->unk_2EC, gBattleContext.unk_11F2);
         }
         GbsCommitBankBlock(0x14, 0);
         GbsSyncBank(2);

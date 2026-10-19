@@ -335,7 +335,7 @@ void WaterSurface_CalcViewMatrix(void) {
     tmp2 += temp_fa0;
     tmp3 += temp_fa1;
 
-    func_80031C6C(D_8439E680.unk_0010, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6);
+    Mtx_BuildTranslatedDirectionRotation(D_8439E680.unk_0010, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6);
 }
 
 Gfx* WaterSurface_DrawLit(Gfx* arg0) {

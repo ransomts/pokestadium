@@ -207,7 +207,7 @@ void UpdateSelectionConfirmTimer(unk_D_83079E70* arg0) {
     }
 }
 
-void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
+void RentalRules_DrawScrollbar(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
     static s16 D_83003B70 = 0;
 
     s16 temp_t0;
@@ -242,7 +242,7 @@ void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2) {
     D_83003B70 = (D_83003B70 + 1) % 8;
 }
 
-void func_83002F9C(s16 arg0, s16 arg1) {
+void RentalRules_DrawEligibilityPanelLegend(s16 arg0, s16 arg1) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -298,7 +298,7 @@ void DrawPokemonSelectionEntries(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2) {
     Text_SetupDL();
 }
 
-void func_830032D8(s32 arg0) {
+void RentalRules_QualifyingSpeciesWindowInit(s32 arg0) {
     unk_D_83079E70* ptr = &D_83079E70;
     s32 i;
 
@@ -312,12 +312,12 @@ void func_830032D8(s32 arg0) {
 
     if (arg0 != 0) {
         for (i = 0; i < 151; i++) {
-            func_8001B0DC(gPokemonIconTextures[i], i + 1, NULL);
+            PokeIcon_LoadModelTextureForMon(gPokemonIconTextures[i], i + 1, NULL);
         }
     }
 }
 
-void func_830033F0(void) {
+void RentalRules_QualifyingSpeciesWindowUpdate(void) {
     unk_D_83079E70* ptr = &D_83079E70;
 
     if (ptr->unk_00 != 0) {
@@ -352,7 +352,7 @@ void RenderSelectionMenu(void) {
 
     spA6 = (((0x400 - ptr->unk_04) * 0x108) / 1024) + 0x38;
     spA4 = (((0x400 - ptr->unk_04) * 0xA8) / 1024) + 0x5C;
-    func_83000F10(spA6, spA4, (ptr->unk_04 * 0x210) / 1024, (ptr->unk_04 * 0x150) / 1024);
+    RentalRules_DrawWindowFrame(spA6, spA4, (ptr->unk_04 * 0x210) / 1024, (ptr->unk_04 * 0x150) / 1024);
 
     if (ptr->unk_04 >= 0x400) {
         UNUSED s32 pad;
@@ -361,11 +361,11 @@ void RenderSelectionMenu(void) {
 
         DrawColoredPanel(spA6, spA4, 0x210, 0x24, 0x1E, 0x64, 0x64);
         DrawColoredPanel(spA6, spA4 + 0x24, 0x18, 0x12C, 0x1E, 0x1E, 0x64);
-        func_83002C74(spA6 + 4, spA4 + 0x2C, ptr);
+        RentalRules_DrawScrollbar(spA6 + 4, spA4 + 0x2C, ptr);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        func_83002F9C(spA6 + 8, spA4 + 8);
+        RentalRules_DrawEligibilityPanelLegend(spA6 + 8, spA4 + 8);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -416,7 +416,7 @@ void RenderSelectionMenu(void) {
     if (1) {}
 }
 
-void func_830038DC(void) {
+void RentalRules_QualifyingSpeciesWindowOpen(void) {
     unk_D_83079E70* ptr = &D_83079E70;
     s32 i;
 
@@ -434,7 +434,7 @@ void func_830038DC(void) {
     }
 }
 
-s32 func_83003988(void) {
+s32 RentalRules_QualifyingSpeciesWindowIsActive(void) {
     s32 ret;
 
     if (D_83079E70.unk_00 != 0) {
@@ -445,6 +445,6 @@ s32 func_83003988(void) {
     return ret;
 }
 
-s32 func_830039AC(void) {
+s32 RentalRules_GetQualifyingSpeciesDisplayOpeningProgress(void) {
     return D_83079E70.unk_04;
 }

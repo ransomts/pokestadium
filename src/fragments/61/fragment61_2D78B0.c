@@ -276,7 +276,7 @@ void DrawIconPanel(s16 arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84201BC4(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
+void TeamSelection_DrawGradientPanel(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
     gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, arg3->r, arg3->g, arg3->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg4->r, arg4->g, arg4->b, 255);
@@ -298,7 +298,7 @@ void SetupBattleSelectionUI(void) {
 
     GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
     GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
-    func_84201BC4(0x48, 0x28, 0x208, &sp2C, &sp28);
+    TeamSelection_DrawGradientPanel(0x48, 0x28, 0x208, &sp2C, &sp28);
     DrawTopPanel(0x30, 0x20);
     Text_ResetState();
     Text_SetFont(0x10, 0);
@@ -352,16 +352,16 @@ void DrawOptionsScreen(s16 arg0, s16 arg1, s16 arg2) {
             Text_SetupDL();
         }
     }
-    func_8420D4F8(0);
+    TeamSelection_RulePrompt_DrawFrame(0);
     Stage_Advance();
 }
 
 void WaitForMenuConfirm(void) {
     PlaySoundEffect(8);
-    func_8420DA28(0x10, gPlayer1Controller);
+    TeamSelection_RulePrompt_Open(0x10, gPlayer1Controller);
 
-    while (func_8420DB48(0x10) == -1) {
-        func_8420D9B0();
+    while (TeamSelection_RulePrompt_TryFinish(0x10) == -1) {
+        TeamSelection_RulePrompt_Update();
         DrawOptionsScreen(0x8C, 0xBC, 9);
         Game_UpdateInputs();
     }
@@ -371,7 +371,7 @@ s32 UpdateMenuSelectionInput(void) {
     s32 sp1C = 'exec';
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        if ((gMenuSelectionIndex == 0) && (func_80028E68() == 0xA)) {
+        if ((gMenuSelectionIndex == 0) && (Deck_FindFirstFreeTeamSlot() == 0xA)) {
             WaitForMenuConfirm();
         } else {
             if (gMenuSelectionIndex < 3) {
@@ -447,7 +447,7 @@ void DrawPartyTopPanel(s16 arg0, s16 arg1) {
     if (arg0 == 0) {
         GfxColor_SetRGB(&sp34, 0x64, 0x64, 0xC8);
         GfxColor_SetRGB(&sp30, 0x28, 0x28, 0x8C);
-        func_84201BC4(0x48, 0x28, 0x208, &sp34, &sp30);
+        TeamSelection_DrawGradientPanel(0x48, 0x28, 0x208, &sp34, &sp30);
         DrawTopPanel(0x30, 0x20);
         if (var_t0 != 0) {
             DrawIconPanel(0x1AE, 0x26, arg1);
@@ -455,7 +455,7 @@ void DrawPartyTopPanel(s16 arg0, s16 arg1) {
     } else {
         GfxColor_SetRGB(&sp34, 0xB4, 0x5A, 0xA0);
         GfxColor_SetRGB(&sp30, 0x78, 0x28, 0x64);
-        func_84201BC4(0x48, 0x28, 0x208, &sp34, &sp30);
+        TeamSelection_DrawGradientPanel(0x48, 0x28, 0x208, &sp34, &sp30);
         DrawAlternateTopPanel(0x30, 0x20);
     }
 
@@ -486,7 +486,7 @@ void DrawPartyScreenSubsystems(UNUSED s16 arg0, s16 arg1, s16 arg2) {
     }
 
     if (gSubsystemEnableMask & 8) {
-        func_84204760(temp_s0);
+        TeamSelection_TrainerSlots_Render(temp_s0);
     }
 
     if (gSubsystemEnableMask & 1) {
@@ -506,7 +506,7 @@ void DrawPartyScreenSubsystems(UNUSED s16 arg0, s16 arg1, s16 arg2) {
     }
 
     if (gSubsystemEnableMask & 0x20) {
-        func_8420D4F8(temp_s0);
+        TeamSelection_RulePrompt_DrawFrame(temp_s0);
     }
 
     Stage_Advance();
@@ -527,8 +527,8 @@ s16 RunPartyMenuSelection(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
 
     while (temp_s1 == -1) {
         Game_UpdateInputs();
-        func_8420570C();
-        func_8420D9B0();
+        TeamSelection_TrainerSlots_Update();
+        TeamSelection_RulePrompt_Update();
         temp_s1 = Menu_GetSelectedIndex();
         gFrameTimer = 2;
         DrawPartyScreenSubsystems(-1, arg1, arg2);
@@ -550,7 +550,7 @@ void UpdatePartyScreenSubsystems(UNUSED s16 arg0, UNUSED s32 arg1) {
     }
 
     if (gSubsystemEnableMask & 4) {
-        var_a1 |= func_842106FC(&gPokemonData);
+        var_a1 |= TeamSelection_RegisteredTeam_Update(&gPokemonData);
     }
 
     if (gSubsystemEnableMask & 0x10) {
@@ -558,7 +558,7 @@ void UpdatePartyScreenSubsystems(UNUSED s16 arg0, UNUSED s32 arg1) {
     }
 
     if (gSubsystemEnableMask & 0x20) {
-        var_a1 |= func_8420D9B0();
+        var_a1 |= TeamSelection_RulePrompt_Update();
     }
 
     if (var_a1 != 0) {
@@ -569,7 +569,7 @@ void UpdatePartyScreenSubsystems(UNUSED s16 arg0, UNUSED s32 arg1) {
 void PartyScreenTransition(s16 arg0, s32 arg1, s16 arg2) {
     PlaySoundEffect(4);
     if (arg0 == 4) {
-        func_84210A18(&gPokemonData);
+        RegistrationManager_Begin(&gPokemonData);
     } else {
         ItemPanel_StartSlideDown(&gPartyInfo, 0);
         TriggerScrollUp(&gControllerInfo, 0);
@@ -590,7 +590,7 @@ void PartyScreenInputLoop(s16 arg0, s16 arg1, s16 arg2) {
         DrawPartyScreenSubsystems(arg0, arg1, arg2);
 
         if (arg0 == 4) {
-            var_s0 = func_84210B54(&gPokemonData) == 0;
+            var_s0 = TeamSelection_RegisteredTeam_GetSelection(&gPokemonData) == 0;
         } else {
             var_s0 = !ItemPanel_IsOffscreen(&gPartyInfo);
             var_s0 |= !IsMenuInState2(&gControllerInfo);
@@ -630,7 +630,7 @@ void SetupBattleSelectionSlot(unk_D_8423D3D8* arg0, s16 arg1) {
     Gen1StringDecodeBuffer sp38;
 
     if (arg1 == 4) {
-        gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 0, 0x2C, 0x54, arg0->unk_02);
+        gSubsystemEnableMask |= TeamSelection_RegisteredTeam_Initialize(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 0, 0x2C, 0x54, arg0->unk_02);
         return;
     }
 
@@ -655,7 +655,7 @@ s32 CommitBattleSelectionSlot(unk_D_8423D3D8* arg0, s16 arg1) {
 
     arg0->unk_04->unk_002 = 0;
     if (arg1 == 4) {
-        temp_s3 = func_84210B60(&gPokemonData, &sp34);
+        temp_s3 = RegisteredTeam_LoadSelected(&gPokemonData, &sp34);
         if (sp34 != NULL) {
             arg0->unk_04->unk_018 = sp34->unk_4D10;
             if (gBattleContext.unk_0000 != 0) {
@@ -725,7 +725,7 @@ void ShowSelectedMonInfo(s16 arg0, s16 arg1) {
 
     if (temp_v1->unk_002 != 0) {
         if (arg1 == 4) {
-            func_84210C80(&gPokemonData, temp_v1->unk_214->unk_028[0].unk_53);
+            TeamSelection_RegisteredTeam_ApplySelection(&gPokemonData, temp_v1->unk_214->unk_028[0].unk_53);
         } else {
             ItemPanel_LoadItems(&gPartyInfo, &temp_v1->unk_214->unk_028, temp_v1->unk_214->unk_002);
         }
@@ -763,7 +763,7 @@ s32 RunBattleSelectionMode(void) {
     InitBattleSelectionSlots();
     FadeInPartyScreen();
 
-    gSubsystemEnableMask |= func_84205C18(0);
+    gSubsystemEnableMask |= TeamSelection_TrainerSlots_Initialize(0);
     gSubsystemEnableMask |= MoveScreen_Create(&gMoveScreenInfo);
 
     while (var_s1 >= 0 && var_s1 < 4) {
@@ -845,7 +845,7 @@ s32 RunBattleSelectionModeAlt(void) {
     InitBattleSelectionSlots();
     FadeInPartyScreen();
 
-    gSubsystemEnableMask |= func_84205C18(0);
+    gSubsystemEnableMask |= TeamSelection_TrainerSlots_Initialize(0);
     gSubsystemEnableMask |= MoveScreen_Create(&gMoveScreenInfo);
 
     while ((var_s1 >= 0) && (var_s1 < 4)) {
@@ -931,7 +931,7 @@ void RunRegistrationMode(void) {
         }
 
         ptr = &gPokemonData;
-        gSubsystemEnableMask |= func_8421089C(ptr, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 3, 0x2C, 0xBC, 0);
+        gSubsystemEnableMask |= TeamSelection_RegisteredTeam_Initialize(ptr, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 3, 0x2C, 0xBC, 0);
         gSubsystemEnableMask |= ItemPanel_Init(&gPartyInfo, &gControllerInfo, &gMoveScreenInfo, ptr, 1, var_s1, sp74, 0x40, 0x54, 0);
         gSubsystemEnableMask |= InitPokemonMenu(&gControllerInfo, &gPartyInfo, &gMoveScreenInfo, 1, 0x68, 0xE4, 0, temp_v0, gBattleSelectionControllerInfo);
 
@@ -947,9 +947,9 @@ void RunRegistrationMode(void) {
 }
 
 void RunRentalSelectionMode(void) {
-    gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 1, 0x2C, 0x54, 0);
+    gSubsystemEnableMask |= TeamSelection_RegisteredTeam_Initialize(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 1, 0x2C, 0x54, 0);
 
-    func_84210A18(&gPokemonData);
+    RegistrationManager_Begin(&gPokemonData);
     Game_UpdateInputs();
     UpdatePartyScreenSubsystems(4, 0);
     DrawPartyScreenSubsystems(4, 2, 0);
@@ -959,13 +959,13 @@ void RunRentalSelectionMode(void) {
         Game_UpdateInputs();
         UpdatePartyScreenSubsystems(4, MenuInput_ReadDirection() & 0xFFFF);
         DrawPartyScreenSubsystems(4, 2, 0);
-    } while (func_84210B54(&gPokemonData) == 0);
+    } while (TeamSelection_RegisteredTeam_GetSelection(&gPokemonData) == 0);
 }
 
 void RunTradeSelectionMode(void) {
-    gSubsystemEnableMask |= func_8421089C(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 2, 0x2C, 0x54, 0);
+    gSubsystemEnableMask |= TeamSelection_RegisteredTeam_Initialize(&gPokemonData, &gPartyInfo, &gControllerInfo, &gMoveScreenInfo, 2, 0x2C, 0x54, 0);
 
-    func_84210A18(&gPokemonData);
+    RegistrationManager_Begin(&gPokemonData);
     Game_UpdateInputs();
     UpdatePartyScreenSubsystems(4, 0);
     DrawPartyScreenSubsystems(4, 3, 0);
@@ -975,13 +975,13 @@ void RunTradeSelectionMode(void) {
         Game_UpdateInputs();
         UpdatePartyScreenSubsystems(4, MenuInput_ReadDirection() & 0xFFFF);
         DrawPartyScreenSubsystems(4, 3, 0);
-    } while (func_84210B54(&gPokemonData) == 0);
+    } while (TeamSelection_RegisteredTeam_GetSelection(&gPokemonData) == 0);
 }
 
 s32 RunMainPartyMenu(void) {
     s16 temp_v0;
 
-    gSubsystemEnableMask |= func_84205C18(1);
+    gSubsystemEnableMask |= TeamSelection_TrainerSlots_Initialize(1);
     gSubsystemEnableMask |= MoveScreen_Create(&gMoveScreenInfo);
 
     do {
@@ -1102,8 +1102,8 @@ s32 RunPartyScreenMain(s32 arg0, UNUSED s32 arg1) {
     gMessageBank_06 = GetMessageBank(6);
 
     GbsEnsureBankLoaded(gBattleContext.unk_0001 / 4);
-    func_80028C48(gBattleContext.unk_0001);
-    func_80028EB8();
+    Save_SetActiveRecordBank(gBattleContext.unk_0001);
+    Deck_CompactRegisteredTeams();
     LoadBattleSelectionBackground();
     SpriteAssets_Load();
     LoadBattleSelectionControllerAssets();

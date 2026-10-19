@@ -533,10 +533,10 @@ void ParticleSystem_ResetKeepType4(void) {
         }
     }
 
-    GraphNode_SetColorRGBA(&D_84390010[0]->unk_000, 0xFF, 0xFF, 0xFF, 0);
-    GraphNode_SetColorRGBA(&D_84390010[1]->unk_000, 0xFF, 0xFF, 0xFF, 0);
-    GraphNode_SetState(&D_84390010[0]->unk_000, 0xFF);
-    GraphNode_SetState(&D_84390010[1]->unk_000, 0xFF);
+    GraphNode_SetColorRGBA(&sActivePokemon[0]->unk_000, 0xFF, 0xFF, 0xFF, 0);
+    GraphNode_SetColorRGBA(&sActivePokemon[1]->unk_000, 0xFF, 0xFF, 0xFF, 0);
+    GraphNode_SetState(&sActivePokemon[0]->unk_000, 0xFF);
+    GraphNode_SetState(&sActivePokemon[1]->unk_000, 0xFF);
 
     gSavedPrimColorB = 0xFF;
     gSavedPrimColorG = gSavedPrimColorB;
@@ -603,7 +603,7 @@ void Battle_SetAnimChannelFlag(s32 arg0) {
             ParticleSystem_ResetKeepType4();
             ParticleCameraCallbacks_Clear();
             ParticleSystem_ClearResetLock();
-            func_84359380();
+            BattleAnim_ReinitAuxiliaryEffects();
             break;
     }
 }
@@ -670,7 +670,7 @@ ParticleDef* ParticleDef_CreateFull(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140
 }
 
 ParticleDef* ParticleDef_CreateDefault(s32 arg0, s16 arg1, u8 arg2) {
-    return ParticleDef_Create(arg0, 0, 1, func_84331DC8, &gParticleDefaultCallback, NULL, 0, arg1, 0x16, 0, arg2, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackGlobalTintColorFadeDetach, &gParticleDefaultCallback, NULL, 0, arg1, 0x16, 0, arg2, 0);
 }
 
 ParticleDef* ParticleDef_CreateBC20(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
@@ -690,71 +690,71 @@ ParticleDef* ParticleDef_CreateBC20CDFull(s32 arg0, s32 arg1, s8 arg2, s16 arg3,
 }
 
 ParticleDef* ParticleDef_Create32E6C(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
-    return ParticleDef_Create(arg0, 0, 1, func_84332E6C, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, 0xFF, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackDescriptor25AlphaFadeInHold, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, 0xFF, arg3, 0);
 }
 
 ParticleDef* ParticleDef_Create32E6CAlt(s32 arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_84332E6C, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackDescriptor25AlphaFadeInHold, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
 ParticleDef* ParticleDef_Create32E6CFull(s32 arg0, s32 arg1, s8 arg2, s16 arg3, s16 arg4, u8 arg5, u8 arg6) {
-    return ParticleDef_Create(arg0, arg1, arg2, func_84332E6C, &gParticleEffectData[37], NULL, arg3, arg4, 0x16, arg6, arg5, 0);
+    return ParticleDef_Create(arg0, arg1, arg2, BattleAnim_CallbackDescriptor25AlphaFadeInHold, &gParticleEffectData[37], NULL, arg3, arg4, 0x16, arg6, arg5, 0);
 }
 
 ParticleDef* ParticleDef_Create32F30(s32 arg0, s16 arg1, u8 arg2) {
-    return ParticleDef_Create(arg0, 0, 1, func_84332F30, &gParticleEffectData[37], NULL, arg1, 0, 0x16, 0xFF, arg2, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackDescriptor25AlphaHoldDetach, &gParticleEffectData[37], NULL, arg1, 0, 0x16, 0xFF, arg2, 0);
 }
 
 ParticleDef* ParticleDef_Create32F30Alt(s32 arg0, s16 arg1, u8 arg2, u8 arg3) {
-    return ParticleDef_Create(arg0, 0, 1, func_84332F30, &gParticleEffectData[37], NULL, arg1, 0, 0x16, arg3, arg2, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackDescriptor25AlphaHoldDetach, &gParticleEffectData[37], NULL, arg1, 0, 0x16, arg3, arg2, 0);
 }
 
 ParticleDef* ParticleDef_Create32F30Full(s32 arg0, s32 arg1, s8 arg2, s16 arg3, u8 arg4, u8 arg5) {
-    return ParticleDef_Create(arg0, arg1, arg2, func_84332F30, &gParticleEffectData[37], NULL, arg3, 0, 0x16, arg5, arg4, 0);
+    return ParticleDef_Create(arg0, arg1, arg2, BattleAnim_CallbackDescriptor25AlphaHoldDetach, &gParticleEffectData[37], NULL, arg3, 0, 0x16, arg5, arg4, 0);
 }
 
 ParticleDef* ParticleDef_Create32FD0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_84332FD0, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackDescriptor25PaletteFadeOut, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
 ParticleDef* ParticleDef_Create330A0(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_843330A0, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackDescriptor25PaletteFadeIn, &gParticleEffectData[37], NULL, arg1, arg2, 0x16, arg4, arg3, 0);
 }
 
 ParticleDef* ParticleDef_Create31EAC(s32 arg0, u8 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_84331EAC, &gParticleDefaultCallback, gParticleEffectEntityA, arg2, arg4, 0x1A, arg3, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintRampDetach, &gParticleDefaultCallback, gParticleEffectEntityA, arg2, arg4, 0x1A, arg3, arg1, 0);
 }
 
 ParticleDef* ParticleDef_Create31FAC(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return ParticleDef_Create(arg0, 0, 1, func_84331FAC, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg5, 0x1A, arg4, arg2, arg3);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPulseDetach, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg5, 0x1A, arg4, arg2, arg3);
 }
 
 ParticleDef* ParticleDef_Create320A4(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_843320A4, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg4, 0x1A, 0, arg2, arg3);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintHoldFadeDetach, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg4, 0x1A, 0, arg2, arg3);
 }
 
 ParticleDef* ParticleDef_Create321BC(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_843321BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteApproachInactive, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
 ParticleDef* ParticleDef_Create321BCAlt(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return ParticleDef_Create(arg0, 0, 1, func_843321BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteApproachInactive, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
 ParticleDef* ParticleDef_Create323BC(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return ParticleDef_Create(arg0, 0, 1, func_843323BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteCycle, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 ParticleDef* ParticleDef_Create323BCAlt(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return ParticleDef_Create(arg0, 0, 1, func_843323BC, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteCycle, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 ParticleDef* ParticleDef_Create32604(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return ParticleDef_Create(arg0, 0, 1, func_84332604, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteFade, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 ParticleDef* ParticleDef_Create327B8(s32 arg0, s16 arg1, u8 arg2) {
-    return ParticleDef_Create(arg0, 0, 1, func_843327B8, &gParticleDefaultCallback, gParticleEffectEntityA, 0, arg1, 0x1A, arg2, 0, 0);
+    return ParticleDef_Create(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintRandomPaletteCycle, &gParticleDefaultCallback, gParticleEffectEntityA, 0, arg1, 0x1A, arg2, 0, 0);
 }
 
 ParticleDef* ParticleDef_CreateComplexColor(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
@@ -781,10 +781,10 @@ ParticleDef* ParticleDef_CreateNullType19(s32 arg0, u8 arg1) {
     return ParticleDef_Create(arg0, 0, 1, NULL, NULL, gParticleEffectEntityA, 0, 0, 0x19, arg1, 0, 0);
 }
 
-void func_8432F998(void) {
+void BattleAnim_EffectStartNop(void) {
 }
 
-void func_8432F9A0(void) {
+void BattleAnim_EffectEndNop(void) {
 }
 
 void SetGameStateFlag(s32 arg0) {

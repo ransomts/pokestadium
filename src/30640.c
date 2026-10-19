@@ -863,7 +863,7 @@ void Math_NormalizeVector(f32* arg0, f32* arg1, f32* arg2) {
     *arg2 = temp_ft4;
 }
 
-void func_80031B98(const f32* a, const f32* b, f32* out) {
+void Vec3f_CrossProductArrays(const f32* a, const f32* b, f32* out) {
     f32 ax = a[0];
     f32 ay = a[1];
     f32 az = a[2];
@@ -877,7 +877,7 @@ void func_80031B98(const f32* a, const f32* b, f32* out) {
     out[2] = (ax * by) - (ay * bx);
 }
 
-void func_80031BE8(Vec3f* vec) {
+void Vec3f_NormalizeSafe(Vec3f* vec) {
     f32 x;
     f32 y;
     f32 z;
@@ -900,7 +900,7 @@ void func_80031BE8(Vec3f* vec) {
     vec->z = z;
 }
 
-void func_80031C6C(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+void Mtx_BuildTranslatedDirectionRotation(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     f32 sp10C;
     f32 sp108;
     UNUSED s32 pad;

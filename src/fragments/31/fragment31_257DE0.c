@@ -3,7 +3,7 @@
 #include "src/12D80.h"
 #include "src/32D10.h"
 
-void func_81002B20(Gfx* gfx) {
+void DisplayList_BuildRotationMatrixSegment(Gfx* gfx) {
     Mtx* mtx;
     u8 angle;
 
@@ -14,12 +14,12 @@ void func_81002B20(Gfx* gfx) {
     gSPEndDisplayList(gfx++);
 }
 
-void func_81002BC0(s32 arg0, DisplayListState* state) {
+void DisplayList_InitRotationMatrixSegment(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {
         gfx = (Gfx*)GfxAlloc(0x50);
         state->gfx = gfx;
-        func_81002B20(gfx);
+        DisplayList_BuildRotationMatrixSegment(gfx);
     }
 }

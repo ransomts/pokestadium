@@ -26,7 +26,7 @@ s32 func_8420DBA0(unk_D_84229EB0_00024* arg0) {
     s32 ret = 0;
     unk_func_80022C28_ret* temp_s3;
 
-    temp_v0 = func_80028E68();
+    temp_v0 = Deck_FindFirstFreeTeamSlot();
     if (temp_v0 < 0xA) {
         temp_s3 = GbsBlock_CreateWithString(0x10, 0, temp_v0, &arg0->unk_4D12, &arg0->unk_4D12, arg0->unk_4D10);
 
@@ -41,7 +41,7 @@ s32 func_8420DBA0(unk_D_84229EB0_00024* arg0) {
     return ret;
 }
 
-void func_8420DC78(unk_D_84229EB0_00024* arg0) {
+void RegisteredTeam_DeleteAndCompact(unk_D_84229EB0_00024* arg0) {
     unk_D_800AE4E8_004_1_000 sp30;
     s16 tmp = arg0->unk_4D1E;
     s16 i;
@@ -51,8 +51,8 @@ void func_8420DC78(unk_D_84229EB0_00024* arg0) {
     }
 
     for (i = tmp; i < 9; i++) {
-        func_80028C7C(&sp30, i + 1);
-        func_80028D60(&sp30, i);
+        RegisteredTeam_ReadSlot(&sp30, i + 1);
+        RegisteredTeam_WriteSlot(&sp30, i);
         GbsCommitBankBlock(0x10, i);
     }
 
@@ -421,7 +421,7 @@ s32 LoadPokemonPageFromGbs(unk_D_84229EB0_00024* arg0, s16 arg1) {
     }
 
     for (i = 0; i < var_s4; i++) {
-        func_8001B0DC(arg0->unk_0000[i].unk_058, 0, &arg0->unk_0000[i].unk_004);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_0000[i].unk_058, 0, &arg0->unk_0000[i].unk_004);
         arg0->unk_0000[i].unk_000 = 4;
         arg0->unk_0000[i].unk_001 = arg1;
         arg0->unk_0000[i].unk_002 = i;
@@ -448,7 +448,7 @@ void UpdateSelectionHighlight(unk_D_84229EB0* arg0) {
         if (arg0->unk_00005 == -1) {
             MoveScreen_Start(arg0->unk_134F0, arg0->unk_00003, 0x30, 0xEC, sp34, sp32, &temp_v0_2->unk_0000[temp_s1], 0);
         } else if (temp_s1 != arg0->unk_00005) {
-            func_8420C6D8(arg0->unk_134F0, sp34, sp32, &temp_v0_2->unk_0000[temp_s1]);
+            TeamSelection_Preview_StartCompact(arg0->unk_134F0, sp34, sp32, &temp_v0_2->unk_0000[temp_s1]);
             arg0->unk_00006 = 0xA;
         }
         arg0->unk_00005 = temp_s1;
@@ -468,7 +468,7 @@ void ResetPokemonListState(unk_D_84229EB0* arg0) {
     arg0->unk_00002 = 8;
 }
 
-void func_8420F524(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_SetOpeningPosition(unk_D_84229EB0* arg0) {
     arg0->unk_00012 = arg0->unk_0000E + 0x280;
     arg0->unk_00014 = arg0->unk_00010;
 }
@@ -499,7 +499,7 @@ void ScrollDownStep(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8420F5F0(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_AdvanceReturnFromEdit(unk_D_84229EB0* arg0) {
     arg0->unk_00006++;
     if (arg0->unk_00006 == 0x14) {
         arg0->unk_00001 = 0x11;
@@ -513,7 +513,7 @@ void func_8420F5F0(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8420F654(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_MoveListUp(unk_D_84229EB0* arg0) {
     unk_D_84229EB0_00024* sp24;
 
     if (arg0->unk_0001E == 0) {
@@ -541,7 +541,7 @@ void func_8420F654(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420F754(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_MoveListDown(unk_D_84229EB0* arg0) {
     if (arg0->unk_0001E == 0) {
         if ((arg0->unk_0000D - arg0->unk_0000C) < 2) {
             arg0->unk_0000D++;
@@ -597,9 +597,9 @@ void ProcessPokemonListInput(unk_D_84229EB0* arg0) {
         arg0->unk_00006 = 0;
         arg0->unk_00001 = 4;
     } else if (BTN_IS_DOWN(cont, BTN_DUP)) {
-        func_8420F654(arg0);
+        TeamSelection_RegisteredTeam_MoveListUp(arg0);
     } else if (BTN_IS_DOWN(cont, BTN_DDOWN)) {
-        func_8420F754(arg0);
+        TeamSelection_RegisteredTeam_MoveListDown(arg0);
     } else {
         arg0->unk_0001F = 8;
         arg0->unk_0001E = 0;
@@ -609,7 +609,7 @@ void ProcessPokemonListInput(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8420F9C8(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_MovePokemonLeft(unk_D_84229EB0* arg0) {
     if (arg0->unk_00008 > 0) {
         unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) - 1;
@@ -626,7 +626,7 @@ void func_8420F9C8(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420FA88(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_MovePokemonRight(unk_D_84229EB0* arg0) {
     if (arg0->unk_00008 < 2) {
         unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) + 1;
@@ -643,7 +643,7 @@ void func_8420FA88(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420FB4C(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_MovePokemonUp(unk_D_84229EB0* arg0) {
     if (arg0->unk_0000A > 0) {
         unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) - 3;
@@ -660,7 +660,7 @@ void func_8420FB4C(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420FC0C(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_MovePokemonDown(unk_D_84229EB0* arg0) {
     if (arg0->unk_0000A <= 0) {
         unk_D_84229EB0_00024* ptr = GetNextPage(arg0->unk_00024, arg0->unk_0000D - arg0->unk_0000C);
         s32 idx = ((arg0->unk_0000A * 3) + arg0->unk_00008) + 3;
@@ -677,7 +677,7 @@ void func_8420FC0C(unk_D_84229EB0* arg0) {
     }
 }
 
-void func_8420FCCC(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_HandlePokemonInput(unk_D_84229EB0* arg0) {
     Controller* cont = &gControllers[arg0->unk_00003];
 
     UpdateSelectionHighlight(arg0);
@@ -691,13 +691,13 @@ void func_8420FCCC(unk_D_84229EB0* arg0) {
             }
             arg0->unk_00001 = 0xE;
         } else if (BTN_IS_PRESSED(cont, BTN_DUP)) {
-            func_8420FB4C(arg0);
+            TeamSelection_RegisteredTeam_MovePokemonUp(arg0);
         } else if (BTN_IS_PRESSED(cont, BTN_DDOWN)) {
-            func_8420FC0C(arg0);
+            TeamSelection_RegisteredTeam_MovePokemonDown(arg0);
         } else if (BTN_IS_PRESSED(cont, BTN_DRIGHT)) {
-            func_8420FA88(arg0);
+            TeamSelection_RegisteredTeam_MovePokemonRight(arg0);
         } else if (BTN_IS_PRESSED(cont, BTN_DLEFT)) {
-            func_8420F9C8(arg0);
+            TeamSelection_RegisteredTeam_MovePokemonLeft(arg0);
         }
     }
     arg0->unk_00012 = arg0->unk_0000E;
@@ -705,7 +705,7 @@ void func_8420FCCC(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8420FDDC(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_AdvanceCursorTransition(unk_D_84229EB0* arg0) {
     if (arg0->unk_0001A > 0) {
         arg0->unk_00018++;
         if (arg0->unk_00018 >= arg0->unk_0001A) {
@@ -722,7 +722,7 @@ void func_8420FDDC(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8420FE50(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_AdvancePanelShrink(unk_D_84229EB0* arg0) {
     if (arg0->unk_00016 == 0x58) {
         if (arg0->unk_00006 == 0) {
             arg0->unk_00001 = arg0->unk_00002;
@@ -735,7 +735,7 @@ void func_8420FE50(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8420FE90(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_AdvancePanelExpand(unk_D_84229EB0* arg0) {
     arg0->unk_00016 += 0x2E;
     if (arg0->unk_00016 == 0x110) {
         arg0->unk_00001 = arg0->unk_00002;
@@ -743,16 +743,16 @@ void func_8420FE90(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8420FEC0(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_HandleRulePromptA(unk_D_84229EB0* arg0) {
     s16 sp26 = 4;
 
     if ((arg0->unk_0000D - arg0->unk_0000C) == 2) {
         sp26 = 5;
     }
 
-    func_8420DA28(sp26, &gControllers[arg0->unk_00003]);
+    TeamSelection_RulePrompt_Open(sp26, &gControllers[arg0->unk_00003]);
 
-    switch (func_8420DB48(sp26)) {
+    switch (TeamSelection_RulePrompt_TryFinish(sp26)) {
         case 0:
             arg0->unk_00001 = 2;
             break;
@@ -776,16 +776,16 @@ void func_8420FEC0(unk_D_84229EB0* arg0) {
     arg0->unk_00014 = arg0->unk_00010;
 }
 
-void func_8420FFB0(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_HandleRulePromptB(unk_D_84229EB0* arg0) {
     s16 sp26 = 6;
 
     if ((arg0->unk_0000D - arg0->unk_0000C) == 2) {
         sp26 = 7;
     }
 
-    func_8420DA28(sp26, &gControllers[arg0->unk_00003]);
+    TeamSelection_RulePrompt_Open(sp26, &gControllers[arg0->unk_00003]);
 
-    switch (func_8420DB48(sp26)) {
+    switch (TeamSelection_RulePrompt_TryFinish(sp26)) {
         case 0:
             arg0->unk_00001 = 2;
             break;
@@ -809,18 +809,18 @@ void func_8420FFB0(unk_D_84229EB0* arg0) {
     arg0->unk_00014 = arg0->unk_00010;
 }
 
-void func_8421009C(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_HandleSavePrompt(unk_D_84229EB0* arg0) {
     s32 sp24;
 
-    if (func_80028E68() == 0) {
+    if (Deck_FindFirstFreeTeamSlot() == 0) {
         sp24 = 0x13;
     } else {
         sp24 = 9;
     }
 
-    func_8420DA28(sp24, &gControllers[arg0->unk_00003]);
+    TeamSelection_RulePrompt_Open(sp24, &gControllers[arg0->unk_00003]);
 
-    switch (func_8420DB48(sp24)) {
+    switch (TeamSelection_RulePrompt_TryFinish(sp24)) {
         case 1:
             arg0->unk_00006 = 0;
             arg0->unk_00001 = 0xE;
@@ -838,7 +838,7 @@ void func_8421009C(unk_D_84229EB0* arg0) {
     arg0->unk_00014 = arg0->unk_00010;
 }
 
-void func_8421015C(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_EditTeam(unk_D_84229EB0* arg0) {
     unk_D_84229EB0_00024* temp_v0;
     s16 temp_hi;
     s16 temp_lo;
@@ -856,7 +856,7 @@ void func_8421015C(unk_D_84229EB0* arg0) {
 
         if (temp_hi == 4) {
             temp_v0->unk_0000[temp_lo].unk_004.unk_00.unk_00 = 0;
-            func_8001B0DC(temp_v0->unk_0000[temp_lo].unk_058, 0x84, NULL);
+            PokeIcon_LoadModelTextureForMon(temp_v0->unk_0000[temp_lo].unk_058, 0x84, NULL);
             PlaySoundEffect(0x01100010);
         }
     }
@@ -864,11 +864,11 @@ void func_8421015C(unk_D_84229EB0* arg0) {
     if (((temp_v0->unk_4D20 * 0xC) - 1) >= arg0->unk_00006) {
         if (arg0->unk_00006 == ((temp_v0->unk_4D20 * 0xC) - 1)) {
             temp_v0->unk_4D20 = -1;
-            func_8420DC78(temp_v0);
-            func_8420DA28(8, &gControllers[arg0->unk_00003]);
+            RegisteredTeam_DeleteAndCompact(temp_v0);
+            TeamSelection_RulePrompt_Open(8, &gControllers[arg0->unk_00003]);
         }
         arg0->unk_00006 += 1;
-    } else if (func_8420DB48(8) >= 0) {
+    } else if (TeamSelection_RulePrompt_TryFinish(8) >= 0) {
         arg0->unk_00001 = 7;
     }
 
@@ -877,7 +877,7 @@ void func_8421015C(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_84210328(unk_D_84229EB0* arg0) {
+void RegisteredTeam_SaveFromTray(unk_D_84229EB0* arg0) {
     s32 i;
     unk_D_84229EB0_00024* temp_a3;
     s16 temp_hi;
@@ -917,11 +917,11 @@ void func_84210328(unk_D_84229EB0* arg0) {
     if ((temp_a3->unk_4D20 * 0xC) - 1 >= arg0->unk_00006) {
         if (arg0->unk_00006 == (temp_a3->unk_4D20 * 0xC) - 1) {
             func_8420DBA0(temp_a3);
-            func_8420DA28(0xB, &gControllers[arg0->unk_00003]);
+            TeamSelection_RulePrompt_Open(0xB, &gControllers[arg0->unk_00003]);
         }
         arg0->unk_00006++;
-    } else if (func_8420DB48(0xB) >= 0) {
-        if (func_80028E68() >= 0xA) {
+    } else if (TeamSelection_RulePrompt_TryFinish(0xB) >= 0) {
+        if (Deck_FindFirstFreeTeamSlot() >= 0xA) {
             ItemPanel_StartSlideUp(arg0->unk_134E8);
             arg0->unk_00006 = 0;
             arg0->unk_00001 = 4;
@@ -935,10 +935,10 @@ void func_84210328(unk_D_84229EB0* arg0) {
     arg0->unk_00004 = 2;
 }
 
-void func_8421059C(unk_D_84229EB0* arg0) {
-    func_8420DA28(0xC, &gControllers[arg0->unk_00003]);
+void TeamSelection_RegisteredTeam_HandleDiscardPrompt(unk_D_84229EB0* arg0) {
+    TeamSelection_RulePrompt_Open(0xC, &gControllers[arg0->unk_00003]);
 
-    switch (func_8420DB48(0xC)) {
+    switch (TeamSelection_RulePrompt_TryFinish(0xC)) {
         case 1:
             ItemPanel_ClearAndReset(arg0->unk_134E8);
             TriggerScrollDown(arg0->unk_134EC);
@@ -958,7 +958,7 @@ void func_8421059C(unk_D_84229EB0* arg0) {
     arg0->unk_00014 = arg0->unk_00010;
 }
 
-void func_84210668(unk_D_84229EB0* arg0) {
+void TeamSelection_RegisteredTeam_LoadVisible(unk_D_84229EB0* arg0) {
     s32 i;
     unk_D_84229EB0_00024* var_s1;
 
@@ -977,7 +977,7 @@ void func_84210668(unk_D_84229EB0* arg0) {
     }
 }
 
-s32 func_842106FC(unk_D_84229EB0* arg0) {
+s32 TeamSelection_RegisteredTeam_Update(unk_D_84229EB0* arg0) {
     s32 sp1C = 0;
 
     if (arg0->unk_0001E > 0) {
@@ -986,11 +986,11 @@ s32 func_842106FC(unk_D_84229EB0* arg0) {
 
     switch (arg0->unk_00001) {
         case 0:
-            func_8420F524(arg0);
+            TeamSelection_RegisteredTeam_SetOpeningPosition(arg0);
             break;
 
         case 1:
-            func_8420F524(arg0);
+            TeamSelection_RegisteredTeam_SetOpeningPosition(arg0);
             break;
 
         case 2:
@@ -1008,72 +1008,72 @@ s32 func_842106FC(unk_D_84229EB0* arg0) {
             break;
 
         case 8:
-            func_8420FCCC(arg0);
+            TeamSelection_RegisteredTeam_HandlePokemonInput(arg0);
             break;
 
         case 9:
-            func_8420FDDC(arg0);
+            TeamSelection_RegisteredTeam_AdvanceCursorTransition(arg0);
             break;
 
         case 10:
-            func_8420FDDC(arg0);
+            TeamSelection_RegisteredTeam_AdvanceCursorTransition(arg0);
             break;
 
         case 12:
-            func_8420FDDC(arg0);
+            TeamSelection_RegisteredTeam_AdvanceCursorTransition(arg0);
             break;
 
         case 11:
-            func_8420FDDC(arg0);
+            TeamSelection_RegisteredTeam_AdvanceCursorTransition(arg0);
             break;
 
         case 5:
-            func_8420FEC0(arg0);
+            TeamSelection_RegisteredTeam_HandleRulePromptA(arg0);
             break;
 
         case 6:
-            func_8420FFB0(arg0);
+            TeamSelection_RegisteredTeam_HandleRulePromptB(arg0);
             break;
 
         case 7:
-            func_8421009C(arg0);
+            TeamSelection_RegisteredTeam_HandleSavePrompt(arg0);
             break;
 
         case 13:
-            func_8420FE50(arg0);
+            TeamSelection_RegisteredTeam_AdvancePanelShrink(arg0);
             sp1C = 1;
             break;
 
         case 14:
-            func_8420FE90(arg0);
+            TeamSelection_RegisteredTeam_AdvancePanelExpand(arg0);
             sp1C = 1;
             break;
 
         case 15:
-            func_8421015C(arg0);
+            TeamSelection_RegisteredTeam_EditTeam(arg0);
             break;
 
         case 16:
-            func_8420F5F0(arg0);
+            TeamSelection_RegisteredTeam_AdvanceReturnFromEdit(arg0);
             sp1C = 1;
             break;
 
         case 17:
-            func_84210328(arg0);
+            RegisteredTeam_SaveFromTray(arg0);
             break;
 
         case 18:
-            func_8421059C(arg0);
+            TeamSelection_RegisteredTeam_HandleDiscardPrompt(arg0);
             break;
 
         case 19:
-            func_84210668(arg0);
+            TeamSelection_RegisteredTeam_LoadVisible(arg0);
             break;
     }
     return sp1C;
 }
 
-s32 func_8421089C(unk_D_84229EB0* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3, s16 arg4,
+s32 TeamSelection_RegisteredTeam_Initialize(unk_D_84229EB0* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3, s16 arg4,
                   s16 arg5, s16 arg6, s16 arg7) {
     s32 i;
 
@@ -1112,12 +1112,12 @@ s32 func_8421089C(unk_D_84229EB0* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, 
     }
 
     if (arg0->unk_00000 == 0) {
-        arg0->unk_0001C = func_80028E68();
+        arg0->unk_0001C = Deck_FindFirstFreeTeamSlot();
     }
     return 4;
 }
 
-s32 func_84210A18(unk_D_84229EB0* arg0) {
+s32 RegistrationManager_Begin(unk_D_84229EB0* arg0) {
     if (arg0->unk_00001 != 1) {
         return 0;
     }
@@ -1127,13 +1127,13 @@ s32 func_84210A18(unk_D_84229EB0* arg0) {
     return 1;
 }
 
-s32 func_84210A48(unk_D_84229EB0* arg0, u16 arg1, char* arg2, unk_D_838067F0_0168_0000* arg3) {
+s32 RegistrationManager_Initialize(unk_D_84229EB0* arg0, u16 arg1, char* arg2, unk_D_838067F0_0168_0000* arg3) {
     unk_D_84229EB0_00024* ptr = arg0->unk_00028;
     s16 i;
 
     _bcopy(arg3, &arg0->unk_00028[0], sizeof(unk_D_838067F0_0168_0000) * 6);
     _bcopy(arg3, &arg0->unk_00028[1], sizeof(unk_D_838067F0_0168_0000) * 6);
-    ptr->unk_4D1E = func_80028E68();
+    ptr->unk_4D1E = Deck_FindFirstFreeTeamSlot();
     ptr->unk_4D20 = -1;
     ptr->unk_4D10 = arg1;
     HAL_Strcpy(ptr->unk_4D12, arg2);
@@ -1142,7 +1142,7 @@ s32 func_84210A48(unk_D_84229EB0* arg0, u16 arg1, char* arg2, unk_D_838067F0_016
         if (ptr->unk_0000[i].unk_004.unk_00.unk_00 != 0) {
             ptr->unk_0000[i].unk_004.unk_00.unk_00 = 0;
             ptr->unk_0000[i].raw = 1;
-            func_8001B0DC(ptr->unk_0000[i].unk_058, 0x84, NULL);
+            PokeIcon_LoadModelTextureForMon(ptr->unk_0000[i].unk_058, 0x84, NULL);
         } else {
             ptr->unk_0000[i].raw = 0;
         }
@@ -1153,11 +1153,11 @@ s32 func_84210A48(unk_D_84229EB0* arg0, u16 arg1, char* arg2, unk_D_838067F0_016
     return 1;
 }
 
-s32 func_84210B54(unk_D_84229EB0* arg0) {
+s32 TeamSelection_RegisteredTeam_GetSelection(unk_D_84229EB0* arg0) {
     return arg0->unk_00001 == 0;
 }
 
-s32 func_84210B60(unk_D_84229EB0* arg0, unk_D_84229EB0_00024** arg1) {
+s32 RegisteredTeam_LoadSelected(unk_D_84229EB0* arg0, unk_D_84229EB0_00024** arg1) {
     s32 i;
     s16 var_t0 = 0;
 
@@ -1175,7 +1175,7 @@ s32 func_84210B60(unk_D_84229EB0* arg0, unk_D_84229EB0_00024** arg1) {
     return var_t0;
 }
 
-void func_84210C80(unk_D_84229EB0* arg0, s16 arg1) {
+void TeamSelection_RegisteredTeam_ApplySelection(unk_D_84229EB0* arg0, s16 arg1) {
     s32 tmp;
 
     arg0->unk_0000D = arg1;

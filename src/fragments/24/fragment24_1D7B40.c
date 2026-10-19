@@ -83,7 +83,7 @@ void MoveList_Create(unk_func_8830867C_04C_078* arg0, s32 arg1, s32 arg2, Memory
     temp_v1 = MeasureTextWidth(8, 0, "WWWWWWWWWWWW") + 0x29;
     sp58 = temp_v1;
     sp4C = temp_v1;
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_04C_078));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_04C_078));
 
     arg0->unk_00.unk_20 = MoveList_HandleInput;
     arg0->unk_00.unk_10.unk_00 = (arg2 - sp4C) - 8;
@@ -250,8 +250,8 @@ void ApplySelectionFlagsToEntries(unk_func_8830867C_034_03C* arg0) {
 }
 
 void DrawSelectionBox(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
-    func_8002E8E4(arg0, arg1, arg2, 2);
-    func_8002E8E4(arg0 + 0x1B, arg1, arg3, 2);
+    Gfx_DrawNumberDigits(arg0, arg1, arg2, 2);
+    Gfx_DrawNumberDigits(arg0 + 0x1B, arg1, arg3, 2);
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -331,7 +331,7 @@ void MoveListUI_Create(unk_func_8830867C_034_03C* arg0, s32 arg1, s32 arg2, s32 
     temp_v0 = CalculateMoveListWidth();
     sp80 = temp_v0 + 0x34;
     sp78 = temp_v0 + 0x46;
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_034_03C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_034_03C));
 
     arg0->unk_00.unk_20 = MoveListUI_HandleInput;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -349,7 +349,7 @@ void MoveListUI_Create(unk_func_8830867C_034_03C* arg0, s32 arg1, s32 arg2, s32 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp74);
 
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_30, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_30, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp74, arg0->unk_30);
 
     sp70 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
@@ -373,11 +373,11 @@ void MoveListUI_Create(unk_func_8830867C_034_03C* arg0, s32 arg1, s32 arg2, s32 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp68);
 
     arg0->unk_34 = mem_pool_alloc(arg4, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_34, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_34, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp68, arg0->unk_34);
 
     sp64 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(sp64, 0x2C);
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(sp64, 0x2C);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_34, sp64);
 
     arg0->unk_38[0] = mem_pool_alloc(arg4, sizeof(unk_func_8830867C_034_03C_038));
@@ -435,7 +435,7 @@ void RefreshMoveListUI(unk_func_8830867C_034_03C* arg0, s32 arg1) {
 }
 
 void UIComponent_Init(unk_func_8830867C_034_034* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_034_034));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_034_034));
     arg0->unk_00.unk_18 = DrawItemBackground;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -607,7 +607,7 @@ void ItemListUI_Create(unk_func_8830867C_034* arg0, s32 arg1, s32 arg2, unk_func
     unk_func_8850BD40* sp54;
     unk_func_88503298* sp50;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_034));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_034));
 
     arg0->unk_00.unk_20 = ItemListUI_HandleInput;
     arg0->unk_00.unk_24 = ItemListUI_SetSelection;
@@ -869,7 +869,7 @@ s32 ItemListUI_Run(unk_func_8830867C_034* arg0, Controller* arg1) {
     return var_s0 - 1;
 }
 
-void func_8830BA1C(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4) {
+void BattleInfoWidget_DrawLabel(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4) {
     static Color_RGBA8 gMenuItemTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 gMenuItemDisabledColor = { 0xF0, 0xF0, 0xF0, 0x4D };
 
@@ -893,7 +893,7 @@ void Panel_Create(unk_func_8830867C_030* arg0, unk_func_88001300_000* arg1, Memo
 
     unk_func_88503298* sp44;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_030));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_030));
 
     arg0->unk_00.unk_20 = Panel_HandleInput;
     arg0->unk_00.unk_24 = Panel_SetSelectionCallback;
@@ -912,7 +912,7 @@ void Panel_Create(unk_func_8830867C_030* arg0, unk_func_88001300_000* arg1, Memo
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_38);
 
     arg0->unk_3C = mem_pool_alloc(arg2, sizeof(unk_func_88200FA0_030_030_1CEA00));
-    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_3C, 0, 4, func_8830BA1C, 0x10, 0x10, 0xA, 1, arg2);
+    ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_3C, 0, 4, BattleInfoWidget_DrawLabel, 0x10, 0x10, 0xA, 1, arg2);
     ((func88506238)Memmap_GetFragmentVaddr(ScrollableList_SetItemHeight))(arg0->unk_3C, 0xA, arg2);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, arg0->unk_3C);
 
@@ -1127,7 +1127,7 @@ void StatScreenUI_Create(unk_func_8830867C_038* arg0, s32 arg1, s32 arg2, unk_fu
     arg0->unk_30 = mem_pool_alloc(arg4, sizeof(unk_func_88200FA0_030_030_1CEA00));
     ((func885060BC)Memmap_GetFragmentVaddr(UIButton_Create))(arg0->unk_30, 0, 4, DrawStringListItem, spAC, 0x1C, 4, 1, arg4);
     ((func88506384)Memmap_GetFragmentVaddr(List_SetItems))(arg0->unk_30, &arg0->unk_34, arg4);
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, 0x44);
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, 0x44);
 
     arg0->unk_00.unk_20 = GetMenuControllerResult;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -1323,7 +1323,7 @@ void UpdateNumericInputMetrics(unk_func_8830867C_044_038* arg0) {
 void InitNumericInputComponent(unk_func_8830867C_044_038* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     s32 sp2C;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_044_038));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_044_038));
 
     arg0->unk_00.unk_18 = DrawNumericInputDigits;
     arg0->unk_00.unk_20 = HandleNumericInput;
@@ -1424,7 +1424,7 @@ void InitMoveCategorySelectFragment(unk_func_8830867C_044* arg0, s32 arg1, s32 a
         }
     }
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_044));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_044));
 
     arg0->unk_00.unk_20 = HandleNumericInputAlt;
     arg0->unk_00.unk_24 = SetFragmentSelection;
@@ -1480,7 +1480,7 @@ void InitMoveCategorySelectFragment(unk_func_8830867C_044* arg0, s32 arg1, s32 a
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp78, temp_s0_4);
 
     arg0->unk_44 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_03C));
-    ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(arg0->unk_44, 2, 1, arg4);
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_44, 2, 1, arg4);
     arg0->unk_44->unk_28 |= 0x100;
     ((func8850CC74)Memmap_GetFragmentVaddr(Fragment_LinkSiblingAlt))(arg0->unk_40, arg0->unk_44);
 
@@ -1804,7 +1804,7 @@ void InitMoveListFragment(unk_func_8830867C_03C* arg0, s32 arg1, s32 arg2, unk_f
     }
 
     spCC = ((arg0->unk_E0 < spB0) ? spB0 : arg0->unk_E0) + spC4 + 0x30;
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_03C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_03C));
 
     arg0->unk_00.unk_20 = HandleMoveCategoryInput;
     arg0->unk_00.unk_24 = SetMoveCategorySelection;
@@ -1835,7 +1835,7 @@ void InitMoveListFragment(unk_func_8830867C_03C* arg0, s32 arg1, s32 arg2, unk_f
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, spA0);
 
     arg0->unk_50 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_03C));
-    ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(arg0->unk_50, 4, 1, arg4);
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_50, 4, 1, arg4);
     ((func8850BF80)Memmap_GetFragmentVaddr(Screen_SetFragment))(arg0->unk_4C, arg0->unk_50);
 
     for (i = 0; i < 2; i++) {
@@ -2219,7 +2219,7 @@ void InitPokemonSelectFragment(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, 
     }
 
     spCC = ((arg0->unk_74 < spB0) ? spB0 : arg0->unk_74) + spC4 + 0x30;
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_040));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_040));
 
     arg0->unk_00.unk_20 = HandleMoveSelectionInput;
     arg0->unk_00.unk_24 = SetMoveSelection;
@@ -2250,7 +2250,7 @@ void InitPokemonSelectFragment(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, spA0);
 
     arg0->unk_60 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_03C));
-    ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(arg0->unk_60, 6, 1, arg4);
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_60, 6, 1, arg4);
     ((func8850BF80)Memmap_GetFragmentVaddr(Screen_SetFragment))(arg0->unk_5C, arg0->unk_60);
 
     for (i = 0; i < 4; i++) {
@@ -2525,7 +2525,7 @@ s32 MenuItem_ProcessInput(unk_func_8830867C_040_05C* arg0, Controller* arg1) {
 }
 
 void MenuItem_Create(unk_func_88310B70* arg0, s32 arg1, s32 arg2, unk_func_8830867C_04C_030* arg3, MemoryPool* arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88310B70));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88310B70));
 
     arg0->unk_00.unk_1C = MenuItem_SetLabel;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -2663,7 +2663,7 @@ void Fragment_Create(unk_func_8830867C_04C* arg0, s32 arg1, s32 arg2, unk_func_8
     unk_func_8850BD40* sp4C;
 
     Fragment_SetPokemonData(arg0, NULL);
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_04C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_04C));
 
     arg0->unk_00.unk_20 = IsFragmentReady;
     arg0->unk_00.unk_24 = SetFragmentState;
@@ -2713,7 +2713,7 @@ void Fragment_Create(unk_func_8830867C_04C* arg0, s32 arg1, s32 arg2, unk_func_8
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, sp74);
 
     arg0->unk_34 = mem_pool_alloc(arg4, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_34, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_34, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp74, arg0->unk_34);
 
     sp70 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
@@ -3610,7 +3610,7 @@ void Fragment_InitializeListUI(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2, 
     unk_func_8850BD40* sp6C;
     unk_func_88503298* sp68;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8830867C_048));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8830867C_048));
 
     arg0->unk_00.unk_20 = BoxMoveDialog_HandleInput;
     arg0->unk_00.unk_24 = BoxMoveDialog_SetSelection;
@@ -3705,7 +3705,7 @@ void Fragment_InitializeListUI(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2, 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_30, sp80);
 
     arg0->unk_40 = mem_pool_alloc(arg4, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_40, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_40, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp80, arg0->unk_40);
 
     sp7C = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
@@ -3725,11 +3725,11 @@ void Fragment_InitializeListUI(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2, 
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_30, sp78);
 
     arg0->unk_44 = mem_pool_alloc(arg4, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_44, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_44, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp78, arg0->unk_44);
 
     sp74 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(sp74, 0x2C);
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(sp74, 0x2C);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_44, sp74);
 
     arg0->unk_38[0] = mem_pool_alloc(arg4, sizeof(unk_func_88200FA0_030_030_1CEA00));
@@ -3998,7 +3998,7 @@ void ReturnToMenuDialog_Create(YesNoDialog* arg0, s32 arg1, s32 arg2, MemoryPool
     sp5C = temp_v1;
     ((func8850B254)Memmap_GetFragmentVaddr(UIList_Create))(sp54, 0, 0, sp5C, 0x14, gListBgColor2, gListHighlightColor2);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(sp54, sp4C);
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, 0x40);
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, 0x40);
 
     arg0->unk_00.unk_20 = ReturnToMenuDialog_HandleInput;
     arg0->unk_00.unk_10.unk_00 = (arg2 - sp5C) / 2;
@@ -4077,7 +4077,7 @@ s32 ReturnToMenuDialog_Run(YesNoDialog* arg0, Controller* arg1) {
 }
 
 void MoveChangeBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882173EC));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_882173EC));
     arg0->unk_00.unk_1C = MoveChangeBanner_Update;
     arg0->unk_00.unk_18 = MoveChangeBanner_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -4172,7 +4172,7 @@ void MoveChangeBanner_Start(unk_func_882173EC* arg0, s32 arg1, s32 arg2, unk_fun
 }
 
 void PpChangeBanner_Init(PpChangeBanner* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(PpChangeBanner));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(PpChangeBanner));
     arg0->unk_00.unk_00.unk_1C = PpChangeBanner_Update;
     arg0->unk_00.unk_00.unk_18 = PpChangeBanner_Draw;
     arg0->unk_00.unk_00.unk_10.unk_00 = arg1;
@@ -4307,7 +4307,7 @@ void PpChangeBanner_Start(PpChangeBanner* arg0, s32 arg1, s32 arg2, s32 arg3, un
 }
 
 void LevelChangeBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882173EC));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_882173EC));
     arg0->unk_00.unk_1C = LevelChangeBanner_Update;
     arg0->unk_00.unk_18 = LevelChangeBanner_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -4398,7 +4398,7 @@ void LevelChangeBanner_Start(unk_func_882173EC* arg0, char* arg1, char* arg2, un
 }
 
 void BoxMoveBanner_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_882173EC));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_882173EC));
 
     arg0->unk_00.unk_1C = BoxMoveBanner_Update;
     arg0->unk_00.unk_18 = BoxMoveBanner_Draw;

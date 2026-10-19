@@ -56,7 +56,7 @@ void PlayerPanel_DrawLeft(void);
 void PlayerPanel_DrawRight(void);
 void MoveSelection_Record(s32 arg0, s32 arg1);
 void SelectionState_Reset(s32 arg0);
-void func_84800CA4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
+void BattleMenu_DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4);
 void DrawPanelContents(unk_D_848037A0* arg0);
 void StatusIcon_DrawAnimated(s16 arg0, s16 arg1, s16 arg2);
 void ModeSelectionPanel_Draw(unk_D_848037A0* arg0);
@@ -80,8 +80,8 @@ s32 Panel_MainLoop(s32 arg0);
 void Panel_UpdatePokemonOrder(unk_D_800AE540_1194* arg0, unk_D_84803760* arg1);
 void Panel_SortSelection(s8* arg0, s32 arg1);
 void Panel_SyncSelectionToData(void);
-void func_84802F7C(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4);
-void func_84803110(unk_D_800AE540* arg0);
-s32 func_84803368(s32 arg0, s32 arg1);
+void BattleMenu_AddOrderSelectPanel(s16 arg0, s16 arg1, unk_D_800AE540_0004* arg2, s32 arg3, s32 arg4);
+void BattleMenu_InitOrderSelectPanels(unk_D_800AE540* arg0);
+s32 BattleMenu_RunOrderSelectScreen(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT64_H_

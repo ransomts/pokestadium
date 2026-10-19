@@ -174,7 +174,7 @@ void Sushi_UpdateCameraPos(void);
 
 f32 Sushi_CalcTargetDelta(unk_D_868084D8*, Vec3f*, Vec3f*);
 void SushiInstance_SetMode(unk_D_868084D8*, s32, unk_D_86807558*);
-s32 func_86806930(unk_D_868084D8*);
+s32 SushiGame_GetPlateValue(unk_D_868084D8*);
 s16 Sushi_GetActiveCount(s32);
 void Sushi_SetSpawnMode(s32);
 void Sushi_InitAssets(void);

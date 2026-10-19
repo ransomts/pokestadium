@@ -335,7 +335,7 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
         romAddr = ((u32*)D_800FC6F0)[arg0 + 3];
         size = gMoveSoundSeqInfo->seqArray[2].offset - romAddr;
     }
-    func_8004ADB0(romAddr, gMoveSoundTempBuffer, size);
+    Rom_DmaRead(romAddr, gMoveSoundTempBuffer, size);
     DecompressData(gMoveSoundTempBuffer, D_800FC698[gBankRemapIndex], 0x258);
     RemapBankPointers((bank_remap_descriptor_t*)D_800FC698[gBankRemapIndex]);
     result = MusStartSoundEffect((SoundBank*)D_800FC690, D_800FC698[gBankRemapIndex], sound + 1, 0x70, 0x80, -1);

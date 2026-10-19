@@ -326,14 +326,14 @@ void func_84300E78(void) {
 void func_84300E80(void) {
 }
 
-s32 func_84300E88(s32 arg0) {
+s32 BattleScene_UpdateFrame(s32 arg0) {
     s32 sp1C;
 
     Gfx_FinishFrame();
     AnimationFrame_StallCheck();
     BattleInitDispatch(2, D_8438E798);
     HandleBattlePhase(2, &D_8438E598, &D_8438E688);
-    sp1C = func_8432AEE4(2, &D_8438E440);
+    sp1C = BattleScene_Dispatch(2, &D_8438E440);
     HandleCameraMode(2, &D_8438E440);
     FramebufferNode_Init(D_8438E788, D_8438E790);
     FramebufferNode_Init(D_8438E78C, D_8438E794);
@@ -356,11 +356,11 @@ s32 func_84300E88(s32 arg0) {
     return sp1C;
 }
 
-s32 func_84300FBC(s32 arg0) {
+s32 BattleScene_UpdatePausedFrame(s32 arg0) {
     s32 sp1C = 0;
 
     if ((arg0 == 0) && BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        sp1C = func_84300E88(arg0);
+        sp1C = BattleScene_UpdateFrame(arg0);
     } else {
         AnimationFrame_StallCheck();
         Stage_BeginDisplayList();
@@ -377,7 +377,7 @@ s32 func_84300FBC(s32 arg0) {
     return sp1C;
 }
 
-void func_84301094(void) {
+void Battle_UpdateCompletionGate(void) {
     if (D_8438E7AC < 0) {
         D_8438E7AC++;
     } else if ((D_8438E7AC == 0) && (gBattleContext.unk_0000 == 0x10) && gPlayer1Controller->buttonPressed) {
@@ -398,11 +398,11 @@ s32 PokemonSelectScreen_Update(s32 arg0) {
 
     switch (D_8438E79C) {
         case 0:
-            sp1C = func_84300E88(arg0);
+            sp1C = BattleScene_UpdateFrame(arg0);
             break;
 
         case 1:
-            sp1C = func_84300FBC(arg0);
+            sp1C = BattleScene_UpdatePausedFrame(arg0);
             break;
     }
 
@@ -410,7 +410,7 @@ s32 PokemonSelectScreen_Update(s32 arg0) {
         D_8438E7AC = 1;
     }
 
-    func_84301094();
+    Battle_UpdateCompletionGate();
     StartPokemonAnimation(&D_8438E798[0]);
     StartPokemonAnimation(&D_8438E798[1]);
 
@@ -425,7 +425,7 @@ s32 PokemonSelectScreen_Update(s32 arg0) {
     return 0;
 }
 
-void func_8430123C(u8* arg0, s32 arg1) {
+void Battle_CompleteRosterOrder(u8* arg0, s32 arg1) {
     s32 i;
     s32 j;
 
@@ -442,7 +442,7 @@ void func_8430123C(u8* arg0, s32 arg1) {
     }
 }
 
-void func_8430128C(void) {
+void Battle_SelectComRoster(void) {
     unk_D_800AE540_0004* temp_s0;
     unk_D_800AE540_0004* temp_s1;
     u8 sp48[8];
@@ -470,7 +470,7 @@ void func_8430128C(void) {
             }
             func_843831A0(temp_s1, NULL, temp_s0, temp_s0->unk_018 & 0xFF, sp48, gBattleContext.unk_0001, var_s1);
         }
-        func_8430123C(sp48, var_s1);
+        Battle_CompleteRosterOrder(sp48, var_s1);
         temp_s0->unk_002 = var_s1;
 
         for (i = 0; i < temp_s0->unk_214->unk_002; i++) {
@@ -546,7 +546,7 @@ void BattleScreen_Init(Stage* arg0) {
     D_8438E780 = sp3C(2, 0);
 
     sp28 = GeoLayout_LoadById(0x9A);
-    func_8430128C();
+    Battle_SelectComRoster();
     PokemonSelection_InitPlayer(&D_8438E798[0], sp28);
     PokemonSelection_InitPlayer(&D_8438E798[1], sp28);
 
@@ -562,7 +562,7 @@ void BattleScreen_Init(Stage* arg0) {
     Graph_InitRoots();
     BattleInitDispatch(0, D_8438E798);
     HandleBattlePhase(0, &D_8438E598, &D_8438E688);
-    func_8432AEE4(0, &D_8438E440);
+    BattleScene_Dispatch(0, &D_8438E440);
     HandleCameraMode(0, &D_8438E440);
 
     sp44 = state_pool_try_init(main_pool_get_available(), 0);
@@ -600,7 +600,7 @@ void BattleScreen_Init(Stage* arg0) {
 
     BattleInitDispatch(3, D_8438E798);
     HandleBattlePhase(3, &D_8438E598, &D_8438E688);
-    func_8432AEE4(3, &D_8438E440);
+    BattleScene_Dispatch(3, &D_8438E440);
     HandleCameraMode(3, &D_8438E440);
 
     D_8438E7A0 = 1;

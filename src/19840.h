@@ -69,18 +69,18 @@ void Sched_InitThreads(void);
 AssetManager* AssetManager_Create(u32 arg0);
 void AssetManager_LoadArchives(void);
 s32 AssetManager_RequestLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2);
-s32 func_80019A1C(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3);
-s32 func_80019A7C(AssetManager* arg0, s32 arg1, s32 arg2);
+s32 PokeIcon_RequestFrameLoadWithVariant(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3);
+s32 PokeIcon_RequestBackgroundLoad(AssetManager* arg0, s32 arg1, s32 arg2);
 s32 AssetManager_HandleRequest(AssetManager* arg0, sp18_func_800198E4* arg1);
 s32 AssetManager_TryProcessLoadQueue(AssetManager* arg0);
-s32 func_80019C58(AssetManager* arg0);
+s32 PokeIcon_PollBackgroundLoad(AssetManager* arg0);
 s32 AssetManager_WaitLoadQueue(AssetManager* arg0);
-s32 func_80019CE0(AssetManager* arg0);
+s32 PokeIcon_WaitBackgroundLoad(AssetManager* arg0);
 unk_D_86002F30* GeoLayout_LoadById(s32 arg0);
-unk_D_86002F30* func_80019D90(PokemonData* arg0);
-s32 func_80019E18(s32 arg0, s32 arg1);
-arg1_func_80019420* func_80019EA0(s32 arg0);
-Fragment* func_80019F0C(MainPoolState* arg0, u32 arg1, s32 arg2, s32 arg3, PERSSZP* arg4, s32 arg5);
+unk_D_86002F30* Model_LoadForPokemon(PokemonData* arg0);
+s32 Model_LoadWithScale(s32 arg0, s32 arg1);
+arg1_func_80019420* BattleAnim_LoadResourceTable(s32 arg0);
+Fragment* Fragment_LoadAndRelocateFromRomRange(MainPoolState* arg0, u32 arg1, s32 arg2, s32 arg3, PERSSZP* arg4, s32 arg5);
 
 
 #endif // _19840_H_

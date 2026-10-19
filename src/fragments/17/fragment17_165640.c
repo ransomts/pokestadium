@@ -244,7 +244,7 @@ void MonsterNode_Init(void) {
     Graph_AddToRootList0(&gCameraTarget->unk_004);
     AssetManager_LoadArchives();
 
-    gCameraTarget->unk_000 = func_80019D90(&gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C]);
+    gCameraTarget->unk_000 = Model_LoadForPokemon(&gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C]);
     GraphNode_InitChild(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
     GraphNode_TriggerAction(&gCameraTarget->unk_004, 0);
     gCameraTarget->unk_004.modelPhase = 0;
@@ -378,24 +378,24 @@ void MonsterNode_SpawnParticles(void) {
     if (gCameraTarget->unk_178 & 1) {
         Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
                       gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-        Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+        Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
 
         if ((gCameraTarget->unk_178 >= 0xA) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x14) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x1E) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
                           gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, func_879027F0, &D_87903E40, 1);
+            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
         }
     }
 }
@@ -542,7 +542,7 @@ s32 BattleSequence_Update(void) {
     switch (gCameraTarget->unk_16C) {
         case 0:
             MiniCamera_Setup();
-            func_86B08C44(gCameraState->unk_00);
+            Intro_UpdateCameraKeyframe(gCameraState->unk_00);
             gCameraTarget->unk_170 = 0;
             gCameraTarget->unk_16C += 1;
             break;
@@ -553,7 +553,7 @@ s32 BattleSequence_Update(void) {
                 gUIElementName->unk_90 = 0;
             }
 
-            if (func_86B08C44(gCameraState->unk_00) != 0) {
+            if (Intro_UpdateCameraKeyframe(gCameraState->unk_00) != 0) {
                 if ((gBattleContext.unk_0001 == 7) && (gCameraTarget->unk_17C == 5)) {
                     return 1;
                 }
@@ -589,7 +589,7 @@ s32 BattleSequence_Update(void) {
         case 3:
             Scroll_Update();
             if (gCameraTarget->unk_178++ > 0) {
-                func_86B08C44(gCameraState->unk_00);
+                Intro_UpdateCameraKeyframe(gCameraState->unk_00);
             }
 
             if (Scroll_GetMode() == 0) {

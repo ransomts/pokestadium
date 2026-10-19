@@ -1,7 +1,7 @@
 #include "fragment62.h"
 #include "src/6A40.h"
 
-void func_84358FF0(void) {
+void BattleAnim_RenderNop1(void) {
 }
 
 void func_84358FF8(void) {

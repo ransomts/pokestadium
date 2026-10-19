@@ -61,7 +61,7 @@ void FadeOut_Update(void);
 s32 FadeOut_IsComplete(void);
 void DrawBattleModeBackground(void);
 void DrawLoadingBar(void);
-void func_83000F10(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+void RentalRules_DrawWindowFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void DrawColoredPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6);
 void DrawMenuIcon(s16 arg0, s16 arg1);
 void DrawMenuOptions(s16 arg0, s16 arg1);
@@ -95,15 +95,15 @@ void UpdateSelectionOpenTimer(unk_D_83079E70* arg0);
 void HandleSelectionInput(unk_D_83079E70* arg0);
 void UpdateSelectionCloseTimer(unk_D_83079E70* arg0);
 void UpdateSelectionConfirmTimer(unk_D_83079E70* arg0);
-void func_83002C74(s16 arg0, s16 arg1, unk_D_83079E70* arg2);
-void func_83002F9C(s16 arg0, s16 arg1);
+void RentalRules_DrawScrollbar(s16 arg0, s16 arg1, unk_D_83079E70* arg2);
+void RentalRules_DrawEligibilityPanelLegend(s16 arg0, s16 arg1);
 void DrawPokemonSelectionEntries(s16 arg0, s16 arg1, unk_D_83079E70_000* arg2);
-void func_830032D8(s32 arg0);
-void func_830033F0(void);
+void RentalRules_QualifyingSpeciesWindowInit(s32 arg0);
+void RentalRules_QualifyingSpeciesWindowUpdate(void);
 void RenderSelectionMenu(void);
-void func_830038DC(void);
-s32 func_83003988(void);
-s32 func_830039AC(void);
+void RentalRules_QualifyingSpeciesWindowOpen(void);
+s32 RentalRules_QualifyingSpeciesWindowIsActive(void);
+s32 RentalRules_GetQualifyingSpeciesDisplayOpeningProgress(void);
 
 
 #endif // _FRAGMENT55_H_

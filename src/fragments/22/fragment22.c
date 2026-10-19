@@ -2448,7 +2448,7 @@ static char** gLaboMessageBankMain;
 static char** gLaboMessageBankSystem;
 
 void Labo_CreateBackgroundObject(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88001300_000));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88001300_000));
 
     arg0->unk_18 = Labo_DrawBackground;
     arg0->unk_10.unk_00 = arg1;
@@ -2501,7 +2501,7 @@ void Labo_DrawDualLayerRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, u8
 
 void Labo_CreateDualLayerObject(unk_func_8800071C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8* arg5, u8* arg6,
                    Color_RGBA8 arg7, Color_RGBA8 arg8) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8800071C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8800071C));
 
     arg0->unk_00.unk_18 = Labo_DrawDualLayerObject;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -2523,7 +2523,7 @@ s32 Labo_DrawDualLayerObject(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
 }
 
 void Labo_CreateAnimatedImageObject(unk_func_88000830* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, u8** arg6) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88000830));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88000830));
 
     arg0->unk_00.unk_1C = Labo_AnimatedImageAdvanceFrame;
     arg0->unk_00.unk_18 = Labo_DrawAnimatedImage;
@@ -2563,7 +2563,7 @@ s32 Labo_DrawAnimatedImage(unk_func_88000830* arg0, s32 arg1, s32 arg2) {
 }
 
 void Labo_CreateColorRectObject(unk_func_88000C18* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88000C18));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88000C18));
 
     arg0->unk_00.unk_1C = Labo_ColorRectAdvanceFrame;
     arg0->unk_00.unk_24 = Labo_ColorRectSetFrame;
@@ -2588,7 +2588,7 @@ void Labo_ColorRectSetFrame(unk_func_88001300* arg0, s32 arg1) {
 
 void Labo_CreateBlinkingObject(unk_func_88000CC8* arg0, s32 arg1, s32 arg2, unk_func_88500020* arg3, u8* arg4, u8* arg5, u8* arg6,
                    u8* arg7, u8* arg8, unk_func_88001300_034* arg9) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88000CC8));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88000CC8));
 
     arg0->unk_00.unk_18 = Labo_DrawBlinkingObject;
     arg0->unk_00.unk_1C = Labo_BlinkingObjectAdvanceFrame;
@@ -2722,7 +2722,7 @@ void Labo_InitFragment(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
         }
     }
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88001300));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88001300));
 
     arg0->unk_00.unk_20 = Labo_HandleInput;
     arg0->unk_00.unk_24 = Labo_SetUIState;
@@ -2730,7 +2730,7 @@ void Labo_InitFragment(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_3C = mem_pool_alloc(arg6, sizeof(unk_func_88001300_03C));
 
-    ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(arg0->unk_3C, 2, 4, arg6);
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_3C, 2, 4, arg6);
 
     sp78 = mem_pool_alloc(arg6, sizeof(unk_func_88500E34));
     ((func88500E34)Memmap_GetFragmentVaddr(UITextureRect_Create))(sp78, 0, 0, 0x280, 0x1E0, arg4);
@@ -2786,9 +2786,9 @@ void Labo_InitFragment(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00, &temp_v0_6->unk_00.unk_00);
     arg0->unk_3C->unk_18[arg0->unk_3C->unk_2C + 3] = &temp_v0_6->unk_00;
 
-    if (func_8002816C() != 0) {
+    if (Save_GetSelectedPokemonId() != 0) {
         temp_s0 = mem_pool_alloc(arg6, sizeof(unk_func_88001300_000));
-        ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(temp_s0, sizeof(unk_func_88001300_000));
+        ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(temp_s0, sizeof(unk_func_88001300_000));
         // clang-format off
         temp_s0->unk_10.unk_00 = 0x1E4; temp_s0->unk_10.unk_02 = 0x34;
         // clang-format on
@@ -2815,7 +2815,7 @@ void Labo_InitFragment(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     arg0->unk_3C->unk_1C = temp_s0_3;
 
     if (arg3 == 0) {
-        if (func_8002816C() != 0) {
+        if (Save_GetSelectedPokemonId() != 0) {
             ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(arg0->unk_3C, 3);
         } else {
             ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(arg0->unk_3C, 4);
@@ -3008,7 +3008,7 @@ void Labo_ThreadMain(unk_func_88001300* arg0) {
 
     arg0->unk_2C->unk_2C = -1;
 
-    if (func_8002816C() != 0) {
+    if (Save_GetSelectedPokemonId() != 0) {
         if (arg0->unk_54 == 0) {
             // clang-format off
             temp_s0 = Memmap_GetFragmentVaddr(MessageBox_SetText); temp_s0(arg0->unk_34, GetMessageString(NULL, 0, gLaboMessageBankSystem, 5));

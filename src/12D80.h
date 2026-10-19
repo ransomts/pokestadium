@@ -113,7 +113,7 @@ void Gfx_ResetRenderState(void);
 void Gfx_UpdateFogColor(unk_D_800ABB10* arg0);
 void Gfx_ApplyRenderMode(UNUSED unk_D_800ABB10* arg0);
 void Gfx_UpdatePrimColor(unk_D_800ABB10* arg0);
-void func_80015A44(unk_D_800ABB10* arg0);
+void GeoRender_SetCombineTableEntry(unk_D_800ABB10* arg0);
 void Gfx_DisableTexture(UNUSED unk_D_800ABB10* arg0);
 void Gfx_EnableTexture(unk_D_800ABB10* arg0);
 void Gfx_SetupTextureBlock(UNUSED unk_D_800ABB10* arg0);

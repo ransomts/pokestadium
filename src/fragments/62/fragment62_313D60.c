@@ -17,13 +17,13 @@ void InitializeCameraForCurrentEntity(CameraStruct* arg0) {
     f32 sp3C;
 
     Camera_SetClippingPlanes(arg0, 20.0f, 12800.0f);
-    GetEntityCenterPosition(D_84390010[gCurrentEntityIndex], &gBattleState.unk_00->unk_D0);
-    sp3C = ClampScaledDistance(D_84390010[gCurrentEntityIndex], 3.5f, 300.0f);
-    Camera_SetLookAtPosition(D_84390010[gCurrentEntityIndex], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(D_84390010[gCurrentEntityIndex]),
+    GetEntityCenterPosition(sActivePokemon[gCurrentEntityIndex], &gBattleState.unk_00->unk_D0);
+    sp3C = ClampScaledDistance(sActivePokemon[gCurrentEntityIndex], 3.5f, 300.0f);
+    Camera_SetLookAtPosition(sActivePokemon[gCurrentEntityIndex], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(sActivePokemon[gCurrentEntityIndex]),
                   0.0f, 0.0f);
-    Camera_SetViewAndOffsetEye(arg0, 0, GetPlayerSideYaw(D_84390010[gCurrentEntityIndex]), sp3C, 0.0f);
+    Camera_SetViewAndOffsetEye(arg0, 0, GetPlayerSideYaw(sActivePokemon[gCurrentEntityIndex]), sp3C, 0.0f);
 
-    if (D_84390010[0]) {}
+    if (sActivePokemon[0]) {}
     gBattleState.unk_00->unk_20 += 1;
     if (gCurrentEntityIndex) {}
 }
@@ -32,12 +32,12 @@ void InitializeCameraForPlayerEntity(CameraStruct* arg0) {
     f32 sp3C;
 
     Camera_SetClippingPlanes(arg0, 20.0f, 12800.0f);
-    GetEntityCenterPosition(D_84390010[0], &gBattleState.unk_00->unk_D0);
-    sp3C = ClampScaledDistance(D_84390010[0], 3.5f, 300.0f);
-    Camera_SetLookAtPosition(D_84390010[0], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(*D_84390010), 0.0f, 0.0f);
-    Camera_SetViewAndOffsetEye(arg0, 0, GetPlayerSideYaw(*D_84390010), sp3C, 0.0f);
+    GetEntityCenterPosition(sActivePokemon[0], &gBattleState.unk_00->unk_D0);
+    sp3C = ClampScaledDistance(sActivePokemon[0], 3.5f, 300.0f);
+    Camera_SetLookAtPosition(sActivePokemon[0], arg0, gBattleState.unk_00->unk_D0, 0, GetPlayerSideYaw(*sActivePokemon), 0.0f, 0.0f);
+    Camera_SetViewAndOffsetEye(arg0, 0, GetPlayerSideYaw(*sActivePokemon), sp3C, 0.0f);
 
-    if (D_84390010[0]) {}
+    if (sActivePokemon[0]) {}
     gBattleState.unk_00->unk_20 += 1;
 }
 
@@ -102,7 +102,7 @@ void Battle_StartSequence(CameraStruct* arg0) {
             break;
 
         case 2:
-            if (D_84390010[0]->unk_728.unk_168->unk_1C == -0x48) {
+            if (sActivePokemon[0]->unk_728.unk_168->unk_1C == -0x48) {
                 gBattleState.unk_00->unk_30++;
             }
             break;
@@ -117,21 +117,21 @@ void Battle_StartSequence(CameraStruct* arg0) {
             if (arg0->unk_CC.unk_0A == 0xA) {
                 Battle_ResetSubstate();
                 ProcessEntityAnimFlagUpdates();
-                UpdateEntityStateByMode(D_84390010[0]);
-                UpdateEntityStateByMode(D_84390010[1]);
+                UpdateEntityStateByMode(sActivePokemon[0]);
+                UpdateEntityStateByMode(sActivePokemon[1]);
                 gBattleState.unk_00->unk_30 += 1;
                 gBattleState.unk_00->unk_18 = 1;
             }
             break;
 
         case 5:
-            if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
+            if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(sActivePokemon[gBattleState.unk_00->unk_2A]) == 0)) {
                 if (gBattleState.unk_00->unk_44 == 1) {
                     Battle_SetAnimChannelFlag(2);
                     Battle_AlignPhaseTimer();
                 }
-                ClearAnimFlagIfState6A(D_84390010[0]);
-                ClearAnimFlagIfState6A(D_84390010[1]);
+                ClearAnimFlagIfState6A(sActivePokemon[0]);
+                ClearAnimFlagIfState6A(sActivePokemon[1]);
                 gBattleState.unk_00->unk_18 = 2;
                 Texture_SetDefault(arg0, 0xA, 0x12C, 2, Util_ConvertAddrToVirtAddr((u32)D_1000000));
                 Background_SetColor(arg0, 4, 0xA, 0, 0, 0);
@@ -170,7 +170,7 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
             break;
 
         case 2:
-            if (D_84390010[0]->unk_728.unk_168->unk_1C == -0x48) {
+            if (sActivePokemon[0]->unk_728.unk_168->unk_1C == -0x48) {
                 gBattleState.unk_00->unk_30++;
             }
             break;
@@ -186,8 +186,8 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
             if (ScreenTransition_GetState() == 1) {
                 Battle_ResetSubstate();
                 ProcessEntityAnimFlagUpdates();
-                UpdateEntityStateByMode(D_84390010[0]);
-                UpdateEntityStateByMode(D_84390010[1]);
+                UpdateEntityStateByMode(sActivePokemon[0]);
+                UpdateEntityStateByMode(sActivePokemon[1]);
                 gBattleState.unk_00->unk_30 += 1;
                 gBattleState.unk_00->unk_18 = 1;
             }
@@ -209,13 +209,13 @@ void Battle_TransitionSequence(CameraStruct* arg0) {
             break;
 
         case 8:
-            if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(D_84390010[gBattleState.unk_00->unk_2A]) == 0)) {
+            if ((ProcessDualPlayerActionState1() == 0) && (ProcessActionWhenState44Is2(sActivePokemon[gBattleState.unk_00->unk_2A]) == 0)) {
                 if (gBattleState.unk_00->unk_44 == 1) {
                     Battle_SetAnimChannelFlag(2);
                     Battle_AlignPhaseTimer();
                 }
-                ClearAnimFlagIfState6A(D_84390010[0]);
-                ClearAnimFlagIfState6A(D_84390010[1]);
+                ClearAnimFlagIfState6A(sActivePokemon[0]);
+                ClearAnimFlagIfState6A(sActivePokemon[1]);
                 gBattleState.unk_00->unk_18 = 2;
                 ScreenTransition_SetState(2, 0x1E);
                 ScreenTransition_Update();
@@ -341,21 +341,21 @@ u16 IsPointInTriangleAndWithinRange(unk_BattlePlayerEntity* arg0, CameraStruct* 
 }
 
 void UpdateEntityVisibilityFromCamera(CameraStruct* arg0) {
-    if (IsPointInTriangle(D_84390010[0], arg0, D_84390010[0], 0x2AA8, 2500.0f) != 0) {
-        D_84390010[0]->unk_000.unk_000.unk_01 |= 1;
+    if (IsPointInTriangle(sActivePokemon[0], arg0, sActivePokemon[0], 0x2AA8, 2500.0f) != 0) {
+        sActivePokemon[0]->unk_000.unk_000.unk_01 |= 1;
     } else {
-        D_84390010[0]->unk_000.unk_000.unk_01 &= ~1;
+        sActivePokemon[0]->unk_000.unk_000.unk_01 &= ~1;
     }
 
-    if (IsPointInTriangle(D_84390010[1], arg0, D_84390010[1], 0x2AA8, 2500.0f) != 0) {
-        D_84390010[1]->unk_000.unk_000.unk_01 |= 1;
+    if (IsPointInTriangle(sActivePokemon[1], arg0, sActivePokemon[1], 0x2AA8, 2500.0f) != 0) {
+        sActivePokemon[1]->unk_000.unk_000.unk_01 |= 1;
     } else {
-        D_84390010[1]->unk_000.unk_000.unk_01 &= ~1;
+        sActivePokemon[1]->unk_000.unk_000.unk_01 &= ~1;
     }
 }
 
 void UpdateOppositeEntityVisibility(CameraStruct* arg0) {
-    unk_BattlePlayerEntity* sp24 = D_84390010[!gBattleState.unk_00->unk_2C];
+    unk_BattlePlayerEntity* sp24 = sActivePokemon[!gBattleState.unk_00->unk_2C];
 
     if (IsPointInTriangleAndWithinRange(sp24, arg0, sp24, 0x2AA8, 2500.0f) != 0) {
         sp24->unk_000.unk_000.unk_01 |= 1;
@@ -368,25 +368,25 @@ void func_8432A414(void) {
 }
 
 void SetAllEntitiesActiveFlag(void) {
-    D_84390010[0]->unk_000.unk_000.unk_01 |= 1;
-    D_84390010[1]->unk_000.unk_000.unk_01 |= 1;
+    sActivePokemon[0]->unk_000.unk_000.unk_01 |= 1;
+    sActivePokemon[1]->unk_000.unk_000.unk_01 |= 1;
 }
 
 void DeactivateOppositeEntity(void) {
-    Battle_ApplyAnimEffect(D_84390010[!gBattleState.unk_00->unk_2C]);
-    D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+    Battle_ApplyAnimEffect(sActivePokemon[!gBattleState.unk_00->unk_2C]);
+    sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
 }
 
 void DeactivateCurrentEntity(void) {
-    D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-    Battle_ApplyAnimEffect(D_84390010[gBattleState.unk_00->unk_2C]);
+    sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+    Battle_ApplyAnimEffect(sActivePokemon[gBattleState.unk_00->unk_2C]);
 }
 
 void ClearEntityFlagIfInState(void) {
-    unk_BattlePlayerEntity* ptr1 = D_84390010[0];
-    unk_BattlePlayerEntity* ptr2 = D_84390010[1];
+    unk_BattlePlayerEntity* ptr1 = sActivePokemon[0];
+    unk_BattlePlayerEntity* ptr2 = sActivePokemon[1];
 
-    if ((ptr1->unk_654.unk_2D == 0x10) || ((ptr1 = D_84390010[0])->unk_654.unk_2D == 0x13)) {
+    if ((ptr1->unk_654.unk_2D == 0x10) || ((ptr1 = sActivePokemon[0])->unk_654.unk_2D == 0x13)) {
         ptr1->unk_000.unk_000.unk_01 &= ~1;
     }
 
@@ -425,7 +425,7 @@ void ProcessBattleState(CameraStruct* arg0) {
                 case 17:
                 case 18:
                 case 19:
-                    D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                    sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                     break;
 
                 default:
@@ -493,11 +493,11 @@ void ProcessBattleState(CameraStruct* arg0) {
                     if (gBattleState.unk_00->unk_08 == 1) {
                         DeactivateOppositeEntity();
                     } else if (gBattleState.unk_00->unk_08 == 2) {
-                        D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                        sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                     } else if (gBattleState.unk_00->unk_08 == 3) {
-                        D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                        sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                     } else if (gBattleState.unk_00->unk_08 == 4) {
-                        D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                        sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                     }
                     break;
 
@@ -505,11 +505,11 @@ void ProcessBattleState(CameraStruct* arg0) {
                     if (gBattleState.unk_00->unk_08 == 1) {
                         DeactivateCurrentEntity();
                     } else if (gBattleState.unk_00->unk_08 == 2) {
-                        D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                        sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                     } else if (gBattleState.unk_00->unk_08 == 3) {
-                        D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                        sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                     } else if (gBattleState.unk_00->unk_08 == 4) {
-                        D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                        sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                     }
                     break;
 
@@ -614,7 +614,7 @@ void ProcessBattleState(CameraStruct* arg0) {
                     switch (gBattleState.unk_00->unk_20) {
                         case 0:
                         case 1:
-                            D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                            sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                             break;
                     }
                     break;
@@ -624,7 +624,7 @@ void ProcessBattleState(CameraStruct* arg0) {
     ClearEntityFlagIfInState();
 }
 
-void func_8432ABBC(CameraStruct* arg0) {
+void BattleScene_UpdateOwnerVisibilityDouble(CameraStruct* arg0) {
     switch (gBattleState.unk_00->unk_1C) {
         case 1:
             SetAllEntitiesActiveFlag();
@@ -642,7 +642,7 @@ void func_8432ABBC(CameraStruct* arg0) {
                 case 17:
                 case 18:
                 case 19:
-                    D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                    sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
                     break;
 
                 default:
@@ -659,13 +659,13 @@ void func_8432ABBC(CameraStruct* arg0) {
                         case 1:
                         case 2:
                         case 5:
-                            D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                            D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 |= 1;
+                            sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                            sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 |= 1;
                             break;
 
                         default:
-                            D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                            D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 |= 1;
+                            sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                            sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 |= 1;
                     }
                     break;
 
@@ -674,8 +674,8 @@ void func_8432ABBC(CameraStruct* arg0) {
                     switch (gBattleState.unk_00->unk_20) {
                         case 0:
                         case 1:
-                            D_84390010[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                            D_84390010[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 |= 1;
+                            sActivePokemon[gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                            sActivePokemon[!gBattleState.unk_00->unk_2C]->unk_000.unk_000.unk_01 |= 1;
                             break;
                     }
                     break;
@@ -717,17 +717,17 @@ void Battle_Update(CameraStruct* arg0) {
             break;
     }
 
-    func_8432ABBC(arg0);
+    BattleScene_UpdateOwnerVisibilityDouble(arg0);
     Anim_ProcessQueue();
     ProcessEntityPostMoveEffects(gPrimaryPokemonEntity);
     ProcessEntityPostMoveEffects(gPokemonEntityUnused);
     Battle_ApplyCameraShake(arg0);
-    func_8431B830(arg0);
-    func_8431BD10(arg0);
+    BattleScene_ClampCameraEyeFloor(arg0);
+    BattleScene_CameraHelperNop(arg0);
     Camera_PreventDegenerateView(arg0);
 }
 
-s32 func_8432AEE4(s32 arg0, CameraStruct* arg1) {
+s32 BattleScene_Dispatch(s32 arg0, CameraStruct* arg1) {
     switch (arg0) {
         case 0:
             BattleState_Allocate();
@@ -739,7 +739,7 @@ s32 func_8432AEE4(s32 arg0, CameraStruct* arg1) {
             break;
 
         case 3:
-            BattleCamera_RunState(arg1, D_84390010[0], D_84390010[1]);
+            BattleCamera_RunState(arg1, sActivePokemon[0], sActivePokemon[1]);
             break;
     }
     return gBattleState.unk_00->unk_40;

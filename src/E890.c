@@ -50,20 +50,20 @@ s32 BootID_StoreIfValid(unk_D_800AA680* arg0) {
     return var_v1;
 }
 
-s32 func_8000DDB0(void) {
-    func_80001124(&gBootMsgQueue, 0);
+s32 Leo_QueueDiskIdRead(void) {
+    Storage_QueueDiskIdRead(&gBootMsgQueue, 0);
     gBootState.unk_00 = 3;
     return 0;
 }
 
-s32 func_8000DDE4(void) {
-    func_8000123C(&gBootMsgQueue, 0);
+s32 Leo_QueueDiskReset(void) {
+    Storage_QueueDiskReset(&gBootMsgQueue, 0);
     gBootState.unk_00 = 5;
     return 0;
 }
 
 s32 Boot_DMAReadHeader(unk_D_800AA680* arg0) {
-    func_80001098(0, arg0, 0x230, 1, &gBootMsgQueue, 1);
+    Storage_QueueDiskTransfer(0, arg0, 0x230, 1, &gBootMsgQueue, 1);
     gBootState.unk_04 = 0;
     gBootState.unk_02 = 0;
     gBootState.unk_00 = 7;
@@ -71,7 +71,7 @@ s32 Boot_DMAReadHeader(unk_D_800AA680* arg0) {
 }
 
 s32 Boot_DMAReadData(void) {
-    func_80001098(0, gBootIDData.unk_08, gBootIDData.unk_04, gBootIDData.unk_06, &gBootMsgQueue, 1);
+    Storage_QueueDiskTransfer(0, gBootIDData.unk_08, gBootIDData.unk_04, gBootIDData.unk_06, &gBootMsgQueue, 1);
     gBootState.unk_04 = 0;
     gBootState.unk_02 = 0;
     gBootState.unk_00 = 9;
@@ -350,7 +350,7 @@ void func_8000E5B4(void) {
 s32 Boot_MainLoop(unk_D_800AA680* arg0) {
     s32 sp24 = 1;
 
-    if (func_800012F8() != 0) {
+    if (Storage_GetDiskStatus() != 0) {
         while (sp24 != 0) {
             switch (gBootState.unk_00) {
                 case 0:
@@ -362,7 +362,7 @@ s32 Boot_MainLoop(unk_D_800AA680* arg0) {
                     break;
 
                 case 2:
-                    sp24 = func_8000DDB0();
+                    sp24 = Leo_QueueDiskIdRead();
                     break;
 
                 case 3:
@@ -370,7 +370,7 @@ s32 Boot_MainLoop(unk_D_800AA680* arg0) {
                     break;
 
                 case 4:
-                    sp24 = func_8000DDE4();
+                    sp24 = Leo_QueueDiskReset();
                     break;
 
                 case 5:
@@ -404,7 +404,7 @@ s32 Boot_MainLoop(unk_D_800AA680* arg0) {
 }
 
 s32 Boot_Init(void) {
-    s32 sp1C = func_800012F8();
+    s32 sp1C = Storage_GetDiskStatus();
 
     if (sp1C != 0) {
         gBootState.unk_00 = 2;
@@ -420,7 +420,7 @@ s32 Boot_Init(void) {
     return sp1C;
 }
 
-void func_8000E760(void) {
+void Leo_AbortPendingBootRequest(void) {
     s32 tmp = gBootState.unk_00;
 
     if (tmp == 3) {
@@ -438,8 +438,8 @@ void func_8000E760(void) {
     }
 }
 
-void func_8000E7E4(void) {
-    if (func_800012F8() != 0) {
+void Leo_ResetBootStateIfReady(void) {
+    if (Storage_GetDiskStatus() != 0) {
         gBootState.unk_00 = 2;
         gBootState.unk_04 = 0;
         gBootState.unk_02 = 0;

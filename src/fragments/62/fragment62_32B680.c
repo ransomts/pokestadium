@@ -5198,7 +5198,7 @@ void ParticleEffect_ConfigureParameters_Slow(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8434F248(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffect132Descriptor39DelayedRiseFade(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_ConfigureParameters_Slow(arg0);
@@ -5235,6 +5235,6 @@ void func_8434F248(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_CreateDual(void) {
-    ParticleDef_CreateQuick(0, func_8434F248, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x46, 0);
-    ParticleDef_CreateQuick(0x10, func_8434F248, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x46, 0);
+    ParticleDef_CreateQuick(0, BattleAnim_CallbackStartEffect132Descriptor39DelayedRiseFade, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x46, 0);
+    ParticleDef_CreateQuick(0x10, BattleAnim_CallbackStartEffect132Descriptor39DelayedRiseFade, &gParticleEffectData[0x39], 8, 3, 2, 0, 0x46, 0);
 }

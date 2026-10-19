@@ -250,7 +250,7 @@ s32 DmaCopyAsyncBlock(u8* arg0, s16 arg1, s16 arg2, s32 arg3) {
         PiReadRom(arg3, arg0, arg1, mesq, 0);
         osRecvMesg(mesq, &sp44, 1);
 
-        if ((arg3 == 1) && (func_8000CFB0(arg1) != 0)) {
+        if ((arg3 == 1) && (Flash_ProgramPage(arg1) != 0)) {
             return -1;
         }
 
@@ -262,7 +262,7 @@ s32 DmaCopyAsyncBlock(u8* arg0, s16 arg1, s16 arg2, s32 arg3) {
     return 0;
 }
 
-s32 func_80003B04(s16 arg0) {
+s32 Flash_EraseSectorByIndex(s16 arg0) {
     return Flash_EraseSector(arg0 << 7);
 }
 
@@ -278,7 +278,7 @@ void DmaCopyAsyncRange(u32 arg0, u32 arg1, u32 arg2, s32 arg3) {
             var_s0 = var_s1;
         }
 
-        func_80000E80(arg3, arg0, arg1, var_s0, mesq, 0);
+        Storage_QueueRomRead(arg3, arg0, arg1, var_s0, mesq, 0);
         osRecvMesg(mesq, NULL, 1);
 
         arg0 += var_s0;
@@ -407,7 +407,7 @@ void* LbaLoadToPool(unk_func_800041C0* arg0, s32 arg1) {
     if (temp_v0 != NULL) {
         temp_s0 = arg0->unk_04 + temp_v0;
 
-        func_80001098(0, temp_v0, arg0->unk_00, arg0->unk_02, &D_800A62C0, 0);
+        Storage_QueueDiskTransfer(0, temp_v0, arg0->unk_00, arg0->unk_02, &D_800A62C0, 0);
         osRecvMesg(&D_800A62C0, NULL, 1);
 
         if (((u32*)temp_s0->magic)[0] == 'PERS' && (((u32*)temp_s0->magic)[1] == '-SZP')) {
@@ -456,14 +456,14 @@ unk_func_800041C0* LbaRange_Set(unk_func_800041C0* arg0, u32 arg1, u32 offset, u
     return arg0;
 }
 
-void func_800041C0(s32 arg0, s32 arg1, s32 arg2) {
+void Storage_PrefetchLbaRange(s32 arg0, s32 arg1, s32 arg2) {
     unk_func_800041C0 sp1C;
 
     LbaRange_Init(&sp1C, arg0, arg1);
     LbaLoadToPool(&sp1C, arg2);
 }
 
-void func_80004200(u32 block_addr, u32 addr) {
+void Memmap_ClearSegmentOnBlockFree(u32 block_addr, u32 addr) {
     u32 base = addr & 0xFF000000;
     u32 sp1C = addr & 0xFFFFFF;
 
@@ -477,25 +477,25 @@ u8* Asset_Load(s32 id, u8* rom_start, u8* rom_end, s32 arg3) {
 
     if ((vaddr != NULL) && (id > 0)) {
         Memmap_SetSegmentMap(id, vaddr, main_pool_get_block_dist(vaddr));
-        main_pool_set_func(vaddr, id + 0x82000000, &func_80004200);
+        main_pool_set_func(vaddr, id + 0x82000000, &Memmap_ClearSegmentOnBlockFree);
     }
     return vaddr;
 }
 
-MainPoolBlock* func_800042E0(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+MainPoolBlock* Asset_LoadToSegmentByLbaRange(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad;
     unk_func_800041C0 sp28;
     MainPoolBlock* temp_v0 = LbaLoadToPool(LbaRange_Init(&sp28, arg1, arg2), arg3);
 
     if ((temp_v0 != NULL) && (arg0 > 0)) {
         Memmap_SetSegmentMap(arg0, temp_v0, main_pool_get_block_dist(temp_v0));
-        main_pool_set_func(temp_v0, arg0 + 0x82000000, func_80004200);
+        main_pool_set_func(temp_v0, arg0 + 0x82000000, Memmap_ClearSegmentOnBlockFree);
     }
 
     return temp_v0;
 }
 
-void func_80004364(u32 base_addr, u32 addr) {
+void Fragment_FreeCallback(u32 base_addr, u32 addr) {
     u32 sp1C;
     u32 temp_a0;
 
@@ -507,11 +507,11 @@ void func_80004364(u32 base_addr, u32 addr) {
     }
 }
 
-void func_800043BC(s32 arg0, Fragment* addr) {
+void Fragment_Register(s32 arg0, Fragment* addr) {
     UNUSED s32 pad;
     u32 sp20 = main_pool_get_block_dist(addr);
 
-    main_pool_set_func(addr, arg0 + 0x81000000, &func_80004364);
+    main_pool_set_func(addr, arg0 + 0x81000000, &Fragment_FreeCallback);
 
     if (sp20 < addr->sizeInRam) {
         main_pool_realloc(addr, addr->sizeInRam);
@@ -526,18 +526,18 @@ ret_func_80004454 Fragment_Load(s32 arg0, u8* romStart, u8* romEnd) {
     void* addr = Asset_LoadFromRomSegment(romStart, romEnd, 0, 0);
 
     if (addr != NULL) {
-        func_800043BC(arg0, (Fragment*)addr);
+        Fragment_Register(arg0, (Fragment*)addr);
     }
     return addr;
 }
 
-void* func_800044A8(s32 arg0, s32 arg1, s32 arg2) {
+void* Fragment_LoadByLbaRange(s32 arg0, s32 arg1, s32 arg2) {
     Fragment* sp2C;
     unk_func_800041C0 sp20;
 
     sp2C = LbaLoadToPool(LbaRange_Init(&sp20, arg1, arg2), 0);
     if (sp2C != NULL) {
-        func_800043BC(arg0, sp2C);
+        Fragment_Register(arg0, sp2C);
     }
     return sp2C;
 }
@@ -596,7 +596,7 @@ BinArchive* Asset_Load2(u8* romStart, u8* romEnd, s32 arg2, s32 arg3) {
     return ret;
 }
 
-void* func_80004660(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void* BinArchive_LoadByLbaRange(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     BinArchive* var_a0;
     unk_func_800041C0 sp20;
 
@@ -642,17 +642,17 @@ void* func_80004660(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return var_a0;
 }
 
-void func_800047A4(void* arg0) {
+void BinArchive_Free(void* arg0) {
     main_pool_try_free(arg0);
 }
 
-Fragment* func_800047C4(BinArchive* arg0, BinArchiveFile* arg1) {
+Fragment* BinArchive_LoadFileFromRom(BinArchive* arg0, BinArchiveFile* arg1) {
     u8* temp_a0 = arg0->unk_04 + arg1->offset;
 
     return Asset_LoadFromRomSegment(temp_a0, arg1->size + temp_a0, 0, 0);
 }
 
-void* func_80004804(BinArchive* arg0, BinArchiveFile* arg1) {
+void* BinArchive_LoadFileBuffered(BinArchive* arg0, BinArchiveFile* arg1) {
     unk_func_800041C0 sp1C;
 
     LbaRange_Set(&sp1C, arg0->unk_04, arg1->offset, arg1->size);
@@ -671,14 +671,14 @@ void* BinArchive_GetFile(BinArchive* archive, s32 file_number) {
             var_a2 = sp18->unk_08;
         } else {
             if (archive->unk_00 & 0x80) {
-                var_a2 = func_80004804(archive, sp18);
+                var_a2 = BinArchive_LoadFileBuffered(archive, sp18);
             } else {
-                var_a2 = func_800047C4(archive, sp18);
+                var_a2 = BinArchive_LoadFileFromRom(archive, sp18);
             }
 
             if (var_a2 != NULL) {
                 if ((((u32*)var_a2->magic)[0] == 'FRAG') && (((u32*)var_a2->magic)[1] == 'MENT')) {
-                    func_800043BC(archive->unk_02, var_a2);
+                    Fragment_Register(archive->unk_02, var_a2);
                 }
 
                 sp18->unk_08 = var_a2;
@@ -689,7 +689,7 @@ void* BinArchive_GetFile(BinArchive* archive, s32 file_number) {
     return var_a2;
 }
 
-s32 func_8000495C(BinArchive* archive, s32 file_number) {
+s32 BinArchive_GetCachedFile(BinArchive* archive, s32 file_number) {
     BinArchiveFile* sp18 = (u8*)archive + sizeof(BinArchive) + (file_number * sizeof(BinArchiveFile));
     s32 var_v1 = 0;
 

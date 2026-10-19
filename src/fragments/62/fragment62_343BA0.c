@@ -24,7 +24,7 @@ static s16 gParticleSpawnTimerG;
 static const char gCalcVectorATtoDMErrorMsg[] = "calc_vector_ATtoDM() normal error!!!\n";
 static const char gCalcVectorATtoDM2ErrorMsg[] = "calc_vector_ATtoDM2() normal error!!!\n";
 
-void func_843592E0(void) {
+void BattleAnim_NoopUpdateHook(void) {
 }
 
 void func_843592E8(void) {
@@ -63,11 +63,11 @@ void func_84359338(UNUSED s32 arg0) {
 void func_84359340(void) {
 }
 
-void func_84359348(void) {
+void BattleAnim_DrawStoredColorOverlay(void) {
     RenderPrimColorRect(gSavedPrimColorR, gSavedPrimColorG, gSavedPrimColorB, 0xFF);
 }
 
-void func_84359380(void) {
+void BattleAnim_ReinitAuxiliaryEffects(void) {
     GlowEmitters_Reset();
 }
 
@@ -77,41 +77,41 @@ void func_843593A0(void) {
 void func_843593A8(void) {
 }
 
-s32 func_843593B0(void) {
+s32 BattleAnim_DefaultStartEffect_CompleteImmediately(void) {
     return -1;
 }
 
-s32 func_843593B8(void) {
+s32 BattleAnim_DefaultEndEffect_CompleteImmediately(void) {
     return -1;
 }
 
-void func_843593C0(void) {
+void BattleAnim_DefaultStartEffect_Draw(void) {
 }
 
-void func_843593C8(void) {
+void BattleAnim_DefaultEndEffect_Draw(void) {
 }
 
-void func_843593D0(Vec3f* arg0) {
+void Battle_GetTertiaryOwnerBonePositionUnused(Vec3f* arg0) {
     GetSecondaryEntityNodePosition(arg0);
 }
 
-void func_843593F0(Vec3f* arg0) {
+void BattleAnim_EffectSecondaryOwnerAnchorPosition(Vec3f* arg0) {
     GetPrimaryEffectCenterOrNode(arg0);
 }
 
-void func_84359410(Vec3f* arg0) {
+void BattleAnim_EffectTertiaryOwnerBonePosition(Vec3f* arg0) {
     GetSecondaryEntityNodePosition(arg0);
 }
 
-void func_84359430(Vec3f* arg0) {
+void BattleAnim_EffectSecondaryOwnerBonePosition(Vec3f* arg0) {
     GetPrimaryEffectNodePosition(arg0);
 }
 
-f32 func_84359450(void) {
+f32 BattleAnim_EffectTertiaryOwnerModelScale(void) {
     return GetSecondaryEntityScale();
 }
 
-f32 func_84359470(void) {
+f32 BattleAnim_EffectSecondaryOwnerModelScale(void) {
     return GetPrimaryEntityScale();
 }
 
@@ -126,8 +126,8 @@ void CalcVectorATtoDM(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32
     f32 sp20;
     f32 sp1C;
 
-    func_843593F0(&sp4C);
-    func_84359410(&sp40);
+    BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp4C);
+    BattleAnim_EffectTertiaryOwnerBonePosition(&sp40);
 
     sp3C = sp4C.x;
     sp38 = sp4C.y;
@@ -161,8 +161,8 @@ void CalcVectorATtoDM2(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f3
     f32 sp20;
     f32 sp1C;
 
-    func_843593F0(&sp4C);
-    func_84359410(&sp40);
+    BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp4C);
+    BattleAnim_EffectTertiaryOwnerBonePosition(&sp40);
 
     sp3C = sp4C.x;
     sp38 = sp4C.y;
@@ -198,17 +198,17 @@ void SpawnParticleEmitters_Default(void) {
     f32 sp20;
 
     InitEffectMatrix();
-    func_84359430(&sp24);
-    sp20 = func_84359470();
+    BattleAnim_EffectSecondaryOwnerBonePosition(&sp24);
+    sp20 = BattleAnim_EffectSecondaryOwnerModelScale();
     ParticleEmitters_Reset();
-    func_8435CAE8(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
+    RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
 }
 
-s32 func_843596DC(void) {
+s32 BattleAnim_Effect5RibbonMesh_Update(void) {
     return ParticleEmitters_Tick();
 }
 
-void func_843596FC(void) {
+void BattleAnim_Effect5RibbonMesh_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
@@ -219,17 +219,17 @@ void SpawnParticleEmitters_Alt(void) {
     f32 sp20;
 
     InitEffectMatrix();
-    func_84359430(&sp24);
-    sp20 = func_84359450();
+    BattleAnim_EffectSecondaryOwnerBonePosition(&sp24);
+    sp20 = BattleAnim_EffectTertiaryOwnerModelScale();
     ParticleEmitters_Reset();
-    func_8435CAE8(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 1);
+    RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 1);
 }
 
-s32 func_843597AC(void) {
+s32 BattleAnim_EndEffect1RibbonMesh_Update(void) {
     return ParticleEmitters_Tick();
 }
 
-void func_843597CC(void) {
+void BattleAnim_EndEffect1RibbonMesh_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
@@ -240,18 +240,18 @@ void SpawnParticleEmitters_Dual(void) {
     f32 sp20;
 
     InitEffectMatrix();
-    func_84359430(&sp24);
-    sp20 = func_84359450();
+    BattleAnim_EffectSecondaryOwnerBonePosition(&sp24);
+    sp20 = BattleAnim_EffectTertiaryOwnerModelScale();
     ParticleEmitters_Reset();
-    func_8435CAE8(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
-    func_8435CAE8(sp24.x, sp24.y, sp24.z, 38.0f, sp20, 1);
+    RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
+    RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 38.0f, sp20, 1);
 }
 
-s32 func_8435989C(void) {
+s32 BattleAnim_EndEffect19RibbonMesh_Update(void) {
     return ParticleEmitters_Tick();
 }
 
-void func_843598BC(void) {
+void BattleAnim_EndEffect19RibbonMesh_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
@@ -262,18 +262,18 @@ void SpawnParticleEmitters_Alt2(void) {
     f32 sp20;
 
     InitEffectMatrix();
-    func_84359430(&sp24);
-    sp20 = func_84359470();
+    BattleAnim_EffectSecondaryOwnerBonePosition(&sp24);
+    sp20 = BattleAnim_EffectSecondaryOwnerModelScale();
     ParticleEmitters_Reset();
-    func_8435CAE8(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
-    func_8435CAE8(sp24.x, sp24.y, sp24.z, 38.0f, sp20, 1);
+    RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
+    RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 38.0f, sp20, 1);
 }
 
-s32 func_8435998C(void) {
+s32 BattleAnim_Effect54RibbonMesh_Update(void) {
     return ParticleEmitters_Tick();
 }
 
-void func_843599AC(void) {
+void BattleAnim_Effect54RibbonMesh_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
@@ -282,7 +282,7 @@ void func_843599AC(void) {
 void WaterHeightMap_InitByCameraX(void) {
     Vec3f sp1C;
 
-    func_843593F0(&sp1C);
+    BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp1C);
     InitEffectMatrix();
 
     if (sp1C.x < 0.0) {
@@ -292,24 +292,24 @@ void WaterHeightMap_InitByCameraX(void) {
     }
 }
 
-s32 func_84359A6C(void) {
-    return func_8435EDF8();
+s32 BattleAnim_StartEffect34TerrainGrid_Update(void) {
+    return TerrainGrid_Update();
 }
 
-void func_84359A8C(void) {
+void BattleAnim_StartEffect34TerrainGrid_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = WaterSurface_Render(gDisplayListHead);
 }
 
-void func_84359AE0(void) {
+void BattleAnim_EndEffect16_NoOpInit(void) {
 }
 
-s32 func_84359AE8(void) {
+s32 BattleAnim_EndEffect16_CompleteImmediately(void) {
     return -1;
 }
 
-void func_84359AF0(void) {
+void BattleAnim_EndEffect16_NoOpDraw(void) {
 }
 
 void SpawnRandomizedParticleEffect(void) {
@@ -328,9 +328,9 @@ void SpawnRandomizedParticleEffect(void) {
     sp64 *= 4.0f;
     sp60 = 0.0f;
     sp64 += 6.0f;
-    sp5C = func_84359470();
+    sp5C = BattleAnim_EffectSecondaryOwnerModelScale();
     sp54 = guRandom();
-    func_84360EFC(sp74, sp70, sp6C, sp68, (((sp54 % 4) * 0.01f) + sp64) - 0.02f,
+    Radial20_VariantD(sp74, sp70, sp6C, sp68, (((sp54 % 4) * 0.01f) + sp64) - 0.02f,
                   (sp60 - ((guRandom() % 5) * 0.3f)) + 0.6f, 3, 0x64, 0xC8, 0xFF, 0xC8, 0, 0x64, 0xC8, 0.1f, sp5C,
                   4.0f * sp5C, 0x3C);
 }
@@ -338,7 +338,7 @@ void SpawnRandomizedParticleEffect(void) {
 void StartParticleEffectA(void) {
     gParticleSpawnTimerA = 0;
     InitEffectMatrix();
-    func_843605C0();
+    Radial20_ResetPool();
     SpawnRandomizedParticleEffect();
 }
 
@@ -351,7 +351,7 @@ s32 UpdateParticleEffectA(void) {
     if ((gParticleSpawnTimerA < 0x78) && ((gParticleSpawnTimerA % 7) == 0)) {
         SpawnRandomizedParticleEffect();
     }
-    return func_84361FB0();
+    return Radial20_IsComplete();
 }
 
 void RenderParticleEffectA(void) {
@@ -365,8 +365,8 @@ void InitTrailEffect(void) {
     f32 sp30;
 
     InitEffectMatrix();
-    func_84359410(&sp34);
-    sp30 = func_84359450();
+    BattleAnim_EffectTertiaryOwnerBonePosition(&sp34);
+    sp30 = BattleAnim_EffectTertiaryOwnerModelScale();
     InitEffectMatrix();
     Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0x64, 0xC8, 0xFF, 0, 0x64, 0xC8);
 }
@@ -391,7 +391,7 @@ void SpawnWaterParticleEffect(void) {
     f32 sp44;
     f32 sp40;
 
-    sp40 = func_84359470();
+    sp40 = BattleAnim_EffectSecondaryOwnerModelScale();
     CalcVectorATtoDM2(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
     sp4C *= 20.0f;
     sp48 *= 20.0f;
@@ -444,7 +444,7 @@ void SpawnRandomizedParticleEffectC(void) {
     sp64 *= 4.0f;
     sp60 = 0.0f;
     sp64 += 6.0f;
-    sp5C = func_84359470();
+    sp5C = BattleAnim_EffectSecondaryOwnerModelScale();
     sp54 = guRandom();
     ParticleEmitter_AddRandomized(sp74, sp70, sp6C, sp68, (((sp54 % 5) * 0.1f) + sp64) - 0.2f,
                   (sp60 - ((guRandom() % 5) * 0.3f)) + 0.6f, 3, 0xFF, 0xFF, 0xFF, 0x64, 0x64, 0x96, 0x96, 0.1f, sp5C,
@@ -454,7 +454,7 @@ void SpawnRandomizedParticleEffectC(void) {
 void StartParticleEffectC(void) {
     gParticleSpawnTimerC = 0;
     InitEffectMatrix();
-    func_843605C0();
+    Radial20_ResetPool();
     SpawnRandomizedParticleEffectC();
 }
 
@@ -468,7 +468,7 @@ s32 UpdateParticleEffectC(void) {
         SpawnRandomizedParticleEffectC();
     }
 
-    return func_84361FB0();
+    return Radial20_IsComplete();
 }
 
 void RenderParticleEffectC(void) {
@@ -482,8 +482,8 @@ void InitTrailEffectVariant(void) {
     f32 sp30;
 
     InitEffectMatrix();
-    func_84359430(&sp34);
-    sp30 = func_84359450();
+    BattleAnim_EffectSecondaryOwnerBonePosition(&sp34);
+    sp30 = BattleAnim_EffectTertiaryOwnerModelScale();
     InitEffectMatrix();
     Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0xFF, 0x64, 0x96, 0x96);
 }
@@ -503,8 +503,8 @@ void InitTrailEffectVariant2(void) {
     f32 sp30;
 
     InitEffectMatrix();
-    func_84359430(&sp34);
-    sp30 = func_84359450();
+    BattleAnim_EffectSecondaryOwnerBonePosition(&sp34);
+    sp30 = BattleAnim_EffectTertiaryOwnerModelScale();
     InitEffectMatrix();
     Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0x64, 0x96, 0x96, 0);
 }
@@ -535,9 +535,9 @@ void SpawnRandomizedParticleEffectD(void) {
     sp64 *= 4.0f;
     sp60 = 0.0f;
     sp64 += 6.0f;
-    sp5C = func_84359470();
+    sp5C = BattleAnim_EffectSecondaryOwnerModelScale();
     sp54 = guRandom();
-    func_84360EFC(sp74, sp70, sp6C, sp68, (((sp54 % 4) * 0.01f) + sp64) - 0.02f,
+    Radial20_VariantD(sp74, sp70, sp6C, sp68, (((sp54 % 4) * 0.01f) + sp64) - 0.02f,
                   (sp60 - ((guRandom() % 5) * 0.3f)) + 0.6f, 3, 0xFF, 0xFF, 0x64, 0xFF, 0x96, 0x96, 0, 0.1f, sp5C,
                   4.0f * sp5C, 0x3C);
 }
@@ -545,7 +545,7 @@ void SpawnRandomizedParticleEffectD(void) {
 void StartParticleEffectE(void) {
     gParticleSpawnTimerE = 0;
     InitEffectMatrix();
-    func_843605C0();
+    Radial20_ResetPool();
     SpawnRandomizedParticleEffectD();
 }
 
@@ -559,7 +559,7 @@ s32 UpdateParticleEffectE(void) {
         SpawnRandomizedParticleEffectD();
     }
 
-    return func_84361FB0();
+    return Radial20_IsComplete();
 }
 
 void RenderParticleEffectE(void) {
@@ -586,8 +586,8 @@ s32 UpdateEffectF(void) {
 
     gParticleSpawnTimerF++;
     if (!(gParticleSpawnTimerF & 1)) {
-        sp44 = func_84359470();
-        func_843593F0(&sp60);
+        sp44 = BattleAnim_EffectSecondaryOwnerModelScale();
+        BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp60);
         sp5C = (((guRandom() % 50) - 0x19) * sp44) + sp60.x;
         sp58 = (((guRandom() % 60) - 0x1E) * sp44) + sp60.y;
         sp54 = (((guRandom() % 50) - 0x19) * sp44) + sp60.z;
@@ -625,8 +625,8 @@ s32 UpdateWaterParticlePoolG(void) {
 
     gParticleSpawnTimerG++;
     if (!(gParticleSpawnTimerG & 1)) {
-        sp44 = func_84359470();
-        func_843593F0(&sp60);
+        sp44 = BattleAnim_EffectSecondaryOwnerModelScale();
+        BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp60);
         sp5C = (((guRandom() % 50) - 0x19) * sp44) + sp60.x;
         sp58 = (((guRandom() % 60) - 0x1E) * sp44) + sp60.y;
         sp54 = (((guRandom() % 50) - 0x19) * sp44) + sp60.z;
@@ -650,7 +650,7 @@ void InitWaterSurface(void) {
     Vec3f sp1C;
 
     InitEffectMatrix();
-    func_843593F0(&sp1C);
+    BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp1C);
     WaterSurface_Init(0x708);
 }
 
@@ -668,7 +668,7 @@ void InitWaterSurfaceVariant(void) {
     Vec3f sp1C;
 
     InitEffectMatrix();
-    func_843593F0(&sp1C);
+    BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp1C);
     WaterSurface_Initialize(0x708);
 }
 
@@ -686,18 +686,18 @@ void InitWaterEffectVariant(void) {
     Vec3f sp1C;
 
     InitEffectMatrix();
-    func_843593F0(&sp1C);
-    func_84365A10(0x708);
+    BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp1C);
+    Trail40GridAlt_Init(0x708);
 }
 
 s32 UpdateWaterEffectVariant(void) {
-    return func_843661D0();
+    return Trail40GridAlt_IsComplete();
 }
 
 void RenderWaterEffectVariant(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = func_84366560(gDisplayListHead);
+    gDisplayListHead = Trail40GridAlt_Draw(gDisplayListHead);
 }
 
 void ResetAllParticleSystems(void) {
@@ -723,7 +723,7 @@ s32 UpdateWaterParticleSystemPhaseA(void) {
     }
 
     if (gEffectPhaseCounterA < 4) {
-        func_84359430(&sp68);
+        BattleAnim_EffectSecondaryOwnerBonePosition(&sp68);
         sp64 = sp68.x;
         sp60 = sp68.y;
         sp5C = sp68.z;
@@ -856,7 +856,7 @@ void CreateSimpleParticleEmitter(void) {
 void StartParticleEffectD(void) {
     gParticleSpawnTimerD0 = 0;
     InitEffectMatrix();
-    func_843605C0();
+    Radial20_ResetPool();
     CreateSimpleParticleEmitter();
 }
 
@@ -865,7 +865,7 @@ s32 UpdateParticleEffectD(void) {
     if (gParticleSpawnTimerD0 >= 0xB5) {
         return -1;
     }
-    return func_84361FB0();
+    return Radial20_IsComplete();
 }
 
 void RenderParticleEffectD(void) {

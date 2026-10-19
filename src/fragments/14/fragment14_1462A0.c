@@ -639,7 +639,7 @@ unk_D_868084D8* Sushi_FindBestTarget(unk_D_86807558* arg0) {
             }
         }
 
-        var_v1 = func_86806930(var_s0);
+        var_v1 = SushiGame_GetPlateValue(var_s0);
         if (var_s0->unk_0C == arg0->unk_05C) {
             var_a0 = arg0->unk_03E;
             if (var_a0 < 5) {
@@ -1010,7 +1010,7 @@ void Sushi_UpdateAI(unk_D_86807558* arg0) {
             if (arg0->unk_060 == 2) {
                 arg0->unk_0D0.g = arg0->unk_0D0.b = 255.0f * spB8;
                 if (!(arg0->unk_006 & 0xF)) {
-                    Particle_CreateMultiple(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, func_879023EC, &gMiniTutoScreenNode0, 4);
+                    Particle_CreateMultiple(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0, 4);
                 }
             } else {
                 arg0->unk_0D0.r = arg0->unk_0D0.b = 255.0f * spB8;
@@ -1219,7 +1219,7 @@ void Sushi_UpdateState(unk_D_86807558* arg0) {
     }
     arg0->unk_05C = sp20;
 
-    arg0->unk_018 += func_86806930(arg0->unk_0DC) * arg0->unk_03E;
+    arg0->unk_018 += SushiGame_GetPlateValue(arg0->unk_0DC) * arg0->unk_03E;
     arg0->unk_02A++;
     arg0->unk_02C[sp20]++;
 

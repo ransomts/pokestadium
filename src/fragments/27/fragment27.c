@@ -40,7 +40,7 @@ typedef struct unk_D_88605B00 {
     /* 0x02 */ s16 unk_02;
 } unk_D_88605B00; // size = 0x4
 
-s32 func_88600020(s32 arg0, s32 arg1) {
+s32 LabPC_ComputeExpForLevel(s32 arg0, s32 arg1) {
     s32 sp4;
 
     switch (D_80070F84[arg0].unk_13) {
@@ -71,7 +71,7 @@ s32 func_88600020(s32 arg0, s32 arg1) {
     return sp4;
 }
 
-void func_88600214(PokemonData* arg0, s32 arg1, s32 arg2) {
+void LabPC_SwapMonMoves(PokemonData* arg0, s32 arg1, s32 arg2) {
     u8 temp_t0;
     u8 temp_v0;
 
@@ -87,14 +87,14 @@ void func_88600214(PokemonData* arg0, s32 arg1, s32 arg2) {
 void func_88600240(void) {
 }
 
-void func_88600248(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = func_886002A8;
+void LabPC_InitDualArrowHeader(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88001300_000));
+    arg0->unk_18 = LabPC_DrawDualArrowHeader;
     arg0->unk_10.unk_00 = arg1;
     arg0->unk_10.unk_02 = arg2;
 }
 
-s32 func_886002A8(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawDualArrowHeader(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gSummaryTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
@@ -127,14 +127,14 @@ s32 func_886002A8(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_886006D8(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = func_88600738;
+void LabPC_InitArrowLabelA(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88001300_000));
+    arg0->unk_18 = LabPC_DrawArrowLabelA;
     arg0->unk_10.unk_00 = arg1;
     arg0->unk_10.unk_02 = arg2;
 }
 
-s32 func_88600738(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawArrowLabelA(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gSummaryTextColor2 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
@@ -160,14 +160,14 @@ s32 func_88600738(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88600A04(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = func_88600A64;
+void LabPC_InitArrowLabelB(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88001300_000));
+    arg0->unk_18 = LabPC_DrawArrowLabelB;
     arg0->unk_10.unk_00 = arg1;
     arg0->unk_10.unk_02 = arg2;
 }
 
-s32 func_88600A64(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawArrowLabelB(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gSummaryTextColor3 = { 0xF0, 0xF0, 0xF0, 0xFF };
     UNUSED static Color_RGBA8 D_88605ACC = { 0xF0, 0xF0, 0xF0, 0xFF };
     UNUSED static Color_RGBA8 D_88605AD0 = { 0x1E, 0x78, 0x32, 0xFF };
@@ -196,10 +196,10 @@ s32 func_88600A64(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88600D30(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, char* arg5, Color_RGBA8 arg6,
+void LabPC_InitCenteredLabel(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, char* arg5, Color_RGBA8 arg6,
                    Color_RGBA8 arg7, UNUSED MemoryPool* arg8) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_8860439C_sp64));
-    arg0->unk_00.unk_18 = func_88600DDC;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_8860439C_sp64));
+    arg0->unk_00.unk_18 = LabPC_DrawCenteredLabel;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
@@ -210,7 +210,7 @@ void func_88600D30(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2, s32 arg3, s
     arg0->unk_38 = arg7;
 }
 
-s32 func_88600DDC(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawCenteredLabel(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88605AD8 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Text_ResetState();
@@ -222,9 +222,9 @@ s32 func_88600DDC(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88600E90(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_02C));
-    arg0->unk_00.unk_18 = func_88600F08;
+void LabPC_InitIconWidget(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32 arg2, s32 arg3) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_02C));
+    arg0->unk_00.unk_18 = LabPC_DrawIconWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_02 = 0x1A;
@@ -232,7 +232,7 @@ void func_88600E90(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32 arg2,
     arg0->unk_2C = arg3;
 }
 
-s32 func_88600F08(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawIconWidget(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32 arg2) {
     static u8* D_88605ADC[] = { D_4004448, D_4004A00, D_4004FB8, D_4005570 };
     UNUSED static Color_RGBA8 D_88605AEC = { 0xF0, 0xF0, 0xF0, 0xFF };
 
@@ -253,22 +253,22 @@ s32 func_88600F08(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32 arg2) 
     return 0;
 }
 
-void func_8860115C(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_03C));
-    arg0->unk_00.unk_18 = func_886011F4;
+void LabPC_InitMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_03C));
+    arg0->unk_00.unk_18 = LabPC_DrawMoveNameWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     // clang-format off
     arg0->unk_00.unk_14.unk_00 = MeasureTextWidth(8, 0, "WWWWWWWWWWWW") + 0x16; arg0->unk_00.unk_14.unk_02 = 0x14;
     // clang-format on
-    func_886011EC(arg0, 0);
+    LabPC_SetMoveNameId(arg0, 0);
 }
 
-void func_886011EC(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1) {
+void LabPC_SetMoveNameId(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1) {
     arg0->unk_2C = arg1;
 }
 
-s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) {
     ret_func_8002ED08* sp6C;
 
     if (arg0->unk_2C == 0) {
@@ -313,23 +313,23 @@ s32 func_886011F4(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) 
     return 0;
 }
 
-void func_88601578(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_05C));
-    arg0->unk_00.unk_18 = func_88601600;
+void LabPC_InitPpWidget(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_05C));
+    arg0->unk_00.unk_18 = LabPC_DrawPpWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     // clang-format off
     arg0->unk_00.unk_14.unk_00 = 0x2D; arg0->unk_00.unk_14.unk_02 = 0xC;
     // clang-format on
-    func_886015F4(arg0, 0, 0);
+    LabPC_SetPpWidgetMove(arg0, 0, 0);
 }
 
-void func_886015F4(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
+void LabPC_SetPpWidgetMove(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
     arg0->unk_2C = arg1;
     arg0->unk_30 = arg2;
 }
 
-s32 func_88601600(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawPpWidget(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
     MoveBattleData* temp_v0 = GetMoveBattleDataEntry(arg0->unk_2C);
     s32 sp18;
     s32 var_v1;
@@ -360,15 +360,15 @@ s32 func_88601600(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) 
     return 0;
 }
 
-void func_886018C8(unk_func_88205880_0098_008_040_06C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_06C));
-    arg0->unk_00.unk_1C = func_8860192C;
+void LabPC_InitFlyWidget(unk_func_88205880_0098_008_040_06C* arg0, s32 arg1, s32 arg2) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_06C));
+    arg0->unk_00.unk_1C = LabPC_UpdateFlyWidget;
     arg0->unk_30.unk_00 = arg1;
     arg0->unk_30.unk_02 = arg2;
-    func_88601ADC(arg0);
+    LabPC_StopFlyWidget(arg0);
 }
 
-s32 func_8860192C(unk_func_88205880_0098_008_040_06C* arg0) {
+s32 LabPC_UpdateFlyWidget(unk_func_88205880_0098_008_040_06C* arg0) {
     UNUSED s32 pad;
     f32 tmp = 15.0f;
     f32 temp_fa1;
@@ -413,30 +413,30 @@ s32 func_8860192C(unk_func_88205880_0098_008_040_06C* arg0) {
     return 0;
 }
 
-void func_88601AB0(unk_func_88205880_0098_008_040_06C* arg0, unk_func_88001300_000_010 arg1) {
+void LabPC_StartFlyWidget(unk_func_88205880_0098_008_040_06C* arg0, unk_func_88001300_000_010 arg1) {
     arg0->unk_30 = arg0->unk_00.unk_10;
     arg0->unk_34 = arg1;
     arg0->unk_2C = 0;
 }
 
-void func_88601ADC(unk_func_88205880_0098_008_040_06C* arg0) {
+void LabPC_StopFlyWidget(unk_func_88205880_0098_008_040_06C* arg0) {
     arg0->unk_00.unk_10 = arg0->unk_30;
     arg0->unk_2C = 0x10;
 }
 
-void func_88601AF8(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_044));
-    arg0->unk_00.unk_18 = func_88601B64;
+void LabPC_InitMonSummaryWidget(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_044));
+    arg0->unk_00.unk_18 = LabPC_DrawMonSummaryWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_2C = NULL;
 }
 
-void func_88601B5C(unk_func_88205880_0098_008_044* arg0, PokemonData* arg1) {
+void LabPC_SetSummaryMon(unk_func_88205880_0098_008_044* arg0, PokemonData* arg1) {
     arg0->unk_2C = arg1;
 }
 
-s32 func_88601B64(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawMonSummaryWidget(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 gSummarySpeciesTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char* sp34;
@@ -470,9 +470,9 @@ s32 func_88601B64(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88601D6C(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2, unk_func_8850182C* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_048));
-    arg0->unk_00.unk_18 = func_88601DF0;
+void LabPC_InitTypeListWidget(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2, unk_func_8850182C* arg3) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_048));
+    arg0->unk_00.unk_18 = LabPC_DrawTypeListWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3->unk_00.unk_14.unk_00;
@@ -480,11 +480,11 @@ void func_88601D6C(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2, unk
     arg0->unk_2C = 0;
 }
 
-void func_88601DE8(unk_func_88205880_0098_008_048* arg0, PokemonData* arg1) {
+void LabPC_SetTypeListMon(unk_func_88205880_0098_008_048* arg0, PokemonData* arg1) {
     arg0->unk_2C = arg1;
 }
 
-s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawTypeListWidget(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88605AF4 = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     s32 var_s4;
@@ -538,9 +538,9 @@ s32 func_88601DF0(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88602114(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2, unk_func_8850182C* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_04C));
-    arg0->unk_00.unk_18 = func_88602198;
+void LabPC_InitStatWidget(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2, unk_func_8850182C* arg3) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_04C));
+    arg0->unk_00.unk_18 = LabPC_DrawStatWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3->unk_00.unk_14.unk_00;
@@ -548,11 +548,11 @@ void func_88602114(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2, unk
     arg0->unk_2C = NULL;
 }
 
-void func_88602190(unk_func_88205880_0098_008_04C* arg0, PokemonData* arg1) {
+void LabPC_SetStatMon(unk_func_88205880_0098_008_04C* arg0, PokemonData* arg1) {
     arg0->unk_2C = arg1;
 }
 
-s32 func_88602198(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawStatWidget(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88605AF8 = { 0xF0, 0xF0, 0xF0, 0xFF };
     static char D_88605AFC[] = "?";
 
@@ -603,20 +603,20 @@ s32 func_88602198(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88602604(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5,
+void LabPC_InitMonPreviewWidget(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5,
                    unk_func_8001B1FC* arg6) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_050));
-    arg0->unk_00.unk_18 = func_88602694;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_050));
+    arg0->unk_00.unk_18 = LabPC_DrawMonPreviewWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg4;
     arg0->unk_00.unk_14.unk_02 = arg5;
     arg0->unk_2C = arg3;
     arg0->unk_34 = arg6;
-    func_88602A8C(arg0, NULL);
+    LabPC_SetPreviewMon(arg0, NULL);
 }
 
-s32 func_88602694(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawMonPreviewWidget(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2) {
     s32 a1 = arg1;
     s32 temp_v0;
     s32 var_t1;
@@ -627,7 +627,7 @@ s32 func_88602694(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2) {
         return 0;
     }
 
-    var_s1 = func_8001B9D4(arg0->unk_34);
+    var_s1 = PokeIcon_RenderPreview(arg0->unk_34);
     Stage_BeginDisplayList();
 
     gDPPipeSync(gDisplayListHead++);
@@ -660,14 +660,14 @@ s32 func_88602694(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88602A8C(unk_func_88205880_0098_008_050* arg0, PokemonData* arg1) {
+void LabPC_SetPreviewMon(unk_func_88205880_0098_008_050* arg0, PokemonData* arg1) {
     arg0->unk_30 = arg1;
     if (arg1 != NULL) {
-        func_8001B2D8(arg0->unk_34, arg1, 0x108D);
+        PokeIcon_SetPreviewMon(arg0->unk_34, arg1, 0x108D);
     }
 }
 
-void func_88602AB8(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
+void LabPC_InitMovesPanel(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     static unk_D_88605B00 D_88605B00[] = {
         { 0x00F7, 0x0007 },
         { 0x0111, 0x0021 },
@@ -699,7 +699,7 @@ void func_88602AB8(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, Mem
     s32 x;
     s32 y;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040));
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
@@ -713,49 +713,49 @@ void func_88602AB8(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, Mem
 
     for (j = 0; j < 4; j++) {
         arg0->unk_2C[j] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_02C));
-        func_88600E90(arg0->unk_2C[j], D_88605B14[j].unk_00, D_88605B14[j].unk_02, j);
+        LabPC_InitIconWidget(arg0->unk_2C[j], D_88605B14[j].unk_00, D_88605B14[j].unk_02, j);
         ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_2C[j]->unk_00.unk_00);
     }
 
     for (x = 0; x < 4; x++) {
         arg0->unk_6C[x] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_06C));
-        func_886018C8(arg0->unk_6C[x], D_88605B24[x].unk_00, D_88605B24[x].unk_02);
+        LabPC_InitFlyWidget(arg0->unk_6C[x], D_88605B24[x].unk_00, D_88605B24[x].unk_02);
         ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_6C[x]->unk_00.unk_00);
 
         arg0->unk_5C[x] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_05C));
-        func_88601578(arg0->unk_5C[x], 0, 0);
+        LabPC_InitPpWidget(arg0->unk_5C[x], 0, 0);
         ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_6C[x]->unk_00.unk_00,
                                                                &arg0->unk_5C[x]->unk_00.unk_00);
     }
 
     for (y = 0; y < 4; y++) {
         arg0->unk_4C[y] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_06C));
-        func_886018C8(arg0->unk_4C[y], D_88605B34[y].unk_00, D_88605B34[y].unk_02);
+        LabPC_InitFlyWidget(arg0->unk_4C[y], D_88605B34[y].unk_00, D_88605B34[y].unk_02);
         ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_00.unk_00, &arg0->unk_4C[y]->unk_00.unk_00);
 
         arg0->unk_3C[y] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_03C));
-        func_8860115C(arg0->unk_3C[y], 0, 0);
+        LabPC_InitMoveNameWidget(arg0->unk_3C[y], 0, 0);
         ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_4C[y]->unk_00.unk_00,
                                                                &arg0->unk_3C[y]->unk_00.unk_00);
     }
 }
 
-void func_88602D40(unk_func_88205880_0098_008_040* arg0, PokemonData* arg1) {
+void LabPC_SetMovesPanelMon(unk_func_88205880_0098_008_040* arg0, PokemonData* arg1) {
     s32 temp_s3 = Mon_CountMoves(arg1);
     s32 i;
 
     for (i = 0; i < 4; i++) {
         if (i < temp_s3) {
-            func_886011EC(arg0->unk_3C[i], arg1->unk_09[i]);
-            func_886015F4(arg0->unk_5C[i], arg1->unk_09[i], arg1->unk_20[i]);
+            LabPC_SetMoveNameId(arg0->unk_3C[i], arg1->unk_09[i]);
+            LabPC_SetPpWidgetMove(arg0->unk_5C[i], arg1->unk_09[i], arg1->unk_20[i]);
         } else {
-            func_886011EC(arg0->unk_3C[i], 0);
-            func_886015F4(arg0->unk_5C[i], 0, 0);
+            LabPC_SetMoveNameId(arg0->unk_3C[i], 0);
+            LabPC_SetPpWidgetMove(arg0->unk_5C[i], 0, 0);
         }
     }
 }
 
-void func_88602DFC(unk_func_88205880_0098_008_040* arg0, unk_func_88001300_03C_01C* arg1,
+void LabPC_BindMovesPanelGrid(unk_func_88205880_0098_008_040* arg0, unk_func_88001300_03C_01C* arg1,
                    unk_func_88205880_0098_008_070* arg2) {
     arg2->unk_00.unk_18[0] = &arg0->unk_7C[0]->unk_00;
     arg2->unk_00.unk_18[1] = &arg0->unk_7C[1]->unk_00;
@@ -765,7 +765,7 @@ void func_88602DFC(unk_func_88205880_0098_008_040* arg0, unk_func_88001300_03C_0
     ((func8850CAB4)Memmap_GetFragmentVaddr(GridMenu_SelectFirstEnabled))(&arg2->unk_00);
 }
 
-void func_88602E60(unk_func_88205880_0098_008_040* arg0, unk_func_8850CD44* arg1, MemoryPool* arg2) {
+void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, unk_func_8850CD44* arg1, MemoryPool* arg2) {
     s32 i;
 
     ((func8850CD44)Memmap_GetFragmentVaddr(Panel_Setup))(arg1, 8, arg2);
@@ -779,33 +779,33 @@ void func_88602E60(unk_func_88205880_0098_008_040* arg0, unk_func_8850CD44* arg1
     }
 }
 
-void func_88602F04(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2) {
-    func_88601AB0(arg0->unk_4C[arg1], arg0->unk_4C[arg2]->unk_00.unk_10);
-    func_88601AB0(arg0->unk_4C[arg2], arg0->unk_4C[arg1]->unk_00.unk_10);
-    func_88601AB0(arg0->unk_6C[arg1], arg0->unk_6C[arg2]->unk_00.unk_10);
-    func_88601AB0(arg0->unk_6C[arg2], arg0->unk_6C[arg1]->unk_00.unk_10);
+void LabPC_SwapMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2) {
+    LabPC_StartFlyWidget(arg0->unk_4C[arg1], arg0->unk_4C[arg2]->unk_00.unk_10);
+    LabPC_StartFlyWidget(arg0->unk_4C[arg2], arg0->unk_4C[arg1]->unk_00.unk_10);
+    LabPC_StartFlyWidget(arg0->unk_6C[arg1], arg0->unk_6C[arg2]->unk_00.unk_10);
+    LabPC_StartFlyWidget(arg0->unk_6C[arg2], arg0->unk_6C[arg1]->unk_00.unk_10);
 }
 
-void func_88602FC0(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2) {
-    func_88601ADC(arg0->unk_4C[arg1]);
-    func_88601ADC(arg0->unk_4C[arg2]);
-    func_88601ADC(arg0->unk_6C[arg1]);
-    func_88601ADC(arg0->unk_6C[arg2]);
+void LabPC_ResetMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2) {
+    LabPC_StopFlyWidget(arg0->unk_4C[arg1]);
+    LabPC_StopFlyWidget(arg0->unk_4C[arg2]);
+    LabPC_StopFlyWidget(arg0->unk_6C[arg1]);
+    LabPC_StopFlyWidget(arg0->unk_6C[arg2]);
 }
 
-void func_88603028(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_054));
-    arg0->unk_00.unk_18 = func_88603094;
+void LabPC_InitTrainerInfoWidget(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_054));
+    arg0->unk_00.unk_18 = LabPC_DrawTrainerInfoWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_2C = NULL;
 }
 
-void func_8860308C(unk_func_88205880_0098_008_054* arg0, PokemonData* arg1) {
+void LabPC_SetTrainerInfoMon(unk_func_88205880_0098_008_054* arg0, PokemonData* arg1) {
     arg0->unk_2C = arg1;
 }
 
-s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawTrainerInfoWidget(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88605B44 = { 0xF0, 0xF0, 0xF0, 0xFF };
     UNUSED static Color_RGBA8 D_88605B48 = { 0xD2, 0xBE, 0x32, 0xFF };
 
@@ -835,7 +835,7 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
         char sp48[32];
         s32 sp44;
 
-        MessageBank_SetPointer_1_9(6, (char*)(func_88600020(arg0->unk_2C->unk_00.unk_00, sp6C) - arg0->unk_2C->unk_10));
+        MessageBank_SetPointer_1_9(6, (char*)(LabPC_ComputeExpForLevel(arg0->unk_2C->unk_00.unk_00, sp6C) - arg0->unk_2C->unk_10));
         GetMessageString(sp48, sizeof(sp48), gMonSummaryStrings, 0x10);
         sp44 = MeasureTextWidth(0, 0, sp48);
         Text_Print(arg1 + 0xE8, arg2 + 0x44, sp48);
@@ -852,21 +852,21 @@ s32 func_88603094(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_886033E0(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_058));
-    arg0->unk_00.unk_18 = func_88603468;
+void LabPC_InitMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_058));
+    arg0->unk_00.unk_18 = LabPC_DrawMoveDetailWidget;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
     arg0->unk_00.unk_14.unk_00 = arg3;
     arg0->unk_00.unk_14.unk_02 = arg4;
-    func_88603460(arg0, 0);
+    LabPC_SetMoveDetailId(arg0, 0);
 }
 
-void func_88603460(unk_func_88205880_0098_008_058* arg0, s32 arg1) {
+void LabPC_SetMoveDetailId(unk_func_88205880_0098_008_058* arg0, s32 arg1) {
     arg0->unk_2C = arg1;
 }
 
-s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_88605B4C = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     s32 sp13C;
@@ -978,17 +978,17 @@ s32 func_88603468(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void func_88604190(unk_func_88205880_0098_008_070* arg0, s32 arg1) {
+void LabPC_SetGridMenuItemCount(unk_func_88205880_0098_008_070* arg0, s32 arg1) {
     arg0->unk_40 = arg1;
 }
 
-void func_88604198(unk_func_88205880_0098_008_070* arg0, MemoryPool* arg1) {
-    ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(&arg0->unk_00, 1, 4, arg1);
-    arg0->unk_00.unk_10 = func_886041F0;
-    func_88604190(arg0, 0);
+void LabPC_InitMoveGridMenu(unk_func_88205880_0098_008_070* arg0, MemoryPool* arg1) {
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(&arg0->unk_00, 1, 4, arg1);
+    arg0->unk_00.unk_10 = LabPC_HandleMoveGridInput;
+    LabPC_SetGridMenuItemCount(arg0, 0);
 }
 
-s32 func_886041F0(unk_func_88205880_0098_008_070* arg0, Controller* arg1) {
+s32 LabPC_HandleMoveGridInput(unk_func_88205880_0098_008_070* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
     if (arg0->unk_00.unk_18[arg0->unk_00.unk_24] != NULL) {
@@ -1023,7 +1023,7 @@ s32 func_886041F0(unk_func_88205880_0098_008_070* arg0, Controller* arg1) {
     return var_v1;
 }
 
-void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_func_8001B1FC* arg3,
+void LabPC_BuildMonDetailPanel(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_func_8001B1FC* arg3,
                    unk_func_88001300_000* arg4, MemoryPool* arg5) {
     static Color_RGBA8 D_88605B50 = { 0x80, 0x18, 0x18, 0xFF };
     static Color_RGBA8 D_88605B54 = { 0x38, 0x38, 0x80, 0xFF };
@@ -1054,8 +1054,8 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     unk_func_88001300_03C_01C* sp60;
     unk_func_88503298* sp5C;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008));
-    arg0->unk_00.unk_20 = func_886056D4;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008));
+    arg0->unk_00.unk_20 = LabPC_DispatchDetailPanelInput;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
@@ -1072,19 +1072,19 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
 
     arg0->unk_68 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(arg0->unk_68, 0, 0, 0x210, 0x24, D_88605B50);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(arg0->unk_68, 0, 0, 0x210, 0x24, D_88605B50);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_30->unk_00.unk_00, &arg0->unk_68->unk_00.unk_00);
 
     arg0->unk_44 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_044));
-    func_88601AF8(arg0->unk_44, 0, 0);
+    LabPC_InitMonSummaryWidget(arg0->unk_44, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_68->unk_00.unk_00, &arg0->unk_44->unk_00.unk_00);
 
     sp8C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp8C, 0xE0, 0x24, 0x130, 0x1C, D_88605B54);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp8C, 0xE0, 0x24, 0x130, 0x1C, D_88605B54);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_30->unk_00.unk_00, &sp8C->unk_00.unk_00);
 
     arg0->unk_48 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_048));
-    func_88601D6C(arg0->unk_48, 0, 0, sp8C);
+    LabPC_InitTypeListWidget(arg0->unk_48, 0, 0, sp8C);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp8C->unk_00.unk_00, &arg0->unk_48->unk_00.unk_00);
 
     arg0->unk_34 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_02C));
@@ -1093,19 +1093,19 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_34->unk_00.unk_00);
 
     arg0->unk_5C = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_5C, 0xE0, 0x40);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_5C, 0xE0, 0x40);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_34->unk_00.unk_00, &arg0->unk_5C->unk_00.unk_00);
 
     sp88 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp88, 0, 0, 0x130, 0x84, D_88605B58);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp88, 0, 0, 0x130, 0x84, D_88605B58);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_5C, &sp88->unk_00);
 
     arg0->unk_4C = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_04C));
-    func_88602114(arg0->unk_4C, 0, 0, sp88);
+    LabPC_InitStatWidget(arg0->unk_4C, 0, 0, sp88);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp88->unk_00.unk_00, &arg0->unk_4C->unk_00.unk_00);
 
     arg0->unk_58 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_058));
-    func_886033E0(arg0->unk_58, 0, 0, 0x130, 0x84);
+    LabPC_InitMoveDetailWidget(arg0->unk_58, 0, 0, 0x130, 0x84);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_5C, &arg0->unk_58->unk_00);
 
     arg0->unk_38 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_02C));
@@ -1113,69 +1113,69 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_38->unk_00.unk_00);
 
     sp84 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp84, 0, 0xC4, 0x210, 0x60, D_88605B5C);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp84, 0, 0xC4, 0x210, 0x60, D_88605B5C);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_38->unk_00.unk_00, &sp84->unk_00.unk_00);
 
     arg0->unk_60 = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_60, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_60, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp84->unk_00.unk_00, &arg0->unk_60->unk_00.unk_00);
 
     arg0->unk_54 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_054));
-    func_88603028(arg0->unk_54, 0, 0);
+    LabPC_InitTrainerInfoWidget(arg0->unk_54, 0, 0);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_60, &arg0->unk_54->unk_00);
 
     arg0->unk_40 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_040));
-    func_88602AB8(arg0->unk_40, 0, 0, arg5);
+    LabPC_InitMovesPanel(arg0->unk_40, 0, 0, arg5);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_60, &arg0->unk_40->unk_00);
 
     arg0->unk_70 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_070));
-    func_88604198(arg0->unk_70, arg5);
+    LabPC_InitMoveGridMenu(arg0->unk_70, arg5);
 
     sp80 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_03C_01C));
     ((func88504570)Memmap_GetFragmentVaddr(UIButtonPrompt_Create))(sp80, 0, 0, 0x20, 0x20, D_88605B60);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_40->unk_00.unk_00, &sp80->unk_00.unk_00);
-    func_88602DFC(arg0->unk_40, sp80, arg0->unk_70);
+    LabPC_BindMovesPanelGrid(arg0->unk_40, sp80, arg0->unk_70);
 
     arg0->unk_74 = mem_pool_alloc(arg5, sizeof(unk_func_8850CD44));
-    func_88602E60(arg0->unk_40, arg0->unk_74, arg5);
+    LabPC_GroupMovesPanelFlyWidgets(arg0->unk_40, arg0->unk_74, arg5);
 
     arg0->unk_3C = mem_pool_alloc(arg5, sizeof(unk_func_88001300_02C));
     ((func88503118)Memmap_GetFragmentVaddr(UITimer_Create))(arg0->unk_3C, 0, 0, 0x210, 0x148);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_3C->unk_00.unk_00);
 
     arg0->unk_64 = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_64, 0, 0x124);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_64, 0, 0x124);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_3C->unk_00.unk_00, &arg0->unk_64->unk_00.unk_00);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, &sp7C->unk_00);
 
     sp78 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_000));
-    func_88600248(sp78, 0, 0, arg5);
+    LabPC_InitDualArrowHeader(sp78, 0, 0, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp7C->unk_00.unk_00, &sp78->unk_00);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, &sp7C->unk_00);
 
     sp74 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_000));
-    func_886006D8(sp74, 0, 0, arg5);
+    LabPC_InitArrowLabelA(sp74, 0, 0, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp7C->unk_00.unk_00, &sp74->unk_00);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, &sp7C->unk_00);
 
     sp70 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_000));
-    func_88600A04(sp70, 0, 0, arg5);
+    LabPC_InitArrowLabelB(sp70, 0, 0, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp7C->unk_00.unk_00, &sp70->unk_00);
 
     arg0->unk_6C = mem_pool_alloc(arg5, sizeof(unk_func_88001300_03C));
-    ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(arg0->unk_6C, 1, 2, arg5);
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_6C, 1, 2, arg5);
 
     sp6C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(func_8850182C))(sp6C, 0, 0, 0x210, 0x24, D_88605B68);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp6C, 0, 0, 0x210, 0x24, D_88605B68);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, &sp6C->unk_00);
 
     sp68 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
@@ -1187,13 +1187,13 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp6C->unk_00.unk_00, &sp68->unk_00.unk_00);
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
-    func_88600D30(sp64, 0x126, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, gMonSummaryStrings, 5), D_88605B74, D_88605B78, arg5);
+    LabPC_InitCenteredLabel(sp64, 0x126, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, gMonSummaryStrings, 5), D_88605B74, D_88605B78, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
     tmp = arg0->unk_6C;
     tmp->unk_18[0] = &sp64->unk_00;
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
-    func_88600D30(sp64, 0x19A, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, gMonSummaryStrings, 6), D_88605B74, D_88605B78, arg5);
+    LabPC_InitCenteredLabel(sp64, 0x19A, 2, 0x6E, 0x1E, GetMessageString(NULL, 0, gMonSummaryStrings, 6), D_88605B74, D_88605B78, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
     tmp = arg0->unk_6C;
     tmp->unk_18[1] = &sp64->unk_00;
@@ -1205,7 +1205,7 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     arg0->unk_6C->unk_1C = sp60;
 
     arg0->unk_50 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_050));
-    func_88602604(arg0->unk_50, 0, 0x24, 0xE4, 0xE0, 0xA0, arg3);
+    LabPC_InitMonPreviewWidget(arg0->unk_50, 0, 0x24, 0xE4, 0xE0, 0xA0, arg3);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_50->unk_00.unk_00);
 
     if (arg4 != NULL) {
@@ -1218,7 +1218,7 @@ void func_8860439C(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_fun
     arg0->unk_80 = 0;
 }
 
-void func_88604F80(unk_func_88205880_0098_008* arg0, PokemonData* arg1, s32 arg2) {
+void LabPC_SetDetailPanelMon(unk_func_88205880_0098_008* arg0, PokemonData* arg1, s32 arg2) {
     static Color_RGBA8 gSummaryNatureColors[] = { { 0x80, 0x18, 0x18, 0xFF },
                                         { 0x90, 0x60, 0x18, 0xFF },
                                         { 0x30, 0x60, 0x60, 0xFF } };
@@ -1231,32 +1231,32 @@ void func_88604F80(unk_func_88205880_0098_008* arg0, PokemonData* arg1, s32 arg2
     arg0->unk_30->unk_2C = 0;
     arg0->unk_34->unk_2C = 0;
 
-    func_88604190(arg0->unk_70, Mon_CountMoves(arg1));
-    func_88602D40(arg0->unk_40, arg1);
-    func_88601B5C(arg0->unk_44, arg1);
-    func_88601DE8(arg0->unk_48, arg1);
-    func_88602190(arg0->unk_4C, arg1);
-    func_88602A8C(arg0->unk_50, arg1);
-    func_8860308C(arg0->unk_54, arg1);
+    LabPC_SetGridMenuItemCount(arg0->unk_70, Mon_CountMoves(arg1));
+    LabPC_SetMovesPanelMon(arg0->unk_40, arg1);
+    LabPC_SetSummaryMon(arg0->unk_44, arg1);
+    LabPC_SetTypeListMon(arg0->unk_48, arg1);
+    LabPC_SetStatMon(arg0->unk_4C, arg1);
+    LabPC_SetPreviewMon(arg0->unk_50, arg1);
+    LabPC_SetTrainerInfoMon(arg0->unk_54, arg1);
 
     arg0->unk_68->unk_2C = gSummaryNatureColors[arg2];
 }
 
-void func_88605050(unk_func_88205880_0098_008* arg0, s32 arg1) {
+void LabPC_SetDetailPanelMode(unk_func_88205880_0098_008* arg0, s32 arg1) {
     arg0->unk_88 = arg1;
 }
 
-s32 func_88605058(unk_func_88205880_0098_008* arg0) {
+s32 LabPC_GetDetailPanelMode(unk_func_88205880_0098_008* arg0) {
     return arg0->unk_88;
 }
 
-void func_88605060(unk_func_88205880_0098_008* arg0, s32 arg1) {
+void LabPC_ShowMoveDetailPage(unk_func_88205880_0098_008* arg0, s32 arg1) {
     arg0->unk_34->unk_2C = 0;
     ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_5C, 1);
-    func_88603460(arg0->unk_58, arg0->unk_78->unk_09[arg1]);
+    LabPC_SetMoveDetailId(arg0->unk_58, arg0->unk_78->unk_09[arg1]);
 }
 
-void func_886050C0(unk_func_88205880_0098_008* arg0, s32 arg1) {
+void LabPC_SelectDetailPanelPage(unk_func_88205880_0098_008* arg0, s32 arg1) {
     arg0->unk_00.unk_24(&arg0->unk_00, 0);
 
     switch (arg1) {
@@ -1269,7 +1269,7 @@ void func_886050C0(unk_func_88205880_0098_008* arg0, s32 arg1) {
             break;
 
         case 1:
-            func_88605060(arg0, 0);
+            LabPC_ShowMoveDetailPage(arg0, 0);
             ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(&arg0->unk_70->unk_00, 0);
             arg0->unk_3C->unk_2C = 0;
             ((func88500A6C)Memmap_GetFragmentVaddr(UIContainer_SetChildCount))(arg0->unk_64, 1);
@@ -1303,7 +1303,7 @@ void func_886050C0(unk_func_88205880_0098_008* arg0, s32 arg1) {
     arg0->unk_80 = arg1;
 }
 
-s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
+s32 LabPC_HandleDetailPanelInput(unk_func_88205880_0098_008* arg0, Controller* arg1) {
     s32 var_a2 = 0;
 
     switch (arg0->unk_80) {
@@ -1311,10 +1311,10 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
             if (arg1->buttonPressed & 0x4000) {
                 var_a2 = 0x80000002;
             } else if (arg1->buttonPressed & 0x8000) {
-                func_886050C0(arg0, 1);
+                LabPC_SelectDetailPanelPage(arg0, 1);
                 var_a2 = 0x80000005;
             } else if (arg1->buttonPressed & 0x1000) {
-                func_886050C0(arg0, 2);
+                LabPC_SelectDetailPanelPage(arg0, 2);
                 ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(&arg0->unk_70->unk_00, 0);
                 var_a2 = 0x80000005;
             }
@@ -1323,10 +1323,10 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
         case 1:
             var_a2 = arg0->unk_70->unk_00.unk_10(&arg0->unk_70->unk_00, arg1);
             if (var_a2 != 0) {
-                func_88605060(arg0, arg0->unk_70->unk_00.unk_24);
+                LabPC_ShowMoveDetailPage(arg0, arg0->unk_70->unk_00.unk_24);
             } else if (arg1->buttonPressed & 0x4000) {
                 var_a2 = 0x80000003;
-                func_886050C0(arg0, 0);
+                LabPC_SelectDetailPanelPage(arg0, 0);
             } else if (arg1->buttonPressed & 0x8000) {
                 var_a2 = 0x80000002;
             }
@@ -1339,11 +1339,11 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
 
                 arg0->unk_84 = tmp;
                 arg0->unk_40->unk_7C[tmp]->unk_00.unk_28 |= 1;
-                func_886050C0(arg0, 3);
+                LabPC_SelectDetailPanelPage(arg0, 3);
                 PlaySoundEffect(2);
                 var_a2 = 1;
             } else if (arg1->buttonPressed & 0x5000) {
-                func_886050C0(arg0, 0);
+                LabPC_SelectDetailPanelPage(arg0, 0);
                 var_a2 = 0x80000003;
             }
             break;
@@ -1357,22 +1357,22 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
                     PlaySoundEffect(0x18);
                     arg0->unk_40->unk_7C[arg0->unk_70->unk_00.unk_24]->unk_00.unk_28 |= 1;
                     arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 0);
-                    func_88602F04(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
+                    LabPC_SwapMovesPanelSlots(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
 
                     ((func8850CF00)Memmap_GetFragmentVaddr(ItemArray_WaitForSelection))(arg0->unk_74, arg1);
 
-                    func_88602FC0(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
-                    func_88600214(arg0->unk_78, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
-                    func_88602D40(arg0->unk_40, arg0->unk_78);
+                    LabPC_ResetMovesPanelSlots(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
+                    LabPC_SwapMonMoves(arg0->unk_78, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
+                    LabPC_SetMovesPanelMon(arg0->unk_40, arg0->unk_78);
                     arg0->unk_40->unk_7C[arg0->unk_84]->unk_00.unk_28 &= ~1;
                     arg0->unk_40->unk_7C[arg0->unk_70->unk_00.unk_24]->unk_00.unk_28 &= ~1;
                     arg0->unk_8C = 1;
-                    func_886050C0(arg0, 2);
+                    LabPC_SelectDetailPanelPage(arg0, 2);
                     var_a2 = 0x80000081;
                 }
             } else if (arg1->buttonPressed & 0x4000) {
                 arg0->unk_40->unk_7C[arg0->unk_84]->unk_00.unk_28 &= ~1;
-                func_886050C0(arg0, 2);
+                LabPC_SelectDetailPanelPage(arg0, 2);
                 var_a2 = 0x80000003;
             }
             break;
@@ -1398,30 +1398,30 @@ s32 func_886052F4(unk_func_88205880_0098_008* arg0, Controller* arg1) {
     return var_a2;
 }
 
-s32 func_886056D4(unk_func_88001300_000* arg0, Controller* arg1) {
+s32 LabPC_DispatchDetailPanelInput(unk_func_88001300_000* arg0, Controller* arg1) {
     unk_func_88205880_0098_008* ptr = (unk_func_88205880_0098_008*)arg0;
     s32 var_v1;
 
     if (ptr->unk_2C->unk_30 & 2) {
-        var_v1 = func_886052F4(ptr, arg1);
+        var_v1 = LabPC_HandleDetailPanelInput(ptr, arg1);
     } else {
         var_v1 = 1;
     }
     return var_v1;
 }
 
-s32 func_88605718(unk_func_88205880_0098_008* arg0) {
+s32 LabPC_RunDetailPanel(unk_func_88205880_0098_008* arg0) {
     s32 var_s1 = 0;
 
     arg0->unk_30->unk_2C = 0;
 
     if (arg0->unk_88 != 0) {
-        func_886050C0(arg0, 4);
+        LabPC_SelectDetailPanelPage(arg0, 4);
         ((func8850CB48)Memmap_GetFragmentVaddr(GridMenu_SetSelection))(arg0->unk_6C, 1);
         *((u16*)arg0->unk_50->unk_34) &= ~2;
         *((u16*)arg0->unk_50->unk_34) &= ~4;
     } else {
-        func_886050C0(arg0, 0);
+        LabPC_SelectDetailPanelPage(arg0, 0);
         *((u16*)arg0->unk_50->unk_34) |= 2;
         *((u16*)arg0->unk_50->unk_34) |= 4;
         arg0->unk_8C = 0;
@@ -1457,13 +1457,13 @@ s32 func_88605718(unk_func_88205880_0098_008* arg0) {
     return var_s1;
 }
 
-unk_func_88205880_0098_008* func_886058B8(unk_func_88205880_0098* arg0) {
+unk_func_88205880_0098_008* LabPC_CreateMonDetailPanel(unk_func_88205880_0098* arg0) {
     UNUSED s32 pad;
     unk_func_8001B1FC* sp38;
     unk_func_88205880_0098_008* sp34;
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
-    sp38 = func_8001B1FC(AssetManager_Create(1), 228, 160, 0, 0, 0xE0, 0xA0, D_8860A6D0);
+    sp38 = PokeIcon_CreateModelPreview(AssetManager_Create(1), 228, 160, 0, 0, 0xE0, 0xA0, D_8860A6D0);
     AssetManager_LoadArchives();
     FRAGMENT_LOAD(fragment31);
 
@@ -1476,37 +1476,37 @@ unk_func_88205880_0098_008* func_886058B8(unk_func_88205880_0098* arg0) {
     gMoveDescriptions = arg0->unk_34;
 
     sp34 = mem_pool_alloc(arg0->unk_04, sizeof(unk_func_88205880_0098_008));
-    func_8860439C(sp34, arg0->unk_00, arg0->unk_02, sp38, arg0->unk_14, arg0->unk_04);
-    func_88605050(sp34, arg0->unk_18);
+    LabPC_BuildMonDetailPanel(sp34, arg0->unk_00, arg0->unk_02, sp38, arg0->unk_14, arg0->unk_04);
+    LabPC_SetDetailPanelMode(sp34, arg0->unk_18);
     return sp34;
 }
 
-s32 func_88605A0C(u32 arg0, unk_func_88205880_0098* arg1) {
+s32 LabPC_IconListDispatch(u32 arg0, unk_func_88205880_0098* arg1) {
     UNUSED s32 pad;
     s32 var_v1 = 0;
 
     switch (arg0) {
         case 0:
             var_v1 = 0;
-            arg1->unk_08 = func_886058B8(arg1);
+            arg1->unk_08 = LabPC_CreateMonDetailPanel(arg1);
             break;
 
         case 1:
-            func_88604F80(arg1->unk_08, arg1->unk_0C, arg1->unk_10);
+            LabPC_SetDetailPanelMon(arg1->unk_08, arg1->unk_0C, arg1->unk_10);
             var_v1 = 0;
             break;
 
         case 2:
-            func_88605050(arg1->unk_08, arg1->unk_18);
+            LabPC_SetDetailPanelMode(arg1->unk_08, arg1->unk_18);
             var_v1 = 0;
             break;
 
         case 3:
-            var_v1 = func_88605058(arg1->unk_08);
+            var_v1 = LabPC_GetDetailPanelMode(arg1->unk_08);
             break;
 
         case 4:
-            var_v1 = func_88605718(arg1->unk_08);
+            var_v1 = LabPC_RunDetailPanel(arg1->unk_08);
             break;
     }
     return var_v1;

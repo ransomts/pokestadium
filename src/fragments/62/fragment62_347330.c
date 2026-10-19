@@ -60,7 +60,7 @@ func_D_84390320 gStateCallbackTable[] = {
 func_D_84390320 gParticleCallbackTable[] = {
     func_843593A8, SpawnParticleEmitters_Alt, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
     func_843593A8, func_843593A8, InitTrailEffect, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
-    func_843593A8, func_843593A8, func_84359AE0, func_843593A8, func_843593A8, SpawnParticleEmitters_Dual, func_843593A8,
+    func_843593A8, func_843593A8, BattleAnim_EndEffect16_NoOpInit, func_843593A8, func_843593A8, SpawnParticleEmitters_Dual, func_843593A8,
     func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
     func_843593A8, func_843593A8, func_843593A8, func_843593A8, InitTrailEffectVariant, InitTrailEffectVariant2, func_843593A8,
     func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
@@ -76,89 +76,89 @@ func_D_84390320 gParticleCallbackTable[] = {
 };
 
 func_D_84390320 gStateEnterCallbackTable[] = {
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, UpdateWaterEffectVariant2, func_843596DC, func_843593B0,
-    UpdateWaterParticleEffectB, func_843593B0, func_843593B0, func_843593B0, UpdateEffectF, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, UpdateParticleEffectA, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, UpdateWaterParticleSystemsCombined, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, UpdateParticleEffectC, func_843593B0,
-    func_843593B0, func_84359A6C, func_843593B0, func_843593B0, UpdateWaterEffectD, func_843593B0, func_843593B0,
-    UpdateWaterSurface, UpdateWaterSurfaceVariant, UpdateWaterEffectVariant, UpdateWaterParticleSystemPhaseA, func_843593B0, UpdateWaterEffectH, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_8435998C, func_843593B0,
-    func_843593B0, UpdateWaterParticlePoolG, func_843593B0, func_843593B0, func_843593B0, func_843593B0, UpdateParticleEmittersPhaseB,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, UpdateParticleSystemI, func_843593B0, func_843593B0,
-    UpdateWaterEffectVariant4, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    UpdateWaterEffectVariant3, UpdateParticleEffectD, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    UpdateParticleEffectE, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0, func_843593B0,
-    func_843593B0, func_843593B0, func_843593B0,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterEffectVariant2, BattleAnim_Effect5RibbonMesh_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    UpdateWaterParticleEffectB, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateEffectF, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateParticleEffectA, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterParticleSystemsCombined, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateParticleEffectC, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect34TerrainGrid_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterEffectD, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    UpdateWaterSurface, UpdateWaterSurfaceVariant, UpdateWaterEffectVariant, UpdateWaterParticleSystemPhaseA, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterEffectH, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_Effect54RibbonMesh_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterParticlePoolG, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateParticleEmittersPhaseB,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateParticleSystemI, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    UpdateWaterEffectVariant4, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    UpdateWaterEffectVariant3, UpdateParticleEffectD, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    UpdateParticleEffectE, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
 };
 
 func_D_84390320 gParticleEnterCallbackTable[] = {
-    func_843593B8, func_843597AC, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, UpdateTrailEffect, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_84359AE8, func_843593B8, func_843593B8, func_8435989C, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, UpdateTrailEffectVariant, UpdateTrailEffectVariant2, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843596DC,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8, func_843593B8,
-    func_843593B8, func_843593B8,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_EndEffect1RibbonMesh_Update, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, UpdateTrailEffect, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_EndEffect16_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_EndEffect19RibbonMesh_Update, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, UpdateTrailEffectVariant, UpdateTrailEffectVariant2, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_Effect5RibbonMesh_Update,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
 };
 
 func_D_84390320 gStateExitCallbackTable[] = {
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, RenderWaterEffectVariant2, func_843596FC, func_843593C0,
-    RenderWaterParticleEffectB, func_843593C0, func_843593C0, func_843593C0, RenderWaterParticleEffectF, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, RenderParticleEffectA, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, RenderCombinedWaterEffect, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, RenderParticleEffectC, func_843593C0,
-    func_843593C0, func_84359A8C, func_843593C0, func_843593C0, RenderCombinedWaterEffectD, func_843593C0, func_843593C0,
-    RenderWaterSurface, RenderWaterSurfaceVariant, RenderWaterEffectVariant, RenderWaterParticleSystemPhaseA, func_843593C0, RenderWaterEffectH, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843599AC, func_843593C0,
-    func_843593C0, RenderWaterParticlePoolG, func_843593C0, func_843593C0, func_843593C0, func_843593C0, RenderParticleEmittersPhaseB,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, RenderParticleSystemI, func_843593C0, func_843593C0,
-    RenderWaterEffectVariant4, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    RenderWaterEffectVariant3, RenderParticleEffectD, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    RenderParticleEffectE, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0, func_843593C0,
-    func_843593C0, func_843593C0, func_843593C0,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderWaterEffectVariant2, BattleAnim_Effect5RibbonMesh_Draw, BattleAnim_DefaultStartEffect_Draw,
+    RenderWaterParticleEffectB, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderWaterParticleEffectF, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderParticleEffectA, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderCombinedWaterEffect, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderParticleEffectC, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect34TerrainGrid_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderCombinedWaterEffectD, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    RenderWaterSurface, RenderWaterSurfaceVariant, RenderWaterEffectVariant, RenderWaterParticleSystemPhaseA, BattleAnim_DefaultStartEffect_Draw, RenderWaterEffectH, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_Effect54RibbonMesh_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, RenderWaterParticlePoolG, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderParticleEmittersPhaseB,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderParticleSystemI, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    RenderWaterEffectVariant4, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    RenderWaterEffectVariant3, RenderParticleEffectD, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    RenderParticleEffectE, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
 };
 
 func_D_84390320 gParticleExitCallbackTable[] = {
-    func_843593C8, func_843597CC, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, RenderTrailEffect, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_84359AF0, func_843593C8, func_843593C8, func_843598BC, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, RenderTrailEffectVariant, RenderTrailEffectVariant2, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843596FC,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8, func_843593C8,
-    func_843593C8, func_843593C8,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_EndEffect1RibbonMesh_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, RenderTrailEffect, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_EndEffect16_NoOpDraw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_EndEffect19RibbonMesh_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, RenderTrailEffectVariant, RenderTrailEffectVariant2, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_Effect5RibbonMesh_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
 };
 
 static s32 pad_D_84388E38[2] = { 0, 0 };
@@ -199,7 +199,7 @@ void ParticleEmitter_SetColors(unk_D_843925E0* arg0, s32 arg1, s32 arg2, s32 arg
     arg0->unk_044 = arg9;
 }
 
-void func_8435CAE8(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
+void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
     unk_D_843925E0* ptr;
     unk_D_843925E0_430* ptr1;
     unk_D_843925E0_430* ptr2;
@@ -649,7 +649,7 @@ Gfx* ParticleEmitters_Render(Gfx* arg0) {
     return arg0;
 }
 
-void func_8435DED0(unk_D_843975E8* arg0, f32 arg1) {
+void TerrainGrid_BuildCameraBounds(unk_D_843975E8* arg0, f32 arg1) {
     CameraStruct* spB4 = GetBattleCamera();
     f32 spB0;
     f32 spAC;
@@ -732,7 +732,7 @@ void func_8435DED0(unk_D_843975E8* arg0, f32 arg1) {
     arg0->unk_20 = sp54 * var_fs0;
 }
 
-f32 func_8435E158(f32 arg0, f32 arg1, f32* arg2) {
+f32 TerrainGrid_SampleHeightAndSlope(f32 arg0, f32 arg1, f32* arg2) {
     UNUSED s32 pad1[2];
     f32 spC4;
     f32 spC0;
@@ -963,18 +963,18 @@ void WaterHeightMap_Init(s32 arg0, s16 arg1, s16 arg2) {
             WaterHeightMap_Update();
         }
 
-        func_8435DED0(&D_843975E8, 50.0f);
+        TerrainGrid_BuildCameraBounds(&D_843975E8, 50.0f);
     }
 }
 
-s32 func_8435EDF8(void) {
+s32 TerrainGrid_Update(void) {
     UNUSED s32 pad[2];
     s32 sp1C = WaterHeightMap_Update();
 
     D_843975E0 = (D_843975E0 - 1) & 0x3FFF;
     D_843975E2 = (D_843975E2 - 1) & 0x3FFF;
     D_843975E4 = (D_843975E4 - 1) & 0x3FFF;
-    func_8435DED0(&D_843975E8, 50.0f);
+    TerrainGrid_BuildCameraBounds(&D_843975E8, 50.0f);
 
     return sp1C;
 }
@@ -1096,12 +1096,12 @@ Gfx* WaterSurface_Render(Gfx* arg0) {
     sp12C = (D_843975E8.unk_00 - D_843975E8.unk_0C) + D_843975E8.unk_18;
     sp130 = (D_843975E8.unk_04 - D_843975E8.unk_10) + D_843975E8.unk_1C;
     sp134 = (D_843975E8.unk_08 - D_843975E8.unk_14) + D_843975E8.unk_20;
-    sp11C = func_8435E158(sp12C, sp134, &sp110);
+    sp11C = TerrainGrid_SampleHeightAndSlope(sp12C, sp134, &sp110);
 
     sp120 = D_843975E8.unk_00 + D_843975E8.unk_0C + D_843975E8.unk_18;
     sp124 = D_843975E8.unk_04 + D_843975E8.unk_10 + D_843975E8.unk_1C;
     sp128 = D_843975E8.unk_08 + D_843975E8.unk_14 + D_843975E8.unk_20;
-    temp_fv0 = func_8435E158(sp120, sp128, &sp110);
+    temp_fv0 = TerrainGrid_SampleHeightAndSlope(sp120, sp128, &sp110);
 
     if ((sp130 < sp11C) || (sp124 < temp_fv0)) {
         temp_v0 = GfxAlloc(sizeof(Vtx) * 4);

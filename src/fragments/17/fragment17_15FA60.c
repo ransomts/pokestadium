@@ -121,7 +121,7 @@ s32 Callback_SetObjectState(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void func_86B001D8(void) {
+void Diorama_ClearModelSlots(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -129,7 +129,7 @@ void func_86B001D8(void) {
     }
 }
 
-void func_86B001FC(unk_D_86B0E5F0* arg0) {
+void Diorama_FreeModelSlots(unk_D_86B0E5F0* arg0) {
     while (arg0->unk_16C != 1) {
         GraphNode_ClearCallback(&arg0->unk_004);
         arg0++;
@@ -137,11 +137,11 @@ void func_86B001FC(unk_D_86B0E5F0* arg0) {
     main_pool_pop_state('MONS');
 }
 
-void func_86B00258(void) {
+void Diorama_PushModelPool(void) {
     main_pool_push_state('MONS');
 }
 
-void func_86B0027C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
+void Diorama_InitModelSlot(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
     Graph_AddToRootList0(&arg0->unk_004);
 
     arg0->unk_000 = GeoLayout_LoadById(arg1->unk_0C);
@@ -159,13 +159,13 @@ void func_86B0027C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
     arg0->unk_004.unk_000.unk_02 &= ~0x40;
 }
 
-void func_86B0032C(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
+void Diorama_SetModelSlotPosition(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
     arg0->unk_004.unk_024.x = arg1->unk_00.x;
     arg0->unk_004.unk_024.y = arg1->unk_00.y;
     arg0->unk_004.unk_024.z = arg1->unk_00.z;
 }
 
-void func_86B00348(s32 arg0) {
+void Diorama_SetGlowFromGroup(s32 arg0) {
     gFragment17ColorAnim->unk_00 = gFragment17PresetData[arg0].unk_0C;
     gFragment17ColorAnim->unk_02 = gFragment17PresetData[arg0].unk_0E;
     gFragment17ColorAnim->unk_08 = gFragment17PresetData[arg0].unk_18;
@@ -180,46 +180,46 @@ void Fragment_LoadObjectsForPreset(s32 arg0) {
     unk_D_86B0C4C8* var_s0 = gFragment17ObjectDefs[arg0];
     unk_D_86B0E5F0* var_s1 = gFragment17Objects;
 
-    func_86B001D8();
-    func_86B00258();
+    Diorama_ClearModelSlots();
+    Diorama_PushModelPool();
 
     while (var_s0->unk_0C != 0x98) {
-        func_86B0027C(var_s1, var_s0);
-        func_86B0032C(var_s1, var_s0);
+        Diorama_InitModelSlot(var_s1, var_s0);
+        Diorama_SetModelSlotPosition(var_s1, var_s0);
         var_s1->unk_16C = 1;
 
         var_s1++;
         var_s0++;
     }
 
-    func_86B00348(arg0);
+    Diorama_SetGlowFromGroup(arg0);
 }
 
-void func_86B00470(s32 arg0) {
+void Diorama_SwitchModelGroup(s32 arg0) {
     unk_D_86B0C4C8* sp2C = gFragment17ObjectDefs[arg0];
     unk_D_86B0E5F0* var_s1 = gFragment17Objects;
 
-    func_86B001FC(gFragment17Objects);
-    func_86B001D8();
-    func_86B00258();
+    Diorama_FreeModelSlots(gFragment17Objects);
+    Diorama_ClearModelSlots();
+    Diorama_PushModelPool();
 
     while (sp2C->unk_0C != 0x98) {
-        func_86B0027C(var_s1, sp2C);
-        func_86B0032C(var_s1, sp2C);
+        Diorama_InitModelSlot(var_s1, sp2C);
+        Diorama_SetModelSlotPosition(var_s1, sp2C);
         var_s1->unk_16C = 1;
 
         var_s1++;
         sp2C++;
     }
 
-    func_86B00348(arg0);
+    Diorama_SetGlowFromGroup(arg0);
 
     if (arg0 == 4) {
         GraphNode_TriggerSound(&gFragment17Objects[0].unk_004, 0);
     }
 }
 
-void func_86B0054C(s32 arg0) {
+void Diorama_SetGroupCamera(s32 arg0) {
     if (arg0 == 4) {
         gFragment17State->unk_00->unk_60.at.x = -0.04f;
         gFragment17State->unk_00->unk_60.at.y = 24.2f;
@@ -241,7 +241,7 @@ void func_86B0054C(s32 arg0) {
 void func_86B00680(void) {
 }
 
-void func_86B00688(void) {
+void Diorama_LoopIdleAnimations(void) {
     s32 i = 0;
 
     if ((gFragment17State->unk_04.unk_4C != 5) && (gFragment17State->unk_04.unk_4C != 6) && (gFragment17State->unk_04.unk_4C != 7) &&
@@ -257,19 +257,19 @@ void func_86B00688(void) {
     }
 }
 
-void func_86B00794(void) {
+void Diorama_DrawFadeOverlay(void) {
     if (gFragment17State->unk_04.unk_48 == 1) {
         Text_DrawWindowRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0, gFragment17WindowAlpha);
     }
 }
 
-void func_86B007EC(void) {
+void Diorama_DrawGroupTransitionOverlay(void) {
     if (gFragment17State->unk_04.unk_44 == 2) {
-        func_86B01D8C(&gFragment17MaskTable, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 4, 0x80);
+        Diorama_DrawFullscreenTexture(&gFragment17MaskTable, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 4, 0x80);
     }
 }
 
-s32 func_86B00848(s32 arg0) {
+s32 Diorama_SlideModelsForward(s32 arg0) {
     unk_D_86B0E5F0* var_v0 = gFragment17Objects;
     unk_D_86B0C4C8* var_v1 = gFragment17ObjectDefs[arg0];
     s32 var_a1 = 1;
@@ -285,21 +285,21 @@ s32 func_86B00848(s32 arg0) {
     return var_a1;
 }
 
-void func_86B008C4(void) {
+void Diorama_BeginGroupTransition(void) {
     Stage_SetFillColor(1);
     Stage_FadeOut(0xC);
     gFragment17State->unk_04.unk_4C = 0;
     gFragment17State->unk_04.unk_50 = 0;
 }
 
-void func_86B00904(void) {
+void Diorama_FinishSequence(void) {
     gFragment17State->unk_04.unk_4C = 9;
     gFragment17State->unk_04.unk_50 = 0;
     gFragment17Objects->unk_004.unk_000.unk_01 &= ~1;
     D_86B0E5DC = 1;
 }
 
-void func_86B00944(s32 arg0) {
+void Diorama_UpdateProximityHighlight(s32 arg0) {
     unk_D_86B0C4C8* ptr1 = gFragment17ObjectDefs[arg0];
     unk_D_86B0E5F0* ptr2 = &gFragment17Objects[0];
     s16 sp88[] = {
@@ -330,13 +330,13 @@ void func_86B00944(s32 arg0) {
     }
 }
 
-void func_86B00AE4(void) {
+void Diorama_ReadControllerInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     MenuInput_Init();
 }
 
-void func_86B00B14(void) {
+void Diorama_InitSceneState(void) {
     gFragment17State = main_pool_alloc(sizeof(unk_D_86B0E5D4), 0);
     bzero(gFragment17State, sizeof(unk_D_86B0E5D4));
 
@@ -391,8 +391,8 @@ s32 StateMachine_Update(void) {
             }
 
             gFragment17State->unk_04.unk_44++;
-            func_86B0054C(gFragment17State->unk_04.unk_44);
-            func_86B00470(gFragment17State->unk_04.unk_44);
+            Diorama_SetGroupCamera(gFragment17State->unk_04.unk_44);
+            Diorama_SwitchModelGroup(gFragment17State->unk_04.unk_44);
             gFragment17State->unk_04.unk_4C = 6;
             gFragment17State->unk_04.unk_50 = 0;
             break;
@@ -411,29 +411,29 @@ s32 StateMachine_Update(void) {
         case 7:
             if (gFragment17State->unk_04.unk_44 == 4) {
                 if (GraphNode_IsAnimationFinished(&gFragment17Objects[0].unk_004) != 0) {
-                    func_86B00904();
+                    Diorama_FinishSequence();
                 }
             } else {
                 if (gFragment17State->unk_04.unk_44 >= 2) {
-                    if (func_86B00848(gFragment17State->unk_04.unk_44) != 0) {
-                        func_86B008C4();
+                    if (Diorama_SlideModelsForward(gFragment17State->unk_04.unk_44) != 0) {
+                        Diorama_BeginGroupTransition();
                     }
                 } else if (gFragment17State->unk_04.unk_6C < gFragment17State->unk_04.unk_30) {
-                    func_86B008C4();
+                    Diorama_BeginGroupTransition();
                 }
 
                 if ((gFragment17State->unk_04.unk_44 == 0) || (gFragment17State->unk_04.unk_44 == 1)) {
                     UpdateCameraTransition(&gFragment17State->unk_04, gFragment17State);
                 }
 
-                func_86B00944(gFragment17State->unk_04.unk_44);
+                Diorama_UpdateProximityHighlight(gFragment17State->unk_04.unk_44);
             }
             break;
 
         case 8:
             if (gFragment17State->unk_04.unk_50++ >= 0xB) {
                 gFragment17State->unk_04.unk_44 = 0;
-                func_86B0054C(gFragment17State->unk_04.unk_44);
+                Diorama_SetGroupCamera(gFragment17State->unk_04.unk_44);
                 gFragment17State->unk_04.unk_4C = 6;
                 gFragment17State->unk_04.unk_50 = 0;
                 Fragment_LoadObjectsForPreset(gFragment17State->unk_04.unk_44);
@@ -451,7 +451,7 @@ s32 StateMachine_Update(void) {
         default:
             if (gFragment17State->unk_04.unk_44 != 4) {
                 if (gFragment17State->unk_04.unk_44 >= 2) {
-                    func_86B00848(gFragment17State->unk_04.unk_44);
+                    Diorama_SlideModelsForward(gFragment17State->unk_04.unk_44);
                 } else {
                     UpdateCameraTransition(&gFragment17State->unk_04, gFragment17State);
                 }
@@ -470,24 +470,24 @@ s32 StateMachine_Update(void) {
 void func_86B01004(void) {
 }
 
-void func_86B0100C(void) {
+void Diorama_RenderFrame(void) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 1);
     Gfx_FinishFrame();
-    func_86B007EC();
-    func_86B01C00(D_86B0E5E8);
+    Diorama_DrawGroupTransitionOverlay();
+    Diorama_DrawEndBackgroundTiles(D_86B0E5E8);
     Graph_SetTextureState(gFragment17RootNode);
-    func_86B00794();
-    func_86B02348();
+    Diorama_DrawFadeOverlay();
+    Diorama_DrawEndCaption();
     Stage_Advance();
 }
 
-void func_86B0107C(void) {
+void Diorama_RunLoop(void) {
     s32 var_s1 = 1;
     s32 var_s0 = 0;
 
     while (var_s1 != 0) {
-        func_86B00AE4();
+        Diorama_ReadControllerInput();
         Timer_UpdateCounters();
 
         if (StateMachine_Update() != 0) {
@@ -499,16 +499,16 @@ void func_86B0107C(void) {
             var_s0 = 0;
         }
 
-        func_86B00688();
-        func_86B0100C();
+        Diorama_LoopIdleAnimations();
+        Diorama_RenderFrame();
     }
 }
 
-void func_86B010FC(void) {
-    func_86B0100C();
+void Diorama_RenderFinalFrame(void) {
+    Diorama_RenderFrame();
 }
 
-void func_86B0111C(void) {
+void Diorama_InitScene(void) {
     MemoryBlock* sp1C;
 
     sp1C = state_pool_try_init(main_pool_get_available(), 0);
@@ -517,7 +517,7 @@ void func_86B0111C(void) {
     mem_pool_resize_block(sp1C);
     Graph_InitRoots();
     AssetManager_LoadArchives();
-    func_86B00B14();
+    Diorama_InitSceneState();
 
     gFragment17WindowAlpha = 0;
     D_86B0E5DC = 0;
@@ -544,10 +544,10 @@ s32 BattleState_Handle18(void) {
 
     MessageBank_Init();
     D_86B0E5E0 = GetMessageBank(0x14);
-    func_86B0111C();
+    Diorama_InitScene();
     Menu_SetupDisplayList();
-    func_86B0107C();
-    func_86B010FC();
+    Diorama_RunLoop();
+    Diorama_RenderFinalFrame();
     Stage_Terminate();
     FontManager_Free();
 

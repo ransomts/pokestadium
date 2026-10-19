@@ -170,13 +170,13 @@ void ParticleEmitters_UpdateAll(void) {
     }
 }
 
-void func_87901BB0(ParticleEffectInstance* arg0) {
+void MiniFx_SetParticleRenderScale(ParticleEffectInstance* arg0) {
     gParticleScaleFactor.unk_00.x = arg0->unk_28;
     gParticleScaleFactor.unk_00.y = arg0->unk_28;
     gParticleScaleFactor.unk_00.z = arg0->unk_28;
 }
 
-void func_87901BD4(ParticleEffectInstance* arg0) {
+void MiniFx_RetireParticle(ParticleEffectInstance* arg0) {
     if (Particle_IsInactive(arg0) != 0) {
         arg0->unk_18 = 0;
         Particle_ResetState(arg0);
@@ -194,11 +194,11 @@ void ParticleSystem_UpdateAndRender(void) {
 
     for (i = 0; i < 0x12C; i++, var_s0++) {
         if (var_s0->unk_D0 != 0) {
-            func_87901BB0(var_s0);
+            MiniFx_SetParticleRenderScale(var_s0);
 
             var_s0->unk_08(var_s0);
 
-            func_87901BD4(var_s0);
+            MiniFx_RetireParticle(var_s0);
         }
     }
 }
@@ -218,7 +218,7 @@ void ParticleRender_SetupMiniCamera(void) {
     gSPDisplayList(gDisplayListHead++, gDL_End3D);
 }
 
-void func_87901DA0(ParticleEffectInstance* arg0) {
+void MiniFx_InitRandomVelocityGravityParticle(ParticleEffectInstance* arg0) {
     Vec3s sp28;
     s16 sp26 = Particle_GetShortAC(arg0);
 
@@ -237,10 +237,10 @@ void func_87901DA0(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_87901F04(ParticleEffectInstance* arg0) {
+void MiniFx_UpdateRandomVelocityGravityParticle(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_87901DA0(arg0);
+            MiniFx_InitRandomVelocityGravityParticle(arg0);
             break;
 
         case 2:
@@ -256,7 +256,7 @@ void func_87901F04(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_87901FA0(ParticleEffectInstance* arg0) {
+void MiniFx_InitPalette10FastRiseFadeParticle(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 0.25f);
     Particle_RotateY(arg0, RandomMod(0x10000));
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
@@ -267,10 +267,10 @@ void func_87901FA0(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_87902068(ParticleEffectInstance* arg0) {
+void MiniFx_UpdatePalette10FastRiseFadeParticle(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_87901FA0(arg0);
+            MiniFx_InitPalette10FastRiseFadeParticle(arg0);
             break;
 
         case 2:
@@ -278,7 +278,7 @@ void func_87902068(ParticleEffectInstance* arg0) {
             Particle_ApproachScaleFactor1(arg0, 0.8f, 0.1f);
             Particle_ApproachSpeedScaled(arg0, 1.0f, 1);
             if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                func_8140B180(arg0, 0.5f, 0.4f);
+                Particle_Field7C_ApproachY_0B180(arg0, 0.5f, 0.4f);
                 Particle_AddVelocityYFromTarget(arg0);
             }
             break;
@@ -293,7 +293,7 @@ void func_87902068(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_8790215C(ParticleEffectInstance* arg0) {
+void MiniFx_InitPalette10SlowRiseFadeParticle(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 0.25f);
     Particle_RotateY(arg0, RandomMod(0x10000));
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 2.0f);
@@ -304,10 +304,10 @@ void func_8790215C(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_87902224(ParticleEffectInstance* arg0) {
+void MiniFx_UpdatePalette10SlowRiseFadeParticle(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_8790215C(arg0);
+            MiniFx_InitPalette10SlowRiseFadeParticle(arg0);
             break;
 
         case 2:
@@ -315,7 +315,7 @@ void func_87902224(ParticleEffectInstance* arg0) {
             Particle_ApproachScaleFactor1(arg0, 0.8f, 0.1f);
             Particle_ApproachSpeedScaled(arg0, 1.0f, 1);
             if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                func_8140B180(arg0, 0.5f, 0.4f);
+                Particle_Field7C_ApproachY_0B180(arg0, 0.5f, 0.4f);
                 Particle_AddVelocityYFromTarget(arg0);
             }
             break;
@@ -330,7 +330,7 @@ void func_87902224(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_87902318(ParticleEffectInstance* arg0) {
+void MiniFx_InitRandomOffsetPalette10RiseFadeParticle(ParticleEffectInstance* arg0) {
     Particle_SetScaleFactor1(arg0, 0.5f);
     Particle_SetRandomVelocityXYZ(arg0, 3, 0, 3);
     Particle_RotateY(arg0, RandomMod(0x10000));
@@ -342,10 +342,10 @@ void func_87902318(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_879023EC(ParticleEffectInstance* arg0) {
+void MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_87902318(arg0);
+            MiniFx_InitRandomOffsetPalette10RiseFadeParticle(arg0);
             break;
 
         case 2:
@@ -353,7 +353,7 @@ void func_879023EC(ParticleEffectInstance* arg0) {
             Particle_ApproachScaleFactor1(arg0, 1.0f, 0.05f);
             Particle_ApproachSpeedScaled(arg0, 1.0f, 1);
             if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                func_8140B180(arg0, 1.0f, 0.2f);
+                Particle_Field7C_ApproachY_0B180(arg0, 1.0f, 0.2f);
                 Particle_AddVelocityYFromTarget(arg0);
             }
             break;
@@ -368,7 +368,7 @@ void func_879023EC(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_879024DC(ParticleEffectInstance* arg0) {
+void MiniFx_InitSurfaceCrossingGravityParticle(ParticleEffectInstance* arg0) {
     Vec3s sp28;
 
     Particle_SetPrimColor(arg0, 0xC8, 0xAA, 0x64);
@@ -386,10 +386,10 @@ void func_879024DC(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_87902608(ParticleEffectInstance* arg0) {
+void MiniFx_UpdateSurfaceCrossingGravityParticle(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_879024DC(arg0);
+            MiniFx_InitSurfaceCrossingGravityParticle(arg0);
             break;
 
         case 2:
@@ -410,7 +410,7 @@ void func_87902608(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_879026D8(ParticleEffectInstance* arg0) {
+void MiniFx_InitPalette17DelayedRevealFallParticle(ParticleEffectInstance* arg0) {
     Vec3s sp28;
     s16 sp26 = Particle_GetShortAC(arg0);
 
@@ -435,10 +435,10 @@ void func_879026D8(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_879027F0(ParticleEffectInstance* arg0) {
+void MiniFx_UpdatePalette17DelayedRevealFallParticle(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_879026D8(arg0);
+            MiniFx_InitPalette17DelayedRevealFallParticle(arg0);
             break;
 
         case 2:
@@ -470,7 +470,7 @@ void func_879027F0(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_879028E0(ParticleEffectInstance* arg0) {
+void MiniFx_InitPalette17SmallDelayedRevealFallParticle(ParticleEffectInstance* arg0) {
     Vec3s sp28;
     s16 sp26 = Particle_GetShortAC(arg0);
 
@@ -493,10 +493,10 @@ void func_879028E0(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_879029F0(ParticleEffectInstance* arg0) {
+void MiniFx_UpdatePalette17SmallDelayedRevealFallParticle(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_879028E0(arg0);
+            MiniFx_InitPalette17SmallDelayedRevealFallParticle(arg0);
             break;
 
         case 2:
@@ -528,7 +528,7 @@ void func_879029F0(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_87902AE0(ParticleEffectInstance* arg0) {
+void MiniFx_InitCoolGravityParticle(ParticleEffectInstance* arg0) {
     Vec3s sp30;
 
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
@@ -548,10 +548,10 @@ void func_87902AE0(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_87902C9C(ParticleEffectInstance* arg0) {
+void MiniFx_UpdateCoolGravityParticle(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
-            func_87902AE0(arg0);
+            MiniFx_InitCoolGravityParticle(arg0);
             break;
 
         case 2:
@@ -567,7 +567,7 @@ void func_87902C9C(ParticleEffectInstance* arg0) {
     }
 }
 
-void func_87902D3C(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
+void MiniFx_BuildParticleRenderListVariantA(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
     gDPPipeSync(arg0++);
 
     gDPSetPrimColor(arg0++, 0, 0xB4, 255, 255, 255, 128);
@@ -588,14 +588,14 @@ void func_87902D3C(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_87902F80(s32 arg0, arg1_func_87902F80* arg1) {
+void MiniFx_GraphNodeBuildParticleRenderListVariantA(s32 arg0, arg1_func_87902F80* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_87902D3C(arg1->unk_18, arg1->unk_00.unk_14, gAnimationFrame);
+        MiniFx_BuildParticleRenderListVariantA(arg1->unk_18, arg1->unk_00.unk_14, gAnimationFrame);
     }
 }
 
-void func_87902FC8(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
+void MiniFx_BuildParticleRenderListVariantB(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
     gDPPipeSync(arg0++);
 
     gDPSetPrimColor(arg0++, 0, 0xC8, 255, 255, 255, 180);
@@ -616,9 +616,9 @@ void func_87902FC8(Gfx* arg0, unk_D_86002F34_000_014* arg1, UNUSED u16 arg2) {
     gSPEndDisplayList(arg0++);
 }
 
-void func_8790320C(s32 arg0, arg1_func_87902F80* arg1) {
+void MiniFx_GraphNodeBuildParticleRenderListVariantB(s32 arg0, arg1_func_87902F80* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = GfxAlloc(sizeof(Gfx) * 30);
-        func_87902FC8(arg1->unk_18, arg1->unk_00.unk_14, gAnimationFrame);
+        MiniFx_BuildParticleRenderListVariantB(arg1->unk_18, arg1->unk_00.unk_14, gAnimationFrame);
     }
 }

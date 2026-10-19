@@ -1132,11 +1132,11 @@ void UpdateSingleBattleSpriteImages(unk_D_84B25A58* arg0) {
     s32 count;
 
     for (i = 0, count = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
-        func_8001B0DC(arg0->unk_20[count], gBattleContext.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, NULL);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gBattleContext.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, NULL);
     }
 
     for (i = 0, count = 3; i < gBattleContext.unk_1194[1].unk_08[0]->unk_002; count++, i++) {
-        func_8001B0DC(arg0->unk_20[count], gBattleContext.unk_1194[1].unk_08[0]->unk_01C[i].unk_00.unk_00, NULL);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gBattleContext.unk_1194[1].unk_08[0]->unk_01C[i].unk_00.unk_00, NULL);
     }
 }
 
@@ -1145,22 +1145,22 @@ void UpdateDoubleBattleSpriteImages(unk_D_84B25A58* arg0) {
     s32 count;
 
     for (i = 0, count = 0; i < gBattleContext.unk_1194[0].unk_08[0]->unk_002; count++, i++) {
-        func_8001B0DC(&arg0->unk_20[count], gBattleContext.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, NULL);
+        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gBattleContext.unk_1194[0].unk_08[0]->unk_01C[i].unk_00.unk_00, NULL);
     }
 
     for (i = 0, count = 6; i < gBattleContext.unk_1194[1].unk_08[0]->unk_002; count++, i++) {
-        func_8001B0DC(&arg0->unk_20[count], gBattleContext.unk_1194[1].unk_08[0]->unk_01C[i].unk_00.unk_00, NULL);
+        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gBattleContext.unk_1194[1].unk_08[0]->unk_01C[i].unk_00.unk_00, NULL);
     }
 
     if (gBattleContext.unk_1194[0].unk_08[1] != NULL) {
         for (i = 0, count = 3; i < gBattleContext.unk_1194[0].unk_08[1]->unk_002; count++, i++) {
-            func_8001B0DC(&arg0->unk_20[count], gBattleContext.unk_1194[0].unk_08[1]->unk_01C[i].unk_00.unk_00, NULL);
+            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gBattleContext.unk_1194[0].unk_08[1]->unk_01C[i].unk_00.unk_00, NULL);
         }
     }
 
     if (gBattleContext.unk_1194[1].unk_08[1] != NULL) {
         for (i = 0, count = 9; i < gBattleContext.unk_1194[1].unk_08[1]->unk_002; count++, i++) {
-            func_8001B0DC(&arg0->unk_20[count], gBattleContext.unk_1194[1].unk_08[1]->unk_01C[i].unk_00.unk_00, NULL);
+            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gBattleContext.unk_1194[1].unk_08[1]->unk_01C[i].unk_00.unk_00, NULL);
         }
     }
 }

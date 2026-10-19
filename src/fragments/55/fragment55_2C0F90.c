@@ -76,7 +76,7 @@ void Dialog_Render(void) {
 
     if (gDialogAnimProgress != 0) {
         temp_s0 = gDialogYPos + (((gDialogHeight / 2) * (0x400 - gDialogAnimProgress)) / 1024);
-        func_83000F10(0x48, temp_s0, 0x1F0, (gDialogHeight * gDialogAnimProgress) / 1024);
+        RentalRules_DrawWindowFrame(0x48, temp_s0, 0x1F0, (gDialogHeight * gDialogAnimProgress) / 1024);
         if (gDialogAnimProgress >= 0x400) {
             DrawColoredPanel(0x48, temp_s0, 0x1F0, 0x20, 0x1E, 0x64, 0x64);
             DrawColoredPanel(0x48, temp_s0 + 0x20, 0x1F0, gDialogHeight - 0x20, 0x3C, 0x3C, 0xA0);

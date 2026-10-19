@@ -18,7 +18,7 @@ void HpWheel_SetDigitsSmooth(u8 arg0, s16 arg1);
 void AnimationFrame_StallCheck(void);
 s32 ModelPhase_IsIdle(void);
 u8 GraphRoot_GetCurrentModelSlot(void);
-s16 func_800325E0(void);
+s16 ModelRenderer_GetObjectType(void);
 void GraphNode_EnableTransform(Fragment2_1GraphNode* arg0);
 void ModelPhase_Advance(u32 arg0, u32 arg1);
 void ModelPhase_UpdateStatus(u32 arg0, u32 arg1);

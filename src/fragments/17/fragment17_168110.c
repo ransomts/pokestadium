@@ -72,7 +72,7 @@ void Camera_SetBaseParams(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gCameraState->unk_26 = arg3;
 }
 
-void func_86B08A3C(f32 arg0, f32 arg1) {
+void IntroCamKeyframe_SetDistance(f32 arg0, f32 arg1) {
     gCameraState->unk_1C = arg0;
     gCameraState->unk_30 = arg1;
 }
@@ -84,7 +84,7 @@ void Camera_SetEyeParams(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gCameraState->unk_2C = arg3;
 }
 
-void func_86B08AB4(f32 arg0, f32 arg1) {
+void IntroCamKeyframe_SetAtDistance(f32 arg0, f32 arg1) {
     gCameraState->unk_20 = arg0;
     gCameraState->unk_34 = arg1;
 }
@@ -113,14 +113,14 @@ void Camera_InitFromConfig(unk_D_86B0C160* arg0, CameraStruct* arg1) {
     sp28 = ClampFloatByScale(arg0->unk_24, 500.0f);
 
     Camera_SetBaseParams(arg0->unk_00, GetCameraBaseY() + arg0->unk_02, arg0->unk_14, GetCameraBaseY() + arg0->unk_16);
-    func_86B08A3C(sp34, sp30);
+    IntroCamKeyframe_SetDistance(sp34, sp30);
 
     Camera_SetEyeParams(arg0->unk_06, GetCameraBaseY() + arg0->unk_08, arg0->unk_1A, GetCameraBaseY() + arg0->unk_1C);
-    func_86B08AB4(sp2C, sp28);
+    IntroCamKeyframe_SetAtDistance(sp2C, sp28);
     Camera_SetApproachParams(arg0->unk_28, arg0->unk_2C);
 }
 
-s32 func_86B08C44(CameraStruct* arg0) {
+s32 Intro_UpdateCameraKeyframe(CameraStruct* arg0) {
     Vec3f sp5C;
     Vec3f sp50;
     Vec3f sp44;

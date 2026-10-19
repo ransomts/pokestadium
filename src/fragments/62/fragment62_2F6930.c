@@ -181,11 +181,11 @@ void Math_ExponentialApproach(f32* arg0, f32 arg1, f32 arg2) {
     }
 }
 
-void func_8430C780(s16* arg0, s16 arg1, s16 arg2) {
+void BattleAnim_ApproachS16(s16* arg0, s16 arg1, s16 arg2) {
     *arg0 = *arg0 + ((arg1 - *arg0) * arg2);
 }
 
-void func_8430C7B4(u16* arg0, u16 arg1, s16 arg2) {
+void BattleAnim_ApproachU16(u16* arg0, u16 arg1, s16 arg2) {
     *arg0 = *arg0 + ((arg1 - *arg0) * arg2);
 }
 
@@ -204,7 +204,7 @@ void Math_CubicBezierCoeffs(f32* arg0, f32 arg1) {
     arg0[3] = D_843900D8 / 6.0;
 }
 
-void func_8430C8A0(f32* arg0, f32 arg1) {
+void Battle_ComputeSplineWeightsVariantB(f32* arg0, f32 arg1) {
     static f32 D_843900E4;
     static f32 D_843900E8;
     static f32 D_843900EC;
@@ -219,7 +219,7 @@ void func_8430C8A0(f32* arg0, f32 arg1) {
     arg0[3] = D_843900E4 / 6.0f;
 }
 
-void func_8430C97C(f32* arg0, f32 arg1) {
+void Battle_ComputeSplineWeightsVariantC(f32* arg0, f32 arg1) {
     static f32 D_843900F0;
     static f32 D_843900F4;
     static f32 D_843900F8;
@@ -251,7 +251,7 @@ void Math_EaseOutCubicCoeffs(f32* arg0, f32 arg1) {
     arg0[3] = D_843900FC * 0.25f;
 }
 
-void func_8430CB3C(f32* arg0, f32 arg1) {
+void Battle_ComputeSplineWeightsVariantE(f32* arg0, f32 arg1) {
     static f32 D_8439010C;
     static f32 D_84390110;
     static f32 D_84390114;

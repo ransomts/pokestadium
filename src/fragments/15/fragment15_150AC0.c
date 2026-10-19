@@ -761,7 +761,7 @@ void RenderHPBar(void) {
     DrawTexture2Cycle(D_5000BA0, GetUIElementXPosOrMax(sp24 + 0x28), 0x18, 8, 0x1E);
 }
 
-void func_86908418(void) {
+void Gallery_DrawPhotoCounterReelExit(void) {
     s16 sp30 = gStagePanelAnimState.unk_0C;
     s16 sp2E;
 
@@ -798,7 +798,7 @@ void func_86908418(void) {
     DrawSpriteRotated(D_50003F0, sp30, 0x13, 0x18, 0x29);
 }
 
-void func_86908668(void) {
+void Gallery_DrawFrameMarkers(void) {
     if (gStagePanelStateIndex == 0) {
         DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[0], gStagePanelAnimData.unk_00[4], 0x30, 0x19, 0, 0);
         DrawRotatedSprite(&D_50011D0, gStagePanelAnimData.unk_00[1], gStagePanelAnimData.unk_00[5], 0x30, 0x19, 0x4000, 1);
@@ -815,7 +815,7 @@ void func_86908668(void) {
     }
 }
 
-void func_869089AC(void) {
+void Gallery_DrawTutorialTextBox(void) {
     if (gTutorialTextBoxState.unk_00 != 0xFF) {
         DrawBorderedRect(0x3C, 0x9B - (gTutorialTextBoxState.unk_0C / 2), gTutorialTextBoxState.unk_08, gTutorialTextBoxState.unk_0C, 0, 0, 0x9B, 0x7D);
         Text_ResetState();

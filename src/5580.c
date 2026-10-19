@@ -199,7 +199,7 @@ s32 RspTask_YieldCurrent(void) {
     return ret;
 }
 
-void func_80004F08(void) {
+void Sched_HandlePreNMI(void) {
     GbEmuState* var_s0 = gRspTaskManager.unk_A10;
 
     while (var_s0 != NULL) {
@@ -210,7 +210,7 @@ void func_80004F08(void) {
     }
     gRspTaskManager.unk_A38 = 1;
     Audio_FadeAllChannelsFast();
-    func_8002B310();
+    Game_ResetStorageDevice();
 }
 
 void RspTask_Update(void) {
@@ -316,7 +316,7 @@ void RspTask_MainThread(void* arg0) {
                 break;
 
             case 0x68:
-                func_80004F08();
+                Sched_HandlePreNMI();
                 break;
         }
     }

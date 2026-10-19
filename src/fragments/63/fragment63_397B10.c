@@ -685,7 +685,7 @@ s32 SetNodeZFromAnim(s32 arg0, unk_D_86002F34_alt5* arg1) {
     return 0;
 }
 
-void func_84B03D08(unk_D_84B259A8* arg0, s16 arg1) {
+void BattlePrep_CarouselStepFirstItem(unk_D_84B259A8* arg0, s16 arg1) {
     if (arg1 == 0) {
         PlayUISfx(0x01100001, 0, 0);
     }
@@ -695,7 +695,7 @@ void func_84B03D08(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void func_84B03D74(unk_D_84B259A8* arg0, s16 arg1) {
+void BattlePrep_CarouselStepNTSC(unk_D_84B259A8* arg0, s16 arg1) {
     s32 i;
 
     if (arg1 == 2) {
@@ -723,7 +723,7 @@ void func_84B03D74(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void func_84B03F10(unk_D_84B259A8* arg0, s16 arg1) {
+void BattlePrep_CarouselStepPAL(unk_D_84B259A8* arg0, s16 arg1) {
     s32 i;
 
     if (arg1 == 2) {
@@ -751,7 +751,7 @@ void func_84B03F10(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void func_84B040AC(unk_D_84B259A8* arg0, s16 arg1) {
+void BattlePrep_CarouselStepFinalNTSC(unk_D_84B259A8* arg0, s16 arg1) {
     UNUSED s32 pad;
     s32 i;
 
@@ -797,7 +797,7 @@ void func_84B040AC(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void func_84B04364(unk_D_84B259A8* arg0, s16 arg1) {
+void BattlePrep_CarouselStepFinalPAL(unk_D_84B259A8* arg0, s16 arg1) {
     UNUSED s32 pad;
     s32 i;
 
@@ -844,32 +844,32 @@ void func_84B04364(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void func_84B04628(unk_D_84B259A8* arg0) {
+void BattlePrep_UpdateCarousel(unk_D_84B259A8* arg0) {
     s32 i;
 
     if (osTvType == OS_TV_PAL) {
         if (arg0->unk_01 >= 0) {
-            func_84B03D08(arg0, arg0->unk_01);
+            BattlePrep_CarouselStepFirstItem(arg0, arg0->unk_01);
         }
 
         if (arg0->unk_01 >= 2) {
-            func_84B03F10(arg0, arg0->unk_01 - 2);
+            BattlePrep_CarouselStepPAL(arg0, arg0->unk_01 - 2);
         }
 
         if (arg0->unk_01 >= 0x1B) {
-            func_84B04364(arg0, arg0->unk_01 - 0x1B);
+            BattlePrep_CarouselStepFinalPAL(arg0, arg0->unk_01 - 0x1B);
         }
     } else {
         if (arg0->unk_01 >= 0) {
-            func_84B03D08(arg0, arg0->unk_01);
+            BattlePrep_CarouselStepFirstItem(arg0, arg0->unk_01);
         }
 
         if (arg0->unk_01 >= 2) {
-            func_84B03D74(arg0, arg0->unk_01 - 2);
+            BattlePrep_CarouselStepNTSC(arg0, arg0->unk_01 - 2);
         }
 
         if (arg0->unk_01 >= 0x1E) {
-            func_84B040AC(arg0, arg0->unk_01 - 0x1E);
+            BattlePrep_CarouselStepFinalNTSC(arg0, arg0->unk_01 - 0x1E);
         }
     }
 
@@ -882,7 +882,7 @@ void func_84B04628(unk_D_84B259A8* arg0) {
     arg0->unk_01++;
 }
 
-void func_84B04798(unk_D_84B259A8* arg0) {
+void BattlePrep_CarouselExitAnimation(unk_D_84B259A8* arg0) {
     s32 i;
 
     if (arg0->unk_01++ == 0) {
@@ -913,7 +913,7 @@ void func_84B04798(unk_D_84B259A8* arg0) {
     }
 }
 
-void func_84B0492C(unk_D_84B259A8* arg0) {
+void BattlePrep_CarouselEntryAnimation(unk_D_84B259A8* arg0) {
     s32 i;
 
     if (arg0->unk_01 == 0) {
@@ -946,25 +946,25 @@ void func_84B0492C(unk_D_84B259A8* arg0) {
 void ErrorScreen_Update(unk_D_84B259A8* arg0) {
     switch (arg0->unk_00) {
         case 1:
-            func_84B04628(arg0);
+            BattlePrep_UpdateCarousel(arg0);
             break;
 
         case 3:
-            func_84B04798(arg0);
+            BattlePrep_CarouselExitAnimation(arg0);
             break;
 
         case 2:
-            func_84B0492C(arg0);
+            BattlePrep_CarouselEntryAnimation(arg0);
             break;
     }
 }
 
-void func_84B04AE4(unk_D_84B259A8* arg0, s16 arg1, s16 arg2) {
+void BattlePrep_InitCarouselBanner(unk_D_84B259A8* arg0, s16 arg1, s16 arg2) {
     GraphNode_InitChild(arg0->unk_20, 0, 0, arg0->unk_24);
     Vec3f_Set(&arg0->unk_20->unk_024, arg1, arg2, -289.0f);
 }
 
-void func_84B04B5C(unk_D_84B259A8* arg0, s16 arg1, s16 arg2, s16 arg3) {
+void BattlePrep_InitCarouselGymBadgeSlot(unk_D_84B259A8* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s16 temp_s0;
     s16 sp2C;
 
@@ -990,7 +990,7 @@ void func_84B04B5C(unk_D_84B259A8* arg0, s16 arg1, s16 arg2, s16 arg3) {
     }
 }
 
-void func_84B04CCC(unk_D_84B259A8* arg0, s16 arg1) {
+void BattlePrep_InitCarouselLeftIcon(unk_D_84B259A8* arg0, s16 arg1) {
     s16 temp_v1 = arg1 + 9;
     s16 var_a1;
 
@@ -1010,7 +1010,7 @@ void func_84B04CCC(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void func_84B04DB0(unk_D_84B259A8* arg0, s16 arg1) {
+void BattlePrep_InitCarouselRightIcon(unk_D_84B259A8* arg0, s16 arg1) {
     s16 temp_v1 = arg1 + 9;
     s16 var_a1;
 
@@ -1030,7 +1030,7 @@ void func_84B04DB0(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void func_84B04E94(unk_D_84B259A8* arg0, s16 arg1) {
+void BattlePrep_InitCarouselCupIcon(unk_D_84B259A8* arg0, s16 arg1) {
     s16 temp_v1 = arg1 + 0xD;
     s16 var_a1;
 
@@ -1056,13 +1056,13 @@ void ErrorScreen_SetupNodes(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
     arg0->unk_20 = arg1;
     arg0->unk_01 = 0;
     arg0->unk_00 = 1;
-    func_84B04AE4(arg0, -0x140, 0x30);
+    BattlePrep_InitCarouselBanner(arg0, -0x140, 0x30);
 
     for (i = 0; i < 4; i++) {
-        func_84B04B5C(arg0, i, -0x140, 0x30);
-        func_84B04CCC(arg0, i);
+        BattlePrep_InitCarouselGymBadgeSlot(arg0, i, -0x140, 0x30);
+        BattlePrep_InitCarouselLeftIcon(arg0, i);
         if ((gBattleContext.unk_0000 == 3) || (gBattleContext.unk_0000 == 6)) {
-            func_84B04E94(arg0, i);
+            BattlePrep_InitCarouselCupIcon(arg0, i);
         }
     }
 
@@ -1076,17 +1076,17 @@ void ErrorScreen_Finish(unk_D_84B259A8* arg0) {
     arg0->unk_00 = 3;
 }
 
-void func_84B050AC(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
+void BattlePrep_InitCarouselExit(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
 
     arg0->unk_20 = arg1;
     arg0->unk_01 = 0;
     arg0->unk_00 = 2;
-    func_84B04AE4(arg0, -0x140, 0);
+    BattlePrep_InitCarouselBanner(arg0, -0x140, 0);
 
     for (i = 0; i < 4; i++) {
-        func_84B04B5C(arg0, i, 0x140, 0);
-        func_84B04DB0(arg0, i);
+        BattlePrep_InitCarouselGymBadgeSlot(arg0, i, 0x140, 0);
+        BattlePrep_InitCarouselRightIcon(arg0, i);
     }
 
     for (i = 0; i < 13; i++) {
@@ -1094,7 +1094,7 @@ void func_84B050AC(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
     }
 }
 
-void func_84B05184(unk_D_84B259A8* arg0) {
+void BattlePrep_LoadBannerAssets(unk_D_84B259A8* arg0) {
     BinArchive* temp_a0 = ASSET_LOAD2(battle_headers, 1, 1);
 
     if (gBattleContext.unk_0000 == 7) {
@@ -1143,7 +1143,7 @@ void func_84B05184(unk_D_84B259A8* arg0) {
     }
 }
 
-void func_84B0535C(unk_D_84B259A8* arg0) {
+void BattlePrep_AdjustBannerTextureOffset(unk_D_84B259A8* arg0) {
     unk_D_86002F34* ptr;
     s32 var_v0;
     s32 var_v1;
@@ -1177,7 +1177,7 @@ void func_84B0535C(unk_D_84B259A8* arg0) {
     temp_a3[9].v.ob[0] = (temp_a3[9].v.ob[0] - var_v0) + 4;
 }
 
-void func_84B053F4(unk_D_84B259A8* arg0) {
+void BattlePrep_LoadBannerGeoLayouts(unk_D_84B259A8* arg0) {
     MemoryBlock* temp_v0;
 
     temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
@@ -1190,7 +1190,7 @@ void func_84B053F4(unk_D_84B259A8* arg0) {
     } else {
         arg0->unk_28 = process_geo_layout(temp_v0, gUIBarWideTopGeoLayout);
         arg0->unk_2C = process_geo_layout(temp_v0, gUIBarWideBottomGeoLayout);
-        func_84B0535C(arg0);
+        BattlePrep_AdjustBannerTextureOffset(arg0);
     }
 
     if (gBattleContext.unk_0000 == 7) {
@@ -1257,8 +1257,8 @@ void UpdateBarSegmentColors(unk_D_84B259A8* arg0) {
 void ResetBarSegmentState(unk_D_84B259A8* arg0) {
     arg0->unk_00 = 0;
     arg0->unk_01 = 0;
-    func_84B05184(arg0);
-    func_84B053F4(arg0);
+    BattlePrep_LoadBannerAssets(arg0);
+    BattlePrep_LoadBannerGeoLayouts(arg0);
     UpdateBarSegmentColors(arg0);
 }
 
@@ -1534,7 +1534,7 @@ void SetupErrorScreenGraphNodes(unk_D_84B259E8* arg0, Fragment2_1GraphNode* arg1
     }
 }
 
-void func_84B064FC(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
+void BattlePrep_RenderBadgeBackground(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
     Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_30[arg1]);
 
     gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
@@ -1641,7 +1641,7 @@ void LoadTransferPakErrorImages(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchi
                 DrawTransferPakError(arg0->unk_10[i]);
             }
             arg0->unk_30[i] = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
-            func_84B064FC(arg0, i, ptr->unk_010);
+            BattlePrep_RenderBadgeBackground(arg0, i, ptr->unk_010);
         }
     } else {
         for (i = 0; i < 8; i++) {

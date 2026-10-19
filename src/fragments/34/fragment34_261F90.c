@@ -515,7 +515,7 @@ s32 IsWithinRadius2D(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4) {
     return var_v1;
 }
 
-void func_81400A60(void) {
+void ParticleMath_AdvanceRandomOffset(void) {
     gRandomSeedCounter++;
 }
 
@@ -554,7 +554,7 @@ s32 Particle_GetRandomRotation(s32 arg0, s32 arg1) {
     return temp_v0;
 }
 
-void func_81400B84(UNUSED s32 arg0) {
+void ParticleMath_NoopStub(UNUSED s32 arg0) {
 }
 
 s16 Vec3f_AngleX(Vec3f arg0) {
@@ -575,11 +575,11 @@ void Vec3f_ToAngles(Vec3s* arg0, Vec3f arg1) {
     arg0->z = MathUtil_Atan2s(arg1.x, arg1.y);
 }
 
-f32 func_81400C80(f32 arg0, f32 arg1, s16 arg2) {
+f32 ParticleMath_Rotate2DX(f32 arg0, f32 arg1, s16 arg2) {
     return (COSS(arg2) * arg0) - (SINS(arg2) * arg1);
 }
 
-f32 func_81400CC0(f32 arg0, f32 arg1, s16 arg2) {
+f32 ParticleMath_Rotate2DY(f32 arg0, f32 arg1, s16 arg2) {
     return (SINS(arg2) * arg0) + (COSS(arg2) * arg1);
 }
 
@@ -639,7 +639,7 @@ Vec3f* Vec3f_GetDirection(Vec3f* arg0, Vec3f arg1, Vec3f arg2) {
     return arg0;
 }
 
-s32 func_81400FA4(Vec3f arg0, Vec3f arg1, f32 arg2) {
+s32 ParticleMath_DistanceScaled(Vec3f arg0, Vec3f arg1, f32 arg2) {
     return Vec3f_Dist(arg0, arg1) / arg2;
 }
 
@@ -694,7 +694,7 @@ s16 Vec3f_AngleZTo(Vec3f arg0, Vec3f arg1) {
     return MathUtil_Atan2s(arg1.x - arg0.x, arg1.y - arg0.y);
 }
 
-s16 func_81401268(s16 arg0, s16 arg1) {
+s16 ParticleMath_ApproachAngleCoarse(s16 arg0, s16 arg1) {
     s16 temp_v0 = arg1 - arg0;
 
     if ((arg0 >> 8) != (arg1 >> 8)) {
@@ -722,7 +722,7 @@ s16 func_81401268(s16 arg0, s16 arg1) {
     return arg0;
 }
 
-void func_8140138C(void) {
+void ParticleGfx_NoopStub1(void) {
 }
 
 void Matrix_SendToDisplayList(MtxF* arg0) {
@@ -736,7 +736,7 @@ void Matrix_SendToDisplayList(MtxF* arg0) {
     }
 }
 
-void func_81401430(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
+void ParticleGfx_Build2DTransformMatrix(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
     f32 temp_fv0 = SINS(arg3) * arg4;
     f32 temp_fv1 = COSS(arg3) * arg4;
 
@@ -761,7 +761,7 @@ void func_81401430(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_814014E8(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
+void ParticleGfx_Build2DTransformMatrixYScaled(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
     f32 temp_fv0 = SINS(arg3);
     f32 temp_fv1 = COSS(arg3);
 
@@ -789,18 +789,18 @@ void func_814014E8(MtxF* arg0, s16 arg1, s16 arg2, s16 arg3, f32 arg4) {
 void Matrix_Submit2DRotateTranslateScale(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     MtxF sp20;
 
-    func_81401430(&sp20, arg0, arg1, arg2 + 0x8000, arg3);
+    ParticleGfx_Build2DTransformMatrix(&sp20, arg0, arg1, arg2 + 0x8000, arg3);
     Matrix_SendToDisplayList(&sp20);
 }
 
 void Matrix_Submit2DRotateTranslateScaleY(s16 arg0, s16 arg1, s16 arg2, f32 arg3) {
     MtxF sp20;
 
-    func_814014E8(&sp20, arg0, arg1, arg2 + 0x8000, arg3);
+    ParticleGfx_Build2DTransformMatrixYScaled(&sp20, arg0, arg1, arg2 + 0x8000, arg3);
     Matrix_SendToDisplayList(&sp20);
 }
 
-void func_81401650(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3) {
+void ParticleGfx_BuildTransformMatrix(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3) {
     f32 temp_fa1;
     f32 temp_fs0;
     f32 temp_fs1;
@@ -838,7 +838,7 @@ void func_81401650(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_814017E0(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3) {
+void ParticleGfx_BuildTransformMatrixYScaled(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3) {
     f32 temp_fa0;
     f32 temp_fa1;
     f32 temp_fs0;
@@ -876,7 +876,7 @@ void func_814017E0(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_81401940(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3, f32 arg4) {
+void ParticleGfx_BuildTransformMatrixXYScaled(MtxF* arg0, Vec3f arg1, Vec3s arg2, f32 arg3, f32 arg4) {
     f32 temp_fa0;
     f32 temp_fa1;
     f32 temp_fs0;
@@ -1008,7 +1008,7 @@ void Matrix_ComposeBillboardRollY(MtxF* arg0, MtxF* arg1, Vec3f arg2, f32 arg3, 
     arg0->mf[3][3] = 1.0f;
 }
 
-void func_81401E84(MtxF* arg0, Vec3f arg1, Vec3f arg2, s16 arg3, f32 arg4) {
+void ParticleGfx_BuildDirectionMatrix(MtxF* arg0, Vec3f arg1, Vec3f arg2, s16 arg3, f32 arg4) {
     Vec3f sp3C;
     Vec3f sp30;
     Vec3f sp24;
@@ -1044,21 +1044,21 @@ void func_81401E84(MtxF* arg0, Vec3f arg1, Vec3f arg2, s16 arg3, f32 arg4) {
 void Matrix_SubmitRotateTranslateScale(Vec3f arg0, Vec3s arg1, f32 arg2) {
     MtxF sp28;
 
-    func_81401650(&sp28, arg0, arg1, arg2);
+    ParticleGfx_BuildTransformMatrix(&sp28, arg0, arg1, arg2);
     Matrix_SendToDisplayList(&sp28);
 }
 
 void Matrix_SubmitRotateTranslateScaleY(Vec3f arg0, Vec3s arg1, f32 arg2) {
     MtxF sp28;
 
-    func_814017E0(&sp28, arg0, arg1, arg2);
+    ParticleGfx_BuildTransformMatrixYScaled(&sp28, arg0, arg1, arg2);
     Matrix_SendToDisplayList(&sp28);
 }
 
 void Matrix_SubmitRotateTranslateScaleXY(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3) {
     MtxF sp28;
 
-    func_81401940(&sp28, arg0, arg1, arg2, arg3);
+    ParticleGfx_BuildTransformMatrixXYScaled(&sp28, arg0, arg1, arg2, arg3);
     Matrix_SendToDisplayList(&sp28);
 }
 
@@ -1090,7 +1090,7 @@ void Matrix_SubmitBillboardRollY(CameraStruct* arg0, Vec3f arg1, f32 arg4, s16 a
     Matrix_SendToDisplayList(&sp28);
 }
 
-void func_814022EC(Vec3f arg0, Vec3s arg3, f32 arg5) {
+void ParticleGfx_PushTransformMatrixWithHalfTurnXY(Vec3f arg0, Vec3s arg3, f32 arg5) {
     MtxF sp30;
     Vec3s sp28;
 
@@ -1098,13 +1098,13 @@ void func_814022EC(Vec3f arg0, Vec3s arg3, f32 arg5) {
     sp28.y = arg3.y + 0x8000;
     sp28.z = arg3.z;
 
-    func_81401650(&sp30, arg0, sp28, arg5);
+    ParticleGfx_BuildTransformMatrix(&sp30, arg0, sp28, arg5);
     Matrix_SendToDisplayList(&sp30);
 }
 
-void func_8140238C(Vec3f arg0, Vec3f arg3, f32 arg6) {
+void ParticleGfx_PushDirectionMatrix(Vec3f arg0, Vec3f arg3, f32 arg6) {
     MtxF sp30;
 
-    func_81401E84(&sp30, arg3, arg0, 0, arg6);
+    ParticleGfx_BuildDirectionMatrix(&sp30, arg3, arg0, 0, arg6);
     Matrix_SendToDisplayList(&sp30);
 }

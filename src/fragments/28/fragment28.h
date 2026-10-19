@@ -126,7 +126,7 @@ typedef struct unk_func_888044BC {
     /* 0x54 */ unk_func_888044BC_050* unk_54;
 } unk_func_888044BC; // size = 0x58
 
-void func_88800020(s32 arg0, s32 arg1, s32 arg2);
+void Pokedex_DrawCheckboxIcon(s32 arg0, s32 arg1, s32 arg2);
 s32 TrainerCardDrawDexEntryBg(unk_func_888044BC_050* arg0, s32 arg1, s32 arg2);
 void TrainerCardDrawSpeciesListRow(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, unk_func_888044BC_038_02C* arg5);
 void TrainerCardInitSpeciesList(unk_func_888044BC_038_02C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5);
@@ -174,19 +174,19 @@ void PictureQuiz_InitFramebuffers(void);
 s32 PictureQuiz_MainEntry(UNUSED s32 arg0, UNUSED s32 arg1);
 
 
-s32 func_888047D0(s32 arg0);
-s32 func_88804B1C(s32 arg0);
-void func_88804E68(void);
-void func_88804EC8(void);
-void func_8880554C(void);
-Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2);
+s32 Pokedex_FindNextMapArea(s32 arg0);
+s32 Pokedex_FindPrevMapArea(s32 arg0);
+void Pokedex_BuildMapMarkerDisplayList(void);
+void Pokedex_BuildMapMarkersDisplayList(void);
+void Pokedex_BuildOverviewMarkersDisplayList(void);
+Gfx* Pokedex_DrawMapPinIcon(Gfx* arg0, s16 arg1, s16 arg2);
 Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6);
-void func_888069B0(void);
-void func_88806EAC(void);
-void func_88806EC8(void);
-void func_88806F20(Vec3f* arg0, Vec3f* arg1);
-void func_88807090(void);
-s32 func_888071C8(s32 arg0);
+void Pokedex_BuildMapLabelsDisplayList(void);
+void Pokedex_ResetCameraEase(void);
+void Pokedex_UpdateCameraEaseSpeed(void);
+void Pokedex_EaseVec3Toward(Vec3f* arg0, Vec3f* arg1);
+void Pokedex_UpdateAreaMapFrame(void);
+s32 Pokedex_GetCountTier(s32 arg0);
 s32 PictureQuiz_DrawResults(UNUSED u8 arg0);
 s32 PictureQuiz_CheckResultsInput(void);
 void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32 arg4, char* arg5, char** arg6);

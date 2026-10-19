@@ -91,7 +91,7 @@ s32 GetBorderColorIndex(unk_D_838067F0_0168* arg0) {
     return ret;
 }
 
-void func_842088A0(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
+void Rental_DrawBoxNameBanner(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
     static Color_RGB8 D_842115D0[] = {
         { 0xB4, 0x3C, 0x3C },
         { 0xBE, 0x96, 0x32 },
@@ -142,7 +142,7 @@ void func_842088A0(s16 arg0, s16 arg1, unk_D_838067F0_0168* arg2) {
     Text_SetupDL();
 }
 
-void func_84208B04(s16 arg0, s16 arg1, unk_D_842168A0* arg2) {
+void Rental_DrawCarouselScrollbar(s16 arg0, s16 arg1, unk_D_842168A0* arg2) {
     static s16 D_842115E8 = 0;
 
     s16 sp5E;
@@ -267,7 +267,7 @@ void DrawPokemonMenu(unk_D_842168A0* arg0, s32 arg1) {
         DrawPokemonSlots(arg0);
 
         DrawBorderedBox(spB0, temp_s7, 0x1B4, 0xD4);
-        func_84208B04(spB0 + 4, temp_s7 + 4, arg0);
+        Rental_DrawCarouselScrollbar(spB0 + 4, temp_s7 + 4, arg0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -290,8 +290,8 @@ void DrawPokemonMenu(unk_D_842168A0* arg0, s32 arg1) {
             s32 pad;
 
             Gfx_SetScissorRect(&gDisplayListHead, spB0 + 0x24, temp_s7 + 4, 0x18C, 0xCC);
-            func_842088A0(sp9E + 0x24, temp_s7 + 4, arg0->unk_00140->unk_268C);
-            func_842088A0(tmp3 + 0x24, temp_s7 + 4, arg0->unk_00140);
+            Rental_DrawBoxNameBanner(sp9E + 0x24, temp_s7 + 4, arg0->unk_00140->unk_268C);
+            Rental_DrawBoxNameBanner(tmp3 + 0x24, temp_s7 + 4, arg0->unk_00140);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
             gDPLoadTextureBlock(gDisplayListHead++, D_2000C40, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 4, 0,
@@ -317,7 +317,7 @@ void DrawPokemonMenu(unk_D_842168A0* arg0, s32 arg1) {
             Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         } else if (arg0->unk_00001 == 8) {
             temp_s3_3 = temp_s7 - ((arg0->unk_00018 * 0x2C) / 4);
-            func_842088A0(spB0 + 0x24, temp_s7 + 4, arg0->unk_00140);
+            Rental_DrawBoxNameBanner(spB0 + 0x24, temp_s7 + 4, arg0->unk_00140);
             Gfx_SetScissorRect(&gDisplayListHead, spB0 + 0x24, temp_s7 + 0x20, 0x18C, 0xB0);
             if (arg0->unk_0001A > 0) {
                 var_s1_2 = arg0->unk_00140->unk_268C;
@@ -334,7 +334,7 @@ void DrawPokemonMenu(unk_D_842168A0* arg0, s32 arg1) {
             }
             Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
         } else {
-            func_842088A0(spB0 + 0x24, temp_s7 + 4, arg0->unk_00140);
+            Rental_DrawBoxNameBanner(spB0 + 0x24, temp_s7 + 4, arg0->unk_00140);
             var_s1_2 = arg0->unk_00140;
 
             for (i = 0; i < 4; i++) {
@@ -450,7 +450,7 @@ s32 LoadPokemonIntoSlots(unk_D_842168A0* arg0, unk_D_838067F0_0168* arg1, s32 ar
     }
 
     for (i = 0; i < var_s3; i++) {
-        func_8001B0DC(arg1->unk_0000[i].unk_058, 0, &arg1->unk_0000[i].unk_004);
+        PokeIcon_LoadModelTextureForMon(arg1->unk_0000[i].unk_058, 0, &arg1->unk_0000[i].unk_004);
 
         arg1->unk_0000[i].unk_000 = arg0->unk_00004;
         arg1->unk_0000[i].unk_001 = arg0->unk_00005;
@@ -708,7 +708,7 @@ void HandleStartAction(unk_D_842168A0* arg0) {
     }
 }
 
-void func_8420AA08(unk_D_842168A0* arg0) {
+void Rental_CarouselHandleInput(unk_D_842168A0* arg0) {
     Controller* cont = &gControllers[arg0->unk_00003];
 
     if (BTN_IS_PRESSED(cont, BTN_A)) {
@@ -921,7 +921,7 @@ s32 UpdateMenuState(unk_D_842168A0* arg0) {
             break;
 
         case 3:
-            func_8420AA08(arg0);
+            Rental_CarouselHandleInput(arg0);
             break;
 
         case 7:

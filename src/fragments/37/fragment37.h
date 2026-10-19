@@ -17,7 +17,7 @@ void DrawScrollingBackground(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
 void AreaSelect_Update(void);
 void UpdateBackgroundFade(s16 arg0, s16 arg1, s16 arg2);
 void DrawAnimatedIcon(s16 arg0, s16 arg1);
-void func_822018D4(s16 arg0, s16 arg1, s16 arg2);
+void AreaSelect_DrawGlowCircle(s16 arg0, s16 arg1, s16 arg2);
 void DrawBeveledPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
 void DrawAreaLabel(s32 arg0);
 void AreaSelect_InitInput(void);

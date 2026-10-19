@@ -234,7 +234,7 @@ void DrawTransferPakErrorScreen(s16 arg0, s16 arg1, s32 arg2) {
     }
 }
 
-s16 func_8420B870(s16 arg0, s16 arg1, char* arg2) {
+s16 TeamSelection_Preview_CenterMoveText(s16 arg0, s16 arg1, char* arg2) {
     if (arg0 >= 2) {
         arg1 -= MeasureTextWidth(8, 0, arg2, arg1);
     }
@@ -351,7 +351,7 @@ void DrawPokemonMoveInfo(unk_D_8423D3A8* arg0, s32 arg1) {
                         break;
                     }
                     color = &gMoveColorInfoTable[gMoveStrings[temp_a0 - 1].unk_01].unk_00[2];
-                    sp80 = func_8420B870(i, gMoveTextXOffsets[i], GetMessageBank25String(temp_a0));
+                    sp80 = TeamSelection_Preview_CenterMoveText(i, gMoveTextXOffsets[i], GetMessageBank25String(temp_a0));
                     Text_SetEnvColor(color->r, color->g, color->b, 0xFF);
                     Text_Print(temp_s4 + sp80, gMoveTextYOffsets[i] + temp_s5, GetMessageBank25String(temp_s6->unk_09[i]));
                 }
@@ -365,7 +365,7 @@ void DrawPokemonMoveInfo(unk_D_8423D3A8* arg0, s32 arg1) {
                         break;
                     }
 
-                    sp80 = func_8420B870(i, gMoveTextXOffsets[i], GetMessageBank25String(temp_s6->unk_09[i]));
+                    sp80 = TeamSelection_Preview_CenterMoveText(i, gMoveTextXOffsets[i], GetMessageBank25String(temp_s6->unk_09[i]));
                     Gfx_DrawSpriteRGBA16((temp_s4 + sp80) - 0x18, gMoveTextYOffsets[i] + temp_s5, 0x14, 0x14,
                                   gMoveColorInfoTable[gMoveStrings[temp_s6->unk_09[i] - 1].unk_01].unk_0C, 0x14, 0);
                 }
@@ -408,7 +408,7 @@ void HandleMoveScreenInput(unk_D_8423D3A8* arg0) {
     arg0->unk_08 = arg0->unk_0E.y2;
     arg0->unk_0A = 0x228;
     arg0->unk_0C = 0xCC;
-    arg0->unk_20 = func_8001B9D4(arg0->unk_28);
+    arg0->unk_20 = PokeIcon_RenderPreview(arg0->unk_28);
 }
 
 void InitMoveScreenConfirm(unk_D_8423D3A8* arg0) {
@@ -417,7 +417,7 @@ void InitMoveScreenConfirm(unk_D_8423D3A8* arg0) {
     arg0->unk_0A = 0x228;
     arg0->unk_0C = 0xCC;
     arg0->unk_00 = 1;
-    arg0->unk_20 = func_8001B9D4(arg0->unk_28);
+    arg0->unk_20 = PokeIcon_RenderPreview(arg0->unk_28);
 }
 
 void InitMoveScreenExit(unk_D_8423D3A8* arg0) {
@@ -430,7 +430,7 @@ void InitMoveScreenExit(unk_D_8423D3A8* arg0) {
 
 s32 MoveScreen_Create(unk_D_8423D3A8* arg0) {
     arg0->unk_24 = AssetManager_Create(1);
-    arg0->unk_28 = func_8001B1FC(arg0->unk_24, 0x64, 0x54, 0, 0, 0x64, 0x54, NULL);
+    arg0->unk_28 = PokeIcon_CreateModelPreview(arg0->unk_24, 0x64, 0x54, 0, 0, 0x64, 0x54, NULL);
     arg0->unk_28->unk_00 &= ~2;
     arg0->unk_00 = 0;
     arg0->unk_03 = 0;
@@ -472,7 +472,7 @@ s32 MoveScreen_Start(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg
         return 0;
     }
 
-    func_8001B2D8(arg0->unk_28, &arg6->unk_004, 0x108D);
+    PokeIcon_SetPreviewMon(arg0->unk_28, &arg6->unk_004, 0x108D);
 
     arg0->unk_00 = 2;
     arg0->unk_01 = arg7;
@@ -487,14 +487,14 @@ s32 MoveScreen_Start(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg
     return 1;
 }
 
-s32 func_8420C6D8(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168_0000* arg3) {
+s32 TeamSelection_Preview_StartCompact(unk_D_8423D3A8* arg0, s16 arg1, s16 arg2, unk_D_838067F0_0168_0000* arg3) {
     if (arg0->unk_00 != 1) {
         return 0;
     }
 
     while (RspTaskYielded() == 0) {}
 
-    func_8001B2D8(arg0->unk_28, &arg3->unk_004, 0x108D);
+    PokeIcon_SetPreviewMon(arg0->unk_28, &arg3->unk_004, 0x108D);
     arg0->unk_2C = arg3;
     Gfx_MakeClipRect(&arg0->unk_16, arg1, arg2, arg1 + 0x8B, arg2 + 0x33);
     return 1;

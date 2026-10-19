@@ -6,7 +6,7 @@ void Particle_FireBurstSmall(ParticleEffectInstance* arg0, s16 arg1) {
     s16 sp22 = Particle_GetShortAC(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.25f);
-    func_8140A578(arg0, RandomRangeSignedPlus(0x400, 0xE00));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSignedPlus(0x400, 0xE00));
     Particle_RotateY(arg0, RandomRangeSigned(0x400));
     Particle_SetSpeed(arg0, 2.5f);
 
@@ -135,7 +135,7 @@ void Particle_FireBurstLarge_Update(ParticleEffectInstance* arg0) {
             break;
 
         case 2:
-            func_8140A578(arg0, 0xC00);
+            Particle_Field94_AddX_0A578(arg0, 0xC00);
             break;
     }
 
@@ -193,7 +193,7 @@ void Particle_SmokePuff(ParticleEffectInstance* arg0) {
     s16 sp20 = Particle_GetShortCF(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.4f);
-    func_8140A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
     Particle_RotateY(arg0, RandomRangeSigned(0x1800));
     Particle_SetSpeed(arg0, 2.0f);
 
@@ -268,7 +268,7 @@ void Particle_FireBurstTiny(ParticleEffectInstance* arg0, s16 arg1) {
     s16 sp22 = Particle_GetShortAC(arg0);
 
     Particle_SetScaleFactor1(arg0, 0.2f);
-    func_8140A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
     Particle_RotateY(arg0, RandomRangeSigned(0x2000));
     Particle_SetSpeed(arg0, 2.0f);
 
@@ -469,7 +469,7 @@ void Particle_SootPuff_Handler_Sooty(ParticleEffectInstance* arg0) {
     Particle_RotateX(arg0, 0x1000);
 
     if (gTimerMask2 == 0) {
-        func_8140D658(arg0, RandomMod(6));
+        ParticleGfx_RecolorPrimFromPaletteSetB(arg0, RandomMod(6));
     }
 }
 
@@ -733,7 +733,7 @@ void Particle_Dust_Cloud_Handler(ParticleEffectInstance* arg0) {
 void Particle_SetColorByIndex(ParticleEffectInstance* arg0, u8 arg1) {
     u16 sp1E;
 
-    func_8140BEF8(arg0, arg1);
+    Particle_FieldCF_SetU8Alt_0BEF8(arg0, arg1);
 
     switch (arg1) {
         case 0:
@@ -1283,12 +1283,12 @@ void Particle_ExplosionVariant(ParticleEffectInstance* arg0, s16 arg1, s16 arg2)
 
     switch (arg1) {
         case 0:
-            func_8140A578(arg0, RandomRangeSigned(0x800));
+            Particle_Field94_AddX_0A578(arg0, RandomRangeSigned(0x800));
             Particle_RotateY(arg0, RandomRangeSignedPlus(0x1000, 0x8000));
             break;
 
         case 1:
-            func_8140A578(arg0, RandomRangeSigned(0xA00));
+            Particle_Field94_AddX_0A578(arg0, RandomRangeSigned(0xA00));
             Particle_RotateY(arg0, Particle_GetRandomRotation(0xD00, 0xF400) + 0x8000);
             break;
     }
@@ -1374,7 +1374,7 @@ void Particle_ExplosionInit(ParticleEffectInstance* arg0) {
 
     Particle_SetScaleFactor1(arg0, 0.4f);
     Particle_AddVelocityForward(arg0, 15.0f);
-    func_8140A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
     Particle_RotateY(arg0, RandomRangeSignedPlus(0x3800, 0x8000));
     Particle_SetTargetRotationX(arg0, -0x4000);
     Particle_SetRotationDeltaX(arg0, 0x1000);
@@ -1458,31 +1458,31 @@ void Particle_SparkleInit(ParticleEffectInstance* arg0) {
     switch (sp20) {
         case 0:
             Particle_SetSpeed(arg0, 1.5f);
-            func_8140A578(arg0, -0x4000);
+            Particle_Field94_AddX_0A578(arg0, -0x4000);
             break;
 
         case 1:
             Particle_SetSpeed(arg0, 2.0f);
             Particle_RotateY(arg0, 0x4000);
-            func_8140A578(arg0, -0xE00);
+            Particle_Field94_AddX_0A578(arg0, -0xE00);
             break;
 
         case 2:
             Particle_SetSpeed(arg0, 2.0f);
             Particle_RotateY(arg0, -0x4000);
-            func_8140A578(arg0, -0xE00);
+            Particle_Field94_AddX_0A578(arg0, -0xE00);
             break;
 
         case 3:
             Particle_SetSpeed(arg0, 2.5f);
             Particle_RotateY(arg0, 0x4000);
-            func_8140A578(arg0, 0x2000);
+            Particle_Field94_AddX_0A578(arg0, 0x2000);
             break;
 
         case 4:
             Particle_SetSpeed(arg0, 2.5f);
             Particle_RotateY(arg0, -0x4000);
-            func_8140A578(arg0, 0x2000);
+            Particle_Field94_AddX_0A578(arg0, 0x2000);
             break;
     }
 

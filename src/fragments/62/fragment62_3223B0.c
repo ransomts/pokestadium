@@ -97,7 +97,7 @@ void ParticleEffect_Type2_Stage1(ParticleEffectInstance* arg0) {
     Particle_GetShortCF(arg0);
     Particle_SetScaleFactor1(arg0, 0.05f);
     Particle_SetRandomVelocityXYZ(arg0, 4, 2, 2);
-    func_8140A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSignedPlus(0x200, 0xE00));
     Particle_SetRotationDeltaX(arg0, RandomMod(0x1000) + 0x100);
     Particle_SetShortB0(arg0, -0x1800 - RandomMod(0x1000));
     Particle_RotateY(arg0, RandomRangeSigned(0x3000));
@@ -257,7 +257,7 @@ void ParticleEffect_Type4_PostStage(ParticleEffectInstance* arg0) {
         case 1:
             if (Particle_StartTimer2(arg0, 2) != 0) {
                 Particle_IncrementFlag2Counter(arg0);
-                func_8140A578(arg0, arg0->unk_AE);
+                Particle_Field94_AddX_0A578(arg0, arg0->unk_AE);
             }
             break;
 
@@ -315,12 +315,12 @@ void ParticleEffect_Type5_Stage1(ParticleEffectInstance* arg0) {
 
     switch (sp4E) {
         case 0:
-            func_8140A578(arg0, temp_v1 + 0x2000);
+            Particle_Field94_AddX_0A578(arg0, temp_v1 + 0x2000);
             Particle_RotateY(arg0, -0x4000);
             break;
 
         case 1:
-            func_8140A578(arg0, temp_v1 + 0x6000);
+            Particle_Field94_AddX_0A578(arg0, temp_v1 + 0x6000);
             Particle_RotateY(arg0, -0x4000);
             break;
     }
@@ -595,7 +595,7 @@ void ParticleEffect_FadeOut_Stage1(ParticleEffectInstance* arg0) {
 
     Particle_SetScaleFactor1(arg0, 0.25f);
     Particle_SetRandomVelocityXYZ(arg0, 4, 2, 2);
-    func_8140A578(arg0, RandomRangeSignedPlus(0x200, -0xE00));
+    Particle_Field94_AddX_0A578(arg0, RandomRangeSignedPlus(0x200, -0xE00));
     Particle_SetRotationDeltaX(arg0, RandomMod(0x400) + 0x100);
     Particle_SetShortB0(arg0, RandomMod(0x1000) + 0x1000);
     Particle_RotateY(arg0, RandomRangeSigned(0x1800));
@@ -776,8 +776,8 @@ void ParticleEffect_TimedFireball_Stage1(ParticleEffectInstance* arg0) {
     Particle_GetShortCF(arg0);
     Particle_SetScaleFactor1(arg0, 2.0f);
     Particle_AddVelocityBackward(arg0, 10.0f);
-    func_8140D658(arg0, RandomMod(6));
-    func_8140D68C(arg0, RandomMod(6));
+    ParticleGfx_RecolorPrimFromPaletteSetB(arg0, RandomMod(6));
+    ParticleGfx_RecolorEnvFromPaletteSetB(arg0, RandomMod(6));
     Particle_SetParamC7(arg0, 1);
     Particle_SetRotationZ(arg0, RandomMod(0x10000));
     Particle_IncrementState(arg0);
@@ -806,8 +806,8 @@ void ParticleEffect_TimedFireball(ParticleEffectInstance* arg0) {
     }
 
     if (gTimerMask4 == 0) {
-        func_8140D658(arg0, RandomMod(6));
-        func_8140D68C(arg0, RandomMod(6));
+        ParticleGfx_RecolorPrimFromPaletteSetB(arg0, RandomMod(6));
+        ParticleGfx_RecolorEnvFromPaletteSetB(arg0, RandomMod(6));
     }
 }
 
@@ -967,12 +967,12 @@ void ParticleEffect_RandomColor_Stage1(ParticleEffectInstance* arg0) {
             break;
 
         case 1:
-            func_8140D658(arg0, RandomMod(6));
-            func_8140D68C(arg0, RandomMod(6));
+            ParticleGfx_RecolorPrimFromPaletteSetB(arg0, RandomMod(6));
+            ParticleGfx_RecolorEnvFromPaletteSetB(arg0, RandomMod(6));
             break;
 
         case 2:
-            func_8140D708(arg0, RandomMod(6));
+            ParticleGfx_RecolorPrimEnvFromPaletteSetB(arg0, RandomMod(6));
             break;
     }
 
@@ -1012,13 +1012,13 @@ void ParticleEffect_RandomColor_Main(ParticleEffectInstance* arg0) {
 
             case 1:
                 if (gTimerMask3 == 0) {
-                    func_8140D658(arg0, RandomMod(6));
-                    func_8140D68C(arg0, RandomMod(6));
+                    ParticleGfx_RecolorPrimFromPaletteSetB(arg0, RandomMod(6));
+                    ParticleGfx_RecolorEnvFromPaletteSetB(arg0, RandomMod(6));
                 }
                 break;
 
             case 2:
-                func_8140D708(arg0, RandomMod(6));
+                ParticleGfx_RecolorPrimEnvFromPaletteSetB(arg0, RandomMod(6));
                 break;
         }
     }
@@ -1146,7 +1146,7 @@ void ParticleEffect_MediumBurst_Stage1(ParticleEffectInstance* arg0) {
     Particle_IncrementState(arg0);
 }
 
-void func_8433A858(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackUnusedIndexedFadeVariantA(ParticleEffectInstance* arg0) {
     switch (arg0->unk_B2) {
         case 1:
             ParticleEffect_MediumBurst_Stage1(arg0);
@@ -1571,7 +1571,7 @@ void InitParticleEffectSet_WithComplex(void) {
     ParticleDef_CreateQuick(0, ParticleEffect_LargeFireball_Main, &gParticleEffectData[0x34], 0, 1, 0x10, gParticleTexture_Default, 0x2C, 0);
     ParticleDef_CreateFull(4, 8, 1, ParticleEffect_LargeFireball_Main, &gParticleEffectData[0x54], 0, 1, 0x10, gParticleTexture_Default, 0x2C, 0);
     ParticleDef_CreateFull(3, 5, 2, ParticleEffect_Fireball_Stage3, &gParticleEffectData[0x19], 0, 8, 0x10, gParticleTexture_Default, 0xF, 0);
-    func_8433E524();
+    BattleAnim_EndEffect70Descriptor0F_13SprayColumnSequence();
 }
 
 void InitParticleEffectSet_Variant3(void) {

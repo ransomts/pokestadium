@@ -3355,7 +3355,7 @@ static u32 D_888265DC[] = {
     0x88826A20, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-s32 func_888047D0(s32 arg0) {
+s32 Pokedex_FindNextMapArea(s32 arg0) {
     s32 i;
     s32 idx;
     s32 a0 = arg0;
@@ -3369,7 +3369,7 @@ s32 func_888047D0(s32 arg0) {
     return a0;
 }
 
-s32 func_88804B1C(s32 arg0) {
+s32 Pokedex_FindPrevMapArea(s32 arg0) {
     s32 i;
     s32 idx;
     s32 a0 = arg0;
@@ -3383,7 +3383,7 @@ s32 func_88804B1C(s32 arg0) {
     return a0;
 }
 
-void func_88804E68(void) {
+void Pokedex_BuildMapMarkerDisplayList(void) {
     Gfx* temp_v0 = GfxAlloc(sizeof(Gfx) * 5);
 
     D_888269C0.unk_18 = temp_v0;
@@ -3394,7 +3394,7 @@ void func_88804E68(void) {
     gSPEndDisplayList(temp_v0++);
 }
 
-void func_88804EC8(void) {
+void Pokedex_BuildMapMarkersDisplayList(void) {
     s32 i;
     Mtx sp1A8;
     Mtx sp168;
@@ -3482,7 +3482,7 @@ void func_88804EC8(void) {
     gSPEndDisplayList(temp_v0++);
 }
 
-void func_8880554C(void) {
+void Pokedex_BuildOverviewMarkersDisplayList(void) {
     s32 i;
     s32 temp_a0;
     s32 temp_v2;
@@ -3533,7 +3533,7 @@ void func_8880554C(void) {
     gSPEndDisplayList(temp_v0++);
 }
 
-Gfx* func_88805960(Gfx* arg0, s16 arg1, s16 arg2) {
+Gfx* Pokedex_DrawMapPinIcon(Gfx* arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(arg0++, D_88825570);
     gDPSetPrimColor(arg0++, 0xFF, 0xFF, 255, 255, 255, 255);
     gDPPipeSync(arg0++);
@@ -3767,7 +3767,7 @@ Gfx* func_88805AEC(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, 
     return arg0;
 }
 
-void func_888069B0(void) {
+void Pokedex_BuildMapLabelsDisplayList(void) {
     s16 sp46;
     s16 sp44;
     s16 sp42;
@@ -3814,10 +3814,10 @@ void func_888069B0(void) {
     gSPDisplayList(temp_v0++, D_88825548);
 
     if ((D_88826A54 == 0) && (D_88826A4C == 0)) {
-        temp_v0 = func_88805960(temp_v0, 0xBC, 0xD5);
+        temp_v0 = Pokedex_DrawMapPinIcon(temp_v0, 0xBC, 0xD5);
     }
     if (D_88826A4C == 1) {
-        temp_v0 = func_88805960(temp_v0, 0x56, 0xB7);
+        temp_v0 = Pokedex_DrawMapPinIcon(temp_v0, 0x56, 0xB7);
     }
 
     gSPDisplayList(temp_v0++, D_88825A80);
@@ -3842,12 +3842,12 @@ void func_888069B0(void) {
     gSPEndDisplayList(temp_v0++);
 }
 
-void func_88806EAC(void) {
+void Pokedex_ResetCameraEase(void) {
     D_88826CD8 = 8.0f;
     D_88826CDC = 0;
 }
 
-void func_88806EC8(void) {
+void Pokedex_UpdateCameraEaseSpeed(void) {
     D_88826CD8 -= 0.5f;
     if (D_88826CD8 < 1.0f) {
         D_88826CD8 = 1.0f;
@@ -3855,7 +3855,7 @@ void func_88806EC8(void) {
     }
 }
 
-void func_88806F20(Vec3f* arg0, Vec3f* arg1) {
+void Pokedex_EaseVec3Toward(Vec3f* arg0, Vec3f* arg1) {
     f32 sp2C;
     f32 sp28;
     f32 sp24;
@@ -3895,7 +3895,7 @@ void func_88806F20(Vec3f* arg0, Vec3f* arg1) {
     }
 }
 
-void func_88807090(void) {
+void Pokedex_UpdateAreaMapFrame(void) {
     UNUSED s32 pad;
     CameraStruct* node = D_88826A44->unk_0C;
     Vec3f* vec;
@@ -3903,8 +3903,8 @@ void func_88807090(void) {
 
     switch (D_88826A52) {
         case 0:
-            func_88806F20(&node->unk_60.at, &D_8882627C);
-            func_88806F20(&node->unk_60.eye, &D_88826288);
+            Pokedex_EaseVec3Toward(&node->unk_60.at, &D_8882627C);
+            Pokedex_EaseVec3Toward(&node->unk_60.eye, &D_88826288);
             break;
 
         case 1:
@@ -3914,23 +3914,23 @@ void func_88807090(void) {
             sp28.y = vec->y + 1000.0f;
             sp28.z = vec->z + 700.0f;
 
-            func_88806F20(&node->unk_60.at, vec);
-            func_88806F20(&node->unk_60.eye, &sp28);
+            Pokedex_EaseVec3Toward(&node->unk_60.at, vec);
+            Pokedex_EaseVec3Toward(&node->unk_60.eye, &sp28);
             break;
     }
 
-    func_88806EC8();
+    Pokedex_UpdateCameraEaseSpeed();
     node->unk_24.near = 100.0f;
     node->unk_24.far = 12800.0f;
     D_88826A7E++;
 
-    func_88804E68();
-    func_88804EC8();
-    func_8880554C();
-    func_888069B0();
+    Pokedex_BuildMapMarkerDisplayList();
+    Pokedex_BuildMapMarkersDisplayList();
+    Pokedex_BuildOverviewMarkersDisplayList();
+    Pokedex_BuildMapLabelsDisplayList();
 }
 
-s32 func_888071C8(s32 arg0) {
+s32 Pokedex_GetCountTier(s32 arg0) {
     s32 ret;
 
     if (arg0 < 2) {
@@ -3973,7 +3973,7 @@ s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
     s32 idx;
 
     spF4 = GetMessageString(NULL, 0, D_88826A3C, D_88826A4E + 0x13);
-    func_88807090();
+    Pokedex_UpdateAreaMapFrame();
     Gfx_FinishFrame();
     Stage_BeginDisplayList();
     Graph_SetTextureState(D_88826A44);
@@ -4011,7 +4011,7 @@ s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
                             temp_s1 = temp_s2->unk_02;
                             temp_s4 = temp_s2->unk_04;
 
-                            spB4 = func_888071C8(temp_s2->unk_06);
+                            spB4 = Pokedex_GetCountTier(temp_s2->unk_06);
                             temp_s0_2 = GetMessageString(NULL, 0, D_88826A3C, ptr->unk_18[i] + 0x38);
                             if (D_88826CC6 == 1) {
                                 if (temp_s1 == temp_s4) {
@@ -4137,19 +4137,19 @@ s32 PictureQuiz_CheckResultsInput(void) {
 
         if (gPlayer1Controller->buttonPressed & 0x800) {
             D_88826A50 = D_88826A4E;
-            D_88826A4E = func_888047D0(D_88826A4E);
+            D_88826A4E = Pokedex_FindNextMapArea(D_88826A4E);
             if (D_88826A50 != D_88826A4E) {
                 PlaySoundEffectById(1);
-                func_88806EAC();
+                Pokedex_ResetCameraEase();
             }
         }
 
         if (gPlayer1Controller->buttonPressed & 0x400) {
             D_88826A50 = D_88826A4E;
-            D_88826A4E = func_88804B1C(D_88826A4E);
+            D_88826A4E = Pokedex_FindPrevMapArea(D_88826A4E);
             if (D_88826A50 != D_88826A4E) {
                 PlaySoundEffectById(1);
-                func_88806EAC();
+                Pokedex_ResetCameraEase();
             }
         }
 
@@ -4162,7 +4162,7 @@ s32 PictureQuiz_CheckResultsInput(void) {
                     }
                     D_88826A50 = D_88826A4E;
                     PlaySoundEffectById(0x19);
-                    func_88806EAC();
+                    Pokedex_ResetCameraEase();
                 }
                 break;
 
@@ -4172,7 +4172,7 @@ s32 PictureQuiz_CheckResultsInput(void) {
                     D_88826A80 = 1;
                     D_88826A50 = D_88826A4E;
                     PlaySoundEffectById(0x1A);
-                    func_88806EAC();
+                    Pokedex_ResetCameraEase();
                 }
                 break;
         }
@@ -4244,7 +4244,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
   D_88826CD4 = main_pool_alloc(0x3200, 0);
   TrainerCardExportSprite(D_88826CD4, arg0);
   Asset_Load((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
-  func_80019F0C(sp4C, ((((u32) (&D_8C000000)) & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START, pokedex_area_model_ROM_END, arg3, arg4);
+  Fragment_LoadAndRelocateFromRomRange(sp4C, ((((u32) (&D_8C000000)) & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START, pokedex_area_model_ROM_END, arg3, arg4);
   D_88826A48 = BinArchive_GetFile(Asset_Load2(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
   SimpleGfxNode_Create(0, &D_888269C0, 5, 0);
   D_88826A54 = 1;
@@ -4320,7 +4320,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
     }
   }
 
-  D_88826A4E = func_888047D0(0);
+  D_88826A4E = Pokedex_FindNextMapArea(0);
   D_88826A50 = D_88826A4E;
   SimpleGfxNode_Create(0, &D_88826A20, 5, 0);
   SimpleGfxNode_Create(0, &D_88826A00, 5, 0);

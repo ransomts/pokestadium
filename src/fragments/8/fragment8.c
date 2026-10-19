@@ -962,7 +962,7 @@ void UpdateFinishersAnim(void) {
     }
 }
 
-void func_862023F8(void) {
+void RattataGame_MainLoop(void) {
     s32 spA4;
     s32 i;
     s32 j;
@@ -1217,7 +1217,7 @@ void TriggerResultAnims(void) {
     }
 }
 
-void func_86202EE4(void) {
+void RattataGame_WaitForAudioToFinish(void) {
     while (Audio_CalcLoadScore() != 0) {
         PollInputsWhenStageReady();
         Race_RenderFrame(gRacePhase);
@@ -1225,7 +1225,7 @@ void func_86202EE4(void) {
     Music_EndVolumeFade();
 }
 
-void func_86202F3C(void) {
+void RattataGame_FadeOutAndTransition(void) {
     s32 i;
 
     Stage_SetFadeColor(0x1E);
@@ -1237,7 +1237,7 @@ void func_86202F3C(void) {
     }
 }
 
-void func_86202FA4(s32 arg0) {
+void RattataGame_PlayOutroSequence(s32 arg0) {
     s32 i;
 
     gRacePhase = 6;
@@ -1248,7 +1248,7 @@ void func_86202FA4(s32 arg0) {
     }
 }
 
-void func_86203008(void) {
+void RattataGame_WaitForContinue(void) {
     gRacePhase = 5;
 
     while (gResultExitPending == 0) {
@@ -1266,7 +1266,7 @@ void func_86203008(void) {
     }
 }
 
-void func_862030D0(void) {
+void RattataGame_LoadAssets(void) {
     s32 i;
     s32 j;
     MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
@@ -1325,7 +1325,7 @@ void func_862030D0(void) {
     Fragment2_1_Init();
 }
 
-void func_86203380(void) {
+void RattataGame_InitPlayerSlots(void) {
     s32 i;
     s32 j;
     Fragment2_1GraphNode* temp_s0;
@@ -1374,7 +1374,7 @@ void func_86203380(void) {
     }
 }
 
-void func_8620369C(s32 arg0, UNUSED s32 arg1) {
+void RattataGame_Main(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     if (arg0 == 1) {
@@ -1397,26 +1397,26 @@ void func_8620369C(s32 arg0, UNUSED s32 arg1) {
 
     Fragment_Load((((u32)&D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
-    func_862030D0();
+    RattataGame_LoadAssets();
     ResultScreen_Init();
     Stage_Set(sp24);
-    func_86203380();
+    RattataGame_InitPlayerSlots();
 
     if (RunRaceStartSequence() != -1) {
         Stage_SetFadeColor(0x3C);
-        func_86202FA4(5);
+        RattataGame_PlayOutroSequence(5);
         HandleResultScreen();
-        func_862023F8();
+        RattataGame_MainLoop();
         if ((gResultFlag_Special == 0) && (gRaceIsResultScreen == 0)) {
             TriggerResultAnims();
-            func_86203008();
+            RattataGame_WaitForContinue();
         }
     }
 
     if (gRaceIsResultScreen == 0) {
-        func_86202F3C();
+        RattataGame_FadeOutAndTransition();
     } else {
-        func_86202EE4();
+        RattataGame_WaitForAudioToFinish();
     }
 
     Stage_Destroy();

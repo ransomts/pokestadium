@@ -7,7 +7,7 @@
 void TriggerPokemonAnimAndAction(unk_BattlePlayerEntity* arg0) {
     Anim_SetChannelBase(&arg0->unk_728.unk_000, arg0->unk_728.unk_180);
     GraphNode_TriggerAction(&arg0->unk_728.unk_000, arg0->unk_728.unk_17C);
-    func_8430753C(arg0->unk_728.unk_168);
+    BattleScene_SetOwnerPoseFlag(arg0->unk_728.unk_168);
 }
 
 void ClearPokemonActiveFlag(unk_BattlePlayerEntity* arg0) {
@@ -19,23 +19,23 @@ void SetPokemonActiveFlag(unk_BattlePlayerEntity* arg0) {
 }
 
 void ClearAllPokemonActiveFlags(void) {
-    D_84390010[0]->unk_728.unk_170 = 0;
-    D_84390010[1]->unk_728.unk_170 = 0;
+    sActivePokemon[0]->unk_728.unk_170 = 0;
+    sActivePokemon[1]->unk_728.unk_170 = 0;
 }
 
 void SetAllPokemonActiveFlags(void) {
-    D_84390010[0]->unk_728.unk_170 = 1;
-    D_84390010[1]->unk_728.unk_170 = 1;
+    sActivePokemon[0]->unk_728.unk_170 = 1;
+    sActivePokemon[1]->unk_728.unk_170 = 1;
 }
 
-void func_8430753C(unk_D_84390010_728_0168* arg0) {
+void BattleScene_SetOwnerPoseFlag(unk_D_84390010_728_0168* arg0) {
     arg0->unk_00.unk_01 |= 0x10;
 }
 
 void LoadPokemonModelParams(unk_BattlePlayerEntity* arg0) {
     s32 var_v0;
 
-    if (arg0 == D_84390010[0]) {
+    if (arg0 == sActivePokemon[0]) {
         var_v0 = 0;
     } else {
         var_v0 = 1;
@@ -117,9 +117,9 @@ void UpdatePokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
             TriggerPokemonAnimAndAction(arg0);
         }
 
-        if ((func_800328D8(0) != 0) && (arg0->unk_728.unk_18C == 0)) {
+        if ((ModelRenderer_IsReady(0) != 0) && (arg0->unk_728.unk_18C == 0)) {
             arg0->unk_728.unk_18C = 2;
-            func_800328D0(0);
+            ModelRenderer_OnSlotReady(0);
         }
         arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x17, arg1, arg1);
     } else {
@@ -129,9 +129,9 @@ void UpdatePokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
 
         arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x103, arg1, arg1);
 
-        if ((func_800328D8(1) != 0) && (arg0->unk_728.unk_18C == 0)) {
+        if ((ModelRenderer_IsReady(1) != 0) && (arg0->unk_728.unk_18C == 0)) {
             arg0->unk_728.unk_18C = 2;
-            func_800328D0(1);
+            ModelRenderer_OnSlotReady(1);
         }
     }
 }
@@ -181,11 +181,11 @@ s32 HandleBattlePhase(s32 arg0, CameraStruct* arg1, CameraStruct* arg2) {
 
         case 1:
         case 2:
-            UpdatePokemonTurnIfBattleActive(D_84390010[0], D_84390010[1]);
+            UpdatePokemonTurnIfBattleActive(sActivePokemon[0], sActivePokemon[1]);
             break;
 
         case 3:
-            AssignPokemonModels(arg1, D_84390010[0], arg2, D_84390010[1]);
+            AssignPokemonModels(arg1, sActivePokemon[0], arg2, sActivePokemon[1]);
             break;
     }
     return 0;

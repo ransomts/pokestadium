@@ -79,7 +79,7 @@ s32 Stage_RunLogoSequence(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage_AdvanceUntil(3, Stage_LogoDrawCallback);
     MessageBank_Init();
     LoadNameSlots();
-    func_80021920();
+    Text_LoadNameTable();
     GbsGetPlayerMoney(&sp2A);
 
     if (sp2A & 1) {

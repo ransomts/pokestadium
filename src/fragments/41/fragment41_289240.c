@@ -136,9 +136,9 @@ void InitPokemonPicker(s32 arg0, s16 arg1) {
         temp_a3 = &temp_s1->unk_0CA8[temp_s1->unk_0010].unk_00C[i];
 
         if (((temp_a3->unk_00 <= 0) || (temp_a3->unk_00 >= 0x98) ? 1 : 0)) {
-            func_8001B0DC(GetSpriteDataPtr(gPickerSpriteBuffer, temp_s1->unk_0016, i), 0x98, NULL);
+            PokeIcon_LoadModelTextureForMon(GetSpriteDataPtr(gPickerSpriteBuffer, temp_s1->unk_0016, i), 0x98, NULL);
         } else {
-            func_8001B0DC(GetSpriteDataPtr(gPickerSpriteBuffer, temp_s1->unk_0016, i), 0, temp_a3);
+            PokeIcon_LoadModelTextureForMon(GetSpriteDataPtr(gPickerSpriteBuffer, temp_s1->unk_0016, i), 0, temp_a3);
         }
     }
 
@@ -269,9 +269,9 @@ void HandlePickerInput(PickerState* arg0) {
                 }
 
                 if (var_v0 != 0) {
-                    func_8001B0DC(GetSpriteDataPtr(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0x98, NULL);
+                    PokeIcon_LoadModelTextureForMon(GetSpriteDataPtr(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0x98, NULL);
                 } else {
-                    func_8001B0DC(GetSpriteDataPtr(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0, temp_a3);
+                    PokeIcon_LoadModelTextureForMon(GetSpriteDataPtr(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0, temp_a3);
                 }
             }
         } else if (BTN_IS_PRESSED(controller, BTN_L) && (temp_a2->unk_004 != NULL)) {
@@ -290,9 +290,9 @@ void HandlePickerInput(PickerState* arg0) {
                 }
 
                 if (var_v0 != 0) {
-                    func_8001B0DC(GetSpriteDataPtr(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0x98, NULL);
+                    PokeIcon_LoadModelTextureForMon(GetSpriteDataPtr(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0x98, NULL);
                 } else {
-                    func_8001B0DC(GetSpriteDataPtr(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0, temp_a3_2);
+                    PokeIcon_LoadModelTextureForMon(GetSpriteDataPtr(gPickerSpriteBuffer, arg0->unk_0016 ^ 1, i), 0, temp_a3_2);
                 }
             }
         }
@@ -323,7 +323,7 @@ void Picker_SlideTransition(PickerState* arg0) {
 }
 
 void Picker_HandleBattleStart(PickerState* arg0) {
-    s32 temp_v0 = func_82F06E38();
+    s32 temp_v0 = Trade_GetInfoBoxState();
 
     if (temp_v0 != 0) {
         if (temp_v0 == 3) {
@@ -919,7 +919,7 @@ void Picker_Reset(void) {
         ptr->unk_000E = 0;
     }
 
-    func_82F06D50();
+    Trade_ResetInfoBox();
 }
 
 void Picker_Update(void) {
@@ -948,7 +948,7 @@ void Picker_Update(void) {
                 break;
 
             case 4:
-                func_82F06D88();
+                Trade_UpdateInfoBox();
                 Picker_HandleBattleStart(var_s0);
                 break;
 
@@ -974,7 +974,7 @@ void Picker_Render(void) {
     }
 
     if (var_s3 != 0) {
-        func_82F06E04();
+        Trade_DrawInfoBoxIfActive();
     }
 }
 
@@ -992,7 +992,7 @@ void Picker_SwapSelectedSprites(void) {
 }
 
 void Picker_SetSelectedSprite(s16 arg0, PokemonData* arg1) {
-    func_8001B0DC(gPickerState[arg0].unk_0028, 0, arg1);
+    PokeIcon_LoadModelTextureForMon(gPickerState[arg0].unk_0028, 0, arg1);
 }
 
 s32 Picker_GetSelectionInfo(s32 arg0, unk_func_82F00838_sp30* arg1) {

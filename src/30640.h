@@ -148,7 +148,7 @@ s32 IsMonIndexDisplayable(unk_D_83403C60*);
 f32 Math_AbsF(f32);
 void Math_CrossProductComponents(f32, f32, f32, f32, f32, f32, f32*, f32*, f32*);
 void Math_NormalizeVector(f32*, f32*, f32*);
-void func_80031C6C(Mtx*, f32, f32, f32, f32, f32, f32);
+void Mtx_BuildTranslatedDirectionRotation(Mtx*, f32, f32, f32, f32, f32, f32);
 void Camera_CopyMatrixF(MtxF*, MtxF*);
 void Matrix_GetScaleVector(MtxF* arg0, Vec3f* arg1);
 

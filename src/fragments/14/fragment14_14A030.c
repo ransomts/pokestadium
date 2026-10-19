@@ -466,7 +466,7 @@ void SushiInstance_SetMode(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2)
     }
 }
 
-s32 func_86806930(unk_D_868084D8* arg0) {
+s32 SushiGame_GetPlateValue(unk_D_868084D8* arg0) {
     return gSushiItemDefs[arg0->unk_0C].unk_00;
 }
 
@@ -480,7 +480,7 @@ void Sushi_SetSpawnMode(s32 arg0) {
     }
 }
 
-void func_86806980(void) {
+void SushiGame_ApplyGamePhase(void) {
     s32 i;
     unk_D_86808808* var_v1;
 
@@ -543,7 +543,7 @@ void Sushi_UpdateLogic(void) {
     s32 i;
 
     if (gSushiSpawnMode != 0) {
-        func_86806980();
+        SushiGame_ApplyGamePhase();
     }
 
     if (gResultMenuVisible == 0) {

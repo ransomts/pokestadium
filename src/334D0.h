@@ -5,8 +5,8 @@
 
 extern s16 gModelPhase[4];
 
-void func_800328D0(s32);
-s32 func_800328D8(s32);
+void ModelRenderer_OnSlotReady(s32);
+s32 ModelRenderer_IsReady(s32);
 void ModelSlot_Reset(s32);
 void Model_DrawIfReady(void);
 void Model_CopyCurrentToBuffer(u8);

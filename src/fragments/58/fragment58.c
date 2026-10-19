@@ -161,7 +161,7 @@ void DrawDialogBorderLarge(s16 arg0, s16 arg1) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_84000200(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
+void FreeBattle_DrawTintedBar(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
     gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, arg3->r, arg3->g, arg3->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg4->r, arg4->g, arg4->b, 255);
@@ -179,7 +179,7 @@ void DrawTitlePanel(void) {
 
     GfxColor_SetRGB(&sp2C, 0x64, 0x64, 0xC8);
     GfxColor_SetRGB(&sp28, 0x28, 0x28, 0x8C);
-    func_84000200(0x48, 0x28, 0x208, &sp2C, &sp28);
+    FreeBattle_DrawTintedBar(0x48, 0x28, 0x208, &sp2C, &sp28);
     DrawDialogBorderSmall(0x30, 0x20);
     Text_ResetState();
     Text_SetFont(0x10, 0);
@@ -653,7 +653,7 @@ void Menu_UpdateInput(void) {
     MenuInput_Init();
 }
 
-void func_840023B8(void) {
+void FreeBattle_DrawFrame(void) {
     Stage_BeginDisplayList();
     if (gWindowAnimTimer > 0) {
         DrawWindow(0x4C, 0x54, 0x1E8, 0x150);
@@ -775,7 +775,7 @@ void Menu_SetupBattle(void) {
     }
 }
 
-s32 func_84002914(void) {
+s32 FreeBattle_RuleSelectLoop(void) {
     D_84002D16 = 0;
     Music_ChangeTrack(0x2D);
     ResetMenuSelections();
@@ -808,7 +808,7 @@ s32 func_84002914(void) {
                 RuleOption_Prev();
                 break;
         }
-        func_840023B8();
+        FreeBattle_DrawFrame();
     }
 
     if (D_84002D16 == 8) {
@@ -838,7 +838,7 @@ s32 RuleMenu_Main(s32 arg0, s32 arg1) {
     gMenuBackgroundAtlas = BinArchive_GetFile(D_84002D08, 6);
     D_84002D14 = Cont_GetControllerBits();
     Menu_SetupDisplayList();
-    sp1C = func_84002914();
+    sp1C = FreeBattle_RuleSelectLoop();
     Stage_Terminate();
 
     main_pool_pop_state('RULE');

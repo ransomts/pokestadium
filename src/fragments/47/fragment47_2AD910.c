@@ -173,7 +173,7 @@ s32 SnapSelect_Process(void) {
             break;
 
         case 2:
-            sp74 = func_838024EC();
+            sp74 = Gallery_RentalViewerGetLoadState();
             if (sp74 != 0) {
                 main_pool_pop_state('glpc');
 
@@ -212,7 +212,7 @@ void SnapSelect_MainLoop(void) {
     do {
         SnapSelect_ReadInputs();
         PlayerSelectStateUpdate();
-        func_83803488();
+        Gallery_RentalViewerUpdateBoxPicker();
         Menu_IsExitPressed();
         SnapSelect_Update();
     } while (SnapSelect_Process() != 0);

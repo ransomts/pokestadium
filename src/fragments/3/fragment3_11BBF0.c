@@ -5,7 +5,7 @@
 void LoadTexture_CI4_32x32_ByIndex();
 void RenderBillboardQuad();
 void LoadTexture_IA8_32x32();
-void func_8140C8B8();
+void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32();
 
 extern u32 gMiniTutoScreenTilemap[];
 extern u32 gMiniTutoScreenPalette[];
@@ -50,7 +50,7 @@ unk_D_87903E10 D_87903E40 = {
 
 unk_D_87903E00 D_87903E48 = {
     0x00000001,
-    func_8140C8B8,
+    ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
     RenderBillboardQuad,
     gMiniTutoScreenGraphics,
 };

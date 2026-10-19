@@ -727,7 +727,7 @@ void Camera_SetupResultScreen(void) {
     Camera_SetViewParameters(&D_87B000EC->unk_60.at, &D_87B000EC->unk_60.eye, D_87B000F4, D_87B000F0, D_87B000F2);
 }
 
-void func_86501AAC(void) {
+void DynamoGame_LoadAssets(void) {
     u8 j;
     u8 i;
     MemoryBlock* temp_v0;
@@ -820,7 +820,7 @@ void func_86501AAC(void) {
     DrawAnimatedSprite2(0, 0, NULL);
 }
 
-void func_86501E9C(UNUSED s32 arg0, UNUSED s32 arg1) {
+void DynamoGame_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');
@@ -832,7 +832,7 @@ void func_86501E9C(UNUSED s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    func_86501AAC();
+    DynamoGame_LoadAssets();
     Stage_Set(sp24);
     ResultScreen_MainLoop();
     HealthBar_MainLoop();

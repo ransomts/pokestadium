@@ -5,7 +5,7 @@
 #include "src/6BC0.h"
 #include "src/controller.h"
 
-void func_86B01C00(u8* arg0) {
+void Diorama_DrawEndBackgroundTiles(u8* arg0) {
     s32 i;
     s32 j;
 
@@ -33,7 +33,7 @@ void func_86B01C00(u8* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void func_86B01D8C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6) {
+void Diorama_DrawFullscreenTexture(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6) {
     FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
     Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
     Mtx* spCC = GfxAlloc(sizeof(Mtx) * 1);
@@ -79,7 +79,7 @@ void func_86B01D8C(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 }
 
-void func_86B02348(void) {
+void Diorama_DrawEndCaption(void) {
     static s32 D_86B0BD50 = 0;
 
     s32 sp24;

@@ -435,7 +435,7 @@ void Stage_Init(void) {
     if (gStagePanelState->unk_16C == 153) {
         gStagePanelState->unk_000 = CreatePlayerStatNode(&gStagePanelPlayerData);
     } else {
-        gStagePanelState->unk_000 = func_80019D90(&gStagePanelPlayerData);
+        gStagePanelState->unk_000 = Model_LoadForPokemon(&gStagePanelPlayerData);
     }
 
     GraphNode_InitChild(&gStagePanelState->unk_004, 0, gStagePanelState->unk_16C, gStagePanelState->unk_000->unk_08->unk_00[0]);
@@ -897,7 +897,7 @@ s32 StageMainUpdate(void) {
     return 0;
 }
 
-s32 func_8690172C(void) {
+s32 Gallery_CameraExitState_CountDown(void) {
     gStagePanelAnimState.unk_04 = 0;
     gStagePanelAnimState.unk_02 += 4;
 
@@ -916,7 +916,7 @@ s32 func_8690172C(void) {
     return 0;
 }
 
-s32 func_869017D0(void) {
+s32 Gallery_CameraExitState_SpinOut(void) {
     gStagePanelAnimState.unk_02 += 4;
     gStagePanelAnimState.unk_04 = Math_ApproachS32(gStagePanelAnimState.unk_04, 0x30, 0xA, 0xA);
 
@@ -932,7 +932,7 @@ s32 func_869017D0(void) {
     return 0;
 }
 
-s32 func_869018A0(void) {
+s32 Gallery_CameraExitState_ExpandBox(void) {
     gStagePanelFadeData.unk_04 = Math_ApproachS32(gStagePanelFadeData.unk_04, 0x50, 0xA, 0xA);
     if (gStagePanelFadeData.unk_04 == 0x50) {
         gStagePanelFadeData.unk_0C = 0xAA;
@@ -946,7 +946,7 @@ s32 func_869018A0(void) {
     return 0;
 }
 
-s32 func_8690193C(void) {
+s32 Gallery_CameraExitState_FadeOut(void) {
     gStagePanelFadeData.unk_0E = Math_ApproachS32(gStagePanelFadeData.unk_0E, 0x32, 0xA, 0xA);
 
     if (gStagePanelFadeData.unk_0E == 0x32) {
@@ -961,26 +961,26 @@ s32 func_8690193C(void) {
     return 0;
 }
 
-s32 func_869019BC(void) {
+s32 Gallery_CameraCheckExit(void) {
     switch (gStagePanelStateIndex) {
         case 0:
             return StageMainUpdate();
 
         case 1:
-            return func_8690172C();
+            return Gallery_CameraExitState_CountDown();
 
         case 2:
-            return func_869017D0();
+            return Gallery_CameraExitState_SpinOut();
 
         case 3:
-            return func_869018A0();
+            return Gallery_CameraExitState_ExpandBox();
 
         case 4:
-            return func_8690193C();
+            return Gallery_CameraExitState_FadeOut();
     }
 }
 
-void func_86901A44(void) {
+void Gallery_CameraDraw(void) {
     Stage_BeginDisplayList();
 
     if ((gStagePanelFillColor == -1) || (gStagePanelFillColor == 0)) {
@@ -993,17 +993,17 @@ void func_86901A44(void) {
 
     Gfx_FinishFrame();
     Graph_SetTextureState(gMiniCameraStruct);
-    func_86908668();
+    Gallery_DrawFrameMarkers();
     RenderGradientPanel();
     RenderHPBar();
-    func_86908418();
-    func_869089AC();
+    Gallery_DrawPhotoCounterReelExit();
+    Gallery_DrawTutorialTextBox();
     RenderMessageBox(gStagePanelPlayerData.unk_30);
     RenderMainMenu(gCameraParams->unk_00C);
     Stage_Advance();
 }
 
-void func_86901B28(void) {
+void Gallery_CameraIntro(void) {
     f32 temp_fv0;
     f32 tmp1;
     f32 tmp2;
@@ -1019,7 +1019,7 @@ void func_86901B28(void) {
 
     for (i = 0; i < 15; i++) {
         UpdateControllerAndMenuInput();
-        func_86901A44();
+        Gallery_CameraDraw();
     }
 
     tmp2 = 5.7f;
@@ -1064,15 +1064,15 @@ void func_86901B28(void) {
             break;
         }
 
-        func_86901A44();
+        Gallery_CameraDraw();
     }
 
     UpdateControllerAndMenuInput();
     gStagePanelAnimState.unk_0C = 251.0f;
-    func_86901A44();
+    Gallery_CameraDraw();
 }
 
-void func_86901ECC(void) {
+void Gallery_CameraLoop(void) {
     s32 var_s0 = 1;
     void (*temp_s1)(void) = Util_ConvertAddrToVirtAddr(Timer_Tick);
 
@@ -1085,7 +1085,7 @@ void func_86901ECC(void) {
             SimulateControllerInputFromScript();
         }
 
-        if (func_869019BC() != 0) {
+        if (Gallery_CameraCheckExit() != 0) {
             var_s0 = 0;
         }
 
@@ -1095,22 +1095,22 @@ void func_86901ECC(void) {
 
         temp_s1();
 
-        func_86901A44();
+        Gallery_CameraDraw();
     }
 }
 
-void func_86901FB4(void) {
+void Gallery_CameraOutro(void) {
     s32 i;
 
     Stage_FadeOut(0x1E);
 
     for (i = 0; i < 30; i++) {
         UpdateControllerAndMenuInput();
-        func_86901A44();
+        Gallery_CameraDraw();
     }
 }
 
-void func_86902004(s32 arg0) {
+void Gallery_CameraInit(s32 arg0) {
     gStagePanelMode = arg0;
     Graphics_Init();
 
@@ -1126,7 +1126,7 @@ void func_86902004(s32 arg0) {
     LoadStageFragmentByIndex(gCameraParams->unk_00C);
 }
 
-s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
+s32 Gallery_CameraMain(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('SNAP');
@@ -1145,11 +1145,11 @@ s32 func_86902098(s32 arg0, UNUSED s32 arg1) {
     D_8690A698 = ASSET_LOAD2(stadium_models, 1, 1);
     MessageBank_Init();
     gMessageBankPtr = GetMessageBank(0x2B);
-    func_86902004(arg0);
+    Gallery_CameraInit(arg0);
     Stage_Set(sp24);
-    func_86901B28();
-    func_86901ECC();
-    func_86901FB4();
+    Gallery_CameraIntro();
+    Gallery_CameraLoop();
+    Gallery_CameraOutro();
     Stage_Destroy();
     FontManager_Free();
     Gfx_FreeBuffers();

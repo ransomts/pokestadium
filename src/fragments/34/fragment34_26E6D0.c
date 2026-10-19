@@ -68,23 +68,23 @@ void LoadTexture_CI4_32x32_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->unk_C7 * (32 * 32 / 2)], 32, 32);
 }
 
-void func_8140C880(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[gTimerMask2 * (32 * 32 / 2)], 32, 32);
 }
 
-void func_8140C8B8(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerShift1 & 3) * (32 * 32 / 2)], 32, 32);
 }
 
-void func_8140C8F4(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4FrameDiv4Mod4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerShift2 & 3) * (32 * 32 / 2)], 32, 32);
 }
 
-void func_8140C930(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerShift1 & 7) * (32 * 32 / 2)], 32, 32);
 }
 
-void func_8140C96C(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4TileFrameDiv2Mod8_24x24(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureTileI4b_ClampWrapper(&texture[(gTimerShift1 & 7) * (24 * 24 / 2)], 24, 24);
 }
 
@@ -92,7 +92,7 @@ void LoadTexture_CI4_24x24_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureTileI4b_ClampWrapper(&texture[arg0->unk_C7 * (24 * 24 / 2)], 24, 24);
 }
 
-void func_8140C9EC(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerCounter % 10) * (32 * 64 / 2)], 32, 64);
 }
 
@@ -100,15 +100,15 @@ void LoadTexture_CI4_32x64_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->unk_C7 * (32 * 64 / 2)], 32, 64);
 }
 
-void func_8140CA64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(texture, 64, 64);
 }
 
-void func_8140CA90(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4FrameMod8_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[gTimerMask3 * (64 * 64 / 2)], 64, 64);
 }
 
-void func_8140CAC8(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerShift1 & 7) * (64 * 64 / 2)], 64, 64);
 }
 
@@ -116,11 +116,11 @@ void LoadTexture_CI4_64x64_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->unk_C7 * (64 * 64 / 2)], 64, 64);
 }
 
-void func_8140CB38(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackI4WrapST_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockI4b_MirrorWrap(texture, 64, 64);
 }
 
-void func_8140CB64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+void ParticleGfx_LoadTextureCallbackIa8WrapST_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
     Gfx_LoadTextureBlockIA8_MirrorWrap(texture, 64, 64);
 }
 
@@ -143,7 +143,7 @@ s32 RenderRotatedQuad24(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1)
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void func_8140CD80(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+void ParticleGfx_DrawBillboardDefaultQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
@@ -171,7 +171,7 @@ void RenderBillboardQuadRoll(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     Gfx_DrawQuadBillboardRoll(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
 }
 
-void func_8140D050(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+void ParticleGfx_DrawBillboardPrimEnvRotatedTriangle(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawTriangleBillboardRoll(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_TriangleDown, arg0->unk_94.z);
 }
@@ -186,7 +186,7 @@ void RenderBillboardQuad64OffsetY(ParticleEffectInstance* arg0, CameraStruct* ar
     Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_Square);
 }
 
-void func_8140D1FC(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+void ParticleGfx_DrawBillboardPrimEnvQuadVariantC(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
     Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectWide);
 }
@@ -252,22 +252,22 @@ void SetEnvColorFromPreset(ParticleEffectInstance* arg0, s16 arg1) {
     SetEnvColorFromPalette(arg0, gPrimColorPalette[arg1]);
 }
 
-void func_8140D658(ParticleEffectInstance* arg0, s16 arg1) {
+void ParticleGfx_RecolorPrimFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
     SetPrimColorFromPalette(arg0, D_8140E540[arg1]);
 }
 
-void func_8140D68C(ParticleEffectInstance* arg0, s16 arg1) {
+void ParticleGfx_RecolorEnvFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
     SetEnvColorFromPalette(arg0, D_8140E540[arg1]);
 }
 
-void func_8140D6C0(ParticleEffectInstance* arg0, s16 arg1) {
+void ParticleGfx_RecolorPrimEnvFromPaletteSetA(ParticleEffectInstance* arg0, s16 arg1) {
     u8 sp1F = gPrimColorPalette[arg1];
 
     SetPrimColorFromPalette(arg0, sp1F);
     SetEnvColorFromPalette(arg0, sp1F);
 }
 
-void func_8140D708(ParticleEffectInstance* arg0, s16 arg1) {
+void ParticleGfx_RecolorPrimEnvFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
     u8 sp1F = D_8140E540[arg1];
 
     SetPrimColorFromPalette(arg0, sp1F);

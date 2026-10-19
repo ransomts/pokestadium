@@ -143,7 +143,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x01,
         0x01,
         0x0000,
-        func_8140C880,
+        ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
         RenderBillboardQuadPrimColor,
         &gWaterTexture[4],
     },
@@ -151,7 +151,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C930,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32,
         RenderBillboardQuad,
         &gWaterTexture[5],
     },
@@ -159,7 +159,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C9EC,
+        ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64,
         RenderBillboardQuad64,
         &gWaterTexture[20],
     },
@@ -167,15 +167,15 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C9EC,
-        func_8140D1FC,
+        ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64,
+        ParticleGfx_DrawBillboardPrimEnvQuadVariantC,
         &gWaterTexture[20],
     },
     {
         0x00,
         0x01,
         0x0000,
-        func_8140C930,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32,
         RenderBillboardQuad,
         &gWaterTexture[5],
     },
@@ -183,7 +183,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C930,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32,
         RenderBillboardQuadGradient,
         &gWaterTexture[5],
     },
@@ -191,8 +191,8 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C9EC,
-        func_8140D1FC,
+        ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64,
+        ParticleGfx_DrawBillboardPrimEnvQuadVariantC,
         &gWaterTexture[20],
     },
     {
@@ -215,7 +215,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C880,
+        ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
         RenderBillboardQuad,
         &gWaterTexture[23],
     },
@@ -223,7 +223,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0001,
-        func_8140C8B8,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
         RenderBillboardQuad,
         &gWaterTexture[14],
     },
@@ -239,7 +239,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C880,
+        ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
         RenderBillboardQuad,
         &gWaterTexture[14],
     },
@@ -271,7 +271,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140CA90,
+        ParticleGfx_LoadTextureCallbackI4FrameMod8_64x64,
         RenderBillboardQuadTriple,
         &gWaterTexture[18],
     },
@@ -295,7 +295,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C930,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32,
         RenderBillboardQuad,
         &gWaterTexture[5],
     },
@@ -303,7 +303,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140CA90,
+        ParticleGfx_LoadTextureCallbackI4FrameMod8_64x64,
         RenderBillboardQuadTriple,
         &gWaterTexture[18],
     },
@@ -311,7 +311,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C880,
+        ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
         RenderBillboardQuad,
         &gWaterTexture[23],
     },
@@ -319,7 +319,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C880,
+        ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
         RenderBillboardQuad,
         &gWaterTexture[13],
     },
@@ -327,7 +327,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C8F4,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv4Mod4_32x32,
         RenderBillboardQuad,
         &gWaterTexture[13],
     },
@@ -335,7 +335,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140CAC8,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_64x64,
         RenderBillboardQuadTriple,
         &gWaterTexture[18],
     },
@@ -343,7 +343,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C8B8,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
         RenderBillboardQuad,
         &gWaterTexture[23],
     },
@@ -351,7 +351,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140CA64,
+        ParticleGfx_LoadTextureCallbackI4_64x64,
         RenderRotatedQuadTriple,
         &gWaterTexture[11],
     },
@@ -503,7 +503,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140CB38,
+        ParticleGfx_LoadTextureCallbackI4WrapST_64x64,
         RenderGroundQuad,
         &gWaterTexture[63],
     },
@@ -511,7 +511,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140CB64,
+        ParticleGfx_LoadTextureCallbackIa8WrapST_64x64,
         RenderGroundQuad,
         &gWaterTexture[112],
     },
@@ -583,7 +583,7 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x00,
         0x01,
         0x0000,
-        func_8140C8B8,
+        ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
         RenderBillboardQuad,
         &gWaterTexture[14],
     },
@@ -624,7 +624,7 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_84331094,
+        BattleAnim_DrawParticleNoop,
     },
     {
         0x00000001,
@@ -668,7 +668,7 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_84331314,
+        BattleAnim_DrawAsset13FrameI4YScaledQuadC,
     },
     {
         0x00000003,
@@ -676,11 +676,11 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_8433157C,
+        BattleAnim_DrawAsset13FrameI4ModelQuadB,
     },
     {
         0x00000003,
-        func_843316A8,
+        BattleAnim_DrawAsset13FrameI4ModelQuadC,
     },
     {
         0x00000001,
@@ -712,15 +712,15 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_843317D4,
+        BattleAnim_DrawAsset1BI4TriangleA,
     },
     {
         0x00000003,
-        func_843318F8,
+        BattleAnim_DrawAsset1BI4TriangleB,
     },
     {
         0x00000003,
-        func_84331A1C,
+        BattleAnim_DrawAsset13FrameDiv2I4Quad,
     },
     {
         0x00000001,
@@ -748,23 +748,23 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_84331D60,
+        BattleAnim_DrawParticleFullScreenColorOverlay,
     },
     {
         0x00000003,
-        func_84331B58,
+        BattleAnim_DrawAsset18FrameI4ModelQuad,
     },
     {
         0x00000003,
-        func_84331C34,
+        BattleAnim_DrawAssetA9I4XYScaledQuad,
     },
     {
         0x00000003,
-        func_84330AF0,
+        BattleAnim_DrawAsset19I4AtlasYScaled,
     },
     {
         0x00000003,
-        func_84330B40,
+        BattleAnim_DrawAsset1AFrameI4Quad,
     },
     {
         0x00000001,
@@ -772,23 +772,23 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_84330C70,
+        BattleAnim_DrawAsset1CRgba16Quad,
     },
     {
         0x00000003,
-        func_84330D64,
+        BattleAnim_DrawAsset1ERgba16Quad,
     },
     {
         0x00000003,
-        func_84330E58,
+        BattleAnim_DrawAssetC3Rgba16Quad,
     },
     {
         0x00000003,
-        func_84330F4C,
+        BattleAnim_DrawAsset1DRotatedI4Quad,
     },
     {
         0x00000003,
-        func_84330388,
+        BattleAnim_DrawAsset1FAnimatedI4WithAsset20DisplayList,
     },
     {
         0x00000003,
@@ -800,7 +800,7 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_84330688,
+        BattleAnim_DrawAssets27And28LayeredI4QuadVariantB,
     },
     {
         0x00000003,
@@ -860,7 +860,7 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_84330B18,
+        BattleAnim_DrawAsset5EI4AtlasYScaled,
     },
     {
         0x00000001,
@@ -928,7 +928,7 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        func_84330934,
+        BattleAnim_DrawAsset87AnimatedI4Quad,
     },
     {
         0x00000001,
@@ -945,42 +945,42 @@ ParticleEffectData gParticleEffectData[] = {
 };
 
 static func_D_84390320 gStateFunctionTable[] = {
-    func_8432F998, ParticleEffect_RegisterDefault, SpawnLargeBurstIfNotActive, ParticleEffect_InitSmallExplosion, InitParticleEffectSet_Alt, func_8432F998, SpawnSmallGlowAndCustomEffect,
-    ParticleEffect_SmallSetup, ParticleEffect_RegisterCombined, func_8432F998, ParticleEffect_RegisterHandlers_473BC, ParticleEffect_SmallNodeSetup, ParticleEffect_InitBurstEffect, ParticleEffect_DynamicStateSetup,
-    ParticleEffect_Init, SpawnLargeBurstEffect, ParticleEffect_FullSetupA, ParticleEffect_PaletteBurst, func_8433DC80, func_8432F998, func_843378CC,
-    ParticleEffect_WaterAnimBurst, ParticleEffect_InitSetA, func_84336EE8, ParticleEffect_PaletteScriptBurst, func_8432F998, InitParticleEffectSet_Alt2, func_8432F998,
-    ParticleEffect_RegisterEffectE0, ParticleEffect_GroupSetupA, ParticleEffect_FinalGroupSetup, ParticleEffect_ComplexNodeSetup, func_8432F998, func_8432F998, ParticleEffect_RegisterSparkle,
+    BattleAnim_EffectStartNop, ParticleEffect_RegisterDefault, SpawnLargeBurstIfNotActive, ParticleEffect_InitSmallExplosion, InitParticleEffectSet_Alt, BattleAnim_EffectStartNop, SpawnSmallGlowAndCustomEffect,
+    ParticleEffect_SmallSetup, ParticleEffect_RegisterCombined, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandlers_473BC, ParticleEffect_SmallNodeSetup, ParticleEffect_InitBurstEffect, ParticleEffect_DynamicStateSetup,
+    ParticleEffect_Init, SpawnLargeBurstEffect, ParticleEffect_FullSetupA, ParticleEffect_PaletteBurst, BattleAnim_StartEffect18ScatterRadialAndColumnSequence, BattleAnim_EffectStartNop, func_843378CC,
+    ParticleEffect_WaterAnimBurst, ParticleEffect_InitSetA, func_84336EE8, ParticleEffect_PaletteScriptBurst, BattleAnim_EffectStartNop, InitParticleEffectSet_Alt2, BattleAnim_EffectStartNop,
+    ParticleEffect_RegisterEffectE0, ParticleEffect_GroupSetupA, ParticleEffect_FinalGroupSetup, ParticleEffect_ComplexNodeSetup, BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, ParticleEffect_RegisterSparkle,
     ParticleEffect_InitSmokeSetB, ParticleEffect_BasicMultiBurst2, ParticleEffect_SimpleBurstScript, ParticleEffect_RegisterExplosion, InitParticleEffectSet_WithFade, ParticleEffect_RegisterLargeExplosion, ParticleEffect_TextureSetup,
-    func_8432F998, func_8432F998, func_8432F998, ParticleEffect_SetMode, func_8432F998, InitParticleEffectSet_WithTexture53, SpawnTimedFireballEffect,
-    ParticleEffect_SimpleNodeEntry, ParticleEffect_RegisterAll_48630, func_8432F998, ParticleEffect_RegisterHandler_49628, ParticleEffect_RegisterEffectE0Alt2, func_8432F998, ParticleEffect_RegisterHandler_49830,
-    ParticleEffect_AdditionalNodeSetup, ParticleEffect_SmallNodeSetupB, InitExplosionEffectSet, func_8433E124, ParticleEffect_GroupSetupA, ParticleEffect_HandleStateSetup, func_8432F998,
-    ParticleEffect_RegisterHandlers_Default, ParticleEffect_RegisterHandler_416B0, ParticleEffect_RegisterParticleNodes, ParticleEffect_RegisterMultipleHandlers, func_8432F998, ParticleEffect_RegisterHandler_49384, ParticleEffect_RegisterHandlers_49504,
+    BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, ParticleEffect_SetMode, BattleAnim_EffectStartNop, InitParticleEffectSet_WithTexture53, SpawnTimedFireballEffect,
+    ParticleEffect_SimpleNodeEntry, ParticleEffect_RegisterAll_48630, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandler_49628, ParticleEffect_RegisterEffectE0Alt2, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandler_49830,
+    ParticleEffect_AdditionalNodeSetup, ParticleEffect_SmallNodeSetupB, InitExplosionEffectSet, func_8433E124, ParticleEffect_GroupSetupA, ParticleEffect_HandleStateSetup, BattleAnim_EffectStartNop,
+    ParticleEffect_RegisterHandlers_Default, ParticleEffect_RegisterHandler_416B0, ParticleEffect_RegisterParticleNodes, ParticleEffect_RegisterMultipleHandlers, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandler_49384, ParticleEffect_RegisterHandlers_49504,
     InitParticleEffectSet_WithDifferentTiming, ParticleEffect_RegisterHandler_49058, ParticleEffect_RegisterHandler_47448, func_8433E46C, ParticleEffect_RegisterHandler_49108, ParticleEffect_RegisterHandlers_Alternate, ParticleEffect_RegisterEffectE0Alt,
     InitSmallGlowEffectSet, InitParticleEffectSet_Single, ParticleEffect_RegisterHandler_498D8, ParticleEffect_RegisterDefaultTexture, ParticleEffect_AdvancedModeSetup, ParticleEffect_RegisterAll_48630, ParticleEffect_SimpleBurst,
     ParticleEffect_InitSmokeSetC, ParticleEffect_FinalSetupA, ParticleEffect_RegisterLargeExplosionAndEffects, func_8434A9EC, ParticleEffect_MultiNodeC2, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
     ParticleEffect_PortraitBurstNode, ParticleEffect_PortraitBurstCheck, ParticleEffect_WaterAnimFirework, ParticleEffect_SimpleBurst2, ParticleEffect_PaletteMultiBurst2, ParticleEffect_PaletteBurst4, ParticleEffect_PaletteBurst5,
-    func_8432F998, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurst4, ParticleEffect_RotationEntry, ParticleSystem_ForceResetLock, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
+    BattleAnim_EffectStartNop, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurst4, ParticleEffect_RotationEntry, ParticleSystem_ForceResetLock, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
     ParticleEffect_TriggerSpecial, ParticleEffect_AlphaBurst, ParticleEffect_AlphaBurst2, ParticleEffect_AdditionalSetupA, ParticleEffect_SimpleGroupSetup, ParticleEffect_ComplexGroupSetup, ParticleEffect_RegisterHandler_490A8,
     ParticleEffect_PortraitBurstInit, ParticleEffect_TriggerDefault1, ParticleEffect_FinalSetupB, ParticleEffect_FinalSetupC, ParticleEffect_AdditionalNodeA, ParticleEffect_StateCollisionSetupA, ParticleEffect_CreateWithCallback,
-    ParticleEffect_CreateCallback, InitSmallGlowEffectSet, ParticleEffect_TriggerDefault3, func_8433FD30, ParticleEffect_ConditionalStateSetup, ParticleEffect_CollisionResponseSwitch, ParticleEffect_RegisterCallbacks,
+    ParticleEffect_CreateCallback, InitSmallGlowEffectSet, ParticleEffect_TriggerDefault3, BattleAnim_StartEffect122GlobalAndOwnerTintFade, ParticleEffect_ConditionalStateSetup, ParticleEffect_CollisionResponseSwitch, ParticleEffect_RegisterCallbacks,
     func_8433765C, ParticleEffect_CreateVariant45, ParticleEffect_CreateVariant47, ParticleEffect_CreateTypeX, ParticleEffect_CreateSmoke, ParticleEffect_CreateSmokeHighPriority, ParticleEffect_CreateDual,
-    func_8433FAF8, func_8433F758, func_8433F5D4, func_8432F998, ParticleEffect_ExtraNodeSetup, ParticleEffect_TextureNodeSetup, func_8433F414,
-    func_8433F4CC, func_8433F4EC, func_8433F5B4, func_8433F974, func_8432F998,
+    BattleAnim_StartEffect133ModeOrbitBurstAndEffect135Followup, BattleAnim_StartEffect134ModeOrbitAndMetadataBurst, BattleAnim_StartEffect135ExpandingFlashAndRisingScaleFade, BattleAnim_EffectStartNop, ParticleEffect_ExtraNodeSetup, ParticleEffect_TextureNodeSetup, BattleAnim_StartEffect139DualRepeatingSparks,
+    BattleAnim_StartEffect140StartEffect139Alias, BattleAnim_StartEffect141GridRiseAndFallingBurst, BattleAnim_StartEffect142StartEffect141Alias, BattleAnim_StartEffect143ModeOrbitAndMetadataBurst, BattleAnim_EffectStartNop,
 };
 static func_D_84390320 gParticleStateFunctionTable[] = {
-    func_8432F9A0, func_8432F9A0, InitComplexParticleSequence, ParticleEffect_SpecialCollisionSetup, ParticleEffect_MultiTextureSetup, ParticleEffect_DynamicCollisionSetup, ParticleEffect_RegisterPaletteVariants,
-    ParticleEffect_PaletteMultiBurst, func_8433DECC, func_8432F9A0, ParticleEffect_RegisterAnimationCallbacks, func_8432F9A0, func_8432F9A0, ParticleEffect_RegisterSpecific,
-    ParticleEffect_InitializeGroup, ParticleEffect_InitExplosionSetB, ParticleEffect_AdvancedMultiBurst, ParticleEffect_RegisterSmoke, ParticleEffect_ModeSpecificSetup, func_8432F9A0, InitParticleComboVariant,
-    ParticleEffect_RegisterModeSpecific, ParticleEffect_InitExplosionSet, ParticleEffect_RegisterAll, func_8432F9A0, ParticleEffect_PlaySoundAndReset, RegisterParticleEffect_ComplexMovement, InitAdvancedParticleCombo,
-    func_8433E33C, ParticleEffect_InitFireSet, ParticleEffect_HandleCollisionSetup, ParticleEffect_RegisterMultiple, func_8432F9A0, func_8432F9A0, InitParticleEffectGroup_Basic,
+    BattleAnim_EffectEndNop, BattleAnim_EffectEndNop, InitComplexParticleSequence, ParticleEffect_SpecialCollisionSetup, ParticleEffect_MultiTextureSetup, ParticleEffect_DynamicCollisionSetup, ParticleEffect_RegisterPaletteVariants,
+    ParticleEffect_PaletteMultiBurst, func_8433DECC, BattleAnim_EffectEndNop, ParticleEffect_RegisterAnimationCallbacks, BattleAnim_EffectEndNop, BattleAnim_EffectEndNop, ParticleEffect_RegisterSpecific,
+    ParticleEffect_InitializeGroup, ParticleEffect_InitExplosionSetB, ParticleEffect_AdvancedMultiBurst, ParticleEffect_RegisterSmoke, ParticleEffect_ModeSpecificSetup, BattleAnim_EffectEndNop, InitParticleComboVariant,
+    ParticleEffect_RegisterModeSpecific, ParticleEffect_InitExplosionSet, ParticleEffect_RegisterAll, BattleAnim_EffectEndNop, ParticleEffect_PlaySoundAndReset, RegisterParticleEffect_ComplexMovement, InitAdvancedParticleCombo,
+    func_8433E33C, ParticleEffect_InitFireSet, ParticleEffect_HandleCollisionSetup, ParticleEffect_RegisterMultiple, BattleAnim_EffectEndNop, BattleAnim_EffectEndNop, InitParticleEffectGroup_Basic,
     ParticleEffect_ConfigB, ParticleEffect_ConfigA, ParticleEffect_SpecialSetupA, ParticleEffect_SpecialSetupB, ParticleEffect_AdditionalSetupB, ParticleEffect_InitSparkleSet, ParticleEffect_Trigger56A74,
-    ParticleEffect_ModeSetup, ParticleEffect_CollisionSetup, ParticleEffect_ConfigVariantA, ParticleEffect_CombinedSetupA, ParticleEffect_CombinedSetupB, ParticleEffect_SpecialSetupC, func_8432F9A0,
+    ParticleEffect_ModeSetup, ParticleEffect_CollisionSetup, ParticleEffect_ConfigVariantA, ParticleEffect_CombinedSetupA, ParticleEffect_CombinedSetupB, ParticleEffect_SpecialSetupC, BattleAnim_EffectEndNop,
     ParticleEffect_RegisterColorAnim, ParticleEffect_RegisterHandler_WithParticleData, ParticleEffect_WaterAnimBurst2, ParticleEffect_MultiHandleSetup, InitParticleEffectSet_WithCustomCallback, ParticleEffect_InitSetC, ParticleEffect_SimpleNodeSetup,
     ParticleEffect_InitSetB, ParticleEffect_FullSetupB, func_8434A930, ParticleEffect_InitCombinedSet, ParticleEffect_WaterAnimFirework2, ParticleEffect_SimpleBurst3, ParticleEffect_PaletteMultiBurst3,
     ParticleEffect_FireworkBurst, ParticleEffect_FireballBurst, ParticleEffect_FireworkEntry, ParticleEffect_SimpleNodeBurst, InitParticleEffectSet_WithMultiple, InitParticleEffectSet_WithTimedFireball, InitParticleEffectSet_Variant2,
     InitParticleEffectSet_WithComplex, InitParticleEffectSet_Variant3, func_8433DFF4, ParticleEffect_AlphaFirework2, ParticleEffect_AlphaFirework, ParticleEffect_MultiNodeAEntry, ParticleEffect_TriggerAnother,
     ParticleEffect_TriggerDefault2, ParticleEffect_RegisterHandlers_4967C, ParticleEffect_CreateColorVariant, ParticleEffect_ConfigVariantB, ParticleEffect_RegisterAll_489FC, ParticleEffect_RegisterAll_489FC, ParticleEffect_ConfigureAndTrigger_4917C,
-    ParticleEffect_TriggerDefault4, ParticleEffect_StateCollisionSetupB, InitParticleEffectSet_ThreeInstances, RegisterParticleEffect_Burst, ParticleEffect_CollisionAndBurstSetup, func_8432F9A0,
+    ParticleEffect_TriggerDefault4, ParticleEffect_StateCollisionSetupB, InitParticleEffectSet_ThreeInstances, RegisterParticleEffect_Burst, ParticleEffect_CollisionAndBurstSetup, BattleAnim_EffectEndNop,
 };
 static u8 D_8438682C[] = {
     0x3F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00,
@@ -4224,8 +4224,8 @@ void TriggerMoveEvent(unk_BattlePlayerEntity* arg0, unk_D_800FCB18* arg1, s32 ar
 }
 
 void SetPlayerSidesFromActivePokemons(void) {
-    unk_BattlePlayerEntity* ptr1 = D_84390010[0];
-    unk_BattlePlayerEntity* ptr2 = D_84390010[1];
+    unk_BattlePlayerEntity* ptr1 = sActivePokemon[0];
+    unk_BattlePlayerEntity* ptr2 = sActivePokemon[1];
     u8 i;
     u8 sp20[4];
 
@@ -4253,8 +4253,8 @@ void SetPlayerSidesFromActivePokemons(void) {
 }
 
 void SetTeamScoresFromActivePokemons(void) {
-    unk_BattlePlayerEntity* ptr1 = D_84390010[0];
-    unk_BattlePlayerEntity* ptr2 = D_84390010[1];
+    unk_BattlePlayerEntity* ptr1 = sActivePokemon[0];
+    unk_BattlePlayerEntity* ptr2 = sActivePokemon[1];
     u8 sp24[4];
 
     sp24[0] = 0;
@@ -4441,155 +4441,155 @@ void RenderBattleMenuSelection(void) {
         case 0:
             switch (gBattleContext.unk_0001) {
                 case 0:
-                    func_8004BA88(0, 0xE);
+                    Audio_StartTrackForCategory(0, 0xE);
                     break;
 
                 case 1:
-                    func_8004BA88(0, 0xA);
+                    Audio_StartTrackForCategory(0, 0xA);
                     break;
 
                 case 2:
-                    func_8004BA88(0, 0xB);
+                    Audio_StartTrackForCategory(0, 0xB);
                     break;
 
                 case 3:
-                    func_8004BA88(0, 6);
+                    Audio_StartTrackForCategory(0, 6);
                     break;
 
                 case 4:
-                    func_8004BA88(0, 5);
+                    Audio_StartTrackForCategory(0, 5);
                     break;
 
                 case 5:
-                    func_8004BA88(0, 4);
+                    Audio_StartTrackForCategory(0, 4);
                     break;
 
                 case 6:
-                    func_8004BA88(0, 0);
+                    Audio_StartTrackForCategory(0, 0);
                     break;
 
                 case 7:
-                    func_8004BA88(0, 0xC);
+                    Audio_StartTrackForCategory(0, 0xC);
                     break;
 
                 case 8:
-                    func_8004BA88(0, 0xC);
+                    Audio_StartTrackForCategory(0, 0xC);
                     break;
             }
             break;
 
         case 1:
-            func_8004BA88(gBattleContext.unk_0003, 0xA);
+            Audio_StartTrackForCategory(gBattleContext.unk_0003, 0xA);
             break;
 
         case 2:
-            func_8004BA88(gBattleContext.unk_0003, 0xB);
+            Audio_StartTrackForCategory(gBattleContext.unk_0003, 0xB);
             break;
 
         case 3:
             switch (gBattleContext.unk_0002) {
                 case 0:
-                    func_8004BA88(gBattleContext.unk_0003, 6);
+                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 6);
                     break;
 
                 case 1:
-                    func_8004BA88(gBattleContext.unk_0003, 7);
+                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 7);
                     break;
 
                 case 2:
-                    func_8004BA88(gBattleContext.unk_0003, 8);
+                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 8);
                     break;
 
                 case 3:
-                    func_8004BA88(gBattleContext.unk_0003, 9);
+                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 9);
                     break;
             }
             break;
 
         case 4:
-            func_8004BA88(gBattleContext.unk_0003, 5);
+            Audio_StartTrackForCategory(gBattleContext.unk_0003, 5);
             break;
 
         case 5:
-            func_8004BA88(gBattleContext.unk_0003, 4);
+            Audio_StartTrackForCategory(gBattleContext.unk_0003, 4);
             break;
 
         case 6:
             switch (gBattleContext.unk_0002) {
                 case 0:
-                    func_8004BA88(gBattleContext.unk_0003, 0);
+                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 0);
                     break;
 
                 case 1:
-                    func_8004BA88(gBattleContext.unk_0003, 1);
+                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 1);
                     break;
 
                 case 2:
-                    func_8004BA88(gBattleContext.unk_0003, 2);
+                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 2);
                     break;
 
                 case 3:
-                    func_8004BA88(gBattleContext.unk_0003, 3);
+                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 3);
                     break;
             }
             break;
 
         case 7:
             if (gBattleContext.unk_0002 == 9) {
-                func_8004BA88(5, 0xD);
+                Audio_StartTrackForCategory(5, 0xD);
             } else if (gBattleContext.unk_0002 == 8) {
-                func_8004BA88(gBattleContext.unk_0003, 0xD);
+                Audio_StartTrackForCategory(gBattleContext.unk_0003, 0xD);
             } else {
-                func_8004BA88((gBattleContext.unk_0002 * 4) + gBattleContext.unk_0003, 0xC);
+                Audio_StartTrackForCategory((gBattleContext.unk_0002 * 4) + gBattleContext.unk_0003, 0xC);
             }
             break;
 
         case 8:
-            func_8004BA88(gBattleContext.unk_0003, 0xF);
+            Audio_StartTrackForCategory(gBattleContext.unk_0003, 0xF);
             break;
 
         case 10:
             switch (gBattleContext.unk_0001) {
                 case 0:
-                    func_8004BA88(0xFF, 0xE);
+                    Audio_StartTrackForCategory(0xFF, 0xE);
                     break;
 
                 case 1:
-                    func_8004BA88(0xFF, 0xA);
+                    Audio_StartTrackForCategory(0xFF, 0xA);
                     break;
 
                 case 2:
-                    func_8004BA88(0xFF, 0xB);
+                    Audio_StartTrackForCategory(0xFF, 0xB);
                     break;
 
                 case 3:
-                    func_8004BA88(0xFF, 6);
+                    Audio_StartTrackForCategory(0xFF, 6);
                     break;
 
                 case 4:
-                    func_8004BA88(0xFF, 5);
+                    Audio_StartTrackForCategory(0xFF, 5);
                     break;
 
                 case 5:
-                    func_8004BA88(0xFF, 4);
+                    Audio_StartTrackForCategory(0xFF, 4);
                     break;
 
                 case 6:
-                    func_8004BA88(0xFF, 0);
+                    Audio_StartTrackForCategory(0xFF, 0);
                     break;
 
                 case 7:
-                    func_8004BA88(0xFF, 0xC);
+                    Audio_StartTrackForCategory(0xFF, 0xC);
                     break;
 
                 case 8:
-                    func_8004BA88(0xFF, 0xC);
+                    Audio_StartTrackForCategory(0xFF, 0xC);
                     break;
             }
             break;
 
         case 9:
-            func_8004BA88(0, 0x10);
+            Audio_StartTrackForCategory(0, 0x10);
             break;
     }
 }
@@ -4725,7 +4725,7 @@ void MainUpdateLoop(UNUSED CameraStruct* arg0) {
     Timer_UpdateCounters();
     ProcessPendingActionScripts();
     Particles_UpdateAll();
-    func_843592E0();
+    BattleAnim_NoopUpdateHook();
 }
 
 void SetActionScriptSubIndex(u8 arg0) {
@@ -4798,7 +4798,7 @@ void InitSingleEntityActionScriptVariant(s32 arg0, unk_BattlePlayerEntity* arg1)
     gCurrentActionScriptSubId = 5;
 }
 
-void func_8432C748(s32 arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_QueueEffectList6Alt(s32 arg0, unk_BattlePlayerEntity* arg1) {
     InitSingleEntityActionScript(arg0, arg1);
 }
 
@@ -4843,7 +4843,7 @@ void InitWaterTextures(void) {
     for (i = 0; i < 256; i++) { gWaterTexture[i] = NULL; }
     // clang-format on
 
-    LoadWaterTexturesFromList(func_80019EA0(0));
+    LoadWaterTexturesFromList(BattleAnim_LoadResourceTable(0));
 }
 
 void BuildMessageString(s16 arg0) {

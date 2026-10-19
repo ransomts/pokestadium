@@ -117,7 +117,7 @@ void InitMonData(PokemonData* arg0) {
 
     bzero(arg0, sizeof(PokemonData));
 
-    arg0->unk_00.unk_00 = func_8002816C() & 0xFF;
+    arg0->unk_00.unk_00 = Save_GetSelectedPokemonId() & 0xFF;
     var_a2 = MenuItem_GetHeldItemId(GetCurrentPokemonBank());
     i = 0;
     if (var_a2 == 7) {
@@ -165,7 +165,7 @@ void InitMonData(PokemonData* arg0) {
 
     SetMonNickname(arg0);
 
-    if (func_8002816C() & 0x100) {
+    if (Save_GetSelectedPokemonId() & 0x100) {
         arg0->unk_08 = 0xA8;
     } else {
         arg0->unk_08 = 0xA7;
@@ -327,7 +327,7 @@ void MenuEntry_Init(unk_func_8820BE14_02C_078_034* arg0, s32 arg1, s32 arg2, Mem
     s32 sp4C = GetMenuEntryWidth() + 0x10;
     UNUSED s32 pad[2];
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_8820BE14_02C_078_034));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_8820BE14_02C_078_034));
 
     arg0->unk_00.unk_20 = MenuEntry_ProcessInput;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -376,7 +376,7 @@ void MenuList_Init(unk_func_8820BE14_02C_078* arg0, s32 arg1, s32 arg2, s32 arg3
     s32 sp48 = MenuEntry_CalcMaxWidth() + 0x10;
     UNUSED s32 pad2;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_8820BE14_02C_078));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_8820BE14_02C_078));
 
     arg0->unk_00.unk_20 = MenuList_ProcessInput;
     arg0->unk_00.unk_10.unk_00 = ((arg3 - sp48) / 2) + arg1;
@@ -626,7 +626,7 @@ void LevelLabel_DrawBackground(s32 arg0, s32 arg1, unk_func_88205880_00D0* arg2,
 
 
 void LevelLabelFragment_Init(unk_func_882079D8* arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88205880_00D0* arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_882079D8));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_882079D8));
 
     arg0->unk_00.unk_18 = LevelLabelFragment_DrawIfData;
     arg0->unk_00.unk_10.unk_00 = arg1;
@@ -1121,7 +1121,7 @@ unk_func_88205880_00D0* MenuDualList_GetSelectedItem(unk_func_8820B12C_02C* arg0
 }
 
 void MoveTargetSelector_Init(unk_func_88208C5C* arg0, unk_func_8850143C* arg1) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_88208C5C));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88208C5C));
 
     arg0->unk_00.unk_18 = MoveTargetSelector_Draw;
     arg0->unk_00.unk_14.unk_00 = arg1->unk_00.unk_14.unk_00;
@@ -1206,7 +1206,7 @@ void Scroll_SetOffset(unk_func_88208C5C* arg0, u32 arg1) {
 }
 
 void MoveIconList_Init(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(unk_func_8820BE14_02C_070));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8820BE14_02C_070));
 
     arg0->unk_0000.unk_18 = RenderMoveInfoPanel;
     arg0->unk_0000.unk_10.unk_00 = arg1;
@@ -1348,7 +1348,7 @@ void MonPreview_SetMon(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* 
     arg0->unk_002C = arg1;
     if (arg1 != NULL) {
         arg0->unk_0030 = (arg0->unk_0030 + 1) & 1;
-        func_8001B0DC((u32)arg0->unk_0039[arg0->unk_0030] & ~7, 0, arg0->unk_002C);
+        PokeIcon_LoadModelTextureForMon((u32)arg0->unk_0039[arg0->unk_0030] & ~7, 0, arg0->unk_002C);
     }
 }
 
@@ -1515,7 +1515,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     arg0->unk_8C = arg4;
     arg0->unk_80 = arg8;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, sizeof(TextObjectRenderer));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(TextObjectRenderer));
 
     arg0->unk_00.unk_1C = UIState_Update;
     arg0->unk_00.unk_20 = UI_HandleInput;
@@ -1608,7 +1608,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     }
 
     arg0->unk_74->unk_28 = mem_pool_alloc(argA, sizeof(unk_func_88001300_03C));
-    ((func8850C284)Memmap_GetFragmentVaddr(func_8850C284))(arg0->unk_74->unk_28, 4, 2, argA);
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_74->unk_28, 4, 2, argA);
     ((func8850BF80)Memmap_GetFragmentVaddr(Screen_SetFragment))(arg0->unk_74, arg0->unk_74->unk_28);
 
     for (j = 0; j != 8; j++) {
@@ -1629,11 +1629,11 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(arg0->unk_2C, temp_s0_3);
 
     arg0->unk_64 = mem_pool_alloc(argA, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_64, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_64, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(temp_s0_3, arg0->unk_64);
 
     arg0->unk_68 = mem_pool_alloc(argA, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_68, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_68, 0, 0);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, arg0->unk_68);
 
     for (i = 0; i != 8; i++) {
@@ -1656,7 +1656,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     }
 
     arg0->unk_6C = mem_pool_alloc(argA, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_6C, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_6C, 0, 0);
     ((func88500A3C)Memmap_GetFragmentVaddr(Fragment_AddToParent))(arg0->unk_64, arg0->unk_6C);
 
     for (j = 0; j != 2; j++) {
@@ -2014,7 +2014,7 @@ void SaveChangesAndUpdateUI(TextObjectRenderer* arg0, s32 arg1) {
     }
 
     if (MoveTargetSelector_GetSelection(arg0->unk_30[0]) == 0x30000) {
-        func_8002817C(0, 0);
+        Save_SetSelectedPokemonId(0, 0);
         GbsProcessBankWrites(2);
         GbsSyncBank(2);
     }
@@ -2278,7 +2278,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
 
     spA0 = NULL;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(arg0, 0x9C);
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, 0x9C);
 
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;

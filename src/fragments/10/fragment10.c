@@ -656,7 +656,7 @@ void ResultScreen_DrawUI(s32 arg0) {
     Text_SetupDL();
 }
 
-void func_86401A9C(s32 arg0) {
+void DrowzeeGame_DrawFrame(s32 arg0) {
     Stage_BeginDisplayList();
     Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
 
@@ -705,7 +705,7 @@ void ResultScreen_IntroSequence(void) {
         Hud_RenderHealthBars(0);
         Hud_UpdateAnimation();
         ResultScreen_ResetAnim();
-        func_86401A9C(0);
+        DrowzeeGame_DrawFrame(0);
 
         if (var_s1 < 0x11) {
             var_s1++;
@@ -735,12 +735,12 @@ void ResultScreen_IntroSequence(void) {
             Hud_RenderHealthBars(1);
             Hud_UpdateAnimation();
             ResultScreen_ResetAnim();
-            func_86401A9C(1);
+            DrowzeeGame_DrawFrame(1);
         }
     }
 }
 
-void func_86401D1C(void) {
+void DrowzeeGame_MainLoop(void) {
     static u8 D_864029DC = 0;
     static u8 D_864029E0 = 0;
 
@@ -753,7 +753,7 @@ void func_86401D1C(void) {
         Hud_RenderHealthBars(2);
         Hud_UpdateAnimation();
         ResultScreen_ResetAnim();
-        func_86401A9C(2);
+        DrowzeeGame_DrawFrame(2);
 
         while (var_s2 != 0) {
             if (gResultFlag_Special != 0) {
@@ -790,7 +790,7 @@ void func_86401D1C(void) {
             Hud_RenderHealthBars(2);
             Hud_UpdateAnimation();
             ResultScreen_ResetAnim();
-            func_86401A9C(2);
+            DrowzeeGame_DrawFrame(2);
         }
     }
 }
@@ -808,7 +808,7 @@ void ResultScreen_OutroSequence(void) {
         Hud_RenderHealthBars(3);
         Hud_UpdateAnimation();
         ResultScreen_ResetAnim();
-        func_86401A9C(3);
+        DrowzeeGame_DrawFrame(3);
     }
 }
 
@@ -956,7 +956,7 @@ void ResultScreen_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     ResultScreen_InitScene();
     Stage_Set(sp24);
     ResultScreen_IntroSequence();
-    func_86401D1C();
+    DrowzeeGame_MainLoop();
     ResultScreen_OutroSequence();
     Stage_Destroy();
     FontManager_Free();

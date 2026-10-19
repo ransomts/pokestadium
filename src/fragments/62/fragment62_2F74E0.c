@@ -82,15 +82,15 @@ s32 Battle_ComputeWinner(void) {
     s32 var_s5 = 0;
     s32 var_s6 = 0;
 
-    for (i = 0; i < func_84307EC4(D_84390010[0]); i++) {
-        ptr = &D_84390010[0]->unk_724->unk_01C[i];
+    for (i = 0; i < BattleScene_GetSelectedSideTeamSize(sActivePokemon[0]); i++) {
+        ptr = &sActivePokemon[0]->unk_724->unk_01C[i];
         if (ptr->unk_02 != 0) {
             var_s3++;
         }
     }
 
-    for (i = 0; i < func_84307EC4(D_84390010[1]); i++) {
-        ptr = &D_84390010[1]->unk_724->unk_01C[i];
+    for (i = 0; i < BattleScene_GetSelectedSideTeamSize(sActivePokemon[1]); i++) {
+        ptr = &sActivePokemon[1]->unk_724->unk_01C[i];
         if (ptr->unk_02 != 0) {
             var_s4++;
         }
@@ -103,13 +103,13 @@ s32 Battle_ComputeWinner(void) {
         return 2;
     }
 
-    for (i = 0; i < func_84307EC4(D_84390010[0]); i++) {
-        ptr = &D_84390010[0]->unk_724->unk_01C[i];
+    for (i = 0; i < BattleScene_GetSelectedSideTeamSize(sActivePokemon[0]); i++) {
+        ptr = &sActivePokemon[0]->unk_724->unk_01C[i];
         var_s5 += Battle_GetMoveScore(ptr->unk_02, ptr->unk_26);
     }
 
-    for (i = 0; i < func_84307EC4(D_84390010[1]); i++) {
-        ptr = &D_84390010[1]->unk_724->unk_01C[i];
+    for (i = 0; i < BattleScene_GetSelectedSideTeamSize(sActivePokemon[1]); i++) {
+        ptr = &sActivePokemon[1]->unk_724->unk_01C[i];
         var_s6 += Battle_GetMoveScore(ptr->unk_02, ptr->unk_26);
     }
 
@@ -235,13 +235,13 @@ void Battle_UpdateHPScale(void) {
     PokemonData* ptr3;
     PokemonData* ptr4;
 
-    ptr1 = &D_84390010[0]->unk_654;
-    ptr2 = &D_84390010[1]->unk_654;
-    temp_a2 = &D_84390010[0]->unk_654.unk_38;
-    temp_a3 = &D_84390010[1]->unk_654.unk_38;
+    ptr1 = &sActivePokemon[0]->unk_654;
+    ptr2 = &sActivePokemon[1]->unk_654;
+    temp_a2 = &sActivePokemon[0]->unk_654.unk_38;
+    temp_a3 = &sActivePokemon[1]->unk_654.unk_38;
 
-    ptr3 = &D_84390010[0]->unk_724->unk_01C[ptr1->unk_08];
-    ptr4 = &D_84390010[1]->unk_724->unk_01C[ptr2->unk_08];
+    ptr3 = &sActivePokemon[0]->unk_724->unk_01C[ptr1->unk_08];
+    ptr4 = &sActivePokemon[1]->unk_724->unk_01C[ptr2->unk_08];
 
     if (gBattleUpdateHPFlag != 0) {
         gPlayerScaleFactors[0] = temp_a2->unk_0C = temp_a2->unk_28;
@@ -347,8 +347,8 @@ void Battle_HandleConfirmInput(s32 arg0) {
     UNUSED s32 pad;
     Controller* cont;
 
-    sp2C = &D_84390010[arg0]->unk_654;
-    sp28 = &D_84390010[arg0 == 0]->unk_654;
+    sp2C = &sActivePokemon[arg0]->unk_654;
+    sp28 = &sActivePokemon[arg0 == 0]->unk_654;
     cont = sp2C->unk_C8;
 
     if ((sp2C->unk_10 != 3) || !(cont->buttonPressed & 0x20)) {
@@ -357,7 +357,7 @@ void Battle_HandleConfirmInput(s32 arg0) {
 
     if (sp2C->unk_2D == 0x10) {
         if (sp2C->unk_04 == 2) {
-            Battle_UpdateControllerRef(D_84390010[arg0]);
+            Battle_UpdateControllerRef(sActivePokemon[arg0]);
         }
         PlaySoundEffect_Confirm();
         sp2C->unk_10 = 2;
@@ -365,7 +365,7 @@ void Battle_HandleConfirmInput(s32 arg0) {
 
     if (sp28->unk_2D != 0x10) {
         if (sp2C->unk_04 == 2) {
-            Battle_UpdateControllerRef(D_84390010[arg0]);
+            Battle_UpdateControllerRef(sActivePokemon[arg0]);
         }
         PlaySoundEffect_Confirm();
         sp2C->unk_10 = 0;
@@ -374,11 +374,11 @@ void Battle_HandleConfirmInput(s32 arg0) {
 
 void Battle_InitLighting(void) {
     Battle_InitTimers();
-    func_84370B7C(D_84390010[0]);
-    func_84370B7C(D_84390010[1]);
+    func_84370B7C(sActivePokemon[0]);
+    func_84370B7C(sActivePokemon[1]);
 
-    gPlayerScaleFactors[0] = D_84390010[0]->unk_654.unk_38.unk_0C;
-    gPlayerScaleFactors[1] = D_84390010[1]->unk_654.unk_38.unk_0C;
+    gPlayerScaleFactors[0] = sActivePokemon[0]->unk_654.unk_38.unk_0C;
+    gPlayerScaleFactors[1] = sActivePokemon[1]->unk_654.unk_38.unk_0C;
 
     ResetBattleAfterMove(0, 1);
     ResetBattleAfterMove(1, 0);
@@ -425,7 +425,7 @@ s32 Battle_HandleSimultaneousInput(unk_BattlePlayerEntity* arg0, unk_BattlePlaye
 
         if (gBattleTimer == 20.0f) {
             PlaySoundEffect_Cancel();
-            gRandomMoveSlot = func_84383B5C(0);
+            gRandomMoveSlot = BattleAI_ChooseAction(0);
             sp1C->unk_1C = 0;
             sp1C->unk_18 = gRandomMoveSlot - 4;
             sp1C->unk_1E = 0;
@@ -443,7 +443,7 @@ s32 Battle_HandleSimultaneousInput(unk_BattlePlayerEntity* arg0, unk_BattlePlaye
 
         if (gBattleTimer == 20.0f) {
             PlaySoundEffect_Cancel();
-            gRandomMoveSlot = func_84383B5C(0);
+            gRandomMoveSlot = BattleAI_ChooseAction(0);
             sp1C->unk_1C = 0;
             sp1C->unk_18 = gRandomMoveSlot - 4;
             sp1C->unk_1E = 0;
@@ -562,7 +562,7 @@ void Battle_RandomizeMoveSlot(UNUSED unk_D_800FCB18* arg0, UNUSED unk_D_800FCB18
                    UNUSED unk_BattlePlayerAnimState* arg3, UNUSED unk_BattlePlayerEntity* arg4) {
     if ((gBattleTimer == 1.0f) && (gRandomMoveSelectedFlag == 0)) {
         gRandomMoveSelectedFlag = 1;
-        gRandomMoveSlot = func_84383B5C(0);
+        gRandomMoveSlot = BattleAI_ChooseAction(0);
     }
 }
 
@@ -629,7 +629,7 @@ s32 Battle_UpdateMoveSelection(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEnt
 
 void Battle_HandleMenuNavigation(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* sp18 = &arg0->unk_654;
-    unk_BattlePlayerAnimState* temp_a0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
+    unk_BattlePlayerAnimState* temp_a0 = &sActivePokemon[IsPrimaryEntity(arg0) == 0]->unk_654;
 
     if (arg0->unk_720->unk_01 == 1) {
         gActiveController1 = &gControllers[arg0->unk_720->unk_08[0]->unk_001];
@@ -677,7 +677,7 @@ void Battle_HandleMenuNavigation(unk_BattlePlayerEntity* arg0) {
 
 void Battle_ClearMoveSelection(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_v0 = &arg0->unk_654;
-    unk_D_800FCB18* temp_v1 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
+    unk_D_800FCB18* temp_v1 = &sActivePokemon[IsPrimaryEntity(arg0) == 0]->unk_654.unk_38;
 
     if (temp_v1->unk_4C & 0x20) {
         arg0->unk_654.unk_38.unk_5A = 0xFF;
@@ -697,14 +697,14 @@ s32 Battle_ValidateMoveSelection(unk_BattlePlayerEntity* arg0) {
     }
 
     Battle_SetEntityPosition(arg0);
-    func_84319408(arg0, 3);
+    BattleScene_BuildParticipantMessage(arg0, 3);
     PlaySoundEffect_Error();
     return 0;
 }
 
 void Battle_InvalidMoveFeedback(unk_BattlePlayerEntity* arg0) {
     Battle_SetEntityPosition(arg0);
-    func_84319408(arg0, 4);
+    BattleScene_BuildParticipantMessage(arg0, 4);
 }
 
 void Battle_UpdateActiveController(unk_BattlePlayerEntity* arg0, s32 arg1) {
@@ -889,7 +889,7 @@ s32 Battle_CheckInputTimeout(unk_BattlePlayerEntity* arg0) {
                 temp_v0->unk_10 = 1;
             }
             Battle_SetEntityPosition(arg0);
-            func_84319408(arg0, 0);
+            BattleScene_BuildParticipantMessage(arg0, 0);
         } else if (cont->buttonPressed & 0x20) {
             Battle_SetEntityPosition(arg0);
             temp_v0->unk_10 = 0;
@@ -913,14 +913,14 @@ s32 Battle_HandleMoveError(unk_BattlePlayerEntity* arg0) {
     if (!(ptr->unk_32[sp24->unk_14] & 0x3F)) {
         PlaySoundEffect_Error();
         Battle_SetEntityPosition(arg0);
-        func_84319408(arg0, 1);
+        BattleScene_BuildParticipantMessage(arg0, 1);
         return 1;
     }
 
     if ((ptr->unk_52 & 0xF) && (sp24->unk_14 == (ptr->unk_52 >> 4))) {
         PlaySoundEffect_Error();
         Battle_SetEntityPosition(arg0);
-        func_84319408(arg0, 2);
+        BattleScene_BuildParticipantMessage(arg0, 2);
         return 1;
     }
 
@@ -1023,7 +1023,7 @@ void Battle_TriggerMoveAnim(unk_BattlePlayerEntity* arg0) {
 
 void Battle_HandleCancelInput(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* temp_v1 = &arg0->unk_654;
-    unk_BattlePlayerAnimState* temp_t0 = &D_84390010[IsPrimaryEntity(arg0) == 0]->unk_654;
+    unk_BattlePlayerAnimState* temp_t0 = &sActivePokemon[IsPrimaryEntity(arg0) == 0]->unk_654;
 
     if (temp_v1->unk_10 == 0) {
         if (arg0->unk_720->unk_01 == 1) {
@@ -1122,17 +1122,17 @@ s32 Battle_UpdateDualEntityState(unk_BattlePlayerEntity* arg0, unk_BattlePlayerE
 }
 
 void Entities_ShowAllModels(void) {
-    D_84390010[0]->unk_728.unk_168->unk_00.unk_01 |= 1;
-    D_84390010[0]->unk_728.unk_000.unk_000.unk_01 |= 1;
-    D_84390010[1]->unk_728.unk_168->unk_00.unk_01 |= 1;
-    D_84390010[1]->unk_728.unk_000.unk_000.unk_01 |= 1;
+    sActivePokemon[0]->unk_728.unk_168->unk_00.unk_01 |= 1;
+    sActivePokemon[0]->unk_728.unk_000.unk_000.unk_01 |= 1;
+    sActivePokemon[1]->unk_728.unk_168->unk_00.unk_01 |= 1;
+    sActivePokemon[1]->unk_728.unk_000.unk_000.unk_01 |= 1;
 }
 
 void Entities_HideAllModels(void) {
-    D_84390010[0]->unk_728.unk_168->unk_00.unk_01 &= ~1;
-    D_84390010[0]->unk_728.unk_000.unk_000.unk_01 &= ~1;
-    D_84390010[1]->unk_728.unk_168->unk_00.unk_01 &= ~1;
-    D_84390010[1]->unk_728.unk_000.unk_000.unk_01 &= ~1;
+    sActivePokemon[0]->unk_728.unk_168->unk_00.unk_01 &= ~1;
+    sActivePokemon[0]->unk_728.unk_000.unk_000.unk_01 &= ~1;
+    sActivePokemon[1]->unk_728.unk_168->unk_00.unk_01 &= ~1;
+    sActivePokemon[1]->unk_728.unk_000.unk_000.unk_01 &= ~1;
 }
 
 void DemoFeedScriptedInput(void) {
@@ -1174,20 +1174,20 @@ void Battle_SyncMoveFlags(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* 
 }
 
 void Battle_DemoUpdate(void) {
-    unk_BattlePlayerAnimState* sp24 = &D_84390010[0]->unk_654;
-    unk_BattlePlayerAnimState* sp20 = &D_84390010[1]->unk_654;
-    unk_D_800FCB18* sp1C = &D_84390010[0]->unk_654.unk_38;
-    unk_D_800FCB18* sp18 = &D_84390010[1]->unk_654.unk_38;
+    unk_BattlePlayerAnimState* sp24 = &sActivePokemon[0]->unk_654;
+    unk_BattlePlayerAnimState* sp20 = &sActivePokemon[1]->unk_654;
+    unk_D_800FCB18* sp1C = &sActivePokemon[0]->unk_654.unk_38;
+    unk_D_800FCB18* sp18 = &sActivePokemon[1]->unk_654.unk_38;
     Controller* cont = &gDemoController;
 
     DemoFeedScriptedInput();
-    Battle_SyncMoveFlags(D_84390010[0], D_84390010[1]);
-    Battle_SyncMoveFlags(D_84390010[1], D_84390010[0]);
+    Battle_SyncMoveFlags(sActivePokemon[0], sActivePokemon[1]);
+    Battle_SyncMoveFlags(sActivePokemon[1], sActivePokemon[0]);
 
     if (cont->buttonPressed & 0x20) {
         Entities_ShowAllModels();
-        TriggerPokemonAnimAndAction(D_84390010[0]);
-        TriggerPokemonAnimAndAction(D_84390010[1]);
+        TriggerPokemonAnimAndAction(sActivePokemon[0]);
+        TriggerPokemonAnimAndAction(sActivePokemon[1]);
     }
 
     if (cont->buttonPressed & 0x10) {
@@ -1262,25 +1262,25 @@ void Battle_UpdateEntityInteraction(unk_BattlePlayerEntity* arg0, unk_BattlePlay
 }
 
 void Battle_UpdateEntities(void) {
-    unk_BattlePlayerAnimState* sp24 = &D_84390010[0]->unk_654;
-    unk_BattlePlayerAnimState* sp20 = &D_84390010[1]->unk_654;
-    unk_D_800FCB18* sp1C = &D_84390010[0]->unk_654.unk_38;
-    unk_D_800FCB18* sp18 = &D_84390010[1]->unk_654.unk_38;
+    unk_BattlePlayerAnimState* sp24 = &sActivePokemon[0]->unk_654;
+    unk_BattlePlayerAnimState* sp20 = &sActivePokemon[1]->unk_654;
+    unk_D_800FCB18* sp1C = &sActivePokemon[0]->unk_654.unk_38;
+    unk_D_800FCB18* sp18 = &sActivePokemon[1]->unk_654.unk_38;
 
-    if (D_84390010[0]->unk_724->unk_000 & 2) {
+    if (sActivePokemon[0]->unk_724->unk_000 & 2) {
         gBattleControllerId = gCurrentDamage;
-        Battle_UpdateMoveSelection(D_84390010[0], D_84390010[1]);
+        Battle_UpdateMoveSelection(sActivePokemon[0], sActivePokemon[1]);
         gCurrentDamage = gBattleControllerId;
     } else {
-        Battle_UpdateEntityInteraction(D_84390010[0], D_84390010[1]);
+        Battle_UpdateEntityInteraction(sActivePokemon[0], sActivePokemon[1]);
     }
 
-    if (D_84390010[1]->unk_724->unk_000 & 2) {
+    if (sActivePokemon[1]->unk_724->unk_000 & 2) {
         gBattleControllerId = gCurrentDamage;
-        Battle_UpdateMoveSelection(D_84390010[1], D_84390010[0]);
+        Battle_UpdateMoveSelection(sActivePokemon[1], sActivePokemon[0]);
         gCurrentDamage = gBattleControllerId;
     } else {
-        Battle_UpdateEntityInteraction(D_84390010[1], D_84390010[0]);
+        Battle_UpdateEntityInteraction(sActivePokemon[1], sActivePokemon[0]);
     }
 
     if ((sp24->unk_10 == 3) && (sp20->unk_10 == 3)) {
@@ -1289,15 +1289,15 @@ void Battle_UpdateEntities(void) {
         }
 
         if (sp24->unk_04 == 2) {
-            Battle_ClearMoveSelection(D_84390010[0]);
+            Battle_ClearMoveSelection(sActivePokemon[0]);
         } else {
-            Battle_ApplyMoveAnimation(D_84390010[0]);
+            Battle_ApplyMoveAnimation(sActivePokemon[0]);
         }
 
         if (sp20->unk_04 == 2) {
-            Battle_ClearMoveSelection(D_84390010[1]);
+            Battle_ClearMoveSelection(sActivePokemon[1]);
         } else {
-            Battle_ApplyMoveAnimation(D_84390010[1]);
+            Battle_ApplyMoveAnimation(sActivePokemon[1]);
         }
 
         if ((sp24->unk_04 == 2) || (sp20->unk_04 == 2)) {
@@ -1306,11 +1306,11 @@ void Battle_UpdateEntities(void) {
             DetermineTurnOrder();
         }
     } else {
-        if (!(D_84390010[0]->unk_724->unk_000 & 2) && !(sp1C->unk_4D & 0x60) && !(sp1C->unk_4C & 0x12)) {
+        if (!(sActivePokemon[0]->unk_724->unk_000 & 2) && !(sp1C->unk_4D & 0x60) && !(sp1C->unk_4C & 0x12)) {
             Battle_HandleConfirmInput(0);
         }
 
-        if (!(D_84390010[1]->unk_724->unk_000 & 2) && !(sp18->unk_4D & 0x60) && !(sp18->unk_4C & 0x12)) {
+        if (!(sActivePokemon[1]->unk_724->unk_000 & 2) && !(sp18->unk_4D & 0x60) && !(sp18->unk_4C & 0x12)) {
             Battle_HandleConfirmInput(1);
         }
     }
@@ -1326,12 +1326,12 @@ void Battle_UpdateMain(void) {
 }
 
 void Battle_UpdateFrame(void) {
-    unk_BattlePlayerAnimState* sp1C = &D_84390010[0]->unk_654;
-    unk_BattlePlayerAnimState* sp18 = &D_84390010[1]->unk_654;
+    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->unk_654;
+    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->unk_654;
 
     if (Battle_UpdateResultPhase() == 0) {
-        D_84390010[0]->unk_4C8 = 0;
-        D_84390010[1]->unk_4C8 = 0;
+        sActivePokemon[0]->unk_4C8 = 0;
+        sActivePokemon[1]->unk_4C8 = 0;
 
         if (sp1C->unk_2A != 1) {
             sp1C->unk_2A = 0;

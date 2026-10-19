@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-void func_86300C50(s32);
+void JigglypuffGame_UpdatePlayerPhysics(s32);
 
 
 #endif // _FRAGMENT9_H_

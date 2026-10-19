@@ -375,7 +375,7 @@ s32 GetLog2(s32 size) {
     return size_log2;
 }
 
-void func_814024C0(void) {
+void ParticleGfx_NoopStub2(void) {
 }
 
 void func_814024C8(void) {
@@ -671,7 +671,7 @@ void Gfx_DrawQuad(Vtx* arg0) {
     gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
-void func_81404AB4(void) {
+void ParticleGfx_NoopStub10(void) {
 }
 
 void Gfx_DrawQuadRotated(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3) {

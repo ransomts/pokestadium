@@ -106,7 +106,7 @@ void Dialog_Create(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
         PtrList_Insert(&arg0->unk_34, GetMessageString(NULL, 0, arg4, 5), 2);
     }
     sp7C = (arg0->unk_34.unk_08 * 0x1C) + 0x38;
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_889000C4));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_889000C4));
     arg0->unk_00.unk_20 = Dialog_HandleInput;
     if (arg2 != NULL) {
         arg0->unk_00.unk_10.unk_00 = (arg2->unk_00.unk_14.unk_00 - var_s1) / 2;
@@ -127,7 +127,7 @@ void Dialog_Create(unk_func_889000C4* arg0, s32 arg1, unk_func_88001300_038* arg
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &temp_s0->unk_00.unk_00);
 
     arg0->unk_40 = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_40, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_40, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&temp_s0->unk_00.unk_00, &arg0->unk_40->unk_00.unk_00);
 
     temp_s0_2 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
@@ -290,7 +290,7 @@ void Dialog_CreateOptionPanel(unk_func_889000C4_044* arg0, char** arg1, unk_func
     unk_func_8850878C* sp44;
     unk_func_8850878C* sp40;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(func_885007CC))(&arg0->unk_00, sizeof(unk_func_889000C4_044));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_889000C4_044));
     arg0->unk_00.unk_10.unk_00 = (arg2->unk_00.unk_14.unk_00 - 0x1A0) / 2;
     arg0->unk_00.unk_10.unk_02 = (arg2->unk_00.unk_14.unk_02 - 0x108) / 2;
 
@@ -306,7 +306,7 @@ void Dialog_CreateOptionPanel(unk_func_889000C4_044* arg0, char** arg1, unk_func
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&arg0->unk_2C->unk_00.unk_00, &sp50->unk_00.unk_00);
 
     arg0->unk_30 = mem_pool_alloc(arg3, sizeof(unk_func_88500994));
-    ((func88500994)Memmap_GetFragmentVaddr(func_88500994))(arg0->unk_30, 0, 0);
+    ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_30, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(Fragment_SetChild))(&sp50->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
 
     sp4C = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));

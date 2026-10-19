@@ -168,7 +168,7 @@ s32 Fragment63_RenderCallbackBarEnv(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void func_84B0C174(unk_D_84B25AC0_000* arg0, unk_D_86002F34* arg1, s16 arg2, s16 arg3, s16 arg4) {
+void BattlePrepStarBurst_InitSparkSlot(unk_D_84B25AC0_000* arg0, unk_D_86002F34* arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_04 = 0;
     arg0->unk_06 = arg4;
     arg0->unk_08.r = 0x50;
@@ -181,7 +181,7 @@ void func_84B0C174(unk_D_84B25AC0_000* arg0, unk_D_86002F34* arg1, s16 arg2, s16
     arg0->unk_00->unk_024.z = -289.0f;
 }
 
-void func_84B0C278(unk_D_84B25AC0_000* arg0) {
+void BattlePrepStarBurst_UpdateSparkSlot(unk_D_84B25AC0_000* arg0) {
     s16 temp_v0;
     Fragment2_1GraphNode* temp_v1;
     Fragment2_1GraphNode* temp_v1_2;
@@ -213,7 +213,7 @@ s32 Fragment63_RenderCallbackIconEnv(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-void func_84B0C45C(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, s16 arg2, s16 arg3, s16 arg4) {
+void BattlePrepStarBurst_InitRainbowParticle(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_06 = 0;
     arg0->unk_04 = 0;
     arg0->unk_08 = arg4;
@@ -224,7 +224,7 @@ void func_84B0C45C(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, s16 arg2, s16
     arg0->unk_00->unk_024.z = -289.0f;
 }
 
-void func_84B0C534(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1) {
+void BattlePrepStarBurst_SpawnTrailCopy(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1) {
     arg0->unk_06 = 0;
     arg0->unk_04 = 1;
     arg0->unk_0A = arg1->unk_0A;
@@ -234,7 +234,7 @@ void func_84B0C534(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1) {
     arg0->unk_00->unk_030 = arg1->unk_00->unk_030;
 }
 
-void func_84B0C5E4(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1, s16 arg2) {
+void BattlePrepStarBurst_SpawnFlashCopy(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1, s16 arg2) {
     arg0->unk_06 = 0;
     arg0->unk_04 = 2;
     arg0->unk_08 = arg1->unk_08 + arg2;
@@ -246,7 +246,7 @@ void func_84B0C5E4(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1, s16 arg2)
     Vec3f_Set(&arg0->unk_00->unk_030, 0.5f, 0.5f, 0.5f);
 }
 
-void func_84B0C6B4(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, Vec3f* arg2) {
+void BattlePrepStarBurst_SpawnScatterParticle(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, Vec3f* arg2) {
     arg0->unk_06 = 0;
     arg0->unk_04 = 3;
     GfxColor_SetRGBA(&arg0->unk_0A, 0xFF, 0xFF, 0xC8, 0xFF);
@@ -259,7 +259,7 @@ void func_84B0C6B4(unk_D_84B25AC0_0A0* arg0, unk_D_86002F34* arg1, Vec3f* arg2) 
     arg0->unk_00->unk_024.z = arg2->z;
 }
 
-void func_84B0C7D0(unk_D_84B25AC0_0A0* arg0) {
+void BattlePrepStarBurst_UpdateRainbowGradientStep(unk_D_84B25AC0_0A0* arg0) {
     f32 temp_fv0;
     Color_RGBA8* color1;
     Color_RGBA8* color2;
@@ -279,19 +279,19 @@ void func_84B0C7D0(unk_D_84B25AC0_0A0* arg0) {
         arg0->unk_00->unk_024.y += (3.0f * SINS(arg0->unk_08)) - (arg0->unk_06 * 0.0625f);
         Vec3f_Set(&arg0->unk_00->unk_030, temp_fv0, temp_fv0, temp_fv0);
         if (!(arg0->unk_06 & 3)) {
-            func_84B0C534(&arg0[arg0->unk_06 / 4 + 1], arg0);
+            BattlePrepStarBurst_SpawnTrailCopy(&arg0[arg0->unk_06 / 4 + 1], arg0);
         }
         arg0->unk_06++;
     } else if (arg0->unk_06 == 0x10) {
-        func_84B0C5E4(&arg0[5], &arg0[0], -0x6500);
-        func_84B0C5E4(&arg0[6], &arg0[0], 0);
-        func_84B0C5E4(&arg0[7], &arg0[0], 0x6500);
+        BattlePrepStarBurst_SpawnFlashCopy(&arg0[5], &arg0[0], -0x6500);
+        BattlePrepStarBurst_SpawnFlashCopy(&arg0[6], &arg0[0], 0);
+        BattlePrepStarBurst_SpawnFlashCopy(&arg0[7], &arg0[0], 0x6500);
         GraphNode_Reset(arg0->unk_00);
         arg0->unk_06 = -1;
     }
 }
 
-void func_84B0CA34(unk_D_84B25AC0_0A0* arg0) {
+void BattlePrepStarBurst_UpdateTrailFadeStep(unk_D_84B25AC0_0A0* arg0) {
     arg0->unk_06++;
     if ((arg0->unk_06 >= 8) && (arg0->unk_06 < 0x10)) {
         Vec3f_Set(&arg0->unk_00->unk_030, arg0->unk_00->unk_030.x * 0.8f, arg0->unk_00->unk_030.x * 0.8f,
@@ -302,7 +302,7 @@ void func_84B0CA34(unk_D_84B25AC0_0A0* arg0) {
     }
 }
 
-void func_84B0CACC(unk_D_84B25AC0_0A0* arg0) {
+void BattlePrepStarBurst_UpdateFlashFadeStep(unk_D_84B25AC0_0A0* arg0) {
     f32 temp_fv0;
     f32 temp_fv1;
 
@@ -319,7 +319,7 @@ void func_84B0CACC(unk_D_84B25AC0_0A0* arg0) {
     }
 }
 
-void func_84B0CBCC(unk_D_84B25AC0_0A0* arg0) {
+void BattlePrepStarBurst_UpdateScatterFallStep(unk_D_84B25AC0_0A0* arg0) {
     if (arg0->unk_06 < 0x14) {
         Vec3f_Set(&arg0->unk_00->unk_030, arg0->unk_00->unk_030.x - 0.025f, arg0->unk_00->unk_030.x - 0.025f,
                       arg0->unk_00->unk_030.x - 0.025f);
@@ -332,27 +332,27 @@ void func_84B0CBCC(unk_D_84B25AC0_0A0* arg0) {
     }
 }
 
-void func_84B0CC7C(unk_D_84B25AC0_0A0* arg0) {
+void BattlePrepStarBurst_UpdateRainbowParticle(unk_D_84B25AC0_0A0* arg0) {
     switch (arg0->unk_04) {
         case 0:
-            func_84B0C7D0(arg0);
+            BattlePrepStarBurst_UpdateRainbowGradientStep(arg0);
             break;
 
         case 1:
-            func_84B0CA34(arg0);
+            BattlePrepStarBurst_UpdateTrailFadeStep(arg0);
             break;
 
         case 2:
-            func_84B0CACC(arg0);
+            BattlePrepStarBurst_UpdateFlashFadeStep(arg0);
             break;
 
         case 3:
-            func_84B0CBCC(arg0);
+            BattlePrepStarBurst_UpdateScatterFallStep(arg0);
             break;
     }
 }
 
-void func_84B0CCFC(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateBurstEffect(unk_D_84B25AC0* arg0) {
     s32 i;
     s32 j;
 
@@ -362,14 +362,14 @@ void func_84B0CCFC(unk_D_84B25AC0* arg0) {
             for (i = 0; i < 10; i++) {
                 for (j = 0; j < 8; j++) {
                     if (arg0->unk_0A0[i][j].unk_06 >= 0) {
-                        func_84B0CC7C(&arg0->unk_0A0[i][j]);
+                        BattlePrepStarBurst_UpdateRainbowParticle(&arg0->unk_0A0[i][j]);
                     }
                 }
             }
         } else {
             for (i = 0; i < 10; i++) {
                 if (arg0->unk_000[i].unk_04 >= 0) {
-                    func_84B0C278(&arg0->unk_000[i]);
+                    BattlePrepStarBurst_UpdateSparkSlot(&arg0->unk_000[i]);
                 }
             }
         }
@@ -379,7 +379,7 @@ void func_84B0CCFC(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0CDEC(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateFlightArc(unk_D_84B25AC0* arg0) {
     s16 i;
     s16 var_s2;
 
@@ -401,16 +401,16 @@ void func_84B0CDEC(unk_D_84B25AC0* arg0) {
             if (arg0->unk_5A2 != 0) {
                 var_s2 = 0x2000;
                 for (i = 0; i < 5; i++, var_s2 += 0x3000) {
-                    func_84B0C45C(&arg0->unk_0A0[i], arg0->unk_5B8, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
+                    BattlePrepStarBurst_InitRainbowParticle(&arg0->unk_0A0[i], arg0->unk_5B8, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
                                   var_s2);
-                    func_84B0CC7C(&arg0->unk_0A0[i]);
+                    BattlePrepStarBurst_UpdateRainbowParticle(&arg0->unk_0A0[i]);
                 }
 
                 var_s2 = 0x6000;
                 for (i = 5; i < 10; i++, var_s2 -= 0x3000) {
-                    func_84B0C45C(&arg0->unk_0A0[i], arg0->unk_5B8, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
+                    BattlePrepStarBurst_InitRainbowParticle(&arg0->unk_0A0[i], arg0->unk_5B8, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
                                   var_s2);
-                    func_84B0CC7C(&arg0->unk_0A0[i]);
+                    BattlePrepStarBurst_UpdateRainbowParticle(&arg0->unk_0A0[i]);
                 }
 
                 arg0->unk_5A1 = 0;
@@ -418,16 +418,16 @@ void func_84B0CDEC(unk_D_84B25AC0* arg0) {
             } else {
                 var_s2 = 0x3000;
                 for (i = 0; i < 5; i++, var_s2 += 0x2800) {
-                    func_84B0C174(&arg0->unk_000[i], arg0->unk_5B4, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
+                    BattlePrepStarBurst_InitSparkSlot(&arg0->unk_000[i], arg0->unk_5B4, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
                                   var_s2);
-                    func_84B0C278(&arg0->unk_000[i]);
+                    BattlePrepStarBurst_UpdateSparkSlot(&arg0->unk_000[i]);
                 }
 
                 var_s2 = 0x5000;
                 for (i = 5; i < 10; i++, var_s2 -= 0x2800) {
-                    func_84B0C174(&arg0->unk_000[i], arg0->unk_5B4, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
+                    BattlePrepStarBurst_InitSparkSlot(&arg0->unk_000[i], arg0->unk_5B4, arg0->unk_5A8->unk_024.x, arg0->unk_5A8->unk_024.y,
                                   var_s2);
-                    func_84B0C278(&arg0->unk_000[i]);
+                    BattlePrepStarBurst_UpdateSparkSlot(&arg0->unk_000[i]);
                 }
 
                 arg0->unk_5A1 = 0;
@@ -437,7 +437,7 @@ void func_84B0CDEC(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0D194(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateRainbowAftermath(unk_D_84B25AC0* arg0) {
     s32 i;
     s32 j;
 
@@ -450,15 +450,15 @@ void func_84B0D194(unk_D_84B25AC0* arg0) {
 
         if (arg0->unk_5A1 < 0xE) {
             for (i = 0; i < 4; i++) {
-                func_84B0C6B4(&arg0->unk_0A0[arg0->unk_5A1 - 4][0 + i], arg0->unk_5B8, &arg0->unk_5A8->unk_024);
-                func_84B0C6B4(&arg0->unk_0A0[arg0->unk_5A1 - 4][4 + i], arg0->unk_5B8, &arg0->unk_5A8->unk_024);
+                BattlePrepStarBurst_SpawnScatterParticle(&arg0->unk_0A0[arg0->unk_5A1 - 4][0 + i], arg0->unk_5B8, &arg0->unk_5A8->unk_024);
+                BattlePrepStarBurst_SpawnScatterParticle(&arg0->unk_0A0[arg0->unk_5A1 - 4][4 + i], arg0->unk_5B8, &arg0->unk_5A8->unk_024);
             }
         }
 
         for (j = 0; j < 10; j++) {
             for (i = 0; i < 8; i++) {
                 if (arg0->unk_0A0[j][i].unk_06 >= 0) {
-                    func_84B0CC7C(&arg0->unk_0A0[j][i]);
+                    BattlePrepStarBurst_UpdateRainbowParticle(&arg0->unk_0A0[j][i]);
                 }
             }
         }
@@ -470,7 +470,7 @@ void func_84B0D194(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0D31C(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateSparkAftermath(unk_D_84B25AC0* arg0) {
     arg0->unk_5A1++;
     if (arg0->unk_5A1 >= 4) {
         arg0->unk_5A8->unk_024.y += arg0->unk_5A4;
@@ -489,7 +489,7 @@ void func_84B0D31C(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0D3E4(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateExitSlide(unk_D_84B25AC0* arg0) {
     if ((arg0->unk_5A1 < 0x14) && (arg0->unk_5A3 != 0) && (arg0->unk_5A1 < 7)) {
         arg0->unk_5A8->unk_024.x += 40.0f;
     }
@@ -501,7 +501,7 @@ void func_84B0D3E4(unk_D_84B25AC0* arg0) {
     }
 }
 
-void func_84B0D450(unk_D_84B25AC0* arg0) {
+void BattlePrepStarBurst_UpdateFirstClearExit(unk_D_84B25AC0* arg0) {
     s32 tmp;
 
     if (arg0->unk_5A3 != 0) {
@@ -523,27 +523,27 @@ void func_84B0D450(unk_D_84B25AC0* arg0) {
 void UI_UpdateBar(unk_D_84B25AC0* arg0) {
     switch (arg0->unk_5A0) {
         case 1:
-            func_84B0CCFC(arg0);
+            BattlePrepStarBurst_UpdateBurstEffect(arg0);
             break;
 
         case 2:
-            func_84B0CDEC(arg0);
+            BattlePrepStarBurst_UpdateFlightArc(arg0);
             break;
 
         case 3:
-            func_84B0D194(arg0);
+            BattlePrepStarBurst_UpdateRainbowAftermath(arg0);
             break;
 
         case 4:
-            func_84B0D31C(arg0);
+            BattlePrepStarBurst_UpdateSparkAftermath(arg0);
             break;
 
         case 5:
-            func_84B0D3E4(arg0);
+            BattlePrepStarBurst_UpdateExitSlide(arg0);
             break;
 
         case 7:
-            func_84B0D450(arg0);
+            BattlePrepStarBurst_UpdateFirstClearExit(arg0);
             break;
     }
 }
