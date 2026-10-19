@@ -328,7 +328,11 @@ def preflight(rows, protected, named, allow_applied_skip=True):
         elif not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", r.new):
             errors.append(f"{tag}: invalid identifier {r.new!r}")
             continue
-        if r.new.startswith(PLACEHOLDER_PREFIXES):
+        # placeholder check: for field rows the TYPE half may still be a
+        # placeholder (its rename is a separate row); only the FIELD part
+        # of the new name must be semantic
+        new_tok = r.new.rsplit(".", 1)[-1] if r.is_field_row() else r.new
+        if new_tok.startswith(PLACEHOLDER_PREFIXES):
             errors.append(f"{tag}: new name {r.new!r} looks like a placeholder")
         if r.old in protected:
             errors.append(f"{tag}: {r.old} is protected (renames_protected.txt)")
@@ -763,6 +767,11 @@ def _def_classes():
                                  r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
     p_local = re.compile(r"^[ \t]+[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
                          r"([A-Za-z_][A-Za-z0-9_]*)((?:\[[^\]]*\])*)\s*[;=]", re.M)
+    # file-scope FUNCTION definitions (`TYPE name(args) {`) - the hs1 lesson: a
+    # decompiled-but-untracked function (not in symbol_addrs, no .s, no dlabel)
+    # still has a real C definition; the variable-only patterns miss it.
+    p_func_def = re.compile(r"^(?!extern\b)(?:static\s+)?[A-Za-z_][A-Za-z0-9_ \t\*]*?\b"
+                            r"([A-Za-z_][A-Za-z0-9_]*)\s*\([^;{}]*\)\s*\{", re.M)
     p_close = re.compile(r"\}\s*([A-Za-z_][A-Za-z0-9_]*)\s*;")
     for f in rewrite_files():
         if not f.endswith(".c"):
@@ -776,6 +785,9 @@ def _def_classes():
             strict_globals.add(m.group(1))
         for m in p_local.finditer(t):
             locals_.add(m.group(1))
+        for m in p_func_def.finditer(t):
+            globals_.add(m.group(1))
+            strict_globals.add(m.group(1))
         for m in p_close.finditer(t):
             closers.add(m.group(1))
     closers |= {n for n in header_tag_names()}
