@@ -6,9 +6,9 @@
 
 typedef struct unk_D_84803760 {
     /* 0x00 */ s8 posX;
-    /* 0x01 */ s8 unk_01;
+    /* 0x01 */ s8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s8 posY[6];
-    /* 0x08 */ s8 unk_08[6];
+    /* 0x08 */ s8 RentalSlotAnimData_PosePhase[6];
     /* 0x0E */ s8 unk_0E;
     /* 0x0F */ s8 unk_0F;
 } unk_D_84803760; // size = 0x10

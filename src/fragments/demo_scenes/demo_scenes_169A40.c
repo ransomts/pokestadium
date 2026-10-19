@@ -86,11 +86,11 @@ void MewtwoIntro_RenderFrame(void) {
 s32 MewtwoIntro_UpdateFade(void) {
     s32 var_v0;
 
-    if ((gStageRootFragmentNode.unk_040.unk_08 >> 0x10) >= 0x5F) {
+    if ((gStageRootFragmentNode.unk_040.RentalSlotAnimData_PosePhase >> 0x10) >= 0x5F) {
         Model_SetMaterialColor(&gStageRootFragmentNode, 0, 0, 0, gStageFadeAlpha += 0x14);
     }
 
-    if ((gStageRootFragmentNode.unk_040.unk_08 >> 0x10) == 0x64) {
+    if ((gStageRootFragmentNode.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x64) {
         StageContext_SetClearColor(1);
         StageFade_StartFromTransparent(3);
     }
@@ -130,7 +130,7 @@ void MewtwoIntro_InitScene(void) {
     PokeIcon_OpenModelArchives();
 
     gStageGeoLayout = Model_LoadByArchiveIndex(0xD6);
-    Model_InitDisplayObject(&gStageRootFragmentNode, 0, 0xD6, gStageGeoLayout->unk_08->posX[0]);
+    Model_InitDisplayObject(&gStageRootFragmentNode, 0, 0xD6, gStageGeoLayout->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gStageRootFragmentNode, 1);
     Vec3f_SetComponentsDuplicate(&gStageRootFragmentNode.unk_024, 0.0f, 0.0f, 0.0f);
     gStageFadeAlpha = 0;

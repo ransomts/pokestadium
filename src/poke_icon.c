@@ -54,8 +54,8 @@ SpriteDisplay* PokeIcon_CreateRenderList(AssetManager* arg0, s16 arg1, s16 arg2,
         temp_v0->posX = 0;
         temp_v0->posY = 0;
         temp_v0->unk_03 = -1;
-        temp_v0->unk_01 = arg1;
-        temp_v0->unk_08 = main_pool_alloc(arg1 * sizeof(SpriteSlot), 0);
+        temp_v0->TrainerSlotSaveData_GamePort = arg1;
+        temp_v0->RentalSlotAnimData_PosePhase = main_pool_alloc(arg1 * sizeof(SpriteSlot), 0);
         temp_v0->rotation = arg0;
         temp_v0->unk_14 = NULL;
         temp_v0->unk_18 = gSpeciesDisplayTable;
@@ -65,12 +65,12 @@ SpriteDisplay* PokeIcon_CreateRenderList(AssetManager* arg0, s16 arg1, s16 arg2,
         }
 
         for (i = 0; i < arg1; i++) {
-            temp_v0->unk_08[i].posX = 0;
-            temp_v0->unk_08[i].unk_14.raw = 0;
-            temp_v0->unk_08[i].unk_0C = GfxImage_Allocate(0, 2, arg2, arg3, 0);
-            bzero(temp_v0->unk_08[i].unk_0C->img_p, arg2 * arg3 * 2);
+            temp_v0->RentalSlotAnimData_PosePhase[i].posX = 0;
+            temp_v0->RentalSlotAnimData_PosePhase[i].unk_14.raw = 0;
+            temp_v0->RentalSlotAnimData_PosePhase[i].unk_0C = GfxImage_Allocate(0, 2, arg2, arg3, 0);
+            bzero(temp_v0->RentalSlotAnimData_PosePhase[i].unk_0C->img_p, arg2 * arg3 * 2);
             if (temp_v0->unk_14 != NULL) {
-                GfxImage_AttachDepthBuffer(temp_v0->unk_08[i].unk_0C, temp_v0->unk_14);
+                GfxImage_AttachDepthBuffer(temp_v0->RentalSlotAnimData_PosePhase[i].unk_0C, temp_v0->unk_14);
             }
         }
 
@@ -85,8 +85,8 @@ void PokeIcon_AttachDepthBuffer(SpriteDisplay* arg0, AssetManager* arg1, Framebu
     arg0->rotation = arg1;
     arg0->unk_14 = arg2;
 
-    for (i = 0; i < arg0->unk_01; ++i) {
-        GfxImage_AttachDepthBuffer(arg0->unk_08[i].unk_0C, arg2);
+    for (i = 0; i < arg0->TrainerSlotSaveData_GamePort; ++i) {
+        GfxImage_AttachDepthBuffer(arg0->RentalSlotAnimData_PosePhase[i].unk_0C, arg2);
     }
 }
 
@@ -111,14 +111,14 @@ void PokeIcon_ResetRenderList(SpriteDisplay* arg0) {
     arg0->posY = 0;
     arg0->unk_03 = -1;
 
-    for (i = 0; i < arg0->unk_01; ++i) {
-        tempImg_p = &arg0->unk_08[i];
+    for (i = 0; i < arg0->TrainerSlotSaveData_GamePort; ++i) {
+        tempImg_p = &arg0->RentalSlotAnimData_PosePhase[i];
         tempDepth_p = tempImg_p->unk_0C;
         w = tempDepth_p->width;
         h = tempDepth_p->height;
         tempImg_p->posX = 0;
-        arg0->unk_08[i].unk_14.raw = 0;
-        bzero(arg0->unk_08[i].unk_0C->img_p, w * h * 2);
+        arg0->RentalSlotAnimData_PosePhase[i].unk_14.raw = 0;
+        bzero(arg0->RentalSlotAnimData_PosePhase[i].unk_0C->img_p, w * h * 2);
     }
 }
 
@@ -126,25 +126,25 @@ void SpriteDisplay_SetupSlot(SpriteDisplay* arg0, s32 arg1, s32 arg2, u16 arg3) 
     s32 w;
     s32 h;
 
-    if (arg1 < arg0->unk_01) {
-        w = arg0->unk_08[arg1].unk_0C->width;
-        h = arg0->unk_08[arg1].unk_0C->height;
-        bzero(arg0->unk_08[arg1].unk_0C->img_p, w * h * 2);
+    if (arg1 < arg0->TrainerSlotSaveData_GamePort) {
+        w = arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C->width;
+        h = arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C->height;
+        bzero(arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C->img_p, w * h * 2);
     
         if ((arg2 <= 0) || (arg2 >= 0x98)) {
             arg2 = 0x98;
         }
     
-        arg0->unk_08[arg1].posX = 1;
-        arg0->unk_08[arg1].posY = arg3 & ~1;
-        arg0->unk_08[arg1].unk_14.raw = arg2;
-        arg0->unk_08[arg1].unk_08 = arg0->unk_18[arg2 - 1].posY / 100.0f;
-        arg0->unk_08[arg1].unk_10.raw = 0;
+        arg0->RentalSlotAnimData_PosePhase[arg1].posX = 1;
+        arg0->RentalSlotAnimData_PosePhase[arg1].posY = arg3 & ~1;
+        arg0->RentalSlotAnimData_PosePhase[arg1].unk_14.raw = arg2;
+        arg0->RentalSlotAnimData_PosePhase[arg1].RentalSlotAnimData_PosePhase = arg0->unk_18[arg2 - 1].posY / 100.0f;
+        arg0->RentalSlotAnimData_PosePhase[arg1].unk_10.raw = 0;
     
         if (arg0->unk_18[arg2 - 1].name == NULL) {
-            arg0->unk_08[arg1].rotation = arg0->unk_18[arg2 - 1].unk_08 - 0xE38;
+            arg0->RentalSlotAnimData_PosePhase[arg1].rotation = arg0->unk_18[arg2 - 1].RentalSlotAnimData_PosePhase - 0xE38;
         } else {
-            arg0->unk_08[arg1].rotation = -0xE38;
+            arg0->RentalSlotAnimData_PosePhase[arg1].rotation = -0xE38;
         }
     }
 }
@@ -153,29 +153,29 @@ void SpriteDisplay_ConfigSlotWithAnim(SpriteDisplay* arg0, s32 arg1, PokemonData
     s32 w;
     s32 h;
 
-    if (arg1 < arg0->unk_01) {
-        w = arg0->unk_08[arg1].unk_0C->width;
-        h = arg0->unk_08[arg1].unk_0C->height;
-        bzero(arg0->unk_08[arg1].unk_0C->img_p, w * h * 2);
+    if (arg1 < arg0->TrainerSlotSaveData_GamePort) {
+        w = arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C->width;
+        h = arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C->height;
+        bzero(arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C->img_p, w * h * 2);
         if (((s32) arg2->posX.posX > 0) && ((s32) arg2->posX.posX < 0x98)) {
-            arg0->unk_08[arg1].posX = 3;
-            arg0->unk_08[arg1].unk_14.raw = arg2;;
-            arg0->unk_08[arg1].posY = arg3 & ~1;
-            arg0->unk_08[arg1].unk_08 = arg0->unk_18[arg2->posX.posX - 1].posY / 100.0f;
-            Model_ComputeSizeVariant(&arg0->unk_08[arg1].unk_10, arg2);
+            arg0->RentalSlotAnimData_PosePhase[arg1].posX = 3;
+            arg0->RentalSlotAnimData_PosePhase[arg1].unk_14.raw = arg2;;
+            arg0->RentalSlotAnimData_PosePhase[arg1].posY = arg3 & ~1;
+            arg0->RentalSlotAnimData_PosePhase[arg1].RentalSlotAnimData_PosePhase = arg0->unk_18[arg2->posX.posX - 1].posY / 100.0f;
+            Model_ComputeSizeVariant(&arg0->RentalSlotAnimData_PosePhase[arg1].unk_10, arg2);
             if (arg0->unk_18[arg2->posX.posX - 1].name == NULL) {
-                arg0->unk_08[arg1].rotation = arg0->unk_18[arg2->posX.posX - 1].unk_08 - 0xE38;;
+                arg0->RentalSlotAnimData_PosePhase[arg1].rotation = arg0->unk_18[arg2->posX.posX - 1].RentalSlotAnimData_PosePhase - 0xE38;;
                 return;
             }
-            arg0->unk_08[arg1].rotation  = -0xE38;
+            arg0->RentalSlotAnimData_PosePhase[arg1].rotation  = -0xE38;
             return;
         }
-        arg0->unk_08[arg1].posX = 1;
-        arg0->unk_08[arg1].posY = arg3 & ~1;
-        arg0->unk_08[arg1].unk_14.raw = 0x98;
-        arg0->unk_08[arg1].unk_08 = (f32) ((f32) arg0->unk_18[151].posY / 100.0f);
-        arg0->unk_08[arg1].unk_10.raw = 0;
-        arg0->unk_08[arg1].rotation = -0xE38;
+        arg0->RentalSlotAnimData_PosePhase[arg1].posX = 1;
+        arg0->RentalSlotAnimData_PosePhase[arg1].posY = arg3 & ~1;
+        arg0->RentalSlotAnimData_PosePhase[arg1].unk_14.raw = 0x98;
+        arg0->RentalSlotAnimData_PosePhase[arg1].RentalSlotAnimData_PosePhase = (f32) ((f32) arg0->unk_18[151].posY / 100.0f);
+        arg0->RentalSlotAnimData_PosePhase[arg1].unk_10.raw = 0;
+        arg0->RentalSlotAnimData_PosePhase[arg1].rotation = -0xE38;
     }
 }
 
@@ -211,8 +211,8 @@ void PokeIcon_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
     ModelRootNode* sp2C;
 
     sp34 = arg0->unk_0C->unk_0C;
-    temp_s1 = &arg0->unk_08[arg1];
-    sp2C = arg0->rotation->unk_24->unk_08->posX[0];
+    temp_s1 = &arg0->RentalSlotAnimData_PosePhase[arg1];
+    sp2C = arg0->rotation->unk_24->RentalSlotAnimData_PosePhase->posX[0];
 
     ModelRenderer_ClearDisplayObject(arg0->unk_10);
     ModelAnim_ClearTransformChannel(arg0->unk_10);
@@ -223,25 +223,25 @@ void PokeIcon_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
         sp38.z = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 << 6) >> 6;
         Model_InitDisplayObject(arg0->unk_10, 0, *temp_s1->unk_14.ptr, sp2C);
         ModelAnim_SetAnimation(arg0->unk_10, 1);
-        ModelAnim_SetFrame(arg0->unk_10, arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_01);
+        ModelAnim_SetFrame(arg0->unk_10, arg0->unk_18[*temp_s1->unk_14.ptr - 1].TrainerSlotSaveData_GamePort);
     } else {
         sp38.x = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 0x10) >> 6;
         sp38.y = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 6) >> 4;
         sp38.z = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 << 6) >> 6;
         Model_InitDisplayObject(arg0->unk_10, 0, temp_s1->unk_14.posY, sp2C);
         ModelAnim_SetAnimation(arg0->unk_10, 1);
-        ModelAnim_SetFrame(arg0->unk_10, arg0->unk_18[temp_s1->unk_14.raw - 1].unk_01);
+        ModelAnim_SetFrame(arg0->unk_10, arg0->unk_18[temp_s1->unk_14.raw - 1].TrainerSlotSaveData_GamePort);
     }
     Vec3f_FromVec3s(&arg0->unk_10->unk_024, &sp38);
     arg0->unk_10->unk_000.posY &= ~0x40;
     arg0->unk_10->unk_000.posY |= 0x80;
-    Vec3f_SetComponentsDuplicate(&arg0->unk_10->unk_030, temp_s1->unk_08, temp_s1->unk_08, temp_s1->unk_08);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_10->unk_030, temp_s1->RentalSlotAnimData_PosePhase, temp_s1->RentalSlotAnimData_PosePhase, temp_s1->RentalSlotAnimData_PosePhase);
     Camera_ComputeEyeFromAngles(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->rotation);
-    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
+    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C);
     GeoRender_AdvanceFrameCounter();
     GeoRender_SetMode(3);
     Geo_RenderRootNode(arg0->unk_0C);
-    GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_08[arg1].posY);
+    GfxImage_FillCurrent(&gDisplayListHead, arg0->RentalSlotAnimData_PosePhase[arg1].posY);
     GeoRender_SetMode(1);
     Geo_RenderRootNode(arg0->unk_0C);
 }
@@ -263,18 +263,18 @@ s32 PokeIcon_ProcessNextSlot(SpriteDisplay* arg0, s32 arg1) {
         }
         if (var_v0 != 0) {
             arg0->posX &= 0xFFFE;
-            arg0->unk_08[sp20].posX &= 0xFFFE;
+            arg0->RentalSlotAnimData_PosePhase[sp20].posX &= 0xFFFE;
             PokeIcon_RenderSlot(arg0, sp20);
             arg0->unk_03 = sp20;
             sp24 = sp20;
             arg0->posY++;
-            if (arg0->posY >= arg0->unk_01) {
+            if (arg0->posY >= arg0->TrainerSlotSaveData_GamePort) {
                 arg0->posY = 0;
             }
         }
     } else {
-        for (i = 0; i < arg0->unk_01; i++) {
-            temp_v0_2 = &arg0->unk_08[sp20];
+        for (i = 0; i < arg0->TrainerSlotSaveData_GamePort; i++) {
+            temp_v0_2 = &arg0->RentalSlotAnimData_PosePhase[sp20];
             if (temp_v0_2->posX & 1) {
                 arg0->posX |= 1;
                 if (temp_v0_2->posX & 2) {
@@ -286,7 +286,7 @@ s32 PokeIcon_ProcessNextSlot(SpriteDisplay* arg0, s32 arg1) {
                 break;
             } else {
                 sp20 += 1;
-                if (sp20 >= arg0->unk_01) {
+                if (sp20 >= arg0->TrainerSlotSaveData_GamePort) {
                     sp20 = 0;
                 }
             }
@@ -307,7 +307,7 @@ s32 PokeIcon_ProcessAllSlots(SpriteDisplay* arg0, s32 arg1) {
     sp44 = -1;
     var_s1 = arg0->posY;
     if (arg0->unk_03 >= 0) {
-        temp_s0 = &arg0->unk_08[arg0->unk_03];
+        temp_s0 = &arg0->RentalSlotAnimData_PosePhase[arg0->unk_03];
         if (temp_s0->posX & 4) {
             while (Display_IsFrameReady() == 0) {}
             PokeIcon_AdjustImageColorBuffer(temp_s0->unk_0C, temp_s0->unk_10);
@@ -315,8 +315,8 @@ s32 PokeIcon_ProcessAllSlots(SpriteDisplay* arg0, s32 arg1) {
         }
     }
 
-    for (i = 0; i < arg0->unk_01; i++) {
-        temp_s1 = &arg0->unk_08[var_s1];
+    for (i = 0; i < arg0->TrainerSlotSaveData_GamePort; i++) {
+        temp_s1 = &arg0->RentalSlotAnimData_PosePhase[var_s1];
         if (temp_s1->posX & 1) {
             if (Display_IsFrameReady() == 0) {
                 do { } while (Display_IsFrameReady() == 0); }
@@ -332,20 +332,20 @@ s32 PokeIcon_ProcessAllSlots(SpriteDisplay* arg0, s32 arg1) {
             }
 
             PokeIcon_WaitFrameLoad(arg0->rotation);
-            arg0->unk_08[var_s1].posX &= ~1;
+            arg0->RentalSlotAnimData_PosePhase[var_s1].posX &= ~1;
             PokeIcon_RenderSlot(arg0, var_s1);
             sp44 = var_s1;
             arg0->posY = var_s1;
             arg0->unk_03 = var_s1;
             arg0->posY++;
-            if (arg0->posY >= arg0->unk_01) {
+            if (arg0->posY >= arg0->TrainerSlotSaveData_GamePort) {
                 arg0->posY = 0;
             }
             break;
         }
 
         var_s1 += 1;
-        if (var_s1 >= arg0->unk_01) {
+        if (var_s1 >= arg0->TrainerSlotSaveData_GamePort) {
             var_s1 = 0;
         }
     }
@@ -362,10 +362,10 @@ s32 PokeIcon_RenderNextSlotBlocking(SpriteDisplay* arg0, s32 arg1) {
     
     var_a2 = -1;
     var_s0 = arg0->posY;
-    temp_a0 = arg0->unk_08;
+    temp_a0 = arg0->RentalSlotAnimData_PosePhase;
     
-    for (i = 0; i < arg0->unk_01; i++) {
-        temp_s1 = &arg0->unk_08[var_s0];
+    for (i = 0; i < arg0->TrainerSlotSaveData_GamePort; i++) {
+        temp_s1 = &arg0->RentalSlotAnimData_PosePhase[var_s0];
         if (temp_s1->posX & 1) {
             while (Display_IsFrameReady() == 0) {}
             
@@ -375,19 +375,19 @@ s32 PokeIcon_RenderNextSlotBlocking(SpriteDisplay* arg0, s32 arg1) {
                 PokeIcon_RequestFrameLoad(arg0->rotation, temp_s1->unk_14.posY, temp_s1->unk_10);
             }
             PokeIcon_WaitFrameLoad(arg0->rotation);
-            arg0->unk_08[var_s0].posX &= ~1;
+            arg0->RentalSlotAnimData_PosePhase[var_s0].posX &= ~1;
             PokeIcon_RenderSlot(arg0, var_s0);
             arg0->posY = var_s0;
             var_a2 = var_s0;
             arg0->posY++;
             arg0->unk_03 = var_s0;
-            if (arg0->posY >= arg0->unk_01) {
+            if (arg0->posY >= arg0->TrainerSlotSaveData_GamePort) {
                 arg0->posY = 0;
             }
             break;
         } else {
             var_s0 += 1;
-            if (var_s0 >= arg0->unk_01) {
+            if (var_s0 >= arg0->TrainerSlotSaveData_GamePort) {
                 var_s0 = 0;
             }
         }
@@ -399,27 +399,27 @@ void PokeIcon_RedrawSlot(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
 
     if (arg1 == arg0->unk_03) {
-        GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
-        GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_08[arg1].posY);
+        GfxImage_SetRenderTarget(&gDisplayListHead, arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C);
+        GfxImage_FillCurrent(&gDisplayListHead, arg0->RentalSlotAnimData_PosePhase[arg1].posY);
         GeoRender_SetMode(1);
         Geo_RenderRootNode(arg0->unk_0C);
         return;
     }
-    for (i = arg0->unk_01; i > 0; i--) {
-        if (arg0->unk_08[i - 1].posX & 1) {
+    for (i = arg0->TrainerSlotSaveData_GamePort; i > 0; i--) {
+        if (arg0->RentalSlotAnimData_PosePhase[i - 1].posX & 1) {
             break;
         }
     }
     if (i == 0) {
-        arg0->unk_08[arg1].posX |= 1;
+        arg0->RentalSlotAnimData_PosePhase[arg1].posX |= 1;
     }
 }
 
 u8* PokeIcon_GetImage(SpriteDisplay* arg0, s32 arg1) {
     u8* image;
     image = NULL;
-    if (arg1 < (s32)arg0->unk_01) {
-        image = arg0->unk_08[arg1].unk_0C->img_p;
+    if (arg1 < (s32)arg0->TrainerSlotSaveData_GamePort) {
+        image = arg0->RentalSlotAnimData_PosePhase[arg1].unk_0C->img_p;
     }
     return image;
 }
@@ -427,8 +427,8 @@ u8* PokeIcon_GetImage(SpriteDisplay* arg0, s32 arg1) {
 s32 PokeIcon_AreSlotsIdle(SpriteDisplay* arg0) {
     s32 i;
     
-    for (i = 0; i < arg0->unk_01; i++) {
-        if (arg0->unk_08[i].posX & 5) {
+    for (i = 0; i < arg0->TrainerSlotSaveData_GamePort; i++) {
+        if (arg0->RentalSlotAnimData_PosePhase[i].posX & 5) {
             return 0;
         }
     }
@@ -498,7 +498,7 @@ ModelPreview* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16 arg2
         temp_v0->unk_14 = 0;
         temp_v0->rotation = arg1;
         temp_v0->unk_06 = arg2;
-        temp_v0->unk_08 = arg5;
+        temp_v0->RentalSlotAnimData_PosePhase = arg5;
         temp_v0->unk_0A = arg6;
         temp_v0->unk_0C = arg7;
         temp_v0->unk_28 = GfxImage_Allocate(0, 2, arg1, arg2, 0);
@@ -531,7 +531,7 @@ void PokeIcon_SetPreviewMon(ModelPreview* arg0, PokemonData* arg1, u16 arg2) {
     PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1->posX.posX, sp2C);
     PokeIcon_WaitFrameLoad(arg0->unk_1C);
     ModelRenderer_ClearDisplayObject(arg0->unk_24);
-    Model_InitDisplayObject(arg0->unk_24, 0, arg1->posX.posX, arg0->unk_1C->unk_24->unk_08->posX[0]);
+    Model_InitDisplayObject(arg0->unk_24, 0, arg1->posX.posX, arg0->unk_1C->unk_24->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(arg0->unk_24, 1);
     arg0->unk_24->unk_000.posY &= ~0x40;
     arg0->unk_24->unk_000.posY |= 0x80;
@@ -559,7 +559,7 @@ void PokeIcon_SetPreviewSpecies(ModelPreview* arg0, s32 arg1, u16 arg2) {
     PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1, sp34);
     PokeIcon_WaitFrameLoad(arg0->unk_1C);
     ModelRenderer_ClearDisplayObject(arg0->unk_24);
-    Model_InitDisplayObject(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->unk_08->posX[0]);
+    Model_InitDisplayObject(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(arg0->unk_24, 1);
     arg0->unk_24->unk_000.posY &= ~0x40;
     arg0->unk_24->unk_000.posY |= 0x80;
@@ -674,14 +674,14 @@ void PokeIcon_DrawPreview(ModelPreview* arg0) {
         if (var_v0 >= 9) {
             var_v0 = 8;
         }
-        Gfx_DrawTextureRgba16(0, i, arg0->unk_08, var_v0, var_s2, arg0->rotation, 0x200000);
+        Gfx_DrawTextureRgba16(0, i, arg0->RentalSlotAnimData_PosePhase, var_v0, var_s2, arg0->rotation, 0x200000);
         var_s2 += arg0->rotation * 0x10;
     }
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
 
-    GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, arg0->unk_08, arg0->unk_0A);
+    GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, arg0->RentalSlotAnimData_PosePhase, arg0->unk_0A);
 }
 
 u8* PokeIcon_RenderPreview(ModelPreview* arg0) {
@@ -706,7 +706,7 @@ u8* PokeIcon_RenderPreview(ModelPreview* arg0) {
 
             case 3:
                 Font_Printf(0, 0x64, "A:%04X  F:%3d", *(u16*)&arg0->unk_24->unk_01E.y,
-                              arg0->unk_24->unk_040.unk_08 >> 0x10);
+                              arg0->unk_24->unk_040.RentalSlotAnimData_PosePhase >> 0x10);
                 break;
         }
         Font_EndTexturedTextRendering();

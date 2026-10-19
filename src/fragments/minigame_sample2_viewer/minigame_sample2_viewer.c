@@ -98,7 +98,7 @@ void Minigame2SampleViewer_Init(void) {
     ModelRenderer_AttachDisplayObject(&gViewerGraphNode);
     PokeIcon_OpenModelArchives();
     gGeoLayout_StageBackground = Model_LoadByArchiveIndex(0x96);
-    Model_InitDisplayObject(&gViewerGraphNode, 0, 0x96, gGeoLayout_StageBackground->unk_08->posX[0]);
+    Model_InitDisplayObject(&gViewerGraphNode, 0, 0x96, gGeoLayout_StageBackground->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gViewerGraphNode, 0);
 }
 

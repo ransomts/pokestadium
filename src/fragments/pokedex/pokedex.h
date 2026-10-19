@@ -11,7 +11,7 @@ typedef struct unk_func_888044BC_038_02C_02C_000 {
 typedef struct unk_func_888044BC_038_02C_02C {
     /* 0x00 */ unk_func_888044BC_038_02C_02C_000** posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_888044BC_038_02C_02C; // size >= 0x0C
 
 typedef struct unk_func_888044BC_038_02C_044 {

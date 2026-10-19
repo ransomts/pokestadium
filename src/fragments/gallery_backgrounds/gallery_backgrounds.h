@@ -9,7 +9,7 @@ typedef struct MenuPanelInfo {
     /* 0x00 */ s16 posY;
     /* 0x00 */ s16 rotation;
     /* 0x00 */ s16 unk_06;
-    /* 0x00 */ s8 unk_08;
+    /* 0x00 */ s8 RentalSlotAnimData_PosePhase;
     /* 0x00 */ s8 unk_09;
     /* 0x00 */ s16 unk_0A;
     /* 0x00 */ s16* unk_0C;
@@ -20,13 +20,13 @@ typedef struct GallerySelection {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ char unk_0A[0x2];
 } GallerySelection; // size >= 0xC
 
 typedef struct unk_D_83407B18 {
     /* 0x00 */ GalleryCursor posX;
-    /* 0x08 */ GallerySelection unk_08;
+    /* 0x08 */ GallerySelection RentalSlotAnimData_PosePhase;
     /* 0x14 */ char unk14[0x4];
 } unk_D_83407B18; // size = 0x18
 

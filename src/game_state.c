@@ -736,7 +736,7 @@ void State_TitleScreen(void) {
 void State_N64ddBootUnused(void) {
     Audio_WaitForIdle(1);
     Display_WaitForFrames(2);
-    LeoBootGame(gBootIDData.unk_08);
+    LeoBootGame(gBootIDData.RentalSlotAnimData_PosePhase);
 }
 
 void State_StubbedDebug(void) {

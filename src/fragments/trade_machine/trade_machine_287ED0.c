@@ -21,7 +21,7 @@ typedef struct TextPrinterState {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ u16 unk_0C;
     /* 0x10 */ s8* unk_10;
@@ -32,7 +32,7 @@ typedef struct FadeRectState {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
 } FadeRectState; // size = 0xA
 
 static TextObject* gFragment41TextObject;
@@ -82,14 +82,14 @@ void Trade_SetFadeRect(s16 arg0) {
             ptr->posY = 0;
             ptr->rotation = 0;
             ptr->unk_06 = 0x280;
-            ptr->unk_08 = 0x1E0;
+            ptr->RentalSlotAnimData_PosePhase = 0x1E0;
             break;
 
         case 1:
             ptr->posY = 0;
             ptr->rotation = 0x154;
             ptr->unk_06 = 0x280;
-            ptr->unk_08 = 0x8C;
+            ptr->RentalSlotAnimData_PosePhase = 0x8C;
             break;
     }
 }
@@ -110,7 +110,7 @@ void Trade_DrawFadeRect(void) {
         gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
         gDPSetFillColor(gDisplayListHead++, 0x00010001);
         gDPFillRectangle(gDisplayListHead++, ptr->posY, ptr->rotation, (ptr->posY + ptr->unk_06) - 1,
-                         (ptr->rotation + ptr->unk_08) - 1);
+                         (ptr->rotation + ptr->RentalSlotAnimData_PosePhase) - 1);
     }
 }
 
@@ -118,7 +118,7 @@ void Trade_ResetTextPrinter(void) {
     gCurrentTextBox = &gTextBoxState;
     gTextBoxState.posX = 0;
     gTextBoxState.posY = 0;
-    gTextBoxState.unk_08 = 0;
+    gTextBoxState.RentalSlotAnimData_PosePhase = 0;
     gTextBoxState.unk_0A = 2;
     gTextBoxState.rotation = 0;
     gTextBoxState.unk_06 = 0;
@@ -140,7 +140,7 @@ void Trade_SetTextPrinter(s16 arg0, s16 arg1, s8* arg2, s32 arg3) {
         }
     }
 
-    gCurrentTextBox->unk_08 = 0;
+    gCurrentTextBox->RentalSlotAnimData_PosePhase = 0;
     gCurrentTextBox->unk_0A = 2;
     gCurrentTextBox->rotation = arg0;
     gCurrentTextBox->unk_06 = arg1;
@@ -187,15 +187,15 @@ void Trade_UpdateTextPrinter(void) {
 
     if ((gCurrentTextBox->unk_10 != 0) && (gCurrentTextBox->posX >= 0)) {
         if (gPlayer1Controller->buttonPressed & 0x8000) {
-            gCurrentTextBox->unk_08 = 0;
+            gCurrentTextBox->RentalSlotAnimData_PosePhase = 0;
             gCurrentTextBox->unk_0A = 1;
         } else {
-            gCurrentTextBox->unk_08 -= 1;
+            gCurrentTextBox->RentalSlotAnimData_PosePhase -= 1;
         }
 
-        if (gCurrentTextBox->unk_08 <= 0) {
+        if (gCurrentTextBox->RentalSlotAnimData_PosePhase <= 0) {
             Audio_PlaySoundEffectById(0x01200001);
-            gCurrentTextBox->unk_08 = gCurrentTextBox->unk_0A;
+            gCurrentTextBox->RentalSlotAnimData_PosePhase = gCurrentTextBox->unk_0A;
 
             gCurrentTextBox->posX++;
 
@@ -285,9 +285,9 @@ void Trade_ScanPorts(void) {
     for (i = 0, ptr = &gPlayerInfo[0]; i < 4; i++, ptr++) {
         GbSave_CopyPlayerIdentity(i, &sp40);
         GbSave_EnsureMainDataLoaded(i);
-        Text_UntranscodeNameWrapper(ptr->unk_08, sp40.posY);
+        Text_UntranscodeNameWrapper(ptr->RentalSlotAnimData_PosePhase, sp40.posY);
         ptr->unk_06 = sp40.posX;
-        ptr->unk_01 = GbSave_GetPortGame(i);
+        ptr->TrainerSlotSaveData_GamePort = GbSave_GetPortGame(i);
         ptr->posX = GbSave_GetSaveState(i);
         ptr->unk_03 = GbSave_SavedAtPokemonCenter(i);
         ptr->rotation = GbSave_HasPokedex(i);

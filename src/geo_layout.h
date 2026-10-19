@@ -73,7 +73,7 @@ typedef struct GeoCmd_AddNode {
 typedef struct GeoCmd_SetCallback {
     /* 0x00 */ u8 cmd;
     /* 0x04 */ func_D_86002F34_000_010 rotation;
-    /* 0x08 */ unk_D_86002F34_000_014* unk_08;
+    /* 0x08 */ unk_D_86002F34_000_014* RentalSlotAnimData_PosePhase;
 } GeoCmd_SetCallback; // size = 0xC
 
 typedef struct GeoCmd_AllocNode {
@@ -91,7 +91,7 @@ typedef struct GeoCmd_CreateCamera {
     /* 0x02 */ u16 posY;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ Vec3s unk_0C;
     /* 0x12 */ s16 unk_12;
@@ -121,7 +121,7 @@ typedef struct GeoCmd_CreatePerspective {
 
 typedef struct GeoCmd_CreateBackground {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
 } GeoCmd_CreateBackground; // size = 0x4
@@ -173,14 +173,14 @@ typedef struct GeoCmd_CreateMesh {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ GfxTextureInfo* unk_08;
+    /* 0x08 */ GfxTextureInfo* RentalSlotAnimData_PosePhase;
     /* 0x0C */ unk_D_86002F34_01C* unk_0C;
     /* 0x10 */ Vtx* unk_10;
 } GeoCmd_CreateMesh; // size = 0x14
 
 typedef struct GeoCmd_CreateShadow {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
@@ -195,7 +195,7 @@ typedef struct GeoCmd_CreateCullDist {
 
 typedef struct GeoCmd_CreateSwitchCase {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
 } GeoCmd_CreateSwitchCase; // size = 0x4
 
@@ -204,7 +204,7 @@ typedef struct GeoCmd_CreateTransform {
     /* 0x01 */ char pad[0x3];
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ Vec3s unk_0A;
 } GeoCmd_CreateTransform; // size = 0x10
 
@@ -212,13 +212,13 @@ typedef struct GeoCmd_CreateScale {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[0x3];
     /* 0x04 */ u32 rotation;
-    /* 0x08 */ u32 unk_08;
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ u32 unk_0C;
 } GeoCmd_CreateScale; // size = 0x10
 
 typedef struct GeoCmd_CreateAnimatedPart {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ Vec3s rotation;
@@ -230,7 +230,7 @@ typedef struct GeoCmd_CreateAnimatedPart {
 
 typedef struct GeoCmd_CreateDisplayList {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
     /* 0x04 */ Gfx* rotation;
 } GeoCmd_CreateDisplayList; // size = 0x8
@@ -240,7 +240,7 @@ typedef struct GeoCmd_CreateShadowNode {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ Vec3s unk_0A;
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
@@ -250,35 +250,35 @@ typedef struct GeoCmd_CreateShadowNode {
 
 typedef struct GeoCmd_CreateBillboard {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ Vec3s unk_0A;
     /* 0x10 */ Gfx* unk_10;
 } GeoCmd_CreateBillboard; // size = 0x14
 
 typedef struct GeoCmd_CreateScaleBillboard {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ Vec3s posY;
-    /* 0x08 */ u32 unk_08;
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Gfx* unk_0C;
 } GeoCmd_CreateScaleBillboard; // size = 0x10
 
 typedef struct GeoCmd_CreateSimpleGfx {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x04 */ Gfx* rotation;
 } GeoCmd_CreateSimpleGfx; // size = 0x8
 
 typedef struct GeoCmd_CreateShadowTex {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
     /* 0x04 */ Gfx* rotation;
-    /* 0x07 */ s16 unk_08;
+    /* 0x07 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ u8 r;
     /* 0x0D */ u8 g;
@@ -298,12 +298,12 @@ typedef struct GeoCmd_SetNodeFlag4 {
 
 typedef struct GeoCmd_CreateGroup {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ s8 unk_03;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ u8 r;

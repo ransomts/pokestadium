@@ -15,7 +15,7 @@
 
 typedef struct PlayerSlotData {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u16 rotation;
@@ -305,11 +305,11 @@ void Gallery_RentalViewerAnimateSlotBob(s32 arg0, f32 arg1) {
         var_v0 = gPlayerIconAnimData[arg0].unk_0C;
     }
 
-    gPlayerIconNodes[0][arg0].unk_01E.z = SINS(gPlayerIconAnimData[arg0].unk_08) * (1536.0f * var_fv0);
+    gPlayerIconNodes[0][arg0].unk_01E.z = SINS(gPlayerIconAnimData[arg0].RentalSlotAnimData_PosePhase) * (1536.0f * var_fv0);
     gPlayerIconNodes[1][arg0].unk_024.x = gPlayerIconNodes[0][arg0].unk_024.x =
-        (gPlayerIconAnimData[arg0].posY - 320.0f) - (SINS(gPlayerIconAnimData[arg0].unk_08) * (6.0f * var_fv0));
+        (gPlayerIconAnimData[arg0].posY - 320.0f) - (SINS(gPlayerIconAnimData[arg0].RentalSlotAnimData_PosePhase) * (6.0f * var_fv0));
 
-    gPlayerIconAnimData[arg0].unk_08 += var_v0;
+    gPlayerIconAnimData[arg0].RentalSlotAnimData_PosePhase += var_v0;
 }
 
 void Gallery_RentalViewerRefreshPortStatus(void) {
@@ -321,7 +321,7 @@ void Gallery_RentalViewerRefreshPortStatus(void) {
         GbSave_CopyPlayerIdentity(i, &sp48);
         Text_UntranscodeName(gPlayerSlotData[i].unk_06, &sp48.posY);
         gPlayerSlotData[i].rotation = sp48.posX;
-        gPlayerSlotData[i].unk_01 = GbSave_GetPortGame(i);
+        gPlayerSlotData[i].TrainerSlotSaveData_GamePort = GbSave_GetPortGame(i);
         gPlayerSlotData[i].posX = GbSave_GetSaveState(i);
         gPlayerSlotData[i].posY = GbSave_SavedAtPokemonCenter(i);
         gPlayerSlotData[i].unk_03 = (temp_s3 & (1 << i)) != 0;
@@ -332,8 +332,8 @@ void Gallery_RentalViewerUpdatePortIcons(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if (gPlayerSlotData[i].unk_01 != 0) {
-            switch (gPlayerSlotData[i].unk_01) {
+        if (gPlayerSlotData[i].TrainerSlotSaveData_GamePort != 0) {
+            switch (gPlayerSlotData[i].TrainerSlotSaveData_GamePort) {
                 case 1:
                     gPlayerIconTextures[i] = D_201E420;
                     break;
@@ -352,15 +352,15 @@ void Gallery_RentalViewerUpdatePortIcons(void) {
             }
 
             if (gPlayerSlotData[i].posX != 0) {
-                gPlayerIconAnimData[i].unk_01 = 0x14;
+                gPlayerIconAnimData[i].TrainerSlotSaveData_GamePort = 0x14;
             }
         } else {
             gPlayerIconTextures[i] = &D_2026420;
             if (gPlayerSlotData[i].posX == 2) {
-                gPlayerIconAnimData[i].unk_01 = 0x15;
+                gPlayerIconAnimData[i].TrainerSlotSaveData_GamePort = 0x15;
             } else {
                 gPlayerIconAnimData[i].posX = 0;
-                gPlayerIconAnimData[i].unk_01 = 1;
+                gPlayerIconAnimData[i].TrainerSlotSaveData_GamePort = 1;
             }
         }
     }
@@ -528,7 +528,7 @@ void Gallery_RentalViewerUpdateSlotSelect(void) {
     s32 i;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        if (gPlayerIconAnimData[gSelectedPlayerIndex].unk_01 == 0) {
+        if (gPlayerIconAnimData[gSelectedPlayerIndex].TrainerSlotSaveData_GamePort == 0) {
             Audio_PlaySoundEffectById(0x01100012);
             gRentalViewerState = 4;
         } else {
@@ -636,7 +636,7 @@ void Gallery_RentalViewerUpdateBusyConfirm(void) {
     s32 i;
     s32 var_v0;
 
-    if (gPlayerIconAnimData[gSelectedPlayerIndex].unk_01 == 0x15) {
+    if (gPlayerIconAnimData[gSelectedPlayerIndex].TrainerSlotSaveData_GamePort == 0x15) {
         var_v0 = 0;
     } else {
         var_v0 = 1;
@@ -695,7 +695,7 @@ void Gallery_RentalViewerDrawSlotFrame(s32 arg0, s16 arg1, s32 arg2) {
     Color_RGBA8 sp2C;
 
     if (gPlayerIconAnimData[arg0].posX != 0) {
-        if (gPlayerIconAnimData[arg0].unk_01 == 0) {
+        if (gPlayerIconAnimData[arg0].TrainerSlotSaveData_GamePort == 0) {
             Color_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0xFF);
         } else {
             Color_SetRGBA(&sp2C, 0x64, 0x1E, 0x1E, 0xFF);
@@ -710,7 +710,7 @@ void Gallery_RentalViewerDrawSlotLabel(s32 arg0) {
     UNUSED s32 pad;
 
     if (gPlayerIconAnimData[arg0].posX != 0) {
-        if (gPlayerIconAnimData[arg0].unk_01 == 0) {
+        if (gPlayerIconAnimData[arg0].TrainerSlotSaveData_GamePort == 0) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetActive(8, 0);
             Font_Printf(((arg0 << 7) - (Font_MeasureTextExtent(8, 0, gPlayerSlotData[arg0].unk_06) / 2)) + 0x80, 0x5C,

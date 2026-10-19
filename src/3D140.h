@@ -5,7 +5,7 @@
 
 typedef struct unk_D_800FCB18_044 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
@@ -14,7 +14,7 @@ typedef struct unk_D_800FCB18_044 {
 
 typedef struct PokemonAudioInfo {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x2];
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;

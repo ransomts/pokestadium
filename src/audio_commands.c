@@ -11,7 +11,7 @@
 
 typedef struct SfxTableEntry {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
@@ -252,7 +252,7 @@ s32 Audio_PlayCommand(u32 arg0, s32 arg1, s32 arg2) {
                 arg1 = 0;
             }
 
-            switch (gMenuSfxTable[arg1].unk_01) {
+            switch (gMenuSfxTable[arg1].TrainerSlotSaveData_GamePort) {
                 case 0:
                     sp2C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 0xB, 0x80, 0x80, -1);
                     break;

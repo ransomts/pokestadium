@@ -24,7 +24,7 @@ typedef struct RuleOptionWindow {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
 } RuleOptionWindow; // size >= 0xA
 
 typedef struct MenuEntry {
@@ -32,7 +32,7 @@ typedef struct MenuEntry {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ u8* unk_08;
+    /* 0x08 */ u8* RentalSlotAnimData_PosePhase;
     /* 0x0C */ u8* unk_0C;
 } MenuEntry; // size = 0x10
 
@@ -345,7 +345,7 @@ void FreeBattle_DrawRuleGrid(void) {
 
         gDPSetEnvColor(gDisplayListHead++, var_t1, var_t1, var_t1, var_t1);
 
-        Gfx_DrawTextureRgba16(temp_s2, temp_s3, 0x24, 0x1A, gMenuEntries[i].unk_08, 0x24, 0);
+        Gfx_DrawTextureRgba16(temp_s2, temp_s3, 0x24, 0x1A, gMenuEntries[i].RentalSlotAnimData_PosePhase, 0x24, 0);
         if (gMenuEntries[i].unk_0C != NULL) {
             Gfx_DrawTextureRgba16(temp_s2 + 0x30, temp_s3, 0x24, 0x1A, gMenuEntries[i].unk_0C, 0x24, 0);
         }
@@ -572,7 +572,7 @@ void FreeBattle_ClearLevelSelection(void) {
 }
 
 void FreeBattle_DrawConfirmLine(s16 arg0, char* arg1) {
-    if (arg0 == gRuleOptionWindow.unk_08) {
+    if (arg0 == gRuleOptionWindow.RentalSlotAnimData_PosePhase) {
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
     } else {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -592,7 +592,7 @@ void FreeBattle_DrawConfirmPanel(void) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-            Ui_DrawAnimatedTextureMarker(gRuleOptionWindow.posX + 0xC, gRuleOptionWindow.posY + (gRuleOptionWindow.unk_08 * 0x1C) + 0x2B);
+            Ui_DrawAnimatedTextureMarker(gRuleOptionWindow.posX + 0xC, gRuleOptionWindow.posY + (gRuleOptionWindow.RentalSlotAnimData_PosePhase * 0x1C) + 0x2B);
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Font_Printf(gRuleOptionWindow.posX + 0x30, gRuleOptionWindow.posY + 0xB, Text_GetString(NULL, 0, gRuleMessageBank, 0xA));
@@ -608,7 +608,7 @@ void FreeBattle_InitConfirmPanel(void) {
     gRuleOptionWindow.posX = 0x190;
     gRuleOptionWindow.posY = 0x64;
     gRuleOptionWindow.rotation = 0;
-    gRuleOptionWindow.unk_08 = 1;
+    gRuleOptionWindow.RentalSlotAnimData_PosePhase = 1;
 }
 
 void FreeBattle_OpenConfirmPanel(void) {
@@ -629,7 +629,7 @@ void FreeBattle_CloseConfirmPanel(void) {
 
 void FreeBattle_UpdateConfirmDialog(void) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        gSelectedRuleValue = gRuleOptionWindow.unk_08;
+        gSelectedRuleValue = gRuleOptionWindow.RentalSlotAnimData_PosePhase;
         gRuleOptionWindow.unk_06 = 3;
         gSelectedRuleOption = 0;
         gRuleMenuState = 6;
@@ -640,10 +640,10 @@ void FreeBattle_UpdateConfirmDialog(void) {
         Audio_PlaySoundEffectById(3);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
         Audio_PlaySoundEffectById(1);
-        gRuleOptionWindow.unk_08 = (gRuleOptionWindow.unk_08 + 2) % 3;
+        gRuleOptionWindow.RentalSlotAnimData_PosePhase = (gRuleOptionWindow.RentalSlotAnimData_PosePhase + 2) % 3;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
         Audio_PlaySoundEffectById(1);
-        gRuleOptionWindow.unk_08 = (gRuleOptionWindow.unk_08 + 1) % 3;
+        gRuleOptionWindow.RentalSlotAnimData_PosePhase = (gRuleOptionWindow.RentalSlotAnimData_PosePhase + 1) % 3;
     }
 }
 
@@ -764,14 +764,14 @@ void FreeBattle_ApplyRuleSelection(void) {
         }
     }
 
-    if (gSessionContext.battleSides[0].unk_01 == 2) {
-        gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_003 = 0x35;
-        gSessionContext.battleSides[0].unk_08[1]->trainerData->unk_003 = 0x35;
+    if (gSessionContext.battleSides[0].TrainerSlotSaveData_GamePort == 2) {
+        gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData->unk_003 = 0x35;
+        gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[1]->trainerData->unk_003 = 0x35;
     }
 
-    if (gSessionContext.battleSides[1].unk_01 == 2) {
-        gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_003 = 0x35;
-        gSessionContext.battleSides[1].unk_08[1]->trainerData->unk_003 = 0x35;
+    if (gSessionContext.battleSides[1].TrainerSlotSaveData_GamePort == 2) {
+        gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->trainerData->unk_003 = 0x35;
+        gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[1]->trainerData->unk_003 = 0x35;
     }
 }
 

@@ -44,7 +44,7 @@ typedef struct DioramaAnimData {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ s16 unk_14;
@@ -78,7 +78,7 @@ typedef struct SpriteColorParams {
     /* 0x02 */ u16 posY;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ u16 unk_08;
+    /* 0x08 */ u16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ u16 unk_0A;
     /* 0x0C */ u16 unk_0C;
     /* 0x0E */ u16 unk_0E;

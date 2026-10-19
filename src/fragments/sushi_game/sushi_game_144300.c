@@ -250,7 +250,7 @@ void SushiGame_DrawDishIcon(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
         sp34 = ROUND_MAX(32.0f * arg3);
         sp32 = ROUND_MAX(32.0f * arg3);
 
-        gDPLoadTextureBlock(gDisplayListHead++, gSushiItemDefs[arg0].unk_08, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gSushiItemDefs[arg0].RentalSlotAnimData_PosePhase, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
@@ -390,7 +390,7 @@ void RenderSushiGoRoundUI(void) {
                             Text_SetPrimColor(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                         }
 
-                        Font_Printf((s16)ptr->unk_040.unk_08 + (gPanelColumnX[i] + var_s7),
+                        Font_Printf((s16)ptr->unk_040.RentalSlotAnimData_PosePhase + (gPanelColumnX[i] + var_s7),
                                       (gPanelColumnY[i] + var_s4) - (s16)ptr->unk_040.unk_0C, "x%d",
                                       ptr->comboMultiplier);
                     }

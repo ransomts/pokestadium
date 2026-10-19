@@ -43,7 +43,7 @@ void UI_DrawSplitGradientPanel(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     gDPSetCombineLERP(gDisplayListHead++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, TEXEL0, COMBINED, 0,
                       SHADE, 0, 0, 0, 0, COMBINED);
     gDPSetRenderMode(gDisplayListHead++, G_RM_PASS, G_RM_XLU_SURF2);
-    gDPSetEnvColor(gDisplayListHead++, argD->posX.unk_06, argD->posX.unk_08, argD->posX.unk_0A, 255);
+    gDPSetEnvColor(gDisplayListHead++, argD->posX.unk_06, argD->posX.RentalSlotAnimData_PosePhase, argD->posX.unk_0A, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, argD->posX.posX, argD->posX.posY, argD->posX.rotation, 255);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_BILERP);
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);

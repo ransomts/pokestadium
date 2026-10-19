@@ -293,7 +293,7 @@ void BattleScene_NullHandler(void) {
 
 s32 BattleScene_AnimateDisplayedHpToRuntime(BattlePlayerEntity* arg0) {
     PokemonAudioInfo* temp_s1 = &arg0->animationState.unk_38;
-    PokemonData* temp_s2 = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
+    PokemonData* temp_s2 = &arg0->boundRoster->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
     f32 temp_fs0;
     UNUSED s16 pad;
     s16 sp30;
@@ -400,15 +400,15 @@ void DetermineTurnOrder(void) {
 
     if (sActivePokemon[0]->boundRoster->unk_000 & 2) {
         if (gBattleScene.posX->unk_2C == 0) {
-            BattleAI_RecordUsedMove(temp_s0->unk_08, temp_s1->unk_08, 0);
+            BattleAI_RecordUsedMove(temp_s0->RentalSlotAnimData_PosePhase, temp_s1->RentalSlotAnimData_PosePhase, 0);
         } else {
-            BattleAI_RecordUsedMove(temp_s0->unk_08, temp_s1->unk_08, 1);
+            BattleAI_RecordUsedMove(temp_s0->RentalSlotAnimData_PosePhase, temp_s1->RentalSlotAnimData_PosePhase, 1);
         }
     } else if (sActivePokemon[1]->boundRoster->unk_000 & 2) {
         if (gBattleScene.posX->unk_2C == 1) {
-            BattleAI_RecordUsedMove(temp_s1->unk_08, temp_s0->unk_08, 0);
+            BattleAI_RecordUsedMove(temp_s1->RentalSlotAnimData_PosePhase, temp_s0->RentalSlotAnimData_PosePhase, 0);
         } else {
-            BattleAI_RecordUsedMove(temp_s1->unk_08, temp_s0->unk_08, 1);
+            BattleAI_RecordUsedMove(temp_s1->RentalSlotAnimData_PosePhase, temp_s0->RentalSlotAnimData_PosePhase, 1);
         }
     }
 
@@ -434,7 +434,7 @@ void BattleScene_InitializeSwitchActions(void) {
 
     if ((sp28->unk_2D == 0xF) || (sp28->unk_2D == 0x10)) {
         if (sActivePokemon[0]->boundRoster->unk_000 & 2) {
-            BattleAI_RecordUsedMove(sp28->unk_08, sp24->unk_08, 2);
+            BattleAI_RecordUsedMove(sp28->RentalSlotAnimData_PosePhase, sp24->RentalSlotAnimData_PosePhase, 2);
         }
         gBattleScene.posX->unk_2C = 0;
         gBattleScene.posX->unk_2A = 0;
@@ -444,7 +444,7 @@ void BattleScene_InitializeSwitchActions(void) {
         gBattleScene.posX->unk_2C = sp2C;
     } else {
         if (sActivePokemon[0]->boundRoster->unk_000 & 2) {
-            BattleAI_RecordUsedMove(sp24->unk_08, sp28->unk_08, 2);
+            BattleAI_RecordUsedMove(sp24->RentalSlotAnimData_PosePhase, sp28->RentalSlotAnimData_PosePhase, 2);
         }
         gBattleScene.posX->unk_2C = 1;
         gBattleScene.posX->unk_2A = 1;
@@ -462,7 +462,7 @@ s32 BattleScene_PrepareReplacementTransition(void) {
 
     if ((sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_2D == 0xF) || (sp24->unk_2D == 0x10)) {
         if (sActivePokemon[gBattleScene.posX->unk_2C]->boundRoster->unk_000 & 2) {
-            BattleAI_RecordUsedMove(temp_a3->unk_08, sp20->unk_08, 2);
+            BattleAI_RecordUsedMove(temp_a3->RentalSlotAnimData_PosePhase, sp20->RentalSlotAnimData_PosePhase, 2);
         }
         Battle_ClearRuntimeFlags(sActivePokemon[gBattleScene.posX->unk_2C], 0x1800);
         gBattleScene.posX->unk_20 = 0;
@@ -814,10 +814,10 @@ void BattleScene_SendOutPresentationFinalize(CameraStruct* arg0) {
     if (temp_t1->unk_34 & 0x4008) {
         sp24->unk_000.unk_01D = 0xFF;
         BattleAnim_StopOwnerCategoryParticles(4, sp24);
-        sp24->unk_000.unk_024.y = gPokemonModelDimensions[gBattleScene.posX->unk_2C].unk_08;
+        sp24->unk_000.unk_024.y = gPokemonModelDimensions[gBattleScene.posX->unk_2C].RentalSlotAnimData_PosePhase;
         sp24->unk_000.unk_000.posY &= ~0x2;
         sp24->unk_000.unk_000.posY |= 0x20;
-        sp24->unk_000.unk_000.unk_01 |= 1;
+        sp24->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
         Battle_ClearRuntimeFlags(sp24, 0x4608);
     }
 
@@ -836,7 +836,7 @@ void BattleScene_SendOutPresentationFinalize(CameraStruct* arg0) {
     sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_01E.x = 0;
     if ((sp2E == 0x32) || (sp2E == 0x33)) {
         sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.posY |= 0x20;
-        sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 |= 1;
+        sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
         ModelAnim_SetAnimation(&sActivePokemon[gBattleScene.posX->unk_2C]->unk_000, sp28->posX);
     }
 
@@ -865,10 +865,10 @@ s32 BattleScene_ResetOwnerStatusPresentation(BattlePlayerEntity* arg0) {
     if (sp28->unk_34 & 0x4008) {
         arg0->unk_000.unk_01D = 0xFF;
         BattleAnim_StopOwnerCategoryParticles(4, arg0);
-        arg0->unk_000.unk_024.y = gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].unk_08;
+        arg0->unk_000.unk_024.y = gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].RentalSlotAnimData_PosePhase;
         arg0->unk_000.unk_000.posY &= ~0x2;
         arg0->unk_000.unk_000.posY |= 0x20;
-        arg0->unk_000.unk_000.unk_01 |= 1;
+        arg0->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
         Battle_ClearRuntimeFlags(arg0, 0x4608);
     }
 
@@ -922,12 +922,12 @@ void BattleScene_AdvanceSendOutCamera(CameraStruct* arg0) {
             BattleScene_ApproachCameraZoom(arg0, sActivePokemon[!gBattleScene.posX->unk_2C]);
         }
 
-        if (((sp20->rotation >> 1) == (sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_040.unk_08 >> 0x10)) &&
+        if (((sp20->rotation >> 1) == (sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10)) &&
             (sp24->unk_2D != 0x12)) {
             BattleBox_Open(9);
         }
 
-        if (sp20->unk_0A == ((sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_040.unk_08 >> 0x10) + 3)) {
+        if (sp20->unk_0A == ((sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10) + 3)) {
             sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.posY &= ~0x20;
             Battle_SetRuntimeFlags(sActivePokemon[!gBattleScene.posX->unk_2C], 0x100);
             BattleScene_ResetCameraFrameCounter();
@@ -1071,12 +1071,12 @@ void BattleScene_AdvanceSendOutFollowupCamera(CameraStruct* arg0) {
             BattleScene_ApproachCameraZoom(arg0, sActivePokemon[!gBattleScene.posX->unk_2C]);
         }
 
-        if (((sp20->rotation >> 1) == (sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_040.unk_08 >> 0x10)) &&
+        if (((sp20->rotation >> 1) == (sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10)) &&
             (sp24->unk_2D != 0x12)) {
             BattleBox_Open(9);
         }
 
-        if (sp20->unk_0A == ((sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_040.unk_08 >> 0x10) + 3)) {
+        if (sp20->unk_0A == ((sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10) + 3)) {
             sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.posY &= ~0x20;
             Battle_SetRuntimeFlags(sActivePokemon[!gBattleScene.posX->unk_2C], 0x100);
             BattleScene_ResetCameraFrameCounter();
@@ -1186,15 +1186,15 @@ void BattleScene_ResetOwnerPresentationFlags(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* ptr = &arg0->animationState;
 
     if (ptr->unk_34 & 0x200) {
-        arg0->unk_000.unk_024.y = gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].unk_08;
+        arg0->unk_000.unk_024.y = gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].RentalSlotAnimData_PosePhase;
         Battle_ClearRuntimeFlags(arg0, 0x608);
     } else if (ptr->unk_34 & 0x4008) {
         arg0->unk_000.unk_01D = 0xFF;
         BattleAnim_StopOwnerCategoryParticles(4, arg0);
-        arg0->unk_000.unk_024.y = gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].unk_08;
+        arg0->unk_000.unk_024.y = gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].RentalSlotAnimData_PosePhase;
         arg0->unk_000.unk_000.posY &= ~0x2;
         arg0->unk_000.unk_000.posY |= 0x20;
-        arg0->unk_000.unk_000.unk_01 |= 1;
+        arg0->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
         Battle_ClearRuntimeFlags(arg0, 0x4608);
     }
 }
@@ -2460,7 +2460,7 @@ void BattleScene_Phase15(CameraStruct* arg0) {
             } else {
                 gCurrentPlayer->pokemonAnimation->posY = gOpponentPlayer->pokemonAnimation->posY;
             }
-            gCurrentPlayer->pokemonAnimation->rotation = &gCurrentPlayer->boundRoster->unk_01C[gCurrentPlayer->animationState.unk_08];
+            gCurrentPlayer->pokemonAnimation->rotation = &gCurrentPlayer->boundRoster->unk_01C[gCurrentPlayer->animationState.RentalSlotAnimData_PosePhase];
             gCurrentPlayer->pokemonAnimation->posX |= 0x80;
             gBattleScene.posX->unk_20 += 1;
             break;
@@ -2486,8 +2486,8 @@ void BattleScene_Phase15(CameraStruct* arg0) {
 
         case 3:
             BattleScene_RecenterCameraOnOwner(arg0, gCurrentPlayer);
-            gCurrentPlayer->ownerModel.unk_168->posX.unk_01 |= 1;
-            gCurrentPlayer->ownerModel.unk_000.unk_000.unk_01 |= 1;
+            gCurrentPlayer->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort |= 1;
+            gCurrentPlayer->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
             BattleScene_TriggerOwnerModelAnimation(gCurrentPlayer);
             if (BattleScene_IsRowWaitComplete(gCurrentPlayer, 0x32) != 0) {
                 BattleScene_ResetAnimationStep();
@@ -3306,8 +3306,8 @@ void BattleScene_PhaseWithdrawFainted(CameraStruct* arg0) {
             break;
 
         case 4:
-            temp_s0->effectGraphNode.unk_000.unk_01 &= ~1;
-            temp_s0->pokemonAnimation->rotation = &temp_s0->pokemonAnimation->unk_08[sp34->unk_2C]->unk_01C[sp34->unk_18];
+            temp_s0->effectGraphNode.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+            temp_s0->pokemonAnimation->rotation = &temp_s0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp34->unk_2C]->unk_01C[sp34->unk_18];
             temp_s0->pokemonAnimation->posX |= 0x80;
             gBattleScene.posX->unk_20 += 1;
             break;
@@ -3405,9 +3405,9 @@ void BattleScene_PhaseWithdrawSwitch(CameraStruct* arg0) {
             break;
 
         case 3:
-            temp_s0->effectGraphNode.unk_000.unk_01 &= ~1;
+            temp_s0->effectGraphNode.unk_000.TrainerSlotSaveData_GamePort &= ~1;
             temp_s0->pokemonAnimation->posX |= 0x80;
-            temp_s0->pokemonAnimation->rotation = &temp_s0->pokemonAnimation->unk_08[sp3C->unk_2C]->unk_01C[sp3C->unk_18];
+            temp_s0->pokemonAnimation->rotation = &temp_s0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp3C->unk_2C]->unk_01C[sp3C->unk_18];
             gBattleScene.posX->unk_20 += 1;
             break;
 

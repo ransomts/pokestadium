@@ -96,7 +96,7 @@ void Gallery_DrawSaveOptions(MenuPanelInfo* arg0) {
     tmp = (arg0->rotation - Font_MeasureTextExtent(0, 0, temp_v0)) / 2;
     Font_Printf(arg0->posX + tmp, arg0->posY + 0x14, temp_v0);
 
-    for (i = 0; i < arg0->unk_08; i++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++) {
         Font_SetActive(0x10, 0);
         temp_v0 = Gallery_GetUiString(gSaveOptionStringIds[i]);
         if (i == gConfirmPromptCursorIndex) {
@@ -131,7 +131,7 @@ void Gallery_DrawDeleteOptions(MenuPanelInfo* arg0) {
     tmp = (arg0->rotation - Font_MeasureTextExtent(0, 0, temp_v0)) / 2;
     Font_Printf(arg0->posX + tmp, arg0->posY + 0x14, temp_v0);
 
-    for (i = 0; i < arg0->unk_08; i++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++) {
         Font_SetActive(0x10, 0);
         temp_v0 = Gallery_GetUiString(gDeleteOptionStringIds[i]);
         if (i == gConfirmPromptCursorIndex) {
@@ -213,7 +213,7 @@ void Gallery_UpdateConfirmPromptInput(void) {
     s32 tmp8;
 
     temp_v0 = &gConfirmPromptPanels[gConfirmPromptId];
-    tmp8 = temp_v0->unk_08;
+    tmp8 = temp_v0->RentalSlotAnimData_PosePhase;
     temp_a3 = temp_v0->unk_0C;
 
     if (gConfirmPromptController != NULL) {

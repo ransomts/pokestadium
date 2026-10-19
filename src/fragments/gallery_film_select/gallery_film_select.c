@@ -82,9 +82,9 @@ s32 Gallery_FilmSelectHasUnsavedPhoto(void) {
 
 void Gallery_FilmSelectUpdatePageAvailability(GallerySceneGrid* arg0) {
     UNUSED s32 pad;
-    s32 sp18 = arg0->unk_08 + 1;
+    s32 sp18 = arg0->RentalSlotAnimData_PosePhase + 1;
 
-    if (Gallery_CountReadyScenesOnPage(arg0, arg0->unk_08 - 1) > 0) {
+    if (Gallery_CountReadyScenesOnPage(arg0, arg0->RentalSlotAnimData_PosePhase - 1) > 0) {
         gCursorCanMoveUp = 1;
     } else {
         gCursorCanMoveUp = 0;
@@ -111,7 +111,7 @@ s32 Gallery_FilmSelectHandleInput(GallerySceneGrid* arg0) {
     Camera* ptr;
 
     sp54 = 0;
-    sp50 = arg0->unk_08;
+    sp50 = arg0->RentalSlotAnimData_PosePhase;
     sp4C = arg0->posX;
     sp48 = arg0->posX % 3;
     sp44 = arg0->posX / 3;
@@ -185,19 +185,19 @@ s32 Gallery_FilmSelectHandleInput(GallerySceneGrid* arg0) {
     }
 
     if ((gPlayer1Controller->buttonPressed & 0x20) || (sp40 != 0)) {
-        s32 tmp = arg0->unk_08;
+        s32 tmp = arg0->RentalSlotAnimData_PosePhase;
         if (gCursorCanMoveUp != 0) {
             tmp--;
-            arg0->unk_08 = tmp;
+            arg0->RentalSlotAnimData_PosePhase = tmp;
         }
     } else if ((gPlayer1Controller->buttonPressed & 0x10) || (sp3C != 0)) {
-        s32 tmp = arg0->unk_08;
+        s32 tmp = arg0->RentalSlotAnimData_PosePhase;
         if (gCursorCanMoveDown != 0) {
             tmp++;
-            arg0->unk_08 = tmp;
+            arg0->RentalSlotAnimData_PosePhase = tmp;
         }
     } else if (gPlayer1Controller->buttonPressed & 0x8000) {
-        idx = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
+        idx = (arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + arg0->posX;
         if (sp1C < 6) {
             if (Gallery_IsSceneReady(arg0->unk_20[idx]) != 0) {
                 if (gMonSelectionFlags[idx] == 0) {
@@ -229,7 +229,7 @@ s32 Gallery_FilmSelectHandleInput(GallerySceneGrid* arg0) {
             Audio_PlaySoundEffectById(3);
         }
     } else if (gPlayer1Controller->buttonPressed & 4) {
-        idx = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
+        idx = (arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + arg0->posX;
         if ((sp1C < 6) && (Gallery_IsSceneReady(arg0->unk_20[idx]) != 0)) {
             Audio_PlaySoundEffectById(0x19);
             Gallery_SetEnlargeTarget(arg0->unk_20[idx]->unk_18);
@@ -239,13 +239,13 @@ s32 Gallery_FilmSelectHandleInput(GallerySceneGrid* arg0) {
         }
     }
 
-    if (sp50 != arg0->unk_08) {
+    if (sp50 != arg0->RentalSlotAnimData_PosePhase) {
         gSelectionMessageState = 0;
         Audio_PlaySoundEffectById(0x27);
         Gallery_FilmSelectUpdatePageAvailability(arg0);
 
         for (i = 0; i < arg0->unk_14; i++) {
-            ptr = arg0->unk_20[(arg0->unk_08 * arg0->unk_14) + i];
+            ptr = arg0->unk_20[(arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + i];
 
             if (ptr != NULL) {
                 ptr->posX = 0;
@@ -424,12 +424,12 @@ void Gallery_FilmSelectDrawPhotoGrid(GallerySceneGrid* arg0) {
     Camera* temp_s0;
 
     for (i = 0; i < arg0->unk_14; i++) {
-        temp_s5 = (arg0->unk_08 * arg0->unk_14) + i;
+        temp_s5 = (arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + i;
         temp_s0 = arg0->unk_20[temp_s5];
         if ((Gallery_IsSceneReady(temp_s0) != 0) && (temp_s0->posX == 2)) {
             temp_s4 = (i / 3) * 0x6E;
             temp_s1 = (i % 3) * 0xA4;
-            Gallery_DrawPhotoThumbnail(temp_s0->unk_08->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);
+            Gallery_DrawPhotoThumbnail(temp_s0->RentalSlotAnimData_PosePhase->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);
             if (gMonSelectionFlags[temp_s5] != 0) {
                 Gallery_FilmSelectDrawPhotoBadge(temp_s1 + 0xB0, temp_s4 + 0xA6, D_83603280);
             }

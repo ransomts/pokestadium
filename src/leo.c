@@ -71,7 +71,7 @@ s32 Leo_QueueBootBlockRead(LeoDiskDescriptor* arg0) {
 }
 
 s32 Leo_QueueDiskPayloadRead(void) {
-    Storage_QueueDiskTransfer(0, gBootIDData.unk_08, gBootIDData.rotation, gBootIDData.unk_06, &gBootMsgQueue, 1);
+    Storage_QueueDiskTransfer(0, gBootIDData.RentalSlotAnimData_PosePhase, gBootIDData.rotation, gBootIDData.unk_06, &gBootMsgQueue, 1);
     gBootState.rotation = 0;
     gBootState.posY = 0;
     gBootState.posX = 9;

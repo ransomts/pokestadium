@@ -37,7 +37,7 @@ void DoubleTextureTrail_InitPool(void) {
         for (j = 0; j < 10; j++, var_a0++) {
             var_a0->posX = 0;
             var_a0->rotation = 0;
-            var_a0->unk_08 = 1.0f;
+            var_a0->RentalSlotAnimData_PosePhase = 1.0f;
             var_a0->unk_0C = 0.0f;
             var_a0->unk_10.x = 0.0f;
             var_a0->unk_10.y = 0.0f;
@@ -92,9 +92,9 @@ void DoubleTextureTrail_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
             var_v0->unk_070.rotation = arg12;
             var_v0->unk_070.unk_06 = arg13;
 
-            var_v0->unk_064.unk_08 = arg10;
+            var_v0->unk_064.RentalSlotAnimData_PosePhase = arg10;
             var_v0->unk_064.unk_0A = arg11;
-            var_v0->unk_070.unk_08 = arg14;
+            var_v0->unk_070.RentalSlotAnimData_PosePhase = arg14;
             var_v0->unk_070.unk_0A = arg15;
 
             var_v0->unk_024 = *arg16;
@@ -125,7 +125,7 @@ void DoubleTextureTrail_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
             for (j = 0; j < 10; j++, var_a0++) {
                 var_a0->posX = j;
                 var_a0->rotation = 0xFF;
-                var_a0->unk_08 = arg9;
+                var_a0->RentalSlotAnimData_PosePhase = arg9;
                 var_a0->unk_0C = 0.0f;
                 var_a0->unk_10 = sp3C;
                 var_a0->unk_1C = sp30.x * arg8;
@@ -184,30 +184,30 @@ void DoubleTextureTrail_Update(WaterParticleSystem* arg0) {
         var_v0->unk_0C += arg0->unk_00C;
 
         if (i == 0) {
-            var_v0->unk_08 = 1.0f;
+            var_v0->RentalSlotAnimData_PosePhase = 1.0f;
         } else if (i == 9) {
             if (arg0->unk_002 < 5) {
-                var_v0->unk_08 = 1.0f;
+                var_v0->RentalSlotAnimData_PosePhase = 1.0f;
             } else {
-                var_v0->unk_08 += 0.5f;
-                if (arg0->unk_008 * 1.0f < var_v0->unk_08) {
-                    var_v0->unk_08 = arg0->unk_008 * 1.0f;
+                var_v0->RentalSlotAnimData_PosePhase += 0.5f;
+                if (arg0->unk_008 * 1.0f < var_v0->RentalSlotAnimData_PosePhase) {
+                    var_v0->RentalSlotAnimData_PosePhase = arg0->unk_008 * 1.0f;
                 }
             }
         } else if (i == 1) {
-            var_v0->unk_08 += arg0->unk_010;
-            if (arg0->unk_008 * 0.5f < var_v0->unk_08) {
-                var_v0->unk_08 = arg0->unk_008 * 0.5f;
+            var_v0->RentalSlotAnimData_PosePhase += arg0->unk_010;
+            if (arg0->unk_008 * 0.5f < var_v0->RentalSlotAnimData_PosePhase) {
+                var_v0->RentalSlotAnimData_PosePhase = arg0->unk_008 * 0.5f;
             }
         } else if (i == 2) {
-            var_v0->unk_08 += arg0->unk_010;
-            if (arg0->unk_008 * 0.75f < var_v0->unk_08) {
-                var_v0->unk_08 = arg0->unk_008 * 0.75f;
+            var_v0->RentalSlotAnimData_PosePhase += arg0->unk_010;
+            if (arg0->unk_008 * 0.75f < var_v0->RentalSlotAnimData_PosePhase) {
+                var_v0->RentalSlotAnimData_PosePhase = arg0->unk_008 * 0.75f;
             }
         } else {
-            var_v0->unk_08 += arg0->unk_010;
-            if (arg0->unk_008 * 1.0f < var_v0->unk_08) {
-                var_v0->unk_08 = arg0->unk_008 * 1.0f;
+            var_v0->RentalSlotAnimData_PosePhase += arg0->unk_010;
+            if (arg0->unk_008 * 1.0f < var_v0->RentalSlotAnimData_PosePhase) {
+                var_v0->RentalSlotAnimData_PosePhase = arg0->unk_008 * 1.0f;
             }
         }
     }
@@ -286,12 +286,12 @@ Gfx* DoubleTextureTrail_LoadTextures(Gfx* arg0, WaterParticleSystem* arg1) {
 
     ptr = &arg1->unk_064;
     gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_01C], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
-                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
+                          G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0A);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, ptr->posX, ptr->posY, (ptr->posX + 31) << 2, (ptr->posY + 31) << 2);
 
     ptr = &arg1->unk_070;
     gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_020], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
-                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
+                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0A);
     gDPSetTileSize(arg0++, 1, ptr->posX, ptr->posY, (ptr->posX + 31) << 2, (ptr->posY + 31) << 2);
 
     return arg0;
@@ -330,7 +330,7 @@ Gfx* DoubleTextureTrail_DrawAll(Gfx* arg0) {
             var_s0 = var_fp->unk_018;
             for (j = 0; j < 10; j++, var_s2++) {
                 for (k = 0; k < 9; k++) {
-                    DoubleTextureTrail_RotateVertexOffset(var_s2->unk_0C + ((2.0f * (k % 8) * 3.1415927f) / 8), &sp100, var_s2->unk_08);
+                    DoubleTextureTrail_RotateVertexOffset(var_s2->unk_0C + ((2.0f * (k % 8) * 3.1415927f) / 8), &sp100, var_s2->RentalSlotAnimData_PosePhase);
                     var_s0->v.ob[0] = var_s2->unk_10.x + sp100.x;
                     var_s0->v.ob[1] = var_s2->unk_10.y + sp100.y;
                     var_s0->v.ob[2] = var_s2->unk_10.z + sp100.z;
@@ -360,9 +360,9 @@ Gfx* DoubleTextureTrail_DrawAll(Gfx* arg0) {
             gSPDisplayList(arg0++, gWaterParticleDisplayList);
 
             Gfx_SetCombineRaw(
-                arg0++, var_fp->unk_024.posX, var_fp->unk_024.rotation, var_fp->unk_024.unk_08, var_fp->unk_024.unk_0C,
+                arg0++, var_fp->unk_024.posX, var_fp->unk_024.rotation, var_fp->unk_024.RentalSlotAnimData_PosePhase, var_fp->unk_024.unk_0C,
                 var_fp->unk_024.unk_10, var_fp->unk_024.unk_14, var_fp->unk_024.unk_18, var_fp->unk_024.unk_1C,
-                var_fp->unk_044.posX, var_fp->unk_044.rotation, var_fp->unk_044.unk_08, var_fp->unk_044.unk_0C,
+                var_fp->unk_044.posX, var_fp->unk_044.rotation, var_fp->unk_044.RentalSlotAnimData_PosePhase, var_fp->unk_044.unk_0C,
                 var_fp->unk_044.unk_10, var_fp->unk_044.unk_14, var_fp->unk_044.unk_18, var_fp->unk_044.unk_1C);
 
             arg0 = DoubleTextureTrail_LoadTextures(arg0, var_fp);

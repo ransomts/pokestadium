@@ -210,11 +210,11 @@ Vtx* GeoOverlay_BuildFadeQuad(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_0
                 break;
 
             case 2:
-                sp47 = 0xFF - ((arg0->unk_0A * 0xFF) / arg0->unk_08);
+                sp47 = 0xFF - ((arg0->unk_0A * 0xFF) / arg0->RentalSlotAnimData_PosePhase);
                 break;
 
             case 3:
-                sp47 = (arg0->unk_0A * 0xFF) / arg0->unk_08;
+                sp47 = (arg0->unk_0A * 0xFF) / arg0->RentalSlotAnimData_PosePhase;
                 break;
         }
 
@@ -240,7 +240,7 @@ void GeoOverlay_DrawFadeQuad(unk_D_86002F34_00C_0CC* arg0, unk_D_86002F34_00C_04
 
     if (arg0->posX != 1) {
         arg0->unk_0A++;
-        if (arg0->unk_0A == arg0->unk_08) {
+        if (arg0->unk_0A == arg0->RentalSlotAnimData_PosePhase) {
             if (arg0->posX == 2) {
                 arg0->posX = 0;
             } else {
@@ -285,9 +285,9 @@ Vtx* GeoOverlay_BuildRotatingQuad(unk_D_86002F34_00C_0CC* arg0) {
     if (temp_v0 != NULL) {
         temp_s0 = temp_v0;
 
-        temp_s4 = arg0->unk_10 + (((arg0->unk_14 - arg0->unk_10) * arg0->unk_0A) / arg0->unk_08);
-        temp_s5 = arg0->unk_12 + (((arg0->unk_16 - arg0->unk_12) * arg0->unk_0A) / arg0->unk_08);
-        temp_s2 = arg0->unk_0C + (((arg0->unk_0E - arg0->unk_0C) * arg0->unk_0A) / arg0->unk_08);
+        temp_s4 = arg0->unk_10 + (((arg0->unk_14 - arg0->unk_10) * arg0->unk_0A) / arg0->RentalSlotAnimData_PosePhase);
+        temp_s5 = arg0->unk_12 + (((arg0->unk_16 - arg0->unk_12) * arg0->unk_0A) / arg0->RentalSlotAnimData_PosePhase);
+        temp_s2 = arg0->unk_0C + (((arg0->unk_0E - arg0->unk_0C) * arg0->unk_0A) / arg0->RentalSlotAnimData_PosePhase);
 
         if (arg0->posX == 2) {
             Graph_MakeRotatedVertex(temp_s0++, arg0, temp_s4, temp_s5, -temp_s2, -temp_s2, -0x1F, 0x3F);
@@ -348,7 +348,7 @@ void GeoOverlay_DrawRotatingQuad(unk_D_86002F34_00C_0CC* arg0, UNUSED unk_D_8600
     }
 
     arg0->unk_0A++;
-    if (arg0->unk_0A == arg0->unk_08) {
+    if (arg0->unk_0A == arg0->RentalSlotAnimData_PosePhase) {
         if (arg0->posX == 4) {
             arg0->posX = 0;
         } else {
@@ -384,14 +384,14 @@ void Geo_ProcessNodeChildren(GraphNode* arg0) {
 
     if (temp_s2 != NULL) {
         do {
-            if (var_s0->unk_01 & 1) {
+            if (var_s0->TrainerSlotSaveData_GamePort & 1) {
                 gGraphNodeReturnVal = 0;
                 if (var_s0->unk_10 != NULL) {
                     gGraphNodeReturnVal = var_s0->unk_10(2, var_s0);
                 }
                 GeoNodeHandlerTable[var_s0->posX](var_s0);
             }
-            var_s0 = var_s0->unk_08;
+            var_s0 = var_s0->RentalSlotAnimData_PosePhase;
         } while (var_s0 != temp_s2);
     }
 }
@@ -400,7 +400,7 @@ void Geo_NodeReference(GraphNode* arg0) {
     UNUSED s32 pad;
     GraphNode* temp_a1 = ((MiniHudMainGraph*)arg0)->unk_18;
 
-    if ((temp_a1 != NULL) && (temp_a1->unk_01 & 1)) {
+    if ((temp_a1 != NULL) && (temp_a1->TrainerSlotSaveData_GamePort & 1)) {
         gGraphNodeReturnVal = 0;
         if (temp_a1->unk_10 != NULL) {
             gGraphNodeReturnVal = temp_a1->unk_10(2, temp_a1);
@@ -673,11 +673,11 @@ void Geo_NodeSwitchCase(GraphNode* arg0) {
 
     if (var_a1 != NULL) {
         for (i = 0; i < arg->unk_1A; i++) {
-            var_a1 = var_a1->unk_08;
+            var_a1 = var_a1->RentalSlotAnimData_PosePhase;
         }
     }
 
-    if (var_a1->unk_01 & 1) {
+    if (var_a1->TrainerSlotSaveData_GamePort & 1) {
         GeoNodeHandlerTable[var_a1->posX](var_a1);
     }
 }
@@ -998,7 +998,7 @@ void Geo_NodeShadow(GraphNode* arg0) {
 void Geo_RenderRootNode(GraphNode* arg0) {
     unk_D_86002F34_alt1* arg = (unk_D_86002F34_alt1*)arg0;
 
-    if (arg0->unk_01 & 1) {
+    if (arg0->TrainerSlotSaveData_GamePort & 1) {
         gDPPipeSync(gDisplayListHead++);
 
         gDPSetTextureLOD(gDisplayListHead++, G_TL_TILE);
@@ -1063,7 +1063,7 @@ void Geo_ProcessCallbacks(GraphNode* arg0, s32 arg1) {
             }
         }
 
-        var_s1 = var_s1->unk_08;
+        var_s1 = var_s1->RentalSlotAnimData_PosePhase;
     } while (var_s1 != arg0);
 }
 
@@ -1104,9 +1104,9 @@ Vec3f* GeoRender_FindAnchorPosition(Fragment2_1GraphNode* arg0, s16 arg1, Vec3f*
 
 void GeoRender_SetCombineMode(Gfx* arg0, arg1_func_81407874_014_000_010* arg1) {
     gDPSetCombine(arg0++,
-                  GCCc0w0(arg1->posX, arg1->posY, arg1->rotation, arg1->unk_06) | GCCc1w0(arg1->unk_08, arg1->unk_0A),
+                  GCCc0w0(arg1->posX, arg1->posY, arg1->rotation, arg1->unk_06) | GCCc1w0(arg1->RentalSlotAnimData_PosePhase, arg1->unk_0A),
 
-                  GCCc0w1(arg1->unk_01, arg1->unk_03, arg1->unk_05, arg1->unk_07) |
+                  GCCc0w1(arg1->TrainerSlotSaveData_GamePort, arg1->unk_03, arg1->unk_05, arg1->unk_07) |
                       GCCc1w1(arg1->unk_09, arg1->unk_0C, arg1->unk_0E, arg1->unk_0B, arg1->unk_0D, arg1->unk_0F));
 }
 
@@ -1169,13 +1169,13 @@ void GeoRender_ApplyMaterialState(void) {
 }
 
 void GeoRender_SetFogColor(RenderState* arg0) {
-    if (arg0->unk_08.rgba != gCurrentRenderState->unk_14.rgba) {
+    if (arg0->RentalSlotAnimData_PosePhase.rgba != gCurrentRenderState->unk_14.rgba) {
         GeoRender_SyncMaterialState();
 
-        gDPSetColor(gDisplayListHead++, G_SETFOGCOLOR, arg0->unk_08.rgba);
+        gDPSetColor(gDisplayListHead++, G_SETFOGCOLOR, arg0->RentalSlotAnimData_PosePhase.rgba);
         gDPSetRenderMode(gDisplayListHead++, gRenderModeTable[gRenderModeIndex][gCurrentRenderState->unk_24], 0xC4000000);
 
-        gCurrentRenderState->unk_14.rgba = arg0->unk_08.rgba;
+        gCurrentRenderState->unk_14.rgba = arg0->RentalSlotAnimData_PosePhase.rgba;
     }
 }
 
@@ -1186,14 +1186,14 @@ void GeoRender_RestoreRenderMode(UNUSED RenderState* arg0) {
 }
 
 void GeoRender_SetPrimitiveColor(RenderState* arg0) {
-    if ((arg0->rotation.rgba != gCurrentRenderState->unk_10.rgba) || (arg0->unk_01 != gCurrentRenderState->unk_26)) {
+    if ((arg0->rotation.rgba != gCurrentRenderState->unk_10.rgba) || (arg0->TrainerSlotSaveData_GamePort != gCurrentRenderState->unk_26)) {
         GeoRender_SyncMaterialState();
 
-        gDPSetPrimColor(gDisplayListHead++, 0, arg0->unk_01, arg0->rotation.r, arg0->rotation.g, arg0->rotation.b,
+        gDPSetPrimColor(gDisplayListHead++, 0, arg0->TrainerSlotSaveData_GamePort, arg0->rotation.r, arg0->rotation.g, arg0->rotation.b,
                         arg0->rotation.a);
 
         gCurrentRenderState->unk_10.rgba = arg0->rotation.rgba;
-        gCurrentRenderState->unk_26 = arg0->unk_01;
+        gCurrentRenderState->unk_26 = arg0->TrainerSlotSaveData_GamePort;
     }
 }
 
@@ -1227,20 +1227,20 @@ void GeoRender_BindTexture(RenderState* arg0) {
         temp_t0 = arg0->unk_0C;
 
         if (arg0->unk_10 != NULL) {
-            gSPDisplayList(gDisplayListHead++, arg0->unk_10->unk_08);
+            gSPDisplayList(gDisplayListHead++, arg0->unk_10->RentalSlotAnimData_PosePhase);
         } else {
             gDPSetTextureLUT(gDisplayListHead++, G_TT_NONE);
         }
 
-        if (temp_t0->unk_01 == 0) {
+        if (temp_t0->TrainerSlotSaveData_GamePort == 0) {
             if ((temp_t0->posY % gScaleFactors[0]) == 0) {
                 gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, G_IM_SIZ_16b, 1, temp_t0->texture);
             } else {
                 gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, G_IM_SIZ_8b, temp_t0->posY >> 1,
                                    temp_t0->texture);
             }
-        } else if ((temp_t0->posY % gScaleFactors[temp_t0->unk_01]) == 0) {
-            if (temp_t0->unk_01 == 3) {
+        } else if ((temp_t0->posY % gScaleFactors[temp_t0->TrainerSlotSaveData_GamePort]) == 0) {
+            if (temp_t0->TrainerSlotSaveData_GamePort == 3) {
                 var_a3 = 3;
             } else {
                 var_a3 = 2;
@@ -1248,7 +1248,7 @@ void GeoRender_BindTexture(RenderState* arg0) {
 
             gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, var_a3, 1, temp_t0->texture);
         } else {
-            gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, temp_t0->unk_01, temp_t0->posY, temp_t0->texture);
+            gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, temp_t0->TrainerSlotSaveData_GamePort, temp_t0->posY, temp_t0->texture);
         }
 
         gSPDisplayList(gDisplayListHead++, arg0->unk_14);
@@ -1278,7 +1278,7 @@ void GeoRender_SelectMaterialSlot(s16 arg0) {
         return;
     }
 
-    gCurrentRenderState->unk_08 = gDisplayListHead;
+    gCurrentRenderState->RentalSlotAnimData_PosePhase = gDisplayListHead;
 
     gSPBranchList(gDisplayListHead++, NULL);
 
@@ -1287,8 +1287,8 @@ void GeoRender_SelectMaterialSlot(s16 arg0) {
 
     if (gCurrentRenderState->rotation == NULL) {
         gCurrentRenderState->rotation = gDisplayListHead;
-    } else if (gCurrentRenderState->unk_08 != NULL) {
-        gSPBranchList(gCurrentRenderState->unk_08, gDisplayListHead);
+    } else if (gCurrentRenderState->RentalSlotAnimData_PosePhase != NULL) {
+        gSPBranchList(gCurrentRenderState->RentalSlotAnimData_PosePhase, gDisplayListHead);
     }
 }
 
@@ -1303,7 +1303,7 @@ void GeoRender_SetTextureMode(s16 arg0) {
 s16 GeoRender_NormalizeTextureFormat(s16 arg0) {
     s16 var_v1 = arg0 & 0xF;
 
-    if (gRenderState.unk_01 < 0xFF) {
+    if (gRenderState.TrainerSlotSaveData_GamePort < 0xFF) {
         switch (var_v1) {
             case 1:
                 var_v1 = 8;
@@ -1324,7 +1324,7 @@ s16 GeoRender_NormalizeTextureFormat(s16 arg0) {
 }
 
 void GeoRender_SubmitMaterial(s16 arg0, MtxF* arg1) {
-    if ((gIsRenderInitialized != 0) && !(gRenderFlags & 2) && (gRenderState.unk_01 > 0)) {
+    if ((gIsRenderInitialized != 0) && !(gRenderFlags & 2) && (gRenderState.TrainerSlotSaveData_GamePort > 0)) {
         GeoRender_SetTextureMode(arg0);
         GeoRender_SelectMaterialSlot(GeoRender_NormalizeTextureFormat(arg0));
         gPipeSynced = 0;
@@ -1335,7 +1335,7 @@ void GeoRender_SubmitMaterial(s16 arg0, MtxF* arg1) {
             gCurrentRenderState->posX = 1;
         }
 
-        if (gRenderState.unk_08.rgba & 0xFF) {
+        if (gRenderState.RentalSlotAnimData_PosePhase.rgba & 0xFF) {
             GeoRender_SetFogColor(&gRenderState);
         } else {
             GeoRender_RestoreRenderMode(&gRenderState);
@@ -1366,7 +1366,7 @@ void GeoRender_SubmitMaterial(s16 arg0, MtxF* arg1) {
 }
 
 void GeoRender_SubmitDisplayList(Gfx* arg0, s32 arg1) {
-    if ((gIsRenderInitialized != 0) && !(gRenderFlags & 2) && (gRenderState.unk_01 > 0)) {
+    if ((gIsRenderInitialized != 0) && !(gRenderFlags & 2) && (gRenderState.TrainerSlotSaveData_GamePort > 0)) {
         if (arg0 != NULL) {
             if (((u32)arg0 >= 0x81000000) && ((u32)arg0 < 0x90000000)) {
                 gSPDisplayList(gDisplayListHead++, Memmap_GetFragmentVaddr((u32)arg0));
@@ -1382,8 +1382,8 @@ void GeoRender_SubmitDisplayList(Gfx* arg0, s32 arg1) {
 }
 
 void GeoRender_SetMaterialParams(Color_RGBA8_u32 arg0, u8 arg1, u32 arg2) {
-    gRenderState.unk_08.rgba = arg0.rgba;
-    gRenderState.unk_01 = arg1;
+    gRenderState.RentalSlotAnimData_PosePhase.rgba = arg0.rgba;
+    gRenderState.TrainerSlotSaveData_GamePort = arg1;
     gRenderState.posY = arg2;
 }
 
@@ -1411,7 +1411,7 @@ void GeoRender_InitMaterialState(s32 arg0, s32 arg1) {
 
     for (i = 0; i < 10; i++, ptr++) {
         ptr->rotation = NULL;
-        ptr->unk_08 = NULL;
+        ptr->RentalSlotAnimData_PosePhase = NULL;
 
         ptr->posX = 0;
         ptr->unk_0C = 0;
@@ -1430,11 +1430,11 @@ void GeoRender_InitMaterialState(s32 arg0, s32 arg1) {
     }
 
     gRenderState.posX = 0;
-    gRenderState.unk_01 = 0xFF;
+    gRenderState.TrainerSlotSaveData_GamePort = 0xFF;
     gRenderState.posY = 0;
     gRenderState.unk_03 = 0;
     gRenderState.rotation.rgba = -1;
-    gRenderState.unk_08.rgba = 0xFFFFFF00;
+    gRenderState.RentalSlotAnimData_PosePhase.rgba = 0xFFFFFF00;
     gRenderState.unk_0C = 0;
     gRenderState.unk_10 = 0;
     gRenderState.unk_14 = 0;
@@ -1457,10 +1457,10 @@ void GeoRender_FlushMaterialSlots(void) {
 
     GeoRender_SelectMaterialSlot(9);
 
-    if (gLayerStates[0].unk_08 != NULL) {
+    if (gLayerStates[0].RentalSlotAnimData_PosePhase != NULL) {
         while (sp1C < 9) {
             temp_v0 = sp1C + 1;
-            temp_t0 = gLayerStates[sp1C].unk_08;
+            temp_t0 = gLayerStates[sp1C].RentalSlotAnimData_PosePhase;
             sp1C++;
 
             while (gLayerStates[temp_v0].rotation == NULL) {

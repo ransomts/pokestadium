@@ -38,8 +38,8 @@ void GalleryCamera_InitFreeView(void) {
     gCameraPitch = 0;
     gCameraDistance = GalleryCamera_ComputeZoomDistance(4.0f);
 
-    if (gCameraConfig.unk_08 != 0.0f) {
-        gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_08;
+    if (gCameraConfig.RentalSlotAnimData_PosePhase != 0.0f) {
+        gMiniCameraPtr->unk_60.at.y = gCameraConfig.RentalSlotAnimData_PosePhase;
     } else {
         gMiniCameraPtr->unk_60.at.y = gCameraConfig.rotation + gCameraConfig.unk_0C;
     }
@@ -91,8 +91,8 @@ void GalleryCamera_ResetFreeView(void) {
     gMiniCameraPtr->unk_60.at.x = 0.0f;
     gMiniCameraPtr->unk_60.at.z = 0.0f;
 
-    if (gCameraConfig.unk_08 != 0) {
-        gMiniCameraPtr->unk_60.at.y = gCameraConfig.unk_08;
+    if (gCameraConfig.RentalSlotAnimData_PosePhase != 0) {
+        gMiniCameraPtr->unk_60.at.y = gCameraConfig.RentalSlotAnimData_PosePhase;
     } else {
         gMiniCameraPtr->unk_60.at.y = gCameraConfig.rotation + gCameraConfig.unk_0C;
     }

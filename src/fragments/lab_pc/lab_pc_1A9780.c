@@ -28,7 +28,7 @@ typedef struct unk_func_88201488_arg2_000 {
 typedef struct unk_func_88201488_arg2 {
     /* 0x00 */ unk_func_88201488_arg2_000* posX;
     /* 0x04 */ char pad04[4];
-    /* 0x08 */ u8 unk_08[1];
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase[1];
 } unk_func_88201488_arg2; // size >= 0x9
 
 extern u8 D_4006A08[];
@@ -92,7 +92,7 @@ s32 LabPC_NoEmptyBoxAvailable(unk_func_88205880_A030* arg0) {
     s32 i;
     unk_func_88205880_00D0** var_a0 = arg0->posX;
 
-    for (i = 0; i < arg0->unk_08; i++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++) {
         if (var_a0[i]->count == 0) {
             return 0;
         }
@@ -105,7 +105,7 @@ s32 LabPC_AllBoxesEmpty(unk_func_88205880_A030* arg0) {
     s32 i;
     unk_func_88205880_00D0** var_a0 = arg0->posX;
 
-    for (i = 0; i < arg0->unk_08; i++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++) {
         if (var_a0[i]->count > 0) {
             return 0;
         }
@@ -170,7 +170,7 @@ void LabPC_DrawSlot(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, 
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-        gDPLoadTextureBlock(gDisplayListHead++, arg2->unk_08, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 40, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, arg2->RentalSlotAnimData_PosePhase, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 40, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (arg0 + 0x30) << 2, (arg1 + 6) << 2, (arg0 + 0x57) << 2,
@@ -406,7 +406,7 @@ void LabPC_BuildBoxPairSelector(unk_func_882025E0_1A9780* arg0, unk_func_88200FA
         ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(arg0->unk_3C[i].posX, 0, 0, temp_s2, 0x10);
         arg0->unk_3C[i].posX->unk_30 = gMenuTextColor;
         arg0->unk_3C[i].posX->unk_44 = arg0->unk_3C[i].posX->unk_44;
-        arg0->unk_3C[i].unk_08 = 0;
+        arg0->unk_3C[i].RentalSlotAnimData_PosePhase = 0;
         arg0->unk_3C[i].rotation = 0;
     }
 }
@@ -485,7 +485,7 @@ void LabPC_BoxPairSelector_GetSelectedBoxIds(unk_func_882025E0_1A9780* arg0, unk
 
 void LabPC_DisableEmptyBoxes(unk_func_88200FA0_030_030* arg0) {
     s32 i;
-    s32 count = arg0->unk_2C->unk_08;
+    s32 count = arg0->unk_2C->RentalSlotAnimData_PosePhase;
     unk_func_88205880_00D0** temp_v0 = arg0->unk_2C->posX;
 
     for (i = 0; i < count; i++) {
@@ -499,7 +499,7 @@ void LabPC_DisableEmptyBoxes(unk_func_88200FA0_030_030* arg0) {
 
 void LabPC_DisableNonEmptyBoxes(unk_func_88200FA0_030_030* arg0) {
     s32 i;
-    s32 count = arg0->unk_2C->unk_08;
+    s32 count = arg0->unk_2C->RentalSlotAnimData_PosePhase;
     unk_func_88205880_00D0** temp_v0 = arg0->unk_2C->posX;
 
     for (i = 0; i < count; i++) {
@@ -637,14 +637,14 @@ s32 LabPC_BoxPairSelector_HandleInput(unk_func_882025E0_1A9780* arg0, Controller
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
                                 arg0->posX.unk_20->unk_60, arg0->unk_3C[0].posX, arg0->unk_3C[0].rotation,
-                                arg0->unk_3C[0].unk_08);
+                                arg0->unk_3C[0].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->posX.unk_20->unk_60, arg1);
                             var_a2 = 1;
                         } else if (LabPC_NoEmptyBoxAvailable(arg0->unk_24[1]->unk_2C) != 0) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
                                 arg0->posX.unk_20->unk_60, arg0->unk_3C[4].posX, arg0->unk_3C[4].rotation,
-                                arg0->unk_3C[4].unk_08);
+                                arg0->unk_3C[4].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->posX.unk_20->unk_60, arg1);
                             var_a2 = 1;
                         } else {
@@ -659,7 +659,7 @@ s32 LabPC_BoxPairSelector_HandleInput(unk_func_882025E0_1A9780* arg0, Controller
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
                                 arg0->posX.unk_20->unk_60, arg0->unk_3C[1].posX, arg0->unk_3C[1].rotation,
-                                arg0->unk_3C[1].unk_08);
+                                arg0->unk_3C[1].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->posX.unk_20->unk_60, arg1);
                             var_a2 = 1;
                         } else {
@@ -677,7 +677,7 @@ s32 LabPC_BoxPairSelector_HandleInput(unk_func_882025E0_1A9780* arg0, Controller
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
                                 arg0->posX.unk_20->unk_60, arg0->unk_3C[2].posX, arg0->unk_3C[2].rotation,
-                                arg0->unk_3C[2].unk_08);
+                                arg0->unk_3C[2].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->posX.unk_20->unk_60, arg1);
                             var_a2 = 1;
                         } else {
@@ -692,7 +692,7 @@ s32 LabPC_BoxPairSelector_HandleInput(unk_func_882025E0_1A9780* arg0, Controller
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
                                 arg0->posX.unk_20->unk_60, arg0->unk_3C[3].posX, arg0->unk_3C[3].rotation,
-                                arg0->unk_3C[3].unk_08);
+                                arg0->unk_3C[3].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->posX.unk_20->unk_60, arg1);
                             var_a2 = 1;
                         }
@@ -1023,7 +1023,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
         arg0->unk_44[j] = mem_pool_alloc(arg8, sizeof(unk_func_882149A0));
 
         LabPC_InitTabWidget(arg0->unk_44[j], gMenuItemDefs[j].posX, gMenuItemDefs[j].posY, gMenuItemDefs[j].rotation,
-                      gMenuItemDefs[j].unk_06, gMenuItemDefs[j].unk_08, gMenuItemDefs[j].unk_0C, gMenuItemDefs[j].unk_10[0],
+                      gMenuItemDefs[j].unk_06, gMenuItemDefs[j].RentalSlotAnimData_PosePhase, gMenuItemDefs[j].unk_0C, gMenuItemDefs[j].unk_10[0],
                       gMenuItemDefs[j].unk_10[1], gMenuBackgroundColor);
 
         if (gMenuItemDefs[j].unk_14 != 0) {
@@ -1338,7 +1338,7 @@ s32 BoxPCMenuCursor_HandleInput(unk_func_88203ED8_064* arg0, Controller* arg1) {
     if (arg0->posX.unk_20 > 0) {
         var_a0 = arg0->posX.posX.rotation;
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->posX.posX.unk_08;
+            var_a0 = var_a0->posX.posX.RentalSlotAnimData_PosePhase;
         }
         sp34 = var_a0->posX.unk_10(var_a0, arg1);
     }
@@ -1600,7 +1600,7 @@ void BoxPC_InitScreen(LabPC_BuildBoxScreenWidget* arg0, s32 arg1, s32 arg2, Text
 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp78, arg0->unk_002C);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp74, arg0->boxList);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->boxListConfig.unk_08);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->boxListConfig.RentalSlotAnimData_PosePhase);
 }
 
 s32 LabPC_BoxScreen_HandleInput(LabPC_BuildBoxScreenWidget* arg0, Controller* arg1) {

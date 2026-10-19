@@ -7,7 +7,7 @@ typedef struct AnimStackEntry {
     /* 0x00 */ u8 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ unk_D_86002F58_004_000_054_004* rotation;
-    /* 0x08 */ void* unk_08;
+    /* 0x08 */ void* RentalSlotAnimData_PosePhase;
     /* 0x0C */ void* unk_0C;
 } AnimStackEntry; // size = 0x10
 

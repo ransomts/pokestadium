@@ -12,7 +12,7 @@ u8 gPlayerInitState[4] = { 0, 0, 0, 0 };
 
 typedef struct unk_func_800228F0_sp24 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u16 posY;
     /* 0x04 */ char rotation[0x10];
     /* 0x14 */ char unk_14[0x8];
@@ -82,7 +82,7 @@ s32 VictoryPalace_LoadSpeciesRecord(SpeciesRecord* arg0, u16 arg1) {
     var_v1 = 0;
     if ((Deck_ReadSaveEntry(0x13, 0, arg1 - 1, &sp24) != 0) && (sp24.posX != 0)) {
         arg0->posX = sp24.posX;
-        arg0->unk_01 = sp24.unk_01;
+        arg0->TrainerSlotSaveData_GamePort = sp24.TrainerSlotSaveData_GamePort;
         arg0->posY = sp24.posY;
         Text_UntranscodeFixedName(arg0->rotation, &sp24.rotation[0]);
         Text_UntranscodeFixedName(arg0->unk_14, &sp24.rotation[0xB]);
@@ -99,7 +99,7 @@ void VictoryPalace_SaveSpeciesRecord(PokemonData* arg0, s16 arg1, u8 arg2) {
     } else {
         sp24.posX = arg1;
     }
-    sp24.unk_01 = arg0->unk_24;
+    sp24.TrainerSlotSaveData_GamePort = arg0->unk_24;
     sp24.posY = arg0->unk_0E;
     Text_TranscodeName(sp24.rotation, arg0->unk_30);
     Text_TranscodeName(sp24.unk_0F, arg0->unk_3B);
@@ -166,15 +166,15 @@ s32 GetPokemonGrowthRate(s32 arg0) {
 void Deck_InitializeSaveBackend(DeckHandle* arg0) {
     if (arg0->posX == 1) {
         arg0->rotation |= 1;
-        Deck_SetSaveEntryCount(arg0->unk_01, arg0->unk_03, 0);
+        Deck_SetSaveEntryCount(arg0->TrainerSlotSaveData_GamePort, arg0->unk_03, 0);
     }
 
-    arg0->unk_05 = Deck_GetSaveRecordSize(arg0->unk_01);
-    arg0->unk_06 = Deck_GetSaveRecordCapacity(arg0->unk_01);
-    arg0->unk_08 = Deck_GetSaveEntryCount(arg0->unk_01, arg0->unk_03);
+    arg0->unk_05 = Deck_GetSaveRecordSize(arg0->TrainerSlotSaveData_GamePort);
+    arg0->unk_06 = Deck_GetSaveRecordCapacity(arg0->TrainerSlotSaveData_GamePort);
+    arg0->RentalSlotAnimData_PosePhase = Deck_GetSaveEntryCount(arg0->TrainerSlotSaveData_GamePort, arg0->unk_03);
 
     if (arg0->posX == 2) {
-        arg0->unk_0A = arg0->unk_08;
+        arg0->unk_0A = arg0->RentalSlotAnimData_PosePhase;
     } else {
         arg0->unk_0A = 0;
     }
@@ -183,15 +183,15 @@ void Deck_InitializeSaveBackend(DeckHandle* arg0) {
 void Deck_InitializeBoxBackend(DeckHandle* arg0) {
     if (arg0->posX == 1) {
         arg0->rotation |= 1;
-        Deck_DeleteEntry(arg0->unk_01, arg0->posY, arg0->unk_03, 0);
+        Deck_DeleteEntry(arg0->TrainerSlotSaveData_GamePort, arg0->posY, arg0->unk_03, 0);
     }
 
-    arg0->unk_05 = Deck_GetEntrySize(arg0->unk_01);
-    arg0->unk_06 = Deck_GetCapacity(arg0->unk_01);
-    arg0->unk_08 = Deck_GetCount(arg0->unk_01, arg0->posY, arg0->unk_03);
+    arg0->unk_05 = Deck_GetEntrySize(arg0->TrainerSlotSaveData_GamePort);
+    arg0->unk_06 = Deck_GetCapacity(arg0->TrainerSlotSaveData_GamePort);
+    arg0->RentalSlotAnimData_PosePhase = Deck_GetCount(arg0->TrainerSlotSaveData_GamePort, arg0->posY, arg0->unk_03);
 
     if (arg0->posX == 2) {
-        arg0->unk_0A = arg0->unk_08;
+        arg0->unk_0A = arg0->RentalSlotAnimData_PosePhase;
     } else {
         arg0->unk_0A = 0;
     }
@@ -203,7 +203,7 @@ DeckHandle* Deck_Open(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     sp1C = Util_Malloc(sizeof(DeckHandle));
     if (sp1C != NULL) {
         sp1C->posX = arg3;
-        sp1C->unk_01 = arg0;
+        sp1C->TrainerSlotSaveData_GamePort = arg0;
         sp1C->posY = arg1;
         sp1C->unk_03 = arg2;
         sp1C->rotation = 0;
@@ -237,8 +237,8 @@ DeckHandle* Deck_OpenAndSetName(s32 arg0, s32 arg1, s32 arg2, s32 arg3, char* ar
 s32 Deck_CloseAndFlushBox(DeckHandle* arg0) {
     s32 sp1C = 0;
 
-    if ((arg0->unk_01 & 0x10) && (arg0->rotation & 1)) {
-        Save_InvalidateTypedRecord(arg0->unk_01, arg0->unk_03);
+    if ((arg0->TrainerSlotSaveData_GamePort & 0x10) && (arg0->rotation & 1)) {
+        Save_InvalidateTypedRecord(arg0->TrainerSlotSaveData_GamePort, arg0->unk_03);
         sp1C = 1;
     }
 
@@ -250,8 +250,8 @@ s32 Deck_CloseAndFlushBox(DeckHandle* arg0) {
 s32 Deck_CloseAndFlush(DeckHandle* arg0) {
     s32 sp1C = 0;
 
-    if ((arg0->unk_01 & 0x10) && (arg0->rotation & 1)) {
-        Save_CommitTypedRecord(arg0->unk_01, arg0->unk_03);
+    if ((arg0->TrainerSlotSaveData_GamePort & 0x10) && (arg0->rotation & 1)) {
+        Save_CommitTypedRecord(arg0->TrainerSlotSaveData_GamePort, arg0->unk_03);
         sp1C = 1;
     }
 
@@ -264,7 +264,7 @@ s32 Deck_SetCursor(DeckHandle* arg0, s32 arg1) {
     s32 var_v1;
 
     var_v1 = 0;
-    if (arg0->unk_08 >= arg1) {
+    if (arg0->RentalSlotAnimData_PosePhase >= arg1) {
         arg0->unk_0A = arg1;
         var_v1 = 1;
     }
@@ -284,15 +284,15 @@ s32 Deck_ReadEntries(u8* arg0, s32 arg1, DeckHandle* arg2) {
     if (tmp) {}
 
     if (tmp != 0) {
-        for (; arg2->unk_0A < arg2->unk_08;) {
+        for (; arg2->unk_0A < arg2->RentalSlotAnimData_PosePhase;) {
             var_v1 = 0;
-            switch (arg2->unk_01 & 0xF0) {
+            switch (arg2->TrainerSlotSaveData_GamePort & 0xF0) {
                 case 16:
-                    var_v1 = Deck_ReadSaveEntry(arg2->unk_01, arg2->unk_03, arg2->unk_0A, arg0);
+                    var_v1 = Deck_ReadSaveEntry(arg2->TrainerSlotSaveData_GamePort, arg2->unk_03, arg2->unk_0A, arg0);
                     break;
 
                 case 32:
-                    var_v1 = Deck_ReadEntry(arg2->unk_01, arg2->posY, arg2->unk_03, arg2->unk_0A, arg0);
+                    var_v1 = Deck_ReadEntry(arg2->TrainerSlotSaveData_GamePort, arg2->posY, arg2->unk_03, arg2->unk_0A, arg0);
                     break;
             }
 
@@ -329,15 +329,15 @@ s32 Deck_WriteEntries(u8* arg0, s32 arg1, DeckHandle* arg2) {
     if (tmp) {
         for (; arg2->unk_0A < arg2->unk_06;) {
             var_s2 = 0;
-            switch (arg2->unk_01 & 0xF0) {
+            switch (arg2->TrainerSlotSaveData_GamePort & 0xF0) {
                 case 16:
-                    var_s2 = Save_WriteTypedRecord(arg2->unk_01, arg2->unk_03, arg2->unk_0A, arg0);
-                    arg2->unk_08 = Deck_GetSaveEntryCount(arg2->unk_01, arg2->unk_03);
+                    var_s2 = Save_WriteTypedRecord(arg2->TrainerSlotSaveData_GamePort, arg2->unk_03, arg2->unk_0A, arg0);
+                    arg2->RentalSlotAnimData_PosePhase = Deck_GetSaveEntryCount(arg2->TrainerSlotSaveData_GamePort, arg2->unk_03);
                     break;
 
                 case 32:
-                    var_s2 = Deck_WriteEntry(arg2->unk_01, arg2->posY, arg2->unk_03, arg2->unk_0A, arg0);
-                    arg2->unk_08 = Deck_GetCount(arg2->unk_01, arg2->posY, arg2->unk_03);
+                    var_s2 = Deck_WriteEntry(arg2->TrainerSlotSaveData_GamePort, arg2->posY, arg2->unk_03, arg2->unk_0A, arg0);
+                    arg2->RentalSlotAnimData_PosePhase = Deck_GetCount(arg2->TrainerSlotSaveData_GamePort, arg2->posY, arg2->unk_03);
                     break;
             }
 

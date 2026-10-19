@@ -19,7 +19,7 @@ s32 Glc_GeoBannerCallback(s32, GraphNode*);
 typedef struct Glc_ColorKeyframe {
     /* 0x00 */ s16 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -31,7 +31,7 @@ typedef struct Glc_CircleWipeState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
 } Glc_CircleWipeState; // size = 0xC
 
 typedef struct Glc_FadeAnimState {
@@ -194,7 +194,7 @@ void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
             ptr1 = &gNodeColorScaleTable[arg0->unk_170];
             ptr2 = &gNodeColorScaleTable[arg0->unk_170 + 1];
 
-            arg0->unk_172 = ptr2->unk_08 + (((ptr1->unk_08 - ptr2->unk_08) * arg0->unk_16C) / arg0->unk_16E);
+            arg0->unk_172 = ptr2->RentalSlotAnimData_PosePhase + (((ptr1->RentalSlotAnimData_PosePhase - ptr2->RentalSlotAnimData_PosePhase) * arg0->unk_16C) / arg0->unk_16E);
             arg0->unk_174 = ptr2->unk_0A + (((ptr1->unk_0A - ptr2->unk_0A) * arg0->unk_16C) / arg0->unk_16E);
             arg0->unk_176 = ptr2->unk_0C + (((ptr1->unk_0C - ptr2->unk_0C) * arg0->unk_16C) / arg0->unk_16E);
 
@@ -209,7 +209,7 @@ void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
                 ptr1 = &gNodeColorScaleTable[arg0->unk_170];
 
                 arg0->unk_16C = arg0->unk_16E = ptr1->posX;
-                arg0->unk_172 = ptr1->unk_08;
+                arg0->unk_172 = ptr1->RentalSlotAnimData_PosePhase;
                 arg0->unk_174 = ptr1->unk_0A;
                 arg0->unk_176 = ptr1->unk_0C;
                 arg0->unk_178 = ptr1->unk_0E;
@@ -263,7 +263,7 @@ s32 Glc_GeoSpriteCallback(s32 arg0, GraphNode* arg1) {
 void Glc_InitCircleWipe(void) {
     gBorderAnimState.posX = 0;
     gBorderAnimState.posY = 0;
-    gBorderAnimState.unk_08 = 7.0f;
+    gBorderAnimState.RentalSlotAnimData_PosePhase = 7.0f;
 }
 
 void Glc_UpdateCircleWipe(void) {
@@ -272,13 +272,13 @@ void Glc_UpdateCircleWipe(void) {
     switch (gBorderAnimState.posX) {
         case 1:
             gBorderAnimState.posY--;
-            gBorderAnimState.unk_08 = (gBorderAnimState.posY * 7.0f) / gBorderAnimState.rotation;
+            gBorderAnimState.RentalSlotAnimData_PosePhase = (gBorderAnimState.posY * 7.0f) / gBorderAnimState.rotation;
 
             tmp = gBorderAnimState.posY <= 0;
             if (tmp) {
                 gBorderAnimState.posX = 2;
                 gBorderAnimState.posY = gBorderAnimState.rotation = 0;
-                gBorderAnimState.unk_08 = 0.0f;
+                gBorderAnimState.RentalSlotAnimData_PosePhase = 0.0f;
             }
             break;
 
@@ -304,16 +304,16 @@ void Glc_DrawCircleWipe(void) {
         return;
     }
 
-    if ((gBorderAnimState.unk_08 <= 0.0f) || (gBorderAnimState.posX == 2)) {
+    if ((gBorderAnimState.RentalSlotAnimData_PosePhase <= 0.0f) || (gBorderAnimState.posX == 2)) {
         gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
         gDPSetFillColor(gDisplayListHead++, 0x00010001);
         gDPFillRectangle(gDisplayListHead++, 0, 0, 639, 479);
         return;
     }
 
-    temp_ft2 = ROUND_MAX(1024.0f / gBorderAnimState.unk_08);
-    sp9E = ROUND_MAX(128.0f * gBorderAnimState.unk_08);
-    sp9C = ROUND_MAX(128.0f * gBorderAnimState.unk_08);
+    temp_ft2 = ROUND_MAX(1024.0f / gBorderAnimState.RentalSlotAnimData_PosePhase);
+    sp9E = ROUND_MAX(128.0f * gBorderAnimState.RentalSlotAnimData_PosePhase);
+    sp9C = ROUND_MAX(128.0f * gBorderAnimState.RentalSlotAnimData_PosePhase);
 
     sp38 = (0x280 - sp9E) / 2;
     sp40 = (0x1E0 - sp9C) / 2;
@@ -373,7 +373,7 @@ void Glc_StartCircleWipe(s16 arg0) {
     if (arg0 > 0) {
         gBorderAnimState.posX = 1;
         gBorderAnimState.posY = gBorderAnimState.rotation = arg0;
-        gBorderAnimState.unk_08 = 7.0f;
+        gBorderAnimState.RentalSlotAnimData_PosePhase = 7.0f;
     }
 }
 
@@ -468,7 +468,7 @@ void Glc_InitObjectAnimation(unk_D_83101F00* arg0, s16 arg1) {
                 ptr = &gNodeColorScaleTable[arg0->unk_170];
 
                 arg0->unk_16C = arg0->unk_16E = ptr->posX;
-                arg0->unk_172 = ptr->unk_08;
+                arg0->unk_172 = ptr->RentalSlotAnimData_PosePhase;
                 arg0->unk_174 = ptr->unk_0A;
                 arg0->unk_176 = ptr->unk_0C;
                 arg0->unk_178 = ptr->unk_0E;

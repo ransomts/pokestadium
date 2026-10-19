@@ -22,7 +22,7 @@ void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
     ptr->unk_06 = arg3;
     ptr->unk_0C = 0;
     ptr->unk_0E = 0;
-    ptr->unk_08 = arg2;
+    ptr->RentalSlotAnimData_PosePhase = arg2;
     ptr->unk_0A = arg3;
     ptr->unk_10 = 6;
     ptr->unk_14 = arg1;
@@ -37,7 +37,7 @@ void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
 
 void Trade_UpdateInfoBoxOpenIn(TradeInfoBoxState* arg0) {
     arg0->unk_10--;
-    arg0->rotation = 0x38 - (((0x38 - arg0->unk_08) * arg0->unk_10) / 6);
+    arg0->rotation = 0x38 - (((0x38 - arg0->RentalSlotAnimData_PosePhase) * arg0->unk_10) / 6);
     arg0->unk_06 = 0x70 - (((0x70 - arg0->unk_0A) * arg0->unk_10) / 6);
     arg0->unk_0C = 0x210 - ((arg0->unk_10 * 0x210) / 6);
     arg0->unk_0E = 0x148 - ((arg0->unk_10 * 0x148) / 6);
@@ -49,7 +49,7 @@ void Trade_UpdateInfoBoxOpenIn(TradeInfoBoxState* arg0) {
 }
 
 void Trade_UpdateInfoBoxChoose(TradeInfoBoxState* arg0) {
-    static Controller** D_82F13C10[] = {
+    static Controller** gTradeControllerList[] = {
         &gPlayer1Controller,
         &gPlayer1Controller,
         &gPlayer1Controller,
@@ -61,7 +61,7 @@ void Trade_UpdateInfoBoxChoose(TradeInfoBoxState* arg0) {
     Controller* temp_a3;
 
     arg0->unk_1C = PokeIcon_RenderPreview(arg0->unk_24);
-    temp_a3 = *D_82F13C10[arg0->unk_18->unk_000E];
+    temp_a3 = *gTradeControllerList[arg0->unk_18->unk_000E];
     var_t0 = 0;
     tmp = gResultOptionIndex;
 
@@ -108,7 +108,7 @@ void Trade_UpdateInfoBoxChoose(TradeInfoBoxState* arg0) {
 
 void Trade_UpdateInfoBoxCloseOut(TradeInfoBoxState* arg0) {
     arg0->unk_10--;
-    arg0->rotation = arg0->unk_08 - (((arg0->unk_08 - 0x38) * arg0->unk_10) / 6);
+    arg0->rotation = arg0->RentalSlotAnimData_PosePhase - (((arg0->RentalSlotAnimData_PosePhase - 0x38) * arg0->unk_10) / 6);
     arg0->unk_06 = arg0->unk_0A - (((arg0->unk_0A - 0x70) * arg0->unk_10) / 6);
     arg0->unk_0C = (arg0->unk_10 * 0x210) / 6;
     arg0->unk_0E = (arg0->unk_10 * 0x148) / 6;
@@ -267,7 +267,7 @@ void Trade_DrawInfoBox(TradeInfoBoxState* arg0) {
 
             if (Trade_IsMoveInvalid(sp11C->unk_09[i]) == 0) {
                 Gfx_DrawTextureRgba16(D_82F13C54[i] + arg0->rotation, D_82F13C5C[i] + arg0->unk_06, 0x14, 0x14,
-                              gMoveIconTextureTable[gMoveDisplayInfo[sp11C->unk_09[i] - 1].unk_01], 0x14, 0x200000);
+                              gMoveIconTextureTable[gMoveDisplayInfo[sp11C->unk_09[i] - 1].TrainerSlotSaveData_GamePort], 0x14, 0x200000);
             }
         }
 
@@ -371,7 +371,7 @@ void Trade_DrawInfoBox(TradeInfoBoxState* arg0) {
                 }
 
                 if (Trade_IsMoveInvalid(sp11C->unk_09[i]) == 0) {
-                    sp70 = &D_80071D88[gMoveDisplayInfo[sp11C->unk_09[i] - 1].unk_01].color;
+                    sp70 = &D_80071D88[gMoveDisplayInfo[sp11C->unk_09[i] - 1].TrainerSlotSaveData_GamePort].color;
                     sp74 = Trade_GetMoveName(sp11C->unk_09[i]);
                 } else {
                     // "？？？？？？？"

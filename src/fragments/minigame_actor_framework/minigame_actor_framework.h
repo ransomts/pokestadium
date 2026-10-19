@@ -129,7 +129,7 @@ typedef struct arg1_func_87902F80 {
 typedef struct Gfx_TextureConfig {
     /* 0x00 */ u32 posX;
     /* 0x04 */ void* rotation;
-    /* 0x08 */ void* unk_08;
+    /* 0x08 */ void* RentalSlotAnimData_PosePhase;
     /* 0x0C */ u32* unk_0C;
 } Gfx_TextureConfig; // size = 0x10
 

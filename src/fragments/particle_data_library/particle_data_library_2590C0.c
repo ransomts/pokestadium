@@ -10,7 +10,7 @@ typedef struct GraphNodeRange {
 
 typedef struct GraphFlag {
     /* 0x00 */ char unk00[0x1];
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } GraphFlag; // size = 0x2
 
 typedef struct GraphCondition {
@@ -30,18 +30,18 @@ void DisplayList_SetFlagInRange(s32 arg0, GraphCondition* arg1) {
         temp_v0 = arg1->unk_14;
         var_v1 = 0;
         if (gDefaultGraphRoot->unk_040.posX == temp_v0->posX) {
-            temp_a2 = ((s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10) & 0xFFFF;
+            temp_a2 = ((s32) gDefaultGraphRoot->unk_040.RentalSlotAnimData_PosePhase >> 0x10) & 0xFFFF;
             if ((temp_a2 >= (s32) temp_v0->posY) && ((s32) temp_v0->rotation >= temp_a2)) {
                 var_v1 = 1;
             }
         }
         if (var_v1 == 1) {
             temp_v0_2 = arg1->rotation;
-            temp_v0_2->unk_01 |= 1;
+            temp_v0_2->TrainerSlotSaveData_GamePort |= 1;
             return;
         }
         temp_v0_2 = arg1->rotation;
-        temp_v0_2->unk_01 &= 0xFFFE;
+        temp_v0_2->TrainerSlotSaveData_GamePort &= 0xFFFE;
     }
 }
 
@@ -55,18 +55,18 @@ void DisplayList_SetFlagOutOfRange(s32 arg0, GraphCondition* arg1) {
         temp_v0 = arg1->unk_14;
         var_v1 = 1;
         if (gDefaultGraphRoot->unk_040.posX == temp_v0->posX) {
-            temp_a2 = ((s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10) & 0xFFFF;
+            temp_a2 = ((s32) gDefaultGraphRoot->unk_040.RentalSlotAnimData_PosePhase >> 0x10) & 0xFFFF;
             if ((temp_a2 >= (s32) temp_v0->posY) && ((s32) temp_v0->rotation >= temp_a2)) {
                 var_v1 = 0;
             }
         }
         if (var_v1 == 1) {
             temp_v0_2 = arg1->rotation;
-            temp_v0_2->unk_01 |= 1;
+            temp_v0_2->TrainerSlotSaveData_GamePort |= 1;
             return;
         }
         temp_v0_2 = arg1->rotation;
-        temp_v0_2->unk_01 &= 0xFFFE;
+        temp_v0_2->TrainerSlotSaveData_GamePort &= 0xFFFE;
     }
 }
 

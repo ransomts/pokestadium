@@ -6,11 +6,11 @@
 
 typedef struct unk_D_800A7450 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ Gfx* rotation;
-    /* 0x08 */ Gfx* unk_08;
+    /* 0x08 */ Gfx* RentalSlotAnimData_PosePhase;
     /* 0x0C */ void* unk_0C;
     /* 0x10 */ char unk10[0x4];
 } unk_D_800A7450; // size >= 0x14
@@ -20,7 +20,7 @@ typedef struct Stage {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s8 unk_0C;
     /* 0x0D */ s8 unk_0D;

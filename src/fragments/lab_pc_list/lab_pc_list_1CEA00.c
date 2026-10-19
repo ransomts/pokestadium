@@ -710,7 +710,7 @@ void LabPCList_SaveDirtyDecks(unk_func_8830867C_02C* arg0) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        if ((arg0->deckCategories[i].rotation != 0) && (arg0->deckCategories[i].unk_08 != 0)) {
+        if ((arg0->deckCategories[i].rotation != 0) && (arg0->deckCategories[i].RentalSlotAnimData_PosePhase != 0)) {
             LabPCList_WriteDeckCategory(&arg0->deckCategories[i]);
         }
     }
@@ -721,21 +721,21 @@ void LabPCList_InitDeckSlots(unk_func_8830867C_02C* arg0, MemoryPool* arg1) {
 
     arg0->unk_0E4[0].posX = 0x20;
     arg0->unk_0E4[0].rotation = GbSave_GetActivePort();
-    arg0->unk_0E4[0].unk_08 = 0;
+    arg0->unk_0E4[0].RentalSlotAnimData_PosePhase = 0;
     arg0->unk_0E4[0].unk_1C = 6;
     ByteMatrix_Allocate(&arg0->unk_0E4[0].unk_0C, 0x1C, 1, arg1);
     LabPCList_AllocateBoxSlots(&arg0->unk_0E4[0], 6, 1, arg1);
 
     arg0->unk_0E4[1].posX = 0x21;
     arg0->unk_0E4[1].rotation = arg0->unk_0E4[0].rotation;
-    arg0->unk_0E4[1].unk_08 = 1;
+    arg0->unk_0E4[1].RentalSlotAnimData_PosePhase = 1;
     arg0->unk_0E4[1].unk_1C = 0x14;
     ByteMatrix_Allocate(&arg0->unk_0E4[1].unk_0C, 0x1C, 0xC, arg1);
     LabPCList_AllocateBoxSlots(&arg0->unk_0E4[1], 0x14, 0, arg1);
 
     arg0->unk_0E4[2].posX = 0x11;
     arg0->unk_0E4[2].rotation = 0;
-    arg0->unk_0E4[2].unk_08 = 2;
+    arg0->unk_0E4[2].RentalSlotAnimData_PosePhase = 2;
     arg0->unk_0E4[2].unk_1C = 0x14;
     ByteMatrix_Allocate(&arg0->unk_0E4[2].unk_0C, 0x1C, 0xC, arg1);
     LabPCList_AllocateBoxSlots(&arg0->unk_0E4[2], 0x14, 0, arg1);
@@ -819,7 +819,7 @@ void LabPCList_SwitchColumnPage(unk_func_8830867C_02C* arg0) {
     switch (arg0->unk_038->unk_2C) {
         case 0:
             ptr = arg0->columnMenu;
-            ptr->unk_18->unk_08 = arg0->unk_058;
+            ptr->unk_18->RentalSlotAnimData_PosePhase = arg0->unk_058;
 
             ptr = arg0->columnMenu;
             ptr->unk_18->unk_0C = arg0->unk_05C;
@@ -843,7 +843,7 @@ void LabPCList_SwitchColumnPage(unk_func_8830867C_02C* arg0) {
 
         case 1:
             ptr = arg0->columnMenu;
-            ptr->unk_18->unk_08 = arg0->movesHeader;
+            ptr->unk_18->RentalSlotAnimData_PosePhase = arg0->movesHeader;
 
             ptr = arg0->columnMenu;
             ptr->unk_18->unk_0C = 0;
@@ -867,7 +867,7 @@ void LabPCList_SwitchColumnPage(unk_func_8830867C_02C* arg0) {
 
         case 2:
             ptr = arg0->columnMenu;
-            ptr->unk_18->unk_08 = arg0->unk_070;
+            ptr->unk_18->RentalSlotAnimData_PosePhase = arg0->unk_070;
 
             ptr = arg0->columnMenu;
             ptr->unk_18->unk_0C = arg0->unk_074;
@@ -1416,13 +1416,13 @@ void LabPCList_DrawEntryCell(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s
     Text_SetEnvColor(spBC.r, spBC.g, spBC.b, spBC.a);
     Font_SetActive(4, 0);
     spA8 = (0x5C - Font_MeasureTextExtent(0, 0, "WWWWWWWWWW")) / 2;
-    if ((mon->unk_08 <= 0) || (mon->unk_08 >= 0x98))
+    if ((mon->RentalSlotAnimData_PosePhase <= 0) || (mon->RentalSlotAnimData_PosePhase >= 0x98))
     {
       Font_Printf((arg0 + spA8) + 0x26, arg1 + 2, "?????");
     }
     else
     {
-      Font_Printf((arg0 + spA8) + 0x26, arg1 + 2, Text_GetString(NULL, 0, gLabPCListStatNames, mon->unk_08 - 1));
+      Font_Printf((arg0 + spA8) + 0x26, arg1 + 2, Text_GetString(NULL, 0, gLabPCListStatNames, mon->RentalSlotAnimData_PosePhase - 1));
     }
     Font_EndTexturedTextRendering();
     var_s6 = temp_s5->pageColumnStarts[temp_s5->columnPage];
@@ -1450,7 +1450,7 @@ void LabPCList_DrawEntryCell(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s
         case 4:
 
         case 5:
-          LabPCList_DrawTypeName(var_s1, arg1 + 2, ((s32 *) temp_s5->unk_0DC)[var_s6], &mon->unk_08, var_s6 - 4);
+          LabPCList_DrawTypeName(var_s1, arg1 + 2, ((s32 *) temp_s5->unk_0DC)[var_s6], &mon->RentalSlotAnimData_PosePhase, var_s6 - 4);
           break;
 
         case 6:
@@ -1460,37 +1460,37 @@ void LabPCList_DrawEntryCell(s32 arg0, s32 arg1, unk_func_88304850_arg2 *arg2, s
         case 8:
 
         case 9:
-          LabPCList_DrawMoveNameCell(var_s1, arg1 + 2, ((s32 *) temp_s5->unk_0DC)[var_s6], &mon->unk_08, var_s6 - 6);
+          LabPCList_DrawMoveNameCell(var_s1, arg1 + 2, ((s32 *) temp_s5->unk_0DC)[var_s6], &mon->RentalSlotAnimData_PosePhase, var_s6 - 6);
           break;
 
         case 10:
           temp_s7 = ((s32 *) temp_s5->unk_0DC)[var_s6] - ((((s32 *) temp_s5->unk_0DC)[var_s6] - Font_MeasureTextExtent(0, 0, "000")) / 2);
-          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", mon->unk_2C, &mon->unk_08);
+          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", mon->unk_2C, &mon->RentalSlotAnimData_PosePhase);
           break;
 
         case 11:
           temp_s7 = ((s32 *) temp_s5->unk_0DC)[var_s6] - ((((s32 *) temp_s5->unk_0DC)[var_s6] - Font_MeasureTextExtent(0, 0, "000")) / 2);
-          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_2E, &mon->unk_08);
+          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_2E, &mon->RentalSlotAnimData_PosePhase);
           break;
 
         case 12:
           temp_s7 = ((s32 *) temp_s5->unk_0DC)[var_s6] - ((((s32 *) temp_s5->unk_0DC)[var_s6] - Font_MeasureTextExtent(0, 0, "000")) / 2);
-          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_30, &mon->unk_08);
+          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_30, &mon->RentalSlotAnimData_PosePhase);
           break;
 
         case 13:
           temp_s7 = ((s32 *) temp_s5->unk_0DC)[var_s6] - ((((s32 *) temp_s5->unk_0DC)[var_s6] - Font_MeasureTextExtent(0, 0, "000")) / 2);
-          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_32, &mon->unk_08);
+          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_32, &mon->RentalSlotAnimData_PosePhase);
           break;
 
         case 14:
           temp_s7 = ((s32 *) temp_s5->unk_0DC)[var_s6] - ((((s32 *) temp_s5->unk_0DC)[var_s6] - Font_MeasureTextExtent(0, 0, "000")) / 2);
-          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_34, &mon->unk_08);
+          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_34, &mon->RentalSlotAnimData_PosePhase);
           break;
 
         case 15:
           temp_s7 = ((s32 *) temp_s5->unk_0DC)[var_s6] - ((((s32 *) temp_s5->unk_0DC)[var_s6] - Font_MeasureTextExtent(0, 0, "000")) / 2);
-          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_36, &mon->unk_08);
+          LabPCList_DrawStatNumber(var_s1 + temp_s7, arg1 + 2, "%3d", (u16) mon->unk_36, &mon->RentalSlotAnimData_PosePhase);
           break;
 
       }
@@ -1528,7 +1528,7 @@ void LabPCList_ResetFilterState(unk_func_8830867C_02C* arg0) {
     arg0->filterState.rotation = NULL;
     arg0->filterState.posX = 0;
     // clang-format off
-    arg0->filterState.unk_08 = 1; arg0->filterState.unk_09 = 0x64;
+    arg0->filterState.RentalSlotAnimData_PosePhase = 1; arg0->filterState.unk_09 = 0x64;
     // clang-format on
     arg0->filterState.unk_0C = 0;
     arg0->filterState.unk_1C.posX = 0;
@@ -1561,7 +1561,7 @@ void LabPCList_ApplyFiltersAndSort(unk_func_8830867C_02C* arg0) {
 
     if (arg0->filterState.rotation != 0) {
         if (arg0->filterState.rotation & 1) {
-            PointerList_Filter(arg0->unk_034->posX.unk_2C, &arg0->unk_0CC, LabPCList_FilterByLevelRange, &arg0->filterState.unk_08);
+            PointerList_Filter(arg0->unk_034->posX.unk_2C, &arg0->unk_0CC, LabPCList_FilterByLevelRange, &arg0->filterState.RentalSlotAnimData_PosePhase);
             ((func88506EE4)Memmap_GetFragmentVaddr(WidgetTree_BindScrollableGridData))(arg0->unk_034, &arg0->unk_0CC);
         }
 
@@ -1599,7 +1599,7 @@ s32 LabPCList_CheckAnyDirty(unk_func_8830867C_02C* arg0) {
     s32 i;
 
     for (i = 0; i < 3; i++) {
-        if ((arg0->deckCategories[i].rotation != 0) && (arg0->deckCategories[i].unk_08 != 0)) {
+        if ((arg0->deckCategories[i].rotation != 0) && (arg0->deckCategories[i].RentalSlotAnimData_PosePhase != 0)) {
             if (i == 0) {
                 var_a0 |= 2;
             } else if (i == 1) {
@@ -1617,7 +1617,7 @@ s32 LabPCList_FindEntryIndex(unk_func_8830867C_02C_0CC* arg0, LabPCListEntry* ar
     LabPCListEntry** ptr = arg0->posX;
     s32 i;
 
-    for (i = 0; i < arg0->unk_08; i++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++) {
         if (arg1 == ptr[i]) {
             return i;
         }
@@ -1642,7 +1642,7 @@ void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1,
     unk_func_88500994* tmp;
 
     sp84 = 0;
-    sp80 = (arg1->posX->posX->unk_08 << 0x10) | arg1->posX->rotation;
+    sp80 = (arg1->posX->posX->RentalSlotAnimData_PosePhase << 0x10) | arg1->posX->rotation;
     sp88 = arg0->unk_0A8->unk_34->unk_38;
 
     if (sp88 != 0) {
@@ -1654,7 +1654,7 @@ void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1,
     sp74 = arg0->unk_034->posX.unk_2C->posX[sp90];
 
     LabPCList_MoveEntryToBox(arg0, sp74, sp88, sp84);
-    sp7C = (arg1->posX->posX->unk_08 << 0x10) | arg1->posX->rotation;
+    sp7C = (arg1->posX->posX->RentalSlotAnimData_PosePhase << 0x10) | arg1->posX->rotation;
 
     temp_v0_4 = ((func88500A6C)Memmap_GetFragmentVaddr(WidgetTree_SelectPage));
     tmp = arg0->unk_038;
@@ -1663,7 +1663,7 @@ void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1,
 
     LabPCList_SwitchColumnPage(arg0);
 
-    sp78.posX = arg0->unk_0DC->unk_08 + (s32)arg0->unk_0DC->posX + arg0->unk_0DC->rotation + 0x84;
+    sp78.posX = arg0->unk_0DC->RentalSlotAnimData_PosePhase + (s32)arg0->unk_0DC->posX + arg0->unk_0DC->rotation + 0x84;
     sp78.posY = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
 
     LabPCList_LocationCrossfadeWidget_Start(arg0->unk_0C8, sp80, sp7C, sp78);
@@ -1696,7 +1696,7 @@ void LabPCList_ReindexBoxSlots(unk_func_8830867C_02C_0CC_000_000* arg0) {
     unk_func_8830867C_02C_0CC_000_000_010_000* ptr = arg0->unk_10.posX;
     s32 i;
 
-    for (i = 0; i < arg0->unk_10.unk_08; i++, ptr++) {
+    for (i = 0; i < arg0->unk_10.RentalSlotAnimData_PosePhase; i++, ptr++) {
         ptr->posX->rotation = i;
     }
 }
@@ -1710,9 +1710,9 @@ void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1,
     LabPCList_ReindexBoxSlots(sp24);
 
     arg1->posX = &temp_s0->posX;
-    arg1->rotation = temp_s0->unk_10.unk_08;
+    arg1->rotation = temp_s0->unk_10.RentalSlotAnimData_PosePhase;
 
-    PointerList_Insert(&temp_s0->unk_10, arg1, temp_s0->unk_10.unk_08);
+    PointerList_Insert(&temp_s0->unk_10, arg1, temp_s0->unk_10.RentalSlotAnimData_PosePhase);
 
     sp24->unk_0C = 1;
     temp_s0->unk_0C = 1;
@@ -1720,7 +1720,7 @@ void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1,
 
 s32 LabPCList_ApplyVitaminItem(LabPCListEntry* arg0, unk_func_8830867C_04C_030_02C_000* arg1, u32** arg2,
                   u32** arg3) {
-    unk_func_8830867C_02C_0CC_000_008* temp_s0 = &arg0->unk_08;
+    unk_func_8830867C_02C_0CC_000_008* temp_s0 = &arg0->RentalSlotAnimData_PosePhase;
     u16 sp3A;
     s32 sp34;
 
@@ -1786,7 +1786,7 @@ s32 LabPCList_ApplyVitaminItem(LabPCListEntry* arg0, unk_func_8830867C_04C_030_0
             *arg2 = temp_s0->unk_24;
             sp3A = temp_s0->unk_26;
             *(s32*)&temp_s0->unk_10 = Pokemon_ExpForLevel(temp_s0->posX, (temp_s0->unk_24 + 1) & 0xFFFF);
-            Pokemon_RecalcStats(&arg0->unk_08);
+            Pokemon_RecalcStats(&arg0->RentalSlotAnimData_PosePhase);
             temp_s0->posY = (temp_s0->posY + temp_s0->unk_26) - sp3A;
             *arg3 = temp_s0->unk_24;
             break;
@@ -1801,7 +1801,7 @@ void LabPCList_ApplyPpUpItem(LabPCListEntry* arg0, unk_func_8830867C_04C_030_02C
                    s32* arg4) {
     s32 var_v1;
     MoveBattleData* temp_v0;
-    unk_func_8830867C_02C_0CC_000_008* ptr = &arg0->unk_08;
+    unk_func_8830867C_02C_0CC_000_008* ptr = &arg0->RentalSlotAnimData_PosePhase;
 
     temp_v0 = Move_GetData(ptr->unk_09[arg2]);
 
@@ -1829,7 +1829,7 @@ void LabPCList_ClearMovesFrom(unk_func_8830867C_02C_0CC_000_008* arg0, s32 arg1)
 }
 
 void LabPCList_TeachTmMove(LabPCListEntry* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2) {
-    unk_func_8830867C_02C_0CC_000_008* ptr = &arg0->unk_08;
+    unk_func_8830867C_02C_0CC_000_008* ptr = &arg0->RentalSlotAnimData_PosePhase;
     s32 var_a0;
 
     if (arg1->posX[0]->posX >= 0xC9) {
@@ -1918,15 +1918,15 @@ void LabPCList_ApplyItemToMon(unk_func_8830867C_02C* arg0) {
     spD0 = arg0->unk_034->posX.unk_38;
     spCC = spD0 - (arg0->unk_034->unk_58 / arg0->unk_034->posX.unk_3E);
 
-    if (spDC->unk_08 >= 0x64) {
-        spC0 = BattleMon_CountMoves(&spD8->unk_08);
+    if (spDC->RentalSlotAnimData_PosePhase >= 0x64) {
+        spC0 = BattleMon_CountMoves(&spD8->RentalSlotAnimData_PosePhase);
         if (spC0 < 4) {
-            LabPCList_ClearMovesFrom(&spD8->unk_08, spC0);
+            LabPCList_ClearMovesFrom(&spD8->RentalSlotAnimData_PosePhase, spC0);
             spBC = -1;
         } else {
             if (1) {}
             spC0 = arg0->itemMenu->unk_78->unk_30->unk_38;
-            spBC = spD8->unk_08.unk_09[spC0];
+            spBC = spD8->RentalSlotAnimData_PosePhase.unk_09[spC0];
         }
         LabPCList_TeachTmMove(spD8, spDC, spC0);
 
@@ -1937,7 +1937,7 @@ void LabPCList_ApplyItemToMon(unk_func_8830867C_02C* arg0) {
         spC8.posX = (arg0->unk_0DC->unk_18 * spC0) + 0x84;
         spC8.posY = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
 
-        LabPCList_TextFadeWidget_Start(arg0->unk_0BC, spBC, spD8->unk_08.unk_09[spC0], spC8);
+        LabPCList_TextFadeWidget_Start(arg0->unk_0BC, spBC, spD8->RentalSlotAnimData_PosePhase.unk_09[spC0], spC8);
         LabPCList_SwitchColumnPage(arg0);
         ((func8850CF00)Memmap_GetFragmentVaddr(WidgetTree_RunChildWidgetGroup))(arg0->cellAnimGroup, gPlayer1Controller);
         LabPCList_ApplyFiltersAndSort(arg0);
@@ -1947,14 +1947,14 @@ void LabPCList_ApplyItemToMon(unk_func_8830867C_02C* arg0) {
             ((func88507C0C)Memmap_GetFragmentVaddr(WidgetTree_SetPagedGridSelectionWithOffset))(arg0->unk_034, spD0, spCC);
             Text_SetStringToken(0x1A, spD8->unk_38);
             Text_SetStringToken(0x1D, Text_GetString(NULL, 0, gMoveNamesTable, spBC - 1));
-            Text_SetStringToken(0x1E, Text_GetString(NULL, 0, gMoveNamesTable, spD8->unk_08.unk_09[spC0] - 1));
+            Text_SetStringToken(0x1E, Text_GetString(NULL, 0, gMoveNamesTable, spD8->RentalSlotAnimData_PosePhase.unk_09[spC0] - 1));
             Text_GetString(arg0->messageLabel->unk_40, 0x140, gMoveListMessageTable, 0x5D);
             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(arg0->unk_090, arg0->messageLabel, 0, 0);
             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_090, gPlayer1Controller);
         } else {
             ((func88507C0C)Memmap_GetFragmentVaddr(WidgetTree_SetPagedGridSelectionWithOffset))(arg0->unk_034, spD4, spCC);
         }
-    } else if (spDC->unk_08 >= 0x32) {
+    } else if (spDC->RentalSlotAnimData_PosePhase >= 0x32) {
         spB4 = arg0->itemMenu->unk_78->unk_30->unk_38;
         LabPCList_ApplyPpUpItem(spD8, spDC, spB4, &spB0, &spAC);
 
@@ -1964,7 +1964,7 @@ void LabPCList_ApplyItemToMon(unk_func_8830867C_02C* arg0) {
 
         spB8.posX = (arg0->unk_0DC->unk_18 * spB4) + 0x84;
         spB8.posY = arg0->unk_034->unk_5C - arg0->unk_034->unk_58;
-        LabPCList_PpUpAnimWidget_Start(arg0->unk_0C0, spD8->unk_08.unk_09[spB4], spB0, spAC, spB8);
+        LabPCList_PpUpAnimWidget_Start(arg0->unk_0C0, spD8->RentalSlotAnimData_PosePhase.unk_09[spB4], spB0, spAC, spB8);
         LabPCList_SwitchColumnPage(arg0);
         ((func8850CF00)Memmap_GetFragmentVaddr(WidgetTree_RunChildWidgetGroup))(arg0->cellAnimGroup, gPlayer1Controller);
     } else {
@@ -2021,7 +2021,7 @@ s32 LabPCList_OpenListMenu(unk_func_8830867C_02C* arg0, Controller* arg1) {
 
     BattleInfoWidget_UpdateViewport(arg0->unk_08C);
 
-    if ((arg0->unk_034->posX.unk_2C->unk_08 == 0) || (arg0->tmHmList.unk_08 == 0)) {
+    if ((arg0->unk_034->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) || (arg0->tmHmList.RentalSlotAnimData_PosePhase == 0)) {
         arg0->unk_08C->unk_3C->unk_34[3] |= 4;
     }
 
@@ -2098,7 +2098,7 @@ s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1) {
         sp38 = 0x23;
     }
 
-    Text_SetStringToken(0x19, Text_GetString(NULL, 0, gLabPCListStatNames, sp3C->unk_08.posX - 1));
+    Text_SetStringToken(0x19, Text_GetString(NULL, 0, gLabPCListStatNames, sp3C->RentalSlotAnimData_PosePhase.posX - 1));
     Text_GetString(gRowMenuHeaderBuf, 0x20, gMoveListMessageTable, sp38);
 
     sp44[0] = gRowMenuHeaderBuf;
@@ -2117,11 +2117,11 @@ s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1) {
 
     BattleInfoWidget_UpdateViewport(arg0->unk_08C);
 
-    if (arg0->tmHmList.unk_08 == 0) {
+    if (arg0->tmHmList.RentalSlotAnimData_PosePhase == 0) {
         arg0->unk_08C->unk_3C->unk_34[3] |= 4;
     }
 
-    if ((sp3C->unk_08.posX <= 0) || (sp3C->unk_08.posX >= 0x98)) {
+    if ((sp3C->RentalSlotAnimData_PosePhase.posX <= 0) || (sp3C->RentalSlotAnimData_PosePhase.posX >= 0x98)) {
         arg0->unk_08C->unk_3C->unk_34[0] |= 4;
         arg0->unk_08C->unk_3C->unk_34[1] |= 4;
         arg0->unk_08C->unk_3C->unk_34[3] |= 4;
@@ -2144,7 +2144,7 @@ s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1) {
 
             LabPCList_SaveFilterState(arg0);
             if (LabPCList_ToggleFilterFlag(arg0, 8) != 0) {
-                arg0->filterState.unk_10 = sp3C->unk_08.posX;
+                arg0->filterState.unk_10 = sp3C->RentalSlotAnimData_PosePhase.posX;
             }
             LabPCList_ApplyFiltersAndSort(arg0);
             ((func88507C0C)Memmap_GetFragmentVaddr(WidgetTree_SetPagedGridSelectionWithOffset))(
@@ -2157,7 +2157,7 @@ s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1) {
 
             LabPCList_SaveFilterState(arg0);
             if (LabPCList_ToggleFilterFlag(arg0, 0x10) != 0) {
-                sp2C = sp3C->unk_08.posX - 1;
+                sp2C = sp3C->RentalSlotAnimData_PosePhase.posX - 1;
 
                 arg0->filterState.unk_14.posX = 1;
 
@@ -2452,16 +2452,16 @@ void LabPCList_MarkIneligibleEntries(unk_func_8830867C_02C* arg0) {
     temp_s1 = arg0->itemMenu->unk_30->unk_2C->posX[arg0->itemMenu->unk_30->unk_38].posX[0];
     temp_v0_2 = arg0->unk_034->posX.unk_2C->posX;
 
-    for (i = 0; i < arg0->unk_034->posX.unk_2C->unk_08; i++) {
-        if ((temp_v0_2[i]->unk_08.posX <= 0) || (temp_v0_2[i]->unk_08.posX >= 0x98)) {
+    for (i = 0; i < arg0->unk_034->posX.unk_2C->RentalSlotAnimData_PosePhase; i++) {
+        if ((temp_v0_2[i]->RentalSlotAnimData_PosePhase.posX <= 0) || (temp_v0_2[i]->RentalSlotAnimData_PosePhase.posX >= 0x98)) {
             arg0->unk_034->posX.unk_34[i] |= 4;
         } else {
-            if (temp_s1->unk_08 >= 0x64) {
-                var_v0 = LabPCList_CheckTmHmIneligibility(**(u8**)&temp_s1->posX, &temp_v0_2[i]->unk_08);
-            } else if (temp_s1->unk_08 >= 0x32) {
-                var_v0 = LabPCList_CheckPpUpIneligibility(&temp_v0_2[i]->unk_08);
+            if (temp_s1->RentalSlotAnimData_PosePhase >= 0x64) {
+                var_v0 = LabPCList_CheckTmHmIneligibility(**(u8**)&temp_s1->posX, &temp_v0_2[i]->RentalSlotAnimData_PosePhase);
+            } else if (temp_s1->RentalSlotAnimData_PosePhase >= 0x32) {
+                var_v0 = LabPCList_CheckPpUpIneligibility(&temp_v0_2[i]->RentalSlotAnimData_PosePhase);
             } else {
-                var_v0 = LabPCList_CheckVitaminIneligibility(**(u8**)&temp_s1->posX, &temp_v0_2[i]->unk_08);
+                var_v0 = LabPCList_CheckVitaminIneligibility(**(u8**)&temp_s1->posX, &temp_v0_2[i]->RentalSlotAnimData_PosePhase);
             }
 
             if (var_v0 != 0) {
@@ -2472,7 +2472,7 @@ void LabPCList_MarkIneligibleEntries(unk_func_8830867C_02C* arg0) {
 }
 
 s32 LabPCList_IsGamePakBoxEmpty(unk_func_8830867C_02C* arg0) {
-    return arg0->boxTable.posX->unk_0C->unk_10.unk_08 == 0;
+    return arg0->boxTable.posX->unk_0C->unk_10.RentalSlotAnimData_PosePhase == 0;
 }
 
 s32 LabPCList_ConfirmExit(unk_func_8830867C_02C* arg0, Controller* arg1, s32 arg2) {
@@ -2604,7 +2604,7 @@ s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 a
                 Audio_PlaySoundEffectById(2);
                 BattleInfoWidget_SetItemMenuMon(
                     arg0->unk_24->itemMenu,
-                    &arg0->unk_24->unk_034->posX.unk_2C->posX[arg0->unk_24->unk_034->posX.unk_38]->unk_08);
+                    &arg0->unk_24->unk_034->posX.unk_2C->posX[arg0->unk_24->unk_034->posX.unk_38]->RentalSlotAnimData_PosePhase);
 
                 arg0->unk_24->unk_034->posX.posX.unk_24(&arg0->unk_24->unk_034->posX.posX, 0x100);
 
@@ -2629,7 +2629,7 @@ s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 a
         if (arg2 & 2) {
             arg2 = LabPCList_HandleBackButton(arg0, arg1);
         } else if (arg2 & 4) {
-            if (arg0->unk_24->unk_034->posX.unk_2C->unk_08 == 0) {
+            if (arg0->unk_24->unk_034->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) {
                 Audio_PlaySoundEffectById(8);
                 arg2 = 1;
             } else {
@@ -2638,7 +2638,7 @@ s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 a
                 if (temp_v0 == 1) {
                     sp24 = arg0->unk_24->unk_034->posX.unk_2C->posX[arg0->unk_24->unk_034->posX.unk_38];
 
-                    BattleInfoWidget_SetMoveDestinationTitle(arg0->unk_24->unk_0A8, sp24->posX->posX->unk_08, sp24->posX->rotation);
+                    BattleInfoWidget_SetMoveDestinationTitle(arg0->unk_24->unk_0A8, sp24->posX->posX->RentalSlotAnimData_PosePhase, sp24->posX->rotation);
                     BattleInfoWidget_MarkIneligibleDestinations(arg0->unk_24->unk_0A8, sp24);
 
                     arg0->unk_24->unk_034->posX.posX.unk_24(&arg0->unk_24->unk_034->posX.posX, 0x100);
@@ -2657,7 +2657,7 @@ s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 a
                     BattleInfoWidget_RebindItemGrid(arg0->unk_24->itemMenu, &arg0->unk_24->tmHmList);
                     BattleInfoWidget_SetItemMenuMon(
                         arg0->unk_24->itemMenu,
-                        &arg0->unk_24->unk_034->posX.unk_2C->posX[arg0->unk_24->unk_034->posX.unk_38]->unk_08);
+                        &arg0->unk_24->unk_034->posX.unk_2C->posX[arg0->unk_24->unk_034->posX.unk_38]->RentalSlotAnimData_PosePhase);
                     BattleInfoWidget_SetItemMenuMode(arg0->unk_24->itemMenu, 0);
 
                     arg0->unk_24->unk_034->posX.posX.unk_24(&arg0->unk_24->unk_034->posX.posX, 0x100);
@@ -2676,8 +2676,8 @@ s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 a
                     if (temp_v0 == 3) {
                         sp20 = arg0->unk_24->unk_034->posX.unk_2C->posX[arg0->unk_24->unk_034->posX.unk_38];
 
-                        arg0->unk_24->monInfoContext->unk_0C = &sp20->unk_08;
-                        arg0->unk_24->monInfoContext->unk_10 = sp20->posX->posX->unk_08;
+                        arg0->unk_24->monInfoContext->unk_0C = &sp20->RentalSlotAnimData_PosePhase;
+                        arg0->unk_24->monInfoContext->unk_10 = sp20->posX->posX->RentalSlotAnimData_PosePhase;
 
                         arg0->unk_24->monInfoFragmentEntry(1, arg0->unk_24->monInfoContext);
 
@@ -2761,7 +2761,7 @@ s32 LabPCList_HandleColumnMenuInput(ChildSelectionProxy* arg0, Controller* arg1,
                             sp2C--;
                             LabPCList_SaveFilterState(arg0->unk_24);
 
-                            if ((sp2C + 1) == arg0->unk_24->unk_098->unk_30->unk_2C->unk_08) {
+                            if ((sp2C + 1) == arg0->unk_24->unk_098->unk_30->unk_2C->RentalSlotAnimData_PosePhase) {
                                 LabPCList_ClearFilterFlag(arg0->unk_24, 0x20);
                             } else {
                                 LabPCList_SetFilterFlag(arg0->unk_24, 0x20);
@@ -2826,9 +2826,9 @@ s32 LabPCList_HandleColumnMenuInput(ChildSelectionProxy* arg0, Controller* arg1,
                     if (LabPCList_HandleColumnHeaderClick(arg0->unk_24, arg0->unk_24->unk_070, sp34, arg1) == 1) {
                         if (arg0->unk_24->filterState.unk_0C != 0) {
                             sp28 = arg0->unk_24->filterState.unk_09;
-                            sp24 = arg0->unk_24->filterState.unk_08;
+                            sp24 = arg0->unk_24->filterState.RentalSlotAnimData_PosePhase;
                         } else {
-                            sp28 = arg0->unk_24->filterState.unk_08;
+                            sp28 = arg0->unk_24->filterState.RentalSlotAnimData_PosePhase;
                             sp24 = arg0->unk_24->filterState.unk_09;
                         }
                         BattleInfoWidget_SetLevelRange(arg0->unk_24->unk_0A4, sp28, sp24, LabPCList_HasFilterFlag(arg0->unk_24, 1));
@@ -2848,13 +2848,13 @@ s32 LabPCList_HandleColumnMenuInput(ChildSelectionProxy* arg0, Controller* arg1,
                                 if (arg0->unk_24->unk_0A4->unk_3C->unk_30.posX >=
                                     arg0->unk_24->unk_0A4->unk_38->unk_30.posX) {
                                     arg0->unk_24->filterState.unk_0C = 0;
-                                    arg0->unk_24->filterState.unk_08 = arg0->unk_24->unk_0A4->unk_38->unk_30.posX;
+                                    arg0->unk_24->filterState.RentalSlotAnimData_PosePhase = arg0->unk_24->unk_0A4->unk_38->unk_30.posX;
                                     arg0->unk_24->filterState.unk_09 = arg0->unk_24->unk_0A4->unk_3C->unk_30.posX;
                                     LabPCList_SetSortMode(arg0->unk_24, 2);
                                 } else {
                                     arg0->unk_24->filterState.unk_0C = 1;
                                     arg0->unk_24->filterState.unk_09 = arg0->unk_24->unk_0A4->unk_38->unk_30.posX;
-                                    arg0->unk_24->filterState.unk_08 = arg0->unk_24->unk_0A4->unk_3C->unk_30.posX;
+                                    arg0->unk_24->filterState.RentalSlotAnimData_PosePhase = arg0->unk_24->unk_0A4->unk_3C->unk_30.posX;
                                     LabPCList_SetSortMode(arg0->unk_24, 3);
                                 }
                                 LabPCList_SetFilterFlag(arg0->unk_24, 1);
@@ -2863,7 +2863,7 @@ s32 LabPCList_HandleColumnMenuInput(ChildSelectionProxy* arg0, Controller* arg1,
                             } else {
                                 if (temp_s0_11 == 2) {
                                     LabPCList_SaveFilterState(arg0->unk_24);
-                                    arg0->unk_24->filterState.unk_08 = 1;
+                                    arg0->unk_24->filterState.RentalSlotAnimData_PosePhase = 1;
                                     arg0->unk_24->filterState.unk_09 = 0x64;
                                     arg0->unk_24->filterState.unk_0C = 0;
                                     LabPCList_ClearFilterFlag(arg0->unk_24, 1);
@@ -2985,7 +2985,7 @@ s32 LabPCList_HandleTopLevelInput(ChildSelectionProxy* arg0, Controller* arg1) {
         var_a0 = arg0->posX.posX.rotation;
 
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->posX.posX.unk_08;
+            var_a0 = var_a0->posX.posX.RentalSlotAnimData_PosePhase;
         }
 
         var_a2 = var_a0->posX.unk_10(var_a0, arg1);
@@ -3132,7 +3132,7 @@ void LabPCList_BuildWidget(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPo
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_48->posX.posX);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_4C->posX.posX);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_50->posX.posX);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_54.unk_08->posX);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_54.RentalSlotAnimData_PosePhase->posX);
 
     arg0->unk_50->posX.unk_10.posX =
         arg0->unk_2C->unk_000.unk_10.posX +

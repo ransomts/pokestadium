@@ -19,7 +19,7 @@ typedef struct unk_D_800ABB00 {
 typedef struct LayerState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ Gfx* rotation;
-    /* 0x08 */ Gfx* unk_08;
+    /* 0x08 */ Gfx* RentalSlotAnimData_PosePhase;
     /* 0x0C */ MtxF* unk_0C;
     /* 0x10 */ Color_RGBA8_u32 unk_10;
     /* 0x14 */ Color_RGBA8_u32 unk_14;
@@ -34,11 +34,11 @@ typedef struct LayerState {
 
 typedef struct RenderState {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ Color_RGBA8_u32 rotation;
-    /* 0x08 */ Color_RGBA8_u32 unk_08;
+    /* 0x08 */ Color_RGBA8_u32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ TextureInfo* unk_0C;
     /* 0x10 */ LayerState* unk_10;
     /* 0x14 */ Gfx* unk_14;

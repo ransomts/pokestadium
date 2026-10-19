@@ -5,20 +5,20 @@
 
 typedef struct unk_D_800ABCC0_008 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ u16 unk_08;
+    /* 0x08 */ u16 RentalSlotAnimData_PosePhase;
 } unk_D_800ABCC0_008; // size = 0xA
 
 typedef struct unk_D_800ABCC0 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
     /* 0x04 */ unk_D_86002F58_004_000_040_004* rotation;
-    /* 0x08 */ unk_D_800ABCC0_008* unk_08;
+    /* 0x08 */ unk_D_800ABCC0_008* RentalSlotAnimData_PosePhase;
     /* 0x0C */ s16* unk_0C;
     /* 0x10 */ s16* unk_10;
     /* 0x14 */ s16* unk_14;

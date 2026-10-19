@@ -293,24 +293,24 @@ void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, BattlePokemon* arg2) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    if (arg2->unk_01 == 1) {
-        if (arg2->unk_08[0]->unk_000 & 2) {
+    if (arg2->TrainerSlotSaveData_GamePort == 1) {
+        if (arg2->RentalSlotAnimData_PosePhase[0]->unk_000 & 2) {
             Gfx_DrawTextureRgba16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, D_3025200, 0x24, 0);
             if (0) {}
         } else {
-            Gfx_DrawTextureRgba16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
+            Gfx_DrawTextureRgba16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
         return;
     }
 
-    if (arg2->unk_08[0]->unk_001 < arg2->unk_08[1]->unk_001) {
-        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
-        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[1]->unk_001], 0x24, 0);
+    if (arg2->RentalSlotAnimData_PosePhase[0]->unk_001 < arg2->RentalSlotAnimData_PosePhase[1]->unk_001) {
+        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[1]->unk_001], 0x24, 0);
     } else {
-        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[1]->unk_001], 0x24, 0);
-        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[1]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -375,8 +375,8 @@ void BattlePrep_DrawStreakGiveUpPrompt(RuleWindowState* arg0, RuleWindowLayout* 
 
     if (sp50.posX == 7) {
         Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x17, BattlePrep_GetString(sp50.posX - 1));
-        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x26, BattlePrep_GetString(sp50.unk_01 + 0x13));
-        if (sp50.unk_01 < 8) {
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x26, BattlePrep_GetString(sp50.TrainerSlotSaveData_GamePort + 0x13));
+        if (sp50.TrainerSlotSaveData_GamePort < 8) {
             if (sp50.posY < 4) {
                 Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x35, "%s %d", BattlePrep_GetString(0x37), sp50.posY);
             } else {
@@ -387,7 +387,7 @@ void BattlePrep_DrawStreakGiveUpPrompt(RuleWindowState* arg0, RuleWindowLayout* 
         }
     } else if ((sp50.posX == 3) || (sp50.posX == 6)) {
         Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x17, BattlePrep_GetString(sp50.posX - 1));
-        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x26, BattlePrep_GetString(sp50.unk_01 + 7));
+        Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x26, BattlePrep_GetString(sp50.TrainerSlotSaveData_GamePort + 7));
         Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x35, BattlePrep_GetString(sp50.posY + 0xA));
     } else {
         Font_Printf(arg1->posX + 0x1E, arg1->posY + 0x17, BattlePrep_GetString(sp50.posX - 1));
@@ -427,7 +427,7 @@ void BattlePrep_DrawRuleWindow(RuleWindowState* arg0) {
     s16 var_a3;
 
     if ((arg0->posX != 0) && (arg0->posY > 0)) {
-        temp_s0 = &gBattlePrepRuleWindowLayouts[arg0->unk_01 - 1];
+        temp_s0 = &gBattlePrepRuleWindowLayouts[arg0->TrainerSlotSaveData_GamePort - 1];
 
         if (arg0->posY < 4) {
             var_a3 = (temp_s0->unk_06 * arg0->posY) / 4;
@@ -449,7 +449,7 @@ void BattlePrep_DrawRuleWindow(RuleWindowState* arg0) {
                               0xFF);
             }
 
-            switch (arg0->unk_01) {
+            switch (arg0->TrainerSlotSaveData_GamePort) {
                 case 1:
                     BattlePrep_DrawResultPrompt(arg0, temp_s0);
                     break;
@@ -499,8 +499,8 @@ void BattlePrep_RunQuitMenu(RuleWindowState* arg0) {
     s16 sp22;
     s32 tmp;
 
-    sp24 = &gBattlePrepRuleWindowLayouts[arg0->unk_01 - 1];
-    sp22 = sp24->unk_08 - 1;
+    sp24 = &gBattlePrepRuleWindowLayouts[arg0->TrainerSlotSaveData_GamePort - 1];
+    sp22 = sp24->RentalSlotAnimData_PosePhase - 1;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         tmp = sp24->unk_10 >> (arg0->rotation * 3);
@@ -584,7 +584,7 @@ void BattlePrep_UpdateRuleWindow(RuleWindowState* arg0) {
 void BattlePrep_InitRuleWindow(RuleWindowState* arg0, s16 arg1) {
     RuleWindowLayout* ptr = &gBattlePrepRuleWindowLayouts[arg1 - 1];
 
-    arg0->unk_01 = arg1;
+    arg0->TrainerSlotSaveData_GamePort = arg1;
     arg0->posY = 0;
     arg0->rotation = 0;
     arg0->posX = 1;
@@ -616,7 +616,7 @@ void BattlePrep_InitRuleWindow(RuleWindowState* arg0, s16 arg1) {
 
 void BattlePrep_CloseRuleWindow(RuleWindowState* arg0) {
     arg0->posX = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posY = 0;
 }
 

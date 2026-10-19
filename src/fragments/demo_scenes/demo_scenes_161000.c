@@ -100,7 +100,7 @@ void Diorama_LoadCameraKeyframe(DioramaAnimData* arg0, DioramaState* arg1) {
 
     DioramaCamKeyframe_SetAngles(ptr, arg0->posX, arg0->posY, arg0->unk_14, arg0->unk_16);
     DioramaCamKeyframe_SetDistance(ptr, sp34, sp30);
-    DioramaCamKeyframe_SetAtAngles(ptr, arg0->unk_06, arg0->unk_08, arg0->unk_1A, arg0->unk_1C);
+    DioramaCamKeyframe_SetAtAngles(ptr, arg0->unk_06, arg0->RentalSlotAnimData_PosePhase, arg0->unk_1A, arg0->unk_1C);
     DioramaCamKeyframe_SetAtDistance(ptr, sp2C, sp28);
     DioramaCamKeyframe_SetTransitionSpeed(ptr, arg0->unk_28, arg0->unk_2C);
 }

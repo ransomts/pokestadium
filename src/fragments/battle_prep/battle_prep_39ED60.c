@@ -223,12 +223,12 @@ void BattlePrepBadgeAward_NoOp(void) {
 void BattlePrepBadgeAward_SlideInStep(gBadgeAwardState* arg0) {
     s32 i;
 
-    if (arg0->unk_01 == 0) {
+    if (arg0->TrainerSlotSaveData_GamePort == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
     }
 
-    arg0->unk_01++;
-    if (arg0->unk_01 < 0x10) {
+    arg0->TrainerSlotSaveData_GamePort++;
+    if (arg0->TrainerSlotSaveData_GamePort < 0x10) {
         for (i = 0; i < 4; i++) {
             arg0->rotation[0 + i].unk_01E.y -= 0x800;
             arg0->rotation[8 + i].unk_01E.y -= 0x800;
@@ -242,7 +242,7 @@ void BattlePrepBadgeAward_SlideInStep(gBadgeAwardState* arg0) {
         for (i = 0; i < 8; i++) {
             ModelRenderer_ClearDisplayObject(&arg0->rotation[i]);
             BattlePrep_ResetDisplayObject(&arg0->rotation[8 + i]);
-            Model_InitDisplayObject(&arg0->rotation[i], 0, 0, arg0->unk_08);
+            Model_InitDisplayObject(&arg0->rotation[i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
             arg0->rotation[i].unk_01E.y = 0;
             arg0->rotation[i].unk_000.unk_14 = arg0;
         }
@@ -251,7 +251,7 @@ void BattlePrepBadgeAward_SlideInStep(gBadgeAwardState* arg0) {
             arg0->unk_28[i] = -1;
         }
 
-        arg0->unk_01 = 0;
+        arg0->TrainerSlotSaveData_GamePort = 0;
         arg0->posX = 2;
     }
 }
@@ -273,14 +273,14 @@ void BattlePrepBadgeAward_RevealStep(gBadgeAwardState* arg0) {
         var_a2 = 0x28;
     }
 
-    var_s3 = arg0->unk_01 / var_a0;
-    arg0->unk_01++;
+    var_s3 = arg0->TrainerSlotSaveData_GamePort / var_a0;
+    arg0->TrainerSlotSaveData_GamePort++;
     if (gSessionContext.unk_0003 - 1 < var_s3) {
         var_s3 = gSessionContext.unk_0003 - 1;
     }
 
     if (var_s3 < gSessionContext.unk_0003 - 1) {
-        if ((arg0->unk_01 % var_a0) == 0) {
+        if ((arg0->TrainerSlotSaveData_GamePort % var_a0) == 0) {
             Audio_PlayCategory11SoundCommand(0x0110000E, var_s3 + 1, 0);
             Model_InitDisplayObject(&arg0->rotation[8 + var_s3], 1, 0, arg0->unk_0C);
             Vec3f_SetComponentsDuplicate(&arg0->rotation[8 + var_s3].unk_024, gBattleSlotXOffsets[var_s3], gBattleSlotYOffsets[var_s3], -289.0f);
@@ -292,7 +292,7 @@ void BattlePrepBadgeAward_RevealStep(gBadgeAwardState* arg0) {
             arg0->unk_28[var_s3] = 0;
         }
     } else if (var_s3 == gSessionContext.unk_0003 - 1) {
-        if (var_a1 == (arg0->unk_01 - (var_s3 * var_a0))) {
+        if (var_a1 == (arg0->TrainerSlotSaveData_GamePort - (var_s3 * var_a0))) {
             Audio_PlayCategory11SoundCommand(0x0110000F, 0, 0);
             Model_InitDisplayObject(&arg0->rotation[8 + var_s3], 1, 0, arg0->unk_0C);
             Vec3f_SetComponentsDuplicate(&arg0->rotation[8 + var_s3].unk_024, gBattleSlotXOffsets[var_s3], gBattleSlotYOffsets[var_s3], -289.0f);
@@ -310,13 +310,13 @@ void BattlePrepBadgeAward_RevealStep(gBadgeAwardState* arg0) {
                 arg0->rotation[8 + i].unk_018 = 0;
             }
         } else {
-            if (var_a2 == (arg0->unk_01 - (var_s3 * var_a0))) {
+            if (var_a2 == (arg0->TrainerSlotSaveData_GamePort - (var_s3 * var_a0))) {
                 for (i = 16; i < 25; i++) {
                     BattlePrep_ResetDisplayObject(&arg0->rotation[i]);
                 }
 
                 arg0->rotation[8 + var_s3].unk_018 = 0;
-                arg0->unk_01 = 0;
+                arg0->TrainerSlotSaveData_GamePort = 0;
                 arg0->posX = 3;
             }
         }
@@ -345,10 +345,10 @@ void BattlePrepBadgeAward_SpawnSparkleParticle(gBadgeAwardState* arg0, Fragment2
 
 void BattlePrepBadgeAward_UpdateSparkleStep(gBadgeAwardState* arg0) {
     s32 i;
-    s32 temp_s0 = arg0->unk_01 % 4;
+    s32 temp_s0 = arg0->TrainerSlotSaveData_GamePort % 4;
 
-    BattlePrepBadgeAward_SpawnSparkleParticle(arg0, &arg0->rotation[16 + arg0->unk_01], temp_s0);
-    BattlePrepBadgeAward_SpawnSparkleParticle(arg0, &arg0->rotation[28 + arg0->unk_01], 7 - temp_s0);
+    BattlePrepBadgeAward_SpawnSparkleParticle(arg0, &arg0->rotation[16 + arg0->TrainerSlotSaveData_GamePort], temp_s0);
+    BattlePrepBadgeAward_SpawnSparkleParticle(arg0, &arg0->rotation[28 + arg0->TrainerSlotSaveData_GamePort], 7 - temp_s0);
 
     for (i = 16; i < 41; i++) {
         if ((s32)arg0->unk_18 == (s32)arg0->rotation[i].unk_000.unk_0C) {
@@ -359,7 +359,7 @@ void BattlePrepBadgeAward_UpdateSparkleStep(gBadgeAwardState* arg0) {
         }
     }
 
-    arg0->unk_01 = (arg0->unk_01 + 1) % 12;
+    arg0->TrainerSlotSaveData_GamePort = (arg0->TrainerSlotSaveData_GamePort + 1) % 12;
 }
 
 void BattlePrepBadgeAward_ScatterStep(gBadgeAwardState* arg0) {
@@ -368,29 +368,29 @@ void BattlePrepBadgeAward_ScatterStep(gBadgeAwardState* arg0) {
 
     s32 i;
 
-    arg0->unk_01++;
-    if (arg0->unk_01 < 0x10) {
+    arg0->TrainerSlotSaveData_GamePort++;
+    if (arg0->TrainerSlotSaveData_GamePort < 0x10) {
         for (i = 0; i < 4; i++) {
             arg0->rotation[0 + i].unk_01E.x += 0x300;
             arg0->rotation[8 + i].unk_01E.x += 0x300;
             arg0->rotation[4 + i].unk_01E.x -= 0x300;
             arg0->rotation[12 + i].unk_01E.x -= 0x300;
 
-            arg0->rotation[0 + i].unk_024.y += 2.0f * arg0->unk_01 * 0.5f;
-            arg0->rotation[8 + i].unk_024.y += 2.0f * arg0->unk_01 * 0.5f;
-            arg0->rotation[4 + i].unk_024.y -= 2.0f * arg0->unk_01 * 0.5f;
-            arg0->rotation[12 + i].unk_024.y -= 2.0f * arg0->unk_01 * 0.5f;
+            arg0->rotation[0 + i].unk_024.y += 2.0f * arg0->TrainerSlotSaveData_GamePort * 0.5f;
+            arg0->rotation[8 + i].unk_024.y += 2.0f * arg0->TrainerSlotSaveData_GamePort * 0.5f;
+            arg0->rotation[4 + i].unk_024.y -= 2.0f * arg0->TrainerSlotSaveData_GamePort * 0.5f;
+            arg0->rotation[12 + i].unk_024.y -= 2.0f * arg0->TrainerSlotSaveData_GamePort * 0.5f;
         }
 
         for (i = 0; i < 8; i++) {
             arg0->rotation[0 + i].unk_01E.z += gScatterXOffsets[i];
             arg0->rotation[8 + i].unk_01E.z += gScatterXOffsets[i];
 
-            arg0->rotation[0 + i].unk_024.x += (arg0->unk_01 * gScatterXVelocities[i] * 0.5f);
-            arg0->rotation[8 + i].unk_024.x += (arg0->unk_01 * gScatterXVelocities[i] * 0.5f);
+            arg0->rotation[0 + i].unk_024.x += (arg0->TrainerSlotSaveData_GamePort * gScatterXVelocities[i] * 0.5f);
+            arg0->rotation[8 + i].unk_024.x += (arg0->TrainerSlotSaveData_GamePort * gScatterXVelocities[i] * 0.5f);
         }
     } else {
-        arg0->unk_01 = 0;
+        arg0->TrainerSlotSaveData_GamePort = 0;
         arg0->posX = 0;
     }
 }
@@ -419,11 +419,11 @@ void BattlePrepBadgeAward_InitDisplayObjects(gBadgeAwardState* arg0, Fragment2_1
     s32 i;
 
     arg0->rotation = arg1;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posX = 1;
 
     for (i = 0; i < 8; i++) {
-        Model_InitDisplayObject(&arg0->rotation[8 + i], 0, 0, arg0->unk_08);
+        Model_InitDisplayObject(&arg0->rotation[8 + i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
         arg0->rotation[8 + i].unk_01E.y = -0x8000;
         arg0->rotation[8 + i].unk_000.unk_14 = arg0;
     }
@@ -445,7 +445,7 @@ void BattlePrepBadgeAward_StartScatter(gBadgeAwardState* arg0) {
         BattlePrep_ResetDisplayObject(&arg0->rotation[i]);
     }
 
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posX = 4;
 }
 
@@ -453,14 +453,14 @@ void BattlePrepBadgeAward_Init(gBadgeAwardState* arg0) {
     MemoryBlock* temp_v0;
 
     arg0->posX = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->unk_20 = Memmap_GetSegmentVaddr(D_2021620);
     arg0->unk_1C = Memmap_GetSegmentVaddr(D_2018000);
     arg0->unk_24 = Memmap_GetSegmentVaddr(D_2023240);
 
     temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
 
-    arg0->unk_08 = process_geo_layout(temp_v0, gGeoLayout_BattleBackground);
+    arg0->RentalSlotAnimData_PosePhase = process_geo_layout(temp_v0, gGeoLayout_BattleBackground);
     arg0->unk_0C = process_geo_layout(temp_v0, gGeoLayout_Panel);
     arg0->unk_10 = process_geo_layout(temp_v0, gGeoLayout_Icon);
     arg0->unk_14 = process_geo_layout(temp_v0, gGeoLayout_GlowFade);

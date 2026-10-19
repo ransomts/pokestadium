@@ -41,12 +41,12 @@ typedef unk_D_86002F58_004_000_00C_028* (*unk_D_86002F58_004_000_00C_028_func)(s
 typedef struct unk_D_86002F58_004_000_010_024 {
     /* 0x00 */ u16 posX;
     /* 0x02 */ char unk02[0x6];
-    /* 0x08 */ struct ModelRootNode* unk_08;
+    /* 0x08 */ struct ModelRootNode* RentalSlotAnimData_PosePhase;
 } unk_D_86002F58_004_000_010_024; // size >= 0xC
 
 typedef struct AssetManager {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x04 */ s32 rotation[1];
     /* 0x08 */ char pad8[0x10];
@@ -78,11 +78,11 @@ typedef struct unk_D_86002F58_004_000_00C {
 
 typedef struct GraphRootNode {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ struct GraphRootNode* rotation;
-    /* 0x08 */ struct GraphRootNode* unk_08;
+    /* 0x08 */ struct GraphRootNode* RentalSlotAnimData_PosePhase;
     /* 0x0C */ unk_D_86002F58_004_000_00C* unk_0C;
     /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ s32 unk_14;
@@ -93,7 +93,7 @@ typedef struct unk_D_86002F58_004_000_040_004 {
     /* 0x02 */ char unk02[0x2];
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ u16 unk_08;
+    /* 0x08 */ u16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ u16 unk_0A;
     /* 0x0C */ u32 unk_0C;
     /* 0x10 */ u32 unk_10;
@@ -104,7 +104,7 @@ typedef struct unk_D_86002F58_004_000_040_004 {
 typedef struct unk_D_86002F58_004_000_040 {
     /* 0x00 */ s16 posX;
     /* 0x04 */ unk_D_86002F58_004_000_040_004* rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ u32 unk_0C;
     /* 0x10 */ char unk10[0x2];
     /* 0x12 */ u16 unk_12;
@@ -115,7 +115,7 @@ typedef struct unk_D_86002F58_004_000_054_004 {
     /* 0x02 */ char posY[0x2];
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ u16 unk_08;
+    /* 0x08 */ u16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ u16 unk_0A;
     /* 0x0C */ void* unk_0C;
     /* 0x10 */ void* unk_10;
@@ -124,7 +124,7 @@ typedef struct unk_D_86002F58_004_000_054_004 {
 typedef struct unk_D_86002F58_004_000_054 {
     /* 0x00 */ s16 posX;
     /* 0x04 */ unk_D_86002F58_004_000_054_004* rotation;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ u16 unk_0A;
 } unk_D_86002F58_004_000_054; // size = 0xC
 
@@ -179,11 +179,11 @@ typedef s32 (*func_D_86002F34_000_010)(s32, struct GraphNode*);
 
 typedef struct GraphNode {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ struct GraphNode* rotation;
-    /* 0x08 */ struct GraphNode* unk_08;
+    /* 0x08 */ struct GraphNode* RentalSlotAnimData_PosePhase;
     /* 0x0C */ struct CameraStruct* unk_0C;
     /* 0x10 */ func_D_86002F34_000_010 unk_10;
     /* 0x14 */ void* unk_14;
@@ -231,7 +231,7 @@ typedef struct unk_D_86002F34_00C_0CC {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ Color_RGBA8_u32 color;
-    /* 0x08 */ u16 unk_08;
+    /* 0x08 */ u16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ u16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -330,7 +330,7 @@ typedef struct unk_D_86002F34_alt10 {
 
 typedef struct TextureInfo {
     /* 0x00 */ u8 fmt;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
     /* 0x04 */ char unk04[0x4];
     /* 0x08 */ u8* texture;
@@ -458,7 +458,7 @@ typedef struct MiniHudMainGraph {
 // Are ModelData and unk_D_800AC840 the same?
 typedef struct ModelData {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ ModelRootNode* unk_08;
+    /* 0x08 */ ModelRootNode* RentalSlotAnimData_PosePhase;
 } ModelData; // size = 0x18 ??
 
 typedef struct UnkInputStruct8000D738 {
@@ -486,7 +486,7 @@ typedef struct GbEmuState {
 typedef struct unk_D_864027C0 {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -497,14 +497,14 @@ typedef struct unk_D_864027C0 {
 
 typedef struct arg1_func_81407874_014_000_010 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09;
     /* 0x0A */ u8 unk_0A;
     /* 0x0B */ u8 unk_0B;
@@ -522,7 +522,7 @@ typedef struct TextObjectThreadData {
 typedef struct TiledTexture {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ u8* unk_0C;
 } TiledTexture; // size = 0x10
 

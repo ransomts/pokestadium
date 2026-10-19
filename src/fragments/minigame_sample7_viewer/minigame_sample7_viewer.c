@@ -208,7 +208,7 @@ void Minigame_Sample7Viewer_Init(void) {
     ModelRenderer_AttachDisplayObject(&gMiniGameAnimNode);
     PokeIcon_OpenModelArchives();
     gMiniGameGeoLayoutData = Model_LoadByArchiveIndex(0x19);
-    Model_InitDisplayObject(&gMiniGameAnimNode, 0, 0x19, gMiniGameGeoLayoutData->unk_08->posX[0]);
+    Model_InitDisplayObject(&gMiniGameAnimNode, 0, 0x19, gMiniGameGeoLayoutData->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gMiniGameAnimNode, 0);
     Minigame_Sample7Viewer_InitCamera();
 }

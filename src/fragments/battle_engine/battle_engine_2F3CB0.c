@@ -92,7 +92,7 @@ void BattleScene_HideParticipantSecondaryModels(BattlePlayerEntity* arg0) {
 
     for (i = 0; i < 2; i++) {
         Vec3f_SetComponentsDuplicate(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
-        arg0->unk_168[i].unk_000.unk_000.unk_01 &= ~1;
+        arg0->unk_168[i].unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
         arg0->unk_168[i].unk_169 = 0;
     }
 }
@@ -105,7 +105,7 @@ void BattleScene_ShowSecondaryModelsAtMainTransform(BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_16C = 0;
         arg0->unk_168[i].unk_16A = sp64[i];
         arg0->unk_168[i].unk_000.unk_01D = 0;
-        arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
+        arg0->unk_168[i].unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
         BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
         BattleAnim_Vec3sCopy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
         BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
@@ -131,7 +131,7 @@ void BattleScene_UpdateSecondaryModelOrbit(BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_000.unk_024.y = arg0->unk_000.unk_024.y + sp5C.y;
         arg0->unk_168[i].unk_000.unk_024.z = arg0->unk_000.unk_024.z + sp5C.z;
 
-        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10);
         ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.posX);
     }
 }
@@ -142,7 +142,7 @@ void BattleScene_ShowSecondaryModelsAtMainPose(BattlePlayerEntity* arg0) {
     for (i = 0; i < 2; i++) {
         arg0->unk_168[i].unk_169 = 0;
         arg0->unk_168[i].unk_000.unk_01D = 0x3C;
-        arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
+        arg0->unk_168[i].unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
         Vec3f_SetComponentsDuplicate(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
         BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
         BattleAnim_Vec3sCopy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
@@ -162,7 +162,7 @@ s32 BattleScene_ShrinkSecondaryModelsToScale(BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_000.unk_030.y = temp_fv0_2;
         arg0->unk_168[i].unk_000.unk_030.z = temp_fv0_2;
 
-        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10);
         ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.posX);
 
         if (arg0->unk_168[i].unk_000.unk_030.y < 0.8) {
@@ -179,9 +179,9 @@ void BattleScene_ShowSecondaryModelsStaggeredFrame(BattlePlayerEntity* arg0) {
     for (i = 0; i < 2; i++) {
         arg0->unk_168[i].unk_169 = 0;
         arg0->unk_168[i].unk_000.unk_01D = 0x41 - i * 4;
-        arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
+        arg0->unk_168[i].unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
 
-        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10);
         ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.posX);
         Vec3f_SetComponentsDuplicate(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
         BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
@@ -200,7 +200,7 @@ void BattleScene_UpdateSecondaryModelTrailPosition(BattlePlayerEntity* arg0, s16
     f32 sp70[3] = { 0.98f, 0.96f, 0.95f }; // D_84384644
 
     for (i = 0; i < 2; i++) {
-        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10);
         ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.posX);
         Vec3f_CalculateDistanceAngles(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, &sp90, &sp8E, &sp8C);
         Camera_ComputeEyeFromAngles(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, sp7C[i] * sp90, sp8E, sp8C);
@@ -213,7 +213,7 @@ void BattleScene_ResetParticipantModelFlags(BattlePlayerEntity* arg0) {
 }
 
 void BattleAnim_StatusIdleCase1Sub0(UNUSED BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
-    arg1->effectGraphNode.unk_000.unk_01 |= 1;
+    arg1->effectGraphNode.unk_000.TrainerSlotSaveData_GamePort |= 1;
     if (arg1 == sActivePokemon[0]) {
         Vec3f_SetComponentsDuplicate(&arg1->effectGraphNode.unk_024, 35.0f, 50.0f, -250.0f);
     } else {
@@ -236,7 +236,7 @@ void BattleAnim_StatusIdleCase1Sub1(BattlePlayerEntity* arg0, BattlePlayerEntity
     arg1->effectGraphNode.unk_01E.z += 0xE38;
 
     if (arg1->effectGraphNode.unk_024.y < 0) {
-        arg1->effectGraphNode.unk_000.unk_01 &= ~1;
+        arg1->effectGraphNode.unk_000.TrainerSlotSaveData_GamePort &= ~1;
         arg1->effectGraphNode.unk_024.y = 0.0f;
         arg1->unk_448.unk_0C.y = 0.0f;
         BattleScene_ResetParticipantModelFlags(arg1);
@@ -258,7 +258,7 @@ void BattleAnim_StatusIdleCase2Sub0(UNUSED BattlePlayerEntity* arg0, BattlePlaye
     Vec3f_SetComponentsDuplicate(&arg1->effectGraphNode.unk_024, arg1->sideSign * -150.0f, 100.0f, 0.0f);
     arg1->animationSubstate++;
     BattleAnim_InitSwayOffset(arg1, 0.0f, 0x3FFC);
-    arg1->effectGraphNode.unk_000.unk_01 |= 1;
+    arg1->effectGraphNode.unk_000.TrainerSlotSaveData_GamePort |= 1;
     arg1->effectGraphNode.unk_000.posY &= ~0x20;
     ModelAnim_SetFrame(&arg1->effectGraphNode, 0);
 }

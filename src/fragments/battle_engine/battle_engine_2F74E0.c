@@ -240,8 +240,8 @@ void BattleScene_SyncActiveHpToPartyState(void) {
     temp_a2 = &sActivePokemon[0]->animationState.unk_38;
     temp_a3 = &sActivePokemon[1]->animationState.unk_38;
 
-    ptr3 = &sActivePokemon[0]->boundRoster->unk_01C[ptr1->unk_08];
-    ptr4 = &sActivePokemon[1]->boundRoster->unk_01C[ptr2->unk_08];
+    ptr3 = &sActivePokemon[0]->boundRoster->unk_01C[ptr1->RentalSlotAnimData_PosePhase];
+    ptr4 = &sActivePokemon[1]->boundRoster->unk_01C[ptr2->RentalSlotAnimData_PosePhase];
 
     if (gBattleUpdateHPFlag != 0) {
         gPlayerScaleFactors[0] = temp_a2->unk_0C = temp_a2->unk_28;
@@ -320,8 +320,8 @@ void BattleScene_AutoSelectReplacementMon(BattlePlayerEntity* arg0) {
     s32 i;
     BattlePlayerAnimState* sp1C = &arg0->animationState;
 
-    for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-        if ((arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY != 0) && (i != sp1C->unk_08)) {
+    for (i = 0; i < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_002; i++) {
+        if ((arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].posY != 0) && (i != sp1C->RentalSlotAnimData_PosePhase)) {
             BattleAnim_PlaySoundEffect2();
             sp1C->unk_1C = 0;
             sp1C->unk_1E = 0;
@@ -338,7 +338,7 @@ void BattleScene_SelectActiveController(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* ptr = &arg0->animationState;
 
     ptr->unk_2C = ptr->unk_2B;
-    ptr->controller = &gControllers[arg0->pokemonAnimation->unk_08[ptr->unk_2C]->unk_001];
+    ptr->controller = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[ptr->unk_2C]->unk_001];
 }
 
 void BattleScene_HandleActionSelectionCancel(s32 arg0) {
@@ -631,12 +631,12 @@ void BattleScene_ForfeitPrompt(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* sp18 = &arg0->animationState;
     BattlePlayerAnimState* temp_a0 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState;
 
-    if (arg0->pokemonAnimation->unk_01 == 1) {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
+    if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 1) {
+        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
     } else {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[1]->unk_001];
+        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
     }
 
     if (temp_a0->unk_10 == 4) {
@@ -692,7 +692,7 @@ void BattleScene_CommitPlayerSwitchAction(BattlePlayerEntity* arg0) {
 }
 
 s32 BattleScene_ValidateSelectedPartyMember(BattlePlayerEntity* arg0) {
-    if (arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C]->unk_01C[arg0->animationState.unk_18].posY != 0) {
+    if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->animationState.unk_2C]->unk_01C[arg0->animationState.unk_18].posY != 0) {
         return 1;
     }
 
@@ -709,11 +709,11 @@ void BattleScene_QueuePartySelectionConfirmMessage(BattlePlayerEntity* arg0) {
 
 void BattleScene_AssignActiveCoopController(BattlePlayerEntity* arg0, s32 arg1) {
     if (arg1 == 1) {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
+        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
     } else {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[1]->unk_001];
+        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
     }
 
     if (arg1 == 1) {
@@ -739,8 +739,8 @@ void BattleScene_HandlePartySlotCursorInput(BattlePlayerEntity* arg0, Controller
 
     sp1C = &arg0->animationState;
 
-    BattleScene_AssignActiveCoopController(arg0, arg0->pokemonAnimation->unk_01);
-    temp_a1 = arg0->pokemonAnimation->unk_08[sp1C->unk_2C];
+    BattleScene_AssignActiveCoopController(arg0, arg0->pokemonAnimation->TrainerSlotSaveData_GamePort);
+    temp_a1 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp1C->unk_2C];
     arg1 = sp1C->controller;
 
     if (temp_a1->unk_002 < 4) {
@@ -780,7 +780,7 @@ void BattleScene_HandlePartySlotCursorInput(BattlePlayerEntity* arg0, Controller
     }
 
     if (BTN_IS_PRESSED(arg1, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
-        if ((sp1C->unk_08 == sp1C->unk_18) && (sp1C->unk_2C == sp1C->unk_2B)) {
+        if ((sp1C->RentalSlotAnimData_PosePhase == sp1C->unk_18) && (sp1C->unk_2C == sp1C->unk_2B)) {
             if (BattleScene_ValidateSelectedPartyMember(arg0) != 0) {
                 BattleAnim_PlaySoundEffect8();
                 BattleScene_QueuePartySelectionConfirmMessage(arg0);
@@ -799,14 +799,14 @@ void BattleScene_HandlePlayerPartySelection(BattlePlayerEntity* arg0) {
     s32 idx;
     BattlePlayerAnimState* sp18 = &arg0->animationState;
 
-    if (arg0->pokemonAnimation->unk_01 == 1) {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
+    if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 1) {
+        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
     } else {
 
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[sp18->unk_2C]->unk_001];
+        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp18->unk_2C]->unk_001];
         idx = sp18->unk_2C == 0;
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[idx]->unk_001];
+        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[idx]->unk_001];
     }
 
     if (arg0->messageBuffer.posX != 0) {
@@ -1026,12 +1026,12 @@ void BattleScene_PollActionMenuRequestButtons(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* temp_t0 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState;
 
     if (temp_v1->unk_10 == 0) {
-        if (arg0->pokemonAnimation->unk_01 == 1) {
-            gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
-            gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
+        if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 1) {
+            gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+            gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
         } else {
-            gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
-            gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[1]->unk_001];
+            gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+            gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
         }
 
         if (temp_v1->controller->buttonPressed & 0x8000) {
@@ -1122,17 +1122,17 @@ s32 BattleScene_HandlePlayerForcedActionState(BattlePlayerEntity* arg0, BattlePl
 }
 
 void BattleScene_ShowParticipantOwnerAndSecondaryModels(void) {
-    sActivePokemon[0]->ownerModel.unk_168->posX.unk_01 |= 1;
-    sActivePokemon[0]->ownerModel.unk_000.unk_000.unk_01 |= 1;
-    sActivePokemon[1]->ownerModel.unk_168->posX.unk_01 |= 1;
-    sActivePokemon[1]->ownerModel.unk_000.unk_000.unk_01 |= 1;
+    sActivePokemon[0]->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort |= 1;
+    sActivePokemon[0]->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
+    sActivePokemon[1]->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort |= 1;
+    sActivePokemon[1]->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
 }
 
 void BattleScene_HideParticipantOwnerAndSecondaryModels(void) {
-    sActivePokemon[0]->ownerModel.unk_168->posX.unk_01 &= ~1;
-    sActivePokemon[0]->ownerModel.unk_000.unk_000.unk_01 &= ~1;
-    sActivePokemon[1]->ownerModel.unk_168->posX.unk_01 &= ~1;
-    sActivePokemon[1]->ownerModel.unk_000.unk_000.unk_01 &= ~1;
+    sActivePokemon[0]->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort &= ~1;
+    sActivePokemon[0]->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+    sActivePokemon[1]->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort &= ~1;
+    sActivePokemon[1]->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
 }
 
 void BattleScene_AdvanceAttractInputScript(void) {

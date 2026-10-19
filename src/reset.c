@@ -17,7 +17,7 @@ typedef struct UnkStruct4 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } UnkStruct4; // size >= 0xC
 
 UnkStruct800A6D20 gSoftResetThread;
@@ -113,9 +113,9 @@ void SoftReset_Thread(void* unused) {
             UnkStruct4* temp_v0 = Display_GetWorkerStatus();
             if (temp_v0 != NULL) {
                 if (temp_v0->rotation == 320) {
-                    SoftReset_ClearLines320(temp_v0->unk_08);
+                    SoftReset_ClearLines320(temp_v0->RentalSlotAnimData_PosePhase);
                 } else {
-                    SoftReset_ClearLines640(temp_v0->unk_08);
+                    SoftReset_ClearLines640(temp_v0->RentalSlotAnimData_PosePhase);
                 }
             } else if (Display_IsCurrentFramebuffer() != 0) {
                 SoftReset_UpdateFadeColor();

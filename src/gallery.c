@@ -26,7 +26,7 @@ typedef struct {
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
 
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -406,9 +406,9 @@ void Gallery_InitializePhotoGrid(s32 arg0, s32 arg1) {
     temp_a3 = arg1 - 0x2B;
     for(i = 0; i < 12; i+=2) {
         gCamQuadVertices[i].posX = temp_v0;
-        gCamQuadVertices[i].unk_08 = 0;
+        gCamQuadVertices[i].RentalSlotAnimData_PosePhase = 0;
         gCamQuadVertices[i + 1].posX = temp_v1;
-        gCamQuadVertices[i + 1].unk_08 = 0x18E0;
+        gCamQuadVertices[i + 1].RentalSlotAnimData_PosePhase = 0x18E0;
         if (i < 10) {
             temp_a0 = temp_a2 - (i * 0xA);
             gCamQuadVertices[i].posY = temp_a0;
@@ -477,7 +477,7 @@ s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
             Font_DisableTwoCycleTexturing();
             Font_EndTexturedTextRendering();
         }
-        GfxImage_SetRenderTarget(&gDisplayListHead, gCamSecondary->unk_08);
+        GfxImage_SetRenderTarget(&gDisplayListHead, gCamSecondary->RentalSlotAnimData_PosePhase);
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
         gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
@@ -552,9 +552,9 @@ Camera* Geo_CreateSceneInstance(s16 arg0, s16 arg1, FramebufferImage* arg2, Fram
         temp_v0->unk_06 = arg1;
 
         if (arg2 != NULL) {
-            temp_v0->unk_08 = arg2;
+            temp_v0->RentalSlotAnimData_PosePhase = arg2;
         } else {
-            temp_v0->unk_08 = GfxImage_Allocate(0, 2, arg0, arg1, 0);
+            temp_v0->RentalSlotAnimData_PosePhase = GfxImage_Allocate(0, 2, arg0, arg1, 0);
         }
 
         if (arg3 != NULL) {
@@ -563,7 +563,7 @@ Camera* Geo_CreateSceneInstance(s16 arg0, s16 arg1, FramebufferImage* arg2, Fram
             temp_v0->unk_0C = GfxImage_Allocate(0, 2, arg0, arg1, 1);
         }
 
-        GfxImage_AttachDepthBuffer(temp_v0->unk_08, temp_v0->unk_0C);
+        GfxImage_AttachDepthBuffer(temp_v0->RentalSlotAnimData_PosePhase, temp_v0->unk_0C);
 
         temp_v0->unk_10 = arg4;
         temp_v0->unk_14 = arg5;
@@ -582,7 +582,7 @@ Camera* Geo_CreateSceneInstance(s16 arg0, s16 arg1, FramebufferImage* arg2, Fram
 typedef union unk_func_80026268_arg0_000_raw {
     struct {
         u8 posX;
-        u8 unk_01;
+        u8 TrainerSlotSaveData_GamePort;
         u16 posY;
     };
     f32 raw;
@@ -593,7 +593,7 @@ typedef struct PhotoMonRaw {
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09[4];
     /* 0x0D */ u8 pad0D;
     /* 0x0E */ u16 unk_0E;
@@ -650,12 +650,12 @@ void Gallery_InitializePhotoModel(Camera* arg0) {
     PokeIcon_RequestFrameLoad(arg0->unk_10, sp30.posX.posX, sp90);
     PokeIcon_WaitFrameLoad(arg0->unk_10);
     ModelRenderer_ClearDisplayObject(arg0->unk_20);
-    Model_InitDisplayObject(arg0->unk_20, 0, sp30.posX.posX, arg0->unk_10->unk_24->unk_08->posX[0]);
+    Model_InitDisplayObject(arg0->unk_20, 0, sp30.posX.posX, arg0->unk_10->unk_24->RentalSlotAnimData_PosePhase->posX[0]);
     sp28 = Util_ConvertAddrToVirtAddr(&Particle31_UnpackSlotData);
     sp28(arg0->unk_20, Util_ConvertAddrToVirtAddr(&temp_s1->posX.unk_09[1]));
     ModelAnim_SetAnimation(arg0->unk_20, temp_s1->posX.unk_05);
     ModelAnim_SetFrame(arg0->unk_20, temp_s1->posX.unk_06);
-    ModelAnim_SetEventTrack(arg0->unk_20, temp_s1->posX.unk_08);
+    ModelAnim_SetEventTrack(arg0->unk_20, temp_s1->posX.RentalSlotAnimData_PosePhase);
     ModelAnim_SetEventFrame(arg0->unk_20, (s16)temp_s1->posX.unk_09[0]);
 }
 
@@ -690,7 +690,7 @@ void Gallery_LoadPhotoSceneGraph(Camera* arg0) {
     temp_v0_4 = sp20(4, 0);
     if (temp_v0_4 == NULL) {
         temp_v1 = arg0->unk_24;
-        temp_v1->unk_01 = (u8) (temp_v1->unk_01 & 0xFFFE);
+        temp_v1->TrainerSlotSaveData_GamePort = (u8) (temp_v1->TrainerSlotSaveData_GamePort & 0xFFFE);
         arg0->unk_24->unk_14 = 0;
         return;
     }
@@ -699,7 +699,7 @@ void Gallery_LoadPhotoSceneGraph(Camera* arg0) {
     arg0->unk_24->unk_1C = (s32) temp_v0_4->rotation;
     arg0->unk_24->unk_14 = 1;
     temp_v1 = arg0->unk_24;
-    temp_v1->unk_01 = (u8) (temp_v1->unk_01 | 1);
+    temp_v1->TrainerSlotSaveData_GamePort = (u8) (temp_v1->TrainerSlotSaveData_GamePort | 1);
 }
 
 u8* Gallery_ProcessSceneInstance(Camera* arg0) {
@@ -716,7 +716,7 @@ u8* Gallery_ProcessSceneInstance(Camera* arg0) {
                 Gallery_LoadPhotoSceneGraph(arg0);
                 break;
             case 1:
-                GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_08);
+                GfxImage_SetRenderTarget(&gDisplayListHead, arg0->RentalSlotAnimData_PosePhase);
 
                 if ((arg0->unk_34 == -1) || (arg0->unk_34 == 0)) {
                     GfxImage_FillCurrent(&gDisplayListHead, 1);
@@ -749,7 +749,7 @@ u8* Gallery_ProcessSceneInstance(Camera* arg0) {
         case 2:
             break;
     }
-    return arg0->unk_08->img_p;
+    return arg0->RentalSlotAnimData_PosePhase->img_p;
 }
 
 s32 Gallery_IsSceneReady(Camera* arg0) {

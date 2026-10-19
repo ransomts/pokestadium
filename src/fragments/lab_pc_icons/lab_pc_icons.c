@@ -897,7 +897,7 @@ s32 LabPC_DrawMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
-    gDPSetPrimColor(gDisplayListHead++, 0, 0, sp12C->unk_08.r, sp12C->unk_08.g, sp12C->unk_08.b, sp12C->unk_08.a);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, sp12C->RentalSlotAnimData_PosePhase.r, sp12C->RentalSlotAnimData_PosePhase.g, sp12C->RentalSlotAnimData_PosePhase.b, sp12C->RentalSlotAnimData_PosePhase.a);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, gSummaryRibbonBar1Tex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -1488,25 +1488,25 @@ s32 LabPC_IconListDispatch(u32 arg0, LabPC_DetailPanelParams* arg1) {
     switch (arg0) {
         case 0:
             var_v1 = 0;
-            arg1->unk_08 = LabPC_CreateMonDetailPanel(arg1);
+            arg1->RentalSlotAnimData_PosePhase = LabPC_CreateMonDetailPanel(arg1);
             break;
 
         case 1:
-            LabPC_SetDetailPanelMon(arg1->unk_08, arg1->unk_0C, arg1->unk_10);
+            LabPC_SetDetailPanelMon(arg1->RentalSlotAnimData_PosePhase, arg1->unk_0C, arg1->unk_10);
             var_v1 = 0;
             break;
 
         case 2:
-            LabPC_SetDetailPanelMode(arg1->unk_08, arg1->unk_18);
+            LabPC_SetDetailPanelMode(arg1->RentalSlotAnimData_PosePhase, arg1->unk_18);
             var_v1 = 0;
             break;
 
         case 3:
-            var_v1 = LabPC_GetDetailPanelMode(arg1->unk_08);
+            var_v1 = LabPC_GetDetailPanelMode(arg1->RentalSlotAnimData_PosePhase);
             break;
 
         case 4:
-            var_v1 = LabPC_RunDetailPanel(arg1->unk_08);
+            var_v1 = LabPC_RunDetailPanel(arg1->RentalSlotAnimData_PosePhase);
             break;
     }
     return var_v1;

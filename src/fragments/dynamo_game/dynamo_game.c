@@ -186,8 +186,8 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                             break;
                     }
                 } else if ((gCurrentHealthBar->unk_008 == 6) &&
-                           (((gHealthBarAnimFlagA != 0) && ((gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10) == 0x37)) ||
-                            ((gHealthBarAnimFlagB != 0) && ((gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10) == 0x5E)))) {
+                           (((gHealthBarAnimFlagA != 0) && ((gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x37)) ||
+                            ((gHealthBarAnimFlagB != 0) && ((gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x5E)))) {
                     var_s1 = 1;
                 }
             } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->unk_00E >= 3) &&
@@ -253,9 +253,9 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                         ModelAnim_SetEventFrame(&gCurrentHealthBar->unk_014, 0x4B);
                     }
                 } else if (var_s1 == 2) {
-                    ModelAnim_SetFrame(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10);
+                    ModelAnim_SetFrame(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10);
                     if (gCurrentHealthBar->unk_008 != 0) {
-                        ModelAnim_SetEventFrame(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.unk_08 >> 0x10);
+                        ModelAnim_SetEventFrame(&gCurrentHealthBar->unk_014, gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10);
                     }
                 } else {
                     ModelAnim_SetFrame(&gCurrentHealthBar->unk_014, 0);
@@ -755,9 +755,9 @@ void DynamoGame_LoadAssets(void) {
                 ModelRenderer_AttachDisplayObject(gCurrentHealthBarNode);
 
                 if (i == 0) {
-                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC5, gDrowzeeModelTemp->unk_08->posX[0]);
+                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC5, gDrowzeeModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
                 } else {
-                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC6, gDrowzeeModelTemp->unk_08->posX[0]);
+                    Model_InitDisplayObject(gCurrentHealthBarNode, 0, 0xC6, gDrowzeeModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
                 }
 
                 gCurrentHealthBar->unk_008 = 0;
@@ -771,7 +771,7 @@ void DynamoGame_LoadAssets(void) {
                     gCurrentHealthBarNode->unk_024.y += 0.15f;
                 }
 
-                gCurrentHealthBarNode->unk_024.z = gHealthBarPositions[j].unk_08;
+                gCurrentHealthBarNode->unk_024.z = gHealthBarPositions[j].RentalSlotAnimData_PosePhase;
 
                 gCurrentHealthBarNode->unk_030.x = gHealthBarPositions[j].unk_0C;
                 gCurrentHealthBarNode->unk_030.y = gHealthBarPositions[j].unk_10;
@@ -805,7 +805,7 @@ void DynamoGame_LoadAssets(void) {
             gCurrentHealthBarNode = gHealthBarGraphNodePtrs[j];
 
             ModelRenderer_AttachDisplayObject(gCurrentHealthBarNode);
-            Model_InitDisplayObject(gCurrentHealthBarNode, 0, sp5C[j], gDrowzeeModelTemp->unk_08->posX[0]);
+            Model_InitDisplayObject(gCurrentHealthBarNode, 0, sp5C[j], gDrowzeeModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
             ModelAnim_SetAnimation(gCurrentHealthBarNode, 0);
             ModelAnim_SetFrame(gCurrentHealthBarNode, gCurrentHealthBarNode->unk_040.rotation->unk_0A);
         }

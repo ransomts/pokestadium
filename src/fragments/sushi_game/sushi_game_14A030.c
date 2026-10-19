@@ -146,7 +146,7 @@ static Vtx gSushiBillboardVtx[] = {
 
 static s32 gSushiFirstSpawnFlag;
 static f32 gSushiRotationAngle;
-unk_D_868084D8 gSushiInstances[12];
+SushiPlate gSushiInstances[12];
 static SushiSpawner gSushiSpawners[12];
 static s32 gSushiSpawnMode;
 static s16 gSushiTotalWeight;
@@ -165,7 +165,7 @@ void SushiGame_GetConveyorSlotPosition(s16 arg0, Vec3f* arg1) {
     arg1->z = gSushiOrbitCenter.z + (COSS(var_fv0) * gSushiOrbitRadius);
 }
 
-f32 SushiGame_ComputePlateDistance(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
+f32 SushiGame_ComputePlateDistance(SushiPlate* arg0, Vec3f* arg1, Vec3f* arg2) {
     f32 var_fv1;
     SushiPlateNode* ptr = arg0->unk_38;
 
@@ -195,7 +195,7 @@ void SushiGame_InitConveyorCup(SushiSpawner* arg0, s32 arg1) {
     sp1C->unk_030.x = sp1C->unk_030.y = sp1C->unk_030.z = 2.0f;
 }
 
-void SushiGame_SetPlateSpawnPosition(unk_D_868084D8* arg0) {
+void SushiGame_SetPlateSpawnPosition(SushiPlate* arg0) {
     SushiPlateNode* ptr;
 
     switch (arg0->unk_10) {
@@ -261,7 +261,7 @@ s32 SushiGame_PickRandomSushiType(void) {
     return sp1C;
 }
 
-void SushiGame_InitPlate(s32 arg0, unk_D_868084D8* arg1, s32 arg2, SushiPlateNode* arg3) {
+void SushiGame_InitPlate(s32 arg0, SushiPlate* arg1, s32 arg2, SushiPlateNode* arg3) {
     if (arg0 == 0) {
         if (arg2 != -1) {
             arg1->posX = arg2;
@@ -269,18 +269,18 @@ void SushiGame_InitPlate(s32 arg0, unk_D_868084D8* arg1, s32 arg2, SushiPlateNod
         arg1->posY = 0;
         arg1->rotation = 0;
         arg1->unk_06 = 0;
-        arg1->unk_08.rgba = -1;
+        arg1->RentalSlotAnimData_PosePhase.rgba = -1;
         arg1->unk_0C = 0;
         arg1->unk_10 = 0;
         arg1->unk_38 = NULL;
         arg1->unk_2C = 0.0f;
-        arg1->unk_40->posX.unk_01 &= ~1;
+        arg1->unk_40->posX.TrainerSlotSaveData_GamePort &= ~1;
     } else {
         arg3->unk_008 = arg1;
         arg1->posY = 0;
         arg1->rotation = 0;
         arg1->unk_06 = 0;
-        arg1->unk_08.rgba = 0xFFFFFF80;
+        arg1->RentalSlotAnimData_PosePhase.rgba = 0xFFFFFF80;
         arg1->unk_0C = SushiGame_PickRandomSushiType();
 
         gSushiActiveCounts[arg1->unk_0C]++;
@@ -293,7 +293,7 @@ void SushiGame_InitPlate(s32 arg0, unk_D_868084D8* arg1, s32 arg2, SushiPlateNod
             arg1->posY |= 2;
         }
 
-        arg1->unk_40->posX.unk_01 |= 1;
+        arg1->unk_40->posX.TrainerSlotSaveData_GamePort |= 1;
 
         if (arg3->unk_006 >= 2) {
             if ((gSushiItemDefs[arg1->unk_0C].unk_18 != 0) && (gSushiGoRoundTimer >= 0x3D)) {
@@ -310,9 +310,9 @@ void SushiGame_InitPlate(s32 arg0, unk_D_868084D8* arg1, s32 arg2, SushiPlateNod
     arg1->unk_3C = &gSushiEmptyDL;
 }
 
-unk_D_868084D8* SushiGame_FindFreePlate(void) {
+SushiPlate* SushiGame_FindFreePlate(void) {
     s32 i;
-    unk_D_868084D8* var_v1 = gSushiInstances;
+    SushiPlate* var_v1 = gSushiInstances;
 
     for (i = 0; i < 12; i++, var_v1++) {
         if (var_v1->unk_0C == 0) {
@@ -327,7 +327,7 @@ unk_D_868084D8* SushiGame_FindFreePlate(void) {
 }
 
 void SushiGame_UpdateConveyorCup(SushiSpawner* arg0) {
-    unk_D_868084D8* sp24;
+    SushiPlate* sp24;
 
     SushiGame_GetConveyorSlotPosition(arg0->unk_000, &arg0->unk_00C);
 
@@ -351,7 +351,7 @@ void SushiGame_UpdateConveyorCup(SushiSpawner* arg0) {
     arg0->unk_018.unk_024 = arg0->unk_00C;
 }
 
-void SushiGame_UpdatePlate(unk_D_868084D8* arg0) {
+void SushiGame_UpdatePlate(SushiPlate* arg0) {
     Gfx* gfx;
     f32 var_fv0;
     s32 var_v0;
@@ -398,7 +398,7 @@ void SushiGame_UpdatePlate(unk_D_868084D8* arg0) {
                         arg0->unk_2C = 1.5f * var_fv0;
                     } else {
                         arg0->unk_2C = 0.0f;
-                        arg0->unk_40->posX.unk_01 &= ~1;
+                        arg0->unk_40->posX.TrainerSlotSaveData_GamePort &= ~1;
                     }
                 }
                 break;
@@ -411,11 +411,11 @@ void SushiGame_UpdatePlate(unk_D_868084D8* arg0) {
 
     gSPVertex(gfx++, gSushiBillboardVtx, 4, 0);
 
-    if (arg0->unk_08.a != 0xFF) {
+    if (arg0->RentalSlotAnimData_PosePhase.a != 0xFF) {
         gDPPipeSync(gfx++);
 
         gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_PASS2);
-        gDPSetPrimColor(gfx++, 0, 0, arg0->unk_08.r, arg0->unk_08.g, arg0->unk_08.b, arg0->unk_08.a);
+        gDPSetPrimColor(gfx++, 0, 0, arg0->RentalSlotAnimData_PosePhase.r, arg0->RentalSlotAnimData_PosePhase.g, arg0->RentalSlotAnimData_PosePhase.b, arg0->RentalSlotAnimData_PosePhase.a);
     }
 
     gDPLoadTextureBlock(gfx++, gSushiItemDefs[arg0->unk_0C].rotation, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
@@ -424,7 +424,7 @@ void SushiGame_UpdatePlate(unk_D_868084D8* arg0) {
     gSP2Triangles(gfx++, 0, 3, 1, 0, 0, 2, 3, 0);
     gSPEndDisplayList(gfx++);
 
-    if (arg0->unk_08.a != 0xFF) {
+    if (arg0->RentalSlotAnimData_PosePhase.a != 0xFF) {
         arg0->unk_40->posX.unk_03 = 5;
     } else {
         arg0->unk_40->posX.unk_03 = 4;
@@ -438,7 +438,7 @@ void SushiGame_UpdatePlate(unk_D_868084D8* arg0) {
 void func_86806860(void) {
 }
 
-void SushiGame_SetPlateState(unk_D_868084D8* arg0, s32 arg1, SushiPlayerEntity* arg2) {
+void SushiGame_SetPlateState(SushiPlate* arg0, s32 arg1, SushiPlayerEntity* arg2) {
     SushiPlateNode* temp_v0;
 
     arg0->unk_10 = arg1;
@@ -447,7 +447,7 @@ void SushiGame_SetPlateState(unk_D_868084D8* arg0, s32 arg1, SushiPlayerEntity* 
         case 2:
             arg0->posY |= 1;
             arg0->rotation = 0;
-            arg0->unk_08.a = 0xFF;
+            arg0->RentalSlotAnimData_PosePhase.a = 0xFF;
             arg0->unk_2C = 1.5f;
             break;
 
@@ -466,7 +466,7 @@ void SushiGame_SetPlateState(unk_D_868084D8* arg0, s32 arg1, SushiPlayerEntity* 
     }
 }
 
-s32 SushiGame_GetPlateValue(unk_D_868084D8* arg0) {
+s32 SushiGame_GetPlateValue(SushiPlate* arg0) {
     return gSushiItemDefs[arg0->unk_0C].posX;
 }
 
@@ -504,7 +504,7 @@ void SushiGame_ApplyGamePhase(void) {
 void SushiGame_InitConveyorBelt(void) {
     s32 i;
     MainPoolState* temp_s2;
-    unk_D_868084D8* var_s0;
+    SushiPlate* var_s0;
     SimpleGfxNode* temp_a1;
     SushiSpawner* ptr;
     Gfx* gfx = gSushiEmptyDL;
@@ -524,7 +524,7 @@ void SushiGame_InitConveyorBelt(void) {
     for (i = 0, ptr = gSushiSpawners; i < 12; i++, ptr++) {
         SushiGame_InitConveyorCup(ptr, i);
         temp_a1 = GeoNode_CreateDisplayList(temp_s2, NULL, 4, gSushiPlaneDL);
-        ptr->unk_018.unk_000.unk_01 |= 1;
+        ptr->unk_018.unk_000.TrainerSlotSaveData_GamePort |= 1;
         GraphNode_AppendChild(&ptr->unk_018, &temp_a1->posX);
     }
 
@@ -539,7 +539,7 @@ void SushiGame_InitConveyorBelt(void) {
 
 void SushiGame_UpdateConveyorBelt(void) {
     SushiSpawner* ptr;
-    unk_D_868084D8* var_s0;
+    SushiPlate* var_s0;
     s32 i;
 
     if (gSushiSpawnMode != 0) {

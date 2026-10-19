@@ -33,7 +33,7 @@ typedef struct PokedexStageParam {
     /* 0x00 */ f32 posX;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
 } PokedexStageParam; // size = 0x14
@@ -2012,7 +2012,7 @@ void VictoryPalace_DrawOverlay(void) {
         Font_Printf(0x1E, 0x8C, " --- No.%03d ---", (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
         Font_Printf(0x1E, 0x98, " SCALE %3.1f", sp7C->posX);
         Font_Printf(0x1E, 0xA4, " FRAME %d", sp7C->rotation);
-        Font_Printf(0x1E, 0xBC, " POS-X %3.1f", sp7C->unk_08);
+        Font_Printf(0x1E, 0xBC, " POS-X %3.1f", sp7C->RentalSlotAnimData_PosePhase);
         Font_Printf(0x1E, 0xC8, " POS-Y %3.1f", sp7C->unk_0C);
         Font_Printf(0x1E, 0xD4, " POS-Z %3.1f", sp7C->unk_10);
     } else if ((gPokedexPanelShowInfo == 1) && (VictoryPalace_SpeciesObtained((gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1) != 0)) {
@@ -2044,7 +2044,7 @@ void VictoryPalace_DrawOverlay(void) {
         Font_SetActive(8, 0);
         Font_Printf(0x84, 0x2A, "%s", sp58.rotation);
         Font_SetActive(4, 0);
-        Font_Printf(0x8C, 0x42, "%d", sp58.unk_01);
+        Font_Printf(0x8C, 0x42, "%d", sp58.TrainerSlotSaveData_GamePort);
         Font_Printf(0x8C, 0x56, "%s", sp58.unk_14);
         Font_Printf(0x8C, 0x6A, "%05d", sp58.posY);
         Font_Printf(0x46, 0x98, "%s", Text_GetString(NULL, 0, gFragment50StringTable, (((sp58.posX & 0x7F) - 1) % 7) + 7));
@@ -2103,7 +2103,7 @@ void VictoryPalace_InitCarouselModel(s16 arg0) {
     }
 
     temp_s0->unk_008.modelPhase = 0xFF;
-    Model_InitDisplayObject(&temp_s0->unk_008, 0, temp_s0->unk_000, temp_s0->unk_004->unk_08->posX[0]);
+    Model_InitDisplayObject(&temp_s0->unk_008, 0, temp_s0->unk_000, temp_s0->unk_004->RentalSlotAnimData_PosePhase->posX[0]);
 
     if (temp_s0->unk_000 == 0x90) {
         ModelAnim_SetAnimation(&temp_s0->unk_008, 0xB);
@@ -2116,12 +2116,12 @@ void VictoryPalace_InitCarouselModel(s16 arg0) {
 
     temp_fs0 = (tmp * 6.283f) / 65536.0f;
     temp_s0->unk_008.unk_024.x =
-        ((-temp_s1->unk_08 * __cosf(temp_fs0)) - (__sinf(temp_fs0) * temp_s1->unk_10)) + (arg0 * 0x258);
+        ((-temp_s1->RentalSlotAnimData_PosePhase * __cosf(temp_fs0)) - (__sinf(temp_fs0) * temp_s1->unk_10)) + (arg0 * 0x258);
     temp_s0->unk_008.unk_024.y = temp_s1->unk_0C;
-    temp_s0->unk_008.unk_024.z = (temp_s1->unk_08 * __sinf(temp_fs0)) - (__cosf(temp_fs0) * temp_s1->unk_10);
+    temp_s0->unk_008.unk_024.z = (temp_s1->RentalSlotAnimData_PosePhase * __sinf(temp_fs0)) - (__cosf(temp_fs0) * temp_s1->unk_10);
 
     temp_s0->unk_008.unk_01E.y = tmp;
-    temp_s0->unk_008.unk_040.unk_08 = temp_s1->rotation << 0x10;
+    temp_s0->unk_008.unk_040.RentalSlotAnimData_PosePhase = temp_s1->rotation << 0x10;
     temp_s0->unk_008.unk_040.unk_0C = 0;
     temp_s0->unk_008.unk_01C = gPokedexPanelModelId;
 }
@@ -2204,11 +2204,11 @@ void VictoryPalace_UpdateCarouselModelRotation(void) {
     temp_s0->unk_008.unk_030.y = temp_s1->posX;
     temp_s0->unk_008.unk_030.z = temp_s1->posX;
 
-    temp_s0->unk_008.unk_040.unk_08 = temp_s1->rotation << 0x10;
+    temp_s0->unk_008.unk_040.RentalSlotAnimData_PosePhase = temp_s1->rotation << 0x10;
 
-    temp_s0->unk_008.unk_024.x = (-temp_s1->unk_08 * __cosf(temp_fs0)) - (__sinf(temp_fs0) * temp_s1->unk_10);
+    temp_s0->unk_008.unk_024.x = (-temp_s1->RentalSlotAnimData_PosePhase * __cosf(temp_fs0)) - (__sinf(temp_fs0) * temp_s1->unk_10);
     temp_s0->unk_008.unk_024.y = temp_s1->unk_0C;
-    temp_s0->unk_008.unk_024.z = (temp_s1->unk_08 * __sinf(temp_fs0)) - (__cosf(temp_fs0) * temp_s1->unk_10);
+    temp_s0->unk_008.unk_024.z = (temp_s1->RentalSlotAnimData_PosePhase * __sinf(temp_fs0)) - (__cosf(temp_fs0) * temp_s1->unk_10);
 }
 
 void VictoryPalace_ShowSpeciesInfo(void) {
@@ -2366,11 +2366,11 @@ s32 HallOfFame_HandleGalleryInput(void) {
             }
 
             if (BTN_IS_DOWN(gPlayer1Controller, BTN_CLEFT)) {
-                temp_s0->unk_08 -= 10.0f;
+                temp_s0->RentalSlotAnimData_PosePhase -= 10.0f;
             }
 
             if (BTN_IS_DOWN(gPlayer1Controller, BTN_CRIGHT)) {
-                temp_s0->unk_08 += 10.0f;
+                temp_s0->RentalSlotAnimData_PosePhase += 10.0f;
             }
 
             if (BTN_IS_DOWN(gPlayer1Controller, BTN_DDOWN)) {
@@ -2574,7 +2574,7 @@ void HallOfFame_SpawnPokeIcon(s32 arg0, f32 arg1) {
         Fragment2_1GraphNode* temp_s0 = &gFragment50GraphNodeArray[arg0];
 
         temp_s0->modelPhase = arg0;
-        Model_InitDisplayObject(temp_s0, 0, 0xB6, gFragment50ObjData->unk_08->posX[0]);
+        Model_InitDisplayObject(temp_s0, 0, 0xB6, gFragment50ObjData->RentalSlotAnimData_PosePhase->posX[0]);
         temp_s0->unk_000.posY &= ~0x40;
         temp_s0->unk_01E.x = 0;
         temp_s0->unk_01E.y = 0;
@@ -2634,7 +2634,7 @@ void HallOfFame_InitGallery(void) {
 
     ptr = &gFragment50GraphNodeA;
     ModelRenderer_AttachDisplayObject(&gFragment50GraphNodeA);
-    Model_InitDisplayObject(&gFragment50GraphNodeA, 0, 0xB7, temp_s0->unk_08->posX[0]);
+    Model_InitDisplayObject(&gFragment50GraphNodeA, 0, 0xB7, temp_s0->RentalSlotAnimData_PosePhase->posX[0]);
 
     ptr->unk_000.posY &= ~0x40;
     ptr->unk_024.x = 0.0f;
@@ -2651,7 +2651,7 @@ void HallOfFame_InitGallery(void) {
     temp_s0 = Model_LoadByArchiveIndex(0xB7);
     ptr = &gFragment50GraphNodeB;
     ModelRenderer_AttachDisplayObject(&gFragment50GraphNodeB);
-    Model_InitDisplayObject(&gFragment50GraphNodeB, 0, 0xB7, temp_s0->unk_08->posX[1]);
+    Model_InitDisplayObject(&gFragment50GraphNodeB, 0, 0xB7, temp_s0->RentalSlotAnimData_PosePhase->posX[1]);
 
     ptr->unk_000.posY &= ~0x40;
     ptr->unk_024.x = 0.0f;

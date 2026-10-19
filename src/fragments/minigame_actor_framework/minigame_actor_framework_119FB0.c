@@ -113,7 +113,7 @@ void MiniFx_ApplyEmitterToParticle(ParticleEffectInstance* arg0, ParticleSpawner
 
             arg0->unk_AC = arg2++;
 
-            arg0->unk_08 = arg1->unk_18;
+            arg0->RentalSlotAnimData_PosePhase = arg1->unk_18;
             arg0->unk_0C = arg1->unk_1C;
 
             arg0->targetAlpha = arg1->unk_2F;
@@ -196,7 +196,7 @@ void MiniFx_UpdateParticles(void) {
         if (var_s0->unk_D0 != 0) {
             MiniFx_SetParticleRenderScale(var_s0);
 
-            var_s0->unk_08(var_s0);
+            var_s0->RentalSlotAnimData_PosePhase(var_s0);
 
             MiniFx_RetireParticle(var_s0);
         }

@@ -728,8 +728,8 @@ s32 BattlePrepRoster_ConvergeIconsStep(BattleUiState* arg0, s16 arg1) {
 }
 
 void BattlePrepRoster_UpdateCameraSwoop(BattleUiState* arg0, s16 arg1) {
-    arg0->unk_08->unk_60.at.y = SINS(arg1 << 0xE) * SQ((0x10 - arg1) / 12.0f);
-    Camera_ComputeEyeFromAngles(&arg0->unk_08->unk_60.at, &arg0->unk_08->unk_60.eye, 289.0f, 0, 0);
+    arg0->RentalSlotAnimData_PosePhase->unk_60.at.y = SINS(arg1 << 0xE) * SQ((0x10 - arg1) / 12.0f);
+    Camera_ComputeEyeFromAngles(&arg0->RentalSlotAnimData_PosePhase->unk_60.at, &arg0->RentalSlotAnimData_PosePhase->unk_60.eye, 289.0f, 0, 0);
 }
 
 s32 BattlePrepRoster_ZoomStepNTSC(BattleUiState* arg0, s16 arg1) {
@@ -779,35 +779,35 @@ void BattlePrepRoster_UpdateAssembleStep(BattleUiState* arg0) {
     s32 sp24 = 1;
 
     if (osTvType == OS_TV_PAL) {
-        if (arg0->unk_01 >= 0) {
-            sp24 = BattlePrepRoster_ConvergeIconsStep(arg0, arg0->unk_01) & 1;
+        if (arg0->TrainerSlotSaveData_GamePort >= 0) {
+            sp24 = BattlePrepRoster_ConvergeIconsStep(arg0, arg0->TrainerSlotSaveData_GamePort) & 1;
         }
 
-        if (arg0->unk_01 >= 0xD) {
-            sp24 &= BattlePrepRoster_ZoomStepPAL(arg0, arg0->unk_01 - 0xD);
+        if (arg0->TrainerSlotSaveData_GamePort >= 0xD) {
+            sp24 &= BattlePrepRoster_ZoomStepPAL(arg0, arg0->TrainerSlotSaveData_GamePort - 0xD);
         }
     } else {
-        if (arg0->unk_01 >= 0) {
-            sp24 = BattlePrepRoster_ConvergeIconsStep(arg0, arg0->unk_01) & 1;
+        if (arg0->TrainerSlotSaveData_GamePort >= 0) {
+            sp24 = BattlePrepRoster_ConvergeIconsStep(arg0, arg0->TrainerSlotSaveData_GamePort) & 1;
         }
 
-        if (arg0->unk_01 >= 0x10) {
-            sp24 &= BattlePrepRoster_ZoomStepNTSC(arg0, arg0->unk_01 - 0x10);
+        if (arg0->TrainerSlotSaveData_GamePort >= 0x10) {
+            sp24 &= BattlePrepRoster_ZoomStepNTSC(arg0, arg0->TrainerSlotSaveData_GamePort - 0x10);
         }
     }
 
     if (sp24 != 0) {
         arg0->posX = 0;
     }
-    arg0->unk_01++;
+    arg0->TrainerSlotSaveData_GamePort++;
 }
 
 void BattlePrepRoster_UpdateLoadingStep(BattleUiState* arg0) {
     PokeIcon_ProcessNextSlot(arg0->unk_20, 0);
 
-    arg0->unk_01++;
-    if ((arg0->unk_01 >= 0x1E) && (PokeIcon_AreSlotsIdle(arg0->unk_20) != 0)) {
-        arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort++;
+    if ((arg0->TrainerSlotSaveData_GamePort >= 0x1E) && (PokeIcon_AreSlotsIdle(arg0->unk_20) != 0)) {
+        arg0->TrainerSlotSaveData_GamePort = 0;
         arg0->posX = 2;
     }
 }
@@ -832,12 +832,12 @@ void BattlePrepRoster_LoadDexIdsSingle(BattleUiState* arg0) {
     temp_s0 = PokeIcon_AllocFramebuffers(5);
     PokeIcon_AttachDepthBuffer(arg0->unk_20, temp_s0, GfxImage_Allocate(0, 2, 0x80, 0x60, 1));
 
-    for (count = 0, i = 0; i < gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_028[i].posX.posX, 0);
+    for (count = 0, i = 0; i < gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData->unk_028[i].posX.posX, 0);
     }
 
-    for (count = 6, i = 0; i < gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_028[i].posX.posX, 0);
+    for (count = 6, i = 0; i < gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->trainerData->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->trainerData->unk_028[i].posX.posX, 0);
     }
 }
 
@@ -848,30 +848,30 @@ void BattlePrepRoster_LoadDexIdsDouble(BattleUiState* arg0) {
 
     PokeIcon_AttachDepthBuffer(arg0->unk_20, tmp, GfxImage_Allocate(0, 2, 0x60, 0x40, 1));
 
-    for (count = 0, i = 0; i < gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_028[i].posX.posX, 0);
+    for (count = 0, i = 0; i < gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData->unk_028[i].posX.posX, 0);
     }
 
-    if (gSessionContext.battleSides[0].unk_08[1] != NULL) {
-        for (i = 0, count = 6; i < gSessionContext.battleSides[0].unk_08[1]->trainerData->unk_002; count++, i++) {
-            SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[0].unk_08[1]->trainerData->unk_028[i].posX.posX, 0);
+    if (gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[1] != NULL) {
+        for (i = 0, count = 6; i < gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[1]->trainerData->unk_002; count++, i++) {
+            SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[1]->trainerData->unk_028[i].posX.posX, 0);
         }
     }
 
-    for (i = 0, count = 12; i < gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_002; count++, i++) {
-        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_028[i].posX.posX, 0);
+    for (i = 0, count = 12; i < gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->trainerData->unk_002; count++, i++) {
+        SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->trainerData->unk_028[i].posX.posX, 0);
     }
 
-    if (gSessionContext.battleSides[1].unk_08[1] != NULL) {
-        for (count = 18, i = 0; i < gSessionContext.battleSides[1].unk_08[1]->trainerData->unk_002; count++, i++) {
-            SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[1].unk_08[1]->trainerData->unk_028[i].posX.posX, 0);
+    if (gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[1] != NULL) {
+        for (count = 18, i = 0; i < gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[1]->trainerData->unk_002; count++, i++) {
+            SpriteDisplay_SetupSlot(arg0->unk_20, count, gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[1]->trainerData->unk_028[i].posX.posX, 0);
         }
     }
 }
 
 void BattlePrepRoster_Load(BattleUiState* arg0, BinArchive* arg1) {
-    u8* sp24 = BinArchive_GetFile(arg1, gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_003);
-    u8* sp20 = BinArchive_GetFile(arg1, gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_003);
+    u8* sp24 = BinArchive_GetFile(arg1, gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData->unk_003);
+    u8* sp20 = BinArchive_GetFile(arg1, gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->trainerData->unk_003);
 
     PokeIcon_OpenModelArchives();
     FRAGMENT_LOAD(fragment31);
@@ -897,8 +897,8 @@ void BattlePrepRoster_PositionIconsSingle(BattleUiState* arg0) {
     Vec3f_SetComponentsDuplicate(&arg0->rotation[7].unk_024, 32.0f, -96.0f, -289.0f);
     Vec3f_SetComponentsDuplicate(&arg0->rotation[9].unk_024, 96.0f, -96.0f, -289.0f);
 
-    arg0->rotation[1].unk_000.unk_01 &= ~1;
-    arg0->rotation[8].unk_000.unk_01 &= ~1;
+    arg0->rotation[1].unk_000.TrainerSlotSaveData_GamePort &= ~1;
+    arg0->rotation[8].unk_000.TrainerSlotSaveData_GamePort &= ~1;
 }
 
 void BattlePrepRoster_PositionIconsDouble(BattleUiState* arg0) {
@@ -921,7 +921,7 @@ s32 BattlePrepRoster_InitDisplayObjects(BattleUiState* arg0, Fragment2_1GraphNod
     if (arg0->posX == 2) {
         arg0->posX = 3;
         arg0->rotation = arg1;
-        arg0->unk_01 = 0;
+        arg0->TrainerSlotSaveData_GamePort = 0;
         if (osTvType == OS_TV_PAL) {
             var_a1 = 0x53F0;
         } else {
@@ -966,14 +966,14 @@ s32 BattlePrepRoster_InitDisplayObjects(BattleUiState* arg0, Fragment2_1GraphNod
 void BattlePrepRoster_Init(BattleUiState* arg0, CameraStruct* arg1) {
     MemoryBlock* temp_s1;
 
-    arg0->unk_08 = arg1;
+    arg0->RentalSlotAnimData_PosePhase = arg1;
     arg0->posX = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posY = 0;
     arg0->unk_24 = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
     arg0->unk_28 = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
 
-    if ((gSessionContext.unk_0001 == 0) && ((gSessionContext.battleSides[0].unk_01 == 2) || (gSessionContext.battleSides[1].unk_01 == 2))) {
+    if ((gSessionContext.unk_0001 == 0) && ((gSessionContext.battleSides[0].TrainerSlotSaveData_GamePort == 2) || (gSessionContext.battleSides[1].TrainerSlotSaveData_GamePort == 2))) {
         arg0->posY = 1;
     }
     if (arg0->posY == 1) {

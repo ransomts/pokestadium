@@ -32,7 +32,7 @@ typedef struct unk_D_84390010_168 {
 typedef struct BattlePlayerAnimState {
     /* 0x00 */ char unk00[0x4];
     /* 0x04 */ u32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ u32 unk_10;
     /* 0x14 */ s32 unk_14;
@@ -98,7 +98,7 @@ typedef struct unk_D_84390010_728 {
 typedef struct unk_D_84390010_8C4 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s8 unk_08[4];
+    /* 0x08 */ s8 RentalSlotAnimData_PosePhase[4];
     /* 0x0C */ char unk0C[0x3C];
     /* 0x48 */ s8 unk_48[4];
     /* 0x4C */ char unk4C[0x3C];
@@ -170,14 +170,14 @@ typedef struct BattlePlayerEntity {
 
 typedef struct BattleAnimDataEntry {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09;
     /* 0x0A */ u8 unk_0A;
     /* 0x0B */ u8 unk_0B;
@@ -205,7 +205,7 @@ typedef struct unk_D_8438E7B0 {
 
 typedef struct unk_D_84390240_000 {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ s8 unk_08;
+    /* 0x08 */ s8 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;
@@ -285,7 +285,7 @@ typedef struct unk_D_84390068 {
 
 typedef struct unk_D_84384588 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0xE];
 } unk_D_84384588; // size = 0x10
 
@@ -306,7 +306,7 @@ typedef struct unk_D_8438FF70 {
 typedef struct unk_D_84390028 {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
 } unk_D_84390028; // size = 0x10
 
@@ -319,7 +319,7 @@ typedef struct unk_D_843847BC {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ s16 unk_14;
@@ -349,7 +349,7 @@ typedef struct unk_D_843901B0 {
 typedef struct unk_D_843901A0_4C8 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ Vec3f unk_14;
@@ -405,7 +405,7 @@ typedef struct arg1_func_8434E21C {
 typedef struct unk_D_843925E0_430 {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ Color_RGBA8 unk_10;
@@ -442,7 +442,7 @@ typedef struct RibbonEmitter {
 typedef struct WaterCameraBounds {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -455,7 +455,7 @@ typedef struct WaterCameraBounds {
 typedef struct RadialNodePoint {
     /* 0x00 */ f32 posX;
     /* 0x04 */ u8 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ Vec3f unk_10;
     /* 0x1C */ Vec3f unk_1C;
@@ -482,7 +482,7 @@ typedef struct RadialNode {
 typedef struct WaterSurfaceVertex {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -503,7 +503,7 @@ typedef struct WaterSurfaceData {
 typedef struct WaterNode {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -525,7 +525,7 @@ typedef struct WaterSurface {
 typedef struct unk_D_843A22C0_038 {
     /* 0x00 */ f32 posX;
     /* 0x08 */ u8 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
     /* 0x24 */ Vec3f unk_24;
@@ -549,7 +549,7 @@ typedef struct unk_D_843A22C0 {
 typedef struct WaterParticleParticle {
     /* 0x00 */ u8 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
     /* 0x24 */ f32 unk_24;
@@ -576,7 +576,7 @@ typedef struct WaterParticleEmitter {
 typedef struct ParticleState {
     /* 0x00 */ u8 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
     /* 0x24 */ f32 unk_24;
@@ -604,7 +604,7 @@ typedef struct ParticleEmitter {
 typedef struct unk_D_843ACA10_01C {
     /* 0x00 */ u8 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
     /* 0x24 */ f32 unk_24;
@@ -630,7 +630,7 @@ typedef struct unk_D_843ACA10 {
 typedef struct Trail50EffectAltNode {
     /* 0x00 */ u8 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
     /* 0x24 */ Vec3f unk_24;
@@ -660,7 +660,7 @@ typedef struct Trail50EffectAltInstance {
 typedef struct WaterParticleVertex {
     /* 0x00 */ s32 posX;
     /* 0x04 */ u8 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ Vec3f unk_10;
     /* 0x1C */ f32 unk_1C;
@@ -673,14 +673,14 @@ typedef struct TextureTileInfo {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } TextureTileInfo; // size = 0xC
 
 typedef struct CombineParams {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;
@@ -723,7 +723,7 @@ typedef struct Particle {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Vec3f unk_0C;
 } Particle; // size = 0x18
 
@@ -736,7 +736,7 @@ typedef struct AuxEffectInstance {
 typedef struct unk_D_843C3508_0A4 {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Vec3f unk_0C;
     /* 0x18 */ Vec3f unk_18;
 } unk_D_843C3508_0A4; // size = 0x24
@@ -766,18 +766,18 @@ typedef struct unk_D_843C3508 {
 
 typedef struct StatStageMultiplier {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } StatStageMultiplier; // size = 0x2
 
 typedef struct TypeEffectivenessEntry {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
 } TypeEffectivenessEntry; // size = 0x3
 
 typedef struct BattleAI_MonData {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
@@ -788,12 +788,12 @@ typedef struct BattleAI_MonData {
 
 typedef struct BattleAI_TeamState {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01[2];
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort[2];
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation[2];
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07[1];
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09;
     /* 0x0A */ u8 unk_0A[1];
     /* 0x0B */ char unk0B[0x5];
@@ -825,14 +825,14 @@ typedef struct BattleAI_ActivePokemonStruct {
 
 typedef struct MoveCandidateScore {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -858,7 +858,7 @@ typedef struct AiSpeciesAnimRecord {
 
 typedef struct BattleAI_MoveScoreStruct {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x04 */ s32 rotation[1];
     /* 0x08 */ char unk08[0xC];
@@ -870,7 +870,7 @@ typedef struct BattleAI_StateStruct {
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09;
     /* 0x0A */ u8 unk_0A;
     /* 0x0B */ u8 unk_0B;
@@ -884,7 +884,7 @@ typedef struct BattleAI_StateStruct {
 
 typedef struct BattleAI_ConfigStruct {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ char unk03[0x9];
     /* 0x0C */ BattleAI_MoveScoreStruct unk_0C[3];
@@ -892,7 +892,7 @@ typedef struct BattleAI_ConfigStruct {
 
 typedef struct BattleAI_CurrentMoveStruct {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;

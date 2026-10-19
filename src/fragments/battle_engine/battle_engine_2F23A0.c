@@ -17,7 +17,7 @@ s32 BattleScene_ByteArrayContains(u8 arg0, u8* arg1, s32 arg2) {
 }
 
 PokemonData* BattleScene_GetParticipantSessionMon(BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C]->unk_01C[arg0->animationState.unk_08];
+    PokemonData* ptr = &arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->animationState.unk_2C]->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
 
     return ptr;
 }
@@ -32,7 +32,7 @@ s32 BattleScene_IsPartnerPikachu(BattlePlayerEntity* arg0) {
 }
 
 f32 BattleScene_GetParticipantModelHeight(BattlePlayerEntity* arg0) {
-    return gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].unk_08;
+    return gPokemonModelDimensions[BattleScene_GetParticipantSideIndex(arg0)].RentalSlotAnimData_PosePhase;
 }
 
 f32 BattleScene_GetParticipantModelRadius(BattlePlayerEntity* arg0) {
@@ -97,13 +97,13 @@ void BattleScene_SetParticipantModelScale(BattlePlayerEntity* arg0, f32 arg1) {
 }
 
 s32 BattleScene_GetSelectedSideTeamSize(BattlePlayerEntity* arg0) {
-    return arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2B]->unk_002;
+    return arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->animationState.unk_2B]->unk_002;
 }
 
 s32 BattleScene_GetOpposingSelectedSideTeamSize(BattlePlayerEntity* arg0) {
     s32 idx = arg0->animationState.unk_2B == 0;
 
-    return arg0->pokemonAnimation->unk_08[idx]->unk_002;
+    return arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[idx]->unk_002;
 }
 
 s32 BattleScene_GetParticipantSideIndex(BattlePlayerEntity* arg0) {
@@ -168,7 +168,7 @@ void BattleScene_GetParticipantModelRotation(BattlePlayerEntity* arg0, Vec3s* ar
 }
 
 u16 Battle_GetActiveMonHp(BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
+    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
 
     return ptr->posY;
 }
@@ -186,7 +186,7 @@ s32 BattleAnim_GetOwnerSpecies(BattlePlayerEntity* arg0) {
 }
 
 u8 BattleScene_IsParticipantModelVisible(BattlePlayerEntity* arg0) {
-    s32 ret = arg0->unk_000.unk_000.unk_01 & 1;
+    s32 ret = arg0->unk_000.unk_000.TrainerSlotSaveData_GamePort & 1;
     return ret;
 }
 
@@ -274,7 +274,7 @@ char* Battle_GetActiveMoveName(BattlePlayerEntity* arg0) {
 }
 
 u8* Battle_GetActiveMonNickname(BattlePlayerEntity* arg0) {
-    return arg0->boundRoster->unk_01C[arg0->animationState.unk_08].unk_30;
+    return arg0->boundRoster->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase].unk_30;
 }
 
 void BattleScene_SetParticipantModelFlags(BattlePlayerEntity* arg0, s32 arg1, s32 arg2) {
@@ -366,7 +366,7 @@ void Battle_SetModelToStatusAnim(BattlePlayerEntity* arg0) {
 }
 
 void BattleScene_BindParticipantRosterForSide(BattlePlayerEntity* arg0, s32 arg1) {
-    arg0->boundRoster = arg0->pokemonAnimation->unk_08[arg1];
+    arg0->boundRoster = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg1];
 }
 
 void BattleScene_SetParticipantSelectedSide(BattlePlayerEntity* arg0, s32 arg1) {
@@ -382,7 +382,7 @@ void BattleScene_RebindParticipantToSide(BattlePlayerEntity* arg0, s32 arg1) {
 
     BattleScene_BindParticipantRosterForSide(arg0, arg1);
     BattleScene_SetParticipantSelectedSide(arg0, arg1);
-    temp_v0->unk_08 = temp_v0->unk_18;
+    temp_v0->RentalSlotAnimData_PosePhase = temp_v0->unk_18;
     arg0->ownerModel.unk_16C = temp_v0->unk_2B;
 }
 
@@ -395,16 +395,16 @@ s32 Battle_HasUsableSleepStatusTarget(BattlePlayerEntity* arg0) {
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         ptr = &arg0->boundRoster->unk_01C[i];
-        if ((ptr->unk_05 & 0x20) && (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
+        if ((ptr->unk_05 & 0x20) && (arg0->animationState.unk_38.unk_16[temp_s0->RentalSlotAnimData_PosePhase + temp_s0->unk_2B * 3] == 0)) {
             return 1;
         }
     }
 
-    if (arg0->pokemonAnimation->unk_01 == 2) {
+    if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
         for (i = 0; i < BattleScene_GetOpposingSelectedSideTeamSize(arg0); i++) {
-            ptr = &arg0->pokemonAnimation->unk_08[temp_s0->unk_2B == 0]->unk_01C[i];
+            ptr = &arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[temp_s0->unk_2B == 0]->unk_01C[i];
             if ((ptr->unk_05 & 0x20) &&
-                (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + (temp_s0->unk_2B == 0) * 3] == 0)) {
+                (arg0->animationState.unk_38.unk_16[temp_s0->RentalSlotAnimData_PosePhase + (temp_s0->unk_2B == 0) * 3] == 0)) {
                 return 1;
             }
         }
@@ -422,15 +422,15 @@ s32 Battle_HasUsableMajorStatusTarget(BattlePlayerEntity* arg0) {
 
     for (i = 0; i < BattleScene_GetSelectedSideTeamSize(arg0); i++) {
         ptr = &arg0->boundRoster->unk_01C[i];
-        if ((ptr->unk_05 & 7) && (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + temp_s0->unk_2B * 3] == 0)) {
+        if ((ptr->unk_05 & 7) && (arg0->animationState.unk_38.unk_16[temp_s0->RentalSlotAnimData_PosePhase + temp_s0->unk_2B * 3] == 0)) {
             return 1;
         }
     }
 
-    if (arg0->pokemonAnimation->unk_01 == 2) {
+    if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
         for (i = 0; i < BattleScene_GetOpposingSelectedSideTeamSize(arg0); i++) {
-            ptr = &arg0->pokemonAnimation->unk_08[temp_s0->unk_2B == 0]->unk_01C[i];
-            if ((ptr->unk_05 & 7) && (arg0->animationState.unk_38.unk_16[temp_s0->unk_08 + (temp_s0->unk_2B == 0) * 3] == 0)) {
+            ptr = &arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[temp_s0->unk_2B == 0]->unk_01C[i];
+            if ((ptr->unk_05 & 7) && (arg0->animationState.unk_38.unk_16[temp_s0->RentalSlotAnimData_PosePhase + (temp_s0->unk_2B == 0) * 3] == 0)) {
                 return 1;
             }
         }
@@ -439,10 +439,10 @@ s32 Battle_HasUsableMajorStatusTarget(BattlePlayerEntity* arg0) {
 }
 
 s32 BattleScene_GetCombinedTeamSize(BattlePlayerEntity* arg0) {
-    if (arg0->pokemonAnimation->unk_01 != 2) {
-        return arg0->pokemonAnimation->unk_08[0]->unk_002;
+    if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort != 2) {
+        return arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_002;
     }
-    return arg0->pokemonAnimation->unk_08[1]->unk_002 + arg0->pokemonAnimation->unk_08[0]->unk_002;
+    return arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_002 + arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_002;
 }
 
 u8 BattleScene_GetRosterTeamSize(BattleAI_TeamContext* arg0) {
@@ -450,7 +450,7 @@ u8 BattleScene_GetRosterTeamSize(BattleAI_TeamContext* arg0) {
 }
 
 s32 BattleScene_GetParticipantDisplayPlayerNumber(BattlePlayerEntity* arg0) {
-    return arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C]->unk_001 + 1;
+    return arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C]->unk_001 + 1;
 }
 
 void BattleScene_ReinitParticipantBodyModel(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
@@ -542,7 +542,7 @@ void BattleScene_ReinitParticipantSecondaryModels(BattlePlayerEntity* arg0, s16 
             var_s0->unk_000.unk_01E.y = -0x4000;
         }
 
-        var_s0->unk_000.unk_000.unk_01 &= ~1;
+        var_s0->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 

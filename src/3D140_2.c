@@ -74,7 +74,7 @@ typedef struct HPHistoryEntry {
 
 typedef struct AudioCommandMapEntry {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } AudioCommandMapEntry;
 
 // .data
@@ -1935,7 +1935,7 @@ void HandleMoveEvent(PokemonAudioInfo* arg0, s32 arg1, s32 arg2, s32 arg3) {
                         return;
                     }
 
-                    if (arg1 == AudioCommandMap[i].unk_01) {
+                    if (arg1 == AudioCommandMap[i].TrainerSlotSaveData_GamePort) {
                         if (gAudioInfoPtr[sp40]->unk_0C < gHPHistory[sp40].posX[gHPHistory[sp40].unk_24 & 0xF]) {
                             tmp = gHPHistory[sp40].posX[gHPHistory[sp40].unk_24 & 0xF] - gAudioInfoPtr[sp40]->unk_0C;
                             gAudioHPChangePercent = (tmp * 0x64) / gAudioInfoPtr[sp40]->unk_28;

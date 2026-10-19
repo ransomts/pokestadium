@@ -348,7 +348,7 @@ s32 LabPCList_CompareByPointer(PokemonListEntry* arg0, PokemonListEntry* arg1) {
 }
 
 s32 LabPCList_CompareBySpeciesGroup(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
-    s32 var_v1 = *(s32*)&arg0->posX[0]->unk_08.posX - *(s32*)&arg1->posX[0]->unk_08.posX;
+    s32 var_v1 = *(s32*)&arg0->posX[0]->RentalSlotAnimData_PosePhase.posX - *(s32*)&arg1->posX[0]->RentalSlotAnimData_PosePhase.posX;
 
     if (var_v1 == 0) {
         var_v1 = (s32)arg0->posX[1] - (s32)arg1->posX[1];
@@ -557,7 +557,7 @@ s32 LabPCList_CompareBySpeciesDexOrder(unk_func_8830867C_02C_0CC* arg0, unk_func
         0x83, 0x82, 0x54, 0x78, 0x3B, 0x20, 0x4A, 0x68, 0x85, 0x49, 0x32, 0x44, 0x16, 0x1E, 0x88, 0x3A, 0x26,
         0x6D, 0x5E, 0x5F, 0x3C, 0x3D, 0x01, 0x7F, 0x05, 0x95, 0x53, 0x1B, 0x19, 0x1A, 0x52, 0x51, 0x00,
     };
-    s32 var_v0 = gSpeciesSortOrder[*(u8*)&arg0->unk_08 - 1] - gSpeciesSortOrder[*(u8*)&arg1->unk_08 - 1];
+    s32 var_v0 = gSpeciesSortOrder[*(u8*)&arg0->RentalSlotAnimData_PosePhase - 1] - gSpeciesSortOrder[*(u8*)&arg1->RentalSlotAnimData_PosePhase - 1];
     s32 ret;
 
     if (var_v0 != 0) {
@@ -569,7 +569,7 @@ s32 LabPCList_CompareBySpeciesDexOrder(unk_func_8830867C_02C_0CC* arg0, unk_func
 }
 
 s32 LabPCList_CompareBySpeciesRawId(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
-    s32 var_v0 = *(u8*)&arg0->unk_08 - *(u8*)&arg1->unk_08;
+    s32 var_v0 = *(u8*)&arg0->RentalSlotAnimData_PosePhase - *(u8*)&arg1->RentalSlotAnimData_PosePhase;
     s32 ret;
 
     if (var_v0 != 0) {
@@ -602,7 +602,7 @@ s32 LabPCList_FilterByAnyType(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C
     s32 j;
     s32 var_v1;
     unk_func_8830867C_02C_C54_01C* arg1 = a1;
-    s32 idx = *(u8*)&arg0->unk_08 - 1;
+    s32 idx = *(u8*)&arg0->RentalSlotAnimData_PosePhase - 1;
     u8 spC[2];
 
     spC[0] = gSpeciesBaseStats[idx].unk_06;
@@ -632,7 +632,7 @@ s32 LabPCList_FilterByAnyType(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C
 typedef struct unk_func_88316304 {
     /* 0x00 */ LabPCListEntry** posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ char unk09[0x8];
     /* 0x11 */ u8 unk_11[1];
 } unk_func_88316304; // size >= 0x12
@@ -642,7 +642,7 @@ s32 LabPCList_FilterByAnyMove(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_0
     unk_func_8830867C_02C_C54_024* arg1 = a1;
     s32 i;
     s32 j;
-    s32 temp_v0 = BattleMon_CountMoves(&arg0->unk_08);
+    s32 temp_v0 = BattleMon_CountMoves(&arg0->RentalSlotAnimData_PosePhase);
 
     for (i = 0; i < arg1->rotation; i++) {
         for (j = 0; j < temp_v0; j++) {
@@ -660,7 +660,7 @@ s32 LabPCList_FilterByAnyMove(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_0
 }
 
 s32 LabPCList_FilterBySpeciesId(unk_func_8830867C_02C_0CC* arg0, s32* arg1) {
-    return *(u8*)&arg0->unk_08 == *arg1;
+    return *(u8*)&arg0->RentalSlotAnimData_PosePhase == *arg1;
 }
 
 s32 LabPCList_FilterByExactTypePair(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014* a1) {
@@ -669,7 +669,7 @@ s32 LabPCList_FilterByExactTypePair(unk_func_8830867C_02C_0CC* arg0, unk_func_88
     s32 j;
     s32 var_v1;
     unk_func_8830867C_02C_C54_014* arg1 = a1;
-    s32 idx = *(u8*)&arg0->unk_08 - 1;
+    s32 idx = *(u8*)&arg0->RentalSlotAnimData_PosePhase - 1;
     s32 sp8[2];
 
     sp8[0] = gSpeciesBaseStats[idx].unk_06;
@@ -705,7 +705,7 @@ s32 LabPCList_FilterByCategoryBit(PokemonListEntry* arg0, u8* arg1) {
         0x03, 0x04, 0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     };
 
-    return ((1 << gCupAllowedMasks[*arg1]) & ((gSpeciesDisplayTable + arg0->unk_08 - 1)->unk_0C)) != 0;
+    return ((1 << gCupAllowedMasks[*arg1]) & ((gSpeciesDisplayTable + arg0->RentalSlotAnimData_PosePhase - 1)->unk_0C)) != 0;
 }
 
 typedef struct unk_func_883164C0 {
@@ -728,13 +728,13 @@ void LabPCList_AllocateBoxSlots(unk_func_8830867C_02C_0E4* arg0, s32 arg1, s32 a
     var_s1 = arg0->unk_0C.posX;
     bzero(var_s3, temp_lo * sizeof(unk_func_883164C0));
 
-    arg0->unk_0C.unk_08 = arg0->unk_0C.rotation;
+    arg0->unk_0C.RentalSlotAnimData_PosePhase = arg0->unk_0C.rotation;
 
-    for (i = 0; i < arg0->unk_0C.unk_08; i++) {
+    for (i = 0; i < arg0->unk_0C.RentalSlotAnimData_PosePhase; i++) {
         var_s1[i].posX = arg0;
         var_s1[i].rotation.posX = i;
         var_s1[i].rotation.rotation = arg2;
-        var_s1[i].rotation.unk_08 = 0;
+        var_s1[i].rotation.RentalSlotAnimData_PosePhase = 0;
 
         // clang-format off
         for (j = 0; j < arg1; j++) { var_s2[j] = &var_s3[j]; }
@@ -761,7 +761,7 @@ void LabPCList_LoadAllBoxes(unk_func_8830867C_02C_144* arg0) {
         GbSave_MarkBoxDataLoaded(var_s5[1].rotation);
     }
 
-    for (i = 0; i < arg0->unk_08; i++, var_s5++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++, var_s5++) {
         var_s3 = var_s5->unk_0C;
 
         for (j = 0; j < var_s5->unk_14; j++, var_s3++) {
@@ -772,7 +772,7 @@ void LabPCList_LoadAllBoxes(unk_func_8830867C_02C_144* arg0) {
                 var_s0 = var_s3->unk_10.posX;
 
                 while (true) {
-                    if (Deck_ReadEntries(&var_s0->posX->unk_08, 1, temp_v0) == 0) {
+                    if (Deck_ReadEntries(&var_s0->posX->RentalSlotAnimData_PosePhase, 1, temp_v0) == 0) {
                         break;
                     }
 
@@ -786,7 +786,7 @@ void LabPCList_LoadAllBoxes(unk_func_8830867C_02C_144* arg0) {
                 Deck_CloseAndFlush(temp_v0);
             }
 
-            var_s3->unk_10.unk_08 = var_s1;
+            var_s3->unk_10.RentalSlotAnimData_PosePhase = var_s1;
         }
     }
 }
@@ -803,21 +803,21 @@ void LabPCList_FlattenEntries(unk_func_88200FA0_030_038* arg0, unk_func_8830867C
     var_v0 = arg0->posX;
     var_a2 = arg1->posX;
 
-    for (i = 0; i < arg1->unk_08; i++, var_a2++) {
+    for (i = 0; i < arg1->RentalSlotAnimData_PosePhase; i++, var_a2++) {
         var_v1 = var_a2->unk_0C;
 
         for (j = 0; j < var_a2->unk_14; j++, var_v1++) {
-            if (var_v1->unk_08 != 0) {
+            if (var_v1->RentalSlotAnimData_PosePhase != 0) {
                 var_t0 = var_v1->unk_10.posX;
 
-                for (x = 0; x < var_v1->unk_10.unk_08; x++, var_t0++, var_v0++) {
+                for (x = 0; x < var_v1->unk_10.RentalSlotAnimData_PosePhase; x++, var_t0++, var_v0++) {
                     *var_v0 = var_t0->posX;
                 }
             }
         }
     }
 
-    arg0->unk_08 = var_v0 - arg0->posX;
+    arg0->RentalSlotAnimData_PosePhase = var_v0 - arg0->posX;
 }
 
 s32 LabPCList_GetCategoryDirtyFlag(s32 arg0) {
@@ -851,7 +851,7 @@ s32 LabPCList_CheckDirtyBoxes(unk_func_8830867C_02C_144* arg0) {
     unk_func_8830867C_02C_144_000* var_s5 = arg0->posX;
     PokemonData sp4C;
 
-    for (i = 0; i < arg0->unk_08; i++, var_s5++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++, var_s5++) {
         var_s3 = var_s5->unk_0C;
 
         for (j = 0; j < var_s5->unk_14; j++, var_s3++) {
@@ -862,16 +862,16 @@ s32 LabPCList_CheckDirtyBoxes(unk_func_8830867C_02C_144* arg0) {
                 }
 
                 var_s3->unk_0C = 0;
-                if (Deck_GetEntryCountForType(var_s5->posX, var_s5->rotation, j) != var_s3->unk_10.unk_08) {
+                if (Deck_GetEntryCountForType(var_s5->posX, var_s5->rotation, j) != var_s3->unk_10.RentalSlotAnimData_PosePhase) {
                     var_s3->unk_0C = 1;
                     var_s7 |= LabPCList_GetCategoryDirtyFlag(var_s5->posX);
                 } else {
                     var_s0 = var_s3->unk_10.posX;
 
-                    for (x = 0; x < var_s3->unk_10.unk_08; x++, var_s0++) {
+                    for (x = 0; x < var_s3->unk_10.RentalSlotAnimData_PosePhase; x++, var_s0++) {
                         bzero(&sp4C, sizeof(PokemonData));
                         Deck_ReadEntries(&sp4C, 1, temp_v0);
-                        if (bcmp(&sp4C, &var_s0->posX->unk_08, sizeof(PokemonData)) != 0) {
+                        if (bcmp(&sp4C, &var_s0->posX->RentalSlotAnimData_PosePhase, sizeof(PokemonData)) != 0) {
                             var_s3->unk_0C = 1;
                             var_s7 |= LabPCList_GetCategoryDirtyFlag(var_s5->posX);
                             break;
@@ -900,7 +900,7 @@ void LabPCList_SaveDirtyBoxes(unk_func_8830867C_02C_144* arg0, s32 arg1) {
 
     var_s2 = arg0->posX;
 
-    for (i = 0; i < arg0->unk_08; i++, var_s2++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++, var_s2++) {
         var_s4 = var_s2->unk_0C;
         var_s7 = 0;
 
@@ -909,12 +909,12 @@ void LabPCList_SaveDirtyBoxes(unk_func_8830867C_02C_144* arg0, s32 arg1) {
                 var_s0 = var_s4->unk_10.posX;
                 temp_s3 = Deck_Open(var_s2->posX, var_s2->rotation, j, 1);
 
-                for (x = 0; x < var_s4->unk_10.unk_08; x++, var_s0++) {
-                    Deck_WriteEntries(&var_s0->posX->unk_08, 1, temp_s3);
+                for (x = 0; x < var_s4->unk_10.RentalSlotAnimData_PosePhase; x++, var_s0++) {
+                    Deck_WriteEntries(&var_s0->posX->RentalSlotAnimData_PosePhase, 1, temp_s3);
                     if ((var_s2->posX == 0x20) || (var_s2->posX == 0x21)) {
-                        if ((var_s0->posX->unk_08.posX.posX > 0) &&
-                            (var_s0->posX->unk_08.posX.posX < 0x98)) {
-                            GbSave_SetSeenOwnedBits(var_s2->rotation, var_s0->posX->unk_08.posX.posX, 3);
+                        if ((var_s0->posX->RentalSlotAnimData_PosePhase.posX.posX > 0) &&
+                            (var_s0->posX->RentalSlotAnimData_PosePhase.posX.posX < 0x98)) {
+                            GbSave_SetSeenOwnedBits(var_s2->rotation, var_s0->posX->RentalSlotAnimData_PosePhase.posX.posX, 3);
                         }
                     }
                 }
@@ -941,28 +941,28 @@ void LabPCList_InitDeckCategories(unk_func_8830867C_02C_154* arg0, MemoryPool* a
     s32 i;
 
     arg0->posX = 0x23;
-    arg0->unk_01 = GbSave_GetActivePort();
+    arg0->TrainerSlotSaveData_GamePort = GbSave_GetActivePort();
     arg0->posY = 0;
     arg0->rotation = 1;
     ByteMatrix_Allocate(&arg0[0].unk_0C, 2, 0x14, arg1);
 
     arg0[1].posX = 0x22;
-    arg0[1].unk_01 = arg0->unk_01;
+    arg0[1].TrainerSlotSaveData_GamePort = arg0->TrainerSlotSaveData_GamePort;
     arg0[1].posY = 0;
     arg0[1].rotation = 1;
     ByteMatrix_Allocate(&arg0[1].unk_0C, 2, 0x32, arg1);
 
     arg0[2].posX = 0x12;
-    arg0[2].unk_01 = 0;
+    arg0[2].TrainerSlotSaveData_GamePort = 0;
     ByteMatrix_Allocate(&arg0[2].unk_0C, 2, 0x64, arg1);
 
-    GbSave_BuildPortSummary(&sp48, arg0->unk_01);
+    GbSave_BuildPortSummary(&sp48, arg0->TrainerSlotSaveData_GamePort);
 
     for (i = 0; i < 4; i++) {
         if ((Deck_IsSaveEntryPresent(0x12, i) != 0) && (Deck_GetSaveEntryCount(0x12, i) > 0)) {
             temp_s1 = Deck_GetSaveEntryTrainerId(0x12, i);
             Deck_GetSaveEntryName(0x12, i, &sp38);
-            if ((sp48.unk_08 == temp_s1) && (HAL_Strcmp(sp54, sp38) == 0)) {
+            if ((sp48.RentalSlotAnimData_PosePhase == temp_s1) && (HAL_Strcmp(sp54, sp38) == 0)) {
                 break;
             }
         }
@@ -979,18 +979,18 @@ void LabPCList_InitDeckCategories(unk_func_8830867C_02C_154* arg0, MemoryPool* a
 void LabPCList_ReadDeckCategory(unk_func_8830867C_02C_154* arg0) {
     DeckHandle* sp24;
 
-    sp24 = Deck_Open(arg0->posX, arg0->unk_01, arg0->posY, 0);
+    sp24 = Deck_Open(arg0->posX, arg0->TrainerSlotSaveData_GamePort, arg0->posY, 0);
     arg0->unk_14 = Deck_ReadEntries(arg0->unk_0C, arg0->unk_10, sp24);
     Deck_CloseAndFlush(sp24);
-    arg0->unk_08 = 0;
+    arg0->RentalSlotAnimData_PosePhase = 0;
 }
 
 void LabPCList_WriteDeckCategory(unk_func_8830867C_02C_154* arg0) {
-    DeckHandle* sp24 = Deck_Open(arg0->posX, arg0->unk_01, arg0->posY, 1);
+    DeckHandle* sp24 = Deck_Open(arg0->posX, arg0->TrainerSlotSaveData_GamePort, arg0->posY, 1);
 
     Deck_WriteEntries(arg0->unk_0C, arg0->unk_14, sp24);
     Deck_CloseAndFlush(sp24);
-    arg0->unk_08 = 0;
+    arg0->RentalSlotAnimData_PosePhase = 0;
 }
 
 s32 LabPCList_IsTmItemId(s32* arg0) {
@@ -1036,7 +1036,7 @@ s32 LabPCList_IsSpecialTmItemId(s32* arg0) {
 }
 
 s32 LabPCList_CompareTmHmEntries(unk_func_88200FA0_030_038* arg0, unk_func_88200FA0_030_038* arg1) {
-    return (arg0->unk_08 - arg1->unk_08 != 0) ? arg0->unk_08 - arg1->unk_08 : (s32)arg0[1].posX - (s32)arg1[1].posX;
+    return (arg0->RentalSlotAnimData_PosePhase - arg1->RentalSlotAnimData_PosePhase != 0) ? arg0->RentalSlotAnimData_PosePhase - arg1->RentalSlotAnimData_PosePhase : (s32)arg0[1].posX - (s32)arg1[1].posX;
 }
 
 void LabPCList_BuildTmHmList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_1A8* arg1, unk_func_8830867C_02C_154* arg2,
@@ -1074,7 +1074,7 @@ void LabPCList_BuildTmHmList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_
                 if (var_s0 != 0) {
                     var_s1->posX = var_s2;
                     var_s1->rotation = var_s4;
-                    var_s1->unk_08 = sp50;
+                    var_s1->RentalSlotAnimData_PosePhase = sp50;
 
                     if (var_s4->posX == 0x23) {
                         var_s1->unk_0C = 0;
@@ -1095,17 +1095,17 @@ void LabPCList_BuildTmHmList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_
         }
     }
 
-    arg0->unk_08 = ((s32)var_s1 - (s32)arg1) >> 4;
+    arg0->RentalSlotAnimData_PosePhase = ((s32)var_s1 - (s32)arg1) >> 4;
     PointerList_Sort(arg0, LabPCList_CompareTmHmEntries);
 }
 
 void LabPCList_ConsumeUsedTmItem(unk_func_8830867C_04C_030_02C_000* arg0) {
-    if ((LabItem_IsQuantitylessItemForOperation(arg0->posX[0]->posX) != 0) || (arg0->posX[0]->unk_01 < 2)) {
+    if ((LabItem_IsQuantitylessItemForOperation(arg0->posX[0]->posX) != 0) || (arg0->posX[0]->TrainerSlotSaveData_GamePort < 2)) {
         s32 tmp = arg0->posX[1]->unk_0C.posX;
 
         WordList_Remove(&arg0->posX[1]->unk_0C, ((s32)arg0->posX[0] - tmp) >> 1);
     } else {
-        arg0->posX[0]->unk_01--;
+        arg0->posX[0]->TrainerSlotSaveData_GamePort--;
     }
-    arg0->posX[1]->unk_08 = 1;
+    arg0->posX[1]->RentalSlotAnimData_PosePhase = 1;
 }

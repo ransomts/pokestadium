@@ -25,7 +25,7 @@ typedef struct func_800253F4_arg1 {
 
 typedef struct SpeciesRecord {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u16 posY;
     /* 0x04 */ char rotation[16];
     /* 0x14 */ char unk_14[16];

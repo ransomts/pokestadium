@@ -42,7 +42,7 @@ s32 Intro_FogColorCallback(s32, GraphNode*);
 typedef struct unk_D_86B0DD58 {
     /* 0x00 */ u8 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
 } unk_D_86B0DD58; // size = 0xC
 
 static SpriteColorParams gUIElementColors[4] = {
@@ -215,10 +215,10 @@ void Intro_SetBackgroundTint(u8 arg0, u8 arg1, u8 arg2) {
 
     if (v == 0xFF) {
         if (gBattleOverlayRect.posX.unk_14 == 1) {
-            gBattleOverlayRect.posX.unk_01 |= 1;
+            gBattleOverlayRect.posX.TrainerSlotSaveData_GamePort |= 1;
         }
     } else {
-        gBattleOverlayRect.posX.unk_01 &= ~1;
+        gBattleOverlayRect.posX.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 
@@ -245,11 +245,11 @@ void Intro_LoadShowcaseModel(void) {
     PokeIcon_OpenModelArchives();
 
     gCameraTarget->unk_000 = Model_LoadForPokemon(&gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C]);
-    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->posX[0]);
+    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gCameraTarget->unk_004, 0);
     gCameraTarget->unk_004.modelPhase = 0;
     Intro_LoadPokemonTextures();
-    gCameraTarget->unk_004.unk_024.y += gMonsterStageData.unk_08;
+    gCameraTarget->unk_004.unk_024.y += gMonsterStageData.RentalSlotAnimData_PosePhase;
     gCameraTarget->unk_170 = 0;
     ModelAnim_SetEventFrame(&gCameraTarget->unk_004, 0);
     ModelAnim_SetEventTrack(&gCameraTarget->unk_004, -1);
@@ -285,7 +285,7 @@ void Intro_LoadStageModel(void) {
     ModelRenderer_AttachDisplayObject(&gCameraTarget->unk_004);
     PokeIcon_OpenModelArchives();
     gCameraTarget->unk_000 = Model_LoadByArchiveIndex(gCameraTarget->unk_174);
-    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->posX[0]);
+    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gCameraTarget->unk_004, 0);
     Vec3f_SetComponentsDuplicate(&gCameraTarget->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
 }
@@ -377,24 +377,24 @@ void Intro_EmitLandingParticles(void) {
 
     if (gCameraTarget->unk_178 & 1) {
         Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
-                      gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+                      gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].RentalSlotAnimData_PosePhase + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
         Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &gMiniTutoScreenNode2, 1);
 
         if ((gCameraTarget->unk_178 >= 0xA) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
-                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].RentalSlotAnimData_PosePhase + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
             Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &gMiniTutoScreenNode2, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x14) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
-                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].RentalSlotAnimData_PosePhase + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
             Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &gMiniTutoScreenNode2, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x1E) && (gCameraTarget->unk_178 & 1)) {
             Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
-                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].RentalSlotAnimData_PosePhase + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
             Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &gMiniTutoScreenNode2, 1);
         }
     }
@@ -434,7 +434,7 @@ void Intro_SetupTextPanel(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s1
     arg0->unk_B0.posY = gUIElementColors->posY;
     arg0->unk_B0.rotation = gUIElementColors->rotation;
     arg0->unk_B0.unk_06 = gUIElementColors->unk_06;
-    arg0->unk_B0.unk_08 = gUIElementColors->unk_08;
+    arg0->unk_B0.RentalSlotAnimData_PosePhase = gUIElementColors->RentalSlotAnimData_PosePhase;
     arg0->unk_B0.unk_0A = gUIElementColors->unk_0A;
 }
 
@@ -524,10 +524,10 @@ void Intro_TriggerTextPanelExit(void) {
 
 void Intro_SelectPartyRoster(void) {
     if (gSessionContext.battleSides[0].unk_1C == 1) {
-        gMonsterDataPtr = gSessionContext.battleSides[0].unk_08[0];
+        gMonsterDataPtr = gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0];
         gMonsterContextPtr = &gSessionContext.battleSides[0];
     } else {
-        gMonsterDataPtr = gSessionContext.battleSides[1].unk_08[0];
+        gMonsterDataPtr = gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0];
         gMonsterContextPtr = &gSessionContext.battleSides[1];
     }
 }
@@ -745,8 +745,8 @@ void Intro_DrawTextPanels(void) {
                     gUIElementHealthBar->unk_B0.unk_06 = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_06, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_06,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_12, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_12);
-                    gUIElementHealthBar->unk_B0.unk_08 = Math_StepToS32(
-                        gUIElementHealthBar->unk_B0.unk_08, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_08,
+                    gUIElementHealthBar->unk_B0.RentalSlotAnimData_PosePhase = Math_StepToS32(
+                        gUIElementHealthBar->unk_B0.RentalSlotAnimData_PosePhase, gUIElementColors[gUIElementHealthBar->unk_88 + 1].RentalSlotAnimData_PosePhase,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_14, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_14);
                     gUIElementHealthBar->unk_B0.unk_0A = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_0A, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0A,
@@ -755,7 +755,7 @@ void Intro_DrawTextPanels(void) {
                         (gUIElementHealthBar->unk_B0.posY == gUIElementColors[gUIElementHealthBar->unk_88 + 1].posY) &&
                         (gUIElementHealthBar->unk_B0.rotation == gUIElementColors[gUIElementHealthBar->unk_88 + 1].rotation) &&
                         (gUIElementHealthBar->unk_B0.unk_06 == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_06) &&
-                        (gUIElementHealthBar->unk_B0.unk_08 == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_08) &&
+                        (gUIElementHealthBar->unk_B0.RentalSlotAnimData_PosePhase == gUIElementColors[gUIElementHealthBar->unk_88 + 1].RentalSlotAnimData_PosePhase) &&
                         (gUIElementHealthBar->unk_B0.unk_0A == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0A)) {
 
                         gUIElementHealthBar->unk_88++;
@@ -1007,7 +1007,7 @@ void Stage_LoadModels(void) {
     temp_v0_6 = sp2C(4, 0);
     if (temp_v0_6 == NULL) {
         gBattleOverlayRect.posX.unk_14 = 0;
-        gBattleOverlayRect.posX.unk_01 &= ~1;
+        gBattleOverlayRect.posX.TrainerSlotSaveData_GamePort &= ~1;
     } else {
         gBattleOverlayRect.unk_18.posX = temp_v0_6->posX;
         gBattleOverlayRect.unk_18.posY = temp_v0_6->posY;

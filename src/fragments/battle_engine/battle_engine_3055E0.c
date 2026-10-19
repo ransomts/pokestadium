@@ -117,7 +117,7 @@ void BattleScene_ApplyCameraPhaseDefaults(void) {
 }
 
 void BattleScene_SetDamageShakeAmplitude(BattlePlayerEntity* arg0) {
-    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.unk_08];
+    PokemonData* ptr = &arg0->boundRoster->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
 
     gBattleScene.posX->unk_68 = ((ptr->posY - arg0->animationState.unk_38.unk_0C) / 996.0f) * 1400.0f;
 
@@ -957,7 +957,7 @@ void BattleScene_LoadCameraPreset(DioramaAnimData* arg0, CameraStruct* arg1, Bat
                   BattleScene_GetParticipantFacingAngle(arg2) - (arg0->unk_16 * arg2->sideSign));
     BattleScene_SetCameraPresetAtDistances(sp34, sp30);
     sp20 = BattleScene_GetParticipantFacingAngle(arg2);
-    BattleScene_SetCameraPresetEyeAngles(arg0->unk_06, sp20 - (arg0->unk_08 * arg2->sideSign), arg0->unk_1A,
+    BattleScene_SetCameraPresetEyeAngles(arg0->unk_06, sp20 - (arg0->RentalSlotAnimData_PosePhase * arg2->sideSign), arg0->unk_1A,
                   BattleScene_GetParticipantFacingAngle(arg2) - (arg0->unk_1C * arg2->sideSign));
     BattleScene_SetCameraPresetEyeDistances(sp2C, sp28);
     BattleScene_SetCameraPresetSmoothing(arg0->unk_28, arg0->unk_2C);
@@ -987,7 +987,7 @@ void BattleScene_LoadCameraPresetUnscaled(DioramaAnimData* arg0, CameraStruct* a
 
     BattleScene_SetCameraPresetAtAngles(arg0->posX, arg0->posY, arg0->unk_14, arg0->unk_16);
     BattleScene_SetCameraPresetAtDistances(sp2C, sp28);
-    BattleScene_SetCameraPresetEyeAngles(arg0->unk_06, arg0->unk_08, arg0->unk_1A, arg0->unk_1C);
+    BattleScene_SetCameraPresetEyeAngles(arg0->unk_06, arg0->RentalSlotAnimData_PosePhase, arg0->unk_1A, arg0->unk_1C);
     BattleScene_SetCameraPresetEyeDistances(sp24, sp20);
     BattleScene_SetCameraPresetSmoothing(arg0->unk_28, arg0->unk_2C);
 }

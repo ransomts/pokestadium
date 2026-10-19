@@ -11,7 +11,7 @@ typedef struct ModelPreview {
     /* 0x02 */ u16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s16 unk_10;
@@ -38,7 +38,7 @@ typedef struct SpriteSlot {
     /* 0x00 */ s16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ s16 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ FramebufferImage* unk_0C;
     /* 0x10 */ arg1_func_80010CA8 unk_10;
     /* 0x14 */ unk_func_8001A024_008_014 unk_14;
@@ -46,11 +46,11 @@ typedef struct SpriteSlot {
 
 typedef struct SpriteDisplay {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s8 posY;
     /* 0x03 */ s8 unk_03;
     /* 0x04 */ AssetManager* rotation;
-    /* 0x08 */ SpriteSlot* unk_08;
+    /* 0x08 */ SpriteSlot* RentalSlotAnimData_PosePhase;
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ Fragment2_1GraphNode* unk_10;
     /* 0x14 */ FramebufferImage* unk_14;
@@ -59,10 +59,10 @@ typedef struct SpriteDisplay {
 
 typedef struct BattleUiState {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x04 */ Fragment2_1GraphNode* rotation;
-    /* 0x08 */ CameraStruct* unk_08;
+    /* 0x08 */ CameraStruct* RentalSlotAnimData_PosePhase;
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ GraphNode* unk_10;
     /* 0x14 */ GraphNode* unk_14;

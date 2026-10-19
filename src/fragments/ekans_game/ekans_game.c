@@ -1751,7 +1751,7 @@ void initEkans(MiniActor* ekans, s16 player) {
 
     ModelAnim_SetAnimation(&ekans->unk_000, 0);
 
-    ekans->unk_000.unk_000.unk_01 |= 1;
+    ekans->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
     ekans->unk_000.unk_000.posY |= 0x20;
 
     ModelAnim_BindTransformCurve(&ekans->unk_000, 0, ekans->unk_000.unk_040.rotation, 0x10000);
@@ -2533,7 +2533,7 @@ void miniGetCloser2Diglett(MiniActor* ekans, s32 nPlayer) {
                 }
             }
 
-            ekans->unk_000.unk_000.unk_01 &= ~1;
+            ekans->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
             ekans->unk_000.unk_01D = 0xFF;
             ekans->yRot_3 = 0;
             ekans->ySpinSpeed = 0;
@@ -2593,7 +2593,7 @@ void miniEkansPlayerStateMachine(MiniActor* ekans, s32 nPlayer) {
             break;
 
         case 0x4:
-            ekans->unk_000.unk_000.unk_01 |= 1;
+            ekans->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
             ekans->unk_000.unk_000.posY |= 0x20;
             ekans->unk_298 = 0;
             ekans->unk_296 = 0;
@@ -2895,7 +2895,7 @@ void miniDiglettStateMachine(void) {
                     activeDigletts[i].timer = 0xD;
                     activeDigletts[i].diglettId = miniEkansChooseRandDiglett(i);
                     miniDiglettPtr = &miniDigletts[activeDigletts[i].diglettId];
-                    miniDiglettPtr->unk_000.unk_000.unk_01 |= 1;
+                    miniDiglettPtr->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
                     EkansGame_PlaySoundEventGuarded(7, i);
                     EkansGame_RollDiglettGoldChance(miniDiglettPtr);
                     miniChangeActorAnim_alt2(miniDiglettPtr, 1, -1, 1);
@@ -2935,7 +2935,7 @@ void miniDiglettStateMachine(void) {
             case 8:
                 miniDiglettPtr = &miniDigletts[activeDigletts[i].diglettId];
                 if (miniPokeIsIdleCheck(miniDiglettPtr)) {
-                    miniDiglettPtr->unk_000.unk_000.unk_01 &= ~1;
+                    miniDiglettPtr->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
                     activeDigletts[i].timer = 1;
                     activeDigletts[i].state = 9;
                     miniDiglettPtr->diglettIsGold = false;
@@ -3463,7 +3463,7 @@ void EkansGame_LoadAssets(void) {
     for (i = 0; i < 4; i++) {
         miniEkanses[i].unk_23C = 0x9F;
         miniEkanses[i].unk_168 = temp_s1;
-        Model_InitDisplayObject(&miniEkanses[i].unk_000, 0, miniEkanses[i].unk_23C, temp_s1->unk_08->posX[0]);
+        Model_InitDisplayObject(&miniEkanses[i].unk_000, 0, miniEkanses[i].unk_23C, temp_s1->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&miniEkanses[i].unk_000, 0);
     }
 
@@ -3471,15 +3471,15 @@ void EkansGame_LoadAssets(void) {
     for (i = 0; i < 9; i++) {
         miniDigletts[i].unk_23C = 0xA4;
         miniDigletts[i].unk_168 = temp_s1;
-        Model_InitDisplayObject(&miniDigletts[i].unk_000, 0, miniDigletts[i].unk_23C, temp_s1->unk_08->posX[0]);
-        miniDigletts[i].unk_000.unk_000.unk_01 &= ~1;
+        Model_InitDisplayObject(&miniDigletts[i].unk_000, 0, miniDigletts[i].unk_23C, temp_s1->RentalSlotAnimData_PosePhase->posX[0]);
+        miniDigletts[i].unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
 
     temp_s1 = Model_LoadByArchiveIndex(0xA3);
     for (i = 0; i < 9; i++) {
         miniDiglettHoles[i].unk_23C = 0xA3;
         miniDiglettHoles[i].unk_168 = temp_s1;
-        Model_InitDisplayObject(&miniDiglettHoles[i].unk_000, 0, miniDiglettHoles[i].unk_23C, temp_s1->unk_08->posX[0]);
+        Model_InitDisplayObject(&miniDiglettHoles[i].unk_000, 0, miniDiglettHoles[i].unk_23C, temp_s1->RentalSlotAnimData_PosePhase->posX[0]);
     }
 }
 

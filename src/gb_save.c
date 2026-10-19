@@ -50,7 +50,7 @@ void GbSave_BuildPortSummary(PortSummary* arg0, s32 arg1) {
         arg0->posX = 1;
     } else {
         arg0->posX = 0;
-        arg0->unk_08 = GbSave_GetTrainerId(arg1);
+        arg0->RentalSlotAnimData_PosePhase = GbSave_GetTrainerId(arg1);
         GbSave_GetPlayerName(arg1, &arg0[1]);
     }
     arg0->rotation = GbSave_GetPortGame(arg1);
@@ -85,7 +85,7 @@ void Gfx_DrawTiledTextureStrip(TiledTexture* arg0, s32 arg1, s32 a2) {
         gDPLoadTextureBlock(gDisplayListHead++, var_s2, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg0->posX, var_t0, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg1 + arg0->unk_08) - 1) << 2,
+        gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg1 + arg0->RentalSlotAnimData_PosePhase) - 1) << 2,
                             ((arg2 + var_t0) - 1) << 2, G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
         i -= var_t0;
@@ -104,7 +104,7 @@ s32 Ui_AdjustVerticalSelection(VerticalSelection* arg0, s32 arg1) {
         case 0x800:
             Audio_PlaySoundEffectById(1);
             if (arg0->rotation == 0) {
-                arg0->rotation += arg0->unk_08;
+                arg0->rotation += arg0->RentalSlotAnimData_PosePhase;
             }
             arg0->rotation--;
             ret = 1;
@@ -112,8 +112,8 @@ s32 Ui_AdjustVerticalSelection(VerticalSelection* arg0, s32 arg1) {
 
         case 0x400:
             Audio_PlaySoundEffectById(1);
-            if (arg0->rotation >= (arg0->unk_08 - 1)) {
-                arg0->rotation -= arg0->unk_08;
+            if (arg0->rotation >= (arg0->RentalSlotAnimData_PosePhase - 1)) {
+                arg0->rotation -= arg0->RentalSlotAnimData_PosePhase;
             }
             arg0->rotation++;
             ret = 1;
@@ -137,7 +137,7 @@ s32 Ui_AdjustHorizontalSelection(HorizontalSelection* arg0, s32 arg1) {
         case 0x200:
             Audio_PlaySoundEffectById(1);
             if (arg0->rotation == 0) {
-                arg0->rotation += arg0->unk_08;
+                arg0->rotation += arg0->RentalSlotAnimData_PosePhase;
             }
             arg0->rotation--;
             ret = 1;
@@ -145,8 +145,8 @@ s32 Ui_AdjustHorizontalSelection(HorizontalSelection* arg0, s32 arg1) {
 
         case 0x100:
             Audio_PlaySoundEffectById(1);
-            if (arg0->rotation >= (arg0->unk_08 - 1)) {
-                arg0->rotation -= arg0->unk_08;
+            if (arg0->rotation >= (arg0->RentalSlotAnimData_PosePhase - 1)) {
+                arg0->rotation -= arg0->RentalSlotAnimData_PosePhase;
             }
             arg0->rotation++;
             ret = 1;
@@ -168,7 +168,7 @@ void Ui_AdjustSteppedScrollSelection(SteppedScrollSelection* arg0) {
     s32 sp18 = arg0->unk_0C;
 
     if (gPlayer1Controller->buttonDown & 0x2000) {
-        sp18 = ((arg0->unk_08 - arg0->rotation) + 1) / 10;
+        sp18 = ((arg0->RentalSlotAnimData_PosePhase - arg0->rotation) + 1) / 10;
     }
 
     switch (temp_v0) {
@@ -183,8 +183,8 @@ void Ui_AdjustSteppedScrollSelection(SteppedScrollSelection* arg0) {
 
         case 0x400:
             Audio_PlaySoundEffectById(1);
-            if (arg0->unk_08 < arg0->posX + sp18) {
-                arg0->posX = arg0->unk_08;
+            if (arg0->RentalSlotAnimData_PosePhase < arg0->posX + sp18) {
+                arg0->posX = arg0->RentalSlotAnimData_PosePhase;
             } else {
                 arg0->posX += sp18;
             }
@@ -228,15 +228,15 @@ s32 Ui_AdjustNumericSelection(NumericSelection* arg0, s32 arg1) {
             break;
 
         case 0x800:
-            if (arg0->posX == arg0->unk_08) {
+            if (arg0->posX == arg0->RentalSlotAnimData_PosePhase) {
                 arg0->posX = arg0->posX - ((arg0->posX / var_a2) * var_a2);
                 if (arg0->posX < arg0->rotation) {
                     arg0->posX = arg0->rotation;
                 }
             } else {
                 arg0->posX += var_a2;
-                if (arg0->unk_08 < arg0->posX) {
-                    arg0->posX = arg0->unk_08;
+                if (arg0->RentalSlotAnimData_PosePhase < arg0->posX) {
+                    arg0->posX = arg0->RentalSlotAnimData_PosePhase;
                 }
             }
             Audio_PlaySoundEffectById(1);
@@ -245,7 +245,7 @@ s32 Ui_AdjustNumericSelection(NumericSelection* arg0, s32 arg1) {
 
         case 0x400:
             if (arg0->posX == arg0->rotation) {
-                arg0->posX = arg0->unk_08;
+                arg0->posX = arg0->RentalSlotAnimData_PosePhase;
             } else {
                 arg0->posX -= var_a2;
                 if (arg0->posX < arg0->rotation) {
@@ -278,10 +278,10 @@ s32 Ui_AdjustSteppedRangeSelection(SteppedRangeSelection* arg0) {
                 sp18 *= 0xA;
 
             case 0x800:
-                if (arg0->posX >= arg0->unk_08) {
+                if (arg0->posX >= arg0->RentalSlotAnimData_PosePhase) {
                     arg0->posX = arg0->rotation;
-                } else if (arg0->unk_08 < (arg0->posX + sp18)) {
-                    arg0->posX = arg0->unk_08;
+                } else if (arg0->RentalSlotAnimData_PosePhase < (arg0->posX + sp18)) {
+                    arg0->posX = arg0->RentalSlotAnimData_PosePhase;
                 } else {
                     arg0->posX = arg0->posX + sp18;
                 }
@@ -292,7 +292,7 @@ s32 Ui_AdjustSteppedRangeSelection(SteppedRangeSelection* arg0) {
 
             case 0x400:
                 if (arg0->rotation >= arg0->posX) {
-                    arg0->posX = arg0->unk_08;
+                    arg0->posX = arg0->RentalSlotAnimData_PosePhase;
                 } else if ((arg0->posX - sp18) < arg0->rotation) {
                     arg0->posX = arg0->rotation;
                 } else {
@@ -388,9 +388,9 @@ void Gfx_DrawNumberDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 s32 Ui_GetSelectionDirection(SelectionDirection* arg0) {
     s32 var_v1 = 0;
 
-    if (arg0->unk_08 & 0x4000) {
+    if (arg0->RentalSlotAnimData_PosePhase & 0x4000) {
         var_v1 = -1;
-    } else if (arg0->unk_08 & 0x8000) {
+    } else if (arg0->RentalSlotAnimData_PosePhase & 0x8000) {
         var_v1 = 1;
     }
 

@@ -115,7 +115,7 @@ void Battle_QueueStatusText(char* arg0, s32 arg1) {
     UNUSED s32 pad2[2];
 
     Battle_ClearMessageCursor();
-    gBattleMessageQueues->unk_000 = sActivePokemon[arg1]->pokemonAnimation->unk_08[sp28->unk_2B]->unk_001;
+    gBattleMessageQueues->unk_000 = sActivePokemon[arg1]->pokemonAnimation->RentalSlotAnimData_PosePhase[sp28->unk_2B]->unk_001;
     SimpleStringFormat(gBattleMessageQueues->unk_048, arg0 + 1);
     *arg0 = 0;
 }
@@ -128,8 +128,8 @@ void Battle_DrawCompactStatusBoxesIfVisible(void) {
     BattlePlayerEntity* ptr2 = sActivePokemon[1];
 
     if ((gSessionContext.unk_0000 != 0x10) && (gBattleScene.posX->unk_30 == 0)) {
-        BattleHud_DrawCompactMonStatusBox(ptr1, 0x15, 0xF, ptr1->pokemonAnimation->unk_08[ptr1->ownerModel.unk_16C]->unk_001);
-        BattleHud_DrawCompactMonStatusBox(ptr2, 0xE1, 0xF, ptr2->pokemonAnimation->unk_08[ptr2->ownerModel.unk_16C]->unk_001);
+        BattleHud_DrawCompactMonStatusBox(ptr1, 0x15, 0xF, ptr1->pokemonAnimation->RentalSlotAnimData_PosePhase[ptr1->ownerModel.unk_16C]->unk_001);
+        BattleHud_DrawCompactMonStatusBox(ptr2, 0xE1, 0xF, ptr2->pokemonAnimation->RentalSlotAnimData_PosePhase[ptr2->ownerModel.unk_16C]->unk_001);
     }
 }
 
@@ -632,7 +632,7 @@ void BattleBox_Update(s16 arg0, s16 arg1) {
 
     switch (temp_s0->posX) {
         case 0:
-            temp_s0->unk_08 = 0;
+            temp_s0->RentalSlotAnimData_PosePhase = 0;
             if (temp_s0->rotation == 0xD) {
                 BattleHud_InitCaptionBoxPopupBlack(temp_s0, 0xA0, 0x78);
                 temp_s0->posX++;
@@ -667,8 +667,8 @@ void BattleBox_Update(s16 arg0, s16 arg1) {
                 BattleHud_UpdateCaptionBoxPopupBlack(temp_s0, 0xA0, 0x78);
                 BattleBox_DrawMessage(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
 
-                temp_s0->unk_08++;
-                if (temp_s0->unk_08 == 0x46) {
+                temp_s0->RentalSlotAnimData_PosePhase++;
+                if (temp_s0->RentalSlotAnimData_PosePhase == 0x46) {
                     temp_s0->posX++;
                 }
             } else {
@@ -678,8 +678,8 @@ void BattleBox_Update(s16 arg0, s16 arg1) {
                     BattleHud_UpdateCaptionBoxPopup(temp_s0, arg0, arg1);
                     BattleBox_DrawMessage(temp_s0, temp_s0->unk_14.x, temp_s0->unk_14.y);
 
-                    temp_s0->unk_08++;
-                    if (temp_s0->unk_08 == 0x2D) {
+                    temp_s0->RentalSlotAnimData_PosePhase++;
+                    if (temp_s0->RentalSlotAnimData_PosePhase == 0x2D) {
                         temp_s0->posX++;
                     }
                 }
@@ -692,36 +692,36 @@ void BattleScene_ClearParticipantMessageBuffer(BattlePlayerEntity* arg0) {
     arg0->messageBuffer.posX = 0;
     arg0->messageBuffer.rotation = 0;
     arg0->messageBuffer.unk_48[0] = 0;
-    arg0->messageBuffer.unk_08[0] = 0;
+    arg0->messageBuffer.RentalSlotAnimData_PosePhase[0] = 0;
 }
 
 void BattleScene_BuildParticipantMessage(BattlePlayerEntity* arg0, s32 arg1) {
-    gBattleMessageQueues->unk_000 = arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C]->unk_001;
+    gBattleMessageQueues->unk_000 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->animationState.unk_2C]->unk_001;
     arg0->messageBuffer.posX = 1;
-    Text_SetStringToken(0x19, arg0->boundRoster->unk_01C[arg0->animationState.unk_08].unk_30);
+    Text_SetStringToken(0x19, arg0->boundRoster->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase].unk_30);
     Text_GetString(arg0->messageBuffer.unk_48, 0x40, gMessageBank_0x1E, arg1);
 }
 
 void BattleScene_RevealParticipantMessageChars(BattlePlayerEntity* arg0) {
-    BattleAI_TeamContext* temp_t0 = arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C];
+    BattleAI_TeamContext* temp_t0 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->animationState.unk_2C];
 
     if (arg0->messageBuffer.unk_48[arg0->messageBuffer.rotation] != '\x00') {
-        arg0->messageBuffer.unk_08[arg0->messageBuffer.rotation] = arg0->messageBuffer.unk_48[arg0->messageBuffer.rotation];
+        arg0->messageBuffer.RentalSlotAnimData_PosePhase[arg0->messageBuffer.rotation] = arg0->messageBuffer.unk_48[arg0->messageBuffer.rotation];
         arg0->messageBuffer.rotation++;
     }
 
     if (arg0->messageBuffer.unk_48[arg0->messageBuffer.rotation] != '\x00') {
-        arg0->messageBuffer.unk_08[arg0->messageBuffer.rotation] = arg0->messageBuffer.unk_48[arg0->messageBuffer.rotation];
+        arg0->messageBuffer.RentalSlotAnimData_PosePhase[arg0->messageBuffer.rotation] = arg0->messageBuffer.unk_48[arg0->messageBuffer.rotation];
         arg0->messageBuffer.rotation++;
     }
 
-    arg0->messageBuffer.unk_08[arg0->messageBuffer.rotation] = '\x00';
+    arg0->messageBuffer.RentalSlotAnimData_PosePhase[arg0->messageBuffer.rotation] = '\x00';
 
     if (arg0->messageBuffer.unk_48[0] != 0) {
         if (arg0 == gPrimaryPokemonEntity) {
-            BattleHud_DrawTextBox(temp_t0->unk_001, 0x5F, 0xE, &arg0->messageBuffer.unk_08);
+            BattleHud_DrawTextBox(temp_t0->unk_001, 0x5F, 0xE, &arg0->messageBuffer.RentalSlotAnimData_PosePhase);
         } else {
-            BattleHud_DrawTextBox(temp_t0->unk_001, 0x17, 0xBB, &arg0->messageBuffer.unk_08);
+            BattleHud_DrawTextBox(temp_t0->unk_001, 0x17, 0xBB, &arg0->messageBuffer.RentalSlotAnimData_PosePhase);
         }
     }
 }

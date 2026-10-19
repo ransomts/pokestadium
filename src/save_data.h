@@ -21,7 +21,7 @@ typedef struct SessionModeSettings {
 
 typedef struct ContinueRecord {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
@@ -33,7 +33,7 @@ typedef struct ContinueRecord {
 
 typedef struct unk_D_800AE4E8_004_1_000_000 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0xA];
     /* 0x0C */ u16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -63,7 +63,7 @@ typedef struct SaveBank_OptionsRecord {
 
 typedef struct SaveBank_VictoryPalaceEntry {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u16 posY;
     /* 0x04 */ char rotation[11];
     /* 0x0F */ char unk_0F[11];
@@ -126,7 +126,7 @@ typedef struct SaveBank_TrainerRecord {
 
 typedef struct SaveBank_ItemBoxEntry {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } SaveBank_ItemBoxEntry; // size = 0x2
 
 typedef struct SaveBank_ItemBoxRecord {
@@ -150,7 +150,7 @@ typedef union unk_D_800AE4E8_004 {
 typedef struct unk_D_800AE4E8 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ unk_D_800AE4E8_004 rotation;
-    /* 0x08 */ unk_D_800AE4E8_004 unk_08;
+    /* 0x08 */ unk_D_800AE4E8_004 RentalSlotAnimData_PosePhase;
 } unk_D_800AE4E8; // size = 0xC
 
 void Save_ResetBank(UNUSED MainPoolBlock* arg0, u32 arg1);

@@ -85,7 +85,7 @@ void Gallery_RentalViewerLoadPort(s32 arg0) {
     }
 
     if (arg0 != 0) {
-        Gallery_RentalViewerOpenBoxPicker(gRentalViewerSelectedSlot, &gGalleryFinalSelection.unk_08);
+        Gallery_RentalViewerOpenBoxPicker(gRentalViewerSelectedSlot, &gGalleryFinalSelection.RentalSlotAnimData_PosePhase);
     } else {
         Gallery_RentalViewerOpenBoxPicker(gRentalViewerSelectedSlot, NULL);
     }
@@ -125,7 +125,7 @@ s32 Gallery_RentalViewerHandleInput(void) {
                 if (gRentalViewerInputDelay <= 0) {
                     gSnapSelectState = 1;
                     if (gSnapSelectMode == 1) {
-                        gRentalViewerSelectedSlot = gGalleryFinalSelection.unk_08.posX;
+                        gRentalViewerSelectedSlot = gGalleryFinalSelection.RentalSlotAnimData_PosePhase.posX;
                         Gallery_RentalViewerLoadPort(1);
                     } else {
                         if (gSnapSelectMode == 2) {
@@ -220,7 +220,7 @@ void Gallery_RentalViewerLoop(void) {
 
 s32 Gallery_RentalViewerGetResult(void) {
     s32 var_v1;
-    GallerySelection* temp_a0 = &gGalleryFinalSelection.unk_08;
+    GallerySelection* temp_a0 = &gGalleryFinalSelection.RentalSlotAnimData_PosePhase;
     temp_a0 += 0;
 
     if (gRentalViewerConfirmResult == 0) {

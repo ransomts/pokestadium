@@ -22,7 +22,7 @@ typedef struct MenuItemInfo {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s8 unk_08;
+    /* 0x08 */ s8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ s8 unk_09;
     /* 0x0A */ s8 unk_0A;
     /* 0x0B */ s8 unk_0B;
@@ -33,7 +33,7 @@ typedef struct MenuRectAnim {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } MenuRectAnim; // size = 0xC
 
@@ -564,10 +564,10 @@ void StadiumSelect_UpdateSparkles(s16 arg0) {
             default:
                 switch (var_s0->posX) {
                     case 1:
-                        var_s0->unk_06 = (s32)(COSS(var_s0->unk_08) * 16.0f) + 0x10;
+                        var_s0->unk_06 = (s32)(COSS(var_s0->RentalSlotAnimData_PosePhase) * 16.0f) + 0x10;
                         AnimateRectangle(var_s0->posY, var_s0->rotation, var_s0->unk_06);
-                        var_s0->unk_08 += 0x1000;
-                        if ((u16)var_s0->unk_08 == 0x8000) {
+                        var_s0->RentalSlotAnimData_PosePhase += 0x1000;
+                        if ((u16)var_s0->RentalSlotAnimData_PosePhase == 0x8000) {
                             var_s0->posX = 2;
                             var_s0->unk_0A = (MathUtil_Random16() & 7) + 0x14;
                         }
@@ -905,7 +905,7 @@ s16 StadiumSelect_HandleInput(void) {
         var_v1 = -1;
         var_a1 = 6;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        var_v1 = gMenuItemInfo[gSelectedMenuIndex].unk_08;
+        var_v1 = gMenuItemInfo[gSelectedMenuIndex].RentalSlotAnimData_PosePhase;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
         var_v1 = gMenuItemInfo[gSelectedMenuIndex].unk_09;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT)) {

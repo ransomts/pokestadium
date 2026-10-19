@@ -4234,13 +4234,13 @@ void BattleScene_ConfigureAudioChannelGroupsByTeam(void) {
     sp20[2] = 0xA;
     sp20[3] = 0xA;
 
-    sp20[ptr1->pokemonAnimation->unk_08[0]->unk_001] = 1;
-    if (ptr1->pokemonAnimation->unk_01 == 2) {
-        sp20[ptr1->pokemonAnimation->unk_08[1]->unk_001] = 1;
+    sp20[ptr1->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001] = 1;
+    if (ptr1->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
+        sp20[ptr1->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001] = 1;
     }
-    sp20[ptr2->pokemonAnimation->unk_08[0]->unk_001] = 2;
-    if (ptr2->pokemonAnimation->unk_01 == 2) {
-        sp20[ptr2->pokemonAnimation->unk_08[1]->unk_001] = 2;
+    sp20[ptr2->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001] = 2;
+    if (ptr2->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
+        sp20[ptr2->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001] = 2;
     }
 
     for (i = 0; i < 4; i++) {
@@ -4262,14 +4262,14 @@ void BattleScene_ConfigureAudioChannelGroupCounts(void) {
     sp24[2] = 0;
     sp24[3] = 0;
 
-    sp24[ptr1->pokemonAnimation->unk_08[0]->unk_001] = BattleScene_GetRosterTeamSize(ptr1->pokemonAnimation->unk_08[0]);
-    if (ptr1->pokemonAnimation->unk_01 == 2) {
-        sp24[ptr1->pokemonAnimation->unk_08[1]->unk_001] = BattleScene_GetRosterTeamSize(ptr1->pokemonAnimation->unk_08[1]);
+    sp24[ptr1->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001] = BattleScene_GetRosterTeamSize(ptr1->pokemonAnimation->RentalSlotAnimData_PosePhase[0]);
+    if (ptr1->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
+        sp24[ptr1->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001] = BattleScene_GetRosterTeamSize(ptr1->pokemonAnimation->RentalSlotAnimData_PosePhase[1]);
     }
 
-    sp24[ptr2->pokemonAnimation->unk_08[0]->unk_001] = BattleScene_GetRosterTeamSize(ptr2->pokemonAnimation->unk_08[0]);
-    if (ptr2->pokemonAnimation->unk_01 == 2) {
-        sp24[ptr2->pokemonAnimation->unk_08[1]->unk_001] = BattleScene_GetRosterTeamSize(ptr2->pokemonAnimation->unk_08[1]);
+    sp24[ptr2->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001] = BattleScene_GetRosterTeamSize(ptr2->pokemonAnimation->RentalSlotAnimData_PosePhase[0]);
+    if (ptr2->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
+        sp24[ptr2->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001] = BattleScene_GetRosterTeamSize(ptr2->pokemonAnimation->RentalSlotAnimData_PosePhase[1]);
     }
     Audio_SetChannelGroupCounts(sp24[0], sp24[1], sp24[2], sp24[3]);
 }
@@ -5028,7 +5028,7 @@ void BattleAnim_BindModelAnimReversed(Fragment2_1GraphNode* arg0, s16 arg1) {
 s32 BattleAnim_IsModelAnimComplete(Fragment2_1GraphNode* arg0) {
     s32 ret = 0;
 
-    if (arg0->unk_040.unk_08 == 0) {
+    if (arg0->unk_040.RentalSlotAnimData_PosePhase == 0) {
         ret = 1;
     }
     return ret;

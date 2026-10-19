@@ -120,7 +120,7 @@ ParticleEffectInstance* Particle_CreateAtTransform(f32 arg0, Vec3f arg1, Vec3s a
         ParticleMath_CopyVec3f(&sp1C->unk_68, &arg1);
         ParticleMath_CopyVec3s(&sp1C->unk_94, &arg2);
 
-        sp1C->unk_08 = arg3;
+        sp1C->RentalSlotAnimData_PosePhase = arg3;
         sp1C->unk_0C = arg4;
         sp1C->unk_10 = 0;
         sp1C->unk_14 = 0;
@@ -148,7 +148,7 @@ ParticleEffectInstance* Particle_CreateFromObjectTransform(Fragment2_1GraphNode*
         sp1C->unk_94.y = arg0->unk_01E.y;
         sp1C->unk_94.z = arg0->unk_01E.z;
 
-        sp1C->unk_08 = arg1;
+        sp1C->RentalSlotAnimData_PosePhase = arg1;
         sp1C->unk_0C = arg2;
 
         sp1C->unk_10 = 0;
@@ -225,7 +225,7 @@ s32 Particle_CountActiveAlias(void) {
 void Particle_InitLifecycle(ParticleEffectInstance* arg0) {
     arg0->updateState = 1;
     arg0->unk_0C = &gParticleDefaultCallback;
-    arg0->unk_08 = NULL;
+    arg0->RentalSlotAnimData_PosePhase = NULL;
     arg0->unk_10 = 0;
     arg0->unk_14 = 0;
     arg0->unk_B8 = 0;
@@ -239,7 +239,7 @@ void Particle_MarkInactive(ParticleEffectInstance* arg0) {
 void Particle_DisableAndDetach(ParticleEffectInstance* arg0) {
     arg0->updateState = 0;
 
-    arg0->unk_08 = NULL;
+    arg0->RentalSlotAnimData_PosePhase = NULL;
     arg0->unk_0C = NULL;
 
     Particle_ResetPhase(arg0);
@@ -2015,7 +2015,7 @@ void Particle_SetRenderMode(s16 arg0) {
 }
 
 void Particle_InvokeRenderSetup(ParticleEffectInstance* arg0, ParticleRenderSettings* arg1) {
-    switch (arg1->unk_01) {
+    switch (arg1->TrainerSlotSaveData_GamePort) {
         case 0:
             arg1->rotation(arg0, arg1->unk_0C.arg, arg1);
             break;
@@ -2047,7 +2047,7 @@ void Particle_DispatchDraw(ParticleEffectInstance* arg0, CameraStruct* arg1) {
             if (sp18->posX == 0) {
                 Particle_InvokeRenderSetup(arg0, sp18);
             }
-            sp18->unk_08(arg0, arg1, sp18);
+            sp18->RentalSlotAnimData_PosePhase(arg0, arg1, sp18);
             break;
 
         case 3:

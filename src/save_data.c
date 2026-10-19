@@ -14,7 +14,7 @@ void Save_ResetBank(UNUSED MainPoolBlock* arg0, u32 arg1) {
     if ((arg1 >= 'BNK0') && (arg1 < 'BNK4')) {
         temp_v0->posX &= ~3;
         temp_v0->rotation.unk1 = NULL;
-        temp_v0->unk_08.unk1 = NULL;
+        temp_v0->RentalSlotAnimData_PosePhase.unk1 = NULL;
     }
 }
 
@@ -90,7 +90,7 @@ void Save_InvalidateRecord(u8* arg0, s32 arg1, s32 arg2) {
 void Save_RestoreRecord(u8* arg0, s32 arg1, s32 arg2) {
     u32 tmp = arg0 - (u8*)gGbsSaveBanks[arg2].rotation.unk1;
 
-    _bcopy(tmp + (u8*)gGbsSaveBanks[arg2].unk_08.unk1, arg0, arg1);
+    _bcopy(tmp + (u8*)gGbsSaveBanks[arg2].RentalSlotAnimData_PosePhase.unk1, arg0, arg1);
 }
 
 void Save_ClearRecord(u8* arg0, s32 arg1, s32 arg2) {
@@ -113,56 +113,56 @@ void Save_LoadWithRepair(s32 arg0, s32 arg1) {
             idx2 = gCurrentBankSlot % 4;
             sp34 = 0x160;
             sp24 = (u8*)&gGbsSaveBanks[sp30].rotation.unk1->unk_0000[idx2][arg1];
-            sp20 = (u8*)&gGbsSaveBanks[sp30].unk_08.unk1->unk_0000[idx2][arg1];
+            sp20 = (u8*)&gGbsSaveBanks[sp30].RentalSlotAnimData_PosePhase.unk1->unk_0000[idx2][arg1];
             break;
 
         case 17:
             sp30 = 3;
             sp34 = 0x468;
             sp24 = (u8*)&gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1];
-            sp20 = (u8*)&gGbsSaveBanks[3].unk_08.unk3->unk_0000[arg1];
+            sp20 = (u8*)&gGbsSaveBanks[3].RentalSlotAnimData_PosePhase.unk3->unk_0000[arg1];
             break;
 
         case 18:
             sp30 = 3;
             sp34 = 0xE0;
             sp24 = (u8*)&gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1];
-            sp20 = (u8*)&gGbsSaveBanks[3].unk_08.unk3->gamePakItemBoxes[arg1];
+            sp20 = (u8*)&gGbsSaveBanks[3].RentalSlotAnimData_PosePhase.unk3->gamePakItemBoxes[arg1];
             break;
 
         case 19:
             sp30 = 2;
             sp34 = 0xF60;
             sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->victoryPalace;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->victoryPalace;
+            sp20 = (u8*)&gGbsSaveBanks[2].RentalSlotAnimData_PosePhase.unk2->victoryPalace;
             break;
 
         case 20:
             sp30 = 2;
             sp34 = 0x28;
             sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->options;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->options;
+            sp20 = (u8*)&gGbsSaveBanks[2].RentalSlotAnimData_PosePhase.unk2->options;
             break;
 
         case 21:
             sp30 = 2;
             sp34 = 0x180;
             sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->continueRecord;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->continueRecord;
+            sp20 = (u8*)&gGbsSaveBanks[2].RentalSlotAnimData_PosePhase.unk2->continueRecord;
             break;
 
         case 22:
             sp30 = 2;
             sp34 = 0x13B8;
             sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->galleryPhotos;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->galleryPhotos;
+            sp20 = (u8*)&gGbsSaveBanks[2].RentalSlotAnimData_PosePhase.unk2->galleryPhotos;
             break;
 
         case 23:
             sp30 = 2;
             sp34 = 0xB84;
             sp24 = (u8*)&gGbsSaveBanks[2].rotation.unk2->galleryCameras;
-            sp20 = (u8*)&gGbsSaveBanks[2].unk_08.unk2->galleryCameras;
+            sp20 = (u8*)&gGbsSaveBanks[2].RentalSlotAnimData_PosePhase.unk2->galleryCameras;
             break;
     }
 
@@ -421,19 +421,19 @@ void Save_ClearTypedRecord(s32 arg0, s32 arg1) {
         case 16:
             sp38 = &gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1];
             Save_ClearRecord(sp38, 0x160, idx1);
-            sp38->unk_000.unk_01 = 0x50;
+            sp38->unk_000.TrainerSlotSaveData_GamePort = 0x50;
             break;
 
         case 17:
             sp34 = &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1];
             Save_ClearRecord(sp34, 0x468, 3);
-            sp34->unk_000.unk_01 = 0x50;
+            sp34->unk_000.TrainerSlotSaveData_GamePort = 0x50;
             break;
 
         case 18:
             sp30 = &gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1];
             Save_ClearRecord(sp30, 0xE0, 3);
-            sp30->posX.unk_01 = 0x50;
+            sp30->posX.TrainerSlotSaveData_GamePort = 0x50;
             break;
 
         case 19:
@@ -640,15 +640,15 @@ char* Deck_GetSaveEntryName(s32 arg0, s32 arg1, char* arg2) {
 
         switch (arg0) {
             case 16:
-                var_a1 = &gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_000.unk_01;
+                var_a1 = &gGbsSaveBanks[idx1].rotation.unk1->unk_0000[idx2][arg1].unk_000.TrainerSlotSaveData_GamePort;
                 break;
 
             case 17:
-                var_a1 = &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.unk_01;
+                var_a1 = &gGbsSaveBanks[3].rotation.unk3->unk_0000[arg1].unk_000.TrainerSlotSaveData_GamePort;
                 break;
 
             case 18:
-                var_a1 = &gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.unk_01;
+                var_a1 = &gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].posX.TrainerSlotSaveData_GamePort;
                 break;
         }
 
@@ -679,7 +679,7 @@ void Deck_SetSaveEntryTrainerIdAndName(s32 arg0, s32 arg1, s32 arg2, char* arg3,
             }
 
             if (arg3 != NULL) {
-                Text_TranscodeName(&temp_v0->unk_000.unk_01, arg3);
+                Text_TranscodeName(&temp_v0->unk_000.TrainerSlotSaveData_GamePort, arg3);
             }
 
             Save_MarkRecordDirty(arg0, arg1, 3);
@@ -692,7 +692,7 @@ void Deck_SetSaveEntryTrainerIdAndName(s32 arg0, s32 arg1, s32 arg2, char* arg3,
             }
 
             if (arg3 != NULL) {
-                Text_TranscodeName(&temp_v0_2->unk_000.unk_01, arg3);
+                Text_TranscodeName(&temp_v0_2->unk_000.TrainerSlotSaveData_GamePort, arg3);
             }
 
             Save_MarkRecordDirty(arg0, arg1, 3);
@@ -705,7 +705,7 @@ void Deck_SetSaveEntryTrainerIdAndName(s32 arg0, s32 arg1, s32 arg2, char* arg3,
             }
 
             if (arg3 != NULL) {
-                Text_TranscodeName(&temp_v0_3->posX.unk_01, arg3);
+                Text_TranscodeName(&temp_v0_3->posX.TrainerSlotSaveData_GamePort, arg3);
             }
 
             Save_MarkRecordDirty(arg0, arg1, 3);
@@ -1020,7 +1020,7 @@ s32 Save_FlushBank(s16 arg0) {
     temp_s5 = gGbsBankSizeTable[arg0] >> 7;
 
     if ((gGbsSaveBanks[arg0].posX & 1) && (gGbsSaveBanks[arg0].posX & 2)) {
-        _bcopy(gGbsSaveBanks[arg0].rotation.unk1, gGbsSaveBanks[arg0].unk_08.unk1, gGbsBankSizeTable[arg0]);
+        _bcopy(gGbsSaveBanks[arg0].rotation.unk1, gGbsSaveBanks[arg0].RentalSlotAnimData_PosePhase.unk1, gGbsBankSizeTable[arg0]);
         var_s0 = 0;
         while (Flash_EraseSectorByIndex(arg0) == -1) {
             var_s0++;
@@ -1049,7 +1049,7 @@ s32 Save_FlushBank(s16 arg0) {
         sp38 = arg0 << 7;
         sp38 += 0x200;
         var_s0 = 0;
-        while (Flash_ProgramPages((u8*)gGbsSaveBanks[arg0].unk_08.unk1, sp38, temp_s5, 1) == -1) {
+        while (Flash_ProgramPages((u8*)gGbsSaveBanks[arg0].RentalSlotAnimData_PosePhase.unk1, sp38, temp_s5, 1) == -1) {
             var_s0++;
             if (var_s0 == 4) {
                 return 0;
@@ -1084,9 +1084,9 @@ s32 Save_AllocateBank(s16 arg0, u32 arg1) {
         if (sp28 != NULL) {
             bzero(sp28, arg1 * 2);
             gGbsSaveBanks[arg0].rotation.unk1 = sp28;
-            gGbsSaveBanks[arg0].unk_08.unk1 = sp28 + arg1;
+            gGbsSaveBanks[arg0].RentalSlotAnimData_PosePhase.unk1 = sp28 + arg1;
             Flash_ProgramPages(sp28, arg0 << 7, arg1 >> 7, 0);
-            Flash_ProgramPages(gGbsSaveBanks[arg0].unk_08.unk1, (arg0 << 7) + 0x200, arg1 >> 7, 0);
+            Flash_ProgramPages(gGbsSaveBanks[arg0].RentalSlotAnimData_PosePhase.unk1, (arg0 << 7) + 0x200, arg1 >> 7, 0);
             sp2C = 1;
         }
     }

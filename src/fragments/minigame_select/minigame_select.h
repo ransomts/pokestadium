@@ -9,7 +9,7 @@ typedef struct ControllerState {
     /* 0x02 */ u16 posY;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ u16 unk_08;
+    /* 0x08 */ u16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } ControllerState; // size = 0xC
 
@@ -18,12 +18,12 @@ typedef struct unk_D_8250A288 {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
 } unk_D_8250A288; // size >= 0xA
 
 typedef struct UIElementNode {
     /* 0x00 */ char unk00[0x1];
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x12];
     /* 0x14 */ s32 unk_14;
     /* 0x18 */ char unk18[0x6];
@@ -39,7 +39,7 @@ typedef struct UIWidget {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x08 */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E[4];
@@ -85,7 +85,7 @@ typedef struct MatchBanner {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0A */ s16 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -97,7 +97,7 @@ typedef struct RoundBanner {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;

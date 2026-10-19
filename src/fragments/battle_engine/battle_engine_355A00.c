@@ -57,7 +57,7 @@ void Trail50EffectAlt_Init(void) {
         for (j = 0; j < 10; j++, var_a0++) {
             var_a0->posX = 0;
             var_a0->rotation = 1.0f;
-            var_a0->unk_08 = 0.0f;
+            var_a0->RentalSlotAnimData_PosePhase = 0.0f;
 
             var_a0->unk_0C.x = 0.0f;
             var_a0->unk_0C.y = 0.0f;
@@ -120,7 +120,7 @@ void Trail50EffectAlt_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f3
             for (j = 0; j < 10; j++, var_s0++) {
                 var_s0->posX = (arg9 * (9 - j)) / 10;
                 var_s0->rotation = argB;
-                var_s0->unk_08 = (RAND(120) * 6.2831855f) / 120.0;
+                var_s0->RentalSlotAnimData_PosePhase = (RAND(120) * 6.2831855f) / 120.0;
                 var_s0->unk_0C = sp7C;
                 var_s0->unk_18 = sp70;
                 var_s0->unk_24 = sp64;
@@ -146,7 +146,7 @@ void Trail50EffectAlt_AdvanceNodes(Trail50EffectAltInstance* arg0) {
     for (i = 0; i < 10; i++, var_s0++) {
         if (i == 0) {
             var_s0->unk_30 = var_s0->rotation;
-            var_s0->unk_34 = var_s0->unk_08;
+            var_s0->unk_34 = var_s0->RentalSlotAnimData_PosePhase;
             var_s0->unk_38 = var_s0->unk_0C;
             var_s0->unk_44 = var_s0->unk_18;
 
@@ -155,9 +155,9 @@ void Trail50EffectAlt_AdvanceNodes(Trail50EffectAltInstance* arg0) {
                     var_s0->unk_0C.x += var_s0->unk_24.x;
                     var_s0->unk_0C.y += var_s0->unk_24.y;
                     var_s0->unk_0C.z += var_s0->unk_24.z;
-                    var_s0->unk_08 += arg0->unk_018;
-                    var_s0->unk_24.x += __sinf(var_s0->unk_08) * temp_fs3;
-                    var_s0->unk_24.z += __cosf(var_s0->unk_08) * temp_fs3;
+                    var_s0->RentalSlotAnimData_PosePhase += arg0->unk_018;
+                    var_s0->unk_24.x += __sinf(var_s0->RentalSlotAnimData_PosePhase) * temp_fs3;
+                    var_s0->unk_24.z += __cosf(var_s0->RentalSlotAnimData_PosePhase) * temp_fs3;
                     if (arg0->unk_004 >= 0x15) {
                         arg0->unk_002 = 1;
                         arg0->unk_004 = 0;
@@ -168,7 +168,7 @@ void Trail50EffectAlt_AdvanceNodes(Trail50EffectAltInstance* arg0) {
                     var_s0->unk_0C.x += var_s0->unk_18.x;
                     var_s0->unk_0C.y += var_s0->unk_18.y;
                     var_s0->unk_0C.z += var_s0->unk_18.z;
-                    var_s0->unk_08 += arg0->unk_018;
+                    var_s0->RentalSlotAnimData_PosePhase += arg0->unk_018;
                     if (arg0->unk_008 > 0) {
                         var_s0->unk_18.x += 2.0;
                         if (var_s0->unk_18.x > 20.0) {
@@ -189,13 +189,13 @@ void Trail50EffectAlt_AdvanceNodes(Trail50EffectAltInstance* arg0) {
             }
         } else {
             var_s0->unk_30 = var_s0->rotation;
-            var_s0->unk_34 = var_s0->unk_08;
+            var_s0->unk_34 = var_s0->RentalSlotAnimData_PosePhase;
 
             var_s0->unk_38 = var_s0->unk_0C;
             var_s0->unk_44 = var_s0->unk_18;
 
             var_s0->unk_0C = var_s0[-1].unk_38;
-            var_s0->unk_08 = var_s0[-1].unk_34;
+            var_s0->RentalSlotAnimData_PosePhase = var_s0[-1].unk_34;
             var_s0->unk_18 = var_s0[-1].unk_44;
             var_s0->rotation = var_s0[-1].unk_30;
         }
@@ -244,7 +244,7 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
             temp_s0 = &var_s5->unk_040[0];
             tmp = var_s5->unk_010;
             if (temp_s0->unk_0C.y > 0.0f) {
-                temp_fs1 = (temp_s0->unk_08 * 360.0f) / 6.2831854820251465;
+                temp_fs1 = (temp_s0->RentalSlotAnimData_PosePhase * 360.0f) / 6.2831854820251465;
                 temp_v0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
                 guTranslate(temp_v0, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
                 guRotateRPY(&sp100, 90.0f, temp_fs1, temp_fs1);
@@ -261,7 +261,7 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
 
             var_s0 = var_s5->unk_020;
             for (j = 0; j < 10; j++) {
-                Trail50EffectAlt_Update(temp_s0->unk_08, &sp184, temp_s0->rotation * tmp);
+                Trail50EffectAlt_Update(temp_s0->RentalSlotAnimData_PosePhase, &sp184, temp_s0->rotation * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {
@@ -277,7 +277,7 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
-                Trail50EffectAlt_Update(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->rotation * tmp);
+                Trail50EffectAlt_Update(temp_s0->RentalSlotAnimData_PosePhase + 3.1415927f, &sp184, temp_s0->rotation * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {

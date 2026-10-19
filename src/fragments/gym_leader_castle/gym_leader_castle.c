@@ -224,8 +224,8 @@ void Glc_DrawTrainerIntroPanels(void) {
             }
 
             Font_SetActive(0x10, 0);
-            Font_Printf((tmp - (Font_MeasureTextExtent(0x10, 0, gTrainerPortraits[i].unk_08) / 2)) + 0x40, 0x11C,
-                          gTrainerPortraits[i].unk_08);
+            Font_Printf((tmp - (Font_MeasureTextExtent(0x10, 0, gTrainerPortraits[i].RentalSlotAnimData_PosePhase) / 2)) + 0x40, 0x11C,
+                          gTrainerPortraits[i].RentalSlotAnimData_PosePhase);
             Font_EndTexturedTextRendering();
         }
     }
@@ -280,15 +280,15 @@ void Glc_DrawRoomMarkers(void) {
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
 
     for (; var_s2 > 0; var_s2--, var_s0++) {
-        if (var_s0->unk_01 != 0) {
+        if (var_s0->TrainerSlotSaveData_GamePort != 0) {
             var_a0 = 0xFF;
-            if (var_s0->unk_01 == 1) {
+            if (var_s0->TrainerSlotSaveData_GamePort == 1) {
                 var_a0 = (s32)((COSS(var_s0->unk_12) + 1.0f) * 96.0f);
                 var_a0 += 0x3F;
                 var_s0->unk_12 += 0x200;
             } else {
                 var_s0->unk_12 = 0;
-                var_s0->unk_01--;
+                var_s0->TrainerSlotSaveData_GamePort--;
             }
 
             gDPSetEnvColor(gDisplayListHead++, var_s0->unk_18.r, var_s0->unk_18.g, var_s0->unk_18.b, var_a0);
@@ -326,7 +326,7 @@ void Glc_DrawRoomLabels(void) {
     Text_SetPrimColor(0x50, 0x64, 0xDC, 0xFF);
 
     for (; var_s2 > 0; var_s2--, var_s1++) {
-        if (var_s1->unk_01 != 0) {
+        if (var_s1->TrainerSlotSaveData_GamePort != 0) {
             if (var_s1->unk_22 >= 0x1E) {
                 var_s0 = Text_GetString(NULL, 0, gRoomMessageBank, var_s1->unk_22);
             } else if (var_s1->unk_22 >= 0) {
@@ -470,10 +470,10 @@ void Glc_UpdateMapCursor(void) {
 
     if (gRoomTransitionTimer == 0) {
         sp1E = temp_a1->unk_06 - 0x20;
-        sp1C = temp_a1->unk_08 - 0xD;
+        sp1C = temp_a1->RentalSlotAnimData_PosePhase - 0xD;
     } else {
         sp1E = ((((gRoomDefinitions[gPrevRoomIndex].unk_06 - temp_a1->unk_06) * gRoomTransitionTimer) / 4) + temp_a1->unk_06) - 0x20;
-        sp1C = ((((gRoomDefinitions[gPrevRoomIndex].unk_08 - temp_a1->unk_08) * gRoomTransitionTimer) / 4) + temp_a1->unk_08) - 0xD;
+        sp1C = ((((gRoomDefinitions[gPrevRoomIndex].RentalSlotAnimData_PosePhase - temp_a1->RentalSlotAnimData_PosePhase) * gRoomTransitionTimer) / 4) + temp_a1->RentalSlotAnimData_PosePhase) - 0xD;
 
         gRoomTransitionTimer--;
         if ((gRoomTransitionTimer == 0) && ((gCurrentRoomIndex == 8) || (gCurrentRoomIndex == 9))) {
@@ -571,7 +571,7 @@ s32 Glc_SelectRoom(void) {
                         var_s1 = temp_s0->unk_17 - 1;
                     }
 
-                    if ((var_s1 >= 0) && (gRoomDefinitions[var_s1].unk_01 != 0)) {
+                    if ((var_s1 >= 0) && (gRoomDefinitions[var_s1].TrainerSlotSaveData_GamePort != 0)) {
                         Audio_PlaySoundEffectById(1);
                         gCurrentRoomIndex = var_s1;
                         gRoomTransitionTimer = 3;
@@ -622,7 +622,7 @@ void Glc_LoadTrainerPanels(void) {
         portrait_file_idx = (var_s1[i].gfx_file_idx >> 8) & 0xFF;
         gTrainerPortraits[i].posX = 1;
         gTrainerPortraits[i].posY = 0x280;
-        gTrainerPortraits[i].unk_08 = var_s1[i].name1;
+        gTrainerPortraits[i].RentalSlotAnimData_PosePhase = var_s1[i].name1;
         gTrainerPortraits[i].rotation = BinArchive_GetFile(gPortraitGfxArchive, portrait_file_idx);
     }
 }
@@ -754,14 +754,14 @@ s32 Glc_AdvanceRoom(void) {
     Audio_PlaySoundEffectById(0x01100011);
 
     if (gSessionContext.unk_0002 == 8) {
-        gRoomDefinitions[11].unk_01 = 0x3C;
+        gRoomDefinitions[11].TrainerSlotSaveData_GamePort = 0x3C;
     } else {
-        gRoomDefinitions[gSessionSettings.rotation].unk_01 = 0x3C;
+        gRoomDefinitions[gSessionSettings.rotation].TrainerSlotSaveData_GamePort = 0x3C;
     }
 
     if (gSessionSettings.rotation == 8) {
-        gRoomDefinitions[9].unk_01 = 0x3C;
-        gRoomDefinitions[10].unk_01 = 0x3C;
+        gRoomDefinitions[9].TrainerSlotSaveData_GamePort = 0x3C;
+        gRoomDefinitions[10].TrainerSlotSaveData_GamePort = 0x3C;
     }
 
     for (i = 3; i >= 0; i--) {
@@ -837,12 +837,12 @@ s16 Glc_InitMenu(s16 arg0) {
     }
 
     for (i = 0; i <= var_v1; i++) {
-        gRoomDefinitions[i].unk_01 = 1;
+        gRoomDefinitions[i].TrainerSlotSaveData_GamePort = 1;
     }
 
-    if (gRoomDefinitions[8].unk_01 != 0) {
-        gRoomDefinitions[9].unk_01 = 1;
-        gRoomDefinitions[10].unk_01 = 1;
+    if (gRoomDefinitions[8].TrainerSlotSaveData_GamePort != 0) {
+        gRoomDefinitions[9].TrainerSlotSaveData_GamePort = 1;
+        gRoomDefinitions[10].TrainerSlotSaveData_GamePort = 1;
     }
 
     for (i = 0; i < 4; i++) {

@@ -587,11 +587,11 @@ void BattleHud_DrawPartyBallRow(BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg0 == sActivePokemon[0]) {
-        if (arg0->pokemonAnimation->unk_01 == 1) {
-            for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY == 0) {
+        if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 1) {
+            for (i = 0; i < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_002; i++) {
+                if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].posY == 0) {
                     var_v0_2 = 2;
-                } else if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_05 != 0) {
+                } else if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].unk_05 != 0) {
                     var_v0_2 = 1;
                 } else {
                     var_v0_2 = 0;
@@ -599,10 +599,10 @@ void BattleHud_DrawPartyBallRow(BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 Gfx_DrawTextureRgba16(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         } else {
-            for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY == 0) {
+            for (i = 0; i < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_002; i++) {
+                if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].posY == 0) {
                     var_v0_2 = 2;
-                } else if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_05 != 0) {
+                } else if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].unk_05 != 0) {
                     var_v0_2 = 1;
                 } else {
                     var_v0_2 = 0;
@@ -610,10 +610,10 @@ void BattleHud_DrawPartyBallRow(BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 Gfx_DrawTextureRgba16(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
 
-            for (j = 0; j < arg0->pokemonAnimation->unk_08[1]->unk_002; j++) {
-                if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].posY == 0) {
+            for (j = 0; j < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_002; j++) {
+                if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_01C[j].posY == 0) {
                     var_v0_2 = 2;
-                } else if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].unk_05 != 0) {
+                } else if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_01C[j].unk_05 != 0) {
                     var_v0_2 = 1;
                 } else {
                     var_v0_2 = 0;
@@ -624,11 +624,11 @@ void BattleHud_DrawPartyBallRow(BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     }
 
     if (arg0 == sActivePokemon[1]) {
-        if (arg0->pokemonAnimation->unk_01 == 1) {
-            for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY == 0) {
+        if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 1) {
+            for (i = 0; i < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_002; i++) {
+                if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].posY == 0) {
                     var_v0_2 = 2;
-                } else if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_05 != 0) {
+                } else if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].unk_05 != 0) {
                     var_v0_2 = 1;
                 } else {
                     var_v0_2 = 0;
@@ -636,10 +636,10 @@ void BattleHud_DrawPartyBallRow(BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 Gfx_DrawTextureRgba16(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         } else {
-            for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
-                if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY == 0) {
+            for (i = 0; i < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_002; i++) {
+                if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].posY == 0) {
                     var_v0_2 = 2;
-                } else if (arg0->pokemonAnimation->unk_08[0]->unk_01C[i].unk_05 != 0) {
+                } else if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_01C[i].unk_05 != 0) {
                     var_v0_2 = 1;
                 } else {
                     var_v0_2 = 0;
@@ -647,10 +647,10 @@ void BattleHud_DrawPartyBallRow(BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 Gfx_DrawTextureRgba16(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
 
-            for (j = 0; j < arg0->pokemonAnimation->unk_08[1]->unk_002; j++) {
-                if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].posY == 0) {
+            for (j = 0; j < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_002; j++) {
+                if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_01C[j].posY == 0) {
                     var_v0_2 = 2;
-                } else if (arg0->pokemonAnimation->unk_08[1]->unk_01C[j].unk_05 != 0) {
+                } else if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_01C[j].unk_05 != 0) {
                     var_v0_2 = 1;
                 } else {
                     var_v0_2 = 0;
@@ -670,8 +670,8 @@ void BattleHud_DrawMonStatusBoxPlayer(BattlePlayerEntity* arg0, s16 arg1, s16 ar
     Color_RGB8* temp_v0_2;
     u32 var_v1;
 
-    sp80 = arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C];
-    sp7C = &arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C]->unk_01C[arg0->animationState.unk_08];
+    sp80 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C];
+    sp7C = &arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C]->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
 
     if (sp7C->posY == 0) {
         var_v1 = 1;
@@ -758,8 +758,8 @@ void BattleHud_DrawMonStatusBoxOpponent(BattlePlayerEntity* arg0, s16 arg1, s16 
     Color_RGB8* temp_v0;
     u32 var_v1;
 
-    sp80 = arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C];
-    sp7C = &arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C]->unk_01C[arg0->animationState.unk_08];
+    sp80 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C];
+    sp7C = &arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C]->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
 
     if (sp7C->posY == 0) {
         var_v1 = 1;
@@ -1001,7 +1001,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
     PokemonData* sp58;
     UNUSED s32 pad;
 
-    sp58 = &arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C]->unk_01C[arg0->animationState.unk_08];
+    sp58 = &arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C]->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
     temp_s0 = &arg0->animationState.unk_38;
 
     Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xC7, 0x38, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
@@ -1409,7 +1409,7 @@ void BattleHud_DrawDoublesTeamStatusList(BattlePlayerEntity* arg0, s16 arg1, s16
     s32 tmp;
     PokemonData* sp5C[6];
 
-    temp_s0 = arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C];
+    temp_s0 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C];
     temp_s1 = arg0->boundRoster;
 
     sp5C[5] = &temp_s1->unk_01C[0];
@@ -1469,7 +1469,7 @@ void BattleHud_DrawCompactMonStatusBox(BattlePlayerEntity* arg0, s16 arg1, s16 a
     u16 tmp;
     PokemonData* sp40;
 
-    sp40 = &arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C]->unk_01C[arg0->animationState.unk_08];
+    sp40 = &arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C]->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
     temp_v0 = &arg0->animationState;
 
     if (sp40->posY == 0) {
@@ -1525,7 +1525,7 @@ void BattleHud_DrawExpandingCaptionBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 a
     BattleAI_TeamContext* tmp;
 
     temp_v1 = sActivePokemon[arg0->unk_0C];
-    tmp = temp_v1->pokemonAnimation->unk_08[temp_v1->ownerModel.unk_16C];
+    tmp = temp_v1->pokemonAnimation->RentalSlotAnimData_PosePhase[temp_v1->ownerModel.unk_16C];
     temp_v0 = &gBoxColorPrimary[tmp->unk_001];
 
     sp2C = (arg1 - arg3.x) * 2;
@@ -1542,7 +1542,7 @@ void BattleHud_InitCaptionBoxPopup(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2)
     Vec3f sp34;
     UNUSED s32 pad;
 
-    arg0->unk_08 = 0;
+    arg0->RentalSlotAnimData_PosePhase = 0;
     arg0->unk_10 = 0;
     Vec3f_SetComponentsDuplicate(&sp40, arg1, arg2, 0.0f);
     Vec3f_SetComponentsDuplicate(&sp34, arg1 - 110.0f, arg2 - 19.0f, 0.0f);
@@ -1580,7 +1580,7 @@ void BattleHud_InitCaptionBoxPopupBlack(unk_D_843901A0_4C8* arg0, s16 arg1, s16 
     Vec3f sp34;
     UNUSED s32 pad;
 
-    arg0->unk_08 = 0;
+    arg0->RentalSlotAnimData_PosePhase = 0;
     arg0->unk_10 = 0;
     Vec3f_SetComponentsDuplicate(&sp40, arg1, arg2, 0.0f);
     Vec3f_SetComponentsDuplicate(&sp34, arg1 - 50.0f, arg2 - 10.0f, 0.0f);
@@ -1775,7 +1775,7 @@ void Battle_DrawSpectatorModeScrollingText(void) {
 }
 
 void BattleHud_DrawOwnSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState* arg1) {
-    BattleAI_TeamContext* sp34 = arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C];
+    BattleAI_TeamContext* sp34 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C];
     UNUSED s32 pad;
     s32 var_v1;
 
@@ -1792,18 +1792,18 @@ void BattleHud_DrawOwnSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState
             switch (arg1->unk_10) {
                 case 2:
                     if (arg1->unk_1C == 1) {
-                        if (arg0->pokemonAnimation->unk_01 == 2) {
-                            if (arg0->pokemonAnimation->unk_08[1]->unk_001 < arg0->pokemonAnimation->unk_08[0]->unk_001) {
+                        if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
+                            if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001 < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001) {
                                 var_v1 = 0;
                             } else {
                                 var_v1 = 1;
                             }
-                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->unk_08[var_v1], 0x60, 0xF,
-                                          arg0->pokemonAnimation->unk_08[var_v1]->unk_001);
-                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->unk_08[var_v1 == 0], 0xC6, 0xF,
-                                          arg0->pokemonAnimation->unk_08[var_v1 == 0]->unk_001);
+                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[var_v1], 0x60, 0xF,
+                                          arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[var_v1]->unk_001);
+                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[var_v1 == 0], 0xC6, 0xF,
+                                          arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[var_v1 == 0]->unk_001);
                         } else if (arg0->boundRoster->unk_002 < 4) {
-                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->unk_08[0], 0x60, 0xF, sp34->unk_001);
+                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0], 0x60, 0xF, sp34->unk_001);
                         } else {
                             BattleHud_DrawDoublesTeamStatusList(arg0, 0x60, 0xF, sp34->unk_001);
                         }
@@ -1835,7 +1835,7 @@ void BattleHud_DrawOwnSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState
 }
 
 void BattleHud_DrawOpponentSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState* arg1) {
-    BattleAI_TeamContext* sp24 = arg0->pokemonAnimation->unk_08[arg0->ownerModel.unk_16C];
+    BattleAI_TeamContext* sp24 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->ownerModel.unk_16C];
     s32 sp20;
 
     if (gSessionContext.unk_0000 != 0x10) {
@@ -1851,18 +1851,18 @@ void BattleHud_DrawOpponentSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnim
             switch (arg1->unk_10) {
                 case 2:
                     if (arg1->unk_1C == 1) {
-                        if (arg0->pokemonAnimation->unk_01 == 2) {
-                            if (arg0->pokemonAnimation->unk_08[1]->unk_001 < arg0->pokemonAnimation->unk_08[0]->unk_001) {
+                        if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
+                            if (arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001 < arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001) {
                                 sp20 = 0;
                             } else {
                                 sp20 = 1;
                             }
-                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->unk_08[sp20 == 0], 0x16, 0x79,
-                                          arg0->pokemonAnimation->unk_08[sp20 == 0]->unk_001);
-                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->unk_08[sp20], 0x7C, 0x79,
-                                          arg0->pokemonAnimation->unk_08[sp20]->unk_001);
+                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp20 == 0], 0x16, 0x79,
+                                          arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp20 == 0]->unk_001);
+                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp20], 0x7C, 0x79,
+                                          arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp20]->unk_001);
                         } else if (arg0->boundRoster->unk_002 < 4) {
-                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->unk_08[0], 0x7C, 0x79, sp24->unk_001);
+                            BattleHud_DrawTeamStatusList(arg0, arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0], 0x7C, 0x79, sp24->unk_001);
                         } else {
                             BattleHud_DrawDoublesTeamStatusList(arg0, 0x18, 0x79, sp24->unk_001);
                         }

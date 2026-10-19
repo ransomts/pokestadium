@@ -764,7 +764,7 @@ void func_80034254(StadiumModel* model) {
 // colours that the interleaved order + boundary-after-bx provides. The colouring and the pointer
 // priority seem to be in direct conflict; next lead: a struct/tail-change that alters what
 // 'single block' means for the pointer temps (e.g. -Wo,-doassoc grouping of the address math).
-void func_80034348(ModelSegment* segment, ModelVertex* vertices) {
+void SandshrewGame_Update(ModelSegment* segment, ModelVertex* vertices) {
     s32 i;
     f32 x0, y0, z0;
     f32 x1, y1, z1;
@@ -1561,7 +1561,7 @@ void Model_DrawPrepared(StadiumModel* model, MtxF* mtx) {
     case 3:
         func_80035248(segment, mtx, mvtx);
         Model_OffsetVertexHeights(segment, mvtx, model->position.y * -10.0f);
-        func_80034348(segment, mvtx);
+        SandshrewGame_Update(segment, mvtx);
         for(var_s0 = 0; var_s0 < model->posY; var_s0++) {
             func_80034BD4(segment, &model->transforms[var_s0], var_s0, mvtx);
         }
@@ -1571,7 +1571,7 @@ void Model_DrawPrepared(StadiumModel* model, MtxF* mtx) {
     case 4:
         func_80035248(segment, mtx, mvtx);
         Model_OffsetVertexHeights(segment, mvtx, model->position.y * -10.0f);
-        func_80034348(segment, mvtx);
+        SandshrewGame_Update(segment, mvtx);
         func_80035FA8(segment, mvtx);
         break;
     case 10:
@@ -1588,29 +1588,29 @@ void Model_DrawPrepared(StadiumModel* model, MtxF* mtx) {
         break;
     case 1:
         func_80035248(segment, mtx, mvtx);
-        func_80034348(segment, mvtx);
+        SandshrewGame_Update(segment, mvtx);
         func_80035FA8(segment, mvtx);
         break;
     case 2:
         func_80035248(segment, mtx, mvtx);
         Model_OffsetVertexHeights(segment, mvtx, model->position.y * -10.0f);
-        func_80034348(segment, mvtx);
+        SandshrewGame_Update(segment, mvtx);
         func_80035FA8(segment, mvtx);
         break;
     case 5:
         func_80035248(segment, mtx, mvtx);
-        func_80034348(segment, mvtx);
+        SandshrewGame_Update(segment, mvtx);
         func_80035FA8(segment, mvtx);
         break;
     case 6:
         func_80035248(segment, mtx, mvtx);
-        func_80034348(segment, mvtx);
+        SandshrewGame_Update(segment, mvtx);
         func_80035FA8(segment, mvtx);
         break;
     case 9:
         func_80035248(segment, mtx, mvtx);
         Model_ApplyVertexTransforms(model);
-        func_80034348(segment, mvtx);
+        SandshrewGame_Update(segment, mvtx);
         break;
     default:
         return;

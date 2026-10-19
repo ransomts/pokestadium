@@ -35,7 +35,7 @@ typedef struct QualifyingSpeciesWindow {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x10 */ SpeciesPage* unk_10;

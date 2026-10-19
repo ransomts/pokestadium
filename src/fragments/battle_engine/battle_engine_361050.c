@@ -154,7 +154,7 @@ u8 BattleAI_EstimateCriticalHitChance(PokemonAudioInfo* arg0, PokemonAudioInfo* 
 u16 BattleAI_ApplyMoveEffectDamageOverride(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1) {
     s32 var_v0;
 
-    switch (gAiCurrentMove.unk_01) {
+    switch (gAiCurrentMove.TrainerSlotSaveData_GamePort) {
         case 38:
             break;
 
@@ -219,7 +219,7 @@ void BattleAI_ApplyTypeEffectAndStab(PokemonAudioInfo* arg0, PokemonAudioInfo* a
 
         var_v0 = gTypeEffectivenessTable;
         while (var_v0->posX != 0xFF) {
-            if ((var_v0->posX == tmp3) && ((var_v0->unk_01 == tmp11) || (var_v0->unk_01 == tmp21))) {
+            if ((var_v0->posX == tmp3) && ((var_v0->TrainerSlotSaveData_GamePort == tmp11) || (var_v0->TrainerSlotSaveData_GamePort == tmp21))) {
                 gAiCurrentDamage = (gAiCurrentDamage * var_v0->posY) / 10;
             }
             var_v0++;
@@ -231,7 +231,7 @@ void BattleAI_PrepareDamageCalcState(PokemonAudioInfo* arg0, PokemonAudioInfo* a
     MoveBattleData* temp_v0 = &gMoveData[arg2 - 1];
 
     gAiCurrentMove.posX = temp_v0->posX;
-    gAiCurrentMove.unk_01 = temp_v0->unk_01;
+    gAiCurrentMove.TrainerSlotSaveData_GamePort = temp_v0->TrainerSlotSaveData_GamePort;
     gAiCurrentMove.posY = temp_v0->posY;
     gAiCurrentMove.unk_03 = temp_v0->unk_03;
     gAiCurrentMove.rotation = temp_v0->rotation;
@@ -284,7 +284,7 @@ void BattleAI_PrepareDamageCalcState(PokemonAudioInfo* arg0, PokemonAudioInfo* a
 }
 
 void BattleAI_CalcDamage(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1) {
-    u8 tmp = gAiCurrentMove.unk_01;
+    u8 tmp = gAiCurrentMove.TrainerSlotSaveData_GamePort;
 
     if (tmp == 7) {
         gAiDefenseStat >>= 1;
@@ -483,7 +483,7 @@ f32 Battle_GetTypeEffectiveness(u8 arg0, PokemonAudioInfo* arg1) {
     f32 var_fv1 = 1.0f;
 
     while (var_v0->posX != 0xFF) {
-        if ((var_v0->posX == arg0) && ((var_v0->unk_01 == temp_v1) || (var_v0->unk_01 == temp_a2))) {
+        if ((var_v0->posX == arg0) && ((var_v0->TrainerSlotSaveData_GamePort == temp_v1) || (var_v0->TrainerSlotSaveData_GamePort == temp_a2))) {
             var_fv1 *= var_v0->posY / 10.0f;
         }
         var_v0++;
@@ -501,7 +501,7 @@ s32 BattleAI_AllCandidatesResistType(u8 arg0, BattleAI_TeamState* arg1) {
 
     for (i = 0; i < arg1->posX; i++) {
         if (i) {
-            var_s0 = arg1->unk_01[0];
+            var_s0 = arg1->TrainerSlotSaveData_GamePort[0];
         } else {
             var_s0 = 0;
         }
@@ -509,7 +509,7 @@ s32 BattleAI_AllCandidatesResistType(u8 arg0, BattleAI_TeamState* arg1) {
         if (arg1->rotation[i] == arg1->unk_07[i]) {
             var_a0 = arg1->rotation[i];
         } else {
-            var_a0 = arg1->unk_01[i];
+            var_a0 = arg1->TrainerSlotSaveData_GamePort[i];
         }
 
         end = (s32)var_a0 + var_s0;
@@ -570,7 +570,7 @@ s32 BattleAI_HasCandidateStatusMask(BattleAI_TeamState* arg0, u8 arg1) {
     u8 var_a1;
 
     for (i = 0; i < arg0->posX; i++) {
-        var_a1 = (i) ? arg0->unk_01[0] : 0;
+        var_a1 = (i) ? arg0->TrainerSlotSaveData_GamePort[0] : 0;
 
         end = arg0->rotation[i] + var_a1;
 
@@ -609,12 +609,12 @@ u8 BattleAI_ClassifyMoveAvailability(BattleAI_MonData* arg0, BattleAI_MonData* a
     temp_v0 = BattleAI_FindSpeciesIndex(sp30->unk_0B);
 
     for (i = 0; i < 4; i++) {
-        if ((arg1->unk_01 | (arg1->unk_01 >> 4)) & (1 << i) && (arg2 == sp30->unk_1F[i])) {
+        if ((arg1->TrainerSlotSaveData_GamePort | (arg1->TrainerSlotSaveData_GamePort >> 4)) & (1 << i) && (arg2 == sp30->unk_1F[i])) {
             return 2;
         }
     }
 
-    if (((arg1->unk_01 | (arg1->unk_01 >> 4)) ^ 0xF) != 0) {
+    if (((arg1->TrainerSlotSaveData_GamePort | (arg1->TrainerSlotSaveData_GamePort >> 4)) ^ 0xF) != 0) {
         for (i = 0; i < 4; i++) {
             if (arg2 == gSpeciesBaseStats[sp30->unk_0B - 1].unk_0A[i]) {
                 return 1;
@@ -624,7 +624,7 @@ u8 BattleAI_ClassifyMoveAvailability(BattleAI_MonData* arg0, BattleAI_MonData* a
                 return 1;
             }
 
-            if ((gAnimExtraDataByPlayer[sp36]->unk_01 != 0) && (arg2 == gSpeciesBaseStats[gAnimExtraDataByPlayer[sp36]->unk_01 - 1].unk_0A[i])) {
+            if ((gAnimExtraDataByPlayer[sp36]->TrainerSlotSaveData_GamePort != 0) && (arg2 == gSpeciesBaseStats[gAnimExtraDataByPlayer[sp36]->TrainerSlotSaveData_GamePort - 1].unk_0A[i])) {
                 return 1;
             }
         }
@@ -905,12 +905,12 @@ u8 BattleAI_SelectBestHeuristicCandidate(BattleAI_MonData* arg0, BattleAI_TeamSt
     var_s4 = 0;
 
     for (i = 0; i < arg1->posX; i++) {
-        var_v0 = (i != 0) ? arg1->unk_01[0] : 0;
+        var_v0 = (i != 0) ? arg1->TrainerSlotSaveData_GamePort[0] : 0;
 
         if (arg1->rotation[i] == arg1->unk_07[i]) {
             var_a0 = arg1->rotation[i];
         } else {
-            var_a0 = arg1->unk_01[i];
+            var_a0 = arg1->TrainerSlotSaveData_GamePort[i];
         }
 
         for (j = var_v0; j < var_a0 + var_v0; j++) {
@@ -1018,7 +1018,7 @@ u8 BattleAI_HasExactlyOneUsableCandidate(BattleAI_TeamState* arg0) {
 
     for (i = 0; i < arg0->posX; i++) {
         if (i) {
-            var_a2 = arg0->unk_01[0];
+            var_a2 = arg0->TrainerSlotSaveData_GamePort[0];
         } else {
             var_a2 = 0;
         }
@@ -1097,8 +1097,8 @@ void BattleAI_UpdateRememberedMoveCandidate(BattleAI_MonData* arg0, u8 arg1) {
         if (!(arg0->unk_12.unk_15 & 7) && !(arg0->unk_12.unk_15 & 0x20) && !(arg0->unk_12.statusFlags2 & 0x20)) {
             if (gMoveData[sp2F - 1].posY != 0) {
                 if (Battle_GetTypeEffectiveness(gMoveData[sp2F - 1].unk_03, &arg0->unk_12) != 0.0f) {
-                    if ((gMoveData[sp2F - 1].unk_01 != 7) && (gMoveData[sp2F - 1].unk_01 != 0x26) &&
-                        (gMoveData[sp2F - 1].unk_01 != 0x28)) {
+                    if ((gMoveData[sp2F - 1].TrainerSlotSaveData_GamePort != 7) && (gMoveData[sp2F - 1].TrainerSlotSaveData_GamePort != 0x26) &&
+                        (gMoveData[sp2F - 1].TrainerSlotSaveData_GamePort != 0x28)) {
                         arg0->unk_05[arg1] = sp2F;
                     }
                 }
@@ -1118,7 +1118,7 @@ u16 BattleAI_ScoreMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2) 
         var_v0 = BattleAI_PredictDamage(arg0, arg1, arg2, 1);
     }
 
-    switch (gMoveData[arg2 - 1].unk_01) {
+    switch (gMoveData[arg2 - 1].TrainerSlotSaveData_GamePort) {
         case 0x3:
             if (arg1->statusFlags2 & 0x10) {
                 var_v0 = 0;
@@ -1199,9 +1199,9 @@ void BattleAI_PickBestMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u16* 
         if (1) {}
         temp_v0 = BattleAI_ScoreMove(arg0, arg1, arg4);
 
-        var_a1 = gMoveData[arg4 - 1].unk_01;
+        var_a1 = gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort;
 
-        if (((var_a1 != 0x26) && (gMoveData[arg4 - 1].unk_01 != 7)) || (arg5 == 0)) {
+        if (((var_a1 != 0x26) && (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 7)) || (arg5 == 0)) {
             switch (arg5) {
                 case 1:
                     if ((gMoveData[arg4 - 1].unk_03 < 0xA) && (temp_v0 >= *arg2)) {
@@ -1226,8 +1226,8 @@ void BattleAI_PickBestMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u16* 
 
                 case 10:
                     temp_v0 *= (f32)gMoveData[arg4 - 1].rotation / 255.0;
-                    if ((gMoveData[arg4 - 1].unk_01 != 0x1A) && (gMoveData[arg4 - 1].unk_01 != 0x27) &&
-                        (gMoveData[arg4 - 1].unk_01 != 0x2B) && (gMoveData[arg4 - 1].unk_01 != 0x50) &&
+                    if ((gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x1A) && (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x27) &&
+                        (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x2B) && (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x50) &&
                         (arg0->unk_2E >= arg1->unk_2E)) {
                         temp_v0 *= 2;
                     }
@@ -1240,8 +1240,8 @@ void BattleAI_PickBestMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u16* 
                     break;
 
                 case 12:
-                    if ((gMoveData[arg4 - 1].unk_01 != 0x1A) && (gMoveData[arg4 - 1].unk_01 != 0x27) &&
-                        (gMoveData[arg4 - 1].unk_01 != 0x2B) && (gMoveData[arg4 - 1].unk_01 != 0x50)) {
+                    if ((gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x1A) && (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x27) &&
+                        (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x2B) && (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x50)) {
                         temp_v0 *= 2;
                     }
 
@@ -1253,7 +1253,7 @@ void BattleAI_PickBestMove(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u16* 
                     break;
 
                 case 11:
-                    if ((gMoveData[arg4 - 1].unk_01 == 0x27) || (gMoveData[arg4 - 1].unk_01 == 0x2B)) {
+                    if ((gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort == 0x27) || (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort == 0x2B)) {
                         temp_v0 = 0;
                     }
 
@@ -1344,9 +1344,9 @@ s32 BattleAI_ScoreAllCandidateMoves(BattleAI_MonData* arg0, BattleAI_MonData* ar
     } else if (temp_s2->statusFlags2 & 0x40) {
         *arg2 = 0x63;
         spD6 = BattleAI_ScoreMove(temp_s2, &arg1->unk_12, 0x63);
-    } else if (((arg0->unk_01 | (arg0->unk_01 >> 4)) ^ 0xF) != 0) {
+    } else if (((arg0->TrainerSlotSaveData_GamePort | (arg0->TrainerSlotSaveData_GamePort >> 4)) ^ 0xF) != 0) {
         for (i = 0; i < 4; i++) {
-            if ((arg0->unk_01 | (arg0->unk_01 >> 4)) & (1 << i)) {
+            if ((arg0->TrainerSlotSaveData_GamePort | (arg0->TrainerSlotSaveData_GamePort >> 4)) & (1 << i)) {
                 BattleAI_PickBestMove(temp_s2, &arg1->unk_12, &spD6, arg2, temp_s2->unk_1F[i], arg3);
             }
         }
@@ -1374,8 +1374,8 @@ s32 BattleAI_ScoreAllCandidateMoves(BattleAI_MonData* arg0, BattleAI_MonData* ar
                 }
             }
 
-            if (gAnimExtraDataByPlayer[var_v0_2]->unk_01 != 0) {
-                for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[gAnimExtraDataByPlayer[var_v0_2]->unk_01 - 1].unk_0A[i]) != 0; i++) {
+            if (gAnimExtraDataByPlayer[var_v0_2]->TrainerSlotSaveData_GamePort != 0) {
+                for (i = 0; i < 4 && (tmp = gSpeciesBaseStats[gAnimExtraDataByPlayer[var_v0_2]->TrainerSlotSaveData_GamePort - 1].unk_0A[i]) != 0; i++) {
                     BattleAI_PickBestMove(temp_s2, &arg1->unk_12, &spD6, arg2, tmp, arg3);
                 }
             }
@@ -1443,12 +1443,12 @@ u8 BattleAI_CalcStagedMovePower(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, 
         var_a3 = 0xFF;
     }
 
-    var_t0 = (var_a3 * var_a0[tmp1 - 1].posX) / var_a0[tmp1 - 1].unk_01;
+    var_t0 = (var_a3 * var_a0[tmp1 - 1].posX) / var_a0[tmp1 - 1].TrainerSlotSaveData_GamePort;
     if (var_t0 == 0) {
         var_t0 = 1;
     }
 
-    var_t0 = (var_t0 * var_a0[tmp2 - 1].posX) / var_a0[tmp2 - 1].unk_01;
+    var_t0 = (var_t0 * var_a0[tmp2 - 1].posX) / var_a0[tmp2 - 1].TrainerSlotSaveData_GamePort;
     if ((gBattleRuleFlags[0] == 1) && (arg2 == 0x81)) {
         var_t0 = 0xFF;
     }
@@ -1573,7 +1573,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
         spFB = BattleAI_CalcStagedMovePower(var_s0, var_s3, var_s2->posX, 1);
         var_s2->posY = BattleAI_EstimateCriticalHitChance(var_s0, var_s3, var_s2->posX);
 
-        var_s2->unk_03 = gMoveData[var_s2->posX - 1].unk_01;
+        var_s2->unk_03 = gMoveData[var_s2->posX - 1].TrainerSlotSaveData_GamePort;
         var_s2->unk_16 = 0;
         var_s2->rotation = 0xFF;
         var_s2->unk_0E = var_s2->unk_16;
@@ -1592,8 +1592,8 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
 
         if (((gBattleAI_ForceRandom != 0) && (arg2 == 0)) || ((var_s3->unk_15 & 7) != 0) ||
             ((var_s0->unk_4C & 0x20) && (var_s0->multiTurnCounter != 0)) ||
-            ((var_s3->unk_15 & 0x20) && (gMoveData[var_s2->posX - 1].unk_01 != 4) &&
-             (gMoveData[var_s2->posX - 1].unk_01 != 0x22))) {
+            ((var_s3->unk_15 & 0x20) && (gMoveData[var_s2->posX - 1].TrainerSlotSaveData_GamePort != 4) &&
+             (gMoveData[var_s2->posX - 1].TrainerSlotSaveData_GamePort != 0x22))) {
             var_s4 = 0;
             sp102 = 0;
         }
@@ -1611,7 +1611,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
             }
         }
 
-        switch (gMoveData[var_s2->posX - 1].unk_01) {
+        switch (gMoveData[var_s2->posX - 1].TrainerSlotSaveData_GamePort) {
             case 0x0:
                 switch (var_s2->posX) {
                     case 0x44:
@@ -2097,7 +2097,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
         }
 
         var_s2->unk_0A = var_s1;
-        var_s2->unk_01 = spFB;
+        var_s2->TrainerSlotSaveData_GamePort = spFB;
         var_s2->unk_0C = BattleAI_ScaleSignedRatio(var_s1, var_s3->unk_0C);
         var_s2->unk_10 = BattleAI_ScaleSignedRatio(var_s2->unk_0E, var_s3->unk_0C);
         var_s2->unk_05 = spF7;
@@ -2109,7 +2109,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
         var_s2->unk_1C = BattleAI_ScaleSignedRatio(var_s7, var_s0->unk_0C);
         var_s2->unk_07 = arg3;
         var_s2->unk_1E = sp102;
-        var_s2->unk_08 = spF9;
+        var_s2->RentalSlotAnimData_PosePhase = spF9;
         var_s2->unk_20 = BattleAI_ScaleSignedRatio(sp102, spFC);
 
         if ((var_s2->unk_0C + var_s2->unk_10) >= 0x100) {
@@ -2128,7 +2128,7 @@ s32 BattleAI_HasScoredMoveAtValue(MoveCandidateScore* arg0, u8 arg1, u8 arg2) {
     u8 i;
 
     for (i = 0; i < arg1; i++) {
-        if ((arg2 == arg0[i].unk_0C) && (gMoveData[arg0[i].posX - 1].unk_01 != 0x26)) {
+        if ((arg2 == arg0[i].unk_0C) && (gMoveData[arg0[i].posX - 1].TrainerSlotSaveData_GamePort != 0x26)) {
             return 1;
         }
     }
@@ -2141,7 +2141,7 @@ s32 BattleAI_IsCandidateScoreBelowPeers(MoveCandidateScore* arg0, u8 arg1, u8 ar
     s32 var_v1 = 0;
 
     for (i = 0; i < arg2; i++) {
-        if ((arg3 < arg0[i].unk_0C) && (gMoveData[arg0[i].posX - 1].unk_01 != 0x26)) {
+        if ((arg3 < arg0[i].unk_0C) && (gMoveData[arg0[i].posX - 1].TrainerSlotSaveData_GamePort != 0x26)) {
             var_v1 = 1;
         }
     }
@@ -2166,7 +2166,7 @@ u8 BattleAI_HasOtherCandidateAtLeastScore(MoveCandidateScore* arg0, u8 arg1, u8 
 
     for (i = 0; i < arg2; i++) {
         if (i != arg1) {
-            if ((arg0[i].unk_0C >= arg3) && (gMoveData[arg0[i].posX - 1].unk_01 != 0x26)) {
+            if ((arg0[i].unk_0C >= arg3) && (gMoveData[arg0[i].posX - 1].TrainerSlotSaveData_GamePort != 0x26)) {
                 var_v1 = 1;
             }
         }
@@ -2227,16 +2227,16 @@ u8 BattleAI_HasOtherCandidateAtLeastScore(MoveCandidateScore* arg0, u8 arg1, u8 
 // ORDER only (target: 0x64 spBA copy and 0x68 unk_0A copy in case 0x5C, 0x6C temp_t0, 0x70 the
 // spB6 copy at ~instr 2470, 0x78 sp78, 0x80 arg2 bound; ours: 0x64 temp_t0, 0x68 spB7/spB6 copies
 // shared, 0x70 sp78, 0x74 spBA copy, 0x7C arg2 bound) and spC0 vs var_s2 (target spills spC0
-// (unk_06, t1) to 0xC0 and keeps unk_08 in s2; ours puts spC0 in s2 and spills var_s2 to 0xE8).
-// Tried for that: swapping the unk_06/unk_08 store order, reading temp_s7->unk_06/08 back in the
+// (unk_06, t1) to 0xC0 and keeps RentalSlotAnimData_PosePhase in s2; ours puts spC0 in s2 and spills var_s2 to 0xE8).
+// Tried for that: swapping the unk_06/RentalSlotAnimData_PosePhase store order, reading temp_s7->unk_06/08 back in the
 // float expression (all worse). `var_s1 += (spB7 * a) + (spB6 * b);` is two statements in all four
 // places (target: addu s1,a0,x then addu s1,s1,y): 10424 -> 9079. Case 0x39 had a semantic
 // bug: with unk_0B == 0x84 but !(unk_4E & 8) the target breaks (else-break added; `!= 0x84`).
 // The unk_20 product is its own statement like tmp1..tmp6 (target loads unk_20 with the others);
 // with no slot left for a tmp7 it reuses a spare s32 (now var_s2; 9074 -> 8919).
 // Prologue matches with the field reads in the order 09 0E 0A 0B 0C 0D 0F 10 (8919 -> 8639).
-// The unk_08 clamp result is var_v1_6 (case 0x39 flag is var_v1_4: v1): spC0 then lives in t1 (spilled to
-// 0xC0) and the unk_08 value in s2, as in the target (8639 -> 8349).
+// The RentalSlotAnimData_PosePhase clamp result is var_v1_6 (case 0x39 flag is var_v1_4: v1): spC0 then lives in t1 (spilled to
+// 0xC0) and the RentalSlotAnimData_PosePhase value in s2, as in the target (8639 -> 8349).
 // The unk_0A copy for the last two uses in the 0x5C block (`spC0 = temp_t0;` just before the
 // multiply) and var_s2 for the unk_20 product (8349 -> 8029). var_s5 must stay u8: as s32 it
 // takes the copy into s5 like the target but loses the `move s2,s5` copies in case 0x34. The
@@ -2254,9 +2254,9 @@ u8 BattleAI_HasOtherCandidateAtLeastScore(MoveCandidateScore* arg0, u8 arg1, u8 
 //   unk_0A value (spill 0x68 -> reload into s5) and spBA (spill 0x64); draft CSEs spB7 into v1/0x68
 //   and reloads unk_0A from its slot. Dead ends: var_s5/var_v1_6 = temp_t0 copies, operand order
 //   flips, one combined expression, using spB7 directly (34173!).
-// - end-of-loop block: its t-registers (unk_01 t5 / sp58 t9 in the target; every `break` delay
+// - end-of-loop block: its t-registers (TrainerSlotSaveData_GamePort t5 / sp58 t9 in the target; every `break` delay
 //   slot copies its first load) follow the rotation left by the last case, so they are not a
-//   separate problem. spC0/unk_08 (t1/s2) fixed in round 8. Clamp rewrites (operand order,
+//   separate problem. spC0/RentalSlotAnimData_PosePhase (t1/s2) fixed in round 8. Clamp rewrites (operand order,
 //   >= 0x100, swapped ternary arms): worse.
 // - spB7's CSE is v0 in the target and v1 in ours in EVERY case (2, 5, 0x19, ...): our 0x5C block
 //   keeps it live across the first call (copy-propagated into the first multiply), which rules out
@@ -3133,7 +3133,7 @@ void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* 
                             }
                         }
 
-                        if (!((((f32)temp_s6->unk_0C) / temp_s6->unk_28) < ((gBattleAI_State->unk_08 + 0x33) / 255.0f))) {
+                        if (!((((f32)temp_s6->unk_0C) / temp_s6->unk_28) < ((gBattleAI_State->RentalSlotAnimData_PosePhase + 0x33) / 255.0f))) {
                             var_s1 += spB6 * 2;
                             if ((BattleAI_HasExactlyOneUsableCandidate(arg1) != 0) && (temp_s4->unk_12.unk_15 & 0x20)) {
                                 var_s1 = 1;
@@ -3207,7 +3207,7 @@ void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* 
                                 if ((temp_s3->unk_2E < temp_s6->unk_2E) ||
                                     ((temp_s6->unk_2E == temp_s3->unk_2E) && (BattleAI_RandomBelowInclusive(1) != 0))) {
                                     if (BattleAI_ScaleSignedRatio(temp_s6->unk_0C - temp_s7->unk_16, temp_s6->unk_28) >=
-                                        (gBattleAI_State->unk_08 + 0x33)) {
+                                        (gBattleAI_State->RentalSlotAnimData_PosePhase + 0x33)) {
                                         if (((((temp_s6->unk_0C - temp_s7->unk_16) - temp_s7->unk_12) -
                                               (((BattleAI_ClassifyMoveAvailability(temp_fp, temp_s4, 0x62) != 0) &&
                                                 (BattleAI_RandomBelowInclusive(1) != 0))
@@ -3220,7 +3220,7 @@ void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* 
                                     var_s1 = (spB6 * 7) + 1;
                                 } else if (BattleAI_ScaleSignedRatio(
                                                (temp_s6->unk_0C - temp_s7->unk_12) - temp_s7->unk_16, temp_s6->unk_28) <
-                                           (gBattleAI_State->unk_08 + 0x33)) {
+                                           (gBattleAI_State->RentalSlotAnimData_PosePhase + 0x33)) {
                                     var_s1 = (spB6 * 7) + 1;
                                 }
                                 break;
@@ -3230,7 +3230,7 @@ void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* 
                                 if ((temp_s3->unk_2E < temp_s6->unk_2E) ||
                                     ((temp_s6->unk_2E == temp_s3->unk_2E) && (BattleAI_RandomBelowInclusive(1) != 0))) {
                                     if ((BattleAI_ScaleSignedRatio(temp_s6->unk_0C - temp_s7->unk_16, temp_s6->unk_28) <
-                                         (gBattleAI_State->unk_08 - 0x33)) ||
+                                         (gBattleAI_State->RentalSlotAnimData_PosePhase - 0x33)) ||
                                         (((((temp_s6->unk_0C - temp_s7->unk_16) - temp_s7->unk_12) -
                                            (((BattleAI_ClassifyMoveAvailability(temp_fp, temp_s4, 0x62) != 0) &&
                                              (BattleAI_RandomBelowInclusive(1) != 0))
@@ -3241,7 +3241,7 @@ void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* 
                                     }
                                 } else {
                                     if (BattleAI_ScaleSignedRatio((temp_s6->unk_0C - temp_s7->unk_12) - temp_s7->unk_16,
-                                                                  temp_s6->unk_28) < (gBattleAI_State->unk_08 - 0x33)) {
+                                                                  temp_s6->unk_28) < (gBattleAI_State->RentalSlotAnimData_PosePhase - 0x33)) {
                                         var_s1 = (spB6 * 7) + 1;
                                     }
                                     if ((BattleAI_FindHeuristicMove(temp_fp, temp_s4, 1, &sp104) == 2) &&
@@ -3463,18 +3463,18 @@ void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* 
                 break;
         }
 
-        var_s0_4 = ((temp_s7->unk_01 + sp58) > 0xFF) ? (0xFF) : (temp_s7->unk_01 + sp58);
+        var_s0_4 = ((temp_s7->TrainerSlotSaveData_GamePort + sp58) > 0xFF) ? (0xFF) : (temp_s7->TrainerSlotSaveData_GamePort + sp58);
         spC0 = ((temp_s7->unk_06 - sp58) < 0) ? (0) : (temp_s7->unk_06 - sp58);
-        var_s2 = ((temp_s7->unk_08 - sp58) < 0) ? (0) : (temp_s7->unk_08 - sp58);
+        var_s2 = ((temp_s7->RentalSlotAnimData_PosePhase - sp58) < 0) ? (0) : (temp_s7->RentalSlotAnimData_PosePhase - sp58);
         if (((temp_s4->unk_03 != 0) && (sp9C->unk_03 < 2)) && (temp_s7->unk_0C < 0xFF)) {
             var_s0_4 *= (BattleAI_RandomBelowInclusive(3) * 0x55) / 255.0f;
         }
         if (((temp_s7->posX == 0x44) && (temp_fp->unk_03 != 0)) && (!(temp_s4->unk_12.unk_4C & 0x80))) {
             var_s0_4 = (BattleAI_RandomBelowInclusive(2) * var_s0_4) / 2;
         }
-        temp_s7->unk_01 = var_s0_4;
+        temp_s7->TrainerSlotSaveData_GamePort = var_s0_4;
         temp_s7->unk_06 = spC0;
-        temp_s7->unk_08 = var_s2;
+        temp_s7->RentalSlotAnimData_PosePhase = var_s2;
         if (((temp_s7->unk_03 >= 0x12) && (temp_s7->unk_03 < 0x1A)) ||
             ((temp_s7->unk_03 >= 0x3A) && (temp_s7->unk_03 < 0x42))) {
             temp_s3 = oppMon;
@@ -3512,8 +3512,8 @@ void BattleAI_ApplyTypeResistance(BattleAI_TeamState* arg0, BattleAI_TeamState* 
                         temp_s7->unk_28 = 0;
                     }
                 } else {
-                    if (((gMoveData[temp_s7->posX - 1].unk_01 != 0x28) &&
-                         (gMoveData[temp_s7->posX - 1].unk_01 != 0x29)) &&
+                    if (((gMoveData[temp_s7->posX - 1].TrainerSlotSaveData_GamePort != 0x28) &&
+                         (gMoveData[temp_s7->posX - 1].TrainerSlotSaveData_GamePort != 0x29)) &&
                         (Battle_GetTypeEffectiveness(gMoveData[temp_s7->posX - 1].unk_03, oppMon) == 0.0f)) {
                         temp_s7->unk_28 = 0;
                     }
@@ -3682,12 +3682,12 @@ void BattleAI_InitTeamContext(BattleAI_TeamContext* arg0, BattleAI_TeamContext* 
     for (i = 0; i < arg2->posX; i++) {
         temp_s7 = sp64[i];
         if (i) {
-            var_v1 = arg2->unk_01[0];
+            var_v1 = arg2->TrainerSlotSaveData_GamePort[0];
         } else {
             var_v1 = 0;
         }
 
-        for (j = 0; j < arg2->unk_01[i]; j++) {
+        for (j = 0; j < arg2->TrainerSlotSaveData_GamePort[i]; j++) {
             sp73 = temp_s7[j].unk_24;
             sp6C = &gSpeciesBaseStats[temp_s7[j].posX.posX - 1];
 
@@ -3714,13 +3714,13 @@ void BattleAI_InitTeamContext(BattleAI_TeamContext* arg0, BattleAI_TeamContext* 
             }
 
             if (!arg3 && (gBattleAI_State->posX & 0x02000000)) {
-                arg2->unk_14[j + var_v1].unk_01 = 0xF0;
+                arg2->unk_14[j + var_v1].TrainerSlotSaveData_GamePort = 0xF0;
             } else {
-                arg2->unk_14[j + var_v1].unk_01 = 0;
+                arg2->unk_14[j + var_v1].TrainerSlotSaveData_GamePort = 0;
             }
 
             if (arg3) {
-                arg2->unk_14[j + var_v1].unk_12.unk_28 = BattleAI_ComputeDifficultyThreshold(sp6C->unk_01, sp73) + sp73 + 5;
+                arg2->unk_14[j + var_v1].unk_12.unk_28 = BattleAI_ComputeDifficultyThreshold(sp6C->TrainerSlotSaveData_GamePort, sp73) + sp73 + 5;
             } else {
                 arg2->unk_14[j + var_v1].unk_12.unk_28 = temp_s7[j].unk_26;
             }
@@ -3878,7 +3878,7 @@ s32 BattleAI_IsCandidateEligible(BattleAI_TeamState* arg0, u8* arg1, u8 arg2, u8
 
 typedef struct unk_func_8437F068_sp28 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } unk_func_8437F068_sp28; // size = 0x2
 
 s32 BattleAI_GroupSharesTypeWeakness(BattleAI_TeamState* arg0, u8* arg1, u8 arg2) {
@@ -3891,7 +3891,7 @@ s32 BattleAI_GroupSharesTypeWeakness(BattleAI_TeamState* arg0, u8* arg1, u8 arg2
 
     for (j = 0; j < arg2; j++) {
         sp28[j].posX = arg0->unk_14[arg1[j]].unk_12.unk_16[6];
-        sp28[j].unk_01 = arg0->unk_14[arg1[j]].unk_12.unk_16[7];
+        sp28[j].TrainerSlotSaveData_GamePort = arg0->unk_14[arg1[j]].unk_12.unk_16[7];
     }
 
     for (i = 0; i < 9; i++) {
@@ -3903,7 +3903,7 @@ s32 BattleAI_GroupSharesTypeWeakness(BattleAI_TeamState* arg0, u8* arg1, u8 arg2
             var_a3 = &gTypeEffectivenessTable[0];
             while (var_a3->posX != 0xFF) {
                 if ((var_a3->posX == i) &&
-                    ((var_a3->unk_01 == sp28[j].posX) || (var_a3->unk_01 == sp28[j].unk_01))) {
+                    ((var_a3->TrainerSlotSaveData_GamePort == sp28[j].posX) || (var_a3->TrainerSlotSaveData_GamePort == sp28[j].TrainerSlotSaveData_GamePort))) {
                     var_fv0 = (var_a3->posY * var_fv0) / 10.0f;
                 }
                 var_a3++;
@@ -3932,7 +3932,7 @@ s32 BattleAI_GroupSharesTypeWeakness(BattleAI_TeamState* arg0, u8* arg1, u8 arg2
             var_a3 = &gTypeEffectivenessTable[0];
             while (var_a3->posX != 0xFF) {
                 if ((var_a3->posX == i) &&
-                    ((var_a3->unk_01 == sp28[j].posX) || (var_a3->unk_01 == sp28[j].unk_01))) {
+                    ((var_a3->TrainerSlotSaveData_GamePort == sp28[j].posX) || (var_a3->TrainerSlotSaveData_GamePort == sp28[j].TrainerSlotSaveData_GamePort))) {
                     var_fv0 = (var_a3->posY * var_fv0) / 10.0f;
                 }
                 var_a3++;
@@ -3983,8 +3983,8 @@ s32 BattleAI_ScoreAllTeamCandidates(BattleAI_TeamState* arg0, BattleAI_TeamState
     sp12C = 0x80000002;
 
     for (i = 0; i < arg0->posX; i++) {
-        sp13E = (i) ? arg0->unk_01[0] : 0;
-        sp5C = arg0->unk_01[i] + sp13E;
+        sp13E = (i) ? arg0->TrainerSlotSaveData_GamePort[0] : 0;
+        sp5C = arg0->TrainerSlotSaveData_GamePort[i] + sp13E;
 
         for (j = sp13E; j < sp5C; j++) {
             temp_s7 = &arg0->unk_14[j];
@@ -4020,8 +4020,8 @@ s32 BattleAI_ScoreAllTeamCandidates(BattleAI_TeamState* arg0, BattleAI_TeamState
                 }
             } else {
                 for (k = 0; k < arg1->posX; k++) {
-                    var_v1_2 = (k) ? arg1->unk_01[0] : 0;
-                    temp_fp = arg1->unk_01[k] + var_v1_2;
+                    var_v1_2 = (k) ? arg1->TrainerSlotSaveData_GamePort[0] : 0;
+                    temp_fp = arg1->TrainerSlotSaveData_GamePort[k] + var_v1_2;
 
                     for (tmp = var_v1_2; tmp < temp_fp; tmp++) {
                         arg1->unk_10 = tmp;
@@ -4169,7 +4169,7 @@ s32 BattleAI_SelectRandomUsableCandidate(BattleAI_TeamState* arg0) {
     do {
         var_v1 = BattleAI_RandomBelowInclusive(arg0->unk_06 - 1);
         if (arg0->rotation[0] < var_v1) {
-            var_v1 += arg0->unk_01[0];
+            var_v1 += arg0->TrainerSlotSaveData_GamePort[0];
         }
     } while (arg0->unk_14[var_v1].unk_12.unk_0C <= 0 || var_v1 == arg0->unk_10);
 
@@ -4234,7 +4234,7 @@ s32 BattleAI_SelectTeamOrder(BattleAI_TeamState* arg0, u8* arg1, s32* arg2, u8 a
         }
 
         if (i) {
-            var_a3 = arg0->unk_01[0];
+            var_a3 = arg0->TrainerSlotSaveData_GamePort[0];
         } else {
             var_a3 = 0;
         }
@@ -4245,13 +4245,13 @@ s32 BattleAI_SelectTeamOrder(BattleAI_TeamState* arg0, u8* arg1, s32* arg2, u8 a
 
         sp5C = arg0->rotation[i];
 
-        if (sp5C < arg0->unk_01[i]) {
+        if (sp5C < arg0->TrainerSlotSaveData_GamePort[i]) {
             if (sp5C != 3) {
                 continue;
             }
             if (1) {
                 var_s2 = 0;
-                temp_v0_2 = arg0->unk_01[i] + var_a3;
+                temp_v0_2 = arg0->TrainerSlotSaveData_GamePort[i] + var_a3;
 
                 for (j = var_a3; j < temp_v0_2 - 2; j++) {
                     for (k = j + 1; k < temp_v0_2 - 1; k++) {
@@ -4306,7 +4306,7 @@ s32 BattleAI_SelectTeamOrder(BattleAI_TeamState* arg0, u8* arg1, s32* arg2, u8 a
                 }
             }
         } else {
-            for (j = 0; j < arg0->unk_01[i]; j++) {
+            for (j = 0; j < arg0->TrainerSlotSaveData_GamePort[i]; j++) {
                 arg1[j + spBA] = j + var_a3;
             }
             sp76 = 1;
@@ -4456,7 +4456,7 @@ void BattleAI_UpdateTeamAdvantageBias(void) {
 
     for (i = 0; i < gBattleAI_MonContext->posX; i++) {
         if (i != 0) {
-            var_t0 = gBattleAI_MonContext->unk_01[0];
+            var_t0 = gBattleAI_MonContext->TrainerSlotSaveData_GamePort[0];
         } else {
             var_t0 = 0;
         }
@@ -4471,7 +4471,7 @@ void BattleAI_UpdateTeamAdvantageBias(void) {
 
     for (i = 0; i < gBattleAI_TypeResistance->posX; i++) {
         if (i != 0) {
-            var_t0 = gBattleAI_TypeResistance->unk_01[0];
+            var_t0 = gBattleAI_TypeResistance->TrainerSlotSaveData_GamePort[0];
         } else {
             var_t0 = 0;
         }
@@ -4522,12 +4522,12 @@ u8 BattleAI_SelectBestSwitchCandidateIndex(BattleAI_TeamState* arg0, BattleAI_Te
     var_fs1 = -3.4028235e38f;
 
     for (i = 0; i < arg0->posX; i++) {
-        var_a1 = i ? arg0->unk_01[0] : 0;
+        var_a1 = i ? arg0->TrainerSlotSaveData_GamePort[0] : 0;
 
         if (arg0->rotation[i] == arg0->unk_07[i]) {
             var_a0 = arg0->rotation[i];
         } else {
-            var_a0 = arg0->unk_01[i];
+            var_a0 = arg0->TrainerSlotSaveData_GamePort[i];
         }
 
         for (j = var_a1; j < var_a0 + var_a1; j++) {
@@ -4537,7 +4537,7 @@ u8 BattleAI_SelectBestSwitchCandidateIndex(BattleAI_TeamState* arg0, BattleAI_Te
                 (!(arg0->unk_14[j].unk_12.unk_15 & 0x20) || (BattleAI_HasExactlyOneUsableCandidate(arg0) != 0))) {
                 for (k = 0; k < arg1->posX; k++) {
                     if (k) {
-                        var_a2 = arg1->unk_01[0];
+                        var_a2 = arg1->TrainerSlotSaveData_GamePort[0];
                     } else {
                         var_a2 = 0;
                     }
@@ -4545,7 +4545,7 @@ u8 BattleAI_SelectBestSwitchCandidateIndex(BattleAI_TeamState* arg0, BattleAI_Te
                     if (arg1->rotation[k] == arg1->unk_07[k]) {
                         sp90 = arg1->rotation[k];
                     } else {
-                        sp90 = arg1->unk_01[k];
+                        sp90 = arg1->TrainerSlotSaveData_GamePort[k];
                     }
 
                     for (l = var_a2; l < sp90 + var_a2; l++) {
@@ -4592,12 +4592,12 @@ u8 BattleAI_SelectBestAttackTargetIndex(BattleAI_MonData* arg0, s32* arg1, s32* 
     *arg1 = 0;
 
     for (i = 0; i < arg3->posX; i++) {
-        var_a1 = (i) ? arg3->unk_01[0] : 0;
+        var_a1 = (i) ? arg3->TrainerSlotSaveData_GamePort[0] : 0;
 
         if (arg3->rotation[i] == arg3->unk_07[i]) {
             var_a0 = arg3->rotation[i];
         } else {
-            var_a0 = arg3->unk_01[i];
+            var_a0 = arg3->TrainerSlotSaveData_GamePort[i];
         }
         temp_v1_2 = var_a1 + (0, var_a0);
 
@@ -4636,7 +4636,7 @@ u8 BattleAI_SelectBestAttackTargetIndex(BattleAI_MonData* arg0, s32* arg1, s32* 
 
                 if (ptr->unk_15 & 0x20) {
                     var_s1 = 0;
-                    if ((gMoveData[arg4 - 1].unk_01 != 4) && (gMoveData[arg4 - 1].unk_01 != 0x22)) {
+                    if ((gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 4) && (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort != 0x22)) {
                         var_s3 = ptr->unk_0C;
                     }
                 }
@@ -4648,8 +4648,8 @@ u8 BattleAI_SelectBestAttackTargetIndex(BattleAI_MonData* arg0, s32* arg1, s32* 
                     var_s1_2 = 0;
                 }
 
-                if ((!(ptr->unk_15 & 0x20) || (gMoveData[arg4 - 1].unk_01 == 4) ||
-                     (gMoveData[arg4 - 1].unk_01 == 0x22)) &&
+                if ((!(ptr->unk_15 & 0x20) || (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort == 4) ||
+                     (gMoveData[arg4 - 1].TrainerSlotSaveData_GamePort == 0x22)) &&
                     ((sp70 < (var_s1_2 - temp_v0_2)) ||
                      ((sp70 == (var_s1_2 - temp_v0_2)) && (BattleAI_RandomBelowInclusive(1) != 0)))) {
                     sp70 = var_s1_2 - temp_v0_2;
@@ -4702,8 +4702,8 @@ s32 BattleAI_ComputeAttackTargetScore(BattleAI_TargetScoreContext* arg0) {
     s32 temp_ft4;
 
     temp_ft4 =
-        (((((sp40 + sp2C + sp38) * (temp_s0->unk_01 / 255.0f)) + sp3C) - (sp34 * (temp_s0->unk_06 / 255.0f))) - sp30) -
-        ((temp_v0_2 * temp_s1) * (temp_s0->unk_08 / 255.0f));
+        (((((sp40 + sp2C + sp38) * (temp_s0->TrainerSlotSaveData_GamePort / 255.0f)) + sp3C) - (sp34 * (temp_s0->unk_06 / 255.0f))) - sp30) -
+        ((temp_v0_2 * temp_s1) * (temp_s0->RentalSlotAnimData_PosePhase / 255.0f));
     if (temp_ft4 >= 0) {
         var_a0 = temp_ft4;
     } else {
@@ -4774,7 +4774,7 @@ s32 BattleAI_ScoreAttackOptionDoubles(BattleAI_MonData* arg0, BattleAI_MonData* 
     var_s2 = 0x80000002;
 
     for (i = 0; i < arg2->posX; i++) {
-        var_v1 = (i) ? arg2->unk_01[0] : 0;
+        var_v1 = (i) ? arg2->TrainerSlotSaveData_GamePort[0] : 0;
         temp_s4 = arg2->rotation[i] + var_v1;
 
         for (j = var_v1; j < temp_s4; j++) {
@@ -4849,12 +4849,12 @@ u8 BattleAI_ScoreAttackVsSwitch(BattleAI_MonData* arg0, BattleAI_MonData* arg1, 
                 sp6C += BattleAI_ScoreCategorySetLowPP(arg0, arg1) * 0x64;
                 sp6C += 0x1A;
             } else {
-                if ((BattleAI_ScaleSignedRatio(sp40->unk_0C, sp40->unk_28) < gBattleAI_State->unk_08) &&
+                if ((BattleAI_ScaleSignedRatio(sp40->unk_0C, sp40->unk_28) < gBattleAI_State->RentalSlotAnimData_PosePhase) &&
                     (!(gBattleAI_State->posX & 0x400000) ||
                      ((arg5 != NULL) && (arg5[*arg4].rotation[arg5[*arg4].unk_B4].unk_1E == 0)))) {
                     if (gBattleAI_State->posX & 0x200) {
                         sp4C = 1;
-                    } else if (gBattleAI_State->unk_08 <
+                    } else if (gBattleAI_State->RentalSlotAnimData_PosePhase <
                                BattleAI_ScaleSignedRatio(arg2->unk_14[*arg4].unk_12.unk_0C, arg2->unk_14[*arg4].unk_12.unk_28)) {
                         sp6C += 0x64;
                     }
@@ -4948,7 +4948,7 @@ u8 BattleAI_ScoreAttackVsSwitch(BattleAI_MonData* arg0, BattleAI_MonData* arg1, 
 }
 
 u16 BattleAI_ApplyStatStageModifier(u16* arg0, u16 arg1, u8 arg2) {
-    *arg0 = (arg1 * gStatStageMultipliers[arg2 - 1].posX) / gStatStageMultipliers[arg2 - 1].unk_01;
+    *arg0 = (arg1 * gStatStageMultipliers[arg2 - 1].posX) / gStatStageMultipliers[arg2 - 1].TrainerSlotSaveData_GamePort;
 
     if (*arg0 == 0) {
         *arg0 = 1;
@@ -5071,7 +5071,7 @@ u8 BattleAI_DecideFinalAction(BattleAI_TargetScoreContext* arg0) {
 
     sp38 = BattleAI_ScoreAttackVsSwitch(gBattleAI_PlayerMon, gBattleAI_OpponentMon, gBattleAI_MonContext, gBattleAI_TypeResistance, &sp3E, arg0);
     gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].posX = sp38;
-    gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].unk_01 = sp3E;
+    gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].TrainerSlotSaveData_GamePort = sp3E;
 
     if ((BattleAI_RandomBelowInclusive(0xFE) < sp38) && (sp3E != gBattleAI_MonContext->unk_10)) {
         return sp3E + 4;
@@ -5107,19 +5107,19 @@ s32 BattleAI_ResolveTiedActionChoice(s32 arg0) {
     var_fp = BattleAI_SelectRandomUsableMoveSlot(gBattleAIStatsContext);
     BattleAI_SelectRandomUsableCandidate(gBattleAI_MonContext);
 
-    if (gBattleAI_MoveScores[0].unk_01 == gBattleAI_MoveScores[1].unk_01) {
+    if (gBattleAI_MoveScores[0].TrainerSlotSaveData_GamePort == gBattleAI_MoveScores[1].TrainerSlotSaveData_GamePort) {
         var_v0_2 = gBattleAI_MoveScores[1].posX * arg0;
         var_s6 = max - arg0;
         var_a0 = gBattleAI_MoveScores[0].posX * var_s6;
-        sp5E = gBattleAI_MoveScores[0].unk_01;
+        sp5E = gBattleAI_MoveScores[0].TrainerSlotSaveData_GamePort;
     } else {
         var_v0_2 = gBattleAI_MoveScores[1].posX * arg0;
         var_s6 = max - arg0;
         var_a0 = gBattleAI_MoveScores[0].posX * var_s6;
         if (var_v0_2 < var_a0) {
-            sp5E = gBattleAI_MoveScores[0].unk_01;
+            sp5E = gBattleAI_MoveScores[0].TrainerSlotSaveData_GamePort;
         } else {
-            sp5E = gBattleAI_MoveScores[1].unk_01;
+            sp5E = gBattleAI_MoveScores[1].TrainerSlotSaveData_GamePort;
         }
     }
 
@@ -5164,8 +5164,8 @@ s32 BattleAI_MatchesLastMoveCategory(u8 arg0, u8 arg1) {
         return 1;
     }
 
-    if ((IsByteInArray(gMoveData[arg1 - 1].unk_01, gAiMoveList_2, 0x1A) != 0) &&
-        (IsByteInArray(sp18->unk_01, gAiMoveList_2, 0x1A) != 0)) {
+    if ((IsByteInArray(gMoveData[arg1 - 1].TrainerSlotSaveData_GamePort, gAiMoveList_2, 0x1A) != 0) &&
+        (IsByteInArray(sp18->TrainerSlotSaveData_GamePort, gAiMoveList_2, 0x1A) != 0)) {
         return 1;
     }
     return 0;
@@ -5176,7 +5176,7 @@ s32 BattleAI_IsDiscouragedRepeatCategory(u8 arg0, u8 arg1) {
         return 0;
     }
 
-    if (IsByteInArray(gMoveData[arg1 - 1].unk_01, gAiDiscouragedRepeatCategories, 2) != 0) {
+    if (IsByteInArray(gMoveData[arg1 - 1].TrainerSlotSaveData_GamePort, gAiDiscouragedRepeatCategories, 2) != 0) {
         return 1;
     }
     return 0;
@@ -5208,7 +5208,7 @@ s32 BattleAI_IsMoveExcludedForSpecies(PokemonAudioInfo* arg0, s32 arg1, u8 arg2,
             return 0;
         }
 
-        if ((gAnimExtraDataByPlayer[arg2]->unk_01 != 0) && (arg3 == gSpeciesBaseStats[gAnimExtraDataByPlayer[arg2]->unk_01 - 1].unk_0A[i])) {
+        if ((gAnimExtraDataByPlayer[arg2]->TrainerSlotSaveData_GamePort != 0) && (arg3 == gSpeciesBaseStats[gAnimExtraDataByPlayer[arg2]->TrainerSlotSaveData_GamePort - 1].unk_0A[i])) {
             return 0;
         }
     }
@@ -5238,7 +5238,7 @@ s32 BattleAI_IsMoveIneffective(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u
         }
     }
 
-    switch (sp1C->unk_01) {
+    switch (sp1C->TrainerSlotSaveData_GamePort) {
         case 0x0:
             if ((arg2 == 0x62) && (arg1->unk_4C & 0x40)) {
                 sp24 = 1;
@@ -5346,7 +5346,7 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
             var_v1 = 0;
         }
 
-        var_s3->unk_012 = sActivePokemon[i]->animationState.unk_08 + var_v1;
+        var_s3->unk_012 = sActivePokemon[i]->animationState.RentalSlotAnimData_PosePhase + var_v1;
         temp_s0 = &var_s3->unk_016[var_s3->unk_012].unk_12;
 
         temp_s0->unk_0C = temp_s2->unk_0C;
@@ -5370,7 +5370,7 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
         _bcopy(temp_s2->unk_5C, temp_s0->unk_5C, 6);
 
         if ((temp_s2->unk_4E & 8) && (temp_s2->unk_5A == 0x90)) {
-            gBattleAI_ActivePokemon[1 - i].unk_016[gBattleAI_ActivePokemon[1 - i].unk_012].unk_01 = 15;
+            gBattleAI_ActivePokemon[1 - i].unk_016[gBattleAI_ActivePokemon[1 - i].unk_012].TrainerSlotSaveData_GamePort = 15;
 
             temp_s0->unk_2A = temp_s2->unk_2A;
             temp_s0->unk_2C = temp_s2->unk_2C;
@@ -5443,10 +5443,10 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
 
         if (var_a2 == 0) {
             gBattleAI_TypeResistance->unk_0A[gBattleAI_TypeResistance->unk_09] = gBattleAI_TypeResistance->unk_10;
-            if (gBattleAI_TypeResistance->unk_10 < gBattleAI_TypeResistance->unk_01[0]) {
+            if (gBattleAI_TypeResistance->unk_10 < gBattleAI_TypeResistance->TrainerSlotSaveData_GamePort[0]) {
                 gBattleAI_TypeResistance->unk_07[0]++;
             } else {
-                gBattleAI_TypeResistance->unk_08++;
+                gBattleAI_TypeResistance->RentalSlotAnimData_PosePhase++;
             }
             gBattleAI_TypeResistance->unk_09++;
         }
@@ -5454,7 +5454,7 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
 
     for (i = 0; i < gBattleAI_TypeResistance->posX; i++) {
         if (i) {
-            var_v0 = gBattleAI_TypeResistance->unk_01[0];
+            var_v0 = gBattleAI_TypeResistance->TrainerSlotSaveData_GamePort[0];
         } else {
             var_v0 = 0;
         }
@@ -5463,7 +5463,7 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
             temp_v1_5 = j + var_v0;
             var_a2 = 1;
             gBattleAI_TypeResistance->unk_14[temp_v1_5].unk_12.unk_0C =
-                sActivePokemon[1 - gBattleAI_ActivePokemon[0].unk_000]->pokemonAnimation->unk_08[i]->unk_01C[j].posY;
+                sActivePokemon[1 - gBattleAI_ActivePokemon[0].unk_000]->pokemonAnimation->RentalSlotAnimData_PosePhase[i]->unk_01C[j].posY;
             if (gBattleAI_TypeResistance->unk_14[temp_v1_5].unk_12.unk_0C == 0) {
                 var_a2 = 0;
                 for (k = 0; k < gBattleAI_TypeResistance->unk_09; k++) {
@@ -5475,10 +5475,10 @@ void BattleAI_SyncTeamStateFromRuntime(void) {
 
             if (var_a2 == 0) {
                 gBattleAI_TypeResistance->unk_0A[gBattleAI_TypeResistance->unk_09] = temp_v1_5;
-                if (temp_v1_5 < gBattleAI_TypeResistance->unk_01[0]) {
+                if (temp_v1_5 < gBattleAI_TypeResistance->TrainerSlotSaveData_GamePort[0]) {
                     gBattleAI_TypeResistance->unk_07[0]++;
                 } else {
-                    gBattleAI_TypeResistance->unk_08++;
+                    gBattleAI_TypeResistance->RentalSlotAnimData_PosePhase++;
                 }
                 gBattleAI_TypeResistance->unk_09++;
             }
@@ -5524,7 +5524,7 @@ s32 BattleAI_InitializeBattle(BattleAI_TeamContext* arg0, BattleAI_TeamContext* 
         }
         gBattleAI_TypeResistance->unk_09 = gBattleAI_TypeResistance->unk_06;
         gBattleAI_TypeResistance->unk_07[0] = gBattleAI_TypeResistance->rotation[0];
-        gBattleAI_TypeResistance->unk_08 = gBattleAI_TypeResistance->rotation[1];
+        gBattleAI_TypeResistance->RentalSlotAnimData_PosePhase = gBattleAI_TypeResistance->rotation[1];
     } else {
         gBattleAI_TypeResistance->unk_09 = 0;
     }
@@ -5594,7 +5594,7 @@ void BattleAI_RecordUsedMove(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2) {
 
     for (i = 0; i < 4; i++) {
         if (gBattleAI_OpponentMon->posY == gBattleAI_DefaultMon->unk_1F[i]) {
-            gBattleAI_OpponentMon->unk_01 |= 1 << i;
+            gBattleAI_OpponentMon->TrainerSlotSaveData_GamePort |= 1 << i;
             gBattleAI_DefaultMon->unk_32[i]--;
             if (gBattleAI_DefaultMon->unk_32[i] < 0) {
                 gBattleAI_DefaultMon->unk_32[i] = 0;
@@ -5617,7 +5617,7 @@ void BattleAI_RecordUsedMove(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2) {
 
     for (i = 0; i < 4; i++) {
         if (gBattleAI_PlayerMon->posY == gBattleAIStatsContext->unk_1F[i]) {
-            gBattleAI_PlayerMon->unk_01 |= 1 << i;
+            gBattleAI_PlayerMon->TrainerSlotSaveData_GamePort |= 1 << i;
         }
     }
 
@@ -5634,7 +5634,7 @@ void BattleAI_RecordUsedMove(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2) {
             } else {
                 gBattleAI_DefaultMon->unk_3C = gBattleAI_DefaultMon->unk_2E;
             }
-            gBattleAI_DefaultMon->unk_3C = (gBattleAI_DefaultMon->unk_3C * gStatStageMultipliers[gBattleAI_DefaultMon->unk_5C[2] - 1].unk_01) /
+            gBattleAI_DefaultMon->unk_3C = (gBattleAI_DefaultMon->unk_3C * gStatStageMultipliers[gBattleAI_DefaultMon->unk_5C[2] - 1].TrainerSlotSaveData_GamePort) /
                                  gStatStageMultipliers[gBattleAI_DefaultMon->unk_5C[2] - 1].posX;
         }
     }
@@ -5647,7 +5647,7 @@ void BattleAI_RecordUsedMove(UNUSED s32 arg0, UNUSED s32 arg1, s32 arg2) {
             } else {
                 gBattleAI_DefaultMon->unk_3C = gBattleAI_DefaultMon->unk_2E;
             }
-            gBattleAI_DefaultMon->unk_3C = (gBattleAI_DefaultMon->unk_3C * gStatStageMultipliers[gBattleAI_DefaultMon->unk_5C[2] - 1].unk_01) /
+            gBattleAI_DefaultMon->unk_3C = (gBattleAI_DefaultMon->unk_3C * gStatStageMultipliers[gBattleAI_DefaultMon->unk_5C[2] - 1].TrainerSlotSaveData_GamePort) /
                                  gStatStageMultipliers[gBattleAI_DefaultMon->unk_5C[2] - 1].posX;
         }
     }
@@ -5671,10 +5671,10 @@ s32 BattleAI_ChooseAction(UNUSED s32 arg0) {
     BattleAI_TeamContext* sp30;
 
     if (gBattleAI_ActivePokemon[0].unk_001 == 0) {
-        temp_v0 = sActivePokemon[0]->pokemonAnimation->unk_08[0];
-        sp30 = sActivePokemon[1]->pokemonAnimation->unk_08[0];
-        if (sActivePokemon[0]->pokemonAnimation->unk_01 == 2) {
-            temp_v00 = sActivePokemon[0]->pokemonAnimation->unk_08[1];
+        temp_v0 = sActivePokemon[0]->pokemonAnimation->RentalSlotAnimData_PosePhase[0];
+        sp30 = sActivePokemon[1]->pokemonAnimation->RentalSlotAnimData_PosePhase[0];
+        if (sActivePokemon[0]->pokemonAnimation->TrainerSlotSaveData_GamePort == 2) {
+            temp_v00 = sActivePokemon[0]->pokemonAnimation->RentalSlotAnimData_PosePhase[1];
             BattleAI_InitTeamContext(temp_v0, temp_v00, gBattleAI_TypeResistance, 1);
         } else {
             BattleAI_InitTeamContext(temp_v0, NULL, gBattleAI_TypeResistance, 1);
@@ -5690,7 +5690,7 @@ s32 BattleAI_ChooseAction(UNUSED s32 arg0) {
             var_v1 = 0;
         }
 
-        if (gBattleAI_TypeResistance->unk_10 != (sActivePokemon[0]->animationState.unk_08 + var_v1)) {
+        if (gBattleAI_TypeResistance->unk_10 != (sActivePokemon[0]->animationState.RentalSlotAnimData_PosePhase + var_v1)) {
             gAiTurnCounter += 1;
             goto label1;
         }
@@ -5712,9 +5712,9 @@ label1:
         sp44 = BattleAI_DecideAction();
     } else {
         gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].posX = BattleAI_ScoreAttackVsSwitch(gBattleAI_PlayerMon, gBattleAI_OpponentMon, gBattleAI_MonContext, gBattleAI_TypeResistance, &sp3F, 0);
-        gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].unk_01 = sp3F;
+        gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].TrainerSlotSaveData_GamePort = sp3F;
         if (BattleAI_RandomBelowInclusive(0xFE) < gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].posX) {
-            sp44 = gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].unk_01 + 4;
+            sp44 = gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].TrainerSlotSaveData_GamePort + 4;
         } else {
             sp44 = BattleAI_ChooseMoveForCandidate();
         }
@@ -5722,7 +5722,7 @@ label1:
 
     gBattleAI_ForceRandom = 0;
     if ((gBattleAI_DefaultMon->unk_0C != 0) && (gBattleAI_State->posX & 4)) {
-        if ((gBattleAI_State->unk_08 + 0x33) < BattleAI_ScaleSignedRatio(gBattleAIStatsContext->unk_0C, gBattleAIStatsContext->unk_28)) {
+        if ((gBattleAI_State->RentalSlotAnimData_PosePhase + 0x33) < BattleAI_ScaleSignedRatio(gBattleAIStatsContext->unk_0C, gBattleAIStatsContext->unk_28)) {
             sp42 = BattleAI_ScoreAttackVsSwitch(gBattleAI_OpponentMon, gBattleAI_PlayerMon, gBattleAI_TypeResistance, gBattleAI_MonContext, &sp40, 0) >> gAiTurnCounter;
             if (BattleAI_RandomBelowInclusive(0xFE) < sp42) {
                 gBattleAI_TypeResistance->unk_10 = sp40;
@@ -5736,10 +5736,10 @@ label1:
                     // clang-format off
                     sp41 = BattleAI_ScoreAttackVsSwitch(gBattleAI_PlayerMon, gBattleAI_OpponentMon, gBattleAI_MonContext, gBattleAI_TypeResistance, &sp3F, 0); gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].posX = sp41;
                     // clang-format on
-                    gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].unk_01 = sp3F;
+                    gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].TrainerSlotSaveData_GamePort = sp3F;
 
                     if (BattleAI_RandomBelowInclusive(0xFE) < sp41) {
-                        sp44 = gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].unk_01 + 4;
+                        sp44 = gBattleAI_MoveScores[gBattleAI_CurrentMoveCount].TrainerSlotSaveData_GamePort + 4;
                     } else {
                         sp44 = BattleAI_ChooseMoveForCandidate();
                     }

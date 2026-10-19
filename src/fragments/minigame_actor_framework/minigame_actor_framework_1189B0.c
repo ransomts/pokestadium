@@ -160,7 +160,7 @@ void MiniActor_UpdateAnimation(MiniActor* poke) {
                     poke->unk_248++;
                 }
             } else {
-                if (poke->unk_000.unk_040.unk_08 == 0) {
+                if (poke->unk_000.unk_040.RentalSlotAnimData_PosePhase == 0) {
                     poke->unk_248++;
                 }
             }

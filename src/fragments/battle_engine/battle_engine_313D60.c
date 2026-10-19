@@ -342,15 +342,15 @@ u16 BattleScene_IsOwnerInViewWedgeAlt(BattlePlayerEntity* arg0, CameraStruct* ar
 
 void BattleScene_UpdateBothOwnersVisibilityCulling(CameraStruct* arg0) {
     if (BattleScene_IsOwnerInViewWedge(sActivePokemon[0], arg0, sActivePokemon[0], 0x2AA8, 2500.0f) != 0) {
-        sActivePokemon[0]->unk_000.unk_000.unk_01 |= 1;
+        sActivePokemon[0]->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
     } else {
-        sActivePokemon[0]->unk_000.unk_000.unk_01 &= ~1;
+        sActivePokemon[0]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
 
     if (BattleScene_IsOwnerInViewWedge(sActivePokemon[1], arg0, sActivePokemon[1], 0x2AA8, 2500.0f) != 0) {
-        sActivePokemon[1]->unk_000.unk_000.unk_01 |= 1;
+        sActivePokemon[1]->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
     } else {
-        sActivePokemon[1]->unk_000.unk_000.unk_01 &= ~1;
+        sActivePokemon[1]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 
@@ -358,9 +358,9 @@ void BattleScene_UpdateOpponentVisibilityCulling(CameraStruct* arg0) {
     BattlePlayerEntity* sp24 = sActivePokemon[!gBattleScene.posX->unk_2C];
 
     if (BattleScene_IsOwnerInViewWedgeAlt(sp24, arg0, sp24, 0x2AA8, 2500.0f) != 0) {
-        sp24->unk_000.unk_000.unk_01 |= 1;
+        sp24->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
     } else {
-        sp24->unk_000.unk_000.unk_01 &= 0xFFFE;
+        sp24->unk_000.unk_000.TrainerSlotSaveData_GamePort &= 0xFFFE;
     }
 }
 
@@ -368,17 +368,17 @@ void BattleScene_UpdateCameraStateEmpty(void) {
 }
 
 void BattleScene_ShowBothOwners(void) {
-    sActivePokemon[0]->unk_000.unk_000.unk_01 |= 1;
-    sActivePokemon[1]->unk_000.unk_000.unk_01 |= 1;
+    sActivePokemon[0]->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
+    sActivePokemon[1]->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
 }
 
 void BattleScene_HideOpponentOwner(void) {
     Battle_ResetModelToIdleAnim(sActivePokemon[!gBattleScene.posX->unk_2C]);
-    sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+    sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
 }
 
 void BattleScene_HideActiveOwner(void) {
-    sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+    sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     Battle_ResetModelToIdleAnim(sActivePokemon[gBattleScene.posX->unk_2C]);
 }
 
@@ -387,11 +387,11 @@ void BattleScene_HideFaintedOwners(void) {
     BattlePlayerEntity* ptr2 = sActivePokemon[1];
 
     if ((ptr1->animationState.unk_2D == 0x10) || ((ptr1 = sActivePokemon[0])->animationState.unk_2D == 0x13)) {
-        ptr1->unk_000.unk_000.unk_01 &= ~1;
+        ptr1->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
 
     if ((ptr2->animationState.unk_2D == 0x10) || (ptr2->animationState.unk_2D == 0x13)) {
-        ptr2->unk_000.unk_000.unk_01 &= ~1;
+        ptr2->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 
@@ -425,7 +425,7 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
                 case 17:
                 case 18:
                 case 19:
-                    sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                    sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
                     break;
 
                 default:
@@ -457,7 +457,7 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
                             break;
 
                         case 1:
-                            gBattleScene.posX->unk_08 = 0;
+                            gBattleScene.posX->RentalSlotAnimData_PosePhase = 0;
                             if (!(sp40->unk_34 & 0x4400)) {
                                 BattleScene_HideOpponentOwner();
                             }
@@ -484,37 +484,37 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
                                 }
                                 BattleScene_HideActiveOwner();
                             }
-                            gBattleScene.posX->unk_08 = 1;
+                            gBattleScene.posX->RentalSlotAnimData_PosePhase = 1;
                             break;
                     }
                     break;
 
                 case 36:
-                    if (gBattleScene.posX->unk_08 == 1) {
+                    if (gBattleScene.posX->RentalSlotAnimData_PosePhase == 1) {
                         BattleScene_HideOpponentOwner();
-                    } else if (gBattleScene.posX->unk_08 == 2) {
-                        sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                    } else if (gBattleScene.posX->unk_08 == 3) {
-                        sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                    } else if (gBattleScene.posX->unk_08 == 4) {
-                        sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                    } else if (gBattleScene.posX->RentalSlotAnimData_PosePhase == 2) {
+                        sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+                    } else if (gBattleScene.posX->RentalSlotAnimData_PosePhase == 3) {
+                        sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+                    } else if (gBattleScene.posX->RentalSlotAnimData_PosePhase == 4) {
+                        sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
                     }
                     break;
 
                 case 4:
-                    if (gBattleScene.posX->unk_08 == 1) {
+                    if (gBattleScene.posX->RentalSlotAnimData_PosePhase == 1) {
                         BattleScene_HideActiveOwner();
-                    } else if (gBattleScene.posX->unk_08 == 2) {
-                        sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                    } else if (gBattleScene.posX->unk_08 == 3) {
-                        sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                    } else if (gBattleScene.posX->unk_08 == 4) {
-                        sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                    } else if (gBattleScene.posX->RentalSlotAnimData_PosePhase == 2) {
+                        sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+                    } else if (gBattleScene.posX->RentalSlotAnimData_PosePhase == 3) {
+                        sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+                    } else if (gBattleScene.posX->RentalSlotAnimData_PosePhase == 4) {
+                        sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
                     }
                     break;
 
                 case 11:
-                    gBattleScene.posX->unk_08 = 4;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 4;
                     if (gBattleScene.posX->unk_34 == 1) {
                         BattleScene_HideOpponentOwner();
                     } else if (gBattleScene.posX->unk_20 == 0) {
@@ -525,7 +525,7 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
                     break;
 
                 case 18:
-                    gBattleScene.posX->unk_08 = 3;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 3;
                     switch (gBattleScene.posX->unk_20) {
                         case 0:
                             BattleScene_UpdateBothOwnersVisibilityCulling(arg0);
@@ -538,7 +538,7 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
                     break;
 
                 case 12:
-                    gBattleScene.posX->unk_08 = 0;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 0;
                     switch (gBattleScene.posX->unk_20) {
                         case 2:
                         case 3:
@@ -553,7 +553,7 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
                     break;
 
                 case 37:
-                    gBattleScene.posX->unk_08 = 0;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 0;
                     BattleScene_HideOpponentOwner();
                     break;
 
@@ -571,29 +571,29 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
                 case 29:
                 case 31:
                 case 38:
-                    gBattleScene.posX->unk_08 = 3;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 3;
                     BattleScene_HideOpponentOwner();
                     break;
 
                 case 9:
                 case 35:
-                    gBattleScene.posX->unk_08 = 3;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 3;
                     BattleScene_HideOpponentOwner();
                     break;
 
                 case 6:
-                    gBattleScene.posX->unk_08 = 0;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 0;
                     BattleScene_HideOpponentOwner();
                     break;
 
                 case 8:
                 case 10:
-                    gBattleScene.posX->unk_08 = 0;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 0;
                     BattleScene_HideActiveOwner();
                     break;
 
                 case 30:
-                    gBattleScene.posX->unk_08 = 0;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 0;
 
                     switch (gBattleScene.posX->unk_20) {
                         case 0:
@@ -610,11 +610,11 @@ void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
 
                 case 5:
                 case 34:
-                    gBattleScene.posX->unk_08 = 0;
+                    gBattleScene.posX->RentalSlotAnimData_PosePhase = 0;
                     switch (gBattleScene.posX->unk_20) {
                         case 0:
                         case 1:
-                            sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                            sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
                             break;
                     }
                     break;
@@ -642,7 +642,7 @@ void BattleScene_UpdateOwnerVisibilityDouble(CameraStruct* arg0) {
                 case 17:
                 case 18:
                 case 19:
-                    sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
+                    sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
                     break;
 
                 default:
@@ -659,13 +659,13 @@ void BattleScene_UpdateOwnerVisibilityDouble(CameraStruct* arg0) {
                         case 1:
                         case 2:
                         case 5:
-                            sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                            sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 |= 1;
+                            sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+                            sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
                             break;
 
                         default:
-                            sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                            sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 |= 1;
+                            sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+                            sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
                     }
                     break;
 
@@ -674,8 +674,8 @@ void BattleScene_UpdateOwnerVisibilityDouble(CameraStruct* arg0) {
                     switch (gBattleScene.posX->unk_20) {
                         case 0:
                         case 1:
-                            sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 &= ~1;
-                            sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.unk_01 |= 1;
+                            sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
+                            sActivePokemon[!gBattleScene.posX->unk_2C]->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
                             break;
                     }
                     break;

@@ -14,7 +14,7 @@ typedef struct TextQueueNode {
     /* 0x00 */ struct TextQueueNode* next;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s8 unk_08[4];
+    /* 0x08 */ s8 RentalSlotAnimData_PosePhase[4];
 } TextQueueNode; // size = 0xC
 
 s32 gShowCPUProfiler = 0;
@@ -369,11 +369,11 @@ void StageLoader_SwapDisplayListAndReset(void) {
 void StageLoader_BeginFrame(void) {
     StageLoader_SetupFrame();
     gFramebufferRequest.posX = gCurrentStage->unk_10;
-    gFramebufferRequest.unk_01 = gCurrentStage->unk_0C;
+    gFramebufferRequest.TrainerSlotSaveData_GamePort = gCurrentStage->unk_0C;
     gFramebufferRequest.posY = gCurrentStage->unk_0D;
     gFramebufferRequest.unk_03 = gCurrentStage->unk_16;
     gFramebufferRequest.unk_0C = gCurrentStage->unk_18[gCurrentStage->unk_16];
-    Gfx_GetDisplayListRange(&gFramebufferRequest.rotation, &gFramebufferRequest.unk_08);
+    Gfx_GetDisplayListRange(&gFramebufferRequest.rotation, &gFramebufferRequest.RentalSlotAnimData_PosePhase);
     gCurrentStage->unk_16++;
     if (gCurrentStage->unk_16 == gCurrentStage->unk_0E) {
         gCurrentStage->unk_16 = 0;
@@ -387,7 +387,7 @@ void StageLoader_FillFrame(void) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
     gDPSetFillColor(gDisplayListHead++, (gCurrentStage->unk_14 << 0x10) | gCurrentStage->unk_14);
-    gDPFillRectangle(gDisplayListHead++, gCurrentStage->rotation, gCurrentStage->unk_08, gCurrentStage->unk_06,
+    gDPFillRectangle(gDisplayListHead++, gCurrentStage->rotation, gCurrentStage->RentalSlotAnimData_PosePhase, gCurrentStage->unk_06,
                      gCurrentStage->unk_0A);
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -413,7 +413,7 @@ Stage* StageContext_Allocate(s8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 arg4, s32 ar
         temp_v0->unk_16 = 0;
         temp_v0->rotation = 0;
         temp_v0->unk_06 = temp_v0->posX - 1;
-        temp_v0->unk_08 = 0;
+        temp_v0->RentalSlotAnimData_PosePhase = 0;
         temp_v0->unk_0A = temp_v0->posY - 1;
 
         temp_v0->unk_18[0] = 0;
@@ -649,13 +649,13 @@ void TextRenderer_FlushQueuedStrings(Gfx** arg0, s32 arg1) {
         while (var_s0 != NULL) {
             TextQueueNode* next = var_s0->next;
 
-            TextRenderer_DrawString(var_s0->rotation, var_s0->unk_06, var_s0->unk_08, arg1);
+            TextRenderer_DrawString(var_s0->rotation, var_s0->unk_06, var_s0->RentalSlotAnimData_PosePhase, arg1);
             Util_Free(var_s0);
             var_s0 = next;
         }
 
         while (var_s2 != NULL) {
-            TextRenderer_DrawString(var_s2->rotation, var_s2->unk_06, var_s2->unk_08, arg1);
+            TextRenderer_DrawString(var_s2->rotation, var_s2->unk_06, var_s2->RentalSlotAnimData_PosePhase, arg1);
             var_s2 = var_s2->next;
         }
 
@@ -706,8 +706,8 @@ s32 HAL_Printf(s16 x, s16 y, const char* fmt, ...) {
         if (sp1C != NULL) {
             sp1C->rotation = x;
             sp1C->unk_06 = y;
-            memcpy(sp1C->unk_08, &sp20, sp124);
-            sp1C->unk_08[sp124] = 0;
+            memcpy(sp1C->RentalSlotAnimData_PosePhase, &sp20, sp124);
+            sp1C->RentalSlotAnimData_PosePhase[sp124] = 0;
             sp1C->next = gTextQueueTransient;
             gTextQueueTransient = sp1C;
         }
@@ -733,8 +733,8 @@ s32 TextRenderer_QueuePersistentString(s16 x, s16 y, const char* fmt, ...) {
         if (sp1C != NULL) {
             sp1C->rotation = x;
             sp1C->unk_06 = y;
-            memcpy(sp1C->unk_08, &sp20, sp124);
-            sp1C->unk_08[sp124] = 0;
+            memcpy(sp1C->RentalSlotAnimData_PosePhase, &sp20, sp124);
+            sp1C->RentalSlotAnimData_PosePhase[sp124] = 0;
             sp1C->next = gTextQueuePersistent;
             gTextQueuePersistent = sp1C;
         }

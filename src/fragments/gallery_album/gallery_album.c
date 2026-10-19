@@ -41,7 +41,7 @@ s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
     Camera* ptr;
 
     sp64 = 0;
-    sp60 = arg0->unk_08;
+    sp60 = arg0->RentalSlotAnimData_PosePhase;
     sp5C = arg0->posX;
 
     sp58 = arg0->posX % 3;
@@ -78,7 +78,7 @@ s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
         if (gPlayer1Controller->buttonPressed & 0x200) {
             sp58--;
             if (sp58 < 0) {
-                if (arg0->unk_08 > 0) {
+                if (arg0->RentalSlotAnimData_PosePhase > 0) {
                     sp58 = 2;
                 } else {
                     sp58 = 0;
@@ -90,7 +90,7 @@ s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
         if (gPlayer1Controller->buttonPressed & 0x100) {
             sp58++;
             if (sp58 >= 3) {
-                if (arg0->unk_08 < (arg0->unk_0C - 1)) {
+                if (arg0->RentalSlotAnimData_PosePhase < (arg0->unk_0C - 1)) {
                     sp58 = 0;
                 } else {
                     sp58 = 2;
@@ -106,22 +106,22 @@ s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
     }
 
     if ((gPlayer1Controller->buttonPressed & 0x20) || (sp4C != 0)) {
-        arg0->unk_08--;
-        if (arg0->unk_08 < 0) {
-            arg0->unk_08 = 0;
+        arg0->RentalSlotAnimData_PosePhase--;
+        if (arg0->RentalSlotAnimData_PosePhase < 0) {
+            arg0->RentalSlotAnimData_PosePhase = 0;
         }
     } else if ((gPlayer1Controller->buttonPressed & 0x10) || (sp48 != 0)) {
-        arg0->unk_08++;
-        if (arg0->unk_0C - 1 < arg0->unk_08) {
-            arg0->unk_08 = arg0->unk_0C - 1;
+        arg0->RentalSlotAnimData_PosePhase++;
+        if (arg0->unk_0C - 1 < arg0->RentalSlotAnimData_PosePhase) {
+            arg0->RentalSlotAnimData_PosePhase = arg0->unk_0C - 1;
         }
     }
 
-    if (sp60 != arg0->unk_08) {
+    if (sp60 != arg0->RentalSlotAnimData_PosePhase) {
         Audio_PlaySoundEffectById(0x27);
 
         for (i = 0; i < arg0->unk_14; i++) {
-            sp40 = arg0->unk_20[arg0->unk_08 * arg0->unk_14 + i];
+            sp40 = arg0->unk_20[arg0->RentalSlotAnimData_PosePhase * arg0->unk_14 + i];
             if (Gallery_IsSceneReady(sp40) != 0) {
                 sp40->posX = 0;
             }
@@ -129,7 +129,7 @@ s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
     }
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {
-        sp3C = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
+        sp3C = (arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + arg0->posX;
         sp38 = arg0->unk_20[sp3C];
 
         if (arg0->rotation == -1) {
@@ -183,7 +183,7 @@ s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
         }
         Audio_PlaySoundEffectById(3);
     } else if (gPlayer1Controller->buttonPressed & 4) {
-        idx = arg0->unk_08 * arg0->unk_14 + arg0->posX;
+        idx = arg0->RentalSlotAnimData_PosePhase * arg0->unk_14 + arg0->posX;
         ptr = arg0->unk_20[idx];
 
         if (((sp54 * 3) < 6) && (arg0->rotation == -1) && (Gallery_IsSceneReady(ptr) != 0)) {
@@ -331,7 +331,7 @@ void DrawGridPageCounter(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
     Font_Printf((arg1 + temp_s1) - Font_MeasureTextExtent(0, 0, sp30), arg2 + 0x108, sp30);
     temp_s1 -= Font_MeasureTextExtent(0, 0, sp30);
     if (sp30) {}
-    sprintf(sp30, "%d", arg0->unk_08 + 1);
+    sprintf(sp30, "%d", arg0->RentalSlotAnimData_PosePhase + 1);
     Font_Printf((arg1 + temp_s1) - Font_MeasureTextExtent(0, 0, sp30), arg2 + 0x108, sp30);
     Font_DisableTwoCycleTexturing();
     Font_EndTexturedTextRendering();
@@ -510,13 +510,13 @@ void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, GallerySceneGrid* arg2) {
 
     for (i = 0; i < arg2->unk_14; i++) {
         idx = i;
-        temp_s3 = idx + (arg2->unk_08 * arg2->unk_14);
+        temp_s3 = idx + (arg2->RentalSlotAnimData_PosePhase * arg2->unk_14);
         ptr = arg2->unk_20[temp_s3];
 
         var_s4 = 0;
         if ((temp_s3 != arg2->rotation) && (Gallery_IsSceneReady(ptr) != 0) && (ptr->posX == 2)) {
             var_s4 = 1;
-            Gallery_DrawPhotoThumbnail(ptr->unk_08->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
+            Gallery_DrawPhotoThumbnail(ptr->RentalSlotAnimData_PosePhase->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -541,11 +541,11 @@ void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, GallerySceneGrid* arg2) {
         if ((Gallery_IsSceneReady(ptr) != 0) && (ptr->posX == 2)) {
             if (sp6C < 2) {
                 Gallery_DrawDropShadow((sp70 * 0xA0) + arg0, (sp6C * 0x76) + arg1, 0x88, 0x66);
-                Gallery_DrawPhotoThumbnail(ptr->unk_08->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
+                Gallery_DrawPhotoThumbnail(ptr->RentalSlotAnimData_PosePhase->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
                               0x66, 8, 1);
             } else {
                 Gallery_AlbumComputeEnlargeMotion(ItemSelect_ResultAnimTimer, &sp68, &sp64, &sp60);
-                DrawResultPanelImage(ptr->unk_08->img_p, sp68, sp64, 0x88, 0x66, sp60);
+                DrawResultPanelImage(ptr->RentalSlotAnimData_PosePhase->img_p, sp68, sp64, 0x88, 0x66, sp60);
             }
         }
     }
@@ -578,7 +578,7 @@ void Gallery_AlbumDrawTitleBar(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
     Gallery_DrawImageStrips(D_3001D20, (arg1 + temp_s0) - 0x44, arg2 - 3, 0x30, 0x23, 0);
     Gallery_DrawImageStrips(D_3001D20, Font_MeasureTextExtent(0x10, 0, sp5C) + arg1 + temp_s0 + 0x14, arg2 - 3, 0x30, 0x23, 1);
 
-    if (arg0->unk_08 > 0) {
+    if (arg0->RentalSlotAnimData_PosePhase > 0) {
         temp_s0 = sp54;
         var_t1 = 0xFF;
     } else {
@@ -591,7 +591,7 @@ void Gallery_AlbumDrawTitleBar(GallerySceneGrid* arg0, s32 arg1, s32 arg2) {
 
     Gallery_DrawStatusIcon((arg1 - temp_s0) - 0x21, arg2 + 6, 0);
 
-    if (arg0->unk_08 < (arg0->unk_0C - 1)) {
+    if (arg0->RentalSlotAnimData_PosePhase < (arg0->unk_0C - 1)) {
         temp_s0 = sp54;
         var_t1 = 0xFF;
     } else {

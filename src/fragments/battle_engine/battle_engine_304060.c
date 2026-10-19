@@ -5,7 +5,7 @@
 typedef struct CameraPreset {
     /* 0x00 */ u8 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ f32 unk_0C;
 } CameraPreset; // size = 0x10
@@ -338,7 +338,7 @@ void BattleScene_IntroCameraStep20(CameraStruct* arg0) {
     }
     arg0->unk_24.fovy = gCameraPresets[var_v1].unk_0C;
     Vec3f_SetComponentsDuplicate(&arg0->unk_60.at, 0.0f, 10.0f, 0.0f);
-    Camera_ComputeEyeFromAngles(&arg0->unk_60.at, &arg0->unk_60.eye, gCameraPresets[var_v1].rotation, gCameraPresets[var_v1].unk_08,
+    Camera_ComputeEyeFromAngles(&arg0->unk_60.at, &arg0->unk_60.eye, gCameraPresets[var_v1].rotation, gCameraPresets[var_v1].RentalSlotAnimData_PosePhase,
                   gCameraPresets[var_v1].unk_0A);
     gBattleScene.posX->unk_20++;
 }

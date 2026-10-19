@@ -29,7 +29,7 @@ void BattleScene_SetBothOwnerActiveFlags(void) {
 }
 
 void BattleScene_SetOwnerPoseFlag(unk_D_84390010_728_0168* arg0) {
-    arg0->posX.unk_01 |= 0x10;
+    arg0->posX.TrainerSlotSaveData_GamePort |= 0x10;
 }
 
 void BattleScene_LoadOwnerCameraFramingConstants(BattlePlayerEntity* arg0) {
@@ -49,7 +49,7 @@ void BattleScene_LoadOwnerCameraFramingConstants(BattlePlayerEntity* arg0) {
 
     arg0->ownerModel.unk_168->unk_34 = gEntityInitParams[var_v0].unk_0C;
     arg0->ownerModel.unk_168->unk_38 = gEntityInitParams[var_v0].unk_10;
-    arg0->ownerModel.unk_168->unk_2C = gEntityInitParams[var_v0].unk_08;
+    arg0->ownerModel.unk_168->unk_2C = gEntityInitParams[var_v0].RentalSlotAnimData_PosePhase;
 }
 
 void BattleScene_SetupOwnerCameraFraming(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
@@ -109,8 +109,8 @@ void BattleScene_TickOwnerSlideIn(BattlePlayerEntity* arg0, s32 arg1) {
     s16 var_a0;
     unk_D_84390010_728_0168* temp_v0;
 
-    arg0->ownerModel.unk_168->posX.unk_01 |= 1;
-    arg0->ownerModel.unk_000.unk_000.unk_01 |= 1;
+    arg0->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort |= 1;
+    arg0->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
 
     if (arg0->ownerModel.unk_178 == 1) {
         if ((arg0->ownerModel.unk_168->unk_1C == -0x48) && !(arg0->animationState.unk_34 & 0x800)) {
@@ -141,15 +141,15 @@ void BattleScene_TickOwnerSlideOut(BattlePlayerEntity* arg0, s32 arg1) {
         arg0->ownerModel.unk_18C = 0;
         arg0->ownerModel.unk_168->unk_1C = Math_StepToS32(arg0->ownerModel.unk_168->unk_1C, -0x48, arg1, arg1);
         if (arg0->ownerModel.unk_168->unk_1C == -0x48) {
-            arg0->ownerModel.unk_168->posX.unk_01 &= ~1;
-            arg0->ownerModel.unk_000.unk_000.unk_01 &= ~1;
+            arg0->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort &= ~1;
+            arg0->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
         }
     } else {
         arg0->ownerModel.unk_18C = 0;
         arg0->ownerModel.unk_168->unk_1C = Math_StepToS32(arg0->ownerModel.unk_168->unk_1C, 0x15F, arg1, arg1);
         if (arg0->ownerModel.unk_168->unk_1C == 0x15F) {
-            arg0->ownerModel.unk_168->posX.unk_01 &= ~1;
-            arg0->ownerModel.unk_000.unk_000.unk_01 &= ~1;
+            arg0->ownerModel.unk_168->posX.TrainerSlotSaveData_GamePort &= ~1;
+            arg0->ownerModel.unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
         }
     }
 }

@@ -484,7 +484,7 @@ void Gallery_InitSceneGrid(GallerySceneGrid* arg0, s32 arg1, s32 arg2, s32 arg3,
 
     arg0->posX = 0;
     arg0->rotation = -1;
-    arg0->unk_08 = 0;
+    arg0->RentalSlotAnimData_PosePhase = 0;
 
     arg0->unk_0C = arg8 / arg3;
     if ((arg8 % arg3) > 0) {
@@ -525,7 +525,7 @@ void Gallery_ProcessSceneGrid(GallerySceneGrid* arg0) {
     if (temp_v0 == -1) {
         for (i = 0; i < arg0->unk_14 + 1; i++) {
             if (i < arg0->unk_14) {
-                var_s0 = arg0->unk_20[arg0->unk_08 * arg0->unk_14 + i];
+                var_s0 = arg0->unk_20[arg0->RentalSlotAnimData_PosePhase * arg0->unk_14 + i];
             } else if (arg0->rotation != -1) {
                 var_s0 = arg0->unk_B0;
             } else {
@@ -575,13 +575,13 @@ void Gallery_ClearSavedPosition(GalleryCursor* arg0) {
 
 void Gallery_SavePosition(GallerySceneGrid* arg0, GalleryCursor* arg1) {
     arg1->posX = arg0->posX;
-    arg1->rotation = arg0->unk_08;
+    arg1->rotation = arg0->RentalSlotAnimData_PosePhase;
 }
 
 void Gallery_RestorePosition(GallerySceneGrid* arg0, GalleryCursor* arg1) {
     if (arg1->posX != -1) {
         arg0->posX = arg1->posX;
-        arg0->unk_08 = arg1->rotation;
+        arg0->RentalSlotAnimData_PosePhase = arg1->rotation;
     }
 }
 

@@ -389,7 +389,7 @@ void EventBattle_DrawRuleCard(RuleCard* arg0) {
     s16 temp_s2;
 
     if (arg0->posX != 0) {
-        temp_s1 = arg0->unk_08;
+        temp_s1 = arg0->RentalSlotAnimData_PosePhase;
         temp_s2 = arg0->unk_0A;
 
         EventBattle_DrawPanelFrame(temp_s1, temp_s2, 0xF8, 0x38);
@@ -397,7 +397,7 @@ void EventBattle_DrawRuleCard(RuleCard* arg0) {
         gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
         if (arg0->unk_0C != NULL) {
-            if (arg0->unk_01 != 0) {
+            if (arg0->TrainerSlotSaveData_GamePort != 0) {
                 Gfx_FillRectRgb(temp_s1 + 4, temp_s2 + 4, 0xF0, 0x30, 0x1E, 0x1E, 0x64);
             } else {
                 Gfx_FillRectRgb(temp_s1 + 4, temp_s2 + 4, 0xF0, 0x30, 0x64, 0x1E, 0x1E);
@@ -419,7 +419,7 @@ void EventBattle_DrawRuleCard(RuleCard* arg0) {
 
             Font_SetActive(8, 0);
 
-            if (arg0->unk_01 != 0) {
+            if (arg0->TrainerSlotSaveData_GamePort != 0) {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
                 Text_SetEnvColor(0xDC, 0x37, 0x37, 0xFF);
@@ -448,9 +448,9 @@ void EventBattle_UpdateRuleCardSlide(RuleCard* arg0) {
             }
 
             if (arg0->rotation < 0x140) {
-                arg0->unk_08 = arg0->rotation - (arg0->posY << 5);
+                arg0->RentalSlotAnimData_PosePhase = arg0->rotation - (arg0->posY << 5);
             } else {
-                arg0->unk_08 = arg0->rotation + (arg0->posY << 5);
+                arg0->RentalSlotAnimData_PosePhase = arg0->rotation + (arg0->posY << 5);
             }
             break;
 
@@ -461,9 +461,9 @@ void EventBattle_UpdateRuleCardSlide(RuleCard* arg0) {
             }
 
             if (arg0->rotation < 0x140) {
-                arg0->unk_08 = arg0->rotation - (arg0->posY << 5);
+                arg0->RentalSlotAnimData_PosePhase = arg0->rotation - (arg0->posY << 5);
             } else {
-                arg0->unk_08 = arg0->rotation + (arg0->posY << 5);
+                arg0->RentalSlotAnimData_PosePhase = arg0->rotation + (arg0->posY << 5);
             }
             break;
     }
@@ -474,20 +474,20 @@ void EventBattle_InitRuleCard(RuleCard* arg0, s16 arg1, s16 arg2, u8* arg3, s8* 
     arg0->posY = 0xA;
     arg0->rotation = arg1;
     arg0->unk_06 = arg2;
-    arg0->unk_08 = arg1;
+    arg0->RentalSlotAnimData_PosePhase = arg1;
     arg0->unk_0A = arg2;
     arg0->unk_0C = arg3;
     arg0->unk_10 = arg4;
     arg0->unk_14 = 0;
     arg0->unk_16 = 0;
     arg0->unk_18 = arg6;
-    arg0->unk_01 = 1;
+    arg0->TrainerSlotSaveData_GamePort = 1;
 
     if (arg5 != 0) {
         arg0->unk_14 = gStatThresholds[arg5 - 1].posX;
         arg0->unk_16 = gStatThresholds[arg5 - 1].posY;
-        arg0->unk_01 = EventBattle_CheckTeamLegality(&gTrainerPanels[0], arg5);
-        arg0->unk_01 &= EventBattle_CheckTeamLegality(&gTrainerPanels[1], arg5);
+        arg0->TrainerSlotSaveData_GamePort = EventBattle_CheckTeamLegality(&gTrainerPanels[0], arg5);
+        arg0->TrainerSlotSaveData_GamePort &= EventBattle_CheckTeamLegality(&gTrainerPanels[1], arg5);
     }
 }
 
@@ -764,7 +764,7 @@ void EventBattle_DrawNoticeBanner(AnimState* arg0) {
             Gfx_DrawTexturedRectClipped(temp_s3, sp58 + (i * temp_s2), 0x64, temp_s2, 0, 0, 0x400, 0x3800 / temp_s2, 0);
         }
 
-        if ((arg0->unk_01 == 0) && (arg0->posY == 0x38)) {
+        if ((arg0->TrainerSlotSaveData_GamePort == 0) && (arg0->posY == 0x38)) {
             EventBattle_DrawSlicedFrame(0x70, sp58 + 8, 0x1A0, 0x28, 0, 0, 0, 0x96);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -785,7 +785,7 @@ void EventBattle_UpdateNoticeBanner(AnimState* arg0) {
         case 1:
             arg0->posY += 7;
             if (arg0->posY == 0x38) {
-                if (arg0->unk_01 == 0) {
+                if (arg0->TrainerSlotSaveData_GamePort == 0) {
                     Audio_PlaySoundEffectById(8);
                 }
                 arg0->posX = 0;
@@ -809,7 +809,7 @@ void EventBattle_InitNoticeBanner(AnimState* arg0, s16 arg1, s16 arg2) {
 }
 
 void EventBattle_ShowNoticeBanner(AnimState* arg0, s32 arg1) {
-    arg0->unk_01 = arg1;
+    arg0->TrainerSlotSaveData_GamePort = arg1;
     arg0->posX = 1;
 }
 
@@ -834,7 +834,7 @@ void EventBattle_DrawOptionLabel(OptionLabel* arg0) {
         if (arg0->posY == 0x30) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
-            Font_Printf((sp38 - ((s16)Font_MeasureTextExtent(0x10, 0, arg0->unk_08) / 2)) + 0x4C, sp36 + 0xB, arg0->unk_08);
+            Font_Printf((sp38 - ((s16)Font_MeasureTextExtent(0x10, 0, arg0->RentalSlotAnimData_PosePhase) / 2)) + 0x4C, sp36 + 0xB, arg0->RentalSlotAnimData_PosePhase);
             Font_EndTexturedTextRendering();
         }
     }
@@ -863,14 +863,14 @@ void EventBattle_InitOptionLabel(OptionLabel* arg0, s16 arg1, s16 arg2, s8* arg3
     arg0->posY = 6;
     arg0->rotation = arg1;
     arg0->unk_06 = arg2;
-    arg0->unk_08 = arg3;
+    arg0->RentalSlotAnimData_PosePhase = arg3;
 }
 
 void EventBattle_DrawSettingLine(BattleSettings* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     char sp30[64];
     UNUSED s32 pad;
 
-    if (((arg1 == 1) || (arg1 == 2)) && (arg0->unk_01 == 0)) {
+    if (((arg1 == 1) || (arg1 == 2)) && (arg0->TrainerSlotSaveData_GamePort == 0)) {
         Text_SetEnvColor(0x50, 0x50, 0xB4, 0xFF);
     } else if (arg1 == arg0->unk_0C) {
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
@@ -878,12 +878,12 @@ void EventBattle_DrawSettingLine(BattleSettings* arg0, s16 arg1, s16 arg2, s16 a
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     }
 
-    Font_Printf(arg0->unk_08 + 0x34, arg0->unk_0A + arg1 * 0x21 + 0x2F, Text_GetString(NULL, 0, gMessageBankMain, arg2));
+    Font_Printf(arg0->RentalSlotAnimData_PosePhase + 0x34, arg0->unk_0A + arg1 * 0x21 + 0x2F, Text_GetString(NULL, 0, gMessageBankMain, arg2));
 
     if (arg3 >= 0) {
         Text_SetNumberToken(2, arg4);
         Text_GetString(sp30, sizeof(sp30), gMessageBankMain, arg3);
-        Font_Printf((arg0->unk_08 - (Font_MeasureTextExtent(0, 0, sp30) / 2)) + 0x158, arg0->unk_0A + arg1 * 0x21 + 0x2F, sp30,
+        Font_Printf((arg0->RentalSlotAnimData_PosePhase - (Font_MeasureTextExtent(0, 0, sp30) / 2)) + 0x158, arg0->unk_0A + arg1 * 0x21 + 0x2F, sp30,
                       arg4);
     }
 }
@@ -935,7 +935,7 @@ void EventBattle_DrawSettingsPanel(BattleSettings* arg0) {
 
     if (arg0->unk_06 >= 0xF) {
         sp4A = arg0->unk_06;
-        temp_s2 = arg0->unk_08;
+        temp_s2 = arg0->RentalSlotAnimData_PosePhase;
         temp_s1 = arg0->unk_0A + ((0xBA - sp4A) / 2);
 
         Ui_DrawBorderedPanelNoFill(temp_s2, temp_s1, 0x1BE, sp4A);
@@ -947,7 +947,7 @@ void EventBattle_DrawSettingsPanel(BattleSettings* arg0) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-            if (arg0->unk_01 == 1) {
+            if (arg0->TrainerSlotSaveData_GamePort == 1) {
                 if (arg0->unk_0C == 1) {
                     EventBattle_DrawSpinnerArrows(temp_s2 + 0x104, temp_s1 + 0x2D, arg0->unk_0C, arg0->posY);
                 }
@@ -958,8 +958,8 @@ void EventBattle_DrawSettingsPanel(BattleSettings* arg0) {
             }
 
             EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x2E, 1);
-            EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x4F, arg0->unk_01);
-            EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x70, arg0->unk_01);
+            EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x4F, arg0->TrainerSlotSaveData_GamePort);
+            EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x70, arg0->TrainerSlotSaveData_GamePort);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -968,7 +968,7 @@ void EventBattle_DrawSettingsPanel(BattleSettings* arg0) {
             sp54 = Text_GetString(NULL, 0, gMessageBankMain, 0xB);
             Font_Printf((temp_s2 - (Font_MeasureTextExtent(0x10, 0, sp54) / 2)) + 0xDF, temp_s1 + 0xA, sp54);
 
-            if (arg0->unk_01 == 1) {
+            if (arg0->TrainerSlotSaveData_GamePort == 1) {
                 var_a3 = 0xC;
             } else {
                 var_a3 = 0xD;
@@ -991,7 +991,7 @@ void EventBattle_UpdateSettingsPanel(BattleSettings* arg0) {
     switch (arg0->posX) {
         case 1:
             temp_v0_2 = Input_GetRepeatedDPad();
-            if ((temp_v0_2 == 0x200) && (arg0->unk_01 == 1)) {
+            if ((temp_v0_2 == 0x200) && (arg0->TrainerSlotSaveData_GamePort == 1)) {
                 if (arg0->unk_0C == 1) {
                     if (arg0->posY >= 6) {
                         arg0->posY -= 5;
@@ -1005,7 +1005,7 @@ void EventBattle_UpdateSettingsPanel(BattleSettings* arg0) {
                         Audio_PlaySoundEffectById(1);
                     }
                 }
-            } else if ((temp_v0_2 == 0x100) && (arg0->unk_01 == 1)) {
+            } else if ((temp_v0_2 == 0x100) && (arg0->TrainerSlotSaveData_GamePort == 1)) {
                 if (arg0->unk_0C == 1) {
                     if (arg0->posY < 0x5A) {
                         arg0->posY += 5;
@@ -1032,12 +1032,12 @@ void EventBattle_UpdateSettingsPanel(BattleSettings* arg0) {
                     }
                 } else if (gPlayer1Controller->buttonPressed & 0x8000) {
                     if (arg0->unk_0C == 0) {
-                        arg0->unk_01 ^= 1;
+                        arg0->TrainerSlotSaveData_GamePort ^= 1;
                         Audio_PlaySoundEffectById(2);
                     }
 
                     if (arg0->unk_0C == 3) {
-                        gBattleTimerLimits[0] = arg0->unk_01;
+                        gBattleTimerLimits[0] = arg0->TrainerSlotSaveData_GamePort;
                         gBattleTimerLimits[1] = arg0->posY;
                         gBattleTimerLimits[2] = arg0->rotation;
                         arg0->posX = 3;
@@ -1045,7 +1045,7 @@ void EventBattle_UpdateSettingsPanel(BattleSettings* arg0) {
                     }
                 } else {
                     if (gPlayer1Controller->buttonPressed & 0x4000) {
-                        arg0->unk_01 = gBattleTimerLimits[0];
+                        arg0->TrainerSlotSaveData_GamePort = gBattleTimerLimits[0];
                         arg0->posY = gBattleTimerLimits[1];
                         arg0->rotation = gBattleTimerLimits[2];
                         arg0->posX = 3;
@@ -1075,12 +1075,12 @@ void EventBattle_UpdateSettingsPanel(BattleSettings* arg0) {
 void EventBattle_InitSettingsPanel(BattleSettings* arg0, s16 arg1, s16 arg2, s32 arg3) {
     arg0->posX = 0;
     arg0->unk_06 = 0xA;
-    arg0->unk_08 = arg1;
+    arg0->RentalSlotAnimData_PosePhase = arg1;
     arg0->unk_0A = arg2;
     arg0->unk_0C = 0;
 
     if (arg3 != 0) {
-        arg0->unk_01 = gBattleTimerLimits[0];
+        arg0->TrainerSlotSaveData_GamePort = gBattleTimerLimits[0];
         arg0->posY = gBattleTimerLimits[1];
         arg0->rotation = gBattleTimerLimits[2];
     }
@@ -1281,11 +1281,11 @@ void EventBattle_ValidateTeamSelection(EventBattleState* arg0) {
     }
 
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
-    arg0->unk_01 = EventBattle_ValidateTeamForRule(&gTrainerPanels[0], gEventBattleModes[arg0->posY].unk_08);
-    arg0->unk_01 &= EventBattle_ValidateTeamForRule(&gTrainerPanels[1], gEventBattleModes[arg0->posY].unk_08);
-    EventBattle_ShowNoticeBanner(&gStatBarAnimState, arg0->unk_01);
+    arg0->TrainerSlotSaveData_GamePort = EventBattle_ValidateTeamForRule(&gTrainerPanels[0], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
+    arg0->TrainerSlotSaveData_GamePort &= EventBattle_ValidateTeamForRule(&gTrainerPanels[1], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
+    EventBattle_ShowNoticeBanner(&gStatBarAnimState, arg0->TrainerSlotSaveData_GamePort);
 
-    tmp1 = !arg0->unk_01;
+    tmp1 = !arg0->TrainerSlotSaveData_GamePort;
     arg0->rotation = tmp1;
 
     for (i = tmp1; i < 3; i++) {
@@ -1305,7 +1305,7 @@ void EventBattle_ReturnToModeSelect(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
-    temp_v1 = !arg0->unk_01;
+    temp_v1 = !arg0->TrainerSlotSaveData_GamePort;
     gTrainerPanels[0].unk_0000 = 3;
     gTrainerPanels[1].unk_0000 = 3;
     gStatBarAnimState.posX = 2;
@@ -1340,11 +1340,11 @@ void EventBattle_ValidateInitialSelection(EventBattleState* arg0) {
     s16 j;
 
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
-    arg0->unk_01 = EventBattle_ValidateTeamForRule(&gTrainerPanels[0], gEventBattleModes[arg0->posY].unk_08);
-    arg0->unk_01 &= EventBattle_ValidateTeamForRule(&gTrainerPanels[1], gEventBattleModes[arg0->posY].unk_08);
-    EventBattle_ShowNoticeBanner(&gStatBarAnimState, arg0->unk_01);
+    arg0->TrainerSlotSaveData_GamePort = EventBattle_ValidateTeamForRule(&gTrainerPanels[0], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
+    arg0->TrainerSlotSaveData_GamePort &= EventBattle_ValidateTeamForRule(&gTrainerPanels[1], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
+    EventBattle_ShowNoticeBanner(&gStatBarAnimState, arg0->TrainerSlotSaveData_GamePort);
 
-    temp_v1 = !arg0->unk_01;
+    temp_v1 = !arg0->TrainerSlotSaveData_GamePort;
     arg0->rotation = temp_v1;
 
     for (i = temp_v1; i < 3; i++) {
@@ -1389,12 +1389,12 @@ void EventBattle_StartBattle(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
-    Session_SetMode(0xA, gEventBattleModes[arg0->posY].unk_08, 0);
+    Session_SetMode(0xA, gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase, 0);
     EventBattle_BuildTrainerFromCard(&gTrainerPanels[0]);
     EventBattle_BuildTrainerFromCard(&gTrainerPanels[1]);
 
-    if (gBattleSettingsState.unk_01 == 1) {
-        gSessionContext.timerEnabled = gBattleSettingsState.unk_01;
+    if (gBattleSettingsState.TrainerSlotSaveData_GamePort == 1) {
+        gSessionContext.timerEnabled = gBattleSettingsState.TrainerSlotSaveData_GamePort;
         gSessionContext.battleTimeLimitMinutes = gBattleSettingsState.posY;
         gSessionContext.turnTimeLimitSeconds = gBattleSettingsState.rotation;
     }
@@ -1427,7 +1427,7 @@ void EventBattle_StartBattle(EventBattleState* arg0) {
 void EventBattle_UpdateActionMenu(EventBattleState* arg0) {
     u8 temp_s7;
 
-    temp_s7 = !arg0->unk_01;
+    temp_s7 = !arg0->TrainerSlotSaveData_GamePort;
 
     if (arg0->posX == 4) {
         do {
@@ -1510,7 +1510,7 @@ void EventBattle_ExitWithMode(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
-    Session_SetMode(0xA, gEventBattleModes[arg0->posY].unk_08, 0);
+    Session_SetMode(0xA, gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase, 0);
 
     gTrainerPanels[0].unk_0000 = 3;
     gTrainerPanels[1].unk_0000 = 3;
@@ -1607,7 +1607,7 @@ void EventBattle_InitSelect(EventBattleState* arg0, s16 arg1) {
 
     if (arg1 == -1) {
         for (i = 2; i >= 0; i--) {
-            if (gMenuItems[i].unk_01 != 0) {
+            if (gMenuItems[i].TrainerSlotSaveData_GamePort != 0) {
                 arg0->posY = i;
             }
         }

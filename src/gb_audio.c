@@ -3,7 +3,7 @@
 
 typedef struct EnvelopeState {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
@@ -12,7 +12,7 @@ typedef struct EnvelopeState {
 typedef struct VibratoState {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ u8 unk_0C;
 } VibratoState; // size = 0x10
 
@@ -133,13 +133,13 @@ void GbMusic_UpdateChannel(u32 arg0) {
         } else if (gEnvelopeState[arg0].unk_03 != 0) {
             gEnvelopeState[arg0].unk_03--;
         } else if (gEnvelopeState[arg0].posX != 0) {
-            if (gEnvelopeState[arg0].unk_01 & 0xF) {
-                gEnvelopeState[arg0].unk_01--;
+            if (gEnvelopeState[arg0].TrainerSlotSaveData_GamePort & 0xF) {
+                gEnvelopeState[arg0].TrainerSlotSaveData_GamePort--;
             } else {
-                u8 sp2F = gEnvelopeState[arg0].unk_01;
+                u8 sp2F = gEnvelopeState[arg0].TrainerSlotSaveData_GamePort;
                 sp2F = (sp2F << 4) | ((sp2F >> 4) & 0xF);
 
-                gEnvelopeState[arg0].unk_01 |= sp2F;
+                gEnvelopeState[arg0].TrainerSlotSaveData_GamePort |= sp2F;
 
                 if ((gChannelStatus[arg0] & 8) != 0) {
                     sp2F = gEnvelopeState[arg0].posX & 0xF;
@@ -331,7 +331,7 @@ u8 GbMusic_CmdSetEnvelope(u32 arg0) {
     temp_t9 = temp_v0 & 0xF;
     temp_v0 = temp_t9 << 4;
     temp_v0 |= temp_t9;
-    gEnvelopeState[arg0].unk_01 = temp_v0;
+    gEnvelopeState[arg0].TrainerSlotSaveData_GamePort = temp_v0;
     return 0;
 }
 
@@ -687,7 +687,7 @@ void GbMusic_AdvancePitchSlide(u32 arg0) {
     u8 sp1E;
     u16 sp1C;
 
-    gVibratoState[arg0].posX += gVibratoState[arg0].unk_08;
+    gVibratoState[arg0].posX += gVibratoState[arg0].RentalSlotAnimData_PosePhase;
     if (gChannelStatus[arg0] & 0x20) {
         if (gVibratoState[arg0].rotation < gVibratoState[arg0].posX) {
             gChannelStatus[arg0] &= ~0x30;
@@ -712,7 +712,7 @@ s32 GbMusic_StartPitchSlide(u32 arg0, u16 arg1) {
     } else {
         gChannelStatus[arg0] |= 0x20;
     }
-    gVibratoState[arg0].unk_08 = (gVibratoState[arg0].rotation - gVibratoState[arg0].posX) / gVibratoState[arg0].unk_0C;
+    gVibratoState[arg0].RentalSlotAnimData_PosePhase = (gVibratoState[arg0].rotation - gVibratoState[arg0].posX) / gVibratoState[arg0].unk_0C;
     return 1;
 }
 
@@ -775,7 +775,7 @@ void GbMusic_StartMusic(u8 arg0) {
 
         gEnvelopeState[i].unk_03 = 0;
         gEnvelopeState[i].posX = 0;
-        gEnvelopeState[i].unk_01 = 0;
+        gEnvelopeState[i].TrainerSlotSaveData_GamePort = 0;
         gEnvelopeState[i].posY = 0;
         gEnvelopeState[i].rotation = 0;
 
@@ -784,7 +784,7 @@ void GbMusic_StartMusic(u8 arg0) {
         gVibratoState[i].unk_0C = 0;
         gVibratoState[i].posX = 0;
         gVibratoState[i].rotation = 0;
-        gVibratoState[i].unk_08 = 0;
+        gVibratoState[i].RentalSlotAnimData_PosePhase = 0;
 
         gChannelJumpCounters[i] = 1;
         gChannelWaitCounters[i] = 1;
@@ -834,14 +834,14 @@ void GbMusic_StartSfx(u8 arg0) {
 
         gEnvelopeState[i].unk_03 = 0;
         gEnvelopeState[i].posX = 0;
-        gEnvelopeState[i].unk_01 = 0;
+        gEnvelopeState[i].TrainerSlotSaveData_GamePort = 0;
         gEnvelopeState[i].posY = 0;
         gEnvelopeState[i].rotation = 0;
 
         gVibratoState[i].unk_0C = 0;
         gVibratoState[i].posX = 0.0f;
         gVibratoState[i].rotation = 0.0f;
-        gVibratoState[i].unk_08 = 0.0f;
+        gVibratoState[i].RentalSlotAnimData_PosePhase = 0.0f;
 
         gChannelJumpCounters[i] = 1;
         gChannelWaitCounters[i] = 1;

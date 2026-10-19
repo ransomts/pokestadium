@@ -29,7 +29,7 @@ typedef struct unk_D_83402EE0 {
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09;
     /* 0x0A */ unk_D_83402EE0_00A unk_0A[10];
     /* 0x50 */ Vec3f unk_50;
@@ -52,7 +52,7 @@ typedef struct PhotoSceneData {
 typedef struct unk_D_83403C60_050_00C {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_D_83403C60_050_00C; // size = 0xC
 
 typedef struct PhotoSceneControl {
@@ -86,7 +86,7 @@ typedef struct unk_func_800314BC_temp_v4 {
 
 typedef struct unk_func_80031270_024 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char pad2[0x12];
     /* 0x14 */ s32 unk_14;
     /* 0x18 */ s16 unk_18;
@@ -99,7 +99,7 @@ typedef struct Camera {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ FramebufferImage* unk_08;
+    /* 0x08 */ FramebufferImage* RentalSlotAnimData_PosePhase;
     /* 0x0C */ FramebufferImage* unk_0C;
     /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ BinArchive* unk_14;
@@ -115,13 +115,13 @@ typedef struct Camera {
 
 typedef struct unk_D_83407B38_0B0 {
     /* 0x00 */ s32 posX;
-    /* 0x00 */ s32 unk_08;
+    /* 0x00 */ s32 RentalSlotAnimData_PosePhase;
 } unk_D_83407B38_0B0; // size >= 0xC
 
 typedef struct GallerySceneGrid {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;

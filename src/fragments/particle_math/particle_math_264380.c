@@ -1069,16 +1069,16 @@ Gfx* ParticleGfx_LoadDescriptorTextureAndTile(Gfx* arg0, arg1_func_81407874_014_
         arg0 = ParticleGfx_LoadDescriptorTexture(arg0, texture, arg1, tmem, rtile);
     }
 
-    if (arg1->unk_08 != NULL) {
+    if (arg1->RentalSlotAnimData_PosePhase != NULL) {
         switch (rtile) {
             case G_TX_RENDERTILE:
-                ParticleGfx_SetFrameIndexedTileSize(arg0++, arg1->unk_08->posX, arg1->unk_08->posY, arg1->unk_08->rotation,
-                              arg1->unk_08->unk_06, arg1->rotation->width, arg1->rotation->height, arg1->unk_08->unk_08);
+                ParticleGfx_SetFrameIndexedTileSize(arg0++, arg1->RentalSlotAnimData_PosePhase->posX, arg1->RentalSlotAnimData_PosePhase->posY, arg1->RentalSlotAnimData_PosePhase->rotation,
+                              arg1->RentalSlotAnimData_PosePhase->unk_06, arg1->rotation->width, arg1->rotation->height, arg1->RentalSlotAnimData_PosePhase->RentalSlotAnimData_PosePhase);
                 break;
 
             case 1:
-                ParticleGfx_SetFrameIndexedAuxTileSize(arg0++, arg1->unk_08->posX, arg1->unk_08->posY, arg1->unk_08->rotation,
-                              arg1->unk_08->unk_06, arg1->rotation->width, arg1->rotation->height, arg1->unk_08->unk_08);
+                ParticleGfx_SetFrameIndexedAuxTileSize(arg0++, arg1->RentalSlotAnimData_PosePhase->posX, arg1->RentalSlotAnimData_PosePhase->posY, arg1->RentalSlotAnimData_PosePhase->rotation,
+                              arg1->RentalSlotAnimData_PosePhase->unk_06, arg1->rotation->width, arg1->rotation->height, arg1->RentalSlotAnimData_PosePhase->RentalSlotAnimData_PosePhase);
                 break;
         }
     }
@@ -1101,9 +1101,9 @@ Gfx* ParticleGfx_LoadSecondaryDescriptorTexture(Gfx* arg0, arg1_func_81407874_01
 
 void ParticleGfx_SetCombineModeFromDescriptor(Gfx* arg0, arg1_func_81407874_014_000_010* arg1) {
     gDPSetCombine(arg0++,
-                  GCCc0w0(arg1->posX, arg1->posY, arg1->rotation, arg1->unk_06) | GCCc1w0(arg1->unk_08, arg1->unk_0A),
+                  GCCc0w0(arg1->posX, arg1->posY, arg1->rotation, arg1->unk_06) | GCCc1w0(arg1->RentalSlotAnimData_PosePhase, arg1->unk_0A),
 
-                  GCCc0w1(arg1->unk_01, arg1->unk_03, arg1->unk_05, arg1->unk_07) |
+                  GCCc0w1(arg1->TrainerSlotSaveData_GamePort, arg1->unk_03, arg1->unk_05, arg1->unk_07) |
                       GCCc1w1(arg1->unk_09, arg1->unk_0C, arg1->unk_0E, arg1->unk_0B, arg1->unk_0D, arg1->unk_0F));
 }
 

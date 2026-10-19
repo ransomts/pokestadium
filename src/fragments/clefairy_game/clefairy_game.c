@@ -108,7 +108,7 @@ typedef struct IconPosition {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } IconPosition; // size = 0xC
 
@@ -418,7 +418,7 @@ void ClefairyGame_GeneratePattern(void) {
     for (i = 0; i < 6; i++, ptr++) {
         ptr->unk_000 = temp_v0_2->posX[i];
         ptr->unk_002 = 0;
-        ptr->unk_16C = gFragment7Struct3->unk_08->posX[ptr->unk_000];
+        ptr->unk_16C = gFragment7Struct3->RentalSlotAnimData_PosePhase->posX[ptr->unk_000];
     }
 
     var_v0 = ClefairyGame_ChoosePatternEntry(var_s2, var_a3);
@@ -429,7 +429,7 @@ void ClefairyGame_GeneratePattern(void) {
     for (i = 0; i < 6; i++) {
         ptr->unk_000 = var_v0->posX[i];
         ptr->unk_002 = 0;
-        ptr->unk_16C = gFragment7Struct3->unk_08->posX[ptr->unk_000];
+        ptr->unk_16C = gFragment7Struct3->RentalSlotAnimData_PosePhase->posX[ptr->unk_000];
         ptr++;
     }
 }
@@ -852,7 +852,7 @@ void ClefairyGame_UpdateStartCountdown(void) {
     ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
     ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
 
-    gResultScreenGraphNode1.unk_040.unk_08 = 0;
+    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
     gResultScreenActionFlag = 1;
     gResultScreenActionTimer = 0x5A;
 
@@ -907,7 +907,7 @@ void ClefairyGame_BeginPatternDemo(void) {
     MiniSound_DispatchCommand(0x90003, 0, 0);
     ModelAnim_SetAnimation(&gResultScreenGraphNode1, 1);
     ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.unk_08 = 0;
+    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
     ModelAnim_SetEventTrack(&gResultScreenGraphNode1, 0);
 }
 
@@ -919,7 +919,7 @@ void ClefairyGame_BeginDemoPlayerAnims(void) {
     gResultScreenTimer = 0;
     ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
     ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.unk_08 = 0;
+    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
 
     for (i = 0; i < 4; i++) {
         temp_s0 = &gPlayerStates[i].unk_008;
@@ -979,7 +979,7 @@ void ClefairyGame_AdvancePatternDemo(void) {
     MiniSound_DispatchCommand(0x90006, 0, 0);
     ModelAnim_SetAnimation(&gResultScreenGraphNode1, 2);
     ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.unk_08 = 0;
+    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
 }
 
 void ClefairyGame_PreparePatternIconSpawn(void) {
@@ -987,7 +987,7 @@ void ClefairyGame_PreparePatternIconSpawn(void) {
     gResultScreenTimer = 0;
     ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
     ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.unk_08 = 0;
+    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
 }
 
 s32 ClefairyGame_WaitDemoAdvance(void) {
@@ -1035,7 +1035,7 @@ s32 ClefairyGame_FinishPatternIconSpawn(void) {
 
         ModelAnim_SetAnimation(&gResultScreenGraphNode1, 1);
         ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-        gResultScreenGraphNode1.unk_040.unk_08 = 0;
+        gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
         return -1;
     }
 
@@ -1123,7 +1123,7 @@ void ClefairyGame_EndPatternResponse(void) {
     gResultScreenTimer = 0;
     ModelAnim_SetAnimation(&gResultScreenGraphNode1, 1);
     ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.unk_08 = 0;
+    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
     MiniSound_DispatchCommand(0x90008, 0, 0);
     MiniSound_DispatchCommand(0x90003, 0, 0);
 }
@@ -1140,7 +1140,7 @@ void ClefairyGame_StartPlaybackTransition(void) {
             gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
             ModelAnim_SetAnimation(gCurrentPlayerGraphNode, 2);
             ModelAnim_ClearEventTrack(gCurrentPlayerGraphNode);
-            gCurrentPlayerGraphNode->unk_040.unk_08 = 0x200000;
+            gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0x200000;
             gCurrentPlayerGraphNode->unk_040.unk_0C = 0xFFFE0000;
         }
     }
@@ -1227,7 +1227,7 @@ s32 ClefairyGame_WaitPlaybackTransition(void) {
     for (i = 0; i < 4; i++) {
         gCurrentPlayerState = &gPlayerStates[i];
         gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
-        if ((gCurrentPlayerState->unk_1AC == 0) && (gCurrentPlayerGraphNode->unk_040.unk_08 == 0)) {
+        if ((gCurrentPlayerState->unk_1AC == 0) && (gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase == 0)) {
             return -1;
         }
     }
@@ -1250,14 +1250,14 @@ void ClefairyGame_PreparePatternPlayback(void) {
             ModelAnim_SetAnimation(gCurrentPlayerGraphNode, 3);
             ModelAnim_ClearEventTrack(gCurrentPlayerGraphNode);
             ModelAnim_SetEventTrack(gCurrentPlayerGraphNode, 4);
-            gCurrentPlayerGraphNode->unk_040.unk_08 = 0;
+            gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
             gCurrentPlayerGraphNode->unk_040.unk_0C = 0x10000;
         }
     }
 
     ModelAnim_SetAnimation(&gResultScreenGraphNode1, 3);
     ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.unk_08 = 0;
+    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
     ModelAnim_SetEventTrack(&gResultScreenGraphNode1, 1);
 }
 
@@ -1307,7 +1307,7 @@ void ClefairyGame_BeginPatternPlayback(void) {
     gResultScreenTimer = 0;
     ModelAnim_SetAnimation(&gResultScreenGraphNode1, 4);
     ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.unk_08 = 0;
+    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
 
     for (i = 0; i < 4; i++) {
         gCurrentPlayerState = &gPlayerStates[i];
@@ -1327,7 +1327,7 @@ s32 ClefairyGame_UpdatePatternPlayback(void) {
     if (temp_lo >= gPlayerItemCount) {
         ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
         ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-        gResultScreenGraphNode1.unk_040.unk_08 = 0;
+        gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
 
         for (i = 0; i < 4; i++) {
             gCurrentPlayerState = &gPlayerStates[i];
@@ -1371,7 +1371,7 @@ s32 ClefairyGame_UpdatePatternPlayback(void) {
                         break;
                 }
 
-                gCurrentPlayerGraphNode->unk_040.unk_08 = 0;
+                gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
                 gCurrentPlayerGraphNode->unk_040.unk_0C = 0x10000;
 
                 if (gCurrentPlayerState->unk_18E[temp_lo] != gItemPairStates[temp_lo].unk_000) {
@@ -1394,7 +1394,7 @@ void ClefairyGame_DeductPlayerHealth(void) {
         ModelAnim_SetAnimation(gCurrentPlayerGraphNode, 0xA);
         ModelAnim_ClearEventTrack(gCurrentPlayerGraphNode);
         ModelAnim_SetEventTrack(gCurrentPlayerGraphNode, 1);
-        gCurrentPlayerGraphNode->unk_040.unk_08 = 0;
+        gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
         gCurrentPlayerGraphNode->unk_040.unk_0C = 0x10000;
         gCurrentPlayerState->unk_1AC = 1;
     }
@@ -1448,7 +1448,7 @@ s32 ClefairyGame_UpdateRoundScoring(void) {
                 temp_s0 = &gResultScreenGraphNodes[i].unk_004;
                 ModelAnim_SetAnimation(temp_s0, 0);
                 ModelAnim_ClearEventTrack(temp_s0);
-                temp_s0->unk_040.unk_08 = 0;
+                temp_s0->unk_040.RentalSlotAnimData_PosePhase = 0;
             }
         }
     }
@@ -1499,7 +1499,7 @@ s32 ClefairyGame_UpdatePenaltyPhase(void) {
             gCurrentPlayerState = &gPlayerStates[i];
             if ((gCurrentPlayerState->unk_1B2 == 0) && (gCurrentPlayerState->unk_1AC == 0)) {
                 gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
-                if (gResultScreenGraphNodes[i].unk_004.unk_040.unk_08 == 0xD0000) {
+                if (gResultScreenGraphNodes[i].unk_004.unk_040.RentalSlotAnimData_PosePhase == 0xD0000) {
                     if (var_s5 == 0) {
                         MiniSound_DispatchCommand(0x90004, 0, 0);
                         var_s5 = 1;
@@ -1507,7 +1507,7 @@ s32 ClefairyGame_UpdatePenaltyPhase(void) {
                     ModelAnim_SetAnimation(gCurrentPlayerGraphNode, 9);
                     ModelAnim_ClearEventTrack(gCurrentPlayerGraphNode);
                     ModelAnim_SetEventTrack(gCurrentPlayerGraphNode, 0);
-                    gCurrentPlayerGraphNode->unk_040.unk_08 = 0;
+                    gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
                     gCurrentPlayerGraphNode->unk_040.unk_0C = 0x10000;
                     gCurrentPlayerState->unk_1B2 = 1;
                 }
@@ -1760,7 +1760,7 @@ void ClefairyGame_LoadAssets(void) {
         gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
 
         ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
-        Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB1, gFragment7Struct1->unk_08->posX[0]);
+        Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB1, gFragment7Struct1->RentalSlotAnimData_PosePhase->posX[0]);
 
         gCurrentPlayerGraphNode->unk_024.x = (i - 1.5f) * 40.0f;
         gCurrentPlayerGraphNode->unk_024.y = 0.0f;
@@ -1772,7 +1772,7 @@ void ClefairyGame_LoadAssets(void) {
         ModelAnim_SetAnimation(gCurrentPlayerGraphNode, 0);
         ModelAnim_ClearEventTrack(gCurrentPlayerGraphNode);
 
-        gCurrentPlayerGraphNode->unk_040.unk_08 = 0;
+        gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
         gCurrentPlayerState->unk_1B4 = 0;
         gCurrentPlayerState->unk_1B8 = 0.0f;
         gCurrentPlayerState->unk_1BC = 0.0f;
@@ -1781,7 +1781,7 @@ void ClefairyGame_LoadAssets(void) {
     gFragment7Struct1 = Model_LoadByArchiveIndex(0xB2);
     gCurrentPlayerGraphNode = &gResultScreenGraphNode1;
     ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
-    Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB2, gFragment7Struct1->unk_08->posX[0]);
+    Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB2, gFragment7Struct1->RentalSlotAnimData_PosePhase->posX[0]);
     gCurrentPlayerGraphNode->unk_024.x = 0.0f;
     gCurrentPlayerGraphNode->unk_024.y = 10.0f;
     gCurrentPlayerGraphNode->unk_024.z = -145.0f;
@@ -1793,7 +1793,7 @@ void ClefairyGame_LoadAssets(void) {
     gFragment7Struct1 = Model_LoadByArchiveIndex(0xB3);
     gCurrentPlayerGraphNode = &gResultScreenGraphNode2;
     ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
-    Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB3, gFragment7Struct1->unk_08->posX[0]);
+    Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB3, gFragment7Struct1->RentalSlotAnimData_PosePhase->posX[0]);
     gFragment7Struct3 = Model_LoadByArchiveIndex(0xB4);
 
     for (i = 0; i < 12; i++) {
@@ -1807,13 +1807,13 @@ void ClefairyGame_LoadAssets(void) {
     for (i = 0; i < 4; i++) {
         gCurrentPlayerGraphNode = &gResultScreenGraphNodes[i].unk_004;
         ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
-        Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB5, gFragment7Struct1->unk_08->posX[0]);
+        Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB5, gFragment7Struct1->RentalSlotAnimData_PosePhase->posX[0]);
         gCurrentPlayerGraphNode->unk_024.x = (i - 1.5f) * 40.0f;
         gCurrentPlayerGraphNode->unk_024.y = 0.0f;
         gCurrentPlayerGraphNode->unk_024.z = 0.0f;
         ModelAnim_SetAnimation(gCurrentPlayerGraphNode, 0);
         ModelAnim_ClearEventTrack(gCurrentPlayerGraphNode);
-        gCurrentPlayerGraphNode->unk_040.unk_08 = 0x320000;
+        gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0x320000;
     }
 
     ClefairyGame_InitCamera();

@@ -227,7 +227,7 @@ s32 JigglypuffGame_WaitForStart(void) {
         ModelAnim_SetAnimation(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
-        D_86301D48->unk_040.unk_08 = Rand_Range(0x14) << 0x10;
+        D_86301D48->unk_040.RentalSlotAnimData_PosePhase = Rand_Range(0x14) << 0x10;
 
         gPlayerJumpState[i] = 0;
     }
@@ -272,7 +272,7 @@ void JigglypuffGame_ReadyCountdown(void) {
         ModelAnim_SetAnimation(D_86301D48, 1);
 
         D_86301D48->unk_040.unk_0C = 0x10000;
-        D_86301D48->unk_040.unk_08 = Rand_Range(0x14) << 0x10;
+        D_86301D48->unk_040.RentalSlotAnimData_PosePhase = Rand_Range(0x14) << 0x10;
 
         gPlayerJumpState[i] = 0;
     }
@@ -535,7 +535,7 @@ void JigglypuffGame_Init(void) {
         D_86301D48 = &gCurrentPlayerNode->unk_004;
 
         ModelRenderer_AttachDisplayObject(D_86301D48);
-        Model_InitDisplayObject(D_86301D48, 0, 0x27, gCurrentGeoLayout->unk_08->posX[0]);
+        Model_InitDisplayObject(D_86301D48, 0, 0x27, gCurrentGeoLayout->RentalSlotAnimData_PosePhase->posX[0]);
 
         D_86301D48->unk_024.x = (i - 1.5f) * 50.0f;
         D_86301D48->unk_024.y = 0.0f;
@@ -550,7 +550,7 @@ void JigglypuffGame_Init(void) {
         ModelAnim_SetAnimation(D_86301D48, 2);
         ModelAnim_ClearEventTrack(D_86301D48);
 
-        D_86301D48->unk_040.unk_08 = Rand_Range(5) << 0x10;
+        D_86301D48->unk_040.RentalSlotAnimData_PosePhase = Rand_Range(5) << 0x10;
     }
 
     PokeIcon_OpenModelArchives();
@@ -558,7 +558,7 @@ void JigglypuffGame_Init(void) {
     D_86301D48 = &gStageCenterNode;
 
     ModelRenderer_AttachDisplayObject(D_86301D48);
-    Model_InitDisplayObject(D_86301D48, 0, 0x9A, gCurrentGeoLayout->unk_08->posX[0]);
+    Model_InitDisplayObject(D_86301D48, 0, 0x9A, gCurrentGeoLayout->RentalSlotAnimData_PosePhase->posX[0]);
 
     D_86301D48->unk_024.x = 0.0f;
     D_86301D48->unk_024.y = 0.0f;

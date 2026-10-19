@@ -7,7 +7,7 @@ typedef struct GbApu_ResetChannels {
   /* 0x08 */ union {
       u16 posX;
       s32 posY;
-  } unk_08;
+  } RentalSlotAnimData_PosePhase;
   /* 0x0C */ u32 unk_0C;
   /* 0x10 */ u16 unk_10;
   /* 0x12 */ u16 unk_12;
@@ -41,7 +41,7 @@ typedef struct GbApu_ResetChannels {
 
 typedef struct unk_D_8122EEA8 {
   /* 0x00 */ u8 posX;
-  /* 0x01 */ u8 unk_01;
+  /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
   /* 0x02 */ u8 posY;
   /* 0x03 */ u8 unk_03;
 } unk_D_8122EEA8; // size = 0x4
@@ -303,9 +303,9 @@ u16 GbApu_UpdateSquare1Channel(void) {
         gGbApuSquare1.unk_4C = 0U;
     }
     {
-        s32 temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare1.unk_3B, gGbApuSquare1.unk_08.posX);
-        gGbApuSquare1.unk_08.posY += gGbApuSquare1.unk_0C;
-        gGbApuSquare1.unk_08.posY &= 0x1FFFFF;
+        s32 temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare1.unk_3B, gGbApuSquare1.RentalSlotAnimData_PosePhase.posX);
+        gGbApuSquare1.RentalSlotAnimData_PosePhase.posY += gGbApuSquare1.unk_0C;
+        gGbApuSquare1.RentalSlotAnimData_PosePhase.posY &= 0x1FFFFF;
         if (gGbApuSquare1.unk_4C == 1) {
             if (gGbApuSquare1.unk_3C != 0) {
                 gGbApuSquare1.unk_3C--;
@@ -394,9 +394,9 @@ s32 GbApu_UpdateSquare2Channel(void) {
     } else {
         gGbApuSquare2.unk_4C = 0U;
     }
-    temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare2.unk_3B, gGbApuSquare2.unk_08.posX);
-    gGbApuSquare2.unk_08.posY += gGbApuSquare2.unk_0C;
-    gGbApuSquare2.unk_08.posY &= 0x1FFFFF;
+    temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare2.unk_3B, gGbApuSquare2.RentalSlotAnimData_PosePhase.posX);
+    gGbApuSquare2.RentalSlotAnimData_PosePhase.posY += gGbApuSquare2.unk_0C;
+    gGbApuSquare2.RentalSlotAnimData_PosePhase.posY &= 0x1FFFFF;
     if (gGbApuSquare2.unk_4C == 1) {
         if (gGbApuSquare2.unk_3C != 0) {
             gGbApuSquare2.unk_3C--;
@@ -466,7 +466,7 @@ u16 GbApu_UpdateWaveChannel(void) {
             if (gGbApuWave.rotation >= 0x21) {
                 if (gGbApuWave.unk_3C == 0) {
                     gGbApuWave.rotation = 0x20;
-                    gGbApuWave.unk_08.posY = 0;
+                    gGbApuWave.RentalSlotAnimData_PosePhase.posY = 0;
                     gGbApuWave.unk_0C = GbApu_FreqToStep(gGbApuWave.unk_10);
                     gGbApuWave.unk_20 = gGbWaveLevelTable[gGbApuWave.unk_21];
                 } else {
@@ -479,9 +479,9 @@ u16 GbApu_UpdateWaveChannel(void) {
             }
         }
     }
-    temp_a0 = GbAudio_GetDutyVolume(7, gGbApuWave.unk_08.posX);
-    gGbApuWave.unk_08.posY += gGbApuWave.unk_0C;
-    gGbApuWave.unk_08.posY &= 0x1FFFFF;
+    temp_a0 = GbAudio_GetDutyVolume(7, gGbApuWave.RentalSlotAnimData_PosePhase.posX);
+    gGbApuWave.RentalSlotAnimData_PosePhase.posY += gGbApuWave.unk_0C;
+    gGbApuWave.RentalSlotAnimData_PosePhase.posY &= 0x1FFFFF;
     if (gGbApuWave.unk_4C - 1 == 0) {
 
         if (gGbApuWave.unk_3C != 0) {
@@ -537,10 +537,10 @@ u16 GbAudio_StepNoiseChannel(void) {
         gGbApuNoise.unk_20 = gGbApuNoise.unk_3C;
         gGbApuNoise.unk_0C = gGbApuNoise.unk_40;
     }
-    temp_v0 = GbAudio_GetDutyVolume(6, gGbApuNoise.unk_08.posX);
-    gGbApuNoise.unk_08.posY += var_a2;
-    if (gGbApuNoise.unk_08.posX  >= (u32)D_8120EACC) {
-        gGbApuNoise.unk_08.posX  = D_8120EAC8;
+    temp_v0 = GbAudio_GetDutyVolume(6, gGbApuNoise.RentalSlotAnimData_PosePhase.posX);
+    gGbApuNoise.RentalSlotAnimData_PosePhase.posY += var_a2;
+    if (gGbApuNoise.RentalSlotAnimData_PosePhase.posX  >= (u32)D_8120EACC) {
+        gGbApuNoise.RentalSlotAnimData_PosePhase.posX  = D_8120EAC8;
     }
     temp_v0 *= gGbApuNoise.unk_3C;
     if ((gGbApuNoise.unk_3C != gGbApuNoise.unk_20) && ((D_8120EB6C % 95) == 0)) {
@@ -695,7 +695,7 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             gGbApuSquare2.unk_0C = GbApu_FreqToStep2x(gGbApuSquare2.unk_10);
             if ((s32)GB_APU_REGS.trigger2 == 1) {
                 gGbApuSquare2.unk_14 = gGbApuSquare2.unk_1C * 200;
-                gGbApuSquare2.unk_08.posY = 0;
+                gGbApuSquare2.RentalSlotAnimData_PosePhase.posY = 0;
                 gGbApuSquare2.unk_20 = gGbEnvStepTable[gGbApuSquare2.unk_21];
                 gGbApuSquare2.unk_24 = 0;
                 gGbApuSquare2.unk_2E = GB_APU_REGS.envDir2;
@@ -783,7 +783,7 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             if ((s32)GB_APU_REGS.trigger4 == 1) {
                 gGbApuNoise.unk_14 = gGbApuNoise.unk_1C * 200;
                 if (gGbApuNoise.posX == 0) {
-                    gGbApuNoise.unk_08.posY = 0;
+                    gGbApuNoise.RentalSlotAnimData_PosePhase.posY = 0;
                 }
                 gGbApuNoise.unk_2D = gGbApuNoise.unk_21;
                 switch ((s32)GB_APU_REGS.width4) {
@@ -930,7 +930,7 @@ void GbAudio_MixChannels(s32 numSamples, s16* out) {
     }
 
     gGbApuStatusLatch.posX = 0;
-    gGbApuStatusLatch.unk_01 = 0;
+    gGbApuStatusLatch.TrainerSlotSaveData_GamePort = 0;
     gGbApuStatusLatch.posY = 0;
     gGbApuStatusLatch.unk_03 = 0;
 }
@@ -951,7 +951,7 @@ void GbAudio_QueueWrite(u16 arg0, u8 arg1, u16 arg2) {
         return;
     case 25:
         if (arg1 & 0x80) {
-            gGbApuStatusLatch.unk_01 = 2;
+            gGbApuStatusLatch.TrainerSlotSaveData_GamePort = 2;
             return;
         }
         break;
@@ -972,7 +972,7 @@ void GbAudio_QueueWrite(u16 arg0, u8 arg1, u16 arg2) {
             gGbApuStatusLatch.posX = 1;
         }
         if (!(arg1 & 2)) {
-            gGbApuStatusLatch.unk_01 = 1;
+            gGbApuStatusLatch.TrainerSlotSaveData_GamePort = 1;
         }
         if (!(arg1 & 4)) {
             gGbApuStatusLatch.posY = 1;
@@ -982,7 +982,7 @@ void GbAudio_QueueWrite(u16 arg0, u8 arg1, u16 arg2) {
         }
         if (!(arg1 & 0x80)) {
             gGbApuStatusLatch.posX = 1;
-            gGbApuStatusLatch.unk_01 = 1;
+            gGbApuStatusLatch.TrainerSlotSaveData_GamePort = 1;
             gGbApuStatusLatch.posY = 1;
             gGbApuStatusLatch.unk_03 = 1;
         }
@@ -1005,10 +1005,10 @@ void GbAudio_Reset(void) {
   gGbApuSquare2.unk_3C = 0;
   gGbApuWave.unk_3C = 0;
   gGbApuNoise.unk_3C = 0;
-  gGbApuSquare1.unk_08.posY = 0;
-  gGbApuSquare2.unk_08.posY = 0;
-  gGbApuWave.unk_08.posY = 0;
-  gGbApuNoise.unk_08.posY = 0;
+  gGbApuSquare1.RentalSlotAnimData_PosePhase.posY = 0;
+  gGbApuSquare2.RentalSlotAnimData_PosePhase.posY = 0;
+  gGbApuWave.RentalSlotAnimData_PosePhase.posY = 0;
+  gGbApuNoise.RentalSlotAnimData_PosePhase.posY = 0;
 }
 
 void GbApu_Reset(s32 arg0) {
@@ -1054,8 +1054,8 @@ u8 GbMem_ReadIoRegister(u16 arg0) {
       } else {
           var_v1 = gGbApuSquare1.posX;
       }
-      if (gGbApuStatusLatch.unk_01 != 0) {
-          var_a0 = (gGbApuStatusLatch.unk_01 - 1) & 0xFF;
+      if (gGbApuStatusLatch.TrainerSlotSaveData_GamePort != 0) {
+          var_a0 = (gGbApuStatusLatch.TrainerSlotSaveData_GamePort - 1) & 0xFF;
       } else {
           var_a0 = gGbApuSquare2.posX;
       }

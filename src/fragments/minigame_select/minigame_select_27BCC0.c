@@ -23,7 +23,7 @@ typedef struct ItemSelectionCoords {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -935,7 +935,7 @@ void MiniGameSelect_CreateCursor(void) {
     ModelRenderer_AttachDisplayObject(&gCursor.unk_000);
     Vec3f_SetComponentsDuplicate(&gCursor.unk_000.unk_024, -220.0f, 140.0f, -579.0f);
     Model_InitDisplayObject(&gCursor.unk_000, 0, 0, gSelectionHighlightNode);
-    ptr->unk_01 &= ~1;
+    ptr->TrainerSlotSaveData_GamePort &= ~1;
 }
 
 void MiniGameSelect_UpdateCursor(Fragment2_1GraphNode* a0) {
@@ -980,7 +980,7 @@ void MiniGameSelect_UpdateCursor(Fragment2_1GraphNode* a0) {
                 } else {
                     var_v0 = 0x48;
                 }
-                arg0->unk_16A = var_v0 + 0xA4 + (D_8250A288.unk_08 * 0x18);
+                arg0->unk_16A = var_v0 + 0xA4 + (D_8250A288.RentalSlotAnimData_PosePhase * 0x18);
             }
             break;
 
@@ -1041,7 +1041,7 @@ void MiniGameSelect_ResetInputStates(void) {
         ptr->posY = 0;
         ptr->rotation = 0;
         ptr->unk_06 = 0;
-        ptr->unk_08 = 0;
+        ptr->RentalSlotAnimData_PosePhase = 0;
         ptr->unk_0A = 0xA;
     }
 }
@@ -1074,36 +1074,36 @@ void MiniGameSelect_ReadInputsWithRepeat(void) {
         var_v1->unk_06 = tmp & var_v1->posX;
         var_v1->posY |= var_a0->buttonDown;
         var_v1->rotation |= var_a0->buttonPressed;
-        var_v1->unk_08 = 0;
+        var_v1->RentalSlotAnimData_PosePhase = 0;
 
         if (var_v1->rotation & 0x800) {
             var_v1->unk_0A = 0xA;
-            var_v1->unk_08 = 0x800;
+            var_v1->RentalSlotAnimData_PosePhase = 0x800;
         } else if (var_v1->rotation & 0x400) {
             var_v1->unk_0A = 0xA;
-            var_v1->unk_08 = 0x400;
+            var_v1->RentalSlotAnimData_PosePhase = 0x400;
         } else if (var_v1->rotation & 0x200) {
             var_v1->unk_0A = 0xA;
-            var_v1->unk_08 = 0x200;
+            var_v1->RentalSlotAnimData_PosePhase = 0x200;
         } else if (var_v1->rotation & 0x100) {
             var_v1->unk_0A = 0xA;
-            var_v1->unk_08 = 0x100;
+            var_v1->RentalSlotAnimData_PosePhase = 0x100;
         } else {
             var_v1->unk_0A--;
             if (var_v1->unk_0A <= 0) {
                 var_v1->unk_0A = 0;
                 if (var_v1->posY & 0x800) {
                     var_v1->unk_0A = 2;
-                    var_v1->unk_08 = 0x800;
+                    var_v1->RentalSlotAnimData_PosePhase = 0x800;
                 } else if (var_v1->posY & 0x400) {
                     var_v1->unk_0A = 2;
-                    var_v1->unk_08 = 0x400;
+                    var_v1->RentalSlotAnimData_PosePhase = 0x400;
                 } else if (var_v1->posY & 0x200) {
                     var_v1->unk_0A = 2;
-                    var_v1->unk_08 = 0x200;
+                    var_v1->RentalSlotAnimData_PosePhase = 0x200;
                 } else if (var_v1->posY & 0x100) {
                     var_v1->unk_0A = 2;
-                    var_v1->unk_08 = 0x100;
+                    var_v1->RentalSlotAnimData_PosePhase = 0x100;
                 }
             }
         }
@@ -1333,7 +1333,7 @@ UIWidget* MiniGameSelect_CreateMenuWidget(s16 arg0, s16 arg1, GraphNode* arg2) {
     ModelRenderer_AttachDisplayObject(temp_s1);
     temp_s1->unk_1E = -0x4000;
     Model_InitDisplayObject(temp_s1, 0, 0, arg2);
-    temp_s1->unk_01 &= ~1;
+    temp_s1->TrainerSlotSaveData_GamePort &= ~1;
 
     switch (temp_v0->posX) {
         case 1:
@@ -1403,8 +1403,8 @@ void SetUIElementState(UIWidget* arg0, s16 arg1) {
     switch (arg0->posY) {
         case 1:
             arg0->unk_06 |= 1;
-            arg0->unk_08 = 0xA;
-            arg0->unk_3C.unk_01 |= 1;
+            arg0->RentalSlotAnimData_PosePhase = 0xA;
+            arg0->unk_3C.TrainerSlotSaveData_GamePort |= 1;
             arg0->unk_0E[0] = 0xFF;
             arg0->unk_0E[1] = 0xFF;
             arg0->unk_0E[2] = 0xFF;
@@ -1420,14 +1420,14 @@ void SetUIElementState(UIWidget* arg0, s16 arg1) {
             break;
 
         case 3:
-            arg0->unk_08 = 0xA;
+            arg0->RentalSlotAnimData_PosePhase = 0xA;
             if (arg0->unk_34 != NULL) {
                 var_v0 = 1;
             }
             break;
 
         case 5:
-            arg0->unk_08 = 0xA;
+            arg0->RentalSlotAnimData_PosePhase = 0xA;
             arg0->unk_0C = D_8250A288.unk_06;
 
             for (i = 0; i < 4; i++) {
@@ -1440,18 +1440,18 @@ void SetUIElementState(UIWidget* arg0, s16 arg1) {
             break;
 
         case 8:
-            arg0->unk_08 = 0xA;
+            arg0->RentalSlotAnimData_PosePhase = 0xA;
             if (arg0->unk_34 != NULL) {
                 var_v0 = 1;
             }
             break;
 
         case 7:
-            arg0->unk_08 = 0xA;
+            arg0->RentalSlotAnimData_PosePhase = 0xA;
             if (arg0->unk_34 != NULL) {
                 var_v0 = 1;
             }
-            arg0->unk_3C.unk_01 |= 1;
+            arg0->unk_3C.TrainerSlotSaveData_GamePort |= 1;
             break;
     }
 
@@ -1466,7 +1466,7 @@ void MiniGameSelect_SetWidgetTargetState(UIWidget* arg0, s16 arg1, s32 arg2) {
             arg0->unk_0A = arg0->unk_0C;
         }
     }
-    arg0->unk_08 = 6;
+    arg0->RentalSlotAnimData_PosePhase = 6;
     arg0->unk_0C = arg1;
 }
 
@@ -1594,7 +1594,7 @@ void MiniGameSelect_UpdateWidgets(void) {
                     var_s0->unk_002 = 4;
                     var_s0->unk_008 = 0;
                     temp_v0->unk_1E = 0x4000;
-                    temp_v0->unk_01 &= ~1;
+                    temp_v0->TrainerSlotSaveData_GamePort &= ~1;
                     if (var_s0->unk_030 != NULL) {
                         SetUIElementState(var_s0->unk_030, 1);
                     }
@@ -1657,7 +1657,7 @@ void MiniGameSelect_UpdateWidgets(void) {
                     temp_v0->unk_1E = -0x4000;
                     var_s0->unk_002 = 0;
                     var_s0->unk_008 = 0;
-                    temp_v0->unk_01 &= ~1;
+                    temp_v0->TrainerSlotSaveData_GamePort &= ~1;
                     if (var_s0->unk_02C != NULL) {
                         SetUIElementState(var_s0->unk_02C, 7);
                     }
@@ -1683,7 +1683,7 @@ void MiniGameSelect_ClearOptionPanelState(void) {
     gSelectionCoords.posY = 0;
     gSelectionCoords.rotation = 0;
     gSelectionCoords.unk_06 = 0;
-    gSelectionCoords.unk_08 = 0;
+    gSelectionCoords.RentalSlotAnimData_PosePhase = 0;
     gSelectionCoords.unk_0A = 0;
     gSelectionCoords.unk_0C = 0;
     gSelectionCoords.unk_0E = 0;
@@ -1696,9 +1696,9 @@ void MiniGameSelect_ResetSelection(void) {
     D_8250A288.unk_06 = 0;
 
     if (gSelectionFlags & 1) {
-        D_8250A288.unk_08 = 2;
+        D_8250A288.RentalSlotAnimData_PosePhase = 2;
     } else {
-        D_8250A288.unk_08 = 1;
+        D_8250A288.RentalSlotAnimData_PosePhase = 1;
     }
 }
 
@@ -1707,7 +1707,7 @@ void MiniGameSelect_LoadSavedSelection(s16 arg0, s16 arg1) {
     D_8250A288.posY = arg0;
     D_8250A288.rotation = gMenuSubState;
     D_8250A288.unk_06 = MiniGameSelect_GameIDToIndex(arg1);
-    D_8250A288.unk_08 = MiniGameSelect_FindTableIndex(gMenuState, gSelectionFlags & 1);
+    D_8250A288.RentalSlotAnimData_PosePhase = MiniGameSelect_FindTableIndex(gMenuState, gSelectionFlags & 1);
 }
 
 void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
@@ -1849,7 +1849,7 @@ void UI_DrawStatusIcon(void) {
             if (gSelectionCoords.posX == 2) {
                 sp30 = 1;
                 sp40 = 0xDC;
-                sp38 = ((gSelectionFlags & 1) ? 0x36 : 0x48) + (D_8250A288.unk_08 * 0x18) + 0xA4;
+                sp38 = ((gSelectionFlags & 1) ? 0x36 : 0x48) + (D_8250A288.RentalSlotAnimData_PosePhase * 0x18) + 0xA4;
                 break;
             }
             break;
@@ -1936,7 +1936,7 @@ void MiniGameSelect_DrawOptionPanel(void) {
     sp5C[3] = Text_GetString(NULL, 0, gStringTable, 6);
 
     if (gSelectionCoords.posX != 0) {
-        Ui_DrawGradientPanel(gSelectionCoords.unk_08, gSelectionCoords.unk_0A, gSelectionCoords.unk_0C, gSelectionCoords.unk_0E, &sp80, &sp7C);
+        Ui_DrawGradientPanel(gSelectionCoords.RentalSlotAnimData_PosePhase, gSelectionCoords.unk_0A, gSelectionCoords.unk_0C, gSelectionCoords.unk_0E, &sp80, &sp7C);
         if (gSelectionCoords.posX == 2) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
@@ -1955,7 +1955,7 @@ void MiniGameSelect_DrawOptionPanel(void) {
             }
 
             for (i = 0; i < var_s4; i++) {
-                if (i != D_8250A288.unk_08) {
+                if (i != D_8250A288.RentalSlotAnimData_PosePhase) {
                     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 } else {
                     Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
@@ -2168,14 +2168,14 @@ void MiniGameSelect_UpdateOptionPanel(void) {
             gSelectionCoords.posY = 0;
             gSelectionCoords.rotation = 8;
             gSelectionCoords.unk_06 = 0x12C;
-            gSelectionCoords.unk_08 = 0x140;
+            gSelectionCoords.RentalSlotAnimData_PosePhase = 0x140;
             gSelectionCoords.unk_0A = 0xF0;
             gSelectionCoords.unk_0C = gSelectionCoords.unk_0E = 0;
             break;
 
         case 1:
             gSelectionCoords.rotation -= 1;
-            gSelectionCoords.unk_08 = ((gSelectionCoords.rotation * 0x8C) / 8) + 0xB4;
+            gSelectionCoords.RentalSlotAnimData_PosePhase = ((gSelectionCoords.rotation * 0x8C) / 8) + 0xB4;
             gSelectionCoords.unk_0A = ((gSelectionCoords.rotation * 0x54) / 8) + 0x9C;
             gSelectionCoords.unk_0C = 0x118 - ((gSelectionCoords.rotation * 0x118) / 8);
             gSelectionCoords.unk_0E = 0xA8 - ((gSelectionCoords.rotation * 0xA8) / 8);
@@ -2201,35 +2201,35 @@ void MiniGameSelect_UpdateOptionPanel(void) {
                 gSelectionCoords.unk_06 -= 1;
             }
 
-            tmp = D_8250A288.unk_08;
+            tmp = D_8250A288.RentalSlotAnimData_PosePhase;
             if (gControllerInputs->rotation & 0x800) {
-                D_8250A288.unk_08 -= 1;
-                if (D_8250A288.unk_08 < 0) {
-                    D_8250A288.unk_08 = var_a2 - 1;
+                D_8250A288.RentalSlotAnimData_PosePhase -= 1;
+                if (D_8250A288.RentalSlotAnimData_PosePhase < 0) {
+                    D_8250A288.RentalSlotAnimData_PosePhase = var_a2 - 1;
                 }
             }
 
             if (gControllerInputs->rotation & 0x400) {
-                D_8250A288.unk_08 += 1;
-                if (D_8250A288.unk_08 >= var_a2) {
-                    D_8250A288.unk_08 = 0;
+                D_8250A288.RentalSlotAnimData_PosePhase += 1;
+                if (D_8250A288.RentalSlotAnimData_PosePhase >= var_a2) {
+                    D_8250A288.RentalSlotAnimData_PosePhase = 0;
                 }
             }
 
-            if (tmp != D_8250A288.unk_08) {
+            if (tmp != D_8250A288.RentalSlotAnimData_PosePhase) {
                 Audio_PlaySoundEffectById(1);
             }
 
             if (gControllerInputs->rotation & 0x8000) {
                 if (gSelectionFlags & 1) {
-                    gMenuState = gCategoryMapB[D_8250A288.unk_08];
+                    gMenuState = gCategoryMapB[D_8250A288.RentalSlotAnimData_PosePhase];
                 } else {
-                    gMenuState = gCategoryMapA[D_8250A288.unk_08];
+                    gMenuState = gCategoryMapA[D_8250A288.RentalSlotAnimData_PosePhase];
                 }
                 gSelectionCoords.posX = 3;
                 gSelectionCoords.posY = 1;
                 gSelectionCoords.rotation = 8;
-                gSelectionCoords.unk_08 = 0xB4;
+                gSelectionCoords.RentalSlotAnimData_PosePhase = 0xB4;
                 gSelectionCoords.unk_0A = 0x9C;
                 gSelectionCoords.unk_0C = 0x118;
                 gSelectionCoords.unk_0E = 0xA8;
@@ -2238,7 +2238,7 @@ void MiniGameSelect_UpdateOptionPanel(void) {
                 gSelectionCoords.posX = 3;
                 gSelectionCoords.posY = 0;
                 gSelectionCoords.rotation = 8;
-                gSelectionCoords.unk_08 = 0xB4;
+                gSelectionCoords.RentalSlotAnimData_PosePhase = 0xB4;
                 gSelectionCoords.unk_0A = 0x9C;
                 gSelectionCoords.unk_0C = 0x118;
                 gSelectionCoords.unk_0E = 0xA8;
@@ -2248,7 +2248,7 @@ void MiniGameSelect_UpdateOptionPanel(void) {
 
         case 3:
             gSelectionCoords.rotation -= 1;
-            gSelectionCoords.unk_08 = ((gSelectionCoords.rotation * -0x8C) / 8) + 0x140;
+            gSelectionCoords.RentalSlotAnimData_PosePhase = ((gSelectionCoords.rotation * -0x8C) / 8) + 0x140;
             gSelectionCoords.unk_0A = ((gSelectionCoords.rotation * -0x54) / 8) + 0xF0;
             gSelectionCoords.unk_0C = (gSelectionCoords.rotation * 0x118) / 8;
             gSelectionCoords.unk_0E = (gSelectionCoords.rotation * 0xA8) / 8;
@@ -2291,10 +2291,10 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
                     KidsClub_SetMatchBannerState(1);
                     SetUIElementState(gComputerUIRoot, 8);
                     Audio_PlaySoundEffectById(3);
-                } else if ((gControllerInputs->unk_08 & 0x800) && (D_8250A288.rotation < 9)) {
+                } else if ((gControllerInputs->RentalSlotAnimData_PosePhase & 0x800) && (D_8250A288.rotation < 9)) {
                     gUnused0 = 2;
                     gUnused1 = 5;
-                } else if ((gControllerInputs->unk_08 & 0x400) && (D_8250A288.rotation >= 2)) {
+                } else if ((gControllerInputs->RentalSlotAnimData_PosePhase & 0x400) && (D_8250A288.rotation >= 2)) {
                     gUnused0 = 1;
                     gUnused1 = 5;
                 }

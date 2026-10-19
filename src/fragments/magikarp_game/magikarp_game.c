@@ -27,7 +27,7 @@ typedef struct MiniHudRandomChance {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } MiniHudRandomChance; // size = 0xC
 
@@ -57,7 +57,7 @@ typedef struct MiniHudTextureRect {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } MiniHudTextureRect; // size = 0xC
 
@@ -215,29 +215,29 @@ void MagikarpGame_UpdateAIInputBias(void) {
                     break;
 
                 case 8:
-                    if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0x90000) &&
-                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
+                    if ((D_86003B5C->unk_004.unk_000.unk_040.RentalSlotAnimData_PosePhase > 0x90000) &&
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].RentalSlotAnimData_PosePhase)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 9:
-                    if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xD0000) &&
-                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
+                    if ((D_86003B5C->unk_004.unk_000.unk_040.RentalSlotAnimData_PosePhase > 0xD0000) &&
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].RentalSlotAnimData_PosePhase)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 10:
-                    if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xB0000) &&
-                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
+                    if ((D_86003B5C->unk_004.unk_000.unk_040.RentalSlotAnimData_PosePhase > 0xB0000) &&
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].RentalSlotAnimData_PosePhase)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 11:
-                    if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xF0000) &&
-                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
+                    if ((D_86003B5C->unk_004.unk_000.unk_040.RentalSlotAnimData_PosePhase > 0xF0000) &&
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].RentalSlotAnimData_PosePhase)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
@@ -568,7 +568,7 @@ s32 MagikarpGame_WaitForStart(void) {
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
         ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
         gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
-        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = (Rand_Range(0x14) << 0x10);
+        gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = (Rand_Range(0x14) << 0x10);
         gMiniHudActionFlags[i] = 0;
     }
 
@@ -607,7 +607,7 @@ void MagikarpGame_Countdown(void) {
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
         ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
         gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
-        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = Rand_Range(0x14) << 0x10;
+        gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = Rand_Range(0x14) << 0x10;
         gMiniHudActionFlags[i] = 0;
     }
 
@@ -656,49 +656,49 @@ void MagikarpGame_StartTrickPose(s16 arg0) {
 
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 8);
 
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void MagikarpGame_AdvanceTrickPoseB(void) {
     D_86003B5C->unk_004.unk_168 = 6;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 9);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void MagikarpGame_AdvanceTrickPoseC(void) {
     D_86003B5C->unk_004.unk_168 = 7;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xA);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void MagikarpGame_AdvanceTrickPoseD(void) {
     D_86003B5C->unk_004.unk_168 = 8;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xB);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void MagikarpGame_AdvanceTrickPoseE(void) {
     D_86003B5C->unk_004.unk_168 = 9;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xC);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void MagikarpGame_AdvanceTrickPoseF(void) {
     D_86003B5C->unk_004.unk_168 = 0xA;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xD);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
 void MagikarpGame_AdvanceTrickPoseG(void) {
     D_86003B5C->unk_004.unk_168 = 0xB;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xE);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
@@ -716,7 +716,7 @@ void MagikarpGame_FinishTrickOrChain(s32 arg0) {
 
     D_86003B5C->unk_004.unk_168 = 0xC;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 5);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
@@ -724,7 +724,7 @@ void MagikarpGame_LandTrick(s32 arg0) {
     gMiniHudActionFlags[arg0] = 0;
     D_86003B5C->unk_004.unk_168 = 0xD;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 6);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
@@ -732,7 +732,7 @@ void MagikarpGame_ResetPlayerState(s32 arg0) {
     gMiniHudActionFlags[arg0] = 0;
     D_86003B5C->unk_004.unk_168 = 0;
     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
-    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
@@ -811,7 +811,7 @@ void MagikarpGame_UpdatePlayerState(s32 arg0) {
             case 1:
                 if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
                     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 7);
-                    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+                    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
                     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
                 }
                 break;
@@ -819,22 +819,22 @@ void MagikarpGame_UpdatePlayerState(s32 arg0) {
             default:
                 if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
                     ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
-                    gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+                    gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
                     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
                     gMiniHudActionFlags[arg0] = 0;
                 }
                 break;
         }
 
-        if (((D_86003B5C->unk_004.unk_168 == 9) && ((gCurrentPlayerGraph->unk_000.unk_040.unk_08 >> 0x10) == 2)) ||
-            ((D_86003B5C->unk_004.unk_168 == 10) && ((gCurrentPlayerGraph->unk_000.unk_040.unk_08 >> 0x10) == 2)) ||
-            ((D_86003B5C->unk_004.unk_168 == 11) && ((gCurrentPlayerGraph->unk_000.unk_040.unk_08 >> 0x10) == 2))) {
+        if (((D_86003B5C->unk_004.unk_168 == 9) && ((gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 2)) ||
+            ((D_86003B5C->unk_004.unk_168 == 10) && ((gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 2)) ||
+            ((D_86003B5C->unk_004.unk_168 == 11) && ((gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 2))) {
             if (gMiniHudActionFlags[arg0] == 0) {
                 gCurrentPlayerWheel->unk_16A++;
                 gMiniHudActionFlags[arg0] = 1;
                 ModelAnim_SetAnimation(&gCurrentPlayerWheel->unk_000, 0);
                 gCurrentPlayerWheel->unk_000.unk_040.unk_0C = 0x10000;
-                gCurrentPlayerWheel->unk_000.unk_040.unk_08 = 0;
+                gCurrentPlayerWheel->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
                 MiniSound_DispatchCommand(0x20008, arg0, 4);
             }
         }
@@ -1001,11 +1001,11 @@ void MagikarpGame_ShowWinnerSequence(void) {
         if ((gMiniHudMaxWheelValue == gMiniHudScoreWheels[i].unk_16A) && (gMiniHudMaxWheelValue > 0)) {
             D_86003B5C->unk_004.unk_168 = 1;
             ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 7);
-            gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
+            gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = 0;
         } else {
             D_86003B5C->unk_004.unk_168 = 2;
             ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
-            gCurrentPlayerGraph->unk_000.unk_040.unk_08 = Rand_Range(5) << 0x10;
+            gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = Rand_Range(5) << 0x10;
         }
         gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
     }
@@ -1123,7 +1123,7 @@ void MagikarpGame_InitActors(void) {
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
-        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->unk_08->posX[0]);
+        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->RentalSlotAnimData_PosePhase->posX[0]);
 
         gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * gKarpPlayerSpacing;
 
@@ -1147,7 +1147,7 @@ void MagikarpGame_InitActors(void) {
 
         ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
 
-        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = Rand_Range(5) << 0x10;
+        gCurrentPlayerGraph->unk_000.unk_040.RentalSlotAnimData_PosePhase = Rand_Range(5) << 0x10;
         gCurrentPlayerGraph->unk_000.unk_01E.y = -0x2800;
     }
 
@@ -1158,7 +1158,7 @@ void MagikarpGame_InitActors(void) {
         gCurrentPlayerGraph = gCurrentPlayerWheel;
 
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
-        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->unk_08->posX[0]);
+        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->RentalSlotAnimData_PosePhase->posX[0]);
         gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * gKarpPlayerSpacing;
         gCurrentPlayerGraph->unk_000.unk_024.z = 0.0f;
         gCurrentPlayerGraph->unk_000.unk_024.y = 200.0f;

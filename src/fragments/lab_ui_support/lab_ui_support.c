@@ -105,7 +105,7 @@ void LabUI_BuildConfirmDialog(unk_func_889000C4* arg0, s32 arg1, unk_func_880013
     if (arg1 == 0) {
         PointerList_Insert(&arg0->unk_34, Text_GetString(NULL, 0, arg4, 5), 2);
     }
-    sp7C = (arg0->unk_34.unk_08 * 0x1C) + 0x38;
+    sp7C = (arg0->unk_34.RentalSlotAnimData_PosePhase * 0x1C) + 0x38;
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_889000C4));
     arg0->posX.unk_20 = LabUI_ConfirmDialogHandleInput;
     if (arg2 != NULL) {
@@ -156,7 +156,7 @@ void LabUI_BuildConfirmDialog(unk_func_889000C4* arg0, s32 arg1, unk_func_880013
 
     arg0->unk_30 = mem_pool_alloc(arg5, sizeof(unk_func_88200FA0_030_030));
     ((func885060BC)Memmap_GetFragmentVaddr(WidgetTree_InitPagedGrid))(arg0->unk_30, 0, 4, LabUI_DrawConfirmOptionLabel, var_s1, 0x1C,
-                                                           arg0->unk_34.unk_08, 1, arg5);
+                                                           arg0->unk_34.RentalSlotAnimData_PosePhase, 1, arg5);
     ((func88506384)Memmap_GetFragmentVaddr(WidgetTree_BindPagedGridPage))(arg0->unk_30, &arg0->unk_34, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&temp_s0_5->posX.posX, &arg0->unk_30->posX.posX);
 
@@ -209,7 +209,7 @@ s32 LabUI_RunConfirmDialog(unk_func_889000C4* arg0, Controller* arg1, s32 arg2) 
         temp_v0 = arg0->posX.unk_20(&arg0->posX, arg1);
         if (!(temp_v0 & 1)) {
             if (arg1->buttonPressed & 0x4000) {
-                if (arg0->unk_30->unk_2C->unk_08 == 3) {
+                if (arg0->unk_30->unk_2C->RentalSlotAnimData_PosePhase == 3) {
                     var_s0 = 3;
                     Audio_PlaySoundEffectById(var_s0);
                 }

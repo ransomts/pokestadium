@@ -38,7 +38,7 @@ s32 Completion_LightAngleCallbackB(s32, GraphNode*);
 typedef struct unk_D_86B0DBCC {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
 } unk_D_86B0DBCC; // size = 0x10
 
@@ -50,7 +50,7 @@ typedef struct unk_D_86B0DB98 {
 typedef struct unk_D_86B0EBD8 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ char unk10[0x8];
     /* 0x18 */ s32 unk_18;
@@ -80,7 +80,7 @@ typedef struct CompletionSceneState {
 typedef struct unk_D_86B0EBE0 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s16 unk_14;
@@ -824,14 +824,14 @@ void Completion_LoadModels(void) {
     gCompletionSceneState->unk_000 = Model_LoadByArchiveIndex(0xD3);
     gCompletionSceneState->unk_008.modelPhase = 0xFF;
 
-    Model_InitDisplayObject(&gCompletionSceneState->unk_008, 0, 0xD3, gCompletionSceneState->unk_000->unk_08->posX[0]);
+    Model_InitDisplayObject(&gCompletionSceneState->unk_008, 0, 0xD3, gCompletionSceneState->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gCompletionSceneState->unk_008, 0);
     ModelRenderer_AttachDisplayObject(&gCompletionSceneState->unk_170);
     PokeIcon_OpenModelArchives();
 
     gCompletionSceneState->unk_004 = Model_LoadByArchiveIndex(gCompletionSceneState->unk_2EC);
     gCompletionSceneState->unk_170.modelPhase = 0;
-    Model_InitDisplayObject(&gCompletionSceneState->unk_170, 0, gCompletionSceneState->unk_2EC, gCompletionSceneState->unk_004->unk_08->posX[0]);
+    Model_InitDisplayObject(&gCompletionSceneState->unk_170, 0, gCompletionSceneState->unk_2EC, gCompletionSceneState->unk_004->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gCompletionSceneState->unk_170, 0);
     gCompletionSceneState->unk_170.unk_000.posY &= ~0x40;
 
@@ -839,11 +839,11 @@ void Completion_LoadModels(void) {
     gCompletionSceneState->unk_170.unk_030.y = gCompletionSceneState->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].posX / 1000.0f;
     gCompletionSceneState->unk_170.unk_030.z = gCompletionSceneState->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].posX / 1000.0f;
 
-    gCompletionSceneState->unk_2FC = gFragment17ObjPresetTable[gFragment17RandomIdx].unk_08;
+    gCompletionSceneState->unk_2FC = gFragment17ObjPresetTable[gFragment17RandomIdx].RentalSlotAnimData_PosePhase;
     gCompletionSceneState->unk_300 = gFragment17ObjPresetTable[gFragment17RandomIdx].unk_0C;
     gCompletionSceneState->unk_170.unk_024.y = -100.0f;
     gCompletionSceneState->unk_008.unk_000.posY &= ~0x20;
-    gCompletionSceneState->unk_170.unk_000.unk_01 &= ~1;
+    gCompletionSceneState->unk_170.unk_000.TrainerSlotSaveData_GamePort &= ~1;
 
     temp_a1 = _70D3A0_ROM_START + (gStageRomOffsets[gCompletionSceneState->unk_2EC - 1] & 0xFFFFFF);
     Dma_WriteChunks(gFragment17StageBuffer, temp_a1, temp_a1 + 0xBC0, 0);
@@ -875,7 +875,7 @@ void Completion_InitDialogBoxParams(void) {
     gFragment17TileStruct->unk_1C.posX.posY = gFragment17TileParams[0].posX.posY;
     gFragment17TileStruct->unk_1C.posX.rotation = gFragment17TileParams[0].posX.rotation;
     gFragment17TileStruct->unk_1C.posX.unk_06 = gFragment17TileParams[0].posX.unk_06;
-    gFragment17TileStruct->unk_1C.posX.unk_08 = gFragment17TileParams[0].posX.unk_08;
+    gFragment17TileStruct->unk_1C.posX.RentalSlotAnimData_PosePhase = gFragment17TileParams[0].posX.RentalSlotAnimData_PosePhase;
     gFragment17TileStruct->unk_1C.posX.unk_0A = gFragment17TileParams[0].posX.unk_0A;
     gFragment17TileStruct->unk_1C.posX.unk_0C = gFragment17TileParams[0].posX.unk_0C;
     gFragment17TileStruct->unk_1C.posX.unk_0E = gFragment17TileParams[0].posX.unk_0E;
@@ -886,7 +886,7 @@ void Completion_InitDialogBoxParams(void) {
 
     gFragment17TileStruct->posX = 0x50;
     gFragment17TileStruct->rotation = -0x32;
-    gFragment17TileStruct->unk_08 = 0x40;
+    gFragment17TileStruct->RentalSlotAnimData_PosePhase = 0x40;
     gFragment17TileStruct->unk_0C = 0xF2;
     gFragment17TileStruct->unk_18 = 0;
 }
@@ -980,9 +980,9 @@ void Completion_ResetDialogText(void) {
 }
 
 void Completion_DrawDialogBox(void) {
-    FirstClearBonus_DrawDialogFrame(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2), gFragment17TextState->unk_08,
+    FirstClearBonus_DrawDialogFrame(gFragment17TextState->unk_16, gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2), gFragment17TextState->RentalSlotAnimData_PosePhase,
                   gFragment17TextState->unk_0C, 0x14, 0x14, 0xB4, 0x80);
-    UI_DrawAlphaQuad(gFragment17TextState->unk_16 - 2, (gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2)) - 2, gFragment17TextState->unk_08 + 4,
+    UI_DrawAlphaQuad(gFragment17TextState->unk_16 - 2, (gFragment17TextState->unk_14 - (gFragment17TextState->unk_0C / 2)) - 2, gFragment17TextState->RentalSlotAnimData_PosePhase + 4,
                   gFragment17TextState->unk_0C + 4, 0);
 }
 
@@ -1000,7 +1000,7 @@ void Completion_UpdateGiftDialogFirstTime(void) {
             }
 
             gFragment17TextState->rotation = 0;
-            gFragment17TextState->unk_08 = 0xB4;
+            gFragment17TextState->RentalSlotAnimData_PosePhase = 0xB4;
             gFragment17TextState->unk_0C = 0xA;
             gFragment17TextState->unk_16 = 0x46;
             gFragment17TextState->unk_14 = 0xC8;
@@ -1089,7 +1089,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                 Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Intro2);
             }
             gFragment17TextState->rotation = 0;
-            gFragment17TextState->unk_08 = 0xB4;
+            gFragment17TextState->RentalSlotAnimData_PosePhase = 0xB4;
             gFragment17TextState->unk_0C = 0xA;
             gFragment17TextState->unk_16 = 0x46;
             gFragment17TextState->unk_14 = 0xC8;
@@ -1229,11 +1229,11 @@ void Completion_DrawLogoBanner(void) {
                   &gFragment17TileStruct->unk_1C, 0);
     UI_DrawSplitGradientPanel(D_30074E0, gFragment17TileStruct->posX + 0x50, gFragment17TileStruct->rotation, 0x50, 0x30, 0xA0, 0x30, 0x50, 0, 0xA0, 0x30,
                   0x9F, 0x50, &gFragment17TileStruct->unk_1C, 0);
-    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->unk_08, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0, 0, 0x40, 0x30, 0x3F, 0,
+    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->RentalSlotAnimData_PosePhase, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0, 0, 0x40, 0x30, 0x3F, 0,
                   &gFragment17TileStruct->unk_1C, 1);
-    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->unk_08 + 0x40, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x40, 0, 0x80, 0x30,
+    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->RentalSlotAnimData_PosePhase + 0x40, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x40, 0, 0x80, 0x30,
                   0x7F, 0x40, &gFragment17TileStruct->unk_1C, 1);
-    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->unk_08 + 0x80, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x80, 0, 0xC0, 0x30,
+    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->RentalSlotAnimData_PosePhase + 0x80, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x80, 0, 0xC0, 0x30,
                   0xBF, 0x80, &gFragment17TileStruct->unk_1C, 1);
 }
 
@@ -1250,9 +1250,9 @@ s32 Completion_AnimateLogoBannerColor(void) {
     gFragment17TileStruct->unk_1C.posX.unk_06 = Math_StepToS32(
         gFragment17TileStruct->unk_1C.posX.unk_06, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.unk_06,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_06, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_06);
-    gFragment17TileStruct->unk_1C.posX.unk_08 = Math_StepToS32(
-        gFragment17TileStruct->unk_1C.posX.unk_08, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.unk_08,
-        gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_08, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_08);
+    gFragment17TileStruct->unk_1C.posX.RentalSlotAnimData_PosePhase = Math_StepToS32(
+        gFragment17TileStruct->unk_1C.posX.RentalSlotAnimData_PosePhase, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.RentalSlotAnimData_PosePhase,
+        gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.RentalSlotAnimData_PosePhase, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.RentalSlotAnimData_PosePhase);
     gFragment17TileStruct->unk_1C.posX.unk_0A = Math_StepToS32(
         gFragment17TileStruct->unk_1C.posX.unk_0A, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.unk_0A,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_0A, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_0A);
@@ -1270,7 +1270,7 @@ s32 Completion_AnimateLogoBannerColor(void) {
         (gFragment17TileStruct->unk_1C.posX.posY == gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.posY) &&
         (gFragment17TileStruct->unk_1C.posX.rotation == gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.rotation) &&
         (gFragment17TileStruct->unk_1C.posX.unk_06 == gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.unk_06) &&
-        (gFragment17TileStruct->unk_1C.posX.unk_08 == gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.unk_08) &&
+        (gFragment17TileStruct->unk_1C.posX.RentalSlotAnimData_PosePhase == gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.RentalSlotAnimData_PosePhase) &&
         (gFragment17TileStruct->unk_1C.posX.unk_0A == gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.unk_0A) &&
         (gFragment17TileStruct->unk_1C.posX.unk_0C == gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.unk_0C) &&
         (gFragment17TileStruct->unk_1C.posX.unk_0E == gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].posX.unk_0E) &&
@@ -1340,7 +1340,7 @@ s32 Completion_MoveCameraToFront(void) {
 
     if (gFragment17Camera->unk_60.eye.z >= 85.0f) {
         gCompletionSceneState->unk_008.unk_000.posY |= 0x20;
-        gCompletionSceneState->unk_170.unk_000.unk_01 |= 1;
+        gCompletionSceneState->unk_170.unk_000.TrainerSlotSaveData_GamePort |= 1;
         Completion_PositionBonusModel();
     }
 
@@ -1429,8 +1429,8 @@ void Completion_LoopBonusModelIdleAnim(void) {
 
 void Completion_ClampAnimTimer(void) {
     if (((s32)gCompletionSceneState->unk_008.unk_040.unk_0C >> 0x10) == -1) {
-        if ((gCompletionSceneState->unk_008.unk_040.unk_08 >> 0x10) > 0) {
-            gCompletionSceneState->unk_008.unk_040.unk_08 += 0xFFFF0000;
+        if ((gCompletionSceneState->unk_008.unk_040.RentalSlotAnimData_PosePhase >> 0x10) > 0) {
+            gCompletionSceneState->unk_008.unk_040.RentalSlotAnimData_PosePhase += 0xFFFF0000;
         }
     }
 }

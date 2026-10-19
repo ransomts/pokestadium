@@ -33,13 +33,13 @@ typedef struct GalleryState {
 
 typedef struct GalleryAnimScriptEntry {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0xE];
 } GalleryAnimScriptEntry; // size = 0x10
 
 typedef struct GalleryCameraConfig {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x04 */ f32 rotation;
 } GalleryCameraConfig; // size = 0x8
 
@@ -52,7 +52,7 @@ typedef struct GalleryScriptInput {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ char unk14[0xC];
@@ -385,10 +385,10 @@ void Gallery_SetBackgroundTint(u8 arg0, u8 arg1, u8 arg2) {
 
     if (v == 0xFF) {
         if (gStagePanelRootNode.posX.unk_14 == 1) {
-            gStagePanelRootNode.posX.unk_01 |= 1;
+            gStagePanelRootNode.posX.TrainerSlotSaveData_GamePort |= 1;
         }
     } else {
-        gStagePanelRootNode.posX.unk_01 &= ~1;
+        gStagePanelRootNode.posX.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 
@@ -427,7 +427,7 @@ void Gallery_SetupPhotoModel(void) {
 
     gCameraZoomOffset = gStageCameraConfig[gStagePanelState->unk_16C - 1].rotation;
     gStageAnimIndexA = gStageCameraConfig[gStagePanelState->unk_16C - 1].posX - 6;
-    gStageAnimIndexB = gStageCameraConfig[gStagePanelState->unk_16C - 1].unk_01 - 6;
+    gStageAnimIndexB = gStageCameraConfig[gStagePanelState->unk_16C - 1].TrainerSlotSaveData_GamePort - 6;
 
     ModelRenderer_AttachDisplayObject(&gStagePanelState->unk_004);
     PokeIcon_OpenModelArchives();
@@ -438,11 +438,11 @@ void Gallery_SetupPhotoModel(void) {
         gStagePanelState->unk_000 = Model_LoadForPokemon(&gStagePanelPlayerData);
     }
 
-    Model_InitDisplayObject(&gStagePanelState->unk_004, 0, gStagePanelState->unk_16C, gStagePanelState->unk_000->unk_08->posX[0]);
+    Model_InitDisplayObject(&gStagePanelState->unk_004, 0, gStagePanelState->unk_16C, gStagePanelState->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
     Gallery_LoadPhotoTextures();
     ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].posX);
 
-    gStagePanelState->unk_004.unk_024.y += gCameraConfig.unk_08;
+    gStagePanelState->unk_004.unk_024.y += gCameraConfig.RentalSlotAnimData_PosePhase;
     gStagePanelState->unk_004.modelPhase = 0;
 }
 
@@ -488,7 +488,7 @@ void Gallery_LoadBackgroundSet(s32 arg0) {
     temp_v1 = sp18(4, 0);
     if (temp_v1 == NULL) {
         gStagePanelRootNode.posX.unk_14 = 0;
-        gStagePanelRootNode.posX.unk_01 &= ~1;
+        gStagePanelRootNode.posX.TrainerSlotSaveData_GamePort &= ~1;
     } else {
         gStagePanelRootNode.unk_18.posX = temp_v1->posX;
         gStagePanelRootNode.unk_18.posY = temp_v1->posY;
@@ -613,7 +613,7 @@ void GalleryCamera_UpdatePokemonIdleAnim(void) {
         ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].posX);
         ModelAnim_SetFrame(&gStagePanelState->unk_004, 0);
         ModelAnim_SetEventFrame(&gStagePanelState->unk_004, 0);
-        ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].unk_01);
+        ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].TrainerSlotSaveData_GamePort);
         gStageAnimStateFlag = 1;
     }
 
@@ -631,7 +631,7 @@ void GalleryCamera_UpdatePokemonEventLoop(void) {
         gStageSoundTimer = 0;
         if (gStageAnimStateFlag == 0) {
             ModelAnim_SetEventFrame(&gStagePanelState->unk_004, 0);
-            ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].unk_01);
+            ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].TrainerSlotSaveData_GamePort);
         }
     }
 }
@@ -664,10 +664,10 @@ void Gallery_CapturePhoto(void) {
 
             gDisplayableMonIndices[gStageSnapshotCount].posX = gStagePanelState->unk_004.unk_024.y;
             gDisplayableMonIndices[gStageSnapshotCount].rotation = gStagePanelState->unk_16C;
-            gDisplayableMonIndices[gStageSnapshotCount].unk_06 = gStagePanelState->unk_004.unk_040.unk_08 >> 0x10;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_06 = gStagePanelState->unk_004.unk_040.RentalSlotAnimData_PosePhase >> 0x10;
             gDisplayableMonIndices[gStageSnapshotCount].unk_05 = gStagePanelState->unk_004.unk_040.posX;
-            gDisplayableMonIndices[gStageSnapshotCount].unk_08 = gStagePanelState->unk_004.unk_054.posX;
-            gDisplayableMonIndices[gStageSnapshotCount].unk_09 = gStagePanelState->unk_004.unk_054.unk_08;
+            gDisplayableMonIndices[gStageSnapshotCount].RentalSlotAnimData_PosePhase = gStagePanelState->unk_004.unk_054.posX;
+            gDisplayableMonIndices[gStageSnapshotCount].unk_09 = gStagePanelState->unk_004.unk_054.RentalSlotAnimData_PosePhase;
 
             Particle31_PackSlotData(gDisplayableMonIndices[gStageSnapshotCount].unk_0A);
             Gallery_CopyPhotoMonFromBattleMon(&gDisplayableMonIndices[gStageSnapshotCount].unk_70, &gStagePanelPlayerData);
@@ -801,7 +801,7 @@ void Gallery_CameraUpdateTutorialText(void) {
         switch (gTutorialTextBoxState.posX) {
             case 0x0:
                 gTutorialTextBoxState.rotation = 0;
-                gTutorialTextBoxState.unk_08 = 0xC8;
+                gTutorialTextBoxState.RentalSlotAnimData_PosePhase = 0xC8;
                 gTutorialTextBoxState.unk_0C = 0x14;
 
                 // clang-format off
@@ -908,7 +908,7 @@ s32 Gallery_CameraExitState_CountDown(void) {
         } else {
             gStagePanelStateIndex = 2;
             Audio_PlaySoundEffectById(0x2E);
-            gStagePanelAnimState.unk_08 = 0xE38;
+            gStagePanelAnimState.RentalSlotAnimData_PosePhase = 0xE38;
         }
     }
 
@@ -921,10 +921,10 @@ s32 Gallery_CameraExitState_SpinOut(void) {
     gStagePanelAnimState.rotation = Math_StepToS32(gStagePanelAnimState.rotation, 0x30, 0xA, 0xA);
 
     if (gStagePanelAnimState.rotation >= 0x30) {
-        gStagePanelAnimState.unk_08 = Math_StepToS32(gStagePanelAnimState.unk_08, 0, 0xC8, 0xC8);
+        gStagePanelAnimState.RentalSlotAnimData_PosePhase = Math_StepToS32(gStagePanelAnimState.RentalSlotAnimData_PosePhase, 0, 0xC8, 0xC8);
         gStagePanelAnimState.unk_0A -= 0x31C7;
-        gStagePanelAnimState.unk_06 = SINS(gStagePanelAnimState.unk_0A) * gStagePanelAnimState.unk_08;
-        if (gStagePanelAnimState.unk_08 == 0) {
+        gStagePanelAnimState.unk_06 = SINS(gStagePanelAnimState.unk_0A) * gStagePanelAnimState.RentalSlotAnimData_PosePhase;
+        if (gStagePanelAnimState.RentalSlotAnimData_PosePhase == 0) {
             gStagePanelAnimState.unk_06 = 0;
             gStagePanelStateIndex = 3;
         }
@@ -937,7 +937,7 @@ s32 Gallery_CameraExitState_ExpandBox(void) {
     if (gStagePanelFadeData.rotation == 0x50) {
         gStagePanelFadeData.unk_0C = 0xAA;
         gStagePanelFadeData.unk_0E = 0xA;
-        gStagePanelFadeData.unk_08 = 0xA0 - (gStagePanelFadeData.unk_0C / 2);
+        gStagePanelFadeData.RentalSlotAnimData_PosePhase = 0xA0 - (gStagePanelFadeData.unk_0C / 2);
         gStagePanelFadeData.unk_0A = 0x78;
         gStagePanelFadeData.posX = 0;
         gStagePanelStateIndex = 4;

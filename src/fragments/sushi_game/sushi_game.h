@@ -17,17 +17,17 @@ typedef struct SushiPlateNode {
 
 typedef struct unk_D_868084D8_040 {
     /* 0x00 */char unk00[0x1];
-    /* 0x01 */u8 unk_01;
+    /* 0x01 */u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */char unk02[0x1];
     /* 0x03 */u8 unk_03;
 } unk_D_868084D8_040; // size >= 0x2
 
-typedef struct unk_D_868084D8 {
+typedef struct SushiPlate {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ Color_RGBA8_u32 unk_08;
+    /* 0x08 */ Color_RGBA8_u32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ Vec3f unk_14;
@@ -38,13 +38,13 @@ typedef struct unk_D_868084D8 {
     /* 0x38 */ SushiPlateNode* unk_38;
     /* 0x3C */ Gfx* unk_3C;
     /* 0x40 */ unk_D_86002F34_alt9* unk_40;
-} unk_D_868084D8; // size = 0x44
+} SushiPlate; // size = 0x44
 
 typedef struct SushiNameTag {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -64,7 +64,7 @@ typedef struct SushiPlayerEntity {
     /* 0x004 */ s16 unk_006;
     /* 0x008 */ s32 unk_008;
     /* 0x00C */ s16 unk_00C;
-    /* 0x010 */ unk_D_868084D8* unk_010;
+    /* 0x010 */ SushiPlate* unk_010;
     /* 0x014 */ s16 unk_014;
     /* 0x016 */ u16 unk_016;
     /* 0x018 */ s32 unk_018;
@@ -93,7 +93,7 @@ typedef struct SushiPlayerEntity {
     /* 0x0D0 */ Color_RGBA8_u32 tintColor;
     /* 0x0D4 */ s16 chewCount;
     /* 0x0D8 */ f32 unk_0D8;
-    /* 0x0DC */ unk_D_868084D8* unk_0DC;
+    /* 0x0DC */ SushiPlate* unk_0DC;
     /* 0x0E0 */ s16 unk_0E0;
     /* 0x0E2 */ s16 pulsePhase;
     /* 0x0E4 */ Fragment2_1GraphNode unk_0E4;
@@ -132,7 +132,7 @@ typedef struct SushiSpawner {
 typedef struct SushiItemDef {
     /* 0x00 */ s32 posX;
     /* 0x04 */ u8* rotation;
-    /* 0x08 */ u8* unk_08;
+    /* 0x08 */ u8* RentalSlotAnimData_PosePhase;
     /* 0x10 */ char* unk_0C;
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
@@ -147,7 +147,7 @@ extern MiniHudMainGraph* gSushiGoRoundGraphNode;
 extern s32 gSushiGoRoundTimer;
 extern SushiPlayerEntity gSushiEntities[4];
 
-extern unk_D_868084D8 gSushiInstances[12];
+extern SushiPlate gSushiInstances[12];
 
 void SushiGame_FadeAudio(s32 arg0);
 void SushiGame_PollInput(void);
@@ -172,9 +172,9 @@ void SushiGame_UpdatePlayers(void);
 void SushiGame_InitCamera(void);
 void SushiGame_UpdateCamera(void);
 
-f32 SushiGame_ComputePlateDistance(unk_D_868084D8*, Vec3f*, Vec3f*);
-void SushiGame_SetPlateState(unk_D_868084D8*, s32, SushiPlayerEntity*);
-s32 SushiGame_GetPlateValue(unk_D_868084D8*);
+f32 SushiGame_ComputePlateDistance(SushiPlate*, Vec3f*, Vec3f*);
+void SushiGame_SetPlateState(SushiPlate*, s32, SushiPlayerEntity*);
+s32 SushiGame_GetPlateValue(SushiPlate*);
 s16 SushiGame_GetActivePlateCount(s32);
 void SushiGame_SetGamePhase(s32);
 void SushiGame_InitConveyorBelt(void);

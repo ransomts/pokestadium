@@ -24,7 +24,7 @@ typedef struct unk_D_88218070 {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ u8* unk_08;
+    /* 0x08 */ u8* RentalSlotAnimData_PosePhase;
     /* 0x0C */ s16 unk_0C;
     /* 0x10 */ Color_RGBA8* unk_10;
 } unk_D_88218070; // size = 0x14
@@ -37,7 +37,7 @@ static char** gMessageBank_0xC;
 void LabItem_ReadDeckEntries(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3) {
     DeckHandle* sp1C = Deck_Open(arg0, arg1, arg2, 0);
 
-    arg3->unk_08 = Deck_ReadEntries(arg3->posX, arg3->rotation, sp1C);
+    arg3->RentalSlotAnimData_PosePhase = Deck_ReadEntries(arg3->posX, arg3->rotation, sp1C);
     Deck_CloseAndFlush(sp1C);
 }
 
@@ -51,7 +51,7 @@ void LabItem_WriteDeckBack(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* 
         sp2C = Deck_Open(arg0, arg1, arg2, 1);
     }
 
-    Deck_WriteEntries(arg3->posX, arg3->unk_08, sp2C);
+    Deck_WriteEntries(arg3->posX, arg3->RentalSlotAnimData_PosePhase, sp2C);
 
     if ((arg0 == 0x10) || (arg0 == 0x11) || (arg0 == 0x12)) {
         Deck_CloseAndFlushBox(sp2C);
@@ -67,7 +67,7 @@ void LabItem_LoadGamePakBoxSlots(ItemBlockInfo* arg0) {
         arg0[i].posX = Deck_IsSaveEntryPresent(0x12, i);
         if (arg0[i].posX != 0) {
             arg0[i].rotation = Deck_GetSaveEntryTrainerId(0x12, i) & 0xFFFF;
-            Deck_GetSaveEntryName(0x12, i, arg0[i].unk_08);
+            Deck_GetSaveEntryName(0x12, i, arg0[i].RentalSlotAnimData_PosePhase);
         }
     }
 }
@@ -76,7 +76,7 @@ s32 LabItem_FindOrAllocateGamePakBoxSlot(ItemBlockInfo* arg0, s32 arg1, char* ar
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        if ((arg0[i].posX != 0) && (arg1 == arg0[i].rotation) && (HAL_Strcmp(arg0[i].unk_08, arg2) == 0)) {
+        if ((arg0[i].posX != 0) && (arg1 == arg0[i].rotation) && (HAL_Strcmp(arg0[i].RentalSlotAnimData_PosePhase, arg2) == 0)) {
             return i;
         }
     }
@@ -606,7 +606,7 @@ void LabItem_InitItemRowWidget(unk_func_8821421C_02C_06C_02C_060* arg0, s32 arg1
     arg0->posX.unk_14.posX = arg3;
     arg0->posX.unk_14.posY = 0;
     arg0->unk_2C.posX.posX = 1;
-    arg0->unk_2C.posX.unk_01 = 1;
+    arg0->unk_2C.posX.TrainerSlotSaveData_GamePort = 1;
 }
 
 void LabItem_ItemRowWidget_SetItem(unk_func_8821421C_02C_06C_02C_060* arg0, unk_func_8821421C_02C_06C_02C_060_02C_000 arg1) {
@@ -621,7 +621,7 @@ void LabItem_QuantitySpinner_Init(unk_func_8820E99C_030* arg0, s32 arg1) {
     arg0->unk_30.unk_0C = 2;
     arg0->unk_30.posX = 1;
     arg0->unk_30.rotation = 1;
-    arg0->unk_30.unk_08 = arg1;
+    arg0->unk_30.RentalSlotAnimData_PosePhase = arg1;
     arg0->unk_30.unk_10 = 0;
 }
 
@@ -798,7 +798,7 @@ s32 LabItem_DrawGamePakLabel(unk_func_8821421C_038_02C* arg0, s32 arg1, s32 arg2
     Font_BeginTranslucentTextRendering();
     Text_SetEnvColor(gColor_LabelText.r, gColor_LabelText.g, gColor_LabelText.b, gColor_LabelText.a);
     Font_SetActive(8, 0);
-    Font_Printf(arg1 + 0x35, arg2 + 4, &arg0->unk_30->unk_08);
+    Font_Printf(arg1 + 0x35, arg2 + 4, &arg0->unk_30->RentalSlotAnimData_PosePhase);
     Font_EndTexturedTextRendering();
 
     return 0;
@@ -886,7 +886,7 @@ void LabItem_DrawGamePakInfoCard(s32 arg0, s32 arg1, ItemBlockHeader* arg2, s32 
 
     sp64 = Text_GetString(NULL, 0, gCommonStrings, 0x14);
     Font_Printf(arg0 + 8, arg1 + 6, sp64);
-    Font_Printf(Font_MeasureTextExtent(0, 0, sp64) + arg0 + 8, arg1 + 6, "%s", &arg2->unk_08);
+    Font_Printf(Font_MeasureTextExtent(0, 0, sp64) + arg0 + 8, arg1 + 6, "%s", &arg2->RentalSlotAnimData_PosePhase);
     Font_SetActive(8, 0);
 
     sp64 = Text_GetString(NULL, 0, gCommonStrings, 0x15);
@@ -1092,7 +1092,7 @@ void LabItem_InitBoxScreen(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_
     for (i = 0; i < 2; i++) {
         temp_v0_6 = mem_pool_alloc(arg5, sizeof(unk_func_882149A0));
         LabPC_InitTabWidget(temp_v0_6, gPanelConfig[i].posX, gPanelConfig[i].posY, gPanelConfig[i].rotation, gPanelConfig[i].unk_06,
-                      gPanelConfig[i].unk_08, gPanelConfig[i].unk_0C, gPanelConfig[i].unk_10[0], gPanelConfig[i].unk_10[1],
+                      gPanelConfig[i].RentalSlotAnimData_PosePhase, gPanelConfig[i].unk_0C, gPanelConfig[i].unk_10[0], gPanelConfig[i].unk_10[1],
                       gColor_MainMenuBg);
 
         ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_44, temp_v0_6);
@@ -1246,7 +1246,7 @@ s32 Fragment_InputHandler(unk_func_8821421C_038_04C* arg0, Controller* arg1) {
     if (arg0->posX.unk_20 > 0) {
         var_a0 = arg0->posX.rotation;
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->unk_08;
+            var_a0 = var_a0->RentalSlotAnimData_PosePhase;
         }
         var_v1 = var_a0->unk_10(var_a0, arg1);
     }
@@ -1355,7 +1355,7 @@ void LabItem_InitOperationController(unk_func_8821421C_02C_06C_02C* arg0, unk_fu
 
         arg0->unk_78[i].posX->unk_30 = gTextWhite;
         arg0->unk_78[i].posX->unk_44 = arg0->unk_78[i].posX->unk_44;
-        arg0->unk_78[i].unk_08 = 0;
+        arg0->unk_78[i].RentalSlotAnimData_PosePhase = 0;
         arg0->unk_78[i].rotation = 0;
     }
 }
@@ -1563,7 +1563,7 @@ s32 LabItem_ComputeRemainingCapacity(s32 arg0, unk_func_8820BE14_06C* arg1) {
     s32 var_v1 = 0;
     u8* var_v0 = arg1->posX;
 
-    for (i = 0; i < arg1->unk_08; i++, var_v0 += 2) {
+    for (i = 0; i < arg1->RentalSlotAnimData_PosePhase; i++, var_v0 += 2) {
         if (arg0 == var_v0[0]) {
             var_v1 = (var_v1 - var_v0[1]) + 0x63;
         }
@@ -1576,12 +1576,12 @@ s32 LabItem_ComputeMaxTransferQuantity(s32 arg0, unk_func_8820BE14_06C* arg1) {
     s32 var_v1;
 
     if (LabItem_IsQuantitylessItemForOperation(arg0) != 0) {
-        if (arg1->unk_08 < arg1->rotation) {
+        if (arg1->RentalSlotAnimData_PosePhase < arg1->rotation) {
             var_v1 = 1;
         } else {
             var_v1 = 0;
         }
-    } else if (arg1->unk_08 < arg1->rotation) {
+    } else if (arg1->RentalSlotAnimData_PosePhase < arg1->rotation) {
         var_v1 = 0x63;
     } else {
         var_v1 = LabItem_ComputeRemainingCapacity(arg0, arg1);
@@ -1612,7 +1612,7 @@ void LabItem_RemoveSelectedGridEntry(unk_func_8820BE14_02C_038* arg0) {
 
     sp1C = arg0->posX.unk_38;
     ByteMatrix_RemoveRow(arg0->posX.unk_2C, sp1C);
-    if ((sp1C > 0) && (sp1C >= arg0->posX.unk_2C->unk_08)) {
+    if ((sp1C > 0) && (sp1C >= arg0->posX.unk_2C->RentalSlotAnimData_PosePhase)) {
         sp1C -= 1;
     }
     ((func88507AE4)Memmap_GetFragmentVaddr(WidgetTree_SetScrollableGridIndex))(arg0, sp1C);
@@ -1633,7 +1633,7 @@ void List_AdjustCounts(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
     temp_v1 = temp_s4->posX;
     i = 0;
 
-    if (temp_s4->unk_08 > 0) {
+    if (temp_s4->RentalSlotAnimData_PosePhase > 0) {
         var_s2 = (u8*)temp_v1;
         do {
             if (arg1 == var_s2[0]) {
@@ -1646,7 +1646,7 @@ void List_AdjustCounts(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
                 i++;
                 var_s2 += 2;
             }
-        } while (i < temp_s4->unk_08);
+        } while (i < temp_s4->RentalSlotAnimData_PosePhase);
     }
 
     sp44.posX = arg1;
@@ -1658,7 +1658,7 @@ void List_AdjustCounts(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2) {
             var_v0 = 0x63;
         }
         arg2 -= var_v0;
-        sp44.unk_01 = var_v0;
+        sp44.TrainerSlotSaveData_GamePort = var_v0;
         ByteMatrix_InsertRow(temp_s4, &sp44, var_s3++);
     }
 
@@ -1691,7 +1691,7 @@ void LabItem_MoveSelectedItem(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14
 }
 
 s32 LabItem_CombineStackQuantities(unk_func_8821421C_02C_06C_02C_060_02C_000* arg0, unk_func_8821421C_02C_06C_02C_060_02C_000* arg1) {
-    s32 temp_v1 = arg0->unk_01 + arg1->unk_01;
+    s32 temp_v1 = arg0->TrainerSlotSaveData_GamePort + arg1->TrainerSlotSaveData_GamePort;
     s32 var_a2;
 
     if (temp_v1 >= 0x64) {
@@ -1700,8 +1700,8 @@ s32 LabItem_CombineStackQuantities(unk_func_8821421C_02C_06C_02C_060_02C_000* ar
         var_a2 = 0;
     }
 
-    arg0->unk_01 = temp_v1 - var_a2;
-    arg1->unk_01 = var_a2;
+    arg0->TrainerSlotSaveData_GamePort = temp_v1 - var_a2;
+    arg1->TrainerSlotSaveData_GamePort = var_a2;
     return var_a2;
 }
 
@@ -1756,16 +1756,16 @@ void LabItem_CommitMove(unk_func_8821421C_02C_06C_02C* arg0, Controller* arg1) {
     sp34.posX = *sp38;
 
     if (LabItem_IsQuantitylessItemForOperation(sp38->posX) == 0) {
-        sp34.posX.unk_01 = arg0->unk_34->unk_30->unk_30.posX;
+        sp34.posX.TrainerSlotSaveData_GamePort = arg0->unk_34->unk_30->unk_30.posX;
     }
 
     LabItem_ItemRowWidget_SetItem(arg0->unk_60[0], sp34.posX);
     LabItem_GetSelectedSlotPositions(arg0, &sp30, &sp2C);
     LabPC_FlyingIconWidget_Start(arg0->unk_58[0], sp30, sp2C);
 
-    if (sp38->unk_01 != sp34.posX.unk_01) {
+    if (sp38->TrainerSlotSaveData_GamePort != sp34.posX.TrainerSlotSaveData_GamePort) {
         sp34.posY.posX = sp34.posX.posX;
-        sp34.posY.unk_01 = sp38->unk_01 - sp34.posX.unk_01;
+        sp34.posY.TrainerSlotSaveData_GamePort = sp38->TrainerSlotSaveData_GamePort - sp34.posX.TrainerSlotSaveData_GamePort;
         LabItem_ItemRowWidget_SetItem(arg0->unk_70[0], sp34.posY);
         LabPC_SlideIconWidget_Start(arg0->unk_68[0], sp30);
     }
@@ -1801,7 +1801,7 @@ void LabItem_CommitReorder(unk_func_8821421C_02C_06C_02C* arg0, Controller* arg1
         }
 
         sp2C.posX = *sp30;
-        sp2C.posX.unk_01 -= sp2C.posY.unk_01;
+        sp2C.posX.TrainerSlotSaveData_GamePort -= sp2C.posY.TrainerSlotSaveData_GamePort;
 
         LabItem_ItemRowWidget_SetItem(arg0->unk_60[0], sp2C.posX);
         LabItem_ItemRowWidget_SetItem(arg0->unk_70[0], *sp34);
@@ -1879,16 +1879,16 @@ s32 LabItem_OperationInputHandler(unk_func_8821421C_02C_06C_02C* arg0, Controlle
                                                                            arg0->unk_2C[0]->posX.unk_38];
                         sp24 = new_var;
 
-                        if (arg0->unk_2C[0]->posX.unk_2C->unk_08 == 0) {
+                        if (arg0->unk_2C[0]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
-                                arg0->unk_4C, arg0->unk_78[0].posX, arg0->unk_78[0].rotation, arg0->unk_78[0].unk_08);
+                                arg0->unk_4C, arg0->unk_78[0].posX, arg0->unk_78[0].rotation, arg0->unk_78[0].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_4C, arg1);
                             sp2C = 1;
                         } else if ((LabItem_IsQuantitylessItem(sp24[0]) != 0) && ((arg0->unk_2C[1]->unk_8C >> 0x10) == 2)) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
-                                arg0->unk_4C, arg0->unk_78[4].posX, arg0->unk_78[4].rotation, arg0->unk_78[4].unk_08);
+                                arg0->unk_4C, arg0->unk_78[4].posX, arg0->unk_78[4].rotation, arg0->unk_78[4].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_4C, arg1);
                             sp2C = 1;
                         } else {
@@ -1897,7 +1897,7 @@ s32 LabItem_OperationInputHandler(unk_func_8821421C_02C_06C_02C* arg0, Controlle
                                 Audio_PlaySoundEffectById(8);
                                 ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
                                     arg0->unk_4C, arg0->unk_78[3].posX, arg0->unk_78[3].rotation,
-                                    arg0->unk_78[3].unk_08);
+                                    arg0->unk_78[3].RentalSlotAnimData_PosePhase);
                                 ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_4C, arg1);
                                 sp2C = 1;
                             } else {
@@ -1917,10 +1917,10 @@ s32 LabItem_OperationInputHandler(unk_func_8821421C_02C_06C_02C* arg0, Controlle
 
                 case 1:
                     if (!(sp2C & 2) && (sp2C & 4)) {
-                        if (arg0->unk_2C[0]->posX.unk_2C->unk_08 == 0) {
+                        if (arg0->unk_2C[0]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
-                                arg0->unk_4C, arg0->unk_78[1].posX, arg0->unk_78[1].rotation, arg0->unk_78[1].unk_08);
+                                arg0->unk_4C, arg0->unk_78[1].posX, arg0->unk_78[1].rotation, arg0->unk_78[1].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_4C, arg1);
                             sp2C = 1;
                         } else {
@@ -1936,17 +1936,17 @@ s32 LabItem_OperationInputHandler(unk_func_8821421C_02C_06C_02C* arg0, Controlle
                     if (!(sp2C & 2) && (sp2C & 4)) {
                         sp24 = &((u8*)arg0->unk_2C[0]->posX.unk_2C->posX)[arg0->unk_2C[0]->posX.unk_2C->unk_0C *
                                                                               arg0->unk_2C[0]->posX.unk_38];
-                        if ((arg0->unk_2C[0]->posX.unk_2C->unk_08 == 0) ||
-                            (arg0->unk_2C[1]->posX.unk_2C->unk_08 == 0)) {
+                        if ((arg0->unk_2C[0]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) ||
+                            (arg0->unk_2C[1]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0)) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
-                                arg0->unk_4C, arg0->unk_78[2].posX, arg0->unk_78[2].rotation, arg0->unk_78[2].unk_08);
+                                arg0->unk_4C, arg0->unk_78[2].posX, arg0->unk_78[2].rotation, arg0->unk_78[2].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_4C, arg1);
                             sp2C = 1;
                         } else if ((LabItem_IsQuantitylessItem(sp24[0]) != 0) && ((arg0->unk_2C[1]->unk_8C >> 0x10) == 2)) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
-                                arg0->unk_4C, arg0->unk_78[4].posX, arg0->unk_78[4].rotation, arg0->unk_78[4].unk_08);
+                                arg0->unk_4C, arg0->unk_78[4].posX, arg0->unk_78[4].rotation, arg0->unk_78[4].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_4C, arg1);
                             sp2C = 1;
                         } else {
@@ -1968,7 +1968,7 @@ s32 LabItem_OperationInputHandler(unk_func_8821421C_02C_06C_02C* arg0, Controlle
                 if (arg0->unk_34->unk_34 < arg0->unk_34->unk_30->unk_30.posX) {
                     Audio_PlaySoundEffectById(8);
                     ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
-                        arg0->unk_4C, arg0->unk_78[3].posX, arg0->unk_78[3].rotation, arg0->unk_78[3].unk_08);
+                        arg0->unk_4C, arg0->unk_78[3].posX, arg0->unk_78[3].rotation, arg0->unk_78[3].RentalSlotAnimData_PosePhase);
                     ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_4C, arg1);
                     arg0->unk_34->unk_30->unk_30.posX = arg0->unk_34->unk_34;
                     sp2C = 1;
@@ -2030,7 +2030,7 @@ s32 LabItem_OperationInputHandler(unk_func_8821421C_02C_06C_02C* arg0, Controlle
                 if ((LabItem_IsQuantitylessItem(new_var2[0]) != 0) && ((arg0->unk_2C[0]->unk_8C >> 0x10) == 2)) {
                     Audio_PlaySoundEffectById(8);
                     ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
-                        arg0->unk_4C, arg0->unk_78[4].posX, arg0->unk_78[4].rotation, arg0->unk_78[4].unk_08);
+                        arg0->unk_4C, arg0->unk_78[4].posX, arg0->unk_78[4].rotation, arg0->unk_78[4].RentalSlotAnimData_PosePhase);
                     ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_4C, arg1);
                     sp2C = 1;
                 } else {
@@ -2071,7 +2071,7 @@ u8* LabItem_GetHighlightedEntry(unk_func_8821421C_02C_06C_02C* arg0) {
 
     temp_v1 = arg0->unk_2C[sp0]->posX.unk_38;
     temp_a1 = arg0->unk_2C[sp0]->posX.unk_2C;
-    if (temp_v1 >= temp_a1->unk_08) {
+    if (temp_v1 >= temp_a1->RentalSlotAnimData_PosePhase) {
         return NULL;
     }
     return &((u8*)temp_a1->posX)[temp_a1->unk_0C * temp_v1];
@@ -2363,7 +2363,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
         arg0->unk_44[x] = mem_pool_alloc(argB, sizeof(unk_func_882149A0));
 
         LabPC_InitTabWidget(arg0->unk_44[x], gPanelLayoutData[x].posX, gPanelLayoutData[x].posY, gPanelLayoutData[x].rotation,
-                      gPanelLayoutData[x].unk_06, gPanelLayoutData[x].unk_08, gPanelLayoutData[x].unk_0C, gPanelLayoutData[x].unk_10[0],
+                      gPanelLayoutData[x].unk_06, gPanelLayoutData[x].RentalSlotAnimData_PosePhase, gPanelLayoutData[x].unk_0C, gPanelLayoutData[x].unk_10[0],
                       gPanelLayoutData[x].unk_10[1], gPanelBackgroundColor1);
 
         if (gPanelLayoutData[x].unk_14 != 0) {
@@ -2476,7 +2476,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
 
         arg0->unk_94[i].posX->unk_30 = gDefaultPanelColor;
         arg0->unk_94[i].posX->unk_44 = arg0->unk_94[i].posX->unk_44;
-        arg0->unk_94[i].unk_08 = 0;
+        arg0->unk_94[i].RentalSlotAnimData_PosePhase = 0;
         arg0->unk_94[i].rotation = 0;
     }
 
@@ -2605,12 +2605,12 @@ s32 LabItem_DeckHasChanged(unk_func_8821421C_03C* arg0, s32 arg1, s32 arg2, s32 
     }
 
     arg0->posX = 0;
-    if (Deck_GetEntryCountForType(arg1, arg2, arg3) != arg0->rotation.unk_08) {
+    if (Deck_GetEntryCountForType(arg1, arg2, arg3) != arg0->rotation.RentalSlotAnimData_PosePhase) {
         arg0->posX = 1;
         sp40 = 1;
     } else {
         var_s0 = arg0->rotation.posX;
-        for (i = 0; i < arg0->rotation.unk_08; i++, var_s0++) {
+        for (i = 0; i < arg0->rotation.RentalSlotAnimData_PosePhase; i++, var_s0++) {
             Deck_ReadEntries(&sp34, 1, temp_v0);
             if (bcmp(&sp34, var_s0, sizeof(unk_func_8821421C_02C_06C_02C_060_02C_000)) != 0) {
                 arg0->posX = 1;
@@ -2649,7 +2649,7 @@ s32 LabItem_CheckDirtyDecks(unk_func_8821421C_02C* arg0) {
             if (LabItem_DeckHasChanged(&arg0->unk_78[2], 0x12, 0, arg0->unk_7C->posX) != 0) {
                 sp20 |= 4;
             }
-        } else if (arg0->unk_78[2].rotation.unk_08 > 0) {
+        } else if (arg0->unk_78[2].rotation.RentalSlotAnimData_PosePhase > 0) {
             sp20 |= 4;
         } else {
             arg0->unk_78[2].posX = 0;
@@ -2675,7 +2675,7 @@ void LabItem_CommitChanges(unk_func_8821421C_02C* arg0, s32 arg1) {
 
     if (arg0->unk_78[2].posX != 0) {
         if (arg0->unk_90[arg0->unk_7C->posX].posX != 0) {
-            if (arg0->unk_78[2].rotation.unk_08 == 0) {
+            if (arg0->unk_78[2].rotation.RentalSlotAnimData_PosePhase == 0) {
                 Save_ResetAndCommitTypedRecord(0x12, arg0->unk_7C->posX);
             } else {
                 LabItem_WriteDeckBack(0x12, 0, arg0->unk_7C->posX, &arg0->unk_78[2].rotation, 0, NULL, -1);
@@ -2740,7 +2740,7 @@ s32 LabItem_BoxPairMenu_HandleInput(unk_func_8821421C_02C_06C* arg0, Controller*
     if (arg0->posX.unk_20 > 0) {
         var_a0 = arg0->posX.rotation;
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->unk_08;
+            var_a0 = var_a0->RentalSlotAnimData_PosePhase;
         }
         var_s0 = var_a0->unk_10(var_a0, arg1);
     }
@@ -2801,7 +2801,7 @@ s32 LabItem_BoxPairMenu_HandleInput(unk_func_8821421C_02C_06C* arg0, Controller*
 
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(
                                 arg0->posX.unk_24->unk_8C, arg0->posX.unk_24->unk_94[0].posX,
-                                arg0->posX.unk_24->unk_94[0].rotation, arg0->posX.unk_24->unk_94[0].unk_08);
+                                arg0->posX.unk_24->unk_94[0].rotation, arg0->posX.unk_24->unk_94[0].RentalSlotAnimData_PosePhase);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->posX.unk_24->unk_8C, arg1);
 
                             if (LabItem_RunBoxScreenModal(arg0->posX.unk_24->unk_84, arg1) == 1) {

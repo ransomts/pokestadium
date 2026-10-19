@@ -18,7 +18,7 @@
 
 typedef struct TrainerSlotSaveData {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u16 rotation;
@@ -128,7 +128,7 @@ static Vtx gMenuVtx_Special1[] = {
     VTX(-38, 20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-38, 0, 0, 0, 640, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(38, 0, 0, 2432, 640, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(38, 20, 0, 2432, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_842110E8[] = {
+static Gfx gMenuGfx_Special1[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -146,9 +146,9 @@ static Gfx D_842110E8[] = {
 };
 static u32 gMenuGeoLayout_Special1[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_Special1, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_842110E8, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_Special1, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84211208[] = {
+static Vtx gMenuVtx_Special2[] = {
     VTX(-50, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 48, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(50, 48, 0, 3200, 512, 0xFF, 0xFF, 0xFF, 0xFF), VTX(50, 64, 0, 3200, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-50, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 32, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -158,11 +158,11 @@ static Vtx D_84211208[] = {
     VTX(-50, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 0, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(50, 0, 0, 3200, 512, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(50, 16, 0, 3200, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84211308[] = {
+static Gfx gMenuGfx_Special2[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84211208, 16, 0),
+    gsSPVertex(gMenuVtx_Special2, 16, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 100, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -178,28 +178,28 @@ static Gfx D_84211308[] = {
     gsSPEndDisplayList(),
 };
 static u32 gMenuGeoLayout_Special2[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84211208, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_84211308, 0x06000000, 0x01000000, 0x00000000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_Special2, 0x05000000, 0x22040000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_Special2, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84211468[] = {
+static Vtx gMenuVtx_Common[] = {
     VTX(-36, 12, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-36, -12, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(36, -12, 0, 2304, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(36, 12, 0, 2304, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_842114A8[] = {
+static Gfx gMenuGfx_Common[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84211468, 4, 0),
+    gsSPVertex(gMenuVtx_Common, 4, 0),
     gsDPLoadTextureBlock_4b(0x0F000000, G_IM_FMT_I, 80, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 static u32 gMenuGeoLayout_Common[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84211468, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_842114A8, 0x06000000, 0x01000000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_Common, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_Common, 0x06000000, 0x01000000,
 };
 
 s16 gMenuOpenScaleX[] = { 0x46, 0x28, 0x1E, 0x1E, 0x1E, 0x1E, 0x28, 0x3C, 0x5A, 0x78, 0x6E, 0x64 };
@@ -273,7 +273,7 @@ void TeamSelection_TrainerSlots_DrawEntry(s32 arg0) {
     UNUSED s32 pad;
 
     if (gIconConfig[arg0].posX != 0) {
-        if (gIconConfig[arg0].unk_01 == 0) {
+        if (gIconConfig[arg0].TrainerSlotSaveData_GamePort == 0) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetActive(8, 0);
             Font_Printf(((arg0 * 128) - (Font_MeasureTextExtent(8, 0, gTrainerSlotData[arg0].unk_06) / 2)) + 0x80, 0x5C,
@@ -337,7 +337,7 @@ void TeamSelection_TrainerSlots_DrawEntryFrame(s32 arg0, s16 arg1, s16 arg2) {
     Color_RGBA8 sp2C;
 
     if (gIconConfig[arg0].posX != 0) {
-        if (gIconConfig[arg0].unk_01 == 0) {
+        if (gIconConfig[arg0].TrainerSlotSaveData_GamePort == 0) {
             Color_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0xFF);
         } else {
             Color_SetRGBA(&sp2C, 0x64, 0x1E, 0x1E, 0xFF);
@@ -415,14 +415,14 @@ void TeamSelection_TrainerSlots_UpdateModelPose(s16 arg0, f32 arg1) {
         var_fv0 = 1.0f;
     }
 
-    gMenuModelNodes[0][arg0].unk_01E.z = SINS(gIconConfig[arg0].unk_08) * (1536.0f * var_fv0);
+    gMenuModelNodes[0][arg0].unk_01E.z = SINS(gIconConfig[arg0].RentalSlotAnimData_PosePhase) * (1536.0f * var_fv0);
 
     gMenuModelNodes[0][arg0].unk_024.x =
-        (gIconConfig[arg0].posY - 320.0f) - (SINS(gIconConfig[arg0].unk_08) * (6.0f * var_fv0));
+        (gIconConfig[arg0].posY - 320.0f) - (SINS(gIconConfig[arg0].RentalSlotAnimData_PosePhase) * (6.0f * var_fv0));
     gMenuModelNodes[1][arg0].unk_024.x =
-        (gIconConfig[arg0].posY - 320.0f) - (SINS(gIconConfig[arg0].unk_08) * (6.0f * var_fv0));
+        (gIconConfig[arg0].posY - 320.0f) - (SINS(gIconConfig[arg0].RentalSlotAnimData_PosePhase) * (6.0f * var_fv0));
 
-    gIconConfig[arg0].unk_08 += var_v0;
+    gIconConfig[arg0].RentalSlotAnimData_PosePhase += var_v0;
 }
 
 void TeamSelection_TrainerSlots_MoveFromSpecialUp(void) {
@@ -505,7 +505,7 @@ void TeamSelection_TrainerSlots_HandleInput(void) {
     s16 i;
 
     if (BTN_IS_PRESSED(gCurrentController, BTN_A)) {
-        if (gIconConfig[gSelectedIconIndex].unk_01 == 0) {
+        if (gIconConfig[gSelectedIconIndex].TrainerSlotSaveData_GamePort == 0) {
             Audio_PlaySoundEffectById(0x01100012);
             D_8423E56C = 4;
         } else {
@@ -625,7 +625,7 @@ void TeamSelection_TrainerSlots_HandleRulePrompt(void) {
     s16 var_s0;
     s16 i;
 
-    if (gIconConfig[gSelectedIconIndex].unk_01 == 0x15) {
+    if (gIconConfig[gSelectedIconIndex].TrainerSlotSaveData_GamePort == 0x15) {
         var_s0 = 0x11;
     } else {
         var_s0 = 0x12;
@@ -676,8 +676,8 @@ void TeamSelection_TrainerSlots_ApplySaveStates(void) {
     s16 i;
 
     for (i = 0; i < 4; i++) {
-        if (gTrainerSlotData[i].unk_01 != 0) {
-            switch (gTrainerSlotData[i].unk_01) {
+        if (gTrainerSlotData[i].TrainerSlotSaveData_GamePort != 0) {
+            switch (gTrainerSlotData[i].TrainerSlotSaveData_GamePort) {
                 case 1:
                     gMenuTextureSegments[i] = D_201E420;
                     break;
@@ -696,15 +696,15 @@ void TeamSelection_TrainerSlots_ApplySaveStates(void) {
             }
 
             if (gTrainerSlotData[i].posX != 0) {
-                gIconConfig[i].unk_01 = 0x14;
+                gIconConfig[i].TrainerSlotSaveData_GamePort = 0x14;
             }
         } else {
             gMenuTextureSegments[i] = D_2026420;
             if (gTrainerSlotData[i].posX == 2) {
-                gIconConfig[i].unk_01 = 0x15;
+                gIconConfig[i].TrainerSlotSaveData_GamePort = 0x15;
             } else {
                 gIconConfig[i].posX = 0;
-                gIconConfig[i].unk_01 = 1;
+                gIconConfig[i].TrainerSlotSaveData_GamePort = 1;
             }
         }
     }
@@ -751,7 +751,7 @@ void TeamSelection_TrainerSlots_PollGameBoySaves(void) {
         GbSave_CopyPlayerIdentity(i, &sp48);
         Text_UntranscodeName(gTrainerSlotData[i].unk_06, sp48.posY);
         gTrainerSlotData[i].rotation = sp48.posX;
-        gTrainerSlotData[i].unk_01 = GbSave_GetPortGame(i);
+        gTrainerSlotData[i].TrainerSlotSaveData_GamePort = GbSave_GetPortGame(i);
         gTrainerSlotData[i].posX = GbSave_GetSaveState(i);
         gTrainerSlotData[i].posY = GbSave_SavedAtPokemonCenter(i);
         gTrainerSlotData[i].unk_03 = (temp_s3 & (1 << i)) != 0;

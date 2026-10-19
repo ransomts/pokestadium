@@ -54,7 +54,7 @@ void TexturedRibbonSheet_Init(void) {
         for (j = 0; j < 10; j++, var_a0++) {
             var_a0->posX = 0.0f;
             var_a0->rotation = 0;
-            var_a0->unk_08 = 0.0f;
+            var_a0->RentalSlotAnimData_PosePhase = 0.0f;
             var_a0->unk_0C.z = var_a0->unk_0C.y = var_a0->unk_0C.x = 0.0f;
             var_a0->unk_18.z = var_a0->unk_18.y = var_a0->unk_18.x = 0.0f;
         }
@@ -110,7 +110,7 @@ void TexturedRibbonSheet_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4,
             for (j = 0; j < 10; j++, var_s0++) {
                 var_s0->posX = j;
                 var_s0->rotation = (arg9 * (9 - j)) / 10;
-                var_s0->unk_08 = (RAND(100) * 6.2831854820251465) / 100.0;
+                var_s0->RentalSlotAnimData_PosePhase = (RAND(100) * 6.2831854820251465) / 100.0;
                 var_s0->unk_0C = sp74;
                 var_s0->unk_18 = sp68;
                 var_s0->unk_24 = sp5C;
@@ -151,7 +151,7 @@ void TexturedRibbonSheet_UpdateRecord(unk_D_843A22C0* arg0) {
             if (arg0->unk_004 >= 0xB) {
                 arg0->unk_002 = 1;
             }
-            var_v1->unk_08 += 2.0 * arg0->unk_014;
+            var_v1->RentalSlotAnimData_PosePhase += 2.0 * arg0->unk_014;
             break;
 
         case 1:
@@ -170,7 +170,7 @@ void TexturedRibbonSheet_UpdateRecord(unk_D_843A22C0* arg0) {
                     var_v1->unk_18.x = -20.0f;
                 }
             }
-            var_v1->unk_08 += arg0->unk_014;
+            var_v1->RentalSlotAnimData_PosePhase += arg0->unk_014;
             break;
     }
 }
@@ -224,7 +224,7 @@ Gfx* TexturedRibbonSheet_Draw(Gfx* arg0) {
 
             temp_s1 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
 
-            spB4 = (temp_s0->unk_08 * 360.0) / 6.2831854820251465;
+            spB4 = (temp_s0->RentalSlotAnimData_PosePhase * 360.0) / 6.2831854820251465;
             guTranslate(temp_s1, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
 
             if (var_s5->unk_002 == 0) {
@@ -248,7 +248,7 @@ Gfx* TexturedRibbonSheet_Draw(Gfx* arg0) {
                 if ((j == 0) || (var_s5->unk_004 < 2)) {
                     for (k = 0, vtx2 = &temp_s0->unk_30[0]; k < 2; k++) {
                         if (temp_s0->posX <= 0.0) {
-                            TexturedRibbonSheet_Update(temp_s0->unk_08 + ((2.0 * k * 3.1415927410125732) / 2), &sp13C,
+                            TexturedRibbonSheet_Update(temp_s0->RentalSlotAnimData_PosePhase + ((2.0 * k * 3.1415927410125732) / 2), &sp13C,
                                           (10.0f * tmp) * 0.8f);
                         }
 

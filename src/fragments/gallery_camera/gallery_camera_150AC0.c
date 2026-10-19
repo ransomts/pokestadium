@@ -605,10 +605,10 @@ void Gallery_CameraDrawHelpBalloon(void) {
 
     if (gStagePanelStateIndex == 4) {
         if (gStagePanelFadeData.unk_0E < 0x15) {
-            Ui_DrawGradientPanel(gStagePanelFadeData.unk_08, gStagePanelFadeData.unk_0A - (gStagePanelFadeData.unk_0E / 2), gStagePanelFadeData.unk_0C,
+            Ui_DrawGradientPanel(gStagePanelFadeData.RentalSlotAnimData_PosePhase, gStagePanelFadeData.unk_0A - (gStagePanelFadeData.unk_0E / 2), gStagePanelFadeData.unk_0C,
                           gStagePanelFadeData.unk_0E, &sp34, &sp34);
         } else {
-            Ui_DrawGradientPanel(gStagePanelFadeData.unk_08, gStagePanelFadeData.unk_0A - (gStagePanelFadeData.unk_0E / 2), gStagePanelFadeData.unk_0C,
+            Ui_DrawGradientPanel(gStagePanelFadeData.RentalSlotAnimData_PosePhase, gStagePanelFadeData.unk_0A - (gStagePanelFadeData.unk_0E / 2), gStagePanelFadeData.unk_0C,
                           gStagePanelFadeData.unk_0E, &sp34, &sp30);
         }
 
@@ -617,7 +617,7 @@ void Gallery_CameraDrawHelpBalloon(void) {
             Font_SetActive(4, 0);
             sp3C = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMessageBankPtr, 0));
             sp38 = Text_GetString(NULL, 0, gMessageBankPtr, 0);
-            Font_Printf((gStagePanelFadeData.unk_08 - (sp3C / 2)) + (gStagePanelFadeData.unk_0C / 2), gStagePanelFadeData.unk_0A - 8, sp38);
+            Font_Printf((gStagePanelFadeData.RentalSlotAnimData_PosePhase - (sp3C / 2)) + (gStagePanelFadeData.unk_0C / 2), gStagePanelFadeData.unk_0A - 8, sp38);
             Font_EndTexturedTextRendering();
         }
     }
@@ -817,7 +817,7 @@ void Gallery_DrawFrameMarkers(void) {
 
 void Gallery_DrawTutorialTextBox(void) {
     if (gTutorialTextBoxState.posX != 0xFF) {
-        Gallery_DrawHelpBalloonFrame(0x3C, 0x9B - (gTutorialTextBoxState.unk_0C / 2), gTutorialTextBoxState.unk_08, gTutorialTextBoxState.unk_0C, 0, 0, 0x9B, 0x7D);
+        Gallery_DrawHelpBalloonFrame(0x3C, 0x9B - (gTutorialTextBoxState.unk_0C / 2), gTutorialTextBoxState.RentalSlotAnimData_PosePhase, gTutorialTextBoxState.unk_0C, 0, 0, 0x9B, 0x7D);
         Font_BeginTranslucentTextRendering();
         Font_SetActive(2, 0);
         Font_SetLineHeight(0xC);

@@ -31,7 +31,7 @@ typedef void (*unk_func_88001300_000_000_0C)(struct unk_func_88001300_000_000*, 
 typedef struct unk_func_88001300_000_000 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ struct unk_func_88001300_000_000* rotation;
-    /* 0x08 */ struct unk_func_88001300_000_000* unk_08;
+    /* 0x08 */ struct unk_func_88001300_000_000* RentalSlotAnimData_PosePhase;
     /* 0x0C */ unk_func_88001300_000_000_0C unk_0C;
 } unk_func_88001300_000_000; // size = 0x10
 
@@ -342,7 +342,7 @@ typedef struct ChildWidgetGroup {
 typedef struct unk_func_882025E0_03C {
     /* 0x00 */ unk_func_8850878C* posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_882025E0_03C; // size = 0xC
 
 typedef s32 (*unk_func_882025E0_010)(struct unk_func_882025E0* arg0, Controller* arg1);
@@ -350,7 +350,7 @@ typedef void (*unk_func_882025E0_014)(struct unk_func_882025E0* arg0, s32 arg1);
 
 typedef struct unk_func_882025E0_024_02C {
     /* 0x00 */ unk_func_88205880_00D0* posX[2];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_882025E0_024_02C; // size >= 0xC
 
 typedef struct unk_func_882025E0_024_02C_wrap {
@@ -507,7 +507,7 @@ typedef struct LabPC_DetailPanelParams {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ MemoryPool* rotation;
-    /* 0x08 */ LabPC_DetailPanel* unk_08;
+    /* 0x08 */ LabPC_DetailPanel* RentalSlotAnimData_PosePhase;
     /* 0x0C */ PokemonData* unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ unk_func_88001300_000* unk_14;
@@ -650,7 +650,7 @@ typedef struct unk_func_8850BD40 {
 
 typedef struct unk_func_8821421C_038_050 {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ char unk_08[4];
+    /* 0x08 */ char RentalSlotAnimData_PosePhase[4];
     /* 0x0C */ char unk0C[0x8];
 } unk_func_8821421C_038_050; // size = 0x14
 
@@ -695,7 +695,7 @@ typedef struct unk_func_8830867C_03C_058 {
 typedef struct unk_func_8830867C_03C_0D0 {
     /* 0x00 */ unk_func_8830867C_03C_058** posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } unk_func_8830867C_03C_0D0; // size = 0x10
 

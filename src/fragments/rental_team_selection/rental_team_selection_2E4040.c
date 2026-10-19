@@ -342,16 +342,16 @@ void TeamSelection_RulePrompt_DrawThreeRowPanel(RulePromptConfig* arg0) {
 void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->unk_08 + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->unk_08 + 0x3A, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
-    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->unk_08 + 0x4E, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->RentalSlotAnimData_PosePhase + 0x26, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->RentalSlotAnimData_PosePhase + 0x3A, 0x4C, 0x14, D_202A8C0, 0x4C, 0);
+    Gfx_DrawTextureRgba16(arg0->posX + 0x18, arg0->posY + arg0->RentalSlotAnimData_PosePhase + 0x4E, 0x4C, 0x14, D_202B4A0, 0x4C, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     Font_SetLineHeight(0x1E);
-    Font_Printf(arg0->posX + 0x78, arg0->posY + arg0->unk_08 + 0x29, TeamSelection_GetLabelText(0x23));
+    Font_Printf(arg0->posX + 0x78, arg0->posY + arg0->RentalSlotAnimData_PosePhase + 0x29, TeamSelection_GetLabelText(0x23));
     Font_EndTexturedTextRendering();
 }
 

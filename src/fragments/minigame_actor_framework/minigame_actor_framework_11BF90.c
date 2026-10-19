@@ -16,16 +16,16 @@ void miniRankingActorsInit(void) {
     for (i = 0; i < 3; i++, ptr++) {
         ModelRenderer_AttachDisplayObject(&ptr->unk_000);
         ptr->unk_168 = Model_LoadByArchiveIndex(0xAB);
-        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->posX[0]);
+        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&ptr->unk_000, 0);
-        ptr->unk_000.unk_000.unk_01 &= ~1;
+        ptr->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
         miniActorAllToZero(ptr);
     }
 }
 
 void miniRankingActorSpawn(MiniActor* arg0) {
     if (arg0->mainState == 1) {
-        arg0->unk_000.unk_000.unk_01 |= 1;
+        arg0->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
         miniChangeActorAnim(arg0, 0, -1, 0);
         arg0->mainState++;
     }
@@ -103,7 +103,7 @@ Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, ColorLerpData* arg1) {
     u32 temp_a3;
 
     temp_a2 = gDefaultGraphRoot->unk_000.unk_14;
-    temp_a3 = (gDefaultGraphRoot->unk_040.unk_08 >> 0x10) + 1;
+    temp_a3 = (gDefaultGraphRoot->unk_040.RentalSlotAnimData_PosePhase >> 0x10) + 1;
 
     pad = arg1->posX;
     switch (pad) {
@@ -153,8 +153,8 @@ Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, ColorLerpData* arg1) {
             break;
 
         case 1:
-            sp2C = &arg1->unk_08[sp38];
-            sp28 = &arg1->unk_08[sp34];
+            sp2C = &arg1->RentalSlotAnimData_PosePhase[sp38];
+            sp28 = &arg1->RentalSlotAnimData_PosePhase[sp34];
             sp24 = &arg1->unk_14[sp38];
             sp20 = &arg1->unk_14[sp34];
             break;

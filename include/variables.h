@@ -862,10 +862,10 @@ extern struct GraphRootNode gGraphRoot1;
 
 typedef struct SpeciesDisplayParams {
 	/* 0x00 */ u8 posX;
-	/* 0x01 */ u8 unk_01;
+	/* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 	/* 0x02 */ s16 posY;
 	/* 0x04 */ char* name;
-	/* 0x08 */ s32 unk_08;
+	/* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 	/* 0x0C */ u8 unk_0C;
 	/* 0x0D */ u8 unk_0D;
 	/* 0x0E */ s16 unk_0E;
@@ -880,7 +880,7 @@ typedef struct FontBankInfo {
 	/* 0x00 */ s16 posX;
 	/* 0x02 */ s16 posY;
 	/* 0x04 */ u8* rotation;
-	/* 0x08 */ u8* unk_08;
+	/* 0x08 */ u8* RentalSlotAnimData_PosePhase;
 } FontBankInfo; // size = 0xC
 
 typedef struct TextObject {
@@ -938,7 +938,7 @@ extern u8 D_102BA0[];
 typedef struct unk_70D3A0 {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
 } unk_70D3A0; // size = 0x10
 
@@ -950,7 +950,7 @@ extern u32 D_8C000000; // start of some rom area
 
 typedef struct MoveBattleData {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
@@ -960,10 +960,10 @@ extern MoveBattleData gMoveData[];
 
 typedef struct unk_D_80072338 {
     /* 0x00 */ char unk00[0x1];
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x2];
     /* 0x04 */ char* rotation; // move name (the US build has "skill" placeholders)
-    /* 0x08 */ char* unk_08; // "comment"
+    /* 0x08 */ char* RentalSlotAnimData_PosePhase; // "comment"
 } unk_D_80072338; // size = 0xC
 extern unk_D_80072338 gMoveDisplayInfo[];
 

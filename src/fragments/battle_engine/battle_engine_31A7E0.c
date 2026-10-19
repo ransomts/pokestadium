@@ -50,12 +50,12 @@ void BattleAnim_UpdateSecondaryOwnerParticleBlueGrow(ParticleEffectInstance* arg
 void BattleAnim_ConfigureSecondaryOwnerParticleVariant(ParticleEffectInstance* arg0, u8 arg1) {
     switch (arg1) {
         case 1:
-            arg0->unk_08 = BattleAnim_UpdateSecondaryOwnerParticleBlueFadeGrow;
+            arg0->RentalSlotAnimData_PosePhase = BattleAnim_UpdateSecondaryOwnerParticleBlueFadeGrow;
             arg0->unk_0C = &gBattleAnimParticleDescriptors[25];
             break;
 
         case 2:
-            arg0->unk_08 = BattleAnim_UpdateSecondaryOwnerParticleBlueGrow;
+            arg0->RentalSlotAnimData_PosePhase = BattleAnim_UpdateSecondaryOwnerParticleBlueGrow;
             arg0->unk_0C = &gBattleAnimParticleDescriptors[22];
             break;
     }

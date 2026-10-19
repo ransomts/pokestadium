@@ -57,7 +57,7 @@ void DisplayTask_Initialize(UnkStruct80001380* arg0) {
 
 void DisplayTask_Submit(UnkStruct80001380* arg0, struct UnkArray4* arg1, s32 arg2) {
     arg0->task.t.data_ptr = (void*)(uintptr_t)arg1->rotation;
-    arg0->task.t.data_size = arg1->unk_08;
+    arg0->task.t.data_size = arg1->RentalSlotAnimData_PosePhase;
     Sched_SubmitTask(arg0, arg2);
 }
 
@@ -82,17 +82,17 @@ void Video_SetMode(s8 arg0, s8 arg1) {
 void DisplayWorker_SetBufferConfig(struct UnkArray4* arg0) {
     if (arg0 == NULL) {
         gIntroTaskState.pendingTask.rotation = 0;
-        gIntroTaskState.pendingTask.unk_08 = 0;
+        gIntroTaskState.pendingTask.RentalSlotAnimData_PosePhase = 0;
         gIntroTaskState.pendingTask.unk_0C = NULL;
-        gIntroTaskState.pendingTask.unk_01 = gIntroTaskState.currentTask.unk_01;
+        gIntroTaskState.pendingTask.TrainerSlotSaveData_GamePort = gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort;
         gIntroTaskState.pendingTask.posY = gIntroTaskState.currentTask.posY;
         gIntroTaskState.pendingTask.posX = gIntroTaskState.currentTask.posX;
     } else {
-        gIntroTaskState.pendingTask.unk_01 = arg0->unk_01;
+        gIntroTaskState.pendingTask.TrainerSlotSaveData_GamePort = arg0->TrainerSlotSaveData_GamePort;
         gIntroTaskState.pendingTask.posY = arg0->posY;
         gIntroTaskState.pendingTask.posX = arg0->posX;
         gIntroTaskState.pendingTask.rotation = arg0->rotation;
-        gIntroTaskState.pendingTask.unk_08 = arg0->unk_08;
+        gIntroTaskState.pendingTask.RentalSlotAnimData_PosePhase = arg0->RentalSlotAnimData_PosePhase;
         gIntroTaskState.pendingTask.unk_0C = arg0->unk_0C;
         gIntroTaskState.pendingTask.unk_03 = arg0->unk_03;
     }
@@ -123,9 +123,9 @@ void DisplayWorker_ProcessFrame(void) {
     if (gIntroTaskState.currentTask.unk_0C != NULL) {
         osViSwapBuffer(gIntroTaskState.currentTask.unk_0C->img_p);
         osViRepeatLine(0);
-        if ((gIntroTaskState.currentTask.unk_01 != gIntroTaskState.previousTask.unk_01) ||
+        if ((gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort != gIntroTaskState.previousTask.TrainerSlotSaveData_GamePort) ||
             (gIntroTaskState.currentTask.posY != gIntroTaskState.previousTask.posY)) {
-            Video_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.posY);
+            Video_SetMode((s8)gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort, (s8)gIntroTaskState.currentTask.posY);
         }
         if (gForceBlackScreen != 0) {
             osViBlack(1U);
@@ -136,9 +136,9 @@ void DisplayWorker_ProcessFrame(void) {
     } else {
         osViRepeatLine(1);
         osViSwapBuffer(gIntroTaskState.framebufferImage->img_p);
-        if ((gIntroTaskState.currentTask.unk_01 != gIntroTaskState.previousTask.unk_01) ||
+        if ((gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort != gIntroTaskState.previousTask.TrainerSlotSaveData_GamePort) ||
             (gIntroTaskState.currentTask.posY != gIntroTaskState.previousTask.posY)) {
-            Video_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.posY);
+            Video_SetMode((s8)gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort, (s8)gIntroTaskState.currentTask.posY);
         }
     }
 
@@ -255,12 +255,12 @@ void Display_WaitForFrames(s32 arg0) {
 }
 
 void Display_SetBufferConfig(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6, s32 arg7) {
-    arg0->unk_01 = arg1;
+    arg0->TrainerSlotSaveData_GamePort = arg1;
     arg0->posY = arg2;
     arg0->posX = arg3;
     arg0->unk_03 = arg4;
     arg0->rotation = arg5;
-    arg0->unk_08 = arg6;
+    arg0->RentalSlotAnimData_PosePhase = arg6;
     arg0->unk_0C = (struct FramebufferImage*)(uintptr_t)arg7;
 }
 
@@ -269,7 +269,7 @@ s32 Display_GetWorkerStatus(void) {
 }
 
 void Display_ApplyPendingVideoMode(void) {
-    Video_SetMode((s8)gIntroTaskState.previousTask.unk_01, (s8)gIntroTaskState.previousTask.posY);
+    Video_SetMode((s8)gIntroTaskState.previousTask.TrainerSlotSaveData_GamePort, (s8)gIntroTaskState.previousTask.posY);
 }
 
 s32 Display_IsFrameReady(void) {

@@ -14,7 +14,7 @@
 
 typedef struct PokemonStats {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
@@ -33,14 +33,14 @@ typedef struct PokemonStats {
 
 typedef struct gBaseStats {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09;
     /* 0x0A */ u8 unk_0A[4];
     /* 0x0E */ char unk0E[1];
@@ -62,13 +62,13 @@ extern TypeColorEntry D_80071D88[];
 
 typedef struct unk_D_800AE4E8_004_1_000_010_000 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01[2];
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort[2];
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08[4];
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase[4];
     /* 0x0C */ u8 unk_0C[2];
     /* 0x0E */ u8 unk_0E[3];
     /* 0x11 */ u8 unk_11[2];
@@ -98,13 +98,13 @@ typedef struct unk_D_800AC910_050_9AC_008 {
 
 typedef struct DeckHandle {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } DeckHandle; // size = 0xC
 
@@ -135,7 +135,7 @@ typedef struct GbSaveBoxEntry {
 
 typedef struct GbSaveChecksumBlock {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x1];
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ char unk04[0x1C];

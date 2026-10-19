@@ -123,7 +123,7 @@ s32 Pokedex_DrawListScrollArrows(unk_func_888044BC_050* arg0, s32 arg1, s32 arg2
         if (arg0->posX.unk_28 & 0x100) {
             if ((arg0->unk_2C->posX.unk_2C != NULL) &&
                 ((arg0->unk_2C->posX.unk_58 + tmp) <
-                 (arg0->unk_2C->posX.unk_3E * arg0->unk_2C->posX.unk_2C->unk_08))) {
+                 (arg0->unk_2C->posX.unk_3E * arg0->unk_2C->posX.unk_2C->RentalSlotAnimData_PosePhase))) {
                 var_t4 = 1;
             }
         }
@@ -674,7 +674,7 @@ s32 Pokedex_DrawPreview(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
 
     TiledTexture sp58;
     // clang-format off
-    sp58.posX = 0x100; sp58.rotation = 0xC0; sp58.unk_08 = 0xF8;
+    sp58.posX = 0x100; sp58.rotation = 0xC0; sp58.RentalSlotAnimData_PosePhase = 0xF8;
     // clang-format on
     sp58.unk_0C = PokeIcon_RenderPreview(gTrainerCardSpriteMgr);
 

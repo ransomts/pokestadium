@@ -8,7 +8,7 @@
 typedef struct GalleryCameraConfigState {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
 } GalleryCameraConfigState; // size >= 0x10
 
@@ -25,7 +25,7 @@ typedef struct GalleryCameraParams {
 typedef struct GalleryFadeData {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -36,7 +36,7 @@ typedef struct GalleryAnimState {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
@@ -62,7 +62,7 @@ typedef struct GalleryAnimData {
 typedef struct GalleryTextBoxState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } GalleryTextBoxState; // size >= 0x10
 

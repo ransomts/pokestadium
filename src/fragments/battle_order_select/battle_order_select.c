@@ -173,11 +173,11 @@ void BattleMenu_InitTeamOrderState(unk_D_84803760* arg0, BattlePokemon* arg1, s3
     s32 i;
 
     arg0->posX = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
 
     for (i = 0; i < 6; i++) {
         arg0->posY[i] = 0;
-        arg0->unk_08[i] = 1;
+        arg0->RentalSlotAnimData_PosePhase[i] = 1;
     }
 
     if (arg2 != 0) {
@@ -188,16 +188,16 @@ void BattleMenu_InitTeamOrderState(unk_D_84803760* arg0, BattlePokemon* arg1, s3
         }
     }
 
-    if (arg1->unk_01 == 1) {
-        arg0->unk_0E = arg1->unk_08[0]->unk_001;
+    if (arg1->TrainerSlotSaveData_GamePort == 1) {
+        arg0->unk_0E = arg1->RentalSlotAnimData_PosePhase[0]->unk_001;
         arg0->unk_0F = -1;
-        arg0->unk_01 = (arg1->unk_08[0]->unk_000 & 2) != 0;
-    } else if (arg1->unk_08[0]->unk_001 < arg1->unk_08[1]->unk_001) {
-        arg0->unk_0E = arg1->unk_08[0]->unk_001;
-        arg0->unk_0F = arg1->unk_08[1]->unk_001;
+        arg0->TrainerSlotSaveData_GamePort = (arg1->RentalSlotAnimData_PosePhase[0]->unk_000 & 2) != 0;
+    } else if (arg1->RentalSlotAnimData_PosePhase[0]->unk_001 < arg1->RentalSlotAnimData_PosePhase[1]->unk_001) {
+        arg0->unk_0E = arg1->RentalSlotAnimData_PosePhase[0]->unk_001;
+        arg0->unk_0F = arg1->RentalSlotAnimData_PosePhase[1]->unk_001;
     } else {
-        arg0->unk_0E = arg1->unk_08[1]->unk_001;
-        arg0->unk_0F = arg1->unk_08[0]->unk_001;
+        arg0->unk_0E = arg1->RentalSlotAnimData_PosePhase[1]->unk_001;
+        arg0->unk_0F = arg1->RentalSlotAnimData_PosePhase[0]->unk_001;
     }
 }
 
@@ -205,7 +205,7 @@ void BattleMenu_DrawSidebarLeadIcon(s32 arg0, s32 arg1, unk_D_84803760* arg2) {
     u8* sp2C;
 
     if (arg2->unk_0F == -1) {
-        if (arg2->unk_01 != 0) {
+        if (arg2->TrainerSlotSaveData_GamePort != 0) {
             Gfx_DrawTextureRgba16(arg0, arg1, 0x24, 0x1A, D_3008880, 0x24, 0x200000);
         } else {
             Gfx_DrawTextureRgba16(arg0, arg1, 0x24, 0x1A, gLeadIconTextures[arg2->unk_0E], 0x24, 0x200000);
@@ -287,7 +287,7 @@ void BattleMenu_DrawTeamOrderSidebarTeam0(void) {
 
     var_s1 = var_s2 + 0x76;
     for (i = 0; i < 6; i++) {
-        temp_v0->posY[i] = BattleMenu_DrawSidebarRowTypeIcon(0x2D, var_s1 - i * 0x17, temp_v0->posY[i], temp_v0->unk_08[i]);
+        temp_v0->posY[i] = BattleMenu_DrawSidebarRowTypeIcon(0x2D, var_s1 - i * 0x17, temp_v0->posY[i], temp_v0->RentalSlotAnimData_PosePhase[i]);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -322,7 +322,7 @@ void BattleMenu_DrawTeamOrderSidebarTeam1(void) {
 
     var_s1 = var_s2 + 0xC;
     for (i = 0; i < 6; i++) {
-        temp_v0->posY[i] = BattleMenu_DrawSidebarRowTypeIcon(0x2D, var_s1 + i * 0x17, temp_v0->posY[i], temp_v0->unk_08[i]);
+        temp_v0->posY[i] = BattleMenu_DrawSidebarRowTypeIcon(0x2D, var_s1 + i * 0x17, temp_v0->posY[i], temp_v0->RentalSlotAnimData_PosePhase[i]);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -332,7 +332,7 @@ void BattleMenu_AppendOrderSlotIcon(s32 arg0, s32 arg1) {
     unk_D_84803760* temp_v0 = &gSelectionStates[arg0];
 
     temp_v0->posY[temp_v0->posX] = ((arg1 + 1) << 4) | (temp_v0->posY[temp_v0->posX] & 0xF);
-    temp_v0->unk_08[temp_v0->posX] = 1;
+    temp_v0->RentalSlotAnimData_PosePhase[temp_v0->posX] = 1;
     temp_v0->posX++;
 }
 
@@ -341,7 +341,7 @@ void BattleMenu_ResetOrderSlotIcons(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        ptr->unk_08[i] = -1;
+        ptr->RentalSlotAnimData_PosePhase[i] = -1;
     }
     ptr->posX = 0;
 }
@@ -646,7 +646,7 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
         if (sp78->unk_09[i] == 0) {
             break;
         }
-        temp_v1 = &gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].unk_01];
+        temp_v1 = &gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].TrainerSlotSaveData_GamePort];
         Font_SetActive(4, 0);
         Text_SetEnvColor(temp_v1->posX.r, temp_v1->posX.g, temp_v1->posX.b, 0xFF);
         Font_Printf(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, Text_GetString(NULL, 0, gOrderSelectStrings, sp78->unk_09[i] - 1));
@@ -664,7 +664,7 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
             break;
         }
         Gfx_DrawTextureRgba16(temp_fp + 0x136, (i * 0x14) + sp7C + 7, 0x14, 0x14,
-                      gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].unk_01].rotation, 0x14, 0);
+                      gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].TrainerSlotSaveData_GamePort].rotation, 0x14, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -1124,12 +1124,12 @@ void BattleMenu_RearrangeLeadPokemon(BattlePokemon* arg0, unk_D_84803760* arg1) 
     BattleAI_TeamContext* temp_v0;
     s32 tmp;
 
-    if (arg0->unk_01 == 2) {
+    if (arg0->TrainerSlotSaveData_GamePort == 2) {
         tmp = ((arg1->posY[0] >> 4) & 0xF) - 1;
-        if (tmp == arg0->unk_08[1]->unk_001) {
-            temp_v0 = arg0->unk_08[0];
-            arg0->unk_08[0] = arg0->unk_08[1];
-            arg0->unk_08[1] = temp_v0;
+        if (tmp == arg0->RentalSlotAnimData_PosePhase[1]->unk_001) {
+            temp_v0 = arg0->RentalSlotAnimData_PosePhase[0];
+            arg0->RentalSlotAnimData_PosePhase[0] = arg0->RentalSlotAnimData_PosePhase[1];
+            arg0->RentalSlotAnimData_PosePhase[1] = temp_v0;
         }
     }
 }
@@ -1228,25 +1228,25 @@ void BattleMenu_InitOrderSelectPanels(SessionContext* arg0) {
     BattleMenu_InitTeamOrderState(&gSelectionStates[0], &gCurrentSessionContext->battleSides[0], gCurrentSessionContext->unk_0001);
     BattleMenu_InitTeamOrderState(&gSelectionStates[1], &gCurrentSessionContext->battleSides[1], gCurrentSessionContext->unk_0001);
 
-    if (temp_s0->unk_01 == 1) {
-        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->unk_08[0], 0, -1);
-    } else if (temp_s0->unk_08[0]->unk_001 < temp_s0->unk_08[1]->unk_001) {
-        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->unk_08[0], 0, gPanelCount + 1);
-        BattleMenu_AddOrderSelectPanel(0x50, 0x81, temp_s0->unk_08[1], 0, gPanelCount - 1);
+    if (temp_s0->TrainerSlotSaveData_GamePort == 1) {
+        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->RentalSlotAnimData_PosePhase[0], 0, -1);
+    } else if (temp_s0->RentalSlotAnimData_PosePhase[0]->unk_001 < temp_s0->RentalSlotAnimData_PosePhase[1]->unk_001) {
+        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->RentalSlotAnimData_PosePhase[0], 0, gPanelCount + 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x81, temp_s0->RentalSlotAnimData_PosePhase[1], 0, gPanelCount - 1);
     } else {
-        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->unk_08[1], 0, gPanelCount + 1);
-        BattleMenu_AddOrderSelectPanel(0x50, 0x81, temp_s0->unk_08[0], 0, gPanelCount - 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x21, temp_s0->RentalSlotAnimData_PosePhase[1], 0, gPanelCount + 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x81, temp_s0->RentalSlotAnimData_PosePhase[0], 0, gPanelCount - 1);
     }
 
     temp_s0++;
-    if (temp_s0->unk_01 == 1) {
-        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->unk_08[0], 1, -1);
-    } else if (temp_s0->unk_08[0]->unk_001 < temp_s0->unk_08[1]->unk_001) {
-        BattleMenu_AddOrderSelectPanel(0x50, 0xE6, temp_s0->unk_08[0], 1, gPanelCount + 1);
-        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->unk_08[1], 1, gPanelCount - 1);
+    if (temp_s0->TrainerSlotSaveData_GamePort == 1) {
+        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->RentalSlotAnimData_PosePhase[0], 1, -1);
+    } else if (temp_s0->RentalSlotAnimData_PosePhase[0]->unk_001 < temp_s0->RentalSlotAnimData_PosePhase[1]->unk_001) {
+        BattleMenu_AddOrderSelectPanel(0x50, 0xE6, temp_s0->RentalSlotAnimData_PosePhase[0], 1, gPanelCount + 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->RentalSlotAnimData_PosePhase[1], 1, gPanelCount - 1);
     } else {
-        BattleMenu_AddOrderSelectPanel(0x50, 0xE6, temp_s0->unk_08[1], 1, gPanelCount + 1);
-        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->unk_08[0], 1, gPanelCount - 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0xE6, temp_s0->RentalSlotAnimData_PosePhase[1], 1, gPanelCount + 1);
+        BattleMenu_AddOrderSelectPanel(0x50, 0x146, temp_s0->RentalSlotAnimData_PosePhase[0], 1, gPanelCount - 1);
     }
 }
 

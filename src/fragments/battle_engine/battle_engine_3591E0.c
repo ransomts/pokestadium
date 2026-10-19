@@ -135,7 +135,7 @@ s16 AuxiliaryEffect_Alloc(void) {
             for (j = 0; j < 20; j++, var_v1++) {
                 var_v1->posX = 0;
                 var_v1->rotation = 0;
-                var_v1->unk_08 = 1.0f;
+                var_v1->RentalSlotAnimData_PosePhase = 1.0f;
                 var_v1->unk_0C.x = 0.0f;
                 var_v1->unk_0C.y = 0.0f;
                 var_v1->unk_0C.z = 0.0f;
@@ -159,7 +159,7 @@ void AuxiliaryEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32
                 var_v1->posX = 1;
                 var_v1->rotation = 0;
                 var_v1->unk_06 = arg4;
-                var_v1->unk_08 = arg5;
+                var_v1->RentalSlotAnimData_PosePhase = arg5;
                 var_v1->unk_0C.x = arg1;
                 var_v1->unk_0C.y = arg2;
                 var_v1->unk_0C.z = arg3;
@@ -200,7 +200,7 @@ Gfx* AuxiliaryEffect_DrawOne(Gfx* arg0, Particle* arg1, MtxF* arg2) {
     spCC = arg1->unk_0C.x;
     spC8 = arg1->unk_0C.y;
     spC4 = arg1->unk_0C.z;
-    spC0 = arg1->unk_08;
+    spC0 = arg1->RentalSlotAnimData_PosePhase;
     spC0 *= __sinf((arg1->rotation * 3.1415927f) / 10.0f);
 
     guScale(&sp38, spC0, spC0, spC0);

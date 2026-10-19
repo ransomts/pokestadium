@@ -848,44 +848,44 @@ void BattlePrep_UpdateCarousel(gBannerState* arg0) {
     s32 i;
 
     if (osTvType == OS_TV_PAL) {
-        if (arg0->unk_01 >= 0) {
-            BattlePrep_CarouselStepFirstItem(arg0, arg0->unk_01);
+        if (arg0->TrainerSlotSaveData_GamePort >= 0) {
+            BattlePrep_CarouselStepFirstItem(arg0, arg0->TrainerSlotSaveData_GamePort);
         }
 
-        if (arg0->unk_01 >= 2) {
-            BattlePrep_CarouselStepPAL(arg0, arg0->unk_01 - 2);
+        if (arg0->TrainerSlotSaveData_GamePort >= 2) {
+            BattlePrep_CarouselStepPAL(arg0, arg0->TrainerSlotSaveData_GamePort - 2);
         }
 
-        if (arg0->unk_01 >= 0x1B) {
-            BattlePrep_CarouselStepFinalPAL(arg0, arg0->unk_01 - 0x1B);
+        if (arg0->TrainerSlotSaveData_GamePort >= 0x1B) {
+            BattlePrep_CarouselStepFinalPAL(arg0, arg0->TrainerSlotSaveData_GamePort - 0x1B);
         }
     } else {
-        if (arg0->unk_01 >= 0) {
-            BattlePrep_CarouselStepFirstItem(arg0, arg0->unk_01);
+        if (arg0->TrainerSlotSaveData_GamePort >= 0) {
+            BattlePrep_CarouselStepFirstItem(arg0, arg0->TrainerSlotSaveData_GamePort);
         }
 
-        if (arg0->unk_01 >= 2) {
-            BattlePrep_CarouselStepNTSC(arg0, arg0->unk_01 - 2);
+        if (arg0->TrainerSlotSaveData_GamePort >= 2) {
+            BattlePrep_CarouselStepNTSC(arg0, arg0->TrainerSlotSaveData_GamePort - 2);
         }
 
-        if (arg0->unk_01 >= 0x1E) {
-            BattlePrep_CarouselStepFinalNTSC(arg0, arg0->unk_01 - 0x1E);
+        if (arg0->TrainerSlotSaveData_GamePort >= 0x1E) {
+            BattlePrep_CarouselStepFinalNTSC(arg0, arg0->TrainerSlotSaveData_GamePort - 0x1E);
         }
     }
 
-    if (arg0->unk_01 == 0xDC) {
+    if (arg0->TrainerSlotSaveData_GamePort == 0xDC) {
         for (i = 0; i < 17; i++) {
             arg0->unk_20[i].unk_024.x = -320.0f;
         }
     }
 
-    arg0->unk_01++;
+    arg0->TrainerSlotSaveData_GamePort++;
 }
 
 void BattlePrep_CarouselExitAnimation(gBannerState* arg0) {
     s32 i;
 
-    if (arg0->unk_01++ == 0) {
+    if (arg0->TrainerSlotSaveData_GamePort++ == 0) {
         Audio_PlayCategory11SoundCommand(0x01100005, 0, 0);
     }
 
@@ -916,7 +916,7 @@ void BattlePrep_CarouselExitAnimation(gBannerState* arg0) {
 void BattlePrep_CarouselEntryAnimation(gBannerState* arg0) {
     s32 i;
 
-    if (arg0->unk_01 == 0) {
+    if (arg0->TrainerSlotSaveData_GamePort == 0) {
         Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
         Audio_PlayCategory11SoundCommand(0x01100002, 0, 0);
     }
@@ -930,17 +930,17 @@ void BattlePrep_CarouselEntryAnimation(gBannerState* arg0) {
         arg0->unk_20[9 + i].unk_024 = arg0->unk_20[10 + i].unk_024;
     }
 
-    if (arg0->unk_01 < 0xA) {
+    if (arg0->TrainerSlotSaveData_GamePort < 0xA) {
         arg0->unk_20[0].unk_024.x += 32.0f;
         arg0->unk_20[7].unk_024.x -= 32.0f;
         arg0->unk_20[8].unk_024.x -= 32.0f;
         arg0->unk_20[12].unk_024.x -= 32.0f;
     }
 
-    if (arg0->unk_01 == 0x20) {
+    if (arg0->TrainerSlotSaveData_GamePort == 0x20) {
         arg0->posX = 0;
     }
-    arg0->unk_01++;
+    arg0->TrainerSlotSaveData_GamePort++;
 }
 
 void BattlePrep_UpdateCarouselState(gBannerState* arg0) {
@@ -1054,7 +1054,7 @@ void BattlePrep_InitCarouselEntry(gBannerState* arg0, Fragment2_1GraphNode* arg1
     s32 i;
 
     arg0->unk_20 = arg1;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posX = 1;
     BattlePrep_InitCarouselBanner(arg0, -0x140, 0x30);
 
@@ -1072,7 +1072,7 @@ void BattlePrep_InitCarouselEntry(gBannerState* arg0, Fragment2_1GraphNode* arg1
 }
 
 void BattlePrep_StartCarouselExit(gBannerState* arg0) {
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posX = 3;
 }
 
@@ -1080,7 +1080,7 @@ void BattlePrep_InitCarouselExit(gBannerState* arg0, Fragment2_1GraphNode* arg1)
     s32 i;
 
     arg0->unk_20 = arg1;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posX = 2;
     BattlePrep_InitCarouselBanner(arg0, -0x140, 0);
 
@@ -1256,7 +1256,7 @@ void BattlePrep_ApplyBannerColors(gBannerState* arg0) {
 
 void BattlePrep_InitBannerScene(gBannerState* arg0) {
     arg0->posX = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     BattlePrep_LoadBannerAssets(arg0);
     BattlePrep_LoadBannerGeoLayouts(arg0);
     BattlePrep_ApplyBannerColors(arg0);
@@ -1269,7 +1269,7 @@ s32 BattlePrep_BadgeCarouselGeoCallback(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_a0 = (gBadgeCarouselAnim*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = ((gDefaultGraphRoot->modelPhase - temp_a0->unk_08->modelPhase) % 8) - 4;
+        tmp = ((gDefaultGraphRoot->modelPhase - temp_a0->RentalSlotAnimData_PosePhase->modelPhase) % 8) - 4;
         tmp2 = (arg1->posX.unk_14 * 4) + tmp;
 
         gDPPipeSync(gDisplayListHead++);
@@ -1291,7 +1291,7 @@ s32 BattlePrep_BadgeCarouselGlowCallback(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v0 = (gBadgeCarouselAnim*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->unk_08->modelPhase) % 8) - 4;
+        tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->RentalSlotAnimData_PosePhase->modelPhase) % 8) - 4;
         tmp2 = tmp + arg1->posX.unk_14 * 4;
 
         if ((temp_v0->posY != 0) && ((tmp2 + 1) == gSessionContext.unk_0003)) {
@@ -1320,7 +1320,7 @@ s32 BattlePrep_BadgeCarouselTextureCallback(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_a0 = (gBadgeCarouselAnim*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = ((gDefaultGraphRoot->modelPhase - temp_a0->unk_08->modelPhase) % 8) - 4;
+        tmp = ((gDefaultGraphRoot->modelPhase - temp_a0->RentalSlotAnimData_PosePhase->modelPhase) % 8) - 4;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -1341,7 +1341,7 @@ s32 BattlePrep_BadgeCarouselGlowCallback2(s32 arg0, SimpleGfxNode* arg1) {
 
     if (arg0 == 5) {
         temp_v0 = (gBadgeCarouselAnim*)gDefaultGraphRoot->unk_000.unk_14;
-        tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->unk_08->modelPhase) % 8);
+        tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->RentalSlotAnimData_PosePhase->modelPhase) % 8);
         tmp -= 4;
 
         if ((temp_v0->posY != 0) && ((tmp + 1) == gSessionContext.unk_0003)) {
@@ -1383,25 +1383,25 @@ void BattlePrep_ResetBadgeSlideSlots(gBadgeCarouselAnim* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        ModelRenderer_ClearDisplayObject(&arg0->unk_08[i + 4]);
-        BattlePrep_ResetDisplayObject(&arg0->unk_08[i + 12]);
-        Model_InitDisplayObject(&arg0->unk_08[i + 4], 1, 0, arg0->unk_0C);
-        arg0->unk_08[i + 4].unk_01E.x = 0;
-        arg0->unk_08[i + 4].unk_000.unk_14 = arg0;
+        ModelRenderer_ClearDisplayObject(&arg0->RentalSlotAnimData_PosePhase[i + 4]);
+        BattlePrep_ResetDisplayObject(&arg0->RentalSlotAnimData_PosePhase[i + 12]);
+        Model_InitDisplayObject(&arg0->RentalSlotAnimData_PosePhase[i + 4], 1, 0, arg0->unk_0C);
+        arg0->RentalSlotAnimData_PosePhase[i + 4].unk_01E.x = 0;
+        arg0->RentalSlotAnimData_PosePhase[i + 4].unk_000.unk_14 = arg0;
     }
 }
 
 void BattlePrep_BadgeSlideInLeft(gBadgeCarouselAnim* arg0) {
     s32 i;
 
-    arg0->unk_01++;
+    arg0->TrainerSlotSaveData_GamePort++;
 
     for (i = 0; i < 4; i++) {
-        arg0->unk_08[4 + i].unk_024.x = (0xE0 + i * 0x40) - (arg0->unk_01 << 5);
+        arg0->RentalSlotAnimData_PosePhase[4 + i].unk_024.x = (0xE0 + i * 0x40) - (arg0->TrainerSlotSaveData_GamePort << 5);
     }
 
-    if (arg0->unk_01 == 0xA) {
-        arg0->unk_01 = 0;
+    if (arg0->TrainerSlotSaveData_GamePort == 0xA) {
+        arg0->TrainerSlotSaveData_GamePort = 0;
         arg0->posX = 0;
     }
 }
@@ -1410,17 +1410,17 @@ void BattlePrep_BadgeSlideInRight(gBadgeCarouselAnim* arg0) {
     s32 i;
     s32 var_v0;
 
-    arg0->unk_01++;
+    arg0->TrainerSlotSaveData_GamePort++;
 
     for (i = 0, var_v0 = -0x60; i < 4; i++, var_v0 += 0x40) {
-        arg0->unk_08[4 + i].unk_024.x = (s16)var_v0 - (arg0->unk_01 << 5);
+        arg0->RentalSlotAnimData_PosePhase[4 + i].unk_024.x = (s16)var_v0 - (arg0->TrainerSlotSaveData_GamePort << 5);
     }
 
-    if (arg0->unk_01 == 0xA) {
+    if (arg0->TrainerSlotSaveData_GamePort == 0xA) {
         for (i = 0; i < 4; i++) {
-            BattlePrep_ResetDisplayObject(&arg0->unk_08[4 + i]);
+            BattlePrep_ResetDisplayObject(&arg0->RentalSlotAnimData_PosePhase[4 + i]);
         }
-        arg0->unk_01 = 0;
+        arg0->TrainerSlotSaveData_GamePort = 0;
         arg0->posX = 0;
     }
 }
@@ -1429,16 +1429,16 @@ void BattlePrep_BadgeRevealSpin(gBadgeCarouselAnim* arg0) {
     s32 i;
     s32 var_a2;
 
-    arg0->unk_01++;
-    if (arg0->unk_01 < 0x10) {
+    arg0->TrainerSlotSaveData_GamePort++;
+    if (arg0->TrainerSlotSaveData_GamePort < 0x10) {
         for (i = 0; i < 4; i++) {
-            arg0->unk_08[4 + i].unk_01E.x += 0x800;
-            arg0->unk_08[12 + i].unk_01E.x += 0x800;
+            arg0->RentalSlotAnimData_PosePhase[4 + i].unk_01E.x += 0x800;
+            arg0->RentalSlotAnimData_PosePhase[12 + i].unk_01E.x += 0x800;
         }
-    } else if (arg0->unk_01 == 0x10) {
+    } else if (arg0->TrainerSlotSaveData_GamePort == 0x10) {
         Audio_PlayCategory11SoundCommand(0x0110000C, 0, 0);
         BattlePrep_ResetBadgeSlideSlots(arg0);
-    } else if (arg0->unk_01 == 0x20) {
+    } else if (arg0->TrainerSlotSaveData_GamePort == 0x20) {
         if (gSessionContext.unk_0000 == 7) {
             var_a2 = 4;
         } else {
@@ -1459,7 +1459,7 @@ void BattlePrep_BadgeRevealSpin(gBadgeCarouselAnim* arg0) {
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
         }
 
-        arg0->unk_01 = 0;
+        arg0->TrainerSlotSaveData_GamePort = 0;
         arg0->posX = 0;
     }
 }
@@ -1468,15 +1468,15 @@ void BattlePrep_BadgeHideSpin(gBadgeCarouselAnim* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        arg0->unk_08[4 + i].unk_01E.x -= 0x800;
-        arg0->unk_08[12 + i].unk_01E.x -= 0x800;
+        arg0->RentalSlotAnimData_PosePhase[4 + i].unk_01E.x -= 0x800;
+        arg0->RentalSlotAnimData_PosePhase[12 + i].unk_01E.x -= 0x800;
     }
 
-    arg0->unk_01++;
-    if (arg0->unk_01 == 0x10) {
+    arg0->TrainerSlotSaveData_GamePort++;
+    if (arg0->TrainerSlotSaveData_GamePort == 0x10) {
         Audio_PlayCategory11SoundCommand(0x0110000C, 0, 0);
         BattlePrep_ResetBadgeSlideSlots(arg0);
-        arg0->unk_01 = 0;
+        arg0->TrainerSlotSaveData_GamePort = 0;
         arg0->posX = 0;
     }
 }
@@ -1505,23 +1505,23 @@ void BattlePrep_InitBadgeCarousel(gBadgeCarouselAnim* arg0, Fragment2_1GraphNode
     s32 i;
     s16 var_s2;
 
-    arg0->unk_08 = arg1;
-    arg0->unk_01 = 0;
+    arg0->RentalSlotAnimData_PosePhase = arg1;
+    arg0->TrainerSlotSaveData_GamePort = 0;
 
     if (arg2 == 0) {
         for (i = 4; i < 8; i++) {
-            Model_InitDisplayObject(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
-            Vec3f_SetComponentsDuplicate(&arg0->unk_08[i].unk_024, 320.0f, -48.0f, -289.0f);
-            arg0->unk_08[i].unk_000.unk_14 = (s32)arg0;
+            Model_InitDisplayObject(&arg0->RentalSlotAnimData_PosePhase[i], 1, 0, arg0->unk_0C);
+            Vec3f_SetComponentsDuplicate(&arg0->RentalSlotAnimData_PosePhase[i].unk_024, 320.0f, -48.0f, -289.0f);
+            arg0->RentalSlotAnimData_PosePhase[i].unk_000.unk_14 = (s32)arg0;
         }
         arg0->posX = 1;
     } else {
         for (i = 12, var_s2 = -0x60; i < 16; i++) {
-            Model_InitDisplayObject(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
-            Vec3f_SetComponentsDuplicate(&arg0->unk_08[i].unk_024, var_s2, -48.0f, -289.0f);
-            arg0->unk_08[i].unk_01E.x = -0x8000;
+            Model_InitDisplayObject(&arg0->RentalSlotAnimData_PosePhase[i], 1, 0, arg0->unk_0C);
+            Vec3f_SetComponentsDuplicate(&arg0->RentalSlotAnimData_PosePhase[i].unk_024, var_s2, -48.0f, -289.0f);
+            arg0->RentalSlotAnimData_PosePhase[i].unk_01E.x = -0x8000;
             var_s2 += 0x40;
-            arg0->unk_08[i].unk_000.unk_14 = arg0;
+            arg0->RentalSlotAnimData_PosePhase[i].unk_000.unk_14 = arg0;
         }
 
         if (arg2 == 1) {
@@ -1664,7 +1664,7 @@ void BattlePrep_InitBadgeCarouselScene(gBadgeCarouselAnim* arg0, BinArchive* arg
     MemoryBlock* temp_v0;
 
     arg0->posX = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posY = 1;
     arg0->rotation = 0;
 

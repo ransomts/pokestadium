@@ -1058,7 +1058,7 @@ void miniInitRock(MiniActor* rock, s32 arg1) {
     rock->scale.y = 0.5f;
     rock->scale.z = 0.5f;
 
-    rock->unk_000.unk_000.unk_01 &= ~1;
+    rock->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
 
     miniActorUpdateTransform(rock);
 }
@@ -1145,13 +1145,13 @@ void MetapodGame_LaunchRock(MiniActor* rock) {
         temp_v1;
     rock->unk_270 = 1;
 
-    rock->unk_000.unk_000.unk_01 |= 1;
+    rock->unk_000.unk_000.TrainerSlotSaveData_GamePort |= 1;
     ModelAnim_SetAnimation(&rock->unk_000, 0);
 }
 
 void MetapodGame_DespawnRock(MiniActor* rock) {
     rock->mainState = 0;
-    rock->unk_000.unk_000.unk_01 &= ~1;
+    rock->unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
 }
 
 void miniRockStateMachine(MiniActor* rock) {
@@ -1842,7 +1842,7 @@ void MetapodGame_LoadAssets(void) {
         miniMetapods[i].cubeRadio = playerVariations[randN][1];
         miniMetapods[i].halfHeight = playerVariations[randN][2];
 
-        Model_InitDisplayObject(&miniMetapods[i].unk_000, 0, miniMetapods[i].unk_23C, miniMetapods[i].unk_168->unk_08->posX[0]);
+        Model_InitDisplayObject(&miniMetapods[i].unk_000, 0, miniMetapods[i].unk_23C, miniMetapods[i].unk_168->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&miniMetapods[i].unk_000, 0);
 
         if (miniMetapods) {}
@@ -1853,10 +1853,10 @@ void MetapodGame_LoadAssets(void) {
         miniMetapodRocks[i].unk_23C = 0x9C;
         miniMetapodRocks[i].unk_168 = temp_s1_2;
 
-        Model_InitDisplayObject(&miniMetapodRocks[i].unk_000, 0, miniMetapodRocks[i].unk_23C, temp_s1_2->unk_08->posX[0]);
+        Model_InitDisplayObject(&miniMetapodRocks[i].unk_000, 0, miniMetapodRocks[i].unk_23C, temp_s1_2->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&miniMetapodRocks[i].unk_000, 0);
 
-        miniMetapodRocks[i].unk_000.unk_000.unk_01 &= ~1;
+        miniMetapodRocks[i].unk_000.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 

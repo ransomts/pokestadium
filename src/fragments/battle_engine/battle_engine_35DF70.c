@@ -42,7 +42,7 @@ static func_D_8438AE50 gMoveEffectFunctions[] = {
 };
 
 u16 Battle_ApplyStatStageMultiplier(u16* arg0, u16 arg1, u8 arg2) {
-    *arg0 = (arg1 * gStatStageMultipliers[arg2 - 1].posX) / gStatStageMultipliers[arg2 - 1].unk_01;
+    *arg0 = (arg1 * gStatStageMultipliers[arg2 - 1].posX) / gStatStageMultipliers[arg2 - 1].TrainerSlotSaveData_GamePort;
 
     if (*arg0 == 0) {
         *arg0 = 1;
@@ -114,7 +114,7 @@ void Battle_Effect_Poison(void) {
 
     if (!(gBattleTarget->statusFlags2 & 0x10) && (gBattleTarget->unk_15 == 0) && (gBattleTarget->unk_16[6] != 3) &&
         (gBattleTarget->unk_16[7] != 3)) {
-        switch (gBattleUser->unk_44.unk_01) {
+        switch (gBattleUser->unk_44.TrainerSlotSaveData_GamePort) {
             case 2:
                 if (gBattleScene.posX->unk_48 != 0x18) {
                     gBattleScene.posX->unk_48 = 0;
@@ -158,7 +158,7 @@ void Battle_Effect_Poison(void) {
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
             Battle_QueueMessage(sp1C, -0x7B);
         }
-    } else if (gBattleUser->unk_44.unk_01 == 0x42) {
+    } else if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x42) {
         if (gBattleScene.posX->unk_48 != 0x18) {
             gBattleMoveFailed = 1;
             gBattleScene.posX->unk_48 = 0x16;
@@ -181,7 +181,7 @@ void Battle_Effect_DrainHP(void) {
         gBattleUser->unk_0C += gBattleDamage;
     }
 
-    if (gBattleUser->unk_44.unk_01 == 8) {
+    if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 8) {
         Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
         Battle_QueueMessage(gBattleMessageQueues->unk_208, -0x79);
     } else {
@@ -223,7 +223,7 @@ void Battle_Effect_SecondaryStatusChance(void) {
 
     if ((gBattleTarget->unk_16[6] != (*gBattleUser).unk_44.unk_03) &&
         (gBattleTarget->unk_16[7] != (*gBattleUser).unk_44.unk_03)) {
-        if ((gBattleUser->unk_44.unk_01 < 7) || ((gBattleRuleFlags[0] != 2) && (gBattleUser->unk_44.posX == 0x3B))) {
+        if ((gBattleUser->unk_44.TrainerSlotSaveData_GamePort < 7) || ((gBattleRuleFlags[0] != 2) && (gBattleUser->unk_44.posX == 0x3B))) {
             if (Battle_Random() >= 0x1A) {
                 return;
             }
@@ -231,7 +231,7 @@ void Battle_Effect_SecondaryStatusChance(void) {
             return;
         }
 
-        switch (gBattleUser->unk_44.unk_01) {
+        switch (gBattleUser->unk_44.TrainerSlotSaveData_GamePort) {
             case 4:
             case 34:
                 gBattleTarget->unk_15 = 0x10;
@@ -272,7 +272,7 @@ void Battle_ApplyRageStatBoost(void) {
     gBattleScene.posX->unk_4C = 0xA;
 
     var_a3 = 1;
-    sp24 = gBattleUser->unk_44.unk_01 - 0xA;
+    sp24 = gBattleUser->unk_44.TrainerSlotSaveData_GamePort - 0xA;
 
     if (sp24 >= 8) {
         var_a3 = 2;
@@ -315,7 +315,7 @@ void Battle_ApplyRageStatBoost(void) {
 
             if (*sp1C != 0x3E7) {
                 *sp1C = (*sp18 * gStatStageMultipliers[gBattleUser->unk_5C[sp24] - 1].posX) /
-                        gStatStageMultipliers[gBattleUser->unk_5C[sp24] - 1].unk_01;
+                        gStatStageMultipliers[gBattleUser->unk_5C[sp24] - 1].TrainerSlotSaveData_GamePort;
                 if (*sp1C >= 0x3E8) {
                     *sp1C = 0x3E7;
                 }
@@ -364,7 +364,7 @@ void Battle_Effect_RaiseOwnStat(void) {
     }
 
     var_a3 = 1;
-    sp24 = gBattleUser->unk_44.unk_01 - 0xA;
+    sp24 = gBattleUser->unk_44.TrainerSlotSaveData_GamePort - 0xA;
     if (sp24 >= 8) {
         var_a3 = 2;
         sp24 -= 0x28;
@@ -406,7 +406,7 @@ void Battle_Effect_RaiseOwnStat(void) {
 
             if (*sp1C != 0x3E7) {
                 *sp1C = (*sp18 * gStatStageMultipliers[gBattleUser->unk_5C[sp24] - 1].posX) /
-                        gStatStageMultipliers[gBattleUser->unk_5C[sp24] - 1].unk_01;
+                        gStatStageMultipliers[gBattleUser->unk_5C[sp24] - 1].TrainerSlotSaveData_GamePort;
                 if (*sp1C >= 0x3E8) {
                     *sp1C = 0x3E7;
                 }
@@ -449,7 +449,7 @@ void Battle_Effect_LowerStat(void) {
     u16* sp1C;
     u16* sp18;
 
-    if (gBattleUser->unk_44.unk_01 < 0x44) {
+    if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort < 0x44) {
         gBattleScene.posX->unk_48 = 0x1A;
     } else {
         gBattleScene.posX->unk_1A = 3;
@@ -459,7 +459,7 @@ void Battle_Effect_LowerStat(void) {
         goto end;
     }
 
-    sp24 = gBattleUser->unk_44.unk_01;
+    sp24 = gBattleUser->unk_44.TrainerSlotSaveData_GamePort;
     sp20 = 1;
 
     if (sp24 >= 0x44) {
@@ -521,7 +521,7 @@ void Battle_Effect_LowerStat(void) {
 
                 if (*sp1C != 1) {
                     *sp1C = (*sp18 * gStatStageMultipliers[gBattleTarget->unk_5C[sp24] - 1].posX) /
-                            gStatStageMultipliers[gBattleTarget->unk_5C[sp24] - 1].unk_01;
+                            gStatStageMultipliers[gBattleTarget->unk_5C[sp24] - 1].TrainerSlotSaveData_GamePort;
                     if (*sp1C == 0) {
                         *sp1C = 1;
                     }
@@ -550,7 +550,7 @@ void Battle_Effect_LowerStat(void) {
     }
 
 block_39:
-    if (gBattleUser->unk_44.unk_01 < 0x44) {
+    if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort < 0x44) {
         gIsBattleMode = 0;
         gAnimStateFlag = 0;
         Battle_QueueMessage(gBattleMessageQueues->unk_088, -0x5A);
@@ -558,7 +558,7 @@ block_39:
     }
 
 end:
-    if (gBattleUser->unk_44.unk_01 < 0x44) {
+    if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort < 0x44) {
         gIsBattleMode = 0;
         gAnimStateFlag = 0;
         if (gBattleUnusedFlag4 == 0) {
@@ -571,14 +571,14 @@ end:
 
 void Battle_Effect_Bide(void) {
     gBattleScene.posX->unk_48 = 0x1B;
-    gBattleUser->unk_44.unk_01 = 0;
+    gBattleUser->unk_44.TrainerSlotSaveData_GamePort = 0;
     gBattleUser->unk_4C |= 1;
     gBattleUser->unk_54 = 0;
     gBattleUser->multiTurnCounter = (Battle_Random() & 1) + 2;
 }
 
 void Battle_Effect_Thrash(void) {
-    gBattleUser->unk_44.unk_01 = 0;
+    gBattleUser->unk_44.TrainerSlotSaveData_GamePort = 0;
     gBattleUser->unk_4C |= 2;
     gBattleUser->multiTurnCounter = (Battle_Random() & 1) + 2;
 }
@@ -600,9 +600,9 @@ void Battle_Effect_MultiHit(void) {
     if (!(gBattleUser->unk_4C & 4)) {
         gBattleUser->unk_4C |= 4;
 
-        switch (gBattleUser->unk_44.unk_01) {
+        switch (gBattleUser->unk_44.TrainerSlotSaveData_GamePort) {
             case 0x4D:
-                gBattleUser->unk_44.unk_01 = 2;
+                gBattleUser->unk_44.TrainerSlotSaveData_GamePort = 2;
 
             case 0x2C:
                 gBattleUser->unk_54 = 2;
@@ -626,7 +626,7 @@ void Battle_Effect_MultiHit(void) {
 void Battle_Effect_Flinch(void) {
     if (!(gBattleTarget->statusFlags2 & 0x10)) {
         if (gBattleRuleFlags[0] == 1) {
-            if (gBattleUser->unk_44.unk_01 == 0x1F) {
+            if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x1F) {
                 if (Battle_Random() >= 0x1A) {
                     return;
                 }
@@ -635,7 +635,7 @@ void Battle_Effect_Flinch(void) {
             }
         } else {
             gBattleTarget->statusFlags2 &= ~0x20;
-            if (gBattleUser->unk_44.unk_01 == 0x1F) {
+            if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x1F) {
                 if (Battle_Random() >= 0x1A) {
                     return;
                 }
@@ -662,13 +662,13 @@ void Battle_Effect_TwoTurnMove(void) {
     gBattleScene.posX->unk_48 = 0xE;
     gBattleUser->unk_4C |= 0x10;
 
-    if ((gBattleUser->unk_44.unk_01 == 0x2B) || (gBattleUser->unk_44.posX == 0x5B)) {
+    if ((gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x2B) || (gBattleUser->unk_44.posX == 0x5B)) {
         gBattleUser->unk_4C |= 0x40;
         if (gBattleUser->unk_44.posX == 0x5B) {
             gBattleScene.posX->unk_48 = 0xD;
         }
 
-        if (gBattleUser->unk_44.unk_01 == 0x2B) {
+        if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x2B) {
             gBattleScene.posX->unk_48 = 0xC;
         }
     }
@@ -1005,7 +1005,7 @@ void Battle_Effect_Heal(void) {
             temp_v0 = gBattleUser->unk_15;
 
             gBattleUser->unk_15 = 2;
-            temp_a2->unk_16[temp_a1->unk_08 + temp_a1->unk_2B * 3] = 2;
+            temp_a2->unk_16[temp_a1->RentalSlotAnimData_PosePhase + temp_a1->unk_2B * 3] = 2;
 
             if (temp_v0 != 0) {
                 if (gBattleRuleFlags[0] == 1) {
@@ -1105,7 +1105,7 @@ void Battle_Effect_Transform(void) {
 
 void Battle_Effect_ReflectLightScreen(void) {
     gBattleScene.posX->unk_48 = 7;
-    if (gBattleUser->unk_44.unk_01 == 0x40) {
+    if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x40) {
         if (!(gBattleUser->unk_4E & 2)) {
             gBattleUser->unk_4E |= 2;
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[gBattleScene.posX->unk_2C]));
@@ -1124,7 +1124,7 @@ void Battle_Effect_ReflectLightScreen(void) {
 
 void Battle_RunMoveEffect(void) {
     PokemonAudioInfo* ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
-    s32 idx = ptr->unk_44.unk_01;
+    s32 idx = ptr->unk_44.TrainerSlotSaveData_GamePort;
 
     if (gMoveEffectFunctions[idx - 1] != NULL) {
         gMoveEffectFunctions[idx - 1]();

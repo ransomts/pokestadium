@@ -1285,7 +1285,7 @@ void PakUi_DrawTitleHeader(s16 arg0) {
 void PakUi_DrawPartyCardBadge(s32 arg0) {
     u8* var_t0;
 
-    switch (gMenuItemData[arg0].unk_01) {
+    switch (gMenuItemData[arg0].TrainerSlotSaveData_GamePort) {
         default:
             var_t0 = D_3008420;
             break;
@@ -1409,12 +1409,12 @@ void PakUi_InitPartyCard(s32 arg0) {
     unk_D_82D0AB38* temp_v1;
 
     gMenuFramebufferImages[arg0] = GfxImage_Allocate(0, 2, 0x80, 0xCC, 1);
-    if (gMenuItemData[arg0].unk_01 != 0) {
+    if (gMenuItemData[arg0].TrainerSlotSaveData_GamePort != 0) {
         if (gMenuItemData[arg0].posX == 0) {
             if (gMenuItemData[arg0].unk_03 != 0) {
-                PakUi_BuildPartyCard(arg0, 1, 0, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
+                PakUi_BuildPartyCard(arg0, 1, 0, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].RentalSlotAnimData_PosePhase);
             } else {
-                PakUi_BuildPartyCard(arg0, 1, 0x13, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
+                PakUi_BuildPartyCard(arg0, 1, 0x13, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].RentalSlotAnimData_PosePhase);
             }
         } else {
             PakUi_BuildPartyCard(arg0, 1, 0x14, -1, "?????");
@@ -1724,9 +1724,9 @@ void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, ContinueRecord* arg2, s32 ar
 
             if (arg2->posX == 7) {
                 Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
-                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_01 + 0x13));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->TrainerSlotSaveData_GamePort + 0x13));
 
-                if (arg2->unk_01 < 8) {
+                if (arg2->TrainerSlotSaveData_GamePort < 8) {
                     if (arg2->posY < 4) {
                         Text_SetNumberToken(1, arg2->posY);
                         Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gMenuMessageBank, 0x2E));
@@ -1739,7 +1739,7 @@ void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, ContinueRecord* arg2, s32 ar
                 }
             } else if ((arg2->posX == 3) || (arg2->posX == 6)) {
                 Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
-                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_01 + 7));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->TrainerSlotSaveData_GamePort + 7));
                 Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posY + 0xA));
             } else {
                 Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
@@ -1947,7 +1947,7 @@ void PakUi_DrawStatusPopup(unk_D_82D0ABD0* arg0) {
 
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, 150);
 
-            if (arg0->unk_08 != 0) {
+            if (arg0->RentalSlotAnimData_PosePhase != 0) {
                 Gfx_DrawTextureI4(sp4A + 0x22, temp_s0 + 0x12, 0x40, 0x40, &D_3024480, 0x40, 0);
             }
 
@@ -1962,8 +1962,8 @@ void PakUi_DrawStatusPopup(unk_D_82D0ABD0* arg0) {
             Text_SetEnvColor(0xFF, 0x64, 0x32, 0xFF);
             Font_SetLineHeight(0x1C);
 
-            if (arg0->unk_08 != 0) {
-                Font_Printf(sp4A + 0x76, temp_s0 + 0x18, Text_GetString(NULL, 0, gMenuMessageBank, arg0->unk_08 + 0x32));
+            if (arg0->RentalSlotAnimData_PosePhase != 0) {
+                Font_Printf(sp4A + 0x76, temp_s0 + 0x18, Text_GetString(NULL, 0, gMenuMessageBank, arg0->RentalSlotAnimData_PosePhase + 0x32));
             }
 
             if (arg0->unk_0A != 0) {
@@ -2013,7 +2013,7 @@ void PakUi_InitStatusPopup(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
 
 void PakUi_OpenStatusPopup(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
     arg0->posX = 2;
-    arg0->unk_08 = arg1;
+    arg0->RentalSlotAnimData_PosePhase = arg1;
     arg0->unk_0A = arg2;
 }
 
@@ -2544,7 +2544,7 @@ s32 TransferPak_MenuHandleInput(void) {
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         var_a3 = 7;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        sp24 = gMenuNavigationTable[gAudioMessageIndex].unk_08;
+        sp24 = gMenuNavigationTable[gAudioMessageIndex].RentalSlotAnimData_PosePhase;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
         sp24 = gMenuNavigationTable[gAudioMessageIndex].unk_09;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT)) {
@@ -2564,7 +2564,7 @@ s32 TransferPak_MenuHandleInput(void) {
     if (var_a3 == 1) {
         var_a1 = 0;
         var_a2 = 0;
-        if (gMenuItemData->unk_01 == 0) {
+        if (gMenuItemData->TrainerSlotSaveData_GamePort == 0) {
             var_a1 = 1;
         } else if (gMenuItemData->posX != 0) {
             var_a1 = 2;
@@ -2574,7 +2574,7 @@ s32 TransferPak_MenuHandleInput(void) {
 
         if (gMenuItemData[1].rotation == 0) {
             var_a2 = 4;
-        } else if (gMenuItemData[1].unk_01 == 0) {
+        } else if (gMenuItemData[1].TrainerSlotSaveData_GamePort == 0) {
             var_a2 = 1;
         } else if (gMenuItemData[1].posX != 0) {
             var_a2 = 2;
@@ -2745,9 +2745,9 @@ void Pak_PollPortStatus(void) {
 
     for (i = 0; i < 4; i++) {
         GbSave_CopyPlayerIdentity(i, &sp48);
-        Text_UntranscodeName(&gMenuItemData[i].unk_08, &sp48.posY);
+        Text_UntranscodeName(&gMenuItemData[i].RentalSlotAnimData_PosePhase, &sp48.posY);
         gMenuItemData[i].unk_06 = sp48.posX;
-        gMenuItemData[i].unk_01 = GbSave_GetPortGame(i);
+        gMenuItemData[i].TrainerSlotSaveData_GamePort = GbSave_GetPortGame(i);
         gMenuItemData[i].posX = GbSave_GetSaveState(i);
         gMenuItemData[i].unk_03 = GbSave_SavedAtPokemonCenter(i);
         gMenuItemData[i].rotation = (temp_s3 & (1 << i)) != 0;

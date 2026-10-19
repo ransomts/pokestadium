@@ -147,7 +147,7 @@ void geo_layout_cmd_set_callback(void) {
     GeoCmd_SetCallback* cmd = (GeoCmd_SetCallback*)gGeoLayoutCommand;
 
     if (gCurGraphNodeList[gCurGraphNodeIndex] != NULL) {
-        GeoNode_SetCallback(gCurGraphNodeList[gCurGraphNodeIndex], cmd->rotation, cmd->unk_08);
+        GeoNode_SetCallback(gCurGraphNodeList[gCurGraphNodeIndex], cmd->rotation, cmd->RentalSlotAnimData_PosePhase);
     }
 
     gGeoLayoutCommand += sizeof(GeoCmd_SetCallback);
@@ -170,7 +170,7 @@ void geo_layout_cmd_create_reference(void) {
 void geo_layout_cmd_create_camera(void) {
     GeoCmd_CreateCamera* cmd = (GeoCmd_CreateCamera*)gGeoLayoutCommand;
     CameraStruct* temp_v0 =
-        GeoNode_CreateCamera(gGraphNodePool, NULL, cmd->rotation, cmd->unk_06, cmd->unk_08, cmd->unk_0A);
+        GeoNode_CreateCamera(gGraphNodePool, NULL, cmd->rotation, cmd->unk_06, cmd->RentalSlotAnimData_PosePhase, cmd->unk_0A);
 
     if (temp_v0 != NULL) {
         temp_v0->unk_24.fovy = cmd->posY;
@@ -219,7 +219,7 @@ void geo_layout_cmd_create_perspective(void) {
 void geo_layout_cmd_create_background(void) {
     GeoCmd_CreateBackground* cmd = (GeoCmd_CreateBackground*)gGeoLayoutCommand;
 
-    register_graph_node(GeoNode_CreateBackground(gGraphNodePool, NULL, cmd->unk_01, cmd->posY, cmd->unk_03));
+    register_graph_node(GeoNode_CreateBackground(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->posY, cmd->unk_03));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateBackground);
 }
@@ -265,7 +265,7 @@ void geo_layout_cmd_create_ambient_light(void) {
 void geo_layout_cmd_create_shadow_context(void) {
     GeoCmd_CreateMesh* cmd = (GeoCmd_CreateMesh*)gGeoLayoutCommand;
 
-    register_graph_node(GeoNode_CreateShadowContext(gGraphNodePool, NULL, cmd->posY, cmd->unk_08, cmd->rotation, cmd->unk_0C, cmd->unk_06,
+    register_graph_node(GeoNode_CreateShadowContext(gGraphNodePool, NULL, cmd->posY, cmd->RentalSlotAnimData_PosePhase, cmd->rotation, cmd->unk_0C, cmd->unk_06,
                                 cmd->unk_10));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateMesh);
@@ -274,7 +274,7 @@ void geo_layout_cmd_create_shadow_context(void) {
 void geo_layout_cmd_create_shadow(void) {
     GeoCmd_CreateShadow* cmd = (GeoCmd_CreateShadow*)gGeoLayoutCommand;
 
-    register_graph_node(GeoNode_CreateShadow(gGraphNodePool, NULL, cmd->unk_01, cmd->rotation, cmd->unk_06, cmd->posY));
+    register_graph_node(GeoNode_CreateShadow(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->rotation, cmd->unk_06, cmd->posY));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateShadow);
 }
@@ -290,7 +290,7 @@ void geo_layout_cmd_create_cull_distance(void) {
 void geo_layout_cmd_create_switch_case(void) {
     GeoCmd_CreateSwitchCase* cmd = (GeoCmd_CreateSwitchCase*)gGeoLayoutCommand;
 
-    register_graph_node(GeoNode_CreateSwitchCase(gGraphNodePool, NULL, cmd->unk_01, cmd->posY));
+    register_graph_node(GeoNode_CreateSwitchCase(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->posY));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateSwitchCase);
 }
@@ -302,7 +302,7 @@ void geo_layout_cmd_create_translate_rotate(void) {
     GeoCmd_CreateTransform* cmd = (GeoCmd_CreateTransform*)gGeoLayoutCommand;
 
     Vec3f_FromVec3s(&sp24, &cmd->unk_0A);
-    Vec3s_SetComponents(&sp30, (cmd->rotation << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
+    Vec3s_SetComponents(&sp30, (cmd->rotation << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->RentalSlotAnimData_PosePhase << 0xF) / 180);
     register_graph_node(GeoNode_CreateTranslateRotate(gGraphNodePool, NULL, &sp24, &sp30));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateTransform);
@@ -313,7 +313,7 @@ void geo_layout_cmd_create_translate(void) {
     GeoCmd_CreateScale* cmd = (GeoCmd_CreateScale*)gGeoLayoutCommand;
 
     sp24.x = cmd->rotation / 65536.0f;
-    sp24.y = cmd->unk_08 / 65536.0f;
+    sp24.y = cmd->RentalSlotAnimData_PosePhase / 65536.0f;
     sp24.z = cmd->unk_0C / 65536.0f;
     register_graph_node(GeoNode_CreateTranslate(gGraphNodePool, NULL, &sp24));
 
@@ -338,7 +338,7 @@ void geo_layout_cmd_create_animated_part(void) {
     }
 
     register_graph_node(
-        GeoNode_CreateAnimatedPart(gGraphNodePool, NULL, cmd->unk_01, var_a3, cmd->unk_03, &cmd->rotation, &cmd->unk_0A, &sp3C));
+        GeoNode_CreateAnimatedPart(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, var_a3, cmd->unk_03, &cmd->rotation, &cmd->unk_0A, &sp3C));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateAnimatedPart);
 }
@@ -346,7 +346,7 @@ void geo_layout_cmd_create_animated_part(void) {
 void geo_layout_cmd_create_display_list_part(void) {
     GeoCmd_CreateDisplayList* cmd = (GeoCmd_CreateDisplayList*)gGeoLayoutCommand;
 
-    register_graph_node(GeoNode_CreateDisplayListPart(gGraphNodePool, NULL, cmd->unk_01, cmd->rotation, cmd->posY));
+    register_graph_node(GeoNode_CreateDisplayListPart(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->rotation, cmd->posY));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateDisplayList);
 }
@@ -364,7 +364,7 @@ void geo_layout_cmd_create_model_part(void) {
     sp28.y = cmd->unk_12 / 100.0f;
     sp28.z = cmd->unk_14 / 100.0f;
 
-    Vec3s_SetComponents(&sp40, (cmd->rotation << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
+    Vec3s_SetComponents(&sp40, (cmd->rotation << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->RentalSlotAnimData_PosePhase << 0xF) / 180);
     tmp = GeoNode_CreateModelPart(gGraphNodePool, NULL, cmd->posY, &sp34, &sp40, &sp28);
     register_graph_node(tmp);
 
@@ -378,8 +378,8 @@ void geo_layout_cmd_create_display_list_matrix(void) {
     GeoCmd_CreateBillboard* cmd = (GeoCmd_CreateBillboard*)gGeoLayoutCommand;
 
     Vec3f_FromVec3s(&sp34, &cmd->unk_0A);
-    Vec3s_SetComponents(&sp2C, (cmd->rotation << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->unk_08 << 0xF) / 180);
-    tmp = GeoNode_CreateDisplayListMatrixFromTransform(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_10, &sp34, &sp2C);
+    Vec3s_SetComponents(&sp2C, (cmd->rotation << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->RentalSlotAnimData_PosePhase << 0xF) / 180);
+    tmp = GeoNode_CreateDisplayListMatrixFromTransform(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->unk_10, &sp34, &sp2C);
     register_graph_node(tmp);
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateBillboard);
@@ -391,7 +391,7 @@ void geo_layout_cmd_create_scale(void) {
     GeoCmd_CreateScaleBillboard* cmd = (GeoCmd_CreateScaleBillboard*)gGeoLayoutCommand;
 
     Vec3f_FromVec3s(&sp2C, &cmd->posY);
-    tmp = GeoNode_CreateScale(gGraphNodePool, NULL, cmd->unk_01, cmd->unk_0C, &sp2C, cmd->unk_08 / 65536.0f);
+    tmp = GeoNode_CreateScale(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->unk_0C, &sp2C, cmd->RentalSlotAnimData_PosePhase / 65536.0f);
     register_graph_node(tmp);
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateScaleBillboard);
@@ -400,7 +400,7 @@ void geo_layout_cmd_create_scale(void) {
 void geo_layout_cmd_create_display_list(void) {
     GeoCmd_CreateSimpleGfx* cmd = (GeoCmd_CreateSimpleGfx*)gGeoLayoutCommand;
 
-    register_graph_node(GeoNode_CreateDisplayList(gGraphNodePool, NULL, cmd->unk_01, cmd->rotation));
+    register_graph_node(GeoNode_CreateDisplayList(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->rotation));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateSimpleGfx);
 }
@@ -408,7 +408,7 @@ void geo_layout_cmd_create_display_list(void) {
 void geo_layout_cmd_create_shadow_texture(void) {
     GeoCmd_CreateShadowTex* cmd = (GeoCmd_CreateShadowTex*)gGeoLayoutCommand;
 
-    register_graph_node(GeoNode_CreateShadowTexture(gGraphNodePool, NULL, cmd->unk_01, cmd->posY, cmd->rotation, cmd->unk_08, cmd->unk_0A,
+    register_graph_node(GeoNode_CreateShadowTexture(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->posY, cmd->rotation, cmd->RentalSlotAnimData_PosePhase, cmd->unk_0A,
                                 cmd->r, cmd->g, cmd->b, cmd->a));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateShadowTex);
@@ -435,7 +435,7 @@ void geo_layout_cmd_set_node_flag4(void) {
 void geo_layout_cmd_create_group(void) {
     GeoCmd_CreateGroup* cmd = (GeoCmd_CreateGroup*)gGeoLayoutCommand;
 
-    register_graph_node(GeoNode_CreateGroup(gGraphNodePool, NULL, cmd->unk_01, cmd->rotation, cmd->unk_06, cmd->unk_08, cmd->unk_0A,
+    register_graph_node(GeoNode_CreateGroup(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->rotation, cmd->unk_06, cmd->RentalSlotAnimData_PosePhase, cmd->unk_0A,
                                 cmd->posY, cmd->unk_03, cmd->unk_0C, cmd->r, cmd->g, cmd->b, cmd->a));
 
     gGeoLayoutCommand += sizeof(GeoCmd_CreateGroup);

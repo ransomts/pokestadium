@@ -62,7 +62,7 @@ void TradeCable_SetBallState(s32 arg0, s16 arg1) {
         case 3:
             temp_v0->unk_06 = 0;
             temp_v0->unk_0A = 0;
-            temp_v0->unk_08 = 0;
+            temp_v0->RentalSlotAnimData_PosePhase = 0;
             temp_v0->unk_0C = 0xFF;
             break;
     }
@@ -155,12 +155,12 @@ void TradeCable_UpdateBallTravel(TradeBall* arg0) {
         }
 
         if (idx != 0) {
-            arg0->unk_08--;
+            arg0->RentalSlotAnimData_PosePhase--;
         } else {
-            arg0->unk_08++;
+            arg0->RentalSlotAnimData_PosePhase++;
         }
 
-        arg0->posY += arg0->unk_08;
+        arg0->posY += arg0->RentalSlotAnimData_PosePhase;
     }
 }
 
@@ -280,7 +280,7 @@ void TradeEvo_BeginSequence(s16 arg0) {
     gScreenTransition.posY = 1;
     gScreenTransition.rotation = sp20.posY;
     gScreenTransition.unk_06 = 1;
-    gScreenTransition.unk_08 = 0;
+    gScreenTransition.RentalSlotAnimData_PosePhase = 0;
     ptr->unk_0A = MathUtil_Random16() % 2;
     ptr->unk_0C = 0;
     ptr->unk_0E = 0x140;
@@ -347,7 +347,7 @@ s32 Trade_SpeciesEvolvesOnTransfer(s32 arg0) {
 void TradeEvo_UpdateWaitForConfirm(TradeEvoState* arg0) {
     TradeEvo_UpdatePreviewModel(arg0);
 
-    if (arg0->unk_08 != 0) {
+    if (arg0->RentalSlotAnimData_PosePhase != 0) {
         arg0->unk_0C -= 1;
         if (arg0->unk_0C <= 0) {
             arg0->unk_0C = 0;
@@ -359,7 +359,7 @@ void TradeEvo_UpdateWaitForConfirm(TradeEvoState* arg0) {
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         if (Trade_SpeciesEvolvesOnTransfer(arg0->unk_24->posX.posX) != 0) {
             arg0->posY = 3;
-            arg0->unk_08 = 1;
+            arg0->RentalSlotAnimData_PosePhase = 1;
             arg0->unk_0C = 0x3C;
             arg0->unk_18 = 0;
             arg0->unk_1A = 0x800;
@@ -369,7 +369,7 @@ void TradeEvo_UpdateWaitForConfirm(TradeEvoState* arg0) {
         } else {
             arg0->posY = 6;
             arg0->unk_0C = 0xA;
-            if (arg0->unk_08 != 0) {
+            if (arg0->RentalSlotAnimData_PosePhase != 0) {
                 Audio_PlaySoundEffectById(0x01200009);
             } else {
                 Audio_PlaySoundEffectById(2);
@@ -785,7 +785,7 @@ void TradeCable_ResetLights(void) {
         var_v1->posY = 0;
         var_v1->rotation = 0;
         var_v1->unk_06 = 0;
-        var_v1->unk_08 = 0;
+        var_v1->RentalSlotAnimData_PosePhase = 0;
         var_v1->unk_0A = 0;
         var_v1->unk_0C = 0;
         var_v1->unk_0E = 0;
@@ -810,7 +810,7 @@ void TradeCable_SetLightState(s32 arg0, s16 arg1) {
             temp_v0->posY = gTradeCableLightXPos[arg0];
             temp_v0->rotation = gTradeCableState.posY + temp_v0->posY;
             temp_v0->unk_06 = 0xFA;
-            temp_v0->unk_08 = temp_v0->rotation - 0x40;
+            temp_v0->RentalSlotAnimData_PosePhase = temp_v0->rotation - 0x40;
             temp_v0->unk_0A = 0xAE;
             temp_v0->unk_0C = 0x80;
             temp_v0->unk_0E = 0x48;
@@ -822,7 +822,7 @@ void TradeCable_SetLightState(s32 arg0, s16 arg1) {
             break;
 
         case 2:
-            temp_v0->unk_08 = 0;
+            temp_v0->RentalSlotAnimData_PosePhase = 0;
             temp_v0->unk_0A = 0;
             temp_v0->unk_0C = 0;
             temp_v0->unk_0E = 0;
@@ -830,7 +830,7 @@ void TradeCable_SetLightState(s32 arg0, s16 arg1) {
             break;
 
         case 3:
-            temp_v0->unk_08 = 0;
+            temp_v0->RentalSlotAnimData_PosePhase = 0;
             temp_v0->unk_0A = 0;
             temp_v0->unk_0C = 0;
             temp_v0->unk_0E = 0;
@@ -849,9 +849,9 @@ void TradeCable_SetLightState(s32 arg0, s16 arg1) {
 
         case 5:
             temp_v0->unk_12 = 0;
-            temp_v0->unk_08 = temp_v0->rotation - 0x40;
-            if (temp_v0->unk_08 < 0) {
-                temp_v0->unk_08 = 0;
+            temp_v0->RentalSlotAnimData_PosePhase = temp_v0->rotation - 0x40;
+            if (temp_v0->RentalSlotAnimData_PosePhase < 0) {
+                temp_v0->RentalSlotAnimData_PosePhase = 0;
             }
             temp_v0->unk_0A = 0xC2;
             temp_v0->unk_0C = 0x80;
@@ -862,9 +862,9 @@ void TradeCable_SetLightState(s32 arg0, s16 arg1) {
             temp_v0->posY = gTradeCableLightYPos[arg0];
             temp_v0->rotation = gTradeCableState.posY + temp_v0->posY;
             temp_v0->unk_06 = 0xA0;
-            temp_v0->unk_08 = temp_v0->rotation - 0x40;
-            if (temp_v0->unk_08 < 0) {
-                temp_v0->unk_08 = 0;
+            temp_v0->RentalSlotAnimData_PosePhase = temp_v0->rotation - 0x40;
+            if (temp_v0->RentalSlotAnimData_PosePhase < 0) {
+                temp_v0->RentalSlotAnimData_PosePhase = 0;
             }
             temp_v0->unk_0A = 0xC2;
             temp_v0->unk_0C = 0x80;
@@ -880,9 +880,9 @@ void TradeCable_SetLightState(s32 arg0, s16 arg1) {
             temp_v0->posY = gTradeCableLightYPos[arg0];
             temp_v0->rotation = gTradeCableState.posY + temp_v0->posY;
             temp_v0->unk_06 = 0xA0;
-            temp_v0->unk_08 = temp_v0->rotation - 0x40;
-            if (temp_v0->unk_08 < 0) {
-                temp_v0->unk_08 = 0;
+            temp_v0->RentalSlotAnimData_PosePhase = temp_v0->rotation - 0x40;
+            if (temp_v0->RentalSlotAnimData_PosePhase < 0) {
+                temp_v0->RentalSlotAnimData_PosePhase = 0;
             }
             temp_v0->unk_0A = 0xC2;
             temp_v0->unk_0C = 0x80;
@@ -1123,11 +1123,11 @@ void TradeCable_DrawLights(void) {
 
         if ((var_s0->unk_0C != 0) && (var_s0->unk_0E != 0)) {
             var_s3 = 1;
-            var_s0->unk_08 = var_s0->rotation - 0x40;
-            if (var_s0->unk_08 < 0) {
-                var_s0->unk_08 = 0;
+            var_s0->RentalSlotAnimData_PosePhase = var_s0->rotation - 0x40;
+            if (var_s0->RentalSlotAnimData_PosePhase < 0) {
+                var_s0->RentalSlotAnimData_PosePhase = 0;
             }
-            Gfx_SetScissorRect(&gDisplayListHead, var_s0->unk_08, var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E);
+            Gfx_SetScissorRect(&gDisplayListHead, var_s0->RentalSlotAnimData_PosePhase, var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E);
         }
 
         TradeCable_DrawLightSpark(var_s0->rotation, var_s0->unk_06, var_s0->unk_14, var_s0->unk_18);
@@ -1164,7 +1164,7 @@ void TradeCable_SetSequenceState(s16 arg0) {
             ptr->rotation = 0x18;
             ptr->unk_10 = 1.5f;
             ptr->unk_06 = 0xB4;
-            ptr->unk_08 = 0xE4;
+            ptr->RentalSlotAnimData_PosePhase = 0xE4;
             ptr->unk_0A = 0xAA;
             ptr->unk_0E = -1;
             ptr->unk_14 = 0x80;
@@ -1954,7 +1954,7 @@ void TradeCable_DrawSequence(void) {
 
     if (ptr->unk_0C & 0x10) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp83);
-        TradeCable_DrawTubeRailBar(ptr->posY, ptr->rotation, ptr->unk_10, ptr->unk_06, ptr->unk_08, ptr->unk_0A);
+        TradeCable_DrawTubeRailBar(ptr->posY, ptr->rotation, ptr->unk_10, ptr->unk_06, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0A);
     }
 
     gDPPipeSync(gDisplayListHead++);

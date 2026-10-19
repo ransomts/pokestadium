@@ -14,7 +14,7 @@ static s32 gCurrentAnimChannelIdx;
 f32 ModelAnim_EvaluateTranslationChannel(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 ret;
     s32 var_a2;
-    unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
+    unk_D_800ABCC0_008* temp_v0 = &arg0->RentalSlotAnimData_PosePhase[arg1];
 
     if (temp_v0->posX == 1) {
         ret = temp_v0->rotation / 1000.0f;
@@ -34,15 +34,15 @@ f32 ModelAnim_EvaluateTranslationChannel(unk_D_800ABCC0* arg0, s32 arg1) {
 s16 ModelAnim_EvaluateRotationChannel(unk_D_800ABCC0* arg0, s32 arg1) {
     s32 var_a1;
     s16 var_v1;
-    unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
+    unk_D_800ABCC0_008* temp_v0 = &arg0->RentalSlotAnimData_PosePhase[arg1];
 
-    if (temp_v0->unk_01 == 1) {
+    if (temp_v0->TrainerSlotSaveData_GamePort == 1) {
         var_v1 = temp_v0->unk_06 * 0x10;
     } else {
-        if (arg0->posY < temp_v0->unk_01) {
+        if (arg0->posY < temp_v0->TrainerSlotSaveData_GamePort) {
             var_a1 = temp_v0->unk_06 + arg0->posY;
         } else {
-            var_a1 = (temp_v0->unk_06 + temp_v0->unk_01) - 1;
+            var_a1 = (temp_v0->unk_06 + temp_v0->TrainerSlotSaveData_GamePort) - 1;
         }
         var_v1 = PackedBits_ReadSigned(arg0->unk_10, var_a1, 0xC) * 0x10;
     }
@@ -53,23 +53,23 @@ f32 ModelAnim_EvaluateScaleChannel(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
     s16 var_a2;
     s32 var_a1;
-    unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
+    unk_D_800ABCC0_008* temp_v0 = &arg0->RentalSlotAnimData_PosePhase[arg1];
 
     if (temp_v0->posY == 1) {
-        if (arg0->unk_01 & 4) {
-            var_fv1 = (s16)temp_v0->unk_08;
+        if (arg0->TrainerSlotSaveData_GamePort & 4) {
+            var_fv1 = (s16)temp_v0->RentalSlotAnimData_PosePhase;
         } else {
-            var_a2 = temp_v0->unk_08 * 0x10;
+            var_a2 = temp_v0->RentalSlotAnimData_PosePhase * 0x10;
             var_fv1 = var_a2 >> 4;
         }
     } else {
         if (arg0->posY < temp_v0->posY) {
-            var_a1 = temp_v0->unk_08 + arg0->posY;
+            var_a1 = temp_v0->RentalSlotAnimData_PosePhase + arg0->posY;
         } else {
-            var_a1 = (temp_v0->unk_08 + temp_v0->posY) - 1;
+            var_a1 = (temp_v0->RentalSlotAnimData_PosePhase + temp_v0->posY) - 1;
         }
 
-        if (arg0->unk_01 & 4) {
+        if (arg0->TrainerSlotSaveData_GamePort & 4) {
             var_fv1 = PackedBits_ReadSigned(arg0->unk_14, var_a1, 0x10);
         } else {
             var_fv1 = PackedBits_ReadSigned(arg0->unk_14, var_a1, 0xC);
@@ -141,7 +141,7 @@ f32 ModelAnim_InterpolateKeyframeTangent(unk_func_80016B30_arg0* arg0, s16 arg1,
 
 f32 ModelAnim_EvaluateTranslationCurve(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
-    unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
+    unk_D_800ABCC0_008* temp_v0 = &arg0->RentalSlotAnimData_PosePhase[arg1];
     s16* tmp;
 
     if (temp_v0->posX < 2) {
@@ -160,16 +160,16 @@ f32 ModelAnim_EvaluateTranslationCurve(unk_D_800ABCC0* arg0, s32 arg1) {
 s16 ModelAnim_EvaluateRotationCurve(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
     s16* temp_a0;
-    unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
+    unk_D_800ABCC0_008* temp_v0 = &arg0->RentalSlotAnimData_PosePhase[arg1];
 
-    if (temp_v0->unk_01 < 2) {
+    if (temp_v0->TrainerSlotSaveData_GamePort < 2) {
         var_fv1 = (s16)temp_v0->unk_06 / 10.0f;
     } else {
         temp_a0 = &arg0->unk_10[temp_v0->unk_06];
         if (temp_v0->unk_03 & 2) {
-            var_fv1 = ModelAnim_InterpolateKeyframeTangent(temp_a0, temp_v0->unk_01, arg0->posY) / 10.0f;
+            var_fv1 = ModelAnim_InterpolateKeyframeTangent(temp_a0, temp_v0->TrainerSlotSaveData_GamePort, arg0->posY) / 10.0f;
         } else {
-            var_fv1 = ModelAnim_InterpolateKeyframe(temp_a0, temp_v0->unk_01, arg0->posY) / 10.0f;
+            var_fv1 = ModelAnim_InterpolateKeyframe(temp_a0, temp_v0->TrainerSlotSaveData_GamePort, arg0->posY) / 10.0f;
         }
     }
 
@@ -188,12 +188,12 @@ f32 ModelAnim_EvaluateScaleCurve(unk_D_800ABCC0* arg0, s32 arg1) {
     s16* temp_a0;
     f32 var_fv0;
     f32 var_fv1;
-    unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
+    unk_D_800ABCC0_008* temp_v0 = &arg0->RentalSlotAnimData_PosePhase[arg1];
 
     if (temp_v0->posY < 2) {
-        var_fv1 = (s16)temp_v0->unk_08;
+        var_fv1 = (s16)temp_v0->RentalSlotAnimData_PosePhase;
     } else {
-        temp_a0 = &arg0->unk_14[temp_v0->unk_08];
+        temp_a0 = &arg0->unk_14[temp_v0->RentalSlotAnimData_PosePhase];
         if (temp_v0->unk_03 & 1) {
             var_fv0 = ModelAnim_InterpolateKeyframeTangent(temp_a0, temp_v0->posY, arg0->posY);
         } else {
@@ -215,7 +215,7 @@ typedef union unk_D_86002F58_004_000_040_raw_08 {
 typedef struct unk_D_86002F58_004_000_040_raw {
     /* 0x00 */ s16 posX;
     /* 0x04 */ unk_D_86002F58_004_000_040_004* rotation;
-    /* 0x08 */ unk_D_86002F58_004_000_040_raw_08 unk_08;
+    /* 0x08 */ unk_D_86002F58_004_000_040_raw_08 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ char unk10[0x2];
     /* 0x12 */ u16 unk_12;
@@ -228,7 +228,7 @@ s32 ModelAnim_AdvanceCurveFrame(unk_D_86002F58_004_000_040_raw* arg0, u16 arg1) 
 
     ptr = &spC;
     temp_v0 = arg0->rotation;
-    spC.raw = arg0->unk_08.raw;
+    spC.raw = arg0->RentalSlotAnimData_PosePhase.raw;
     if (arg0->unk_12 != arg1) {
         spC.raw += arg0->unk_0C;
         if (arg0->unk_0C >= 0) {
@@ -268,16 +268,16 @@ void ModelAnim_BeginCurveContext(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32
         temp_s0 = &gAnimChannels[gCurrentAnimChannelIdx];
         if (arg0->rotation != NULL) {
             if (arg2 != 0) {
-                arg0->unk_08 = ModelAnim_AdvanceCurveFrame(arg0, arg1);
+                arg0->RentalSlotAnimData_PosePhase = ModelAnim_AdvanceCurveFrame(arg0, arg1);
             }
 
             arg0->unk_12 = arg1;
 
             temp_s0->posX = 1;
-            temp_s0->unk_01 = arg0->rotation->posX;
-            temp_s0->posY = arg0->unk_08 >> 0x10;
+            temp_s0->TrainerSlotSaveData_GamePort = arg0->rotation->posX;
+            temp_s0->posY = arg0->RentalSlotAnimData_PosePhase >> 0x10;
             temp_s0->rotation = temp_s1;
-            temp_s0->unk_08 = Util_ConvertAddrToVirtAddr(temp_s1->unk_0C);
+            temp_s0->RentalSlotAnimData_PosePhase = Util_ConvertAddrToVirtAddr(temp_s1->unk_0C);
             temp_s0->unk_0C = Util_ConvertAddrToVirtAddr(temp_s1->unk_10);
             temp_s0->unk_10 = Util_ConvertAddrToVirtAddr(temp_s1->unk_14);
             temp_s0->unk_14 = Util_ConvertAddrToVirtAddr(temp_s1->unk_18);
@@ -301,8 +301,8 @@ void ModelAnim_EvaluateJointTransform(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32
     if ((gCurrentAnimChannelIdx >= 0) && (gCurrentAnimChannelIdx < 2)) {
         unk_D_800ABCC0* temp_s0 = &gAnimChannels[gCurrentAnimChannelIdx];
 
-        if ((temp_s0->posX == 1) && (arg3 >= 0) && (arg3 + 2 < temp_s0->rotation->unk_08)) {
-            if (temp_s0->unk_01 & 8) {
+        if ((temp_s0->posX == 1) && (arg3 >= 0) && (arg3 + 2 < temp_s0->rotation->RentalSlotAnimData_PosePhase)) {
+            if (temp_s0->TrainerSlotSaveData_GamePort & 8) {
                 arg0->x = ModelAnim_EvaluateScaleCurve(temp_s0, arg3 + 0);
                 arg0->y = ModelAnim_EvaluateScaleCurve(temp_s0, arg3 + 1);
                 arg0->z = ModelAnim_EvaluateScaleCurve(temp_s0, arg3 + 2);
@@ -343,36 +343,36 @@ s32 ModelAnim_BindTransformCurve(Fragment2_1GraphNode* arg0, s16 arg1, void* arg
     if ((temp_v0 != ptr->rotation) || (arg1 != ptr->posX)) {
         ptr->posX = arg1;
         ptr->rotation = temp_v0;
-        ptr->unk_08 = (temp_v0->rotation << 0x10) - arg3;
+        ptr->RentalSlotAnimData_PosePhase = (temp_v0->rotation << 0x10) - arg3;
     }
 
     ptr->unk_0C = arg3;
-    return ptr->unk_08 >> 0x10;
+    return ptr->RentalSlotAnimData_PosePhase >> 0x10;
 }
 
 s32 ModelAnim_SetSpeed(Fragment2_1GraphNode* arg0, s32 arg1) {
     arg0->unk_040.unk_0C = arg1;
-    return arg0->unk_040.unk_08 >> 0x10;
+    return arg0->unk_040.RentalSlotAnimData_PosePhase >> 0x10;
 }
 
 void ModelAnim_SetFrame(Fragment2_1GraphNode* arg0, s16 arg1) {
-    arg0->unk_040.unk_08 = (arg1 << 0x10) - arg0->unk_040.unk_0C;
+    arg0->unk_040.RentalSlotAnimData_PosePhase = (arg1 << 0x10) - arg0->unk_040.unk_0C;
 }
 
 s32 ModelAnim_HasCrossedFrame(Fragment2_1GraphNode* arg0, s16 arg1) {
     unk_D_86002F58_004_000_040* ptr = &arg0->unk_040;
-    s32 temp_v0 = ptr->unk_08 + ptr->unk_0C;
+    s32 temp_v0 = ptr->RentalSlotAnimData_PosePhase + ptr->unk_0C;
     s32 arg = arg1 << 0x10;
     s32 var_a2;
     s32 v = ptr->unk_0C;
 
     if (v >= 0) {
-        var_a2 = ptr->unk_08 < arg;
+        var_a2 = ptr->RentalSlotAnimData_PosePhase < arg;
         if (var_a2 != 0) {
             var_a2 = temp_v0 >= arg;
         }
     } else {
-        var_a2 = (arg < ptr->unk_08);
+        var_a2 = (arg < ptr->RentalSlotAnimData_PosePhase);
         if (var_a2 != 0) {
             var_a2 = arg >= temp_v0;
         }
@@ -386,5 +386,5 @@ s32 ModelAnim_IsAnimationDone(Fragment2_1GraphNode* arg0) {
 }
 
 s32 ModelAnim_IsFinished(Fragment2_1GraphNode* arg0) {
-    return arg0->unk_040.unk_08 >= ((arg0->unk_040.rotation->unk_0A - 1) << 0x10);
+    return arg0->unk_040.RentalSlotAnimData_PosePhase >= ((arg0->unk_040.rotation->unk_0A - 1) << 0x10);
 }

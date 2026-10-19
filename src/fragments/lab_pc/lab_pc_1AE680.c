@@ -22,13 +22,13 @@ typedef void (*ThreadEntries)(TextObjectContext*);
 typedef struct unk_D_88217D10 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ u8 unk_08[4];
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase[4];
 } unk_D_88217D10; // size = 0xC
 
 typedef struct MoveIconInfoEntry {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ u8* unk_10;
 } MoveIconInfoEntry; // size = 0x14
@@ -38,7 +38,7 @@ typedef struct UIComponentInfoEntry {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ u8* unk_08;
+    /* 0x08 */ u8* RentalSlotAnimData_PosePhase;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ Color_RGBA8* unk_10;
@@ -48,14 +48,14 @@ typedef struct UIComponentInfoEntry {
 
 typedef struct unk_func_8820634C_arg2_unk0 {
     /* 0x00 */ char pad00[0x8];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } unk_func_8820634C_arg2_unk0;
 
 typedef struct unk_func_8820634C_arg2 {
     /* 0x00 */ unk_func_8820634C_arg2_unk0* posX;
     /* 0x00 */ char pad04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } unk_func_8820634C_arg2; // size = 0x54
 
@@ -141,7 +141,7 @@ void InitMonData(PokemonData* arg0) {
 
     arg0->unk_10 = var_v0->rotation;
     for (j = 0; j < 4; j++) {
-        arg0->unk_09[j] = temp_a1[i].unk_08[j];
+        arg0->unk_09[j] = temp_a1[i].RentalSlotAnimData_PosePhase[j];
     }
 
     arg0->unk_0E = 0x7D0;
@@ -166,9 +166,9 @@ void InitMonData(PokemonData* arg0) {
     Pokemon_SetDisplayNameFromOt(arg0);
 
     if (Save_GetSelectedPokemonId() & 0x100) {
-        arg0->unk_08 = 0xA8;
+        arg0->RentalSlotAnimData_PosePhase = 0xA8;
     } else {
-        arg0->unk_08 = 0xA7;
+        arg0->RentalSlotAnimData_PosePhase = 0xA7;
     }
 
     arg0->unk_52 = 0;
@@ -227,7 +227,7 @@ void LabPC_DrawBoxNumberCell(s32 arg0, s32 arg1, unk_func_8820634C_arg2* arg2, s
     sprintf(sp58, gFormat_Decimal, (int)arg3 + 1);
     Font_Printf(((arg0 + Font_MeasureTextExtent(0, 0, sp5C) + Font_MeasureTextExtent(0, 0, gString_SpaceZeroZero)) - Font_MeasureTextExtent(0, 0, sp58)) + 8, arg1 + 2, sp58);
     Font_EndTexturedTextRendering();
-    LabPC_DrawPageCounterDigits((arg5->unk_3C + arg0) - 0x35, arg1 + 8, arg2->unk_0C, arg2->unk_08, 2);
+    LabPC_DrawPageCounterDigits((arg5->unk_3C + arg0) - 0x35, arg1 + 8, arg2->unk_0C, arg2->RentalSlotAnimData_PosePhase, 2);
 }
 
 
@@ -266,9 +266,9 @@ void LabPC_DrawBoxTypeCell(s32 arg0, s32 arg1, unk_func_8820634C_arg2* arg2, s32
     Font_SetActive(8, 0);
     Font_Printf(arg0 + 8, arg1 + 4, Text_GetString(0, 0, gMessageBank_2, gLevelOptionMessageIds[arg3]));
     Font_EndTexturedTextRendering();
-    if (arg2->unk_08 == 1) {
+    if (arg2->RentalSlotAnimData_PosePhase == 1) {
         temp_v0_7 = arg2->posX;
-        LabPC_DrawPageCounterDigits((arg5->unk_3C + arg0) - 0x35, arg1 + 0xA, temp_v0_7->unk_0C, temp_v0_7->unk_08, 2);
+        LabPC_DrawPageCounterDigits((arg5->unk_3C + arg0) - 0x35, arg1 + 0xA, temp_v0_7->unk_0C, temp_v0_7->RentalSlotAnimData_PosePhase, 2);
     }
 }
 
@@ -980,12 +980,12 @@ s32 LabPC_SwapMenuInput(unk_func_8820B12C_02C* arg0, Controller* arg1) {
             switch (arg0->unk_28) {
                 case 0:
                     if (!(var_v1 & 2) && (var_v1 & 4)) {
-                        if (arg0->unk_20[0]->posX.unk_2C->unk_08 == 0) {
+                        if (arg0->unk_20[0]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(arg0->unk_3C, arg0->unk_5C[0], 0, 0);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_3C, arg1);
                             var_v1 = 1;
-                        } else if (arg0->unk_20[1]->posX.unk_2C->unk_08 >= arg0->unk_20[1]->posX.unk_2C->rotation) {
+                        } else if (arg0->unk_20[1]->posX.unk_2C->RentalSlotAnimData_PosePhase >= arg0->unk_20[1]->posX.unk_2C->rotation) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(arg0->unk_3C, arg0->unk_5C[5], 0, 0);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_3C, arg1);
@@ -999,7 +999,7 @@ s32 LabPC_SwapMenuInput(unk_func_8820B12C_02C* arg0, Controller* arg1) {
 
                 case 1:
                     if (!(var_v1 & 2) && (var_v1 & 4)) {
-                        if (arg0->unk_20[0]->posX.unk_2C->unk_08 == 0) {
+                        if (arg0->unk_20[0]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(arg0->unk_3C, arg0->unk_5C[1], 0, 0);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_3C, arg1);
@@ -1013,8 +1013,8 @@ s32 LabPC_SwapMenuInput(unk_func_8820B12C_02C* arg0, Controller* arg1) {
 
                 case 2:
                     if (!(var_v1 & 2) && (var_v1 & 4)) {
-                        if ((arg0->unk_20[0]->posX.unk_2C->unk_08 == 0) ||
-                            (arg0->unk_20[1]->posX.unk_2C->unk_08 == 0)) {
+                        if ((arg0->unk_20[0]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) ||
+                            (arg0->unk_20[1]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0)) {
                             Audio_PlaySoundEffectById(8);
                             ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText))(arg0->unk_3C, arg0->unk_5C[2], 0, 0);
                             ((func8850A3CC)Memmap_GetFragmentVaddr(WidgetTree_RunMessagePanelWithSound))(arg0->unk_3C, arg1);
@@ -1028,7 +1028,7 @@ s32 LabPC_SwapMenuInput(unk_func_8820B12C_02C* arg0, Controller* arg1) {
 
                 case 3:
                     if (!(var_v1 & 2) && (var_v1 & 4)) {
-                        if (arg0->unk_20[0]->posX.unk_2C->unk_08 == 0) {
+                        if (arg0->unk_20[0]->posX.unk_2C->RentalSlotAnimData_PosePhase == 0) {
                             Audio_PlaySoundEffectById(8);
                             temp_v1 = ((func8850A10C)Memmap_GetFragmentVaddr(WidgetTree_SetMessagePanelText));
                             if (arg0->unk_48->unk_18 != 0) {
@@ -1113,7 +1113,7 @@ unk_func_88205880_00D0* LabPC_GetHighlightedMon(unk_func_8820B12C_02C* arg0) {
     temp_v1 = arg0->unk_20[arg0->unk_1C]->posX.unk_38;
     temp_a1 = arg0->unk_20[arg0->unk_1C]->posX.unk_2C;
 
-    if (temp_v1 >= temp_a1->unk_08) {
+    if (temp_v1 >= temp_a1->RentalSlotAnimData_PosePhase) {
         return NULL;
     }
 
@@ -1336,7 +1336,7 @@ s32 LabPC_DrawPokemonInfoCard(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg
 
     for (i = 0; i < spB0; i++) {
         LabPC_DrawMoveName(gMoveIconInfo[i].posX + arg1, gMoveIconInfo[i].rotation + arg2,
-                      Move_GetDisplayInfo(arg0->unk_002C->unk_000[0].unk_09[i]), gMoveIconInfo[i].unk_08);
+                      Move_GetDisplayInfo(arg0->unk_002C->unk_000[0].unk_09[i]), gMoveIconInfo[i].RentalSlotAnimData_PosePhase);
     }
 
     Font_EndTexturedTextRendering();
@@ -1359,8 +1359,8 @@ s32 LabPC_FindDirtyDeck(unk_func_8820BE14_06C* arg0) {
 
     for (i = 0; i < 3; i++) {
         ptr = arg0[i].posX;
-        for (j = 0; j < arg0[i].unk_08; j++) {
-            if (ptr[j].rotation.unk_08 < ptr[j].rotation.rotation) {
+        for (j = 0; j < arg0[i].RentalSlotAnimData_PosePhase; j++) {
+            if (ptr[j].rotation.RentalSlotAnimData_PosePhase < ptr[j].rotation.rotation) {
                 return (i << 0x10) | j;
             }
         }
@@ -1597,7 +1597,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
         }
 
         arg0->unk_44[j] = mem_pool_alloc(argA, sizeof(unk_func_882149A0));
-        LabPC_InitTabWidget(arg0->unk_44[j], ptr->posX, ptr->posY, ptr->rotation, ptr->unk_06, ptr->unk_08, ptr->unk_0C,
+        LabPC_InitTabWidget(arg0->unk_44[j], ptr->posX, ptr->posY, ptr->rotation, ptr->unk_06, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0C,
                       ptr->unk_10[0], ptr->unk_10[1], gUIComponentColorPrimary);
 
         if (ptr->unk_14 != 0) {
@@ -1889,13 +1889,13 @@ s32 LabPC_DeckHasChanged(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s3
 
     arg0->posX = 0;
 
-    if (Deck_GetEntryCountForType(arg1, arg2, arg3) != arg0->rotation.unk_08) {
+    if (Deck_GetEntryCountForType(arg1, arg2, arg3) != arg0->rotation.RentalSlotAnimData_PosePhase) {
         arg0->posX = 1;
         sp90 = 1;
     } else {
         var_s1 = arg0->rotation.posX;
 
-        for (i = 0; i < arg0->rotation.unk_08; i++, var_s1++) {
+        for (i = 0; i < arg0->rotation.RentalSlotAnimData_PosePhase; i++, var_s1++) {
             bzero(&sp34, sizeof(PokemonData));
             Deck_ReadEntries(&sp34, 1, temp_v0);
             if (bcmp(&sp34, *var_s1, sizeof(PokemonData)) != 0) {
@@ -1948,7 +1948,7 @@ s32 LabPC_CheckDirtyDecks(TextObjectRenderer* arg0) {
 }
 
 s32 LabPC_IsPrizeDeckEmpty(TextObjectRenderer* arg0) {
-    return arg0->unk_8C->posX->rotation.unk_08 == 0;
+    return arg0->unk_8C->posX->rotation.RentalSlotAnimData_PosePhase == 0;
 }
 
 void LabPC_WriteDeckBack(s32 arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_038* arg3) {
@@ -1959,7 +1959,7 @@ void LabPC_WriteDeckBack(s32 arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_038
     sp28 = arg3->posX;
     temp_s3 = Deck_Open(arg0, arg1, arg2, 1);
 
-    for (i = 0; i < arg3->unk_08; i++) {
+    for (i = 0; i < arg3->RentalSlotAnimData_PosePhase; i++) {
         Deck_WriteEntries(sp28[i], 1, temp_s3);
     }
 
@@ -1974,7 +1974,7 @@ void LabPC_MarkSeenOwned(unk_func_88200FA0_030_038* arg0, s32 arg1) {
     s32 i;
     unk_func_88205880_00D0** tmp = arg0->posX;
 
-    for (i = 0; i < arg0->unk_08; i++) {
+    for (i = 0; i < arg0->RentalSlotAnimData_PosePhase; i++) {
         if ((tmp[i]->unk_000[0].posX.posX > 0) && (tmp[i]->unk_000[0].posX.posX < 0x98)) {
             GbSave_SetSeenOwnedBits(arg1, tmp[i]->unk_000[0].posX.posX, 3);
         }
@@ -2086,7 +2086,7 @@ s32 LabPC_SwapControllerInput(unk_func_8820B12C* arg0, Controller* arg1) {
     if (arg0->posX.unk_20 > 0) {
         var_a0 = arg0->posX.rotation;
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->unk_08;
+            var_a0 = var_a0->RentalSlotAnimData_PosePhase;
         }
         var_s1 = var_a0->unk_10(var_a0, arg1);
     }
@@ -2292,19 +2292,19 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ByteMatrix_Allocate(&arg0->unk_7C, 0x10, 12, arg4);
     ByteMatrix_Allocate(&arg0->unk_8C, 0x10, 12, arg4);
 
-    arg0->unk_6C.unk_08 = 1;
+    arg0->unk_6C.RentalSlotAnimData_PosePhase = 1;
     ptr = arg0->unk_6C.posX;
     for (i = 0; i < 1; i++) {
         PointerList_Allocate(&ptr[i].rotation, 6, arg4);
     }
 
-    arg0->unk_7C.unk_08 = 12;
+    arg0->unk_7C.RentalSlotAnimData_PosePhase = 12;
     ptr = arg0->unk_7C.posX;
     for (i = 0; i < 12; i++) {
         PointerList_Allocate(&ptr[i].rotation, 20, arg4);
     }
 
-    arg0->unk_8C.unk_08 = 12;
+    arg0->unk_8C.RentalSlotAnimData_PosePhase = 12;
     ptr = arg0->unk_8C.posX;
     for (i = 0; i < 12; i++) {
         PointerList_Allocate(&ptr[i].rotation, 20, arg4);
@@ -2319,7 +2319,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
         j = 0;
         count = LabPC_ReadDeckEntries(var_s1, 6, 0x20, spB4, i);
         ptr2 = &ptr[i].rotation;
-        ptr2->unk_08 = count;
+        ptr2->RentalSlotAnimData_PosePhase = count;
 
         for (j = 0; j < count; j++) {
             ptr2->posX[j] = var_s1++;
@@ -2333,7 +2333,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
         j = 0;
         count = LabPC_ReadDeckEntries(var_s1, 20, 0x21, spB4, i);
         ptr2 = &ptr[i].rotation;
-        ptr2->unk_08 = count;
+        ptr2->RentalSlotAnimData_PosePhase = count;
 
         for (j = 0; j < count; j++) {
             ptr2->posX[j] = var_s1++;
@@ -2347,7 +2347,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
         j = 0;
         count = LabPC_ReadDeckEntries(var_s1, 20, 0x11, 0, i);
         ptr2 = &ptr[i].rotation;
-        ptr2->unk_08 = count;
+        ptr2->RentalSlotAnimData_PosePhase = count;
 
         for (j = 0; j < count; j++) {
             ptr2->posX[j] = var_s1++;
@@ -2363,7 +2363,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
         spA0 = mem_pool_alloc(arg4, sizeof(unk_func_8820BE14_06C_000));
         PointerList_Allocate(&spA0->rotation, 1, arg4);
 
-        spA0->rotation.unk_08 = 1;
+        spA0->rotation.RentalSlotAnimData_PosePhase = 1;
         *spA0->rotation.posX = temp_v0_5;
         spA0->posX = 0;
     }
@@ -2420,7 +2420,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
                   arg4);
 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s0_4, arg0->unk_2C);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX, arg0->unk_30.unk_08);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX, arg0->unk_30.RentalSlotAnimData_PosePhase);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s0_4, arg0->unk_68);
 }
 

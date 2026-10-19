@@ -29,7 +29,7 @@ void Intro_ComputeFollowPoint(unk_D_86B0FA78* arg0, Vec3f* arg1) {
         sp24 = gMonsterStageData.rotation / 1.5f;
     }
 
-    if (gMonsterStageData.unk_08 != 0) {
+    if (gMonsterStageData.RentalSlotAnimData_PosePhase != 0) {
         arg1->x = arg0->unk_004.unk_024.x;
         arg1->y = arg0->unk_004.unk_024.y + sp24;
         arg1->z = arg0->unk_004.unk_024.z;
@@ -115,7 +115,7 @@ void Intro_LoadCameraKeyframe(DioramaAnimData* arg0, CameraStruct* arg1) {
     IntroCamKeyframe_SetAngles(arg0->posX, Intro_GetTrackedModelFacingOffset() + arg0->posY, arg0->unk_14, Intro_GetTrackedModelFacingOffset() + arg0->unk_16);
     IntroCamKeyframe_SetDistance(sp34, sp30);
 
-    IntroCamKeyframe_SetAtAngles(arg0->unk_06, Intro_GetTrackedModelFacingOffset() + arg0->unk_08, arg0->unk_1A, Intro_GetTrackedModelFacingOffset() + arg0->unk_1C);
+    IntroCamKeyframe_SetAtAngles(arg0->unk_06, Intro_GetTrackedModelFacingOffset() + arg0->RentalSlotAnimData_PosePhase, arg0->unk_1A, Intro_GetTrackedModelFacingOffset() + arg0->unk_1C);
     IntroCamKeyframe_SetAtDistance(sp2C, sp28);
     IntroCamKeyframe_SetTransitionSpeed(arg0->unk_28, arg0->unk_2C);
 }

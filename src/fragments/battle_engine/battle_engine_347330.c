@@ -7,7 +7,7 @@
 typedef struct WaterHeightNode {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ s16 unk_10;
 } WaterHeightNode; // size = 0x14
@@ -338,7 +338,7 @@ void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5
         if (ptr2->rotation < 0.0) {
             ptr2->rotation = 0.0f;
         }
-        ptr2->unk_08 = (__sinf(ptr2->unk_14) * (arg3 * arg4)) + arg2;
+        ptr2->RentalSlotAnimData_PosePhase = (__sinf(ptr2->unk_14) * (arg3 * arg4)) + arg2;
 
         ptr3->unk_18 = 0.0f;
         ptr3->unk_14 = ptr2->unk_14;
@@ -348,7 +348,7 @@ void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5
             ptr3->rotation = 0.0f;
         }
 
-        ptr3->unk_08 = ptr2->unk_08;
+        ptr3->RentalSlotAnimData_PosePhase = ptr2->RentalSlotAnimData_PosePhase;
     }
 }
 
@@ -480,7 +480,7 @@ s32 RibbonMesh_Update(RibbonEmitter* arg0) {
 
         var_s2->v.ob[0] = temp_s0->posX;
         var_s2->v.ob[1] = temp_s0->rotation;
-        var_s2->v.ob[2] = temp_s0->unk_08;
+        var_s2->v.ob[2] = temp_s0->RentalSlotAnimData_PosePhase;
         var_s2->v.tc[0] = temp_s0->unk_0C;
         var_s2->v.tc[1] = temp_s0->unk_0E;
         var_s2->v.cn[0] = temp_s0->unk_10.r;
@@ -491,7 +491,7 @@ s32 RibbonMesh_Update(RibbonEmitter* arg0) {
 
         var_s2->v.ob[0] = temp_s1->posX;
         var_s2->v.ob[1] = temp_s1->rotation;
-        var_s2->v.ob[2] = temp_s1->unk_08;
+        var_s2->v.ob[2] = temp_s1->RentalSlotAnimData_PosePhase;
         var_s2->v.tc[0] = temp_s1->unk_0C;
         var_s2->v.tc[1] = temp_s1->unk_0E;
         var_s2->v.cn[0] = temp_s1->unk_10.r;
@@ -706,7 +706,7 @@ void TerrainGrid_BuildCameraBounds(WaterCameraBounds* arg0, f32 arg1) {
 
     arg0->posX = (sp40 * sp84) + spB0;
     arg0->rotation = (sp40 * sp80) + spAC;
-    arg0->unk_08 = (sp40 * sp7C) + spA8;
+    arg0->RentalSlotAnimData_PosePhase = (sp40 * sp7C) + spA8;
 
     sp50 = __cosf(sp44);
     if (sp50 != 0.0) {
@@ -780,16 +780,16 @@ f32 TerrainGrid_SampleHeightAndSlope(f32 arg0, f32 arg1, f32* arg2) {
 
     spC0 = gWaterHeightMap.unk_1010[var_v1][var_a0].posX;
     spBC = gWaterHeightMap.unk_1010[var_v1][var_a0].rotation;
-    spB8 = gWaterHeightMap.unk_1010[var_v1][var_a0].unk_08;
+    spB8 = gWaterHeightMap.unk_1010[var_v1][var_a0].RentalSlotAnimData_PosePhase;
     spB4 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].posX;
     spB0 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].rotation;
-    spAC = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].unk_08;
+    spAC = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0].RentalSlotAnimData_PosePhase;
     spA8 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].posX;
     spA4 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].rotation;
-    spA0 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].unk_08;
+    spA0 = gWaterHeightMap.unk_1010[var_v1][var_a0 + 1].RentalSlotAnimData_PosePhase;
     sp9C = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].posX;
     sp98 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].rotation;
-    sp94 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].unk_08;
+    sp94 = gWaterHeightMap.unk_1010[var_v1 + 1][var_a0 + 1].RentalSlotAnimData_PosePhase;
 
     temp_fv0 = spB4 - arg0;
     spBC = gWaterHeightMap.unk_1010[var_v1][var_a0].rotation;
@@ -936,7 +936,7 @@ void TerrainGrid_Init(s32 arg0, s16 arg1, s16 arg2) {
         for (j = 0; j < 16; j++, ptr++) {
             ptr->posX = arg0 * (((i * 150.0f) - 1200.0f) - 440.0f);
             ptr->rotation = 1.0f;
-            ptr->unk_08 = (j * 200.0f) - 1600.0f;
+            ptr->RentalSlotAnimData_PosePhase = (j * 200.0f) - 1600.0f;
             ptr->unk_0C = 1.0f;
             ptr->unk_10 = 0xFF;
 
@@ -1045,7 +1045,7 @@ Gfx* TerrainGrid_Draw(Gfx* arg0) {
         for (j = 0; j < 16; j++) {
             vtx->v.ob[0] = var_v1->posX;
             vtx->v.ob[1] = var_v1->rotation;
-            vtx->v.ob[2] = var_v1->unk_08;
+            vtx->v.ob[2] = var_v1->RentalSlotAnimData_PosePhase;
             vtx->v.tc[0] = (i * 0x800) / 3;
             vtx->v.tc[1] = (j * 0x800) / 3;
             vtx->v.cn[3] = var_v1->unk_10;
@@ -1095,12 +1095,12 @@ Gfx* TerrainGrid_Draw(Gfx* arg0) {
 
     sp12C = (gWaterCameraBounds.posX - gWaterCameraBounds.unk_0C) + gWaterCameraBounds.unk_18;
     sp130 = (gWaterCameraBounds.rotation - gWaterCameraBounds.unk_10) + gWaterCameraBounds.unk_1C;
-    sp134 = (gWaterCameraBounds.unk_08 - gWaterCameraBounds.unk_14) + gWaterCameraBounds.unk_20;
+    sp134 = (gWaterCameraBounds.RentalSlotAnimData_PosePhase - gWaterCameraBounds.unk_14) + gWaterCameraBounds.unk_20;
     sp11C = TerrainGrid_SampleHeightAndSlope(sp12C, sp134, &sp110);
 
     sp120 = gWaterCameraBounds.posX + gWaterCameraBounds.unk_0C + gWaterCameraBounds.unk_18;
     sp124 = gWaterCameraBounds.rotation + gWaterCameraBounds.unk_10 + gWaterCameraBounds.unk_1C;
-    sp128 = gWaterCameraBounds.unk_08 + gWaterCameraBounds.unk_14 + gWaterCameraBounds.unk_20;
+    sp128 = gWaterCameraBounds.RentalSlotAnimData_PosePhase + gWaterCameraBounds.unk_14 + gWaterCameraBounds.unk_20;
     temp_fv0 = TerrainGrid_SampleHeightAndSlope(sp120, sp128, &sp110);
 
     if ((sp130 < sp11C) || (sp124 < temp_fv0)) {
@@ -1108,13 +1108,13 @@ Gfx* TerrainGrid_Draw(Gfx* arg0) {
 
         temp_v0[0].v.ob[0] = (gWaterCameraBounds.posX - gWaterCameraBounds.unk_0C) - gWaterCameraBounds.unk_18;
         temp_v0[0].v.ob[1] = sp11C;
-        temp_v0[0].v.ob[2] = (gWaterCameraBounds.unk_08 - gWaterCameraBounds.unk_14) - gWaterCameraBounds.unk_20;
+        temp_v0[0].v.ob[2] = (gWaterCameraBounds.RentalSlotAnimData_PosePhase - gWaterCameraBounds.unk_14) - gWaterCameraBounds.unk_20;
         temp_v0[0].v.tc[0] = 0;
         temp_v0[0].v.tc[1] = 0;
 
         temp_v0[1].v.ob[0] = (gWaterCameraBounds.posX + gWaterCameraBounds.unk_0C) - gWaterCameraBounds.unk_18;
         temp_v0[1].v.ob[1] = sp11C;
-        temp_v0[1].v.ob[2] = (gWaterCameraBounds.unk_08 + gWaterCameraBounds.unk_14) - gWaterCameraBounds.unk_20;
+        temp_v0[1].v.ob[2] = (gWaterCameraBounds.RentalSlotAnimData_PosePhase + gWaterCameraBounds.unk_14) - gWaterCameraBounds.unk_20;
         temp_v0[1].v.tc[0] = 0x3E0;
         temp_v0[1].v.tc[1] = 0;
 

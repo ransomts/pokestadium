@@ -18,7 +18,7 @@ typedef struct unk_D_800FCFD8 {
     /* 0x00 */ u32 posX;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 pad05[0x3];
-    /* 0x04 */ u32 unk_08;
+    /* 0x04 */ u32 RentalSlotAnimData_PosePhase;
     /* 0x04 */ f32 unk_0C;
     /* 0x04 */ f32 unk_10;
     /* 0x04 */ f32 unk_14;
@@ -34,7 +34,7 @@ typedef struct unk_D_800FCF90 {
     /* 0x00 */ u32 posX; // sample clock
     /* 0x04 */ s16 rotation; // volume
     /* 0x06 */ s16 unk_06; // volume step
-    /* 0x08 */ u32 unk_08; // envelope period
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase; // envelope period
     /* 0x0C */ u32 unk_0C; // next envelope step
     /* 0x10 */ u16 unk_10[2]; // duty half-period lengths
     /* 0x14 */ s16 unk_14;
@@ -55,7 +55,7 @@ typedef struct unk_D_800FCFB8 {
 typedef struct unk_D_800FCF60 {
     /* 0x00 */ u32 posX; // sample clock
     /* 0x04 */ u16 rotation; // frequency
-    /* 0x08 */ u32 unk_08; // sweep period
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase; // sweep period
     /* 0x0C */ s16 unk_0C; // volume
     /* 0x0E */ s16 unk_0E; // volume step
     /* 0x10 */ u32 unk_10; // envelope period
@@ -380,9 +380,9 @@ s16 GbAudio_RenderSquare1(void) {
                 gSquare1State.unk_10 = -1;
                 gSquare1State.unk_14 = -1;
             }
-            gSquare1State.unk_08 = (((gGbSoundRegs[0].value & 0x70) >> 4) * D_800FD004) >> 1;
-            if (gSquare1State.unk_08 == 0) {
-                gSquare1State.unk_08 = -1;
+            gSquare1State.RentalSlotAnimData_PosePhase = (((gGbSoundRegs[0].value & 0x70) >> 4) * D_800FD004) >> 1;
+            if (gSquare1State.RentalSlotAnimData_PosePhase == 0) {
+                gSquare1State.RentalSlotAnimData_PosePhase = -1;
             }
             if (nr14 & 0x40) {
                 gSquare1State.unk_28 = ((0x40 - (nr11 & 0x3F)) * D_800FD004) >> 2;
@@ -404,7 +404,7 @@ s16 GbAudio_RenderSquare1(void) {
         return 0;
     }
 
-    if ((gSquare1State.unk_08 - (gSquare1State.posX % gSquare1State.unk_08)) <= 0x40) {
+    if ((gSquare1State.RentalSlotAnimData_PosePhase - (gSquare1State.posX % gSquare1State.RentalSlotAnimData_PosePhase)) <= 0x40) {
         duty = gGbSoundRegs[0].value;
         if (!(duty & 8)) {
             freq = (u16)((gSquare1State.rotation >> (duty & 7)) + gSquare1State.rotation);
@@ -586,10 +586,10 @@ s16 GbAudio_RenderSquare2(void) {
                 } else {
                     gSquare2State.unk_06 = -0x800;
                 }
-                gSquare2State.unk_0C = gSquare2State.unk_08 = (duty & 7) * D_800FD004;
+                gSquare2State.unk_0C = gSquare2State.RentalSlotAnimData_PosePhase = (duty & 7) * D_800FD004;
             } else {
                 gSquare2State.unk_06 = 0;
-                gSquare2State.unk_08 = -1;
+                gSquare2State.RentalSlotAnimData_PosePhase = -1;
                 gSquare2State.unk_0C = -1;
             }
             if (nr24 & 0x40) {
@@ -616,7 +616,7 @@ s16 GbAudio_RenderSquare2(void) {
     dir = p[0xE] & 8;
     if (gSquare2State.unk_0C < pos) {
         gSquare2State.rotation += gSquare2State.unk_06;
-        gSquare2State.unk_0C += gSquare2State.unk_08;
+        gSquare2State.unk_0C += gSquare2State.RentalSlotAnimData_PosePhase;
     }
     while (gSquare2State.unk_18 <= pos) {
         gSquare2State.unk_16 ^= 1;
@@ -748,7 +748,7 @@ s16 GbAudio_RenderWave(void) {
             Rom_DmaRead(ent->posX, (u32)gAudioSfxDataBuffer, ent->rotation);
         }
 
-        gWaveState.unk_08 = 0;
+        gWaveState.RentalSlotAnimData_PosePhase = 0;
         gWaveState.unk_10 = 0;
         if (!(((u8*)&gGbSoundRegs[0x11])[0] & 8) && !(((u8*)&gGbSoundRegs[0x11])[0] & 0xF0)) {
             gWaveState.unk_28 = 0;
@@ -806,13 +806,13 @@ s16 GbAudio_RenderWave(void) {
 
     ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (gWaveState.rotation << 1));
     if (1) {}
-    sample = ((s16*)gAudioSfxDataBuffer)[gWaveState.unk_08];
+    sample = ((s16*)gAudioSfxDataBuffer)[gWaveState.RentalSlotAnimData_PosePhase];
     gWaveState.unk_10 += 1.0f;
     if (gWaveState.unk_0C <= gWaveState.unk_10) {
-        gWaveState.unk_08++;
+        gWaveState.RentalSlotAnimData_PosePhase++;
         gWaveState.unk_10 -= gWaveState.unk_0C;
-        if (gWaveState.unk_08 >= (ent->rotation >> 1)) {
-            gWaveState.unk_08 = 0;
+        if (gWaveState.RentalSlotAnimData_PosePhase >= (ent->rotation >> 1)) {
+            gWaveState.RentalSlotAnimData_PosePhase = 0;
         }
     }
 

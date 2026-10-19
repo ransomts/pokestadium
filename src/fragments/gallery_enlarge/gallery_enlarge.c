@@ -35,7 +35,7 @@ void Gallery_EnlargeDraw(void) {
 
     BgStage_DrawFrame();
     if (gFragment46_Camera->posX == 2) {
-        Gallery_DrawPhotoThumbnail(gFragment46_Camera->unk_08->img_p, 0, 0, gFragment46_Camera->rotation, gFragment46_Camera->unk_06, 1, 0);
+        Gallery_DrawPhotoThumbnail(gFragment46_Camera->RentalSlotAnimData_PosePhase->img_p, 0, 0, gFragment46_Camera->rotation, gFragment46_Camera->unk_06, 1, 0);
     }
     BgStage_AdvanceFrame();
     gFragment46_FrameCounter += 0x1000;

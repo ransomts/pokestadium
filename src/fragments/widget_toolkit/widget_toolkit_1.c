@@ -119,7 +119,7 @@ void Widget_CountdownUpdate(void) {
                 gFragment2_1StartFlag = 0;
                 gFragment2_1Phase = 1;
                 var_s2 = 1;
-                gFragment2_1GraphNode.unk_000.unk_01 |= 1;
+                gFragment2_1GraphNode.unk_000.TrainerSlotSaveData_GamePort |= 1;
                 gFragment2_1GraphNode.unk_030.x = 0.5f;
                 gFragment2_1GraphNode.unk_030.y = 0.5f;
             }
@@ -142,7 +142,7 @@ void Widget_CountdownUpdate(void) {
             if (gFragment2_1RemainingSteps < 0) {
                 gFragment2_1Phase = 2;
                 gFragment2_1StepTimer = 0x1B;
-                gFragment2_1GraphNode.unk_000.unk_01 &= ~1;
+                gFragment2_1GraphNode.unk_000.TrainerSlotSaveData_GamePort &= ~1;
             }
             break;
 

@@ -196,7 +196,7 @@ void Trade_SetupBoxSlots(s16 arg0) {
             case 2:
             case 3:
             case 4:
-                switch (gPlayerInfo[i].unk_01) {
+                switch (gPlayerInfo[i].TrainerSlotSaveData_GamePort) {
                     case 1:
                         var_s0->unk_024 = D_30306B0;
                         break;
@@ -228,7 +228,7 @@ void Trade_SetupBoxSlots(s16 arg0) {
         ModelRenderer_AttachDisplayObject(ptr);
         Model_InitDisplayObject(ptr, 0, 0, gMenuOverlayNode);
         ptr->unk_000.unk_14 = i;
-        ptr->unk_000.unk_01 &= ~1;
+        ptr->unk_000.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 
@@ -239,7 +239,7 @@ void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1) {
 
     switch (arg0->unk_000) {
         case 0:
-            temp_v0->unk_000.unk_01 &= ~1;
+            temp_v0->unk_000.TrainerSlotSaveData_GamePort &= ~1;
             break;
 
         case 1:
@@ -262,7 +262,7 @@ void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1) {
             arg0->unk_018 = 1.0f;
             arg0->unk_01C = 1.0f;
             arg0->unk_020 = 1.0f;
-            temp_v0->unk_000.unk_01 |= 1;
+            temp_v0->unk_000.TrainerSlotSaveData_GamePort |= 1;
             break;
 
         case 2:
@@ -283,7 +283,7 @@ void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1) {
             arg0->unk_01C = 1.0f;
             arg0->unk_020 = 1.0f;
             arg0->unk_018 = 0.0f;
-            temp_v0->unk_000.unk_01 |= 1;
+            temp_v0->unk_000.TrainerSlotSaveData_GamePort |= 1;
             break;
 
         case 4:
@@ -330,7 +330,7 @@ void Trade_UpdateBoxSlotFlyIn(TradeSlotInfo* arg0) {
 }
 
 void Trade_UpdateBoxSlotBob(TradeSlotInfo* arg0) {
-    static s16 D_82F13F38[] = { 0x5C0, 0x680, 0x580 };
+    static s16 gSlotBobAmplitudes[] = { 0x5C0, 0x680, 0x580 };
 
     s32 temp_lo = arg0 - &gPlayerSlotInfo[0];
     s16 var_a2;
@@ -340,11 +340,11 @@ void Trade_UpdateBoxSlotBob(TradeSlotInfo* arg0) {
 
     if (temp_lo - 1 == gSelectedSlotIndex) {
         var_fv0 = 1.5f;
-        var_a2 = D_82F13F38[temp_lo - 1] * 2;
+        var_a2 = gSlotBobAmplitudes[temp_lo - 1] * 2;
         var_fv1 = 0.06f;
         var_a3 = 0x3000;
     } else {
-        var_a2 = D_82F13F38[temp_lo - 1];
+        var_a2 = gSlotBobAmplitudes[temp_lo - 1];
         var_fv1 = 0.02f;
         var_a3 = 0x2000;
         var_fv0 = 1.0f;
@@ -824,7 +824,7 @@ void Trade_DrawBoxMachineTopBar(unk_D_82F20A40* arg0) {
                 if (ptr) {}
 
                 Font_SetActive(0x10, 0);
-                Font_Printf(temp_s4->posX + (i * 0x110) + 0x24, temp_s4->posY + 0x3C, ptr->unk_08);
+                Font_Printf(temp_s4->posX + (i * 0x110) + 0x24, temp_s4->posY + 0x3C, ptr->RentalSlotAnimData_PosePhase);
                 Font_SetActive(8, 0);
                 Font_Printf(temp_s4->posX + (i * 0x110) + 0x24, temp_s4->posY + 0x54, "ID%05d", ptr->unk_06);
             }
@@ -889,7 +889,7 @@ void Trade_DrawBoxMachineSlots(unk_D_82F20A40* arg0) {
         if ((arg0->unk_0E[i].rotation == 0x78) && (ptr->unk_06 == 0x38)) {
             Font_SetActive(8, 0);
             if (var_s2 != NULL) {
-                var_s0_2 = var_s2->unk_08;
+                var_s0_2 = var_s2->RentalSlotAnimData_PosePhase;
             } else {
                 var_s0_2 = "?????";
             }
@@ -1029,9 +1029,9 @@ void Trade_DrawBoxMachineBanner(unk_D_82F20A40* arg0) {
 }
 
 void Trade_DrawBoxMachineTransferArrows(s16 arg0, s16 arg1) {
-    static s16 D_82F13F5C = 0;
+    static s16 gTransferArrowAnimTimer = 0;
 
-    s16 sp86 = ROUND_MAX(2.0f * SINS(D_82F13F5C));
+    s16 sp86 = ROUND_MAX(2.0f * SINS(gTransferArrowAnimTimer));
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPLoadTextureBlock(gDisplayListHead++, D_302AC68, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 24, 0,
@@ -1050,7 +1050,7 @@ void Trade_DrawBoxMachineTransferArrows(s16 arg0, s16 arg1) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    D_82F13F5C += 0x1000;
+    gTransferArrowAnimTimer += 0x1000;
 }
 
 void Trade_DrawBoxMachineCursor(s16 arg0) {

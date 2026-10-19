@@ -9,7 +9,7 @@ typedef struct TrailState {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -27,7 +27,7 @@ typedef struct TrailState {
 typedef struct TrailPoint {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
 } TrailPoint; // size = 0x10
 
@@ -56,7 +56,7 @@ void Radial20_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 
     ptr1->posY = 0;
     ptr1->rotation = 0;
     ptr1->unk_06 = 0x46;
-    ptr1->unk_08 = arg0;
+    ptr1->RentalSlotAnimData_PosePhase = arg0;
     ptr1->unk_0C = arg1;
     ptr1->unk_10 = arg2;
     ptr1->unk_14 = arg3 * 40.0;
@@ -77,7 +77,7 @@ void Radial20_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 
     for (i = 0; i < 400; i++, ptr2++) {
         ptr2->posX = arg0;
         ptr2->rotation = arg1;
-        ptr2->unk_08 = arg2;
+        ptr2->RentalSlotAnimData_PosePhase = arg2;
         ptr2->unk_0C = ptr1->unk_14;
     }
 }
@@ -189,14 +189,14 @@ s32 Radial20_Update(void) {
         temp_fs0_2 = (__sinf(temp_fs5) * (0.7 * tmp2)) + sp94;
         temp_ft0 = __cosf(temp_fs4) * tmp2 + sp90;
 
-        var_s0->unk_08 = temp_ft0;
+        var_s0->RentalSlotAnimData_PosePhase = temp_ft0;
         var_s0->rotation = temp_fs0_2 + var_fs1;
         var_s0->posX = spB8;
         var_s0++;
 
         var_s0->posX = spB8;
         var_s0->rotation = (2.0 * __sinf(temp_fs5 * 3.0)) + temp_fs0_2 + var_fs1;
-        var_s0->unk_08 = temp_ft0;
+        var_s0->RentalSlotAnimData_PosePhase = temp_ft0;
         var_s0++;
     }
 
@@ -241,7 +241,7 @@ Gfx* Strip400_Draw(Gfx* arg0) {
         } else {
             vtx->v.ob[1] = 0;
         }
-        vtx->v.ob[2] = var_a0->unk_08;
+        vtx->v.ob[2] = var_a0->RentalSlotAnimData_PosePhase;
 
         vtx->v.tc[0] = (i * 8) << 5;
         vtx->v.tc[1] = 0;
@@ -255,7 +255,7 @@ Gfx* Strip400_Draw(Gfx* arg0) {
         } else {
             vtx->v.ob[1] = 0;
         }
-        vtx->v.ob[2] = var_a0->unk_08;
+        vtx->v.ob[2] = var_a0->RentalSlotAnimData_PosePhase;
 
         vtx->v.tc[0] = (i * 8) << 5;
         vtx->v.tc[1] = 0x200;
@@ -297,7 +297,7 @@ void Radial20_ResetPool(void) {
         for (j = 0; j < 20; j++, var_v1++) {
             var_v1->posX = 0.0f;
             var_v1->rotation = 0;
-            var_v1->unk_08 = 1.0f;
+            var_v1->RentalSlotAnimData_PosePhase = 1.0f;
             var_v1->unk_0C = 0.0f;
             var_v1->unk_10.x = 0.0f;
             var_v1->unk_10.y = 0.0f;
@@ -355,7 +355,7 @@ void Radial20_VariantA(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
                 } else {
                     var_a1_2->rotation = (argA * (0x13 - j)) / 20;
                 }
-                var_a1_2->unk_08 = argC;
+                var_a1_2->RentalSlotAnimData_PosePhase = argC;
                 var_a1_2->unk_0C = 0.0f;
                 var_a1_2->unk_10 = sp14;
                 var_a1_2->unk_1C = sp8;
@@ -400,7 +400,7 @@ void Radial20_VariantB(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             for (j = 0; j < 20; j++, var_v1_2++) {
                 var_v1_2->posX = j;
                 var_v1_2->rotation = argA;
-                var_v1_2->unk_08 = argC;
+                var_v1_2->RentalSlotAnimData_PosePhase = argC;
                 var_v1_2->unk_0C = 0.0f;
                 var_v1_2->unk_10 = spC;
                 var_v1_2->unk_1C = sp0;
@@ -461,7 +461,7 @@ void Radial20_VariantC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             for (j = 0, temp_s3 = temp_s7, temp_s2 = spA4; j < 20; j++) {
                 var_s0->posX = j;
                 var_s0->rotation = argA;
-                var_s0->unk_08 = argF;
+                var_s0->RentalSlotAnimData_PosePhase = argF;
                 var_s0->unk_0C = 0.0f;
                 var_s0->unk_10 = spBC;
                 var_s0->unk_1C = spB0;
@@ -532,7 +532,7 @@ void Radial20_VariantD(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             for (j = 0, temp_s3 = temp_s7, temp_s2 = spA4; j < 20; j++) {
                 var_s0->posX = j;
                 var_s0->rotation = argA;
-                var_s0->unk_08 = argF;
+                var_s0->RentalSlotAnimData_PosePhase = argF;
                 var_s0->unk_0C = 0.0f;
                 var_s0->unk_10 = spBC;
                 var_s0->unk_1C = spB0;
@@ -596,7 +596,7 @@ void Radial20_VariantE(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
             for (j = 0; j < 20; j++) {
                 var_s0->posX = j;
                 var_s0->rotation = argA;
-                var_s0->unk_08 = argC;
+                var_s0->RentalSlotAnimData_PosePhase = argC;
                 var_s0->unk_0C = 0.0f;
                 var_s0->unk_10 = spBC;
 
@@ -645,9 +645,9 @@ void Radial20_UpdateNode(RadialNode* arg0) {
                     var_v0->unk_10.z += var_v0->unk_1C.z;
                     var_v0->unk_0C += arg0->unk_018;
 
-                    var_v0->unk_08 += 1.0;
-                    if (arg0->unk_014 < var_v0->unk_08) {
-                        var_v0->unk_08 = arg0->unk_014;
+                    var_v0->RentalSlotAnimData_PosePhase += 1.0;
+                    if (arg0->unk_014 < var_v0->RentalSlotAnimData_PosePhase) {
+                        var_v0->RentalSlotAnimData_PosePhase = arg0->unk_014;
                     }
                 }
             }
@@ -698,10 +698,10 @@ void Radial20_UpdateNode(RadialNode* arg0) {
                     var_v0->unk_10.z = sp28.z;
 
                     var_v0->unk_0C += arg0->unk_018;
-                    var_v0->unk_08 += 1.0;
+                    var_v0->RentalSlotAnimData_PosePhase += 1.0;
 
-                    if (arg0->unk_014 < var_v0->unk_08) {
-                        var_v0->unk_08 = arg0->unk_014;
+                    if (arg0->unk_014 < var_v0->RentalSlotAnimData_PosePhase) {
+                        var_v0->RentalSlotAnimData_PosePhase = arg0->unk_014;
                     }
                 }
             }
@@ -719,10 +719,10 @@ void Radial20_UpdateNode(RadialNode* arg0) {
                     var_v0->unk_10.z += var_v0->unk_1C.z;
 
                     var_v0->unk_0C += arg0->unk_018;
-                    var_v0->unk_08 += 1.0;
+                    var_v0->RentalSlotAnimData_PosePhase += 1.0;
 
-                    if (arg0->unk_014 < var_v0->unk_08) {
-                        var_v0->unk_08 = arg0->unk_014;
+                    if (arg0->unk_014 < var_v0->RentalSlotAnimData_PosePhase) {
+                        var_v0->RentalSlotAnimData_PosePhase = arg0->unk_014;
                     }
                 }
             }
@@ -740,10 +740,10 @@ void Radial20_UpdateNode(RadialNode* arg0) {
                     var_v0->unk_10.z += var_v0->unk_1C.z;
 
                     var_v0->unk_0C += arg0->unk_018;
-                    var_v0->unk_08 += 1.0;
+                    var_v0->RentalSlotAnimData_PosePhase += 1.0;
 
-                    if (arg0->unk_014 < var_v0->unk_08) {
-                        var_v0->unk_08 = arg0->unk_014;
+                    if (arg0->unk_014 < var_v0->RentalSlotAnimData_PosePhase) {
+                        var_v0->RentalSlotAnimData_PosePhase = arg0->unk_014;
                     }
                 }
             }
@@ -761,10 +761,10 @@ void Radial20_UpdateNode(RadialNode* arg0) {
                     var_v0->unk_10.z += var_v0->unk_1C.z;
 
                     var_v0->unk_0C += arg0->unk_018;
-                    var_v0->unk_08 += 1.0;
+                    var_v0->RentalSlotAnimData_PosePhase += 1.0;
 
-                    if (arg0->unk_014 < var_v0->unk_08) {
-                        var_v0->unk_08 = arg0->unk_014;
+                    if (arg0->unk_014 < var_v0->RentalSlotAnimData_PosePhase) {
+                        var_v0->RentalSlotAnimData_PosePhase = arg0->unk_014;
                     }
                 }
             }
@@ -867,7 +867,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
-                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
+                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->RentalSlotAnimData_PosePhase, 1.0f, 0.0f, 0.0f);
 
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
@@ -877,7 +877,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->posX <= 0.0) {
-                            Radial20_RotateVertexOffset(var_s2->unk_0C + M_PI_F, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + M_PI_F, &var_s2->unk_1C, &sp1A0, var_s2->RentalSlotAnimData_PosePhase, 1.0f, 0.0f,
                                           0.0f);
                         }
 
@@ -896,7 +896,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
-                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
+                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->RentalSlotAnimData_PosePhase, 1.0f, 0.0f, 0.0f);
 
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
@@ -908,7 +908,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->posX <= 0.0) {
-                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->RentalSlotAnimData_PosePhase, 1.0f,
                                           0.0f, 0.0f);
                         }
 
@@ -922,7 +922,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->posX <= 0.0) {
-                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->unk_08,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->RentalSlotAnimData_PosePhase,
                                           1.0f, 0.0f, 0.0f);
                         }
 
@@ -943,7 +943,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
-                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f, 0.0f, 0.0f);
+                        Radial20_RotateVertexOffset(var_s2->unk_0C, &var_s2->unk_1C, &sp1A0, var_s2->RentalSlotAnimData_PosePhase, 1.0f, 0.0f, 0.0f);
 
                         vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                         vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
@@ -955,7 +955,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->posX <= 0.0) {
-                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->unk_08, 1.0f,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI, &var_s2->unk_1C, &sp1A0, var_s2->RentalSlotAnimData_PosePhase, 1.0f,
                                           0.0f, 0.0f);
                         }
 
@@ -969,7 +969,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         vtx++;
 
                         if (var_s2->posX <= 0.0) {
-                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->unk_08,
+                            Radial20_RotateVertexOffset(var_s2->unk_0C + TWO_THIRDS_PI * 2, &var_s2->unk_1C, &sp1A0, var_s2->RentalSlotAnimData_PosePhase,
                                           1.0f, 0.0f, 0.0f);
                         }
 
@@ -993,7 +993,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                     for (j = 0; j < 20; j++, var_s2++) {
                         for (x = 0; x < 6; x++) {
                             Radial20_RotateVertexOffset(var_s2->unk_0C + ((2.0 * x * M_PI_F) / 6.0), &var_s2->unk_1C, &sp1A0,
-                                          var_s2->unk_08, 1.0f, 0.0f, 0.0f);
+                                          var_s2->RentalSlotAnimData_PosePhase, 1.0f, 0.0f, 0.0f);
 
                             vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;
                             vtx->v.ob[1] = var_s2->unk_10.y + sp1A0.y;
@@ -1017,7 +1017,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                                 f32 x1, y1, z1;
 
                                 Radial20_RotateVertexOffset(var_s2->unk_0C + ((TWO_PI_F * y) / 12.0f) + ((TWO_PI_F * x) / 3.0f),
-                                              &var_s2->unk_1C, &sp1A0, gRadialNodeScaleTable[y] * var_s2->unk_08, 1.0f, 0.0f,
+                                              &var_s2->unk_1C, &sp1A0, gRadialNodeScaleTable[y] * var_s2->RentalSlotAnimData_PosePhase, 1.0f, 0.0f,
                                               0.0f);
 
                                 x1 = var_s2->unk_10.x + sp1A0.x;
@@ -1054,7 +1054,7 @@ Gfx* Radial20_Draw(Gfx* arg0) {
                         for (x = 0; x < 15; x++) {
                             if (var_s2->posX <= 0.0) {
                                 Radial20_RotateVertexOffset(var_s2->unk_0C + ((2.0 * x * M_PI_F) / 15.0), &var_s2->unk_1C, &sp1A0,
-                                              var_s2->unk_08, 1.0f, 0.0f, 0.0f);
+                                              var_s2->RentalSlotAnimData_PosePhase, 1.0f, 0.0f, 0.0f);
                             }
 
                             vtx->v.ob[0] = var_s2->unk_10.x + sp1A0.x;

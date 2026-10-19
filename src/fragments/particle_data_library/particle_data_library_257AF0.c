@@ -70,7 +70,7 @@ void DisplayList_InitSelectedTextureSegment(s32 arg0, TextureState* state) {
         textures = state->textures;
         state->gfx = (Gfx*)Gfx_AllocDisplayList(0x50);
         if (gDefaultGraphRoot->unk_01A == 0x58) {
-            index = (s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
+            index = (s32) gDefaultGraphRoot->unk_040.RentalSlotAnimData_PosePhase >> 0x10;
             if (index >= 0x42) {
                 index = index - 0x42;
             } else {

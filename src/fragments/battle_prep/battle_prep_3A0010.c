@@ -160,7 +160,7 @@ s32 BattlePrepStarBurst_DrawSparkParticle(s32 arg0, SimpleGfxNode* arg1) {
 
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_0C & 0x1FFFFFFF);
-        gDPSetEnvColor(gDisplayListHead++, temp_a0->unk_08.r, temp_a0->unk_08.g, temp_a0->unk_08.b, 255);
+        gDPSetEnvColor(gDisplayListHead++, temp_a0->RentalSlotAnimData_PosePhase.r, temp_a0->RentalSlotAnimData_PosePhase.g, temp_a0->RentalSlotAnimData_PosePhase.b, 255);
         gSPDisplayList(gDisplayListHead++, arg1->posX.unk_14);
 
         GeoRender_ApplyMaterialState();
@@ -171,8 +171,8 @@ s32 BattlePrepStarBurst_DrawSparkParticle(s32 arg0, SimpleGfxNode* arg1) {
 void BattlePrepStarBurst_InitSparkSlot(unk_D_84B25AC0_000* arg0, MiniHudMainGraph* arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->rotation = 0;
     arg0->unk_06 = arg4;
-    arg0->unk_08.r = 0x50;
-    arg0->unk_08.g = 0x64;
+    arg0->RentalSlotAnimData_PosePhase.r = 0x50;
+    arg0->RentalSlotAnimData_PosePhase.g = 0x64;
     Model_InitDisplayObject(arg0->posX, 0, 0, arg1);
     Vec3f_SetComponentsDuplicate(&arg0->posX->unk_030, 2.0f, 2.0f, 2.0f);
     arg0->posX->unk_000.unk_14 = arg0;
@@ -188,7 +188,7 @@ void BattlePrepStarBurst_UpdateSparkSlot(unk_D_84B25AC0_000* arg0) {
 
     if (arg0->rotation < 0x10) {
         arg0->unk_0C = Memmap_GetSegmentVaddr(((s32*)Memmap_GetSegmentVaddr(D_2023240))[(arg0->rotation / 2)]);
-        arg0->unk_08.b = ((arg0->rotation * -0x5A) / 16) + 0x82;
+        arg0->RentalSlotAnimData_PosePhase.b = ((arg0->rotation * -0x5A) / 16) + 0x82;
         arg0->posX->unk_024.x += 2.0f * COSS(arg0->unk_06);
         arg0->posX->unk_024.y += 2.0f * SINS(arg0->unk_06);
         arg0->rotation++;
@@ -216,7 +216,7 @@ s32 BattlePrepStarBurst_DrawRainbowParticle(s32 arg0, SimpleGfxNode* arg1) {
 void BattlePrepStarBurst_InitRainbowParticle(unk_D_84B25AC0_0A0* arg0, MiniHudMainGraph* arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_06 = 0;
     arg0->rotation = 0;
-    arg0->unk_08 = arg4;
+    arg0->RentalSlotAnimData_PosePhase = arg4;
     Model_InitDisplayObject(arg0->posX, 2, 0, arg1);
     arg0->posX->unk_000.unk_14 = arg0;
     arg0->posX->unk_024.x = (COSS(arg4) * 60.0f) + arg2;
@@ -237,7 +237,7 @@ void BattlePrepStarBurst_SpawnTrailCopy(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0
 void BattlePrepStarBurst_SpawnFlashCopy(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1, s16 arg2) {
     arg0->unk_06 = 0;
     arg0->rotation = 2;
-    arg0->unk_08 = arg1->unk_08 + arg2;
+    arg0->RentalSlotAnimData_PosePhase = arg1->RentalSlotAnimData_PosePhase + arg2;
 
     Color_SetRGBA(&arg0->unk_0A, 0xFF, 0xFF, 0xFF, 0xFF);
     Model_InitDisplayObject(arg0->posX, 1, 0, &arg1->posX->unk_000.unk_0C->posX);
@@ -275,8 +275,8 @@ void BattlePrepStarBurst_UpdateRainbowGradientStep(unk_D_84B25AC0_0A0* arg0) {
         arg0->unk_0A.b = (((color2->b - color1->b) * (arg0->unk_06 % 4)) / 4) + color1->b;
         arg0->unk_0A.a = (((color2->a - color1->a) * (arg0->unk_06 % 4)) / 4) + color1->a;
 
-        arg0->posX->unk_024.x += 3.0f * COSS(arg0->unk_08);
-        arg0->posX->unk_024.y += (3.0f * SINS(arg0->unk_08)) - (arg0->unk_06 * 0.0625f);
+        arg0->posX->unk_024.x += 3.0f * COSS(arg0->RentalSlotAnimData_PosePhase);
+        arg0->posX->unk_024.y += (3.0f * SINS(arg0->RentalSlotAnimData_PosePhase)) - (arg0->unk_06 * 0.0625f);
         Vec3f_SetComponentsDuplicate(&arg0->posX->unk_030, temp_fv0, temp_fv0, temp_fv0);
         if (!(arg0->unk_06 & 3)) {
             BattlePrepStarBurst_SpawnTrailCopy(&arg0[arg0->unk_06 / 4 + 1], arg0);
@@ -309,8 +309,8 @@ void BattlePrepStarBurst_UpdateFlashFadeStep(unk_D_84B25AC0_0A0* arg0) {
     if (arg0->unk_06 < 0x10) {
         temp_fv0 = arg0->posX->unk_030.x * 0.9f;
         temp_fv1 = (20.0f - arg0->unk_06) / 5.0f;
-        arg0->posX->unk_024.x += temp_fv1 * COSS(arg0->unk_08);
-        arg0->posX->unk_024.y += temp_fv1 * SINS(arg0->unk_08);
+        arg0->posX->unk_024.x += temp_fv1 * COSS(arg0->RentalSlotAnimData_PosePhase);
+        arg0->posX->unk_024.y += temp_fv1 * SINS(arg0->RentalSlotAnimData_PosePhase);
         Vec3f_SetComponentsDuplicate(&arg0->posX->unk_030, temp_fv0, temp_fv0, temp_fv0);
         arg0->unk_06++;
     } else if (arg0->unk_06 == 0x10) {
@@ -385,7 +385,7 @@ void BattlePrepStarBurst_UpdateFlightArc(gStarBurstState* arg0) {
 
     arg0->timer++;
     if (arg0->timer > 0) {
-        arg0->barNode->unk_000.unk_01 |= 1;
+        arg0->barNode->unk_000.TrainerSlotSaveData_GamePort |= 1;
         arg0->barNode->unk_024.z -= 8.0f;
         if (arg0->side != 0) {
             arg0->barNode->unk_01E.z += 0x400;
@@ -575,7 +575,7 @@ void BattlePrepStarBurst_Launch(gStarBurstState* arg0, Fragment2_1GraphNode* arg
     }
 
     arg0->state = 2;
-    arg0->barNode->unk_000.unk_01 &= ~1;
+    arg0->barNode->unk_000.TrainerSlotSaveData_GamePort &= ~1;
     if (arg0->side != 0) {
         Vec3f_SetComponentsDuplicate(&arg0->barNode->unk_024, 32.0f, 48.0f, -161.0f);
         arg0->barNode->unk_01E.z = -0x4000;

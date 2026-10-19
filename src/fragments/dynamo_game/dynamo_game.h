@@ -20,7 +20,7 @@ typedef struct DynamoHealthBar {
 typedef struct unk_D_8650AB30_000 {
     /* 0x00 */ s8 posX;
     /* 0x04 */ f32 rotation;
-    /* 0x08 */ f32 unk_08;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
 } unk_D_8650AB30_000; // size = 0xC
 
 typedef struct DynamoHealthBarEffect {

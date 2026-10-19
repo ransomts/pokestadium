@@ -116,20 +116,20 @@ void BattlePrep_TrophyModelIdle(BarState* arg0) {
 }
 
 void BattlePrep_TrophyModelGrow(BarState* arg0) {
-    arg0->unk_01++;
-    if (arg0->unk_01 == 8) {
+    arg0->TrainerSlotSaveData_GamePort++;
+    if (arg0->TrainerSlotSaveData_GamePort == 8) {
         arg0->posX = 0;
     }
-    Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
+    Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_030, arg0->TrainerSlotSaveData_GamePort * 0.125f, arg0->TrainerSlotSaveData_GamePort * 0.125f, arg0->TrainerSlotSaveData_GamePort * 0.125f);
 }
 
 void BattlePrep_TrophyModelShrink(BarState* arg0) {
-    arg0->unk_01--;
-    if (arg0->unk_01 == 0) {
+    arg0->TrainerSlotSaveData_GamePort--;
+    if (arg0->TrainerSlotSaveData_GamePort == 0) {
         arg0->posX = 0;
         ModelRenderer_ClearDisplayObject(arg0->rotation);
     } else {
-        Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_030, arg0->TrainerSlotSaveData_GamePort * 0.125f, arg0->TrainerSlotSaveData_GamePort * 0.125f, arg0->TrainerSlotSaveData_GamePort * 0.125f);
     }
 }
 
@@ -151,9 +151,9 @@ void BattlePrep_UpdateTrophyModel(BarState* arg0) {
 
 void BattlePrep_StartTrophyModelGrow(BarState* arg0, Fragment2_1GraphNode* arg1) {
     arg0->rotation = arg1;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posX = 2;
-    Model_InitDisplayObject(arg1, 1, 0, arg0->unk_08);
+    Model_InitDisplayObject(arg1, 1, 0, arg0->RentalSlotAnimData_PosePhase);
     arg0->rotation->unk_000.unk_14 = arg0;
     if (arg0->posY == 0) {
         Vec3f_SetComponentsDuplicate(&arg0->rotation->unk_024, 32.0f, 26.0f, -288.0f);
@@ -164,7 +164,7 @@ void BattlePrep_StartTrophyModelGrow(BarState* arg0, Fragment2_1GraphNode* arg1)
 }
 
 void BattlePrep_StartTrophyModelShrink(BarState* arg0) {
-    arg0->unk_01 = 8;
+    arg0->TrainerSlotSaveData_GamePort = 8;
     arg0->posX = 3;
 }
 
@@ -172,14 +172,14 @@ void BattlePrep_InitTrophyModel(BarState* arg0, u8 arg1) {
     MemoryBlock* sp2C;
 
     arg0->posX = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posY = arg1;
 
     sp2C = MainPool_AllocState(main_pool_get_available(), 0);
     if (arg1 == 0) {
-        arg0->unk_08 = process_geo_layout(sp2C, gBarGeoLayoutLarge);
+        arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gBarGeoLayoutLarge);
     } else {
-        arg0->unk_08 = process_geo_layout(sp2C, gBarGeoLayoutSmall);
+        arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gBarGeoLayoutSmall);
     }
     MainPool_FinalizeAllocation(sp2C);
 }

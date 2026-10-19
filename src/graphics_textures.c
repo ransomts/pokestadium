@@ -328,7 +328,7 @@ void Font_ResetContext(UNUSED s32 arg0, UNUSED s32 arg1) {
 void Font_FreeSetAsset(UNUSED s32 arg0, s32 arg1) {
     if (gFontManager != NULL) {
         gFontManager->posX[arg1].rotation = 0;
-        gFontManager->posX[arg1].unk_08 = 0;
+        gFontManager->posX[arg1].RentalSlotAnimData_PosePhase = 0;
     }
 }
 
@@ -363,7 +363,7 @@ void Font_LoadSet(s32 arg0, s32 arg1, s32 arg2) {
         gFontManager->posX[sp1C].posX = arg1;
         gFontManager->posX[sp1C].posY = arg2;
         gFontManager->posX[sp1C].rotation = temp_v0_2;
-        gFontManager->posX[sp1C].unk_08 = &temp_v0_2->unk_90;
+        gFontManager->posX[sp1C].RentalSlotAnimData_PosePhase = &temp_v0_2->unk_90;
         main_pool_set_func(temp_v0_2, sp1C, &Font_FreeSetAsset);
     }
 }
@@ -480,15 +480,15 @@ s16 Font_DrawChar(s16 arg0, s16 arg1, s16 arg2) {
     if ((gFontManager->unk_53 & 1) && !(gFontManager->unk_53 & 2)) {
         gFontManager->unk_53 |= 2;
 
-        gDPLoadMultiBlock(gDisplayListHead++, (u32)temp_s0->unk_08 + (temp_s0->posX * 0x90 * temp_s0->posY), 0x0100,
+        gDPLoadMultiBlock(gDisplayListHead++, (u32)temp_s0->RentalSlotAnimData_PosePhase + (temp_s0->posX * 0x90 * temp_s0->posY), 0x0100,
                           1, G_IM_FMT_I, G_IM_SIZ_8b, temp_s0->posX, temp_s0->posY, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
 
-    if ((u32)temp_s0->unk_08 + sp88 != gFontManager->unk_4C) {
-        gFontManager->unk_4C = (u32)temp_s0->unk_08 + sp88;
+    if ((u32)temp_s0->RentalSlotAnimData_PosePhase + sp88 != gFontManager->unk_4C) {
+        gFontManager->unk_4C = (u32)temp_s0->RentalSlotAnimData_PosePhase + sp88;
 
-        gDPLoadTextureBlock(gDisplayListHead++, (u32)temp_s0->unk_08 + sp88, G_IM_FMT_IA, G_IM_SIZ_8b, temp_s0->posX,
+        gDPLoadTextureBlock(gDisplayListHead++, (u32)temp_s0->RentalSlotAnimData_PosePhase + sp88, G_IM_FMT_IA, G_IM_SIZ_8b, temp_s0->posX,
                             temp_s0->posY, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }

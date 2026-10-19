@@ -17653,3 +17653,21 @@ D_888238C0	gMapLabelTailBottomRightTex	w12		texture for the bottom-right part of
 D_88826CCE	gMapLabelMaxWidth	w12		stores the maximum width encountered among map labels	applied@49a671ad
 D_88013D20	gFragment22GfxDL_Empty	w12		Empty display list for fragment 22	applied@49a671ad
 unk_D_83003CE0	RentalRulesStringTable	w12		unk_D_83003CE0:char**	applied@49a671ad
+D_842110E8	gMenuGfx_Special1	w13		Gfx display list for the Special1 geo layout, used in TeamSelection_TrainerSlots_GraphCallback	applied@198d1efc
+D_84211208	gMenuVtx_Special2	w13		Vertex array for the Special2 geo layout, used in gMenuGeoLayout_Special2	applied@198d1efc
+D_84211308	gMenuGfx_Special2	w13		Gfx display list for the Special2 geo layout, used in gMenuGeoLayout_Special2	applied@198d1efc
+D_84211468	gMenuVtx_Common	w13		Vertex array for the common geo layout, used in gMenuGeoLayout_Common	applied@198d1efc
+D_842114A8	gMenuGfx_Common	w13		Gfx display list for the common geo layout, used in gMenuGeoLayout_Common	applied@198d1efc
+unk_01	TrainerSlotSaveData_GamePort	w13	unk_D_800FD008:u8	assigned via GbSave_GetPortGame in TeamSelection_TrainerSlots_PollGameBoySaves	applied@198d1efc
+unk_08	RentalSlotAnimData_PosePhase	w13	unk_D_800FD008:s16	used with SINS in TeamSelection_TrainerSlots_UpdateModelPose to animate vertical movement	applied@198d1efc
+func_80034348	SandshrewGame_Update	w13		handles the frame-by-frame logic for the Sandshrew mini-game, including actor movement and state transitions	applied@198d1efc
+unk_D_868084D8	SushiPlate	w13		used in SushiGame_UpdatePlate and SushiGame_InitPlate to track sushi item state, position, and type	applied@198d1efc
+func_82100020	Title_Init	w13		empty function at start of title_screen.c	applied@198d1efc
+D_82100EB0	gTitleBgArchive	w13		BinArchive* loaded from "backgrounds" asset in Title_LoadAssets	applied@198d1efc
+D_82100EB4	gTitleBgTexture	w13		u8* pointer to a specific background file retrieved from gTitleBgArchive	applied@198d1efc
+D_82F13C10	gTradeControllerList	w13		array of Controller pointers used to handle input in Trade_UpdateInfoBoxChoose	applied@198d1efc
+D_82F13F38	gSlotBobAmplitudes	w13		Array of values used in Trade_UpdateBoxSlotBob to calculate vertical oscillation.	applied@198d1efc
+D_82F13F5C	gTransferArrowAnimTimer	w13		Static timer incremented by 0x1000 used for SINS calculation in Trade_DrawBoxMachineTransferArrows.	applied@198d1efc
+D_82F13F78	gSaveSeqMenuMarkerAnim	w13		used in SINS() to animate the menu cursor marker in Trade_DrawSaveSeqMenuPanel	applied@198d1efc
+D_82F13F88	gSaveSeqMessageAnim	w13		incremented by 0x800 in RentalMenu_DrawMessage to animate the backdrop	applied@198d1efc
+D_82F13F8C	gPortPanelYOffsets	w13		array of Y offsets (0x32, 0x14A) used for Trade_DrawPortInfoPanel in Trade_DrawSaveSeq	applied@198d1efc

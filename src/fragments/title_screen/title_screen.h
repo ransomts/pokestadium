@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-void func_82100020(void);
+void Title_Init(void);
 void Title_DrawMenuOption(UNUSED s32 arg0, UNUSED s32 arg1);
 void Title_PollDPad(void);
 s32 Title_ResolveStartPressState(void);

@@ -3282,7 +3282,7 @@ void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u
         }
 
         *arg0 = gStageCameraPositions[arg5][arg6].unk_06;
-        *arg2 = gStageCameraPositions[arg5][arg6].unk_08;
+        *arg2 = gStageCameraPositions[arg5][arg6].RentalSlotAnimData_PosePhase;
 
         sCurrentCamera->unk_60.at.x = 0.0f;
         sCurrentCamera->unk_60.at.y = gStageCameraPositions[arg5][arg6].unk_10;
@@ -3307,7 +3307,7 @@ void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u
         }
 
         *arg0 = sCreditsPivotCameras[arg5][arg6 - 6].unk_06;
-        *arg2 = sCreditsPivotCameras[arg5][arg6 - 6].unk_08;
+        *arg2 = sCreditsPivotCameras[arg5][arg6 - 6].RentalSlotAnimData_PosePhase;
 
         gCreditsCameraPivot.x = 0.0f;
         gCreditsCameraPivot.y = sCreditsPivotCameras[arg5][arg6 - 6].unk_10;

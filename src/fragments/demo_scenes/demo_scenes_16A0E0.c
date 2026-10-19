@@ -19,13 +19,13 @@
 typedef struct SceneState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } SceneState; // size >= 0xC
 
 typedef struct DialogBoxState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
 } DialogBoxState; // size >= 0x14
@@ -76,7 +76,7 @@ void FirstClearBonus_InitCamera(void) {
 void FirstClearBonus_InitState(void) {
     D_86B10BD0.posX = 0;
     D_86B10BD0.rotation = 0;
-    D_86B10BD0.unk_08 = 0;
+    D_86B10BD0.RentalSlotAnimData_PosePhase = 0;
     gMessageBoxState.unk_10 = 0xA;
 }
 
@@ -190,7 +190,7 @@ void FirstClearBonus_UpdateDialogSequence(void) {
             }
 
             gMessageBoxState.rotation = 0;
-            gMessageBoxState.unk_08 = 0;
+            gMessageBoxState.RentalSlotAnimData_PosePhase = 0;
             gMessageBoxState.unk_0C = 0xC8;
             gMessageBoxState.unk_10 = 0xA;
 
@@ -222,7 +222,7 @@ void FirstClearBonus_UpdateDialogSequence(void) {
             FirstClearBonus_DrawDialogBox();
             FirstClearBonus_DrawDialogText();
 
-            if (gMessageBoxState.unk_08++ == 0x3C) {
+            if (gMessageBoxState.RentalSlotAnimData_PosePhase++ == 0x3C) {
                 if (gSessionContext.unk_0000 == 0x16) {
                     sprintf(gFirstClearBonusTextBuffer, Text_GetString(NULL, 0, gFirstClearBonusStringTable, 0x92));
                 } else {
@@ -230,7 +230,7 @@ void FirstClearBonus_UpdateDialogSequence(void) {
                 }
 
                 gMessageBoxState.rotation = 0;
-                gMessageBoxState.unk_08 = 0;
+                gMessageBoxState.RentalSlotAnimData_PosePhase = 0;
 
                 // clang-format off
                 for (i = 0; i < 255; i++) { gFirstClearBonusTypingBuffer[i] = 0; }
@@ -252,7 +252,7 @@ void FirstClearBonus_UpdateDialogSequence(void) {
             FirstClearBonus_DrawDialogBox();
             FirstClearBonus_DrawDialogText();
 
-            if (gMessageBoxState.unk_08++ == 0x41) {
+            if (gMessageBoxState.RentalSlotAnimData_PosePhase++ == 0x41) {
                 gMessageBoxState.posX = 0xFF;
             }
             break;
@@ -315,17 +315,17 @@ s32 FirstClearBonus_UpdateScene(void) {
     switch (D_86B10BD0.posX) {
         case 0:
             gFirstClearBonusModelObj.unk_000.posY |= 0x20;
-            gFirstClearBonusModelObj.unk_000.unk_01 |= 1;
+            gFirstClearBonusModelObj.unk_000.TrainerSlotSaveData_GamePort |= 1;
             D_86B10BD0.posX++;
             break;
 
         case 1:
-            if ((gFirstClearBonusModelObj.unk_040.unk_08 >> 0x10) == 0xA) {
+            if ((gFirstClearBonusModelObj.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0xA) {
                 Audio_StartMusicTrack(0x38);
             }
 
-            if ((gFirstClearBonusModelObj.unk_040.unk_08 >> 0x10) == 0x72) {
-                D_86B10BD0.unk_08 = 0;
+            if ((gFirstClearBonusModelObj.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x72) {
+                D_86B10BD0.RentalSlotAnimData_PosePhase = 0;
                 gFirstClearBonusModelObj.unk_000.posY &= 0xFFDF;
                 FirstClearBonus_HideDialogBox();
                 Audio_StartMusicTrack(0x13);
@@ -335,7 +335,7 @@ s32 FirstClearBonus_UpdateScene(void) {
 
         case 2:
             if (gMessageBoxState.posX == 0xFF) {
-                D_86B10BD0.unk_08 = 0;
+                D_86B10BD0.RentalSlotAnimData_PosePhase = 0;
                 gFirstClearBonusModelObj.unk_000.posY |= 0x20;
                 FirstClearBonus_ShowDialogBox();
                 D_86B10BD0.posX++;
@@ -402,16 +402,16 @@ void FirstClearBonus_InitScene(void) {
 
     if (gSessionContext.unk_0000 == 0x16) {
         gFirstClearBonusModelData = Model_LoadByArchiveIndex(0xD5);
-        Model_InitDisplayObject(&gFirstClearBonusModelObj, 0, 0xD5, gFirstClearBonusModelData->unk_08->posX[0]);
+        Model_InitDisplayObject(&gFirstClearBonusModelObj, 0, 0xD5, gFirstClearBonusModelData->RentalSlotAnimData_PosePhase->posX[0]);
     } else {
         gFirstClearBonusModelData = Model_LoadByArchiveIndex(0xD4);
-        Model_InitDisplayObject(&gFirstClearBonusModelObj, 0, 0xD4, gFirstClearBonusModelData->unk_08->posX[0]);
+        Model_InitDisplayObject(&gFirstClearBonusModelObj, 0, 0xD4, gFirstClearBonusModelData->RentalSlotAnimData_PosePhase->posX[0]);
     }
 
     ModelAnim_SetAnimation(&gFirstClearBonusModelObj, 0);
 
     gFirstClearBonusModelObj.unk_000.posY &= ~0x20;
-    gFirstClearBonusModelObj.unk_000.unk_01 &= ~1;
+    gFirstClearBonusModelObj.unk_000.TrainerSlotSaveData_GamePort &= ~1;
 
     Vec3f_SetComponentsDuplicate(&gFirstClearBonusModelObj.unk_024, 0.0f, 11.0f, -105.0f);
 }

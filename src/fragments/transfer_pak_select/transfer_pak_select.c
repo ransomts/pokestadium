@@ -144,7 +144,7 @@ s32 TransferPak_GetPortErrorCode(s32 arg0) {
     unk_D_81303FA8* ptr = &gEntryStatus[arg0];
     s32 var_v1;
 
-    if (ptr->unk_01 != 0) {
+    if (ptr->TrainerSlotSaveData_GamePort != 0) {
         if (ptr->posX == 0) {
             if (GbSave_HasPokedex(arg0) == 0) {
                 var_v1 = 0x16;
@@ -249,8 +249,8 @@ void TransferPak_DrawPortBox(s32 arg0, s32 arg1, s32 arg2) {
 
     if (gEntryStatus[arg0].posX == 0) {
         Font_SetActive(8, 0);
-        Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, gEntryStatus[arg0].unk_08) / 2)) + 0x3C, arg2 + 0xA,
-                      gEntryStatus[arg0].unk_08);
+        Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, gEntryStatus[arg0].RentalSlotAnimData_PosePhase) / 2)) + 0x3C, arg2 + 0xA,
+                      gEntryStatus[arg0].RentalSlotAnimData_PosePhase);
         Font_SetActive(4, 0);
         sprintf(gEntryIdBuffer, "ID %05d", gEntryStatus[arg0].unk_06);
         Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, gEntryIdBuffer) / 2)) + 0x3C, arg2 + 0x1E, gEntryIdBuffer);
@@ -484,7 +484,7 @@ void TransferPak_MovePortCursor(void) {
         while (true) {
             gSelectedEntryIndex = (gSelectedEntryIndex + 3) % 4;
 
-            if (gEntryStatus[gSelectedEntryIndex].unk_01 != 0 || TransferPak_GetPortMessageIndex(gSelectedEntryIndex) > 0) {
+            if (gEntryStatus[gSelectedEntryIndex].TrainerSlotSaveData_GamePort != 0 || TransferPak_GetPortMessageIndex(gSelectedEntryIndex) > 0) {
                 break;
             }
         }
@@ -492,7 +492,7 @@ void TransferPak_MovePortCursor(void) {
         while (true) {
             gSelectedEntryIndex = (gSelectedEntryIndex + 1) % 4;
 
-            if (gEntryStatus[gSelectedEntryIndex].unk_01 != 0 || TransferPak_GetPortMessageIndex(gSelectedEntryIndex) > 0) {
+            if (gEntryStatus[gSelectedEntryIndex].TrainerSlotSaveData_GamePort != 0 || TransferPak_GetPortMessageIndex(gSelectedEntryIndex) > 0) {
                 break;
             }
         }
@@ -566,9 +566,9 @@ void TransferPak_ScanAllPorts(void) {
 
     for (i = 0; i < 4; i++) {
         GbSave_CopyPlayerIdentity(i, &sp48);
-        Text_UntranscodeNameWrapper(gEntryStatus[i].unk_08, sp48.posY);
+        Text_UntranscodeNameWrapper(gEntryStatus[i].RentalSlotAnimData_PosePhase, sp48.posY);
         gEntryStatus[i].unk_06 = sp48.posX;
-        gEntryStatus[i].unk_01 = GbSave_GetPortGame(i);
+        gEntryStatus[i].TrainerSlotSaveData_GamePort = GbSave_GetPortGame(i);
         gEntryStatus[i].posX = GbSave_GetSaveState(i);
         gEntryStatus[i].unk_03 = GbSave_SavedAtPokemonCenter(i);
         gEntryStatus[i].rotation = (temp_s3 & (1 << i)) != 0;
@@ -601,9 +601,9 @@ void TransferPak_AutoSelectPort(void) {
         while (TransferPak_GetPortMessageIndex(gSelectedEntryIndex) != 1) {
             gSelectedEntryIndex++;
         }
-    } else if ((gSelectedEntryIndex == -1) || (gEntryStatus[gSelectedEntryIndex].unk_01 == 0)) {
+    } else if ((gSelectedEntryIndex == -1) || (gEntryStatus[gSelectedEntryIndex].TrainerSlotSaveData_GamePort == 0)) {
         gSelectedEntryIndex = 0;
-        while (gEntryStatus[gSelectedEntryIndex].unk_01 == 0) {
+        while (gEntryStatus[gSelectedEntryIndex].TrainerSlotSaveData_GamePort == 0) {
             gSelectedEntryIndex++;
         }
     }

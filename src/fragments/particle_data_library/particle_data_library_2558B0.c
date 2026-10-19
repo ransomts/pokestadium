@@ -16,7 +16,7 @@ typedef struct Particle {
 typedef struct unk_arg2_func_81001D80 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08[1];
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase[1];
 } unk_arg2_func_81001D80; // size = 0xC
 
 typedef struct ParticleCondition {
@@ -234,7 +234,7 @@ void Particle31_UpdateSpeciesEffectTrigger(Particle* arg0) {
     s32 var_v0;
     s16* var_v1;
 
-    var_a1 = gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
+    var_a1 = gDefaultGraphRoot->unk_040.RentalSlotAnimData_PosePhase >> 0x10;
     switch (gDefaultGraphRoot->unk_01A) {
     case 0x6D:
     case 0x6E:
@@ -541,7 +541,7 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
                     var_a3 = 0;
                     temp_v0_2 = gDefaultGraphRoot->unk_040.posX;
                     temp_a2 = gParticleConditionIndexSeq[gParticleFrameCounter % 18];
-                    temp_a1 = (s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
+                    temp_a1 = (s32) gDefaultGraphRoot->unk_040.RentalSlotAnimData_PosePhase >> 0x10;
                     switch (temp_v0_2) {
                     case 4:
                         temp_a0 = gParticleConditionTable[temp_a2].posY;

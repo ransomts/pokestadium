@@ -30,7 +30,7 @@ void WidgetTree_DrawTiledTexture(TiledTexture* arg0, s32 arg1, s32 arg2) {
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
 
-        gSPTextureRectangle(gDisplayListHead++, arg1 << 2, var_s3 << 2, ((arg0->unk_08 + arg1) - 1) << 2,
+        gSPTextureRectangle(gDisplayListHead++, arg1 << 2, var_s3 << 2, ((arg0->RentalSlotAnimData_PosePhase + arg1) - 1) << 2,
                             ((var_s3 + var_t0) - 1) << 2, G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
         var_s3 += var_t0;
@@ -56,7 +56,7 @@ void WidgetTree_DrawTiledTextureFmt(TiledTexture* arg0, s32 arg1, s32 arg2, s32 
         gDPLoadTextureBlock(gDisplayListHead++, var_s2, arg1, G_IM_SIZ_16b, arg0->posX, var_t0, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        gSPTextureRectangle(gDisplayListHead++, arg2 << 2, var_s3 << 2, (arg0->unk_08 + arg2) << 2,
+        gSPTextureRectangle(gDisplayListHead++, arg2 << 2, var_s3 << 2, (arg0->RentalSlotAnimData_PosePhase + arg2) << 2,
                             (var_s3 + var_t0) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
         var_s3 += var_t0;
@@ -68,12 +68,12 @@ void WidgetTree_DrawTiledTextureFmt(TiledTexture* arg0, s32 arg1, s32 arg2, s32 
 void WidgetTree_InitNode(unk_func_88001300_000_000* arg0, s32 arg1) {
     arg0->posX = arg1;
     arg0->rotation = NULL;
-    arg0->unk_08 = NULL;
+    arg0->RentalSlotAnimData_PosePhase = NULL;
     arg0->unk_0C = NULL;
 }
 
 void WidgetTree_PrependChild(unk_func_88001300_000_000* arg0, unk_func_88001300_000_000* arg1) {
-    arg1->unk_08 = arg0->rotation;
+    arg1->RentalSlotAnimData_PosePhase = arg0->rotation;
     arg0->rotation = arg1;
 }
 
@@ -87,14 +87,14 @@ void WidgetTree_AppendChild(unk_func_88001300_000_000* arg0, unk_func_88001300_0
     }
 
     var_v1 = arg0->rotation;
-    var_a0 = arg0->rotation->unk_08;
+    var_a0 = arg0->rotation->RentalSlotAnimData_PosePhase;
 
     while (var_a0 != NULL) {
         var_v1 = var_a0;
-        var_a0 = var_a0->unk_08;
+        var_a0 = var_a0->RentalSlotAnimData_PosePhase;
     }
 
-    var_v1->unk_08 = arg1;
+    var_v1->RentalSlotAnimData_PosePhase = arg1;
 }
 
 void WidgetTree_FreeChildren(unk_func_88001300_000_000* arg0, MemoryPool* arg1) {
@@ -106,7 +106,7 @@ void WidgetTree_FreeChildren(unk_func_88001300_000_000* arg0, MemoryPool* arg1) 
         if (var_s0->unk_0C != NULL) {
             var_s0->unk_0C(var_s0, arg1);
         }
-        temp_s1 = var_s0->unk_08;
+        temp_s1 = var_s0->RentalSlotAnimData_PosePhase;
         mem_pool_free(arg1, var_s0);
         var_s0 = temp_s1;
     }
@@ -118,7 +118,7 @@ void WidgetTree_FreeTree(unk_func_88001300_000_000* arg0, MemoryPool* arg1) {
     unk_func_88001300_000_000* var_s0 = arg0->rotation;
 
     while (var_s0 != NULL) {
-        temp_s1 = var_s0->unk_08;
+        temp_s1 = var_s0->RentalSlotAnimData_PosePhase;
         WidgetTree_FreeTree(var_s0, arg1);
         var_s0 = temp_s1;
     }
@@ -159,7 +159,7 @@ void WidgetTree_Draw(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
             var_s0 = arg0->posX.rotation;
             while (var_s0 != NULL) {
                 WidgetTree_Draw(var_s0, arg1, arg2);
-                var_s0 = var_s0->unk_08;
+                var_s0 = var_s0->RentalSlotAnimData_PosePhase;
             }
         }
     }
@@ -178,7 +178,7 @@ void WidgetTree_Update(unk_func_88001300_000* arg0) {
             var_s0 = arg0->posX.rotation;
             while (var_s0 != NULL) {
                 WidgetTree_Update(var_s0);
-                var_s0 = var_s0->unk_08;
+                var_s0 = var_s0->RentalSlotAnimData_PosePhase;
             }
         }
     }
@@ -191,7 +191,7 @@ void WidgetTree_SetStateDefault(unk_func_88001300_000* arg0, s32 arg1) {
 
     while (var_s0 != NULL) {
         var_s0->unk_24(var_s0, arg1);
-        var_s0 = var_s0->posX.unk_08;
+        var_s0 = var_s0->posX.RentalSlotAnimData_PosePhase;
     }
 }
 
@@ -212,7 +212,7 @@ s32 WidgetTree_DrawCurrentPage(unk_func_88500994* arg0, s32 arg1, s32 arg2) {
         var_a0 = arg0->posX.posX.rotation;
 
         for (i = 0; i < arg0->unk_2C; i++) {
-            var_a0 = var_a0->unk_08;
+            var_a0 = var_a0->RentalSlotAnimData_PosePhase;
         }
         WidgetTree_Draw(var_a0, arg1, arg2);
     }
@@ -1439,7 +1439,7 @@ s32 WidgetTree_DrawPagedGrid(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2
         if (arg0->unk_30 != 0) {
             var_s5 = arg0->unk_2C->unk_0C;
         }
-        var_s3 = arg0->unk_2C->unk_08;
+        var_s3 = arg0->unk_2C->RentalSlotAnimData_PosePhase;
     }
 
     for (i = 0; i < temp_lo; i++) {
@@ -1480,10 +1480,10 @@ s32 List_HandleInput(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
 
     var_t4 = 0;
     sp5C = 0;
-    if ((arg0->unk_2C == NULL) || (arg0->unk_2C->unk_08 == 0)) {
+    if ((arg0->unk_2C == NULL) || (arg0->unk_2C->RentalSlotAnimData_PosePhase == 0)) {
         return 0;
     }
-    sp48 = ((arg0->unk_2C->unk_08 + arg0->unk_48) - 1) / arg0->unk_48;
+    sp48 = ((arg0->unk_2C->RentalSlotAnimData_PosePhase + arg0->unk_48) - 1) / arg0->unk_48;
     sp58 = arg0->unk_38 % arg0->unk_48;
     sp54 = arg0->unk_38 / arg0->unk_48;
     sp24 = Input_GetRepeatedDPad() & 0xFFFF;
@@ -1494,7 +1494,7 @@ s32 List_HandleInput(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
 
             for (j = 0, sp50 = arg0->unk_4C; j < arg0->unk_48;) {
                 temp_v0_3 = (arg0->unk_48 * sp4C) + sp50;
-                if ((temp_v0_3 < arg0->unk_2C->unk_08) && !(arg0->unk_34[temp_v0_3] & 4)) {
+                if ((temp_v0_3 < arg0->unk_2C->RentalSlotAnimData_PosePhase) && !(arg0->unk_34[temp_v0_3] & 4)) {
                     var_t4 = 1;
                     break;
                 }
@@ -1521,7 +1521,7 @@ s32 List_HandleInput(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
 
             for (j = 0, sp50 = arg0->unk_4C; j < arg0->unk_48;) {
                 temp_v0_3 = (arg0->unk_48 * sp4C) + sp50;
-                if ((temp_v0_3 < arg0->unk_2C->unk_08) && !(arg0->unk_34[temp_v0_3] & 4)) {
+                if ((temp_v0_3 < arg0->unk_2C->RentalSlotAnimData_PosePhase) && !(arg0->unk_34[temp_v0_3] & 4)) {
                     var_t4 = 1;
                     break;
                 }
@@ -1548,7 +1548,7 @@ s32 List_HandleInput(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
 
             for (i = 0, sp4C = arg0->unk_4E; i < sp48;) {
                 temp_v0_3 = (arg0->unk_48 * sp4C) + sp50;
-                if ((temp_v0_3 < arg0->unk_2C->unk_08) && !(arg0->unk_34[temp_v0_3] & 4)) {
+                if ((temp_v0_3 < arg0->unk_2C->RentalSlotAnimData_PosePhase) && !(arg0->unk_34[temp_v0_3] & 4)) {
                     var_t4 = 1;
                     break;
                 }
@@ -1571,7 +1571,7 @@ s32 List_HandleInput(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
 
             for (i = 0, sp4C = arg0->unk_4E; i < sp48;) {
                 temp_v0_3 = (arg0->unk_48 * sp4C) + sp50;
-                if ((temp_v0_3 < arg0->unk_2C->unk_08) && !(arg0->unk_34[temp_v0_3] & 4)) {
+                if ((temp_v0_3 < arg0->unk_2C->RentalSlotAnimData_PosePhase) && !(arg0->unk_34[temp_v0_3] & 4)) {
                     var_t4 = 1;
                     break;
                 }
@@ -1615,16 +1615,16 @@ void WidgetTree_SetPagedGridSelection(unk_func_88200FA0_030_030* arg0, s32 arg1)
 s32 WidgetTree_FindSelectableGridEntry(unk_func_88200FA0_030_030* arg0) {
     s32 var_a1 = arg0->unk_38;
 
-    if (arg0->unk_38 < arg0->unk_2C->unk_08) {
+    if (arg0->unk_38 < arg0->unk_2C->RentalSlotAnimData_PosePhase) {
         while (arg0->unk_34[var_a1] & 4) {
             var_a1++;
-            if (var_a1 >= arg0->unk_2C->unk_08) {
+            if (var_a1 >= arg0->unk_2C->RentalSlotAnimData_PosePhase) {
                 break;
             }
         }
     }
 
-    if (var_a1 < arg0->unk_2C->unk_08) {
+    if (var_a1 < arg0->unk_2C->RentalSlotAnimData_PosePhase) {
         WidgetTree_SetPagedGridSelection(arg0, var_a1);
         return var_a1;
     }
@@ -1753,7 +1753,7 @@ s32 WidgetTree_UpdateScrollableGridScroll(unk_func_8821421C_038_034* arg0) {
             }
         }
     } else if ((arg0->unk_56 & 0x100) && !(arg0->unk_54 & 0x100)) {
-        s32 tmp = arg0->posX.unk_3E * arg0->posX.unk_2C->unk_08;
+        s32 tmp = arg0->posX.unk_3E * arg0->posX.unk_2C->RentalSlotAnimData_PosePhase;
         s32 tmp2 = arg0->posX.unk_3E * arg0->posX.unk_4A;
 
         temp_a2_4 = arg0->unk_60 - arg0->unk_5C;
@@ -1808,7 +1808,7 @@ s32 ScrollListFragment_Draw(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2)
         if (arg0->posX.unk_30 != 0) {
             var_s6 = arg0->posX.unk_2C->unk_0C;
         }
-        var_s4 = arg0->posX.unk_2C->unk_08;
+        var_s4 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase;
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -1870,7 +1870,7 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
     }
     // clang-format on
 
-    if ((arg0->posX.unk_2C == NULL) || !(arg0->posX.unk_2C->unk_08)) {
+    if ((arg0->posX.unk_2C == NULL) || !(arg0->posX.unk_2C->RentalSlotAnimData_PosePhase)) {
         return (arg1->buttonPressed & 0xF00) ? 8 : 0;
     }
 
@@ -1887,7 +1887,7 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
         }
     } else if ((arg0->unk_54 & 0x400) && ((arg0->unk_56 & ~0x400) == 0)) {
         s32 temp_a3_2;
-        s32 temp_lo_2 = arg0->posX.unk_3E * arg0->posX.unk_2C->unk_08;
+        s32 temp_lo_2 = arg0->posX.unk_3E * arg0->posX.unk_2C->RentalSlotAnimData_PosePhase;
 
         if (arg0->unk_56 == 0) {
             arg0->unk_5C = (arg0->unk_5C + arg0->posX.unk_3E) - 1;
@@ -1924,7 +1924,7 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
         }
     } else if (arg0->unk_54 & 0x100) {
         if (!(arg0->unk_56 & ~0x100)) {
-            s32 temp_lo_5 = arg0->posX.unk_3E * arg0->posX.unk_2C->unk_08;
+            s32 temp_lo_5 = arg0->posX.unk_3E * arg0->posX.unk_2C->RentalSlotAnimData_PosePhase;
             s32 temp_lo_6 = arg0->posX.unk_3E * arg0->posX.unk_4A;
             s32 temp_a2 = (temp_lo_5 - arg0->unk_5C) - arg0->posX.unk_3E;
             s32 var_a2;
@@ -1984,10 +1984,10 @@ void WidgetTree_SetScrollableGridIndex(unk_func_8820BE14_02C_038* arg0, s32 arg1
         return;
     }
 
-    if (arg0->posX.unk_4A >= arg0->posX.unk_2C->unk_08) {
+    if (arg0->posX.unk_4A >= arg0->posX.unk_2C->RentalSlotAnimData_PosePhase) {
         var_a3 = 0;
     } else {
-        var_a3 = (arg0->posX.unk_2C->unk_08 - arg0->posX.unk_4A) * arg0->posX.unk_3E;
+        var_a3 = (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - arg0->posX.unk_4A) * arg0->posX.unk_3E;
     }
 
     if (var_a3 < arg0->unk_58) {
@@ -2006,7 +2006,7 @@ void WidgetTree_SetScrollableGridIndexPreserveScroll(unk_func_8820BE14_02C_038* 
     temp_v0 = arg0->unk_5C - arg0->unk_58;
     arg0->unk_5C = arg0->posX.unk_3E * arg1;
 
-    temp_a2 = arg0->posX.unk_2C->unk_08 - arg0->posX.unk_4A;
+    temp_a2 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - arg0->posX.unk_4A;
 
     var_a1 = temp_a2 = (temp_a2 > 0) ? temp_a2 : 0;
     temp_a2 *= arg0->posX.unk_3E;
@@ -2027,16 +2027,16 @@ void WidgetTree_SetPagedGridSelectionWithOffset(unk_func_8830867C_02C_034* arg0,
     s32 temp_v1;
     s32 var_v0_2;
 
-    if (arg0->posX.unk_2C->unk_08 != 0) {
+    if (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase != 0) {
         arg0->unk_6C = 0;
-        temp_v1 = arg0->posX.unk_2C->unk_08 - 1;
+        temp_v1 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - 1;
         if (arg1 >= temp_v1) {
             arg1 = temp_v1;
         }
         arg0->posX.unk_38 = arg1;
         arg0->unk_5C = arg0->posX.unk_3E * arg1;
 
-        temp_a2 = arg0->posX.unk_2C->unk_08 - arg0->posX.unk_4A;
+        temp_a2 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - arg0->posX.unk_4A;
         temp_lo = ((temp_a2 > 0) ? temp_a2 : 0) * arg0->posX.unk_3E;
 
         temp_a2_2 = arg0->unk_5C - (arg2 * arg0->posX.unk_3E);
@@ -2063,8 +2063,8 @@ void WidgetTree_RemoveScrollableGridEntry(unk_func_8820BE14_02C_038* arg0) {
 
     PointerList_Remove(arg0->posX.unk_2C, arg0->posX.unk_38);
     var_a1 = arg0->posX.unk_38;
-    if ((var_a1 >= arg0->posX.unk_2C->unk_08) && (var_a1 > 0)) {
-        var_a1 = arg0->posX.unk_2C->unk_08 - 1;
+    if ((var_a1 >= arg0->posX.unk_2C->RentalSlotAnimData_PosePhase) && (var_a1 > 0)) {
+        var_a1 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - 1;
         arg0->posX.unk_38 = var_a1;
     }
     WidgetTree_SetScrollableGridIndexPreserveScroll(arg0, var_a1);
@@ -2124,7 +2124,7 @@ s32 WidgetTree_DrawScrollableGridScrollbar(unk_func_88507D4C* arg0, s32 arg1, s3
         s32 var_t5 = 0;
 
         if ((arg0->unk_2C->posX.unk_2C != NULL) &&
-            ((arg0->unk_2C->unk_58 + sp12C) < (arg0->unk_2C->posX.unk_3E * arg0->unk_2C->posX.unk_2C->unk_08))) {
+            ((arg0->unk_2C->unk_58 + sp12C) < (arg0->unk_2C->posX.unk_3E * arg0->unk_2C->posX.unk_2C->RentalSlotAnimData_PosePhase))) {
             var_t5 = 1;
         }
 
@@ -2729,7 +2729,7 @@ s32 WidgetTree_HandleVerticalMenuInput(VerticalMenu* arg0, Controller* arg1) {
         s32 i;
 
         for (i = 0; i < arg0->unk_1C; i++) {
-            var_a0 = var_a0->posX.unk_08;
+            var_a0 = var_a0->posX.RentalSlotAnimData_PosePhase;
         }
         ret = var_a0->unk_10(var_a0, arg1);
     }
@@ -2795,7 +2795,7 @@ void WidgetTree_UpdateVerticalMenuItems(VerticalMenu* arg0) {
         }
 
         var_s1->unk_14(var_s1, (var_v0 & temp_s4) | var_v1);
-        var_s1 = var_s1->posX.unk_08;
+        var_s1 = var_s1->posX.RentalSlotAnimData_PosePhase;
     }
 }
 
@@ -2821,7 +2821,7 @@ s32 WidgetTree_HandleHorizontalMenuInput(VerticalMenu* arg0, Controller* arg1) {
         s32 i;
 
         for (i = 0; i < arg0->unk_1C; i++) {
-            var_a0 = var_a0->posX.unk_08;
+            var_a0 = var_a0->posX.RentalSlotAnimData_PosePhase;
         }
         var_a3 = var_a0->unk_10(var_a0, arg1);
     }
@@ -2873,7 +2873,7 @@ void WidgetTree_UpdateHorizontalMenuItems(VerticalMenu* arg0) {
             var_a1 = arg0->unk_18;
         }
         var_s0->unk_14(var_s0, var_a1);
-        var_s0 = var_s0->posX.unk_08;
+        var_s0 = var_s0->posX.RentalSlotAnimData_PosePhase;
     }
 }
 
@@ -3126,7 +3126,7 @@ s32 WidgetTree_HandleChildSelectionProxyInput(VerticalMenu* arg0, Controller* ar
         VerticalMenu* var_a0 = arg0->posX.rotation;
 
         for (i = 0; i < arg0->unk_1C; i++) {
-            var_a0 = var_a0->posX.unk_08;
+            var_a0 = var_a0->posX.RentalSlotAnimData_PosePhase;
         }
         var_v1 = var_a0->unk_10(var_a0, arg1);
     }
@@ -3155,7 +3155,7 @@ void WidgetTree_UpdateChildSelectionProxyItems(VerticalMenu* arg0) {
             var_a1 = 0;
         }
         var_s0->unk_14(var_s0, var_a1);
-        var_s0 = var_s0->posX.unk_08;
+        var_s0 = var_s0->posX.RentalSlotAnimData_PosePhase;
     }
 }
 

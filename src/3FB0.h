@@ -23,7 +23,7 @@ typedef struct PERSSZP {
 
 typedef struct PRESJPEG {
     /* 0x00 */ char magic[0x8]; // PRESJPEG
-    /* 0x08 */ u32 unk_08; // header size? always 0x10
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase; // header size? always 0x10
     /* 0x0C */ u32 unk_0C; 
 } PRESJPEG; // size = 0x10
 
@@ -50,7 +50,7 @@ typedef struct BinArchive {
 typedef struct BinArchiveFile {
     /* 0x00 */ u32 offset;
     /* 0x04 */ u32 size;
-    /* 0x08 */ u32 unk_08;
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ char unk0C[0x4];
 } BinArchiveFile; // size = 0x10
 
@@ -58,12 +58,12 @@ typedef struct StorageRange {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } StorageRange; // size >= 0x8
 
 typedef struct JpegStreamInfo {
     /* 0x00 */ u8 posX; // mode
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x2];
     /* 0x04 */ s16 width;
     /* 0x06 */ s16 height;
@@ -76,7 +76,7 @@ typedef struct JpegStreamInfo {
 typedef struct JpegDspTaskData {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;

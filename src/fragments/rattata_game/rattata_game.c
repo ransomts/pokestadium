@@ -512,7 +512,7 @@ s32 RattataGame_WaitForStart(void) {
         ModelAnim_SetAnimation(gRacePlayerGraphNode, 0);
         ModelAnim_ClearEventTrack(gRacePlayerGraphNode);
         gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
-        gRacePlayerGraphNode->unk_040.unk_08 = Rand_Range(0x14) << 0x10;
+        gRacePlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = Rand_Range(0x14) << 0x10;
     }
 
     for (i = 0; i < 4; i++) {
@@ -636,13 +636,13 @@ s32 RattataGame_CheckHurdleCollision(RacePlayerState* arg0, RaceObstacle* arg1) 
         return 0;
     }
 
-    temp_fv0 = 30.0f - (arg1->unk_004.unk_040.unk_08 / 111411.2f);
+    temp_fv0 = 30.0f - (arg1->unk_004.unk_040.RentalSlotAnimData_PosePhase / 111411.2f);
     temp_fv1 = arg0->unk_008.unk_024.z / 3.0f;
 
     arg0->unk_1A8 = temp_fv1;
     arg0->hurdlePos = temp_fv0;
 
-    if ((temp_fv0 <= temp_fv1 - 3.0f) && (arg0->animState == 1) && (arg0->unk_008.unk_040.unk_08 >= 0xC0001) &&
+    if ((temp_fv0 <= temp_fv1 - 3.0f) && (arg0->animState == 1) && (arg0->unk_008.unk_040.RentalSlotAnimData_PosePhase >= 0xC0001) &&
         (arg1->unk_170 == 0)) {
         arg1->unk_170 = 1;
     }
@@ -652,7 +652,7 @@ s32 RattataGame_CheckHurdleCollision(RacePlayerState* arg0, RaceObstacle* arg1) 
     }
 
     if (arg0->animState == 1) {
-        if ((arg0->unk_008.unk_040.unk_08 >= 0x20001) && (arg0->unk_008.unk_040.unk_08 < 0x100000)) {
+        if ((arg0->unk_008.unk_040.RentalSlotAnimData_PosePhase >= 0x20001) && (arg0->unk_008.unk_040.RentalSlotAnimData_PosePhase < 0x100000)) {
             return 0;
         }
     }
@@ -717,7 +717,7 @@ void RattataGame_UpdateHurdleMarkers(RacePlayerState* arg0) {
                 case 0:
                     if ((unk_190 - (temp_fs1 - 30.0f)) < 5.0f) {
                         gRaceObstaclePtr->unk_002 = 1;
-                        Model_InitDisplayObject(temp_s1, 0, 0xB0, gRaceStageAssets->unk_08->posX[arg0_unk000]);
+                        Model_InitDisplayObject(temp_s1, 0, 0xB0, gRaceStageAssets->RentalSlotAnimData_PosePhase->posX[arg0_unk000]);
                     }
                     break;
 
@@ -752,7 +752,7 @@ void RattataGame_UpdateHurdleMarkers(RacePlayerState* arg0) {
             }
 
             temp_v0 = ((unk_190 - temp_fs1) + 30.0f) * 1.7f * 65536.0f;
-            temp_s1->unk_040.unk_08 = (gRaceObstaclePtr->unk_16C + temp_v0) >> 1;
+            temp_s1->unk_040.RentalSlotAnimData_PosePhase = (gRaceObstaclePtr->unk_16C + temp_v0) >> 1;
             gRaceObstaclePtr->unk_16C = temp_v0;
 
             if (gRaceObstaclePtr->unk_002 == 1) {
@@ -762,7 +762,7 @@ void RattataGame_UpdateHurdleMarkers(RacePlayerState* arg0) {
                 ModelAnim_SetAnimation(temp_s1, 0);
                 temp_s1->unk_01D = 0x80;
             } else if ((gRaceObstaclePtr->unk_002 == 0) || (gRaceObstaclePtr->unk_002 == 2)) {
-                temp_s1->unk_040.unk_08 = 0x730000;
+                temp_s1->unk_040.RentalSlotAnimData_PosePhase = 0x730000;
             }
 
             temp_s1->unk_040.unk_0C = 0;
@@ -928,7 +928,7 @@ s16 RattataGame_UpdateRacers(void) {
 
             if (ModelAnim_IsFinished(gRacePlayerGraphNode) != 0) {
                 ModelAnim_SetAnimation(gRacePlayerGraphNode, 0);
-                gRacePlayerGraphNode->unk_040.unk_08 = 0;
+                gRacePlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
                 gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
             }
         }
@@ -955,7 +955,7 @@ void RattataGame_AdvanceFinishLineApproach(void) {
 
             if (ModelAnim_IsFinished(gRacePlayerGraphNode) != 0) {
                 ModelAnim_SetAnimation(gRacePlayerGraphNode, 0);
-                gRacePlayerGraphNode->unk_040.unk_08 = 0;
+                gRacePlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
                 gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
             }
         }
@@ -984,7 +984,7 @@ void RattataGame_MainLoop(void) {
 
         ModelAnim_SetAnimation(var_s2, 1);
         ModelAnim_ClearEventTrack(var_s2);
-        var_s2->unk_040.unk_08 = (Rand_Range(5) * 0x3) << 0x10;
+        var_s2->unk_040.RentalSlotAnimData_PosePhase = (Rand_Range(5) * 0x3) << 0x10;
         RattataGame_ResetRacerState(temp_s1);
         temp_s1->unk_1C8 = 0;
         temp_s1->unk_1B2 = 4;
@@ -1170,12 +1170,12 @@ void RattataGame_UpdatePostRaceIdleAnim(void) {
             continue;
         }
 
-        if ((ModelAnim_IsFinished(gRacePlayerGraphNode) == 0) && (gRacePlayerGraphNode->unk_040.unk_08 < 0x340000)) {
+        if ((ModelAnim_IsFinished(gRacePlayerGraphNode) == 0) && (gRacePlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase < 0x340000)) {
             continue;
         }
 
         ModelAnim_SetAnimation(gRacePlayerGraphNode, 5);
-        gRacePlayerGraphNode->unk_040.unk_08 = 0x270000;
+        gRacePlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0x270000;
     }
 }
 
@@ -1190,7 +1190,7 @@ void RattataGame_PlayResultAnimation(void) {
             gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
         } else {
             ModelAnim_SetAnimation(gRacePlayerGraphNode, 5);
-            gRacePlayerGraphNode->unk_040.unk_08 = 0;
+            gRacePlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
             gRacePlayerGraphNode->unk_040.unk_0C = 0x10000;
             ModelAnim_SetEventTrack(gRacePlayerGraphNode, 0);
         }
@@ -1280,7 +1280,7 @@ void RattataGame_LoadAssets(void) {
     gRaceStageReady = 0;
     gRaceStageData = Model_LoadByArchiveIndex(0xB8);
     ModelRenderer_AttachDisplayObject(&gRacePlayerGraphNodeTemp);
-    Model_InitDisplayObject(&gRacePlayerGraphNodeTemp, 0, 0xB8, gRaceStageData->unk_08->posX[0]);
+    Model_InitDisplayObject(&gRacePlayerGraphNodeTemp, 0, 0xB8, gRaceStageData->RentalSlotAnimData_PosePhase->posX[0]);
     gRacePlayerGraphNodeTemp.unk_024.y = -26.0f;
     gRaceStageData = Model_LoadByArchiveIndex(0xAF);
 
@@ -1291,7 +1291,7 @@ void RattataGame_LoadAssets(void) {
 
         RattataGame_InitAIDifficulty(gRacePlayerState);
         ModelRenderer_AttachDisplayObject(temp_s0);
-        Model_InitDisplayObject(temp_s0, 0, 0xAF, gRaceStageData->unk_08->posX[0]);
+        Model_InitDisplayObject(temp_s0, 0, 0xAF, gRaceStageData->RentalSlotAnimData_PosePhase->posX[0]);
         temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
         temp_s0->unk_024.y = 0.0f;
         temp_s0->unk_030.x = 1.0f;
@@ -1316,7 +1316,7 @@ void RattataGame_LoadAssets(void) {
             gRaceObstaclePtr->unk_002 = 0;
             temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
             temp_s0->unk_024.y = -25.0f;
-            temp_s0->unk_040.unk_08 = 0x730000;
+            temp_s0->unk_040.RentalSlotAnimData_PosePhase = 0x730000;
             temp_s0->unk_040.unk_0C = 0;
         }
     }
@@ -1368,7 +1368,7 @@ void RattataGame_InitPlayerSlots(void) {
             gRaceObstaclePtr->unk_170 = 0;
             temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
             temp_s0->unk_024.y = -25.0f;
-            temp_s0->unk_040.unk_08 = 0x730000;
+            temp_s0->unk_040.RentalSlotAnimData_PosePhase = 0x730000;
             temp_s0->unk_040.unk_0C = 0;
         }
     }

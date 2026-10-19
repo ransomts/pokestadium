@@ -6,39 +6,39 @@
 
 typedef struct SelectionDirection {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ u16 unk_08;
+    /* 0x08 */ u16 RentalSlotAnimData_PosePhase;
 } SelectionDirection; // size >= 0xA
 
 typedef struct SteppedRangeSelection {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } SteppedRangeSelection; // size >= 0x10
 
 typedef struct VerticalSelection {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } VerticalSelection; // size >= 0xC
 
 typedef struct HorizontalSelection {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } HorizontalSelection; // size >= 0xC
 
 typedef struct SteppedScrollSelection {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } SteppedScrollSelection; // size >= 0x10
 
 typedef struct PortSummary {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } PortSummary; // size = 0xC
 
 typedef struct ret_func_8002ED08 {
@@ -48,7 +48,7 @@ typedef struct ret_func_8002ED08 {
 typedef struct unk_func_8820E99C_030_030 {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
 } unk_func_8820E99C_030_030; // size = 0x14
@@ -56,7 +56,7 @@ typedef struct unk_func_8820E99C_030_030 {
 typedef struct NumericSelection {
     /* 0x00 */ s32 posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
 } NumericSelection; // size = 0x14

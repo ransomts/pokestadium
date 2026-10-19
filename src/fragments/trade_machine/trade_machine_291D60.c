@@ -21,7 +21,7 @@ s32 Trade_WriteDeckAndCommitCart(RentalItemInfo* arg0) {
         sp24 = Deck_Open(0x21, arg0->posY, arg0->rotation - 1, 1);
     }
 
-    Deck_WriteEntries(&arg0->unk_0C->posX, arg0->unk_08, sp24);
+    Deck_WriteEntries(&arg0->unk_0C->posX, arg0->RentalSlotAnimData_PosePhase, sp24);
     Deck_CloseAndFlush(sp24);
 
     var_v1 = GbSave_WriteBoxBanks(arg0->posY);
@@ -48,21 +48,21 @@ s32 Trade_StepCartWriteSequence(RentalMenuState* arg0) {
         }
     }
 
-    if (arg0->unk_08 < 2) {
+    if (arg0->RentalSlotAnimData_PosePhase < 2) {
         for (i = 0, ptr = &sp30[0]; i < 2; i++, ptr++) {
-            if (i < arg0->unk_08) {
+            if (i < arg0->RentalSlotAnimData_PosePhase) {
                 continue;
             }
 
             if (GbSave_InvalidateMainDataChecksum(ptr->posY) != 0) {
-                arg0->unk_08++;
+                arg0->RentalSlotAnimData_PosePhase++;
             } else {
                 break;
             }
         }
     }
 
-    if (arg0->unk_08 < 2) {
+    if (arg0->RentalSlotAnimData_PosePhase < 2) {
         return 0;
     }
 
@@ -95,7 +95,7 @@ void Trade_InitSaveSequence(s32 arg0) {
     ptr->posY = 0xA;
     ptr->rotation = 0;
     ptr->unk_06 = -1;
-    ptr->unk_08 = 0;
+    ptr->RentalSlotAnimData_PosePhase = 0;
     ptr->unk_0A = 0;
     ptr->unk_0C = 0;
     ptr->unk_0E = 0;
@@ -301,7 +301,7 @@ void Trade_UpdateSaveSeqBeginWrite(RentalMenuState* arg0) {
         arg0->posX = 7;
         arg0->posY = 5;
         arg0->unk_06 = -1;
-        arg0->unk_08 = 0;
+        arg0->RentalSlotAnimData_PosePhase = 0;
         arg0->unk_0A = 0;
         arg0->unk_0C = 0;
         arg0->unk_0E = 0;
@@ -534,9 +534,9 @@ void Trade_DrawSaveSeqMenuPanel(RentalMenuState* arg0) {
     }
 
     {
-        static s16 D_82F13F78 = 0;
+        static s16 gSaveSeqMenuMarkerAnim = 0;
 
-        temp_ft3 = SINS(D_82F13F78) * 3.0f;
+        temp_ft3 = SINS(gSaveSeqMenuMarkerAnim) * 3.0f;
 
         if (arg0->rotation & 1) {
             Ui_DrawTextureMarker(var_s4->posX + temp_ft3 + 0x10, var_s4->posY + (gRentalMenuCursorIndex * 0x1C) + 0x14);
@@ -578,7 +578,7 @@ void Trade_DrawSaveSeqMenuPanel(RentalMenuState* arg0) {
         }
 
         Font_EndTexturedTextRendering();
-        D_82F13F78 += 0x1000;
+        gSaveSeqMenuMarkerAnim += 0x1000;
     }
 }
 
@@ -631,15 +631,15 @@ void Trade_DrawSaveSeqMessageBackdrop(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 void RentalMenu_DrawMessage(RentalMenuState* arg0) {
-    static s16 D_82F13F88 = 0;
+    static s16 gSaveSeqMessageAnim = 0;
 
     s32 pad[2];
     char sp38[64];
     s32 pad2[2];
     RentalItemInfo sp20;
 
-    if (arg0->unk_08 < 2) {
-        Trade_GetPickScreenSnapshot(arg0->unk_08, &sp20);
+    if (arg0->RentalSlotAnimData_PosePhase < 2) {
+        Trade_GetPickScreenSnapshot(arg0->RentalSlotAnimData_PosePhase, &sp20);
     } else {
         Trade_GetPickScreenSnapshot(arg0->unk_0A, &sp20);
     }
@@ -687,7 +687,7 @@ void RentalMenu_DrawMessage(RentalMenuState* arg0) {
     }
 
     Font_EndTexturedTextRendering();
-    D_82F13F88 += 0x800;
+    gSaveSeqMessageAnim += 0x800;
 }
 
 s32 Trade_GetSaveSeqState(void) {
@@ -777,7 +777,7 @@ void Trade_UpdateSaveSeq(void) {
 }
 
 void Trade_DrawSaveSeq(void) {
-    static s16 D_82F13F8C[] = { 0x32, 0x14A };
+    static s16 gPortPanelYOffsets[] = { 0x32, 0x14A };
 
     RentalMenuState* ptr = &gRentalMenuState;
     s32 i;
@@ -797,7 +797,7 @@ void Trade_DrawSaveSeq(void) {
 
         if (ptr->rotation & 4) {
             for (i = 0; i < 2; i++) {
-                Trade_DrawPortInfoPanel(i, D_82F13F8C[i], 0x2A);
+                Trade_DrawPortInfoPanel(i, gPortPanelYOffsets[i], 0x2A);
             }
         }
         RentalMenu_DrawMessage(&gRentalMenuState);

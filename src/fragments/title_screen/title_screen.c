@@ -19,15 +19,15 @@
 static char** gMessageBank14;
 static s32 pad_D_82100EA4;
 static SessionModeSettings gTitleSessionSettings;
-static BinArchive* D_82100EB0;
-static u8* D_82100EB4;
+static BinArchive* gTitleBgArchive;
+static u8* gTitleBgTexture;
 static void* gTitleScratchBuffer;
 static void* gAudioBankBuffer;
 static u16 gMenuOption;
 static s16* gMenuStatePtr;
 static s32 gBorderEnabled;
 
-void func_82100020(void) {
+void Title_Init(void) {
 }
 
 void Title_DrawMenuOption(UNUSED s32 arg0, UNUSED s32 arg1) {
@@ -164,7 +164,7 @@ void Title_DrawBackgroundImage(u8* arg0) {
 
 void Title_DrawFrame(void) {
     BgStage_DrawFrame();
-    Title_DrawBackgroundImage(D_82100EB4);
+    Title_DrawBackgroundImage(gTitleBgTexture);
     if ((Cont_GetControllerBits() & 1) && (gBorderEnabled != 0)) {
         Title_DrawPressStartBlink(0x6E, 0xAF);
     }
@@ -350,12 +350,12 @@ void Title_LoadAssets(void) {
     gTitleScratchBuffer = main_pool_alloc(0x4510, 0);
     gAudioBankBuffer = main_pool_alloc(0x100000, 0);
 
-    D_82100EB0 = ASSET_LOAD2(backgrounds, 1, 1);
+    gTitleBgArchive = ASSET_LOAD2(backgrounds, 1, 1);
 
     if (gTitleSessionSettings.posX == 0x1F8) {
-        D_82100EB4 = BinArchive_GetFile(D_82100EB0, 0x11);
+        gTitleBgTexture = BinArchive_GetFile(gTitleBgArchive, 0x11);
     } else {
-        D_82100EB4 = BinArchive_GetFile(D_82100EB0, 0);
+        gTitleBgTexture = BinArchive_GetFile(gTitleBgArchive, 0);
     }
 
     gBorderEnabled = 0;

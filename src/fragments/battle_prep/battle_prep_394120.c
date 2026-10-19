@@ -54,7 +54,7 @@ void BattlePrep_SaveVictoryPalaceRecords(void) {
     unk_D_800AE540_0874* temp_v0;
     PokemonData* var_s1;
 
-    temp_v0 = gSessionContext.battleSides[0].unk_08[0]->trainerData;
+    temp_v0 = gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData;
     temp_s0 = temp_v0->unk_002;
     var_s1 = temp_v0->unk_028;
 
@@ -241,31 +241,31 @@ void BattlePrep_DrawTrainerStatusIcon(FramebufferImage* arg0, s16 arg1, u8* arg2
     Gfx_DrawTextureRgba16(4, 0x40, 0x38, 0x1C, arg2 + 0x1008, 0x40, 0x200000);
 
     if (gSessionContext.unk_0000 == 0 || gSessionContext.unk_0000 == 9) {
-        if (temp_v1->unk_08[0]->unk_000 & 2) {
+        if (temp_v1->RentalSlotAnimData_PosePhase[0]->unk_000 & 2) {
             Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, &D_3016900, 0x30, 0x200000);
-        } else if (temp_v1->unk_01 == 1) {
-            Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, gTrainerIconTextures[temp_v1->unk_08[0]->unk_001], 0x30, 0x200000);
+        } else if (temp_v1->TrainerSlotSaveData_GamePort == 1) {
+            Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, gTrainerIconTextures[temp_v1->RentalSlotAnimData_PosePhase[0]->unk_001], 0x30, 0x200000);
         } else {
-            if (temp_v1->unk_08[0]->unk_001 < temp_v1->unk_08[1]->unk_001) {
-                Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, gTrainerIconTextures[temp_v1->unk_08[0]->unk_001], 0x30, 0x200000);
-                Gfx_DrawTextureRgba16(8, 0x14, 0x30, 0x10, gTrainerIconTextures[temp_v1->unk_08[1]->unk_001], 0x30, 0x200000);
+            if (temp_v1->RentalSlotAnimData_PosePhase[0]->unk_001 < temp_v1->RentalSlotAnimData_PosePhase[1]->unk_001) {
+                Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, gTrainerIconTextures[temp_v1->RentalSlotAnimData_PosePhase[0]->unk_001], 0x30, 0x200000);
+                Gfx_DrawTextureRgba16(8, 0x14, 0x30, 0x10, gTrainerIconTextures[temp_v1->RentalSlotAnimData_PosePhase[1]->unk_001], 0x30, 0x200000);
             } else {
-                Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, gTrainerIconTextures[temp_v1->unk_08[1]->unk_001], 0x30, 0x200000);
-                Gfx_DrawTextureRgba16(8, 0x14, 0x30, 0x10, gTrainerIconTextures[temp_v1->unk_08[0]->unk_001], 0x30, 0x200000);
+                Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, gTrainerIconTextures[temp_v1->RentalSlotAnimData_PosePhase[1]->unk_001], 0x30, 0x200000);
+                Gfx_DrawTextureRgba16(8, 0x14, 0x30, 0x10, gTrainerIconTextures[temp_v1->RentalSlotAnimData_PosePhase[0]->unk_001], 0x30, 0x200000);
             }
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else if ((arg1 == 0) || (gSessionContext.unk_0000 == 0xA)) {
-        Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, gTrainerIconTextures[temp_v1->unk_08[0]->unk_001], 0x30, 0x200000);
+        Gfx_DrawTextureRgba16(8, 4, 0x30, 0x10, gTrainerIconTextures[temp_v1->RentalSlotAnimData_PosePhase[0]->unk_001], 0x30, 0x200000);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-        BattlePrep_DrawCenteredText(arg1, 0x14, temp_v1->unk_08[0]->trainerData->unk_014);
+        BattlePrep_DrawCenteredText(arg1, 0x14, temp_v1->RentalSlotAnimData_PosePhase[0]->trainerData->unk_014);
     } else {
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-        BattlePrep_DrawCenteredText(arg1, 6, temp_v1->unk_08[0]->trainerData->unk_220);
+        BattlePrep_DrawCenteredText(arg1, 6, temp_v1->RentalSlotAnimData_PosePhase[0]->trainerData->unk_220);
     }
 }
 
@@ -465,7 +465,7 @@ void BattlePrep_CheckPikachuNeedsSurf(void) {
 
     if (!(gSessionContext.sessionFlags & 2) && (gSessionContext.inRound2 == 1) && (gSessionContext.unk_0000 == 6) &&
         (gSessionContext.unk_0002 == 3)) {
-        var_a1 = gSessionContext.battleSides[0].unk_08[0];
+        var_a1 = gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0];
         temp_v1 = var_a1->trainerData;
 
         for (i = 0; i < temp_v1->unk_002; i++) {
@@ -539,7 +539,7 @@ void BattlePrep_RunNormalRoundIntro(void) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
-    if (gSessionContext.battleSides[1].unk_08[0]->unk_000 & 2) {
+    if (gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->unk_000 & 2) {
         if (gSessionContext.battleSides[0].unk_1C == 1) {
             Audio_PlayMusicIfChanged(0x32);
         } else {
@@ -1079,7 +1079,7 @@ u8 BattlePrep_CheckTeamChosen(void) {
         if (gSessionContext.battleSides[0].unk_1C == 1) {
             var_v1 = 1;
             for (i = 0; i < 3; i++) {
-                if (gSessionContext.battleSides[0].unk_08[0]->unk_01C[i].posY == 0) {
+                if (gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->unk_01C[i].posY == 0) {
                     var_v1 = 0;
                 }
             }

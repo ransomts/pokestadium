@@ -15,7 +15,7 @@ void Gallery_RentalViewerSaveBoxCursor(GallerySelection* arg0) {
     arg0->posY = D_838067F0.unk_001C;
     arg0->rotation = D_838067F0.unk_0020;
     arg0->unk_06 = D_838067F0.cursorColumn;
-    arg0->unk_08 = D_838067F0.unk_0028;
+    arg0->RentalSlotAnimData_PosePhase = D_838067F0.unk_0028;
 }
 
 s32 Gallery_RentalViewerGetLoadState(void) {
@@ -180,7 +180,7 @@ s32 Gallery_RentalViewerOpenBoxPicker(s32 arg0, GallerySelection* arg1) {
         ptr->unk_001C = arg1->posY;
         ptr->unk_0020 = arg1->rotation;
         ptr->cursorColumn = arg1->unk_06;
-        ptr->unk_0028 = arg1->unk_08;
+        ptr->unk_0028 = arg1->RentalSlotAnimData_PosePhase;
     } else {
         ptr->unk_001C = 0xD;
         ptr->unk_0020 = 0;

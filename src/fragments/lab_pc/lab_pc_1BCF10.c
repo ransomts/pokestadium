@@ -4,7 +4,7 @@
 
 typedef struct unk_func_8820BE14_02C_038_02C_02C {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8820BE14_02C_038_02C_02C; // size >= 0xC
 
 typedef struct unk_func_8820BE14_02C_038_02C {
@@ -217,7 +217,7 @@ s32 LabPC_ScrollableGrid_UpdateScroll(unk_func_8820BE14_02C_038* arg0) {
             }
         }
     } else if ((arg0->unk_56 & 0x100) && !(arg0->unk_54 & 0x100)) {
-        s32 tmp1 = arg0->posX.unk_3E * (arg0->posX.unk_2C->unk_08 + 1);
+        s32 tmp1 = arg0->posX.unk_3E * (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase + 1);
         s32 tmp2 = arg0->posX.unk_3E * arg0->posX.unk_4A;
 
         if ((arg0->unk_60 - arg0->unk_5C) < arg0->unk_68) {
@@ -281,7 +281,7 @@ s32 LabPC_ScrollableGrid_DrawCells(unk_func_8820BE14_02C_038* arg0, s32 arg1, s3
         if (arg0->posX.unk_30 != 0) {
             var_s6 = arg0->posX.unk_2C->unk_0C;
         }
-        var_s4 = arg0->posX.unk_2C->unk_08 + 1;
+        var_s4 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase + 1;
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -370,7 +370,7 @@ s32 StatBar_Draw(unk_func_88507D4C* arg0, s32 arg1, s32 arg2) {
         s32 var_t5 = 0;
 
         if ((arg0->unk_2C->posX.unk_2C != NULL) &&
-            ((arg0->unk_2C->unk_58 + sp12C) < (arg0->unk_2C->posX.unk_3E * (arg0->unk_2C->posX.unk_2C->unk_08 + 1)))) {
+            ((arg0->unk_2C->unk_58 + sp12C) < (arg0->unk_2C->posX.unk_3E * (arg0->unk_2C->posX.unk_2C->RentalSlotAnimData_PosePhase + 1)))) {
             var_t5 = 1;
         }
 
@@ -399,7 +399,7 @@ s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1
     s32 sp18 = 0;
     s32 var_a1;
 
-    if ((arg0->posX.unk_2C == NULL) || (arg0->posX.unk_2C->unk_08 == 0)) {
+    if ((arg0->posX.unk_2C == NULL) || (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase == 0)) {
         return 0;
     }
 
@@ -441,7 +441,7 @@ s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1
             var_t2 = 0x80000000;
         }
     } else if ((arg0->unk_54 & 0x400) && ((arg0->unk_56 & ~0x400) == 0)) {
-        s32 temp_lo_2 = arg0->posX.unk_3E * (arg0->posX.unk_2C->unk_08 + 1);
+        s32 temp_lo_2 = arg0->posX.unk_3E * (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase + 1);
         s32 temp_lo_6;
 
         if (arg0->unk_56 == 0) {
@@ -512,7 +512,7 @@ s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1
         }
     } else if (arg0->unk_54 & 0x100) {
         if (!(arg0->unk_56 & ~0x100)) {
-            s32 temp_lo_2 = arg0->posX.unk_3E * (arg0->posX.unk_2C->unk_08 + 1);
+            s32 temp_lo_2 = arg0->posX.unk_3E * (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase + 1);
             s32 temp_lo_6 = arg0->posX.unk_3E * arg0->posX.unk_4A;
             s32 temp_a3 = (temp_lo_2 - arg0->unk_5C) - arg0->posX.unk_3E;
 
@@ -582,7 +582,7 @@ void LabPC_ScrollableGrid_SetSwapMode(unk_func_8820BE14_02C_038* arg0, s32 arg1)
         arg0->posX.posX.unk_18 = LabPC_ScrollableGrid_DrawCells;
         arg0->posX.posX.unk_20 = ScrollableList_HandleInput;
         arg0->unk_84->posX.unk_18 = StatBar_Draw;
-        if (arg0->posX.unk_2C->unk_08 > 0) {
+        if (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase > 0) {
             ((func88507AE4)Memmap_GetFragmentVaddr(WidgetTree_SetScrollableGridIndex))(arg0, arg0->posX.unk_38 + 1);
         }
     } else {
@@ -591,7 +591,7 @@ void LabPC_ScrollableGrid_SetSwapMode(unk_func_8820BE14_02C_038* arg0, s32 arg1)
         arg0->posX.posX.unk_18 = arg0->unk_78;
         arg0->posX.posX.unk_20 = arg0->unk_7C;
         arg0->unk_84->posX.unk_18 = arg0->unk_80;
-        if ((arg1 == 1) && (arg0->posX.unk_38 > 0) && (arg0->posX.unk_2C->unk_08 > 0)) {
+        if ((arg1 == 1) && (arg0->posX.unk_38 > 0) && (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase > 0)) {
             ((func88507B80)Memmap_GetFragmentVaddr(WidgetTree_SetScrollableGridIndexPreserveScroll))(arg0, arg0->posX.unk_38 - 1);
         }
     }
@@ -644,7 +644,7 @@ s32 LabPC_PageCounterWidget_Draw(unk_func_882170A8* arg0, s32 arg1, s32 arg2) {
         return 0;
     }
 
-    LabPC_DrawPageCounterDigits(arg1, arg2, temp_v0->unk_08, temp_v0->rotation, arg0->unk_30);
+    LabPC_DrawPageCounterDigits(arg1, arg2, temp_v0->RentalSlotAnimData_PosePhase, temp_v0->rotation, arg0->unk_30);
     return 0;
 }
 

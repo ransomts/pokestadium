@@ -16,7 +16,7 @@ typedef struct unk_func_88205880_00D0 {
 typedef struct unk_func_88200FA0_030_038 {
     /* 0x00 */ unk_func_88205880_00D0** posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_88200FA0_030_038; // size = 0xC
 
 typedef struct unk_func_88201DA0_034 {
@@ -28,14 +28,14 @@ typedef struct unk_func_88201DA0_034 {
 typedef struct unk_func_88201DA0_038 {
     /* 0x00 */ unk_func_88201DA0_034* posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } unk_func_88201DA0_038; // size = 0x10
 
 typedef struct unk_func_88205880_A030 {
     /* 0x00 */ unk_func_88205880_00D0** posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_88205880_A030; // size = 0xC
 
 typedef struct unk_func_8820BE14_06C_000 {
@@ -52,19 +52,19 @@ typedef struct unk_func_8820BE14_06C_000_alt {
 typedef struct unk_func_8820BE14_06C {
     /* 0x00 */ unk_func_8820BE14_06C_000* posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } unk_func_8820BE14_06C; // size = 0x10
 
 typedef struct unk_func_8830867C_02C_0CC_000_000_000 {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_0CC_000_000_000; // size >= 0xC
 
 typedef struct unk_func_8830867C_02C_0CC_000_000_010_000_000 {
     /* 0x00 */ struct unk_func_8830867C_02C_0CC_000_000* posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ PokemonData unk_08;
+    /* 0x08 */ PokemonData RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_0CC_000_000_010_000_000; // size >= 0x5C
 
 typedef struct unk_func_8830867C_02C_0CC_000_000_010_000 {
@@ -74,13 +74,13 @@ typedef struct unk_func_8830867C_02C_0CC_000_000_010_000 {
 typedef struct unk_func_8830867C_02C_0CC_000_000_010 {
     /* 0x00 */ unk_func_8830867C_02C_0CC_000_000_010_000* posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_0CC_000_000_010; // size = 0xC
 
 typedef struct unk_func_8830867C_02C_0CC_000_000 {
     /* 0x00 */ unk_func_8830867C_02C_0CC_000_000_000* posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ unk_func_8830867C_02C_0CC_000_000_010 unk_10;
 } unk_func_8830867C_02C_0CC_000_000; // size = 0x1C
@@ -113,7 +113,7 @@ typedef struct unk_func_8830867C_02C_0CC_000_008 {
 typedef struct LabPCListEntry {
     /* 0x00 */ unk_func_8830867C_02C_0CC_000_000* posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ unk_func_8830867C_02C_0CC_000_008 unk_08;
+    /* 0x08 */ unk_func_8830867C_02C_0CC_000_008 RentalSlotAnimData_PosePhase;
     /* 0x38 */ char unk_38[4];
     /* 0x3C */ char unk3C[0x20];
 } LabPCListEntry; // size = 0x5C
@@ -121,13 +121,13 @@ typedef struct LabPCListEntry {
 typedef struct unk_func_8830867C_02C_0CC {
     /* 0x00 */ LabPCListEntry** posX;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_0CC; // size = 0xC
 
 typedef struct unk_func_8830867C_04C_030_02C_000_000_00C {
     /* 0x00 */ s32 posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_04C_030_02C_000_000_00C; // size >= 0xC
 
 typedef s32 (*func_func_8002D1AC)(LabPCListEntry*, s32*);

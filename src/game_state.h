@@ -23,7 +23,7 @@ typedef struct FragmentCallContext {
 
 typedef struct unk_func_80026268_arg0_000 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } unk_func_80026268_arg0_000; // size = 0x2
 
 typedef struct PokemonData {
@@ -33,7 +33,7 @@ typedef struct PokemonData {
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09[4];
     /* 0x0D */ u8 pad0D;
     /* 0x0E */ u16 unk_0E;
@@ -88,10 +88,10 @@ typedef struct BattleAI_TeamContext {
 
 typedef struct BattlePokemon {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
     /* 0x04 */ BattleAI_TeamContext* rotation;
-    /* 0x08 */ BattleAI_TeamContext* unk_08[2];
+    /* 0x08 */ BattleAI_TeamContext* RentalSlotAnimData_PosePhase[2];
     /* 0x10 */ AssetManager* unk_10;
     /* 0x14 */ ModelRootNode* unk_14;
     /* 0x18 */ ModelRootNode* unk_18;

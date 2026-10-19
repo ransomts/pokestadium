@@ -74,7 +74,7 @@ typedef struct HPHistoryEntry {
 
 typedef struct AudioCommandMapEntry {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } AudioCommandMapEntry;
 
 // .data

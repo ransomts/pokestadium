@@ -680,7 +680,7 @@ void Trade_DrawPortInfoPanel(s16 arg0, s16 arg1, s16 arg2) {
 
     Trade_DrawRoundedFrameSmall(arg1, arg2, 0x104, 0x28, 0x1E, 0x1E, 0x82, 0xFF);
 
-    switch (sp40->unk_01) {
+    switch (sp40->TrainerSlotSaveData_GamePort) {
         case 1:
             sp3C = D_3029C68;
             break;
@@ -708,7 +708,7 @@ void Trade_DrawPortInfoPanel(s16 arg0, s16 arg1, s16 arg2) {
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Font_Printf(D_82F13C08[arg0] + arg1, arg2 + 0xC, sp40->unk_08);
+    Font_Printf(D_82F13C08[arg0] + arg1, arg2 + 0xC, sp40->RentalSlotAnimData_PosePhase);
     Font_SetActive(4, 0);
     Font_Printf(D_82F13C08[arg0] + arg1 + 0x8E, arg2 + 0x14, "%05d", sp40->unk_06);
     Font_SetActive(4, 0);
@@ -1005,7 +1005,7 @@ s32 Trade_GetPickScreenSnapshot(s32 arg0, RentalItemInfo* arg1) {
         arg1->posY = ptr->unk_000E;
         arg1->rotation = ptr->unk_0010;
         arg1->unk_06 = (ptr->unk_001A * 5) + ptr->unk_0018;
-        arg1->unk_08 = ptr->pokemonGroups[ptr->unk_0010].unk_000;
+        arg1->RentalSlotAnimData_PosePhase = ptr->pokemonGroups[ptr->unk_0010].unk_000;
         arg1->unk_0C = &ptr->pokemonGroups[ptr->unk_0010].unk_00C;
         ret = 1;
     }

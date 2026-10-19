@@ -3,7 +3,7 @@
 typedef struct unk_func_81206FA0 {
   /* 0x00 */ s32 posX;
   /* 0x04 */ s32 rotation;
-  /* 0x08 */ s32 unk_08;
+  /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
   /* 0x0C */ s32 unk_0C;
 } unk_func_81206FA0; // size = 0x10
 
@@ -12,7 +12,7 @@ typedef struct GbApuConfig {
     /* 0x02 */ u16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ u8 pad0E[0x2A];
@@ -45,7 +45,7 @@ u32 GbApu_AllocZeroed(unk_func_81206FA0* arg0, s32 arg1) {
   u32 var_a1;
   temp_v0 = ALIGN16(arg1);
   temp_a2 = arg0->rotation;
-  if ((arg0->posX + arg0->unk_08) >= (temp_a2 + temp_v0)) {
+  if ((arg0->posX + arg0->RentalSlotAnimData_PosePhase) >= (temp_a2 + temp_v0)) {
       arg0->rotation += temp_v0;
       var_a1 = temp_a2;
       while (var_a1 < arg0->rotation) {
@@ -64,7 +64,7 @@ s32 GbApu_Alloc(unk_func_81206FA0* arg0, s32 arg1) {
 
   temp_v0 = ALIGN16(arg1);
   temp_a2 = arg0->rotation;
-  if ((arg0->posX + arg0->unk_08) >= (arg0->rotation + temp_v0)) {
+  if ((arg0->posX + arg0->RentalSlotAnimData_PosePhase) >= (arg0->rotation + temp_v0)) {
       arg0->rotation = temp_v0 + temp_a2;
   } else {
       return 0;
@@ -76,7 +76,7 @@ s32 GbApu_Alloc(unk_func_81206FA0* arg0, s32 arg1) {
 void GbApu_InitAllocator(unk_func_81206FA0* arg0, s32 arg1, s32 arg2) {
   arg0->posX = ALIGN16(arg1);
   arg0->rotation = ALIGN16(arg1);
-  arg0->unk_08 = (s32) (arg2 - (arg1 & 0xF));
+  arg0->RentalSlotAnimData_PosePhase = (s32) (arg2 - (arg1 & 0xF));
   arg0->unk_0C = 0;
 }
 
@@ -109,7 +109,7 @@ void GbPak_InitGfx(void) {
     gAudioConfig.unk_06 = (s16) (((gAudioConfig.posY / gAudioFramesPerSec) + 0xF) & ~0xF);
     var_v1_2 = (s16*) &gApuInitValues;
     gAudioConfig.unk_0A = (s16) (gAudioConfig.unk_06 - 0x10);
-    gAudioConfig.unk_08 = (s16) (gAudioConfig.unk_06 + 0x10);
+    gAudioConfig.RentalSlotAnimData_PosePhase = (s16) (gAudioConfig.unk_06 + 0x10);
     do {
         *var_v1_2 = 0xA0;
         var_v1_2++;

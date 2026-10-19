@@ -20,7 +20,7 @@ typedef struct MenuItem {
     /* 0x00 */ u8* posX;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16* unk_0C;
     /* 0x10 */ s16 unk_10;
@@ -32,7 +32,7 @@ typedef struct MenuSubPanelItem {
     /* 0x00 */ u8* posX;
     /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
 } MenuSubPanelItem; // size = 0xC
 
 static s32 gGalleryMenuMode;
@@ -222,10 +222,10 @@ void Gallery_SnapUpdateMenuIconStates(void) {
 
             case 5:
                 if (gGallerySpecialViewed == 0) {
-                    ptr->unk_08 = 9;
+                    ptr->RentalSlotAnimData_PosePhase = 9;
                     ptr->unk_0A = sp1C[1];
                 } else {
-                    ptr->unk_08 = 0x44;
+                    ptr->RentalSlotAnimData_PosePhase = 0x44;
                     ptr->unk_0A = 0x46;
                 }
 
@@ -422,7 +422,7 @@ s32 Gallery_SnapUpdateGridInput(GallerySceneGrid* arg0) {
     }
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {
-        sp3C = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
+        sp3C = (arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + arg0->posX;
         sp38 = arg0->unk_20[sp3C];
         if (arg0->rotation == -1) {
             if (Gallery_IsSceneReady(sp38) != 0) {
@@ -473,7 +473,7 @@ s32 Gallery_SnapUpdateGridInput(GallerySceneGrid* arg0) {
         }
         Audio_PlaySoundEffectById(3);
     } else if (gPlayer1Controller->buttonPressed & 4) {
-        idx = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
+        idx = (arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + arg0->posX;
         if (arg0->rotation == -1) {
             sp28 = arg0->unk_20[idx];
         } else {
@@ -576,7 +576,7 @@ void DrawMenuScreen(void) {
     Font_SetActive(8, 0);
 
     for (i = 0; i < 7; i++) {
-        temp_v0_4 = Gallery_GetUiString(gGalleryMenuItems[i].unk_08);
+        temp_v0_4 = Gallery_GetUiString(gGalleryMenuItems[i].RentalSlotAnimData_PosePhase);
         temp_s2 = ((0x73 - Font_MeasureTextExtent(0, 0, temp_v0_4)) / 2) + 0xC;
         tmp2 = (gGalleryMenuItems[i].unk_12 == 0) ? 0xFFu : 0x40u;
 
@@ -617,7 +617,7 @@ void Gallery_SnapDrawTitleBar(s32 arg0, s32 arg1, s32 arg2) {
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    sp34 = Gallery_GetUiString(sp20->unk_08);
+    sp34 = Gallery_GetUiString(sp20->RentalSlotAnimData_PosePhase);
     sp3C = (0x186 - Font_MeasureTextExtent(0, 0, sp34)) / 2;
     Text_SetEnvColor(0, 0, 0, 0xFF);
     Font_Printf(arg0 + sp3C + 2, arg1 + 5, sp34);
@@ -842,13 +842,13 @@ void DrawPokemonGrid(GallerySceneGrid* arg0) {
     }
 
     for (i = 0; i < arg0->unk_14; i++) {
-        temp_s0 = (arg0->unk_08 * arg0->unk_14) + i;
+        temp_s0 = (arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + i;
         Gallery_IndexToGridPos(arg0, &sp78, &sp74, i);
         temp_s1 = arg0->unk_20[temp_s0];
 
         if ((i != arg0->rotation) && (Gallery_IsSceneReady(temp_s1) != 0) && (temp_s1->posX == 2)) {
             for (j = 0; j < var_s6; j++) {
-                Gallery_DrawPhotoThumbnail(temp_s1->unk_08->img_p, (temp_s4 * sp78) + temp_fp + ((temp_s4 / 2) * (j % 2)),
+                Gallery_DrawPhotoThumbnail(temp_s1->RentalSlotAnimData_PosePhase->img_p, (temp_s4 * sp78) + temp_fp + ((temp_s4 / 2) * (j % 2)),
                               (temp_s5 * sp74) + sp8C + ((temp_s5 / 2) * (j / 2)), temp_s1->rotation, temp_s1->unk_06, 8,
                               1);
             }
@@ -865,7 +865,7 @@ void DrawPokemonGrid(GallerySceneGrid* arg0) {
                 Gallery_DrawDropShadow((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1),
                               (temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * tmp2), temp_s1->rotation, temp_s1->unk_06);
 
-                Gallery_DrawPhotoThumbnail(temp_s1->unk_08->img_p, ((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1)) - 0x10,
+                Gallery_DrawPhotoThumbnail(temp_s1->RentalSlotAnimData_PosePhase->img_p, ((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1)) - 0x10,
                               ((temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * tmp2)) - 0x10, temp_s1->rotation,
                               temp_s1->unk_06, 8, 1);
             }
@@ -972,7 +972,7 @@ void Gallery_SnapDrawFrame(void) {
 
 void Gallery_SnapUpdatePasteConfirm(GallerySceneGrid* arg0) {
     s32 var_a2 = 0;
-    s32 idx = (arg0->unk_08 * arg0->unk_14) + arg0->posX;
+    s32 idx = (arg0->RentalSlotAnimData_PosePhase * arg0->unk_14) + arg0->posX;
     Camera* temp_v1 = arg0->unk_20[idx];
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {

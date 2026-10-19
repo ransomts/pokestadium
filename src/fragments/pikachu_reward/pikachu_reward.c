@@ -122,15 +122,15 @@ s32 PikachuReward_FindPikachuOnCart(void) {
     s32 i;
     BattleAI_TeamContext* var_v1;
 
-    var_v1 = gSessionContext.battleSides[0].unk_08[0];
+    var_v1 = gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0];
 
     for (i = 0; i < var_v1->unk_002; i++) {
         if (var_v1->unk_01C[i].posX.posX == 0x19) {
             gPikachuSession.posX = (var_v1->unk_01C[i].unk_52 & 0x70) >> 4;
-            gPikachuSession.unk_01 = var_v1->unk_01C[i].unk_52 & 0xF;
-            if ((gPikachuSession.posX < 4) && (gPikachuSession.unk_01 < 0xD)) {
+            gPikachuSession.TrainerSlotSaveData_GamePort = var_v1->unk_01C[i].unk_52 & 0xF;
+            if ((gPikachuSession.posX < 4) && (gPikachuSession.TrainerSlotSaveData_GamePort < 0xD)) {
                 if (GbSave_LoadPort(gPikachuSession.posX) != 0) {
-                    gPikachuSession.posY = PikachuReward_SearchDeckForPikachu(gPikachuSession.posX, gPikachuSession.unk_01, var_v1->unk_01C[i].unk_53);
+                    gPikachuSession.posY = PikachuReward_SearchDeckForPikachu(gPikachuSession.posX, gPikachuSession.TrainerSlotSaveData_GamePort, var_v1->unk_01C[i].unk_53);
                     if (gPikachuSession.posY >= 0) {
                         return 1;
                     }
@@ -168,7 +168,7 @@ void PikachuReward_UpdateLeadPikachuAnimation(void) {
 
     if ((gPikachuNodes[0].unk_040.posX != 0) && (ModelAnim_IsFinished(&gPikachuNodes[0]) != 0)) {
         if (gPikachuActive != 0) {
-            gPikachuNodes[0].unk_000.unk_01 &= ~1;
+            gPikachuNodes[0].unk_000.TrainerSlotSaveData_GamePort &= ~1;
         } else {
             ModelAnim_SetAnimation(&gPikachuNodes[0], 0);
         }
@@ -177,35 +177,35 @@ void PikachuReward_UpdateLeadPikachuAnimation(void) {
 
 void PikachuReward_UpdateFollowerVisibility(void) {
     if (gPikachuVisibilityState == -1) {
-        gPikachuNodes[1].unk_000.unk_01 &= ~1;
-        gPikachuNodes[2].unk_000.unk_01 &= ~1;
-        gPikachuNodes[3].unk_000.unk_01 &= ~1;
+        gPikachuNodes[1].unk_000.TrainerSlotSaveData_GamePort &= ~1;
+        gPikachuNodes[2].unk_000.TrainerSlotSaveData_GamePort &= ~1;
+        gPikachuNodes[3].unk_000.TrainerSlotSaveData_GamePort &= ~1;
         return;
     }
 
     switch (gPikachuVisibilityState) {
         case 0x0:
-            gPikachuNodes[1].unk_000.unk_01 |= 1;
+            gPikachuNodes[1].unk_000.TrainerSlotSaveData_GamePort |= 1;
             break;
 
         case 0x8:
-            gPikachuNodes[2].unk_000.unk_01 |= 1;
+            gPikachuNodes[2].unk_000.TrainerSlotSaveData_GamePort |= 1;
             break;
 
         case 0x10:
-            gPikachuNodes[3].unk_000.unk_01 |= 1;
+            gPikachuNodes[3].unk_000.TrainerSlotSaveData_GamePort |= 1;
             break;
 
         case 0x46:
-            gPikachuNodes[1].unk_000.unk_01 &= ~1;
+            gPikachuNodes[1].unk_000.TrainerSlotSaveData_GamePort &= ~1;
             break;
 
         case 0x4E:
-            gPikachuNodes[2].unk_000.unk_01 &= ~1;
+            gPikachuNodes[2].unk_000.TrainerSlotSaveData_GamePort &= ~1;
             break;
 
         case 0x56:
-            gPikachuNodes[3].unk_000.unk_01 &= ~1;
+            gPikachuNodes[3].unk_000.TrainerSlotSaveData_GamePort &= ~1;
             break;
     }
 
@@ -647,10 +647,10 @@ void PikachuReward_SaveToCartridge(void) {
     s32 temp_v0;
     DeckHandle* var_v0;
 
-    if (gPikachuSession.unk_01 == 0) {
+    if (gPikachuSession.TrainerSlotSaveData_GamePort == 0) {
         var_v0 = Deck_Open(0x20, gPikachuSession.posX, 0, 2);
     } else {
-        var_v0 = Deck_Open(0x21, gPikachuSession.posX, gPikachuSession.unk_01 - 1, 2);
+        var_v0 = Deck_Open(0x21, gPikachuSession.posX, gPikachuSession.TrainerSlotSaveData_GamePort - 1, 2);
     }
 
     Deck_SetCursor(var_v0, gPikachuSession.posY);
@@ -721,7 +721,7 @@ void PikachuReward_RunSequence(void) {
 void PikachuReward_SetupFollowerModel(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, s16 arg3) {
     Model_InitDisplayObject(arg0, 0, 0, gPikachuGeoNode);
     ModelAnim_BindTransformCurve(arg0, 0, D_8C2011C4, 0x10000);
-    arg0->unk_000.unk_01 &= ~1;
+    arg0->unk_000.TrainerSlotSaveData_GamePort &= ~1;
     Vec3f_SetComponentsDuplicate(&arg0->unk_030, 1.5f, 1.5f, 1.5f);
     arg0->unk_024.x = arg1;
     arg0->unk_024.y = arg2;
@@ -743,7 +743,7 @@ void PikachuReward_SetupScene(void) {
         ModelRenderer_AttachDisplayObject(&gPikachuNodes[i]);
     }
 
-    Model_InitDisplayObject(&gPikachuNodes[0], 0, 0, gPikachuModelData->unk_08->posX[0]);
+    Model_InitDisplayObject(&gPikachuNodes[0], 0, 0, gPikachuModelData->RentalSlotAnimData_PosePhase->posX[0]);
     Vec3f_SetComponentsDuplicate(&gPikachuNodes[0].unk_030, 16.0f, 16.0f, 16.0f);
     ModelAnim_SetAnimation(&gPikachuNodes[0], 0);
     gPikachuNodes->unk_000.posY &= ~0x40;

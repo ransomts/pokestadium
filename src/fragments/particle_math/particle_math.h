@@ -24,10 +24,10 @@ typedef union unk_D_8140E728_01C_00C {
 
 typedef struct ParticleRenderSettings {
     /* 0x00 */ u8 posX;
-    /* 0x00 */ u8 unk_01;
+    /* 0x00 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x00 */ s16 posY;
     /* 0x04 */ unk_D_8140E728_01C_004_1_04 rotation;
-    /* 0x08 */ unk_D_8140E728_01C_004_1_08 unk_08;
+    /* 0x08 */ unk_D_8140E728_01C_004_1_08 RentalSlotAnimData_PosePhase;
     /* 0x0C */ unk_D_8140E728_01C_00C unk_0C;
 } ParticleRenderSettings; // size = 0x10
 
@@ -62,7 +62,7 @@ typedef struct ParticleSpawner {
 typedef struct ParticleEffectInstance {
     /* 0x00 */ struct ParticleEffectInstance* next;
     /* 0x04 */ struct ParticleEffectInstance* prev;
-    /* 0x08 */ func_unk_D_8140E724_008 unk_08;
+    /* 0x08 */ func_unk_D_8140E724_008 RentalSlotAnimData_PosePhase;
     /* 0x0C */ ParticleEffectData* unk_0C;
     /* 0x10 */ struct BattlePlayerEntity* unk_10;
     /* 0x14 */ Fragment2_1GraphNode* unk_14;
@@ -121,7 +121,7 @@ typedef void (*func_unk_D_8140E724)(struct ParticleEffectInstance*);
 typedef struct gBattleAnimEffectSlots {
     /* 0x00 */ func_unk_D_8140E724 posX;
     /* 0x04 */ ParticleEffectData* rotation;
-    /* 0x08 */ struct BattlePlayerEntity* unk_08;
+    /* 0x08 */ struct BattlePlayerEntity* RentalSlotAnimData_PosePhase;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
@@ -139,7 +139,7 @@ typedef struct gBattleAnimEffectSlots {
 typedef struct ColorLerpData {
     /* 0x00 */ s32 posX;
     /* 0x04 */ ColorLerpEntry5* rotation;
-    /* 0x08 */ ColorLerpEntry5* unk_08;
+    /* 0x08 */ ColorLerpEntry5* RentalSlotAnimData_PosePhase;
     /* 0x0C */ ColorLerpEntry5* unk_0C;
     /* 0x10 */ ColorLerpEntry4* unk_10;
     /* 0x14 */ ColorLerpEntry4* unk_14;
@@ -196,7 +196,7 @@ typedef struct arg1_func_81407874_014_004_008 {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
 } arg1_func_81407874_014_004_008; // size >= 0xA
 
 typedef struct arg1_func_81407874_014_004_004 {
@@ -215,7 +215,7 @@ typedef struct arg1_func_81407874_014_004_004 {
 typedef struct arg1_func_81407874_014_004 {
     /* 0x00 */ arg1_func_81407874_014_000* posX;
     /* 0x04 */ arg1_func_81407874_014_004_004* rotation;
-    /* 0x08 */ arg1_func_81407874_014_004_008* unk_08;
+    /* 0x08 */ arg1_func_81407874_014_004_008* RentalSlotAnimData_PosePhase;
     /* 0x0C */ arg1_func_81407874_014_000_014* unk_0C;
 } arg1_func_81407874_014_004; // size >= 0x4
 

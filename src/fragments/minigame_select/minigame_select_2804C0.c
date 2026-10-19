@@ -33,7 +33,7 @@ void KidsClub_SetMatchBannerState(s16 arg0) {
             ptr->posY = 0xA;
             ptr->rotation = -0xF8;
             ptr->unk_06 = 0x5A;
-            ptr->unk_08 = 0x280;
+            ptr->RentalSlotAnimData_PosePhase = 0x280;
             ptr->unk_0A = 0x15E;
             ptr->unk_10 = 0.0f;
             break;
@@ -41,7 +41,7 @@ void KidsClub_SetMatchBannerState(s16 arg0) {
         case 2:
             ptr->posY = 0x12C;
             ptr->rotation = 0xBC;
-            ptr->unk_08 = 0x5C;
+            ptr->RentalSlotAnimData_PosePhase = 0x5C;
             ptr->unk_0C = 0;
             break;
 
@@ -55,7 +55,7 @@ void KidsClub_SetMatchBannerState(s16 arg0) {
 void KidsClub_AdvanceMatchBannerOpen(MatchBanner* arg0) {
     arg0->posY--;
     arg0->rotation = ((arg0->posY * -0x1B4) / 10) + 0xBC;
-    arg0->unk_08 = ((arg0->posY * 0x224) / 10) + 0x5C;
+    arg0->RentalSlotAnimData_PosePhase = ((arg0->posY * 0x224) / 10) + 0x5C;
     if (arg0->posY <= 0) {
         KidsClub_SetMatchBannerState(2);
     }
@@ -76,7 +76,7 @@ void KidsClub_UpdateMatchBannerIdle(MatchBanner* arg0) {
 void KidsClub_AdvanceMatchBannerClose(MatchBanner* arg0) {
     arg0->posY--;
     arg0->rotation = ((arg0->posY * -0x1C4) / 10) + 0x280;
-    arg0->unk_08 = ((arg0->posY * 0x224) / 10) - 0x1C8;
+    arg0->RentalSlotAnimData_PosePhase = ((arg0->posY * 0x224) / 10) - 0x1C8;
     if (arg0->posY <= 0) {
         KidsClub_SetMatchBannerState(0);
     }
@@ -194,16 +194,16 @@ void KidsClub_DrawMatchBanner(void) {
 
     if (ptr->posX != 0) {
         KidsClub_DrawRoundedFrame(ptr->rotation, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
-        KidsClub_DrawRoundedFrame(ptr->unk_08, ptr->unk_0A, 0x1C8, 0x2C, 0x64, 0, 0x50, 0x80);
+        KidsClub_DrawRoundedFrame(ptr->RentalSlotAnimData_PosePhase, ptr->unk_0A, 0x1C8, 0x2C, 0x64, 0, 0x50, 0x80);
         Font_BeginTranslucentTextRendering();
         Font_SetActive(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         if (ptr->unk_10 <= 0.0f) {
             Font_Printf((ptr->rotation - (Font_MeasureTextExtent(0, 0, sp2C) / 2)) + 0x7C, ptr->unk_06 + 0xA, sp2C);
-            Font_Printf((ptr->unk_08 - (Font_MeasureTextExtent(0, 0, sp28) / 2)) + 0xE4, ptr->unk_0A + 0xA, sp28);
+            Font_Printf((ptr->RentalSlotAnimData_PosePhase - (Font_MeasureTextExtent(0, 0, sp28) / 2)) + 0xE4, ptr->unk_0A + 0xA, sp28);
         } else {
             KidsClub_DrawWavyText(ptr->rotation + 0x18, ptr->unk_06 + 0xA, sp2C, ptr->unk_10, ptr->unk_0C);
-            KidsClub_DrawWavyText(ptr->unk_08 + 0x18, ptr->unk_0A + 0xA, sp28, ptr->unk_10, ptr->unk_0C);
+            KidsClub_DrawWavyText(ptr->RentalSlotAnimData_PosePhase + 0x18, ptr->unk_0A + 0xA, sp28, ptr->unk_10, ptr->unk_0C);
         }
         Font_EndTexturedTextRendering();
     }
@@ -253,12 +253,12 @@ void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1) {
             ptr->unk_10 = ptr->unk_12 = arg1;
             ptr->unk_0C = ptr->unk_0E = Font_MeasureTextExtent(0, 0, gOptionMenuItems[ptr->unk_12], arg1) + 0x30;
             ptr->rotation = ptr->unk_06 = (0x280 - ptr->unk_0C) / 2;
-            ptr->unk_08 = -0x2C;
+            ptr->RentalSlotAnimData_PosePhase = -0x2C;
             ptr->unk_0A = 0x1E0;
             break;
 
         case 2:
-            ptr->unk_08 = 0x3C;
+            ptr->RentalSlotAnimData_PosePhase = 0x3C;
             break;
 
         case 3:
@@ -269,7 +269,7 @@ void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1) {
 
 void KidsClub_AdvanceRoundBannerOpen(RoundBanner* arg0) {
     arg0->posY--;
-    arg0->unk_08 = ((arg0->posY * -0x68) / 10) + 0x3C;
+    arg0->RentalSlotAnimData_PosePhase = ((arg0->posY * -0x68) / 10) + 0x3C;
     arg0->unk_0A = ((arg0->posY * 0x56) / 10) + 0x18A;
     if (arg0->posY <= 0) {
         KidsClub_SetRoundBannerState(2, -1);
@@ -289,7 +289,7 @@ void KidsClub_UpdateRoundBannerCrossfade(RoundBanner* arg0) {
 
 void KidsClub_AdvanceRoundBannerClose(RoundBanner* arg0) {
     arg0->posY--;
-    arg0->unk_08 = ((arg0->posY * 0x68) / 10) - 0x2C;
+    arg0->RentalSlotAnimData_PosePhase = ((arg0->posY * 0x68) / 10) - 0x2C;
     arg0->unk_0A = ((arg0->posY * -0x56) / 10) + 0x1E0;
     if (arg0->posY <= 0) {
         KidsClub_SetRoundBannerState(0, -1);
@@ -325,12 +325,12 @@ void KidsClub_DrawRoundBanner(void) {
 
     if (ptr->posX != 0) {
         if (ptr->unk_10 == ptr->unk_12) {
-            KidsClub_DrawRoundedFrame(ptr->rotation, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
+            KidsClub_DrawRoundedFrame(ptr->rotation, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
         } else {
             tmp = (ptr->posY << 7) / 5;
-            KidsClub_DrawRoundedFrame(ptr->rotation, ptr->unk_08, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, tmp);
+            KidsClub_DrawRoundedFrame(ptr->rotation, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, tmp);
             tmp = ((-ptr->posY * 0x80) + 0x280) / 5;
-            KidsClub_DrawRoundedFrame(ptr->unk_06, ptr->unk_08, ptr->unk_0E, 0x2C, 0x1E, 0x1E, 0x82, tmp);
+            KidsClub_DrawRoundedFrame(ptr->unk_06, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0E, 0x2C, 0x1E, 0x1E, 0x82, tmp);
         }
 
         if (gMenuSelectedOption == -1) {
@@ -342,15 +342,15 @@ void KidsClub_DrawRoundBanner(void) {
         sp3C = gOptionMenuItems[ptr->unk_10];
         if (ptr->unk_10 == ptr->unk_12) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(ptr->rotation + 0x18, ptr->unk_08 + 0xA, sp3C);
+            Font_Printf(ptr->rotation + 0x18, ptr->RentalSlotAnimData_PosePhase + 0xA, sp3C);
         } else {
             tmp = (ptr->posY * 0xFF) / 5;
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
-            Font_Printf(ptr->rotation + 0x18, ptr->unk_08 + 0xA, sp3C);
+            Font_Printf(ptr->rotation + 0x18, ptr->RentalSlotAnimData_PosePhase + 0xA, sp3C);
             sp3C = gOptionMenuItems[ptr->unk_12];
             tmp = ((5 - ptr->posY) * 0xFF) / 5;
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
-            Font_Printf(ptr->unk_06 + 0x18, ptr->unk_08 + 0xA, sp3C);
+            Font_Printf(ptr->unk_06 + 0x18, ptr->RentalSlotAnimData_PosePhase + 0xA, sp3C);
         }
 
         if (gMenuSelectedOption == -1) {

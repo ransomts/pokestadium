@@ -59,7 +59,7 @@ void BattleAnim_InitializeParticleChain(ParticleEffectInstance* arg0, Vec3f arg1
     while (arg0 != NULL) {
         ParticleMath_CopyVec3f(&arg0->unk_68, &arg1);
         ParticleMath_CopyVec3s(&arg0->unk_94, &arg2);
-        arg0->unk_08 = arg3;
+        arg0->RentalSlotAnimData_PosePhase = arg3;
         arg0->unk_0C = arg4;
         arg0->unk_10 = 0;
         arg0->unk_14 = 0;
@@ -71,7 +71,7 @@ void BattleAnim_InitializeParticleChain(ParticleEffectInstance* arg0, Vec3f arg1
 
 void BattleAnim_CloneParticleState(ParticleEffectInstance* arg0, ParticleEffectInstance* arg1, func_unk_D_8140E724_008 arg2, ParticleEffectData* arg3,
                    s32 arg4) {
-    arg0->unk_08 = arg2;
+    arg0->RentalSlotAnimData_PosePhase = arg2;
     arg0->unk_0C = arg3;
     arg0->unk_10 = arg1->unk_10;
     arg0->paletteIndex = arg1->paletteIndex;
@@ -338,7 +338,7 @@ void BattleAnim_UpdateParticlePool(void) {
         if (var_s0->unk_D0 != 0) {
             BattleAnim_UpdateParticleAnchor(var_s0);
             BattleAnim_UpdateParticleCameraScale(var_s0);
-            var_s0->unk_08(var_s0);
+            var_s0->RentalSlotAnimData_PosePhase(var_s0);
             BattleAnim_UpdateOrDestroyParticle(var_s0);
         }
     }
@@ -359,7 +359,7 @@ void BattleAnim_InitializeParticleFromEffect(ParticleEffectInstance* arg0, Battl
     while (arg0 != NULL) {
         arg0->unk_10 = arg1;
         arg0->unk_AC = arg3++;
-        arg0->unk_08 = arg2->posX;
+        arg0->RentalSlotAnimData_PosePhase = arg2->posX;
         arg0->unk_0C = arg2->rotation;
         arg0->targetAlpha = arg2->unk_19;
         arg0->metadata = arg2->unk_1A;
@@ -388,7 +388,7 @@ void BattleAnim_SpawnEffectParticles(gBattleAnimEffectSlots* arg0, s32 arg1) {
     s16 var_s2;
     ParticleEffectData* temp_a2 = arg0->rotation;
     ParticleRenderSettings* temp_a3 = arg0->rotation->rotation.a;
-    BattlePlayerEntity* tmp08 = arg0->unk_08;
+    BattlePlayerEntity* tmp08 = arg0->RentalSlotAnimData_PosePhase;
     s16 tmp12 = arg0->unk_12;
 
     switch (arg1) {
@@ -422,7 +422,7 @@ void BattleAnim_SpawnBatchedParticles(gBattleAnimEffectSlots* arg0) {
 
 void BattleAnim_SpawnSingleParticle(gBattleAnimEffectSlots* arg0) {
     UNUSED s32 pad;
-    BattlePlayerEntity* sp18 = arg0->unk_08;
+    BattlePlayerEntity* sp18 = arg0->RentalSlotAnimData_PosePhase;
 
     BattleAnim_InitializeParticleFromEffect(Particle_New(), sp18, arg0, 0);
 }
@@ -646,7 +646,7 @@ gBattleAnimEffectSlots* BattleAnim_CreateEffectSlot(s32 arg0, s32 arg1, s8 arg2,
         sp1C->unk_14 = arg2;
         sp1C->posX = arg3;
         sp1C->rotation = arg4;
-        sp1C->unk_08 = arg5;
+        sp1C->RentalSlotAnimData_PosePhase = arg5;
         sp1C->unk_16 = arg8;
         sp1C->unk_10 = arg6;
         sp1C->unk_12 = arg7;

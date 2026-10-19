@@ -130,13 +130,13 @@ void BattleMoveListWidget_SetMoves(unk_func_8830867C_04C_078* arg0, PokemonData*
 
 typedef struct unk_func_88309614 {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_88309614; // size >= 0xC
 
 void BattleMoveListWidget_DisableUnavailableMoves(unk_func_8830867C_04C_078* arg0) {
     s32 i;
 
-    for (i = 0; i < ((unk_func_88309614*)arg0->unk_30->unk_2C)->unk_08; i++) {
+    for (i = 0; i < ((unk_func_88309614*)arg0->unk_30->unk_2C)->RentalSlotAnimData_PosePhase; i++) {
         if ((Move_GetDisplayInfo(arg0->unk_44[i].posX) == NULL) || (arg0->unk_44[i].rotation >= 0xC0)) {
             arg0->unk_30->unk_34[i] |= 4;
         }
@@ -188,7 +188,7 @@ void BattleMoveListWidget_Update(void) {
 s32 BattleInfoWidget_GetEntryDisabledFlags(unk_func_8830867C_034_03C_038_02C_000* arg0) {
     s32 var_v1 = 0;
 
-    if (arg0->unk_08 != 0) {
+    if (arg0->RentalSlotAnimData_PosePhase != 0) {
         var_v1 = 2;
     }
     return var_v1;
@@ -207,7 +207,7 @@ void BattleInfoWidget_ApplyEntryDisabledFlags(unk_func_8830867C_034_03C* arg0) {
         temp_s3 = arg0->unk_38[i];
         var_s0 = temp_s3->unk_2C->posX;
 
-        for (j = 0; j < temp_s3->unk_2C->unk_08; j++, var_s0++) {
+        for (j = 0; j < temp_s3->unk_2C->RentalSlotAnimData_PosePhase; j++, var_s0++) {
             temp_s3->unk_34[j] |= BattleInfoWidget_GetEntryDisabledFlags(var_s0);
         }
     }
@@ -227,7 +227,7 @@ void BattleInfoWidget_SetActivePageFlags(unk_func_8830867C_034_03C* arg0, s32 ar
     if (arg0->unk_34->unk_2C != 0) {
         temp_a1 = arg0->unk_38[arg0->unk_34->unk_2C - 1];
 
-        for (i = 0; i < temp_a1->unk_2C->unk_08; i++) {
+        for (i = 0; i < temp_a1->unk_2C->RentalSlotAnimData_PosePhase; i++) {
             temp_a1->unk_34[i] &= ~2;
             temp_a1->unk_34[i] |= var_v0;
         }
@@ -243,8 +243,8 @@ void BattleInfoWidget_SyncEntrySelection(unk_func_8830867C_034_03C* arg0) {
     for (i = 0; i < 2; i++) {
         temp_v0 = arg0->unk_38[i];
         ptr = temp_v0->unk_2C->posX;
-        for (j = 0; j < temp_v0->unk_2C->unk_08; j++, ptr++) {
-            ptr->unk_08 = (temp_v0->unk_34[j] & 2) != 0;
+        for (j = 0; j < temp_v0->unk_2C->RentalSlotAnimData_PosePhase; j++, ptr++) {
+            ptr->RentalSlotAnimData_PosePhase = (temp_v0->unk_34[j] & 2) != 0;
         }
     }
 }
@@ -466,7 +466,7 @@ s32 BattleInfoWidget_GetPageSelectionFlags(unk_func_8830867C_02C_144_000* arg0) 
     unk_func_8830867C_02C_0CC_000_000* ptr = arg0->unk_0C;
 
     for (i = 0; i < arg0->unk_14; i++) {
-        if (ptr[i].unk_08 != 0) {
+        if (ptr[i].RentalSlotAnimData_PosePhase != 0) {
             var_v1 |= 2;
         }
     }
@@ -479,7 +479,7 @@ void BattleInfoWidget_SyncParentSelection(unk_func_8830867C_034* arg0, unk_func_
     unk_func_8830867C_034_03C_038* temp_v0 = arg1->unk_38[arg1->unk_34->unk_2C - 1];
     s32 var_v1 = 0;
 
-    for (i = 0; i < temp_v0->unk_2C->unk_08; i++) {
+    for (i = 0; i < temp_v0->unk_2C->RentalSlotAnimData_PosePhase; i++) {
         if (arg0) {}
 
         if (temp_v0->unk_34[i] & 2) {
@@ -496,7 +496,7 @@ void BattleInfoWidget_UpdateEntryFlags(unk_func_8830867C_034* arg0) {
     s32 i;
     unk_func_8830867C_02C_144_000* var_s2 = arg0->unk_30->unk_2C->posX;
 
-    for (i = 0; i < arg0->unk_30->unk_2C->unk_08; i++, var_s2++) {
+    for (i = 0; i < arg0->unk_30->unk_2C->RentalSlotAnimData_PosePhase; i++, var_s2++) {
         arg0->unk_30->unk_34[i] = 0;
         arg0->unk_30->unk_34[i] |= BattleInfoWidget_GetPageSelectionFlags(var_s2);
     }
@@ -513,7 +513,7 @@ void BattleInfoWidget_UpdateConfirmState(unk_func_8830867C_034* arg0) {
 
     var_a1 = 1;
 
-    for (i = 0; i < ptr->unk_08; i++) {
+    for (i = 0; i < ptr->RentalSlotAnimData_PosePhase; i++) {
         if (temp_v0->unk_34[i] & 2) {
             var_a1 = 0;
             break;
@@ -535,7 +535,7 @@ void BattleInfoWidget_ApplyEntrySelection(unk_func_8830867C_034* arg0, s32 arg1)
     unk_func_8830867C_02C_144_000* ptr = &((unk_func_8830867C_02C_144*)(arg0->unk_30->unk_2C))->posX[arg1];
     unk_func_8830867C_02C_0CC_000_000* ptr2 = ptr->unk_0C;
 
-    ptr2->unk_08 = (arg0->unk_30->unk_34[arg1] & 2) != 0;
+    ptr2->RentalSlotAnimData_PosePhase = (arg0->unk_30->unk_34[arg1] & 2) != 0;
 }
 
 void BattleInfoWidget_DrawStatusEntry(s32 arg0, s32 arg1, unk_func_88309C38_arg2* arg2, s32 arg3, s32 arg4,
@@ -742,7 +742,7 @@ s32 BattleInfoWidget_HandleSelectionProxyInput(unk_func_8830867C_034_038* arg0, 
         var_a0 = arg0->posX.posX.rotation;
 
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->posX.posX.unk_08;
+            var_a0 = var_a0->posX.posX.RentalSlotAnimData_PosePhase;
         }
 
         var_v1 = var_a0->posX.unk_10(var_a0, arg1);
@@ -791,7 +791,7 @@ s32 BattleInfoWidget_HandleSelectionProxyInput(unk_func_8830867C_034_038* arg0, 
             if (arg1->buttonPressed & 0x800) {
                 arg0->unk_24->unk_34->posX.unk_28 |= 1;
                 ((func88506BFC)Memmap_GetFragmentVaddr(WidgetTree_SetPagedGridSelection))(arg0->unk_24->unk_30,
-                                                                       arg0->unk_24->unk_30->unk_2C->unk_08 - 1);
+                                                                       arg0->unk_24->unk_30->unk_2C->RentalSlotAnimData_PosePhase - 1);
                 BattleInfoWidget_SelectPage(arg0->unk_24->unk_3C, arg0->unk_24->unk_30->unk_38);
                 ((func8850CD24)Memmap_GetFragmentVaddr(WidgetTree_SetChildSelectionProxySelection))(arg0, 0);
                 var_v1 = 0x80000009;
@@ -943,7 +943,7 @@ void BattleInfoWidget_SetLabels(unk_func_8830867C_030* arg0, char** arg1, s32 ar
     arg0->unk_3C->unk_4A = arg2;
 
     arg0->unk_2C->posX.unk_14.posX = var_s1;
-    arg0->unk_2C->posX.unk_14.posY = (arg0->unk_40.unk_08 * 0x1C) + 8;
+    arg0->unk_2C->posX.unk_14.posY = (arg0->unk_40.RentalSlotAnimData_PosePhase * 0x1C) + 8;
 
     arg0->unk_3C->unk_3C = var_s1;
     arg0->unk_3C->unk_3E = 0x1C;
@@ -1260,7 +1260,7 @@ void BattleInfoWidget_SetStatusSelection(unk_func_8830867C_038* arg0, s32 arg1) 
     ((func8850628C)Memmap_GetFragmentVaddr(WidgetTree_ClearEntryFlags))(arg0->unk_30);
     if (arg1 == -1) {
         sp1C = 0;
-        arg0->unk_30->unk_34[arg0->unk_30->unk_2C->unk_08 - 1] |= 4;
+        arg0->unk_30->unk_34[arg0->unk_30->unk_2C->RentalSlotAnimData_PosePhase - 1] |= 4;
     } else {
         sp1C = arg1;
         arg0->unk_30->unk_34[arg1] |= 2;
@@ -1532,7 +1532,7 @@ void BattleInfoWidget_SetLevelRange(unk_func_8830867C_044* arg0, s32 arg1, s32 a
     arg0->unk_38->unk_30.unk_0C = 3;
     arg0->unk_38->unk_30.posX = arg1;
     arg0->unk_38->unk_30.rotation = 1;
-    arg0->unk_38->unk_30.unk_08 = 0x64;
+    arg0->unk_38->unk_30.RentalSlotAnimData_PosePhase = 0x64;
     arg0->unk_38->unk_30.unk_10 = 0;
 
     BattleInfoWidget_UpdateNumberIndicator(arg0->unk_38);
@@ -1540,7 +1540,7 @@ void BattleInfoWidget_SetLevelRange(unk_func_8830867C_044* arg0, s32 arg1, s32 a
     arg0->unk_3C->unk_30.unk_0C = 3;
     arg0->unk_3C->unk_30.posX = arg2;
     arg0->unk_3C->unk_30.rotation = 1;
-    arg0->unk_3C->unk_30.unk_08 = 0x64;
+    arg0->unk_3C->unk_30.RentalSlotAnimData_PosePhase = 0x64;
     arg0->unk_3C->unk_30.unk_10 = 0;
 
     BattleInfoWidget_UpdateNumberIndicator(arg0->unk_3C);
@@ -1623,7 +1623,7 @@ s32 BattleInfoWidget_LevelRangeSelectionInput(unk_func_8830867C_044_040* arg0, C
         var_a0 = arg0->posX.posX.rotation;
 
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->posX.posX.unk_08;
+            var_a0 = var_a0->posX.posX.RentalSlotAnimData_PosePhase;
         }
         var_v1 = var_a0->posX.unk_10(var_a0, arg1);
     }
@@ -2038,7 +2038,7 @@ s32 BattleInfoWidget_HandleTypeSelectionProxyInput(unk_func_8830867C_03C_04C* ar
     if (arg0->posX.unk_20 > 0) {
         var_a0 = arg0->posX.posX.rotation;
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->posX.posX.unk_08;
+            var_a0 = var_a0->posX.posX.RentalSlotAnimData_PosePhase;
         }
 
         var_t2 = var_a0->posX.unk_10(var_a0, arg1);
@@ -2158,7 +2158,7 @@ void BattleInfoWidget_DrawTypeEntry(s32 arg0, s32 arg1, unk_func_88309C38_arg2* 
     Text_SetEnvColor(0xF0, 0xF0, 0xF0, 0xFF);
     Font_Printf(((arg0 + sp7C) - Font_MeasureTextExtent(0, 0, sp74)) + 8, arg1 + 8, sp74);
 
-    sp84 = (((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(arg2->unk_01))->rotation;
+    sp84 = (((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(arg2->TrainerSlotSaveData_GamePort))->rotation;
     Text_SetEnvColor(sp84.r, sp84.g, sp84.b, sp84.a);
     Font_SetActive(8, 0);
 
@@ -2452,7 +2452,7 @@ s32 MenuItem_ProcessInput(unk_func_8830867C_040_05C* arg0, Controller* arg1) {
         var_a0 = arg0->posX.posX.rotation;
 
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->posX.posX.unk_08;
+            var_a0 = var_a0->posX.posX.RentalSlotAnimData_PosePhase;
         }
 
         var_t2 = var_a0->posX.unk_10(var_a0, arg1);
@@ -3224,10 +3224,10 @@ void BattleInfoWidget_MarkIneligibleItems(unk_func_8830867C_04C* arg0) {
     s32 var_v0;
     unk_func_8830867C_04C_030_02C_000* var_s2 = arg0->unk_30->unk_2C->posX;
 
-    for (i = 0; i < arg0->unk_30->unk_2C->unk_08; i++) {
-        if (var_s2->posX[i]->unk_08 >= 0x64) {
+    for (i = 0; i < arg0->unk_30->unk_2C->RentalSlotAnimData_PosePhase; i++) {
+        if (var_s2->posX[i]->RentalSlotAnimData_PosePhase >= 0x64) {
             var_v0 = LabPCList_CheckTmHmIneligibility(**(u8**)&var_s2->posX[i]->posX, arg0->unk_88);
-        } else if (var_s2->posX[i]->unk_08 >= 0x32) {
+        } else if (var_s2->posX[i]->RentalSlotAnimData_PosePhase >= 0x32) {
             var_v0 = LabPCList_CheckPpUpIneligibility(arg0->unk_88);
         } else {
             var_v0 = LabPCList_CheckVitaminIneligibility(**(u8**)&var_s2->posX[i]->posX, arg0->unk_88);
@@ -3276,12 +3276,12 @@ s32 BattleInfoWidget_GetItemMenuActionType(unk_func_8830867C_04C* arg0, s32* arg
     s32 sp1C = 0;
     unk_func_8830867C_04C_030_02C_000_000* ptr = arg0->unk_30->unk_2C->posX[arg0->unk_30->unk_38].posX[0];
 
-    if (ptr->unk_08 >= 0x64) {
+    if (ptr->RentalSlotAnimData_PosePhase >= 0x64) {
         sp1C = 0;
         if (BattleMon_CountMoves(arg1) >= 4) {
             sp1C = 2;
         }
-    } else if (ptr->unk_08 >= 0x32) {
+    } else if (ptr->RentalSlotAnimData_PosePhase >= 0x32) {
         sp1C = 1;
     }
     return sp1C;
@@ -3360,7 +3360,7 @@ s32 BattleInfoWidget_ItemMenuHandleInput(unk_func_8830867C_04C_080* arg0, Contro
     if (arg0->posX.unk_20 > 0) {
         var_a0 = arg0->posX.posX.rotation;
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->posX.posX.unk_08;
+            var_a0 = var_a0->posX.posX.RentalSlotAnimData_PosePhase;
         }
         var_s0 = var_a0->posX.unk_10(var_a0, arg1);
     }
@@ -3785,7 +3785,7 @@ void BattleInfoWidget_MarkFullBoxSlots(unk_func_88200FA0_030_030_1CEA00* arg0, L
     for (i = 0; i < arg2->unk_14; i++, sp24++) {
         if (sp24 == arg1->posX) {
             arg0->unk_34[i] |= 4;
-        } else if (sp24->unk_10.unk_08 >= arg2->unk_1C) {
+        } else if (sp24->unk_10.RentalSlotAnimData_PosePhase >= arg2->unk_1C) {
             arg0->unk_34[i] |= 4;
         }
     }
@@ -3803,7 +3803,7 @@ void BattleInfoWidget_MarkIneligibleDestinations(unk_func_8830867C_048* arg0, La
     temp_v0 = temp_s1->unk_0C;
     if (temp_v0 == arg1->posX) {
         arg0->unk_34->unk_34[0] |= 4;
-    } else if (temp_v0->unk_10.unk_08 >= temp_s1->unk_1C) {
+    } else if (temp_v0->unk_10.RentalSlotAnimData_PosePhase >= temp_s1->unk_1C) {
         arg0->unk_34->unk_34[0] |= 4;
     }
 
@@ -3893,7 +3893,7 @@ s32 BattleInfoWidget_MoveDestinationSelectionInput(unk_func_8830867C_048_048* ar
         var_a0 = arg0->posX.posX.rotation;
 
         for (i = 0; i < arg0->posX.unk_1C; i++) {
-            var_a0 = var_a0->posX.posX.unk_08;
+            var_a0 = var_a0->posX.posX.RentalSlotAnimData_PosePhase;
         }
 
         var_a2 = var_a0->posX.unk_10(var_a0, arg1);

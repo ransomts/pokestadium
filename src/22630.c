@@ -119,14 +119,14 @@ char* GetItemName(s32 arg0, char* arg1) {
 
 void Pokemon_FromGbRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1) {
     arg0->posX.posX = Species_FromInternalIndex(arg1->posX);
-    arg0->posX.unk_01 = arg1->posX;
-    arg0->posY = GbData_ReadU16BE(arg1->unk_01);
+    arg0->posX.TrainerSlotSaveData_GamePort = arg1->posX;
+    arg0->posY = GbData_ReadU16BE(arg1->TrainerSlotSaveData_GamePort);
 
     arg0->rotation = arg1->unk_03;
     arg0->unk_05 = arg1->rotation;
     arg0->unk_06 = arg1->unk_05;
     arg0->unk_07 = arg1->unk_06;
-    arg0->unk_08 = arg1->unk_07;
+    arg0->RentalSlotAnimData_PosePhase = arg1->unk_07;
 
     arg0->unk_0E = GbData_ReadU16BE(arg1->unk_0C);
     arg0->unk_10 = GbData_ReadU24BE(arg1->unk_0E);
@@ -137,7 +137,7 @@ void Pokemon_FromGbRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* a
     arg0->unk_1C = GbData_ReadU16BE(arg1->unk_19);
     arg0->unk_1E = GbData_ReadU16BE(arg1->unk_1B);
 
-    memcpy(arg0->unk_09, arg1->unk_08, 4);
+    memcpy(arg0->unk_09, arg1->RentalSlotAnimData_PosePhase, 4);
     memcpy(arg0->unk_20, arg1->unk_1D, 4);
 }
 
@@ -155,16 +155,16 @@ void Pokemon_ToGbRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg
     if (Species_ToInternalIndex(arg0->posX.posX) & 0xFF) {
         arg1->posX = Species_ToInternalIndex(arg0->posX.posX);
     } else {
-        arg1->posX = arg0->posX.unk_01;
+        arg1->posX = arg0->posX.TrainerSlotSaveData_GamePort;
     }
 
-    GbData_WriteU16BE(arg1->unk_01, (u16)arg0->posY);
+    GbData_WriteU16BE(arg1->TrainerSlotSaveData_GamePort, (u16)arg0->posY);
 
     arg1->unk_03 = arg0->rotation;
     arg1->rotation = arg0->unk_05;
     arg1->unk_05 = arg0->unk_06;
     arg1->unk_06 = arg0->unk_07;
-    arg1->unk_07 = arg0->unk_08;
+    arg1->unk_07 = arg0->RentalSlotAnimData_PosePhase;
 
     GbData_WriteU16BE(arg1->unk_0C, arg0->unk_0E);
     GbData_WriteU24BE(arg1->unk_0E, arg0->unk_10);
@@ -175,7 +175,7 @@ void Pokemon_ToGbRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg
     GbData_WriteU16BE(arg1->unk_19, arg0->unk_1C);
     GbData_WriteU16BE(arg1->unk_1B, arg0->unk_1E);
 
-    memcpy(arg1->unk_08, arg0->unk_09, 4);
+    memcpy(arg1->RentalSlotAnimData_PosePhase, arg0->unk_09, 4);
     memcpy(arg1->unk_1D, arg0->unk_20, 4);
 }
 

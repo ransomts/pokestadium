@@ -604,7 +604,7 @@ void TeamSelection_InitializeSlots(void) {
 
     for (i = 0; i < 4; i++) {
         gBattleSelectionSlots[i].posX = 0;
-        gBattleSelectionSlots[i].unk_01 = i;
+        gBattleSelectionSlots[i].TrainerSlotSaveData_GamePort = i;
         gBattleSelectionSlots[i].posY = i;
     }
 
@@ -616,7 +616,7 @@ void TeamSelection_InitializeSlots(void) {
             } else if (gSessionContext.unk_0000 == 0) {
                 gBattleSelectionSlots[var_v0->unk_001].posX = 1;
                 gBattleSelectionSlots[var_v0->unk_001].rotation = var_v0;
-                gBattleSelectionSlots[var_v0->unk_001].unk_01 = 4;
+                gBattleSelectionSlots[var_v0->unk_001].TrainerSlotSaveData_GamePort = 4;
                 gBattleSelectionSlots[var_v0->unk_001].posY = 0;
             }
         }
@@ -768,7 +768,7 @@ s32 Team_SelectTeams(void) {
 
     while (var_s1 >= 0 && var_s1 < 4) {
         if (gBattleSelectionSlots[var_s1].posX != 0) {
-            var_s2 = TeamSelection_RunModal(gBattleSelectionSlots[var_s1].posY, 0, gBattleSelectionSlots[var_s1].unk_01, 1);
+            var_s2 = TeamSelection_RunModal(gBattleSelectionSlots[var_s1].posY, 0, gBattleSelectionSlots[var_s1].TrainerSlotSaveData_GamePort, 1);
             gBattleSelectionSlots[var_s1].rotation->unk_002 = 0;
 
             if (var_s2 < 0) {
@@ -797,8 +797,8 @@ s32 Team_SelectTeams(void) {
 
                 TeamSelection_InitializeSlot(&gBattleSelectionSlots[(unsigned long)idx], var_s2);
                 TeamSelection_ApplySlotSelection(var_s1, var_s2);
-                TeamSelection_Open(var_s2, 0, gBattleSelectionSlots[var_s1].unk_01);
-                TeamSelection_RunInputLoop(var_s2, 0, gBattleSelectionSlots[var_s1].unk_01);
+                TeamSelection_Open(var_s2, 0, gBattleSelectionSlots[var_s1].TrainerSlotSaveData_GamePort);
+                TeamSelection_RunInputLoop(var_s2, 0, gBattleSelectionSlots[var_s1].TrainerSlotSaveData_GamePort);
 
                 if (Team_CommitSelectionToTrainer(&gBattleSelectionSlots[(unsigned long)idx], var_s2) != 0) {
                     var_s1++;
@@ -851,7 +851,7 @@ s32 Team_SelectRegisteredTeams(void) {
     while ((var_s1 >= 0) && (var_s1 < 4)) {
         if (gBattleSelectionSlots[var_s1].posX != 0) {
             if (gBattleSelectionSlots[var_s1].rotation->unk_002 == 0) {
-                var_s2 = TeamSelection_RunModal(gBattleSelectionSlots[var_s1].posY, 0, gBattleSelectionSlots[var_s1].unk_01, 1);
+                var_s2 = TeamSelection_RunModal(gBattleSelectionSlots[var_s1].posY, 0, gBattleSelectionSlots[var_s1].TrainerSlotSaveData_GamePort, 1);
             } else {
                 var_s2 = ((gBattleSelectionSlots[var_s1].rotation->unk_01C[0].unk_52 & 0x70) >> 4);
             }
@@ -882,8 +882,8 @@ s32 Team_SelectRegisteredTeams(void) {
                 }
                 TeamSelection_InitializeSlot(&gBattleSelectionSlots[(unsigned long)idx], var_s2);
                 TeamSelection_ApplySlotSelection(var_s1, var_s2);
-                TeamSelection_Open(var_s2, 0, gBattleSelectionSlots[var_s1].unk_01);
-                TeamSelection_RunInputLoop(var_s2, 0, gBattleSelectionSlots[var_s1].unk_01);
+                TeamSelection_Open(var_s2, 0, gBattleSelectionSlots[var_s1].TrainerSlotSaveData_GamePort);
+                TeamSelection_RunInputLoop(var_s2, 0, gBattleSelectionSlots[var_s1].TrainerSlotSaveData_GamePort);
                 if (Team_CommitSelectionToTrainer(&gBattleSelectionSlots[(unsigned long)idx], var_s2) != 0) {
                     var_s1++;
                 }

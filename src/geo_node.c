@@ -6,11 +6,11 @@
 void GeoNode_Init(GraphNode* arg0, u8 arg1) {
     if (arg0 != NULL) {
         arg0->posX = arg1;
-        arg0->unk_01 = 0x11;
+        arg0->TrainerSlotSaveData_GamePort = 0x11;
         arg0->posY = 0;
         arg0->unk_03 = 0;
         arg0->rotation = arg0;
-        arg0->unk_08 = arg0;
+        arg0->RentalSlotAnimData_PosePhase = arg0;
         arg0->unk_0C = NULL;
         arg0->unk_10 = NULL;
         arg0->unk_14 = NULL;
@@ -345,12 +345,12 @@ Fragment2_1GraphNode* GeoNode_CreateModelPart(MainPoolState* arg0, Fragment2_1Gr
         arg1->unk_03C.rgba = 0xFFFFFF00;
         arg1->unk_040.posX = 0;
         arg1->unk_040.rotation = NULL;
-        arg1->unk_040.unk_08 = 0;
+        arg1->unk_040.RentalSlotAnimData_PosePhase = 0;
         arg1->unk_040.unk_0C = 0x10000;
         arg1->unk_040.unk_12 = 0;
         arg1->unk_054.posX = 0;
         arg1->unk_054.rotation = NULL;
-        arg1->unk_054.unk_08 = 0;
+        arg1->unk_054.RentalSlotAnimData_PosePhase = 0;
         arg1->unk_054.unk_0A = 0;
         GeoNode_Init(&arg1->unk_000, 0x16);
         arg1->unk_000.posY |= 0x60;
@@ -519,7 +519,7 @@ void GeoCamera_SetBackground(CameraStruct* arg0, s16 arg1, s16 arg2, u8 arg3, u8
         }
     } else {
         ptr->posX = arg1;
-        ptr->unk_08 = arg2;
+        ptr->RentalSlotAnimData_PosePhase = arg2;
         ptr->unk_0A = 1;
         ptr->color.r = arg3;
         ptr->color.g = arg4;
@@ -550,26 +550,26 @@ void GraphNode_AppendChild(GraphNode* arg0, GraphNode* arg1) {
         if (temp_v0 == NULL) {
             arg0->unk_0C = arg1;
             arg1->rotation = arg1;
-            arg1->unk_08 = arg1;
+            arg1->RentalSlotAnimData_PosePhase = arg1;
         } else {
             temp_v1 = temp_v0->rotation;
-            arg1->unk_08 = temp_v0;
+            arg1->RentalSlotAnimData_PosePhase = temp_v0;
             arg1->rotation = temp_v1;
             temp_v0->rotation = arg1;
-            temp_v1->unk_08 = arg1;
+            temp_v1->RentalSlotAnimData_PosePhase = arg1;
         }
     }
 }
 
 void GraphNode_RemoveChild(GraphNode* arg0, GraphNode* arg1) {    
-    arg1->rotation->unk_08 = arg1->unk_08;
-    arg1->unk_08->rotation = arg1->rotation;
+    arg1->rotation->RentalSlotAnimData_PosePhase = arg1->RentalSlotAnimData_PosePhase;
+    arg1->RentalSlotAnimData_PosePhase->rotation = arg1->rotation;
     if ((CameraStruct*)arg1 == arg0->unk_0C) {
-        if (arg1 == arg1->unk_08) {
+        if (arg1 == arg1->RentalSlotAnimData_PosePhase) {
             arg0->unk_0C = NULL;
             return;
         }
-        arg0->unk_0C = (CameraStruct*)arg1->unk_08;
+        arg0->unk_0C = (CameraStruct*)arg1->RentalSlotAnimData_PosePhase;
     }
 }
 
@@ -579,7 +579,7 @@ GraphNode* GraphNode_GetChildAtIndex(GraphNode* arg0, s32 arg1) {
     var_v1 = (GraphNode*)arg0->unk_0C;
     if (var_v1 != NULL) {
         for (i = 0; i < arg1; i++) {
-            var_v1 = var_v1->unk_08;
+            var_v1 = var_v1->RentalSlotAnimData_PosePhase;
         }
     }
     return var_v1;

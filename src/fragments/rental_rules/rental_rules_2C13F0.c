@@ -123,10 +123,10 @@ SpeciesPage* RentalRules_AdvancePageNode(SpeciesPage* arg0, s32 arg1) {
 s32 RentalRules_ScrollPageUp(QualifyingSpeciesWindow* arg0) {
     s32 sp1C = 0;
 
-    if (RentalRules_BuildSpeciesPage(arg0->unk_10->unk_1C, arg0->unk_08 - 1, gSessionContext.unk_0001) > 0) {
+    if (RentalRules_BuildSpeciesPage(arg0->unk_10->unk_1C, arg0->RentalSlotAnimData_PosePhase - 1, gSessionContext.unk_0001) > 0) {
         arg0->posX = 3;
         arg0->posY = 4;
-        arg0->unk_08--;
+        arg0->RentalSlotAnimData_PosePhase--;
         arg0->unk_10 = arg0->unk_10->unk_1C;
         arg0->unk_0A = -1;
         arg0->unk_0C = -1;
@@ -140,10 +140,10 @@ s32 RentalRules_ScrollPageUp(QualifyingSpeciesWindow* arg0) {
 s32 RentalRules_ScrollPageDown(QualifyingSpeciesWindow* arg0) {
     s32 sp1C = 0;
 
-    if (RentalRules_BuildSpeciesPage(RentalRules_AdvancePageNode(arg0->unk_10, 5), arg0->unk_08 + 5, gSessionContext.unk_0001) > 0) {
+    if (RentalRules_BuildSpeciesPage(RentalRules_AdvancePageNode(arg0->unk_10, 5), arg0->RentalSlotAnimData_PosePhase + 5, gSessionContext.unk_0001) > 0) {
         arg0->posX = 3;
         arg0->posY = 4;
-        arg0->unk_08++;
+        arg0->RentalSlotAnimData_PosePhase++;
         arg0->unk_10 = arg0->unk_10->unk_18;
         arg0->unk_0A = 1;
         arg0->unk_0C = -1;
@@ -221,11 +221,11 @@ void RentalRules_DrawScrollbar(s16 arg0, s16 arg1, QualifyingSpeciesWindow* arg2
     Gfx_DrawTexturedRectClipped(arg0, arg1 + 8, 0x10, 0x10C, 0, 0, 0x400, 0, 0);
 
     if (arg2->posX != 3) {
-        temp_t0 = (arg2->unk_08 * 0x10C) / 21;
+        temp_t0 = (arg2->RentalSlotAnimData_PosePhase * 0x10C) / 21;
     } else if (arg2->unk_0A > 0) {
-        temp_t0 = (((arg2->unk_08 * 4) - arg2->posY) * 0x10C) / 84;
+        temp_t0 = (((arg2->RentalSlotAnimData_PosePhase * 4) - arg2->posY) * 0x10C) / 84;
     } else {
-        temp_t0 = (((arg2->unk_08 * 4) + arg2->posY) * 0x10C) / 84;
+        temp_t0 = (((arg2->RentalSlotAnimData_PosePhase * 4) + arg2->posY) * 0x10C) / 84;
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -423,7 +423,7 @@ void RentalRules_QualifyingSpeciesWindowOpen(void) {
     ptr->posX = 1;
     ptr->posY = 5;
     ptr->rotation = 0;
-    ptr->unk_08 = 0;
+    ptr->RentalSlotAnimData_PosePhase = 0;
     ptr->unk_0A = 0;
     ptr->unk_0C = -1;
     ptr->unk_06 = RentalRules_CountMatchingSpecies(gSessionContext.unk_0001);

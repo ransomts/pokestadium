@@ -23,13 +23,13 @@ typedef struct unk_D_81304008 {
 
 typedef struct unk_D_81303FA8 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ char unk05[0x1];
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ char unk_08[1];
+    /* 0x08 */ char RentalSlotAnimData_PosePhase[1];
     /* 0x09 */ char unk09[0xD];
 } unk_D_81303FA8; // size = 0x16
 

@@ -293,7 +293,7 @@ void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
         gCurrentHudState->unk_190->unk_18 = temp_v0;
 
         if ((gCurrentHudState->unk_010 == 0) || (gCurrentHudState->unk_00C == 1)) {
-            temp_a3 = gCurrentHudState->unk_028.unk_040.unk_08 >> 0x10;
+            temp_a3 = gCurrentHudState->unk_028.unk_040.RentalSlotAnimData_PosePhase >> 0x10;
 
             gSPDisplayList(temp_v0++, gDamageOverlayDL);
             gDPSetTileSize(temp_v0++, G_TX_RENDERTILE, 0x0000, (0x40 - (gDrowzeeFrameCounter % 64)) << 2, 0x007C,
@@ -370,7 +370,7 @@ void DrowzeeGame_UpdateRoundTick(s32 arg0) {
         if (arg0 == 2) {
             static u8 D_864029C0 = 0;
 
-            gCurrentHealthSegment = gDrowzeeGameStatePtr->unk_004.unk_040.unk_08 >> 0x10;
+            gCurrentHealthSegment = gDrowzeeGameStatePtr->unk_004.unk_040.RentalSlotAnimData_PosePhase >> 0x10;
             gHealthSegmentExactMatch = 0;
 
             for (i = 0; i < 8; i++) {
@@ -854,7 +854,7 @@ void DrowzeeGame_LoadAssets(void) {
     gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xC7);
     gCurrentGraphNode = &gResultScreenNode;
     ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC7, gDrowzeeModelTemp->unk_08->posX[0]);
+    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC7, gDrowzeeModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(gCurrentGraphNode, 0);
     ModelAnim_SetFrame(gCurrentGraphNode, 0);
     gDrowzeeModelTemp = Model_LoadByArchiveIndex(0xC4);
@@ -864,14 +864,14 @@ void DrowzeeGame_LoadAssets(void) {
         gCurrentGraphNode = &gCurrentHudState->unk_028;
 
         ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC4, gDrowzeeModelTemp->unk_08->posX[0]);
+        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC4, gDrowzeeModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
         gCurrentHudState->unk_004 = 0;
         ModelAnim_SetAnimation(gCurrentGraphNode, gCurrentHudState->unk_004);
         ModelAnim_SetFrame(gCurrentGraphNode, MiniGame_RandomRange(gCurrentGraphNode->unk_040.rotation->unk_0A));
 
         gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].posX;
         gCurrentGraphNode->unk_024.y = gPlayerSpawnInfo[i].rotation;
-        gCurrentGraphNode->unk_024.z = gPlayerSpawnInfo[i].unk_08;
+        gCurrentGraphNode->unk_024.z = gPlayerSpawnInfo[i].RentalSlotAnimData_PosePhase;
 
         gCurrentGraphNode->unk_030.x = gPlayerSpawnInfo[i].unk_0C;
         gCurrentGraphNode->unk_030.y = gPlayerSpawnInfo[i].unk_10;
@@ -902,7 +902,7 @@ void DrowzeeGame_LoadAssets(void) {
     gDrowzeeGameStatePtr = &gGameState;
     gCurrentGraphNode = &gDrowzeeGameStatePtr->unk_004;
     ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC3, gDrowzeeModelTemp->unk_08->posX[0]);
+    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC3, gDrowzeeModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
 
     gDrowzeeGameStatePtr->unk_001 = gDrowzeeGameStatePtr->unk_000 = 0;
 
@@ -923,13 +923,13 @@ void DrowzeeGame_LoadAssets(void) {
         gCurrentGraphNode = &gPlayerResultNodes[i];
 
         ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
-        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xD2, gDrowzeeModelTemp->unk_08->posX[0]);
+        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xD2, gDrowzeeModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(gCurrentGraphNode, 0);
         ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.rotation->unk_0A);
 
         gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].posX;
         gCurrentGraphNode->unk_024.y = 25.0f;
-        gCurrentGraphNode->unk_024.z = gPlayerSpawnInfo[i].unk_08;
+        gCurrentGraphNode->unk_024.z = gPlayerSpawnInfo[i].RentalSlotAnimData_PosePhase;
         gCurrentGraphNode->unk_01E.x = gPlayerSpawnInfo[i].unk_18;
         gCurrentGraphNode->unk_01E.y = gPlayerSpawnInfo[i].unk_1A;
         gCurrentGraphNode->unk_01E.z = gPlayerSpawnInfo[i].unk_1C;

@@ -33,7 +33,7 @@ typedef struct unk_D_84B1A598 {
 
 typedef struct RuleWindowState {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ char unk06[0x2];
@@ -41,7 +41,7 @@ typedef struct RuleWindowState {
 
 typedef struct gBannerState {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY[5];
     /* 0x0C */ void* unk_0C;
     /* 0x10 */ void* unk_10;
@@ -60,10 +60,10 @@ typedef struct gBannerState {
 
 typedef struct gBadgeCarouselAnim {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x04 */ s32 rotation;
-    /* 0x08 */ Fragment2_1GraphNode* unk_08;
+    /* 0x08 */ Fragment2_1GraphNode* RentalSlotAnimData_PosePhase;
     /* 0x0C */ GraphNode* unk_0C;
     /* 0x10 */ u8* unk_10[4];
     /* 0x20 */ char unk20[0x10];
@@ -72,10 +72,10 @@ typedef struct gBadgeCarouselAnim {
 
 typedef struct gTeamIconsState {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x04 */ Fragment2_1GraphNode* rotation;
-    /* 0x08 */ MiniHudMainGraph* unk_08;
+    /* 0x08 */ MiniHudMainGraph* RentalSlotAnimData_PosePhase;
     /* 0x0C */ MiniHudMainGraph* unk_0C;
     /* 0x10 */ MiniHudMainGraph* unk_10;
     /* 0x14 */ MiniHudMainGraph* unk_14;
@@ -89,9 +89,9 @@ typedef struct gTeamIconsState {
 
 typedef struct gBadgeAwardState {
     /* 0x00 */ u8 posX;
-    /* 0x00 */ u8 unk_01;
+    /* 0x00 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x04 */ Fragment2_1GraphNode* rotation;
-    /* 0x08 */ MiniHudMainGraph* unk_08;
+    /* 0x08 */ MiniHudMainGraph* RentalSlotAnimData_PosePhase;
     /* 0x0C */ MiniHudMainGraph* unk_0C;
     /* 0x10 */ MiniHudMainGraph* unk_10;
     /* 0x14 */ MiniHudMainGraph* unk_14;
@@ -107,7 +107,7 @@ typedef struct unk_D_84B25AC0_000 {
     /* 0x00 */ Fragment2_1GraphNode* posX;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ Color_RGB8 unk_08;
+    /* 0x08 */ Color_RGB8 RentalSlotAnimData_PosePhase;
     /* 0x0C */ u8* unk_0C;
 } unk_D_84B25AC0_000; // size = 0x10
 
@@ -115,7 +115,7 @@ typedef struct unk_D_84B25AC0_0A0 {
     /* 0x00 */ Fragment2_1GraphNode* posX;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ Color_RGBA8 unk_0A;
 } unk_D_84B25AC0_0A0; // size = 0x10
 
@@ -137,10 +137,10 @@ typedef struct gStarBurstState {
 
 typedef struct unk_D_84B26640_010_010 {
     /* 0x00 */ u8 posX;
-    /* 0x01 */ s8 unk_01;
+    /* 0x01 */ s8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s8 posY;
     /* 0x04 */ Fragment2_1GraphNode* rotation;
-    /* 0x08 */ MiniHudMainGraph* unk_08;
+    /* 0x08 */ MiniHudMainGraph* RentalSlotAnimData_PosePhase;
 } BarState; // size = 0xC
 
 typedef struct unk_D_84B26640 {
@@ -164,7 +164,7 @@ typedef struct RuleWindowLayout {
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;

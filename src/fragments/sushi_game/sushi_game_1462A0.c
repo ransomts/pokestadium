@@ -236,7 +236,7 @@ void SushiGame_ResetPlayerSubState(SushiNameTag* arg0) {
     arg0->posY = 0;
     arg0->unk_18 = 0xFF;
     arg0->unk_0C = 0.0f;
-    arg0->unk_08 = 0.0f;
+    arg0->RentalSlotAnimData_PosePhase = 0.0f;
     arg0->unk_14 = 0.0f;
     arg0->unk_10 = 0.0f;
 }
@@ -362,14 +362,14 @@ void SushiGame_InitPlayerSlot(SushiPlayerEntity* arg0, s32 arg1, s32 arg2) {
 
     arg0->unk_24C.unk_000.unk_14 = arg0->unk_000;
 
-    Model_InitDisplayObject(sp24, 0, 0xA0, gSushiGraphData->unk_08->posX[0]);
+    Model_InitDisplayObject(sp24, 0, 0xA0, gSushiGraphData->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(sp24, arg0->unk_0C0);
 
-    sp24->unk_040.unk_08 = Rand_Range(0x1E) << 0x10;
+    sp24->unk_040.RentalSlotAnimData_PosePhase = Rand_Range(0x1E) << 0x10;
 
     Model_InitDisplayObject(&arg0->unk_24C, 0, 0, gSushiGraphNode);
 
-    arg0->unk_24C.unk_000.unk_01 |= 1;
+    arg0->unk_24C.unk_000.TrainerSlotSaveData_GamePort |= 1;
     arg0->unk_24C.unk_000.posY |= 8;
 
     if (arg2 != 0) {
@@ -501,7 +501,7 @@ void SushiGame_SetPlayerEatState(SushiPlayerEntity* arg0, u32 arg1) {
             arg0->tintColor.rgba = -0x100;
             if ((arg0->unk_028 != 1) || (arg0->unk_018 == 0)) {
                 arg0->unk_0C0 = 9;
-                arg0->unk_24C.unk_000.unk_01 &= ~1;
+                arg0->unk_24C.unk_000.TrainerSlotSaveData_GamePort &= ~1;
             }
             arg0->unk_074.x = arg0->unk_074.z = 0.0f;
             arg0->unk_0C8 = 1.0f;
@@ -509,7 +509,7 @@ void SushiGame_SetPlayerEatState(SushiPlayerEntity* arg0, u32 arg1) {
     }
 }
 
-s32 SushiGame_IsPlateGrabbable(unk_D_868084D8* arg0, s32 arg1, s32 arg2) {
+s32 SushiGame_IsPlateGrabbable(SushiPlate* arg0, s32 arg1, s32 arg2) {
     if (arg0 == NULL) {
         return 1;
     }
@@ -533,7 +533,7 @@ s32 SushiGame_IsPlateGrabbable(unk_D_868084D8* arg0, s32 arg1, s32 arg2) {
     return 1;
 }
 
-SushiPlayerEntity* SushiGame_FindPlateClaimant(SushiPlayerEntity* arg0, unk_D_868084D8* arg1) {
+SushiPlayerEntity* SushiGame_FindPlateClaimant(SushiPlayerEntity* arg0, SushiPlate* arg1) {
     s32 i;
     SushiPlayerEntity* ret = NULL;
     SushiPlayerEntity* ptr;
@@ -548,15 +548,15 @@ SushiPlayerEntity* SushiGame_FindPlateClaimant(SushiPlayerEntity* arg0, unk_D_86
     return ret;
 }
 
-unk_D_868084D8* SushiGame_FindNearestGrabbablePlate(SushiPlayerEntity* arg0) {
+SushiPlate* SushiGame_FindNearestGrabbablePlate(SushiPlayerEntity* arg0) {
     s32 i;
     f32 temp_fa0;
     f32 var_fs0;
     s32 var_s4;
     s32 var_s6;
     SushiPlayerEntity* temp_v0_2;
-    unk_D_868084D8* var_s0;
-    unk_D_868084D8* var_s5;
+    SushiPlate* var_s0;
+    SushiPlate* var_s5;
 
     var_s5 = NULL;
 
@@ -596,7 +596,7 @@ unk_D_868084D8* SushiGame_FindNearestGrabbablePlate(SushiPlayerEntity* arg0) {
     return var_s5;
 }
 
-unk_D_868084D8* SushiGame_FindHighestValuePlate(SushiPlayerEntity* arg0) {
+SushiPlate* SushiGame_FindHighestValuePlate(SushiPlayerEntity* arg0) {
     s32 i;
     f32 temp_fa0;
     f32 var_fs0;
@@ -606,8 +606,8 @@ unk_D_868084D8* SushiGame_FindHighestValuePlate(SushiPlayerEntity* arg0) {
     s32 var_s7;
     s32 var_v1;
     SushiPlayerEntity* temp_v0_2;
-    unk_D_868084D8* var_s0;
-    unk_D_868084D8* var_s4;
+    SushiPlate* var_s0;
+    SushiPlate* var_s4;
 
     if (!(arg0->unk_016 & 1)) {
         var_s7 = 0;
@@ -664,7 +664,7 @@ unk_D_868084D8* SushiGame_FindHighestValuePlate(SushiPlayerEntity* arg0) {
     return var_s4;
 }
 
-unk_D_868084D8* SushiGame_FindComboOrAbundantPlate(SushiPlayerEntity* arg0) {
+SushiPlate* SushiGame_FindComboOrAbundantPlate(SushiPlayerEntity* arg0) {
     s32 i;
     s16 sp4A;
     f32 temp_fa0;
@@ -673,9 +673,9 @@ unk_D_868084D8* SushiGame_FindComboOrAbundantPlate(SushiPlayerEntity* arg0) {
     s32 var_s6;
     s32 var_s7;
     SushiPlayerEntity* temp_v0_2;
-    unk_D_868084D8* var_s0;
-    unk_D_868084D8* var_s0_2;
-    unk_D_868084D8* var_s5;
+    SushiPlate* var_s0;
+    SushiPlate* var_s0_2;
+    SushiPlate* var_s5;
 
     if (!(arg0->unk_016 & 1)) {
         var_s6 = 0;
@@ -761,12 +761,12 @@ unk_D_868084D8* SushiGame_FindComboOrAbundantPlate(SushiPlayerEntity* arg0) {
     return var_s5;
 }
 
-unk_D_868084D8* SushiGame_FindTypeOnePlate(SushiPlayerEntity* arg0) {
+SushiPlate* SushiGame_FindTypeOnePlate(SushiPlayerEntity* arg0) {
     s32 i;
     f32 temp_fa0;
     f32 var_fs0;
-    unk_D_868084D8* var_s0;
-    unk_D_868084D8* var_s3;
+    SushiPlate* var_s0;
+    SushiPlate* var_s3;
 
     var_fs0 = 1e9f;
     var_s3 = NULL;
@@ -1129,14 +1129,14 @@ void Sushi_UpdateAI(SushiPlayerEntity* arg0) {
     }
 }
 
-unk_D_868084D8* Sushi_FindNearbyInstance(SushiPlayerEntity* arg0) {
+SushiPlate* Sushi_FindNearbyInstance(SushiPlayerEntity* arg0) {
     UNUSED s32 pad;
     s32 i;
     Vec3f sp14;
     f32 dx;
     f32 dy;
     f32 dz;
-    unk_D_868084D8* var_v1;
+    SushiPlate* var_v1;
 
     sp14 = arg0->unk_0E4.anchor4Position;
 
@@ -1586,7 +1586,7 @@ void SushiGame_UpdateNameTagSpringEffect(UNUSED SushiPlayerEntity* arg0, SushiNa
             arg1->posY = 0xA;
             arg1->rotation = 0;
             arg1->unk_10 = 0.0f;
-            arg1->unk_08 = arg1->unk_08;
+            arg1->RentalSlotAnimData_PosePhase = arg1->RentalSlotAnimData_PosePhase;
             arg1->unk_0C += 5.0f;
             arg1->unk_14 = 5.0f;
             arg1->unk_18 = 0;
@@ -1615,7 +1615,7 @@ void SushiGame_UpdateNameTagSpringEffect(UNUSED SushiPlayerEntity* arg0, SushiNa
                     arg1->unk_18 = 0xFF;
                 }
             }
-            arg1->unk_08 += arg1->unk_10;
+            arg1->RentalSlotAnimData_PosePhase += arg1->unk_10;
             arg1->unk_0C += arg1->unk_14;
             break;
 

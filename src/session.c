@@ -14,12 +14,12 @@ static s16 gBattleToggleFlag = 0;
 
 void Team_ClearTrainerSlot(BattlePokemon* arg0) {
     arg0->posX = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->posY = 0;
     arg0->rotation = 0;
     arg0->unk_14 = 0;
-    arg0->unk_08[0] = 0;
-    arg0->unk_08[1] = 0;
+    arg0->RentalSlotAnimData_PosePhase[0] = 0;
+    arg0->RentalSlotAnimData_PosePhase[1] = 0;
     arg0->unk_1D = 0;
     arg0->unk_20 = 0;
     arg0->unk_1E = 0;
@@ -114,11 +114,11 @@ BattleAI_TeamContext* Trainer_Create(s32 arg0, s16 arg1, char* arg2, char* arg3)
 
 void Team_AddTrainer(s32 arg0, BattleAI_TeamContext* arg1) {
     BattlePokemon* temp_v0 = &gSessionContext.battleSides[arg0];
-    u8 idx = temp_v0->unk_01;
+    u8 idx = temp_v0->TrainerSlotSaveData_GamePort;
 
     if (idx < 2) {
-        temp_v0->unk_08[idx] = arg1;
-        temp_v0->unk_01++;
+        temp_v0->RentalSlotAnimData_PosePhase[idx] = arg1;
+        temp_v0->TrainerSlotSaveData_GamePort++;
     }
 }
 
@@ -149,7 +149,7 @@ PokemonData* Pokemon_CreateDefault(PokemonData* arg0, u8 arg1, s16 arg2) {
     arg0->unk_1A = 0x6400;
     arg0->unk_1C = 0x6400;
 
-    arg0->unk_08 = 0;
+    arg0->RentalSlotAnimData_PosePhase = 0;
 
     arg0->unk_09[0] = 0;
     arg0->unk_09[1] = 0;
@@ -327,9 +327,9 @@ s16 Team_GetHighestPartyLevel(void) {
     s16 var_v1 = 0;
     PokemonData* var_v0;
 
-    var_v0 = &gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_028[0];
+    var_v0 = &gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData->unk_028[0];
 
-    for (i = 0; i < gSessionContext.battleSides[0].unk_08[0]->trainerData->unk_002; i++, var_v0++) {
+    for (i = 0; i < gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData->unk_002; i++, var_v0++) {
         if (var_v1 < var_v0->unk_24) {
             var_v1 = var_v0->unk_24;
         }
@@ -347,10 +347,10 @@ void Team_ScaleOpponentToLevel(s16 arg0) {
         return;
     }
 
-    var_s0 = gSessionContext.battleSides[1].unk_08[0]->unk_01C;
-    var_s1 = gSessionContext.battleSides[1].unk_08[0]->trainerData->unk_028;
+    var_s0 = gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->unk_01C;
+    var_s1 = gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->trainerData->unk_028;
 
-    for (i = 0; i < gSessionContext.battleSides[1].unk_08[0]->unk_002; i++, var_s1++, var_s0++) {
+    for (i = 0; i < gSessionContext.battleSides[1].RentalSlotAnimData_PosePhase[0]->unk_002; i++, var_s1++, var_s0++) {
         var_s0->unk_24 = arg0;
         var_s0->unk_10 = Pokemon_ExpForLevel(var_s0->posX.posX, arg0);
         Pokemon_RecalcStats(var_s0);
@@ -386,7 +386,7 @@ void Team_LoadPresetTrainer(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     unk_func_8002BFC4* ptr;
     unk_func_8002BFC4* temp_v1;
 
-    temp_s3 = gSessionContext.battleSides[arg0].unk_08[0];
+    temp_s3 = gSessionContext.battleSides[arg0].RentalSlotAnimData_PosePhase[0];
     if (gSessionContext.inRound2 != 0) {
         arg1 += 0x1F;
     }
@@ -524,19 +524,19 @@ void Team_BuildQuickBattleTeams(s16 arg0) {
 
 void Session_SaveContinueData(void) {
     ContinueRecord sp20;
-    unk_D_800AE540_0874* sp1C = gSessionContext.battleSides[0].unk_08[0]->trainerData;
+    unk_D_800AE540_0874* sp1C = gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->trainerData;
 
     sp20.posX = gSessionContext.unk_0000;
-    sp20.unk_01 = gSessionContext.unk_0002;
+    sp20.TrainerSlotSaveData_GamePort = gSessionContext.unk_0002;
     sp20.posY = gSessionContext.unk_0003;
     sp20.rotation = gSessionContext.continueCount;
     sp20.unk_03 = gSessionContext.inRound2;
 
     sp20.unk_0D = gSessionContext.gbStarterChoice;
-    sp20.unk_0E = gSessionContext.battleSides[0].unk_08[0]->unk_018;
+    sp20.unk_0E = gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->unk_018;
 
     _bcopy(gSessionContext.opponentHistory[0], &sp20.unk_05, 8);
-    Text_TranscodeNameWrapper(&sp20.unk_10, &gSessionContext.battleSides[0].unk_08[0]->unk_008);
+    Text_TranscodeNameWrapper(&sp20.unk_10, &gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0]->unk_008);
     Session_SaveContinueRecord(&sp20, sp1C->unk_028, sp1C->unk_002);
     Save_CommitTypedRecord(0x15, 0);
 }
@@ -551,7 +551,7 @@ s32 Session_LoadContinueData(void) {
 
     temp_v0 = Session_LoadContinueRecord(&sp250, sp58);
     if (temp_v0 != -1) {
-        Session_SetMode(sp250.posX, sp250.posX, sp250.unk_01);
+        Session_SetMode(sp250.posX, sp250.posX, sp250.TrainerSlotSaveData_GamePort);
 
         _bcopy(sp250.unk_05, gSessionContext.opponentHistory[0], 8);
         gSessionContext.unk_0003 = sp250.posY;
@@ -565,7 +565,7 @@ s32 Session_LoadContinueData(void) {
         Team_AddTrainer(1, Trainer_Create(-1, tmp, "COM", Text_GetPlayerLabel(3)));
 
         for (i = 0; i < temp_v0; i++) {
-            Trainer_AddPokemon(gSessionContext.battleSides[0].unk_08[0], &sp58[i]);
+            Trainer_AddPokemon(gSessionContext.battleSides[0].RentalSlotAnimData_PosePhase[0], &sp58[i]);
         }
 
         gSessionContext.sessionFlags |= 3;

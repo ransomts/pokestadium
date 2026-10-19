@@ -24,7 +24,7 @@ typedef struct DioramaColorAnim {
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } DioramaColorAnim; // size = 0xC
 
@@ -72,7 +72,7 @@ s32 Diorama_LogoRotateColorCallback(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         PillarGlowParams* ptr = (PillarGlowParams*)arg1;
 
-        gFragment17ColorAnim->posX += gFragment17ColorAnim->unk_08;
+        gFragment17ColorAnim->posX += gFragment17ColorAnim->RentalSlotAnimData_PosePhase;
         gFragment17ColorAnim->posY += gFragment17ColorAnim->unk_0A;
 
         ptr->unk_1C = gFragment17ColorAnim->posX;
@@ -146,7 +146,7 @@ void Diorama_InitModelSlot(DioramaModelSlot* arg0, DioramaObjectDef* arg1) {
 
     arg0->unk_000 = Model_LoadByArchiveIndex(arg1->unk_0C);
 
-    Model_InitDisplayObject(&arg0->unk_004, 0, arg1->unk_0C, arg0->unk_000->unk_08->posX[0]);
+    Model_InitDisplayObject(&arg0->unk_004, 0, arg1->unk_0C, arg0->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&arg0->unk_004, arg1->unk_10);
 
     if (arg1->unk_0C == 6) {
@@ -168,7 +168,7 @@ void Diorama_SetModelSlotPosition(DioramaModelSlot* arg0, DioramaObjectDef* arg1
 void Diorama_SetGlowFromGroup(s32 arg0) {
     gFragment17ColorAnim->posX = gFragment17PresetData[arg0].unk_0C;
     gFragment17ColorAnim->posY = gFragment17PresetData[arg0].unk_0E;
-    gFragment17ColorAnim->unk_08 = gFragment17PresetData[arg0].unk_18;
+    gFragment17ColorAnim->RentalSlotAnimData_PosePhase = gFragment17PresetData[arg0].unk_18;
     gFragment17ColorAnim->unk_0A = gFragment17PresetData[arg0].unk_1A;
     gFragment17ColorAnim->unk_05 = gFragment17PresetData[arg0].unk_10;
     gFragment17ColorAnim->unk_06 = gFragment17PresetData[arg0].unk_12;
@@ -295,7 +295,7 @@ void Diorama_BeginGroupTransition(void) {
 void Diorama_FinishSequence(void) {
     gFragment17State->rotation.unk_4C = 9;
     gFragment17State->rotation.unk_50 = 0;
-    gFragment17Objects->unk_004.unk_000.unk_01 &= ~1;
+    gFragment17Objects->unk_004.unk_000.TrainerSlotSaveData_GamePort &= ~1;
     gDioramaEndScreenActive = 1;
 }
 
@@ -321,9 +321,9 @@ void Diorama_UpdateProximityHighlight(s32 arg0) {
 
     while (ptr1->unk_0C != 0x98) {
         if (Diorama_IsModelInCameraCone(gFragment17State->posX, &ptr2->unk_004, sp88[arg0], sp80[arg0], sp70[arg0], sp60[arg0]) != 0) {
-            ptr2->unk_004.unk_000.unk_01 |= 1;
+            ptr2->unk_004.unk_000.TrainerSlotSaveData_GamePort |= 1;
         } else {
-            ptr2->unk_004.unk_000.unk_01 &= ~1;
+            ptr2->unk_004.unk_000.TrainerSlotSaveData_GamePort &= ~1;
         }
         ptr2++;
         ptr1++;

@@ -10,7 +10,7 @@
 
 typedef struct unk_D_8122C4FA {
   /* 0x00 */ u8 posX;
-  /* 0x01 */ u8 unk_01;
+  /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } unk_D_8122C4FA; // size >= 0x2
 
 typedef struct TileAssetFragment {
@@ -1615,13 +1615,13 @@ void LoadCompressedBank(GbPakDeviceState* arg0) {
 }
 
 void GbEmu_ApplyButtonMapping(void) {
-  if ((gGbEmuButtonBindingSelections.unk_01 == gGbEmuButtonBindingSelections.posX) || (gGbEmuButtonBindingSelections.posX >= 5) || (gGbEmuButtonBindingSelections.unk_01 >= 5)) {
+  if ((gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort == gGbEmuButtonBindingSelections.posX) || (gGbEmuButtonBindingSelections.posX >= 5) || (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort >= 5)) {
       gGbEmuButtonBindingSelections.posX = 0;
-      gGbEmuButtonBindingSelections.unk_01 = 1;
+      gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort = 1;
   }
 
   gAudioModeIndex0 = (gGbEmuButtonBindingSelections.posX == 1) ?   0x20 : (gGbEmuButtonBindingSelections.posX == 2) ? 0x10 : (gGbEmuButtonBindingSelections.posX == 3) ? 2 : (gGbEmuButtonBindingSelections.posX == 4) ? 4 : 0x1000;
-  gAudioModeIndex1 = (gGbEmuButtonBindingSelections.unk_01 == 0) ? 0x1000 : (gGbEmuButtonBindingSelections.unk_01 == 2) ? 0x10 : (gGbEmuButtonBindingSelections.unk_01 == 3) ? 2 : (gGbEmuButtonBindingSelections.unk_01 == 4) ? 4 : 0x20;
+  gAudioModeIndex1 = (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort == 0) ? 0x1000 : (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort == 2) ? 0x10 : (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort == 3) ? 2 : (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort == 4) ? 4 : 0x20;
 }
 
 void AudioStateMachine(GbPakDeviceState* arg0) {
@@ -1649,15 +1649,15 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 : (gAudioModeIndex0 == 2)    ? 3
                                 : (gAudioModeIndex0 == 4)    ? 4
                                                        : 0;
-            gGbEmuButtonBindingSelections.unk_01 = (gAudioModeIndex0 == 0x1000) ? 0
+            gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort = (gAudioModeIndex0 == 0x1000) ? 0
                                 : (gAudioModeIndex0 == 0x10) ? 2
                                 : (gAudioModeIndex0 == 2)    ? 3
                                 : (gAudioModeIndex0 == 4)    ? 4
                                                        : 1;
 
-            if (gGbEmuButtonBindingSelections.unk_01 == gGbEmuButtonBindingSelections.posX) {
+            if (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort == gGbEmuButtonBindingSelections.posX) {
                 gGbEmuButtonBindingSelections.posX = 0;
-                gGbEmuButtonBindingSelections.unk_01 = 1;
+                gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort = 1;
             }
             return;
         default:
@@ -1795,7 +1795,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             case 0x4:
                                 var_v0 = 4;
                             block_96:
-                                if (gGbEmuButtonBindingSelections.unk_01 == var_v0) {
+                                if (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort == var_v0) {
                                     GbAudio_SetAlternateStreamId(3);
                                     return;
                                 }
@@ -1820,7 +1820,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             case 0x8000:
                                 GbAudio_SetAlternateStreamId(6);
                                 Flag_GbPakPowerState = 0;
-                                gEmuSavedAudioMode = (s32) gGbEmuButtonBindingSelections.unk_01;
+                                gEmuSavedAudioMode = (s32) gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort;
                                 Flag_GbPakInitialized = 0xB;
                                 return;
                             case 0x1000:
@@ -1842,7 +1842,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                     GbAudio_SetAlternateStreamId(3);
                                     return;
                                 }
-                                gGbEmuButtonBindingSelections.unk_01 = var_v0_2;
+                                gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort = var_v0_2;
                                 GbAudio_SetAlternateStreamId(6);
                                 if (Flag_GbPakInitialized == 0xC) {
                                     Flag_GbPakInitialized = 0xD;
@@ -1876,7 +1876,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 Flag_GbPakInitialized = 9;
                                 return;
                             case 0x8000:
-                                if (gGbEmuButtonBindingSelections.posX == gGbEmuButtonBindingSelections.unk_01) {
+                                if (gGbEmuButtonBindingSelections.posX == gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort) {
                                     GbAudio_SetAlternateStreamId(3);
                                 } else {
                                     GbAudio_SetAlternateStreamId(6);
@@ -1918,11 +1918,11 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
                                 GbAudio_SetAlternateStreamId(8);
-                                gGbEmuButtonBindingSelections.unk_01 = gEmuSavedAudioMode;
+                                gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort = gEmuSavedAudioMode;
                                 Flag_GbPakInitialized = 0xD;
                                 return;
                             case 0x8000:
-                                if (gGbEmuButtonBindingSelections.posX == gGbEmuButtonBindingSelections.unk_01) {
+                                if (gGbEmuButtonBindingSelections.posX == gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort) {
                                     GbAudio_SetAlternateStreamId(3);
                                 } else {
                                     GbAudio_SetAlternateStreamId(6);
@@ -1930,16 +1930,16 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 }
                                 return;
                             case 0x200:
-                                gGbEmuButtonBindingSelections.unk_01--;
-                                if ((gGbEmuButtonBindingSelections.unk_01 < 0) || (gGbEmuButtonBindingSelections.unk_01 >= 5)) {
-                                    gGbEmuButtonBindingSelections.unk_01 = 0U;
+                                gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort--;
+                                if ((gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort < 0) || (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort >= 5)) {
+                                    gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort = 0U;
                                 }
                                 GbAudio_SetAlternateStreamId(5);
                                 return;
                             case 0x100:
-                                gGbEmuButtonBindingSelections.unk_01++;
-                                if (gGbEmuButtonBindingSelections.unk_01 >= 5) {
-                                    gGbEmuButtonBindingSelections.unk_01 = 4U;
+                                gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort++;
+                                if (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort >= 5) {
+                                    gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort = 4U;
                                 }
                                 GbAudio_SetAlternateStreamId(5);
                                 return;
@@ -2210,7 +2210,7 @@ void GbPak_DrawMenu(s32 arg0) {
                 break;
             }
         draw_second:
-            switch (gGbEmuButtonBindingSelections.unk_01) {
+            switch (gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort) {
                 case 0:
                     j = 0xBBD8;
                     break;
@@ -2246,7 +2246,7 @@ void GbPak_DrawMenu(s32 arg0) {
             break;
         case 12:
             i = 0x14;
-            j = gGbEmuButtonBindingSelections.unk_01;
+            j = gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort;
             base = fb + 0x3C3E;
             break;
         default:
@@ -2816,7 +2816,7 @@ void GbEmu_Init(GbEmuState* arg0) {
       gGbEmuPresentationMode = 0;
   }
   gGbEmuButtonBindingSelections.posX = ((arg0->inputConfig.posX & 0xFF00) >> 8);
-  gGbEmuButtonBindingSelections.unk_01 = (arg0->inputConfig.posX + 1) & 0xFF;
+  gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort = (arg0->inputConfig.posX + 1) & 0xFF;
   GbEmu_ApplyButtonMapping();
   gGbEmuFont1Data = arg0->font1 + 0x90;
   gGbEmuFont2Data = arg0->font2 + 0x90;
@@ -2825,7 +2825,7 @@ void GbEmu_Init(GbEmuState* arg0) {
 
 void GbEmu_RunFrame(GbEmuState* arg0) {
   if (EmuMainLoop(0) != 0) {
-      arg0->inputConfig.posX = ((gGbEmuButtonBindingSelections.unk_01 - 1) & 0xFF) | (gGbEmuButtonBindingSelections.posX << 8);
+      arg0->inputConfig.posX = ((gGbEmuButtonBindingSelections.TrainerSlotSaveData_GamePort - 1) & 0xFF) | (gGbEmuButtonBindingSelections.posX << 8);
       IO_WRITE(SP_STATUS_REG, 0x8000);
       osSendMesg(&arg0->queue2, UnknownFlag, 0);
   }

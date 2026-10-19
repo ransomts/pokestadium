@@ -126,10 +126,10 @@ void Credits_SetBackgroundTint(u8 r, u8 g, u8 b) {
 
     if (v == 0xFF) {
         if (gStageFragmentState.posX.unk_14 == 1) {
-            gStageFragmentState.posX.unk_01 |= 1;
+            gStageFragmentState.posX.TrainerSlotSaveData_GamePort |= 1;
         }
     } else {
-        gStageFragmentState.posX.unk_01 &= ~1;
+        gStageFragmentState.posX.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 
@@ -173,7 +173,7 @@ void Credits_LoadBackgroundScene(s8 arg0, u8 arg1) {
     temp_v0_4 = sp28(4, 0);
     if (temp_v0_4 == NULL) {
         gStageFragmentState.posX.unk_14 = 0;
-        gStageFragmentState.posX.unk_01 &= ~1;
+        gStageFragmentState.posX.TrainerSlotSaveData_GamePort &= ~1;
     } else {
         gStageFragmentState.unk_18.posX = temp_v0_4->posX;
         gStageFragmentState.unk_18.posY = temp_v0_4->posY;
@@ -195,7 +195,7 @@ void Credits_LoadBackgroundScene(s8 arg0, u8 arg1) {
         }
     } else {
         sSceneCamera->unk_60.at.y = gStageCameraPositions[arg0][gCurrentSubStageId].unk_10;
-        sCameraDistance = gStageCameraPositions[arg0][gCurrentSubStageId].unk_08;
+        sCameraDistance = gStageCameraPositions[arg0][gCurrentSubStageId].RentalSlotAnimData_PosePhase;
     }
 }
 
@@ -357,7 +357,7 @@ void Credits_MainLoop(s32 arg0) {
                     GeoNode_CreateContainer(NULL, &gStageOverlayNode);
                     GeoNode_CreateContainer(NULL, &gStageForegroundNode);
 
-                    gStageFragmentState.posX.unk_01 &= ~1;
+                    gStageFragmentState.posX.TrainerSlotSaveData_GamePort &= ~1;
                     if (gStagePhases[gCurrentPhaseIndex].posY == 0) {
                         main_pool_pop_state('BACK');
                     }
@@ -1602,7 +1602,7 @@ void Credits_DrawRoleList(void) {
         Text_SetEnvColor(sp60[0].r, sp60[0].g, sp60[0].b, sp60[0].a);
         Text_SetPrimColor(sp60[1].r, sp60[1].g, sp60[1].b, sp60[1].a);
 
-        ptr = gStageLayoutPtr->unk_08;
+        ptr = gStageLayoutPtr->RentalSlotAnimData_PosePhase;
         for (i = 0; i < gStageLayoutPtr->unk_05; i++, ptr++) {
             switch (ptr->posX) {
                 case 0:
@@ -1623,7 +1623,7 @@ void Credits_DrawRoleList(void) {
 
         var_s11 = (((-((gStageLayoutPtr->unk_05 - var_s1) * 0x11) - var_a1) + 0xF0) / 2) & 0xFFFF;
 
-        for (i = 0, ptr = gStageLayoutPtr->unk_08; i < gStageLayoutPtr->unk_05; i++, ptr++) {
+        for (i = 0, ptr = gStageLayoutPtr->RentalSlotAnimData_PosePhase; i < gStageLayoutPtr->unk_05; i++, ptr++) {
             if (ptr->posX == 2) {
                 var_s11 += 0xA;
                 continue;
@@ -1662,7 +1662,7 @@ void Credits_DrawRoleList(void) {
 
         gStageLayoutPtr++;
 
-        gStageLayoutPtr->unk_08 = &sp4C.unk_08[sp4C.unk_05];
+        gStageLayoutPtr->RentalSlotAnimData_PosePhase = &sp4C.RentalSlotAnimData_PosePhase[sp4C.unk_05];
         if (gStageLayoutPtr->posY == 0) {
             gStageLayoutPtr = NULL;
         } else {
