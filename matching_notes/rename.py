@@ -488,7 +488,7 @@ class Rewriter:
             if path.endswith(".h"):
                 pat = re.compile(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s*\**\s*)("
                                  + self._alt(self._member_map) + r")((?:\[[^\]]*\])*)\s*;", re.M)
-                text, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3), text)
+                text, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3) + ";", text)
                 changed |= bool(k)
         if changed:
             self._save(path, text)
