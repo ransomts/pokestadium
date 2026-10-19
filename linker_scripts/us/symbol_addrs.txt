@@ -2647,3 +2647,6 @@ BattlePrepBadgeAward_NoOp = 0x84B0B054; // defined:true
 ClefairyGame_NoOp = 0x86100C28; // defined:true
 GalleryCamera_NullUpdate = 0x8690232C; // defined:true
 RattataGame_Stub = 0x86200938; // defined:true
+CupSelect_EmptyFunc = 0x82E00050; // defined:true
+FirstClearBonus_EmptyFunc2 = 0x86B0B4C8; // defined:true
+gHealthBarEffects = 0x8650AB30; // defined:true

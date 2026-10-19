@@ -20,19 +20,19 @@
 #include "src/stage_loader.h"
 #include "src/controller.h"
 
-static Fragment2_1GraphNode D_865092E0;
-static Fragment2_1GraphNode D_86509448;
-static Fragment2_1GraphNode D_865095B0;
-static Fragment2_1GraphNode D_86509718;
-static Fragment2_1GraphNode D_86509880;
-static Fragment2_1GraphNode D_865099E8;
-static Fragment2_1GraphNode D_86509B50;
-static Fragment2_1GraphNode D_86509CB8;
-static Fragment2_1GraphNode D_86509E20;
-static Fragment2_1GraphNode D_86509F88;
-static Fragment2_1GraphNode D_8650A0F0;
-static Fragment2_1GraphNode D_8650A258;
-static Fragment2_1GraphNode D_8650A3C0;
+static Fragment2_1GraphNode gChainLinkNode0;
+static Fragment2_1GraphNode gChainLinkNode1;
+static Fragment2_1GraphNode gChainLinkNode2;
+static Fragment2_1GraphNode gChainLinkNode3;
+static Fragment2_1GraphNode gChainLinkNode4;
+static Fragment2_1GraphNode gChainLinkNode5;
+static Fragment2_1GraphNode gChainLinkNode6;
+static Fragment2_1GraphNode gChainLinkNode7;
+static Fragment2_1GraphNode gChainLinkNode8;
+static Fragment2_1GraphNode gChainLinkNode9;
+static Fragment2_1GraphNode gChainLinkNode10;
+static Fragment2_1GraphNode gChainLinkNode11;
+static Fragment2_1GraphNode gChainLinkNode12;
 
 static unk_D_864027C0 gHealthBarPositions[] = {
     { -60.0f, 7.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0, 0xA00, 0 },
@@ -42,8 +42,8 @@ static unk_D_864027C0 gHealthBarPositions[] = {
 };
 
 static Fragment2_1GraphNode* gHealthBarGraphNodePtrs[] = {
-    &D_865092E0, &D_86509448, &D_865095B0, &D_86509718, &D_86509880, &D_865099E8, &D_86509B50,
-    &D_86509CB8, &D_86509E20, &D_86509F88, &D_8650A0F0, &D_8650A258, &D_8650A3C0,
+    &gChainLinkNode0, &gChainLinkNode1, &gChainLinkNode2, &gChainLinkNode3, &gChainLinkNode4, &gChainLinkNode5, &gChainLinkNode6,
+    &gChainLinkNode7, &gChainLinkNode8, &gChainLinkNode9, &gChainLinkNode10, &gChainLinkNode11, &gChainLinkNode12,
 };
 
 static u8 gHealthBarUpdateCounter = 0;
@@ -78,7 +78,7 @@ static u8 gHealthBarAnimFlagB = 0;
 DynamoHealthBar gHealthBarData[4];
 DynamoHealthBar* gCurrentHealthBar;
 static Fragment2_1GraphNode* gCurrentHealthBarNode;
-DynamoHealthBarEffect D_8650AB30[4];
+DynamoHealthBarEffect gHealthBarEffects[4];
 DynamoHealthBarEffect* gHealthBarEffectData;
 
 void DynamoGame_ComputeAIChargeDelta(DynamoHealthBar* arg0, u8 arg1) {

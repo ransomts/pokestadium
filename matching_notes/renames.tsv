@@ -17471,3 +17471,39 @@ func_86100C28	ClefairyGame_NoOp	w8		void function that does nothing	applied@8f9c
 D_86105496	gGameFrameCounter	w8		incremented every frame in ClefairyGame_DrawFrame	applied@8f9ce8a1
 func_8690232C	GalleryCamera_NullUpdate	w8		no-op function in gallery camera logic	applied@8f9ce8a1
 func_86200938	RattataGame_Stub	w8		unused function in RattataGame domain	applied@8f9ce8a1
+D_86A03C98	gCreditsCameraPositions	w9		table of CameraPosition structs used for the credits sequence cinematic	applied@847d78b9
+func_82E00050	CupSelect_EmptyFunc	w9		empty function in cup_select.c	applied@847d78b9
+unk_D_86B0EBDC	CompletionSceneState	w9		Stores model pointers, reward Pokemon ID, and scene progression state.	applied@847d78b9
+D_86B10824	gMewtwoIntroBgArchive	w9		loads backgrounds archive via ASSET_LOAD2 and retrieves texture data via BinArchive_GetFile	applied@847d78b9
+func_86B0A81C	FirstClearBonus_EmptyFunc	w9		void function that does nothing, likely a placeholder or hook	applied@847d78b9
+func_86B0B4C8	FirstClearBonus_EmptyFunc2	w9		void function that does nothing, likely a placeholder or hook	applied@847d78b9
+D_86B0E2B0	gFirstClearBonusTextData	w9		u32 array containing encoded text or metadata used in the scene	applied@847d78b9
+D_86B0E374	gFirstClearBonusGeoLayout	w9		layout table passed to process_geo_layout to initialize scene geometry	applied@847d78b9
+D_86B10840	gFirstClearBonusStringTable	w9		pointer to the string table loaded via Text_GetStringTable(0x1E)	applied@847d78b9
+D_86B10844	gFirstClearBonusModelData	w9		ModelData pointer for the loaded Pokemon model (index 0xD4 or 0xD5)	applied@847d78b9
+D_86B10848	gFirstClearBonusGraphRoot	w9		GraphNode pointer returned by process_geo_layout	applied@847d78b9
+D_86B10850	gFirstClearBonusModelObj	w9		Fragment2_1GraphNode used for model animation and rendering	applied@847d78b9
+D_86B109B8	gFirstClearBonusCamera	w9		CameraStruct pointer used for eye and angle computations	applied@847d78b9
+D_86B109BC	gFirstClearBonusBgArchive	w9		BinArchive pointer for the background assets	applied@847d78b9
+D_86B109C0	gFirstClearBonusBgTiles	w9		pointer to the background tile data passed to FirstClearBonus_DrawBackgroundTiles	applied@847d78b9
+D_86B109C8	gFirstClearBonusTextBuffer	w9		buffer used by sprintf to store the current dialog string	applied@847d78b9
+D_86B10AC8	gFirstClearBonusTypingBuffer	w9		buffer used to store characters as they are revealed one by one	applied@847d78b9
+D_86B10BC8	gFirstClearBonusCamAngleX	w9		s16 used as X angle in Camera_ComputeEyeFromAngles	applied@847d78b9
+D_86B10BCA	gFirstClearBonusCamAngleY	w9		s16 used as Y angle in Camera_ComputeEyeFromAngles	applied@847d78b9
+D_8650AB30	gHealthBarEffects	w9		DynamoHealthBarEffect	applied@847d78b9
+D_865092E0	gChainLinkNode0	w9		Fragment2_1GraphNode	applied@847d78b9
+D_86509448	gChainLinkNode1	w9		Fragment2_1GraphNode	applied@847d78b9
+D_865095B0	gChainLinkNode2	w9		Fragment2_1GraphNode	applied@847d78b9
+D_86509718	gChainLinkNode3	w9		Fragment2_1GraphNode	applied@847d78b9
+D_86509880	gChainLinkNode4	w9		Fragment2_1GraphNode	applied@847d78b9
+D_865099E8	gChainLinkNode5	w9		Fragment2_1GraphNode	applied@847d78b9
+D_86509B50	gChainLinkNode6	w9		Fragment2_1GraphNode	applied@847d78b9
+D_86509CB8	gChainLinkNode7	w9		Fragment2_1GraphNode	applied@847d78b9
+D_86509E20	gChainLinkNode8	w9		Fragment2_1GraphNode	applied@847d78b9
+D_86509F88	gChainLinkNode9	w9		Fragment2_1GraphNode	applied@847d78b9
+D_8650A0F0	gChainLinkNode10	w9		Fragment2_1GraphNode	applied@847d78b9
+D_8650A258	gChainLinkNode11	w9		Fragment2_1GraphNode	applied@847d78b9
+D_8650A3C0	gChainLinkNode12	w9		Fragment2_1GraphNode	applied@847d78b9
+D_86C0E054	gEkansSymmetryTable	w9		array of s16 values used for actor positioning or symmetry	applied@847d78b9
+unk_D_82305A28	EventBattleState	w9		tracks the current state (posX), selected mode (posY), and validation results for the event battle menu system	applied@847d78b9
+D_823059CC	gLastSelectedMode	w9		static variable in EventBattle_ShowSelect that stores the last selected mode index (posY) across calls	applied@847d78b9

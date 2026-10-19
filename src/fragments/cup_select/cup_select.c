@@ -194,7 +194,7 @@ void CupSelect_PollController(void) {
     Input_ResetRepeatState();
 }
 
-void func_82E00050(void) {
+void CupSelect_EmptyFunc(void) {
 }
 
 void CupSelect_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {

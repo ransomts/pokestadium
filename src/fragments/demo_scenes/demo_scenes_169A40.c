@@ -26,7 +26,7 @@ static ModelData* gStageGeoLayout;
 static GraphNode* gStageRootGraphNode;
 static Fragment2_1GraphNode gStageRootFragmentNode;
 static CameraStruct* gStageCamera;
-static BinArchive* D_86B10824;
+static BinArchive* gMewtwoIntroBgArchive;
 static u8* gBackgroundTextureData;
 static u8 gStageFadeAlpha;
 static SessionModeSettings gSessionModeSettings;
@@ -152,14 +152,14 @@ s32 Stage_ShowMewtwoIntro(void) {
     Save_GetModeSettings(&gSessionModeSettings, gSessionContext.inRound2);
 
     if (gSessionContext.inRound2 == 1) {
-        D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
-        gBackgroundTextureData = BinArchive_GetFile(D_86B10824, 2);
+        gMewtwoIntroBgArchive = ASSET_LOAD2(backgrounds, 1, 1);
+        gBackgroundTextureData = BinArchive_GetFile(gMewtwoIntroBgArchive, 2);
     } else if (gSessionModeSettings.posX & 0x100) {
-        D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
-        gBackgroundTextureData = BinArchive_GetFile(D_86B10824, 1);
+        gMewtwoIntroBgArchive = ASSET_LOAD2(backgrounds, 1, 1);
+        gBackgroundTextureData = BinArchive_GetFile(gMewtwoIntroBgArchive, 1);
     } else {
-        D_86B10824 = ASSET_LOAD2(backgrounds, 1, 1);
-        gBackgroundTextureData = BinArchive_GetFile(D_86B10824, 2);
+        gMewtwoIntroBgArchive = ASSET_LOAD2(backgrounds, 1, 1);
+        gBackgroundTextureData = BinArchive_GetFile(gMewtwoIntroBgArchive, 2);
     }
 
     MewtwoIntro_InitScene();

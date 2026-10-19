@@ -33,7 +33,7 @@ extern u8 gHealthBarTimer;
 extern u8 gHealthBarDuration;
 extern DynamoHealthBar gHealthBarData[4];
 extern DynamoHealthBar* gCurrentHealthBar;
-extern DynamoHealthBarEffect D_8650AB30[4];
+extern DynamoHealthBarEffect gHealthBarEffects[4];
 extern DynamoHealthBarEffect* gHealthBarEffectData;
 extern u32 HealthBarPalette0[];
 extern u32 HealthBarPalette1[];

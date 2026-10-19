@@ -1144,7 +1144,7 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
 
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
-        gHealthBarEffectData = &D_8650AB30[i];
+        gHealthBarEffectData = &gHealthBarEffects[i];
 
         var_s1 = Gfx_AllocDisplayList(sizeof(Gfx) * 256);
 
@@ -1257,7 +1257,7 @@ void DynamoGame_InitSparkEffects(void) {
     MainPool_FinalizeAllocation(temp_s5);
 
     for (i = 0; i < 4; i++) {
-        gHealthBarEffectData = &D_8650AB30[i];
+        gHealthBarEffectData = &gHealthBarEffects[i];
 
         for (j = 0; j < 12; j++) {
             gHealthBarEffectData->posX[j].posX = -1;

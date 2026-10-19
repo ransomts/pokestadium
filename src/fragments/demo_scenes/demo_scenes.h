@@ -329,7 +329,7 @@ s32 Stage_ShowMewtwoIntro(void);
 
 void FirstClearBonus_InitCamera(void);
 void FirstClearBonus_InitState(void);
-void func_86B0A81C(void);
+void FirstClearBonus_EmptyFunc(void);
 void FirstClearBonus_DrawDialogFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
 void FirstClearBonus_ShowDialogBox(void);
 void FirstClearBonus_HideDialogBox(void);
@@ -338,7 +338,7 @@ void FirstClearBonus_DrawDialogBox(void);
 void FirstClearBonus_DrawDialogText(void);
 void FirstClearBonus_UpdateDialogSequence(void);
 void FirstClearBonus_ReadControllerInput(void);
-void func_86B0B4C8(void);
+void FirstClearBonus_EmptyFunc2(void);
 void FirstClearBonus_DrawBackgroundTiles(u8* arg0);
 void FirstClearBonus_RenderFrame(void);
 s32 FirstClearBonus_UpdateScene(void);

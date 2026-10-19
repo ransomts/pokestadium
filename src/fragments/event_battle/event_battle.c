@@ -18,7 +18,7 @@
 
 static char** gMessageBankMain;
 static char** gMessageBankSecondary;
-static unk_D_82305A28 gModeSelectState;
+static EventBattleState gModeSelectState;
 static AnimState gPanelAnimState;
 static AnimState gStatBarAnimState;
 static BattleSettings gBattleSettingsState;
@@ -1159,7 +1159,7 @@ void EventBattle_UpdateWidgets(void) {
     }
 }
 
-void EventBattle_UpdateModeSelect(unk_D_82305A28* arg0) {
+void EventBattle_UpdateModeSelect(EventBattleState* arg0) {
     if (arg0->posX == 3) {
         do {
             EventBattle_UpdateWidgets();
@@ -1210,7 +1210,7 @@ void EventBattle_UpdateModeSelect(unk_D_82305A28* arg0) {
     arg0->unk_06 = 4;
 }
 
-void EventBattle_EnterModeSelect(unk_D_82305A28* arg0) {
+void EventBattle_EnterModeSelect(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
@@ -1237,7 +1237,7 @@ void EventBattle_EnterModeSelect(unk_D_82305A28* arg0) {
     arg0->posX = 3;
 }
 
-void EventBattle_ExitModeSelect(unk_D_82305A28* arg0) {
+void EventBattle_ExitModeSelect(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
@@ -1264,7 +1264,7 @@ void EventBattle_ExitModeSelect(unk_D_82305A28* arg0) {
     arg0->posX = 0;
 }
 
-void EventBattle_ValidateTeamSelection(unk_D_82305A28* arg0) {
+void EventBattle_ValidateTeamSelection(EventBattleState* arg0) {
     s16 i;
     s16 j;
     u8 tmp1;
@@ -1300,7 +1300,7 @@ void EventBattle_ValidateTeamSelection(unk_D_82305A28* arg0) {
     arg0->posX = 4;
 }
 
-void EventBattle_ReturnToModeSelect(unk_D_82305A28* arg0) {
+void EventBattle_ReturnToModeSelect(EventBattleState* arg0) {
     u8 temp_v1;
     s16 i;
     s16 j;
@@ -1334,7 +1334,7 @@ void EventBattle_ReturnToModeSelect(unk_D_82305A28* arg0) {
     arg0->posX = 3;
 }
 
-void EventBattle_ValidateInitialSelection(unk_D_82305A28* arg0) {
+void EventBattle_ValidateInitialSelection(EventBattleState* arg0) {
     u8 temp_v1;
     s16 i;
     s16 j;
@@ -1385,7 +1385,7 @@ void EventBattle_BuildTrainerFromCard(TrainerCard* arg0) {
     Team_AddTrainer(arg0->unk_0001, temp_s4);
 }
 
-void EventBattle_StartBattle(unk_D_82305A28* arg0) {
+void EventBattle_StartBattle(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
@@ -1424,7 +1424,7 @@ void EventBattle_StartBattle(unk_D_82305A28* arg0) {
     arg0->posX = 0;
 }
 
-void EventBattle_UpdateActionMenu(unk_D_82305A28* arg0) {
+void EventBattle_UpdateActionMenu(EventBattleState* arg0) {
     u8 temp_s7;
 
     temp_s7 = !arg0->unk_01;
@@ -1469,7 +1469,7 @@ void EventBattle_UpdateActionMenu(unk_D_82305A28* arg0) {
     }
 }
 
-void EventBattle_RunSettingsPanel(unk_D_82305A28* arg0) {
+void EventBattle_RunSettingsPanel(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
@@ -1506,7 +1506,7 @@ void EventBattle_RunSettingsPanel(unk_D_82305A28* arg0) {
     arg0->posX = 3;
 }
 
-void EventBattle_ExitWithMode(unk_D_82305A28* arg0) {
+void EventBattle_ExitWithMode(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
@@ -1529,7 +1529,7 @@ void EventBattle_ExitWithMode(unk_D_82305A28* arg0) {
     arg0->posX = 0;
 }
 
-void EventBattle_RunSelect(unk_D_82305A28* arg0) {
+void EventBattle_RunSelect(EventBattleState* arg0) {
     while (arg0->posX != 0) {
         switch (arg0->posX) {
             case 1:
@@ -1575,7 +1575,7 @@ void EventBattle_RunSelect(unk_D_82305A28* arg0) {
     }
 }
 
-void EventBattle_InitSelect(unk_D_82305A28* arg0, s16 arg1) {
+void EventBattle_InitSelect(EventBattleState* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == -1) {
@@ -1615,7 +1615,7 @@ void EventBattle_InitSelect(unk_D_82305A28* arg0, s16 arg1) {
 }
 
 s16 EventBattle_ShowSelect(void) {
-    static s16 D_823059CC = -1;
+    static s16 gLastSelectedMode = -1;
 
     main_pool_push_state('EVSL');
 
@@ -1629,9 +1629,9 @@ s16 EventBattle_ShowSelect(void) {
     GbSave_EnsureMainDataLoaded(0);
     GbSave_EnsureMainDataLoaded(1);
     StageLoader_UpdateSegments();
-    EventBattle_InitSelect(&gModeSelectState, D_823059CC);
+    EventBattle_InitSelect(&gModeSelectState, gLastSelectedMode);
     EventBattle_RunSelect(&gModeSelectState);
-    D_823059CC = gModeSelectState.posY;
+    gLastSelectedMode = gModeSelectState.posY;
     StageLoader_WaitForRetrace();
     Gfx_FreeDisplayListBuffers();
 

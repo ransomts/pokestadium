@@ -4,13 +4,13 @@
 #include "global.h"
 #include "src/game_state.h"
 
-typedef struct unk_D_82305A28 {
+typedef struct EventBattleState {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-} unk_D_82305A28; // size = 0x8
+} EventBattleState; // size = 0x8
 
 typedef struct RuleCard {
     /* 0x00 */ u8 posX;

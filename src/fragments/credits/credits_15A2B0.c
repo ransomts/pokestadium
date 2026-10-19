@@ -1160,7 +1160,7 @@ CameraPosition gStageCameraPositions[17][6] = {
     },
 };
 
-static CameraPosition D_86A03C98[2][3] = {
+static CameraPosition gCreditsCameraPositions[2][3] = {
     {
         {
             256,

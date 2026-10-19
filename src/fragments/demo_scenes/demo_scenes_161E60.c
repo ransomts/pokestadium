@@ -57,7 +57,7 @@ typedef struct unk_D_86B0EBD8 {
     /* 0x30 */ GfxTileParams unk_1C;
 } unk_D_86B0EBD8; // size = 0x4C
 
-typedef struct unk_D_86B0EBDC {
+typedef struct CompletionSceneState {
     /* 0x000 */ ModelData* unk_000;
     /* 0x004 */ ModelData* unk_004;
     /* 0x008 */ Fragment2_1GraphNode unk_008;
@@ -75,7 +75,7 @@ typedef struct unk_D_86B0EBDC {
     /* 0x300 */ f32 unk_300;
     /* 0x304 */ s32 unk_304;
     /* 0x308 */ s32 unk_308;
-} unk_D_86B0EBDC; // size = 0x30C
+} CompletionSceneState; // size = 0x30C
 
 typedef struct unk_D_86B0EBE0 {
     /* 0x00 */ s32 posX;
@@ -745,7 +745,7 @@ static f32 gFragment17CameraDist;
 static char** gFragment17MsgBank0;
 static char** gFragment17MsgBank1;
 static unk_D_86B0EBD8* gFragment17TileStruct;
-static unk_D_86B0EBDC* gCompletionSceneState;
+static CompletionSceneState* gCompletionSceneState;
 static unk_D_86B0EBE0* gFragment17TextState;
 static u8 gFragment17StageBuffer[0xA60];
 static u8 gFragment17ActionTable[0x180];
