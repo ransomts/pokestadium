@@ -1,4 +1,4 @@
-#include "D470.h"
+#include "flash.h"
 #include "PR/os_internal_flash.h"
 
 static u32 gFlashID[4];      // __osFlashID

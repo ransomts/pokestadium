@@ -1,6 +1,6 @@
 #include "global.h"
 #include "rsp.h"
-#include "D470.h"
+#include "src/flash.h"
 #include "util.h"
 
 // All from n64 programming manual section 27.2

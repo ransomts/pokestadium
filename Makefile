@@ -277,9 +277,9 @@ build/src/libleo/%.o: CC := $(CC_OLD)
 build/src/jpegutils.o: CC := $(CC_OLD)
 build/src/jpeg_decoder.o: CC := $(CC_OLD)
 
-build/src/D470.o: CC := $(CC_OLD)
-build/src/D470.o: OPTFLAGS := -O0
-build/src/D470.o: MIPS_VERSION := -mips1
+build/src/flash.o: CC := $(CC_OLD)
+build/src/flash.o: OPTFLAGS := -O0
+build/src/flash.o: MIPS_VERSION := -mips1
 
 ifeq ($(COLOR),1)
 NO_COL  := \033[0m
