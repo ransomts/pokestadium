@@ -403,6 +403,24 @@ reorg.py, each committed):
   type-aware parsing (pycparser-class) or stays parked.
 - LEDGER: 17,803 applied rows. ROM byte-identical through every gate.
 
+## TYPE-AWARE PARSER SHIPPED (2026-10-19 deep night, closing arc)
+
+The decompile-asm ask resolved to ~ZERO backlog: the reorg converged the tree to
+michiiik's fully-decompiled structure - the "284 asm-only" were library-region
+auto-symbols (IPL/boot/entry/libgsm/yay0 - by-design asm, identical to theirs).
+The TYPE-AWARE resolver is the real deliverable:
+1. field_resolver.py - params/locals/globals/nested-chains/typedef-chasing;
+   4,749 resolved (name, file) owner sets over 813 fields.
+2. field_safe_expander.py - v2 rule: a shared name is renamable for T when
+   every file resolving it to T resolves to T ALONE (?-sites park if they
+   reach T's header). 872 safe pairs vs the 138 of file-scoping (6.3x).
+3. rename.py decl rewrites are TYPE-SCOPED to the owning struct's block
+   (_struct_spans yields block typedefs) - same-header contamination closed
+   (the unk_00A/primColor lesson, the last member-rewrite hardening).
+Batches: c4 (8) + c5 (109) + c6 (29) = 146 shared-name field renames - a class
+parked since the first inventory. Ledger: 17,832 applied. The remainder
+(mixed-owner files, casts, function returns) is full-compiler territory.
+
 ## SESSION CLOSE (2026-10-19 night) - statics tail + Tier C shipped
 
 Batches this session (all gated, ROM byte-identical throughout):
