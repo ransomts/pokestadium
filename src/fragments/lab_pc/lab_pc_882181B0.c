@@ -1,4 +1,4 @@
-#include "fragment23.h"
+#include "lab_pc.h"
 
 Color_RGBA8 gPanelAccentTexture1[2] = {
     { 0xFF, 0xFF, 0xFF, 0xFF },

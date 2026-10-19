@@ -1,4 +1,4 @@
-#include "fragment22.h"
+#include "pokemon_lab.h"
 #include "src/1CF30.h"
 #include "src/20330.h"
 #include "src/232C0.h"
