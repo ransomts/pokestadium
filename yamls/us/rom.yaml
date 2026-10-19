@@ -1668,33 +1668,33 @@
     start: 0x287EB0
     vram: 0x82F00000
     subsegments:
-    - [0x287EB0, textbin,   fragments/41/fragment41_header]
-    - [0x287ED0, c,      fragments/41/fragment41_287ED0]
-    - [0x289240, c,      fragments/41/fragment41_289240]
-    - [0x28D1A0, c,      fragments/41/fragment41_28D1A0]
-    - [0x28ED00, c,      fragments/41/fragment41_28ED00]
-    - [0x291D60, c,      fragments/41/fragment41_291D60]
-    - [0x2942C0, c,      fragments/41/fragment41_2942C0]
-    - [0x29BA20, .data,   fragments/41/fragment41_287ED0]
-    - [0x29BA40, .data,   fragments/41/fragment41_289240]
-    - [0x29BAC0, .data,   fragments/41/fragment41_28D1A0]
-    - [0x29BB60, .data,   fragments/41/fragment41_28ED00]
-    - [0x29BE20, .data,   fragments/41/fragment41_291D60]
-    - [0x29BE40, .data,   fragments/41/fragment41_2942C0]
+    - [0x287EB0, textbin,   fragments/trade_machine/trade_machine_header]
+    - [0x287ED0, c,      fragments/trade_machine/trade_machine_287ED0]
+    - [0x289240, c,      fragments/trade_machine/trade_machine_289240]
+    - [0x28D1A0, c,      fragments/trade_machine/trade_machine_28D1A0]
+    - [0x28ED00, c,      fragments/trade_machine/trade_machine_28ED00]
+    - [0x291D60, c,      fragments/trade_machine/trade_machine_291D60]
+    - [0x2942C0, c,      fragments/trade_machine/trade_machine_2942C0]
+    - [0x29BA20, .data,   fragments/trade_machine/trade_machine_287ED0]
+    - [0x29BA40, .data,   fragments/trade_machine/trade_machine_289240]
+    - [0x29BAC0, .data,   fragments/trade_machine/trade_machine_28D1A0]
+    - [0x29BB60, .data,   fragments/trade_machine/trade_machine_28ED00]
+    - [0x29BE20, .data,   fragments/trade_machine/trade_machine_291D60]
+    - [0x29BE40, .data,   fragments/trade_machine/trade_machine_2942C0]
     
-    - [0x29BF80, .rodata, fragments/41/fragment41_287ED0]
-    - [0x29C010, .rodata, fragments/41/fragment41_289240]
-    - [0x29C040, .rodata, fragments/41/fragment41_28D1A0]
-    - [0x29C090, .rodata, fragments/41/fragment41_28ED00]
-    - [0x29C140, .rodata, fragments/41/fragment41_291D60]
-    - [0x29C180, .rodata, fragments/41/fragment41_2942C0]
+    - [0x29BF80, .rodata, fragments/trade_machine/trade_machine_287ED0]
+    - [0x29C010, .rodata, fragments/trade_machine/trade_machine_289240]
+    - [0x29C040, .rodata, fragments/trade_machine/trade_machine_28D1A0]
+    - [0x29C090, .rodata, fragments/trade_machine/trade_machine_28ED00]
+    - [0x29C140, .rodata, fragments/trade_machine/trade_machine_291D60]
+    - [0x29C180, .rodata, fragments/trade_machine/trade_machine_2942C0]
 
-    - {vram: 0x82F14420, type:  .bss, name: fragments/41/fragment41_287ED0}
-    - {vram: 0x82F144D0, type:  .bss, name: fragments/41/fragment41_289240}
-    - {vram: 0x82F20A10, type:  .bss, name: fragments/41/fragment41_28D1A0}
-    - {vram: 0x82F20A40, type:  .bss, name: fragments/41/fragment41_28ED00}
-    - {vram: 0x82F210E0, type:  .bss, name: fragments/41/fragment41_291D60}
-    - {vram: 0x82F21140, type:  .bss, name: fragments/41/fragment41_2942C0}
+    - {vram: 0x82F14420, type:  .bss, name: fragments/trade_machine/trade_machine_287ED0}
+    - {vram: 0x82F144D0, type:  .bss, name: fragments/trade_machine/trade_machine_289240}
+    - {vram: 0x82F20A10, type:  .bss, name: fragments/trade_machine/trade_machine_28D1A0}
+    - {vram: 0x82F20A40, type:  .bss, name: fragments/trade_machine/trade_machine_28ED00}
+    - {vram: 0x82F210E0, type:  .bss, name: fragments/trade_machine/trade_machine_291D60}
+    - {vram: 0x82F21140, type:  .bss, name: fragments/trade_machine/trade_machine_2942C0}
 
   - name: fragment41_relocs
     type: code
@@ -1711,12 +1711,12 @@
     start: 0x29DD30
     vram: 0x83300000
     subsegments:
-    - [0x29DD30, textbin,   fragments/42/fragment42_header]
-    - [0x29DD50, c,      fragments/42/fragment42]
-    - [0x2A0EB0, .data,   fragments/42/fragment42]
-    - [0x2A0FE0, .rodata, fragments/42/fragment42]
+    - [0x29DD30, textbin,   fragments/gallery_snap/gallery_snap_header]
+    - [0x29DD50, c,      fragments/gallery_snap/gallery_snap]
+    - [0x2A0EB0, .data,   fragments/gallery_snap/gallery_snap]
+    - [0x2A0FE0, .rodata, fragments/gallery_snap/gallery_snap]
 
-    - {vram: 0x833032E0, type:  .bss, name: fragments/42/fragment42}
+    - {vram: 0x833032E0, type:  .bss, name: fragments/gallery_snap/gallery_snap}
 
   - name: fragment42_relocs
     type: code
