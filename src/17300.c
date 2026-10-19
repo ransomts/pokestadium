@@ -11,7 +11,7 @@ typedef struct unk_func_80016B30_arg0 {
 static unk_D_800ABCC0 gAnimChannels[2];
 static s32 gCurrentAnimChannelIdx;
 
-f32 Anim_GetScalar(unk_D_800ABCC0* arg0, s32 arg1) {
+f32 ModelAnim_EvaluateTranslationChannel(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 ret;
     s32 var_a2;
     unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
@@ -31,7 +31,7 @@ f32 Anim_GetScalar(unk_D_800ABCC0* arg0, s32 arg1) {
     return ret;
 }
 
-s16 Anim_GetRotation(unk_D_800ABCC0* arg0, s32 arg1) {
+s16 ModelAnim_EvaluateRotationChannel(unk_D_800ABCC0* arg0, s32 arg1) {
     s32 var_a1;
     s16 var_v1;
     unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
@@ -49,7 +49,7 @@ s16 Anim_GetRotation(unk_D_800ABCC0* arg0, s32 arg1) {
     return var_v1;
 }
 
-f32 Anim_GetPosition(unk_D_800ABCC0* arg0, s32 arg1) {
+f32 ModelAnim_EvaluateScaleChannel(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
     s16 var_a2;
     s32 var_a1;
@@ -79,7 +79,7 @@ f32 Anim_GetPosition(unk_D_800ABCC0* arg0, s32 arg1) {
     return var_fv1;
 }
 
-f32 Anim_InterpolateCubic(Vec3s* arg0, s16 arg1, s16 arg2) {
+f32 ModelAnim_InterpolateKeyframe(Vec3s* arg0, s16 arg1, s16 arg2) {
     f32 y;
     s32 i;
     f32 x;
@@ -109,7 +109,7 @@ f32 Anim_InterpolateCubic(Vec3s* arg0, s16 arg1, s16 arg2) {
     return var_fv1;
 }
 
-f32 Anim_InterpolateCubicVec(unk_func_80016B30_arg0* arg0, s16 arg1, s16 arg2) {
+f32 ModelAnim_InterpolateKeyframeTangent(unk_func_80016B30_arg0* arg0, s16 arg1, s16 arg2) {
     f32 y;
     s32 i;
     f32 x;
@@ -139,7 +139,7 @@ f32 Anim_InterpolateCubicVec(unk_func_80016B30_arg0* arg0, s16 arg1, s16 arg2) {
     return var_fv1;
 }
 
-f32 Anim_GetScaleInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
+f32 ModelAnim_EvaluateTranslationCurve(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
     unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
     s16* tmp;
@@ -149,15 +149,15 @@ f32 Anim_GetScaleInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
     } else {
         tmp = &arg0->unk_0C[temp_v0->unk_04];
         if (temp_v0->unk_03 & 4) {
-            var_fv1 = Anim_InterpolateCubicVec(tmp, temp_v0->unk_00, arg0->unk_02) / 100.0f;
+            var_fv1 = ModelAnim_InterpolateKeyframeTangent(tmp, temp_v0->unk_00, arg0->unk_02) / 100.0f;
         } else {
-            var_fv1 = Anim_InterpolateCubic(tmp, temp_v0->unk_00, arg0->unk_02) / 100.0f;
+            var_fv1 = ModelAnim_InterpolateKeyframe(tmp, temp_v0->unk_00, arg0->unk_02) / 100.0f;
         }
     }
     return var_fv1;
 }
 
-s16 Anim_GetRotationInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
+s16 ModelAnim_EvaluateRotationCurve(unk_D_800ABCC0* arg0, s32 arg1) {
     f32 var_fv1;
     s16* temp_a0;
     unk_D_800ABCC0_008* temp_v0 = &arg0->unk_08[arg1];
@@ -167,9 +167,9 @@ s16 Anim_GetRotationInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
     } else {
         temp_a0 = &arg0->unk_10[temp_v0->unk_06];
         if (temp_v0->unk_03 & 2) {
-            var_fv1 = Anim_InterpolateCubicVec(temp_a0, temp_v0->unk_01, arg0->unk_02) / 10.0f;
+            var_fv1 = ModelAnim_InterpolateKeyframeTangent(temp_a0, temp_v0->unk_01, arg0->unk_02) / 10.0f;
         } else {
-            var_fv1 = Anim_InterpolateCubic(temp_a0, temp_v0->unk_01, arg0->unk_02) / 10.0f;
+            var_fv1 = ModelAnim_InterpolateKeyframe(temp_a0, temp_v0->unk_01, arg0->unk_02) / 10.0f;
         }
     }
 
@@ -184,7 +184,7 @@ s16 Anim_GetRotationInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
     return (var_fv1 / 360.0f) * 65536.0f;
 }
 
-f32 Anim_GetPositionInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
+f32 ModelAnim_EvaluateScaleCurve(unk_D_800ABCC0* arg0, s32 arg1) {
     s16* temp_a0;
     f32 var_fv0;
     f32 var_fv1;
@@ -195,9 +195,9 @@ f32 Anim_GetPositionInterpolated(unk_D_800ABCC0* arg0, s32 arg1) {
     } else {
         temp_a0 = &arg0->unk_14[temp_v0->unk_08];
         if (temp_v0->unk_03 & 1) {
-            var_fv0 = Anim_InterpolateCubicVec(temp_a0, temp_v0->unk_02, arg0->unk_02);
+            var_fv0 = ModelAnim_InterpolateKeyframeTangent(temp_a0, temp_v0->unk_02, arg0->unk_02);
         } else {
-            var_fv0 = Anim_InterpolateCubic(temp_a0, temp_v0->unk_02, arg0->unk_02);
+            var_fv0 = ModelAnim_InterpolateKeyframe(temp_a0, temp_v0->unk_02, arg0->unk_02);
         }
         var_fv1 = var_fv0;
     }
@@ -221,7 +221,7 @@ typedef struct unk_D_86002F58_004_000_040_raw {
     /* 0x12 */ u16 unk_12;
 } unk_D_86002F58_004_000_040_raw; // size >= 0x14
 
-s32 Anim_ComputeKeyframeIndex(unk_D_86002F58_004_000_040_raw* arg0, u16 arg1) {
+s32 ModelAnim_AdvanceCurveFrame(unk_D_86002F58_004_000_040_raw* arg0, u16 arg1) {
     unk_D_86002F58_004_000_040_raw_08 spC;
     unk_D_86002F58_004_000_040_raw_08* ptr;
     unk_D_86002F58_004_000_040_004* temp_v0;
@@ -253,11 +253,11 @@ s32 Anim_ComputeKeyframeIndex(unk_D_86002F58_004_000_040_raw* arg0, u16 arg1) {
     return spC.raw;
 }
 
-void Anim_ResetChannelIndex(void) {
+void ModelAnim_ResetCurveContext(void) {
     gCurrentAnimChannelIdx = -1;
 }
 
-void Anim_StartChannel(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
+void ModelAnim_BeginCurveContext(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
     unk_D_86002F58_004_000_040_004* temp_s1;
     unk_D_800ABCC0* temp_s0;
 
@@ -268,7 +268,7 @@ void Anim_StartChannel(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
         temp_s0 = &gAnimChannels[gCurrentAnimChannelIdx];
         if (arg0->unk_04 != NULL) {
             if (arg2 != 0) {
-                arg0->unk_08 = Anim_ComputeKeyframeIndex(arg0, arg1);
+                arg0->unk_08 = ModelAnim_AdvanceCurveFrame(arg0, arg1);
             }
 
             arg0->unk_12 = arg1;
@@ -291,52 +291,52 @@ void Anim_StartChannel(unk_D_86002F58_004_000_040* arg0, u16 arg1, s32 arg2) {
     }
 }
 
-void Anim_EndChannel(void) {
+void ModelAnim_EndCurveContext(void) {
     if (gCurrentAnimChannelIdx >= 0) {
         gCurrentAnimChannelIdx--;
     }
 }
 
-void Anim_GetTransformTriple(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
+void ModelAnim_EvaluateJointTransform(Vec3f* arg0, Vec3s* arg1, Vec3f* arg2, s32 arg3) {
     if ((gCurrentAnimChannelIdx >= 0) && (gCurrentAnimChannelIdx < 2)) {
         unk_D_800ABCC0* temp_s0 = &gAnimChannels[gCurrentAnimChannelIdx];
 
         if ((temp_s0->unk_00 == 1) && (arg3 >= 0) && (arg3 + 2 < temp_s0->unk_04->unk_08)) {
             if (temp_s0->unk_01 & 8) {
-                arg0->x = Anim_GetPositionInterpolated(temp_s0, arg3 + 0);
-                arg0->y = Anim_GetPositionInterpolated(temp_s0, arg3 + 1);
-                arg0->z = Anim_GetPositionInterpolated(temp_s0, arg3 + 2);
+                arg0->x = ModelAnim_EvaluateScaleCurve(temp_s0, arg3 + 0);
+                arg0->y = ModelAnim_EvaluateScaleCurve(temp_s0, arg3 + 1);
+                arg0->z = ModelAnim_EvaluateScaleCurve(temp_s0, arg3 + 2);
 
-                arg1->x = Anim_GetRotationInterpolated(temp_s0, arg3 + 0);
-                arg1->y = Anim_GetRotationInterpolated(temp_s0, arg3 + 1);
-                arg1->z = Anim_GetRotationInterpolated(temp_s0, arg3 + 2);
+                arg1->x = ModelAnim_EvaluateRotationCurve(temp_s0, arg3 + 0);
+                arg1->y = ModelAnim_EvaluateRotationCurve(temp_s0, arg3 + 1);
+                arg1->z = ModelAnim_EvaluateRotationCurve(temp_s0, arg3 + 2);
 
-                arg2->x = Anim_GetScaleInterpolated(temp_s0, arg3 + 0);
-                arg2->y = Anim_GetScaleInterpolated(temp_s0, arg3 + 1);
-                arg2->z = Anim_GetScaleInterpolated(temp_s0, arg3 + 2);
+                arg2->x = ModelAnim_EvaluateTranslationCurve(temp_s0, arg3 + 0);
+                arg2->y = ModelAnim_EvaluateTranslationCurve(temp_s0, arg3 + 1);
+                arg2->z = ModelAnim_EvaluateTranslationCurve(temp_s0, arg3 + 2);
             } else {
-                arg0->x = Anim_GetPosition(temp_s0, arg3 + 0);
-                arg0->y = Anim_GetPosition(temp_s0, arg3 + 1);
-                arg0->z = Anim_GetPosition(temp_s0, arg3 + 2);
+                arg0->x = ModelAnim_EvaluateScaleChannel(temp_s0, arg3 + 0);
+                arg0->y = ModelAnim_EvaluateScaleChannel(temp_s0, arg3 + 1);
+                arg0->z = ModelAnim_EvaluateScaleChannel(temp_s0, arg3 + 2);
 
-                arg1->x = Anim_GetRotation(temp_s0, arg3 + 0);
-                arg1->y = Anim_GetRotation(temp_s0, arg3 + 1);
-                arg1->z = Anim_GetRotation(temp_s0, arg3 + 2);
+                arg1->x = ModelAnim_EvaluateRotationChannel(temp_s0, arg3 + 0);
+                arg1->y = ModelAnim_EvaluateRotationChannel(temp_s0, arg3 + 1);
+                arg1->z = ModelAnim_EvaluateRotationChannel(temp_s0, arg3 + 2);
 
-                arg2->x = Anim_GetScalar(temp_s0, arg3 + 0);
-                arg2->y = Anim_GetScalar(temp_s0, arg3 + 1);
-                arg2->z = Anim_GetScalar(temp_s0, arg3 + 2);
+                arg2->x = ModelAnim_EvaluateTranslationChannel(temp_s0, arg3 + 0);
+                arg2->y = ModelAnim_EvaluateTranslationChannel(temp_s0, arg3 + 1);
+                arg2->z = ModelAnim_EvaluateTranslationChannel(temp_s0, arg3 + 2);
             }
         }
     }
 }
 
-void Anim_ClearChannelState(Fragment2_1GraphNode* arg0) {
+void ModelAnim_ClearTransformChannel(Fragment2_1GraphNode* arg0) {
     arg0->unk_040.unk_00 = -1;
     arg0->unk_040.unk_04 = NULL;
 }
 
-s32 Anim_SetChannel(Fragment2_1GraphNode* arg0, s16 arg1, void* arg2, s32 arg3) {
+s32 ModelAnim_BindTransformCurve(Fragment2_1GraphNode* arg0, s16 arg1, void* arg2, s32 arg3) {
     unk_D_86002F58_004_000_040_004* temp_v0 = Util_ConvertAddrToVirtAddr(arg2);
     unk_D_86002F58_004_000_040* ptr = &arg0->unk_040;
 
@@ -350,16 +350,16 @@ s32 Anim_SetChannel(Fragment2_1GraphNode* arg0, s16 arg1, void* arg2, s32 arg3) 
     return ptr->unk_08 >> 0x10;
 }
 
-s32 Anim_SetChannelOffset(Fragment2_1GraphNode* arg0, s32 arg1) {
+s32 ModelAnim_SetSpeed(Fragment2_1GraphNode* arg0, s32 arg1) {
     arg0->unk_040.unk_0C = arg1;
     return arg0->unk_040.unk_08 >> 0x10;
 }
 
-void Anim_SetChannelBase(Fragment2_1GraphNode* arg0, s16 arg1) {
+void ModelAnim_SetFrame(Fragment2_1GraphNode* arg0, s16 arg1) {
     arg0->unk_040.unk_08 = (arg1 << 0x10) - arg0->unk_040.unk_0C;
 }
 
-s32 Anim_IsFrameInRange(Fragment2_1GraphNode* arg0, s16 arg1) {
+s32 ModelAnim_HasCrossedFrame(Fragment2_1GraphNode* arg0, s16 arg1) {
     unk_D_86002F58_004_000_040* ptr = &arg0->unk_040;
     s32 temp_v0 = ptr->unk_08 + ptr->unk_0C;
     s32 arg = arg1 << 0x10;
@@ -381,10 +381,10 @@ s32 Anim_IsFrameInRange(Fragment2_1GraphNode* arg0, s16 arg1) {
     return var_a2;
 }
 
-s32 GraphNode_IsAnimationFinished(Fragment2_1GraphNode* arg0) {
-    return Anim_IsFrameInRange(arg0, arg0->unk_040.unk_04->unk_0A - 1);
+s32 ModelAnim_IsAnimationDone(Fragment2_1GraphNode* arg0) {
+    return ModelAnim_HasCrossedFrame(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
-s32 Anim_HasReachedEnd(Fragment2_1GraphNode* arg0) {
+s32 ModelAnim_IsFinished(Fragment2_1GraphNode* arg0) {
     return arg0->unk_040.unk_08 >= ((arg0->unk_040.unk_04->unk_0A - 1) << 0x10);
 }

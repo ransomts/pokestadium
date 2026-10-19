@@ -3,15 +3,15 @@
 
 #include "global.h"
 
-void MiniGame_PollController(void);
-void MiniGame_InitCamera(void);
-void MiniGame_HandleCameraInput(void);
-void MiniGame_DrawOverlay(s32 arg0);
-void MiniGame_RenderFrame(s32 arg0);
-void MiniGame_RunOpening(void);
-void MiniGame_RunPlaying(void);
-void MiniGame_RunEnding(void);
-void MiniGame_InitGraph(void);
-s32 MiniGame_Main(UNUSED s32 arg0, UNUSED s32 arg1);
+void Minigame_Sample8Viewer_PollInput(void);
+void Minigame_Sample8Viewer_InitCamera(void);
+void Minigame_Sample8Viewer_UpdateCameraControls(void);
+void Minigame_Sample8Viewer_DrawDebugText(s32 arg0);
+void Minigame_Sample8Viewer_DrawFrame(s32 arg0);
+void Minigame_Sample8Viewer_OpeningLoop(void);
+void Minigame_Sample8Viewer_PlayingLoop(void);
+void Minigame_Sample8Viewer_EndingLoop(void);
+void Minigame_Sample8Viewer_Init(void);
+s32 Minigame_Sample8Viewer(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT13_H_

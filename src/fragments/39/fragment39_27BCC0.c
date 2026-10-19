@@ -421,7 +421,7 @@ static Gfx gStatusIconAltAnimDL[] = {
 
 static u32 gStatusIconDescriptor[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gStatusBarVertices0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawStatusIconForPlayer, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, MiniGameSelect_DrawMenuBackdrop, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
 static Vtx gComputerSelectionBarVertices0[] = {
@@ -594,7 +594,7 @@ static Gfx gComputerSelectionDL[] = {
 
 static u32 gComputerSelectionDescriptor[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gComputerSelectionBarVertices0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawComputerSelection, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, MiniGameSelect_DrawGameBackdrop, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
 static Vtx gComputerSelectionVertices[] = {
@@ -703,7 +703,7 @@ static Gfx gComputerRootDL[] = {
 };
 static u32 gItemSelectionDescriptor[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gComputerSelectionVertices, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawComputerRootUI, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, MiniGameSelect_DrawStaticBackdrop, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
 static Vtx gItemSelectionVertices[][4] = {
@@ -740,7 +740,7 @@ static Gfx gItemSelectionBaseDL[] = {
 };
 static u32 gItemSelectionUIDescriptor[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gItemSelectionVertices, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawItemSelectionUI, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, MiniGameSelect_DrawLabelStrips, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
 static Vtx gIconQuadVertices[] = {
@@ -761,7 +761,7 @@ static Gfx gIconDL[] = {
 };
 static u32 gUIDrawIconDescriptor[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gIconQuadVertices, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, UI_DrawIcon, 0x00000000, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, MiniGameSelect_CursorNodeCallback, 0x00000000, 0x06000000, 0x01000000,
 };
 static u32 gUILayoutConfig[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000,
@@ -790,7 +790,7 @@ static u8* gItemSelectionIconTextures[9][4] = {
     D_030B1290, D_030B5290, D_030B7290, D_030B9290, D_030B7290, D_030BB290, D_030BD290, D_030BF290, D_030BD290,
 };
 
-s32 DrawStatusIconForPlayer(s32 arg0, GraphNode* arg1) {
+s32 MiniGameSelect_DrawMenuBackdrop(s32 arg0, GraphNode* arg1) {
     s32 var_v0;
     s32 tmp;
     u32 var_a2;
@@ -817,12 +817,12 @@ s32 DrawStatusIconForPlayer(s32 arg0, GraphNode* arg1) {
         gSPDisplayList(gDisplayListHead++, gStatusIconDL);
         gSPDisplayList(gDisplayListHead++, var_a3);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 DrawComputerSelection(s32 arg0, GraphNode* arg1) {
+s32 MiniGameSelect_DrawGameBackdrop(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
         s32 tmp = gDefaultGraphRoot->unk_000.unk_14;
 
@@ -849,24 +849,24 @@ s32 DrawComputerSelection(s32 arg0, GraphNode* arg1) {
             gSPDisplayList(gDisplayListHead++, gComputerSelectionDL);
             gSPDisplayList(gDisplayListHead++, var_a3);
         }
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
 
     return 0;
 }
 
-s32 DrawComputerRootUI(s32 arg0, GraphNode* arg1) {
+s32 MiniGameSelect_DrawStaticBackdrop(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gComputerUIRoot->unk_38->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, gComputerRootDL);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
+s32 MiniGameSelect_DrawLabelStrips(s32 arg0, GraphNode* arg1) {
     UNUSED s32 pad;
     s32 var_a0;
     u32 var_a2;
@@ -919,12 +919,12 @@ s32 DrawItemSelectionUI(s32 arg0, GraphNode* arg1) {
             gSP2Triangles(gDisplayListHead++, 0, 1, 2, 0, 0, 2, 3, 0);
         }
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-void UI_Cursor_Init(void) {
+void MiniGameSelect_CreateCursor(void) {
     GraphRootNode* ptr = &gCursor.unk_000.unk_000;
 
     gCursor.unk_16C = 0;
@@ -932,13 +932,13 @@ void UI_Cursor_Init(void) {
     gCursor.unk_16A = 0;
     gCursor.unk_16E = 0;
     gCursor.unk_170 = 0;
-    Graph_AddToRootList0(&gCursor.unk_000);
-    Vec3f_Set(&gCursor.unk_000.unk_024, -220.0f, 140.0f, -579.0f);
-    GraphNode_InitChild(&gCursor.unk_000, 0, 0, gSelectionHighlightNode);
+    ModelRenderer_AttachDisplayObject(&gCursor.unk_000);
+    Vec3f_SetComponentsDuplicate(&gCursor.unk_000.unk_024, -220.0f, 140.0f, -579.0f);
+    Model_InitDisplayObject(&gCursor.unk_000, 0, 0, gSelectionHighlightNode);
     ptr->unk_01 &= ~1;
 }
 
-void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
+void MiniGameSelect_UpdateCursor(Fragment2_1GraphNode* a0) {
     unk_D_8250A308* arg0 = (unk_D_8250A308*)a0;
     s32 var_v0;
 
@@ -947,7 +947,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
 
     switch (D_8250A26C) {
         case 1:
-            if (UI_Element_IsState(gUIElementArray[0], 2) != 0) {
+            if (MiniGameSelect_IsWidgetInState(gUIElementArray[0], 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0x8C;
                 arg0->unk_16A = (D_8250A288.unk_00 * 0x58) + 0xBA;
@@ -956,7 +956,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
             break;
 
         case 2:
-            if (UI_Element_IsState(gComputerUIElements[0], 2) != 0) {
+            if (MiniGameSelect_IsWidgetInState(gComputerUIElements[0], 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0x96;
                 arg0->unk_16A = (D_8250A288.unk_02 * 0x62) + 0xBA;
@@ -964,7 +964,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
             break;
 
         case 3:
-            if (UI_Element_IsState(gComputerUIRoot, 2) != 0) {
+            if (MiniGameSelect_IsWidgetInState(gComputerUIRoot, 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0xE4;
                 arg0->unk_16A = 0xDA;
@@ -985,7 +985,7 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
             break;
 
         case 5:
-            if ((UI_Element_IsState(gItemGridElements[0], 2) != 0) && (gMenuSelectedOption != -1)) {
+            if ((MiniGameSelect_IsWidgetInState(gItemGridElements[0], 2) != 0) && (gMenuSelectedOption != -1)) {
                 arg0->unk_16E = 1;
                 arg0->unk_170 = 1;
                 arg0->unk_168 = ((D_8250A288.unk_06 % 3) * 0x60) + 0xA5;
@@ -1012,13 +1012,13 @@ void UI_Cursor_Update(Fragment2_1GraphNode* a0) {
     arg0->unk_16C += 0x1000;
 }
 
-s32 UI_DrawIcon(s32 arg0, GraphNode* arg1) {
+s32 MiniGameSelect_CursorNodeCallback(s32 arg0, GraphNode* arg1) {
     switch (arg0) {
         case 0:
             break;
 
         case 2:
-            UI_Cursor_Update(gDefaultGraphRoot);
+            MiniGameSelect_UpdateCursor(gDefaultGraphRoot);
             break;
 
         case 5:
@@ -1026,13 +1026,13 @@ s32 UI_DrawIcon(s32 arg0, GraphNode* arg1) {
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDefaultGraphRoot->unk_01D);
             gSPDisplayList(gDisplayListHead++, gIconDL);
 
-            Gfx_ResetRenderState();
+            GeoRender_ApplyMaterialState();
             break;
     }
     return 0;
 }
 
-void ControllerInput_Clear(void) {
+void MiniGameSelect_ResetInputStates(void) {
     s32 i;
     unk_D_82508B00* ptr = &gControllerStates[0];
 
@@ -1046,7 +1046,7 @@ void ControllerInput_Clear(void) {
     }
 }
 
-void ControllerInput_Update(void) {
+void MiniGameSelect_ReadInputsWithRepeat(void) {
     Controller* var_a0;
     unk_D_82508B00* var_v1;
     s32 i;
@@ -1110,14 +1110,14 @@ void ControllerInput_Update(void) {
     }
 }
 
-void ToggleInputUpdate(void) {
+void MiniGameSelect_PollInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
-    ControllerInput_Update();
+    Input_ResetRepeatState();
+    MiniGameSelect_ReadInputsWithRepeat();
 }
 
-s32 GetSelectedItemId(void) {
+s32 MiniGameSelect_ResolveGameID(void) {
     s32 sp1C;
 
     if ((D_8250A288.unk_06 >= 0) && (D_8250A288.unk_06 < 9)) {
@@ -1127,14 +1127,14 @@ s32 GetSelectedItemId(void) {
     }
 
     if (sp1C != 0) {
-        SetCurrentMenuIndex(sp1C);
+        KidsClub_SetSelectedGameId(sp1C);
     } else {
-        SetCurrentMenuIndex(-1);
+        KidsClub_SetSelectedGameId(-1);
     }
     return sp1C;
 }
 
-s32 GetItemIndexById(s32 arg0) {
+s32 MiniGameSelect_GameIDToIndex(s32 arg0) {
     s32 ret = 0;
     s32 i;
 
@@ -1148,7 +1148,7 @@ s32 GetItemIndexById(s32 arg0) {
     return ret;
 }
 
-s32 GetCategoryIndex(s16 arg0, s32 arg1) {
+s32 MiniGameSelect_FindTableIndex(s16 arg0, s32 arg1) {
     s16* var_a0;
     s32 var_v0;
     s32 ret = 0;
@@ -1172,12 +1172,12 @@ s32 GetCategoryIndex(s16 arg0, s32 arg1) {
     return ret;
 }
 
-void InitItemSelectionTimer(void) {
+void MiniGameSelect_ResetAttractShuffle(void) {
     gItemSelectionTimer = 0x78;
-    gItemSelectionRandom = GetRandomMod(3);
+    gItemSelectionRandom = Rand_Range(3);
 }
 
-void ResetUIElement(UIElement* arg0) {
+void MiniGameSelect_ClearWidgetSlot(UIElement* arg0) {
     arg0->unk_00C = 0;
     arg0->unk_000 = 0;
     arg0->unk_002 = 0;
@@ -1195,7 +1195,7 @@ void ResetUIElement(UIElement* arg0) {
     arg0->unk_00A = arg0->unk_00C;
 }
 
-void UI_AnimatedBackground_Draw(UIElement* arg0) {
+void MiniGameSelect_RenderPlayerPanel(UIElement* arg0) {
     static s16 gGradientPanelPhase = 0;
     static s16 gGradientPanelPhaseOffset = 0x3200;
 
@@ -1208,8 +1208,8 @@ void UI_AnimatedBackground_Draw(UIElement* arg0) {
 
     gGradientPanelPhase += 0x2000;
 
-    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
-    Gfx_FillScreen(&gDisplayListHead, 0);
+    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_038);
+    GfxImage_FillCurrent(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
@@ -1221,7 +1221,7 @@ void UI_AnimatedBackground_Draw(UIElement* arg0) {
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(0, i * 5, 0x12C, 5, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(0, i * 5, 0x12C, 5, 0, 0, 0x400, 0x400, 0);
         var_s2 += 0xBB8;
     }
 
@@ -1233,9 +1233,9 @@ void UI_AnimatedBackground_Draw(UIElement* arg0) {
             temp_fv1 = ROUND_MAX((temp_fs3 - 1.0f) * 36.0f * 0.5f);
             temp_fa0 = ROUND_MAX((temp_fs4 - 1.0f) * 26.0f * 0.5f);
 
-            DrawScaledTextureRect(i, ((i * 0x48) - temp_fv1) + 0x1A, 0x1A - temp_fa0, temp_fs3, temp_fs4);
+            Widget_DrawPlayerIconScaled(i, ((i * 0x48) - temp_fv1) + 0x1A, 0x1A - temp_fa0, temp_fs3, temp_fs4);
         } else {
-            DrawUniformScaledTextureRect(-5, (i * 0x48) + 0x1A, 0x1A, 1.0f);
+            Widget_DrawPlayerIcon(-5, (i * 0x48) + 0x1A, 0x1A, 1.0f);
         }
     }
 
@@ -1244,15 +1244,15 @@ void UI_AnimatedBackground_Draw(UIElement* arg0) {
 
 static const char gStr_ComputerStrength[] = "コンピュータのつよさ";
 
-void UI_GradientPanel_Draw(UIElement* arg0) {
+void MiniGameSelect_RenderNumberSpinner(UIElement* arg0) {
     s32 var_v1;
     u8* var_s2;
     s16 temp_v0;
     s16 sp90[3];
     s32 i;
 
-    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_038);
-    Gfx_FillScreen(&gDisplayListHead, 0);
+    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_038);
+    GfxImage_FillCurrent(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
@@ -1264,7 +1264,7 @@ void UI_GradientPanel_Draw(UIElement* arg0) {
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(0, i * 5, 0x12C, 5, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(0, i * 5, 0x12C, 5, 0, 0, 0x400, 0x400, 0);
         var_s2 += 0xBB8;
     }
 
@@ -1287,21 +1287,21 @@ void UI_GradientPanel_Draw(UIElement* arg0) {
     }
 
     Gfx_SetScissorRect(&gDisplayListHead, 0x6E, 0xE, 0x1C, 0x1A);
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     for (i = 0; i < 3; i++) {
         if (sp90[i] == -1) {
             continue;
         }
-        Text_Print(0x76, (gUnused2 - (i * 0x1A)) + 0x28, "%d", sp90[i]);
+        Font_Printf(0x76, (gUnused2 - (i * 0x1A)) + 0x28, "%d", sp90[i]);
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
-unk_D_8250A228* UI_Element_Allocate(void) {
+unk_D_8250A228* MiniGameSelect_FindFreeWidgetSlot(void) {
     s32 i;
     UIElement* var_v1 = gUIElements;
 
@@ -1317,8 +1317,8 @@ unk_D_8250A228* UI_Element_Allocate(void) {
     return var_v1;
 }
 
-unk_D_8250A228* UI_Element_Create(s16 arg0, s16 arg1, GraphNode* arg2) {
-    unk_D_8250A228* temp_v0 = UI_Element_Allocate();
+unk_D_8250A228* MiniGameSelect_CreateMenuWidget(s16 arg0, s16 arg1, GraphNode* arg2) {
+    unk_D_8250A228* temp_v0 = MiniGameSelect_FindFreeWidgetSlot();
     UIElementNode* temp_s1;
 
     if (temp_v0 == NULL) {
@@ -1330,40 +1330,40 @@ unk_D_8250A228* UI_Element_Create(s16 arg0, s16 arg1, GraphNode* arg2) {
     temp_v0->unk_00 = arg0;
     temp_v0->unk_02 = 0;
     temp_v0->unk_04 = arg1;
-    Graph_AddToRootList0(temp_s1);
+    ModelRenderer_AttachDisplayObject(temp_s1);
     temp_s1->unk_1E = -0x4000;
-    GraphNode_InitChild(temp_s1, 0, 0, arg2);
+    Model_InitDisplayObject(temp_s1, 0, 0, arg2);
     temp_s1->unk_01 &= ~1;
 
     switch (temp_v0->unk_00) {
         case 1:
             temp_v0->unk_38 = NULL;
-            Vec3f_Set(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 88.0f) + 196.0f), -579.0f);
+            Vec3f_SetComponentsDuplicate(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 88.0f) + 196.0f), -579.0f);
             temp_s1->unk_14 = arg1;
             break;
 
         case 2:
             if (arg1 == 0) {
-                temp_v0->unk_38 = FramebufferImage_Allocate(0, 2, 0x12C, 0x50, 1);
+                temp_v0->unk_38 = GfxImage_Allocate(0, 2, 0x12C, 0x50, 1);
                 temp_v0->unk_06 |= 1;
             } else {
                 temp_v0->unk_38 = NULL;
             }
-            Vec3f_Set(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 98.0f) + 190.0f), -579.0f);
+            Vec3f_SetComponentsDuplicate(&temp_s1->unk_24, -150.0f, 240.0f - ((arg1 * 98.0f) + 190.0f), -579.0f);
             temp_s1->unk_14 = arg1;
             break;
 
         case 3:
-            temp_v0->unk_38 = FramebufferImage_Allocate(0, 2, 0x12C, 0x50, 1);
+            temp_v0->unk_38 = GfxImage_Allocate(0, 2, 0x12C, 0x50, 1);
             temp_v0->unk_06 |= 1;
-            Vec3f_Set(&temp_s1->unk_24, -150.0f, 0.0f, -579.0f);
+            Vec3f_SetComponentsDuplicate(&temp_s1->unk_24, -150.0f, 0.0f, -579.0f);
             break;
 
         case 4:
             temp_v0->unk_38 = NULL;
             temp_v0->unk_0C = temp_v0->unk_04;
             temp_v0->unk_0A = temp_v0->unk_04;
-            Vec3f_Set(&temp_s1->unk_24, (((arg1 % 3) * 96.0f) + 224.0f) - 320.0f,
+            Vec3f_SetComponentsDuplicate(&temp_s1->unk_24, (((arg1 % 3) * 96.0f) + 224.0f) - 320.0f,
                           240.0f - (((arg1 / 3) * 96.0f) + 156.0f), -579.0f);
             temp_s1->unk_14 = arg1;
             temp_s1->unk_30.x = temp_s1->unk_30.y = temp_s1->unk_30.z = 1.2f;
@@ -1372,7 +1372,7 @@ unk_D_8250A228* UI_Element_Create(s16 arg0, s16 arg1, GraphNode* arg2) {
     return temp_v0;
 }
 
-void LinkUIElementsForward(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
+void MiniGameSelect_LinkWidgets(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
     if (arg0 != NULL) {
         arg0->unk_30 = arg1;
     }
@@ -1382,7 +1382,7 @@ void LinkUIElementsForward(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
     }
 }
 
-void SetUIElementNext(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
+void MiniGameSelect_ChainWidget(unk_D_8250A228* arg0, unk_D_8250A228* arg1) {
     if (arg0 != NULL) {
         arg0->unk_34 = arg1;
     }
@@ -1460,7 +1460,7 @@ void SetUIElementState(unk_D_8250A228* arg0, s16 arg1) {
     }
 }
 
-void SetUIElementSelection(unk_D_8250A228* arg0, s16 arg1, s32 arg2) {
+void MiniGameSelect_SetWidgetTargetState(unk_D_8250A228* arg0, s16 arg1, s32 arg2) {
     if (arg2 != 0) {
         if (arg0->unk_0A != arg0->unk_0C) {
             arg0->unk_0A = arg0->unk_0C;
@@ -1470,7 +1470,7 @@ void SetUIElementSelection(unk_D_8250A228* arg0, s16 arg1, s32 arg2) {
     arg0->unk_0C = arg1;
 }
 
-s32 UI_Element_IsState(unk_D_8250A228* arg0, s16 arg1) {
+s32 MiniGameSelect_IsWidgetInState(unk_D_8250A228* arg0, s16 arg1) {
     s32 ret = 0;
 
     if (arg0 == NULL) {
@@ -1487,7 +1487,7 @@ s32 UI_Element_IsState(unk_D_8250A228* arg0, s16 arg1) {
     return ret;
 }
 
-void FadeOutUIElement(UIElement* arg0) {
+void MiniGameSelect_UpdateWidgetFade(UIElement* arg0) {
     s32 i;
 
     arg0->unk_008 -= 1;
@@ -1502,7 +1502,7 @@ void FadeOutUIElement(UIElement* arg0) {
     }
 }
 
-s32 CountUIElementColors(unk_D_8250A228* arg0, s16 arg1) {
+s32 MiniGameSelect_CountWidgetChannels(unk_D_8250A228* arg0, s16 arg1) {
     s32 var_v1 = 0;
     s32 i;
 
@@ -1515,7 +1515,7 @@ s32 CountUIElementColors(unk_D_8250A228* arg0, s16 arg1) {
     return var_v1;
 }
 
-s32 UpdateUIElementAnimation(UIElement* arg0) {
+s32 MiniGameSelect_StaggerWidgetFade(UIElement* arg0) {
     s16 var_v0;
     s32 var_a1;
     s32 var_v1;
@@ -1544,7 +1544,7 @@ s32 UpdateUIElementAnimation(UIElement* arg0) {
         arg0->unk_00E[var_a1] = (var_v0 * 0xFF) / 10;
     }
 
-    if (CountUIElementColors(arg0, 0) >= 2) {
+    if (MiniGameSelect_CountWidgetChannels(arg0, 0) >= 2) {
         var_v1 = 1;
     } else {
         var_v1 = 0;
@@ -1553,7 +1553,7 @@ s32 UpdateUIElementAnimation(UIElement* arg0) {
     return var_v1;
 }
 
-void UpdateAllUIElements(void) {
+void MiniGameSelect_UpdateWidgets(void) {
     UNUSED s32 pad;
     s32 i;
     f32 temp_fa1;
@@ -1583,7 +1583,7 @@ void UpdateAllUIElements(void) {
 
             case 2:
                 if ((var_s0->unk_006 & 2) && (var_s0->unk_00A != var_s0->unk_00C)) {
-                    FadeOutUIElement(var_s0);
+                    MiniGameSelect_UpdateWidgetFade(var_s0);
                 }
                 break;
 
@@ -1602,7 +1602,7 @@ void UpdateAllUIElements(void) {
                 break;
 
             case 5:
-                if (UpdateUIElementAnimation(var_s0) != 0) {
+                if (MiniGameSelect_StaggerWidgetFade(var_s0) != 0) {
                     Vec3f sp58[] = {
                         { -1.0f, 1.0f, -1.0f }, { 0.0f, 1.0f, -1.0f }, { 1.0f, 1.0f, -1.0f },
                         { -1.0f, 0.0f, 0.0f },  { 0.0f, 0.0f, 1.0f },  { 1.0f, 0.0f, 0.0f },
@@ -1625,7 +1625,7 @@ void UpdateAllUIElements(void) {
                 break;
 
             case 6:
-                UpdateUIElementAnimation(var_s0);
+                MiniGameSelect_StaggerWidgetFade(var_s0);
                 var_s0->unk_018 -= 0.5f;
                 if (var_s0->unk_018 < 0.0f) {
                     var_s0->unk_018 = 0.0f;
@@ -1678,7 +1678,7 @@ void UpdateAllUIElements(void) {
     }
 }
 
-void SelectionState_Clear(void) {
+void MiniGameSelect_ClearOptionPanelState(void) {
     gSelectionCoords.unk_00 = 0;
     gSelectionCoords.unk_02 = 0;
     gSelectionCoords.unk_04 = 0;
@@ -1689,7 +1689,7 @@ void SelectionState_Clear(void) {
     gSelectionCoords.unk_0E = 0;
 }
 
-void SelectionState_InitDefaults(void) {
+void MiniGameSelect_ResetSelection(void) {
     D_8250A288.unk_00 = 0;
     D_8250A288.unk_02 = 0;
     D_8250A288.unk_04 = 3;
@@ -1702,22 +1702,22 @@ void SelectionState_InitDefaults(void) {
     }
 }
 
-void SelectionCursor_Update(s16 arg0, s16 arg1) {
+void MiniGameSelect_LoadSavedSelection(s16 arg0, s16 arg1) {
     D_8250A288.unk_00 = gMenuCursorX;
     D_8250A288.unk_02 = arg0;
     D_8250A288.unk_04 = gMenuSubState;
-    D_8250A288.unk_06 = GetItemIndexById(arg1);
-    D_8250A288.unk_08 = GetCategoryIndex(gMenuState, gSelectionFlags & 1);
+    D_8250A288.unk_06 = MiniGameSelect_GameIDToIndex(arg1);
+    D_8250A288.unk_08 = MiniGameSelect_FindTableIndex(gMenuState, gSelectionFlags & 1);
 }
 
-void SelectionUI_Init(s16 arg0, s16 arg1) {
+void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
     s32 i;
     s32 j;
     UIElement* ptr;
 
     gSubMenuState = arg0;
     if (arg1 == 0) {
-        UpdateMenuRandomSeed();
+        KidsClub_LoadDifficultySetting();
     }
 
     D_8250A26C = 0;
@@ -1726,7 +1726,7 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
         gSelectionFlags |= 1;
     }
 
-    SelectionState_InitDefaults();
+    MiniGameSelect_ResetSelection();
     KidsClub_ResetTournamentState(gSubMenuState);
     gSelectionTimer = -1;
 
@@ -1735,22 +1735,22 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
             break;
 
         case 1:
-            SelectionCursor_Update(0, arg1);
+            MiniGameSelect_LoadSavedSelection(0, arg1);
             if (gMiniHudColorDefaults[gMenuSelectedOption] == 0) {
                 gSelectionTimer = -1;
             } else {
-                gSelectionTimer = GetRandomUnusedMenuSlot();
+                gSelectionTimer = KidsClub_PickUnplayedGame();
                 gSelectionDelay = 0x1E;
             }
             break;
 
         case 4:
-            SelectionCursor_Update(1, arg1);
+            MiniGameSelect_LoadSavedSelection(1, arg1);
             if (gMenuCursorX == 0) {
                 gMenuSelectedOption = 0;
             } else {
                 gMenuSelectedOption = -1;
-                InitItemSelectionTimer();
+                MiniGameSelect_ResetAttractShuffle();
             }
 
             // clang-format off
@@ -1761,44 +1761,44 @@ void SelectionUI_Init(s16 arg0, s16 arg1) {
 
     ptr = gUIElements;
     for (i = 0; i < 14; i++, ptr++) {
-        ResetUIElement(ptr);
+        MiniGameSelect_ClearWidgetSlot(ptr);
     }
 
     for (i = 0; i < 2; i++) {
-        gUIElementArray[i] = UI_Element_Create(1, i, gStatusIconNode);
+        gUIElementArray[i] = MiniGameSelect_CreateMenuWidget(1, i, gStatusIconNode);
     }
 
     for (i = 0; i < 2; i++) {
-        gComputerUIElements[i] = UI_Element_Create(2, i, gComputerSelectionNode);
+        gComputerUIElements[i] = MiniGameSelect_CreateMenuWidget(2, i, gComputerSelectionNode);
     }
 
-    gComputerUIRoot = UI_Element_Create(3, 0, gItemSelectionNode);
+    gComputerUIRoot = MiniGameSelect_CreateMenuWidget(3, 0, gItemSelectionNode);
 
     for (i = 0; i < 9; i++) {
         if (i != 4) {
-            gItemGridElements[i] = UI_Element_Create(4, i, gBackgroundNode);
+            gItemGridElements[i] = MiniGameSelect_CreateMenuWidget(4, i, gBackgroundNode);
         }
     }
 
-    gItemGridElements[4] = UI_Element_Create(4, 4, gBackgroundNode);
-    LinkUIElementsForward(gUIElementArray[0], gComputerUIElements[0]);
+    gItemGridElements[4] = MiniGameSelect_CreateMenuWidget(4, 4, gBackgroundNode);
+    MiniGameSelect_LinkWidgets(gUIElementArray[0], gComputerUIElements[0]);
 
     for (i = 0; i < 1; i++) {
-        SetUIElementNext(gUIElementArray[i], gUIElementArray[i + 1]);
+        MiniGameSelect_ChainWidget(gUIElementArray[i], gUIElementArray[i + 1]);
     }
 
     for (i = 0; i < 1; i++) {
-        SetUIElementNext(gComputerUIElements[i], gComputerUIElements[i + 1]);
+        MiniGameSelect_ChainWidget(gComputerUIElements[i], gComputerUIElements[i + 1]);
     }
 
     for (i = 0; i < 8; i++) {
-        SetUIElementNext(gItemGridElements[i], gItemGridElements[i + 1]);
+        MiniGameSelect_ChainWidget(gItemGridElements[i], gItemGridElements[i + 1]);
     }
 
-    MessageBox_SetBank(gStringTable);
-    OptionMenu_Init(gStringTable);
-    SelectionState_Clear();
-    UI_Cursor_Init();
+    KidsClub_InitMatchBanner(gStringTable);
+    KidsClub_InitRoundBanner(gStringTable);
+    MiniGameSelect_ClearOptionPanelState();
+    MiniGameSelect_CreateCursor();
 }
 
 void UI_DrawStatusIcon(void) {
@@ -1816,7 +1816,7 @@ void UI_DrawStatusIcon(void) {
     switch (D_8250A26C) {
         case 1:
             sp30 = 0;
-            if (UI_Element_IsState(gUIElementArray[0], 2) != 0) {
+            if (MiniGameSelect_IsWidgetInState(gUIElementArray[0], 2) != 0) {
                 sp30 = 1;
                 sp40 = 0x8C;
                 sp38 = D_8250A288.unk_00 * 0x58 + 0xBA;
@@ -1827,7 +1827,7 @@ void UI_DrawStatusIcon(void) {
         case 2:
             sp30 = 0;
             gMenuSelectedOption += 0;
-            if (UI_Element_IsState(gComputerUIElements[0], 2) != 0) {
+            if (MiniGameSelect_IsWidgetInState(gComputerUIElements[0], 2) != 0) {
                 sp30 = 1;
                 sp40 = 0x96;
                 sp38 = D_8250A288.unk_02 * 0x62 + 0xBA;
@@ -1837,7 +1837,7 @@ void UI_DrawStatusIcon(void) {
 
         case 3:
             sp30 = 0;
-            if (UI_Element_IsState(gComputerUIRoot, 2) != 0) {
+            if (MiniGameSelect_IsWidgetInState(gComputerUIRoot, 2) != 0) {
                 sp30 = 1;
                 sp40 = 0xE4;
                 sp38 = 0xDA;
@@ -1856,7 +1856,7 @@ void UI_DrawStatusIcon(void) {
 
         case 5:
             sp30 = 0;
-            if ((UI_Element_IsState(gItemGridElements[0], 2) != 0) && (gMenuSelectedOption != -1)) {
+            if ((MiniGameSelect_IsWidgetInState(gItemGridElements[0], 2) != 0) && (gMenuSelectedOption != -1)) {
                 sp30 = 1;
                 sp2C = 1;
                 sp40 = ((D_8250A288.unk_06 % 3) * 0x60) + 0xA5;
@@ -1875,7 +1875,7 @@ void UI_DrawStatusIcon(void) {
             var_a2_2 = 6 - var_a2_2;
         }
         sp18 = sp40 + var_a2_2;
-        DrawStatusIcon(sp18, sp38);
+        Ui_DrawTextureMarker(sp18, sp38);
 
         if ((sp2C != 0) && (gMenuSelectedOption >= 0)) {
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -1883,9 +1883,9 @@ void UI_DrawStatusIcon(void) {
 
             var_a2_2 = gMenuSelectedOption;
             if (gMiniHudColorDefaults[var_a2_2] == 0) {
-                DrawUniformScaledTextureRect(var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
+                Widget_DrawPlayerIcon(var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
             } else {
-                DrawUniformScaledTextureRect(-1 - (s32)var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
+                Widget_DrawPlayerIcon(-1 - (s32)var_a2_2, sp18 - 0x20, sp38 - 2, 1.0f);
             }
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -1893,7 +1893,7 @@ void UI_DrawStatusIcon(void) {
     }
 }
 
-void UI_DrawPendingElements(void) {
+void MiniGameSelect_RenderDirtyPanels(void) {
     s32 i;
     UIElement* var_s0 = gUIElements;
 
@@ -1905,19 +1905,19 @@ void UI_DrawPendingElements(void) {
         switch (var_s0->unk_000) {
             case 2:
                 if (var_s0->unk_004 == 0) {
-                    UI_AnimatedBackground_Draw(var_s0);
+                    MiniGameSelect_RenderPlayerPanel(var_s0);
                 }
                 break;
 
             case 3:
-                UI_GradientPanel_Draw(var_s0);
+                MiniGameSelect_RenderNumberSpinner(var_s0);
                 break;
         }
         var_s0->unk_006 &= ~1;
     }
 }
 
-void UI_DrawGradientPanelWithText(void) {
+void MiniGameSelect_DrawOptionPanel(void) {
     char** var_v0;
     s32 i;
     s32 var_s5;
@@ -1927,22 +1927,22 @@ void UI_DrawGradientPanelWithText(void) {
     char* sp6C[3];
     char* sp5C[4];
 
-    sp6C[0] = GetMessageString(NULL, 0, gStringTable, 4);
-    sp6C[1] = GetMessageString(NULL, 0, gStringTable, 5);
-    sp6C[2] = GetMessageString(NULL, 0, gStringTable, 6);
-    sp5C[0] = GetMessageString(NULL, 0, gStringTable, 3);
-    sp5C[1] = GetMessageString(NULL, 0, gStringTable, 4);
-    sp5C[2] = GetMessageString(NULL, 0, gStringTable, 5);
-    sp5C[3] = GetMessageString(NULL, 0, gStringTable, 6);
+    sp6C[0] = Text_GetString(NULL, 0, gStringTable, 4);
+    sp6C[1] = Text_GetString(NULL, 0, gStringTable, 5);
+    sp6C[2] = Text_GetString(NULL, 0, gStringTable, 6);
+    sp5C[0] = Text_GetString(NULL, 0, gStringTable, 3);
+    sp5C[1] = Text_GetString(NULL, 0, gStringTable, 4);
+    sp5C[2] = Text_GetString(NULL, 0, gStringTable, 5);
+    sp5C[3] = Text_GetString(NULL, 0, gStringTable, 6);
 
     if (gSelectionCoords.unk_00 != 0) {
-        DrawGradientPanel(gSelectionCoords.unk_08, gSelectionCoords.unk_0A, gSelectionCoords.unk_0C, gSelectionCoords.unk_0E, &sp80, &sp7C);
+        Ui_DrawGradientPanel(gSelectionCoords.unk_08, gSelectionCoords.unk_0A, gSelectionCoords.unk_0C, gSelectionCoords.unk_0E, &sp80, &sp7C);
         if (gSelectionCoords.unk_00 == 2) {
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x140 - (GetTextWidth(gTextObjectHandle, GetMessageString(NULL, 0, gStringTable, 2)) / 2),
-                          gSelectionCoords.unk_0A + 0x18, GetMessageString(NULL, 0, gStringTable, 2));
+            Font_Printf(0x140 - (Text_MeasureStringWidth(gTextObjectHandle, Text_GetString(NULL, 0, gStringTable, 2)) / 2),
+                          gSelectionCoords.unk_0A + 0x18, Text_GetString(NULL, 0, gStringTable, 2));
 
             if (gSelectionFlags & 1) {
                 var_s4 = 4;
@@ -1960,28 +1960,28 @@ void UI_DrawGradientPanelWithText(void) {
                 } else {
                     Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
                 }
-                Text_Print(0x140 - (GetTextWidth(gTextObjectHandle, var_v0[i]) / 2),
+                Font_Printf(0x140 - (Text_MeasureStringWidth(gTextObjectHandle, var_v0[i]) / 2),
                               gSelectionCoords.unk_0A + var_s5 + (i * 0x18), var_v0[i]);
             }
 
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
         }
     }
 }
 
-void SelectionUI_Render(void) {
-    UI_DrawPendingElements();
-    Stage_BeginDisplayList();
-    Gfx_DrawTextureAtlas(gItemDataPtr);
-    Graph_SetTextureState(gCursorNode);
-    MessageBox_Render();
-    OptionMenu_Render();
-    UI_DrawGradientPanelWithText();
+void MiniGameSelect_DrawFrame(void) {
+    MiniGameSelect_RenderDirtyPanels();
+    BgStage_DrawFrame();
+    Gfx_DrawTiledRgba16Image(gItemDataPtr);
+    Geo_RenderRootNode(gCursorNode);
+    KidsClub_DrawMatchBanner();
+    KidsClub_DrawRoundBanner();
+    MiniGameSelect_DrawOptionPanel();
     UI_DrawStatusIcon();
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
-void SelectionUI_Reset(void) {
+void MiniGameSelect_ReturnToIdle(void) {
     s16 tmp = D_8250A26C;
     s16 sp1C;
     s32 sp18;
@@ -1993,7 +1993,7 @@ void SelectionUI_Reset(void) {
 
     D_8250A26C = 1;
     sp1C = D_8250A288.unk_00;
-    SelectionState_InitDefaults();
+    MiniGameSelect_ResetSelection();
 
     if (sp18 == 0) {
         D_8250A288.unk_00 = sp1C;
@@ -2002,15 +2002,15 @@ void SelectionUI_Reset(void) {
     KidsClub_ResetTournamentState(gSubMenuState);
 }
 
-void UI_HandleMainSelectionInput(void) {
+void MiniGameSelect_UpdateMainMenu(void) {
     s32 i;
     s32 tmp;
 
-    if (UI_Element_IsState(gUIElementArray[0], 2) == 0) {
+    if (MiniGameSelect_IsWidgetInState(gUIElementArray[0], 2) == 0) {
         return;
     }
 
-    GetRandomMod(0x80);
+    Rand_Range(0x80);
 
     tmp = D_8250A288.unk_00;
     if (gControllerInputs->unk_04 & 0x800) {
@@ -2028,13 +2028,13 @@ void UI_HandleMainSelectionInput(void) {
     }
 
     if (tmp != D_8250A288.unk_00) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 
     if (gControllerInputs->unk_04 & 0x8000) {
         gMenuCursorX = D_8250A288.unk_00;
         D_8250A26C = 2;
-        MessageBox_SetState(1);
+        KidsClub_SetMatchBannerState(1);
         D_8250A288.unk_02 = 0;
 
         for (i = 0; i < 4; i++) {
@@ -2044,48 +2044,48 @@ void UI_HandleMainSelectionInput(void) {
         gComputerUIElements[0]->unk_06 |= 1;
         if (gMenuCursorX == 0) {
             gMenuSelectedOption = 0;
-            PlaySoundEffect(0xB);
+            Audio_PlaySoundEffectById(0xB);
         } else {
             gMenuSelectedOption = -1;
-            InitItemSelectionTimer();
-            PlaySoundEffect(0xC);
+            MiniGameSelect_ResetAttractShuffle();
+            Audio_PlaySoundEffectById(0xC);
         }
         SetUIElementState(gUIElementArray[0], 3);
     } else if (gControllerInputs->unk_04 & 0x4000) {
         D_8250A26C = 7;
         D_8250A288.unk_06 = -1;
-        Stage_SetFillColor(1);
-        Stage_FadeOut(0xF);
-        Stage_SetFadeColor(0xF);
-        PlaySoundEffect(3);
+        StageContext_SetClearColor(1);
+        StageFade_StartFromTransparent(0xF);
+        Audio_FadeOutAll(0xF);
+        Audio_PlaySoundEffectById(3);
     }
 }
 
-void SelectionUI_ConfirmChoice(void) {
-    MessageBox_SetState(3);
+void MiniGameSelect_LeaveJoinMenu(void) {
+    KidsClub_SetMatchBannerState(3);
     if (D_8250A288.unk_00 == 0) {
         D_8250A26C = 5;
-        LinkUIElementsForward(gComputerUIElements[0], gItemGridElements[0]);
-        OptionMenu_SetState(1, D_8250A288.unk_06);
+        MiniGameSelect_LinkWidgets(gComputerUIElements[0], gItemGridElements[0]);
+        KidsClub_SetRoundBannerState(1, D_8250A288.unk_06);
     } else {
         D_8250A26C = 3;
         gUnused0 = 0;
         gUnused1 = 0;
         gUnused2 = 0;
-        LinkUIElementsForward(gComputerUIElements[0], gComputerUIRoot);
-        LinkUIElementsForward(gComputerUIRoot, gItemGridElements[0]);
+        MiniGameSelect_LinkWidgets(gComputerUIElements[0], gComputerUIRoot);
+        MiniGameSelect_LinkWidgets(gComputerUIRoot, gItemGridElements[0]);
     }
     SetUIElementState(*gComputerUIElements, 3);
 }
 
-void ComputerUI_HandleInput(void) {
+void MiniGameSelect_PlayerJoinUpdate(void) {
     s32 temp_a1;
     s32 var_v1;
     s32 var_s4;
     s32 i;
 
     gComputerUIElements[1]->unk_0A = gMenuCursorX;
-    if ((UI_Element_IsState(gComputerUIElements[0], 2) != 0) && (MessageBox_GetState() == 2)) {
+    if ((MiniGameSelect_IsWidgetInState(gComputerUIElements[0], 2) != 0) && (KidsClub_GetMatchBannerState() == 2)) {
         var_v1 = D_8250A288.unk_02;
         if ((gControllerInputs->unk_04 & 0x800) && (gMiniHudColorDefaults[0] == 0)) {
             D_8250A288.unk_02--;
@@ -2102,7 +2102,7 @@ void ComputerUI_HandleInput(void) {
         }
 
         if (var_v1 != D_8250A288.unk_02) {
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
         }
 
         var_s4 = 0;
@@ -2112,12 +2112,12 @@ void ComputerUI_HandleInput(void) {
                     if ((gControllerStates[i].unk_04 & 0x8000) && (gMiniHudColorDefaults[i] != 0)) {
                         var_s4 = 1;
                         gMiniHudColorDefaults[i] = 0;
-                        PlaySoundEffect(0xD);
+                        Audio_PlaySoundEffectById(0xD);
                     } else if (gControllerStates[i].unk_04 & 0x4000) {
                         if (gMiniHudColorDefaults[i] != 1) {
                             var_s4 = 1;
                             gMiniHudColorDefaults[i] = 1;
-                            PlaySoundEffect(3);
+                            Audio_PlaySoundEffectById(3);
                         }
                     }
                 }
@@ -2137,18 +2137,18 @@ void ComputerUI_HandleInput(void) {
                     if (gMenuCursorY != 4) {
                         D_8250A26C = 4;
                     } else {
-                        SelectionUI_ConfirmChoice();
+                        MiniGameSelect_LeaveJoinMenu();
                     }
-                    PlaySoundEffect(0xE);
+                    Audio_PlaySoundEffectById(0xE);
                 }
                 break;
         }
 
         if ((var_s4 == 0) && (gControllerInputs->unk_04 & 0x4000)) {
-            SelectionUI_Reset();
-            MessageBox_SetState(3);
+            MiniGameSelect_ReturnToIdle();
+            KidsClub_SetMatchBannerState(3);
             SetUIElementState(gComputerUIElements[0], 8);
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
         }
 
         if (D_8250A26C == 2) {
@@ -2157,7 +2157,7 @@ void ComputerUI_HandleInput(void) {
     }
 }
 
-void GradientPanel_Animate(void) {
+void MiniGameSelect_UpdateOptionPanel(void) {
     s32 var_a2;
     s32 var_v0;
     s32 tmp;
@@ -2217,7 +2217,7 @@ void GradientPanel_Animate(void) {
             }
 
             if (tmp != D_8250A288.unk_08) {
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
             }
 
             if (gControllerInputs->unk_04 & 0x8000) {
@@ -2233,7 +2233,7 @@ void GradientPanel_Animate(void) {
                 gSelectionCoords.unk_0A = 0x9C;
                 gSelectionCoords.unk_0C = 0x118;
                 gSelectionCoords.unk_0E = 0xA8;
-                PlaySoundEffect(2);
+                Audio_PlaySoundEffectById(2);
             } else if (gControllerInputs->unk_04 & 0x4000) {
                 gSelectionCoords.unk_00 = 3;
                 gSelectionCoords.unk_02 = 0;
@@ -2242,7 +2242,7 @@ void GradientPanel_Animate(void) {
                 gSelectionCoords.unk_0A = 0x9C;
                 gSelectionCoords.unk_0C = 0x118;
                 gSelectionCoords.unk_0E = 0xA8;
-                PlaySoundEffect(3);
+                Audio_PlaySoundEffectById(3);
             }
             break;
 
@@ -2255,7 +2255,7 @@ void GradientPanel_Animate(void) {
             if (gSelectionCoords.unk_04 <= 0) {
                 gSelectionCoords.unk_00 = 0;
                 if (gSelectionCoords.unk_02 != 0) {
-                    SelectionUI_ConfirmChoice();
+                    MiniGameSelect_LeaveJoinMenu();
                 } else {
                     D_8250A26C = 2;
                 }
@@ -2268,10 +2268,10 @@ void GradientPanel_Animate(void) {
     }
 }
 
-void ComputerUIRoot_HandleInput(void) {
+void MiniGameSelect_UpdateRoundSpinner(void) {
     s32 i;
 
-    if (UI_Element_IsState(gComputerUIRoot, 2) != 0) {
+    if (MiniGameSelect_IsWidgetInState(gComputerUIRoot, 2) != 0) {
         switch (gUnused0) {
             case 0:
                 if (gControllerInputs->unk_04 & 0x8000) {
@@ -2281,16 +2281,16 @@ void ComputerUIRoot_HandleInput(void) {
                         gMenuOptionTimers[i] = 0;
                     }
 
-                    ResetSelectionState();
+                    Widget_PauseMenuResetWinStreak();
                     D_8250A26C = 5;
                     SetUIElementState(gComputerUIRoot, 3);
-                    PlaySoundEffect(0xE);
-                    OptionMenu_SetState(1, D_8250A288.unk_06);
+                    Audio_PlaySoundEffectById(0xE);
+                    KidsClub_SetRoundBannerState(1, D_8250A288.unk_06);
                 } else if (gControllerInputs->unk_04 & 0x4000) {
                     D_8250A26C = 2;
-                    MessageBox_SetState(1);
+                    KidsClub_SetMatchBannerState(1);
                     SetUIElementState(gComputerUIRoot, 8);
-                    PlaySoundEffect(3);
+                    Audio_PlaySoundEffectById(3);
                 } else if ((gControllerInputs->unk_08 & 0x800) && (D_8250A288.unk_04 < 9)) {
                     gUnused0 = 2;
                     gUnused1 = 5;
@@ -2300,7 +2300,7 @@ void ComputerUIRoot_HandleInput(void) {
                 }
 
                 if ((gUnused0 == 2) || (gUnused0 == 1)) {
-                    PlaySoundEffect(0x10);
+                    Audio_PlaySoundEffectById(0x10);
                 }
                 break;
 
@@ -2328,7 +2328,7 @@ void ComputerUIRoot_HandleInput(void) {
     }
 }
 
-s32 ItemGrid_Navigate(s16* arg0, s16 arg1) {
+s32 MiniGameSelect_UpdateGridCursor(s16* arg0, s16 arg1) {
     s32 var_a3;
     s32 var_t0;
     s32 sp2C;
@@ -2384,7 +2384,7 @@ s32 ItemGrid_Navigate(s16* arg0, s16 arg1) {
                     if (D_8250A288.unk_00 == 0) {
                         sp1E = -1;
                         gSubMenuState = 0;
-                        LinkUIElementsForward(gComputerUIElements[0], gItemGridElements[0]);
+                        MiniGameSelect_LinkWidgets(gComputerUIElements[0], gItemGridElements[0]);
                     }
                     break;
             }
@@ -2414,14 +2414,14 @@ s32 ItemGrid_Navigate(s16* arg0, s16 arg1) {
 
     *arg0 = (var_t0 * 3) + var_a3;
     if (sp2C != *arg0) {
-        OptionMenu_SetSelection(*arg0);
-        PlaySoundEffect(1);
+        KidsClub_SetRoundBannerLabel(*arg0);
+        Audio_PlaySoundEffectById(1);
     }
 
     return sp1E;
 }
 
-s32 SelectionScreen_ProcessRandomSelection(s16* arg0, s16 arg1) {
+s32 MiniGameSelect_AttractCursorShuffle(s16* arg0, s16 arg1) {
     s32 i;
     s32 sp68;
     s16 temp_s3;
@@ -2430,10 +2430,10 @@ s32 SelectionScreen_ProcessRandomSelection(s16* arg0, s16 arg1) {
 
     sp68 = 0;
     if (arg1 >= 0) {
-        GetRandomMod(2);
+        Rand_Range(2);
         if ((arg1 % 6) == 0) {
-            *arg0 = GetRandomMod(9);
-            OptionMenu_SetSelection(*arg0);
+            *arg0 = Rand_Range(9);
+            KidsClub_SetRoundBannerLabel(*arg0);
 
             if (arg1 != 0) {
                 for (i = 0; i < 9; i++) {
@@ -2445,27 +2445,27 @@ s32 SelectionScreen_ProcessRandomSelection(s16* arg0, s16 arg1) {
                 if (arg1 != 0) {
                     switch (gItemSelectionRandom) {
                         case 0:
-                            tmp = GetRandomMod(9);
+                            tmp = Rand_Range(9);
                             temp_s3 = gItemGridElements[i]->unk_0C;
-                            SetUIElementSelection(gItemGridElements[i], gItemGridElements[tmp]->unk_0C, 0);
+                            MiniGameSelect_SetWidgetTargetState(gItemGridElements[i], gItemGridElements[tmp]->unk_0C, 0);
                             gItemGridElements[tmp]->unk_0C = temp_s3;
                             break;
 
                         case 1:
                             tmp = gItemCategoryMap[i];
-                            SetUIElementSelection(gItemGridElements[i], sp50[tmp], 0);
+                            MiniGameSelect_SetWidgetTargetState(gItemGridElements[i], sp50[tmp], 0);
                             break;
 
                         case 2:
                             tmp = gExtendedItemMap[i];
-                            SetUIElementSelection(gItemGridElements[i], sp50[tmp], 0);
+                            MiniGameSelect_SetWidgetTargetState(gItemGridElements[i], sp50[tmp], 0);
                             break;
                     }
                 } else {
-                    SetUIElementSelection(gItemGridElements[i], *arg0, 1);
+                    MiniGameSelect_SetWidgetTargetState(gItemGridElements[i], *arg0, 1);
                 }
             }
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
         }
     }
 
@@ -2476,19 +2476,19 @@ s32 SelectionScreen_ProcessRandomSelection(s16* arg0, s16 arg1) {
     return sp68;
 }
 
-void SelectionScreen_HandleOptionUse(void) {
+void MiniGameSelect_GameGridUpdate(void) {
     s32 sp1C;
     s32 sp18;
     s32 temp_v0;
     s32 var_a2;
     s32 var_v1;
 
-    IncrementRandomCounter();
-    if (UI_Element_IsState(gItemGridElements[0], 2) != 0) {
+    Rand_Advance();
+    if (MiniGameSelect_IsWidgetInState(gItemGridElements[0], 2) != 0) {
         sp1C = 0;
         sp18 = 0;
         if (gMenuSelectedOption >= 0) {
-            switch (ItemGrid_Navigate(&D_8250A288.unk_06, gMenuSelectedOption)) {
+            switch (MiniGameSelect_UpdateGridCursor(&D_8250A288.unk_06, gMenuSelectedOption)) {
                 case 1:
                     sp1C = 1;
 
@@ -2498,25 +2498,25 @@ void SelectionScreen_HandleOptionUse(void) {
             }
         } else {
             gItemSelectionTimer -= 1;
-            sp1C = SelectionScreen_ProcessRandomSelection(&D_8250A288.unk_06, gItemSelectionTimer);
+            sp1C = MiniGameSelect_AttractCursorShuffle(&D_8250A288.unk_06, gItemSelectionTimer);
         }
 
         if (sp1C != 0) {
             D_8250A26C = 6;
             SetUIElementState(gItemGridElements[0], 5);
             gMenuOptionUsedFlags[D_8250A288.unk_06] = 1;
-            PlaySoundEffect(0x11);
+            Audio_PlaySoundEffectById(0x11);
         } else if (sp18 != 0) {
-            OptionMenu_SetState(3, -1);
+            KidsClub_SetRoundBannerState(3, -1);
             SetUIElementState(gItemGridElements[0], 8);
             D_8250A26C = 2;
-            MessageBox_SetState(1);
-            PlaySoundEffect(3);
+            KidsClub_SetMatchBannerState(1);
+            Audio_PlaySoundEffectById(3);
         }
     }
 }
 
-void SelectionScreen_CheckMiniHudAndFade(void) {
+void MiniGameSelect_ConfirmUpdate(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -2531,35 +2531,35 @@ void SelectionScreen_CheckMiniHudAndFade(void) {
         }
     }
 
-    if (CountUIElementColors(gItemGridElements[4], 0) >= 3) {
+    if (MiniGameSelect_CountWidgetChannels(gItemGridElements[4], 0) >= 3) {
         D_8250A26C = 7;
-        Stage_SetFillColor(1);
-        Stage_FadeOut(0xA);
+        StageContext_SetClearColor(1);
+        StageFade_StartFromTransparent(0xA);
     }
 }
 
-void RunSelectionScreen(s16 arg0, s16 arg1) {
+void MiniGameSelect_MainLoop(s16 arg0, s16 arg1) {
     s32 var_s6 = 1;
     s32 i;
 
-    SelectionUI_Init(arg0, arg1);
-    ResultScreen_SetAnimation(0x16);
-    Stage_FadeIn(0xF);
+    MiniGameSelect_InitMenuNodes(arg0, arg1);
+    Audio_StartMusicTrack(0x16);
+    StageFade_StartFromOpaque(0xF);
     gSelectionFrameCounter = 0;
 
     while (var_s6 != 0) {
-        ToggleInputUpdate();
-        SelectionScreen_HandleInput();
-        OptionMenu_Update();
-        UpdateAllUIElements();
-        SelectionUI_Render();
+        MiniGameSelect_PollInputs();
+        KidsClub_UpdateMatchBanner();
+        KidsClub_UpdateRoundBanner();
+        MiniGameSelect_UpdateWidgets();
+        MiniGameSelect_DrawFrame();
 
         switch (D_8250A26C) {
             case 0:
-                if (Stage_GetFadeState() == 0) {
+                if (StageContext_GetFadeMode() == 0) {
                     switch (gSubMenuState) {
                         case 0:
-                            SelectionUI_Reset();
+                            MiniGameSelect_ReturnToIdle();
                             SetUIElementState(gUIElementArray[0], 1);
                             break;
 
@@ -2568,7 +2568,7 @@ void RunSelectionScreen(s16 arg0, s16 arg1) {
                             for (i = 0; i < 9; i++) {
                                 SetUIElementState(gItemGridElements[i], 1);
                             }
-                            OptionMenu_SetState(1, D_8250A288.unk_06);
+                            KidsClub_SetRoundBannerState(1, D_8250A288.unk_06);
                             break;
 
                         case 4:
@@ -2576,38 +2576,38 @@ void RunSelectionScreen(s16 arg0, s16 arg1) {
                             for (i = 0; i < 2; i++) {
                                 SetUIElementState(gComputerUIElements[i], 1);
                             }
-                            MessageBox_SetState(1);
+                            KidsClub_SetMatchBannerState(1);
                             break;
                     }
                 }
                 break;
 
             case 1:
-                UI_HandleMainSelectionInput();
+                MiniGameSelect_UpdateMainMenu();
                 break;
 
             case 2:
-                ComputerUI_HandleInput();
+                MiniGameSelect_PlayerJoinUpdate();
                 break;
 
             case 4:
-                GradientPanel_Animate();
+                MiniGameSelect_UpdateOptionPanel();
                 break;
 
             case 3:
-                ComputerUIRoot_HandleInput();
+                MiniGameSelect_UpdateRoundSpinner();
                 break;
 
             case 5:
-                SelectionScreen_HandleOptionUse();
+                MiniGameSelect_GameGridUpdate();
                 break;
 
             case 6:
-                SelectionScreen_CheckMiniHudAndFade();
+                MiniGameSelect_ConfirmUpdate();
                 break;
 
             case 7:
-                if (Stage_GetFadeState() == 1) {
+                if (StageContext_GetFadeMode() == 1) {
                     var_s6 = 0;
                 }
                 break;
@@ -2616,31 +2616,31 @@ void RunSelectionScreen(s16 arg0, s16 arg1) {
     }
 }
 
-void SelectionScreen_InitResources(void) {
+void MiniGameSelect_LoadScene(void) {
     MemoryBlock* temp_v0;
 
     gControllerInputs = &gControllerStates;
-    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     gCursorNode = process_geo_layout(temp_v0, gUILayoutConfig);
     gStatusIconNode = process_geo_layout(temp_v0, gStatusIconDescriptor);
     gComputerSelectionNode = process_geo_layout(temp_v0, gComputerSelectionDescriptor);
     gItemSelectionNode = process_geo_layout(temp_v0, gItemSelectionDescriptor);
     gBackgroundNode = process_geo_layout(temp_v0, gItemSelectionUIDescriptor);
     gSelectionHighlightNode = process_geo_layout(temp_v0, gUIDrawIconDescriptor);
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
-    ControllerInput_Clear();
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
+    MiniGameSelect_ResetInputStates();
 }
 
-s32 SelectionScreen_Entry(s32 arg0, s32 arg1) {
+s32 MiniGameSelect_Entry(s32 arg0, s32 arg1) {
     Stage* sp24;
     BinArchive* temp_v0;
 
     main_pool_push_state('KIDC');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    gTextObjectHandle = Text_Init(0x10, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    gTextObjectHandle = Font_Init(0x10, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, kids_club_select_ui, 0);
@@ -2648,16 +2648,16 @@ s32 SelectionScreen_Entry(s32 arg0, s32 arg1) {
 
     gItemDataPtr = BinArchive_GetFile(gItemArchive, 4);
     gStringTable = gItemNamesBank;
-    GbsEnsureBankLoaded(2);
-    SelectionScreen_InitResources();
-    Stage_Set(sp24);
-    RunSelectionScreen(arg0, arg1);
-    Stage_AdvanceN(2);
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    Save_EnsureBankLoaded(2);
+    MiniGameSelect_LoadScene();
+    StageContext_Activate(sp24);
+    MiniGameSelect_MainLoop(arg0, arg1);
+    StageLoader_RunFrames(2);
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('KIDC');
 
-    return GetSelectedItemId();
+    return MiniGameSelect_ResolveGameID();
 }

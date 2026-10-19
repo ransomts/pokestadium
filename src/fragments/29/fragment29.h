@@ -10,10 +10,10 @@ typedef void (*func889007AC)(unk_func_889000C4*);
 typedef s32 (*func88900808)(unk_func_889000C4*, Controller*, s32);
 typedef void (*func88900970)(unk_func_889000C4*, s32);
 
-void Dialog_Create(unk_func_889000C4*, s32, unk_func_88001300_038*, unk_func_88001300_000*, char**, MemoryPool*);
-void Dialog_SetEnabled(unk_func_889000C4*, s32);
-void Dialog_SetCloseState(unk_func_889000C4*);
-s32 Dialog_WaitForSelection(unk_func_889000C4*, Controller*, s32);
-void Dialog_Run(unk_func_889000C4*, s32);
+void LabUI_BuildConfirmDialog(unk_func_889000C4*, s32, unk_func_88001300_038*, unk_func_88001300_000*, char**, MemoryPool*);
+void LabUI_OpenConfirmDialog(unk_func_889000C4*, s32);
+void LabUI_CloseConfirmDialog(unk_func_889000C4*);
+s32 LabUI_RunConfirmDialog(unk_func_889000C4*, Controller*, s32);
+void LabUI_ShowSavingPrompt(unk_func_889000C4*, s32);
 
 #endif // _FRAGMENT29_H_

@@ -7,7 +7,7 @@ static unk_D_800AA690 gBootState;
 static OSMesgQueue gBootMsgQueue;
 static OSMesg gBootMsgBuffer;
 
-s32 Boot_ValidateAndCopy(void) {
+s32 Leo_ValidateBootDiskId(void) {
     static char D_8006F000[] = "P2J";
     static char D_8006F004[] = "01";
 
@@ -39,7 +39,7 @@ s32 Boot_ValidateAndCopy(void) {
     return 0;
 }
 
-s32 BootID_StoreIfValid(unk_D_800AA680* arg0) {
+s32 Leo_AcceptPokemonDiskDescriptor(unk_D_800AA680* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_00 == 'POKE') {
@@ -62,7 +62,7 @@ s32 Leo_QueueDiskReset(void) {
     return 0;
 }
 
-s32 Boot_DMAReadHeader(unk_D_800AA680* arg0) {
+s32 Leo_QueueBootBlockRead(unk_D_800AA680* arg0) {
     Storage_QueueDiskTransfer(0, arg0, 0x230, 1, &gBootMsgQueue, 1);
     gBootState.unk_04 = 0;
     gBootState.unk_02 = 0;
@@ -70,7 +70,7 @@ s32 Boot_DMAReadHeader(unk_D_800AA680* arg0) {
     return 0;
 }
 
-s32 Boot_DMAReadData(void) {
+s32 Leo_QueueDiskPayloadRead(void) {
     Storage_QueueDiskTransfer(0, gBootIDData.unk_08, gBootIDData.unk_04, gBootIDData.unk_06, &gBootMsgQueue, 1);
     gBootState.unk_04 = 0;
     gBootState.unk_02 = 0;
@@ -78,13 +78,13 @@ s32 Boot_DMAReadData(void) {
     return 0;
 }
 
-s32 Boot_ProcessMessage(void) {
+s32 Leo_HandleDiskIdCompletion(void) {
     s32 sp1C;
 
     if (osRecvMesg(&gBootMsgQueue, &sp1C, 0) != -1) {
         switch (sp1C) {
             case 0:
-                switch (Boot_ValidateAndCopy()) {
+                switch (Leo_ValidateBootDiskId()) {
                     case 0:
                         gBootState.unk_04 = sp1C;
                         gBootState.unk_02 = 0;
@@ -158,7 +158,7 @@ s32 Boot_ProcessMessage(void) {
     return 0;
 }
 
-s32 Boot_ProcessMessageStage2(void) {
+s32 Leo_HandleResetCompletion(void) {
     s32 sp1C;
 
     if (osRecvMesg(&gBootMsgQueue, &sp1C, 0) != -1) {
@@ -205,14 +205,14 @@ s32 Boot_ProcessMessageStage2(void) {
     return 0;
 }
 
-s32 Boot_ProcessMessageWithID(unk_D_800AA680* arg0) {
+s32 Leo_HandleBootBlockCompletion(unk_D_800AA680* arg0) {
     s32 sp24;
     UNUSED s32 pad;
 
     if (osRecvMesg(&gBootMsgQueue, &sp24, 0) != -1) {
         switch (sp24) {
             case 0:
-                if (BootID_StoreIfValid(arg0) != 0) {
+                if (Leo_AcceptPokemonDiskDescriptor(arg0) != 0) {
                     gBootState.unk_00 = 8;
                 } else {
                     gBootState.unk_02 = 5;
@@ -262,7 +262,7 @@ s32 Boot_ProcessMessageWithID(unk_D_800AA680* arg0) {
     return 0;
 }
 
-s32 Boot_ProcessMessageStage3(void) {
+s32 Leo_HandlePayloadCompletion(void) {
     s32 sp1C;
 
     if (osRecvMesg(&gBootMsgQueue, &sp1C, 0) != -1) {
@@ -313,7 +313,7 @@ s32 Boot_ProcessMessageStage3(void) {
     return 0;
 }
 
-s32 Boot_CheckUnitReady(void) {
+s32 Leo_PollDiskReady(void) {
     UNUSED s32 pad;
     u8 sp23;
     s32 temp_v0 = LeoTestUnitReady(&sp23);
@@ -347,7 +347,7 @@ s32 Boot_CheckUnitReady(void) {
 void func_8000E5B4(void) {
 }
 
-s32 Boot_MainLoop(unk_D_800AA680* arg0) {
+s32 Leo_RunBootStateMachine(unk_D_800AA680* arg0) {
     s32 sp24 = 1;
 
     if (Storage_GetDiskStatus() != 0) {
@@ -358,7 +358,7 @@ s32 Boot_MainLoop(unk_D_800AA680* arg0) {
                     break;
 
                 case 1:
-                    sp24 = Boot_CheckUnitReady();
+                    sp24 = Leo_PollDiskReady();
                     break;
 
                 case 2:
@@ -366,7 +366,7 @@ s32 Boot_MainLoop(unk_D_800AA680* arg0) {
                     break;
 
                 case 3:
-                    sp24 = Boot_ProcessMessage();
+                    sp24 = Leo_HandleDiskIdCompletion();
                     break;
 
                 case 4:
@@ -374,23 +374,23 @@ s32 Boot_MainLoop(unk_D_800AA680* arg0) {
                     break;
 
                 case 5:
-                    sp24 = Boot_ProcessMessageStage2();
+                    sp24 = Leo_HandleResetCompletion();
                     break;
 
                 case 6:
-                    sp24 = Boot_DMAReadHeader(arg0);
+                    sp24 = Leo_QueueBootBlockRead(arg0);
                     break;
 
                 case 7:
-                    sp24 = Boot_ProcessMessageWithID(arg0);
+                    sp24 = Leo_HandleBootBlockCompletion(arg0);
                     break;
 
                 case 8:
-                    sp24 = Boot_DMAReadData();
+                    sp24 = Leo_QueueDiskPayloadRead();
                     break;
 
                 case 9:
-                    sp24 = Boot_ProcessMessageStage3();
+                    sp24 = Leo_HandlePayloadCompletion();
                     break;
 
                 case 10:
@@ -403,7 +403,7 @@ s32 Boot_MainLoop(unk_D_800AA680* arg0) {
     return (gBootState.unk_00 << 0x10) | (gBootState.unk_02 << 8) | gBootState.unk_04;
 }
 
-s32 Boot_Init(void) {
+s32 Leo_InitializeBootState(void) {
     s32 sp1C = Storage_GetDiskStatus();
 
     if (sp1C != 0) {

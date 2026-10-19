@@ -98,7 +98,7 @@ void func_80049A60(u32);
 void GbAudio_ClearInterpolationHistory();
 void GbAudio_ClearOutputBuffer();
 
-void Audio_PlayMusicBuffer(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
+void GbAudio_GenerateSamples(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
     func_80049A60(arg2);
 }
 

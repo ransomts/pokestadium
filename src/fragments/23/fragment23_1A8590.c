@@ -5,65 +5,65 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-TextObject* Fragment23_Init(void) {
+TextObject* LabPC_Enter(void) {
     TextObject* sp1C;
 
     main_pool_push_state('TERM');
 
-    sp1C = Text_Init(0x1C, 0);
+    sp1C = Font_Init(0x1C, 0);
 
     ASSET_LOAD(D_04000000, fragment29_misc_1, 0);
     FRAGMENT_LOAD(fragment26);
     FRAGMENT_LOAD(fragment29);
 
-    Menu_SetupDisplayList();
+    StageLoader_UpdateSegments();
     return sp1C;
 }
 
-void Fragment23_Terminate(void) {
-    Stage_Terminate();
+void LabPC_Exit(void) {
+    StageLoader_WaitForRetrace();
 
     main_pool_pop_state('TERM');
 }
 
-s32 Fragment23_Execute(UNUSED s32 arg0, UNUSED s32 arg1) {
-    TextObject_Show(Fragment23_Init(), 1);
-    Stage_SetFillColor(1);
-    Stage_FadeOut(0xA);
-    Fragment23_Terminate();
+s32 LabPC_ExitToLabMain(UNUSED s32 arg0, UNUSED s32 arg1) {
+    LabPC_ShowPokemon(LabPC_Enter(), 1);
+    StageContext_SetClearColor(1);
+    StageFade_StartFromTransparent(0xA);
+    LabPC_Exit();
 
     FRAGMENT_LOAD_AND_CALL2(fragment22, 1, 0);
     return 0x25;
 }
 
-s32 Fragment23_HandleState(s32 arg0, s32 arg1) {
+s32 LabPC_Dispatch(s32 arg0, s32 arg1) {
     TextObject* temp_s0;
     s32 var_s1;
 
     if (arg0 == 5) {
-        return Fragment23_Execute(arg0, arg1);
+        return LabPC_ExitToLabMain(arg0, arg1);
     }
-    temp_s0 = Fragment23_Init();
+    temp_s0 = LabPC_Enter();
 
-    var_s1 = Fragment23_GetNextState(arg0, arg1);
+    var_s1 = LabPC_ShowMenu(arg0, arg1);
     while (var_s1 != 0) {
         switch (var_s1) {
             case 1:
-                TextObject_Show(temp_s0, 0);
+                LabPC_ShowPokemon(temp_s0, 0);
                 break;
 
             case 2:
-                TextObject_Confirm(temp_s0);
+                LabPC_ShowItems(temp_s0);
                 break;
 
             case 3:
-                TextObject_Cancel(temp_s0);
+                LabPC_ShowBoxes(temp_s0);
                 break;
         }
-        var_s1 = Fragment23_GetNextState(var_s1, arg1);
+        var_s1 = LabPC_ShowMenu(var_s1, arg1);
     }
 
-    Fragment23_Terminate();
+    LabPC_Exit();
 
     return 0x25;
 }

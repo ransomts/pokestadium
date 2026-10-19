@@ -4,7 +4,7 @@
 #include "include/math.h"
 #include "src/math_util.h"
 
-u8* gWaterTexture[256];
+u8* gBattleAnimAssetPointers[256];
 s16 gMessageBuffer[0x10];
 arg1_func_80019420* gMessageStringLists[40];
 static s16 gEffectPhaseCounterA;
@@ -64,11 +64,11 @@ void func_84359340(void) {
 }
 
 void BattleAnim_DrawStoredColorOverlay(void) {
-    RenderPrimColorRect(gSavedPrimColorR, gSavedPrimColorG, gSavedPrimColorB, 0xFF);
+    BattleAnim_DrawFullScreenColorOverlay(gSavedPrimColorR, gSavedPrimColorG, gSavedPrimColorB, 0xFF);
 }
 
 void BattleAnim_ReinitAuxiliaryEffects(void) {
-    GlowEmitters_Reset();
+    AuxiliaryEffect_Init();
 }
 
 void func_843593A0(void) {
@@ -92,30 +92,30 @@ void BattleAnim_DefaultEndEffect_Draw(void) {
 }
 
 void Battle_GetTertiaryOwnerBonePositionUnused(Vec3f* arg0) {
-    GetSecondaryEntityNodePosition(arg0);
+    BattleAnim_GetTertiaryOwnerBonePosition(arg0);
 }
 
 void BattleAnim_EffectSecondaryOwnerAnchorPosition(Vec3f* arg0) {
-    GetPrimaryEffectCenterOrNode(arg0);
+    BattleAnim_GetSecondaryOwnerAnchorPosition(arg0);
 }
 
 void BattleAnim_EffectTertiaryOwnerBonePosition(Vec3f* arg0) {
-    GetSecondaryEntityNodePosition(arg0);
+    BattleAnim_GetTertiaryOwnerBonePosition(arg0);
 }
 
 void BattleAnim_EffectSecondaryOwnerBonePosition(Vec3f* arg0) {
-    GetPrimaryEffectNodePosition(arg0);
+    BattleAnim_GetSecondaryOwnerBonePosition(arg0);
 }
 
 f32 BattleAnim_EffectTertiaryOwnerModelScale(void) {
-    return GetSecondaryEntityScale();
+    return BattleAnim_GetTertiaryOwnerModelScale();
 }
 
 f32 BattleAnim_EffectSecondaryOwnerModelScale(void) {
-    return GetPrimaryEntityScale();
+    return BattleAnim_GetSecondaryOwnerModelScale();
 }
 
-void CalcVectorATtoDM(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
+void BattleAnim_CalcVectorAtToDm(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
     Vec3f sp4C;
     Vec3f sp40;
     f32 sp3C;
@@ -139,7 +139,7 @@ void CalcVectorATtoDM(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32
 
     if (sp24 == 0.0f || sp20 == 0.0f || sp1C == 0.0f) {}
 
-    Math_NormalizeVector(&sp24, &sp20, &sp1C);
+    Vec3f_NormalizeComponents(&sp24, &sp20, &sp1C);
 
     *arg0 = sp3C;
     *arg1 = sp38;
@@ -149,7 +149,7 @@ void CalcVectorATtoDM(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32
     *arg5 = sp1C;
 }
 
-void CalcVectorATtoDM2(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
+void BattleAnim_CalcVectorAtToDm2(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f32* arg5) {
     Vec3f sp4C;
     Vec3f sp40;
     f32 sp3C;
@@ -179,7 +179,7 @@ void CalcVectorATtoDM2(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f3
 
     if (sp24 == 0.0f || sp20 == 0.0f || sp1C == 0.0f) {}
 
-    Math_NormalizeVector(&sp24, &sp20, &sp1C);
+    Vec3f_NormalizeComponents(&sp24, &sp20, &sp1C);
 
     *arg0 = sp3C;
     *arg1 = sp38;
@@ -189,106 +189,106 @@ void CalcVectorATtoDM2(f32* arg0, f32* arg1, f32* arg2, f32* arg3, f32* arg4, f3
     *arg5 = sp1C;
 }
 
-void InitEffectMatrix(void) {
+void BattleAnim_ResetSharedEffectMatrix(void) {
     guRotateRPY(&gEffectMatrix, 0.0f, 0.0f, 0.0f);
 }
 
-void SpawnParticleEmitters_Default(void) {
+void BattleAnim_Effect5RibbonMesh_Init(void) {
     Vec3f sp24;
     f32 sp20;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerBonePosition(&sp24);
     sp20 = BattleAnim_EffectSecondaryOwnerModelScale();
-    ParticleEmitters_Reset();
+    RibbonMesh_Init();
     RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
 }
 
 s32 BattleAnim_Effect5RibbonMesh_Update(void) {
-    return ParticleEmitters_Tick();
+    return RibbonMesh_UpdatePool();
 }
 
 void BattleAnim_Effect5RibbonMesh_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
+    gDisplayListHead = RibbonMesh_DrawPool(gDisplayListHead);
 }
 
-void SpawnParticleEmitters_Alt(void) {
+void BattleAnim_EndEffect1RibbonMesh_Init(void) {
     Vec3f sp24;
     f32 sp20;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerBonePosition(&sp24);
     sp20 = BattleAnim_EffectTertiaryOwnerModelScale();
-    ParticleEmitters_Reset();
+    RibbonMesh_Init();
     RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 1);
 }
 
 s32 BattleAnim_EndEffect1RibbonMesh_Update(void) {
-    return ParticleEmitters_Tick();
+    return RibbonMesh_UpdatePool();
 }
 
 void BattleAnim_EndEffect1RibbonMesh_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
+    gDisplayListHead = RibbonMesh_DrawPool(gDisplayListHead);
 }
 
-void SpawnParticleEmitters_Dual(void) {
+void BattleAnim_EndEffect19RibbonMesh_Init(void) {
     Vec3f sp24;
     f32 sp20;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerBonePosition(&sp24);
     sp20 = BattleAnim_EffectTertiaryOwnerModelScale();
-    ParticleEmitters_Reset();
+    RibbonMesh_Init();
     RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
     RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 38.0f, sp20, 1);
 }
 
 s32 BattleAnim_EndEffect19RibbonMesh_Update(void) {
-    return ParticleEmitters_Tick();
+    return RibbonMesh_UpdatePool();
 }
 
 void BattleAnim_EndEffect19RibbonMesh_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
+    gDisplayListHead = RibbonMesh_DrawPool(gDisplayListHead);
 }
 
-void SpawnParticleEmitters_Alt2(void) {
+void BattleAnim_Effect54RibbonMesh_Init(void) {
     Vec3f sp24;
     f32 sp20;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerBonePosition(&sp24);
     sp20 = BattleAnim_EffectSecondaryOwnerModelScale();
-    ParticleEmitters_Reset();
+    RibbonMesh_Init();
     RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 40.0f, sp20, 0);
     RibbonMesh_Spawn(sp24.x, sp24.y, sp24.z, 38.0f, sp20, 1);
 }
 
 s32 BattleAnim_Effect54RibbonMesh_Update(void) {
-    return ParticleEmitters_Tick();
+    return RibbonMesh_UpdatePool();
 }
 
 void BattleAnim_Effect54RibbonMesh_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = ParticleEmitters_Render(gDisplayListHead);
+    gDisplayListHead = RibbonMesh_DrawPool(gDisplayListHead);
 }
 
-void WaterHeightMap_InitByCameraX(void) {
+void BattleAnim_StartEffect34TerrainGrid_Init(void) {
     Vec3f sp1C;
 
     BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp1C);
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
 
     if (sp1C.x < 0.0) {
-        WaterHeightMap_Init(1, 0, 0x4650);
+        TerrainGrid_Init(1, 0, 0x4650);
     } else {
-        WaterHeightMap_Init(-1, 0, 0x4650);
+        TerrainGrid_Init(-1, 0, 0x4650);
     }
 }
 
@@ -299,7 +299,7 @@ s32 BattleAnim_StartEffect34TerrainGrid_Update(void) {
 void BattleAnim_StartEffect34TerrainGrid_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterSurface_Render(gDisplayListHead);
+    gDisplayListHead = TerrainGrid_Draw(gDisplayListHead);
 }
 
 void BattleAnim_EndEffect16_NoOpInit(void) {
@@ -312,7 +312,7 @@ s32 BattleAnim_EndEffect16_CompleteImmediately(void) {
 void BattleAnim_EndEffect16_NoOpDraw(void) {
 }
 
-void SpawnRandomizedParticleEffect(void) {
+void BattleAnim_StartEffect19Radial20_EmitVariantD(void) {
     f32 sp74;
     f32 sp70;
     f32 sp6C;
@@ -323,7 +323,7 @@ void SpawnRandomizedParticleEffect(void) {
     UNUSED s32 pad;
     s32 sp54;
 
-    CalcVectorATtoDM(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
+    BattleAnim_CalcVectorAtToDm(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
     sp68 *= 8.0f;
     sp64 *= 4.0f;
     sp60 = 0.0f;
@@ -335,53 +335,53 @@ void SpawnRandomizedParticleEffect(void) {
                   4.0f * sp5C, 0x3C);
 }
 
-void StartParticleEffectA(void) {
+void BattleAnim_StartEffect19Radial20_Init(void) {
     gParticleSpawnTimerA = 0;
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     Radial20_ResetPool();
-    SpawnRandomizedParticleEffect();
+    BattleAnim_StartEffect19Radial20_EmitVariantD();
 }
 
-s32 UpdateParticleEffectA(void) {
+s32 BattleAnim_StartEffect19Radial20_Update(void) {
     gParticleSpawnTimerA++;
     if (gParticleSpawnTimerA >= 0xB5) {
         return -1;
     }
 
     if ((gParticleSpawnTimerA < 0x78) && ((gParticleSpawnTimerA % 7) == 0)) {
-        SpawnRandomizedParticleEffect();
+        BattleAnim_StartEffect19Radial20_EmitVariantD();
     }
     return Radial20_IsComplete();
 }
 
-void RenderParticleEffectA(void) {
+void BattleAnim_StartEffect19Radial20_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84362084(gDisplayListHead);
 }
 
-void InitTrailEffect(void) {
+void BattleAnim_EndEffect9Radial20_Init(void) {
     Vec3f sp34;
     f32 sp30;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectTertiaryOwnerBonePosition(&sp34);
     sp30 = BattleAnim_EffectTertiaryOwnerModelScale();
-    InitEffectMatrix();
-    Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0x64, 0xC8, 0xFF, 0, 0x64, 0xC8);
+    BattleAnim_ResetSharedEffectMatrix();
+    Radial20_Init(sp34.x, sp34.y, sp34.z, sp30, 0x64, 0xC8, 0xFF, 0, 0x64, 0xC8);
 }
 
-s32 UpdateTrailEffect(void) {
-    return Trail_Update();
+s32 BattleAnim_EndEffect9Radial20_Update(void) {
+    return Radial20_Update();
 }
 
-void RenderTrailEffect(void) {
+void BattleAnim_EndEffect9Radial20_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = Trail_Render(gDisplayListHead);
+    gDisplayListHead = Strip400_Draw(gDisplayListHead);
 }
 
-void SpawnWaterParticleEffect(void) {
+void BattleAnim_StartEffect7TexturedRibbonSheet_Emit(void) {
     UNUSED s32 pad[3];
     f32 sp58;
     f32 sp54;
@@ -392,43 +392,43 @@ void SpawnWaterParticleEffect(void) {
     f32 sp40;
 
     sp40 = BattleAnim_EffectSecondaryOwnerModelScale();
-    CalcVectorATtoDM2(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
+    BattleAnim_CalcVectorAtToDm2(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
     sp4C *= 20.0f;
     sp48 *= 20.0f;
     sp44 *= 20.0f;
     sp58 += sp40 * (30.0f - (guRandom() % 60));
     sp54 += sp40 * (30.0f - (guRandom() % 60));
     sp50 += sp40 * (30.0f - (guRandom() % 60));
-    WaterParticle_Spawn(sp58, sp54, sp50, sp4C, sp48, sp44, 0xFF, 0xFF, 0, 0x3C, 0.3f, 0x1E);
+    TexturedRibbonSheet_Start(sp58, sp54, sp50, sp4C, sp48, sp44, 0xFF, 0xFF, 0, 0x3C, 0.3f, 0x1E);
 }
 
-void StartWaterParticleEffectB(void) {
+void BattleAnim_StartEffect7TexturedRibbonSheet_Init(void) {
     gParticleSpawnTimerB = 0;
-    InitEffectMatrix();
-    WaterParticle_Reset();
-    SpawnWaterParticleEffect();
+    BattleAnim_ResetSharedEffectMatrix();
+    TexturedRibbonSheet_Init();
+    BattleAnim_StartEffect7TexturedRibbonSheet_Emit();
 }
 
-s32 UpdateWaterParticleEffectB(void) {
+s32 BattleAnim_StartEffect7TexturedRibbonSheet_Update(void) {
     gParticleSpawnTimerB++;
     if (gParticleSpawnTimerB >= 0x709) {
         return -1;
     }
 
     if ((gParticleSpawnTimerB < 0x6EA) && ((gParticleSpawnTimerB % 3) == 0)) {
-        SpawnWaterParticleEffect();
+        BattleAnim_StartEffect7TexturedRibbonSheet_Emit();
     }
 
-    return WaterParticle_TickAll();
+    return TexturedRibbonSheet_IsComplete();
 }
 
-void RenderWaterParticleEffectB(void) {
+void BattleAnim_StartEffect7TexturedRibbonSheet_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterParticle_RenderAll(gDisplayListHead);
+    gDisplayListHead = TexturedRibbonSheet_Draw(gDisplayListHead);
 }
 
-void SpawnRandomizedParticleEffectC(void) {
+void BattleAnim_StartEffect33Radial20_EmitVariantC(void) {
     f32 sp74;
     f32 sp70;
     f32 sp6C;
@@ -439,87 +439,87 @@ void SpawnRandomizedParticleEffectC(void) {
     UNUSED s32 pad;
     s32 sp54;
 
-    CalcVectorATtoDM(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
+    BattleAnim_CalcVectorAtToDm(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
     sp68 *= 8.0f;
     sp64 *= 4.0f;
     sp60 = 0.0f;
     sp64 += 6.0f;
     sp5C = BattleAnim_EffectSecondaryOwnerModelScale();
     sp54 = guRandom();
-    ParticleEmitter_AddRandomized(sp74, sp70, sp6C, sp68, (((sp54 % 5) * 0.1f) + sp64) - 0.2f,
+    Radial20_VariantC(sp74, sp70, sp6C, sp68, (((sp54 % 5) * 0.1f) + sp64) - 0.2f,
                   (sp60 - ((guRandom() % 5) * 0.3f)) + 0.6f, 3, 0xFF, 0xFF, 0xFF, 0x64, 0x64, 0x96, 0x96, 0.1f, sp5C,
                   3.0f * sp5C, 0x3C);
 }
 
-void StartParticleEffectC(void) {
+void BattleAnim_StartEffect33Radial20_Init(void) {
     gParticleSpawnTimerC = 0;
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     Radial20_ResetPool();
-    SpawnRandomizedParticleEffectC();
+    BattleAnim_StartEffect33Radial20_EmitVariantC();
 }
 
-s32 UpdateParticleEffectC(void) {
+s32 BattleAnim_StartEffect33Radial20_Update(void) {
     gParticleSpawnTimerC++;
     if (gParticleSpawnTimerC >= 0xB5) {
         return -1;
     }
 
     if ((gParticleSpawnTimerC < 0x78) && ((gParticleSpawnTimerC % 7) == 0)) {
-        SpawnRandomizedParticleEffectC();
+        BattleAnim_StartEffect33Radial20_EmitVariantC();
     }
 
     return Radial20_IsComplete();
 }
 
-void RenderParticleEffectC(void) {
+void BattleAnim_StartEffect33Radial20_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84362084(gDisplayListHead);
 }
 
-void InitTrailEffectVariant(void) {
+void BattleAnim_EndEffect32Radial20_Init(void) {
     Vec3f sp34;
     f32 sp30;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerBonePosition(&sp34);
     sp30 = BattleAnim_EffectTertiaryOwnerModelScale();
-    InitEffectMatrix();
-    Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0xFF, 0x64, 0x96, 0x96);
+    BattleAnim_ResetSharedEffectMatrix();
+    Radial20_Init(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0xFF, 0x64, 0x96, 0x96);
 }
 
-s32 UpdateTrailEffectVariant(void) {
-    return Trail_Update();
+s32 BattleAnim_EndEffect32Radial20_Update(void) {
+    return Radial20_Update();
 }
 
-void RenderTrailEffectVariant(void) {
+void BattleAnim_EndEffect32Radial20_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = Trail_Render(gDisplayListHead);
+    gDisplayListHead = Strip400_Draw(gDisplayListHead);
 }
 
-void InitTrailEffectVariant2(void) {
+void BattleAnim_EndEffect33Radial20_Init(void) {
     Vec3f sp34;
     f32 sp30;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerBonePosition(&sp34);
     sp30 = BattleAnim_EffectTertiaryOwnerModelScale();
-    InitEffectMatrix();
-    Trail_Init(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0x64, 0x96, 0x96, 0);
+    BattleAnim_ResetSharedEffectMatrix();
+    Radial20_Init(sp34.x, sp34.y, sp34.z, sp30, 0xFF, 0xFF, 0x64, 0x96, 0x96, 0);
 }
 
-s32 UpdateTrailEffectVariant2(void) {
-    return Trail_Update();
+s32 BattleAnim_EndEffect33Radial20_Update(void) {
+    return Radial20_Update();
 }
 
-void RenderTrailEffectVariant2(void) {
+void BattleAnim_EndEffect33Radial20_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = Trail_Render(gDisplayListHead);
+    gDisplayListHead = Strip400_Draw(gDisplayListHead);
 }
 
-void SpawnRandomizedParticleEffectD(void) {
+void BattleAnim_StartEffect98Radial20_EmitVariantD(void) {
     f32 sp74;
     f32 sp70;
     f32 sp6C;
@@ -530,7 +530,7 @@ void SpawnRandomizedParticleEffectD(void) {
     UNUSED s32 pad;
     s32 sp54;
 
-    CalcVectorATtoDM(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
+    BattleAnim_CalcVectorAtToDm(&sp74, &sp70, &sp6C, &sp68, &sp64, &sp60);
     sp68 *= 8.0f;
     sp64 *= 4.0f;
     sp60 = 0.0f;
@@ -542,39 +542,39 @@ void SpawnRandomizedParticleEffectD(void) {
                   4.0f * sp5C, 0x3C);
 }
 
-void StartParticleEffectE(void) {
+void BattleAnim_StartEffect98Radial20_Init(void) {
     gParticleSpawnTimerE = 0;
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     Radial20_ResetPool();
-    SpawnRandomizedParticleEffectD();
+    BattleAnim_StartEffect98Radial20_EmitVariantD();
 }
 
-s32 UpdateParticleEffectE(void) {
+s32 BattleAnim_StartEffect98Radial20_Update(void) {
     gParticleSpawnTimerE++;
     if (gParticleSpawnTimerE >= 0xB5) {
         return -1;
     }
 
     if ((gParticleSpawnTimerE < 0x78) && ((gParticleSpawnTimerE % 7) == 0)) {
-        SpawnRandomizedParticleEffectD();
+        BattleAnim_StartEffect98Radial20_EmitVariantD();
     }
 
     return Radial20_IsComplete();
 }
 
-void RenderParticleEffectE(void) {
+void BattleAnim_StartEffect98Radial20_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84362084(gDisplayListHead);
 }
 
-void StartEffectF(void) {
+void BattleAnim_StartEffect11Trail50Alt_Init(void) {
     gParticleSpawnTimerF = 0;
-    InitEffectMatrix();
-    WaterParticlePool_InitAlt();
+    BattleAnim_ResetSharedEffectMatrix();
+    Trail50EffectAlt_Init();
 }
 
-s32 UpdateEffectF(void) {
+s32 BattleAnim_StartEffect11Trail50Alt_Update(void) {
     UNUSED s32 pad[1];
     Vec3f sp60;
     f32 sp5C;
@@ -595,25 +595,25 @@ s32 UpdateEffectF(void) {
         if (sp5C > 0.0) {
             var_fv0 = -var_fv0;
         }
-        WaterParticlePool_SpawnAlt(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
+        Trail50EffectAlt_Start(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
     }
-    WaterParticle_UpdateAll();
+    Trail50EffectAlt_IsComplete();
     return 0;
 }
 
-void RenderWaterParticleEffectF(void) {
+void BattleAnim_StartEffect11Trail50Alt_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterParticle_Render(gDisplayListHead);
+    gDisplayListHead = Trail50EffectAlt_Draw(gDisplayListHead);
 }
 
-void StartWaterParticlePoolG(void) {
+void BattleAnim_StartEffect57Trail50_Init(void) {
     gParticleSpawnTimerG = 0;
-    InitEffectMatrix();
-    WaterParticlePool_Init();
+    BattleAnim_ResetSharedEffectMatrix();
+    Trail50Effect_Init();
 }
 
-s32 UpdateWaterParticlePoolG(void) {
+s32 BattleAnim_StartEffect57Trail50_Update(void) {
     UNUSED s32 pad[1];
     Vec3f sp60;
     f32 sp5C;
@@ -634,79 +634,79 @@ s32 UpdateWaterParticlePoolG(void) {
         if (sp5C > 0.0) {
             var_fv0 = -var_fv0;
         }
-        WaterParticlePool_Spawn(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
+        Trail50Effect_Start(sp5C, sp58, sp54, var_fv0, 0.0f, 0.0f, 0xFF, 0xFF, 0xFF, 0x64, 0.3f, 1.0f, 4.0f, 0x1E);
     }
-    WaterParticlePool_Tick();
+    Trail50Effect_IsComplete();
     return 0;
 }
 
-void RenderWaterParticlePoolG(void) {
+void BattleAnim_StartEffect57Trail50_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterParticlePool_Render(gDisplayListHead);
+    gDisplayListHead = Trail50Effect_Draw(gDisplayListHead);
 }
 
-void InitWaterSurface(void) {
+void BattleAnim_StartEffect42Trail40_Init(void) {
     Vec3f sp1C;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp1C);
-    WaterSurface_Init(0x708);
+    Trail40_Init(0x708);
 }
 
-s32 UpdateWaterSurface(void) {
-    return WaterSurface_Update();
+s32 BattleAnim_StartEffect42Trail40_Update(void) {
+    return Trail40_IsComplete();
 }
 
-void RenderWaterSurface(void) {
+void BattleAnim_StartEffect42Trail40_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterSurface_Draw(gDisplayListHead);
+    gDisplayListHead = Trail40_Draw(gDisplayListHead);
 }
 
-void InitWaterSurfaceVariant(void) {
+void BattleAnim_StartEffect43Trail40Variant_Init(void) {
     Vec3f sp1C;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp1C);
-    WaterSurface_Initialize(0x708);
+    Trail40Variant_InitPool(0x708);
 }
 
-s32 UpdateWaterSurfaceVariant(void) {
-    return WaterSurface_Tick();
+s32 BattleAnim_StartEffect43Trail40Variant_Update(void) {
+    return Trail40Variant_AdvanceTimer();
 }
 
-void RenderWaterSurfaceVariant(void) {
+void BattleAnim_StartEffect43Trail40Variant_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterSurface_DrawLit(gDisplayListHead);
+    gDisplayListHead = Trail40Variant_BuildGfx(gDisplayListHead);
 }
 
-void InitWaterEffectVariant(void) {
+void BattleAnim_StartEffect44Trail40GridAlt_Init(void) {
     Vec3f sp1C;
 
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp1C);
     Trail40GridAlt_Init(0x708);
 }
 
-s32 UpdateWaterEffectVariant(void) {
+s32 BattleAnim_StartEffect44Trail40GridAlt_Update(void) {
     return Trail40GridAlt_IsComplete();
 }
 
-void RenderWaterEffectVariant(void) {
+void BattleAnim_StartEffect44Trail40GridAlt_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = Trail40GridAlt_Draw(gDisplayListHead);
 }
 
-void ResetAllParticleSystems(void) {
+void BattleAnim_StartEffect45FourStreamTrail_Init(void) {
     gEffectPhaseCounterA = 0;
-    InitEffectMatrix();
-    WaterParticleSystem_ResetAll();
+    BattleAnim_ResetSharedEffectMatrix();
+    FourStreamTrail_Init();
 }
 
-s32 UpdateWaterParticleSystemPhaseA(void) {
+s32 BattleAnim_StartEffect45FourStreamTrail_Update(void) {
     s32 var_v1;
     Vec3f sp68;
     f32 sp64;
@@ -731,40 +731,40 @@ s32 UpdateWaterParticleSystemPhaseA(void) {
         sp4C = (((gEffectPhaseCounterA % 3) * M_PI_F) / 3.0) + 0.5235987901687622;
         sp54 = (f64)__sinf(sp4C);
         sp50 = (f64)__cosf(sp4C);
-        Math_NormalizeVector(&sp58, &sp54, &sp50);
+        Vec3f_NormalizeComponents(&sp58, &sp54, &sp50);
         sp54 *= 20.0;
         sp50 *= 20.0;
         sp58 = 10.0f;
         if (sp64 < 0.0) {
             sp58 = -sp58;
         }
-        WaterParticleSystem_Spawn(sp64, sp60, sp5C, sp58, sp54, sp50, 0xC0, 0xFF, 0xFF, 0x80, (((guRandom() % 2) * 2) - 1) * 0.3,
+        FourStreamTrail_Start(sp64, sp60, sp5C, sp58, sp54, sp50, 0xC0, 0xFF, 0xFF, 0x80, (((guRandom() % 2) * 2) - 1) * 0.3,
                       2.0f, 13.0f, 0x28);
     }
 
     if (gEffectPhaseCounterA >= 2) {
-        var_v1 = WaterParticleSystem_UpdateAll();
+        var_v1 = FourStreamTrail_IsComplete();
     } else {
         var_v1 = 0;
     }
     return var_v1;
 }
 
-void RenderWaterParticleSystemPhaseA(void) {
+void BattleAnim_StartEffect45FourStreamTrail_Draw(void) {
     if (gEffectPhaseCounterA >= 2) {
         gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        gDisplayListHead = WaterParticleSystem_Render(gDisplayListHead);
+        gDisplayListHead = FourStreamTrail_Draw(gDisplayListHead);
     }
 }
 
-void ResetParticleEmittersPhaseB(void) {
+void BattleAnim_StartEffect62OwnerLinkedFourStream_Init(void) {
     gEffectPhaseCounterB = 0;
-    InitEffectMatrix();
-    ResetParticleEmitters();
+    BattleAnim_ResetSharedEffectMatrix();
+    OwnerLinkedFourStream_Init();
 }
 
-s32 UpdateParticleEmittersPhaseB(void) {
+s32 BattleAnim_StartEffect62OwnerLinkedFourStream_Update(void) {
     s32 var_v1;
     f32 sp60;
     f32 sp5C;
@@ -776,31 +776,31 @@ s32 UpdateParticleEmittersPhaseB(void) {
 
     gEffectPhaseCounterB++;
     if (((gEffectPhaseCounterB >> 2) < 4) && !(gEffectPhaseCounterB & 3)) {
-        CalcVectorATtoDM(&sp60, &sp5C, &sp58, &sp54, &sp50, &sp4C);
+        BattleAnim_CalcVectorAtToDm(&sp60, &sp5C, &sp58, &sp54, &sp50, &sp4C);
         sp48 = ((2 - (((gEffectPhaseCounterB >> 2) + 2) % 3)) * 0.5235988f) + 0.34906587f;
         sp54 *= 7.0f * __cosf(sp48);
         sp50 = __sinf(sp48) * 10.0f;
         sp4C = 0.0f;
-        CreateParticleEmitter(sp60, sp5C, sp58, sp54, sp50, 0.0f, 0xD0, 0xFF, 0xFF, 0x80, 0.8f, 2.0f, 4.0f, 0x28);
+        OwnerLinkedFourStream_Start(sp60, sp5C, sp58, sp54, sp50, 0.0f, 0xD0, 0xFF, 0xFF, 0x80, 0.8f, 2.0f, 4.0f, 0x28);
     }
 
     if (gEffectPhaseCounterB >= 2) {
-        var_v1 = TickParticleEmitters();
+        var_v1 = OwnerLinkedFourStream_IsComplete();
     } else {
         var_v1 = 0;
     }
     return var_v1;
 }
 
-void RenderParticleEmittersPhaseB(void) {
+void BattleAnim_StartEffect62OwnerLinkedFourStream_Draw(void) {
     if (gEffectPhaseCounterB >= 2) {
         gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        gDisplayListHead = RenderParticleEmitters(gDisplayListHead);
+        gDisplayListHead = OwnerLinkedFourStream_Draw(gDisplayListHead);
     }
 }
 
-void StartParticleSystemI(void) {
+void BattleAnim_StartEffect67OwnerAnchoredFourStream_Init(void) {
     Vec3f sp5C;
     f32 sp58;
     f32 sp54;
@@ -810,35 +810,35 @@ void StartParticleSystemI(void) {
     f32 sp44;
 
     gParticleSpawnTimerI = 0;
-    InitEffectMatrix();
-    ParticleSystem_ResetAll();
-    CalcVectorATtoDM(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
+    BattleAnim_ResetSharedEffectMatrix();
+    OwnerAnchoredFourStream_Init();
+    BattleAnim_CalcVectorAtToDm(&sp58, &sp54, &sp50, &sp4C, &sp48, &sp44);
     sp4C *= 5.0;
     sp48 *= 5.0;
     sp44 *= 5.0;
-    ParticleSystem_Spawn(sp58, sp54, sp50, sp4C, sp48, sp44, 0xC0, 0xFF, 0xFF, 0xA0, 0.6f, 2.0f, 4.0f, 0x28);
+    OwnerAnchoredFourStream_Start(sp58, sp54, sp50, sp4C, sp48, sp44, 0xC0, 0xFF, 0xFF, 0xA0, 0.6f, 2.0f, 4.0f, 0x28);
     sp5C.x = sp58;
     sp5C.y = sp54;
     sp5C.z = sp50;
-    ParticleNode_CreateWhiteFlash(sp5C, 1);
+    BattleAnim_SpawnSecondaryOwnerParticle(sp5C, 1);
 }
 
-s32 UpdateParticleSystemI(void) {
+s32 BattleAnim_StartEffect67OwnerAnchoredFourStream_Update(void) {
     gParticleSpawnTimerI++;
     if (gParticleSpawnTimerI >= 0x32) {
         return -1;
     }
 
-    return ParticleSystem_TickAll();
+    return OwnerAnchoredFourStream_IsComplete();
 }
 
-void RenderParticleSystemI(void) {
+void BattleAnim_StartEffect67OwnerAnchoredFourStream_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = ParticleSystem_RenderAll(gDisplayListHead);
+    gDisplayListHead = OwnerAnchoredFourStream_Draw(gDisplayListHead);
 }
 
-void CreateSimpleParticleEmitter(void) {
+void BattleAnim_StartEffect78Radial20_EmitVariantA(void) {
     f32 sp5C;
     f32 sp58;
     f32 sp54;
@@ -846,21 +846,21 @@ void CreateSimpleParticleEmitter(void) {
     f32 sp4C;
     f32 sp48;
 
-    CalcVectorATtoDM(&sp5C, &sp58, &sp54, &sp50, &sp4C, &sp48);
+    BattleAnim_CalcVectorAtToDm(&sp5C, &sp58, &sp54, &sp50, &sp4C, &sp48);
     sp50 *= 6.0f;
     sp4C *= 6.0f;
     sp48 *= 6.0f;
-    ParticleEmitter_AddSimple(sp5C, sp58, sp54, sp50, sp4C, sp48, 8, 0xFF, 0xFF, 0xFF, 0xB4, 0.3f, 2.0f, 20.0f, 0x3C);
+    Radial20_VariantA(sp5C, sp58, sp54, sp50, sp4C, sp48, 8, 0xFF, 0xFF, 0xFF, 0xB4, 0.3f, 2.0f, 20.0f, 0x3C);
 }
 
-void StartParticleEffectD(void) {
+void BattleAnim_StartEffect78Radial20_Init(void) {
     gParticleSpawnTimerD0 = 0;
-    InitEffectMatrix();
+    BattleAnim_ResetSharedEffectMatrix();
     Radial20_ResetPool();
-    CreateSimpleParticleEmitter();
+    BattleAnim_StartEffect78Radial20_EmitVariantA();
 }
 
-s32 UpdateParticleEffectD(void) {
+s32 BattleAnim_StartEffect78Radial20_Update(void) {
     gParticleSpawnTimerD0++;
     if (gParticleSpawnTimerD0 >= 0xB5) {
         return -1;
@@ -868,13 +868,13 @@ s32 UpdateParticleEffectD(void) {
     return Radial20_IsComplete();
 }
 
-void RenderParticleEffectD(void) {
+void BattleAnim_StartEffect78Radial20_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDisplayListHead = func_84362084(gDisplayListHead);
 }
 
-void ConfigureWaterParticleSystemCombine(void) {
+void BattleAnim_StartEffect26DoubleTextureTrail_Seed(void) {
     static CombineParams D_84387FC0 = { 2, 1, 0xE, 1, 2, 2, 3, 1 };
     static CombineParams D_84387FE0 = { 3, 5, 0, 5, 3, 7, 0, 5 };
     static CombineParams D_84388000 = { 2, 1, 0xE, 1, 2, 1, 3, 1 };
@@ -887,34 +887,34 @@ void ConfigureWaterParticleSystemCombine(void) {
     f32 spA4;
     f32 spA0;
 
-    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    BattleAnim_CalcVectorAtToDm(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x8F, 0x8F, 6, 0xA, 0xF, 0xE,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x8F, 0x8F, 6, 0xA, 0xF, 0xE,
                   -3, 5, 0, 0xF, &D_84387FC0, &D_84387FE0, 0xFF, 0xFF, 0, 0x96, 0x64, 0xFF, 0, 0xC8, 0x32, 0xFF, 0x96,
                   0xFF, 0x78);
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x8F, 0x90, 2, 6, 0, 0xF, -4,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x8F, 0x90, 2, 6, 0, 0xF, -4,
                   2, 0, 0, &D_84388000, &D_84388020, 0, 0xFF, 0x64, 0x96, 0x64, 0x64, 0, 0xFF, 0xC8, 0, 0, 0, 0);
 }
 
-void InitWaterParticleSystemsCombined(void) {
-    InitEffectMatrix();
-    WaterParticleSystems_ResetAll();
-    ConfigureWaterParticleSystemCombine();
+void BattleAnim_StartEffect26DoubleTextureTrail_Init(void) {
+    BattleAnim_ResetSharedEffectMatrix();
+    DoubleTextureTrail_InitPool();
+    BattleAnim_StartEffect26DoubleTextureTrail_Seed();
 }
 
-s32 UpdateWaterParticleSystemsCombined(void) {
-    return WaterParticleSystems_Tick();
+s32 BattleAnim_StartEffect26DoubleTextureTrail_Update(void) {
+    return DoubleTextureTrail_UpdateAll();
 }
 
-void RenderCombinedWaterEffect(void) {
+void BattleAnim_StartEffect26DoubleTextureTrail_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
+    gDisplayListHead = DoubleTextureTrail_DrawAll(gDisplayListHead);
 }
 
-void SpawnWaterEffectVariant1(void) {
+void BattleAnim_StartEffect47SixSlotTrail_Seed(void) {
     static CombineParams D_84388040 = { 3, 5, 1, 5, 1, 7, 3, 7 };
     static CombineParams D_84388060 = { 0x1F, 0x1F, 0x1F, 0, 7, 7, 7, 0 };
 
@@ -925,7 +925,7 @@ void SpawnWaterEffectVariant1(void) {
     f32 sp94;
     f32 sp90;
 
-    CalcVectorATtoDM(&spA4, &spA0, &sp9C, &sp98, &sp94, &sp90);
+    BattleAnim_CalcVectorAtToDm(&spA4, &spA0, &sp9C, &sp98, &sp94, &sp90);
     sp94 += 0.2f * __cosf((RAND(10) * M_PI_F) / 10.0f);
     sp90 += 0.2f * __cosf((RAND(10) * M_PI_F) / 10.0f);
 
@@ -933,32 +933,32 @@ void SpawnWaterEffectVariant1(void) {
     sp94 *= 12.0f;
     sp90 *= 12.0f;
 
-    WaterEffect_Spawn(0, spA4, spA0, sp9C, sp98, sp94, sp90, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0x64, 0xFF, 0xFF, 0.4f, 2.0f,
+    BattleAnim_SixSlotTrail_Spawn(0, spA4, spA0, sp9C, sp98, sp94, sp90, 0xFF, 0xFF, 0xFF, 0xFF, 0, 0, 0x64, 0xFF, 0xFF, 0.4f, 2.0f,
                   20.0f, 0x3C, 0x95, 0x95, 0, 0xA, 0, 0xD, 0, 0, 0, 0, &D_84388040, &D_84388060);
 }
 
-void StartWaterEffectH(void) {
+void BattleAnim_StartEffect47SixSlotTrail_Init(void) {
     gParticleSpawnTimerH = 0;
-    InitEffectMatrix();
-    WaterEffect_Init();
-    SpawnWaterEffectVariant1();
+    BattleAnim_ResetSharedEffectMatrix();
+    BattleAnim_SixSlotTrail_ResetPool();
+    BattleAnim_StartEffect47SixSlotTrail_Seed();
 }
 
-s32 UpdateWaterEffectH(void) {
+s32 BattleAnim_StartEffect47SixSlotTrail_Update(void) {
     gParticleSpawnTimerH++;
     if ((gParticleSpawnTimerH % 10) == 0) {
-        SpawnWaterEffectVariant1();
+        BattleAnim_StartEffect47SixSlotTrail_Seed();
     }
-    return WaterEffect_Process();
+    return BattleAnim_SixSlotTrail_UpdateAll();
 }
 
-void RenderWaterEffectH(void) {
+void BattleAnim_StartEffect47SixSlotTrail_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterEffect_RenderAll(gDisplayListHead);
+    gDisplayListHead = BattleAnim_SixSlotTrail_DrawAll(gDisplayListHead);
 }
 
-void ConfigureWaterEffectVariant2(void) {
+void BattleAnim_StartEffect4DoubleTextureTrail_Seed(void) {
     static CombineParams D_84388080 = { 3, 5, 1, 5, 6, 7, 2, 3 };
     static CombineParams D_843880A0 = { 0x1F, 0x1F, 0x1F, 0, 0, 7, 5, 7 };
     static CombineParams D_843880C0 = { 3, 5, 2, 5, 1, 7, 3, 7 };
@@ -971,35 +971,35 @@ void ConfigureWaterEffectVariant2(void) {
     f32 spA4;
     f32 spA0;
 
-    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    BattleAnim_CalcVectorAtToDm(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x93, 0x93, 5, 0xA, 0xF, 0xF,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x93, 0x93, 5, 0xA, 0xF, 0xF,
                   -5, 5, 0xF, 0xF, &D_84388080, &D_843880A0, 0xC8, 0xC8, 0, 0x64, 0, 0, 0xC8, 0, 0xFF, 0, 0xFF, 0,
                   0x5A);
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x91, 0x91, -2, 0xA, 0xF,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x91, 0x91, -2, 0xA, 0xF,
                   0xF, 5, 0xF, 0xF, 0xF, &D_843880C0, &D_843880E0, 0xFF, 0x32, 0x64, 0xC8, 0, 0x64, 0x32, 0xFF, 0xFF, 0,
                   0, 0, 0);
 }
 
-void InitWaterEffectVariant2(void) {
-    InitEffectMatrix();
-    WaterParticleSystems_ResetAll();
-    ConfigureWaterEffectVariant2();
+void BattleAnim_StartEffect4DoubleTextureTrail_Init(void) {
+    BattleAnim_ResetSharedEffectMatrix();
+    DoubleTextureTrail_InitPool();
+    BattleAnim_StartEffect4DoubleTextureTrail_Seed();
 }
 
-s32 UpdateWaterEffectVariant2(void) {
-    return WaterParticleSystems_Tick();
+s32 BattleAnim_StartEffect4DoubleTextureTrail_Update(void) {
+    return DoubleTextureTrail_UpdateAll();
 }
 
-void RenderWaterEffectVariant2(void) {
+void BattleAnim_StartEffect4DoubleTextureTrail_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
+    gDisplayListHead = DoubleTextureTrail_DrawAll(gDisplayListHead);
 }
 
-void ConfigureWaterEffectVariant3(void) {
+void BattleAnim_StartEffect77DoubleTextureTrail_Seed(void) {
     static CombineParams D_84388100 = { 2, 1, 0xE, 1, 2, 7, 1, 3 };
     static CombineParams D_84388120 = { 3, 5, 0, 5, 0, 7, 5, 7 };
     static CombineParams D_84388140 = { 2, 1, 0xE, 1, 2, 7, 1, 3 };
@@ -1012,35 +1012,35 @@ void ConfigureWaterEffectVariant3(void) {
     f32 spA4;
     f32 spA0;
 
-    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    BattleAnim_CalcVectorAtToDm(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x97, 0x98, -5, 0x14, 0xF,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x97, 0x98, -5, 0x14, 0xF,
                   0xD, -5, 0x14, 0, 0xE, &D_84388100, &D_84388120, 0xFF, 0xFF, 0xFF, 0x32, 0x64, 0x64, 0, 0xFF, 0xFF,
                   0xC8, 0xFF, 0xFF, 0x96);
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x98, 5, 0xF, 0xF, 0xE,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x98, 5, 0xF, 0xF, 0xE,
                   0, 0xF, 0xF, 0xF, &D_84388140, &D_84388160, 0xFF, 0xFF, 0xFF, 0x32, 0x64, 0x64, 0x64, 0xFF, 0xFF, 0,
                   0, 0, 0);
 }
 
-void InitWaterEffectVariant3(void) {
-    InitEffectMatrix();
-    WaterParticleSystems_ResetAll();
-    ConfigureWaterEffectVariant3();
+void BattleAnim_StartEffect77DoubleTextureTrail_Init(void) {
+    BattleAnim_ResetSharedEffectMatrix();
+    DoubleTextureTrail_InitPool();
+    BattleAnim_StartEffect77DoubleTextureTrail_Seed();
 }
 
-s32 UpdateWaterEffectVariant3(void) {
-    return WaterParticleSystems_Tick();
+s32 BattleAnim_StartEffect77DoubleTextureTrail_Update(void) {
+    return DoubleTextureTrail_UpdateAll();
 }
 
-void RenderWaterEffectVariant3(void) {
+void BattleAnim_StartEffect77DoubleTextureTrail_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
+    gDisplayListHead = DoubleTextureTrail_DrawAll(gDisplayListHead);
 }
 
-void ConfigureWaterEffectVariant4(void) {
+void BattleAnim_StartEffect70DoubleTextureTrail_Seed(void) {
     static CombineParams D_84388180 = { 2, 1, 0xE, 1, 2, 1, 3, 1 };
     static CombineParams D_843881A0 = { 3, 5, 0, 5, 0, 7, 5, 7 };
 
@@ -1051,32 +1051,32 @@ void ConfigureWaterEffectVariant4(void) {
     f32 spA4;
     f32 spA0;
 
-    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    BattleAnim_CalcVectorAtToDm(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 10.0f;
     spA4 *= 10.0f;
     spA0 *= 10.0f;
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x94, 0, 0x14, 0xE,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x94, 0, 0x14, 0xE,
                   0xF, 0, 0x14, 0xF, 0xE, &D_84388180, &D_843881A0, 0xFF, 0xFF, 0xFF, 0x96, 0x96, 0xFF, 0xFF, 0, 0xFF,
                   0xFF, 0xFF, 0, 0x96);
 }
 
-void InitWaterEffectVariant4(void) {
-    InitEffectMatrix();
-    WaterParticleSystems_ResetAll();
-    ConfigureWaterEffectVariant4();
+void BattleAnim_StartEffect70DoubleTextureTrail_Init(void) {
+    BattleAnim_ResetSharedEffectMatrix();
+    DoubleTextureTrail_InitPool();
+    BattleAnim_StartEffect70DoubleTextureTrail_Seed();
 }
 
-s32 UpdateWaterEffectVariant4(void) {
-    return WaterParticleSystems_Tick();
+s32 BattleAnim_StartEffect70DoubleTextureTrail_Update(void) {
+    return DoubleTextureTrail_UpdateAll();
 }
 
-void RenderWaterEffectVariant4(void) {
+void BattleAnim_StartEffect70DoubleTextureTrail_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
+    gDisplayListHead = DoubleTextureTrail_DrawAll(gDisplayListHead);
 }
 
-void ConfigureWaterEffectVariant5(void) {
+void BattleAnim_StartEffect39DoubleTextureTrail_Seed(void) {
     static CombineParams D_843881C0 = {
         0x00000002, 0x00000001, 0x0000000E, 0x00000001, 0x00000007, 0x00000007, 0x00000007, 0x00000003,
     };
@@ -1097,19 +1097,19 @@ void ConfigureWaterEffectVariant5(void) {
     f32 spA4;
     f32 spA0;
 
-    CalcVectorATtoDM(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
+    BattleAnim_CalcVectorAtToDm(&spB4, &spB0, &spAC, &spA8, &spA4, &spA0);
     spA8 *= 12.0f;
     spA4 *= 12.0f;
     spA0 *= 12.0f;
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x91, 0x92, 5, 0x1E, 0, 0xD,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 2.0f, 10.0f, 0x14, 0x91, 0x92, 5, 0x1E, 0, 0xD,
                   -5, 0x1E, 0xF, 0xD, &D_843881C0, &D_843881E0, 0xFF, 0xFF, 0, 0xFF, 0x96, 0x32, 0, 0, 0xFF, 0xFF, 0xC8,
                   0x64, 0xC8);
-    WaterParticleSystems_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x96, 6, 0x14, 0xE,
+    DoubleTextureTrail_Spawn(spB4, spB0, spAC, spA8, spA4, spA0, 0.0f, 5.0f, 1.2f, 3.0f, 15.0f, 0x14, 0x97, 0x96, 6, 0x14, 0xE,
                   0xF, -3, 0xA, 0, 0xF, &D_84388200, &D_84388220, 0xFF, 0xFF, 0x64, 0x96, 0xFF, 0xFF, 0x64, 0, 0xC8, 0,
                   0, 0, 0);
 }
 
-void SpawnWaterEffectVariant5(void) {
+void BattleAnim_StartEffect39SixSlotTrail_Seed(void) {
     static CombineParams D_84388240 = {
         0x00000002, 0x00000001, 0x0000000E, 0x00000001, 0x00000002, 0x00000001, 0x00000003, 0x00000001,
     };
@@ -1124,7 +1124,7 @@ void SpawnWaterEffectVariant5(void) {
     f32 sp94;
     f32 sp90;
 
-    CalcVectorATtoDM(&spA4, &spA0, &sp9C, &sp98, &sp94, &sp90);
+    BattleAnim_CalcVectorAtToDm(&spA4, &spA0, &sp9C, &sp98, &sp94, &sp90);
 
     sp94 += (0.4f * __cosf((RAND(10) * M_PI_F) / 10));
     sp90 += (0.4f * __cosf((RAND(10) * M_PI_F) / 10));
@@ -1133,30 +1133,30 @@ void SpawnWaterEffectVariant5(void) {
     sp94 *= 12.0f;
     sp90 *= 12.0f;
 
-    WaterEffect_Spawn(0, spA4, spA0, sp9C, sp98, sp94, sp90, 0xFF, 0xFF, 0x64, 0x32, 0xC8, 0xFF, 0x32, 0, 0xFF, 0.4f, 2.0f,
+    BattleAnim_SixSlotTrail_Spawn(0, spA4, spA0, sp9C, sp98, sp94, sp90, 0xFF, 0xFF, 0x64, 0x32, 0xC8, 0xFF, 0x32, 0, 0xFF, 0.4f, 2.0f,
                   5.0f, 0x3C, 0x95, 0x95, 0, 0x14, 0, 0xD, 0, 0x19, 0, 0xD, &D_84388240, &D_84388260);
 }
 
-void InitWaterEffectVariant5(void) {
-    InitEffectMatrix();
-    WaterParticleSystems_ResetAll();
-    ConfigureWaterEffectVariant5();
-    WaterEffect_Init();
-    SpawnWaterEffectVariant5();
+void BattleAnim_StartEffect39CombinedTrail_Init(void) {
+    BattleAnim_ResetSharedEffectMatrix();
+    DoubleTextureTrail_InitPool();
+    BattleAnim_StartEffect39DoubleTextureTrail_Seed();
+    BattleAnim_SixSlotTrail_ResetPool();
+    BattleAnim_StartEffect39SixSlotTrail_Seed();
 }
 
-s32 UpdateWaterEffectD(void) {
+s32 BattleAnim_StartEffect39CombinedTrail_Update(void) {
     gParticleSpawnTimerD++;
     if ((gParticleSpawnTimerD % 10) == 0) {
-        SpawnWaterEffectVariant5();
+        BattleAnim_StartEffect39SixSlotTrail_Seed();
     }
-    WaterEffect_Process();
-    return WaterParticleSystems_Tick();
+    BattleAnim_SixSlotTrail_UpdateAll();
+    return DoubleTextureTrail_UpdateAll();
 }
 
-void RenderCombinedWaterEffectD(void) {
+void BattleAnim_StartEffect39CombinedTrail_Draw(void) {
     gSPMatrix(gDisplayListHead++, &gEffectMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    gDisplayListHead = WaterParticleSystems_Render(gDisplayListHead);
-    gDisplayListHead = WaterEffect_RenderAll(gDisplayListHead);
+    gDisplayListHead = DoubleTextureTrail_DrawAll(gDisplayListHead);
+    gDisplayListHead = BattleAnim_SixSlotTrail_DrawAll(gDisplayListHead);
 }

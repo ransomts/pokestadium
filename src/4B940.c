@@ -4,7 +4,7 @@ static OSMesgQueue gRomDmaQueue;
 static OSPiHandle* gRomPiHandle;
 static OSMesg gRomDmaMsg;
 
-void Rom_SelectDevice(s32 arg0) {
+void Rom_InitDevice(s32 arg0) {
     switch (arg0) {
         case 1:
             gRomPiHandle = osDriveRomInit();

@@ -1513,7 +1513,7 @@ static AnimFrame gSandshrewTutoAnimTable3[6] = {
 static s16 playerIconsScreenXPos[] = { 0x1E, 0x32, 0xF0, 0x104 };
 static s16 playerIconsScreenYPos[] = { 0xA8, 0x50, 0x50, 0xA8 };
 
-void MiniGame_PlaySoundEffect(s16 arg0, s16 arg1) {
+void SandshrewGame_PlaySoundEvent(s16 arg0, s16 arg1) {
     UNUSED s32 pad;
     s32 sp30;
     s32 sp2C;
@@ -1548,45 +1548,45 @@ void MiniGame_PlaySoundEffect(s16 arg0, s16 arg1) {
             break;
 
         case 6:
-            ResultScreen_SetAnimation(0x1C);
+            Audio_StartMusicTrack(0x1C);
             break;
 
         case 7:
-            Stage_SetFadeColor(0x3C);
+            Audio_FadeOutAll(0x3C);
             break;
 
         case 8:
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
             break;
 
         case 9:
-            Audio_SetVolumeFadeAndDuration(1, arg1);
-            Audio_SetVolumeFadeAndDuration(2, arg1);
+            Audio_FadeCategories(1, arg1);
+            Audio_FadeCategories(2, arg1);
             D_8790604A = 1;
             break;
 
         case 10:
-            Music_StartVolumeFade(arg1);
+            Audio_BeginVolumeTransition(arg1);
             break;
 
         case 11:
-            Music_EndVolumeFade();
+            Audio_ResetVolumeTransition();
             break;
 
         case 12:
-            Audio_SetVolumeFadeAndDuration(1, arg1);
+            Audio_FadeCategories(1, arg1);
             break;
     }
 
     if (var_s0 != 0) {
         D_87903DBC++;
-        PlaySoundByCategory(var_s0, sp30, sp2C);
+        Audio_DispatchSoundBankCommand(var_s0, sp30, sp2C);
     }
 }
 
-void MiniGame_PlaySoundIfNotMuted(s16 arg0, s16 arg1) {
+void SandshrewGame_PlaySoundEventGuarded(s16 arg0, s16 arg1) {
     if (D_8790604A == 0) {
-        MiniGame_PlaySoundEffect(arg0, arg1);
+        SandshrewGame_PlaySoundEvent(arg0, arg1);
     }
 }
 
@@ -1623,7 +1623,7 @@ void initSandshrew(MiniActor* sandshrew, s32 player) {
     sandshrew->miniHealth = sandshrew->miniMaxHealth = 0x64;
     sandshrew->unk_238 = sandshrew->unk_23A = 0;
 
-    GraphNode_TriggerAction(&sandshrew->unk_000, 0);
+    ModelAnim_SetAnimation(&sandshrew->unk_000, 0);
 
     sandshrew->unk_290 = 0;
     sandshrew->mainState = 0;
@@ -1661,10 +1661,10 @@ void miniSandshewReangleAll(void) {
 }
 
 void miniSandshewChangeAnim(MiniActor* actor, s32 animID) {
-    GraphNode_TriggerAction(&actor->unk_000, animID);
-    Anim_SetChannel(&actor->unk_000, 0, actor->unk_000.unk_040.unk_04, 0x10000);
-    Anim_SetChannelBase(&actor->unk_000, 0);
-    Anim_SetChannelOffset(&actor->unk_000, 0x10000);
+    ModelAnim_SetAnimation(&actor->unk_000, animID);
+    ModelAnim_BindTransformCurve(&actor->unk_000, 0, actor->unk_000.unk_040.unk_04, 0x10000);
+    ModelAnim_SetFrame(&actor->unk_000, 0);
+    ModelAnim_SetSpeed(&actor->unk_000, 0x10000);
 }
 
 void sandshrewDecreaseVel(MiniActor* sandshrew, f32 arg1) {
@@ -1766,19 +1766,19 @@ void sandshrewHumanControls(MiniActor* sandshrew) {
 void sandshrewCompControls(MiniActor* arg0) {
     switch (miniDifficulty) {
         case 0:
-            arg0->diggingAccel2 = (RandomMod(0xA) * 0.1f) + 3.0f;
+            arg0->diggingAccel2 = (ParticleMath_RandomRange(0xA) * 0.1f) + 3.0f;
             break;
 
         case 1:
-            arg0->diggingAccel2 = (RandomMod(0x14) * 0.15f) + 5.0f;
+            arg0->diggingAccel2 = (ParticleMath_RandomRange(0x14) * 0.15f) + 5.0f;
             break;
 
         case 2:
-            arg0->diggingAccel2 = (RandomMod(0x14) * 0.17f) + 6.0f;
+            arg0->diggingAccel2 = (ParticleMath_RandomRange(0x14) * 0.17f) + 6.0f;
             break;
 
         case 3:
-            arg0->diggingAccel2 = (RandomMod(0x12) * 0.2f) + 6.4f;
+            arg0->diggingAccel2 = (ParticleMath_RandomRange(0x12) * 0.2f) + 6.4f;
             break;
     }
 
@@ -1788,7 +1788,7 @@ void sandshrewCompControls(MiniActor* arg0) {
     }
 }
 
-void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
+void SandshrewGame_DigStateMachine(MiniActor* sandshrew) {
     UNUSED s32 pad;
     Vec3f sp48;
     f32 holeDeepeness;
@@ -1800,9 +1800,9 @@ void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
             break;
 
         case 0x2: //	start digging animation 2
-            if (GraphNode_IsAnimationFinished(&sandshrew->unk_000) != 0) {
+            if (ModelAnim_IsAnimationDone(&sandshrew->unk_000) != 0) {
                 miniSandshewChangeAnim(sandshrew, 2);
-                Anim_SetChannelOffset(&sandshrew->unk_000, 0);
+                ModelAnim_SetSpeed(&sandshrew->unk_000, 0);
                 sandshrew->ySpinSpeed = 0;
                 sandshrew->mainState++;
             }
@@ -1811,69 +1811,69 @@ void MiniSandshrew_StateMachine(MiniActor* sandshrew) {
         case 0x3: //  diggin
             if (sandshrew->diggingAccel2 != 0) {
                 if (gTimerMask2 == 0) {
-                    Particle_CreateFromEntityMultiple(&sandshrew->unk_000, MiniFx_UpdateSurfaceCrossingGravityParticle, &gMiniTutoScreenNode1, 1, 1); //	perticles
-                    Particle_CreateFromEntityMultiple(&sandshrew->unk_000, MiniFx_UpdateSurfaceCrossingGravityParticle, &gMiniTutoScreenNode1, 1, 2); //	particles
+                    Particle_EmitBurstFromObject(&sandshrew->unk_000, MiniFx_UpdateSurfaceCrossingGravityParticle, &gMiniTutoScreenNode1, 1, 1); //	perticles
+                    Particle_EmitBurstFromObject(&sandshrew->unk_000, MiniFx_UpdateSurfaceCrossingGravityParticle, &gMiniTutoScreenNode1, 1, 2); //	particles
                 }
 
                 if (gTimerMask2 == 0) {
                     if (sandshrew->totalPos.y > -10.0f) {
-                        Particle_CreateMultiple(1.0f, sandshrew->totalPos, sandshrew->totalRot, MiniFx_UpdatePalette10SlowRiseFadeParticle, &gMiniTutoScreenNode0,
+                        Particle_EmitBurstAtTransform(1.0f, sandshrew->totalPos, sandshrew->totalRot, MiniFx_UpdatePalette10SlowRiseFadeParticle, &gMiniTutoScreenNode0,
                                       1); //	particles
                     } else {
                         sp48.x = sandshrew->totalPos.x;
                         sp48.y = -5.0f;
                         sp48.z = sandshrew->totalPos.z;
-                        Particle_CreateMultiple(1.0f, sp48, sandshrew->totalRot, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0,
+                        Particle_EmitBurstAtTransform(1.0f, sp48, sandshrew->totalRot, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0,
                                       1); //	particles
                     }
                 }
 
-                Anim_SetChannelOffset(&sandshrew->unk_000, ((s32)sandshrew->diggingAccel2 << 0xE) + 0xC000);
+                ModelAnim_SetSpeed(&sandshrew->unk_000, ((s32)sandshrew->diggingAccel2 << 0xE) + 0xC000);
 
                 holeDeepeness = sandshrew->diggingSpeed / 5000.0f;
                 if (holeDeepeness > 0.2f) {
                     sandshrew->position_2.y -= holeDeepeness;
                 }
 
-                MiniGame_PlaySoundIfNotMuted(3, sandshrew - miniSandshrews);
-                if (GraphNode_IsAnimationFinished(&sandshrew->unk_000) != 0) {
-                    Anim_SetChannelBase(&sandshrew->unk_000, 0);
+                SandshrewGame_PlaySoundEventGuarded(3, sandshrew - miniSandshrews);
+                if (ModelAnim_IsAnimationDone(&sandshrew->unk_000) != 0) {
+                    ModelAnim_SetFrame(&sandshrew->unk_000, 0);
                 }
             } else {
                 sandshrew->diggingSpeed = 0.0f;
-                GraphNode_TriggerAction(&sandshrew->unk_000, 3);
-                Anim_SetChannel(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
-                Anim_SetChannelBase(&sandshrew->unk_000, 0);
-                Anim_SetChannelOffset(&sandshrew->unk_000, 0x10000);
-                MiniGame_PlaySoundIfNotMuted(4, sandshrew - miniSandshrews);
+                ModelAnim_SetAnimation(&sandshrew->unk_000, 3);
+                ModelAnim_BindTransformCurve(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
+                ModelAnim_SetFrame(&sandshrew->unk_000, 0);
+                ModelAnim_SetSpeed(&sandshrew->unk_000, 0x10000);
+                SandshrewGame_PlaySoundEventGuarded(4, sandshrew - miniSandshrews);
                 sandshrew->mainState++;
             }
             break;
 
         case 0x4: //   on stop diggin
-            if (GraphNode_IsAnimationFinished(&sandshrew->unk_000) != 0) {
-                GraphNode_TriggerAction(&sandshrew->unk_000, 0);
+            if (ModelAnim_IsAnimationDone(&sandshrew->unk_000) != 0) {
+                ModelAnim_SetAnimation(&sandshrew->unk_000, 0);
                 sandshrew->mainState = 0;
             }
             break;
 
         case 0x64: //	win start animation
-            GraphNode_TriggerAction(&sandshrew->unk_000, 4);
-            Anim_SetChannel(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
-            Anim_SetChannelBase(&sandshrew->unk_000, 0);
-            Anim_SetChannelOffset(&sandshrew->unk_000, 0x10000);
+            ModelAnim_SetAnimation(&sandshrew->unk_000, 4);
+            ModelAnim_BindTransformCurve(&sandshrew->unk_000, 0, sandshrew->unk_000.unk_040.unk_04, 0x10000);
+            ModelAnim_SetFrame(&sandshrew->unk_000, 0);
+            ModelAnim_SetSpeed(&sandshrew->unk_000, 0x10000);
             sandshrew->mainState++;
             sandshrew->position_2.y += 15.0f;
             break;
 
         case 0x65: //	win animation loop
             minigameActorLocalOriginToZero(sandshrew);
-            Graph_GetRecordedPosition(&miniSandshrewGeiserPtr->unk_000, 0xA, &sandshrew->position_2);
+            GeoRender_FindAnchorPosition(&miniSandshrewGeiserPtr->unk_000, 0xA, &sandshrew->position_2);
             break;
     }
 }
 
-void MiniGame_UpdateSandshrewPhysics(void) {
+void SandshrewGame_UpdatePlayers(void) {
     s32 i;
 
     miniControllerPtr = gPlayer1Controller;
@@ -1891,9 +1891,9 @@ void MiniGame_UpdateSandshrewPhysics(void) {
             }
         }
 
-        MiniSandshrew_StateMachine(miniSandshrewPtr);
+        SandshrewGame_DigStateMachine(miniSandshrewPtr);
         miniActorUpdateTransform(miniSandshrewPtr);
-        MiniActor_UpdateCollider(miniSandshrewPtr);
+        MiniActor_SyncModelTransform(miniSandshrewPtr);
 
         miniSandshrewPtr++;
         miniSandshrewHolePtr++;
@@ -1960,11 +1960,11 @@ void SandshrewGame_UpdateHole(MiniActor* sandshrewHole, MiniActor* sandshrewPlay
         } else {
             var_a1 = 0;
         }
-        Anim_SetChannelOffset(&sandshrewHole->unk_000, var_a1);
+        ModelAnim_SetSpeed(&sandshrewHole->unk_000, var_a1);
     }
 }
 
-void MiniGame_UpdateSandshrewHoles(void) {
+void SandshrewGame_UpdateHoles(void) {
     s32 i;
 
     miniSandshrewHolePtr = miniSandshrewHoles;
@@ -1973,7 +1973,7 @@ void MiniGame_UpdateSandshrewHoles(void) {
     for (i = 0; i < 4; i++) {
         SandshrewGame_UpdateHole(miniSandshrewHolePtr, miniSandshrewPtr);
         miniActorUpdateTransform(miniSandshrewHolePtr);
-        MiniActor_UpdateCollider(miniSandshrewHolePtr);
+        MiniActor_SyncModelTransform(miniSandshrewHolePtr);
 
         miniSandshrewHolePtr++;
         miniSandshrewPtr++;
@@ -2028,7 +2028,7 @@ void SandshrewGame_UpdateGeiser(MiniActor* geiser) {
             geiser->mainState++;
             break;
         case 2:
-            if (Anim_HasReachedEnd(&miniSandshrewGeiserPtr->unk_000) != 0) {
+            if (ModelAnim_IsFinished(&miniSandshrewGeiserPtr->unk_000) != 0) {
                 miniSandshewChangeAnim(geiser, 1);
                 geiser->mainState++;
             }
@@ -2036,11 +2036,11 @@ void SandshrewGame_UpdateGeiser(MiniActor* geiser) {
     }
 
     if ((geiser->mainState >= 2) && (gTimerMask2 == 0)) {
-        Particle_CreateFromEntityMultiple(&geiser->unk_000, MiniFx_UpdateCoolGravityParticle, &D_87903E58, 4, 0xA);
+        Particle_EmitBurstFromObject(&geiser->unk_000, MiniFx_UpdateCoolGravityParticle, &D_87903E58, 4, 0xA);
     }
 }
 
-void MiniGame_UpdateSandshrewGeisers(void) {
+void SandshrewGame_UpdateGeisers(void) {
     s32 i;
 
     miniSandshrewGeiserPtr = miniSandshrewGeisers;
@@ -2048,7 +2048,7 @@ void MiniGame_UpdateSandshrewGeisers(void) {
     for (i = 0; i < 4; i++) {
         SandshrewGame_UpdateGeiser(miniSandshrewGeiserPtr);
         miniActorUpdateTransform(miniSandshrewGeiserPtr);
-        MiniActor_UpdateCollider(miniSandshrewGeiserPtr);
+        MiniActor_SyncModelTransform(miniSandshrewGeiserPtr);
 
         miniSandshrewGeiserPtr++;
     }
@@ -2074,38 +2074,38 @@ void SandshrewGame_InitCamera(void) {
 void SandshrewGame_UpdateWinCamera(void) {
     switch (gMiniCameraNearBackup) {
         case 1:
-            MiniGame_SaveCameraState();
+            miniSaveCameraState();
             gMiniCameraNearBackup++;
             break;
 
         case 2:
-            ApproachF32(&gMiniCameraDistanceBackup, 250.0f, 1.0f);
-            ApproachF32(&gMiniCameraCoordsBackup.y, 34.0f, 1.8f);
-            ApproachS16Signed(&gMiniCameraXRotBackup, 0x600, 0xCC);
-            ApproachS16Signed(&miniHudTransparency, 0, 0x30);
+            ParticleMath_ApproachFloat(&gMiniCameraDistanceBackup, 250.0f, 1.0f);
+            ParticleMath_ApproachFloat(&gMiniCameraCoordsBackup.y, 34.0f, 1.8f);
+            ParticleMath_ApproachS16(&gMiniCameraXRotBackup, 0x600, 0xCC);
+            ParticleMath_ApproachS16(&miniHudTransparency, 0, 0x30);
             break;
     }
 
     if (gMiniCameraNearBackup != 0) {
-        MiniGame_RestoreCameraState();
+        miniRestoreCameraState();
     }
 }
 
-void MiniGame_UpdateSandshrewHUD(void) {
+void SandshrewGame_CameraControls(void) {
     SandshrewGame_UpdateWinCamera();
     minigameDebuggModeControl();
     miniUpdateCamera();
 }
 
 void sandshrewMinigameInitObjects(void) {
-    MiniGame_ResetState(); //	init minigame variables
+    miniResetGlobalState(); //	init minigame variables
     initSandshrews();
     initSandshrewHoles();
     initSandshrewGeisers();
     SandshrewGame_InitCamera(); // fix the camera
 }
 
-s32 MiniSandshrewGame_DetermineWinner(void) {
+s32 SandshrewGame_CheckWinCondition(void) {
     s32 i;
     f32 var_fs0;
     s32 var_s4;
@@ -2132,8 +2132,8 @@ s32 MiniSandshrewGame_DetermineWinner(void) {
             var_s4 += 1;
             miniSandshrewPtr->mainState = 0x64;
             miniSandshrewGeiserPtr->mainState = 1;
-            MiniGame_PlaySoundIfNotMuted(5, i);
-            IncrementPlayerScore(i);
+            SandshrewGame_PlaySoundEventGuarded(5, i);
+            Widget_PauseMenuRecordWin(i);
         }
         miniSandshrewPtr++;
         miniSandshrewGeiserPtr++;
@@ -2155,23 +2155,23 @@ void SandshrewGame_ResetDigSpeeds(void) {
 
 s32 SandshrewGame_UpdateStartCountdown(void) {
     s32 sp1C = 0;
-    s32 sp18 = Fragment2_1_GetResult();
+    s32 sp18 = Widget_CountdownGetState();
 
     if (sp18 == -2) {
-        MiniGame_PlaySoundIfNotMuted(6, 0);
+        SandshrewGame_PlaySoundEventGuarded(6, 0);
         sp1C = 1;
     }
 
     if (sp18 > 0) {
-        MiniGame_PlaySoundIfNotMuted(1, 0);
+        SandshrewGame_PlaySoundEventGuarded(1, 0);
     } else if (sp18 == 0) {
-        MiniGame_PlaySoundIfNotMuted(2, 0);
+        SandshrewGame_PlaySoundEventGuarded(2, 0);
     }
 
     return sp1C;
 }
 
-void MiniGame_UpdateSandshrewAI(void) {
+void SandshrewGame_MinigameStateMachine(void) {
     switch (minigameState) {
         case 1: //  after pressing start
             miniInputLockTimer = 0xF;
@@ -2181,7 +2181,7 @@ void MiniGame_UpdateSandshrewAI(void) {
         case 2: //  waits for some frames before starting the main countdown
             miniInputLockTimer--;
             if (miniInputLockTimer < 0) {
-                Fragment2_1_SetStartFlag(1);
+                Widget_CountdownStart(1);
                 minigameState++;
             }
             break;
@@ -2196,7 +2196,7 @@ void MiniGame_UpdateSandshrewAI(void) {
             break;
 
         case 4:
-            if (MiniSandshrewGame_DetermineWinner() != 0) {
+            if (SandshrewGame_CheckWinCondition() != 0) {
                 SandshrewGame_ResetDigSpeeds();
                 minigameInputLock = false;
                 gMiniCameraNearBackup = 1;
@@ -2208,9 +2208,9 @@ void MiniGame_UpdateSandshrewAI(void) {
         case 5:
             miniInputLockTimer--;
             if (miniInputLockTimer == 0) {
-                SetResultFlag(1);
-                MiniTutoScreen_Reset();
-                MiniGame_PlaySoundIfNotMuted(0xC, 0xB4);
+                Widget_PauseMenuTrigger(1);
+                miniTutoScreenEnd();
+                SandshrewGame_PlaySoundEventGuarded(0xC, 0xB4);
                 minigameState++;
             }
             break;
@@ -2222,11 +2222,11 @@ void MiniGame_UpdateSandshrewAI(void) {
             }
             break;
     }
-    Fragment2_1_Update();
+    Widget_CountdownUpdate();
 }
 
-void MiniGame_UpdateSandshrewScore(void) {
-    ParticleSystem_UpdateAndRender();
+void SandshrewGame_SyncModelTransforms(void) {
+    MiniFx_UpdateParticles();
 }
 
 void SandshrewGame_DrawTutorialText(void) {
@@ -2234,37 +2234,37 @@ void SandshrewGame_DrawTutorialText(void) {
     s32 sp38;
     s32 sp34;
 
-    DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
-    DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
-    Text_ResetState();
-    Text_BeginRender();
-    Text_SetFont(2, 0);
-    Text_SetLineHeight(0xC);
+    Ui_DrawBorderedPanel(0x18, 0x16, 0x110, 0x90, 0x15);
+    Ui_DrawBorderedPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
+    Font_SetActive(2, 0);
+    Font_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Text_Print(0xA0 - (GetTextWidth(gMiniHUDTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0x4A)) / 2), 0x20,
-                  GetMessageString(NULL, 0, gItemNamesBank, 0x4A));
+    Font_Printf(0xA0 - (Text_MeasureStringWidth(gMiniHUDTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0x4A)) / 2), 0x20,
+                  Text_GetString(NULL, 0, gItemNamesBank, 0x4A));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x4B));
-    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x4C));
-    Text_Print(0x28, 0x70, GetMessageString(NULL, 0, gItemNamesBank, 0x4D));
+    Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x4B));
+    Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gItemNamesBank, 0x4C));
+    Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gItemNamesBank, 0x4D));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x4B), GetMessageString(NULL, 0, gItemNamesBank, 0x63),
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x4B), Text_GetString(NULL, 0, gItemNamesBank, 0x63),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x63));
-    Text_Print(0xB8, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
-    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x63));
+    Font_Printf(0xB8, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+    Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Text_Print(0xCF, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x4E));
+    Font_Printf(0xCF, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x4E));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
-    Text_EndRender();
-    Text_SetFont(4, -2);
-    Text_SetupDL();
+    Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
+    Font_DisableTwoCycleTexturing();
+    Font_SetActive(4, -2);
+    Font_EndTexturedTextRendering();
 }
 
 void SandshrewGame_DrawTutorialScreen(void) {
@@ -2274,25 +2274,25 @@ void SandshrewGame_DrawTutorialScreen(void) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-            DrawDualTexturePanel(2, 0x19, 0xA6);
-            DrawAnimatedTexture(0x63, 0xAB, gSandshrewTutoAnimTable2);
-            DrawAnimatedTexture2(0x8B, 0xAB, gSandshrewTutoAnimTable3);
-            DrawAnimatedSprite3(0x74, 0xC6, gSandshrewTutoAnimTable1);
+            Widget_DrawSplitBanner(2, 0x19, 0xA6);
+            Widget_DrawAnimIcon40x20(0x63, 0xAB, gSandshrewTutoAnimTable2);
+            Widget_DrawAnimIcon40x20B(0x8B, 0xAB, gSandshrewTutoAnimTable3);
+            Widget_DrawAnimIcon16C(0x74, 0xC6, gSandshrewTutoAnimTable1);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;
 
         case 5:
-            MiniTutoScreen_StartCountdown(0x3E8);
+            miniTutoScreenShow(0x3E8);
             break;
     }
 
     if (miniTutoScreenState == -2) {
-        Text_SetFont(0x10, -2);
+        Font_SetActive(0x10, -2);
         if (D_87903DD0 == 0x18) {
-            MiniTutoScreen_DrawWinners(miniSandshrews);
+            miniDrawResultIcons(miniSandshrews);
         }
-        Text_SetFont(4, -2);
+        Font_SetActive(4, -2);
     }
 }
 
@@ -2307,9 +2307,9 @@ void fixSandshrewMinigameHUD(void) {
         s16 yPos = playerIconsScreenYPos[i];
 
         if (gMiniHudColors[i] == 0) { //	if ai player
-            DrawUniformScaledTextureRect(i, xPos, yPos, 0.75f);
+            Widget_DrawPlayerIcon(i, xPos, yPos, 0.75f);
         } else { //	if human player
-            DrawUniformScaledTextureRect(-1 - i, xPos, yPos, 0.75f);
+            Widget_DrawPlayerIcon(-1 - i, xPos, yPos, 0.75f);
         }
     }
 
@@ -2317,7 +2317,7 @@ void fixSandshrewMinigameHUD(void) {
 }
 
 void SandshrewGame_DrawTutorial(void) {
-    MiniTutoScreen_Start();
+    miniTutoScreenBegin();
     SandshrewGame_DrawTutorialScreen();
 
     if (miniShowHUB != 0) {
@@ -2329,10 +2329,10 @@ void SandshrewGame_DrawPlayerHUBs(UNUSED s32 arg0) {
     UNUSED u8 sp1C[] = { 0, 0, 30 };  // D_86F0B168
     UNUSED u8 sp18[] = { 0, 0, 250 }; // D_86F0B16C
 
-    Text_ResetState();
-    Text_SetFont(4, -2);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(4, -2);
     SandshrewGame_DrawTutorial();
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
 static u32 gSandshrewHudPanelRect[] = {
@@ -2342,46 +2342,46 @@ static u32 gSandshrewHudPanelRect[] = {
     0x0000000E,
 };
 
-void MiniGame_WaitForFrame(s32 arg0) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
+void SandshrewGame_DrawFrame(s32 arg0) {
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 0xA6BF);
 
     if (gResultMenuVisible == 0) {
-        Gfx_FinishFrame();
+        GeoRender_AdvanceFrameCounter();
     }
 
-    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
-    ParticleRender_SetupMiniCamera();
+    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
+    MiniFx_DrawParticles();
 
     if (miniDebugMode == 0) {
         if (gResultConfirmPressed == 0) {
             SandshrewGame_DrawPlayerHUBs(arg0);
         }
-        ResultScreen_UpdateAndRender();
+        Widget_PauseMenuUpdate();
     } else {
         showDebuggCameraInfo();
         showDebuggJoystickInfo();
     }
 
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
 void sandshrewMinigameInit(void) {
     sandshrewMinigameInitObjects();
-    Stage_AdvanceN(0xA);
-    Stage_FadeIn(0x10);
+    StageLoader_RunFrames(0xA);
+    StageFade_StartFromOpaque(0x10);
     miniTutoScreenState = 3;
     miniDifficulty = gMenuState;
 }
 
-void MiniGame_ShowTutorial(void) {
+void SandshrewGame_MainLoop(void) {
     s32 var_s5 = 1;
 
-    ParticleSystem_Init();
+    MiniFx_Init();
     hideMiniGameHUD();
 
     while (var_s5 != 0) {
-        MiniGame_ReadInputs();
+        MiniActor_ReadControllerInputs();
 
         if (minigameState == 0) {
             D_87906042 += 1;
@@ -2390,114 +2390,114 @@ void MiniGame_ShowTutorial(void) {
             }
         }
 
-        if ((miniDebugMode == false) && (miniShowHUB == false) && (Stage_GetFadeState() == 0)) {
+        if ((miniDebugMode == false) && (miniShowHUB == false) && (StageContext_GetFadeMode() == 0)) {
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_START)) {
                 miniTutoScreenState = 1;
                 minigameState = 1;
                 miniShowHUB = true;
-                MiniGame_PlaySoundIfNotMuted(7, 0);
+                SandshrewGame_PlaySoundEventGuarded(7, 0);
             } else if ((gMenuCursorX == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
-                MiniGame_PlaySoundIfNotMuted(8, 0);
-                SetResultFlag(2);
+                SandshrewGame_PlaySoundEventGuarded(8, 0);
+                Widget_PauseMenuTrigger(2);
             }
         }
 
         if (gResultMenuVisible == 0) {
-            Timer_UpdateCounters();
-            MiniGame_UpdateSandshrewAI(); //	next stept
-            MiniGame_UpdateSandshrewPhysics();
-            MiniGame_UpdateSandshrewHoles();
-            MiniGame_UpdateSandshrewGeisers();
-            MiniGame_UpdateSandshrewScore();
-            MiniGame_UpdateSandshrewHUD();
+            Particle_UpdateFrameCounters();
+            SandshrewGame_MinigameStateMachine(); //	next stept
+            SandshrewGame_UpdatePlayers();
+            SandshrewGame_UpdateHoles();
+            SandshrewGame_UpdateGeisers();
+            SandshrewGame_SyncModelTransforms();
+            SandshrewGame_CameraControls();
         }
 
         if ((miniDebugMode == 0) && ((D_87903DAC != 0) || (gResultFlag_Special != 0))) {
             var_s5 = 0;
         }
 
-        MiniGame_WaitForFrame(1);
+        SandshrewGame_DrawFrame(1);
     }
 }
 
-void MiniGame_FadeOutAndWaitAudio(void) {
+void SandshrewGame_ShowResultText(void) {
     s32 i;
 
-    Stage_FadeOut(0x1E);
+    StageFade_StartFromTransparent(0x1E);
 
     if (gMiniGameDemoFlag != 0) {
-        MiniGame_PlaySoundIfNotMuted(0xA, 0x1E);
+        SandshrewGame_PlaySoundEventGuarded(0xA, 0x1E);
     } else {
-        MiniGame_PlaySoundIfNotMuted(9, 0x1E);
+        SandshrewGame_PlaySoundEventGuarded(9, 0x1E);
     }
 
     for (i = 0; i < 30; i++) {
-        MiniGame_ReadInputs();
+        MiniActor_ReadControllerInputs();
 
         if (gResultMenuVisible == 0) {
-            Timer_UpdateCounters();
-            MiniGame_UpdateSandshrewPhysics();
-            MiniGame_UpdateSandshrewHoles();
-            MiniGame_UpdateSandshrewGeisers();
-            MiniGame_UpdateSandshrewScore();
+            Particle_UpdateFrameCounters();
+            SandshrewGame_UpdatePlayers();
+            SandshrewGame_UpdateHoles();
+            SandshrewGame_UpdateGeisers();
+            SandshrewGame_SyncModelTransforms();
         }
 
-        MiniGame_WaitForFrame(2);
+        SandshrewGame_DrawFrame(2);
     }
 
-    while (Audio_CalcLoadScore() != 0) {}
+    while (Audio_GetActivityScore() != 0) {}
 
-    MiniGame_PlaySoundIfNotMuted(0xB, 0);
+    SandshrewGame_PlaySoundEventGuarded(0xB, 0);
 }
 
-void MiniGame_InitSandshrewObjects(void) {
+void SandshrewGame_LoadAssets(void) {
     s32 i;
-    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     unk_D_86002F30* temp_s1;
 
     gMiniCameraStruct = process_geo_layout(temp_v0, gSandshrewStageScript);
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
 
     for (i = 0; i < 4; i++) {
-        Graph_AddToRootList0(&miniSandshrews[i].unk_000);
+        ModelRenderer_AttachDisplayObject(&miniSandshrews[i].unk_000);
     }
 
     for (i = 0; i < 4; i++) {
-        Graph_AddToRootList0(&miniSandshrewHoles[i].unk_000);
+        ModelRenderer_AttachDisplayObject(&miniSandshrewHoles[i].unk_000);
     }
 
     for (i = 0; i < 4; i++) {
-        Graph_AddToRootList0(&miniSandshrewGeisers[i].unk_000);
+        ModelRenderer_AttachDisplayObject(&miniSandshrewGeisers[i].unk_000);
     }
 
-    AssetManager_LoadArchives();
+    PokeIcon_OpenModelArchives();
 
-    temp_s1 = GeoLayout_LoadById(0xA1);
+    temp_s1 = Model_LoadByArchiveIndex(0xA1);
 
     for (i = 0; i < 4; i++) {
         miniSandshrews[i].unk_23C = 0xA1;
         miniSandshrews[i].unk_168 = temp_s1;
-        GraphNode_InitChild(&miniSandshrews[i].unk_000, 0, miniSandshrews[i].unk_23C, temp_s1->unk_08->unk_00[0]);
-        GraphNode_TriggerAction(&miniSandshrews[i].unk_000, 0);
+        Model_InitDisplayObject(&miniSandshrews[i].unk_000, 0, miniSandshrews[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        ModelAnim_SetAnimation(&miniSandshrews[i].unk_000, 0);
     }
 
-    temp_s1 = GeoLayout_LoadById(0x9D);
+    temp_s1 = Model_LoadByArchiveIndex(0x9D);
 
     for (i = 0; i < 4; i++) {
         miniSandshrewHoles[i].unk_23C = 0x9D;
         miniSandshrewHoles[i].unk_168 = temp_s1;
-        GraphNode_InitChild(&miniSandshrewHoles[i].unk_000, 0, miniSandshrewHoles[i].unk_23C, temp_s1->unk_08->unk_00[0]);
-        GraphNode_TriggerAction(&miniSandshrewHoles[i].unk_000, 0);
+        Model_InitDisplayObject(&miniSandshrewHoles[i].unk_000, 0, miniSandshrewHoles[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        ModelAnim_SetAnimation(&miniSandshrewHoles[i].unk_000, 0);
     }
 
-    temp_s1 = GeoLayout_LoadById(0xA2);
+    temp_s1 = Model_LoadByArchiveIndex(0xA2);
 
     for (i = 0; i < 4; i++) {
         miniSandshrewGeisers[i].unk_23C = 0xA2;
         miniSandshrewGeisers[i].unk_168 = temp_s1;
-        GraphNode_InitChild(&miniSandshrewGeisers[i].unk_000, 0, miniSandshrewGeisers[i].unk_23C, temp_s1->unk_08->unk_00[0]);
-        GraphNode_TriggerAction(&miniSandshrewGeisers[i].unk_000, 0);
+        Model_InitDisplayObject(&miniSandshrewGeisers[i].unk_000, 0, miniSandshrewGeisers[i].unk_23C, temp_s1->unk_08->unk_00[0]);
+        ModelAnim_SetAnimation(&miniSandshrewGeisers[i].unk_000, 0);
     }
 }
 
@@ -2512,24 +2512,24 @@ s32 sandshrewMinigameLoad(s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('MINI');
 
-    Gfx_InitBuffers(0x20000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    gMiniHUDTextObject = Text_Init(0x16, 0);
+    Gfx_InitDisplayListBuffers(0x20000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    gMiniHUDTextObject = Font_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
-    MiniGame_InitSandshrewObjects();
-    Stage_Set(sp24);
+    SandshrewGame_LoadAssets();
+    StageContext_Activate(sp24);
     sandshrewMinigameInit();
-    MiniGame_ShowTutorial(); //	tutorial screen ?
-    MiniGame_FadeOutAndWaitAudio();
-    Stage_Destroy();
-    FontManager_Free(); //	main_pool_try_free(gFontManager);
-    Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
+    SandshrewGame_MainLoop(); //	tutorial screen ?
+    SandshrewGame_ShowResultText();
+    StageContext_Deactivate();
+    Font_Free(); //	main_pool_try_free(gFontManager);
+    Gfx_FreeDisplayListBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');
 
-    return GetCurrentOptionCount();
+    return Widget_PauseMenuGetResult();
 }

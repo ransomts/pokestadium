@@ -17,7 +17,7 @@ static Gfx gParticleBlendDL[] = {
     gsSPEndDisplayList(),
 };
 
-void ParticleSystem_ResetAll(void) {
+void OwnerAnchoredFourStream_Init(void) {
     s32 i;
     s32 j;
     unk_D_843ACA10* var_v0 = &gParticleSystems[0];
@@ -44,7 +44,7 @@ void ParticleSystem_ResetAll(void) {
     }
 }
 
-void ParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void OwnerAnchoredFourStream_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
     s32 i;
     s32 j;
@@ -71,7 +71,7 @@ void ParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 
             var_v1->unk_008.b = arg8;
             var_v1->unk_010 = argA;
 
-            if (GetSpeciesPrimaryEffect() == 0xD) {
+            if (BattleAnim_GetSecondaryOwnerSpecies() == 0xD) {
                 var_v1->unk_418 = 0.08f;
                 var_v1->unk_00C = argC * 0.5f;
             } else {
@@ -79,7 +79,7 @@ void ParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 
                 var_v1->unk_00C = argC;
             }
 
-            var_v1->unk_018 = ParticleNode_CreateWhiteFlash(sp64, 2);
+            var_v1->unk_018 = BattleAnim_SpawnSecondaryOwnerParticle(sp64, 2);
             if (arg3 < 0.0) {
                 var_v1->unk_006 = -1;
             } else {
@@ -99,7 +99,7 @@ void ParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 
     }
 }
 
-void CalcRotatedOffsetX(f32 arg0, Vec3f* arg1, f32 arg2) {
+void OwnerAnchoredFourStream_Update(f32 arg0, Vec3f* arg1, f32 arg2) {
     UNUSED MtxF sp70;
     MtxF sp30;
     UNUSED s32 pad;
@@ -108,7 +108,7 @@ void CalcRotatedOffsetX(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void ParticleSystem_UpdateEmitter(unk_D_843ACA10* arg0) {
+void OwnerAnchoredFourStream_UpdateNodeChain(unk_D_843ACA10* arg0) {
     s32 i;
     unk_D_843ACA10_01C* var_s0 = &arg0->unk_01C[0];
 
@@ -137,7 +137,7 @@ void ParticleSystem_UpdateEmitter(unk_D_843ACA10* arg0) {
                 }
             }
 
-            ParticleNode_SetPosition(arg0->unk_018, var_s0->unk_0C);
+            BattleAnim_SetParticlePosition(arg0->unk_018, var_s0->unk_0C);
 
             var_s0->unk_04 += 2.0;
             if (arg0->unk_00C < var_s0->unk_04) {
@@ -158,7 +158,7 @@ void ParticleSystem_UpdateEmitter(unk_D_843ACA10* arg0) {
     }
 }
 
-s32 ParticleSystem_TickAll(void) {
+s32 OwnerAnchoredFourStream_IsComplete(void) {
     s32 i;
     unk_D_843ACA10* var_s0 = &gParticleSystems[0];
 
@@ -168,7 +168,7 @@ s32 ParticleSystem_TickAll(void) {
             if (var_s0->unk_004 < var_s0->unk_002) {
                 var_s0->unk_000 = 0;
             } else {
-                ParticleSystem_UpdateEmitter(var_s0);
+                OwnerAnchoredFourStream_UpdateNodeChain(var_s0);
             }
         }
     }
@@ -176,7 +176,7 @@ s32 ParticleSystem_TickAll(void) {
     return 0;
 }
 
-Gfx* ParticleSystem_RenderAll(Gfx* arg0) {
+Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
@@ -195,7 +195,7 @@ Gfx* ParticleSystem_RenderAll(Gfx* arg0) {
         if (var_s5->unk_000 == 1) {
             temp_s0 = &var_s5->unk_01C[0];
             if (temp_s0->unk_0C.y > 0.0f) {
-                temp_v0 = GfxAlloc(sizeof(Mtx) * 1);
+                temp_v0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
                 guTranslate(temp_v0, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
                 guRotateRPY(&sp100, (temp_s0->unk_08 * -360.0f * var_s5->unk_006) / 6.2831854820251465,
                             0x5A - (var_s5->unk_006 * 0x5A), 0.0f);
@@ -208,11 +208,11 @@ Gfx* ParticleSystem_RenderAll(Gfx* arg0) {
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
-            var_s5->unk_014 = GfxAlloc(sizeof(Vtx) * 30);
+            var_s5->unk_014 = Gfx_AllocDisplayList(sizeof(Vtx) * 30);
 
             var_s0 = var_s5->unk_014;
             for (j = 0; j < 15; j++) {
-                CalcRotatedOffsetX(temp_s0->unk_08, &sp154, temp_s0->unk_04);
+                OwnerAnchoredFourStream_Update(temp_s0->unk_08, &sp154, temp_s0->unk_04);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -228,7 +228,7 @@ Gfx* ParticleSystem_RenderAll(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->unk_00;
                 var_s0++;
 
-                CalcRotatedOffsetX(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
+                OwnerAnchoredFourStream_Update(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {

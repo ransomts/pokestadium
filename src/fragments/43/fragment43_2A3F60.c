@@ -74,15 +74,15 @@ static s16 D_83402EAC[] = {
     0,
 };
 
-void MenuPanel_DrawYesNo(MenuPanelInfo* arg0, s16 arg1) {
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
+void Gallery_DrawYesNoOptions(MenuPanelInfo* arg0, s16 arg1) {
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
     if (arg1 == 0) {
-        Text_Print(arg0->unk_00 + 0x18, arg0->unk_02 + 0x14, Text_GetMessageString_Bank1A(0x29));
+        Font_Printf(arg0->unk_00 + 0x18, arg0->unk_02 + 0x14, Gallery_GetCommonUiString(0x29));
     } else {
-        Text_Print(arg0->unk_00 + 0x39, arg0->unk_02 + 0x14, Text_GetMessageString_Bank1A(0x2A));
+        Font_Printf(arg0->unk_00 + 0x39, arg0->unk_02 + 0x14, Gallery_GetCommonUiString(0x2A));
     }
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
 void Gallery_DrawSaveOptions(MenuPanelInfo* arg0) {
@@ -90,33 +90,33 @@ void Gallery_DrawSaveOptions(MenuPanelInfo* arg0) {
     s32 i;
     s32 tmp;
 
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
-    temp_v0 = Text_GetMessageString_Bank2C(0x2A);
-    tmp = (arg0->unk_04 - MeasureTextWidth(0, 0, temp_v0)) / 2;
-    Text_Print(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, temp_v0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
+    temp_v0 = Gallery_GetUiString(0x2A);
+    tmp = (arg0->unk_04 - Font_MeasureTextExtent(0, 0, temp_v0)) / 2;
+    Font_Printf(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, temp_v0);
 
     for (i = 0; i < arg0->unk_08; i++) {
-        Text_SetFont(0x10, 0);
-        temp_v0 = Text_GetMessageString_Bank2C(D_83402E9C[i]);
+        Font_SetActive(0x10, 0);
+        temp_v0 = Gallery_GetUiString(D_83402E9C[i]);
         if (i == D_83407C0A) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         }
 
-        Text_Print(arg0->unk_00 + 0x3C, D_83402EA4[i] + arg0->unk_02 + 0x40, temp_v0);
+        Font_Printf(arg0->unk_00 + 0x3C, D_83402EA4[i] + arg0->unk_02 + 0x40, temp_v0);
 
         if (i == 1) {
-            Text_SetFont(8, 0);
-            Text_Print(arg0->unk_00 + 0x3C, D_83402EA4[i] + arg0->unk_02 + 0x58, Text_GetMessageString_Bank2C(0x36));
+            Font_SetActive(8, 0);
+            Font_Printf(arg0->unk_00 + 0x3C, D_83402EA4[i] + arg0->unk_02 + 0x58, Gallery_GetUiString(0x36));
         }
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 
     if (D_83407C0A >= 0) {
-        AnimateIconOffset(arg0->unk_00 + 0x10, D_83402EA4[D_83407C0A] + arg0->unk_02 + 0x48);
+        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, D_83402EA4[D_83407C0A] + arg0->unk_02 + 0x48);
     }
 }
 
@@ -125,45 +125,45 @@ void Gallery_DrawDeleteOptions(MenuPanelInfo* arg0) {
     s32 tmp;
     char* temp_v0;
 
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
-    temp_v0 = Text_GetMessageString_Bank2C(0x2E);
-    tmp = (arg0->unk_04 - MeasureTextWidth(0, 0, temp_v0)) / 2;
-    Text_Print(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, temp_v0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
+    temp_v0 = Gallery_GetUiString(0x2E);
+    tmp = (arg0->unk_04 - Font_MeasureTextExtent(0, 0, temp_v0)) / 2;
+    Font_Printf(arg0->unk_00 + tmp, arg0->unk_02 + 0x14, temp_v0);
 
     for (i = 0; i < arg0->unk_08; i++) {
-        Text_SetFont(0x10, 0);
-        temp_v0 = Text_GetMessageString_Bank2C(D_83402EAC[i]);
+        Font_SetActive(0x10, 0);
+        temp_v0 = Gallery_GetUiString(D_83402EAC[i]);
         if (i == D_83407C0A) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         }
-        Text_Print(arg0->unk_00 + 0x3C, arg0->unk_02 + (i * 0x22) + 0x40, temp_v0);
+        Font_Printf(arg0->unk_00 + 0x3C, arg0->unk_02 + (i * 0x22) + 0x40, temp_v0);
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 
     if (D_83407C0A >= 0) {
-        AnimateIconOffset(arg0->unk_00 + 0x10, arg0->unk_02 + (D_83407C0A * 0x22) + 0x48);
+        Ui_DrawAnimatedTextureMarker(arg0->unk_00 + 0x10, arg0->unk_02 + (D_83407C0A * 0x22) + 0x48);
     }
 }
 
 void Gallery_DrawMessagePrompt(MenuPanelInfo* arg0) {
     UNUSED s32 pad;
-    s32 sp18 = (0xC8 - MeasureTextWidth(0x10, 0, Text_GetMessageString_Bank2C(0x41))) / 2;
+    s32 sp18 = (0xC8 - Font_MeasureTextExtent(0x10, 0, Gallery_GetUiString(0x41))) / 2;
 
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
-    Text_Print(arg0->unk_00 + sp18, arg0->unk_02 + 0x14, Text_GetMessageString_Bank2C(0x41));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
+    Font_Printf(arg0->unk_00 + sp18, arg0->unk_02 + 0x14, Gallery_GetUiString(0x41));
+    Font_EndTexturedTextRendering();
 }
 
-void SnapSelect_SetupDisplay(void) {
+void Gallery_ResetConfirmPrompt(void) {
     D_83402E40 = 0;
 }
 
-void SnapSelect_UpdateUIState(UNUSED s32 arg0) {
+void Gallery_DrawConfirmPrompt(UNUSED s32 arg0) {
     s16 var_a3;
     MenuPanelInfo* temp_s0;
     s16 tmp;
@@ -177,17 +177,17 @@ void SnapSelect_UpdateUIState(UNUSED s32 arg0) {
             }
             tmp = temp_s0->unk_02 + ((temp_s0->unk_06 - var_a3) / 2);
 
-            DrawPanel(temp_s0->unk_00, tmp, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
+            Ui_DrawBorderedPanel(temp_s0->unk_00, tmp, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
         } else {
-            DrawPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
+            Ui_DrawBorderedPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
 
             switch (D_83407C00) {
                 case 0:
-                    MenuPanel_DrawYesNo(temp_s0, 0);
+                    Gallery_DrawYesNoOptions(temp_s0, 0);
                     break;
 
                 case 1:
-                    MenuPanel_DrawYesNo(temp_s0, 1);
+                    Gallery_DrawYesNoOptions(temp_s0, 1);
                     break;
 
                 case 2:
@@ -235,35 +235,35 @@ void Gallery_UpdateConfirmPromptInput(void) {
             }
 
             if (tmpA != D_83407C0A) {
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
             }
         }
 
         if (D_83407C04->buttonPressed & 0x8000) {
             if (temp_a3 == NULL) {
-                PlaySoundEffect(2);
+                Audio_PlaySoundEffectById(2);
             } else {
                 switch (temp_a3[D_83407C0A]) {
                     case 1:
-                        PlaySoundEffect(3);
+                        Audio_PlaySoundEffectById(3);
                         break;
 
                     case 2:
-                        PlaySoundEffect(2);
+                        Audio_PlaySoundEffectById(2);
                         break;
 
                     case 3:
-                        PlaySoundEffect(0x1D);
+                        Audio_PlaySoundEffectById(0x1D);
                         break;
 
                     case 4:
-                        PlaySoundEffect(0x21);
+                        Audio_PlaySoundEffectById(0x21);
                         break;
                 }
             }
             D_83402E40 = 3;
         } else if (D_83407C04->buttonPressed & 0x4000) {
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
             D_83407C0A = -2;
             D_83402E40 = 3;
         }
@@ -287,7 +287,7 @@ void Gallery_AdvanceConfirmPromptClose(void) {
     }
 }
 
-s32 Menu_IsExitPressed(void) {
+s32 Gallery_UpdateConfirmPrompt(void) {
     s32 sp1C = 0;
 
     switch (D_83402E40) {
@@ -309,9 +309,9 @@ s32 Menu_IsExitPressed(void) {
     return sp1C;
 }
 
-s32 Menu_SetStep(s16 arg0, Controller* arg1) {
+s32 Gallery_OpenConfirmPrompt(s16 arg0, Controller* arg1) {
     if (D_83402E40 == 0) {
-        PlaySoundEffect(4);
+        Audio_PlaySoundEffectById(4);
         D_83407C00 = arg0;
         D_83407C0A = D_83402E4C[arg0].unk_09;
         D_83407C08 = 0;
@@ -322,7 +322,7 @@ s32 Menu_SetStep(s16 arg0, Controller* arg1) {
     return 0;
 }
 
-s32 Menu_ExitToGallery(s16 arg0) {
+s32 Gallery_RequestCloseConfirmPrompt(s16 arg0) {
     if ((D_83402E40 == 2) && (arg0 == D_83407C00)) {
         D_83407C0A = -1;
         D_83402E40 = 3;
@@ -331,7 +331,7 @@ s32 Menu_ExitToGallery(s16 arg0) {
     return 0;
 }
 
-s16 SnapSelect_GetResultCode(s16 arg0) {
+s16 Gallery_GetConfirmPromptResult(s16 arg0) {
     if ((D_83402E40 == 4) && (arg0 == D_83407C00)) {
         D_83402E40 = 0;
         return D_83407C0A;

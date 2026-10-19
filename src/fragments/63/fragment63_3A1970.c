@@ -112,74 +112,74 @@ static u32 gBarGeoLayoutSmall[] = {
     0x05000000, 0x22050000, gBarDisplayListSmall, 0x06000000, 0x01000000,
 };
 
-void BarIdleCallback(BarState* arg0) {
+void BattlePrep_TrophyModelIdle(BarState* arg0) {
 }
 
-void BarGrowStep(BarState* arg0) {
+void BattlePrep_TrophyModelGrow(BarState* arg0) {
     arg0->unk_01++;
     if (arg0->unk_01 == 8) {
         arg0->unk_00 = 0;
     }
-    Vec3f_Set(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
 }
 
-void BarShrinkStep(BarState* arg0) {
+void BattlePrep_TrophyModelShrink(BarState* arg0) {
     arg0->unk_01--;
     if (arg0->unk_01 == 0) {
         arg0->unk_00 = 0;
-        GraphNode_ClearCallback(arg0->unk_04);
+        ModelRenderer_ClearDisplayObject(arg0->unk_04);
     } else {
-        Vec3f_Set(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_030, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f, arg0->unk_01 * 0.125f);
     }
 }
 
-void BarUpdateCallback(BarState* arg0) {
+void BattlePrep_UpdateTrophyModel(BarState* arg0) {
     switch ((s8)arg0->unk_00) {
         case 1:
-            BarIdleCallback(arg0);
+            BattlePrep_TrophyModelIdle(arg0);
             break;
 
         case 2:
-            BarGrowStep(arg0);
+            BattlePrep_TrophyModelGrow(arg0);
             break;
 
         case 3:
-            BarShrinkStep(arg0);
+            BattlePrep_TrophyModelShrink(arg0);
             break;
     }
 }
 
-void BarInit(BarState* arg0, Fragment2_1GraphNode* arg1) {
+void BattlePrep_StartTrophyModelGrow(BarState* arg0, Fragment2_1GraphNode* arg1) {
     arg0->unk_04 = arg1;
     arg0->unk_01 = 0;
     arg0->unk_00 = 2;
-    GraphNode_InitChild(arg1, 1, 0, arg0->unk_08);
+    Model_InitDisplayObject(arg1, 1, 0, arg0->unk_08);
     arg0->unk_04->unk_000.unk_14 = arg0;
     if (arg0->unk_02 == 0) {
-        Vec3f_Set(&arg0->unk_04->unk_024, 32.0f, 26.0f, -288.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_024, 32.0f, 26.0f, -288.0f);
     } else {
-        Vec3f_Set(&arg0->unk_04->unk_024, -96.0f, 80.0f, -288.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_024, -96.0f, 80.0f, -288.0f);
     }
-    Vec3f_Set(&arg0->unk_04->unk_030, 0.1f, 0.1f, 0.1f);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_04->unk_030, 0.1f, 0.1f, 0.1f);
 }
 
-void BarStartShrink(BarState* arg0) {
+void BattlePrep_StartTrophyModelShrink(BarState* arg0) {
     arg0->unk_01 = 8;
     arg0->unk_00 = 3;
 }
 
-void BarCreate(BarState* arg0, u8 arg1) {
+void BattlePrep_InitTrophyModel(BarState* arg0, u8 arg1) {
     MemoryBlock* sp2C;
 
     arg0->unk_00 = 0;
     arg0->unk_01 = 0;
     arg0->unk_02 = arg1;
 
-    sp2C = state_pool_try_init(main_pool_get_available(), 0);
+    sp2C = MainPool_AllocState(main_pool_get_available(), 0);
     if (arg1 == 0) {
         arg0->unk_08 = process_geo_layout(sp2C, gBarGeoLayoutLarge);
     } else {
         arg0->unk_08 = process_geo_layout(sp2C, gBarGeoLayoutSmall);
     }
-    mem_pool_resize_block(sp2C);
+    MainPool_FinalizeAllocation(sp2C);
 }

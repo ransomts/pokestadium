@@ -41,27 +41,27 @@ extern Gfx gHealthBarDL[];
 extern Gfx gHealthBarQuadDL[];
 extern Gfx gDamageOverlayDL[];
 
-void UpdateHealthBarSegmentOffsets(void);
-u16 IsHealthSegmentMatch(u8 arg0);
-void Hud_SetAnimationState(HudState* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4);
-void Hud_InitDefaultStates(void);
-void ResultScreen_ResetAnim(void);
-void GameState_UpdateAnim(ResultGameState* arg0);
-void Hud_UpdateAnimation(void);
-void Hud_HandlePlayerElimination(u8 arg0);
-void Hud_RenderHealthBars(UNUSED s32 arg0);
-void ResultScreen_Update(s32 arg0);
-void ResultScreen_HandleInput(void);
-void ResultScreen_DrawUI(s32 arg0);
+void DrowzeeGame_UpdatePlayerTimingWindows(void);
+u16 DrowzeeGame_IsWindowMatch(u8 arg0);
+void DrowzeeGame_SetPlayerState(HudState* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4);
+void DrowzeeGame_InitPlayerSlots(void);
+void DrowzeeGame_LoopDrowzeeIdleAnim(void);
+void DrowzeeGame_AdvanceBreathPhase(ResultGameState* arg0);
+void DrowzeeGame_UpdatePlayerAnimations(void);
+void DrowzeeGame_ProcessElimination(u8 arg0);
+void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0);
+void DrowzeeGame_UpdateRoundTick(s32 arg0);
+void DrowzeeGame_JudgePlayerTiming(void);
+void DrowzeeGame_DrawTutorialScreen(s32 arg0);
 void DrowzeeGame_DrawFrame(s32 arg0);
-void ResultScreen_IntroSequence(void);
+void DrowzeeGame_WaitForStart(void);
 void DrowzeeGame_MainLoop(void);
-void ResultScreen_OutroSequence(void);
-void ResultScreen_SetupCamera(void);
-void Hud_CreateBillboards(void);
-void ResultScreen_InitScene(void);
-void ResultScreen_Main(UNUSED s32 arg0, UNUSED s32 arg1);
+void DrowzeeGame_ShowResultText(void);
+void DrowzeeGame_InitCamera(void);
+void DrowzeeGame_InitPlayerOverlays(void);
+void DrowzeeGame_LoadAssets(void);
+void DrowzeeGame_Main(UNUSED s32 arg0, UNUSED s32 arg1);
 
-s8 GetHealthBarSegmentOffset(u8 arg0, s32 arg1);
+s8 DrowzeeGame_ComputeAITimingBias(u8 arg0, s32 arg1);
 
 #endif // _FRAGMENT10_H_

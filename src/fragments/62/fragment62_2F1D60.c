@@ -4,26 +4,26 @@
 #include "src/334D0.h"
 #include "src/F420.h"
 
-void TriggerPokemonAnimAndAction(unk_BattlePlayerEntity* arg0) {
-    Anim_SetChannelBase(&arg0->unk_728.unk_000, arg0->unk_728.unk_180);
-    GraphNode_TriggerAction(&arg0->unk_728.unk_000, arg0->unk_728.unk_17C);
+void BattleScene_TriggerOwnerModelAnimation(unk_BattlePlayerEntity* arg0) {
+    ModelAnim_SetFrame(&arg0->unk_728.unk_000, arg0->unk_728.unk_180);
+    ModelAnim_SetAnimation(&arg0->unk_728.unk_000, arg0->unk_728.unk_17C);
     BattleScene_SetOwnerPoseFlag(arg0->unk_728.unk_168);
 }
 
-void ClearPokemonActiveFlag(unk_BattlePlayerEntity* arg0) {
+void BattleScene_ClearParticipantOwnerActiveFlag(unk_BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_170 = 0;
 }
 
-void SetPokemonActiveFlag(unk_BattlePlayerEntity* arg0) {
+void BattleScene_SetParticipantOwnerActiveFlag(unk_BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_170 = 1;
 }
 
-void ClearAllPokemonActiveFlags(void) {
+void BattleScene_ClearBothOwnerActiveFlags(void) {
     sActivePokemon[0]->unk_728.unk_170 = 0;
     sActivePokemon[1]->unk_728.unk_170 = 0;
 }
 
-void SetAllPokemonActiveFlags(void) {
+void BattleScene_SetBothOwnerActiveFlags(void) {
     sActivePokemon[0]->unk_728.unk_170 = 1;
     sActivePokemon[1]->unk_728.unk_170 = 1;
 }
@@ -32,7 +32,7 @@ void BattleScene_SetOwnerPoseFlag(unk_D_84390010_728_0168* arg0) {
     arg0->unk_00.unk_01 |= 0x10;
 }
 
-void LoadPokemonModelParams(unk_BattlePlayerEntity* arg0) {
+void BattleScene_LoadOwnerCameraFramingConstants(unk_BattlePlayerEntity* arg0) {
     s32 var_v0;
 
     if (arg0 == sActivePokemon[0]) {
@@ -52,27 +52,27 @@ void LoadPokemonModelParams(unk_BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_168->unk_2C = gEntityInitParams[var_v0].unk_08;
 }
 
-void SetupPokemonForBattle(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    if (gBattleState.unk_00->unk_1C == 1) {
-        SetAllPokemonActiveFlags();
+void BattleScene_SetupOwnerCameraFraming(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+    if (gBattleScene.unk_00->unk_1C == 1) {
+        BattleScene_SetBothOwnerActiveFlags();
     } else {
-        ClearAllPokemonActiveFlags();
+        BattleScene_ClearBothOwnerActiveFlags();
     }
-    LoadPokemonModelParams(arg0);
-    LoadPokemonModelParams(arg1);
+    BattleScene_LoadOwnerCameraFramingConstants(arg0);
+    BattleScene_LoadOwnerCameraFramingConstants(arg1);
 }
 
 void func_84307630(void) {
 }
 
-void UpdatePokemonTransform(unk_BattlePlayerEntity* arg0) {
+void BattleScene_ApplyOwnerCameraFraming(unk_BattlePlayerEntity* arg0) {
     s32 temp_v0;
     unk_D_84390010_728_0168* sp30;
     f32 tmp;
     f32 tmp2;
 
     sp30 = arg0->unk_728.unk_168;
-    temp_v0 = IsPrimaryEntity(arg0);
+    temp_v0 = BattleScene_GetParticipantSideIndex(arg0);
 
     arg0->unk_728.unk_184 = gAnimDataSetB[temp_v0]->unk_0C;
     if (gAnimDataSetB[temp_v0]->unk_10 == 0xFF) {
@@ -89,23 +89,23 @@ void UpdatePokemonTransform(unk_BattlePlayerEntity* arg0) {
     tmp2 = gAnimDataSetB[temp_v0]->unk_00.y;
     arg0->unk_728.unk_194 = tmp2;
 
-    SetCameraPositionAndView(sp30, arg0->unk_728.unk_000.unk_024.x + arg0->unk_728.unk_190, arg0->unk_728.unk_000.unk_024.y + tmp2,
+    BattleScene_SetCameraAtAndEyeFromAngles(sp30, arg0->unk_728.unk_000.unk_024.x + arg0->unk_728.unk_190, arg0->unk_728.unk_000.unk_024.y + tmp2,
                   arg0->unk_728.unk_000.unk_024.z, arg0->unk_728.unk_188, arg0->unk_728.unk_184, arg0->unk_728.unk_186);
 }
 
-void RefreshPokemonTransform(unk_BattlePlayerEntity* arg0) {
-    UpdatePokemonTransform(arg0);
+void BattleScene_TickOwnerCameraFraming(unk_BattlePlayerEntity* arg0) {
+    BattleScene_ApplyOwnerCameraFraming(arg0);
 }
 
-void AssignPokemonModels(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, CameraStruct* arg2, unk_BattlePlayerEntity* arg3) {
+void BattleScene_InitializeOwnerCameraFraming(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, CameraStruct* arg2, unk_BattlePlayerEntity* arg3) {
     arg1->unk_728.unk_168 = arg0;
     arg3->unk_728.unk_168 = arg2;
-    SetupPokemonForBattle(arg1, arg3);
-    RefreshPokemonTransform(arg1);
-    RefreshPokemonTransform(arg3);
+    BattleScene_SetupOwnerCameraFraming(arg1, arg3);
+    BattleScene_TickOwnerCameraFraming(arg1);
+    BattleScene_TickOwnerCameraFraming(arg3);
 }
 
-void UpdatePokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void BattleScene_TickOwnerSlideIn(unk_BattlePlayerEntity* arg0, s32 arg1) {
     s16 var_a0;
     unk_D_84390010_728_0168* temp_v0;
 
@@ -114,20 +114,20 @@ void UpdatePokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
 
     if (arg0->unk_728.unk_178 == 1) {
         if ((arg0->unk_728.unk_168->unk_1C == -0x48) && !(arg0->animationState.unk_34 & 0x800)) {
-            TriggerPokemonAnimAndAction(arg0);
+            BattleScene_TriggerOwnerModelAnimation(arg0);
         }
 
         if ((ModelRenderer_IsReady(0) != 0) && (arg0->unk_728.unk_18C == 0)) {
             arg0->unk_728.unk_18C = 2;
             ModelRenderer_OnSlotReady(0);
         }
-        arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x17, arg1, arg1);
+        arg0->unk_728.unk_168->unk_1C = Math_StepToS32(arg0->unk_728.unk_168->unk_1C, 0x17, arg1, arg1);
     } else {
         if ((arg0->unk_728.unk_168->unk_1C == 0x15F) && !(arg0->animationState.unk_34 & 0x800)) {
-            TriggerPokemonAnimAndAction(arg0);
+            BattleScene_TriggerOwnerModelAnimation(arg0);
         }
 
-        arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x103, arg1, arg1);
+        arg0->unk_728.unk_168->unk_1C = Math_StepToS32(arg0->unk_728.unk_168->unk_1C, 0x103, arg1, arg1);
 
         if ((ModelRenderer_IsReady(1) != 0) && (arg0->unk_728.unk_18C == 0)) {
             arg0->unk_728.unk_18C = 2;
@@ -136,17 +136,17 @@ void UpdatePokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
     }
 }
 
-void ResetPokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void BattleScene_TickOwnerSlideOut(unk_BattlePlayerEntity* arg0, s32 arg1) {
     if (arg0->unk_728.unk_178 == 1) {
         arg0->unk_728.unk_18C = 0;
-        arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, -0x48, arg1, arg1);
+        arg0->unk_728.unk_168->unk_1C = Math_StepToS32(arg0->unk_728.unk_168->unk_1C, -0x48, arg1, arg1);
         if (arg0->unk_728.unk_168->unk_1C == -0x48) {
             arg0->unk_728.unk_168->unk_00.unk_01 &= ~1;
             arg0->unk_728.unk_000.unk_000.unk_01 &= ~1;
         }
     } else {
         arg0->unk_728.unk_18C = 0;
-        arg0->unk_728.unk_168->unk_1C = Math_ApproachS32(arg0->unk_728.unk_168->unk_1C, 0x15F, arg1, arg1);
+        arg0->unk_728.unk_168->unk_1C = Math_StepToS32(arg0->unk_728.unk_168->unk_1C, 0x15F, arg1, arg1);
         if (arg0->unk_728.unk_168->unk_1C == 0x15F) {
             arg0->unk_728.unk_168->unk_00.unk_01 &= ~1;
             arg0->unk_728.unk_000.unk_000.unk_01 &= ~1;
@@ -154,26 +154,26 @@ void ResetPokemonTurn(unk_BattlePlayerEntity* arg0, s32 arg1) {
     }
 }
 
-void ProcessPokemonTurnState(unk_BattlePlayerEntity* arg0) {
+void BattleScene_TickOwnerSlideAnimation(unk_BattlePlayerEntity* arg0) {
     switch (arg0->unk_728.unk_170) {
         case 0:
-            ResetPokemonTurn(arg0, 9);
+            BattleScene_TickOwnerSlideOut(arg0, 9);
             break;
 
         case 1:
-            UpdatePokemonTurn(arg0, 9);
+            BattleScene_TickOwnerSlideIn(arg0, 9);
             break;
     }
 }
 
-void UpdatePokemonTurnIfBattleActive(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    if (gBattleContext.unk_0000 != 0x10) {
-        ProcessPokemonTurnState(arg0);
-        ProcessPokemonTurnState(arg1);
+void BattleScene_TickBothOwnerSlideAnimations(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+    if (gSessionContext.unk_0000 != 0x10) {
+        BattleScene_TickOwnerSlideAnimation(arg0);
+        BattleScene_TickOwnerSlideAnimation(arg1);
     }
 }
 
-s32 HandleBattlePhase(s32 arg0, CameraStruct* arg1, CameraStruct* arg2) {
+s32 BattleScene_DispatchOwnerCameraLifecycle(s32 arg0, CameraStruct* arg1, CameraStruct* arg2) {
     switch (arg0) {
         case 0:
             func_84307630();
@@ -181,11 +181,11 @@ s32 HandleBattlePhase(s32 arg0, CameraStruct* arg1, CameraStruct* arg2) {
 
         case 1:
         case 2:
-            UpdatePokemonTurnIfBattleActive(sActivePokemon[0], sActivePokemon[1]);
+            BattleScene_TickBothOwnerSlideAnimations(sActivePokemon[0], sActivePokemon[1]);
             break;
 
         case 3:
-            AssignPokemonModels(arg1, sActivePokemon[0], arg2, sActivePokemon[1]);
+            BattleScene_InitializeOwnerCameraFraming(arg1, sActivePokemon[0], arg2, sActivePokemon[1]);
             break;
     }
     return 0;

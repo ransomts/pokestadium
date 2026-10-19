@@ -99,16 +99,16 @@ u32 gStageDisplayListCommands[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,    0x00000000, 0x014000F0,  0x0000000F, 0x00000000,  0x00000000,
     0x05000000, 0x0D000000, 0x05000000,    0x07000000, &gStageFragmentState, 0x14000000, 0x002D0019,  0xFFFFFF28,
     0x16646464, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &w27, 0x06000000,
+    0x00640000, 0x08000000, Credits_BackgroundNodePostCallback, 0x00000000, 0x05000000,  0x07000000, &w27, 0x06000000,
     0x06000000, 0x0F000003, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &gStageOverlayNode, 0x06000000,
+    0x00640000, 0x08000000, Credits_BackgroundNodePostCallback, 0x00000000, 0x05000000,  0x07000000, &gStageOverlayNode, 0x06000000,
     0x06000000, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, NodeColorSetter, 0x00000000, 0x05000000,  0x07000000, &gStageForegroundNode, 0x06000000,
+    0x00640000, 0x08000000, Credits_BackgroundNodePostCallback, 0x00000000, 0x05000000,  0x07000000, &gStageForegroundNode, 0x06000000,
     0x06000000, 0x0F000003, 0x05000000,    0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000,  0x06000000,
     0x06000000, 0x01000000,
 };
 
-s32 NodeColorSetter(s32 arg0, GraphNode* arg1) {
+s32 Credits_BackgroundNodePostCallback(s32 arg0, GraphNode* arg1) {
     Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
     if (arg0 == 2) {
@@ -117,7 +117,7 @@ s32 NodeColorSetter(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void SetGlobalBackgroundColor(u8 r, u8 g, u8 b) {
+void Credits_SetBackgroundTint(u8 r, u8 g, u8 b) {
     u8 v = r & g & b;
 
     gGlobalBackgroundColor.r = r;
@@ -133,42 +133,42 @@ void SetGlobalBackgroundColor(u8 r, u8 g, u8 b) {
     }
 }
 
-void Stage_LoadResources(s8 arg0, u8 arg1) {
+void Credits_LoadBackgroundScene(s8 arg0, u8 arg1) {
     MemoryBlock* sp2C;
     FragmentEntry sp28;
     u32* temp_v0;
     unk_D_8690A610_018* temp_v0_4;
 
-    while (RspTaskYielded() == 0) {}
+    while (Display_IsFrameReady() == 0) {}
 
-    GraphNode_AllocInit(NULL, &w27);
-    GraphNode_AllocInit(NULL, &gStageOverlayNode);
-    GraphNode_AllocInit(NULL, &gStageForegroundNode);
+    GeoNode_CreateContainer(NULL, &w27);
+    GeoNode_CreateContainer(NULL, &gStageOverlayNode);
+    GeoNode_CreateContainer(NULL, &gStageForegroundNode);
 
     main_pool_pop_state('BACK');
 
     main_pool_push_state('BACK');
 
     sp28 = BinArchive_GetFile(gStageArchive, arg0);
-    sp2C = state_pool_try_init(main_pool_get_available(), 0);
+    sp2C = MainPool_AllocState(main_pool_get_available(), 0);
 
     temp_v0 = sp28(0, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(&w27, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AppendChild(&w27, process_geo_layout(sp2C, temp_v0));
     }
 
     temp_v0 = sp28(1, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(&gStageOverlayNode, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AppendChild(&gStageOverlayNode, process_geo_layout(sp2C, temp_v0));
     }
 
     temp_v0 = sp28(3, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(&gStageForegroundNode, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AppendChild(&gStageForegroundNode, process_geo_layout(sp2C, temp_v0));
     }
 
     gScreenFadeAlpha = sp28(2, 0);
-    mem_pool_resize_block(sp2C);
+    MainPool_FinalizeAllocation(sp2C);
 
     temp_v0_4 = sp28(4, 0);
     if (temp_v0_4 == NULL) {
@@ -181,7 +181,7 @@ void Stage_LoadResources(s8 arg0, u8 arg1) {
         gStageFragmentState.unk_00.unk_14 = 1;
     }
 
-    SetGlobalBackgroundColor(0xFF, 0xFF, 0xFF);
+    Credits_SetBackgroundTint(0xFF, 0xFF, 0xFF);
 
     if (arg1 < 6) {
         Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
@@ -189,9 +189,9 @@ void Stage_LoadResources(s8 arg0, u8 arg1) {
         Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
     } else if (arg1 < 0xF) {
         if (gCurrentPhaseIndex == 7) {
-            Camera_AdjustForStage(sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28, arg0, arg1);
+            Credits_InitCameraKeyframeBlend(sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28, arg0, arg1);
         } else {
-            Camera_AdjustForStage(sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
+            Credits_InitCameraKeyframeBlend(sSceneCamera, gStagePhases[gCurrentPhaseIndex].unk_02, arg0, arg1);
         }
     } else {
         sSceneCamera->unk_60.at.y = gStageCameraPositions[arg0][gCurrentSubStageId].unk_10;
@@ -199,29 +199,29 @@ void Stage_LoadResources(s8 arg0, u8 arg1) {
     }
 }
 
-void Credits_UpdateInputs(void) {
+void Credits_PollInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-void Camera_UpdateForPhase(void) {
+void Credits_UpdateCamera(void) {
     if (gCurrentSubStageId < 6) {
-        Camera_SetViewParameters(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
+        Camera_ComputeEyeFromAngles(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
     } else if (gCurrentSubStageId < 9) {
-        Camera_SetViewParameters(&gCreditsCameraPivot, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
-        Camera_SetViewParameters(&gCreditsCameraPivot, &sSceneCamera->unk_60.at, sCameraDistance + 500.0f, sCameraPitch, sCameraYaw);
+        Camera_ComputeEyeFromAngles(&gCreditsCameraPivot, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
+        Camera_ComputeEyeFromAngles(&gCreditsCameraPivot, &sSceneCamera->unk_60.at, sCameraDistance + 500.0f, sCameraPitch, sCameraYaw);
     }
 }
 
-void Credits_DrawFadeIn(void) {
+void Credits_DrawFadeOverlay(void) {
     u8 temp_v1_2;
 
     if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
         if (gCreditsShotTimer < 8) {
             temp_v1_2 = (s8)ROUND_MAX(((-(f32)gCreditsShotTimer / 8) + 1.0f) * 255.0f);
             if (temp_v1_2 != 0) {
-                Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
+                Gfx_FillRectWithDisplayState(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
             }
         } else {
             if ((gStagePhases[gCurrentPhaseIndex].unk_02 - 0x28) < gCreditsShotTimer) {
@@ -229,50 +229,50 @@ void Credits_DrawFadeIn(void) {
 
                 temp_v1_2 = (s32)ROUND_MAX((((gCreditsShotTimer - tmp) + 0x28) * 255.0f) / 40.0f);
                 if (temp_v1_2 != 0) {
-                    Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
+                    Gfx_FillRectWithDisplayState(0, 0, 0x140, 0xF0, 0, 0, 0, temp_v1_2);
                 }
             }
         }
     }
 }
 
-void Stage_HandleFadeAndTransition(u8 arg0) {
+void Credits_UpdateSceneTransition(u8 arg0) {
     if ((arg0 == 1) || (arg0 == 2)) {
-        Credits_DrawFadeIn();
+        Credits_DrawFadeOverlay();
         if ((gCurrentPhaseIndex != 0) || (gCreditsShotTimer >= 0xF0)) {
-            Stage_TriggerNextPhase();
+            Credits_DrawRoleList();
         }
     }
 }
 
-void Credits_RenderFrame(u8 arg0) {
-    Stage_BeginDisplayList();
+void Credits_DrawFrame(u8 arg0) {
+    BgStage_DrawFrame();
 
     if ((gScreenFadeAlpha == -1) || (gScreenFadeAlpha == 0)) {
-        Gfx_FillScreen(&gDisplayListHead, 1);
+        GfxImage_FillCurrent(&gDisplayListHead, 1);
     } else if (gScreenFadeAlpha < 0x10000) {
-        Gfx_FillScreen(&gDisplayListHead, gScreenFadeAlpha);
+        GfxImage_FillCurrent(&gDisplayListHead, gScreenFadeAlpha);
     } else {
-        Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
+        GfxImage_FillCurrent(&gDisplayListHead, 0xA6BF);
     }
 
     if (arg0 == 0) {
-        Stage_DrawBorderFade(0);
+        Credits_DrawContinuePrompt(0);
     } else {
-        Graph_SetTextureState(sSceneGraphRoot);
-        Stage_HandleFadeAndTransition(arg0);
+        Geo_RenderRootNode(sSceneGraphRoot);
+        Credits_UpdateSceneTransition(arg0);
     }
 
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
-void Stage_IntroFadeSequence(void) {
+void Credits_IntroLoop(void) {
     u8 i;
     u8 j;
     u8 sp35;
     s32 var_s1;
 
-    Stage_SetFadeColor(0x1E);
+    Audio_FadeOutAll(0x1E);
 
     for (i = 0; i < 3; i++) {
         var_s1 = sp35;
@@ -280,7 +280,7 @@ void Stage_IntroFadeSequence(void) {
         switch (i) {
             case 0:
                 sp35 = 0x1E;
-                Stage_FadeIn(sp35);
+                StageFade_StartFromOpaque(sp35);
                 var_s1 = 0x1E;
                 break;
 
@@ -291,7 +291,7 @@ void Stage_IntroFadeSequence(void) {
 
             case 2:
                 sp35 = 0x78;
-                Stage_FadeOut(sp35);
+                StageFade_StartFromTransparent(sp35);
                 var_s1 = sp35;
                 break;
 
@@ -301,39 +301,39 @@ void Stage_IntroFadeSequence(void) {
         }
 
         for (j = 0; j < var_s1; j++) {
-            Credits_UpdateInputs();
-            Credits_RenderFrame(0);
+            Credits_PollInput();
+            Credits_DrawFrame(0);
         }
     }
 }
 
-void Stage_MainLoop(s32 arg0) {
+void Credits_MainLoop(s32 arg0) {
     static u8 D_86A026F8 = 0;
 
     s32 var_s6 = 1;
 
-    Stage_AdvanceN(0x3C);
-    Stage_FadeIn(0xB4);
+    StageLoader_RunFrames(0x3C);
+    StageFade_StartFromOpaque(0xB4);
 
     if (arg0 != 0) {
-        ResultScreen_SetAnimation(0x42);
+        Audio_StartMusicTrack(0x42);
     } else {
-        ResultScreen_SetAnimation(0x43);
+        Audio_StartMusicTrack(0x43);
     }
 
-    Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);
-    Stage_LoadResources(gCurrentStageId, gCurrentSubStageId);
+    Credits_SelectNextScene(&gCurrentStageId, &gCurrentSubStageId);
+    Credits_LoadBackgroundScene(gCurrentStageId, gCurrentSubStageId);
 
     while (var_s6 != 0) {
         Stage_UpdateLogic();
-        Timer_UpdateCounters();
+        Particle_UpdateFrameCounters();
 
         if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
             if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
                 if (gCurrentSubStageId < 9) {
-                    Stage_UpdateSubPhase();
+                    Credits_StepCameraYawBlend();
                 } else {
-                    Stage_HandleFinalPhase();
+                    Credits_StepCameraKeyframeBlend();
                 }
             }
 
@@ -347,15 +347,15 @@ void Stage_MainLoop(s32 arg0) {
                 gCreditsShotTimer = 0;
 
                 if (gStagePhases[gCurrentPhaseIndex].unk_00 != -1) {
-                    Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);
-                    Stage_LoadResources(gCurrentStageId, gCurrentSubStageId);
+                    Credits_SelectNextScene(&gCurrentStageId, &gCurrentSubStageId);
+                    Credits_LoadBackgroundScene(gCurrentStageId, gCurrentSubStageId);
                 } else {
                     gCurrentStageId = -1;
                     gScreenFadeAlpha = 0;
 
-                    GraphNode_AllocInit(NULL, &w27);
-                    GraphNode_AllocInit(NULL, &gStageOverlayNode);
-                    GraphNode_AllocInit(NULL, &gStageForegroundNode);
+                    GeoNode_CreateContainer(NULL, &w27);
+                    GeoNode_CreateContainer(NULL, &gStageOverlayNode);
+                    GeoNode_CreateContainer(NULL, &gStageForegroundNode);
 
                     gStageFragmentState.unk_00.unk_01 &= ~1;
                     if (gStagePhases[gCurrentPhaseIndex].unk_02 == 0) {
@@ -364,14 +364,14 @@ void Stage_MainLoop(s32 arg0) {
                 }
             } else if ((gCurrentPhaseIndex == 3) && (D_86A026F8 < 2) &&
                        (gCreditsShotTimer >= (((gStagePhases[gCurrentPhaseIndex].unk_02 * (D_86A026F8 + 1)) / 3) - 1))) {
-                Stage_SelectRandomStage(&gCurrentStageId, &gCurrentSubStageId);
-                Stage_LoadResources(gCurrentStageId, 0xFF);
+                Credits_SelectNextScene(&gCurrentStageId, &gCurrentSubStageId);
+                Credits_LoadBackgroundScene(gCurrentStageId, 0xFF);
                 D_86A026F8++;
             }
         }
 
-        Credits_UpdateInputs();
-        Camera_UpdateForPhase();
+        Credits_PollInput();
+        Credits_UpdateCamera();
 
         if (gBorderFadeCycleCount >= 0x2D1) {
             var_s6 = 0;
@@ -380,7 +380,7 @@ void Stage_MainLoop(s32 arg0) {
             var_s6 = 0;
         }
 
-        Credits_RenderFrame(1);
+        Credits_DrawFrame(1);
 
         if (gStagePhases[gCurrentPhaseIndex].unk_02 != 0) {
             gCreditsShotTimer += gPhaseDelta;
@@ -1399,19 +1399,19 @@ StageCameraConfig gStageCameraConfigs[29] = {
     },
 };
 
-void Stage_FadeOutAndAdvance(void) {
+void Credits_OutroLoop(void) {
     u8 i;
 
-    Audio_SetVolumeFadeAndDuration(1, 0x78);
-    Audio_SetVolumeFadeAndDuration(2, 0x78);
-    Stage_FadeOut(0x78);
+    Audio_FadeCategories(1, 0x78);
+    Audio_FadeCategories(2, 0x78);
+    StageFade_StartFromTransparent(0x78);
 
     for (i = 0; i < 120; i++) {
-        Credits_UpdateInputs();
-        Credits_RenderFrame(2);
+        Credits_PollInput();
+        Credits_DrawFrame(2);
     }
 
-    Stage_AdvanceN(0x3C);
+    StageLoader_RunFrames(0x3C);
 }
 
 void Credits_InitCamera(void) {
@@ -1422,7 +1422,7 @@ void Credits_InitCamera(void) {
 
     sSceneCamera->unk_24.near = 50.0f;
     sSceneCamera->unk_24.far = 6400.0f;
-    Camera_SetViewParameters(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
+    Camera_ComputeEyeFromAngles(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
 }
 
 void Credits_InitScene(s32 arg0) {
@@ -1430,15 +1430,15 @@ void Credits_InitScene(s32 arg0) {
     MemoryBlock* temp_v0;
 
     gStageArchive = ASSET_LOAD2(stadium_models, 1, 1);
-    ColorRectNode_Create(0, &gStageFragmentState, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
-    GraphNode_AllocInit(NULL, &w27);
-    GraphNode_AllocInit(NULL, &gStageOverlayNode);
-    GraphNode_AllocInit(NULL, &gStageForegroundNode);
-    SetGlobalBackgroundColor(0xFF, 0xFF, 0xFF);
-    sp2C = state_pool_try_init(main_pool_get_available(), 0);
+    GeoNode_CreateFog(0, &gStageFragmentState, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    GeoNode_CreateContainer(NULL, &w27);
+    GeoNode_CreateContainer(NULL, &gStageOverlayNode);
+    GeoNode_CreateContainer(NULL, &gStageForegroundNode);
+    Credits_SetBackgroundTint(0xFF, 0xFF, 0xFF);
+    sp2C = MainPool_AllocState(main_pool_get_available(), 0);
     sSceneGraphRoot = process_geo_layout(sp2C, &gStageDisplayListCommands);
-    mem_pool_resize_block(sp2C);
-    Graph_InitRoots();
+    MainPool_FinalizeAllocation(sp2C);
+    ModelRenderer_InitDisplayRoots();
     Credits_InitCamera();
     MessageSequence_Init(1, arg0, gStageCameraConfigs);
     gCurrentStageId = -1;
@@ -1446,27 +1446,27 @@ void Credits_InitScene(s32 arg0) {
     main_pool_push_state('BACK');
 }
 
-s32 Fragment16_Main(s32 arg0, s32 arg1) {
+s32 Credits_Main(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('ROLE');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 1, 1);
-    gStageTextObject = Text_Init(4, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 1, 1);
+    gStageTextObject = Font_Init(4, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, kids_club_game_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
     Credits_InitScene(arg1);
-    Stage_Set(sp24);
-    Stage_IntroFadeSequence();
-    Stage_MainLoop(arg1);
-    Stage_FadeOutAndAdvance();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    StageContext_Activate(sp24);
+    Credits_IntroLoop();
+    Credits_MainLoop(arg1);
+    Credits_OutroLoop();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('ROLE');
     // The unused labels below generate no code. They stand in for >= 7 file-level symbols the
@@ -1486,7 +1486,7 @@ lab7:
     return 0;
 }
 
-s32 ComputeGradientColors(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
+s32 Credits_InterpolateRoleColor(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
     u8 i;
     u8 j;
     u8 temp_fv1;
@@ -1501,7 +1501,7 @@ s32 ComputeGradientColors(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 arg3) {
     for (i = 0; i < 5; i++) {
         if (arg1 == gStageFadePalettes[i].unk_00) {
             for (j = 0; j < 4; j++) {
-                GfxColor_SetRGBA(&arg0[j], gStageFadePalettes[i].unk_03[j].r, gStageFadePalettes[i].unk_03[j].g, gStageFadePalettes[i].unk_03[j].b,
+                Color_SetRGBA(&arg0[j], gStageFadePalettes[i].unk_03[j].r, gStageFadePalettes[i].unk_03[j].g, gStageFadePalettes[i].unk_03[j].b,
                               gStageFadePalettes[i].unk_02);
             }
             break;
@@ -1542,12 +1542,12 @@ void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2) {
     u16 sp2C;
     MessageDecompressEntry* ptr;
 
-    sp2C = GetFragment16Constant();
-    MessageBank_Init();
-    sCreditsMessageBank = GetMessageBank(0x2D);
+    sp2C = Credits_GetRoleCount();
+    Text_InitStringTables();
+    sCreditsMessageBank = Text_GetStringTable(0x2D);
 
     for (i = 0, ptr = gMessageDecompressTable; i < sp2C; i++, ptr++) {
-        ptr->unk_04[0] = GetMessageString(NULL, 0, sCreditsMessageBank, i);
+        ptr->unk_04[0] = Text_GetString(NULL, 0, sCreditsMessageBank, i);
     }
 
     gPhaseDelta = arg0;
@@ -1573,7 +1573,7 @@ void Stage_UpdateLogic(void) {
     gPrevRspCounter = v0;
 }
 
-void Stage_TriggerNextPhase(void) {
+void Credits_DrawRoleList(void) {
     u8 var_a1;
     u8 var_s0;
     u8 var_s1;
@@ -1585,17 +1585,17 @@ void Stage_TriggerNextPhase(void) {
     StageCameraConfig sp4C;
 
     if (gStageLayoutPtr == NULL) {
-        Stage_DrawBorderFade(1);
+        Credits_DrawContinuePrompt(1);
         return;
     }
 
     var_s0 = 0;
     var_s1 = 0;
 
-    if (ComputeGradientColors(sp60, gStageLayoutPtr->unk_00, gStageLayoutPtr->unk_02, gStageLayoutPtr->unk_04) != 0) {
-        Text_ResetState();
-        Text_BeginRender();
-        Text_SetFont(4, 0);
+    if (Credits_InterpolateRoleColor(sp60, gStageLayoutPtr->unk_00, gStageLayoutPtr->unk_02, gStageLayoutPtr->unk_04) != 0) {
+        Font_BeginTranslucentTextRendering();
+        Font_EnableTwoCycleTexturing();
+        Font_SetActive(4, 0);
 
         var_s5 = 0;
 
@@ -1647,13 +1647,13 @@ void Stage_TriggerNextPhase(void) {
                 }
             }
 
-            Text_Print(0xA0 - (MeasureTextWidth(0, 0, ptr->unk_04[gUnusedTimer1]) / 2), (var_s11 * 4) >> 2,
+            Font_Printf(0xA0 - (Font_MeasureTextExtent(0, 0, ptr->unk_04[gUnusedTimer1]) / 2), (var_s11 * 4) >> 2,
                           ptr->unk_04[gUnusedTimer1]);
             var_s11 += 0x11;
         }
 
-        Text_EndRender();
-        Text_SetupDL();
+        Font_DisableTwoCycleTexturing();
+        Font_EndTexturedTextRendering();
     }
 
     gStageLayoutPtr->unk_00 = gStageLayoutPtr->unk_00 + gPhaseDelta;

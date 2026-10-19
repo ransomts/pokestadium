@@ -1654,7 +1654,7 @@ void Model_WriteVtxBuffer(StadiumModel* model, Vtx* vtxBuf) {
     }
 }
 
-Gfx* Model_DrawWithVertexBuffer(Gfx* gfx, StadiumModel* model, Vtx* vtxBuf) {
+Gfx* Model_Draw(Gfx* gfx, StadiumModel* model, Vtx* vtxBuf) {
     ModelSegment* segment;
 
     segment = Memmap_GetSegmentVaddr(model->modelSegment);

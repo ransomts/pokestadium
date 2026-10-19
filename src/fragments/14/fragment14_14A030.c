@@ -152,7 +152,7 @@ static s32 gSushiSpawnMode;
 static s16 gSushiTotalWeight;
 static s16 gSushiActiveCounts[9];
 
-void Sushi_CalcOrbitPos(s16 arg0, Vec3f* arg1) {
+void SushiGame_GetConveyorSlotPosition(s16 arg0, Vec3f* arg1) {
     f32 var_fv0 = gSushiRotationAngle + (arg0 * 30.0f);
 
     if (var_fv0 >= 360.0f) {
@@ -165,7 +165,7 @@ void Sushi_CalcOrbitPos(s16 arg0, Vec3f* arg1) {
     arg1->z = gSushiOrbitCenter.z + (COSS(var_fv0) * gSushiOrbitRadius);
 }
 
-f32 Sushi_CalcTargetDelta(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
+f32 SushiGame_ComputePlateDistance(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
     f32 var_fv1;
     unk_D_868084D8_038* ptr = arg0->unk_38;
 
@@ -180,7 +180,7 @@ f32 Sushi_CalcTargetDelta(unk_D_868084D8* arg0, Vec3f* arg1, Vec3f* arg2) {
     return SQ(arg2->x) + SQ(arg2->z);
 }
 
-void SushiSpawner_Init(unk_D_86808808* arg0, s32 arg1) {
+void SushiGame_InitConveyorCup(unk_D_86808808* arg0, s32 arg1) {
     unk_D_86808808_018* sp1C = &arg0->unk_018;
 
     arg0->unk_000 = arg1;
@@ -189,13 +189,13 @@ void SushiSpawner_Init(unk_D_86808808* arg0, s32 arg1) {
     arg0->unk_006 = 0;
     arg0->unk_008 = 0;
 
-    Sushi_CalcOrbitPos(arg0->unk_000, &arg0->unk_00C);
-    Graph_AddToRootList0(&sp1C->unk_000);
+    SushiGame_GetConveyorSlotPosition(arg0->unk_000, &arg0->unk_00C);
+    ModelRenderer_AttachDisplayObject(&sp1C->unk_000);
 
     sp1C->unk_030.x = sp1C->unk_030.y = sp1C->unk_030.z = 2.0f;
 }
 
-void SushiInstance_UpdatePosition(unk_D_868084D8* arg0) {
+void SushiGame_SetPlateSpawnPosition(unk_D_868084D8* arg0) {
     unk_D_868084D8_038* ptr;
 
     switch (arg0->unk_10) {
@@ -223,7 +223,7 @@ void SushiInstance_UpdatePosition(unk_D_868084D8* arg0) {
     }
 }
 
-s32 Sushi_SelectRandomItem(void) {
+s32 SushiGame_PickRandomSushiType(void) {
     UNUSED s32 pad[4];
     s32 i;
     s32 sp20;
@@ -241,7 +241,7 @@ s32 Sushi_SelectRandomItem(void) {
         var_v0 = gSushiTotalWeight - gSushiItemDefs[1].unk_12;
     }
 
-    temp_v0 = GetRandomMod(var_v0);
+    temp_v0 = Rand_Range(var_v0);
     var_a1 = 0;
 
     for (i = 0; i < 9; i++) {
@@ -261,7 +261,7 @@ s32 Sushi_SelectRandomItem(void) {
     return sp1C;
 }
 
-void SushiInstance_SetActive(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038* arg3) {
+void SushiGame_InitPlate(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868084D8_038* arg3) {
     if (arg0 == 0) {
         if (arg2 != -1) {
             arg1->unk_00 = arg2;
@@ -281,7 +281,7 @@ void SushiInstance_SetActive(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868
         arg1->unk_04 = 0;
         arg1->unk_06 = 0;
         arg1->unk_08.rgba = 0xFFFFFF80;
-        arg1->unk_0C = Sushi_SelectRandomItem();
+        arg1->unk_0C = SushiGame_PickRandomSushiType();
 
         gSushiActiveCounts[arg1->unk_0C]++;
 
@@ -289,7 +289,7 @@ void SushiInstance_SetActive(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868
         arg1->unk_2C = 0.0f;
         arg1->unk_38 = arg3;
 
-        if ((s16)GetRandomMod(100) < gSushiItemDefs[arg1->unk_0C].unk_10) {
+        if ((s16)Rand_Range(100) < gSushiItemDefs[arg1->unk_0C].unk_10) {
             arg1->unk_02 |= 2;
         }
 
@@ -297,7 +297,7 @@ void SushiInstance_SetActive(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868
 
         if (arg3->unk_006 >= 2) {
             if ((gSushiItemDefs[arg1->unk_0C].unk_18 != 0) && (gSushiGoRoundTimer >= 0x3D)) {
-                PlaySoundByCategory(gSushiItemDefs[arg1->unk_0C].unk_14, 0, 0);
+                Audio_DispatchSoundBankCommand(gSushiItemDefs[arg1->unk_0C].unk_14, 0, 0);
             }
         }
     }
@@ -305,12 +305,12 @@ void SushiInstance_SetActive(s32 arg0, unk_D_868084D8* arg1, s32 arg2, unk_D_868
     arg1->unk_30 = 1.0f;
     arg1->unk_34 = 0.0f;
 
-    SushiInstance_UpdatePosition(arg1);
+    SushiGame_SetPlateSpawnPosition(arg1);
 
     arg1->unk_3C = &gSushiEmptyDL;
 }
 
-unk_D_868084D8* SushiInstance_Allocate(void) {
+unk_D_868084D8* SushiGame_FindFreePlate(void) {
     s32 i;
     unk_D_868084D8* var_v1 = gSushiInstances;
 
@@ -326,24 +326,24 @@ unk_D_868084D8* SushiInstance_Allocate(void) {
     return var_v1;
 }
 
-void SushiSpawner_Update(unk_D_86808808* arg0) {
+void SushiGame_UpdateConveyorCup(unk_D_86808808* arg0) {
     unk_D_868084D8* sp24;
 
-    Sushi_CalcOrbitPos(arg0->unk_000, &arg0->unk_00C);
+    SushiGame_GetConveyorSlotPosition(arg0->unk_000, &arg0->unk_00C);
 
     if ((gResultMenuVisible == 0) && (arg0->unk_008 == 0) && (arg0->unk_004 & 1)) {
         arg0->unk_002 -= 1;
         if (arg0->unk_002 <= 0) {
             arg0->unk_002 = 0;
-            sp24 = SushiInstance_Allocate();
+            sp24 = SushiGame_FindFreePlate();
             if (sp24 != NULL) {
                 arg0->unk_006++;
                 if (gSushiFirstSpawnFlag == 0) {
                     gSushiFirstSpawnFlag = 1;
-                    PlaySoundByCategory(0x50003, 0, 0);
-                    ResultScreen_SetAnimation(0x17);
+                    Audio_DispatchSoundBankCommand(0x50003, 0, 0);
+                    Audio_StartMusicTrack(0x17);
                 }
-                SushiInstance_SetActive(1, sp24, -1, arg0);
+                SushiGame_InitPlate(1, sp24, -1, arg0);
             }
         }
     }
@@ -351,7 +351,7 @@ void SushiSpawner_Update(unk_D_86808808* arg0) {
     arg0->unk_018.unk_024 = arg0->unk_00C;
 }
 
-void SushiInstance_Render(unk_D_868084D8* arg0) {
+void SushiGame_UpdatePlate(unk_D_868084D8* arg0) {
     Gfx* gfx;
     f32 var_fv0;
     s32 var_v0;
@@ -386,7 +386,7 @@ void SushiInstance_Render(unk_D_868084D8* arg0) {
                     arg0->unk_34 *= 0.8f;
                     arg0->unk_2C = (arg0->unk_30 * -1.5f) + 1.5f;
                 } else {
-                    SushiInstance_SetMode(arg0, 2, NULL);
+                    SushiGame_SetPlateState(arg0, 2, NULL);
                 }
                 break;
 
@@ -405,8 +405,8 @@ void SushiInstance_Render(unk_D_868084D8* arg0) {
         }
     }
 
-    SushiInstance_UpdatePosition(arg0);
-    gfx = GfxAlloc(sizeof(Gfx) * 16);
+    SushiGame_SetPlateSpawnPosition(arg0);
+    gfx = Gfx_AllocDisplayList(sizeof(Gfx) * 16);
     arg0->unk_3C = gfx;
 
     gSPVertex(gfx++, gSushiBillboardVtx, 4, 0);
@@ -438,7 +438,7 @@ void SushiInstance_Render(unk_D_868084D8* arg0) {
 void func_86806860(void) {
 }
 
-void SushiInstance_SetMode(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2) {
+void SushiGame_SetPlateState(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2) {
     unk_D_868084D8_038* temp_v0;
 
     arg0->unk_10 = arg1;
@@ -461,7 +461,7 @@ void SushiInstance_SetMode(unk_D_868084D8* arg0, s32 arg1, unk_D_86807558* arg2)
 
         case 0:
             gSushiActiveCounts[arg0->unk_0C]--;
-            SushiInstance_SetActive(0, arg0, -1, NULL);
+            SushiGame_InitPlate(0, arg0, -1, NULL);
             break;
     }
 }
@@ -470,11 +470,11 @@ s32 SushiGame_GetPlateValue(unk_D_868084D8* arg0) {
     return gSushiItemDefs[arg0->unk_0C].unk_00;
 }
 
-s16 Sushi_GetActiveCount(s32 arg0) {
+s16 SushiGame_GetActivePlateCount(s32 arg0) {
     return gSushiActiveCounts[arg0];
 }
 
-void Sushi_SetSpawnMode(s32 arg0) {
+void SushiGame_SetGamePhase(s32 arg0) {
     if ((arg0 >= 0) && (arg0 < 3)) {
         gSushiSpawnMode = arg0;
     }
@@ -501,7 +501,7 @@ void SushiGame_ApplyGamePhase(void) {
     gSushiSpawnMode = 0;
 }
 
-void Sushi_InitAssets(void) {
+void SushiGame_InitConveyorBelt(void) {
     s32 i;
     MainPoolState* temp_s2;
     unk_D_868084D8* var_s0;
@@ -519,25 +519,25 @@ void Sushi_InitAssets(void) {
     }
 
     gSushiFirstSpawnFlag = 0;
-    temp_s2 = state_pool_try_init(main_pool_get_available(), 0);
+    temp_s2 = MainPool_AllocState(main_pool_get_available(), 0);
 
     for (i = 0, ptr = gSushiSpawners; i < 12; i++, ptr++) {
-        SushiSpawner_Init(ptr, i);
-        temp_a1 = SimpleGfxNode_Create(temp_s2, NULL, 4, gSushiPlaneDL);
+        SushiGame_InitConveyorCup(ptr, i);
+        temp_a1 = GeoNode_CreateDisplayList(temp_s2, NULL, 4, gSushiPlaneDL);
         ptr->unk_018.unk_000.unk_01 |= 1;
-        GraphNode_AddChild(&ptr->unk_018, &temp_a1->unk_00);
+        GraphNode_AppendChild(&ptr->unk_018, &temp_a1->unk_00);
     }
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        var_s0->unk_40 = BillboardNode_Create(temp_s2, NULL, 5, gfx, &gRootNodePosition, var_s0->unk_2C);
-        SushiInstance_SetActive(0, var_s0, i, NULL);
-        GraphNode_AddChild(&gGraphRoot0, var_s0->unk_40);
+        var_s0->unk_40 = GeoNode_CreateScale(temp_s2, NULL, 5, gfx, &gRootNodePosition, var_s0->unk_2C);
+        SushiGame_InitPlate(0, var_s0, i, NULL);
+        GraphNode_AppendChild(&gGraphRoot0, var_s0->unk_40);
     }
 
-    mem_pool_resize_block(temp_s2);
+    MainPool_FinalizeAllocation(temp_s2);
 }
 
-void Sushi_UpdateLogic(void) {
+void SushiGame_UpdateConveyorBelt(void) {
     unk_D_86808808* ptr;
     unk_D_868084D8* var_s0;
     s32 i;
@@ -554,12 +554,12 @@ void Sushi_UpdateLogic(void) {
     }
 
     for (i = 0, ptr = gSushiSpawners; i < 12; i++, ptr++) {
-        SushiSpawner_Update(ptr);
+        SushiGame_UpdateConveyorCup(ptr);
     }
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
         if (var_s0->unk_0C != 0) {
-            SushiInstance_Render(var_s0);
+            SushiGame_UpdatePlate(var_s0);
         }
     }
 }

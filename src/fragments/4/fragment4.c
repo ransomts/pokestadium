@@ -81,11 +81,11 @@ static Gfx gColorRectDL[] = {
 static u8 pad_D_87A01300[0x30];
 static CameraStruct* gProjectionInfo;
 
-void SetProjectionInfo(CameraStruct* arg0) {
+void MiniCam_SetActive(CameraStruct* arg0) {
     gProjectionInfo = arg0;
 }
 
-Gfx* Gfx_ApplyProjection(Gfx* arg0) {
+Gfx* MiniCam_ApplyProjection(Gfx* arg0) {
     gSPPerspNormalize(arg0++, gProjectionInfo->unk_24.perspNorm);
     gSPMatrix(arg0++, (u32)gProjectionInfo->unk_24.mtx & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(arg0++, (u32)gProjectionInfo->unk_60.p_mtxf & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
@@ -93,11 +93,11 @@ Gfx* Gfx_ApplyProjection(Gfx* arg0) {
     return arg0;
 }
 
-Gfx* Gfx_DrawTexturedQuad(Gfx* arg0, Mtx* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, void* arg6, s32 arg7, s32 arg8) {
+Gfx* MiniGfx_DrawTexturedQuad(Gfx* arg0, Mtx* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, void* arg6, s32 arg7, s32 arg8) {
     Mtx spD8;
     Mtx sp98;
     UNUSED Mtx sp58;
-    Mtx* temp_s1 = (Mtx*)GfxAlloc(sizeof(Mtx));
+    Mtx* temp_s1 = (Mtx*)Gfx_AllocDisplayList(sizeof(Mtx));
 
     guTranslate(&spD8, arg2, arg3, arg4);
     guScale(&sp98, arg5, arg5, arg5);
@@ -115,7 +115,7 @@ Gfx* Gfx_DrawTexturedQuad(Gfx* arg0, Mtx* arg1, f32 arg2, f32 arg3, f32 arg4, f3
     return arg0;
 }
 
-Gfx* Gfx_DrawColoredRect(Gfx* arg0, Mtx* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s32 arg6, s32 arg7, s32 arg8,
+Gfx* MiniGfx_DrawVertexColoredQuad(Gfx* arg0, Mtx* arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s32 arg6, s32 arg7, s32 arg8,
                    u8* arg9) {
     s32 i;
     Mtx spE8;
@@ -125,8 +125,8 @@ Gfx* Gfx_DrawColoredRect(Gfx* arg0, Mtx* arg1, f32 arg2, f32 arg3, f32 arg4, f32
     Vtx* temp_v0;
     Vtx* ptr1;
 
-    temp_s1 = GfxAlloc(sizeof(Mtx) * 1);
-    temp_v0 = GfxAlloc(sizeof(Vtx) * 4);
+    temp_s1 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    temp_v0 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
 
     ptr1 = temp_v0;
     for (i = 0; i < 4; i++, ptr1++, arg9 += 4) {
@@ -157,7 +157,7 @@ Gfx* Gfx_DrawColoredRect(Gfx* arg0, Mtx* arg1, f32 arg2, f32 arg3, f32 arg4, f32
     return arg0;
 }
 
-void Gfx_DrawScaledTextureRect(u32* arg0, s16 arg1, s16 arg2, f32 arg3) {
+void MiniGfx_DrawScaledSprite(u32* arg0, s16 arg1, s16 arg2, f32 arg3) {
     Gfx* gfx = gDisplayListHead;
 
     if (arg3 != 0.0f) {
@@ -184,7 +184,7 @@ void Gfx_DrawScaledTextureRect(u32* arg0, s16 arg1, s16 arg2, f32 arg3) {
     }
 }
 
-void Gfx_DrawBackgroundStrips(s32 arg0) {
+void MiniGfx_DrawBackgroundStrips(s32 arg0) {
     s32 i;
     Gfx* gfx = gDisplayListHead;
 
@@ -247,11 +247,11 @@ ret_func_87A010C8 func_87A010C8(void) {
     return func_87A010C8;
 }
 
-s32 PlaySoundIfEnabled(s32 arg0, s32 arg1, s32 arg2) {
+s32 MiniSound_DispatchCommand(s32 arg0, s32 arg1, s32 arg2) {
     s32 ret = 0;
 
     if (gResultFlag_Special == 0) {
-        ret = PlaySoundByCategory(arg0, arg1, arg2);
+        ret = Audio_DispatchSoundBankCommand(arg0, arg1, arg2);
     }
 
     return ret;

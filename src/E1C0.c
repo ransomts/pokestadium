@@ -15,15 +15,15 @@ static char gGbEmuThreadId;
 
 extern u8 D_81200000[];
 
-void GbAudio_ThreadMain(UNUSED void* arg0) {
-    void (*func)(void*) = Util_ConvertAddrToVirtAddr(&GbEmu_AudioUpdateThread);
+void GbTower_AudioThread(UNUSED void* arg0) {
+    void (*func)(void*) = Util_ConvertAddrToVirtAddr(&GbEmu_AudioVideoTick);
 
     __osSetFpcCsr(0x01000C01);
-    MessageQueue_Create(gGbEmuThreadInfo, 0, 1);
-    ThreadList_Add(gGbEmuThreadInfo);
+    Sched_InitClientQueue(gGbEmuThreadInfo, 0, 1);
+    Sched_AddClient(gGbEmuThreadInfo);
 
     while (1) {
-        MessageQueue_Recv(gGbEmuThreadInfo);
+        Sched_WaitClientQueue(gGbEmuThreadInfo);
         if (gRspTaskManager.unk_A38 >= 0x15) {
             continue;
         }
@@ -31,18 +31,18 @@ void GbAudio_ThreadMain(UNUSED void* arg0) {
     }
 }
 
-void GbEmu_ThreadMain(UNUSED void* arg0) {
+void GbTower_EmuThread(UNUSED void* arg0) {
     void (*func1)(void* func) = Util_ConvertAddrToVirtAddr(&GbEmu_Init);
     void (*func2)(void* func) = Util_ConvertAddrToVirtAddr(&GbEmu_RunFrame);
 
     __osSetFpcCsr(0x01000C01);
-    MessageQueue_Create(gGbEmuState, 0, 1);
-    ThreadList_Add(gGbEmuState);
+    Sched_InitClientQueue(gGbEmuState, 0, 1);
+    Sched_AddClient(gGbEmuState);
     func1(gGbEmuState);
     osStartThread(&gGbEmuThreadInfo->thread);
 
     while (1) {
-        MessageQueue_Recv(gGbEmuState);
+        Sched_WaitClientQueue(gGbEmuState);
         if (gRspTaskManager.unk_A38 >= 0x15) {
             continue;
         }
@@ -50,7 +50,7 @@ void GbEmu_ThreadMain(UNUSED void* arg0) {
     }
 }
 
-void GbEmu_Create(UnkInputStruct8000D738* arg0) {
+void GbTower_Start(UnkInputStruct8000D738* arg0) {
     s32 temp_v0;
 
     main_pool_push_state('GBEM');
@@ -64,26 +64,26 @@ void GbEmu_Create(UnkInputStruct8000D738* arg0) {
     gGbEmuState->font2 = BinArchive_GetFile(temp_v0, 1);
     gGbEmuState->inputConfig = *arg0;
     osCreateMesgQueue(&gGbEmuState->queue2, &gGbEmuState->mesg, 1);
-    osCreateThread(&gGbEmuThreadInfo->thread, 10, GbAudio_ThreadMain, NULL, (u32)gGbEmuThreadInfo + 0x21E0, 0x11);
-    osCreateThread(&gGbEmuState->thread, 8, GbEmu_ThreadMain, NULL, (u32)gGbEmuState + 0x21E0, 0xF);
+    osCreateThread(&gGbEmuThreadInfo->thread, 10, GbTower_AudioThread, NULL, (u32)gGbEmuThreadInfo + 0x21E0, 0x11);
+    osCreateThread(&gGbEmuState->thread, 8, GbTower_EmuThread, NULL, (u32)gGbEmuState + 0x21E0, 0xF);
     gGbEmuThreadId = GbTower_SetPollMask(0);
     osStartThread(&gGbEmuState->thread);
 }
 
-OSMesg* GbEmu_RecvMessage(void) {
+OSMesg* GbTower_RecvExitMesg(void) {
     OSMesg mesg;
 
     osRecvMesg(&gGbEmuState->queue2, &mesg, OS_MESG_BLOCK);
     return mesg;
 }
 
-void GbEmu_Shutdown(UnkInputStruct8000D738* arg0) {
+void GbTower_Stop(UnkInputStruct8000D738* arg0) {
     *arg0 = gGbEmuState->inputConfig;
     GbTower_SetPollMask(gGbEmuThreadId);
     osViBlack(1U);
     Display_ApplyPendingVideoMode();
-    ThreadList_Remove(gGbEmuState);
-    ThreadList_Remove(gGbEmuThreadInfo);
+    Sched_RemoveClient(gGbEmuState);
+    Sched_RemoveClient(gGbEmuThreadInfo);
     osDestroyThread(&gGbEmuState->thread);
     osDestroyThread(&gGbEmuThreadInfo->thread);
     main_pool_pop_state('GBEM');

@@ -88,6 +88,6 @@ typedef struct unk_D_82305978 {
     /* 0x06 */ s16 unk_06;
 } unk_D_82305978; // size = 0x8
 
-u8 CalculateStatThresholds(unk_D_82305AF8* arg0, s16 arg1);
+u8 EventBattle_CheckTeamLegality(unk_D_82305AF8* arg0, s16 arg1);
 
 #endif // _FRAGMENT38_H_

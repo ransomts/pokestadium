@@ -61,21 +61,21 @@ s32 ModelRenderer_IsReady(UNUSED s32 arg0) {
     return 1;
 }
 
-void Model_CopyCurrentToBuffer(u8 arg0) {
-    Matrix_Copy(gModelMtxBuffers[arg0].mtx, Matrix_GetRelative(0));
-    Matrix_Copy(gModelMtxBuffers[arg0].mtx[1].mf, Matrix_GetRelative(-1));
+void ModelRenderer_CacheSlotMatrices(u8 arg0) {
+    MtxF_Copy(gModelMtxBuffers[arg0].mtx, GeoRender_GetRelativeMatrix(0));
+    MtxF_Copy(gModelMtxBuffers[arg0].mtx[1].mf, GeoRender_GetRelativeMatrix(-1));
 }
 
-void Model_ConcatCameraMatrix(u8 index) {
+void ModelRenderer_ApplySlotScale(u8 index) {
     MtxF* temp_a1;
     MtxF sp1C;
 
     temp_a1 = &gModelMtxBuffers[index];
-    Camera_CopyMatrixF(&sp1C, &gCurrentCameraNode->unk_60.mtxf);
+    MtxF_ExtractScale(&sp1C, &gCurrentCameraNode->unk_60.mtxf);
     guMtxCatF(sp1C.mf, temp_a1->mf, temp_a1->mf);
 }
 
-void Model_ApplyScaleAndTranslation(u8 index) {
+void ModelRenderer_RebuildSlotMatrix(u8 index) {
     MtxF* temp_a0;
     
     s32 pad[2];
@@ -89,14 +89,14 @@ void Model_ApplyScaleAndTranslation(u8 index) {
     
     temp_a0 = &gModelMtxBuffers[index].mtx;
     
-    Matrix_GetScaleVector(temp_a0, &sp2C);
+    MtxF_GetScaleVector(temp_a0, &sp2C);
     guScaleF(sp38.mf, sp2C.x, sp2C.y, sp2C.z);
     guMtxXFMF(temp_a0->mf, 0.0f, 0.0f, 0.0f, &spC0, &spBC, &spB8);
     guTranslateF(sp78.mf, spC0, spBC, spB8);
     guMtxCatF(sp38.mf, sp78.mf, temp_a0->mf);
 }
 
-void ModelSlot_Reset(s32 arg0) {
+void ModelRenderer_ClearSlotModels(s32 arg0) {
     s32 i;
     StadiumModelSlot* slot = &gStadiumModelSlots[arg0];
 
@@ -105,7 +105,7 @@ void ModelSlot_Reset(s32 arg0) {
     }
 }
 
-Gfx* Model_SetRenderColors(Gfx* gfx) {
+Gfx* ModelRenderer_SetupSlotColors(Gfx* gfx) {
     u8 temp_v0 = gDefaultGraphRoot->unk_01D;
 
     switch (gDefaultGraphRoot->unk_01A) {
@@ -129,16 +129,16 @@ Gfx* Model_SetRenderColors(Gfx* gfx) {
     return gfx;
 }
 
-void Model_DrawCurrent(void) {
+void ModelRenderer_UpdateSlotModel(void) {
     u8 index;
     s32 mode;
 
-    mode = GraphRoot_GetCurrentModelSlot();
+    mode = ModelRenderer_GetActiveMode();
     index = (u8)mode;
     if (mode < 2) {
-        Model_CopyCurrentToBuffer(index);
-        Model_ApplyScaleAndTranslation(index);
-        Model_ConcatCameraMatrix(index);
+        ModelRenderer_CacheSlotMatrices(index);
+        ModelRenderer_RebuildSlotMatrix(index);
+        ModelRenderer_ApplySlotScale(index);
 
         if (gDefaultGraphRoot->unk_01A == 0x92) {
             Model_DrawWithSegment(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gSpecialModelSegment);
@@ -148,21 +148,21 @@ void Model_DrawCurrent(void) {
     }
 }
 
-void Model_DrawIfReady(void) {
+void ModelRenderer_UpdateSlotVertices(void) {
     u8 index;
     s32 mode;
 
-    mode = GraphRoot_GetCurrentModelSlot();
+    mode = ModelRenderer_GetActiveMode();
     index = (u8)mode;
     if ((mode < 2) && (ModelPhase_IsIdle() == 0) && (gModelPhase[index] >= 2)) {
-        Model_CopyCurrentToBuffer(index);
-        Model_ApplyScaleAndTranslation(index);
-        Model_ConcatCameraMatrix(index);
+        ModelRenderer_CacheSlotMatrices(index);
+        ModelRenderer_RebuildSlotMatrix(index);
+        ModelRenderer_ApplySlotScale(index);
         Model_DrawPrepared(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, &gModelMtxBuffers[index].mtx);
     }
 }
 
-Gfx* Model_DrawSegment(Gfx* gfx) {
+Gfx* ModelRenderer_DrawStaticSegment(Gfx* gfx) {
     ModelSegment* segment;
     s32 pad[1];
     MtxF modelMtx;     // sp1E8
@@ -181,19 +181,19 @@ Gfx* Model_DrawSegment(Gfx* gfx) {
     } else {
         segment = (ModelSegment *)&gNormalModelSegment;
     }
-    Camera_CopyMatrixF(&modelMtx, &gCurrentCameraNode->unk_60.mtxf);
+    MtxF_ExtractScale(&modelMtx, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(&modelMtx.mf[0], &tempMtx);
-    Matrix_Copy(&tempCatMtx, Matrix_GetRelative(0));
-    Matrix_GetScaleVector(&tempCatMtx, &scale);
+    MtxF_Copy(&tempCatMtx, GeoRender_GetRelativeMatrix(0));
+    MtxF_GetScaleVector(&tempCatMtx, &scale);
     guScaleF(&scaleMtx.mf[0], scale.x, scale.y, scale.z);
     guMtxXFMF(&tempCatMtx.mf[0], 0.0f, 0.0f, 0.0f, &translate.z, &translate.y, &translate.x);
     guTranslateF(&translateMtx.mf[0], translate.z, translate.y, translate.x);
-    mtxL = GfxAlloc(0x40);
+    mtxL = Gfx_AllocDisplayList(0x40);
     guMtxCatF(&scaleMtx.mf[0], &translateMtx.mf[0], &tempCatMtx.mf[0]);
     guMtxF2L(&tempCatMtx.mf[0], mtxL);
     guMtxCatL(&tempMtx, mtxL, mtxL);
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = mtxL;    }
-    gfx = Model_SetRenderColors(gfx);
+    gfx = ModelRenderer_SetupSlotColors(gfx);
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDB060038;    _gfx->words.w1 = (s32) segment->vertexSegment;    }
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = (s32) segment->displayList;    }
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xD8380002;    _gfx->words.w1 = 0x40;    }
@@ -201,14 +201,14 @@ Gfx* Model_DrawSegment(Gfx* gfx) {
     return gfx;
 }
 
-Gfx* Model_RenderStateMachine(Gfx* gfx) {
+Gfx* ModelRenderer_RenderActiveSlot(Gfx* gfx) {
     u8 mode;
     Vtx* vtx;
     s16* var_v1;
 
-    mode = GraphRoot_GetCurrentModelSlot();
+    mode = ModelRenderer_GetActiveMode();
     if ((mode == 0xFF) || (mode == 0xFE)) {
-        return Model_DrawSegment(gfx);
+        return ModelRenderer_DrawStaticSegment(gfx);
     }
     if (mode >= 4) {
         return gfx;
@@ -216,8 +216,8 @@ Gfx* Model_RenderStateMachine(Gfx* gfx) {
     if (mode >= 2) {
         mode &= 1;
         if (gModelPhase[mode] >= 2) {
-            GfxAlloc(0xA0);
-            gfx = Model_SetRenderColors(gfx);
+            Gfx_AllocDisplayList(0xA0);
+            gfx = ModelRenderer_SetupSlotColors(gfx);
             var_v1 = &gModelUpdateFlag[mode & 1];
             {
                 ModelSegment* segment = (ModelSegment*)(&gStadiumModelSlots[mode][*var_v1].model.unkSegment);
@@ -234,16 +234,16 @@ Gfx* Model_RenderStateMachine(Gfx* gfx) {
             var_v1 = &gModelUpdateFlag[mode & 1];
             break;
         case 1:
-            Model_DrawCurrent();
+            ModelRenderer_UpdateSlotModel();
             var_v1 = &gModelUpdateFlag[mode & 1];
             break;
         case 2:
         case 3:
-            vtx = GfxAlloc(0xA0);
+            vtx = Gfx_AllocDisplayList(0xA0);
             {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = &gIdentityMtx;    }
-            gfx = Model_SetRenderColors(gfx);
+            gfx = ModelRenderer_SetupSlotColors(gfx);
             var_v1 = &gModelUpdateFlag[mode & 1];
-            gfx = Model_DrawWithVertexBuffer(gfx, &gStadiumModelSlots[mode][*var_v1].model, vtx);
+            gfx = Model_Draw(gfx, &gStadiumModelSlots[mode][*var_v1].model, vtx);
             {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xD8380002;    _gfx->words.w1 = 0x40;    }
             {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &gModelSetupDL;    }
             break;

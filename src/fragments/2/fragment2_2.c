@@ -1273,7 +1273,7 @@ static u16 gResultMenuWidth_1;
 static u16 gResultMenuWidth_2;
 static u16 gResultMenuWidth_3;
 
-void ResultScreen_Init(void) {
+void Widget_PauseMenuInit(void) {
     u8 i;
     u8 j;
 
@@ -1310,29 +1310,29 @@ void ResultScreen_Init(void) {
     gResultMusicChangePending = 0;
     gResultAnimCountdown = 0xC;
 
-    gResultMenuStrings_0[0] = gResultMenuStrings_2[0] = GetMessageString(NULL, 0, gItemNamesBank, 0x51);
+    gResultMenuStrings_0[0] = gResultMenuStrings_2[0] = Text_GetString(NULL, 0, gItemNamesBank, 0x51);
 
-    gResultMenuStrings_0[1] = GetMessageString(NULL, 0, gItemNamesBank, 0x52);
+    gResultMenuStrings_0[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x52);
 
-    gResultMenuStrings_0[2] = gResultMenuStrings_1[2] = gResultMenuStrings_2[1] = GetMessageString(NULL, 0, gItemNamesBank, 0x53);
+    gResultMenuStrings_0[2] = gResultMenuStrings_1[2] = gResultMenuStrings_2[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x53);
 
-    gResultMenuStrings_1[0] = GetMessageString(NULL, 0, gItemNamesBank, 0x54);
-    gResultMenuStrings_1[1] = GetMessageString(NULL, 0, gItemNamesBank, 0x55);
+    gResultMenuStrings_1[0] = Text_GetString(NULL, 0, gItemNamesBank, 0x54);
+    gResultMenuStrings_1[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x55);
 
-    Text_SetFont(4, 0);
+    Font_SetActive(4, 0);
 
-    gResultMenuWidth_0 = MAX(MeasureTextWidth(0, 0, gResultMenuStrings_1[0]), MeasureTextWidth(0, 0, gResultMenuStrings_1[2]));
-    gResultMenuWidth_1 = MAX(MeasureTextWidth(0, 0, gResultMenuStrings_0[0]), MeasureTextWidth(0, 0, gResultMenuStrings_0[1]));
-    gResultMenuWidth_1 = MAX(gResultMenuWidth_1, MeasureTextWidth(0, 0, gResultMenuStrings_0[2]));
-    gResultMenuWidth_2 = MAX(gResultMenuWidth_0, MeasureTextWidth(0, 0, gResultMenuStrings_1[1]));
-    gResultMenuWidth_3 = MAX(MeasureTextWidth(0, 0, gResultMenuStrings_2[0]), MeasureTextWidth(0, 0, gResultMenuStrings_2[1]));
+    gResultMenuWidth_0 = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_1[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_1[2]));
+    gResultMenuWidth_1 = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_0[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_0[1]));
+    gResultMenuWidth_1 = MAX(gResultMenuWidth_1, Font_MeasureTextExtent(0, 0, gResultMenuStrings_0[2]));
+    gResultMenuWidth_2 = MAX(gResultMenuWidth_0, Font_MeasureTextExtent(0, 0, gResultMenuStrings_1[1]));
+    gResultMenuWidth_3 = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_2[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_2[1]));
 
     if (gResultMenuWidth_1) {}
 
-    GbsEnsureBankLoaded(2);
+    Save_EnsureBankLoaded(2);
 }
 
-void ResetSelectionState(void) {
+void Widget_PauseMenuResetWinStreak(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -1358,7 +1358,7 @@ void UpdateDeltaTime(void) {
     D_8780FE38 = v0;
 }
 
-void SetResultFlag(s16 arg0) {
+void Widget_PauseMenuTrigger(s16 arg0) {
     switch (arg0) {
         case 1:
             gResultFlag_Win = 1;
@@ -1370,7 +1370,7 @@ void SetResultFlag(s16 arg0) {
     }
 }
 
-void IncrementPlayerScore(s32 arg0) {
+void Widget_PauseMenuRecordWin(s32 arg0) {
     if ((arg0 >= 0) && (arg0 < 4)) {
         gMenuOptionTimers[arg0]++;
         gResultPlayerScored[arg0] = 1;
@@ -1378,7 +1378,7 @@ void IncrementPlayerScore(s32 arg0) {
     }
 }
 
-void CheckScoreThreshold(void) {
+void Widget_PauseMenuCheckTournamentEnd(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -1389,7 +1389,7 @@ void CheckScoreThreshold(void) {
     }
 }
 
-s32 IsSpecialWinCondition(void) {
+s32 Widget_PauseMenuCheckHyperUnlock(void) {
     if ((gMenuCursorX == 1) && (gMenuSubState >= 5) && (gMenuState == 2) && (gMiniHudColorDefaults[0] == 0) && (gMiniHudColorDefaults[1] == 1) &&
         (gMiniHudColorDefaults[2] == 1) && (gMiniHudColorDefaults[3] == 1) && (*gResultPlayerCurrentScore == 5) && !(gMenuRandomSeed & 1)) {
         return 1;
@@ -1397,7 +1397,7 @@ s32 IsSpecialWinCondition(void) {
     return 0;
 }
 
-void FindLowestScorers(void) {
+void Widget_PauseMenuFindLeaders(void) {
     u8 i;
     s8 var_v0 = 9;
 
@@ -1422,7 +1422,7 @@ void FindLowestScorers(void) {
     gMenuSelectedOption = gResultLowestScorerIndices[0];
 }
 
-s32 GetCurrentOptionCount(void) {
+s32 Widget_PauseMenuGetResult(void) {
     s32 sp1C;
 
     if (gResultMusicChangePending != 0) {
@@ -1431,7 +1431,7 @@ s32 GetCurrentOptionCount(void) {
         } else {
             sp1C = 4;
         }
-        Music_HandleStateChange(4);
+        Audio_SetPauseMixMode(4);
         gResultMusicChangePending = 0;
     } else if (gResultFlag_Special != 0) {
         sp1C = 1;
@@ -1448,12 +1448,12 @@ s32 GetCurrentOptionCount(void) {
     return sp1C;
 }
 
-void ResultScreen_DrawGradientPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, u8* arg5) {
-    DrawGradientPanel(arg0, arg1, arg2, arg3, arg4, arg5);
-    FillRect(arg0 - 1, arg1 - 1, arg2 + 2, arg3 + 2);
+void Widget_DrawPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, u8* arg5) {
+    Ui_DrawGradientPanel(arg0, arg1, arg2, arg3, arg4, arg5);
+    Widget_FillRect(arg0 - 1, arg1 - 1, arg2 + 2, arg3 + 2);
 }
 
-void CreateScaledTranslationMatrix(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
+void MathUtil_BuildTransformMtx(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
                    f32 argA) {
     MtxF sp20;
 
@@ -1478,7 +1478,7 @@ void CreateScaledTranslationMatrix(Mtx* arg0, f32 arg1, f32 arg2, f32 arg3, f32 
     guMtxF2L(sp20.mf, arg0);
 }
 
-void RenderScoreCubes(s16 arg0) {
+void Widget_PauseMenuDrawWinIcons(s16 arg0) {
     u8 i;
     u8 j;
     u8 x;
@@ -1487,16 +1487,16 @@ void RenderScoreCubes(s16 arg0) {
     Mtx* spC8;
     Mtx* temp_s3;
 
-    temp_s3 = (Mtx*)GfxAlloc(sizeof(Mtx) * 1);
-    spC8 = (Mtx*)GfxAlloc(sizeof(Mtx) * 36);
-    temp_s2 = (LookAt*)GfxAlloc(sizeof(LookAt) * 1);
+    temp_s3 = (Mtx*)Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    spC8 = (Mtx*)Gfx_AllocDisplayList(sizeof(Mtx) * 36);
+    temp_s2 = (LookAt*)Gfx_AllocDisplayList(sizeof(LookAt) * 1);
 
     if (arg0 == 0) {
         for (x = 0; x < 4; x++) {
-            Gfx_FillDepthRectangle(&gDisplayListHead, (x * 0x36) + 0x44, 0, 0x16, 0xC0);
+            GfxImage_ClearDepthRectangle(&gDisplayListHead, (x * 0x36) + 0x44, 0, 0x16, 0xC0);
         }
     } else {
-        Gfx_FillDepthRectangle(&gDisplayListHead, 0x44, 0, 0xFC, 0xC0);
+        GfxImage_ClearDepthRectangle(&gDisplayListHead, 0x44, 0, 0xFC, 0xC0);
     }
 
     guLookAtReflect(&spD0, temp_s2, 0.0f, 0.0f, 320.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
@@ -1540,9 +1540,9 @@ void RenderScoreCubes(s16 arg0) {
                         }
 
                         if (x != 4) {
-                            ResultScreen_PlaySfx(0x15, 0);
+                            Audio_PlayPersistentSoundCommand(0x15, 0);
                         } else {
-                            ResultScreen_PlaySfx(0x15, 1);
+                            Audio_PlayPersistentSoundCommand(0x15, 1);
                         }
                     }
 
@@ -1555,7 +1555,7 @@ void RenderScoreCubes(s16 arg0) {
                 }
             }
 
-            CreateScaledTranslationMatrix(spC8, 0.2f, 0.2f, 0.2f, gResultCubes[i][j].unk_04, 0.0f, 1.0f, 0.0f,
+            MathUtil_BuildTransformMtx(spC8, 0.2f, 0.2f, 0.2f, gResultCubes[i][j].unk_04, 0.0f, 1.0f, 0.0f,
                           (gResultCubes[i][j].unk_00 + arg0) - 0xA0, 0x78 - gResultCubes[i][j].unk_02, 0.0f);
 
             gSPMatrix(gDisplayListHead++, (u32)spC8++ & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1564,7 +1564,7 @@ void RenderScoreCubes(s16 arg0) {
     }
 }
 
-void ResultScreen_RenderScaledTexture(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, f32 arg8, f32 arg9,
+void Widget_PauseMenuDrawIconQuad(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, f32 arg8, f32 arg9,
                    f32 argA, f32 argB, f32 argC, f32 argD, f32 argE) {
     u8 i;
     s16 sp64 = (arg4 + arg6) / 2;
@@ -1573,18 +1573,18 @@ void ResultScreen_RenderScaledTexture(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16
     Mtx* spC8;
     Mtx* spC4;
 
-    spCC = GfxAlloc(sizeof(Vtx) * 4);
-    spC8 = GfxAlloc(sizeof(Mtx) * 1);
-    spC4 = GfxAlloc(sizeof(Mtx) * 1);
+    spCC = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
+    spC8 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    spC4 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
 
-    SetTileVertex(&spCC[0], -sp64 + arg4, -sp5C + arg5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    SetTileVertex(&spCC[1], -sp64 + arg6, -sp5C + arg5, 0, arg2 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    SetTileVertex(&spCC[2], -sp64 + arg4, -sp5C + arg7, 0, 0, arg3 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-    SetTileVertex(&spCC[3], -sp64 + arg6, -sp5C + arg7, 0, arg2 << 5, arg3 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    Gfx_SetVertexAttributes(&spCC[0], -sp64 + arg4, -sp5C + arg5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    Gfx_SetVertexAttributes(&spCC[1], -sp64 + arg6, -sp5C + arg5, 0, arg2 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    Gfx_SetVertexAttributes(&spCC[2], -sp64 + arg4, -sp5C + arg7, 0, 0, arg3 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    Gfx_SetVertexAttributes(&spCC[3], -sp64 + arg6, -sp5C + arg7, 0, arg2 << 5, arg3 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
     guOrtho(spC8, -sp64, 0x140 - sp64, 0xF0 - sp5C, -sp5C, -2.0f, 2.0f, 1.0f);
 
-    CreateScaledTranslationMatrix(spC4, arg8, arg9, argA, argB, argC, argD, argE, 0.0f, 0.0f, 0.0f);
+    MathUtil_BuildTransformMtx(spC4, arg8, arg9, argA, argB, argC, argD, argE, 0.0f, 0.0f, 0.0f);
 
     gSPDisplayList(gDisplayListHead++, gResultScreenSetupDL);
 
@@ -1614,11 +1614,11 @@ void ResultScreen_RenderScaledTexture(s32 arg0, u32* arg1, u8 arg2, u8 arg3, s16
 void ResultScreen_DrawTiledTexture(u32* arg0, u16 arg1, UNUSED u16 arg2, u16 arg3, u16 arg4, u8 arg5, u8 arg6) {
     u8 j;
     u8 i;
-    Vtx* temp_fp = GfxAlloc(sizeof(Vtx) * (arg5 * arg6));
+    Vtx* temp_fp = Gfx_AllocDisplayList(sizeof(Vtx) * (arg5 * arg6));
 
     for (i = 0; i < arg6; i++) {
         for (j = 0; j < arg5; j++) {
-            SetTileVertex(&temp_fp[(arg5 * i) + j], gResultTiledTexX[j] - arg3, gResultTiledTexY[i] - arg4, 0,
+            Gfx_SetVertexAttributes(&temp_fp[(arg5 * i) + j], gResultTiledTexX[j] - arg3, gResultTiledTexY[i] - arg4, 0,
                           gResultTiledTexX[j] * 32, gResultTiledTexY[i] * 32, 0xFF, 0xFF, 0xFF, 0xFF);
         }
     }
@@ -1645,7 +1645,7 @@ void ResultScreen_RenderResultGraphics(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 ar
     u8 var_s4;
     s8 temp_s2;
 
-    temp_v0 = GfxAlloc(sizeof(Mtx) * 1);
+    temp_v0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
     temp_s2 = arg1 + arg2 + arg3 + arg4;
 
     gSPDisplayList(gDisplayListHead++, gResultScreenSetupDL);
@@ -1695,7 +1695,7 @@ void ResultScreen_RenderResultGraphics(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 ar
         ResultScreen_DrawTiledTexture(&D_30200C0, 0xE8, 0x5C, 0x74, 0x2E, 9, 2);
     } else if (temp_s2 == 0) {
         if ((arg0 == 0xA) && (gCurrentMenuIndex != 2)) {
-            ResultScreen_SetAnimation(0x1B);
+            Audio_StartMusicTrack(0x1B);
         }
         gResultTiledTexX[0] = 0;
         gResultTiledTexX[1] = 0x1E;
@@ -1716,7 +1716,7 @@ void ResultScreen_RenderResultGraphics(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 ar
         s8 spA0[4];
 
         if ((arg0 == 0xA) && (gCurrentMenuIndex != 2)) {
-            ResultScreen_SetAnimation(0x1A);
+            Audio_StartMusicTrack(0x1A);
         }
 
         gResultTiledTexX[0] = 0;
@@ -1731,7 +1731,7 @@ void ResultScreen_RenderResultGraphics(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 ar
 
         ResultScreen_DrawTiledTexture(&D_3010000, 0x88, 0x34, 0x23, 0x1A, 5, 3);
 
-        spAC = GfxAlloc(sizeof(Vtx) * 4 * temp_s2);
+        spAC = Gfx_AllocDisplayList(sizeof(Vtx) * 4 * temp_s2);
 
         spA0[0] = arg1;
         spA0[1] = arg2;
@@ -1755,10 +1755,10 @@ void ResultScreen_RenderResultGraphics(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 ar
 
         for (i = 0, var_s4 = 0; i < 4; i++) {
             if (spA0[i] == 1) {
-                SetTileVertex(&spAC[var_s4 * 4 + 0], -0x63, spA4[var_s4], 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-                SetTileVertex(&spAC[var_s4 * 4 + 1], -0x1B, spA4[var_s4], 0, 0x480, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-                SetTileVertex(&spAC[var_s4 * 4 + 2], -0x63, spA4[var_s4] + 0x34, 0, 0, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
-                SetTileVertex(&spAC[var_s4 * 4 + 3], -0x1B, spA4[var_s4] + 0x34, 0, 0x480, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
+                Gfx_SetVertexAttributes(&spAC[var_s4 * 4 + 0], -0x63, spA4[var_s4], 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+                Gfx_SetVertexAttributes(&spAC[var_s4 * 4 + 1], -0x1B, spA4[var_s4], 0, 0x480, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+                Gfx_SetVertexAttributes(&spAC[var_s4 * 4 + 2], -0x63, spA4[var_s4] + 0x34, 0, 0, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
+                Gfx_SetVertexAttributes(&spAC[var_s4 * 4 + 3], -0x1B, spA4[var_s4] + 0x34, 0, 0x480, 0x340, 0xFF, 0xFF, 0xFF, 0xFF);
 
                 gSPVertex(gDisplayListHead++, &spAC[var_s4 * 4 + 0], 4, 0);
                 gDPLoadTextureBlock(gDisplayListHead++, gResultCubeTextureTable[gMiniHudColorDefaults[i]][i], G_IM_FMT_RGBA, G_IM_SIZ_32b, 36,
@@ -1774,7 +1774,7 @@ void ResultScreen_RenderResultGraphics(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 ar
     }
 }
 
-void ResultScreen_DrawScoreCubes(s16 arg0) {
+void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
     s32 var_a0;
     u8 i;
 
@@ -1811,13 +1811,13 @@ void ResultScreen_DrawScoreCubes(s16 arg0) {
                 }
             }
         }
-        ResultScreen_RenderScaledTexture(var_a0, gResultCubeTextureTable[gMiniHudColorDefaults[i]][i], 0x24, 0x1A, ((i * 0x36) + arg0) + 0x3E, 0xBF,
+        Widget_PauseMenuDrawIconQuad(var_a0, gResultCubeTextureTable[gMiniHudColorDefaults[i]][i], 0x24, 0x1A, ((i * 0x36) + arg0) + 0x3E, 0xBF,
                       ((i * 0x36) + arg0) + 0x62, 0xD9, gResultCubeRotationScale[gResultCubeAnimFrame[i]], gResultCubeRotationScale[gResultCubeAnimFrame[i]],
                       gResultCubeRotationScale[gResultCubeAnimFrame[i]], D_8780F940[gResultCubeAnimTimer[i]], 0.0f, 0.0f, 1.0f);
     }
 
-    Text_ResetState();
-    Text_SetFont(2, -2);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     for (i = 0; i < 4; i++) {
@@ -1830,36 +1830,36 @@ void ResultScreen_DrawScoreCubes(s16 arg0) {
         }
 
         if (gResultCubeStateFlag[i] == 1) {
-            Text_Print((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gMenuOptionTimers[i] - 1);
+            Font_Printf((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gMenuOptionTimers[i] - 1);
         } else {
-            Text_Print((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gMenuOptionTimers[i]);
+            Font_Printf((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gMenuOptionTimers[i]);
         }
     }
 
-    Text_SetFont(4, 0);
-    Text_BeginRender();
+    Font_SetActive(4, 0);
+    Font_EnableTwoCycleTexturing();
     Text_SetEnvColor(0xF0, 0xF0, 0xF0, 0xFF);
     Text_SetPrimColor(0x8C, 0x8C, 0x8C, 0xFF);
-    MessageBank_SetPointer_1_9(1, gMenuSubState);
+    Text_SetNumberToken(1, gMenuSubState);
 
     {
         char sp8C[0x60];
         char* var_s0_3;
 
-        var_s0_3 = GetMessageString(sp8C, 0x60, gItemNamesBank, 0x13);
+        var_s0_3 = Text_GetString(sp8C, 0x60, gItemNamesBank, 0x13);
 
         if ((gMiniHudColorDefaults[0] + gMiniHudColorDefaults[1] + gMiniHudColorDefaults[2] + gMiniHudColorDefaults[3]) != 0) {
-            sprintf(sp8C, "%s - %s", var_s0_3, GetMessageString(NULL, 0, gItemNamesBank, gResultStateMessageIds[gMenuState]));
+            sprintf(sp8C, "%s - %s", var_s0_3, Text_GetString(NULL, 0, gItemNamesBank, gResultStateMessageIds[gMenuState]));
             var_s0_3 = sp8C;
         }
 
-        Text_Print((arg0 - (GetTextWidth(NULL, var_s0_3) / 2)) + 0xA0, 0x10, var_s0_3);
-        Text_EndRender();
-        Text_SetupDL();
+        Font_Printf((arg0 - (Text_MeasureStringWidth(NULL, var_s0_3) / 2)) + 0xA0, 0x10, var_s0_3);
+        Font_DisableTwoCycleTexturing();
+        Font_EndTexturedTextRendering();
     }
 }
 
-s32 ResultScreen_UpdateAndRender(void) {
+s32 Widget_PauseMenuUpdate(void) {
     static s32 D_8780FE3C;
     static s32 D_8780FE40;
     static s32 D_8780FE44;
@@ -1918,33 +1918,33 @@ s32 ResultScreen_UpdateAndRender(void) {
             } else if (gResultFlag_Special == 0) {
                 if (gResultMenuVisible != 0) {
                     if ((gResultController->buttonPressed & 0x800) || ((sp67 == 1) && (gResultStickUp == 0))) {
-                        Music_HandleStateChange(2);
+                        Audio_SetPauseMixMode(2);
                         gResultSelectedOption--;
                         if (gResultSelectedOption < 0) {
                             gResultSelectedOption = gResultOptionLimit - 1;
                         }
                     } else if ((gResultController->buttonPressed & 0x400) || ((sp66 == 1) && (gResultStickDown == 0))) {
-                        Music_HandleStateChange(2);
+                        Audio_SetPauseMixMode(2);
                         gResultSelectedOption++;
                         if (gResultSelectedOption >= gResultOptionLimit) {
                             gResultSelectedOption = 0;
                         }
                     } else if (gResultController->buttonPressed & 0x8000) {
                         if (gResultSelectedOption == 0) {
-                            Music_HandleStateChange(0);
+                            Audio_SetPauseMixMode(0);
                             gResultMenuVisible = 0;
                         } else if (gResultSelectedOption == 1) {
-                            Music_HandleStateChange(3);
+                            Audio_SetPauseMixMode(3);
                             gResultFlag_Special = 1;
                             gResultMusicChangePending = 1;
                         }
                     } else if (gResultController->buttonPressed & 0x1000) {
-                        Music_HandleStateChange(0);
+                        Audio_SetPauseMixMode(0);
                         gResultMenuVisible = 0;
                         gResultSelectedOption = 0;
                     }
-                } else if ((Fragment2_1_GetResult() == -2) && (gResultController->buttonPressed & 0x1000)) {
-                    Music_HandleStateChange(1);
+                } else if ((Widget_CountdownGetState() == -2) && (gResultController->buttonPressed & 0x1000)) {
+                    Audio_SetPauseMixMode(1);
                     gResultMenuVisible = 1;
                     gResultOptionLimit = 2;
                 }
@@ -1959,22 +1959,22 @@ s32 ResultScreen_UpdateAndRender(void) {
             if ((D_8780FE44 <= 0) && (gResultController->buttonPressed & 0x8000)) {
                 gResultConfirmPressed = 1;
                 if (gMenuCursorX == 0) {
-                    PlaySoundEffect(4);
+                    Audio_PlaySoundEffectById(4);
                     D_8780FC40 = 3;
                     gResultMenuActive = 1;
                     gResultOptionLimit = 3;
                 } else {
-                    ResultScreen_PlaySfx(0x12, 0);
+                    Audio_PlayPersistentSoundCommand(0x12, 0);
                     D_8780FC40 = 2;
                     gResultAnimTimer_1 = 1;
                     D_8780FCAA = 0x190;
-                    CheckScoreThreshold();
+                    Widget_PauseMenuCheckTournamentEnd();
                     if (gResultScoreThresholdMet != 0) {
                         gResultOptionLimit = 2;
                     } else {
                         gResultOptionLimit = 3;
                     }
-                    FindLowestScorers();
+                    Widget_PauseMenuFindLeaders();
                 }
             }
             break;
@@ -1997,7 +1997,7 @@ s32 ResultScreen_UpdateAndRender(void) {
                     }
                 }
 
-                if ((gResultScoreThresholdMet == 0) || ((gResultScoreThresholdMet == 1) && (gResultAnimStep == 0) && (Music_GetState(2) == 0))) {
+                if ((gResultScoreThresholdMet == 0) || ((gResultScoreThresholdMet == 1) && (gResultAnimStep == 0) && (Audio_CountCategorySounds(2) == 0))) {
                     for (i = 0; i < 4; i++) {
                         if (gResultCubeStateFlag[i] == 1) {
                             break;
@@ -2007,9 +2007,9 @@ s32 ResultScreen_UpdateAndRender(void) {
                     if (i == 4) {
                         if (gResultSpecialWinActive == 0) {
                             if (gResultController->buttonPressed & 0x8000) {
-                                PlaySoundEffect(4);
-                                if (IsSpecialWinCondition() != 0) {
-                                    ResultScreen_SetAnimation(0x13);
+                                Audio_PlaySoundEffectById(4);
+                                if (Widget_PauseMenuCheckHyperUnlock() != 0) {
+                                    Audio_StartMusicTrack(0x13);
                                     gResultSpecialWinActive = 1;
                                     D_8780FE44 = 0xB4;
                                 } else {
@@ -2021,16 +2021,16 @@ s32 ResultScreen_UpdateAndRender(void) {
                             D_8780FE44 -= gResultDeltaTime;
                             if (D_8780FE44 <= 0) {
                                 if (gResultController->buttonPressed & 0x8000) {
-                                    PlaySoundEffect(4);
+                                    Audio_PlaySoundEffectById(4);
                                     D_8780FC40 = 3;
                                     gResultMenuActive = 1;
                                     gResultSpecialWinActive = 0;
                                 }
                             } else if ((D_8780FE44 < 0xAB) && (gResultBankSyncDone == 0)) {
                                 gMenuRandomSeed |= 1;
-                                ResultScreen_SetRandomSeed(gMenuRandomSeed & 0xFF);
-                                GbsCommitBankBlock(0x14, 0);
-                                GbsSyncBank(2);
+                                Save_SetOptionsField1E(gMenuRandomSeed & 0xFF);
+                                Save_CommitTypedRecord(0x14, 0);
+                                Save_FlushBank(2);
                                 gResultBankSyncDone = 1;
                             }
                         }
@@ -2041,19 +2041,19 @@ s32 ResultScreen_UpdateAndRender(void) {
 
         case 3:
             if ((gResultController->buttonPressed & 0x800) || ((sp67 == 1) && (gResultStickUp == 0))) {
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 gResultSelectedOption--;
                 if (gResultSelectedOption < 0) {
                     gResultSelectedOption = gResultOptionLimit - 1;
                 }
             } else if ((gResultController->buttonPressed & 0x400) || ((sp66 == 1) && (gResultStickDown == 0))) {
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 gResultSelectedOption++;
                 if (gResultSelectedOption >= gResultOptionLimit) {
                     gResultSelectedOption = 0;
                 }
             } else if (gResultController->buttonPressed & 0x8000) {
-                PlaySoundEffect(2);
+                Audio_PlaySoundEffectById(2);
                 if (gMenuCursorX == 0) {
                     D_8780FC40 = 6;
                 } else if (gResultScoreThresholdMet != 0) {
@@ -2066,7 +2066,7 @@ s32 ResultScreen_UpdateAndRender(void) {
                         gResultAnimTimer = 0x2F;
                     } else {
                         D_8780FC40 = 4;
-                        D_8780FE3C = 0x60 - GetRandomMod(0x20);
+                        D_8780FE3C = 0x60 - Rand_Range(0x20);
                         gResultCubeCycleIndex = 0;
                     }
                 } else {
@@ -2085,7 +2085,7 @@ s32 ResultScreen_UpdateAndRender(void) {
 
             if (!(gResultFrameCounter & D_8780FE40)) {
                 gResultCubeCycleIndex++;
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 if (gResultCubeCycleIndex >= gResultLowestScorerCount) {
                     gResultCubeCycleIndex = 0;
                 }
@@ -2101,7 +2101,7 @@ s32 ResultScreen_UpdateAndRender(void) {
         case 5:
             gResultAnimTimer--;
             if (gResultAnimTimer == 0x29) {
-                PlaySoundEffect(0x11);
+                Audio_PlaySoundEffectById(0x11);
             } else if (gResultAnimTimer <= 0) {
                 D_8780FC40 = 6;
             }
@@ -2113,9 +2113,9 @@ s32 ResultScreen_UpdateAndRender(void) {
     }
 
     if (gResultMenuVisible != 0) {
-        ResultScreen_DrawGradientPanel(((0x140 - gResultMenuWidth_0) / 2) - 0xA, 0x61, gResultMenuWidth_0 + 0x14, 0x30, &sp70[0], &sp70[3]);
-        Text_ResetState();
-        Text_SetFont(4, 0);
+        Widget_DrawPanel(((0x140 - gResultMenuWidth_0) / 2) - 0xA, 0x61, gResultMenuWidth_0 + 0x14, 0x30, &sp70[0], &sp70[3]);
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(4, 0);
 
         for (i = 0; i < gResultOptionLimit; i++) {
             if (gResultSelectedOption == i) {
@@ -2130,10 +2130,10 @@ s32 ResultScreen_UpdateAndRender(void) {
                 temp_t0 = i;
             }
 
-            Text_Print((0x140 - gResultMenuWidth_0) / 2, (i * 0x12) + 0x68, "%s", gResultMenuStrings_1[temp_t0]);
+            Font_Printf((0x140 - gResultMenuWidth_0) / 2, (i * 0x12) + 0x68, "%s", gResultMenuStrings_1[temp_t0]);
         }
 
-        Text_SetupDL();
+        Font_EndTexturedTextRendering();
     } else {
         if (gResultAnimTimer_0 != 0) {
             if (gResultAnimFrame > 0) {
@@ -2143,7 +2143,7 @@ s32 ResultScreen_UpdateAndRender(void) {
         }
 
         if ((D_8780FC40 != 0) && (D_8780FC40 != 1)) {
-            Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, 0xB4);
+            Gfx_FillRectWithDisplayState(0, 0, 0x140, 0xF0, 0, 0, 0, 0xB4);
         }
 
         if (gResultAnimTimer_1 != 0) {
@@ -2152,7 +2152,7 @@ s32 ResultScreen_UpdateAndRender(void) {
                 D_8780FCAA = 0;
                 if (gResultSfxTriggered == 0) {
                     gResultSfxTriggered = 1;
-                    ResultScreen_PlaySfx(0x13, 0);
+                    Audio_PlayPersistentSoundCommand(0x13, 0);
 
                     for (i = 0; i < 4; i++) {
                         if (gResultPlayerScored[i] != 0) {
@@ -2170,15 +2170,15 @@ s32 ResultScreen_UpdateAndRender(void) {
                 if (gResultAnimCountdown >= 0) {
                     if (gResultAnimCountdown == 0) {
                         if ((gResultPlayerScored[0] + gResultPlayerScored[1] + gResultPlayerScored[2] + gResultPlayerScored[3]) != 0) {
-                            ResultScreen_PlaySfx(0x14, 0);
+                            Audio_PlayPersistentSoundCommand(0x14, 0);
                         }
                     }
                     gResultAnimCountdown--;
                 }
             }
 
-            ResultScreen_DrawScoreCubes(D_8780FCAA);
-            RenderScoreCubes(D_8780FCAA);
+            Widget_PauseMenuDrawPlayerIcons(D_8780FCAA);
+            Widget_PauseMenuDrawWinIcons(D_8780FCAA);
         }
 
         if (gResultAnimTimer_2 != 0) {
@@ -2186,7 +2186,7 @@ s32 ResultScreen_UpdateAndRender(void) {
                 case 0:
                     gResultAnimYOffset -= gResultDeltaTime;
                     if (gResultAnimYOffset < 0xB4) {
-                        ResultScreen_SetAnimation(0x2C);
+                        Audio_StartMusicTrack(0x2C);
                         gResultAnimState = 1;
                     }
                     break;
@@ -2208,8 +2208,8 @@ s32 ResultScreen_UpdateAndRender(void) {
         }
 
         if (gResultSpecialWinActive != 0) {
-            sp60 = GetMessageString(0, 0, gItemNamesBank, 0x57);
-            sp5C = GetMessageString(0, 0, gItemNamesBank, 0x58);
+            sp60 = Text_GetString(0, 0, gItemNamesBank, 0x57);
+            sp5C = Text_GetString(0, 0, gItemNamesBank, 0x58);
             sp44 = CountTextLines(sp60);
             tmp = CountTextLines(sp5C);
             tmp = sp44 + tmp;
@@ -2217,32 +2217,32 @@ s32 ResultScreen_UpdateAndRender(void) {
             temp_t0 += tmp * 2;
             temp_t0 -= 2;
             sp55 = (0xF0 - temp_t0) >> 1;
-            ResultScreen_DrawGradientPanel(0x1E, sp55 - 7, 0x104, temp_t0 + 0xE, &sp68[0], &sp68[3]);
-            Text_ResetState();
-            Text_BeginRender();
+            Widget_DrawPanel(0x1E, sp55 - 7, 0x104, temp_t0 + 0xE, &sp68[0], &sp68[3]);
+            Font_BeginTranslucentTextRendering();
+            Font_EnableTwoCycleTexturing();
             Text_SetEnvColor(0xFF, 0xFD, 0xD4, 0xFF);
             Text_SetPrimColor(0xBA, 0xB7, 0, 0xFF);
-            Text_SetFont(4, 0);
-            Text_SetLineHeight(0x12);
-            Text_Print(0x28, sp55, sp60);
+            Font_SetActive(4, 0);
+            Font_SetLineHeight(0x12);
+            Font_Printf(0x28, sp55, sp60);
             sp55 = (sp55 + (sp44 * 0x12));
-            Text_Print(0x28, sp55 & 0xFF, sp5C);
-            Text_EndRender();
-            Text_SetupDL();
+            Font_Printf(0x28, sp55 & 0xFF, sp5C);
+            Font_DisableTwoCycleTexturing();
+            Font_EndTexturedTextRendering();
         }
 
         if (gResultMenuActive != 0) {
             if (gResultScoreThresholdMet == 0) {
                 if (gMenuCursorX == 0) {
-                    ResultScreen_DrawGradientPanel(((0x140 - gResultMenuWidth_1) / 2) - 0xA, 0x58, gResultMenuWidth_1 + 0x14, 0x42, &sp70[0], &sp70[3]);
+                    Widget_DrawPanel(((0x140 - gResultMenuWidth_1) / 2) - 0xA, 0x58, gResultMenuWidth_1 + 0x14, 0x42, &sp70[0], &sp70[3]);
                 } else {
-                    ResultScreen_DrawGradientPanel(((0x140 - gResultMenuWidth_2) / 2) - 0xA, 0x58, gResultMenuWidth_2 + 0x14, 0x42, &sp70[0], &sp70[3]);
+                    Widget_DrawPanel(((0x140 - gResultMenuWidth_2) / 2) - 0xA, 0x58, gResultMenuWidth_2 + 0x14, 0x42, &sp70[0], &sp70[3]);
                 }
             } else {
-                ResultScreen_DrawGradientPanel(((0x140 - gResultMenuWidth_3) / 2) - 0xA, 0x61, gResultMenuWidth_3 + 0x14, 0x30, &sp70[0], &sp70[3]);
+                Widget_DrawPanel(((0x140 - gResultMenuWidth_3) / 2) - 0xA, 0x61, gResultMenuWidth_3 + 0x14, 0x30, &sp70[0], &sp70[3]);
             }
-            Text_ResetState();
-            Text_SetFont(4, 0);
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(4, 0);
 
             for (i = 0; i < gResultOptionLimit; i++) {
                 if (gResultSelectedOption == i) {
@@ -2253,28 +2253,28 @@ s32 ResultScreen_UpdateAndRender(void) {
 
                 if (gResultScoreThresholdMet == 0) {
                     if (gMenuCursorX == 0) {
-                        Text_Print((0x140 - gResultMenuWidth_1) / 2, (i * 0x12) + 0x5F, "%s", gResultMenuStrings_0[i]);
+                        Font_Printf((0x140 - gResultMenuWidth_1) / 2, (i * 0x12) + 0x5F, "%s", gResultMenuStrings_0[i]);
                     } else {
-                        Text_Print((0x140 - gResultMenuWidth_2) / 2, (i * 0x12) + 0x5F, "%s", gResultMenuStrings_1[i]);
+                        Font_Printf((0x140 - gResultMenuWidth_2) / 2, (i * 0x12) + 0x5F, "%s", gResultMenuStrings_1[i]);
                     }
                 } else {
-                    Text_Print((0x140 - gResultMenuWidth_3) / 2, (i * 0x12) + 0x68, "%s", gResultMenuStrings_2[i]);
+                    Font_Printf((0x140 - gResultMenuWidth_3) / 2, (i * 0x12) + 0x68, "%s", gResultMenuStrings_2[i]);
                 }
             }
 
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
         }
 
         if (gResultCubesActive != 0) {
-            Text_ResetState();
-            Text_BeginRender();
-            Text_SetFont(0x10, 0);
+            Font_BeginTranslucentTextRendering();
+            Font_EnableTwoCycleTexturing();
+            Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-            Text_Print(0xA0 - (GetTextWidth(NULL, GetMessageString(0, 0, gItemNamesBank, 0x56)) / 2), 0x6C,
-                          GetMessageString(0, 0, gItemNamesBank, 0x56));
-            Text_EndRender();
-            Text_SetupDL();
+            Font_Printf(0xA0 - (Text_MeasureStringWidth(NULL, Text_GetString(0, 0, gItemNamesBank, 0x56)) / 2), 0x6C,
+                          Text_GetString(0, 0, gItemNamesBank, 0x56));
+            Font_DisableTwoCycleTexturing();
+            Font_EndTexturedTextRendering();
         }
     }
 

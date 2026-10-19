@@ -5,15 +5,15 @@ static s32 pad_D_800AC880[0x2];
 static s32 gMenuInput_RepeatTimer;
 static Controller* gMenuInput_Controller;
 
-void MenuInput_Init(void) {
+void Input_ResetRepeatState(void) {
 }
 
-void MenuInput_SetController(Controller* arg0) {
+void Input_SetRepeatController(Controller* arg0) {
     gMenuInput_RepeatTimer = 0xA;
     gMenuInput_Controller = arg0;
 }
 
-s32 MenuInput_ReadDirection(void) {
+s32 Input_GetRepeatedDPad(void) {
     if (gMenuInput_Controller->buttonPressed & 0x800) {
         gMenuInput_RepeatTimer = 0xA;
         return 0x800;

@@ -16,14 +16,14 @@ static PokemonData gLoadedPokemon[6];
 
 static s32 gLoadedPokemonCount = 0;
 
-void LoadSaveSlotSprites(s32 arg0) {
+void GbTower_LoadPartyFromDeck(s32 arg0) {
     s32 i;
     unk_func_80022C28_ret* temp_v0;
 
-    if (SaveSlot_Load(arg0) != 0) {
-        temp_v0 = CreateGbsBlock(0x20, arg0, 0, 0);
-        gLoadedPokemonCount = GbsBlock_ReadPokemon(gLoadedPokemon, 6, temp_v0);
-        CommitAndFreeGbsBlock(temp_v0);
+    if (GbSave_EnsureMainDataLoaded(arg0) != 0) {
+        temp_v0 = Deck_Open(0x20, arg0, 0, 0);
+        gLoadedPokemonCount = Deck_ReadEntries(gLoadedPokemon, 6, temp_v0);
+        Deck_CloseAndFlush(temp_v0);
     }
 
     for (i = 0; i < gLoadedPokemonCount; i++) {
@@ -31,27 +31,27 @@ void LoadSaveSlotSprites(s32 arg0) {
     }
 }
 
-s32 MenuStage_Frame(u8 arg0) {
+s32 GbTower_TeamPrepFrameCallback(u8 arg0) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     PokeIcon_ProcessAllSlots(gSpriteDisplay, 0);
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 1);
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 1);
     return 0;
 }
 
-void PopulateInputStructFromSprites(UnkInputStruct8000D738* arg0) {
+void GbTower_BuildPartyResult(UnkInputStruct8000D738* arg0) {
     s32 i;
     PlayerName sp34;
     u16(*var_s1)[0x640] = arg0->unk_04[0];
 
-    GbsGetPlayerName(&sp34);
+    Save_GetOptions(&sp34);
     arg0->unk_02 = sp34.unk_00;
     arg0->unk_00 = sp34.unk_04;
     arg0->unk_03 = gLoadedPokemonCount;
 
     for (i = 0; i < gLoadedPokemonCount; i++, var_s1++) {
-        _bcopy(SpriteDisplay_GetImagePtr(gSpriteDisplay, i), var_s1, sizeof(var_s1[0]));
+        _bcopy(PokeIcon_GetImage(gSpriteDisplay, i), var_s1, sizeof(var_s1[0]));
     }
 
     if (gLoadedPokemonCount < 6) {
@@ -59,27 +59,27 @@ void PopulateInputStructFromSprites(UnkInputStruct8000D738* arg0) {
     }
 }
 
-s32 Fragment53_Main(s32 arg0, UnkInputStruct8000D738* arg1) {
+s32 GbTower_TeamPrep(s32 arg0, UnkInputStruct8000D738* arg1) {
     Stage* sp24;
 
     main_pool_push_state('PREP');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(0, 1, 2, 0, 1, 1);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(0, 1, 2, 0, 1, 1);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    D_82A00370 = AssetManager_Create(1);
-    gSpriteDisplay = SpriteDisplay_Alloc(D_82A00370, 6, 0x28, 0x28);
-    AssetManager_LoadArchives();
-    LoadSaveSlotSprites(arg0);
-    GbsEnsureBankLoaded(2);
-    Stage_Set(sp24);
-    Stage_AdvanceUntil(8, MenuStage_Frame);
-    Stage_Destroy();
-    PopulateInputStructFromSprites(arg1);
-    Gfx_FreeBuffers();
+    D_82A00370 = PokeIcon_AllocFramebuffers(1);
+    gSpriteDisplay = PokeIcon_CreateRenderList(D_82A00370, 6, 0x28, 0x28);
+    PokeIcon_OpenModelArchives();
+    GbTower_LoadPartyFromDeck(arg0);
+    Save_EnsureBankLoaded(2);
+    StageContext_Activate(sp24);
+    BgStage_RunUntilCondition(8, GbTower_TeamPrepFrameCallback);
+    StageContext_Deactivate();
+    GbTower_BuildPartyResult(arg1);
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('PREP');
 

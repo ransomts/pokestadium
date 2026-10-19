@@ -14,7 +14,7 @@ s32 __osContRamRead(OSMesgQueue* mq, int channel, u16 address, u8* buffer);
 extern s32 osPfsIsPlug(OSMesgQueue*, u8*);
 
 // some kind of cycle count sleep function. just like the one in crash_screen.c
-void WaitMs(long ms) {
+void System_DelayMilliseconds(long ms) {
     unsigned long start = (osGetCount());
     unsigned long target = (s32)((ms * 1000LL) * 3000 / 64ULL + start);
 
@@ -24,7 +24,7 @@ void WaitMs(long ms) {
 }
 
 // Is this a Sticker Station?
-s32 IsStickerStationConnected(void) {
+s32 Controller_CheckAccessoryEeprom(void) {
     s32 i;
     s32 ret;
     u8 sp2F; // sp2F
@@ -70,20 +70,20 @@ s32 IsStickerStationConnected(void) {
     return 1;
 }
 
-u8 StickerStation_GetCommand(void) {
+u8 Controller_ReadAccessoryStatus(void) {
     Cont_BlockEepromQueue();
     __osContRamRead(&gSIEventMesgQueue, 3, 0x600, gStickerStationEepromBuf);
     Cont_NoBlockEepromQueue();
     return gStickerStationCommand;
 }
 
-void StickerStation_SetCommand(u8 arg0) {
+void Controller_WriteAccessoryStatus(u8 arg0) {
     u8* buffer = gStickerStationEepromBuf;
     Cont_BlockEepromQueue();
     __osContRamRead(&gSIEventMesgQueue, 3, 0x600, buffer);
     if (gStickerStationCommand == 8) {
         do {
-            WaitMs(0x14);
+            System_DelayMilliseconds(0x14);
             __osContRamRead(&gSIEventMesgQueue, 3, 0x600, buffer);
         } while (buffer[0x1F] == 8);
     }

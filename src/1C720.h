@@ -22,23 +22,23 @@ typedef struct unk_func_8001C248 {
     /* 0x024 */ s32* unk_024;
 } unk_func_8001C248; // size >= 0x28
 
-void Graph_InitRoots(void);
-void Graph_AddToRootList0(Fragment2_1GraphNode* arg0);
-void Graph_AddToRootList1(Fragment2_1GraphNode* arg0);
-void GraphNode_InitChild(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3);
-void GraphNode_ClearCallback(Fragment2_1GraphNode* arg0);
-s32 GraphNode_TriggerAction(Fragment2_1GraphNode* arg0, s32 arg1);
-s32 GraphNode_TriggerSound(Fragment2_1GraphNode* arg0, s32 arg1);
-void GraphNode_SetColorRGBA(Fragment2_1GraphNode* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);
-void GraphNode_SetState(Fragment2_1GraphNode* arg0, u8 arg1);
-void GraphNode_SetSubState(Fragment2_1GraphNode* arg0, u8 arg1);
-unk_D_86002F58_004_000_00C_028* GraphNode_GetChildByIndex(Fragment2_1GraphNode* arg0, s32 arg1);
-arg1_func_80010CA8* ComputeStatFromName(arg1_func_80010CA8* arg0, PokemonData* arg1);
-void GetPokemonStatFromEntry(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2);
-void ProcessPokemonSelection(unk_D_800AE540_1194* arg0);
-void UpdatePokemonStateOnEnter(unk_func_8001C248* arg0);
-void UpdatePokemonStateOnExit(unk_func_8001C248* arg0);
-void StartPokemonAnimation(unk_func_8001C248* arg0);
-void FinishPokemonAnimation(unk_func_8001C248* arg0);
+void ModelRenderer_InitDisplayRoots(void);
+void ModelRenderer_AttachDisplayObject(Fragment2_1GraphNode* arg0);
+void ModelRenderer_AttachSecondaryDisplayObject(Fragment2_1GraphNode* arg0);
+void Model_InitDisplayObject(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2, unk_D_86002F58_004_000_004* arg3);
+void ModelRenderer_ClearDisplayObject(Fragment2_1GraphNode* arg0);
+s32 ModelAnim_SetAnimation(Fragment2_1GraphNode* arg0, s32 arg1);
+s32 ModelAnim_SetEventTrack(Fragment2_1GraphNode* arg0, s32 arg1);
+void Model_SetMaterialColor(Fragment2_1GraphNode* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4);
+void Model_SetMaterialAlpha(Fragment2_1GraphNode* arg0, u8 arg1);
+void Model_SetMaterialTextureMode(Fragment2_1GraphNode* arg0, u8 arg1);
+unk_D_86002F58_004_000_00C_028* ModelAnim_GetAnimationRecord(Fragment2_1GraphNode* arg0, s32 arg1);
+arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, PokemonData* arg1);
+void Model_ComputeSizeVariantFromRecord(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2);
+void Trainer_RequestPokeIcon(unk_D_800AE540_1194* arg0);
+void PokeIcon_PollFrameLoadForObject(unk_func_8001C248* arg0);
+void PokeIcon_WaitFrameLoadForObject(unk_func_8001C248* arg0);
+void PokeIcon_RequestBackgroundForObject(unk_func_8001C248* arg0);
+void PokeIcon_PollBackgroundForObject(unk_func_8001C248* arg0);
 
 #endif // _1C720_H_

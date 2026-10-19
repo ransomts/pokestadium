@@ -9,10 +9,10 @@ extern u32 D_87A01180[];
 extern u32 D_87A01190[];
 extern u32 D_87A011A4[];
 
-void SetProjectionInfo(CameraStruct*);
-Gfx* Gfx_ApplyProjection(Gfx*);
-Gfx* Gfx_DrawTexturedQuad(Gfx*, Mtx*, f32, f32, f32, f32, void*, s32, s32);
+void MiniCam_SetActive(CameraStruct*);
+Gfx* MiniCam_ApplyProjection(Gfx*);
+Gfx* MiniGfx_DrawTexturedQuad(Gfx*, Mtx*, f32, f32, f32, f32, void*, s32, s32);
 void Gfx_DrawTilemap(s32);
-s32 PlaySoundIfEnabled(s32, s32, s32);
+s32 MiniSound_DispatchCommand(s32, s32, s32);
 
 #endif // _FRAGMENT4_H_

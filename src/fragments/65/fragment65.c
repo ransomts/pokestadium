@@ -80,7 +80,7 @@ static s16 gPanelFadeAlpha = 0xFF;
 static s16 gInfoPanelHeight = 0;
 static s16 gBgFadeAlpha = 0;
 
-void TileBackgroundTexture(u8* arg0, u8* arg1, u8 arg2) {
+void Glc_DrawBackgroundCrossfade(u8* arg0, u8* arg1, u8 arg2) {
     s32 i;
     s32 j;
 
@@ -119,23 +119,23 @@ void Glc_DrawScaledTextureRgba(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4,
                         0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg6, 1024.0f / arg6, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg6, 1024.0f / arg6, 0);
 }
 
 void func_84A00630(void) {
 }
 
-void DrawScaledIA8TextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5) {
+void Glc_DrawScaledTextureIa8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5) {
     UNUSED s32 pad;
 
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, (s32)(arg2 / arg5), (s32)(arg3 / arg5), 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg5, 1024.0f / arg5, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 1024.0f / arg5, 1024.0f / arg5, 0);
 }
 
-void DrawInfoPanel(void) {
+void Glc_DrawRoomDescription(void) {
     char sp40[0x100];
     UNUSED s32 pad2;
     s16 sp3A;
@@ -144,44 +144,44 @@ void DrawInfoPanel(void) {
 
     if (gInfoPanelHeight >= 0x10) {
         sp3A = 0xF0 - (gInfoPanelHeight / 2);
-        DrawSimplePanel(0x78, sp3A, 0x190, gInfoPanelHeight);
-        Text_DrawWindowRect(0x7F, sp3A + 7, 0x182, gInfoPanelHeight - 0xE, 0x14, 0x32, 0x64, 0x96);
+        Ui_DrawBorderedPanelNoFill(0x78, sp3A, 0x190, gInfoPanelHeight);
+        Gfx_FillRectWithDisplayState(0x7F, sp3A + 7, 0x182, gInfoPanelHeight - 0xE, 0x14, 0x32, 0x64, 0x96);
 
         if (gInfoPanelHeight == 0x50) {
-            Text_ResetState();
-            Text_SetFont(8, 0);
-            Text_SetLineHeight(0x18);
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(8, 0);
+            Font_SetLineHeight(0x18);
 
             if (gCurrentRoomIndex == 7) {
-                Text_Print(0x88, sp3A + 0x10, GetMessageString(NULL, 0, gGymMessageBank, 0xC));
+                Font_Printf(0x88, sp3A + 0x10, Text_GetString(NULL, 0, gGymMessageBank, 0xC));
             } else if (gCurrentRoomIndex == 0xA) {
-                Text_Print(0x88, sp3A + 0x10, GetMessageString(NULL, 0, gGymMessageBank, 0xD));
+                Font_Printf(0x88, sp3A + 0x10, Text_GetString(NULL, 0, gGymMessageBank, 0xD));
             } else {
                 temp_v0 = gRoomDefinitions[gCurrentRoomIndex].unk_22;
                 if (temp_v0 >= 0x1E) {
-                    MessageBank_SetPointer_0x14_0x2A(0x24, GetMessageString(NULL, 0, gRoomMessageBank, temp_v0));
+                    Text_SetStringToken(0x24, Text_GetString(NULL, 0, gRoomMessageBank, temp_v0));
                 } else if (temp_v0 >= 0) {
-                    MessageBank_SetPointer_0x14_0x2A(0x24, GetMessageString(NULL, 0, gGymMessageBank, temp_v0));
+                    Text_SetStringToken(0x24, Text_GetString(NULL, 0, gGymMessageBank, temp_v0));
                 } else {
-                    MessageBank_SetPointer_0x14_0x2A(0x24, " ");
+                    Text_SetStringToken(0x24, " ");
                 }
 
                 temp_v0 = gRoomDefinitions[gCurrentRoomIndex + 1].unk_22;
                 if (temp_v0 >= 0x1E) {
-                    MessageBank_SetPointer_0x14_0x2A(0x29, GetMessageString(NULL, 0, gRoomMessageBank, temp_v0));
+                    Text_SetStringToken(0x29, Text_GetString(NULL, 0, gRoomMessageBank, temp_v0));
                 } else if (temp_v0 >= 0) {
-                    MessageBank_SetPointer_0x14_0x2A(0x29, GetMessageString(NULL, 0, gGymMessageBank, temp_v0));
+                    Text_SetStringToken(0x29, Text_GetString(NULL, 0, gGymMessageBank, temp_v0));
                 } else {
-                    MessageBank_SetPointer_0x14_0x2A(0x29, " ");
+                    Text_SetStringToken(0x29, " ");
                 }
-                Text_Print(0x88, sp3A + 0x10, GetMessageString(sp40, sizeof(sp40), gGymMessageBank, 0xE));
+                Font_Printf(0x88, sp3A + 0x10, Text_GetString(sp40, sizeof(sp40), gGymMessageBank, 0xE));
             }
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
         }
     }
 }
 
-void DrawPortraitIcons(void) {
+void Glc_DrawTrainerIntroPanels(void) {
     UNUSED s32 pad[3];
     s32 i;
     char* var_s0;
@@ -201,37 +201,37 @@ void DrawPortraitIcons(void) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-            Text_ResetState();
+            Font_BeginTranslucentTextRendering();
 
             if ((gCurrentRoomIndex >= 8) || (i == 3)) {
-                Text_SetFont(8, 0);
+                Font_SetActive(8, 0);
 
                 if (sp58->unk_20 >= 0) {
-                    var_s0 = GetMessageString(NULL, 0, gGymMessageBank, sp58->unk_20);
+                    var_s0 = Text_GetString(NULL, 0, gGymMessageBank, sp58->unk_20);
                 } else {
                     var_s0 = " ";
                 }
 
-                Text_Print((tmp - (MeasureTextWidth(8, 0, var_s0) / 2)) + 0x40, 0xF4, var_s0);
+                Font_Printf((tmp - (Font_MeasureTextExtent(8, 0, var_s0) / 2)) + 0x40, 0xF4, var_s0);
             }
 
-            Text_SetFont(4, 0);
+            Font_SetActive(4, 0);
 
             if ((i == 3) && (gCurrentRoomIndex < 8)) {
-                Text_Print(tmp + 8, 0x10C, GetMessageString(NULL, 0, gGymMessageBank, 8));
+                Font_Printf(tmp + 8, 0x10C, Text_GetString(NULL, 0, gGymMessageBank, 8));
             } else {
-                Text_Print(tmp + 8, 0x10C, GetMessageString(NULL, 0, gGymMessageBank, 0xF));
+                Font_Printf(tmp + 8, 0x10C, Text_GetString(NULL, 0, gGymMessageBank, 0xF));
             }
 
-            Text_SetFont(0x10, 0);
-            Text_Print((tmp - (MeasureTextWidth(0x10, 0, gTrainerPortraits[i].unk_08) / 2)) + 0x40, 0x11C,
+            Font_SetActive(0x10, 0);
+            Font_Printf((tmp - (Font_MeasureTextExtent(0x10, 0, gTrainerPortraits[i].unk_08) / 2)) + 0x40, 0x11C,
                           gTrainerPortraits[i].unk_08);
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
         }
     }
 }
 
-void AnimatePortraitScroll(void) {
+void Glc_DrawMapBorder(void) {
     static s16 D_84A030F4 = 0;
     static s16 gScrollDirection = 1;
 
@@ -241,7 +241,7 @@ void AnimatePortraitScroll(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 9; i++) {
-        Gfx_DrawSpriteRGBA16(0x24, var_s1, 0xE4, 8, D_3011A30 + i * 0xE40, 0xE4, 0);
+        Gfx_DrawTextureRgba16(0x24, var_s1, 0xE4, 8, D_3011A30 + i * 0xE40, 0xE4, 0);
         var_s1 += 8;
     }
 
@@ -257,7 +257,7 @@ void AnimatePortraitScroll(void) {
     }
 }
 
-void DrawAnimatedSprites(void) {
+void Glc_DrawRoomMarkers(void) {
     s32 i;
     s32 var_a0;
     s32 var_s2;
@@ -299,14 +299,14 @@ void DrawAnimatedSprites(void) {
                 gDPSetPrimColor(gDisplayListHead++, 0, 0, 255, 255, 255, 255);
             }
 
-            DrawScaledIA8TextureRect(var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E * 2, var_s0->unk_10 * 2, var_s0->unk_1C, 2.0f);
+            Glc_DrawScaledTextureIa8(var_s0->unk_0A, var_s0->unk_0C, var_s0->unk_0E * 2, var_s0->unk_10 * 2, var_s0->unk_1C, 2.0f);
         }
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawMessageList(void) {
+void Glc_DrawRoomLabels(void) {
     s32 var_s2;
     char* var_s0;
     RoomDef* var_s1;
@@ -320,30 +320,30 @@ void DrawMessageList(void) {
         var_s2 = 3;
     }
 
-    Text_ResetState();
-    Text_BeginRender();
-    Text_SetFont(4, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
+    Font_SetActive(4, 0);
     Text_SetPrimColor(0x50, 0x64, 0xDC, 0xFF);
 
     for (; var_s2 > 0; var_s2--, var_s1++) {
         if (var_s1->unk_01 != 0) {
             if (var_s1->unk_22 >= 0x1E) {
-                var_s0 = GetMessageString(NULL, 0, gRoomMessageBank, var_s1->unk_22);
+                var_s0 = Text_GetString(NULL, 0, gRoomMessageBank, var_s1->unk_22);
             } else if (var_s1->unk_22 >= 0) {
-                var_s0 = GetMessageString(NULL, 0, gGymMessageBank, var_s1->unk_22);
+                var_s0 = Text_GetString(NULL, 0, gGymMessageBank, var_s1->unk_22);
             } else {
                 var_s0 = " ";
             }
-            tmp = var_s1->unk_02 - (MeasureTextWidth(4, 0, var_s0) / 2);
-            Text_Print(tmp, var_s1->unk_04, var_s0);
+            tmp = var_s1->unk_02 - (Font_MeasureTextExtent(4, 0, var_s0) / 2);
+            Font_Printf(tmp, var_s1->unk_04, var_s0);
         }
     }
 
-    Text_EndRender();
-    Text_SetupDL();
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
-void DrawDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
+void Glc_DrawGymLeaderInfoPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
     char* sp54;
 
     if (arg0->unk_24 != NULL) {
@@ -356,40 +356,40 @@ void DrawDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
         gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
         gDPSetEnvColor(gDisplayListHead++, arg0->unk_18.r, arg0->unk_18.g, arg0->unk_18.b, (arg2 * 0x96) / 255);
 
-        Gfx_DrawSpriteIA16(0x166, 0x174, 0x10, 0x4C, D_300C290, 0x10, 0);
-        Gfx_DrawTextureRect(0x176, 0x174, 0x80, 0x4C, 0x1E0, 0, 0, 0x400, 0);
+        Gfx_DrawTextureIa16(0x166, 0x174, 0x10, 0x4C, D_300C290, 0x10, 0);
+        Gfx_DrawTexturedRectClipped(0x176, 0x174, 0x80, 0x4C, 0x1E0, 0, 0, 0x400, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-        Text_ResetState();
-        Text_BeginRender();
+        Font_BeginTranslucentTextRendering();
+        Font_EnableTwoCycleTexturing();
         Text_SetEnvColor(0x8C, 0x90, 0x90, arg2);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, arg2);
-        Text_SetFont(8, 0);
+        Font_SetActive(8, 0);
 
         if (arg0->unk_20 >= 0) {
-            sp54 = GetMessageString(NULL, 0, gGymMessageBank, arg0->unk_20);
+            sp54 = Text_GetString(NULL, 0, gGymMessageBank, arg0->unk_20);
         } else {
             sp54 = " ";
         }
-        Text_Print(0x1AE - (MeasureTextWidth(8, 0, sp54) / 2), 0x17A, sp54);
-        Text_SetFont(0x20, 0);
+        Font_Printf(0x1AE - (Font_MeasureTextExtent(8, 0, sp54) / 2), 0x17A, sp54);
+        Font_SetActive(0x20, 0);
 
         if (arg0->unk_22 >= 0x1E) {
-            sp54 = GetMessageString(NULL, 0, gRoomMessageBank, arg0->unk_22);
+            sp54 = Text_GetString(NULL, 0, gRoomMessageBank, arg0->unk_22);
         } else if (arg0->unk_22 >= 0) {
-            sp54 = GetMessageString(NULL, 0, gGymMessageBank, arg0->unk_22);
+            sp54 = Text_GetString(NULL, 0, gGymMessageBank, arg0->unk_22);
         } else {
             sp54 = " ";
         }
 
-        Text_Print(0x1AE - (MeasureTextWidth(0x20, 0, sp54) / 2), 0x196, sp54);
-        Text_EndRender();
-        Text_SetupDL();
+        Font_Printf(0x1AE - (Font_MeasureTextExtent(0x20, 0, sp54) / 2), 0x196, sp54);
+        Font_DisableTwoCycleTexturing();
+        Font_EndTexturedTextRendering();
     }
 }
 
-void DrawAlternateDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
+void Glc_DrawEliteFourRoomInfoPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
     char* var_s0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -406,28 +406,28 @@ void DrawAlternateDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
     gDPLoadTextureBlock(gDisplayListHead++, D_300C290, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 76, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(0x15A, 0x174, 0x10, 0x4C, 0, 0, 0x400, 0x400, 0);
-    Gfx_DrawTextureRect(0x16A, 0x174, 0x6C, 0x4C, 0x1E0, 0, 0, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(0x15A, 0x174, 0x10, 0x4C, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(0x16A, 0x174, 0x6C, 0x4C, 0x1E0, 0, 0, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_BeginRender();
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
     Text_SetEnvColor(0x8C, 0x90, 0x90, arg2);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, arg2);
-    Text_SetFont(0x10, 0);
+    Font_SetActive(0x10, 0);
 
     if (arg0->unk_22 >= 0x1E) {
-        var_s0 = GetMessageString(NULL, 0, gRoomMessageBank, arg0->unk_22);
+        var_s0 = Text_GetString(NULL, 0, gRoomMessageBank, arg0->unk_22);
     } else if (arg0->unk_22 >= 0) {
-        var_s0 = GetMessageString(NULL, 0, gGymMessageBank, arg0->unk_22);
+        var_s0 = Text_GetString(NULL, 0, gGymMessageBank, arg0->unk_22);
     } else {
         var_s0 = " ";
     }
 
-    Text_Print(0x198 - (MeasureTextWidth(0x10, 0, var_s0) / 2), 0x196, var_s0);
-    Text_EndRender();
-    Text_SetupDL();
+    Font_Printf(0x198 - (Font_MeasureTextExtent(0x10, 0, var_s0) / 2), 0x196, var_s0);
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
 void Glc_UpdateRoomInfoPanelFade(void) {
@@ -436,28 +436,28 @@ void Glc_UpdateRoomInfoPanelFade(void) {
     if (gPanelFadeAlpha > 0) {
         if (gPanelFadeAlpha < 0xFF) {
             if (gCurrentRoomIndex == 0xA) {
-                DrawAlternateDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], gPanelFadeAlpha, gPanelFadeAlpha);
+                Glc_DrawEliteFourRoomInfoPanel(&gRoomDefinitions[gCurrentRoomIndex], gPanelFadeAlpha, gPanelFadeAlpha);
             } else {
-                DrawDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], gPanelFadeAlpha, gPanelFadeAlpha);
+                Glc_DrawGymLeaderInfoPanel(&gRoomDefinitions[gCurrentRoomIndex], gPanelFadeAlpha, gPanelFadeAlpha);
             }
         } else if (gRoomTransitionTimer == 0) {
             if (gCurrentRoomIndex == 0xA) {
-                DrawAlternateDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF);
+                Glc_DrawEliteFourRoomInfoPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF);
             } else {
-                DrawDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF);
+                Glc_DrawGymLeaderInfoPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF);
             }
         } else {
             sp1F = ((gRoomTransitionTimer * 0xFF) / 4) & 0xFF;
             if (gCurrentRoomIndex == 0xA) {
-                DrawAlternateDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF - sp1F);
+                Glc_DrawEliteFourRoomInfoPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF - sp1F);
             } else {
-                DrawDetailPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF - sp1F);
+                Glc_DrawGymLeaderInfoPanel(&gRoomDefinitions[gCurrentRoomIndex], 0xFF, 0xFF - sp1F);
             }
 
             if (gPrevRoomIndex == 0xA) {
-                DrawAlternateDetailPanel(&gRoomDefinitions[gPrevRoomIndex], sp1F, sp1F);
+                Glc_DrawEliteFourRoomInfoPanel(&gRoomDefinitions[gPrevRoomIndex], sp1F, sp1F);
             } else {
-                DrawDetailPanel(&gRoomDefinitions[gPrevRoomIndex], sp1F, sp1F);
+                Glc_DrawGymLeaderInfoPanel(&gRoomDefinitions[gPrevRoomIndex], sp1F, sp1F);
             }
         }
     }
@@ -477,49 +477,49 @@ void Glc_UpdateMapCursor(void) {
 
         gRoomTransitionTimer--;
         if ((gRoomTransitionTimer == 0) && ((gCurrentRoomIndex == 8) || (gCurrentRoomIndex == 9))) {
-            Stage_SetFillColor(1);
-            Stage_FadeOut(8);
+            StageContext_SetClearColor(1);
+            StageFade_StartFromTransparent(8);
         }
     }
 
-    AnimateIconOffset(sp1E - 3, sp1C);
+    Ui_DrawAnimatedTextureMarker(sp1E - 3, sp1C);
 }
 
 void Glc_Draw(void) {
-    Stage_BeginDisplayList();
+    BgStage_DrawFrame();
 
     if (gCurrentRoomIndex < 9) {
         if (gBgFadeAlpha == 0) {
-            Gfx_DrawTextureAtlas(gBgTexture1);
+            Gfx_DrawTiledRgba16Image(gBgTexture1);
         } else if (gBgFadeAlpha == 0xFF) {
-            Gfx_DrawTextureAtlas(gBgTexture2);
+            Gfx_DrawTiledRgba16Image(gBgTexture2);
         } else {
-            TileBackgroundTexture(gBgTexture1, gBgTexture2, gBgFadeAlpha);
+            Glc_DrawBackgroundCrossfade(gBgTexture1, gBgTexture2, gBgFadeAlpha);
             if (gBgFadeAlpha < 0xFF) {
                 gBgFadeAlpha += 5;
             }
         }
     } else {
-        Gfx_DrawTextureAtlas(gBgTexture3);
+        Gfx_DrawTiledRgba16Image(gBgTexture3);
         gBgFadeAlpha = 0xFF;
     }
 
-    if (gBattleContext.unk_11F2 == 1) {
+    if (gSessionContext.unk_11F2 == 1) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA16(0x22C, 0x28, 0x24, 0x24, D_3019C38, 0x24, 0);
+        Gfx_DrawTextureRgba16(0x22C, 0x28, 0x24, 0x24, D_3019C38, 0x24, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 
-    DrawAnimatedSprites();
-    DrawMessageList();
+    Glc_DrawRoomMarkers();
+    Glc_DrawRoomLabels();
     Glc_UpdateRoomInfoPanelFade();
     Glc_UpdateMapCursor();
-    DrawPortraitIcons();
-    AnimatePortraitScroll();
-    DrawInfoPanel();
-    Stage_Advance();
+    Glc_DrawTrainerIntroPanels();
+    Glc_DrawMapBorder();
+    Glc_DrawRoomDescription();
+    BgStage_AdvanceFrame();
 }
 
 s32 Glc_GetInputStatus(void) {
@@ -539,10 +539,10 @@ s32 Glc_SelectRoom(void) {
         var_s1 = -1;
         temp_s0 = &gRoomDefinitions[gCurrentRoomIndex];
 
-        Game_UpdateInputs();
+        Controller_PollInputs();
 
         if (Glc_GetInputStatus() == 0) {
-            if (Stage_GetFadeState() == 0) {
+            if (StageContext_GetFadeMode() == 0) {
                 if (gRoomTransitionTimer == 0) {
                     gPrevRoomIndex = gCurrentRoomIndex;
                     if (gCurrentRoomIndex == 0xB) {
@@ -551,10 +551,10 @@ s32 Glc_SelectRoom(void) {
                             var_s3 = 3;
                         }
                     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-                        PlaySoundEffect(2);
+                        Audio_PlaySoundEffectById(2);
                         var_s3 = 3;
                     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-                        PlaySoundEffect(3);
+                        Audio_PlaySoundEffectById(3);
                         if (temp_s0->unk_00 >= 0xA) {
                             gCurrentRoomIndex = 9;
                             gRoomTransitionTimer = 3;
@@ -572,12 +572,12 @@ s32 Glc_SelectRoom(void) {
                     }
 
                     if ((var_s1 >= 0) && (gRoomDefinitions[var_s1].unk_01 != 0)) {
-                        PlaySoundEffect(1);
+                        Audio_PlaySoundEffectById(1);
                         gCurrentRoomIndex = var_s1;
                         gRoomTransitionTimer = 3;
                     }
                 }
-            } else if (Stage_GetFadeState() == 1) {
+            } else if (StageContext_GetFadeMode() == 1) {
                 if (gCurrentRoomIndex == 8) {
                     gCurrentRoomIndex = 0xA;
                 }
@@ -585,7 +585,7 @@ s32 Glc_SelectRoom(void) {
                 if (gCurrentRoomIndex == 9) {
                     gCurrentRoomIndex = 7;
                 }
-                Stage_FadeIn(8);
+                StageFade_StartFromOpaque(8);
             }
         }
         Glc_Draw();
@@ -593,7 +593,7 @@ s32 Glc_SelectRoom(void) {
     return var_s3;
 }
 
-void LoadTrainerPortraits(void) {
+void Glc_LoadTrainerPanels(void) {
     s32 i;
     s32 var_a1;
     s32 var_s7;
@@ -612,7 +612,7 @@ void LoadTrainerPortraits(void) {
         var_a1 = gCurrentRoomIndex + 0xA;
     }
 
-    if (gBattleContext.unk_11F2 != 0) {
+    if (gSessionContext.unk_11F2 != 0) {
         var_a1 += 0x1F;
     }
 
@@ -642,28 +642,28 @@ void Glc_AnimateTrainerPanelsIn(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
         for (i = arg0; i <= arg1; i++) {
             gTrainerPortraits[i].unk_02 += arg3;
         }
-        Game_UpdateInputs();
+        Controller_PollInputs();
         Glc_Draw();
     }
 }
 
-s32 PlayIntroSequence(void) {
+s32 GymLeaderCastle_ShowIntro(void) {
     s16 i;
     s32 var_s1;
     s32 var_s1_2 = 0;
 
     main_pool_push_state('itro');
 
-    LoadTrainerPortraits();
-    Music_StopTrack(8);
+    Glc_LoadTrainerPanels();
+    Audio_StopMusic(8);
 
     for (i = 3; i >= 0; i--) {
         gPanelFadeAlpha = i << 6;
-        Game_UpdateInputs();
+        Controller_PollInputs();
         Glc_Draw();
     }
 
-    Music_ChangeTrack(0x2B);
+    Audio_PlayMusicIfChanged(0x2B);
     if (gCurrentRoomIndex == 0xB) {
         Glc_AnimateTrainerPanelsIn(0, 0, 6, -0x40);
     } else {
@@ -674,7 +674,7 @@ s32 PlayIntroSequence(void) {
     }
 
     while (var_s1_2 == 0) {
-        Game_UpdateInputs();
+        Controller_PollInputs();
         Glc_Draw();
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             var_s1_2 = 1;
@@ -688,7 +688,7 @@ s32 PlayIntroSequence(void) {
     }
 
     if (var_s1_2 == 1) {
-        PlaySoundEffect(0x1C);
+        Audio_PlaySoundEffectById(0x1C);
         var_s1 = 0;
         if (gCurrentRoomIndex == 0xB) {
             Glc_AnimateTrainerPanelsIn(0, 0, 6, -0x40);
@@ -701,9 +701,9 @@ s32 PlayIntroSequence(void) {
         Glc_ClearTrainerPanels();
         Glc_Draw();
     } else {
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
         var_s1 = 2;
-        Music_StopTrack(0x12);
+        Audio_StopMusic(0x12);
         if (gCurrentRoomIndex == 0xB) {
             Glc_AnimateTrainerPanelsIn(0, 0, 6, 0x40);
         } else {
@@ -715,14 +715,14 @@ s32 PlayIntroSequence(void) {
         Glc_ClearTrainerPanels();
 
         if (D_84A03180.unk_04 < 8) {
-            Music_ChangeTrack(0x2A);
+            Audio_PlayMusicIfChanged(0x2A);
         } else {
-            Music_ChangeTrack(0x27);
+            Audio_PlayMusicIfChanged(0x27);
         }
 
         for (i = 1; i < 5; i++) {
             gPanelFadeAlpha = (i << 6) - 1;
-            Game_UpdateInputs();
+            Controller_PollInputs();
             Glc_Draw();
         }
     }
@@ -732,28 +732,28 @@ s32 PlayIntroSequence(void) {
     return var_s1;
 }
 
-s32 ShowBattleStartPrompt(void) {
+s32 Glc_AdvanceRoom(void) {
     s16 i;
 
-    if (gBattleContext.unk_0002 == 7) {
-        PlayUISfx(0x01100015, 0, 0);
+    if (gSessionContext.unk_0002 == 7) {
+        Audio_PlayCategory11SoundCommand(0x01100015, 0, 0);
         gBgFadeAlpha = 5;
     }
 
     for (i = 1; i < 5; i++) {
         gInfoPanelHeight = i * 0x14;
-        Game_UpdateInputs();
+        Controller_PollInputs();
         Glc_Draw();
     }
 
     do {
-        Game_UpdateInputs();
+        Controller_PollInputs();
         Glc_Draw();
     } while (!BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B));
 
-    PlaySoundEffect(0x01100011);
+    Audio_PlaySoundEffectById(0x01100011);
 
-    if (gBattleContext.unk_0002 == 8) {
+    if (gSessionContext.unk_0002 == 8) {
         gRoomDefinitions[11].unk_01 = 0x3C;
     } else {
         gRoomDefinitions[D_84A03180.unk_04].unk_01 = 0x3C;
@@ -766,7 +766,7 @@ s32 ShowBattleStartPrompt(void) {
 
     for (i = 3; i >= 0; i--) {
         gInfoPanelHeight = i * 0x14;
-        Game_UpdateInputs();
+        Controller_PollInputs();
         Glc_Draw();
     }
 
@@ -779,10 +779,10 @@ s32 ShowBattleStartPrompt(void) {
 s16 Glc_RunMenu(s16 arg0) {
     s16 i;
 
-    if (Stage_GetFadeState() == 1) {
-        Stage_FadeIn(8);
+    if (StageContext_GetFadeMode() == 1) {
+        StageFade_StartFromOpaque(8);
         for (i = 0; i < 9; i++) {
-            Game_UpdateInputs();
+            Controller_PollInputs();
             Glc_Draw();
         }
     }
@@ -794,20 +794,20 @@ s16 Glc_RunMenu(s16 arg0) {
                 break;
 
             case 3:
-                arg0 = PlayIntroSequence();
+                arg0 = GymLeaderCastle_ShowIntro();
                 break;
 
             case 4:
-                arg0 = ShowBattleStartPrompt();
+                arg0 = Glc_AdvanceRoom();
                 break;
         }
     }
 
-    gBattleContext.unk_0003 = 1;
+    gSessionContext.unk_0003 = 1;
     if (gCurrentRoomIndex < 8) {
-        gBattleContext.unk_0002 = gCurrentRoomIndex;
+        gSessionContext.unk_0002 = gCurrentRoomIndex;
     } else {
-        gBattleContext.unk_0002 = gCurrentRoomIndex - 2;
+        gSessionContext.unk_0002 = gCurrentRoomIndex - 2;
     }
     return arg0;
 }
@@ -817,15 +817,15 @@ s16 Glc_InitMenu(s16 arg0) {
     s16 sp2C = 2;
     s16 var_v1 = D_84A03180.unk_04;
 
-    if (gBattleContext.unk_0002 < 8) {
-        gCurrentRoomIndex = gBattleContext.unk_0002;
+    if (gSessionContext.unk_0002 < 8) {
+        gCurrentRoomIndex = gSessionContext.unk_0002;
     } else {
-        gCurrentRoomIndex = gBattleContext.unk_0002 + 2;
+        gCurrentRoomIndex = gSessionContext.unk_0002 + 2;
     }
 
     if (arg0 == 1) {
         sp2C = 4;
-        if (gBattleContext.unk_0002 < 8) {
+        if (gSessionContext.unk_0002 < 8) {
             var_v1--;
         }
     }
@@ -858,37 +858,37 @@ s16 Glc_InitMenu(s16 arg0) {
     return sp2C;
 }
 
-s32 InitializePokemonStadiumMenu(s32 arg0, UNUSED s32 arg1) {
+s32 GymLeaderCastle_Main(s32 arg0, UNUSED s32 arg1) {
     s16 sp1E;
 
     main_pool_push_state('PNLV');
 
-    Text_Init(0x3C, 0);
+    Font_Init(0x3C, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gym_leader_castle_ui, 0);
-    MessageBank_Init();
-    gGymMessageBank = GetMessageBank(0x19);
-    gRoomMessageBank = GetMessageBank(0x22);
-    GbsEnsureBankLoaded(2);
-    GBAudio_ResetState(&D_84A03180, gBattleContext.unk_11F2);
-    gTrainerDataArchive = Asset_Load2(0x898000, NULL, 1, 1);
+    Text_InitStringTables();
+    gGymMessageBank = Text_GetStringTable(0x19);
+    gRoomMessageBank = Text_GetStringTable(0x22);
+    Save_EnsureBankLoaded(2);
+    Save_GetModeSettings(&D_84A03180, gSessionContext.unk_11F2);
+    gTrainerDataArchive = BinArchive_Open(0x898000, NULL, 1, 1);
     gPortraitGfxArchive = ASSET_LOAD2(battle_portraits, 1, 1);
     D_84A03170 = ASSET_LOAD2(backgrounds, 1, 1);
     gBgTexture1 = BinArchive_GetFile(D_84A03170, 0xD);
     gBgTexture2 = BinArchive_GetFile(D_84A03170, 0x10);
     gBgTexture3 = BinArchive_GetFile(D_84A03170, 0xE);
-    Menu_SetupDisplayList();
+    StageLoader_UpdateSegments();
 
     sp1E = Glc_InitMenu(arg0);
     if (D_84A03180.unk_04 < 8) {
-        Music_ChangeTrack(0x2A);
+        Audio_PlayMusicIfChanged(0x2A);
     } else {
-        Music_ChangeTrack(0x27);
+        Audio_PlayMusicIfChanged(0x27);
     }
 
     sp1E = Glc_RunMenu(sp1E);
-    Stage_Terminate();
-    FontManager_Free();
+    StageLoader_WaitForRetrace();
+    Font_Free();
 
     main_pool_pop_state('PNLV');
     return sp1E == 0;

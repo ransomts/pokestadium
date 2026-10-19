@@ -20,8 +20,8 @@ static u8 gBackgroundIndices[] = {
 };
 static Camera* D_8FA00A00 = NULL;
 
-void DrawStageBottomBar(s32 arg0) {
-    Stage_BeginDisplayList();
+void Snap_PrintClubDrawSealMargin(s32 arg0) {
+    BgStage_DrawFrame();
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -56,18 +56,18 @@ void DrawStageBottomBar(s32 arg0) {
     }
 }
 
-void WaitFrames(s32 arg0) {
+void Snap_PrintClubWaitMs(s32 arg0) {
     u32 sp24 = osGetCount();
     u32 temp_s0 = __ull_div(__ll_mul(__ll_mul(arg0, 0x3E8), 0xBB8), 0x40) + sp24;
 
     while (osGetCount() < temp_s0) {}
 }
 
-s32 IsSnapModeEnabled(void) {
+s32 Snap_PrintClubIsBackgroundMode(void) {
     return gGallerySpecialViewed;
 }
 
-s32 StickerStation_Run(s32 arg0, s32 arg1) {
+s32 Snap_PrintClubPrintSeals(s32 arg0, s32 arg1) {
     s32 i;
     AssetManager* temp_s0;
     Stage* temp_v0;
@@ -78,42 +78,42 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
     u8 var_v0;
     u8 sp4E;
 
-    if (IsSnapModeEnabled() == 0) {
-        if (CountDisplayableMonIndices(sp60, (gGallerySpecialUnlocked != 0) ? 16 : 4, 0) != 0) {
-            StickerStation_SetCommand(0x10);
+    if (Snap_PrintClubIsBackgroundMode() == 0) {
+        if (Gallery_CountValidPhotos(sp60, (gGallerySpecialUnlocked != 0) ? 16 : 4, 0) != 0) {
+            Controller_WriteAccessoryStatus(0x10);
             return 0;
         }
     }
 
     main_pool_push_state('SEAL');
 
-    Text_Init(0x10, 0);
-    Gfx_InitBuffers(0x10000, 0);
-    temp_v0 = Stage_Create(1, 0, 1, 0, 2, 1);
+    Font_Init(0x10, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    temp_v0 = StageContext_Allocate(1, 0, 1, 0, 2, 1);
     D_8FA00A2C = temp_v0;
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_6000000, copyright, 0);
 
-    if (IsSnapModeEnabled() == 0) {
+    if (Snap_PrintClubIsBackgroundMode() == 0) {
         ASSET_LOAD(D_5000000, snap_mode_ui, 0);
         FRAGMENT_LOAD(fragment31);
 
-        AssetManager_LoadArchives();
+        PokeIcon_OpenModelArchives();
 
         D_8FA00A28 = ASSET_LOAD2(stadium_models, 1, 1);
-        temp_s0 = AssetManager_Create(5);
-        Cam_ResetUnkF90();
-        D_8FA00A00 = Cam_Create(0x280, 0x1E0, D_8FA00A2C->unk_18[0], NULL, temp_s0, D_8FA00A28, sp60);
+        temp_s0 = PokeIcon_AllocFramebuffers(5);
+        Gallery_ClearPhotoRenderTarget();
+        D_8FA00A00 = Geo_CreateSceneInstance(0x280, 0x1E0, D_8FA00A2C->unk_18[0], NULL, temp_s0, D_8FA00A28, sp60);
     }
 
-    Stage_Set(temp_v0);
-    StickerStation_SetCommand(1);
-    WaitFrames(0xC8);
-    Stage_FadeIn(1);
+    StageContext_Activate(temp_v0);
+    Controller_WriteAccessoryStatus(1);
+    Snap_PrintClubWaitMs(0xC8);
+    StageFade_StartFromOpaque(1);
 
-    while (Stage_GetFadeState() != 0) {
-        Stage_Advance();
+    while (StageContext_GetFadeMode() != 0) {
+        BgStage_AdvanceFrame();
     }
 
     osViBlack(1);
@@ -121,7 +121,7 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
 
     sp4E = 0;
     for (i = 0; i < 16; i++) {
-        if (IsSnapModeEnabled() == 0) {
+        if (Snap_PrintClubIsBackgroundMode() == 0) {
             if (gGallerySpecialUnlocked != 0) {
                 var_v0 = i;
             } else {
@@ -136,47 +136,47 @@ s32 StickerStation_Run(s32 arg0, s32 arg1) {
             main_pool_push_state('DRAW');
 
             do {
-                Cam_Update(D_8FA00A00);
+                Gallery_ProcessSceneInstance(D_8FA00A00);
             } while (D_8FA00A00->unk_00 != 2);
 
-            DrawStageBottomBar(i);
+            Snap_PrintClubDrawSealMargin(i);
             main_pool_pop_state('DRAW');
         } else {
             main_pool_push_state('DRAW');
 
             D_8FA00A20 = ASSET_LOAD2(backgrounds, 1, 1);
             gBackgroundData = BinArchive_GetFile(D_8FA00A20, gBackgroundIndices[i]);
-            Gfx_DrawTextureAtlas(gBackgroundData);
-            DrawStageBottomBar(i);
+            Gfx_DrawTiledRgba16Image(gBackgroundData);
+            Snap_PrintClubDrawSealMargin(i);
 
             main_pool_pop_state('DRAW');
         }
 
-        Stage_Advance();
+        BgStage_AdvanceFrame();
 
-        while (RspTaskYielded() == 0) {}
+        while (Display_IsFrameReady() == 0) {}
 
         osViBlack(0);
         Display_DisableBlackout();
-        WaitFrames(0xC8);
-        StickerStation_SetCommand(2);
+        Snap_PrintClubWaitMs(0xC8);
+        Controller_WriteAccessoryStatus(2);
 
-        while (StickerStation_GetCommand() == 8) {
-            WaitFrames(0xC8);
+        while (Controller_ReadAccessoryStatus() == 8) {
+            Snap_PrintClubWaitMs(0xC8);
         }
 
         osViBlack(1);
         Display_EnableBlackout();
     }
 
-    StickerStation_SetCommand(4);
+    Controller_WriteAccessoryStatus(4);
 
-    while (StickerStation_GetCommand() == 8) {
-        WaitFrames(0x14);
+    while (Controller_ReadAccessoryStatus() == 8) {
+        Snap_PrintClubWaitMs(0x14);
     }
 
     Display_DisableBlackout();
-    Stage_Destroy();
+    StageContext_Deactivate();
 
     main_pool_pop_state('SEAL');
 

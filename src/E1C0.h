@@ -10,8 +10,8 @@ typedef struct GbEmuThreadInfo {
 
 extern GbEmuState* gGbEmuState;
 
-void GbEmu_Create(UnkInputStruct8000D738* arg0);
-OSMesg* GbEmu_RecvMessage(void);
-void GbEmu_Shutdown(UnkInputStruct8000D738* arg0);
+void GbTower_Start(UnkInputStruct8000D738* arg0);
+OSMesg* GbTower_RecvExitMesg(void);
+void GbTower_Stop(UnkInputStruct8000D738* arg0);
 
 #endif // _E1C0_H_

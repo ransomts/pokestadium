@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-s32 GetPlayerCount(UNUSED s32 arg0, UNUSED s32 arg1);
+s32 DebugMenu_Exit(UNUSED s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT67_H_

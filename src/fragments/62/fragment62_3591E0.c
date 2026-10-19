@@ -115,7 +115,7 @@ u32 gBeamTexture[] = {
     0x00000000, 0x00000000,
 };
 
-void GlowEmitters_Reset(void) {
+void AuxiliaryEffect_Init(void) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -123,7 +123,7 @@ void GlowEmitters_Reset(void) {
     }
 }
 
-s16 GlowEmitter_Allocate(void) {
+s16 AuxiliaryEffect_Alloc(void) {
     unk_D_843C49C0* var_a0;
     Particle* var_v1;
     s32 i;
@@ -147,7 +147,7 @@ s16 GlowEmitter_Allocate(void) {
     return -1;
 }
 
-void ParticleEmitter_AddParticle(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32 arg5) {
+void AuxiliaryEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, f32 arg5) {
     s32 i;
     unk_D_843C49C0* temp_v0 = &D_843C49C0[arg0];
     Particle* var_v1;
@@ -169,7 +169,7 @@ void ParticleEmitter_AddParticle(s16 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg
     }
 }
 
-void GlowEmitter_Update(s16 arg0) {
+void AuxiliaryEffect_Update(s16 arg0) {
     unk_D_843C49C0* temp_v0 = &D_843C49C0[arg0];
     Particle* var_v1;
     s32 i;
@@ -188,7 +188,7 @@ void GlowEmitter_Update(s16 arg0) {
     }
 }
 
-Gfx* GlowParticle_Draw(Gfx* arg0, Particle* arg1, MtxF* arg2) {
+Gfx* AuxiliaryEffect_DrawOne(Gfx* arg0, Particle* arg1, MtxF* arg2) {
     f32 spCC;
     f32 spC8;
     f32 spC4;
@@ -205,7 +205,7 @@ Gfx* GlowParticle_Draw(Gfx* arg0, Particle* arg1, MtxF* arg2) {
 
     guScale(&sp38, spC0, spC0, spC0);
     guTranslate(&sp78, spCC, spC8, spC4);
-    spBC = GfxAlloc(sizeof(Mtx) * 1);
+    spBC = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
     guMtxCatL(&sp38, &sp78, spBC);
     guMtxCatL(arg2, spBC, spBC);
 
@@ -217,7 +217,7 @@ Gfx* GlowParticle_Draw(Gfx* arg0, Particle* arg1, MtxF* arg2) {
     return arg0;
 }
 
-Gfx* ParticleEmitter_RenderAll(s16 arg0, Gfx* arg1) {
+Gfx* AuxiliaryEffect_Draw(s16 arg0, Gfx* arg1) {
     UNUSED s32 pad;
     unk_D_843C49C0* temp_s3 = &D_843C49C0[arg0];
     Particle* var_s0;
@@ -229,13 +229,13 @@ Gfx* ParticleEmitter_RenderAll(s16 arg0, Gfx* arg1) {
         return arg1;
     }
 
-    Camera_CopyMatrixF(sp78.mf, &gCurrentCameraNode->unk_60.mtxf);
+    MtxF_ExtractScale(sp78.mf, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(sp78.mf, sp38.mf);
 
     var_s0 = &temp_s3->unk_004;
     for (i = 0; i < 20; i++, var_s0++) {
         if (var_s0->unk_00 == 1) {
-            arg1 = GlowParticle_Draw(arg1, var_s0, &sp38);
+            arg1 = AuxiliaryEffect_DrawOne(arg1, var_s0, &sp38);
         }
     }
 

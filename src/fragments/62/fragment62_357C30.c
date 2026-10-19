@@ -7,7 +7,7 @@
 static s16 gWaterEffectFrameCounter;
 static unk_D_843C3508 gWaterEffects[6];
 
-void WaterEffect_Init(void) {
+void BattleAnim_SixSlotTrail_ResetPool(void) {
     s32 i;
     s32 j;
     unk_D_843C3508* var_v0;
@@ -42,7 +42,7 @@ void WaterEffect_Init(void) {
     }
 }
 
-void WaterEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, u8 arg7, u8 arg8, u8 arg9,
+void BattleAnim_SixSlotTrail_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC, u8 argD, u8 argE, u8 argF, f32 arg10, f32 arg11, f32 arg12, s16 arg13,
                    s32 arg14, s32 arg15, s16 arg16, s16 arg17, s16 arg18, s16 arg19, s16 arg1A, s16 arg1B, s16 arg1C,
                    s16 arg1D, CombineParams* arg1E, CombineParams* arg1F) {
@@ -111,10 +111,10 @@ void WaterEffect_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     }
 }
 
-void WaterEffect_CalcDirection(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, UNUSED f32 arg5, UNUSED f32 arg6,
+void BattleAnim_SixSlotTrail_ComputeCameraRelativeOffset(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, f32 arg4, UNUSED f32 arg5, UNUSED f32 arg6,
                    UNUSED f32 arg7) {
     UNUSED s32 pad[36];
-    CameraStruct* temp_v0 = GetBattleCamera();
+    CameraStruct* temp_v0 = BattleAnim_GetCameraContext();
     f32 sp6C;
     f32 sp68;
     f32 sp64;
@@ -133,9 +133,9 @@ void WaterEffect_CalcDirection(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, 
     sp68 = arg1->y;
     sp64 = arg1->z;
 
-    Math_CrossProductComponents(sp6C, sp68, sp64, sp60, sp5C, sp58, &sp54, &sp50, &sp4C);
+    Vec3f_CrossProductComponents(sp6C, sp68, sp64, sp60, sp5C, sp58, &sp54, &sp50, &sp4C);
 
-    Math_NormalizeVector(&sp54, &sp50, &sp4C);
+    Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
 
     switch (arg0) {
         case 0:
@@ -152,7 +152,7 @@ void WaterEffect_CalcDirection(s32 arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3, 
     }
 }
 
-void WaterEffect_ApplyRotation(f32 arg0, Vec3f* arg1, Vec3f* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+void BattleAnim_SixSlotTrail_ComputeRotatedOffset(f32 arg0, Vec3f* arg1, Vec3f* arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     UNUSED Mtx sp70;
     Mtx sp30;
     UNUSED s32 pad;
@@ -161,7 +161,7 @@ void WaterEffect_ApplyRotation(f32 arg0, Vec3f* arg1, Vec3f* arg2, f32 arg3, f32
     guMtxXFMF(&sp30, 0.0f, 0.0f, arg3, &arg2->x, &arg2->y, &arg2->z);
 }
 
-void WaterEffect_UpdateParticles(unk_D_843C3508* arg0) {
+void BattleAnim_SixSlotTrail_UpdateSlot(unk_D_843C3508* arg0) {
     unk_D_843C3508_0A4* var_s0;
     s32 spA8;
     s32 i;
@@ -187,7 +187,7 @@ void WaterEffect_UpdateParticles(unk_D_843C3508* arg0) {
             temp_fs2 =
                 __sinf((((spA8 + temp_s4) % (temp_s1 + 20)) * 6.2831854820251465) / (temp_s1 + 20)) * (10.0 * temp_fs1);
             temp_fs1_2 = __sinf((((spA8 + temp_s4) % temp_s1) * 6.2831854820251465) / temp_s1) * 10.0;
-            GetPrimaryEffectCenterOrNode(&sp98);
+            BattleAnim_GetSecondaryOwnerAnchorPosition(&sp98);
             var_s0->unk_0C.x = sp98.x;
             var_s0->unk_0C.y = sp98.y + temp_fs2;
             var_s0->unk_0C.z = sp98.z + temp_fs1_2;
@@ -205,7 +205,7 @@ void WaterEffect_UpdateParticles(unk_D_843C3508* arg0) {
     }
 }
 
-s32 WaterEffect_Process(void) {
+s32 BattleAnim_SixSlotTrail_UpdateAll(void) {
     f32 temp_fv0;
     s32 i;
     s32 var_s2;
@@ -221,7 +221,7 @@ s32 WaterEffect_Process(void) {
             if (var_s0->unk_006 < var_s0->unk_004) {
                 var_s0->unk_000 = 0;
             } else {
-                WaterEffect_UpdateParticles(var_s0);
+                BattleAnim_SixSlotTrail_UpdateSlot(var_s0);
                 var_s2++;
             }
 
@@ -249,7 +249,7 @@ s32 WaterEffect_Process(void) {
     return -1;
 }
 
-Gfx* WaterEffect_RenderGeometry(Gfx* arg0, unk_D_843C3508* arg1) {
+Gfx* BattleAnim_SixSlotTrail_DrawSegments(Gfx* arg0, unk_D_843C3508* arg1) {
     s32 i;
     Vtx* temp_v0 = arg1->unk_088;
 
@@ -262,24 +262,24 @@ Gfx* WaterEffect_RenderGeometry(Gfx* arg0, unk_D_843C3508* arg1) {
     return arg0;
 }
 
-Gfx* WaterEffect_LoadTextures(Gfx* arg0, unk_D_843C3508* arg1) {
+Gfx* BattleAnim_SixSlotTrail_LoadTextures(Gfx* arg0, unk_D_843C3508* arg1) {
     TextureTileInfo* ptr;
     UNUSED s32 pad[2];
 
     ptr = &arg1->unk_068;
-    gDPLoadTextureTile_4b(arg0++, gWaterTexture[arg1->unk_020], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_020], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
 
     ptr = &arg1->unk_074;
-    gDPLoadMultiTile_4b(arg0++, gWaterTexture[arg1->unk_024], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_024], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
     gDPSetTileSize(arg0++, 1, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
 
     return arg0;
 }
 
-Gfx* WaterEffect_RenderAll(Gfx* arg0) {
+Gfx* BattleAnim_SixSlotTrail_DrawAll(Gfx* arg0) {
     static Gfx sWaterEffectRenderStateDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
@@ -307,14 +307,14 @@ Gfx* WaterEffect_RenderAll(Gfx* arg0) {
     Vtx* var_s1;
     s32 pad[12];
 
-    GetBattleCamera();
+    BattleAnim_GetCameraContext();
 
     var_s6 = &gWaterEffects[0];
     for (i = 0; i < 6; i++, var_s6++) {
         if (var_s6->unk_000 == 1) {
             var_s0 = &var_s6->unk_0A4[0];
 
-            var_s6->unk_088 = GfxAlloc(sizeof(Vtx) * 40);
+            var_s6->unk_088 = Gfx_AllocDisplayList(sizeof(Vtx) * 40);
             var_s1 = var_s6->unk_088;
 
             for (j = 0; j < 20; j++, var_s0++) {
@@ -322,14 +322,14 @@ Gfx* WaterEffect_RenderAll(Gfx* arg0) {
                     switch (var_s6->unk_002) {
                         case 0:
                             if (var_s0->unk_00 <= 0.0) {
-                                WaterEffect_ApplyRotation(var_s0->unk_08 + ((k % 2) * 3.1415927f), &var_s0->unk_18, &spF0,
+                                BattleAnim_SixSlotTrail_ComputeRotatedOffset(var_s0->unk_08 + ((k % 2) * 3.1415927f), &var_s0->unk_18, &spF0,
                                               var_s0->unk_04, 1.0f, 0.0f, 0.0f);
                             }
                             break;
 
                         case 1:
                             if (var_s0->unk_00 <= 0.0) {
-                                WaterEffect_CalcDirection(k % 2, &var_s0->unk_18, &var_s0->unk_0C, &spF0, var_s0->unk_04, 1.0f,
+                                BattleAnim_SixSlotTrail_ComputeCameraRelativeOffset(k % 2, &var_s0->unk_18, &var_s0->unk_0C, &spF0, var_s0->unk_04, 1.0f,
                                               0.0f, 0.0f);
                             }
                             break;
@@ -363,11 +363,11 @@ Gfx* WaterEffect_RenderAll(Gfx* arg0) {
             gDPSetEnvColor(arg0++, var_s6->unk_00D.unk_00.r, var_s6->unk_00D.unk_00.g, var_s6->unk_00D.unk_00.b,
                            (u8)(var_s6->unk_00D.unk_00.a * var_s6->unk_018));
 
-            arg0 = WaterEffect_LoadTextures(arg0, var_s6);
+            arg0 = BattleAnim_SixSlotTrail_LoadTextures(arg0, var_s6);
 
             gDPPipeSync(arg0++);
 
-            arg0 = WaterEffect_RenderGeometry(arg0, var_s6);
+            arg0 = BattleAnim_SixSlotTrail_DrawSegments(arg0, var_s6);
         }
     }
 

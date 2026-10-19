@@ -20,20 +20,20 @@ typedef struct unk_D_800AA690 {
 
 extern unk_D_800AA680 gBootIDData;
 
-s32 Boot_ValidateAndCopy(void);
-s32 BootID_StoreIfValid(unk_D_800AA680* arg0);
+s32 Leo_ValidateBootDiskId(void);
+s32 Leo_AcceptPokemonDiskDescriptor(unk_D_800AA680* arg0);
 s32 Leo_QueueDiskIdRead(void);
 s32 Leo_QueueDiskReset(void);
-s32 Boot_DMAReadHeader(unk_D_800AA680* arg0);
-s32 Boot_DMAReadData(void);
-s32 Boot_ProcessMessage(void);
-s32 Boot_ProcessMessageStage2(void);
-s32 Boot_ProcessMessageWithID(unk_D_800AA680* arg0);
-s32 Boot_ProcessMessageStage3(void);
-s32 Boot_CheckUnitReady(void);
+s32 Leo_QueueBootBlockRead(unk_D_800AA680* arg0);
+s32 Leo_QueueDiskPayloadRead(void);
+s32 Leo_HandleDiskIdCompletion(void);
+s32 Leo_HandleResetCompletion(void);
+s32 Leo_HandleBootBlockCompletion(unk_D_800AA680* arg0);
+s32 Leo_HandlePayloadCompletion(void);
+s32 Leo_PollDiskReady(void);
 void func_8000E5B4(void);
-s32 Boot_MainLoop(unk_D_800AA680* arg0);
-s32 Boot_Init(void);
+s32 Leo_RunBootStateMachine(unk_D_800AA680* arg0);
+s32 Leo_InitializeBootState(void);
 void Leo_AbortPendingBootRequest(void);
 void Leo_ResetBootStateIfReady(void);
 

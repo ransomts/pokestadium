@@ -430,20 +430,20 @@ extern u8 gUnusedTimer1;
 
 extern Vec3f gCreditsCameraPivot;
 
-s32 NodeColorSetter(s32 arg0, GraphNode* arg1);
+s32 Credits_BackgroundNodePostCallback(s32 arg0, GraphNode* arg1);
 void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2);
 void Stage_UpdateLogic(void);
-void Stage_TriggerNextPhase(void);
+void Credits_DrawRoleList(void);
 
-u16 GetFragment16Constant(void);
+u16 Credits_GetRoleCount(void);
 
-void Camera_AdjustForStage(CameraStruct*, u16, s8, u8);
-void Stage_HandleFinalPhase(void);
+void Credits_InitCameraKeyframeBlend(CameraStruct*, u16, s8, u8);
+void Credits_StepCameraKeyframeBlend(void);
 void Camera_SetupForPhase(s16*, s16*, s16*, CameraStruct*, u16, s8, u8);
-void Stage_UpdateSubPhase(void);
-void Stage_SelectRandomStage(s8*, u8*);
+void Credits_StepCameraYawBlend(void);
+void Credits_SelectNextScene(s8*, u8*);
 
-s32 Math_RandomModulo(s32);
-void Stage_DrawBorderFade(u8);
+s32 Credits_RandomRange(s32);
+void Credits_DrawContinuePrompt(u8);
 
 #endif // _FRAGMENT16_H_

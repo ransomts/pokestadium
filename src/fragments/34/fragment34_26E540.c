@@ -1,6 +1,6 @@
 #include "fragment34.h"
 
-void Timer_UpdateCounters(void) {
+void Particle_UpdateFrameCounters(void) {
     gTimerCounter++;
     gTimerMask6 = gTimerCounter & 0x3F;
     gTimerMask5 = gTimerCounter & 0x1F;
@@ -25,6 +25,6 @@ void Timer_UpdateCounters(void) {
     gTimerBit1 = gTimerShift1 & 1;
 }
 
-void Timer_Tick(void) {
-    Timer_UpdateCounters();
+void Particle_UpdateFrameCountersAlias(void) {
+    Particle_UpdateFrameCounters();
 }

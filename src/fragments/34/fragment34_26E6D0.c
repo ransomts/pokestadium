@@ -44,256 +44,256 @@ static u8 gColorPairTable[][2] = {
     { 0x38, 0x35 }, { 0x38, 0x39 }, { 0x1C, 0x1A }, { 9, 0x35 },
 };
 
-void LoadTexture_RGBA16_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockRGBA16_Clamp(texture, 32, 32);
+void ParticleGfx_LoadTextureCallbackRgba16_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureRgba16(texture, 32, 32);
 }
 
-void LoadTexture_IA8_32x32_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->rampValue * 32 * 32], 32, 32);
+void ParticleGfx_LoadTextureCallbackIa8Frame_32x32(ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureIa8(&texture[arg0->rampValue * 32 * 32], 32, 32);
 }
 
-void LoadTexture_IA8_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockIA8_Clamp(texture, 32, 32);
+void ParticleGfx_LoadTextureCallbackIa8_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureIa8(texture, 32, 32);
 }
 
-void LoadTexture_IA8_32x64_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockIA8_Clamp(&texture[arg0->rampValue * 32 * 64], 32, 64);
+void ParticleGfx_LoadTextureCallbackIa8Frame_32x64(ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureIa8(&texture[arg0->rampValue * 32 * 64], 32, 64);
 }
 
-void LoadTexture_CI4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(texture, 32, 32);
+void ParticleGfx_LoadTextureCallbackI4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureI4Alias(texture, 32, 32);
 }
 
-void LoadTexture_CI4_32x32_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->rampValue * (32 * 32 / 2)], 32, 32);
+void ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32(ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureI4Alias(&texture[arg0->rampValue * (32 * 32 / 2)], 32, 32);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[gTimerMask2 * (32 * 32 / 2)], 32, 32);
+    ParticleGfx_LoadTextureI4Alias(&texture[gTimerMask2 * (32 * 32 / 2)], 32, 32);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerShift1 & 3) * (32 * 32 / 2)], 32, 32);
+    ParticleGfx_LoadTextureI4Alias(&texture[(gTimerShift1 & 3) * (32 * 32 / 2)], 32, 32);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameDiv4Mod4_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerShift2 & 3) * (32 * 32 / 2)], 32, 32);
+    ParticleGfx_LoadTextureI4Alias(&texture[(gTimerShift2 & 3) * (32 * 32 / 2)], 32, 32);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerShift1 & 7) * (32 * 32 / 2)], 32, 32);
+    ParticleGfx_LoadTextureI4Alias(&texture[(gTimerShift1 & 7) * (32 * 32 / 2)], 32, 32);
 }
 
 void ParticleGfx_LoadTextureCallbackI4TileFrameDiv2Mod8_24x24(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureTileI4b_ClampWrapper(&texture[(gTimerShift1 & 7) * (24 * 24 / 2)], 24, 24);
+    ParticleGfx_LoadTextureTileI4Alias(&texture[(gTimerShift1 & 7) * (24 * 24 / 2)], 24, 24);
 }
 
-void LoadTexture_CI4_24x24_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureTileI4b_ClampWrapper(&texture[arg0->rampValue * (24 * 24 / 2)], 24, 24);
+void ParticleGfx_LoadTextureCallbackI4TileParticleFrame_24x24(ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureTileI4Alias(&texture[arg0->rampValue * (24 * 24 / 2)], 24, 24);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerCounter % 10) * (32 * 64 / 2)], 32, 64);
+    ParticleGfx_LoadTextureI4Alias(&texture[(gTimerCounter % 10) * (32 * 64 / 2)], 32, 64);
 }
 
-void LoadTexture_CI4_32x64_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->rampValue * (32 * 64 / 2)], 32, 64);
+void ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x64(ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureI4Alias(&texture[arg0->rampValue * (32 * 64 / 2)], 32, 64);
 }
 
 void ParticleGfx_LoadTextureCallbackI4_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(texture, 64, 64);
+    ParticleGfx_LoadTextureI4Alias(texture, 64, 64);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameMod8_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[gTimerMask3 * (64 * 64 / 2)], 64, 64);
+    ParticleGfx_LoadTextureI4Alias(&texture[gTimerMask3 * (64 * 64 / 2)], 64, 64);
 }
 
 void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[(gTimerShift1 & 7) * (64 * 64 / 2)], 64, 64);
+    ParticleGfx_LoadTextureI4Alias(&texture[(gTimerShift1 & 7) * (64 * 64 / 2)], 64, 64);
 }
 
-void LoadTexture_CI4_64x64_ByIndex(ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_ClampWrapper(&texture[arg0->rampValue * (64 * 64 / 2)], 64, 64);
+void ParticleGfx_LoadTextureCallbackI4ParticleFrame_64x64(ParticleEffectInstance* arg0, u8* texture) {
+    ParticleGfx_LoadTextureI4Alias(&texture[arg0->rampValue * (64 * 64 / 2)], 64, 64);
 }
 
 void ParticleGfx_LoadTextureCallbackI4WrapST_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockI4b_MirrorWrap(texture, 64, 64);
+    ParticleGfx_LoadTextureI4WrapST(texture, 64, 64);
 }
 
 void ParticleGfx_LoadTextureCallbackIa8WrapST_64x64(UNUSED ParticleEffectInstance* arg0, u8* texture) {
-    Gfx_LoadTextureBlockIA8_MirrorWrap(texture, 64, 64);
+    ParticleGfx_LoadTextureIa8WrapST(texture, 64, 64);
 }
 
-void RenderBillboardQuadPrimColor(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimColorCombinePrimitive(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
+void ParticleGfx_DrawBillboardPrim(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimColorTextureCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
-void RenderBillboardQuad24(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_MediumQuad);
+void ParticleGfx_DrawBillboardPrimEnv(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_MediumQuad);
 }
 
-s32 RenderRotatedQuad24(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+s32 ParticleGfx_DrawBillboardDoubleSided(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gVtx_UI_MediumQuad);
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawTransformedQuad(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gVtx_UI_MediumQuad);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
 void ParticleGfx_DrawBillboardDefaultQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
-void RenderBillboardQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
+void ParticleGfx_DrawBillboardPrimEnvQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
-void RenderBillboardQuadGradient(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimColorAlpha(arg0->prim_a);
-    Gfx_DrawQuadBillboardRoll(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_ColorQuad, arg0->unk_94.z);
+void ParticleGfx_DrawBillboardTextureAlphaRotatedQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetTextureAlphaCombine(arg0->prim_a);
+    ParticleGfx_DrawModelQuadRotated(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_ColorQuad, arg0->unk_94.z);
 }
 
-void RenderBillboardQuadOffsetY(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectHorizontal);
+void ParticleGfx_DrawBillboardOffsetQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectHorizontal);
 }
 
-void RenderBillboardQuadNoise(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColorNoise(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
+void ParticleGfx_DrawBillboardPrimEnvNoiseQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimEnvNoiseCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform);
 }
 
-void RenderBillboardQuadRoll(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboardRoll(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
+void ParticleGfx_DrawBillboardPrimEnvRotatedQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuadRotated(arg1, arg0->unk_2C, arg0->unk_1C, gMatrix_UITransform, arg0->unk_94.z);
 }
 
 void ParticleGfx_DrawBillboardPrimEnvRotatedTriangle(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawTriangleBillboardRoll(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_TriangleDown, arg0->unk_94.z);
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelTriangleRotated(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_TriangleDown, arg0->unk_94.z);
 }
 
-void RenderBillboardQuad64(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectTall);
+void ParticleGfx_DrawBillboardPrimEnvQuadVariantA(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectTall);
 }
 
-void RenderBillboardQuad64OffsetY(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_Square);
+void ParticleGfx_DrawBillboardPrimEnvQuadVariantB(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_Square);
 }
 
 void ParticleGfx_DrawBillboardPrimEnvQuadVariantC(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectWide);
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectWide);
 }
 
-void RenderBillboardQuadTriple(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadBillboard(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_GridQuad);
+void ParticleGfx_DrawBillboardPrimEnvComposite(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_GridQuad);
 }
 
-s32 RenderRotatedQuadTriple(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
+s32 ParticleGfx_DrawBillboardPrimEnvTriangleDoubleSided(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gVtx_UI_GridQuad);
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawTransformedQuad(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gVtx_UI_GridQuad);
 
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void RenderGroundQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
-    Gfx_SetPrimAndEnvColor(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    Gfx_DrawQuadRotated(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gGroundQuadVtx);
+void ParticleGfx_DrawBillboardPrimEnvTransformedQuad(ParticleEffectInstance* arg0, CameraStruct* arg1) {
+    ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
+    ParticleGfx_DrawTransformedQuad(arg0->unk_2C, arg0->unk_94, arg0->unk_1C, gGroundQuadVtx);
 }
 
-void GetPaletteColor(u8* arg0, u16 arg1) {
+void ParticleGfx_CopyPaletteRgb(u8* arg0, u16 arg1) {
     arg0[0] = gParticleColorPalette[arg1][0];
     arg0[1] = gParticleColorPalette[arg1][1];
     arg0[2] = gParticleColorPalette[arg1][2];
 }
 
-void GetPaletteColorPair(u8* arg0, u8* arg1, u16 arg2) {
+void ParticleGfx_CopyPalettePairRgb(u8* arg0, u8* arg1, u16 arg2) {
     u8 sp1C = gColorPairTable[arg2][0];
     u8 sp1E = gColorPairTable[arg2][1];
 
-    GetPaletteColor(arg0, sp1C);
-    GetPaletteColor(arg1, sp1E);
+    ParticleGfx_CopyPaletteRgb(arg0, sp1C);
+    ParticleGfx_CopyPaletteRgb(arg1, sp1E);
 }
 
-void SetPrimColorFromPalette(ParticleEffectInstance* arg0, u16 arg1) {
+void ParticleGfx_RecolorPrim(ParticleEffectInstance* arg0, u16 arg1) {
     arg0->prim_r = gParticleColorPalette[arg1][0];
     arg0->prim_g = gParticleColorPalette[arg1][1];
     arg0->prim_b = gParticleColorPalette[arg1][2];
 }
 
-void SetEnvColorFromPalette(ParticleEffectInstance* arg0, u16 arg1) {
+void ParticleGfx_RecolorEnv(ParticleEffectInstance* arg0, u16 arg1) {
     arg0->env_r = gParticleColorPalette[arg1][0];
     arg0->env_g = gParticleColorPalette[arg1][1];
     arg0->env_b = gParticleColorPalette[arg1][2];
 }
 
-void SetPrimEnvColorFromPair(ParticleEffectInstance* arg0, u16 arg1) {
+void ParticleGfx_RecolorPrimEnvFromPalettePair(ParticleEffectInstance* arg0, u16 arg1) {
     u8 sp1C = gColorPairTable[arg1][0];
     u8 sp1E = gColorPairTable[arg1][1];
 
-    SetPrimColorFromPalette(arg0, sp1C);
-    SetEnvColorFromPalette(arg0, sp1E);
+    ParticleGfx_RecolorPrim(arg0, sp1C);
+    ParticleGfx_RecolorEnv(arg0, sp1E);
 }
 
-void SetPrimColorFromPreset(ParticleEffectInstance* arg0, s16 arg1) {
-    SetPrimColorFromPalette(arg0, gPrimColorPalette[arg1]);
+void ParticleGfx_RecolorPrimFromPaletteSetA(ParticleEffectInstance* arg0, s16 arg1) {
+    ParticleGfx_RecolorPrim(arg0, gPrimColorPalette[arg1]);
 }
 
-void SetEnvColorFromPreset(ParticleEffectInstance* arg0, s16 arg1) {
-    SetEnvColorFromPalette(arg0, gPrimColorPalette[arg1]);
+void ParticleGfx_RecolorEnvFromPaletteSetA(ParticleEffectInstance* arg0, s16 arg1) {
+    ParticleGfx_RecolorEnv(arg0, gPrimColorPalette[arg1]);
 }
 
 void ParticleGfx_RecolorPrimFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
-    SetPrimColorFromPalette(arg0, gParticleColorSetB[arg1]);
+    ParticleGfx_RecolorPrim(arg0, gParticleColorSetB[arg1]);
 }
 
 void ParticleGfx_RecolorEnvFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
-    SetEnvColorFromPalette(arg0, gParticleColorSetB[arg1]);
+    ParticleGfx_RecolorEnv(arg0, gParticleColorSetB[arg1]);
 }
 
 void ParticleGfx_RecolorPrimEnvFromPaletteSetA(ParticleEffectInstance* arg0, s16 arg1) {
     u8 sp1F = gPrimColorPalette[arg1];
 
-    SetPrimColorFromPalette(arg0, sp1F);
-    SetEnvColorFromPalette(arg0, sp1F);
+    ParticleGfx_RecolorPrim(arg0, sp1F);
+    ParticleGfx_RecolorEnv(arg0, sp1F);
 }
 
 void ParticleGfx_RecolorPrimEnvFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
     u8 sp1F = gParticleColorSetB[arg1];
 
-    SetPrimColorFromPalette(arg0, sp1F);
-    SetEnvColorFromPalette(arg0, sp1F);
+    ParticleGfx_RecolorPrim(arg0, sp1F);
+    ParticleGfx_RecolorEnv(arg0, sp1F);
 }
 
-void SetRandomPrimColor(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, gParticleRandomColorIndices[(RandomMod(5) & 0xFF)]);
+void ParticleGfx_RecolorPrimRandomPalette(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, gParticleRandomColorIndices[(ParticleMath_RandomRange(5) & 0xFF)]);
 }
 
-void SetRandomEnvColor(ParticleEffectInstance* arg0) {
-    SetEnvColorFromPalette(arg0, gParticleRandomColorIndices[RandomMod(5) & 0xFF]);
+void ParticleGfx_RecolorEnvRandomPalette(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorEnv(arg0, gParticleRandomColorIndices[ParticleMath_RandomRange(5) & 0xFF]);
 }
 
-s32 IsPrimColorSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
+s32 ParticleGfx_ApproachPrimPalette(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
     s32 sp2C = 0;
     s32 sp28;
     s32 sp24;
     s32 sp20;
     u8 sp1C[3];
 
-    GetPaletteColor(sp1C, arg1);
+    ParticleGfx_CopyPaletteRgb(sp1C, arg1);
 
-    sp28 = Particle_ApproachPrimR(arg0, sp1C[0], arg2);
-    sp24 = Particle_ApproachPrimG(arg0, sp1C[1], arg2);
-    sp20 = Particle_ApproachPrimB(arg0, sp1C[2], arg2);
+    sp28 = Particle_PrimR_Approach_0BAE4(arg0, sp1C[0], arg2);
+    sp24 = Particle_PrimG_Approach_0BB14(arg0, sp1C[1], arg2);
+    sp20 = Particle_PrimB_Approach_0BB44(arg0, sp1C[2], arg2);
 
     if ((sp28 * sp24 * sp20) != 0) {
         sp2C = 1;
@@ -301,18 +301,18 @@ s32 IsPrimColorSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
     return sp2C;
 }
 
-s32 IsEnvColorSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
+s32 ParticleGfx_ApproachEnvPalette(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
     s32 sp2C = 0;
     s32 sp28;
     s32 sp24;
     s32 sp20;
     u8 sp1C[3];
 
-    GetPaletteColor(&sp1C, arg1);
+    ParticleGfx_CopyPaletteRgb(&sp1C, arg1);
 
-    sp28 = Particle_ApproachEnvR(arg0, sp1C[0], arg2);
-    sp24 = Particle_ApproachEnvG(arg0, sp1C[1], arg2);
-    sp20 = Particle_ApproachEnvB(arg0, sp1C[2], arg2);
+    sp28 = Particle_EnvR_Approach_0BB90(arg0, sp1C[0], arg2);
+    sp24 = Particle_EnvG_Approach_0BBF0(arg0, sp1C[1], arg2);
+    sp20 = Particle_EnvB_Approach_0BBC0(arg0, sp1C[2], arg2);
 
     if ((sp28 * sp24 * sp20) != 0) {
         sp2C = 1;
@@ -320,7 +320,7 @@ s32 IsEnvColorSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
     return sp2C;
 }
 
-s32 AreBothColorsSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
+s32 ParticleGfx_ApproachPrimEnvPalettePair(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
     s32 sp44 = 0;
     s32 sp40;
     s32 sp3C;
@@ -331,14 +331,14 @@ s32 AreBothColorsSupported(ParticleEffectInstance* arg0, u16 arg1, u8 arg2) {
     u8 sp28[3];
     u8 sp24[3];
 
-    GetPaletteColorPair(sp28, sp24, arg1);
+    ParticleGfx_CopyPalettePairRgb(sp28, sp24, arg1);
 
-    sp40 = Particle_ApproachPrimR(arg0, sp28[0], arg2);
-    sp3C = Particle_ApproachPrimG(arg0, sp28[1], arg2);
-    sp38 = Particle_ApproachPrimB(arg0, sp28[2], arg2);
-    sp34 = Particle_ApproachEnvR(arg0, sp24[0], arg2);
-    sp30 = Particle_ApproachEnvG(arg0, sp24[1], arg2);
-    sp2C = Particle_ApproachEnvB(arg0, sp24[2], arg2);
+    sp40 = Particle_PrimR_Approach_0BAE4(arg0, sp28[0], arg2);
+    sp3C = Particle_PrimG_Approach_0BB14(arg0, sp28[1], arg2);
+    sp38 = Particle_PrimB_Approach_0BB44(arg0, sp28[2], arg2);
+    sp34 = Particle_EnvR_Approach_0BB90(arg0, sp24[0], arg2);
+    sp30 = Particle_EnvG_Approach_0BBF0(arg0, sp24[1], arg2);
+    sp2C = Particle_EnvB_Approach_0BBC0(arg0, sp24[2], arg2);
 
     if ((sp40 * sp3C * sp38 * sp34 * sp30 * sp2C) != 0) {
         sp44 = 1;

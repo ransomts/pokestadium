@@ -38,14 +38,14 @@ void VictoryPalace_HideOverlays(void);
 void VictoryPalace_ResetPillarGlow(s32 arg0);
 s32 VictoryPalace_HandleInput(s16* arg0);
 s32 HallOfFame_HandleGalleryInput(void);
-s32 Fragment50_SlideRight(void);
-s32 Fragment50_SlideLeft(void);
-s32 Fragment50_SlideRightFast(void);
-s32 Fragment50_SlideLeftFast(void);
-s32 Fragment50_WaitAssetLoad(void);
-void Fragment50_MainSequence(void);
-void Fragment50_InitGraphNode(s32 arg0, f32 arg1);
-void Fragment50_InitAssets(void);
-s32 Fragment50_MainEntry(s32 arg0, s32 arg1);
+s32 HallOfFame_ScrollRight(void);
+s32 HallOfFame_ScrollLeft(void);
+s32 HallOfFame_PageRight(void);
+s32 HallOfFame_PageLeft(void);
+s32 HallOfFame_WaitFramebuffer(void);
+void HallOfFame_RunGallery(void);
+void HallOfFame_SpawnPokeIcon(s32 arg0, f32 arg1);
+void HallOfFame_InitGallery(void);
+s32 HallOfFame_Main(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT50_H_

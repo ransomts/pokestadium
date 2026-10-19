@@ -3,11 +3,11 @@
 
 #include "global.h"
 
-void Gfx_InitBuffers(u32 arg0, s32 arg1);
-void Gfx_FreeBuffers(void);
-void Gfx_SwapDisplayList(void);
-void Gfx_GetCurrentDL(Gfx** arg0, Gfx** arg1);
-void* GfxAlloc(s32 arg0);
-s32 Gfx_GetRemainingDLSize(void);
+void Gfx_InitDisplayListBuffers(u32 arg0, s32 arg1);
+void Gfx_FreeDisplayListBuffers(void);
+void Gfx_SwapDisplayListBuffer(void);
+void Gfx_GetDisplayListRange(Gfx** arg0, Gfx** arg1);
+void* Gfx_AllocDisplayList(s32 arg0);
+s32 Gfx_GetDisplayListRemaining(void);
 
 #endif // _6A40_H_

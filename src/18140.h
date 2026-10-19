@@ -16,17 +16,17 @@ typedef struct unk_func_80017540_arg1 {
     /* 0x02 */ u16 unk_02;
 } unk_func_80017540_arg1; // size = 0x4
 
-s32 MapIndexInRange(s32 arg0, unk_func_80017540_arg1* arg1, s32 arg2);
-s16 GetNextAnimFrame(unk_D_86002F58_004_000_054* arg0, u16 arg1);
-void ResetAnimStack(void);
-void PushAnimStackEntry(unk_D_86002F58_004_000_054* arg0, u16 arg1, s32 arg2);
-void PopAnimStackEntry(void);
-void GetAnimStackCurrentFramePtr(unk_D_86002F34_alt11_018** arg0, unk_D_86002F34_alt11_018* arg1, s32 arg2);
-void InitAnimState(Fragment2_1GraphNode* arg0);
-s16 SetAnimStateTable(Fragment2_1GraphNode* arg0, s16 arg1, s32 arg2);
-void SetAnimStateIndex(Fragment2_1GraphNode* arg0, s16 arg1);
-s32 IsAnimStateAtIndex(Fragment2_1GraphNode* arg0, s16 arg1);
-s32 IsAnimStateSecondLast(Fragment2_1GraphNode* arg0);
-s32 IsAnimStateLast(Fragment2_1GraphNode* arg0);
+s32 ModelAnim_ResolveEventIndex(s32 arg0, unk_func_80017540_arg1* arg1, s32 arg2);
+s16 ModelAnim_AdvanceEventFrame(unk_D_86002F58_004_000_054* arg0, u16 arg1);
+void ModelAnim_ResetEventContext(void);
+void ModelAnim_BeginEventContext(unk_D_86002F58_004_000_054* arg0, u16 arg1, s32 arg2);
+void ModelAnim_EndEventContext(void);
+void ModelAnim_GetEventAtFrame(unk_D_86002F34_alt11_018** arg0, unk_D_86002F34_alt11_018* arg1, s32 arg2);
+void ModelAnim_ClearEventTrack(Fragment2_1GraphNode* arg0);
+s16 ModelAnim_BindEventTrack(Fragment2_1GraphNode* arg0, s16 arg1, s32 arg2);
+void ModelAnim_SetEventFrame(Fragment2_1GraphNode* arg0, s16 arg1);
+s32 ModelAnim_IsEventFrame(Fragment2_1GraphNode* arg0, s16 arg1);
+s32 ModelAnim_IsEventTrackNearEnd(Fragment2_1GraphNode* arg0);
+s32 ModelAnim_IsEventTrackDone(Fragment2_1GraphNode* arg0);
 
 #endif // _18140_H_

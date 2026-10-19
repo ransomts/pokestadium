@@ -5,19 +5,19 @@
 
 unk_D_800A62E0 gRspTaskManager;
 
-void RspTask_Reset(UnkStruct80001380* arg0) {
+void Sched_ResetTaskState(UnkStruct80001380* arg0) {
     osWritebackDCacheAll();
     arg0->unk_1C = 0;
     arg0->unk_1E = 0;
 }
 
-void RspTaskYield(UnkStruct80001380* arg0) {
+void Sched_WaitForTaskMessage(UnkStruct80001380* arg0) {
     void* sp1C;
 
     osRecvMesg(&arg0->queue, &sp1C, 1);
 }
 
-s32 RspTask_Start(UnkStruct80001380* arg0) {
+s32 Sched_StartTask(UnkStruct80001380* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_1C == 2) {
@@ -51,7 +51,7 @@ s32 RspTask_Start(UnkStruct80001380* arg0) {
     return var_v1;
 }
 
-s32 RspTask_Yield(UnkStruct80001380* arg0) {
+s32 Sched_RequestTaskYield(UnkStruct80001380* arg0) {
     s32 var_v1 = 0;
 
     switch (arg0->task.t.type) {
@@ -68,7 +68,7 @@ s32 RspTask_Yield(UnkStruct80001380* arg0) {
     return var_v1;
 }
 
-s32 RspTask_CheckCompletion(UnkStruct80001380* arg0) {
+s32 Sched_HandleRspCompletion(UnkStruct80001380* arg0) {
     s32 sp24 = 0;
 
     if (arg0->unk_1C == 2) {
@@ -113,7 +113,7 @@ s32 RspTask_CheckCompletion(UnkStruct80001380* arg0) {
     return sp24;
 }
 
-void RspTask_Finish(UnkStruct80001380* arg0) {
+void Sched_HandleRdpCompletion(UnkStruct80001380* arg0) {
     profiler_log_gfx_time(RDP_COMPLETE);
     if (arg0->unk_1C == 3) {
         osSendMesg(&arg0->queue, 'DONE', 0);
@@ -121,20 +121,20 @@ void RspTask_Finish(UnkStruct80001380* arg0) {
     arg0->unk_1E = 2;
 }
 
-void MessageQueue_Create(UnkStruct80083CA0_2* arg0, s32 arg1, s32 arg2) {
+void Sched_InitClientQueue(UnkStruct80083CA0_2* arg0, s32 arg1, s32 arg2) {
     arg0->unk_1DC = arg1;
     arg0->unk_1D8 = 0;
     osCreateMesgQueue(&arg0->messageQueue, &arg0->unk_1B0, arg2);
 }
 
-s32 MessageQueue_Recv(UnkStruct80083CA0_2* arg0) {
+s32 Sched_WaitClientQueue(UnkStruct80083CA0_2* arg0) {
     void* sp1C;
 
     osRecvMesg(&arg0->messageQueue, &sp1C, 1);
     return sp1C;
 }
 
-s32 MessageQueue_TryRecv(UnkStruct80083CA0_2* arg0) {
+s32 Sched_TryReceiveClientQueue(UnkStruct80083CA0_2* arg0) {
     u32 sp1C = 'NULL';
 
     if (arg0->messageQueue.validCount != 0) {
@@ -144,7 +144,7 @@ s32 MessageQueue_TryRecv(UnkStruct80083CA0_2* arg0) {
     return sp1C;
 }
 
-void RspTask_PromotePending(void) {
+void Sched_PromotePendingTasks(void) {
     if ((gRspTaskManager.unk_A18 == NULL) && (gRspTaskManager.unk_A20 != NULL)) {
         gRspTaskManager.unk_A18 = gRspTaskManager.unk_A20;
         gRspTaskManager.unk_A20 = NULL;
@@ -159,7 +159,7 @@ void RspTask_PromotePending(void) {
 void func_80004DB4(void) {
 }
 
-void ThreadList_SendMessage(u32 arg0) {
+void Sched_NotifyClients(u32 arg0) {
     GbEmuState* var_s0 = gRspTaskManager.unk_A10;
 
     while (var_s0 != NULL) {
@@ -174,26 +174,26 @@ void ThreadList_SendMessage(u32 arg0) {
     }
 }
 
-UnkStruct80001380* RspTask_StartValidated(UnkStruct80001380* arg0) {
+UnkStruct80001380* Sched_TryStartTask(UnkStruct80001380* arg0) {
     if (arg0 != NULL) {
-        if (RspTask_Start(arg0) == 0) {
+        if (Sched_StartTask(arg0) == 0) {
             arg0 = NULL;
         }
     }
     return arg0;
 }
 
-void RspTask_EnsureCurrent(void) {
+void Sched_StartPendingTask(void) {
     if (gRspTaskManager.unk_A14 == NULL) {
-        gRspTaskManager.unk_A14 = RspTask_StartValidated(gRspTaskManager.unk_A1C);
+        gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A1C);
     }
 }
 
-s32 RspTask_YieldCurrent(void) {
+s32 Sched_TryYieldActiveTask(void) {
     s32 ret = 0;
 
     if (gRspTaskManager.unk_A14 != NULL) {
-        ret = RspTask_Yield(gRspTaskManager.unk_A14);
+        ret = Sched_RequestTaskYield(gRspTaskManager.unk_A14);
     }
 
     return ret;
@@ -209,11 +209,11 @@ void Sched_HandlePreNMI(void) {
         var_s0 = var_s0->next;
     }
     gRspTaskManager.unk_A38 = 1;
-    Audio_FadeAllChannelsFast();
+    Audio_FadeOutForShutdown();
     Game_ResetStorageDevice();
 }
 
-void RspTask_Update(void) {
+void Sched_HandleRetrace(void) {
     UnkStruct80001380* var_v0;
 
     gRspTaskManager.time = osGetTime();
@@ -228,30 +228,30 @@ void RspTask_Update(void) {
         }
     }
 
-    RspTask_PromotePending();
+    Sched_PromotePendingTasks();
     func_80004DB4();
 
     if (gRspTaskManager.unk_A18 != NULL) {
         if (gRspTaskManager.unk_A14 == NULL) {
-            gRspTaskManager.unk_A14 = RspTask_StartValidated(gRspTaskManager.unk_A18);
+            gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A18);
         } else {
-            RspTask_YieldCurrent();
+            Sched_TryYieldActiveTask();
         }
     } else if ((gRspTaskManager.unk_A1C != NULL) && (gRspTaskManager.unk_A14 == NULL)) {
-        gRspTaskManager.unk_A14 = RspTask_StartValidated(gRspTaskManager.unk_A1C);
+        gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A1C);
     }
 
-    ThreadList_SendMessage('VTRE');
+    Sched_NotifyClients('VTRE');
 }
 
-void RspTask_HandleCompletion(void) {
+void Sched_HandleRspEvent(void) {
     UnkStruct80001380* sp24 = gRspTaskManager.unk_A14;
-    s32 tmp = RspTask_CheckCompletion(gRspTaskManager.unk_A14);
+    s32 tmp = Sched_HandleRspCompletion(gRspTaskManager.unk_A14);
 
     gRspTaskManager.unk_A14 = NULL;
 
     if (tmp) {
-        gRspTaskManager.unk_A14 = RspTask_StartValidated(gRspTaskManager.unk_A18);
+        gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A18);
     }
 
     if (sp24->unk_1C == 3) {
@@ -259,7 +259,7 @@ void RspTask_HandleCompletion(void) {
             case M_AUDTASK:
                 gRspTaskManager.unk_A18 = 0;
                 gRspTaskManager.unk_A28 = 0;
-                gRspTaskManager.unk_A14 = RspTask_StartValidated(gRspTaskManager.unk_A1C);
+                gRspTaskManager.unk_A14 = Sched_TryStartTask(gRspTaskManager.unk_A1C);
                 break;
 
             case M_GFXTASK:
@@ -277,15 +277,15 @@ void RspTask_HandleCompletion(void) {
     }
 }
 
-void RspTask_GfxFinalize(void) {
-    RspTask_Finish(gRspTaskManager.unk_A1C);
+void Sched_HandleRdpEvent(void) {
+    Sched_HandleRdpCompletion(gRspTaskManager.unk_A1C);
     if (gRspTaskManager.unk_A1C->unk_1C == 3) {
         gRspTaskManager.unk_A1C = NULL;
         gRspTaskManager.unk_A2C = 0;
     }
 }
 
-void RspTask_MainThread(void* arg0) {
+void Sched_ThreadEntry(void* arg0) {
     s32 sp24;
 
     __osSetFpcCsr(0x01000C01);
@@ -300,19 +300,19 @@ void RspTask_MainThread(void* arg0) {
 
         switch (sp24) {
             case 0x66:
-                RspTask_Update();
+                Sched_HandleRetrace();
                 break;
 
             case 0x64:
-                RspTask_HandleCompletion();
+                Sched_HandleRspEvent();
                 break;
 
             case 0x65:
-                RspTask_GfxFinalize();
+                Sched_HandleRdpEvent();
                 break;
 
             case 0x67:
-                RspTask_EnsureCurrent();
+                Sched_StartPendingTask();
                 break;
 
             case 0x68:
@@ -322,7 +322,7 @@ void RspTask_MainThread(void* arg0) {
     }
 }
 
-void RspTask_ManagerInit(void) {
+void Sched_Init(void) {
     gRspTaskManager.unk_A10 = NULL;
     gRspTaskManager.unk_A14 = NULL;
     gRspTaskManager.unk_A18 = 0;
@@ -331,11 +331,11 @@ void RspTask_ManagerInit(void) {
     gRspTaskManager.unk_A24 = NULL;
     gRspTaskManager.unk_A28 = 0;
     gRspTaskManager.unk_A2C = 0;
-    osCreateThread(&gRspTaskManager.thread, 3, RspTask_MainThread, NULL, gRspTaskManager.stack, 0x64);
+    osCreateThread(&gRspTaskManager.thread, 3, Sched_ThreadEntry, NULL, gRspTaskManager.stack, 0x64);
     osStartThread(&gRspTaskManager.thread);
 }
 
-void ThreadList_Add(GbEmuState* arg0) {
+void Sched_AddClient(GbEmuState* arg0) {
     GbEmuState* var_v1;
     GbEmuState* var_a1;
 
@@ -354,7 +354,7 @@ void ThreadList_Add(GbEmuState* arg0) {
     arg0->next = NULL;
 }
 
-void ThreadList_Remove(GbEmuState* arg0) {
+void Sched_RemoveClient(GbEmuState* arg0) {
     GbEmuState** var_v0 = &gRspTaskManager.unk_A10;
     GbEmuState* var_v1 = gRspTaskManager.unk_A10;
 
@@ -368,9 +368,9 @@ void ThreadList_Remove(GbEmuState* arg0) {
     }
 }
 
-void RspTaskStart(UnkStruct80001380* arg0, s32 arg1) {
+void Sched_SubmitTask(UnkStruct80001380* arg0, s32 arg1) {
     if (arg0 != NULL) {
-        RspTask_Reset(arg0);
+        Sched_ResetTaskState(arg0);
 
         switch (arg0->task.t.type) {
             case 2:

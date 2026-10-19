@@ -32,8 +32,8 @@ extern u8 D_300BAD0[];
 extern u8 D_300BED0[];
 extern u8 D_300C2D0[];
 
-s32 Camera_UpdatePrimaryAngles(s32, GraphNode*);
-s32 Camera_UpdateSecondaryAngles(s32, GraphNode*);
+s32 Completion_LightAngleCallbackA(s32, GraphNode*);
+s32 Completion_LightAngleCallbackB(s32, GraphNode*);
 
 typedef struct unk_D_86B0DBCC {
     /* 0x00 */ f32 unk_00;
@@ -732,8 +732,8 @@ static unk_D_86B0DBCC gFragment17ObjPresetTable[] = {
 
 static u32 gFragment17CameraScript[] = {
     0x0C00FFFF,  0x05000000, 0x0B00001E, 0x00000000,    0x014000F0, 0x0000000F, 0x00000000,    0x00000000, 0x05000000,
-    0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, Camera_UpdatePrimaryAngles, 0x00000000, 0x14000000,
-    0x002D0019,  0x80808028, 0x08000000, Camera_UpdateSecondaryAngles, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
+    0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, Completion_LightAngleCallbackA, 0x00000000, 0x14000000,
+    0x002D0019,  0x80808028, 0x08000000, Completion_LightAngleCallbackB, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,    0x06000000, 0x01000000,
 };
 
@@ -753,40 +753,40 @@ static s8 gFragment17TextBuffer[0x100];
 static s8 gFragment17TextBuffer2[0x100];
 static s32 gFragment17RandomIdx;
 
-s32 Camera_UpdatePrimaryAngles(s32 arg0, GraphNode* arg1) {
+s32 Completion_LightAngleCallbackA(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
+        Vec3f_CalculateDistanceAngles(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         ptr->unk_1C = sp26 + 0x2000;
         ptr->unk_1E = sp24 - 0x2000;
     }
     return 0;
 }
 
-s32 Camera_UpdateSecondaryAngles(s32 arg0, GraphNode* arg1) {
+s32 Completion_LightAngleCallbackB(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
+        Vec3f_CalculateDistanceAngles(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         ptr->unk_1C = -0x2000 - sp26;
         ptr->unk_1E = sp24 + 0x6000;
     }
     return 0;
 }
 
-void BattleIntroPanel_InitAnimTables(void) {
+void Completion_SelectBonusPokemon(void) {
     s32 temp_s0 = osGetCount() & 0xFF;
     s32 var_v0;
 
     D_86B0EBDC->unk_2F0 = 0;
-    GbsEnsureBankLoaded(2);
+    Save_EnsureBankLoaded(2);
     var_v0 = Save_GetSelectedPokemonId() & 0xFF;
 
     D_86B0EBDC->unk_2E8 = var_v0;
@@ -801,7 +801,7 @@ void BattleIntroPanel_InitAnimTables(void) {
         MathUtil_Random_ZeroOne();
     }
 
-    if (gBattleContext.unk_0000 == 0x1A) {
+    if (gSessionContext.unk_0000 == 0x1A) {
         gFragment17RandomIdx = 8;
         D_86B0EBDC->unk_2EC = gFragment17RandomTable[gFragment17RandomIdx];
     } else {
@@ -813,26 +813,26 @@ void BattleIntroPanel_InitAnimTables(void) {
     }
 }
 
-void BattleIntroPanel_InitSpriteTables(void) {
+void Completion_LoadModels(void) {
     u8* temp_a1;
 
     main_pool_push_state('MONS');
 
-    Graph_AddToRootList0(&D_86B0EBDC->unk_008);
-    AssetManager_LoadArchives();
+    ModelRenderer_AttachDisplayObject(&D_86B0EBDC->unk_008);
+    PokeIcon_OpenModelArchives();
 
-    D_86B0EBDC->unk_000 = GeoLayout_LoadById(0xD3);
+    D_86B0EBDC->unk_000 = Model_LoadByArchiveIndex(0xD3);
     D_86B0EBDC->unk_008.modelPhase = 0xFF;
 
-    GraphNode_InitChild(&D_86B0EBDC->unk_008, 0, 0xD3, D_86B0EBDC->unk_000->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&D_86B0EBDC->unk_008, 0);
-    Graph_AddToRootList0(&D_86B0EBDC->unk_170);
-    AssetManager_LoadArchives();
+    Model_InitDisplayObject(&D_86B0EBDC->unk_008, 0, 0xD3, D_86B0EBDC->unk_000->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(&D_86B0EBDC->unk_008, 0);
+    ModelRenderer_AttachDisplayObject(&D_86B0EBDC->unk_170);
+    PokeIcon_OpenModelArchives();
 
-    D_86B0EBDC->unk_004 = GeoLayout_LoadById(D_86B0EBDC->unk_2EC);
+    D_86B0EBDC->unk_004 = Model_LoadByArchiveIndex(D_86B0EBDC->unk_2EC);
     D_86B0EBDC->unk_170.modelPhase = 0;
-    GraphNode_InitChild(&D_86B0EBDC->unk_170, 0, D_86B0EBDC->unk_2EC, D_86B0EBDC->unk_004->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&D_86B0EBDC->unk_170, 0);
+    Model_InitDisplayObject(&D_86B0EBDC->unk_170, 0, D_86B0EBDC->unk_2EC, D_86B0EBDC->unk_004->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(&D_86B0EBDC->unk_170, 0);
     D_86B0EBDC->unk_170.unk_000.unk_02 &= ~0x40;
 
     D_86B0EBDC->unk_170.unk_030.x = D_86B0EBDC->unk_2F4 = gFragment17ObjPresetTable[gFragment17RandomIdx].unk_00 / 1000.0f;
@@ -846,16 +846,16 @@ void BattleIntroPanel_InitSpriteTables(void) {
     D_86B0EBDC->unk_170.unk_000.unk_01 &= ~1;
 
     temp_a1 = _70D3A0_ROM_START + (gStageRomOffsets[D_86B0EBDC->unk_2EC - 1] & 0xFFFFFF);
-    DmaCopyAsyncRange(gFragment17StageBuffer, temp_a1, temp_a1 + 0xBC0, 0);
+    Dma_WriteChunks(gFragment17StageBuffer, temp_a1, temp_a1 + 0xBC0, 0);
     D_86B0EBDC->unk_308 = 0;
-    MiniActorArray_Create();
+    miniRankingActorsInit();
 }
 
-void BattleIntroPanel_InitSoundTables(void) {
+void Completion_ResetSceneStep(void) {
     D_86B0EBDC->unk_2DC = 0;
 }
 
-void BattleIntroPanel_InitInputTables(void) {
+void Completion_ResetDialogToIdle(void) {
     gFragment17TextState->unk_00 = 0xB;
     gFragment17TextState->unk_18 = 0;
 }
@@ -863,14 +863,14 @@ void BattleIntroPanel_InitInputTables(void) {
 void Completion_PositionBonusModel(void) {
     Vec3f sp1C;
 
-    if (Graph_GetRecordedPosition(&D_86B0EBDC->unk_008, 1, &sp1C) != NULL) {
+    if (GeoRender_FindAnchorPosition(&D_86B0EBDC->unk_008, 1, &sp1C) != NULL) {
         D_86B0EBDC->unk_170.unk_024.x = sp1C.x;
         D_86B0EBDC->unk_170.unk_024.y = D_86B0EBDC->unk_2FC + sp1C.y;
         D_86B0EBDC->unk_170.unk_024.z = D_86B0EBDC->unk_300 + sp1C.z;
     }
 }
 
-void BattleIntroPanel_InitCameraTables(void) {
+void Completion_InitDialogBoxParams(void) {
     gFragment17TileStruct->unk_1C.unk_00.unk_00 = gFragment17TileParams[0].unk_00.unk_00;
     gFragment17TileStruct->unk_1C.unk_00.unk_02 = gFragment17TileParams[0].unk_00.unk_02;
     gFragment17TileStruct->unk_1C.unk_00.unk_04 = gFragment17TileParams[0].unk_00.unk_04;
@@ -891,14 +891,14 @@ void BattleIntroPanel_InitCameraTables(void) {
     gFragment17TileStruct->unk_18 = 0;
 }
 
-void BattleIntroPanel_InitColorTables(void) {
+void Completion_InitCamera(void) {
     gFragment17Camera = gFragment17GraphRoot->unk_0C;
     gFragment17CameraAngleY = 0;
     gFragment17CameraAngleX = 0;
     gFragment17CameraDist = 120.0f;
 
-    Vec3f_Set(&gFragment17Camera->unk_60.at, 0.0f, 132.5f, -225.0f);
-    Camera_SetViewParameters(&gFragment17Camera->unk_60.at, &gFragment17Camera->unk_60.eye, gFragment17CameraDist, gFragment17CameraAngleY, gFragment17CameraAngleX);
+    Vec3f_SetComponentsDuplicate(&gFragment17Camera->unk_60.at, 0.0f, 132.5f, -225.0f);
+    Camera_ComputeEyeFromAngles(&gFragment17Camera->unk_60.at, &gFragment17Camera->unk_60.eye, gFragment17CameraDist, gFragment17CameraAngleY, gFragment17CameraAngleX);
 
     gFragment17Camera->unk_24.near = 10.0f;
     gFragment17Camera->unk_24.far = 6400.0f;
@@ -939,33 +939,33 @@ s32 Completion_WrapDialogText(void) {
 }
 
 void Completion_DrawSpeciesRewardText(s16 arg0, s16 arg1) {
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    Text_SetLineHeight(0x10);
-    MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
-    GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, 0xA5);
-    Text_Print((arg0 - (MeasureTextWidth(2, 0, gFragment17TextBuffer) / 2)) + 0x5A, arg1 + 5, gFragment17TextBuffer);
-    Text_Print(arg0 + 0x28, arg1 + 0x19, GetMessageString(NULL, 0, gFragment17MsgBank0, 0xA2));
-    Text_Print(arg0 + 0x69, arg1 + 0x19, GetMessageString(NULL, 0, gFragment17MsgBank0, 0xA3));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    Font_SetLineHeight(0x10);
+    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+    Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, 0xA5);
+    Font_Printf((arg0 - (Font_MeasureTextExtent(2, 0, gFragment17TextBuffer) / 2)) + 0x5A, arg1 + 5, gFragment17TextBuffer);
+    Font_Printf(arg0 + 0x28, arg1 + 0x19, Text_GetString(NULL, 0, gFragment17MsgBank0, 0xA2));
+    Font_Printf(arg0 + 0x69, arg1 + 0x19, Text_GetString(NULL, 0, gFragment17MsgBank0, 0xA3));
+    Font_EndTexturedTextRendering();
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     if (D_86B0EBDC->unk_2F0 == 1) {
-        Gfx_DrawSpriteRGBA16Paletted(arg0 + 0x14, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg0 + 0x14, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
     } else {
-        Gfx_DrawSpriteRGBA16Paletted(arg0 + 0x55, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg0 + 0x55, arg1 + 0x19, 0x18, 0xE, D_300B6E0, D_300B980, 0x18, 0x100000);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
 void Completion_DrawWrappedDialogText(s16 arg0, s16 arg1) {
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    Text_SetLineHeight(0x10);
-    Text_Print(arg0 + 0x10, arg1 + 5, "%s", gFragment17TextBuffer2);
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    Font_SetLineHeight(0x10);
+    Font_Printf(arg0 + 0x10, arg1 + 5, "%s", gFragment17TextBuffer2);
+    Font_EndTexturedTextRendering();
 }
 
 void Completion_ResetDialogText(void) {
@@ -992,11 +992,11 @@ void Completion_UpdateGiftDialogFirstTime(void) {
 
     switch (gFragment17TextState->unk_00) {
         case 0:
-            if (gBattleContext.unk_0000 == 0x1A) {
-                sprintf(gFragment17TextBuffer, GetMessageString(NULL, 0, gFragment17MsgBank0, 0x96));
+            if (gSessionContext.unk_0000 == 0x1A) {
+                sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, 0x96));
             } else {
-                MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
-                GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Intro);
+                Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+                Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Intro);
             }
 
             gFragment17TextState->unk_04 = 0;
@@ -1014,7 +1014,7 @@ void Completion_UpdateGiftDialogFirstTime(void) {
             break;
 
         case 1:
-            temp_v0 = Math_ApproachS32(gFragment17TextState->unk_0C, 0x37, 0xA, 0xA);
+            temp_v0 = Math_StepToS32(gFragment17TextState->unk_0C, 0x37, 0xA, 0xA);
             gFragment17TextState->unk_0C = temp_v0;
             if (temp_v0 == 0x37) {
                 gFragment17TextState->unk_00++;
@@ -1035,8 +1035,8 @@ void Completion_UpdateGiftDialogFirstTime(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
-                    GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Confirm);
+                    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+                    Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Confirm);
                     gFragment17TextState->unk_00++;
                 }
             }
@@ -1054,9 +1054,9 @@ void Completion_UpdateGiftDialogFirstTime(void) {
                 for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                 // clang-format on
 
-                sprintf(gFragment17TextBuffer, GetMessageString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Success));
-                Audio_PlaySequence(D_86B0EBDC->unk_2EC, 2);
-                GraphNode_TriggerAction(&D_86B0EBDC->unk_170, *gFragment17ActionTable);
+                sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Success));
+                Cry_Play(D_86B0EBDC->unk_2EC, 2);
+                ModelAnim_SetAnimation(&D_86B0EBDC->unk_170, *gFragment17ActionTable);
                 gFragment17TextState->unk_00++;
             }
             break;
@@ -1082,11 +1082,11 @@ void Completion_UpdateGiftDialogWithExisting(void) {
 
     switch (gFragment17TextState->unk_00) {
         case 0:
-            if (gBattleContext.unk_0000 == 0x1A) {
-                sprintf(gFragment17TextBuffer, GetMessageString(NULL, 0, gFragment17MsgBank0, 0x96));
+            if (gSessionContext.unk_0000 == 0x1A) {
+                sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, 0x96));
             } else {
-                MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
-                GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Intro2);
+                Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+                Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Intro2);
             }
             gFragment17TextState->unk_04 = 0;
             gFragment17TextState->unk_08 = 0xB4;
@@ -1103,7 +1103,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
             break;
 
         case 1:
-            temp_v0 = Math_ApproachS32(gFragment17TextState->unk_0C, 0x37, 0xA, 0xA);
+            temp_v0 = Math_StepToS32(gFragment17TextState->unk_0C, 0x37, 0xA, 0xA);
             gFragment17TextState->unk_0C = temp_v0;
             if (temp_v0 == 0x37) {
                 gFragment17TextState->unk_00++;
@@ -1124,7 +1124,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    sprintf(gFragment17TextBuffer, GetMessageString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Confirm2));
+                    sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Confirm2));
                     gFragment17TextState->unk_00++;
                 }
             }
@@ -1142,7 +1142,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    sprintf(gFragment17TextBuffer, GetMessageString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Success2));
+                    sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Success2));
                     gFragment17TextState->unk_00++;
                 }
             }
@@ -1160,9 +1160,9 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    MessageBank_SetPointer_0x14_0x2A(0x20, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2E8 - 1));
-                    MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
-                    GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Failure);
+                    Text_SetStringToken(0x20, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2E8 - 1));
+                    Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+                    Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Failure);
                     gFragment17TextState->unk_00++;
                 }
             }
@@ -1197,7 +1197,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    sprintf(gFragment17TextBuffer, GetMessageString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Complete));
+                    sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Complete));
                     gFragment17TextState->unk_00++;
                 }
             }
@@ -1224,45 +1224,45 @@ void Completion_UpdateGiftDialogWithExisting(void) {
     }
 }
 
-void Gfx_DrawBattleIntroPanels(void) {
-    Gfx_DrawTexturedRect(D_30074E0, gFragment17TileStruct->unk_00, gFragment17TileStruct->unk_04, 0x50, 0x30, 0xA0, 0x30, 0, 0, 0x50, 0x30, 0x4F, 0,
+void Completion_DrawLogoBanner(void) {
+    UI_DrawSplitGradientPanel(D_30074E0, gFragment17TileStruct->unk_00, gFragment17TileStruct->unk_04, 0x50, 0x30, 0xA0, 0x30, 0, 0, 0x50, 0x30, 0x4F, 0,
                   &gFragment17TileStruct->unk_1C, 0);
-    Gfx_DrawTexturedRect(D_30074E0, gFragment17TileStruct->unk_00 + 0x50, gFragment17TileStruct->unk_04, 0x50, 0x30, 0xA0, 0x30, 0x50, 0, 0xA0, 0x30,
+    UI_DrawSplitGradientPanel(D_30074E0, gFragment17TileStruct->unk_00 + 0x50, gFragment17TileStruct->unk_04, 0x50, 0x30, 0xA0, 0x30, 0x50, 0, 0xA0, 0x30,
                   0x9F, 0x50, &gFragment17TileStruct->unk_1C, 0);
-    Gfx_DrawTexturedRect(D_30092E0, gFragment17TileStruct->unk_08, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0, 0, 0x40, 0x30, 0x3F, 0,
+    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->unk_08, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0, 0, 0x40, 0x30, 0x3F, 0,
                   &gFragment17TileStruct->unk_1C, 1);
-    Gfx_DrawTexturedRect(D_30092E0, gFragment17TileStruct->unk_08 + 0x40, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x40, 0, 0x80, 0x30,
+    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->unk_08 + 0x40, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x40, 0, 0x80, 0x30,
                   0x7F, 0x40, &gFragment17TileStruct->unk_1C, 1);
-    Gfx_DrawTexturedRect(D_30092E0, gFragment17TileStruct->unk_08 + 0x80, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x80, 0, 0xC0, 0x30,
+    UI_DrawSplitGradientPanel(D_30092E0, gFragment17TileStruct->unk_08 + 0x80, gFragment17TileStruct->unk_0C, 0x40, 0x30, 0xC0, 0x30, 0x80, 0, 0xC0, 0x30,
                   0xBF, 0x80, &gFragment17TileStruct->unk_1C, 1);
 }
 
-s32 BattleIntroPanel_ApproachColorAnim(void) {
-    gFragment17TileStruct->unk_1C.unk_00.unk_00 = Math_ApproachS32(
+s32 Completion_AnimateLogoBannerColor(void) {
+    gFragment17TileStruct->unk_1C.unk_00.unk_00 = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_00, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_00,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_00, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_00);
-    gFragment17TileStruct->unk_1C.unk_00.unk_02 = Math_ApproachS32(
+    gFragment17TileStruct->unk_1C.unk_00.unk_02 = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_02, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_02,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_02, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_02);
-    gFragment17TileStruct->unk_1C.unk_00.unk_04 = Math_ApproachS32(
+    gFragment17TileStruct->unk_1C.unk_00.unk_04 = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_04, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_04,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_04, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_04);
-    gFragment17TileStruct->unk_1C.unk_00.unk_06 = Math_ApproachS32(
+    gFragment17TileStruct->unk_1C.unk_00.unk_06 = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_06, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_06,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_06, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_06);
-    gFragment17TileStruct->unk_1C.unk_00.unk_08 = Math_ApproachS32(
+    gFragment17TileStruct->unk_1C.unk_00.unk_08 = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_08, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_08,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_08, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_08);
-    gFragment17TileStruct->unk_1C.unk_00.unk_0A = Math_ApproachS32(
+    gFragment17TileStruct->unk_1C.unk_00.unk_0A = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_0A, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_0A,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_0A, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_0A);
-    gFragment17TileStruct->unk_1C.unk_00.unk_0C = Math_ApproachS32(
+    gFragment17TileStruct->unk_1C.unk_00.unk_0C = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_0C, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_0C,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_0C, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_0C);
-    gFragment17TileStruct->unk_1C.unk_00.unk_0E = Math_ApproachS32(
+    gFragment17TileStruct->unk_1C.unk_00.unk_0E = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_0E, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_0E,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_0E, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_0E);
-    gFragment17TileStruct->unk_1C.unk_00.unk_10 = Math_ApproachS32(
+    gFragment17TileStruct->unk_1C.unk_00.unk_10 = Math_StepToS32(
         gFragment17TileStruct->unk_1C.unk_00.unk_10, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_00.unk_10,
         gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_10, gFragment17TileParams[gFragment17TileStruct->unk_18 + 1].unk_18.unk_10);
 
@@ -1284,7 +1284,7 @@ s32 BattleIntroPanel_ApproachColorAnim(void) {
     return 0;
 }
 
-Gfx* BattleIntroPanel_DrawSpriteAnim(void) {
+Gfx* Completion_DrawBlinkingCursorIcon(void) {
     if (gFragment17TextState->unk_18 == 1) {
         if (!gFragment17TextState->unk_1A--) {
             gFragment17TextState->unk_1C++;
@@ -1296,20 +1296,20 @@ Gfx* BattleIntroPanel_DrawSpriteAnim(void) {
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA32(gFragment17TextState->unk_16 + 0x9E, gFragment17TextState->unk_14 + 9, 0x10, 0x10,
+        Gfx_DrawTextureRgba32(gFragment17TextState->unk_16 + 0x9E, gFragment17TextState->unk_14 + 9, 0x10, 0x10,
                       gFragment17MsgBankTable[gFragment17TextState->unk_1C].unk_00, 0x10, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 }
 
-s32 BattleIntroPanel_SlideInAnim(void) {
+s32 Completion_SlideLogoBannerIn(void) {
     if (gFragment17TileStruct->unk_04 == 0) {
-        ResultScreen_SetAnimation(0x3A);
+        Audio_StartMusicTrack(0x3A);
     }
 
-    gFragment17TileStruct->unk_04 = Math_ApproachS32(gFragment17TileStruct->unk_04, 0x3E, 0x19, 0x19);
-    gFragment17TileStruct->unk_0C = Math_ApproachS32(gFragment17TileStruct->unk_0C, 0x82, 0x19, 0x19);
+    gFragment17TileStruct->unk_04 = Math_StepToS32(gFragment17TileStruct->unk_04, 0x3E, 0x19, 0x19);
+    gFragment17TileStruct->unk_0C = Math_StepToS32(gFragment17TileStruct->unk_0C, 0x82, 0x19, 0x19);
 
     if ((gFragment17TileStruct->unk_04 == 0x3E) && (gFragment17TileStruct->unk_0C == 0x82)) {
         return 1;
@@ -1317,9 +1317,9 @@ s32 BattleIntroPanel_SlideInAnim(void) {
     return 0;
 }
 
-s32 BattleIntroPanel_SlideOutAnim(void) {
-    gFragment17TileStruct->unk_04 = Math_ApproachS32(gFragment17TileStruct->unk_04, -0x32, 0x19, 0x19);
-    gFragment17TileStruct->unk_0C = Math_ApproachS32(gFragment17TileStruct->unk_0C, 0x122, 0x19, 0x19);
+s32 Completion_SlideLogoBannerOut(void) {
+    gFragment17TileStruct->unk_04 = Math_StepToS32(gFragment17TileStruct->unk_04, -0x32, 0x19, 0x19);
+    gFragment17TileStruct->unk_0C = Math_StepToS32(gFragment17TileStruct->unk_0C, 0x122, 0x19, 0x19);
 
     if ((gFragment17TileStruct->unk_04 == -0x32) && (gFragment17TileStruct->unk_0C == 0x122)) {
         return 1;
@@ -1327,16 +1327,16 @@ s32 BattleIntroPanel_SlideOutAnim(void) {
     return 0;
 }
 
-s32 BattleIntro_CameraApproachAnim(void) {
+s32 Completion_MoveCameraToFront(void) {
     Vec3f tmp;
 
     tmp.x = 50.0f;
     tmp.y = 30.0f;
     tmp.z = 100.0f;
 
-    gFragment17Camera->unk_60.at.y = Math_ApproachF32(gFragment17Camera->unk_60.at.y, 45.0f, tmp.x / 65.0f, tmp.x / 65.0f);
-    gFragment17Camera->unk_60.eye.y = Math_ApproachF32(gFragment17Camera->unk_60.eye.y, 50.0f, tmp.y / 65.0f, tmp.y / 65.0f);
-    gFragment17Camera->unk_60.eye.z = Math_ApproachF32(gFragment17Camera->unk_60.eye.z, 190.0f, tmp.z / 60.0f, tmp.z / 60.0f);
+    gFragment17Camera->unk_60.at.y = Math_StepToF(gFragment17Camera->unk_60.at.y, 45.0f, tmp.x / 65.0f, tmp.x / 65.0f);
+    gFragment17Camera->unk_60.eye.y = Math_StepToF(gFragment17Camera->unk_60.eye.y, 50.0f, tmp.y / 65.0f, tmp.y / 65.0f);
+    gFragment17Camera->unk_60.eye.z = Math_StepToF(gFragment17Camera->unk_60.eye.z, 190.0f, tmp.z / 60.0f, tmp.z / 60.0f);
 
     if (gFragment17Camera->unk_60.eye.z >= 85.0f) {
         D_86B0EBDC->unk_008.unk_000.unk_02 |= 0x20;
@@ -1350,11 +1350,11 @@ s32 BattleIntro_CameraApproachAnim(void) {
     return 0;
 }
 
-void BattleIntroPanel_ResetState(void) {
+void Completion_StartGiftDialog(void) {
     gFragment17TextState->unk_00 = 0;
 }
 
-void BattleIntroPanel_SetupChoice(void) {
+void Completion_AbortDialogToIdle(void) {
     s32 i;
 
     gFragment17TextState->unk_00 = 0xB;
@@ -1364,7 +1364,7 @@ void BattleIntroPanel_SetupChoice(void) {
     // clang-format on
 }
 
-void BattleIntroPanel_HandleChoiceInput(void) {
+void Completion_HandleAcceptDeclineInput(void) {
     if (gFragment17TextState->unk_00 == 0xD) {
         if (gPlayer1Controller->buttonPressed & 0x200) {
             D_86B0EBDC->unk_2F0 = 1;
@@ -1375,59 +1375,59 @@ void BattleIntroPanel_HandleChoiceInput(void) {
         }
 
         if ((gPlayer1Controller->buttonPressed & 0x200) || (gPlayer1Controller->buttonPressed & 0x100)) {
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
         }
 
         if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 1)) {
-            PlaySoundEffect(2);
+            Audio_PlaySoundEffectById(2);
             gFragment17TextState->unk_00 = 6;
             Completion_ResetDialogText();
-            MessageBank_SetPointer_0x14_0x2A(0x20, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2E8 - 1));
-            MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
-            GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Timeout);
-            GraphNode_TriggerAction(&D_86B0EBDC->unk_170, *gFragment17ActionTable);
-            Audio_PlaySequence(D_86B0EBDC->unk_2EC, 2);
+            Text_SetStringToken(0x20, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2E8 - 1));
+            Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+            Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Timeout);
+            ModelAnim_SetAnimation(&D_86B0EBDC->unk_170, *gFragment17ActionTable);
+            Cry_Play(D_86B0EBDC->unk_2EC, 2);
         }
 
         if ((gPlayer1Controller->buttonPressed & 0x8000) && (D_86B0EBDC->unk_2F0 == 0)) {
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
             gFragment17TextState->unk_00 = 7;
             Completion_ResetDialogText();
-            MessageBank_SetPointer_0x14_0x2A(0x1F, GetMessageString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
-            GetMessageString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Extra);
-            Anim_SetChannelOffset(&D_86B0EBDC->unk_008, -1);
+            Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, D_86B0EBDC->unk_2EC - 1));
+            Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Extra);
+            ModelAnim_SetSpeed(&D_86B0EBDC->unk_008, -1);
         }
     }
 }
 
-void BattleIntroPanel_HandleConfirmInput(void) {
+void Completion_HandleContinuePrompt(void) {
     if ((gFragment17TextState->unk_18 == 1) && (gPlayer1Controller->buttonPressed & 0x8000)) {
         gFragment17TextState->unk_18 = 0;
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 }
 
-void BattleIntroPanel_AnimSoundTick(void) {
+void Completion_UpdateCryEventTrack(void) {
     D_86B0EBDC->unk_304++;
     if (((D_86B0EBDC->unk_304 % 60) == 0) && (D_86B0EBDC->unk_308 == 0) && (gFragment17StageBuffer[2641] != 0xFF)) {
-        InitAnimState(&D_86B0EBDC->unk_170);
-        GraphNode_TriggerSound(&D_86B0EBDC->unk_170, gFragment17StageBuffer[2641]);
+        ModelAnim_ClearEventTrack(&D_86B0EBDC->unk_170);
+        ModelAnim_SetEventTrack(&D_86B0EBDC->unk_170, gFragment17StageBuffer[2641]);
         D_86B0EBDC->unk_308 = 1;
-    } else if ((D_86B0EBDC->unk_308 == 1) && (IsAnimStateSecondLast(&D_86B0EBDC->unk_170) == 1)) {
+    } else if ((D_86B0EBDC->unk_308 == 1) && (ModelAnim_IsEventTrackNearEnd(&D_86B0EBDC->unk_170) == 1)) {
         D_86B0EBDC->unk_308 = 0;
-        SetAnimStateIndex(&D_86B0EBDC->unk_170, 0);
-        GraphNode_TriggerSound(&D_86B0EBDC->unk_170, -1);
+        ModelAnim_SetEventFrame(&D_86B0EBDC->unk_170, 0);
+        ModelAnim_SetEventTrack(&D_86B0EBDC->unk_170, -1);
     }
 }
 
-void BattleIntroPanel_AnimResetIfDone(void) {
-    if (GraphNode_IsAnimationFinished(&D_86B0EBDC->unk_170) == 1) {
-        Anim_SetChannelBase(&D_86B0EBDC->unk_170, 0);
-        GraphNode_TriggerAction(&D_86B0EBDC->unk_170, 0);
+void Completion_LoopBonusModelIdleAnim(void) {
+    if (ModelAnim_IsAnimationDone(&D_86B0EBDC->unk_170) == 1) {
+        ModelAnim_SetFrame(&D_86B0EBDC->unk_170, 0);
+        ModelAnim_SetAnimation(&D_86B0EBDC->unk_170, 0);
     }
 }
 
-void BattleIntroPanel_AnimClamp(void) {
+void Completion_ClampAnimTimer(void) {
     if (((s32)D_86B0EBDC->unk_008.unk_040.unk_0C >> 0x10) == -1) {
         if ((D_86B0EBDC->unk_008.unk_040.unk_08 >> 0x10) > 0) {
             D_86B0EBDC->unk_008.unk_040.unk_08 += 0xFFFF0000;
@@ -1435,28 +1435,28 @@ void BattleIntroPanel_AnimClamp(void) {
     }
 }
 
-void BattleIntroPanel_InputInit(void) {
+void Completion_ReadControllerInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-s32 BattleIntroPanel_StateMachine(void) {
+s32 Completion_UpdateSceneSteps(void) {
     if (D_86B0EBDC->unk_2DC >= 7) {
-        BattleIntroPanel_HandleConfirmInput();
-        BattleIntroPanel_AnimSoundTick();
-        BattleIntroPanel_AnimResetIfDone();
+        Completion_HandleContinuePrompt();
+        Completion_UpdateCryEventTrack();
+        Completion_LoopBonusModelIdleAnim();
     }
 
     switch (D_86B0EBDC->unk_2DC) {
         case 0:
-            if (BattleIntroPanel_SlideInAnim() != 0) {
+            if (Completion_SlideLogoBannerIn() != 0) {
                 D_86B0EBDC->unk_2DC++;
             }
             break;
 
         case 1:
-            if (BattleIntroPanel_ApproachColorAnim() != 0) {
+            if (Completion_AnimateLogoBannerColor() != 0) {
                 D_86B0EBDC->unk_2E4 = 0;
                 D_86B0EBDC->unk_2DC++;
             }
@@ -1470,26 +1470,26 @@ s32 BattleIntroPanel_StateMachine(void) {
             break;
 
         case 3:
-            if (BattleIntroPanel_SlideOutAnim() != 0) {
+            if (Completion_SlideLogoBannerOut() != 0) {
                 D_86B0EBDC->unk_2DC++;
             }
             break;
 
         case 4:
             if (D_86B0EBDC->unk_2E4++ >= 0x1E) {
-                Vec3f_Set(&gFragment17Camera->unk_60.at, 0.0f, 90.0f, 0.0f);
-                Vec3f_Set(&gFragment17Camera->unk_60.eye, 0.0f, 80.0f, 90.0f);
+                Vec3f_SetComponentsDuplicate(&gFragment17Camera->unk_60.at, 0.0f, 90.0f, 0.0f);
+                Vec3f_SetComponentsDuplicate(&gFragment17Camera->unk_60.eye, 0.0f, 80.0f, 90.0f);
 
                 if (D_86B0EBDC->unk_2E4 == 0x1F) {
-                    MiniActor_ConfigureFirst(0.2f, 0.0f, 125.0f, -235.0f, 0x7D2, 0, 0);
+                    miniRankingActorSetup1st(0.2f, 0.0f, 125.0f, -235.0f, 0x7D2, 0, 0);
                 }
 
                 if (D_86B0EBDC->unk_2E4 == 0x3C) {
-                    MiniActor_ConfigureSecond(0.2f, 100.0f, 125.0f, -235.0f, 0x7D2, -0xE38, 0);
+                    miniRankingActorSetup2nd(0.2f, 100.0f, 125.0f, -235.0f, 0x7D2, -0xE38, 0);
                 }
 
                 if (D_86B0EBDC->unk_2E4 == 0x5A) {
-                    MiniActor_ConfigureThird(0.2f, -100.0f, 125.0f, -235.0f, 0x7D2, 0xE38, 0);
+                    miniRankingActorSetup3rd(0.2f, -100.0f, 125.0f, -235.0f, 0x7D2, 0xE38, 0);
                 }
             }
 
@@ -1500,36 +1500,36 @@ s32 BattleIntroPanel_StateMachine(void) {
             break;
 
         case 5:
-            if (BattleIntro_CameraApproachAnim() != 0) {
+            if (Completion_MoveCameraToFront() != 0) {
                 D_86B0EBDC->unk_2DC++;
             }
             break;
 
         case 6:
             Completion_PositionBonusModel();
-            if (GraphNode_IsAnimationFinished(&D_86B0EBDC->unk_008) != 0) {
+            if (ModelAnim_IsAnimationDone(&D_86B0EBDC->unk_008) != 0) {
                 D_86B0EBDC->unk_2E4 = 0;
                 D_86B0EBDC->unk_2DC++;
             }
             break;
 
         case 7:
-            BattleIntroPanel_ResetState();
-            ResultScreen_SetAnimation(0x13);
+            Completion_StartGiftDialog();
+            Audio_StartMusicTrack(0x13);
             D_86B0EBDC->unk_2DC++;
             break;
 
         case 8:
-            BattleIntroPanel_AnimClamp();
+            Completion_ClampAnimTimer();
             Completion_PositionBonusModel();
-            BattleIntroPanel_HandleChoiceInput();
+            Completion_HandleAcceptDeclineInput();
             if (gFragment17TextState->unk_00 == 0xC) {
                 D_86B0EBDC->unk_2DC++;
             }
             break;
 
         case 9:
-            BattleIntroPanel_AnimClamp();
+            Completion_ClampAnimTimer();
             Completion_PositionBonusModel();
             if (D_86B0EBDC->unk_2E4++ == 2) {
                 return 1;
@@ -1540,81 +1540,81 @@ s32 BattleIntroPanel_StateMachine(void) {
     return 0;
 }
 
-void BattleIntroPanel_DrawFrame(void) {
+void Completion_DrawDialog(void) {
     if (D_86B0EBDC->unk_2D8 == 1) {
         Completion_UpdateGiftDialogWithExisting();
     } else {
         Completion_UpdateGiftDialogFirstTime();
     }
-    Gfx_DrawBattleIntroPanels();
-    BattleIntroPanel_DrawSpriteAnim();
+    Completion_DrawLogoBanner();
+    Completion_DrawBlinkingCursorIcon();
 }
 
-void BattleIntroPanel_DrawFrameWrapper(UNUSED s32 arg0) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 1);
-    Gfx_FinishFrame();
-    Graph_SetTextureState(gFragment17GraphRoot);
-    BattleIntroPanel_DrawFrame();
-    Stage_Advance();
+void Completion_RenderFrame(UNUSED s32 arg0) {
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 1);
+    GeoRender_AdvanceFrameCounter();
+    Geo_RenderRootNode(gFragment17GraphRoot);
+    Completion_DrawDialog();
+    BgStage_AdvanceFrame();
 }
 
-void BattleIntroPanel_FadeInSequence(void) {
+void Completion_FadeIn(void) {
     s32 i;
 
-    Stage_FadeIn(0x10);
+    StageFade_StartFromOpaque(0x10);
 
     for (i = 0; i < 16; i++) {
-        BattleIntroPanel_InputInit();
-        BattleIntroPanel_DrawFrameWrapper(0);
+        Completion_ReadControllerInput();
+        Completion_RenderFrame(0);
     }
 }
 
-void BattleIntroPanel_MainLoop(void) {
+void Completion_RunLoop(void) {
     s32 var_s0 = 1;
 
     while (var_s0 != 0) {
-        BattleIntroPanel_InputInit();
-        MiniActorArray_Update();
+        Completion_ReadControllerInput();
+        miniRankingActorsUpdate();
 
-        if (BattleIntroPanel_StateMachine() != 0) {
+        if (Completion_UpdateSceneSteps() != 0) {
             var_s0 = 0;
         }
 
-        BattleIntroPanel_DrawFrameWrapper(1);
+        Completion_RenderFrame(1);
     }
 }
 
-void BattleIntroPanel_FadeOutSequence(void) {
+void Completion_FadeOutAndSave(void) {
     s32 i;
 
-    Stage_FadeOut(0xA);
+    StageFade_StartFromTransparent(0xA);
     for (i = 0; i < 10; i++) {
-        BattleIntroPanel_InputInit();
-        BattleIntroPanel_AnimClamp();
+        Completion_ReadControllerInput();
+        Completion_ClampAnimTimer();
         Completion_PositionBonusModel();
-        BattleIntroPanel_DrawFrameWrapper(2);
+        Completion_RenderFrame(2);
     }
 
     if (D_86B0EBDC->unk_2F0 == 1) {
-        if (gBattleContext.unk_0000 == 0x1A) {
+        if (gSessionContext.unk_0000 == 0x1A) {
             Save_SetSelectedPokemonId(D_86B0EBDC->unk_2EC, 1);
             Save_SetOptionsField1F(1);
         } else {
-            Save_SetSelectedPokemonId(D_86B0EBDC->unk_2EC, gBattleContext.unk_11F2);
+            Save_SetSelectedPokemonId(D_86B0EBDC->unk_2EC, gSessionContext.unk_11F2);
         }
-        GbsCommitBankBlock(0x14, 0);
-        GbsSyncBank(2);
+        Save_CommitTypedRecord(0x14, 0);
+        Save_FlushBank(2);
     }
 }
 
-void BattleIntroPanel_AllocAndInit(void) {
+void Completion_InitScene(void) {
     MemoryBlock* sp1C;
 
-    sp1C = state_pool_try_init(main_pool_get_available(), 0);
+    sp1C = MainPool_AllocState(main_pool_get_available(), 0);
     gFragment17GraphRoot = process_geo_layout(sp1C, &gFragment17CameraScript);
-    mem_pool_resize_block(sp1C);
-    Graph_InitRoots();
+    MainPool_FinalizeAllocation(sp1C);
+    ModelRenderer_InitDisplayRoots();
 
     gFragment17TextState = main_pool_alloc(0x20, 0);
     bzero(gFragment17TextState, 0x20);
@@ -1625,22 +1625,22 @@ void BattleIntroPanel_AllocAndInit(void) {
     gFragment17TileStruct = main_pool_alloc(0x4C, 0);
     bzero(gFragment17TileStruct, 0x4C);
 
-    BattleIntroPanel_InitAnimTables();
-    BattleIntroPanel_InitSpriteTables();
-    BattleIntroPanel_InitColorTables();
-    BattleIntroPanel_InitSoundTables();
-    BattleIntroPanel_InitInputTables();
-    BattleIntroPanel_InitCameraTables();
+    Completion_SelectBonusPokemon();
+    Completion_LoadModels();
+    Completion_InitCamera();
+    Completion_ResetSceneStep();
+    Completion_ResetDialogToIdle();
+    Completion_InitDialogBoxParams();
 }
 
-s32 BattleState_Handle21Or26(void) {
+s32 Stage_ShowCompletionScene(void) {
     Stage* sp24;
 
     main_pool_push_state('DEMO');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    Text_Init(2, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    Font_Init(2, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
@@ -1649,19 +1649,19 @@ s32 BattleState_Handle21Or26(void) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
-    MessageBank_Init();
+    Text_InitStringTables();
 
-    gFragment17MsgBank0 = GetMessageBank(0x1E);
-    gFragment17MsgBank1 = GetMessageBank(0x24);
+    gFragment17MsgBank0 = Text_GetStringTable(0x1E);
+    gFragment17MsgBank1 = Text_GetStringTable(0x24);
 
-    BattleIntroPanel_AllocAndInit();
-    Stage_Set(sp24);
-    BattleIntroPanel_FadeInSequence();
-    BattleIntroPanel_MainLoop();
-    BattleIntroPanel_FadeOutSequence();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    Completion_InitScene();
+    StageContext_Activate(sp24);
+    Completion_FadeIn();
+    Completion_RunLoop();
+    Completion_FadeOutAndSave();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
     main_pool_pop_state('DEMO');
 
     return 0;

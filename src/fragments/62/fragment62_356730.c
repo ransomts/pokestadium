@@ -22,7 +22,7 @@ static Gfx D_84389C70[] = {
     gsSPEndDisplayList(),
 };
 
-void WaterParticleSystems_ResetAll(void) {
+void DoubleTextureTrail_InitPool(void) {
     s32 i;
     s32 j;
     WaterParticleSystem* var_v0 = &D_843C2C00[0];
@@ -49,7 +49,7 @@ void WaterParticleSystems_ResetAll(void) {
     }
 }
 
-void WaterParticleSystems_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
+void DoubleTextureTrail_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, f32 arg7, f32 arg8, f32 arg9,
                    f32 argA, s16 argB, s32 argC, s32 argD, s16 argE, s16 argF, s16 arg10, s16 arg11, s16 arg12,
                    s16 arg13, s16 arg14, s16 arg15, CombineParams* arg16, CombineParams* arg17, u8 arg18,
                    u8 arg19, u8 arg1A, u8 arg1B, u8 arg1C, u8 arg1D, u8 arg1E, u8 arg1F, u8 arg20, u8 arg21, u8 arg22,
@@ -137,7 +137,7 @@ void WaterParticleSystems_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4
     }
 }
 
-void WaterParticle_ComputeOffset(f32 arg0, Vec3f* arg1, f32 arg2) {
+void DoubleTextureTrail_RotateVertexOffset(f32 arg0, Vec3f* arg1, f32 arg2) {
     UNUSED MtxF sp70;
     MtxF sp30;
     UNUSED s32 pad;
@@ -146,7 +146,7 @@ void WaterParticle_ComputeOffset(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void WaterParticle_UpdateSystem(WaterParticleSystem* arg0) {
+void DoubleTextureTrail_Update(WaterParticleSystem* arg0) {
     WaterParticleVertex* var_v0;
     UNUSED s32 pad;
     s32 i;
@@ -157,8 +157,8 @@ void WaterParticle_UpdateSystem(WaterParticleSystem* arg0) {
     f32 var_fv0;
     f32 var_fv1;
 
-    GetPrimaryEffectCenterOrNode(&sp58);
-    GetSecondaryEntityNode9Position(&sp4C);
+    BattleAnim_GetSecondaryOwnerAnchorPosition(&sp58);
+    BattleAnim_GetTertiaryOwnerBone9Position(&sp4C);
     if (sp4C.y > 200.0f) {
         sp4C.y = 200.0f;
     }
@@ -213,14 +213,14 @@ void WaterParticle_UpdateSystem(WaterParticleSystem* arg0) {
     }
 }
 
-s32 WaterParticleSystems_Tick(void) {
+s32 DoubleTextureTrail_UpdateAll(void) {
     s32 i;
     WaterParticleSystem* var_s0 = &D_843C2C00[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
             var_s0->unk_002 += 1;
-            WaterParticle_UpdateSystem(var_s0);
+            DoubleTextureTrail_Update(var_s0);
         }
     }
 
@@ -240,7 +240,7 @@ Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 
     temp_v1 = &arg1->unk_07C;
     temp_v0 = &arg1->envColorBlend;
 
-    if (GetParticleSpecialFlag() == 1) {
+    if (BattleAnim_GetMoveFailedFlag() == 1) {
         if (arg1->unk_094 >= arg1->unk_002) {
             arg1->unk_002 = arg1->unk_094 + 1;
         }
@@ -281,23 +281,23 @@ Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 
     return arg0;
 }
 
-Gfx* WaterParticle_LoadTextureTiles(Gfx* arg0, WaterParticleSystem* arg1) {
+Gfx* DoubleTextureTrail_LoadTextures(Gfx* arg0, WaterParticleSystem* arg1) {
     TextureTileInfo* ptr;
 
     ptr = &arg1->unk_064;
-    gDPLoadTextureTile_4b(arg0++, gWaterTexture[arg1->unk_01C], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_01C], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                           G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
 
     ptr = &arg1->unk_070;
-    gDPLoadMultiTile_4b(arg0++, gWaterTexture[arg1->unk_020], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[arg1->unk_020], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, ptr->unk_08, ptr->unk_0A);
     gDPSetTileSize(arg0++, 1, ptr->unk_00, ptr->unk_02, (ptr->unk_00 + 31) << 2, (ptr->unk_02 + 31) << 2);
 
     return arg0;
 }
 
-Gfx* WaterParticleSystems_Render(Gfx* arg0) {
+Gfx* DoubleTextureTrail_DrawAll(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
@@ -311,7 +311,7 @@ Gfx* WaterParticleSystems_Render(Gfx* arg0) {
     UNUSED s32 pad[3];
     Vtx* var_s0;
 
-    spD8 = GetBattleCamera();
+    spD8 = BattleAnim_GetCameraContext();
     var_fp = &D_843C2C00[0];
 
     for (i = 0; i < 4; i++, var_fp++) {
@@ -325,12 +325,12 @@ Gfx* WaterParticleSystems_Render(Gfx* arg0) {
 
             var_s2 = &var_fp->unk_0B0[0];
 
-            var_fp->unk_018 = GfxAlloc(sizeof(Vtx) * 90);
+            var_fp->unk_018 = Gfx_AllocDisplayList(sizeof(Vtx) * 90);
 
             var_s0 = var_fp->unk_018;
             for (j = 0; j < 10; j++, var_s2++) {
                 for (k = 0; k < 9; k++) {
-                    WaterParticle_ComputeOffset(var_s2->unk_0C + ((2.0f * (k % 8) * 3.1415927f) / 8), &sp100, var_s2->unk_08);
+                    DoubleTextureTrail_RotateVertexOffset(var_s2->unk_0C + ((2.0f * (k % 8) * 3.1415927f) / 8), &sp100, var_s2->unk_08);
                     var_s0->v.ob[0] = var_s2->unk_10.x + sp100.x;
                     var_s0->v.ob[1] = var_s2->unk_10.y + sp100.y;
                     var_s0->v.ob[2] = var_s2->unk_10.z + sp100.z;
@@ -365,7 +365,7 @@ Gfx* WaterParticleSystems_Render(Gfx* arg0) {
                 var_fp->unk_044.unk_00, var_fp->unk_044.unk_04, var_fp->unk_044.unk_08, var_fp->unk_044.unk_0C,
                 var_fp->unk_044.unk_10, var_fp->unk_044.unk_14, var_fp->unk_044.unk_18, var_fp->unk_044.unk_1C);
 
-            arg0 = WaterParticle_LoadTextureTiles(arg0, var_fp);
+            arg0 = DoubleTextureTrail_LoadTextures(arg0, var_fp);
 
             gDPSetPrimColor(arg0++, 0, var_fp->unk_07C.unk_04, var_fp->unk_07C.unk_00.r, var_fp->unk_07C.unk_00.g,
                             var_fp->unk_07C.unk_00.b, var_fp->unk_07C.unk_00.a);

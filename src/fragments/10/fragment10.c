@@ -72,7 +72,7 @@ static Fragment2_1GraphNode* gCurrentGraphNode;
 static u8 gHealthSegmentExactMatch;
 static s16 gCurrentHealthSegment;
 
-void UpdateHealthBarSegmentOffsets(void) {
+void DrowzeeGame_UpdatePlayerTimingWindows(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
@@ -83,27 +83,27 @@ void UpdateHealthBarSegmentOffsets(void) {
         }
 
         gCurrentHudState->unk_008 =
-            gHealthBarSegmentTable[D_864052CC->unk_000][2] + GetHealthBarSegmentOffset(D_864052CC->unk_000, gCurrentHudState->unk_000);
+            gHealthBarSegmentTable[D_864052CC->unk_000][2] + DrowzeeGame_ComputeAITimingBias(D_864052CC->unk_000, gCurrentHudState->unk_000);
         gCurrentHudState->unk_00A =
-            gHealthBarSegmentTable[D_864052CC->unk_000][6] + GetHealthBarSegmentOffset(D_864052CC->unk_000, gCurrentHudState->unk_000);
+            gHealthBarSegmentTable[D_864052CC->unk_000][6] + DrowzeeGame_ComputeAITimingBias(D_864052CC->unk_000, gCurrentHudState->unk_000);
     }
 }
 
-u16 IsHealthSegmentMatch(u8 arg0) {
+u16 DrowzeeGame_IsWindowMatch(u8 arg0) {
     if ((gCurrentHealthSegment == gPlayerHudStates[arg0].unk_008) || (gCurrentHealthSegment == gPlayerHudStates[arg0].unk_00A)) {
         return 1;
     }
     return 0;
 }
 
-void Hud_SetAnimationState(HudState* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4) {
+void DrowzeeGame_SetPlayerState(HudState* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4) {
     arg0->unk_018 = arg1;
     arg0->unk_01C = arg2;
     arg0->unk_020 = arg3;
     arg0->unk_024 = arg4;
 }
 
-void Hud_InitDefaultStates(void) {
+void DrowzeeGame_InitPlayerSlots(void) {
     s8 i;
 
     for (i = 0; i < 4; i++) {
@@ -115,20 +115,20 @@ void Hud_InitDefaultStates(void) {
     }
 }
 
-void ResultScreen_ResetAnim(void) {
-    if (Anim_HasReachedEnd(&gResultScreenNode) != 0) {
-        Anim_SetChannelBase(&gResultScreenNode, 0);
+void DrowzeeGame_LoopDrowzeeIdleAnim(void) {
+    if (ModelAnim_IsFinished(&gResultScreenNode) != 0) {
+        ModelAnim_SetFrame(&gResultScreenNode, 0);
     }
 }
 
-void GameState_UpdateAnim(ResultGameState* arg0) {
+void DrowzeeGame_AdvanceBreathPhase(ResultGameState* arg0) {
     static u8 D_86402994 = 0;
     static u8 D_86402998[] = {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x08, 0x08, 0x09,
         0x09, 0x09, 0x0A, 0x0A, 0x0A, 0x0B, 0x0B, 0x0B, 0x0C, 0x0C, 0x0C, 0x0D,
     };
 
-    if (Anim_HasReachedEnd(&arg0->unk_004) != 0) {
+    if (ModelAnim_IsFinished(&arg0->unk_004) != 0) {
         arg0->unk_001 = arg0->unk_000;
 
         if (arg0->unk_000 != 0xD) {
@@ -137,16 +137,16 @@ void GameState_UpdateAnim(ResultGameState* arg0) {
         }
 
         if (arg0->unk_001 != arg0->unk_000) {
-            GraphNode_TriggerAction(&arg0->unk_004, arg0->unk_000);
+            ModelAnim_SetAnimation(&arg0->unk_004, arg0->unk_000);
         } else {
-            Anim_SetChannelBase(&arg0->unk_004, 0);
+            ModelAnim_SetFrame(&arg0->unk_004, 0);
         }
 
-        UpdateHealthBarSegmentOffsets();
+        DrowzeeGame_UpdatePlayerTimingWindows();
     }
 }
 
-void Hud_UpdateAnimation(void) {
+void DrowzeeGame_UpdatePlayerAnimations(void) {
     u8 i;
     f32 temp_fv0;
     f32 var_fv1;
@@ -157,7 +157,7 @@ void Hud_UpdateAnimation(void) {
         for (i = 0; i < 4; i++) {
             gCurrentHudState = &gPlayerHudStates[i];
 
-            if ((Anim_HasReachedEnd(&gCurrentHudState->unk_028) != 0) ||
+            if ((ModelAnim_IsFinished(&gCurrentHudState->unk_028) != 0) ||
                 ((gCurrentHudState->unk_010 == 0) && (gCurrentHudState->unk_012 > 0)) ||
                 ((D_87B000C8 != 0) && (gCurrentHudState->unk_00C == 1) && (D_86402840 == 0x3C) && (D_87B000D4 == 1))) {
                 temp_s1 = gCurrentHudState->unk_004;
@@ -190,20 +190,20 @@ void Hud_UpdateAnimation(void) {
                 }
 
                 if (temp_s1 != gCurrentHudState->unk_004) {
-                    GraphNode_TriggerAction(&gCurrentHudState->unk_028, gCurrentHudState->unk_004);
+                    ModelAnim_SetAnimation(&gCurrentHudState->unk_028, gCurrentHudState->unk_004);
                     if (gCurrentHudState->unk_004 != 0) {
-                        GraphNode_TriggerSound(&gCurrentHudState->unk_028, gCurrentHudState->unk_004);
+                        ModelAnim_SetEventTrack(&gCurrentHudState->unk_028, gCurrentHudState->unk_004);
                     }
                 } else if (gCurrentHudState->unk_004 == 5) {
-                    Anim_SetChannelBase(&gCurrentHudState->unk_028, 0x18);
-                    SetAnimStateIndex(&gCurrentHudState->unk_028, 0x18);
+                    ModelAnim_SetFrame(&gCurrentHudState->unk_028, 0x18);
+                    ModelAnim_SetEventFrame(&gCurrentHudState->unk_028, 0x18);
                 } else if (gCurrentHudState->unk_004 == 6) {
-                    Anim_SetChannelBase(&gCurrentHudState->unk_028, 0x77);
-                    SetAnimStateIndex(&gCurrentHudState->unk_028, 0x77);
+                    ModelAnim_SetFrame(&gCurrentHudState->unk_028, 0x77);
+                    ModelAnim_SetEventFrame(&gCurrentHudState->unk_028, 0x77);
                 } else {
-                    Anim_SetChannelBase(&gCurrentHudState->unk_028, 0);
+                    ModelAnim_SetFrame(&gCurrentHudState->unk_028, 0);
                     if (gCurrentHudState->unk_004 != 0) {
-                        SetAnimStateIndex(&gCurrentHudState->unk_028, 0);
+                        ModelAnim_SetEventFrame(&gCurrentHudState->unk_028, 0);
                     }
                 }
             }
@@ -211,7 +211,7 @@ void Hud_UpdateAnimation(void) {
     }
 }
 
-void Hud_HandlePlayerElimination(u8 arg0) {
+void DrowzeeGame_ProcessElimination(u8 arg0) {
     u8 i;
     u8 sp40[] = {
         0,
@@ -239,7 +239,7 @@ void Hud_HandlePlayerElimination(u8 arg0) {
 
         if (sp40[i] != 0) {
             gCurrentHudState->unk_00C = D_864029B4;
-            Hud_SetAnimationState(gCurrentHudState, 0, 0, 0, 0);
+            DrowzeeGame_SetPlayerState(gCurrentHudState, 0, 0, 0, 0);
         }
     }
 
@@ -248,14 +248,14 @@ void Hud_HandlePlayerElimination(u8 arg0) {
         D_864052CC->unk_004.unk_040.unk_0C = 0;
         D_87B000C8 = 1;
 
-        Stage_SetFadeColor(0xA);
+        Audio_FadeOutAll(0xA);
 
         for (i = 0; i < 4; i++) {
             gCurrentHudState = &gPlayerHudStates[i];
 
             if (gCurrentHudState->unk_00C == 0) {
                 gCurrentHudState->unk_00C = 1;
-                Hud_SetAnimationState(gCurrentHudState, 0, 0, 0, 0);
+                DrowzeeGame_SetPlayerState(gCurrentHudState, 0, 0, 0, 0);
             }
         }
 
@@ -270,7 +270,7 @@ void Hud_HandlePlayerElimination(u8 arg0) {
         if (D_87B000D4 == 1) {
             for (i = 0; i < 4; i++) {
                 if (gPlayerHudStates[i].unk_00C == 1) {
-                    IncrementPlayerScore(i);
+                    Widget_PauseMenuRecordWin(i);
                     break;
                 }
             }
@@ -278,7 +278,7 @@ void Hud_HandlePlayerElimination(u8 arg0) {
     }
 }
 
-void Hud_RenderHealthBars(UNUSED s32 arg0) {
+void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0) {
     u8 i;
     f32 temp_fs0;
     s16 temp_a3;
@@ -289,7 +289,7 @@ void Hud_RenderHealthBars(UNUSED s32 arg0) {
     for (i = 0; i < 4; i++) {
         gCurrentHudState = &gPlayerHudStates[i];
 
-        temp_v0 = GfxAlloc(0x80);
+        temp_v0 = Gfx_AllocDisplayList(0x80);
         gCurrentHudState->unk_190->unk_18 = temp_v0;
 
         if ((gCurrentHudState->unk_010 == 0) || (gCurrentHudState->unk_00C == 1)) {
@@ -304,7 +304,7 @@ void Hud_RenderHealthBars(UNUSED s32 arg0) {
                 if (gCurrentHudState->unk_015 == 0) {
                     gCurrentHudState->unk_015 = 1;
                     if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
-                        PlaySoundByCategory(0x70005, i + 1, 0);
+                        Audio_DispatchSoundBankCommand(0x70005, i + 1, 0);
                     }
                 }
                 gCurrentHudState->unk_190->unk_28 = temp_fs0;
@@ -312,7 +312,7 @@ void Hud_RenderHealthBars(UNUSED s32 arg0) {
                 if (gCurrentHudState->unk_015 == 0) {
                     gCurrentHudState->unk_015 = 1;
                     if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
-                        PlaySoundByCategory(0x70006, i + 1, 0);
+                        Audio_DispatchSoundBankCommand(0x70006, i + 1, 0);
                     }
                 }
                 gCurrentHudState->unk_190->unk_28 = temp_fs0;
@@ -331,7 +331,7 @@ void Hud_RenderHealthBars(UNUSED s32 arg0) {
                     case 20:
                         gCurrentHudState->unk_190->unk_28 = temp_fs0;
                         if ((gResultFlag_Special == 0) && (gResultMenuVisible == 0)) {
-                            PlaySoundByCategory(0x70004, i + 1, 0);
+                            Audio_DispatchSoundBankCommand(0x70004, i + 1, 0);
                         }
                         break;
 
@@ -354,7 +354,7 @@ void Hud_RenderHealthBars(UNUSED s32 arg0) {
     }
 }
 
-void ResultScreen_Update(s32 arg0) {
+void DrowzeeGame_UpdateRoundTick(s32 arg0) {
     s32 temp;
     s16 sp24[] = {
         0xFB1E,
@@ -364,7 +364,7 @@ void ResultScreen_Update(s32 arg0) {
     };
     u8 i;
 
-    Fragment2_1_Update();
+    Widget_CountdownUpdate();
 
     if (gResultMenuVisible == 0) {
         if (arg0 == 2) {
@@ -411,7 +411,7 @@ void ResultScreen_Update(s32 arg0) {
                     if (D_86402840 < 0x6A) {
                         if (D_86402840 == 0x69) {
                             D_87B000CC = 1;
-                            SetResultFlag(1);
+                            Widget_PauseMenuTrigger(1);
                         }
                         D_86402840++;
                     }
@@ -436,7 +436,7 @@ void ResultScreen_Update(s32 arg0) {
     }
 }
 
-void ResultScreen_HandleInput(void) {
+void DrowzeeGame_JudgePlayerTiming(void) {
     static u8 D_864029C8 = 0;
 
     u8 i;
@@ -453,7 +453,7 @@ void ResultScreen_HandleInput(void) {
         }
 
         if (D_864052CC->unk_16C != D_864052CC->previousHealthState) {
-            PlaySoundByCategory(0x70003, 1 - D_864052CC->unk_16C, 0);
+            Audio_DispatchSoundBankCommand(0x70003, 1 - D_864052CC->unk_16C, 0);
 
             for (i = 0; i < 4; i++) {
                 gCurrentHudState = &gPlayerHudStates[i];
@@ -477,25 +477,25 @@ void ResultScreen_HandleInput(void) {
                 if (gCurrentHudState->unk_01C >= 2) {
                     gCurrentHudState->unk_01C--;
                 } else {
-                    Hud_SetAnimationState(gCurrentHudState, gCurrentHudState->unk_020, gCurrentHudState->unk_024, 0, 0);
+                    DrowzeeGame_SetPlayerState(gCurrentHudState, gCurrentHudState->unk_020, gCurrentHudState->unk_024, 0, 0);
                 }
 
                 if (gCurrentHudState->unk_000 == 4) {
                     gPlayerButtonPressed = gControllers[i].buttonPressed & 0x8000;
                 } else {
-                    gPlayerButtonPressed = IsHealthSegmentMatch(i);
+                    gPlayerButtonPressed = DrowzeeGame_IsWindowMatch(i);
                 }
 
                 if (gPlayerButtonPressed != 0) {
                     if (gHealthSegmentExactMatch != 0) {
                         if (gCurrentHudState->unk_014 == 0) {
                             if (D_864029C8 == 0) {
-                                PlaySoundByCategory(0x70009, 0, 0);
+                                Audio_DispatchSoundBankCommand(0x70009, 0, 0);
                                 D_864029C8 = 1;
                             }
 
                             gCurrentHudState->unk_014 = 1;
-                            Anim_SetChannelBase(&gPlayerResultNodes[i], 0);
+                            ModelAnim_SetFrame(&gPlayerResultNodes[i], 0);
 
                             for (j = 0; j < 4; j++) {
                                 if (i != j) {
@@ -504,17 +504,17 @@ void ResultScreen_HandleInput(void) {
                             }
 
                             if (gCurrentHudState->unk_018 == 0) {
-                                Hud_SetAnimationState(gCurrentHudState, 1, 0x14, 0, 0);
+                                DrowzeeGame_SetPlayerState(gCurrentHudState, 1, 0x14, 0, 0);
                             } else {
-                                Hud_SetAnimationState(gCurrentHudState, 0, 1, 1, 0x14);
+                                DrowzeeGame_SetPlayerState(gCurrentHudState, 0, 1, 1, 0x14);
                             }
                         }
                     } else {
                         gCurrentHudState->unk_010 -= 1;
                         if (gCurrentHudState->unk_018 == 0) {
-                            Hud_SetAnimationState(gCurrentHudState, 2, 0x14, 0, 0);
+                            DrowzeeGame_SetPlayerState(gCurrentHudState, 2, 0x14, 0, 0);
                         } else {
-                            Hud_SetAnimationState(gCurrentHudState, 0, 1, 2, 0x14);
+                            DrowzeeGame_SetPlayerState(gCurrentHudState, 0, 1, 2, 0x14);
                         }
                     }
 
@@ -547,9 +547,9 @@ void ResultScreen_HandleInput(void) {
                     if (gCurrentHudState->unk_014 == 0) {
                         gCurrentHudState->unk_010--;
                         if (gCurrentHudState->unk_018 == 0) {
-                            Hud_SetAnimationState(gCurrentHudState, 2, 0x14, 0, 0);
+                            DrowzeeGame_SetPlayerState(gCurrentHudState, 2, 0x14, 0, 0);
                         } else {
-                            Hud_SetAnimationState(gCurrentHudState, 0, 1, 2, 0x14);
+                            DrowzeeGame_SetPlayerState(gCurrentHudState, 0, 1, 2, 0x14);
                         }
                     } else {
                         gCurrentHudState->unk_014 = 0;
@@ -568,23 +568,23 @@ void ResultScreen_HandleInput(void) {
             if (gCurrentHudState->unk_010 <= 0) {
                 gCurrentHudState->unk_010 = 0;
                 if ((gCurrentHudState->unk_012 > 0) && (gCurrentHudState->unk_00C == 0)) {
-                    Hud_HandlePlayerElimination(i);
+                    DrowzeeGame_ProcessElimination(i);
                 }
             }
         }
     }
 }
 
-void ResultScreen_DrawUI(s32 arg0) {
+void DrowzeeGame_DrawTutorialScreen(s32 arg0) {
     if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
-        DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
-        DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
+        Ui_DrawBorderedPanel(0x18, 0x16, 0x110, 0x90, 0x15);
+        Ui_DrawBorderedPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        DrawDualTexturePanel(2, 0x19, 0xA6);
-        DrawAnimatedSprite(0x74, 0xB0, gPrefLayoutTable1);
-        DrawAnimatedSprite3(0x74, 0xC6, gPrefLayoutTable2);
+        Widget_DrawSplitBanner(2, 0x19, 0xA6);
+        Widget_DrawAnimIcon16(0x74, 0xB0, gPrefLayoutTable1);
+        Widget_DrawAnimIcon16C(0x74, 0xC6, gPrefLayoutTable2);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -608,103 +608,103 @@ void ResultScreen_DrawUI(s32 arg0) {
 
         for (i = 0; i < 4; i++) {
             if (gPlayerHudStates[i].unk_000 == 4) {
-                DrawUniformScaledTextureRect(i, sp74[i], sp6C[i], 0.75f);
+                Widget_DrawPlayerIcon(i, sp74[i], sp6C[i], 0.75f);
             } else {
-                DrawUniformScaledTextureRect(-1 - i, sp74[i], sp6C[i], 0.75f);
+                Widget_DrawPlayerIcon(-1 - i, sp74[i], sp6C[i], 0.75f);
             }
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 
-    Text_ResetState();
-    Text_BeginRender();
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
 
     if ((arg0 == 0) || ((arg0 == 3) && (D_87B000D0 == 1))) {
-        char* temp_s2 = GetMessageString(NULL, 0, gItemNamesBank, 0x29);
+        char* temp_s2 = Text_GetString(NULL, 0, gItemNamesBank, 0x29);
         s32 sp58;
         s32 sp54;
         s32 temp_s0;
 
-        Text_SetFont(2, 0);
-        Text_SetLineHeight(0xC);
+        Font_SetActive(2, 0);
+        Font_SetLineHeight(0xC);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-        Text_Print(0xA0 - (GetTextWidth(gCurrentTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0x28)) / 2), 0x20,
-                      GetMessageString(NULL, 0, gItemNamesBank, 0x28));
+        Font_Printf(0xA0 - (Text_MeasureStringWidth(gCurrentTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0x28)) / 2), 0x20,
+                      Text_GetString(NULL, 0, gItemNamesBank, 0x28));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print(0x28, 0x34, temp_s2);
+        Font_Printf(0x28, 0x34, temp_s2);
 
         temp_s0 = ((CountTextLines(temp_s2) * 0xC) + 0xC);
-        Text_Print(0x28, temp_s0 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x2A));
-        Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
-        Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+        Font_Printf(0x28, temp_s0 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x2A));
+        Font_Printf(0x8B, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+        Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
         Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
         Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-        ParseStringAndMeasure(&sp58, &sp54, temp_s2, GetMessageString(NULL, 0, gItemNamesBank, 0x5F), 0xC);
-        Text_Print(sp58 + 0x28, sp54 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x5F));
+        Widget_MeasureLabelBox(&sp58, &sp54, temp_s2, Text_GetString(NULL, 0, gItemNamesBank, 0x5F), 0xC);
+        Font_Printf(sp58 + 0x28, sp54 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x5F));
         Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
         Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-        Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x2B));
+        Font_Printf(0xA2, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x2B));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-        Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
+        Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
     }
 
-    Text_EndRender();
-    Text_SetupDL();
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
 void DrowzeeGame_DrawFrame(s32 arg0) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 0xA6BF);
 
     if (gResultMenuVisible == 0) {
-        Gfx_FinishFrame();
+        GeoRender_AdvanceFrameCounter();
     }
 
-    Graph_SetTextureState(D_87B000E8);
+    Geo_RenderRootNode(D_87B000E8);
 
     if (gResultConfirmPressed == 0) {
-        ResultScreen_DrawUI(arg0);
+        DrowzeeGame_DrawTutorialScreen(arg0);
     }
 
-    ResultScreen_UpdateAndRender();
-    Stage_Advance();
+    Widget_PauseMenuUpdate();
+    BgStage_AdvanceFrame();
 
     if (gResultMenuVisible == 0) {
         D_87B000C0++;
     }
 }
 
-void ResultScreen_IntroSequence(void) {
+void DrowzeeGame_WaitForStart(void) {
     u8 i;
     u8 var_s1;
     s32 var_s2;
 
     var_s1 = 0;
     var_s2 = 1;
-    Stage_AdvanceN(5);
-    Stage_FadeIn(0x10);
+    StageLoader_RunFrames(5);
+    StageFade_StartFromOpaque(0x10);
 
     while (var_s2 != 0) {
         if (var_s1 >= 0x11) {
             if (gPlayer1Controller->buttonPressed & 0x1000) {
                 var_s2 = 0;
             } else if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
-                PlaySoundEffect(3);
-                SetResultFlag(2);
+                Audio_PlaySoundEffectById(3);
+                Widget_PauseMenuTrigger(2);
                 D_87B000D0 = 1;
                 return;
             }
         }
 
         MenuInput_FrameUpdate();
-        ResultScreen_Update(0);
-        Hud_RenderHealthBars(0);
-        Hud_UpdateAnimation();
-        ResultScreen_ResetAnim();
+        DrowzeeGame_UpdateRoundTick(0);
+        DrowzeeGame_DrawPlayerOverlay(0);
+        DrowzeeGame_UpdatePlayerAnimations();
+        DrowzeeGame_LoopDrowzeeIdleAnim();
         DrowzeeGame_DrawFrame(0);
 
         if (var_s1 < 0x11) {
@@ -712,7 +712,7 @@ void ResultScreen_IntroSequence(void) {
         }
     }
 
-    Stage_SetFadeColor(0x3C);
+    Audio_FadeOutAll(0x3C);
     if (gResultFlag_Special == 0) {
         while (true) {
             if (D_87B000C4 <= 0) {
@@ -722,19 +722,19 @@ void ResultScreen_IntroSequence(void) {
             for (i = 3; i > 0; i--) {
                 if (D_87B000C4 == ((i * 0x3C) / 2)) {
                     if (i == 3) {
-                        Fragment2_1_SetStartFlag(1);
+                        Widget_CountdownStart(1);
                     }
-                    PlaySoundByCategory(0x70001, 0, 0);
+                    Audio_DispatchSoundBankCommand(0x70001, 0, 0);
                 }
             }
 
             D_87B000C4--;
 
             MenuInput_FrameUpdate();
-            ResultScreen_Update(1);
-            Hud_RenderHealthBars(1);
-            Hud_UpdateAnimation();
-            ResultScreen_ResetAnim();
+            DrowzeeGame_UpdateRoundTick(1);
+            DrowzeeGame_DrawPlayerOverlay(1);
+            DrowzeeGame_UpdatePlayerAnimations();
+            DrowzeeGame_LoopDrowzeeIdleAnim();
             DrowzeeGame_DrawFrame(1);
         }
     }
@@ -747,12 +747,12 @@ void DrowzeeGame_MainLoop(void) {
     s32 var_s2 = 1;
 
     if (gResultFlag_Special == 0) {
-        PlaySoundByCategory(0x70002, 0, 0);
+        Audio_DispatchSoundBankCommand(0x70002, 0, 0);
         MenuInput_FrameUpdate();
-        ResultScreen_Update(2);
-        Hud_RenderHealthBars(2);
-        Hud_UpdateAnimation();
-        ResultScreen_ResetAnim();
+        DrowzeeGame_UpdateRoundTick(2);
+        DrowzeeGame_DrawPlayerOverlay(2);
+        DrowzeeGame_UpdatePlayerAnimations();
+        DrowzeeGame_LoopDrowzeeIdleAnim();
         DrowzeeGame_DrawFrame(2);
 
         while (var_s2 != 0) {
@@ -760,13 +760,13 @@ void DrowzeeGame_MainLoop(void) {
                 break;
             }
 
-            if ((D_864029DC == 0) && (Fragment2_1_GetResult() == -2)) {
-                ResultScreen_SetAnimation(0x18);
+            if ((D_864029DC == 0) && (Widget_CountdownGetState() == -2)) {
+                Audio_StartMusicTrack(0x18);
                 D_864029DC = 1;
             }
 
             MenuInput_FrameUpdate();
-            ResultScreen_Update(2);
+            DrowzeeGame_UpdateRoundTick(2);
 
             if (D_87B000C8 == 0) {
                 if (D_864029E0 < 0x1E) {
@@ -775,44 +775,44 @@ void DrowzeeGame_MainLoop(void) {
                     }
                 } else if (D_864029E0 == 0x1E) {
                     if (gResultMenuVisible == 0) {
-                        PlaySoundByCategory(0x70003, 1, 0);
+                        Audio_DispatchSoundBankCommand(0x70003, 1, 0);
                         D_864029E0++;
                     }
-                    Anim_SetChannelBase(&D_864052CC->unk_004, 1);
+                    ModelAnim_SetFrame(&D_864052CC->unk_004, 1);
                 } else {
-                    ResultScreen_HandleInput();
-                    GameState_UpdateAnim(D_864052CC);
+                    DrowzeeGame_JudgePlayerTiming();
+                    DrowzeeGame_AdvanceBreathPhase(D_864052CC);
                 }
             } else if (gResultExitPending != 0) {
                 var_s2 = 0;
             }
 
-            Hud_RenderHealthBars(2);
-            Hud_UpdateAnimation();
-            ResultScreen_ResetAnim();
+            DrowzeeGame_DrawPlayerOverlay(2);
+            DrowzeeGame_UpdatePlayerAnimations();
+            DrowzeeGame_LoopDrowzeeIdleAnim();
             DrowzeeGame_DrawFrame(2);
         }
     }
 }
 
-void ResultScreen_OutroSequence(void) {
+void DrowzeeGame_ShowResultText(void) {
     u8 i;
 
-    Audio_SetVolumeFadeAndDuration(1, 0x1E);
-    Audio_SetVolumeFadeAndDuration(2, 0x1E);
-    Stage_FadeOut(0x1E);
+    Audio_FadeCategories(1, 0x1E);
+    Audio_FadeCategories(2, 0x1E);
+    StageFade_StartFromTransparent(0x1E);
 
     for (i = 0; i < 30; i++) {
         MenuInput_FrameUpdate();
-        ResultScreen_Update(3);
-        Hud_RenderHealthBars(3);
-        Hud_UpdateAnimation();
-        ResultScreen_ResetAnim();
+        DrowzeeGame_UpdateRoundTick(3);
+        DrowzeeGame_DrawPlayerOverlay(3);
+        DrowzeeGame_UpdatePlayerAnimations();
+        DrowzeeGame_LoopDrowzeeIdleAnim();
         DrowzeeGame_DrawFrame(3);
     }
 }
 
-void ResultScreen_SetupCamera(void) {
+void DrowzeeGame_InitCamera(void) {
     D_87B000EC = D_87B000E8->unk_00.unk_0C;
 
     D_87B000F0 = 0x900;
@@ -825,49 +825,49 @@ void ResultScreen_SetupCamera(void) {
 
     D_87B000EC->unk_60.at.y = 25.0f;
 
-    Camera_SetViewParameters(&D_87B000EC->unk_60.at, &D_87B000EC->unk_60.eye, D_87B000F4, D_87B000F0, D_87B000F2);
+    Camera_ComputeEyeFromAngles(&D_87B000EC->unk_60.at, &D_87B000EC->unk_60.eye, D_87B000F4, D_87B000F0, D_87B000F2);
 }
 
-void Hud_CreateBillboards(void) {
+void DrowzeeGame_InitPlayerOverlays(void) {
     u8 i;
-    MemoryBlock* temp_s5 = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* temp_s5 = MainPool_AllocState(main_pool_get_available(), 0);
 
     for (i = 0; i < 4; i++) {
         gCurrentHudState = &gPlayerHudStates[i];
-        gCurrentHudState->unk_190 = BillboardNode_Create(temp_s5, NULL, 4, NULL, &gRootNodePosition, 0.0f);
-        GraphNode_AddChild(&gGraphRoot0, &gCurrentHudState->unk_190->unk_00);
+        gCurrentHudState->unk_190 = GeoNode_CreateScale(temp_s5, NULL, 4, NULL, &gRootNodePosition, 0.0f);
+        GraphNode_AppendChild(&gGraphRoot0, &gCurrentHudState->unk_190->unk_00);
     }
 
-    mem_pool_resize_block(temp_s5);
+    MainPool_FinalizeAllocation(temp_s5);
 }
 
-void ResultScreen_InitScene(void) {
+void DrowzeeGame_LoadAssets(void) {
     u8 i;
     u8 x;
     u8 y;
-    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
 
     D_87B000E8 = process_geo_layout(temp_v0, gGeoLayoutData);
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
-    AssetManager_LoadArchives();
-    D_87B000E4 = GeoLayout_LoadById(0xC7);
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
+    PokeIcon_OpenModelArchives();
+    D_87B000E4 = Model_LoadByArchiveIndex(0xC7);
     gCurrentGraphNode = &gResultScreenNode;
-    Graph_AddToRootList0(gCurrentGraphNode);
-    GraphNode_InitChild(gCurrentGraphNode, 0, 0xC7, D_87B000E4->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(gCurrentGraphNode, 0);
-    Anim_SetChannelBase(gCurrentGraphNode, 0);
-    D_87B000E4 = GeoLayout_LoadById(0xC4);
+    ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
+    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC7, D_87B000E4->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(gCurrentGraphNode, 0);
+    ModelAnim_SetFrame(gCurrentGraphNode, 0);
+    D_87B000E4 = Model_LoadByArchiveIndex(0xC4);
 
     for (i = 0; i < 4; i++) {
         gCurrentHudState = &gPlayerHudStates[i];
         gCurrentGraphNode = &gCurrentHudState->unk_028;
 
-        Graph_AddToRootList0(gCurrentGraphNode);
-        GraphNode_InitChild(gCurrentGraphNode, 0, 0xC4, D_87B000E4->unk_08->unk_00[0]);
+        ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
+        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC4, D_87B000E4->unk_08->unk_00[0]);
         gCurrentHudState->unk_004 = 0;
-        GraphNode_TriggerAction(gCurrentGraphNode, gCurrentHudState->unk_004);
-        Anim_SetChannelBase(gCurrentGraphNode, HealthBar_ValueToPixel(gCurrentGraphNode->unk_040.unk_04->unk_0A));
+        ModelAnim_SetAnimation(gCurrentGraphNode, gCurrentHudState->unk_004);
+        ModelAnim_SetFrame(gCurrentGraphNode, MiniGame_RandomRange(gCurrentGraphNode->unk_040.unk_04->unk_0A));
 
         gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].unk_00;
         gCurrentGraphNode->unk_024.y = gPlayerSpawnInfo[i].unk_04;
@@ -887,7 +887,7 @@ void ResultScreen_InitScene(void) {
         gCurrentHudState->unk_014 = 0;
         gCurrentHudState->unk_015 = 0;
 
-        Hud_SetAnimationState(gCurrentHudState, 0, 0, 0, 0);
+        DrowzeeGame_SetPlayerState(gCurrentHudState, 0, 0, 0, 0);
 
         for (x = 0; x < 14; x++) {
             for (y = 0; y < 8; y++) {
@@ -898,16 +898,16 @@ void ResultScreen_InitScene(void) {
         gCurrentHudState->unk_274 = 0;
     }
 
-    D_87B000E4 = GeoLayout_LoadById(0xC3);
+    D_87B000E4 = Model_LoadByArchiveIndex(0xC3);
     D_864052CC = &gGameState;
     gCurrentGraphNode = &D_864052CC->unk_004;
-    Graph_AddToRootList0(gCurrentGraphNode);
-    GraphNode_InitChild(gCurrentGraphNode, 0, 0xC3, D_87B000E4->unk_08->unk_00[0]);
+    ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
+    Model_InitDisplayObject(gCurrentGraphNode, 0, 0xC3, D_87B000E4->unk_08->unk_00[0]);
 
     D_864052CC->unk_001 = D_864052CC->unk_000 = 0;
 
-    GraphNode_TriggerAction(gCurrentGraphNode, D_864052CC->unk_000);
-    Anim_SetChannelBase(gCurrentGraphNode, gCurrentGraphNode->unk_040.unk_04->unk_0A);
+    ModelAnim_SetAnimation(gCurrentGraphNode, D_864052CC->unk_000);
+    ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.unk_04->unk_0A);
 
     gCurrentGraphNode->unk_024.y = 20.0f;
     gCurrentGraphNode->unk_030.x = 1.0f;
@@ -917,15 +917,15 @@ void ResultScreen_InitScene(void) {
 
     D_864052CC->unk_16C = 0;
     D_864052CC->previousHealthState = 0;
-    D_87B000E4 = GeoLayout_LoadById(0xD2);
+    D_87B000E4 = Model_LoadByArchiveIndex(0xD2);
 
     for (i = 0; i < 4; i++) {
         gCurrentGraphNode = &gPlayerResultNodes[i];
 
-        Graph_AddToRootList0(gCurrentGraphNode);
-        GraphNode_InitChild(gCurrentGraphNode, 0, 0xD2, D_87B000E4->unk_08->unk_00[0]);
-        GraphNode_TriggerAction(gCurrentGraphNode, 0);
-        Anim_SetChannelBase(gCurrentGraphNode, gCurrentGraphNode->unk_040.unk_04->unk_0A);
+        ModelRenderer_AttachDisplayObject(gCurrentGraphNode);
+        Model_InitDisplayObject(gCurrentGraphNode, 0, 0xD2, D_87B000E4->unk_08->unk_00[0]);
+        ModelAnim_SetAnimation(gCurrentGraphNode, 0);
+        ModelAnim_SetFrame(gCurrentGraphNode, gCurrentGraphNode->unk_040.unk_04->unk_0A);
 
         gCurrentGraphNode->unk_024.x = gPlayerSpawnInfo[i].unk_00;
         gCurrentGraphNode->unk_024.y = 25.0f;
@@ -935,34 +935,34 @@ void ResultScreen_InitScene(void) {
         gCurrentGraphNode->unk_01E.z = gPlayerSpawnInfo[i].unk_1C;
     }
 
-    Hud_CreateBillboards();
-    Hud_InitDefaultStates();
-    UpdateHealthBarSegmentOffsets();
-    ResultScreen_SetupCamera();
-    Fragment2_1_Init();
-    ResultScreen_Init();
+    DrowzeeGame_InitPlayerOverlays();
+    DrowzeeGame_InitPlayerSlots();
+    DrowzeeGame_UpdatePlayerTimingWindows();
+    DrowzeeGame_InitCamera();
+    Widget_CountdownInit();
+    Widget_PauseMenuInit();
 }
 
-void ResultScreen_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
+void DrowzeeGame_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');
 
-    Gfx_InitBuffers(0x18000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    gCurrentTextObject = Text_Init(0x16, 0);
+    Gfx_InitDisplayListBuffers(0x18000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    gCurrentTextObject = Font_Init(0x16, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
-    ResultScreen_InitScene();
-    Stage_Set(sp24);
-    ResultScreen_IntroSequence();
+    DrowzeeGame_LoadAssets();
+    StageContext_Activate(sp24);
+    DrowzeeGame_WaitForStart();
     DrowzeeGame_MainLoop();
-    ResultScreen_OutroSequence();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    DrowzeeGame_ShowResultText();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('MINI');
 
-    GetCurrentOptionCount();
+    Widget_PauseMenuGetResult();
 }

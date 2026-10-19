@@ -26,7 +26,7 @@ void Diorama_DrawEndBackgroundTiles(u8* arg0) {
 
     for (i = 0; i < 15; i++) {
         for (j = 0; j < 20; j++, arg0 += 0x200) {
-            Gfx_DrawSpriteRGBA16(j * 16, i * 16, 0x10, 0x10, arg0, 0x10, 0);
+            Gfx_DrawTextureRgba16(j * 16, i * 16, 0x10, 0x10, arg0, 0x10, 0);
         }
     }
 
@@ -34,20 +34,20 @@ void Diorama_DrawEndBackgroundTiles(u8* arg0) {
 }
 
 void Diorama_DrawFullscreenTexture(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6) {
-    FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
-    Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
-    Mtx* spCC = GfxAlloc(sizeof(Mtx) * 1);
-    Vp* spC8 = GfxAlloc(sizeof(Vp));
+    FramebufferImage* temp_s1 = GfxImage_GetCurrent();
+    Vtx* temp_s2 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
+    Mtx* spCC = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    Vp* spC8 = Gfx_AllocDisplayList(sizeof(Vp));
 
-    SetViewport(spC8, temp_s1->width, temp_s1->height);
+    Gfx_SetViewportDimensions(spC8, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)spC8 & 0x1FFFFFFF);
 
     guOrtho(spCC, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
-    SetTileVertex(&temp_s2[0], arg1, arg2, -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    SetTileVertex(&temp_s2[1], arg1 + arg3, arg2, -1, arg5 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-    SetTileVertex(&temp_s2[2], arg1, arg2 + arg4, -1, 0, arg6 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
-    SetTileVertex(&temp_s2[3], arg1 + arg3, arg2 + arg4, -1, arg5 << 5, arg6 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[0], arg1, arg2, -1, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[1], arg1 + arg3, arg2, -1, arg5 << 5, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[2], arg1, arg2 + arg4, -1, 0, arg6 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[3], arg1 + arg3, arg2 + arg4, -1, arg5 << 5, arg6 << 5, 0xFF, 0xFF, 0xFF, 0xFF);
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -86,21 +86,21 @@ void Diorama_DrawEndCaption(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, D_86B0E5E0, 0));
+        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, D_86B0E5E0, 0));
         temp_s0 = 0x50 - D_86B0BD50;
         if (D_86B0E5DC != 1) {
             gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
-            Text_ResetState();
-            Text_SetFont(4, 0);
-            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_86B0E5E0, 0));
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(4, 0);
+            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, D_86B0E5E0, 0));
 
             temp_s0 += sp24 + 0x1E;
             if (temp_s0 < 0x140) {
-                Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, D_86B0E5E0, 0));
+                Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, D_86B0E5E0, 0));
             }
 
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
 
             gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 

@@ -106,21 +106,21 @@ static u16 gSushiUIFlags;
 static s16 gIsDemoMode;
 static s16 gSushiFadeTimer;
 
-void Sushi_FadeAudio(s32 arg0) {
+void SushiGame_FadeAudio(s32 arg0) {
     if (gIsDemoMode == 0) {
-        Audio_SetVolumeFadeAndDuration(1, arg0);
-        Audio_SetVolumeFadeAndDuration(2, arg0);
+        Audio_FadeCategories(1, arg0);
+        Audio_FadeCategories(2, arg0);
     } else {
-        Music_StartVolumeFade(arg0);
+        Audio_BeginVolumeTransition(arg0);
     }
 }
 
-void ReadAllControllers(void) {
+void SushiGame_PollInput(void) {
     Controller* temp_v0;
 
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 
     bzero(&gCombinedController, sizeof(Controller));
 
@@ -147,7 +147,7 @@ void ReadAllControllers(void) {
     if (1) {}
 }
 
-Gfx* DrawTextureStackColumn(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+Gfx* SushiGame_DrawPlateStack(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     unk_D_86806E20** var_a3;
     s32 var_v0;
     s32 var_v1;
@@ -191,19 +191,19 @@ Gfx* DrawTextureStackColumn(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     return arg0;
 }
 
-void RenderPanelColumns(void) {
+void SushiGame_DrawAllPlateStacks(void) {
     s32 i;
     Gfx* var_s4 = gDisplayListHead;
     unk_D_86807558* ptr;
 
     for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
-        var_s4 = DrawTextureStackColumn(var_s4, i / 2, gPanelColumnX[i], gPanelColumnY[i], ptr->unk_02A);
+        var_s4 = SushiGame_DrawPlateStack(var_s4, i / 2, gPanelColumnX[i], gPanelColumnY[i], ptr->unk_02A);
     }
 
     gDisplayListHead = var_s4;
 }
 
-void InterpolateColors(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 arg4) {
+void SushiGame_InterpolateColorCycle(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 arg4) {
     Color_RGB8* var_v0;
     Color_RGB8* var_v1;
     f32 temp_fv0;
@@ -240,7 +240,7 @@ void InterpolateColors(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s
     }
 }
 
-void DrawSushiItem(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
+void SushiGame_DrawDishIcon(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
     s16 sp36;
     s16 sp34;
     s16 sp32;
@@ -254,7 +254,7 @@ void DrawSushiItem(s32 arg0, s16 arg1, s16 arg2, f32 arg3) {
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg1, arg2, sp34, sp32, 0, 0, sp36, sp36, 0);
+        Gfx_DrawTexturedRectClipped(arg1, arg2, sp34, sp32, 0, 0, sp36, sp36, 0);
     }
 }
 
@@ -271,7 +271,7 @@ void RenderSushiGoRoundUI(void) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (gSushiUIFlags & 2) {
-        RenderPanelColumns();
+        SushiGame_DrawAllPlateStacks();
         for (i = 0; i < 4; i++) {
             if ((i == 0) || (i == 3)) {
                 var_v0 = -0x18;
@@ -280,28 +280,28 @@ void RenderSushiGoRoundUI(void) {
             }
 
             if (!(gSushiEntities[i].unk_002 & 4)) {
-                DrawUniformScaledTextureRect(i, gPanelColumnX[i], gPanelColumnY[i] + var_v0, 0.75f);
+                Widget_DrawPlayerIcon(i, gPanelColumnX[i], gPanelColumnY[i] + var_v0, 0.75f);
             } else {
-                DrawUniformScaledTextureRect(-1 - i, gPanelColumnX[i], gPanelColumnY[i] + var_v0, 0.75f);
+                Widget_DrawPlayerIcon(-1 - i, gPanelColumnX[i], gPanelColumnY[i] + var_v0, 0.75f);
             }
         }
     }
 
     if (gIsDemoMode != 0) {
-        Stage_SetBorderFadeParams(0x1E, 0x17);
+        Widget_DrawStripedBar(0x1E, 0x17);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if (gSushiUIFlags & 1) {
-        DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
-        DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
-        FillRect(0x17, 0x16, 2, 0x90);
-        FillRect(0x127, 0x16, 2, 0x90);
+        Ui_DrawBorderedPanel(0x18, 0x16, 0x110, 0x90, 0x15);
+        Ui_DrawBorderedPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
+        Widget_FillRect(0x17, 0x16, 2, 0x90);
+        Widget_FillRect(0x127, 0x16, 2, 0x90);
     }
 
-    Text_ResetState();
-    Text_BeginRender();
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
 
     if (gSushiUIFlags & 1) {
         s32 spA4;
@@ -310,34 +310,34 @@ void RenderSushiGoRoundUI(void) {
         s32 sp98;
         s32 sp94;
 
-        Text_SetFont(2, 0);
+        Font_SetActive(2, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-        Text_Print(0xA0 - (GetTextWidth(gSushiGoRoundTextObject, GetMessageString(NULL, 0, gItemNamesBank, 0xC)) / 2), 0x20,
-                      GetMessageString(NULL, 0, gItemNamesBank, 0xC));
+        Font_Printf(0xA0 - (Text_MeasureStringWidth(gSushiGoRoundTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0xC)) / 2), 0x20,
+                      Text_GetString(NULL, 0, gItemNamesBank, 0xC));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_SetLineHeight(0xC);
-        Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x32));
-        Text_Print(0x28, 0x4C, GetMessageString(NULL, 0, gItemNamesBank, 0x33));
-        Text_Print(0x78, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
-        Text_Print(0xDA, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
-        Text_Print(0x86, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+        Font_SetLineHeight(0xC);
+        Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x32));
+        Font_Printf(0x28, 0x4C, Text_GetString(NULL, 0, gItemNamesBank, 0x33));
+        Font_Printf(0x78, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+        Font_Printf(0xDA, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+        Font_Printf(0x86, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
         Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
         Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-        Text_Print(0x8C, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x34));
+        Font_Printf(0x8C, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x34));
         Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
         Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-        Text_Print(0xEE, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x35));
+        Font_Printf(0xEE, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x35));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-        Text_Print(0x9A, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
-        ParseStringAndMeasure(&spA4, &spA0, GetMessageString(NULL, 0, gItemNamesBank, 0x32), GetMessageString(NULL, 0, gItemNamesBank, 0x5F),
+        Font_Printf(0x9A, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
+        Widget_MeasureLabelBox(&spA4, &spA0, Text_GetString(NULL, 0, gItemNamesBank, 0x32), Text_GetString(NULL, 0, gItemNamesBank, 0x5F),
                       0xC);
         Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
         Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-        Text_Print(spA4 + 0x28, spA0 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x5F));
-        Text_SetFont(1, 0);
+        Font_Printf(spA4 + 0x28, spA0 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x5F));
+        Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
 
@@ -346,11 +346,11 @@ void RenderSushiGoRoundUI(void) {
             pad1 = i % 4;
             if (pad1) {}
 
-            sp9C = MeasureTextWidth(0, 0, GetMessageString(NULL, 0, gItemNamesBank, 0x36));
-            sp98 = MeasureTextWidth(0, 0, GetMessageString(NULL, 0, gItemNamesBank, i + 0x36));
+            sp9C = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gItemNamesBank, 0x36));
+            sp98 = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gItemNamesBank, i + 0x36));
 
-            Text_Print((((var_v0 * pad1) + sp9C) - sp98) + 0x46, ((i / 4) << 5) + 0x72,
-                          GetMessageString(NULL, 0, gItemNamesBank, i + 0x36));
+            Font_Printf((((var_v0 * pad1) + sp9C) - sp98) + 0x46, ((i / 4) << 5) + 0x72,
+                          Text_GetString(NULL, 0, gItemNamesBank, i + 0x36));
         }
     }
 
@@ -365,7 +365,7 @@ void RenderSushiGoRoundUI(void) {
         case 2:
         case 3:
             if (gIsDemoMode == 0) {
-                Text_SetFont(4, 0);
+                Font_SetActive(4, 0);
                 for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
                     if ((ptr->unk_040.unk_00 != 0) && (ptr->unk_040.unk_00 != 1)) {
                         if ((i / 2) != 0) {
@@ -385,12 +385,12 @@ void RenderSushiGoRoundUI(void) {
                             Text_SetPrimColor(gPanelTextColors[i].r, gPanelTextColors[i].g, gPanelTextColors[i].b,
                                           ptr->unk_040.unk_18);
                         } else {
-                            InterpolateColors(spD8, gSushiColorGradC, 4, 4, 0);
+                            SushiGame_InterpolateColorCycle(spD8, gSushiColorGradC, 4, 4, 0);
                             Text_SetEnvColor(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                             Text_SetPrimColor(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                         }
 
-                        Text_Print((s16)ptr->unk_040.unk_08 + (gPanelColumnX[i] + var_s7),
+                        Font_Printf((s16)ptr->unk_040.unk_08 + (gPanelColumnX[i] + var_s7),
                                       (gPanelColumnY[i] + var_s4) - (s16)ptr->unk_040.unk_0C, "x%d",
                                       ptr->unk_03E);
                     }
@@ -400,7 +400,7 @@ void RenderSushiGoRoundUI(void) {
 
         case 5:
         case 6:
-            Text_SetFont(4, 0);
+            Font_SetActive(4, 0);
 
             for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
                 char sp78[16];
@@ -408,8 +408,8 @@ void RenderSushiGoRoundUI(void) {
                 spD0[0] = spB4;
                 spD0[1] = gPanelTextColors[i];
 
-                InterpolateColors(&spB8[0][i], spD0, 2, 0x1E, 0);
-                InterpolateColors(&spB8[1][i], spD0, 2, 0x1E, 1);
+                SushiGame_InterpolateColorCycle(&spB8[0][i], spD0, 2, 0x1E, 0);
+                SushiGame_InterpolateColorCycle(&spB8[1][i], spD0, 2, 0x1E, 1);
 
                 if ((i / 2) != 0) {
                     var_s7 = -0x32;
@@ -425,24 +425,24 @@ void RenderSushiGoRoundUI(void) {
 
                 if ((ptr->unk_028 == 1) && (ptr->unk_018 == ptr->unk_01C) &&
                     (ptr->unk_018 > 0)) {
-                    InterpolateColors(&spD8, &gSushiColorGradA, 3, 4, 0);
+                    SushiGame_InterpolateColorCycle(&spD8, &gSushiColorGradA, 3, 4, 0);
                     Text_SetEnvColor(spD8[0].r, spD8[0].g, spD8[0].b, 0xFF);
-                    InterpolateColors(&spD8, &gSushiColorGradB, 3, 4, 0);
+                    SushiGame_InterpolateColorCycle(&spD8, &gSushiColorGradB, 3, 4, 0);
                     Text_SetPrimColor(spD8[0].r, spD8[0].g, spD8[0].b, 0xFF);
                 } else {
                     Text_SetEnvColor(spB8[0][i].r, spB8[0][i].g, spB8[0][i].b, 0xFF);
                     Text_SetPrimColor(spB8[1][i].r, spB8[1][i].g, spB8[1][i].b, 0xFF);
                 }
 
-                MessageBank_SetPointer_1_9(6, ptr->unk_01C);
-                Text_Print(gPanelColumnX[i] + var_s7, gPanelColumnY[i] + var_s4,
-                              GetMessageString(&sp78, 0x20, gItemNamesBank, 0x5E));
+                Text_SetNumberToken(6, ptr->unk_01C);
+                Font_Printf(gPanelColumnX[i] + var_s7, gPanelColumnY[i] + var_s4,
+                              Text_GetString(&sp78, 0x20, gItemNamesBank, 0x5E));
             }
             break;
     }
 
-    Text_EndRender();
-    Text_SetupDL();
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 
     if (gSushiUIFlags & 1) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -455,46 +455,46 @@ void RenderSushiGoRoundUI(void) {
             }
 
             pad1 = i % 4;
-            DrawSushiItem(gSushiOrderIndices[i], (var_v0 * pad1) + 0x28, ((i / 4) << 5) + 0x68, 0.75f);
+            SushiGame_DrawDishIcon(gSushiOrderIndices[i], (var_v0 * pad1) + 0x28, ((i / 4) << 5) + 0x68, 0.75f);
         }
 
-        DrawAnimatedTextureDual(0, 0x5A, 0xA8, gSushiUI_TextPosC);
-        DrawAnimatedSprite(0xC8, 0xB0, gSushiUI_TextPosA);
-        DrawAnimatedSprite3(0x74, 0xC6, gSushiUI_TextPosB);
-        DrawDualTexturePanel(0, 0x19, 0xA6);
+        Widget_DrawAnimIcon28(0, 0x5A, 0xA8, gSushiUI_TextPosC);
+        Widget_DrawAnimIcon16(0xC8, 0xB0, gSushiUI_TextPosA);
+        Widget_DrawAnimIcon16C(0x74, 0xC6, gSushiUI_TextPosB);
+        Widget_DrawSplitBanner(0, 0x19, 0xA6);
     }
 }
 
-void RenderSushiGoRoundFrame(void) {
-    Stage_BeginDisplayList();
-    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+void SushiGame_DrawFrame(void) {
+    BgStage_DrawFrame();
+    GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
 
     if (gResultMenuVisible == 0) {
-        Gfx_FinishFrame();
+        GeoRender_AdvanceFrameCounter();
     }
 
-    Graph_SetTextureState(gSushiGoRoundGraphNode);
-    ParticleRender_SetupMiniCamera();
+    Geo_RenderRootNode(gSushiGoRoundGraphNode);
+    MiniFx_DrawParticles();
 
     if (gResultConfirmPressed == 0) {
         RenderSushiGoRoundUI();
     }
 
     if (gIsDemoMode == 0) {
-        ResultScreen_UpdateAndRender();
+        Widget_PauseMenuUpdate();
     }
 
     if (gIsDemoMode != 0) {
-        UpdateScrollingMessage();
+        Widget_DrawControllerDisconnectBanner();
     }
 
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
-void HandleSushiGoRoundInput(void) {
-    GetRandomMod(0x80);
+void SushiGame_UpdateWaitForStart(void) {
+    Rand_Range(0x80);
 
-    if (Stage_GetFadeState() == 0) {
+    if (StageContext_GetFadeMode() == 0) {
         if (gIsDemoMode != 0) {
             gSushiGoRoundState = 1;
             gSushiGoRoundTimer = 0x1C2;
@@ -505,20 +505,20 @@ void HandleSushiGoRoundInput(void) {
             gSushiUIFlags |= 2;
             gSushiGoRoundTimer = 0x708;
             gSushiFadeTimer = 0xF;
-            Stage_SetFadeColor(0x3C);
-            Sushi_SetEntityInput(0xF, 1);
+            Audio_FadeOutAll(0x3C);
+            SushiGame_BroadcastPlayerPhase(0xF, 1);
         } else if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
             gSushiGoRoundState = 7;
             gSushiFadeTimer = 0x1E;
-            Stage_FadeOut(gSushiFadeTimer);
-            Sushi_FadeAudio(gSushiFadeTimer / 2);
-            SetResultFlag(2);
+            StageFade_StartFromTransparent(gSushiFadeTimer);
+            SushiGame_FadeAudio(gSushiFadeTimer / 2);
+            Widget_PauseMenuTrigger(2);
         }
     }
 }
 
-s32 IsTimerExpired(void) {
+s32 SushiGame_IsRoundTimeUp(void) {
     s32 var_v1 = 0;
 
     if (gIsDemoMode == 0) {
@@ -543,7 +543,7 @@ s32 UpdateSushiGoRoundState(void) {
 
     sp18 = 0;
     if ((gIsDemoMode != 0) && (gPlayer1Controller->buttonPressed != 0)) {
-        if (Stage_GetFadeState() == 0) {
+        if (StageContext_GetFadeMode() == 0) {
             sp18 = 1;
         }
     }
@@ -551,31 +551,31 @@ s32 UpdateSushiGoRoundState(void) {
     if (((gResultFlag_Special != 0) || (sp18 != 0)) && (gSushiGoRoundState != 7)) {
         gSushiGoRoundState = 7;
         gSushiFadeTimer = 0x1E;
-        Stage_FadeOut(gSushiFadeTimer);
-        Sushi_FadeAudio(gSushiFadeTimer / 2);
+        StageFade_StartFromTransparent(gSushiFadeTimer);
+        SushiGame_FadeAudio(gSushiFadeTimer / 2);
     }
 
     switch (gSushiGoRoundState) {
         case 0:
-            HandleSushiGoRoundInput();
+            SushiGame_UpdateWaitForStart();
             break;
 
         case 1:
             gSushiFadeTimer -= 1;
             if (gSushiFadeTimer <= 0) {
                 gSushiGoRoundState = 2;
-                Fragment2_1_SetStartFlag(1);
+                Widget_CountdownStart(1);
             }
             break;
 
         case 2:
-            temp_v0 = Fragment2_1_GetResult();
+            temp_v0 = Widget_CountdownGetState();
             if ((temp_v0 >= 0) && (temp_v0 < 4)) {
-                PlaySoundByCategory(gResultSoundCategories[temp_v0], 0, 0);
+                Audio_DispatchSoundBankCommand(gResultSoundCategories[temp_v0], 0, 0);
             } else if (temp_v0 == -2) {
                 gSushiGoRoundState = 3;
-                Sushi_SetEntityInput(0xF, 3);
-                Sushi_SetSpawnMode(1);
+                SushiGame_BroadcastPlayerPhase(0xF, 3);
+                SushiGame_SetGamePhase(1);
             }
             break;
 
@@ -584,37 +584,37 @@ s32 UpdateSushiGoRoundState(void) {
                 gSushiGoRoundTimer--;
                 if (((gSushiGoRoundTimer % 30) == 0) && (gIsDemoMode == 0)) {
                     if (((gSushiGoRoundTimer / 30) > 0) && ((gSushiGoRoundTimer / 30) < 6)) {
-                        PlaySoundByCategory(0x50002, 0, 0);
+                        Audio_DispatchSoundBankCommand(0x50002, 0, 0);
                     }
                 }
             }
 
-            if (IsTimerExpired() != 0) {
+            if (SushiGame_IsRoundTimeUp() != 0) {
                 if (gIsDemoMode == 0) {
                     gSushiGoRoundState = 4;
                     gSushiFadeTimer = 0x1E;
-                    Sushi_SetEntityInput(0xF, 2);
-                    Sushi_SetSpawnMode(2);
-                    Stage_SetFadeColor(0xA);
-                    PlaySoundByCategory(0x50004, 0, 0);
+                    SushiGame_BroadcastPlayerPhase(0xF, 2);
+                    SushiGame_SetGamePhase(2);
+                    Audio_FadeOutAll(0xA);
+                    Audio_DispatchSoundBankCommand(0x50004, 0, 0);
                 } else {
                     gSushiGoRoundState = 7;
                     gSushiFadeTimer = 0x1E;
-                    Stage_FadeOut(gSushiFadeTimer);
-                    Sushi_FadeAudio(gSushiFadeTimer / 2);
-                    SetResultFlag(2);
+                    StageFade_StartFromTransparent(gSushiFadeTimer);
+                    SushiGame_FadeAudio(gSushiFadeTimer / 2);
+                    Widget_PauseMenuTrigger(2);
                 }
             }
             break;
 
         case 4:
-            if (Sushi_CheckAllIdle() != 0) {
+            if (SushiGame_AreAllPlayersIdle() != 0) {
                 gSushiFadeTimer--;
             }
 
             if (gSushiFadeTimer <= 0) {
                 gSushiGoRoundState = 5;
-                Sushi_SetEntityInput(0xF, 4);
+                SushiGame_BroadcastPlayerPhase(0xF, 4);
             }
             break;
 
@@ -630,8 +630,8 @@ s32 UpdateSushiGoRoundState(void) {
 
             if ((var_a0 != 0) && (gResultMenuVisible == 0)) {
                 gSushiGoRoundState = 6;
-                Sushi_SetEntityInput(0xF, 5);
-                SetResultFlag(1);
+                SushiGame_BroadcastPlayerPhase(0xF, 5);
+                Widget_PauseMenuTrigger(1);
             }
             break;
 
@@ -639,8 +639,8 @@ s32 UpdateSushiGoRoundState(void) {
             if (gResultExitPending != 0) {
                 gSushiGoRoundState = 7;
                 gSushiFadeTimer = 0x1E;
-                Stage_FadeOut(gSushiFadeTimer);
-                Sushi_FadeAudio(gSushiFadeTimer / 2);
+                StageFade_StartFromTransparent(gSushiFadeTimer);
+                SushiGame_FadeAudio(gSushiFadeTimer / 2);
             }
             break;
 
@@ -649,9 +649,9 @@ s32 UpdateSushiGoRoundState(void) {
                 gSushiFadeTimer--;
             }
 
-            if ((gSushiFadeTimer <= 0) && (Audio_CalcLoadScore() == 0)) {
+            if ((gSushiFadeTimer <= 0) && (Audio_GetActivityScore() == 0)) {
                 sp1C = 1;
-                Music_EndVolumeFade();
+                Audio_ResetVolumeTransition();
             }
             break;
     }
@@ -659,22 +659,22 @@ s32 UpdateSushiGoRoundState(void) {
     return sp1C;
 }
 
-void RunSushiGoRound(void) {
+void SushiGame_MainLoop(void) {
     s32 var_s0;
 
-    Stage_AdvanceN(5);
-    Stage_FadeIn(0x10);
+    StageLoader_RunFrames(5);
+    StageFade_StartFromOpaque(0x10);
     gSushiGoRoundFrameCounter = 0;
 
     var_s0 = 1;
     while (var_s0 != 0) {
-        ReadAllControllers();
-        Fragment2_1_Update();
-        Sushi_UpdateCameraPos();
-        Sushi_UpdateLogic();
-        Sushi_MainUpdate();
-        ParticleSystem_UpdateAndRender();
-        RenderSushiGoRoundFrame();
+        SushiGame_PollInput();
+        Widget_CountdownUpdate();
+        SushiGame_UpdateCamera();
+        SushiGame_UpdateConveyorBelt();
+        SushiGame_UpdatePlayers();
+        MiniFx_UpdateParticles();
+        SushiGame_DrawFrame();
 
         if (UpdateSushiGoRoundState() != 0) {
             var_s0 = 0;
@@ -684,52 +684,52 @@ void RunSushiGoRound(void) {
     }
 }
 
-void InitSushiGoRound(void) {
+void SushiGame_LoadAssets(void) {
     UNUSED s32 pad;
     MemoryBlock* sp18;
 
-    sp18 = state_pool_try_init(main_pool_get_available(), 0);
+    sp18 = MainPool_AllocState(main_pool_get_available(), 0);
     gSushiGoRoundGraphNode = (GraphNode*)process_geo_layout(sp18, &gSushiGoRoundGeoLayout);
 
-    mem_pool_resize_block(sp18);
-    Graph_InitRoots();
-    AssetManager_LoadArchives();
-    Fragment2_1_Init();
-    Sushi_InitAssets();
+    MainPool_FinalizeAllocation(sp18);
+    ModelRenderer_InitDisplayRoots();
+    PokeIcon_OpenModelArchives();
+    Widget_CountdownInit();
+    SushiGame_InitConveyorBelt();
 
     if (gIsDemoMode != 0) {
-        Sushi_InitSystem(1);
+        SushiGame_InitPlayerSlots(1);
     } else {
-        Sushi_InitSystem(0);
+        SushiGame_InitPlayerSlots(0);
     }
 
-    Sushi_InitCamera();
-    ParticleSystem_Init();
-    ResultScreen_Init();
+    SushiGame_InitCamera();
+    MiniFx_Init();
+    Widget_PauseMenuInit();
 
     gSushiGoRoundState = 0;
     if (gIsDemoMode == 0) {
         gSushiUIFlags |= 1;
     }
 
-    Sushi_SetEntityInput(0xF, 2);
+    SushiGame_BroadcastPlayerPhase(0xF, 2);
 }
 
-void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1) {
+void SushiGame_Main(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     if (arg0 == 1) {
         gIsDemoMode = 1;
-        Sushi_SetDemoParams(9);
+        Minigame_InitSharedState(9);
     } else {
         gIsDemoMode = 0;
     }
 
     main_pool_push_state('MINI');
 
-    Gfx_InitBuffers(0x18000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    gSushiGoRoundTextObject = Text_Init(0x17, 0);
+    Gfx_InitDisplayListBuffers(0x18000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    gSushiGoRoundTextObject = Font_Init(0x17, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_04000000, sushi_go_round_sprites, 0);
@@ -737,14 +737,14 @@ void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1) {
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_87000000 & 0x0FF00000) >> 0x14) - 0x10, sushi_go_round_ROM_START, order_select_ui_ROM_START);
 
-    InitSushiGoRound();
-    Stage_Set(sp24);
-    RunSushiGoRound();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    SushiGame_LoadAssets();
+    StageContext_Activate(sp24);
+    SushiGame_MainLoop();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('MINI');
 
-    GetCurrentOptionCount();
+    Widget_PauseMenuGetResult();
 }

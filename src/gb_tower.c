@@ -23,7 +23,7 @@ s32 GbPak_MbcWrite(s32 arg0, void* arg1, u16 arg2, u16 arg3);
 
 // TODO: These 0x20 sizes probably belong to a struct size or something. Use
 // that instead of assuming sizeof is the same
-s32 GbPak_VerifyBlock(s32 arg0, void* arg1) {
+s32 GbPak_VerifyPattern(s32 arg0, void* arg1) {
     u8 sp47;
     u8 sp24[0x20];
     s32 sp20 = 0;
@@ -36,7 +36,7 @@ s32 GbPak_VerifyBlock(s32 arg0, void* arg1) {
     return sp20;
 }
 
-s32 GbPak_TestMemory(s32 arg0, u8* arg1) {
+s32 GbPak_DetectRam(s32 arg0, u8* arg1) {
     s32 var_s0 = 0;
     u8 sp34[0x20];
 
@@ -44,20 +44,20 @@ s32 GbPak_TestMemory(s32 arg0, u8* arg1) {
         arg1 = sp34;
     }
     HAL_Memset((char*)arg1, 0x55, 0x20);
-    if (GbPak_VerifyBlock(arg0, arg1) != 0) {
+    if (GbPak_VerifyPattern(arg0, arg1) != 0) {
         HAL_Memset((char*)arg1, 0xAA, 0x20);
-        if (GbPak_VerifyBlock(arg0, arg1) != 0) {
+        if (GbPak_VerifyPattern(arg0, arg1) != 0) {
             s32 i;
             for (i = 0; i < ARRAY_COUNT(sp34); i++) {
                 arg1[i] = osGetCount();
             }
-            var_s0 = GbPak_VerifyBlock(arg0, arg1);
+            var_s0 = GbPak_VerifyPattern(arg0, arg1);
         }
     }
     return var_s0;
 }
 
-s32 GbPak_InitAndTest(s32 arg0, u8* arg1, u8* arg2) {
+s32 GbTower_ProbePak(s32 arg0, u8* arg1, u8* arg2) {
     u8 status;
     OSGbpakId gbpakId;
     s32 sp28 = 0;
@@ -75,13 +75,13 @@ s32 GbPak_InitAndTest(s32 arg0, u8* arg1, u8* arg2) {
     }
     if ((status & OS_GBPAK_RSTB_STATUS) && (osGbpakCheckConnector(&gGbPakPfs[arg0], &status) == 0)) {
         osGbmbcRamEnable(&gGbPakPfs[arg0]);
-        sp28 = GbPak_TestMemory(arg0, arg2);
+        sp28 = GbPak_DetectRam(arg0, arg2);
     }
     gGbPakReady[arg0] = 1;
     return sp28;
 }
 
-s32 GbPak_SetPowerState(s32 arg0, u8 arg1) {
+s32 GbTower_CheckPakRemoved(s32 arg0, u8 arg1) {
     u8 status;
     s32 temp_v1;
 
@@ -108,7 +108,7 @@ void GbTower_PowerOffAllPaks(void) {
     }
 }
 
-s32 GbPak_IsSupportedPokemonCart(OSGbpakId* header) {
+s32 GbPak_IsPokemonCartridge(OSGbpakId* header) {
     // make sure its 0 terminated. dont want those dirty hackers abusing a Strcmp exploit
     header->game_title[15] = '\0';
 
@@ -132,7 +132,7 @@ s32 GbPak_IsSupportedPokemonCart(OSGbpakId* header) {
     return 0;
 }
 
-s32 GbPak_InitAll(void) {
+s32 GbTower_ScanPaks(void) {
     s32 i;
     s32 temp_v0;
     u8 status;
@@ -145,7 +145,7 @@ s32 GbPak_InitAll(void) {
     osPfsIsPlug(&gSIEventMesgQueue, &gGbPakPlugMask);
 
     for (i = 0; i < 4; i++) {
-        if ((gGbPakPlugMask & (1 << i)) && ((i != 3) || (IsStickerStationConnected() == 0))) {
+        if ((gGbPakPlugMask & (1 << i)) && ((i != 3) || (Controller_CheckAccessoryEeprom() == 0))) {
             if (osGbpakInit(&gSIEventMesgQueue, &gGbPakPfs[i], i) == 0) {
                 gGbPakPresentMask |= (1 << i);
                 temp_v0 = osGbpakReadId(&gGbPakPfs[i], &sp4C, &status);
@@ -153,7 +153,7 @@ s32 GbPak_InitAll(void) {
                     if (!(status & 8)) {
                         Game_ShutdownAndLoadFragment(i, 2);
                     }
-                    if (GbPak_IsSupportedPokemonCart(&sp4C) != 0) {
+                    if (GbPak_IsPokemonCartridge(&sp4C) != 0) {
                         if (temp_v0 == 4) {
                             // what. the redundant temp_v0 functionless check is apparently needed to match.
                         }
@@ -180,7 +180,7 @@ s32 GbPak_InitAll(void) {
     return (gGbPakValidMask << 0x10) | gGbPakPresentMask;
 }
 
-s32 GbPak_IsCartRemoved(s32 arg0) {
+s32 GbPak_IsCartOff(s32 arg0) {
     u8 status;
     s32 ret = osGbpakGetStatus(&gGbPakPfs[arg0], &status);
     UNUSED u8 filler;
@@ -193,7 +193,7 @@ s32 GbPak_IsCartRemoved(s32 arg0) {
     return !((status & OS_GBPAK_GBCART_ON) != 0);
 }
 
-s32 GbPak_IsCartInserted(s32 arg0) {
+s32 GbPak_IsCartOn(s32 arg0) {
     u8 status;
     s32 ret = osGbpakGetStatus(&gGbPakPfs[arg0], &status);
 
@@ -203,7 +203,7 @@ s32 GbPak_IsCartInserted(s32 arg0) {
     return ((status & OS_GBPAK_GBCART_ON) != 0);
 }
 
-s32 GbPak_ReinitSlot(s32 arg0) {
+s32 GbTower_ReinitPak(s32 arg0) {
     UNUSED u8 filler[4];
     u8 status;
     OSGbpakId sp28;
@@ -220,7 +220,7 @@ s32 GbPak_ReinitSlot(s32 arg0) {
     return gGbPakReady[arg0] == 1;
 }
 
-s32 GbPak_VerifyBlockNoDetect(s32 arg0, void* arg1) {
+s32 GbTower_VerifyPakStillInserted(s32 arg0, void* arg1) {
     u8 status;
     u8 sp1C[0x20];
     s32 sp18;
@@ -253,7 +253,7 @@ s32 GbPak_MbcWrite(s32 arg0, void* arg1, u16 arg2, u16 arg3) {
     return var_v1;
 }
 
-s32 GbPak_Read(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
+s32 GbPak_RawRead(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
     s32 var_v1;
 
     var_v1 = 1;
@@ -263,7 +263,7 @@ s32 GbPak_Read(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
     return var_v1;
 }
 
-s32 GbPak_Write(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
+s32 GbPak_RawWrite(s32 arg0, u8* arg1, u16 arg2, u16 arg3) {
     s32 var_v1;
 
     var_v1 = 1;
@@ -281,24 +281,24 @@ int GbPak_SelectRomBank(s32 arg0, s32 arg1) {
     for (i = 0; i < 0x20; i++) {
         sp28[i] = 0;
     }
-    ret = GbPak_Write(arg0, sp28, 0x5000U, 0x20U);
+    ret = GbPak_RawWrite(arg0, sp28, 0x5000U, 0x20U);
     if (ret) {
         return ret;
     }
     for (i = 0; i < 0x20; i++) {
         sp28[i] = (arg1 / 32);
     }
-    ret = GbPak_Write(arg0, sp28, 0x4000U, 0x20U);
+    ret = GbPak_RawWrite(arg0, sp28, 0x4000U, 0x20U);
     if (ret) {
         return ret;
     }
     for (i = 0; i < 0x20; i++) {
         sp28[i] = (arg1 % 32);
     }
-    return GbPak_Write(arg0, sp28, 0x2000U, 0x20U);
+    return GbPak_RawWrite(arg0, sp28, 0x2000U, 0x20U);
 }
 
-s32 GbPak_WriteDataAligned(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
+s32 GbPak_ReadRom(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
     s32 ret = 1;
     u32 temp_s1 = (arg2 & ~0x1F);
     u32 temp_s4 = ((arg2 + arg3) + 0x1F) & ~0x1F;
@@ -315,7 +315,7 @@ s32 GbPak_WriteDataAligned(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
             var_v1_2 = 0x4000;
         }
         temp_v0_4 = var_v1_2 - temp_s1;
-        ret = GbPak_Read(arg0, arg1, temp_s1, temp_v0_4);
+        ret = GbPak_RawRead(arg0, arg1, temp_s1, temp_v0_4);
         if (ret != 0) {
             return ret;
         }
@@ -334,7 +334,7 @@ s32 GbPak_WriteDataAligned(s32 arg0, u8* arg1, s32 arg2, s32 arg3) {
         if (ret != 0) {
             return ret;
         }
-        ret = GbPak_Read(arg0, arg1, ((temp_s1 & 0x3FFF) + 0x4000) & 0xFFFF, temp_s1_2);
+        ret = GbPak_RawRead(arg0, arg1, ((temp_s1 & 0x3FFF) + 0x4000) & 0xFFFF, temp_s1_2);
         if (ret != 0) {
             return ret;
         }
@@ -351,7 +351,7 @@ u8 GbTower_SetPollMask(u8 arg0) {
     return temp_v0;
 }
 
-void Cont_FinishRead(void) {
+void GbTower_PollPakConnection(void) {
     u8 sp1F;
     static s32 D_800697D0 = 0; // .data
 

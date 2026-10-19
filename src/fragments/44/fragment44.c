@@ -23,7 +23,7 @@ static s32 ItemSelect_FadeInFlag;
 static u16 gSlotStatusFlags[0x24];
 static s32 ItemSelect_ResultAnimTimer;
 
-s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
+s32 Gallery_AlbumHandleGridInput(unk_D_83407B38* arg0) {
     s32 sp64;
     s32 sp60;
     s32 sp5C;
@@ -56,7 +56,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
         sp50 = 2;
     }
 
-    if (Cam_FindActiveIndex(arg0->unk_20, 0x25) != -1) {
+    if (Gallery_FindReadyScene(arg0->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -102,7 +102,7 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
 
     arg0->unk_00 = (sp54 * 3) + sp58;
     if (sp5C != arg0->unk_00) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 
     if ((gPlayer1Controller->buttonPressed & 0x20) || (sp4C != 0)) {
@@ -118,11 +118,11 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
     }
 
     if (sp60 != arg0->unk_08) {
-        PlaySoundEffect(0x27);
+        Audio_PlaySoundEffectById(0x27);
 
         for (i = 0; i < arg0->unk_14; i++) {
             sp40 = arg0->unk_20[arg0->unk_08 * arg0->unk_14 + i];
-            if (Cam_IsMonIndexDisplayable(sp40) != 0) {
+            if (Gallery_IsSceneReady(sp40) != 0) {
                 sp40->unk_00 = 0;
             }
         }
@@ -134,28 +134,28 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
 
         if (arg0->unk_04 == -1) {
             if ((sp54 * 3) < 6) {
-                if (Cam_IsMonIndexDisplayable(sp38) != 0) {
+                if (Gallery_IsSceneReady(sp38) != 0) {
                     arg0->unk_04 = sp3C;
                     arg0->unk_B0->unk_18 = sp38->unk_18;
                     arg0->unk_B0->unk_00 = 0;
                     if (gItemSelectMode == 2) {
                         gItemSelectState = 3;
-                        PlaySoundEffect(0xD);
+                        Audio_PlaySoundEffectById(0xD);
                         gGalleryMainSelection.unk_04 = arg0->unk_04;
                     } else {
-                        PlaySoundEffect(2);
+                        Audio_PlaySoundEffectById(2);
                     }
                 } else {
-                    PlaySoundEffect(8);
+                    Audio_PlaySoundEffectById(8);
                 }
             } else {
                 sp64 = 1;
-                PlaySoundEffect(3);
+                Audio_PlaySoundEffectById(3);
             }
         } else if ((sp54 * 3) < 6) {
             if (sp3C != arg0->unk_04) {
-                PlaySoundEffect(0x29);
-                Gallery_SwapEntries(sp38->unk_18, arg0->unk_20[arg0->unk_04]->unk_18);
+                Audio_PlaySoundEffectById(0x29);
+                Gallery_SwapPhotoRecords(sp38->unk_18, arg0->unk_20[arg0->unk_04]->unk_18);
 
                 tmp = gSlotStatusFlags[sp3C];
                 gSlotStatusFlags[sp3C] = gSlotStatusFlags[arg0->unk_04];
@@ -164,40 +164,40 @@ s32 ItemSelect_HandleInput(unk_D_83407B38* arg0) {
                 arg0->unk_20[arg0->unk_04]->unk_00 = 0;
                 sp38->unk_00 = 0;
             } else {
-                PlaySoundEffect(3);
+                Audio_PlaySoundEffectById(3);
             }
             arg0->unk_04 = -1;
         } else {
             gItemSelectState = 2;
             ItemSelect_ResultAnimTimer = 0;
-            PlayResultScreenSfx(0x0120000C, 0, 0);
+            Audio_PlayCategory12SoundCommand(0x0120000C, 0, 0);
         }
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         if (arg0->unk_04 == -1) {
             sp64 = 1;
             if (gItemSelectMode == 2) {
-                GallerySelection_Init(&gGalleryMainSelection);
+                Gallery_InitPageCursor(&gGalleryMainSelection);
             }
         } else {
             arg0->unk_04 = -1;
         }
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
     } else if (gPlayer1Controller->buttonPressed & 4) {
         idx = arg0->unk_08 * arg0->unk_14 + arg0->unk_00;
         ptr = arg0->unk_20[idx];
 
-        if (((sp54 * 3) < 6) && (arg0->unk_04 == -1) && (Cam_IsMonIndexDisplayable(ptr) != 0)) {
+        if (((sp54 * 3) < 6) && (arg0->unk_04 == -1) && (Gallery_IsSceneReady(ptr) != 0)) {
             sp64 = 2;
-            PlaySoundEffect(0x19);
-            Gallery_SetCurrentEntry(ptr->unk_18);
+            Audio_PlaySoundEffectById(0x19);
+            Gallery_SetEnlargeTarget(ptr->unk_18);
         } else {
-            PlaySoundEffect(8);
+            Audio_PlaySoundEffectById(8);
         }
     }
     return sp64;
 }
 
-void ItemSelect_Init(s32 arg0, s32 arg1) {
+void Gallery_AlbumInit(s32 arg0, s32 arg1) {
     s32 i;
     s32 j;
     AssetManager* tmp;
@@ -220,21 +220,21 @@ void ItemSelect_Init(s32 arg0, s32 arg1) {
     ItemSelect_HighlightFlags = -1;
     ItemSelect_ResultAnimTimer = 0;
 
-    tmp = AssetManager_Create(5);
-    CamList_Init(&gItemSelectContext, 0x88, 0x66, 6, 3, tmp, gStadiumModelArchive, gGalleryEntries, 0x24, 1);
+    tmp = PokeIcon_AllocFramebuffers(5);
+    Gallery_InitSceneGrid(&gItemSelectContext, 0x88, 0x66, 6, 3, tmp, gStadiumModelArchive, gGalleryEntries, 0x24, 1);
     if (gItemSelectMode == 2) {
-        Gallery_SyncCamToSelection(&gItemSelectContext, &gGalleryFinalSelection.unk_00);
+        Gallery_RestorePosition(&gItemSelectContext, &gGalleryFinalSelection.unk_00);
     } else if (arg1 == 0) {
-        Gallery_SyncCamToSelection(&gItemSelectContext, &gGalleryTertiarySelection);
+        Gallery_RestorePosition(&gItemSelectContext, &gGalleryTertiarySelection);
     }
 
     for (i = 0; i < 36; i++) {
         unk_D_83403C60* ptr = &gGalleryEntries[i];
 
         gSlotStatusFlags[i] = 0;
-        if (IsMonIndexDisplayable(ptr) != 0) {
+        if (Gallery_IsPhotoSpeciesValid(ptr) != 0) {
             for (j = 0; j < 21; j++) {
-                if ((IsMonIndexDisplayable(&gGalleryCamEntries[j]) != 0) && (Gallery_IsEntryEqual(&gGalleryCamEntries[j], ptr) != 0)) {
+                if ((Gallery_IsPhotoSpeciesValid(&gGalleryCamEntries[j]) != 0) && (Gallery_PhotoRecordsEqual(&gGalleryCamEntries[j], ptr) != 0)) {
                     if (j < 4) {
                         gSlotStatusFlags[i] |= 1;
                     } else {
@@ -246,7 +246,7 @@ void ItemSelect_Init(s32 arg0, s32 arg1) {
     }
 }
 
-void DrawGridCellTexture(s32 arg0, s32 arg1) {
+void Gallery_AlbumDrawTileColumn(s32 arg0, s32 arg1) {
     s32 temp_v0;
     s32 i;
     s32 tmp = 8;
@@ -261,11 +261,11 @@ void DrawGridCellTexture(s32 arg0, s32 arg1) {
                            tmp2, 64, temp_v0 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg0, arg1 + i, 64, temp_v0, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(arg0, arg1 + i, 64, temp_v0, 0, 0, 0x400, 0x400, 0);
     }
 }
 
-void DrawGridPanelTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gallery_AlbumDrawFilledPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPSetCombineMode(gDisplayListHead++, G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 155, 140, 155, 255);
@@ -273,10 +273,10 @@ void DrawGridPanelTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_4003900, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, 0);
 }
 
-void DrawResultPanelTexture(s32 arg0, s32 arg1, s32 arg2) {
+void Gallery_AlbumDrawEdgeBand(s32 arg0, s32 arg1, s32 arg2) {
     gDPSetCombineMode(gDisplayListHead++, G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 195, 175, 175, 255);
@@ -284,13 +284,13 @@ void DrawResultPanelTexture(s32 arg0, s32 arg1, s32 arg2) {
     gDPLoadTextureBlock(gDisplayListHead++, D_4002900, G_IM_FMT_IA, G_IM_SIZ_8b, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, 0x40, 0x40, 0x7E0, 0, -0x400, 0x400, 0);
-    Gfx_DrawTextureRect(arg0 - 0x40, arg1, 0x40, 0x40, 0, 0, 0x400, 0x400, 0);
-    Gfx_DrawTextureRect((arg0 + arg2) - 0x40, arg1, 0x40, 0x40, 0, 0, 0x400, 0x400, 0);
-    Gfx_DrawTextureRect(arg0 + 0x40, arg1, arg2 - 0x80, 0x40, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, 0x40, 0x40, 0x7E0, 0, -0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0 - 0x40, arg1, 0x40, 0x40, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - 0x40, arg1, 0x40, 0x40, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 0x40, arg1, arg2 - 0x80, 0x40, 0, 0, 0, 0x400, 0);
 }
 
-void DrawResultPanelHighlight(s32 arg0, s32 arg1, s32 arg2) {
+void Gallery_AlbumDrawCornerMarkers(s32 arg0, s32 arg1, s32 arg2) {
     gDPSetCombineMode(gDisplayListHead++, G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 100, 100, 200, 255);
@@ -298,9 +298,9 @@ void DrawResultPanelHighlight(s32 arg0, s32 arg1, s32 arg2) {
     gDPLoadTextureBlock(gDisplayListHead++, D_04002800, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, 0x10, 0x10, 0x1E0, 0, -0x400, 0x400, 0);
-    Gfx_DrawTextureRect(arg0 - 0x10, arg1, 0x10, 0x10, 0, 0, 0x400, 0x400, 0);
-    Gfx_DrawTextureRect((arg0 + arg2) - 0x10, arg1, 0x10, 0x10, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, 0x10, 0x10, 0x1E0, 0, -0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0 - 0x10, arg1, 0x10, 0x10, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - 0x10, arg1, 0x10, 0x10, 0, 0, 0x400, 0x400, 0);
 }
 
 void DrawGridPageCounter(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
@@ -310,34 +310,34 @@ void DrawGridPageCounter(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[2];
     char sp30[4];
 
-    Text_ResetState();
-    Text_BeginRender();
-    Text_SetFont(8, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
+    Font_SetActive(8, 0);
     Text_SetEnvColor(0, 0x64, 0xDC, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
 
-    temp_v0 = Text_GetMessageString_Bank2C(0x3A);
+    temp_v0 = Gallery_GetUiString(0x3A);
 
-    temp_v1 = (0xDF - (MeasureTextWidth(0, 0, temp_v0) + MeasureTextWidth(0, 0, "99/99"))) / 2;
+    temp_v1 = (0xDF - (Font_MeasureTextExtent(0, 0, temp_v0) + Font_MeasureTextExtent(0, 0, "99/99"))) / 2;
     temp_s1 = temp_v1 + 0x133;
 
-    Text_Print((arg1 + temp_v1) + 0x133, arg2 + 0x108, temp_v0);
-    temp_s1 += MeasureTextWidth(0, 0, temp_v0) + MeasureTextWidth(0, 0, "99/99");
+    Font_Printf((arg1 + temp_v1) + 0x133, arg2 + 0x108, temp_v0);
+    temp_s1 += Font_MeasureTextExtent(0, 0, temp_v0) + Font_MeasureTextExtent(0, 0, "99/99");
     temp_s1 += 0x14;
     sprintf(sp30, "%d", arg0->unk_0C);
-    Text_Print((arg1 + temp_s1) - MeasureTextWidth(0, 0, sp30), arg2 + 0x108, sp30);
-    temp_s1 -= MeasureTextWidth(0, 0, "99");
+    Font_Printf((arg1 + temp_s1) - Font_MeasureTextExtent(0, 0, sp30), arg2 + 0x108, sp30);
+    temp_s1 -= Font_MeasureTextExtent(0, 0, "99");
     sprintf(sp30, "/");
-    Text_Print((arg1 + temp_s1) - MeasureTextWidth(0, 0, sp30), arg2 + 0x108, sp30);
-    temp_s1 -= MeasureTextWidth(0, 0, sp30);
+    Font_Printf((arg1 + temp_s1) - Font_MeasureTextExtent(0, 0, sp30), arg2 + 0x108, sp30);
+    temp_s1 -= Font_MeasureTextExtent(0, 0, sp30);
     if (sp30) {}
     sprintf(sp30, "%d", arg0->unk_08 + 1);
-    Text_Print((arg1 + temp_s1) - MeasureTextWidth(0, 0, sp30), arg2 + 0x108, sp30);
-    Text_EndRender();
-    Text_SetupDL();
+    Font_Printf((arg1 + temp_s1) - Font_MeasureTextExtent(0, 0, sp30), arg2 + 0x108, sp30);
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
-void DrawGridCellBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gallery_AlbumDrawThumbnailFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
     arg0 -= 4;
@@ -345,13 +345,13 @@ void DrawGridCellBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     arg2 += 8;
     arg3 += 8;
 
-    Gfx_DrawSpriteIA8(arg0, arg1, 0x18, 0x18, D_400D780, 0x18, 0);
-    Gfx_DrawTextureRect((arg0 + arg2) - 0x18, arg1 & 0xFFFFFFFF, 0x18, 0x18, 0x2E0, 0, -0x400, 0x400, 0);
-    Gfx_DrawSpriteIA8(arg0 & 0xFFFFFFFF, (arg1 + arg3) - 0x14, 0x18, 0x18, D_400D9C0, 0x18, 0);
-    Gfx_DrawTextureRect((arg0 + arg2) - 0x18, (arg1 + arg3) - 0x14, 0x18, 0x18, 0x2E0, 0, -0x400, 0x400, 0);
+    Gfx_DrawTextureIa8(arg0, arg1, 0x18, 0x18, D_400D780, 0x18, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - 0x18, arg1 & 0xFFFFFFFF, 0x18, 0x18, 0x2E0, 0, -0x400, 0x400, 0);
+    Gfx_DrawTextureIa8(arg0 & 0xFFFFFFFF, (arg1 + arg3) - 0x14, 0x18, 0x18, D_400D9C0, 0x18, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - 0x18, (arg1 + arg3) - 0x14, 0x18, 0x18, 0x2E0, 0, -0x400, 0x400, 0);
 }
 
-void DrawSlotStatusIcons(s32 arg0, s32 arg1, u16 arg2) {
+void Gallery_AlbumDrawStickerBadge(s32 arg0, s32 arg1, u16 arg2) {
     s32 var_s2;
     s8* var_s0;
     s32 i;
@@ -372,13 +372,13 @@ void DrawSlotStatusIcons(s32 arg0, s32 arg1, u16 arg2) {
                 gDPSetEnvColor(gDisplayListHead++, 0, 120, 100, 255);
             }
 
-            Gfx_DrawSpriteIA8(arg0 + 0x6C, (arg1 - (var_s2 * 0x32)) + 0x36, 0x20, 0x2E, &D_4011638, 0x20, 0);
+            Gfx_DrawTextureIa8(arg0 + 0x6C, (arg1 - (var_s2 * 0x32)) + 0x36, 0x20, 0x2E, &D_4011638, 0x20, 0);
             var_s2++;
         }
     }
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
 
     var_s2 = 0;
@@ -389,16 +389,16 @@ void DrawSlotStatusIcons(s32 arg0, s32 arg1, u16 arg2) {
             } else {
                 var_s0 = "16";
             }
-            tmp = (0x16 - MeasureTextWidth(8, 0, var_s0)) / 2;
-            Text_Print(arg0 + 0x6C + tmp, (arg1 - (var_s2 * 0x32)) + 0x4E, var_s0);
+            tmp = (0x16 - Font_MeasureTextExtent(8, 0, var_s0)) / 2;
+            Font_Printf(arg0 + 0x6C + tmp, (arg1 - (var_s2 * 0x32)) + 0x4E, var_s0);
             var_s2++;
         }
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
-void CalcResultPanelSize(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
+void Gallery_AlbumComputeEnlargeMotion(s32 arg0, s32* arg1, s32* arg2, f32* arg3) {
     static f32 D_83503E70 = 69.0f;
     static f32 D_83503E74 = 5.3f;
     static f32 D_83503E78 = -0.6f;
@@ -479,8 +479,8 @@ void DrawResultPanelImage(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
-    Gfx_FillRectRGBA(arg1 + tmp2 + 0xA, arg2 + spE8 + 0xA, spF4 + 4, temp_ft3 + 4, 0, 0, 0, 0x80);
-    DrawRectBorder(arg1 + tmp2, arg2 + spE8, spF4, temp_ft3, 2);
+    Gfx_FillRectRgba(arg1 + tmp2 + 0xA, arg2 + spE8 + 0xA, spF4 + 4, temp_ft3 + 4, 0, 0, 0, 0x80);
+    Gallery_DrawWhiteBorder(arg1 + tmp2, arg2 + spE8, spF4, temp_ft3, 2);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
@@ -496,11 +496,11 @@ void DrawResultPanelImage(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32
                            temp_ft0, var_t0 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg1 + tmp2, arg2 + spE8 + temp_fv1_3, spF4, temp_fv0_3, 0, 0, a, a, 0);
+        Gfx_DrawTexturedRectClipped(arg1 + tmp2, arg2 + spE8 + temp_fv1_3, spF4, temp_fv0_3, 0, 0, a, a, 0);
     }
 }
 
-void ItemSelect_DrawGrid(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
+void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     UNUSED s32 pad;
     s32 temp_s3;
     s32 var_s4;
@@ -514,17 +514,17 @@ void ItemSelect_DrawGrid(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
         ptr = arg2->unk_20[temp_s3];
 
         var_s4 = 0;
-        if ((temp_s3 != arg2->unk_04) && (Cam_IsMonIndexDisplayable(ptr) != 0) && (ptr->unk_00 == 2)) {
+        if ((temp_s3 != arg2->unk_04) && (Gallery_IsSceneReady(ptr) != 0) && (ptr->unk_00 == 2)) {
             var_s4 = 1;
-            Gallery_DrawTextureList(ptr->unk_08->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
+            Gallery_DrawPhotoThumbnail(ptr->unk_08->img_p, ((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66, 0xF, 1);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        DrawGridCellBorder(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66);
+        Gallery_AlbumDrawThumbnailFrame(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, 0x88, 0x66);
 
         if ((var_s4 != 0) && (gSlotStatusFlags[temp_s3] != 0)) {
-            DrawSlotStatusIcons(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, gSlotStatusFlags[temp_s3]);
+            Gallery_AlbumDrawStickerBadge(((idx % 3) * 0xA0) + arg0, ((idx / 3) * 0x76) + arg1, gSlotStatusFlags[temp_s3]);
         }
     }
 
@@ -535,23 +535,23 @@ void ItemSelect_DrawGrid(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
         s32 sp64;
         f32 sp60;
 
-        Gallery_GetPageAndIndex(arg2, &sp70, &sp6C, arg2->unk_00);
+        Gallery_IndexToGridPos(arg2, &sp70, &sp6C, arg2->unk_00);
 
         ptr = arg2->unk_B0;
-        if ((Cam_IsMonIndexDisplayable(ptr) != 0) && (ptr->unk_00 == 2)) {
+        if ((Gallery_IsSceneReady(ptr) != 0) && (ptr->unk_00 == 2)) {
             if (sp6C < 2) {
-                Gallery_DrawShadow((sp70 * 0xA0) + arg0, (sp6C * 0x76) + arg1, 0x88, 0x66);
-                Gallery_DrawTextureList(ptr->unk_08->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
+                Gallery_DrawDropShadow((sp70 * 0xA0) + arg0, (sp6C * 0x76) + arg1, 0x88, 0x66);
+                Gallery_DrawPhotoThumbnail(ptr->unk_08->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
                               0x66, 8, 1);
             } else {
-                CalcResultPanelSize(ItemSelect_ResultAnimTimer, &sp68, &sp64, &sp60);
+                Gallery_AlbumComputeEnlargeMotion(ItemSelect_ResultAnimTimer, &sp68, &sp64, &sp60);
                 DrawResultPanelImage(ptr->unk_08->img_p, sp68, sp64, 0x88, 0x66, sp60);
             }
         }
     }
 }
 
-void ItemSelect_DrawHeader(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void Gallery_AlbumDrawTitleBar(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     static Color_RGBA8 D_83503E8C = { 0x9A, 0x37, 0x54, 0xFF };
     static Color_RGBA8 D_83503E90 = { 0xC3, 0x54, 0x84, 0xFF };
     static s16 D_83503E94 = 0;
@@ -566,17 +566,17 @@ void ItemSelect_DrawHeader(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     sp54 = SINS(D_83503E94) * 4.0f;
 
     if (gItemSelectMode != 2) {
-        sp5C = Text_GetMessageString_Bank2C(1);
+        sp5C = Gallery_GetUiString(1);
     } else {
-        sp5C = Text_GetMessageString_Bank2C(3);
+        sp5C = Gallery_GetUiString(3);
     }
-    temp_s0 = (0x1B6 - MeasureTextWidth(0x10, 0, sp5C)) / 2;
-    DrawPanelWithTextures(arg1, arg2, 0x1B6, &sp4C, &sp48);
+    temp_s0 = (0x1B6 - Font_MeasureTextExtent(0x10, 0, sp5C)) / 2;
+    Gallery_DrawHeaderBar(arg1, arg2, 0x1B6, &sp4C, &sp48);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    DrawVerticalTextureStrip(D_3001D20, (arg1 + temp_s0) - 0x44, arg2 - 3, 0x30, 0x23, 0);
-    DrawVerticalTextureStrip(D_3001D20, MeasureTextWidth(0x10, 0, sp5C) + arg1 + temp_s0 + 0x14, arg2 - 3, 0x30, 0x23, 1);
+    Gallery_DrawImageStrips(D_3001D20, (arg1 + temp_s0) - 0x44, arg2 - 3, 0x30, 0x23, 0);
+    Gallery_DrawImageStrips(D_3001D20, Font_MeasureTextExtent(0x10, 0, sp5C) + arg1 + temp_s0 + 0x14, arg2 - 3, 0x30, 0x23, 1);
 
     if (arg0->unk_08 > 0) {
         temp_s0 = sp54;
@@ -589,7 +589,7 @@ void ItemSelect_DrawHeader(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, var_t1);
 
-    Gallery_DrawCursor((arg1 - temp_s0) - 0x21, arg2 + 6, 0);
+    Gallery_DrawStatusIcon((arg1 - temp_s0) - 0x21, arg2 + 6, 0);
 
     if (arg0->unk_08 < (arg0->unk_0C - 1)) {
         temp_s0 = sp54;
@@ -602,61 +602,61 @@ void ItemSelect_DrawHeader(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, var_t1);
 
-    Gallery_DrawCursor(arg1 + temp_s0 + 0x19C, arg2 + 6, 1);
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
-    temp_s0 = 0x1B6 - MeasureTextWidth(0x10, 0, sp5C);
+    Gallery_DrawStatusIcon(arg1 + temp_s0 + 0x19C, arg2 + 6, 1);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
+    temp_s0 = 0x1B6 - Font_MeasureTextExtent(0x10, 0, sp5C);
     temp_s0 /= 2;
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print((arg1 + temp_s0) + 2, arg2 + 5, sp5C);
+    Font_Printf((arg1 + temp_s0) + 2, arg2 + 5, sp5C);
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Text_Print(arg1 + temp_s0, arg2 + 3, sp5C);
-    Text_SetupDL();
+    Font_Printf(arg1 + temp_s0, arg2 + 3, sp5C);
+    Font_EndTexturedTextRendering();
 
     D_83503E94 += 0x1000;
 }
 
-void DrawGridHelpPrompt(s32 arg0) {
+void Gallery_AlbumDrawEnlargeHint(s32 arg0) {
     char* sp2C;
     s32 sp28;
     s32 temp_v1;
 
-    sp2C = Text_GetMessageString_Bank2C(0x3C);
-    temp_v1 = (0xF3 - MeasureTextWidth(8, 0, sp2C)) / 2;
+    sp2C = Gallery_GetUiString(0x3C);
+    temp_v1 = (0xF3 - Font_MeasureTextExtent(8, 0, sp2C)) / 2;
     sp28 = temp_v1 + 0x5E;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(temp_v1 + 0x3E, arg0 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
-    Text_ResetState();
-    Text_SetFont(8, 0);
+    Gfx_DrawTextureRgba16(temp_v1 + 0x3E, arg0 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(sp28, arg0, sp2C);
-    Text_SetupDL();
+    Font_Printf(sp28, arg0, sp2C);
+    Font_EndTexturedTextRendering();
 }
 
-void DrawGridBackground(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
+void Gallery_AlbumDrawGridPanel(s32 arg0, s32 arg1, unk_D_83407B38* arg2) {
     s32 i;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 6; i++) {
-        DrawGridCellTexture(arg0, arg1 + i * 0x30);
+        Gallery_AlbumDrawTileColumn(arg0, arg1 + i * 0x30);
     }
 
-    DrawGridPanelTexture(arg0 + 0x40, arg1, 0x1E7, 0x120);
-    DrawResultPanelTexture(arg0 + 0x20, arg1 + 0x113, 0x207);
-    DrawResultPanelHighlight(arg0 + 0x20, arg1, 0x207);
-    ItemSelect_DrawHeader(&gItemSelectContext, 0x65, 0x24);
+    Gallery_AlbumDrawFilledPanel(arg0 + 0x40, arg1, 0x1E7, 0x120);
+    Gallery_AlbumDrawEdgeBand(arg0 + 0x20, arg1 + 0x113, 0x207);
+    Gallery_AlbumDrawCornerMarkers(arg0 + 0x20, arg1, 0x207);
+    Gallery_AlbumDrawTitleBar(&gItemSelectContext, 0x65, 0x24);
 
     if (gItemSelectContext.unk_04 == -1) {
-        DrawGridHelpPrompt(arg1 + 0x108);
+        Gallery_AlbumDrawEnlargeHint(arg1 + 0x108);
     }
 
     DrawGridPageCounter(&gItemSelectContext, arg0, arg1);
 }
 
-void DrawHighlightBars(void) {
+void Gallery_AlbumDrawGradientBackground(void) {
     static Color_RGBA8 D_83503E98 = { 0xCD, 0xE1, 0x73, 0 };
     static Color_RGBA8 D_83503E9C = { 0xB4, 0, 0x91, 0 };
     static Color_RGBA8 D_83503EA0 = { 0xD7, 0xEB, 0x7D, 0 };
@@ -695,7 +695,7 @@ void DrawHighlightBars(void) {
 
             gDPSetEnvColor(gDisplayListHead++, r, g, b, 255);
 
-            Gfx_DrawTextureRect(0, i, 0x280, temp_v0_11, 0, 0, 0x400, 0x400, 0);
+            Gfx_DrawTexturedRectClipped(0, i, 0x280, temp_v0_11, 0, 0, 0x400, 0x400, 0);
         }
     }
 }
@@ -705,7 +705,7 @@ typedef struct unk_D_83503EA8 {
     /* 0x04 */ s32 unk_04;
 } unk_D_83503EA8; // size = 0x8
 
-void DrawAnimatedMonPanel(s32 arg0, s32 arg1, s32 arg2) {
+void Gallery_AlbumDrawAnimatedOverlay(s32 arg0, s32 arg1, s32 arg2) {
     static unk_D_83503EA8 D_83503EA8[] = {
         {
             NULL,
@@ -793,7 +793,7 @@ void DrawAnimatedMonPanel(s32 arg0, s32 arg1, s32 arg2) {
     s32 var_s2;
     UNUSED s32 pad;
 
-    Text_GetMessageString_Bank2C(0x3B);
+    Gallery_GetUiString(0x3B);
 
     if (arg2 != 0) {
         spF0 = D_4015080;
@@ -836,7 +836,7 @@ void DrawAnimatedMonPanel(s32 arg0, s32 arg1, s32 arg2) {
                            temp_v0_11 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg0 + spFC, arg1 + i, var_ra, temp_v0_11, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(arg0 + spFC, arg1 + i, var_ra, temp_v0_11, 0, 0, 0x400, 0x400, 0);
     }
 
     if (arg2 != 0) {
@@ -853,7 +853,7 @@ void DrawAnimatedMonPanel(s32 arg0, s32 arg1, s32 arg2) {
                                temp_v0_11 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-            Gfx_DrawTextureRect(arg0, arg1 + i + 7, var_ra, temp_v0_11, 0, 0, 0x400, 0x400, 0);
+            Gfx_DrawTexturedRectClipped(arg0, arg1 + i + 7, var_ra, temp_v0_11, 0, 0, 0x400, 0x400, 0);
         }
     }
 
@@ -872,12 +872,12 @@ void DrawAnimatedMonPanel(s32 arg0, s32 arg1, s32 arg2) {
                                var_ra, temp_v0_11 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                                G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-            Gfx_DrawTextureRect(arg0 + spFC + 0x30, arg1 + i, var_ra, temp_v0_11, 0, 0, 0x400, 0x400, 0);
+            Gfx_DrawTexturedRectClipped(arg0 + spFC + 0x30, arg1 + i, var_ra, temp_v0_11, 0, 0, 0x400, 0x400, 0);
         }
     }
 }
 
-void DrawResultScreen(int arg0, int arg1, s32 arg2, f32 arg3) {
+void Gallery_AlbumDrawExitButton(int arg0, int arg1, s32 arg2, f32 arg3) {
     s32 i;
     s32 iter = 16;
     f32 tmp = 1024.0f;
@@ -890,7 +890,7 @@ void DrawResultScreen(int arg0, int arg1, s32 arg2, f32 arg3) {
     u16* spE4[] = { D_03005F80, D_0400DC00 };
     s16 spE0[] = { 0x0037, 0x0038 };
     u16* spDC = spE4[arg2];
-    char* spD8 = Text_GetMessageString_Bank2C(spE0[arg2]);
+    char* spD8 = Gallery_GetUiString(spE0[arg2]);
     Color_RGB8 spD0[] = {
         { 0xE6, 0x6E, 0x82 },
         { 0x6E, 0xFF, 0x0F },
@@ -911,58 +911,58 @@ void DrawResultScreen(int arg0, int arg1, s32 arg2, f32 arg3) {
                            temp_v0_2 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg0 + ((spFC - temp_ft2) / 2), arg1 + ((spF8 - temp_fv1) / 2) + temp_fa0, temp_ft2, temp_fv1_2,
+        Gfx_DrawTexturedRectClipped(arg0 + ((spFC - temp_ft2) / 2), arg1 + ((spF8 - temp_fv1) / 2) + temp_fa0, temp_ft2, temp_fv1_2,
                       0, 0, tmp / arg3, tmp / arg3, 0);
     }
 
-    temp_s3 = (spFC - MeasureTextWidth(0, 0, spD8)) / 2;
-    temp_s2 = (spF8 - (Text_CountLines(spD8) * 0x14)) / 2;
+    temp_s3 = (spFC - Font_MeasureTextExtent(0, 0, spD8)) / 2;
+    temp_s2 = (spF8 - (Gallery_CountTextLines(spD8) * 0x14)) / 2;
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
-    Text_SetLineHeight(0x14);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
+    Font_SetLineHeight(0x14);
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(arg0 + temp_s3 + 2, arg1 + temp_s2 + 2, spD8);
-    Text_BeginRender();
+    Font_Printf(arg0 + temp_s3 + 2, arg1 + temp_s2 + 2, spD8);
+    Font_EnableTwoCycleTexturing();
     Text_SetEnvColor(spD0[arg2].r, spD0[arg2].g, spD0[arg2].b, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(arg0 + temp_s3, arg1 + temp_s2, spD8);
-    Text_EndRender();
-    Text_SetupDL();
+    Font_Printf(arg0 + temp_s3, arg1 + temp_s2, spD8);
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
-char* GetGridHelpString(unk_D_83407B38* arg0) {
+char* Gallery_AlbumGetStatusText(unk_D_83407B38* arg0) {
     s32 tmp = arg0->unk_00 / 3;
     char* var_v0;
 
     if (gItemSelectMode == 2) {
-        var_v0 = Text_GetMessageString_Bank2C(0x29);
+        var_v0 = Gallery_GetUiString(0x29);
     } else if (tmp < 2) {
-        var_v0 = Text_GetMessageString_Bank2C(0x25);
+        var_v0 = Gallery_GetUiString(0x25);
     } else if (arg0->unk_04 != -1) {
-        var_v0 = Text_GetMessageString_Bank2C(0x26);
+        var_v0 = Gallery_GetUiString(0x26);
     } else if (gItemSelectMode == 1) {
-        var_v0 = Text_GetMessageString_Bank2C(0x28);
+        var_v0 = Gallery_GetUiString(0x28);
     } else {
-        var_v0 = Text_GetMessageString_Bank2C(0x27);
+        var_v0 = Gallery_GetUiString(0x27);
     }
     return var_v0;
 }
 
-void DrawGridHelpBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
-    char* sp1C = GetGridHelpString(arg0);
+void Gallery_AlbumDrawStatusText(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+    char* sp1C = Gallery_AlbumGetStatusText(arg0);
 
-    Gallery_DrawGradientPanel(arg1, arg2, 0x13F, 0x4C);
+    Gallery_DrawBluePanel(arg1, arg2, 0x13F, 0x4C);
     if (sp1C != NULL) {
-        Text_ResetState();
-        Text_SetFont(8, 0);
-        Text_SetLineHeight(0x14);
-        Text_Print(arg1 + 0xA, arg2 + 8, sp1C);
-        Text_SetupDL();
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(8, 0);
+        Font_SetLineHeight(0x14);
+        Font_Printf(arg1 + 0xA, arg2 + 8, sp1C);
+        Font_EndTexturedTextRendering();
     }
 }
 
-f32 UpdateFadeTimer(s32* arg0, u32* arg1, s32 arg2) {
+f32 Gallery_AlbumPulseAlpha(s32* arg0, u32* arg1, s32 arg2) {
     f32 tmp;
 
     if (*arg0 < arg2) {
@@ -980,7 +980,7 @@ f32 UpdateFadeTimer(s32* arg0, u32* arg1, s32 arg2) {
     return tmp;
 }
 
-void DrawGridSelectionHighlight(unk_D_83407B38* arg0) {
+void Gallery_AlbumDrawCursor(unk_D_83407B38* arg0) {
     s32 temp_hi = arg0->unk_00 % 3;
     s32 temp_lo = arg0->unk_00 / 3;
     s32 var_v0;
@@ -994,15 +994,15 @@ void DrawGridSelectionHighlight(unk_D_83407B38* arg0) {
     }
 
     if (temp_lo < 2) {
-        Gallery_DrawAnimatedCorners((temp_hi * 0xA0) + var_v0 + 0x67, (temp_lo * 0x76) + var_v0 + 0x4A, 0x90, 0x6E);
+        Gallery_DrawSelectionCorners((temp_hi * 0xA0) + var_v0 + 0x67, (temp_lo * 0x76) + var_v0 + 0x4A, 0x90, 0x6E);
     } else if (arg0->unk_04 != -1) {
-        Gallery_DrawAnimatedCorners(0x41, 0x15A, 0x4C, 0x3B);
+        Gallery_DrawSelectionCorners(0x41, 0x15A, 0x4C, 0x3B);
     } else {
-        Gallery_DrawAnimatedCorners(0x1E1, 0x172, 0x6C, 0x45);
+        Gallery_DrawSelectionCorners(0x1E1, 0x172, 0x6C, 0x45);
     }
 }
 
-void ItemSelect_MainDraw(void) {
+void Gallery_AlbumDraw(void) {
     static s32 D_83503F54 = 0;
     static s32 D_83503F58 = 0;
     static s32 D_83503F5C = 0;
@@ -1017,17 +1017,17 @@ void ItemSelect_MainDraw(void) {
     f32 sp24;
     f32 var_fv1;
 
-    Gallery_GetPageAndIndex(&gItemSelectContext, &sp30, &sp2C, gItemSelectContext.unk_00);
-    Stage_BeginDisplayList();
-    DrawHighlightBars();
-    DrawGridBackground(0x1E, 0x2A, &gItemSelectContext);
+    Gallery_IndexToGridPos(&gItemSelectContext, &sp30, &sp2C, gItemSelectContext.unk_00);
+    BgStage_DrawFrame();
+    Gallery_AlbumDrawGradientBackground();
+    Gallery_AlbumDrawGridPanel(0x1E, 0x2A, &gItemSelectContext);
     if (ItemSelect_ShowResult != 0) {
         if (gItemSelectContext.unk_04 == -1) {
             var_a2 = 1;
         } else {
             var_a2 = 0;
         }
-        DrawAnimatedMonPanel(0x35, 0x15E, var_a2);
+        Gallery_AlbumDrawAnimatedOverlay(0x35, 0x15E, var_a2);
 
         switch (gItemSelectMode) {
             case 0:
@@ -1043,25 +1043,25 @@ void ItemSelect_MainDraw(void) {
                 break;
         }
 
-        sp24 = UpdateFadeTimer(&D_83503F54, &D_83503F58, 0x1E);
-        temp_fv0 = UpdateFadeTimer(&D_83503F5C, &D_83503F60, 0xF);
+        sp24 = Gallery_AlbumPulseAlpha(&D_83503F54, &D_83503F58, 0x1E);
+        temp_fv0 = Gallery_AlbumPulseAlpha(&D_83503F5C, &D_83503F60, 0xF);
         if ((gItemSelectContext.unk_04 == -1) && (sp2C >= 2)) {
             var_fv1 = temp_fv0;
         } else {
             var_fv1 = sp24;
         }
-        DrawResultScreen(0x1E1, 0x172, sp38, var_fv1);
+        Gallery_AlbumDrawExitButton(0x1E1, 0x172, sp38, var_fv1);
     }
-    ItemSelect_DrawGrid(0x6B, 0x4E, &gItemSelectContext);
-    DrawGridSelectionHighlight(&gItemSelectContext);
-    DrawGridHelpBox(&gItemSelectContext, 0x9E, 0x16B);
-    Stage_Advance();
+    Gallery_AlbumDrawThumbnails(0x6B, 0x4E, &gItemSelectContext);
+    Gallery_AlbumDrawCursor(&gItemSelectContext);
+    Gallery_AlbumDrawStatusText(&gItemSelectContext, 0x9E, 0x16B);
+    BgStage_AdvanceFrame();
 }
 
-void AdvanceResultAnim(unk_D_83407B38* arg0) {
+void Gallery_AlbumAdvanceDeleteAnimation(unk_D_83407B38* arg0) {
     ItemSelect_ResultAnimTimer++;
     if (ItemSelect_ResultAnimTimer >= 0x15) {
-        Gallery_ClearEntry(arg0->unk_20[arg0->unk_04]->unk_18);
+        Gallery_ClearPhotoRecord(arg0->unk_20[arg0->unk_04]->unk_18);
         gSlotStatusFlags[arg0->unk_04] = 0;
         arg0->unk_04 = -1;
         gItemSelectState = 1;
@@ -1069,18 +1069,18 @@ void AdvanceResultAnim(unk_D_83407B38* arg0) {
     }
 }
 
-void BeginFadeOutAfterResult(unk_D_83407B38* arg0) {
+void Gallery_AlbumConfirmAndExit(unk_D_83407B38* arg0) {
     Camera* sp1C = arg0->unk_B0;
 
-    if ((Cam_IsMonIndexDisplayable(sp1C) != 0) && (sp1C->unk_00 == 2)) {
+    if ((Gallery_IsSceneReady(sp1C) != 0) && (sp1C->unk_00 == 2)) {
         gItemSelectState = 4;
         ItemSelect_HighlightFlags = 0xFFFF;
-        Stage_SetFillColor(0xFFFF);
-        Stage_FadeOut(0xF);
+        StageContext_SetClearColor(0xFFFF);
+        StageFade_StartFromTransparent(0xF);
     }
 }
 
-s32 ItemSelect_StateMachine(void) {
+s32 Gallery_AlbumUpdate(void) {
     static s32 D_83503F64 = 2;
 
     s32 sp1C = 1;
@@ -1089,7 +1089,7 @@ s32 ItemSelect_StateMachine(void) {
 
     switch (gItemSelectState) {
         case 0:
-            if (Stage_GetFadeState() == 0) {
+            if (StageContext_GetFadeMode() == 0) {
                 D_83503F64--;
                 if (D_83503F64 <= 0) {
                     gItemSelectState = 1;
@@ -1099,31 +1099,31 @@ s32 ItemSelect_StateMachine(void) {
 
         case 1:
             ItemSelect_HighlightFlags &= 0xFF60;
-            temp_v0_2 = ItemSelect_HandleInput(&gItemSelectContext);
+            temp_v0_2 = Gallery_AlbumHandleGridInput(&gItemSelectContext);
             if (temp_v0_2 != 0) {
                 gItemSelectState = 4;
                 ItemSelect_HighlightFlags = 0xFFFF;
                 if (temp_v0_2 != 2) {
-                    Stage_SetFillColor(0xFFFF);
+                    StageContext_SetClearColor(0xFFFF);
                     var_a0 = 0xF;
                 } else {
-                    Stage_SetFillColor(1);
+                    StageContext_SetClearColor(1);
                     var_a0 = 1;
                 }
-                Stage_FadeOut(var_a0);
+                StageFade_StartFromTransparent(var_a0);
             }
             break;
 
         case 2:
-            AdvanceResultAnim(&gItemSelectContext);
+            Gallery_AlbumAdvanceDeleteAnimation(&gItemSelectContext);
             break;
 
         case 3:
-            BeginFadeOutAfterResult(&gItemSelectContext);
+            Gallery_AlbumConfirmAndExit(&gItemSelectContext);
             break;
 
         case 4:
-            if (Stage_GetFadeState() == 1) {
+            if (StageContext_GetFadeMode() == 1) {
                 sp1C = 0;
             }
             break;
@@ -1131,21 +1131,21 @@ s32 ItemSelect_StateMachine(void) {
     return sp1C;
 }
 
-void ItemSelect_ReadInputs(void) {
+void Gallery_AlbumReadInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-void ItemSelect_Loop(void) {
+void Gallery_AlbumLoop(void) {
     if (ItemSelect_FadeInFlag != 0) {
-        Stage_FadeIn(7);
+        StageFade_StartFromOpaque(7);
     } else {
-        Stage_FadeIn(1);
+        StageFade_StartFromOpaque(1);
     }
 
     do {
-        ItemSelect_ReadInputs();
+        Gallery_AlbumReadInput();
 
         switch (gItemSelectState) {
             case 0:
@@ -1153,16 +1153,16 @@ void ItemSelect_Loop(void) {
                 break;
 
             default:
-                CamList_Update(&gItemSelectContext);
+                Gallery_ProcessSceneGrid(&gItemSelectContext);
                 break;
         }
 
-        ItemSelect_MainDraw();
-        Gallery_ClearActiveCamera();
-    } while (ItemSelect_StateMachine() != 0);
+        Gallery_AlbumDraw();
+        Gallery_FinishActiveScene();
+    } while (Gallery_AlbumUpdate() != 0);
 }
 
-s32 ItemSelect_ApplySelection(unk_D_83407B38* arg0) {
+s32 Gallery_AlbumGetResult(unk_D_83407B38* arg0) {
     UNUSED s32 pad[2];
     s32 sp1C;
 
@@ -1180,16 +1180,16 @@ s32 ItemSelect_ApplySelection(unk_D_83407B38* arg0) {
             break;
     }
 
-    if (Gallery_GetCurrentEntry(0) != 0) {
+    if (Gallery_GetEnlargeTarget(0) != 0) {
         sp1C = 4;
     }
 
     if (gItemSelectMode == 2) {
-        Gallery_SyncSelectionToCam(arg0, &gGalleryFinalSelection.unk_00);
+        Gallery_SavePosition(arg0, &gGalleryFinalSelection.unk_00);
     } else {
-        Gallery_SyncSelectionToCam(arg0, &gGalleryTertiarySelection);
+        Gallery_SavePosition(arg0, &gGalleryTertiarySelection);
         if (sp1C == 0) {
-            Selection_Reset(&gGalleryTertiarySelection);
+            Gallery_ClearSavedPosition(&gGalleryTertiarySelection);
         }
     }
 
@@ -1201,9 +1201,9 @@ void Gallery_AlbumMain(s32 arg0, s32 arg1) {
 
     main_pool_push_state('ALBM');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    gTextObjectHandle = Text_Init(0x18, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    gTextObjectHandle = Font_Init(0x18, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
@@ -1212,18 +1212,18 @@ void Gallery_AlbumMain(s32 arg0, s32 arg1) {
 
     FRAGMENT_LOAD(fragment31);
 
-    AssetManager_LoadArchives();
+    PokeIcon_OpenModelArchives();
     gStadiumModelArchive = ASSET_LOAD2(stadium_models, 1, 1);
-    MessageBank_Init();
-    Text_LoadMessageBanks();
-    ItemSelect_Init(arg0, arg1);
-    Stage_Set(sp24);
-    ItemSelect_Loop();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    Text_InitStringTables();
+    Gallery_InitStringTables();
+    Gallery_AlbumInit(arg0, arg1);
+    StageContext_Activate(sp24);
+    Gallery_AlbumLoop();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('ALBM');
 
-    ItemSelect_ApplySelection(&gItemSelectContext);
+    Gallery_AlbumGetResult(&gItemSelectContext);
 }

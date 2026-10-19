@@ -12,7 +12,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-void Stage_DrawN64Logo(void) {
+void N64Logo_DrawLogoTexture(void) {
     s32 var_t4;
     u8* var_t5;
     u32 tmp = 0xF;
@@ -36,15 +36,15 @@ void Stage_DrawN64Logo(void) {
     gDPSetTextureConvert(gDisplayListHead++, G_TC_FILT);
 }
 
-s32 Stage_LogoDrawCallback(UNUSED u8 arg0) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 1);
-    Stage_DrawN64Logo();
+s32 N64Logo_DrawFrame(UNUSED u8 arg0) {
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 1);
+    N64Logo_DrawLogoTexture();
 
     return 0;
 }
 
-void Delay_OneSecond(u64 arg0) {
+void N64Logo_WaitForElapsed(u64 arg0) {
     u32 temp_ret = 0xF;
 
     while (temp_ret < 0xF4240) {
@@ -52,56 +52,56 @@ void Delay_OneSecond(u64 arg0) {
     }
 }
 
-void Players_Initialize(void) {
+void N64Logo_ScanGbSavePorts(void) {
     main_pool_push_state('GPAK');
 
-    InitializePlayers();
+    GbSave_ScanAllPorts();
 
     main_pool_pop_state('GPAK');
 }
 
-s32 Stage_RunLogoSequence(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 N64Logo_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     u64 sp30;
     Stage* sp2C;
     u16 sp2A;
 
     main_pool_push_state('LOGO');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp2C = Stage_Create(0, 1, 2, 0, 2, 1);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp2C = StageContext_Allocate(0, 1, 2, 0, 2, 1);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, n64_logo_texture, 0);
 
-    GbsEnsureBankLoaded(2);
-    Stage_Set(sp2C);
-    Stage_StartFade(1);
-    Stage_AdvanceUntil(3, Stage_LogoDrawCallback);
-    MessageBank_Init();
-    LoadNameSlots();
+    Save_EnsureBankLoaded(2);
+    StageContext_Activate(sp2C);
+    StageFade_Start(1);
+    BgStage_RunUntilCondition(3, N64Logo_DrawFrame);
+    Text_InitStringTables();
+    Text_LoadPlayerLabels();
     Text_LoadNameTable();
-    GbsGetPlayerMoney(&sp2A);
+    Save_GetOptionsField02(&sp2A);
 
     if (sp2A & 1) {
-        Music_SetPanMode(1);
+        Audio_SetMonoOutput(1);
     } else {
-        Music_SetPanMode(0);
+        Audio_SetMonoOutput(0);
     }
 
     if (sp2A & 2) {
-        SetAudioActiveFlag(0);
+        Audio_SetVoiceEnabled(0);
     } else {
-        SetAudioActiveFlag(1);
+        Audio_SetVoiceEnabled(1);
     }
 
-    PlaySoundEffect(0xA);
+    Audio_PlaySoundEffectById(0xA);
     sp30 = osGetTime();
-    Players_Initialize();
-    Delay_OneSecond(sp30);
-    Stage_StartFade(0x10);
-    Stage_AdvanceUntil(0x10, Stage_LogoDrawCallback);
-    Stage_Destroy();
-    Gfx_FreeBuffers();
+    N64Logo_ScanGbSavePorts();
+    N64Logo_WaitForElapsed(sp30);
+    StageFade_Start(0x10);
+    BgStage_RunUntilCondition(0x10, N64Logo_DrawFrame);
+    StageContext_Deactivate();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('LOGO');
     return 2;

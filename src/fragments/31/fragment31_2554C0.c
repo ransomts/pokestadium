@@ -23,7 +23,7 @@ const char gEmptyString1[0x4] = "";
 const char gEmptyString2[0x4] = "";
 const char gEmptyString3[0x4] = "";
 
-Gfx* Stage_LoadTextureSegment(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
+Gfx* DisplayList_BuildIndexedTextureSegment(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
     gSPDisplayList(gfx++, addresses->segments[0]);
     // TODO: Convert to gDPLoadTextureBlock
     gDPSetTextureImage(gfx++, G_IM_FMT_I, G_IM_SIZ_16b, 1, addresses->textures[index]);
@@ -38,41 +38,41 @@ Gfx* Stage_LoadTextureSegment(Gfx* gfx, DisplayListAddresses* addresses, s32 ind
     return gfx;
 }
 
-void Stage_BuildAnimationGfx(s32 arg0, DisplayListState* state) {
+void DisplayList_InitIndexedTextureSegment(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
     if (arg0 == 2) {
         addresses = state->addresses;
-        gfx = GfxAlloc(0x50);
+        gfx = Gfx_AllocDisplayList(0x50);
         state->gfx = gfx;
-        Stage_LoadTextureSegment(gfx, addresses, gAnimationFrame & 7);
+        DisplayList_BuildIndexedTextureSegment(gfx, addresses, gAnimationFrame & 7);
     }
 }
 
-Gfx* Stage_DrawModelWithTexture(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
+Gfx* DisplayList_BuildAnimatedModelTexture(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
     gDPLoadTextureBlock(gfx++, addresses->textures[index], G_IM_FMT_IA, G_IM_SIZ_8b, 32, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    Model_DrawIfReady();
+    ModelRenderer_UpdateSlotVertices();
     {
-        Gfx* gfx2 = Model_RenderStateMachine(gfx);
+        Gfx* gfx2 = ModelRenderer_RenderActiveSlot(gfx);
         gSPSetGeometryMode(gfx2++, 0x00020000);
         gSPEndDisplayList(gfx2++);
         return gfx2;
     }
 }
 
-void Stage_UpdateAndRenderModel(s32 arg0, DisplayListState* state) {
+void DisplayList_InitAnimatedModelTexture(s32 arg0, DisplayListState* state) {
     static s32 gStageModelCounter = 0;
     Gfx* gfx;
     DisplayListAddresses* addresses;
     u8 temp_v1;
 
-    temp_v1 = GraphRoot_GetCurrentModelSlot();
+    temp_v1 = ModelRenderer_GetActiveMode();
     if (arg0 == 2) {
         addresses = state->addresses;
-        gfx = GfxAlloc(0x140);
+        gfx = Gfx_AllocDisplayList(0x140);
         state->gfx = gfx;
-        Stage_DrawModelWithTexture(gfx, addresses, ((gModelUpdateFlag[temp_v1 & 1] * 3) + gStageModelCounter) % 8);
+        DisplayList_BuildAnimatedModelTexture(gfx, addresses, ((gModelUpdateFlag[temp_v1 & 1] * 3) + gStageModelCounter) % 8);
         gStageModelCounter += 1;
     }
 }

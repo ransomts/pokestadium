@@ -47,7 +47,7 @@ static u32 gTrailTextureData[] = {
     0x6F6F6F6F, 0x6F6F6F6F, 0x2F2F2F2F, 0x2F2F2F2F, 0x0D0D0D0D, 0x0D0D0D0D, 0x08080808, 0x08080808,
 };
 
-void Trail_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
+void Radial20_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
     unk_D_84397610* ptr1 = &gTrailState;
     unk_D_84397648* ptr2;
     s32 i;
@@ -82,7 +82,7 @@ void Trail_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 arg
     }
 }
 
-f32 Trail_GetWidthScale(void) {
+f32 Strip400_GetTailFadeRatio(void) {
     unk_D_84397610* ptr = &gTrailState;
     f32 tmp;
     s32 tmp2 = ptr->unk_00;
@@ -99,7 +99,7 @@ f32 Trail_GetWidthScale(void) {
     return tmp;
 }
 
-s32 Trail_Update(void) {
+s32 Radial20_Update(void) {
     s32 i;
     f32 spB8;
     f32 temp_fs0_2;
@@ -134,7 +134,7 @@ s32 Trail_Update(void) {
         }
     }
 
-    GetPrimaryEntityNodePosition(&sp7C);
+    BattleAnim_GetCurrentOwnerBonePosition(&sp7C);
     sp98 = sp7C.x;
     sp94 = sp7C.y;
     sp90 = sp7C.z;
@@ -203,7 +203,7 @@ s32 Trail_Update(void) {
     return 0;
 }
 
-Gfx* Trail_Render(Gfx* arg0) {
+Gfx* Strip400_Draw(Gfx* arg0) {
     static Gfx D_843890E8[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_1CYCLE),
@@ -230,7 +230,7 @@ Gfx* Trail_Render(Gfx* arg0) {
     if (ptr->unk_28 < 2) {
         return arg0;
     }
-    ptr->unk_2C = GfxAlloc(ptr->unk_28 * 2 * sizeof(Vtx));
+    ptr->unk_2C = Gfx_AllocDisplayList(ptr->unk_28 * 2 * sizeof(Vtx));
     vtx = ptr->unk_2C;
     var_a0 = &gTrailPoints[0];
 
@@ -285,7 +285,7 @@ void Radial20_ResetPool(void) {
     unk_D_84398F50* var_a2;
     unk_D_84398F50_048* var_v1;
 
-    temp_v0 = GlowEmitter_Allocate();
+    temp_v0 = AuxiliaryEffect_Alloc();
     var_a2 = &D_84398F50[0];
 
     for (i = 0; i < 10; i++) {
@@ -312,7 +312,7 @@ void Radial20_ResetPool(void) {
     }
 }
 
-void ParticleEmitter_AddSimple(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
+void Radial20_VariantA(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, f32 argB, f32 argC, f32 argD, s16 argE) {
     unk_D_84398F50* var_v0;
     unk_D_84398F50_048* var_a1_2;
@@ -366,7 +366,7 @@ void ParticleEmitter_AddSimple(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4,
     }
 }
 
-void ParticleEmitter_AddSimpleNoFade(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
+void Radial20_VariantB(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, f32 argB, f32 argC, f32 argD, s16 argE) {
     unk_D_84398F50* var_v0;
     unk_D_84398F50_048* var_v1_2;
@@ -410,7 +410,7 @@ void ParticleEmitter_AddSimpleNoFade(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32
     }
 }
 
-void ParticleEmitter_AddRandomized(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
+void Radial20_VariantC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC, u8 argD, f32 argE, f32 argF, f32 arg10, s16 arg11) {
     unk_D_84398F50* var_v0;
     unk_D_84398F50_048* var_s0;
@@ -631,7 +631,7 @@ void Radial20_UpdateNode(unk_D_84398F50* arg0) {
     s32 i;
     Vec3f sp28;
 
-    GetPrimaryEffectCenterOrNode(&sp28);
+    BattleAnim_GetSecondaryOwnerAnchorPosition(&sp28);
 
     switch (arg0->unk_008) {
         case 0:
@@ -787,7 +787,7 @@ s32 Radial20_IsComplete(void) {
                 Radial20_UpdateNode(var_s0);
                 var_s2++;
             }
-            GlowEmitter_Update(var_s0->unk_002);
+            AuxiliaryEffect_Update(var_s0->unk_002);
         }
     }
 
@@ -863,7 +863,7 @@ Gfx* func_84362084(Gfx* arg0) {
             switch (sp1B4->unk_008) {
                 case 0:
                 case 3:
-                    vtx = GfxAlloc(sizeof(Vtx) * 40);
+                    vtx = Gfx_AllocDisplayList(sizeof(Vtx) * 40);
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
@@ -892,7 +892,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     break;
 
                 case 1:
-                    vtx = GfxAlloc(sizeof(Vtx) * 60);
+                    vtx = Gfx_AllocDisplayList(sizeof(Vtx) * 60);
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
@@ -939,7 +939,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     break;
 
                 case 5:
-                    vtx = GfxAlloc(sizeof(Vtx) * 60);
+                    vtx = Gfx_AllocDisplayList(sizeof(Vtx) * 60);
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++) {
@@ -987,7 +987,7 @@ Gfx* func_84362084(Gfx* arg0) {
 
                 case 6:
                 case 7:
-                    vtx = GfxAlloc(sizeof(Vtx) * 20 * 6);
+                    vtx = Gfx_AllocDisplayList(sizeof(Vtx) * 20 * 6);
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++, var_s2++) {
@@ -1008,7 +1008,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     break;
 
                 case 8:
-                    vtx = GfxAlloc(sizeof(Vtx) * 20 * 3 * 3);
+                    vtx = Gfx_AllocDisplayList(sizeof(Vtx) * 20 * 3 * 3);
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++, var_s2++) {
@@ -1029,7 +1029,7 @@ Gfx* func_84362084(Gfx* arg0) {
                                 vtx->v.ob[2] = z1;
 
                                 if ((y == 0) && (RAND(100) == 0)) {
-                                    ParticleEmitter_AddParticle(sp1B4->unk_002, x1, y1, z1, 0xA, 0.75f);
+                                    AuxiliaryEffect_Spawn(sp1B4->unk_002, x1, y1, z1, 0xA, 0.75f);
                                 }
 
                                 vtx->v.cn[0] = ((gParticlePaletteR[x] * (0xFF - var_s2->unk_04)) +
@@ -1047,7 +1047,7 @@ Gfx* func_84362084(Gfx* arg0) {
 
                 case 2:
                 case 4:
-                    vtx = GfxAlloc(sizeof(Vtx) * 20 * 15);
+                    vtx = Gfx_AllocDisplayList(sizeof(Vtx) * 20 * 15);
                     sp1B4->unk_01C = vtx;
 
                     for (j = 0; j < 20; j++, var_s2++) {
@@ -1206,7 +1206,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     gSP1Triangle(arg0++, 8, 7, 6, 0);
                     break;
             }
-            arg0 = ParticleEmitter_RenderAll(sp1B4->unk_002, arg0);
+            arg0 = AuxiliaryEffect_Draw(sp1B4->unk_002, arg0);
         }
         sp1B4++;
     }

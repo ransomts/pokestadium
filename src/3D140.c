@@ -311,9 +311,9 @@ u32 gAudioCommandQueue[10];
 u8 gAudioShuffleBuffer[0x28];
 
 // function prototypes
-void PlaySoundEffectOrQueue(u16, u16*, u8*);
-u32 CalculateMoveDamage(u32, PokemonAudioInfo*, PokemonAudioInfo*);
-s32 GetTypeIndex(u8);
+void Audio_QueueSoundWithFallbackList(u16, u16*, u8*);
+u32 Battle_EstimateMoveDamage(u32, PokemonAudioInfo*, PokemonAudioInfo*);
+s32 Battle_MapCategoryIdToCompactIndex(u8);
 ALDMAproc __amDmaNew(AMDMAState** state);
 
 void amCreateAudioMgr(ALSynConfig* c, amConfig* amc, u32 num_dma_buffers, s32 arg3, s32 arg4) {
@@ -375,7 +375,7 @@ void amCreateAudioMgr(ALSynConfig* c, amConfig* amc, u32 num_dma_buffers, s32 ar
     gAudioMaxVoices = c->maxVVoices;
     gMusicFadeStepActive = 0;
 
-    Audio_Init(c->heap, minFrameSize, maxFrameSize);
+    AudioStream_Init(c->heap, minFrameSize, maxFrameSize);
 }
 
 s32 __amDMA(s32 addr, s32 len, void* state) {
@@ -454,7 +454,7 @@ s32 __amDMA(s32 addr, s32 len, void* state) {
     return osVirtualToPhysical(foundBuffer) + delta;
 }
 
-OSTask* AudioTask_Build(OSTask* arg0) {
+OSTask* Audio_CreateFrameTask(OSTask* arg0) {
     s16* audioPtr;
     Acmd* cmdp;
     s32 cmdLen;
@@ -513,9 +513,9 @@ OSTask* AudioTask_Build(OSTask* arg0) {
     }
 
     if (gMusicEnabled[0] != 0) {
-        Audio_ProcessMusic();
+        GbMusic_UpdateChannels();
         if (lastInfo != NULL) {
-            Audio_PlayMusicBuffer(lastInfo->data, 0, ((audFrameCt % 3) == 0) ? 0x216 : 0x215, 0);
+            GbAudio_GenerateSamples(lastInfo->data, 0, ((audFrameCt % 3) == 0) ? 0x216 : 0x215, 0);
         }
     }
 
@@ -523,7 +523,7 @@ OSTask* AudioTask_Build(OSTask* arg0) {
         Audio_ProcessChannels();
     }
 
-    Audio_UpdateEffects();
+    Audio_UpdateBattleAudioFrame();
 
     if (mus_active_fade_handle != 0) {
         mus_fade_start_volume += mus_fade_step_rate;
@@ -622,7 +622,7 @@ void __clearAudioDMA(void) {
 }
 
 
-void Audio_SetMusicEnabled(s32 arg0) {
+void Cry_SetEnabled(s32 arg0) {
     const f32 D_8007C7C0 = 0.8000000119f;
     if (arg0 != 0) {
         Audio_LoadMusicTrack(0x7D00, 0x78, 0x640);
@@ -633,7 +633,7 @@ void Audio_SetMusicEnabled(s32 arg0) {
     gMusicEnabled[0] = 0;
 }
 
-void Audio_StartMusicFade(s32 arg0) {
+void Cry_PlayFromPokedex(s32 arg0) {
     if (gMusicEnabled[0] == 0) {
         Audio_LoadMusicTrack(0x7D00, 0x78, 0x320);
         gMusicEnabled[0] = 1;
@@ -649,7 +649,7 @@ void Audio_MusicFadeUpdate(void) {
     switch (gMusicFadeState[0]) {
         case 1:
             MusSetupVolumeFade(gMusicHandle, 0x50, 0x18, 3);
-            Music_PlayTrack(gMusicFadeTargetTrack);
+            GbMusic_StartTableSequence(gMusicFadeTargetTrack);
             gMusicFadeState[0]++;
             gMusicFadeTimer = 0;
             break;
@@ -664,7 +664,7 @@ void Audio_MusicFadeUpdate(void) {
             break;
 
         case 3:
-            if (Music_FadeStepComplete() == 0) {
+            if (GbMusic_CountActiveHighChannels() == 0) {
                 gMusicFadeState[0]++;
                 gMusicFadeTimer = 0;
             }
@@ -690,11 +690,11 @@ void Audio_MusicFadeUpdate(void) {
     }
 }
 
-s32 Audio_IsMusicEnabled(void) {
+s32 Cry_IsPlaying(void) {
     return gMusicEnabled[0];
 }
 
-s32 Audio_SetPauseState(s32 arg0) {
+s32 Audio_SetEnabled(s32 arg0) {
     if (arg0 == 0) {
         if (mus_free_voices_count != gAudioMaxVoices) {
             return 0;
@@ -709,7 +709,7 @@ s32 Audio_SetPauseState(s32 arg0) {
     return 1;
 }
 
-s32 Audio_GetUnitReadyStatus(u8* arg0) {
+s32 Audio_GetDiskReadyStatus(u8* arg0) {
     if (gAudioUnitReady == 0) {
         *arg0 = 7;
         return 8;
@@ -718,7 +718,7 @@ s32 Audio_GetUnitReadyStatus(u8* arg0) {
     return gAudioUnitReadyStatus;
 }
 
-void Audio_SetUnitReadyFlag(s32 arg0) {
+void Audio_SetDiskReadyPolling(s32 arg0) {
     if (arg0 == 1) {
         gAudioUnitReady = 1;
         return;

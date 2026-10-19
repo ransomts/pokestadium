@@ -31,7 +31,7 @@ typedef struct PokemonStats {
     /* 0x14 */ char unk14[0x3];
 } PokemonStats; // size = 0x17
 
-typedef struct SpeciesStats {
+typedef struct gBaseStats {
     /* 0x00 */ u8 unk_00;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 unk_02;
@@ -48,10 +48,10 @@ typedef struct SpeciesStats {
     /* 0x10 */ char unk10[0x3];
     /* 0x13 */ u8 unk_13;
     /* 0x14 */ char unk14[0x3];
-} SpeciesStats; // size = 0x17
+} gBaseStats; // size = 0x17
 
 extern PokemonStats D_80070F84[];
-extern SpeciesStats gSpeciesBaseStats[]; //TODO: is this typed correctly?
+extern gBaseStats gSpeciesBaseStats[]; //TODO: is this typed correctly?
 
 typedef struct TypeColorEntry {
     /* 0x00 */ char* type_name;
@@ -211,28 +211,28 @@ typedef struct unk_D_800AC910 {
     /* 0x54 */ unk_D_800AC910_054* unk_54;
 } unk_D_800AC910; // size = 0x58
 
-u16 ReadBE16(u8* arg0);
-u32 ReadBE24(u8* arg0);
-void WriteBE16(u8* arg0, s32 arg1);
-void WriteBE24(u8* arg0, s32 arg1);
-char* DecodeGen1String(char* arg0, char* arg1);
-void DecodeGen1StringToBuffer(char* arg0, char* arg1);
-char* EncodeGen1String(char* arg0, char* arg1);
-char* EncodeGen1StringToBuffer(char* arg0, char* arg1);
-char* DecodeGen1StringFromRawBuffer(char* arg0, char* arg1);
-char* StrCopy(char* arg0, char* arg1);
-char* GetSpeciesName(char* arg0, s32 arg1);
-char* GetItemName(s32 arg0, char* arg1);
-void DeserializePokemonRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
-void DeserializePartyPokemon(PokemonData* arg0, unk_D_800AC910_050_9AC_008* arg1);
-void SerializePokemonToRawData(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
-void SerializePartyToRawData(unk_func_88205880_00D0* arg0, unk_D_800AC910_050_9AC_008* arg1);
-u16 CalcSqrtCeil(u16 arg0);
+u16 GbData_ReadU16BE(u8* arg0);
+u32 GbData_ReadU24BE(u8* arg0);
+void GbData_WriteU16BE(u8* arg0, s32 arg1);
+void GbData_WriteU24BE(u8* arg0, s32 arg1);
+char* Text_UntranscodeName(char* arg0, char* arg1);
+void Text_UntranscodeNameWrapper(char* arg0, char* arg1);
+char* Text_TranscodeName(char* arg0, char* arg1);
+char* Text_TranscodeNameWrapper(char* arg0, char* arg1);
+char* Text_UntranscodeFixedName(char* arg0, char* arg1);
+char* Text_CopyString(char* arg0, char* arg1);
+char* Text_CopySpeciesName(char* arg0, s32 arg1);
+char* Text_GetTmHmName(s32 arg0, char* arg1);
+void Pokemon_FromGbRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
+void Pokemon_FromGbRecordExt(PokemonData* arg0, unk_D_800AC910_050_9AC_008* arg1);
+void Pokemon_ToGbRecord(PokemonData* arg0, unk_D_800AE4E8_004_1_000_010_000* arg1);
+void Pokemon_ToGbRecordExt(unk_func_88205880_00D0* arg0, unk_D_800AC910_050_9AC_008* arg1);
+u16 StatExpSqrt(u16 arg0);
 void func_800220C4(void);
 u16 func_800220CC(s32 arg0, u16 arg1);
 u32 CalculateStatValue(s32 statId, s32 speciesId, u16 statModifier, u16 level, u16 dvBits);
-void CalculatePokemonStats(PokemonData* arg0);
-u16 CalcStatModifierForValue(s32 arg0, s32 arg1, u16 arg2, u16 arg3, u16 arg4);
-u32 CalculateExperienceAtLevel(s32 arg0, u16 arg1);
+void Pokemon_RecalcStats(PokemonData* arg0);
+u16 Pokemon_StatExpForTarget(s32 arg0, s32 arg1, u16 arg2, u16 arg3, u16 arg4);
+u32 Pokemon_ExpForLevel(s32 arg0, u16 arg1);
 
 #endif // _6BC0_H_

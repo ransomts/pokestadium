@@ -41,7 +41,7 @@ Gfx gWaterParticleQuadDL[] = {
     gsSPEndDisplayList(),
 };
 
-void WaterParticlePool_Init(void) {
+void Trail50Effect_Init(void) {
     unk_D_843ADA80* var_v0 = &gWaterParticleSystems[0];
     unk_D_843ADA80_040* var_a0;
     s32 i;
@@ -69,7 +69,7 @@ void WaterParticlePool_Init(void) {
     }
 }
 
-void WaterParticlePool_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void Trail50Effect_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
     unk_D_843ADA80* var_v1;
     unk_D_843ADA80_040* var_s0;
@@ -80,7 +80,7 @@ void WaterParticlePool_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f
     Vec3f sp64;
     f32 temp_fv1;
 
-    temp_fv1 = GetPrimaryEntityScale() * 0.5f;
+    temp_fv1 = BattleAnim_GetSecondaryOwnerModelScale() * 0.5f;
 
     sp7C.x = arg0;
     sp7C.y = (80.0f * temp_fv1) + arg1;
@@ -130,7 +130,7 @@ void WaterParticlePool_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f
     }
 }
 
-void WaterParticle_CalcOffsetRoll(f32 arg0, Vec3f* arg1, f32 arg2) {
+void Trail50Effect_Update(f32 arg0, Vec3f* arg1, f32 arg2) {
     MtxF sp30;
     f32 temp_fv0 = (arg0 * 360.0) / 6.2831854820251465;
 
@@ -138,7 +138,7 @@ void WaterParticle_CalcOffsetRoll(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void WaterParticleSystem_Update(unk_D_843ADA80* arg0) {
+void Trail50Effect_AdvanceNodes(unk_D_843ADA80* arg0) {
     s32 i;
     f32 temp_fs3 = arg0->unk_010;
     unk_D_843ADA80_040* var_s0 = &arg0->unk_040[0];
@@ -202,7 +202,7 @@ void WaterParticleSystem_Update(unk_D_843ADA80* arg0) {
     }
 }
 
-s32 WaterParticlePool_Tick(void) {
+s32 Trail50Effect_IsComplete(void) {
     s32 i;
     unk_D_843ADA80* var_s0 = &gWaterParticleSystems[0];
 
@@ -212,14 +212,14 @@ s32 WaterParticlePool_Tick(void) {
             if ((var_s0->unk_002 == 1) && (var_s0->unk_006 < var_s0->unk_004)) {
                 var_s0->unk_000 = 0;
             } else {
-                WaterParticleSystem_Update(var_s0);
+                Trail50Effect_AdvanceNodes(var_s0);
             }
         }
     }
     return 0;
 }
 
-Gfx* WaterParticlePool_Render(Gfx* arg0) {
+Gfx* Trail50Effect_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
@@ -235,7 +235,7 @@ Gfx* WaterParticlePool_Render(Gfx* arg0) {
     s16 var_s3;
     f32 tmp;
 
-    gDPLoadTextureBlock(arg0++, gWaterTexture[0x1E], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock(arg0++, gBattleAnimAssetPointers[0x1E], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
     var_s5 = &gWaterParticleSystems[0];
@@ -245,7 +245,7 @@ Gfx* WaterParticlePool_Render(Gfx* arg0) {
             tmp = var_s5->unk_010;
             if (temp_s0->unk_0C.y > 0.0f) {
                 temp_fs1 = (temp_s0->unk_08 * 360.0f) / 6.2831854820251465;
-                temp_v0 = GfxAlloc(sizeof(Mtx) * 1);
+                temp_v0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
                 guTranslate(temp_v0, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
                 guRotateRPY(&sp100, 90.0f, temp_fs1, temp_fs1);
                 guMtxCatL(&sp100, temp_v0, temp_v0);
@@ -257,11 +257,11 @@ Gfx* WaterParticlePool_Render(Gfx* arg0) {
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
-            var_s5->unk_020 = GfxAlloc(0x140);
+            var_s5->unk_020 = Gfx_AllocDisplayList(0x140);
 
             var_s0 = var_s5->unk_020;
             for (j = 0; j < 10; j++) {
-                WaterParticle_CalcOffsetRoll(temp_s0->unk_08, &sp184, temp_s0->unk_04 * tmp);
+                Trail50Effect_Update(temp_s0->unk_08, &sp184, temp_s0->unk_04 * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {
@@ -277,7 +277,7 @@ Gfx* WaterParticlePool_Render(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->unk_00;
                 var_s0++;
 
-                WaterParticle_CalcOffsetRoll(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->unk_04 * tmp);
+                Trail50Effect_Update(temp_s0->unk_08 + 3.1415927f, &sp184, temp_s0->unk_04 * tmp);
 
                 var_s3 = temp_s0->unk_0C.y + sp184.y;
                 if (var_s3 < 0) {

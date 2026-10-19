@@ -6,14 +6,14 @@
 void Gallery_Debugger_PostLoad(void);
 void func_83900028(void);
 void func_83900030(void);
-void Gallery_Debugger_Init(void);
-void Gallery_Debugger_WriteBankData(void);
-void Gallery_Debugger_DrawMenu(void);
-void Gallery_Debugger_Render(void);
-s32 Gallery_Debugger_HandleInput(void);
-s32 Gallery_Debugger_MainLoop(void);
-void Gallery_Debugger_UpdateController(void);
-void Gallery_Debugger_Run(void);
-s32 Gallery_Debugger_Entry(s32 arg0, s32 arg1);
+void GalleryDebugger_LoadDeckEntries(void);
+void GalleryDebugger_SaveDeckEntries(void);
+void GalleryDebugger_DrawMenu(void);
+void GalleryDebugger_DrawFrame(void);
+s32 GalleryDebugger_HandleMenuInput(void);
+s32 GalleryDebugger_UpdateFadeState(void);
+void GalleryDebugger_PollInput(void);
+void GalleryDebugger_MenuLoop(void);
+s32 GalleryDebugger_Main(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT48_H_

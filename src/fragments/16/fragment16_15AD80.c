@@ -3,14 +3,14 @@
 
 u16 gBorderFadeCycleCount = 0;
 
-s32 Math_RandomModulo(s32 arg0) {
+s32 Credits_RandomRange(s32 arg0) {
     if (arg0 == 0) {
         return 0;
     }
     return ((guRandom() + osGetCount()) / 10) % arg0;
 }
 
-void Stage_DrawBorderFade(u8 arg0) {
+void Credits_DrawContinuePrompt(u8 arg0) {
     static u8 sBorderFadeStep = 0;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -25,7 +25,7 @@ void Stage_DrawBorderFade(u8 arg0) {
         gBorderFadeCycleCount++;
     }
 
-    Stage_SetBorderFadeParams(0x6E, 0x5C);
+    Widget_DrawStripedBar(0x6E, 0x5C);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }

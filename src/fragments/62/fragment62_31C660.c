@@ -2,8 +2,8 @@
 #include "src/1C720.h"
 
 void BattleAnim_SetupGlobalTintColorFadeDetach(ParticleEffectInstance* arg0) {
-    ParticleNode_RestorePrimColor(arg0);
-    Particle_IncrementState(arg0);
+    BattleAnim_LoadGlobalTintToParticle(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackGlobalTintColorFadeDetach(ParticleEffectInstance* arg0) {
@@ -13,82 +13,82 @@ void BattleAnim_CallbackGlobalTintColorFadeDetach(ParticleEffectInstance* arg0) 
             break;
 
         case 2:
-            if (IsPrimColorSupported(arg0, arg0->paletteIndex, Particle_GetShortAA(arg0)) != 0) {
-                Particle_IncrementState(arg0);
+            if (ParticleGfx_ApproachPrimPalette(arg0, arg0->paletteIndex, Particle_FieldAA_GetS16_0C068(arg0)) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 3:
-            Particle_ResetState(arg0);
+            Particle_DisableAndDetach(arg0);
             break;
     }
 
-    ParticleNode_SavePrimColor(arg0);
+    BattleAnim_SetGlobalTintFromParticle(arg0);
 }
 
-void Fragment_SetPrimColorFromPaletteAndRender(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
-    Particle_SetShortAE(arg0, arg0->initialAlpha);
-    Particle_IncrementState(arg0);
+void BattleAnim_SetupOwnerModelTintRampDetach(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
+    Particle_FieldAE_SetS16_0BF4C(arg0, arg0->initialAlpha);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackOwnerModelTintRampDetach(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetPrimColorFromPaletteAndRender(arg0);
+            BattleAnim_SetupOwnerModelTintRampDetach(arg0);
             break;
 
         case 2:
-            if (Particle_ApproachShortAE(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (Particle_FieldAE_Approach_0BF60(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 3:
-            Particle_ResetState(arg0);
+            Particle_DisableAndDetach(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
     }
 }
 
-void Fragment_SetPrimColorFromPaletteAndRender_WithCE(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
-    Particle_SetShortAE(arg0, arg0->unk_CE);
-    Particle_IncrementState(arg0);
+void BattleAnim_SetupOwnerModelTintPulseDetach(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
+    Particle_FieldAE_SetS16_0BF4C(arg0, arg0->unk_CE);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackOwnerModelTintPulseDetach(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetPrimColorFromPaletteAndRender_WithCE(arg0);
+            BattleAnim_SetupOwnerModelTintPulseDetach(arg0);
             break;
 
         case 2:
-            if (Particle_ApproachShortAE(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (Particle_FieldAE_Approach_0BF60(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 3:
-            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
+            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
             break;
 
         case 4:
-            if (Particle_ApproachShortAE(arg0, 0, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (Particle_FieldAE_Approach_0BF60(arg0, 0, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 5:
-            Particle_ResetState(arg0);
+            Particle_DisableAndDetach(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
     }
 }
 
@@ -98,33 +98,33 @@ void func_8433209C(void) {
 void BattleAnim_CallbackOwnerModelTintHoldFadeDetach(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetPrimColorFromPaletteAndRender_WithCE(arg0);
+            BattleAnim_SetupOwnerModelTintPulseDetach(arg0);
             break;
 
         case 2:
-            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
+            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
             break;
 
         case 3:
-            if (Particle_ApproachShortAE(arg0, 0, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (Particle_FieldAE_Approach_0BF60(arg0, 0, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 4:
-            Particle_ResetState(arg0);
+            Particle_DisableAndDetach(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
     }
 }
 
 void BattleAnim_SetupOwnerModelTintPaletteApproachInactive(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
-    Particle_SetShortAE(arg0, arg0->initialAlpha);
-    Particle_IncrementState(arg0);
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
+    Particle_FieldAE_SetS16_0BF4C(arg0, arg0->initialAlpha);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackOwnerModelTintPaletteApproachInactive(ParticleEffectInstance* arg0) {
@@ -134,26 +134,26 @@ void BattleAnim_CallbackOwnerModelTintPaletteApproachInactive(ParticleEffectInst
             break;
 
         case 2:
-            if (IsPrimColorSupported(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
-                Particle_SetShortAE(arg0, 0);
-                Particle_IncrementState(arg0);
+            if (ParticleGfx_ApproachPrimPalette(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
+                Particle_FieldAE_SetS16_0BF4C(arg0, 0);
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 3:
-            Particle_ClearActiveFlag(arg0);
+            Particle_MarkInactive(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
     }
 }
 
 void BattleAnim_SetupOwnerModelTintPaletteApproach(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
-    Particle_SetShortAE(arg0, arg0->initialAlpha);
-    Particle_IncrementState(arg0);
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
+    Particle_FieldAE_SetS16_0BF4C(arg0, arg0->initialAlpha);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackOwnerModelTintPaletteApproach(ParticleEffectInstance* arg0) {
@@ -163,25 +163,25 @@ void BattleAnim_CallbackOwnerModelTintPaletteApproach(ParticleEffectInstance* ar
             break;
 
         case 2:
-            if (IsPrimColorSupported(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (ParticleGfx_ApproachPrimPalette(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 3:
-            Particle_ClearActiveFlag(arg0);
+            Particle_MarkInactive(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
     }
 }
 
 void BattleAnim_SetupOwnerModelTintPaletteCycle(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
-    Particle_SetShortAE(arg0, 0);
-    Particle_IncrementState(arg0);
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
+    Particle_FieldAE_SetS16_0BF4C(arg0, 0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackOwnerModelTintPaletteCycle(ParticleEffectInstance* arg0) {
@@ -191,33 +191,33 @@ void BattleAnim_CallbackOwnerModelTintPaletteCycle(ParticleEffectInstance* arg0)
             break;
 
         case 2:
-            Particle_ApproachShortAEWithCallback(arg0, arg0->initialAlpha, arg0->unk_CE);
+            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, arg0->initialAlpha, arg0->unk_CE);
             break;
 
         case 3:
-            if (IsPrimColorSupported(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (ParticleGfx_ApproachPrimPalette(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 4:
-            Particle_ApproachShortAEWithCallback(arg0, 0, arg0->unk_CE);
+            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, 0, arg0->unk_CE);
             break;
 
         case 5:
-            Particle_ClearActiveFlag(arg0);
+            Particle_MarkInactive(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
     }
 }
 
 void BattleAnim_SetupOwnerModelTintPaletteApproachRampDown(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
-    Particle_SetShortAE(arg0, arg0->initialAlpha);
-    Particle_IncrementState(arg0);
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
+    Particle_FieldAE_SetS16_0BF4C(arg0, arg0->initialAlpha);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackOwnerModelTintPaletteApproachRampDown(ParticleEffectInstance* arg0) {
@@ -227,29 +227,29 @@ void BattleAnim_CallbackOwnerModelTintPaletteApproachRampDown(ParticleEffectInst
             break;
 
         case 2:
-            if (IsPrimColorSupported(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (ParticleGfx_ApproachPrimPalette(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 3:
-            Particle_ApproachShortAEWithCallback(arg0, 0, arg0->unk_CE);
+            Particle_FieldAE_ApproachAndStepState_0BF98(arg0, 0, arg0->unk_CE);
             break;
 
         case 4:
-            Particle_ClearActiveFlag(arg0);
+            Particle_MarkInactive(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
     }
 }
 
 void BattleAnim_SetupOwnerModelTintPaletteFade(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
-    Particle_SetShortAE(arg0, 0);
-    Particle_IncrementState(arg0);
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
+    Particle_FieldAE_SetS16_0BF4C(arg0, 0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackOwnerModelTintPaletteFade(ParticleEffectInstance* arg0) {
@@ -259,234 +259,234 @@ void BattleAnim_CallbackOwnerModelTintPaletteFade(ParticleEffectInstance* arg0) 
             break;
 
         case 2:
-            if (Particle_ApproachShortAE(arg0, arg0->initialAlpha, arg0->unk_CE) != 0) {
-                Particle_IncrementState(arg0);
+            if (Particle_FieldAE_Approach_0BF60(arg0, arg0->initialAlpha, arg0->unk_CE) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 3:
-            if (IsPrimColorSupported(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (ParticleGfx_ApproachPrimPalette(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 4:
-            Particle_ClearActiveFlag(arg0);
+            Particle_MarkInactive(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->alpha);
     }
 }
 
-void Fragment_SetRandomPrimColorAndRender(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, gPrimColorPalette[RandomMod(6)]);
-    Particle_SetByteCF(arg0, gPrimColorPalette[RandomMod(6)]);
+void BattleAnim_SetupOwnerModelTintRandomPaletteCycle(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, gPrimColorPalette[ParticleMath_RandomRange(6)]);
+    Particle_FieldCF_SetU8_0BEEC(arg0, gPrimColorPalette[ParticleMath_RandomRange(6)]);
     Particle_SetPrimAlpha(arg0, arg0->targetAlpha);
 
     if (arg0->alphaStep == 0) {
         arg0->alphaStep = 1;
     }
 
-    Particle_SetTimerA6(arg0, 0xFF / arg0->alphaStep);
-    Particle_IncrementState(arg0);
+    Particle_FieldA6_SetS16_0BCA8(arg0, 0xFF / arg0->alphaStep);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackOwnerModelTintRandomPaletteCycle(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetRandomPrimColorAndRender(arg0);
+            BattleAnim_SetupOwnerModelTintRandomPaletteCycle(arg0);
             break;
 
         case 2:
-            IsPrimColorSupported(arg0, arg0->paletteIndex, arg0->alphaStep);
-            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                Particle_SetTimerA6(arg0, 0xFF / arg0->alphaStep);
-                Particle_SetByteCF(arg0, gPrimColorPalette[RandomMod(6)]);
+            ParticleGfx_ApproachPrimPalette(arg0, arg0->paletteIndex, arg0->alphaStep);
+            if (Particle_FieldA6_DecrementToZeroStep1_0BDAC(arg0) != 0) {
+                Particle_FieldA6_SetS16_0BCA8(arg0, 0xFF / arg0->alphaStep);
+                Particle_FieldCF_SetU8_0BEEC(arg0, gPrimColorPalette[ParticleMath_RandomRange(6)]);
             }
-            GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
+            Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
             break;
     }
 }
 
-void Fragment_SetFixedPrimColorsAndRender(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, gPrimColorPalette[0]);
-    Particle_SetShortAE(arg0, 1);
-    Particle_SetByteCF(arg0, gPrimColorPalette[1]);
+void BattleAnim_SetupOwnerModelTintPaletteRotateFadeDetach(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, gPrimColorPalette[0]);
+    Particle_FieldAE_SetS16_0BF4C(arg0, 1);
+    Particle_FieldCF_SetU8_0BEEC(arg0, gPrimColorPalette[1]);
     Particle_SetPrimAlpha(arg0, arg0->targetAlpha);
 
     if (arg0->alphaStep == 0) {
         arg0->alphaStep = 1;
     }
 
-    Particle_SetTimerA8(arg0, 0xFF / arg0->alphaStep);
-    Particle_IncrementState(arg0);
+    Particle_FieldA8_SetS16_0BE14(arg0, 0xFF / arg0->alphaStep);
+    Particle_AdvanceLifecycle(arg0);
 }
 
-void Fragment_ComplexColorMode(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackOwnerModelTintPaletteRotateFadeDetach(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetFixedPrimColorsAndRender(arg0);
+            BattleAnim_SetupOwnerModelTintPaletteRotateFadeDetach(arg0);
             break;
 
         case 2:
-            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
-            if (Particle_DecrementTimerA8ToZero(arg0) != 0) {
-                Particle_SetTimerA8(arg0, 0xFF / arg0->alphaStep);
+            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
+            if (Particle_FieldA8_DecrementToZeroStep1_0BE6C(arg0) != 0) {
+                Particle_FieldA8_SetS16_0BE14(arg0, 0xFF / arg0->alphaStep);
                 arg0->alpha = (arg0->alpha + 1) % 6;
-                Particle_SetByteCF(arg0, gPrimColorPalette[arg0->alpha]);
+                Particle_FieldCF_SetU8_0BEEC(arg0, gPrimColorPalette[arg0->alpha]);
             }
-            IsPrimColorSupported(arg0, arg0->paletteIndex, arg0->alphaStep);
-            GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
+            ParticleGfx_ApproachPrimPalette(arg0, arg0->paletteIndex, arg0->alphaStep);
+            Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
             break;
 
         case 3:
-            if (Particle_ApproachPrimAlpha(arg0, 0, 8) != 0) {
-                Particle_IncrementState(arg0);
+            if (Particle_PrimAlpha_Approach_0BC2C(arg0, 0, 8) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
-            GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
+            Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
             break;
 
         case 4:
-            Particle_ResetState(arg0);
+            Particle_DisableAndDetach(arg0);
             break;
     }
 }
 
-void Fragment_SetAlphaFromUnkA6AndRender(ParticleEffectInstance* arg0) {
+void BattleAnim_SetupOwnerModelAlphaFade(ParticleEffectInstance* arg0) {
     arg0->prim_a = arg0->initialAlpha;
-    Particle_IncrementState(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
-void Fragment_ProcessAlphaMode(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackOwnerModelAlphaFade(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetAlphaFromUnkA6AndRender(arg0);
+            BattleAnim_SetupOwnerModelAlphaFade(arg0);
             break;
 
         case 2:
-            if (Particle_ApproachPrimAlpha(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
-                Particle_IncrementState(arg0);
+            if (Particle_PrimAlpha_Approach_0BC2C(arg0, arg0->targetAlpha, arg0->alphaStep) != 0) {
+                Particle_AdvanceLifecycle(arg0);
             }
             break;
 
         case 3:
-            Particle_ClearActiveFlag(arg0);
+            Particle_MarkInactive(arg0);
             break;
     }
 
-    if (Particle_IsActive(arg0) != 0) {
-        GraphNode_SetState(&arg0->unk_10->unk_000, arg0->prim_a);
+    if (Particle_IsRunning(arg0) != 0) {
+        Model_SetMaterialAlpha(&arg0->unk_10->unk_000, arg0->prim_a);
     }
 }
 
-void Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
+void BattleAnim_SetupParticleRecolorTransparent(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
     Particle_SetPrimAlpha(arg0, 0);
-    Particle_IncrementState(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
-void Fragment_ProcessBC20Mode(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackStartEffect125OwnerColorAlphaFade(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20(arg0);
+            BattleAnim_SetupParticleRecolorTransparent(arg0);
             break;
 
         case 2:
-            Particle_ApproachPrimAlpha(arg0, 0x80, 4);
+            Particle_PrimAlpha_Approach_0BC2C(arg0, 0x80, 4);
             break;
 
         case 3:
-            if (Particle_ApproachPrimAlpha(arg0, 0, 8) != 0) {
-                Particle_ResetState(arg0);
+            if (Particle_PrimAlpha_Approach_0BC2C(arg0, 0, 8) != 0) {
+                Particle_DisableAndDetach(arg0);
             }
             break;
     }
 
-    GraphNode_SetColorRGBA(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
+    Model_SetMaterialColor(&arg0->unk_10->unk_000, arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->prim_a);
 }
 
-void Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Alt(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
+void BattleAnim_SetupDescriptor25AlphaFadeInHoldOut(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
     Particle_SetPrimAlpha(arg0, 0);
-    Particle_IncrementState(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
-void Fragment_ProcessBC20Variant(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackDescriptor25AlphaFadeInHoldOut(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Alt(arg0);
+            BattleAnim_SetupDescriptor25AlphaFadeInHoldOut(arg0);
             break;
 
         case 2:
-            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->targetAlpha, arg0->alphaStep);
+            Particle_PrimAlpha_ApproachAndStepState_0BC5C(arg0, arg0->targetAlpha, arg0->alphaStep);
             break;
 
         case 3:
-            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
+            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
             break;
 
         case 4:
-            if (Particle_ApproachPrimAlpha(arg0, 0, arg0->alphaStep) != 0) {
-                Particle_ClearActiveFlag(arg0);
+            if (Particle_PrimAlpha_Approach_0BC2C(arg0, 0, arg0->alphaStep) != 0) {
+                Particle_MarkInactive(arg0);
             }
             break;
     }
 }
 
-void Fragment_SetPrimColorFromPaletteAndRender_WithCD_BC20(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
+void BattleAnim_SetupDescriptor25AlphaHoldFadeOut(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
     Particle_SetPrimAlpha(arg0, arg0->targetAlpha);
-    Particle_IncrementState(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
-void Fragment_ProcessBC20WithCDMode(ParticleEffectInstance* arg0) {
+void BattleAnim_CallbackDescriptor25AlphaHoldFadeOut(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetPrimColorFromPaletteAndRender_WithCD_BC20(arg0);
+            BattleAnim_SetupDescriptor25AlphaHoldFadeOut(arg0);
             break;
 
         case 2:
-            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
+            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
             break;
 
         case 3:
-            if (Particle_ApproachPrimAlpha(arg0, 0, arg0->alphaStep) != 0) {
-                Particle_ClearActiveFlag(arg0);
+            if (Particle_PrimAlpha_Approach_0BC2C(arg0, 0, arg0->alphaStep) != 0) {
+                Particle_MarkInactive(arg0);
             }
             break;
     }
 }
 
-void Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Third(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
+void BattleAnim_SetupDescriptor25AlphaFadeInHold(ParticleEffectInstance* arg0) {
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
     Particle_SetPrimAlpha(arg0, 0);
-    Particle_IncrementState(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackDescriptor25AlphaFadeInHold(ParticleEffectInstance* arg0) {
     switch (arg0->updateState) {
         case 1:
-            Fragment_SetPrimColorFromPaletteAndRender_ZeroBC20_Third(arg0);
+            BattleAnim_SetupDescriptor25AlphaFadeInHold(arg0);
             break;
 
         case 2:
-            Particle_ApproachPrimAlphaWithCallback(arg0, arg0->targetAlpha, arg0->alphaStep);
+            Particle_PrimAlpha_ApproachAndStepState_0BC5C(arg0, arg0->targetAlpha, arg0->alphaStep);
             break;
 
         case 3:
-            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                Particle_ClearActiveFlag(arg0);
+            if (Particle_FieldA6_DecrementToZeroStep1_0BDAC(arg0) != 0) {
+                Particle_MarkInactive(arg0);
             }
             break;
     }
 }
 
 void BattleAnim_SetupDescriptor25AlphaHoldDetach(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
     Particle_SetPrimAlpha(arg0, arg0->targetAlpha);
-    Particle_IncrementState(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackDescriptor25AlphaHoldDetach(ParticleEffectInstance* arg0) {
@@ -496,17 +496,17 @@ void BattleAnim_CallbackDescriptor25AlphaHoldDetach(ParticleEffectInstance* arg0
             break;
 
         case 2:
-            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                Particle_ResetState(arg0);
+            if (Particle_FieldA6_DecrementToZeroStep1_0BDAC(arg0) != 0) {
+                Particle_DisableAndDetach(arg0);
             }
             break;
     }
 }
 
 void BattleAnim_SetupDescriptor25PaletteFadeOut(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
     Particle_SetPrimAlpha(arg0, 0xFF);
-    Particle_IncrementState(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackDescriptor25PaletteFadeOut(ParticleEffectInstance* arg0) {
@@ -516,22 +516,22 @@ void BattleAnim_CallbackDescriptor25PaletteFadeOut(ParticleEffectInstance* arg0)
             break;
 
         case 2:
-            Particle_DecrementTimerA6ToZeroWithCallback(arg0);
+            Particle_FieldA6_DecrementToZeroStep1AndStepState_0BDD0(arg0);
             break;
 
         case 3:
-            IsPrimColorSupported(arg0, arg0->targetAlpha, arg0->alphaStep);
-            if (Particle_ApproachPrimAlpha(arg0, 0, arg0->alphaStep) != 0) {
-                Particle_ClearActiveFlag(arg0);
+            ParticleGfx_ApproachPrimPalette(arg0, arg0->targetAlpha, arg0->alphaStep);
+            if (Particle_PrimAlpha_Approach_0BC2C(arg0, 0, arg0->alphaStep) != 0) {
+                Particle_MarkInactive(arg0);
             }
             break;
     }
 }
 
 void BattleAnim_SetupDescriptor25PaletteFadeIn(ParticleEffectInstance* arg0) {
-    SetPrimColorFromPalette(arg0, Particle_GetShortCF(arg0));
+    ParticleGfx_RecolorPrim(arg0, Particle_FieldCF_GetS16_0C058(arg0));
     Particle_SetPrimAlpha(arg0, 0);
-    Particle_IncrementState(arg0);
+    Particle_AdvanceLifecycle(arg0);
 }
 
 void BattleAnim_CallbackDescriptor25PaletteFadeIn(ParticleEffectInstance* arg0) {
@@ -541,13 +541,13 @@ void BattleAnim_CallbackDescriptor25PaletteFadeIn(ParticleEffectInstance* arg0) 
             break;
 
         case 2:
-            IsPrimColorSupported(arg0, arg0->targetAlpha, arg0->alphaStep);
-            Particle_ApproachPrimAlphaWithCallback(arg0, 0xFF, arg0->alphaStep);
+            ParticleGfx_ApproachPrimPalette(arg0, arg0->targetAlpha, arg0->alphaStep);
+            Particle_PrimAlpha_ApproachAndStepState_0BC5C(arg0, 0xFF, arg0->alphaStep);
             break;
 
         case 3:
-            if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                Particle_ClearActiveFlag(arg0);
+            if (Particle_FieldA6_DecrementToZeroStep1_0BDAC(arg0) != 0) {
+                Particle_MarkInactive(arg0);
             }
             break;
     }

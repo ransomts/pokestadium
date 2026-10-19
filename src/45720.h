@@ -11,17 +11,17 @@ typedef struct unk_D_800FCF28 {
 extern unk_D_800FCF28* gAudioChannelBuffer[2];
 extern u32 gAudioChannelReadPos[2];
 
-void Audio_Init(ALHeap*, u32, u32);
-void Audio_StartChannel(u32, u32, u32, u32);
-void Audio_SetVolumeFade(u32, u32);
-s32 Audio_IsChannelActive(u32);
-void Audio_SetPaused(s32);
+void AudioStream_Init(ALHeap*, u32, u32);
+void AudioStream_Start(u32, u32, u32, u32);
+void AudioStream_Stop(u32, u32);
+s32 AudioStream_IsPlaying(u32);
+void AudioStream_SetEnabled(s32);
 void Audio_ProcessChannels(void);
-void Audio_DmaTransfer(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3);
-void AudioChannel_Init(GbAudioChannelState*, s32, s32);
-void AudioChannel_Update(GbAudioChannelState*);
-u32 AudioChannel_Consume(GbAudioChannelState*, u32);
-void AudioChannel_StartPlayback(GbAudioChannelState*);
-void AudioChannel_Stop(GbAudioChannelState*);
+void AudioStream_DmaReadChunk(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3);
+void AudioStream_OpenChannel(GbAudioChannelState*, s32, s32);
+void AudioStream_RefillAndDecode(GbAudioChannelState*);
+u32 AudioStream_ConsumeSamples(GbAudioChannelState*, u32);
+void AudioStream_MarkLoaded(GbAudioChannelState*);
+void AudioStream_Abort(GbAudioChannelState*);
 
 #endif // _45720_H_

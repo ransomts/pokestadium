@@ -19,7 +19,7 @@ extern s16 D_87B000F2;
 extern s16 D_87B000F4;
 
 void MenuInput_FrameUpdate(void);
-u32 HealthBar_ValueToPixel(u32);
+u32 MiniGame_RandomRange(u32);
 
 
 #endif // _FRAGMENT5_H_

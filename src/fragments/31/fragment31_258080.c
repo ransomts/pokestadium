@@ -23,7 +23,7 @@ static u8 pad_D_81004BA8[0x8];
 static s32 gFragment31_NumberDrawPhase;
 static char gFragment31_NumberStringBuffer[0x28];
 
-void Fragment31_LoadTexture0(Gfx* gfx, u16* arg1, u8* arg2) {
+void DisplayList_BuildScrollingIconSegment0(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
@@ -32,7 +32,7 @@ void Fragment31_LoadTexture0(Gfx* gfx, u16* arg1, u8* arg2) {
     gSPEndDisplayList(gfx++);
 }
 
-void Fragment31_Tex0StateHandler(s32 arg0, DisplayListState* state) {
+void DisplayList_InitScrollingIconSegment0(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -42,15 +42,15 @@ void Fragment31_Tex0StateHandler(s32 arg0, DisplayListState* state) {
         gFragment31_Tex0Counter = 0;
         return;
     case 2:
-        gfx = GfxAlloc(0xA0);
+        gfx = Gfx_AllocDisplayList(0xA0);
         state->gfx = gfx;
-        Fragment31_LoadTexture0(gfx, addresses->segments[0], addresses->segments[1]);
+        DisplayList_BuildScrollingIconSegment0(gfx, addresses->segments[0], addresses->segments[1]);
         gFragment31_Tex0Counter += 1;
         return;
     }
 }
 
-void Fragment31_LoadTexture1(Gfx* gfx, u16* arg1, u8* arg2) {
+void DisplayList_BuildScrollingIconSegment1(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
@@ -59,7 +59,7 @@ void Fragment31_LoadTexture1(Gfx* gfx, u16* arg1, u8* arg2) {
     gSPEndDisplayList(gfx++);
 }
 
-void Fragment31_Tex1StateHandler(s32 arg0, DisplayListState* state) {
+void DisplayList_InitScrollingIconSegment1(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -69,15 +69,15 @@ void Fragment31_Tex1StateHandler(s32 arg0, DisplayListState* state) {
         gFragment31_Tex1Counter = 0;
         return;
     case 2:
-        gfx = GfxAlloc(0xA0);
+        gfx = Gfx_AllocDisplayList(0xA0);
         state->gfx = gfx;
-        Fragment31_LoadTexture1(gfx, addresses->segments[0], addresses->segments[1]);
+        DisplayList_BuildScrollingIconSegment1(gfx, addresses->segments[0], addresses->segments[1]);
         gFragment31_Tex1Counter += 1;
         return;
     }
 }
 
-void Fragment31_LoadTexture2(Gfx* gfx, u16* arg1, u8* arg2) {
+void DisplayList_BuildScrollingIconSegment2(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
@@ -86,7 +86,7 @@ void Fragment31_LoadTexture2(Gfx* gfx, u16* arg1, u8* arg2) {
     gSPEndDisplayList(gfx++);
 }
 
-void Fragment31_Tex2StateHandler(s32 arg0, DisplayListState* state) {
+void DisplayList_InitScrollingIconSegment2(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -96,15 +96,15 @@ void Fragment31_Tex2StateHandler(s32 arg0, DisplayListState* state) {
         gFragment31_Tex2Counter = 0;
         return;
     case 2:
-        gfx = GfxAlloc(0xA0);
+        gfx = Gfx_AllocDisplayList(0xA0);
         state->gfx = gfx;
-        Fragment31_LoadTexture2(gfx, addresses->segments[0], addresses->segments[1]);
+        DisplayList_BuildScrollingIconSegment2(gfx, addresses->segments[0], addresses->segments[1]);
         gFragment31_Tex2Counter += 1;
         return;
     }
 }
 
-void Fragment31_LoadTexture3(Gfx* gfx, u16* arg1, u8* arg2) {
+void DisplayList_BuildScrollingIconSegment3(Gfx* gfx, u16* arg1, u8* arg2) {
     gDPPipeSync(gfx++);
     gSPTexture(gfx++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
     gDPSetTextureLUT(gfx++, G_TT_RGBA16);
@@ -113,7 +113,7 @@ void Fragment31_LoadTexture3(Gfx* gfx, u16* arg1, u8* arg2) {
     gSPEndDisplayList(gfx++);
 }
 
-void Fragment31_Tex3StateHandler(s32 arg0, DisplayListState* state) {
+void DisplayList_InitScrollingIconSegment3(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
@@ -123,22 +123,22 @@ void Fragment31_Tex3StateHandler(s32 arg0, DisplayListState* state) {
         gFragment31_Tex3Counter = 0;
         return;
     case 2:
-        gfx = GfxAlloc(0xA0);
+        gfx = Gfx_AllocDisplayList(0xA0);
         state->gfx = gfx;
-        Fragment31_LoadTexture3(gfx, addresses->segments[0], addresses->segments[1]);
+        DisplayList_BuildScrollingIconSegment3(gfx, addresses->segments[0], addresses->segments[1]);
         gFragment31_Tex3Counter += 1;
         return;
     }
 }
 
-void Fragment31_DrawAnimatedTile(s32 arg0, DisplayListState* state) {
+void DisplayList_InitPulsingRectSegment(s32 arg0, DisplayListState* state) {
     static u8 gFragment31_AnimatedTileCounter = 0;
     s32 temp_a1;
     s32 temp_a2;
     Gfx* gfx;
 
     if (arg0 == 2) {
-        gfx = GfxAlloc(0x10);
+        gfx = Gfx_AllocDisplayList(0x10);
         temp_a1 = gFragment31_AnimatedTileCounter * 3;
         temp_a2 = gFragment31_AnimatedTileCounter * -6;
         state->gfx = gfx;
@@ -149,7 +149,7 @@ void Fragment31_DrawAnimatedTile(s32 arg0, DisplayListState* state) {
     }
 }
 
-void Fragment31_AnimateColorCycle(s32 arg0, DisplayListState* state) {
+void DisplayList_InitColorCycleBoxSegment(s32 arg0, DisplayListState* state) {
     static u8 gFragment31_ColorCyclePhase = 0;
     static u8 gFragment31_ColorCycleFrame = 0;
     static Keyframe gFragment31_ColorCycleKeyframes[6] = {
@@ -167,7 +167,7 @@ void Fragment31_AnimateColorCycle(s32 arg0, DisplayListState* state) {
     u8 sp48[3];
     
     if (arg0 == 2) {
-        gfx = GfxAlloc(sizeof(Gfx) * 4);
+        gfx = Gfx_AllocDisplayList(sizeof(Gfx) * 4);
         state->gfx = gfx;
         for (i = 0; i < 5; i++) {
             if (gFragment31_ColorCycleFrame == gFragment31_ColorCycleKeyframes[i].frameStart) {
@@ -197,7 +197,7 @@ void Fragment31_AnimateColorCycle(s32 arg0, DisplayListState* state) {
     }
 }
 
-void Fragment31_DrawOverlay(Gfx* gfx) {
+void DisplayList_BuildDigitDisplayBackground(Gfx* gfx) {
     s32 temp_a3;
 
     {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDE000000;    _gfx->words.w1 = &gCommonGfxInit;    }
@@ -215,7 +215,7 @@ void Fragment31_DrawOverlay(Gfx* gfx) {
     gFragment31_NumberDrawPhase = 0;
 }
 
-s32 StringLength(s8* arg0) {
+s32 Util_Strlen(s8* arg0) {
     s32 var_v1;
     s8 temp_t7;
     s8* var_v0;
@@ -254,12 +254,12 @@ void Fragment31_DrawNumberDigit(Gfx* gfx) {
         break;
     default:
         {
-        sp34 = GetMessageString(0, 0, D_8267E760, temp_t0);
+        sp34 = Text_GetString(0, 0, D_8267E760, temp_t0);
         sprintf(gFragment31_NumberStringBuffer, "%s     ", sp34);
         temp_v1 = gFragment31_NumberDrawPhase - 3;
-        sp4D = GetCharIndexFromFontTables((u8) gFragment31_NumberStringBuffer[temp_v1]);
-        sp2C = 0xA - StringLength((s8*)sp34);
-        sp30 = GfxAlloc(sizeof(Mtx));
+        sp4D = Font_MapGlyphCode((u8) gFragment31_NumberStringBuffer[temp_v1]);
+        sp2C = 0xA - Util_Strlen((s8*)sp34);
+        sp30 = Gfx_AllocDisplayList(sizeof(Mtx));
         guTranslate(sp30, (f32) sp2C * 32.0f, 0.0f, 0.0f);
         gSPMatrix(gfx++, sp30, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         break;
@@ -270,21 +270,21 @@ void Fragment31_DrawNumberDigit(Gfx* gfx) {
     gFragment31_NumberDrawPhase++;
 }
 
-void Fragment31_CreateOverlay(s32 arg0, DisplayListState* state) {
+void DisplayList_InitDigitDisplayBackground(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {
-        gfx = GfxAlloc(0xF0);
+        gfx = Gfx_AllocDisplayList(0xF0);
         state->gfx = gfx;
-        Fragment31_DrawOverlay(gfx);
+        DisplayList_BuildDigitDisplayBackground(gfx);
     }
 }
 
-void Fragment31_NumberDigitStateHandler(s32 arg0, DisplayListState* state) {
+void DisplayList_InitDigitOrGlyphSegment(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {
-        gfx = GfxAlloc(0xA0);
+        gfx = Gfx_AllocDisplayList(0xA0);
         state->gfx = gfx;
         Fragment31_DrawNumberDigit(gfx);
     }

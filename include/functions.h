@@ -10,21 +10,21 @@ s32 func_8005A990(OSPiHandle *);
 void func_80050BA0(s32, void*);
 
 // 49190.s
-void AnimProcessor_FinishFrame(s32, s32, s32);
-void AnimBlock_DecodeSubframe(s32, s32, void*, s16*);
-void AnimProcessor_ApplySubframe(void*, s16, s32, s16*);
+void Gsm_Short_Term_Synthesis_Filter(s32, s32, s32);
+void Gsm_RPE_Decoding(s32, s32, void*, s16*);
+void Gsm_Long_term_synthesis_filtering(void*, s16, s32, s16*);
 
 // bcopy.s
 void _bcopy(void* src, void* dst, s32);
 
 // C030.s
-s32 IsStickerStationConnected(void);
+s32 Controller_CheckAccessoryEeprom(void);
 
 // Yay0.s
 void Yay0_Decompress(void* src, void* dst);
 
 // DDC0.s
-void Audio_CreateThread(void);
+void Audio_StartThread(void);
 
 // exception_set.s
 void set_watch_lohi(s32);

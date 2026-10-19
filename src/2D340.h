@@ -133,19 +133,19 @@ typedef struct unk_func_8830867C_04C_030_02C_000_000_00C {
 typedef s32 (*func_func_8002D1AC)(unk_func_8830867C_02C_0CC_000*, s32*);
 typedef s32 (*SortComparatorFunc)(s32, s32);
 
-void SubList_Init(unk_func_88201DA0_038*, unk_func_88201DA0_034*, s32, s32, s32);
-void List_Init(unk_func_8820BE14_06C*, s32, s32, MemoryPool*);
-s32 List_Insert(unk_func_8820BE14_06C*, s8*, s32);
-s32 List_RemoveAt(unk_func_8820BE14_06C*, s32);
-s32 S16List_RemoveAt(unk_func_8830867C_04C_030_02C_000_000_00C*, s32);
-void PtrArray_Init(unk_func_88205880_A030*, void**, s32, s32);
-void PtrList_Init(unk_func_88200FA0_030_038*, s32, MemoryPool*);
-void PtrList_Insert(unk_func_88200FA0_030_038*, char*, s32);
-void PtrArray_RemoveAt(unk_func_8830867C_02C_0CC*, s32);
-void PtrArray_Sort(unk_func_8830867C_02C_0CC*, SortComparatorFunc);
-void PtrArray_Filter(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*, func_func_8002D1AC, s32*);
-s32 StringCompare_WithMask(u8*, u8*);
-void Vector2_Normalize(f32*);
-Color_RGBA8 Color_ScaleRGB(Color_RGBA8, f32);
+void TableView_Initialize(unk_func_88201DA0_038*, unk_func_88201DA0_034*, s32, s32, s32);
+void ByteMatrix_Allocate(unk_func_8820BE14_06C*, s32, s32, MemoryPool*);
+s32 ByteMatrix_InsertRow(unk_func_8820BE14_06C*, s8*, s32);
+s32 ByteMatrix_RemoveRow(unk_func_8820BE14_06C*, s32);
+s32 WordList_Remove(unk_func_8830867C_04C_030_02C_000_000_00C*, s32);
+void PointerList_Initialize(unk_func_88205880_A030*, void**, s32, s32);
+void PointerList_Allocate(unk_func_88200FA0_030_038*, s32, MemoryPool*);
+void PointerList_Insert(unk_func_88200FA0_030_038*, char*, s32);
+void PointerList_Remove(unk_func_8830867C_02C_0CC*, s32);
+void PointerList_Sort(unk_func_8830867C_02C_0CC*, SortComparatorFunc);
+void PointerList_Filter(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*, func_func_8002D1AC, s32*);
+s32 Text_CompareGlyphCodes(u8*, u8*);
+void Vec2f_Normalize(f32*);
+Color_RGBA8 Color_ScaleRgb(Color_RGBA8, f32);
 
 #endif // _3D340_H_

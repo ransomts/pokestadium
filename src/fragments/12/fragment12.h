@@ -3,9 +3,9 @@
 
 #include "global.h"
 
-void MiniGame_PollInputs(void);
+void Minigame_Sample7Viewer_PollInput(void);
 void Minigame_Sample7Viewer_InitCamera(void);
-void MiniGame_UpdateCamera(void);
+void Minigame_Sample7Viewer_UpdateCameraControls(void);
 void Minigame_Sample7Viewer_DrawDebugText(s32 arg0);
 void Minigame_Sample7Viewer_DrawFrame(s32 arg0);
 void Minigame_Sample7Viewer_OpeningLoop(void);

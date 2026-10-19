@@ -34,7 +34,7 @@ Vec3s gSpriteAnimUpdateFunc = { 0, 0, 0 };
 Vec3f gRootNodeScale = { 1.0f, 1.0f, 1.0f };
 u16 D_8006F070[] = { 1, 1, 1 };
 
-Color_RGBA8* GfxColor_SetRGB(Color_RGBA8* arg0, u8 r, u8 g, u8 b) {
+Color_RGBA8* Color_SetRGB(Color_RGBA8* arg0, u8 r, u8 g, u8 b) {
     arg0->r = r;
     arg0->g = g;
     arg0->b = b;
@@ -42,7 +42,7 @@ Color_RGBA8* GfxColor_SetRGB(Color_RGBA8* arg0, u8 r, u8 g, u8 b) {
     return arg0;
 }
 
-Color_RGBA8* GfxColor_SetRGBA(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
+Color_RGBA8* Color_SetRGBA(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4) {
     arg0->r = arg1;
     arg0->g = arg2;
     arg0->b = arg3;
@@ -51,7 +51,7 @@ Color_RGBA8* GfxColor_SetRGBA(Color_RGBA8* arg0, u8 arg1, u8 arg2, u8 arg3, u8 a
     return arg0;
 }
 
-Vec3f* Vec3f_SetXYZ(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
+Vec3f* Vec3f_SetComponents(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->x = arg1;
     arg0->y = arg2;
     arg0->z = arg3;
@@ -59,7 +59,7 @@ Vec3f* Vec3f_SetXYZ(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     return arg0;
 }
 
-Vec3f* Vec3f_Set(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
+Vec3f* Vec3f_SetComponentsDuplicate(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->x = arg1;
     arg0->y = arg2;
     arg0->z = arg3;
@@ -67,7 +67,7 @@ Vec3f* Vec3f_Set(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3) {
     return arg0;
 }
 
-Vec3f* Vec3f_Add(Vec3f* arg0, Vec3f* arg1) {
+Vec3f* Vec3f_AddInPlace(Vec3f* arg0, Vec3f* arg1) {
     arg0->x += arg1->x;
     arg0->y += arg1->y;
     arg0->z += arg1->z;
@@ -83,7 +83,7 @@ Vec3f* Vec3f_Sum(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
     return arg0;
 }
 
-Vec3f* Vec3f_Subtract(Vec3f* arg0, Vec3f* arg1) {
+Vec3f* Vec3f_SubtractInPlace(Vec3f* arg0, Vec3f* arg1) {
     arg0->x -= arg1->x;
     arg0->y -= arg1->y;
     arg0->z -= arg1->z;
@@ -99,7 +99,7 @@ Vec3f* func_8000E958(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
     return arg0;
 }
 
-Vec3f* GraphNode_SetPositionFromVec3s(Vec3f* arg0, Vec3s* arg1) {
+Vec3f* Vec3f_FromVec3s(Vec3f* arg0, Vec3s* arg1) {
     arg0->x = arg1->x;
     arg0->y = arg1->y;
     arg0->z = arg1->z;
@@ -133,7 +133,7 @@ Vec3f* Vec3f_Normalize(Vec3f* arg0) {
     return arg0;
 }
 
-Vec3s* Vec3s_Set(Vec3s* arg0, s16 arg1, s16 arg2, s16 arg3) {
+Vec3s* Vec3s_SetComponents(Vec3s* arg0, s16 arg1, s16 arg2, s16 arg3) {
     arg0->x = arg1;
     arg0->y = arg2;
     arg0->z = arg3;
@@ -141,7 +141,7 @@ Vec3s* Vec3s_Set(Vec3s* arg0, s16 arg1, s16 arg2, s16 arg3) {
     return arg0;
 }
 
-Vec3s* Vec3s_Add(Vec3s* arg0, Vec3s* arg1) {
+Vec3s* Vec3s_AddInPlace(Vec3s* arg0, Vec3s* arg1) {
     arg0->x += arg1->x;
     arg0->y += arg1->y;
     arg0->z += arg1->z;
@@ -157,7 +157,7 @@ Vec3s* Vec3s_Sum(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2) {
     return arg0;
 }
 
-Vec3s* Vec3s_Subtract(Vec3s* arg0, Vec3s* arg1) {
+Vec3s* Vec3s_SubtractInPlace(Vec3s* arg0, Vec3s* arg1) {
     arg0->x -= arg1->x;
     arg0->y -= arg1->y;
     arg0->z -= arg1->z;
@@ -173,7 +173,7 @@ Vec3s* func_8000EC50(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2) {
     return arg0;
 }
 
-Vec3s* Vec3s_FromVec3f_Round(Vec3s* arg0, Vec3f* arg1) {
+Vec3s* Vec3s_FromVec3f(Vec3s* arg0, Vec3f* arg1) {
     arg0->x = ROUND_MAX(arg1->x);
     arg0->y = ROUND_MAX(arg1->y);
     arg0->z = ROUND_MAX(arg1->z);
@@ -181,7 +181,7 @@ Vec3s* Vec3s_FromVec3f_Round(Vec3s* arg0, Vec3f* arg1) {
     return arg0;
 }
 
-void Matrix_Copy(MtxF* dest, MtxF* src) {
+void MtxF_Copy(MtxF* dest, MtxF* src) {
     if (dest != src) {
         s32 i;
         u32* d = (u32*)dest;
@@ -193,7 +193,7 @@ void Matrix_Copy(MtxF* dest, MtxF* src) {
     }
 }
 
-void Matrix_Identity(MtxF* arg0) {
+void MtxF_Identity(MtxF* arg0) {
     s32 i;
     f32* dest;
     // These loops must be one line to match on -O2
@@ -207,15 +207,15 @@ void Matrix_Identity(MtxF* arg0) {
     // clang-format on
 }
 
-void Matrix_FromTranslation(MtxF* arg0, Vec3f* arg1) {
-    Matrix_Identity(arg0);
+void MtxF_SetTranslation(MtxF* arg0, Vec3f* arg1) {
+    MtxF_Identity(arg0);
 
     arg0->mf[3][0] = arg1->x;
     arg0->mf[3][1] = arg1->y;
     arg0->mf[3][2] = arg1->z;
 }
 
-void Matrix_LookAtBetween(MtxF* mtx, Vec3f* from, Vec3f* to, u16 roll) {
+void MtxF_SetLookAt(MtxF* mtx, Vec3f* from, Vec3f* to, u16 roll) {
     f32 invLength;
     f32 dx;
     f32 dz;
@@ -289,7 +289,7 @@ void Matrix_LookAtBetween(MtxF* mtx, Vec3f* from, Vec3f* to, u16 roll) {
     mtx->mf[3][3] = 1.0f;
 }
 
-void Matrix_FromSRT(MtxF* dest, Vec3s* translate, Vec3s* rotate) {
+void MtxF_SetRotationTranslation(MtxF* dest, Vec3s* translate, Vec3s* rotate) {
     f32 sx = SINS(rotate->x);
     f32 cx = COSS(rotate->x);
 
@@ -320,7 +320,7 @@ void Matrix_FromSRT(MtxF* dest, Vec3s* translate, Vec3s* rotate) {
     dest->mf[3][3] = 1.0f;
 }
 
-void Matrix_RotateTranslate(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
+void MtxF_SetRotationTranslationF(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
     f32 temp_fa0;
     f32 temp_fa1;
     f32 temp_ft4;
@@ -361,7 +361,7 @@ void Matrix_RotateTranslate(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void Matrix_RotateTranslateScale(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
+void MtxF_SetRotationAndTransformTranslation(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
     f32 sx = SINS(arg2->x);
     f32 cx = COSS(arg2->x);
     f32 sy = SINS(arg2->y);
@@ -389,7 +389,7 @@ void Matrix_RotateTranslateScale(MtxF* arg0, Vec3f* arg1, Vec3s* arg2) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void Matrix_TransformPoint(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
+void MtxF_SetRotationScaleTranslation(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
     f32 sx = SINS(c->x);
     f32 cx = COSS(c->x);
 
@@ -420,7 +420,7 @@ void Matrix_TransformPoint(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
     dest->mf[3][3] = 1.0f;
 }
 
-void Matrix_TransformPointScale(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
+void MtxF_SetRotationAndScaledTranslation(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
     f32 sx = SINS(c->x);
     f32 cx = COSS(c->x);
 
@@ -451,7 +451,7 @@ void Matrix_TransformPointScale(MtxF* dest, Vec3f* b, Vec3s* c, Vec3f* arg3) {
     dest->mf[3][3] = 1.0f;
 }
 
-void Matrix_ComposeTR(MtxF* arg0, MtxF* arg1, MtxF* arg2, Vec3f* arg3, f32 arg4) {
+void MtxF_ApplyScaleTransform(MtxF* arg0, MtxF* arg1, MtxF* arg2, Vec3f* arg3, f32 arg4) {
     f32 sp24;
     f32 sp20;
     f32 sp1C;
@@ -484,12 +484,12 @@ void Matrix_ComposeTR(MtxF* arg0, MtxF* arg1, MtxF* arg2, Vec3f* arg3, f32 arg4)
     arg0->mf[3][3] = 1.0f;
 }
 
-void Matrix_LookAtYaw(MtxF* dest, Vec3f* upDir, Vec3f* pos, s16 yaw) {
+void MtxF_SetOrthonormalBasis(MtxF* dest, Vec3f* upDir, Vec3f* pos, s16 yaw) {
     Vec3f lateralDir;
     Vec3f leftDir;
     Vec3f forwardDir;
 
-    Vec3f_Set(&lateralDir, SINS(yaw), 0, COSS(yaw));
+    Vec3f_SetComponentsDuplicate(&lateralDir, SINS(yaw), 0, COSS(yaw));
     Vec3f_Normalize(upDir);
 
     Vec3f_CrossProduct(&leftDir, upDir, &lateralDir);
@@ -519,7 +519,7 @@ void Matrix_LookAtYaw(MtxF* dest, Vec3f* upDir, Vec3f* pos, s16 yaw) {
     dest->mf[3][3] = 1.0f;
 }
 
-void Matrix_Multiply(MtxF* arg0, MtxF* arg1, MtxF* arg2) {
+void MtxF_Multiply(MtxF* arg0, MtxF* arg1, MtxF* arg2) {
     f32 entry0;
     f32 entry1;
     f32 entry2;
@@ -560,7 +560,7 @@ void Matrix_Multiply(MtxF* arg0, MtxF* arg1, MtxF* arg2) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void Matrix_Scale(MtxF* dest, MtxF* mtx, Vec3f* s) {
+void MtxF_ScaleRows(MtxF* dest, MtxF* mtx, Vec3f* s) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -571,13 +571,13 @@ void Matrix_Scale(MtxF* dest, MtxF* mtx, Vec3f* s) {
     }
 }
 
-void Matrix_GetScale(MtxF* arg0, Vec3f* arg1) {
+void MtxF_GetScale(MtxF* arg0, Vec3f* arg1) {
     arg1->x = sqrtf(SQ(arg0->mf[0][0]) + SQ(arg0->mf[0][1]) + SQ(arg0->mf[0][2]));
     arg1->y = sqrtf(SQ(arg0->mf[1][0]) + SQ(arg0->mf[1][1]) + SQ(arg0->mf[1][2]));
     arg1->z = sqrtf(SQ(arg0->mf[2][0]) + SQ(arg0->mf[2][1]) + SQ(arg0->mf[2][2]));
 }
 
-void Matrix_TransformVec3sInPlace(MtxF* arg0, Vec3s* arg1) {
+void MtxF_TransformVec3s(MtxF* arg0, Vec3s* arg1) {
     f32 entry0 = arg1->x;
     f32 entry1 = arg1->y;
     f32 entry2 = arg1->z;
@@ -590,7 +590,7 @@ void Matrix_TransformVec3sInPlace(MtxF* arg0, Vec3s* arg1) {
 #define GET_HIGH_S16_OF_32(var) (((s16*)&(var))[0])
 #define GET_LOW_S16_OF_32(var) (((s16*)&(var))[1])
 
-void Matrix_ConvertToMtx(MtxF* dest, MtxF* src) {
+void MtxF_ToFixed(MtxF* dest, MtxF* src) {
     s32 asFixedPoint;
     s32 i;
     s16* a3 = (s16*)dest;      // all integer parts stored in first 16 bytes
@@ -604,17 +604,17 @@ void Matrix_ConvertToMtx(MtxF* dest, MtxF* src) {
     }
 }
 
-void Matrix_BuildObjectTransform(MtxF* arg0, Vec3f* arg1, Vec3s* arg2, Vec3f* arg3, MtxF* arg4, MtxF* arg5) {
+void MtxF_BuildTransform(MtxF* arg0, Vec3f* arg1, Vec3s* arg2, Vec3f* arg3, MtxF* arg4, MtxF* arg5) {
     MtxF sp60;
     MtxF sp20;
 
-    Matrix_ComposeTR(&sp60, arg4, arg5, arg1, 1.0f);
-    Matrix_RotateTranslate(&sp20, &gRootNodePosition, arg2);
-    Matrix_Multiply(&sp20, &sp20, &sp60);
-    Matrix_Scale(arg0, &sp20, arg3);
+    MtxF_ApplyScaleTransform(&sp60, arg4, arg5, arg1, 1.0f);
+    MtxF_SetRotationTranslationF(&sp20, &gRootNodePosition, arg2);
+    MtxF_Multiply(&sp20, &sp20, &sp60);
+    MtxF_ScaleRows(arg0, &sp20, arg3);
 }
 
-void Matrix_Decompose(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4) {
+void Vec3f_CalculateDistanceAngles(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4) {
     f32 sp2C = arg1->x - arg0->x;
     f32 sp28 = arg1->y - arg0->y;
     f32 sp24 = arg1->z - arg0->z;
@@ -624,13 +624,13 @@ void Matrix_Decompose(Vec3f* arg0, Vec3f* arg1, f32* arg2, s16* arg3, s16* arg4)
     *arg4 = MathUtil_Atan2s(sp24, sp2C);
 }
 
-void Camera_SetViewParameters(Vec3f* from, Vec3f* to, f32 dist, s16 pitch, s16 yaw) {
+void Camera_ComputeEyeFromAngles(Vec3f* from, Vec3f* to, f32 dist, s16 pitch, s16 yaw) {
     to->x = from->x + (dist * COSS(pitch) * SINS(yaw));
     to->y = from->y + (dist * SINS(pitch));
     to->z = from->z + (dist * COSS(pitch) * COSS(yaw));
 }
 
-s16 Math_ApproachS16(s16 current, s16 target, s16 inc) {
+s16 Math_StepToS(s16 current, s16 target, s16 inc) {
     s16 temp_v0 = target - current;
 
     if (temp_v0 < 0) {
@@ -648,7 +648,7 @@ s16 Math_ApproachS16(s16 current, s16 target, s16 inc) {
     return target - temp_v0;
 }
 
-s32 Math_ApproachS32(s32 current, s32 target, s32 inc, s32 dec) {
+s32 Math_StepToS32(s32 current, s32 target, s32 inc, s32 dec) {
     //! If target is close to the max or min s32, then it's possible to overflow
     // past it without stopping.
 
@@ -666,7 +666,7 @@ s32 Math_ApproachS32(s32 current, s32 target, s32 inc, s32 dec) {
     return current;
 }
 
-f32 Math_ApproachF32(f32 current, f32 target, f32 inc, f32 dec) {
+f32 Math_StepToF(f32 current, f32 target, f32 inc, f32 dec) {
     if (current < target) {
         current += inc;
         if (current > target) {
@@ -694,7 +694,7 @@ s16 PackedBits_ReadSigned(s16* arg0, s32 arg1, s32 arg2) {
     return spC.y;
 }
 
-void RGB_ToHSV(f32 arg0, f32 arg1, f32 arg2, Vec3f* arg3) {
+void Color_RGBToHSV(f32 arg0, f32 arg1, f32 arg2, Vec3f* arg3) {
     f32 temp_ft4;
     f32 var_ft5;
     f32 var_fv0;
@@ -755,11 +755,11 @@ void RGB_ToHSV(f32 arg0, f32 arg1, f32 arg2, Vec3f* arg3) {
 }
 
 void Color_RGBA8ToHSV(Color_RGBA8_u32 arg0, Vec3f* arg1) {
-    RGB_ToHSV((s32)arg0.r / 255.0f, (s32)arg0.g / 255.0f, (s32)arg0.b / 255.0f, arg1);
+    Color_RGBToHSV((s32)arg0.r / 255.0f, (s32)arg0.g / 255.0f, (s32)arg0.b / 255.0f, arg1);
 }
 
 void Color_RGB5551ToHSV(u16 arg0, Vec3f* arg1) {
-    RGB_ToHSV(((arg0 & 0xF800) >> 0xB) / 31.0f, ((arg0 & 0x7C0) >> 6) / 31.0f, ((arg0 & 0x3E) >> 1) / 31.0f, arg1);
+    Color_RGBToHSV(((arg0 & 0xF800) >> 0xB) / 31.0f, ((arg0 & 0x7C0) >> 6) / 31.0f, ((arg0 & 0x3E) >> 1) / 31.0f, arg1);
 }
 
 f32 Color_HSVInterpolate(f32 arg0, f32 arg1, f32 arg2) {
@@ -786,7 +786,7 @@ f32 Color_HSVInterpolate(f32 arg0, f32 arg1, f32 arg2) {
     return ret;
 }
 
-void HSV_ToRGB(f32* arg0, f32* arg1, f32* arg2, Vec3f* arg3) {
+void Color_HSVToRGB(f32* arg0, f32* arg1, f32* arg2, Vec3f* arg3) {
     f32 sp24;
     f32 sp20;
     f32 temp_ft4;
@@ -837,7 +837,7 @@ u16 Color_HSVToRGB5551(Vec3f* arg0) {
     s32 var_a1;
     s32 var_v1;
 
-    HSV_ToRGB(&sp2C, &sp28, &sp24, arg0);
+    Color_HSVToRGB(&sp2C, &sp28, &sp24, arg0);
 
     var_a1 = (sp2C * 31.0f) + 0.5f;
     if (var_a1 >= 0x20) {
@@ -866,7 +866,7 @@ Color_RGBA8_u32* Color_HSVToRGBA8(Color_RGBA8_u32* arg0, Vec3f* arg1, s32 arg2) 
     s32 var_v1;
     Color_RGBA8_u32 sp1C;
 
-    HSV_ToRGB(&sp34, &sp30, &sp2C, arg1);
+    Color_HSVToRGB(&sp34, &sp30, &sp2C, arg1);
 
     var_a1 = (sp34 * 255.0f) + 0.5f;
     if (var_a1 >= 0x100) {

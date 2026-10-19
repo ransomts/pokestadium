@@ -6,7 +6,7 @@
 
 static MiniActor* gMiniActorArray;
 
-void MiniActorArray_Create(void) {
+void miniRankingActorsInit(void) {
     s32 i;
     MiniActor* ptr;
 
@@ -14,16 +14,16 @@ void MiniActorArray_Create(void) {
     ptr = gMiniActorArray;
 
     for (i = 0; i < 3; i++, ptr++) {
-        Graph_AddToRootList0(&ptr->unk_000);
-        ptr->unk_168 = GeoLayout_LoadById(0xAB);
-        GraphNode_InitChild(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->unk_00[0]);
-        GraphNode_TriggerAction(&ptr->unk_000, 0);
+        ModelRenderer_AttachDisplayObject(&ptr->unk_000);
+        ptr->unk_168 = Model_LoadByArchiveIndex(0xAB);
+        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->unk_00[0]);
+        ModelAnim_SetAnimation(&ptr->unk_000, 0);
         ptr->unk_000.unk_000.unk_01 &= ~1;
         miniActorAllToZero(ptr);
     }
 }
 
-void MiniActor_StartAnimation(MiniActor* arg0) {
+void miniRankingActorSpawn(MiniActor* arg0) {
     if (arg0->mainState == 1) {
         arg0->unk_000.unk_000.unk_01 |= 1;
         miniChangeActorAnim(arg0, 0, -1, 0);
@@ -31,21 +31,21 @@ void MiniActor_StartAnimation(MiniActor* arg0) {
     }
 }
 
-void MiniActorArray_Update(void) {
+void miniRankingActorsUpdate(void) {
     s32 i;
     MiniActor* ptr = gMiniActorArray;
 
-    Timer_UpdateCounters();
+    Particle_UpdateFrameCounters();
 
     for (i = 0; i < 3; i++, ptr++) {
-        MiniActor_StartAnimation(ptr);
-        MiniActor_ProcessAnim(ptr);
+        miniRankingActorSpawn(ptr);
+        MiniActor_UpdateAnimation(ptr);
         miniActorUpdateTransform(ptr);
-        MiniActor_UpdateCollider(ptr);
+        MiniActor_SyncModelTransform(ptr);
     }
 }
 
-void MiniActor_SetTransformAndState(MiniActor* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s16 arg5, s16 arg6, s16 arg7, s16 arg8) {
+void miniRankingActorSetup(MiniActor* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s16 arg5, s16 arg6, s16 arg7, s16 arg8) {
     arg0->scale.x = arg1;
     arg0->scale.y = arg1;
     arg0->scale.z = arg1;
@@ -60,28 +60,28 @@ void MiniActor_SetTransformAndState(MiniActor* arg0, f32 arg1, f32 arg2, f32 arg
     arg0->mainState = 1;
 }
 
-void MiniActor_ConfigureFirst(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
+void miniRankingActorSetup1st(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
     MiniActor* sp34 = gMiniActorArray;
 
-    MiniActor_SetTransformAndState(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 0);
+    miniRankingActorSetup(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 0);
     sp34->unk_000.unk_000.unk_14 = 0;
 }
 
-void MiniActor_ConfigureSecond(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
+void miniRankingActorSetup2nd(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
     MiniActor* sp34 = &gMiniActorArray[1];
 
-    MiniActor_SetTransformAndState(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 1);
+    miniRankingActorSetup(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 1);
     sp34->unk_000.unk_000.unk_14 = 1;
 }
 
-void MiniActor_ConfigureThird(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
+void miniRankingActorSetup3rd(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
     MiniActor* sp34 = &gMiniActorArray[2];
 
-    MiniActor_SetTransformAndState(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 2);
+    miniRankingActorSetup(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 2);
     sp34->unk_000.unk_000.unk_14 = 2;
 }
 
-Gfx* Gfx_SetLerpPrimEnvColor(Gfx* gfx, ColorLerpData* arg1) {
+Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, ColorLerpData* arg1) {
     u8 tmp1;
     u8 tmp2;
     u8 tmp3;
@@ -187,10 +187,10 @@ Gfx* Gfx_SetLerpPrimEnvColor(Gfx* gfx, ColorLerpData* arg1) {
     return gfx;
 }
 
-void ColorLerp_DisplayListHook(s32 arg0, ColorLerpHook* arg1) {
+void MiniFx_GraphNodeBuildColorRampList(s32 arg0, ColorLerpHook* arg1) {
     if (arg0 == 5) {
         ColorLerpData* tmp = arg1->unk_14;
 
-        gDisplayListHead = Gfx_SetLerpPrimEnvColor(gDisplayListHead, tmp);
+        gDisplayListHead = MiniFx_BuildNodeColorRampDisplayList(gDisplayListHead, tmp);
     }
 }

@@ -186,7 +186,7 @@ static Gfx MenuTextureA_DisplayList[] = {
 };
 static u32 MenuTextureA_CommandList[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureA_Vtx0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawMenuTextureA, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, PakUi_RenderPartyCardTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx MenuTextureA_PanelVtx0[] = {
     VTX(0, 50, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -487,7 +487,7 @@ static Gfx MenuTextureB_DisplayList[] = {
 };
 static u32 MenuTextureB_CommandList[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureA_PanelVtx0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawMenuTextureB, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, PakUi_RenderIconPanelTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx MenuTextureB_Vtx0[] = {
     VTX(0, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -527,7 +527,7 @@ static Gfx gMenuInfoDisplayList[] = {
 };
 static u32 MenuTextureC_CommandList[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureB_Vtx0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawMenuTextureC, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, PakUi_RenderBannerTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx MenuTextureC_Vtx0[] = {
     VTX(0, 76, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -703,7 +703,7 @@ static Gfx MenuTextureC_DisplayList[] = {
 };
 static u32 MenuTextureD_CommandList[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureC_Vtx0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawMenuTextureGeneric, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, PakUi_RenderMenuIconTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx MenuTextureD_Vtx0[] = {
     VTX(0, 32, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -795,7 +795,7 @@ static Gfx MenuTextureD_DisplayList[] = {
 };
 static u32 MenuTextureE_CommandList[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureD_Vtx0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawMenuTextureGeneric, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, PakUi_RenderMenuIconTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx MenuTextureE_Vtx0[] = {
     VTX(0, 46, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -908,7 +908,7 @@ static Gfx MenuTextureE_DisplayList[] = {
 };
 static u32 MenuTextureF_CommandList[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureE_Vtx0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawMenuTextureGeneric, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, PakUi_RenderMenuIconTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx MenuTextureF_Vtx0[] = {
     VTX(0, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -979,10 +979,10 @@ static Gfx MenuTextureF_DisplayList[] = {
 };
 static u32 MenuTextureG_CommandList[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureF_Vtx0, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, DrawMenuTextureGeneric, 0x00000000, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, PakUi_RenderMenuIconTexture, 0x00000000, 0x06000000, 0x01000000,
 };
 
-s32 ValidatePIStatus(s32 arg0) {
+s32 Pak_CheckPiIntegrity(s32 arg0) {
     u32 temp_a0 = osSetIntMask(1);
 
     if (!(IO_READ(PI_STATUS_REG) & (PI_STATUS_DMA_BUSY | PI_STATUS_IO_BUSY)) &&
@@ -993,7 +993,7 @@ s32 ValidatePIStatus(s32 arg0) {
     return arg0;
 }
 
-void PrefBackground_Draw(void) {
+void PakUi_DrawMenuBackdrop(void) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -1008,33 +1008,33 @@ void PrefBackground_Draw(void) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, gPrefBackgroundTexture, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(0, 0, 0x280, 0x1E0, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(0, 0, 0x280, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void SetupFramebufferAndFill(FramebufferImage* arg0, s16 arg1, s16 arg2) {
-    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0);
-    Gfx_FillScreen(&gDisplayListHead, 0);
+void PakUi_BuildFrameBuffer(FramebufferImage* arg0, s16 arg1, s16 arg2) {
+    GfxImage_SetRenderTarget(&gDisplayListHead, arg0);
+    GfxImage_FillCurrent(&gDisplayListHead, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
 
-    Gfx_DrawSpriteIA8(-3, -3, 8, 8, D_2000340, 8, 0);
-    Gfx_DrawTextureRect(4, -3, arg1 - 8, 8, 0xE0, 0, 0, 0x400, 0);
-    Gfx_DrawTextureRect(-3, 4, 8, arg2 - 8, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawSpriteIA8(arg1 - 5, -3, 8, 8, D_2000380, 8, 0);
-    Gfx_DrawTextureRect(arg1 - 5, 4, 8, arg2 - 8, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawSpriteIA8(-3, arg2 - 5, 8, 8, D_20002C0, 8, 0);
-    Gfx_DrawTextureRect(4, arg2 - 5, arg1 - 8, 8, 0xE0, 0, 0, 0x400, 0);
-    Gfx_DrawSpriteIA8(arg1 - 5, arg2 - 5, 8, 8, D_2000300, 8, 0);
+    Gfx_DrawTextureIa8(-3, -3, 8, 8, D_2000340, 8, 0);
+    Gfx_DrawTexturedRectClipped(4, -3, arg1 - 8, 8, 0xE0, 0, 0, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(-3, 4, 8, arg2 - 8, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8(arg1 - 5, -3, 8, 8, D_2000380, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg1 - 5, 4, 8, arg2 - 8, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8(-3, arg2 - 5, 8, 8, D_20002C0, 8, 0);
+    Gfx_DrawTexturedRectClipped(4, arg2 - 5, arg1 - 8, 8, 0xE0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureIa8(arg1 - 5, arg2 - 5, 8, 8, D_2000300, 8, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawPanelBordered(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void PakUi_DrawThickBoxBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -1059,40 +1059,40 @@ void DrawPanelBordered(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5,
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_300F480, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_300F500, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_300F380, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_300F400, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
                   0x4000 / var_s2, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0, arg1 + var_s3, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1 + var_s3 + temp_s0_32, temp_a2, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s3, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1 + var_s3 + temp_s0_32, temp_a2, var_s2, arg4, arg5, arg6, arg7);
     } else if (temp_a2 > 0) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, arg3, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, temp_a2, arg3, arg4, arg5, arg6, arg7);
     } else if (temp_s0_32 > 0) {
-        Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawSmallPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void PakUi_DrawThinBoxBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -1117,40 +1117,40 @@ void DrawSmallPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_3022A20, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_3022A60, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30229A0, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30229E0, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
                   0x2000 / var_s2, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0, arg1 + var_s3, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1 + var_s3 + temp_s0_32, temp_a2, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s3, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1 + var_s3 + temp_s0_32, temp_a2, var_s2, arg4, arg5, arg6, arg7);
     } else if (temp_a2 > 0) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, arg3, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, temp_a2, arg3, arg4, arg5, arg6, arg7);
     } else if (temp_s0_32 > 0) {
-        Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawAnimatedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void PakUi_DrawRotatingCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     static s16 D_82D09EEC = 0;
 
     s16 sp56 = SINS(D_82D09EEC) * 2;
@@ -1159,17 +1159,17 @@ void DrawAnimatedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5,
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
-    Gfx_DrawSpriteIA8((arg0 + sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000C80, 0x10, 0);
-    Gfx_DrawSpriteIA8((arg0 + sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000F80, 0x10, 0);
-    Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000D80, 0x10, 0);
-    Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000E80, 0x10, 0);
+    Gfx_DrawTextureIa8((arg0 + sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000C80, 0x10, 0);
+    Gfx_DrawTextureIa8((arg0 + sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000F80, 0x10, 0);
+    Gfx_DrawTextureIa8(((arg0 + arg2) - sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000D80, 0x10, 0);
+    Gfx_DrawTextureIa8(((arg0 + arg2) - sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000E80, 0x10, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     D_82D09EEC += 0x2000;
 }
 
-s32 DrawMenuTextureA(s32 arg0, SimpleGfxNode* arg1) {
+s32 PakUi_RenderPartyCardTexture(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         s32 var_a3 = gDefaultGraphRoot->unk_000.unk_14;
 
@@ -1178,31 +1178,31 @@ s32 DrawMenuTextureA(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuFramebufferImages[var_a3]->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, MenuTextureA_DisplayList);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 DrawMenuTextureB(s32 arg0, SimpleGfxNode* arg1) {
+s32 PakUi_RenderIconPanelTexture(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
 
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuFramebufferImageB[0].img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, MenuTextureB_DisplayList);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 DrawMenuTextureC(s32 arg0, SimpleGfxNode* arg1) {
+s32 PakUi_RenderBannerTexture(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
 
         gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuGraphNodeD->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, gMenuInfoDisplayList);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
@@ -1213,20 +1213,20 @@ void PakUi_DrawPartyProgressBar(s32 arg0) {
 
     if (arg0 > 0) {
         temp_lo_2 = (arg0 * 0x3C) / 10;
-        DrawPanelBordered(0x34, (s16)((0x3C - temp_lo_2) / 2) + 0x28, 0xB0, temp_lo_2, 0x1E, 0x1E, 0x82, 0x96);
+        PakUi_DrawThickBoxBorder(0x34, (s16)((0x3C - temp_lo_2) / 2) + 0x28, 0xB0, temp_lo_2, 0x1E, 0x1E, 0x82, 0x96);
         if (arg0 == 10) {
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
-            sp30 = GetMessageString(NULL, 0, gMenuMessageBank, 0x1D);
-            Text_Print(0x8C - (MeasureTextWidth(0x10, 0, sp30) / 2), 0x2C, sp30);
-            sp30 = GetMessageString(NULL, 0, gMenuMessageBank, 0x1E);
-            Text_Print(0x8C - (MeasureTextWidth(0x10, 0, sp30) / 2), 0x48, sp30);
-            Text_SetupDL();
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
+            sp30 = Text_GetString(NULL, 0, gMenuMessageBank, 0x1D);
+            Font_Printf(0x8C - (Font_MeasureTextExtent(0x10, 0, sp30) / 2), 0x2C, sp30);
+            sp30 = Text_GetString(NULL, 0, gMenuMessageBank, 0x1E);
+            Font_Printf(0x8C - (Font_MeasureTextExtent(0x10, 0, sp30) / 2), 0x48, sp30);
+            Font_EndTexturedTextRendering();
         }
     }
 }
 
-void RenderMenuBackground(s16 arg0) {
+void PakUi_DrawTitleHeader(s16 arg0) {
     static Color_RGB8 gMenuItemColors[] = { { 0x8C, 0x82, 0x50 }, { 0x32, 0x32, 0x32 } };
 
     Color_RGB8* ptr = &gMenuItemColors[0];
@@ -1234,55 +1234,55 @@ void RenderMenuBackground(s16 arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg0);
 
-    Gfx_DrawSpriteRGBA16(0x100, 0x20, 0x80, 0x10, D_300A820, 0x80, 0);
-    Gfx_DrawSpriteRGBA16(0x100, 0x30, 0x80, 0x10, D_300B820, 0x80, 0);
-    Gfx_DrawSpriteRGBA16(0x100, 0x40, 0x80, 0x10, D_300C820, 0x80, 0);
-    Gfx_DrawSpriteRGBA16(0x100, 0x50, 0x80, 0x10, D_300D820, 0x80, 0);
+    Gfx_DrawTextureRgba16(0x100, 0x20, 0x80, 0x10, D_300A820, 0x80, 0);
+    Gfx_DrawTextureRgba16(0x100, 0x30, 0x80, 0x10, D_300B820, 0x80, 0);
+    Gfx_DrawTextureRgba16(0x100, 0x40, 0x80, 0x10, D_300C820, 0x80, 0);
+    Gfx_DrawTextureRgba16(0x100, 0x50, 0x80, 0x10, D_300D820, 0x80, 0);
 
     ptr = &gMenuItemColors[gMenuItemData[0].unk_04];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
-    Gfx_DrawSpriteI4(0x120, 0x60, 8, 8, D_300F240, 0x10, 0);
-    Gfx_DrawSpriteI4(0x120, 0x6C, 8, 8, D_300F280, 0x10, 0);
-    Gfx_DrawSpriteI4(0x70, 0x6C, 8, 8, D_300F2C0, 0x10, 0);
-    Gfx_DrawTextureRect(0x120, 0x68, 8, 4, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawTextureRect(0x70, 0x74, 8, 0x14, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawTextureRect(0x78, 0x6C, 0xA8, 8, 0xE0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureI4(0x120, 0x60, 8, 8, D_300F240, 0x10, 0);
+    Gfx_DrawTextureI4(0x120, 0x6C, 8, 8, D_300F280, 0x10, 0);
+    Gfx_DrawTextureI4(0x70, 0x6C, 8, 8, D_300F2C0, 0x10, 0);
+    Gfx_DrawTexturedRectClipped(0x120, 0x68, 8, 4, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTexturedRectClipped(0x70, 0x74, 8, 0x14, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTexturedRectClipped(0x78, 0x6C, 0xA8, 8, 0xE0, 0, 0, 0x400, 0);
 
     ptr = &gMenuItemColors[gMenuItemData[1].unk_04];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
-    Gfx_DrawSpriteI4(0x12C, 0x60, 8, 8, D_300F240, 0x10, 0);
-    Gfx_DrawSpriteI4(0x12C, 0x78, 8, 8, D_300F280, 0x10, 0);
-    Gfx_DrawSpriteI4(0xF8, 0x78, 8, 8, D_300F2C0, 0x10, 0);
-    Gfx_DrawTextureRect(0x12C, 0x68, 8, 0x10, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawTextureRect(0xF8, 0x80, 8, 8, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawTextureRect(0x100, 0x78, 0x2C, 8, 0xE0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureI4(0x12C, 0x60, 8, 8, D_300F240, 0x10, 0);
+    Gfx_DrawTextureI4(0x12C, 0x78, 8, 8, D_300F280, 0x10, 0);
+    Gfx_DrawTextureI4(0xF8, 0x78, 8, 8, D_300F2C0, 0x10, 0);
+    Gfx_DrawTexturedRectClipped(0x12C, 0x68, 8, 0x10, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTexturedRectClipped(0xF8, 0x80, 8, 8, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTexturedRectClipped(0x100, 0x78, 0x2C, 8, 0xE0, 0, 0, 0x400, 0);
 
     ptr = &gMenuItemColors[gMenuItemData[2].unk_04];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
-    Gfx_DrawSpriteI4(0x14C, 0x60, 8, 8, D_300F240, 0x10, 0);
-    Gfx_DrawSpriteI4(0x14C, 0x78, 8, 8, D_300F300, 0x10, 0);
-    Gfx_DrawSpriteI4(0x180, 0x78, 8, 8, D_300F340, 0x10, 0);
-    Gfx_DrawTextureRect(0x14C, 0x68, 8, 0x10, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawTextureRect(0x180, 0x80, 8, 8, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawTextureRect(0x154, 0x78, 0x2C, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureI4(0x14C, 0x60, 8, 8, D_300F240, 0x10, 0);
+    Gfx_DrawTextureI4(0x14C, 0x78, 8, 8, D_300F300, 0x10, 0);
+    Gfx_DrawTextureI4(0x180, 0x78, 8, 8, D_300F340, 0x10, 0);
+    Gfx_DrawTexturedRectClipped(0x14C, 0x68, 8, 0x10, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTexturedRectClipped(0x180, 0x80, 8, 8, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTexturedRectClipped(0x154, 0x78, 0x2C, 8, 0, 0, 0, 0x400, 0);
 
     ptr = &gMenuItemColors[gMenuItemData[3].unk_04];
     gDPSetEnvColor(gDisplayListHead++, ptr->r, ptr->g, ptr->b, arg0);
 
-    Gfx_DrawSpriteI4(0x158, 0x60, 8, 8, D_300F240, 0x10, 0);
-    Gfx_DrawSpriteI4(0x158, 0x6C, 8, 8, D_300F300, 0x10, 0);
-    Gfx_DrawSpriteI4(0x208, 0x6C, 8, 8, D_300F340, 0x10, 0);
-    Gfx_DrawTextureRect(0x158, 0x68, 8, 4, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawTextureRect(0x208, 0x74, 8, 0x14, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawTextureRect(0x160, 0x6C, 0xA8, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureI4(0x158, 0x60, 8, 8, D_300F240, 0x10, 0);
+    Gfx_DrawTextureI4(0x158, 0x6C, 8, 8, D_300F300, 0x10, 0);
+    Gfx_DrawTextureI4(0x208, 0x6C, 8, 8, D_300F340, 0x10, 0);
+    Gfx_DrawTexturedRectClipped(0x158, 0x68, 8, 4, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTexturedRectClipped(0x208, 0x74, 8, 0x14, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTexturedRectClipped(0x160, 0x6C, 0xA8, 8, 0, 0, 0, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawMenuItemIcon(s32 arg0) {
+void PakUi_DrawPartyCardBadge(s32 arg0) {
     u8* var_t0;
 
     switch (gMenuItemData[arg0].unk_01) {
@@ -1309,185 +1309,185 @@ void DrawMenuItemIcon(s32 arg0) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(0x26, 8, 0x30, 0x18, var_t0, 0x30, 0);
-    Gfx_DrawSpriteRGBA16(0x26, 0x20, 0x30, 0x18, var_t0 + 0x900, 0x30, 0);
+    Gfx_DrawTextureRgba16(0x26, 8, 0x30, 0x18, var_t0, 0x30, 0);
+    Gfx_DrawTextureRgba16(0x26, 0x20, 0x30, 0x18, var_t0 + 0x900, 0x30, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawMenuItemInfoPanel(u8 arg0) {
+void PakUi_DrawPartyCardList(u8 arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg0);
 
-    Gfx_DrawSpriteRGBA16(0xC, 0x60, 0x64, 0x14, D_3000000, 0x64, 0);
-    Gfx_DrawSpriteRGBA16(0xC, 0x74, 0x64, 0x14, D_3000FA0, 0x64, 0);
-    Gfx_DrawSpriteRGBA16(0xC, 0x88, 0x64, 0x14, D_3001F40, 0x64, 0);
-    Gfx_DrawSpriteRGBA16(0xC, 0x9C, 0x64, 0x14, D_3002EE0, 0x64, 0);
-    Gfx_DrawSpriteRGBA16(0xC, 0xB0, 0x64, 0x14, D_3003E80, 0x64, 0);
+    Gfx_DrawTextureRgba16(0xC, 0x60, 0x64, 0x14, D_3000000, 0x64, 0);
+    Gfx_DrawTextureRgba16(0xC, 0x74, 0x64, 0x14, D_3000FA0, 0x64, 0);
+    Gfx_DrawTextureRgba16(0xC, 0x88, 0x64, 0x14, D_3001F40, 0x64, 0);
+    Gfx_DrawTextureRgba16(0xC, 0x9C, 0x64, 0x14, D_3002EE0, 0x64, 0);
+    Gfx_DrawTextureRgba16(0xC, 0xB0, 0x64, 0x14, D_3003E80, 0x64, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void SetupMenuPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
+void PakUi_BuildPartyCard(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
     s32 sp2C;
     char* sp40;
 
-    SetupFramebufferAndFill(gMenuFramebufferImages[arg0], 0x7C, 0xC8);
+    PakUi_BuildFrameBuffer(gMenuFramebufferImages[arg0], 0x7C, 0xC8);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
     sp2C = arg2 & 0x10;
     if (sp2C != 0) {
-        Gfx_FillRect(4, 4, 0x74, 0x64, 0x64, 0x1E, 0x1E);
-        Gfx_FillRect(4, 0x68, 0x74, 0x5C, 0, 0, 0);
+        Gfx_FillRectRgb(4, 4, 0x74, 0x64, 0x64, 0x1E, 0x1E);
+        Gfx_FillRectRgb(4, 0x68, 0x74, 0x5C, 0, 0, 0);
     } else {
-        Gfx_FillRect(4, 4, 0x74, 0xC0, 0x32, 0x32, 0x78);
+        Gfx_FillRectRgb(4, 4, 0x74, 0xC0, 0x32, 0x32, 0x78);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     if (arg1 != 0) {
-        DrawMenuItemIcon(arg0);
+        PakUi_DrawPartyCardBadge(arg0);
     }
 
     if (arg2 != 2) {
         if (sp2C != 0) {
-            DrawMenuItemInfoPanel(0x64);
+            PakUi_DrawPartyCardList(0x64);
         } else {
-            DrawMenuItemInfoPanel(0xFF);
+            PakUi_DrawPartyCardList(0xFF);
         }
     }
 
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_PutChar(8, 8, arg0 + 0x31);
+    Font_DrawCharAt(8, 8, arg0 + 0x31);
 
     if (arg1 != 0) {
         if (arg4 != NULL) {
-            Text_SetFont(4, 0);
-            Text_Print(0x3E - (MeasureTextWidth(4, 0, arg4) / 2), 0x3C, arg4);
+            Font_SetActive(4, 0);
+            Font_Printf(0x3E - (Font_MeasureTextExtent(4, 0, arg4) / 2), 0x3C, arg4);
         }
 
-        Text_SetFont(4, 0);
+        Font_SetActive(4, 0);
 
         if (arg3 >= 0) {
-            Text_Print(0x3E - (MeasureTextWidth(4, 0, "ID  00000") / 2), 0x50, "ID  %05d", arg3);
+            Font_Printf(0x3E - (Font_MeasureTextExtent(4, 0, "ID  00000") / 2), 0x50, "ID  %05d", arg3);
         } else {
-            Text_Print(0x3E - (MeasureTextWidth(4, 0, "ID  *****") / 2), 0x50, "ID  *****");
+            Font_Printf(0x3E - (Font_MeasureTextExtent(4, 0, "ID  *****") / 2), 0x50, "ID  *****");
         }
     } else {
-        Text_SetFont(4, 0);
-        sp40 = GetMessageString(NULL, 0, gMenuMessageBank, 0x1D);
-        Text_Print(0x40 - (MeasureTextWidth(4, 0, sp40) / 2), 0x24, sp40);
-        sp40 = GetMessageString(NULL, 0, gMenuMessageBank, 0x1F);
-        Text_Print(0x40 - (MeasureTextWidth(4, 0, sp40) / 2), 0x38, sp40);
+        Font_SetActive(4, 0);
+        sp40 = Text_GetString(NULL, 0, gMenuMessageBank, 0x1D);
+        Font_Printf(0x40 - (Font_MeasureTextExtent(4, 0, sp40) / 2), 0x24, sp40);
+        sp40 = Text_GetString(NULL, 0, gMenuMessageBank, 0x1F);
+        Font_Printf(0x40 - (Font_MeasureTextExtent(4, 0, sp40) / 2), 0x38, sp40);
     }
 
     if (sp2C != 0) {
-        Text_SetFont(4, 0);
-        Text_SetLineHeight(0x14);
+        Font_SetActive(4, 0);
+        Font_SetLineHeight(0x14);
 
         switch (arg2) {
             case 20:
-                Text_Print(0xE, 0x70, GetMessageString(NULL, 0, gMenuMessageBank, 0x20));
+                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gMenuMessageBank, 0x20));
                 break;
 
             case 19:
-                Text_Print(0xE, 0x70, GetMessageString(NULL, 0, gMenuMessageBank, 0x21));
+                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gMenuMessageBank, 0x21));
                 break;
 
             case 21:
-                Text_Print(0xE, 0x70, GetMessageString(NULL, 0, gMenuMessageBank, 0x22));
+                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gMenuMessageBank, 0x22));
                 break;
         }
     }
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
-void InitMenuOption(s32 arg0) {
+void PakUi_InitPartyCard(s32 arg0) {
     unk_D_82D0AB38* temp_v1;
 
-    gMenuFramebufferImages[arg0] = FramebufferImage_Allocate(0, 2, 0x80, 0xCC, 1);
+    gMenuFramebufferImages[arg0] = GfxImage_Allocate(0, 2, 0x80, 0xCC, 1);
     if (gMenuItemData[arg0].unk_01 != 0) {
         if (gMenuItemData[arg0].unk_00 == 0) {
             if (gMenuItemData[arg0].unk_03 != 0) {
-                SetupMenuPanel(arg0, 1, 0, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
+                PakUi_BuildPartyCard(arg0, 1, 0, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
             } else {
-                SetupMenuPanel(arg0, 1, 0x13, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
+                PakUi_BuildPartyCard(arg0, 1, 0x13, (u16)gMenuItemData[arg0].unk_06, gMenuItemData[arg0].unk_08);
             }
         } else {
-            SetupMenuPanel(arg0, 1, 0x14, -1, "?????");
+            PakUi_BuildPartyCard(arg0, 1, 0x14, -1, "?????");
         }
     } else if (gMenuItemData[arg0].unk_00 == 2) {
-        SetupMenuPanel(arg0, 1, 0x15, -1, "?????");
+        PakUi_BuildPartyCard(arg0, 1, 0x15, -1, "?????");
     } else if (gMenuItemData[arg0].unk_04 != 0) {
-        SetupMenuPanel(arg0, 0, 1, -1, NULL);
+        PakUi_BuildPartyCard(arg0, 0, 1, -1, NULL);
     } else {
-        SetupMenuPanel(arg0, 0, 2, -1, NULL);
+        PakUi_BuildPartyCard(arg0, 0, 2, -1, NULL);
     }
 }
 
 void PakUi_BuildIconPanel(void) {
-    gMenuFramebufferImageB = FramebufferImage_Allocate(0, 2, 0x21A, 0x64, 1);
-    SetupFramebufferAndFill(gMenuFramebufferImageB, 0x216, 0x60);
+    gMenuFramebufferImageB = GfxImage_Allocate(0, 2, 0x21A, 0x64, 1);
+    PakUi_BuildFrameBuffer(gMenuFramebufferImageB, 0x216, 0x60);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPSetBlendColor(gDisplayListHead++, 255, 255, 255, 128);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
 
-    Gfx_DrawSpriteIA8(0x5B, -3, 8, 8, D_2000240, 8, 0);
-    Gfx_DrawTextureRect(0x5B, 4, 8, 0x58, 0, 0xE0, 0x400, 0, 0);
-    Gfx_DrawSpriteIA8(0x5B, 0x5B, 8, 8, D_2000040, 8, 0);
+    Gfx_DrawTextureIa8(0x5B, -3, 8, 8, D_2000240, 8, 0);
+    Gfx_DrawTexturedRectClipped(0x5B, 4, 8, 0x58, 0, 0xE0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8(0x5B, 0x5B, 8, 8, D_2000040, 8, 0);
 
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
     gDPSetEnvColor(gDisplayListHead++, 160, 120, 30, 255);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_300F580, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(4, 4, 0x58, 0x58, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(4, 4, 0x58, 0x58, 0, 0, 0x400, 0x400, 0);
 
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
-    Gfx_DrawSpriteIA8(0xC, 0x1E, 0x48, 0x12, D_300E820, 0x48, 0);
-    Gfx_DrawSpriteIA8(0xC, 0x30, 0x48, 0x12, D_300ED30, 0x48, 0);
+    Gfx_DrawTextureIa8(0xC, 0x1E, 0x48, 0x12, D_300E820, 0x48, 0);
+    Gfx_DrawTextureIa8(0xC, 0x30, 0x48, 0x12, D_300ED30, 0x48, 0);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
-    Gfx_FillRect(0x62, 4, 0x1B0, 0x58, 0x64, 0x1E, 0x1E);
+    Gfx_FillRectRgb(0x62, 4, 0x1B0, 0x58, 0x64, 0x1E, 0x1E);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
-    Text_SetLineHeight(0x1C);
-    Text_Print(0x6E, 8, GetMessageString(NULL, 0, gMenuMessageBank, 0x23));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
+    Font_SetLineHeight(0x1C);
+    Font_Printf(0x6E, 8, Text_GetString(NULL, 0, gMenuMessageBank, 0x23));
+    Font_EndTexturedTextRendering();
 }
 
-void CreateTitlePanel(void) {
+void PakUi_BuildBottomBanner(void) {
     s32 sp2C;
     char* sp28;
 
-    gMenuGraphNodeD = FramebufferImage_Allocate(0, 2, 0x80, 0x2C, 1);
-    SetupFramebufferAndFill(gMenuGraphNodeD, 0x78, 0x28);
+    gMenuGraphNodeD = GfxImage_Allocate(0, 2, 0x80, 0x2C, 1);
+    PakUi_BuildFrameBuffer(gMenuGraphNodeD, 0x78, 0x28);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
-    Gfx_FillRect(4, 4, 0x70, 0x20, 0x1E, 0x64, 0x1E);
+    Gfx_FillRectRgb(4, 4, 0x70, 0x20, 0x1E, 0x64, 0x1E);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    sp28 = GetMessageString(NULL, 0, gMenuMessageBank, 0x24);
-    sp2C = MeasureTextWidth(0x10, 0, sp28);
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
-    Text_Print(0x3C - (sp2C / 2), 7, sp28);
-    Text_SetupDL();
+    sp28 = Text_GetString(NULL, 0, gMenuMessageBank, 0x24);
+    sp2C = Font_MeasureTextExtent(0x10, 0, sp28);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
+    Font_Printf(0x3C - (sp2C / 2), 7, sp28);
+    Font_EndTexturedTextRendering();
 }
 
-void UpdateMenuDisplay(s32 arg0, s16 arg1) {
+void PakUi_UpdatePartyDisplayFrame(s32 arg0, s16 arg1) {
     s16 i;
     s16 sp1C;
     s16 temp_lo;
@@ -1507,41 +1507,41 @@ void UpdateMenuDisplay(s32 arg0, s16 arg1) {
         gMenuOptionNodes[i].unk_01E.x = temp_lo;
     }
 
-    Stage_BeginDisplayList();
-    PrefBackground_Draw();
-    RenderMenuBackground(arg1);
-    Graph_SetTextureState(gTextureStateNode);
+    BgStage_DrawFrame();
+    PakUi_DrawMenuBackdrop();
+    PakUi_DrawTitleHeader(arg1);
+    Geo_RenderRootNode(gTextureStateNode);
     PakUi_DrawPartyProgressBar(sp1C);
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
-void InitializeMenuScreen(void) {
+void TransferPak_InitPartyDisplay(void) {
     s32 i;
 
     main_pool_push_state('chck');
 
     for (i = 0; i < 4; i++) {
-        InitMenuOption(i);
-        GraphNode_InitChild(&gMenuOptionNodes[i], 0, 0, gMenuGraphNodeA);
+        PakUi_InitPartyCard(i);
+        Model_InitDisplayObject(&gMenuOptionNodes[i], 0, 0, gMenuGraphNodeA);
     }
 
     PakUi_BuildIconPanel();
-    GraphNode_InitChild(&gMenuOptionNodes[4], 0, 0, gMenuGraphNodeB);
-    CreateTitlePanel();
-    GraphNode_InitChild(&gMenuOptionNodes[5], 0, 0, gMenuGraphNodeC);
-    Vec3f_Set(&gMenuOptionNodes->unk_024, -204.0f, 104.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[1].unk_024, -68.0f, 104.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[2].unk_024, 68.0f, 104.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[3].unk_024, 204.0f, 104.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[4].unk_024, -268.0f, -158.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[5].unk_024, 144.0f, 162.0f, -579.0f);
+    Model_InitDisplayObject(&gMenuOptionNodes[4], 0, 0, gMenuGraphNodeB);
+    PakUi_BuildBottomBanner();
+    Model_InitDisplayObject(&gMenuOptionNodes[5], 0, 0, gMenuGraphNodeC);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes->unk_024, -204.0f, 104.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[1].unk_024, -68.0f, 104.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[2].unk_024, 68.0f, 104.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[3].unk_024, 204.0f, 104.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[4].unk_024, -268.0f, -158.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[5].unk_024, 144.0f, 162.0f, -579.0f);
 }
 
-void CleanupMenuScreen(void) {
+void PakUi_FreePartyDisplayModels(void) {
     s32 i;
 
     for (i = 0; i < 6; i++) {
-        GraphNode_ClearCallback(&gMenuOptionNodes[i]);
+        ModelRenderer_ClearDisplayObject(&gMenuOptionNodes[i]);
     }
 
     main_pool_pop_state('chck');
@@ -1552,22 +1552,22 @@ s32 TransferPak_ShowRulesPrompt(void) {
     s16 i;
     s16 j;
 
-    InitializeMenuScreen();
-    Stage_FadeIn(8);
+    TransferPak_InitPartyDisplay();
+    StageFade_StartFromOpaque(8);
 
     for (j = 0; j < 7; j++) {
-        Game_UpdateInputs();
-        UpdateMenuDisplay(-0xA, 0xFF);
+        Controller_PollInputs();
+        PakUi_UpdatePartyDisplayFrame(-0xA, 0xFF);
     }
 
     for (i = -9; i < 0; i++) {
-        Game_UpdateInputs();
-        UpdateMenuDisplay(i, 0xFF);
+        Controller_PollInputs();
+        PakUi_UpdatePartyDisplayFrame(i, 0xFF);
     }
 
     while (var_s2 == 0) {
-        Game_UpdateInputs();
-        UpdateMenuDisplay(i, 0xFF);
+        Controller_PollInputs();
+        PakUi_UpdatePartyDisplayFrame(i, 0xFF);
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
             var_s2 = BTN_A;
@@ -1577,32 +1577,32 @@ s32 TransferPak_ShowRulesPrompt(void) {
     }
 
     if (var_s2 == BTN_A) {
-        PlaySoundEffect(0x17);
+        Audio_PlaySoundEffectById(0x17);
 
         for (i = 0; i < 10; i++) {
-            Game_UpdateInputs();
-            UpdateMenuDisplay(i, 0xFF);
+            Controller_PollInputs();
+            PakUi_UpdatePartyDisplayFrame(i, 0xFF);
         }
 
         for (j = 0xE0; j >= 0x20; j -= 0x20) {
-            Game_UpdateInputs();
-            UpdateMenuDisplay(i, j);
+            Controller_PollInputs();
+            PakUi_UpdatePartyDisplayFrame(i, j);
         }
     } else {
-        PlaySoundEffect(3);
-        Music_StopTrack(0x10);
-        Stage_SetFillColor(0xFFFF);
-        Stage_FadeOut(8);
-        while (Stage_GetFadeState() != 1) {
-            Game_UpdateInputs();
-            UpdateMenuDisplay(i, 0xFF);
+        Audio_PlaySoundEffectById(3);
+        Audio_StopMusic(0x10);
+        StageContext_SetClearColor(0xFFFF);
+        StageFade_StartFromTransparent(8);
+        while (StageContext_GetFadeMode() != 1) {
+            Controller_PollInputs();
+            PakUi_UpdatePartyDisplayFrame(i, 0xFF);
         }
     }
-    CleanupMenuScreen();
+    PakUi_FreePartyDisplayModels();
     return var_s2 == BTN_A;
 }
 
-void DrawNineSlicePanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void PakUi_DrawDataPanelBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -1628,34 +1628,34 @@ void DrawNineSlicePanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_20288E0, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028960, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_20287E0, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028860, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
                   0x4000 / var_s2, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0, arg1 + var_s3, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1 + var_s3 + temp_s0_32, temp_a2, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s3, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1 + var_s3 + temp_s0_32, temp_a2, var_s2, arg4, arg5, arg6, arg7);
     } else if (temp_a2 > 0) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, arg3, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, temp_a2, arg3, arg4, arg5, arg6, arg7);
     } else if (temp_s0_32 > 0) {
-        Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -1667,10 +1667,10 @@ void PakUi_DrawMenuOptionText(s16 arg0, s16 arg1, s16 arg2, s16 arg3, char* arg4
     } else {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     }
-    Text_Print(arg0, arg1 + (arg2 * 0x1C), arg4);
+    Font_Printf(arg0, arg1 + (arg2 * 0x1C), arg4);
 }
 
-void DrawOptionDetailsPanel(s16 arg0, s16 arg1) {
+void PakUi_DrawRulesPanel(s16 arg0, s16 arg1) {
     UNUSED s32 pad;
     s16 sp28;
     s16 sp24;
@@ -1680,25 +1680,25 @@ void DrawOptionDetailsPanel(s16 arg0, s16 arg1) {
     if (arg0 > 0) {
         sp28 = (arg0 * 0x11) + 2;
         sp24 = ((0x8A - sp28) / 2) + 0xFA;
-        DrawPanel(0x87, sp24, 0x172, sp28, 0x6109);
+        Ui_DrawBorderedPanel(0x87, sp24, 0x172, sp28, 0x6109);
         if (arg0 == 8) {
-            AnimateIconOffset(0x13B, sp24 + (arg1 * 0x1C) + 0x48);
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
+            Ui_DrawAnimatedTextureMarker(0x13B, sp24 + (arg1 * 0x1C) + 0x48);
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
-            Text_SetLineHeight(0x1A);
-            Text_Print(0x9B, sp24 + 0xC, GetMessageString(NULL, 0, gMenuMessageBank, 0x25));
-            Text_Print(0x9B, sp24 + 0x44, GetMessageString(NULL, 0, gMenuMessageBank, 0x26));
+            Font_SetLineHeight(0x1A);
+            Font_Printf(0x9B, sp24 + 0xC, Text_GetString(NULL, 0, gMenuMessageBank, 0x25));
+            Font_Printf(0x9B, sp24 + 0x44, Text_GetString(NULL, 0, gMenuMessageBank, 0x26));
             Text_SetEnvColor(0xFF, 0xFF, ((arg1 * 0x1C) == 0) ? 0 : 0xFF, 0xFF);
-            Text_Print(0x163, sp24 + 0x48, GetMessageString(NULL, 0, gMenuMessageBank, 0x27));
+            Font_Printf(0x163, sp24 + 0x48, Text_GetString(NULL, 0, gMenuMessageBank, 0x27));
             Text_SetEnvColor(0xFF, 0xFF, ((arg1 * 0x1C) == 0x1C) ? 0 : 0xFF, 0xFF);
-            Text_Print(0x163, sp24 + 0x64, GetMessageString(NULL, 0, gMenuMessageBank, 0x28));
-            Text_SetupDL();
+            Font_Printf(0x163, sp24 + 0x64, Text_GetString(NULL, 0, gMenuMessageBank, 0x28));
+            Font_EndTexturedTextRendering();
         }
     }
 }
 
-void DrawDetailedInfoPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
+void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3) {
     char sp50[0x100];
     UNUSED s32 pad;
     s16 sp34 = (arg0 * 0x2C) + 2;
@@ -1706,65 +1706,65 @@ void DrawDetailedInfoPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3
 
     if (sp34 >= 0x10) {
         temp_s0 = ((0x162 - sp34) / 2) + 0x3C;
-        DrawPanel(0x79, temp_s0, 0x18E, sp34, 0x2349);
+        Ui_DrawBorderedPanel(0x79, temp_s0, 0x18E, sp34, 0x2349);
         if (sp34 == 0x162) {
-            DrawNineSlicePanel(0x98, temp_s0 + 0x27, 0x150, 0x78, 0, 0, 0, 0xFF);
-            DrawNineSlicePanel(0x98, temp_s0 + 0xBF, 0x150, 0x60, 0, 0, 0, 0xFF);
+            PakUi_DrawDataPanelBorder(0x98, temp_s0 + 0x27, 0x150, 0x78, 0, 0, 0, 0xFF);
+            PakUi_DrawDataPanelBorder(0x98, temp_s0 + 0xBF, 0x150, 0x60, 0, 0, 0, 0xFF);
             if (arg3 != 0) {
-                AnimateIconOffset(0x9D, temp_s0 + (arg1 * 0x1C) + 0xC7);
+                Ui_DrawAnimatedTextureMarker(0x9D, temp_s0 + (arg1 * 0x1C) + 0xC7);
             }
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
-            Text_Print(0x99, temp_s0 + 0xD, GetMessageString(NULL, 0, gMenuMessageBank, 0x29));
-            Text_Print(0x99, temp_s0 + 0xA5, GetMessageString(NULL, 0, gMenuMessageBank, 0x2A));
-            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 0, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2B));
-            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 1, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2C));
-            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 2, arg1, GetMessageString(NULL, 0, gMenuMessageBank, 0x2D));
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
+            Font_Printf(0x99, temp_s0 + 0xD, Text_GetString(NULL, 0, gMenuMessageBank, 0x29));
+            Font_Printf(0x99, temp_s0 + 0xA5, Text_GetString(NULL, 0, gMenuMessageBank, 0x2A));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 0, arg1, Text_GetString(NULL, 0, gMenuMessageBank, 0x2B));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 1, arg1, Text_GetString(NULL, 0, gMenuMessageBank, 0x2C));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 2, arg1, Text_GetString(NULL, 0, gMenuMessageBank, 0x2D));
             Text_SetEnvColor(0xFF, 0x64, 0x64, 0xFF);
 
             if (arg2->unk_00 == 7) {
-                Text_Print(0xA9, temp_s0 + 0x2D, GetMessageString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
-                Text_Print(0xA9, temp_s0 + 0x4B, GetMessageString(NULL, 0, gMenuMessageBank, arg2->unk_01 + 0x13));
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_01 + 0x13));
 
                 if (arg2->unk_01 < 8) {
                     if (arg2->unk_02 < 4) {
-                        MessageBank_SetPointer_1_9(1, arg2->unk_02);
-                        Text_Print(0xA9, temp_s0 + 0x69, GetMessageString(sp50, sizeof(sp50), gMenuMessageBank, 0x2E));
+                        Text_SetNumberToken(1, arg2->unk_02);
+                        Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gMenuMessageBank, 0x2E));
                     } else {
-                        Text_Print(0xA9, temp_s0 + 0x69, GetMessageString(NULL, 0, gMenuMessageBank, 0x2F));
+                        Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gMenuMessageBank, 0x2F));
                     }
                 } else {
-                    MessageBank_SetPointer_1_9(1, arg2->unk_02);
-                    Text_Print(0xA9, temp_s0 + 0x69, GetMessageString(sp50, sizeof(sp50), gMenuMessageBank, 0x30));
+                    Text_SetNumberToken(1, arg2->unk_02);
+                    Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gMenuMessageBank, 0x30));
                 }
             } else if ((arg2->unk_00 == 3) || (arg2->unk_00 == 6)) {
-                Text_Print(0xA9, temp_s0 + 0x2D, GetMessageString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
-                Text_Print(0xA9, temp_s0 + 0x4B, GetMessageString(NULL, 0, gMenuMessageBank, arg2->unk_01 + 7));
-                Text_Print(0xA9, temp_s0 + 0x69, GetMessageString(NULL, 0, gMenuMessageBank, arg2->unk_02 + 0xA));
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_01 + 7));
+                Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_02 + 0xA));
             } else {
-                Text_Print(0xA9, temp_s0 + 0x2D, GetMessageString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
-                Text_Print(0xA9, temp_s0 + 0x4B, GetMessageString(NULL, 0, gMenuMessageBank, arg2->unk_02 + 0xA));
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_02 + 0xA));
             }
 
             if (arg2->unk_00 != 7) {
-                Text_SetFont(8, 0);
+                Font_SetActive(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                MessageBank_SetPointer_1_9(1, arg2->unk_04);
-                Text_Print(0x12D, temp_s0 + 0x85, GetMessageString(&sp50, 0x100, gMenuMessageBank, 0x31));
+                Text_SetNumberToken(1, arg2->unk_04);
+                Font_Printf(0x12D, temp_s0 + 0x85, Text_GetString(&sp50, 0x100, gMenuMessageBank, 0x31));
             }
 
-            Text_SetFont(8, 0);
+            Font_SetActive(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
-            Text_SetLineHeight(0x1A);
-            Text_Print(0xA1, temp_s0 + 0x124, GetMessageString(NULL, 0, gMenuMessageBank, 0x32));
-            Text_SetupDL();
+            Font_SetLineHeight(0x1A);
+            Font_Printf(0xA1, temp_s0 + 0x124, Text_GetString(NULL, 0, gMenuMessageBank, 0x32));
+            Font_EndTexturedTextRendering();
 
             if (arg2->unk_03 == 1) {
-                s32 temp_v0_3 = MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
+                s32 temp_v0_3 = Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gMenuMessageBank, arg2->unk_00 - 1));
 
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-                Gfx_DrawSpriteRGBA16(temp_v0_3 + 0xAB, temp_s0 + 0x2B, 0x1C, 0x1C, &D_3022AA0, 0x1C, 0);
+                Gfx_DrawTextureRgba16(temp_v0_3 + 0xAB, temp_s0 + 0x2B, 0x1C, 0x1C, &D_3022AA0, 0x1C, 0);
 
                 gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             }
@@ -1772,28 +1772,28 @@ void DrawDetailedInfoPanel(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s32 arg3
     }
 }
 
-void RenderDetailScreen(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s16 arg3, s16 arg4) {
-    Stage_BeginDisplayList();
-    PrefBackground_Draw();
-    DrawDetailedInfoPanel(arg0, arg1, arg2, arg3 == 0);
-    DrawOptionDetailsPanel(arg3, arg4);
-    Stage_Advance();
+void PakUi_UpdateConfirmDisplayFrame(s16 arg0, s16 arg1, unk_func_800281D4* arg2, s16 arg3, s16 arg4) {
+    BgStage_DrawFrame();
+    PakUi_DrawMenuBackdrop();
+    PakUi_DrawDataSummaryPanel(arg0, arg1, arg2, arg3 == 0);
+    PakUi_DrawRulesPanel(arg3, arg4);
+    BgStage_AdvanceFrame();
 }
 
-s32 HandleOptionSelection(unk_func_800281D4* arg0) {
+s32 TransferPak_ConfirmPrompt(unk_func_800281D4* arg0) {
     s16 i;
     s16 var_s2 = 1;
     s16 var_s1 = 1;
 
     for (i = 1; i < 8; i++) {
-        Game_UpdateInputs();
-        RenderDetailScreen(8, 2, arg0, i, 1);
+        Controller_PollInputs();
+        PakUi_UpdateConfirmDisplayFrame(8, 2, arg0, i, 1);
     }
 
     while (var_s2 != 0) {
-        Game_UpdateInputs();
+        Controller_PollInputs();
         if (gPlayer1Controller->buttonPressed & 0xC00) {
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             var_s1 ^= 1;
         } else if (gPlayer1Controller->buttonPressed & 0x8000) {
             var_s2 = 0;
@@ -1801,24 +1801,24 @@ s32 HandleOptionSelection(unk_func_800281D4* arg0) {
             var_s1 = 1;
             var_s2 = 0;
         }
-        RenderDetailScreen(8, 2, arg0, 8, var_s1);
+        PakUi_UpdateConfirmDisplayFrame(8, 2, arg0, 8, var_s1);
     }
 
     if (var_s1 == 0) {
-        PlaySoundEffect(0x1F);
+        Audio_PlaySoundEffectById(0x1F);
     } else {
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
     }
 
     for (i = 7; i > 0; i--) {
-        Game_UpdateInputs();
-        RenderDetailScreen(8, 2, arg0, i, var_s1);
+        Controller_PollInputs();
+        PakUi_UpdateConfirmDisplayFrame(8, 2, arg0, i, var_s1);
     }
 
     return var_s1 == 0;
 }
 
-s16 HandleMainMenu(unk_func_800281D4* arg0) {
+s16 TransferPak_MainMenu(unk_func_800281D4* arg0) {
     s16 i;
     s16 var_s1;
     UNUSED s32 pad;
@@ -1829,105 +1829,105 @@ s16 HandleMainMenu(unk_func_800281D4* arg0) {
     var_s6 = 1;
     var_s0 = 0;
     sp44 = 4;
-    PlaySoundEffect(4);
+    Audio_PlaySoundEffectById(4);
 
     for (i = 1; i < 8; i++) {
-        Game_UpdateInputs();
-        RenderDetailScreen(i, 0, arg0, 0, 0);
+        Controller_PollInputs();
+        PakUi_UpdateConfirmDisplayFrame(i, 0, arg0, 0, 0);
     }
 
     while (var_s6 != 0) {
         var_s1 = -1;
         while (var_s1 == -1) {
-            Game_UpdateInputs();
+            Controller_PollInputs();
 
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
                 var_s1 = var_s0;
             } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
                 var_s1 = 3;
             } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 var_s0 -= 1;
                 if (var_s0 < 0) {
                     var_s0 = 2;
                 }
             } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 var_s0 += 1;
                 if (var_s0 >= 3) {
                     var_s0 = 0;
                 }
             }
-            RenderDetailScreen(i, var_s0, arg0, 0, 0);
+            PakUi_UpdateConfirmDisplayFrame(i, var_s0, arg0, 0, 0);
         }
 
         switch (var_s1) {
             case 0:
                 var_s6 = 0;
-                PlaySoundEffect(0x20);
+                Audio_PlaySoundEffectById(0x20);
                 break;
 
             case 1:
                 var_s6 = 0;
-                PlaySoundEffect(3);
+                Audio_PlaySoundEffectById(3);
                 break;
 
             case 2:
-                PlaySoundEffect(2);
-                if (HandleOptionSelection(arg0) != 0) {
+                Audio_PlaySoundEffectById(2);
+                if (TransferPak_ConfirmPrompt(arg0) != 0) {
                     var_s6 = 0;
                 }
                 break;
 
             case 3:
                 var_s6 = 0;
-                PlaySoundEffect(3);
+                Audio_PlaySoundEffectById(3);
                 break;
         }
     }
 
     for (i = 7; i >= 0; i--) {
-        Game_UpdateInputs();
-        RenderDetailScreen(i, var_s0, arg0, 0, 0);
+        Controller_PollInputs();
+        PakUi_UpdateConfirmDisplayFrame(i, var_s0, arg0, 0, 0);
     }
 
-    RenderDetailScreen(0, var_s0, arg0, 0, 0);
+    PakUi_UpdateConfirmDisplayFrame(0, var_s0, arg0, 0, 0);
 
     if (var_s1 == 0) {
-        Battle_LoadStateFromSave();
-        Music_StopTrack(0x10);
-        Stage_SetFillColor(1);
-        Stage_FadeOut(8);
+        Session_LoadContinueData();
+        Audio_StopMusic(0x10);
+        StageContext_SetClearColor(1);
+        StageFade_StartFromTransparent(8);
 
-        while (Stage_GetFadeState() != 1) {
-            Game_UpdateInputs();
-            RenderDetailScreen(0, 0, arg0, 0, 0);
+        while (StageContext_GetFadeMode() != 1) {
+            Controller_PollInputs();
+            PakUi_UpdateConfirmDisplayFrame(0, 0, arg0, 0, 0);
         }
 
-        Stage_AdvanceN(2);
+        StageLoader_RunFrames(2);
 
-        if (gBattleContext.unk_0000 == 7) {
+        if (gSessionContext.unk_0000 == 7) {
             sp44 = 0x27;
         } else {
             sp44 = 0x20;
         }
     } else if (var_s1 == 2) {
-        GbsClearAndCommitBlock(0x15, 0);
-        GbsSyncBank(2);
+        Save_ResetAndCommitTypedRecord(0x15, 0);
+        Save_FlushBank(2);
     }
 
     if (var_s1 != 0) {
-        Stage_SetFillColor(0xFFFF);
-        Stage_FadeOut(8);
-        while (Stage_GetFadeState() != 1) {
-            Game_UpdateInputs();
-            RenderDetailScreen(0, var_s0, arg0, 0, 0);
+        StageContext_SetClearColor(0xFFFF);
+        StageFade_StartFromTransparent(8);
+        while (StageContext_GetFadeMode() != 1) {
+            Controller_PollInputs();
+            PakUi_UpdateConfirmDisplayFrame(0, var_s0, arg0, 0, 0);
         }
     }
     return sp44;
 }
 
-void DrawStatPanel(unk_D_82D0ABD0* arg0) {
+void PakUi_DrawStatusPopup(unk_D_82D0ABD0* arg0) {
     s16 temp_s0;
     s16 sp48;
     s16 sp4A;
@@ -1936,52 +1936,52 @@ void DrawStatPanel(unk_D_82D0ABD0* arg0) {
         sp48 = arg0->unk_02;
         sp4A = arg0->unk_04;
         temp_s0 = arg0->unk_06 + ((0xA6 - sp48) / 2);
-        DrawPanel(sp4A, temp_s0, 0x19E, sp48, 1);
+        Ui_DrawBorderedPanel(sp4A, temp_s0, 0x19E, sp48, 1);
         if (arg0->unk_02 == 0xA6) {
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-            Gfx_DrawSpriteRGBA16(sp4A + 0x1E, temp_s0 + 0x20, 0x48, 0x12, D_3024C80, 0x48, 0);
-            Gfx_DrawSpriteRGBA16(sp4A + 0x1E, temp_s0 + 0x32, 0x48, 0x12, &D_30256A0, 0x48, 0);
-            Gfx_DrawSpriteRGBA16(sp4A + 0x1E, temp_s0 + 0x62, 0x48, 0x12, D_30260C0, 0x48, 0);
-            Gfx_DrawSpriteRGBA16(sp4A + 0x1E, temp_s0 + 0x74, 0x48, 0x12, &D_3026AE0, 0x48, 0);
+            Gfx_DrawTextureRgba16(sp4A + 0x1E, temp_s0 + 0x20, 0x48, 0x12, D_3024C80, 0x48, 0);
+            Gfx_DrawTextureRgba16(sp4A + 0x1E, temp_s0 + 0x32, 0x48, 0x12, &D_30256A0, 0x48, 0);
+            Gfx_DrawTextureRgba16(sp4A + 0x1E, temp_s0 + 0x62, 0x48, 0x12, D_30260C0, 0x48, 0);
+            Gfx_DrawTextureRgba16(sp4A + 0x1E, temp_s0 + 0x74, 0x48, 0x12, &D_3026AE0, 0x48, 0);
 
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, 150);
 
             if (arg0->unk_08 != 0) {
-                Gfx_DrawSpriteI4(sp4A + 0x22, temp_s0 + 0x12, 0x40, 0x40, &D_3024480, 0x40, 0);
+                Gfx_DrawTextureI4(sp4A + 0x22, temp_s0 + 0x12, 0x40, 0x40, &D_3024480, 0x40, 0);
             }
 
             if (arg0->unk_0A != 0) {
-                Gfx_DrawSpriteI4(sp4A + 0x22, temp_s0 + 0x54, 0x40, 0x40, &D_3024480, 0x40, 0);
+                Gfx_DrawTextureI4(sp4A + 0x22, temp_s0 + 0x54, 0x40, 0x40, &D_3024480, 0x40, 0);
             }
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0x64, 0x32, 0xFF);
-            Text_SetLineHeight(0x1C);
+            Font_SetLineHeight(0x1C);
 
             if (arg0->unk_08 != 0) {
-                Text_Print(sp4A + 0x76, temp_s0 + 0x18, GetMessageString(NULL, 0, gMenuMessageBank, arg0->unk_08 + 0x32));
+                Font_Printf(sp4A + 0x76, temp_s0 + 0x18, Text_GetString(NULL, 0, gMenuMessageBank, arg0->unk_08 + 0x32));
             }
 
             if (arg0->unk_0A != 0) {
-                Text_Print(sp4A + 0x76, temp_s0 + 0x5A, GetMessageString(NULL, 0, gMenuMessageBank, arg0->unk_0A + 0x32));
+                Font_Printf(sp4A + 0x76, temp_s0 + 0x5A, Text_GetString(NULL, 0, gMenuMessageBank, arg0->unk_0A + 0x32));
             }
 
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
         }
     }
 }
 
-s32 UpdateStatPanelState(unk_D_82D0ABD0* arg0) {
+s32 PakUi_UpdateStatusPopup(unk_D_82D0ABD0* arg0) {
     s16 sp1E = -2;
 
     switch (arg0->unk_00) {
         case 1:
             if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
-                PlaySoundEffect(3);
+                Audio_PlaySoundEffectById(3);
                 arg0->unk_00 = 3;
             }
             break;
@@ -2004,20 +2004,20 @@ s32 UpdateStatPanelState(unk_D_82D0ABD0* arg0) {
     return sp1E;
 }
 
-void StatPanel_Init(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
+void PakUi_InitStatusPopup(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
     arg0->unk_00 = 0;
     arg0->unk_02 = 6;
     arg0->unk_04 = arg1;
     arg0->unk_06 = arg2;
 }
 
-void StatPanel_SetInfo(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
+void PakUi_OpenStatusPopup(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
     arg0->unk_00 = 2;
     arg0->unk_08 = arg1;
     arg0->unk_0A = arg2;
 }
 
-s32 DrawMenuTextureGeneric(s32 arg0, UNUSED SimpleGfxNode* arg1) {
+s32 PakUi_RenderMenuIconTexture(s32 arg0, UNUSED SimpleGfxNode* arg1) {
     static Gfx* gBattleOverlayGfxList[] = {
         MenuTextureC_DisplayList, MenuTextureE_DisplayList, MenuTextureF_DisplayList, MenuTextureD_DisplayList, MenuTextureE_DisplayList, MenuTextureF_DisplayList, MenuTextureF_DisplayList,
     };
@@ -2028,7 +2028,7 @@ s32 DrawMenuTextureGeneric(s32 arg0, UNUSED SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         var_a3 = gDefaultGraphRoot->unk_000.unk_14;
         var_a2 = var_a3;
-        if ((var_a3 == 0) && (gBattleContext.unk_11F2 == 1)) {
+        if ((var_a3 == 0) && (gSessionContext.unk_11F2 == 1)) {
             var_a2 = 7;
         }
 
@@ -2046,7 +2046,7 @@ s32 DrawMenuTextureGeneric(s32 arg0, UNUSED SimpleGfxNode* arg1) {
 
         gSPDisplayList(gDisplayListHead++, gBattleOverlayGfxList[var_a3]);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
@@ -2128,7 +2128,7 @@ static unk_D_82D09F1C gMenuNavigationTable[] = {
     },
 };
 
-s32 GetSinusoidalAlpha(void) {
+s32 PakUi_ComputeBlinkAlpha(void) {
     static s16 gSinusCounter = 0;
 
     s16 var_a0;
@@ -2145,7 +2145,7 @@ s32 GetSinusoidalAlpha(void) {
     return var_a0;
 }
 
-void DrawAudioProgressBar(s32 arg0, s32 arg1) {
+void PakUi_DrawHeaderProgressBar(s32 arg0, s32 arg1) {
     UNUSED s32 pad;
     s16 tmp;
     s16 sp48;
@@ -2167,36 +2167,36 @@ void DrawAudioProgressBar(s32 arg0, s32 arg1) {
 
     if (arg0 > 0) {
         tmp = (arg0 * 0x3C) / 10;
-        DrawPanelBordered(0x38, (s16)((0x3C - tmp) / 2) + 0x24, 0x210, tmp, 0x1E, 0x1E, 0x82, 0x96);
+        PakUi_DrawThickBoxBorder(0x38, (s16)((0x3C - tmp) / 2) + 0x24, 0x210, tmp, 0x1E, 0x1E, 0x82, 0x96);
         if (arg0 == 10) {
-            sp48 = GetSinusoidalAlpha();
+            sp48 = PakUi_ComputeBlinkAlpha();
             if (gGbAudioState.unk_00 == 0x1F8) {
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp48);
 
-                Gfx_DrawSpriteRGBA16(0x1B8, 0x35, 0x1C, 0x1A, &D_2016010, 0x1C, 0);
+                Gfx_DrawTextureRgba16(0x1B8, 0x35, 0x1C, 0x1A, &D_2016010, 0x1C, 0);
 
                 gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             }
 
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
-            tmp = (MeasureTextWidth(0x10, 0, GetMessageString(NULL, 0, gMenuMessageBank, 0x3B)));
-            Text_Print(0x140 - tmp / 2, 0x36, GetMessageString(NULL, 0, gMenuMessageBank, 0x3B));
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
+            tmp = (Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gMenuMessageBank, 0x3B)));
+            Font_Printf(0x140 - tmp / 2, 0x36, Text_GetString(NULL, 0, gMenuMessageBank, 0x3B));
 
             if (gGbAudioState.unk_00 == 0x1F8) {
-                Text_SetFont(8, 0);
+                Font_SetActive(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, sp48);
-                Text_Print(0x1D6, 0x2D, GetMessageString(NULL, 0, gMenuMessageBank, 0x3C));
-                Text_Print(0x1D6, 0x43, GetMessageString(NULL, 0, gMenuMessageBank, 0x3D));
+                Font_Printf(0x1D6, 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, 0x3C));
+                Font_Printf(0x1D6, 0x43, Text_GetString(NULL, 0, gMenuMessageBank, 0x3D));
             }
 
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
         }
     }
 }
 
-void DrawAudioSmallPanel(s32 arg0, s32 arg1) {
+void PakUi_DrawBodyProgressBar(s32 arg0, s32 arg1) {
     s16 temp_lo_2;
 
     if (arg1 == 0) {
@@ -2215,22 +2215,22 @@ void DrawAudioSmallPanel(s32 arg0, s32 arg1) {
     }
     if (arg0 > 0) {
         temp_lo_2 = (arg0 * 0x64) / 10;
-        DrawSmallPanel(0x38, (s16)((0x64 - temp_lo_2) / 2) + 0x154, 0x210, temp_lo_2, 0x1E, 0x1E, 0x82, 0x96);
+        PakUi_DrawThinBoxBorder(0x38, (s16)((0x64 - temp_lo_2) / 2) + 0x154, 0x210, temp_lo_2, 0x1E, 0x1E, 0x82, 0x96);
         if ((arg0 == 10) && (gAudioMessageIndex < 7)) {
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
-            Text_SetLineHeight(0x1C);
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
+            Font_SetLineHeight(0x1C);
             if (gAudioModeFlag == 0) {
-                Text_Print(0x50, 0x15E, GetMessageString(NULL, 0, gMenuMessageBank, gAudioMessageIndices[gAudioMessageIndex]));
+                Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gMenuMessageBank, gAudioMessageIndices[gAudioMessageIndex]));
             } else {
-                Text_Print(0x50, 0x15E, GetMessageString(NULL, 0, gMenuMessageBank, 0x46));
+                Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gMenuMessageBank, 0x46));
             }
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
         }
     }
 }
 
-void AnimateMenuOptionNodes(s32 arg0, s32 arg1) {
+void PakUi_UpdateMenuDisplayFrame(s32 arg0, s32 arg1) {
     s16 i;
     s32 sp30;
     s16 var_a0;
@@ -2291,22 +2291,22 @@ void AnimateMenuOptionNodes(s32 arg0, s32 arg1) {
         sp30 = 1;
     }
 
-    Stage_BeginDisplayList();
-    PrefBackground_Draw();
-    Graph_SetTextureState(gTextureStateNode);
-    DrawAudioProgressBar(arg0, sp30);
-    DrawAudioSmallPanel(arg0, sp30);
+    BgStage_DrawFrame();
+    PakUi_DrawMenuBackdrop();
+    Geo_RenderRootNode(gTextureStateNode);
+    PakUi_DrawHeaderProgressBar(arg0, sp30);
+    PakUi_DrawBodyProgressBar(arg0, sp30);
 
     if (arg1 != 0) {
         unk_D_82D09F1C* ptr = &gMenuNavigationTable[gAudioMessageIndex];
-        DrawAnimatedPanel(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
+        PakUi_DrawRotatingCorners(ptr->unk_00, ptr->unk_02, ptr->unk_04, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
     }
 
-    DrawStatPanel(&D_82D0ABD0);
-    Stage_Advance();
+    PakUi_DrawStatusPopup(&D_82D0ABD0);
+    BgStage_AdvanceFrame();
 }
 
-FramebufferImage* CreateSaveDataPanel(s32 arg0) {
+FramebufferImage* PakUi_BuildGameIconBuffer(s32 arg0) {
     UNUSED s32 pad;
     s16 i;
     FramebufferImage* sp3C;
@@ -2319,163 +2319,163 @@ FramebufferImage* CreateSaveDataPanel(s32 arg0) {
         var_s3 = D_3017DA0;
     }
 
-    sp3C = FramebufferImage_Allocate(0, 2, 0xAC, 0x98, 1);
-    SetupFramebufferAndFill(sp3C, 0xA8, 0x94);
+    sp3C = GfxImage_Allocate(0, 2, 0xAC, 0x98, 1);
+    PakUi_BuildFrameBuffer(sp3C, 0xA8, 0x94);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
     if (arg0 == 0) {
-        Gfx_FillRect(4, 4, 0xA0, 0x8C, 0x1E, 0x1E, 0x82);
+        Gfx_FillRectRgb(4, 4, 0xA0, 0x8C, 0x1E, 0x1E, 0x82);
     } else {
-        Gfx_FillRect(4, 4, 0xA0, 0x8C, 0x64, 0x1E, 0x1E);
+        Gfx_FillRectRgb(4, 4, 0xA0, 0x8C, 0x64, 0x1E, 0x1E);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     for (i = 0; i < 8; i++) {
-        Gfx_DrawSpriteRGBA16(0xC, (i * 0xC) + 0xC, 0x90, 0xC, (i * 0xD80) + var_s3, 0x90, 0);
+        Gfx_DrawTextureRgba16(0xC, (i * 0xC) + 0xC, 0x90, 0xC, (i * 0xD80) + var_s3, 0x90, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    temp_s0 = MeasureTextWidth(8, 0, GetMessageString(NULL, 0, gMenuMessageBank, 0x3E));
-    Text_SetFont(8, 0);
-    Text_Print(0x54 - (temp_s0 / 2), 0x74, GetMessageString(NULL, 0, gMenuMessageBank, 0x3E));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    temp_s0 = Font_MeasureTextExtent(8, 0, Text_GetString(NULL, 0, gMenuMessageBank, 0x3E));
+    Font_SetActive(8, 0);
+    Font_Printf(0x54 - (temp_s0 / 2), 0x74, Text_GetString(NULL, 0, gMenuMessageBank, 0x3E));
+    Font_EndTexturedTextRendering();
 
     return sp3C;
 }
 
-FramebufferImage* CreateOptionsPanel(void) {
+FramebufferImage* PakUi_BuildControllerIconBuffer(void) {
     FramebufferImage* sp34;
 
-    sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x5C, 1);
-    SetupFramebufferAndFill(sp34, 0xA8, 0x58);
+    sp34 = GfxImage_Allocate(0, 2, 0xAC, 0x5C, 1);
+    PakUi_BuildFrameBuffer(sp34, 0xA8, 0x58);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
-    Gfx_FillRect(4, 4, 0xA0, 0x50, 0x1E, 0x1E, 0x82);
+    Gfx_FillRectRgb(4, 4, 0xA0, 0x50, 0x1E, 0x1E, 0x82);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(0xC, 0xC, 0x40, 0x20, &D_301E9A0, 0x40, 0);
-    Gfx_DrawSpriteRGBA16(0xC, 0x2C, 0x40, 0x20, &D_301F9A0, 0x40, 0);
+    Gfx_DrawTextureRgba16(0xC, 0xC, 0x40, 0x20, &D_301E9A0, 0x40, 0);
+    Gfx_DrawTextureRgba16(0xC, 0x2C, 0x40, 0x20, &D_301F9A0, 0x40, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
-    Text_SetLineHeight(0x16);
-    Text_Print(0x50, 0x17, GetMessageString(NULL, 0, gMenuMessageBank, 0x3F));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
+    Font_SetLineHeight(0x16);
+    Font_Printf(0x50, 0x17, Text_GetString(NULL, 0, gMenuMessageBank, 0x3F));
+    Font_EndTexturedTextRendering();
 
     return sp34;
 }
 
-FramebufferImage* CreateControlsPanel(void) {
+FramebufferImage* PakUi_BuildControllerIconBufferAlt(void) {
     FramebufferImage* sp34;
 
-    sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x5C, 1);
-    SetupFramebufferAndFill(sp34, 0xA8, 0x58);
+    sp34 = GfxImage_Allocate(0, 2, 0xAC, 0x5C, 1);
+    PakUi_BuildFrameBuffer(sp34, 0xA8, 0x58);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
-    Gfx_FillRect(4, 4, 0xA0, 0x50, 0x1E, 0x1E, 0x82);
+    Gfx_FillRectRgb(4, 4, 0xA0, 0x50, 0x1E, 0x1E, 0x82);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(0xC, 0xC, 0x40, 0x20, &D_30209A0, 0x40, 0);
-    Gfx_DrawSpriteRGBA16(0xC, 0x2C, 0x40, 0x20, &D_30219A0, 0x40, 0);
+    Gfx_DrawTextureRgba16(0xC, 0xC, 0x40, 0x20, &D_30209A0, 0x40, 0);
+    Gfx_DrawTextureRgba16(0xC, 0x2C, 0x40, 0x20, &D_30219A0, 0x40, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
-    Text_SetLineHeight(0x16);
-    Text_Print(0x50, 0x17, GetMessageString(NULL, 0, gMenuMessageBank, 0x40));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
+    Font_SetLineHeight(0x16);
+    Font_Printf(0x50, 0x17, Text_GetString(NULL, 0, gMenuMessageBank, 0x40));
+    Font_EndTexturedTextRendering();
 
     return sp34;
 }
 
-FramebufferImage* Menu_CreateBackgroundFrame(void) {
+FramebufferImage* PakUi_BuildMonIconBuffer(void) {
     FramebufferImage* sp34;
 
-    sp34 = FramebufferImage_Allocate(0, 2, 0xAC, 0x40, 1);
-    SetupFramebufferAndFill(sp34, 0xA8, 0x3C);
+    sp34 = GfxImage_Allocate(0, 2, 0xAC, 0x40, 1);
+    PakUi_BuildFrameBuffer(sp34, 0xA8, 0x3C);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
-    Gfx_FillRect(4, 4, 0xA0, 0x34, 0x1E, 0x1E, 0x82);
+    Gfx_FillRectRgb(4, 4, 0xA0, 0x34, 0x1E, 0x1E, 0x82);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(6, 6, 0x30, 0x18, &D_30230C0, 0x30, 0);
-    Gfx_DrawSpriteRGBA16(6, 0x1E, 0x30, 0x18, &D_30239C0, 0x30, 0);
+    Gfx_DrawTextureRgba16(6, 6, 0x30, 0x18, &D_30230C0, 0x30, 0);
+    Gfx_DrawTextureRgba16(6, 0x1E, 0x30, 0x18, &D_30239C0, 0x30, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
-    Text_SetLineHeight(0x16);
-    Text_Print(0x40, 0x14, GetMessageString(NULL, 0, gMenuMessageBank, 0x44));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
+    Font_SetLineHeight(0x16);
+    Font_Printf(0x40, 0x14, Text_GetString(NULL, 0, gMenuMessageBank, 0x44));
+    Font_EndTexturedTextRendering();
 
     return sp34;
 }
 
-FramebufferImage* Menu_CreateOptionFrame(s8* arg0, u8 arg1, u8 arg2, u8 arg3) {
+FramebufferImage* PakUi_BuildTextLabelBuffer(s8* arg0, u8 arg1, u8 arg2, u8 arg3) {
     s32 sp2C;
     FramebufferImage* sp28;
 
-    sp2C = MeasureTextWidth(8, 0, arg0);
-    sp28 = FramebufferImage_Allocate(0, 2, 0xAC, 0x30, 1);
-    SetupFramebufferAndFill(sp28, 0xA8, 0x2C);
+    sp2C = Font_MeasureTextExtent(8, 0, arg0);
+    sp28 = GfxImage_Allocate(0, 2, 0xAC, 0x30, 1);
+    PakUi_BuildFrameBuffer(sp28, 0xA8, 0x2C);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
-    Gfx_FillRect(4, 4, 0xA0, 0x24, arg1, arg2, arg3);
+    Gfx_FillRectRgb(4, 4, 0xA0, 0x24, arg1, arg2, arg3);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
-    Text_Print(0x54 - (sp2C / 2), 0xC, arg0);
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
+    Font_Printf(0x54 - (sp2C / 2), 0xC, arg0);
+    Font_EndTexturedTextRendering();
 
     return sp28;
 }
 
-void Menu_InitializeOptionNodes(void) {
+void TransferPak_MenuIconsInit(void) {
     s32 i;
     u8 sp1B = Cont_GetControllerBits();
 
     main_pool_push_state('msel');
 
-    gMenuFramebufferImagesAlt[0] = CreateSaveDataPanel(0);
-    gMenuFramebufferImagesAlt[7] = CreateSaveDataPanel(1);
-    gMenuFramebufferImagesAlt[1] = CreateControlsPanel();
-    gMenuFramebufferImagesAlt[2] = Menu_CreateOptionFrame(GetMessageString(NULL, 0, gMenuMessageBank, 0x41), 0x1E, 0x64, 0x1E);
-    gMenuFramebufferImagesAlt[3] = Menu_CreateBackgroundFrame();
-    gMenuFramebufferImagesAlt[4] = CreateOptionsPanel();
-    gMenuFramebufferImagesAlt[5] = Menu_CreateOptionFrame(GetMessageString(NULL, 0, gMenuMessageBank, 0x42), 0x1E, 0x64, 0x1E);
-    gMenuFramebufferImagesAlt[6] = Menu_CreateOptionFrame(GetMessageString(NULL, 0, gMenuMessageBank, 0x43), 0x1E, 0x64, 0x1E);
+    gMenuFramebufferImagesAlt[0] = PakUi_BuildGameIconBuffer(0);
+    gMenuFramebufferImagesAlt[7] = PakUi_BuildGameIconBuffer(1);
+    gMenuFramebufferImagesAlt[1] = PakUi_BuildControllerIconBufferAlt();
+    gMenuFramebufferImagesAlt[2] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gMenuMessageBank, 0x41), 0x1E, 0x64, 0x1E);
+    gMenuFramebufferImagesAlt[3] = PakUi_BuildMonIconBuffer();
+    gMenuFramebufferImagesAlt[4] = PakUi_BuildControllerIconBuffer();
+    gMenuFramebufferImagesAlt[5] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gMenuMessageBank, 0x42), 0x1E, 0x64, 0x1E);
+    gMenuFramebufferImagesAlt[6] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gMenuMessageBank, 0x43), 0x1E, 0x64, 0x1E);
 
-    GraphNode_InitChild(&gMenuOptionNodes[0], 0, 0, gMenuGraphNodeE);
-    GraphNode_InitChild(&gMenuOptionNodes[1], 0, 0, gMenuGraphNodeF);
-    GraphNode_InitChild(&gMenuOptionNodes[2], 0, 0, gMenuGraphNodeG);
-    GraphNode_InitChild(&gMenuOptionNodes[3], 0, 0, gMenuGraphNodeH);
-    GraphNode_InitChild(&gMenuOptionNodes[4], 0, 0, gMenuGraphNodeF);
-    GraphNode_InitChild(&gMenuOptionNodes[5], 0, 0, gMenuGraphNodeG);
-    GraphNode_InitChild(&gMenuOptionNodes[6], 0, 0, gMenuGraphNodeG);
-    Vec3f_Set(&gMenuOptionNodes[0].unk_024, -84.0f, 48.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[1].unk_024, 100.0f, 18.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[3].unk_024, -84.0f, -64.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[2].unk_024, 100.0f, -64.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[4].unk_024, -268.0f, 18.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[5].unk_024, -268.0f, -4.0f, -579.0f);
-    Vec3f_Set(&gMenuOptionNodes[6].unk_024, -268.0f, -56.0f, -579.0f);
+    Model_InitDisplayObject(&gMenuOptionNodes[0], 0, 0, gMenuGraphNodeE);
+    Model_InitDisplayObject(&gMenuOptionNodes[1], 0, 0, gMenuGraphNodeF);
+    Model_InitDisplayObject(&gMenuOptionNodes[2], 0, 0, gMenuGraphNodeG);
+    Model_InitDisplayObject(&gMenuOptionNodes[3], 0, 0, gMenuGraphNodeH);
+    Model_InitDisplayObject(&gMenuOptionNodes[4], 0, 0, gMenuGraphNodeF);
+    Model_InitDisplayObject(&gMenuOptionNodes[5], 0, 0, gMenuGraphNodeG);
+    Model_InitDisplayObject(&gMenuOptionNodes[6], 0, 0, gMenuGraphNodeG);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[0].unk_024, -84.0f, 48.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[1].unk_024, 100.0f, 18.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[3].unk_024, -84.0f, -64.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[2].unk_024, 100.0f, -64.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[4].unk_024, -268.0f, 18.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[5].unk_024, -268.0f, -4.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[6].unk_024, -268.0f, -56.0f, -579.0f);
 
     for (i = 0; i < 6; i++) {
         gMenuOptionNodes[i].unk_01E.x = 0;
@@ -2510,14 +2510,14 @@ void Menu_InitializeOptionNodes(void) {
         }
     }
 
-    StatPanel_Init(&D_82D0ABD0, 0x71, 0x84);
+    PakUi_InitStatusPopup(&D_82D0ABD0, 0x71, 0x84);
 }
 
-void Menu_Cleanup(void) {
+void TransferPak_MenuIconsFree(void) {
     s32 i;
 
     for (i = 0; i < 7; i++) {
-        GraphNode_ClearCallback(gMenuOptionNodes);
+        ModelRenderer_ClearDisplayObject(gMenuOptionNodes);
     }
 
     main_pool_pop_state('msel');
@@ -2538,7 +2538,7 @@ s32 TransferPak_MenuHandleInput(void) {
             var_a3 = gAudioMessageIndex;
         } else {
             gAudioModeFlag = 1;
-            PlaySoundEffect(8);
+            Audio_PlaySoundEffectById(8);
             var_a3 = -1;
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
@@ -2552,9 +2552,9 @@ s32 TransferPak_MenuHandleInput(void) {
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT)) {
         sp24 = gMenuNavigationTable[gAudioMessageIndex].unk_0B;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (gGbAudioState.unk_00 == 0x1F8)) {
-        PlaySoundEffect(2);
+        Audio_PlaySoundEffectById(2);
         var_a3 = -1;
-        gBattleContext.unk_11F2 ^= 1;
+        gSessionContext.unk_11F2 ^= 1;
     }
 
     if ((sp24 != -1) && (sp22 != sp24)) {
@@ -2583,32 +2583,32 @@ s32 TransferPak_MenuHandleInput(void) {
         }
 
         if ((var_a1 != 0) || (var_a2 != 0)) {
-            PlaySoundEffect(8);
-            StatPanel_SetInfo(&D_82D0ABD0, var_a1, var_a2);
+            Audio_PlaySoundEffectById(8);
+            PakUi_OpenStatusPopup(&D_82D0ABD0, var_a1, var_a2);
             var_a3 = -2;
         }
     }
 
     if ((var_a3 == 6) && (gMenuItemData[1].unk_04 == 0)) {
-        PlaySoundEffect(8);
-        StatPanel_SetInfo(&D_82D0ABD0, 0, 4);
+        Audio_PlaySoundEffectById(8);
+        PakUi_OpenStatusPopup(&D_82D0ABD0, 0, 4);
         var_a3 = -2;
     }
 
     if (var_a3 == 7) {
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
     } else if (var_a3 >= 0) {
-        PlaySoundEffect(0x1C);
+        Audio_PlaySoundEffectById(0x1C);
     }
 
     if (sp24 != -1) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
         gAudioMessageIndex = sp24;
     }
     return var_a3;
 }
 
-s32 Menu_GetResultCode(void) {
+s32 TransferPak_MenuCursorToCode(void) {
     s32 sp4;
 
     switch (gAudioMessageIndex) {
@@ -2654,57 +2654,57 @@ s16 TransferPak_MenuLoop(void) {
 
     var_s0 = -1;
     gAudioModeFlag = 0;
-    Menu_InitializeOptionNodes();
+    TransferPak_MenuIconsInit();
     gAudioMessageIndex = 0;
-    if (Stage_GetFadeState() != 0) {
-        Stage_FadeIn(8);
-        while (Stage_GetFadeState() != 0) {
-            Game_UpdateInputs();
-            AnimateMenuOptionNodes(0, 0);
+    if (StageContext_GetFadeMode() != 0) {
+        StageFade_StartFromOpaque(8);
+        while (StageContext_GetFadeMode() != 0) {
+            Controller_PollInputs();
+            PakUi_UpdateMenuDisplayFrame(0, 0);
         }
     }
 
     for (i = 0; i < 10; i++) {
-        Game_UpdateInputs();
-        AnimateMenuOptionNodes(i, 0);
+        Controller_PollInputs();
+        PakUi_UpdateMenuDisplayFrame(i, 0);
     }
 
     while (var_s0 == -1) {
         while (var_s0 < 0) {
-            Game_UpdateInputs();
+            Controller_PollInputs();
             if (var_s0 == -1) {
                 var_s0 = TransferPak_MenuHandleInput();
             } else {
-                var_s0 = UpdateStatPanelState(&D_82D0ABD0);
+                var_s0 = PakUi_UpdateStatusPopup(&D_82D0ABD0);
             }
-            AnimateMenuOptionNodes(i, var_s0 == -1);
+            PakUi_UpdateMenuDisplayFrame(i, var_s0 == -1);
         }
         gAudioMessageIndex = var_s0;
 
         if (gAudioMessageIndex == 4) {
             for (i = 11; i < 26; i++) {
-                Game_UpdateInputs();
-                AnimateMenuOptionNodes(i, 0);
+                Controller_PollInputs();
+                PakUi_UpdateMenuDisplayFrame(i, 0);
             }
 
             gAudioMessageIndex = 5;
 
             var_s0 = -1;
             while (var_s0 < 0) {
-                Game_UpdateInputs();
+                Controller_PollInputs();
                 if (var_s0 == -1) {
                     var_s0 = TransferPak_MenuHandleInput();
                 } else {
-                    var_s0 = UpdateStatPanelState(&D_82D0ABD0);
+                    var_s0 = PakUi_UpdateStatusPopup(&D_82D0ABD0);
                 }
-                AnimateMenuOptionNodes(i, var_s0 == -1);
+                PakUi_UpdateMenuDisplayFrame(i, var_s0 == -1);
             }
             gAudioMessageIndex = var_s0;
 
             if (gAudioMessageIndex == 7) {
                 for (i = 25; i >= 11; i--) {
-                    Game_UpdateInputs();
-                    AnimateMenuOptionNodes(i, 0);
+                    Controller_PollInputs();
+                    PakUi_UpdateMenuDisplayFrame(i, 0);
                 }
                 gAudioMessageIndex = 4;
                 var_s0 = -1;
@@ -2714,50 +2714,50 @@ s16 TransferPak_MenuLoop(void) {
 
     if (gAudioMessageIndex < 7) {
         for (i = 27; i < 36; i++) {
-            Game_UpdateInputs();
-            AnimateMenuOptionNodes(i, 0);
+            Controller_PollInputs();
+            PakUi_UpdateMenuDisplayFrame(i, 0);
         }
     }
 
     if (gAudioMessageIndex == 0) {
-        Music_SetTrack(0x50);
+        Audio_PlayMusicIfChangedImmediate(0x50);
     } else if (gAudioMessageIndex != 2) {
-        Music_StopTrack(0x10);
+        Audio_StopMusic(0x10);
     }
 
     if ((gMenuAnimationFlag == 0) || (gAudioMessageIndex != 0)) {
-        Stage_SetFillColor(0xFFFF);
-        Stage_FadeOut(8);
-        while (Stage_GetFadeState() != 1) {
-            Game_UpdateInputs();
-            AnimateMenuOptionNodes(i, 0);
+        StageContext_SetClearColor(0xFFFF);
+        StageFade_StartFromTransparent(8);
+        while (StageContext_GetFadeMode() != 1) {
+            Controller_PollInputs();
+            PakUi_UpdateMenuDisplayFrame(i, 0);
         }
     }
 
-    Menu_Cleanup();
-    return Menu_GetResultCode();
+    TransferPak_MenuIconsFree();
+    return TransferPak_MenuCursorToCode();
 }
 
-void Menu_LoadItemData(void) {
+void Pak_PollPortStatus(void) {
     s32 i;
     u8 temp_s3 = Cont_GetControllerBits();
     Gen1StringDecodeBuffer sp48;
 
     for (i = 0; i < 4; i++) {
-        Controller_ReadInput(i, &sp48);
-        DecodeGen1String(&gMenuItemData[i].unk_08, &sp48.unk_02);
+        GbSave_CopyPlayerIdentity(i, &sp48);
+        Text_UntranscodeName(&gMenuItemData[i].unk_08, &sp48.unk_02);
         gMenuItemData[i].unk_06 = sp48.unk_00;
-        gMenuItemData[i].unk_01 = MenuItem_GetHeldItemId(i);
-        gMenuItemData[i].unk_00 = MenuItem_GetPokemonSpecies(i);
-        gMenuItemData[i].unk_03 = MenuItem_GetPokemonGender(i);
+        gMenuItemData[i].unk_01 = GbSave_GetPortGame(i);
+        gMenuItemData[i].unk_00 = GbSave_GetSaveState(i);
+        gMenuItemData[i].unk_03 = GbSave_SavedAtPokemonCenter(i);
         gMenuItemData[i].unk_04 = (temp_s3 & (1 << i)) != 0;
-        gMenuItemData[i].unk_02 = MenuItem_GetPokemonLevel(i);
+        gMenuItemData[i].unk_02 = GbSave_GetPartyCount(i);
     }
 }
 
-void Menu_LoadGraphics(void) {
+void TransferPak_InitMenuGraphics(void) {
     s32 i;
-    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     Fragment2_1GraphNode* var_s1;
 
     gTextureStateNode = process_geo_layout(temp_v0, &gMenuDisplayListCommands);
@@ -2769,24 +2769,24 @@ void Menu_LoadGraphics(void) {
     gMenuGraphNodeF = process_geo_layout(temp_v0, &MenuTextureF_CommandList);
     gMenuGraphNodeG = process_geo_layout(temp_v0, &MenuTextureG_CommandList);
 
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
 
     for (i = 0, var_s1 = &gMenuOptionNodes[0]; i < 8; var_s1++, i++) {
-        Graph_AddToRootList0(var_s1);
+        ModelRenderer_AttachDisplayObject(var_s1);
         gMenuOptionNodes[i].unk_000.unk_14 = i;
     }
 
-    Menu_LoadItemData();
+    Pak_PollPortStatus();
 
-    if (IsStickerStationConnected() != 0) {
+    if (Controller_CheckAccessoryEeprom() != 0) {
         gIsStickerStationConnected = 1;
     } else {
         gIsStickerStationConnected = 0;
     }
 }
 
-s32 Menu_Main(s32 arg0, s32 arg1) {
+s32 TransferPak_CheckMain(s32 arg0, s32 arg1) {
     Stage* sp54;
     u8 sp53;
     s16 sp50 = 2;
@@ -2796,58 +2796,58 @@ s32 Menu_Main(s32 arg0, s32 arg1) {
 
     main_pool_push_state('GBCK');
 
-    GbsEnsureBankLoaded(2);
-    GBAudio_ResetState(&gGbAudioState, 0);
-    GbsGetPlayerMoney(&gPlayerMoney);
+    Save_EnsureBankLoaded(2);
+    Save_GetModeSettings(&gGbAudioState, 0);
+    Save_GetOptionsField02(&gPlayerMoney);
     sp53 = (gPlayerMoney & 4) != 0;
-    gBattleContext.unk_11F2 = sp53;
-    Gfx_InitBuffers(0x10000, 0);
-    sp54 = Stage_Create(1, 0, 2, 0, 2, 1);
-    Text_Init(0x1C, 0);
+    gSessionContext.unk_11F2 = sp53;
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp54 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    Font_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
 
-    Menu_LoadGraphics();
-    MessageBank_Init();
-    gMenuMessageBank = GetMessageBank(0xE);
-    Music_ChangeTrack(0x28);
-    Stage_Set(sp54);
+    TransferPak_InitMenuGraphics();
+    Text_InitStringTables();
+    gMenuMessageBank = Text_GetStringTable(0xE);
+    Audio_PlayMusicIfChanged(0x28);
+    StageContext_Activate(sp54);
 
     if (arg1 != 0) {
         sp4C = TransferPak_ShowRulesPrompt();
     }
 
     if (sp4C != 0) {
-        if (DecodeBattleSaveData(&sp28, NULL) == -1) {
+        if (Session_LoadContinueRecord(&sp28, NULL) == -1) {
             gMenuAnimationFlag = 0;
         } else {
             gMenuAnimationFlag = 1;
         }
-        sp50 = ValidatePIStatus(TransferPak_MenuLoop());
+        sp50 = Pak_CheckPiIntegrity(TransferPak_MenuLoop());
         if ((sp50 == 0x10) && (gMenuAnimationFlag != 0)) {
-            temp_v0_3 = HandleMainMenu(&sp28);
+            temp_v0_3 = TransferPak_MainMenu(&sp28);
             if (temp_v0_3 != 4) {
                 sp50 = temp_v0_3;
             }
         }
     }
 
-    Stage_Destroy();
+    StageContext_Deactivate();
 
-    if (gBattleContext.unk_11F2 != sp53) {
-        if (gBattleContext.unk_11F2 == 0) {
+    if (gSessionContext.unk_11F2 != sp53) {
+        if (gSessionContext.unk_11F2 == 0) {
             gPlayerMoney &= ~4;
         } else {
             gPlayerMoney |= 4;
         }
-        GbsSetPlayerMoney(&gPlayerMoney);
-        GbsCommitBankBlock(0x14, 0);
+        Save_SetOptionsField02(&gPlayerMoney);
+        Save_CommitTypedRecord(0x14, 0);
     }
 
-    GbsSyncBank(2);
-    Gfx_FreeBuffers();
+    Save_FlushBank(2);
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('GBCK');
 

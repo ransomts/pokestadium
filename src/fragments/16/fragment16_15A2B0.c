@@ -3211,7 +3211,7 @@ static CameraStruct* sCurrentCamera;
 static s16 sCameraYawRate;
 static s16* sCameraYawPtr;
 
-void Camera_AdjustForStage(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
+void Credits_InitCameraKeyframeBlend(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
     f32 scale = 1.0f;
     CreditsMovingCamera* ptr = &sCreditsMovingCameras[arg2 - 1][arg3 - 3];
     Vec3f sp3C;
@@ -3220,8 +3220,8 @@ void Camera_AdjustForStage(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
     sCameraElapsed = 0;
     sCameraDuration = arg1;
 
-    Camera_SetViewParameters(&ptr->unk_00, &sp3C, 720.0f, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_0C) << 0xF) / 180, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_10) << 0xF) / 180);
-    Camera_SetViewParameters(&ptr->unk_14, &sp30, 720.0f, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_20) << 0xF) / 180, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_24) << 0xF) / 180);
+    Camera_ComputeEyeFromAngles(&ptr->unk_00, &sp3C, 720.0f, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_0C) << 0xF) / 180, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_10) << 0xF) / 180);
+    Camera_ComputeEyeFromAngles(&ptr->unk_14, &sp30, 720.0f, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_20) << 0xF) / 180, (((s32) sCreditsMovingCameras[arg2 - 1][arg3 - 3].unk_24) << 0xF) / 180);
 
     sCurrentCamera->unk_60.eye = ptr->unk_00;
     sCurrentCamera->unk_60.at = sp3C;
@@ -3241,7 +3241,7 @@ void Camera_AdjustForStage(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
     sCameraFovStep = ((ptr->unk_2C - ptr->unk_28) * scale) / arg1;
 }
 
-void Stage_HandleFinalPhase(void) {
+void Credits_StepCameraKeyframeBlend(void) {
     if (sCameraElapsed < sCameraDuration) {
         s8 tmp = gPhaseDelta;
 
@@ -3319,14 +3319,14 @@ void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u
     }
 }
 
-void Stage_UpdateSubPhase(void) {
+void Credits_StepCameraYawBlend(void) {
     if (sCameraElapsed < sCameraDuration) {
         sCameraElapsed += gPhaseDelta;
         *sCameraYawPtr += sCameraYawRate * gPhaseDelta;
     }
 }
 
-void Stage_SelectRandomStage(s8* arg0, u8* arg1) {
+void Credits_SelectNextScene(s8* arg0, u8* arg1) {
     u8 var_a3;
     u8 i;
     u8 j;
@@ -3393,7 +3393,7 @@ void Stage_SelectRandomStage(s8* arg0, u8* arg1) {
                 }
             }
         }
-        *arg0 = sp28[Math_RandomModulo(var_a3)];
+        *arg0 = sp28[Credits_RandomRange(var_a3)];
     }
 
     switch (sStageGroupIndex) {

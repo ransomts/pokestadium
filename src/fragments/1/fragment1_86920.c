@@ -39,7 +39,7 @@ extern s16 D_812346F2;
 extern s32 D_81234700;
 extern volatile u32 D_812346FC;
 
-u32 AudioArena_AllocZero(unk_func_81206FA0* arg0, s32 arg1) {
+u32 GbApu_AllocZeroed(unk_func_81206FA0* arg0, s32 arg1) {
   s32 temp_v0;
   u32 temp_a2;
   u32 var_a1;
@@ -58,7 +58,7 @@ u32 AudioArena_AllocZero(unk_func_81206FA0* arg0, s32 arg1) {
   return temp_a2;
 }
 
-s32 AudioArena_Alloc(unk_func_81206FA0* arg0, s32 arg1) {
+s32 GbApu_Alloc(unk_func_81206FA0* arg0, s32 arg1) {
   s32 temp_a2;
   u32 temp_v0;
 
@@ -73,7 +73,7 @@ s32 AudioArena_Alloc(unk_func_81206FA0* arg0, s32 arg1) {
   return temp_a2;
 }
 
-void AudioArena_Init(unk_func_81206FA0* arg0, s32 arg1, s32 arg2) {
+void GbApu_InitAllocator(unk_func_81206FA0* arg0, s32 arg1, s32 arg2) {
   arg0->unk_00 = ALIGN16(arg1);
   arg0->unk_04 = ALIGN16(arg1);
   arg0->unk_08 = (s32) (arg2 - (arg1 & 0xF));
@@ -116,9 +116,9 @@ void GbPak_InitGfx(void) {
     } while (var_v1_2 < (s16*) &D_812346F2);
     gAudioTaskPending = 0;
     gAudioTaskId = 0;
-    AudioArena_Init(&gAudioArena, (s32) gAudioArenaBuffer, D_812286F0);
+    GbApu_InitAllocator(&gAudioArena, (s32) gAudioArenaBuffer, D_812286F0);
     for (i = 0; i < 3; i++) {
-        D_812346E0[i] = (s16*) AudioArena_Alloc(&gAudioArena, 0xFC0);
+        D_812346E0[i] = (s16*) GbApu_Alloc(&gAudioArena, 0xFC0);
         var_v1_3 = D_812346E0[i];
         for (var_a0 = 0; var_a0 != 0xFC0 / 2; var_a0++) {
             *var_v1_3 = 0;

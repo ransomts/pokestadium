@@ -13,12 +13,12 @@
 // .bss
 TextObject* gFontManager;
 
-void Gfx_DrawTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8) {
+void Gfx_DrawTexturedRectClipped(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7, s32 arg8) {
     ClipRect sp30;
 
-    Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+    GfxRect_SetBounds(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 
-    if (Gfx_IntersectClip(&sp30) != 0) {
+    if (GfxRect_ClipToScissor(&sp30) != 0) {
         if (arg6 != 0) {
             arg4 += ((sp30.x1 - arg0) * arg6) >> 5;
         }
@@ -40,71 +40,71 @@ void Gfx_DrawTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 a
 }
 
 void Gfx_DrawTextureRect2(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
-    Gfx_DrawTextureRect(arg0, arg1, (arg2 - arg0) + 1, (arg3 - arg1) + 1, 0, 0, arg4, arg5, arg6);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, (arg2 - arg0) + 1, (arg3 - arg1) + 1, 0, 0, arg4, arg5, arg6);
 }
 
-void Gfx_FillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
+void Gfx_FillRectRgb(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg4, arg5, arg6, 0xFF);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0, 0, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0, 0, 0);
 }
 
-void Gfx_FillRectRGBA(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Gfx_FillRectRgba(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg4, arg5, arg6, arg7);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0, 0, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0, 0, 0);
 }
 
-void Gfx_DrawSpriteRGBA16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawTextureRgba16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg5, arg3, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void Gfx_DrawSpriteRGBA32(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawTextureRgba32(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_32b, arg5, arg3, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void Gfx_DrawSpriteIA8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawTextureIa8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void Gfx_DrawSpriteIA16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawTextureIa16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_16b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void Gfx_DrawSpriteI4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawTextureI4(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, arg4, G_IM_FMT_I, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void Gfx_DrawSpriteI8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawTextureI8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_I, G_IM_SIZ_8b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void Gfx_DrawSpriteI16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
+void Gfx_DrawTextureI16(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, s16 arg5, s32 arg6) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_I, G_IM_SIZ_16b, arg5, arg3, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg6);
 }
 
-void Gfx_DrawSpriteRGBA16Paletted(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, u8* arg5, s16 arg6, s32 arg7) {
+void Gfx_DrawTextureRgba16Ia8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, u8* arg5, s16 arg6, s32 arg7) {
     gDPLoadTextureBlock(gDisplayListHead++, arg4, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg6, arg3, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
@@ -112,10 +112,10 @@ void Gfx_DrawSpriteRGBA16Paletted(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* ar
                       G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                       G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg7);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400, arg7);
 }
 
-void Gfx_DrawTextureAtlas(u8* arg0) {
+void Gfx_DrawTiledRgba16Image(u8* arg0) {
     s32 i;
     s32 j;
 
@@ -139,7 +139,7 @@ void Gfx_DrawTextureAtlas(u8* arg0) {
     }
 }
 
-void Gfx_DrawClippedTextureRegion(u32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void Gfx_DrawRgba16ImageRegion(u32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     s32 div = 32;
     s16 sp9A;
     s16 sp98;
@@ -203,7 +203,7 @@ void Gfx_DrawClippedTextureRegion(u32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 ar
     }
 }
 
-void Gfx_DrawTileMap16x16(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) {
+void Gfx_DrawTiledImageMesh(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32 arg5) {
     s16 j;
     s16 i;
     Vec3s spCC;
@@ -215,19 +215,19 @@ void Gfx_DrawTileMap16x16(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u32
     MtxF* temp_s0;
     MtxF* temp_s3;
 
-    temp_s3 = GfxAlloc(0x40);
-    temp_s4 = GfxAlloc(0x40);
-    temp_s0 = GfxAlloc(0x40);
-    temp_s2 = GfxAlloc(0x10);
-    temp_s1 = Gfx_GetCurrentFramebuffer();
+    temp_s3 = Gfx_AllocDisplayList(0x40);
+    temp_s4 = Gfx_AllocDisplayList(0x40);
+    temp_s0 = Gfx_AllocDisplayList(0x40);
+    temp_s2 = Gfx_AllocDisplayList(0x10);
+    temp_s1 = GfxImage_GetCurrent();
 
-    Vec3s_Set(&spCC, 0, 0, arg2);
-    Vec3f_Set(&spC0, arg0, arg1, 0.0f);
-    Vec3f_Set(&spB4, arg3, arg3, 1.0f);
-    Matrix_RotateTranslate(temp_s0, &spC0, &spCC);
-    Matrix_Scale(temp_s0, temp_s0, &spB4);
-    Matrix_ConvertToMtx(temp_s3, temp_s0);
-    SetViewport(temp_s2, temp_s1->width, temp_s1->height);
+    Vec3s_SetComponents(&spCC, 0, 0, arg2);
+    Vec3f_SetComponentsDuplicate(&spC0, arg0, arg1, 0.0f);
+    Vec3f_SetComponentsDuplicate(&spB4, arg3, arg3, 1.0f);
+    MtxF_SetRotationTranslationF(temp_s0, &spC0, &spCC);
+    MtxF_ScaleRows(temp_s0, temp_s0, &spB4);
+    MtxF_ToFixed(temp_s3, temp_s0);
+    Gfx_SetViewportDimensions(temp_s2, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)temp_s2 & 0x1FFFFFFF);
 
@@ -268,10 +268,10 @@ Vtx* AllocateTileMapVertices(void) {
 
         for (i = -0xF0; i < 0xF0; i += 0x20) {
             for (j = -0x140; j < 0x140; j += 0x20) {
-                SetTileVertex(var_s0++, j + 0, i + 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
-                SetTileVertex(var_s0++, j + 0, i + 0x20, 0, 0, 0x200, 0xFF, 0xFF, 0xFF, 0xFF);
-                SetTileVertex(var_s0++, j + 0x20, i + 0x20, 0, 0x200, 0x200, 0xFF, 0xFF, 0xFF, 0xFF);
-                SetTileVertex(var_s0++, j + 0x20, i + 0, 0, 0x200, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+                Gfx_SetVertexAttributes(var_s0++, j + 0, i + 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+                Gfx_SetVertexAttributes(var_s0++, j + 0, i + 0x20, 0, 0, 0x200, 0xFF, 0xFF, 0xFF, 0xFF);
+                Gfx_SetVertexAttributes(var_s0++, j + 0x20, i + 0x20, 0, 0x200, 0x200, 0xFF, 0xFF, 0xFF, 0xFF);
+                Gfx_SetVertexAttributes(var_s0++, j + 0x20, i + 0, 0, 0x200, 0, 0xFF, 0xFF, 0xFF, 0xFF);
             }
         }
     }
@@ -279,7 +279,7 @@ Vtx* AllocateTileMapVertices(void) {
     return sp54;
 }
 
-void SetTileVertex(Vtx* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
+void Gfx_SetVertexAttributes(Vtx* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
     arg0->v.ob[0] = arg1;
     arg0->v.ob[1] = arg2;
     arg0->v.ob[2] = arg3;
@@ -292,7 +292,7 @@ void SetTileVertex(Vtx* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, 
     arg0->v.cn[3] = arg9;
 }
 
-void SetViewport(Vp* arg0, s16 arg1, s16 arg2) {
+void Gfx_SetViewportDimensions(Vp* arg0, s16 arg1, s16 arg2) {
     arg0->vp.vtrans[0] = arg1 * 2;
     arg0->vp.vtrans[1] = arg2 * 2;
     arg0->vp.vtrans[2] = 0x1FF;
@@ -303,7 +303,7 @@ void SetViewport(Vp* arg0, s16 arg1, s16 arg2) {
     arg0->vp.vscale[3] = 0;
 }
 
-u8 GetCharIndexFromFontTables(u16 arg0) {
+u8 Font_MapGlyphCode(u16 arg0) {
     u8 var_v1 = 0;
 
     if ((arg0 >= 0x20) && (arg0 < 0x80)) {
@@ -315,24 +315,24 @@ u8 GetCharIndexFromFontTables(u16 arg0) {
     return var_v1;
 }
 
-u8 Text_GetCharWidth(FontBankInfo* arg0, u16 arg1) {
-    s32 idx = GetCharIndexFromFontTables(arg1);
+u8 Font_GetGlyphAdvance(FontBankInfo* arg0, u16 arg1) {
+    s32 idx = Font_MapGlyphCode(arg1);
 
     return arg0->unk_04[idx];
 }
 
-void FontManager_Cleanup(UNUSED s32 arg0, UNUSED s32 arg1) {
+void Font_ResetContext(UNUSED s32 arg0, UNUSED s32 arg1) {
     gFontManager = NULL;
 }
 
-void Text_UnloadFont(UNUSED s32 arg0, s32 arg1) {
+void Font_FreeSetAsset(UNUSED s32 arg0, s32 arg1) {
     if (gFontManager != NULL) {
         gFontManager->unk_00[arg1].unk_04 = 0;
         gFontManager->unk_00[arg1].unk_08 = 0;
     }
 }
 
-s32 GetFontBank(s32 arg0) {
+s32 Font_GetSetIndexFromMask(s32 arg0) {
     s32 var_v1 = 0;
 
     if (arg0 != 1) {
@@ -352,11 +352,11 @@ s32 GetFontBank(s32 arg0) {
     return var_v1;
 }
 
-void LoadFontBank(s32 arg0, s32 arg1, s32 arg2) {
+void Font_LoadSet(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp1C;
     ret_func_8000484C* temp_v0_2;
 
-    sp1C = GetFontBank(arg0);
+    sp1C = Font_GetSetIndexFromMask(arg0);
     if (gFontManager->unk_00[sp1C].unk_04 == 0) {
         temp_v0_2 = BinArchive_GetFile(gFontManager->unk_48, sp1C);
         gFontManager->unk_50 = sp1C;
@@ -364,52 +364,52 @@ void LoadFontBank(s32 arg0, s32 arg1, s32 arg2) {
         gFontManager->unk_00[sp1C].unk_02 = arg2;
         gFontManager->unk_00[sp1C].unk_04 = temp_v0_2;
         gFontManager->unk_00[sp1C].unk_08 = &temp_v0_2->unk_90;
-        main_pool_set_func(temp_v0_2, sp1C, &Text_UnloadFont);
+        main_pool_set_func(temp_v0_2, sp1C, &Font_FreeSetAsset);
     }
 }
 
-TextObject* Text_Init(s32 arg0, s32 arg1) {
-    gFontManager = main_pool_alloc_with_func(sizeof(*gFontManager), arg1, 'PRNT', FontManager_Cleanup);
+TextObject* Font_Init(s32 arg0, s32 arg1) {
+    gFontManager = main_pool_alloc_with_func(sizeof(*gFontManager), arg1, 'PRNT', Font_ResetContext);
     bzero(gFontManager, sizeof(*gFontManager));
     gFontManager->unk_48 = ASSET_LOAD2(fonts, 1, 1);
-    LoadFontBanksFromMask(arg0);
+    Font_LoadSizes(arg0);
 
     return gFontManager;
 }
 
-void FontManager_Free(void) {
+void Font_Free(void) {
     main_pool_try_free(gFontManager);
 }
 
-void LoadFontBanksFromMask(s32 arg0) {
+void Font_LoadSizes(s32 arg0) {
     if (gFontManager != NULL) {
         if (arg0 & 0x20) {
-            LoadFontBank(0x20, 0x20, 0x20);
+            Font_LoadSet(0x20, 0x20, 0x20);
         }
 
         if (arg0 & 0x10) {
-            LoadFontBank(0x10, 0x18, 0x18);
+            Font_LoadSet(0x10, 0x18, 0x18);
         }
 
         if (arg0 & 8) {
-            LoadFontBank(8, 0x18, 0x14);
+            Font_LoadSet(8, 0x18, 0x14);
         }
 
         if (arg0 & 4) {
-            LoadFontBank(4, 0x10, 0x10);
+            Font_LoadSet(4, 0x10, 0x10);
         }
 
         if (arg0 & 2) {
-            LoadFontBank(2, 0x10, 0xC);
+            Font_LoadSet(2, 0x10, 0xC);
         }
 
         if (arg0 & 1) {
-            LoadFontBank(1, 0x10, 0xA);
+            Font_LoadSet(1, 0x10, 0xA);
         }
     }
 }
 
-void FreeFontBanks(s32 arg0) {
+void Font_UnloadSizes(s32 arg0) {
     if (gFontManager != NULL) {
         if (arg0 & 1) {
             if (gFontManager->unk_00[0].unk_04 != NULL) {
@@ -449,33 +449,33 @@ void FreeFontBanks(s32 arg0) {
     }
 }
 
-void Text_SetFont(s32 arg0, s32 arg1) {
+void Font_SetActive(s32 arg0, s32 arg1) {
     if (gFontManager != NULL) {
-        gFontManager->unk_50 = GetFontBank(arg0);
+        gFontManager->unk_50 = Font_GetSetIndexFromMask(arg0);
         gFontManager->unk_51 = arg1;
         gFontManager->unk_53 &= ~2;
     }
 }
 
-s32 GetFontBankInfo(s32 arg0, FontBankInfo* arg1) {
+s32 Font_GetSetInfo(s32 arg0, FontBankInfo* arg1) {
     s32 var_v1 = 0;
 
     if ((arg1 != NULL) && (gFontManager != NULL)) {
-        *arg1 = gFontManager->unk_00[GetFontBank(arg0)];
+        *arg1 = gFontManager->unk_00[Font_GetSetIndexFromMask(arg0)];
         var_v1 = 1;
     }
 
     return var_v1;
 }
 
-s16 Text_DrawGlyph(s16 arg0, s16 arg1, s16 arg2) {
+s16 Font_DrawChar(s16 arg0, s16 arg1, s16 arg2) {
     FontBankInfo* temp_s0;
     s32 sp88;
     s16 sp86;
 
     temp_s0 = &gFontManager->unk_00[gFontManager->unk_50];
-    sp88 = GetCharIndexFromFontTables(arg2) * temp_s0->unk_00 * temp_s0->unk_02;
-    sp86 = Text_GetCharWidth(temp_s0, arg2);
+    sp88 = Font_MapGlyphCode(arg2) * temp_s0->unk_00 * temp_s0->unk_02;
+    sp86 = Font_GetGlyphAdvance(temp_s0, arg2);
 
     if ((gFontManager->unk_53 & 1) && !(gFontManager->unk_53 & 2)) {
         gFontManager->unk_53 |= 2;
@@ -493,7 +493,7 @@ s16 Text_DrawGlyph(s16 arg0, s16 arg1, s16 arg2) {
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
 
-    Gfx_DrawTextureRect(arg0, arg1, sp86, temp_s0->unk_02, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, sp86, temp_s0->unk_02, 0, 0, 0x400, 0x400, 0);
 
     arg0 += sp86 + gFontManager->unk_51;
     if (gFontManager->unk_50 >= 2) {
@@ -505,11 +505,11 @@ s16 Text_DrawGlyph(s16 arg0, s16 arg1, s16 arg2) {
     return arg0;
 }
 
-char* Buffer_CopyAndAdvance(char* buffer, const char* data, u32 size) {
+char* String_CopyBytesAndAdvance(char* buffer, const char* data, u32 size) {
     return (char*)memcpy(buffer, data, size) + size;
 }
 
-void Text_Print(s32 x, s32 y, const char* fmt, ...) {
+void Font_Printf(s32 x, s32 y, const char* fmt, ...) {
     char sp50[0x100];
     s32 temp_s5 = x - 1;
     s32 var_s1 = x - 1;
@@ -521,7 +521,7 @@ void Text_Print(s32 x, s32 y, const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
 
-    temp_v0 = _Printf(Buffer_CopyAndAdvance, sp50, fmt, args);
+    temp_v0 = _Printf(String_CopyBytesAndAdvance, sp50, fmt, args);
 
     if (temp_v0 > 0) {
         sp50[temp_v0] = 0;
@@ -538,7 +538,7 @@ void Text_Print(s32 x, s32 y, const char* fmt, ...) {
             }
 
             if (var_v0 != 0) {
-                var_s1 = Text_DrawGlyph(var_s1, y, chr & 0xFF);
+                var_s1 = Font_DrawChar(var_s1, y, chr & 0xFF);
             }
 
             chr = *var_s0;
@@ -549,8 +549,8 @@ void Text_Print(s32 x, s32 y, const char* fmt, ...) {
     va_end(args);
 }
 
-void Text_PutChar(s32 arg0, s32 arg1, s32 arg2) {
-    Text_DrawGlyph(arg0 - 1, arg1, arg2 & 0xFF);
+void Font_DrawCharAt(s32 arg0, s32 arg1, s32 arg2) {
+    Font_DrawChar(arg0 - 1, arg1, arg2 & 0xFF);
 }
 
 void Text_SetEnvColor(s32 r, s32 g, s32 b, s32 a) {
@@ -561,19 +561,19 @@ void Text_SetPrimColor(s32 r, s32 g, s32 b, s32 a) {
     gDPSetPrimColor(gDisplayListHead++, 0, 0, r, g, b, a);
 }
 
-void Text_SetLineHeight(s32 arg0) {
+void Font_SetLineHeight(s32 arg0) {
     gFontManager->unk_52 = arg0;
 }
 
-void Text_SetNoWordWrap(void) {
+void Font_DisableLineBreak(void) {
     gFontManager->unk_53 |= 4;
 }
 
-void Text_EnableWordWrap(void) {
+void Font_EnableLineBreak(void) {
     gFontManager->unk_53 &= ~4;
 }
 
-void Text_ResetState(void) {
+void Font_BeginTranslucentTextRendering(void) {
     gFontManager->unk_53 = 0;
     gFontManager->unk_52 = 0x28;
     gFontManager->unk_4C = 0;
@@ -581,31 +581,31 @@ void Text_ResetState(void) {
     gSPDisplayList(gDisplayListHead++, gDL_TextResetState);
 }
 
-void Text_SetupDL(void) {
+void Font_EndTexturedTextRendering(void) {
     gSPDisplayList(gDisplayListHead++, gDL_TextSetup);
 }
 
-void Text_BeginRender(void) {
+void Font_EnableTwoCycleTexturing(void) {
     gFontManager->unk_53 |= 1;
     gFontManager->unk_53 &= ~2;
 
     gSPDisplayList(gDisplayListHead++, gDL_TextBegin);
 }
 
-void Text_EndRender(void) {
+void Font_DisableTwoCycleTexturing(void) {
     gFontManager->unk_53 &= ~3;
     gSPDisplayList(gDisplayListHead++, gDL_TextEnd);
 }
 
-void Text_DrawWindowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
+void Gfx_FillRectWithDisplayState(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
-    Gfx_FillRectRGBA(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    Gfx_FillRectRgba(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
+s32 Font_MeasureTextExtent(s32 x, s32 y, const char* fmt, ...) {
     s32 temp_s0;
     s32 temp_v0;
     s32 var_s2;
@@ -622,13 +622,13 @@ s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
     if (x == 0) {
         var_a0 = gFontManager->unk_50;
     } else {
-        var_a0 = GetFontBank(x);
+        var_a0 = Font_GetSetIndexFromMask(x);
     }
 
     temp_s4 = &gFontManager->unk_00[var_a0];
     if (temp_s4->unk_04 != NULL) {
         temp_s0 = 0;
-        temp_v0 = _Printf(Buffer_CopyAndAdvance, sp5C, fmt, args);
+        temp_v0 = _Printf(String_CopyBytesAndAdvance, sp5C, fmt, args);
         if (temp_v0 > 0) {
             sp5C[temp_v0] = 0;
 
@@ -639,7 +639,7 @@ s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
                 if (chr == 0xA) {
                     temp_s0 = 0;
                 } else {
-                    temp_s0 += Text_GetCharWidth(temp_s4, chr & 0xFF) + y;
+                    temp_s0 += Font_GetGlyphAdvance(temp_s4, chr & 0xFF) + y;
                     if (var_a0 >= 2) {
                         temp_s0 -= 2;
                     } else {
@@ -662,6 +662,6 @@ s32 MeasureTextWidth(s32 x, s32 y, const char* fmt, ...) {
     return var_s2;
 }
 
-u8 MeasureCharWidth(s32 arg0, s32 arg1) {
-    return Text_GetCharWidth(&gFontManager->unk_00[gFontManager->unk_50], arg1 & 0xFF);
+u8 Font_GetCharWidth(s32 arg0, s32 arg1) {
+    return Font_GetGlyphAdvance(&gFontManager->unk_00[gFontManager->unk_50], arg1 & 0xFF);
 }

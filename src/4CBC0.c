@@ -23,7 +23,7 @@ static s32 gPlayerSoundHandles[8] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-s32 Player_PlaySoundEffect(s32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_PlayCategory2SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp34;
     UNUSED s32 pad[3];
     f32 var_fv0;
@@ -80,7 +80,7 @@ s32 Player_PlaySoundEffect(s32 arg0, s32 arg1, s32 arg2) {
 void Audio_StopCategory2SoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 Player_HandleSfx(s32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_PlayCategory3SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp44;
     UNUSED s32 pad[2];
     u32 sp38;
@@ -150,7 +150,7 @@ s32 Player_HandleSfx(s32 arg0, s32 arg1, s32 arg2) {
 void Audio_StopCategory3SoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 Player_CalcVolume(u32 arg0, u32 arg1) {
+s32 Audio_ComputeIndexedVolume(u32 arg0, u32 arg1) {
     s32 ret;
 
     if ((arg0 == 0) || (arg0 >= 5)) {
@@ -182,7 +182,7 @@ s32 Player_CalcVolume(u32 arg0, u32 arg1) {
     return ret;
 }
 
-s32 Player_PlaySpecialSfx(s32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_PlayCategory4SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp3C;
     UNUSED s32 pad;
     s32 var_v1 = 0x80;
@@ -196,7 +196,7 @@ s32 Player_PlaySpecialSfx(s32 arg0, s32 arg1, s32 arg2) {
                 arg1 = 1;
             }
             MusSetDurationScale(gPlayerSoundHandles[arg1 + 3], 0x14);
-            var_v1 = Player_CalcVolume(arg1, arg2);
+            var_v1 = Audio_ComputeIndexedVolume(arg1, arg2);
             var_fv0 = (4 - arg1) * 0.5f;
             break;
 
@@ -206,7 +206,7 @@ s32 Player_PlaySpecialSfx(s32 arg0, s32 arg1, s32 arg2) {
             if ((arg1 <= 0) || (arg1 >= 5)) {
                 arg1 = 1;
             }
-            var_v1 = Player_CalcVolume(arg1, arg2);
+            var_v1 = Audio_ComputeIndexedVolume(arg1, arg2);
             var_a3 = 0x80;
             var_fv0 = (4 - arg1) * 0.5f;
             break;
@@ -219,7 +219,7 @@ s32 Player_PlaySpecialSfx(s32 arg0, s32 arg1, s32 arg2) {
             if ((arg1 <= 0) || (arg1 >= 5)) {
                 arg1 = 1;
             }
-            var_v1 = Player_CalcVolume(arg1, arg2);
+            var_v1 = Audio_ComputeIndexedVolume(arg1, arg2);
             var_a3 = 0xC0;
             var_fv0 = 0.0f;
             break;
@@ -244,7 +244,7 @@ s32 Player_PlaySpecialSfx(s32 arg0, s32 arg1, s32 arg2) {
 void Audio_StopCategory4SoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 PlayAmbientSound(s32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_PlayCategory5SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     static s32 gAmbientSoundHandle = 0x00000000;
 
     s32 sp34;
@@ -300,7 +300,7 @@ s32 PlayAmbientSound(s32 arg0, s32 arg1, s32 arg2) {
 void Audio_StopCategory5SoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 Menu_PlaySfx(s32 arg0, s32 arg1, UNUSED s32 arg2) {
+s32 Audio_PlayCategory6SoundCommand(s32 arg0, s32 arg1, UNUSED s32 arg2) {
     static s32 gMenuVolumeDelta[4] = {
         0xFFFFFF88,
         0xFFFFFFC4,
@@ -386,7 +386,7 @@ void Audio_StopCategory6SoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s3
 
 static u8 gBattleCryCycle = 0;
 
-s32 PlayBattleCry(s32 arg0, s32 arg1, UNUSED s32 arg2) {
+s32 Audio_PlayCategory7SoundCommand(s32 arg0, s32 arg1, UNUSED s32 arg2) {
     s32 sp44;
     s32 var_a2;
     s32 var_a3;
@@ -525,7 +525,7 @@ f32 Audio_RandomFloat(void) {
     return (f32)Audio_NextRandom() / -1u;
 }
 
-s32 PlayPokemonCry(s32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_PlayCategory8SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     static u32 gCryModCounter = 0;
 
     s32 sp44;
@@ -622,11 +622,11 @@ s32 PlayPokemonCry(s32 arg0, s32 arg1, s32 arg2) {
             if (MusHandleAsk(gCrySpecialHandle1) != 0) {
                 return 0;
             }
-            Audio_SetVolumeFadeAndDuration(1, 1);
+            Audio_FadeCategories(1, 1);
             break;
 
         case 0x80004:
-            Audio_SetVolumeFadeAndDuration(1, 1);
+            Audio_FadeCategories(1, 1);
             break;
 
         case 0x80005:
@@ -639,7 +639,7 @@ s32 PlayPokemonCry(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x80006:
-            Audio_SetVolumeFadeAndDuration(1, 2);
+            Audio_FadeCategories(1, 2);
             break;
 
         case 0x80007:
@@ -681,7 +681,7 @@ void Audio_StopCategory8SoundCommand(s32 arg0, s32 arg1, UNUSED s32 arg2) {
 
 s32 gBattleMusicHandle = 0;
 
-s32 PlayBattleMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
+s32 Audio_PlayCategory9SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     static s32 D_80078FAC = 0;
 
     s32 sp3C;
@@ -727,11 +727,11 @@ s32 PlayBattleMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
             break;
 
         case 0x9000A:
-            ResultScreen_SetAnimation(0x1A);
+            Audio_StartMusicTrack(0x1A);
             break;
 
         case 0x9000B:
-            ResultScreen_SetAnimation(0x1B);
+            Audio_StartMusicTrack(0x1B);
             break;
 
         case 0x9000C:
@@ -769,7 +769,7 @@ s32 PlayBattleMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 void Audio_StopCategory9SoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 PlayStadiumSfx(s32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     static s32 D_80078FB0[4] = {
         0xFFFFFF88,
         0xFFFFFFD8,
@@ -916,7 +916,7 @@ s32 PlayStadiumSfx(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0xA000E:
-            Audio_SetVolumeFadeAndDuration(1, 5);
+            Audio_FadeCategories(1, 5);
             var_a3 = 0x80;
             var_t0 = 0x7F;
             var_fv0 = 0.0f;
@@ -952,7 +952,7 @@ s32 PlayStadiumSfx(s32 arg0, s32 arg1, s32 arg2) {
 void Audio_StopCategoryASoundCommand(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 }
 
-s32 ResultScreen_PlaySfx(s32 arg0, u32 arg1) {
+s32 Audio_PlayPersistentSoundCommand(s32 arg0, u32 arg1) {
     static s32 D_80079008 = 0x00000000;
     static s32 D_8007900C = 0x00000000;
     static s32 D_80079010 = 0x00000000;
@@ -1011,7 +1011,7 @@ s32 ResultScreen_PlaySfx(s32 arg0, u32 arg1) {
 u32 D_80079014 = 0xFFFFFFFF;
 static s32 D_80079018 = 0x00000000;
 
-s32 PlaySoundByCategory(s32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_DispatchSoundBankCommand(s32 arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[5];
     s32 var_v0;
     u32 sp24;
@@ -1039,12 +1039,12 @@ s32 PlaySoundByCategory(s32 arg0, s32 arg1, s32 arg2) {
         sp24 = D_800FC6F8->seqArray[(temp_v1 >> 0x10) - 2].offset;
 
         Rom_DmaRead(sp24, (u32)D_800FC798, 0xC);
-        Audio_AddBaseToOffsets((u32)D_800FC798, sp24, 3);
+        Audio_RelocateOffsets((u32)D_800FC798, sp24, 3);
         Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
-        DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
+        Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
         Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
-        DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
+        Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 
@@ -1052,39 +1052,39 @@ s32 PlaySoundByCategory(s32 arg0, s32 arg1, s32 arg2) {
 
     switch (temp_v1) {
         case 0x20000:
-            var_v0 = Player_PlaySoundEffect(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategory2SoundCommand(arg0, arg1, arg2);
             break;
 
         case 0x30000:
-            var_v0 = Player_HandleSfx(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategory3SoundCommand(arg0, arg1, arg2);
             break;
 
         case 0x40000:
-            var_v0 = Player_PlaySpecialSfx(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategory4SoundCommand(arg0, arg1, arg2);
             break;
 
         case 0x50000:
-            var_v0 = PlayAmbientSound(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategory5SoundCommand(arg0, arg1, arg2);
             break;
 
         case 0x60000:
-            var_v0 = Menu_PlaySfx(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategory6SoundCommand(arg0, arg1, arg2);
             break;
 
         case 0x70000:
-            var_v0 = PlayBattleCry(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategory7SoundCommand(arg0, arg1, arg2);
             break;
 
         case 0x80000:
-            var_v0 = PlayPokemonCry(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategory8SoundCommand(arg0, arg1, arg2);
             break;
 
         case 0x90000:
-            var_v0 = PlayBattleMusic(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategory9SoundCommand(arg0, arg1, arg2);
             break;
 
         case 0xA0000:
-            var_v0 = PlayStadiumSfx(arg0, arg1, arg2);
+            var_v0 = Audio_PlayCategoryASoundCommand(arg0, arg1, arg2);
             break;
 
         default:
@@ -1094,7 +1094,7 @@ s32 PlaySoundByCategory(s32 arg0, s32 arg1, s32 arg2) {
     D_80079018 = var_v0;
 }
 
-void StopSoundByCategory(s32 arg0, s32 arg1, s32 arg2) {
+void Audio_DispatchSoundBankStopCommand(s32 arg0, s32 arg1, s32 arg2) {
     switch (arg0 & 0xFFFF0000) {
         case 0x20000:
             Audio_StopCategory2SoundCommand(arg0, arg1, arg2);
@@ -1134,7 +1134,7 @@ void StopSoundByCategory(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 PlayBackgroundMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
+s32 Audio_PlayDirectSoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     UNUSED s32 pad[4];
     s32 var_v0;
     s32 sp2C;
@@ -1148,14 +1148,14 @@ s32 PlayBackgroundMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
         sp34 = D_800FC6F4->seqArray[2].offset;
 
         Rom_DmaRead(sp34, &D_800FC798[0], 0xC);
-        Audio_AddBaseToOffsets(D_800FC798, sp34, 3);
+        Audio_RelocateOffsets(D_800FC798, sp34, 3);
         sp34 = D_800FC798[1] - D_800FC798[0];
         Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, sp34);
-        DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
+        Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
         sp34 = D_800FC798[2] - D_800FC798[1];
         Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, sp34);
-        DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
+        Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 
@@ -1181,7 +1181,7 @@ s32 PlayBackgroundMusic(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     D_80079018 = var_v0;
 }
 
-s32 PlayUISfx(s32 arg0, s32 arg1, s32 arg2) {
+s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     static s32 D_8007901C = 0x00000000;
     static s32 D_80079020 = 0x00000000;
     static s32 D_80079024 = 0x00000000;
@@ -1213,12 +1213,12 @@ s32 PlayUISfx(s32 arg0, s32 arg1, s32 arg2) {
         sp2C = D_800FC6F4->seqArray[3].offset;
 
         Rom_DmaRead(sp2C, (u32)D_800FC798, 0xC);
-        Audio_AddBaseToOffsets((u32)D_800FC798, sp2C, 3);
+        Audio_RelocateOffsets((u32)D_800FC798, sp2C, 3);
         Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
-        DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
+        Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
         Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
-        DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
+        Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 
@@ -1254,7 +1254,7 @@ s32 PlayUISfx(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 0x1100012:
-            PlaySoundEffect(0x1B);
+            Audio_PlaySoundEffectById(0x1B);
             break;
 
         case 0x1100004:
@@ -1322,7 +1322,7 @@ s32 PlayUISfx(s32 arg0, s32 arg1, s32 arg2) {
     D_80079018 = temp_v0_2;
 }
 
-s32 PlayResultScreenSfx(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
+s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     static s32 D_8007904C = 0x00000000;
     static s32 D_80079050 = 0x00000000;
     static s32 D_80079054 = 0x00000000;
@@ -1343,12 +1343,12 @@ s32 PlayResultScreenSfx(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
         sp3C = D_800FC6F4->seqArray[4].offset;
 
         Rom_DmaRead(sp3C, (u32)D_800FC798, 0xC);
-        Audio_AddBaseToOffsets((u32)D_800FC798, sp3C, 3);
+        Audio_RelocateOffsets((u32)D_800FC798, sp3C, 3);
         Rom_DmaRead(D_800FC798[0], gMoveSoundTempBuffer, D_800FC798[1] - D_800FC798[0]);
-        DecompressData(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
+        Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxInstBank, 0xBB8);
         RemapBankPointers(gAudioSfxInstBank);
         Rom_DmaRead(D_800FC798[1], gMoveSoundTempBuffer, D_800FC798[2] - D_800FC798[1]);
-        DecompressData(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
+        Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gAudioSfxBank, 0x1388);
         MusBankInitialize(gAudioSfxBank, D_800FC798[2]);
     }
 
@@ -1401,21 +1401,21 @@ s32 PlayResultScreenSfx(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
 
         case 0x1200007:
             D_8007905C = sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 6, 0x80, 0x80, -1);
-            Stage_SetFadeColor(0x78);
+            Audio_FadeOutAll(0x78);
             D_80079064 = 1;
             break;
 
         case 0x1200008:
             MusSetDurationScale(D_8007905C, 6);
-            ResultScreen_SetAnimation(0x13);
+            Audio_StartMusicTrack(0x13);
             D_80079064 = 1;
             break;
 
         case 0x1200009:
             if (D_80079064 != 0) {
-                ResultScreen_SetAnimation(0x10);
+                Audio_StartMusicTrack(0x10);
             }
-            PlaySoundEffect(2);
+            Audio_PlaySoundEffectById(2);
             D_80079064 = 0;
             break;
 

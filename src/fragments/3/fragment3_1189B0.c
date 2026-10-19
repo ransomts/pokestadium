@@ -38,7 +38,7 @@ void MinigameGetVec3Distance_3d(MiniActor* arg0, MiniActor* arg1) {
 }
 
 //  unused,
-s32 CheckActorCollision(MiniActor* arg0, MiniActor* arg1) {
+s32 miniActorCubeOverlapCheckUnused(MiniActor* arg0, MiniActor* arg1) {
     f32 totalX = arg1->totalPos_alt.x - arg0->totalPos_alt.x;
     f32 totalY = arg1->totalPos_alt.y - arg0->totalPos_alt.y;
     f32 totalZ = arg1->totalPos_alt.z - arg0->totalPos_alt.z;
@@ -135,20 +135,20 @@ s32 miniPokeIsIdleCheck(MiniActor* arg0) {
     return var_v1;
 }
 
-void MiniActor_ProcessAnim(MiniActor* poke) {
+void MiniActor_UpdateAnimation(MiniActor* poke) {
     switch (poke->unk_248) {
         case 1:
-            GraphNode_TriggerAction(&poke->unk_000, poke->unk_24A);
+            ModelAnim_SetAnimation(&poke->unk_000, poke->unk_24A);
             if (poke->unk_26C != 0) {
-                Anim_SetChannel(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, -0x10000);
-                Anim_SetChannelBase(&poke->unk_000, poke->unk_000.unk_040.unk_04->unk_0A - 1);
+                ModelAnim_BindTransformCurve(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, -0x10000);
+                ModelAnim_SetFrame(&poke->unk_000, poke->unk_000.unk_040.unk_04->unk_0A - 1);
             } else {
-                Anim_SetChannel(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, 0x10000);
-                Anim_SetChannelBase(&poke->unk_000, poke->unk_26E);
-                InitAnimState(&poke->unk_000);
+                ModelAnim_BindTransformCurve(&poke->unk_000, 0, poke->unk_000.unk_040.unk_04, 0x10000);
+                ModelAnim_SetFrame(&poke->unk_000, poke->unk_26E);
+                ModelAnim_ClearEventTrack(&poke->unk_000);
                 if (poke->unk_24C != -1) {
-                    GraphNode_TriggerSound(&poke->unk_000, poke->unk_24C);
-                    SetAnimStateIndex(&poke->unk_000, poke->unk_26E);
+                    ModelAnim_SetEventTrack(&poke->unk_000, poke->unk_24C);
+                    ModelAnim_SetEventFrame(&poke->unk_000, poke->unk_26E);
                 }
             }
             poke->unk_248++;
@@ -156,7 +156,7 @@ void MiniActor_ProcessAnim(MiniActor* poke) {
 
         case 2:
             if (poke->unk_26C == 0) {
-                if (GraphNode_IsAnimationFinished(&poke->unk_000) != 0) {
+                if (ModelAnim_IsAnimationDone(&poke->unk_000) != 0) {
                     poke->unk_248++;
                 }
             } else {
@@ -168,28 +168,28 @@ void MiniActor_ProcessAnim(MiniActor* poke) {
 
         case 3:
             if (poke->unk_26A != 0) {
-                GraphNode_TriggerAction(&poke->unk_000, 0);
+                ModelAnim_SetAnimation(&poke->unk_000, 0);
             }
             poke->unk_248 = 0;
             break;
     }
 }
 
-void MiniActor_SetAnimToLastFrame(Fragment2_1GraphNode* arg0) {
-    Anim_SetChannelBase(arg0, arg0->unk_040.unk_04->unk_0A - 1);
+void MiniActor_SnapAnimToLastFrame(Fragment2_1GraphNode* arg0) {
+    ModelAnim_SetFrame(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
-void MiniGame_ReadInputs(void) {
+void MiniActor_ReadControllerInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init(); // nothing
+    Input_ResetRepeatState(); // nothing
 }
 
 void hideMiniGameHUD(void) {
     miniShowHUB = 0;
 }
 
-void MiniActor_ResetPosition(MiniActor* actor) {
+void miniActorAllPositionsToZero(MiniActor* actor) {
     actor->position_2.x = 0.0f;
     actor->position_1.x = 0.0f;
     actor->totalPos.x = 0.0f;
@@ -209,7 +209,7 @@ void minigameActorLocalOriginToZero(MiniActor* arg0) {
     arg0->position_1.z = 0.0f;
 }
 
-void MiniActor_ResetLocalOffset(MiniActor* arg0) {
+void miniActorPosition2ToZero(MiniActor* arg0) {
     arg0->position_2.x = 0.0f;
     arg0->position_2.y = 0.0f;
     arg0->position_2.z = 0.0f;
@@ -291,7 +291,7 @@ void miniActorUpdateTransform(MiniActor* poke) {
 }
 
 //  updates an object's collider ?
-void MiniActor_UpdateCollider(MiniActor* arg0) {
+void MiniActor_SyncModelTransform(MiniActor* arg0) {
     arg0->unk_000.unk_030.x = arg0->scale.x;
     arg0->unk_000.unk_030.y = arg0->scale.y;
     arg0->unk_000.unk_030.z = arg0->scale.z;
@@ -305,7 +305,7 @@ void MiniActor_UpdateCollider(MiniActor* arg0) {
     arg0->unk_000.unk_01E.z = arg0->totalRot.z;
 }
 
-void MiniGame_ResetState(void) {
+void miniResetGlobalState(void) {
     s16* ptr = gMiniHudColorDefaults;
 
     minigameInputLock = 0;
@@ -321,8 +321,8 @@ void MiniGame_ResetState(void) {
     D_87903DD0 = 0;
     gMiniCameraNearBackup = 0;
 
-    ResultScreen_Init();
-    Fragment2_1_Init();
+    Widget_PauseMenuInit();
+    Widget_CountdownInit();
 
     gMiniHudColors[0] = ptr[0];
     gMiniHudColors[1] = ptr[1];
@@ -332,7 +332,7 @@ void MiniGame_ResetState(void) {
     miniHudTransparency = 0xFF;
 }
 
-void MiniGame_SaveCameraState(void) {
+void miniSaveCameraState(void) {
     gMiniCameraDistanceBackup = miniCameraDistance;
     gMiniCameraFovBackup = miniCameraFov;
 
@@ -344,7 +344,7 @@ void MiniGame_SaveCameraState(void) {
     gMiniCameraYRotBackup = miniCameraYRot;
 }
 
-void MiniGame_RestoreCameraState(void) {
+void miniRestoreCameraState(void) {
     miniCameraDistance = gMiniCameraDistanceBackup;
     miniCameraFov = gMiniCameraFovBackup;
 

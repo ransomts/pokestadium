@@ -75,7 +75,7 @@ void Trail40GridAlt_Init(s16 arg0) {
     }
 }
 
-void WaterSurface_CalcVertexNormal(s32 arg0, s32 arg1) {
+void Trail40GridAlt_Start(s32 arg0, s32 arg1) {
     f32 sp84;
     f32 sp80;
     f32 sp7C;
@@ -106,13 +106,13 @@ void WaterSurface_CalcVertexNormal(s32 arg0, s32 arg1) {
         sp60 = D_843A06A0.unk_0014[arg0 - 1][arg1].unk_00 - sp6C;
         sp5C = D_843A06A0.unk_0014[arg0 - 1][arg1].unk_04 - sp68;
         sp58 = D_843A06A0.unk_0014[arg0 - 1][arg1].unk_08 - sp64;
-        Math_NormalizeVector(&sp60, &sp5C, &sp58);
+        Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
         sp54 = D_843A06A0.unk_0014[arg0][arg1 - 1].unk_00 - sp6C;
         sp50 = D_843A06A0.unk_0014[arg0][arg1 - 1].unk_04 - sp68;
         sp4C = D_843A06A0.unk_0014[arg0][arg1 - 1].unk_08 - sp64;
-        Math_NormalizeVector(&sp54, &sp50, &sp4C);
-        Math_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
-        Math_NormalizeVector(&sp78, &sp74, &sp70);
+        Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
+        Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
+        Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
         sp84 += sp78;
         sp80 += sp74;
         sp7C += sp70;
@@ -123,13 +123,13 @@ void WaterSurface_CalcVertexNormal(s32 arg0, s32 arg1) {
         sp60 = D_843A06A0.unk_0014[arg0 - 1][arg1].unk_00 - sp6C;
         sp5C = D_843A06A0.unk_0014[arg0 - 1][arg1].unk_04 - sp68;
         sp58 = D_843A06A0.unk_0014[arg0 - 1][arg1].unk_08 - sp64;
-        Math_NormalizeVector(&sp60, &sp5C, &sp58);
+        Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
         sp54 = D_843A06A0.unk_0014[arg0][arg1 + 1].unk_00 - sp6C;
         sp50 = D_843A06A0.unk_0014[arg0][arg1 + 1].unk_04 - sp68;
         sp4C = D_843A06A0.unk_0014[arg0][arg1 + 1].unk_08 - sp64;
-        Math_NormalizeVector(&sp54, &sp50, &sp4C);
-        Math_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
-        Math_NormalizeVector(&sp78, &sp74, &sp70);
+        Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
+        Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
+        Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
         sp84 += sp78;
         sp80 += sp74;
         sp7C += sp70;
@@ -140,13 +140,13 @@ void WaterSurface_CalcVertexNormal(s32 arg0, s32 arg1) {
         sp60 = D_843A06A0.unk_0014[arg0 + 1][arg1].unk_00 - sp6C;
         sp5C = D_843A06A0.unk_0014[arg0 + 1][arg1].unk_04 - sp68;
         sp58 = D_843A06A0.unk_0014[arg0 + 1][arg1].unk_08 - sp64;
-        Math_NormalizeVector(&sp60, &sp5C, &sp58);
+        Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
         sp54 = D_843A06A0.unk_0014[arg0][arg1 - 1].unk_00 - sp6C;
         sp50 = D_843A06A0.unk_0014[arg0][arg1 - 1].unk_04 - sp68;
         sp4C = D_843A06A0.unk_0014[arg0][arg1 - 1].unk_08 - sp64;
-        Math_NormalizeVector(&sp54, &sp50, &sp4C);
-        Math_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
-        Math_NormalizeVector(&sp78, &sp74, &sp70);
+        Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
+        Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
+        Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
         sp84 += sp78;
         sp80 += sp74;
         sp7C += sp70;
@@ -157,13 +157,13 @@ void WaterSurface_CalcVertexNormal(s32 arg0, s32 arg1) {
         sp60 = D_843A06A0.unk_0014[arg0 + 1][arg1].unk_00 - sp6C;
         sp5C = D_843A06A0.unk_0014[arg0 + 1][arg1].unk_04 - sp68;
         sp58 = D_843A06A0.unk_0014[arg0 + 1][arg1].unk_08 - sp64;
-        Math_NormalizeVector(&sp60, &sp5C, &sp58);
+        Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
         sp54 = D_843A06A0.unk_0014[arg0][arg1 + 1].unk_00 - sp6C;
         sp50 = D_843A06A0.unk_0014[arg0][arg1 + 1].unk_04 - sp68;
         sp4C = D_843A06A0.unk_0014[arg0][arg1 + 1].unk_08 - sp64;
-        Math_NormalizeVector(&sp54, &sp50, &sp4C);
-        Math_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
-        Math_NormalizeVector(&sp78, &sp74, &sp70);
+        Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
+        Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
+        Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
         sp84 -= sp78;
         sp80 -= sp74;
         sp7C -= sp70;
@@ -174,7 +174,7 @@ void WaterSurface_CalcVertexNormal(s32 arg0, s32 arg1) {
         if ((sp84 == 0.0) && (sp80 == 0.0) && (sp7C == 0.0)) {
             sp80 = 1.0f;
         } else {
-            Math_NormalizeVector(&sp84, &sp80, &sp7C);
+            Vec3f_NormalizeComponents(&sp84, &sp80, &sp7C);
         }
         D_843A06A0.unk_0014[arg0][arg1].unk_0C = sp84;
         D_843A06A0.unk_0014[arg0][arg1].unk_10 = sp80;
@@ -182,7 +182,7 @@ void WaterSurface_CalcVertexNormal(s32 arg0, s32 arg1) {
     }
 }
 
-void WaterSurface_PackVertex(WaterSurfaceVertex* arg0, Vtx* arg1) {
+void Trail40GridAlt_FillVertex(WaterSurfaceVertex* arg0, Vtx* arg1) {
     f32 r;
     f32 g;
     f32 b;
@@ -244,7 +244,7 @@ s32 Trail40GridAlt_IsComplete(void) {
 
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            WaterSurface_CalcVertexNormal(i, j);
+            Trail40GridAlt_Start(i, j);
         }
     }
 
@@ -268,8 +268,8 @@ void Trail40GridAlt_Reset(void) {
     f32 temp_fv0;
     f32 temp_fv1;
 
-    D_843A06A0.unk_0010 = GfxAlloc(sizeof(Mtx) * 1);
-    temp_v0 = GetBattleCamera();
+    D_843A06A0.unk_0010 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    temp_v0 = BattleAnim_GetCameraContext();
 
     tmp4 = temp_v0->unk_60.at.x;
     tmp5 = temp_v0->unk_60.at.y;
@@ -284,7 +284,7 @@ void Trail40GridAlt_Reset(void) {
     sp64 = tmp5 - tmp2;
     sp60 = tmp6 - tmp3;
 
-    Math_NormalizeVector(&sp68, &sp64, &sp60);
+    Vec3f_NormalizeComponents(&sp68, &sp64, &sp60);
 
     temp_fv0 = sp5C / 30.0f;
     temp_fv1 = (140.0f * sp68) / temp_fv0;
@@ -311,13 +311,13 @@ Gfx* Trail40GridAlt_Draw(Gfx* arg0) {
     s32 idx;
 
     var_s4 = 0;
-    D_843A06A0.unk_000C = GfxAlloc(sizeof(Vtx) * 16 * 16);
+    D_843A06A0.unk_000C = Gfx_AllocDisplayList(sizeof(Vtx) * 16 * 16);
 
     vtx = D_843A06A0.unk_000C;
     var_s2 = &D_843A06A0.unk_0014[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            WaterSurface_PackVertex(var_s2, vtx);
+            Trail40GridAlt_FillVertex(var_s2, vtx);
             var_s2++;
             vtx++;
         }
@@ -325,7 +325,7 @@ Gfx* Trail40GridAlt_Draw(Gfx* arg0) {
 
     Trail40GridAlt_Reset();
 
-    gDPLoadTextureBlock(arg0++, gWaterTexture[0x48], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock(arg0++, gBattleAnimAssetPointers[0x48], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     gSPDisplayList(arg0++, D_84389588);
     gDPSetPrimColor(arg0++, 0, 0, 255, 255, 255, D_843A06A0.unk_0004);

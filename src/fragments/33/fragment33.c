@@ -80,7 +80,7 @@ static Gfx D_81303DD8[] = {
 
 static u32 D_81303EC0[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_81303D18, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, GraphNode_RenderMenu, D_81303DD8, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, TransferPak_RenderPortNodeCallback, D_81303DD8, 0x06000000, 0x01000000,
 };
 
 static u32 D_81303EF4[] = {
@@ -97,7 +97,7 @@ static Color_RGB8 gGradientColor = { 0x64, 0x1E, 0x1E };
 static s32 pad_D_81303F18 = 0;
 static u8* gBgTextureSequence[] = { D_3000008, D_03000FD0, D_03001F98, D_03002F60, D_03003F28 };
 
-s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1) {
+s32 TransferPak_RenderPortNodeCallback(s32 arg0, GraphNode* arg1) {
     s32 idx;
 
     if (arg0 == 5) {
@@ -118,20 +118,20 @@ s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1) {
             gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(D_81303EF4[gEntryGraphNodes[idx].unk_002]));
             gSPDisplayList(gDisplayListHead++, arg1->unk_14);
         }
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 GetPlayerNameLength(void) {
+s32 TransferPak_GetPresentationMode(void) {
     PlayerName sp18;
 
-    GbsEnsureBankLoaded(2);
-    GbsGetPlayerName(&sp18);
+    Save_EnsureBankLoaded(2);
+    Save_GetOptions(&sp18);
     return sp18.unk_00;
 }
 
-void StartEntrySelection(void) {
+void TransferPak_LaunchSelectedPortAnim(void) {
     if (gSelectedEntryIndex >= 0) {
         gEntryGraphNodes[gSelectedEntryIndex].unk_000 = 1;
         gEntryGraphNodes[gSelectedEntryIndex].unk_020 = -gEntryGraphNodes[gSelectedEntryIndex].unk_028.unk_024.x / 20.0f;
@@ -140,13 +140,13 @@ void StartEntrySelection(void) {
     }
 }
 
-s32 GetEntryStatus(s32 arg0) {
+s32 TransferPak_GetPortErrorCode(s32 arg0) {
     unk_D_81303FA8* ptr = &gEntryStatus[arg0];
     s32 var_v1;
 
     if (ptr->unk_01 != 0) {
         if (ptr->unk_00 == 0) {
-            if (MenuItem_IsPokemonShiny(arg0) == 0) {
+            if (GbSave_HasPokedex(arg0) == 0) {
                 var_v1 = 0x16;
             } else if (ptr->unk_03 != 0) {
                 var_v1 = 0;
@@ -166,10 +166,10 @@ s32 GetEntryStatus(s32 arg0) {
     return var_v1;
 }
 
-s32 GetEntryMenuOption(s32 arg0) {
+s32 TransferPak_GetPortMessageIndex(s32 arg0) {
     UNUSED s32 pad;
     s32 sp18 = 0;
-    s32 temp_v0 = GetEntryStatus(arg0);
+    s32 temp_v0 = TransferPak_GetPortErrorCode(arg0);
 
     if (gCurrentGameState == 0x25) {
         if (temp_v0 & 0x10) {
@@ -197,7 +197,7 @@ s32 GetEntryMenuOption(s32 arg0) {
     return sp18;
 }
 
-void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
+void TransferPak_DrawPortBox(s32 arg0, s32 arg1, s32 arg2) {
     s16 tmp2;
     s16 tmp1;
 
@@ -207,40 +207,40 @@ void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
         tmp1 = 0xFF;
     }
 
-    if (GetEntryMenuOption(arg0) == 0) {
-        DrawBorderedPanel(arg1, arg2, 0x78, 0x38, 0x1E, 0x1E, 0x82, tmp1);
+    if (TransferPak_GetPortMessageIndex(arg0) == 0) {
+        TransferPak_DrawPromptPanel(arg1, arg2, 0x78, 0x38, 0x1E, 0x1E, 0x82, tmp1);
     } else {
-        DrawBorderedPanel(arg1, arg2, 0x78, 0x38, 0x64, 0x1E, 0x1E, tmp1);
+        TransferPak_DrawPromptPanel(arg1, arg2, 0x78, 0x38, 0x64, 0x1E, 0x1E, tmp1);
     }
 
-    if ((arg0 == gSelectedEntryIndex) && (gIsEntrySelectionActive == 1) && (GetEntryMenuOption(arg0) > 0)) {
-        DrawGradientPanel(arg1 - 4, arg2 + 0x9C, 0x80, 0x74, &gGradientColor, &gGradientColor);
+    if ((arg0 == gSelectedEntryIndex) && (gIsEntrySelectionActive == 1) && (TransferPak_GetPortMessageIndex(arg0) > 0)) {
+        Ui_DrawGradientPanel(arg1 - 4, arg2 + 0x9C, 0x80, 0x74, &gGradientColor, &gGradientColor);
         tmp1 = arg1 + 0x28;
         tmp2 = (SINS(gMenuAnimTimer * 2) * 2) + (arg2 + 0x8C);
         TransferPak_DrawSpinningPakIcon(D_3006060, tmp1, tmp2, 0x30, 0x10, 1.0f);
     }
 
-    Text_ResetState();
+    Font_BeginTranslucentTextRendering();
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_SetFont(8, 0);
-    Text_SetLineHeight(0x18);
+    Font_SetActive(8, 0);
+    Font_SetLineHeight(0x18);
 
     if ((arg0 == gSelectedEntryIndex) && (gIsEntrySelectionActive == 1)) {
-        switch (GetEntryMenuOption(arg0)) {
+        switch (TransferPak_GetPortMessageIndex(arg0)) {
             case 1:
-                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, gEntryMessageBank, 0xE));
+                Font_Printf(arg1 + 5, arg2 + 0xAC, Text_GetString(NULL, 0, gEntryMessageBank, 0xE));
                 break;
 
             case 2:
-                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, gEntryMessageBank, 0xF));
+                Font_Printf(arg1 + 5, arg2 + 0xAC, Text_GetString(NULL, 0, gEntryMessageBank, 0xF));
                 break;
 
             case 3:
-                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, gEntryMessageBank, 0x10));
+                Font_Printf(arg1 + 5, arg2 + 0xAC, Text_GetString(NULL, 0, gEntryMessageBank, 0x10));
                 break;
 
             case 4:
-                Text_Print(arg1 + 5, arg2 + 0xAC, GetMessageString(NULL, 0, gEntryMessageBank, 0x11));
+                Font_Printf(arg1 + 5, arg2 + 0xAC, Text_GetString(NULL, 0, gEntryMessageBank, 0x11));
                 break;
         }
     }
@@ -248,20 +248,20 @@ void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     if (gEntryStatus[arg0].unk_00 == 0) {
-        Text_SetFont(8, 0);
-        Text_Print((arg1 - (MeasureTextWidth(0, 0, gEntryStatus[arg0].unk_08) / 2)) + 0x3C, arg2 + 0xA,
+        Font_SetActive(8, 0);
+        Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, gEntryStatus[arg0].unk_08) / 2)) + 0x3C, arg2 + 0xA,
                       gEntryStatus[arg0].unk_08);
-        Text_SetFont(4, 0);
+        Font_SetActive(4, 0);
         sprintf(gEntryIdBuffer, "ID %05d", gEntryStatus[arg0].unk_06);
-        Text_Print((arg1 - (MeasureTextWidth(0, 0, gEntryIdBuffer) / 2)) + 0x3C, arg2 + 0x1E, gEntryIdBuffer);
+        Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, gEntryIdBuffer) / 2)) + 0x3C, arg2 + 0x1E, gEntryIdBuffer);
     } else if (gEntryStatus[arg0].unk_00 != 1) {
-        Text_SetFont(8, 0);
-        Text_Print((arg1 - (MeasureTextWidth(0, 0, "?????") / 2)) + 0x3C, arg2 + 0xA, "?????");
-        Text_SetFont(4, 0);
-        Text_Print((arg1 - (MeasureTextWidth(0, 0, "ID ?????") / 2)) + 0x3C, arg2 + 0x1E, "ID ?????");
+        Font_SetActive(8, 0);
+        Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, "?????") / 2)) + 0x3C, arg2 + 0xA, "?????");
+        Font_SetActive(4, 0);
+        Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, "ID ?????") / 2)) + 0x3C, arg2 + 0x1E, "ID ?????");
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
 void TransferPak_DrawSpinningPakIcon(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5) {
@@ -304,7 +304,7 @@ void TransferPak_DrawSpinningPakIcon(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16
     gDisplayListHead = gfx;
 }
 
-void UpdatePulseAlpha(void) {
+void TransferPak_UpdatePulseAlpha(void) {
     static s16 D_81303F30 = 0;
     static u16 D_81303F34[] = { 0, 0x6400, 0, 0xFF00 };
 
@@ -321,7 +321,7 @@ void UpdatePulseAlpha(void) {
     }
 }
 
-void DrawTextureRectFlipped(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s16 arg6) {
+void TransferPak_DrawPulsingGuideIcon(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s16 arg6) {
     Gfx* gfx = gDisplayListHead;
     u16 tmpa1;
     u16 tmpa2;
@@ -365,7 +365,7 @@ void DrawTextureRectFlipped(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f3
     }
 }
 
-void DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void TransferPak_DrawPromptPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 temp_a2;
     s16 temp_s0_32;
     s16 var_s2;
@@ -400,80 +400,80 @@ void DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5,
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_20288E0, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028960, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_20287E0, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3, 0x4000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028860, G_IM_FMT_I, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x4000 / var_s3,
                   0x4000 / var_s2, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((temp_a2 > 0) && (temp_s0_32 > 0)) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0, arg1 + var_s3, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1 + var_s3 + temp_s0_32, temp_a2, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, temp_a2, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s3, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1 + var_s3 + temp_s0_32, temp_a2, var_s2, arg4, arg5, arg6, arg7);
     } else if (temp_a2 > 0) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, temp_a2, arg3, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, temp_a2, arg3, arg4, arg5, arg6, arg7);
     } else if (temp_s0_32 > 0) {
-        Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s2, arg2, temp_s0_32, arg4, arg5, arg6, arg7);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void RenderMenuScreen(void) {
+void TransferPak_DrawPortSelectOverlay(void) {
     static s32 D_81303F3C = 0;
 
-    UpdatePulseAlpha();
+    TransferPak_UpdatePulseAlpha();
 
     if (gCurrentGameState == 0x25) {
         TransferPak_DrawSpinningPakIcon(gBgTextureSequence[D_81303F3C], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
         D_81303F3C = (D_81303F3C + 1) % 5;
-        DrawTextureRectFlipped(D_30055B0, 0x98, 0xEE, 0x20, 0x23, 2.0f, 1);
-        DrawTextureRectFlipped(D_3004EF0, 0xC2, 0x100, 0x28, 0x2B, 2.0f, 1);
-        DrawTextureRectFlipped(D_30055B0, 0x1AA, 0xEE, 0x20, 0x23, 2.0f, -1);
-        DrawTextureRectFlipped(D_3004EF0, 0x172, 0xFC, 0x28, 0x2B, 2.0f, -1);
-        DrawTextureRectFlipped(D_3005A18, 0x102, 0xAC, 0x40, 0x19, 2.0f, 1);
+        TransferPak_DrawPulsingGuideIcon(D_30055B0, 0x98, 0xEE, 0x20, 0x23, 2.0f, 1);
+        TransferPak_DrawPulsingGuideIcon(D_3004EF0, 0xC2, 0x100, 0x28, 0x2B, 2.0f, 1);
+        TransferPak_DrawPulsingGuideIcon(D_30055B0, 0x1AA, 0xEE, 0x20, 0x23, 2.0f, -1);
+        TransferPak_DrawPulsingGuideIcon(D_3004EF0, 0x172, 0xFC, 0x28, 0x2B, 2.0f, -1);
+        TransferPak_DrawPulsingGuideIcon(D_3005A18, 0x102, 0xAC, 0x40, 0x19, 2.0f, 1);
     }
 
     if (gSelectedEntryIndex >= 0) {
-        DrawBorderedPanel(0x38, 0x19A, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x80);
-        Text_ResetState();
-        Text_SetFont(0x10, 0);
-        Text_Print(0x132 - (MeasureTextWidth(0, 0, GetMessageString(NULL, 0, gEntryMessageBank, 0x12)) / 2), 0x1A1,
-                      GetMessageString(NULL, 0, gEntryMessageBank, 0x12));
-        Text_SetupDL();
-        DrawEntryPanel(0, 0x38, 0x2E);
-        DrawEntryPanel(1, 0xBC, 0x2E);
-        DrawEntryPanel(2, 0x140, 0x2E);
-        DrawEntryPanel(3, 0x1C4, 0x2E);
+        TransferPak_DrawPromptPanel(0x38, 0x19A, 0x210, 0x28, 0x1E, 0x1E, 0x82, 0x80);
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(0x10, 0);
+        Font_Printf(0x132 - (Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gEntryMessageBank, 0x12)) / 2), 0x1A1,
+                      Text_GetString(NULL, 0, gEntryMessageBank, 0x12));
+        Font_EndTexturedTextRendering();
+        TransferPak_DrawPortBox(0, 0x38, 0x2E);
+        TransferPak_DrawPortBox(1, 0xBC, 0x2E);
+        TransferPak_DrawPortBox(2, 0x140, 0x2E);
+        TransferPak_DrawPortBox(3, 0x1C4, 0x2E);
         if (gIsEntrySelectionActive == 1) {
-            DrawStatusIcon((SINS(gMenuAnimTimer) * 5.0f) + ((gSelectedEntryIndex * 0x84) + 0x38), 0x7E);
+            Ui_DrawTextureMarker((SINS(gMenuAnimTimer) * 5.0f) + ((gSelectedEntryIndex * 0x84) + 0x38), 0x7E);
         }
     } else {
-        DrawBorderedPanel(0x46, 0x146, 0x1F4, 0x78, 0x82, 0x1E, 0x1E, 0x80);
-        Text_ResetState();
-        Text_SetFont(0x10, 0);
-        Text_SetLineHeight(0x1C);
-        Text_Print(0x5A, 0x15A, GetMessageString(NULL, 0, gEntryMessageBank, 0x13));
-        Text_SetupDL();
+        TransferPak_DrawPromptPanel(0x46, 0x146, 0x1F4, 0x78, 0x82, 0x1E, 0x1E, 0x80);
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(0x10, 0);
+        Font_SetLineHeight(0x1C);
+        Font_Printf(0x5A, 0x15A, Text_GetString(NULL, 0, gEntryMessageBank, 0x13));
+        Font_EndTexturedTextRendering();
     }
     gMenuAnimTimer += 0xB80;
 }
 
-void HandleEntryNavigation(void) {
+void TransferPak_MovePortCursor(void) {
     if (gIsEntrySelectionActive == 0) {
         return;
     }
@@ -484,7 +484,7 @@ void HandleEntryNavigation(void) {
         while (true) {
             gSelectedEntryIndex = (gSelectedEntryIndex + 3) % 4;
 
-            if (gEntryStatus[gSelectedEntryIndex].unk_01 != 0 || GetEntryMenuOption(gSelectedEntryIndex) > 0) {
+            if (gEntryStatus[gSelectedEntryIndex].unk_01 != 0 || TransferPak_GetPortMessageIndex(gSelectedEntryIndex) > 0) {
                 break;
             }
         }
@@ -492,7 +492,7 @@ void HandleEntryNavigation(void) {
         while (true) {
             gSelectedEntryIndex = (gSelectedEntryIndex + 1) % 4;
 
-            if (gEntryStatus[gSelectedEntryIndex].unk_01 != 0 || GetEntryMenuOption(gSelectedEntryIndex) > 0) {
+            if (gEntryStatus[gSelectedEntryIndex].unk_01 != 0 || TransferPak_GetPortMessageIndex(gSelectedEntryIndex) > 0) {
                 break;
             }
         }
@@ -500,11 +500,11 @@ void HandleEntryNavigation(void) {
 
     if (gSelectedEntryIndex != gPrevSelectedEntryIndex) {
         gMenuAnimTimer = 0;
-        PlaySoundEffect(0x25);
+        Audio_PlaySoundEffectById(0x25);
     }
 }
 
-void HandleEntryConfirmCancel(void) {
+void TransferPak_HandlePortSelectInput(void) {
     s32 var_v0;
 
     if (gIsEntrySelectionActive > 0) {
@@ -514,34 +514,34 @@ void HandleEntryConfirmCancel(void) {
                 var_v0 = 1;
             }
 
-            if ((var_v0 == 0) && (GetEntryMenuOption(gSelectedEntryIndex) != 1)) {
+            if ((var_v0 == 0) && (TransferPak_GetPortMessageIndex(gSelectedEntryIndex) != 1)) {
                 if (gCurrentGameState == 0x25) {
-                    PlaySoundEffect(0x2A);
+                    Audio_PlaySoundEffectById(0x2A);
                 } else {
-                    PlaySoundEffect(0x2B);
+                    Audio_PlaySoundEffectById(0x2B);
                 }
                 gEntryConfirmState = 1;
-                StartEntrySelection();
+                TransferPak_LaunchSelectedPortAnim();
             } else {
-                PlaySoundEffect(8);
+                Audio_PlaySoundEffectById(8);
             }
         } else if ((gPlayer1Controller->buttonPressed & 0x4000) && (gEntryConfirmState != 2)) {
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
             gEntryConfirmState = 2;
         } else if (gSelectedEntryIndex >= 0) {
-            HandleEntryNavigation();
+            TransferPak_MovePortCursor();
         }
     }
 }
 
-void Menu_InitInput(void) {
+void TransferPak_PollInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
 void TransferPak_DrawFrame(s32 arg0) {
-    Stage_BeginDisplayList();
+    BgStage_DrawFrame();
     if (gCurrentGameState == 0x25) {
         Gfx_DrawBackgroundGrid(gMenuMiscAssets);
     } else {
@@ -549,15 +549,15 @@ void TransferPak_DrawFrame(s32 arg0) {
     }
 
     if (arg0 != 0) {
-        HandleEntryConfirmCancel();
+        TransferPak_HandlePortSelectInput();
     }
 
-    RenderMenuScreen();
-    Graph_SetTextureState(D_8130464C);
-    Stage_Advance();
+    TransferPak_DrawPortSelectOverlay();
+    Geo_RenderRootNode(D_8130464C);
+    BgStage_AdvanceFrame();
 }
 
-void Menu_UpdateEntryData(void) {
+void TransferPak_ScanAllPorts(void) {
     s32 i;
     u8 temp_s3;
     Gen1StringDecodeBuffer sp48;
@@ -565,25 +565,25 @@ void Menu_UpdateEntryData(void) {
     temp_s3 = Cont_GetControllerBits();
 
     for (i = 0; i < 4; i++) {
-        Controller_ReadInput(i, &sp48);
-        DecodeGen1StringToBuffer(gEntryStatus[i].unk_08, sp48.unk_02);
+        GbSave_CopyPlayerIdentity(i, &sp48);
+        Text_UntranscodeNameWrapper(gEntryStatus[i].unk_08, sp48.unk_02);
         gEntryStatus[i].unk_06 = sp48.unk_00;
-        gEntryStatus[i].unk_01 = MenuItem_GetHeldItemId(i);
-        gEntryStatus[i].unk_00 = MenuItem_GetPokemonSpecies(i);
-        gEntryStatus[i].unk_03 = MenuItem_GetPokemonGender(i);
+        gEntryStatus[i].unk_01 = GbSave_GetPortGame(i);
+        gEntryStatus[i].unk_00 = GbSave_GetSaveState(i);
+        gEntryStatus[i].unk_03 = GbSave_SavedAtPokemonCenter(i);
         gEntryStatus[i].unk_04 = (temp_s3 & (1 << i)) != 0;
-        gEntryStatus[i].unk_02 = MenuItem_GetPokemonLevel(i);
+        gEntryStatus[i].unk_02 = GbSave_GetPartyCount(i);
     }
 }
 
-void Menu_SelectDefaultEntry(void) {
+void TransferPak_AutoSelectPort(void) {
     s32 i;
-    s32 sp28 = GetActivePlayerMask();
+    s32 sp28 = GbSave_GetPresentPortMask();
     s32 var_s1 = 0;
 
     if (sp28 == 0) {
         for (i = 0; i < 4; i++) {
-            if (GetEntryMenuOption(i) == 1) {
+            if (TransferPak_GetPortMessageIndex(i) == 1) {
                 var_s1++;
             }
         }
@@ -594,11 +594,11 @@ void Menu_SelectDefaultEntry(void) {
         return;
     }
 
-    gSelectedEntryIndex = GetCurrentPokemonBank();
+    gSelectedEntryIndex = GbSave_GetActivePort();
 
     if (sp28 == 0) {
         gSelectedEntryIndex = 0;
-        while (GetEntryMenuOption(gSelectedEntryIndex) != 1) {
+        while (TransferPak_GetPortMessageIndex(gSelectedEntryIndex) != 1) {
             gSelectedEntryIndex++;
         }
     } else if ((gSelectedEntryIndex == -1) || (gEntryStatus[gSelectedEntryIndex].unk_01 == 0)) {
@@ -609,7 +609,7 @@ void Menu_SelectDefaultEntry(void) {
     }
 }
 
-void Menu_UpdateEntryAnimations(void) {
+void TransferPak_AnimatePortModels(void) {
     static s16 D_81303F40[] = { 0x5C0, 0x680, 0x580, 0 };
 
     f32 var_fv0;
@@ -674,26 +674,26 @@ void Menu_UpdateEntryAnimations(void) {
     }
 }
 
-s32 Menu_RunScreen(s32 arg0) {
+s32 TransferPak_PortSelectLoop(s32 arg0) {
     s32 var_s0 = 1;
     s32 var_s1 = 0;
     s32 i;
 
-    Stage_FadeIn(8);
+    StageFade_StartFromOpaque(8);
 
-    while (Stage_GetFadeState() != 0) {
-        Menu_InitInput();
-        Menu_UpdateEntryAnimations();
+    while (StageContext_GetFadeMode() != 0) {
+        TransferPak_PollInput();
+        TransferPak_AnimatePortModels();
         TransferPak_DrawFrame(0);
     }
 
     if (arg0 == 1) {
-        ResultScreen_SetAnimation(9);
+        Audio_StartMusicTrack(9);
     }
 
     while (var_s0 != 0) {
-        Menu_InitInput();
-        Menu_UpdateEntryAnimations();
+        TransferPak_PollInput();
+        TransferPak_AnimatePortModels();
         TransferPak_DrawFrame(1);
 
         if (gEntryConfirmState > 0) {
@@ -708,22 +708,22 @@ s32 Menu_RunScreen(s32 arg0) {
 
     if (var_s1 != -1) {
         for (i = 0; i < 20; i++) {
-            Menu_InitInput();
-            Menu_UpdateEntryAnimations();
+            TransferPak_PollInput();
+            TransferPak_AnimatePortModels();
             TransferPak_DrawFrame(1);
         }
     }
 
     if ((arg0 == 1) && (var_s1 == -1)) {
-        Stage_SetFadeColor(0x20);
+        Audio_FadeOutAll(0x20);
     }
 
-    Stage_SetFillColor(1);
-    Stage_FadeOut(8);
+    StageContext_SetClearColor(1);
+    StageFade_StartFromTransparent(8);
 
-    while (Stage_GetFadeState() != 1) {
-        Menu_InitInput();
-        Menu_UpdateEntryAnimations();
+    while (StageContext_GetFadeMode() != 1) {
+        TransferPak_PollInput();
+        TransferPak_AnimatePortModels();
         TransferPak_DrawFrame(0);
     }
 
@@ -734,7 +734,7 @@ s32 Menu_RunScreen(s32 arg0) {
     return var_s1;
 }
 
-void Menu_InitEntryNodes(void) {
+void TransferPak_InitPortModels(void) {
     static s16 D_81303F48[] = { 1, 2, 0, 3 };
 
     Fragment2_1GraphNode* ptr;
@@ -747,12 +747,12 @@ void Menu_InitEntryNodes(void) {
         temp_s1 = D_81303F48[i];
         ptr = &gEntryGraphNodes[temp_s1].unk_028;
 
-        Graph_AddToRootList0(ptr);
-        Vec3f_Set(&ptr->unk_024, ((temp_s1 * 0x84) + 0x7A) - 320.0f, 64.0f, -579.0f);
+        ModelRenderer_AttachDisplayObject(ptr);
+        Vec3f_SetComponentsDuplicate(&ptr->unk_024, ((temp_s1 * 0x84) + 0x7A) - 320.0f, 64.0f, -579.0f);
         gEntryGraphNodes[temp_s1].unk_002 = temp_s1;
         gEntryGraphNodes[temp_s1].unk_000 = 0;
 
-        switch (MenuItem_GetHeldItemId(temp_s1)) {
+        switch (GbSave_GetPortGame(temp_s1)) {
             case 1:
                 gEntryGraphNodes[temp_s1].unk_01C = D_201E420;
                 break;
@@ -771,37 +771,37 @@ void Menu_InitEntryNodes(void) {
 
             default:
                 gEntryGraphNodes[temp_s1].unk_01C = NULL;
-                if (GetEntryMenuOption(temp_s1) > 0) {
+                if (TransferPak_GetPortMessageIndex(temp_s1) > 0) {
                     gEntryGraphNodes[temp_s1].unk_01C = D_3006668;
                 }
                 break;
         }
 
-        GraphNode_InitChild(ptr, 0, 0, gMenuGeoNode);
+        Model_InitDisplayObject(ptr, 0, 0, gMenuGeoNode);
         ptr->unk_000.unk_14 = temp_s1;
     }
 }
 
-void Menu_InitGeo(void) {
-    MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
+void TransferPak_InitScene(void) {
+    MemoryBlock* sp1C = MainPool_AllocState(main_pool_get_available(), 0);
 
     D_8130464C = process_geo_layout(sp1C, &D_81303CB4);
     gMenuGeoNode = process_geo_layout(sp1C, &D_81303EC0);
-    mem_pool_resize_block(sp1C);
-    Graph_InitRoots();
-    Menu_InitEntryNodes();
+    MainPool_FinalizeAllocation(sp1C);
+    ModelRenderer_InitDisplayRoots();
+    TransferPak_InitPortModels();
     gIsEntrySelectionActive = 1;
 }
 
-s32 Menu_EntrySelection_Init(s32 arg0, UNUSED s32 arg1) {
+s32 TransferPak_SelectMain(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
     s32 sp20;
 
     main_pool_push_state('GBSL');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    Text_Init(0x1C, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    Font_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_8000000, _6EC4D0, 0);
@@ -811,21 +811,21 @@ s32 Menu_EntrySelection_Init(s32 arg0, UNUSED s32 arg1) {
 
     FRAGMENT_LOAD(fragment31);
 
-    AssetManager_LoadArchives();
-    SpriteAssets_Load();
-    Menu_UpdateEntryData();
-    Menu_SelectDefaultEntry();
-    MessageBank_Init();
-    gEntryMessageBank = GetMessageBank(0x1F);
-    Menu_InitGeo();
-    gPlayerNameLength = GetPlayerNameLength();
+    PokeIcon_OpenModelArchives();
+    PokeIcon_OpenModelArchive();
+    TransferPak_ScanAllPorts();
+    TransferPak_AutoSelectPort();
+    Text_InitStringTables();
+    gEntryMessageBank = Text_GetStringTable(0x1F);
+    TransferPak_InitScene();
+    gPlayerNameLength = TransferPak_GetPresentationMode();
 
     gMenuMiscAssets = ASSET_LOAD(0, fragment33_misc, 0);
 
-    Stage_Set(sp24);
-    sp20 = Menu_RunScreen(arg0);
-    Stage_Destroy();
-    Gfx_FreeBuffers();
+    StageContext_Activate(sp24);
+    sp20 = TransferPak_PortSelectLoop(arg0);
+    StageContext_Deactivate();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('GBSL');
 

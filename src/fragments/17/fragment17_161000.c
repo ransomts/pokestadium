@@ -1,7 +1,7 @@
 #include "fragment17.h"
 #include "src/F420.h"
 
-u16 IsPointInSector(CameraStruct* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
+u16 Diorama_IsModelInCameraCone(CameraStruct* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5) {
     UNUSED s32 pad[6];
     f32 sp6C;
     f32 sp68;
@@ -20,7 +20,7 @@ u16 IsPointInSector(CameraStruct* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s1
     f32 sp38;
     s32 sp34 = 0;
 
-    Matrix_Decompose(&arg0->unk_60.at, &arg0->unk_60.eye, &sp48, &sp46, &sp44);
+    Vec3f_CalculateDistanceAngles(&arg0->unk_60.at, &arg0->unk_60.eye, &sp48, &sp46, &sp44);
     sp40 = (COSS(sp44 + 0x8000) * arg5) + arg0->unk_60.eye.z;
     sp38 = (SINS(sp44 + 0x8000) * arg5) + arg0->unk_60.eye.x;
 
@@ -47,36 +47,36 @@ u16 IsPointInSector(CameraStruct* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s1
     return sp34;
 }
 
-void SetCameraOrientationParams(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void DioramaCamKeyframe_SetAngles(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_0C = arg1;
     arg0->unk_0E = arg2;
     arg0->unk_20 = arg3;
     arg0->unk_22 = arg4;
 }
 
-void SetCameraFov(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
+void DioramaCamKeyframe_SetDistance(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
     arg0->unk_18 = arg1;
     arg0->unk_2C = arg2;
 }
 
-void SetCameraEyeAngles(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void DioramaCamKeyframe_SetAtAngles(unk_D_86B0E5D4_04* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_12 = arg1;
     arg0->unk_14 = arg2;
     arg0->unk_26 = arg3;
     arg0->unk_28 = arg4;
 }
 
-void SetCameraTargetFov(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
+void DioramaCamKeyframe_SetAtDistance(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
     arg0->unk_1C = arg1;
     arg0->unk_30 = arg2;
 }
 
-void SetCameraSmoothing(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
+void DioramaCamKeyframe_SetTransitionSpeed(unk_D_86B0E5D4_04* arg0, f32 arg1, f32 arg2) {
     arg0->unk_34 = arg1;
     arg0->unk_38 = arg2;
 }
 
-void InitCameraFromConfig(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
+void Diorama_LoadCameraKeyframe(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
     unk_D_86B0E5D4_04* ptr = &arg1->unk_04;
     CameraStruct* ptr2 = arg1->unk_00;
     f32 sp34;
@@ -98,21 +98,21 @@ void InitCameraFromConfig(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
     sp2C = arg0->unk_10;
     sp28 = arg0->unk_24;
 
-    SetCameraOrientationParams(ptr, arg0->unk_00, arg0->unk_02, arg0->unk_14, arg0->unk_16);
-    SetCameraFov(ptr, sp34, sp30);
-    SetCameraEyeAngles(ptr, arg0->unk_06, arg0->unk_08, arg0->unk_1A, arg0->unk_1C);
-    SetCameraTargetFov(ptr, sp2C, sp28);
-    SetCameraSmoothing(ptr, arg0->unk_28, arg0->unk_2C);
+    DioramaCamKeyframe_SetAngles(ptr, arg0->unk_00, arg0->unk_02, arg0->unk_14, arg0->unk_16);
+    DioramaCamKeyframe_SetDistance(ptr, sp34, sp30);
+    DioramaCamKeyframe_SetAtAngles(ptr, arg0->unk_06, arg0->unk_08, arg0->unk_1A, arg0->unk_1C);
+    DioramaCamKeyframe_SetAtDistance(ptr, sp2C, sp28);
+    DioramaCamKeyframe_SetTransitionSpeed(ptr, arg0->unk_28, arg0->unk_2C);
 }
 
-void ApplyCameraViewParameters(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
+void Diorama_SetCameraToKeyframeStart(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
     CameraStruct* sp2C = arg1->unk_00;
 
-    Camera_SetViewParameters(&arg0->unk_00, &sp2C->unk_60.at, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
-    Camera_SetViewParameters(&sp2C->unk_60.at, &sp2C->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
+    Camera_ComputeEyeFromAngles(&arg0->unk_00, &sp2C->unk_60.at, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
+    Camera_ComputeEyeFromAngles(&sp2C->unk_60.at, &sp2C->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 }
 
-s32 UpdateCameraTransition(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
+s32 Diorama_UpdateCameraKeyframe(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
     CameraStruct* temp_s2 = arg1->unk_00;
     Vec3f sp58;
     Vec3f sp4C;
@@ -124,17 +124,17 @@ s32 UpdateCameraTransition(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
     if (arg0->unk_3C != 255.0f) {
         temp_s2->unk_24.fovy = arg0->unk_3C;
     } else {
-        Math_ApproachFloat(&temp_s2->unk_24.fovy, 30.0f, 0.06f);
+        Math_EaseTowardF(&temp_s2->unk_24.fovy, 30.0f, 0.06f);
     }
 
-    Camera_SetViewParameters(&arg0->unk_00, &sp58, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
-    Camera_SetViewParameters(&arg0->unk_00, &sp4C, arg0->unk_2C, arg0->unk_20, arg0->unk_22);
-    Matrix_Decompose(&sp58, &sp4C, &sp3C, &sp3A, &sp38);
+    Camera_ComputeEyeFromAngles(&arg0->unk_00, &sp58, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
+    Camera_ComputeEyeFromAngles(&arg0->unk_00, &sp4C, arg0->unk_2C, arg0->unk_20, arg0->unk_22);
+    Vec3f_CalculateDistanceAngles(&sp58, &sp4C, &sp3C, &sp3A, &sp38);
 
-    arg1->unk_04.unk_68 = Math_ApproachF32(arg1->unk_04.unk_68, sp3C, arg0->unk_34, arg0->unk_34);
+    arg1->unk_04.unk_68 = Math_StepToF(arg1->unk_04.unk_68, sp3C, arg0->unk_34, arg0->unk_34);
 
-    Camera_SetViewParameters(&sp58, &temp_s2->unk_60.at, arg1->unk_04.unk_68, sp3A, sp38);
-    Camera_SetViewParameters(&temp_s2->unk_60.at, &temp_s2->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
+    Camera_ComputeEyeFromAngles(&sp58, &temp_s2->unk_60.at, arg1->unk_04.unk_68, sp3A, sp38);
+    Camera_ComputeEyeFromAngles(&temp_s2->unk_60.at, &temp_s2->unk_60.eye, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 
     arg1->unk_04.unk_6C = sp3C - arg1->unk_04.unk_68;
     if (arg1->unk_04.unk_6C <= 5.0f) {

@@ -97,7 +97,7 @@ static s32 pad_D_86808488[2];
 static CameraStruct* gSushiCamera;
 unk_D_86808498 gSushiWorldOrientation;
 
-void Sushi_UpdateScale(unk_D_86807558* arg0) {
+void SushiGame_UpdateNameTagPulse(unk_D_86807558* arg0) {
     Fragment2_1GraphNode* ptr = &arg0->unk_24C;
 
     if (arg0->unk_0DC != 0) {
@@ -115,14 +115,14 @@ void Sushi_UpdateScale(unk_D_86807558* arg0) {
     }
 }
 
-void Sushi_Render(s32 arg0, UNUSED s32 arg1) {
+void SushiGame_NameTagGeoCallback(s32 arg0, UNUSED s32 arg1) {
     UNUSED s32 pad;
     s32 idx;
 
     switch (arg0) {
         case 2:
             idx = gDefaultGraphRoot->unk_000.unk_14;
-            Sushi_UpdateScale(&gSushiEntities[idx]);
+            SushiGame_UpdateNameTagPulse(&gSushiEntities[idx]);
             break;
 
         case 5:
@@ -139,13 +139,13 @@ void Sushi_Render(s32 arg0, UNUSED s32 arg1) {
                            gDefaultGraphRoot->unk_01D);
             gSPDisplayList(gDisplayListHead++, gSushiRenderDL);
 
-            Graph_SetRenderMode();
-            Gfx_ResetRenderState();
+            GeoRender_SetRenderMode();
+            GeoRender_ApplyMaterialState();
             break;
     }
 }
 
-s32 Orientation_Orthonormalize(unk_D_86807558_098* arg0) {
+s32 SushiGame_OrthonormalizeBasis(unk_D_86807558_098* arg0) {
     f32 temp_fs0;
 
     arg0->unk_00.x = ABS_NORMALIZED(arg0->unk_00.x);
@@ -191,18 +191,18 @@ s32 Orientation_Orthonormalize(unk_D_86807558_098* arg0) {
     return 0;
 }
 
-s16 Anim_FindFirstFrameInRange(Fragment2_1GraphNode* arg0, s16 arg1) {
+s16 SushiGame_FindCrossedAnimEvent(Fragment2_1GraphNode* arg0, s16 arg1) {
     s32 i;
     s16 sp2A;
 
-    if (Anim_HasReachedEnd(arg0) != 0) {
+    if (ModelAnim_IsFinished(arg0) != 0) {
         return arg1;
     }
 
     sp2A = -1;
 
     for (i = 0; i < arg1; i++) {
-        if (Anim_IsFrameInRange(arg0, i) != 0) {
+        if (ModelAnim_HasCrossedFrame(arg0, i) != 0) {
             sp2A = i;
             break;
         }
@@ -211,7 +211,7 @@ s16 Anim_FindFirstFrameInRange(Fragment2_1GraphNode* arg0, s16 arg1) {
     return sp2A;
 }
 
-s16 Sushi_GetScaleType(s16 arg0) {
+s16 SushiGame_ClassifyDifficultyTier(s16 arg0) {
     s16 ret;
 
     if (arg0 < 0x32) {
@@ -222,7 +222,7 @@ s16 Sushi_GetScaleType(s16 arg0) {
     return ret;
 }
 
-f32 Sushi_CalcScaleFactor(s16 arg0) {
+f32 SushiGame_ScaleAnimSpeed(s16 arg0) {
     f32 var_fv1 = (2.0f * arg0) / 100.0f;
 
     if (var_fv1 < 0.5f) {
@@ -231,7 +231,7 @@ f32 Sushi_CalcScaleFactor(s16 arg0) {
     return var_fv1;
 }
 
-void Sushi_ResetPhysics(unk_D_86807558_040* arg0) {
+void SushiGame_ResetPlayerSubState(unk_D_86807558_040* arg0) {
     arg0->unk_00 = 0;
     arg0->unk_02 = 0;
     arg0->unk_18 = 0xFF;
@@ -241,7 +241,7 @@ void Sushi_ResetPhysics(unk_D_86807558_040* arg0) {
     arg0->unk_10 = 0.0f;
 }
 
-void Sushi_InitEntity(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
+void SushiGame_InitPlayerSlot(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     s32 i;
     Fragment2_1GraphNode* sp24;
     s16 angle;
@@ -270,7 +270,7 @@ void Sushi_InitEntity(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
 
         gSushiEntityIndex++;
 
-        if ((arg2 != 0) && (GetRandomMod(4) == 0) && (gSushiSpecialEntityCount <= 0)) {
+        if ((arg2 != 0) && (Rand_Range(4) == 0) && (gSushiSpecialEntityCount <= 0)) {
             arg0->unk_008 = 4;
             gSushiSpecialEntityCount++;
         }
@@ -308,7 +308,7 @@ void Sushi_InitEntity(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     arg0->unk_05C = 0;
     arg0->unk_03E = 1;
 
-    Sushi_ResetPhysics(&arg0->unk_040);
+    SushiGame_ResetPlayerSubState(&arg0->unk_040);
     arg0->unk_060 = 0;
     arg0->unk_064 = *gSushiControllerMap[arg0->unk_000];
 
@@ -341,33 +341,33 @@ void Sushi_InitEntity(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     arg0->unk_098.unk_0C.y = 1.0f;
     arg0->unk_098.unk_0C.z = 0.0f;
 
-    Orientation_Orthonormalize(&arg0->unk_098);
+    SushiGame_OrthonormalizeBasis(&arg0->unk_098);
 
     arg0->unk_0BC = 0;
-    arg0->unk_0BE = GetRandomMod(0x5B) + 0x1E;
+    arg0->unk_0BE = Rand_Range(0x5B) + 0x1E;
     arg0->unk_0C0 = 0;
     arg0->unk_0C4 = 0;
     arg0->unk_0CC = 0;
     arg0->unk_0D0.rgba = -0x100;
     arg0->unk_0C8 = 1.0f;
-    arg0->unk_0D4 = Sushi_GetScaleType(arg0->unk_004);
-    arg0->unk_0D8 = Sushi_CalcScaleFactor(arg0->unk_004);
+    arg0->unk_0D4 = SushiGame_ClassifyDifficultyTier(arg0->unk_004);
+    arg0->unk_0D8 = SushiGame_ScaleAnimSpeed(arg0->unk_004);
     arg0->unk_0DC = 0;
     arg0->unk_0E0 = 0;
     arg0->unk_0E2 = 0;
 
     sp24 = &arg0->unk_0E4;
-    Graph_AddToRootList0(sp24);
-    Graph_AddToRootList0(&arg0->unk_24C);
+    ModelRenderer_AttachDisplayObject(sp24);
+    ModelRenderer_AttachDisplayObject(&arg0->unk_24C);
 
     arg0->unk_24C.unk_000.unk_14 = arg0->unk_000;
 
-    GraphNode_InitChild(sp24, 0, 0xA0, gSushiGraphData->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(sp24, arg0->unk_0C0);
+    Model_InitDisplayObject(sp24, 0, 0xA0, gSushiGraphData->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(sp24, arg0->unk_0C0);
 
-    sp24->unk_040.unk_08 = GetRandomMod(0x1E) << 0x10;
+    sp24->unk_040.unk_08 = Rand_Range(0x1E) << 0x10;
 
-    GraphNode_InitChild(&arg0->unk_24C, 0, 0, gSushiGraphNode);
+    Model_InitDisplayObject(&arg0->unk_24C, 0, 0, gSushiGraphNode);
 
     arg0->unk_24C.unk_000.unk_01 |= 1;
     arg0->unk_24C.unk_000.unk_02 |= 8;
@@ -381,7 +381,7 @@ void Sushi_InitEntity(unk_D_86807558* arg0, s32 arg1, s32 arg2) {
     }
 }
 
-f32 Controller_NormalizeAxis(s16 arg0) {
+f32 SushiGame_StickToPanValue(s16 arg0) {
     f32 temp_fv0;
     s16 var_v1;
     s32 var_v0 = 0;
@@ -411,7 +411,7 @@ f32 Controller_NormalizeAxis(s16 arg0) {
     return temp_fv0;
 }
 
-s32 Sushi_ClampPosition(unk_D_86807558* arg0) {
+s32 SushiGame_ClampPlayerToBelt(unk_D_86807558* arg0) {
     s32 sp1C = 0;
     f32 temp_fa0 = SQ(arg0->unk_068.x) + SQ(arg0->unk_068.z);
 
@@ -434,7 +434,7 @@ s32 Sushi_ClampPosition(unk_D_86807558* arg0) {
     return sp1C;
 }
 
-s32 Sushi_CalcSoundPan(unk_D_86807558* arg0) {
+s32 SushiGame_ComputeStereoPan(unk_D_86807558* arg0) {
     f32 var_fv0 = arg0->unk_068.x - gSushiWorldOrientation.unk_0C.x;
     s32 var_v1;
 
@@ -459,7 +459,7 @@ s32 Sushi_CalcSoundPan(unk_D_86807558* arg0) {
     return var_v1;
 }
 
-void Sushi_SetState(unk_D_86807558* arg0, u32 arg1) {
+void SushiGame_SetPlayerEatState(unk_D_86807558* arg0, u32 arg1) {
     arg0->unk_060 = arg1;
 
     switch (arg1) {
@@ -475,7 +475,7 @@ void Sushi_SetState(unk_D_86807558* arg0, u32 arg1) {
             arg0->unk_006 = 0x1E;
             arg0->unk_074.z = 0.0f;
             arg0->unk_074.x = 0.0f;
-            PlaySoundByCategory(0x50008, arg0->unk_000 + 1, Sushi_CalcSoundPan(arg0));
+            Audio_DispatchSoundBankCommand(0x50008, arg0->unk_000 + 1, SushiGame_ComputeStereoPan(arg0));
             arg0->unk_0C0 = 2;
             arg0->unk_0C8 = 1.0f;
             break;
@@ -485,7 +485,7 @@ void Sushi_SetState(unk_D_86807558* arg0, u32 arg1) {
             arg0->unk_0C0 = 7;
             arg0->unk_0DC = 0;
             arg0->unk_0C8 = 1.0f;
-            PlaySoundByCategory(0x50009, arg0->unk_000 + 1, Sushi_CalcSoundPan(arg0));
+            Audio_DispatchSoundBankCommand(0x50009, arg0->unk_000 + 1, SushiGame_ComputeStereoPan(arg0));
             break;
 
         case 3:
@@ -493,7 +493,7 @@ void Sushi_SetState(unk_D_86807558* arg0, u32 arg1) {
             arg0->unk_0C0 = 7;
             arg0->unk_0DC = 0;
             arg0->unk_0C8 = 1.0f;
-            PlaySoundByCategory(0x5000A, arg0->unk_000 + 1, Sushi_CalcSoundPan(arg0));
+            Audio_DispatchSoundBankCommand(0x5000A, arg0->unk_000 + 1, SushiGame_ComputeStereoPan(arg0));
             break;
 
         case 4:
@@ -509,7 +509,7 @@ void Sushi_SetState(unk_D_86807558* arg0, u32 arg1) {
     }
 }
 
-s32 Sushi_IsInstanceAvailable(unk_D_868084D8* arg0, s32 arg1, s32 arg2) {
+s32 SushiGame_IsPlateGrabbable(unk_D_868084D8* arg0, s32 arg1, s32 arg2) {
     if (arg0 == NULL) {
         return 1;
     }
@@ -533,7 +533,7 @@ s32 Sushi_IsInstanceAvailable(unk_D_868084D8* arg0, s32 arg1, s32 arg2) {
     return 1;
 }
 
-unk_D_86807558* Sushi_GetEntityByInstance(unk_D_86807558* arg0, unk_D_868084D8* arg1) {
+unk_D_86807558* SushiGame_FindPlateClaimant(unk_D_86807558* arg0, unk_D_868084D8* arg1) {
     s32 i;
     unk_D_86807558* ret = NULL;
     unk_D_86807558* ptr;
@@ -548,7 +548,7 @@ unk_D_86807558* Sushi_GetEntityByInstance(unk_D_86807558* arg0, unk_D_868084D8* 
     return ret;
 }
 
-unk_D_868084D8* Sushi_FindNearestTarget(unk_D_86807558* arg0) {
+unk_D_868084D8* SushiGame_FindNearestGrabbablePlate(unk_D_86807558* arg0) {
     s32 i;
     f32 temp_fa0;
     f32 var_fs0;
@@ -573,11 +573,11 @@ unk_D_868084D8* Sushi_FindNearestTarget(unk_D_86807558* arg0) {
     var_fs0 = 1e9f;
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        if (Sushi_IsInstanceAvailable(var_s0, var_s6, var_s4) == 0) {
+        if (SushiGame_IsPlateGrabbable(var_s0, var_s6, var_s4) == 0) {
             continue;
         }
 
-        temp_v0_2 = Sushi_GetEntityByInstance(arg0, var_s0);
+        temp_v0_2 = SushiGame_FindPlateClaimant(arg0, var_s0);
         if (temp_v0_2 != NULL) {
             if (temp_v0_2->unk_00C >= arg0->unk_00C) {
                 temp_v0_2->unk_010 = 0;
@@ -596,7 +596,7 @@ unk_D_868084D8* Sushi_FindNearestTarget(unk_D_86807558* arg0) {
     return var_s5;
 }
 
-unk_D_868084D8* Sushi_FindBestTarget(unk_D_86807558* arg0) {
+unk_D_868084D8* SushiGame_FindHighestValuePlate(unk_D_86807558* arg0) {
     s32 i;
     f32 temp_fa0;
     f32 var_fs0;
@@ -626,11 +626,11 @@ unk_D_868084D8* Sushi_FindBestTarget(unk_D_86807558* arg0) {
     var_s4 = NULL;
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        if (Sushi_IsInstanceAvailable(var_s0, var_s7, var_s5) == 0) {
+        if (SushiGame_IsPlateGrabbable(var_s0, var_s7, var_s5) == 0) {
             continue;
         }
 
-        temp_v0_2 = Sushi_GetEntityByInstance(arg0, var_s0);
+        temp_v0_2 = SushiGame_FindPlateClaimant(arg0, var_s0);
         if (temp_v0_2 != NULL) {
             if (temp_v0_2->unk_00C >= arg0->unk_00C) {
                 temp_v0_2->unk_010 = NULL;
@@ -664,7 +664,7 @@ unk_D_868084D8* Sushi_FindBestTarget(unk_D_86807558* arg0) {
     return var_s4;
 }
 
-unk_D_868084D8* Sushi_FindTargetByPriority(unk_D_86807558* arg0) {
+unk_D_868084D8* SushiGame_FindComboOrAbundantPlate(unk_D_86807558* arg0) {
     s32 i;
     s16 sp4A;
     f32 temp_fa0;
@@ -694,11 +694,11 @@ unk_D_868084D8* Sushi_FindTargetByPriority(unk_D_86807558* arg0) {
 
     if (arg0->unk_05C != 0) {
         for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-            if ((Sushi_IsInstanceAvailable(var_s0, var_s6, var_s7) == 0) || (arg0->unk_05C != var_s0->unk_0C)) {
+            if ((SushiGame_IsPlateGrabbable(var_s0, var_s6, var_s7) == 0) || (arg0->unk_05C != var_s0->unk_0C)) {
                 continue;
             }
 
-            temp_v0_2 = Sushi_GetEntityByInstance(arg0, var_s0);
+            temp_v0_2 = SushiGame_FindPlateClaimant(arg0, var_s0);
             if (temp_v0_2 != NULL) {
                 if (temp_v0_2->unk_00C >= arg0->unk_00C) {
                     temp_v0_2->unk_010 = NULL;
@@ -722,20 +722,20 @@ unk_D_868084D8* Sushi_FindTargetByPriority(unk_D_86807558* arg0) {
         for (i = 0; i < 8; i++) {
             s32 v = gSushiOrderIndices[i];
             if (v != 1) {
-                if (sp4A < Sushi_GetActiveCount(v)) {
+                if (sp4A < SushiGame_GetActivePlateCount(v)) {
                     var_s4 = v;
-                    sp4A = Sushi_GetActiveCount(v);
+                    sp4A = SushiGame_GetActivePlateCount(v);
                 }
             }
         }
 
         if (var_s4 != 0) {
             for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-                if ((Sushi_IsInstanceAvailable(var_s0, var_s6, var_s7) == 0) || (var_s4 != var_s0->unk_0C)) {
+                if ((SushiGame_IsPlateGrabbable(var_s0, var_s6, var_s7) == 0) || (var_s4 != var_s0->unk_0C)) {
                     continue;
                 }
 
-                temp_v0_2 = Sushi_GetEntityByInstance(arg0, var_s0);
+                temp_v0_2 = SushiGame_FindPlateClaimant(arg0, var_s0);
                 if (temp_v0_2 != NULL) {
                     if (temp_v0_2->unk_00C >= arg0->unk_00C) {
                         temp_v0_2->unk_010 = NULL;
@@ -754,14 +754,14 @@ unk_D_868084D8* Sushi_FindTargetByPriority(unk_D_86807558* arg0) {
         }
 
         if (var_s5 == NULL) {
-            var_s5 = Sushi_FindBestTarget(arg0);
+            var_s5 = SushiGame_FindHighestValuePlate(arg0);
         }
     }
 
     return var_s5;
 }
 
-unk_D_868084D8* Sushi_FindSpecialTarget(unk_D_86807558* arg0) {
+unk_D_868084D8* SushiGame_FindTypeOnePlate(unk_D_86807558* arg0) {
     s32 i;
     f32 temp_fa0;
     f32 var_fs0;
@@ -772,7 +772,7 @@ unk_D_868084D8* Sushi_FindSpecialTarget(unk_D_86807558* arg0) {
     var_s3 = NULL;
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        if ((Sushi_IsInstanceAvailable(var_s0, 0, 1) == 0) || (var_s0->unk_0C != 1)) {
+        if ((SushiGame_IsPlateGrabbable(var_s0, 0, 1) == 0) || (var_s0->unk_0C != 1)) {
             continue;
         }
 
@@ -788,7 +788,7 @@ unk_D_868084D8* Sushi_FindSpecialTarget(unk_D_86807558* arg0) {
     }
 
     for (i = 0, var_s0 = gSushiInstances; i < 12; i++, var_s0++) {
-        if ((Sushi_IsInstanceAvailable(var_s0, 0, 1) == 0) || !(var_s0->unk_02 & 2)) {
+        if ((SushiGame_IsPlateGrabbable(var_s0, 0, 1) == 0) || !(var_s0->unk_02 & 2)) {
             continue;
         }
 
@@ -803,7 +803,7 @@ unk_D_868084D8* Sushi_FindSpecialTarget(unk_D_86807558* arg0) {
     return var_s3;
 }
 
-void Controller_CalcStickFromVector(Vec3f* arg0, f32 arg1, s16* arg2, s16* arg3, f32 arg4) {
+void SushiGame_DirectionToStickInput(Vec3f* arg0, f32 arg1, s16* arg2, s16* arg3, f32 arg4) {
     unk_D_86808498* ptr = &gSushiWorldOrientation;
     f32 tmp1;
     f32 tmp2;
@@ -827,7 +827,7 @@ void Controller_CalcStickFromVector(Vec3f* arg0, f32 arg1, s16* arg2, s16* arg3,
     *arg3 = 74.0f * tmp2 * arg4;
 }
 
-void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
+void SushiGame_ComputeCpuInput(unk_D_86807558* arg0, Controller* arg1) {
     s16 var_a1;
     s16 var_a2;
     f32 sp60;
@@ -859,7 +859,7 @@ void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
         arg0->unk_014 = sp40[gMenuState];
         arg0->unk_010 = NULL;
     } else {
-        if (Sushi_IsInstanceAvailable(arg0->unk_010, var_a1, var_a2) == 0) {
+        if (SushiGame_IsPlateGrabbable(arg0->unk_010, var_a1, var_a2) == 0) {
             arg0->unk_010 = NULL;
         }
     }
@@ -867,19 +867,19 @@ void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
     if (sp50 != 0) {
         switch (arg0->unk_008) {
             case 1:
-                arg0->unk_010 = Sushi_FindNearestTarget(arg0);
+                arg0->unk_010 = SushiGame_FindNearestGrabbablePlate(arg0);
                 break;
 
             case 2:
-                arg0->unk_010 = Sushi_FindTargetByPriority(arg0);
+                arg0->unk_010 = SushiGame_FindComboOrAbundantPlate(arg0);
                 break;
 
             case 3:
-                arg0->unk_010 = Sushi_FindBestTarget(arg0);
+                arg0->unk_010 = SushiGame_FindHighestValuePlate(arg0);
                 break;
 
             case 4:
-                arg0->unk_010 = Sushi_FindSpecialTarget(arg0);
+                arg0->unk_010 = SushiGame_FindTypeOnePlate(arg0);
                 break;
         }
     }
@@ -892,12 +892,12 @@ void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
 
             temp_fv0 = SQ(sp54.x) + SQ(sp54.z);
             if (temp_fv0 > 30.0f) {
-                Controller_CalcStickFromVector(&sp54, temp_fv0, &arg1->rawStickX, &arg1->rawStickY, 0.5f);
+                SushiGame_DirectionToStickInput(&sp54, temp_fv0, &arg1->rawStickX, &arg1->rawStickY, 0.5f);
             }
         }
     } else {
         sp54.y = 0.0f;
-        sp60 = Sushi_CalcTargetDelta(arg0->unk_010, &arg0->unk_068, &sp54);
+        sp60 = SushiGame_ComputePlateDistance(arg0->unk_010, &arg0->unk_068, &sp54);
 
         if ((sp60 <= 13225.0f) && (sp60 != 0.0f)) {
             tmp = (((sp54.x * arg0->unk_098.unk_00.x) + (sp54.y * arg0->unk_098.unk_00.y) +
@@ -906,15 +906,15 @@ void Sushi_GenerateAIController(unk_D_86807558* arg0, Controller* arg1) {
             if (tmp >= 0.8f) {
                 arg1->buttonPressed |= 0x8000;
             } else {
-                Controller_CalcStickFromVector(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[gMenuState]);
+                SushiGame_DirectionToStickInput(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[gMenuState]);
             }
         } else {
-            Controller_CalcStickFromVector(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[gMenuState]);
+            SushiGame_DirectionToStickInput(&sp54, sp60, &arg1->rawStickX, &arg1->rawStickY, sp30[gMenuState]);
         }
     }
 }
 
-f32 Sushi_CalcAnimationWeight(s16 arg0, s32 arg1) {
+f32 SushiGame_ComputeEatFadeEnvelope(s16 arg0, s32 arg1) {
     static s16 D_86807114[] = {
         0x003C,
         0x000A,
@@ -966,7 +966,7 @@ void Sushi_UpdateAI(unk_D_86807558* arg0) {
         if (!(arg0->unk_002 & 4)) {
             spA4 = arg0->unk_064;
         } else {
-            Sushi_GenerateAIController(arg0, &sp80);
+            SushiGame_ComputeCpuInput(arg0, &sp80);
             spA4 = &sp80;
         }
     } else {
@@ -976,31 +976,31 @@ void Sushi_UpdateAI(unk_D_86807558* arg0) {
     switch (arg0->unk_060) {
         case 0:
             if (spA4->buttonPressed & 0x8000) {
-                Sushi_SetState(arg0, 1);
+                SushiGame_SetPlayerEatState(arg0, 1);
                 return;
             }
 
-            spAC = Controller_NormalizeAxis(spA4->rawStickX);
-            spA8 = Controller_NormalizeAxis(spA4->rawStickY);
+            spAC = SushiGame_StickToPanValue(spA4->rawStickX);
+            spA8 = SushiGame_StickToPanValue(spA4->rawStickY);
             break;
 
         case 2:
         case 3:
             arg0->unk_006--;
             if (arg0->unk_060 == 2) {
-                spB8 = Sushi_CalcAnimationWeight(arg0->unk_006, 0);
+                spB8 = SushiGame_ComputeEatFadeEnvelope(arg0->unk_006, 0);
             } else {
-                spB8 = Sushi_CalcAnimationWeight(arg0->unk_006, 1);
+                spB8 = SushiGame_ComputeEatFadeEnvelope(arg0->unk_006, 1);
             }
 
             if (arg0->unk_006 <= 0) {
                 arg0->unk_006 = 0;
-                Sushi_SetState(arg0, 0);
+                SushiGame_SetPlayerEatState(arg0, 0);
                 return;
             }
 
             if (!(arg0->unk_006 & 0xF)) {
-                arg0->unk_0E0 = GetRandomMod(0x10000) & 0xFFFF;
+                arg0->unk_0E0 = Rand_Range(0x10000) & 0xFFFF;
             }
 
             spAC = COSS(arg0->unk_0E0) * spB8;
@@ -1010,7 +1010,7 @@ void Sushi_UpdateAI(unk_D_86807558* arg0) {
             if (arg0->unk_060 == 2) {
                 arg0->unk_0D0.g = arg0->unk_0D0.b = 255.0f * spB8;
                 if (!(arg0->unk_006 & 0xF)) {
-                    Particle_CreateMultiple(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0, 4);
+                    Particle_EmitBurstAtTransform(1.0f, arg0->unk_0E4.unk_0FC, gSpriteAnimUpdateFunc, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0, 4);
                 }
             } else {
                 arg0->unk_0D0.r = arg0->unk_0D0.b = 255.0f * spB8;
@@ -1090,7 +1090,7 @@ void Sushi_UpdateAI(unk_D_86807558* arg0) {
     arg0->unk_068.y = arg0->unk_074.y + sp70.y;
     arg0->unk_068.z = arg0->unk_074.z + sp70.z;
 
-    Sushi_ClampPosition(arg0);
+    SushiGame_ClampPlayerToBelt(arg0);
 
     temp_fa0 = SQ(sp4C.x) + SQ(sp4C.z);
     if (temp_fa0 > 0.0001f) {
@@ -1116,12 +1116,12 @@ void Sushi_UpdateAI(unk_D_86807558* arg0) {
     arg0->unk_0BE--;
     if (arg0->unk_0BE == 0) {
         if (arg0->unk_0BC == 0) {
-            arg0->unk_0BC = GetRandomMod(3) + 1;
+            arg0->unk_0BC = Rand_Range(3) + 1;
             arg0->unk_0BE = 0xF;
         } else {
             arg0->unk_0BC--;
             if (arg0->unk_0BC == 0) {
-                arg0->unk_0BE = GetRandomMod(0x5B) + 0x1E;
+                arg0->unk_0BE = Rand_Range(0x5B) + 0x1E;
             } else {
                 arg0->unk_0BE = 0xF;
             }
@@ -1162,7 +1162,7 @@ unk_D_868084D8* Sushi_FindNearbyInstance(unk_D_86807558* arg0) {
     return var_v1;
 }
 
-s32 Sushi_CheckCollision(unk_D_86807558* arg0) {
+s32 SushiGame_CheckEatInterrupt(unk_D_86807558* arg0) {
     UNUSED s32 pad;
     s32 i;
     Vec3f sp2C;
@@ -1175,7 +1175,7 @@ s32 Sushi_CheckCollision(unk_D_86807558* arg0) {
         return 1;
     }
 
-    if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
+    if (ModelAnim_IsFinished(&arg0->unk_0E4) != 0) {
         return 2;
     }
 
@@ -1198,7 +1198,7 @@ s32 Sushi_CheckCollision(unk_D_86807558* arg0) {
     return 0;
 }
 
-void Sushi_UpdateState(unk_D_86807558* arg0) {
+void SushiGame_ConsumePlate(unk_D_86807558* arg0) {
     s32 sp24;
     s32 sp20;
 
@@ -1223,21 +1223,21 @@ void Sushi_UpdateState(unk_D_86807558* arg0) {
     arg0->unk_02A++;
     arg0->unk_02C[sp20]++;
 
-    SushiInstance_SetMode(arg0->unk_0DC, 0, NULL);
+    SushiGame_SetPlateState(arg0->unk_0DC, 0, NULL);
 
     if (sp20 == 1) {
-        Sushi_SetState(arg0, 2);
+        SushiGame_SetPlayerEatState(arg0, 2);
     } else if ((sp24 != 0) && (arg0->unk_002 & 2)) {
-        Sushi_SetState(arg0, 3);
+        SushiGame_SetPlayerEatState(arg0, 3);
     } else {
-        Sushi_SetState(arg0, 0);
+        SushiGame_SetPlayerEatState(arg0, 0);
     }
 }
 
-void Sushi_UpdateAnimationState(unk_D_86807558* arg0) {
+void SushiGame_UpdateEatingState(unk_D_86807558* arg0) {
     switch (arg0->unk_0C0) {
         case 2:
-            if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
+            if (ModelAnim_IsFinished(&arg0->unk_0E4) != 0) {
                 arg0->unk_0C0 = 3;
             }
             break;
@@ -1246,78 +1246,78 @@ void Sushi_UpdateAnimationState(unk_D_86807558* arg0) {
             if (arg0->unk_0DC == NULL) {
                 arg0->unk_0DC = Sushi_FindNearbyInstance(arg0);
                 if (arg0->unk_0DC != NULL) {
-                    arg0->unk_0CC = Anim_FindFirstFrameInRange(&arg0->unk_0E4, 0xD);
-                    SushiInstance_SetMode(arg0->unk_0DC, 3, arg0);
+                    arg0->unk_0CC = SushiGame_FindCrossedAnimEvent(&arg0->unk_0E4, 0xD);
+                    SushiGame_SetPlateState(arg0->unk_0DC, 3, arg0);
                 }
             }
 
             if (arg0->unk_0C8 >= 0.0f) {
-                switch (Sushi_CheckCollision(arg0)) {
+                switch (SushiGame_CheckEatInterrupt(arg0)) {
                     case 1:
                     case 2:
                         arg0->unk_0C8 = -1.0f;
                         break;
 
                     case 3:
-                        if (Anim_FindFirstFrameInRange(&arg0->unk_0E4, 0xD) < 3) {
+                        if (SushiGame_FindCrossedAnimEvent(&arg0->unk_0E4, 0xD) < 3) {
                             arg0->unk_0C0 = 4;
                         } else {
                             arg0->unk_0C8 = -1.0f;
                         }
                         break;
                 }
-            } else if (Anim_IsFrameInRange(&arg0->unk_0E4, 0) != 0) {
+            } else if (ModelAnim_HasCrossedFrame(&arg0->unk_0E4, 0) != 0) {
                 if (arg0->unk_0DC == NULL) {
                     arg0->unk_0C0 = 4;
                 } else if (arg0->unk_0DC->unk_0C != 1) {
                     arg0->unk_0C0 = 5;
                     arg0->unk_006 = arg0->unk_0D4;
                 } else {
-                    Sushi_UpdateState(arg0);
+                    SushiGame_ConsumePlate(arg0);
                 }
                 arg0->unk_0C8 = 1.0f;
             }
             break;
 
         case 4:
-            if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
-                Sushi_SetState(arg0, 0);
+            if (ModelAnim_IsFinished(&arg0->unk_0E4) != 0) {
+                SushiGame_SetPlayerEatState(arg0, 0);
             }
             break;
 
         case 5:
-            if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
+            if (ModelAnim_IsFinished(&arg0->unk_0E4) != 0) {
                 arg0->unk_006--;
                 if (arg0->unk_006 <= 0) {
                     arg0->unk_0C0 = 6;
                     arg0->unk_0C8 = arg0->unk_0D8;
                 } else {
-                    Anim_SetChannelBase(&arg0->unk_0E4, 0);
+                    ModelAnim_SetFrame(&arg0->unk_0E4, 0);
                 }
             }
             break;
 
         case 6:
-            if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
-                Sushi_UpdateState(arg0);
+            if (ModelAnim_IsFinished(&arg0->unk_0E4) != 0) {
+                SushiGame_ConsumePlate(arg0);
             }
             break;
     }
 }
 
-void Sushi_FaceTarget(unk_D_86807558* arg0) {
+void SushiGame_UpdateReturnToCenterState(unk_D_86807558* arg0) {
     UNUSED s32 pad;
     Vec3f sp30;
     f32 temp_fa0;
     f32 tmp;
 
     if ((arg0->unk_028 != 1) || (arg0->unk_018 == 0)) {
-        if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
-            Anim_SetChannelBase(&arg0->unk_0E4, 0x3D);
+        if (ModelAnim_IsFinished(&arg0->unk_0E4) != 0) {
+            ModelAnim_SetFrame(&arg0->unk_0E4, 0x3D);
         }
     } else if (arg0->unk_0C0 == 8) {
-        if (Anim_HasReachedEnd(&arg0->unk_0E4) != 0) {
-            Sushi_SetState(arg0, 0);
+        if (ModelAnim_IsFinished(&arg0->unk_0E4) != 0) {
+            SushiGame_SetPlayerEatState(arg0, 0);
         }
     } else {
         sp30.x = gSushiWorldOrientation.unk_0C.x - arg0->unk_068.x;
@@ -1331,7 +1331,7 @@ void Sushi_FaceTarget(unk_D_86807558* arg0) {
         arg0->unk_098.unk_00.x += sp30.x * 0.3f;
         arg0->unk_098.unk_00.z += sp30.z * 0.3f;
 
-        Orientation_Orthonormalize(&arg0->unk_098);
+        SushiGame_OrthonormalizeBasis(&arg0->unk_098);
 
         tmp = (sp30.x * arg0->unk_098.unk_00.x) + sp30.y + (sp30.z * arg0->unk_098.unk_00.z);
 
@@ -1341,7 +1341,7 @@ void Sushi_FaceTarget(unk_D_86807558* arg0) {
     }
 }
 
-void Sushi_ApplyRepulsion(unk_D_86807558* arg0) {
+void SushiGame_ResolvePlayerCollisions(unk_D_86807558* arg0) {
     s32 i;
     f32 sp68;
     f32 temp_fa0;
@@ -1392,7 +1392,7 @@ void Sushi_ApplyRepulsion(unk_D_86807558* arg0) {
     }
 }
 
-void Sushi_ApplyMovement(unk_D_86807558* arg0) {
+void SushiGame_ApplyCollisionPush(unk_D_86807558* arg0) {
     if (arg0->unk_002 & 1) {
         arg0->unk_068.x += arg0->unk_080.x + arg0->unk_08C.x;
         arg0->unk_068.y += arg0->unk_080.y + arg0->unk_08C.y;
@@ -1400,7 +1400,7 @@ void Sushi_ApplyMovement(unk_D_86807558* arg0) {
 
         arg0->unk_074 = arg0->unk_080;
 
-        Sushi_ClampPosition(arg0);
+        SushiGame_ClampPlayerToBelt(arg0);
 
         arg0->unk_002 &= ~1;
         arg0->unk_080.x = arg0->unk_080.y = arg0->unk_080.z = 0.0f;
@@ -1409,14 +1409,14 @@ void Sushi_ApplyMovement(unk_D_86807558* arg0) {
     }
 }
 
-void Sushi_SyncGraphNode(unk_D_86807558* arg0) {
+void SushiGame_UpdatePlayerModelTransform(unk_D_86807558* arg0) {
     UNUSED s32 pad[3];
     f32 var_fv0;
     Fragment2_1GraphNode* ptr = &arg0->unk_0E4;
 
     ptr->unk_024 = arg0->unk_068;
 
-    Orientation_Orthonormalize(&arg0->unk_098);
+    SushiGame_OrthonormalizeBasis(&arg0->unk_098);
 
     var_fv0 = 1.0f - arg0->unk_098.unk_00.z;
     var_fv0 = var_fv0 * 32768.0f * 0.5f;
@@ -1428,7 +1428,7 @@ void Sushi_SyncGraphNode(unk_D_86807558* arg0) {
     ptr->unk_03C.rgba = arg0->unk_0D0.rgba;
 
     if (arg0->unk_0C4 != arg0->unk_0C0) {
-        GraphNode_TriggerAction(&arg0->unk_0E4, arg0->unk_0C0);
+        ModelAnim_SetAnimation(&arg0->unk_0E4, arg0->unk_0C0);
     }
 
     ptr->unk_040.unk_0C = (s32)(arg0->unk_0C8 * 65536.0f);
@@ -1439,7 +1439,7 @@ void Sushi_SyncGraphNode(unk_D_86807558* arg0) {
     }
 }
 
-void Sushi_SetEntityInput(u16 arg0, s32 arg1) {
+void SushiGame_BroadcastPlayerPhase(u16 arg0, s32 arg1) {
     static u16 D_8680712C[] = { 1, 2, 4, 8 };
 
     s32 i;
@@ -1456,7 +1456,7 @@ void Sushi_SetEntityInput(u16 arg0, s32 arg1) {
     }
 }
 
-void Sushi_UpdateRankings(void) {
+void SushiGame_DetermineWinner(void) {
     unk_D_86807558* ptr2;
     s32 tmp;
     s32 i;
@@ -1505,12 +1505,12 @@ void Sushi_UpdateRankings(void) {
     for (i = 0, ptr = gSushiEntities; i < 4; i++, ptr++) {
         ptr->unk_002 |= 8;
         if ((ptr->unk_028 == 1) && (ptr->unk_018 > 0)) {
-            IncrementPlayerScore(i);
+            Widget_PauseMenuRecordWin(i);
         }
     }
 }
 
-void Sushi_HandleInputEvent(unk_D_86807558* arg0) {
+void SushiGame_ApplyPlayerPhaseFlags(unk_D_86807558* arg0) {
     switch (gSushiInstanceIds[arg0->unk_000]) {
         case 0:
         case 4:
@@ -1530,14 +1530,14 @@ void Sushi_HandleInputEvent(unk_D_86807558* arg0) {
 
         case 5:
             arg0->unk_002 &= ~2;
-            Sushi_SetState(arg0, 4);
+            SushiGame_SetPlayerEatState(arg0, 4);
             break;
     }
 
     gSushiInstanceIds[arg0->unk_000] = 0;
 }
 
-void Sushi_UpdateProgress(unk_D_86807558* arg0) {
+void SushiGame_UpdateScoreTally(unk_D_86807558* arg0) {
     arg0->unk_020++;
     arg0->unk_01C += arg0->unk_020;
     if (arg0->unk_01C >= arg0->unk_018) {
@@ -1546,17 +1546,17 @@ void Sushi_UpdateProgress(unk_D_86807558* arg0) {
         arg0->unk_020 = 0;
         arg0->unk_002 &= ~8;
         if (gSushiActiveCount == arg0->unk_000) {
-            PlaySoundByCategory(0x5000C, 0, 0);
+            Audio_DispatchSoundBankCommand(0x5000C, 0, 0);
         }
     } else if ((arg0->unk_01C - arg0->unk_024) >= 0xA) {
         arg0->unk_024 = arg0->unk_01C;
         if (gSushiActiveCount == arg0->unk_000) {
-            PlaySoundByCategory(0x5000B, 0, 0);
+            Audio_DispatchSoundBankCommand(0x5000B, 0, 0);
         }
     }
 }
 
-s32 Sushi_CheckAllIdle(void) {
+s32 SushiGame_AreAllPlayersIdle(void) {
     s32 var_v1 = 0;
     s32 i;
     unk_D_86807558* var_a0;
@@ -1574,7 +1574,7 @@ s32 Sushi_CheckAllIdle(void) {
     return var_v1;
 }
 
-void Sushi_UpdateEntityEffect(UNUSED unk_D_86807558* arg0, unk_D_86807558_040* arg1) {
+void SushiGame_UpdateNameTagSpringEffect(UNUSED unk_D_86807558* arg0, unk_D_86807558_040* arg1) {
     s32 i;
 
     switch (arg1->unk_00) {
@@ -1631,13 +1631,13 @@ void Sushi_UpdateEntityEffect(UNUSED unk_D_86807558* arg0, unk_D_86807558_040* a
             arg1->unk_02--;
             arg1->unk_18 = (arg1->unk_02 * 0xFF) / 15;
             if (arg1->unk_02 <= 0) {
-                Sushi_ResetPhysics(arg1);
+                SushiGame_ResetPlayerSubState(arg1);
             }
             break;
     }
 }
 
-void Sushi_InitSystem(s32 arg0) {
+void SushiGame_InitPlayerSlots(s32 arg0) {
     s32 i;
     MemoryBlock* temp_v0;
 
@@ -1648,27 +1648,27 @@ void Sushi_InitSystem(s32 arg0) {
     bzero(&gSushiDefaultController, sizeof(Controller));
 
     gSushiActiveCount = -1;
-    gSushiGraphData = GeoLayout_LoadById(0xA0);
+    gSushiGraphData = Model_LoadByArchiveIndex(0xA0);
 
-    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     gSushiGraphNode = (unk_D_86002F58_004_000_004*)process_geo_layout(temp_v0, &D_86807078);
-    mem_pool_resize_block(temp_v0);
+    MainPool_FinalizeAllocation(temp_v0);
     gSushiEntityIndex = 0;
     gSushiMaxEntities = 4 - gMenuCursorY;
-    gSushiTotalEntities = GetRandomMod(gSushiMaxEntities);
+    gSushiTotalEntities = Rand_Range(gSushiMaxEntities);
     gSushiSpecialEntityCount = 0;
 
     for (i = 0; i < 4; i++) {
-        Sushi_InitEntity(&gSushiEntities[i], i, arg0);
+        SushiGame_InitPlayerSlot(&gSushiEntities[i], i, arg0);
     }
 }
 
-void Sushi_MainUpdate(void) {
+void SushiGame_UpdatePlayers(void) {
     s32 i;
     unk_D_86807558* var_s0;
 
     if ((gResultMenuVisible == 0) && (gSushiInstanceIds[0] != 0)) {
-        Sushi_UpdateRankings();
+        SushiGame_DetermineWinner();
     }
 
     var_s0 = gSushiEntities;
@@ -1679,7 +1679,7 @@ void Sushi_MainUpdate(void) {
 
         var_s0->unk_0C4 = var_s0->unk_0C0;
         if (gSushiInstanceIds[i] != 0) {
-            Sushi_HandleInputEvent(var_s0);
+            SushiGame_ApplyPlayerPhaseFlags(var_s0);
         }
 
         switch (var_s0->unk_060) {
@@ -1690,38 +1690,38 @@ void Sushi_MainUpdate(void) {
                 break;
 
             case 1:
-                Sushi_UpdateAnimationState(var_s0);
+                SushiGame_UpdateEatingState(var_s0);
                 break;
 
             case 4:
-                Sushi_FaceTarget(var_s0);
+                SushiGame_UpdateReturnToCenterState(var_s0);
                 break;
         }
 
         if (var_s0->unk_002 & 8) {
-            Sushi_UpdateProgress(var_s0);
+            SushiGame_UpdateScoreTally(var_s0);
         }
 
-        Sushi_UpdateEntityEffect(var_s0, &var_s0->unk_040);
+        SushiGame_UpdateNameTagSpringEffect(var_s0, &var_s0->unk_040);
     }
 
     var_s0 = gSushiEntities;
     for (i = 0; i < 4; i++, var_s0++) {
         if (gResultMenuVisible == 0) {
-            Sushi_ApplyRepulsion(var_s0);
+            SushiGame_ResolvePlayerCollisions(var_s0);
         }
     }
 
     var_s0 = gSushiEntities;
     for (i = 0; i < 4; i++, var_s0++) {
         if (gResultMenuVisible == 0) {
-            Sushi_ApplyMovement(var_s0);
+            SushiGame_ApplyCollisionPush(var_s0);
         }
-        Sushi_SyncGraphNode(var_s0);
+        SushiGame_UpdatePlayerModelTransform(var_s0);
     }
 }
 
-void Sushi_UpdateCameraMatrix(unk_D_86808498* arg0) {
+void SushiGame_UpdateCameraBasis(unk_D_86808498* arg0) {
     f32 temp_fa0;
     Vec3f sp20;
 
@@ -1746,7 +1746,7 @@ void Sushi_UpdateCameraMatrix(unk_D_86808498* arg0) {
     Vec3f_CrossProduct(&arg0->unk_2C, &sp20, &arg0->unk_20);
 }
 
-void Sushi_InitCamera(void) {
+void SushiGame_InitCamera(void) {
     gMiniCameraPtr = gSushiCamera = gSushiGoRoundGraphNode->unk_00.unk_0C;
 
     gSushiWorldOrientation.unk_00.x = 0.0f;
@@ -1759,16 +1759,16 @@ void Sushi_InitCamera(void) {
     gSushiWorldOrientation.unk_1A = 0x16A8;
     gSushiWorldOrientation.unk_1C = 880.0f;
 
-    Camera_SetViewParameters(&gSushiWorldOrientation.unk_00, &gSushiWorldOrientation.unk_0C, gSushiWorldOrientation.unk_1C, gSushiWorldOrientation.unk_1A, gSushiWorldOrientation.unk_18);
-    Sushi_UpdateCameraMatrix(&gSushiWorldOrientation);
+    Camera_ComputeEyeFromAngles(&gSushiWorldOrientation.unk_00, &gSushiWorldOrientation.unk_0C, gSushiWorldOrientation.unk_1C, gSushiWorldOrientation.unk_1A, gSushiWorldOrientation.unk_18);
+    SushiGame_UpdateCameraBasis(&gSushiWorldOrientation);
 
     gSushiCamera->unk_24.near = 50.0f;
     gSushiCamera->unk_24.far = 6400.0f;
 }
 
-void Sushi_UpdateCameraPos(void) {
-    Camera_SetViewParameters(&gSushiWorldOrientation.unk_00, &gSushiWorldOrientation.unk_0C, gSushiWorldOrientation.unk_1C, gSushiWorldOrientation.unk_1A, gSushiWorldOrientation.unk_18);
-    Sushi_UpdateCameraMatrix(&gSushiWorldOrientation);
+void SushiGame_UpdateCamera(void) {
+    Camera_ComputeEyeFromAngles(&gSushiWorldOrientation.unk_00, &gSushiWorldOrientation.unk_0C, gSushiWorldOrientation.unk_1C, gSushiWorldOrientation.unk_1A, gSushiWorldOrientation.unk_18);
+    SushiGame_UpdateCameraBasis(&gSushiWorldOrientation);
     gSushiCamera->unk_60.eye = gSushiWorldOrientation.unk_0C;
     gSushiCamera->unk_60.at = gSushiWorldOrientation.unk_00;
 }

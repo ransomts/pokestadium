@@ -1,7 +1,7 @@
 #include "fragment31.h"
 #include "12D80.h"
 
-void Fragment_BuildDisplayList(Gfx* gfx, DisplayListAddresses* addresses) {
+void DisplayList_BuildOptionalPlusSegment(Gfx* gfx, DisplayListAddresses* addresses) {
     if (gDefaultGraphRoot->unk_01C == 0) {
         gSPDisplayList(gfx++, addresses->segments[0]);
     }
@@ -9,14 +9,14 @@ void Fragment_BuildDisplayList(Gfx* gfx, DisplayListAddresses* addresses) {
     gSPEndDisplayList(gfx++);
 }
 
-void Fragment_InitDisplayList(s32 arg0, DisplayListState* state) {
+void DisplayList_InitOptionalPlusSegment(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
     if (arg0 == 2) {
         addresses = state->addresses;
-        gfx = GfxAlloc(0x50);
+        gfx = Gfx_AllocDisplayList(0x50);
         state->gfx = gfx;
-        Fragment_BuildDisplayList(gfx, addresses);
+        DisplayList_BuildOptionalPlusSegment(gfx, addresses);
     }
 }

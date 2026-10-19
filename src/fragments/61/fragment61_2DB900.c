@@ -118,7 +118,7 @@ static Gfx D_84210F08[] = {
 };
 static u32 D_84210FF0[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84210E48, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, RenderUIElement, D_84210F08, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_84210F08, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84211028[] = {
     VTX(-38, 60, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-38, 40, 0, 0, 640, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -146,7 +146,7 @@ static Gfx D_842110E8[] = {
 };
 static u32 D_842111D0[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84211028, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, RenderUIElement, D_842110E8, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_842110E8, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84211208[] = {
     VTX(-50, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 48, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -179,7 +179,7 @@ static Gfx D_84211308[] = {
 };
 static u32 D_84211430[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84211208, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, RenderUIElement, D_84211308, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_84211308, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx D_84211468[] = {
     VTX(-36, 12, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -199,7 +199,7 @@ static Gfx D_842114A8[] = {
 };
 static u32 D_84211510[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84211468, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, RenderUIElement, D_842114A8, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, D_842114A8, 0x06000000, 0x01000000,
 };
 
 s16 D_84211544[] = { 0x46, 0x28, 0x1E, 0x1E, 0x1E, 0x1E, 0x28, 0x3C, 0x5A, 0x78, 0x6E, 0x64 };
@@ -209,7 +209,7 @@ s16 D_8421158C[] = {
     0x64, 0x6E, 0x82, 0x96, 0xA0, 0xA0, 0x78, 0x50, 0x32, 0x1E, 0xA, 5,
 };
 
-s32 RenderUIElement(s32 arg0, SimpleGfxNode* arg1) {
+s32 TeamSelection_TrainerSlots_GraphCallback(s32 arg0, SimpleGfxNode* arg1) {
     u32 var_a0;
     u8* var_a3;
 
@@ -255,100 +255,100 @@ s32 RenderUIElement(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0E, Memmap_GetSegmentVaddr(var_a3));
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
 
     return 0;
 }
 
-void UpdateSelectedIconPosition(void) {
+void TeamSelection_TrainerSlots_DrawCursorPrompt(void) {
     if (D_8423E56C == 3) {
         s16 tmp = (gIconConfig[gSelectedIconIndex].unk_02 - (gIconConfig[gSelectedIconIndex].unk_06 / 2)) - 0x1E;
 
-        AnimateIconOffset(tmp, gIconConfig[gSelectedIconIndex].unk_04 - 0x20);
+        Ui_DrawAnimatedTextureMarker(tmp, gIconConfig[gSelectedIconIndex].unk_04 - 0x20);
     }
 }
 
-void DrawPlayerInfoEntry(s32 arg0) {
+void TeamSelection_TrainerSlots_DrawEntry(s32 arg0) {
     UNUSED s32 pad;
 
     if (gIconConfig[arg0].unk_00 != 0) {
         if (gIconConfig[arg0].unk_01 == 0) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_SetFont(8, 0);
-            Text_Print(((arg0 * 128) - (MeasureTextWidth(8, 0, gTrainerSlotData[arg0].unk_06) / 2)) + 0x80, 0x5C,
+            Font_SetActive(8, 0);
+            Font_Printf(((arg0 * 128) - (Font_MeasureTextExtent(8, 0, gTrainerSlotData[arg0].unk_06) / 2)) + 0x80, 0x5C,
                           gTrainerSlotData[arg0].unk_06);
             Text_SetEnvColor(0xFF, 0xBE, 0xFF, 0xFF);
-            Text_SetFont(4, 0);
-            Text_Print(((arg0 * 128) - (MeasureTextWidth(4, 0, "ID  00000") / 2)) + 0x80, 0x73, "ID  %05d",
+            Font_SetActive(4, 0);
+            Font_Printf(((arg0 * 128) - (Font_MeasureTextExtent(4, 0, "ID  00000") / 2)) + 0x80, 0x73, "ID  %05d",
                           gTrainerSlotData[arg0].unk_04);
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_SetFont(8, 0);
-            Text_Print(((arg0 * 128) - (MeasureTextWidth(8, 0, "???????") / 2)) + 0x80, 0x5C, "???????");
+            Font_SetActive(8, 0);
+            Font_Printf(((arg0 * 128) - (Font_MeasureTextExtent(8, 0, "???????") / 2)) + 0x80, 0x5C, "???????");
             Text_SetEnvColor(0xFF, 0xBE, 0xFF, 0xFF);
-            Text_SetFont(4, 0);
-            Text_Print(((arg0 * 128) - (MeasureTextWidth(4, 0, "ID  *****") / 2)) + 0x80, 0x73, "ID  *****");
+            Font_SetActive(4, 0);
+            Font_Printf(((arg0 * 128) - (Font_MeasureTextExtent(4, 0, "ID  *****") / 2)) + 0x80, 0x73, "ID  *****");
         }
     }
 }
 
-void DrawMainMenuScreen(void) {
+void TeamSelection_TrainerSlots_DrawEntries(void) {
     s32 tmp;
     char* temp_v0;
     char sp20[0x100];
 
-    Text_ResetState();
-    DrawPlayerInfoEntry(0);
-    DrawPlayerInfoEntry(1);
-    DrawPlayerInfoEntry(2);
-    DrawPlayerInfoEntry(3);
+    Font_BeginTranslucentTextRendering();
+    TeamSelection_TrainerSlots_DrawEntry(0);
+    TeamSelection_TrainerSlots_DrawEntry(1);
+    TeamSelection_TrainerSlots_DrawEntry(2);
+    TeamSelection_TrainerSlots_DrawEntry(3);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_SetFont(0x10, 0);
+    Font_SetActive(0x10, 0);
 
-    temp_v0 = GetMessageBank1AString(0xB);
-    tmp = MeasureTextWidth(0x10, 0, temp_v0) / 2;
-    Text_Print(0x140 - tmp, 0x198, temp_v0);
-    Text_SetFont(8, 0);
+    temp_v0 = TeamSelection_GetLabelText(0xB);
+    tmp = Font_MeasureTextExtent(0x10, 0, temp_v0) / 2;
+    Font_Printf(0x140 - tmp, 0x198, temp_v0);
+    Font_SetActive(8, 0);
 
     if (gMenuMode == 0) {
-        temp_v0 = GetMessageBank1AString(0xC);
+        temp_v0 = TeamSelection_GetLabelText(0xC);
     } else {
-        temp_v0 = GetMessageBank1AString(0xD);
+        temp_v0 = TeamSelection_GetLabelText(0xD);
     }
 
-    tmp = MeasureTextWidth(8, 0, temp_v0) / 2;
-    Text_Print(0x1C0 - tmp, 0x102, temp_v0);
+    tmp = Font_MeasureTextExtent(8, 0, temp_v0) / 2;
+    Font_Printf(0x1C0 - tmp, 0x102, temp_v0);
 
     if (gMenuMode == 0) {
-        temp_v0 = GetMessageBank1AString(0xE);
-        tmp = MeasureTextWidth(8, 0, temp_v0) / 2;
-        Text_Print(0xC0 - tmp, 0xF6, temp_v0);
+        temp_v0 = TeamSelection_GetLabelText(0xE);
+        tmp = Font_MeasureTextExtent(8, 0, temp_v0) / 2;
+        Font_Printf(0xC0 - tmp, 0xF6, temp_v0);
         Text_SetEnvColor(0xFF, 0xBA, 0xCC, 0xFF);
-        MessageBank_SetPointer_1_9(2, gMessageId);
-        temp_v0 = GetMessageBank1AStringCustomBuf(sp20, sizeof(sp20), 0xF);
-        tmp = MeasureTextWidth(8, 0, temp_v0) / 2;
-        Text_Print(0xC0 - tmp, 0x10E, temp_v0);
+        Text_SetNumberToken(2, gMessageId);
+        temp_v0 = TeamSelection_FormatText(sp20, sizeof(sp20), 0xF);
+        tmp = Font_MeasureTextExtent(8, 0, temp_v0) / 2;
+        Font_Printf(0xC0 - tmp, 0x10E, temp_v0);
     }
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
-void DrawIconBackgroundRect(s32 arg0, s16 arg1, s16 arg2) {
+void TeamSelection_TrainerSlots_DrawEntryFrame(s32 arg0, s16 arg1, s16 arg2) {
     Color_RGBA8 sp2C;
 
     if (gIconConfig[arg0].unk_00 != 0) {
         if (gIconConfig[arg0].unk_01 == 0) {
-            GfxColor_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0xFF);
+            Color_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0xFF);
         } else {
-            GfxColor_SetRGBA(&sp2C, 0x64, 0x1E, 0x1E, 0xFF);
+            Color_SetRGBA(&sp2C, 0x64, 0x1E, 0x1E, 0xFF);
         }
     } else {
-        GfxColor_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0x80);
+        Color_SetRGBA(&sp2C, 0x1E, 0x1E, 0x82, 0x80);
     }
-    DrawTiledBorder((arg0 * 128) + 0x44, arg1 + 0x54, 0x78, arg2, sp2C.r, sp2C.g, sp2C.b, sp2C.a);
+    TeamSelection_DrawTexturedFrame((arg0 * 128) + 0x44, arg1 + 0x54, 0x78, arg2, sp2C.r, sp2C.g, sp2C.b, sp2C.a);
 }
 
-void UpdateSelectedIconPosition(void);
+void TeamSelection_TrainerSlots_DrawCursorPrompt(void);
 
 void TeamSelection_TrainerSlots_Render(s32 arg0) {
     UNUSED s32 pad;
@@ -358,31 +358,31 @@ void TeamSelection_TrainerSlots_Render(s32 arg0) {
     if (D_8423E56C != 0) {
         temp_s0 = (0x38 - gMenuBackgroundWidth) / 2;
         sp32 = (0x28 - gMenuBackgroundHeight) / 2;
-        Graph_SetTextureState(gMenuGraphRoot);
-        UpdateSelectedIconPosition();
+        Geo_RenderRootNode(gMenuGraphRoot);
+        TeamSelection_TrainerSlots_DrawCursorPrompt();
 
         if (gMenuBackgroundWidth > 0) {
-            DrawIconBackgroundRect(0, temp_s0, gMenuBackgroundWidth);
-            DrawIconBackgroundRect(1, temp_s0, gMenuBackgroundWidth);
-            DrawIconBackgroundRect(2, temp_s0, gMenuBackgroundWidth);
-            DrawIconBackgroundRect(3, temp_s0, gMenuBackgroundWidth);
+            TeamSelection_TrainerSlots_DrawEntryFrame(0, temp_s0, gMenuBackgroundWidth);
+            TeamSelection_TrainerSlots_DrawEntryFrame(1, temp_s0, gMenuBackgroundWidth);
+            TeamSelection_TrainerSlots_DrawEntryFrame(2, temp_s0, gMenuBackgroundWidth);
+            TeamSelection_TrainerSlots_DrawEntryFrame(3, temp_s0, gMenuBackgroundWidth);
             if (gMenuMode == 0) {
-                DrawTiledBorder(0x44, temp_s0 + 0xF0, 0xF8, gMenuBackgroundWidth, 0x78, 0x1E, 0x64, 0xFF);
+                TeamSelection_DrawTexturedFrame(0x44, temp_s0 + 0xF0, 0xF8, gMenuBackgroundWidth, 0x78, 0x1E, 0x64, 0xFF);
             }
-            DrawTiledBorder(0x144, temp_s0 + 0xF0, 0xF8, gMenuBackgroundWidth, 0x78, 0x1E, 0x64, 0xFF);
+            TeamSelection_DrawTexturedFrame(0x144, temp_s0 + 0xF0, 0xF8, gMenuBackgroundWidth, 0x78, 0x1E, 0x64, 0xFF);
         }
 
         if (gMenuBackgroundHeight > 0) {
-            DrawSmallTiledBorder(0x38, sp32 + 0x190, 0x210, gMenuBackgroundHeight, 0x1E, 0x1E, 0x82, 0x96);
+            TeamSelection_DrawTexturedPanel(0x38, sp32 + 0x190, 0x210, gMenuBackgroundHeight, 0x1E, 0x1E, 0x82, 0x96);
         }
 
         if (gMenuBackgroundWidth == 0x38) {
-            DrawMainMenuScreen();
+            TeamSelection_TrainerSlots_DrawEntries();
         }
     }
 }
 
-void UpdateIconTransform(s16 arg0, f32 arg1) {
+void TeamSelection_TrainerSlots_UpdateModelScale(s16 arg0, f32 arg1) {
     s16 var_a2;
     f32 var_fa0;
 
@@ -403,7 +403,7 @@ void UpdateIconTransform(s16 arg0, f32 arg1) {
     gIconConfig[arg0].unk_0A += var_a2 + ((MathUtil_Random16() & 0xF) * 0x10);
 }
 
-void UpdateIconDepthTransform(s16 arg0, f32 arg1) {
+void TeamSelection_TrainerSlots_UpdateModelPose(s16 arg0, f32 arg1) {
     f32 var_fv0;
     s16 var_v0;
 
@@ -425,7 +425,7 @@ void UpdateIconDepthTransform(s16 arg0, f32 arg1) {
     gIconConfig[arg0].unk_08 += var_v0;
 }
 
-void SelectNextActiveIcon(void) {
+void TeamSelection_TrainerSlots_MoveFromSpecialUp(void) {
     s16 i;
     s16 var_v1;
     s32 var_a0;
@@ -442,7 +442,7 @@ void SelectNextActiveIcon(void) {
         for (i = 0; i < 4; i++) {
             if (gIconConfig[var_v1].unk_00 != 0) {
                 gSelectedIconIndex = var_v1;
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 break;
             }
             var_v1 = (var_v1 + var_a0) & 3;
@@ -450,7 +450,7 @@ void SelectNextActiveIcon(void) {
     }
 }
 
-void SelectAlternateIcon(void) {
+void TeamSelection_TrainerSlots_MoveFromTrainerToSpecial(void) {
     s16 var_v0;
     s16 i;
 
@@ -459,7 +459,7 @@ void SelectAlternateIcon(void) {
         for (i = 0; i < 2; i++) {
             if (gIconConfig[var_v0].unk_00 != 0) {
                 gSelectedIconIndex = var_v0;
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 break;
             }
             var_v0 ^= 1;
@@ -467,37 +467,37 @@ void SelectAlternateIcon(void) {
     }
 }
 
-void SelectLeftIcon(void) {
+void TeamSelection_TrainerSlots_MovePrevious(void) {
     s16 i;
 
     if ((gSelectedIconIndex > 0) && (gSelectedIconIndex < 4)) {
         for (i = gSelectedIconIndex - 1; i >= 0; i--) {
             if (gIconConfig[i].unk_00 != 0) {
                 gSelectedIconIndex = i;
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 break;
             }
         }
     } else if ((gSelectedIconIndex == 5) && (gIconConfig[4].unk_00 != 0)) {
         gSelectedIconIndex = 4;
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 }
 
-void SelectRightIcon(void) {
+void TeamSelection_TrainerSlots_MoveNext(void) {
     s16 i;
 
     if (gSelectedIconIndex < 3) {
         for (i = gSelectedIconIndex + 1; i < 4; i++) {
             if (gIconConfig[i].unk_00 != 0) {
                 gSelectedIconIndex = i;
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 break;
             }
         }
     } else if (gSelectedIconIndex == 4) {
         gSelectedIconIndex = 5;
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 }
 
@@ -506,28 +506,28 @@ void TeamSelection_TrainerSlots_HandleInput(void) {
 
     if (BTN_IS_PRESSED(gCurrentController, BTN_A)) {
         if (gIconConfig[gSelectedIconIndex].unk_01 == 0) {
-            PlaySoundEffect(0x01100012);
+            Audio_PlaySoundEffectById(0x01100012);
             D_8423E56C = 4;
         } else {
-            PlaySoundEffect(8);
+            Audio_PlaySoundEffectById(8);
             D_8423E56C = 6;
         }
     } else if ((D_8423E57C != 0) && (BTN_IS_PRESSED(gCurrentController, BTN_B))) {
         D_8423E56C = 5;
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
     } else if (BTN_IS_PRESSED(gCurrentController, BTN_DUP)) {
-        SelectNextActiveIcon();
+        TeamSelection_TrainerSlots_MoveFromSpecialUp();
     } else if (BTN_IS_PRESSED(gCurrentController, BTN_DDOWN)) {
-        SelectAlternateIcon();
+        TeamSelection_TrainerSlots_MoveFromTrainerToSpecial();
     } else if (BTN_IS_PRESSED(gCurrentController, BTN_DLEFT)) {
-        SelectLeftIcon();
+        TeamSelection_TrainerSlots_MovePrevious();
     } else if (BTN_IS_PRESSED(gCurrentController, BTN_DRIGHT)) {
-        SelectRightIcon();
+        TeamSelection_TrainerSlots_MoveNext();
     }
 
     for (i = 0; i < 6; i++) {
-        UpdateIconTransform(i, 1.0f);
-        UpdateIconDepthTransform(i, 1.0f);
+        TeamSelection_TrainerSlots_UpdateModelScale(i, 1.0f);
+        TeamSelection_TrainerSlots_UpdateModelPose(i, 1.0f);
     }
 }
 
@@ -558,8 +558,8 @@ void TeamSelection_TrainerSlots_AnimateSelected(void) {
 
         D_8423D408[0][gSelectedIconIndex].unk_01E.z = 0;
     } else {
-        GraphNode_ClearCallback(&D_8423D408[0][gSelectedIconIndex]);
-        GraphNode_ClearCallback(&D_8423D408[1][gSelectedIconIndex]);
+        ModelRenderer_ClearDisplayObject(&D_8423D408[0][gSelectedIconIndex]);
+        ModelRenderer_ClearDisplayObject(&D_8423D408[1][gSelectedIconIndex]);
         D_8423E56C = 0;
     }
 }
@@ -571,8 +571,8 @@ void TeamSelection_TrainerSlots_AnimateClose(void) {
     if (gMenuTimer == 0) {
         for (i = 0; i < 6; i++) {
             if (i != gSelectedIconIndex) {
-                GraphNode_ClearCallback(&D_8423D408[0][i]);
-                GraphNode_ClearCallback(&D_8423D408[1][i]);
+                ModelRenderer_ClearDisplayObject(&D_8423D408[0][i]);
+                ModelRenderer_ClearDisplayObject(&D_8423D408[1][i]);
             }
         }
 
@@ -582,11 +582,11 @@ void TeamSelection_TrainerSlots_AnimateClose(void) {
     } else {
         for (i = 0; i < 6; i++) {
             if (i == gSelectedIconIndex) {
-                UpdateIconTransform(i, 1.0f);
-                UpdateIconDepthTransform(i, 1.0f);
+                TeamSelection_TrainerSlots_UpdateModelScale(i, 1.0f);
+                TeamSelection_TrainerSlots_UpdateModelPose(i, 1.0f);
             } else {
-                UpdateIconTransform(i, gMenuTimer / 12.0f);
-                UpdateIconDepthTransform(i, gMenuTimer / 12.0f);
+                TeamSelection_TrainerSlots_UpdateModelScale(i, gMenuTimer / 12.0f);
+                TeamSelection_TrainerSlots_UpdateModelPose(i, gMenuTimer / 12.0f);
             }
 
             gMenuBackgroundWidth = ((((gMenuTimer * 0x32) + 0x32) / 12) + 6) & (u16)~1;
@@ -602,8 +602,8 @@ void TeamSelection_TrainerSlots_Teardown(void) {
     if (gMenuTimer == 0) {
 
         for (i = 0; i < 6; i++) {
-            GraphNode_ClearCallback(&D_8423D408[0][i]);
-            GraphNode_ClearCallback(&D_8423D408[1][i]);
+            ModelRenderer_ClearDisplayObject(&D_8423D408[0][i]);
+            ModelRenderer_ClearDisplayObject(&D_8423D408[1][i]);
         }
 
         gSelectedIconIndex = -2;
@@ -612,8 +612,8 @@ void TeamSelection_TrainerSlots_Teardown(void) {
         D_8423E56C = 0;
     } else {
         for (i = 0; i < 6; i++) {
-            UpdateIconTransform(i, gMenuTimer / 12.0f);
-            UpdateIconDepthTransform(i, gMenuTimer / 12.0f);
+            TeamSelection_TrainerSlots_UpdateModelScale(i, gMenuTimer / 12.0f);
+            TeamSelection_TrainerSlots_UpdateModelPose(i, gMenuTimer / 12.0f);
         }
 
         gMenuBackgroundWidth = ((((gMenuTimer * 0x32) + 0x32) / 12) + 6) & (u16)~1;
@@ -638,8 +638,8 @@ void TeamSelection_TrainerSlots_HandleRulePrompt(void) {
     }
 
     for (i = 0; i < 6; i++) {
-        UpdateIconTransform(i, 1.0f);
-        UpdateIconDepthTransform(i, 1.0f);
+        TeamSelection_TrainerSlots_UpdateModelScale(i, 1.0f);
+        TeamSelection_TrainerSlots_UpdateModelPose(i, 1.0f);
     }
 }
 
@@ -721,10 +721,10 @@ void TeamSelection_TrainerSlots_InitializeModels(void) {
 
     for (i = 0; i < 6; i++) {
         if (gIconConfig[i].unk_00 != 0) {
-            GraphNode_InitChild(D_8423D408[0] + i, 0, 0, gMenuGeoLayouts[i]);
-            GraphNode_InitChild(D_8423D408[1] + i, 0, 0, gMenuCommonGeoLayout);
-            Vec3f_Set(&D_8423D408[0][i].unk_024, gIconConfig[i].unk_02 - 0x140, 0xF0 - gIconConfig[i].unk_04, -579.f);
-            Vec3f_Set(&D_8423D408[1][i].unk_024, gIconConfig[i].unk_02 - 0x140, 0xE4 - gIconConfig[i].unk_04,
+            Model_InitDisplayObject(D_8423D408[0] + i, 0, 0, gMenuGeoLayouts[i]);
+            Model_InitDisplayObject(D_8423D408[1] + i, 0, 0, gMenuCommonGeoLayout);
+            Vec3f_SetComponentsDuplicate(&D_8423D408[0][i].unk_024, gIconConfig[i].unk_02 - 0x140, 0xF0 - gIconConfig[i].unk_04, -579.f);
+            Vec3f_SetComponentsDuplicate(&D_8423D408[1][i].unk_024, gIconConfig[i].unk_02 - 0x140, 0xE4 - gIconConfig[i].unk_04,
                           -579.0f);
             D_8423D408[1][i].unk_01D = 0xB4;
         }
@@ -748,19 +748,19 @@ void TeamSelection_TrainerSlots_PollGameBoySaves(void) {
     Gen1StringDecodeBuffer sp48;
 
     for (i = 0; i < 4; i++) {
-        Controller_ReadInput(i, &sp48);
-        DecodeGen1String(gTrainerSlotData[i].unk_06, sp48.unk_02);
+        GbSave_CopyPlayerIdentity(i, &sp48);
+        Text_UntranscodeName(gTrainerSlotData[i].unk_06, sp48.unk_02);
         gTrainerSlotData[i].unk_04 = sp48.unk_00;
-        gTrainerSlotData[i].unk_01 = MenuItem_GetHeldItemId(i);
-        gTrainerSlotData[i].unk_00 = MenuItem_GetPokemonSpecies(i);
-        gTrainerSlotData[i].unk_02 = MenuItem_GetPokemonGender(i);
+        gTrainerSlotData[i].unk_01 = GbSave_GetPortGame(i);
+        gTrainerSlotData[i].unk_00 = GbSave_GetSaveState(i);
+        gTrainerSlotData[i].unk_02 = GbSave_SavedAtPokemonCenter(i);
         gTrainerSlotData[i].unk_03 = (temp_s3 & (1 << i)) != 0;
     }
 }
 
 s32 TeamSelection_TrainerSlots_Initialize(s16 arg0) {
     s32 i;
-    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     Fragment2_1GraphNode* var_s2;
 
     gMenuGraphRoot = process_geo_layout(temp_v0, gMenuRootLayout);
@@ -770,12 +770,12 @@ s32 TeamSelection_TrainerSlots_Initialize(s16 arg0) {
     gMenuGeoLayouts[5] = process_geo_layout(temp_v0, D_84211430);
     gMenuCommonGeoLayout = process_geo_layout(temp_v0, D_84211510);
 
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
 
     var_s2 = &D_8423D408[0][0];
     for (i = 0; i < 12; var_s2++, i++) {
-        Graph_AddToRootList0(var_s2);
+        ModelRenderer_AttachDisplayObject(var_s2);
         D_8423D408[0][i].unk_000.unk_14 = i;
     }
 
@@ -784,7 +784,7 @@ s32 TeamSelection_TrainerSlots_Initialize(s16 arg0) {
     return 8;
 }
 
-s32 Menu_Start(s16 arg0, s32 arg1) {
+s32 TeamSelection_TrainerSlots_Open(s16 arg0, s32 arg1) {
     if (D_8423E56C == 0) {
         TeamSelection_TrainerSlots_InitializeModels();
         if (gIconConfig[arg0].unk_00 != 0) {
@@ -807,7 +807,7 @@ s32 Menu_Start(s16 arg0, s32 arg1) {
     return 0;
 }
 
-s16 Menu_GetSelectedIndex(void) {
+s16 TeamSelection_TrainerSlots_GetSelection(void) {
     if (D_8423E56C == 0) {
         return gSelectedIconIndex;
     }

@@ -43,7 +43,7 @@ typedef struct AnimProcessor {
     s16 unk188;       // 0x188
 } AnimProcessor;
 
-void AnimHeader_ProcessScaled(AnimProcessor* arg0, AnimHeader* arg1, s32 arg2, s32 arg3) {
+void Decoding_of_the_coded_Log_Area_Ratios(AnimProcessor* arg0, AnimHeader* arg1, s32 arg2, s32 arg3) {
     AnimHeader* temp_v0_2;
 
     temp_v0_2 = &arg0->unk168[arg0->unk188];
@@ -56,17 +56,17 @@ void AnimHeader_ProcessScaled(AnimProcessor* arg0, AnimHeader* arg1, s32 arg2, s
     temp_v0_2->unkC = (s16) (((s32) ((((arg1->unkC - 4) << 0xA) * 0x7ADE) + 0x0147936C) >> 0xF) * 2);
     temp_v0_2->unkE = (s16) (((s32) ((((arg1->unkE - 4) << 0xA) * 0x740C) + 0x040D6B40) >> 0xF) * 2);
 
-    AnimProcessor_FinishFrame((s32)arg0, arg2, arg3);
+    Gsm_Short_Term_Synthesis_Filter((s32)arg0, arg2, arg3);
     arg0->unk188 ^= 1;
 }
 
-void AnimFrame_ProcessSubframes(AnimProcessor* arg0, AnimHeader* arg1, s16* arg2, s16* arg3, s16* arg4, s16* arg5, AnimBlock19* arg6, s32 arg7) {
+void Gsm_Decoder(AnimProcessor* arg0, AnimHeader* arg1, s16* arg2, s16* arg3, s16* arg4, s16* arg5, AnimBlock19* arg6, s32 arg7) {
     s32 i;
     s16 sp44[40];
     
     for (i = 0; i < 4; i++) {
-        AnimBlock_DecodeSubframe(*arg5, *arg4, arg6, sp44);
-        AnimProcessor_ApplySubframe(arg0, *arg2, *arg3, sp44);
+        Gsm_RPE_Decoding(*arg5, *arg4, arg6, sp44);
+        Gsm_Long_term_synthesis_filtering(arg0, *arg2, *arg3, sp44);
         arg5++;
         arg3++;
         arg2++;
@@ -75,10 +75,10 @@ void AnimFrame_ProcessSubframes(AnimProcessor* arg0, AnimHeader* arg1, s16* arg2
     }
 
 
-    AnimHeader_ProcessScaled(arg0, arg1, arg0, arg7);
+    Decoding_of_the_coded_Log_Area_Ratios(arg0, arg1, arg0, arg7);
 }
 
-s32 AnimData_DecodePacked(AnimProcessor* arg0, AnimPackedData* arg1, s32 arg2) {
+s32 Gsm_Decode(AnimProcessor* arg0, AnimPackedData* arg1, s32 arg2) {
     AnimHeader header;
     s16 spC8[4];
     s16 spC0[4];
@@ -115,7 +115,7 @@ s32 AnimData_DecodePacked(AnimProcessor* arg0, AnimPackedData* arg1, s32 arg2) {
         sp48[i].unkC = (arg1[i + 1].unk4 >> 3) & 7;
         sp48[i].unkD = arg1[i + 1].unk4 & 7;
     }
-    AnimFrame_ProcessSubframes(arg0, &header, spC8, spB8, spC0, spB0, sp48, arg2);
+    Gsm_Decoder(arg0, &header, spC8, spB8, spC0, spB0, sp48, arg2);
     return 0;
 }
 
@@ -141,15 +141,15 @@ s32 AnimData_DecodePacked(AnimProcessor* arg0, AnimPackedData* arg1, s32 arg2) {
     }
 
 // Speech/voice frame decoder: called once per 160-sample (0x140-byte) output
-// frame by AudioChannel_Update (src/45720.c). Bitstream layout:
+// frame by AudioStream_RefillAndDecode (src/45720.c). Bitstream layout:
 //  - if no run is active: 1 bit; 1 => silence run of (4 bits + 1) frames
 //    (unk_18C), 0 => voiced run of (7 bits + 1) frames (unk_18A).
 //  - silence frame: zero the output buffer.
 //  - voiced frame: 8 header fields (6,6,5,5,4,4,3,3 bits) then 4 subframes of
-//    (7,2,2,6 bits + 13 x 3 bits), same layout AnimData_DecodePacked unpacks from
-//    bytes, then synthesised by AnimFrame_ProcessSubframes.
+//    (7,2,2,6 bits + 13 x 3 bits), same layout Gsm_Decode unpacks from
+//    bytes, then synthesised by Gsm_Decoder.
 // The stored position is (word-aligned pos) + (32 - left).
-s32 GbAudio_DecodeSpeechFrame(GbAudioChannelState* arg0, void* arg1) {
+s32 Gsm_Decode_Stream(GbAudioChannelState* arg0, void* arg1) {
     AnimHeader header;
     s16 spE0[4];
     s16 spD8[4];
@@ -209,7 +209,7 @@ s32 GbAudio_DecodeSpeechFrame(GbAudioChannelState* arg0, void* arg1) {
             READ_BITS(sp60[i].unkD, 3);
         }
         arg0->unk_0000.unk_18A--;
-        AnimFrame_ProcessSubframes((AnimProcessor*)arg0, &header, spE0, spD0, spD8, spC8, sp60, (s32)arg1);
+        Gsm_Decoder((AnimProcessor*)arg0, &header, spE0, spD0, spD8, spC8, sp60, (s32)arg1);
     }
 
     arg0->bitReadPosition = (pos & ~0x1F) - left + 32;

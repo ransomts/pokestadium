@@ -34,69 +34,69 @@ void func_8000D1D0(void) {
 void func_8000D1D8(void) {
 }
 
-void Music_ClearCurrentId(void) {
+void Audio_ResetCurrentMusic(void) {
     gCurrentMusicId = -1;
 }
 
-void Music_ChangeTrack(s32 arg0) {
+void Audio_PlayMusicIfChanged(s32 arg0) {
     if (arg0 != gCurrentMusicId) {
         if (gCurrentMusicId >= 0) {
-            Stage_SetFadeColor(0);
+            Audio_FadeOutAll(0);
         }
-        ResultScreen_SetAnimation(arg0);
+        Audio_StartMusicTrack(arg0);
         gCurrentMusicId = arg0;
     }
 }
 
-void Music_SetTrack(s32 arg0) {
+void Audio_PlayMusicIfChangedImmediate(s32 arg0) {
     if (arg0 != gCurrentMusicId) {
-        ResultScreen_SetAnimation(arg0);
+        Audio_StartMusicTrack(arg0);
         gCurrentMusicId = arg0;
     }
 }
 
-void Music_StopTrack(s32 arg0) {
+void Audio_StopMusic(s32 arg0) {
     if (gCurrentMusicId >= 0) {
-        Stage_SetFadeColor(arg0);
+        Audio_FadeOutAll(arg0);
         gCurrentMusicId = -1;
     }
 }
 
-s32 Audio_WaitForLoadAndFade(s32 arg0) {
+s32 Audio_WaitForIdle(s32 arg0) {
     s32 retvar = 0;
 
     if (arg0 != 0) {
-        Audio_ResetAndSetFade(2);
+        Audio_FadeCategoriesAndStreams(2);
     }
-    while (Audio_CalcLoadScore() != 0) {
+    while (Audio_GetActivityScore() != 0) {
         if (retvar < 1000000) {
             retvar++;
         } else if (retvar == 1000000) {
-            Audio_FadeAllChannelsDefault();
+            Audio_FadeCategoriesAndStreamsDefault();
             retvar++;
         }
     }
     return retvar;
 }
 
-void Audio_FadeAllChannelsFast(void) {
-    Audio_FadeAllChannels(0x10);
+void Audio_FadeOutForShutdown(void) {
+    Audio_FadeCategoriesAndStreamsWithDuration(0x10);
 }
 
-void Audio_Unpause(void) {
+void Audio_Disable(void) {
     gAudioThreadEnabled = 0;
-    Audio_SetPauseState(0);
+    Audio_SetEnabled(0);
 }
 
-void Audio_Pause(void) {
-    Audio_SetPauseState(1);
+void Audio_Enable(void) {
+    Audio_SetEnabled(1);
     gAudioThreadEnabled = 1;
 }
 
 void Audio_ThreadMain(void* unused) {
     __osSetFpcCsr(0x01000C01);
-    MessageQueue_Create(&gAudioThreadData.thread, 1, 1);
-    ThreadList_Add(&gAudioThreadData.thread);
+    Sched_InitClientQueue(&gAudioThreadData.thread, 1, 1);
+    Sched_AddClient(&gAudioThreadData.thread);
     gAudioThreadEnabled = 1;
     gCurrentMusicId = -1;
     gAudioTaskBufferIndex = 0;
@@ -104,24 +104,24 @@ void Audio_ThreadMain(void* unused) {
     osCreateMesgQueue(&gAudioMessageQueues[1].queue, &gAudioMessageQueues[1].mesg, 1);
     osSendMesg(&gAudioMessageQueues[0].queue, (void*)'DONE', 0);
     osSendMesg(&gAudioMessageQueues[1].queue, (void*)'DONE', 0);
-    Audio_Initialize();
-    Music_SetPanMode(0);
-    Music_SetMasterVolumeLevel(3, 4);
+    Audio_InitBanks();
+    Audio_SetMonoOutput(0);
+    Audio_SetChannelVolume(3, 4);
 
     // thread loop
     while (1) {
-        MessageQueue_Recv(&gAudioThreadData.thread);
+        Sched_WaitClientQueue(&gAudioThreadData.thread);
         profiler_log_thread4_time();
         if ((gAudioThreadEnabled != 0) && (gRspTaskManager.unk_A38 < 0x15)) {
-            Audio_BuildTask(&gAudioMessageQueues[gAudioTaskBufferIndex].task);
-            RspTaskStart(&gAudioMessageQueues[gAudioTaskBufferIndex], 0);
+            Audio_CreateFrameTaskWrapper(&gAudioMessageQueues[gAudioTaskBufferIndex].task);
+            Sched_SubmitTask(&gAudioMessageQueues[gAudioTaskBufferIndex], 0);
         }
         gAudioTaskBufferIndex ^= 1;
         profiler_log_thread4_time();
     }
 }
 
-void Audio_CreateThread(void) {
+void Audio_StartThread(void) {
     osCreateThread(&gAudioThreadData.thread, 4, Audio_ThreadMain, NULL, &gGbEmuState, 0x50);
     osStartThread(&gAudioThreadData.thread);
 }

@@ -18,12 +18,12 @@ s32 Storage_QueueRomRead(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32
         temp_v0->unk24 = arg3;
         temp_v0->unk20 = arg1;
         temp_v0->unk28 = arg4;
-        Rsp_SendMessage(temp_v0, arg5);
+        Storage_QueueRequest(temp_v0, arg5);
     }
     return temp_v0 == NULL;
 }
 
-s32 PiStartDmaCopy(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4) {
+s32 Storage_QueueRomWrite(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -33,12 +33,12 @@ s32 PiStartDmaCopy(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4) {
         temp_v0->unk24 = arg2;
         temp_v0->unk20 = (void*)(uintptr_t)arg0;
         temp_v0->unk28 = arg3;
-        Rsp_SendMessage(temp_v0, arg4);
+        Storage_QueueRequest(temp_v0, arg4);
     }
     return temp_v0 == NULL;
 }
 
-s32 PiStartDma(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
+s32 Storage_QueueSramTransfer(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -52,12 +52,12 @@ s32 PiStartDma(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5) {
         temp_v0->unk24 = arg3;
         temp_v0->unk20 = arg1;
         temp_v0->unk28 = arg4;
-        Rsp_SendMessage(temp_v0, arg5);
+        Storage_QueueRequest(temp_v0, arg5);
     }
     return temp_v0 == NULL;
 }
 
-s32 PiReadRom(s32 arg0, void* arg1, s16 arg2, s32 arg3, s32 arg4) {
+s32 Storage_QueueFlashTransfer(s32 arg0, void* arg1, s16 arg2, s32 arg3, s32 arg4) {
     struct UnkStruct80000E80* temp_v0;
 
     temp_v0 = Util_Malloc(0x2C);
@@ -71,7 +71,7 @@ s32 PiReadRom(s32 arg0, void* arg1, s16 arg2, s32 arg3, s32 arg4) {
         temp_v0->unk24 = 1;
         temp_v0->unk20 = arg1;
         temp_v0->unk28 = arg3;
-        Rsp_SendMessage(temp_v0, arg4);
+        Storage_QueueRequest(temp_v0, arg4);
     }
     return temp_v0 == NULL;
 }
@@ -90,7 +90,7 @@ s32 Storage_QueueDiskTransfer(s32 arg0, void* arg1, s32 arg2, s32 arg3, s32 arg4
         temp_v0->unk24 = arg3;
         temp_v0->unk20 = arg1;
         temp_v0->unk28 = arg4;
-        Rsp_SendMessage(temp_v0, arg5);
+        Storage_QueueRequest(temp_v0, arg5);
     }
     return temp_v0 == NULL;
 }
@@ -103,7 +103,7 @@ s32 Storage_QueueDiskIdRead(s32 arg0, s32 arg1) {
         temp_v0->unk0 = 0xC;
         temp_v0->unk20 = &D_800818E0;
         temp_v0->unk28 = arg0;
-        Rsp_SendMessage(temp_v0, arg1);
+        Storage_QueueRequest(temp_v0, arg1);
     }
     return temp_v0 == NULL;
 }
@@ -116,7 +116,7 @@ s32 Storage_QueueDiskSeek(s32 arg0, s32 arg1, s32 arg2) {
         temp_v0->unk0 = 7;
         temp_v0->unk1C = arg0;
         temp_v0->unk28 = arg1;
-        Rsp_SendMessage(temp_v0, arg2);
+        Storage_QueueRequest(temp_v0, arg2);
     }
     return temp_v0 == NULL;
 }
@@ -129,7 +129,7 @@ s32 Storage_QueueDiskMotorOff(s32 arg0, s32 arg1) {
         temp_v0->unk0 = 8;
         temp_v0->unk1C = 0;
         temp_v0->unk28 = arg0;
-        Rsp_SendMessage(temp_v0, arg1);
+        Storage_QueueRequest(temp_v0, arg1);
     }
     return temp_v0 == NULL;
 }
@@ -142,7 +142,7 @@ s32 Storage_QueueDiskReset(s32 arg0, s32 arg1) {
         temp_v0->unk0 = 8;
         temp_v0->unk1C = 4;
         temp_v0->unk28 = arg0;
-        Rsp_SendMessage(temp_v0, arg1);
+        Storage_QueueRequest(temp_v0, arg1);
     }
     return temp_v0 == NULL;
 }
@@ -155,7 +155,7 @@ s32 Storage_QueueRtcWrite(void* arg0, s32 arg1, s32 arg2) {
         temp_v0->unk0 = 0xE;
         temp_v0->unk20 = arg0;
         temp_v0->unk28 = arg1;
-        Rsp_SendMessage(temp_v0, arg2);
+        Storage_QueueRequest(temp_v0, arg2);
     }
     return temp_v0 == NULL;
 }
@@ -172,7 +172,7 @@ s32 Storage_QueueRtcRead(void* arg0, s32 arg1, s32 arg2) {
         temp_v0->unk0 = 0xD;
         temp_v0->unk20 = arg0;
         temp_v0->unk28 = arg1;
-        Rsp_SendMessage(temp_v0, arg2);
+        Storage_QueueRequest(temp_v0, arg2);
     }
     return temp_v0 == NULL;
 }

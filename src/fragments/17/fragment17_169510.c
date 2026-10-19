@@ -1,6 +1,6 @@
 #include "fragment17.h"
 
-void Matrix_ConvertFloatToFixed(Mtx* arg0, MtxF* arg1) {
+void MtxF_PackToFixed(Mtx* arg0, MtxF* arg1) {
     arg0->m[0][0] =
         ((s32)(arg1->mf[0][0] * 65536.0f) & 0xFFFF0000) | (((s32)(arg1->mf[0][1] * 65536.0f) >> 0x10) & 0xFFFF);
     arg0->m[0][1] =
@@ -27,7 +27,7 @@ void Matrix_ConvertFloatToFixed(Mtx* arg0, MtxF* arg1) {
     arg0->m[3][3] = ((s32)(arg1->mf[3][2] * 65536.0f) << 0x10) | ((s32)(arg1->mf[3][3] * 65536.0f) & 0xFFFF);
 }
 
-void Matrix_ScaleUniform(MtxF* arg0, f32 arg1) {
+void MtxF_ScaleUpperRows(MtxF* arg0, f32 arg1) {
     arg0->mf[0][0] *= arg1;
     arg0->mf[1][0] *= arg1;
     arg0->mf[2][0] *= arg1;

@@ -7,11 +7,11 @@ typedef struct CameraModeFlag {
 
 static CameraModeFlag gCameraModeFlag = { 0x8E };
 
-s16 GetCameraBaseY(void) {
+s16 Intro_GetTrackedModelFacingOffset(void) {
     return gCameraTarget->unk_004.unk_01E.y + 0x8000;
 }
 
-s32 ByteArrayContains(u8 arg0, u8* arg1, s32 arg2) {
+s32 Util_ByteInArray(u8 arg0, u8* arg1, s32 arg2) {
     while (arg2--) {
         if (arg0 == *arg1) {
             return 1;
@@ -21,11 +21,11 @@ s32 ByteArrayContains(u8 arg0, u8* arg1, s32 arg2) {
     return 0;
 }
 
-void ComputeCameraTargetPos(unk_D_86B0FA78* arg0, Vec3f* arg1) {
+void Intro_ComputeFollowPoint(unk_D_86B0FA78* arg0, Vec3f* arg1) {
     f32 sp24 = 0.0f;
     CameraModeFlag sp20 = gCameraModeFlag;
 
-    if (ByteArrayContains(gCameraTarget->unk_174, sp20.unk_00, 1) != 0) {
+    if (Util_ByteInArray(gCameraTarget->unk_174, sp20.unk_00, 1) != 0) {
         sp24 = gMonsterStageData.unk_04 / 1.5f;
     }
 
@@ -44,11 +44,11 @@ void ComputeCameraTargetPos(unk_D_86B0FA78* arg0, Vec3f* arg1) {
     }
 }
 
-void Camera_UpdateView(void) {
-    Camera_SetViewParameters(&gCameraState->unk_04, &gCameraState->unk_00->unk_60.at, gCameraState->unk_1C, gCameraState->unk_10,
-                  GetCameraBaseY() + gCameraState->unk_12);
-    Camera_SetViewParameters(&gCameraState->unk_04, &gCameraState->unk_00->unk_60.eye, gCameraState->unk_20, gCameraState->unk_16,
-                  GetCameraBaseY() + gCameraState->unk_18);
+void Intro_UpdateOrbitCamera(void) {
+    Camera_ComputeEyeFromAngles(&gCameraState->unk_04, &gCameraState->unk_00->unk_60.at, gCameraState->unk_1C, gCameraState->unk_10,
+                  Intro_GetTrackedModelFacingOffset() + gCameraState->unk_12);
+    Camera_ComputeEyeFromAngles(&gCameraState->unk_04, &gCameraState->unk_00->unk_60.eye, gCameraState->unk_20, gCameraState->unk_16,
+                  Intro_GetTrackedModelFacingOffset() + gCameraState->unk_18);
 
     gCameraState->unk_00->unk_60.at.y += gMonsterStageData.unk_0C;
     if (gCameraState->unk_00->unk_60.eye.y <= 10.0f) {
@@ -56,7 +56,7 @@ void Camera_UpdateView(void) {
     }
 }
 
-f32 ClampFloatByScale(f32 arg0, f32 arg1) {
+f32 Intro_ClampOrbitDistance(f32 arg0, f32 arg1) {
     f32 temp_fv1 = gMonsterStageData.unk_00 * arg0;
 
     if (arg1 < temp_fv1) {
@@ -65,7 +65,7 @@ f32 ClampFloatByScale(f32 arg0, f32 arg1) {
     return temp_fv1;
 }
 
-void Camera_SetBaseParams(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void IntroCamKeyframe_SetAngles(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gCameraState->unk_10 = arg0;
     gCameraState->unk_12 = arg1;
     gCameraState->unk_24 = arg2;
@@ -77,7 +77,7 @@ void IntroCamKeyframe_SetDistance(f32 arg0, f32 arg1) {
     gCameraState->unk_30 = arg1;
 }
 
-void Camera_SetEyeParams(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void IntroCamKeyframe_SetAtAngles(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gCameraState->unk_16 = arg0;
     gCameraState->unk_18 = arg1;
     gCameraState->unk_2A = arg2;
@@ -89,12 +89,12 @@ void IntroCamKeyframe_SetAtDistance(f32 arg0, f32 arg1) {
     gCameraState->unk_34 = arg1;
 }
 
-void Camera_SetApproachParams(f32 arg0, f32 arg1) {
+void IntroCamKeyframe_SetTransitionSpeed(f32 arg0, f32 arg1) {
     gCameraState->unk_38 = arg0;
     gCameraState->unk_3C = arg1;
 }
 
-void Camera_InitFromConfig(unk_D_86B0C160* arg0, CameraStruct* arg1) {
+void Intro_LoadCameraKeyframe(unk_D_86B0C160* arg0, CameraStruct* arg1) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -107,17 +107,17 @@ void Camera_InitFromConfig(unk_D_86B0C160* arg0, CameraStruct* arg1) {
         gCameraState->unk_40 = arg0->unk_30;
     }
 
-    sp34 = ClampFloatByScale(arg0->unk_0C, 500.0f);
-    sp30 = ClampFloatByScale(arg0->unk_20, 500.0f);
-    sp2C = ClampFloatByScale(arg0->unk_10, 500.0f);
-    sp28 = ClampFloatByScale(arg0->unk_24, 500.0f);
+    sp34 = Intro_ClampOrbitDistance(arg0->unk_0C, 500.0f);
+    sp30 = Intro_ClampOrbitDistance(arg0->unk_20, 500.0f);
+    sp2C = Intro_ClampOrbitDistance(arg0->unk_10, 500.0f);
+    sp28 = Intro_ClampOrbitDistance(arg0->unk_24, 500.0f);
 
-    Camera_SetBaseParams(arg0->unk_00, GetCameraBaseY() + arg0->unk_02, arg0->unk_14, GetCameraBaseY() + arg0->unk_16);
+    IntroCamKeyframe_SetAngles(arg0->unk_00, Intro_GetTrackedModelFacingOffset() + arg0->unk_02, arg0->unk_14, Intro_GetTrackedModelFacingOffset() + arg0->unk_16);
     IntroCamKeyframe_SetDistance(sp34, sp30);
 
-    Camera_SetEyeParams(arg0->unk_06, GetCameraBaseY() + arg0->unk_08, arg0->unk_1A, GetCameraBaseY() + arg0->unk_1C);
+    IntroCamKeyframe_SetAtAngles(arg0->unk_06, Intro_GetTrackedModelFacingOffset() + arg0->unk_08, arg0->unk_1A, Intro_GetTrackedModelFacingOffset() + arg0->unk_1C);
     IntroCamKeyframe_SetAtDistance(sp2C, sp28);
-    Camera_SetApproachParams(arg0->unk_28, arg0->unk_2C);
+    IntroCamKeyframe_SetTransitionSpeed(arg0->unk_28, arg0->unk_2C);
 }
 
 s32 Intro_UpdateCameraKeyframe(CameraStruct* arg0) {
@@ -133,28 +133,28 @@ s32 Intro_UpdateCameraKeyframe(CameraStruct* arg0) {
     if (gCameraState->unk_40 != 200.0f) {
         arg0->unk_24.fovy = gCameraState->unk_40;
     } else {
-        Math_ApproachFloat(&arg0->unk_24.fovy, 30.0f, 0.06f);
+        Math_EaseTowardF(&arg0->unk_24.fovy, 30.0f, 0.06f);
     }
 
-    Math_ApproachFloat(&gCameraState->unk_44, gCameraState->unk_38, gCameraState->unk_3C);
-    Camera_SetViewParameters(&gCameraState->unk_04, &sp50, gCameraState->unk_34, gCameraState->unk_2A,
-                  GetCameraBaseY() + gCameraState->unk_2C);
+    Math_EaseTowardF(&gCameraState->unk_44, gCameraState->unk_38, gCameraState->unk_3C);
+    Camera_ComputeEyeFromAngles(&gCameraState->unk_04, &sp50, gCameraState->unk_34, gCameraState->unk_2A,
+                  Intro_GetTrackedModelFacingOffset() + gCameraState->unk_2C);
 
     if (sp50.y <= 10.0f) {
         sp50.y = 10.0f;
     }
 
     func_86B01404(&sp44, &arg0->unk_60.eye);
-    Matrix_Decompose(&sp44, &sp50, &sp34, &sp2E, &sp2C);
-    Camera_SetViewParameters(&sp44, &arg0->unk_60.eye, gCameraState->unk_44 * sp34, sp2E, sp2C);
-    Camera_SetViewParameters(&gCameraState->unk_04, &sp38, gCameraState->unk_30, gCameraState->unk_24,
-                  GetCameraBaseY() + gCameraState->unk_26);
+    Vec3f_CalculateDistanceAngles(&sp44, &sp50, &sp34, &sp2E, &sp2C);
+    Camera_ComputeEyeFromAngles(&sp44, &arg0->unk_60.eye, gCameraState->unk_44 * sp34, sp2E, sp2C);
+    Camera_ComputeEyeFromAngles(&gCameraState->unk_04, &sp38, gCameraState->unk_30, gCameraState->unk_24,
+                  Intro_GetTrackedModelFacingOffset() + gCameraState->unk_26);
 
     sp38.y += gMonsterStageData.unk_0C;
 
     func_86B01404(&sp5C, &arg0->unk_60.at);
-    Matrix_Decompose(&sp5C, &sp38, &sp30, &sp2E, &sp2C);
-    Camera_SetViewParameters(&sp5C, &arg0->unk_60.at, gCameraState->unk_44 * sp30, sp2E, sp2C);
+    Vec3f_CalculateDistanceAngles(&sp5C, &sp38, &sp30, &sp2E, &sp2C);
+    Camera_ComputeEyeFromAngles(&sp5C, &arg0->unk_60.at, gCameraState->unk_44 * sp30, sp2E, sp2C);
 
     if ((sp34 <= 1.0f) && (sp30 <= 1.0f)) {
         return 1;

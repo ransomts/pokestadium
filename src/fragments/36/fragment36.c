@@ -34,10 +34,10 @@ void func_82100028(UNUSED s32 arg0, UNUSED s32 arg1) {
 }
 
 void Title_PollDPad(void) {
-    MenuInput_ReadDirection();
+    Input_GetRepeatedDPad();
 }
 
-s32 GetMenuOptionCode(void) {
+s32 Title_ResolveStartPressState(void) {
     static s32 D_82100DC0 = 0;
 
     s32 var_v1 = 4;
@@ -76,7 +76,7 @@ s32 GetMenuOptionCode(void) {
     return var_v1;
 }
 
-void DrawBorderOverlay(s16 arg0, s16 arg1) {
+void Title_DrawPressStartBlink(s16 arg0, s16 arg1) {
     static s32 D_82100DC4 = 0x40;
 
     s32 temp_v0 = D_82100DC4 - 0x30;
@@ -104,7 +104,7 @@ void DrawBorderOverlay(s16 arg0, s16 arg1) {
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, 100, 15, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, 100, 15, 0, 0, 0x400, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
@@ -116,21 +116,21 @@ void Title_DrawNoControllerWarning(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, gMessageBank14, 0));
+        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMessageBank14, 0));
         temp_s0 = 0x50 - D_82100DC8;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
-        Text_ResetState();
-        Text_SetFont(4, 0);
-        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMessageBank14, 0));
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(4, 0);
+        Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMessageBank14, 0));
 
         temp_s0 += sp24 + 30;
         if (temp_s0 < 0x140) {
-            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMessageBank14, 0));
+            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMessageBank14, 0));
         }
 
-        Text_SetupDL();
+        Font_EndTexturedTextRendering();
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 
@@ -141,7 +141,7 @@ void Title_DrawNoControllerWarning(void) {
     }
 }
 
-void DrawBackgroundTextureTiles(u8* arg0) {
+void Title_DrawBackgroundImage(u8* arg0) {
     s32 i;
     s32 j;
 
@@ -155,22 +155,22 @@ void DrawBackgroundTextureTiles(u8* arg0) {
 
     for (i = 0; i < 0xF0; i += 0x10) {
         for (j = 0; j < 0x140; j += 0x10, arg0 += 0x200) {
-            Gfx_DrawSpriteRGBA16(j, i, 0x10, 0x10, arg0, 0x10, 0);
+            Gfx_DrawTextureRgba16(j, i, 0x10, 0x10, arg0, 0x10, 0);
         }
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void TitleScreen_RenderFrame(void) {
-    Stage_BeginDisplayList();
-    DrawBackgroundTextureTiles(D_82100EB4);
+void Title_DrawFrame(void) {
+    BgStage_DrawFrame();
+    Title_DrawBackgroundImage(D_82100EB4);
     if ((Cont_GetControllerBits() & 1) && (gBorderEnabled != 0)) {
-        DrawBorderOverlay(0x6E, 0xAF);
+        Title_DrawPressStartBlink(0x6E, 0xAF);
     }
     Title_DrawNoControllerWarning();
     func_82100028(0x64, 0x50);
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
 static u8 gFlagTable[] = {
@@ -184,7 +184,7 @@ static u8 gFlagTable[] = {
     0x18, 0x18, 0x14, 0x22, 0x21, 0x24, 0x21, 0x24, 0x14, 0x18, 0x18, 0x18, 0x14, 0x21, 0x22, 0x18, 0x20, 0x28,
 };
 
-s32 CountFlagOccurrences(s32 arg0) {
+s32 Title_CountEligibleDemoEntries(s32 arg0) {
     s32 var_v1 = 0;
     s32 i;
 
@@ -218,7 +218,7 @@ void Title_PickDemoMatchup(u8* arg0) {
     UNUSED s32 pad[2];
     s32 sp2C;
 
-    sp2C = CountFlagOccurrences(arg0[2]);
+    sp2C = Title_CountEligibleDemoEntries(arg0[2]);
 
     temp_s0 = osGetCount() & 0xFF;
     while (temp_s0-- > 0) {
@@ -230,7 +230,7 @@ void Title_PickDemoMatchup(u8* arg0) {
         sp38 = MathUtil_Random_ZeroOne() * sp2C;
     } while (temp_s0 == sp38);
 
-    Battle_CreateTwoPlayerMatch(arg0[0], arg0[1], Title_FindEligibleDemoEntry(temp_s0, arg0[2]), Title_FindEligibleDemoEntry(sp38, arg0[2]));
+    Session_SetupDemoBattle(arg0[0], arg0[1], Title_FindEligibleDemoEntry(temp_s0, arg0[2]), Title_FindEligibleDemoEntry(sp38, arg0[2]));
 }
 
 static u8 gTwoPlayerBattlePresets[2][4] = {
@@ -254,8 +254,8 @@ s32 Title_StartAttractDemo(void) {
     if (mod == 0) {
         Title_PickDemoMatchup(gTwoPlayerBattlePresets[low_index]);
     } else {
-        gBattleContext.unk_0000 = 0x19;
-        gBattleContext.unk_0003 = gTwoPlayerBattlePresets[low_index][3];
+        gSessionContext.unk_0000 = 0x19;
+        gSessionContext.unk_0003 = gTwoPlayerBattlePresets[low_index][3];
     }
 
     temp_a1 = ((temp_a1 + 1) % 4);
@@ -270,7 +270,7 @@ s32 Title_ShouldStartAttractDemo(void) {
     s32 sp1C = 0;
 
     if (D_82100E7C >= 0x259) {
-        if (Audio_CalcLoadScore() == 0) {
+        if (Audio_GetActivityScore() == 0) {
             sp1C = 1;
         }
     } else {
@@ -287,7 +287,7 @@ s32 Title_Loop(void) {
     s32 var_s0 = 0;
     s32 var_s2 = 30;
 
-    MenuInput_SetController(gPlayer1Controller);
+    Input_SetRepeatController(gPlayer1Controller);
 
     while (var_s0 == 0) {
         if (gBorderEnabled == 0) {
@@ -297,11 +297,11 @@ s32 Title_Loop(void) {
             }
         }
 
-        Game_UpdateInputs();
+        Controller_PollInputs();
 
         if ((gPlayer1Controller->buttonPressed & 0x9000) && (gBorderEnabled != 0)) {
-            PlaySoundEffect(0xF);
-            var_s0 = GetMenuOptionCode();
+            Audio_PlaySoundEffectById(0xF);
+            var_s0 = Title_ResolveStartPressState();
         } else if (Title_ShouldStartAttractDemo() != 0) {
             var_s0 = Title_StartAttractDemo();
         } else {
@@ -311,34 +311,34 @@ s32 Title_Loop(void) {
             }
         }
 
-        TitleScreen_RenderFrame();
+        Title_DrawFrame();
     }
 
     return var_s0;
 }
 
 void Title_FadeIn(void) {
-    if (Stage_GetFadeState() == 1) {
-        Stage_FadeIn(0xA);
-        while (Stage_GetFadeState() != 0) {
-            Game_UpdateInputs();
-            TitleScreen_RenderFrame();
+    if (StageContext_GetFadeMode() == 1) {
+        StageFade_StartFromOpaque(0xA);
+        while (StageContext_GetFadeMode() != 0) {
+            Controller_PollInputs();
+            Title_DrawFrame();
         }
     }
 }
 
 void Title_FadeOut(s32 arg0) {
     if (arg0 == 3) {
-        Stage_SetFillColor(1);
+        StageContext_SetClearColor(1);
     } else {
-        Stage_SetFillColor(0xFFFF);
+        StageContext_SetClearColor(0xFFFF);
     }
 
-    Stage_FadeOut(8);
+    StageFade_StartFromTransparent(8);
 
-    while (Stage_GetFadeState() != 1) {
-        Game_UpdateInputs();
-        TitleScreen_RenderFrame();
+    while (StageContext_GetFadeMode() != 1) {
+        Controller_PollInputs();
+        Title_DrawFrame();
     }
 }
 
@@ -366,29 +366,29 @@ s32 Title_Main(UNUSED s32 arg0, s16* arg1) {
 
     gMenuStatePtr = arg1;
 
-    if (Stage_GetCurrent() == NULL) {
+    if (StageContext_GetCurrent() == NULL) {
         main_pool_push_state('TITL');
 
-        Gfx_InitBuffers(0x10000, 0);
-        Stage_Set(Stage_Create(0, 1, 3, 1, 2, 1));
+        Gfx_InitDisplayListBuffers(0x10000, 0);
+        StageContext_Activate(StageContext_Allocate(0, 1, 3, 1, 2, 1));
     } else {
-        Menu_SetupDisplayList();
+        StageLoader_UpdateSegments();
     }
 
-    GbsEnsureBankLoaded(2);
-    GBAudio_ResetState(&D_82100EA8, 0);
-    Text_Init(6, 0);
+    Save_EnsureBankLoaded(2);
+    Save_GetModeSettings(&D_82100EA8, 0);
+    Font_Init(6, 0);
     Title_LoadAssets();
-    MessageBank_Init();
-    gMessageBank14 = GetMessageBank(0x14);
-    Audio_LoadBankAndSong(gAudioBankBuffer);
+    Text_InitStringTables();
+    gMessageBank14 = Text_GetStringTable(0x14);
+    Audio_LoadWaveTablesAndMusic(gAudioBankBuffer);
     Title_FadeIn();
     sp24 = Title_Loop();
     Title_FadeOut(sp24);
-    Stage_Destroy();
-    Audio_WaitForLoadAndFade(0);
-    Audio_ClearBankDMAFlag();
-    Gfx_FreeBuffers();
+    StageContext_Deactivate();
+    Audio_WaitForIdle(0);
+    Audio_ClearWaveDataLoaded();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('TITL');
     return sp24;

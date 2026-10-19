@@ -1136,17 +1136,17 @@ static Vtx HealthBarBackgroundVertices[] = {
     VTX(48, -48, 0, 1024, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-void RenderHealthBar(s32 arg0) {
+void DynamoGame_DrawSparkEffects(s32 arg0) {
     u8 i;
     u8 j;
     Gfx* var_s1;
-    Mtx* var_s4 = GfxAlloc(sizeof(Mtx) * 4 * 12);
+    Mtx* var_s4 = Gfx_AllocDisplayList(sizeof(Mtx) * 4 * 12);
 
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
         gHealthBarEffectData = &D_8650AB30[i];
 
-        var_s1 = GfxAlloc(sizeof(Gfx) * 256);
+        var_s1 = Gfx_AllocDisplayList(sizeof(Gfx) * 256);
 
         gCurrentHealthBar->unk_17C->unk_18 = var_s1;
 
@@ -1192,12 +1192,12 @@ void RenderHealthBar(s32 arg0) {
             }
 
             if (gResultMenuVisible == 0) {
-                if (HealthBar_ValueToPixel(2) == 0) {
+                if (MiniGame_RandomRange(2) == 0) {
                     for (j = 0; j < 12; j++) {
                         if (gHealthBarEffectData->unk_00[j].unk_00 == -1) {
                             gHealthBarEffectData->unk_00[j].unk_00 = 0;
-                            gHealthBarEffectData->unk_00[j].unk_04 = HealthBar_ValueToPixel(0x50);
-                            gHealthBarEffectData->unk_00[j].unk_08 = HealthBar_ValueToPixel(0x168);
+                            gHealthBarEffectData->unk_00[j].unk_04 = MiniGame_RandomRange(0x50);
+                            gHealthBarEffectData->unk_00[j].unk_08 = MiniGame_RandomRange(0x168);
                             break;
                         }
                     }
@@ -1240,21 +1240,21 @@ void RenderHealthBar(s32 arg0) {
     }
 }
 
-void InitHealthBar(void) {
+void DynamoGame_InitSparkEffects(void) {
     u8 i;
     u8 j;
     MainPoolState* temp_s5;
 
-    temp_s5 = state_pool_try_init(main_pool_get_available(), 0);
+    temp_s5 = MainPool_AllocState(main_pool_get_available(), 0);
 
     for (i = 0; i < 4; i++) {
         gCurrentHealthBar = &gHealthBarData[i];
 
-        gCurrentHealthBar->unk_17C = BillboardNode_Create(temp_s5, NULL, 4, NULL, &gRootNodePosition, 1.0f);
-        GraphNode_AddChild(&gGraphRoot0, &gCurrentHealthBar->unk_17C->unk_00);
+        gCurrentHealthBar->unk_17C = GeoNode_CreateScale(temp_s5, NULL, 4, NULL, &gRootNodePosition, 1.0f);
+        GraphNode_AppendChild(&gGraphRoot0, &gCurrentHealthBar->unk_17C->unk_00);
     }
 
-    mem_pool_resize_block(temp_s5);
+    MainPool_FinalizeAllocation(temp_s5);
 
     for (i = 0; i < 4; i++) {
         gHealthBarEffectData = &D_8650AB30[i];

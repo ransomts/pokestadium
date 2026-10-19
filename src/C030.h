@@ -3,9 +3,9 @@
 
 #include "global.h"
 
-void WaitMs(long ms);
-s32 IsStickerStationConnected(void);
-u8 StickerStation_GetCommand(void);
-void StickerStation_SetCommand(u8 arg0);
+void System_DelayMilliseconds(long ms);
+s32 Controller_CheckAccessoryEeprom(void);
+u8 Controller_ReadAccessoryStatus(void);
+void Controller_WriteAccessoryStatus(u8 arg0);
 
 #endif // _C030_H_

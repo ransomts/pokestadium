@@ -54,13 +54,13 @@ extern u32 gCamGeoLayoutCmdTable[];
 extern u32 gCamGeoLayoutIndices[];
 extern unk_D_800761B0 gCamQuadVertices[12];
 
-s32 Cam_SetupCameraParams(s32 arg0, CameraStruct* arg1);
-s32 Cam_SetActiveCameraParams(s32 arg0, unk_func_80031270_024* arg1);
-s32 Cam_GetCameraAngles(s32 arg0, unk_func_8003013C_arg1* arg1);
-s32 Cam_GetCameraAnglesInverse(s32 arg0, unk_func_8003013C_arg1* arg1);
-s32 Cam_SetActiveGraphNode(s32 arg0, GraphNode* arg1);
-s32 Cam_SetActiveNode(s32 arg0, Fragment2_1GraphNode* arg1);
-s32 Cam_SetupDefaultCamera(s32 arg0, CameraStruct* arg1);
+s32 Gallery_ConfigurePhotoCamera(s32 arg0, CameraStruct* arg1);
+s32 Gallery_SetSceneRenderState(s32 arg0, unk_func_80031270_024* arg1);
+s32 Gallery_SetCameraAngleOffsets(s32 arg0, unk_func_8003013C_arg1* arg1);
+s32 Gallery_SetCameraAngleOffsetsAlternate(s32 arg0, unk_func_8003013C_arg1* arg1);
+s32 Gallery_SetSceneGraphNode(s32 arg0, GraphNode* arg1);
+s32 Gallery_SetSceneModelNode(s32 arg0, Fragment2_1GraphNode* arg1);
+s32 Gallery_SetScenePoseCamera(s32 arg0, CameraStruct* arg1);
 s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1);
 
 s16 gCamDistances[160] = { 0, 105, 150, 220, 70, 120, 188, 75, 110, 160, 60, 80, 120, 60, 70, 100, 70, 130, 170, 80, 110, 65, 160, 120, 180, 85, 105, 100, 130, 80, 100, 160, 100, 120, 160, 100, 140, 80, 130, 90, 120, 110, 160, 90, 100, 160, 80, 125, 130, 150, 60, 120, 70, 105, 105, 170, 90, 120, 100, 190, 100, 140, 170, 90, 150, 150, 80, 120, 160, 80, 165, 170, 140, 160, 120, 140, 160, 110, 170, 140, 160, 80, 110, 100, 140, 150, 110, 90, 140, 220, 85, 170, 150, 180, 150, 250, 120, 160, 102, 160, 100, 130, 110, 160, 60, 100, 150, 140, 150, 110, 140, 130, 200, 150, 120, 220, 80, 140, 80, 140, 90, 110, 140, 160, 140, 130, 130, 150, 160, 90, 270, 250, 100, 65, 120, 120, 110, 120, 70, 120, 90, 140, 200, 180, 170, 180, 180, 100, 200, 180, 180, 85, 100, 40, 0, 0, 0, 0, 0, 0 };
@@ -71,7 +71,7 @@ FramebufferImage* gCamFramebuffer = NULL;
 s32 gCamTexWidth = 200;
 s32 gCamTexHeight = 43;
 s32 gCamTextWidth = 0;
-u32 gCamGeoLayoutCmdTable[115] = { 0xC00FFFF, 0x5000000, 0xB00001E, 0, 0x14000F0, 0xF, 0, 0, 0x8000000, (u32)&Cam_SetupCameraParams, 0, 0x5000000, 0xD000000, 0x5000000, 0x13FFFFFF, 0x3C003E8, 0x8000000, (u32)&Cam_SetActiveCameraParams, 0, 0x14000000, 0x2D0019, 0xFFFFFF28, 0x8000000, (u32)&Cam_GetCameraAngles, 0, 0x14000000, 0x2D0019, 0x80808028, 0x8000000, (u32)&Cam_GetCameraAnglesInverse, 0, 0x16646464, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 0, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 1, 0x6000000, 0x6000000, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Cam_SetActiveGraphNode, 2, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F000000, 0, 0, 0xFF060000, 0x640064, 0x640000, 0x8000000, (u32)&Cam_SetActiveNode, 0, 0x6000000, 0x6000000, 0x6000000, 0xB00002D, 0, 0x14000F0, 0, 0xFDBD0000, 0x243, 0x8000000, (u32)&Cam_SetupDefaultCamera, 0, 0x5000000, 0xD000000, 0x5000000, 0xF000002, 0x5000000, 0x22010000, 0, 0x8000000, (u32)&Cam_RenderView, 0, 0x6000000, 0x6000000, 0x6000000, 0x6000000, 0x1000000 };
+u32 gCamGeoLayoutCmdTable[115] = { 0xC00FFFF, 0x5000000, 0xB00001E, 0, 0x14000F0, 0xF, 0, 0, 0x8000000, (u32)&Gallery_ConfigurePhotoCamera, 0, 0x5000000, 0xD000000, 0x5000000, 0x13FFFFFF, 0x3C003E8, 0x8000000, (u32)&Gallery_SetSceneRenderState, 0, 0x14000000, 0x2D0019, 0xFFFFFF28, 0x8000000, (u32)&Gallery_SetCameraAngleOffsets, 0, 0x14000000, 0x2D0019, 0x80808028, 0x8000000, (u32)&Gallery_SetCameraAngleOffsetsAlternate, 0, 0x16646464, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Gallery_SetSceneGraphNode, 0, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Gallery_SetSceneGraphNode, 1, 0x6000000, 0x6000000, 0xF000002, 0x5000000, 0x1F00FFFF, 0, 0, 0, 0x640064, 0x640000, 0x5000000, 0x9000000, 0x8000000, (u32)&Gallery_SetSceneGraphNode, 2, 0x6000000, 0x6000000, 0xF000003, 0x5000000, 0x1F000000, 0, 0, 0xFF060000, 0x640064, 0x640000, 0x8000000, (u32)&Gallery_SetSceneModelNode, 0, 0x6000000, 0x6000000, 0x6000000, 0xB00002D, 0, 0x14000F0, 0, 0xFDBD0000, 0x243, 0x8000000, (u32)&Gallery_SetScenePoseCamera, 0, 0x5000000, 0xD000000, 0x5000000, 0xF000002, 0x5000000, 0x22010000, 0, 0x8000000, (u32)&Cam_RenderView, 0, 0x6000000, 0x6000000, 0x6000000, 0x6000000, 0x1000000 };
 u32 gCamGeoLayoutIndices[17] = { 0, 1, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF, 0x11, 0 };
 unk_D_800761B0 gCamQuadVertices[12] = { { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 }, { 0, 0, -579, 0, 0, 0, 127, -256 } };
 extern f64 D_8007C538;
@@ -83,10 +83,10 @@ extern f64 D_8007C560;
 extern f64 D_8007C568;
 extern f64 D_8007C570;
 
-void Cam_ClearActive2(void);
+void Gallery_ClearActiveScene(void);
 void Gallery_Terminate(void);
 
-void Gallery_Run(void) {
+void Gallery_Dispatch(void) {
     s32 var_s6;
     u32* temp_s0;
     u32 var_s0;
@@ -102,7 +102,7 @@ void Gallery_Run(void) {
     var_s5 = 0;
 
     main_pool_push_state('SNPM');
-    ResultScreen_SetAnimation(0x4B);
+    Audio_StartMusicTrack(0x4B);
 
     FRAGMENT_LOAD(fragment43)();
     FRAGMENT_LOAD(fragment34);
@@ -252,19 +252,19 @@ void Gallery_Run(void) {
     main_pool_pop_state('SNPM');
 }
 
-void Cam_CallInit318B8(void) {
-    Cam_ClearActive2();
+void Gallery_ResetActiveScene(void) {
+    Gallery_ClearActiveScene();
 }
 
-void Cam_ResetUnkF90(void) {
+void Gallery_ClearPhotoRenderTarget(void) {
     gCamFramebuffer = 0;
 }
 
-s32 Cam_GetMode(unk_D_83403C60* arg0) {
+s32 Gallery_GetPhotoPoseIndex(unk_D_83403C60* arg0) {
     return ((s32) arg0->unk_6C >> 2) & 3;
 }
 
-f32 Cam_GetFov(unk_D_83403C60* arg0) {
+f32 Gallery_GetPhotoScaleIndex(unk_D_83403C60* arg0) {
     s32 index;
     f32* table;
     index = ((s32) arg0->unk_6C >> 1) & 1;
@@ -272,13 +272,13 @@ f32 Cam_GetFov(unk_D_83403C60* arg0) {
     return table[index];
 }
 
-u32 Cam_GetUnk6CHigh(unk_D_83403C60* arg0) {
+u32 Gallery_GetPhotoVariantIndex(unk_D_83403C60* arg0) {
     u8 v1 = arg0->unk_6C;
     v1 = v1 >> 4;
     return v1 & 0xF;
 }
 
-s32 Cam_GetActive(s32 arg0) {
+s32 Gallery_GetScenePoseIndex(s32 arg0) {
     Camera* var_a1;
     UNUSED Camera* sp1C;
 
@@ -295,20 +295,20 @@ s32 Cam_GetActive(s32 arg0) {
         break;
     }
     sp1C = var_a1;
-    if (Cam_IsMonIndexDisplayable(var_a1) != 0) {
-        return Cam_GetMode(var_a1->unk_18);
+    if (Gallery_IsSceneReady(var_a1) != 0) {
+        return Gallery_GetPhotoPoseIndex(var_a1->unk_18);
     }
     return 0;
 }
 
-s32 Cam_SetupCameraParams(s32 arg0, CameraStruct* arg1) {
+s32 Gallery_ConfigurePhotoCamera(s32 arg0, CameraStruct* arg1) {
     s32 pad;
     unk_D_83403C60_050_00C* src;
 
     if (arg0 == 2) {
         src = (unk_D_83403C60_050_00C*)((u8*)gCamSecondary->unk_18 + 0x50);
-        Viewport_SetRect(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
-        Perspective_SetParams(arg1, Cam_GetFov(gCamSecondary->unk_18), 20.0f, 10000.0f);
+        GeoCamera_SetViewport(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
+        GeoCamera_SetPerspective(arg1, Gallery_GetPhotoScaleIndex(gCamSecondary->unk_18), 20.0f, 10000.0f);
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[0] = src[0];
         ((unk_D_83403C60_050_00C*)((u8*)arg1 + 0xA8))[1] = src[1];
         pad = 0;
@@ -316,59 +316,59 @@ s32 Cam_SetupCameraParams(s32 arg0, CameraStruct* arg1) {
     return 0;
 }
 
-s32 Cam_SetupDefaultCamera(s32 arg0, CameraStruct* arg1) {
-    if (Cam_GetActive(arg0) != 0) {
+s32 Gallery_SetScenePoseCamera(s32 arg0, CameraStruct* arg1) {
+    if (Gallery_GetScenePoseIndex(arg0) != 0) {
         if (arg0 == 2) {
-            Viewport_SetRect(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
-            Perspective_SetParams(arg1, 45.0f, 20.0f, 8000.0f);
+            GeoCamera_SetViewport(arg1, 0, 0, gCamSecondary->unk_04, gCamSecondary->unk_06);
+            GeoCamera_SetPerspective(arg1, 45.0f, 20.0f, 8000.0f);
         }
     }
     return 0;
 }
 
-s32 Cam_GetCameraAngles(s32 arg0, unk_func_8003013C_arg1* arg1) {
+s32 Gallery_SetCameraAngleOffsets(s32 arg0, unk_func_8003013C_arg1* arg1) {
     UNUSED s32 pad;
     f32 sp28;
     s16 sp26;
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
+        Vec3f_CalculateDistanceAngles(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         arg1->unk_1C = (s16) (sp26 + 0x2000);
         arg1->unk_1E = (s16) (sp24 - 0x2000);
     }
     return 0;
 }
 
-s32 Cam_GetCameraAnglesInverse(s32 arg0, unk_func_8003013C_arg1* arg1) {
+s32 Gallery_SetCameraAngleOffsetsAlternate(s32 arg0, unk_func_8003013C_arg1* arg1) {
     UNUSED s32 pad;
     f32 sp28;
     s16 sp26;
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
+        Vec3f_CalculateDistanceAngles(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         arg1->unk_1C = (s16) (-0x2000 - sp26);
         arg1->unk_1E = (s16) (sp24 + 0x6000);
     }
     return 0;
 }
 
-s32 Cam_SetActiveNode(s32 arg0, Fragment2_1GraphNode* arg1) {
+s32 Gallery_SetSceneModelNode(s32 arg0, Fragment2_1GraphNode* arg1) {
     if (arg0 == 0) {
         gCamPrimary->unk_20 = arg1;
     }
     return 0;
 }
 
-s32 Cam_SetActiveCameraParams(s32 arg0, unk_func_80031270_024* arg1) {
+s32 Gallery_SetSceneRenderState(s32 arg0, unk_func_80031270_024* arg1) {
     if (arg0 == 0) {
         gCamPrimary->unk_24 = arg1;
     }
     return 0;
 }
 
-s32 Cam_SetActiveGraphNode(s32 arg0, GraphNode* arg1) {
+s32 Gallery_SetSceneGraphNode(s32 arg0, GraphNode* arg1) {
     s32 temp_v0;
 
     if (arg0 == 0) {
@@ -389,7 +389,7 @@ s32 Cam_SetActiveGraphNode(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void Cam_SetupQuadVertices(s32 arg0, s32 arg1) {
+void Gallery_InitializePhotoGrid(s32 arg0, s32 arg1) {
     s16 temp_a0;
     s16 temp_a1;
     s32 temp_a3;
@@ -430,13 +430,13 @@ s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
     s32 i;
     char* sp16C;
 
-    temp_v0 = Cam_GetActive(arg0);
+    temp_v0 = Gallery_GetScenePoseIndex(arg0);
     if ((temp_v0 != 0) && (arg0 == 2)) {
         sp16C = (char*)((u8*)gCamSecondary->unk_18 + 0x73);
-        gCamTextWidth = MeasureTextWidth(0x10, 0, sp16C);
-        Cam_SetupQuadVertices(0, -0x96);
-        Gfx_SetupFrameBuffer(&gDisplayListHead, gCamFramebuffer);
-        Gfx_FillScreen(&gDisplayListHead, 0);
+        gCamTextWidth = Font_MeasureTextExtent(0x10, 0, sp16C);
+        Gallery_InitializePhotoGrid(0, -0x96);
+        GfxImage_SetRenderTarget(&gDisplayListHead, gCamFramebuffer);
+        GfxImage_FillCurrent(&gDisplayListHead, 0);
         gDPPipeSync(gDisplayListHead++);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
         gDPSetTextureFilter(gDisplayListHead++, G_TF_BILERP);
@@ -456,28 +456,28 @@ s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
             gDPLoadTextureTile(gDisplayListHead++, D_5001950, G_IM_FMT_RGBA, G_IM_SIZ_16b, 100, 0, 0, 30, 99, 42, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, 0, 30 << 2, 100 << 2, 43 << 2, 0, 0, 30 << 5, 1 << 10, 1 << 10);
             gSPTextureRectangle(gDisplayListHead++, 100 << 2, 30 << 2, 200 << 2, 43 << 2, 0, 100 << 5, 30 << 5, -(1 << 10), 1 << 10);
-            Text_ResetState();
-            Text_BeginRender();
+            Font_BeginTranslucentTextRendering();
+            Font_EnableTwoCycleTexturing();
             Text_SetEnvColor(0xF0, 0x78, 0x6E, 0xFF);
             Text_SetPrimColor(0xF0, 0xF0, 0x78, 0xFF);
-            Text_SetFont(0x10, 0);
-            Text_Print(0x64 - ((s32) gCamTextWidth / 2), 5, sp16C);
-            Text_EndRender();
-            Text_SetupDL();
+            Font_SetActive(0x10, 0);
+            Font_Printf(0x64 - ((s32) gCamTextWidth / 2), 5, sp16C);
+            Font_DisableTwoCycleTexturing();
+            Font_EndTexturedTextRendering();
         } else {
             gDPLoadTextureTile(gDisplayListHead++, D_5003AE8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 40, 0, 0, 31, 39, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, 16 << 2, 0 << 2, 152 << 2, 40 << 2, 0, 0, 0, 1 << 10, 1 << 10);
             gSPTextureRectangle(gDisplayListHead++, 152 << 2, 0 << 2, 185 << 2, 40 << 2, 0, 32 << 5, 0, -(1 << 10), 1 << 10);
-            Text_ResetState();
-            Text_BeginRender();
+            Font_BeginTranslucentTextRendering();
+            Font_EnableTwoCycleTexturing();
             Text_SetEnvColor(0xDC, 0xFF, 0xDC, 0xFF);
             Text_SetPrimColor(0x78, 0xB4, 0xFF, 0xFF);
-            Text_SetFont(0x10, 0);
-            Text_Print(0x64 - ((s32) gCamTextWidth / 2), 7, sp16C);
-            Text_EndRender();
-            Text_SetupDL();
+            Font_SetActive(0x10, 0);
+            Font_Printf(0x64 - ((s32) gCamTextWidth / 2), 7, sp16C);
+            Font_DisableTwoCycleTexturing();
+            Font_EndTexturedTextRendering();
         }
-        Gfx_SetupFrameBuffer(&gDisplayListHead, gCamSecondary->unk_08);
+        GfxImage_SetRenderTarget(&gDisplayListHead, gCamSecondary->unk_08);
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
         gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_DECALRGBA);
@@ -496,7 +496,7 @@ s32 Cam_RenderView(s32 arg0, UNUSED GraphNode* arg1) {
     return 0;
 }
 
-void Cam_ConvertInputToState(unk_D_83402EE0_070* arg0, PokemonData* arg1) {
+void Gallery_CopyPhotoMonFromBattleMon(unk_D_83402EE0_070* arg0, PokemonData* arg1) {
     s32 i;
 
     bzero(arg0, sizeof(unk_D_83402EE0_070));
@@ -512,7 +512,7 @@ void Cam_ConvertInputToState(unk_D_83402EE0_070* arg0, PokemonData* arg1) {
     }
 }
 
-void Cam_ConvertStateToInput(PokemonData* arg0, unk_D_83407AC8* arg1) {
+void Gallery_CopyBattleMonFromPhotoMon(PokemonData* arg0, unk_D_83407AC8* arg1) {
     s32 i;
 
     bzero(arg0, sizeof(PokemonData));
@@ -529,18 +529,18 @@ void Cam_ConvertStateToInput(PokemonData* arg0, unk_D_83407AC8* arg1) {
     }
 }
 
-void Cam_ProcessGeoLayout(Camera* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
+void Geo_LoadSceneGraphNode(Camera* arg0, UNUSED s16 arg1, UNUSED s16 arg2) {
     UNUSED s32 pad;
     MemoryBlock* sp18;
 
-    sp18 = state_pool_try_init(main_pool_get_available(), 0);
+    sp18 = MainPool_AllocState(main_pool_get_available(), 0);
     gCamPrimary = arg0;
     arg0->unk_1C = process_geo_layout(sp18, gCamGeoLayoutCmdTable);
     gCamPrimary = NULL;
-    mem_pool_resize_block(sp18);
+    MainPool_FinalizeAllocation(sp18);
 }
 
-Camera* Cam_Create(s16 arg0, s16 arg1, FramebufferImage* arg2, FramebufferImage* arg3,
+Camera* Geo_CreateSceneInstance(s16 arg0, s16 arg1, FramebufferImage* arg2, FramebufferImage* arg3,
                                  AssetManager* arg4, BinArchive* arg5, unk_D_83403C60* arg6) {
     UNUSED FramebufferImage* var_v0;
     Camera* temp_v0 = main_pool_alloc(sizeof(Camera), 0);
@@ -554,16 +554,16 @@ Camera* Cam_Create(s16 arg0, s16 arg1, FramebufferImage* arg2, FramebufferImage*
         if (arg2 != NULL) {
             temp_v0->unk_08 = arg2;
         } else {
-            temp_v0->unk_08 = FramebufferImage_Allocate(0, 2, arg0, arg1, 0);
+            temp_v0->unk_08 = GfxImage_Allocate(0, 2, arg0, arg1, 0);
         }
 
         if (arg3 != NULL) {
             temp_v0->unk_0C = arg3;
         } else {
-            temp_v0->unk_0C = FramebufferImage_Allocate(0, 2, arg0, arg1, 1);
+            temp_v0->unk_0C = GfxImage_Allocate(0, 2, arg0, arg1, 1);
         }
 
-        FramebufferImage_AttachDepth(temp_v0->unk_08, temp_v0->unk_0C);
+        GfxImage_AttachDepthBuffer(temp_v0->unk_08, temp_v0->unk_0C);
 
         temp_v0->unk_10 = arg4;
         temp_v0->unk_14 = arg5;
@@ -571,10 +571,10 @@ Camera* Cam_Create(s16 arg0, s16 arg1, FramebufferImage* arg2, FramebufferImage*
         temp_v0->unk_34 = 0;
 
         if (gCamFramebuffer == 0) {
-            gCamFramebuffer = FramebufferImage_Allocate(0, 2, 0xC8, 0x2B, 0);
+            gCamFramebuffer = GfxImage_Allocate(0, 2, 0xC8, 0x2B, 0);
         }
 
-        Cam_ProcessGeoLayout(temp_v0, arg0, arg1);
+        Geo_LoadSceneGraphNode(temp_v0, arg0, arg1);
     }
     return temp_v0;
 }
@@ -629,7 +629,7 @@ typedef struct unk_D_83403C60_raw {
     /* 0x8A */ char unk8A[0x2];
 } unk_D_83403C60_raw; // size = 0x8C
 
-void Cam_Initialize(Camera* arg0) {
+void Gallery_InitializePhotoModel(Camera* arg0) {
     s32 sp94;
     arg1_func_80010CA8 sp90;
     UNUSED s32 pad[3]; // PokemonData potentially bigger?
@@ -638,28 +638,28 @@ void Cam_Initialize(Camera* arg0) {
     void (*sp28)(void*, u32);
 
     temp_s1 = (unk_D_83403C60_raw*)arg0->unk_18;
-    Cam_ConvertStateToInput(&sp30, &temp_s1->unk_70);
-    Vec3f_Set(&arg0->unk_20->unk_024, 0, temp_s1->unk_00.unk_00.raw, 0); //?
+    Gallery_CopyBattleMonFromPhotoMon(&sp30, &temp_s1->unk_70);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_20->unk_024, 0, temp_s1->unk_00.unk_00.raw, 0); //?
     arg0->unk_20->modelPhase = 0xFE;
     sp94 = sp30.unk_00.unk_00;
     if (sp30.unk_00.unk_00 == 0x99) {
         sp30.unk_00.unk_00 = 0x19;
     }
-    ComputeStatFromName(&sp90, &sp30);
+    Model_ComputeSizeVariant(&sp90, &sp30);
     sp30.unk_00.unk_00 = sp94;
-    AssetManager_RequestLoad(arg0->unk_10, sp30.unk_00.unk_00, sp90);
-    AssetManager_WaitLoadQueue(arg0->unk_10);
-    GraphNode_ClearCallback(arg0->unk_20);
-    GraphNode_InitChild(arg0->unk_20, 0, sp30.unk_00.unk_00, arg0->unk_10->unk_24->unk_08->unk_00[0]);
-    sp28 = Util_ConvertAddrToVirtAddr(&Particle_Deserialize);
+    PokeIcon_RequestFrameLoad(arg0->unk_10, sp30.unk_00.unk_00, sp90);
+    PokeIcon_WaitFrameLoad(arg0->unk_10);
+    ModelRenderer_ClearDisplayObject(arg0->unk_20);
+    Model_InitDisplayObject(arg0->unk_20, 0, sp30.unk_00.unk_00, arg0->unk_10->unk_24->unk_08->unk_00[0]);
+    sp28 = Util_ConvertAddrToVirtAddr(&Particle31_UnpackSlotData);
     sp28(arg0->unk_20, Util_ConvertAddrToVirtAddr(&temp_s1->unk_00.unk_09[1]));
-    GraphNode_TriggerAction(arg0->unk_20, temp_s1->unk_00.unk_05);
-    Anim_SetChannelBase(arg0->unk_20, temp_s1->unk_00.unk_06);
-    GraphNode_TriggerSound(arg0->unk_20, temp_s1->unk_00.unk_08);
-    SetAnimStateIndex(arg0->unk_20, (s16)temp_s1->unk_00.unk_09[0]);
+    ModelAnim_SetAnimation(arg0->unk_20, temp_s1->unk_00.unk_05);
+    ModelAnim_SetFrame(arg0->unk_20, temp_s1->unk_00.unk_06);
+    ModelAnim_SetEventTrack(arg0->unk_20, temp_s1->unk_00.unk_08);
+    ModelAnim_SetEventFrame(arg0->unk_20, (s16)temp_s1->unk_00.unk_09[0]);
 }
 
-void Cam_LoadGeometry(Camera* arg0) {
+void Gallery_LoadPhotoSceneGraph(Camera* arg0) {
     MemoryBlock* sp24;
     FragmentEntry sp20;
     u32* temp_v0;
@@ -668,25 +668,25 @@ void Cam_LoadGeometry(Camera* arg0) {
     unk_func_800314BC_temp_v4* temp_v0_4;
     unk_func_80031270_024* temp_v1;
 
-    GraphNode_AllocInit(0, arg0->unk_28);
-    GraphNode_AllocInit(0, arg0->unk_2C);
-    GraphNode_AllocInit(0, arg0->unk_30);
-    sp20 = BinArchive_GetFile(arg0->unk_14, gCamGeoLayoutIndices[Cam_GetUnk6CHigh(arg0->unk_18)]);
-    sp24 = state_pool_try_init(main_pool_get_available(), 0);
+    GeoNode_CreateContainer(0, arg0->unk_28);
+    GeoNode_CreateContainer(0, arg0->unk_2C);
+    GeoNode_CreateContainer(0, arg0->unk_30);
+    sp20 = BinArchive_GetFile(arg0->unk_14, gCamGeoLayoutIndices[Gallery_GetPhotoVariantIndex(arg0->unk_18)]);
+    sp24 = MainPool_AllocState(main_pool_get_available(), 0);
     temp_v0 = sp20(0, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AddChild(arg0->unk_28, process_geo_layout(sp24, temp_v0));
+        GraphNode_AppendChild(arg0->unk_28, process_geo_layout(sp24, temp_v0));
     }
     temp_v0_2 = sp20(1, 0);
     if (temp_v0_2 != NULL) {
-        GraphNode_AddChild(arg0->unk_2C, process_geo_layout(sp24, temp_v0_2));
+        GraphNode_AppendChild(arg0->unk_2C, process_geo_layout(sp24, temp_v0_2));
     }
     temp_v0_3 = sp20(3, 0);
     if (temp_v0_3 != NULL) {
-        GraphNode_AddChild(arg0->unk_30, process_geo_layout(sp24, temp_v0_3));
+        GraphNode_AppendChild(arg0->unk_30, process_geo_layout(sp24, temp_v0_3));
     }
     arg0->unk_34 = sp20(2, 0);
-    mem_pool_resize_block(sp24);
+    MainPool_FinalizeAllocation(sp24);
     temp_v0_4 = sp20(4, 0);
     if (temp_v0_4 == NULL) {
         temp_v1 = arg0->unk_24;
@@ -702,33 +702,33 @@ void Cam_LoadGeometry(Camera* arg0) {
     temp_v1->unk_01 = (u8) (temp_v1->unk_01 | 1);
 }
 
-u8* Cam_Update(Camera* arg0) {
+u8* Gallery_ProcessSceneInstance(Camera* arg0) {
     unk_func_80031660_sp24* sp24;
     void (*sp20)();
 
     sp24 = (unk_func_80031660_sp24*)((u8*)arg0->unk_18 + 0x50);
-    sp20 = Util_ConvertAddrToVirtAddr(&Timer_Tick);
+    sp20 = Util_ConvertAddrToVirtAddr(&Particle_UpdateFrameCountersAlias);
     gCamSecondary = arg0;
     if (arg0->unk_00 == 1) {
         switch (arg0->unk_02) {
             case 2:
-                Cam_Initialize(arg0);
-                Cam_LoadGeometry(arg0);
+                Gallery_InitializePhotoModel(arg0);
+                Gallery_LoadPhotoSceneGraph(arg0);
                 break;
             case 1:
-                Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08);
+                GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_08);
 
                 if ((arg0->unk_34 == -1) || (arg0->unk_34 == 0)) {
-                    Gfx_FillScreen(&gDisplayListHead, 1);
+                    GfxImage_FillCurrent(&gDisplayListHead, 1);
                 } else if (arg0->unk_34 < 0x10000U) {
-                    Gfx_FillScreen(&gDisplayListHead, arg0->unk_34);
+                    GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_34);
                 } else {
-                    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
+                    GfxImage_FillCurrent(&gDisplayListHead, 0xA6BF);
                 }
-                Gfx_FinishFrame();
+                GeoRender_AdvanceFrameCounter();
                 *((s32*)Util_ConvertAddrToVirtAddr(&gTimerCounter)) = sp24->unk_18;
                 sp20();
-                Graph_SetTextureState(arg0->unk_1C);
+                Geo_RenderRootNode(arg0->unk_1C);
                 break;
             default:
                 break;
@@ -752,7 +752,7 @@ u8* Cam_Update(Camera* arg0) {
     return arg0->unk_08->img_p;
 }
 
-s32 Cam_IsMonIndexDisplayable(Camera* arg0) {
+s32 Gallery_IsSceneReady(Camera* arg0) {
     s32 var_v1;
     s32 sp1C;
     unk_D_83403C60* temp_a0;
@@ -763,7 +763,7 @@ s32 Cam_IsMonIndexDisplayable(Camera* arg0) {
         if (temp_a0 != 0) {
             sp1C = 0;
             var_v1 = sp1C;
-            if (IsMonIndexDisplayable(temp_a0) != 0) {
+            if (Gallery_IsPhotoSpeciesValid(temp_a0) != 0) {
                 var_v1 = 1;
             }
         }
@@ -771,7 +771,7 @@ s32 Cam_IsMonIndexDisplayable(Camera* arg0) {
     return var_v1;
 }
 
-s32 Cam_FindActiveIndex(Camera** arg0, s32 arg1) {
+s32 Gallery_FindReadyScene(Camera** arg0, s32 arg1) {
     Camera* temp_s1;
     s32 sp30;
     s32 i;
@@ -780,7 +780,7 @@ s32 Cam_FindActiveIndex(Camera** arg0, s32 arg1) {
 
     for (i = 0; i < arg1; i++) {
         temp_s1 = arg0[i];
-        if ((Cam_IsMonIndexDisplayable(temp_s1) != 0) && (temp_s1->unk_00 == 1)) {
+        if ((Gallery_IsSceneReady(temp_s1) != 0) && (temp_s1->unk_00 == 1)) {
             sp30 = i;
             break;
         }
@@ -788,15 +788,15 @@ s32 Cam_FindActiveIndex(Camera** arg0, s32 arg1) {
     return sp30;
 }
 
-Camera* Cam_GetCurrent(void) {
+Camera* Gallery_GetActiveScene(void) {
     return gCamSecondary;
 }
 
-void Cam_ClearActive2(void) {
+void Gallery_ClearActiveScene(void) {
     gCamSecondary = 0;
 }
 
-s32 IsMonIndexDisplayable(unk_D_83403C60* arg0) {
+s32 Gallery_IsPhotoSpeciesValid(unk_D_83403C60* arg0) {
     s32 v1 = 0;
 
     if ((arg0->unk_00.unk_04 > 0 && arg0->unk_00.unk_04 < 0x98) || arg0->unk_00.unk_04 == 0x99) {
@@ -809,7 +809,7 @@ void func_800318F0(void) {
     Stub_ReturnInvalidIndex();
 }
 
-void Matrix_BillboardBetween(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
+void Mtx_BuildDirectionRotation(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6) {
     f32 sp144;
     f32 sp140;
     f32 temp_fa0;
@@ -830,20 +830,20 @@ void Matrix_BillboardBetween(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f
     *mtx = spF0;
 }
 
-f32 Math_AbsF(f32 arg0) {
+f32 Math_AbsF32(f32 arg0) {
     if (arg0 < 0.0) {
         arg0 = -arg0;
     }
     return arg0;
 }
 
-void Math_CrossProductComponents(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32* arg6, f32* arg7, f32* arg8) {
+void Vec3f_CrossProductComponents(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32* arg6, f32* arg7, f32* arg8) {
     *arg6 = (arg1 * arg5) - (arg2 * arg4);
     *arg7 = (arg2 * arg3) - (arg0 * arg5);
     *arg8 = (arg0 * arg4) - (arg1 * arg3);
 }
 
-void Math_NormalizeVector(f32* arg0, f32* arg1, f32* arg2) {
+void Vec3f_NormalizeComponents(f32* arg0, f32* arg1, f32* arg2) {
     f32 temp_fv1;
     f32 temp_fa1;
     f32 temp_ft4;
@@ -923,7 +923,7 @@ void Mtx_BuildTranslatedDirectionRotation(Mtx* mtx, f32 arg1, f32 arg2, f32 arg3
     *mtx = spB8;
 }
 
-void Math_ClosestPointOnLineSegment(
+void Math_ProjectPointOntoLine(
     f32 px, f32 py, f32 pz,
     f32 ax, f32 ay, f32 az,
     f32 bx, f32 by, f32 bz,
@@ -960,7 +960,7 @@ void Math_ClosestPointOnLineSegment(
     *outZ = az + (t * dz);
 }
 
-void Camera_CopyMatrixF(MtxF* arg0, MtxF* arg1) {
+void MtxF_ExtractScale(MtxF* arg0, MtxF* arg1) {
     f32 sp24 = sqrtf(SQ(arg1->mf[0][0]) + SQ(arg1->mf[0][1]) + SQ(arg1->mf[0][2]));
     f32 sp20 = sqrtf(SQ(arg1->mf[1][0]) + SQ(arg1->mf[1][1]) + SQ(arg1->mf[1][2]));
     f32 sp1C = sqrtf(SQ(arg1->mf[2][0]) + SQ(arg1->mf[2][1]) + SQ(arg1->mf[2][2]));
@@ -986,7 +986,7 @@ void Camera_CopyMatrixF(MtxF* arg0, MtxF* arg1) {
     arg0->mf[3][3] = 1.0f;
 }
 
-void Matrix_GetScaleVector(MtxF* arg0, Vec3f* arg1) {
+void MtxF_GetScaleVector(MtxF* arg0, Vec3f* arg1) {
     f32 temp_fa1;
     f32 temp_fv0;
     f32 temp_fv1;

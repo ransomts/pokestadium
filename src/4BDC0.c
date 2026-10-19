@@ -39,7 +39,7 @@ void Audio_SetMusicLoopPoint(s32 arg0) {
     gMusicFadeDuration = arg0;
 }
 
-s32 ResultScreen_SetAnimation(s32 arg0) {
+s32 Audio_StartMusicTrack(s32 arg0) {
     u32 sp2C;
     s32 var_a2;
     UNUSED s32 pad;
@@ -48,7 +48,7 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
 
     sp20 = arg0;
     sp1C = 0x80;
-    Audio_SetPaused(1);
+    AudioStream_SetEnabled(1);
     MusSetVoicePriority(1);
     gCurrentAnimationId = arg0;
     if (arg0 == 0x50) {
@@ -63,7 +63,7 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
         gMusicHandle = 0;
         MusSetDurationScale(gCurrentBgmHandle, 1);
         gBgmFadeState = 0;
-        gCurrentBgmHandle = PlayBackgroundMusic(0x01000003, 0, 0);
+        gCurrentBgmHandle = Audio_PlayDirectSoundCommand(0x01000003, 0, 0);
         arg0 = 0x28;
         gBgmFadeState = 2;
     } else if (arg0 == 0x28) {
@@ -77,7 +77,7 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
         gMusicHandle = 0;
         MusSetDurationScale(gCurrentBgmHandle, 1);
         gBgmFadeState = 0;
-        gCurrentBgmHandle = PlayBackgroundMusic(0x01000003, 0, 0);
+        gCurrentBgmHandle = Audio_PlayDirectSoundCommand(0x01000003, 0, 0);
         MusSetVolumeScale(gCurrentBgmHandle, 0);
         gBgmFadeState = 1;
     } else {
@@ -122,7 +122,7 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
         case 0x1:
             sp20 = 0x68;
             gStadiumModeActive = 1;
-            ProcessMenuSelection(0, 0xF);
+            Audio_SelectModeMusic(0, 0xF);
             break;
 
         case 0x9:
@@ -187,12 +187,12 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
 
         case 0x1A:
             sp20 = 0x60;
-            Music_EndVolumeFade();
+            Audio_ResetVolumeTransition();
             break;
 
         case 0x1B:
             sp20 = 0x58;
-            Music_EndVolumeFade();
+            Audio_ResetVolumeTransition();
             break;
 
         case 0x2C:
@@ -313,13 +313,13 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
 
         case 0x3A:
             sp20 = 0x68;
-            ProcessMenuSelection(0, 0xF);
-            PlayUISfx(0x01100016, 0, 0);
+            Audio_SelectModeMusic(0, 0xF);
+            Audio_PlayCategory11SoundCommand(0x01100016, 0, 0);
             break;
 
         case 0x48:
-            ProcessMenuSelection(0, 0xF);
-            PlayUISfx(0x01100016, 0, 0);
+            Audio_SelectModeMusic(0, 0xF);
+            Audio_PlayCategory11SoundCommand(0x01100016, 0, 0);
             sp20 = 0x70;
             break;
 
@@ -462,7 +462,7 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
     }
 
     Rom_DmaRead(D_800FC6E4->files[sp2C], gMoveSoundTempBuffer, var_a2);
-    DecompressData(gMoveSoundTempBuffer, D_800FC680, 0x98D8);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, D_800FC680, 0x98D8);
 
     if (gMusicFadeDuration <= 0) {
         gMusicHandle = MusLoadSong(D_800FC684, D_800FC680);
@@ -484,7 +484,7 @@ s32 ResultScreen_SetAnimation(s32 arg0) {
     return gMusicHandle;
 }
 
-void Stage_SetFadeColor(s32 arg0) {
+void Audio_FadeOutAll(s32 arg0) {
     s32 i;
 
     if (arg0 == 0) {
@@ -497,12 +497,12 @@ void Stage_SetFadeColor(s32 arg0) {
     gBgmFadeState = 0;
     gAudioStadiumSfxEnabled = 0;
     MusSetDurationScale(gBattleMusicHandle, arg0);
-    Audio_SetPaused(0);
+    AudioStream_SetEnabled(0);
     AudioFrameUpdate(0);
 
     if (gCurrentAnimationId != 0x50) {
         for (i = 0; i < 2; i++) {
-            Audio_SetVolumeFade(i, arg0);
+            AudioStream_Stop(i, arg0);
         }
     }
 }
@@ -513,7 +513,7 @@ s32 Audio_StartTrackForCategory(s32 arg0, s32 arg1) {
     if ((arg0 == 0) || (arg0 == 0xFF)) {
         arg0 = 1;
         if ((arg1 == 0xE)) {    
-            return ResultScreen_SetAnimation(2U);
+            return Audio_StartMusicTrack(2U);
         }
     }
     switch (arg1) {
@@ -522,7 +522,7 @@ s32 Audio_StartTrackForCategory(s32 arg0, s32 arg1) {
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(&D_80078E83 + arg0));
+        ret = Audio_StartMusicTrack(*(&D_80078E83 + arg0));
         break;
     case 6:
     case 7:
@@ -530,25 +530,25 @@ s32 Audio_StartTrackForCategory(s32 arg0, s32 arg1) {
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(&D_80078E8B + arg0));
+        ret = Audio_StartMusicTrack(*(&D_80078E8B + arg0));
         break;
     case 9:
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(&D_80078E93 + arg0));
+        ret = Audio_StartMusicTrack(*(&D_80078E93 + arg0));
         break;
     case 5:
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(&D_80078E9B + arg0));
+        ret = Audio_StartMusicTrack(*(&D_80078E9B + arg0));
         break;
     case 4:
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(&D_80078EA3 + arg0));
+        ret = Audio_StartMusicTrack(*(&D_80078EA3 + arg0));
         break;
     case 0:
     case 1:
@@ -556,31 +556,31 @@ s32 Audio_StartTrackForCategory(s32 arg0, s32 arg1) {
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(&D_80078EAB + arg0));
+        ret = Audio_StartMusicTrack(*(&D_80078EAB + arg0));
         break;
     case 3:
         if (arg0 >= 9U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(&D_80078EB3 + arg0));
+        ret = Audio_StartMusicTrack(*(&D_80078EB3 + arg0));
         break;
     case 12:
         if (arg0 >= 0x21U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(gBgmCategoryTable7 + ((arg0 - 1) & 3)));
+        ret = Audio_StartMusicTrack(*(gBgmCategoryTable7 + ((arg0 - 1) & 3)));
         break;
     case 13:
         if (arg0 >= 6U) {
             return 0;
         }
-        ret = ResultScreen_SetAnimation(*(&D_80078EBF + arg0));
+        ret = Audio_StartMusicTrack(*(&D_80078EBF + arg0));
         break;
     case 15:
-        ret = ResultScreen_SetAnimation(0x14U);
+        ret = Audio_StartMusicTrack(0x14U);
         break;
     default:
-        ret = ResultScreen_SetAnimation(2U);
+        ret = Audio_StartMusicTrack(2U);
     }
     return ret;
 }
@@ -593,7 +593,7 @@ s32 Audio_UpdateSpecialSequence(s32 arg0, u32 arg1) {
             switch (gSpecialSequenceState) {
                 case 0:
                     gSpecialSequenceState = 1;
-                    return ResultScreen_SetAnimation(0x1E);
+                    return Audio_StartMusicTrack(0x1E);
 
                 case 1:
                     return 0;
@@ -605,7 +605,7 @@ s32 Audio_UpdateSpecialSequence(s32 arg0, u32 arg1) {
                     if (MusHandleAsk(gSequenceMusicHandle2) == 0) {
                         gSpecialSequenceState = 1;
                         if (arg1 == 0) {
-                            return ResultScreen_SetAnimation(0x1E);
+                            return Audio_StartMusicTrack(0x1E);
                         }
                         return 0;
                     }
@@ -643,28 +643,28 @@ s32 Audio_UpdateSpecialSequence(s32 arg0, u32 arg1) {
 
             switch (arg1) {
                 case 0:
-                    PlaySoundByCategory(0x9000D, 0, 0);
+                    Audio_DispatchSoundBankCommand(0x9000D, 0, 0);
                     break;
 
                 case 1:
-                    PlaySoundByCategory(0x9000E, 0, 0);
+                    Audio_DispatchSoundBankCommand(0x9000E, 0, 0);
                     break;
 
                 case 2:
-                    PlaySoundByCategory(0x9000F, 0, 0);
+                    Audio_DispatchSoundBankCommand(0x9000F, 0, 0);
                     break;
 
                 case 3:
-                    PlaySoundByCategory(0x90010, 0, 0);
+                    Audio_DispatchSoundBankCommand(0x90010, 0, 0);
                     break;
 
                 case 4:
-                    PlaySoundByCategory(0x90011, 0, 0);
+                    Audio_DispatchSoundBankCommand(0x90011, 0, 0);
                     break;
             }
 
             Audio_SetMusicLoopPoint(var_a3);
-            gSequenceMusicHandle1 = ResultScreen_SetAnimation(0x1F);
+            gSequenceMusicHandle1 = Audio_StartMusicTrack(0x1F);
             return gSequenceMusicHandle1;
 
         case 32:
@@ -683,7 +683,7 @@ s32 Audio_UpdateSpecialSequence(s32 arg0, u32 arg1) {
                         } else {
                             Audio_SetMusicLoopPoint(0x46);
                             gSpecialSequenceState = 3;
-                            gSequenceMusicHandle2 = ResultScreen_SetAnimation(0x20);
+                            gSequenceMusicHandle2 = Audio_StartMusicTrack(0x20);
                             return gSequenceMusicHandle2;
                         }
                     }

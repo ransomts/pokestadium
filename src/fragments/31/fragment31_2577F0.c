@@ -20,7 +20,7 @@ void Fragment31_BuildDisplayList(Gfx* gfx, DisplayListAddresses* addresses) {
     s16 temp_t2;
     u8 temp_v0;
 
-    temp_v0 = GraphRoot_GetCurrentModelSlot();
+    temp_v0 = ModelRenderer_GetActiveMode();
     if (gDefaultGraphRoot->unk_01C == 0) {
         temp_t2 = (gFragment31ScrollOffset >> 4);
         temp_t3 = 0x4000 - (u16)(gFragment31ScrollOffset >> 4);
@@ -43,13 +43,13 @@ void Fragment31_BuildDisplayList(Gfx* gfx, DisplayListAddresses* addresses) {
     gSPEndDisplayList(gfx++);
 }
 
-void Fragment31_Init(s32 arg0, DisplayListState* state) {
+void DisplayList_InitScrollingDualPanel(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
     DisplayListAddresses* addresses;
 
     if (arg0 == 2) {
         addresses = state->addresses;
-        gfx = GfxAlloc(0xF0);
+        gfx = Gfx_AllocDisplayList(0xF0);
         state->gfx = gfx;
         Fragment31_BuildDisplayList(gfx, addresses);
     }

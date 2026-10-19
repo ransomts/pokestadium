@@ -19,13 +19,13 @@ s16 gTextureOffsetScale;
 s16 gModelUpdateFlag[2];
 s16 gModelReadyFlag[2];
 
-void HpWheel_SetDigits(u8 arg0, s16 arg1) {
+void BattleHud_SetDigitRotationTargets(u8 arg0, s16 arg1) {
     gHpWheelDigitOffsetOnes[arg0] = 0x167 - ((arg1 % 10) * 0x24);
     gHpWheelDigitOffsetTens[arg0] = 0x167 - (((arg1 / 10) % 10) * 0x24);
     gHpWheelDigitOffsetHundreds[arg0] = 0x167 - (((arg1 / 100) % 10) * 0x24);
 }
 
-void HpWheel_SetDigitsSmooth(u8 arg0, s16 arg1) {
+void BattleHud_ApproachDigitRotations(u8 arg0, s16 arg1) {
     s16 tmp;
     s16 tmp2;
 
@@ -118,7 +118,7 @@ void HpWheel_SetDigitsSmooth(u8 arg0, s16 arg1) {
     }
 }
 
-void AnimationFrame_StallCheck(void) {
+void ModelAnim_UpdateFrameChangeState(void) {
     gAnimationFrameUnchangedFlag = (gPrevAnimationFrame == gAnimationFrame) ? 1 : 0;
     gPrevAnimationFrame = gAnimationFrame;
 }
@@ -127,7 +127,7 @@ s32 ModelPhase_IsIdle(void) {
     return 0;
 }
 
-u8 GraphRoot_GetCurrentModelSlot(void) {
+u8 ModelRenderer_GetActiveMode(void) {
     u8 ret = *(u8*)Memmap_GetSegmentVaddr(&gDefaultGraphRoot->modelPhase);
     return ret;
 }
@@ -137,7 +137,7 @@ s16 ModelRenderer_GetObjectType(void) {
     return ret;
 }
 
-void GraphNode_EnableTransform(Fragment2_1GraphNode* arg0) {
+void ModelAnim_StartDisplayObjectAnimation(Fragment2_1GraphNode* arg0) {
     void (*func)(void*);
     s32 unk1A = arg0->unk_01A;
     s32 idx = arg0->modelPhase;
@@ -146,17 +146,17 @@ void GraphNode_EnableTransform(Fragment2_1GraphNode* arg0) {
 
     if (unk1A < 0x98) {
         gModelPhase[idx & 1] = 0;
-        ModelSlot_Reset(idx & 1);
-        func = Util_ConvertAddrToVirtAddr(Particle_ClearAllSlots);
+        ModelRenderer_ClearSlotModels(idx & 1);
+        func = Util_ConvertAddrToVirtAddr(Particle31_ResetAllSlots);
         func(arg0);
     }
 }
 
-void ModelPhase_Advance(u32 arg0, u32 arg1) {
+void ModelAnim_UpdateDisplayObjectAnimation(u32 arg0, u32 arg1) {
     s32 (*func)(void);
 
     gModelUpdateFlag[arg0 & 1] = 0;
-    func = Util_ConvertAddrToVirtAddr(Particle_ResetCounters);
+    func = Util_ConvertAddrToVirtAddr(Particle31_ResetCounters);
     func();
 
     if ((arg0 < 2) && (arg1 != 0) && (arg1 < 0x98)) {
@@ -179,7 +179,7 @@ void ModelPhase_Advance(u32 arg0, u32 arg1) {
     }
 }
 
-void ModelPhase_UpdateStatus(u32 arg0, u32 arg1) {
+void ModelAnim_FinalizeDisplayObjectAnimation(u32 arg0, u32 arg1) {
     if (ModelPhase_IsIdle() == 0) {
         gTextureOffsetScale++;
     }

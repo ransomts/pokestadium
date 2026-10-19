@@ -5,7 +5,7 @@
 
 extern u8* gSfxBankSpecial;
 
-s32 Audio_LoadBankAndSong(u8*);
-void Audio_ClearBankDMAFlag(void);
+s32 Audio_LoadWaveTablesAndMusic(u8*);
+void Audio_ClearWaveDataLoaded(void);
 
 #endif // _50A00_H_

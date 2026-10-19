@@ -60,20 +60,20 @@ static s16 D_86B10BCC;
 static unk_D_86B10BD0 D_86B10BD0;
 static unk_D_86B10BE0 gMessageBoxState;
 
-void Camera_SetupView(void) {
+void FirstClearBonus_InitCamera(void) {
     D_86B109B8 = D_86B10848->unk_0C;
 
     D_86B10BC8 = 0;
     D_86B10BCA = 0;
     D_86B10BCC = 0x78;
 
-    Camera_SetViewParameters(&D_86B109B8->unk_60.at, &D_86B109B8->unk_60.eye, D_86B10BCC, D_86B10BC8, D_86B10BCA);
+    Camera_ComputeEyeFromAngles(&D_86B109B8->unk_60.at, &D_86B109B8->unk_60.eye, D_86B10BCC, D_86B10BC8, D_86B10BCA);
 
     D_86B109B8->unk_24.near = 50.0f;
     D_86B109B8->unk_24.far = 6400.0f;
 }
 
-void MessageState_Reset(void) {
+void FirstClearBonus_InitState(void) {
     D_86B10BD0.unk_00 = 0;
     D_86B10BD0.unk_04 = 0;
     D_86B10BD0.unk_08 = 0;
@@ -110,48 +110,48 @@ void FirstClearBonus_DrawDialogFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028A60, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028AA0, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, arg1, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_20289E0, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
+    Gfx_DrawTexturedRectClipped(arg0, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3, 0x2000 / var_s2, 0);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_2028A20, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - var_s3, (arg1 + arg3) - var_s2, var_s3, var_s2, 0, 0, 0x2000 / var_s3,
                   0x2000 / var_s2, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
     if ((sp48 > 0) && (sp44 > 0)) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, sp48, var_s2, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0, arg1 + var_s3, arg2, sp44, arg4, arg5, arg6, arg7);
-        Gfx_FillRectRGBA(arg0 + var_s3, (arg1 + var_s3) + sp44, sp48, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, sp48, var_s2, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s3, arg2, sp44, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, (arg1 + var_s3) + sp44, sp48, var_s2, arg4, arg5, arg6, arg7);
     } else if (sp48 > 0) {
-        Gfx_FillRectRGBA(arg0 + var_s3, arg1, sp48, arg3, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0 + var_s3, arg1, sp48, arg3, arg4, arg5, arg6, arg7);
     } else if (sp44 > 0) {
-        Gfx_FillRectRGBA(arg0, arg1 + var_s2, arg2, sp44, arg4, arg5, arg6, arg7);
+        Gfx_FillRectRgba(arg0, arg1 + var_s2, arg2, sp44, arg4, arg5, arg6, arg7);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void MessageState_SetFinished(void) {
+void FirstClearBonus_ShowDialogBox(void) {
     gMessageBoxState.unk_00 = 0xFF;
 }
 
-void MessageState_Clear(void) {
+void FirstClearBonus_HideDialogBox(void) {
     gMessageBoxState.unk_00 = 0;
 }
 
-s32 MessageState_CopyNextChars(void) {
+s32 FirstClearBonus_RevealNextChar(void) {
     if (D_86B109C8[gMessageBoxState.unk_04] == 0) {
         return 1;
     }
@@ -166,27 +166,27 @@ s32 MessageState_CopyNextChars(void) {
     return 0;
 }
 
-void MessageBox_Draw(void) {
+void FirstClearBonus_DrawDialogBox(void) {
     FirstClearBonus_DrawDialogFrame(0x3C, 0xBE - (gMessageBoxState.unk_10 / 2), gMessageBoxState.unk_0C, gMessageBoxState.unk_10, 0x50, 0x50, 0xF0, 0x80);
 }
 
-void MessageBox_RenderText(void) {
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    Text_SetLineHeight(0x10);
-    Text_Print(0x56, 0xAF, "%s", D_86B10AC8);
-    Text_SetupDL();
+void FirstClearBonus_DrawDialogText(void) {
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    Font_SetLineHeight(0x10);
+    Font_Printf(0x56, 0xAF, "%s", D_86B10AC8);
+    Font_EndTexturedTextRendering();
 }
 
-void MessageBox_Update(void) {
+void FirstClearBonus_UpdateDialogSequence(void) {
     s32 i;
 
     switch (gMessageBoxState.unk_00) {
         case 0x0:
-            if (gBattleContext.unk_0000 == 0x16) {
-                sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x91));
+            if (gSessionContext.unk_0000 == 0x16) {
+                sprintf(D_86B109C8, Text_GetString(NULL, 0, D_86B10840, 0x91));
             } else {
-                sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x93));
+                sprintf(D_86B109C8, Text_GetString(NULL, 0, D_86B10840, 0x93));
             }
 
             gMessageBoxState.unk_04 = 0;
@@ -198,35 +198,35 @@ void MessageBox_Update(void) {
             for (i = 0; i < 255; i++) { D_86B10AC8[i] = 0; }
             // clang-format on
 
-            MessageBox_Draw();
+            FirstClearBonus_DrawDialogBox();
             gMessageBoxState.unk_00++;
             break;
 
         case 0x1:
-            gMessageBoxState.unk_10 = Math_ApproachS32(gMessageBoxState.unk_10, 0x28, 8, 8);
+            gMessageBoxState.unk_10 = Math_StepToS32(gMessageBoxState.unk_10, 0x28, 8, 8);
             if (gMessageBoxState.unk_10 == 0x28) {
                 gMessageBoxState.unk_00++;
             }
-            MessageBox_Draw();
+            FirstClearBonus_DrawDialogBox();
             break;
 
         case 0x2:
-            MessageBox_Draw();
-            if (MessageState_CopyNextChars() != 0) {
+            FirstClearBonus_DrawDialogBox();
+            if (FirstClearBonus_RevealNextChar() != 0) {
                 gMessageBoxState.unk_00++;
             }
-            MessageBox_RenderText();
+            FirstClearBonus_DrawDialogText();
             break;
 
         case 0x3:
-            MessageBox_Draw();
-            MessageBox_RenderText();
+            FirstClearBonus_DrawDialogBox();
+            FirstClearBonus_DrawDialogText();
 
             if (gMessageBoxState.unk_08++ == 0x3C) {
-                if (gBattleContext.unk_0000 == 0x16) {
-                    sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x92));
+                if (gSessionContext.unk_0000 == 0x16) {
+                    sprintf(D_86B109C8, Text_GetString(NULL, 0, D_86B10840, 0x92));
                 } else {
-                    sprintf(D_86B109C8, GetMessageString(NULL, 0, D_86B10840, 0x94));
+                    sprintf(D_86B109C8, Text_GetString(NULL, 0, D_86B10840, 0x94));
                 }
 
                 gMessageBoxState.unk_04 = 0;
@@ -241,16 +241,16 @@ void MessageBox_Update(void) {
             break;
 
         case 0x4:
-            MessageBox_Draw();
-            if (MessageState_CopyNextChars() != 0) {
+            FirstClearBonus_DrawDialogBox();
+            if (FirstClearBonus_RevealNextChar() != 0) {
                 gMessageBoxState.unk_00++;
             }
-            MessageBox_RenderText();
+            FirstClearBonus_DrawDialogText();
             break;
 
         case 0x5:
-            MessageBox_Draw();
-            MessageBox_RenderText();
+            FirstClearBonus_DrawDialogBox();
+            FirstClearBonus_DrawDialogText();
 
             if (gMessageBoxState.unk_08++ == 0x41) {
                 gMessageBoxState.unk_00 = 0xFF;
@@ -258,9 +258,9 @@ void MessageBox_Update(void) {
             break;
 
         case 0xFF:
-            gMessageBoxState.unk_10 = Math_ApproachS32(gMessageBoxState.unk_10, 0, 8, 8);
+            gMessageBoxState.unk_10 = Math_StepToS32(gMessageBoxState.unk_10, 0, 8, 8);
             if (gMessageBoxState.unk_10 >= 0xB) {
-                MessageBox_Draw();
+                FirstClearBonus_DrawDialogBox();
             }
             break;
     }
@@ -269,13 +269,13 @@ void MessageBox_Update(void) {
 void FirstClearBonus_ReadControllerInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
 void func_86B0B4C8(void) {
 }
 
-void DrawBackgroundTiles(u8* arg0) {
+void FirstClearBonus_DrawBackgroundTiles(u8* arg0) {
     s32 i;
     s32 j;
 
@@ -292,7 +292,7 @@ void DrawBackgroundTiles(u8* arg0) {
 
     for (i = 0; i < 15; i++) {
         for (j = 0; j < 20; j++, arg0 += 0x200) {
-            Gfx_DrawSpriteRGBA16(j * 0x10, i * 0x10, 0x10, 0x10, arg0, 0x10, 0);
+            Gfx_DrawTextureRgba16(j * 0x10, i * 0x10, 0x10, 0x10, arg0, 0x10, 0);
         }
     }
 
@@ -300,16 +300,16 @@ void DrawBackgroundTiles(u8* arg0) {
 }
 
 void FirstClearBonus_RenderFrame(void) {
-    Stage_BeginDisplayList();
-    DrawBackgroundTiles(D_86B109C0);
-    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
-    Gfx_FinishFrame();
-    Graph_SetTextureState(D_86B10848);
-    MessageBox_Update();
-    Stage_Advance();
+    BgStage_DrawFrame();
+    FirstClearBonus_DrawBackgroundTiles(D_86B109C0);
+    GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    GeoRender_AdvanceFrameCounter();
+    Geo_RenderRootNode(D_86B10848);
+    FirstClearBonus_UpdateDialogSequence();
+    BgStage_AdvanceFrame();
 }
 
-s32 BattleCutscene_Process(void) {
+s32 FirstClearBonus_UpdateScene(void) {
     s32 sp24 = 0;
 
     switch (D_86B10BD0.unk_00) {
@@ -321,14 +321,14 @@ s32 BattleCutscene_Process(void) {
 
         case 1:
             if ((D_86B10850.unk_040.unk_08 >> 0x10) == 0xA) {
-                ResultScreen_SetAnimation(0x38);
+                Audio_StartMusicTrack(0x38);
             }
 
             if ((D_86B10850.unk_040.unk_08 >> 0x10) == 0x72) {
                 D_86B10BD0.unk_08 = 0;
                 D_86B10850.unk_000.unk_02 &= 0xFFDF;
-                MessageState_Clear();
-                ResultScreen_SetAnimation(0x13);
+                FirstClearBonus_HideDialogBox();
+                Audio_StartMusicTrack(0x13);
                 D_86B10BD0.unk_00++;
             }
             break;
@@ -337,13 +337,13 @@ s32 BattleCutscene_Process(void) {
             if (gMessageBoxState.unk_00 == 0xFF) {
                 D_86B10BD0.unk_08 = 0;
                 D_86B10850.unk_000.unk_02 |= 0x20;
-                MessageState_SetFinished();
+                FirstClearBonus_ShowDialogBox();
                 D_86B10BD0.unk_00++;
             }
             break;
 
         case 3:
-            if (GraphNode_IsAnimationFinished(&D_86B10850) != 0) {
+            if (ModelAnim_IsAnimationDone(&D_86B10850) != 0) {
                 D_86B10BD0.unk_00++;
             }
             break;
@@ -360,8 +360,8 @@ void FirstClearBonus_RunLoop(void) {
     s32 i;
     s32 var_s2 = 1;
 
-    Stage_SetFillColor(1);
-    Stage_FadeIn(0xA);
+    StageContext_SetClearColor(1);
+    StageFade_StartFromOpaque(0xA);
 
     for (i = 0; i < 10; i++) {
         FirstClearBonus_ReadControllerInput();
@@ -370,69 +370,69 @@ void FirstClearBonus_RunLoop(void) {
 
     while (var_s2 != 0) {
         FirstClearBonus_ReadControllerInput();
-        if (BattleCutscene_Process() != 0) {
+        if (FirstClearBonus_UpdateScene() != 0) {
             var_s2 = 0;
         }
         FirstClearBonus_RenderFrame();
     }
 
-    Stage_SetFillColor(0xFFFF);
-    Stage_FadeOut(8);
+    StageContext_SetClearColor(0xFFFF);
+    StageFade_StartFromTransparent(8);
 
     for (i = 0; i < 8; i++) {
         FirstClearBonus_ReadControllerInput();
         FirstClearBonus_RenderFrame();
     }
 
-    Stage_AdvanceN(2);
+    StageLoader_RunFrames(2);
 }
 
 void FirstClearBonus_InitScene(void) {
-    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
 
     D_86B10848 = process_geo_layout(temp_v0, &D_86B0E374);
-    mem_pool_resize_block(temp_v0);
+    MainPool_FinalizeAllocation(temp_v0);
 
-    Graph_InitRoots();
-    Camera_SetupView();
-    MessageState_Reset();
-    MessageState_SetFinished();
-    Graph_AddToRootList0(&D_86B10850);
-    AssetManager_LoadArchives();
+    ModelRenderer_InitDisplayRoots();
+    FirstClearBonus_InitCamera();
+    FirstClearBonus_InitState();
+    FirstClearBonus_ShowDialogBox();
+    ModelRenderer_AttachDisplayObject(&D_86B10850);
+    PokeIcon_OpenModelArchives();
 
-    if (gBattleContext.unk_0000 == 0x16) {
-        D_86B10844 = GeoLayout_LoadById(0xD5);
-        GraphNode_InitChild(&D_86B10850, 0, 0xD5, D_86B10844->unk_08->unk_00[0]);
+    if (gSessionContext.unk_0000 == 0x16) {
+        D_86B10844 = Model_LoadByArchiveIndex(0xD5);
+        Model_InitDisplayObject(&D_86B10850, 0, 0xD5, D_86B10844->unk_08->unk_00[0]);
     } else {
-        D_86B10844 = GeoLayout_LoadById(0xD4);
-        GraphNode_InitChild(&D_86B10850, 0, 0xD4, D_86B10844->unk_08->unk_00[0]);
+        D_86B10844 = Model_LoadByArchiveIndex(0xD4);
+        Model_InitDisplayObject(&D_86B10850, 0, 0xD4, D_86B10844->unk_08->unk_00[0]);
     }
 
-    GraphNode_TriggerAction(&D_86B10850, 0);
+    ModelAnim_SetAnimation(&D_86B10850, 0);
 
     D_86B10850.unk_000.unk_02 &= ~0x20;
     D_86B10850.unk_000.unk_01 &= ~1;
 
-    Vec3f_Set(&D_86B10850.unk_024, 0.0f, 11.0f, -105.0f);
+    Vec3f_SetComponentsDuplicate(&D_86B10850.unk_024, 0.0f, 11.0f, -105.0f);
 }
 
-s32 BattleState_Handle22Or23(void) {
+s32 Stage_ShowFirstClearBonusScene(void) {
     Stage* sp24;
 
     main_pool_push_state('GBOY');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    Text_Init(2, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    Font_Init(2, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
-    MessageBank_Init();
-    D_86B10840 = GetMessageBank(0x1E);
+    Text_InitStringTables();
+    D_86B10840 = Text_GetStringTable(0x1E);
 
-    if (gBattleContext.unk_0000 == 0x16) {
+    if (gSessionContext.unk_0000 == 0x16) {
         D_86B109BC = ASSET_LOAD2(backgrounds, 1, 1);
         D_86B109C0 = BinArchive_GetFile(D_86B109BC, 0x12);
     } else {
@@ -441,11 +441,11 @@ s32 BattleState_Handle22Or23(void) {
     }
 
     FirstClearBonus_InitScene();
-    Stage_Set(sp24);
+    StageContext_Activate(sp24);
     FirstClearBonus_RunLoop();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('GBOY');
 

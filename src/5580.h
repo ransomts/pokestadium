@@ -70,15 +70,15 @@ typedef struct UnkStruct80083CA0_2 {
 
 extern unk_D_800A62E0 gRspTaskManager;
 
-void MessageQueue_Create(UnkStruct80083CA0_2*, s32, s32);
-s32 MessageQueue_Recv(UnkStruct80083CA0_2*);
-s32 MessageQueue_TryRecv(UnkStruct80083CA0_2*);
-void RspTask_ManagerInit(void);
-void ThreadList_Add(GbEmuState*);
-void RspTask_Reset(UnkStruct80001380* arg0);
-void RspTaskYield(UnkStruct80001380* arg0);
-void ThreadList_Remove(GbEmuState* arg0);
-void RspTaskStart(UnkStruct80001380* arg0, s32 arg1);
+void Sched_InitClientQueue(UnkStruct80083CA0_2*, s32, s32);
+s32 Sched_WaitClientQueue(UnkStruct80083CA0_2*);
+s32 Sched_TryReceiveClientQueue(UnkStruct80083CA0_2*);
+void Sched_Init(void);
+void Sched_AddClient(GbEmuState*);
+void Sched_ResetTaskState(UnkStruct80001380* arg0);
+void Sched_WaitForTaskMessage(UnkStruct80001380* arg0);
+void Sched_RemoveClient(GbEmuState* arg0);
+void Sched_SubmitTask(UnkStruct80001380* arg0, s32 arg1);
 
 
 #endif // _5580_H_

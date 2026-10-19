@@ -100,11 +100,11 @@ extern ALSeqFile* gAudioSeqBuffer;
 extern ALSeqFile* gAudioSeqData;
 extern u32* D_800FC798;
 
-s32 Audio_PlaySoundEffect(u32 arg0, s32 arg1, s32 arg2);
-s32 Audio_SetSfxDurationScale(s32 arg0, u32 arg1);
+s32 Audio_PlayCommand(u32 arg0, s32 arg1, s32 arg2);
+s32 Audio_FadeCommand(s32 arg0, u32 arg1);
 void func_8003733C(void);
-void Audio_BuildTask(void* arg0);
-void Audio_AddBaseToOffsets(u32* arg0, u32 arg1, s32 arg2);
-s32 Audio_Initialize(void);
+void Audio_CreateFrameTaskWrapper(void* arg0);
+void Audio_RelocateOffsets(u32* arg0, u32 arg1, s32 arg2);
+s32 Audio_InitBanks(void);
 
 #endif // _373A0_H_

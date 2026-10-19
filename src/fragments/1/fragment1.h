@@ -6,9 +6,9 @@
 
 void GbEmu_Init(GbEmuState*);
 void GbEmu_RunFrame(GbEmuState*);
-void GbEmu_AudioUpdateThread(GbEmuThreadInfo*);
+void GbEmu_AudioVideoTick(GbEmuThreadInfo*);
 void GbAudio_Update();
-void UpdateAudioParameters(GbPakDeviceState*); 
+void GbEmu_InitContext(GbPakDeviceState*); 
 s32 osGbSetNextBuffer(void*, s32);
 
 #endif /* _FRAGMENT1_H_ */

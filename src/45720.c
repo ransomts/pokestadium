@@ -22,7 +22,7 @@ u32 gAudioChannelWritePos[2];
 OSMesgQueue gAudioDmaQueue;
 OSMesg gAudioDmaMsg;
 
-void Audio_Init(ALHeap* arg0, u32 arg1, u32 arg2) {
+void AudioStream_Init(ALHeap* arg0, u32 arg1, u32 arg2) {
     s32 i;
 
     gAudioChunkSizeLarge = arg1 >> 1;
@@ -40,7 +40,7 @@ void Audio_Init(ALHeap* arg0, u32 arg1, u32 arg2) {
         bzero(gAudioChannelBuffer[i], 0x1140);
         bzero(gAudioSampleData[i], 0x1400);
 
-        AudioChannel_Init(gAudioChannel[i], 0, 0);
+        AudioStream_OpenChannel(gAudioChannel[i], 0, 0);
         gAudioChannelStopFlag[i] = 0;
     }
 
@@ -50,7 +50,7 @@ void Audio_Init(ALHeap* arg0, u32 arg1, u32 arg2) {
     gAudioPaused = 0;
 }
 
-void Audio_StartChannel(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
+void AudioStream_Start(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     u32 temp_a0;
 
     if ((arg0 < 2) && (gAudioPaused == 0)) {
@@ -73,7 +73,7 @@ void Audio_StartChannel(u32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     }
 }
 
-void Audio_SetVolumeFade(u32 arg0, u32 arg1) {
+void AudioStream_Stop(u32 arg0, u32 arg1) {
     u32 temp_a0;
 
     if (arg0 < 2) {
@@ -90,14 +90,14 @@ void Audio_SetVolumeFade(u32 arg0, u32 arg1) {
     }
 }
 
-s32 Audio_IsChannelActive(u32 arg0) {
+s32 AudioStream_IsPlaying(u32 arg0) {
     if (gAudioChannelState[arg0] == 2) {
         return 0;
     }
     return 1;
 }
 
-void Audio_SetPaused(s32 arg0) {
+void AudioStream_SetEnabled(s32 arg0) {
     if (arg0 != 0) {
         gAudioPaused = 0;
     } else {
@@ -131,16 +131,16 @@ void Audio_ProcessChannels(void) {
             var_s7 = gAudioChunkSizeLarge;
         }
 
-        AudioChannel_Update(gAudioChannel[i]);
+        AudioStream_RefillAndDecode(gAudioChannel[i]);
         if ((u8) gAudioChannel[i]->streamState == 2) {
             osWritebackDCache(gAudioChannelBuffer[i], 0x1140);
-            AudioChannel_StartPlayback(gAudioChannel[i]);
+            AudioStream_MarkLoaded(gAudioChannel[i]);
             gAudioTransferPending = 1;
             gAudioChannelStopFlag[i] = 0;
         } else {
             if ((gAudioChannelState[i] != 0) && (gAudioChannelState[i] != 3) && ((u8) gAudioChannel[i]->streamState == 4)) {
                 if (gAudioChannelStopFlag[i] == 0) {
-                    AudioChannel_Stop(gAudioChannel[i]);
+                    AudioStream_Abort(gAudioChannel[i]);
                     gAudioChannelStopFlag[i] = 1;
                 }
                 gAudioTransferPending = 0;
@@ -150,7 +150,7 @@ void Audio_ProcessChannels(void) {
             }
         }
 
-        AudioChannel_Consume(gAudioChannel[i], var_s7);
+        AudioStream_ConsumeSamples(gAudioChannel[i], var_s7);
 
         temp_a2 = gAudioChannel[i]->playbackSamplePosition - var_s7;
         for (j = 0; j < var_s7; j++) {
@@ -169,7 +169,7 @@ void Audio_ProcessChannels(void) {
                 break;
 
             case 0:
-                AudioChannel_Init(gAudioChannel[i], gAudioChannelDmaStart[i], Audio_DmaTransfer);
+                AudioStream_OpenChannel(gAudioChannel[i], gAudioChannelDmaStart[i], AudioStream_DmaReadChunk);
                 gAudioChannelState[i] = 4;
                 if (gAudioTransferPending != 0) {
                     gAudioTransferPending = 0;
@@ -178,7 +178,7 @@ void Audio_ProcessChannels(void) {
                 break;
 
             case 1:
-                AudioChannel_Stop(gAudioChannel[i]);
+                AudioStream_Abort(gAudioChannel[i]);
                 bzero(gAudioSampleData[i], 0x1400);
                 gAudioChannelStopFlag[i] = 1;
                 break;
@@ -203,7 +203,7 @@ void Audio_ProcessChannels(void) {
     }
 }
 
-void Audio_DmaTransfer(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
+void AudioStream_DmaReadChunk(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
     OSIoMesg sp48;
     u32 var_s1;
     u32 var_s2;
@@ -237,7 +237,7 @@ void Audio_DmaTransfer(u32 arg0, u32 arg1, u32 arg2, OSMesgQueue* arg3) {
     osSendMesg(arg3, NULL, 1);
 }
 
-void AudioChannel_Init(GbAudioChannelState* arg0, s32 arg1, s32 arg2) {
+void AudioStream_OpenChannel(GbAudioChannelState* arg0, s32 arg1, s32 arg2) {
     bzero(&arg0->unk_0000, sizeof(unk_D_800FCED8_0000));
 
     arg0->unk_0000.unk_166 = 0x28;
@@ -262,7 +262,7 @@ void AudioChannel_Init(GbAudioChannelState* arg0, s32 arg1, s32 arg2) {
     arg0->decodeFrameLimit = 2;
 }
 
-void AudioChannel_Update(GbAudioChannelState* arg0) {
+void AudioStream_RefillAndDecode(GbAudioChannelState* arg0) {
     s32 var_a2;
     s32 var_s2;
     u32 var_v1;
@@ -307,7 +307,7 @@ void AudioChannel_Update(GbAudioChannelState* arg0) {
     var_v1 = arg0->decodedSamplePosition - arg0->playbackSamplePosition;
     while ((var_v1 < 0x960) && ((arg0->streamState == 1) || (arg0->framesRemaining > 0)) &&
            ((arg0->bitstreamWriteOffset - arg0->bitstreamReadOffset) >= 0x25) && (var_s2 > 0)) {
-        GbAudio_DecodeSpeechFrame(arg0, arg0->pcmRingBuffer.unk_0000 + (((arg0->decodedSamplePosition % 2560) >> 2) * 8));
+        Gsm_Decode_Stream(arg0, arg0->pcmRingBuffer.unk_0000 + (((arg0->decodedSamplePosition % 2560) >> 2) * 8));
         arg0->bitstreamReadOffset = (arg0->bitReadPosition >> 3) & ~3;
         arg0->decodedSamplePosition += 0xA0;
         arg0->framesRemaining--;
@@ -320,7 +320,7 @@ void AudioChannel_Update(GbAudioChannelState* arg0) {
     }
 }
 
-u32 AudioChannel_Consume(GbAudioChannelState* arg0, u32 arg1) {
+u32 AudioStream_ConsumeSamples(GbAudioChannelState* arg0, u32 arg1) {
     u32 temp_v0;
     u32 var_a2;
 
@@ -341,12 +341,12 @@ u32 AudioChannel_Consume(GbAudioChannelState* arg0, u32 arg1) {
     return 0;
 }
 
-void AudioChannel_StartPlayback(GbAudioChannelState* arg0) {
+void AudioStream_MarkLoaded(GbAudioChannelState* arg0) {
     if (arg0->streamState == 2) {
         arg0->streamState = 3;
     }
 }
 
-void AudioChannel_Stop(GbAudioChannelState* arg0) {
+void AudioStream_Abort(GbAudioChannelState* arg0) {
     arg0->streamState = 4;
 }

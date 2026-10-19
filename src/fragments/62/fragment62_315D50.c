@@ -138,30 +138,30 @@ Vtx gPanelBgLargeVerts[] = {
     VTX(-160, 120, 0, 0, 0, 0x00, 0x00, 0x78, 0xFF),
 };
 
-ParticleRenderSettings gParticleRenderSettingsTable[] = {
+ParticleRenderSettings gParticleDescriptorChildren[] = {
     {
         0x01,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
-        RenderBillboardQuadPrimColor,
-        &gWaterTexture[4],
+        ParticleGfx_DrawBillboardPrim,
+        &gBattleAnimAssetPointers[4],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[5],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[5],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64,
-        RenderBillboardQuad64,
-        &gWaterTexture[20],
+        ParticleGfx_DrawBillboardPrimEnvQuadVariantA,
+        &gBattleAnimAssetPointers[20],
     },
     {
         0x00,
@@ -169,23 +169,23 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64,
         ParticleGfx_DrawBillboardPrimEnvQuadVariantC,
-        &gWaterTexture[20],
+        &gBattleAnimAssetPointers[20],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[5],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[5],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32,
-        RenderBillboardQuadGradient,
-        &gWaterTexture[5],
+        ParticleGfx_DrawBillboardTextureAlphaRotatedQuad,
+        &gBattleAnimAssetPointers[5],
     },
     {
         0x00,
@@ -193,434 +193,434 @@ ParticleRenderSettings gParticleRenderSettingsTable[] = {
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod10_32x64,
         ParticleGfx_DrawBillboardPrimEnvQuadVariantC,
-        &gWaterTexture[20],
+        &gBattleAnimAssetPointers[20],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x64_ByIndex,
-        RenderBillboardQuad64,
-        &gWaterTexture[9],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x64,
+        ParticleGfx_DrawBillboardPrimEnvQuadVariantA,
+        &gBattleAnimAssetPointers[9],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x32,
-        RenderBillboardQuadPrimColor,
-        &gWaterTexture[3],
+        ParticleGfx_LoadTextureCallbackI4_32x32,
+        ParticleGfx_DrawBillboardPrim,
+        &gBattleAnimAssetPointers[3],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[23],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[23],
     },
     {
         0x00,
         0x01,
         0x0001,
         ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[14],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[14],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[17],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[17],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[14],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[14],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_CI4_24x24_ByIndex,
-        RenderBillboardQuad24,
-        &gWaterTexture[8],
+        ParticleGfx_LoadTextureCallbackI4TileParticleFrame_24x24,
+        ParticleGfx_DrawBillboardPrimEnv,
+        &gBattleAnimAssetPointers[8],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_24x24_ByIndex,
-        RenderBillboardQuad24,
-        &gWaterTexture[8],
+        ParticleGfx_LoadTextureCallbackI4TileParticleFrame_24x24,
+        ParticleGfx_DrawBillboardPrimEnv,
+        &gBattleAnimAssetPointers[8],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_24x24_ByIndex,
-        RenderRotatedQuad24,
-        &gWaterTexture[8],
+        ParticleGfx_LoadTextureCallbackI4TileParticleFrame_24x24,
+        ParticleGfx_DrawBillboardDoubleSided,
+        &gBattleAnimAssetPointers[8],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod8_64x64,
-        RenderBillboardQuadTriple,
-        &gWaterTexture[18],
+        ParticleGfx_DrawBillboardPrimEnvComposite,
+        &gBattleAnimAssetPointers[18],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[17],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[17],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[17],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[17],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[5],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[5],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod8_64x64,
-        RenderBillboardQuadTriple,
-        &gWaterTexture[18],
+        ParticleGfx_DrawBillboardPrimEnvComposite,
+        &gBattleAnimAssetPointers[18],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[23],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[23],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameMod4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[13],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[13],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameDiv4Mod4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[13],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[13],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod8_64x64,
-        RenderBillboardQuadTriple,
-        &gWaterTexture[18],
+        ParticleGfx_DrawBillboardPrimEnvComposite,
+        &gBattleAnimAssetPointers[18],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[23],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[23],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4_64x64,
-        RenderRotatedQuadTriple,
-        &gWaterTexture[11],
+        ParticleGfx_DrawBillboardPrimEnvTriangleDoubleSided,
+        &gBattleAnimAssetPointers[11],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[82],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[82],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x32,
-        RenderBillboardQuadRoll,
-        &gWaterTexture[16],
+        ParticleGfx_LoadTextureCallbackI4_32x32,
+        ParticleGfx_DrawBillboardPrimEnvRotatedQuad,
+        &gBattleAnimAssetPointers[16],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_IA8_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[84],
+        ParticleGfx_LoadTextureCallbackIa8_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[84],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_CI4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[169],
+        ParticleGfx_LoadTextureCallbackI4_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[169],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_CI4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[172],
+        ParticleGfx_LoadTextureCallbackI4_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[172],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[166],
+        ParticleGfx_LoadTextureCallbackI4_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[166],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[167],
+        ParticleGfx_LoadTextureCallbackI4_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[167],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_CI4_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[83],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[83],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_CI4_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[83],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[83],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_CI4_64x64_ByIndex,
-        RenderBillboardQuadTriple,
-        &gWaterTexture[89],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_64x64,
+        ParticleGfx_DrawBillboardPrimEnvComposite,
+        &gBattleAnimAssetPointers[89],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_IA8_32x32,
-        RenderBillboardQuadRoll,
-        &gWaterTexture[95],
+        ParticleGfx_LoadTextureCallbackIa8_32x32,
+        ParticleGfx_DrawBillboardPrimEnvRotatedQuad,
+        &gBattleAnimAssetPointers[95],
     },
     {
         0x01,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x32,
-        RenderPanelBackground,
-        &gWaterTexture[95],
+        ParticleGfx_LoadTextureCallbackIa8_32x32,
+        BattleAnim_DrawAsset95Ia8Billboard,
+        &gBattleAnimAssetPointers[95],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[2],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[2],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[100],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[100],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_CI4_32x32_ByIndex,
-        RenderBillboardQuadNoise,
-        &gWaterTexture[83],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvNoiseQuad,
+        &gBattleAnimAssetPointers[83],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x32_ByIndex,
-        RenderBillboardQuadNoise,
-        &gWaterTexture[83],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvNoiseQuad,
+        &gBattleAnimAssetPointers[83],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_CI4_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[101],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[101],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[83],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[83],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4WrapST_64x64,
-        RenderGroundQuad,
-        &gWaterTexture[63],
+        ParticleGfx_DrawBillboardPrimEnvTransformedQuad,
+        &gBattleAnimAssetPointers[63],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackIa8WrapST_64x64,
-        RenderGroundQuad,
-        &gWaterTexture[112],
+        ParticleGfx_DrawBillboardPrimEnvTransformedQuad,
+        &gBattleAnimAssetPointers[112],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x32_ByIndex,
-        RenderBillboardQuadOffsetY,
-        &gWaterTexture[83],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+        ParticleGfx_DrawBillboardOffsetQuad,
+        &gBattleAnimAssetPointers[83],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x64_ByIndex,
-        RenderBillboardQuad64OffsetY,
-        &gWaterTexture[117],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x64,
+        ParticleGfx_DrawBillboardPrimEnvQuadVariantB,
+        &gBattleAnimAssetPointers[117],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[122],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[122],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[82],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[82],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x32,
-        RenderBillboardQuadRoll,
-        &gWaterTexture[95],
+        ParticleGfx_LoadTextureCallbackIa8_32x32,
+        ParticleGfx_DrawBillboardPrimEnvRotatedQuad,
+        &gBattleAnimAssetPointers[95],
     },
     {
         0x00,
         0x01,
         0x0001,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuadRoll,
-        &gWaterTexture[82],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvRotatedQuad,
+        &gBattleAnimAssetPointers[82],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuadRoll,
-        &gWaterTexture[82],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvRotatedQuad,
+        &gBattleAnimAssetPointers[82],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_CI4_32x32_ByIndex,
-        RenderBillboardQuad,
-        &gWaterTexture[83],
+        ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[83],
     },
     {
         0x00,
         0x01,
         0x0000,
         ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
-        RenderBillboardQuad,
-        &gWaterTexture[14],
+        ParticleGfx_DrawBillboardPrimEnvQuad,
+        &gBattleAnimAssetPointers[14],
     },
     {
         0x00,
         0x01,
         0x0000,
-        LoadTexture_IA8_32x32_ByIndex,
-        RenderBillboardQuadGradient,
-        &gWaterTexture[17],
+        ParticleGfx_LoadTextureCallbackIa8Frame_32x32,
+        ParticleGfx_DrawBillboardTextureAlphaRotatedQuad,
+        &gBattleAnimAssetPointers[17],
     },
 };
 
-ParticleEffectData gParticleEffectData[] = {
+ParticleEffectData gBattleAnimParticleDescriptors[] = {
     {
         0x00000001,
-        &gParticleRenderSettingsTable[0],
+        &gParticleDescriptorChildren[0],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[1],
+        &gParticleDescriptorChildren[1],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[2],
+        &gParticleDescriptorChildren[2],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[3],
+        &gParticleDescriptorChildren[3],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[4],
+        &gParticleDescriptorChildren[4],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[7],
+        &gParticleDescriptorChildren[7],
     },
     {
         0x00000003,
@@ -628,43 +628,43 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[8],
+        &gParticleDescriptorChildren[8],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[9],
+        &gParticleDescriptorChildren[9],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[10],
+        &gParticleDescriptorChildren[10],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[55],
+        &gParticleDescriptorChildren[55],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[11],
+        &gParticleDescriptorChildren[11],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[12],
+        &gParticleDescriptorChildren[12],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[13],
+        &gParticleDescriptorChildren[13],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[14],
+        &gParticleDescriptorChildren[14],
     },
     {
         0x00000003,
-        RenderTimerDigits,
+        BattleAnim_DrawAsset13FrameI4YScaledQuadA,
     },
     {
         0x00000003,
-        RenderTimerDigitsAlt,
+        BattleAnim_DrawAsset13FrameI4YScaledQuadB,
     },
     {
         0x00000003,
@@ -672,7 +672,7 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        RenderTimerNumber,
+        BattleAnim_DrawAsset13FrameI4ModelQuadA,
     },
     {
         0x00000003,
@@ -684,31 +684,31 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[16],
+        &gParticleDescriptorChildren[16],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[22],
+        &gParticleDescriptorChildren[22],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[23],
+        &gParticleDescriptorChildren[23],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[17],
+        &gParticleDescriptorChildren[17],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[18],
+        &gParticleDescriptorChildren[18],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[56],
+        &gParticleDescriptorChildren[56],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[5],
+        &gParticleDescriptorChildren[5],
     },
     {
         0x00000003,
@@ -724,27 +724,27 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[19],
+        &gParticleDescriptorChildren[19],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[20],
+        &gParticleDescriptorChildren[20],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[24],
+        &gParticleDescriptorChildren[24],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[21],
+        &gParticleDescriptorChildren[21],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[25],
+        &gParticleDescriptorChildren[25],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[26],
+        &gParticleDescriptorChildren[26],
     },
     {
         0x00000003,
@@ -768,7 +768,7 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[15],
+        &gParticleDescriptorChildren[15],
     },
     {
         0x00000003,
@@ -792,11 +792,11 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        RenderItemIcon,
+        BattleAnim_DrawAssetBcRgba16WithAssetBdDisplayList,
     },
     {
         0x00000003,
-        RenderStatusBar,
+        BattleAnim_DrawAssets27And28LayeredI4QuadVariantA,
     },
     {
         0x00000003,
@@ -804,59 +804,59 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000003,
-        RenderMultiBlockIcon,
+        BattleAnim_DrawAsset29DualI4LayeredQuad,
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[27],
+        &gParticleDescriptorChildren[27],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[6],
+        &gParticleDescriptorChildren[6],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[45],
+        &gParticleDescriptorChildren[45],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[28],
+        &gParticleDescriptorChildren[28],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[29],
+        &gParticleDescriptorChildren[29],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[30],
+        &gParticleDescriptorChildren[30],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[31],
+        &gParticleDescriptorChildren[31],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[32],
+        &gParticleDescriptorChildren[32],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[33],
+        &gParticleDescriptorChildren[33],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[34],
+        &gParticleDescriptorChildren[34],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[35],
+        &gParticleDescriptorChildren[35],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[54],
+        &gParticleDescriptorChildren[54],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[36],
+        &gParticleDescriptorChildren[36],
     },
     {
         0x00000003,
@@ -864,67 +864,67 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[37],
+        &gParticleDescriptorChildren[37],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[38],
+        &gParticleDescriptorChildren[38],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[51],
+        &gParticleDescriptorChildren[51],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[39],
+        &gParticleDescriptorChildren[39],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[40],
+        &gParticleDescriptorChildren[40],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[41],
+        &gParticleDescriptorChildren[41],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[42],
+        &gParticleDescriptorChildren[42],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[43],
+        &gParticleDescriptorChildren[43],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[44],
+        &gParticleDescriptorChildren[44],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[46],
+        &gParticleDescriptorChildren[46],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[47],
+        &gParticleDescriptorChildren[47],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[48],
+        &gParticleDescriptorChildren[48],
     },
     {
         0x00000003,
-        RenderPanelWithIcon,
+        BattleAnim_DrawAsset76Ia8FrameWithAsset77I4OverlayPipelineA,
     },
     {
         0x00000003,
-        RenderOverlayWithIcon,
+        BattleAnim_DrawAsset76Ia8FrameWithAsset77I4OverlayPipelineB,
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[49],
+        &gParticleDescriptorChildren[49],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[50],
+        &gParticleDescriptorChildren[50],
     },
     {
         0x00000003,
@@ -932,11 +932,11 @@ ParticleEffectData gParticleEffectData[] = {
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[52],
+        &gParticleDescriptorChildren[52],
     },
     {
         0x00000001,
-        &gParticleRenderSettingsTable[53],
+        &gParticleDescriptorChildren[53],
     },
     {
         0x00000000,
@@ -945,9 +945,9 @@ ParticleEffectData gParticleEffectData[] = {
 };
 
 static func_D_84390320 gStateFunctionTable[] = {
-    BattleAnim_EffectStartNop, ParticleEffect_RegisterDefault, SpawnLargeBurstIfNotActive, ParticleEffect_InitSmallExplosion, InitParticleEffectSet_Alt, BattleAnim_EffectStartNop, SpawnSmallGlowAndCustomEffect,
-    ParticleEffect_SmallSetup, ParticleEffect_RegisterCombined, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandlers_473BC, ParticleEffect_SmallNodeSetup, ParticleEffect_InitBurstEffect, ParticleEffect_DynamicStateSetup,
-    ParticleEffect_Init, SpawnLargeBurstEffect, ParticleEffect_FullSetupA, ParticleEffect_PaletteBurst, BattleAnim_StartEffect18ScatterRadialAndColumnSequence, BattleAnim_EffectStartNop, func_843378CC,
+    BattleAnim_EffectStartNop, BattleAnim_StartEffect1Descriptor2FPhaseFadeOut, BattleAnim_StartEffect2Descriptor08IndexedScaleDelayFade, BattleAnim_StartEffect3ModelTintAndVerticalFade, BattleAnim_StartEffect4TintDescriptor53ScalePulse, BattleAnim_EffectStartNop, BattleAnim_StartEffect6AnimatedScaleAndBurstEmitter,
+    BattleAnim_StartEffect7GlobalTintFade, BattleAnim_StartEffect8ModelBurstAndVerticalFade, BattleAnim_EffectStartNop, BattleAnim_StartEffect10Model60AndModelAnimWait, BattleAnim_StartEffect11GlobalTintFade, BattleAnim_StartEffect12DelayedModelAnim, BattleAnim_StartEffect13SecondaryOwnerSpeciesBranch,
+    BattleAnim_StartEffect14ModelAnimAndMoveKeyedTintParticles, BattleAnim_StartEffect15Descriptor08IndexedScaleDelayFade, BattleAnim_StartEffect16TintDescriptor34Sequence, BattleAnim_StartEffect17ModelAnimFinish, BattleAnim_StartEffect18ScatterRadialAndColumnSequence, BattleAnim_EffectStartNop, func_843378CC,
     ParticleEffect_WaterAnimBurst, ParticleEffect_InitSetA, func_84336EE8, ParticleEffect_PaletteScriptBurst, BattleAnim_EffectStartNop, InitParticleEffectSet_Alt2, BattleAnim_EffectStartNop,
     ParticleEffect_RegisterEffectE0, ParticleEffect_GroupSetupA, ParticleEffect_FinalGroupSetup, ParticleEffect_ComplexNodeSetup, BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, ParticleEffect_RegisterSparkle,
     ParticleEffect_InitSmokeSetB, ParticleEffect_BasicMultiBurst2, ParticleEffect_SimpleBurstScript, ParticleEffect_RegisterExplosion, InitParticleEffectSet_WithFade, ParticleEffect_RegisterLargeExplosion, ParticleEffect_TextureSetup,
@@ -959,12 +959,12 @@ static func_D_84390320 gStateFunctionTable[] = {
     InitSmallGlowEffectSet, InitParticleEffectSet_Single, ParticleEffect_RegisterHandler_498D8, ParticleEffect_RegisterDefaultTexture, ParticleEffect_AdvancedModeSetup, ParticleEffect_RegisterAll_48630, ParticleEffect_SimpleBurst,
     ParticleEffect_InitSmokeSetC, ParticleEffect_FinalSetupA, ParticleEffect_RegisterLargeExplosionAndEffects, func_8434A9EC, ParticleEffect_MultiNodeC2, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
     ParticleEffect_PortraitBurstNode, ParticleEffect_PortraitBurstCheck, ParticleEffect_WaterAnimFirework, ParticleEffect_SimpleBurst2, ParticleEffect_PaletteMultiBurst2, ParticleEffect_PaletteBurst4, ParticleEffect_PaletteBurst5,
-    BattleAnim_EffectStartNop, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurst4, ParticleEffect_RotationEntry, ParticleSystem_ForceResetLock, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
+    BattleAnim_EffectStartNop, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurst4, ParticleEffect_RotationEntry, BattleAnim_DisableEffectSpawningAlias, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
     ParticleEffect_TriggerSpecial, ParticleEffect_AlphaBurst, ParticleEffect_AlphaBurst2, ParticleEffect_AdditionalSetupA, ParticleEffect_SimpleGroupSetup, ParticleEffect_ComplexGroupSetup, ParticleEffect_RegisterHandler_490A8,
     ParticleEffect_PortraitBurstInit, ParticleEffect_TriggerDefault1, ParticleEffect_FinalSetupB, ParticleEffect_FinalSetupC, ParticleEffect_AdditionalNodeA, ParticleEffect_StateCollisionSetupA, ParticleEffect_CreateWithCallback,
     ParticleEffect_CreateCallback, InitSmallGlowEffectSet, ParticleEffect_TriggerDefault3, BattleAnim_StartEffect122GlobalAndOwnerTintFade, ParticleEffect_ConditionalStateSetup, ParticleEffect_CollisionResponseSwitch, ParticleEffect_RegisterCallbacks,
     func_8433765C, ParticleEffect_CreateVariant45, ParticleEffect_CreateVariant47, ParticleEffect_CreateTypeX, ParticleEffect_CreateSmoke, ParticleEffect_CreateSmokeHighPriority, ParticleEffect_CreateDual,
-    BattleAnim_StartEffect133ModeOrbitBurstAndEffect135Followup, BattleAnim_StartEffect134ModeOrbitAndMetadataBurst, BattleAnim_StartEffect135ExpandingFlashAndRisingScaleFade, BattleAnim_EffectStartNop, ParticleEffect_ExtraNodeSetup, ParticleEffect_TextureNodeSetup, BattleAnim_StartEffect139DualRepeatingSparks,
+    BattleAnim_StartEffect133ModeOrbitBurstAndEffect135Followup, BattleAnim_StartEffect134ModeOrbitAndMetadataBurst, BattleAnim_StartEffect135ExpandingFlashAndRisingScaleFade, BattleAnim_EffectStartNop, BattleAnim_StartEffect137Descriptor3FRisingFade, ParticleEffect_TextureNodeSetup, BattleAnim_StartEffect139DualRepeatingSparks,
     BattleAnim_StartEffect140StartEffect139Alias, BattleAnim_StartEffect141GridRiseAndFallingBurst, BattleAnim_StartEffect142StartEffect141Alias, BattleAnim_StartEffect143ModeOrbitAndMetadataBurst, BattleAnim_EffectStartNop,
 };
 static func_D_84390320 gParticleStateFunctionTable[] = {
@@ -4183,47 +4183,47 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
     },
 };
 
-void PlaySoundEffect_Select(void) {
-    PlaySoundEffect(1);
+void BattleAnim_PlaySoundEffect1(void) {
+    Audio_PlaySoundEffectById(1);
 }
 
-void PlaySoundEffect_Cancel(void) {
-    PlaySoundEffect(2);
+void BattleAnim_PlaySoundEffect2(void) {
+    Audio_PlaySoundEffectById(2);
 }
 
-void PlaySoundEffect_Confirm(void) {
-    PlaySoundEffect(3);
+void BattleAnim_PlaySoundEffect3(void) {
+    Audio_PlaySoundEffectById(3);
 }
 
-void PlaySoundEffect_Error(void) {
-    PlaySoundEffect(8);
+void BattleAnim_PlaySoundEffect8(void) {
+    Audio_PlaySoundEffectById(8);
 }
 
-void PlayBattleMusicOrDefault(unk_BattlePlayerEntity* arg0, s16 arg1) {
-    if (Pokemon_IsSpecialSpecies(arg0) != 0) {
-        Audio_PlaySequence(0xC8, 2);
+void BattleAnim_PlayOwnerCry(unk_BattlePlayerEntity* arg0, s16 arg1) {
+    if (BattleScene_IsPartnerPikachu(arg0) != 0) {
+        Cry_Play(0xC8, 2);
     } else {
-        Audio_PlaySequence(arg1, 2);
+        Cry_Play(arg1, 2);
     }
 }
 
-void PlayHeightBasedSoundEffect(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_PlaySpeciesSequence33(unk_BattlePlayerEntity* arg0) {
     s16 sp1E = arg0->unk_000.unk_01A;
 
-    GetModelHeight(arg0);
-    Audio_PlaySoundEffect(0x33, sp1E, 0);
+    BattleScene_GetParticipantModelWidth(arg0);
+    Audio_PlayCommand(0x33, sp1E, 0);
 }
 
-void ProcessEntityAudioInfo(unk_BattlePlayerEntity* arg0) {
-    ProcessAudioInfo(GetPlayerDefeatMessageId(arg0), &arg0->animationState.unk_38);
+void Battle_TriggerTrainerPresentationCue(unk_BattlePlayerEntity* arg0) {
+    ProcessAudioInfo(BattleScene_GetParticipantDisplayPlayerNumber(arg0), &arg0->animationState.unk_38);
 }
 
-void TriggerMoveEvent(unk_BattlePlayerEntity* arg0, PokemonAudioInfo* arg1, s32 arg2) {
+void BattleAnim_PlaySpeciesReactionSound(unk_BattlePlayerEntity* arg0, PokemonAudioInfo* arg1, s32 arg2) {
     Effect_TriggerMoveVisual(arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
     HandleMoveEvent(arg1, arg1->unk_5A, arg0->unk_000.unk_01A, arg2);
 }
 
-void SetPlayerSidesFromActivePokemons(void) {
+void BattleScene_ConfigureAudioChannelGroupsByTeam(void) {
     unk_BattlePlayerEntity* ptr1 = sActivePokemon[0];
     unk_BattlePlayerEntity* ptr2 = sActivePokemon[1];
     u8 i;
@@ -4249,10 +4249,10 @@ void SetPlayerSidesFromActivePokemons(void) {
         }
     }
 
-    SetPlayerSidesAndReset(sp20[0], sp20[1], sp20[2], sp20[3]);
+    Audio_ConfigureChannelGroups(sp20[0], sp20[1], sp20[2], sp20[3]);
 }
 
-void SetTeamScoresFromActivePokemons(void) {
+void BattleScene_ConfigureAudioChannelGroupCounts(void) {
     unk_BattlePlayerEntity* ptr1 = sActivePokemon[0];
     unk_BattlePlayerEntity* ptr2 = sActivePokemon[1];
     u8 sp24[4];
@@ -4262,184 +4262,184 @@ void SetTeamScoresFromActivePokemons(void) {
     sp24[2] = 0;
     sp24[3] = 0;
 
-    sp24[ptr1->pokemonAnimation->unk_08[0]->unk_001] = GetPokemonType(ptr1->pokemonAnimation->unk_08[0]);
+    sp24[ptr1->pokemonAnimation->unk_08[0]->unk_001] = BattleScene_GetRosterTeamSize(ptr1->pokemonAnimation->unk_08[0]);
     if (ptr1->pokemonAnimation->unk_01 == 2) {
-        sp24[ptr1->pokemonAnimation->unk_08[1]->unk_001] = GetPokemonType(ptr1->pokemonAnimation->unk_08[1]);
+        sp24[ptr1->pokemonAnimation->unk_08[1]->unk_001] = BattleScene_GetRosterTeamSize(ptr1->pokemonAnimation->unk_08[1]);
     }
 
-    sp24[ptr2->pokemonAnimation->unk_08[0]->unk_001] = GetPokemonType(ptr2->pokemonAnimation->unk_08[0]);
+    sp24[ptr2->pokemonAnimation->unk_08[0]->unk_001] = BattleScene_GetRosterTeamSize(ptr2->pokemonAnimation->unk_08[0]);
     if (ptr2->pokemonAnimation->unk_01 == 2) {
-        sp24[ptr2->pokemonAnimation->unk_08[1]->unk_001] = GetPokemonType(ptr2->pokemonAnimation->unk_08[1]);
+        sp24[ptr2->pokemonAnimation->unk_08[1]->unk_001] = BattleScene_GetRosterTeamSize(ptr2->pokemonAnimation->unk_08[1]);
     }
-    SetTeamScores(sp24[0], sp24[1], sp24[2], sp24[3]);
+    Audio_SetChannelGroupCounts(sp24[0], sp24[1], sp24[2], sp24[3]);
 }
 
-void ProcessBattleMenuSelection(void) {
-    switch (gBattleContext.unk_0000) {
+void BattleScene_SelectBattleMusic(void) {
+    switch (gSessionContext.unk_0000) {
         case 0:
-            switch (gBattleContext.unk_0001) {
+            switch (gSessionContext.unk_0001) {
                 case 0:
-                    ProcessMenuSelection(0, 0xE);
+                    Audio_SelectModeMusic(0, 0xE);
                     break;
 
                 case 1:
-                    ProcessMenuSelection(0, 0xA);
+                    Audio_SelectModeMusic(0, 0xA);
                     break;
 
                 case 2:
-                    ProcessMenuSelection(0, 0xB);
+                    Audio_SelectModeMusic(0, 0xB);
                     break;
 
                 case 3:
-                    ProcessMenuSelection(0, 6);
+                    Audio_SelectModeMusic(0, 6);
                     break;
 
                 case 4:
-                    ProcessMenuSelection(0, 5);
+                    Audio_SelectModeMusic(0, 5);
                     break;
 
                 case 5:
-                    ProcessMenuSelection(0, 4);
+                    Audio_SelectModeMusic(0, 4);
                     break;
 
                 case 6:
-                    ProcessMenuSelection(0, 0);
+                    Audio_SelectModeMusic(0, 0);
                     break;
 
                 case 7:
-                    ProcessMenuSelection(0, 0xC);
+                    Audio_SelectModeMusic(0, 0xC);
                     break;
 
                 case 8:
-                    ProcessMenuSelection(0, 0xC);
+                    Audio_SelectModeMusic(0, 0xC);
                     break;
             }
             break;
 
         case 1:
-            ProcessMenuSelection(gBattleContext.unk_0003, 0xA);
+            Audio_SelectModeMusic(gSessionContext.unk_0003, 0xA);
             break;
 
         case 2:
-            ProcessMenuSelection(gBattleContext.unk_0003, 0xB);
+            Audio_SelectModeMusic(gSessionContext.unk_0003, 0xB);
             break;
 
         case 3:
-            switch (gBattleContext.unk_0002) {
+            switch (gSessionContext.unk_0002) {
                 case 0:
-                    ProcessMenuSelection(gBattleContext.unk_0003, 6);
+                    Audio_SelectModeMusic(gSessionContext.unk_0003, 6);
                     break;
 
                 case 1:
-                    ProcessMenuSelection(gBattleContext.unk_0003, 7);
+                    Audio_SelectModeMusic(gSessionContext.unk_0003, 7);
                     break;
 
                 case 2:
-                    ProcessMenuSelection(gBattleContext.unk_0003, 8);
+                    Audio_SelectModeMusic(gSessionContext.unk_0003, 8);
                     break;
 
                 case 3:
-                    ProcessMenuSelection(gBattleContext.unk_0003, 9);
+                    Audio_SelectModeMusic(gSessionContext.unk_0003, 9);
                     break;
             }
             break;
 
         case 4:
-            ProcessMenuSelection(gBattleContext.unk_0003, 5);
+            Audio_SelectModeMusic(gSessionContext.unk_0003, 5);
             break;
 
         case 5:
-            ProcessMenuSelection(gBattleContext.unk_0003, 4);
+            Audio_SelectModeMusic(gSessionContext.unk_0003, 4);
             break;
 
         case 6:
-            switch (gBattleContext.unk_0002) {
+            switch (gSessionContext.unk_0002) {
                 case 0:
-                    ProcessMenuSelection(gBattleContext.unk_0003, 0);
+                    Audio_SelectModeMusic(gSessionContext.unk_0003, 0);
                     break;
 
                 case 1:
-                    ProcessMenuSelection(gBattleContext.unk_0003, 1);
+                    Audio_SelectModeMusic(gSessionContext.unk_0003, 1);
                     break;
 
                 case 2:
-                    ProcessMenuSelection(gBattleContext.unk_0003, 2);
+                    Audio_SelectModeMusic(gSessionContext.unk_0003, 2);
                     break;
 
                 case 3:
-                    ProcessMenuSelection(gBattleContext.unk_0003, 3);
+                    Audio_SelectModeMusic(gSessionContext.unk_0003, 3);
                     break;
             }
             break;
 
         case 7:
-            if (gBattleContext.unk_0002 == 9) {
-                ProcessMenuSelection(5, 0xD);
-            } else if (gBattleContext.unk_0002 == 8) {
-                ProcessMenuSelection(gBattleContext.unk_0003, 0xD);
+            if (gSessionContext.unk_0002 == 9) {
+                Audio_SelectModeMusic(5, 0xD);
+            } else if (gSessionContext.unk_0002 == 8) {
+                Audio_SelectModeMusic(gSessionContext.unk_0003, 0xD);
             } else {
-                ProcessMenuSelection((gBattleContext.unk_0002 * 4) + gBattleContext.unk_0003, 0xC);
+                Audio_SelectModeMusic((gSessionContext.unk_0002 * 4) + gSessionContext.unk_0003, 0xC);
             }
             break;
 
         case 8:
-            ProcessMenuSelection(gBattleContext.unk_0003, 0xF);
+            Audio_SelectModeMusic(gSessionContext.unk_0003, 0xF);
             break;
 
         case 10:
-            switch (gBattleContext.unk_0001) {
+            switch (gSessionContext.unk_0001) {
                 case 0:
-                    ProcessMenuSelection(0xFF, 0xE);
+                    Audio_SelectModeMusic(0xFF, 0xE);
                     break;
 
                 case 1:
-                    ProcessMenuSelection(0xFF, 0xA);
+                    Audio_SelectModeMusic(0xFF, 0xA);
                     break;
 
                 case 2:
-                    ProcessMenuSelection(0xFF, 0xB);
+                    Audio_SelectModeMusic(0xFF, 0xB);
                     break;
 
                 case 3:
-                    ProcessMenuSelection(0xFF, 6);
+                    Audio_SelectModeMusic(0xFF, 6);
                     break;
 
                 case 4:
-                    ProcessMenuSelection(0xFF, 5);
+                    Audio_SelectModeMusic(0xFF, 5);
                     break;
 
                 case 5:
-                    ProcessMenuSelection(0xFF, 4);
+                    Audio_SelectModeMusic(0xFF, 4);
                     break;
 
                 case 6:
-                    ProcessMenuSelection(0xFF, 0);
+                    Audio_SelectModeMusic(0xFF, 0);
                     break;
 
                 case 7:
-                    ProcessMenuSelection(0xFF, 0xC);
+                    Audio_SelectModeMusic(0xFF, 0xC);
                     break;
 
                 case 8:
-                    ProcessMenuSelection(0xFF, 0xC);
+                    Audio_SelectModeMusic(0xFF, 0xC);
                     break;
             }
             break;
 
         case 9:
-            ProcessMenuSelection(0, 0x10);
+            Audio_SelectModeMusic(0, 0x10);
             break;
     }
 }
 
-void RenderBattleMenuSelection(void) {
-    switch (gBattleContext.unk_0000) {
+void BattleScene_StartBattleMusic(void) {
+    switch (gSessionContext.unk_0000) {
         case 16:
-            ResultScreen_SetAnimation(1);
+            Audio_StartMusicTrack(1);
             break;
 
         case 0:
-            switch (gBattleContext.unk_0001) {
+            switch (gSessionContext.unk_0001) {
                 case 0:
                     Audio_StartTrackForCategory(0, 0xE);
                     break;
@@ -4479,77 +4479,77 @@ void RenderBattleMenuSelection(void) {
             break;
 
         case 1:
-            Audio_StartTrackForCategory(gBattleContext.unk_0003, 0xA);
+            Audio_StartTrackForCategory(gSessionContext.unk_0003, 0xA);
             break;
 
         case 2:
-            Audio_StartTrackForCategory(gBattleContext.unk_0003, 0xB);
+            Audio_StartTrackForCategory(gSessionContext.unk_0003, 0xB);
             break;
 
         case 3:
-            switch (gBattleContext.unk_0002) {
+            switch (gSessionContext.unk_0002) {
                 case 0:
-                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 6);
+                    Audio_StartTrackForCategory(gSessionContext.unk_0003, 6);
                     break;
 
                 case 1:
-                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 7);
+                    Audio_StartTrackForCategory(gSessionContext.unk_0003, 7);
                     break;
 
                 case 2:
-                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 8);
+                    Audio_StartTrackForCategory(gSessionContext.unk_0003, 8);
                     break;
 
                 case 3:
-                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 9);
+                    Audio_StartTrackForCategory(gSessionContext.unk_0003, 9);
                     break;
             }
             break;
 
         case 4:
-            Audio_StartTrackForCategory(gBattleContext.unk_0003, 5);
+            Audio_StartTrackForCategory(gSessionContext.unk_0003, 5);
             break;
 
         case 5:
-            Audio_StartTrackForCategory(gBattleContext.unk_0003, 4);
+            Audio_StartTrackForCategory(gSessionContext.unk_0003, 4);
             break;
 
         case 6:
-            switch (gBattleContext.unk_0002) {
+            switch (gSessionContext.unk_0002) {
                 case 0:
-                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 0);
+                    Audio_StartTrackForCategory(gSessionContext.unk_0003, 0);
                     break;
 
                 case 1:
-                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 1);
+                    Audio_StartTrackForCategory(gSessionContext.unk_0003, 1);
                     break;
 
                 case 2:
-                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 2);
+                    Audio_StartTrackForCategory(gSessionContext.unk_0003, 2);
                     break;
 
                 case 3:
-                    Audio_StartTrackForCategory(gBattleContext.unk_0003, 3);
+                    Audio_StartTrackForCategory(gSessionContext.unk_0003, 3);
                     break;
             }
             break;
 
         case 7:
-            if (gBattleContext.unk_0002 == 9) {
+            if (gSessionContext.unk_0002 == 9) {
                 Audio_StartTrackForCategory(5, 0xD);
-            } else if (gBattleContext.unk_0002 == 8) {
-                Audio_StartTrackForCategory(gBattleContext.unk_0003, 0xD);
+            } else if (gSessionContext.unk_0002 == 8) {
+                Audio_StartTrackForCategory(gSessionContext.unk_0003, 0xD);
             } else {
-                Audio_StartTrackForCategory((gBattleContext.unk_0002 * 4) + gBattleContext.unk_0003, 0xC);
+                Audio_StartTrackForCategory((gSessionContext.unk_0002 * 4) + gSessionContext.unk_0003, 0xC);
             }
             break;
 
         case 8:
-            Audio_StartTrackForCategory(gBattleContext.unk_0003, 0xF);
+            Audio_StartTrackForCategory(gSessionContext.unk_0003, 0xF);
             break;
 
         case 10:
-            switch (gBattleContext.unk_0001) {
+            switch (gSessionContext.unk_0001) {
                 case 0:
                     Audio_StartTrackForCategory(0xFF, 0xE);
                     break;
@@ -4594,31 +4594,31 @@ void RenderBattleMenuSelection(void) {
     }
 }
 
-void PlayBattleSoundEffect(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void BattleAnim_PlayBattleSequenceById(unk_BattlePlayerEntity* arg0, s32 arg1) {
     s16 sp1E = arg0->unk_000.unk_01A;
 
-    if ((Pokemon_IsSpecialSpecies(arg0) != 0) && (arg1 == 0x32)) {
-        Audio_PlaySoundEffect(0x32, 0xC8, 0);
+    if ((BattleScene_IsPartnerPikachu(arg0) != 0) && (arg1 == 0x32)) {
+        Audio_PlayCommand(0x32, 0xC8, 0);
     } else if (arg1 == 0x14) {
-        Audio_PlaySoundEffect(0x14, 0, 0);
+        Audio_PlayCommand(0x14, 0, 0);
     } else if (arg1 == 0x12) {
-        Audio_PlaySoundEffect(0x12, 0, 0);
+        Audio_PlayCommand(0x12, 0, 0);
     } else if (arg1 == 0x32) {
-        Audio_PlaySoundEffect(0x32, sp1E, 0);
+        Audio_PlayCommand(0x32, sp1E, 0);
     } else if (arg1 == 0x21) {
-        Audio_PlaySoundEffect(0x21, 0, 0);
+        Audio_PlayCommand(0x21, 0, 0);
     } else if (arg1 == 0x13) {
-        Audio_PlaySoundEffect(0x13, 0, 0);
+        Audio_PlayCommand(0x13, 0, 0);
     } else if (arg1 == 0x1E) {
-        Audio_PlaySoundEffect(0x1E, 0, 0);
+        Audio_PlayCommand(0x1E, 0, 0);
     } else if (arg1 == 0x1F) {
-        Audio_PlaySoundEffect(0x1F, 0, 0);
+        Audio_PlayCommand(0x1F, 0, 0);
     } else if (arg1 == 0x20) {
-        Audio_PlaySoundEffect(0x20, 0, 0);
+        Audio_PlayCommand(0x20, 0, 0);
     }
 }
 
-void ExecuteStateFunction(s16 arg0) {
+void BattleAnim_RunEffectInitStart(s16 arg0) {
     gParticleTexture_Default = gParticleEffectPrimaryId;
     gStateFunctionTable[arg0]();
     if (gParticleEffectSecondaryId != 0xFF) {
@@ -4627,12 +4627,12 @@ void ExecuteStateFunction(s16 arg0) {
     }
 }
 
-void ExecuteParticleEffect(s16 arg0) {
+void BattleAnim_RunEffectInitEnd(s16 arg0) {
     gParticleTexture_Default = gParticleEffectPrimaryId;
     gParticleStateFunctionTable[arg0]();
 }
 
-void RegisterStateCallbacks(func_D_84390300 arg0, func_D_84390320 arg1) {
+void BattleAnim_RegisterEffectSlot(func_D_84390300 arg0, func_D_84390320 arg1) {
     if (gStateCallbackSlot >= 8) {
         gStateCallbackSlot = 0;
     }
@@ -4644,7 +4644,7 @@ void RegisterStateCallbacks(func_D_84390300 arg0, func_D_84390320 arg1) {
     gStateCallbackSlot++;
 }
 
-void RunActionScript(s32 arg0, s32 arg1, s32 arg2) {
+void BattleAnim_RunEffectList(s32 arg0, s32 arg1, s32 arg2) {
     u8* sp2C;
 
     gCurrentActionScriptType = arg1;
@@ -4673,9 +4673,9 @@ void RunActionScript(s32 arg0, s32 arg1, s32 arg2) {
         }
 
         while (*sp2C != 0) {
-            ExecuteStateFunction(*sp2C);
+            BattleAnim_RunEffectInitStart(*sp2C);
             gStateCallbackTable[*sp2C]();
-            RegisterStateCallbacks(gStateEnterCallbackTable[*sp2C], gStateExitCallbackTable[*sp2C]);
+            BattleAnim_RegisterEffectSlot(gStateEnterCallbackTable[*sp2C], gStateExitCallbackTable[*sp2C]);
             sp2C++;
         }
     } else {
@@ -4690,66 +4690,66 @@ void RunActionScript(s32 arg0, s32 arg1, s32 arg2) {
         }
 
         while (*sp2C != 0) {
-            ExecuteParticleEffect(*sp2C);
+            BattleAnim_RunEffectInitEnd(*sp2C);
             gParticleCallbackTable[*sp2C]();
-            RegisterStateCallbacks(gParticleEnterCallbackTable[*sp2C], gParticleExitCallbackTable[*sp2C]);
+            BattleAnim_RegisterEffectSlot(gParticleEnterCallbackTable[*sp2C], gParticleExitCallbackTable[*sp2C]);
             sp2C++;
         }
     }
 }
 
-void ProcessPendingActionScripts(void) {
+void BattleAnim_ProcessQueuedEffects(void) {
     if (gPendingActionScriptFlag0 != 0) {
-        ParticleSystem_ResetSpawnOffset2();
-        RunActionScript(gCurrentActionScriptId, gCurrentActionScriptSubIndex, gPendingActionScriptFlag0);
+        BattleAnim_ResetSpawnDelayAlias();
+        BattleAnim_RunEffectList(gCurrentActionScriptId, gCurrentActionScriptSubIndex, gPendingActionScriptFlag0);
         gPendingActionScriptFlag0 = 0;
     }
 
     if (gPendingActionScriptFlag1 != 0) {
-        RunActionScript(gCurrentActionScriptAltId, gCurrentActionScriptSubId, gPendingActionScriptFlag1);
+        BattleAnim_RunEffectList(gCurrentActionScriptAltId, gCurrentActionScriptSubId, gPendingActionScriptFlag1);
         gPendingActionScriptFlag1 = 0;
     }
 
     if (gPendingActionScriptFlag2 != 0) {
-        RunActionScript(gWaterEffectParam, gWaterEffectTimerMax, gPendingActionScriptFlag2);
+        BattleAnim_RunEffectList(gWaterEffectParam, gWaterEffectTimerMax, gPendingActionScriptFlag2);
         gPendingActionScriptFlag2 = 0;
     }
 
     if (gPendingActionScriptFlag3 != 0) {
-        RunActionScript(gCurrentActionScriptMode, 4, gPendingActionScriptFlag3);
+        BattleAnim_RunEffectList(gCurrentActionScriptMode, 4, gPendingActionScriptFlag3);
         gPendingActionScriptFlag3 = 0;
     }
 }
 
-void MainUpdateLoop(UNUSED CameraStruct* arg0) {
-    Timer_UpdateCounters();
-    ProcessPendingActionScripts();
-    Particles_UpdateAll();
+void BattleAnim_UpdateFrame(UNUSED CameraStruct* arg0) {
+    Particle_UpdateFrameCounters();
+    BattleAnim_ProcessQueuedEffects();
+    BattleAnim_UpdateEffects();
     BattleAnim_NoopUpdateHook();
 }
 
-void SetActionScriptSubIndex(u8 arg0) {
+void BattleAnim_SetQueuedEffectList(u8 arg0) {
     gCurrentActionScriptSubIndex = arg0;
 }
 
-u8 GetActionScriptSubIndex(void) {
+u8 BattleAnim_GetCurrentEffectList(void) {
     return gCurrentActionScriptType;
 }
 
-void SetActionScriptMode(u8 arg0) {
+void BattleAnim_SetQueuedResourceListId(u8 arg0) {
     gCurrentActionScriptMode = arg0;
 }
 
-u8 GetActionScriptMode(void) {
+u8 BattleAnim_GetQueuedResourceListId(void) {
     return gCurrentActionScriptMode;
 }
 
-s16 GetActionScriptId(void) {
+s16 BattleAnim_GetQueuedMoveId(void) {
     return gCurrentActionScriptId;
 }
 
-void InitActionScript(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
-    SetActionScriptSubIndex(0);
+void BattleAnim_QueueMoveEffect(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
+    BattleAnim_SetQueuedEffectList(0);
     gPendingActionScriptFlag0 = 1;
     gCurrentActionScriptId = arg0;
     gPanelDrawCount = 0;
@@ -4760,28 +4760,28 @@ void InitActionScript(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEn
     gParticleEffectEntityB = arg2;
 }
 
-void InitActionScriptSimple(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
-    InitActionScript(arg0, arg1, arg2, arg3, arg4);
+void BattleAnim_QueueMoveEffectScriptA(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
+    BattleAnim_QueueMoveEffect(arg0, arg1, arg2, arg3, arg4);
 }
 
-void InitDualTargetActionScript(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
-    InitActionScript(arg0, arg1, arg2, arg3, arg4);
-    SetActionScriptSubIndex(2);
+void BattleAnim_QueueMoveEffectEnd(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
+    BattleAnim_QueueMoveEffect(arg0, arg1, arg2, arg3, arg4);
+    BattleAnim_SetQueuedEffectList(2);
     gParticleEffectEntityA = arg2;
     gPendingActionScriptFlag0 = 2;
 }
 
-void InitActionScriptMode1(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
-    InitActionScript(arg0, arg1, arg2, arg3, arg4);
-    SetActionScriptSubIndex(1);
+void BattleAnim_QueueMoveEffectScriptB(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
+    BattleAnim_QueueMoveEffect(arg0, arg1, arg2, arg3, arg4);
+    BattleAnim_SetQueuedEffectList(1);
 }
 
-void InitActionScriptMode3(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
-    InitActionScript(arg0, arg1, arg2, arg3, arg4);
-    SetActionScriptSubIndex(3);
+void BattleAnim_QueueEffectList3(s32 arg0, unk_BattlePlayerEntity* arg1, unk_BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
+    BattleAnim_QueueMoveEffect(arg0, arg1, arg2, arg3, arg4);
+    BattleAnim_SetQueuedEffectList(3);
 }
 
-void InitSingleEntityActionScript(s32 arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_QueueEffectList6(s32 arg0, unk_BattlePlayerEntity* arg1) {
     gPendingActionScriptFlag1 = 2;
     gCurrentActionScriptAltId = arg0;
     gCurrentActionScriptSubId = 6;
@@ -4792,17 +4792,17 @@ void InitSingleEntityActionScript(s32 arg0, unk_BattlePlayerEntity* arg1) {
     gParticleEffectEntityB = arg1;
 }
 
-void InitSingleEntityActionScriptVariant(s32 arg0, unk_BattlePlayerEntity* arg1) {
-    InitSingleEntityActionScript(arg0, arg1);
+void BattleAnim_QueueEffectList5(s32 arg0, unk_BattlePlayerEntity* arg1) {
+    BattleAnim_QueueEffectList6(arg0, arg1);
     gPendingActionScriptFlag1 = 1;
     gCurrentActionScriptSubId = 5;
 }
 
 void BattleAnim_QueueEffectList6Alt(s32 arg0, unk_BattlePlayerEntity* arg1) {
-    InitSingleEntityActionScript(arg0, arg1);
+    BattleAnim_QueueEffectList6(arg0, arg1);
 }
 
-void InitWaterEffect(s32 arg0) {
+void BattleAnim_QueueEffectList9(s32 arg0) {
     gPendingActionScriptFlag2 = 1;
     gWaterEffectTimerMax = 9;
     gWaterEffectParam = arg0;
@@ -4810,9 +4810,9 @@ void InitWaterEffect(s32 arg0) {
     gParticleEffectSecondaryId = 0xFF;
 }
 
-void Battle_ApplyAnimChannelEffect(u8 arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_QueueEffectList(u8 arg0, unk_BattlePlayerEntity* arg1) {
     gPendingActionScriptFlag3 = 1;
-    SetActionScriptMode(arg0);
+    BattleAnim_SetQueuedResourceListId(arg0);
     gParticleEffectEntityA = arg1;
     gParticleEffectPrimaryId = 0xFF;
     gParticleEffectSecondaryId = 0xFF;
@@ -4821,32 +4821,32 @@ void Battle_ApplyAnimChannelEffect(u8 arg0, unk_BattlePlayerEntity* arg1) {
     }
 }
 
-void RunParticleEffectScript(u8 arg0, unk_BattlePlayerEntity* arg1) {
-    ParticleNode_TriggerByEntity(arg0, arg1);
+void BattleAnim_StopOwnerCategoryParticles(u8 arg0, unk_BattlePlayerEntity* arg1) {
+    BattleAnim_StopParticlesForOwnerCategory(arg0, arg1);
 }
 
-void LoadWaterTexturesFromList(arg1_func_80019420* arg0) {
+void BattleAnim_RegisterAssetTable(arg1_func_80019420* arg0) {
     if (arg0 != NULL) {
         do {
             if (arg0->unk_02 != 0) {
-                gWaterTexture[arg0->unk_02] = arg0->unk_04;
+                gBattleAnimAssetPointers[arg0->unk_02] = arg0->unk_04;
                 arg0++;
             }
         } while (arg0->unk_00 != 0);
     }
 }
 
-void InitWaterTextures(void) {
+void BattleAnim_ResetAssetTable(void) {
     s32 i;
 
     // clang-format off
-    for (i = 0; i < 256; i++) { gWaterTexture[i] = NULL; }
+    for (i = 0; i < 256; i++) { gBattleAnimAssetPointers[i] = NULL; }
     // clang-format on
 
-    LoadWaterTexturesFromList(BattleAnim_LoadResourceTable(0));
+    BattleAnim_RegisterAssetTable(BattleAnim_LoadResourceTable(0));
 }
 
-void BuildMessageString(s16 arg0) {
+void BattleAnim_BuildResourceListForMove(s16 arg0) {
     s32 var_v0 = 0;
     u8* temp_a1 = Fragment62_ComplexPtrTable[arg0][3];
 
@@ -4866,16 +4866,16 @@ void BuildMessageString(s16 arg0) {
     gMessageBuffer[var_v0] = -1;
 }
 
-void SetMessageFromId(unk_D_800AE540_1194* arg0, s16 arg1) {
+void BattleAnim_LoadMoveResourceList(unk_D_800AE540_1194* arg0, s16 arg1) {
     if (arg1 != 0xFF) {
-        BuildMessageString(arg1);
+        BattleAnim_BuildResourceListForMove(arg1);
         arg0->unk_1D |= 0x80;
         arg0->unk_20 = gMessageBuffer;
         arg0->unk_24 = gMessageStringLists;
     }
 }
 
-void SetMessageFromAltTable(unk_D_800AE540_1194* arg0, s16 arg1) {
+void BattleAnim_LoadModeResourceList(unk_D_800AE540_1194* arg0, s16 arg1) {
     s32 var_v0 = 0;
     u8* var_v1 = Fragment62_SubTablePtr2D[arg1][1];
 
@@ -4891,7 +4891,7 @@ void SetMessageFromAltTable(unk_D_800AE540_1194* arg0, s16 arg1) {
     arg0->unk_24 = gMessageStringLists;
 }
 
-void ProcessWaterTextureLists(void) {
+void BattleAnim_RegisterAllAssetTables(void) {
     s32 i = 0;
     arg1_func_80019420* var_v0;
     arg1_func_80019420** var_s1 = gMessageStringLists;
@@ -4899,36 +4899,36 @@ void ProcessWaterTextureLists(void) {
     while (*var_s1 != NULL) {
         var_v0 = *var_s1;
         if (i) {}
-        LoadWaterTexturesFromList(var_v0);
+        BattleAnim_RegisterAssetTable(var_v0);
         var_s1++;
         i++;
     }
 }
 
-void ResetWaterEffect(unk_D_800AE540_1194* arg0) {
+void BattleAnim_RegisterAssetTablesForSession(unk_D_800AE540_1194* arg0) {
     arg0->unk_1D &= ~0x10;
-    ProcessWaterTextureLists();
+    BattleAnim_RegisterAllAssetTables();
 }
 
-void InitGraphNodePools(void) {
+void BattleAnim_ResetDisplayContexts(void) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
-        Graph_AddToRootList0(&D_843903D0[i]);
+        ModelRenderer_AttachDisplayObject(&D_843903D0[i]);
         gGraphNodeUsed[i] = 0;
     }
 
     for (i = 0; i < 4; i++) {
-        Graph_AddToRootList1(&gParticleNodePool[i]);
+        ModelRenderer_AttachSecondaryDisplayObject(&gParticleNodePool[i]);
         gParticleNodeUsed[i] = 0;
     }
 }
 
-ParticleEffectInstance* GetGraphNodeData(Fragment2_1GraphNode* arg0) {
+ParticleEffectInstance* BattleAnim_GetOwnerContextParticle(Fragment2_1GraphNode* arg0) {
     return arg0->unk_000.unk_14;
 }
 
-Fragment2_1GraphNode* AllocateGraphNode(ParticleEffectInstance* arg0) {
+Fragment2_1GraphNode* BattleAnim_AllocOwnerDisplayContext(ParticleEffectInstance* arg0) {
     s32 i;
     s32 var_v0 = -1;
     Fragment2_1GraphNode* temp_a0;
@@ -4950,7 +4950,7 @@ Fragment2_1GraphNode* AllocateGraphNode(ParticleEffectInstance* arg0) {
     return temp_a0;
 }
 
-void FreeGraphNode(Fragment2_1GraphNode* arg0) {
+void BattleAnim_FreeOwnerDisplayContext(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 16; i++) {
@@ -4961,11 +4961,11 @@ void FreeGraphNode(Fragment2_1GraphNode* arg0) {
 
     if (i != 16) {
         gGraphNodeUsed[i] = 0;
-        GraphNode_ClearCallback(arg0);
+        ModelRenderer_ClearDisplayObject(arg0);
     }
 }
 
-Fragment2_1GraphNode* AllocateParticleNode(ParticleEffectInstance* arg0) {
+Fragment2_1GraphNode* BattleAnim_AllocParticleDisplayContext(ParticleEffectInstance* arg0) {
     s32 i;
     s32 var_a2 = -1;
     Fragment2_1GraphNode* sp1C;
@@ -4980,7 +4980,7 @@ Fragment2_1GraphNode* AllocateParticleNode(ParticleEffectInstance* arg0) {
     if (var_a2 >= 0) {
         sp1C = &gParticleNodePool[var_a2];
         gParticleNodeUsed[var_a2] = 1;
-        Particle_SetFlag(arg0, 0x400);
+        Particle_SetFlags(arg0, 0x400);
         sp1C->unk_000.unk_14 = arg0;
     } else {
         sp1C = NULL;
@@ -4988,7 +4988,7 @@ Fragment2_1GraphNode* AllocateParticleNode(ParticleEffectInstance* arg0) {
     return sp1C;
 }
 
-void FreeParticleNode(Fragment2_1GraphNode* arg0) {
+void BattleAnim_FreeParticleDisplayContext(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -4999,33 +4999,33 @@ void FreeParticleNode(Fragment2_1GraphNode* arg0) {
 
     if (i != 4) {
         gParticleNodeUsed[i] = 0;
-        GraphNode_ClearCallback(arg0);
+        ModelRenderer_ClearDisplayObject(arg0);
     }
 }
 
-void InitWaterAnimNode(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
-    GraphNode_InitChild(arg0, 0, 0, gWaterTexture[arg1]);
-    Anim_SetChannel(arg0, 0, gWaterTexture[arg2], 0x10000);
+void BattleAnim_InitModelWithAnim(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
+    Model_InitDisplayObject(arg0, 0, 0, gBattleAnimAssetPointers[arg1]);
+    ModelAnim_BindTransformCurve(arg0, 0, gBattleAnimAssetPointers[arg2], 0x10000);
 }
 
-void SetAnimChannelBase(Fragment2_1GraphNode* arg0, s16 arg1) {
-    Anim_SetChannelBase(arg0, arg1);
+void BattleAnim_SetModelAnimFrame(Fragment2_1GraphNode* arg0, s16 arg1) {
+    ModelAnim_SetFrame(arg0, arg1);
 }
 
-void InitGraphNodeTexture(Fragment2_1GraphNode* arg0, s16 arg1) {
-    GraphNode_InitChild(arg0, 0, 0, gWaterTexture[arg1]);
+void BattleAnim_InitModel(Fragment2_1GraphNode* arg0, s16 arg1) {
+    Model_InitDisplayObject(arg0, 0, 0, gBattleAnimAssetPointers[arg1]);
 }
 
-void SetAnimChannel(Fragment2_1GraphNode* arg0, s16 arg1) {
-    Anim_SetChannel(arg0, 0, gWaterTexture[arg1], 0x10000);
+void BattleAnim_BindModelAnim(Fragment2_1GraphNode* arg0, s16 arg1) {
+    ModelAnim_BindTransformCurve(arg0, 0, gBattleAnimAssetPointers[arg1], 0x10000);
 }
 
-void InitReverseAnimNode(Fragment2_1GraphNode* arg0, s16 arg1) {
-    Anim_SetChannel(arg0, 0, gWaterTexture[arg1], -0x10000);
-    Anim_SetChannelBase(arg0, arg0->unk_040.unk_04->unk_0A - 1);
+void BattleAnim_BindModelAnimReversed(Fragment2_1GraphNode* arg0, s16 arg1) {
+    ModelAnim_BindTransformCurve(arg0, 0, gBattleAnimAssetPointers[arg1], -0x10000);
+    ModelAnim_SetFrame(arg0, arg0->unk_040.unk_04->unk_0A - 1);
 }
 
-s32 IsAnimChannelFinished(Fragment2_1GraphNode* arg0) {
+s32 BattleAnim_IsModelAnimComplete(Fragment2_1GraphNode* arg0) {
     s32 ret = 0;
 
     if (arg0->unk_040.unk_08 == 0) {
@@ -5034,7 +5034,7 @@ s32 IsAnimChannelFinished(Fragment2_1GraphNode* arg0) {
     return ret;
 }
 
-void ClearCameraCallbacks(UNUSED CameraStruct* arg0) {
+void BattleAnim_UpdateEffectCallbacks(UNUSED CameraStruct* arg0) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
@@ -5045,7 +5045,7 @@ void ClearCameraCallbacks(UNUSED CameraStruct* arg0) {
     }
 }
 
-void RunCameraCallbacks(UNUSED CameraStruct* arg0) {
+void BattleAnim_DrawEffectCallbacks(UNUSED CameraStruct* arg0) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
@@ -5055,20 +5055,20 @@ void RunCameraCallbacks(UNUSED CameraStruct* arg0) {
     }
 }
 
-void UpdateCameraGlobals(CameraStruct* arg0) {
-    gParticleScaleFactor.unk_0C = arg0;
-    gParticleCameraInfo = &gParticleScaleFactor.unk_10;
+void BattleAnim_UpdateCamera(CameraStruct* arg0) {
+    gParticleRenderContext.unk_0C = arg0;
+    gParticleCameraInfo = &gParticleRenderContext.unk_10;
 
-    Matrix_Copy(&gParticleCameraInfo->unk_00, &arg0->unk_60.mtxf);
-    Vec3f_Copy(&gParticleCameraInfo->unk_40, &arg0->unk_60.eye);
-    Vec3f_Copy(&gParticleCameraInfo->unk_4C, &arg0->unk_60.at);
-    GetCameraPitchYawFromAtToEye(&gParticleCameraInfo->unk_70, &gParticleCameraInfo->unk_72);
-    GetCameraPitchYawFromEyeToAt(&gParticleCameraInfo->unk_76, &gParticleCameraInfo->unk_78);
-    Vec3f_GetDirection(&gParticleCameraInfo->unk_58, gParticleCameraInfo->unk_40, gParticleCameraInfo->unk_4C);
-    Vec3f_GetDirection(&gParticleCameraInfo->unk_64, gParticleCameraInfo->unk_4C, gParticleCameraInfo->unk_40);
+    MtxF_Copy(&gParticleCameraInfo->unk_00, &arg0->unk_60.mtxf);
+    ParticleMath_CopyVec3f(&gParticleCameraInfo->unk_40, &arg0->unk_60.eye);
+    ParticleMath_CopyVec3f(&gParticleCameraInfo->unk_4C, &arg0->unk_60.at);
+    BattleAnim_GetCameraLookAngles(&gParticleCameraInfo->unk_70, &gParticleCameraInfo->unk_72);
+    BattleAnim_GetCameraEyeAngles(&gParticleCameraInfo->unk_76, &gParticleCameraInfo->unk_78);
+    ParticleMath_NormalizedDirection(&gParticleCameraInfo->unk_58, gParticleCameraInfo->unk_40, gParticleCameraInfo->unk_4C);
+    ParticleMath_NormalizedDirection(&gParticleCameraInfo->unk_64, gParticleCameraInfo->unk_4C, gParticleCameraInfo->unk_40);
 }
 
-s32 HandleCameraMode(s32 arg0, CameraStruct* arg1) {
+s32 BattleAnim_DispatchPresentation(s32 arg0, CameraStruct* arg1) {
     switch (arg0) {
         case 1:
         case 3:
@@ -5076,36 +5076,36 @@ s32 HandleCameraMode(s32 arg0, CameraStruct* arg1) {
             break;
 
         case 0:
-            InitGameState();
+            BattleAnim_Initialize();
             break;
 
         case 2:
-            UpdateCameraGlobals(arg1);
-            MainUpdateLoop(arg1);
-            ClearCameraCallbacks(arg1);
+            BattleAnim_UpdateCamera(arg1);
+            BattleAnim_UpdateFrame(arg1);
+            BattleAnim_UpdateEffectCallbacks(arg1);
             break;
 
         case 5:
-            Ui_DrawPanel(arg1);
+            BattleAnim_RenderEffectsFrame(arg1);
             break;
     }
 
     return 0;
 }
 
-void InitGameState(void) {
-    ParticlePools_Allocate();
-    ResetGameGlobals();
+void BattleAnim_Initialize(void) {
+    BattleAnim_InitParticleSystem();
+    BattleAnim_Reset();
 }
 
-void ResetGameGlobals(void) {
+void BattleAnim_Reset(void) {
     s32 i;
 
     gParticleEffectEntityA = NULL;
     gWaterEffectCounter = 0;
-    gParticleScaleFactor.unk_00.x = 1.0f;
-    gParticleScaleFactor.unk_00.y = 1.0f;
-    gParticleScaleFactor.unk_00.z = 1.0f;
+    gParticleRenderContext.unk_00.x = 1.0f;
+    gParticleRenderContext.unk_00.y = 1.0f;
+    gParticleRenderContext.unk_00.z = 1.0f;
     gGameStateFlag = 0;
     gWaterAnimParams.unk_0C = 1.0f;
     gWaterAnimParams.unk_10 = 1.0f;
@@ -5131,26 +5131,26 @@ void ResetGameGlobals(void) {
     gFogColorB = 0;
     gWaterScale = 1.0f;
 
-    Vec3f_Set(&gCameraPosOffset, 0.0f, 0.0f, 0.0f);
-    Vec3s_Set(&gCameraRotOffset, 0, 0, 0);
-    Vec3s_Set(&gCameraTargetOffset, 0, 0, 0);
-    Vec3f_Set(&gCameraLookAtPos, 0.0f, 0.0f, 0.0f);
-    Vec3s_Set(&gCameraAngles, 0, 0, 0);
-    InitWaterTextures();
-    InitGraphNodePools();
+    Vec3f_SetComponentsDuplicate(&gCameraPosOffset, 0.0f, 0.0f, 0.0f);
+    Vec3s_SetComponents(&gCameraRotOffset, 0, 0, 0);
+    Vec3s_SetComponents(&gCameraTargetOffset, 0, 0, 0);
+    Vec3f_SetComponentsDuplicate(&gCameraLookAtPos, 0.0f, 0.0f, 0.0f);
+    Vec3s_SetComponents(&gCameraAngles, 0, 0, 0);
+    BattleAnim_ResetAssetTable();
+    BattleAnim_ResetDisplayContexts();
     gGraphNodePoolInitFlag = 0;
     gParticleNodePoolInitFlag = 0;
-    ParticleSystem_ClearResetLock();
+    BattleAnim_EnableEffectSpawning();
 }
 
-void GetCameraOffsetPosition(Vec3f* arg0, f32 arg1) {
+void BattleAnim_GetPointAlongCameraRay(Vec3f* arg0, f32 arg1) {
     arg0->x = gParticleCameraInfo->unk_40.x + (arg1 * gParticleCameraInfo->unk_58.x);
     arg0->y = gParticleCameraInfo->unk_40.y + (arg1 * gParticleCameraInfo->unk_58.y);
     arg0->z = gParticleCameraInfo->unk_40.z + (arg1 * gParticleCameraInfo->unk_58.z);
 }
 
-void GetCameraPitchYawFromEyeToAt(s16* arg0, s16* arg1) {
-    CameraStruct* temp_v0 = GetBattleCamera();
+void BattleAnim_GetCameraEyeAngles(s16* arg0, s16* arg1) {
+    CameraStruct* temp_v0 = BattleAnim_GetCameraContext();
     f32 sp20 = temp_v0->unk_60.eye.x - temp_v0->unk_60.at.x;
     f32 sp1C = temp_v0->unk_60.eye.y - temp_v0->unk_60.at.y;
     f32 sp18 = temp_v0->unk_60.eye.z - temp_v0->unk_60.at.z;
@@ -5159,16 +5159,16 @@ void GetCameraPitchYawFromEyeToAt(s16* arg0, s16* arg1) {
     *arg1 = MathUtil_Atan2s(sp18, sp20);
 }
 
-void GetCameraYawFromEyeToAt(s16* arg0) {
-    CameraStruct* temp_v0 = GetBattleCamera();
+void BattleAnim_GetCameraEyeYaw(s16* arg0) {
+    CameraStruct* temp_v0 = BattleAnim_GetCameraContext();
     f32 x = temp_v0->unk_60.eye.x - temp_v0->unk_60.at.x;
     f32 z = temp_v0->unk_60.eye.z - temp_v0->unk_60.at.z;
 
     *arg0 = MathUtil_Atan2s(z, x);
 }
 
-void GetCameraPitchYawFromAtToEye(s16* arg0, s16* arg1) {
-    CameraStruct* temp_v0 = GetBattleCamera();
+void BattleAnim_GetCameraLookAngles(s16* arg0, s16* arg1) {
+    CameraStruct* temp_v0 = BattleAnim_GetCameraContext();
     f32 sp20 = temp_v0->unk_60.at.x - temp_v0->unk_60.eye.x;
     f32 sp1C = temp_v0->unk_60.at.y - temp_v0->unk_60.eye.y;
     f32 sp18 = temp_v0->unk_60.at.z - temp_v0->unk_60.eye.z;
@@ -5177,28 +5177,28 @@ void GetCameraPitchYawFromAtToEye(s16* arg0, s16* arg1) {
     *arg1 = MathUtil_Atan2s(sp18, sp20);
 }
 
-void GetCameraYawFromAtToEye(s16* arg0) {
-    CameraStruct* temp_v0 = GetBattleCamera();
+void BattleAnim_GetCameraLookYaw(s16* arg0) {
+    CameraStruct* temp_v0 = BattleAnim_GetCameraContext();
     f32 x = temp_v0->unk_60.at.x - temp_v0->unk_60.eye.x;
     f32 z = temp_v0->unk_60.at.z - temp_v0->unk_60.eye.z;
 
     *arg0 = MathUtil_Atan2s(z, x);
 }
 
-void GetCameraStoredPitchYaw(s16* arg0, s16* arg1) {
+void BattleAnim_GetCameraStoredAngles76(s16* arg0, s16* arg1) {
     *arg0 = gParticleCameraInfo->unk_76;
     *arg1 = gParticleCameraInfo->unk_78;
 }
 
-void GetCameraStoredYaw(s16* arg0) {
+void BattleAnim_GetCameraStoredYaw78(s16* arg0) {
     *arg0 = gParticleCameraInfo->unk_78;
 }
 
-void GetCameraStoredRollPitch(s16* arg0, s16* arg1) {
+void BattleAnim_GetCameraStoredAngles70(s16* arg0, s16* arg1) {
     *arg0 = gParticleCameraInfo->unk_70;
     *arg1 = gParticleCameraInfo->unk_72;
 }
 
-void GetCameraStoredPitch(s16* arg0) {
+void BattleAnim_GetCameraStoredYaw72(s16* arg0) {
     *arg0 = gParticleCameraInfo->unk_72;
 }

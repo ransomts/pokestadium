@@ -20,10 +20,10 @@ s16 D_87B000F4;
 void MenuInput_FrameUpdate(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-u32 HealthBar_ValueToPixel(u32 arg0) {
+u32 MiniGame_RandomRange(u32 arg0) {
     if (arg0 == 0) {
         return 0;
     }

@@ -33,29 +33,29 @@ typedef struct RoomDef {
     /* 0x24 */ u8* unk_24;
 } RoomDef; // size = 0x28
 
-void TileBackgroundTexture(u8* arg0, u8* arg1, u8 arg2);
+void Glc_DrawBackgroundCrossfade(u8* arg0, u8* arg1, u8 arg2);
 void Glc_DrawScaledTextureRgba(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, u8* arg5, f32 arg6);
 void func_84A00630(void);
-void DrawScaledIA8TextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5);
-void DrawInfoPanel(void);
-void DrawPortraitIcons(void);
-void AnimatePortraitScroll(void);
-void DrawAnimatedSprites(void);
-void DrawMessageList(void);
-void DrawDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2);
-void DrawAlternateDetailPanel(RoomDef* arg0, u8 arg1, u8 arg2);
+void Glc_DrawScaledTextureIa8(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8* arg4, f32 arg5);
+void Glc_DrawRoomDescription(void);
+void Glc_DrawTrainerIntroPanels(void);
+void Glc_DrawMapBorder(void);
+void Glc_DrawRoomMarkers(void);
+void Glc_DrawRoomLabels(void);
+void Glc_DrawGymLeaderInfoPanel(RoomDef* arg0, u8 arg1, u8 arg2);
+void Glc_DrawEliteFourRoomInfoPanel(RoomDef* arg0, u8 arg1, u8 arg2);
 void Glc_UpdateRoomInfoPanelFade(void);
 void Glc_UpdateMapCursor(void);
 void Glc_Draw(void);
 s32 Glc_GetInputStatus(void);
 s32 Glc_SelectRoom(void);
-void LoadTrainerPortraits(void);
+void Glc_LoadTrainerPanels(void);
 void Glc_ClearTrainerPanels(void);
 void Glc_AnimateTrainerPanelsIn(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
-s32 PlayIntroSequence(void);
-s32 ShowBattleStartPrompt(void);
+s32 GymLeaderCastle_ShowIntro(void);
+s32 Glc_AdvanceRoom(void);
 s16 Glc_RunMenu(s16 arg0);
 s16 Glc_InitMenu(s16 arg0);
-s32 InitializePokemonStadiumMenu(s32 arg0, UNUSED s32 arg1);
+s32 GymLeaderCastle_Main(s32 arg0, UNUSED s32 arg1);
 
 #endif // _FRAGMENT65_H_

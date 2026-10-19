@@ -9,16 +9,16 @@
 #include "src/memory.h"
 #include "src/util.h"
 
-s32 RenderUI_BackgroundSegment(s32, SimpleGfxNode*);
-s32 RenderUI_FrontLayerSegment(s32, SimpleGfxNode*);
-s32 RenderUI_MiddleLayerSegment(s32, SimpleGfxNode*);
-s32 SetNodeZFromAnim(s32, unk_D_86002F34_alt5*);
-s32 RenderUI_TwoLayerSegment(s32, SimpleGfxNode*);
+s32 BattlePrep_BindCarouselSegment0(s32, SimpleGfxNode*);
+s32 BattlePrep_BindCarouselSegment1(s32, SimpleGfxNode*);
+s32 BattlePrep_BindCarouselSegment2(s32, SimpleGfxNode*);
+s32 BattlePrep_CarouselDepthCallback(s32, unk_D_86002F34_alt5*);
+s32 BattlePrep_BindCarouselSegment3(s32, SimpleGfxNode*);
 
-s32 RenderUI_BarSegment(s32, SimpleGfxNode*);
-s32 RenderUI_HighlightedBar(s32, SimpleGfxNode*);
-s32 RenderUI_SegmentImage(s32, SimpleGfxNode*);
-s32 RenderUI_HighlightedSegment(s32, SimpleGfxNode*);
+s32 BattlePrep_BadgeCarouselGeoCallback(s32, SimpleGfxNode*);
+s32 BattlePrep_BadgeCarouselGlowCallback(s32, SimpleGfxNode*);
+s32 BattlePrep_BadgeCarouselTextureCallback(s32, SimpleGfxNode*);
+s32 BattlePrep_BadgeCarouselGlowCallback2(s32, SimpleGfxNode*);
 
 static u8 gBattleModeBackgroundIds[] = {
     0x00, 0x00, 0x00, 0x01, 0x02, 0x03,
@@ -134,7 +134,7 @@ static Gfx gUIBarDisplayList[] = {
 };
 static u32 gUIBarGeoLayout[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, 0x84B0FD40, 0x05000000, 0x22010000,
-    0x00000000, 0x08000000, RenderUI_BackgroundSegment, gUIBarDisplayList, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, BattlePrep_BindCarouselSegment0, gUIBarDisplayList, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarSmallTopVerts[] = {
     VTX(-100, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(-36, 14, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -194,7 +194,7 @@ static u32 gUIBarSmallTopGeoLayout[] = {
 static u32 gUIBarSmallBottomGeoLayout[] = {
     0x17000000,    0x0000000C, 0x00000000, 0x00000000, gUIBarSmallTopVerts, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00120000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    RenderUI_FrontLayerSegment, gUIBarSmallBottomDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    BattlePrep_BindCarouselSegment1, gUIBarSmallBottomDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarWideTopVerts[] = {
     VTX(86, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(114, 14, 0, 896, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -260,7 +260,7 @@ static u32 gUIBarWideTopGeoLayout[] = {
 static u32 gUIBarWideBottomGeoLayout[] = {
     0x17000000,    0x00000010, 0x00000000, 0x00000000, gUIBarWideTopVerts, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00120000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    RenderUI_FrontLayerSegment, gUIBarWideBottomDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    BattlePrep_BindCarouselSegment1, gUIBarWideBottomDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarMidVerts[] = {
     VTX(-76, 10, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 10, 0, 2432, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -298,7 +298,7 @@ static Gfx gUIBarMidDisplayList[] = {
 static u32 gUIBarMidGeoLayout[] = {
     0x17000000,    0x00000008, 0x00000000, 0x00000000, gUIBarMidVerts, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00020000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    RenderUI_MiddleLayerSegment, gUIBarMidDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    BattlePrep_BindCarouselSegment2, gUIBarMidDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarTwoLayerVerts[] = {
     VTX(-100, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-36, 14, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -347,8 +347,8 @@ static Gfx gUIBarTwoLayerDisplayList[] = {
 };
 static u32 gUIBarTwoLayerGeoLayout[] = {
     0x17000000, 0x0000000C,    0x00000000, 0x00000000,    gUIBarTwoLayerVerts, 0x05000000, 0x1B000000, 0x00000000,
-    0x00000000, 0xFFEE0000,    0x08000000, SetNodeZFromAnim, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, RenderUI_TwoLayerSegment, gUIBarTwoLayerDisplayList, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0xFFEE0000,    0x08000000, BattlePrep_CarouselDepthCallback, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, BattlePrep_BindCarouselSegment3, gUIBarTwoLayerDisplayList, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarMiniVerts[] = {
     VTX(-64, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, 16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -385,8 +385,8 @@ static Gfx gUIBarMiniDisplayList[] = {
 };
 static u32 gUIBarMiniGeoLayout[] = {
     0x17000000, 0x00000008,    0x00000000, 0x00000000,    gUIBarMiniVerts, 0x05000000, 0x1B000000, 0x00000000,
-    0x00000000, 0xFFEE0000,    0x08000000, SetNodeZFromAnim, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, RenderUI_TwoLayerSegment, gUIBarMiniDisplayList, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0xFFEE0000,    0x08000000, BattlePrep_CarouselDepthCallback, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, BattlePrep_BindCarouselSegment3, gUIBarMiniDisplayList, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Gfx gUIBarMiniAltDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
@@ -459,8 +459,8 @@ static Gfx gUIBarSpecialDisplayList[] = {
 };
 static u32 gUIBarSpecialGeoLayout[] = {
     0x17000000, 0x0000000C,    0x00000000, 0x00000000,    gUIBarSpecialVerts, 0x05000000, 0x1B000000, 0x00000000,
-    0x00000000, 0xFFEE0000,    0x08000000, SetNodeZFromAnim, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, RenderUI_TwoLayerSegment, gUIBarSpecialDisplayList, 0x06000000,    0x06000000, 0x01000000, 0x00000000, 0x00000000,
+    0x00000000, 0xFFEE0000,    0x08000000, BattlePrep_CarouselDepthCallback, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, BattlePrep_BindCarouselSegment3, gUIBarSpecialDisplayList, 0x06000000,    0x06000000, 0x01000000, 0x00000000, 0x00000000,
 };
 static Vtx gUIBarBarSegmentVerts[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -537,10 +537,10 @@ static Gfx gUIBarBarSegmentDetailDisplayList[] = {
 };
 static u32 gUIBarBarSegmentGeoLayout[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000,    gUIBarBarSegmentVerts, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, RenderUI_BarSegment, 0x00000000,
-    0x22050000, 0x00000000, 0x08000000, RenderUI_HighlightedBar, 0x00000000, 0x06000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, RenderUI_BarSegment, 0x00000001,
-    0x22050000, 0x00000000, 0x08000000, RenderUI_HighlightedBar, 0x00000001, 0x06000000, 0x06000000,    0x01000000,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, BattlePrep_BadgeCarouselGeoCallback, 0x00000000,
+    0x22050000, 0x00000000, 0x08000000, BattlePrep_BadgeCarouselGlowCallback, 0x00000000, 0x06000000, 0x1B000000,    0x00000000,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000,    0x00000000, 0x08000000, BattlePrep_BadgeCarouselGeoCallback, 0x00000001,
+    0x22050000, 0x00000000, 0x08000000, BattlePrep_BadgeCarouselGlowCallback, 0x00000001, 0x06000000, 0x06000000,    0x01000000,
 };
 static Vtx gUIBarLargeVerts[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -610,10 +610,10 @@ static Gfx gUIBarLargeDetailDisplayList[] = {
 };
 static u32 gUIBarLargeGeoLayout[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, gUIBarLargeVerts, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
-    RenderUI_SegmentImage, gUIBarLargeDisplayList, 0x22050000, 0x00000000, 0x08000000, RenderUI_HighlightedSegment, gUIBarLargeDetailDisplayList, 0x06000000, 0x01000000,
+    BattlePrep_BadgeCarouselTextureCallback, gUIBarLargeDisplayList, 0x22050000, 0x00000000, 0x08000000, BattlePrep_BadgeCarouselGlowCallback2, gUIBarLargeDetailDisplayList, 0x06000000, 0x01000000,
 };
 
-s32 RenderUI_BackgroundSegment(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BindCarouselSegment0(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
@@ -623,12 +623,12 @@ s32 RenderUI_BackgroundSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_0C & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 RenderUI_FrontLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BindCarouselSegment1(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
@@ -638,12 +638,12 @@ s32 RenderUI_FrontLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[0] & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 RenderUI_TwoLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BindCarouselSegment3(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
@@ -654,12 +654,12 @@ s32 RenderUI_TwoLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0E, (u32)temp_a0->unk_10[3] & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 RenderUI_MiddleLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BindCarouselSegment2(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
 
     if (arg0 == 5) {
@@ -669,12 +669,12 @@ s32 RenderUI_MiddleLayerSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[1] & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 SetNodeZFromAnim(s32 arg0, unk_D_86002F34_alt5* arg1) {
+s32 BattlePrep_CarouselDepthCallback(s32 arg0, unk_D_86002F34_alt5* arg1) {
     unk_D_84B259A8* temp_a0;
 
     if (arg0 == 2) {
@@ -687,7 +687,7 @@ s32 SetNodeZFromAnim(s32 arg0, unk_D_86002F34_alt5* arg1) {
 
 void BattlePrep_CarouselStepFirstItem(unk_D_84B259A8* arg0, s16 arg1) {
     if (arg1 == 0) {
-        PlayUISfx(0x01100001, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
     }
 
     if (arg1 < 0xA) {
@@ -699,7 +699,7 @@ void BattlePrep_CarouselStepNTSC(unk_D_84B259A8* arg0, s16 arg1) {
     s32 i;
 
     if (arg1 == 2) {
-        PlayUISfx(0x01100002, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100002, 0, 0);
     }
 
     for (i = 1; i < 7; i += 2) {
@@ -727,7 +727,7 @@ void BattlePrep_CarouselStepPAL(unk_D_84B259A8* arg0, s16 arg1) {
     s32 i;
 
     if (arg1 == 2) {
-        PlayUISfx(0x01100002, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100002, 0, 0);
     }
 
     for (i = 1; i < 7; i += 2) {
@@ -756,11 +756,11 @@ void BattlePrep_CarouselStepFinalNTSC(unk_D_84B259A8* arg0, s16 arg1) {
     s32 i;
 
     if (arg1 == 0) {
-        PlayUISfx(0x01100003, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100003, 0, 0);
     }
 
     if (arg1 == 0x10) {
-        PlayUISfx(0x01100004, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100004, 0, 0);
     }
 
     for (i = 0; i < 3; i++) {
@@ -781,19 +781,19 @@ void BattlePrep_CarouselStepFinalNTSC(unk_D_84B259A8* arg0, s16 arg1) {
         arg0->unk_20[12].unk_024.x = 0.0f;
         arg0->unk_20[16].unk_024.x = 0.0f;
 
-        Vec3f_Set(&arg0->unk_20[12].unk_030, sp28, sp28, sp28);
-        Vec3f_Set(&arg0->unk_20[16].unk_030, sp28, sp28, sp28);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[12].unk_030, sp28, sp28, sp28);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[16].unk_030, sp28, sp28, sp28);
         if (sp24 >= 0xF000) {
-            Vec3f_Set(&arg0->unk_20[7].unk_030, sp28, sp28, sp28);
-            Vec3f_Set(&arg0->unk_20[8].unk_030, sp28, sp28, sp28);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_20[7].unk_030, sp28, sp28, sp28);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_20[8].unk_030, sp28, sp28, sp28);
         }
     } else if (arg1 < 0x1F) {
         f32 sp2C = (SINS((arg1 << 0xD) + 0xFFFE0000) * ((0x12C - (arg1 * 0xA)) / 1000.0f)) + 1.0f;
 
-        Vec3f_Set(&arg0->unk_20[7].unk_030, sp2C, sp2C, sp2C);
-        Vec3f_Set(&arg0->unk_20[8].unk_030, sp2C, sp2C, sp2C);
-        Vec3f_Set(&arg0->unk_20[12].unk_030, sp2C, sp2C, sp2C);
-        Vec3f_Set(&arg0->unk_20[16].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[7].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[8].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[12].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[16].unk_030, sp2C, sp2C, sp2C);
     }
 }
 
@@ -802,11 +802,11 @@ void BattlePrep_CarouselStepFinalPAL(unk_D_84B259A8* arg0, s16 arg1) {
     s32 i;
 
     if (arg1 == 0) {
-        PlayUISfx(0x01100003, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100003, 0, 0);
     }
 
     if (arg1 == 0xD) {
-        PlayUISfx(0x01100004, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100004, 0, 0);
     }
 
     for (i = 0; i < 3; i++) {
@@ -827,20 +827,20 @@ void BattlePrep_CarouselStepFinalPAL(unk_D_84B259A8* arg0, s16 arg1) {
         arg0->unk_20[12].unk_024.x = 0.0f;
         arg0->unk_20[16].unk_024.x = 0.0f;
 
-        Vec3f_Set(&arg0->unk_20[12].unk_030, sp28, sp28, sp28);
-        Vec3f_Set(&arg0->unk_20[16].unk_030, sp28, sp28, sp28);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[12].unk_030, sp28, sp28, sp28);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[16].unk_030, sp28, sp28, sp28);
 
         if (sp24 >= 0xECCD) {
-            Vec3f_Set(&arg0->unk_20[7].unk_030, sp28, sp28, sp28);
-            Vec3f_Set(&arg0->unk_20[8].unk_030, sp28, sp28, sp28);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_20[7].unk_030, sp28, sp28, sp28);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_20[8].unk_030, sp28, sp28, sp28);
         }
     } else if (arg1 < 0x1C) {
         f32 sp2C = (SINS((arg1 << 0xD) + 0xFFFE6000) * ((0x10E - (arg1 * 0xA)) / 1000.0f)) + 1.0f;
 
-        Vec3f_Set(&arg0->unk_20[7].unk_030, sp2C, sp2C, sp2C);
-        Vec3f_Set(&arg0->unk_20[8].unk_030, sp2C, sp2C, sp2C);
-        Vec3f_Set(&arg0->unk_20[12].unk_030, sp2C, sp2C, sp2C);
-        Vec3f_Set(&arg0->unk_20[16].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[7].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[8].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[12].unk_030, sp2C, sp2C, sp2C);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_20[16].unk_030, sp2C, sp2C, sp2C);
     }
 }
 
@@ -886,7 +886,7 @@ void BattlePrep_CarouselExitAnimation(unk_D_84B259A8* arg0) {
     s32 i;
 
     if (arg0->unk_01++ == 0) {
-        PlayUISfx(0x01100005, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100005, 0, 0);
     }
 
     for (i = 0; i < 5; i += 2) {
@@ -907,7 +907,7 @@ void BattlePrep_CarouselExitAnimation(unk_D_84B259A8* arg0) {
 
     if (arg0->unk_20->unk_024.x >= 416.0f) {
         for (i = 0; i < 17; i++) {
-            GraphNode_Reset(&arg0->unk_20[i]);
+            BattlePrep_ResetDisplayObject(&arg0->unk_20[i]);
         }
         arg0->unk_00 = 0;
     }
@@ -917,8 +917,8 @@ void BattlePrep_CarouselEntryAnimation(unk_D_84B259A8* arg0) {
     s32 i;
 
     if (arg0->unk_01 == 0) {
-        PlayUISfx(0x01100001, 0, 0);
-        PlayUISfx(0x01100002, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x01100002, 0, 0);
     }
 
     for (i = 0; i < 5; i += 2) {
@@ -943,7 +943,7 @@ void BattlePrep_CarouselEntryAnimation(unk_D_84B259A8* arg0) {
     arg0->unk_01++;
 }
 
-void ErrorScreen_Update(unk_D_84B259A8* arg0) {
+void BattlePrep_UpdateCarouselState(unk_D_84B259A8* arg0) {
     switch (arg0->unk_00) {
         case 1:
             BattlePrep_UpdateCarousel(arg0);
@@ -960,8 +960,8 @@ void ErrorScreen_Update(unk_D_84B259A8* arg0) {
 }
 
 void BattlePrep_InitCarouselBanner(unk_D_84B259A8* arg0, s16 arg1, s16 arg2) {
-    GraphNode_InitChild(arg0->unk_20, 0, 0, arg0->unk_24);
-    Vec3f_Set(&arg0->unk_20->unk_024, arg1, arg2, -289.0f);
+    Model_InitDisplayObject(arg0->unk_20, 0, 0, arg0->unk_24);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_20->unk_024, arg1, arg2, -289.0f);
 }
 
 void BattlePrep_InitCarouselGymBadgeSlot(unk_D_84B259A8* arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -976,10 +976,10 @@ void BattlePrep_InitCarouselGymBadgeSlot(unk_D_84B259A8* arg0, s16 arg1, s16 arg
     temp_s0 = (arg1 * 2) + 1;
     if (sp2C) {}
 
-    GraphNode_InitChild(&arg0->unk_20[temp_s0], sp2C, 0, arg0->unk_28);
-    GraphNode_InitChild(&arg0->unk_20[temp_s0 + 1], sp2C, 0, arg0->unk_2C);
-    Vec3f_Set(&arg0->unk_20[temp_s0].unk_024, arg2, arg3, -289.0f);
-    Vec3f_Set(&arg0->unk_20[temp_s0 + 1].unk_024, arg2, arg3, -289.0f);
+    Model_InitDisplayObject(&arg0->unk_20[temp_s0], sp2C, 0, arg0->unk_28);
+    Model_InitDisplayObject(&arg0->unk_20[temp_s0 + 1], sp2C, 0, arg0->unk_2C);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_20[temp_s0].unk_024, arg2, arg3, -289.0f);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_20[temp_s0 + 1].unk_024, arg2, arg3, -289.0f);
 
     if (arg1 == 3) {
         arg0->unk_20[temp_s0].unk_01D = 0xFF;
@@ -1000,8 +1000,8 @@ void BattlePrep_InitCarouselLeftIcon(unk_D_84B259A8* arg0, s16 arg1) {
         var_a1 = 0;
     }
 
-    GraphNode_InitChild(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_30);
-    Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
+    Model_InitDisplayObject(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_30);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
 
     if (arg1 == 3) {
         arg0->unk_20[temp_v1].unk_01D = 0xFF;
@@ -1020,8 +1020,8 @@ void BattlePrep_InitCarouselRightIcon(unk_D_84B259A8* arg0, s16 arg1) {
         var_a1 = 0;
     }
 
-    GraphNode_InitChild(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_38);
-    Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, 320.0f, 0.0f, -289.0f);
+    Model_InitDisplayObject(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_38);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_20[temp_v1].unk_024, 320.0f, 0.0f, -289.0f);
 
     if (arg1 == 3) {
         arg0->unk_20[temp_v1].unk_01D = 0xFF;
@@ -1040,8 +1040,8 @@ void BattlePrep_InitCarouselCupIcon(unk_D_84B259A8* arg0, s16 arg1) {
         var_a1 = 0;
     }
 
-    GraphNode_InitChild(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_34);
-    Vec3f_Set(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
+    Model_InitDisplayObject(&arg0->unk_20[temp_v1], var_a1, 0, arg0->unk_34);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_20[temp_v1].unk_024, -320.0f, 48.0f, -289.0f);
 
     if (arg1 == 3) {
         arg0->unk_20[temp_v1].unk_01D = 0xFF;
@@ -1050,7 +1050,7 @@ void BattlePrep_InitCarouselCupIcon(unk_D_84B259A8* arg0, s16 arg1) {
     }
 }
 
-void ErrorScreen_SetupNodes(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
+void BattlePrep_InitCarouselEntry(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
     s32 i;
 
     arg0->unk_20 = arg1;
@@ -1061,7 +1061,7 @@ void ErrorScreen_SetupNodes(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
     for (i = 0; i < 4; i++) {
         BattlePrep_InitCarouselGymBadgeSlot(arg0, i, -0x140, 0x30);
         BattlePrep_InitCarouselLeftIcon(arg0, i);
-        if ((gBattleContext.unk_0000 == 3) || (gBattleContext.unk_0000 == 6)) {
+        if ((gSessionContext.unk_0000 == 3) || (gSessionContext.unk_0000 == 6)) {
             BattlePrep_InitCarouselCupIcon(arg0, i);
         }
     }
@@ -1071,7 +1071,7 @@ void ErrorScreen_SetupNodes(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg1) {
     }
 }
 
-void ErrorScreen_Finish(unk_D_84B259A8* arg0) {
+void BattlePrep_StartCarouselExit(unk_D_84B259A8* arg0) {
     arg0->unk_01 = 0;
     arg0->unk_00 = 3;
 }
@@ -1097,13 +1097,13 @@ void BattlePrep_InitCarouselExit(unk_D_84B259A8* arg0, Fragment2_1GraphNode* arg
 void BattlePrep_LoadBannerAssets(unk_D_84B259A8* arg0) {
     BinArchive* temp_a0 = ASSET_LOAD2(battle_headers, 1, 1);
 
-    if (gBattleContext.unk_0000 == 7) {
-        arg0->unk_0C = BinArchive_GetFile(temp_a0, gBattleSubModeBackgroundIds[gBattleContext.unk_0002]);
-        arg0->unk_10 = Util_ConvertAddrToVirtAddr(gBattleSubModeBackgroundTextures[gBattleContext.unk_0002]);
+    if (gSessionContext.unk_0000 == 7) {
+        arg0->unk_0C = BinArchive_GetFile(temp_a0, gBattleSubModeBackgroundIds[gSessionContext.unk_0002]);
+        arg0->unk_10 = Util_ConvertAddrToVirtAddr(gBattleSubModeBackgroundTextures[gSessionContext.unk_0002]);
 
-        switch (gBattleContext.unk_0002) {
+        switch (gSessionContext.unk_0002) {
             default:
-                if (gBattleContext.unk_0003 == 4) {
+                if (gSessionContext.unk_0003 == 4) {
                     arg0->unk_18 = Util_ConvertAddrToVirtAddr(D_302CA70);
                 } else {
                     arg0->unk_18 = Util_ConvertAddrToVirtAddr(D_302BA70);
@@ -1119,11 +1119,11 @@ void BattlePrep_LoadBannerAssets(unk_D_84B259A8* arg0) {
                 break;
         }
     } else {
-        arg0->unk_0C = BinArchive_GetFile(temp_a0, gBattleModeBackgroundIds[gBattleContext.unk_0000 - 1]);
-        arg0->unk_10 = Util_ConvertAddrToVirtAddr(gBattleModeBackgroundTextures[gBattleContext.unk_0000 - 1]);
-        arg0->unk_14 = Util_ConvertAddrToVirtAddr(gBattleModeExtraTextures[gBattleContext.unk_0002]);
+        arg0->unk_0C = BinArchive_GetFile(temp_a0, gBattleModeBackgroundIds[gSessionContext.unk_0000 - 1]);
+        arg0->unk_10 = Util_ConvertAddrToVirtAddr(gBattleModeBackgroundTextures[gSessionContext.unk_0000 - 1]);
+        arg0->unk_14 = Util_ConvertAddrToVirtAddr(gBattleModeExtraTextures[gSessionContext.unk_0002]);
 
-        switch (gBattleContext.unk_0003) {
+        switch (gSessionContext.unk_0003) {
             default:
                 arg0->unk_18 = Util_ConvertAddrToVirtAddr(D_302AA70);
                 break;
@@ -1138,8 +1138,8 @@ void BattlePrep_LoadBannerAssets(unk_D_84B259A8* arg0) {
         }
     }
 
-    if (gBattleContext.unk_0003 < 7) {
-        arg0->unk_1C = Util_ConvertAddrToVirtAddr(gBattleSubModeExtraTextures[gBattleContext.unk_0003]);
+    if (gSessionContext.unk_0003 < 7) {
+        arg0->unk_1C = Util_ConvertAddrToVirtAddr(gBattleSubModeExtraTextures[gSessionContext.unk_0003]);
     }
 }
 
@@ -1180,11 +1180,11 @@ void BattlePrep_AdjustBannerTextureOffset(unk_D_84B259A8* arg0) {
 void BattlePrep_LoadBannerGeoLayouts(unk_D_84B259A8* arg0) {
     MemoryBlock* temp_v0;
 
-    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     arg0->unk_24 = process_geo_layout(temp_v0, gUIBarGeoLayout);
     arg0->unk_38 = process_geo_layout(temp_v0, gUIBarMiniAltGeoLayout);
     arg0->unk_34 = process_geo_layout(temp_v0, gUIBarMidGeoLayout);
-    if (gBattleContext.unk_11F2 == 0) {
+    if (gSessionContext.unk_11F2 == 0) {
         arg0->unk_28 = process_geo_layout(temp_v0, gUIBarSmallTopGeoLayout);
         arg0->unk_2C = process_geo_layout(temp_v0, gUIBarSmallBottomGeoLayout);
     } else {
@@ -1193,10 +1193,10 @@ void BattlePrep_LoadBannerGeoLayouts(unk_D_84B259A8* arg0) {
         BattlePrep_AdjustBannerTextureOffset(arg0);
     }
 
-    if (gBattleContext.unk_0000 == 7) {
-        switch (gBattleContext.unk_0002) {
+    if (gSessionContext.unk_0000 == 7) {
+        switch (gSessionContext.unk_0002) {
             default:
-                if (gBattleContext.unk_0003 < 4) {
+                if (gSessionContext.unk_0003 < 4) {
                     arg0->unk_30 = process_geo_layout(temp_v0, gUIBarSpecialGeoLayout);
                 } else {
                     arg0->unk_30 = process_geo_layout(temp_v0, gUIBarMiniGeoLayout);
@@ -1211,15 +1211,15 @@ void BattlePrep_LoadBannerGeoLayouts(unk_D_84B259A8* arg0) {
                 arg0->unk_30 = process_geo_layout(temp_v0, gUIBarMiniGeoLayout);
                 break;
         }
-    } else if (gBattleContext.unk_0003 < 7) {
+    } else if (gSessionContext.unk_0003 < 7) {
         arg0->unk_30 = process_geo_layout(temp_v0, gUIBarSpecialGeoLayout);
     } else {
         arg0->unk_30 = process_geo_layout(temp_v0, gUIBarTwoLayerGeoLayout);
     }
-    mem_pool_resize_block(temp_v0);
+    MainPool_FinalizeAllocation(temp_v0);
 }
 
-void SetBarSegmentColors(unk_D_86002F34* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2) {
+void BattlePrep_SetVertexGradientColors(unk_D_86002F34* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2) {
     Vtx* var_v0 = arg0->unk_20;
     s16 temp_v1 = arg0->unk_26 / 2;
     s16 i;
@@ -1239,30 +1239,30 @@ void SetBarSegmentColors(unk_D_86002F34* arg0, Color_RGBA8* arg1, Color_RGBA8* a
     }
 }
 
-void UpdateBarSegmentColors(unk_D_84B259A8* arg0) {
+void BattlePrep_ApplyBannerColors(unk_D_84B259A8* arg0) {
     UNUSED s32 pad[2];
     s16 var_v1;
 
-    var_v1 = gBattleContext.unk_0000 - 1;
-    if (gBattleContext.unk_0000 == 7) {
-        var_v1 += gBattleContext.unk_0002;
+    var_v1 = gSessionContext.unk_0000 - 1;
+    if (gSessionContext.unk_0000 == 7) {
+        var_v1 += gSessionContext.unk_0002;
     }
 
-    SetBarSegmentColors(arg0->unk_28, &gBattleModeBarColors[var_v1], &gBattleModeBarHighlightColors[var_v1]);
-    SetBarSegmentColors(arg0->unk_34, &gBattleModeBarHighlightColors[var_v1], &gBattleModeBarHighlightColors[var_v1]);
-    SetBarSegmentColors(arg0->unk_30, &gBattleModeBarHighlightColors[var_v1], &gBattleModeBarColors[var_v1]);
-    SetBarSegmentColors(arg0->unk_38, &gBattleModeBarHighlightColors[var_v1], &gBattleModeBarColors[var_v1]);
+    BattlePrep_SetVertexGradientColors(arg0->unk_28, &gBattleModeBarColors[var_v1], &gBattleModeBarHighlightColors[var_v1]);
+    BattlePrep_SetVertexGradientColors(arg0->unk_34, &gBattleModeBarHighlightColors[var_v1], &gBattleModeBarHighlightColors[var_v1]);
+    BattlePrep_SetVertexGradientColors(arg0->unk_30, &gBattleModeBarHighlightColors[var_v1], &gBattleModeBarColors[var_v1]);
+    BattlePrep_SetVertexGradientColors(arg0->unk_38, &gBattleModeBarHighlightColors[var_v1], &gBattleModeBarColors[var_v1]);
 }
 
-void ResetBarSegmentState(unk_D_84B259A8* arg0) {
+void BattlePrep_InitBannerScene(unk_D_84B259A8* arg0) {
     arg0->unk_00 = 0;
     arg0->unk_01 = 0;
     BattlePrep_LoadBannerAssets(arg0);
     BattlePrep_LoadBannerGeoLayouts(arg0);
-    UpdateBarSegmentColors(arg0);
+    BattlePrep_ApplyBannerColors(arg0);
 }
 
-s32 RenderUI_BarSegment(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BadgeCarouselGeoCallback(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
     s32 tmp;
     s32 tmp2;
@@ -1276,12 +1276,12 @@ s32 RenderUI_BarSegment(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_10[tmp2] & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, gUIBarBarSegmentDisplayList);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 RenderUI_HighlightedBar(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BadgeCarouselGlowCallback(s32 arg0, SimpleGfxNode* arg1) {
     static s16 gBarHighlightAnimPhase = 0;
 
     unk_D_84B259E8* temp_v0;
@@ -1294,7 +1294,7 @@ s32 RenderUI_HighlightedBar(s32 arg0, SimpleGfxNode* arg1) {
         tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->unk_08->modelPhase) % 8) - 4;
         tmp2 = tmp + arg1->unk_00.unk_14 * 4;
 
-        if ((temp_v0->unk_02 != 0) && ((tmp2 + 1) == gBattleContext.unk_0003)) {
+        if ((temp_v0->unk_02 != 0) && ((tmp2 + 1) == gSessionContext.unk_0003)) {
             // clang-format off
             if (gBarHighlightAnimPhase >= 0) { var_t1 = (s32)(SINS((s32)(SINS(gBarHighlightAnimPhase) * 16384.0f)) * 127.0f) + 0x7F;
             } else {
@@ -1307,14 +1307,14 @@ s32 RenderUI_HighlightedBar(s32 arg0, SimpleGfxNode* arg1) {
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, var_t1);
             gSPDisplayList(gDisplayListHead++, gUIBarBarSegmentDetailDisplayList);
 
-            Gfx_ResetRenderState();
+            GeoRender_ApplyMaterialState();
             gBarHighlightAnimPhase += 0x800;
         }
     }
     return 0;
 }
 
-s32 RenderUI_SegmentImage(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BadgeCarouselTextureCallback(s32 arg0, SimpleGfxNode* arg1) {
     unk_D_84B259E8* temp_a0;
     s32 tmp;
 
@@ -1327,12 +1327,12 @@ s32 RenderUI_SegmentImage(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, (u32)temp_a0->unk_30[tmp]->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 RenderUI_HighlightedSegment(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BadgeCarouselGlowCallback2(s32 arg0, SimpleGfxNode* arg1) {
     static s16 gSegmentHighlightAnimPhase = 0;
 
     unk_D_84B259E8* temp_v0;
@@ -1344,7 +1344,7 @@ s32 RenderUI_HighlightedSegment(s32 arg0, SimpleGfxNode* arg1) {
         tmp = ((gDefaultGraphRoot->modelPhase - temp_v0->unk_08->modelPhase) % 8);
         tmp -= 4;
 
-        if ((temp_v0->unk_02 != 0) && ((tmp + 1) == gBattleContext.unk_0003)) {
+        if ((temp_v0->unk_02 != 0) && ((tmp + 1) == gSessionContext.unk_0003)) {
             // clang-format off
             if (gSegmentHighlightAnimPhase >= 0) {                var_t1 = (s32)(SINS((s32)(SINS(gSegmentHighlightAnimPhase) * 16384.0f)) * 127.0f)+ 0x7F;
             } else {
@@ -1357,41 +1357,41 @@ s32 RenderUI_HighlightedSegment(s32 arg0, SimpleGfxNode* arg1) {
             gDPSetEnvColor(gDisplayListHead++, 200, 30, 30, var_t1);
             gSPDisplayList(gDisplayListHead++, arg1->unk_00.unk_14);
 
-            Gfx_ResetRenderState();
+            GeoRender_ApplyMaterialState();
             gSegmentHighlightAnimPhase += 0x800;
         }
     }
     return 0;
 }
 
-void DrawTransferPakError(s32 arg0) {
+void BattlePrep_RenderBadgeGlowTexture(s32 arg0) {
     FramebufferImage sp40;
     u32 sp3C = Util_ConvertAddrToVirtAddr(&D_3017F00);
 
-    FramebufferImage_Init(&sp40, 0, 2, 0x40, 0x40, arg0);
-    Gfx_SetupFrameBuffer(&gDisplayListHead, &sp40);
+    GfxImage_Initialize(&sp40, 0, 2, 0x40, 0x40, arg0);
+    GfxImage_SetRenderTarget(&gDisplayListHead, &sp40);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 50, 20, 160);
 
-    Gfx_DrawSpriteI4(0, 0, 0x40, 0x40, sp3C, 0x40, 0);
+    Gfx_DrawTextureI4(0, 0, 0x40, 0x40, sp3C, 0x40, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void ResetErrorScreenGraphNodes(unk_D_84B259E8* arg0) {
+void BattlePrep_ResetBadgeSlideSlots(unk_D_84B259E8* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        GraphNode_ClearCallback(&arg0->unk_08[i + 4]);
-        GraphNode_Reset(&arg0->unk_08[i + 12]);
-        GraphNode_InitChild(&arg0->unk_08[i + 4], 1, 0, arg0->unk_0C);
+        ModelRenderer_ClearDisplayObject(&arg0->unk_08[i + 4]);
+        BattlePrep_ResetDisplayObject(&arg0->unk_08[i + 12]);
+        Model_InitDisplayObject(&arg0->unk_08[i + 4], 1, 0, arg0->unk_0C);
         arg0->unk_08[i + 4].unk_01E.x = 0;
         arg0->unk_08[i + 4].unk_000.unk_14 = arg0;
     }
 }
 
-void AnimateErrorScreenSlideIn(unk_D_84B259E8* arg0) {
+void BattlePrep_BadgeSlideInLeft(unk_D_84B259E8* arg0) {
     s32 i;
 
     arg0->unk_01++;
@@ -1406,7 +1406,7 @@ void AnimateErrorScreenSlideIn(unk_D_84B259E8* arg0) {
     }
 }
 
-void AnimateErrorScreenSlideOut(unk_D_84B259E8* arg0) {
+void BattlePrep_BadgeSlideInRight(unk_D_84B259E8* arg0) {
     s32 i;
     s32 var_v0;
 
@@ -1418,14 +1418,14 @@ void AnimateErrorScreenSlideOut(unk_D_84B259E8* arg0) {
 
     if (arg0->unk_01 == 0xA) {
         for (i = 0; i < 4; i++) {
-            GraphNode_Reset(&arg0->unk_08[4 + i]);
+            BattlePrep_ResetDisplayObject(&arg0->unk_08[4 + i]);
         }
         arg0->unk_01 = 0;
         arg0->unk_00 = 0;
     }
 }
 
-void AnimateErrorScreenShow(unk_D_84B259E8* arg0) {
+void BattlePrep_BadgeRevealSpin(unk_D_84B259E8* arg0) {
     s32 i;
     s32 var_a2;
 
@@ -1436,25 +1436,25 @@ void AnimateErrorScreenShow(unk_D_84B259E8* arg0) {
             arg0->unk_08[12 + i].unk_01E.x += 0x800;
         }
     } else if (arg0->unk_01 == 0x10) {
-        PlayUISfx(0x0110000C, 0, 0);
-        ResetErrorScreenGraphNodes(arg0);
+        Audio_PlayCategory11SoundCommand(0x0110000C, 0, 0);
+        BattlePrep_ResetBadgeSlideSlots(arg0);
     } else if (arg0->unk_01 == 0x20) {
-        if (gBattleContext.unk_0000 == 7) {
+        if (gSessionContext.unk_0000 == 7) {
             var_a2 = 4;
         } else {
             var_a2 = 8;
         }
 
-        PlayUISfx(0x01100014, gBattleContext.unk_0003, var_a2);
-        DrawTransferPakError(arg0->unk_10[gBattleContext.unk_0003 - 1]);
+        Audio_PlayCategory11SoundCommand(0x01100014, gSessionContext.unk_0003, var_a2);
+        BattlePrep_RenderBadgeGlowTexture(arg0->unk_10[gSessionContext.unk_0003 - 1]);
 
-        if (gBattleContext.unk_0000 == 7) {
-            Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_30[gBattleContext.unk_0003 - 1]);
+        if (gSessionContext.unk_0000 == 7) {
+            GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_30[gSessionContext.unk_0003 - 1]);
 
             gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
-            Gfx_DrawSpriteRGBA16(4, 0x24, 0x38, 0x1C, &arg0->unk_10[gBattleContext.unk_0003 - 1][0x208], 0x40, 0x200000);
-            Gfx_DrawSpriteRGBA16(4, 0x40, 0x38, 0x1C, &arg0->unk_10[gBattleContext.unk_0003 - 1][0x1008], 0x40, 0x200000);
+            Gfx_DrawTextureRgba16(4, 0x24, 0x38, 0x1C, &arg0->unk_10[gSessionContext.unk_0003 - 1][0x208], 0x40, 0x200000);
+            Gfx_DrawTextureRgba16(4, 0x40, 0x38, 0x1C, &arg0->unk_10[gSessionContext.unk_0003 - 1][0x1008], 0x40, 0x200000);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
         }
@@ -1464,7 +1464,7 @@ void AnimateErrorScreenShow(unk_D_84B259E8* arg0) {
     }
 }
 
-void AnimateErrorScreenHide(unk_D_84B259E8* arg0) {
+void BattlePrep_BadgeHideSpin(unk_D_84B259E8* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -1474,34 +1474,34 @@ void AnimateErrorScreenHide(unk_D_84B259E8* arg0) {
 
     arg0->unk_01++;
     if (arg0->unk_01 == 0x10) {
-        PlayUISfx(0x0110000C, 0, 0);
-        ResetErrorScreenGraphNodes(arg0);
+        Audio_PlayCategory11SoundCommand(0x0110000C, 0, 0);
+        BattlePrep_ResetBadgeSlideSlots(arg0);
         arg0->unk_01 = 0;
         arg0->unk_00 = 0;
     }
 }
 
-void UpdateErrorScreenAnimation(unk_D_84B259E8* arg0) {
+void BattlePrep_UpdateBadgeCarousel(unk_D_84B259E8* arg0) {
     switch (arg0->unk_00) {
         case 1:
-            AnimateErrorScreenSlideIn(arg0);
+            BattlePrep_BadgeSlideInLeft(arg0);
             break;
 
         case 2:
-            AnimateErrorScreenSlideOut(arg0);
+            BattlePrep_BadgeSlideInRight(arg0);
             break;
 
         case 3:
-            AnimateErrorScreenShow(arg0);
+            BattlePrep_BadgeRevealSpin(arg0);
             break;
 
         case 4:
-            AnimateErrorScreenHide(arg0);
+            BattlePrep_BadgeHideSpin(arg0);
             break;
     }
 }
 
-void SetupErrorScreenGraphNodes(unk_D_84B259E8* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
+void BattlePrep_InitBadgeCarousel(unk_D_84B259E8* arg0, Fragment2_1GraphNode* arg1, s16 arg2) {
     s32 i;
     s16 var_s2;
 
@@ -1510,15 +1510,15 @@ void SetupErrorScreenGraphNodes(unk_D_84B259E8* arg0, Fragment2_1GraphNode* arg1
 
     if (arg2 == 0) {
         for (i = 4; i < 8; i++) {
-            GraphNode_InitChild(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
-            Vec3f_Set(&arg0->unk_08[i].unk_024, 320.0f, -48.0f, -289.0f);
+            Model_InitDisplayObject(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_08[i].unk_024, 320.0f, -48.0f, -289.0f);
             arg0->unk_08[i].unk_000.unk_14 = (s32)arg0;
         }
         arg0->unk_00 = 1;
     } else {
         for (i = 12, var_s2 = -0x60; i < 16; i++) {
-            GraphNode_InitChild(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
-            Vec3f_Set(&arg0->unk_08[i].unk_024, var_s2, -48.0f, -289.0f);
+            Model_InitDisplayObject(&arg0->unk_08[i], 1, 0, arg0->unk_0C);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_08[i].unk_024, var_s2, -48.0f, -289.0f);
             arg0->unk_08[i].unk_01E.x = -0x8000;
             var_s2 += 0x40;
             arg0->unk_08[i].unk_000.unk_14 = arg0;
@@ -1535,33 +1535,33 @@ void SetupErrorScreenGraphNodes(unk_D_84B259E8* arg0, Fragment2_1GraphNode* arg1
 }
 
 void BattlePrep_RenderBadgeBackground(unk_D_84B259E8* arg0, s16 arg1, char* arg2) {
-    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_30[arg1]);
+    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_30[arg1]);
 
     gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
-    Gfx_DrawSpriteRGBA16(0, 0, 0x40, 0x20, D_3012000, 0x40, 0x200000);
-    Gfx_DrawSpriteRGBA16(0, 0x20, 0x40, 0x20, D_3013000, 0x40, 0x200000);
-    Gfx_DrawSpriteRGBA16(0, 0x40, 0x40, 0x20, D_3014000, 0x40, 0x200000);
+    Gfx_DrawTextureRgba16(0, 0, 0x40, 0x20, D_3012000, 0x40, 0x200000);
+    Gfx_DrawTextureRgba16(0, 0x20, 0x40, 0x20, D_3013000, 0x40, 0x200000);
+    Gfx_DrawTextureRgba16(0, 0x40, 0x40, 0x20, D_3014000, 0x40, 0x200000);
 
-    if ((gBattleContext.unk_0002 < 9) || (arg1 == 0)) {
-        Gfx_DrawSpriteRGBA16(4, 0x24, 0x38, 0x1C, arg0->unk_10[arg1] + 0x208, 0x40, 0x200000);
-        Gfx_DrawSpriteRGBA16(4, 0x40, 0x38, 0x1C, arg0->unk_10[arg1] + 0x1008, 0x40, 0x200000);
+    if ((gSessionContext.unk_0002 < 9) || (arg1 == 0)) {
+        Gfx_DrawTextureRgba16(4, 0x24, 0x38, 0x1C, arg0->unk_10[arg1] + 0x208, 0x40, 0x200000);
+        Gfx_DrawTextureRgba16(4, 0x40, 0x38, 0x1C, arg0->unk_10[arg1] + 0x1008, 0x40, 0x200000);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    if ((gBattleContext.unk_0002 < 9) || (arg1 == 0)) {
-        s32 sp34 = MeasureTextWidth(2, 0, arg2);
+    if ((gSessionContext.unk_0002 < 9) || (arg1 == 0)) {
+        s32 sp34 = Font_MeasureTextExtent(2, 0, arg2);
 
-        Text_ResetState();
-        Text_SetLineHeight(0xC);
-        Text_SetFont(2, 0);
-        Text_Print(0x20 - (sp34 / 2), 6, arg2);
-        Text_SetupDL();
+        Font_BeginTranslucentTextRendering();
+        Font_SetLineHeight(0xC);
+        Font_SetActive(2, 0);
+        Font_Printf(0x20 - (sp34 / 2), 6, arg2);
+        Font_EndTexturedTextRendering();
     }
 }
 
-s32 AlignMemoryBlockTo64(s32* arg0) {
+s32 BattlePrep_Align64PoolBlock(s32* arg0) {
     u32 temp_v0;
     s32 var_v1;
     s32 i;
@@ -1585,14 +1585,14 @@ s32 AlignMemoryBlockTo64(s32* arg0) {
     return var_v1;
 }
 
-void LoadTransferPakErrorImages(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
+void BattlePrep_LoadBadgeTextures(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
     s16 i;
     s16 sp44;
     unk_func_84B067B4* temp_s5;
     unk_func_84B067B4* ptr;
     s16 tmp;
 
-    switch (gBattleContext.unk_0000) {
+    switch (gSessionContext.unk_0000) {
         case 1:
             sp44 = 6;
             break;
@@ -1602,7 +1602,7 @@ void LoadTransferPakErrorImages(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchi
             break;
 
         case 3:
-            sp44 = gBattleContext.unk_0002 + 8;
+            sp44 = gSessionContext.unk_0002 + 8;
             break;
 
         case 4:
@@ -1614,11 +1614,11 @@ void LoadTransferPakErrorImages(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchi
             break;
 
         case 6:
-            sp44 = gBattleContext.unk_0002 + 2;
+            sp44 = gSessionContext.unk_0002 + 2;
             break;
 
         case 7:
-            sp44 = gBattleContext.unk_0002 + 0xC;
+            sp44 = gSessionContext.unk_0002 + 0xC;
             break;
 
         case 8:
@@ -1626,31 +1626,31 @@ void LoadTransferPakErrorImages(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchi
             break;
     }
 
-    if (gBattleContext.unk_11F2 != 0) {
+    if (gSessionContext.unk_11F2 != 0) {
         sp44 += 0x1F;
     }
 
     temp_s5 = BinArchive_GetFile(arg1, sp44);
-    if (gBattleContext.unk_0000 == 7) {
+    if (gSessionContext.unk_0000 == 7) {
         for (i = 0; i < 4; i++) {
             ptr = i + ((void)0, temp_s5);
 
             tmp = (ptr->unk_038 >> 8) & 0xFF;
-            arg0->unk_10[i] = AlignMemoryBlockTo64(BinArchive_GetFile(arg2, tmp));
-            if (i < (gBattleContext.unk_0003 - 1)) {
-                DrawTransferPakError(arg0->unk_10[i]);
+            arg0->unk_10[i] = BattlePrep_Align64PoolBlock(BinArchive_GetFile(arg2, tmp));
+            if (i < (gSessionContext.unk_0003 - 1)) {
+                BattlePrep_RenderBadgeGlowTexture(arg0->unk_10[i]);
             }
-            arg0->unk_30[i] = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
+            arg0->unk_30[i] = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
             BattlePrep_RenderBadgeBackground(arg0, i, ptr->unk_010);
         }
     } else {
         for (i = 0; i < 8; i++) {
-            if (i < gBattleContext.unk_0003) {
-                tmp = (temp_s5[gBattleContext.unk_11E4[0][i]].unk_038 >> 8) & 0xFF;
+            if (i < gSessionContext.unk_0003) {
+                tmp = (temp_s5[gSessionContext.unk_11E4[0][i]].unk_038 >> 8) & 0xFF;
 
-                arg0->unk_10[i] = AlignMemoryBlockTo64(BinArchive_GetFile(arg2, tmp));
-                if (i < (gBattleContext.unk_0003 - 1)) {
-                    DrawTransferPakError(arg0->unk_10[i]);
+                arg0->unk_10[i] = BattlePrep_Align64PoolBlock(BinArchive_GetFile(arg2, tmp));
+                if (i < (gSessionContext.unk_0003 - 1)) {
+                    BattlePrep_RenderBadgeGlowTexture(arg0->unk_10[i]);
                 }
             } else {
                 arg0->unk_10[i] = BinArchive_GetFile(arg2, 0);
@@ -1659,7 +1659,7 @@ void LoadTransferPakErrorImages(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchi
     }
 }
 
-void InitTransferPakErrorScreen(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
+void BattlePrep_InitBadgeCarouselScene(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchive* arg2) {
     s32 i;
     MemoryBlock* temp_v0;
 
@@ -1669,16 +1669,16 @@ void InitTransferPakErrorScreen(unk_D_84B259E8* arg0, BinArchive* arg1, BinArchi
     arg0->unk_04 = 0;
 
     for (i = 0; i < 4; i++) {
-        arg0->unk_30[i] = FramebufferImage_Allocate(0, 2, 0x40, 0x60, 0);
+        arg0->unk_30[i] = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
     }
 
-    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
-    if (gBattleContext.unk_0000 == 7) {
+    temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
+    if (gSessionContext.unk_0000 == 7) {
         arg0->unk_0C = process_geo_layout(temp_v0, gUIBarLargeGeoLayout);
     } else {
         arg0->unk_0C = process_geo_layout(temp_v0, gUIBarBarSegmentGeoLayout);
     }
 
-    mem_pool_resize_block(temp_v0);
-    LoadTransferPakErrorImages(arg0, arg1, arg2);
+    MainPool_FinalizeAllocation(temp_v0);
+    BattlePrep_LoadBadgeTextures(arg0, arg1, arg2);
 }

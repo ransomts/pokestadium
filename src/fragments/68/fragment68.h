@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-s32 Fragment67_Load(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
+s32 DebugMenu_ForwardSlot68(UNUSED s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2);
 
 #endif // _FRAGMENT68_H_

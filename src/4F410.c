@@ -1076,7 +1076,7 @@ static AudioChannelConfig gAudioChannelConfigTable[151] = {
 
 u8 gAudioSeqLoadPending = 0;
 
-void Audio_PlaySequence(u32 arg0, u32 arg1) {
+void Cry_Play(u32 arg0, u32 arg1) {
     UNUSED s32 pad[2];
     u32 sp24;
     u32 var_a3;
@@ -1138,7 +1138,7 @@ void Audio_PlaySequence(u32 arg0, u32 arg1) {
                 var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_03;
             }
             sp24 = 0x60;
-            Audio_PlaySoundEffect(0x15, gAudioEffectId, 0);
+            Audio_PlayCommand(0x15, gAudioEffectId, 0);
             break;
 
         case 4:
@@ -1149,7 +1149,7 @@ void Audio_PlaySequence(u32 arg0, u32 arg1) {
                 var_a3 = gAudioChannelConfigTable[arg0 - 1].unk_03;
             }
             sp24 = 0x70;
-            Audio_PlaySoundEffect(0x15, gAudioEffectId, 0);
+            Audio_PlayCommand(0x15, gAudioEffectId, 0);
             break;
 
         case 5:
@@ -1235,9 +1235,9 @@ void Audio_PlaySequence(u32 arg0, u32 arg1) {
             break;
     }
 
-    Audio_StartChannel(0, gAudioSeqBuffer->seqArray[arg0 - 1].offset, sp24, var_a3);
+    AudioStream_Start(0, gAudioSeqBuffer->seqArray[arg0 - 1].offset, sp24, var_a3);
 }
 
-void Audio_PlaySequenceMode4(u32 arg0) {
-    Audio_PlaySequence(arg0, 4);
+void Cry_PlayVariant4(u32 arg0) {
+    Cry_Play(arg0, 4);
 }

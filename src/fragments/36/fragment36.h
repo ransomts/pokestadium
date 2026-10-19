@@ -6,12 +6,12 @@
 void func_82100020(void);
 void func_82100028(UNUSED s32 arg0, UNUSED s32 arg1);
 void Title_PollDPad(void);
-s32 GetMenuOptionCode(void);
-void DrawBorderOverlay(s16 arg0, s16 arg1);
+s32 Title_ResolveStartPressState(void);
+void Title_DrawPressStartBlink(s16 arg0, s16 arg1);
 void Title_DrawNoControllerWarning(void);
-void DrawBackgroundTextureTiles(u8* arg0);
-void TitleScreen_RenderFrame(void);
-s32 CountFlagOccurrences(s32 arg0);
+void Title_DrawBackgroundImage(u8* arg0);
+void Title_DrawFrame(void);
+s32 Title_CountEligibleDemoEntries(s32 arg0);
 s32 Title_FindEligibleDemoEntry(s32 arg0, u32 arg1);
 void Title_PickDemoMatchup(u8* arg0);
 s32 Title_StartAttractDemo(void);

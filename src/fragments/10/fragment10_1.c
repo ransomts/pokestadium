@@ -268,7 +268,7 @@ Gfx gHealthBarDL[] = {
     gsSPEndDisplayList(),
 };
 
-s8 GetHealthBarSegmentOffset(u8 arg0, s32 arg1) {
+s8 DrowzeeGame_ComputeAITimingBias(u8 arg0, s32 arg1) {
     u8 i;
     u16 var_a0;
     u16 var_a1;
@@ -278,7 +278,7 @@ s8 GetHealthBarSegmentOffset(u8 arg0, s32 arg1) {
         var_a0 += gGaugeSegmentLengths[arg1][arg0][i];
     }
 
-    temp_a1 = HealthBar_ValueToPixel(var_a0);
+    temp_a1 = MiniGame_RandomRange(var_a0);
 
     for (var_a1 = 0, i = 0; i < 7; i++) {
         if ((temp_a1 >= var_a1) && (temp_a1 < (gGaugeSegmentLengths[arg1][arg0][i] + var_a1))) {

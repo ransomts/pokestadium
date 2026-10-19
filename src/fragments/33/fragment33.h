@@ -33,28 +33,28 @@ typedef struct unk_D_81303FA8 {
     /* 0x09 */ char unk09[0xD];
 } unk_D_81303FA8; // size = 0x16
 
-s32 GraphNode_RenderMenu(s32 arg0, GraphNode* arg1);
-s32 GetPlayerNameLength(void);
-void StartEntrySelection(void);
-s32 GetEntryStatus(s32 arg0);
-s32 GetEntryMenuOption(s32 arg0);
-void DrawEntryPanel(s32 arg0, s32 arg1, s32 arg2);
+s32 TransferPak_RenderPortNodeCallback(s32 arg0, GraphNode* arg1);
+s32 TransferPak_GetPresentationMode(void);
+void TransferPak_LaunchSelectedPortAnim(void);
+s32 TransferPak_GetPortErrorCode(s32 arg0);
+s32 TransferPak_GetPortMessageIndex(s32 arg0);
+void TransferPak_DrawPortBox(s32 arg0, s32 arg1, s32 arg2);
 void TransferPak_DrawSpinningPakIcon(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5);
-void UpdatePulseAlpha(void);
-void DrawTextureRectFlipped(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s16 arg6);
-void DrawBorderedPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
-void RenderMenuScreen(void);
-void HandleEntryNavigation(void);
-void HandleEntryConfirmCancel(void);
-void Menu_InitInput(void);
+void TransferPak_UpdatePulseAlpha(void);
+void TransferPak_DrawPulsingGuideIcon(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, f32 arg5, s16 arg6);
+void TransferPak_DrawPromptPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
+void TransferPak_DrawPortSelectOverlay(void);
+void TransferPak_MovePortCursor(void);
+void TransferPak_HandlePortSelectInput(void);
+void TransferPak_PollInput(void);
 void TransferPak_DrawFrame(s32 arg0);
-void Menu_UpdateEntryData(void);
-void Menu_SelectDefaultEntry(void);
-void Menu_UpdateEntryAnimations(void);
-s32 Menu_RunScreen(s32 arg0);
-void Menu_InitEntryNodes(void);
-void Menu_InitGeo(void);
-s32 Menu_EntrySelection_Init(s32 arg0, s32 arg1);
+void TransferPak_ScanAllPorts(void);
+void TransferPak_AutoSelectPort(void);
+void TransferPak_AnimatePortModels(void);
+s32 TransferPak_PortSelectLoop(s32 arg0);
+void TransferPak_InitPortModels(void);
+void TransferPak_InitScene(void);
+s32 TransferPak_SelectMain(s32 arg0, s32 arg1);
 void Gfx_DrawBackgroundGrid(u8* arg0);
 void Gfx_DrawMenuBackground(void);
 

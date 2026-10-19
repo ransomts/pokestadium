@@ -15,36 +15,36 @@
 static Fragment2_1GraphNode* gCameraNode;
 static s32 gDebugMode;
 
-s32 SetCurrentCameraNode(s32, GraphNode*);
-s32 SpriteDisplay_SetCameraNode(s32, GraphNode*);
+s32 PokeIcon_CapturePreviewGeoNode(s32, GraphNode*);
+s32 PokeIcon_CaptureGeoNode(s32, GraphNode*);
 
-s32 SpriteDisplay_SetCameraNode(s32 arg0, GraphNode* arg1) {
+s32 PokeIcon_CaptureGeoNode(s32 arg0, GraphNode* arg1) {
     if (arg0 == 0) {
         gAssetManager.unk_A04.unk_0C = arg1;
     }
     return 0;
 }
 
-void SpriteDisplay_InitGeoLayout(SpriteDisplay* arg0, s16 arg1, s16 arg2) {
+void PokeIcon_InitRenderScene(SpriteDisplay* arg0, s16 arg1, s16 arg2) {
     static u32 sSpriteGeoLayoutCommands[] = {
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x00300030, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D0019, 0xFFFFFF32, 0x14000000, 0xFFD300CD, 0x80808032, 0x16646464,
         0x0F000001,    0x05000000, 0x1F000000, 0x00000000, 0x00000000, 0xFF060000, 0x00640064, 0x00640000, 0x08000000,
-        SpriteDisplay_SetCameraNode, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
+        PokeIcon_CaptureGeoNode, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
     };
 
     CameraStruct* sp24;
-    MemoryBlock* sp20 = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* sp20 = MainPool_AllocState(main_pool_get_available(), 0);
 
     arg0->unk_0C = process_geo_layout(sp20, sSpriteGeoLayoutCommands);
     arg0->unk_10 = gAssetManager.unk_A04.unk_0C;
-    mem_pool_resize_block(sp20);
+    MainPool_FinalizeAllocation(sp20);
     sp24 = arg0->unk_0C->unk_0C;
-    Viewport_SetRect(sp24, 0, 0, arg1, arg2);
-    Perspective_SetParams(sp24, 30.0f, 100.0f, 12800.0f);
+    GeoCamera_SetViewport(sp24, 0, 0, arg1, arg2);
+    GeoCamera_SetPerspective(sp24, 30.0f, 100.0f, 12800.0f);
 }
 
-SpriteDisplay* SpriteDisplay_Alloc(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3) {
+SpriteDisplay* PokeIcon_CreateRenderList(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s32 var_s0;
     FramebufferImage* temp_a1;
     s32 i;
@@ -61,40 +61,40 @@ SpriteDisplay* SpriteDisplay_Alloc(AssetManager* arg0, s16 arg1, s16 arg2, s16 a
         temp_v0->unk_18 = gSpeciesDisplayTable;
 
         if (arg0 != NULL) {
-            temp_v0->unk_14 = FramebufferImage_Allocate(0, 2, arg2, arg3, 1);
+            temp_v0->unk_14 = GfxImage_Allocate(0, 2, arg2, arg3, 1);
         }
 
         for (i = 0; i < arg1; i++) {
             temp_v0->unk_08[i].unk_00 = 0;
             temp_v0->unk_08[i].unk_14.raw = 0;
-            temp_v0->unk_08[i].unk_0C = FramebufferImage_Allocate(0, 2, arg2, arg3, 0);
+            temp_v0->unk_08[i].unk_0C = GfxImage_Allocate(0, 2, arg2, arg3, 0);
             bzero(temp_v0->unk_08[i].unk_0C->img_p, arg2 * arg3 * 2);
             if (temp_v0->unk_14 != NULL) {
-                FramebufferImage_AttachDepth(temp_v0->unk_08[i].unk_0C, temp_v0->unk_14);
+                GfxImage_AttachDepthBuffer(temp_v0->unk_08[i].unk_0C, temp_v0->unk_14);
             }
         }
 
-        SpriteDisplay_InitGeoLayout(temp_v0, arg2, arg3);
+        PokeIcon_InitRenderScene(temp_v0, arg2, arg3);
     }
     return temp_v0;
 }
 
-void SpriteDisplay_SetDepthBuffer(SpriteDisplay* arg0, AssetManager* arg1, FramebufferImage* arg2) {
+void PokeIcon_AttachDepthBuffer(SpriteDisplay* arg0, AssetManager* arg1, FramebufferImage* arg2) {
     s32 i;
 
     arg0->unk_04 = arg1;
     arg0->unk_14 = arg2;
 
     for (i = 0; i < arg0->unk_01; ++i) {
-        FramebufferImage_AttachDepth(arg0->unk_08[i].unk_0C, arg2);
+        GfxImage_AttachDepthBuffer(arg0->unk_08[i].unk_0C, arg2);
     }
 }
 
-void SpriteDisplay_SetScaleTable(SpriteDisplay* arg0, SpeciesDisplayParams* arg1) {
+void PokeIcon_SetNameTable(SpriteDisplay* arg0, SpeciesDisplayParams* arg1) {
     arg0->unk_18 = arg1;
 }
 
-void SpriteDisplay_Clear(SpriteDisplay* arg0) {
+void PokeIcon_ResetRenderList(SpriteDisplay* arg0) {
     // s32 var_s0;
     s32 i;
     u16 w;
@@ -103,8 +103,8 @@ void SpriteDisplay_Clear(SpriteDisplay* arg0) {
     FramebufferImage* tempDepth_p;
 
     if (arg0->unk_00 & 1) {
-        AssetManager_WaitLoadQueue(arg0->unk_04);
-        GraphNode_ClearCallback(arg0->unk_10);
+        PokeIcon_WaitFrameLoad(arg0->unk_04);
+        ModelRenderer_ClearDisplayObject(arg0->unk_10);
     }
 
     arg0->unk_00 = 0;
@@ -162,7 +162,7 @@ void SpriteDisplay_ConfigSlotWithAnim(SpriteDisplay* arg0, s32 arg1, PokemonData
             arg0->unk_08[arg1].unk_14.raw = arg2;;
             arg0->unk_08[arg1].unk_02 = arg3 & ~1;
             arg0->unk_08[arg1].unk_08 = arg0->unk_18[arg2->unk_00.unk_00 - 1].unk_02 / 100.0f;
-            ComputeStatFromName(&arg0->unk_08[arg1].unk_10, arg2);
+            Model_ComputeSizeVariant(&arg0->unk_08[arg1].unk_10, arg2);
             if (arg0->unk_18[arg2->unk_00.unk_00 - 1].name == NULL) {
                 arg0->unk_08[arg1].unk_04 = arg0->unk_18[arg2->unk_00.unk_00 - 1].unk_08 - 0xE38;;
                 return;
@@ -179,7 +179,7 @@ void SpriteDisplay_ConfigSlotWithAnim(SpriteDisplay* arg0, s32 arg1, PokemonData
     }
 }
 
-void U16Buffer_Transform(u16* arg0, s32 a1, arg1_func_80010CA8 arg2) {
+void PokeIcon_AdjustImageColors(u16* arg0, s32 a1, arg1_func_80010CA8 arg2) {
     s32 cond;
     s32 arg1 = a1;
 
@@ -198,13 +198,13 @@ void U16Buffer_Transform(u16* arg0, s32 a1, arg1_func_80010CA8 arg2) {
     // clang-format on
 }
 
-void SpriteImage_Transform(FramebufferImage* arg0, arg1_func_80010CA8 arg1) {
+void PokeIcon_AdjustImageColorBuffer(FramebufferImage* arg0, arg1_func_80010CA8 arg1) {
     s32 size = arg0->width * arg0->height;
 
-    U16Buffer_Transform(arg0->img_p, size, arg1);
+    PokeIcon_AdjustImageColors(arg0->img_p, size, arg1);
 }
 
-void SpriteDisplay_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
+void PokeIcon_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
     Vec3s sp38;
     CameraStruct* sp34;
     unk_func_8001A024_008* temp_s1;
@@ -214,39 +214,39 @@ void SpriteDisplay_RenderSlot(SpriteDisplay* arg0, s32 arg1) {
     temp_s1 = &arg0->unk_08[arg1];
     sp2C = arg0->unk_04->unk_24->unk_08->unk_00[0];
 
-    GraphNode_ClearCallback(arg0->unk_10);
-    Anim_ClearChannelState(arg0->unk_10);
+    ModelRenderer_ClearDisplayObject(arg0->unk_10);
+    ModelAnim_ClearTransformChannel(arg0->unk_10);
 
     if (temp_s1->unk_00 & 2) {
         sp38.x = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 >> 0x10) >> 6;
         sp38.y = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 >> 6) >> 4;
         sp38.z = (s16)(arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_14 << 6) >> 6;
-        GraphNode_InitChild(arg0->unk_10, 0, *temp_s1->unk_14.ptr, sp2C);
-        GraphNode_TriggerAction(arg0->unk_10, 1);
-        Anim_SetChannelBase(arg0->unk_10, arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_01);
+        Model_InitDisplayObject(arg0->unk_10, 0, *temp_s1->unk_14.ptr, sp2C);
+        ModelAnim_SetAnimation(arg0->unk_10, 1);
+        ModelAnim_SetFrame(arg0->unk_10, arg0->unk_18[*temp_s1->unk_14.ptr - 1].unk_01);
     } else {
         sp38.x = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 0x10) >> 6;
         sp38.y = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 >> 6) >> 4;
         sp38.z = (s16)(arg0->unk_18[temp_s1->unk_14.raw - 1].unk_14 << 6) >> 6;
-        GraphNode_InitChild(arg0->unk_10, 0, temp_s1->unk_14.unk_02, sp2C);
-        GraphNode_TriggerAction(arg0->unk_10, 1);
-        Anim_SetChannelBase(arg0->unk_10, arg0->unk_18[temp_s1->unk_14.raw - 1].unk_01);
+        Model_InitDisplayObject(arg0->unk_10, 0, temp_s1->unk_14.unk_02, sp2C);
+        ModelAnim_SetAnimation(arg0->unk_10, 1);
+        ModelAnim_SetFrame(arg0->unk_10, arg0->unk_18[temp_s1->unk_14.raw - 1].unk_01);
     }
-    GraphNode_SetPositionFromVec3s(&arg0->unk_10->unk_024, &sp38);
+    Vec3f_FromVec3s(&arg0->unk_10->unk_024, &sp38);
     arg0->unk_10->unk_000.unk_02 &= ~0x40;
     arg0->unk_10->unk_000.unk_02 |= 0x80;
-    Vec3f_Set(&arg0->unk_10->unk_030, temp_s1->unk_08, temp_s1->unk_08, temp_s1->unk_08);
-    Camera_SetViewParameters(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->unk_04);
-    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
-    Gfx_FinishFrame();
-    Gfx_SetRenderMode(3);
-    Graph_SetTextureState(arg0->unk_0C);
-    Gfx_FillScreen(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
-    Gfx_SetRenderMode(1);
-    Graph_SetTextureState(arg0->unk_0C);
+    Vec3f_SetComponentsDuplicate(&arg0->unk_10->unk_030, temp_s1->unk_08, temp_s1->unk_08, temp_s1->unk_08);
+    Camera_ComputeEyeFromAngles(&sp34->unk_60.at, &sp34->unk_60.eye, 1250.0f, 0x71C, temp_s1->unk_04);
+    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
+    GeoRender_AdvanceFrameCounter();
+    GeoRender_SetMode(3);
+    Geo_RenderRootNode(arg0->unk_0C);
+    GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
+    GeoRender_SetMode(1);
+    Geo_RenderRootNode(arg0->unk_0C);
 }
 
-s32 SpriteDisplay_TryAdvance(SpriteDisplay* arg0, s32 arg1) {
+s32 PokeIcon_ProcessNextSlot(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
     s32 var_v0;
     s32 sp24;
@@ -257,14 +257,14 @@ s32 SpriteDisplay_TryAdvance(SpriteDisplay* arg0, s32 arg1) {
     sp20 = arg0->unk_02;
     if (arg0->unk_00 & 1) {
         if (arg1 == 1) {
-            var_v0 = AssetManager_WaitLoadQueue(arg0->unk_04);
+            var_v0 = PokeIcon_WaitFrameLoad(arg0->unk_04);
         } else {
-            var_v0 = AssetManager_TryProcessLoadQueue(arg0->unk_04);
+            var_v0 = PokeIcon_PollFrameLoad(arg0->unk_04);
         }
         if (var_v0 != 0) {
             arg0->unk_00 &= 0xFFFE;
             arg0->unk_08[sp20].unk_00 &= 0xFFFE;
-            SpriteDisplay_RenderSlot(arg0, sp20);
+            PokeIcon_RenderSlot(arg0, sp20);
             arg0->unk_03 = sp20;
             sp24 = sp20;
             arg0->unk_02++;
@@ -278,9 +278,9 @@ s32 SpriteDisplay_TryAdvance(SpriteDisplay* arg0, s32 arg1) {
             if (temp_v0_2->unk_00 & 1) {
                 arg0->unk_00 |= 1;
                 if (temp_v0_2->unk_00 & 2) {
-                    AssetManager_RequestLoad(arg0->unk_04, *temp_v0_2->unk_14.ptr, temp_v0_2->unk_10);
+                    PokeIcon_RequestFrameLoad(arg0->unk_04, *temp_v0_2->unk_14.ptr, temp_v0_2->unk_10);
                 } else {
-                    AssetManager_RequestLoad(arg0->unk_04, temp_v0_2->unk_14.unk_02, temp_v0_2->unk_10);
+                    PokeIcon_RequestFrameLoad(arg0->unk_04, temp_v0_2->unk_14.unk_02, temp_v0_2->unk_10);
                 }
                 arg0->unk_02 = sp20;
                 break;
@@ -309,8 +309,8 @@ s32 PokeIcon_ProcessAllSlots(SpriteDisplay* arg0, s32 arg1) {
     if (arg0->unk_03 >= 0) {
         temp_s0 = &arg0->unk_08[arg0->unk_03];
         if (temp_s0->unk_00 & 4) {
-            while (RspTaskYielded() == 0) {}
-            SpriteImage_Transform(temp_s0->unk_0C, temp_s0->unk_10);
+            while (Display_IsFrameReady() == 0) {}
+            PokeIcon_AdjustImageColorBuffer(temp_s0->unk_0C, temp_s0->unk_10);
             temp_s0->unk_00 &= ~4;
         }
     }
@@ -318,22 +318,22 @@ s32 PokeIcon_ProcessAllSlots(SpriteDisplay* arg0, s32 arg1) {
     for (i = 0; i < arg0->unk_01; i++) {
         temp_s1 = &arg0->unk_08[var_s1];
         if (temp_s1->unk_00 & 1) {
-            if (RspTaskYielded() == 0) {
-                do { } while (RspTaskYielded() == 0); }
+            if (Display_IsFrameReady() == 0) {
+                do { } while (Display_IsFrameReady() == 0); }
 
             sp48.raw = 0;
             if (temp_s1->unk_00 & 2) {
-                AssetManager_RequestLoad(arg0->unk_04, *temp_s1->unk_14.ptr, sp48);
+                PokeIcon_RequestFrameLoad(arg0->unk_04, *temp_s1->unk_14.ptr, sp48);
                 if (temp_s1->unk_10.raw != 0) {
                     temp_s1->unk_00 |= 4;
                 }
             } else {
-                AssetManager_RequestLoad(arg0->unk_04, temp_s1->unk_14.unk_02, sp48);
+                PokeIcon_RequestFrameLoad(arg0->unk_04, temp_s1->unk_14.unk_02, sp48);
             }
 
-            AssetManager_WaitLoadQueue(arg0->unk_04);
+            PokeIcon_WaitFrameLoad(arg0->unk_04);
             arg0->unk_08[var_s1].unk_00 &= ~1;
-            SpriteDisplay_RenderSlot(arg0, var_s1);
+            PokeIcon_RenderSlot(arg0, var_s1);
             sp44 = var_s1;
             arg0->unk_02 = var_s1;
             arg0->unk_03 = var_s1;
@@ -367,16 +367,16 @@ s32 PokeIcon_RenderNextSlotBlocking(SpriteDisplay* arg0, s32 arg1) {
     for (i = 0; i < arg0->unk_01; i++) {
         temp_s1 = &arg0->unk_08[var_s0];
         if (temp_s1->unk_00 & 1) {
-            while (RspTaskYielded() == 0) {}
+            while (Display_IsFrameReady() == 0) {}
             
             if (temp_s1->unk_00 & 2) {
-                AssetManager_RequestLoad(arg0->unk_04, *temp_s1->unk_14.ptr, temp_s1->unk_10);
+                PokeIcon_RequestFrameLoad(arg0->unk_04, *temp_s1->unk_14.ptr, temp_s1->unk_10);
             } else {
-                AssetManager_RequestLoad(arg0->unk_04, temp_s1->unk_14.unk_02, temp_s1->unk_10);
+                PokeIcon_RequestFrameLoad(arg0->unk_04, temp_s1->unk_14.unk_02, temp_s1->unk_10);
             }
-            AssetManager_WaitLoadQueue(arg0->unk_04);
+            PokeIcon_WaitFrameLoad(arg0->unk_04);
             arg0->unk_08[var_s0].unk_00 &= ~1;
-            SpriteDisplay_RenderSlot(arg0, var_s0);
+            PokeIcon_RenderSlot(arg0, var_s0);
             arg0->unk_02 = var_s0;
             var_a2 = var_s0;
             arg0->unk_02++;
@@ -395,14 +395,14 @@ s32 PokeIcon_RenderNextSlotBlocking(SpriteDisplay* arg0, s32 arg1) {
     return var_a2;
 }
 
-void SpriteDisplay_SetCurrentSlotFramebuffer(SpriteDisplay* arg0, s32 arg1) {
+void PokeIcon_RedrawSlot(SpriteDisplay* arg0, s32 arg1) {
     s32 i;
 
     if (arg1 == arg0->unk_03) {
-        Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
-        Gfx_FillScreen(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
-        Gfx_SetRenderMode(1);
-        Graph_SetTextureState(arg0->unk_0C);
+        GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_08[arg1].unk_0C);
+        GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_08[arg1].unk_02);
+        GeoRender_SetMode(1);
+        Geo_RenderRootNode(arg0->unk_0C);
         return;
     }
     for (i = arg0->unk_01; i > 0; i--) {
@@ -415,7 +415,7 @@ void SpriteDisplay_SetCurrentSlotFramebuffer(SpriteDisplay* arg0, s32 arg1) {
     }
 }
 
-u8* SpriteDisplay_GetImagePtr(SpriteDisplay* arg0, s32 arg1) {
+u8* PokeIcon_GetImage(SpriteDisplay* arg0, s32 arg1) {
     u8* image;
     image = NULL;
     if (arg1 < (s32)arg0->unk_01) {
@@ -424,7 +424,7 @@ u8* SpriteDisplay_GetImagePtr(SpriteDisplay* arg0, s32 arg1) {
     return image;
 }
 
-s32 SpriteDisplay_IsAnimating(SpriteDisplay* arg0) {
+s32 PokeIcon_AreSlotsIdle(SpriteDisplay* arg0) {
     s32 i;
     
     for (i = 0; i < arg0->unk_01; i++) {
@@ -435,8 +435,8 @@ s32 SpriteDisplay_IsAnimating(SpriteDisplay* arg0) {
     return 1;
 }
 
-void SpriteAssets_Load(void) {
-    gAssetManager.unk_A04.unk_10 = Asset_Load2(0x820000, NULL, 1, 1);
+void PokeIcon_OpenModelArchive(void) {
+    gAssetManager.unk_A04.unk_10 = BinArchive_Open(0x820000, NULL, 1, 1);
 }
 
 void PokeIcon_LoadModelTexture(u16* arg0, s32 arg1) {
@@ -446,7 +446,7 @@ void PokeIcon_LoadModelTexture(u16* arg0, s32 arg1) {
     if ((arg1 > 0) && (arg1 < 0x99)) {
         temp_v1 = gAssetManager.unk_A04.unk_10;
         temp_a1 = temp_v1->unk_04 + temp_v1[arg1].raw;
-        DmaCopyAsyncRange(arg0, temp_a1, temp_v1[arg1].unk_04 + temp_a1, 0);
+        Dma_WriteChunks(arg0, temp_a1, temp_v1[arg1].unk_04 + temp_a1, 0);
     }
 }
 
@@ -458,12 +458,12 @@ void PokeIcon_LoadModelTextureForMon(u16* arg0, s32 arg1, PokemonData* arg2) {
         return;
     }
 
-    ComputeStatFromName(&sp1C, arg2);
+    Model_ComputeSizeVariant(&sp1C, arg2);
     PokeIcon_LoadModelTexture(arg0, arg2->unk_00.unk_00);
-    U16Buffer_Transform(arg0, 0x640, sp1C);
+    PokeIcon_AdjustImageColors(arg0, 0x640, sp1C);
 }
 
-s32 SetCurrentCameraNode(s32 arg0, GraphNode* arg1) {
+s32 PokeIcon_CapturePreviewGeoNode(s32 arg0, GraphNode* arg1) {
     if (arg0 == 0) {
         gCameraNode = arg1;
     }
@@ -475,17 +475,17 @@ void PokeIcon_InitPreviewScene(unk_func_8001B1FC* arg0, s16 arg1, s16 arg2, s16 
         0x0C00FFFF,    0x05000000, 0x0B00001E, 0x00000000, 0x010000E0, 0x00000000, 0x0000000A, 0x015404E2, 0x05000000,
         0x0D000000,    0x05000000, 0x14000000, 0x002D013B, 0xFFFFFF32, 0x14000000, 0xFFD30087, 0x80808032, 0x16646464,
         0x0F000001,    0x05000000, 0x1F000000, 0x00000000, 0x00000000, 0xFF060000, 0x00640064, 0x00640000, 0x08000000,
-        SetCurrentCameraNode, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
+        PokeIcon_CapturePreviewGeoNode, 0x00000000, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000, 0x00000000,
     };
     MemoryBlock* sp24;
     MemoryBlock* temp_v0;
 
-    sp24 = state_pool_try_init(main_pool_get_available(), 0);
+    sp24 = MainPool_AllocState(main_pool_get_available(), 0);
     arg0->unk_20 = process_geo_layout(sp24, sSpriteCameraGeoLayoutCommands);
     arg0->unk_24 = gCameraNode;
-    mem_pool_resize_block(sp24);
-    Viewport_SetRect(arg0->unk_20->unk_0C, arg1, arg2, arg3, arg4);
-    Perspective_SetParams(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
+    MainPool_FinalizeAllocation(sp24);
+    GeoCamera_SetViewport(arg0->unk_20->unk_0C, arg1, arg2, arg3, arg4);
+    GeoCamera_SetPerspective(arg0->unk_20->unk_0C, 30.0f, 100.0f, 12800.0f);
 }
 
 unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5,
@@ -501,9 +501,9 @@ unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager* arg0, s16 arg1, s16
         temp_v0->unk_08 = arg5;
         temp_v0->unk_0A = arg6;
         temp_v0->unk_0C = arg7;
-        temp_v0->unk_28 = FramebufferImage_Allocate(0, 2, arg1, arg2, 0);
-        temp_v0->unk_2C = FramebufferImage_Allocate(0, 2, arg1, arg2, 1);
-        FramebufferImage_AttachDepth(temp_v0->unk_28, temp_v0->unk_2C);
+        temp_v0->unk_28 = GfxImage_Allocate(0, 2, arg1, arg2, 0);
+        temp_v0->unk_2C = GfxImage_Allocate(0, 2, arg1, arg2, 1);
+        GfxImage_AttachDepthBuffer(temp_v0->unk_28, temp_v0->unk_2C);
         PokeIcon_InitPreviewScene(temp_v0, arg3, arg4, arg5, arg6);
     }
     return temp_v0;
@@ -527,12 +527,12 @@ void PokeIcon_SetPreviewMon(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2
     arg0->unk_24->unk_024.z = tmp3;
 
     arg0->unk_24->unk_01E = gSpriteAnimUpdateFunc;
-    ComputeStatFromName(&sp2C, arg1);
-    AssetManager_RequestLoad(arg0->unk_1C, arg1->unk_00.unk_00, sp2C);
-    AssetManager_WaitLoadQueue(arg0->unk_1C);
-    GraphNode_ClearCallback(arg0->unk_24);
-    GraphNode_InitChild(arg0->unk_24, 0, arg1->unk_00.unk_00, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(arg0->unk_24, 1);
+    Model_ComputeSizeVariant(&sp2C, arg1);
+    PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1->unk_00.unk_00, sp2C);
+    PokeIcon_WaitFrameLoad(arg0->unk_1C);
+    ModelRenderer_ClearDisplayObject(arg0->unk_24);
+    Model_InitDisplayObject(arg0->unk_24, 0, arg1->unk_00.unk_00, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(arg0->unk_24, 1);
     arg0->unk_24->unk_000.unk_02 &= ~0x40;
     arg0->unk_24->unk_000.unk_02 |= 0x80;
 }
@@ -556,11 +556,11 @@ void PokeIcon_SetPreviewSpecies(unk_func_8001B1FC* arg0, s32 arg1, u16 arg2) {
 
     arg0->unk_24->unk_01E = gSpriteAnimUpdateFunc;
     sp34.raw = 0;
-    AssetManager_RequestLoad(arg0->unk_1C, arg1, sp34);
-    AssetManager_WaitLoadQueue(arg0->unk_1C);
-    GraphNode_ClearCallback(arg0->unk_24);
-    GraphNode_InitChild(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(arg0->unk_24, 1);
+    PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1, sp34);
+    PokeIcon_WaitFrameLoad(arg0->unk_1C);
+    ModelRenderer_ClearDisplayObject(arg0->unk_24);
+    Model_InitDisplayObject(arg0->unk_24, 0, arg1, arg0->unk_1C->unk_24->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(arg0->unk_24, 1);
     arg0->unk_24->unk_000.unk_02 &= ~0x40;
     arg0->unk_24->unk_000.unk_02 |= 0x80;
 }
@@ -621,7 +621,7 @@ void PokeIcon_AdvancePreviewMotion(unk_func_8001B1FC* arg0) {
     if (temp_lo < var_a2) {
         var_a2 = temp_lo;
     }
-    sp18->x = Math_ApproachS16(sp18->x, 0, var_a2);
+    sp18->x = Math_StepToS(sp18->x, 0, var_a2);
 }
 
 void PokeIcon_UpdatePreview(unk_func_8001B1FC* arg0) {
@@ -649,7 +649,7 @@ void PokeIcon_UpdatePreview(unk_func_8001B1FC* arg0) {
         }
     }
 
-    Vec3f_Set(&gCameraNode->unk_030, arg0->unk_18, arg0->unk_18, arg0->unk_18);
+    Vec3f_SetComponentsDuplicate(&gCameraNode->unk_030, arg0->unk_18, arg0->unk_18, arg0->unk_18);
 }
 
 void PokeIcon_DrawPreview(unk_func_8001B1FC* arg0) {
@@ -658,7 +658,7 @@ void PokeIcon_DrawPreview(unk_func_8001B1FC* arg0) {
     s32 i;
 
     if (arg0->unk_0C == 0) {
-        Gfx_FillScreen(&gDisplayListHead, arg0->unk_02);
+        GfxImage_FillCurrent(&gDisplayListHead, arg0->unk_02);
         return;
     }
 
@@ -674,42 +674,42 @@ void PokeIcon_DrawPreview(unk_func_8001B1FC* arg0) {
         if (var_v0 >= 9) {
             var_v0 = 8;
         }
-        Gfx_DrawSpriteRGBA16(0, i, arg0->unk_08, var_v0, var_s2, arg0->unk_04, 0x200000);
+        Gfx_DrawTextureRgba16(0, i, arg0->unk_08, var_v0, var_s2, arg0->unk_04, 0x200000);
         var_s2 += arg0->unk_04 * 0x10;
     }
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_PERSP);
 
-    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, arg0->unk_08, arg0->unk_0A);
+    GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, arg0->unk_08, arg0->unk_0A);
 }
 
 u8* PokeIcon_RenderPreview(unk_func_8001B1FC* arg0) {
     PokeIcon_UpdatePreview(arg0);
-    Gfx_SetupFrameBuffer(&gDisplayListHead, arg0->unk_28);
+    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_28);
     PokeIcon_DrawPreview(arg0);
-    Gfx_FinishFrame();
-    Graph_SetTextureState(arg0->unk_20);
+    GeoRender_AdvanceFrameCounter();
+    Geo_RenderRootNode(arg0->unk_20);
 
     if (gDebugMode > 0) {
-        Text_ResetState();
-        Text_SetFont(8, -4);
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(8, -4);
 
         switch (gDebugMode) {
             case 1:
-                Text_Print(0, 0x64, "S:%5.2f  H:%4d", arg0->unk_18, (s32)arg0->unk_24->unk_024.y);
+                Font_Printf(0, 0x64, "S:%5.2f  H:%4d", arg0->unk_18, (s32)arg0->unk_24->unk_024.y);
                 break;
 
             case 2:
-                Text_Print(0, 0x64, "X:%4d  Z:%4d", (s32)arg0->unk_24->unk_024.x, (s32)arg0->unk_24->unk_024.z);
+                Font_Printf(0, 0x64, "X:%4d  Z:%4d", (s32)arg0->unk_24->unk_024.x, (s32)arg0->unk_24->unk_024.z);
                 break;
 
             case 3:
-                Text_Print(0, 0x64, "A:%04X  F:%3d", *(u16*)&arg0->unk_24->unk_01E.y,
+                Font_Printf(0, 0x64, "A:%04X  F:%3d", *(u16*)&arg0->unk_24->unk_01E.y,
                               arg0->unk_24->unk_040.unk_08 >> 0x10);
                 break;
         }
-        Text_SetupDL();
+        Font_EndTexturedTextRendering();
     }
     return arg0->unk_28->img_p;
 }

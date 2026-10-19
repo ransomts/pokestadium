@@ -7,11 +7,11 @@ extern s16 gModelPhase[4];
 
 void ModelRenderer_OnSlotReady(s32);
 s32 ModelRenderer_IsReady(s32);
-void ModelSlot_Reset(s32);
-void Model_DrawIfReady(void);
-void Model_CopyCurrentToBuffer(u8);
-void Model_ConcatCameraMatrix(u8);
-void Model_ApplyScaleAndTranslation(u8);
-Gfx* Model_RenderStateMachine(Gfx*);
+void ModelRenderer_ClearSlotModels(s32);
+void ModelRenderer_UpdateSlotVertices(void);
+void ModelRenderer_CacheSlotMatrices(u8);
+void ModelRenderer_ApplySlotScale(u8);
+void ModelRenderer_RebuildSlotMatrix(u8);
+Gfx* ModelRenderer_RenderActiveSlot(Gfx*);
 
 #endif // _334D0_H_

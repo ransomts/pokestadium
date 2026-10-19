@@ -3384,7 +3384,7 @@ s32 Pokedex_FindPrevMapArea(s32 arg0) {
 }
 
 void Pokedex_BuildMapMarkerDisplayList(void) {
-    Gfx* temp_v0 = GfxAlloc(sizeof(Gfx) * 5);
+    Gfx* temp_v0 = Gfx_AllocDisplayList(sizeof(Gfx) * 5);
 
     D_888269C0.unk_18 = temp_v0;
 
@@ -3411,13 +3411,13 @@ void Pokedex_BuildMapMarkersDisplayList(void) {
     temp_s2 = D_88826A44->unk_0C;
     ptr = &temp_s2->unk_60;
 
-    temp_v0 = GfxAlloc(sizeof(Gfx) * 36 * 25);
+    temp_v0 = Gfx_AllocDisplayList(sizeof(Gfx) * 36 * 25);
     D_888269E0.unk_18 = temp_v0;
-    D_88826CE8 = GfxAlloc(sizeof(Mtx) * 36);
+    D_88826CE8 = Gfx_AllocDisplayList(sizeof(Mtx) * 36);
     var_s1 = D_88826CE8;
 
-    Matrix_LookAtBetween(&ptr->mtxf, &ptr->eye, &ptr->at, 0);
-    Camera_CopyMatrixF(&sp124, &temp_s2->unk_60.mtxf);
+    MtxF_SetLookAt(&ptr->mtxf, &ptr->eye, &ptr->at, 0);
+    MtxF_ExtractScale(&sp124, &temp_s2->unk_60.mtxf);
     guMtxF2L(sp124.mf, &spE0);
 
     gSPDisplayList(temp_v0++, D_88825248);
@@ -3490,7 +3490,7 @@ void Pokedex_BuildOverviewMarkersDisplayList(void) {
     s32 temp_t2;
     Gfx* temp_v0;
 
-    temp_v0 = GfxAlloc(sizeof(Gfx) * 170);
+    temp_v0 = Gfx_AllocDisplayList(sizeof(Gfx) * 170);
     D_88826A20.unk_18 = temp_v0;
 
     if (D_88826A4C == 1) {
@@ -3566,7 +3566,7 @@ Gfx* Pokedex_DrawMapPinIcon(Gfx* arg0, s16 arg1, s16 arg2) {
 // still reloads arg2 instead of holding it in t4.
 // Slot evidence says tmp/tmp2 were NOT named locals: target 0x44 = arg1+arg3 and 0x30 =
 // arg2+arg4 sit in the compiler-temp area (top temp slot), and the matched sibling
-// TrainerCardDrawRectBorder (fragment28_214920.c) writes `(arg0 + arg2)` inline. Writing both inline
+// Pokedex_DrawListSelectionFrame (fragment28_214920.c) writes `(arg0 + arg2)` inline. Writing both inline
 // (+ `UNUSED s32 pad[3]` after temp_v0, + y5) gives frame 0x228 and every temp slot exactly
 // target-8 (target has 2 more never-stored temps at 0x24-0x2C), score 15173: arg2 still
 // reloaded 7x, tmp gets t5 in the first block (target: never in a register), arg4 gets a3.
@@ -3779,7 +3779,7 @@ void Pokedex_BuildMapLabelsDisplayList(void) {
     Gfx* temp_v0;
     s32 sp2C;
 
-    temp_v0 = GfxAlloc(sizeof(Gfx) * 450);
+    temp_v0 = Gfx_AllocDisplayList(sizeof(Gfx) * 450);
     D_88826A00.unk_18 = temp_v0;
 
     gSPDisplayList(temp_v0++, D_88825510);
@@ -3867,9 +3867,9 @@ void Pokedex_EaseVec3Toward(Vec3f* arg0, Vec3f* arg1) {
     sp28 = arg1->y - arg0->y;
     sp24 = arg1->z - arg0->z;
 
-    sp20 = Math_AbsF(sp2C);
-    sp1C = Math_AbsF(sp28);
-    temp_fv0 = Math_AbsF(sp24);
+    sp20 = Math_AbsF32(sp2C);
+    sp1C = Math_AbsF32(sp28);
+    temp_fv0 = Math_AbsF32(sp24);
     if (sp20 < 1.0f) {
         arg0->x = arg1->x;
     } else {
@@ -3954,7 +3954,7 @@ s32 Pokedex_GetCountTier(s32 arg0) {
     return ret;
 }
 
-s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
+s32 Pokedex_DrawAreaMapFrame(UNUSED u8 arg0) {
     char* spF4;
     s32 i;
     char spD0[32];
@@ -3972,31 +3972,31 @@ s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
     s32 j;
     s32 idx;
 
-    spF4 = GetMessageString(NULL, 0, D_88826A3C, D_88826A4E + 0x13);
+    spF4 = Text_GetString(NULL, 0, D_88826A3C, D_88826A4E + 0x13);
     Pokedex_UpdateAreaMapFrame();
-    Gfx_FinishFrame();
-    Stage_BeginDisplayList();
-    Graph_SetTextureState(D_88826A44);
-    Text_ResetState();
-    Text_SetFont(1, 0);
+    GeoRender_AdvanceFrameCounter();
+    BgStage_DrawFrame();
+    Geo_RenderRootNode(D_88826A44);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    MessageBank_SetPointer_0x14_0x2A(0x19, D_88826A60);
-    temp_v0 = GetMessageString(spD0, 0x20, D_88826A3C, 4);
-    Text_Print(0x23, 0x17, temp_v0);
-    D_88826CC8 = MeasureTextWidth(0, 0, temp_v0) + 0xA;
+    Text_SetStringToken(0x19, D_88826A60);
+    temp_v0 = Text_GetString(spD0, 0x20, D_88826A3C, 4);
+    Font_Printf(0x23, 0x17, temp_v0);
+    D_88826CC8 = Font_MeasureTextExtent(0, 0, temp_v0) + 0xA;
     D_88826CB2 = 0;
     D_88826CB0 = 0;
     D_88826CCE = 0;
     D_88826CD0 = 0;
     if (D_88826A54 == 1) {
-        sprintf(D_88826A88[0].unk_00, "%s", GetMessageString(NULL, 0, D_88826A3C, 7));
-        D_88826CB2 = MeasureTextWidth(0, 0, D_88826A88[0].unk_00) + 0x1E;
-        Text_Print(0xAF - (D_88826CB2 / 2), 0x7D, "%s", D_88826A88[0].unk_00);
+        sprintf(D_88826A88[0].unk_00, "%s", Text_GetString(NULL, 0, D_88826A3C, 7));
+        D_88826CB2 = Font_MeasureTextExtent(0, 0, D_88826A88[0].unk_00) + 0x1E;
+        Font_Printf(0xAF - (D_88826CB2 / 2), 0x7D, "%s", D_88826A88[0].unk_00);
     } else {
         if (D_88826A4C == 0) {
             temp_s0 = D_8882651C[D_88826A4E];
             temp_s0--;
-            Text_Print(0xCB, 0xD5, " %s", GetMessageString(NULL, 0, D_88826A3C, 5));
+            Font_Printf(0xCB, 0xD5, " %s", Text_GetString(NULL, 0, D_88826A3C, 5));
             if (D_88826A52 == 1) {
                 unk_D_88826CF0* ptr = &D_88826CF0[temp_s0];
 
@@ -4012,7 +4012,7 @@ s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
                             temp_s4 = temp_s2->unk_04;
 
                             spB4 = Pokedex_GetCountTier(temp_s2->unk_06);
-                            temp_s0_2 = GetMessageString(NULL, 0, D_88826A3C, ptr->unk_18[i] + 0x38);
+                            temp_s0_2 = Text_GetString(NULL, 0, D_88826A3C, ptr->unk_18[i] + 0x38);
                             if (D_88826CC6 == 1) {
                                 if (temp_s1 == temp_s4) {
                                     if (tmp >= 2) {
@@ -4036,7 +4036,7 @@ s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
                                     sprintf(D_88826A88[i].unk_4B, "%s  %d%%  ", &D_88825B60, temp_s2->unk_06);
                                 }
                             } else {
-                                sprintf(sp94, "%s", GetMessageString(NULL, 0, D_88826A3C, spB4 + 0xB));
+                                sprintf(sp94, "%s", Text_GetString(NULL, 0, D_88826A3C, spB4 + 0xB));
                                 if (temp_s1 == temp_s4) {
                                     sprintf(D_88826A88[i].unk_2D, "%s", temp_s0_2);
                                     sprintf(D_88826A88[i].unk_3C, "%s %2d", D_88826CE0, temp_s1);
@@ -4053,8 +4053,8 @@ s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
                                 D_88826CB0 = D_88826CB2;
                             }
 
-                            temp_s0_3 = MeasureTextWidth(0, 0, D_88826A88[i].unk_2D);
-                            temp_v0_3 = MeasureTextWidth(0, 0, D_88826A88[i].unk_4B);
+                            temp_s0_3 = Font_MeasureTextExtent(0, 0, D_88826A88[i].unk_2D);
+                            temp_v0_3 = Font_MeasureTextExtent(0, 0, D_88826A88[i].unk_4B);
                             if (D_88826CCE < temp_s0_3) {
                                 D_88826CCE = temp_s0_3;
                             }
@@ -4088,11 +4088,11 @@ s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
                                 temp_v0_3 = D_88826CB8[i];
 
                                 if (D_88826A88[temp_v0_3].unk_5A > 0) {
-                                    Text_Print(0x64 - D_88826CCE, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
+                                    Font_Printf(0x64 - D_88826CCE, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
                                                   D_88826A88[temp_v0_3].unk_2D);
-                                    Text_Print(0x6E, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
+                                    Font_Printf(0x6E, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
                                                   D_88826A88[temp_v0_3].unk_3C);
-                                    Text_Print(0xB4, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
+                                    Font_Printf(0xB4, (((i * 0xA) - (tmp * 0xA)) + 0xC3), "%s",
                                                   D_88826A88[temp_v0_3].unk_4B);
                                 }
                             }
@@ -4101,23 +4101,23 @@ s32 PictureQuiz_DrawResults(UNUSED u8 arg0) {
                 }
             }
         } else {
-            Text_Print(0x65, 0xB8, " %s", GetMessageString(NULL, 0, D_88826A3C, 6));
+            Font_Printf(0x65, 0xB8, " %s", Text_GetString(NULL, 0, D_88826A3C, 6));
         }
 
         if ((D_88826A80 == 0) || (D_88826A4E == D_88826A50)) {
-            D_88826CCA = MeasureTextWidth(0, 0, spF4);
+            D_88826CCA = Font_MeasureTextExtent(0, 0, spF4);
             if (D_88826CCA == D_88826CCC) {
-                Text_Print(0x5A - (D_88826CCA / 2), 0xD5, "%s", spF4);
+                Font_Printf(0x5A - (D_88826CCA / 2), 0xD5, "%s", spF4);
             }
         }
     }
 
     D_88826CB4 = D_88826CB2;
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
     return 0;
 }
 
-s32 PictureQuiz_CheckResultsInput(void) {
+s32 Pokedex_CheckAreaMapExit(void) {
     if ((gPlayer1Controller->buttonPressed & 0x4000) && (D_88826A52 == 0)) {
         return -1;
     }
@@ -4127,10 +4127,10 @@ s32 PictureQuiz_CheckResultsInput(void) {
             D_88826A4C = (D_88826A4C + 1) & 1;
             switch (D_88826A4C) {
                 case 0:
-                    PlaySoundEffectById(3);
+                    Audio_PlaySoundEffectByIdWrapper(3);
                     break;
                 case 1:
-                    PlaySoundEffectById(2);
+                    Audio_PlaySoundEffectByIdWrapper(2);
                     break;
             }
         }
@@ -4139,7 +4139,7 @@ s32 PictureQuiz_CheckResultsInput(void) {
             D_88826A50 = D_88826A4E;
             D_88826A4E = Pokedex_FindNextMapArea(D_88826A4E);
             if (D_88826A50 != D_88826A4E) {
-                PlaySoundEffectById(1);
+                Audio_PlaySoundEffectByIdWrapper(1);
                 Pokedex_ResetCameraEase();
             }
         }
@@ -4148,7 +4148,7 @@ s32 PictureQuiz_CheckResultsInput(void) {
             D_88826A50 = D_88826A4E;
             D_88826A4E = Pokedex_FindPrevMapArea(D_88826A4E);
             if (D_88826A50 != D_88826A4E) {
-                PlaySoundEffectById(1);
+                Audio_PlaySoundEffectByIdWrapper(1);
                 Pokedex_ResetCameraEase();
             }
         }
@@ -4161,7 +4161,7 @@ s32 PictureQuiz_CheckResultsInput(void) {
                         D_88826A4C = 0;
                     }
                     D_88826A50 = D_88826A4E;
-                    PlaySoundEffectById(0x19);
+                    Audio_PlaySoundEffectByIdWrapper(0x19);
                     Pokedex_ResetCameraEase();
                 }
                 break;
@@ -4171,7 +4171,7 @@ s32 PictureQuiz_CheckResultsInput(void) {
                     D_88826A52 = 0;
                     D_88826A80 = 1;
                     D_88826A50 = D_88826A4E;
-                    PlaySoundEffectById(0x1A);
+                    Audio_PlaySoundEffectByIdWrapper(0x1A);
                     Pokedex_ResetCameraEase();
                 }
                 break;
@@ -4223,7 +4223,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
   unk_D_88826CF0_004 *new_var2;
   s16 new_var;
   unk_D_88826CF0_004 *var_v1_2;
-  sp4C = state_pool_init(arg1, 0x70800);
+  sp4C = MainPool_InitState(arg1, 0x70800);
   D_88826A4C = 0;
   D_88826A80 = 0;
   D_88826A52 = 0;
@@ -4239,14 +4239,14 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
   D_88826A3C = arg6;
   D_88826A58 = arg0 - 1;
   sprintf(D_88826A60, "%s", arg5);
-  D_88826CE0 = GetMessageString(0, 0, D_88826A3C, 9);
-  D_88826CE4 = GetMessageString(0, 0, D_88826A3C, 0x37);
+  D_88826CE0 = Text_GetString(0, 0, D_88826A3C, 9);
+  D_88826CE4 = Text_GetString(0, 0, D_88826A3C, 0x37);
   D_88826CD4 = main_pool_alloc(0x3200, 0);
-  TrainerCardExportSprite(D_88826CD4, arg0);
-  Asset_Load((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
+  Pokedex_LoadIcon(D_88826CD4, arg0);
+  Asset_LoadToSegment((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
   Fragment_LoadAndRelocateFromRomRange(sp4C, ((((u32) (&D_8C000000)) & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START, pokedex_area_model_ROM_END, arg3, arg4);
-  D_88826A48 = BinArchive_GetFile(Asset_Load2(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
-  SimpleGfxNode_Create(0, &D_888269C0, 5, 0);
+  D_88826A48 = BinArchive_GetFile(BinArchive_Open(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
+  GeoNode_CreateDisplayList(0, &D_888269C0, 5, 0);
   D_88826A54 = 1;
   for (i = 0; i < 59; i++)
   {
@@ -4272,7 +4272,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
       if (1)
       {
       }
-      D_88826A56 = GetMoveTargetType(MenuItem_GetHeldItemId(GetCurrentPokemonBank()));
+      D_88826A56 = GbSave_GameToCategoryIndex(GbSave_GetPortGame(GbSave_GetActivePort()));
       switch (D_88826A56)
       {
         case 0:
@@ -4322,15 +4322,15 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
 
   D_88826A4E = Pokedex_FindNextMapArea(0);
   D_88826A50 = D_88826A4E;
-  SimpleGfxNode_Create(0, &D_88826A20, 5, 0);
-  SimpleGfxNode_Create(0, &D_88826A00, 5, 0);
-  SimpleGfxNode_Create(0, &D_888269E0, 4, 0);
+  GeoNode_CreateDisplayList(0, &D_88826A20, 5, 0);
+  GeoNode_CreateDisplayList(0, &D_88826A00, 5, 0);
+  GeoNode_CreateDisplayList(0, &D_888269E0, 4, 0);
   D_88826A44 = process_geo_layout(sp4C, D_888265DC);
   ptr = D_88826A44->unk_0C;
   ptr->unk_60.at = D_8882627C;
   ptr->unk_60.eye = D_88826288;
 }
 
-void PictureQuiz_CleanupResults(void) {
+void Pokedex_ExitAreaMapPool(void) {
     main_pool_pop_state('MAPV');
 }

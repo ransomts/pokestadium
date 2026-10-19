@@ -3,13 +3,13 @@
 
 #include "global.h"
 
-void MiniCamera_Init(void);
+void miniUnkInitCamera(void);
 void miniUnkUpdateCamera(void);
 void miniUnkDrawHUB(UNUSED s32 arg0);
-void MiniTutorial_FadeIn(void);
+void miniUnkStartFadeIn(void);
 void miniUnkControls(void);
-void MiniGame_ExitFadeOut(void);
-void MiniGame_Initialize(void);
+void miniUnkFadeOutLoop(void);
+void miniUnkInit(void);
 s32 Minigame_RankingDebugTest(s32 arg0, s32 arg1);
 
 #endif // _FRAGMENT19_H_

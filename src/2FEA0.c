@@ -3,7 +3,7 @@
 #include "src/3FB0.h"
 #include "src/memory.h"
 
-void KidsClub_MainLoop(void) {
+void MiniGame_Dispatch(void) {
     u32 var_s0;
     u32 sp60;
     void (*func)(void);

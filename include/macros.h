@@ -66,15 +66,15 @@
 )
 
 #define FRAGMENT_LOAD_AND_CALL2(fragment, arg0, arg1) (\
-    Fragment_LoadAndCall2(FRAGMENT_ID(fragment), fragment##_ROM_START, fragment##_relocs_ROM_END, arg0, arg1) \
+    Fragment_QueueCall(FRAGMENT_ID(fragment), fragment##_ROM_START, fragment##_relocs_ROM_END, arg0, arg1) \
 )
 
 #define ASSET_LOAD(vram, rom, arg0) (\
-    Asset_Load(ASSET_ID(vram), rom##_ROM_START, rom##_ROM_END, arg0) \
+    Asset_LoadToSegment(ASSET_ID(vram), rom##_ROM_START, rom##_ROM_END, arg0) \
 )
 
 #define ASSET_LOAD2(rom, arg0, arg1) (\
-    Asset_Load2(rom##_ROM_START, rom##_ROM_END, arg0, arg1) \
+    BinArchive_Open(rom##_ROM_START, rom##_ROM_END, arg0, arg1) \
 )
 
 #endif

@@ -343,7 +343,7 @@ u32 gFontBitmapData[] = {
     0x435F435E, 0x435E435E,
 };
 
-s32 ComparePointers(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByPointer(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     return (arg0 == arg1) ? 0 : (arg0 < arg1) ? -1 : 1;
 }
 
@@ -359,158 +359,158 @@ s32 LabPCList_CompareBySpeciesGroup(unk_func_8830867C_02C_0CC* arg0, unk_func_88
     return var_v1;
 }
 
-s32 CompareByField2C(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByLevelAsc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_2C - arg1->unk_2C;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField2CDescending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByLevelDesc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_2C - arg0->unk_2C;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField2E(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByHpAsc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_2E - arg1->unk_2E;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField2EDescending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByHpDesc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_2E - arg0->unk_2E;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField30(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByAttackAsc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_30 - arg1->unk_30;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField30Descending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByAttackDesc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_30 - arg0->unk_30;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField32(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByDefenseAsc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_32 - arg1->unk_32;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField32Descending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByDefenseDesc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_32 - arg0->unk_32;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField34(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareBySpeedAsc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_34 - arg1->unk_34;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField34Descending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareBySpeedDesc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_34 - arg0->unk_34;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField36(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareBySpecialAsc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_36 - arg1->unk_36;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField36Descending(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareBySpecialDesc(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg1->unk_36 - arg0->unk_36;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField16(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareById(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0 = arg0->unk_16 - arg1->unk_16;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
@@ -519,33 +519,33 @@ s32 LabPCList_CompareByPokemonColumn(unk_func_8830867C_02C_0CC* arg0, unk_func_8
     return LabPCList_CompareBySpeciesGroup(arg0, arg1);
 }
 
-s32 CompareByField43(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByOtName(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0;
     s32 ret;
 
-    var_v0 = StringCompare_WithMask(&arg0->unk_43, &arg1->unk_43);
+    var_v0 = Text_CompareGlyphCodes(&arg0->unk_43, &arg1->unk_43);
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareByField38(PokemonListEntry* arg0, PokemonListEntry* arg1) {
+s32 LabPCList_CompareByNickname(PokemonListEntry* arg0, PokemonListEntry* arg1) {
     s32 var_v0;
     s32 ret;
 
-    var_v0 = StringCompare_WithMask(&arg0->unk_38, &arg1->unk_38);
+    var_v0 = Text_CompareGlyphCodes(&arg0->unk_38, &arg1->unk_38);
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareSpeciesOrder(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
+s32 LabPCList_CompareBySpeciesDexOrder(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
     static u8 gSpeciesSortOrder[] = {
         0x09, 0x38, 0x8B, 0x0E, 0x0F, 0x0D, 0x81, 0x90, 0x08, 0x0B, 0x50, 0x0A, 0x91, 0x3F, 0x06, 0x66, 0x65,
         0x64, 0x73, 0x72, 0x80, 0x25, 0x1F, 0x03, 0x67, 0x70, 0x76, 0x77, 0x58, 0x5A, 0x57, 0x59, 0x5B, 0x56,
@@ -563,27 +563,27 @@ s32 CompareSpeciesOrder(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
-s32 CompareSpeciesID(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
+s32 LabPCList_CompareBySpeciesRawId(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1) {
     s32 var_v0 = *(u8*)&arg0->unk_08 - *(u8*)&arg1->unk_08;
     s32 ret;
 
     if (var_v0 != 0) {
         ret = var_v0;
     } else {
-        ret = ComparePointers(arg0, arg1);
+        ret = LabPCList_CompareByPointer(arg0, arg1);
     }
     return ret;
 }
 
 SortComparatorFunc gListSortComparators[] = {
-    ComparePointers, LabPCList_CompareByPokemonColumn, CompareByField2C, CompareByField2CDescending, CompareByField2E, CompareByField2EDescending, CompareByField30,
-    CompareByField30Descending, CompareByField32, CompareByField32Descending, CompareByField34, CompareByField34Descending, CompareByField36, CompareByField36Descending,
-    CompareByField16, CompareByField43, CompareByField38, CompareSpeciesOrder, CompareSpeciesID,
+    LabPCList_CompareByPointer, LabPCList_CompareByPokemonColumn, LabPCList_CompareByLevelAsc, LabPCList_CompareByLevelDesc, LabPCList_CompareByHpAsc, LabPCList_CompareByHpDesc, LabPCList_CompareByAttackAsc,
+    LabPCList_CompareByAttackDesc, LabPCList_CompareByDefenseAsc, LabPCList_CompareByDefenseDesc, LabPCList_CompareBySpeedAsc, LabPCList_CompareBySpeedDesc, LabPCList_CompareBySpecialAsc, LabPCList_CompareBySpecialDesc,
+    LabPCList_CompareById, LabPCList_CompareByOtName, LabPCList_CompareByNickname, LabPCList_CompareBySpeciesDexOrder, LabPCList_CompareBySpeciesRawId,
 };
 
 typedef struct unk_func_88316214 {
@@ -591,12 +591,12 @@ typedef struct unk_func_88316214 {
     /* 0x2C */ u8 unk_2C;
 } unk_func_88316214; // size >= 0x30
 
-int PokemonIsWithinLevelRange(unk_func_8830867C_02C_0CC* a0, u8* arg1) {
+int LabPCList_FilterByLevelRange(unk_func_8830867C_02C_0CC* a0, u8* arg1) {
     unk_func_88316214* arg0 = a0;
     return (arg0->unk_2C >= arg1[0]) && (arg1[1] >= arg0->unk_2C);
 }
 
-s32 PokemonHasTypes(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_01C* a1) {
+s32 LabPCList_FilterByAnyType(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_01C* a1) {
     UNUSED s32 pad;
     s32 i;
     s32 j;
@@ -637,12 +637,12 @@ typedef struct unk_func_88316304 {
     /* 0x11 */ u8 unk_11[1];
 } unk_func_88316304; // size >= 0x12
 
-s32 PokemonHasMoves(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_02C_C54_024* a1) {
+s32 LabPCList_FilterByAnyMove(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_02C_C54_024* a1) {
     unk_func_88316304* arg0 = a0;
     unk_func_8830867C_02C_C54_024* arg1 = a1;
     s32 i;
     s32 j;
-    s32 temp_v0 = Mon_CountMoves(&arg0->unk_08);
+    s32 temp_v0 = BattleMon_CountMoves(&arg0->unk_08);
 
     for (i = 0; i < arg1->unk_04; i++) {
         for (j = 0; j < temp_v0; j++) {
@@ -659,11 +659,11 @@ s32 PokemonHasMoves(unk_func_8830867C_02C_0CC* a0, unk_func_8830867C_02C_C54_024
     return 1;
 }
 
-s32 PokemonMatchesSpecies(unk_func_8830867C_02C_0CC* arg0, s32* arg1) {
+s32 LabPCList_FilterBySpeciesId(unk_func_8830867C_02C_0CC* arg0, s32* arg1) {
     return *(u8*)&arg0->unk_08 == *arg1;
 }
 
-s32 PokemonHasExactTypes(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014* a1) {
+s32 LabPCList_FilterByExactTypePair(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014* a1) {
     UNUSED s32 pad;
     s32 i;
     s32 j;
@@ -700,7 +700,7 @@ s32 PokemonHasExactTypes(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_
     return 1;
 }
 
-s32 PokemonAllowedInCup(PokemonListEntry* arg0, u8* arg1) {
+s32 LabPCList_FilterByCategoryBit(PokemonListEntry* arg0, u8* arg1) {
     static u8 gCupAllowedMasks[] = {
         0x03, 0x04, 0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     };
@@ -712,7 +712,7 @@ typedef struct unk_func_883164C0 {
     /* 0x00 */ char unk00[0x5C];
 } unk_func_883164C0; // size = 0x5C
 
-void MonSlots_Init(unk_func_8830867C_02C_0E4* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
+void LabPCList_AllocateBoxSlots(unk_func_8830867C_02C_0E4* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
     s32 i;
     s32 j;
     s32 temp_lo;
@@ -740,14 +740,14 @@ void MonSlots_Init(unk_func_8830867C_02C_0E4* arg0, s32 arg1, s32 arg2, MemoryPo
         for (j = 0; j < arg1; j++) { var_s2[j] = &var_s3[j]; }
         // clang-format on
 
-        PtrArray_Init(&var_s1[i].unk_10, var_s2, arg1, 0);
+        PointerList_Initialize(&var_s1[i].unk_10, var_s2, arg1, 0);
 
         var_s2 += arg1;
         var_s3 += arg1;
     }
 }
 
-void LoadBoxMonsFromGbs(unk_func_8830867C_02C_144* arg0) {
+void LabPCList_LoadAllBoxes(unk_func_8830867C_02C_144* arg0) {
     s32 i;
     s32 j;
     s32 var_s1;
@@ -757,22 +757,22 @@ void LoadBoxMonsFromGbs(unk_func_8830867C_02C_144* arg0) {
     unk_func_8830867C_02C_144_000* var_s5;
 
     var_s5 = arg0->unk_00;
-    if (SaveSlot_GetPokemonBall(var_s5[1].unk_04) == 0) {
-        SetSaveDirtyFlag(var_s5[1].unk_04);
+    if (GbSave_GetBoxCount(var_s5[1].unk_04) == 0) {
+        GbSave_MarkBoxDataLoaded(var_s5[1].unk_04);
     }
 
     for (i = 0; i < arg0->unk_08; i++, var_s5++) {
         var_s3 = var_s5->unk_0C;
 
         for (j = 0; j < var_s5->unk_14; j++, var_s3++) {
-            temp_v0 = CreateGbsBlock(var_s5->unk_00, var_s5->unk_04, j, 0);
+            temp_v0 = Deck_Open(var_s5->unk_00, var_s5->unk_04, j, 0);
             var_s1 = 0;
 
             if (temp_v0 != NULL) {
                 var_s0 = var_s3->unk_10.unk_00;
 
                 while (true) {
-                    if (GbsBlock_ReadPokemon(&var_s0->unk_00->unk_08, 1, temp_v0) == 0) {
+                    if (Deck_ReadEntries(&var_s0->unk_00->unk_08, 1, temp_v0) == 0) {
                         break;
                     }
 
@@ -783,7 +783,7 @@ void LoadBoxMonsFromGbs(unk_func_8830867C_02C_144* arg0) {
                     var_s1++;
                 }
 
-                CommitAndFreeGbsBlock(temp_v0);
+                Deck_CloseAndFlush(temp_v0);
             }
 
             var_s3->unk_10.unk_08 = var_s1;
@@ -791,7 +791,7 @@ void LoadBoxMonsFromGbs(unk_func_8830867C_02C_144* arg0) {
     }
 }
 
-void CollectMonEntryPtrs(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_144* arg1) {
+void LabPCList_FlattenEntries(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_144* arg1) {
     s32 i;
     s32 j;
     s32 x;
@@ -840,7 +840,7 @@ s32 LabPCList_GetCategoryDirtyFlag(s32 arg0) {
     return ret;
 }
 
-s32 DetectGbsDataChanges(unk_func_8830867C_02C_144* arg0) {
+s32 LabPCList_CheckDirtyBoxes(unk_func_8830867C_02C_144* arg0) {
     s32 var_s7 = 0;
     s32 j;
     s32 x;
@@ -856,13 +856,13 @@ s32 DetectGbsDataChanges(unk_func_8830867C_02C_144* arg0) {
 
         for (j = 0; j < var_s5->unk_14; j++, var_s3++) {
             if (var_s3->unk_0C != 0) {
-                temp_v0 = CreateGbsBlock(var_s5->unk_00, var_s5->unk_04, j, 0);
+                temp_v0 = Deck_Open(var_s5->unk_00, var_s5->unk_04, j, 0);
                 if (temp_v0 == NULL) {
                     continue;
                 }
 
                 var_s3->unk_0C = 0;
-                if (GetMonBankField(var_s5->unk_00, var_s5->unk_04, j) != var_s3->unk_10.unk_08) {
+                if (Deck_GetEntryCountForType(var_s5->unk_00, var_s5->unk_04, j) != var_s3->unk_10.unk_08) {
                     var_s3->unk_0C = 1;
                     var_s7 |= LabPCList_GetCategoryDirtyFlag(var_s5->unk_00);
                 } else {
@@ -870,7 +870,7 @@ s32 DetectGbsDataChanges(unk_func_8830867C_02C_144* arg0) {
 
                     for (x = 0; x < var_s3->unk_10.unk_08; x++, var_s0++) {
                         bzero(&sp4C, sizeof(PokemonData));
-                        GbsBlock_ReadPokemon(&sp4C, 1, temp_v0);
+                        Deck_ReadEntries(&sp4C, 1, temp_v0);
                         if (bcmp(&sp4C, &var_s0->unk_00->unk_08, sizeof(PokemonData)) != 0) {
                             var_s3->unk_0C = 1;
                             var_s7 |= LabPCList_GetCategoryDirtyFlag(var_s5->unk_00);
@@ -878,7 +878,7 @@ s32 DetectGbsDataChanges(unk_func_8830867C_02C_144* arg0) {
                         }
                     }
                 }
-                CommitAndFreeGbsBlock(temp_v0);
+                Deck_CloseAndFlush(temp_v0);
             }
         }
     }
@@ -886,7 +886,7 @@ s32 DetectGbsDataChanges(unk_func_8830867C_02C_144* arg0) {
     return var_s7;
 }
 
-void WriteBoxMonsToGbs(unk_func_8830867C_02C_144* arg0, s32 arg1) {
+void LabPCList_SaveDirtyBoxes(unk_func_8830867C_02C_144* arg0, s32 arg1) {
     UNUSED s32 pad[4];
     s32 i;
     s32 j;
@@ -907,23 +907,23 @@ void WriteBoxMonsToGbs(unk_func_8830867C_02C_144* arg0, s32 arg1) {
         for (j = 0; j < var_s2->unk_14; j++, var_s4++) {
             if (var_s4->unk_0C != 0) {
                 var_s0 = var_s4->unk_10.unk_00;
-                temp_s3 = CreateGbsBlock(var_s2->unk_00, var_s2->unk_04, j, 1);
+                temp_s3 = Deck_Open(var_s2->unk_00, var_s2->unk_04, j, 1);
 
                 for (x = 0; x < var_s4->unk_10.unk_08; x++, var_s0++) {
-                    GbsBlock_WriteEntries(&var_s0->unk_00->unk_08, 1, temp_s3);
+                    Deck_WriteEntries(&var_s0->unk_00->unk_08, 1, temp_s3);
                     if ((var_s2->unk_00 == 0x20) || (var_s2->unk_00 == 0x21)) {
                         if ((var_s0->unk_00->unk_08.unk_00.unk_00 > 0) &&
                             (var_s0->unk_00->unk_08.unk_00.unk_00 < 0x98)) {
-                            SaveSlot_SetPokemonOwned(var_s2->unk_04, var_s0->unk_00->unk_08.unk_00.unk_00, 3);
+                            GbSave_SetSeenOwnedBits(var_s2->unk_04, var_s0->unk_00->unk_08.unk_00.unk_00, 3);
                         }
                     }
                 }
 
                 tmp = var_s2->unk_00;
                 if ((tmp == 0x10) || (tmp == 0x11) || (tmp == 0x12)) {
-                    InvalidateAndFreeGbsBlock(temp_s3);
+                    Deck_CloseAndFlushBox(temp_s3);
                 } else {
-                    CommitAndFreeGbsBlock(temp_s3);
+                    Deck_CloseAndFlush(temp_s3);
                 }
 
                 if (1) {}
@@ -932,7 +932,7 @@ void WriteBoxMonsToGbs(unk_func_8830867C_02C_144* arg0, s32 arg1) {
     }
 }
 
-void InitItemSources(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
+void LabPCList_InitDeckCategories(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
     UNUSED s32 pad;
     s32 temp_s1;
     char sp54[4];
@@ -941,27 +941,27 @@ void InitItemSources(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
     s32 i;
 
     arg0->unk_00 = 0x23;
-    arg0->unk_01 = GetCurrentPokemonBank();
+    arg0->unk_01 = GbSave_GetActivePort();
     arg0->unk_02 = 0;
     arg0->unk_04 = 1;
-    List_Init(&arg0[0].unk_0C, 2, 0x14, arg1);
+    ByteMatrix_Allocate(&arg0[0].unk_0C, 2, 0x14, arg1);
 
     arg0[1].unk_00 = 0x22;
     arg0[1].unk_01 = arg0->unk_01;
     arg0[1].unk_02 = 0;
     arg0[1].unk_04 = 1;
-    List_Init(&arg0[1].unk_0C, 2, 0x32, arg1);
+    ByteMatrix_Allocate(&arg0[1].unk_0C, 2, 0x32, arg1);
 
     arg0[2].unk_00 = 0x12;
     arg0[2].unk_01 = 0;
-    List_Init(&arg0[2].unk_0C, 2, 0x64, arg1);
+    ByteMatrix_Allocate(&arg0[2].unk_0C, 2, 0x64, arg1);
 
-    MenuScroll_Init(&sp48, arg0->unk_01);
+    GbSave_BuildPortSummary(&sp48, arg0->unk_01);
 
     for (i = 0; i < 4; i++) {
-        if ((GbsIsBlockActive(0x12, i) != 0) && (GbsGetBlockMaxEntries(0x12, i) > 0)) {
-            temp_s1 = GbsGetBlockStatusField(0x12, i);
-            GbsGetBlockString(0x12, i, &sp38);
+        if ((Deck_IsSaveEntryPresent(0x12, i) != 0) && (Deck_GetSaveEntryCount(0x12, i) > 0)) {
+            temp_s1 = Deck_GetSaveEntryTrainerId(0x12, i);
+            Deck_GetSaveEntryName(0x12, i, &sp38);
             if ((sp48.unk_08 == temp_s1) && (HAL_Strcmp(sp54, sp38) == 0)) {
                 break;
             }
@@ -976,20 +976,20 @@ void InitItemSources(unk_func_8830867C_02C_154* arg0, MemoryPool* arg1) {
     }
 }
 
-void ItemSource_ReadFromGbs(unk_func_8830867C_02C_154* arg0) {
+void LabPCList_ReadDeckCategory(unk_func_8830867C_02C_154* arg0) {
     unk_func_80022C28_ret* sp24;
 
-    sp24 = CreateGbsBlock(arg0->unk_00, arg0->unk_01, arg0->unk_02, 0);
-    arg0->unk_14 = GbsBlock_ReadPokemon(arg0->unk_0C, arg0->unk_10, sp24);
-    CommitAndFreeGbsBlock(sp24);
+    sp24 = Deck_Open(arg0->unk_00, arg0->unk_01, arg0->unk_02, 0);
+    arg0->unk_14 = Deck_ReadEntries(arg0->unk_0C, arg0->unk_10, sp24);
+    Deck_CloseAndFlush(sp24);
     arg0->unk_08 = 0;
 }
 
-void ItemSource_WriteToGbs(unk_func_8830867C_02C_154* arg0) {
-    unk_func_80022C28_ret* sp24 = CreateGbsBlock(arg0->unk_00, arg0->unk_01, arg0->unk_02, 1);
+void LabPCList_WriteDeckCategory(unk_func_8830867C_02C_154* arg0) {
+    unk_func_80022C28_ret* sp24 = Deck_Open(arg0->unk_00, arg0->unk_01, arg0->unk_02, 1);
 
-    GbsBlock_WriteEntries(arg0->unk_0C, arg0->unk_14, sp24);
-    CommitAndFreeGbsBlock(sp24);
+    Deck_WriteEntries(arg0->unk_0C, arg0->unk_14, sp24);
+    Deck_CloseAndFlush(sp24);
     arg0->unk_08 = 0;
 }
 
@@ -1039,7 +1039,7 @@ s32 LabPCList_CompareTmHmEntries(unk_func_88200FA0_030_038* arg0, unk_func_88200
     return (arg0->unk_08 - arg1->unk_08 != 0) ? arg0->unk_08 - arg1->unk_08 : (s32)arg0[1].unk_00 - (s32)arg1[1].unk_00;
 }
 
-void BuildUsableItemList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_1A8* arg1, unk_func_8830867C_02C_154* arg2,
+void LabPCList_BuildTmHmList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_1A8* arg1, unk_func_8830867C_02C_154* arg2,
                    s32 arg3, s32 arg4) {
     unk_func_88205880_00D0** var_s6;
     unk_func_8830867C_02C_154* var_s4;
@@ -1054,7 +1054,7 @@ void BuildUsableItemList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_
     var_s6 = arg0->unk_00;
     var_s4 = arg2;
     var_s1 = arg1;
-    PtrArray_Init(arg0, var_s6, arg4, 0);
+    PointerList_Initialize(arg0, var_s6, arg4, 0);
 
     for (i = 0; i < arg3; i++, var_s4++) {
         if (var_s4->unk_04 != 0) {
@@ -1096,14 +1096,14 @@ void BuildUsableItemList(unk_func_88200FA0_030_038* arg0, unk_func_8830867C_02C_
     }
 
     arg0->unk_08 = ((s32)var_s1 - (s32)arg1) >> 4;
-    PtrArray_Sort(arg0, LabPCList_CompareTmHmEntries);
+    PointerList_Sort(arg0, LabPCList_CompareTmHmEntries);
 }
 
-void ConsumeUsedItem(unk_func_8830867C_04C_030_02C_000* arg0) {
-    if ((IsStageSpecial(arg0->unk_00[0]->unk_00) != 0) || (arg0->unk_00[0]->unk_01 < 2)) {
+void LabPCList_ConsumeUsedTmItem(unk_func_8830867C_04C_030_02C_000* arg0) {
+    if ((LabItem_IsQuantitylessItemForOperation(arg0->unk_00[0]->unk_00) != 0) || (arg0->unk_00[0]->unk_01 < 2)) {
         s32 tmp = arg0->unk_00[1]->unk_0C.unk_00;
 
-        S16List_RemoveAt(&arg0->unk_00[1]->unk_0C, ((s32)arg0->unk_00[0] - tmp) >> 1);
+        WordList_Remove(&arg0->unk_00[1]->unk_0C, ((s32)arg0->unk_00[0] - tmp) >> 1);
     } else {
         arg0->unk_00[0]->unk_01--;
     }

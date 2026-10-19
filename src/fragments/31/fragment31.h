@@ -22,9 +22,9 @@ typedef struct unk_arg0_func_81002260 {
 
 extern const Gfx gCommonGfxInit[];
 
-void Particle_ClearAllSlots(Fragment2_1GraphNode*);
-void Particle_ResetCounters(void);
-void Particle_Serialize(u8*);
-void Particle_Deserialize(unk_arg0_func_81002260*, u8*);
+void Particle31_ResetAllSlots(Fragment2_1GraphNode*);
+void Particle31_ResetCounters(void);
+void Particle31_PackSlotData(u8*);
+void Particle31_UnpackSlotData(unk_arg0_func_81002260*, u8*);
 
 #endif // _FRAGMENT31_H_

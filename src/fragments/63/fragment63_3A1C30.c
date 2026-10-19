@@ -10,7 +10,7 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static unk_D_84B17550 gMenuPanelDefs[] = {
+static unk_D_84B17550 gBattlePrepRuleWindowLayouts[] = {
     {
         78,
         84,
@@ -138,14 +138,14 @@ void BattlePrep_DrawCursorArrow(unk_D_84B2665C* arg0, s16 arg1, s16 arg2) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg1, arg2 + (arg0->unk_04 * 0xE) + 1, 0x10, 0xB, 0, 0, 0x800, 0x800, 0);
+    Gfx_DrawTexturedRectClipped(arg1, arg2 + (arg0->unk_04 * 0xE) + 1, 0x10, 0xB, 0, 0, 0x800, 0x800, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     D_84B17604 = (D_84B17604 + 1) % 12;
 }
 
-void MenuItem_Print(unk_D_84B2665C* arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s8* arg5) {
+void BattlePrep_DrawRuleOption(unk_D_84B2665C* arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4, s8* arg5) {
     if (arg4 == 0) {
         Text_SetEnvColor(0x64, 0x64, 0x64, 0xFF);
     } else if (arg3 == arg0->unk_04) {
@@ -153,152 +153,152 @@ void MenuItem_Print(unk_D_84B2665C* arg0, s16 arg1, s16 arg2, s16 arg3, s32 arg4
     } else {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     }
-    Text_Print(arg1, arg2 + (arg3 * 0xE), arg5);
+    Font_Printf(arg1, arg2 + (arg3 * 0xE), arg5);
 }
 
-void RenderBattleStatusPanel(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawResultPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 0xC, arg1->unk_02 + 0x18);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    Text_Print(arg1->unk_00 + 0x10, arg1->unk_02 + 6, Battle_GetMessageString(0x29));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x22, arg1->unk_02 + 0x18, 0, 1, Battle_GetMessageString(0x2A));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x22, arg1->unk_02 + 0x18, 1, 1, Battle_GetMessageString(0x2B));
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    Font_Printf(arg1->unk_00 + 0x10, arg1->unk_02 + 6, BattlePrep_GetString(0x29));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x22, arg1->unk_02 + 0x18, 0, 1, BattlePrep_GetString(0x2A));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x22, arg1->unk_02 + 0x18, 1, 1, BattlePrep_GetString(0x2B));
 
     if (arg1->unk_06 == 0x48) {
-        Text_SetFont(1, 0);
+        Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x36, "%s%d", Battle_GetMessageString(0x2C), gBattleContext.unk_11F3);
+        Font_Printf(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x36, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.unk_11F3);
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
-void RenderBattleOptionsPanel(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawContinuePrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     s32 sp2C;
     s32 sp28;
 
-    sp2C = gBattleContext.unk_11F3 > 0;
-    sp28 = !!(gBattleContext.unk_11F5 & 2);
+    sp2C = gSessionContext.unk_11F3 > 0;
+    sp28 = !!(gSessionContext.unk_11F5 & 2);
     sp28 = !sp28;
 
     BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, Battle_GetMessageString(0x2D));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, sp2C, Battle_GetMessageString(0x2E));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, sp28, Battle_GetMessageString(0x2F));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 3, 1, Battle_GetMessageString(0x30));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 4, 1, Battle_GetMessageString(0x31));
-    Text_SetFont(1, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, BattlePrep_GetString(0x2D));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, sp2C, BattlePrep_GetString(0x2E));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, sp28, BattlePrep_GetString(0x2F));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 3, 1, BattlePrep_GetString(0x30));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 4, 1, BattlePrep_GetString(0x31));
+    Font_SetActive(1, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x4C, "%s%d", Battle_GetMessageString(0x2C), gBattleContext.unk_11F3);
-    Text_SetupDL();
+    Font_Printf(arg1->unk_00 + 0x4A, arg1->unk_02 + 0x4C, "%s%d", BattlePrep_GetString(0x2C), gSessionContext.unk_11F3);
+    Font_EndTexturedTextRendering();
 }
 
-void RenderBattleSummaryPanel(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    s32 sp2C = !!(gBattleContext.unk_11F5 & 2);
+void BattlePrep_DrawGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+    s32 sp2C = !!(gSessionContext.unk_11F5 & 2);
 
     sp2C = !sp2C;
     BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, Battle_GetMessageString(0x2F));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, Battle_GetMessageString(0x32));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, 1, Battle_GetMessageString(0x31));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, BattlePrep_GetString(0x2F));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, BattlePrep_GetString(0x32));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, 1, BattlePrep_GetString(0x31));
+    Font_EndTexturedTextRendering();
 }
 
-void RenderBattleHPPanel(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    s32 sp2C = gBattleContext.unk_1194[0].unk_1E < 0x63 && gBattleContext.unk_1194[1].unk_1E < 0x63;
+void BattlePrep_DrawRetireStreakPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+    s32 sp2C = gSessionContext.unk_1194[0].unk_1E < 0x63 && gSessionContext.unk_1194[1].unk_1E < 0x63;
 
     BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, Battle_GetMessageString(0x33));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, Battle_GetMessageString(0x34));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, 1, Battle_GetMessageString(0x31));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, sp2C, BattlePrep_GetString(0x33));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, BattlePrep_GetString(0x34));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 2, 1, BattlePrep_GetString(0x31));
+    Font_EndTexturedTextRendering();
 }
 
-void RenderBattleScorePanel(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawQuitPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 5, arg1->unk_02 + 6);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, 1, Battle_GetMessageString(0x35));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, Battle_GetMessageString(0x31));
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 0, 1, BattlePrep_GetString(0x35));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x1A, arg1->unk_02 + 6, 1, 1, BattlePrep_GetString(0x31));
+    Font_EndTexturedTextRendering();
 }
 
-void RenderBattleModeTitle(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawCupRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     char* temp_v0;
 
-    Text_ResetState();
-    Text_BeginRender();
-    Text_SetFont(4, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
+    Font_SetActive(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
 
-    if ((gBattleContext.unk_0000 == 3) || (gBattleContext.unk_0000 == 6)) {
-        temp_v0 = Battle_GetMessageString(gBattleContext.unk_0000 - 1);
-        Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 6, temp_v0);
-        temp_v0 = Battle_GetMessageString(gBattleContext.unk_0002 + 7);
-        Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x18, temp_v0);
-        temp_v0 = Battle_GetMessageString(gBattleContext.unk_0003 + 0xA);
-        Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x2A, temp_v0);
+    if ((gSessionContext.unk_0000 == 3) || (gSessionContext.unk_0000 == 6)) {
+        temp_v0 = BattlePrep_GetString(gSessionContext.unk_0000 - 1);
+        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 6, temp_v0);
+        temp_v0 = BattlePrep_GetString(gSessionContext.unk_0002 + 7);
+        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x18, temp_v0);
+        temp_v0 = BattlePrep_GetString(gSessionContext.unk_0003 + 0xA);
+        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x2A, temp_v0);
     } else {
-        temp_v0 = Battle_GetMessageString(gBattleContext.unk_0000 - 1);
-        Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0xA, temp_v0);
-        temp_v0 = Battle_GetMessageString(gBattleContext.unk_0003 + 0xA);
-        Text_Print((arg1->unk_00 - (MeasureTextWidth(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x26, temp_v0);
+        temp_v0 = BattlePrep_GetString(gSessionContext.unk_0000 - 1);
+        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0xA, temp_v0);
+        temp_v0 = BattlePrep_GetString(gSessionContext.unk_0003 + 0xA);
+        Font_Printf((arg1->unk_00 - (Font_MeasureTextExtent(4, 0, temp_v0) / 2)) + 0x64, arg1->unk_02 + 0x26, temp_v0);
     }
 
-    Text_EndRender();
-    Text_SetupDL();
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
-void RenderBattleMatchupPanel(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
+void BattlePrep_DrawCastleRuleSummary(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
     s32 sp12C;
     char sp2C[0x100];
 
-    Text_ResetState();
-    Text_BeginRender();
-    Text_SetFont(4, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
+    Font_SetActive(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
 
-    sprintf(sp2C, "%s %s", Battle_GetMessageString(gBattleContext.unk_0002 + 0x13), Battle_GetMessageString(0x36));
-    sp12C = MeasureTextWidth(4, 0, sp2C);
-    Text_Print((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0xA, sp2C);
+    sprintf(sp2C, "%s %s", BattlePrep_GetString(gSessionContext.unk_0002 + 0x13), BattlePrep_GetString(0x36));
+    sp12C = Font_MeasureTextExtent(4, 0, sp2C);
+    Font_Printf((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0xA, sp2C);
 
-    if (gBattleContext.unk_0002 < 9) {
-        if (gBattleContext.unk_0002 == 8) {
-            sprintf(sp2C, "%s %d", Battle_GetMessageString(0x1B), gBattleContext.unk_0003);
-            sp12C = MeasureTextWidth(4, 0, sp2C);
-            Text_Print((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26, sp2C);
-        } else if (gBattleContext.unk_0003 < 4) {
-            sprintf(&sp2C, "%s %d", Battle_GetMessageString(0x37), gBattleContext.unk_0003);
-            sp12C = MeasureTextWidth(4, 0, sp2C);
-            Text_Print((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26, sp2C);
+    if (gSessionContext.unk_0002 < 9) {
+        if (gSessionContext.unk_0002 == 8) {
+            sprintf(sp2C, "%s %d", BattlePrep_GetString(0x1B), gSessionContext.unk_0003);
+            sp12C = Font_MeasureTextExtent(4, 0, sp2C);
+            Font_Printf((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26, sp2C);
+        } else if (gSessionContext.unk_0003 < 4) {
+            sprintf(&sp2C, "%s %d", BattlePrep_GetString(0x37), gSessionContext.unk_0003);
+            sp12C = Font_MeasureTextExtent(4, 0, sp2C);
+            Font_Printf((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26, sp2C);
         } else {
-            sp12C = MeasureTextWidth(4, 0, Battle_GetMessageString(gBattleContext.unk_0002 + 0x1D));
-            Text_Print((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26,
-                          Battle_GetMessageString(gBattleContext.unk_0002 + 0x1D));
+            sp12C = Font_MeasureTextExtent(4, 0, BattlePrep_GetString(gSessionContext.unk_0002 + 0x1D));
+            Font_Printf((arg1->unk_00 - (sp12C / 2)) + 0x64, arg1->unk_02 + 0x26,
+                          BattlePrep_GetString(gSessionContext.unk_0002 + 0x1D));
         }
     }
 
-    Text_EndRender();
-    Text_SetupDL();
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
-void RenderBattleItemIcons(s16 arg0, s16 arg1, unk_D_800AE540_1194* arg2) {
+void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, unk_D_800AE540_1194* arg2) {
     static u8* sItemIconTextures[] = { D_3025950, D_30260A0, D_30267F0, D_3026F40 };
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg2->unk_01 == 1) {
         if (arg2->unk_08[0]->unk_000 & 2) {
-            Gfx_DrawSpriteRGBA16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, D_3025200, 0x24, 0);
+            Gfx_DrawTextureRgba16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, D_3025200, 0x24, 0);
             if (0) {}
         } else {
-            Gfx_DrawSpriteRGBA16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
+            Gfx_DrawTextureRgba16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -306,22 +306,22 @@ void RenderBattleItemIcons(s16 arg0, s16 arg1, unk_D_800AE540_1194* arg2) {
     }
 
     if (arg2->unk_08[0]->unk_001 < arg2->unk_08[1]->unk_001) {
-        Gfx_DrawSpriteRGBA16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
-        Gfx_DrawSpriteRGBA16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[1]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[1]->unk_001], 0x24, 0);
     } else {
-        Gfx_DrawSpriteRGBA16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[1]->unk_001], 0x24, 0);
-        Gfx_DrawSpriteRGBA16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[1]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->unk_08[0]->unk_001], 0x24, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(4, 0);
-    Text_PutChar(arg0 + 0x24, arg1 + 8, 0x26);
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(4, 0);
+    Font_DrawCharAt(arg0 + 0x24, arg1 + 8, 0x26);
+    Font_EndTexturedTextRendering();
 }
 
-void UpdateFlashingTextColor(unk_D_800AE540_1194* arg0) {
+void BattlePrep_SetStreakColor(unk_D_800AE540_1194* arg0) {
     static s16 D_84B17618 = 0;
 
     if (arg0->unk_1C == 1) {
@@ -333,26 +333,26 @@ void UpdateFlashingTextColor(unk_D_800AE540_1194* arg0) {
 }
 
 void BattlePrep_DrawTeamPreview(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
-    Gfx_DrawPanel(arg1->unk_00 + 8, arg1->unk_02 + 0x14, 0xA8, 0x20, 0, 0, 0, 0xFF);
-    Gfx_DrawPanel(arg1->unk_00 + 8, arg1->unk_02 + 0x44, 0xA8, 0x20, 0, 0, 0, 0xFF);
-    RenderBattleItemIcons(arg1->unk_00 + 8, arg1->unk_02 + 0x14, gBattleContext.unk_1194);
-    RenderBattleItemIcons(arg1->unk_00 + 8, arg1->unk_02 + 0x44, &gBattleContext.unk_1194[1]);
-    Text_ResetState();
-    Text_BeginRender();
-    Text_SetFont(4, 0);
+    BattlePrep_DrawBorderedRect(arg1->unk_00 + 8, arg1->unk_02 + 0x14, 0xA8, 0x20, 0, 0, 0, 0xFF);
+    BattlePrep_DrawBorderedRect(arg1->unk_00 + 8, arg1->unk_02 + 0x44, 0xA8, 0x20, 0, 0, 0, 0xFF);
+    BattlePrep_DrawRankBadge(arg1->unk_00 + 8, arg1->unk_02 + 0x14, gSessionContext.unk_1194);
+    BattlePrep_DrawRankBadge(arg1->unk_00 + 8, arg1->unk_02 + 0x44, &gSessionContext.unk_1194[1]);
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
+    Font_SetActive(4, 0);
     Text_SetPrimColor(0x32, 0xFF, 0x64, 0xFF);
-    Text_Print(arg1->unk_00 + 0x40, arg1->unk_02 + 2, Battle_GetMessageString(0x38));
-    Text_EndRender();
-    Text_SetFont(0x10, 0);
-    UpdateFlashingTextColor(&gBattleContext.unk_1194[0]);
-    Text_Print(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x18, "%2d", gBattleContext.unk_1194[0].unk_1E);
-    UpdateFlashingTextColor(&gBattleContext.unk_1194[1]);
-    Text_Print(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x48, "%2d", gBattleContext.unk_1194[1].unk_1E);
-    Text_SetFont(4, 0);
+    Font_Printf(arg1->unk_00 + 0x40, arg1->unk_02 + 2, BattlePrep_GetString(0x38));
+    Font_DisableTwoCycleTexturing();
+    Font_SetActive(0x10, 0);
+    BattlePrep_SetStreakColor(&gSessionContext.unk_1194[0]);
+    Font_Printf(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x18, "%2d", gSessionContext.unk_1194[0].unk_1E);
+    BattlePrep_SetStreakColor(&gSessionContext.unk_1194[1]);
+    Font_Printf(arg1->unk_00 + 0x5C, arg1->unk_02 + 0x48, "%2d", gSessionContext.unk_1194[1].unk_1E);
+    Font_SetActive(4, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(arg1->unk_00 + 0x82, arg1->unk_02 + 0x1F, Battle_GetMessageString(0x39));
-    Text_Print(arg1->unk_00 + 0x82, arg1->unk_02 + 0x4F, Battle_GetMessageString(0x39));
-    Text_SetupDL();
+    Font_Printf(arg1->unk_00 + 0x82, arg1->unk_02 + 0x1F, BattlePrep_GetString(0x39));
+    Font_Printf(arg1->unk_00 + 0x82, arg1->unk_02 + 0x4F, BattlePrep_GetString(0x39));
+    Font_EndTexturedTextRendering();
 }
 
 void BattlePrep_DrawStreakGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg1) {
@@ -361,73 +361,73 @@ void BattlePrep_DrawStreakGiveUpPrompt(unk_D_84B2665C* arg0, unk_D_84B17550* arg
     s32 sp48;
     s32 temp_v0;
 
-    DecodeBattleSaveData(&sp50, NULL);
-    Gfx_DrawPanel(arg1->unk_00 + 0x10, arg1->unk_02 + 0x14, 0xA8, 0x3C, 0, 0, 0, 0xFF);
-    Gfx_DrawPanel(arg1->unk_00 + 0x10, arg1->unk_02 + 0x60, 0xA8, 0x22, 0, 0, 0, 0xFF);
+    Session_LoadContinueRecord(&sp50, NULL);
+    BattlePrep_DrawBorderedRect(arg1->unk_00 + 0x10, arg1->unk_02 + 0x14, 0xA8, 0x3C, 0, 0, 0, 0xFF);
+    BattlePrep_DrawBorderedRect(arg1->unk_00 + 0x10, arg1->unk_02 + 0x60, 0xA8, 0x22, 0, 0, 0, 0xFF);
     BattlePrep_DrawCursorArrow(arg0, arg1->unk_00 + 0x14, arg1->unk_02 + 0x64);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    Text_Print(arg1->unk_00 + 0x10, arg1->unk_02 + 6, Battle_GetMessageString(0x3A));
-    Text_Print(arg1->unk_00 + 0x10, arg1->unk_02 + 0x52, Battle_GetMessageString(0x3B));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x2A, arg1->unk_02 + 0x64, 0, 1, Battle_GetMessageString(0x3C));
-    MenuItem_Print(arg0, arg1->unk_00 + 0x2A, arg1->unk_02 + 0x64, 1, 1, Battle_GetMessageString(0x3D));
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    Font_Printf(arg1->unk_00 + 0x10, arg1->unk_02 + 6, BattlePrep_GetString(0x3A));
+    Font_Printf(arg1->unk_00 + 0x10, arg1->unk_02 + 0x52, BattlePrep_GetString(0x3B));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x2A, arg1->unk_02 + 0x64, 0, 1, BattlePrep_GetString(0x3C));
+    BattlePrep_DrawRuleOption(arg0, arg1->unk_00 + 0x2A, arg1->unk_02 + 0x64, 1, 1, BattlePrep_GetString(0x3D));
     Text_SetEnvColor(0xFF, 0x64, 0x64, 0xFF);
 
     if (sp50.unk_00 == 7) {
-        Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, Battle_GetMessageString(sp50.unk_00 - 1));
-        Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, Battle_GetMessageString(sp50.unk_01 + 0x13));
+        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, BattlePrep_GetString(sp50.unk_00 - 1));
+        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, BattlePrep_GetString(sp50.unk_01 + 0x13));
         if (sp50.unk_01 < 8) {
             if (sp50.unk_02 < 4) {
-                Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, "%s %d", Battle_GetMessageString(0x37), sp50.unk_02);
+                Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, "%s %d", BattlePrep_GetString(0x37), sp50.unk_02);
             } else {
-                Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, Battle_GetMessageString(0x3E));
+                Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, BattlePrep_GetString(0x3E));
             }
         } else {
-            Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, "%s %d", Battle_GetMessageString(0x1B), sp50.unk_02);
+            Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, "%s %d", BattlePrep_GetString(0x1B), sp50.unk_02);
         }
     } else if ((sp50.unk_00 == 3) || (sp50.unk_00 == 6)) {
-        Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, Battle_GetMessageString(sp50.unk_00 - 1));
-        Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, Battle_GetMessageString(sp50.unk_01 + 7));
-        Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, Battle_GetMessageString(sp50.unk_02 + 0xA));
+        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, BattlePrep_GetString(sp50.unk_00 - 1));
+        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, BattlePrep_GetString(sp50.unk_01 + 7));
+        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x35, BattlePrep_GetString(sp50.unk_02 + 0xA));
     } else {
-        Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, Battle_GetMessageString(sp50.unk_00 - 1));
-        Text_Print(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, Battle_GetMessageString(sp50.unk_02 + 0xA));
+        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x17, BattlePrep_GetString(sp50.unk_00 - 1));
+        Font_Printf(arg1->unk_00 + 0x1E, arg1->unk_02 + 0x26, BattlePrep_GetString(sp50.unk_02 + 0xA));
     }
 
     if (sp50.unk_00 != 7) {
-        Text_SetFont(1, 0);
+        Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print(arg1->unk_00 + 0x64, arg1->unk_02 + 0x43, "%s %d", Battle_GetMessageString(0x2C), sp50.unk_04);
+        Font_Printf(arg1->unk_00 + 0x64, arg1->unk_02 + 0x43, "%s %d", BattlePrep_GetString(0x2C), sp50.unk_04);
     }
 
     if (arg0->unk_04 == 0) {
-        sp48 = (arg1->unk_04 - MeasureTextWidth(1, 0, Battle_GetMessageString(0x3F))) / 2;
-        Text_SetFont(1, 0);
+        sp48 = (arg1->unk_04 - Font_MeasureTextExtent(1, 0, BattlePrep_GetString(0x3F))) / 2;
+        Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
-        Text_SetLineHeight(0xC);
-        Text_Print(arg1->unk_00 + sp48, arg1->unk_02 + 0x86, Battle_GetMessageString(0x3F));
+        Font_SetLineHeight(0xC);
+        Font_Printf(arg1->unk_00 + sp48, arg1->unk_02 + 0x86, BattlePrep_GetString(0x3F));
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 
     if (sp50.unk_03 == 1) {
-        temp_v0 = MeasureTextWidth(1, 0, Battle_GetMessageString(sp50.unk_00 - 1));
+        temp_v0 = Font_MeasureTextExtent(1, 0, BattlePrep_GetString(sp50.unk_00 - 1));
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA16(arg1->unk_00 + temp_v0 + 0x20, arg1->unk_02 + 0x15, 0x10, 0x10, D_3027690, 0x10, 0);
+        Gfx_DrawTextureRgba16(arg1->unk_00 + temp_v0 + 0x20, arg1->unk_02 + 0x15, 0x10, 0x10, D_3027690, 0x10, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 }
 
-void RenderMenuPanel(unk_D_84B2665C* arg0) {
+void BattlePrep_DrawRuleWindow(unk_D_84B2665C* arg0) {
     unk_D_84B17550* temp_s0;
     s16 temp_a1;
     s16 var_a3;
 
     if ((arg0->unk_00 != 0) && (arg0->unk_02 > 0)) {
-        temp_s0 = &gMenuPanelDefs[arg0->unk_01 - 1];
+        temp_s0 = &gBattlePrepRuleWindowLayouts[arg0->unk_01 - 1];
 
         if (arg0->unk_02 < 4) {
             var_a3 = (temp_s0->unk_06 * arg0->unk_02) / 4;
@@ -437,49 +437,49 @@ void RenderMenuPanel(unk_D_84B2665C* arg0) {
 
             temp_a1 = temp_s0->unk_02 + ((temp_s0->unk_06 - var_a3) / 2);
             if (temp_s0->unk_0C == 0) {
-                DrawPanel(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
+                Ui_DrawBorderedPanel(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, temp_s0->unk_0A);
             } else {
-                Gfx_DrawPanel(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, 0x1E, 0x1E, 0x82, 0xFF);
+                BattlePrep_DrawBorderedRect(temp_s0->unk_00, temp_a1, temp_s0->unk_04, var_a3, 0x1E, 0x1E, 0x82, 0xFF);
             }
         } else {
             if (temp_s0->unk_0C == 0) {
-                DrawPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
+                Ui_DrawBorderedPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, temp_s0->unk_0A);
             } else {
-                Gfx_DrawPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82,
+                BattlePrep_DrawBorderedRect(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82,
                               0xFF);
             }
 
             switch (arg0->unk_01) {
                 case 1:
-                    RenderBattleStatusPanel(arg0, temp_s0);
+                    BattlePrep_DrawResultPrompt(arg0, temp_s0);
                     break;
 
                 case 2:
-                    RenderBattleStatusPanel(arg0, temp_s0);
+                    BattlePrep_DrawResultPrompt(arg0, temp_s0);
                     break;
 
                 case 3:
-                    RenderBattleOptionsPanel(arg0, temp_s0);
+                    BattlePrep_DrawContinuePrompt(arg0, temp_s0);
                     break;
 
                 case 4:
-                    RenderBattleSummaryPanel(arg0, temp_s0);
+                    BattlePrep_DrawGiveUpPrompt(arg0, temp_s0);
                     break;
 
                 case 5:
-                    RenderBattleHPPanel(arg0, temp_s0);
+                    BattlePrep_DrawRetireStreakPrompt(arg0, temp_s0);
                     break;
 
                 case 6:
-                    RenderBattleScorePanel(arg0, temp_s0);
+                    BattlePrep_DrawQuitPrompt(arg0, temp_s0);
                     break;
 
                 case 7:
-                    RenderBattleModeTitle(arg0, temp_s0);
+                    BattlePrep_DrawCupRuleSummary(arg0, temp_s0);
                     break;
 
                 case 8:
-                    RenderBattleMatchupPanel(arg0, temp_s0);
+                    BattlePrep_DrawCastleRuleSummary(arg0, temp_s0);
                     break;
 
                 case 9:
@@ -499,39 +499,39 @@ void BattlePrep_RunQuitMenu(unk_D_84B2665C* arg0) {
     s16 sp22;
     s32 tmp;
 
-    sp24 = &gMenuPanelDefs[arg0->unk_01 - 1];
+    sp24 = &gBattlePrepRuleWindowLayouts[arg0->unk_01 - 1];
     sp22 = sp24->unk_08 - 1;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         tmp = sp24->unk_10 >> (arg0->unk_04 * 3);
         switch (tmp & 7) {
             case 1:
-                PlaySoundEffect(3);
+                Audio_PlaySoundEffectById(3);
                 break;
 
             case 2:
-                PlaySoundEffect(2);
+                Audio_PlaySoundEffectById(2);
                 break;
 
             case 3:
-                PlaySoundEffect(0x1C);
+                Audio_PlaySoundEffectById(0x1C);
                 break;
 
             case 4:
-                PlaySoundEffect(0x20);
+                Audio_PlaySoundEffectById(0x20);
                 break;
 
             case 5:
-                PlaySoundEffect(0x1D);
+                Audio_PlaySoundEffectById(0x1D);
                 break;
 
             case 6:
-                PlaySoundEffect(0x21);
+                Audio_PlaySoundEffectById(0x21);
                 break;
         }
         arg0->unk_00 = 2;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
         do {
             arg0->unk_04--;
             if (arg0->unk_04 < 0) {
@@ -539,7 +539,7 @@ void BattlePrep_RunQuitMenu(unk_D_84B2665C* arg0) {
             }
         } while (!(sp24->unk_0E & (1 << arg0->unk_04)));
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
         do {
             arg0->unk_04++;
             if (sp22 < arg0->unk_04) {
@@ -565,7 +565,7 @@ void BattlePrep_RuleWindowCollapsing(unk_D_84B2665C* arg0) {
     }
 }
 
-void UI_UpdatePanel(unk_D_84B2665C* arg0) {
+void BattlePrep_UpdateRuleWindow(unk_D_84B2665C* arg0) {
     switch (arg0->unk_00) {
         case 1:
             BattlePrep_RuleWindowExpanding(arg0);
@@ -581,8 +581,8 @@ void UI_UpdatePanel(unk_D_84B2665C* arg0) {
     }
 }
 
-void Menu_SetOption(unk_D_84B2665C* arg0, s16 arg1) {
-    unk_D_84B17550* ptr = &gMenuPanelDefs[arg1 - 1];
+void BattlePrep_InitRuleWindow(unk_D_84B2665C* arg0, s16 arg1) {
+    unk_D_84B17550* ptr = &gBattlePrepRuleWindowLayouts[arg1 - 1];
 
     arg0->unk_01 = arg1;
     arg0->unk_02 = 0;
@@ -591,21 +591,21 @@ void Menu_SetOption(unk_D_84B2665C* arg0, s16 arg1) {
 
     ptr->unk_0E = -1;
 
-    PlaySoundEffect(4);
+    Audio_PlaySoundEffectById(4);
 
     if (arg1 - 1 == 2) {
-        if (gBattleContext.unk_11F3 == 0) {
+        if (gSessionContext.unk_11F3 == 0) {
             ptr->unk_0E &= ~3;
         }
-        if (gBattleContext.unk_11F5 & 2) {
+        if (gSessionContext.unk_11F5 & 2) {
             ptr->unk_0E &= ~4;
         }
     } else if (arg1 - 1 == 3) {
-        if (gBattleContext.unk_11F5 & 2) {
+        if (gSessionContext.unk_11F5 & 2) {
             ptr->unk_0E &= ~1;
         }
     } else if ((arg1 - 1 == 4) &&
-               ((gBattleContext.unk_1194[0].unk_1E >= 0x63) || (gBattleContext.unk_1194[1].unk_1E >= 0x63))) {
+               ((gSessionContext.unk_1194[0].unk_1E >= 0x63) || (gSessionContext.unk_1194[1].unk_1E >= 0x63))) {
         ptr->unk_0E &= ~1;
     }
 
@@ -614,13 +614,13 @@ void Menu_SetOption(unk_D_84B2665C* arg0, s16 arg1) {
     }
 }
 
-void BattleMenu_UpdateState(unk_D_84B2665C* arg0) {
+void BattlePrep_CloseRuleWindow(unk_D_84B2665C* arg0) {
     arg0->unk_00 = 0;
     arg0->unk_01 = 0;
     arg0->unk_02 = 0;
 }
 
-s32 Menu_GetInput(unk_D_84B2665C* arg0) {
+s32 BattlePrep_PollRuleWindow(unk_D_84B2665C* arg0) {
     if (arg0->unk_00 == 4) {
         arg0->unk_00 = 0;
         return arg0->unk_04;

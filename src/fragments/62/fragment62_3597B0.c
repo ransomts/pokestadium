@@ -84,7 +84,7 @@ static Gfx gTransitionMaskCleanupDL[] = {
     gsSPEndDisplayList(),
 };
 
-void ScreenTransition_SetState(s32 arg0, s32 arg1) {
+void BattleScene_SetStripWipeState(s32 arg0, s32 arg1) {
     gTransitionState = arg0;
     gTransitionSpeed = arg1;
 
@@ -95,11 +95,11 @@ void ScreenTransition_SetState(s32 arg0, s32 arg1) {
     }
 }
 
-s32 ScreenTransition_GetState(void) {
+s32 BattleScene_GetStripWipeState(void) {
     return gTransitionState;
 }
 
-void ScreenTransition_Update(void) {
+void BattleScene_UpdateStripWipe(void) {
     s16 var_v0 = gTransitionOffset;
 
     switch (gTransitionState) {
@@ -125,7 +125,7 @@ void ScreenTransition_Update(void) {
     gTransitionOffset = var_v0;
 }
 
-Gfx* ScreenTransition_Draw(Gfx* arg0, s32 arg1) {
+Gfx* BattleScene_BuildStripWipeDisplayList(Gfx* arg0, s32 arg1) {
     s32 i;
     s16 left;
     s16 top;
@@ -165,14 +165,14 @@ Gfx* ScreenTransition_Draw(Gfx* arg0, s32 arg1) {
     return arg0;
 }
 
-void ScreenTransition_Apply(void) {
+void BattleScene_DrawStripWipe(void) {
     Gfx* gfx = gDisplayListHead;
 
     if (gTransitionState != 0) {
         if (gTransitionState == 2) {
-            gfx = ScreenTransition_Draw(gfx, 0);
+            gfx = BattleScene_BuildStripWipeDisplayList(gfx, 0);
         } else {
-            gfx = ScreenTransition_Draw(gfx, 1);
+            gfx = BattleScene_BuildStripWipeDisplayList(gfx, 1);
         }
     }
     gDisplayListHead = gfx;

@@ -115,9 +115,9 @@ typedef struct {
     /* 0x01B0 */ u8 stack[0x1000];
 } GbPakThreadStruct; // size = 0x11B0
 
-extern GbPakThreadStruct GbPakThread;
-extern OSMesg MsgQueue_GbPak[4];
-extern OSMesgQueue MsgQueue_GbPakControl;
+extern GbPakThreadStruct gGbPakServiceThread;
+extern OSMesg gGbPakServiceQueueMessages[4];
+extern OSMesgQueue gGbPakServiceQueue;
 extern s16 Msg_GbPakStatus;
 extern u8 Flag_GbPakInitialized;
 extern u8 Flag_GbPakPowerState;
@@ -131,12 +131,12 @@ extern u8 D_102BA0_END[];
 extern OSMesgQueue D_8122B1EC;
 extern OSMesgQueue D_8122B254;
 extern OSMesg D_8122B250;
-extern OSMesgQueue* Ptr_GbPakMsgQueue;
+extern OSMesgQueue* gGbPakSiEventQueue;
 extern s32 GbPakRetryCounter;
-extern volatile u8 Flag_GbPakThreadRunning;
+extern volatile u8 gGbPakServiceThreadActive;
 extern u8 Buffer_GbPakRead1[];
 extern u8 Buffer_GbPakRead2[];
-extern u8 ScreenMode_Current;
+extern u8 gGbEmuPresentationMode;
 extern u8 gAudioInitialized;
 extern u8 gPrevDataSetIndex;
 extern u8 gDataSetLoadResult;
@@ -164,13 +164,13 @@ extern u8 gText_LeavingN64[];
 extern u8 GbPakStateByte;
 extern u16 gAudioModeIndex0;
 extern u16 gAudioModeIndex1;
-extern unk_D_8122C4FA GbPakStatusFlags;
+extern unk_D_8122C4FA gGbEmuButtonBindingSelections;
 extern u8 GbPakStatusByte;
 extern u8 TempBuffer_GbPakReg[0x1F];
 // extern s8 D_8122C51F;
 extern u8 D_8122C520[0x20];
-extern u8* DataPtr_TileGraphicsA;
-extern u8* DataPtr_TileGraphicsB;
+extern u8* gGbEmuFont1Data;
+extern u8* gGbEmuFont2Data;
 extern u8* DataStruct_TileAssets;
 extern s32 Ptr_TempScreenBuffer;
 extern s32 Ptr_TempScreenBuffer2;
@@ -186,7 +186,7 @@ extern u32 gStadiumInterval;
 extern u8 gStadiumScreenFlag0;
 extern u8 gPlayerInfoBoxType;
 
-s32 GbPak_CheckConnector(GbPakDeviceState* arg0) {
+s32 GbPak_CheckConnectorReady(GbPakDeviceState* arg0) {
   s32 result;
 
   result = osGbpakCheckConnector(&arg0->pfs, &arg0->status);
@@ -196,7 +196,7 @@ s32 GbPak_CheckConnector(GbPakDeviceState* arg0) {
   return result;
 }
 
-s32 GbPak_WriteRegister(GbPakDeviceState* arg0, u16 arg1, s32 arg2) {
+s32 GbPak_WriteFilledRegisterBlock(GbPakDeviceState* arg0, u16 arg1, s32 arg2) {
   s32 i;
   for (i = 0x1F; i >= 0; i--) {
       TempBuffer_GbPakReg[i] = arg2;
@@ -204,12 +204,12 @@ s32 GbPak_WriteRegister(GbPakDeviceState* arg0, u16 arg1, s32 arg2) {
   return osGbpakReadWrite(&arg0->pfs, 1, arg1, &TempBuffer_GbPakReg, 0x20);
 }
 
-s32 GbPak_Initialize(GbPakDeviceState* arg0) {
+s32 GbPak_InitializeCartridgeMapper(GbPakDeviceState* arg0) {
   s32 ret;
 
-  if (!(ret = GbPak_WriteRegister(arg0, 0, 0xA))    && !(ret = GbPak_WriteRegister(arg0, 0x6000, 1))
-   && !(ret = GbPak_WriteRegister(arg0, 0x4000, 0)) && !(ret = GbPak_WriteRegister(arg0, 0x6000, 0))
-   && !(ret = GbPak_WriteRegister(arg0, 0x4000, 0)) && !(ret = GbPak_WriteRegister(arg0, 0x2100, 1))) {
+  if (!(ret = GbPak_WriteFilledRegisterBlock(arg0, 0, 0xA))    && !(ret = GbPak_WriteFilledRegisterBlock(arg0, 0x6000, 1))
+   && !(ret = GbPak_WriteFilledRegisterBlock(arg0, 0x4000, 0)) && !(ret = GbPak_WriteFilledRegisterBlock(arg0, 0x6000, 0))
+   && !(ret = GbPak_WriteFilledRegisterBlock(arg0, 0x4000, 0)) && !(ret = GbPak_WriteFilledRegisterBlock(arg0, 0x2100, 1))) {
       arg0->romBank = 1;
       arg0->ramBank = 0;
       arg0->bankingMode = 0;
@@ -218,7 +218,7 @@ s32 GbPak_Initialize(GbPakDeviceState* arg0) {
   return ret;
 }
 
-s32 GbPak_GetStatus(GbPakDeviceState* arg0) {
+s32 GbPak_CheckTransferStatus(GbPakDeviceState* arg0) {
   s32 ret;
 
   ret = osGbpakGetStatus(&arg0->pfs, &arg0->status);
@@ -228,7 +228,7 @@ s32 GbPak_GetStatus(GbPakDeviceState* arg0) {
   return ret;
 }
 
-s32 GbPak_SetReadBank(GbPakDeviceState* arg0, s32 arg1) {
+s32 GbPak_SelectRomAddress(GbPakDeviceState* arg0, s32 arg1) {
   s32 temp_a2;
   s32 var_v1;
 
@@ -236,7 +236,7 @@ s32 GbPak_SetReadBank(GbPakDeviceState* arg0, s32 arg1) {
   arg0->ramBank = 0xFF;
   if (arg0->bankingMode != 0) {
       arg0->romBank = 0xFFFFU;
-      var_v1 = GbPak_WriteRegister(arg0, 0x6000, 0);
+      var_v1 = GbPak_WriteFilledRegisterBlock(arg0, 0x6000, 0);
       if (var_v1 == 0) {
           arg0->bankingMode = 0U;
       }
@@ -246,11 +246,11 @@ s32 GbPak_SetReadBank(GbPakDeviceState* arg0, s32 arg1) {
           temp_a2 = arg1 / 32;
           if (temp_a2 != ((s32) arg0->romBank / 32)) {
               arg0->romBank = 0xFFFEU;
-              var_v1 = GbPak_WriteRegister(arg0, 0x4000, temp_a2);
+              var_v1 = GbPak_WriteFilledRegisterBlock(arg0, 0x4000, temp_a2);
           }
           if (var_v1 == 0) {
               arg0->romBank = 0xFFFDU;
-              var_v1 = GbPak_WriteRegister(arg0, 0x2100, arg1);
+              var_v1 = GbPak_WriteFilledRegisterBlock(arg0, 0x2100, arg1);
               if (var_v1 == 0) {
                   arg0->romBank = (u16) arg1;
               }
@@ -260,20 +260,20 @@ s32 GbPak_SetReadBank(GbPakDeviceState* arg0, s32 arg1) {
   return var_v1;
 }
 
-s32 GbPak_SetWriteBank(GbPakDeviceState* arg0, s32 arg1) {
+s32 GbPak_SelectRamBank(GbPakDeviceState* arg0, s32 arg1) {
   s32 var_v1;
 
   var_v1 = 0;
   arg0->romBank = 0xFFFF;
   if (arg0->bankingMode != 1) {
       arg0->ramBank = 0xFFU;
-      var_v1 = GbPak_WriteRegister(arg0, 0x6000, 1);
+      var_v1 = GbPak_WriteFilledRegisterBlock(arg0, 0x6000, 1);
       if (var_v1 == 0) {
           arg0->bankingMode = 1U;
       }
   }
   if ((var_v1 == 0) && (arg1 != arg0->ramBank)) {
-      var_v1 = GbPak_WriteRegister(arg0, 0x4000, arg1);
+      var_v1 = GbPak_WriteFilledRegisterBlock(arg0, 0x4000, arg1);
       if (var_v1 == 0) {
           arg0->ramBank = arg1;
       }
@@ -281,10 +281,10 @@ s32 GbPak_SetWriteBank(GbPakDeviceState* arg0, s32 arg1) {
   return var_v1;
 }
 
-s32 GbPak_VerifyChecksum(GbPakDeviceState* arg0) {
+s32 GbPak_VerifyProbeBlock(GbPakDeviceState* arg0) {
   s32 ret;
 
-  ret = GbPak_SetWriteBank(arg0, arg0->unk_5DA0 / 8192);
+  ret = GbPak_SelectRamBank(arg0, arg0->unk_5DA0 / 8192);
   if (ret == 0) {
       ret = osGbpakReadWrite(&arg0->pfs, 0, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), D_8122C520, sizeof(D_8122C520));
       if (ret == 0) {
@@ -294,7 +294,7 @@ s32 GbPak_VerifyChecksum(GbPakDeviceState* arg0) {
   return ret;
 }
 
-void GbPak_CollectCounters(GbPakDeviceState* arg0, s32 arg1) {
+void GbPak_PrepareProbeBlock(GbPakDeviceState* arg0, s32 arg1) {
   s32 i;
 
   switch (arg1) {
@@ -318,14 +318,14 @@ void GbPak_CollectCounters(GbPakDeviceState* arg0, s32 arg1) {
   }
 }
 
-s32 GbPak_VerifyWriteReadLoop(GbPakDeviceState* arg0) {
+s32 GbPak_VerifyWritableProbeBlock(GbPakDeviceState* arg0) {
     s32 ret;
     s32 count;
 
     count = 3;
     do {
-        GbPak_CollectCounters(arg0, count);
-        ret = GbPak_SetWriteBank(arg0, arg0->unk_5DA0 / 8192);
+        GbPak_PrepareProbeBlock(arg0, count);
+        ret = GbPak_SelectRamBank(arg0, arg0->unk_5DA0 / 8192);
         if (ret == 0) {
             ret = osGbpakReadWrite(&arg0->pfs, 1, ((arg0->unk_5DA0 & 0x1FFF) | 0xA000), &arg0->unk_5D80, sizeof(D_8122C520));
             if (ret == 0) {
@@ -346,23 +346,23 @@ s32 GbPak_VerifyWriteReadLoop(GbPakDeviceState* arg0) {
     return ret;
 }
 
-s32 GbPak_Init(GbPakDeviceState* arg0) {
+s32 GbPak_ProbeCartridge(GbPakDeviceState* arg0) {
   s32 ret;
 
   ret = 0;
   if (!(arg0->status & 1)) {
-    ret = GbPak_CheckConnector(arg0);
+    ret = GbPak_CheckConnectorReady(arg0);
       if (ret == 0) {
-        ret = GbPak_Initialize(arg0);
+        ret = GbPak_InitializeCartridgeMapper(arg0);
           if (ret == 0) {
             ret = osGbpakReadId(&arg0->pfs, &arg0->gbpakId, &arg0->status);
               if (ret == 0) {
                 ret = bcmp(&arg0->detectedGbpakId, &arg0->gbpakId, sizeof(arg0->detectedGbpakId));
                   if ((ret == 0) && (arg0->unk_5DC4 != 0)) {
                       arg0->unk_5DC4 = 0U;
-                      ret = GbPak_VerifyChecksum(arg0);
+                      ret = GbPak_VerifyProbeBlock(arg0);
                       if (ret == 0) {
-                        ret = GbPak_VerifyWriteReadLoop(arg0);
+                        ret = GbPak_VerifyWritableProbeBlock(arg0);
                       }
                       arg0->unk_5DC4 = 1U;
                   }
@@ -376,7 +376,7 @@ s32 GbPak_Init(GbPakDeviceState* arg0) {
   return ret;
 }
 
-s32 GbPak_ReadDataAndAccumulate(GbPakDeviceState* arg0) {
+s32 GbPak_ReadRomAndChecksum(GbPakDeviceState* arg0) {
     s32 var_s1 = 0;
     s32 var_s2;
     s32 var_s2_2;
@@ -387,7 +387,7 @@ s32 GbPak_ReadDataAndAccumulate(GbPakDeviceState* arg0) {
     u32 offset;
     s32 i;
     u32 temp;
-    var_v1 = GbPak_Init(arg0);
+    var_v1 = GbPak_ProbeCartridge(arg0);
     var_s0 = arg0->transferBuffer;
     var_s3 = arg0->gbAddress;
     var_s4 = arg0->transferSize;
@@ -417,7 +417,7 @@ s32 GbPak_ReadDataAndAccumulate(GbPakDeviceState* arg0) {
     }
 
     while (var_v1 == 0 && var_s4 != 0) {
-        var_v1 = GbPak_SetReadBank(arg0, var_s3 >> 14);
+        var_v1 = GbPak_SelectRomAddress(arg0, var_s3 >> 14);
         if (var_v1 == 0) {
             offset = var_s3 & 0x3FFF;
             temp = offset;
@@ -446,7 +446,7 @@ s32 GbPak_ReadDataAndAccumulate(GbPakDeviceState* arg0) {
     }
 
     if (var_v1 == 0) {
-        var_v1 = GbPak_GetStatus(arg0);
+        var_v1 = GbPak_CheckTransferStatus(arg0);
         if (var_v1 == 0) {
             arg0->unk_5D70[0] += var_s1;
         }
@@ -455,7 +455,7 @@ s32 GbPak_ReadDataAndAccumulate(GbPakDeviceState* arg0) {
     return var_v1;
 }
 
-s32 GbPak_ReadWriteLoop(GbPakDeviceState* arg0, s32 arg1) {
+s32 GbPak_TransferBankedRam(GbPakDeviceState* arg0, s32 arg1) {
   s32 temp_v0;
   s32 var_s0;
   s32 var_s1;
@@ -464,13 +464,13 @@ s32 GbPak_ReadWriteLoop(GbPakDeviceState* arg0, s32 arg1) {
   s32 var_v1;
   u32 var_s2;
 
-  var_v0 = GbPak_Init(arg0);
+  var_v0 = GbPak_ProbeCartridge(arg0);
   var_v1 = var_v0;
   var_s3 = arg0->transferBuffer;
   var_s2 = arg0->gbAddress;
   var_s1 = arg0->transferSize;
   while ((var_v0 == 0) && (var_s1 != 0)) {
-      var_v0 = GbPak_SetWriteBank(arg0, var_s2 >> 0xD);
+      var_v0 = GbPak_SelectRamBank(arg0, var_s2 >> 0xD);
       var_v1 = var_v0;
       if (var_v0 == 0) {
           temp_v0 = var_s2 & 0x1FFF;
@@ -487,12 +487,12 @@ s32 GbPak_ReadWriteLoop(GbPakDeviceState* arg0, s32 arg1) {
       }
   }
   if (var_v0 == 0) {
-      var_v1 = GbPak_GetStatus(arg0);
+      var_v1 = GbPak_CheckTransferStatus(arg0);
   }
   return var_v1;
 }
 
-s32 GbPak_FindMatchingHeader(GbPakHeader* arg0) {
+s32 GbPak_DetectSupportedCartridgeVariant(GbPakHeader* arg0) {
   u8* var_s1;
   s32 i;
 
@@ -522,12 +522,12 @@ void GbPak_ThreadMain(s32 arg0) {
     u8* ptr;
     s32 i;
 
-    Flag_GbPakThreadRunning = 1;
+    gGbPakServiceThreadActive = 1;
 
     for (;;) {
-        osRecvMesg(&MsgQueue_GbPakControl, (OSMesg*)&emu, OS_MESG_BLOCK);
+        osRecvMesg(&gGbPakServiceQueue, (OSMesg*)&emu, OS_MESG_BLOCK);
         if (emu == NULL) {
-            Flag_GbPakThreadRunning = 0;
+            gGbPakServiceThreadActive = 0;
             osDestroyThread(NULL);
         }
         emu->unk_5DC8 = 1;
@@ -550,55 +550,55 @@ void GbPak_ThreadMain(s32 arg0) {
                 /* fallthrough */
             case 1:
                 emu->unk_5DCD -= 9;
-                if (osGbpakInit(Ptr_GbPakMsgQueue, (OSPfs*)&emu->pfs, emu->controllerChannel) != 0) {
+                if (osGbpakInit(gGbPakSiEventQueue, (OSPfs*)&emu->pfs, emu->controllerChannel) != 0) {
                     goto retry;
                 }
                 if (osGbpakReadId((OSPfs*)&emu->pfs, &emu->detectedGbpakId, &emu->status) != 0) {
                     goto retry;
                 }
-                if (GbPak_CheckConnector(emu) != 0) {
+                if (GbPak_CheckConnectorReady(emu) != 0) {
                     goto retry;
                 }
-                if (GbPak_Initialize(emu) != 0) {
+                if (GbPak_InitializeCartridgeMapper(emu) != 0) {
                     goto retry;
                 }
                 emu->transferBuffer = emu->romSignature;
                 emu->gbAddress = 0x9C000;
                 emu->transferSize = 0x20;
-                if (GbPak_ReadDataAndAccumulate(emu) != 0) {
+                if (GbPak_ReadRomAndChecksum(emu) != 0) {
                     goto retry;
                 }
                 if (!(emu->status & 1)) {
                     goto retry;
                 }
-                emu->headerMatchIndex = GbPak_FindMatchingHeader((GbPakHeader*)&emu->detectedGbpakId);
+                emu->headerMatchIndex = GbPak_DetectSupportedCartridgeVariant((GbPakHeader*)&emu->detectedGbpakId);
                 emu->unk_5DC9 = 2;
                 /* fallthrough */
             case 2:
                 switch (emu->command) {
                     case 1:
                         emu->unk_5DCD -= 0x17;
-                        if (GbPak_ReadDataAndAccumulate(emu) != 0) {
+                        if (GbPak_ReadRomAndChecksum(emu) != 0) {
                             goto retry;
                         }
                         break;
                     case 2:
                         emu->unk_5DCD -= 0x17;
-                        if (GbPak_ReadWriteLoop(emu, 0) != 0) {
+                        if (GbPak_TransferBankedRam(emu, 0) != 0) {
                             goto retry;
                         }
                         break;
                     case 3:
                         emu->unk_5DCD -= 0x17;
-                        if (GbPak_ReadWriteLoop(emu, 1) != 0) {
+                        if (GbPak_TransferBankedRam(emu, 1) != 0) {
                             goto retry;
                         }
                         break;
                     case 5:
                         emu->transferBuffer = Buffer_GbPakRead1;
                         emu->transferSize = 0x100;
-                        if ((GbPak_ReadWriteLoop(emu, 1) == 0) &&
-                            (emu->transferBuffer = Buffer_GbPakRead2, GbPak_ReadWriteLoop(emu, 0) == 0) &&
+                        if ((GbPak_TransferBankedRam(emu, 1) == 0) &&
+                            (emu->transferBuffer = Buffer_GbPakRead2, GbPak_TransferBankedRam(emu, 0) == 0) &&
                             (bcmp(Buffer_GbPakRead1, Buffer_GbPakRead2, 0x100) == 0)) {
                             if (emu->blockReadStatus[emu->gbAddress >> 8] != 0) {
                                 emu->blockReadStatus[emu->gbAddress >> 8] = 2;
@@ -620,7 +620,7 @@ void GbPak_ThreadMain(s32 arg0) {
                                     emu->gbAddress = (value & 0xF) << 13;
                                     emu->transferBuffer = (u8*)emu + emu->gbAddress + 0x12DF0;
                                     emu->transferSize = 0x2000;
-                                    if (GbPak_ReadWriteLoop(emu, 0) != 0) {
+                                    if (GbPak_TransferBankedRam(emu, 0) != 0) {
                                         goto disconnect;
                                     }
                                     emu->unk_559C[entry[0] & 0xF] = 0xFF;
@@ -631,7 +631,7 @@ void GbPak_ThreadMain(s32 arg0) {
                                     emu->gbAddress = value << 14;
                                     emu->transferBuffer = (u8*)emu->romImage + emu->gbAddress;
                                     emu->transferSize = 0x4000;
-                                    if (GbPak_ReadDataAndAccumulate(emu) != 0) {
+                                    if (GbPak_ReadRomAndChecksum(emu) != 0) {
                                         goto retry;
                                     }
                                     sum = 0;
@@ -659,15 +659,15 @@ void GbPak_ThreadMain(s32 arg0) {
                         break;
                     case 8:
                         emu->unk_5DC4 = 0;
-                        if (GbPak_Init(emu) != 0) {
+                        if (GbPak_ProbeCartridge(emu) != 0) {
                             goto retry;
                         }
-                        if (GbPak_VerifyWriteReadLoop(emu) != 0) {
+                        if (GbPak_VerifyWritableProbeBlock(emu) != 0) {
                             goto retry;
                         }
                         break;
                     case 7:
-                        if (GbPak_GetStatus(emu) != 0) {
+                        if (GbPak_CheckTransferStatus(emu) != 0) {
                             goto retry;
                         }
                         break;
@@ -689,7 +689,7 @@ void GbPak_ThreadMain(s32 arg0) {
                 if (emu->command != 7) {
                     break;
                 }
-                if (GbPak_GetStatus(emu) != 0) {
+                if (GbPak_CheckTransferStatus(emu) != 0) {
                     if (--retries == 0) {
                         retries = 5;
                         emu->unk_5DC9 = 9;
@@ -699,12 +699,12 @@ void GbPak_ThreadMain(s32 arg0) {
                 }
                 break;
             case 9:
-                if (osGbpakInit(Ptr_GbPakMsgQueue, (OSPfs*)&emu->pfs, emu->controllerChannel) != 0) {
+                if (osGbpakInit(gGbPakSiEventQueue, (OSPfs*)&emu->pfs, emu->controllerChannel) != 0) {
                     retries = 5;
                 } else {
-                    if (GbPak_GetStatus(emu) == 0) {
+                    if (GbPak_CheckTransferStatus(emu) == 0) {
                         if (--retries == 0) {
-                            i = GbPak_Init(emu);
+                            i = GbPak_ProbeCartridge(emu);
                             if (i != 0) {
                                 goto power_off;
                             } else if (i == 0) {
@@ -718,8 +718,8 @@ void GbPak_ThreadMain(s32 arg0) {
                 break;
             case 10:
                 emu->transferBuffer = Buffer_GbPakRead1;
-                if ((GbPak_ReadWriteLoop(emu, 1) == 0) &&
-                    (emu->transferBuffer = Buffer_GbPakRead2, GbPak_ReadWriteLoop(emu, 0) == 0) &&
+                if ((GbPak_TransferBankedRam(emu, 1) == 0) &&
+                    (emu->transferBuffer = Buffer_GbPakRead2, GbPak_TransferBankedRam(emu, 0) == 0) &&
                     (bcmp(Buffer_GbPakRead1, Buffer_GbPakRead2, 0x100) == 0)) {
                     if (emu->blockReadStatus[emu->gbAddress >> 8] != 0) {
                         emu->blockReadStatus[emu->gbAddress >> 8] = 2;
@@ -779,16 +779,16 @@ void Gfx_DrawTileMap(u16* fb, u8* cmd) {
         switch (ptr[3]) {
             default:
                 map = TileMap_8x8;
-                data = DataPtr_TileGraphicsA;
+                data = gGbEmuFont1Data;
                 tileSize = 0xA;
                 break;
             case 0xC:
                 tileSize = 0xC;
                 map = TileMap_12x12;
-                data = DataPtr_TileGraphicsB;
+                data = gGbEmuFont2Data;
                 break;
             case 0xA:
-                map = TileMap_8x8, data = DataPtr_TileGraphicsA;
+                map = TileMap_8x8, data = gGbEmuFont1Data;
                 tileSize = 0xA;
                 break;
         }
@@ -859,32 +859,32 @@ void Gfx_DrawTileMap(u16* fb, u8* cmd) {
     }
 }
 
-s32 BlendMode_SelectFirstIfOdd(s32 arg0, s32 arg1) {
+s32 GbEmu_PixelOpDitherA(s32 arg0, s32 arg1) {
   return (arg1 & 1) ? arg1 : arg0;
 }
 
-s32 BlendMode_SelectSecondIfOdd(s32 arg0, s32 arg1) {
+s32 GbEmu_PixelOpDitherB(s32 arg0, s32 arg1) {
   return (arg1 & 1) ? arg0 : arg1;
 }
 
-s32 BlendMode_AverageRGB(s32 arg0, s32 arg1) {
+s32 GbEmu_PixelOpAverage555(s32 arg0, s32 arg1) {
   return (((s32) ((arg0 & 0xF800) + (arg1 & 0xF800)) >> 1) & 0xF800) | (((s32) ((arg0 & 0x7C0) + (arg1 & 0x7C0)) >> 1) & 0x7C0) | (((s32) ((arg0 & 0x3E) + (arg1 & 0x3E)) >> 1) & 0x3E);
 }
 
-s32 BlendMode_UseSecond(UNUSED s32 arg0, s32 arg1) {
+s32 GbEmu_PixelOpReplace(UNUSED s32 arg0, s32 arg1) {
   return arg1;
 }
 
-void BlendRect(u16* dst, u16* src, s32 mode, s32 width, s32 height) {
+void GbEmu_BlitWithPixelOp(u16* dst, u16* src, s32 mode, s32 width, s32 height) {
   s32 (*operation)(s32, s32);
   s32 x;
   s32 y;
   width = ((width + 3) & 0xFFC);
   switch (mode) {
-      case 0:  operation = BlendMode_SelectFirstIfOdd; break;
-      case 1:  operation = BlendMode_SelectSecondIfOdd; break;
-      case 2:  operation = BlendMode_AverageRGB; break;
-      default: operation = BlendMode_UseSecond; break;
+      case 0:  operation = GbEmu_PixelOpDitherA; break;
+      case 1:  operation = GbEmu_PixelOpDitherB; break;
+      case 2:  operation = GbEmu_PixelOpAverage555; break;
+      default: operation = GbEmu_PixelOpReplace; break;
   }
 
   for (x = 0; x != height; x++) {
@@ -897,21 +897,21 @@ void BlendRect(u16* dst, u16* src, s32 mode, s32 width, s32 height) {
   }
 }
 
-void FillBackgroundPattern(u16* dst) {
+void GbEmu_DrawFramedPanel(u16* dst) {
     s32 i;
     s32 y;
 
     for (i = 1; i < 5; i++) {
-        BlendRect(dst + i * 8, (u16*) (DataStruct_TileAssets + 0x1180), 0xFFFF, 8, 8);
-        BlendRect(dst + 38 * 320 + i * 8, (u16*) (DataStruct_TileAssets + 0x1400), 0xFFFF, 8, 8);
-        BlendRect(dst + i * 8 * 320, (u16*) (DataStruct_TileAssets + 0x1280), 0xFFFF, 8, 8);
-        BlendRect(dst + i * 8 * 320 + 38, (u16*) (DataStruct_TileAssets + 0x1300), 0xFFFF, 8, 8);
+        GbEmu_BlitWithPixelOp(dst + i * 8, (u16*) (DataStruct_TileAssets + 0x1180), 0xFFFF, 8, 8);
+        GbEmu_BlitWithPixelOp(dst + 38 * 320 + i * 8, (u16*) (DataStruct_TileAssets + 0x1400), 0xFFFF, 8, 8);
+        GbEmu_BlitWithPixelOp(dst + i * 8 * 320, (u16*) (DataStruct_TileAssets + 0x1280), 0xFFFF, 8, 8);
+        GbEmu_BlitWithPixelOp(dst + i * 8 * 320 + 38, (u16*) (DataStruct_TileAssets + 0x1300), 0xFFFF, 8, 8);
     }
 
-    BlendRect(dst, (u16*) (DataStruct_TileAssets + 0x1100), 0, 8, 8);
-    BlendRect(dst + 38, (u16*) (DataStruct_TileAssets + 0x1200), 0, 8, 8);
-    BlendRect(dst + 38 * 320, (u16*) (DataStruct_TileAssets + 0x1380), 0, 8, 8);
-    BlendRect(dst + 38 * 320 + 38, (u16*) (DataStruct_TileAssets + 0x1480), 0, 8, 8);
+    GbEmu_BlitWithPixelOp(dst, (u16*) (DataStruct_TileAssets + 0x1100), 0, 8, 8);
+    GbEmu_BlitWithPixelOp(dst + 38, (u16*) (DataStruct_TileAssets + 0x1200), 0, 8, 8);
+    GbEmu_BlitWithPixelOp(dst + 38 * 320, (u16*) (DataStruct_TileAssets + 0x1380), 0, 8, 8);
+    GbEmu_BlitWithPixelOp(dst + 38 * 320 + 38, (u16*) (DataStruct_TileAssets + 0x1480), 0, 8, 8);
 
     for (y = 0; y < 30; y++) {
         for (i = 0; i < 30; i++) {
@@ -966,7 +966,7 @@ void BlendWithAlphaMap(u16* dst, u8* alpha_map, s32 color, s32 width, s32 height
     }
 }
 
-void DrawHorizontalBorder(s32 arg0, s32 arg1, s32 arg2) {
+void GbEmu_DrawStretchedBorderRow(s32 arg0, s32 arg1, s32 arg2) {
   s32 var_s0;
   s32 var_s1;
   s32 i;
@@ -1020,7 +1020,7 @@ void DrawStadiumScreen(s32 arg0, s32 arg1) {
     if (i != 0) {
         i--;
     }
-    DrawHorizontalBorder((s32) fb, Palette_StageColors[i], 0x70);
+    GbEmu_DrawStretchedBorderRow((s32) fb, Palette_StageColors[i], 0x70);
 
     if (arg1 != 0) {
         count = 8;
@@ -1032,19 +1032,19 @@ void DrawStadiumScreen(s32 arg0, s32 arg1) {
 
     for (i = 0; i <= count; i++) {
         BlendWithAlphaMap((u16*) ((x * 2) + fb + 0x788),
-                      &DataPtr_TileGraphicsA[TileMap_8x8[D_8122AD50[arg1 + count - i] - i + 0x43] * 0xA0], 0xFFFE, 0xC, 0xA,
+                      &gGbEmuFont1Data[TileMap_8x8[D_8122AD50[arg1 + count - i] - i + 0x43] * 0xA0], 0xFFFE, 0xC, 0xA,
                       0x10);
         x += TileMap_8x8[TileMap_8x8[D_8122AD50[arg1 + count - i] - i + 0x43]];
     }
 
-    BlendRect((u16*) (fb + 0x7FE), (u16*) (DataStruct_TileAssets + 0xAD18), 0, 0x10, 0xA);
+    GbEmu_BlitWithPixelOp((u16*) (fb + 0x7FE), (u16*) (DataStruct_TileAssets + 0xAD18), 0, 0x10, 0xA);
 
     i = GbPakDevice->headerMatchIndex;
     if (i != 0) {
         i--;
     }
     off = i * 0x90;
-    BlendRect((u16*) (fb + 0x5C2), (u16*) ((off * 2) + DataStruct_TileAssets + 0xAE58), 0, 0xC, 0xC);
+    GbEmu_BlitWithPixelOp((u16*) (fb + 0x5C2), (u16*) ((off * 2) + DataStruct_TileAssets + 0xAE58), 0, 0xC, 0xC);
 
     DrawVerticalMarker((u16*) (fb - 0x10), arg1, 0);
     Flag_ScreenRefreshPending = 0;
@@ -1061,36 +1061,36 @@ void DrawStadiumUI(void) {
     temp_v1 = GbPakDevice->headerMatchIndex;
     temp_s0 = ScreenBasePtr - 0x14;
     temp_v1 = Palette_StageColors[(temp_v1 != 0) ? (temp_v1 - 1) : 0];
-    switch (ScreenMode_Current) {
+    switch (gGbEmuPresentationMode) {
         case 1:
-            DrawHorizontalBorder(temp_s0 + 0xA4, temp_v1, 0x8C);
-            BlendRect((u16*) (temp_s0 + 0x5AA), (u16*) (DataStruct_TileAssets + 0xA778), 0, 0x18, 0xD);
-            BlendRect((u16*) (temp_s0 + 0x1762), (u16*) (DataStruct_TileAssets + 0xA6D8), 0, 0x10, 5);
-            BlendRect((u16*) (temp_s0 + 0x5DE), (u16*) (DataStruct_TileAssets + 0xAC58), 0, 8, 6);
-            BlendRect((u16*) (temp_s0 + 0x5EE), (u16*) (DataStruct_TileAssets + 0xACB8), 0, 8, 6);
+            GbEmu_DrawStretchedBorderRow(temp_s0 + 0xA4, temp_v1, 0x8C);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x5AA), (u16*) (DataStruct_TileAssets + 0xA778), 0, 0x18, 0xD);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x1762), (u16*) (DataStruct_TileAssets + 0xA6D8), 0, 0x10, 5);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x5DE), (u16*) (DataStruct_TileAssets + 0xAC58), 0, 8, 6);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x5EE), (u16*) (DataStruct_TileAssets + 0xACB8), 0, 8, 6);
             var_s4 = temp_s0 + 0x600;
             break;
         case 2:
-            DrawHorizontalBorder(temp_s0 + 0x9C, temp_v1, 0x94);
-            BlendRect((u16*) (temp_s0 + 0x5A4), (u16*) (DataStruct_TileAssets + 0xA9E8), 0, 0x18, 0xD);
-            BlendRect((u16*) (temp_s0 + 0x175C), (u16*) (DataStruct_TileAssets + 0xA5E8), 0, 0x18, 5);
-            BlendRect((u16*) (temp_s0 + 0x5D8), (u16*) (DataStruct_TileAssets + 0xAC58), 0, 8, 6);
-            BlendRect((u16*) (temp_s0 + 0x5E8), (u16*) (DataStruct_TileAssets + 0xACB8), 0, 8, 6);
-            BlendRect((u16*) (temp_s0 + 0x5F8), (u16*) (DataStruct_TileAssets + 0xACB8), 0, 8, 6);
+            GbEmu_DrawStretchedBorderRow(temp_s0 + 0x9C, temp_v1, 0x94);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x5A4), (u16*) (DataStruct_TileAssets + 0xA9E8), 0, 0x18, 0xD);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x175C), (u16*) (DataStruct_TileAssets + 0xA5E8), 0, 0x18, 5);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x5D8), (u16*) (DataStruct_TileAssets + 0xAC58), 0, 8, 6);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x5E8), (u16*) (DataStruct_TileAssets + 0xACB8), 0, 8, 6);
+            GbEmu_BlitWithPixelOp((u16*) (temp_s0 + 0x5F8), (u16*) (DataStruct_TileAssets + 0xACB8), 0, 8, 6);
             var_s4 = temp_s0 + 0x608;
             break;
         default:
         case 0:
-            DrawHorizontalBorder(temp_s0 + 0xCE, temp_v1, 0x60);
+            GbEmu_DrawStretchedBorderRow(temp_s0 + 0xCE, temp_v1, 0x60);
             var_s4 = temp_s0 + 0x5D6;
             break;
     }
-    BlendRect((u16*) var_s4, (u16*) (DataStruct_TileAssets + 0xC1D8), 0, 0xC, 0xC);
+    GbEmu_BlitWithPixelOp((u16*) var_s4, (u16*) (DataStruct_TileAssets + 0xC1D8), 0, 0xC, 0xC);
 
     var_s0 = 0;
     var_s4 -= 0x266;
     for (var_s2 = (u8*) &gStadiumUILayout, var_s1 = 0x37; var_s1 < 0x42; var_s1++, var_s2--) {
-        BlendWithAlphaMap((u16*) ((var_s0 * 2) + var_s4), (TileMap_12x12[var_s2[0x116] - var_s1 + 0x80] * 0xC0) + DataPtr_TileGraphicsB,
+        BlendWithAlphaMap((u16*) ((var_s0 * 2) + var_s4), (TileMap_12x12[var_s2[0x116] - var_s1 + 0x80] * 0xC0) + gGbEmuFont2Data,
                       0xFFFE, 0xC, 0xC, 0x10);
         var_s0 += TileMap_12x12[TileMap_12x12[var_s2[0x116] - var_s1 + 0x80]];
         if (var_s1 == 0x3C) {
@@ -1109,18 +1109,18 @@ void DrawPlayerInfoBox(s32 arg0, s32 arg1) {
 
     temp_s4 = (arg1 * 0x28) << 1;
     for (i = 0; i < 6; i++) {
-        BlendRect((u16*) (arg0), (u16*) (temp_s4 + DataStruct_TileAssets + 0x8910), 0, 8, 5);
+        GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (temp_s4 + DataStruct_TileAssets + 0x8910), 0, 8, 5);
         arg0 += 0x10;
     }
     temp_s6 = arg1 << 6;
     temp_s6 <<= 1;
-    BlendRect((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8F90), 0, 8, 8);
+    GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8F90), 0, 8, 8);
     arg0 += 0x1406;
     for (i = 0; i < 5; i++) {
-        BlendRect((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8090), 0, 8, 8);
+        GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8090), 0, 8, 8);
         arg0 += 0x1400;
     }
-    BlendRect((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8510), 0, 8, 8);
+    GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8510), 0, 8, 8);
     arg0 += 0x10;
     switch (gPlayerInfoBoxType) {
     case 1:
@@ -1137,17 +1137,17 @@ void DrawPlayerInfoBox(s32 arg0, s32 arg1) {
         break;
     }
     while (i > 0) {
-        BlendRect((u16*) (arg0 + 0x780), (u16*) (temp_s4 + DataStruct_TileAssets + 0x8910), 0, 8, 5);
+        GbEmu_BlitWithPixelOp((u16*) (arg0 + 0x780), (u16*) (temp_s4 + DataStruct_TileAssets + 0x8910), 0, 8, 5);
         arg0 += 0x10;
         i--;
     }
-    BlendRect((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8B90), 0, 8, 8);
+    GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8B90), 0, 8, 8);
     arg0 -= 0x13FA;
-    BlendRect((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x9390), 0, 8, 8);
+    GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x9390), 0, 8, 8);
     arg0 -= 0x1400;
-    BlendRect((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x9390), 0, 8, 8);
+    GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x9390), 0, 8, 8);
     arg0 -= 0x1400;
-    BlendRect((u16*) (arg0), (u16*) (DataStruct_TileAssets + 0x8490), 0, 8, 8);
+    GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (DataStruct_TileAssets + 0x8490), 0, 8, 8);
 }
 void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg3) {
     s32 x;
@@ -1163,7 +1163,7 @@ void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg
     for (y = 0; y < 0x14000; y += step) {
         row = dst + y;
         for (x = 0; x != 320u; x += 64) {
-            BlendRect(row, (u16*) ((u8*) DataStruct_TileAssets + 0x1500), 0xFFFF, 64, (y == 0xF000) ? 48 : 64);
+            GbEmu_BlitWithPixelOp(row, (u16*) ((u8*) DataStruct_TileAssets + 0x1500), 0xFFFF, 64, (y == 0xF000) ? 48 : 64);
             row += 64;
         }
     }
@@ -1183,7 +1183,7 @@ void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg
         if (x != 0) {
             for (i = j; i != 0; i++) {
                 BlendWithAlphaMap((u16*) ((xpos * 2) + Ptr_TempScreenBuffer2 + 0x280),
-                              (TileMap_12x12[gStadiumUIMap[0xE7 - i] - i * 2 + 0x5B] * 0xC0) + DataPtr_TileGraphicsB, 0xFFFE, 0xC, 0xC,
+                              (TileMap_12x12[gStadiumUIMap[0xE7 - i] - i * 2 + 0x5B] * 0xC0) + gGbEmuFont2Data, 0xFFFE, 0xC, 0xC,
                               0x10);
                 xpos += TileMap_12x12[TileMap_12x12[gStadiumUIMap[0xE7 - i] - i * 2 + 0x5B]];
                 if (gStadiumUIMap[0xE6 - i] < 0x40) {
@@ -1194,10 +1194,10 @@ void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg
     }
 
     for (x = 0; x < 6; x++) {
-        FillBackgroundPattern(dst + 0xB916 + x * 46);
+        GbEmu_DrawFramedPanel(dst + 0xB916 + x * 46);
         if (arg1 != NULL) {
             osInvalDCache((*arg1) + (0, x), sizeof((*arg1)[x])); // FAKE: (0, x)
-            BlendRect(dst + 0xBCD9 + x * 46, (*arg1) + (0, x), 0, 40, 40);
+            GbEmu_BlitWithPixelOp(dst + 0xBCD9 + x * 46, (*arg1) + (0, x), 0, 40, 40);
         }
     }
 
@@ -1209,8 +1209,8 @@ void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg
     }
 
     for (x = 0; x < 320; x += 8) {
-        BlendRect(dst + 33 * 320 + x, (u16*) ((u8*) DataStruct_TileAssets + 0x3500), 0xFFFF, 8, 8);
-        BlendRect(dst + 113 * 320 + x, (u16*) ((u8*) DataStruct_TileAssets + 0x3580), 0xFFFF, 8, 8);
+        GbEmu_BlitWithPixelOp(dst + 33 * 320 + x, (u16*) ((u8*) DataStruct_TileAssets + 0x3500), 0xFFFF, 8, 8);
+        GbEmu_BlitWithPixelOp(dst + 113 * 320 + x, (u16*) ((u8*) DataStruct_TileAssets + 0x3580), 0xFFFF, 8, 8);
     }
 
     for (j = 0; j < 72; j++) {
@@ -1234,20 +1234,20 @@ void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg
             break;
     }
 
-    BlendRect(dst + 0x4E38, (u16*) ((u8*) DataStruct_TileAssets + 0x3600), 0, 0x56, 0x21);
-    BlendRect((u16*) (gCurrentFramebufferPtr + 0x61E0), (u16*) ((u8*) DataStruct_TileAssets + 0x4CB0), 0, 0x3C, 0x4B);
+    GbEmu_BlitWithPixelOp(dst + 0x4E38, (u16*) ((u8*) DataStruct_TileAssets + 0x3600), 0, 0x56, 0x21);
+    GbEmu_BlitWithPixelOp((u16*) (gCurrentFramebufferPtr + 0x61E0), (u16*) ((u8*) DataStruct_TileAssets + 0x4CB0), 0, 0x3C, 0x4B);
 
     switch (arg3) {
         case 0:
-            BlendRect((u16*) (gCurrentFramebufferPtr + 0x6706), (u16*) ((u8*) DataStruct_TileAssets + 0x6FD8), 0, 0x17, 0x19);
+            GbEmu_BlitWithPixelOp((u16*) (gCurrentFramebufferPtr + 0x6706), (u16*) ((u8*) DataStruct_TileAssets + 0x6FD8), 0, 0x17, 0x19);
             break;
         case 1:
             break;
         case 2:
-            BlendRect((u16*) (gCurrentFramebufferPtr + 0x6706), (u16*) ((u8*) DataStruct_TileAssets + 0x7730), 0, 0x17, 0x19);
+            GbEmu_BlitWithPixelOp((u16*) (gCurrentFramebufferPtr + 0x6706), (u16*) ((u8*) DataStruct_TileAssets + 0x7730), 0, 0x17, 0x19);
             break;
         case 3:
-            BlendRect((u16*) (gCurrentFramebufferPtr + 0x6706), (u16*) ((u8*) DataStruct_TileAssets + 0x7BE0), 0, 0x17, 0x19);
+            GbEmu_BlitWithPixelOp((u16*) (gCurrentFramebufferPtr + 0x6706), (u16*) ((u8*) DataStruct_TileAssets + 0x7BE0), 0, 0x17, 0x19);
             break;
     }
 
@@ -1312,7 +1312,7 @@ s32 EmuTick(s32 arg0, s32 arg1) {
     return var_s0;
 }
 
-void EmuInitBuffers(GbPakDeviceState* arg0) {
+void GbEmu_ResetEmulatorState(GbPakDeviceState* arg0) {
   s32 i;
   s32 var_a0;
   u8* var_a1;
@@ -1374,15 +1374,15 @@ void EmuInitBuffers(GbPakDeviceState* arg0) {
   arg0->romSize = 0x8000;
   arg0->ramSize = 0x8000;
 
-  UpdateAudioParameters(arg0);
+  GbEmu_InitContext(arg0);
 }
 
-void ClearFramebuffers(void) {
+void GbEmu_ClearFramebuffers(void) {
   bzero(FramebufferImage0->img_p, 0x2D000);
   bzero(FramebufferImage1->img_p, 0x2D000);
 }
 
-void DelayMs(OSTime arg0) {
+void GbEmu_Delay(OSTime arg0) {
   OSMesgQueue sp68;
   void* sp64;
   OSTimer sp40;
@@ -1395,20 +1395,20 @@ void DelayMs(OSTime arg0) {
 void DrawStadiumScreen(s32, s32);
 void DrawStadiumUI(void);
 void GbPak_InitGfx(void);
-void SetAudioVolume(s32);
+void GbApu_SelectRegionClock(s32);
 void GbAudio_QueueWrite(u16, u8, u16);
 void GbAudio_Reset(void);
-void GbAudio_SetNoiseTable(TileAssetFragment*);
+void GbApu_Reset(TileAssetFragment*);
 void func_81208F94(void);
-void GbAudio_SetMode(s32);
+void GbAudio_SetAlternateRendererEnabled(s32);
 
 void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16 (*arg5)[6][0x640]) {
     GbPakDeviceState* emu;
     s32 pad[2];
     s32 i;
 
-    FramebufferImage0 = FramebufferImage_Allocate(0, 2, 320, 288, 1);
-    FramebufferImage1 = FramebufferImage_Allocate(0, 2, 320, 288, 1);
+    FramebufferImage0 = GfxImage_Allocate(0, 2, 320, 288, 1);
+    FramebufferImage1 = GfxImage_Allocate(0, 2, 320, 288, 1);
     TileAssetPtr = main_pool_alloc(0x1FEAE8, 0);
     if (TileAssetPtr == NULL) {
         GbPakRetryCounter = 1;
@@ -1436,11 +1436,11 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     osViSetSpecialFeatures(OS_VI_DITHER_FILTER_OFF);
     osViBlack(TRUE);
 
-    Flag_GbPakThreadRunning = 0;
-    Ptr_GbPakMsgQueue = arg4;
-    osCreateMesgQueue(&MsgQueue_GbPakControl, MsgQueue_GbPak, ARRAY_COUNT(MsgQueue_GbPak));
-    osCreateThread(&GbPakThread.thread, arg2, (void (*)(void*)) GbPak_ThreadMain, NULL, GbPakThread.stack + sizeof(GbPakThread.stack), arg3);
-    osStartThread(&GbPakThread.thread);
+    gGbPakServiceThreadActive = 0;
+    gGbPakSiEventQueue = arg4;
+    osCreateMesgQueue(&gGbPakServiceQueue, gGbPakServiceQueueMessages, ARRAY_COUNT(gGbPakServiceQueueMessages));
+    osCreateThread(&gGbPakServiceThread.thread, arg2, (void (*)(void*)) GbPak_ThreadMain, NULL, gGbPakServiceThread.stack + sizeof(gGbPakServiceThread.stack), arg3);
+    osStartThread(&gGbPakServiceThread.thread);
 
     UnknownCounterB = 0;
     UnknownPtr = TempScreenBufferPtr;
@@ -1467,18 +1467,18 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
             } else {
                 emu->romImage = GbPakDevice->romImage;
             }
-            EmuInitBuffers(emu);
+            GbEmu_ResetEmulatorState(emu);
             if ((i == 0) && (arg1 >= 0)) {
                 if (arg1 < 4) {
                     emu->unk_5DCA = 1;
                 }
                 emu->controllerChannel = arg1;
-                osSendMesg(&MsgQueue_GbPakControl, emu, OS_MESG_BLOCK);
+                osSendMesg(&gGbPakServiceQueue, emu, OS_MESG_BLOCK);
             }
         }
     }
 
-    DmaCopyAsyncRange((u32)(TempScreenBufferPtr + 0xC5C0), (u32)D_102BA0, ((u32)fragment2_ROM_START + 1) & ~1, 0);
+    Dma_WriteChunks((u32)(TempScreenBufferPtr + 0xC5C0), (u32)D_102BA0, ((u32)fragment2_ROM_START + 1) & ~1, 0);
     Yay0_Decompress((void*)((u32)TempScreenBufferPtr + 0xC5C0), TempScreenBufferPtr);
     DataStruct_TileAssets = TempScreenBufferPtr;
     TempScreenBufferPtr += 0xC5C0;
@@ -1493,11 +1493,11 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     }
 
     GbPak_InitGfx();
-    DmaCopyAsyncRange((u32)(TempScreenBufferPtr + 0x80000), (u32)fragment1_misc_yay0_ROM_START, ((u32)D_F4130 + 1) & ~1, 0);
+    Dma_WriteChunks((u32)(TempScreenBufferPtr + 0x80000), (u32)fragment1_misc_yay0_ROM_START, ((u32)D_F4130 + 1) & ~1, 0);
     Yay0_Decompress((void*)((u32)TempScreenBufferPtr + 0x80000), TempScreenBufferPtr);
-    GbAudio_SetNoiseTable((TileAssetFragment*)TempScreenBufferPtr);
-    GbAudio_SetMode(0);
-    SetAudioVolume(0);
+    GbApu_Reset((TileAssetFragment*)TempScreenBufferPtr);
+    GbAudio_SetAlternateRendererEnabled(0);
+    GbApu_SelectRegionClock(0);
     GbAudio_Reset();
     GbAudio_QueueWrite(0xFF26, 0, 0);
     GbAudio_QueueWrite(0xFF26, 0x8F, 0x10);
@@ -1506,9 +1506,9 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     func_81208F94();
     TempScreenBufferPtr += 0x80000;
 
-    gPrevDataSetIndex = ScreenMode_Current;
+    gPrevDataSetIndex = gGbEmuPresentationMode;
     gAudioInitialized = 0;
-    if (ScreenMode_Current == 2) {
+    if (gGbEmuPresentationMode == 2) {
         gDataSetLoadResult = 2;
     } else {
         gDataSetLoadResult = 1;
@@ -1522,18 +1522,18 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
         TempScreenBufferPtr += 0x2800;
     }
 
-    switch (ScreenMode_Current) {
+    switch (gGbEmuPresentationMode) {
         case 2:
-            DmaCopyAsyncRange((u32)TileAssetFragments[0], (u32)D_FDE40, ((u32)D_102BA0_END + 1) & ~1, 0);
+            Dma_WriteChunks((u32)TileAssetFragments[0], (u32)D_FDE40, ((u32)D_102BA0_END + 1) & ~1, 0);
             Yay0_Decompress(TileAssetFragments[0], TileAssetFragments[2]);
             /* fallthrough */
         case 1:
-            DmaCopyAsyncRange((u32)TileAssetFragments[0], (u32)D_F5450, ((u32)D_FDE40 + 1) & ~1, 0);
+            Dma_WriteChunks((u32)TileAssetFragments[0], (u32)D_F5450, ((u32)D_FDE40 + 1) & ~1, 0);
             Yay0_Decompress(TileAssetFragments[0], TileAssetFragments[1]);
             break;
         case 0:
         default:
-            DmaCopyAsyncRange((u32)TileAssetFragments[0], (u32)D_F4920, ((u32)D_F5450 + 1) & ~1, 0);
+            Dma_WriteChunks((u32)TileAssetFragments[0], (u32)D_F4920, ((u32)D_F5450 + 1) & ~1, 0);
             Yay0_Decompress(TileAssetFragments[0], TileAssetFragments[1]);
             break;
     }
@@ -1551,7 +1551,7 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
         if (emu->unk_5DCA == 0) {
             GbPakRetryCounter = 1;
             UnknownFlag = 1;
-            ClearFramebuffers();
+            GbEmu_ClearFramebuffers();
             return;
         }
         GbPakStateByte = 0xFF;
@@ -1561,7 +1561,7 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
         if ((emu->headerMatchIndex == 0) || (emu->headerMatchIndex == 2)) {
             GbPakRetryCounter = 1;
             UnknownFlag = 1;
-            ClearFramebuffers();
+            GbEmu_ClearFramebuffers();
             return;
         }
         GbPakRetryCounter = 5;
@@ -1593,13 +1593,13 @@ void LoadCompressedBank(GbPakDeviceState* arg0) {
         do {
             bank = *list & 0xFF;
             count = *list / 256;
-            DmaCopyAsyncRange((u32) arg0->romImage + 0xEC000, rom, list[1] + rom, 0);
+            Dma_WriteChunks((u32) arg0->romImage + 0xEC000, rom, list[1] + rom, 0);
             rom += list[1];
             list += 2;
             Yay0_Decompress((void*) ((u32) arg0->romImage + 0xEC000), (void*) ((u32) arg0->romImage + (bank << 14)));
             for (i = 0; i < count; i++) {
                 if (i + 1 >= arg0->unk_5DC6) {
-                    DmaCopyAsyncRange((u32) arg0->romImage + 0xF0000, rom, *list + rom, 0);
+                    Dma_WriteChunks((u32) arg0->romImage + 0xF0000, rom, *list + rom, 0);
                     Yay0_Decompress((void*) ((u32) arg0->romImage + 0xF0000), (void*) ((u32) arg0->romImage + 0xEC000));
                     src = (u8*) ((u32) arg0->romImage + 0xEC000);
                     dst = (u8*) ((u32) arg0->romImage + (bank << 14));
@@ -1614,14 +1614,14 @@ void LoadCompressedBank(GbPakDeviceState* arg0) {
     }
 }
 
-void UpdateAudioModeIndices(void) {
-  if ((GbPakStatusFlags.unk_01 == GbPakStatusFlags.unk_00) || (GbPakStatusFlags.unk_00 >= 5) || (GbPakStatusFlags.unk_01 >= 5)) {
-      GbPakStatusFlags.unk_00 = 0;
-      GbPakStatusFlags.unk_01 = 1;
+void GbEmu_ApplyButtonMapping(void) {
+  if ((gGbEmuButtonBindingSelections.unk_01 == gGbEmuButtonBindingSelections.unk_00) || (gGbEmuButtonBindingSelections.unk_00 >= 5) || (gGbEmuButtonBindingSelections.unk_01 >= 5)) {
+      gGbEmuButtonBindingSelections.unk_00 = 0;
+      gGbEmuButtonBindingSelections.unk_01 = 1;
   }
 
-  gAudioModeIndex0 = (GbPakStatusFlags.unk_00 == 1) ?   0x20 : (GbPakStatusFlags.unk_00 == 2) ? 0x10 : (GbPakStatusFlags.unk_00 == 3) ? 2 : (GbPakStatusFlags.unk_00 == 4) ? 4 : 0x1000;
-  gAudioModeIndex1 = (GbPakStatusFlags.unk_01 == 0) ? 0x1000 : (GbPakStatusFlags.unk_01 == 2) ? 0x10 : (GbPakStatusFlags.unk_01 == 3) ? 2 : (GbPakStatusFlags.unk_01 == 4) ? 4 : 0x20;
+  gAudioModeIndex0 = (gGbEmuButtonBindingSelections.unk_00 == 1) ?   0x20 : (gGbEmuButtonBindingSelections.unk_00 == 2) ? 0x10 : (gGbEmuButtonBindingSelections.unk_00 == 3) ? 2 : (gGbEmuButtonBindingSelections.unk_00 == 4) ? 4 : 0x1000;
+  gAudioModeIndex1 = (gGbEmuButtonBindingSelections.unk_01 == 0) ? 0x1000 : (gGbEmuButtonBindingSelections.unk_01 == 2) ? 0x10 : (gGbEmuButtonBindingSelections.unk_01 == 3) ? 2 : (gGbEmuButtonBindingSelections.unk_01 == 4) ? 4 : 0x20;
 }
 
 void AudioStateMachine(GbPakDeviceState* arg0) {
@@ -1641,37 +1641,37 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
         case 11:
             Flag_GbPakInitialized = 0x15;
         block_9:
-            GbAudio_SetMode(1);
-            GbAudio_PlayStream(1);
+            GbAudio_SetAlternateRendererEnabled(1);
+            GbAudio_SetAlternateStreamId(1);
 
-            GbPakStatusFlags.unk_00 = (gAudioModeIndex0 == 0x20)   ? 1
+            gGbEmuButtonBindingSelections.unk_00 = (gAudioModeIndex0 == 0x20)   ? 1
                                 : (gAudioModeIndex0 == 0x10) ? 2
                                 : (gAudioModeIndex0 == 2)    ? 3
                                 : (gAudioModeIndex0 == 4)    ? 4
                                                        : 0;
-            GbPakStatusFlags.unk_01 = (gAudioModeIndex0 == 0x1000) ? 0
+            gGbEmuButtonBindingSelections.unk_01 = (gAudioModeIndex0 == 0x1000) ? 0
                                 : (gAudioModeIndex0 == 0x10) ? 2
                                 : (gAudioModeIndex0 == 2)    ? 3
                                 : (gAudioModeIndex0 == 4)    ? 4
                                                        : 1;
 
-            if (GbPakStatusFlags.unk_01 == GbPakStatusFlags.unk_00) {
-                GbPakStatusFlags.unk_00 = 0;
-                GbPakStatusFlags.unk_01 = 1;
+            if (gGbEmuButtonBindingSelections.unk_01 == gGbEmuButtonBindingSelections.unk_00) {
+                gGbEmuButtonBindingSelections.unk_00 = 0;
+                gGbEmuButtonBindingSelections.unk_01 = 1;
             }
             return;
         default:
             if ((Flag_GbPakInitialized == 0x12) || (Flag_GbPakInitialized == 0x13) || (Flag_GbPakInitialized == 0x14) || (Flag_GbPakInitialized == 0x15)) {
-                GbAudio_PlayStream(1);
-                GbAudio_SetMode(0);
+                GbAudio_SetAlternateStreamId(1);
+                GbAudio_SetAlternateRendererEnabled(0);
                 Flag_GbPakInitialized = 0;
                 return;
             }
             if (Flag_GbPakInitialized == 0) {
                 if ((gPlayer1Controller->buttonPressed & 8) && (arg0->inputCooldown == 0) && (Msg_GbPakStatus == 0x40)) {
                     arg0->unk_53FD = 0x40;
-                    GbAudio_SetMode(1);
-                    GbAudio_PlayStream(1);
+                    GbAudio_SetAlternateRendererEnabled(1);
+                    GbAudio_SetAlternateStreamId(1);
                     Flag_GbPakInitialized = 1;
                 }
                 return;
@@ -1690,13 +1690,13 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             }
                             if (gPlayer1Controller->buttonPressed & 0x800) {
                             set_3:
-                                GbAudio_PlayStream(7);
+                                GbAudio_SetAlternateStreamId(7);
                                 Flag_GbPakInitialized = 3;
                                 return;
                             }
                             if (gPlayer1Controller->buttonPressed & 0x400) {
                             set_2:
-                                GbAudio_PlayStream(7);
+                                GbAudio_SetAlternateStreamId(7);
                                 Flag_GbPakInitialized = 2;
                                 return;
                             }
@@ -1704,17 +1704,17 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                         break;
                     case 17:
                         if (gPlayer1Controller->buttonDown == 0) {
-                            UpdateAudioModeIndices();
+                            GbEmu_ApplyButtonMapping();
                             arg0->unk_53FD = 0x40;
-                            GbAudio_PlayStream(1);
-                            GbAudio_SetMode(0);
+                            GbAudio_SetAlternateStreamId(1);
+                            GbAudio_SetAlternateRendererEnabled(0);
                             Flag_GbPakInitialized = 0;
                         }
                         break;
                     case 2:
                         if (gPlayer1Controller->buttonPressed & 0x800) {
                         set_1:
-                            GbAudio_PlayStream(7);
+                            GbAudio_SetAlternateStreamId(7);
                             Flag_GbPakInitialized = 1;
                             return;
                         }
@@ -1722,7 +1722,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             goto set_3;
                         }
                         if (gPlayer1Controller->buttonPressed & 0x9000) {
-                            GbAudio_PlayStream(2);
+                            GbAudio_SetAlternateStreamId(2);
                             Flag_GbPakInitialized = 4;
                             return;
                         }
@@ -1738,7 +1738,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             goto set_1;
                         }
                         if (gPlayer1Controller->buttonPressed & 0x9000) {
-                            GbAudio_PlayStream(6);
+                            GbAudio_SetAlternateStreamId(6);
                             Flag_GbPakInitialized = 6;
                             return;
                         }
@@ -1749,12 +1749,12 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                     case 4:
                     case 5:
                         if (gPlayer1Controller->buttonPressed & 0x4000) {
-                            GbAudio_PlayStream(8);
+                            GbAudio_SetAlternateStreamId(8);
                             Flag_GbPakInitialized = 2;
                             return;
                         }
                         if (gPlayer1Controller->buttonPressed & 0x300) {
-                            GbAudio_PlayStream(5);
+                            GbAudio_SetAlternateStreamId(5);
                             Flag_GbPakInitialized = Flag_GbPakInitialized == 4 ? 5 : 4;
                             return;
                         }
@@ -1771,12 +1771,12 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
                             back_to_3:
-                                GbAudio_PlayStream(8);
+                                GbAudio_SetAlternateStreamId(8);
                                 Flag_GbPakInitialized = 3;
                                 return;
                             case 0x8000:
-                                GbAudio_PlayStream(6);
-                                gEmuSavedAudioMode = (s32) GbPakStatusFlags.unk_00;
+                                GbAudio_SetAlternateStreamId(6);
+                                gEmuSavedAudioMode = (s32) gGbEmuButtonBindingSelections.unk_00;
                                 Flag_GbPakPowerState = 0;
                                 Flag_GbPakInitialized = 7;
                                 return;
@@ -1795,12 +1795,12 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             case 0x4:
                                 var_v0 = 4;
                             block_96:
-                                if (GbPakStatusFlags.unk_01 == var_v0) {
-                                    GbAudio_PlayStream(3);
+                                if (gGbEmuButtonBindingSelections.unk_01 == var_v0) {
+                                    GbAudio_SetAlternateStreamId(3);
                                     return;
                                 }
-                                GbPakStatusFlags.unk_00 = var_v0;
-                                GbAudio_PlayStream(6);
+                                gGbEmuButtonBindingSelections.unk_00 = var_v0;
+                                GbAudio_SetAlternateStreamId(6);
                                 if (Flag_GbPakInitialized == 8) {
                                     Flag_GbPakInitialized = 9;
                                     return;
@@ -1808,7 +1808,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 break;
                             case 0x400:
                             case 0x800:
-                                GbAudio_PlayStream(7);
+                                GbAudio_SetAlternateStreamId(7);
                                 Flag_GbPakInitialized = 0xA;
                                 return;
                         }
@@ -1818,9 +1818,9 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             case 0x4000:
                                 goto back_to_3;
                             case 0x8000:
-                                GbAudio_PlayStream(6);
+                                GbAudio_SetAlternateStreamId(6);
                                 Flag_GbPakPowerState = 0;
-                                gEmuSavedAudioMode = (s32) GbPakStatusFlags.unk_01;
+                                gEmuSavedAudioMode = (s32) gGbEmuButtonBindingSelections.unk_01;
                                 Flag_GbPakInitialized = 0xB;
                                 return;
                             case 0x1000:
@@ -1838,12 +1838,12 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                             case 0x4:
                                 var_v0_2 = 4;
                             block_119:
-                                if (GbPakStatusFlags.unk_00 == var_v0_2) {
-                                    GbAudio_PlayStream(3);
+                                if (gGbEmuButtonBindingSelections.unk_00 == var_v0_2) {
+                                    GbAudio_SetAlternateStreamId(3);
                                     return;
                                 }
-                                GbPakStatusFlags.unk_01 = var_v0_2;
-                                GbAudio_PlayStream(6);
+                                gGbEmuButtonBindingSelections.unk_01 = var_v0_2;
+                                GbAudio_SetAlternateStreamId(6);
                                 if (Flag_GbPakInitialized == 0xC) {
                                     Flag_GbPakInitialized = 0xD;
                                     return;
@@ -1851,7 +1851,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                                 break;
                             case 0x400:
                             case 0x800:
-                                GbAudio_PlayStream(7);
+                                GbAudio_SetAlternateStreamId(7);
                                 Flag_GbPakInitialized = 6;
                                 return;
                         }
@@ -1871,31 +1871,31 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                     case 8:
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
-                                GbAudio_PlayStream(8);
-                                GbPakStatusFlags.unk_00 = gEmuSavedAudioMode;
+                                GbAudio_SetAlternateStreamId(8);
+                                gGbEmuButtonBindingSelections.unk_00 = gEmuSavedAudioMode;
                                 Flag_GbPakInitialized = 9;
                                 return;
                             case 0x8000:
-                                if (GbPakStatusFlags.unk_00 == GbPakStatusFlags.unk_01) {
-                                    GbAudio_PlayStream(3);
+                                if (gGbEmuButtonBindingSelections.unk_00 == gGbEmuButtonBindingSelections.unk_01) {
+                                    GbAudio_SetAlternateStreamId(3);
                                 } else {
-                                    GbAudio_PlayStream(6);
+                                    GbAudio_SetAlternateStreamId(6);
                                     Flag_GbPakInitialized = 9;
                                 }
                                 return;
                             case 0x200:
-                                GbPakStatusFlags.unk_00--;
-                                if ((GbPakStatusFlags.unk_00 < 0) || (GbPakStatusFlags.unk_00 >= 5)) {
-                                    GbPakStatusFlags.unk_00 = 0U;
+                                gGbEmuButtonBindingSelections.unk_00--;
+                                if ((gGbEmuButtonBindingSelections.unk_00 < 0) || (gGbEmuButtonBindingSelections.unk_00 >= 5)) {
+                                    gGbEmuButtonBindingSelections.unk_00 = 0U;
                                 }
-                                GbAudio_PlayStream(5);
+                                GbAudio_SetAlternateStreamId(5);
                                 return;
                             case 0x100:
-                                GbPakStatusFlags.unk_00++;
-                                if (GbPakStatusFlags.unk_00 >= 5) {
-                                    GbPakStatusFlags.unk_00 = 4U;
+                                gGbEmuButtonBindingSelections.unk_00++;
+                                if (gGbEmuButtonBindingSelections.unk_00 >= 5) {
+                                    gGbEmuButtonBindingSelections.unk_00 = 4U;
                                 }
-                                GbAudio_PlayStream(5);
+                                GbAudio_SetAlternateStreamId(5);
                                 return;
                             case 0x1000:
                                 var_v0 = 0;
@@ -1917,31 +1917,31 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                     case 12:
                         switch (gPlayer1Controller->buttonPressed) {
                             case 0x4000:
-                                GbAudio_PlayStream(8);
-                                GbPakStatusFlags.unk_01 = gEmuSavedAudioMode;
+                                GbAudio_SetAlternateStreamId(8);
+                                gGbEmuButtonBindingSelections.unk_01 = gEmuSavedAudioMode;
                                 Flag_GbPakInitialized = 0xD;
                                 return;
                             case 0x8000:
-                                if (GbPakStatusFlags.unk_00 == GbPakStatusFlags.unk_01) {
-                                    GbAudio_PlayStream(3);
+                                if (gGbEmuButtonBindingSelections.unk_00 == gGbEmuButtonBindingSelections.unk_01) {
+                                    GbAudio_SetAlternateStreamId(3);
                                 } else {
-                                    GbAudio_PlayStream(6);
+                                    GbAudio_SetAlternateStreamId(6);
                                     Flag_GbPakInitialized = 0xD;
                                 }
                                 return;
                             case 0x200:
-                                GbPakStatusFlags.unk_01--;
-                                if ((GbPakStatusFlags.unk_01 < 0) || (GbPakStatusFlags.unk_01 >= 5)) {
-                                    GbPakStatusFlags.unk_01 = 0U;
+                                gGbEmuButtonBindingSelections.unk_01--;
+                                if ((gGbEmuButtonBindingSelections.unk_01 < 0) || (gGbEmuButtonBindingSelections.unk_01 >= 5)) {
+                                    gGbEmuButtonBindingSelections.unk_01 = 0U;
                                 }
-                                GbAudio_PlayStream(5);
+                                GbAudio_SetAlternateStreamId(5);
                                 return;
                             case 0x100:
-                                GbPakStatusFlags.unk_01++;
-                                if (GbPakStatusFlags.unk_01 >= 5) {
-                                    GbPakStatusFlags.unk_01 = 4U;
+                                gGbEmuButtonBindingSelections.unk_01++;
+                                if (gGbEmuButtonBindingSelections.unk_01 >= 5) {
+                                    gGbEmuButtonBindingSelections.unk_01 = 4U;
                                 }
-                                GbAudio_PlayStream(5);
+                                GbAudio_SetAlternateStreamId(5);
                                 return;
                             case 0x1000:
                                 var_v0_2 = 0;
@@ -1974,7 +1974,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                         return;
                     case 14:
                         if (gPlayer1Controller->buttonDown == 0) {
-                            UpdateAudioModeIndices();
+                            GbEmu_ApplyButtonMapping();
                             Flag_GbPakInitialized = 0xF;
                         }
                         break;
@@ -1987,8 +1987,8 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                         Flag_GbPakInitialized = 0x10;
                         /* fallthrough */
                     case 16:
-                        GbAudio_PlayStream(1);
-                        GbAudio_SetMode(0);
+                        GbAudio_SetAlternateStreamId(1);
+                        GbAudio_SetAlternateRendererEnabled(0);
                         GbAudio_Reset();
                         break;
                 }
@@ -2045,7 +2045,7 @@ void GbPak_DrawMenu(s32 arg0) {
         case 1:
         case 17:
             base = fb + 0x3C3E;
-            BlendRect(base + 0x1B8A, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
+            GbEmu_BlitWithPixelOp(base + 0x1B8A, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
             c1 = 0xB;
             c2 = 8;
             c3 = 8;
@@ -2059,14 +2059,14 @@ void GbPak_DrawMenu(s32 arg0) {
             goto draw_items;
         case 2:
             base = fb + 0x3C3E;
-            BlendRect(base + 0x348A, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
+            GbEmu_BlitWithPixelOp(base + 0x348A, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
             c1 = 8;
             c2 = 0xB;
             c3 = 8;
             goto draw_items;
         case 3:
             base = fb + 0x3C3E;
-            BlendRect(base + 0x4D8A, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
+            GbEmu_BlitWithPixelOp(base + 0x4D8A, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
             c1 = 8;
             c2 = 8;
             c3 = 0xB;
@@ -2098,7 +2098,7 @@ void GbPak_DrawMenu(s32 arg0) {
             Gfx_DrawTileMap(fb + 0x3C3E, gText_StartSelectInfo);
             break;
         case 4:
-            BlendRect(fb + 0xDC48, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
+            GbEmu_BlitWithPixelOp(fb + 0xDC48, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
             /* fallthrough */
         case 14:
             c1 = 0xB;
@@ -2107,7 +2107,7 @@ void GbPak_DrawMenu(s32 arg0) {
             goto draw_submenu;
         case 5:
             base = fb + 0x3C3E;
-            BlendRect(base + 0xA050, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
+            GbEmu_BlitWithPixelOp(base + 0xA050, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
             c1 = 8;
             c2 = 0xB;
         draw_submenu:
@@ -2130,11 +2130,11 @@ void GbPak_DrawMenu(s32 arg0) {
         case 13:
             base = fb + 0x3C3E;
             y = 0x4A;
-            if (ScreenMode_Current == 1) {
-                BlendRect(base + 0x784, (u16*)(DataStruct_TileAssets + 0xB758), 0, 16, 12);
+            if (gGbEmuPresentationMode == 1) {
+                GbEmu_BlitWithPixelOp(base + 0x784, (u16*)(DataStruct_TileAssets + 0xB758), 0, 16, 12);
                 Gfx_DrawTileMap(base, gText_ButtonDoubleSpeed);
-            } else if (ScreenMode_Current == 2) {
-                BlendRect(base + 0x784, (u16*)(DataStruct_TileAssets + 0xB758), 0, 16, 12);
+            } else if (gGbEmuPresentationMode == 2) {
+                GbEmu_BlitWithPixelOp(base + 0x784, (u16*)(DataStruct_TileAssets + 0xB758), 0, 16, 12);
                 Gfx_DrawTileMap(base, gText_EachPressPokemon);
             } else {
                 y = 0x32;
@@ -2151,7 +2151,7 @@ void GbPak_DrawMenu(s32 arg0) {
             }
             gText_Config[2] = y - 5;
             Gfx_DrawTileMap(base, gText_Config);
-            BlendRect(y * 320 + base + 0x3C1C, (u16*)(DataStruct_TileAssets + 0xB2D8), 0, 16, 12);
+            GbEmu_BlitWithPixelOp(y * 320 + base + 0x3C1C, (u16*)(DataStruct_TileAssets + 0xB2D8), 0, 16, 12);
             gText_ButtonCancel[2] = y + 0x30;
             Gfx_DrawTileMap(base, gText_ButtonCancel);
             break;
@@ -2183,11 +2183,11 @@ void GbPak_DrawMenu(s32 arg0) {
             row = y * 320;
             base = fb + 0x3C3E;
         draw_cursor:
-            BlendRect((y + i) * 320 + base + 0xF14, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
+            GbEmu_BlitWithPixelOp((y + i) * 320 + base + 0xF14, (u16*)(DataStruct_TileAssets + 0xC2F8), 0, 16, 10);
             x = 0x28;
             i = 1;
         draw_first:
-            switch (GbPakStatusFlags.unk_00) {
+            switch (gGbEmuButtonBindingSelections.unk_00) {
                 case 0:
                 default:
                     j = 0xBBD8;
@@ -2205,12 +2205,12 @@ void GbPak_DrawMenu(s32 arg0) {
                     j = 0xB458;
                     break;
             }
-            BlendRect((((i == 0) ? 0x28 : x) + row) + base + 0xCBC, (u16*)(DataStruct_TileAssets + j), 0, 16, 12);
+            GbEmu_BlitWithPixelOp((((i == 0) ? 0x28 : x) + row) + base + 0xCBC, (u16*)(DataStruct_TileAssets + j), 0, 16, 12);
             if (i == 0) {
                 break;
             }
         draw_second:
-            switch (GbPakStatusFlags.unk_01) {
+            switch (gGbEmuButtonBindingSelections.unk_01) {
                 case 0:
                     j = 0xBBD8;
                     break;
@@ -2228,25 +2228,25 @@ void GbPak_DrawMenu(s32 arg0) {
                     j = 0xB458;
                     break;
             }
-            BlendRect((((i == 0) ? 0x28 : x) + row) + base + 0x25BC, (u16*)(DataStruct_TileAssets + j), 0, 16, 12);
+            GbEmu_BlitWithPixelOp((((i == 0) ? 0x28 : x) + row) + base + 0x25BC, (u16*)(DataStruct_TileAssets + j), 0, 16, 12);
             break; } switch (Flag_GbPakInitialized) { case 6: case 7: case 8: case 9: i = x + 8; row = y * 320; j = 0x30; base = fb + 0x3C3E; goto draw_arrows; case 10: case 11: case 12: case 13: i = 0x30; row = y * 320; j = x + 8; base = fb + 0x3C3E; draw_arrows: p = (row + i) + base; // single line needed to match
-            BlendRect(p + 0xC80, (u16*)(DataStruct_TileAssets + 0xBF98), 0, 24, 12);
-            BlendRect(p + 0xC98, (u16*)(DataStruct_TileAssets + 0xC438), 0, 16, 12);
+            GbEmu_BlitWithPixelOp(p + 0xC80, (u16*)(DataStruct_TileAssets + 0xBF98), 0, 24, 12);
+            GbEmu_BlitWithPixelOp(p + 0xC98, (u16*)(DataStruct_TileAssets + 0xC438), 0, 16, 12);
             p = (row + j) + base;
-            BlendRect(p + 0x257E, (u16*)(DataStruct_TileAssets + 0xBD58), 0, 24, 12);
-            BlendRect(p + 0x2598, (u16*)(DataStruct_TileAssets + 0xC438), 0, 16, 12);
+            GbEmu_BlitWithPixelOp(p + 0x257E, (u16*)(DataStruct_TileAssets + 0xBD58), 0, 24, 12);
+            GbEmu_BlitWithPixelOp(p + 0x2598, (u16*)(DataStruct_TileAssets + 0xC438), 0, 16, 12);
             break;
     }
 
     switch (Flag_GbPakInitialized) {
         case 8:
-            j = GbPakStatusFlags.unk_00;
+            j = gGbEmuButtonBindingSelections.unk_00;
             i = 0;
             base = fb + 0x3C3E;
             break;
         case 12:
             i = 0x14;
-            j = GbPakStatusFlags.unk_01;
+            j = gGbEmuButtonBindingSelections.unk_01;
             base = fb + 0x3C3E;
             break;
         default:
@@ -2254,11 +2254,11 @@ void GbPak_DrawMenu(s32 arg0) {
     }
     row = y + i;
     p = row * 320 + base;
-    BlendRect(p + 0xCBA, (u16*)(DataStruct_TileAssets + 0xBBD8), 0, 16, 12);
-    BlendRect(p + 0xCCC, (u16*)(DataStruct_TileAssets + 0xB8D8), 0, 16, 12);
-    BlendRect(p + 0xCDE, (u16*)(DataStruct_TileAssets + 0xBA58), 0, 16, 12);
-    BlendRect(p + 0xCF0, (u16*)(DataStruct_TileAssets + 0xB5D8), 0, 16, 12);
-    BlendRect(p + 0xD02, (u16*)(DataStruct_TileAssets + 0xB458), 0, 16, 12);
+    GbEmu_BlitWithPixelOp(p + 0xCBA, (u16*)(DataStruct_TileAssets + 0xBBD8), 0, 16, 12);
+    GbEmu_BlitWithPixelOp(p + 0xCCC, (u16*)(DataStruct_TileAssets + 0xB8D8), 0, 16, 12);
+    GbEmu_BlitWithPixelOp(p + 0xCDE, (u16*)(DataStruct_TileAssets + 0xBA58), 0, 16, 12);
+    GbEmu_BlitWithPixelOp(p + 0xCF0, (u16*)(DataStruct_TileAssets + 0xB5D8), 0, 16, 12);
+    GbEmu_BlitWithPixelOp(p + 0xD02, (u16*)(DataStruct_TileAssets + 0xB458), 0, 16, 12);
     row += 7;
     x = j * 0x12 + 0x37;
     for (j = 1; j < 0x11; j++) {
@@ -2335,9 +2335,9 @@ u8 gText_ButtonCancel[24] = { 0x80, 0x2C, 0x7A, 0xA, 0xA, 0xE, 0x42, 0x75, 0x74,
 u8 gText_UnableToSave[24] = { 0x80, 0x64, 0x3C, 0xC, 8, 0xF, 0x55, 0x6E, 0x61, 0x62, 0x6C, 0x65, 0x20, 0x74, 0x6F, 0x20, 0x53, 0x41, 0x56, 0x45, 0x2E, 0, 0, 0 };
 u8 gText_LeavingN64[128] = { 0x80, 0x28, 0x78, 0xC, 7, 0x10, 0x4C, 0x65, 0x61, 0x76, 0x69, 0x6E, 0x67, 0x20, 0x79, 0x6F, 0x75, 0x72, 0x20, 0x4E, 0x36, 0x34, 0x80, 0xCC, 0x78, 0xC, 7, 8, 0x2C, 0x20, 0x64, 0x65, 0x74, 0x61, 0x63, 0x68, 0x80, 0x91, 0x78, 0xC, 0xB, 9, 0x74, 0x75, 0x72, 0x6E, 0x65, 0x64, 0x20, 0x4F, 0x4E, 0x80, 0x28, 0x8C, 0xC, 7, 0x24, 0x74, 0x68, 0x65, 0x20, 0x47, 0x42, 0x20, 0x47, 0x61, 0x6D, 0x65, 0x20, 0x50, 0x61, 0x6B, 0x2C, 0x20, 0x63, 0x6C, 0x65, 0x61, 0x6E, 0x20, 0x74, 0x68, 0x65, 0x20, 0x63, 0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x6F, 0x72, 0x80, 0x28, 0xA0, 0xC, 7, 0x19, 0x73, 0x65, 0x63, 0x74, 0x69, 0x6F, 0x6E, 0x20, 0x61, 0x6E, 0x64, 0x20, 0x72, 0x65, 0x2D, 0x61, 0x74, 0x74, 0x61, 0x63, 0x68, 0x20, 0x69, 0x74, 0x2E, 0, 0, 0, 0 };
 u8 gText_GBGamePakInfo[248] = { 0x80, 0x32, 0x32, 0xC, 8, 0x20, 0x54, 0x68, 0x65, 0x20, 0x47, 0x42, 0x20, 0x47, 0x61, 0x6D, 0x65, 0x20, 0x50, 0x61, 0x6B, 0x20, 0x6F, 0x72, 0x20, 0x74, 0x68, 0x65, 0x20, 0x64, 0x61, 0x74, 0x61, 0x20, 0x68, 0x61, 0x73, 0x20, 0x80, 0x32, 0x40, 0xC, 8, 0xD, 0x62, 0x65, 0x65, 0x6E, 0x20, 0x63, 0x68, 0x61, 0x6E, 0x67, 0x65, 0x64, 0x2E, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0x41, 0x75, 0x64, 0x69, 0x6F, 0x3A, 0x4D, 0x65, 0x6D, 0x6F, 0x72, 0x79, 0x3A, 0x48, 0x65, 0x61, 0x70, 0x20, 0x4F, 0x76, 0x65, 0x72, 0x46, 0x6C, 0x6F, 0x77, 0x20, 0x3A, 0x20, 0x4E, 0x6F, 0x74, 0x20, 0x41, 0x6C, 0x6C, 0x6F, 0x63, 0x61, 0x74, 0x65, 0x20, 0x25, 0x64, 0x21, 0xA, 0, 0, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0x41, 0x75, 0x64, 0x69, 0x6F, 0x3A, 0x4D, 0x65, 0x6D, 0x6F, 0x72, 0x79, 0x3A, 0x48, 0x65, 0x61, 0x70, 0x20, 0x4F, 0x76, 0x65, 0x72, 0x46, 0x6C, 0x6F, 0x77, 0x20, 0x3A, 0x20, 0x4E, 0x6F, 0x74, 0x20, 0x41, 0x6C, 0x6C, 0x6F, 0x63, 0x61, 0x74, 0x65, 0x20, 0x25, 0x64, 0x21, 0xA, 0, 0, 0x43, 0x6C, 0x65, 0x61, 0x72, 0x20, 0x57, 0x6F, 0x72, 0x6B, 0x61, 0x72, 0x65, 0x61, 0x20, 0x25, 0x78, 0x20, 0x2D, 0x25, 0x78, 0x20, 0x73, 0x69, 0x7A, 0x65, 0x20, 0x25, 0x78, 0x20, 0xA, 0, 0x48, 0x65, 0x61, 0x70, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0x20, 0x25, 0x78, 0xA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-u8 GbAudio_ReadReg(u16);
-s32 AllocateAudioBuffer(GbPakDeviceState*, s32);
-void StartAudioPlayback(GbPakDeviceState*, TileAssetFragment*);
+u8 GbMem_ReadIoRegister(u16);
+s32 GbCpu_Execute(GbPakDeviceState*, s32);
+void GbCpu_InitOpcodeTables(GbPakDeviceState*, TileAssetFragment*);
 
 s32 EmuMainLoop(s32);
 // emu must live in arg0: a separate pointer local takes a stack slot and the frame grows to 0x50.
@@ -2390,19 +2390,19 @@ s32 EmuMainLoop(s32 arg0) {
                 if (emu->unk_5DCA != 0) {
                     if (i == 0xFFFF) {
                         emu->command = 5;
-                        osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+                        osSendMesg(&gGbPakServiceQueue, emu, 1);
                         emu->inputCooldown = 8;
                         emu->buttonsPressed &= 0xDFF7;
                     } else {
                         if (((emu->inputCooldown == 0) || (emu->unk_5DC9 != 2)) && (Flag_GbPakInitialized != 0xE) && (Flag_GbPakInitialized != 0xF)) {
                             emu->command = 7;
-                            osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+                            osSendMesg(&gGbPakServiceQueue, emu, 1);
                         } else {
                             if (emu->inputCooldown != 0) {
                                 emu->inputCooldown = emu->inputCooldown - 1;
                                 if (emu->inputCooldown == 0) {
                                     emu->command = 4;
-                                    osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+                                    osSendMesg(&gGbPakServiceQueue, emu, 1);
                                 }
                             }
                             emu->buttonsPressed &= 0xDFF7;
@@ -2444,7 +2444,7 @@ s32 EmuMainLoop(s32 arg0) {
             if (emu->unk_5DC4 == 0) {
                 emu->command = 8;
                 emu->unk_5DA0 = 0;
-                osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+                osSendMesg(&gGbPakServiceQueue, emu, 1);
                 return 0;
             }
             emu->unk_5D70[0] = 0;
@@ -2452,7 +2452,7 @@ s32 EmuMainLoop(s32 arg0) {
             emu->gbAddress = 0;
             emu->transferBuffer = emu->romImage;
             emu->transferSize = 0x4000;
-            osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+            osSendMesg(&gGbPakServiceQueue, emu, 1);
             GbPakRetryCounter = 3;
             osViBlack(0);
             goto swap;
@@ -2483,7 +2483,7 @@ s32 EmuMainLoop(s32 arg0) {
                     } else {
                         emu->ramSize = 0;
                     }
-                    UpdateAudioParameters(emu);
+                    GbEmu_InitContext(emu);
                     emu->command = 2;
                     if (emu->headerMatchIndex != 0) {
                         emu->gbAddress = 0x500;
@@ -2497,7 +2497,7 @@ s32 EmuMainLoop(s32 arg0) {
                     emu->transferBuffer += 0x4000;
                     emu->command = 1;
                 }
-                osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+                osSendMesg(&gGbPakServiceQueue, emu, 1);
             }
             goto swap;
 
@@ -2505,9 +2505,9 @@ s32 EmuMainLoop(s32 arg0) {
             if ((emu->unk_5DC8 == 0) && (emu->unk_5DCA != 0)) {
                 emu->unk_559C[0] = emu->unk_559C[1] = emu->unk_559C[2] = emu->unk_559C[3] = 0xFF;
                 emu->inputCooldown = 1;
-                ClearFramebuffers();
+                GbEmu_ClearFramebuffers();
                 if (osTvType == OS_TV_PAL) {
-                    DelayMs(25);
+                    GbEmu_Delay(25);
                     osViSetYScale(0.833f);
                 }
                 osViSetXScale(0.888f);
@@ -2537,7 +2537,7 @@ s32 EmuMainLoop(s32 arg0) {
             if (emu->unk_5DC4 == 0) {
                 emu->command = 8;
                 emu->unk_5DA0 = 0;
-                osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+                osSendMesg(&gGbPakServiceQueue, emu, 1);
                 return 0;
             }
             emu->unk_5D70[0] = 0;
@@ -2590,20 +2590,20 @@ s32 EmuMainLoop(s32 arg0) {
                 default:
                     goto case2;
             }
-            ClearFramebuffers();
+            GbEmu_ClearFramebuffers();
             osViSwapBuffer((&FramebufferImage0)[UnknownCounterB]->img_p);
             UnknownCounterB ^= 1;
             osViBlack(0);
             osViSetXScale(0.888f);
-            osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+            osSendMesg(&gGbPakServiceQueue, emu, 1);
             if (osTvType == OS_TV_PAL) {
-                DelayMs(25);
+                GbEmu_Delay(25);
                 osViSetYScale(0.833f);
             }
             GbPakStateByte = 0;
             DrawStadiumScreen(0, 0);
             DrawStadiumScreen(1, 0);
-            if (ScreenMode_Current == 0) {
+            if (gGbEmuPresentationMode == 0) {
                 gGbScreenRefreshCounter = 2;
             } else {
                 gGbScreenRefreshCounter = 0x20;
@@ -2637,7 +2637,7 @@ s32 EmuMainLoop(s32 arg0) {
             if ((gGbBankLoadedFlag == 0) && (emu->unk_549C[0] != 0) && (emu->unk_549C[1] != 0) &&
                 (emu->unk_559C[0] != 0) && (emu->unk_559C[1] != 0) && (emu->unk_559C[2] != 0) &&
                 (emu->unk_559C[3] != 0) && (emu->unk_53E8 == 0x100)) {
-                if (ScreenMode_Current == 0) {
+                if (gGbEmuPresentationMode == 0) {
                     gGbScreenRefreshCounter = 3;
                 }
                 gGbBankLoadedFlag = 1;
@@ -2649,7 +2649,7 @@ s32 EmuMainLoop(s32 arg0) {
                 }
                 emu->mapperType = gItemEffectTable[((u8*) emu->romImage)[0x147]];
                 emu->romSize = 0x100000;
-                UpdateAudioParameters(emu);
+                GbEmu_InitContext(emu);
             }
             break;
 
@@ -2657,47 +2657,47 @@ stop:
         while (emu->unk_5DC8 != 0) {}
         if (emu->unk_5DCA != 0) {
             emu->command = 4;
-            osSendMesg(&MsgQueue_GbPakControl, emu, 1);
+            osSendMesg(&gGbPakServiceQueue, emu, 1);
             while ((emu->unk_5DCA != 0) && ((emu->unk_5DC8 != 0) || (emu->command != 0))) {}
         }
         while (emu->unk_5DC8 != 0) {}
-        osSendMesg(&MsgQueue_GbPakControl, NULL, 1);
-        while (Flag_GbPakThreadRunning != 0) {}
+        osSendMesg(&gGbPakServiceQueue, NULL, 1);
+        while (gGbPakServiceThreadActive != 0) {}
 reset:
         if (osTvType == OS_TV_PAL) {
             osViSetYScale(1.0f);
-            DelayMs(25);
+            GbEmu_Delay(25);
         }
         osViSetXScale(1.0f);
         osViBlack(1);
         GbPakStatusByte = 4;
-        DelayMs(40);
+        GbEmu_Delay(40);
         return -1;
 
     }
 
-    emu->unk_00[0x126] = GbAudio_ReadReg(0xFF26);
-    SetAudioVolume(emu->unk_00[0x14D] >> 7);
+    emu->unk_00[0x126] = GbMem_ReadIoRegister(0xFF26);
+    GbApu_SelectRegionClock(emu->unk_00[0x14D] >> 7);
     emu->unk_53C0 = 0;
     emu->unk_5490 = emu->audioMode;
     if (Flag_GbPakInitialized == 0) {
-        gAudioBufferPtr = AllocateAudioBuffer(emu, emu->audioMode * 154);
+        gAudioBufferPtr = GbCpu_Execute(emu, emu->audioMode * 154);
     } else if (UnknownCounter != 0) {
         while (!(IO_READ(SP_STATUS_REG) & 0x400)) {}
         IO_WRITE(SP_STATUS_REG, 0x8000);
     }
     AudioStateMachine(emu);
     if ((gAudioInitialized == 0) && (emu->unk_5404 != 0)) {
-        StartAudioPlayback(emu, TileAssetFragments[0]);
+        GbCpu_InitOpcodeTables(emu, TileAssetFragments[0]);
         gAudioInitialized = 1;
-        if (ScreenMode_Current == 0) {
+        if (gGbEmuPresentationMode == 0) {
             gAnimDelayCounter = 0;
             Msg_GbPakStatus = -0x40;
         }
     }
     if ((Flag_GbPakInitialized == 0) && (emu->inputCooldown == 0)) {
         btn = emu->buttonsPressed;
-        if ((btn & 0x2000) && (Msg_GbPakStatus == 0x40) && (gAudioInitialized != 0) && (ScreenMode_Current != 0)) {
+        if ((btn & 0x2000) && (Msg_GbPakStatus == 0x40) && (gAudioInitialized != 0) && (gGbEmuPresentationMode != 0)) {
             gAnimDelayCounter = gDataSetLoadResult + 1;
             if (gPrevDataSetIndex < gAnimDelayCounter) {
                 gAnimDelayCounter = 0;
@@ -2710,7 +2710,7 @@ reset:
             switch (i) {
                 case 1:
                 default:
-                    if (ScreenMode_Current != 0) {
+                    if (gGbEmuPresentationMode != 0) {
                         i = 2;
                     } else {
                         i = 1;
@@ -2718,7 +2718,7 @@ reset:
                     break;
                 case 2:
                     i = 4;
-                    if (ScreenMode_Current == 2) {
+                    if (gGbEmuPresentationMode == 2) {
                         GbPakStatusByte = 1;
                     } else {
                         i = 1;
@@ -2731,13 +2731,13 @@ reset:
             }
             if (i != emu->audioMode) {
                 emu->audioMode = i;
-                switch (ScreenMode_Current) {
+                switch (gGbEmuPresentationMode) {
                     case 2:
-                        BlendRect((u16*) (ScreenBasePtr + 0x5D4), (u16*) (DataStruct_TileAssets + ((i >= 2) ? 0xAC58 : 0xACB8)), 0, 8, 6);
-                        BlendRect((u16*) (ScreenBasePtr + 0x5E4), (u16*) (DataStruct_TileAssets + ((i == 4) ? 0xAC58 : 0xACB8)), 0, 8, 6);
+                        GbEmu_BlitWithPixelOp((u16*) (ScreenBasePtr + 0x5D4), (u16*) (DataStruct_TileAssets + ((i >= 2) ? 0xAC58 : 0xACB8)), 0, 8, 6);
+                        GbEmu_BlitWithPixelOp((u16*) (ScreenBasePtr + 0x5E4), (u16*) (DataStruct_TileAssets + ((i == 4) ? 0xAC58 : 0xACB8)), 0, 8, 6);
                         break;
                     case 1:
-                        BlendRect((u16*) (ScreenBasePtr + 0x5DA), (u16*) (DataStruct_TileAssets + ((i >= 2) ? 0xAC58 : 0xACB8)), 0, 8, 6);
+                        GbEmu_BlitWithPixelOp((u16*) (ScreenBasePtr + 0x5DA), (u16*) (DataStruct_TileAssets + ((i >= 2) ? 0xAC58 : 0xACB8)), 0, 8, 6);
                         break;
                 }
             }
@@ -2758,7 +2758,7 @@ reset:
         emu->mapperType = gItemEffectTable[((u8*) emu->romImage)[0x147]];
         emu->romSize = (((u8*) emu->romImage)[0x148] < 8U) ? gPowerOfTwoTable[((u8*) emu->romImage)[0x148]] : 0x8000;
         emu->ramSize = (((u8*) emu->romImage)[0x149] < 5U) ? gRandomSeedTable[((u8*) emu->romImage)[0x149]] : 0;
-        UpdateAudioParameters(emu);
+        GbEmu_InitContext(emu);
     }
     if ((emu->unk_5DC8 != 0) && (emu->command == 7)) {
         while ((emu->unk_5DC8 != 0) && (emu->unk_5DCA != 0) && (emu->command != 0)) {}
@@ -2797,7 +2797,7 @@ reset:
         osViSwapBuffer((&FramebufferImage0)[UnknownCounterB ^ 1]->img_p);
         if (emu->unk_53A4 != 0) {
             emu->unk_5388 = 0;
-            RspTaskStart((UnkStruct80001380*) &GbPakThreadData[UnknownCounterB], 0);
+            Sched_SubmitTask((UnkStruct80001380*) &GbPakThreadData[UnknownCounterB], 0);
         }
         UnknownCounterB ^= 1;
         UnknownCounter = 1;
@@ -2811,21 +2811,21 @@ reset:
 
 void GbEmu_Init(GbEmuState* arg0) {
   GbPakStatusByte = 0;
-  ScreenMode_Current = arg0->inputConfig.unk_02;
-  if ((ScreenMode_Current < 0) || (ScreenMode_Current >= 3)) {
-      ScreenMode_Current = 0;
+  gGbEmuPresentationMode = arg0->inputConfig.unk_02;
+  if ((gGbEmuPresentationMode < 0) || (gGbEmuPresentationMode >= 3)) {
+      gGbEmuPresentationMode = 0;
   }
-  GbPakStatusFlags.unk_00 = ((arg0->inputConfig.unk_00 & 0xFF00) >> 8);
-  GbPakStatusFlags.unk_01 = (arg0->inputConfig.unk_00 + 1) & 0xFF;
-  UpdateAudioModeIndices();
-  DataPtr_TileGraphicsA = arg0->font1 + 0x90;
-  DataPtr_TileGraphicsB = arg0->font2 + 0x90;
-  EmuMainInit(0, GetCurrentPokemonBank(), 5, 0x50, &gSIEventMesgQueue, arg0->inputConfig.unk_04);
+  gGbEmuButtonBindingSelections.unk_00 = ((arg0->inputConfig.unk_00 & 0xFF00) >> 8);
+  gGbEmuButtonBindingSelections.unk_01 = (arg0->inputConfig.unk_00 + 1) & 0xFF;
+  GbEmu_ApplyButtonMapping();
+  gGbEmuFont1Data = arg0->font1 + 0x90;
+  gGbEmuFont2Data = arg0->font2 + 0x90;
+  EmuMainInit(0, GbSave_GetActivePort(), 5, 0x50, &gSIEventMesgQueue, arg0->inputConfig.unk_04);
 }
 
 void GbEmu_RunFrame(GbEmuState* arg0) {
   if (EmuMainLoop(0) != 0) {
-      arg0->inputConfig.unk_00 = ((GbPakStatusFlags.unk_01 - 1) & 0xFF) | (GbPakStatusFlags.unk_00 << 8);
+      arg0->inputConfig.unk_00 = ((gGbEmuButtonBindingSelections.unk_01 - 1) & 0xFF) | (gGbEmuButtonBindingSelections.unk_00 << 8);
       IO_WRITE(SP_STATUS_REG, 0x8000);
       osSendMesg(&arg0->queue2, UnknownFlag, 0);
   }
@@ -2841,7 +2841,7 @@ void GbEmu_RunFrame(GbEmuState* arg0) {
   }
 }
 
-void GbEmu_AudioUpdateThread(UNUSED GbEmuThreadInfo* arg0) {
+void GbEmu_AudioVideoTick(UNUSED GbEmuThreadInfo* arg0) {
   if ((gRspTaskManager.unk_A38 == 0) && (GbPakStatusByte == 2) && ((GbPakRetryCounter == 0) || (GbPakRetryCounter == 6))) {
       GbAudio_Update();
   }

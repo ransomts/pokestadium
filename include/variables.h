@@ -54,7 +54,7 @@ extern Gfx* gDisplayListHead;
 /*
  * Second name for gDisplayListHead (same address, aliased in undefined_syms.ld). Some fragment
  * code reached the display list head under another symbol: IDO only keeps the address of a
- * global in a register per symbol, so MiniHud_RenderUI and RenderResultScreenUI need it to match.
+ * global in a register per symbol, so MagikarpGame_DrawOverlay and ClefairyGame_DrawOverlay need it to match.
  */
 extern Gfx* D_800A7420;
 extern u64 _binary_assets_us_F3DEX2_bin_start[];
@@ -956,7 +956,7 @@ typedef struct MoveBattleData {
     /* 0x04 */ u8 unk_04;
     /* 0x05 */ u8 unk_05;
 } MoveBattleData; // size = 0x6
-extern MoveBattleData gMoveBattleData[];
+extern MoveBattleData gMoveData[];
 
 typedef struct unk_D_80072338 {
     /* 0x00 */ char unk00[0x1];
@@ -965,7 +965,7 @@ typedef struct unk_D_80072338 {
     /* 0x04 */ char* unk_04; // move name (the US build has "skill" placeholders)
     /* 0x08 */ char* unk_08; // "comment"
 } unk_D_80072338; // size = 0xC
-extern unk_D_80072338 gMoveStrings[];
+extern unk_D_80072338 gMoveDisplayInfo[];
 
 extern char D_8006FEE8[][0x1C];
 

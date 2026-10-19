@@ -2,9 +2,9 @@
 #include "src/fragments/2/fragment2.h"
 #include "src/1CF30.h"
 
-void LoadTexture_CI4_32x32_ByIndex();
-void RenderBillboardQuad();
-void LoadTexture_IA8_32x32();
+void ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32();
+void ParticleGfx_DrawBillboardPrimEnvQuad();
+void ParticleGfx_LoadTextureCallbackIa8_32x32();
 void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32();
 
 extern u32 gMiniTutoScreenTilemap[];
@@ -14,8 +14,8 @@ extern u32 gMiniTutoScreenGraphics[];
 
 unk_D_87903E00 gMiniTutoScreenConfig0 = {
     0x00000001,
-    LoadTexture_CI4_32x32_ByIndex,
-    RenderBillboardQuad,
+    ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
+    ParticleGfx_DrawBillboardPrimEnvQuad,
     gMiniTutoScreenTilemap,
 };
 
@@ -26,8 +26,8 @@ unk_D_87903E10 gMiniTutoScreenNode0 = {
 
 unk_D_87903E00 gMiniTutoScreenConfig1 = {
     0x01000001,
-    LoadTexture_IA8_32x32,
-    RenderBillboardQuad,
+    ParticleGfx_LoadTextureCallbackIa8_32x32,
+    ParticleGfx_DrawBillboardPrimEnvQuad,
     gMiniTutoScreenPalette,
 };
 
@@ -38,8 +38,8 @@ unk_D_87903E10 gMiniTutoScreenNode1 = {
 
 unk_D_87903E00 gMiniTutoScreenConfig2 = {
     0x01000002,
-    LoadTexture_IA8_32x32,
-    RenderBillboardQuad,
+    ParticleGfx_LoadTextureCallbackIa8_32x32,
+    ParticleGfx_DrawBillboardPrimEnvQuad,
     gMiniTutoScreenSettings,
 };
 
@@ -51,7 +51,7 @@ unk_D_87903E10 D_87903E40 = {
 unk_D_87903E00 D_87903E48 = {
     0x00000001,
     ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
-    RenderBillboardQuad,
+    ParticleGfx_DrawBillboardPrimEnvQuad,
     gMiniTutoScreenGraphics,
 };
 
@@ -308,7 +308,7 @@ u32 gMiniTutoScreenGraphics[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-void MiniTutoScreen_Start(void) {
+void miniTutoScreenBegin(void) {
     if (miniTutoScreenState > 0) {
         D_87903DCC = miniTutoScreenState;
         miniTutoScreenState = -2;
@@ -316,14 +316,14 @@ void MiniTutoScreen_Start(void) {
     }
 }
 
-void MiniTutoScreen_Reset(void) {
+void miniTutoScreenEnd(void) {
     miniTutoScreenState = -1;
     D_87903DC0 = 0;
     D_87903DCC = 0;
     D_87903DD0 = 0;
 }
 
-void MiniTutoScreen_StartCountdown(s16 arg0) {
+void miniTutoScreenShow(s16 arg0) {
     switch (D_87903DC0) {
         case 1:
             D_87903DD0 = 0x18;
@@ -334,13 +334,13 @@ void MiniTutoScreen_StartCountdown(s16 arg0) {
         case 2:
             D_87903DC8--;
             if (D_87903DC8 == 0) {
-                MiniTutoScreen_Reset();
+                miniTutoScreenEnd();
             }
             break;
     }
 }
 
-void MiniTutoScreen_StartTimerWithDelay(s16 arg0, s16 arg1) {
+void miniTutoScreenShowTimed(s16 arg0, s16 arg1) {
     switch (D_87903DC0) {
         case 1:
             D_87903DD0 = arg0; // 0x11
@@ -351,13 +351,13 @@ void MiniTutoScreen_StartTimerWithDelay(s16 arg0, s16 arg1) {
         case 2:
             D_87903DC8--;
             if (D_87903DC8 == 0) {
-                MiniTutoScreen_Reset();
+                miniTutoScreenEnd();
             }
             break;
     }
 }
 
-void MiniTutoScreen_DrawWinners(MiniActor* arg0) {
+void miniDrawResultIcons(MiniActor* arg0) {
     s32 i;
     s16 temp_a2;
     s32 var_s2;
@@ -372,9 +372,9 @@ void MiniTutoScreen_DrawWinners(MiniActor* arg0) {
         if (arg0[i].isWinner != 0) {
             temp_a2 = gMiniActorPosOffsets[D_87903DD4][var_s2];
             if (arg0[i].isComp != 0) {
-                DrawUniformScaledTextureRect(-1 - i, 0x78, temp_a2, 1.0f);
+                Widget_DrawPlayerIcon(-1 - i, 0x78, temp_a2, 1.0f);
             } else {
-                DrawUniformScaledTextureRect(i, 0x78, temp_a2, 1.0f);
+                Widget_DrawPlayerIcon(i, 0x78, temp_a2, 1.0f);
             }
             var_s2++;
         }
@@ -383,22 +383,22 @@ void MiniTutoScreen_DrawWinners(MiniActor* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void MiniTutoScreen_PrintDifficulty(void) {
+void miniShowDifficultyText(void) {
     switch (miniDifficulty) {
         case 0:
-            Text_Print(0xC8, 0x20, "(EASY)");
+            Font_Printf(0xC8, 0x20, "(EASY)");
             break;
 
         case 1:
-            Text_Print(0xC8, 0x20, "(NORMAL)");
+            Font_Printf(0xC8, 0x20, "(NORMAL)");
             break;
 
         case 2:
-            Text_Print(0xC8, 0x20, "(HARD)");
+            Font_Printf(0xC8, 0x20, "(HARD)");
             break;
 
         case 3:
-            Text_Print(0xC8, 0x20, "(SUPER)");
+            Font_Printf(0xC8, 0x20, "(SUPER)");
             break;
     }
 }

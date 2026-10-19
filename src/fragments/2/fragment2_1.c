@@ -34,7 +34,7 @@ static s16 gFragment2_1StartFlag;
 static Fragment2_1GraphNode gFragment2_1GraphNode;
 static SimpleGfxNode* gFragment2_1DisplayNode;
 
-void Fragment2_1_CalcAnimOffset(s16 arg0, s16 arg1, f32* arg2, f32* arg3) {
+void Widget_CountdownComputeScale(s16 arg0, s16 arg1, f32* arg2, f32* arg3) {
     f32 var_fv0;
     s32 temp_ft1;
     s32 var_v0;
@@ -88,7 +88,7 @@ void Fragment2_1_CalcAnimOffset(s16 arg0, s16 arg1, f32* arg2, f32* arg3) {
     }
 }
 
-void Fragment2_1_Init(void) {
+void Widget_CountdownInit(void) {
     MainPoolState* sp1C;
 
     gFragment2_1Phase = 0;
@@ -96,16 +96,16 @@ void Fragment2_1_Init(void) {
     gFragment2_1StepTimer = 0;
     gFragment2_1StartFlag = 0;
 
-    Graph_AddToRootList1(&gFragment2_1GraphNode);
-    sp1C = state_pool_try_init(main_pool_get_available(), 0);
-    gFragment2_1DisplayNode = SimpleGfxNode_Create(sp1C, NULL, 4, gFragment2_1EmptyDL);
+    ModelRenderer_AttachSecondaryDisplayObject(&gFragment2_1GraphNode);
+    sp1C = MainPool_AllocState(main_pool_get_available(), 0);
+    gFragment2_1DisplayNode = GeoNode_CreateDisplayList(sp1C, NULL, 4, gFragment2_1EmptyDL);
     gFragment2_1GraphNode.unk_000.unk_02 |= 8;
 
-    GraphNode_AddChild(&gFragment2_1GraphNode.unk_000, &gFragment2_1DisplayNode->unk_00);
-    mem_pool_resize_block(sp1C);
+    GraphNode_AppendChild(&gFragment2_1GraphNode.unk_000, &gFragment2_1DisplayNode->unk_00);
+    MainPool_FinalizeAllocation(sp1C);
 }
 
-void Fragment2_1_Update(void) {
+void Widget_CountdownUpdate(void) {
     s32 i;
     Gfx* temp_v0;
     s32 var_s2;
@@ -134,7 +134,7 @@ void Fragment2_1_Update(void) {
 
             if ((gFragment2_1RemainingSteps >= 0) && (gFragment2_1RemainingSteps < 4)) {
                 var_s2 = 1;
-                Fragment2_1_CalcAnimOffset(gFragment2_1RemainingSteps, gFragment2_1StepTimer, &gFragment2_1GraphNode.unk_030.x, &gFragment2_1GraphNode.unk_030.y);
+                Widget_CountdownComputeScale(gFragment2_1RemainingSteps, gFragment2_1StepTimer, &gFragment2_1GraphNode.unk_030.x, &gFragment2_1GraphNode.unk_030.y);
             } else {
                 gFragment2_1DisplayNode->unk_18 = gFragment2_1EmptyDL;
             }
@@ -155,7 +155,7 @@ void Fragment2_1_Update(void) {
 
     if ((var_s2 != 0) && (gFragment2_1RemainingSteps < 4)) {
         temp_s1 = gFragment2_1TexturePtrs[gFragment2_1RemainingSteps];
-        temp_v0 = GfxAlloc(sizeof(Gfx) * 48);
+        temp_v0 = Gfx_AllocDisplayList(sizeof(Gfx) * 48);
         gFragment2_1DisplayNode->unk_18 = temp_v0;
 
         gSPSetGeometryMode(&temp_v0[0], G_CULL_BACK);
@@ -179,11 +179,11 @@ void Fragment2_1_Update(void) {
     }
 }
 
-void Fragment2_1_SetStartFlag(s16 arg0) {
+void Widget_CountdownStart(s16 arg0) {
     gFragment2_1StartFlag = arg0;
 }
 
-s32 Fragment2_1_GetResult(void) {
+s32 Widget_CountdownGetState(void) {
     s16 var_v1 = -1;
 
     if (gFragment2_1Phase == 2) {

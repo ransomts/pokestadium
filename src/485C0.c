@@ -180,7 +180,7 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
     if ((arg0 >= 0xA6U) && (arg0 != 0xA6)) {
         return 0;
     }
-    UpdateSoundDurationScale();
+    Audio_FadeStoredSound();
 
     if (arg0 == 0xA6) {
         sound = arg2;
@@ -336,7 +336,7 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
         size = gMoveSoundSeqInfo->seqArray[2].offset - romAddr;
     }
     Rom_DmaRead(romAddr, gMoveSoundTempBuffer, size);
-    DecompressData(gMoveSoundTempBuffer, D_800FC698[gBankRemapIndex], 0x258);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, D_800FC698[gBankRemapIndex], 0x258);
     RemapBankPointers((bank_remap_descriptor_t*)D_800FC698[gBankRemapIndex]);
     result = MusStartSoundEffect((SoundBank*)D_800FC690, D_800FC698[gBankRemapIndex], sound + 1, 0x70, 0x80, -1);
 
@@ -349,12 +349,12 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
     if ((arg2 == 0) || (arg2 == 2)) {
         switch (arg0 + 1) {
         case 0x85:
-            Audio_PlaySoundEffect(0x28, 0, 0);
+            Audio_PlayCommand(0x28, 0, 0);
             break;
         case 0x2D:
         case 0x2E:
             if (gSpecialMoveSoundFlag[0] == 0) {
-                Audio_PlaySequence(arg1, 0);
+                Cry_Play(arg1, 0);
             }
             gSpecialMoveSoundFlag[0] = 0;
             break;
@@ -364,7 +364,7 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
     }
 }
 
-void ResetSoundDurations(void) {
+void Audio_FadeAndClearStoredSounds(void) {
   MusSetDurationScale(gActiveSoundHandle, 0x5A);
   MusSetDurationScale(gPrevSoundHandle, 0x5A);
   gActiveSoundHandle = 0;

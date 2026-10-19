@@ -2,11 +2,11 @@
 #include "src/fragments/2/fragment2.h"
 #include "26820.h"
 
-void UpdateMenuRandomSeed(void) {
+void KidsClub_LoadDifficultySetting(void) {
     gMenuRandomSeed = Save_GetOptionsField1E() & 0xFF;
 }
 
-void SetCurrentMenuIndex(s16 arg0) {
+void KidsClub_SetSelectedGameId(s16 arg0) {
     gCurrentMenuIndex = arg0;
 }
 
@@ -47,7 +47,7 @@ void KidsClub_ResetTournamentState(s16 arg0) {
     }
 }
 
-s16 GetRandomUnusedMenuSlot(void) {
+s16 KidsClub_PickUnplayedGame(void) {
     u32 var_a2;
     s32 i;
     s16 sp24[9];
@@ -69,5 +69,5 @@ s16 GetRandomUnusedMenuSlot(void) {
         }
     }
 
-    return sp24[GetRandomMod(var_a2)];
+    return sp24[Rand_Range(var_a2)];
 }

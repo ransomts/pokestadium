@@ -37,10 +37,10 @@ static SimpleGfxNode* gHealthBarNode;
 u8 gHealthBarTimer;
 u8 gHealthBarDuration;
 
-void HealthBar_Init(void) {
+void DynamoGame_PickNextCrankCue(void) {
     switch (gHealthBarMode) {
         case 0:
-            gHealthBarPaletteIndex = HealthBar_ValueToPixel(2) + 3;
+            gHealthBarPaletteIndex = MiniGame_RandomRange(2) + 3;
             break;
 
         case 1:
@@ -53,19 +53,19 @@ void HealthBar_Init(void) {
     }
 
     gHealthBarTimer = 0;
-    gHealthBarDuration = (HealthBar_ValueToPixel(4) * 0xF) + 0x1E;
+    gHealthBarDuration = (MiniGame_RandomRange(4) * 0xF) + 0x1E;
 
     if (gHealthBarMode != 0) {
-        PlaySoundEffect(0x11);
+        Audio_PlaySoundEffectById(0x11);
     }
 }
 
-void HealthBar_BuildDisplayList(void) {
+void DynamoGame_DrawCrankIcon(void) {
     Gfx* sp1C;
     Mtx* sp18;
 
-    sp1C = GfxAlloc(sizeof(Gfx) * 16);
-    sp18 = GfxAlloc(sizeof(Mtx) * 1);
+    sp1C = Gfx_AllocDisplayList(sizeof(Gfx) * 16);
+    sp18 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
 
     gHealthBarNode->unk_18 = sp1C;
     guScale(sp18, 0.1f, 0.1f, 0.1f);
@@ -79,11 +79,11 @@ void HealthBar_BuildDisplayList(void) {
     gSPEndDisplayList(sp1C++);
 }
 
-void HealthBar_CreateNode(void) {
+void DynamoGame_InitCrankIconDisplay(void) {
     MainPoolState* sp1C;
 
-    sp1C = state_pool_try_init(main_pool_get_available(), 0);
-    gHealthBarNode = SimpleGfxNode_Create(sp1C, NULL, 1, NULL);
-    GraphNode_AddChild(&gGraphRoot0, &gHealthBarNode->unk_00);
-    mem_pool_resize_block(sp1C);
+    sp1C = MainPool_AllocState(main_pool_get_available(), 0);
+    gHealthBarNode = GeoNode_CreateDisplayList(sp1C, NULL, 1, NULL);
+    GraphNode_AppendChild(&gGraphRoot0, &gHealthBarNode->unk_00);
+    MainPool_FinalizeAllocation(sp1C);
 }

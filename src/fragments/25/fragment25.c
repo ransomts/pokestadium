@@ -31,7 +31,7 @@ MoveCategoryColorGradient gMoveCategoryGradients[] = {
 
 static u32 gFragment25Pad[] = { 0, 0, 0, 0, 0 }; // bss pad
 
-s32 GetPaletteIndexFromFlags(s32 arg0) {
+s32 LabPC_StatusToIconIndex(s32 arg0) {
     s32 v1;
     if (arg0 & 7) {
         v1 = 2;
@@ -54,17 +54,17 @@ s32 GetPaletteIndexFromFlags(s32 arg0) {
     return v1;
 }
 
-PaletteColor* GetPaletteColorEntry(PokemonData* arg0) {
+PaletteColor* LabPC_GetMonStatusIcon(PokemonData* arg0) {
     s32 var_v1;
 
     if (arg0->unk_02 == 0) {
         var_v1 = 1;
     } else {
-        var_v1 = GetPaletteIndexFromFlags(arg0->unk_05);
+        var_v1 = LabPC_StatusToIconIndex(arg0->unk_05);
     }
     return &gUiColorPalette[var_v1];
 }
 
-MoveCategoryColorGradient* GetMoveCategoryColorGradient(s32 arg0) {
-    return &gMoveCategoryGradients[MapMoveCategory(arg0)];
+MoveCategoryColorGradient* LabPC_GetTypeColor(s32 arg0) {
+    return &gMoveCategoryGradients[Move_NormalizeDisplayIndex(arg0)];
 }

@@ -13,8 +13,8 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-s32 DrawNodeEffect(s32, GraphNode*);
-s32 DrawNodeGeometry(s32, GraphNode*);
+s32 Glc_GeoSpriteCallback(s32, GraphNode*);
+s32 Glc_GeoBannerCallback(s32, GraphNode*);
 
 typedef struct unk_D_83101E6C {
     /* 0x00 */ s16 unk_00;
@@ -79,7 +79,7 @@ static Gfx gClearScreenDL1[] = {
 
 static u32 gClearScreenGeo1[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gClearScreenVerts1, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, DrawNodeGeometry, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, Glc_GeoBannerCallback, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
 static Vtx gClearScreenVerts2[] = {
@@ -102,7 +102,7 @@ static Gfx gClearScreenDL2[] = {
 
 static u32 gClearScreenGeo2[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gClearScreenVerts2, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, DrawNodeEffect, 0x00000000, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, Glc_GeoSpriteCallback, 0x00000000, 0x06000000, 0x01000000,
 };
 
 static u32 gClearScreenRootGeo[] = {
@@ -118,7 +118,7 @@ static unk_D_83101E6C gNodeColorScaleTable[] = {
     { -1, 2.0f, 0xC8, 0xC8, 0x1E, 0, 0, 0 },
 };
 
-void UpdateNodePosition(Fragment2_1GraphNode* arg0) {
+void Glc_UpdateSweepObject(Fragment2_1GraphNode* arg0) {
     unk_D_83101F00* ptr = (unk_D_83101F00*)arg0;
     f32 temp_fv0;
     s32 sp1C;
@@ -161,13 +161,13 @@ void UpdateNodePosition(Fragment2_1GraphNode* arg0) {
     }
 }
 
-s32 DrawNodeGeometry(s32 arg0, UNUSED GraphNode* arg1) {
+s32 Glc_GeoBannerCallback(s32 arg0, UNUSED GraphNode* arg1) {
     switch (arg0) {
         case 0:
             break;
 
         case 2:
-            UpdateNodePosition(gDefaultGraphRoot);
+            Glc_UpdateSweepObject(gDefaultGraphRoot);
             break;
 
         case 5:
@@ -176,14 +176,14 @@ s32 DrawNodeGeometry(s32 arg0, UNUSED GraphNode* arg1) {
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_3000000));
             gSPDisplayList(gDisplayListHead++, gClearScreenDL1);
 
-            Gfx_ResetRenderState();
+            GeoRender_ApplyMaterialState();
             break;
     }
 
     return 0;
 }
 
-void UpdateNodeColorAndScale(unk_D_83101F00* arg0) {
+void Glc_UpdateColorKeyframe(unk_D_83101F00* arg0) {
     unk_D_83101E6C* ptr1;
     unk_D_83101E6C* ptr2;
     f32 var_fv1;
@@ -225,7 +225,7 @@ void UpdateNodeColorAndScale(unk_D_83101F00* arg0) {
                 }
             }
 
-            Vec3f_Set(&arg0->unk_000.unk_030, var_fv1, var_fv1, var_fv1);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_000.unk_030, var_fv1, var_fv1, var_fv1);
             break;
 
         case 0:
@@ -235,7 +235,7 @@ void UpdateNodeColorAndScale(unk_D_83101F00* arg0) {
     }
 }
 
-s32 DrawNodeEffect(s32 arg0, GraphNode* arg1) {
+s32 Glc_GeoSpriteCallback(s32 arg0, GraphNode* arg1) {
     unk_D_83101F00* ptr = (unk_D_83101F00*)gDefaultGraphRoot;
 
     switch (arg0) {
@@ -243,7 +243,7 @@ s32 DrawNodeEffect(s32 arg0, GraphNode* arg1) {
             break;
 
         case 2:
-            UpdateNodeColorAndScale(ptr);
+            Glc_UpdateColorKeyframe(ptr);
             break;
 
         case 5:
@@ -254,19 +254,19 @@ s32 DrawNodeEffect(s32 arg0, GraphNode* arg1) {
             gDPSetEnvColor(gDisplayListHead++, ptr->unk_178, ptr->unk_17A, ptr->unk_17C, 0xFF);
             gSPDisplayList(gDisplayListHead++, gClearScreenDL2);
 
-            Gfx_ResetRenderState();
+            GeoRender_ApplyMaterialState();
             break;
     }
     return 0;
 }
 
-void InitBorderAnimation(void) {
+void Glc_InitCircleWipe(void) {
     gBorderAnimState.unk_00 = 0;
     gBorderAnimState.unk_02 = 0;
     gBorderAnimState.unk_08 = 7.0f;
 }
 
-void UpdateBorderAnimation(void) {
+void Glc_UpdateCircleWipe(void) {
     s32 tmp;
 
     switch (gBorderAnimState.unk_00) {
@@ -288,7 +288,7 @@ void UpdateBorderAnimation(void) {
     }
 }
 
-void DrawBorderEffect(void) {
+void Glc_DrawCircleWipe(void) {
     s16 var_t0;
     s16 var_t1;
     s16 var_t3;
@@ -325,7 +325,7 @@ void DrawBorderEffect(void) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_3002C00, G_IM_FMT_I, 64, 64, 0, G_TX_MIRROR | G_TX_WRAP,
                            G_TX_MIRROR | G_TX_WRAP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(sp38, sp40, sp9E, sp9C, 0, 0, temp_ft2, temp_ft2, 0);
+    Gfx_DrawTexturedRectClipped(sp38, sp40, sp9E, sp9C, 0, 0, temp_ft2, temp_ft2, 0);
 
     var_t3 = sp38;
     var_t0 = sp40;
@@ -369,7 +369,7 @@ void DrawBorderEffect(void) {
     }
 }
 
-void StartBorderAnimation(s16 arg0) {
+void Glc_StartCircleWipe(s16 arg0) {
     if (arg0 > 0) {
         gBorderAnimState.unk_00 = 1;
         gBorderAnimState.unk_02 = gBorderAnimState.unk_04 = arg0;
@@ -377,13 +377,13 @@ void StartBorderAnimation(s16 arg0) {
     }
 }
 
-void InitFadeAnimation(void) {
+void Glc_InitBackgroundFade(void) {
     gFadeAnimState.unk_00 = 0;
     gFadeAnimState.unk_02 = 0;
     gFadeAnimState.unk_04 = 0xC0;
 }
 
-void UpdateFadeAnimation(void) {
+void Glc_UpdateBackgroundFade(void) {
     switch (gFadeAnimState.unk_00) {
         case 1:
             gFadeAnimState.unk_02--;
@@ -400,7 +400,7 @@ void UpdateFadeAnimation(void) {
     }
 }
 
-void DrawTiledTexture(u8* arg0, s16 arg1) {
+void Glc_DrawFadedBackground(u8* arg0, s16 arg1) {
     s32 i;
     s32 j;
 
@@ -429,15 +429,15 @@ void DrawTiledTexture(u8* arg0, s16 arg1) {
     }
 }
 
-void DrawScreenOverlay(void) {
+void Glc_DrawBackground(void) {
     if (gFadeAnimState.unk_04 < 0xFF) {
-        DrawTiledTexture(D_83101EE4, gFadeAnimState.unk_04);
+        Glc_DrawFadedBackground(D_83101EE4, gFadeAnimState.unk_04);
     } else {
-        Gfx_DrawTextureAtlas(D_83101EE4);
+        Gfx_DrawTiledRgba16Image(D_83101EE4);
     }
 }
 
-void StartFadeAnimation(s16 arg0) {
+void Glc_StartBackgroundFade(s16 arg0) {
     gFadeAnimState.unk_00 = arg0;
     if (gFadeAnimState.unk_00 == 1) {
         gFadeAnimState.unk_02 = 0xA;
@@ -445,13 +445,13 @@ void StartFadeAnimation(s16 arg0) {
     }
 }
 
-void InitInput(void) {
+void Glc_ReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-void SetNodeState(unk_D_83101F00* arg0, s16 arg1) {
+void Glc_InitObjectAnimation(unk_D_83101F00* arg0, s16 arg1) {
     unk_D_83101E6C* ptr;
 
     arg0->unk_16A = arg1;
@@ -475,18 +475,18 @@ void SetNodeState(unk_D_83101F00* arg0, s16 arg1) {
                 arg0->unk_17A = ptr->unk_10;
                 arg0->unk_17C = ptr->unk_12;
 
-                Vec3f_Set(&arg0->unk_000.unk_030, ptr->unk_04, ptr->unk_04, ptr->unk_04);
+                Vec3f_SetComponentsDuplicate(&arg0->unk_000.unk_030, ptr->unk_04, ptr->unk_04, ptr->unk_04);
                 break;
         }
     }
 }
 
-void DrawScissoredTexture(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
+void Glc_DrawScisRectangle(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
     gSPScisTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, ((arg0 + arg2) - 1) << 2,
                             ((arg1 + arg3) - 1) << 2, 0, arg4, arg5, arg6, arg7);
 }
 
-void DrawCursorEffect(void) {
+void Glc_DrawTrackingIcon(void) {
     f32 v = 1.8f;
     s16 temp_fa0;
     s16 temp_ft2;
@@ -500,44 +500,44 @@ void DrawCursorEffect(void) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    DrawScissoredTexture(gCursorX, gCursorY, temp_ft2, temp_ft2, 0, 0, temp_fa0, temp_fa0);
+    Glc_DrawScisRectangle(gCursorX, gCursorY, temp_ft2, temp_ft2, 0, 0, temp_fa0, temp_fa0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void InitClearScreenState(void) {
+void Glc_ClearInitState(void) {
     gClearScreenState = 0;
-    if (gBattleContext.unk_11F2 != 0) {
+    if (gSessionContext.unk_11F2 != 0) {
         gShowCursorFlag = 1;
     } else {
         gShowCursorFlag = 0;
     }
     gCursorY = -0x64;
     gCursorX = gCursorY;
-    InitBorderAnimation();
-    InitFadeAnimation();
+    Glc_InitCircleWipe();
+    Glc_InitBackgroundFade();
 }
 
-void RenderClearScreen(void) {
-    Stage_BeginDisplayList();
-    DrawScreenOverlay();
-    Graph_SetTextureState(gClearScreenRoot);
+void Glc_ClearDraw(void) {
+    BgStage_DrawFrame();
+    Glc_DrawBackground();
+    Geo_RenderRootNode(gClearScreenRoot);
     if (gShowCursorFlag != 0) {
-        DrawCursorEffect();
+        Glc_DrawTrackingIcon();
     }
-    DrawBorderEffect();
-    Stage_Advance();
+    Glc_DrawCircleWipe();
+    BgStage_AdvanceFrame();
 }
 
-s32 UpdateClearScreenLogic(void) {
+s32 Glc_ClearAdvanceState(void) {
     s32 sp1C = 1;
 
     switch (gClearScreenState) {
         case 0:
-            if (Stage_GetFadeState() == 0) {
+            if (StageContext_GetFadeMode() == 0) {
                 gClearScreenState = 1;
                 gClearScreenTimer = 0;
-                SetNodeState(gNode1State, 1);
+                Glc_InitObjectAnimation(gNode1State, 1);
             }
             break;
 
@@ -545,20 +545,20 @@ s32 UpdateClearScreenLogic(void) {
             if (gNode1State->unk_16A == 2) {
                 switch (gNode2State->unk_16A) {
                     case 0:
-                        SetNodeState(gNode2State, 1);
+                        Glc_InitObjectAnimation(gNode2State, 1);
                         break;
 
                     case 2:
                         gClearScreenTimer += 1;
                         if (gClearScreenTimer == 1) {
-                            StartFadeAnimation(1);
+                            Glc_StartBackgroundFade(1);
                         }
 
                         if (gClearScreenTimer >= 0x1E) {
                             gClearScreenState = 2;
                             gClearScreenTimer = 0;
-                            StartBorderAnimation(0xF);
-                            Stage_SetFillColor(1);
+                            Glc_StartCircleWipe(0xF);
+                            StageContext_SetClearColor(1);
                         }
                         break;
                 }
@@ -575,34 +575,34 @@ s32 UpdateClearScreenLogic(void) {
     return sp1C;
 }
 
-void RunClearScreenSequence(void) {
-    InitClearScreenState();
-    Stage_FadeIn(0xF);
+void Glc_ClearRunLoop(void) {
+    Glc_ClearInitState();
+    StageFade_StartFromOpaque(0xF);
 
     do {
-        InitInput();
-        UpdateBorderAnimation();
-        UpdateFadeAnimation();
-        RenderClearScreen();
-    } while (UpdateClearScreenLogic() != 0);
+        Glc_ReadInputs();
+        Glc_UpdateCircleWipe();
+        Glc_UpdateBackgroundFade();
+        Glc_ClearDraw();
+    } while (Glc_ClearAdvanceState() != 0);
 }
 
-void InitClearScreenGraph(void) {
+void Glc_ClearInitGraphics(void) {
     unk_D_83101F00* ptr;
-    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     s32 i;
 
     gClearScreenRoot = process_geo_layout(temp_v0, gClearScreenRootGeo);
     gClearScreenNode1 = process_geo_layout(temp_v0, gClearScreenGeo1);
     gClearScreenNode2 = process_geo_layout(temp_v0, gClearScreenGeo2);
 
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
 
     for (i = 0; i < 2; i++) {
         ptr = &D_83101F00[i];
 
-        Graph_AddToRootList0(&ptr->unk_000);
+        ModelRenderer_AttachDisplayObject(&ptr->unk_000);
 
         ptr->unk_172 = ptr->unk_174 = ptr->unk_176 = 0;
         ptr->unk_178 = ptr->unk_17A = ptr->unk_17C = 0;
@@ -616,17 +616,17 @@ void InitClearScreenGraph(void) {
 
         switch (i) {
             case 0:
-                Vec3f_Set(&ptr->unk_000.unk_024, -520.0f, 44.0f, -579.0f);
-                Vec3f_Set(&ptr->unk_000.unk_030, 2.0f, 2.0f, 2.0f);
-                GraphNode_InitChild(&ptr->unk_000, 0, 0, gClearScreenNode1);
+                Vec3f_SetComponentsDuplicate(&ptr->unk_000.unk_024, -520.0f, 44.0f, -579.0f);
+                Vec3f_SetComponentsDuplicate(&ptr->unk_000.unk_030, 2.0f, 2.0f, 2.0f);
+                Model_InitDisplayObject(&ptr->unk_000, 0, 0, gClearScreenNode1);
                 ptr->unk_168 = 1;
                 gNode1State = ptr;
                 break;
 
             case 1:
-                Vec3f_Set(&ptr->unk_000.unk_024, 0.0, -24.0f, -579.0f);
-                Vec3f_Set(&ptr->unk_000.unk_030, 0.0f, 0.0f, 0.0f);
-                GraphNode_InitChild(&ptr->unk_000, 0, 0, gClearScreenNode2);
+                Vec3f_SetComponentsDuplicate(&ptr->unk_000.unk_024, 0.0, -24.0f, -579.0f);
+                Vec3f_SetComponentsDuplicate(&ptr->unk_000.unk_030, 0.0f, 0.0f, 0.0f);
+                Model_InitDisplayObject(&ptr->unk_000, 0, 0, gClearScreenNode2);
                 ptr->unk_168 = 2;
                 gNode2State = ptr;
                 break;
@@ -634,27 +634,27 @@ void InitClearScreenGraph(void) {
     }
 }
 
-s32 ClearScreen_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 GymLeaderCastleClear_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('CLRG');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    Text_Init(0x10, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    Font_Init(0x10, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gym_leader_castle_clear_gfx, 0);
     D_83101EE0 = ASSET_LOAD2(backgrounds, 1, 1);
     D_83101EE4 = BinArchive_GetFile(D_83101EE0, 0xE);
 
-    InitClearScreenGraph();
-    Stage_Set(sp24);
-    RunClearScreenSequence();
-    Stage_AdvanceN(2);
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    Glc_ClearInitGraphics();
+    StageContext_Activate(sp24);
+    Glc_ClearRunLoop();
+    StageLoader_RunFrames(2);
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('CLRG');
 

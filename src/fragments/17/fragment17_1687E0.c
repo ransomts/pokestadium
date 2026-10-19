@@ -219,7 +219,7 @@ static s16 gScrollMode;
 static s16 gScrollOffset;
 static s16 gScrollStep;
 
-void Scroll_Init(s32 arg0, s32 arg1) {
+void WipeTransition_Start(s32 arg0, s32 arg1) {
     gScrollMode = arg0;
     gScrollStep = arg1;
 
@@ -230,11 +230,11 @@ void Scroll_Init(s32 arg0, s32 arg1) {
     }
 }
 
-s32 Scroll_GetMode(void) {
+s32 WipeTransition_GetState(void) {
     return gScrollMode;
 }
 
-void Scroll_Update(void) {
+void WipeTransition_Update(void) {
     s16 tmp = gScrollOffset;
 
     switch (gScrollMode) {
@@ -262,7 +262,7 @@ void Scroll_Update(void) {
     gScrollOffset = tmp;
 }
 
-Gfx* Scroll_Draw(Gfx* gfx, u32 arg1) {
+Gfx* WipeTransition_BuildBrickDisplayList(Gfx* gfx, u32 arg1) {
     s32 idx1 = arg1 % 2;
     s32 idx2 = (arg1 + 1) % 2;
     s32 i;
@@ -300,25 +300,25 @@ Gfx* Scroll_Draw(Gfx* gfx, u32 arg1) {
     return gfx;
 }
 
-void Scroll_RenderIfActive(void) {
+void WipeTransition_Draw(void) {
     Gfx* var_a0 = gDisplayListHead;
 
     if (gScrollMode != 0) {
         if (gScrollMode == 2) {
-            var_a0 = Scroll_Draw(var_a0, 0);
+            var_a0 = WipeTransition_BuildBrickDisplayList(var_a0, 0);
         } else {
-            var_a0 = Scroll_Draw(var_a0, 1);
+            var_a0 = WipeTransition_BuildBrickDisplayList(var_a0, 1);
         }
     }
     gDisplayListHead = var_a0;
 }
 
-void Gfx_DrawClippedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
+void UI_DrawClippedTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
     ClipRect sp30;
 
-    Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+    GfxRect_SetBounds(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 
-    if (Gfx_IntersectClip(&sp30) != 0) {
+    if (GfxRect_ClipToScissor(&sp30) != 0) {
         if (arg6 != 0) {
             arg4 += ((sp30.x1 - arg0) * arg6) >> 5;
         }
@@ -335,15 +335,15 @@ void Gfx_DrawClippedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 a
     }
 }
 
-void Gfx_LoadTextureAndDrawRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, UNUSED s32 arg5) {
+void UI_DrawTiledTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, UNUSED s32 arg5) {
     gDPLoadTextureTile(gDisplayListHead++, arg4, G_IM_FMT_IA, G_IM_SIZ_8b, arg2, arg3, 0, 0, arg2 - 1, arg3 - 1, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawClippedRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400);
+    UI_DrawClippedTextureRect(arg0, arg1, arg2, arg3, 0, 0, 0x400, 0x400);
 }
 
-void Gfx_DrawSpriteWithColors(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, SpriteColorParams* arg5) {
+void UI_DrawGradientTexture(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, SpriteColorParams* arg5) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -355,15 +355,15 @@ void Gfx_DrawSpriteWithColors(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, 
     gDPSetPrimColor(gDisplayListHead++, 0, 0, (u8)arg5->unk_00, (u8)arg5->unk_02, (u8)arg5->unk_04, 255);
     gSPClearGeometryMode(gDisplayListHead++, G_ZBUFFER | G_LIGHTING);
 
-    Gfx_LoadTextureAndDrawRect(arg1, arg2, arg3, arg4, arg0, arg3);
+    UI_DrawTiledTexture(arg1, arg2, arg3, arg4, arg0, arg3);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void Gfx_DrawBorderSprite(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void UI_DrawTextureRgba16(u8* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(arg1, arg2, arg3, arg4, arg0, arg3, 0);
+    Gfx_DrawTextureRgba16(arg1, arg2, arg3, arg4, arg0, arg3, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }

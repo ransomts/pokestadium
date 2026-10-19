@@ -8,7 +8,7 @@ void DisplayList_BuildRotationMatrixSegment(Gfx* gfx) {
     u8 angle;
 
     angle = gDefaultGraphRoot->modelPhase & 3;
-    mtx = (Mtx*)GfxAlloc(sizeof(Mtx));
+    mtx = (Mtx*)Gfx_AllocDisplayList(sizeof(Mtx));
     guRotate(mtx, gHpWheelDigitOffsetOnes[angle], 1.0f, 0.0f, 0.0f);
     gSPMatrix(gfx++, mtx, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
     gSPEndDisplayList(gfx++);
@@ -18,7 +18,7 @@ void DisplayList_InitRotationMatrixSegment(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {
-        gfx = (Gfx*)GfxAlloc(0x50);
+        gfx = (Gfx*)Gfx_AllocDisplayList(0x50);
         state->gfx = gfx;
         DisplayList_BuildRotationMatrixSegment(gfx);
     }

@@ -173,7 +173,7 @@ static TextObject* gMiniHudTextObj;
 static s32 gMiniHudMaxWheelValue;
 static Fragment2_1GraphNode gMiniHudWheelNodes[4];
 
-void MiniHud_UpdateControllerInput(void) {
+void MagikarpGame_UpdateAIInputBias(void) {
     s32 i;
     s32 j;
 
@@ -202,42 +202,42 @@ void MiniHud_UpdateControllerInput(void) {
                 case 0:
                 case 12:
                 case 13:
-                    if (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_06) {
+                    if (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_06) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 5:
                 case 7:
-                    if (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_04) {
+                    if (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_04) {
                         D_86003B5C->unk_174 = 0x8000;
                     }
                     break;
 
                 case 8:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0x90000) &&
-                        (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 9:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xD0000) &&
-                        (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 10:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xB0000) &&
-                        (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 11:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.unk_08 > 0xF0000) &&
-                        (GetRandomMod(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_08)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
@@ -268,25 +268,25 @@ void MiniHud_UpdateControllerInput(void) {
     }
 }
 
-s32 MiniHud_HandleInput(void) {
-    if (Stage_GetFadeState() != 0) {
+s32 MagikarpGame_ReadInputs(void) {
+    if (StageContext_GetFadeMode() != 0) {
         return -1;
     }
 
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 
     if (gResultMenuVisible != 1) {
-        MiniHud_UpdateControllerInput();
+        MagikarpGame_UpdateAIInputBias();
     }
 
     return 0;
 }
 
-void MiniHud_SetupCamera(void) {
+void MagikarpGame_InitCamera(void) {
     gMiniHudCamera = gMiniHudMainGraph->unk_00.unk_0C;
-    SetProjectionInfo(gMiniHudCamera);
+    MiniCam_SetActive(gMiniHudCamera);
     gMiniHudCamAtY = 0x600;
     gMiniHudCamAtZ = 0;
     gMiniHudCamDist = 1000;
@@ -299,14 +299,14 @@ void MiniHud_SetupCamera(void) {
     gMiniHudCamera->unk_60.at.y = 70.0f;
     gMiniHudCamera->unk_60.at.z = 0.0f;
 
-    Camera_SetViewParameters(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamAtY, gMiniHudCamAtZ);
+    Camera_ComputeEyeFromAngles(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamAtY, gMiniHudCamAtZ);
 }
 
-void MiniHud_UpdateCamera(void) {
-    Camera_SetViewParameters(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamAtY, gMiniHudCamAtZ);
+void MagikarpGame_UpdateCameraLookAt(void) {
+    Camera_ComputeEyeFromAngles(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamAtY, gMiniHudCamAtZ);
 }
 
-void MiniHud_RenderUI(s32 arg0) {
+void MagikarpGame_DrawOverlay(s32 arg0) {
     s32 i;
     UNUSED u8 sp68[] = {
         0,
@@ -327,9 +327,9 @@ void MiniHud_RenderUI(s32 arg0) {
             unk_D_86002A98* tmp = &gMiniHudTextureRects[i];
 
             if (gMiniHudPlayerStates[i].unk_000 == 0) {
-                DrawUniformScaledTextureRect(i, tmp->unk_00, tmp->unk_02, 0.75f);
+                Widget_DrawPlayerIcon(i, tmp->unk_00, tmp->unk_02, 0.75f);
             } else {
-                DrawUniformScaledTextureRect(-1 - i, tmp->unk_00, tmp->unk_02, 0.75f);
+                Widget_DrawPlayerIcon(-1 - i, tmp->unk_00, tmp->unk_02, 0.75f);
             }
         }
 
@@ -337,11 +337,11 @@ void MiniHud_RenderUI(s32 arg0) {
     }
 
     if (arg0 == 0) {
-        DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
-        DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
+        Ui_DrawBorderedPanel(0x18, 0x16, 0x110, 0x90, 0x15);
+        Ui_DrawBorderedPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
     }
 
-    Text_ResetState();
+    Font_BeginTranslucentTextRendering();
 
     switch (arg0) {
         s32 sp50;
@@ -354,70 +354,70 @@ void MiniHud_RenderUI(s32 arg0) {
             break;
 
         case 0:
-            Text_BeginRender();
-            Text_SetFont(2, 0);
-            Text_SetLineHeight(0xC);
+            Font_EnableTwoCycleTexturing();
+            Font_SetActive(2, 0);
+            Font_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-            Text_Print(0xA0 - (GetTextWidth(gMiniHudTextObj, GetMessageString(NULL, 0, gItemNamesBank, 0x15)) / 2), 0x20,
-                          GetMessageString(NULL, 0, gItemNamesBank, 0x15));
+            Font_Printf(0xA0 - (Text_MeasureStringWidth(gMiniHudTextObj, Text_GetString(NULL, 0, gItemNamesBank, 0x15)) / 2), 0x20,
+                          Text_GetString(NULL, 0, gItemNamesBank, 0x15));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x16));
-            Text_Print(0x28, 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x17));
-            Text_Print(0x28, 0x7C, GetMessageString(NULL, 0, gItemNamesBank, 0x18));
+            Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x16));
+            Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gItemNamesBank, 0x17));
+            Font_Printf(0x28, 0x7C, Text_GetString(NULL, 0, gItemNamesBank, 0x18));
             Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
             Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
 
-            temp_s0_2 = GetMessageString(NULL, 0, gItemNamesBank, 0x5F);
+            temp_s0_2 = Text_GetString(NULL, 0, gItemNamesBank, 0x5F);
 
-            ParseStringAndMeasure(&sp50, &sp4C, GetMessageString(NULL, 0, gItemNamesBank, 0x16), temp_s0_2, 0xC);
+            Widget_MeasureLabelBox(&sp50, &sp4C, Text_GetString(NULL, 0, gItemNamesBank, 0x16), temp_s0_2, 0xC);
             if (sp50 >= 0) {
-                Text_Print(sp50 + 0x28, sp4C + 0x34, temp_s0_2);
+                Font_Printf(sp50 + 0x28, sp4C + 0x34, temp_s0_2);
             }
 
-            ParseStringAndMeasure(&sp50, &sp4C, GetMessageString(NULL, 0, gItemNamesBank, 0x17), temp_s0_2, 0xC);
+            Widget_MeasureLabelBox(&sp50, &sp4C, Text_GetString(NULL, 0, gItemNamesBank, 0x17), temp_s0_2, 0xC);
             if (sp50 >= 0) {
-                Text_Print(sp50 + 0x28, sp4C + 0x58, temp_s0_2);
+                Font_Printf(sp50 + 0x28, sp4C + 0x58, temp_s0_2);
             }
 
-            ParseStringAndMeasure(&sp50, &sp4C, GetMessageString(NULL, 0, gItemNamesBank, 0x18), temp_s0_2, 0xC);
+            Widget_MeasureLabelBox(&sp50, &sp4C, Text_GetString(NULL, 0, gItemNamesBank, 0x18), temp_s0_2, 0xC);
             if (sp50 >= 0) {
-                Text_Print(sp50 + 0x28, sp4C + 0x7C, temp_s0_2);
+                Font_Printf(sp50 + 0x28, sp4C + 0x7C, temp_s0_2);
             }
 
             Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
             Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-            Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x19));
+            Font_Printf(0xA2, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x19));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-            Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
+            Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
-            Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
-            Text_EndRender();
+            Font_Printf(0x8B, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+            Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+            Font_DisableTwoCycleTexturing();
             break;
 
         case 4:
-            Text_BeginRender();
-            Text_SetFont(0x20, -2);
+            Font_EnableTwoCycleTexturing();
+            Font_SetActive(0x20, -2);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0x1E, 0x1E, 0xFF, 0xFF);
-            Text_Print(0xA0 - (GetTextWidth(gMiniHudTextObj, GetMessageString(NULL, 0, gItemNamesBank, 0x5A)) / 2), 0x64,
-                          GetMessageString(NULL, 0, gItemNamesBank, 0x5A));
-            Text_EndRender();
+            Font_Printf(0xA0 - (Text_MeasureStringWidth(gMiniHudTextObj, Text_GetString(NULL, 0, gItemNamesBank, 0x5A)) / 2), 0x64,
+                          Text_GetString(NULL, 0, gItemNamesBank, 0x5A));
+            Font_DisableTwoCycleTexturing();
             break;
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 
     if (arg0 == 0) {
         // D_800A7420 is gDisplayListHead under its second name (see variables.h).
         gSPDisplayList(D_800A7420++, gPrefDL_Border);
-        DrawAnimatedSprite(0x74, 0xB0, gMiniHudDL_Panel1);
-        DrawAnimatedSprite3(0x74, 0xC6, gMiniHudDL_Panel2);
-        DrawDualTexturePanel(2, 0x19, 0xA6);
+        Widget_DrawAnimIcon16(0x74, 0xB0, gMiniHudDL_Panel1);
+        Widget_DrawAnimIcon16C(0x74, 0xC6, gMiniHudDL_Panel2);
+        Widget_DrawSplitBanner(2, 0x19, 0xA6);
     }
 }
 
@@ -472,9 +472,9 @@ static Gfx D_86002DD8[] = {
 void func_86000C10(void) {
 }
 
-void MiniHud_DrawPlayerIndicators(void) {
+void MagikarpGame_DrawScoreMarkers(void) {
     Gfx* gfx = gDisplayListHead;
-    Mtx* var_s1 = (Mtx*)GfxAlloc(sizeof(MtxF) * 4);
+    Mtx* var_s1 = (Mtx*)Gfx_AllocDisplayList(sizeof(MtxF) * 4);
     Mtx sp100;
     Mtx spC0;
     UNUSED Mtx sp80;
@@ -497,31 +497,31 @@ void MiniHud_DrawPlayerIndicators(void) {
     gDisplayListHead = gfx;
 }
 
-void MiniHud_MainLoop(s32 arg0) {
-    Stage_BeginDisplayList();
-    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+void MagikarpGame_DrawFrame(s32 arg0) {
+    BgStage_DrawFrame();
+    GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     Gfx_DrawTilemap(gMiniHudTilemap);
 
     if (gResultMenuVisible != 1) {
-        Gfx_FinishFrame();
+        GeoRender_AdvanceFrameCounter();
     }
 
-    Fragment2_1_Update();
-    Graph_SetTextureState(gMiniHudMainGraph);
-    gDisplayListHead = Gfx_ApplyProjection(gDisplayListHead);
-    MiniHud_DrawPlayerIndicators();
+    Widget_CountdownUpdate();
+    Geo_RenderRootNode(gMiniHudMainGraph);
+    gDisplayListHead = MiniCam_ApplyProjection(gDisplayListHead);
+    MagikarpGame_DrawScoreMarkers();
 
     if (gResultConfirmPressed == 0) {
-        MiniHud_RenderUI(arg0);
+        MagikarpGame_DrawOverlay(arg0);
     }
 
-    ResultScreen_UpdateAndRender();
-    Stage_Advance();
+    Widget_PauseMenuUpdate();
+    BgStage_AdvanceFrame();
 
     gMiniHudFrameCount++;
 }
 
-void MiniHud_UpdateAnimations(void) {
+void MagikarpGame_UpdateSplashRipple(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -556,19 +556,19 @@ void MiniHud_UpdateAnimations(void) {
     }
 }
 
-s32 MiniHud_InitAndWait(void) {
+s32 MagikarpGame_WaitForStart(void) {
     s32 var_s0_2;
     s32 i;
 
-    Stage_AdvanceN(0xA);
-    Stage_FadeIn(0x10);
+    StageLoader_RunFrames(0xA);
+    StageFade_StartFromOpaque(0x10);
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &gMiniHudPlayerStates[i];
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
-        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+        ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
         gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
-        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = (GetRandomMod(0x14) << 0x10);
+        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = (Rand_Range(0x14) << 0x10);
         gMiniHudActionFlags[i] = 0;
     }
 
@@ -581,47 +581,47 @@ s32 MiniHud_InitAndWait(void) {
 
     var_s0_2 = true;
     while (var_s0_2 == true) {
-        if (MiniHud_HandleInput() == 0) {
+        if (MagikarpGame_ReadInputs() == 0) {
             if (gPlayer1Controller->buttonPressed & 0x1000) {
                 var_s0_2 = false;
             }
 
             if ((gMenuCursorX == 0) && (gPlayer1Controller->buttonPressed & 0x4000)) {
-                PlaySoundEffect(3);
-                SetResultFlag(2);
+                Audio_PlaySoundEffectById(3);
+                Widget_PauseMenuTrigger(2);
                 return -1;
             }
         }
 
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_DrawFrame(gMiniHudState);
     }
 
     return 0;
 }
 
-void MiniHud_PlayIntro(void) {
+void MagikarpGame_Countdown(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &gMiniHudPlayerStates[i];
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
-        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+        ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
         gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
-        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = GetRandomMod(0x14) << 0x10;
+        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = Rand_Range(0x14) << 0x10;
         gMiniHudActionFlags[i] = 0;
     }
 
     gMiniHudIntroActive = 1;
     gMiniHudIntroTimer = 90;
-    Fragment2_1_SetStartFlag(1);
+    Widget_CountdownStart(1);
     gMiniHudState = 1;
 
     while (gMiniHudIntroActive == 1) {
-        switch (Fragment2_1_GetResult()) {
+        switch (Widget_CountdownGetState()) {
             case 1:
             case 2:
             case 3:
-                PlaySoundIfEnabled(0x20001, 0, 0);
+                MiniSound_DispatchCommand(0x20001, 0, 0);
                 break;
 
             case 0:
@@ -629,114 +629,114 @@ void MiniHud_PlayIntro(void) {
                 break;
         }
 
-        MiniHud_UpdateAnimations();
-        MiniHud_HandleInput();
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_UpdateSplashRipple();
+        MagikarpGame_ReadInputs();
+        MagikarpGame_DrawFrame(gMiniHudState);
     }
 }
 
-void MiniHud_TriggerAction_5(s16 arg0) {
+void MagikarpGame_StartTrickPose(s16 arg0) {
     switch (arg0) {
         case 0:
         case 1:
-            PlaySoundIfEnabled(0x20006, D_86003B5C->unk_18A + 1, 4);
+            MiniSound_DispatchCommand(0x20006, D_86003B5C->unk_18A + 1, 4);
             break;
 
         case 2:
-            PlaySoundIfEnabled(0x20005, D_86003B5C->unk_18A + 1, 4);
+            MiniSound_DispatchCommand(0x20005, D_86003B5C->unk_18A + 1, 4);
             break;
 
         default:
-            PlaySoundIfEnabled(0x20004, D_86003B5C->unk_18A + 1, 4);
+            MiniSound_DispatchCommand(0x20004, D_86003B5C->unk_18A + 1, 4);
             break;
     }
 
     D_86003B5C->unk_004.unk_168 = 5;
     D_86003B5C->unk_004.unk_16A = arg0;
 
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 8);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 8);
 
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_TriggerAction_6(void) {
+void MagikarpGame_AdvanceTrickPoseB(void) {
     D_86003B5C->unk_004.unk_168 = 6;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 9);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 9);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_TriggerAction_7(void) {
+void MagikarpGame_AdvanceTrickPoseC(void) {
     D_86003B5C->unk_004.unk_168 = 7;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xA);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xA);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_TriggerAction_8(void) {
+void MagikarpGame_AdvanceTrickPoseD(void) {
     D_86003B5C->unk_004.unk_168 = 8;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xB);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xB);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_TriggerAction_9(void) {
+void MagikarpGame_AdvanceTrickPoseE(void) {
     D_86003B5C->unk_004.unk_168 = 9;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xC);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xC);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_TriggerAction_10(void) {
+void MagikarpGame_AdvanceTrickPoseF(void) {
     D_86003B5C->unk_004.unk_168 = 0xA;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xD);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xD);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_TriggerAction_11(void) {
+void MagikarpGame_AdvanceTrickPoseG(void) {
     D_86003B5C->unk_004.unk_168 = 0xB;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0xE);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0xE);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_HandleActionTimeout(s32 arg0) {
+void MagikarpGame_FinishTrickOrChain(s32 arg0) {
     s32 i;
 
     gMiniHudActionFlags[arg0] = 0;
 
     for (i = 0; i < 2; i++) {
         if (D_86003B5C->unk_17C[i] & 0x8000) {
-            MiniHud_TriggerAction_5(i);
+            MagikarpGame_StartTrickPose(i);
             return;
         }
     }
 
     D_86003B5C->unk_004.unk_168 = 0xC;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 5);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 5);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_TriggerAction_6_Alt(s32 arg0) {
+void MagikarpGame_LandTrick(s32 arg0) {
     gMiniHudActionFlags[arg0] = 0;
     D_86003B5C->unk_004.unk_168 = 0xD;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 6);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 6);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_TriggerAction_0_Alt(s32 arg0) {
+void MagikarpGame_ResetPlayerState(s32 arg0) {
     gMiniHudActionFlags[arg0] = 0;
     D_86003B5C->unk_004.unk_168 = 0;
-    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 }
 
-void MiniHud_UpdatePlayerState(s32 arg0) {
+void MagikarpGame_UpdatePlayerState(s32 arg0) {
     D_86003B5C = &gMiniHudPlayerStates[arg0];
     gCurrentPlayerWheel = &D_86003598[arg0];
     gCurrentPlayerGraph = &D_86003B5C->unk_004;
@@ -745,55 +745,55 @@ void MiniHud_UpdatePlayerState(s32 arg0) {
         switch (D_86003B5C->unk_004.unk_168) {
             case 12:
                 if (D_86003B5C->unk_17C[1] & 0x8000) {
-                    MiniHud_TriggerAction_5(2);
-                } else if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
-                    MiniHud_TriggerAction_6_Alt(arg0);
+                    MagikarpGame_StartTrickPose(2);
+                } else if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
+                    MagikarpGame_LandTrick(arg0);
                 }
                 break;
 
             case 13:
                 if (D_86003B5C->unk_17C[1] & 0x8000) {
-                    MiniHud_TriggerAction_5(3);
-                } else if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
-                    MiniHud_TriggerAction_0_Alt(arg0);
+                    MagikarpGame_StartTrickPose(3);
+                } else if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
+                    MagikarpGame_ResetPlayerState(arg0);
                 }
                 break;
 
             case 0:
                 if (D_86003B5C->unk_17C[1] & 0x8000) {
                     if (D_86003B5C->unk_18C == 1) {
-                        MiniHud_TriggerAction_5(2);
+                        MagikarpGame_StartTrickPose(2);
                         D_86003B5C->unk_18C = 0;
                     } else {
-                        MiniHud_TriggerAction_5(4);
+                        MagikarpGame_StartTrickPose(4);
                     }
                 }
                 break;
 
             case 5:
-                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
+                if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
                     if (D_86003B5C->unk_176[1] & 0x8000) {
-                        MiniHud_TriggerAction_7();
+                        MagikarpGame_AdvanceTrickPoseC();
                     } else {
-                        MiniHud_TriggerAction_6();
+                        MagikarpGame_AdvanceTrickPoseB();
                     }
                 }
                 break;
 
             case 7:
-                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
+                if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
                     if (D_86003B5C->unk_176[1] & 0x8000) {
                         s16 tmp = D_86003B5C->unk_004.unk_16A;
 
                         if (tmp < 2) {
-                            MiniHud_TriggerAction_10();
+                            MagikarpGame_AdvanceTrickPoseF();
                         } else if (tmp == 2) {
-                            MiniHud_TriggerAction_9();
+                            MagikarpGame_AdvanceTrickPoseE();
                         } else {
-                            MiniHud_TriggerAction_11();
+                            MagikarpGame_AdvanceTrickPoseG();
                         }
                     } else {
-                        MiniHud_TriggerAction_8();
+                        MagikarpGame_AdvanceTrickPoseD();
                     }
                 }
                 break;
@@ -803,22 +803,22 @@ void MiniHud_UpdatePlayerState(s32 arg0) {
             case 9:
             case 10:
             case 11:
-                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
-                    MiniHud_HandleActionTimeout(arg0);
+                if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
+                    MagikarpGame_FinishTrickOrChain(arg0);
                 }
                 break;
 
             case 1:
-                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
-                    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 7);
+                if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
+                    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 7);
                     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
                     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
                 }
                 break;
 
             default:
-                if (Anim_HasReachedEnd(&gCurrentPlayerGraph->unk_000)) {
-                    GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+                if (ModelAnim_IsFinished(&gCurrentPlayerGraph->unk_000)) {
+                    ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
                     gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
                     gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
                     gMiniHudActionFlags[arg0] = 0;
@@ -832,40 +832,40 @@ void MiniHud_UpdatePlayerState(s32 arg0) {
             if (gMiniHudActionFlags[arg0] == 0) {
                 gCurrentPlayerWheel->unk_16A++;
                 gMiniHudActionFlags[arg0] = 1;
-                GraphNode_TriggerAction(&gCurrentPlayerWheel->unk_000, 0);
+                ModelAnim_SetAnimation(&gCurrentPlayerWheel->unk_000, 0);
                 gCurrentPlayerWheel->unk_000.unk_040.unk_0C = 0x10000;
                 gCurrentPlayerWheel->unk_000.unk_040.unk_08 = 0;
-                PlaySoundIfEnabled(0x20008, arg0, 4);
+                MiniSound_DispatchCommand(0x20008, arg0, 4);
             }
         }
 
         if (gResultMenuVisible != 1) {
-            HpWheel_SetDigitsSmooth(arg0, gCurrentPlayerWheel->unk_16A);
+            BattleHud_ApproachDigitRotations(arg0, gCurrentPlayerWheel->unk_16A);
         }
 
         if (D_86003B5C->unk_188 > 0) {
             D_86003B5C->unk_188--;
             if (D_86003B5C->unk_188 == 0) {
-                GraphNode_SetColorRGBA(&D_86003B5C->unk_004.unk_000, 0xFF, 0xFF, 0xFF, 0);
+                Model_SetMaterialColor(&D_86003B5C->unk_004.unk_000, 0xFF, 0xFF, 0xFF, 0);
             }
         }
     }
 }
 
-void MiniHud_PlayGame(void) {
+void MagikarpGame_Play(void) {
     s32 i;
     s32 temp_lo;
     s32 temp_v1;
     s32 var_s6 = 1;
 
-    PlaySoundIfEnabled(0x20002, 0, 0);
+    MiniSound_DispatchCommand(0x20002, 0, 0);
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &gMiniHudPlayerStates[i];
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
         D_86003B5C->unk_004.unk_168 = 0;
-        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+        ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
         gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
 
         gMiniHudActionFlags[i] = 0;
@@ -878,30 +878,30 @@ void MiniHud_PlayGame(void) {
     gMiniHudState = 2;
 
     while (var_s6 != 0) {
-        MiniHud_HandleInput();
-        MiniHud_UpdateCamera();
+        MagikarpGame_ReadInputs();
+        MagikarpGame_UpdateCameraLookAt();
 
         if (gMiniHudGameTimer == 0xF) {
-            ResultScreen_SetAnimation(10);
+            Audio_StartMusicTrack(10);
         }
 
         if (gResultMenuVisible != 1) {
             for (i = 0; i < 4; i++) {
-                MiniHud_UpdatePlayerState(i);
+                MagikarpGame_UpdatePlayerState(i);
             }
 
-            MiniHud_UpdateAnimations();
+            MagikarpGame_UpdateSplashRipple();
 
             gMiniHudGameTimer++;
             if (gMiniHudGameTimer >= 0x258) {
-                PlaySoundIfEnabled(0x20009, 0, 0);
+                MiniSound_DispatchCommand(0x20009, 0, 0);
                 var_s6 = 0;
             } else {
                 temp_v1 = 0x258 - gMiniHudGameTimer;
                 if ((temp_v1 % 30) == 0) {
                     temp_lo = temp_v1 / 30;
                     if ((temp_lo < 6) && (temp_lo > 0)) {
-                        PlaySoundIfEnabled(0x2000A, 0, 0);
+                        MiniSound_DispatchCommand(0x2000A, 0, 0);
                         if (1) {}
                         if (1) {}
                         if (1) {}
@@ -914,13 +914,13 @@ void MiniHud_PlayGame(void) {
             var_s6 = 0;
         }
 
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_DrawFrame(gMiniHudState);
     }
 
-    Stage_SetFadeColor(0xA);
+    Audio_FadeOutAll(0xA);
 }
 
-s32 MiniHud_CheckAllIdle(void) {
+s32 MagikarpGame_AllPlayersFinishedJump(void) {
     s32 var_v0 = 0;
     s32 i;
 
@@ -949,7 +949,7 @@ s32 MiniHud_CheckAllIdle(void) {
     return 0;
 }
 
-void MiniHud_ResolveWinner(void) {
+void MagikarpGame_ShowWinnerSequence(void) {
     s32 i;
     s32 j;
     s32 var_s1;
@@ -960,18 +960,18 @@ void MiniHud_ResolveWinner(void) {
     var_s1 = 1;
 
     while (var_s1 != 0) {
-        MiniHud_HandleInput();
-        MiniHud_UpdateCamera();
+        MagikarpGame_ReadInputs();
+        MagikarpGame_UpdateCameraLookAt();
 
         for (i = 0; i < 4; i++) {
-            MiniHud_UpdatePlayerState(i);
+            MagikarpGame_UpdatePlayerState(i);
         }
 
-        if (MiniHud_CheckAllIdle() != 0) {
+        if (MagikarpGame_AllPlayersFinishedJump() != 0) {
             var_s1 = 0;
         }
 
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_DrawFrame(gMiniHudState);
 
         if (gResultFlag_Special != 0) {
             return;
@@ -990,7 +990,7 @@ void MiniHud_ResolveWinner(void) {
 
     for (i = 0; i < 4; i++) {
         if ((gMiniHudMaxWheelValue == D_86003598[i].unk_16A) && (gMiniHudMaxWheelValue != 0)) {
-            IncrementPlayerScore(i);
+            Widget_PauseMenuRecordWin(i);
             gMiniHudWinnerCount++;
         }
     }
@@ -1000,26 +1000,26 @@ void MiniHud_ResolveWinner(void) {
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
         if ((gMiniHudMaxWheelValue == D_86003598[i].unk_16A) && (gMiniHudMaxWheelValue > 0)) {
             D_86003B5C->unk_004.unk_168 = 1;
-            GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 7);
+            ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 7);
             gCurrentPlayerGraph->unk_000.unk_040.unk_08 = 0;
         } else {
             D_86003B5C->unk_004.unk_168 = 2;
-            GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
-            gCurrentPlayerGraph->unk_000.unk_040.unk_08 = GetRandomMod(5) << 0x10;
+            ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
+            gCurrentPlayerGraph->unk_000.unk_040.unk_08 = Rand_Range(5) << 0x10;
         }
         gCurrentPlayerGraph->unk_000.unk_040.unk_0C = 0x10000;
     }
 
     j = 30;
     while (j > 0) {
-        MiniHud_HandleInput();
-        MiniHud_UpdateCamera();
+        MagikarpGame_ReadInputs();
+        MagikarpGame_UpdateCameraLookAt();
 
         for (i = 0; i < 4; i++) {
-            MiniHud_UpdatePlayerState(i);
+            MagikarpGame_UpdatePlayerState(i);
         }
 
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_DrawFrame(gMiniHudState);
 
         if (gResultFlag_Special != 0) {
             return;
@@ -1030,14 +1030,14 @@ void MiniHud_ResolveWinner(void) {
         }
     }
 
-    SetResultFlag(1);
+    Widget_PauseMenuTrigger(1);
 
     while (var_s5 != 0) {
-        MiniHud_HandleInput();
-        MiniHud_UpdateCamera();
+        MagikarpGame_ReadInputs();
+        MagikarpGame_UpdateCameraLookAt();
 
         for (i = 0; i < 4; i++) {
-            MiniHud_UpdatePlayerState(i);
+            MagikarpGame_UpdatePlayerState(i);
         }
 
         for (i = 0; i < 4; i++) {
@@ -1047,7 +1047,7 @@ void MiniHud_ResolveWinner(void) {
             }
         }
 
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_DrawFrame(gMiniHudState);
 
         if (gResultFlag_Special != 0) {
             return;
@@ -1055,36 +1055,36 @@ void MiniHud_ResolveWinner(void) {
     }
 }
 
-void MiniHud_Exit(void) {
+void MagikarpGame_FadeOutLoop(void) {
     s32 i;
     s32 j;
 
-    Stage_SetFadeColor(30);
-    Stage_FadeOut(30);
+    Audio_FadeOutAll(30);
+    StageFade_StartFromTransparent(30);
 
     for (i = 0; i < 30; i++) {
-        MiniHud_HandleInput();
+        MagikarpGame_ReadInputs();
 
         for (j = 0; j < 4; j++) {
-            MiniHud_UpdatePlayerState(j);
+            MagikarpGame_UpdatePlayerState(j);
         }
 
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_DrawFrame(gMiniHudState);
     }
 }
 
-void MiniHud_WaitFrames(s32 arg0) {
+void MagikarpGame_ShowResultDelay(s32 arg0) {
     s32 i;
 
     gMiniHudState = 6;
 
     for (i = 0; i < arg0; i++) {
-        MiniHud_HandleInput();
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_ReadInputs();
+        MagikarpGame_DrawFrame(gMiniHudState);
     }
 }
 
-void MiniHud_WaitForExit(void) {
+void MagikarpGame_WaitForExit(void) {
     s32 i;
 
     gMiniHudState = 5;
@@ -1098,32 +1098,32 @@ void MiniHud_WaitForExit(void) {
         }
 
         for (i = 0; i < 4; i++) {
-            MiniHud_UpdatePlayerState(i);
+            MagikarpGame_UpdatePlayerState(i);
         }
 
-        MiniHud_HandleInput();
-        MiniHud_MainLoop(gMiniHudState);
+        MagikarpGame_ReadInputs();
+        MagikarpGame_DrawFrame(gMiniHudState);
     }
 }
 
-void MiniHud_InitGraphics(void) {
+void MagikarpGame_InitActors(void) {
     s32 i;
     MemoryBlock* temp_v0;
 
-    temp_v0 = (MemoryBlock*)state_pool_try_init(main_pool_get_available(), 0);
+    temp_v0 = (MemoryBlock*)MainPool_AllocState(main_pool_get_available(), 0);
     gMiniHudMainGraph = (unk_D_86002F34*)process_geo_layout(temp_v0, gMiniHudGeoLayout);
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
-    AssetManager_LoadArchives();
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
+    PokeIcon_OpenModelArchives();
     gMiniHudAlpha = 0xFF;
-    gMiniHudGeoLayoutObj = (unk_D_86002F30*)GeoLayout_LoadById(0xAD);
+    gMiniHudGeoLayoutObj = (unk_D_86002F30*)Model_LoadByArchiveIndex(0xAD);
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &gMiniHudPlayerStates[i];
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
-        Graph_AddToRootList0(&gCurrentPlayerGraph->unk_000);
-        GraphNode_InitChild(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->unk_08->unk_00[0]);
+        ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
+        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->unk_08->unk_00[0]);
 
         gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
 
@@ -1145,20 +1145,20 @@ void MiniHud_InitGraphics(void) {
             D_86003B5C->unk_000 = gMenuState + 1;
         }
 
-        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
+        ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
 
-        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = GetRandomMod(5) << 0x10;
+        gCurrentPlayerGraph->unk_000.unk_040.unk_08 = Rand_Range(5) << 0x10;
         gCurrentPlayerGraph->unk_000.unk_01E.y = -0x2800;
     }
 
-    gMiniHudGeoLayoutObj = (unk_D_86002F30*)GeoLayout_LoadById(0xAE);
+    gMiniHudGeoLayoutObj = (unk_D_86002F30*)Model_LoadByArchiveIndex(0xAE);
 
     for (i = 0; i < 4; i++) {
         gCurrentPlayerWheel = &D_86003598[i];
         gCurrentPlayerGraph = gCurrentPlayerWheel;
 
-        Graph_AddToRootList0(&gCurrentPlayerGraph->unk_000);
-        GraphNode_InitChild(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->unk_08->unk_00[0]);
+        ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
+        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->unk_08->unk_00[0]);
         gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * D_86002A94;
         gCurrentPlayerGraph->unk_000.unk_024.z = 0.0f;
         gCurrentPlayerGraph->unk_000.unk_024.y = 200.0f;
@@ -1169,56 +1169,56 @@ void MiniHud_InitGraphics(void) {
         gCurrentPlayerWheel->unk_168 = 0;
         gCurrentPlayerWheel->unk_16A = 0;
         gCurrentPlayerWheel->unk_16C = 0;
-        HpWheel_SetDigits(i, 0);
+        BattleHud_SetDigitRotationTargets(i, 0);
         gCurrentPlayerWheel->unk_000.modelPhase = i;
-        GraphNode_TriggerAction(&gCurrentPlayerGraph->unk_000, 0);
-        Anim_ClearChannelState(&gCurrentPlayerGraph->unk_000);
+        ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
+        ModelAnim_ClearTransformChannel(&gCurrentPlayerGraph->unk_000);
     }
 
-    gMiniHudTilemap = Asset_Load(0, (void*)&D_124570, (void*)fragment7_ROM_START, 0);
-    MiniHud_SetupCamera();
-    Fragment2_1_Init();
+    gMiniHudTilemap = Asset_LoadToSegment(0, (void*)&D_124570, (void*)fragment7_ROM_START, 0);
+    MagikarpGame_InitCamera();
+    Widget_CountdownInit();
 }
 
-void MiniHud_Init(UNUSED s32 arg0, UNUSED s32 arg1) {
+void MagikarpGame_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('MINI');
 
-    Gfx_InitBuffers(0x20000, 0);
-    sp24 = (Stage*)Stage_Create(0, 1, 3, 1, 2, 1);
-    gMiniHudTextObj = Text_Init(0x36, 0);
+    Gfx_InitDisplayListBuffers(0x20000, 0);
+    sp24 = (Stage*)StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    gMiniHudTextObj = Font_Init(0x36, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
 
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
-    MiniHud_InitGraphics();
-    ResultScreen_Init();
-    Stage_Set(sp24);
+    MagikarpGame_InitActors();
+    Widget_PauseMenuInit();
+    StageContext_Activate(sp24);
 
-    if (MiniHud_InitAndWait() != -1) {
-        Stage_SetFadeColor(0x3C);
-        MiniHud_WaitFrames(5);
-        MiniHud_PlayIntro();
-        MiniHud_PlayGame();
+    if (MagikarpGame_WaitForStart() != -1) {
+        Audio_FadeOutAll(0x3C);
+        MagikarpGame_ShowResultDelay(5);
+        MagikarpGame_Countdown();
+        MagikarpGame_Play();
 
         if (gResultFlag_Special == 0) {
-            MiniHud_ResolveWinner();
+            MagikarpGame_ShowWinnerSequence();
         }
 
         if (gResultFlag_Special == 0) {
-            MiniHud_WaitForExit();
+            MagikarpGame_WaitForExit();
         }
     }
 
-    MiniHud_Exit();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    MagikarpGame_FadeOutLoop();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('MINI');
 
-    GetCurrentOptionCount();
+    Widget_PauseMenuGetResult();
 }

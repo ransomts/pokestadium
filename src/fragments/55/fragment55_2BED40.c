@@ -103,36 +103,36 @@ static s16 gMenuOptions_Mode8_S8[] = {
     0x0015, 0x001C, 0x001B, 0x0014, 0x0023, 0xFFFF,
 };
 
-char* GetBattleModeMessage(s32 arg0) {
-    return GetMessageString(NULL, 0, gBattleModeMessageBank, arg0 - 1);
+char* RentalRules_GetPokemonName(s32 arg0) {
+    return Text_GetString(NULL, 0, gBattleModeMessageBank, arg0 - 1);
 }
 
-void BattleMode_LoadAssets(void) {
+void RentalRules_LoadBackgroundArchive(void) {
     unk_func_80027FA0 sp20;
 
-    if (gBattleContext.unk_0000 != 0xA) {
-        gBattleAssetArchive = Asset_Load2(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
-        if (gBattleContext.unk_0000 == 7) {
-            GbsEnsureBankLoaded(2);
-            GBAudio_ResetState(&sp20, gBattleContext.unk_11F2);
+    if (gSessionContext.unk_0000 != 0xA) {
+        gBattleAssetArchive = BinArchive_Open(backgrounds_ROM_START, battle_headers_ROM_START, 1, 1);
+        if (gSessionContext.unk_0000 == 7) {
+            Save_EnsureBankLoaded(2);
+            Save_GetModeSettings(&sp20, gSessionContext.unk_11F2);
             if (sp20.unk_04 < 8) {
                 gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, 0xD);
             } else {
                 gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, 0x10);
             }
         } else {
-            gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, gBattleModeAssetIndices[gBattleContext.unk_0000]);
+            gBattleBackgroundAtlas = BinArchive_GetFile(gBattleAssetArchive, gBattleModeAssetIndices[gSessionContext.unk_0000]);
         }
     }
 }
 
-void MenuInput_Update(void) {
+void RentalRules_PollInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-s16* GetMenuOptionList(unk_D_800AE540* arg0) {
+s16* RentalRules_GetRuleIdList(unk_D_800AE540* arg0) {
     s16* var_v1 = NULL;
 
     switch (arg0->unk_0001) {
@@ -248,7 +248,7 @@ s16* GetMenuOptionList(unk_D_800AE540* arg0) {
     return var_v1;
 }
 
-char* GetBattleModeTitle(s8 arg0) {
+char* RentalRules_GetModeLabel(s8 arg0) {
     char* ret;
 
     switch (arg0) {
@@ -285,7 +285,7 @@ char* GetBattleModeTitle(s8 arg0) {
     return ret;
 }
 
-char* GetBattleModeSubtitle(s8 arg0) {
+char* RentalRules_GetCategoryLabel(s8 arg0) {
     char* ret;
 
     switch (arg0) {
@@ -333,7 +333,7 @@ char* GetBattleModeSubtitle(s8 arg0) {
     return ret;
 }
 
-s32 MenuOptionStringsMissing(s16* arg0) {
+s32 RentalRules_RuleListHasEmptyEntry(s16* arg0) {
     s32 ret = 0;
 
     while (*arg0 != -1) {
@@ -347,7 +347,7 @@ s32 MenuOptionStringsMissing(s16* arg0) {
     return ret;
 }
 
-void FadeIn_Update(void) {
+void RentalRules_UpdateFadeIn(void) {
     s32 temp_lo;
 
     gMenuFadeTimer--;
@@ -364,7 +364,7 @@ void FadeIn_Update(void) {
     }
 }
 
-void MenuInput_HandleSelection(void) {
+void RentalRules_UpdateMainInput(void) {
     s16 tmp = gCurrentMenuSelectedIndex;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
@@ -382,7 +382,7 @@ void MenuInput_HandleSelection(void) {
     }
 
     if (gCurrentMenuSelectedIndex != tmp) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
@@ -390,28 +390,28 @@ void MenuInput_HandleSelection(void) {
         gMenuFadeTimer = 0;
 
         if (gMenuOptionStrings.unk_00[gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]] != NULL) {
-            Dialog_Start(gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]);
+            RentalRules_PopupOpen(gCurrentMenuOptionIds[gCurrentMenuSelectedIndex]);
         } else {
             RentalRules_QualifyingSpeciesWindowOpen();
-            PlaySoundEffect(4);
+            Audio_PlaySoundEffectById(4);
         }
 
-        PlaySoundEffect(2);
+        Audio_PlaySoundEffectById(2);
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         D_83003C80 = 3;
         gMenuFadeTimer = 0xA;
         gMenuBackgroundTimer = -1;
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
     }
 }
 
-void Menu_CheckDialogComplete(void) {
-    if ((Dialog_IsActive() == 0) && (RentalRules_QualifyingSpeciesWindowIsActive() == 0)) {
+void RentalRules_UpdateWaitPopupClose(void) {
+    if ((RentalRules_PopupIsActive() == 0) && (RentalRules_QualifyingSpeciesWindowIsActive() == 0)) {
         D_83003C80 = 1;
     }
 }
 
-void FadeOut_Update(void) {
+void RentalRules_UpdateFadeOut(void) {
     s32 temp_lo;
 
     gMenuFadeTimer--;
@@ -429,7 +429,7 @@ void FadeOut_Update(void) {
     }
 }
 
-s32 FadeOut_IsComplete(void) {
+s32 RentalRules_UpdateExitDelay(void) {
     s32 var_v1 = 0;
 
     gMenuFadeTimer--;
@@ -439,7 +439,7 @@ s32 FadeOut_IsComplete(void) {
     return var_v1;
 }
 
-void DrawBattleModeBackground(void) {
+void RentalRules_DrawBackgroundFallback(void) {
     gDPPipeSync(gDisplayListHead++);
 
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -454,12 +454,12 @@ void DrawBattleModeBackground(void) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_302EBC0, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(0, 0, 0x280, 0x1E0, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(0, 0, 0x280, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawLoadingBar(void) {
+void RentalRules_DrawHeaderBanner(void) {
     UNUSED s32 pad;
     s16 temp_s1;
     s16 spD8;
@@ -478,107 +478,107 @@ void DrawLoadingBar(void) {
     gDPLoadTextureBlock(gDisplayListHead++, D_20003C0, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(0x38, temp_s1, 0x10, spD8, 0, 0, 0x3F0, 0x8000 / spD8, 0);
+    Gfx_DrawTexturedRectClipped(0x38, temp_s1, 0x10, spD8, 0, 0, 0x3F0, 0x8000 / spD8, 0);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_20005C0, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(0x240, temp_s1, 0x10, spD8, 0, 0, 0x400, 0x8000 / spD8, 0);
-    Gfx_DrawTextureRect(0x48, temp_s1, 0x1F8, spD8, 0, 0, 0, 0x8000 / spD8, 0);
+    Gfx_DrawTexturedRectClipped(0x240, temp_s1, 0x10, spD8, 0, 0, 0x400, 0x8000 / spD8, 0);
+    Gfx_DrawTexturedRectClipped(0x48, temp_s1, 0x1F8, spD8, 0, 0, 0, 0x8000 / spD8, 0);
 
     if (gLoadingBarProgress < 0x400) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA16(0x30, temp_s1 - 8, 0x30, 0x18, D_2006C00, 0x30, 0);
-        Gfx_DrawSpriteRGBA16(0x30, temp_s1 + 0x10, 0x30, 0x18, D_2007500, 0x30, 0);
+        Gfx_DrawTextureRgba16(0x30, temp_s1 - 8, 0x30, 0x18, D_2006C00, 0x30, 0);
+        Gfx_DrawTextureRgba16(0x30, temp_s1 + 0x10, 0x30, 0x18, D_2007500, 0x30, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-        Text_ResetState();
-        Text_SetFont(0x10, 0);
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(0x10, 0);
 
         if (gCurrentBattleModeTitle != 0) {
             char sp48[0x40];
             char* temp_v0_21;
 
             Text_SetEnvColor(0, 0, 0, 0xFF);
-            MessageBank_SetPointer_0x14_0x2A(0x26, gCurrentBattleModeTitle);
-            temp_v0_21 = GetMessageString(sp48, sizeof(sp48), D_830039C0, 0);
-            Text_Print(0x6A, temp_s1 + 4, temp_v0_21);
+            Text_SetStringToken(0x26, gCurrentBattleModeTitle);
+            temp_v0_21 = Text_GetString(sp48, sizeof(sp48), D_830039C0, 0);
+            Font_Printf(0x6A, temp_s1 + 4, temp_v0_21);
             Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-            Text_Print(0x68, temp_s1 + 2, temp_v0_21);
+            Font_Printf(0x68, temp_s1 + 2, temp_v0_21);
         }
 
-        Text_SetupDL();
+        Font_EndTexturedTextRendering();
     }
 }
 
 void RentalRules_DrawWindowFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteIA8(arg0 - 7, arg1 - 7, 8, 8, D_2000340, 8, 0);
-    Gfx_DrawSpriteIA8((arg0 + arg2) - 1, arg1 - 7, 8, 8, D_2000380, 8, 0);
-    Gfx_DrawTextureRect(arg0 + 1, arg1 - 7, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
-    Gfx_DrawSpriteIA8(arg0 - 7, (arg1 + arg3) - 1, 8, 8, D_20002C0, 8, 0);
-    Gfx_DrawTextureRect(arg0 - 7, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
-    Gfx_DrawSpriteIA8((arg0 + arg2) - 1, (arg1 + arg3) - 1, 8, 8, D_2000300, 8, 0);
-    Gfx_DrawTextureRect(arg0 + 1, (arg1 + arg3) - 1, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
-    Gfx_DrawTextureRect((arg0 + arg2) - 1, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8(arg0 - 7, arg1 - 7, 8, 8, D_2000340, 8, 0);
+    Gfx_DrawTextureIa8((arg0 + arg2) - 1, arg1 - 7, 8, 8, D_2000380, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 1, arg1 - 7, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureIa8(arg0 - 7, (arg1 + arg3) - 1, 8, 8, D_20002C0, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 - 7, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8((arg0 + arg2) - 1, (arg1 + arg3) - 1, 8, 8, D_2000300, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 1, (arg1 + arg3) - 1, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - 1, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawColoredPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
+void RentalRules_DrawFilledPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     gDPSetRenderMode(gDisplayListHead++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, 255);
 
-    Gfx_DrawSpriteIA8(arg0, arg1, 8, 8, D_2000B40, 8, 0);
-    Gfx_DrawSpriteIA8((arg0 + arg2) - 8, arg1, 8, 8, D_2000B80, 8, 0);
-    Gfx_DrawTextureRect(arg0 + 8, arg1, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
-    Gfx_DrawSpriteIA8(arg0, (arg1 + arg3) - 8, 8, 8, D_2000BC0, 8, 0);
-    Gfx_DrawTextureRect(arg0, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
-    Gfx_DrawSpriteIA8((arg0 + arg2) - 8, (arg1 + arg3) - 8, 8, 8, D_2000C00, 8, 0);
-    Gfx_DrawTextureRect(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
-    Gfx_DrawTextureRect((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8(arg0, arg1, 8, 8, D_2000B40, 8, 0);
+    Gfx_DrawTextureIa8((arg0 + arg2) - 8, arg1, 8, 8, D_2000B80, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 8, arg1, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureIa8(arg0, (arg1 + arg3) - 8, 8, 8, D_2000BC0, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8((arg0 + arg2) - 8, (arg1 + arg3) - 8, 8, 8, D_2000C00, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
-    Gfx_FillRectRGBA(arg0 + 8, arg1 + 8, arg2 - 0x10, arg3 - 0x10, arg4, arg5, arg6, 0xFF);
+    Gfx_FillRectRgba(arg0 + 8, arg1 + 8, arg2 - 0x10, arg3 - 0x10, arg4, arg5, arg6, 0xFF);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawMenuIcon(s16 arg0, s16 arg1) {
+void RentalRules_DrawBulletIcon(s16 arg0, s16 arg1) {
     gDPLoadTextureTile(gDisplayListHead++, D_4000C40, G_IM_FMT_IA, G_IM_SIZ_8b, 20, 0, 0, 0, 19, 19, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, 0x14, 0x14, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, 0x14, 0x14, 0, 0, 0x400, 0x400, 0);
 }
 
-void DrawMenuOptions(s16 arg0, s16 arg1) {
+void RentalRules_DrawRuleListText(s16 arg0, s16 arg1) {
     s16 tmp;
     s32 i;
     char sp48[0x40];
 
-    Text_SetFont(0x10, 0);
+    Font_SetActive(0x10, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     if (gCurrentBattleModeSubtitle != NULL) {
         if (gCurrentBattleModeSubtitle != gBattleModeSubtitle_0) {
-            MessageBank_SetPointer_0x14_0x2A(0x27, gCurrentBattleModeSubtitle);
-            Text_Print(arg0 + 0x10, arg1 + 4, GetMessageString(sp48, sizeof(sp48), D_830039C0, 1));
+            Text_SetStringToken(0x27, gCurrentBattleModeSubtitle);
+            Font_Printf(arg0 + 0x10, arg1 + 4, Text_GetString(sp48, sizeof(sp48), D_830039C0, 1));
         } else {
-            Text_Print(arg0 + 0x10, arg1 + 4, gCurrentBattleModeSubtitle);
+            Font_Printf(arg0 + 0x10, arg1 + 4, gCurrentBattleModeSubtitle);
         }
     }
 
-    Text_Print(arg0 + 0x30, arg1 + 0x134, GetMessageString(NULL, 0, D_830039C0, 2));
-    Text_SetFont(8, 0);
+    Font_Printf(arg0 + 0x30, arg1 + 0x134, Text_GetString(NULL, 0, D_830039C0, 2));
+    Font_SetActive(8, 0);
 
     for (i = 0; i < gCurrentMenuOptionCount; i++) {
         if (i != gCurrentMenuSelectedIndex) {
@@ -587,11 +587,11 @@ void DrawMenuOptions(s16 arg0, s16 arg1) {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
         tmp = gCurrentMenuOptionIds[i];
-        Text_Print(arg0 + 0x54, arg1 + 0x26 + i * 0x18, gMenuStaticStrings.unk_00[tmp]);
+        Font_Printf(arg0 + 0x54, arg1 + 0x26 + i * 0x18, gMenuStaticStrings.unk_00[tmp]);
     }
 }
 
-void DrawSelectionMenu(void) {
+void RentalRules_DrawRuleListPanel(void) {
     static s16 D_83003B60 = 0;
 
     s32 i;
@@ -607,62 +607,62 @@ void DrawSelectionMenu(void) {
     RentalRules_DrawWindowFrame(0x38, temp_s3, 0x210, temp_s2);
 
     if (gMenuFadeAlpha >= 0x400) {
-        DrawColoredPanel(0x38, temp_s3, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
-        DrawColoredPanel(0x38, temp_s3 + 0x20, 0x210, 0x110, 0x1E, 0x1E, 0x64);
-        DrawColoredPanel(0x38, temp_s3 + 0x130, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
-        if ((Dialog_GetAnimProgress() == 0) && (RentalRules_GetQualifyingSpeciesDisplayOpeningProgress() == 0)) {
+        RentalRules_DrawFilledPanel(0x38, temp_s3, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
+        RentalRules_DrawFilledPanel(0x38, temp_s3 + 0x20, 0x210, 0x110, 0x1E, 0x1E, 0x64);
+        RentalRules_DrawFilledPanel(0x38, temp_s3 + 0x130, 0x210, 0x20, 0x3C, 0x3C, 0xA0);
+        if ((RentalRules_PopupGetProgress() == 0) && (RentalRules_GetQualifyingSpeciesDisplayOpeningProgress() == 0)) {
             s16 sins = SINS(D_83003B60) * 3.0f;
 
-            DrawStatusIcon(sins + 0x48, temp_s3 + (gCurrentMenuSelectedIndex * 0x18) + 0x2A);
+            Ui_DrawTextureMarker(sins + 0x48, temp_s3 + (gCurrentMenuSelectedIndex * 0x18) + 0x2A);
             D_83003B60 += 0x1000;
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA16(0x48, temp_s3 + 0x132, 0x1C, 0x1C, D_04000000, 0x1C, 0);
+        Gfx_DrawTextureRgba16(0x48, temp_s3 + 0x132, 0x1C, 0x1C, D_04000000, 0x1C, 0);
 
         for (i = 0; i < gCurrentMenuOptionCount; i++) {
-            DrawMenuIcon(0x74, temp_s3 + 0x28 + i * 0x18);
+            RentalRules_DrawBulletIcon(0x74, temp_s3 + 0x28 + i * 0x18);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-        Text_ResetState();
-        DrawMenuOptions(0x38, temp_s3);
-        Text_SetupDL();
+        Font_BeginTranslucentTextRendering();
+        RentalRules_DrawRuleListText(0x38, temp_s3);
+        Font_EndTexturedTextRendering();
     }
 }
 
-void BattleModeMenu_Render(void) {
-    Stage_BeginDisplayList();
+void RentalRules_DrawFrame(void) {
+    BgStage_DrawFrame();
     if (gMenuBackgroundTimer != 0) {
-        if (gBattleContext.unk_0000 == 0xA) {
-            DrawBattleModeBackground();
+        if (gSessionContext.unk_0000 == 0xA) {
+            RentalRules_DrawBackgroundFallback();
         } else {
-            Gfx_DrawTextureAtlas(gBattleBackgroundAtlas);
+            Gfx_DrawTiledRgba16Image(gBattleBackgroundAtlas);
         }
 
-        DrawLoadingBar();
+        RentalRules_DrawHeaderBanner();
 
         if (gMenuBackgroundTimer > 0) {
             gMenuBackgroundTimer--;
         }
     }
 
-    if ((Dialog_GetAnimProgress() < 0x400) && (RentalRules_GetQualifyingSpeciesDisplayOpeningProgress() < 0x400)) {
-        DrawSelectionMenu();
+    if ((RentalRules_PopupGetProgress() < 0x400) && (RentalRules_GetQualifyingSpeciesDisplayOpeningProgress() < 0x400)) {
+        RentalRules_DrawRuleListPanel();
     }
 
-    Dialog_Render();
-    RenderSelectionMenu();
-    Stage_Advance();
+    RentalRules_PopupDraw();
+    RentalRules_QualifyingSpeciesWindowDraw();
+    BgStage_AdvanceFrame();
 }
 
-void Menu_InitStaticStrings(void) {
+void RentalRules_LoadCategoryStrings(void) {
     s32 i;
 
     for (i = 0; i < 29; i++) {
-        gMenuStaticStrings.unk_00[i] = GetMessageString(NULL, 0, D_830039C0, i + 4);
+        gMenuStaticStrings.unk_00[i] = Text_GetString(NULL, 0, D_830039C0, i + 4);
     }
 
     gMenuStaticStrings.unk_74 = gMenuStaticStrings.unk_00[2];
@@ -671,13 +671,13 @@ void Menu_InitStaticStrings(void) {
     gMenuStaticStrings.unk_80 = gMenuStaticStrings.unk_00[15];
     gMenuStaticStrings.unk_84 = gMenuStaticStrings.unk_00[22];
     gMenuStaticStrings.unk_88 = gMenuStaticStrings.unk_00[27];
-    gMenuStaticStrings.unk_8C = GetMessageString(NULL, 0, D_830039C0, 0x21);
+    gMenuStaticStrings.unk_8C = Text_GetString(NULL, 0, D_830039C0, 0x21);
     gMenuStaticStrings.unk_90 = gMenuStaticStrings.unk_00[20];
     gMenuStaticStrings.unk_94 = gMenuStaticStrings.unk_00[4];
-    gMenuStaticStrings.unk_98 = GetMessageString(NULL, 0, D_830039C0, 0x22);
+    gMenuStaticStrings.unk_98 = Text_GetString(NULL, 0, D_830039C0, 0x22);
 }
 
-void Menu_InitOptionStrings(void) {
+void RentalRules_LoadDescriptionStrings(void) {
     s32 i;
     s32 var_s2 = 0;
 
@@ -692,25 +692,25 @@ void Menu_InitOptionStrings(void) {
                 break;
 
             default:
-                gMenuOptionStrings.unk_00[i] = GetMessageString(NULL, 0, D_830039C0, var_s2 + 0x23);
+                gMenuOptionStrings.unk_00[i] = Text_GetString(NULL, 0, D_830039C0, var_s2 + 0x23);
                 var_s2++;
                 break;
         }
     }
 }
 
-void BattleModeMenu_Init(void) {
+void RentalRules_Init(void) {
     D_83003C80 = 0;
     gMenuFadeTimer = 0xA;
     gMenuBackgroundTimer = -1;
     gMenuFadeAlpha = 0;
-    PlaySoundEffect(4);
+    Audio_PlaySoundEffectById(4);
     gCurrentBattleModeTitle = 0;
     gCurrentBattleModeSubtitle = NULL;
     gCurrentMenuSelectedIndex = 0;
     D_83003C84 = 0;
 
-    gCurrentMenuOptionIds = GetMenuOptionList(&gBattleContext);
+    gCurrentMenuOptionIds = RentalRules_GetRuleIdList(&gSessionContext);
     if (gCurrentMenuOptionIds == 0) {
         gCurrentMenuOptionCount = 0;
     } else {
@@ -720,33 +720,33 @@ void BattleModeMenu_Init(void) {
         }
     }
 
-    Menu_InitStaticStrings();
-    Menu_InitOptionStrings();
+    RentalRules_LoadCategoryStrings();
+    RentalRules_LoadDescriptionStrings();
 
-    gBattleModeTitle_Default = GetMessageString(NULL, 0, D_830039C0, 0x46);
-    gBattleModeTitle_0 = GetMessageString(NULL, 0, D_830039C0, 0x45);
-    gBattleModeTitle_10 = GetMessageString(NULL, 0, D_830039C0, 0x49);
-    gBattleModeTitle_7 = GetMessageString(NULL, 0, D_830039C0, 0x47);
-    gBattleModeTitle_8 = GetMessageString(NULL, 0, D_830039C0, 0x48);
-    gBattleModeSubtitle_0 = GetMessageString(NULL, 0, D_830039C0, 0x4A);
-    gBattleModeSubtitle_1 = GetMessageString(NULL, 0, D_830039C0, 0x4D);
-    gBattleModeSubtitle_2 = GetMessageString(NULL, 0, D_830039C0, 0x4C);
-    gBattleModeSubtitle_3 = GetMessageString(NULL, 0, D_830039C0, 0x4B);
-    gBattleModeSubtitle_4 = GetMessageString(NULL, 0, D_830039C0, 0x4E);
-    gBattleModeSubtitle_5 = GetMessageString(NULL, 0, D_830039C0, 0x4F);
-    gBattleModeSubtitle_6 = GetMessageString(NULL, 0, D_830039C0, 0x50);
+    gBattleModeTitle_Default = Text_GetString(NULL, 0, D_830039C0, 0x46);
+    gBattleModeTitle_0 = Text_GetString(NULL, 0, D_830039C0, 0x45);
+    gBattleModeTitle_10 = Text_GetString(NULL, 0, D_830039C0, 0x49);
+    gBattleModeTitle_7 = Text_GetString(NULL, 0, D_830039C0, 0x47);
+    gBattleModeTitle_8 = Text_GetString(NULL, 0, D_830039C0, 0x48);
+    gBattleModeSubtitle_0 = Text_GetString(NULL, 0, D_830039C0, 0x4A);
+    gBattleModeSubtitle_1 = Text_GetString(NULL, 0, D_830039C0, 0x4D);
+    gBattleModeSubtitle_2 = Text_GetString(NULL, 0, D_830039C0, 0x4C);
+    gBattleModeSubtitle_3 = Text_GetString(NULL, 0, D_830039C0, 0x4B);
+    gBattleModeSubtitle_4 = Text_GetString(NULL, 0, D_830039C0, 0x4E);
+    gBattleModeSubtitle_5 = Text_GetString(NULL, 0, D_830039C0, 0x4F);
+    gBattleModeSubtitle_6 = Text_GetString(NULL, 0, D_830039C0, 0x50);
 
     gBattleModeSubtitle_7 = gBattleModeTitle_7;
     gBattleModeSubtitle_8 = gBattleModeTitle_8;
 
-    gCurrentBattleModeTitle = GetBattleModeTitle(gBattleContext.unk_0000);
-    gCurrentBattleModeSubtitle = GetBattleModeSubtitle(gBattleContext.unk_0001);
+    gCurrentBattleModeTitle = RentalRules_GetModeLabel(gSessionContext.unk_0000);
+    gCurrentBattleModeSubtitle = RentalRules_GetCategoryLabel(gSessionContext.unk_0001);
 
-    if (gBattleContext.unk_11F2 != 0) {
+    if (gSessionContext.unk_11F2 != 0) {
         D_83003C84 |= 1;
     }
 
-    if (MenuOptionStringsMissing(gCurrentMenuOptionIds) != 0) {
+    if (RentalRules_RuleListHasEmptyEntry(gCurrentMenuOptionIds) != 0) {
         D_83003C84 |= 2;
     }
 
@@ -756,33 +756,33 @@ void BattleModeMenu_Init(void) {
         gLoadingBarProgress = 0x400;
     }
 
-    Dialog_CloseImmediately();
+    RentalRules_PopupReset();
 
     RentalRules_QualifyingSpeciesWindowInit((D_83003C84 & 2) ? 1 : 0);
 }
 
-s32 BattleModeMenu_UpdateState(void) {
+s32 RentalRules_Update(void) {
     s32 sp1C = 1;
 
     switch (D_83003C80) {
         case 0:
-            FadeIn_Update();
+            RentalRules_UpdateFadeIn();
             break;
 
         case 1:
-            MenuInput_HandleSelection();
+            RentalRules_UpdateMainInput();
             break;
 
         case 2:
-            Menu_CheckDialogComplete();
+            RentalRules_UpdateWaitPopupClose();
             break;
 
         case 3:
-            FadeOut_Update();
+            RentalRules_UpdateFadeOut();
             break;
 
         case 4:
-            if (FadeOut_IsComplete() != 0) {
+            if (RentalRules_UpdateExitDelay() != 0) {
                 sp1C = 0;
             }
             break;
@@ -790,34 +790,34 @@ s32 BattleModeMenu_UpdateState(void) {
     return sp1C;
 }
 
-void BattleModeMenu_MainLoop(void) {
-    BattleModeMenu_Init();
+void RentalRules_Loop(void) {
+    RentalRules_Init();
     do {
-        MenuInput_Update();
-        Dialog_UpdateStateMachine();
+        RentalRules_PollInput();
+        RentalRules_PopupUpdate();
         RentalRules_QualifyingSpeciesWindowUpdate();
-        BattleModeMenu_Render();
-    } while (BattleModeMenu_UpdateState() != 0);
+        RentalRules_DrawFrame();
+    } while (RentalRules_Update() != 0);
 }
 
-s32 BattleModeMenu_Entry(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 RentalRules_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     main_pool_push_state('EXPL');
 
-    Text_Init(0x1C, 0);
+    Font_Init(0x1C, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
     ASSET_LOAD(D_3000000, menu_select_ui, 0);
     ASSET_LOAD(D_04000000, rental_rules_ui, 0);
 
-    BattleMode_LoadAssets();
-    SpriteAssets_Load();
-    MessageBank_Init();
-    D_830039C0 = GetMessageBank(0x20);
-    gBattleModeMessageBank = GetMessageBank(0x24);
-    Menu_SetupDisplayList();
-    BattleModeMenu_MainLoop();
-    Stage_Terminate();
+    RentalRules_LoadBackgroundArchive();
+    PokeIcon_OpenModelArchive();
+    Text_InitStringTables();
+    D_830039C0 = Text_GetStringTable(0x20);
+    gBattleModeMessageBank = Text_GetStringTable(0x24);
+    StageLoader_UpdateSegments();
+    RentalRules_Loop();
+    StageLoader_WaitForRetrace();
 
     main_pool_pop_state('EXPL');
 

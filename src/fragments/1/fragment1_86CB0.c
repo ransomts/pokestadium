@@ -1,6 +1,6 @@
 #include "global.h"
 
-typedef struct GbAudioChannel {
+typedef struct GbApu_ResetChannels {
   /* 0x00 */ u8 unk_00;
   /* 0x02 */ char unk02[0x02];
   /* 0x04 */ s32 unk_04;
@@ -37,7 +37,7 @@ typedef struct GbAudioChannel {
   /* 0x48 */ u32 unk_48;
   /* 0x4C */ u8 unk_4C;
   /* 0x4D */ char unk4D[0x3];
-} GbAudioChannel; // size = 0x50
+} GbApu_ResetChannels; // size = 0x50
 
 typedef struct unk_D_8122EEA8 {
   /* 0x00 */ u8 unk_00;
@@ -77,10 +77,10 @@ extern s8* gGbAudioStreamData[];
 extern s16 D_8122C790;
 extern s16 D_8122C792;
 extern u8* gGbAudioNoiseTable;
-extern GbAudioChannel gGbAudioSquare1Channel;
-extern GbAudioChannel gGbAudioSquare2Channel;
-extern GbAudioChannel gGbAudioWaveChannel;
-extern GbAudioChannel gGbAudioNoiseChannel;
+extern GbApu_ResetChannels gGbApuSquare1;
+extern GbApu_ResetChannels gGbApuSquare2;
+extern GbApu_ResetChannels gGbApuWave;
+extern GbApu_ResetChannels gGbApuNoise;
 extern u8 gGbWaveRamMirror[40];
 extern u8 D_8120EA70[];
 
@@ -207,7 +207,7 @@ void GbApu_ClearActiveFlag(void) {
 void func_81207354(void) {
 }
 
-void SetAudioVolume(s32 arg0) {
+void GbApu_SelectRegionClock(s32 arg0) {
     if (arg0 == 0) {
         D_8120EAC4 = 0x4578;
         D_8120EAC0 = 1500.0f;
@@ -222,7 +222,7 @@ void GbApu_SetNoisePeriodBounds(s32 arg0, s32 arg1) {
     D_8120EACC = arg1;
 }
 
-u32 GbAudio_CalcWavePeriod(u16 arg0) {
+u32 GbApu_FreqToStep(u16 arg0) {
   u32 temp;
   if (arg0 == 0) {
       return 0;
@@ -284,225 +284,225 @@ s32 GbAudio_GetDutyVolume(u32 arg0, s32 arg1) {
     }
 }
 
-u16 GbAudio_StepSquare1(void) {
+u16 GbApu_UpdateSquare1Channel(void) {
     u16 var_t0;
 
-    if (gGbAudioSquare1Channel.unk_00 == 0) {
-        if (gGbAudioSquare1Channel.unk_3C == 0) {
+    if (gGbApuSquare1.unk_00 == 0) {
+        if (gGbApuSquare1.unk_3C == 0) {
             return 0U;
         }
-        gGbAudioSquare1Channel.unk_3C--;
-        gGbAudioSquare1Channel.unk_20 = gGbAudioSquare1Channel.unk_3C;
-        gGbAudioSquare1Channel.unk_0C = (s32) gGbAudioSquare1Channel.unk_40;
+        gGbApuSquare1.unk_3C--;
+        gGbApuSquare1.unk_20 = gGbApuSquare1.unk_3C;
+        gGbApuSquare1.unk_0C = (s32) gGbApuSquare1.unk_40;
     }
-    if ((s32) gGbAudioSquare1Channel.unk_10 <= 0) {
-        gGbAudioSquare1Channel.unk_4C = 1U;
-    } else if (((s32) gGbAudioSquare1Channel.unk_10 >= 0x7FF) && (gGbAudioSquare1Channel.unk_39 == 0)) {
-        gGbAudioSquare1Channel.unk_4C = 1U;
+    if ((s32) gGbApuSquare1.unk_10 <= 0) {
+        gGbApuSquare1.unk_4C = 1U;
+    } else if (((s32) gGbApuSquare1.unk_10 >= 0x7FF) && (gGbApuSquare1.unk_39 == 0)) {
+        gGbApuSquare1.unk_4C = 1U;
     } else {
-        gGbAudioSquare1Channel.unk_4C = 0U;
+        gGbApuSquare1.unk_4C = 0U;
     }
     {
-        s32 temp_v0 = GbAudio_GetDutyVolume(gGbAudioSquare1Channel.unk_3B, gGbAudioSquare1Channel.unk_08.unk_00);
-        gGbAudioSquare1Channel.unk_08.unk_02 += gGbAudioSquare1Channel.unk_0C;
-        gGbAudioSquare1Channel.unk_08.unk_02 &= 0x1FFFFF;
-        if (gGbAudioSquare1Channel.unk_4C == 1) {
-            if (gGbAudioSquare1Channel.unk_3C != 0) {
-                gGbAudioSquare1Channel.unk_3C--;
+        s32 temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare1.unk_3B, gGbApuSquare1.unk_08.unk_00);
+        gGbApuSquare1.unk_08.unk_02 += gGbApuSquare1.unk_0C;
+        gGbApuSquare1.unk_08.unk_02 &= 0x1FFFFF;
+        if (gGbApuSquare1.unk_4C == 1) {
+            if (gGbApuSquare1.unk_3C != 0) {
+                gGbApuSquare1.unk_3C--;
             }
-            var_t0 = ((temp_v0 & 0xFFFF) * gGbAudioSquare1Channel.unk_3C);
+            var_t0 = ((temp_v0 & 0xFFFF) * gGbApuSquare1.unk_3C);
         } else {
-            gGbAudioSquare1Channel.unk_40 = (s32) gGbAudioSquare1Channel.unk_0C;
-            gGbAudioSquare1Channel.unk_3C = (u8) gGbAudioSquare1Channel.unk_20;
-            var_t0 = ((temp_v0 & 0xFFFF) * gGbAudioSquare1Channel.unk_20);
+            gGbApuSquare1.unk_40 = (s32) gGbApuSquare1.unk_0C;
+            gGbApuSquare1.unk_3C = (u8) gGbApuSquare1.unk_20;
+            var_t0 = ((temp_v0 & 0xFFFF) * gGbApuSquare1.unk_20);
         }
     }
-    if ((gGbAudioSquare1Channel.unk_3A != 0) && (((++gGbAudioSquare1Channel.unk_30 % (u32) gGbAudioSquare1Channel.unk_34) == 0))) {
-        s32 temp_a2 = ((s32) gGbAudioSquare1Channel.unk_10 >> gGbAudioSquare1Channel.unk_38) & 0xFFFF;
-        switch (gGbAudioSquare1Channel.unk_39) {
+    if ((gGbApuSquare1.unk_3A != 0) && (((++gGbApuSquare1.unk_30 % (u32) gGbApuSquare1.unk_34) == 0))) {
+        s32 temp_a2 = ((s32) gGbApuSquare1.unk_10 >> gGbApuSquare1.unk_38) & 0xFFFF;
+        switch (gGbApuSquare1.unk_39) {
         case 0:
-            gGbAudioSquare1Channel.unk_10 += temp_a2;
+            gGbApuSquare1.unk_10 += temp_a2;
             break;
         case 1:
-            gGbAudioSquare1Channel.unk_10 = (gGbAudioSquare1Channel.unk_10 - temp_a2) - 1;;
+            gGbApuSquare1.unk_10 = (gGbApuSquare1.unk_10 - temp_a2) - 1;;
             break;
         }
-        if (gGbAudioSquare1Channel.unk_10 <= 0) {
-            gGbAudioSquare1Channel.unk_00 = 0U;
+        if (gGbApuSquare1.unk_10 <= 0) {
+            gGbApuSquare1.unk_00 = 0U;
             return var_t0;
         } else {
-            if ((gGbAudioSquare1Channel.unk_10 >= 0x800) && (gGbAudioSquare1Channel.unk_39 == 0)) {
-                gGbAudioSquare1Channel.unk_10 = 0x7FFU;
-                gGbAudioSquare1Channel.unk_00 = 0U;
+            if ((gGbApuSquare1.unk_10 >= 0x800) && (gGbApuSquare1.unk_39 == 0)) {
+                gGbApuSquare1.unk_10 = 0x7FFU;
+                gGbApuSquare1.unk_00 = 0U;
             }
-            gGbAudioSquare1Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare1Channel.unk_10);
+            gGbApuSquare1.unk_0C = GbApu_FreqToStep2x(gGbApuSquare1.unk_10);
         }
     }
-    if (gGbAudioSquare1Channel.unk_28 != 0) {
-        gGbAudioSquare1Channel.unk_24++;
-        if ((gGbAudioSquare1Channel.unk_24 % (u32) gGbAudioSquare1Channel.unk_28) == 0) {
-            switch (gGbAudioSquare1Channel.unk_2E) {
+    if (gGbApuSquare1.unk_28 != 0) {
+        gGbApuSquare1.unk_24++;
+        if ((gGbApuSquare1.unk_24 % (u32) gGbApuSquare1.unk_28) == 0) {
+            switch (gGbApuSquare1.unk_2E) {
             case 0:
-                if (gGbAudioSquare1Channel.unk_2D != 0) {
-                    gGbAudioSquare1Channel.unk_2D--;
+                if (gGbApuSquare1.unk_2D != 0) {
+                    gGbApuSquare1.unk_2D--;
                 }
-                if (!gGbAudioSquare1Channel.unk_2D) {
-                    gGbAudioSquare1Channel.unk_00 = 0;
+                if (!gGbApuSquare1.unk_2D) {
+                    gGbApuSquare1.unk_00 = 0;
                 }
                 break;
             
             case 1:
-                if (gGbAudioSquare1Channel.unk_2D < 0xF) {
-                    gGbAudioSquare1Channel.unk_2D++;
+                if (gGbApuSquare1.unk_2D < 0xF) {
+                    gGbApuSquare1.unk_2D++;
                 }
                 break;
             
             default:
                 break;
             }
-        gGbAudioSquare1Channel.unk_20 = gGbEnvStepTable[gGbAudioSquare1Channel.unk_2D];
+        gGbApuSquare1.unk_20 = gGbEnvStepTable[gGbApuSquare1.unk_2D];
         }
     } else {
-        gGbAudioSquare1Channel.unk_20 = gGbEnvStepTable[gGbAudioSquare1Channel.unk_2D];
+        gGbApuSquare1.unk_20 = gGbEnvStepTable[gGbApuSquare1.unk_2D];
     }
-    if (gGbAudioSquare1Channel.unk_18 == 1U) {
-        if (gGbAudioSquare1Channel.unk_14 != 0) {
-            gGbAudioSquare1Channel.unk_14--;
+    if (gGbApuSquare1.unk_18 == 1U) {
+        if (gGbApuSquare1.unk_14 != 0) {
+            gGbApuSquare1.unk_14--;
         }
-        if (gGbAudioSquare1Channel.unk_14 == 0) {
-            gGbAudioSquare1Channel.unk_00 = 0U;
+        if (gGbApuSquare1.unk_14 == 0) {
+            gGbApuSquare1.unk_00 = 0U;
         }
     }
     return var_t0;
 }
 
-s32 GbAudio_StepSquare2(void) {
+s32 GbApu_UpdateSquare2Channel(void) {
     s32 temp_v0;
     s32 var_a3;
     u8 var_v0;
 
-    if (gGbAudioSquare2Channel.unk_00 == 0) {
-        if (gGbAudioSquare2Channel.unk_3C == 0) {
+    if (gGbApuSquare2.unk_00 == 0) {
+        if (gGbApuSquare2.unk_3C == 0) {
             return 0;
         }
-        gGbAudioSquare2Channel.unk_3C--;
-        gGbAudioSquare2Channel.unk_20 = gGbAudioSquare2Channel.unk_3C;
-        gGbAudioSquare2Channel.unk_0C = (s32) gGbAudioSquare2Channel.unk_40;
+        gGbApuSquare2.unk_3C--;
+        gGbApuSquare2.unk_20 = gGbApuSquare2.unk_3C;
+        gGbApuSquare2.unk_0C = (s32) gGbApuSquare2.unk_40;
     }
-    if ((s32) gGbAudioSquare2Channel.unk_10 >= 0x7FF) {
-        gGbAudioSquare2Channel.unk_4C = 1U;
+    if ((s32) gGbApuSquare2.unk_10 >= 0x7FF) {
+        gGbApuSquare2.unk_4C = 1U;
     } else {
-        gGbAudioSquare2Channel.unk_4C = 0U;
+        gGbApuSquare2.unk_4C = 0U;
     }
-    temp_v0 = GbAudio_GetDutyVolume(gGbAudioSquare2Channel.unk_3B, gGbAudioSquare2Channel.unk_08.unk_00);
-    gGbAudioSquare2Channel.unk_08.unk_02 += gGbAudioSquare2Channel.unk_0C;
-    gGbAudioSquare2Channel.unk_08.unk_02 &= 0x1FFFFF;
-    if (gGbAudioSquare2Channel.unk_4C == 1) {
-        if (gGbAudioSquare2Channel.unk_3C != 0) {
-            gGbAudioSquare2Channel.unk_3C--;
+    temp_v0 = GbAudio_GetDutyVolume(gGbApuSquare2.unk_3B, gGbApuSquare2.unk_08.unk_00);
+    gGbApuSquare2.unk_08.unk_02 += gGbApuSquare2.unk_0C;
+    gGbApuSquare2.unk_08.unk_02 &= 0x1FFFFF;
+    if (gGbApuSquare2.unk_4C == 1) {
+        if (gGbApuSquare2.unk_3C != 0) {
+            gGbApuSquare2.unk_3C--;
         }
-        var_a3 = ((temp_v0 & 0xFFFF) * gGbAudioSquare2Channel.unk_3C) & 0xFFFF;
+        var_a3 = ((temp_v0 & 0xFFFF) * gGbApuSquare2.unk_3C) & 0xFFFF;
     } else {
-        if (gGbAudioSquare2Channel.unk_20 != gGbAudioSquare2Channel.unk_3C) {
-            gGbAudioSquare2Channel.unk_3C = (u8) gGbAudioSquare2Channel.unk_20;
+        if (gGbApuSquare2.unk_20 != gGbApuSquare2.unk_3C) {
+            gGbApuSquare2.unk_3C = (u8) gGbApuSquare2.unk_20;
         }
-        gGbAudioSquare2Channel.unk_40 = (s32) gGbAudioSquare2Channel.unk_0C;
-        var_a3 = ((temp_v0 & 0xFFFF) * gGbAudioSquare2Channel.unk_20) & 0xFFFF;
+        gGbApuSquare2.unk_40 = (s32) gGbApuSquare2.unk_0C;
+        var_a3 = ((temp_v0 & 0xFFFF) * gGbApuSquare2.unk_20) & 0xFFFF;
     }
-    if (gGbAudioSquare2Channel.unk_28 != 0) {
-        gGbAudioSquare2Channel.unk_24++;
-        if ((gGbAudioSquare2Channel.unk_24 % (u32) gGbAudioSquare2Channel.unk_28) == 0) {
-            switch (gGbAudioSquare2Channel.unk_2E) {
+    if (gGbApuSquare2.unk_28 != 0) {
+        gGbApuSquare2.unk_24++;
+        if ((gGbApuSquare2.unk_24 % (u32) gGbApuSquare2.unk_28) == 0) {
+            switch (gGbApuSquare2.unk_2E) {
                 case 0:
-                    if (gGbAudioSquare2Channel.unk_2D != 0) {
-                        gGbAudioSquare2Channel.unk_2D--;
+                    if (gGbApuSquare2.unk_2D != 0) {
+                        gGbApuSquare2.unk_2D--;
                     }
-                    if (!gGbAudioSquare2Channel.unk_2D) {
-                        gGbAudioSquare2Channel.unk_00 = 0;
+                    if (!gGbApuSquare2.unk_2D) {
+                        gGbApuSquare2.unk_00 = 0;
                     }
                     break;
                 
                 case 1:
-                    if (gGbAudioSquare2Channel.unk_2D < 0xF) {
-                        gGbAudioSquare2Channel.unk_2D++;
+                    if (gGbApuSquare2.unk_2D < 0xF) {
+                        gGbApuSquare2.unk_2D++;
                     }
                     break;
                 
                 default:
                     break;
                 }
-            gGbAudioSquare2Channel.unk_20 = gGbEnvStepTable[gGbAudioSquare2Channel.unk_2D];
+            gGbApuSquare2.unk_20 = gGbEnvStepTable[gGbApuSquare2.unk_2D];
         }
     } else {
-        gGbAudioSquare2Channel.unk_20 = gGbEnvStepTable[gGbAudioSquare2Channel.unk_2D];
+        gGbApuSquare2.unk_20 = gGbEnvStepTable[gGbApuSquare2.unk_2D];
     }
-    if (gGbAudioSquare2Channel.unk_18 == 1U) {
-        if (gGbAudioSquare2Channel.unk_14 != 0) {
-            gGbAudioSquare2Channel.unk_14--;
+    if (gGbApuSquare2.unk_18 == 1U) {
+        if (gGbApuSquare2.unk_14 != 0) {
+            gGbApuSquare2.unk_14--;
         }
-        if (gGbAudioSquare2Channel.unk_14 == 0) {
-            gGbAudioSquare2Channel.unk_00 = 0U;
+        if (gGbApuSquare2.unk_14 == 0) {
+            gGbApuSquare2.unk_00 = 0U;
         }
     }
     return var_a3;
 }
 
-u16 GbAudio_StepWave(void) {
+u16 GbApu_UpdateWaveChannel(void) {
     u16 temp_v0;
     u16 temp_a0;
     u16 temp_a1;
     u16 var_a0;
 
-    if (gGbAudioWaveChannel.unk_00 == 0) {
-        if (gGbAudioWaveChannel.unk_3C == 0) {
+    if (gGbApuWave.unk_00 == 0) {
+        if (gGbApuWave.unk_3C == 0) {
             return 0U;
         }
-        gGbAudioWaveChannel.unk_3C--;
-        gGbAudioWaveChannel.unk_20 = gGbAudioWaveChannel.unk_3C;
-        gGbAudioWaveChannel.unk_0C = (s32) gGbAudioWaveChannel.unk_40;
+        gGbApuWave.unk_3C--;
+        gGbApuWave.unk_20 = gGbApuWave.unk_3C;
+        gGbApuWave.unk_0C = (s32) gGbApuWave.unk_40;
     } else {    
-        if (gGbAudioWaveChannel.unk_04 != 0) {
-            gGbAudioWaveChannel.unk_04--;
-            if (gGbAudioWaveChannel.unk_04 >= 0x21) {
-                if (gGbAudioWaveChannel.unk_3C == 0) {
-                    gGbAudioWaveChannel.unk_04 = 0x20;
-                    gGbAudioWaveChannel.unk_08.unk_02 = 0;
-                    gGbAudioWaveChannel.unk_0C = GbAudio_CalcWavePeriod(gGbAudioWaveChannel.unk_10);
-                    gGbAudioWaveChannel.unk_20 = gGbWaveLevelTable[gGbAudioWaveChannel.unk_21];
+        if (gGbApuWave.unk_04 != 0) {
+            gGbApuWave.unk_04--;
+            if (gGbApuWave.unk_04 >= 0x21) {
+                if (gGbApuWave.unk_3C == 0) {
+                    gGbApuWave.unk_04 = 0x20;
+                    gGbApuWave.unk_08.unk_02 = 0;
+                    gGbApuWave.unk_0C = GbApu_FreqToStep(gGbApuWave.unk_10);
+                    gGbApuWave.unk_20 = gGbWaveLevelTable[gGbApuWave.unk_21];
                 } else {
-                    if (!(gGbAudioWaveChannel.unk_04 & 7)) {
-                        gGbAudioWaveChannel.unk_3C--;
+                    if (!(gGbApuWave.unk_04 & 7)) {
+                        gGbApuWave.unk_3C--;
                     }
-                    gGbAudioWaveChannel.unk_20 = gGbAudioWaveChannel.unk_3C;
-                    gGbAudioWaveChannel.unk_0C = (s32) gGbAudioWaveChannel.unk_40;
+                    gGbApuWave.unk_20 = gGbApuWave.unk_3C;
+                    gGbApuWave.unk_0C = (s32) gGbApuWave.unk_40;
                 }
             }
         }
     }
-    temp_a0 = GbAudio_GetDutyVolume(7, gGbAudioWaveChannel.unk_08.unk_00);
-    gGbAudioWaveChannel.unk_08.unk_02 += gGbAudioWaveChannel.unk_0C;
-    gGbAudioWaveChannel.unk_08.unk_02 &= 0x1FFFFF;
-    if (gGbAudioWaveChannel.unk_4C - 1 == 0) {
+    temp_a0 = GbAudio_GetDutyVolume(7, gGbApuWave.unk_08.unk_00);
+    gGbApuWave.unk_08.unk_02 += gGbApuWave.unk_0C;
+    gGbApuWave.unk_08.unk_02 &= 0x1FFFFF;
+    if (gGbApuWave.unk_4C - 1 == 0) {
 
-        if (gGbAudioWaveChannel.unk_3C != 0) {
-            gGbAudioWaveChannel.unk_3C--;
+        if (gGbApuWave.unk_3C != 0) {
+            gGbApuWave.unk_3C--;
         }
-        temp_a1 = gGbAudioWaveChannel.unk_3C;
+        temp_a1 = gGbApuWave.unk_3C;
     } else {
-        gGbAudioWaveChannel.unk_3C = gGbAudioWaveChannel.unk_20;
-        gGbAudioWaveChannel.unk_40 = gGbAudioWaveChannel.unk_0C;
-        temp_a1 = gGbAudioWaveChannel.unk_20;
+        gGbApuWave.unk_3C = gGbApuWave.unk_20;
+        gGbApuWave.unk_40 = gGbApuWave.unk_0C;
+        temp_a1 = gGbApuWave.unk_20;
     }
 
     temp_a0 *= temp_a1;
-    temp_a0 = (gGbAudioWaveChannel.unk_44 + temp_a0) >> 1;
-    gGbAudioWaveChannel.unk_44 = temp_a0;
-    if (gGbAudioWaveChannel.unk_18 == 1) {
-        if (gGbAudioWaveChannel.unk_14 != 0) {
-            gGbAudioWaveChannel.unk_14--;
+    temp_a0 = (gGbApuWave.unk_44 + temp_a0) >> 1;
+    gGbApuWave.unk_44 = temp_a0;
+    if (gGbApuWave.unk_18 == 1) {
+        if (gGbApuWave.unk_14 != 0) {
+            gGbApuWave.unk_14--;
         }
-        if (gGbAudioWaveChannel.unk_14 == 0) {
-            gGbAudioWaveChannel.unk_00 = 0U;
+        if (gGbApuWave.unk_14 == 0) {
+            gGbApuWave.unk_00 = 0U;
         }
     }
     return temp_a0;
@@ -519,72 +519,72 @@ u16 GbAudio_StepNoiseChannel(void) {
     u16 temp_v0;
     u32 var_a2;
 
-    if (gGbAudioNoiseChannel.unk_0C < gGbAudioNoiseChannel.unk_40) {
-        gGbAudioNoiseChannel.unk_40 -= gGbAudioNoiseChannel.unk_48;
-        var_a2 = gGbAudioNoiseChannel.unk_40;
-    } else if (gGbAudioNoiseChannel.unk_40 < gGbAudioNoiseChannel.unk_0C) {
-        gGbAudioNoiseChannel.unk_40 += gGbAudioNoiseChannel.unk_48;
-        var_a2 = gGbAudioNoiseChannel.unk_40;
+    if (gGbApuNoise.unk_0C < gGbApuNoise.unk_40) {
+        gGbApuNoise.unk_40 -= gGbApuNoise.unk_48;
+        var_a2 = gGbApuNoise.unk_40;
+    } else if (gGbApuNoise.unk_40 < gGbApuNoise.unk_0C) {
+        gGbApuNoise.unk_40 += gGbApuNoise.unk_48;
+        var_a2 = gGbApuNoise.unk_40;
     } else {
-        var_a2 = gGbAudioNoiseChannel.unk_40;
+        var_a2 = gGbApuNoise.unk_40;
     }
 
-    if (gGbAudioNoiseChannel.unk_00 == 0) {
-        if (gGbAudioNoiseChannel.unk_3C == 0) {
+    if (gGbApuNoise.unk_00 == 0) {
+        if (gGbApuNoise.unk_3C == 0) {
             return 0;
         }
-        gGbAudioNoiseChannel.unk_3C--;
-        gGbAudioNoiseChannel.unk_20 = gGbAudioNoiseChannel.unk_3C;
-        gGbAudioNoiseChannel.unk_0C = gGbAudioNoiseChannel.unk_40;
+        gGbApuNoise.unk_3C--;
+        gGbApuNoise.unk_20 = gGbApuNoise.unk_3C;
+        gGbApuNoise.unk_0C = gGbApuNoise.unk_40;
     }
-    temp_v0 = GbAudio_GetDutyVolume(6, gGbAudioNoiseChannel.unk_08.unk_00);
-    gGbAudioNoiseChannel.unk_08.unk_02 += var_a2;
-    if (gGbAudioNoiseChannel.unk_08.unk_00  >= (u32)D_8120EACC) {
-        gGbAudioNoiseChannel.unk_08.unk_00  = D_8120EAC8;
+    temp_v0 = GbAudio_GetDutyVolume(6, gGbApuNoise.unk_08.unk_00);
+    gGbApuNoise.unk_08.unk_02 += var_a2;
+    if (gGbApuNoise.unk_08.unk_00  >= (u32)D_8120EACC) {
+        gGbApuNoise.unk_08.unk_00  = D_8120EAC8;
     }
-    temp_v0 *= gGbAudioNoiseChannel.unk_3C;
-    if ((gGbAudioNoiseChannel.unk_3C != gGbAudioNoiseChannel.unk_20) && ((D_8120EB6C % 95) == 0)) {
-        if (gGbAudioNoiseChannel.unk_3C > gGbAudioNoiseChannel.unk_20) {
-            gGbAudioNoiseChannel.unk_3C--;
+    temp_v0 *= gGbApuNoise.unk_3C;
+    if ((gGbApuNoise.unk_3C != gGbApuNoise.unk_20) && ((D_8120EB6C % 95) == 0)) {
+        if (gGbApuNoise.unk_3C > gGbApuNoise.unk_20) {
+            gGbApuNoise.unk_3C--;
         } else {
-            gGbAudioNoiseChannel.unk_3C++;
+            gGbApuNoise.unk_3C++;
         }
     }
     D_8120EB6C++;
-    if (gGbAudioNoiseChannel.unk_28 != 0) {
-        gGbAudioNoiseChannel.unk_24++;
-        if ((gGbAudioNoiseChannel.unk_24 % (u32) gGbAudioNoiseChannel.unk_28) == 0) {
-            switch (gGbAudioNoiseChannel.unk_2E) {             /* irregular */
+    if (gGbApuNoise.unk_28 != 0) {
+        gGbApuNoise.unk_24++;
+        if ((gGbApuNoise.unk_24 % (u32) gGbApuNoise.unk_28) == 0) {
+            switch (gGbApuNoise.unk_2E) {             /* irregular */
             case 0:
-                if (gGbAudioNoiseChannel.unk_2D) {
-                    gGbAudioNoiseChannel.unk_2D--;
+                if (gGbApuNoise.unk_2D) {
+                    gGbApuNoise.unk_2D--;
                 }
-                if (gGbAudioNoiseChannel.unk_2D == 0) {
-                    gGbAudioNoiseChannel.unk_00 = 0;
+                if (gGbApuNoise.unk_2D == 0) {
+                    gGbApuNoise.unk_00 = 0;
                 }
                 break;
             case 1:
-                if (gGbAudioNoiseChannel.unk_2D < 0xF) {
-                    gGbAudioNoiseChannel.unk_2D++;
+                if (gGbApuNoise.unk_2D < 0xF) {
+                    gGbApuNoise.unk_2D++;
                 }
                 break;
             }
             switch ((D_8120EA80 << 0x14) >> 0x1F) {                    /* switch 1; irregular */
             case 0:                                 /* switch 1 */
-                gGbAudioNoiseChannel.unk_20 = gGbNoiseStepTable0[gGbAudioNoiseChannel.unk_2D];
+                gGbApuNoise.unk_20 = gGbNoiseStepTable0[gGbApuNoise.unk_2D];
                 break;
             case 1:                                 /* switch 1 */
-                gGbAudioNoiseChannel.unk_20 = gGbNoiseStepTable1[gGbAudioNoiseChannel.unk_2D];
+                gGbApuNoise.unk_20 = gGbNoiseStepTable1[gGbApuNoise.unk_2D];
                 break;
             }
         }
     }
-    if (gGbAudioNoiseChannel.unk_18 == 1) {
-        if (gGbAudioNoiseChannel.unk_14 != 0) {
-            gGbAudioNoiseChannel.unk_14--;
+    if (gGbApuNoise.unk_18 == 1) {
+        if (gGbApuNoise.unk_14 != 0) {
+            gGbApuNoise.unk_14--;
         }
-        if (gGbAudioNoiseChannel.unk_14 == 0) {
-            gGbAudioNoiseChannel.unk_00 = 0U;
+        if (gGbApuNoise.unk_14 == 0) {
+            gGbApuNoise.unk_00 = 0U;
         }
     }
     
@@ -627,110 +627,110 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
 
     switch (reg) {
         case 0x10:
-            gGbAudioSquare1Channel.unk_34 = GB_APU_REGS.sweepTime * 400;
-            gGbAudioSquare1Channel.unk_39 = GB_APU_REGS.sweepDir;
-            gGbAudioSquare1Channel.unk_38 = GB_APU_REGS.sweepShift;
-            if (gGbAudioSquare1Channel.unk_3A == 0) {
-                gGbAudioSquare1Channel.unk_30 = 0;
+            gGbApuSquare1.unk_34 = GB_APU_REGS.sweepTime * 400;
+            gGbApuSquare1.unk_39 = GB_APU_REGS.sweepDir;
+            gGbApuSquare1.unk_38 = GB_APU_REGS.sweepShift;
+            if (gGbApuSquare1.unk_3A == 0) {
+                gGbApuSquare1.unk_30 = 0;
             }
-            if (gGbAudioSquare1Channel.unk_34 == 0) {
-                gGbAudioSquare1Channel.unk_3A = 0;
+            if (gGbApuSquare1.unk_34 == 0) {
+                gGbApuSquare1.unk_3A = 0;
             } else {
-                gGbAudioSquare1Channel.unk_3A = 1;
+                gGbApuSquare1.unk_3A = 1;
             }
             break;
         case 0x11:
-            gGbAudioSquare1Channel.unk_3B = GB_APU_REGS.duty1;
-            gGbAudioSquare1Channel.unk_1C = 0x40 - GB_APU_REGS.length1;
+            gGbApuSquare1.unk_3B = GB_APU_REGS.duty1;
+            gGbApuSquare1.unk_1C = 0x40 - GB_APU_REGS.length1;
             break;
         case 0x12:
-            gGbAudioSquare1Channel.unk_21 = GB_APU_REGS.volume1;
+            gGbApuSquare1.unk_21 = GB_APU_REGS.volume1;
             if ((GB_APU_REGS.volume1 == 0) && (GB_APU_REGS.envDir1 == 0)) {
-                gGbAudioSquare1Channel.unk_00 = 0;
+                gGbApuSquare1.unk_00 = 0;
             }
             break;
         case 0x13:
-            gGbAudioSquare1Channel.unk_10 = GB_APU_REGS.freqLo1 | (GB_APU_REGS.freqHi1 << 8);
-            gGbAudioSquare1Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare1Channel.unk_10);
+            gGbApuSquare1.unk_10 = GB_APU_REGS.freqLo1 | (GB_APU_REGS.freqHi1 << 8);
+            gGbApuSquare1.unk_0C = GbApu_FreqToStep2x(gGbApuSquare1.unk_10);
             break;
         case 0x14:
-            gGbAudioSquare1Channel.unk_18 = GB_APU_REGS.counter1;
-            gGbAudioSquare1Channel.unk_10 = GB_APU_REGS.freqLo1 | (GB_APU_REGS.freqHi1 << 8);
-            gGbAudioSquare1Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare1Channel.unk_10);
+            gGbApuSquare1.unk_18 = GB_APU_REGS.counter1;
+            gGbApuSquare1.unk_10 = GB_APU_REGS.freqLo1 | (GB_APU_REGS.freqHi1 << 8);
+            gGbApuSquare1.unk_0C = GbApu_FreqToStep2x(gGbApuSquare1.unk_10);
             if ((s32)GB_APU_REGS.trigger1 == 1) {
-                gGbAudioSquare1Channel.unk_14 = gGbAudioSquare1Channel.unk_1C * 200;
-                gGbAudioSquare1Channel.unk_20 = gGbEnvStepTable[gGbAudioSquare1Channel.unk_21];
-                gGbAudioSquare1Channel.unk_24 = 0;
-                gGbAudioSquare1Channel.unk_30 = 0;
-                gGbAudioSquare1Channel.unk_2E = GB_APU_REGS.envDir1;
-                gGbAudioSquare1Channel.unk_28 = GB_APU_REGS.envSweep1 * 800;
-                gGbAudioSquare1Channel.unk_2D = gGbAudioSquare1Channel.unk_21;
+                gGbApuSquare1.unk_14 = gGbApuSquare1.unk_1C * 200;
+                gGbApuSquare1.unk_20 = gGbEnvStepTable[gGbApuSquare1.unk_21];
+                gGbApuSquare1.unk_24 = 0;
+                gGbApuSquare1.unk_30 = 0;
+                gGbApuSquare1.unk_2E = GB_APU_REGS.envDir1;
+                gGbApuSquare1.unk_28 = GB_APU_REGS.envSweep1 * 800;
+                gGbApuSquare1.unk_2D = gGbApuSquare1.unk_21;
                 if (GB_APU_REGS.power) {
-                    gGbAudioSquare1Channel.unk_00 = 1;
+                    gGbApuSquare1.unk_00 = 1;
                 }
             }
-            if (gGbAudioSquare1Channel.unk_34 == 0) {
-                gGbAudioSquare1Channel.unk_3A = 0;
+            if (gGbApuSquare1.unk_34 == 0) {
+                gGbApuSquare1.unk_3A = 0;
             } else {
-                gGbAudioSquare1Channel.unk_3A = 1;
+                gGbApuSquare1.unk_3A = 1;
             }
             break;
         case 0x16:
-            gGbAudioSquare2Channel.unk_3B = GB_APU_REGS.duty2;
-            gGbAudioSquare2Channel.unk_1C = 0x40 - GB_APU_REGS.length2;
+            gGbApuSquare2.unk_3B = GB_APU_REGS.duty2;
+            gGbApuSquare2.unk_1C = 0x40 - GB_APU_REGS.length2;
             break;
         case 0x17:
-            gGbAudioSquare2Channel.unk_21 = GB_APU_REGS.volume2;
+            gGbApuSquare2.unk_21 = GB_APU_REGS.volume2;
             if ((GB_APU_REGS.volume2 == 0) && (GB_APU_REGS.envDir2 == 0)) {
-                gGbAudioSquare2Channel.unk_00 = 0;
+                gGbApuSquare2.unk_00 = 0;
             }
             break;
         case 0x18:
-            gGbAudioSquare2Channel.unk_10 = GB_APU_REGS.freqLo2 | (GB_APU_REGS.freqHi2 << 8);
-            gGbAudioSquare2Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare2Channel.unk_10);
+            gGbApuSquare2.unk_10 = GB_APU_REGS.freqLo2 | (GB_APU_REGS.freqHi2 << 8);
+            gGbApuSquare2.unk_0C = GbApu_FreqToStep2x(gGbApuSquare2.unk_10);
             break;
         case 0x19:
-            gGbAudioSquare2Channel.unk_18 = GB_APU_REGS.counter2;
-            gGbAudioSquare2Channel.unk_10 = GB_APU_REGS.freqLo2 | (GB_APU_REGS.freqHi2 << 8);
-            gGbAudioSquare2Channel.unk_0C = GbApu_FreqToStep2x(gGbAudioSquare2Channel.unk_10);
+            gGbApuSquare2.unk_18 = GB_APU_REGS.counter2;
+            gGbApuSquare2.unk_10 = GB_APU_REGS.freqLo2 | (GB_APU_REGS.freqHi2 << 8);
+            gGbApuSquare2.unk_0C = GbApu_FreqToStep2x(gGbApuSquare2.unk_10);
             if ((s32)GB_APU_REGS.trigger2 == 1) {
-                gGbAudioSquare2Channel.unk_14 = gGbAudioSquare2Channel.unk_1C * 200;
-                gGbAudioSquare2Channel.unk_08.unk_02 = 0;
-                gGbAudioSquare2Channel.unk_20 = gGbEnvStepTable[gGbAudioSquare2Channel.unk_21];
-                gGbAudioSquare2Channel.unk_24 = 0;
-                gGbAudioSquare2Channel.unk_2E = GB_APU_REGS.envDir2;
-                gGbAudioSquare2Channel.unk_28 = GB_APU_REGS.envSweep2 * 800;
-                gGbAudioSquare2Channel.unk_2D = gGbAudioSquare2Channel.unk_21;
+                gGbApuSquare2.unk_14 = gGbApuSquare2.unk_1C * 200;
+                gGbApuSquare2.unk_08.unk_02 = 0;
+                gGbApuSquare2.unk_20 = gGbEnvStepTable[gGbApuSquare2.unk_21];
+                gGbApuSquare2.unk_24 = 0;
+                gGbApuSquare2.unk_2E = GB_APU_REGS.envDir2;
+                gGbApuSquare2.unk_28 = GB_APU_REGS.envSweep2 * 800;
+                gGbApuSquare2.unk_2D = gGbApuSquare2.unk_21;
                 if (GB_APU_REGS.power) {
-                    gGbAudioSquare2Channel.unk_00 = 1;
+                    gGbApuSquare2.unk_00 = 1;
                 }
             }
             break;
         case 0x1A:
             if (GB_APU_REGS.waveOn == 0) {
-                gGbAudioWaveChannel.unk_00 = GB_APU_REGS.waveOn;
+                gGbApuWave.unk_00 = GB_APU_REGS.waveOn;
             }
             break;
         case 0x1B:
-            gGbAudioWaveChannel.unk_1C = 0x100 - GB_APU_REGS.length3;
+            gGbApuWave.unk_1C = 0x100 - GB_APU_REGS.length3;
             break;
         case 0x1C:
-            gGbAudioWaveChannel.unk_21 = GB_APU_REGS.level3;
-            gGbAudioWaveChannel.unk_20 = gGbWaveLevelTable[gGbAudioWaveChannel.unk_21];
+            gGbApuWave.unk_21 = GB_APU_REGS.level3;
+            gGbApuWave.unk_20 = gGbWaveLevelTable[gGbApuWave.unk_21];
             break;
         case 0x1D:
-            gGbAudioWaveChannel.unk_10 = GB_APU_REGS.freqLo3 | (GB_APU_REGS.freqHi3 << 8);
-            gGbAudioWaveChannel.unk_0C = GbAudio_CalcWavePeriod(gGbAudioWaveChannel.unk_10);
+            gGbApuWave.unk_10 = GB_APU_REGS.freqLo3 | (GB_APU_REGS.freqHi3 << 8);
+            gGbApuWave.unk_0C = GbApu_FreqToStep(gGbApuWave.unk_10);
             break;
         case 0x1E:
-            gGbAudioWaveChannel.unk_10 = GB_APU_REGS.freqLo3 | (GB_APU_REGS.freqHi3 << 8);
-            gGbAudioWaveChannel.unk_0C = GbAudio_CalcWavePeriod(gGbAudioWaveChannel.unk_10);
-            gGbAudioWaveChannel.unk_18 = GB_APU_REGS.counter3;
+            gGbApuWave.unk_10 = GB_APU_REGS.freqLo3 | (GB_APU_REGS.freqHi3 << 8);
+            gGbApuWave.unk_0C = GbApu_FreqToStep(gGbApuWave.unk_10);
+            gGbApuWave.unk_18 = GB_APU_REGS.counter3;
             if ((s32)GB_APU_REGS.trigger3 == 1) {
-                gGbAudioWaveChannel.unk_14 = gGbAudioWaveChannel.unk_1C * 200;
-                gGbAudioWaveChannel.unk_04 = 0x140;
+                gGbApuWave.unk_14 = gGbApuWave.unk_1C * 200;
+                gGbApuWave.unk_04 = 0x140;
                 if (GB_APU_REGS.power && ((s32)GB_APU_REGS.waveOn == 1)) {
-                    gGbAudioWaveChannel.unk_00 = 1;
+                    gGbApuWave.unk_00 = 1;
                 }
             }
             break;
@@ -754,63 +754,63 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             gGbWaveRamMirror[(reg - 0x30) * 2 + 1] = D_8120EA70[reg - 0x10] & 0xF;
             break;
         case 0x20:
-            gGbAudioNoiseChannel.unk_1C = 0x40 - GB_APU_REGS.length4;
+            gGbApuNoise.unk_1C = 0x40 - GB_APU_REGS.length4;
             break;
         case 0x21:
-            gGbAudioNoiseChannel.unk_21 = GB_APU_REGS.volume4;
+            gGbApuNoise.unk_21 = GB_APU_REGS.volume4;
             if ((GB_APU_REGS.volume4 == 0) && (GB_APU_REGS.envDir4 == 0)) {
-                gGbAudioNoiseChannel.unk_00 = 0;
+                gGbApuNoise.unk_00 = 0;
             }
             break;
         case 0x22:
-            gGbAudioNoiseChannel.unk_10 = GB_APU_REGS.shift4;
-            gGbAudioNoiseChannel.unk_0C = func_81207494(GB_APU_REGS.shift4, GB_APU_REGS.width4, GB_APU_REGS.ratio4);
-            if (gGbAudioNoiseChannel.unk_00 == 0) {
-                gGbAudioNoiseChannel.unk_40 = gGbAudioNoiseChannel.unk_0C;
+            gGbApuNoise.unk_10 = GB_APU_REGS.shift4;
+            gGbApuNoise.unk_0C = func_81207494(GB_APU_REGS.shift4, GB_APU_REGS.width4, GB_APU_REGS.ratio4);
+            if (gGbApuNoise.unk_00 == 0) {
+                gGbApuNoise.unk_40 = gGbApuNoise.unk_0C;
             }
-            if (gGbAudioNoiseChannel.unk_40 < gGbAudioNoiseChannel.unk_0C) {
-                gGbAudioNoiseChannel.unk_48 = gGbAudioNoiseChannel.unk_0C - gGbAudioNoiseChannel.unk_40;
+            if (gGbApuNoise.unk_40 < gGbApuNoise.unk_0C) {
+                gGbApuNoise.unk_48 = gGbApuNoise.unk_0C - gGbApuNoise.unk_40;
             } else {
-                gGbAudioNoiseChannel.unk_48 = gGbAudioNoiseChannel.unk_40 - gGbAudioNoiseChannel.unk_0C;
+                gGbApuNoise.unk_48 = gGbApuNoise.unk_40 - gGbApuNoise.unk_0C;
             }
-            gGbAudioNoiseChannel.unk_48 >>= 7;
-            if (gGbAudioNoiseChannel.unk_48 == 0) {
-                gGbAudioNoiseChannel.unk_48 = 1;
+            gGbApuNoise.unk_48 >>= 7;
+            if (gGbApuNoise.unk_48 == 0) {
+                gGbApuNoise.unk_48 = 1;
             }
             break;
         case 0x23:
-            gGbAudioNoiseChannel.unk_18 = GB_APU_REGS.counter4;
+            gGbApuNoise.unk_18 = GB_APU_REGS.counter4;
             if ((s32)GB_APU_REGS.trigger4 == 1) {
-                gGbAudioNoiseChannel.unk_14 = gGbAudioNoiseChannel.unk_1C * 200;
-                if (gGbAudioNoiseChannel.unk_00 == 0) {
-                    gGbAudioNoiseChannel.unk_08.unk_02 = 0;
+                gGbApuNoise.unk_14 = gGbApuNoise.unk_1C * 200;
+                if (gGbApuNoise.unk_00 == 0) {
+                    gGbApuNoise.unk_08.unk_02 = 0;
                 }
-                gGbAudioNoiseChannel.unk_2D = gGbAudioNoiseChannel.unk_21;
+                gGbApuNoise.unk_2D = gGbApuNoise.unk_21;
                 switch ((s32)GB_APU_REGS.width4) {
                     case 0:
-                        gGbAudioNoiseChannel.unk_20 = gGbNoiseStepTable0[gGbAudioNoiseChannel.unk_2D];
+                        gGbApuNoise.unk_20 = gGbNoiseStepTable0[gGbApuNoise.unk_2D];
                         break;
                     case 1:
-                        gGbAudioNoiseChannel.unk_20 = gGbNoiseStepTable1[gGbAudioNoiseChannel.unk_2D];
+                        gGbApuNoise.unk_20 = gGbNoiseStepTable1[gGbApuNoise.unk_2D];
                         break;
                 }
-                if ((gGbAudioNoiseChannel.unk_00 == 0) || (gGbAudioNoiseChannel.unk_3C < gGbAudioNoiseChannel.unk_20)) {
-                    gGbAudioNoiseChannel.unk_3C = gGbAudioNoiseChannel.unk_20;
+                if ((gGbApuNoise.unk_00 == 0) || (gGbApuNoise.unk_3C < gGbApuNoise.unk_20)) {
+                    gGbApuNoise.unk_3C = gGbApuNoise.unk_20;
                 }
-                gGbAudioNoiseChannel.unk_24 = 0;
-                gGbAudioNoiseChannel.unk_2E = GB_APU_REGS.envDir4;
-                gGbAudioNoiseChannel.unk_28 = GB_APU_REGS.envSweep4 * 800;
+                gGbApuNoise.unk_24 = 0;
+                gGbApuNoise.unk_2E = GB_APU_REGS.envDir4;
+                gGbApuNoise.unk_28 = GB_APU_REGS.envSweep4 * 800;
                 if (GB_APU_REGS.power) {
-                    gGbAudioNoiseChannel.unk_00 = 1;
+                    gGbApuNoise.unk_00 = 1;
                 }
             }
             break;
         case 0x26:
             if (!(value & 0x80)) {
-                gGbAudioSquare1Channel.unk_00 = 0;
-                gGbAudioSquare2Channel.unk_00 = 0;
-                gGbAudioWaveChannel.unk_00 = 0;
-                gGbAudioNoiseChannel.unk_00 = 0;
+                gGbApuSquare1.unk_00 = 0;
+                gGbApuSquare2.unk_00 = 0;
+                gGbApuWave.unk_00 = 0;
+                gGbApuNoise.unk_00 = 0;
             }
             break;
     }
@@ -897,9 +897,9 @@ void GbAudio_MixChannels(s32 numSamples, s16* out) {
             idx++;
         }
 
-        sq1 = GbAudio_StepSquare1();
-        sq2 = GbAudio_StepSquare2();
-        wave = GbAudio_StepWave();
+        sq1 = GbApu_UpdateSquare1Channel();
+        sq2 = GbApu_UpdateSquare2Channel();
+        wave = GbApu_UpdateWaveChannel();
         noise = GbAudio_StepNoiseChannel();
 
         noiseL = GB_APU_REGS.noiseLeft ? noise : 0;
@@ -1001,17 +1001,17 @@ void GbAudio_Reset(void) {
   for (i = 0x50; i > 0xF; i--) {
       GbAudio_WriteReg(i, 0);
   }
-  gGbAudioSquare1Channel.unk_3C = 0;
-  gGbAudioSquare2Channel.unk_3C = 0;
-  gGbAudioWaveChannel.unk_3C = 0;
-  gGbAudioNoiseChannel.unk_3C = 0;
-  gGbAudioSquare1Channel.unk_08.unk_02 = 0;
-  gGbAudioSquare2Channel.unk_08.unk_02 = 0;
-  gGbAudioWaveChannel.unk_08.unk_02 = 0;
-  gGbAudioNoiseChannel.unk_08.unk_02 = 0;
+  gGbApuSquare1.unk_3C = 0;
+  gGbApuSquare2.unk_3C = 0;
+  gGbApuWave.unk_3C = 0;
+  gGbApuNoise.unk_3C = 0;
+  gGbApuSquare1.unk_08.unk_02 = 0;
+  gGbApuSquare2.unk_08.unk_02 = 0;
+  gGbApuWave.unk_08.unk_02 = 0;
+  gGbApuNoise.unk_08.unk_02 = 0;
 }
 
-void GbAudio_SetNoiseTable(s32 arg0) {
+void GbApu_Reset(s32 arg0) {
   gGbAudioNoiseTable = arg0;
   GbAudio_Reset();
 }
@@ -1042,7 +1042,7 @@ void func_81208E4C(void) {
 void func_81208F94(void) {
 }
 
-u8 GbAudio_ReadReg(u16 arg0) {
+u8 GbMem_ReadIoRegister(u16 arg0) {
   u8 var_a0;
   u8 var_a1;
   u8 var_a2;
@@ -1052,22 +1052,22 @@ u8 GbAudio_ReadReg(u16 arg0) {
       if (gGbApuStatusLatch.unk_00 != 0) {
           var_v1 = (gGbApuStatusLatch.unk_00 - 1) & 0xFF;
       } else {
-          var_v1 = gGbAudioSquare1Channel.unk_00;
+          var_v1 = gGbApuSquare1.unk_00;
       }
       if (gGbApuStatusLatch.unk_01 != 0) {
           var_a0 = (gGbApuStatusLatch.unk_01 - 1) & 0xFF;
       } else {
-          var_a0 = gGbAudioSquare2Channel.unk_00;
+          var_a0 = gGbApuSquare2.unk_00;
       }
       if (gGbApuStatusLatch.unk_02 != 0) {
           var_a1 = (gGbApuStatusLatch.unk_02 - 1) & 0xFF;
       } else {
-          var_a1 = gGbAudioWaveChannel.unk_00;
+          var_a1 = gGbApuWave.unk_00;
       }
       if (gGbApuStatusLatch.unk_03 != 0) {
           var_a2 = (gGbApuStatusLatch.unk_03 - 1) & 0xFF;
       } else {
-          var_a2 = gGbAudioNoiseChannel.unk_00;
+          var_a2 = gGbApuNoise.unk_00;
       }
       temp = ((((u32)D_8120EA86 >> 0xF) << 7) | (var_a2 * 8) | (var_a1 * 4) | (var_a0 * 2) | var_v1);
       return temp;
@@ -1143,11 +1143,11 @@ s32 GbAudio_Update(void) {
     return 0;
 }
 
-void GbAudio_SetMode(s32 arg0) {
+void GbAudio_SetAlternateRendererEnabled(s32 arg0) {
   gGbAudioMode = arg0;
 }
 
-void GbAudio_PlayStream(s32 arg0) {
+void GbAudio_SetAlternateStreamId(s32 arg0) {
   gGbAudioStreamQueued.id = arg0;
 }
 

@@ -5,14 +5,14 @@
 
 static f32 gDefaultScales[] = { 1.0f, 2.0f };
 
-void Entity_SetLaunchVelocity(unk_BattlePlayerEntity* arg0, f32 arg1, s16 arg2) {
+void BattleAnim_InitSwayOffset(unk_BattlePlayerEntity* arg0, f32 arg1, s16 arg2) {
     arg0->launchSpeed = arg1;
     arg0->unk_448.unk_0C.z = COSS(arg2) * arg1;
     arg0->unk_448.unk_0C.y = SINS(arg2) * arg1;
     arg0->unk_49C = 0.01f;
 }
 
-void Entity_UpdateMovement(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, f32 arg2, f32 arg3, s32 arg4) {
+void BattleAnim_UpdateSwayPhysicsToOwner(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, f32 arg2, f32 arg3, s32 arg4) {
     f32 sp54;
     f32 sp50;
     f32 sp4C;
@@ -26,7 +26,7 @@ void Entity_UpdateMovement(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity*
     sp54 = arg1->unk_49C;
     sp50 = arg1->launchSpeed;
     sp4C = 18.0f;
-    arg1->launchSpeed = Math_ApproachF32(sp50, arg2, arg3, arg3);
+    arg1->launchSpeed = Math_StepToF(sp50, arg2, arg3, arg3);
 
     var_fa0 = arg1->launchSpeed;
     if (arg2 <= var_fa0) {
@@ -46,11 +46,11 @@ void Entity_UpdateMovement(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity*
     sp3C.y = arg1->unk_448.unk_0C.y;
     arg1->unk_448.unk_0C.x = 0.0f;
 
-    Vector_SetXZFromPolar(&sp3C, arg1->unk_448.unk_0C.z, arg0->unk_000.unk_01E.y + 0x4000);
-    Vec3f_Add(&arg0->unk_000.unk_024, &sp3C);
+    BattleAnim_Vec3fSetPolarXZ(&sp3C, arg1->unk_448.unk_0C.z, arg0->unk_000.unk_01E.y + 0x4000);
+    Vec3f_AddInPlace(&arg0->unk_000.unk_024, &sp3C);
 }
 
-void Entity_UpdateMovementFast(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, f32 arg2, f32 arg3, s32 arg4, s32 arg5) {
+void BattleAnim_UpdateSwayPhysicsToTarget(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1, f32 arg2, f32 arg3, s32 arg4, s32 arg5) {
     f32 sp54;
     f32 sp50;
     f32 sp4C;
@@ -64,7 +64,7 @@ void Entity_UpdateMovementFast(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePl
     sp54 = arg1->unk_49C;
     sp50 = arg1->launchSpeed;
     sp4C = 20.0f;
-    arg1->launchSpeed = Math_ApproachF32(sp50, arg2, arg3, arg3);
+    arg1->launchSpeed = Math_StepToF(sp50, arg2, arg3, arg3);
 
     var_fa0 = arg1->launchSpeed;
     if (arg2 <= var_fa0) {
@@ -83,21 +83,21 @@ void Entity_UpdateMovementFast(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePl
     sp3C.y = arg1->unk_448.unk_0C.y;
     arg1->unk_448.unk_0C.x = 0.0f;
 
-    Vector_SetXZFromPolar(&sp3C, arg1->unk_448.unk_0C.z, arg5);
-    Vec3f_Add(&arg1->effectGraphNode.unk_024, &sp3C);
+    BattleAnim_Vec3fSetPolarXZ(&sp3C, arg1->unk_448.unk_0C.z, arg5);
+    Vec3f_AddInPlace(&arg1->effectGraphNode.unk_024, &sp3C);
 }
 
-void Entity_ResetSubObjectFlags(unk_BattlePlayerEntity* arg0) {
+void BattleScene_HideParticipantSecondaryModels(unk_BattlePlayerEntity* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
-        Vec3f_Set(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
         arg0->unk_168[i].unk_000.unk_000.unk_01 &= ~1;
         arg0->unk_168[i].unk_169 = 0;
     }
 }
 
-void Entity_InitSubObjects(unk_BattlePlayerEntity* arg0) {
+void BattleScene_ShowSecondaryModelsAtMainTransform(unk_BattlePlayerEntity* arg0) {
     s32 i;
     s16 sp64[] = { 0x0, 0xE38, 0xF1C8 }; // D_84384608
 
@@ -106,64 +106,64 @@ void Entity_InitSubObjects(unk_BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_16A = sp64[i];
         arg0->unk_168[i].unk_000.unk_01D = 0;
         arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
-        Vector_Copy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
-        VectorS_Copy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
-        Vector_Copy(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
+        BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
+        BattleAnim_Vec3sCopy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
+        BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
     }
 }
 
-void Entity_AnimateSubObjects(unk_BattlePlayerEntity* arg0) {
+void BattleScene_UpdateSecondaryModelOrbit(unk_BattlePlayerEntity* arg0) {
     s32 i;
     f32 tmp;
     Vec3f sp5C = { 0.0f, 0.0f, 0.0f };         // D_84384610
     f32 sp4C[] = { 0.3f, -0.4f, -0.2f, 0.4f }; // D_8438461C
 
     for (i = 0; i < 2; i++) {
-        arg0->unk_168[i].unk_000.unk_01D = Math_ApproachS32(arg0->unk_168[i].unk_000.unk_01D, 0x3C, 5, 5);
-        arg0->unk_168[i].unk_16C = Math_ApproachS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
-        arg0->unk_168[i].unk_16C = Math_ApproachS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
+        arg0->unk_168[i].unk_000.unk_01D = Math_StepToS32(arg0->unk_168[i].unk_000.unk_01D, 0x3C, 5, 5);
+        arg0->unk_168[i].unk_16C = Math_StepToS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
+        arg0->unk_168[i].unk_16C = Math_StepToS32(arg0->unk_168[i].unk_16C, 0x38E, 0x64, 0x64);
         arg0->unk_168[i].unk_16A += arg0->unk_168[i].unk_16C;
 
-        tmp = SINS(arg0->unk_168[i].unk_16A) * (GetScaledWidth(arg0) * sp4C[i]);
-        Vector_SetXZFromPolar(&sp5C, tmp, arg0->unk_000.unk_01E.y);
+        tmp = SINS(arg0->unk_168[i].unk_16A) * (BattleScene_GetParticipantModelRadiusScaled(arg0) * sp4C[i]);
+        BattleAnim_Vec3fSetPolarXZ(&sp5C, tmp, arg0->unk_000.unk_01E.y);
 
         arg0->unk_168[i].unk_000.unk_024.x = arg0->unk_000.unk_024.x + sp5C.x;
         arg0->unk_168[i].unk_000.unk_024.y = arg0->unk_000.unk_024.y + sp5C.y;
         arg0->unk_168[i].unk_000.unk_024.z = arg0->unk_000.unk_024.z + sp5C.z;
 
-        Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
-        GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
+        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
     }
 }
 
-void Entity_ActivateSubObjects(unk_BattlePlayerEntity* arg0) {
+void BattleScene_ShowSecondaryModelsAtMainPose(unk_BattlePlayerEntity* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
         arg0->unk_168[i].unk_169 = 0;
         arg0->unk_168[i].unk_000.unk_01D = 0x3C;
         arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
-        Vec3f_Set(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
-        Vector_Copy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
-        VectorS_Copy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
+        BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
+        BattleAnim_Vec3sCopy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
     }
 }
 
-s32 Entity_ScaleSubObjects(unk_BattlePlayerEntity* arg0) {
+s32 BattleScene_ShrinkSecondaryModelsToScale(unk_BattlePlayerEntity* arg0) {
     s32 i;
     f32 temp_fv0_2;
     f32 sp5C[] = { 0.007f, 0.005f, 0.039f }; // D_8438462C
 
     for (i = 0; i < 2; i++) {
-        Vector_Copy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
+        BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
 
-        temp_fv0_2 = Math_ApproachF32(arg0->unk_168[i].unk_000.unk_030.x, 0.8f, sp5C[i], sp5C[i]);
+        temp_fv0_2 = Math_StepToF(arg0->unk_168[i].unk_000.unk_030.x, 0.8f, sp5C[i], sp5C[i]);
         arg0->unk_168[i].unk_000.unk_030.x = temp_fv0_2;
         arg0->unk_168[i].unk_000.unk_030.y = temp_fv0_2;
         arg0->unk_168[i].unk_000.unk_030.z = temp_fv0_2;
 
-        Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
-        GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
+        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
 
         if (arg0->unk_168[i].unk_000.unk_030.y < 0.8) {
             arg0->unk_168[i].unk_169 = 1;
@@ -173,7 +173,7 @@ s32 Entity_ScaleSubObjects(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-void Entity_SetSubObjectCameraOffsets(unk_BattlePlayerEntity* arg0) {
+void BattleScene_ShowSecondaryModelsStaggeredFrame(unk_BattlePlayerEntity* arg0) {
     s32 i;
 
     for (i = 0; i < 2; i++) {
@@ -181,16 +181,16 @@ void Entity_SetSubObjectCameraOffsets(unk_BattlePlayerEntity* arg0) {
         arg0->unk_168[i].unk_000.unk_01D = 0x41 - i * 4;
         arg0->unk_168[i].unk_000.unk_000.unk_01 |= 1;
 
-        Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
-        GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
-        Vec3f_Set(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
-        Vector_Copy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
-        VectorS_Copy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
-        Vector_Copy(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
+        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_168[i].unk_000.unk_030, 1.0f, 1.0f, 1.0f);
+        BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_024, &arg0->unk_000.unk_024);
+        BattleAnim_Vec3sCopy(&arg0->unk_168[i].unk_000.unk_01E, &arg0->unk_000.unk_01E);
+        BattleAnim_Vec3fCopy(&arg0->unk_168[i].unk_000.unk_030, &arg0->unk_000.unk_030);
     }
 }
 
-void Entity_UpdateCameraFromSubObject(unk_BattlePlayerEntity* arg0, s16 arg1) {
+void BattleScene_UpdateSecondaryModelTrailPosition(unk_BattlePlayerEntity* arg0, s16 arg1) {
     s32 i;
     f32 sp90;
     s16 sp8E;
@@ -200,36 +200,36 @@ void Entity_UpdateCameraFromSubObject(unk_BattlePlayerEntity* arg0, s16 arg1) {
     f32 sp70[3] = { 0.98f, 0.96f, 0.95f }; // D_84384644
 
     for (i = 0; i < 2; i++) {
-        Anim_SetChannelBase(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
-        GraphNode_TriggerAction(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
-        Matrix_Decompose(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, &sp90, &sp8E, &sp8C);
-        Camera_SetViewParameters(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, sp7C[i] * sp90, sp8E, sp8C);
-        Math_StepTowards(&arg0->unk_168[i].unk_000.unk_01E.y, arg0->unk_000.unk_01E.y, sp70[i] * arg1);
+        ModelAnim_SetFrame(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_08 >> 0x10);
+        ModelAnim_SetAnimation(&arg0->unk_168[i].unk_000, arg0->unk_000.unk_040.unk_00);
+        Vec3f_CalculateDistanceAngles(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, &sp90, &sp8E, &sp8C);
+        Camera_ComputeEyeFromAngles(&arg0->unk_000.unk_024, &arg0->unk_168[i].unk_000.unk_024, sp7C[i] * sp90, sp8E, sp8C);
+        BattleAnim_StepToS16(&arg0->unk_168[i].unk_000.unk_01E.y, arg0->unk_000.unk_01E.y, sp70[i] * arg1);
     }
 }
 
 void BattleScene_ResetParticipantModelFlags(unk_BattlePlayerEntity* arg0) {
-    ApplyAnimEffectToOpponent(arg0, 0, 0);
+    BattleScene_SetParticipantModelFlags(arg0, 0, 0);
 }
 
-void Entity_LaunchProjectile(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase1Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->effectGraphNode.unk_000.unk_01 |= 1;
     if (arg1 == sActivePokemon[0]) {
-        Vec3f_Set(&arg1->effectGraphNode.unk_024, 35.0f, 50.0f, -250.0f);
+        Vec3f_SetComponentsDuplicate(&arg1->effectGraphNode.unk_024, 35.0f, 50.0f, -250.0f);
     } else {
-        Vec3f_Set(&arg1->effectGraphNode.unk_024, -35.0f, 50.0f, -250.0f);
+        Vec3f_SetComponentsDuplicate(&arg1->effectGraphNode.unk_024, -35.0f, 50.0f, -250.0f);
     }
-    Entity_SetLaunchVelocity(arg1, 20.0f, 0x1FFE);
+    BattleAnim_InitSwayOffset(arg1, 20.0f, 0x1FFE);
     arg1->animationSubstate++;
     arg1->effectGraphNode.unk_000.unk_02 &= ~0x20;
-    Anim_SetChannelBase(&arg1->effectGraphNode, 0);
+    ModelAnim_SetFrame(&arg1->effectGraphNode, 0);
 }
 
-void Entity_HandleProjectileLanding(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase1Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     if (arg1 == gPrimaryPokemonEntity) {
-        Entity_UpdateMovementFast(arg0, arg1, 0, 0, 0x1FFE, 0x4440);
+        BattleAnim_UpdateSwayPhysicsToTarget(arg0, arg1, 0, 0, 0x1FFE, 0x4440);
     } else {
-        Entity_UpdateMovementFast(arg0, arg1, 0, 0, 0x1FFE, 0x3BB8);
+        BattleAnim_UpdateSwayPhysicsToTarget(arg0, arg1, 0, 0, 0x1FFE, 0x3BB8);
     }
 
     arg1->effectGraphNode.unk_01E.x += 0x1555;
@@ -243,31 +243,31 @@ void Entity_HandleProjectileLanding(unk_BattlePlayerEntity* arg0, unk_BattlePlay
     }
 }
 
-void Entity_StateMachine_Dispatch(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StatusIdleCase1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     switch (arg1->animationSubstate) {
         case 0:
-            Entity_LaunchProjectile(arg0, arg1);
+            BattleAnim_StatusIdleCase1Sub0(arg0, arg1);
 
         case 1:
-            Entity_HandleProjectileLanding(arg0, arg1);
+            BattleAnim_StatusIdleCase1Sub1(arg0, arg1);
             break;
     }
 }
 
 void BattleAnim_StatusIdleCase2Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Vec3f_Set(&arg1->effectGraphNode.unk_024, arg1->sideSign * -150.0f, 100.0f, 0.0f);
+    Vec3f_SetComponentsDuplicate(&arg1->effectGraphNode.unk_024, arg1->sideSign * -150.0f, 100.0f, 0.0f);
     arg1->animationSubstate++;
-    Entity_SetLaunchVelocity(arg1, 0.0f, 0x3FFC);
+    BattleAnim_InitSwayOffset(arg1, 0.0f, 0x3FFC);
     arg1->effectGraphNode.unk_000.unk_01 |= 1;
     arg1->effectGraphNode.unk_000.unk_02 &= ~0x20;
-    Anim_SetChannelBase(&arg1->effectGraphNode, 0);
+    ModelAnim_SetFrame(&arg1->effectGraphNode, 0);
 }
 
 void BattleAnim_StatusIdleCase2Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     arg1->effectGraphNode.unk_01E.x += 0x1555;
     arg1->effectGraphNode.unk_01E.z += 0xE38;
 
-    Entity_UpdateMovementFast(arg0, arg1, 0.0f, 0.0f, 0x4000, 0);
+    BattleAnim_UpdateSwayPhysicsToTarget(arg0, arg1, 0.0f, 0.0f, 0x4000, 0);
 
     if (arg1->effectGraphNode.unk_024.y < 0) {
         arg1->effectGraphNode.unk_01E.x = 0;
@@ -295,20 +295,20 @@ void BattleAnim_StatusIdleCase2(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEn
 }
 
 void BattleAnim_StatusIdleCase3Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
-    Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
-    Entity_SetLaunchVelocity(arg1, gDefaultScales[0], 0x4000);
-    Entity_SetSubObjectCameraOffsets(arg1);
+    Vec3f_SetComponentsDuplicate(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
+    Vec3f_SetComponentsDuplicate(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
+    BattleAnim_InitSwayOffset(arg1, gDefaultScales[0], 0x4000);
+    BattleScene_ShowSecondaryModelsStaggeredFrame(arg1);
     arg1->animationSubstate++;
 }
 
 void BattleAnim_StatusIdleCase3Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Entity_UpdateMovement(arg0, arg1, 1.45f, 0.015f, 0x4000);
-    Entity_UpdateCameraFromSubObject(arg1, 0);
+    BattleAnim_UpdateSwayPhysicsToOwner(arg0, arg1, 1.45f, 0.015f, 0x4000);
+    BattleScene_UpdateSecondaryModelTrailPosition(arg1, 0);
     if (arg0->unk_000.unk_024.y >= 200.0f) {
         arg1->unk_448.unk_0C.y = 0.0f;
         BattleScene_ResetParticipantModelFlags(arg1);
-        Entity_ResetSubObjectFlags(arg1);
+        BattleScene_HideParticipantSecondaryModels(arg1);
     }
 }
 
@@ -324,15 +324,15 @@ void BattleAnim_StatusIdleCase3(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEn
 }
 
 void BattleAnim_StatusIdleCase14Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Vec3f_Set(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
-    Vec3f_Set(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
-    Entity_SetLaunchVelocity(arg1, gDefaultScales[0], 0x4000);
+    Vec3f_SetComponentsDuplicate(&arg1->unk_448, 0.0f, 0.0f, 0.0f);
+    Vec3f_SetComponentsDuplicate(&arg1->unk_448.unk_0C, 0.0f, 0.0f, 0.0f);
+    BattleAnim_InitSwayOffset(arg1, gDefaultScales[0], 0x4000);
     arg1->animationSubstate++;
 }
 
 void BattleAnim_StatusIdleCase14Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Entity_UpdateMovement(arg0, arg1, 2.0f, 0.002f, 0x4000);
-    if ((arg0->unk_000.unk_024.y - GetModelBaseY(arg1)) >= 90.0f) {
+    BattleAnim_UpdateSwayPhysicsToOwner(arg0, arg1, 2.0f, 0.002f, 0x4000);
+    if ((arg0->unk_000.unk_024.y - BattleScene_GetParticipantModelHeight(arg1)) >= 90.0f) {
         arg1->animationSubstate++;
         arg1->unk_448.unk_0C.y = 0.0f;
     }
@@ -371,7 +371,7 @@ s32 BattleAnim_ApproachAngleAndCheckThreshold(unk_BattlePlayerEntity* arg0, s16 
 }
 
 void BattleAnim_StatusIdleCase4Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Entity_SetSubObjectCameraOffsets(arg1);
+    BattleScene_ShowSecondaryModelsStaggeredFrame(arg1);
     arg1->unk_4A6 = 0;
     arg1->unk_4A4 = 0;
     arg1->moveAnimIndex = 0;
@@ -379,13 +379,13 @@ void BattleAnim_StatusIdleCase4Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_Bat
 }
 
 void BattleAnim_StatusIdleCase4Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    arg1->unk_4A6 = Math_ApproachS32(arg1->unk_4A6, 0x3330, 0x16C, 0x16C);
+    arg1->unk_4A6 = Math_StepToS32(arg1->unk_4A6, 0x3330, 0x16C, 0x16C);
 
     if (BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->sideSign << 0xE) != 0) {
         arg1->moveAnimIndex += 1;
     }
 
-    Entity_UpdateCameraFromSubObject(arg1, arg1->unk_4A6);
+    BattleScene_UpdateSecondaryModelTrailPosition(arg1, arg1->unk_4A6);
 
     if (arg1->moveAnimIndex == 3) {
         arg1->animationSubstate += 1;
@@ -408,12 +408,12 @@ void BattleAnim_StatusIdleCase4Sub2(unk_BattlePlayerEntity* arg0, unk_BattlePlay
         sp26 = 0xE38;
     }
     sp20 = BattleAnim_ApproachAngleAndCheckThreshold(arg0, sp26, arg1->sideSign << 0xE);
-    Entity_UpdateCameraFromSubObject(arg1, sp26);
+    BattleScene_UpdateSecondaryModelTrailPosition(arg1, sp26);
 
     if (sp20 != 0) {
         arg0->unk_000.unk_01E.y = arg1->sideSign << 0xE;
         BattleScene_ResetParticipantModelFlags(arg1);
-        Entity_ResetSubObjectFlags(arg1);
+        BattleScene_HideParticipantSecondaryModels(arg1);
     }
 }
 
@@ -440,14 +440,14 @@ void BattleAnim_StatusIdleCase5Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_Bat
 }
 
 void BattleAnim_StatusIdleCase5Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    arg1->unk_4A6 = Math_ApproachS32(arg1->unk_4A6, 0x3FFC, 0x16C, 0x16C);
+    arg1->unk_4A6 = Math_StepToS32(arg1->unk_4A6, 0x3FFC, 0x16C, 0x16C);
 
     if (BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->sideSign << 0xE) != 0) {
         arg1->moveAnimIndex += 1;
     }
 
     if (arg1->moveAnimIndex >= 3) {
-        Entity_SetSubObjectCameraOffsets(arg1);
+        BattleScene_ShowSecondaryModelsStaggeredFrame(arg1);
         arg1->animationSubstate += 1;
     }
 }
@@ -461,7 +461,7 @@ void BattleAnim_StatusIdleCase5Sub2(unk_BattlePlayerEntity* arg0, unk_BattlePlay
 
     BattleAnim_ApproachAngleAndCheckThreshold(arg0, arg1->unk_4A6, arg1->sideSign << 0xE);
 
-    if (Array_ContainsValue(arg1->unk_000.unk_01A, sp28, sizeof(sp28)) != 0) {
+    if (BattleScene_ByteArrayContains(arg1->unk_000.unk_01A, sp28, sizeof(sp28)) != 0) {
         sp30 = 10.3f;
         sp34 = 10.0f;
         sp2C = 0.035f;
@@ -471,13 +471,13 @@ void BattleAnim_StatusIdleCase5Sub2(unk_BattlePlayerEntity* arg0, unk_BattlePlay
         sp2C = 0.045f;
     }
 
-    Entity_UpdateCameraFromSubObject(arg1, arg1->unk_4A6);
-    Math_ExponentialApproach(&arg0->unk_000.unk_024.y, -(Battle_GetEntityHeight(arg1) * sp30), sp2C);
+    BattleScene_UpdateSecondaryModelTrailPosition(arg1, arg1->unk_4A6);
+    BattleAnim_ApproachF(&arg0->unk_000.unk_024.y, -(BattleAnim_GetOwnerModelHeight(arg1) * sp30), sp2C);
 
-    if (arg0->unk_000.unk_024.y <= -(Battle_GetEntityHeight(arg1) * sp34)) {
-        Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
+    if (arg0->unk_000.unk_024.y <= -(BattleAnim_GetOwnerModelHeight(arg1) * sp34)) {
+        Vec3s_SetComponents(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
         BattleScene_ResetParticipantModelFlags(arg1);
-        Entity_ResetSubObjectFlags(arg1);
+        BattleScene_HideParticipantSecondaryModels(arg1);
     }
 }
 
@@ -501,9 +501,9 @@ void BattleAnim_StatusIdleCase6Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlay
     arg1->unk_4A4 = 0;
     arg1->moveAnimIndex = 0;
     arg1->oscillationAmplitude = 0.0f;
-    UpdateEntityBasePosition(arg1);
-    Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
-    Entity_SetSubObjectCameraOffsets(arg1);
+    BattleScene_PositionParticipantModel(arg1);
+    Vec3s_SetComponents(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
+    BattleScene_ShowSecondaryModelsStaggeredFrame(arg1);
     arg1->animationSubstate++;
 }
 
@@ -511,13 +511,13 @@ void BattleAnim_StatusIdleCase6Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlay
     f32 tmp;
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f }; // D_84384654
 
-    Math_ExponentialApproach(&arg1->oscillationAmplitude, 50.0f, 0.1f);
+    BattleAnim_ApproachF(&arg1->oscillationAmplitude, 50.0f, 0.1f);
     arg1->unk_4A6 += 0xE38;
     tmp = SINS(arg1->unk_4A6) * arg1->oscillationAmplitude;
-    Vector_SetXZFromPolar(&sp20, tmp, arg0->unk_000.unk_01E.y);
-    UpdateEntityBasePosition(arg1);
-    Vec3f_Add(&arg0->unk_000.unk_024, &sp20);
-    Entity_UpdateCameraFromSubObject(arg1, 0);
+    BattleAnim_Vec3fSetPolarXZ(&sp20, tmp, arg0->unk_000.unk_01E.y);
+    BattleScene_PositionParticipantModel(arg1);
+    Vec3f_AddInPlace(&arg0->unk_000.unk_024, &sp20);
+    BattleScene_UpdateSecondaryModelTrailPosition(arg1, 0);
 
     if (arg1->oscillationAmplitude > 49.0f) {
         arg1->animationSubstate++;
@@ -528,21 +528,21 @@ void BattleAnim_StatusIdleCase6Sub2(unk_BattlePlayerEntity* arg0, unk_BattlePlay
     f32 tmp;
     Vec3f sp20 = { 0.0f, 0.0f, 0.0f };
 
-    Math_ExponentialApproach(&arg1->oscillationAmplitude, 0.0f, 0.1f);
+    BattleAnim_ApproachF(&arg1->oscillationAmplitude, 0.0f, 0.1f);
     arg1->unk_4A6 += 0xE38;
 
     tmp = SINS(arg1->unk_4A6) * arg1->oscillationAmplitude;
-    Vector_SetXZFromPolar(&sp20, tmp, arg0->unk_000.unk_01E.y);
+    BattleAnim_Vec3fSetPolarXZ(&sp20, tmp, arg0->unk_000.unk_01E.y);
 
-    UpdateEntityBasePosition(arg1);
-    Vec3f_Add(&arg0->unk_000.unk_024, &sp20);
-    Entity_UpdateCameraFromSubObject(arg1, 0);
+    BattleScene_PositionParticipantModel(arg1);
+    Vec3f_AddInPlace(&arg0->unk_000.unk_024, &sp20);
+    BattleScene_UpdateSecondaryModelTrailPosition(arg1, 0);
 
     if (arg1->oscillationAmplitude <= 0.5f) {
-        UpdateEntityBasePosition(arg1);
-        Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
+        BattleScene_PositionParticipantModel(arg1);
+        Vec3s_SetComponents(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
         BattleScene_ResetParticipantModelFlags(arg1);
-        Entity_ResetSubObjectFlags(arg1);
+        BattleScene_HideParticipantSecondaryModels(arg1);
     }
 }
 
@@ -562,19 +562,19 @@ void BattleAnim_StatusIdleCase6(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEn
 }
 
 void BattleAnim_StatusIdleCase7Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Entity_InitSubObjects(arg1);
+    BattleScene_ShowSecondaryModelsAtMainTransform(arg1);
     arg1->frameCounter = 0;
-    UpdateEntityBasePosition(arg1);
-    Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
+    BattleScene_PositionParticipantModel(arg1);
+    Vec3s_SetComponents(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
     arg1->animationSubstate++;
 }
 
 void BattleAnim_StatusIdleCase7Sub1(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Entity_AnimateSubObjects(arg1);
+    BattleScene_UpdateSecondaryModelOrbit(arg1);
     arg1->frameCounter++;
     if (arg1->frameCounter == 0x3C) {
         BattleScene_ResetParticipantModelFlags(arg1);
-        Entity_ResetSubObjectFlags(arg1);
+        BattleScene_HideParticipantSecondaryModels(arg1);
     }
 }
 
@@ -591,11 +591,11 @@ void BattleAnim_StatusIdleCase7(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEn
 
 void BattleAnim_ResetOwnerFacingAndExitStatusIdle(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
-    CameraStruct* sp18 = gBattleState.unk_00->unk_DC;
+    CameraStruct* sp18 = gBattleScene.unk_00->unk_DC;
 
-    UpdateEntityBasePosition(arg0);
-    Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg0->sideSign << 0xE, 0);
-    Vec3f_Set(&sp18->unk_60.up, 0.0f, 1.0f, 0.0f);
+    BattleScene_PositionParticipantModel(arg0);
+    Vec3s_SetComponents(&arg0->unk_000.unk_01E, 0, arg0->sideSign << 0xE, 0);
+    Vec3f_SetComponentsDuplicate(&sp18->unk_60.up, 0.0f, 1.0f, 0.0f);
     BattleScene_ResetParticipantModelFlags(arg0);
 }
 
@@ -605,13 +605,13 @@ void BattleAnim_StatusIdleCase8Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlay
     arg1->unk_4A4 = 0;
     arg1->moveAnimIndex = 0;
     arg1->oscillationAmplitude = 0.0f;
-    UpdateEntityBasePosition(arg1);
-    Vec3s_Set(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
+    BattleScene_PositionParticipantModel(arg1);
+    Vec3s_SetComponents(&arg0->unk_000.unk_01E, 0, arg1->sideSign << 0xE, 0);
     arg1->animationSubstate++;
 }
 
 void BattleAnim_StatusIdleCase8Sub1(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    CameraStruct* temp_s0 = gBattleState.unk_00->unk_DC;
+    CameraStruct* temp_s0 = gBattleScene.unk_00->unk_DC;
     f32 temp_fa0;
     f32 temp_fa1_2;
     f32 temp_ft4;
@@ -621,8 +621,8 @@ void BattleAnim_StatusIdleCase8Sub1(UNUSED unk_BattlePlayerEntity* arg0, unk_Bat
     f32 temp_fv0_2;
     f32 temp_fv1_2;
 
-    Math_StepTowards(&arg1->unk_4A4, 0x5B0, 0x3C);
-    Math_StepTowards(&arg1->tiltAngle, -0x8000, arg1->unk_4A4);
+    BattleAnim_StepToS16(&arg1->unk_4A4, 0x5B0, 0x3C);
+    BattleAnim_StepToS16(&arg1->tiltAngle, -0x8000, arg1->unk_4A4);
 
     sp2C = temp_s0->unk_60.at.x - temp_s0->unk_60.eye.x;
     sp28 = temp_s0->unk_60.at.y - temp_s0->unk_60.eye.y;
@@ -660,7 +660,7 @@ void BattleAnim_StatusIdleCase9Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlay
     if (arg0->unk_000.unk_030.y != 1.0f) {
         BattleScene_ResetParticipantModelFlags(arg1);
     } else {
-        Entity_ActivateSubObjects(arg1);
+        BattleScene_ShowSecondaryModelsAtMainPose(arg1);
         arg1->animationSubstate++;
     }
 }
@@ -668,16 +668,16 @@ void BattleAnim_StatusIdleCase9Sub0(unk_BattlePlayerEntity* arg0, unk_BattlePlay
 void BattleAnim_StatusIdleCase9Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     f32 temp_fv0;
 
-    temp_fv0 = Math_ApproachF32(arg0->unk_000.unk_030.x, 0.8f, 0.01f, 0.01f);
+    temp_fv0 = Math_StepToF(arg0->unk_000.unk_030.x, 0.8f, 0.01f, 0.01f);
     arg0->unk_000.unk_030.x = temp_fv0;
     arg0->unk_000.unk_030.y = temp_fv0;
     arg0->unk_000.unk_030.z = temp_fv0;
 
-    Entity_ScaleSubObjects(arg1);
+    BattleScene_ShrinkSecondaryModelsToScale(arg1);
 
     if (arg0->unk_000.unk_030.y <= 0.8) {
         BattleScene_ResetParticipantModelFlags(arg1);
-        Entity_ResetSubObjectFlags(arg1);
+        BattleScene_HideParticipantSecondaryModels(arg1);
     }
 }
 
@@ -697,12 +697,12 @@ void BattleAnim_StatusIdleCase12Sub0(UNUSED unk_BattlePlayerEntity* arg0, unk_Ba
 }
 
 void BattleAnim_StatusIdleCase12Sub1(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
-    arg0->unk_000.unk_030.x = Math_ApproachF32(arg0->unk_000.unk_030.x, 0.0f, 0.05f, 0.05f);
-    arg0->unk_000.unk_030.y = Math_ApproachF32(arg0->unk_000.unk_030.y, 0.0f, 0.05f, 0.05f);
-    arg0->unk_000.unk_030.z = Math_ApproachF32(arg0->unk_000.unk_030.z, 0.0f, 0.05f, 0.05f);
+    arg0->unk_000.unk_030.x = Math_StepToF(arg0->unk_000.unk_030.x, 0.0f, 0.05f, 0.05f);
+    arg0->unk_000.unk_030.y = Math_StepToF(arg0->unk_000.unk_030.y, 0.0f, 0.05f, 0.05f);
+    arg0->unk_000.unk_030.z = Math_StepToF(arg0->unk_000.unk_030.z, 0.0f, 0.05f, 0.05f);
 
     if (arg0->unk_000.unk_030.y <= 0.1) {
-        Vec3f_Set(&arg0->unk_000.unk_030, 0.001f, 0.001f, 0.001f);
+        Vec3f_SetComponentsDuplicate(&arg0->unk_000.unk_030, 0.001f, 0.001f, 0.001f);
     }
 }
 
@@ -819,7 +819,7 @@ void BattleAnim_StatusIdleCase15Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePla
     arg1->tiltAngle += 0xCCC;
     sp22 = arg1->tiltAngle;
 
-    arg1->oscillationAmplitude = Math_ApproachF32(arg1->oscillationAmplitude, 0.0f, 0.02f, 0.02f);
+    arg1->oscillationAmplitude = Math_StepToF(arg1->oscillationAmplitude, 0.0f, 0.02f, 0.02f);
 
     if (sp22 > 0) {
         sp22 *= -1;
@@ -837,9 +837,9 @@ void BattleAnim_StatusIdleCase15Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePla
 
     if (arg1->oscillationAmplitude <= 0.01f) {
         if (temp_a0->unk_56 == 0) {
-            Vec3f_Set(&arg0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
         } else {
-            Vec3f_Set(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
+            Vec3f_SetComponentsDuplicate(&arg0->unk_000.unk_030, 0.8f, 0.8f, 0.8f);
         }
         BattleScene_ResetParticipantModelFlags(arg1);
     }
@@ -867,15 +867,15 @@ void BattleAnim_StatusIdleCase16Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePla
     f32 temp_fs0;
 
     if (ptr->unk_56 == 0) {
-        temp_fs0 = (1.0f - Trail_GetWidthScale()) * 0.6f;
-        Math_ExponentialApproach(&arg0->unk_000.unk_030.x, 1.0f - temp_fs0, 0.5f);
-        Math_ExponentialApproach(&arg0->unk_000.unk_030.y, 1.0f + temp_fs0, 0.5f);
-        Math_ExponentialApproach(&arg0->unk_000.unk_030.z, 1.0f - temp_fs0, 0.5f);
+        temp_fs0 = (1.0f - Strip400_GetTailFadeRatio()) * 0.6f;
+        BattleAnim_ApproachF(&arg0->unk_000.unk_030.x, 1.0f - temp_fs0, 0.5f);
+        BattleAnim_ApproachF(&arg0->unk_000.unk_030.y, 1.0f + temp_fs0, 0.5f);
+        BattleAnim_ApproachF(&arg0->unk_000.unk_030.z, 1.0f - temp_fs0, 0.5f);
     } else {
-        temp_fs0 = (1.0f - Trail_GetWidthScale()) * 0.3f;
-        Math_ExponentialApproach(&arg0->unk_000.unk_030.x, 0.8 - temp_fs0, 0.5f);
-        Math_ExponentialApproach(&arg0->unk_000.unk_030.y, temp_fs0 + 0.8, 0.5f);
-        Math_ExponentialApproach(&arg0->unk_000.unk_030.z, 0.8 - temp_fs0, 0.5f);
+        temp_fs0 = (1.0f - Strip400_GetTailFadeRatio()) * 0.3f;
+        BattleAnim_ApproachF(&arg0->unk_000.unk_030.x, 0.8 - temp_fs0, 0.5f);
+        BattleAnim_ApproachF(&arg0->unk_000.unk_030.y, temp_fs0 + 0.8, 0.5f);
+        BattleAnim_ApproachF(&arg0->unk_000.unk_030.z, 0.8 - temp_fs0, 0.5f);
     }
 }
 
@@ -901,11 +901,11 @@ void BattleAnim_StatusIdleCase10Sub1(unk_BattlePlayerEntity* arg0, unk_BattlePla
 
     arg1->moveAnimIndex++;
     sp20 = TerrainGrid_SampleHeightAndSlope(arg0->unk_000.unk_024.x, arg0->unk_000.unk_024.z, &sp24);
-    arg0->unk_000.unk_024.y = GetModelBaseY(arg1) + sp20;
+    arg0->unk_000.unk_024.y = BattleScene_GetParticipantModelHeight(arg1) + sp20;
     arg0->unk_000.unk_01E.x = (s16)sp24 * 0xB6;
 
     if (arg1->moveAnimIndex == 0x12C) {
-        arg0->unk_000.unk_024.y = GetModelBaseY(arg1);
+        arg0->unk_000.unk_024.y = BattleScene_GetParticipantModelHeight(arg1);
         arg0->unk_000.unk_01E.x = 0;
         BattleScene_ResetParticipantModelFlags(arg1);
     }
@@ -925,7 +925,7 @@ void BattleAnim_StatusIdleCase10(unk_BattlePlayerEntity* arg0, unk_BattlePlayerE
 void BattleAnim_StatusIdleCase0(UNUSED unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
 }
 
-void Battle_ClearAnimFlags(s32 arg0) {
+void BattleAnim_UpdateOwnerStatusIdleAnimation(s32 arg0) {
     unk_BattlePlayerEntity* temp_a1 = sActivePokemon[arg0];
     unk_BattlePlayerEntity* temp_a2 = sActivePokemon[arg0];
 
@@ -935,7 +935,7 @@ void Battle_ClearAnimFlags(s32 arg0) {
             break;
 
         case 1:
-            Entity_StateMachine_Dispatch(temp_a1, temp_a2);
+            BattleAnim_StatusIdleCase1(temp_a1, temp_a2);
             break;
 
         case 2:
@@ -1031,22 +1031,22 @@ void BattleAnim_UpdateSecondarySwayPhysics(unk_BattlePlayerEntity* arg0, unk_Bat
     sp2C.y = arg1->secondarySwayOffset.y;
     arg1->secondarySwayOffset.x = 0.0f;
 
-    Vector_SetXZFromPolar(&sp2C, arg1->secondarySwayOffset.z, arg0->unk_000.unk_01E.y + 0x4000);
-    Vec3f_Add(&arg0->unk_000.unk_024, &sp2C);
+    BattleAnim_Vec3fSetPolarXZ(&sp2C, arg1->secondarySwayOffset.z, arg0->unk_000.unk_01E.y + 0x4000);
+    Vec3f_AddInPlace(&arg0->unk_000.unk_024, &sp2C);
 }
 
 void BattleAnim_SecondaryStatusCaseBSub0(UNUSED unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    Vec3f_Set(&arg1->unk_4CC, 0.0f, 0.0f, 0.0f);
-    Vec3f_Set(&arg1->secondarySwayOffset, 0.0f, 0.0f, 0.0f);
+    Vec3f_SetComponentsDuplicate(&arg1->unk_4CC, 0.0f, 0.0f, 0.0f);
+    Vec3f_SetComponentsDuplicate(&arg1->secondarySwayOffset, 0.0f, 0.0f, 0.0f);
     BattleAnim_InitSecondarySwayOffset(arg1, 23.0f, 0x2E36);
     arg1->secondaryStatusState++;
 }
 
 void BattleAnim_SecondaryStatusCaseBSub1(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
     BattleAnim_UpdateSecondarySwayPhysics(arg0, arg1, 0, 0, 0x2E36);
-    if (arg1->unk_000.unk_024.y < GetModelBaseY(arg1)) {
+    if (arg1->unk_000.unk_024.y < BattleScene_GetParticipantModelHeight(arg1)) {
         arg1->secondarySwayOffset.y = 0.0f;
-        arg1->unk_000.unk_024.y = GetModelBaseY(arg1);
+        arg1->unk_000.unk_024.y = BattleScene_GetParticipantModelHeight(arg1);
         BattleAnim_ClearOwnerSecondaryStatusFlags(arg1);
     }
 }
@@ -1600,18 +1600,18 @@ Vec3f gCameraOffsetTable[] = {
     { 0.4000000059604645f, 0.0f, 0.0f },
     { 0.0f, 0.0f, 0.0f },
 };
-unk_D_84385384_func gAnimStateIdle = Anim_NullHandler;
+unk_D_84385384_func gAnimStateIdle = BattleScene_StateCallbackNop;
 unk_D_84385384 gMoveAnimData[] = {
     {
         0,
         {
-            AnimChannel_TriggerMoveEffect,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            AnimChannel_SetupAndTrigger,
-            AnimChannel_CheckModelBaseY,
-            Pokemon_HandleGroundedAnim,
-            Pokemon_HandleAirborneAnim,
+            BattleScene_LoadRowResourceList,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickStartRowAnimRecord,
+            BattleScene_TickQueueRowEffectList3AtAnimEnd,
+            BattleScene_TickPlaySpeciesSequence33,
+            BattleScene_TickQueueList3Selector2OrC,
         },
         167,
         5,
@@ -1620,13 +1620,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         1,
         {
-            Pokemon_HandleSpecialMoveAnimation,
-            ResetAnimChannelToDefault,
-            Anim_ResetPlayer,
-            PlayBattleMusicIfReady,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRowAnim166WithCry,
+            BattleScene_SetOpponentEventTrackA6,
+            BattleScene_ResetStateFrameCounter,
+            BattleScene_TickRow1PlayOwnerCry,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         166,
         255,
@@ -1635,13 +1635,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         2,
         {
-            Anim_NullHandler,
-            AnimChannel_TriggerMoveEffect,
-            Anim_NullHandler,
-            Pokemon_HandleMoveHit,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_StateCallbackNop,
+            BattleScene_LoadRowResourceList,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickAssetLoadQueueRowEffectList3,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         2,
@@ -1650,13 +1650,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         3,
         {
-            Pokemon_StartMoveAnimation,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Pokemon_HandleMoveCompletion,
-            AnimChannel_CheckAndAdvance,
-            AnimChannel_HandleSpecialMoves,
-            Anim_NullHandler,
+            BattleScene_EnterRow3StartMoveAnim,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickRow3PlayMoveEffectScript,
+            BattleScene_TickRow3PostEffectCamera,
+            BattleScene_TickRow3QueueEffectList6,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1665,13 +1665,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         4,
         {
-            Pokemon_EnterBattleState,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Pokemon_HandleSwitchIn,
-            Pokemon_HandleSwitchOut,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRow4StartHitReactionAnim,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickPlayMoveEffectEnd,
+            BattleScene_TickRow4PostEndCamera,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1680,13 +1680,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         5,
         {
-            AnimHandler_AttackStart,
-            AnimChannel_HandleBattleState,
-            Anim_NullHandler,
-            AnimHandler_AttackHit,
-            AnimHandler_AttackEnd,
-            AnimHandler_DamageStart,
-            AnimHandler_DamageHit,
+            BattleScene_StateRow56EnterNop,
+            BattleScene_LoadMoveResourceList,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateRow5Slot3Nop,
+            BattleScene_StateRow5Slot4Nop,
+            BattleScene_StateRow5Slot5Nop,
+            BattleScene_StateRow5Slot6Nop,
         },
         255,
         255,
@@ -1695,13 +1695,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         6,
         {
-            AnimHandler_AttackStart,
-            AnimChannel_HandleBattleState,
-            Anim_NullHandler,
-            AnimHandler_ItemUse,
-            AnimHandler_StatusEffect,
-            AnimHandler_FaintEnd,
-            AnimHandler_FaintStart,
+            BattleScene_StateRow56EnterNop,
+            BattleScene_LoadMoveResourceList,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateRow6Slot3Nop,
+            BattleScene_StateRow6Slot4Nop,
+            BattleScene_StateRow6Slot5Nop,
+            BattleScene_StateRow6Slot6Nop,
         },
         255,
         255,
@@ -1710,13 +1710,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         7,
         {
-            AnimChannel_TriggerMoveEffect,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            AnimChannel_SetupAndTrigger,
-            AnimHandler_Defeat,
-            AnimHandler_DamageEnd,
-            Pokemon_HandleAirborneAnim,
+            BattleScene_LoadRowResourceList,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickStartRowAnimRecord,
+            BattleScene_StateRow7Slot4Nop,
+            BattleScene_StateRow7Slot5Nop,
+            BattleScene_TickQueueList3Selector2OrC,
         },
         167,
         5,
@@ -1725,13 +1725,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         8,
         {
-            Pokemon_TriggerAnimByLookup,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Pokemon_HandleSpecialMoveEffect,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRow8StartMappedMoveAnim,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickRow8PlayMoveEffectScriptB,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1740,13 +1740,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         9,
         {
-            Pokemon_SetSpecialAnimChannel,
-            Pokemon_HandleSpecialCondition,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRow9SetEventTrack,
+            BattleScene_EnterRow9QueueEffectList6,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1755,13 +1755,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         10,
         {
-            Anim_NullHandler,
-            AnimChannel_TriggerMoveEffect,
-            Anim_NullHandler,
-            Pokemon_HandleMoveHit,
-            Pokemon_HandleFaint,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_StateCallbackNop,
+            BattleScene_LoadRowResourceList,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickAssetLoadQueueRowEffectList3,
+            BattleScene_TickRow10CleanupAndEnterState18,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         3,
@@ -1771,12 +1771,12 @@ unk_D_84385384 gMoveAnimData[] = {
         11,
         {
             UpdateAnimChannelForEntity,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Pokemon_HandleSwitchIn,
-            ApplyAnimStateEffect,
-            TriggerAnimStateSound,
-            Anim_NullHandler,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickPlayMoveEffectEnd,
+            BattleScene_TickRow11PostEndCamera,
+            BattleScene_TickRow11QueueEffectList6,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1785,13 +1785,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         12,
         {
-            Anim_ResetPlayer,
-            Pokemon_TriggerAnimIfMatch,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_ResetStateFrameCounter,
+            BattleScene_Row12Slot1CameraCleanup,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1800,13 +1800,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         13,
         {
-            Pokemon_PlaySoundBasedOnFlags,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_Row13PlaySequences14And21,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1816,12 +1816,12 @@ unk_D_84385384 gMoveAnimData[] = {
         14,
         {
             UpdateAnimChannelForEntity,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            ProcessAnimStateMatch,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickRow14PlayMoveEffectEnd,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1830,13 +1830,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         15,
         {
-            Pokemon_StartBattleIntro,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRow15StartAnimA80Seq30,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1845,13 +1845,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         16,
         {
-            Pokemon_HandleSpecialMoveAnimation,
-            ResetAnimChannelToDefault,
-            Anim_ResetPlayer,
-            PlayBattleMusicAndSound,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRowAnim166WithCry,
+            BattleScene_SetOpponentEventTrackA6,
+            BattleScene_ResetStateFrameCounter,
+            BattleScene_TickRow16PlayCryAndSpeciesSound,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         166,
         255,
@@ -1860,13 +1860,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         17,
         {
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            AnimChannel_SetupAndTrigger,
-            CheckAnimStateCompletion,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickStartRowAnimRecord,
+            BattleScene_TickQueueList3Selector2OrCFromB10,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         177,
         255,
@@ -1875,13 +1875,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         18,
         {
-            Pokemon_HandleSpecialMoveAnimation,
-            ResetAnimChannelToDefault,
-            Anim_ResetPlayer,
-            PlayBattleMusicAndSoundAlt,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRowAnim166WithCry,
+            BattleScene_SetOpponentEventTrackA6,
+            BattleScene_ResetStateFrameCounter,
+            BattleScene_TickRow18PlayCryAndSpeciesSound,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         166,
         255,
@@ -1890,13 +1890,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         19,
         {
-            Pokemon_TriggerAnimIfUnlocked,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Pokemon_HandleMoveEnd,
-            Pokemon_HandleSpecialMoveEnd,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRow19StartMoveAnimMidFrame,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickRow19PlayMoveEffectScript,
+            BattleScene_TickRow19PostEffectCamera,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,
@@ -1905,13 +1905,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         20,
         {
-            Anim_NullHandler,
-            AnimChannel_TriggerMoveEffect,
-            Anim_NullHandler,
-            Pokemon_HandleMoveHit,
-            Pokemon_HandleFaintEffect,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_StateCallbackNop,
+            BattleScene_LoadRowResourceList,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickAssetLoadQueueRowEffectList3,
+            BattleScene_TickRow20CleanupAndEnterState18,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         1,
@@ -1920,13 +1920,13 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         21,
         {
-            Pokemon_GenericActionTrigger,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Pokemon_PlayMoveEffect,
-            Anim_NullHandler,
-            Anim_NullHandler,
-            Anim_NullHandler,
+            BattleScene_EnterRow21StartAnimRecord0,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_TickRow21PlaySpeciesSound,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
+            BattleScene_StateCallbackNop,
         },
         255,
         255,

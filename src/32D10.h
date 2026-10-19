@@ -13,15 +13,15 @@ extern s16 gHpWheelDigitOffsetHundredsSmooth[4];
 extern s16 gTextureOffsetScale;
 extern s16 gModelUpdateFlag[2];
 
-void HpWheel_SetDigits(u8 arg0, s16 arg1);
-void HpWheel_SetDigitsSmooth(u8 arg0, s16 arg1);
-void AnimationFrame_StallCheck(void);
+void BattleHud_SetDigitRotationTargets(u8 arg0, s16 arg1);
+void BattleHud_ApproachDigitRotations(u8 arg0, s16 arg1);
+void ModelAnim_UpdateFrameChangeState(void);
 s32 ModelPhase_IsIdle(void);
-u8 GraphRoot_GetCurrentModelSlot(void);
+u8 ModelRenderer_GetActiveMode(void);
 s16 ModelRenderer_GetObjectType(void);
-void GraphNode_EnableTransform(Fragment2_1GraphNode* arg0);
-void ModelPhase_Advance(u32 arg0, u32 arg1);
-void ModelPhase_UpdateStatus(u32 arg0, u32 arg1);
+void ModelAnim_StartDisplayObjectAnimation(Fragment2_1GraphNode* arg0);
+void ModelAnim_UpdateDisplayObjectAnimation(u32 arg0, u32 arg1);
+void ModelAnim_FinalizeDisplayObjectAnimation(u32 arg0, u32 arg1);
 void Gfx_SetCombineRaw(Gfx*, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32, s32);
 
 #endif // _32D10_H_

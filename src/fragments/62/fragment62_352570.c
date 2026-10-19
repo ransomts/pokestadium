@@ -39,14 +39,14 @@ static Gfx gWaterParticleDL[] = {
     gsSPEndDisplayList(),
 };
 
-void WaterParticleSystem_ResetAll(void) {
+void FourStreamTrail_Init(void) {
     s32 i;
     s32 j;
     f32 temp_fa0;
     WaterParticleEmitter* var_a2;
     WaterParticleParticle* var_v0;
 
-    temp_fa0 = GetPrimaryEntityScale() * 0.75f;
+    temp_fa0 = BattleAnim_GetSecondaryOwnerModelScale() * 0.75f;
     var_a2 = &gWaterParticleEmitters[0];
 
     for (i = 0; i < 4; i++, var_a2++) {
@@ -66,7 +66,7 @@ void WaterParticleSystem_ResetAll(void) {
     }
 }
 
-void WaterParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void FourStreamTrail_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
     WaterParticleEmitter* var_v1;
     WaterParticleParticle* var_s0;
@@ -118,7 +118,7 @@ void WaterParticleSystem_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4,
     }
 }
 
-void WaterParticle_CalcOffset(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
+void FourStreamTrail_Update(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
     MtxF spB0;
     MtxF sp70;
     MtxF sp30;
@@ -130,7 +130,7 @@ void WaterParticle_CalcOffset(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
     guMtxXFMF(spB0.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void WaterParticleSystem_UpdateEmitter(WaterParticleEmitter* arg0) {
+void FourStreamTrail_UpdateNodeChain(WaterParticleEmitter* arg0) {
     WaterParticleParticle* var_v0 = &arg0->unk_034[0];
     s32 i;
     f32 temp_fa0;
@@ -193,7 +193,7 @@ void WaterParticleSystem_UpdateEmitter(WaterParticleEmitter* arg0) {
     }
 }
 
-s32 WaterParticleSystem_UpdateAll(void) {
+s32 FourStreamTrail_IsComplete(void) {
     s32 i;
     WaterParticleEmitter* var_s0 = &gWaterParticleEmitters[0];
 
@@ -203,7 +203,7 @@ s32 WaterParticleSystem_UpdateAll(void) {
             if (var_s0->unk_004 < var_s0->unk_002) {
                 var_s0->unk_000 = 0;
             } else {
-                WaterParticleSystem_UpdateEmitter(var_s0);
+                FourStreamTrail_UpdateNodeChain(var_s0);
             }
         }
     }
@@ -211,7 +211,7 @@ s32 WaterParticleSystem_UpdateAll(void) {
     return 0;
 }
 
-Gfx* WaterParticleSystem_Render(Gfx* arg0) {
+Gfx* FourStreamTrail_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
@@ -226,7 +226,7 @@ Gfx* WaterParticleSystem_Render(Gfx* arg0) {
     UNUSED s32 pad;
 
     gDPPipeSync(arg0++);
-    gDPLoadTextureBlock_4b(arg0++, gWaterTexture[0x49], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock_4b(arg0++, gBattleAnimAssetPointers[0x49], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
     var_s4 = &gWaterParticleEmitters[0];
@@ -236,7 +236,7 @@ Gfx* WaterParticleSystem_Render(Gfx* arg0) {
             temp_s0 = &var_s4->unk_034[0];
 
             if (temp_s0->unk_0C.y > 0.0f) {
-                temp_v0 = GfxAlloc(sizeof(Mtx) * 1);
+                temp_v0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
                 guTranslate(temp_v0, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
                 guRotateRPY(&spF0, (temp_s0->unk_08 * -360.0f * var_s4->unk_006) / 6.2831854820251465,
                             (var_s4->unk_006 * 0x5A) + 0x5A, 0.0f);
@@ -248,11 +248,11 @@ Gfx* WaterParticleSystem_Render(Gfx* arg0) {
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
-            var_s4->unk_018 = GfxAlloc(sizeof(Vtx) * 30);
+            var_s4->unk_018 = Gfx_AllocDisplayList(sizeof(Vtx) * 30);
             var_s0 = var_s4->unk_018;
 
             for (j = 0; j < 15; j++) {
-                WaterParticle_CalcOffset(temp_s0->unk_08, &sp134, temp_s0->unk_04, var_s4->unk_00C);
+                FourStreamTrail_Update(temp_s0->unk_08, &sp134, temp_s0->unk_04, var_s4->unk_00C);
                 var_s3 = temp_s0->unk_0C.y + sp134.y;
                 if (var_s3 < 0) {
                     var_s3 = 0;
@@ -267,7 +267,7 @@ Gfx* WaterParticleSystem_Render(Gfx* arg0) {
                 var_s0->v.cn[3] = temp_s0->unk_00;
                 var_s0++;
 
-                WaterParticle_CalcOffset(temp_s0->unk_08 + M_PI_F, &sp134, temp_s0->unk_04, var_s4->unk_00C);
+                FourStreamTrail_Update(temp_s0->unk_08 + M_PI_F, &sp134, temp_s0->unk_04, var_s4->unk_00C);
 
                 var_s3 = temp_s0->unk_0C.y + sp134.y;
                 if (var_s3 < 0) {

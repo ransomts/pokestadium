@@ -483,7 +483,7 @@ static AnimFrame gMetapodAudioEvents2[] = {
     { D_03040580, 0x12 }, { D_03040980, 2 }, { D_03040D80, 8 }, { D_03040980, 2 }, { NULL, 0 },
 };
 
-void MiniAudioEventHandler(s16 arg0, s16 arg1) {
+void MetapodGame_PlaySoundEvent(s16 arg0, s16 arg1) {
     s32 var_s0 = 0;
     s32 sp28;
     s32 sp24;
@@ -526,45 +526,45 @@ void MiniAudioEventHandler(s16 arg0, s16 arg1) {
             break;
 
         case 10:
-            ResultScreen_SetAnimation(0x11);
+            Audio_StartMusicTrack(0x11);
             break;
 
         case 11:
-            Stage_SetFadeColor(0x3C);
+            Audio_FadeOutAll(0x3C);
             break;
 
         case 12:
-            ResultScreen_SetAnimation(0xC1);
+            Audio_StartMusicTrack(0xC1);
             break;
 
         case 13:
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
             break;
 
         case 14:
-            Audio_SetVolumeFadeAndDuration(1, arg1);
-            Audio_SetVolumeFadeAndDuration(2, arg1);
+            Audio_FadeCategories(1, arg1);
+            Audio_FadeCategories(2, arg1);
             D_8790604A = 1;
             break;
 
         case 15:
-            Music_StartVolumeFade(arg1);
+            Audio_BeginVolumeTransition(arg1);
             break;
 
         case 16:
-            Music_EndVolumeFade();
+            Audio_ResetVolumeTransition();
             break;
     }
 
     if (var_s0 != 0) {
         D_87903DBC++;
-        PlaySoundByCategory(var_s0, sp28, sp24);
+        Audio_DispatchSoundBankCommand(var_s0, sp28, sp24);
     }
 }
 
-void PlayAudioIfEnabled(s16 arg0, s16 arg1) {
+void MetapodGame_PlaySoundEventGuarded(s16 arg0, s16 arg1) {
     if (D_8790604A == 0) {
-        MiniAudioEventHandler(arg0, arg1);
+        MetapodGame_PlaySoundEvent(arg0, arg1);
     }
 }
 
@@ -591,8 +591,8 @@ void miniInitMetapodPlayer(MiniActor* metapod, s32 arg1) {
     metapod->unk_2A6 = 5;
     metapod->middleHeight = metapod->halfHeight * 0.5f;
 
-    GraphNode_TriggerAction(&metapod->unk_000, 0);
-    InitAnimState(&metapod->unk_000);
+    ModelAnim_SetAnimation(&metapod->unk_000, 0);
+    ModelAnim_ClearEventTrack(&metapod->unk_000);
     metapod->unk_000.unk_01C = 0;
     miniActorUpdateTransform(metapod);
     metapod->isComp = gMiniHudColors[arg1];
@@ -608,7 +608,7 @@ void miniInitMetapodPlayers(void) {
     }
 }
 
-void MetapodTakeDamage(MiniActor* metapod) {
+void MetapodGame_BeginHarden(MiniActor* metapod) {
     metapod->damageTimer++;
     metapod->unk_272 = 4;
     metapod->unk_000.unk_01C = 1;
@@ -626,14 +626,14 @@ void miniMetapodHumanControls(MiniActor* metapod) {
 
     switch (metapod->mainState) {
         case 1: // start harden
-            MetapodTakeDamage(metapod);
+            MetapodGame_BeginHarden(metapod);
             miniChangeActorAnim(metapod, 1, -1, 1);
-            Particle_CreateMultiple(1.0f, metapod->totalPos, metapod->totalRot, MiniFx_UpdatePalette17SmallDelayedRevealFallParticle, &D_87903E40, 4);
+            Particle_EmitBurstAtTransform(1.0f, metapod->totalPos, metapod->totalRot, MiniFx_UpdatePalette17SmallDelayedRevealFallParticle, &D_87903E40, 4);
             metapod->mainState++;
             break;
 
         case 2: //  harden
-            if (Anim_IsFrameInRange(&metapod->unk_000, 5) != 0) {
+            if (ModelAnim_HasCrossedFrame(&metapod->unk_000, 5) != 0) {
                 metapod->unk_000.unk_000.unk_02 &= ~0x20;
             }
 
@@ -641,20 +641,20 @@ void miniMetapodHumanControls(MiniActor* metapod) {
                 metapod->mainState = 0;
                 metapod->unk_000.unk_000.unk_02 |= 0x20;
             } else if (BTN_IS_DOWN(miniControllerPtr, BTN_A)) {
-                MetapodTakeDamage(metapod);
+                MetapodGame_BeginHarden(metapod);
             }
             break;
     }
 }
 
-void MiniActor_ResetCompState(MiniActor* metapod) {
+void MetapodGame_ResetCompState(MiniActor* metapod) {
     if (metapod->isComp) {
         metapod->unk_244 = 0;
         metapod->compState = 0;
     }
 }
 
-s32 SelectCompMetapodStrategy(UNUSED MiniActor* metapod, s32 arg1) {
+s32 MetapodGame_ChooseRockDelayMode(UNUSED MiniActor* metapod, s32 arg1) {
     s32 sp1C;
     s32 sp18;
     s32 var_v1;
@@ -698,8 +698,8 @@ s32 SelectCompMetapodStrategy(UNUSED MiniActor* metapod, s32 arg1) {
             break;
     }
 
-    sp18 = GetRandomMod(0x64);
-    temp_v0 = GetRandomMod(0x64);
+    sp18 = Rand_Range(0x64);
+    temp_v0 = Rand_Range(0x64);
 
     if (sp18 < sp1C) {
         var_v1 = 0;
@@ -712,36 +712,36 @@ s32 SelectCompMetapodStrategy(UNUSED MiniActor* metapod, s32 arg1) {
     return var_v1;
 }
 
-void CompMetapodSetHardenParams(MiniActor* metapod, s32 arg1) {
+void MetapodGame_ComputeRockDelay_Type0(MiniActor* metapod, s32 arg1) {
     s32 sp2C;
     s32 sp28;
     u32 sp24;
-    u32 temp_s1 = GetRandomMod(arg1);
+    u32 temp_s1 = Rand_Range(arg1);
 
     switch (miniDifficulty) {
         case 0:
-            sp2C = GetRandomMod(0xA) + 2;
+            sp2C = Rand_Range(0xA) + 2;
             sp28 = arg1 - temp_s1;
             sp2C += sp28;
-            sp24 = GetRandomMod(3);
+            sp24 = Rand_Range(3);
             break;
 
         case 1:
-            sp2C = GetRandomMod(5) + 2;
+            sp2C = Rand_Range(5) + 2;
             sp28 = arg1 - temp_s1;
             sp2C += sp28;
             sp24 = 0;
             break;
 
         case 2:
-            sp2C = GetRandomMod(4);
+            sp2C = Rand_Range(4);
             sp28 = arg1 - temp_s1;
             sp2C += sp28;
             sp24 = 0;
             break;
 
         case 3:
-            sp2C = GetRandomMod(3);
+            sp2C = Rand_Range(3);
             sp28 = arg1 - temp_s1;
             sp2C += sp28;
             sp24 = 0;
@@ -753,7 +753,7 @@ void CompMetapodSetHardenParams(MiniActor* metapod, s32 arg1) {
     metapod->unk_2B2 = sp24;
 }
 
-void CompMetapodSetRandomParams(MiniActor* arg0, s32 arg1) {
+void MetapodGame_ComputeRockDelay_Type1(MiniActor* arg0, s32 arg1) {
     u32 sp2C;
     UNUSED s32 pad[3];
     u32 sp1C;
@@ -767,8 +767,8 @@ void CompMetapodSetRandomParams(MiniActor* arg0, s32 arg1) {
         var_a2 = arg1;
     } else {
         sp1C = arg1 - 4;
-        sp2C = GetRandomMod(sp1C);
-        temp_v0_2 = GetRandomMod(sp1C - sp2C);
+        sp2C = Rand_Range(sp1C);
+        temp_v0_2 = Rand_Range(sp1C - sp2C);
         var_a0 = temp_v0_2 + 2;
         var_a2 = ((arg1 - sp2C) - temp_v0_2) - 2;
     }
@@ -778,13 +778,13 @@ void CompMetapodSetRandomParams(MiniActor* arg0, s32 arg1) {
     arg0->unk_2B2 = var_a2;
 }
 
-void CompMetapodSetImmediateParams(MiniActor* metapod, s32 arg1) {
+void MetapodGame_ComputeRockDelay_Type2(MiniActor* metapod, s32 arg1) {
     metapod->unk_244 = arg1;
     metapod->unk_29E = 0;
     metapod->unk_2B2 = 0;
 }
 
-void CompMetapodCheckRockCollision(MiniActor* metapod, s32 player) {
+void MetapodGame_CompDecideRockAvoidance(MiniActor* metapod, s32 player) {
     s32 i;
     s32 sp20;
     s32 var_t0 = 0;
@@ -825,17 +825,17 @@ void CompMetapodCheckRockCollision(MiniActor* metapod, s32 player) {
             }
             metapod->compState = 1;
 
-            switch (SelectCompMetapodStrategy(metapod, sp20)) {
+            switch (MetapodGame_ChooseRockDelayMode(metapod, sp20)) {
                 case 0:
-                    CompMetapodSetHardenParams(metapod, sp20);
+                    MetapodGame_ComputeRockDelay_Type0(metapod, sp20);
                     break;
 
                 case 1:
-                    CompMetapodSetRandomParams(metapod, sp20);
+                    MetapodGame_ComputeRockDelay_Type1(metapod, sp20);
                     break;
 
                 case 2:
-                    CompMetapodSetImmediateParams(metapod, sp20);
+                    MetapodGame_ComputeRockDelay_Type2(metapod, sp20);
                     break;
             }
         }
@@ -844,7 +844,7 @@ void CompMetapodCheckRockCollision(MiniActor* metapod, s32 player) {
 
 void miniMetapodCompControls(MiniActor* compMetapod, s32 nPlayer) {
     if (compMetapod->compState == 0) {
-        CompMetapodCheckRockCollision(compMetapod, nPlayer);
+        MetapodGame_CompDecideRockAvoidance(compMetapod, nPlayer);
     }
 
     switch (compMetapod->compState) {
@@ -857,7 +857,7 @@ void miniMetapodCompControls(MiniActor* compMetapod, s32 nPlayer) {
                         compMetapod->mainState = 1;
                         compMetapod->unk_272 = 4;
                         compMetapod->compState++;
-                        Particle_CreateMultiple(1.0f, compMetapod->totalPos, compMetapod->totalRot, MiniFx_UpdatePalette17SmallDelayedRevealFallParticle, &D_87903E40,
+                        Particle_EmitBurstAtTransform(1.0f, compMetapod->totalPos, compMetapod->totalRot, MiniFx_UpdatePalette17SmallDelayedRevealFallParticle, &D_87903E40,
                                       4);
                     } else {
                         compMetapod->compState = 0x64;
@@ -879,7 +879,7 @@ void miniMetapodCompControls(MiniActor* compMetapod, s32 nPlayer) {
             compMetapod->damageTimer++;
             compMetapod->unk_272 = 4;
             compMetapod->unk_000.unk_01C = 1;
-            if (Anim_IsFrameInRange(&compMetapod->unk_000, 5) != 0) {
+            if (ModelAnim_HasCrossedFrame(&compMetapod->unk_000, 5) != 0) {
                 compMetapod->unk_000.unk_000.unk_02 &= ~0x20;
             }
             break;
@@ -913,7 +913,7 @@ void miniUpdateMetapods(void) {
         }
 
         miniActorUpdateTransform(miniMetapodPtr);
-        MiniActor_UpdateCollider(miniMetapodPtr);
+        MiniActor_SyncModelTransform(miniMetapodPtr);
 
         miniMetapodPtr++;
         miniControllerPtr++;
@@ -924,17 +924,17 @@ s32 metapodRockCollisionCheck_void(void) {
     return metapodRockCollisionCheck(miniRockPtr, &miniMetapods[miniRockPtr->collidingActorId]);
 }
 
-s32 HandleMetapodRockCollision(s32 nPlayer) {
+s32 MetapodGame_ResolveRockHit(s32 nPlayer) {
     s32 sp1C = 0;
 
     if (metapodRockCollisionCheck_void() != 0) {
         miniMetapodPtr->midAirState = 1;
         if (miniMetapodPtr->unk_272 != 0) { //  if hardened ? colliding ?
-            PlayAudioIfEnabled(7, nPlayer);
+            MetapodGame_PlaySoundEventGuarded(7, nPlayer);
             sp1C = 1;
         } else {
             miniMetapodPtr->isSquashed = 1; // rock squashing
-            MiniActor_ResetCompState(miniMetapodPtr);
+            MetapodGame_ResetCompState(miniMetapodPtr);
             sp1C = 2;
         }
     }
@@ -950,7 +950,7 @@ void miniRockChecks(UNUSED MiniActor* metapod, s32 nPlayer) {
     for (i = 0; i < 20; i++) {
         if ((miniRockPtr->unk_270 != 0) && (nPlayer == miniRockPtr->collidingActorId) &&
             (miniRockPtr->midAirState == 0)) {
-            colliding = HandleMetapodRockCollision(nPlayer);
+            colliding = MetapodGame_ResolveRockHit(nPlayer);
             if (colliding) {
                 miniRockPtr->midAirState = 1;
                 if (colliding == 1) {
@@ -982,7 +982,7 @@ void miniMatapodChecks(MiniActor* metapod, s32 nPlayer) {
 
     if (miniMetapodPtr->miniHealth == 0) {
         if (miniMetapodPtr->unk_2A4 == 0) {
-            PlayAudioIfEnabled(9, nPlayer);
+            MetapodGame_PlaySoundEventGuarded(9, nPlayer);
             miniChangeActorAnim(miniMetapodPtr, 3, 1, 0); // dead animation
             miniMetapodPtr->unk_2A4 = 1;
             miniMetapodPtr->unk_2AA = 1;
@@ -992,7 +992,7 @@ void miniMatapodChecks(MiniActor* metapod, s32 nPlayer) {
             case 1:
                 miniMetapodPtr->damageTimer += 0x1E;
                 miniChangeActorAnim(miniMetapodPtr, 2, 0, 1);
-                PlayAudioIfEnabled(8, nPlayer);
+                MetapodGame_PlaySoundEventGuarded(8, nPlayer);
                 miniMetapodPtr->isSquashed++;
                 break;
 
@@ -1019,8 +1019,8 @@ void miniMatapodMinigameChecks(void) {
     }
 }
 
-void MiniActor_SyncAnimTransform(void) {
-    MiniActor_ProcessAnim(miniMetapodPtr);
+void MetapodGame_SyncMetapodModelTransform(void) {
+    MiniActor_UpdateAnimation(miniMetapodPtr);
 
     miniMetapodPtr->unk_000.unk_024.x = miniMetapodPtr->totalPos.x;
     miniMetapodPtr->unk_000.unk_024.y = miniMetapodPtr->totalPos.y;
@@ -1031,13 +1031,13 @@ void MiniActor_SyncAnimTransform(void) {
     miniMetapodPtr->unk_000.unk_01E.z = miniMetapodPtr->totalRot.z;
 }
 
-void MiniActor_SyncAllAnimTransforms(void) {
+void MetapodGame_SyncAllMetapodModelTransforms(void) {
     s32 i;
 
     miniMetapodPtr = miniMetapods;
 
     for (i = 0; i < 4; i++) {
-        MiniActor_SyncAnimTransform();
+        MetapodGame_SyncMetapodModelTransform();
         miniMetapodPtr++;
     }
 }
@@ -1080,7 +1080,7 @@ void miniInitRocks(void) {
     gRocksPerWave = 1;
 }
 
-void InitMetapodRockWave(void) {
+void MetapodGame_ScheduleRockWave(void) {
     s32 i;
     s32 j;
     s32 var_s1;
@@ -1094,19 +1094,19 @@ void InitMetapodRockWave(void) {
             break;
 
         case 0:
-            var_s5 = GetRandomMod(0x14) + 0xF;
+            var_s5 = Rand_Range(0x14) + 0xF;
             break;
 
         case 1:
-            var_s5 = GetRandomMod(0x14) + 0xA;
+            var_s5 = Rand_Range(0x14) + 0xA;
             break;
 
         case 2:
-            var_s5 = GetRandomMod(0x1E) + 5;
+            var_s5 = Rand_Range(0x1E) + 5;
             break;
 
         case 3:
-            var_s5 = GetRandomMod(0x1E) + 5;
+            var_s5 = Rand_Range(0x1E) + 5;
             break;
     }
 
@@ -1129,7 +1129,7 @@ void InitMetapodRockWave(void) {
     }
 }
 
-void StartMetapodRockThrow(MiniActor* rock) {
+void MetapodGame_LaunchRock(MiniActor* rock) {
     s16 temp_v1 = (gRockWaveIndex * 4) + 0x28;
     s16 temp_a1 = rock->collidingActorId;
 
@@ -1146,10 +1146,10 @@ void StartMetapodRockThrow(MiniActor* rock) {
     rock->unk_270 = 1;
 
     rock->unk_000.unk_000.unk_01 |= 1;
-    GraphNode_TriggerAction(&rock->unk_000, 0);
+    ModelAnim_SetAnimation(&rock->unk_000, 0);
 }
 
-void DeactivateMetapodRock(MiniActor* rock) {
+void MetapodGame_DespawnRock(MiniActor* rock) {
     rock->mainState = 0;
     rock->unk_000.unk_000.unk_01 &= ~1;
 }
@@ -1176,8 +1176,8 @@ void miniRockStateMachine(MiniActor* rock) {
         case 0x1:
             rock->unk_29E--;
             if (rock->unk_29E <= 0) {
-                PlayAudioIfEnabled(5, temp_a1);
-                StartMetapodRockThrow(rock);
+                MetapodGame_PlaySoundEventGuarded(5, temp_a1);
+                MetapodGame_LaunchRock(rock);
                 rock->mainState++;
             }
             break;
@@ -1193,8 +1193,8 @@ void miniRockStateMachine(MiniActor* rock) {
                 if (rock->unk_272 != 0) {
                     rock->ySpeed = 5.0f;
                     rock->zSpeed = 1.5f;
-                    DeactivateMetapodRock(rock);
-                    Particle_CreateMultiple(1.0f, rock->totalPos, rock->totalRot, MiniFx_UpdateRandomVelocityGravityParticle, &gMiniTutoScreenNode1, 4);
+                    MetapodGame_DespawnRock(rock);
+                    Particle_EmitBurstAtTransform(1.0f, rock->totalPos, rock->totalRot, MiniFx_UpdateRandomVelocityGravityParticle, &gMiniTutoScreenNode1, 4);
                 } else {
                     rock->mainState++;
                 }
@@ -1209,19 +1209,19 @@ void miniRockStateMachine(MiniActor* rock) {
             sp3C.y = 0.0f;
             sp3C.z = rock->totalPos.z;
 
-            Particle_CreateMultiple(1.0f, sp3C, rock->totalRot, MiniFx_UpdatePalette10FastRiseFadeParticle, &gMiniTutoScreenNode0, 4);
+            Particle_EmitBurstAtTransform(1.0f, sp3C, rock->totalRot, MiniFx_UpdatePalette10FastRiseFadeParticle, &gMiniTutoScreenNode0, 4);
             rock->mainState++;
             break;
 
         case 0x4:
             if (rock->totalPos.y < -10.0f) {
-                DeactivateMetapodRock(rock);
+                MetapodGame_DespawnRock(rock);
             }
             break;
 
         case 0x64:
-            if (ApproachU8(&rock->unk_000.unk_01D, 0, 0x40) != 0) {
-                DeactivateMetapodRock(rock);
+            if (ParticleMath_ApproachU8(&rock->unk_000.unk_01D, 0, 0x40) != 0) {
+                MetapodGame_DespawnRock(rock);
             }
             break;
     }
@@ -1262,8 +1262,8 @@ void miniUpdateRocks(void) {
 }
 
 //	update model transform ?
-void MiniActor_UpdateTransform(MiniActor* arg0) {
-    MiniActor_ProcessAnim(arg0);
+void MetapodGame_SyncRockModelTransform(MiniActor* arg0) {
+    MiniActor_UpdateAnimation(arg0);
 
     arg0->unk_000.unk_030.x = arg0->scale.x;
     arg0->unk_000.unk_030.y = arg0->scale.y;
@@ -1283,7 +1283,7 @@ void miniUpdateRocksPositions(void) {
     miniRockPtr = miniMetapodRocks;
     for (i = 0; i < 20; ++i) {
         miniRockUpdatePosition(miniRockPtr);
-        MiniActor_UpdateTransform(miniRockPtr);
+        MetapodGame_SyncRockModelTransform(miniRockPtr);
         miniRockPtr = &miniRockPtr[1];
     }
 }
@@ -1311,7 +1311,7 @@ void miniMetapodCameraControls(void) {
 }
 
 void initMetapodMinigameAssets(void) {
-    MiniGame_ResetState(); //	minigame variables
+    miniResetGlobalState(); //	minigame variables
     miniInitRocks();
     miniInitMetapodPlayers();
     MetapodGame_InitCamera(); //	camera
@@ -1325,7 +1325,7 @@ void MetapodGame_UpdateRockWaveScheduler(void) {
     miniRockPtr = miniMetapodRocks;
     switch (D_86E04B28) {
         case 1:
-            InitMetapodRockWave();
+            MetapodGame_ScheduleRockWave();
             D_86E04B28++;
             break;
 
@@ -1417,7 +1417,7 @@ s32 MetapodGame_CheckWinCondition(void) {
                     miniMetapodPtr->unk_2AA = 1;
                     miniMetapodPtr->unk_2A6 = 1;
                     var_t3 = 1;
-                    IncrementPlayerScore(i);
+                    Widget_PauseMenuRecordWin(i);
                     break;
                 }
                 miniMetapodPtr++;
@@ -1479,17 +1479,17 @@ void func_86E01EB0(void) {
 
 s32 MetapodGame_UpdateStartCountdown(void) {
     s32 sp1C = 0;
-    s32 temp_v0 = Fragment2_1_GetResult();
+    s32 temp_v0 = Widget_CountdownGetState();
 
     if (temp_v0 == -2) {
         sp1C = 1;
     }
 
     if (temp_v0 > 0) {
-        PlayAudioIfEnabled(1, 0);
+        MetapodGame_PlaySoundEventGuarded(1, 0);
     } else if (temp_v0 == 0) {
-        PlayAudioIfEnabled(2, 0);
-        PlayAudioIfEnabled(0xA, 0);
+        MetapodGame_PlaySoundEventGuarded(2, 0);
+        MetapodGame_PlaySoundEventGuarded(0xA, 0);
     }
 
     return sp1C;
@@ -1519,7 +1519,7 @@ void miniMetapodMinigameStateMachine(void) {
         case 2:
             miniInputLockTimer--;
             if (miniInputLockTimer < 0) {
-                Fragment2_1_SetStartFlag(1);
+                Widget_CountdownStart(1);
                 minigameState++;
             }
             break;
@@ -1554,7 +1554,7 @@ void miniMetapodMinigameStateMachine(void) {
             miniInputLockTimer--;
             if (miniInputLockTimer < 0) {
                 MetapodGame_PlayWinnerAnimations();
-                SetResultFlag(1);
+                Widget_PauseMenuTrigger(1);
                 minigameState++;
             }
             break;
@@ -1567,19 +1567,19 @@ void miniMetapodMinigameStateMachine(void) {
             break;
     }
 
-    Fragment2_1_Update();
+    Widget_CountdownUpdate();
     func_86E01EB0();
 }
 
 void MetapodGame_UpdateParticleFx(void) {
-    ParticleSystem_UpdateAndRender();
+    MiniFx_UpdateParticles();
 }
 
 void miniDrawMetapodHealth(void) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
-        DrawBorderRect(0x1A + i * 0x4A, 0xD0, 0x32, miniMetapods[i].miniHealth, miniMetapods[i].miniMaxHealth);
+        Widget_DrawProgressBar(0x1A + i * 0x4A, 0xD0, 0x32, miniMetapods[i].miniHealth, miniMetapods[i].miniMaxHealth);
     }
 }
 
@@ -1592,9 +1592,9 @@ void miniDrawMetapodHeads(void) {
 
     for (i = 0, tmp = 0x26; i < 4; tmp += 0x4A, i++) {
         if (gMiniHudColors[i] == 0) {
-            DrawUniformScaledTextureRect(i, tmp, 0xD6, 0.7f); //  draw player icon
+            Widget_DrawPlayerIcon(i, tmp, 0xD6, 0.7f); //  draw player icon
         } else {
-            DrawUniformScaledTextureRect(-1 - i, tmp, 0xD6, 0.7f); //  draw player icon
+            Widget_DrawPlayerIcon(-1 - i, tmp, 0xD6, 0.7f); //  draw player icon
         }
     }
 
@@ -1606,40 +1606,40 @@ void MetapodGame_DrawTutorialText(void) {
     s32 sp38;
     s32 sp34;
 
-    DrawPanel(0x18, 0x16, 0x110, 0x90, 0x15);
-    DrawPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
-    Text_ResetState();
-    Text_BeginRender();
-    Text_SetFont(2, 0);
-    Text_SetLineHeight(0xC);
+    Ui_DrawBorderedPanel(0x18, 0x16, 0x110, 0x90, 0x15);
+    Ui_DrawBorderedPanel(0x18, 0xA5, 0x110, 0x36, 0x14B);
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
+    Font_SetActive(2, 0);
+    Font_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Text_Print(0xA0 - (GetTextWidth(D_86E08E44, GetMessageString(NULL, 0, gItemNamesBank, 0x44)) / 2), 0x20,
-                  GetMessageString(NULL, 0, gItemNamesBank, 0x44));
+    Font_Printf(0xA0 - (Text_MeasureStringWidth(D_86E08E44, Text_GetString(NULL, 0, gItemNamesBank, 0x44)) / 2), 0x20,
+                  Text_GetString(NULL, 0, gItemNamesBank, 0x44));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(0x28, 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x45));
-    Text_Print(0x28, 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x46));
-    Text_Print(0x28, 0x7C, GetMessageString(NULL, 0, gItemNamesBank, 0x47));
-    Text_Print(0x28, 0x94, GetMessageString(NULL, 0, gItemNamesBank, 0x48));
+    Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x45));
+    Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gItemNamesBank, 0x46));
+    Font_Printf(0x28, 0x7C, Text_GetString(NULL, 0, gItemNamesBank, 0x47));
+    Font_Printf(0x28, 0x94, Text_GetString(NULL, 0, gItemNamesBank, 0x48));
     Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
     Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x45), GetMessageString(NULL, 0, gItemNamesBank, 0x5F),
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x45), Text_GetString(NULL, 0, gItemNamesBank, 0x5F),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x34, GetMessageString(NULL, 0, gItemNamesBank, 0x5F));
-    ParseStringAndMeasure(&sp38, &sp34, GetMessageString(NULL, 0, gItemNamesBank, 0x46), GetMessageString(NULL, 0, gItemNamesBank, 0x5F),
+    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x5F));
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x46), Text_GetString(NULL, 0, gItemNamesBank, 0x5F),
                   0xC);
-    Text_Print(sp38 + 0x28, sp34 + 0x58, GetMessageString(NULL, 0, gItemNamesBank, 0x5F));
-    Text_Print(0x8B, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
-    Text_Print(0x8B, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x5C));
+    Font_Printf(sp38 + 0x28, sp34 + 0x58, Text_GetString(NULL, 0, gItemNamesBank, 0x5F));
+    Font_Printf(0x8B, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+    Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
     Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
     Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-    Text_Print(0xA2, 0xB2, GetMessageString(NULL, 0, gItemNamesBank, 0x49));
+    Font_Printf(0xA2, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x49));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-    Text_Print(0xA2, 0xC8, GetMessageString(NULL, 0, gItemNamesBank, 0x14));
-    Text_EndRender();
-    Text_SetupDL();
+    Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
 void MetapodGame_DrawTutorialScreen(void) {
@@ -1649,26 +1649,26 @@ void MetapodGame_DrawTutorialScreen(void) {
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-            DrawDualTexturePanel(2, 0x19, 0xA6);
-            DrawAnimatedSprite(0x74, 0xB0, gMetapodAudioEvents1);
-            DrawAnimatedSprite3(0x74, 0xC6, gMetapodAudioEvents2);
+            Widget_DrawSplitBanner(2, 0x19, 0xA6);
+            Widget_DrawAnimIcon16(0x74, 0xB0, gMetapodAudioEvents1);
+            Widget_DrawAnimIcon16C(0x74, 0xC6, gMetapodAudioEvents2);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;
 
         case 5:
-            MiniTutoScreen_StartCountdown(0x3E8);
+            miniTutoScreenShow(0x3E8);
             break;
     }
 
     if (miniTutoScreenState == -2) {
-        Text_SetFont(0x10, -2);
-        Text_SetFont(4, -2);
+        Font_SetActive(0x10, -2);
+        Font_SetActive(4, -2);
     }
 }
 
 void MetapodGame_DrawTutorial(void) {
-    MiniTutoScreen_Start();
+    miniTutoScreenBegin();
     MetapodGame_DrawTutorialScreen();
 }
 
@@ -1676,10 +1676,10 @@ void miniMetapodDrawPlayerHUBs(UNUSED s32 arg0) {
     UNUSED u8 sp1C[] = { 0, 0, 30 };
     UNUSED u8 sp18[] = { 0, 0, 250 };
 
-    Text_ResetState();
-    Text_SetFont(4, -2);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(4, -2);
     MetapodGame_DrawTutorial();
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 
     if (miniShowHUB != 0) {
         miniDrawMetapodHealth();
@@ -1688,32 +1688,32 @@ void miniMetapodDrawPlayerHUBs(UNUSED s32 arg0) {
 }
 
 void MetapodGame_DrawFrame(s32 arg0) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 0xA6BF);
 
     if (gResultMenuVisible == 0) {
-        Gfx_FinishFrame();
+        GeoRender_AdvanceFrameCounter();
     }
 
-    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
-    ParticleRender_SetupMiniCamera();
+    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
+    MiniFx_DrawParticles();
 
     if (miniDebugMode == false) {
         if (gResultConfirmPressed == 0) {
             miniMetapodDrawPlayerHUBs(arg0);
         }
-        ResultScreen_UpdateAndRender();
+        Widget_PauseMenuUpdate();
     } else {
         showDebuggCameraInfo();
     }
 
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
 void metapodMinigameInit(void) {
     initMetapodMinigameAssets();
-    Stage_AdvanceN(0xA);
-    Stage_FadeIn(0x10);
+    StageLoader_RunFrames(0xA);
+    StageFade_StartFromOpaque(0x10);
     miniTutoScreenState = 3;
     miniDifficulty = gMenuState;
 }
@@ -1722,15 +1722,15 @@ void func_86E0296C(void) {
 }
 
 void miniMetapodTutoScreenControls(void) {
-    if ((miniDebugMode == false) && (miniShowHUB == false) && (Stage_GetFadeState() == 0)) {
+    if ((miniDebugMode == false) && (miniShowHUB == false) && (StageContext_GetFadeMode() == 0)) {
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_START)) {
             miniTutoScreenState = 1;
             minigameState = 1;
             miniShowHUB = 1;
-            PlayAudioIfEnabled(0xB, 0);
+            MetapodGame_PlaySoundEventGuarded(0xB, 0);
         } else if ((gMenuCursorX == 0) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_B))) {
-            PlayAudioIfEnabled(0xD, 0);
-            SetResultFlag(2);
+            MetapodGame_PlaySoundEventGuarded(0xD, 0);
+            Widget_PauseMenuTrigger(2);
         }
     }
 }
@@ -1748,11 +1748,11 @@ void MetapodGame_MainLoop(void) {
 
     D_87903DBC = 0;
 
-    ParticleSystem_Init();
+    MiniFx_Init();
     hideMiniGameHUD();
 
     while (var_s1 != 0) {
-        MiniGame_ReadInputs();
+        MiniActor_ReadControllerInputs();
 
         if (minigameState == 0) {
             D_87906042 += 1;
@@ -1764,13 +1764,13 @@ void MetapodGame_MainLoop(void) {
         miniMetapodTutoScreenControls();
 
         if (gResultMenuVisible == 0) {
-            Timer_UpdateCounters();
+            Particle_UpdateFrameCounters();
             miniMetapodMinigameStateMachine();
             miniUpdateMetapods();
             miniUpdateRocks();
             miniMatapodMinigameChecks();
             miniUpdateRocksPositions();
-            MiniActor_SyncAllAnimTransforms(); // update metapod models?
+            MetapodGame_SyncAllMetapodModelTransforms(); // update metapod models?
             MetapodGame_UpdateParticleFx();
             miniMetapodCameraControls();
         } else {
@@ -1788,21 +1788,21 @@ void MetapodGame_MainLoop(void) {
 void MetapodGame_ShowResultText(void) {
     s32 i;
 
-    Stage_FadeOut(0x1E);
+    StageFade_StartFromTransparent(0x1E);
     if (D_86E08E40 != 0) {
-        PlayAudioIfEnabled(0xF, 0x1E);
+        MetapodGame_PlaySoundEventGuarded(0xF, 0x1E);
     } else {
-        PlayAudioIfEnabled(0xE, 0x1E);
+        MetapodGame_PlaySoundEventGuarded(0xE, 0x1E);
     }
 
     for (i = 0; i < 30; i++) {
-        MiniGame_ReadInputs();  // input reading
+        MiniActor_ReadControllerInputs();  // input reading
         MetapodGame_DrawFrame(2); // display text ?
     }
 
-    while (Audio_CalcLoadScore() != 0) {}
+    while (Audio_GetActivityScore() != 0) {}
 
-    PlayAudioIfEnabled(0x10, 0);
+    MetapodGame_PlaySoundEventGuarded(0x10, 0);
 }
 
 void MetapodGame_LoadAssets(void) {
@@ -1816,45 +1816,45 @@ void MetapodGame_LoadAssets(void) {
     unk_D_86002F30* temp_s1_2;
     s32 randN;
 
-    temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+    temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     gMiniCameraStruct = process_geo_layout(temp_v0, gMetapodSceneGraph);
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
 
     for (i = 0; i < 4; i++) {
-        Graph_AddToRootList0(&miniMetapods[i].unk_000);
+        ModelRenderer_AttachDisplayObject(&miniMetapods[i].unk_000);
     }
 
     for (i = 0; i < 20; i++) {
-        Graph_AddToRootList0(&miniMetapodRocks[i].unk_000);
+        ModelRenderer_AttachDisplayObject(&miniMetapodRocks[i].unk_000);
     }
 
-    AssetManager_LoadArchives();
+    PokeIcon_OpenModelArchives();
 
     for (i = 0; i < 4; i++) {
         randN = gMenuOptionFlags[i] - 1;
         if (gMenuOptionFlags[i] == 0) {
-            randN = GetRandomMod(2);
+            randN = Rand_Range(2);
         }
 
         miniMetapods[i].unk_23C = playerVariations[randN][0];
-        miniMetapods[i].unk_168 = GeoLayout_LoadById(miniMetapods[i].unk_23C);
+        miniMetapods[i].unk_168 = Model_LoadByArchiveIndex(miniMetapods[i].unk_23C);
         miniMetapods[i].cubeRadio = playerVariations[randN][1];
         miniMetapods[i].halfHeight = playerVariations[randN][2];
 
-        GraphNode_InitChild(&miniMetapods[i].unk_000, 0, miniMetapods[i].unk_23C, miniMetapods[i].unk_168->unk_08->unk_00[0]);
-        GraphNode_TriggerAction(&miniMetapods[i].unk_000, 0);
+        Model_InitDisplayObject(&miniMetapods[i].unk_000, 0, miniMetapods[i].unk_23C, miniMetapods[i].unk_168->unk_08->unk_00[0]);
+        ModelAnim_SetAnimation(&miniMetapods[i].unk_000, 0);
 
         if (miniMetapods) {}
     }
 
-    temp_s1_2 = GeoLayout_LoadById(0x9C);
+    temp_s1_2 = Model_LoadByArchiveIndex(0x9C);
     for (i = 0; i < 20; i++) {
         miniMetapodRocks[i].unk_23C = 0x9C;
         miniMetapodRocks[i].unk_168 = temp_s1_2;
 
-        GraphNode_InitChild(&miniMetapodRocks[i].unk_000, 0, miniMetapodRocks[i].unk_23C, temp_s1_2->unk_08->unk_00[0]);
-        GraphNode_TriggerAction(&miniMetapodRocks[i].unk_000, 0);
+        Model_InitDisplayObject(&miniMetapodRocks[i].unk_000, 0, miniMetapodRocks[i].unk_23C, temp_s1_2->unk_08->unk_00[0]);
+        ModelAnim_SetAnimation(&miniMetapodRocks[i].unk_000, 0);
 
         miniMetapodRocks[i].unk_000.unk_000.unk_01 &= ~1;
     }
@@ -1871,24 +1871,24 @@ s32 metapodMinigameLoad(s32 arg0, s32 arg1) {
 
     main_pool_push_state('MINI');
 
-    Gfx_InitBuffers(0x40000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    D_86E08E44 = Text_Init(0x16, 0);
+    Gfx_InitDisplayListBuffers(0x40000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    D_86E08E44 = Font_Init(0x16, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
     MetapodGame_LoadAssets();
-    Stage_Set(sp24);
+    StageContext_Activate(sp24);
     metapodMinigameInit();
     MetapodGame_MainLoop(); //	tutorial screen ?
     MetapodGame_ShowResultText();
-    Stage_Destroy();
-    FontManager_Free(); //	main_pool_try_free(gFontManager);
-    Gfx_FreeBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
+    StageContext_Deactivate();
+    Font_Free(); //	main_pool_try_free(gFontManager);
+    Gfx_FreeDisplayListBuffers(); //	main_pool_try_free(gDLBuffers.unk4); main_pool_try_free(gDLBuffers.unk0);
 
     main_pool_pop_state('MINI');
 
-    return GetCurrentOptionCount();
+    return Widget_PauseMenuGetResult();
 }

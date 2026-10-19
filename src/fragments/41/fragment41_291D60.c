@@ -11,40 +11,40 @@ static s16 gRentalMenuCursorIndex;
 static s32 gRentalMenuSaveDirection;
 static s32 gRentalMenuSaveSlotIndex;
 
-s32 LoadRentalItemData(RentalItemInfo* arg0) {
+s32 Trade_WriteDeckAndCommitCart(RentalItemInfo* arg0) {
     unk_func_80022C28_ret* sp24;
     s32 var_v1;
 
     if (arg0->unk_04 == 0) {
-        sp24 = CreateGbsBlock(0x20, arg0->unk_02, 0, 1);
+        sp24 = Deck_Open(0x20, arg0->unk_02, 0, 1);
     } else {
-        sp24 = CreateGbsBlock(0x21, arg0->unk_02, arg0->unk_04 - 1, 1);
+        sp24 = Deck_Open(0x21, arg0->unk_02, arg0->unk_04 - 1, 1);
     }
 
-    GbsBlock_WriteEntries(&arg0->unk_0C->unk_00, arg0->unk_08, sp24);
-    CommitAndFreeGbsBlock(sp24);
+    Deck_WriteEntries(&arg0->unk_0C->unk_00, arg0->unk_08, sp24);
+    Deck_CloseAndFlush(sp24);
 
-    var_v1 = PlayerSave_WriteBoxes(arg0->unk_02);
+    var_v1 = GbSave_WriteBoxBanks(arg0->unk_02);
     if (var_v1 != 0) {
-        var_v1 = PlayerSave_WriteHeader(arg0->unk_02);
+        var_v1 = GbSave_CommitMainData(arg0->unk_02);
     }
     return var_v1;
 }
 
-s32 InitRentalItems(RentalMenuState* arg0) {
+s32 Trade_StepCartWriteSequence(RentalMenuState* arg0) {
     s32 i;
     RentalItemInfo* ptr;
     RentalItemInfo sp30[2];
     s32 sp2C = 0;
 
     for (i = 0; i < 2; i++) {
-        Picker_GetSelectionInfo(i, &sp30[i]);
+        Trade_GetPickScreenSnapshot(i, &sp30[i]);
     }
 
     if (arg0->unk_06 < 0) {
         arg0->unk_06 = 0;
         for (i = 0, ptr = &sp30[0]; i < 2; i++, ptr++) {
-            PlayerSave_VerifyPresence(ptr->unk_02);
+            GbSave_ValidateBeforeWrite(ptr->unk_02);
         }
     }
 
@@ -54,7 +54,7 @@ s32 InitRentalItems(RentalMenuState* arg0) {
                 continue;
             }
 
-            if (SaveAndVerifyFooter(ptr->unk_02) != 0) {
+            if (GbSave_InvalidateMainDataChecksum(ptr->unk_02) != 0) {
                 arg0->unk_08++;
             } else {
                 break;
@@ -71,9 +71,9 @@ s32 InitRentalItems(RentalMenuState* arg0) {
             continue;
         }
 
-        if (LoadRentalItemData(ptr) != 0) {
+        if (Trade_WriteDeckAndCommitCart(ptr) != 0) {
             arg0->unk_0A += 1;
-            PlayerSave_PowerOff(ptr->unk_02);
+            GbSave_RequirePakPresent(ptr->unk_02);
         } else {
             break;
         }
@@ -85,7 +85,7 @@ s32 InitRentalItems(RentalMenuState* arg0) {
     return sp2C;
 }
 
-void RentalMenu_Init(s32 arg0) {
+void Trade_InitSaveSequence(s32 arg0) {
     UNUSED s32 pad;
     RentalMenuState* ptr = &gRentalMenuState;
     s32 i;
@@ -106,7 +106,7 @@ void RentalMenu_Init(s32 arg0) {
     }
 
     for (i = 0; i < 2; i++) {
-        Picker_GetSelectionInfo(i, &sp2C);
+        Trade_GetPickScreenSnapshot(i, &sp2C);
         gRentalItemPtrs[i] = &sp2C.unk_0C[sp2C.unk_06];
     }
 
@@ -134,13 +134,13 @@ void RentalMenu_Init(s32 arg0) {
     ptr->unk_34.unk_02 = 0;
 
     if (arg0 != 0) {
-        PlaySoundEffect(0x1E);
+        Audio_PlaySoundEffectById(0x1E);
     } else {
-        PlaySoundEffect(4);
+        Audio_PlaySoundEffectById(4);
     }
 }
 
-void RentalMenu_UpdatePanels(RentalMenuState* arg0) {
+void Trade_UpdateSaveSeqPanelSlideIn(RentalMenuState* arg0) {
     s32 i;
     PanelRect* ptr;
 
@@ -182,7 +182,7 @@ void RentalMenu_UpdatePanels(RentalMenuState* arg0) {
     }
 }
 
-void RentalMenu_HandleSelection(RentalMenuState* arg0) {
+void Trade_UpdateSaveSeqMenuInput(RentalMenuState* arg0) {
     s32 var_t0 = 0;
     s32 var_a2;
     s16 tmp;
@@ -204,7 +204,7 @@ void RentalMenu_HandleSelection(RentalMenuState* arg0) {
 
     if (gRentalMenuCursorIndex != tmp) {
         var_t0 = 0;
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
@@ -221,14 +221,14 @@ void RentalMenu_HandleSelection(RentalMenuState* arg0) {
                     arg0->unk_00 = 5;
                     arg0->unk_02 = 0xA;
                     gRentalMenuSaveSlotIndex = 0;
-                    PlaySoundEffect(0x1D);
+                    Audio_PlaySoundEffectById(0x1D);
                     break;
 
                 case 1:
                     arg0->unk_00 = 5;
                     arg0->unk_02 = 0xA;
                     gRentalMenuSaveSlotIndex = 1;
-                    PlaySoundEffect(0x22);
+                    Audio_PlaySoundEffectById(0x22);
                     break;
 
                 default:
@@ -236,7 +236,7 @@ void RentalMenu_HandleSelection(RentalMenuState* arg0) {
                     arg0->unk_02 = 0xA;
                     arg0->unk_04 &= ~4;
                     gRentalMenuSaveSlotIndex = 0;
-                    PlaySoundEffect(3);
+                    Audio_PlaySoundEffectById(3);
                     break;
             }
         } else {
@@ -245,17 +245,17 @@ void RentalMenu_HandleSelection(RentalMenuState* arg0) {
             arg0->unk_04 &= ~6;
             if (gRentalMenuCursorIndex == 0) {
                 gRentalMenuSaveDirection = 1;
-                PlaySoundEffect(2);
+                Audio_PlaySoundEffectById(2);
             } else {
                 gRentalMenuSaveDirection = 0;
-                PlaySoundEffect(3);
+                Audio_PlaySoundEffectById(3);
             }
         }
         arg0->unk_12 = -1;
     }
 }
 
-void RentalMenu_ConfirmWait(RentalMenuState* arg0) {
+void Trade_UpdateSaveSeqConfirmWait(RentalMenuState* arg0) {
     arg0->unk_02--;
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         arg0->unk_02 = 0;
@@ -267,7 +267,7 @@ void RentalMenu_ConfirmWait(RentalMenuState* arg0) {
     }
 }
 
-void RentalMenu_ShowItemDetailsA(RentalMenuState* arg0) {
+void Trade_UpdateSaveSeqPanelClose(RentalMenuState* arg0) {
     arg0->unk_02--;
     arg0->unk_24.unk_00 = 0xA2 - (arg0->unk_02 * 0) / 10;
     arg0->unk_24.unk_02 = 0x116 - ((arg0->unk_02 * -0x2E) / 10);
@@ -279,7 +279,7 @@ void RentalMenu_ShowItemDetailsA(RentalMenuState* arg0) {
     }
 }
 
-void RentalMenu_ShowItemDetailsB(RentalMenuState* arg0) {
+void Trade_UpdateSaveSeqPanelReopen(RentalMenuState* arg0) {
     arg0->unk_02--;
     arg0->unk_24.unk_00 = 0xA2 - (arg0->unk_02 * 0) / 10;
     arg0->unk_24.unk_02 = 0x144 - ((arg0->unk_02 * 0x2E) / 10);
@@ -291,7 +291,7 @@ void RentalMenu_ShowItemDetailsB(RentalMenuState* arg0) {
     }
 }
 
-void RentalMenu_ShowOptions(RentalMenuState* arg0) {
+void Trade_UpdateSaveSeqBeginWrite(RentalMenuState* arg0) {
     arg0->unk_02--;
     arg0->unk_34.unk_00 = 0xCC - (arg0->unk_02 * 0) / 10;
     arg0->unk_34.unk_02 = 0x134 - ((arg0->unk_02 * -0x1C) / 10);
@@ -309,7 +309,7 @@ void RentalMenu_ShowOptions(RentalMenuState* arg0) {
     }
 }
 
-void RentalMenu_ProcessItemSelection(RentalMenuState* arg0) {
+void Trade_UpdateSaveSeqWriteCarts(RentalMenuState* arg0) {
     s32 temp_v0;
     RentalItemInfo sp24;
 
@@ -317,8 +317,8 @@ void RentalMenu_ProcessItemSelection(RentalMenuState* arg0) {
     if (arg0->unk_02 <= 0) {
         arg0->unk_02 = 0;
         if (arg0->unk_0C == 1) {
-            Picker_GetSelectionInfo(arg0->unk_0A, &sp24);
-            temp_v0 = PlayerSave_UpdateState(sp24.unk_02);
+            Trade_GetPickScreenSnapshot(arg0->unk_0A, &sp24);
+            temp_v0 = GbSave_PollCartRemoval(sp24.unk_02);
             if (temp_v0 == 1) {
                 arg0->unk_10 = 1;
             }
@@ -343,18 +343,18 @@ void RentalMenu_ProcessItemSelection(RentalMenuState* arg0) {
         }
 
         if (arg0->unk_0C == 0) {
-            if (InitRentalItems(arg0) != 0) {
+            if (Trade_StepCartWriteSequence(arg0) != 0) {
                 arg0->unk_00 = 8;
                 arg0->unk_02 = 0xA;
                 arg0->unk_04 &= ~4;
                 arg0->unk_10 = -1;
-                PlaySoundEffect(9);
+                Audio_PlaySoundEffectById(9);
             } else {
                 arg0->unk_06 += 1;
                 arg0->unk_0C = 1;
                 arg0->unk_10 = 2;
-                Picker_GetSelectionInfo(arg0->unk_0A, &sp24);
-                temp_v0 = PlayerSave_UpdateState(sp24.unk_02);
+                Trade_GetPickScreenSnapshot(arg0->unk_0A, &sp24);
+                temp_v0 = GbSave_PollCartRemoval(sp24.unk_02);
                 if (temp_v0 == 1) {
                     arg0->unk_10 = 1;
                 }
@@ -367,7 +367,7 @@ void RentalMenu_ProcessItemSelection(RentalMenuState* arg0) {
     }
 }
 
-void RentalMenu_Finalize(RentalMenuState* arg0) {
+void Trade_UpdateSaveSeqPanelSlideOut(RentalMenuState* arg0) {
     PanelRect* temp_v1;
     s32 i;
 
@@ -420,15 +420,15 @@ void RentalMenu_Finalize(RentalMenuState* arg0) {
 
 void Trade_DrawSaveSeqBoxThumbnail(s16 arg0, s16 arg1, s16 arg2) {
     UNUSED s32 pad;
-    u16* img = Picker_GetSelectedSprite(arg0);
+    u16* img = Trade_GetPickBuffer(arg0);
 
     gDPLoadTextureBlock(gDisplayListHead++, img, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 40, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg1, arg2, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB, 0);
+    Gfx_DrawTexturedRectClipped(arg1, arg2, 0x3C, 0x3C, 0, 0, 0x2AB, 0x2AB, 0);
 }
 
-void RentalMenu_RenderItemList(RentalMenuState* arg0) {
+void Trade_DrawSaveSeqBoxPanels(RentalMenuState* arg0) {
     PanelRect* var_s0;
     s32 sp74[2];
     PickerPokemonEntry* temp_s3;
@@ -441,7 +441,7 @@ void RentalMenu_RenderItemList(RentalMenuState* arg0) {
     for (i = 0; i < 2; i++) {
         var_s0 = &arg0->unk_14[i];
         if ((var_s0->unk_04 != 0xC8) || (var_s0->unk_06 != 0)) {
-            Picker_DrawFrame(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06);
+            Trade_DrawPickScreenFrame(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06);
         }
     }
 
@@ -458,7 +458,7 @@ void RentalMenu_RenderItemList(RentalMenuState* arg0) {
     for (i = 0; i < 2; i++) {
         var_s0 = &arg0->unk_14[i];
         if (sp74[i] != 0) {
-            Gfx_FillRectRGBA(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06, 0x32, 0x32, 0x96, 0xFF);
+            Gfx_FillRectRgba(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06, 0x32, 0x32, 0x96, 0xFF);
         }
     }
 
@@ -473,32 +473,32 @@ void RentalMenu_RenderItemList(RentalMenuState* arg0) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
+    Font_BeginTranslucentTextRendering();
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     for (i = 0; i < 2; i++) {
         if (sp74[i] != 0) {
             temp_s3 = gRentalItemPtrs[i];
             var_s0 = &arg0->unk_14[i];
-            Text_SetFont(4, 0);
-            Text_Print(var_s0->unk_00 + 0xA, var_s0->unk_02 + 0x4A, "No.");
-            Text_SetFont(4, 0);
-            Text_Print(var_s0->unk_00 + 0x26, var_s0->unk_02 + 0x4A, "%03d", temp_s3->unk_00);
-            Text_SetFont(8, 0);
-            Text_Print(var_s0->unk_00 + 0x62, var_s0->unk_02 + 0x46, GetMessageStringBank24(temp_s3->unk_00));
-            Text_SetFont(8, 0);
-            Text_Print(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x5E, GetMessageString(NULL, 0, D_82F13B70, 0x14));
-            Text_Print(var_s0->unk_00 + 0x46, var_s0->unk_02 + 0x5E, "/%s", temp_s3->unk_30);
-            Text_Print(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x74, GetMessageString(NULL, 0, D_82F13B70, 0x15));
-            Text_Print(var_s0->unk_00 + 0x46, var_s0->unk_02 + 0x74, "/%s", temp_s3->unk_3B);
-            Text_Print(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x8A, "ID%05d", temp_s3->unk_0E);
+            Font_SetActive(4, 0);
+            Font_Printf(var_s0->unk_00 + 0xA, var_s0->unk_02 + 0x4A, "No.");
+            Font_SetActive(4, 0);
+            Font_Printf(var_s0->unk_00 + 0x26, var_s0->unk_02 + 0x4A, "%03d", temp_s3->unk_00);
+            Font_SetActive(8, 0);
+            Font_Printf(var_s0->unk_00 + 0x62, var_s0->unk_02 + 0x46, Trade_GetSpeciesName(temp_s3->unk_00));
+            Font_SetActive(8, 0);
+            Font_Printf(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x5E, Text_GetString(NULL, 0, D_82F13B70, 0x14));
+            Font_Printf(var_s0->unk_00 + 0x46, var_s0->unk_02 + 0x5E, "/%s", temp_s3->unk_30);
+            Font_Printf(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x74, Text_GetString(NULL, 0, D_82F13B70, 0x15));
+            Font_Printf(var_s0->unk_00 + 0x46, var_s0->unk_02 + 0x74, "/%s", temp_s3->unk_3B);
+            Font_Printf(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x8A, "ID%05d", temp_s3->unk_0E);
         }
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
-void RentalMenu_DrawPanels(RentalMenuState* arg0) {
+void Trade_DrawSaveSeqMenuPanel(RentalMenuState* arg0) {
     s32 i;
     PanelRect* var_s4 = &arg0->unk_24;
     Color_RGB8* var_v0;
@@ -522,7 +522,7 @@ void RentalMenu_DrawPanels(RentalMenuState* arg0) {
     }
 
     if ((var_s4->unk_04 >= 0xE) && (var_s4->unk_06 >= 0xE)) {
-        DrawGradientPanel(var_s4->unk_00, var_s4->unk_02, var_s4->unk_04, var_s4->unk_06, var_v0, var_v0);
+        Ui_DrawGradientPanel(var_s4->unk_00, var_s4->unk_02, var_s4->unk_04, var_s4->unk_06, var_v0, var_v0);
     }
 
     if (arg0->unk_04 & 1) {
@@ -539,45 +539,45 @@ void RentalMenu_DrawPanels(RentalMenuState* arg0) {
         temp_ft3 = SINS(D_82F13F78) * 3.0f;
 
         if (arg0->unk_04 & 1) {
-            DrawStatusIcon(var_s4->unk_00 + temp_ft3 + 0x10, var_s4->unk_02 + (gRentalMenuCursorIndex * 0x1C) + 0x14);
+            Ui_DrawTextureMarker(var_s4->unk_00 + temp_ft3 + 0x10, var_s4->unk_02 + (gRentalMenuCursorIndex * 0x1C) + 0x14);
         } else {
-            DrawStatusIcon(var_s4->unk_00 + temp_ft3 + 0x18, var_s4->unk_02 + (gRentalMenuCursorIndex * 0x1C) + 0x32);
+            Ui_DrawTextureMarker(var_s4->unk_00 + temp_ft3 + 0x18, var_s4->unk_02 + (gRentalMenuCursorIndex * 0x1C) + 0x32);
         }
 
-        Text_ResetState();
-        Text_SetFont(0x10, 0);
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
         if (arg0->unk_04 & 1) {
             char* sp54[3];
             for (i = 0; i < 3; i++) {
-                sp54[0] = GetMessageString(NULL, 0, D_82F13B70, 0x1A);
-                sp54[1] = GetMessageString(NULL, 0, D_82F13B70, 0x1B);
-                sp54[2] = GetMessageString(NULL, 0, D_82F13B70, 0x1C);
-                Text_Print(var_s4->unk_00 + 0x38, var_s4->unk_02 + i * 0x1C + 0x10, sp54[i]);
+                sp54[0] = Text_GetString(NULL, 0, D_82F13B70, 0x1A);
+                sp54[1] = Text_GetString(NULL, 0, D_82F13B70, 0x1B);
+                sp54[2] = Text_GetString(NULL, 0, D_82F13B70, 0x1C);
+                Font_Printf(var_s4->unk_00 + 0x38, var_s4->unk_02 + i * 0x1C + 0x10, sp54[i]);
             }
         } else {
-            char* temp_v0 = GetMessageString(NULL, 0, D_82F13B70, 0x16);
+            char* temp_v0 = Text_GetString(NULL, 0, D_82F13B70, 0x16);
             char* sp48[2];
 
-            arg2 = MeasureTextWidth(0, 0, temp_v0);
-            Text_Print((var_s4->unk_00 + (var_s4->unk_04 / 2)) - (arg2 / 2), var_s4->unk_02 + 0x10, temp_v0);
+            arg2 = Font_MeasureTextExtent(0, 0, temp_v0);
+            Font_Printf((var_s4->unk_00 + (var_s4->unk_04 / 2)) - (arg2 / 2), var_s4->unk_02 + 0x10, temp_v0);
 
             for (i = 0; i < 2; i++) {
-                sp48[0] = GetMessageString(NULL, 0, D_82F13B70, 0x17);
-                sp48[1] = GetMessageString(NULL, 0, D_82F13B70, 0x18);
+                sp48[0] = Text_GetString(NULL, 0, D_82F13B70, 0x17);
+                sp48[1] = Text_GetString(NULL, 0, D_82F13B70, 0x18);
                 if (i != gRentalMenuCursorIndex) {
                     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 } else {
                     Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
                 }
-                arg2 = MeasureTextWidth(0, 0, sp48[i]);
-                Text_Print((var_s4->unk_00 + (var_s4->unk_04 / 2)) - (arg2 / 2), var_s4->unk_02 + i * 0x1C + 0x2C,
+                arg2 = Font_MeasureTextExtent(0, 0, sp48[i]);
+                Font_Printf((var_s4->unk_00 + (var_s4->unk_04 / 2)) - (arg2 / 2), var_s4->unk_02 + i * 0x1C + 0x2C,
                               sp48[i]);
             }
         }
 
-        Text_SetupDL();
+        Font_EndTexturedTextRendering();
         D_82F13F78 += 0x1000;
     }
 }
@@ -587,15 +587,15 @@ void Trade_DrawSaveSeqBannerPanel(RentalMenuState* arg0) {
     PanelRect* temp_s0 = &arg0->unk_2C;
 
     if ((arg0->unk_2C.unk_04 != 0x210) || (arg0->unk_2C.unk_06 != 0)) {
-        Picker_DrawLargePanelBorder(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
+        Trade_DrawRoundedFrameLarge(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
         if ((temp_s0->unk_04 == 0x210) && (temp_s0->unk_06 == 0x28)) {
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            sp34 = MeasureTextWidth(0, 0, GetMessageString(NULL, 0, D_82F13B70, 0x1D)) / 2;
-            Text_Print((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - sp34, temp_s0->unk_02 + 8,
-                          GetMessageString(NULL, 0, D_82F13B70, 0x1D));
-            Text_SetupDL();
+            sp34 = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, D_82F13B70, 0x1D)) / 2;
+            Font_Printf((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - sp34, temp_s0->unk_02 + 8,
+                          Text_GetString(NULL, 0, D_82F13B70, 0x1D));
+            Font_EndTexturedTextRendering();
         }
     }
 }
@@ -608,17 +608,17 @@ void Trade_DrawSaveSeqSubBanner(RentalMenuState* arg0) {
 
     if ((arg0->unk_34.unk_04 != 0xE8) || (arg0->unk_34.unk_06 != 0)) {
         if ((temp_s0->unk_04 >= 0xE) && (temp_s0->unk_06 >= 0xE)) {
-            DrawGradientPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, &sp38, &sp38);
+            Ui_DrawGradientPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, &sp38, &sp38);
         }
 
         if ((temp_s0->unk_04 == 0xE8) && (temp_s0->unk_06 == 0x38)) {
-            Text_ResetState();
-            Text_SetFont(0x10, 0);
+            Font_BeginTranslucentTextRendering();
+            Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            sp40 = GetMessageString(NULL, 0, D_82F13B70, 0x1E);
-            Text_Print((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (MeasureTextWidth(0, 0, sp40) / 2),
+            sp40 = Text_GetString(NULL, 0, D_82F13B70, 0x1E);
+            Font_Printf((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (Font_MeasureTextExtent(0, 0, sp40) / 2),
                           temp_s0->unk_02 + 0x10, sp40);
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
         }
     }
 }
@@ -627,7 +627,7 @@ void Trade_DrawSaveSeqMessageBackdrop(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     Color_RGB8 sp24 = { 0x58, 0x08, 0x00 };
     Color_RGB8 sp20 = { 0x58, 0x08, 0x00 };
 
-    DrawGradientPanel(arg0, arg1, arg2, arg3, &sp24, &sp20);
+    Ui_DrawGradientPanel(arg0, arg1, arg2, arg3, &sp24, &sp20);
 }
 
 void RentalMenu_DrawMessage(RentalMenuState* arg0) {
@@ -639,9 +639,9 @@ void RentalMenu_DrawMessage(RentalMenuState* arg0) {
     RentalItemInfo sp20;
 
     if (arg0->unk_08 < 2) {
-        Picker_GetSelectionInfo(arg0->unk_08, &sp20);
+        Trade_GetPickScreenSnapshot(arg0->unk_08, &sp20);
     } else {
-        Picker_GetSelectionInfo(arg0->unk_0A, &sp20);
+        Trade_GetPickScreenSnapshot(arg0->unk_0A, &sp20);
     }
 
     if (arg0->unk_10 == -1) {
@@ -649,44 +649,44 @@ void RentalMenu_DrawMessage(RentalMenuState* arg0) {
     }
 
     Trade_DrawSaveSeqMessageBackdrop(0x6E, 0x72, 0x1A4, 0x114);
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     switch (arg0->unk_10) {
         case 0:
-            Text_BeginRender();
+            Font_EnableTwoCycleTexturing();
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
-            Text_Print(0xEC, 0xA8, (u32)(u64) GetMessageString(NULL, 0, D_82F13B70, 0x1F));
-            Text_EndRender();
+            Font_Printf(0xEC, 0xA8, (u32)(u64) Text_GetString(NULL, 0, D_82F13B70, 0x1F));
+            Font_DisableTwoCycleTexturing();
             break;
 
         case 2:
-            Text_BeginRender();
+            Font_EnableTwoCycleTexturing();
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
-            MessageBank_SetPointer_1_9(1, sp20.unk_02 + 1);
-            Text_Print(0xB0, 0x90, (u32)(u64) GetMessageString(sp38, sizeof(sp38), D_82F13B70, 0x20));
-            Text_EndRender();
+            Text_SetNumberToken(1, sp20.unk_02 + 1);
+            Font_Printf(0xB0, 0x90, (u32)(u64) Text_GetString(sp38, sizeof(sp38), D_82F13B70, 0x20));
+            Font_DisableTwoCycleTexturing();
             break;
 
         case 3:
-            Text_BeginRender();
+            Font_EnableTwoCycleTexturing();
             Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
-            Text_Print(0x80, 0x90, GetMessageString(NULL, 0, D_82F13B70, 0x21));
-            Text_EndRender();
+            Font_Printf(0x80, 0x90, Text_GetString(NULL, 0, D_82F13B70, 0x21));
+            Font_DisableTwoCycleTexturing();
             break;
     }
 
     if (arg0->unk_10 != 0) {
-        Text_BeginRender();
+        Font_EnableTwoCycleTexturing();
         Text_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_SetLineHeight(0x24);
-        Text_Print(0x80, 0xF0, GetMessageString(NULL, 0, D_82F13B70, 0x22));
+        Font_SetLineHeight(0x24);
+        Font_Printf(0x80, 0xF0, Text_GetString(NULL, 0, D_82F13B70, 0x22));
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
     D_82F13F88 += 0x800;
 }
 
@@ -743,35 +743,35 @@ void Trade_UpdateSaveSeq(void) {
 
     switch (ptr->unk_00) {
         case 1:
-            RentalMenu_UpdatePanels(&gRentalMenuState);
+            Trade_UpdateSaveSeqPanelSlideIn(&gRentalMenuState);
             break;
 
         case 2:
-            RentalMenu_HandleSelection(&gRentalMenuState);
+            Trade_UpdateSaveSeqMenuInput(&gRentalMenuState);
             break;
 
         case 3:
-            RentalMenu_ConfirmWait(&gRentalMenuState);
+            Trade_UpdateSaveSeqConfirmWait(&gRentalMenuState);
             break;
 
         case 4:
-            RentalMenu_ShowItemDetailsA(&gRentalMenuState);
+            Trade_UpdateSaveSeqPanelClose(&gRentalMenuState);
             break;
 
         case 5:
-            RentalMenu_ShowItemDetailsB(&gRentalMenuState);
+            Trade_UpdateSaveSeqPanelReopen(&gRentalMenuState);
             break;
 
         case 6:
-            RentalMenu_ShowOptions(&gRentalMenuState);
+            Trade_UpdateSaveSeqBeginWrite(&gRentalMenuState);
             break;
 
         case 7:
-            RentalMenu_ProcessItemSelection(&gRentalMenuState);
+            Trade_UpdateSaveSeqWriteCarts(&gRentalMenuState);
             break;
 
         case 8:
-            RentalMenu_Finalize(&gRentalMenuState);
+            Trade_UpdateSaveSeqPanelSlideOut(&gRentalMenuState);
             break;
     }
 }
@@ -784,10 +784,10 @@ void Trade_DrawSaveSeq(void) {
 
     if (ptr->unk_00 != 0) {
         if (ptr->unk_12 != 0) {
-            RentalMenu_RenderItemList(&gRentalMenuState);
+            Trade_DrawSaveSeqBoxPanels(&gRentalMenuState);
         }
 
-        RentalMenu_DrawPanels(&gRentalMenuState);
+        Trade_DrawSaveSeqMenuPanel(&gRentalMenuState);
         Trade_DrawSaveSeqBannerPanel(&gRentalMenuState);
         Trade_DrawSaveSeqSubBanner(&gRentalMenuState);
 
@@ -797,7 +797,7 @@ void Trade_DrawSaveSeq(void) {
 
         if (ptr->unk_04 & 4) {
             for (i = 0; i < 2; i++) {
-                DrawStatusPanel(i, D_82F13F8C[i], 0x2A);
+                Trade_DrawPortInfoPanel(i, D_82F13F8C[i], 0x2A);
             }
         }
         RentalMenu_DrawMessage(&gRentalMenuState);

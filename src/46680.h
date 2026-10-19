@@ -47,6 +47,6 @@ typedef struct GbAudioChannelState {
     /* 0x25D3 */ char unk25D3[0x5];
 } GbAudioChannelState; // size = 0x25D8
 
-s32 GbAudio_DecodeSpeechFrame(GbAudioChannelState*, void*);
+s32 Gsm_Decode_Stream(GbAudioChannelState*, void*);
 
 #endif // _46680_H_

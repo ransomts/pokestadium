@@ -52,7 +52,7 @@ Vec3f pad_D_879060F0;
 Vec3f gMiniDebugCamVelocity;
 Vec3f D_87906110;
 
-void MiniCamera_ApplyOffsets(void) {
+void miniApplyCameraDebugOffset(void) {
     miniCameraXRot = gMiniCamBaseRotX + gMiniCamRotXDelta;
     miniCameraYRot = gMiniCamBaseRotY + gMiniCamRotYDelta;
 
@@ -83,7 +83,7 @@ void miniUpdateCamera(void) {
     gMiniCameraPtr->unk_60.at.y = miniCameraCoords.y;
     gMiniCameraPtr->unk_60.at.z = miniCameraCoords.z;
 
-    Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, miniCameraDistance, miniCameraXRot, miniCameraYRot);
+    Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, miniCameraDistance, miniCameraXRot, miniCameraYRot);
 }
 
 s32 minigameDebuggModeControl(void) {
@@ -173,42 +173,42 @@ void showDebuggCameraInfo(void) {
     u8 sp24[3] = { 0, 0, 30 };  // D_87903DE0
     u8 sp20[3] = { 0, 0, 250 }; // D_87903DE4
 
-    DrawPanel(0x14, 0x14, 0x122, 0x3C, 0x141);
-    Text_ResetState();
-    Text_SetFont(2, -2);
+    Ui_DrawBorderedPanel(0x14, 0x14, 0x122, 0x3C, 0x141);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     if (D_87903DB8 == 0) {
-        Text_Print(0x19, 0x1C, "TRANSRATE");
+        Font_Printf(0x19, 0x1C, "TRANSRATE");
     }
 
-    Text_Print(0x19, 0x28, "CAMERA X:%d", miniCameraCoords.x);
-    Text_Print(0x19, 0x34, "CAMERA Y:%d", miniCameraCoords.y);
-    Text_Print(0x19, 0x40, "CAMERA Z:%d", miniCameraCoords.z);
-    Text_Print(0xA7, 0x28, "CAMERA D:%d", miniCameraDistance);
-    Text_Print(0xA7, 0x34, "CAMERA F:%d", miniCameraFov);
-    Text_Print(0xA7, 0x40, "X:%04hX Y:%04hX", miniCameraXRot, miniCameraYRot);
-    Text_SetupDL();
+    Font_Printf(0x19, 0x28, "CAMERA X:%d", miniCameraCoords.x);
+    Font_Printf(0x19, 0x34, "CAMERA Y:%d", miniCameraCoords.y);
+    Font_Printf(0x19, 0x40, "CAMERA Z:%d", miniCameraCoords.z);
+    Font_Printf(0xA7, 0x28, "CAMERA D:%d", miniCameraDistance);
+    Font_Printf(0xA7, 0x34, "CAMERA F:%d", miniCameraFov);
+    Font_Printf(0xA7, 0x40, "X:%04hX Y:%04hX", miniCameraXRot, miniCameraYRot);
+    Font_EndTexturedTextRendering();
 }
 
 void showDebuggJoystickInfo(void) {
     u8 sp2C[3] = { 0, 0, 30 };  // D_87903DE8
     u8 sp28[3] = { 0, 0, 250 }; // D_87903DEC
 
-    DrawPanel(0x78, 0x80, 0xB4, 0x64, 0x141);
-    Text_ResetState();
-    Text_SetFont(2, -2);
+    Ui_DrawBorderedPanel(0x78, 0x80, 0xB4, 0x64, 0x141);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(0x82, 0x8C, "FORCE   :%2.2f", gPlayer1Controller->stickMag);
-    Text_Print(0x82, 0x98, "LEVEL X :%2.2f", gPlayer1Controller->stickX);
-    Text_Print(0x82, 0xA4, "LEVEL Y :%2.2f", gPlayer1Controller->stickY);
-    Text_Print(0x82, 0xB0, "STICK X :%d", gPlayer1Controller->rawStickX);
-    Text_Print(0x82, 0xBC, "STICK Y :%d", gPlayer1Controller->rawStickY);
-    Text_Print(0x82, 0xC8, "ANGLE   :%04hx", gPlayer1Controller->angle);
-    Text_SetupDL();
+    Font_Printf(0x82, 0x8C, "FORCE   :%2.2f", gPlayer1Controller->stickMag);
+    Font_Printf(0x82, 0x98, "LEVEL X :%2.2f", gPlayer1Controller->stickX);
+    Font_Printf(0x82, 0xA4, "LEVEL Y :%2.2f", gPlayer1Controller->stickY);
+    Font_Printf(0x82, 0xB0, "STICK X :%d", gPlayer1Controller->rawStickX);
+    Font_Printf(0x82, 0xBC, "STICK Y :%d", gPlayer1Controller->rawStickY);
+    Font_Printf(0x82, 0xC8, "ANGLE   :%04hx", gPlayer1Controller->angle);
+    Font_EndTexturedTextRendering();
 }
 
-void MiniDebugCamera_Control(void) {
+void minigameDebuggVectorEditor(void) {
     UNUSED s32 pad;
     u8 sp30[3] = { 0, 0, 30 };  // D_87903DF0
     u8 sp2C[3] = { 0, 0, 250 }; // D_87903DF4
@@ -274,18 +274,18 @@ void MiniDebugCamera_Control(void) {
             break;
     }
 
-    DrawPanel(0x78, 0x80, 0xB4, 0x64, 0x141);
-    Text_ResetState();
-    Text_SetFont(2, -2);
+    Ui_DrawBorderedPanel(0x78, 0x80, 0xB4, 0x64, 0x141);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(0x7C, 0x8C + (gMiniDebugCameraMode * 0xC), "@");
+    Font_Printf(0x7C, 0x8C + (gMiniDebugCameraMode * 0xC), "@");
 
-    Text_Print(0x82, 0x8C, "VX:%2.2f", gMiniDebugCamVelocity.x);
-    Text_Print(0x82, 0x98, "VY:%2.2f", gMiniDebugCamVelocity.y);
-    Text_Print(0x82, 0xA4, "BX:%2.2f", gMiniDebugBasePos.x);
-    Text_Print(0x82, 0xB0, "BY:%2.2f", gMiniDebugBasePos.y);
-    Text_Print(0x82, 0xBC, "GV:%2.2f", D_87906110.y);
-    Text_Print(0x82, 0xC8, "PW:%2.2f", D_87906110.x);
+    Font_Printf(0x82, 0x8C, "VX:%2.2f", gMiniDebugCamVelocity.x);
+    Font_Printf(0x82, 0x98, "VY:%2.2f", gMiniDebugCamVelocity.y);
+    Font_Printf(0x82, 0xA4, "BX:%2.2f", gMiniDebugBasePos.x);
+    Font_Printf(0x82, 0xB0, "BY:%2.2f", gMiniDebugBasePos.y);
+    Font_Printf(0x82, 0xBC, "GV:%2.2f", D_87906110.y);
+    Font_Printf(0x82, 0xC8, "PW:%2.2f", D_87906110.x);
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }

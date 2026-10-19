@@ -74,18 +74,18 @@ typedef struct BattleUiState {
     /* 0x2C */ char unk2C[0x4];
 } BattleUiState; // size = 0x30
 
-SpriteDisplay* SpriteDisplay_Alloc(AssetManager*, s16, s16, s16);
-void SpriteDisplay_SetDepthBuffer(SpriteDisplay*, AssetManager*, FramebufferImage*);
-void SpriteDisplay_SetScaleTable(SpriteDisplay*, SpeciesDisplayParams*);
-void SpriteDisplay_Clear(SpriteDisplay*);
+SpriteDisplay* PokeIcon_CreateRenderList(AssetManager*, s16, s16, s16);
+void PokeIcon_AttachDepthBuffer(SpriteDisplay*, AssetManager*, FramebufferImage*);
+void PokeIcon_SetNameTable(SpriteDisplay*, SpeciesDisplayParams*);
+void PokeIcon_ResetRenderList(SpriteDisplay*);
 void SpriteDisplay_SetupSlot(SpriteDisplay*, s32, s32, u16);
 void SpriteDisplay_ConfigSlotWithAnim(SpriteDisplay*, s32, PokemonData*, u16);
-s32 SpriteDisplay_TryAdvance(SpriteDisplay*, s32);
+s32 PokeIcon_ProcessNextSlot(SpriteDisplay*, s32);
 s32 PokeIcon_ProcessAllSlots(SpriteDisplay*, s32);
 s32 PokeIcon_RenderNextSlotBlocking(SpriteDisplay*, s32);
-u8* SpriteDisplay_GetImagePtr(SpriteDisplay*, s32);
-s32 SpriteDisplay_IsAnimating(SpriteDisplay*);
-void SpriteAssets_Load(void);
+u8* PokeIcon_GetImage(SpriteDisplay*, s32);
+s32 PokeIcon_AreSlotsIdle(SpriteDisplay*);
+void PokeIcon_OpenModelArchive(void);
 void PokeIcon_LoadModelTextureForMon(u16*, s32, PokemonData*);
 unk_func_8001B1FC* PokeIcon_CreateModelPreview(AssetManager*, s16, s16, s16, s16, s16, s16, u8*);
 void PokeIcon_SetPreviewMon(unk_func_8001B1FC* arg0, PokemonData* arg1, u16 arg2);

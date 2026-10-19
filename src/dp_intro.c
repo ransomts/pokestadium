@@ -34,10 +34,10 @@ u64 gRdpYieldData[0xC08 / sizeof(u64)];
 u64 gRdpOutputBuffer[0x20000 / sizeof(u64)];
 
 // function prototypes
-void Gfx_SetFrameFillColor(u16 color);
-void IntroBuffer_SetParams(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6, s32 arg7);
+void Display_ClearFramebufferLine(u16 color);
+void Display_SetBufferConfig(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6, s32 arg7);
 
-void RdpTask_Init(UnkStruct80001380* arg0) {
+void DisplayTask_Initialize(UnkStruct80001380* arg0) {
     arg0->task.t.type = M_GFXTASK;
     arg0->task.t.flags = 0;
     arg0->task.t.ucode_boot = gRdpBootUcode;
@@ -55,13 +55,13 @@ void RdpTask_Init(UnkStruct80001380* arg0) {
     osCreateMesgQueue(&arg0->queue, &arg0->mesg, 1);
 }
 
-void RdpTask_StartWithData(UnkStruct80001380* arg0, struct UnkArray4* arg1, s32 arg2) {
+void DisplayTask_Submit(UnkStruct80001380* arg0, struct UnkArray4* arg1, s32 arg2) {
     arg0->task.t.data_ptr = (void*)(uintptr_t)arg1->unk_04;
     arg0->task.t.data_size = arg1->unk_08;
-    RspTaskStart(arg0, arg2);
+    Sched_SubmitTask(arg0, arg2);
 }
 
-void Vi_SetMode(s8 arg0, s8 arg1) {
+void Video_SetMode(s8 arg0, s8 arg1) {
     s32 var_v0;
 
     if (osTvType == 2) {
@@ -79,7 +79,7 @@ void Vi_SetMode(s8 arg0, s8 arg1) {
     }
 }
 
-void IntroTask_SetPendingBuffer(struct UnkArray4* arg0) {
+void DisplayWorker_SetBufferConfig(struct UnkArray4* arg0) {
     if (arg0 == NULL) {
         gIntroTaskState.pendingTask.unk_04 = 0;
         gIntroTaskState.pendingTask.unk_08 = 0;
@@ -98,26 +98,26 @@ void IntroTask_SetPendingBuffer(struct UnkArray4* arg0) {
     }
 }
 
-void IntroTask_ProcessFrame(void) {
+void DisplayWorker_ProcessFrame(void) {
     s32 i;
     s32 sp20 = 0;
 
     if (gIntroTaskState.currentTask.unk_04 != 0) {
-        RspTaskYield(&gIntroTaskState.unk_A20);
+        Sched_WaitForTaskMessage(&gIntroTaskState.unk_A20);
     }
 
     if ((gIntroTaskState.pendingTask.unk_04 != 0) && (gIntroTaskState.previousTask.unk_0C != gIntroTaskState.pendingTask.unk_0C) &&
         (gIntroTaskState.previousTask.unk_03 != gIntroTaskState.pendingTask.unk_03)) {
-        RdpTask_StartWithData(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 1);
+        DisplayTask_Submit(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 1);
         sp20 = 1;
     }
 
     for (i = 1; i < gIntroTaskState.previousTask.unk_00; i++) {
-        MessageQueue_Recv(&gIntroTaskState);
+        Sched_WaitClientQueue(&gIntroTaskState);
     }
 
     while (gIntroTaskState.messageQueue.validCount > 0) {
-        MessageQueue_TryRecv(&gIntroTaskState);
+        Sched_TryReceiveClientQueue(&gIntroTaskState);
     }
 
     if (gIntroTaskState.currentTask.unk_0C != NULL) {
@@ -125,7 +125,7 @@ void IntroTask_ProcessFrame(void) {
         osViRepeatLine(0);
         if ((gIntroTaskState.currentTask.unk_01 != gIntroTaskState.previousTask.unk_01) ||
             (gIntroTaskState.currentTask.unk_02 != gIntroTaskState.previousTask.unk_02)) {
-            Vi_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.unk_02);
+            Video_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.unk_02);
         }
         if (gForceBlackScreen != 0) {
             osViBlack(1U);
@@ -138,35 +138,35 @@ void IntroTask_ProcessFrame(void) {
         osViSwapBuffer(gIntroTaskState.framebufferImage->img_p);
         if ((gIntroTaskState.currentTask.unk_01 != gIntroTaskState.previousTask.unk_01) ||
             (gIntroTaskState.currentTask.unk_02 != gIntroTaskState.previousTask.unk_02)) {
-            Vi_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.unk_02);
+            Video_SetMode((s8)gIntroTaskState.currentTask.unk_01, (s8)gIntroTaskState.currentTask.unk_02);
         }
     }
 
     if ((sp20 == 0) && (gIntroTaskState.pendingTask.unk_04 != 0)) {
-        RdpTask_StartWithData(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 0);
+        DisplayTask_Submit(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 0);
     }
 
     gIntroTaskState.previousTask = gIntroTaskState.currentTask;
     gIntroTaskState.currentTask = gIntroTaskState.pendingTask;
     profiler_log_thread5_time(THREAD5_END);
-    MessageQueue_Recv(&gIntroTaskState);
+    Sched_WaitClientQueue(&gIntroTaskState);
 }
 
 void DisplayWorker_DrainEvents(void) {
-    MessageQueue_Recv(&gIntroTaskState);
+    Sched_WaitClientQueue(&gIntroTaskState);
     while (gIntroTaskState.messageQueue.validCount > 0) {
-        MessageQueue_TryRecv(&gIntroTaskState);
+        Sched_TryReceiveClientQueue(&gIntroTaskState);
     }
-    MessageQueue_Recv(&gIntroTaskState);
+    Sched_WaitClientQueue(&gIntroTaskState);
 }
 
-void IntroTask_ThreadMain(UNUSED void* arg) {
+void DisplayWorker_ThreadMain(UNUSED void* arg) {
     __osSetFpcCsr(0x01000C01);
-    IntroBuffer_SetParams(&gIntroTaskState.previousTask, 0, 1, 2, 0xFF, 0, 0, 0);
-    IntroBuffer_SetParams(&gIntroTaskState.currentTask, 0, 1, 2, 0xFF, 0, 0, 0);
-    MessageQueue_Create(&gIntroTaskState.thread, 0, 4);
-    ThreadList_Add(&gIntroTaskState);
-    RdpTask_Init(&gIntroTaskState.unk_A20);
+    Display_SetBufferConfig(&gIntroTaskState.previousTask, 0, 1, 2, 0xFF, 0, 0, 0);
+    Display_SetBufferConfig(&gIntroTaskState.currentTask, 0, 1, 2, 0xFF, 0, 0, 0);
+    Sched_InitClientQueue(&gIntroTaskState.thread, 0, 4);
+    Sched_AddClient(&gIntroTaskState);
+    DisplayTask_Initialize(&gIntroTaskState.unk_A20);
     while (1) {
         void* sp4C;
         if (gRspTaskManager.unk_A38 > 0) {
@@ -179,13 +179,13 @@ void IntroTask_ThreadMain(UNUSED void* arg) {
         gIntroTaskState.waitingForMessage = 0;
         profiler_log_thread5_time(UNK_EVENT_1);
         profiler_log_thread5_time(UNK_EVENT_2);
-        IntroTask_SetPendingBuffer(sp4C);
-        IntroTask_ProcessFrame();
+        DisplayWorker_SetBufferConfig(sp4C);
+        DisplayWorker_ProcessFrame();
         osSendMesg(&gIntroTaskState.unk_A04, (void*)'DONE', 0);
     }
 }
 
-void IntroTask_Init(void) {
+void DisplayWorker_Initialize(void) {
     switch (osTvType) {
         case 1:
         case 2:
@@ -199,21 +199,21 @@ void IntroTask_Init(void) {
             break;
     }
 
-    osCreateThread(&gIntroTaskState.thread, 5, IntroTask_ThreadMain, NULL, &gIntroTaskState.framebufferImage, 0x28);
+    osCreateThread(&gIntroTaskState.thread, 5, DisplayWorker_ThreadMain, NULL, &gIntroTaskState.framebufferImage, 0x28);
     osStartThread(&gIntroTaskState.thread);
     osCreateMesgQueue(&gIntroTaskState.unk_9EC, &gIntroTaskState.unk_9E4, 1);
     osCreateMesgQueue(&gIntroTaskState.unk_A04, &gIntroTaskState.unk_9E8, 1);
     gIntroTaskState.unk_A88 = 0;
     gIntroTaskState.waitingForMessage = 0;
-    gIntroTaskState.framebufferImage = FramebufferImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
-    Gfx_SetFrameFillColor(1);
-    DmaCopyAsyncRange(&gRdpBootUcode, 0xB0000B70, 0xB0000C70, 0);
+    gIntroTaskState.framebufferImage = GfxImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
+    Display_ClearFramebufferLine(1);
+    Dma_WriteChunks(&gRdpBootUcode, 0xB0000B70, 0xB0000C70, 0);
 }
 
 /**
  * Write a specific color to a line on the framebuffer for a 640x480 resolution.
  */
-void Gfx_SetFrameFillColor(u16 color) {
+void Display_ClearFramebufferLine(u16 color) {
     s32 width = 640;
     u16* buf = (u16*)gIntroTaskState.framebufferImage->img_p;
 
@@ -224,12 +224,12 @@ void Gfx_SetFrameFillColor(u16 color) {
     osWritebackDCache(gIntroTaskState.framebufferImage->img_p, 0x500);
 }
 
-u16 Gfx_GetFrameFillColor(void) {
+u16 Display_GetFramebufferClearColor(void) {
     u16* ptr = (u16*)gIntroTaskState.framebufferImage->img_p;
     return *ptr;
 }
 
-s32 IsSoftResetPending(void) {
+s32 Display_IsCurrentFramebuffer(void) {
     s32 result = 0;
 
     if (osViGetCurrentFramebuffer() == gIntroTaskState.framebufferImage->img_p) {
@@ -239,22 +239,22 @@ s32 IsSoftResetPending(void) {
     return result;
 }
 
-void Sched_WaitFrame(void) {
+void Display_WaitForCompletion(void) {
     osRecvMesg(&gIntroTaskState.unk_A04, NULL, 1);
 }
 
-void Sched_SendFrame(void* arg0) {
+void Display_QueueFramebufferRequest(void* arg0) {
     osSendMesg(&gIntroTaskState.unk_9EC, arg0, 0);
 }
 
-void Sched_RunFrames(s32 arg0) {
+void Display_WaitForFrames(s32 arg0) {
     while (arg0-- > 0) {
-        Sched_SendFrame(0);
-        Sched_WaitFrame();
+        Display_QueueFramebufferRequest(0);
+        Display_WaitForCompletion();
     }
 }
 
-void IntroBuffer_SetParams(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6, s32 arg7) {
+void Display_SetBufferConfig(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6, s32 arg7) {
     arg0->unk_01 = arg1;
     arg0->unk_02 = arg2;
     arg0->unk_00 = arg3;
@@ -264,15 +264,15 @@ void IntroBuffer_SetParams(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, u8
     arg0->unk_0C = (struct FramebufferImage*)(uintptr_t)arg7;
 }
 
-s32 GetFramebufferInfo(void) {
+s32 Display_GetWorkerStatus(void) {
     return (s32)gIntroTaskState.previousTask.unk_0C;
 }
 
 void Display_ApplyPendingVideoMode(void) {
-    Vi_SetMode((s8)gIntroTaskState.previousTask.unk_01, (s8)gIntroTaskState.previousTask.unk_02);
+    Video_SetMode((s8)gIntroTaskState.previousTask.unk_01, (s8)gIntroTaskState.previousTask.unk_02);
 }
 
-s32 RspTaskYielded(void) {
+s32 Display_IsFrameReady(void) {
     s32 result = 1;
 
     if (gIntroTaskState.currentTask.unk_04 != 0) {

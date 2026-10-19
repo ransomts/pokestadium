@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void KidsClub_MainLoop(void);
+void MiniGame_Dispatch(void);
 
 #endif // _2FEA0_H_

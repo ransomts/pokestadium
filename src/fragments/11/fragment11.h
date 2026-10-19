@@ -41,11 +41,11 @@ extern u32 HealthBarPalette2[];
 extern u32 HealthBarPalette3[];
 extern u32 HealthBarPalette4[];
 
-s8 HealthBar_GetAnimStateIndex(s32, s32);
-void RenderHealthBar(s32 arg0);
-void InitHealthBar(void);
-void HealthBar_Init(void);
-void HealthBar_BuildDisplayList(void);
-void HealthBar_CreateNode(void);
+s8 DynamoGame_RollAIChargeBias(s32, s32);
+void DynamoGame_DrawSparkEffects(s32 arg0);
+void DynamoGame_InitSparkEffects(void);
+void DynamoGame_PickNextCrankCue(void);
+void DynamoGame_DrawCrankIcon(void);
+void DynamoGame_InitCrankIconDisplay(void);
 
 #endif // _FRAGMENT11_H_

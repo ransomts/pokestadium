@@ -6,6 +6,6 @@
 extern u8 gSpecialMoveSoundFlag[16];
 
 s32 PlayMoveSoundEffect(s32, u32, u32, u32);
-void UpdateSoundDurationScale(void);
+void Audio_FadeStoredSound(void);
 
 #endif // _48C60_H_

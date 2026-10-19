@@ -29,11 +29,11 @@ static u8 gControllerPortStatus;
 static unk_D_800AC910_050 gSaveHeader;
 static u8 D_800ADA38[0xAA8]; // unreferenced bss
 
-u16 CalculateLevelFromExperience(s32 arg0, u32 arg1) {
+u16 Pokemon_LevelFromExp(s32 arg0, u32 arg1) {
     s32 i;
 
     for (i = 1; i < 100; i++) {
-        if (arg1 < CalculateExperienceAtLevel(arg0, i + 1)) {
+        if (arg1 < Pokemon_ExpForLevel(arg0, i + 1)) {
             break;
         }
     }
@@ -41,20 +41,20 @@ u16 CalculateLevelFromExperience(s32 arg0, u32 arg1) {
     return i;
 }
 
-void ApplyPPUps(PokemonData* arg0) {
+void Pokemon_PrepareBattleMon(PokemonData* arg0) {
     s32 i;
     s32 temp_a3;
     s32 var_v0;
     s32 idx;
 
-    CalculatePokemonStats(arg0);
+    Pokemon_RecalcStats(arg0);
     arg0->unk_05 = 0;
     arg0->unk_02 = arg0->unk_26;
 
     for (i = 0; i < 4; i++) {
         if (arg0->unk_09[i] != 0) {
             temp_a3 = (arg0->unk_20[i] >> 6) & 3;
-            var_v0 = gMoveBattleData[arg0->unk_09[i] - 1].unk_05;
+            var_v0 = gMoveData[arg0->unk_09[i] - 1].unk_05;
 
             if (var_v0 >= 0x28) {
                 var_v0 = var_v0 + (temp_a3 * 7);
@@ -67,31 +67,31 @@ void ApplyPPUps(PokemonData* arg0) {
     }
 }
 
-void SetMonNickname(PokemonData* arg0) {
+void Pokemon_SetDisplayNameFromOt(PokemonData* arg0) {
     UNUSED s32 pad;
     char sp18[11];
 
-    EncodeGen1String(&sp18, &arg0->unk_3B);
+    Text_TranscodeName(&sp18, &arg0->unk_3B);
     _bcopy(&sp18, arg0->unk_46, 0xB);
 }
 
-s32 LoadPokemonNameData(unk_func_800228F0* arg0, u16 arg1) {
+s32 VictoryPalace_LoadSpeciesRecord(unk_func_800228F0* arg0, u16 arg1) {
     unk_func_800228F0_sp24 sp24;
     s32 var_v1;
 
     var_v1 = 0;
-    if ((GbsReadBlockEntry(0x13, 0, arg1 - 1, &sp24) != 0) && (sp24.unk_00 != 0)) {
+    if ((Deck_ReadSaveEntry(0x13, 0, arg1 - 1, &sp24) != 0) && (sp24.unk_00 != 0)) {
         arg0->unk_00 = sp24.unk_00;
         arg0->unk_01 = sp24.unk_01;
         arg0->unk_02 = sp24.unk_02;
-        DecodeGen1StringFromRawBuffer(arg0->unk_04, &sp24.unk_04[0]);
-        DecodeGen1StringFromRawBuffer(arg0->unk_14, &sp24.unk_04[0xB]);
+        Text_UntranscodeFixedName(arg0->unk_04, &sp24.unk_04[0]);
+        Text_UntranscodeFixedName(arg0->unk_14, &sp24.unk_04[0xB]);
         var_v1 = 1;
     }
     return var_v1;
 }
 
-void SavePokemonNameData(PokemonData* arg0, s16 arg1, u8 arg2) {
+void VictoryPalace_SaveSpeciesRecord(PokemonData* arg0, s16 arg1, u8 arg2) {
     unk_D_800AE4E8_004_2_0DC0_002 sp24;
 
     if (arg2) {
@@ -101,22 +101,22 @@ void SavePokemonNameData(PokemonData* arg0, s16 arg1, u8 arg2) {
     }
     sp24.unk_01 = arg0->unk_24;
     sp24.unk_02 = arg0->unk_0E;
-    EncodeGen1String(sp24.unk_04, arg0->unk_30);
-    EncodeGen1String(sp24.unk_0F, arg0->unk_3B);
-    GbsWriteBlockEntry(0x13, 0, arg0->unk_00.unk_00 - 1, &sp24);
+    Text_TranscodeName(sp24.unk_04, arg0->unk_30);
+    Text_TranscodeName(sp24.unk_0F, arg0->unk_3B);
+    Save_WriteTypedRecord(0x13, 0, arg0->unk_00.unk_00 - 1, &sp24);
 }
 
-s32 IsPokemonNameMatch(u16* arg0, Gen1StringDecodeBuffer* arg1) {
+s32 GbSave_PlayerIdentityMatches(u16* arg0, Gen1StringDecodeBuffer* arg1) {
     return !bcmp(arg0, arg1, 0xD);
 }
 
-u8 GetPokemonType1(s32 arg0) {
+u8 Move_GetIdFromTableIndex(s32 arg0) {
     extern u8 gPokemonTypeTable[];
 
     return gPokemonTypeTable[arg0];
 }
 
-u8 GetPokemonBaseStat(s32 arg0) {
+u8 Species_ToInternalIndex(s32 arg0) {
     if ((arg0 <= 0) || (arg0 > 151)) {
         return 0;
     }
@@ -124,7 +124,7 @@ u8 GetPokemonBaseStat(s32 arg0) {
     return D_80073267[arg0];
 }
 
-s32 GetPokemonFormId(s32 arg0) {
+s32 Species_FromInternalIndex(s32 arg0) {
     if ((arg0 <= 0) || (arg0 > 190)) {
         return 152;
     }
@@ -163,15 +163,15 @@ s32 GetPokemonGrowthRate(s32 arg0) {
     return D_80073597[arg0] + 1;
 }
 
-void GbsBlock_InitStandard(unk_func_80022C28_ret* arg0) {
+void Deck_InitializeSaveBackend(unk_func_80022C28_ret* arg0) {
     if (arg0->unk_00 == 1) {
         arg0->unk_04 |= 1;
-        GbsSetBlockEntryCount(arg0->unk_01, arg0->unk_03, 0);
+        Deck_SetSaveEntryCount(arg0->unk_01, arg0->unk_03, 0);
     }
 
-    arg0->unk_05 = GbsGetBlockDataSize(arg0->unk_01);
-    arg0->unk_06 = GbsGetBlockEntryCount(arg0->unk_01);
-    arg0->unk_08 = GbsGetBlockMaxEntries(arg0->unk_01, arg0->unk_03);
+    arg0->unk_05 = Deck_GetSaveRecordSize(arg0->unk_01);
+    arg0->unk_06 = Deck_GetSaveRecordCapacity(arg0->unk_01);
+    arg0->unk_08 = Deck_GetSaveEntryCount(arg0->unk_01, arg0->unk_03);
 
     if (arg0->unk_00 == 2) {
         arg0->unk_0A = arg0->unk_08;
@@ -180,15 +180,15 @@ void GbsBlock_InitStandard(unk_func_80022C28_ret* arg0) {
     }
 }
 
-void GbsBlock_InitExtended(unk_func_80022C28_ret* arg0) {
+void Deck_InitializeBoxBackend(unk_func_80022C28_ret* arg0) {
     if (arg0->unk_00 == 1) {
         arg0->unk_04 |= 1;
-        SetSaveBlockCount(arg0->unk_01, arg0->unk_02, arg0->unk_03, 0);
+        Deck_DeleteEntry(arg0->unk_01, arg0->unk_02, arg0->unk_03, 0);
     }
 
-    arg0->unk_05 = GetSaveBlockEntrySize(arg0->unk_01);
-    arg0->unk_06 = GetSaveBlockMaxEntries(arg0->unk_01);
-    arg0->unk_08 = GetSaveBlockCurrentCount(arg0->unk_01, arg0->unk_02, arg0->unk_03);
+    arg0->unk_05 = Deck_GetEntrySize(arg0->unk_01);
+    arg0->unk_06 = Deck_GetCapacity(arg0->unk_01);
+    arg0->unk_08 = Deck_GetCount(arg0->unk_01, arg0->unk_02, arg0->unk_03);
 
     if (arg0->unk_00 == 2) {
         arg0->unk_0A = arg0->unk_08;
@@ -197,7 +197,7 @@ void GbsBlock_InitExtended(unk_func_80022C28_ret* arg0) {
     }
 }
 
-unk_func_80022C28_ret* CreateGbsBlock(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+unk_func_80022C28_ret* Deck_Open(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     unk_func_80022C28_ret* sp1C;
 
     sp1C = Util_Malloc(sizeof(unk_func_80022C28_ret));
@@ -210,11 +210,11 @@ unk_func_80022C28_ret* CreateGbsBlock(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
         switch (arg0 & 0xF0) {
             case 16:
-                GbsBlock_InitStandard(sp1C);
+                Deck_InitializeSaveBackend(sp1C);
                 break;
 
             case 32:
-                GbsBlock_InitExtended(sp1C);
+                Deck_InitializeBoxBackend(sp1C);
                 break;
         }
     }
@@ -222,23 +222,23 @@ unk_func_80022C28_ret* CreateGbsBlock(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return sp1C;
 }
 
-unk_func_80022C28_ret* GbsBlock_CreateWithString(s32 arg0, s32 arg1, s32 arg2, s32 arg3, char* arg4, u16 arg5) {
+unk_func_80022C28_ret* Deck_OpenAndSetName(s32 arg0, s32 arg1, s32 arg2, s32 arg3, char* arg4, u16 arg5) {
     unk_func_80022C28_ret* sp24;
     unk_func_80022C28_ret* temp_v0;
     unk_func_80022C28_ret* var_v1;
 
-    sp24 = CreateGbsBlock(arg0, arg1, arg2, 1);
+    sp24 = Deck_Open(arg0, arg1, arg2, 1);
     if ((sp24 != NULL) && (arg0 & 0xF0)) {
-        GbsSetBlockStringAndValue(arg0, arg2, arg3, arg4, arg5);
+        Deck_SetSaveEntryTrainerIdAndName(arg0, arg2, arg3, arg4, arg5);
     }
     return sp24;
 }
 
-s32 InvalidateAndFreeGbsBlock(unk_func_80022C28_ret* arg0) {
+s32 Deck_CloseAndFlushBox(unk_func_80022C28_ret* arg0) {
     s32 sp1C = 0;
 
     if ((arg0->unk_01 & 0x10) && (arg0->unk_04 & 1)) {
-        GbsInvalidateBankBlock(arg0->unk_01, arg0->unk_03);
+        Save_InvalidateTypedRecord(arg0->unk_01, arg0->unk_03);
         sp1C = 1;
     }
 
@@ -247,11 +247,11 @@ s32 InvalidateAndFreeGbsBlock(unk_func_80022C28_ret* arg0) {
     return sp1C;
 }
 
-s32 CommitAndFreeGbsBlock(unk_func_80022C28_ret* arg0) {
+s32 Deck_CloseAndFlush(unk_func_80022C28_ret* arg0) {
     s32 sp1C = 0;
 
     if ((arg0->unk_01 & 0x10) && (arg0->unk_04 & 1)) {
-        GbsCommitBankBlock(arg0->unk_01, arg0->unk_03);
+        Save_CommitTypedRecord(arg0->unk_01, arg0->unk_03);
         sp1C = 1;
     }
 
@@ -260,7 +260,7 @@ s32 CommitAndFreeGbsBlock(unk_func_80022C28_ret* arg0) {
     return sp1C;
 }
 
-s32 GbsBlock_SetLimit(unk_func_80022C28_ret* arg0, s32 arg1) {
+s32 Deck_SetCursor(unk_func_80022C28_ret* arg0, s32 arg1) {
     s32 var_v1;
 
     var_v1 = 0;
@@ -271,7 +271,7 @@ s32 GbsBlock_SetLimit(unk_func_80022C28_ret* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 GbsBlock_ReadPokemon(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
+s32 Deck_ReadEntries(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
     s32 var_s3;
     s32 var_s4;
     s32 var_v1;
@@ -288,11 +288,11 @@ s32 GbsBlock_ReadPokemon(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
             var_v1 = 0;
             switch (arg2->unk_01 & 0xF0) {
                 case 16:
-                    var_v1 = GbsReadBlockEntry(arg2->unk_01, arg2->unk_03, arg2->unk_0A, arg0);
+                    var_v1 = Deck_ReadSaveEntry(arg2->unk_01, arg2->unk_03, arg2->unk_0A, arg0);
                     break;
 
                 case 32:
-                    var_v1 = ReadSaveBlockEntry(arg2->unk_01, arg2->unk_02, arg2->unk_03, arg2->unk_0A, arg0);
+                    var_v1 = Deck_ReadEntry(arg2->unk_01, arg2->unk_02, arg2->unk_03, arg2->unk_0A, arg0);
                     break;
             }
 
@@ -314,7 +314,7 @@ s32 GbsBlock_ReadPokemon(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
     return var_s4;
 }
 
-s32 GbsBlock_WriteEntries(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
+s32 Deck_WriteEntries(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
     s32 var_s2;
     s32 var_s4;
     s32 var_s5;
@@ -331,13 +331,13 @@ s32 GbsBlock_WriteEntries(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
             var_s2 = 0;
             switch (arg2->unk_01 & 0xF0) {
                 case 16:
-                    var_s2 = GbsWriteBlockEntry(arg2->unk_01, arg2->unk_03, arg2->unk_0A, arg0);
-                    arg2->unk_08 = GbsGetBlockMaxEntries(arg2->unk_01, arg2->unk_03);
+                    var_s2 = Save_WriteTypedRecord(arg2->unk_01, arg2->unk_03, arg2->unk_0A, arg0);
+                    arg2->unk_08 = Deck_GetSaveEntryCount(arg2->unk_01, arg2->unk_03);
                     break;
 
                 case 32:
-                    var_s2 = WriteSaveBlockEntry(arg2->unk_01, arg2->unk_02, arg2->unk_03, arg2->unk_0A, arg0);
-                    arg2->unk_08 = GetSaveBlockCurrentCount(arg2->unk_01, arg2->unk_02, arg2->unk_03);
+                    var_s2 = Deck_WriteEntry(arg2->unk_01, arg2->unk_02, arg2->unk_03, arg2->unk_0A, arg0);
+                    arg2->unk_08 = Deck_GetCount(arg2->unk_01, arg2->unk_02, arg2->unk_03);
                     break;
             }
 
@@ -361,20 +361,20 @@ s32 GbsBlock_WriteEntries(u8* arg0, s32 arg1, unk_func_80022C28_ret* arg2) {
     return var_s5;
 }
 
-void LoadNameSlots(void) {
-    char** sp1C = GetMessageBank(0x11);
+void Text_LoadPlayerLabels(void) {
+    char** sp1C = Text_GetStringTable(0x11);
 
-    HAL_Strcpy(gNameSlots[0], GetMessageString(NULL, 0, sp1C, 0));
-    HAL_Strcpy(gNameSlots[1], GetMessageString(NULL, 0, sp1C, 1));
-    HAL_Strcpy(gNameSlots[2], GetMessageString(NULL, 0, sp1C, 2));
-    HAL_Strcpy(gNameSlots[3], GetMessageString(NULL, 0, sp1C, 3));
+    HAL_Strcpy(gNameSlots[0], Text_GetString(NULL, 0, sp1C, 0));
+    HAL_Strcpy(gNameSlots[1], Text_GetString(NULL, 0, sp1C, 1));
+    HAL_Strcpy(gNameSlots[2], Text_GetString(NULL, 0, sp1C, 2));
+    HAL_Strcpy(gNameSlots[3], Text_GetString(NULL, 0, sp1C, 3));
 }
 
-char* GetNameSlot(s32 arg0) {
+char* Text_GetPlayerLabel(s32 arg0) {
     return gNameSlots[arg0];
 }
 
-s32 IsPokemonSave(u8* arg0) {
+s32 GbSave_HasPlayerNameMarker(u8* arg0) {
     s32 i;
 
     for (i = 0; i < 11; i++) {
@@ -386,11 +386,11 @@ s32 IsPokemonSave(u8* arg0) {
     return 0;
 }
 
-s32 ValidateChecksum(u8* arg0, u8* arg1) {
+s32 GbSave_VerifyChecksum(u8* arg0, u8* arg1) {
     s32 sp1C = 0;
     s32 sp18 = 0;
 
-    if (IsPokemonSave(arg0) != 0) {
+    if (GbSave_HasPlayerNameMarker(arg0) != 0) {
         while (arg1 >= arg0) {
             sp18 += *arg0++;
         }
@@ -400,7 +400,7 @@ s32 ValidateChecksum(u8* arg0, u8* arg1) {
     return sp1C;
 }
 
-void ComputeChecksum(u8* arg0, u8* arg1) {
+void GbSave_ComputeChecksum(u8* arg0, u8* arg1) {
     s32 var_v0 = 0;
 
     while (arg0 < arg1) {
@@ -410,7 +410,7 @@ void ComputeChecksum(u8* arg0, u8* arg1) {
     *arg1 = 0xFF - (var_v0 & 0xFF);
 }
 
-s32 VerifySaveData(u8* arg0, s32 arg1) {
+s32 GbSave_VerifyWriteback(u8* arg0, s32 arg1) {
     u8* var_v0 = gSaveHeader.unk_000;
 
     while (arg1-- > 0) {
@@ -422,7 +422,7 @@ s32 VerifySaveData(u8* arg0, s32 arg1) {
     return 1;
 }
 
-s8 DetectPokemonRom(s32 arg0) {
+s8 GbCart_IdentifyGame(s32 arg0) {
     // Only part of the rom header,
     // osGbpakReadId reads from 0x100 but this reads from 0x120
     typedef struct RomHeader {
@@ -444,7 +444,7 @@ s8 DetectPokemonRom(s32 arg0) {
     RomHeader sp28;
     s8 var_s0 = POKEMON_ROM_NONE;
 
-    if ((GbPak_WriteDataAligned(arg0, &sp28, 0x120, sizeof(RomHeader)) == 0) && (sp28.country_code == 1)) {
+    if ((GbPak_ReadRom(arg0, &sp28, 0x120, sizeof(RomHeader)) == 0) && (sp28.country_code == 1)) {
         sp28.game_title[7] = '\x0';
         sp28.game_title[16] = '\x0';
 
@@ -464,18 +464,18 @@ s8 DetectPokemonRom(s32 arg0) {
     return var_s0;
 }
 
-s32 VerifySaveChecksum(s32 arg0) {
+s32 GbSave_CheckMainDataUnchanged(s32 arg0) {
     UNUSED s32 pad;
     s32 sp18 = 0;
 
     if ((GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
-        (ValidateChecksum(&gSaveHeader.unk_018, &gSaveHeader.unk_FA0.unk_03) != 0)) {
+        (GbSave_VerifyChecksum(&gSaveHeader.unk_018, &gSaveHeader.unk_FA0.unk_03) != 0)) {
         sp18 = gSaveHeader.unk_FA0.unk_03 == gPlayerSaveData[arg0].unk_04;
     }
     return sp18;
 }
 
-s32 LoadAndVerifySave(s32 arg0) {
+s32 GbSave_ReadMainData(s32 arg0) {
     s32 i;
     s32 sp30;
     unk_D_800AC910_050* temp_s4 = gPlayerSaveData[arg0].unk_50;
@@ -484,7 +484,7 @@ s32 LoadAndVerifySave(s32 arg0) {
 
     if (GbPak_MbcRead(arg0, temp_s4, 0x2580, sizeof(unk_D_800AC910_050)) == 0) {
         for (i = 0; i < 3; i++) {
-            sp30 = ValidateChecksum(&temp_s4->unk_018, &temp_s4->unk_FA0.unk_03);
+            sp30 = GbSave_VerifyChecksum(&temp_s4->unk_018, &temp_s4->unk_FA0.unk_03);
             if (sp30 != 0) {
                 if (gPlayerSaveData[arg0].unk_00 & 0x20) {
                     gPlayerSaveData[arg0].unk_04 = temp_s4->unk_FA0.unk_03;
@@ -500,49 +500,49 @@ s32 LoadAndVerifySave(s32 arg0) {
     return sp30;
 }
 
-s32 SaveAndVerifyHeader(s32 arg0) {
+s32 GbSave_WriteMainData(s32 arg0) {
     s32 i;
     unk_D_800AC910* temp_s3;
     unk_D_800AC910_050* temp_s1 = gPlayerSaveData[arg0].unk_50;
 
-    ComputeChecksum(temp_s1->unk_018, &temp_s1->unk_FA0.unk_03);
+    GbSave_ComputeChecksum(temp_s1->unk_018, &temp_s1->unk_FA0.unk_03);
     gPlayerSaveData[arg0].unk_04 = temp_s1->unk_FA0.unk_03;
 
     for (i = 0; i < 4; i++) {
         if ((GbPak_MbcWrite(arg0, temp_s1, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
             (GbPak_MbcRead(arg0, &gSaveHeader, 0x2580, sizeof(unk_D_800AC910_050)) == 0) &&
-            (VerifySaveData(temp_s1, sizeof(unk_D_800AC910_050)) != 0)) {
+            (GbSave_VerifyWriteback(temp_s1, sizeof(unk_D_800AC910_050)) != 0)) {
             return 1;
         }
     }
     return 0;
 }
 
-s32 SaveAndVerifyFooter(s32 arg0) {
+s32 GbSave_InvalidateMainDataChecksum(s32 arg0) {
     unk_D_800AC910_050* temp_s3 = gPlayerSaveData[arg0].unk_50;
     s32 i;
 
-    ComputeChecksum(&temp_s3->unk_018, &temp_s3->unk_FA0.unk_03);
+    GbSave_ComputeChecksum(&temp_s3->unk_018, &temp_s3->unk_FA0.unk_03);
     temp_s3->unk_FA0.unk_03 ^= 0xFF;
 
     for (i = 0; i < 4; i++) {
         if ((GbPak_MbcWrite(arg0, &temp_s3->unk_FA0, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
             (GbPak_MbcRead(arg0, &gSaveHeader, 0x3520, sizeof(unk_D_800AC910_050_FA0)) == 0) &&
-            (VerifySaveData(&temp_s3->unk_FA0, sizeof(unk_D_800AC910_050_FA0)) != 0)) {
+            (GbSave_VerifyWriteback(&temp_s3->unk_FA0, sizeof(unk_D_800AC910_050_FA0)) != 0)) {
             return 1;
         }
     }
     return 0;
 }
 
-s32 ReadSaveBoxData(s32 arg0, s32 arg1) {
+s32 GbSave_ReadBoxBank(s32 arg0, s32 arg1) {
     UNUSED s32 pad[2];
     unk_D_800AC910_054_000_000* sp1C = &gPlayerSaveData[arg0].unk_54->unk_0000[arg1];
 
     return GbPak_MbcRead(arg0, sp1C, (arg1 == 0) ? 0x4000 : 0x6000, 0x1A60) == 0;
 }
 
-s32 WriteAndVerifyBoxData(s32 arg0, s32 arg1) {
+s32 GbSave_WriteBoxBank(s32 arg0, s32 arg1) {
     s32 var_v0;
     unk_D_800AC910_054_000* temp_s2 = &gPlayerSaveData[arg0].unk_54->unk_0000[arg1];
     s32 i;
@@ -557,14 +557,14 @@ s32 WriteAndVerifyBoxData(s32 arg0, s32 arg1) {
 
     for (i = 0; i < 4; i++) {
         if ((GbPak_MbcWrite(arg0, temp_s2, var_v0, 0x1A60) == 0) &&
-            (GbPak_MbcRead(arg0, &gSaveHeader, var_v0, 0x1A60) == 0) && (VerifySaveData(temp_s2, 0x1A60) != 0)) {
+            (GbPak_MbcRead(arg0, &gSaveHeader, var_v0, 0x1A60) == 0) && (GbSave_VerifyWriteback(temp_s2, 0x1A60) != 0)) {
             return 1;
         }
     }
     return 0;
 }
 
-void PlayerSave_PoolFreeCallback(UNUSED MainPoolBlock* arg0, u32 arg1) {
+void GbSave_ReleasePortBuffers(UNUSED MainPoolBlock* arg0, u32 arg1) {
     unk_D_800AC910* ptr;
 
     if ((arg1 >= 'DAT0') && (arg1 < 'DAT4')) {
@@ -580,7 +580,7 @@ void PlayerSave_PoolFreeCallback(UNUSED MainPoolBlock* arg0, u32 arg1) {
     }
 }
 
-void VerifySaveFlag(s32 arg0) {
+void GbSave_CheckLocationFlag(s32 arg0) {
     extern u8 gValidSaveFlags[12];
 
     s32 i;
@@ -596,7 +596,7 @@ void VerifySaveFlag(s32 arg0) {
     }
 }
 
-s32 PlayerSave_InitAndLoad(s32 arg0) {
+s32 GbSave_OpenMainData(s32 arg0) {
     u8 sp2F;
     s32 sp28 = 0;
 
@@ -604,16 +604,16 @@ s32 PlayerSave_InitAndLoad(s32 arg0) {
         return 1;
     }
 
-    gPlayerSaveData[arg0].unk_50 = main_pool_alloc_with_func(0xFC0, 0, arg0 + 'DAT0', PlayerSave_PoolFreeCallback);
+    gPlayerSaveData[arg0].unk_50 = main_pool_alloc_with_func(0xFC0, 0, arg0 + 'DAT0', GbSave_ReleasePortBuffers);
 
     if (gPlayerSaveData[arg0].unk_50 != NULL) {
         gPlayerSaveData[arg0].unk_00 |= 1;
-        if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+        if (GbTower_ProbePak(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             Game_ShutdownAndLoadFragment(arg0, 2);
         }
 
-        sp28 = LoadAndVerifySave(arg0);
-        if (GbPak_SetPowerState(arg0, sp2F) == 0) {
+        sp28 = GbSave_ReadMainData(arg0);
+        if (GbTower_CheckPakRemoved(arg0, sp2F) == 0) {
             Game_ShutdownAndLoadFragment(arg0, 2);
         }
 
@@ -625,11 +625,11 @@ s32 PlayerSave_InitAndLoad(s32 arg0) {
     return sp28;
 }
 
-s32 SaveSlot_Load(s32 arg0) {
+s32 GbSave_EnsureMainDataLoaded(s32 arg0) {
     s32 sp1C = 0;
 
     if (((1 << arg0) & gActivePlayerMask) && (gPlayerSaveData[arg0].unk_03 == 0)) {
-        sp1C = PlayerSave_InitAndLoad(arg0);
+        sp1C = GbSave_OpenMainData(arg0);
         if (sp1C == 0) {
             Game_ShutdownAndLoadFragment(arg0, 2);
         }
@@ -638,7 +638,7 @@ s32 SaveSlot_Load(s32 arg0) {
     return sp1C;
 }
 
-s32 PlayerSave_LoadBoxes(s32 arg0) {
+s32 GbSave_OpenBoxData(s32 arg0) {
     u8 sp37;
     s32 i;
     s32 sp2C;
@@ -653,20 +653,20 @@ s32 PlayerSave_LoadBoxes(s32 arg0) {
         return 1;
     }
 
-    gPlayerSaveData[arg0].unk_54 = main_pool_alloc_with_func(sizeof(unk_D_800AC910_054), 0, arg0 + 'BOX0', PlayerSave_PoolFreeCallback);
+    gPlayerSaveData[arg0].unk_54 = main_pool_alloc_with_func(sizeof(unk_D_800AC910_054), 0, arg0 + 'BOX0', GbSave_ReleasePortBuffers);
 
     if (gPlayerSaveData[arg0].unk_54 != NULL) {
         gPlayerSaveData[arg0].unk_00 |= 2;
-        if (SaveSlot_GetPokemonBall(arg0) > 0) {
-            if (GbPak_InitAndTest(arg0, &sp37, gPlayerSaveData[arg0].unk_19) == 0) {
+        if (GbSave_GetBoxCount(arg0) > 0) {
+            if (GbTower_ProbePak(arg0, &sp37, gPlayerSaveData[arg0].unk_19) == 0) {
                 Game_ShutdownAndLoadFragment(arg0, 2);
             }
 
-            if (ReadSaveBoxData(arg0, 0) != 0) {
-                sp2C = ReadSaveBoxData(arg0, 1);
+            if (GbSave_ReadBoxBank(arg0, 0) != 0) {
+                sp2C = GbSave_ReadBoxBank(arg0, 1);
             }
 
-            if (GbPak_SetPowerState(arg0, sp37) == 0) {
+            if (GbTower_CheckPakRemoved(arg0, sp37) == 0) {
                 Game_ShutdownAndLoadFragment(arg0, 2);
             }
 
@@ -687,25 +687,25 @@ s32 PlayerSave_LoadBoxes(s32 arg0) {
     return sp2C;
 }
 
-s32 SnapSelect_SetCameraMode(s32 arg0) {
+s32 GbSave_LoadPort(s32 arg0) {
     u8 sp2F;
     s32 temp_s1 = 0;
 
     if ((1 << arg0) & gActivePlayerMask) {
         if (gPlayerSaveData[arg0].unk_03 == 0) {
-            if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+            if (GbTower_ProbePak(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
                 Game_ShutdownAndLoadFragment(arg0, 2);
             }
 
-            temp_s1 = SaveSlot_Load(arg0);
-            temp_s1 &= PlayerSave_LoadBoxes(arg0);
+            temp_s1 = GbSave_EnsureMainDataLoaded(arg0);
+            temp_s1 &= GbSave_OpenBoxData(arg0);
 
-            if (GbPak_SetPowerState(arg0, sp2F) == 0) {
+            if (GbTower_CheckPakRemoved(arg0, sp2F) == 0) {
                 Game_ShutdownAndLoadFragment(arg0, 2);
             }
 
             if (temp_s1 != 0) {
-                SaveSlot_UpdateOwnedPokemonBitmask(arg0);
+                GbSave_RebuildSeenBitfield(arg0);
             }
         }
     }
@@ -713,35 +713,35 @@ s32 SnapSelect_SetCameraMode(s32 arg0) {
     return temp_s1;
 }
 
-s32 PlayerSave_UpdateState(s32 arg0) {
+s32 GbSave_PollCartRemoval(s32 arg0) {
     extern u8 gPlayerInitState[];
 
     s32 sp24 = 0;
 
     switch (gPlayerInitState[arg0]) {
         case 0:
-            GbPak_SetPowerState(arg0, 0);
+            GbTower_CheckPakRemoved(arg0, 0);
             gPlayerInitState[arg0] += 1;
             // fallthrough
 
         case 1:
-            if (GbPak_IsCartRemoved(arg0) != 0) {
+            if (GbPak_IsCartOff(arg0) != 0) {
                 gPlayerInitState[arg0] += 1;
             }
             break;
 
         case 2:
-            if (GbPak_IsCartInserted(arg0) != 0) {
+            if (GbPak_IsCartOn(arg0) != 0) {
                 gPlayerInitState[arg0] += 1;
             }
             sp24 = 1;
             break;
 
         case 3:
-            if (GbPak_ReinitSlot(arg0) != 0) {
+            if (GbTower_ReinitPak(arg0) != 0) {
                 sp24 = 3;
-                if (DetectPokemonRom(arg0) == gPlayerSaveData[arg0].unk_02) {
-                    if (GbPak_VerifyBlockNoDetect(arg0, gPlayerSaveData[arg0].unk_19) != 0) {
+                if (GbCart_IdentifyGame(arg0) == gPlayerSaveData[arg0].unk_02) {
+                    if (GbTower_VerifyPakStillInserted(arg0, gPlayerSaveData[arg0].unk_19) != 0) {
                         sp24 = 2;
                     }
                 }
@@ -752,12 +752,12 @@ s32 PlayerSave_UpdateState(s32 arg0) {
     return sp24;
 }
 
-void PlayerSave_Refresh(s32 arg0) {
+void GbSave_RefreshPortState(s32 arg0) {
     gPlayerSaveData[arg0].unk_00 &= ~0x7000;
 
-    if (PlayerSave_InitAndLoad(arg0) != 0) {
-        SaveSlot_LoadPokemonData(arg0);
-        VerifySaveFlag(arg0);
+    if (GbSave_OpenMainData(arg0) != 0) {
+        GbSave_RefreshPlayerIdentity(arg0);
+        GbSave_CheckLocationFlag(arg0);
         gPlayerSaveData[arg0].unk_05 = gPlayerSaveData[arg0].unk_50->unk_9AC.unk_000;
 
         if (gPlayerSaveData[arg0].unk_50->unk_477 & 0x20) {
@@ -774,17 +774,17 @@ void PlayerSave_Refresh(s32 arg0) {
     }
 }
 
-void PlayerSave_RequestRefresh(s32 arg0) {
+void GbSave_ForceReloadPort(s32 arg0) {
     if ((1 << arg0) & gActivePlayerMask) {
         gPlayerSaveData[arg0].unk_00 |= 0x20;
-        PlayerSave_Refresh(arg0);
+        GbSave_RefreshPortState(arg0);
     }
 }
 
-s32 InitializePlayers(void) {
+s32 GbSave_ScanAllPorts(void) {
     s32 i;
     s32 j;
-    s32 temp_v0 = GbPak_InitAll();
+    s32 temp_v0 = GbTower_ScanPaks();
 
     gControllerPortMask = temp_v0 & 0xFF;
     gControllerPortStatus = (temp_v0 >> 0x10) & 0xFF;
@@ -807,15 +807,15 @@ s32 InitializePlayers(void) {
 
         if (gControllerPortStatus & (1 << i)) {
             var_s0->unk_03 = 2;
-            var_s0->unk_02 = DetectPokemonRom(i);
+            var_s0->unk_02 = GbCart_IdentifyGame(i);
             if (var_s0->unk_02) {
                 gActivePlayerMask |= (1 << i);
-                if (GbPak_TestMemory(i, var_s0->unk_19) == 0) {
+                if (GbPak_DetectRam(i, var_s0->unk_19) == 0) {
                     Game_ShutdownAndLoadFragment(i, 2);
                 }
-                PlayerSave_Refresh(i);
+                GbSave_RefreshPortState(i);
             }
-            GbPak_SetPowerState(i, 0);
+            GbTower_CheckPakRemoved(i, 0);
         }
     }
 
@@ -826,95 +826,95 @@ s32 InitializePlayers(void) {
     return gActivePlayerMask;
 }
 
-void SetSaveDirtyFlag(s32 arg0) {
-    u16 temp_v0 = ReadBE16(&gPlayerSaveData[arg0].unk_50->unk_2CC);
+void GbSave_MarkBoxDataLoaded(s32 arg0) {
+    u16 temp_v0 = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->unk_2CC);
 
     if (!(temp_v0 & 0x8000)) {
-        WriteBE16(&gPlayerSaveData[arg0].unk_50->unk_2CC, temp_v0 | 0x8000);
+        GbData_WriteU16BE(&gPlayerSaveData[arg0].unk_50->unk_2CC, temp_v0 | 0x8000);
     }
 }
 
-s32 PlayerSave_WriteBoxes(s32 arg0) {
+s32 GbSave_WriteBoxBanks(s32 arg0) {
     u8 sp2F;
     s32 sp28 = 0;
 
     if (gPlayerSaveData[arg0].unk_00 & 2) {
-        if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+        if (GbTower_ProbePak(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             Game_ShutdownAndLoadFragment(arg0, 2);
         }
 
-        sp28 = WriteAndVerifyBoxData(arg0, 0);
+        sp28 = GbSave_WriteBoxBank(arg0, 0);
 
         if (sp28 != 0) {
-            sp28 = WriteAndVerifyBoxData(arg0, 1);
+            sp28 = GbSave_WriteBoxBank(arg0, 1);
         }
-        sp28 &= GbPak_SetPowerState(arg0, sp2F);
+        sp28 &= GbTower_CheckPakRemoved(arg0, sp2F);
     }
     return sp28;
 }
 
-s32 PlayerSave_WriteHeader(s32 arg0) {
+s32 GbSave_CommitMainData(s32 arg0) {
     u8 sp2F;
     s32 sp28 = 0;
 
     if (gPlayerSaveData[arg0].unk_00 & 1) {
-        if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+        if (GbTower_ProbePak(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
             Game_ShutdownAndLoadFragment(arg0, 2);
         }
 
-        sp28 = SaveAndVerifyHeader(arg0);
-        sp28 &= GbPak_SetPowerState(arg0, sp2F);
+        sp28 = GbSave_WriteMainData(arg0);
+        sp28 &= GbTower_CheckPakRemoved(arg0, sp2F);
 
         if (sp28 != 0) {
-            SaveSlot_LoadPokemonData(arg0);
+            GbSave_RefreshPlayerIdentity(arg0);
             gPlayerSaveData[arg0].unk_05 = gPlayerSaveData[arg0].unk_50->unk_9AC.unk_000;
         }
     }
     return sp28;
 }
 
-s32 PlayerSave_FullSave(s32 arg0) {
+s32 GbSave_RebuildAndWriteSave(s32 arg0) {
     u8 sp2F;
     s32 sp28;
 
-    if (GbPak_InitAndTest(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
+    if (GbTower_ProbePak(arg0, &sp2F, gPlayerSaveData[arg0].unk_19) == 0) {
         Game_ShutdownAndLoadFragment(arg0, 2);
     }
 
-    sp28 = SaveAndVerifyFooter(arg0);
+    sp28 = GbSave_InvalidateMainDataChecksum(arg0);
 
     if (sp28 != 0) {
-        sp28 = PlayerSave_WriteBoxes(arg0);
+        sp28 = GbSave_WriteBoxBanks(arg0);
         if (sp28 != 0) {
-            sp28 = PlayerSave_WriteHeader(arg0);
+            sp28 = GbSave_CommitMainData(arg0);
         }
     }
 
-    sp28 &= GbPak_SetPowerState(arg0, sp2F);
+    sp28 &= GbTower_CheckPakRemoved(arg0, sp2F);
     return sp28;
 }
 
-void PlayerSave_VerifyPresence(s32 arg0) {
+void GbSave_ValidateBeforeWrite(s32 arg0) {
     u8 sp27;
 
-    if (GbPak_InitAndTest(arg0, &sp27, gPlayerSaveData[arg0].unk_19) == 0) {
+    if (GbTower_ProbePak(arg0, &sp27, gPlayerSaveData[arg0].unk_19) == 0) {
         Game_ShutdownAndLoadFragment(arg0, 2);
     }
 
-    if (VerifySaveChecksum(arg0) == 0) {
+    if (GbSave_CheckMainDataUnchanged(arg0) == 0) {
         Game_ShutdownAndLoadFragment(arg0, 1);
     }
 }
 
-void PlayerSave_PowerOff(s32 arg0) {
-    if (GbPak_SetPowerState(arg0, 0) == 0) {
+void GbSave_RequirePakPresent(s32 arg0) {
+    if (GbTower_CheckPakRemoved(arg0, 0) == 0) {
         Game_ShutdownAndLoadFragment(arg0, 2);
     }
 }
 
-unk_D_800AC910_050_B40_000* GetPokemonRecordPtr(s32 arg0, s32 arg1) {
+unk_D_800AC910_050_B40_000* GbSave_GetBoxEntry(s32 arg0, s32 arg1) {
     unk_D_800AC910_050_B40_000* sp1C = NULL;
-    s32 temp_v0 = SaveSlot_GetPokemonBall(arg0);
+    s32 temp_v0 = GbSave_GetBoxCount(arg0);
 
     if (temp_v0 > 0) {
         if (arg1 == (temp_v0 - 1)) {
@@ -928,62 +928,62 @@ unk_D_800AC910_050_B40_000* GetPokemonRecordPtr(s32 arg0, s32 arg1) {
     return sp1C;
 }
 
-void LoadPartyPokemon(PokemonData* arg0, s32 arg1, s32 arg2) {
+void GbSave_LoadMainPokemon(PokemonData* arg0, s32 arg1, s32 arg2) {
     unk_D_800AC910_050_9AC* ptr2 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
 
-    DeserializePartyPokemon(arg0, &ptr2->unk_008[arg2]);
-    CalculatePokemonStats(arg0);
+    Pokemon_FromGbRecordExt(arg0, &ptr2->unk_008[arg2]);
+    Pokemon_RecalcStats(arg0);
 
     arg0->unk_52 = 0;
     arg0->unk_53 = 0;
     arg0->unk_25 = 0;
 
     _bcopy(ptr2->unk_110[arg2], arg0->unk_46, 0xB);
-    DecodeGen1StringFromRawBuffer(arg0->unk_30, ptr2->unk_152[arg2]);
-    DecodeGen1StringFromRawBuffer(arg0->unk_3B, ptr2->unk_110[arg2]);
+    Text_UntranscodeFixedName(arg0->unk_30, ptr2->unk_152[arg2]);
+    Text_UntranscodeFixedName(arg0->unk_3B, ptr2->unk_110[arg2]);
 }
 
-void SavePartyPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
+void GbSave_SaveMainPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
     unk_D_800AC910_050_9AC* sp24 = &gPlayerSaveData[arg1].unk_50->unk_9AC;
 
-    SerializePartyToRawData(arg0, &sp24->unk_008[arg2]);
-    EncodeGen1String(sp24->unk_152[arg2], arg0->unk_000[0].unk_30);
+    Pokemon_ToGbRecordExt(arg0, &sp24->unk_008[arg2]);
+    Text_TranscodeName(sp24->unk_152[arg2], arg0->unk_000[0].unk_30);
     _bcopy(arg0->unk_000[0].unk_46, sp24->unk_110[arg2], 0xB);
     sp24->unk_001[arg2] = sp24->unk_008[arg2].unk_00.unk_00;
 }
 
-void LoadBoxPokemon(PokemonData* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    unk_D_800AC910_050_B40* sp2C = (unk_D_800AC910_050_B40*)GetPokemonRecordPtr(arg1, arg2);
+void GbSave_LoadBoxPokemon(PokemonData* arg0, s32 arg1, s32 arg2, s32 arg3) {
+    unk_D_800AC910_050_B40* sp2C = (unk_D_800AC910_050_B40*)GbSave_GetBoxEntry(arg1, arg2);
 
     if (sp2C != NULL) {
-        DeserializePokemonRecord(arg0, &sp2C->unk_016[arg3]);
-        CalculatePokemonStats(arg0);
+        Pokemon_FromGbRecord(arg0, &sp2C->unk_016[arg3]);
+        Pokemon_RecalcStats(arg0);
 
         arg0->unk_52 = 0;
         arg0->unk_53 = 0;
         arg0->unk_25 = 0;
 
         _bcopy(sp2C->unk_2AA[arg3], arg0->unk_46, 0xB);
-        DecodeGen1StringFromRawBuffer(arg0->unk_30, sp2C->unk_386[arg3]);
-        DecodeGen1StringFromRawBuffer(arg0->unk_3B, sp2C->unk_2AA[arg3]);
+        Text_UntranscodeFixedName(arg0->unk_30, sp2C->unk_386[arg3]);
+        Text_UntranscodeFixedName(arg0->unk_3B, sp2C->unk_2AA[arg3]);
     }
 }
 
-void SaveBoxPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    unk_D_800AC910_050_B40* sp2C = GetPokemonRecordPtr(arg1, arg2);
+void GbSave_SaveBoxPokemon(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2, s32 arg3) {
+    unk_D_800AC910_050_B40* sp2C = GbSave_GetBoxEntry(arg1, arg2);
 
     if (sp2C != NULL) {
         arg0->unk_000[0].unk_04 = arg0->unk_000[0].unk_24;
-        SerializePokemonToRawData(arg0->unk_000, &sp2C->unk_016[arg3]);
-        EncodeGen1StringToBuffer(sp2C->unk_386[arg3], arg0->unk_000[0].unk_30);
+        Pokemon_ToGbRecord(arg0->unk_000, &sp2C->unk_016[arg3]);
+        Text_TranscodeNameWrapper(sp2C->unk_386[arg3], arg0->unk_000[0].unk_30);
         _bcopy(arg0->unk_000[0].unk_46, sp2C->unk_2AA[arg3], 0xB);
         sp2C->unk_000.unk_001[arg3] = sp2C->unk_016[arg3].unk_00;
     }
 }
 
-s32 GetPokemonRecordId(s32 arg0, s32 arg1) {
+s32 GbSave_GetBoxEntryCount(s32 arg0, s32 arg1) {
     s32 sp1C = 0;
-    unk_D_800AC910_050_B40_000* temp_v0 = GetPokemonRecordPtr(arg0, arg1);
+    unk_D_800AC910_050_B40_000* temp_v0 = GbSave_GetBoxEntry(arg0, arg1);
 
     if (temp_v0 != NULL) {
         sp1C = temp_v0->unk_000;
@@ -991,8 +991,8 @@ s32 GetPokemonRecordId(s32 arg0, s32 arg1) {
     return sp1C;
 }
 
-void SetPokemonRecordId(s32 arg0, s32 arg1, s32 arg2) {
-    unk_D_800AC910_050_B40_000* temp_v0 = GetPokemonRecordPtr(arg0, arg1);
+void GbSave_SetBoxEntryCount(s32 arg0, s32 arg1, s32 arg2) {
+    unk_D_800AC910_050_B40_000* temp_v0 = GbSave_GetBoxEntry(arg0, arg1);
 
     if (temp_v0 != NULL) {
         temp_v0->unk_000 = arg2;
@@ -1000,7 +1000,7 @@ void SetPokemonRecordId(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 GetSaveBlockMaxEntries(s32 arg0) {
+s32 Deck_GetCapacity(s32 arg0) {
     s32 ret = 0;
 
     switch (arg0) {
@@ -1024,7 +1024,7 @@ s32 GetSaveBlockMaxEntries(s32 arg0) {
     return ret;
 }
 
-s32 GetSaveBlockEntrySize(s32 arg0) {
+s32 Deck_GetEntrySize(s32 arg0) {
     s32 ret = 0;
 
     switch (arg0) {
@@ -1044,7 +1044,7 @@ s32 GetSaveBlockEntrySize(s32 arg0) {
     return ret;
 }
 
-s32 GetSaveBlockCurrentCount(s32 arg0, s32 arg1, s32 arg2) {
+s32 Deck_GetCount(s32 arg0, s32 arg1, s32 arg2) {
     s32 var_v1 = 0;
     unk_D_800AC910_050* ptr = gPlayerSaveData[arg1].unk_50;
 
@@ -1054,7 +1054,7 @@ s32 GetSaveBlockCurrentCount(s32 arg0, s32 arg1, s32 arg2) {
             break;
 
         case 33:
-            var_v1 = GetPokemonRecordId(arg1, arg2);
+            var_v1 = GbSave_GetBoxEntryCount(arg1, arg2);
             break;
 
         case 34:
@@ -1068,10 +1068,10 @@ s32 GetSaveBlockCurrentCount(s32 arg0, s32 arg1, s32 arg2) {
     return var_v1;
 }
 
-void SetSaveBlockCount(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Deck_DeleteEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     unk_D_800AC910_050* sp1C = gPlayerSaveData[arg1].unk_50;
 
-    if (arg3 < GetSaveBlockCurrentCount(arg0, arg1, arg2)) {
+    if (arg3 < Deck_GetCount(arg0, arg1, arg2)) {
         switch (arg0) {
             case 32:
                 sp1C->unk_9AC.unk_000 = arg3;
@@ -1079,7 +1079,7 @@ void SetSaveBlockCount(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
                 break;
 
             case 33:
-                SetPokemonRecordId(arg1, arg2, arg3);
+                GbSave_SetBoxEntryCount(arg1, arg2, arg3);
                 break;
 
             case 34:
@@ -1095,11 +1095,11 @@ void SetSaveBlockCount(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-void IncrementSaveBlockCount(s32 arg0, s32 arg1, s32 arg2) {
+void Deck_AppendEntry(s32 arg0, s32 arg1, s32 arg2) {
     unk_D_800AC910_050* sp1C = gPlayerSaveData[arg1].unk_50;
-    s32 sp18 = GetSaveBlockCurrentCount(arg0, arg1, arg2);
+    s32 sp18 = Deck_GetCount(arg0, arg1, arg2);
 
-    if (sp18 < GetSaveBlockMaxEntries(arg0)) {
+    if (sp18 < Deck_GetCapacity(arg0)) {
         sp18++;
 
         switch (arg0) {
@@ -1109,7 +1109,7 @@ void IncrementSaveBlockCount(s32 arg0, s32 arg1, s32 arg2) {
                 break;
 
             case 33:
-                SetPokemonRecordId(arg1, arg2, sp18);
+                GbSave_SetBoxEntryCount(arg1, arg2, sp18);
                 break;
 
             case 34:
@@ -1125,19 +1125,19 @@ void IncrementSaveBlockCount(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 ReadSaveBlockEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, PokemonData* arg4) {
+s32 Deck_ReadEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, PokemonData* arg4) {
     s32 sp1C = 0;
 
-    if (arg3 < GetSaveBlockCurrentCount(arg0, arg1, arg2)) {
+    if (arg3 < Deck_GetCount(arg0, arg1, arg2)) {
         unk_D_800AC910_050* temp_v0 = gPlayerSaveData[arg1].unk_50;
 
         switch (arg0) {
             case 32:
-                LoadPartyPokemon(arg4, arg1, arg3);
+                GbSave_LoadMainPokemon(arg4, arg1, arg3);
                 break;
 
             case 33:
-                LoadBoxPokemon(arg4, arg1, arg2, arg3);
+                GbSave_LoadBoxPokemon(arg4, arg1, arg2, arg3);
                 break;
 
             case 35:
@@ -1153,21 +1153,21 @@ s32 ReadSaveBlockEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, PokemonData* arg4
     return sp1C;
 }
 
-s32 WriteSaveBlockEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88205880_00D0* arg4) {
+s32 Deck_WriteEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_88205880_00D0* arg4) {
     s32 sp2C = 0;
-    s32 sp28 = GetSaveBlockMaxEntries(arg0);
-    s32 sp24 = GetSaveBlockCurrentCount(arg0, arg1, arg2);
+    s32 sp28 = Deck_GetCapacity(arg0);
+    s32 sp24 = Deck_GetCount(arg0, arg1, arg2);
 
     if ((arg3 < sp24) || ((arg3 == sp24) && (arg3 < sp28))) {
         unk_D_800AC910_050* ptr = gPlayerSaveData[arg1].unk_50;
 
         switch (arg0) {
             case 32:
-                SavePartyPokemon(arg4, arg1, arg3);
+                GbSave_SaveMainPokemon(arg4, arg1, arg3);
                 break;
 
             case 33:
-                SaveBoxPokemon(arg4, arg1, arg2, arg3);
+                GbSave_SaveBoxPokemon(arg4, arg1, arg2, arg3);
                 break;
 
             case 35:
@@ -1180,7 +1180,7 @@ s32 WriteSaveBlockEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_8820588
         }
 
         if (arg3 == sp24) {
-            IncrementSaveBlockCount(arg0, arg1, arg2);
+            Deck_AppendEntry(arg0, arg1, arg2);
         }
 
         sp2C = 1;
@@ -1188,15 +1188,15 @@ s32 WriteSaveBlockEntry(s32 arg0, s32 arg1, s32 arg2, s32 arg3, unk_func_8820588
     return sp2C;
 }
 
-s32 GetActivePlayerMask(void) {
+s32 GbSave_GetPresentPortMask(void) {
     return gActivePlayerMask;
 }
 
-s32 MenuItem_GetPokemonSpecies(s32 arg0) {
+s32 GbSave_GetSaveState(s32 arg0) {
     return gPlayerSaveData[arg0].unk_03;
 }
 
-s32 GetPlayerBitmask(s32 arg0) {
+s32 GbSave_GetPortAvailability(s32 arg0) {
     s32 temp_v0 = 1 << arg0;
 
     if (!(gControllerPortMask & temp_v0)) {
@@ -1210,26 +1210,26 @@ s32 GetPlayerBitmask(s32 arg0) {
     return 0;
 }
 
-s32 MenuItem_GetHeldItemId(s32 arg0) {
+s32 GbSave_GetPortGame(s32 arg0) {
     return gPlayerSaveData[arg0].unk_02;
 }
 
-s32 MenuItem_GetPokemonLevel(s32 arg0) {
+s32 GbSave_GetPartyCount(s32 arg0) {
     return gPlayerSaveData[arg0].unk_05;
 }
 
-s32 SaveSlot_LoadPokemonData(s32 arg0) {
+s32 GbSave_RefreshPlayerIdentity(s32 arg0) {
     if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return 0;
     }
 
-    gPlayerSaveData[arg0].unk_40.unk_00 = ReadBE16(&gPlayerSaveData[arg0].unk_50->unk_085);
+    gPlayerSaveData[arg0].unk_40.unk_00 = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->unk_085);
     _bcopy(&gPlayerSaveData[arg0].unk_50->unk_018, &gPlayerSaveData[arg0].unk_40.unk_02, 0xB);
     bzero(gPlayerSaveData[arg0].unk_40.unk_0D, 3);
     return 1;
 }
 
-void Controller_ReadInput(s32 arg0, Gen1StringDecodeBuffer* arg1) {
+void GbSave_CopyPlayerIdentity(s32 arg0, Gen1StringDecodeBuffer* arg1) {
     u64* ptr = &gPlayerSaveData[arg0].unk_40;
     u64* ptr2 = arg1;
 
@@ -1237,25 +1237,25 @@ void Controller_ReadInput(s32 arg0, Gen1StringDecodeBuffer* arg1) {
     *ptr2++ = *ptr++;
 }
 
-s32 SaveSlot_GetPokemonId(s32 arg0) {
+s32 GbSave_GetTrainerId(s32 arg0) {
     if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return -1;
     }
-    return ReadBE16(&gPlayerSaveData[arg0].unk_50->unk_085);
+    return GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->unk_085);
 }
 
-void SaveSlot_SetPokemonId(s32 arg0, u16 arg1) {
+void GbSave_SetTrainerId(s32 arg0, u16 arg1) {
     if (gPlayerSaveData[arg0].unk_00 & 1) {
-        WriteBE16(&gPlayerSaveData[arg0].unk_50->unk_085, arg1);
+        GbData_WriteU16BE(&gPlayerSaveData[arg0].unk_50->unk_085, arg1);
     }
 }
 
-s32 SaveSlot_GetPokemonBall(s32 arg0) {
+s32 GbSave_GetBoxCount(s32 arg0) {
     s32 temp_a0;
     s32 phi_v1 = -1;
 
     if (gPlayerSaveData[arg0].unk_00 & 1) {
-        temp_a0 = ReadBE16(&gPlayerSaveData[arg0].unk_50->unk_2CC) >> 8;
+        temp_a0 = GbData_ReadU16BE(&gPlayerSaveData[arg0].unk_50->unk_2CC) >> 8;
         if (temp_a0 & 0x80) {
             phi_v1 = (temp_a0 & 0x7F) + 1;
         } else {
@@ -1265,54 +1265,54 @@ s32 SaveSlot_GetPokemonBall(s32 arg0) {
     return phi_v1;
 }
 
-char* SaveSlot_GetTrainerName(s32 arg0, char* arg1) {
+char* GbSave_GetPlayerName(s32 arg0, char* arg1) {
     if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return DecodeGen1StringFromRawBuffer(arg1, &gPlayerSaveData[arg0].unk_50->unk_018);
+    return Text_UntranscodeFixedName(arg1, &gPlayerSaveData[arg0].unk_50->unk_018);
 }
 
-char* SaveSlot_EncodeTrainerName(s32 arg0, char* arg1) {
+char* GbSave_SetPlayerName(s32 arg0, char* arg1) {
     if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return EncodeGen1String(&gPlayerSaveData[arg0].unk_50->unk_018, arg1);
+    return Text_TranscodeName(&gPlayerSaveData[arg0].unk_50->unk_018, arg1);
 }
 
-char* SaveSlot_GetNickname(s32 arg0, char* arg1) {
+char* GbSave_GetSecondaryName(s32 arg0, char* arg1) {
     if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return DecodeGen1StringFromRawBuffer(arg1, &gPlayerSaveData[arg0].unk_50->unk_076);
+    return Text_UntranscodeFixedName(arg1, &gPlayerSaveData[arg0].unk_50->unk_076);
 }
 
-char* SaveSlot_EncodeNickname(s32 arg0, char* arg1) {
+char* GbSave_SetSecondaryName(s32 arg0, char* arg1) {
     if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return NULL;
     }
-    return EncodeGen1String(&gPlayerSaveData[arg0].unk_50->unk_076, arg1);
+    return Text_TranscodeName(&gPlayerSaveData[arg0].unk_50->unk_076, arg1);
 }
 
-s32 SaveSlot_GetPokemonExperience(s32 arg0) {
+s32 GbSave_GetStarterChoice(s32 arg0) {
     if (!(gPlayerSaveData[arg0].unk_00 & 1)) {
         return -1;
     }
     return gPlayerSaveData[arg0].unk_50->unk_441;
 }
 
-s32 MenuItem_GetPokemonGender(s32 arg0) {
+s32 GbSave_SavedAtPokemonCenter(s32 arg0) {
     return (gPlayerSaveData[arg0].unk_00 & 0x4000) != 0;
 }
 
-s32 MenuItem_IsPokemonShiny(s32 arg0) {
+s32 GbSave_HasPokedex(s32 arg0) {
     return (gPlayerSaveData[arg0].unk_00 & 0x2000) != 0;
 }
 
-s32 MenuItem_IsPokemonEgg(s32 arg0) {
+s32 GbSave_HasProgressFlag1000(s32 arg0) {
     return (gPlayerSaveData[arg0].unk_00 & 0x1000) != 0;
 }
 
-s32 SaveSlot_CopyPokemonStats(s32 arg0, func_800253F4_arg1* arg1) {
+s32 GbSave_CopyPortSnapshot(s32 arg0, func_800253F4_arg1* arg1) {
     s32 temp_v1 = (gPlayerSaveData[arg0].unk_00 & 1) != 0;
 
     if (temp_v1 != 0) {
@@ -1326,12 +1326,12 @@ s32 SaveSlot_CopyPokemonStats(s32 arg0, func_800253F4_arg1* arg1) {
     return temp_v1;
 }
 
-void MarkPokemonOwned(char* arg0, s32 arg1, u8* arg2) {
+void GbSave_MarkSeenBits(char* arg0, s32 arg1, u8* arg2) {
     s32 temp_v0;
     s32 h;
 
     while (arg1-- > 0) {
-        temp_v0 = GetPokemonFormId(*arg2++);
+        temp_v0 = Species_FromInternalIndex(*arg2++);
         if (0x98 != temp_v0) {
             temp_v0++;
             temp_v0--;
@@ -1342,7 +1342,7 @@ void MarkPokemonOwned(char* arg0, s32 arg1, u8* arg2) {
     }
 }
 
-void SaveSlot_UpdateOwnedPokemonBitmask(s32 arg0) {
+void GbSave_RebuildSeenBitfield(s32 arg0) {
     unk_D_800AC910* ptr = &gPlayerSaveData[arg0];
     unk_D_800AC910_050* temp_s0 = ptr->unk_50;
     u8* ptr6 = ptr->unk_06;
@@ -1354,16 +1354,16 @@ void SaveSlot_UpdateOwnedPokemonBitmask(s32 arg0) {
         ptr6[i] = 0;
     }
 
-    MarkPokemonOwned(ptr6, temp_s0->unk_9AC.unk_000, temp_s0->unk_9AC.unk_001);
-    MarkPokemonOwned(ptr6, temp_s0->unk_B40.unk_000.unk_000, temp_s0->unk_B40.unk_000.unk_001);
+    GbSave_MarkSeenBits(ptr6, temp_s0->unk_9AC.unk_000, temp_s0->unk_9AC.unk_001);
+    GbSave_MarkSeenBits(ptr6, temp_s0->unk_B40.unk_000.unk_000, temp_s0->unk_B40.unk_000.unk_001);
 
     for (i = 0; i < 6; i++) {
-        MarkPokemonOwned(ptr6, ptr541->unk_0000[i].unk_000.unk_000, ptr541->unk_0000[i].unk_000.unk_001);
-        MarkPokemonOwned(ptr6, ptr542->unk_0000[i].unk_000.unk_000, ptr542->unk_0000[i].unk_000.unk_001);
+        GbSave_MarkSeenBits(ptr6, ptr541->unk_0000[i].unk_000.unk_000, ptr541->unk_0000[i].unk_000.unk_001);
+        GbSave_MarkSeenBits(ptr6, ptr542->unk_0000[i].unk_000.unk_000, ptr542->unk_0000[i].unk_000.unk_001);
     }
 }
 
-s32 SaveSlot_CheckPokemonOwned(s32 arg0, s32 arg1) {
+s32 GbSave_GetSpeciesProgressLevel(s32 arg0, s32 arg1) {
     s32 temp_t1;
     s32 temp_t2;
     u8* ptr23;
@@ -1382,7 +1382,7 @@ s32 SaveSlot_CheckPokemonOwned(s32 arg0, s32 arg1) {
     return 0;
 }
 
-void SaveSlot_SetPokemonOwned(s32 arg0, s32 arg1, s32 arg2) {
+void GbSave_SetSeenOwnedBits(s32 arg0, s32 arg1, s32 arg2) {
     u8* temp_a3;
     u8* temp_v0;
     s32 var_a2;
@@ -1417,7 +1417,7 @@ void SaveSlot_SetPokemonOwned(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 SaveSlot_CountOwnedPokemon1(s32 arg0) {
+s32 GbSave_CountSpeciesProgressField036(s32 arg0) {
     s32 i;
     s32 temp_v1 = 0;
 
@@ -1428,7 +1428,7 @@ s32 SaveSlot_CountOwnedPokemon1(s32 arg0) {
     return temp_v1;
 }
 
-s32 SaveSlot_CountOwnedPokemon2(s32 arg0) {
+s32 GbSave_CountSpeciesProgressField023(s32 arg0) {
     s32 i;
     s32 temp_v1 = 0;
 
@@ -1439,7 +1439,7 @@ s32 SaveSlot_CountOwnedPokemon2(s32 arg0) {
     return temp_v1;
 }
 
-s32 SaveSlot_CountOwnedPokemon3(s32 arg0) {
+s32 GbSave_CountSpeciesProgressField06(s32 arg0) {
     s32 i;
     s32 temp_v1 = 0;
 

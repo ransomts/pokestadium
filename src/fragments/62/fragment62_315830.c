@@ -3,13 +3,13 @@
 #include "src/18140.h"
 #include "src/1C720.h"
 
-void HandleMoveHitAnimation(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_StartFreezeStatusAnimation(unk_BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     PokemonData* ptr;
     unk_BattlePlayerAnimState* sp2C;
     PokemonAudioInfo* sp28;
     unk_BattleAnimDataEntry* sp20;
-    s32 idx = IsPrimaryEntity(arg0);
+    s32 idx = BattleScene_GetParticipantSideIndex(arg0);
 
     sp28 = &arg0->animationState.unk_38;
     sp2C = &arg0->animationState;
@@ -22,98 +22,98 @@ void HandleMoveHitAnimation(unk_BattlePlayerEntity* arg0) {
 
     if ((sp28->unk_15 & 0x20) && (ptr->unk_05 & 0x20) && !(sp2C->unk_34 & 2) &&
         ((arg0->unk_000.unk_040.unk_08 >> 0x10) >= 3)) {
-        GraphNode_TriggerAction(&arg0->unk_000, sp20->unk_00);
-        Anim_SetChannelBase(&arg0->unk_000, 4);
-        GraphNode_TriggerSound(&arg0->unk_000, sp20->unk_01);
-        SetAnimStateIndex(&arg0->unk_000, 3);
+        ModelAnim_SetAnimation(&arg0->unk_000, sp20->unk_00);
+        ModelAnim_SetFrame(&arg0->unk_000, 4);
+        ModelAnim_SetEventTrack(&arg0->unk_000, sp20->unk_01);
+        ModelAnim_SetEventFrame(&arg0->unk_000, 3);
         arg0->unk_000.unk_000.unk_02 &= ~0x20;
-        SetEntityAnimFlags(arg0, 2);
-        Battle_ApplyAnimChannelEffect(1, arg0);
-        PlayBattleSoundEffect(arg0, 0x13);
+        Battle_SetRuntimeFlags(arg0, 2);
+        BattleAnim_QueueEffectList(1, arg0);
+        BattleAnim_PlayBattleSequenceById(arg0, 0x13);
     }
 }
 
-void TriggerCurrentAnimAction(unk_BattlePlayerEntity* arg0) {
-    unk_BattleAnimDataEntry* ptr = &gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_A50;
+void BattleAnim_RestoreBaseModelAnimation(unk_BattlePlayerEntity* arg0) {
+    unk_BattleAnimDataEntry* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_A50;
 
-    GraphNode_TriggerAction(&arg0->unk_000, ptr->unk_00);
+    ModelAnim_SetAnimation(&arg0->unk_000, ptr->unk_00);
 }
 
-void StartMoveAnimation(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_ClearFreezeStatusAnimation(unk_BattlePlayerEntity* arg0) {
     if (arg0->animationState.unk_34 & 2) {
-        RunParticleEffectScript(1, arg0);
+        BattleAnim_StopOwnerCategoryParticles(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
-        ClearEntityAnimFlags(arg0, 2);
-        TriggerCurrentAnimAction(arg0);
+        Battle_ClearRuntimeFlags(arg0, 2);
+        BattleAnim_RestoreBaseModelAnimation(arg0);
     }
 }
 
-void ResetMoveStateAndStartAnimation(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_ResetFreezeStatusAndRestoreAnimation(unk_BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
 
     if (arg0->animationState.unk_34 & 2) {
         ptr->unk_05 = 0;
-        RunParticleEffectScript(1, arg0);
+        BattleAnim_StopOwnerCategoryParticles(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
-        ClearEntityAnimFlags(arg0, 2);
-        TriggerCurrentAnimAction(arg0);
+        Battle_ClearRuntimeFlags(arg0, 2);
+        BattleAnim_RestoreBaseModelAnimation(arg0);
     }
 }
 
-void ResumeMoveAnimationIfNotTriggered(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_ClearFreezeStatusAnimationIfThawed(unk_BattlePlayerEntity* arg0) {
     if ((arg0->animationState.unk_34 & 2) && !(arg0->animationState.unk_38.unk_15 & 0x20)) {
-        RunParticleEffectScript(1, arg0);
+        BattleAnim_StopOwnerCategoryParticles(1, arg0);
         arg0->unk_000.unk_000.unk_02 |= 0x20;
-        ClearEntityAnimFlags(arg0, 2);
-        TriggerCurrentAnimAction(arg0);
+        Battle_ClearRuntimeFlags(arg0, 2);
+        BattleAnim_RestoreBaseModelAnimation(arg0);
     }
 }
 
-void HandleItemOrStatusEffect(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_UpdateSleepStatusAnimation(unk_BattlePlayerEntity* arg0) {
     unk_BattlePlayerAnimState* sp24 = &arg0->animationState;
     PokemonAudioInfo* sp28 = &sp24->unk_38;
     PokemonData* sp2C = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
 
-    if ((gBattleState.unk_00->unk_38 != 0xB) || (gBattleState.unk_00->unk_20 >= 6)) {
+    if ((gBattleScene.unk_00->unk_38 != 0xB) || (gBattleScene.unk_00->unk_20 >= 6)) {
         if ((sp2C->unk_05 & 7) && (sp28->unk_15 & 7) && !(arg0->animationState.unk_34 & 1)) {
-            PlayAnimSoundSimple(arg0, 0xAF, 2);
-            Battle_ApplyAnimChannelEffect(3, arg0);
-            PlayBattleSoundEffect(arg0, 0x32);
-            SetEntityAnimFlags(arg0, 1);
+            BattleAnim_SetModelEventTrackAndState(arg0, 0xAF, 2);
+            BattleAnim_QueueEffectList(3, arg0);
+            BattleAnim_PlayBattleSequenceById(arg0, 0x32);
+            Battle_SetRuntimeFlags(arg0, 1);
         }
 
         if (!(sp2C->unk_05 & 7) && (sp24->unk_34 & 1)) {
-            if (gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B81 == 0xFF) {
+            if (gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_B81 == 0xFF) {
                 sp24->unk_36 = 0;
-                PlayAnimSoundIfApplicable(arg0, 0xA5);
+                BattleAnim_SetModelEventTrackFromRow(arg0, 0xA5);
             } else {
-                PlayAnimSoundSimple(arg0, 0xB8, 1);
+                BattleAnim_SetModelEventTrackAndState(arg0, 0xB8, 1);
             }
-            RunParticleEffectScript(3, arg0);
-            ClearEntityAnimFlags(arg0, 1);
+            BattleAnim_StopOwnerCategoryParticles(3, arg0);
+            Battle_ClearRuntimeFlags(arg0, 1);
         }
     }
 }
 
-void ProcessStatusEffectEnd(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_EndSleepStatusAnimation(unk_BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
 
     if (arg0->animationState.unk_34 & 1) {
         ptr->unk_05 = 0;
-        if (gAnimDataByPlayer[IsPrimaryEntity(arg0)]->unk_B81 == 0xFF) {
+        if (gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_B81 == 0xFF) {
             arg0->animationState.unk_36 = 0;
-            PlayAnimSoundIfApplicable(arg0, 0xA5);
+            BattleAnim_SetModelEventTrackFromRow(arg0, 0xA5);
         } else {
-            PlayAnimSoundSimple(arg0, 0xB8, 1);
+            BattleAnim_SetModelEventTrackAndState(arg0, 0xB8, 1);
         }
-        RunParticleEffectScript(3, arg0);
-        ClearEntityAnimFlags(arg0, 1);
+        BattleAnim_StopOwnerCategoryParticles(3, arg0);
+        Battle_ClearRuntimeFlags(arg0, 1);
     }
 }
 
-void FinalizeStatusEffect(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_ClearSleepStatusAnimation(unk_BattlePlayerEntity* arg0) {
     if (arg0->animationState.unk_34 & 1) {
-        RunParticleEffectScript(3, arg0);
-        ClearEntityAnimFlags(arg0, 1);
+        BattleAnim_StopOwnerCategoryParticles(3, arg0);
+        Battle_ClearRuntimeFlags(arg0, 1);
     }
 }

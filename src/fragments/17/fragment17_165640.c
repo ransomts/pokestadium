@@ -35,9 +35,9 @@ extern u8 D_30060E0[];
 extern u8 D_3006B80[];
 extern u8 D_300C6D0[];
 
-s32 ToggleCameraNodeOffsetFromCurrent(s32, GraphNode*);
-s32 SetCameraNodeOffsetInverse(s32, GraphNode*);
-s32 GraphNode_SetColor(s32, GraphNode*);
+s32 Intro_LightAngleCallbackA(s32, GraphNode*);
+s32 Intro_LightAngleCallbackB(s32, GraphNode*);
+s32 Intro_FogColorCallback(s32, GraphNode*);
 
 typedef struct unk_D_86B0DD58 {
     /* 0x00 */ u8 unk_00;
@@ -154,26 +154,26 @@ static unk_D_800AE540_1194* gMonsterContextPtr;
 static u32 D_86B0DE5C[] = {
     0x0C00FFFF, 0x05000000,    0x0B00001E,  0x00000000,    0x014000F0,  0x0000000F,  0x00000000, 0x00000000,
     0x05000000, 0x0D000000,    0x05000000,  0x07000000,    &gBattleOverlayRect, 0x14000000,  0x002D0019, 0xFFFFFF28,
-    0x08000000, ToggleCameraNodeOffsetFromCurrent, 0x00000000,  0x14000000,    0x002D0019,  0x80808028,  0x08000000, SetCameraNodeOffsetInverse,
+    0x08000000, Intro_LightAngleCallbackA, 0x00000000,  0x14000000,    0x002D0019,  0x80808028,  0x08000000, Intro_LightAngleCallbackB,
     0x00000000, 0x16646464,    0x0F000002,  0x05000000,    0x1F00FFFF,  0x00000000,  0x00000000, 0x00000000,
-    0x00640064, 0x00640000,    0x08000000,  GraphNode_SetColor, 0x00000000,  0x05000000,  0x07000000, &gMiniCameraRoot0,
+    0x00640064, 0x00640000,    0x08000000,  Intro_FogColorCallback, 0x00000000,  0x05000000,  0x07000000, &gMiniCameraRoot0,
     0x06000000, 0x06000000,    0x0F000003,  0x05000000,    0x1F00FFFF,  0x00000000,  0x00000000, 0x00000000,
-    0x00640064, 0x00640000,    0x08000000,  GraphNode_SetColor, 0x00000000,  0x05000000,  0x07000000, &gMiniCameraRoot1,
+    0x00640064, 0x00640000,    0x08000000,  Intro_FogColorCallback, 0x00000000,  0x05000000,  0x07000000, &gMiniCameraRoot1,
     0x06000000, 0x06000000,    0x0F000002,  0x05000000,    0x1F00FFFF,  0x00000000,  0x00000000, 0x00000000,
-    0x00640064, 0x00640000,    0x08000000,  GraphNode_SetColor, 0x00000000,  0x05000000,  0x07000000, &gMiniCameraRoot2,
+    0x00640064, 0x00640000,    0x08000000,  Intro_FogColorCallback, 0x00000000,  0x05000000,  0x07000000, &gMiniCameraRoot2,
     0x06000000, 0x06000000,    0x0F000003,  0x05000000,    0x0A000000,  &gGraphRoot0, 0x06000000, 0x0F000002,
     0x05000000, 0x0A000000,    &gGraphRoot1, 0x06000000,    0x09000000,  0x06000000,  0x06000000, 0x06000000,
     0x01000000,
 };
 
-s32 ToggleCameraNodeOffsetFromCurrent(s32 arg0, GraphNode* arg1) {
+s32 Intro_LightAngleCallbackA(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
+        Vec3f_CalculateDistanceAngles(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         ptr->unk_1C = sp26 + 0x2000;
         ptr->unk_1E = sp24 - 0x2000;
     }
@@ -181,14 +181,14 @@ s32 ToggleCameraNodeOffsetFromCurrent(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 SetCameraNodeOffsetInverse(s32 arg0, GraphNode* arg1) {
+s32 Intro_LightAngleCallbackB(s32 arg0, GraphNode* arg1) {
     unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
     f32 sp28;
     s16 sp26;
     s16 sp24;
 
     if (arg0 == 2) {
-        Matrix_Decompose(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
+        Vec3f_CalculateDistanceAngles(&gCurrentCameraNode->unk_60.at, &gCurrentCameraNode->unk_60.eye, &sp28, &sp26, &sp24);
         ptr->unk_1C = -0x2000 - sp26;
         ptr->unk_1E = sp24 + 0x6000;
     }
@@ -196,7 +196,7 @@ s32 SetCameraNodeOffsetInverse(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 GraphNode_SetColor(s32 arg0, GraphNode* arg1) {
+s32 Intro_FogColorCallback(s32 arg0, GraphNode* arg1) {
     Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
     if (arg0 == 2) {
@@ -206,7 +206,7 @@ s32 GraphNode_SetColor(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-void SetGlobalOverlayColor(u8 arg0, u8 arg1, u8 arg2) {
+void Intro_SetBackgroundTint(u8 arg0, u8 arg1, u8 arg2) {
     u8 v = arg0 & arg1 & arg2;
 
     gOverlayColor.r = arg0;
@@ -222,7 +222,7 @@ void SetGlobalOverlayColor(u8 arg0, u8 arg1, u8 arg2) {
     }
 }
 
-void LoadStageResources(void) {
+void Intro_LoadPokemonTextures(void) {
     UNUSED s32 pad[2];
     u8* sp24;
     u8* temp_a1;
@@ -234,80 +234,80 @@ void LoadStageResources(void) {
     sp1C = (u32)_70D3A0_ROM_START +
            (((gCameraTarget->unk_174 * sizeof(unk_70D3A0)) - sizeof(unk_70D3A0) + (u32)D_70110) & 0xFFFFFF);
 
-    DmaCopyAsyncRange(D_86B0FA80, temp_a1, temp_a1 + 0xBC0, 0);
-    DmaCopyAsyncRange(&gMonsterStageData, sp1C, sp1C + sizeof(unk_70D3A0), 0);
-    DmaCopyAsyncRange(&gMonsterStageParams, sp24, sp24 + sizeof(unk_D_70B10), 0);
+    Dma_WriteChunks(D_86B0FA80, temp_a1, temp_a1 + 0xBC0, 0);
+    Dma_WriteChunks(&gMonsterStageData, sp1C, sp1C + sizeof(unk_70D3A0), 0);
+    Dma_WriteChunks(&gMonsterStageParams, sp24, sp24 + sizeof(unk_D_70B10), 0);
 }
 
-void MonsterNode_Init(void) {
+void Intro_LoadShowcaseModel(void) {
     gCameraTarget->unk_174 = gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C].unk_00.unk_00;
-    Graph_AddToRootList0(&gCameraTarget->unk_004);
-    AssetManager_LoadArchives();
+    ModelRenderer_AttachDisplayObject(&gCameraTarget->unk_004);
+    PokeIcon_OpenModelArchives();
 
     gCameraTarget->unk_000 = Model_LoadForPokemon(&gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C]);
-    GraphNode_InitChild(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&gCameraTarget->unk_004, 0);
+    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(&gCameraTarget->unk_004, 0);
     gCameraTarget->unk_004.modelPhase = 0;
-    LoadStageResources();
+    Intro_LoadPokemonTextures();
     gCameraTarget->unk_004.unk_024.y += gMonsterStageData.unk_08;
     gCameraTarget->unk_170 = 0;
-    SetAnimStateIndex(&gCameraTarget->unk_004, 0);
-    GraphNode_TriggerSound(&gCameraTarget->unk_004, -1);
+    ModelAnim_SetEventFrame(&gCameraTarget->unk_004, 0);
+    ModelAnim_SetEventTrack(&gCameraTarget->unk_004, -1);
 }
 
-void MonsterNode_Reset(void) {
-    GraphNode_ClearCallback(&gCameraTarget->unk_004);
+void Intro_ReplaceShowcaseModel(void) {
+    ModelRenderer_ClearDisplayObject(&gCameraTarget->unk_004);
 
     main_pool_pop_state('MONS');
 
     main_pool_push_state('MONS');
 
-    MonsterNode_Init();
+    Intro_LoadShowcaseModel();
 }
 
-void MiniCamera_Setup(void) {
+void Intro_SetupOrbitCamera(void) {
     gCameraState->unk_00->unk_24.fovy = 30.0f;
     gCameraState->unk_00->unk_24.near = 30.0f;
     gCameraState->unk_00->unk_24.far = 6400.0f;
-    ComputeCameraTargetPos(gCameraTarget, &gCameraState->unk_04);
-    Camera_InitFromConfig(&gScrollBarSegmentData[gCameraTarget->unk_17C], gCameraState->unk_00);
-    Camera_UpdateView();
+    Intro_ComputeFollowPoint(gCameraTarget, &gCameraState->unk_04);
+    Intro_LoadCameraKeyframe(&gScrollBarSegmentData[gCameraTarget->unk_17C], gCameraState->unk_00);
+    Intro_UpdateOrbitCamera();
 }
 
-void MonsterNode_LoadById(void) {
-    GraphNode_ClearCallback(&gCameraTarget->unk_004);
+void Intro_LoadStageModel(void) {
+    ModelRenderer_ClearDisplayObject(&gCameraTarget->unk_004);
 
     main_pool_pop_state('MONS');
 
     main_pool_push_state('MONS');
 
     gCameraTarget->unk_174 = gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_00;
-    Graph_AddToRootList0(&gCameraTarget->unk_004);
-    AssetManager_LoadArchives();
-    gCameraTarget->unk_000 = GeoLayout_LoadById(gCameraTarget->unk_174);
-    GraphNode_InitChild(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&gCameraTarget->unk_004, 0);
-    Vec3f_Set(&gCameraTarget->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
+    ModelRenderer_AttachDisplayObject(&gCameraTarget->unk_004);
+    PokeIcon_OpenModelArchives();
+    gCameraTarget->unk_000 = Model_LoadByArchiveIndex(gCameraTarget->unk_174);
+    Model_InitDisplayObject(&gCameraTarget->unk_004, 0, gCameraTarget->unk_174, gCameraTarget->unk_000->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(&gCameraTarget->unk_004, 0);
+    Vec3f_SetComponentsDuplicate(&gCameraTarget->unk_004.unk_024, 0.0f, 300.0f, 0.0f);
 }
 
-void MiniCamera_UpdateForMonster(void) {
+void Intro_SetupStaticCamera(void) {
     gMonsterLandingState = 0;
     gMonsterLandingYVel = 0.0f;
     gCameraState->unk_00->unk_24.fovy = 40.0f;
     gCameraState->unk_00->unk_24.near = 30.0f;
     gCameraState->unk_00->unk_24.far = 6400.0f;
 
-    Vec3f_Set(&gCameraState->unk_00->unk_60.at, gCameraTarget->unk_004.unk_024.x,
+    Vec3f_SetComponentsDuplicate(&gCameraState->unk_00->unk_60.at, gCameraTarget->unk_004.unk_024.x,
                   gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_04 + gCameraTarget->unk_004.unk_024.y, gCameraTarget->unk_004.unk_024.z);
 
     if ((gCurrentMonsterSpawnIdx == 4) || (gCurrentMonsterSpawnIdx == 5)) {
-        Vec3f_Set(&gCameraState->unk_00->unk_60.eye, 0, 100.0f, 328.0f);
+        Vec3f_SetComponentsDuplicate(&gCameraState->unk_00->unk_60.eye, 0, 100.0f, 328.0f);
     } else {
-        Vec3f_Set(&gCameraState->unk_00->unk_60.eye, 0, 100.0f, 250.0f);
+        Vec3f_SetComponentsDuplicate(&gCameraState->unk_00->unk_60.eye, 0, 100.0f, 250.0f);
     }
 }
 
-s32 MonsterNode_UpdateYPos(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
+s32 Intro_StepRotationOvershoot(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     if (arg1 > 0) {
         arg0->unk_01E.y -= arg1;
         if ((arg0->unk_01E.y < arg2) && ((arg2 - arg1) < arg0->unk_01E.y)) {
@@ -322,7 +322,7 @@ s32 MonsterNode_UpdateYPos(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     return 0;
 }
 
-s32 MonsterNode_EaseYPos(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
+s32 Intro_StepRotationToTarget(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     if ((((arg0->unk_01E.y - arg2) / 182) < 0x3D) && (((arg0->unk_01E.y - arg2) / 182) >= 0)) {
         arg1 = (arg0->unk_01E.y - arg2) / 9;
     }
@@ -340,25 +340,25 @@ s32 MonsterNode_EaseYPos(Fragment2_1GraphNode* arg0, s16 arg1, s16 arg2) {
     return 0;
 }
 
-s32 MonsterLandingSequence(void) {
+s32 Intro_UpdateModelLanding(void) {
     if (gMonsterLandingState < 3) {
-        if ((gMonsterLandingState <= 0) && (MonsterNode_UpdateYPos(&gCameraTarget->unk_004, 0x71C, 0) != 0)) {
+        if ((gMonsterLandingState <= 0) && (Intro_StepRotationOvershoot(&gCameraTarget->unk_004, 0x71C, 0) != 0)) {
             gMonsterLandingState++;
         }
 
-        if ((gMonsterLandingState > 0) && (MonsterNode_EaseYPos(&gCameraTarget->unk_004, 0x71C, 0) != 0)) {
+        if ((gMonsterLandingState > 0) && (Intro_StepRotationToTarget(&gCameraTarget->unk_004, 0x71C, 0) != 0)) {
             gMonsterLandingState++;
         }
     }
 
-    Math_ApproachFloat(&gMonsterLandingYVel, 0.1f, 0.02f);
-    Math_ApproachFloat(&gCameraTarget->unk_004.unk_024.y, 0.0f, gMonsterLandingYVel);
+    Math_EaseTowardF(&gMonsterLandingYVel, 0.1f, 0.02f);
+    Math_EaseTowardF(&gCameraTarget->unk_004.unk_024.y, 0.0f, gMonsterLandingYVel);
 
     if (gCameraTarget->unk_004.unk_024.y <= 0.25f) {
         gCameraTarget->unk_004.unk_024.y = 0.0f;
     }
 
-    Vec3f_Set(&gCameraState->unk_00->unk_60.at, gCameraTarget->unk_004.unk_024.x,
+    Vec3f_SetComponentsDuplicate(&gCameraState->unk_00->unk_60.at, gCameraTarget->unk_004.unk_024.x,
                   gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_04 + gCameraTarget->unk_004.unk_024.y, gCameraTarget->unk_004.unk_024.z);
 
     if (gCameraTarget->unk_004.unk_024.y <= 0.5f) {
@@ -367,57 +367,57 @@ s32 MonsterLandingSequence(void) {
     return 0;
 }
 
-void MonsterNode_SpawnParticles(void) {
+void Intro_EmitLandingParticles(void) {
     Vec3f sp44;
 
     if (gMonsterSfxTriggered == 0) {
         gMonsterSfxTriggered = 1;
-        PlayUISfx(0x0110000F, 0, 0);
+        Audio_PlayCategory11SoundCommand(0x0110000F, 0, 0);
     }
 
     if (gCameraTarget->unk_178 & 1) {
-        Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
-                      gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-        Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
+        Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
+                      gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+        Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
 
         if ((gCameraTarget->unk_178 >= 0xA) && (gCameraTarget->unk_178 & 1)) {
-            Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
-                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
+            Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
+                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x14) && (gCameraTarget->unk_178 & 1)) {
-            Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
-                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
+            Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
+                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
         }
 
         if ((gCameraTarget->unk_178 >= 0x1E) && (gCameraTarget->unk_178 & 1)) {
-            Vec3f_Set(&sp44, gCameraTarget->unk_004.unk_024.x,
-                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (Math_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
-            Particle_CreateMultiple(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
+            Vec3f_SetComponentsDuplicate(&sp44, gCameraTarget->unk_004.unk_024.x,
+                          gMonsterSpawnInfo[gCurrentMonsterSpawnIdx].unk_08 + (MathUtil_RandomU16Range(0x28) - 0x14), gCameraTarget->unk_004.unk_024.z);
+            Particle_EmitBurstAtTransform(1.0f, sp44, gCameraTarget->unk_004.unk_01E, MiniFx_UpdatePalette17DelayedRevealFallParticle, &D_87903E40, 1);
         }
     }
 }
 
-void UpdateFadeColorFromHealth(void) {
-    gCameraTarget->unk_180 = Math_ApproachF32(gCameraTarget->unk_180, 100.0f, 2.0f, 2.0f);
-    SetGlobalOverlayColor(gCameraTarget->unk_180, gCameraTarget->unk_180, gCameraTarget->unk_180);
+void Intro_FadeInBackgroundTint(void) {
+    gCameraTarget->unk_180 = Math_StepToF(gCameraTarget->unk_180, 100.0f, 2.0f, 2.0f);
+    Intro_SetBackgroundTint(gCameraTarget->unk_180, gCameraTarget->unk_180, gCameraTarget->unk_180);
 }
 
-void MonsterNode_UpdateIdleAnim(void) {
+void Intro_UpdateCryEventTrack(void) {
     if (((gCameraTarget->unk_178 % 50) == 0) && (gCameraTarget->unk_170 == 0) && (D_86B0FA80[0xA51] != 0xFF)) {
-        InitAnimState(&gCameraTarget->unk_004);
-        GraphNode_TriggerSound(&gCameraTarget->unk_004, D_86B0FA80[0xA51]);
+        ModelAnim_ClearEventTrack(&gCameraTarget->unk_004);
+        ModelAnim_SetEventTrack(&gCameraTarget->unk_004, D_86B0FA80[0xA51]);
         gCameraTarget->unk_170 = 1;
-    } else if ((gCameraTarget->unk_170 == 1) && (IsAnimStateSecondLast(&gCameraTarget->unk_004) == 1)) {
+    } else if ((gCameraTarget->unk_170 == 1) && (ModelAnim_IsEventTrackNearEnd(&gCameraTarget->unk_004) == 1)) {
         gCameraTarget->unk_170 = 0;
-        SetAnimStateIndex(&gCameraTarget->unk_004, 0);
-        GraphNode_TriggerSound(&gCameraTarget->unk_004, -1);
+        ModelAnim_SetEventFrame(&gCameraTarget->unk_004, 0);
+        ModelAnim_SetEventTrack(&gCameraTarget->unk_004, -1);
     }
 }
 
-void UIElement_Init(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
+void Intro_SetupTextPanel(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
     arg0->unk_80 = arg1;
     arg0->unk_98 = arg2;
     arg0->unk_9C = arg3;
@@ -438,161 +438,161 @@ void UIElement_Init(unk_D_86B0FA50* arg0, u8* arg1, f32 arg2, s16 arg3, s16 arg4
     arg0->unk_B0.unk_0A = gUIElementColors->unk_0A;
 }
 
-void BattleUI_InitElements(void) {
-    if (gBattleContext.unk_11F2 == 1) {
-        UIElement_Init(gUIElementBorder, &D_300C6D0, -250.0f, 0xC8, 0x18, 0x18);
+void Intro_ConfigureTextPanels(void) {
+    if (gSessionContext.unk_11F2 == 1) {
+        Intro_SetupTextPanel(gUIElementBorder, &D_300C6D0, -250.0f, 0xC8, 0x18, 0x18);
     }
 
-    UIElement_Init(gUIElementHealthBar, &D_3000180, -250.0f, 0xC8, 0x40, 0x18);
+    Intro_SetupTextPanel(gUIElementHealthBar, &D_3000180, -250.0f, 0xC8, 0x40, 0x18);
 
-    if (gBattleContext.unk_0002 == 0) {
-        UIElement_Init(gUIElementStatus, &D_30060E0, -170.0f, 0x3C, 0x88, 0x14);
-    } else if (gBattleContext.unk_0002 == 1) {
-        UIElement_Init(gUIElementStatus, &D_3006B80, -170.0f, 0x3C, 0x78, 0x14);
-    } else if (gBattleContext.unk_0002 == 2) {
-        UIElement_Init(gUIElementStatus, &D_3004E20, -170.0f, 0x3C, 0x78, 0x14);
-    } else if (gBattleContext.unk_0002 == 3) {
-        UIElement_Init(gUIElementStatus, &D_3005780, -170.0f, 0x3C, 0x78, 0x14);
+    if (gSessionContext.unk_0002 == 0) {
+        Intro_SetupTextPanel(gUIElementStatus, &D_30060E0, -170.0f, 0x3C, 0x88, 0x14);
+    } else if (gSessionContext.unk_0002 == 1) {
+        Intro_SetupTextPanel(gUIElementStatus, &D_3006B80, -170.0f, 0x3C, 0x78, 0x14);
+    } else if (gSessionContext.unk_0002 == 2) {
+        Intro_SetupTextPanel(gUIElementStatus, &D_3004E20, -170.0f, 0x3C, 0x78, 0x14);
+    } else if (gSessionContext.unk_0002 == 3) {
+        Intro_SetupTextPanel(gUIElementStatus, &D_3005780, -170.0f, 0x3C, 0x78, 0x14);
     }
 
-    switch (gBattleContext.unk_0001) {
+    switch (gSessionContext.unk_0001) {
         case 1:
-            UIElement_Init(gUIElementHealthFill, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
+            Intro_SetupTextPanel(gUIElementHealthFill, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
             break;
 
         case 2:
-            UIElement_Init(gUIElementHealthFill, &D_30032A0, -100.0f, 0x1E, 0xB0, 0x14);
+            Intro_SetupTextPanel(gUIElementHealthFill, &D_30032A0, -100.0f, 0x1E, 0xB0, 0x14);
             break;
 
         case 3:
-            UIElement_Init(gUIElementHealthFill, &D_3004060, -100.0f, 0x1E, 0xB0, 0x14);
+            Intro_SetupTextPanel(gUIElementHealthFill, &D_3004060, -100.0f, 0x1E, 0xB0, 0x14);
             break;
 
         case 4:
-            UIElement_Init(gUIElementHealthFill, &D_3000780, -100.0f, 0x1E, 0x88, 0x14);
+            Intro_SetupTextPanel(gUIElementHealthFill, &D_3000780, -100.0f, 0x1E, 0x88, 0x14);
             break;
 
         case 5:
-            UIElement_Init(gUIElementHealthFill, &D_3001220, -100.0f, 0x1E, 0x78, 0x14);
+            Intro_SetupTextPanel(gUIElementHealthFill, &D_3001220, -100.0f, 0x1E, 0x78, 0x14);
             break;
 
         case 6:
-            UIElement_Init(gUIElementHealthFill, &D_3001B80, -100.0f, 0x1E, 0x78, 0x14);
+            Intro_SetupTextPanel(gUIElementHealthFill, &D_3001B80, -100.0f, 0x1E, 0x78, 0x14);
             break;
 
         default:
-            UIElement_Init(gUIElementHealthFill, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
+            Intro_SetupTextPanel(gUIElementHealthFill, &D_30024E0, -100.0f, 0x1E, 0xB0, 0x14);
             break;
     }
 }
 
-void MonsterNode_SetupDefault(void) {
+void Intro_StartFirstShowcase(void) {
     gCameraTarget->unk_16C = 0;
     gCameraTarget->unk_17C = 0;
     gCameraTarget->unk_174 = 0;
 
     main_pool_push_state('MONS');
 
-    MonsterNode_Init();
+    Intro_LoadShowcaseModel();
 }
 
-void MiniCamera_InitDefault(void) {
+void Intro_BeginOrbitCamera(void) {
     gCameraState->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
     gMiniCameraPtr = gCameraState->unk_00;
-    MiniCamera_Setup();
+    Intro_SetupOrbitCamera();
 }
 
-void MonsterNode_SetupCustom(void) {
+void Intro_StartFinalStageModel(void) {
     gCameraTarget->unk_16C = 6;
     gCameraTarget->unk_17C = 6;
     gCameraTarget->unk_174 = 0;
 
     main_pool_push_state('MONS');
 
-    MonsterNode_LoadById();
+    Intro_LoadStageModel();
 }
 
-void MiniCamera_InitMonster(void) {
+void Intro_BeginStaticCamera(void) {
     gCameraState->unk_00 = gMiniCameraStruct->unk_00.unk_0C;
     gMiniCameraPtr = gCameraState->unk_00;
-    MiniCamera_UpdateForMonster();
+    Intro_SetupStaticCamera();
 }
 
-void BattleUI_SetStateActive(void) {
+void Intro_TriggerTextPanelExit(void) {
     gUIElementName->unk_90 = 3;
 }
 
-void BattleContext_SyncMonsterData(void) {
-    if (gBattleContext.unk_1194[0].unk_1C == 1) {
-        gMonsterDataPtr = gBattleContext.unk_1194[0].unk_08[0];
-        gMonsterContextPtr = &gBattleContext.unk_1194[0];
+void Intro_SelectPartyRoster(void) {
+    if (gSessionContext.unk_1194[0].unk_1C == 1) {
+        gMonsterDataPtr = gSessionContext.unk_1194[0].unk_08[0];
+        gMonsterContextPtr = &gSessionContext.unk_1194[0];
     } else {
-        gMonsterDataPtr = gBattleContext.unk_1194[1].unk_08[0];
-        gMonsterContextPtr = &gBattleContext.unk_1194[1];
+        gMonsterDataPtr = gSessionContext.unk_1194[1].unk_08[0];
+        gMonsterContextPtr = &gSessionContext.unk_1194[1];
     }
 }
 
-void BattleInput_Update(void) {
+void Intro_ReadControllerInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-s32 BattleSequence_Update(void) {
+s32 Intro_UpdateShowcaseSequence(void) {
     switch (gCameraTarget->unk_16C) {
         case 0:
-            MiniCamera_Setup();
+            Intro_SetupOrbitCamera();
             Intro_UpdateCameraKeyframe(gCameraState->unk_00);
             gCameraTarget->unk_170 = 0;
             gCameraTarget->unk_16C += 1;
             break;
 
         case 1:
-            MonsterNode_UpdateIdleAnim();
+            Intro_UpdateCryEventTrack();
             if (gCameraTarget->unk_178++ == 0x19) {
                 gUIElementName->unk_90 = 0;
             }
 
             if (Intro_UpdateCameraKeyframe(gCameraState->unk_00) != 0) {
-                if ((gBattleContext.unk_0001 == 7) && (gCameraTarget->unk_17C == 5)) {
+                if ((gSessionContext.unk_0001 == 7) && (gCameraTarget->unk_17C == 5)) {
                     return 1;
                 }
-                Scroll_Init(3, 0x1E);
+                WipeTransition_Start(3, 0x1E);
                 gCameraTarget->unk_16C += 1;
             }
             break;
 
         case 2:
-            Scroll_Update();
-            if (Scroll_GetMode() == 1) {
+            WipeTransition_Update();
+            if (WipeTransition_GetState() == 1) {
                 gCameraTarget->unk_17C++;
                 if (gCameraTarget->unk_17C == 6) {
                     gCameraTarget->unk_170 = 0;
-                    MonsterNode_LoadById();
-                    MiniCamera_UpdateForMonster();
+                    Intro_LoadStageModel();
+                    Intro_SetupStaticCamera();
                     gUIElementName->unk_90 = 3;
                     gCameraTarget->unk_178 = 0;
-                    Scroll_Init(2, 0x1E);
+                    WipeTransition_Start(2, 0x1E);
                     gCameraTarget->unk_16C = 6;
                 } else {
                     gCameraTarget->unk_170 = 0;
-                    MonsterNode_Reset();
-                    MiniCamera_Setup();
+                    Intro_ReplaceShowcaseModel();
+                    Intro_SetupOrbitCamera();
                     gUIElementName->unk_90 = 3;
                     gCameraTarget->unk_178 = 0;
-                    Scroll_Init(2, 0x1E);
+                    WipeTransition_Start(2, 0x1E);
                     gCameraTarget->unk_16C++;
                 }
             }
             break;
 
         case 3:
-            Scroll_Update();
+            WipeTransition_Update();
             if (gCameraTarget->unk_178++ > 0) {
                 Intro_UpdateCameraKeyframe(gCameraState->unk_00);
             }
 
-            if (Scroll_GetMode() == 0) {
+            if (WipeTransition_GetState() == 0) {
                 gCameraTarget->unk_178 = 0;
                 gCameraTarget->unk_16C = 1;
             }
@@ -600,18 +600,18 @@ s32 BattleSequence_Update(void) {
 
         case 6:
             gCameraTarget->unk_180 = 0xFF;
-            Scroll_Update();
-            MonsterLandingSequence();
-            if (Scroll_GetMode() == 0) {
+            WipeTransition_Update();
+            Intro_UpdateModelLanding();
+            if (WipeTransition_GetState() == 0) {
                 gCameraTarget->unk_16C++;
             }
             break;
 
         case 7:
-            if (MonsterLandingSequence() != 0) {
+            if (Intro_UpdateModelLanding() != 0) {
                 gCameraTarget->unk_178 = 0;
                 gUIElementName->unk_90 = 0;
-                PlayUISfx(0x01100002, 0, 0);
+                Audio_PlayCategory11SoundCommand(0x01100002, 0, 0);
                 gMonsterSfxTriggered = 0;
                 gCameraTarget->unk_16C++;
             }
@@ -619,20 +619,20 @@ s32 BattleSequence_Update(void) {
 
         case 8:
             if (gUIElementHealthFill->unk_84 != 0) {
-                MonsterNode_SpawnParticles();
+                Intro_EmitLandingParticles();
             }
             if (gCameraTarget->unk_178++ >= 0x41) {
                 D_86B0FA64 = 0;
-                Matrix_Decompose(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraZoomFov, &gCameraZoomPitch, &gCameraZoomYaw);
+                Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraZoomFov, &gCameraZoomPitch, &gCameraZoomYaw);
                 gCameraTarget->unk_16C++;
             }
             break;
 
         case 9:
-            UpdateFadeColorFromHealth();
+            Intro_FadeInBackgroundTint();
 
             if (gUIElementHealthFill->unk_84 != 0) {
-                MonsterNode_SpawnParticles();
+                Intro_EmitLandingParticles();
             }
 
             if (gPlayer1Controller->buttonDown & 0xC000) {
@@ -643,19 +643,19 @@ s32 BattleSequence_Update(void) {
                 gCameraTarget->unk_178 = 0x64;
             }
 
-            D_86B0FA64 = Math_ApproachS32(D_86B0FA64, 0x3C, 1, 1);
+            D_86B0FA64 = Math_StepToS32(D_86B0FA64, 0x3C, 1, 1);
             gCameraZoomYaw += D_86B0FA64;
-            Camera_SetViewParameters(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraZoomFov, gCameraZoomPitch, gCameraZoomYaw);
+            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraZoomFov, gCameraZoomPitch, gCameraZoomYaw);
             break;
     }
 
     if ((gBattleSequenceType == 2) && (gBattleSequenceFrameCount == 0x12C)) {
-        ResultScreen_SetAnimation(0x5B);
+        Audio_StartMusicTrack(0x5B);
     }
     return 0;
 }
 
-s32 UIElement_UpdatePos(unk_D_86B0FA50* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
+s32 Intro_StepPanelBounce(unk_D_86B0FA50* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5) {
     f32 temp_fa1;
     f32 sp20;
     f32 temp_fv0;
@@ -665,7 +665,7 @@ s32 UIElement_UpdatePos(unk_D_86B0FA50* arg0, f32 arg1, f32 arg2, f32 arg3, f32 
 
     sp20 = arg0->unk_A4;
 
-    temp_fv0 = Math_ApproachF32(sp20, 0.0f, 0.0f, 0.0f);
+    temp_fv0 = Math_StepToF(sp20, 0.0f, 0.0f, 0.0f);
     arg0->unk_A4 = temp_fv0;
     if (temp_fv0 >= 0.0f) {
         temp_fv0 = 0;
@@ -701,54 +701,54 @@ s32 UIElement_UpdatePos(unk_D_86B0FA50* arg0, f32 arg1, f32 arg2, f32 arg3, f32 
     return 0;
 }
 
-void BattleUI_Render(void) {
+void Intro_DrawTextPanels(void) {
     if (gCameraTarget->unk_17C == 6) {
         switch (gUIElementName->unk_90) {
             case 3:
                 break;
 
             case 0:
-                BattleUI_InitElements();
+                Intro_ConfigureTextPanels();
                 gUIElementName->unk_90++;
                 break;
 
             case 1:
-                UIElement_UpdatePos(gUIElementHealthBar, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementHealthBar->unk_9E / 2), 1.7f);
-                Gfx_DrawSpriteWithColors(gUIElementHealthBar->unk_80, gUIElementHealthBar->unk_98, gUIElementHealthBar->unk_9C, gUIElementHealthBar->unk_9E,
+                Intro_StepPanelBounce(gUIElementHealthBar, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementHealthBar->unk_9E / 2), 1.7f);
+                UI_DrawGradientTexture(gUIElementHealthBar->unk_80, gUIElementHealthBar->unk_98, gUIElementHealthBar->unk_9C, gUIElementHealthBar->unk_9E,
                               gUIElementHealthBar->unk_A0, &gUIElementHealthBar->unk_B0);
                 gUIElementHealthFill->unk_84 =
-                    UIElement_UpdatePos(gUIElementHealthFill, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementHealthFill->unk_9E / 2), 1.7f);
-                Gfx_DrawSpriteWithColors(gUIElementHealthFill->unk_80, gUIElementHealthFill->unk_98, gUIElementHealthFill->unk_9C, gUIElementHealthFill->unk_9E,
+                    Intro_StepPanelBounce(gUIElementHealthFill, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementHealthFill->unk_9E / 2), 1.7f);
+                UI_DrawGradientTexture(gUIElementHealthFill->unk_80, gUIElementHealthFill->unk_98, gUIElementHealthFill->unk_9C, gUIElementHealthFill->unk_9E,
                               gUIElementHealthFill->unk_A0, &gUIElementHealthBar->unk_B0);
 
-                if (gBattleContext.unk_11F2 == 1) {
-                    Gfx_DrawBorderSprite(gUIElementBorder->unk_80, (s16)gUIElementHealthFill->unk_98 + gUIElementHealthFill->unk_9E,
+                if (gSessionContext.unk_11F2 == 1) {
+                    UI_DrawTextureRgba16(gUIElementBorder->unk_80, (s16)gUIElementHealthFill->unk_98 + gUIElementHealthFill->unk_9E,
                                   gUIElementHealthFill->unk_9C - 2, gUIElementBorder->unk_9E, gUIElementBorder->unk_A0);
                 }
 
                 if ((gCurrentMonsterSpawnIdx != 4) && (gCurrentMonsterSpawnIdx != 5)) {
-                    UIElement_UpdatePos(gUIElementStatus, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementStatus->unk_9E / 2), 1.7f);
-                    Gfx_DrawSpriteWithColors(gUIElementStatus->unk_80, gUIElementStatus->unk_98, gUIElementStatus->unk_9C, gUIElementStatus->unk_9E,
+                    Intro_StepPanelBounce(gUIElementStatus, 0.25f, 0.0f, 3.0f, 0xA3 - (gUIElementStatus->unk_9E / 2), 1.7f);
+                    UI_DrawGradientTexture(gUIElementStatus->unk_80, gUIElementStatus->unk_98, gUIElementStatus->unk_9C, gUIElementStatus->unk_9E,
                                   gUIElementStatus->unk_A0, &gUIElementHealthBar->unk_B0);
                 }
 
                 if (gUIElementHealthFill->unk_84 != 0) {
-                    gUIElementHealthBar->unk_B0.unk_00 = Math_ApproachS32(
+                    gUIElementHealthBar->unk_B0.unk_00 = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_00, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_00,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0C, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0C);
-                    gUIElementHealthBar->unk_B0.unk_02 = Math_ApproachS32(
+                    gUIElementHealthBar->unk_B0.unk_02 = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_02, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_02,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0E, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0E);
-                    gUIElementHealthBar->unk_B0.unk_04 = Math_ApproachS32(
+                    gUIElementHealthBar->unk_B0.unk_04 = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_04, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_04,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_10, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_10);
-                    gUIElementHealthBar->unk_B0.unk_06 = Math_ApproachS32(
+                    gUIElementHealthBar->unk_B0.unk_06 = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_06, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_06,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_12, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_12);
-                    gUIElementHealthBar->unk_B0.unk_08 = Math_ApproachS32(
+                    gUIElementHealthBar->unk_B0.unk_08 = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_08, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_08,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_14, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_14);
-                    gUIElementHealthBar->unk_B0.unk_0A = Math_ApproachS32(
+                    gUIElementHealthBar->unk_B0.unk_0A = Math_StepToS32(
                         gUIElementHealthBar->unk_B0.unk_0A, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_0A,
                         gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_16, gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_16);
                     if ((gUIElementHealthBar->unk_B0.unk_00 == gUIElementColors[gUIElementHealthBar->unk_88 + 1].unk_00) &&
@@ -767,18 +767,18 @@ void BattleUI_Render(void) {
                 break;
 
             case 2:
-                Gfx_DrawSpriteWithColors(gUIElementHealthBar->unk_80, gUIElementHealthBar->unk_98, gUIElementHealthBar->unk_9C, gUIElementHealthBar->unk_9E,
+                UI_DrawGradientTexture(gUIElementHealthBar->unk_80, gUIElementHealthBar->unk_98, gUIElementHealthBar->unk_9C, gUIElementHealthBar->unk_9E,
                               gUIElementHealthBar->unk_A0, gUIElementColorFlat);
-                Gfx_DrawSpriteWithColors(gUIElementHealthFill->unk_80, gUIElementHealthFill->unk_98, gUIElementHealthFill->unk_9C, gUIElementHealthFill->unk_9E,
+                UI_DrawGradientTexture(gUIElementHealthFill->unk_80, gUIElementHealthFill->unk_98, gUIElementHealthFill->unk_9C, gUIElementHealthFill->unk_9E,
                               gUIElementHealthFill->unk_A0, gUIElementColorFlat);
 
-                if (gBattleContext.unk_11F2 == 1) {
-                    Gfx_DrawBorderSprite(gUIElementBorder->unk_80, (s16)gUIElementHealthFill->unk_98 + gUIElementHealthFill->unk_9E,
+                if (gSessionContext.unk_11F2 == 1) {
+                    UI_DrawTextureRgba16(gUIElementBorder->unk_80, (s16)gUIElementHealthFill->unk_98 + gUIElementHealthFill->unk_9E,
                                   gUIElementHealthFill->unk_9C - 2, gUIElementBorder->unk_9E, gUIElementBorder->unk_A0);
                 }
 
                 if ((gCurrentMonsterSpawnIdx != 4) && (gCurrentMonsterSpawnIdx != 5)) {
-                    Gfx_DrawSpriteWithColors(gUIElementStatus->unk_80, gUIElementStatus->unk_98, gUIElementStatus->unk_9C, gUIElementStatus->unk_9E,
+                    UI_DrawGradientTexture(gUIElementStatus->unk_80, gUIElementStatus->unk_98, gUIElementStatus->unk_9C, gUIElementStatus->unk_9E,
                                   gUIElementStatus->unk_A0, gUIElementColorFlat);
                 }
                 break;
@@ -798,155 +798,155 @@ void BattleUI_Render(void) {
                 break;
 
             case 1:
-                Text_ResetState();
-                Text_BeginRender();
-                Text_SetFont(0x10, 0);
+                Font_BeginTranslucentTextRendering();
+                Font_EnableTwoCycleTexturing();
+                Font_SetActive(0x10, 0);
                 Text_SetPrimColor(0, 0x82, 0xFF, 0xFF);
                 Text_SetEnvColor(0xC8, 0xFF, 0xFF, 0xFF);
-                UIElement_UpdatePos(gUIElementName, 0.35f, 0.0f, 4.0f, 160.0f, 1.4f);
-                Text_Print((s32)gUIElementName->unk_98 - (MeasureTextWidth(0x10, 0, gUIElementName->unk00) / 2),
+                Intro_StepPanelBounce(gUIElementName, 0.35f, 0.0f, 4.0f, 160.0f, 1.4f);
+                Font_Printf((s32)gUIElementName->unk_98 - (Font_MeasureTextExtent(0x10, 0, gUIElementName->unk00) / 2),
                               gUIElementName->unk_9C, gUIElementName->unk00);
-                Text_EndRender();
-                Text_SetupDL();
+                Font_DisableTwoCycleTexturing();
+                Font_EndTexturedTextRendering();
                 break;
         }
     }
 
-    Scroll_RenderIfActive();
+    WipeTransition_Draw();
 }
 
-void BattleScene_Render(void) {
-    Stage_BeginDisplayList();
+void Intro_RenderFrame(void) {
+    BgStage_DrawFrame();
 
     if ((gMiniCameraBgColor == -1) || (gMiniCameraBgColor == 0)) {
-        Gfx_FillScreen(&gDisplayListHead, 1);
+        GfxImage_FillCurrent(&gDisplayListHead, 1);
     } else if (gMiniCameraBgColor < 0x10000) {
-        Gfx_FillScreen(&gDisplayListHead, gMiniCameraBgColor);
+        GfxImage_FillCurrent(&gDisplayListHead, gMiniCameraBgColor);
     } else {
-        Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
+        GfxImage_FillCurrent(&gDisplayListHead, 0xA6BF);
     }
 
-    Gfx_FinishFrame();
-    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
-    BattleUI_Render();
-    ParticleRender_SetupMiniCamera();
-    Stage_Advance();
+    GeoRender_AdvanceFrameCounter();
+    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
+    Intro_DrawTextPanels();
+    MiniFx_DrawParticles();
+    BgStage_AdvanceFrame();
 }
 
-void BattleScene_RenderBlank(void) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 1);
-    Gfx_FinishFrame();
-    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
-    Text_DrawWindowRect(0, 0, 0x140, 0xF0, 0, 0, 0, 0xFF);
-    Stage_Advance();
+void Intro_RenderBlackFrame(void) {
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 1);
+    GeoRender_AdvanceFrameCounter();
+    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
+    Gfx_FillRectWithDisplayState(0, 0, 0x140, 0xF0, 0, 0, 0, 0xFF);
+    BgStage_AdvanceFrame();
 }
 
-void BattleSequence_IntroFade(void) {
+void Intro_FadeInSequence(void) {
     s32 i;
 
     for (i = 0; i < 18; i++) {
-        BattleInput_Update();
+        Intro_ReadControllerInput();
 
         if (i < 3) {
-            Stage_SetFillColor(1);
-            Stage_FadeIn(0x10);
-            BattleScene_RenderBlank();
+            StageContext_SetClearColor(1);
+            StageFade_StartFromOpaque(0x10);
+            Intro_RenderBlackFrame();
         }
     }
 
     if (gBattleSequenceType == 2) {
-        ResultScreen_SetAnimation(0x44);
+        Audio_StartMusicTrack(0x44);
     } else {
-        ResultScreen_SetAnimation(8);
+        Audio_StartMusicTrack(8);
     }
 }
 
-void BattleSequence_MainLoop(void) {
+void Intro_RunLoop(void) {
     s32 var_s0 = 1;
-    void (*temp_s2)(void) = (void*)Util_ConvertAddrToVirtAddr(Timer_Tick);
+    void (*temp_s2)(void) = (void*)Util_ConvertAddrToVirtAddr(Particle_UpdateFrameCountersAlias);
 
     gBattleSequenceFrameCount = 0;
     while (var_s0 != 0) {
         gBattleSequenceFrameCount++;
 
-        BattleInput_Update();
-        ParticleSystem_UpdateAndRender();
+        Intro_ReadControllerInput();
+        MiniFx_UpdateParticles();
 
-        if (BattleSequence_Update() != 0) {
+        if (Intro_UpdateShowcaseSequence() != 0) {
             var_s0 = 0;
         }
 
         temp_s2();
-        BattleScene_Render();
+        Intro_RenderFrame();
     }
 }
 
-void BattleSequence_Outro(void) {
+void Intro_FadeOutSequence(void) {
     s32 i;
     s32 var_s1;
-    void (*temp_s2)(void) = Util_ConvertAddrToVirtAddr(Timer_Tick);
+    void (*temp_s2)(void) = Util_ConvertAddrToVirtAddr(Particle_UpdateFrameCountersAlias);
 
-    if (gBattleContext.unk_0001 == 7) {
+    if (gSessionContext.unk_0001 == 7) {
         for (i = 0; i < 100; i++) {
-            BattleInput_Update();
-            ParticleSystem_UpdateAndRender();
+            Intro_ReadControllerInput();
+            MiniFx_UpdateParticles();
 
             temp_s2();
 
-            BattleScene_Render();
+            Intro_RenderFrame();
         }
     }
 
-    if (gBattleContext.unk_0001 == 7) {
+    if (gSessionContext.unk_0001 == 7) {
         var_s1 = 0x64;
     } else {
         var_s1 = 0xA;
     }
 
-    Stage_FadeOut(var_s1);
-    Stage_SetFadeColor(var_s1 - 2);
+    StageFade_StartFromTransparent(var_s1);
+    Audio_FadeOutAll(var_s1 - 2);
 
     for (i = 0; i < var_s1; i++) {
-        if (gBattleContext.unk_0001 == 7) {
-            BattleInput_Update();
-            ParticleSystem_UpdateAndRender();
+        if (gSessionContext.unk_0001 == 7) {
+            Intro_ReadControllerInput();
+            MiniFx_UpdateParticles();
             temp_s2();
-            BattleScene_Render();
+            Intro_RenderFrame();
         } else {
-            BattleInput_Update();
-            ParticleSystem_UpdateAndRender();
-            BattleSequence_Update();
+            Intro_ReadControllerInput();
+            MiniFx_UpdateParticles();
+            Intro_UpdateShowcaseSequence();
             temp_s2();
-            BattleScene_Render();
+            Intro_RenderFrame();
         }
     }
 
-    if (gBattleContext.unk_0001 == 7) {
+    if (gSessionContext.unk_0001 == 7) {
         for (i = 0; i < 30; i++) {
-            BattleInput_Update();
-            ParticleSystem_UpdateAndRender();
+            Intro_ReadControllerInput();
+            MiniFx_UpdateParticles();
 
             temp_s2();
 
-            BattleScene_Render();
+            Intro_RenderFrame();
         }
     }
 }
 
-void BattleSequence_Init(void) {
+void Stage_LoadModels(void) {
     MemoryBlock* sp34;
     UNUSED s32 pad;
     FragmentEntry sp2C;
     void* temp_v0_3;
     unk_D_8690A610_018* temp_v0_6;
 
-    gCurrentMonsterModelId = gMonsterModelIds[gBattleContext.unk_0001];
-    if (gBattleContext.unk_0001 == 7) {
-        gCurrentMonsterModelId += gBattleContext.unk_0002;
+    gCurrentMonsterModelId = gMonsterModelIds[gSessionContext.unk_0001];
+    if (gSessionContext.unk_0001 == 7) {
+        gCurrentMonsterModelId += gSessionContext.unk_0002;
     }
 
-    switch (gBattleContext.unk_0001) {
+    switch (gSessionContext.unk_0001) {
         case 1:
             gCurrentMonsterSpawnIdx = 4;
             break;
@@ -956,7 +956,7 @@ void BattleSequence_Init(void) {
             break;
 
         case 3:
-            gCurrentMonsterSpawnIdx = gBattleContext.unk_0002;
+            gCurrentMonsterSpawnIdx = gSessionContext.unk_0002;
             break;
 
         case 4:
@@ -968,7 +968,7 @@ void BattleSequence_Init(void) {
             break;
 
         case 6:
-            gCurrentMonsterSpawnIdx = gBattleContext.unk_0002;
+            gCurrentMonsterSpawnIdx = gSessionContext.unk_0002;
             break;
 
         default:
@@ -976,33 +976,33 @@ void BattleSequence_Init(void) {
             break;
     }
 
-    sp2C = BinArchive_GetFile(Asset_Load2(stadium_models_ROM_START, _5C7A70_ROM_START, 1, 1), gCurrentMonsterModelId);
+    sp2C = BinArchive_GetFile(BinArchive_Open(stadium_models_ROM_START, _5C7A70_ROM_START, 1, 1), gCurrentMonsterModelId);
 
     gMonsterModelArchive = sp2C(2, 0);
-    ColorRectNode_Create(0, &gBattleOverlayRect, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
-    GraphNode_AllocInit(NULL, &gMiniCameraRoot0);
-    GraphNode_AllocInit(NULL, &gMiniCameraRoot1);
-    GraphNode_AllocInit(NULL, &gMiniCameraRoot2);
-    sp34 = state_pool_try_init(main_pool_get_available(), 0);
+    GeoNode_CreateFog(0, &gBattleOverlayRect, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    GeoNode_CreateContainer(NULL, &gMiniCameraRoot0);
+    GeoNode_CreateContainer(NULL, &gMiniCameraRoot1);
+    GeoNode_CreateContainer(NULL, &gMiniCameraRoot2);
+    sp34 = MainPool_AllocState(main_pool_get_available(), 0);
     gMiniCameraStruct = process_geo_layout(sp34, D_86B0DE5C);
 
     temp_v0_3 = sp2C(0, 0);
     if (temp_v0_3 != NULL) {
-        GraphNode_AddChild(&gMiniCameraRoot0, process_geo_layout(sp34, temp_v0_3));
+        GraphNode_AppendChild(&gMiniCameraRoot0, process_geo_layout(sp34, temp_v0_3));
     }
 
     temp_v0_3 = sp2C(1, 0);
     if (temp_v0_3 != NULL) {
-        GraphNode_AddChild(&gMiniCameraRoot1, process_geo_layout(sp34, temp_v0_3));
+        GraphNode_AppendChild(&gMiniCameraRoot1, process_geo_layout(sp34, temp_v0_3));
     }
 
     temp_v0_3 = sp2C(3, 0);
     if (temp_v0_3 != NULL) {
-        GraphNode_AddChild(&gMiniCameraRoot2, process_geo_layout(sp34, temp_v0_3));
+        GraphNode_AppendChild(&gMiniCameraRoot2, process_geo_layout(sp34, temp_v0_3));
     }
 
     gMiniCameraBgColor = sp2C(2, 0);
-    mem_pool_resize_block(sp34);
+    MainPool_FinalizeAllocation(sp34);
 
     temp_v0_6 = sp2C(4, 0);
     if (temp_v0_6 == NULL) {
@@ -1015,9 +1015,9 @@ void BattleSequence_Init(void) {
         gBattleOverlayRect.unk_00.unk_14 = 1;
     }
 
-    Graph_InitRoots();
-    SetGlobalOverlayColor(0xFF, 0xFF, 0xFF);
-    ParticleSystem_Init();
+    ModelRenderer_InitDisplayRoots();
+    Intro_SetBackgroundTint(0xFF, 0xFF, 0xFF);
+    MiniFx_Init();
 
     gCameraTarget = main_pool_alloc(sizeof(unk_D_86B0FA78), 0);
     bzero(gCameraTarget, sizeof(unk_D_86B0FA78));
@@ -1040,58 +1040,58 @@ void BattleSequence_Init(void) {
     gUIElementBorder = main_pool_alloc(sizeof(unk_D_86B0FA50), 0);
     bzero(gUIElementBorder, sizeof(unk_D_86B0FA50));
 
-    BattleContext_SyncMonsterData();
+    Intro_SelectPartyRoster();
 
-    switch (gBattleContext.unk_0001) {
+    switch (gSessionContext.unk_0001) {
         case 1:
         case 2:
         case 4:
         case 5:
         case 7:
-            MonsterNode_SetupDefault();
-            MiniCamera_InitDefault();
-            BattleUI_SetStateActive();
+            Intro_StartFirstShowcase();
+            Intro_BeginOrbitCamera();
+            Intro_TriggerTextPanelExit();
             gBattleSequenceType = 0;
             break;
 
         default:
-            if (gBattleContext.unk_0002 == 3) {
+            if (gSessionContext.unk_0002 == 3) {
                 gBattleSequenceType = 1;
-                MonsterNode_SetupDefault();
-                MiniCamera_InitDefault();
-                BattleUI_SetStateActive();
+                Intro_StartFirstShowcase();
+                Intro_BeginOrbitCamera();
+                Intro_TriggerTextPanelExit();
             } else {
                 gBattleSequenceType = 2;
-                MonsterNode_SetupCustom();
-                MiniCamera_InitMonster();
-                BattleUI_SetStateActive();
+                Intro_StartFinalStageModel();
+                Intro_BeginStaticCamera();
+                Intro_TriggerTextPanelExit();
             }
             break;
     }
 }
 
-s32 BattleState_Handle17(void) {
+s32 Stage_ShowIntro(void) {
     Stage* sp24;
 
     main_pool_push_state('DEMO');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    Text_Init(0x10, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    Font_Init(0x10, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, cup_clear_ui, 0);
 
     FRAGMENT_LOAD(fragment31);
 
-    BattleSequence_Init();
-    Stage_Set(sp24);
-    BattleSequence_IntroFade();
-    BattleSequence_MainLoop();
-    BattleSequence_Outro();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    Stage_LoadModels();
+    StageContext_Activate(sp24);
+    Intro_FadeInSequence();
+    Intro_RunLoop();
+    Intro_FadeOutSequence();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('DEMO');
 

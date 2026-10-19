@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-u32 GetFlagCategory(s32);
-u32 RemapStadiumModeIndex(s32);
+u32 Status_ToDisplayIconIndex(s32);
+u32 PokemonType_ToDisplayIndex(s32);
 
 #endif // _225A0_H_

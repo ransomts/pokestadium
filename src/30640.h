@@ -133,23 +133,23 @@ typedef struct unk_D_83407B38 {
 
 extern unk_D_83407B00 gGalleryMainSelection;
 
-void Gallery_Run(void);
-void Cam_CallInit318B8(void);
-void Cam_ResetUnkF90(void);
-void Cam_ConvertInputToState(unk_D_83402EE0_070*, PokemonData*);
-void Cam_ConvertStateToInput(PokemonData*, unk_D_83407AC8*);
-Camera* Cam_Create(s16, s16, FramebufferImage*, FramebufferImage*, AssetManager*, BinArchive*, unk_D_83403C60*);
-u8* Cam_Update(Camera*);
-s32 Cam_IsMonIndexDisplayable(Camera*);
-s32 Cam_FindActiveIndex(Camera**, s32);
-Camera* Cam_GetCurrent(void);
-void Cam_ClearActive2(void);
-s32 IsMonIndexDisplayable(unk_D_83403C60*);
-f32 Math_AbsF(f32);
-void Math_CrossProductComponents(f32, f32, f32, f32, f32, f32, f32*, f32*, f32*);
-void Math_NormalizeVector(f32*, f32*, f32*);
+void Gallery_Dispatch(void);
+void Gallery_ResetActiveScene(void);
+void Gallery_ClearPhotoRenderTarget(void);
+void Gallery_CopyPhotoMonFromBattleMon(unk_D_83402EE0_070*, PokemonData*);
+void Gallery_CopyBattleMonFromPhotoMon(PokemonData*, unk_D_83407AC8*);
+Camera* Geo_CreateSceneInstance(s16, s16, FramebufferImage*, FramebufferImage*, AssetManager*, BinArchive*, unk_D_83403C60*);
+u8* Gallery_ProcessSceneInstance(Camera*);
+s32 Gallery_IsSceneReady(Camera*);
+s32 Gallery_FindReadyScene(Camera**, s32);
+Camera* Gallery_GetActiveScene(void);
+void Gallery_ClearActiveScene(void);
+s32 Gallery_IsPhotoSpeciesValid(unk_D_83403C60*);
+f32 Math_AbsF32(f32);
+void Vec3f_CrossProductComponents(f32, f32, f32, f32, f32, f32, f32*, f32*, f32*);
+void Vec3f_NormalizeComponents(f32*, f32*, f32*);
 void Mtx_BuildTranslatedDirectionRotation(Mtx*, f32, f32, f32, f32, f32, f32);
-void Camera_CopyMatrixF(MtxF*, MtxF*);
-void Matrix_GetScaleVector(MtxF* arg0, Vec3f* arg1);
+void MtxF_ExtractScale(MtxF*, MtxF*);
+void MtxF_GetScaleVector(MtxF* arg0, Vec3f* arg1);
 
 #endif // _30640_H_

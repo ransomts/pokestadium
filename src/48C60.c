@@ -65,7 +65,7 @@ s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
         size = gMoveSoundSeqInfo->seqArray[3].offset - romAddr;
     }
     Rom_DmaRead(romAddr, gMoveSoundTempBuffer, size);
-    DecompressData(gMoveSoundTempBuffer, gMoveSoundBankData[slot], 0x3E8);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gMoveSoundBankData[slot], 0x3E8);
     RemapBankPointers(gMoveSoundBankData[slot]);
     if (flag) {
         arg2 = 0x97;
@@ -75,7 +75,7 @@ s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
         size++;
     }
     Rom_DmaRead((u32)gMoveSoundSeqTable->seqArray[arg2].offset, gMoveSoundTempBuffer, size);
-    DecompressData(gMoveSoundTempBuffer, gMoveSoundTables[slot], 0x44C);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gMoveSoundTables[slot], 0x44C);
 
 found:
     switch (arg3) {
@@ -118,7 +118,7 @@ block_38:
             gSpecialMoveSoundFlag[0] = 1;
         }
         if (arg2 != 0) {
-            Audio_PlaySequence(arg2, 0xA);
+            Cry_Play(arg2, 0xA);
         }
         return 0;
     }
@@ -127,7 +127,7 @@ block_38:
     return temp_v0;
 }
 
-void UpdateSoundDurationScale(void) {
+void Audio_FadeStoredSound(void) {
   if (gSoundDurationScale[0] != 0) {
       MusSetDurationScale(gCurrentSoundHandle, (s32)gSoundDurationScale[0]);
   }

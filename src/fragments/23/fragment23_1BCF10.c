@@ -18,11 +18,11 @@ typedef struct unk_func_8820BE14_02C_038_02C {
     /* 0x00 */ s32 unk_58;
 } unk_func_8820BE14_02C_038_02C; // size >= 0x58
 
-void Panel_Init(unk_func_882149A0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6,
+void LabPC_InitTabWidget(unk_func_882149A0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6,
                    Color_RGBA8 arg7, Color_RGBA8 arg8, Color_RGBA8 arg9) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_882149A0));
 
-    arg0->unk_00.unk_18 = Panel_Draw;
+    arg0->unk_00.unk_18 = LabPC_DrawTabWidget;
 
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
@@ -37,7 +37,7 @@ void Panel_Init(unk_func_882149A0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4,
     arg0->unk_40 = 0;
 }
 
-s32 Panel_Draw(unk_func_882149A0* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_DrawTabWidget(unk_func_882149A0* arg0, s32 arg1, s32 arg2) {
     Color_RGBA8 sp16C;
 
     gDPPipeSync(gDisplayListHead++);
@@ -80,7 +80,7 @@ s32 Panel_Draw(unk_func_882149A0* arg0, s32 arg1, s32 arg2) {
         gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
         // clang-format off
-        temp_a0 = RGBA5551(Color_ScaleRGB(arg0->unk_3A, 1.4f).r, Color_ScaleRGB(arg0->unk_3A, 1.4f).g, Color_ScaleRGB(arg0->unk_3A, 1.4f).b, 1); gDPPipeSync(gDisplayListHead++);
+        temp_a0 = RGBA5551(Color_ScaleRgb(arg0->unk_3A, 1.4f).r, Color_ScaleRgb(arg0->unk_3A, 1.4f).g, Color_ScaleRgb(arg0->unk_3A, 1.4f).b, 1); gDPPipeSync(gDisplayListHead++);
         // clang-format on
 
         gDPSetFillColor(gDisplayListHead++, (temp_a0 << 0x10) | temp_a0);
@@ -121,25 +121,25 @@ s32 Panel_Draw(unk_func_882149A0* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void Panel_ToggleFill(unk_func_882149A0* arg0) {
+void LabPC_TabWidget_ToggleFlip(unk_func_882149A0* arg0) {
     arg0->unk_40 = !arg0->unk_40;
 }
 
-void ScrollableList_Init(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(), s32 arg5, s32 arg6,
+void LabPC_InitScrollableBoxGrid(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3, void (*arg4)(), s32 arg5, s32 arg6,
                    MemoryPool* arg7) {
-    ((func88506DCC)Memmap_GetFragmentVaddr(ScrollListFragment_Create))(arg0, arg1, arg2, arg4, arg5, arg6, arg3, arg7);
+    ((func88506DCC)Memmap_GetFragmentVaddr(WidgetTree_InitScrollableGrid))(arg0, arg1, arg2, arg4, arg5, arg6, arg3, arg7);
 
     arg0->unk_70 = 0;
     arg0->unk_74 = arg0->unk_00.unk_00.unk_1C;
     arg0->unk_78 = arg0->unk_00.unk_00.unk_18;
     arg0->unk_7C = arg0->unk_00.unk_00.unk_20;
 
-    ScrollableList_SetDirection(&arg0->unk_00, 1);
+    LabPC_SetGridBorderActive(&arg0->unk_00, 1);
 
     arg0->unk_00.unk_44->unk_00.unk_28 |= 0x100;
 }
 
-void ScrollableList_SetDirection(unk_func_88200FA0_030_030* arg0, s32 arg1) {
+void LabPC_SetGridBorderActive(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     s32 var_v0;
 
     if (arg1 != 0) {
@@ -150,12 +150,12 @@ void ScrollableList_SetDirection(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     arg0->unk_44->unk_2C = D_88218230[var_v0];
 }
 
-void ScrollableList_SetItemRenderer(unk_func_8820BE14_02C_038* arg0, unk_func_88507D4C* arg1) {
+void LabPC_BoxGrid_BindMessagePanel(unk_func_8820BE14_02C_038* arg0, unk_func_88507D4C* arg1) {
     arg0->unk_84 = arg1;
     arg0->unk_80 = arg1->unk_00.unk_18;
 }
 
-s32 ScrollableList_Update(unk_func_8820BE14_02C_038* arg0) {
+s32 LabPC_ScrollableGrid_UpdateScroll(unk_func_8820BE14_02C_038* arg0) {
     s32 sp24;
     s32 var_a2;
     s32 sp1C;
@@ -172,7 +172,7 @@ s32 ScrollableList_Update(unk_func_8820BE14_02C_038* arg0) {
             }
             arg0->unk_5C = arg0->unk_5C - var_a2;
 
-            ((func88506FC0)Memmap_GetFragmentVaddr(ScrollListFragment_UpdateMinOffset))(arg0);
+            ((func88506FC0)Memmap_GetFragmentVaddr(WidgetTree_ClampScrollableGridTop))(arg0);
 
             if (sp24 == arg0->unk_5C) {
                 arg0->unk_56 &= ~0x800;
@@ -188,7 +188,7 @@ s32 ScrollableList_Update(unk_func_8820BE14_02C_038* arg0) {
             }
             arg0->unk_5C = arg0->unk_5C + var_a2;
 
-            ((func88506FE0)Memmap_GetFragmentVaddr(ScrollListFragment_UpdateMaxOffset))(arg0);
+            ((func88506FE0)Memmap_GetFragmentVaddr(WidgetTree_ClampScrollableGridBottom))(arg0);
 
             if (sp1C == arg0->unk_5C) {
                 arg0->unk_56 &= ~0x400;
@@ -258,7 +258,7 @@ s32 ScrollableList_Update(unk_func_8820BE14_02C_038* arg0) {
     return 0;
 }
 
-s32 ScrollableList_DrawItems(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 LabPC_ScrollableGrid_DrawCells(unk_func_8820BE14_02C_038* arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 i;
     s32 temp_lo;
     s32 temp_s5;
@@ -434,7 +434,7 @@ s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1
         }
 
         arg0->unk_5C = arg0->unk_5C - var_a1;
-        ((func88506FC0)Memmap_GetFragmentVaddr(ScrollListFragment_UpdateMinOffset))(arg0);
+        ((func88506FC0)Memmap_GetFragmentVaddr(WidgetTree_ClampScrollableGridTop))(arg0);
         var_t2 = 0;
         arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
         if (sp24 != arg0->unk_00.unk_38) {
@@ -461,7 +461,7 @@ s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1
         }
         arg0->unk_5C += var_a1;
 
-        ((func88506FE0)Memmap_GetFragmentVaddr(ScrollListFragment_UpdateMaxOffset))(arg0);
+        ((func88506FE0)Memmap_GetFragmentVaddr(WidgetTree_ClampScrollableGridBottom))(arg0);
 
         var_t2 = 0;
         arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
@@ -575,15 +575,15 @@ s32 ScrollableList_HandleInput(unk_func_8820BE14_02C_038* arg0, Controller* arg1
     return var_t2;
 }
 
-void ScrollableList_SetActive(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
+void LabPC_ScrollableGrid_SetSwapMode(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
     if (arg1 == 0) {
         arg0->unk_70 = 1;
-        arg0->unk_00.unk_00.unk_1C = ScrollableList_Update;
-        arg0->unk_00.unk_00.unk_18 = ScrollableList_DrawItems;
+        arg0->unk_00.unk_00.unk_1C = LabPC_ScrollableGrid_UpdateScroll;
+        arg0->unk_00.unk_00.unk_18 = LabPC_ScrollableGrid_DrawCells;
         arg0->unk_00.unk_00.unk_20 = ScrollableList_HandleInput;
         arg0->unk_84->unk_00.unk_18 = StatBar_Draw;
         if (arg0->unk_00.unk_2C->unk_08 > 0) {
-            ((func88507AE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetRows))(arg0, arg0->unk_00.unk_38 + 1);
+            ((func88507AE4)Memmap_GetFragmentVaddr(WidgetTree_SetScrollableGridIndex))(arg0, arg0->unk_00.unk_38 + 1);
         }
     } else {
         arg0->unk_70 = 0;
@@ -592,24 +592,24 @@ void ScrollableList_SetActive(unk_func_8820BE14_02C_038* arg0, s32 arg1) {
         arg0->unk_00.unk_00.unk_20 = arg0->unk_7C;
         arg0->unk_84->unk_00.unk_18 = arg0->unk_80;
         if ((arg1 == 1) && (arg0->unk_00.unk_38 > 0) && (arg0->unk_00.unk_2C->unk_08 > 0)) {
-            ((func88507B80)Memmap_GetFragmentVaddr(ScrollListFragment_SetRowsAlt))(arg0, arg0->unk_00.unk_38 - 1);
+            ((func88507B80)Memmap_GetFragmentVaddr(WidgetTree_SetScrollableGridIndexPreserveScroll))(arg0, arg0->unk_00.unk_38 - 1);
         }
     }
 }
 
-void ScrollableList_SetDataPtr(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_06C_000* arg1, s32 arg2) {
+void LabPC_BindGridDeckData(unk_func_8820BE14_02C_038* arg0, unk_func_8820BE14_06C_000* arg1, s32 arg2) {
     arg0->unk_88 = &arg1->unk_00;
     arg0->unk_8C = arg2;
-    ((func88506EE4)Memmap_GetFragmentVaddr(ScrollListFragment_SetData))(arg0, &arg1->unk_04);
+    ((func88506EE4)Memmap_GetFragmentVaddr(WidgetTree_BindScrollableGridData))(arg0, &arg1->unk_04);
 }
 
-void ScrollableList_SetData(unk_func_8820BE14_02C_038* arg0, s32* arg1, s32 arg2) {
+void LabPC_BindGridStridedData(unk_func_8820BE14_02C_038* arg0, s32* arg1, s32 arg2) {
     arg0->unk_88 = arg1;
     arg0->unk_8C = arg2;
-    ((func88506F50)Memmap_GetFragmentVaddr(ScrollListFragment_Init2))(arg0, arg1 + 1);
+    ((func88506F50)Memmap_GetFragmentVaddr(WidgetTree_BindScrollableGridStridedData))(arg0, arg1 + 1);
 }
 
-void ItemSlot_Init(unk_func_882170A8* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_02C_038* arg3, s32 arg4) {
+void LabPC_InitPageCounterWidget(unk_func_882170A8* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_02C_038* arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_882170A8));
 
     arg0->unk_00.unk_18 = LabPC_PageCounterWidget_Draw;
@@ -619,7 +619,7 @@ void ItemSlot_Init(unk_func_882170A8* arg0, s32 arg1, s32 arg2, unk_func_8820BE1
     arg0->unk_30 = arg4;
 }
 
-void Cursor_Draw(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void LabPC_DrawPageCounterDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     Gfx_DrawNumberDigits(arg0, arg1, arg2, arg4);
     Gfx_DrawNumberDigits(((arg4 * 9) + arg0) + 9, arg1, arg3, arg4);
 
@@ -644,14 +644,14 @@ s32 LabPC_PageCounterWidget_Draw(unk_func_882170A8* arg0, s32 arg1, s32 arg2) {
         return 0;
     }
 
-    Cursor_Draw(arg1, arg2, temp_v0->unk_08, temp_v0->unk_04, arg0->unk_30);
+    LabPC_DrawPageCounterDigits(arg1, arg2, temp_v0->unk_08, temp_v0->unk_04, arg0->unk_30);
     return 0;
 }
 
-void Button_Init(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
+void LabPC_InitFlyingIconWidget(unk_func_882173EC* arg0, s32 arg1, s32 arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_882173EC));
 
-    arg0->unk_00.unk_1C = SlideAnim_Update;
+    arg0->unk_00.unk_1C = LabPC_FlyingIconWidget_Update;
     arg0->unk_30.unk_00 = arg1;
     arg0->unk_30.unk_02 = arg2;
     arg0->unk_2C = 0x10;
@@ -663,7 +663,7 @@ typedef struct unk_func_88217460 {
     /* 0x04 */ f32 unk_04;
 } unk_func_88217460; // size >= 0x8
 
-s32 SlideAnim_Update(unk_func_882173EC* arg0) {
+s32 LabPC_FlyingIconWidget_Update(unk_func_882173EC* arg0) {
     f32 temp_fa1;
     f32 temp_ft4;
     f32 tmp = 15.0f;
@@ -692,7 +692,7 @@ s32 SlideAnim_Update(unk_func_882173EC* arg0) {
     sp28[0] = sp34;
     sp28[1] = -sp30;
 
-    Vector2_Normalize(sp28);
+    Vec2f_Normalize(sp28);
 
     sp24 = (arg0->unk_2C * sp38) + sp1C;
 
@@ -716,7 +716,7 @@ s32 SlideAnim_Update(unk_func_882173EC* arg0) {
     return 0;
 }
 
-void SlideAnim_Begin(unk_func_882173EC* arg0, unk_func_88001300_000_010 arg1, unk_func_88001300_000_010 arg2) {
+void LabPC_FlyingIconWidget_Start(unk_func_882173EC* arg0, unk_func_88001300_000_010 arg1, unk_func_88001300_000_010 arg2) {
     unk_func_88001300_000_010 tmp = arg1;
 
     arg0->unk_30 = tmp;
@@ -726,7 +726,7 @@ void SlideAnim_Begin(unk_func_882173EC* arg0, unk_func_88001300_000_010 arg1, un
     arg0->unk_00.unk_28 |= 0x101;
 }
 
-void Button_Create(unk_func_8821421C_02C_06C_02C_068* arg0, s32 arg1, s32 arg2) {
+void LabPC_InitSlideIconWidget(unk_func_8821421C_02C_06C_02C_068* arg0, s32 arg1, s32 arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8821421C_02C_06C_02C_068));
 
     arg0->unk_00.unk_1C = LabPC_SlideIconWidget_Update;
@@ -756,17 +756,17 @@ void LabPC_SlideIconWidget_Start(unk_func_8821421C_02C_06C_02C_068* arg0, unk_fu
     arg0->unk_2C = 0;
 }
 
-void SwapArrows_Init(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
+void LabPC_InitModeToggleIcon(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88217740));
 
-    arg0->unk_00.unk_18 = SwapArrows_Draw;
+    arg0->unk_00.unk_18 = LabPC_ModeToggleIcon_Draw;
     arg0->unk_00.unk_10.unk_00 = arg1;
     arg0->unk_00.unk_10.unk_02 = arg2;
 
     LabPC_ModeToggleIcon_SetMode(arg0, 1);
 }
 
-s32 SwapArrows_Draw(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
+s32 LabPC_ModeToggleIcon_Draw(unk_func_88217740* arg0, s32 arg1, s32 arg2) {
     Color_RGBA8 sp6C;
 
     gDPPipeSync(gDisplayListHead++);
@@ -801,14 +801,14 @@ void LabPC_ModeToggleIcon_SetMode(unk_func_88217740* arg0, s32 arg1) {
     arg0->unk_2C = arg1;
 }
 
-void SwapArrows_Show(unk_func_88217740* arg0) {
+void LabPC_ModeToggleIcon_SetPressed(unk_func_88217740* arg0) {
     arg0->unk_30 = 1;
 }
 
-void SwapArrows_Hide(unk_func_88217740* arg0) {
+void LabPC_ModeToggleIcon_ClearPressed(unk_func_88217740* arg0) {
     arg0->unk_30 = 0;
 }
 
-void SwapArrows_ToggleDirection(unk_func_88217740* arg0) {
+void LabPC_ModeToggleIcon_ToggleMode(unk_func_88217740* arg0) {
     LabPC_ModeToggleIcon_SetMode(arg0, arg0->unk_2C == 0);
 }

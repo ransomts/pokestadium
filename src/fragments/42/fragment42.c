@@ -143,27 +143,27 @@ static s16 gGridStepX[2] = { 0x98, 0x4C };
 static s16 gGridStepY[2] = { 0x7A, 0x3D };
 static s32 gMenuExitFadeColors[] = { 5, 3, 3, 0, 0, 7, 8 };
 
-void DrawPanelFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Gallery_SnapDrawRoundedFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, arg7);
 
-    Gfx_DrawSpriteIA8(arg0 - 7, arg1 - 7, 8, 8, &D_300BE40, 8, 0);
-    Gfx_DrawSpriteIA8((arg0 + arg2) - 1, arg1 - 7, 8, 8, &D_300BE80, 8, 0);
-    Gfx_DrawTextureRect(arg0 + 1, arg1 - 7, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
-    Gfx_DrawSpriteIA8(arg0 - 7, (arg1 + arg3) - 1, 8, 8, &D_300BEC0, 8, 0);
-    Gfx_DrawTextureRect(arg0 - 7, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
-    Gfx_DrawSpriteIA8((arg0 + arg2) - 1, (arg1 + arg3) - 1, 8, 8, &D_300BF00, 8, 0);
-    Gfx_DrawTextureRect(arg0 + 1, (arg1 + arg3) - 1, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
-    Gfx_DrawTextureRect((arg0 + arg2) - 1, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8(arg0 - 7, arg1 - 7, 8, 8, &D_300BE40, 8, 0);
+    Gfx_DrawTextureIa8((arg0 + arg2) - 1, arg1 - 7, 8, 8, &D_300BE80, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 1, arg1 - 7, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureIa8(arg0 - 7, (arg1 + arg3) - 1, 8, 8, &D_300BEC0, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 - 7, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8((arg0 + arg2) - 1, (arg1 + arg3) - 1, 8, 8, &D_300BF00, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 1, (arg1 + arg3) - 1, arg2 - 2, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - 1, arg1 + 1, 8, arg3 - 2, 0, 0, 0x400, 0, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
-    Gfx_FillRectRGBA(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+    Gfx_FillRectRgba(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-unk_D_83407B38* GetActiveMenu(void) {
+unk_D_83407B38* Gallery_SnapGetActiveGrid(void) {
     unk_D_83407B38* ret;
 
     if (gGallerySpecialUnlocked == 0) {
@@ -174,7 +174,7 @@ unk_D_83407B38* GetActiveMenu(void) {
     return ret;
 }
 
-void UpdateMenuItemStates(void) {
+void Gallery_SnapUpdateMenuIconStates(void) {
     MenuItem* ptr;
     s32 sp28;
     s32 i;
@@ -183,17 +183,17 @@ void UpdateMenuItemStates(void) {
     u8* sp18;
     s32 var_v0;
 
-    sp28 = CountDisplayableMonIndices(gGalleryEntries, 0x24, 1);
+    sp28 = Gallery_CountValidPhotos(gGalleryEntries, 0x24, 1);
     if (gGallerySpecialUnlocked == 0) {
         sp1C[1] = 0xF;
         sp1C[0] = 0x14;
-        var_v0 = CountDisplayableMonIndices(gCurrentCamEntry, 4, 1);
+        var_v0 = Gallery_CountValidPhotos(gCurrentCamEntry, 4, 1);
         sp20 = 4;
         sp18 = D_3004540;
     } else {
         sp1C[1] = 0x3F;
         sp1C[0] = 0x40;
-        var_v0 = CountDisplayableMonIndices(gCurrentCamEntryPage, 0x10, 1);
+        var_v0 = Gallery_CountValidPhotos(gCurrentCamEntryPage, 0x10, 1);
         sp20 = 0x10;
         sp18 = D_3005260;
     }
@@ -247,12 +247,12 @@ void UpdateMenuItemStates(void) {
     }
 }
 
-s32 Menu_HandleConfirm(void) {
+s32 Gallery_SnapConfirmSaveBackgrounds(void) {
     s32 sp1C = 0;
 
-    if (Gallery_CheckForChanges() != 0) {
+    if (Gallery_BackgroundsChanged() != 0) {
         gMenuStep = 6;
-        Menu_SetStep(3, gPlayer1Controller);
+        Gallery_OpenConfirmPrompt(3, gPlayer1Controller);
         gBackgroundFadeTimer = 4;
     } else {
         sp1C = 1;
@@ -260,7 +260,7 @@ s32 Menu_HandleConfirm(void) {
     return sp1C;
 }
 
-s32 ProcessMenuInput(void) {
+s32 Gallery_SnapUpdateMenuInput(void) {
     s32 sp2C;
     s32 sp28;
     MenuItem* sp24;
@@ -272,7 +272,7 @@ s32 ProcessMenuInput(void) {
     sp20 = gGallerySpecialViewed;
     sp1C = D_83402E28;
 
-    if (Cam_FindActiveIndex(GetActiveMenu()->unk_20, 0x25) != -1) {
+    if (Gallery_FindReadyScene(Gallery_SnapGetActiveGrid()->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -292,7 +292,7 @@ s32 ProcessMenuInput(void) {
     }
 
     if (sp1C != D_83402E28) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 
     sp24 = &D_833031B4[D_83402E28];
@@ -312,14 +312,14 @@ s32 ProcessMenuInput(void) {
 
     if (sp20 != gGallerySpecialViewed) {
         gMenuDirty = 0;
-        UpdateMenuItemStates();
+        Gallery_SnapUpdateMenuIconStates();
     }
 
     if (sp2C != 0) {
-        if (Menu_HandleConfirm() != 0) {
+        if (Gallery_SnapConfirmSaveBackgrounds() != 0) {
             sp28 = 1;
         }
-        PlaySoundEffect(sp24->unk_14);
+        Audio_PlaySoundEffectById(sp24->unk_14);
     } else if (gPlayer1Controller->buttonPressed & 0x8000) {
         if (sp24->unk_12 == 0) {
             switch (D_83402E28) {
@@ -334,7 +334,7 @@ s32 ProcessMenuInput(void) {
 
                 case 4:
                     gGallerySpecialUnlocked ^= 1;
-                    UpdateMenuItemStates();
+                    Gallery_SnapUpdateMenuIconStates();
                     break;
 
                 case 5:
@@ -347,30 +347,30 @@ s32 ProcessMenuInput(void) {
                     break;
 
                 case 6:
-                    if (Menu_HandleConfirm() != 0) {
+                    if (Gallery_SnapConfirmSaveBackgrounds() != 0) {
                         sp28 = 1;
                     }
                     break;
             }
-            PlaySoundEffect(sp24->unk_14);
+            Audio_PlaySoundEffectById(sp24->unk_14);
         } else if ((D_83402E28 == 5) && (gGallerySpecialViewed != 0)) {
             sp28 = 2;
-            PlaySoundEffect(sp24->unk_14);
+            Audio_PlaySoundEffectById(sp24->unk_14);
         } else {
             gMenuDirty = 1;
-            PlaySoundEffect(8);
+            Audio_PlaySoundEffectById(8);
         }
     }
     return sp28;
 }
 
-void ResetMenuState(void) {
+void Gallery_SnapResetToMenu(void) {
     D_833032E0 = 0;
     gMenuStep = 1;
-    GallerySelection_Init(&gGalleryMainSelection);
+    Gallery_InitPageCursor(&gGalleryMainSelection);
 }
 
-s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
+s32 Gallery_SnapUpdateGridInput(unk_D_83407B38* arg0) {
     s32 sp4C;
     s32 sp48;
     s32 sp44;
@@ -383,8 +383,8 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
 
     sp4C = 0;
     sp48 = arg0->unk_00;
-    Gallery_GetPageAndIndex(arg0, &sp44, &sp40, sp48);
-    if (Cam_FindActiveIndex(arg0->unk_20, 0x25) != -1) {
+    Gallery_IndexToGridPos(arg0, &sp44, &sp40, sp48);
+    if (Gallery_FindReadyScene(arg0->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -416,36 +416,36 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
         }
     }
 
-    arg0->unk_00 = Gallery_GetGlobalIndex(arg0, sp44, sp40);
+    arg0->unk_00 = Gallery_GridPosToIndex(arg0, sp44, sp40);
     if (arg0->unk_00 != sp48) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {
         sp3C = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
         sp38 = arg0->unk_20[sp3C];
         if (arg0->unk_04 == -1) {
-            if (Cam_IsMonIndexDisplayable(sp38) != 0) {
+            if (Gallery_IsSceneReady(sp38) != 0) {
                 arg0->unk_04 = sp3C;
                 arg0->unk_B0->unk_18 = sp38->unk_18;
                 arg0->unk_B0->unk_00 = 0;
-                PlaySoundEffect(2);
+                Audio_PlaySoundEffectById(2);
             } else {
-                PlaySoundEffect(8);
+                Audio_PlaySoundEffectById(8);
             }
         } else {
             if ((arg0->unk_04 >= 0) && (arg0->unk_04 < arg0->unk_14)) {
                 if (sp3C != arg0->unk_04) {
                     sp38->unk_00 = 0;
                     arg0->unk_20[arg0->unk_04]->unk_00 = 0;
-                    Gallery_SwapEntries(sp38->unk_18, arg0->unk_B0->unk_18);
-                    PlaySoundEffect(0x29);
+                    Gallery_SwapPhotoRecords(sp38->unk_18, arg0->unk_B0->unk_18);
+                    Audio_PlaySoundEffectById(0x29);
                 } else {
-                    PlaySoundEffect(3);
+                    Audio_PlaySoundEffectById(3);
                 }
             } else {
-                if (Gallery_IsEntryEqual(arg0->unk_B0->unk_18, sp38->unk_18) == 0) {
-                    PlaySoundEffect(0x31);
+                if (Gallery_PhotoRecordsEqual(arg0->unk_B0->unk_18, sp38->unk_18) == 0) {
+                    Audio_PlaySoundEffectById(0x31);
                     gMenuStep = 4;
 
                     gSwapTempPokemon = *sp38->unk_18;
@@ -453,8 +453,8 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
 
                     sp38->unk_00 = 0;
                 } else {
-                    PlaySoundEffect(3);
-                    ResetMenuState();
+                    Audio_PlaySoundEffectById(3);
+                    Gallery_SnapResetToMenu();
                 }
             }
             arg0->unk_04 = -1;
@@ -465,13 +465,13 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
             gMenuStep = 1;
         } else {
             if (arg0->unk_04 >= 4) {
-                GallerySelection_Init(&gGalleryMainSelection);
+                Gallery_InitPageCursor(&gGalleryMainSelection);
                 D_833032E0 = 0;
                 gMenuStep = 1;
             }
             arg0->unk_04 = -1;
         }
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
     } else if (gPlayer1Controller->buttonPressed & 4) {
         idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
         if (arg0->unk_04 == -1) {
@@ -480,19 +480,19 @@ s32 HandlePokemonGridInput(unk_D_83407B38* arg0) {
             sp28 = arg0->unk_B0;
         }
 
-        if ((arg0->unk_04 == -1) && (Cam_IsMonIndexDisplayable(sp28) != 0)) {
+        if ((arg0->unk_04 == -1) && (Gallery_IsSceneReady(sp28) != 0)) {
             sp4C = 1;
-            PlaySoundEffect(0x19);
-            Gallery_SetCurrentEntry(sp28->unk_18);
+            Audio_PlaySoundEffectById(0x19);
+            Gallery_SetEnlargeTarget(sp28->unk_18);
         } else {
-            PlaySoundEffect(8);
+            Audio_PlaySoundEffectById(8);
         }
     }
 
     return sp4C;
 }
 
-void Menu_DrawAnimatedSprite(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5, f32 arg6) {
+void Gallery_SnapDrawScaledImage(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5, f32 arg6) {
     s32 temp_fa0;
     s32 temp_fa0_2;
     s32 temp_fv1;
@@ -512,7 +512,7 @@ void Menu_DrawAnimatedSprite(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, 
     temp_fv1_2 = -temp_fv1_2;
     temp_fa0_2 = ROUND_MAX(arg4 * (arg6 - 1.0f) * 0.5f);
 
-    Gfx_DrawTextureRect(arg1 + temp_fv1_2, arg2 - temp_fa0_2, temp_fv1, temp_fa0, 0, 0, 1024.0f / arg5, 1024.0f / arg6, 0);
+    Gfx_DrawTexturedRectClipped(arg1 + temp_fv1_2, arg2 - temp_fa0_2, temp_fv1, temp_fa0, 0, 0, 1024.0f / arg5, 1024.0f / arg6, 0);
 }
 
 void DrawMenuScreen(void) {
@@ -538,13 +538,13 @@ void DrawMenuScreen(void) {
         tmp = (D_833031B4[i].unk_12 == 0) ? 0xFF : 0x40;
 
         if (D_833031B4[i].unk_10 == 1) {
-            DrawPanelFrame(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x1E, 0x82, tmp);
+            Gallery_SnapDrawRoundedFrame(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x1E, 0x82, tmp);
         } else {
-            DrawPanelFrame(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x64, 0x1E, tmp);
+            Gallery_SnapDrawRoundedFrame(0x46, 0x4E + i * 0x36, 0x7F, 0x18, 0x1E, 0x64, 0x1E, tmp);
         }
     }
 
-    DrawSelectionHighlight(GetActiveMenu());
+    Gallery_SnapDrawCursor(Gallery_SnapGetActiveGrid());
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -563,31 +563,31 @@ void DrawMenuScreen(void) {
             gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, r);
 
             if ((i == D_83402E28) && (D_833031B4[i].unk_12 == 0)) {
-                Menu_DrawAnimatedSprite(D_833031B4[i].unk_00, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].unk_04,
+                Gallery_SnapDrawScaledImage(D_833031B4[i].unk_00, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].unk_04,
                               D_833031B4[i].unk_06, temp_fs0, temp_fs1);
             } else {
-                DrawVerticalTextureStrip(D_833031B4[i].unk_00, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].unk_04,
+                Gallery_DrawImageStrips(D_833031B4[i].unk_00, temp_t0 + 0x46, (i * 0x36) + 0x48, D_833031B4[i].unk_04,
                               D_833031B4[i].unk_06, 0);
             }
         }
     }
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
 
     for (i = 0; i < 7; i++) {
-        temp_v0_4 = Text_GetMessageString_Bank2C(D_833031B4[i].unk_08);
-        temp_s2 = ((0x73 - MeasureTextWidth(0, 0, temp_v0_4)) / 2) + 0xC;
+        temp_v0_4 = Gallery_GetUiString(D_833031B4[i].unk_08);
+        temp_s2 = ((0x73 - Font_MeasureTextExtent(0, 0, temp_v0_4)) / 2) + 0xC;
         tmp2 = (D_833031B4[i].unk_12 == 0) ? 0xFFu : 0x40u;
 
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp2);
-        Text_Print(temp_s2 + 0x46, 0x50 + i * 0x36, temp_v0_4);
+        Font_Printf(temp_s2 + 0x46, 0x50 + i * 0x36, temp_v0_4);
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
-void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
+void Gallery_SnapDrawTitleBar(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp3C;
     UNUSED s32 pad;
     char* sp34;
@@ -595,7 +595,7 @@ void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
     Color_RGBA8 sp2C = { 0xC3, 0x54, 0x84, 0xFF };
     MenuSubPanelItem* sp20;
 
-    DrawPanelWithTextures(arg0, arg1, 0x186, &sp30, &sp2C);
+    Gallery_DrawHeaderBar(arg0, arg1, 0x186, &sp30, &sp2C);
 
     if ((D_833032E0 != 0) && (D_833032E0 != 2)) {
         sp20 = &gSubPanelItems[arg2];
@@ -612,21 +612,21 @@ void DrawSubPanel(s32 arg0, s32 arg1, s32 arg2) {
     if (sp20->unk_00 != NULL) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        DrawVerticalTextureStrip(sp20->unk_00, arg0 + 0x10, arg1 - 1, sp20->unk_04, sp20->unk_06, 0);
+        Gallery_DrawImageStrips(sp20->unk_00, arg0 + 0x10, arg1 - 1, sp20->unk_04, sp20->unk_06, 0);
     }
 
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
-    sp34 = Text_GetMessageString_Bank2C(sp20->unk_08);
-    sp3C = (0x186 - MeasureTextWidth(0, 0, sp34)) / 2;
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
+    sp34 = Gallery_GetUiString(sp20->unk_08);
+    sp3C = (0x186 - Font_MeasureTextExtent(0, 0, sp34)) / 2;
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(arg0 + sp3C + 2, arg1 + 5, sp34);
+    Font_Printf(arg0 + sp3C + 2, arg1 + 5, sp34);
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Text_Print(arg0 + sp3C, arg1 + 3, sp34);
-    Text_SetupDL();
+    Font_Printf(arg0 + sp3C, arg1 + 3, sp34);
+    Font_EndTexturedTextRendering();
 }
 
-void DrawMessageBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+void Gallery_SnapDrawHintBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
     MenuItem* temp_v1 = &D_833031B4[D_83402E28];
     char* sp18 = NULL;
 
@@ -636,55 +636,55 @@ void DrawMessageBox(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
                 switch (gMenuConfirmState) {
                     case 0:
                         if (gGallerySpecialViewed == 0) {
-                            sp18 = Text_GetMessageString_Bank2C(0x1B);
+                            sp18 = Gallery_GetUiString(0x1B);
                         } else {
-                            sp18 = Text_GetMessageString_Bank2C(0x45);
+                            sp18 = Gallery_GetUiString(0x45);
                         }
                         break;
 
                     case 1:
-                        sp18 = Text_GetMessageString_Bank2C(0x1D);
+                        sp18 = Gallery_GetUiString(0x1D);
                 }
                 break;
             } else if ((gMenuDirty != 0) && (temp_v1->unk_0C != NULL)) {
-                sp18 = Text_GetMessageString_Bank2C(temp_v1->unk_0C[temp_v1->unk_12 - 1]);
+                sp18 = Gallery_GetUiString(temp_v1->unk_0C[temp_v1->unk_12 - 1]);
             } else {
-                sp18 = Text_GetMessageString_Bank2C(temp_v1->unk_0A);
+                sp18 = Gallery_GetUiString(temp_v1->unk_0A);
             }
             break;
 
         case 1:
             if (gMenuStep == 4) {
-                sp18 = Text_GetMessageString_Bank2C(0x17);
+                sp18 = Gallery_GetUiString(0x17);
             } else {
-                sp18 = Text_GetMessageString_Bank2C(0x16);
+                sp18 = Gallery_GetUiString(0x16);
             }
             break;
 
         case 2:
             if (arg0->unk_04 == -1) {
-                sp18 = Text_GetMessageString_Bank2C(0x19);
+                sp18 = Gallery_GetUiString(0x19);
             } else {
-                sp18 = Text_GetMessageString_Bank2C(0x1A);
+                sp18 = Gallery_GetUiString(0x1A);
             }
             break;
     }
 
-    Gallery_DrawGradientPanel(arg1, arg2, 0x186, 0x4C);
+    Gallery_DrawBluePanel(arg1, arg2, 0x186, 0x4C);
 
     if (sp18 != NULL) {
         if (1) {}
         if (1) {}
         if (1) {}
-        Text_ResetState();
-        Text_SetFont(8, 0);
-        Text_SetLineHeight(0x14);
-        Text_Print(arg1 + 0xA, arg2 + 8, sp18);
-        Text_SetupDL();
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(8, 0);
+        Font_SetLineHeight(0x14);
+        Font_Printf(arg1 + 0xA, arg2 + 8, sp18);
+        Font_EndTexturedTextRendering();
     }
 }
 
-void InitializeMenuState(s32 arg0, s32 arg1) {
+void Gallery_SnapInit(s32 arg0, s32 arg1) {
     unk_D_83407B38* temp_v0_2;
     AssetManager* sp30;
 
@@ -715,47 +715,47 @@ void InitializeMenuState(s32 arg0, s32 arg1) {
         gMenuInputLocked = 1;
     }
 
-    if (IsStickerStationConnected() != 0) {
+    if (Controller_CheckAccessoryEeprom() != 0) {
         gStickerStationConnected = 1;
     } else {
         gStickerStationConnected = 0;
     }
 
-    Gallery_Reset();
-    UpdateMenuItemStates();
-    Graph_InitRoots();
-    sp30 = AssetManager_Create(5);
-    CamList_Init(&gMenuActiveData, 0x3C, 0x2D, 4, 2, sp30, gMenuAssetArchive, gCurrentCamEntry, 4, 1);
-    Gallery_UpdateCameraAssets(&gGalleryCamList, sp30, gMenuAssetArchive);
+    Gallery_ResetPhotoPool();
+    Gallery_SnapUpdateMenuIconStates();
+    ModelRenderer_InitDisplayRoots();
+    sp30 = PokeIcon_AllocFramebuffers(5);
+    Gallery_InitSceneGrid(&gMenuActiveData, 0x3C, 0x2D, 4, 2, sp30, gMenuAssetArchive, gCurrentCamEntry, 4, 1);
+    Gallery_RebindSceneGridResources(&gGalleryCamList, sp30, gMenuAssetArchive);
 
     if (D_833032E0 == 1) {
-        temp_v0_2 = GetActiveMenu();
+        temp_v0_2 = Gallery_SnapGetActiveGrid();
         temp_v0_2->unk_04 = 0x400;
         temp_v0_2->unk_B0->unk_18 = &gGalleryEntries[gGalleryMainSelection.unk_04];
         temp_v0_2->unk_B0->unk_00 = 0;
     } else if (D_833032E0 == 2) {
-        Gallery_SyncCamToSelection(&gMenuActiveData, &gGalleryMainSelectionCam);
-        Gallery_SyncCamToSelection(&gGalleryCamList, &gGallerySubSelection);
+        Gallery_RestorePosition(&gMenuActiveData, &gGalleryMainSelectionCam);
+        Gallery_RestorePosition(&gGalleryCamList, &gGallerySubSelection);
     }
 
-    SnapSelect_SetupDisplay();
+    Gallery_ResetConfirmPrompt();
 }
 
-void Gfx_DrawFadeOverlay(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGBA8* arg4, Color_RGBA8* arg5) {
-    FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
-    Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
-    Mtx* sp84 = GfxAlloc(sizeof(Mtx) * 1);
-    Vp* sp80 = GfxAlloc(sizeof(Vp) * 1);
+void Gallery_SnapDrawGradientQuad(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGBA8* arg4, Color_RGBA8* arg5) {
+    FramebufferImage* temp_s1 = GfxImage_GetCurrent();
+    Vtx* temp_s2 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
+    Mtx* sp84 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    Vp* sp80 = Gfx_AllocDisplayList(sizeof(Vp) * 1);
 
-    SetViewport(sp80, temp_s1->width, temp_s1->height);
+    Gfx_SetViewportDimensions(sp80, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)sp80 & 0x1FFFFFFF);
 
     guOrtho(sp84, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
-    SetTileVertex(&temp_s2[0], arg0, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, arg4->a);
-    SetTileVertex(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, arg5->r, arg5->g, arg5->b, arg5->a);
-    SetTileVertex(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, arg4->r, arg4->g, arg4->b, arg4->a);
-    SetTileVertex(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, arg5->a);
+    Gfx_SetVertexAttributes(&temp_s2[0], arg0, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, arg4->a);
+    Gfx_SetVertexAttributes(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, arg5->r, arg5->g, arg5->b, arg5->a);
+    Gfx_SetVertexAttributes(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, arg4->r, arg4->g, arg4->b, arg4->a);
+    Gfx_SetVertexAttributes(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, arg5->a);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -771,7 +771,7 @@ void Gfx_DrawFadeOverlay(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGBA8* ar
     gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
 }
 
-void DrawBackground(void) {
+void Gallery_SnapDrawBackgroundWipe(void) {
     static Color_RGBA8 D_83303298 = { 0, 0, 0, 0xFF };
     static Color_RGBA8 D_8330329C = { 0, 0, 0, 0 };
     static s32 gBackgroundStartX = 0xBE;
@@ -801,7 +801,7 @@ void DrawBackground(void) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_3000000, G_IM_FMT_I, 128, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(gBackgroundStartX, 0, var_ra - gBackgroundStartX, 0x1E0, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(gBackgroundStartX, 0, var_ra - gBackgroundStartX, 0x1E0, 0, 0, 0x400, 0x400, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
@@ -809,7 +809,7 @@ void DrawBackground(void) {
     gDPFillRectangle(gDisplayListHead++, 0, 0, gBackgroundStartX - 1, 479);
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Gfx_DrawFadeOverlay(gBackgroundStartX, 0, gBackgroundEndX - gBackgroundStartX, 0x1E0, &sp80, &sp7C);
+    Gallery_SnapDrawGradientQuad(gBackgroundStartX, 0, gBackgroundEndX - gBackgroundStartX, 0x1E0, &sp80, &sp7C);
 }
 
 void DrawPokemonGrid(unk_D_83407B38* arg0) {
@@ -843,12 +843,12 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
 
     for (i = 0; i < arg0->unk_14; i++) {
         temp_s0 = (arg0->unk_08 * arg0->unk_14) + i;
-        Gallery_GetPageAndIndex(arg0, &sp78, &sp74, i);
+        Gallery_IndexToGridPos(arg0, &sp78, &sp74, i);
         temp_s1 = arg0->unk_20[temp_s0];
 
-        if ((i != arg0->unk_04) && (Cam_IsMonIndexDisplayable(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
+        if ((i != arg0->unk_04) && (Gallery_IsSceneReady(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
             for (j = 0; j < var_s6; j++) {
-                Gallery_DrawTextureList(temp_s1->unk_08->img_p, (temp_s4 * sp78) + temp_fp + ((temp_s4 / 2) * (j % 2)),
+                Gallery_DrawPhotoThumbnail(temp_s1->unk_08->img_p, (temp_s4 * sp78) + temp_fp + ((temp_s4 / 2) * (j % 2)),
                               (temp_s5 * sp74) + sp8C + ((temp_s5 / 2) * (j / 2)), temp_s1->unk_04, temp_s1->unk_06, 8,
                               1);
             }
@@ -856,16 +856,16 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
     }
 
     if (arg0->unk_04 != -1) {
-        Gallery_GetPageAndIndex(arg0, &sp68, &sp64, arg0->unk_00);
+        Gallery_IndexToGridPos(arg0, &sp68, &sp64, arg0->unk_00);
         temp_s1 = arg0->unk_B0;
-        if ((Cam_IsMonIndexDisplayable(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
+        if ((Gallery_IsSceneReady(temp_s1) != 0) && (temp_s1->unk_00 == 2)) {
             for (j = 0; j < var_s6; j++) {
                 tmp1 = j % 2;
                 tmp2 = j / 2;
-                Gallery_DrawShadow((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1),
+                Gallery_DrawDropShadow((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1),
                               (temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * tmp2), temp_s1->unk_04, temp_s1->unk_06);
 
-                Gallery_DrawTextureList(temp_s1->unk_08->img_p, ((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1)) - 0x10,
+                Gallery_DrawPhotoThumbnail(temp_s1->unk_08->img_p, ((temp_s4 * sp68) + temp_fp + ((temp_s4 / 2) * tmp1)) - 0x10,
                               ((temp_s5 * sp64) + sp8C + ((temp_s5 / 2) * tmp2)) - 0x10, temp_s1->unk_04,
                               temp_s1->unk_06, 8, 1);
             }
@@ -873,7 +873,7 @@ void DrawPokemonGrid(unk_D_83407B38* arg0) {
     }
 }
 
-void DrawSelectionHighlight(unk_D_83407B38* arg0) {
+void Gallery_SnapDrawCursor(unk_D_83407B38* arg0) {
     Camera* temp_s0;
     s32 sp58;
     s32 sp54;
@@ -890,12 +890,12 @@ void DrawSelectionHighlight(unk_D_83407B38* arg0) {
     sp48 = gGridStepX[gGallerySpecialUnlocked];
     sp44 = gGridStepY[gGallerySpecialUnlocked];
     temp_s0 = arg0->unk_B0;
-    Gallery_GetPageAndIndex(arg0, &sp58, &sp54, arg0->unk_00);
+    Gallery_IndexToGridPos(arg0, &sp58, &sp54, arg0->unk_00);
 
     switch (D_833032E0) {
         case 0:
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
-            Gallery_DrawAnimatedCorners(0x3E, (D_83402E28 * 0x36) + 0x46, 0x8F, 0x28);
+            Gallery_DrawSelectionCorners(0x3E, (D_83402E28 * 0x36) + 0x46, 0x8F, 0x28);
             break;
 
         case 2:
@@ -914,11 +914,11 @@ void DrawSelectionHighlight(unk_D_83407B38* arg0) {
                 var_a2 = temp_s0->unk_04 + 8;
                 var_a3 = temp_s0->unk_06 + 8;
             }
-            Gallery_DrawAnimatedCorners(((sp48 * sp58) + sp50 + var_v0) - 4, ((sp44 * sp54) + sp4C + var_v0) - 4, var_a2, var_a3);
+            Gallery_DrawSelectionCorners(((sp48 * sp58) + sp50 + var_v0) - 4, ((sp44 * sp54) + sp4C + var_v0) - 4, var_a2, var_a3);
             break;
 
         case 1:
-            if ((arg0->unk_04 != -1) && (Cam_IsMonIndexDisplayable(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
+            if ((arg0->unk_04 != -1) && (Gallery_IsSceneReady(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
                 if (gGallerySpecialUnlocked == 0) {
@@ -928,70 +928,70 @@ void DrawSelectionHighlight(unk_D_83407B38* arg0) {
                     var_a2 = temp_s0->unk_04 + 8;
                     var_a3 = temp_s0->unk_06 + 8;
                 }
-                Gallery_DrawAnimatedCorners(((sp48 * sp58) + sp50) - 0x14, ((sp44 * sp54) + sp4C) - 0x14, var_a2, var_a3);
+                Gallery_DrawSelectionCorners(((sp48 * sp58) + sp50) - 0x14, ((sp44 * sp54) + sp4C) - 0x14, var_a2, var_a3);
             }
             break;
     }
 }
 
-void Menu_DrawHeader(s32 arg0) {
+void Gallery_SnapDrawBackPrompt(s32 arg0) {
     s8* sp2C;
     s32 temp_v1;
 
-    sp2C = Text_GetMessageString_Bank2C(0x3C);
-    temp_v1 = ((0x186 - MeasureTextWidth(0, 0, sp2C)) / 2) + 0xD5;
+    sp2C = Gallery_GetUiString(0x3C);
+    temp_v1 = ((0x186 - Font_MeasureTextExtent(0, 0, sp2C)) / 2) + 0xD5;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(temp_v1 - 0x20, arg0 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
-    Text_ResetState();
-    Text_SetFont(8, 0);
+    Gfx_DrawTextureRgba16(temp_v1 - 0x20, arg0 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(temp_v1, arg0, sp2C);
-    Text_SetupDL();
+    Font_Printf(temp_v1, arg0, sp2C);
+    Font_EndTexturedTextRendering();
 }
 
-void RenderFrame(void) {
+void Gallery_SnapDrawFrame(void) {
     UNUSED s32 pad;
-    unk_D_83407B38* sp18 = GetActiveMenu();
+    unk_D_83407B38* sp18 = Gallery_SnapGetActiveGrid();
 
-    Stage_BeginDisplayList();
-    DrawBackground();
-    DrawSubPanel(0xD5, 0x24, D_833032E0);
+    BgStage_DrawFrame();
+    Gallery_SnapDrawBackgroundWipe();
+    Gallery_SnapDrawTitleBar(0xD5, 0x24, D_833032E0);
     DrawPokemonGrid(sp18);
     DrawMenuScreen();
 
     if ((D_833032E0 == 2) && (sp18->unk_04 == -1)) {
-        Menu_DrawHeader(0x158);
+        Gallery_SnapDrawBackPrompt(0x158);
     }
 
-    DrawMessageBox(sp18, 0xD5, 0x172);
-    SnapSelect_UpdateUIState(1);
-    Stage_Advance();
+    Gallery_SnapDrawHintBox(sp18, 0xD5, 0x172);
+    Gallery_DrawConfirmPrompt(1);
+    BgStage_AdvanceFrame();
 }
 
-void Menu_HandleSwapInput(unk_D_83407B38* arg0) {
+void Gallery_SnapUpdatePasteConfirm(unk_D_83407B38* arg0) {
     s32 var_a2 = 0;
     s32 idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
     Camera* temp_v1 = arg0->unk_20[idx];
 
     if (gPlayer1Controller->buttonPressed & 0x8000) {
-        PlaySoundEffect(0x29);
+        Audio_PlaySoundEffectById(0x29);
         var_a2 = 1;
-        UpdateMenuItemStates();
+        Gallery_SnapUpdateMenuIconStates();
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         *temp_v1->unk_18 = gSwapTempPokemon;
         temp_v1->unk_00 = 0;
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
         var_a2 = 1;
     }
 
     if (var_a2 != 0) {
-        ResetMenuState();
+        Gallery_SnapResetToMenu();
     }
 }
 
-void Menu_HandleConfirmTimer(void) {
+void Gallery_SnapUpdateSaveConfirm(void) {
     static s32 gConfirmTimer = 0;
 
     if (gMenuDirty != 0) {
@@ -999,22 +999,22 @@ void Menu_HandleConfirmTimer(void) {
             gConfirmTimer--;
             if (gConfirmTimer == 0) {
                 gMenuConfirmState = 1;
-                PlaySoundEffect(8);
+                Audio_PlaySoundEffectById(8);
             }
         }
     }
 
     if (gConfirmTimer <= 0) {
         if (gPlayer1Controller->buttonPressed & 0x8000) {
-            PlaySoundEffect(0x1C);
-            Gallery_SaveChanges(1, gStickerStationConnected);
+            Audio_PlaySoundEffectById(0x1C);
+            Gallery_SaveUnlockedBackgrounds(1, gStickerStationConnected);
             if (gStickerStationConnected != 0) {
-                StickerStation_SetCommand(0x5A);
+                Controller_WriteAccessoryStatus(0x5A);
             }
             gMenuDirty = 1;
             gConfirmTimer = 4;
         } else if (gPlayer1Controller->buttonPressed & 0x4000) {
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
             gMenuStep = 1;
             gMenuDirty = 0;
             gMenuConfirmState = 0;
@@ -1022,11 +1022,11 @@ void Menu_HandleConfirmTimer(void) {
     }
 }
 
-void Menu_ProcessResult(void) {
+void Gallery_SnapUpdateExitConfirm(void) {
     s16 temp_v0;
     s32 var_a2;
 
-    temp_v0 = SnapSelect_GetResultCode(3);
+    temp_v0 = Gallery_GetConfirmPromptResult(3);
     if (temp_v0 != -1) {
         var_a2 = 0;
         if (temp_v0 == -2) {
@@ -1036,7 +1036,7 @@ void Menu_ProcessResult(void) {
         switch (temp_v0) {
             case 0:
                 gMenuStep = 7;
-                Menu_SetStep(4, gPlayer1Controller);
+                Gallery_OpenConfirmPrompt(4, gPlayer1Controller);
                 var_a2 = 0;
                 gFadeOutTimer = 6;
                 break;
@@ -1052,30 +1052,30 @@ void Menu_ProcessResult(void) {
 
         if (var_a2 != 0) {
             gMenuStep = 8;
-            Stage_SetFillColor(0xFFFF);
-            Stage_FadeOut(0xF);
+            StageContext_SetClearColor(0xFFFF);
+            StageFade_StartFromTransparent(0xF);
             if (gMenuExitFadeColors[D_83402E28] == 8) {
-                Stage_SetFadeColor(0xF);
+                Audio_FadeOutAll(0xF);
             }
         }
     }
 }
 
-void Menu_FadeOutStep(void) {
+void Gallery_SnapUpdateExitDelay(void) {
     gFadeOutTimer--;
     if (gFadeOutTimer <= 0) {
-        Menu_ExitToGallery(4);
-        Gallery_SaveChanges(0, gStickerStationConnected);
+        Gallery_RequestCloseConfirmPrompt(4);
+        Gallery_SaveUnlockedBackgrounds(0, gStickerStationConnected);
         gMenuStep = 8;
-        Stage_SetFillColor(0xFFFF);
-        Stage_FadeOut(0xF);
+        StageContext_SetClearColor(0xFFFF);
+        StageFade_StartFromTransparent(0xF);
         if (gMenuExitFadeColors[D_83402E28] == 8) {
-            Stage_SetFadeColor(0xF);
+            Audio_FadeOutAll(0xF);
         }
     }
 }
 
-s32 Menu_MainLoopStep(void) {
+s32 Gallery_SnapUpdate(void) {
     static s32 gInitialDelayCounter = 2;
 
     s32 temp_v0_2;
@@ -1092,7 +1092,7 @@ s32 Menu_MainLoopStep(void) {
 
     switch (gMenuStep) {
         case 0:
-            if (Stage_GetFadeState() == 0) {
+            if (StageContext_GetFadeMode() == 0) {
                 gInitialDelayCounter--;
                 if (gInitialDelayCounter <= 0) {
                     switch (D_833032E0) {
@@ -1104,7 +1104,7 @@ s32 Menu_MainLoopStep(void) {
                                 } else {
                                     gMenuStep = 1;
                                     gMenuDirty = 1;
-                                    PlaySoundEffect(8);
+                                    Audio_PlaySoundEffectById(8);
                                 }
                             } else {
                                 gMenuStep = 1;
@@ -1124,20 +1124,20 @@ s32 Menu_MainLoopStep(void) {
             break;
 
         case 1:
-            temp_v0_2 = ProcessMenuInput();
+            temp_v0_2 = Gallery_SnapUpdateMenuInput();
             if (temp_v0_2 != 0) {
                 gMenuStep = 8;
                 if (temp_v0_2 == 2) {
-                    Stage_SetFillColor(1);
+                    StageContext_SetClearColor(1);
                     sp18 = 8;
                 } else {
                     sp18 = 0xF;
                     if (sp18) {}
-                    Stage_SetFillColor(0xFFFF);
+                    StageContext_SetClearColor(0xFFFF);
                 }
-                Stage_FadeOut(sp18);
+                StageFade_StartFromTransparent(sp18);
                 if (gMenuExitFadeColors[D_83402E28] == 8) {
-                    Stage_SetFadeColor(sp18);
+                    Audio_FadeOutAll(sp18);
                 }
             }
 
@@ -1148,31 +1148,31 @@ s32 Menu_MainLoopStep(void) {
 
         case 2:
         case 3:
-            if (HandlePokemonGridInput(GetActiveMenu()) != 0) {
+            if (Gallery_SnapUpdateGridInput(Gallery_SnapGetActiveGrid()) != 0) {
                 gMenuStep = 8;
-                Stage_SetFillColor(1);
-                Stage_FadeOut(1);
+                StageContext_SetClearColor(1);
+                StageFade_StartFromTransparent(1);
             }
             break;
 
         case 4:
-            Menu_HandleSwapInput(GetActiveMenu());
+            Gallery_SnapUpdatePasteConfirm(Gallery_SnapGetActiveGrid());
             break;
 
         case 5:
-            Menu_HandleConfirmTimer();
+            Gallery_SnapUpdateSaveConfirm();
             break;
 
         case 6:
-            Menu_ProcessResult();
+            Gallery_SnapUpdateExitConfirm();
             break;
 
         case 7:
-            Menu_FadeOutStep();
+            Gallery_SnapUpdateExitDelay();
             break;
 
         case 8:
-            if (Stage_GetFadeState() == 1) {
+            if (StageContext_GetFadeMode() == 1) {
                 sp28 = 0;
             }
             break;
@@ -1184,13 +1184,13 @@ s32 Menu_MainLoopStep(void) {
     return sp28;
 }
 
-void Menu_PollInputs(void) {
+void Gallery_SnapReadInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-void Menu_RunLoop(void) {
+void Gallery_SnapLoop(void) {
     s32 var_a0;
 
     if (D_833032E0 == 2) {
@@ -1198,12 +1198,12 @@ void Menu_RunLoop(void) {
     } else {
         var_a0 = 7;
     }
-    Stage_FadeIn(var_a0);
+    StageFade_StartFromOpaque(var_a0);
 
     do {
-        Menu_PollInputs();
+        Gallery_SnapReadInput();
 
-        if ((Menu_IsExitPressed() != 0) && (gBackgroundFadeTimer == 0)) {
+        if ((Gallery_UpdateConfirmPrompt() != 0) && (gBackgroundFadeTimer == 0)) {
             gBackgroundFadeTimer = -1;
         }
 
@@ -1213,19 +1213,19 @@ void Menu_RunLoop(void) {
                 break;
 
             default:
-                CamList_Update(GetActiveMenu());
+                Gallery_ProcessSceneGrid(Gallery_SnapGetActiveGrid());
                 break;
         }
 
-        RenderFrame();
-        Gallery_ClearActiveCamera();
-    } while (Menu_MainLoopStep() != 0);
+        Gallery_SnapDrawFrame();
+        Gallery_FinishActiveScene();
+    } while (Gallery_SnapUpdate() != 0);
 }
 
-s32 Menu_GetResult(void) {
+s32 Gallery_SnapGetResult(void) {
     s32 sp1C = gMenuExitFadeColors[D_83402E28];
 
-    if (Gallery_GetCurrentEntry(0) != NULL) {
+    if (Gallery_GetEnlargeTarget(0) != NULL) {
         sp1C = 4;
     }
 
@@ -1233,20 +1233,20 @@ s32 Menu_GetResult(void) {
         gGalleryMainSelection.unk_00 = 1;
     }
 
-    Gallery_SyncSelectionToCam(&gMenuActiveData, &gGalleryMainSelectionCam);
-    Gallery_SyncSelectionToCam(&gGalleryCamList, &gGallerySubSelection);
+    Gallery_SavePosition(&gMenuActiveData, &gGalleryMainSelectionCam);
+    Gallery_SavePosition(&gGalleryCamList, &gGallerySubSelection);
 
     return sp1C;
 }
 
-void Menu_InitializeAndRun(s32 arg0, s32 arg1) {
+void Gallery_SnapMain(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('SNAP');
 
-    Gfx_InitBuffers(0x20000, 0);
-    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    Text_Init(0x18, 0);
+    Gfx_InitDisplayListBuffers(0x20000, 0);
+    sp24 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    Font_Init(0x18, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gallery_ui, 0);
@@ -1254,18 +1254,18 @@ void Menu_InitializeAndRun(s32 arg0, s32 arg1) {
 
     FRAGMENT_LOAD(fragment31);
 
-    AssetManager_LoadArchives();
+    PokeIcon_OpenModelArchives();
     gMenuAssetArchive = ASSET_LOAD2(stadium_models, 1, 1);
-    MessageBank_Init();
-    Text_LoadMessageBanks();
-    InitializeMenuState(arg0, arg1);
-    Stage_Set(sp24);
-    Menu_RunLoop();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    Text_InitStringTables();
+    Gallery_InitStringTables();
+    Gallery_SnapInit(arg0, arg1);
+    StageContext_Activate(sp24);
+    Gallery_SnapLoop();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('SNAP');
 
-    Menu_GetResult();
+    Gallery_SnapGetResult();
 }

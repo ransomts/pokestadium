@@ -28,7 +28,7 @@ static u32 D_828004D0[] = {
 void Input_PollAndMenuInit(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
 void func_82800050(u8* arg0) {
@@ -48,7 +48,7 @@ void func_82800050(u8* arg0) {
 
     for (i = 0; i < 15; i++) {
         for (j = 0; j < 20; j++, arg0 += 0x200) {
-            Gfx_DrawSpriteRGBA16(j * 0x10, i * 0x10, 0x10, 0x10, arg0, 0x10, 0);
+            Gfx_DrawTextureRgba16(j * 0x10, i * 0x10, 0x10, 0x10, arg0, 0x10, 0);
         }
     }
 
@@ -56,18 +56,18 @@ void func_82800050(u8* arg0) {
 }
 
 void func_828001D0(void) {
-    Stage_BeginDisplayList();
+    BgStage_DrawFrame();
     func_82800050(D_828006A4);
-    Gfx_FillDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
-    Gfx_FinishFrame();
-    Graph_SetTextureState(gStageTextureNode);
-    Stage_Advance();
+    GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
+    GeoRender_AdvanceFrameCounter();
+    Geo_RenderRootNode(gStageTextureNode);
+    BgStage_AdvanceFrame();
 }
 
 void func_82800238(void) {
     s32 i;
 
-    Stage_FadeIn(0x10);
+    StageFade_StartFromOpaque(0x10);
 
     for (i = 0; i < 16; i++) {
         Input_PollAndMenuInit();
@@ -79,27 +79,27 @@ void func_82800238(void) {
         func_828001D0();
     } while (!(BTN_IS_PRESSED(gPlayer1Controller, BTN_A)));
 
-    Stage_FadeOut(0x10);
+    StageFade_StartFromTransparent(0x10);
 
     for (i = 0; i < 16; i++) {
         Input_PollAndMenuInit();
         func_828001D0();
     }
 
-    Stage_AdvanceN(2);
+    StageLoader_RunFrames(2);
 }
 
 void func_828002E4(void) {
-    MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* sp1C = MainPool_AllocState(main_pool_get_available(), 0);
 
     gStageTextureNode = process_geo_layout(sp1C, D_828004D0);
-    mem_pool_resize_block(sp1C);
-    Graph_InitRoots();
-    Graph_AddToRootList0(&D_82800538);
-    AssetManager_LoadArchives();
-    gGeoLayout_StageBackground = GeoLayout_LoadById(0x96);
-    GraphNode_InitChild(&D_82800538, 0, 0x96, gGeoLayout_StageBackground->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&D_82800538, 0);
+    MainPool_FinalizeAllocation(sp1C);
+    ModelRenderer_InitDisplayRoots();
+    ModelRenderer_AttachDisplayObject(&D_82800538);
+    PokeIcon_OpenModelArchives();
+    gGeoLayout_StageBackground = Model_LoadByArchiveIndex(0x96);
+    Model_InitDisplayObject(&D_82800538, 0, 0x96, gGeoLayout_StageBackground->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(&D_82800538, 0);
 }
 
 s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
@@ -107,9 +107,9 @@ s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('MTWO');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    Text_Init(6, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    Font_Init(6, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
@@ -118,11 +118,11 @@ s32 Fragment52_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     D_828006A4 = BinArchive_GetFile(D_828006A0, 2);
 
     func_828002E4();
-    Stage_Set(sp24);
+    StageContext_Activate(sp24);
     func_82800238();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('MTWO');
 

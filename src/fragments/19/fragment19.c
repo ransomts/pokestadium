@@ -18,7 +18,7 @@ static u32 gMiniGeoLayout[] = {
     0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-void MiniCamera_Init(void) {
+void miniUnkInitCamera(void) {
     gMiniCameraPtr = gMiniCameraStruct->unk_00.unk_0C;
 
     miniCameraXRot = 0xA00;
@@ -41,20 +41,20 @@ void miniUnkUpdateCamera(void) {
 }
 
 void miniUnkDrawHUB(UNUSED s32 arg0) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 1);
-    Gfx_FinishFrame();
-    Graph_SetTextureState(&gMiniCameraStruct->unk_00);
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 1);
+    GeoRender_AdvanceFrameCounter();
+    Geo_RenderRootNode(&gMiniCameraStruct->unk_00);
 
     if (miniDebugMode != 0) {
         showDebuggCameraInfo();
     }
 
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
-void MiniTutorial_FadeIn(void) {
-    Stage_FadeIn(0x10);
+void miniUnkStartFadeIn(void) {
+    StageFade_StartFromOpaque(0x10);
     miniTutoScreenState = 3;
 }
 
@@ -62,18 +62,18 @@ void miniUnkControls(void) {
     s32 var_s1 = 1;
 
     while (var_s1 != 0) {
-        MiniGame_ReadInputs();
+        MiniActor_ReadControllerInputs();
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-            MiniActor_ConfigureFirst(0.2f, 0.0f, 50.0f, 50.0f, 0x2000, 0, 0x1000);
+            miniRankingActorSetup1st(0.2f, 0.0f, 50.0f, 50.0f, 0x2000, 0, 0x1000);
         }
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-            MiniActor_ConfigureSecond(0.2f, 50.0f, 50.0f, 50.0f, 0, 0, 0);
+            miniRankingActorSetup2nd(0.2f, 50.0f, 50.0f, 50.0f, 0, 0, 0);
         }
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CLEFT)) {
-            MiniActor_ConfigureThird(0.2f, -50.0f, 50.0f, 50.0f, -0x6000, 0, 0x2000);
+            miniRankingActorSetup3rd(0.2f, -50.0f, 50.0f, 50.0f, -0x6000, 0, 0x2000);
         }
 
         if (BTN_IS_PRESSED(gPlayer1Controller, BTN_Z)) {
@@ -84,7 +84,7 @@ void miniUnkControls(void) {
             minigameState = 1;
         }
 
-        MiniActorArray_Update();
+        miniRankingActorsUpdate();
         miniUnkUpdateCamera();
 
         if ((miniDebugMode == 0) && BTN_IS_PRESSED(gPlayer1Controller, BTN_CDOWN)) {
@@ -95,27 +95,27 @@ void miniUnkControls(void) {
     }
 }
 
-void MiniGame_ExitFadeOut(void) {
+void miniUnkFadeOutLoop(void) {
     s32 i;
 
-    Stage_FadeOut(0x1E);
+    StageFade_StartFromTransparent(0x1E);
 
     for (i = 0; i < 30; i++) {
-        MiniGame_ReadInputs(); //  inputs
+        MiniActor_ReadControllerInputs(); //  inputs
         miniUnkDrawHUB(2);
     }
 }
 
-void MiniGame_Initialize(void) {
+void miniUnkInit(void) {
     UNUSED s32 pad[2];
-    MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* sp1C = MainPool_AllocState(main_pool_get_available(), 0);
 
     gMiniCameraStruct = process_geo_layout(sp1C, &gMiniGeoLayout);
-    mem_pool_resize_block(sp1C);
-    Graph_InitRoots();
-    AssetManager_LoadArchives();
-    MiniActorArray_Create();
-    MiniCamera_Init();
+    MainPool_FinalizeAllocation(sp1C);
+    ModelRenderer_InitDisplayRoots();
+    PokeIcon_OpenModelArchives();
+    miniRankingActorsInit();
+    miniUnkInitCamera();
 }
 
 s32 Minigame_RankingDebugTest(s32 arg0, s32 arg1) {
@@ -123,22 +123,22 @@ s32 Minigame_RankingDebugTest(s32 arg0, s32 arg1) {
 
     main_pool_push_state('MINI');
 
-    Gfx_InitBuffers(0x20000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    Text_Init(6, 0);
+    Gfx_InitDisplayListBuffers(0x20000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    Font_Init(6, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
-    MiniGame_Initialize();
-    Stage_Set(sp24);
-    MiniTutorial_FadeIn();
+    miniUnkInit();
+    StageContext_Activate(sp24);
+    miniUnkStartFadeIn();
     miniUnkControls();
-    MiniGame_ExitFadeOut();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    miniUnkFadeOutLoop();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('MINI');
 

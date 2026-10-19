@@ -44,31 +44,31 @@ void LoadTextureBlockWithTileSize(Gfx* gfx, unk_arg1_func_81002830* arg1) {
     gSPEndDisplayList(gfx++);
 }
 
-void PrepareTextureDisplayList(s32 arg0, unk_arg1_func_81002968* arg1) {
+void DisplayList_InitAnimatedFrameSegment(s32 arg0, unk_arg1_func_81002968* arg1) {
     s32 temp_v0;
     s32 sp18;
 
     if (arg0 == 2) {
         sp18 = arg1->unk_14;
-        temp_v0 = GfxAlloc(0x50);
+        temp_v0 = Gfx_AllocDisplayList(0x50);
         arg1->unk_18 = temp_v0;
         LoadTextureBlockWithTileSize(temp_v0, sp18);
     }
 }
 
-Gfx* LoadTextureFromArray(Gfx* gfx, u32* textures, s32 index) {
+Gfx* DisplayList_BuildSelectedTextureSegment(Gfx* gfx, u32* textures, s32 index) {
     gDPLoadTextureBlock(gfx++, textures[index + 1], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD, G_TX_NOLOD);
     gSPEndDisplayList(gfx++);
     return gfx;
 }
 
-void LoadTextureStateForMode(s32 arg0, TextureState* state) {
+void DisplayList_InitSelectedTextureSegment(s32 arg0, TextureState* state) {
     s32 index;
     u32* textures;
 
     if (arg0 == 2) {
         textures = state->textures;
-        state->gfx = (Gfx*)GfxAlloc(0x50);
+        state->gfx = (Gfx*)Gfx_AllocDisplayList(0x50);
         if (gDefaultGraphRoot->unk_01A == 0x58) {
             index = (s32) gDefaultGraphRoot->unk_040.unk_08 >> 0x10;
             if (index >= 0x42) {
@@ -85,6 +85,6 @@ void LoadTextureStateForMode(s32 arg0, TextureState* state) {
         } else {
             index = gAnimationFrame & 7;
         }
-        LoadTextureFromArray(state->gfx, textures, index);
+        DisplayList_BuildSelectedTextureSegment(state->gfx, textures, index);
     }
 }

@@ -176,26 +176,26 @@ void func_8430FC18(void) {
 void func_8430FC20(void) {
 }
 
-void DrawWindowBackground(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void BattleHud_DrawTranslucentShadowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     FramebufferImage* temp_s1;
     Vtx* temp_s2;
     Mtx* sp84;
     Vp* sp80;
 
-    temp_s1 = Gfx_GetCurrentFramebuffer();
-    temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
-    sp84 = GfxAlloc(sizeof(Mtx) * 1);
-    sp80 = GfxAlloc(sizeof(Vp) * 1);
-    SetViewport(sp80, temp_s1->width, temp_s1->height);
+    temp_s1 = GfxImage_GetCurrent();
+    temp_s2 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
+    sp84 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    sp80 = Gfx_AllocDisplayList(sizeof(Vp) * 1);
+    Gfx_SetViewportDimensions(sp80, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)sp80 & 0x1FFFFFFF);
 
     guOrtho(sp84, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    SetTileVertex(&temp_s2[0], arg0, arg1, -1, 0, 0, 0, 0, 0, arg4);
-    SetTileVertex(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, 0, 0, 0, arg4);
-    SetTileVertex(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
-    SetTileVertex(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
+    Gfx_SetVertexAttributes(&temp_s2[0], arg0, arg1, -1, 0, 0, 0, 0, 0, arg4);
+    Gfx_SetVertexAttributes(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, 0, 0, 0, arg4);
+    Gfx_SetVertexAttributes(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
+    Gfx_SetVertexAttributes(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, 0, 0, 0, arg4);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -209,25 +209,25 @@ void DrawWindowBackground(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
 }
 
-void DrawColoredRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
+void BattleHud_DrawGradientRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
     Vtx* temp_s2;
     FramebufferImage* temp_s1;
     Mtx* sp7C;
     Vp* sp78;
 
-    temp_s1 = Gfx_GetCurrentFramebuffer();
-    temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
-    sp7C = GfxAlloc(sizeof(Mtx) * 1);
-    sp78 = GfxAlloc(sizeof(Vp) * 1);
-    SetViewport(sp78, temp_s1->width, temp_s1->height);
+    temp_s1 = GfxImage_GetCurrent();
+    temp_s2 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
+    sp7C = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    sp78 = Gfx_AllocDisplayList(sizeof(Vp) * 1);
+    Gfx_SetViewportDimensions(sp78, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)sp78 & 0x1FFFFFFF);
 
     guOrtho(sp7C, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
-    SetTileVertex(&temp_s2[0], arg0, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
-    SetTileVertex(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
-    SetTileVertex(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
-    SetTileVertex(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[0], arg0, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[1], arg0 + arg2, arg1, -1, 0, 0, arg4->r, arg4->g, arg4->b, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[2], arg0, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[3], arg0 + arg2, arg1 + arg3, -1, 0, 0, arg5->r, arg5->g, arg5->b, 0xFF);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -241,14 +241,14 @@ void DrawColoredRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, C
     gSP2Triangles(gDisplayListHead++, 0, 2, 3, 0, 0, 3, 1, 0);
 }
 
-void DrawColoredRectWrapper(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
-    DrawColoredRect(arg0, arg1, arg2, arg3, arg4, arg5);
+void Battle_DrawGradientRectWrapper(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5) {
+    BattleHud_DrawGradientRect(arg0, arg1, arg2, arg3, arg4, arg5);
 }
 
 void func_84310360(void) {
 }
 
-void DrawHPBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
+void BattleHud_DrawHpBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
     u8* spCC;
     s32 temp_ft2 = ((arg3 - arg2) * 48.0f) / arg3;
     s32 sp14 = 0x30 - temp_ft2;
@@ -295,7 +295,7 @@ void DrawHPBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
 void func_843109EC(void) {
 }
 
-void DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2) {
+void BattleHud_DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[2];
     s8* var_s2;
     s8 sp58[2];
@@ -309,16 +309,16 @@ void DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2) {
 
     if (arg2 >= 0x64) {
         arg0 -= 2;
-        Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, temp_s4[sp58[0] - '0'], 8, 0);
+        Gfx_DrawTextureRgba16(arg0, arg1, 8, 6, temp_s4[sp58[0] - '0'], 8, 0);
         arg0 += 8;
         var_s2 = &sp58[1];
     } else {
-        Gfx_DrawSpriteRGBA16(arg0, arg1, 4, 6, temp_s4[11], 4, 0);
+        Gfx_DrawTextureRgba16(arg0, arg1, 4, 6, temp_s4[11], 4, 0);
         arg0 += 5;
     }
 
     while (*var_s2 != 0) {
-        Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, temp_s4[*var_s2 - '0'], 8, 0);
+        Gfx_DrawTextureRgba16(arg0, arg1, 8, 6, temp_s4[*var_s2 - '0'], 8, 0);
         arg0 += 8;
         var_s2++;
     }
@@ -326,7 +326,7 @@ void DrawLevelNumber(s32 arg0, s32 arg1, s32 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawFractionNumber(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void BattleHud_DrawHpFractionText(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
     s8 sp70[7];
     UNUSED s32 pad2;
@@ -355,7 +355,7 @@ void DrawFractionNumber(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
 
         if (var_v0 != NULL) {
-            Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, var_v0, 8, 0);
+            Gfx_DrawTextureRgba16(arg0, arg1, 8, 6, var_v0, 8, 0);
         }
 
         arg0 += 8;
@@ -365,17 +365,17 @@ void DrawFractionNumber(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void BattleHud_DrawSpeciesNameLabel(s16 arg0, s16 arg1, s32 arg2, char* arg3, s32 arg4) {
-    DrawColoredRectWrapper(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
-    Text_ResetState();
+    Battle_DrawGradientRectWrapper(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
+    Font_BeginTranslucentTextRendering();
     if (arg4 != 0) {
         Text_SetEnvColor(0xFF, 0x64, 0xFF, 0xFF);
     }
-    Text_SetFont(2, 0);
-    Text_Print((arg0 - (MeasureTextWidth(2, 0, arg3) / 2)) + 0x23, arg1 + 2, arg3);
-    Text_SetupDL();
+    Font_SetActive(2, 0);
+    Font_Printf((arg0 - (Font_MeasureTextExtent(2, 0, arg3) / 2)) + 0x23, arg1 + 2, arg3);
+    Font_EndTexturedTextRendering();
 }
 
-void DrawTextBoxAnimated(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
+void BattleHud_DrawSpeciesNameLabelBlink(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 arg5) {
     s32 sp24;
     s16 sp22;
     s16 sp20;
@@ -386,9 +386,9 @@ void DrawTextBoxAnimated(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 a
         sp20 = sp22 * -1;
     }
 
-    DrawColoredRectWrapper(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
-    Text_ResetState();
-    Text_SetFont(2, 0);
+    Battle_DrawGradientRectWrapper(arg0, arg1, 0x46, 0x11, &gBoxColorPrimary[arg2], &gBoxColorSecondary[arg2]);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
 
     if (arg5 != 0) {
         Text_SetEnvColor(0xFF, 0x64, 0xFF, (s8)sp20);
@@ -397,16 +397,16 @@ void DrawTextBoxAnimated(s16 arg0, s16 arg1, s32 arg2, u8* arg3, s32 arg4, s32 a
     }
 
     if (sp22 > 0) {
-        sp24 = MeasureTextWidth(2, 0, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xAA)) / 2;
-        Text_Print((arg0 - sp24) + 0x23, arg1 + 2, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xAA));
+        sp24 = Font_MeasureTextExtent(2, 0, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xAA)) / 2;
+        Font_Printf((arg0 - sp24) + 0x23, arg1 + 2, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xAA));
     } else {
-        Text_Print((arg0 - (MeasureTextWidth(2, 0, arg3) / 2)) + 0x23, arg1 + 2, arg3);
+        Font_Printf((arg0 - (Font_MeasureTextExtent(2, 0, arg3) / 2)) + 0x23, arg1 + 2, arg3);
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
-void DrawPokemonMoveBox(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
+void BattleHud_DrawSpeciesNameLabelAuto(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
     unk_BattlePlayerAnimState* ptr = &arg0->animationState;
     s32 var_t0 = 0;
     s32 i;
@@ -420,11 +420,11 @@ void DrawPokemonMoveBox(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1,
     if (arg6 == 0) {
         BattleHud_DrawSpeciesNameLabel(arg2, arg3, arg4, &arg1->unk_008, var_t0);
     } else {
-        DrawTextBoxAnimated(arg2, arg3, arg4, &arg1->unk_008, arg5, var_t0);
+        BattleHud_DrawSpeciesNameLabelBlink(arg2, arg3, arg4, &arg1->unk_008, arg5, var_t0);
     }
 }
 
-void DrawPokemonInfoWindow(unk_BattlePlayerEntity* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
+void BattleHud_DrawMonInfoPanel(unk_BattlePlayerEntity* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
                    s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA) {
     s32 sp34;
     s32 temp_a2;
@@ -432,38 +432,38 @@ void DrawPokemonInfoWindow(unk_BattlePlayerEntity* arg0, PokemonData* arg1, unk_
     if (arg3 < 0) {
         temp_a2 = arg5 + arg3;
         if (temp_a2 < 0) {
-            Text_DrawWindowRect(0, arg4, 0, arg6, arg7, arg8, arg9, argA);
+            Gfx_FillRectWithDisplayState(0, arg4, 0, arg6, arg7, arg8, arg9, argA);
         } else {
-            Text_DrawWindowRect(0, arg4, temp_a2, arg6, arg7, arg8, arg9, argA);
+            Gfx_FillRectWithDisplayState(0, arg4, temp_a2, arg6, arg7, arg8, arg9, argA);
         }
     } else {
-        Text_DrawWindowRect(arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
+        Gfx_FillRectWithDisplayState(arg3, arg4, arg5, arg6, arg7, arg8, arg9, argA);
     }
 
-    DrawLevelNumber(arg3 + 3, arg4 + 0x10, arg1->unk_24);
-    DrawHPBar(arg3 + 2, arg4 + 0x19, gPlayerScaleFactors[IsPrimaryEntity(arg0)], arg1->unk_26);
-    DrawFractionNumber(arg3 + 0xC, arg4 + 0x1F, arg1->unk_02, arg1->unk_26);
-    Text_ResetState();
-    Text_SetFont(2, 0);
+    BattleHud_DrawLevelNumber(arg3 + 3, arg4 + 0x10, arg1->unk_24);
+    BattleHud_DrawHpBar(arg3 + 2, arg4 + 0x19, gPlayerScaleFactors[BattleScene_GetParticipantSideIndex(arg0)], arg1->unk_26);
+    BattleHud_DrawHpFractionText(arg3 + 0xC, arg4 + 0x1F, arg1->unk_02, arg1->unk_26);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
 
-    sp34 = MeasureTextWidth(2, 0, GetPokemonName(arg0)) / 2;
-    Text_Print((arg3 - sp34) + 0x23, arg4 + 2, GetPokemonName(arg0));
-    sp34 = MeasureTextWidth(1, 0, GetMessageString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
+    sp34 = Font_MeasureTextExtent(2, 0, Battle_GetActiveMonNickname(arg0)) / 2;
+    Font_Printf((arg3 - sp34) + 0x23, arg4 + 2, Battle_GetActiveMonNickname(arg0));
+    sp34 = Font_MeasureTextExtent(1, 0, Text_GetString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
 
     if (sp34 >= 0x28) {
-        Text_SetFont(1, -1);
+        Font_SetActive(1, -1);
         sp34 = arg3 + 0x1A;
     } else {
-        Text_SetFont(1, 0);
+        Font_SetActive(1, 0);
         sp34 = (arg3 - (sp34 / 2)) + 0x2C;
     }
 
     Text_SetEnvColor(arg2->unk_04.r, arg2->unk_04.g, arg2->unk_04.b, 0xFF);
-    Text_Print(sp34, arg4 + 0xE, GetMessageString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
-    Text_SetupDL();
+    Font_Printf(sp34, arg4 + 0xE, Text_GetString(NULL, 0, gMessageBank_0x29, arg2->unk_00));
+    Font_EndTexturedTextRendering();
 }
 
-s32 DrawTextureRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4) {
+s32 BattleHud_DrawBorderTile(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4) {
     UNUSED s32 pad[4];
     s32 sp2C;
     s32 sp28;
@@ -492,37 +492,37 @@ void BattleHud_DrawBoxBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    DrawTextureRect(arg0, arg1 - 1, 8, 8, D_3008480);
-    DrawTextureRect(arg0, (arg1 + arg3) - 6, 8, 8, D_3008400);
-    DrawTextureRect((arg0 + arg2) - 6, arg1 - 1, 8, 8, D_3008600);
-    DrawTextureRect((arg0 + arg2) - 6, (arg1 + arg3) - 6, 8, 8, D_3008580);
+    BattleHud_DrawBorderTile(arg0, arg1 - 1, 8, 8, D_3008480);
+    BattleHud_DrawBorderTile(arg0, (arg1 + arg3) - 6, 8, 8, D_3008400);
+    BattleHud_DrawBorderTile((arg0 + arg2) - 6, arg1 - 1, 8, 8, D_3008600);
+    BattleHud_DrawBorderTile((arg0 + arg2) - 6, (arg1 + arg3) - 6, 8, 8, D_3008580);
 
     for (i = 0; i < arg3 / 8; i++) {
         if ((arg3 - 4) >= (6 + i * 8)) {
-            DrawTextureRect((arg0 + arg2) - 6, arg1 + (i * 8) + 4, 8, 8, D_3008500);
+            BattleHud_DrawBorderTile((arg0 + arg2) - 6, arg1 + (i * 8) + 4, 8, 8, D_3008500);
         }
     }
 
     for (i = 0; i < arg3 / 8; i++) {
         if ((arg3 - 4) >= (6 + i * 8)) {
-            DrawTextureRect(arg0, arg1 + (i * 8) + 4, 8, 8, D_3008380);
+            BattleHud_DrawBorderTile(arg0, arg1 + (i * 8) + 4, 8, 8, D_3008380);
         }
     }
 
     for (i = 0; i < arg2 / 8; i++) {
         if ((arg2 - 4) >= (6 + i * 8)) {
-            DrawTextureRect(arg0 + (i * 8) + 3, arg1 - 1, 8, 8, D_3008700);
+            BattleHud_DrawBorderTile(arg0 + (i * 8) + 3, arg1 - 1, 8, 8, D_3008700);
         }
 
         if ((arg2 - 4) >= (6 + i * 8)) {
-            DrawTextureRect(arg0 + (i * 8) + 3, (arg1 + arg3) - 6, 8, 8, D_3008680);
+            BattleHud_DrawBorderTile(arg0 + (i * 8) + 3, (arg1 + arg3) - 6, 8, 8, D_3008680);
         }
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawHPBarTimer(s16 arg0, s16 arg1) {
+void BattleHud_DrawParticipantTimer(s16 arg0, s16 arg1) {
     Color_RGB8 sp54[] = {
         { 0xB4, 0x00, 0x00 },
         { 0xCC, 0x8F, 0x00 },
@@ -543,41 +543,41 @@ void DrawHPBarTimer(s16 arg0, s16 arg1) {
         var_v1 = 0;
     }
 
-    Text_DrawWindowRect(arg0 - 1, arg1, 0x14, 0xD, sp54[var_v1].r, sp54[var_v1].g, sp54[var_v1].b, 0xBE);
+    Gfx_FillRectWithDisplayState(arg0 - 1, arg1, 0x14, 0xD, sp54[var_v1].r, sp54[var_v1].g, sp54[var_v1].b, 0xBE);
     BattleHud_DrawBoxBorder(arg0 - 2, arg1 - 1, 0x14, 0xC);
 
     sprintf(sp44, "%02d", temp_t0);
 
-    Text_ResetState();
+    Font_BeginTranslucentTextRendering();
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_SetFont(1, 0);
-    Text_Print(arg0 + 3, arg1, sp44);
-    Text_SetupDL();
-    DrawWindowBackground(arg0 - 3, arg1 - 3, 0x19, 0x12, 0);
+    Font_SetActive(1, 0);
+    Font_Printf(arg0 + 3, arg1, sp44);
+    Font_EndTexturedTextRendering();
+    BattleHud_DrawTranslucentShadowRect(arg0 - 3, arg1 - 3, 0x19, 0x12, 0);
 }
 
-void DrawPhaseTimer(s16 arg0, s16 arg1) {
+void BattleHud_DrawBattleTimer(s16 arg0, s16 arg1) {
     char sp40[16];
     f32 sp3C = gPhaseTimer / 30.0f;
     UNUSED s32 pad[2];
 
-    Text_DrawWindowRect(arg0, arg1, 0x27, 0xC, 0, 0, 0, 0x5A);
+    Gfx_FillRectWithDisplayState(arg0, arg1, 0x27, 0xC, 0, 0, 0, 0x5A);
     BattleHud_DrawBoxBorder(arg0 - 2, arg1 - 1, 0x27, 0xC);
-    Text_ResetState();
-    Text_SetFont(2, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     sprintf(sp40, "%02d", (s32)(sp3C / 60.0f));
-    Text_SetFont(1, 0);
-    Text_Print(arg0 + 3, arg1, sp40);
-    Text_Print(arg0 + 0x10, arg1, ":");
+    Font_SetActive(1, 0);
+    Font_Printf(arg0 + 3, arg1, sp40);
+    Font_Printf(arg0 + 0x10, arg1, ":");
     sprintf(sp40, "%02d", (s32)sp3C % 60);
-    Text_SetFont(1, 0);
-    Text_Print(arg0 + 0x17, arg1, sp40);
-    Text_SetupDL();
-    DrawWindowBackground(arg0 - 3, arg1 - 3, 0x2C, 0x11, 0);
+    Font_SetActive(1, 0);
+    Font_Printf(arg0 + 0x17, arg1, sp40);
+    Font_EndTexturedTextRendering();
+    BattleHud_DrawTranslucentShadowRect(arg0 - 3, arg1 - 3, 0x2C, 0x11, 0);
 }
 
-void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
+void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     u8* sp74[] = { D_3006170, D_30061D0, D_3006230 };
     UNUSED s32 pad;
     s32 i;
@@ -596,7 +596,7 @@ void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                Gfx_DrawSpriteRGBA16(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawTextureRgba16(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         } else {
             for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
@@ -607,7 +607,7 @@ void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                Gfx_DrawSpriteRGBA16(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawTextureRgba16(arg1 + i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
 
             for (j = 0; j < arg0->pokemonAnimation->unk_08[1]->unk_002; j++) {
@@ -618,7 +618,7 @@ void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                Gfx_DrawSpriteRGBA16(arg1 + i * 7 + j * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawTextureRgba16(arg1 + i * 7 + j * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         }
     }
@@ -633,7 +633,7 @@ void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                Gfx_DrawSpriteRGBA16(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawTextureRgba16(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         } else {
             for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
@@ -644,7 +644,7 @@ void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                Gfx_DrawSpriteRGBA16(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawTextureRgba16(arg1 - i * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
 
             for (j = 0; j < arg0->pokemonAnimation->unk_08[1]->unk_002; j++) {
@@ -655,7 +655,7 @@ void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
                 } else {
                     var_v0_2 = 0;
                 }
-                Gfx_DrawSpriteRGBA16(arg1 - i * 7 - j * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
+                Gfx_DrawTextureRgba16(arg1 - i * 7 - j * 7, arg2, 8, 6, sp74[var_v0_2], 8, 0);
             }
         }
     }
@@ -663,7 +663,7 @@ void DrawPokemonStatusIcons(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawBattleInfoWindowLeft(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
+void BattleHud_DrawMonStatusBoxPlayer(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
     unk_D_800AE540_0004* sp80;
     PokemonData* sp7C;
@@ -676,82 +676,82 @@ void DrawBattleInfoWindowLeft(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
     if (sp7C->unk_02 == 0) {
         var_v1 = 1;
     } else {
-        var_v1 = GetFlagCategory(sp7C->unk_05);
+        var_v1 = Status_ToDisplayIconIndex(sp7C->unk_05);
     }
 
     temp_v0_2 = &gBoxColorPrimary[sp80->unk_001];
-    DrawPokemonInfoWindow(arg0, sp7C, &gStatusColors[var_v1], arg1 + 1, arg2 + 0x12, 0x46, 0x28, temp_v0_2->r, temp_v0_2->g,
+    BattleHud_DrawMonInfoPanel(arg0, sp7C, &gStatusColors[var_v1], arg1 + 1, arg2 + 0x12, 0x46, 0x28, temp_v0_2->r, temp_v0_2->g,
                   temp_v0_2->b, 0xB2);
-    DrawPokemonMoveBox(arg0, sp80, arg1 + 1, arg2 + 1, sp80->unk_001, arg3, arg4);
+    BattleHud_DrawSpeciesNameLabelAuto(arg0, sp80, arg1 + 1, arg2 + 1, sp80->unk_001, arg3, arg4);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    DrawTextureRect(arg1, arg2, 8, 8, D_3008480);
-    DrawTextureRect(arg1, arg2 + 0xF, 8, 8, D_3008200);
-    DrawTextureRect(arg1, arg2 + 0x36, 8, 8, D_3008200);
-    DrawTextureRect(arg1 + 0x41, arg2, 8, 8, D_3008600);
-    DrawTextureRect(arg1 + 0x41, arg2 + 0xF, 8, 8, D_3008280);
-    DrawTextureRect(arg1 + 0x41, arg2 + 0x33, 8, 8, D_3008580);
-    DrawTextureRect(arg1 + 8, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x10, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x18, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x20, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x28, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x30, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x38, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x39, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 8, arg2 + 0x12, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x10, arg2 + 0x12, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x18, arg2 + 0x12, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x20, arg2 + 0x12, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x28, arg2 + 0x12, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x30, arg2 + 0x12, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x38, arg2 + 0x12, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x39, arg2 + 0x12, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 8, arg2 + 0x33, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x10, arg2 + 0x33, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x18, arg2 + 0x33, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x20, arg2 + 0x33, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x28, arg2 + 0x33, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x30, arg2 + 0x33, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x38, arg2 + 0x33, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x39, arg2 + 0x33, 8, 8, D_3008680);
-    DrawTextureRect(arg1, arg2 + 8, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x15, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x1D, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x25, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x2D, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x2E, 8, 8, D_3008380);
-    DrawTextureRect(arg1 + 0x41, arg2 + 8, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x41, arg2 + 0x15, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x41, arg2 + 0x1D, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x41, arg2 + 0x25, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x41, arg2 + 0x2D, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x41, arg2 + 0x2F, 8, 8, D_3008500);
-    DrawTextureRect(arg1, arg2 + 0x3D, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x45, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x4D, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x55, 8, 8, D_3008380);
-    DrawTextureRect(arg1 + 0x21, arg2 + 0x3A, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x21, arg2 + 0x3D, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x21, arg2 + 0x45, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x21, arg2 + 0x4D, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x21, arg2 + 0x55, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x21, arg2 + 0x59, 8, 8, D_3008580);
-    DrawTextureRect(arg1, arg2 + 0x59, 8, 8, D_3008400);
-    DrawTextureRect(arg1 + 4, arg2 + 0x59, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0xC, arg2 + 0x59, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x14, arg2 + 0x59, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x1C, arg2 + 0x59, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1, arg2, 8, 8, D_3008480);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0xF, 8, 8, D_3008200);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x36, 8, 8, D_3008200);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2, 8, 8, D_3008600);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2 + 0xF, 8, 8, D_3008280);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2 + 0x33, 8, 8, D_3008580);
+    BattleHud_DrawBorderTile(arg1 + 8, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x10, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x18, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x20, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x28, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x30, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x38, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x39, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 8, arg2 + 0x12, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x10, arg2 + 0x12, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x18, arg2 + 0x12, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x20, arg2 + 0x12, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x28, arg2 + 0x12, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x30, arg2 + 0x12, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x38, arg2 + 0x12, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x39, arg2 + 0x12, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 8, arg2 + 0x33, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x10, arg2 + 0x33, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x18, arg2 + 0x33, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x20, arg2 + 0x33, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x28, arg2 + 0x33, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x30, arg2 + 0x33, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x38, arg2 + 0x33, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x39, arg2 + 0x33, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1, arg2 + 8, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x15, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x1D, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x25, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x2D, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x2E, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2 + 8, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2 + 0x15, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2 + 0x1D, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2 + 0x25, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2 + 0x2D, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x41, arg2 + 0x2F, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x3D, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x45, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x4D, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x55, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1 + 0x21, arg2 + 0x3A, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x21, arg2 + 0x3D, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x21, arg2 + 0x45, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x21, arg2 + 0x4D, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x21, arg2 + 0x55, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x21, arg2 + 0x59, 8, 8, D_3008580);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x59, 8, 8, D_3008400);
+    BattleHud_DrawBorderTile(arg1 + 4, arg2 + 0x59, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0xC, arg2 + 0x59, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x14, arg2 + 0x59, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x1C, arg2 + 0x59, 8, 8, D_3008680);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    DrawWindowBackground(arg1 - 3, arg2 - 2, 0x4E, 0x3F, 0);
-    DrawWindowBackground(arg1 - 3, arg2 + 0x3A, 0x2D, 0x29, 0);
-    DrawPokemonStatusIcons(arg0, arg1, arg2 + 0x62);
+    BattleHud_DrawTranslucentShadowRect(arg1 - 3, arg2 - 2, 0x4E, 0x3F, 0);
+    BattleHud_DrawTranslucentShadowRect(arg1 - 3, arg2 + 0x3A, 0x2D, 0x29, 0);
+    BattleHud_DrawPartyBallRow(arg0, arg1, arg2 + 0x62);
 }
 
-void DrawBattleInfoWindowRight(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
+void BattleHud_DrawMonStatusBoxOpponent(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
     unk_D_800AE540_0004* sp80;
     PokemonData* sp7C;
@@ -764,148 +764,148 @@ void DrawBattleInfoWindowRight(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2,
     if (sp7C->unk_02 == 0) {
         var_v1 = 1;
     } else {
-        var_v1 = GetFlagCategory(sp7C->unk_05);
+        var_v1 = Status_ToDisplayIconIndex(sp7C->unk_05);
     }
 
     temp_v0 = &gBoxColorPrimary[sp80->unk_001];
-    DrawPokemonInfoWindow(arg0, sp7C, &gStatusColors[var_v1], arg1, arg2 + 0x28, 0x46, 0x28, temp_v0->r, temp_v0->g, temp_v0->b,
+    BattleHud_DrawMonInfoPanel(arg0, sp7C, &gStatusColors[var_v1], arg1, arg2 + 0x28, 0x46, 0x28, temp_v0->r, temp_v0->g, temp_v0->b,
                   0xB2);
-    DrawPokemonMoveBox(arg0, sp80, arg1, arg2 + 0x50, sp80->unk_001, arg3, arg4);
+    BattleHud_DrawSpeciesNameLabelAuto(arg0, sp80, arg1, arg2 + 0x50, sp80->unk_001, arg3, arg4);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    DrawTextureRect(arg1, arg2 + 0x4C, 8, 8, D_3008200);
-    DrawTextureRect(arg1, arg2 + 0x5B, 8, 8, D_3008400);
-    DrawTextureRect(arg1, arg2 + 0x27, 8, 8, D_3008480);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x24, 8, 8, D_3008280);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x4C, 8, 8, D_3008280);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x5B, 8, 8, D_3008580);
-    DrawTextureRect(arg1 + 7, arg2 + 0x27, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 8, arg2 + 0x27, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x10, arg2 + 0x27, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x18, arg2 + 0x27, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x20, arg2 + 0x27, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x28, arg2 + 0x27, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x30, arg2 + 0x27, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x38, arg2 + 0x27, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 7, arg2 + 0x4F, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 8, arg2 + 0x4F, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x10, arg2 + 0x4F, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x18, arg2 + 0x4F, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x20, arg2 + 0x4F, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x28, arg2 + 0x4F, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x30, arg2 + 0x4F, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x38, arg2 + 0x4F, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 7, arg2 + 0x5B, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 8, arg2 + 0x5B, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x10, arg2 + 0x5B, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x18, arg2 + 0x5B, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x20, arg2 + 0x5B, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x28, arg2 + 0x5B, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x30, arg2 + 0x5B, 8, 8, D_3008680);
-    DrawTextureRect(arg1 + 0x38, arg2 + 0x5B, 8, 8, D_3008680);
-    DrawTextureRect(arg1, arg2 + 0x2C, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x34, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x3C, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x44, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x52, 8, 8, D_3008380);
-    DrawTextureRect(arg1, arg2 + 0x53, 8, 8, D_3008380);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x2C, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x34, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x3C, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x44, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x52, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x53, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2, 8, 8, D_3008600);
-    DrawTextureRect(arg1 + 0x1E, arg2, 8, 8, D_3008480);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 8, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x10, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x18, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x3F, arg2 + 0x20, 8, 8, D_3008500);
-    DrawTextureRect(arg1 + 0x1E, arg2 + 8, 8, 8, D_3008380);
-    DrawTextureRect(arg1 + 0x1E, arg2 + 0x10, 8, 8, D_3008380);
-    DrawTextureRect(arg1 + 0x1E, arg2 + 0x18, 8, 8, D_3008380);
-    DrawTextureRect(arg1 + 0x1E, arg2 + 0x1F, 8, 8, D_3008380);
-    DrawTextureRect(arg1 + 0x20, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x28, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x30, arg2, 8, 8, D_3008700);
-    DrawTextureRect(arg1 + 0x37, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x4C, 8, 8, D_3008200);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x5B, 8, 8, D_3008400);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x27, 8, 8, D_3008480);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x24, 8, 8, D_3008280);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x4C, 8, 8, D_3008280);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x5B, 8, 8, D_3008580);
+    BattleHud_DrawBorderTile(arg1 + 7, arg2 + 0x27, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 8, arg2 + 0x27, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x10, arg2 + 0x27, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x18, arg2 + 0x27, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x20, arg2 + 0x27, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x28, arg2 + 0x27, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x30, arg2 + 0x27, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x38, arg2 + 0x27, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 7, arg2 + 0x4F, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 8, arg2 + 0x4F, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x10, arg2 + 0x4F, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x18, arg2 + 0x4F, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x20, arg2 + 0x4F, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x28, arg2 + 0x4F, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x30, arg2 + 0x4F, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x38, arg2 + 0x4F, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 7, arg2 + 0x5B, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 8, arg2 + 0x5B, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x10, arg2 + 0x5B, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x18, arg2 + 0x5B, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x20, arg2 + 0x5B, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x28, arg2 + 0x5B, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x30, arg2 + 0x5B, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1 + 0x38, arg2 + 0x5B, 8, 8, D_3008680);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x2C, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x34, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x3C, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x44, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x52, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1, arg2 + 0x53, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x2C, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x34, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x3C, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x44, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x52, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x53, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2, 8, 8, D_3008600);
+    BattleHud_DrawBorderTile(arg1 + 0x1E, arg2, 8, 8, D_3008480);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 8, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x10, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x18, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x3F, arg2 + 0x20, 8, 8, D_3008500);
+    BattleHud_DrawBorderTile(arg1 + 0x1E, arg2 + 8, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1 + 0x1E, arg2 + 0x10, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1 + 0x1E, arg2 + 0x18, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1 + 0x1E, arg2 + 0x1F, 8, 8, D_3008380);
+    BattleHud_DrawBorderTile(arg1 + 0x20, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x28, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x30, arg2, 8, 8, D_3008700);
+    BattleHud_DrawBorderTile(arg1 + 0x37, arg2, 8, 8, D_3008700);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    DrawWindowBackground(arg1 + 0x1B, arg2 - 2, 0x2F, 0x2A, 0);
-    DrawWindowBackground(arg1 - 4, arg2 + 0x26, 0x4D, 0x3D, 0);
-    DrawPokemonStatusIcons(arg0, arg1 + 0x41, arg2 - 7);
+    BattleHud_DrawTranslucentShadowRect(arg1 + 0x1B, arg2 - 2, 0x2F, 0x2A, 0);
+    BattleHud_DrawTranslucentShadowRect(arg1 - 4, arg2 + 0x26, 0x4D, 0x3D, 0);
+    BattleHud_DrawPartyBallRow(arg0, arg1 + 0x41, arg2 - 7);
 }
 
-void DrawBattleMenuThreeOptions(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawThreeOptionLabelBar(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC6, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xC6, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     BattleHud_DrawBoxBorder(arg1, arg2, 0xC6, 0x10);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x46, arg2 + 3, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x86, arg2 + 3, 0x10, 0xC, D_3009080, D_3009200, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 0x46, arg2 + 3, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 0x86, arg2 + 3, 0x10, 0xC, D_3009080, D_3009200, 0x10, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(1, 0);
-    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0x9E));
-    Text_Print(arg1 + 0x58, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0x9F));
-    Text_Print(arg1 + 0x98, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA0));
-    Text_SetupDL();
-    DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
+    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0x9E));
+    Font_Printf(arg1 + 0x58, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0x9F));
+    Font_Printf(arg1 + 0x98, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA0));
+    Font_EndTexturedTextRendering();
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
 }
 
-void DrawBattleMenuTwoOptions(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawTwoOptionLabelBar(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
-    DrawColoredRectWrapper(arg1, arg2, 0x7D, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    Battle_DrawGradientRectWrapper(arg1, arg2, 0x7D, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     BattleHud_DrawBoxBorder(arg1, arg2, 0x7D, 0x10);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008780, D_3008900, 0x10, 0x100000);
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x40, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 7, arg2 + 3, 0x10, 0xC, D_3008780, D_3008900, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 0x40, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(1, 0);
-    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA9));
-    Text_Print(arg1 + 0x51, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA8));
-    Text_SetupDL();
-    DrawWindowBackground(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
+    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA9));
+    Font_Printf(arg1 + 0x51, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA8));
+    Font_EndTexturedTextRendering();
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
 }
 
-void DrawBattleMenuOneOption(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawOneOptionLabelBar(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 pad[2];
 
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0x47, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0x47, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     BattleHud_DrawBoxBorder(arg1, arg2, 0x47, 0x10);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 7, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 7, arg2 + 3, 0x10, 0xC, D_30089C0, D_3008B40, 0x10, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(1, 0);
-    Text_Print(arg1 + 0x18, arg2 + 3, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA8));
-    Text_SetupDL();
-    DrawWindowBackground(arg1 - 2, arg2 - 2, 0x4A, 0x16, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
+    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA8));
+    Font_EndTexturedTextRendering();
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0x4A, 0x16, 0);
 }
 
-void Text_PrintRightAligned(s32 arg0, s32 arg1, char* arg2) {
-    Text_Print(arg0 - (strlen(arg2) * 6), arg1, arg2);
+void Battle_DrawRightAlignedText(s32 arg0, s32 arg1, char* arg2) {
+    Font_Printf(arg0 - (strlen(arg2) * 6), arg1, arg2);
 }
 
-s32 DrawCounterLeftToRight(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 BattleHud_DrawMovePpTextLTR(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
     s8 sp70[7];
     s32 i;
@@ -939,7 +939,7 @@ s32 DrawCounterLeftToRight(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
 
         if (var_v1 != NULL) {
-            Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, var_v1, 8, 0);
+            Gfx_DrawTextureRgba16(arg0, arg1, 8, 6, var_v1, 8, 0);
             arg0 += 8;
         }
     }
@@ -949,7 +949,7 @@ s32 DrawCounterLeftToRight(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return arg0;
 }
 
-s32 DrawCounterRightToLeft(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+s32 BattleHud_DrawMovePpTextRTL(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad[2];
     s8 sp70[7];
     s32 i;
@@ -983,7 +983,7 @@ s32 DrawCounterRightToLeft(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
         }
 
         if (var_v1 != NULL) {
-            Gfx_DrawSpriteRGBA16(arg0, arg1, 8, 6, var_v1, 8, 0);
+            Gfx_DrawTextureRgba16(arg0, arg1, 8, 6, var_v1, 8, 0);
             arg0 -= 8;
         }
     }
@@ -993,7 +993,7 @@ s32 DrawCounterRightToLeft(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return arg0;
 }
 
-void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawMoveSelectMenu(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 i;
     s32 sp64[] = { 0, 0, 0, 0 };
     u8 sp60[4];
@@ -1004,115 +1004,115 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
     sp58 = &arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C]->unk_01C[arg0->animationState.unk_08];
     temp_s0 = &arg0->animationState.unk_38;
 
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC7, 0x38, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xC7, 0x38, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     BattleHud_DrawBoxBorder(arg1, arg2, 0xC7, 0x38);
 
     for (i = 0; i < 4; i++) {
         if (temp_s0->unk_4E & 8) {
-            sp60[i] = gMoveBattleData[temp_s0->unk_1F[i] - 1].unk_05 / 5;
+            sp60[i] = gMoveData[temp_s0->unk_1F[i] - 1].unk_05 / 5;
             if (sp60[i] >= 8) {
                 sp60[i] = 7;
             }
-            sp60[i] = gMoveBattleData[temp_s0->unk_1F[i] - 1].unk_05 + (((temp_s0->unk_32[i] & 0xC0) >> 6) * sp60[i]);
+            sp60[i] = gMoveData[temp_s0->unk_1F[i] - 1].unk_05 + (((temp_s0->unk_32[i] & 0xC0) >> 6) * sp60[i]);
         } else {
-            sp60[i] = gMoveBattleData[sp58->unk_09[i] - 1].unk_05 / 5;
+            sp60[i] = gMoveData[sp58->unk_09[i] - 1].unk_05 / 5;
             if (sp60[i] >= 8) {
                 sp60[i] = 7;
             }
-            sp60[i] = gMoveBattleData[sp58->unk_09[i] - 1].unk_05 + (((sp58->unk_20[i] & 0xC0) >> 6) * sp60[i]);
+            sp60[i] = gMoveData[sp58->unk_09[i] - 1].unk_05 + (((sp58->unk_20[i] & 0xC0) >> 6) * sp60[i]);
         }
     }
 
     if (temp_s0->unk_4E & 8) {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
-            sp64[0] = DrawCounterRightToLeft(arg1 + 0x52, arg2 + 0xF, temp_s0->unk_32[0], sp60[0]);
+            sp64[0] = BattleHud_DrawMovePpTextRTL(arg1 + 0x52, arg2 + 0xF, temp_s0->unk_32[0], sp60[0]);
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
-            sp64[1] = DrawCounterLeftToRight(arg1 + 0x7C, arg2 + 0x1C, temp_s0->unk_32[1], sp60[1]);
+            sp64[1] = BattleHud_DrawMovePpTextLTR(arg1 + 0x7C, arg2 + 0x1C, temp_s0->unk_32[1], sp60[1]);
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
-            sp64[2] = DrawCounterLeftToRight(arg1 + 0x70, arg2 + 0x30, temp_s0->unk_32[2], sp60[2]);
+            sp64[2] = BattleHud_DrawMovePpTextLTR(arg1 + 0x70, arg2 + 0x30, temp_s0->unk_32[2], sp60[2]);
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
-            sp64[3] = DrawCounterRightToLeft(arg1 + 0x44, arg2 + 0x23, temp_s0->unk_32[3], sp60[3]);
+            sp64[3] = BattleHud_DrawMovePpTextRTL(arg1 + 0x44, arg2 + 0x23, temp_s0->unk_32[3], sp60[3]);
         }
     } else {
         if ((sp58->unk_09[0] != 0) && (sp58->unk_09[0] < 0xA6)) {
-            sp64[0] = DrawCounterRightToLeft(arg1 + 0x52, arg2 + 0xF, sp58->unk_20[0], sp60[0]);
+            sp64[0] = BattleHud_DrawMovePpTextRTL(arg1 + 0x52, arg2 + 0xF, sp58->unk_20[0], sp60[0]);
         }
 
         if ((sp58->unk_09[1] != 0) && (sp58->unk_09[1] < 0xA6)) {
-            sp64[1] = DrawCounterLeftToRight(arg1 + 0x7C, arg2 + 0x1C, sp58->unk_20[1], sp60[1]);
+            sp64[1] = BattleHud_DrawMovePpTextLTR(arg1 + 0x7C, arg2 + 0x1C, sp58->unk_20[1], sp60[1]);
         }
 
         if ((sp58->unk_09[2] != 0) && (sp58->unk_09[2] < 0xA6)) {
-            sp64[2] = DrawCounterLeftToRight(arg1 + 0x70, arg2 + 0x30, sp58->unk_20[2], sp60[2]);
+            sp64[2] = BattleHud_DrawMovePpTextLTR(arg1 + 0x70, arg2 + 0x30, sp58->unk_20[2], sp60[2]);
         }
 
         if ((sp58->unk_09[3] != 0) && (sp58->unk_09[3] < 0xA6)) {
-            sp64[3] = DrawCounterRightToLeft(arg1 + 0x44, arg2 + 0x23, sp58->unk_20[3], sp60[3]);
+            sp64[3] = BattleHud_DrawMovePpTextRTL(arg1 + 0x44, arg2 + 0x23, sp58->unk_20[3], sp60[3]);
         }
     }
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x5D, arg2 + 6, 0x10, 0xE, &D_3006A70, &D_3006C30, 0x10, 0x100000);
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x6C, arg2 + 0x16, 0x10, 0xE, &D_3006290, &D_3006450, 0x10, 0x100000);
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x5D, arg2 + 0x26, 0x10, 0xE, &D_3006530, &D_30066F0, 0x10, 0x100000);
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + 0x4E, arg2 + 0x16, 0x10, 0xE, &D_30067D0, &D_3006990, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 0x5D, arg2 + 6, 0x10, 0xE, &D_3006A70, &D_3006C30, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 0x6C, arg2 + 0x16, 0x10, 0xE, &D_3006290, &D_3006450, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 0x5D, arg2 + 0x26, 0x10, 0xE, &D_3006530, &D_30066F0, 0x10, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg1 + 0x4E, arg2 + 0x16, 0x10, 0xE, &D_30067D0, &D_3006990, 0x10, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (temp_s0->unk_4E & 8) {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
+            Gfx_DrawTextureRgba16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, gMoveIconSprites[gMoveData[temp_s0->unk_1F[0] - 1].unk_03],
                           0x20, 0);
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[1], arg2 + 0x1B, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
+            Gfx_DrawTextureRgba16(sp64[1], arg2 + 0x1B, 0x20, 9, gMoveIconSprites[gMoveData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[2], arg2 + 0x2F, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
+            Gfx_DrawTextureRgba16(sp64[2], arg2 + 0x2F, 0x20, 9, gMoveIconSprites[gMoveData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
+            Gfx_DrawTextureRgba16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, gMoveIconSprites[gMoveData[temp_s0->unk_1F[3] - 1].unk_03],
                           0x20, 0);
         }
     } else {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[0] - 1].unk_03],
+            Gfx_DrawTextureRgba16(sp64[0] - 0x19, arg2 + 0xE, 0x20, 9, gMoveIconSprites[gMoveData[temp_s0->unk_1F[0] - 1].unk_03],
                           0x20, 0);
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[1], arg2 + 0x1B, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
+            Gfx_DrawTextureRgba16(sp64[1], arg2 + 0x1B, 0x20, 9, gMoveIconSprites[gMoveData[temp_s0->unk_1F[1] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[2], arg2 + 0x2F, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
+            Gfx_DrawTextureRgba16(sp64[2], arg2 + 0x2F, 0x20, 9, gMoveIconSprites[gMoveData[temp_s0->unk_1F[2] - 1].unk_03], 0x20,
                           0);
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
-            Gfx_DrawSpriteRGBA16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, gMoveIconSprites[gMoveBattleData[temp_s0->unk_1F[3] - 1].unk_03],
+            Gfx_DrawTextureRgba16(sp64[3] - 0x18, arg2 + 0x22, 0x20, 9, gMoveIconSprites[gMoveData[temp_s0->unk_1F[3] - 1].unk_03],
                           0x20, 0);
         }
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(1, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
 
     if (temp_s0->unk_4E & 8) {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
@@ -1121,7 +1121,7 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_PrintRightAligned(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
+            Battle_DrawRightAlignedText(arg1 + 0x5A, arg2 + 4, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
@@ -1130,7 +1130,7 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(arg1 + 0x7C, arg2 + 0x11, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[1] - 1));
+            Font_Printf(arg1 + 0x7C, arg2 + 0x11, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[1] - 1));
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
@@ -1139,7 +1139,7 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(arg1 + 0x6E, arg2 + 0x25, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[2] - 1));
+            Font_Printf(arg1 + 0x6E, arg2 + 0x25, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[2] - 1));
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
@@ -1148,7 +1148,7 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_PrintRightAligned(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
+            Battle_DrawRightAlignedText(arg1 + 0x4C, arg2 + 0x18, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
         }
     } else {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
@@ -1157,7 +1157,7 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_PrintRightAligned(arg1 + 0x5A, arg2 + 4, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
+            Battle_DrawRightAlignedText(arg1 + 0x5A, arg2 + 4, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
@@ -1166,7 +1166,7 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(arg1 + 0x7C, arg2 + 0x11, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[1] - 1));
+            Font_Printf(arg1 + 0x7C, arg2 + 0x11, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[1] - 1));
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
@@ -1175,7 +1175,7 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_Print(arg1 + 0x6E, arg2 + 0x25, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[2] - 1));
+            Font_Printf(arg1 + 0x6E, arg2 + 0x25, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[2] - 1));
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
@@ -1184,30 +1184,30 @@ void DrawMovePPWindows(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Text_PrintRightAligned(arg1 + 0x4C, arg2 + 0x18, GetMessageString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
+            Battle_DrawRightAlignedText(arg1 + 0x4C, arg2 + 0x18, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
         }
     }
 
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
     if (temp_s0->unk_1F[0] >= 0xA6) {
-        Text_PrintRightAligned(arg1 + 0x5A, arg2 + 4, "？？？？？");
+        Battle_DrawRightAlignedText(arg1 + 0x5A, arg2 + 4, "？？？？？");
     }
 
     if (temp_s0->unk_1F[1] >= 0xA6) {
-        Text_Print(arg1 + 0x7C, arg2 + 0x11, "？？？？？");
+        Font_Printf(arg1 + 0x7C, arg2 + 0x11, "？？？？？");
     }
 
     if (temp_s0->unk_1F[2] >= 0xA6) {
-        Text_Print(arg1 + 0x6E, arg2 + 0x25, "？？？？？");
+        Font_Printf(arg1 + 0x6E, arg2 + 0x25, "？？？？？");
     }
 
     if (temp_s0->unk_1F[3] >= 0xA6) {
-        Text_PrintRightAligned(arg1 + 0x4C, arg2 + 0x18, "？？？？？");
+        Battle_DrawRightAlignedText(arg1 + 0x4C, arg2 + 0x18, "？？？？？");
     }
 
-    Text_SetupDL();
-    DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCD, 0x3E, 0);
+    Font_EndTexturedTextRendering();
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0xCD, 0x3E, 0);
 }
 
 void BattleHud_DrawForfeitConfirmDialog(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -1220,82 +1220,82 @@ void BattleHud_DrawForfeitConfirmDialog(s16 arg0, s16 arg1, s16 arg2, s32 arg3) 
         var_v1 = arg2;
     }
 
-    DrawColoredRectWrapper(arg0 + 1, arg1 + 1, 0xC6, 0x28, &gBoxColorPrimary[var_v1], &gBoxColorSecondary[var_v1]);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    Text_Print(arg0 + 0x2E, arg1 + 6, "こうさんしますか?");
-    Text_Print(arg0 + 0x38, arg1 + 0x18, "いいえ");
-    Text_Print(arg0 + 0x81, arg1 + 0x18, "はい");
-    Text_SetupDL();
+    Battle_DrawGradientRectWrapper(arg0 + 1, arg1 + 1, 0xC6, 0x28, &gBoxColorPrimary[var_v1], &gBoxColorSecondary[var_v1]);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    Font_Printf(arg0 + 0x2E, arg1 + 6, "こうさんしますか?");
+    Font_Printf(arg0 + 0x38, arg1 + 0x18, "いいえ");
+    Font_Printf(arg0 + 0x81, arg1 + 0x18, "はい");
+    Font_EndTexturedTextRendering();
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
-    Gfx_DrawSpriteRGBA16Paletted(arg0 + 0x21, arg1 + 0x17, 0x18, 0xE, D_30092C0, D_3009560, 0x18, 0x100000);
+    Gfx_DrawTextureRgba16Ia8(arg0 + 0x21, arg1 + 0x17, 0x18, 0xE, D_30092C0, D_3009560, 0x18, 0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     BattleHud_DrawBoxBorder(arg0, arg1, 0xC6, 0x28);
-    DrawWindowBackground(arg0 - 3, arg1 - 2, 0xCC, 0x2D, 0);
+    BattleHud_DrawTranslucentShadowRect(arg0 - 3, arg1 - 2, 0xCC, 0x2D, 0);
 }
 
 void BattleHud_DrawPlainText(s16 arg0, s16 arg1, char* arg2) {
-    Text_ResetState();
-    Text_SetFont(1, 0);
-    Text_Print(arg0, arg1, arg2);
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
+    Font_Printf(arg0, arg1, arg2);
+    Font_EndTexturedTextRendering();
 }
 
 void BattleHud_DrawDoublesRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
                    s32 arg5) {
     s32 var_t0;
 
-    DrawLevelNumber(arg3 + 3, arg4 + 4, arg2->unk_24);
-    DrawHPBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
-    DrawFractionNumber(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
+    BattleHud_DrawLevelNumber(arg3 + 3, arg4 + 4, arg2->unk_24);
+    BattleHud_DrawHpBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
+    BattleHud_DrawHpFractionText(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     if (arg5 == 0) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
     }
 
     if (arg5 == 1) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_30067D0, D_3006990, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_30067D0, D_3006990, 0x10, 0x100000);
     }
 
     if (arg5 == 2) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008E40, D_3008FC0, 0x10, 0x100000);
     }
 
     if (arg5 == 3) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006290, D_3006450, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006290, D_3006450, 0x10, 0x100000);
     }
 
     if (arg5 == 4) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
     }
 
     if (arg5 == 5) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xC, D_3008C00, D_3008D80, 0x10, 0x100000);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(1, 0);
-    Text_Print(arg3 + 0x1D, arg4 + 2, arg2->unk_30);
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
+    Font_Printf(arg3 + 0x1D, arg4 + 2, arg2->unk_30);
+    Font_EndTexturedTextRendering();
 
     if (arg1->unk_01C[arg5].unk_02 == 0) {
         var_t0 = 1;
     } else {
-        var_t0 = GetFlagCategory(arg1->unk_01C[arg5].unk_05);
+        var_t0 = Status_ToDisplayIconIndex(arg1->unk_01C[arg5].unk_05);
     }
 
     if (var_t0 != 0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, gStatusIconSprites[var_t0 - 1], 0x14, 0);
+        Gfx_DrawTextureRgba16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, gStatusIconSprites[var_t0 - 1], 0x14, 0);
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
 }
@@ -1304,41 +1304,41 @@ void BattleHud_DrawPartyRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0
                    s32 arg5) {
     s32 var_t0;
 
-    DrawLevelNumber(arg3 + 3, arg4 + 4, arg2->unk_24);
-    DrawHPBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
-    DrawFractionNumber(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
+    BattleHud_DrawLevelNumber(arg3 + 3, arg4 + 4, arg2->unk_24);
+    BattleHud_DrawHpBar(arg3 + 0x1E, arg4 + 0xE, arg2->unk_02, arg2->unk_26);
+    BattleHud_DrawHpFractionText(arg3 + 0x26, arg4 + 0x14, arg2->unk_02, arg2->unk_26);
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
     if (arg5 == 0) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006A70, D_3006C30, 0x10, 0x100000);
     }
 
     if (arg5 == 1) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006290, D_3006450, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006290, D_3006450, 0x10, 0x100000);
     }
 
     if (arg5 == 2) {
-        Gfx_DrawSpriteRGBA16Paletted(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
+        Gfx_DrawTextureRgba16Ia8(arg3 + 2, arg4 + 0xD, 0x10, 0xE, D_3006530, D_30066F0, 0x10, 0x100000);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    Text_ResetState();
-    Text_SetFont(1, 0);
-    Text_Print(arg3 + 0x1D, arg4 + 2, arg2->unk_30);
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
+    Font_Printf(arg3 + 0x1D, arg4 + 2, arg2->unk_30);
+    Font_EndTexturedTextRendering();
 
     if (arg1->unk_01C[arg5].unk_02 == 0) {
         var_t0 = 1;
     } else {
-        var_t0 = GetFlagCategory(arg1->unk_01C[arg5].unk_05);
+        var_t0 = Status_ToDisplayIconIndex(arg1->unk_01C[arg5].unk_05);
     }
 
     if (var_t0 != 0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-        Gfx_DrawSpriteRGBA16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, gStatusIconSprites[var_t0 - 1], 0x14, 0);
+        Gfx_DrawTextureRgba16(arg3 + 0x11, arg4 + 0x14, 0x14, 9, gStatusIconSprites[var_t0 - 1], 0x14, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }
@@ -1360,12 +1360,12 @@ void BattleHud_DrawTeamStatusList(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0
     };
     UNUSED s32 pad2[4];
 
-    DrawColoredRectWrapper(arg2 + 1, arg3 + 1, 0x63, 0xF, &sp88[arg4][0], &sp78[arg4][0]);
-    DrawColoredRectWrapper(arg2 + 1, arg3 + 0x10, 0x63, 0x1D, &sp88[arg4][1], &sp78[arg4][1]);
-    DrawColoredRectWrapper(arg2 + 1, arg3 + 0x2D, 0x63, 0x1D, &sp88[arg4][2], &sp78[arg4][2]);
-    DrawColoredRectWrapper(arg2 + 1, arg3 + 0x4A, 0x63, 0x1D, &sp88[arg4][3], &sp78[arg4][3]);
+    Battle_DrawGradientRectWrapper(arg2 + 1, arg3 + 1, 0x63, 0xF, &sp88[arg4][0], &sp78[arg4][0]);
+    Battle_DrawGradientRectWrapper(arg2 + 1, arg3 + 0x10, 0x63, 0x1D, &sp88[arg4][1], &sp78[arg4][1]);
+    Battle_DrawGradientRectWrapper(arg2 + 1, arg3 + 0x2D, 0x63, 0x1D, &sp88[arg4][2], &sp78[arg4][2]);
+    Battle_DrawGradientRectWrapper(arg2 + 1, arg3 + 0x4A, 0x63, 0x1D, &sp88[arg4][3], &sp78[arg4][3]);
 
-    BattleHud_DrawPlainText((arg2 - (MeasureTextWidth(1, 0, arg1->unk_008) / 2)) + 0x32, arg3 + 3, arg1->unk_008);
+    BattleHud_DrawPlainText((arg2 - (Font_MeasureTextExtent(1, 0, arg1->unk_008) / 2)) + 0x32, arg3 + 3, arg1->unk_008);
 
     if (arg1->unk_002 > 0) {
         BattleHud_DrawPartyRosterRow(arg0, arg1, &arg1->unk_01C[0], arg2 + 1, arg3 + 0x10, 0);
@@ -1381,12 +1381,12 @@ void BattleHud_DrawTeamStatusList(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(arg2 + 1, arg3, 0x18, 0x10, gBarTextures[arg4], 0x18, 0);
+    Gfx_DrawTextureRgba16(arg2 + 1, arg3, 0x18, 0x10, gBarTextures[arg4], 0x18, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     BattleHud_DrawBoxBorder(arg2, arg3, 0x63, 0x66);
-    DrawWindowBackground(arg2 - 2, arg3 - 2, 0x69, 0x6A, 0);
+    BattleHud_DrawTranslucentShadowRect(arg2 - 2, arg3 - 2, 0x69, 0x6A, 0);
 }
 
 void BattleHud_DrawDoublesTeamStatusList(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -1420,16 +1420,16 @@ void BattleHud_DrawDoublesTeamStatusList(unk_BattlePlayerEntity* arg0, s16 arg1,
     sp5C[1] = &temp_s1->unk_01C[4];
     sp5C[0] = &temp_s1->unk_01C[5];
 
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0xF, &sp88[arg3][0], &sp78[arg3][0]);
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 0x10, 0xC8, 0x1D, &sp88[arg3][1], &sp78[arg3][1]);
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 0x2D, 0xC8, 0x1D, &sp88[arg3][2], &sp78[arg3][2]);
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 0x4A, 0xC8, 0x1D, &sp88[arg3][3], &sp78[arg3][3]);
-    tmp = MeasureTextWidth(1, 0, temp_s0->unk_008) / 2;
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0xF, &sp88[arg3][0], &sp78[arg3][0]);
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 0x10, 0xC8, 0x1D, &sp88[arg3][1], &sp78[arg3][1]);
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 0x2D, 0xC8, 0x1D, &sp88[arg3][2], &sp78[arg3][2]);
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 0x4A, 0xC8, 0x1D, &sp88[arg3][3], &sp78[arg3][3]);
+    tmp = Font_MeasureTextExtent(1, 0, temp_s0->unk_008) / 2;
     BattleHud_DrawPlainText((arg1 - tmp) + 0x32, arg2 + 3, temp_s0->unk_008);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16(arg1 + 1, arg2, 0x18, 0x10, *(gBarTextures + arg3), 0x18, 0);
+    Gfx_DrawTextureRgba16(arg1 + 1, arg2, 0x18, 0x10, *(gBarTextures + arg3), 0x18, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
@@ -1458,7 +1458,7 @@ void BattleHud_DrawDoublesTeamStatusList(unk_BattlePlayerEntity* arg0, s16 arg1,
     }
 
     BattleHud_DrawBoxBorder(arg1, arg2, 0xC8, 0x66);
-    DrawWindowBackground(arg1 - 2, arg2 - 2, 0xCE, 0x6A, 0);
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0xCE, 0x6A, 0);
 }
 
 void BattleHud_DrawCompactMonStatusBox(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -1475,7 +1475,7 @@ void BattleHud_DrawCompactMonStatusBox(unk_BattlePlayerEntity* arg0, s16 arg1, s
     if (sp40->unk_02 == 0) {
         var_t0 = 1;
     } else {
-        var_t0 = GetFlagCategory(sp40->unk_05);
+        var_t0 = Status_ToDisplayIconIndex(sp40->unk_05);
     }
 
     if (temp_v0->unk_30 < 0xFF00) {
@@ -1489,31 +1489,31 @@ void BattleHud_DrawCompactMonStatusBox(unk_BattlePlayerEntity* arg0, s16 arg1, s
         var_v0 = &gBoxColorPrimaryAlt[arg3];
     }
 
-    DrawPokemonInfoWindow(arg0, sp40, &gStatusColors[var_t0], arg1 + 1, arg2 + 1, 0x46, 0x28, var_v0->r, var_v0->g, var_v0->b,
+    BattleHud_DrawMonInfoPanel(arg0, sp40, &gStatusColors[var_t0], arg1 + 1, arg2 + 1, 0x46, 0x28, var_v0->r, var_v0->g, var_v0->b,
                   0xB2);
     BattleHud_DrawBoxBorder(arg1, arg2, 0x46, 0x28);
-    DrawWindowBackground(arg1 - 2, arg2 - 2, 0x4C, 0x2D, 0);
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0x4C, 0x2D, 0);
 }
 
 void BattleHud_DrawMessageBox(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xEE, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    Text_SetLineHeight(0x10);
-    Text_Print(arg1 + 0xA, arg2 + 5, arg3);
-    Text_SetupDL();
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xEE, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    Font_SetLineHeight(0x10);
+    Font_Printf(arg1 + 0xA, arg2 + 5, arg3);
+    Font_EndTexturedTextRendering();
     BattleHud_DrawBoxBorder(arg1, arg2, 0xEE, 0x24);
-    DrawWindowBackground(arg1 - 2, arg2 - 1, 0xF4, 0x29, 0);
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 1, 0xF4, 0x29, 0);
 }
 
-s32 Dialog_PrintLineIfSet(char* arg0, s16 arg1, s16 arg2) {
+s32 Battle_DrawTextIfNonEmpty(char* arg0, s16 arg1, s16 arg2) {
     if (*(s8*)arg0 == 0) {
         return 0;
     }
-    Text_ResetState();
-    Text_SetFont(1, 0);
-    Text_Print(arg1, arg2, arg0);
-    Text_SetupDL();
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(1, 0);
+    Font_Printf(arg1, arg2, arg0);
+    Font_EndTexturedTextRendering();
     return 1;
 }
 
@@ -1531,12 +1531,12 @@ void BattleHud_DrawExpandingCaptionBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 a
     sp2C = (arg1 - arg3.x) * 2;
     sp28 = (arg2 - arg3.y) * 2;
 
-    Text_DrawWindowRect(arg3.x, arg3.y, sp2C, sp28, temp_v0->r, temp_v0->g, temp_v0->b, 0x96);
+    Gfx_FillRectWithDisplayState(arg3.x, arg3.y, sp2C, sp28, temp_v0->r, temp_v0->g, temp_v0->b, 0x96);
     BattleHud_DrawBoxBorder(arg3.x, arg3.y, sp2C, sp28);
-    DrawWindowBackground(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
+    BattleHud_DrawTranslucentShadowRect(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
 }
 
-void Dialog_OpenColoredWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
+void BattleHud_InitCaptionBoxPopup(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp4C;
     Vec3f sp40;
     Vec3f sp34;
@@ -1544,22 +1544,22 @@ void Dialog_OpenColoredWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
     arg0->unk_08 = 0;
     arg0->unk_10 = 0;
-    Vec3f_Set(&sp40, arg1, arg2, 0.0f);
-    Vec3f_Set(&sp34, arg1 - 110.0f, arg2 - 19.0f, 0.0f);
-    Matrix_Decompose(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
-    Camera_SetViewParameters(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
+    Vec3f_SetComponentsDuplicate(&sp40, arg1, arg2, 0.0f);
+    Vec3f_SetComponentsDuplicate(&sp34, arg1 - 110.0f, arg2 - 19.0f, 0.0f);
+    Vec3f_CalculateDistanceAngles(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
+    Camera_ComputeEyeFromAngles(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
     arg0->unk_24 = arg0->unk_20 * 0.3f;
-    Camera_SetViewParameters(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
+    Camera_ComputeEyeFromAngles(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     BattleHud_DrawExpandingCaptionBox(arg0, arg1, arg2, sp4C);
 }
 
-s32 Dialog_ZoomColoredWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
+s32 BattleHud_UpdateCaptionBoxPopup(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp34;
     Vec3f sp28;
 
-    Vec3f_Set(&sp28, arg1, arg2, 0.0f);
-    arg0->unk_24 = Math_ApproachF32(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
-    Camera_SetViewParameters(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
+    Vec3f_SetComponentsDuplicate(&sp28, arg1, arg2, 0.0f);
+    arg0->unk_24 = Math_StepToF(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
+    Camera_ComputeEyeFromAngles(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     BattleHud_DrawExpandingCaptionBox(arg0, arg1, arg2, sp34);
 
     if (arg0->unk_24 == arg0->unk_20) {
@@ -1569,12 +1569,12 @@ s32 Dialog_ZoomColoredWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 }
 
 void BattleHud_DrawExpandingCaptionBoxBlack(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2, Vec3f arg3) {
-    Text_DrawWindowRect(arg3.x, arg3.y, (s16)((arg1 - arg3.x) * 2), (s16)((arg2 - arg3.y) * 2), 0, 0, 0, 0x96);
+    Gfx_FillRectWithDisplayState(arg3.x, arg3.y, (s16)((arg1 - arg3.x) * 2), (s16)((arg2 - arg3.y) * 2), 0, 0, 0, 0x96);
     BattleHud_DrawBoxBorder(arg3.x, arg3.y, (s16)((arg1 - arg3.x) * 2), (s16)((arg2 - arg3.y) * 2));
-    DrawWindowBackground(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
+    BattleHud_DrawTranslucentShadowRect(arg0->unk_14.x - 2.0f, arg0->unk_14.y - 1.0f, 0xE0, 0x2B, 0);
 }
 
-void Dialog_OpenDarkWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
+void BattleHud_InitCaptionBoxPopupBlack(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp4C;
     Vec3f sp40;
     Vec3f sp34;
@@ -1582,22 +1582,22 @@ void Dialog_OpenDarkWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 
     arg0->unk_08 = 0;
     arg0->unk_10 = 0;
-    Vec3f_Set(&sp40, arg1, arg2, 0.0f);
-    Vec3f_Set(&sp34, arg1 - 50.0f, arg2 - 10.0f, 0.0f);
-    Matrix_Decompose(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
-    Camera_SetViewParameters(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
+    Vec3f_SetComponentsDuplicate(&sp40, arg1, arg2, 0.0f);
+    Vec3f_SetComponentsDuplicate(&sp34, arg1 - 50.0f, arg2 - 10.0f, 0.0f);
+    Vec3f_CalculateDistanceAngles(&sp40, &sp34, &arg0->unk_20, &arg0->unk_28, &arg0->unk_2A);
+    Camera_ComputeEyeFromAngles(&sp40, &arg0->unk_14, arg0->unk_20, arg0->unk_28, arg0->unk_2A);
     arg0->unk_24 = arg0->unk_20 * 0.3f;
-    Camera_SetViewParameters(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
+    Camera_ComputeEyeFromAngles(&sp40, &sp4C, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     BattleHud_DrawExpandingCaptionBoxBlack(arg0, arg1, arg2, sp4C);
 }
 
-s32 Dialog_ZoomDarkWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
+s32 BattleHud_UpdateCaptionBoxPopupBlack(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
     Vec3f sp34;
     Vec3f sp28;
 
-    Vec3f_Set(&sp28, arg1, arg2, 0.0f);
-    arg0->unk_24 = Math_ApproachF32(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
-    Camera_SetViewParameters(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
+    Vec3f_SetComponentsDuplicate(&sp28, arg1, arg2, 0.0f);
+    arg0->unk_24 = Math_StepToF(arg0->unk_24, arg0->unk_20, 15.0f, 15.0f);
+    Camera_ComputeEyeFromAngles(&sp28, &sp34, arg0->unk_24, arg0->unk_28, arg0->unk_2A);
     BattleHud_DrawExpandingCaptionBoxBlack(arg0, arg1, arg2, sp34);
 
     if (arg0->unk_24 == arg0->unk_20) {
@@ -1607,14 +1607,14 @@ s32 Dialog_ZoomDarkWindow(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
 }
 
 void BattleHud_DrawTextBox(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    Text_SetLineHeight(0x10);
-    Text_Print(arg1 + 0xA, arg2 + 5, arg3);
-    Text_SetupDL();
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg0], &gBoxColorSecondary[arg0]);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    Font_SetLineHeight(0x10);
+    Font_Printf(arg1 + 0xA, arg2 + 5, arg3);
+    Font_EndTexturedTextRendering();
     BattleHud_DrawBoxBorder(arg1, arg2, 0xC8, 0x25);
-    DrawWindowBackground(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
 }
 
 void BattleHud_DrawTwoOptionCursorMenu(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
@@ -1622,38 +1622,38 @@ void BattleHud_DrawTwoOptionCursorMenu(unk_BattlePlayerEntity* arg0, s16 arg1, s
     s32 sp48;
     UNUSED s32 pad2[2];
 
-    DrawColoredRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
-    Text_ResetState();
-    Text_SetFont(2, 0);
-    sp48 = MeasureTextWidth(2, 0, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA1)) / 2;
-    Text_Print((arg1 - sp48) + 0x61, arg2 + 5, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA1));
-    Text_Print(arg1 + 0x32, arg2 + 0x14, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA3));
-    Text_Print(arg1 + 0x7A, arg2 + 0x14, GetMessageString(NULL, 0, gMessageBank_0x1E, 0xA2));
-    Text_SetupDL();
+    Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(2, 0);
+    sp48 = Font_MeasureTextExtent(2, 0, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA1)) / 2;
+    Font_Printf((arg1 - sp48) + 0x61, arg2 + 5, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA1));
+    Font_Printf(arg1 + 0x32, arg2 + 0x14, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA3));
+    Font_Printf(arg1 + 0x7A, arg2 + 0x14, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA2));
+    Font_EndTexturedTextRendering();
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
 
-    Gfx_DrawSpriteRGBA16Paletted(arg1 + (arg0->animationState.unk_2F * 0x49) + 0x1B, arg2 + 0x14, 0x18, 0xE, &D_30092C0, &D_3009560, 0x18,
+    Gfx_DrawTextureRgba16Ia8(arg1 + (arg0->animationState.unk_2F * 0x49) + 0x1B, arg2 + 0x14, 0x18, 0xE, &D_30092C0, &D_3009560, 0x18,
                   0x100000);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     BattleHud_DrawBoxBorder(arg1, arg2, 0xC8, 0x25);
-    DrawWindowBackground(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
+    BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
 }
 
 void BattleScene_DrawStripWipeIfActive(void) {
-    if (ScreenTransition_GetState() != 0) {
-        ScreenTransition_Apply();
+    if (BattleScene_GetStripWipeState() != 0) {
+        BattleScene_DrawStripWipe();
     }
 }
 
 void Battle_DrawScrollingTextureRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6, s16 arg7) {
     ClipRect sp30;
 
-    Gfx_MakeClipRect(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
+    GfxRect_SetBounds(&sp30, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 
-    if (Gfx_IntersectClip(&sp30) != 0) {
+    if (GfxRect_ClipToScissor(&sp30) != 0) {
         if (arg6 != 0) {
             arg4 += ((sp30.x1 - arg0) * arg6) >> 5;
         }
@@ -1689,27 +1689,27 @@ void Battle_DrawSpectatorModeBackgroundPanel(void) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    DrawWindowBackground(0x1C, 0x16, 0x5E, 0x34, 0);
+    BattleHud_DrawTranslucentShadowRect(0x1C, 0x16, 0x5E, 0x34, 0);
 }
 
 void Battle_DrawGradientTextureRect(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC) {
     UNUSED s32 pad;
-    FramebufferImage* temp_s1 = Gfx_GetCurrentFramebuffer();
-    Vtx* temp_s2 = GfxAlloc(sizeof(Vtx) * 4);
-    Mtx* spC0 = GfxAlloc(sizeof(Mtx) * 1);
-    Vp* spBC = GfxAlloc(sizeof(Vp));
+    FramebufferImage* temp_s1 = GfxImage_GetCurrent();
+    Vtx* temp_s2 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
+    Mtx* spC0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
+    Vp* spBC = Gfx_AllocDisplayList(sizeof(Vp));
 
-    SetViewport(spBC, temp_s1->width, temp_s1->height);
+    Gfx_SetViewportDimensions(spBC, temp_s1->width, temp_s1->height);
 
     gSPViewport(gDisplayListHead++, (u32)spBC & 0x1FFFFFFF);
 
     guOrtho(spC0, 0.5f, temp_s1->width - 0.5f, temp_s1->height - 0.5f, 0.5f, -2.0f, 2.0f, 1.0f);
 
-    SetTileVertex(&temp_s2[0], arg1, arg2, -1, argC << 5, 0, 0xFF, 0xF0, 0, 0xFF);
-    SetTileVertex(&temp_s2[1], arg1 + arg3, arg2, -1, argB << 5, 0, 0xFF, 0xF0, 0, 0xFF);
-    SetTileVertex(&temp_s2[2], arg1, arg2 + arg4, -1, argC << 5, arg6 << 5, 0xFF, 0, 0x64, 0xFF);
-    SetTileVertex(&temp_s2[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, arg6 << 5, 0xFF, 0, 0x64, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[0], arg1, arg2, -1, argC << 5, 0, 0xFF, 0xF0, 0, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[1], arg1 + arg3, arg2, -1, argB << 5, 0, 0xFF, 0xF0, 0, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[2], arg1, arg2 + arg4, -1, argC << 5, arg6 << 5, 0xFF, 0, 0x64, 0xFF);
+    Gfx_SetVertexAttributes(&temp_s2[3], arg1 + arg3, arg2 + arg4, -1, argB << 5, arg6 << 5, 0xFF, 0, 0x64, 0xFF);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
@@ -1737,7 +1737,7 @@ void Battle_DrawGradientTextureRect(u8* arg0, s32 arg1, s32 arg2, s32 arg3, s32 
 }
 
 void Battle_DrawSpectatorModeIndicator(void) {
-    gCameraPosition.x = Math_ApproachF32(gCameraPosition.x, 52.0f, 80.0f, 80.0f);
+    gCameraPosition.x = Math_StepToF(gCameraPosition.x, 52.0f, 80.0f, 80.0f);
     Battle_DrawGradientTextureRect(D_3000470, gCameraPosition.x, gCameraPosition.y, 0x6C, 0x20, 0xD8, 0x20, 0, 0, 0x6C, 0x20, 0x6B, 0);
     Battle_DrawGradientTextureRect(D_3000470, (s32)gCameraPosition.x + 0x6C, gCameraPosition.y, 0x6C, 0x20, 0xD8, 0x20, 0x6C, 0, 0xD8, 0x20, 0xD7,
                   0x6C);
@@ -1750,20 +1750,20 @@ void Battle_DrawSpectatorModeScrollingText(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, gMarqueeMessageBank, 0));
+        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMarqueeMessageBank, 0));
         temp_s0 = 0x50 - D_84385988;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
-        Text_ResetState();
-        Text_SetFont(4, 0);
-        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMarqueeMessageBank, 0));
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(4, 0);
+        Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMarqueeMessageBank, 0));
 
         temp_s0 += sp24 + 0x1E;
         if (temp_s0 < 0x140) {
-            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMarqueeMessageBank, 0));
+            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMarqueeMessageBank, 0));
         }
-        Text_SetupDL();
+        Font_EndTexturedTextRendering();
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 
@@ -1779,12 +1779,12 @@ void BattleHud_DrawOwnSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePlayerA
     UNUSED s32 pad;
     s32 var_v1;
 
-    if (gBattleContext.unk_0000 != 0x10) {
+    if (gSessionContext.unk_0000 != 0x10) {
         if (arg1->unk_10 == 3) {
-            DrawBattleInfoWindowLeft(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
+            BattleHud_DrawMonStatusBoxPlayer(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
                           1);
         } else {
-            DrawBattleInfoWindowLeft(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
+            BattleHud_DrawMonStatusBoxPlayer(arg0, arg0->unk_728.unk_168->unk_1C - 2, arg0->unk_728.unk_168->unk_1E - 0x3A, arg1->unk_1E,
                           0);
         }
 
@@ -1808,17 +1808,17 @@ void BattleHud_DrawOwnSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePlayerA
                             BattleHud_DrawDoublesTeamStatusList(arg0, 0x60, 0xF, sp34->unk_001);
                         }
                     } else if (arg1->unk_2D == 0x10) {
-                        DrawBattleMenuOneOption(arg0, 0x60, 0xF, sp34->unk_001);
+                        BattleHud_DrawOneOptionLabelBar(arg0, 0x60, 0xF, sp34->unk_001);
                     } else {
-                        DrawBattleMenuTwoOptions(arg0, 0x60, 0xF, sp34->unk_001);
+                        BattleHud_DrawTwoOptionLabelBar(arg0, 0x60, 0xF, sp34->unk_001);
                     }
                     break;
 
                 case 1:
                     if (arg1->unk_1C == 1) {
-                        DrawMovePPWindows(arg0, 0x60, 0xF, sp34->unk_001);
+                        BattleHud_DrawMoveSelectMenu(arg0, 0x60, 0xF, sp34->unk_001);
                     } else {
-                        DrawBattleMenuTwoOptions(arg0, 0x60, 0xF, sp34->unk_001);
+                        BattleHud_DrawTwoOptionLabelBar(arg0, 0x60, 0xF, sp34->unk_001);
                     }
                     break;
 
@@ -1827,7 +1827,7 @@ void BattleHud_DrawOwnSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePlayerA
                     break;
 
                 default:
-                    DrawBattleMenuThreeOptions(arg0, 0x60, 0xF, sp34->unk_001);
+                    BattleHud_DrawThreeOptionLabelBar(arg0, 0x60, 0xF, sp34->unk_001);
                     break;
             }
         }
@@ -1838,12 +1838,12 @@ void BattleHud_DrawOpponentSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePl
     unk_D_800AE540_0004* sp24 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
     s32 sp20;
 
-    if (gBattleContext.unk_0000 != 0x10) {
+    if (gSessionContext.unk_0000 != 0x10) {
         if (arg1->unk_10 == 3) {
-            DrawBattleInfoWindowRight(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
+            BattleHud_DrawMonStatusBoxOpponent(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
                           1);
         } else {
-            DrawBattleInfoWindowRight(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
+            BattleHud_DrawMonStatusBoxOpponent(arg0, arg0->unk_728.unk_168->unk_1C - 0x20, arg0->unk_728.unk_168->unk_1E - 2, arg1->unk_1E,
                           0);
         }
 
@@ -1867,17 +1867,17 @@ void BattleHud_DrawOpponentSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePl
                             BattleHud_DrawDoublesTeamStatusList(arg0, 0x18, 0x79, sp24->unk_001);
                         }
                     } else if (arg1->unk_2D == 0x10) {
-                        DrawBattleMenuOneOption(arg0, 0x98, 0xCE, sp24->unk_001);
+                        BattleHud_DrawOneOptionLabelBar(arg0, 0x98, 0xCE, sp24->unk_001);
                     } else {
-                        DrawBattleMenuTwoOptions(arg0, 0x62, 0xCE, sp24->unk_001);
+                        BattleHud_DrawTwoOptionLabelBar(arg0, 0x62, 0xCE, sp24->unk_001);
                     }
                     break;
 
                 case 1:
                     if (arg1->unk_1C == 1) {
-                        DrawMovePPWindows(arg0, 0x19, 0xA6, sp24->unk_001);
+                        BattleHud_DrawMoveSelectMenu(arg0, 0x19, 0xA6, sp24->unk_001);
                     } else {
-                        DrawBattleMenuTwoOptions(arg0, 0x62, 0xCE, sp24->unk_001);
+                        BattleHud_DrawTwoOptionLabelBar(arg0, 0x62, 0xCE, sp24->unk_001);
                     }
                     break;
 
@@ -1886,7 +1886,7 @@ void BattleHud_DrawOpponentSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePl
                     break;
 
                 default:
-                    DrawBattleMenuThreeOptions(arg0, 0x18, 0xCE, sp24->unk_001);
+                    BattleHud_DrawThreeOptionLabelBar(arg0, 0x18, 0xCE, sp24->unk_001);
                     break;
             }
         }

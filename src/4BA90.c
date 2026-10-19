@@ -7,7 +7,7 @@ s32 gMusicChannel2MasterVolume = 0;
 s32 gMusicChannel1MasterVolume = 0;
 s32 gMusicTransitionSfxId = 0;
 
-void Music_SetMasterVolumeLevel(s32 arg0, u32 arg1) {
+void Audio_SetChannelVolume(s32 arg0, u32 arg1) {
     s32 var_a1;
 
     switch (arg1) {
@@ -51,17 +51,17 @@ void Music_SetMasterVolumeLevel(s32 arg0, u32 arg1) {
     MusSetMasterVolume(arg0, var_a1);
 }
 
-void Music_SetPanMode(s32 arg0) {
+void Audio_SetMonoOutput(s32 arg0) {
     MusSetPanMode(arg0);
 }
 
-void Music_HandleStateChange(u32 arg0) {
+void Audio_SetPauseMixMode(u32 arg0) {
     switch (arg0) {
         case 1:
             MusSetDurationScale(gMusicTransitionSfxId, 3);
             MusSetMasterVolume(2, gMusicChannel2MasterVolume >> 1);
             MusSetMasterVolume(1, gMusicChannel1MasterVolume / 3);
-            gMusicTransitionSfxId = PlaySoundEffect(0x23);
+            gMusicTransitionSfxId = Audio_PlaySoundEffectById(0x23);
             MusSetVolumeScale(gMusicTransitionSfxId, 0xFF);
             break;
 
@@ -69,15 +69,15 @@ void Music_HandleStateChange(u32 arg0) {
             MusSetDurationScale(gMusicTransitionSfxId, 3);
             MusSetMasterVolume(2, gMusicChannel2MasterVolume);
             MusSetMasterVolume(1, gMusicChannel1MasterVolume);
-            gMusicTransitionSfxId = PlaySoundEffect(0x24);
+            gMusicTransitionSfxId = Audio_PlaySoundEffectById(0x24);
             break;
 
         case 2:
-            MusSetVolumeScale(PlaySoundEffect(1), 0xFF);
+            MusSetVolumeScale(Audio_PlaySoundEffectById(1), 0xFF);
             break;
 
         case 3:
-            MusSetVolumeScale(PlaySoundEffect(0x21), 0xFF);
+            MusSetVolumeScale(Audio_PlaySoundEffectById(0x21), 0xFF);
             break;
 
         case 4:
@@ -88,7 +88,7 @@ void Music_HandleStateChange(u32 arg0) {
     }
 }
 
-void Music_StartVolumeFade(u32 arg0) {
+void Audio_BeginVolumeTransition(u32 arg0) {
     u32 temp_v0;
 
     if (arg0 == 0) {
@@ -106,7 +106,7 @@ void Music_StartVolumeFade(u32 arg0) {
     osSetIntMask(temp_v0);
 }
 
-void Music_EndVolumeFade(void) {
+void Audio_ResetVolumeTransition(void) {
     u32 temp_v0 = osSetIntMask(1);
 
     mus_sound_effect_blocked = 0;

@@ -162,7 +162,7 @@ static Gfx gCupSelectBgDL[] = {
 };
 static u32 gCupSelectOverlayGeo[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gCupSelectVtx_0, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, Background_DrawLayer, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, CupSelect_IconGeoPostCallback, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gCupSelectOverlayVtx[] = {
     VTX(-38, 18, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-38, 0, 0, 0, 576, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -185,19 +185,19 @@ static Gfx gCupSelectOverlayDL[] = {
 };
 static u32 gCupSelectUiGeo[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gCupSelectOverlayVtx, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, Overlay_DrawLayer, 0x00000000, 0x06000000, 0x01000000,
+    0x00000000, 0x08000000, CupSelect_DividerGeoPostCallback, 0x00000000, 0x06000000, 0x01000000,
 };
 
 void CupSelect_PollController(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
 void func_82E00050(void) {
 }
 
-void DrawBorderCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void CupSelect_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     static s16 gBorderCornerAnimTimer = 0;
 
     s16 sp56 = SINS(gBorderCornerAnimTimer) * 2;
@@ -206,17 +206,17 @@ void DrawBorderCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5,
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, arg7);
 
-    Gfx_DrawSpriteIA8((arg0 + sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000C80, 0x10, 0);
-    Gfx_DrawSpriteIA8((arg0 + sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000F80, 0x10, 0);
-    Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000D80, 0x10, 0);
-    Gfx_DrawSpriteIA8(((arg0 + arg2) - sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000E80, 0x10, 0);
+    Gfx_DrawTextureIa8((arg0 + sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000C80, 0x10, 0);
+    Gfx_DrawTextureIa8((arg0 + sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000F80, 0x10, 0);
+    Gfx_DrawTextureIa8(((arg0 + arg2) - sp56) - 8, (arg1 + sp56) - 8, 0x10, 0x10, D_2000D80, 0x10, 0);
+    Gfx_DrawTextureIa8(((arg0 + arg2) - sp56) - 8, ((arg1 + arg3) - sp56) - 8, 0x10, 0x10, D_2000E80, 0x10, 0);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     gBorderCornerAnimTimer += 0x2000;
 }
 
-s32 Background_DrawLayer(s32 arg0, SimpleGfxNode* arg1) {
+s32 CupSelect_IconGeoPostCallback(s32 arg0, SimpleGfxNode* arg1) {
     s32 temp_a3;
     s32 var_t0;
 
@@ -233,12 +233,12 @@ s32 Background_DrawLayer(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(gCupSelectBgTextures[temp_a3]));
         gSPDisplayList(gDisplayListHead++, gCupSelectBgDL);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-s32 Overlay_DrawLayer(s32 arg0, SimpleGfxNode* arg1) {
+s32 CupSelect_DividerGeoPostCallback(s32 arg0, SimpleGfxNode* arg1) {
     s32 var_a3;
 
     if (arg0 == 5) {
@@ -255,15 +255,15 @@ s32 Overlay_DrawLayer(s32 arg0, SimpleGfxNode* arg1) {
         gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_3024000));
         gSPDisplayList(gDisplayListHead++, gCupSelectOverlayDL);
 
-        Gfx_ResetRenderState();
+        GeoRender_ApplyMaterialState();
     }
     return 0;
 }
 
-void Stage_DrawFrame(s32 arg0, s32 arg1) {
-    Stage_BeginDisplayList();
-    Gfx_DrawTextureAtlas(gBackgroundTextureAtlas);
-    Graph_SetTextureState(gBackgroundGraphNode);
+void CupSelect_RenderFrame(s32 arg0, s32 arg1) {
+    BgStage_DrawFrame();
+    Gfx_DrawTiledRgba16Image(gBackgroundTextureAtlas);
+    Geo_RenderRootNode(gBackgroundGraphNode);
 
     if (arg0 == 0) {
         if ((arg1 >= 0) && (arg1 < 0xB)) {
@@ -326,122 +326,122 @@ void Stage_DrawFrame(s32 arg0, s32 arg1) {
     }
 
     if (arg0 == 1) {
-        DrawBorderCorners(0xD0, (gCupSelectCursor * 0x6C) + 0x32, 0xE0, 0x38, 0xFF, 0xF0, 0x64, 0xFF);
+        CupSelect_DrawSelectionCorners(0xD0, (gCupSelectCursor * 0x6C) + 0x32, 0xE0, 0x38, 0xFF, 0xF0, 0x64, 0xFF);
     }
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
-void Stage_InitGraphNodes(void) {
+void CupSelect_BuildDivisionList(void) {
     s32 i;
     Fragment2_1GraphNode* var_s1;
     Fragment2_1GraphNode* var_s2;
 
     for (var_s1 = &gCupSelectNodesA[0], i = 0; i < 4; i++, var_s1++) {
-        GraphNode_InitChild(var_s1, 0, 0, gOverlayGraphNode);
+        Model_InitDisplayObject(var_s1, 0, 0, gOverlayGraphNode);
         gCupSelectNodesA[i].unk_01E.y = -0x5000;
     }
 
-    Vec3f_Set(&gCupSelectNodesA[0].unk_024, 0.0f, 162.0f, -579.0f);
-    Vec3f_Set(&gCupSelectNodesA[1].unk_024, 0.0f, 54.0f, -579.0f);
-    Vec3f_Set(&gCupSelectNodesA[2].unk_024, 0.0f, -54.0f, -579.0f);
-    Vec3f_Set(&gCupSelectNodesA[3].unk_024, 0.0f, -162.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectNodesA[0].unk_024, 0.0f, 162.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectNodesA[1].unk_024, 0.0f, 54.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectNodesA[2].unk_024, 0.0f, -54.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectNodesA[3].unk_024, 0.0f, -162.0f, -579.0f);
 
     for (var_s2 = &gCupSelectNodesB[0], i = 0; i < 3; i++, var_s2++) {
-        GraphNode_InitChild(var_s2, 0, 0, gUIGraphNode);
+        Model_InitDisplayObject(var_s2, 0, 0, gUIGraphNode);
         gCupSelectNodesB[i].unk_01E.y = -0x5000;
     }
 
-    Vec3f_Set(&gCupSelectNodesB[0].unk_024, 0.0f, 108.0f, -579.0f);
-    Vec3f_Set(&gCupSelectNodesB[1].unk_024, 0.0f, 0, -579.0f);
-    Vec3f_Set(&gCupSelectNodesB[2].unk_024, 0.0f, -108.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectNodesB[0].unk_024, 0.0f, 108.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectNodesB[1].unk_024, 0.0f, 0, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectNodesB[2].unk_024, 0.0f, -108.0f, -579.0f);
 }
 
-s32 Menu_HandleInput(void) {
+s32 CupSelect_HandleInput(void) {
     s32 var_v1 = 'exec';
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        PlaySoundEffect(0x26);
-        gBattleContext.unk_0002 = gCupSelectCursor;
+        Audio_PlaySoundEffectById(0x26);
+        gSessionContext.unk_0002 = gCupSelectCursor;
         var_v1 = 'slct';
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
         var_v1 = 'quit';
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
         if (gCupSelectCursor > 0) {
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             gCupSelectCursor--;
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN) && (gCupSelectCursor < gCupSelectMaxIndex)) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
         gCupSelectCursor++;
     }
     return var_v1;
 }
 
-s32 Menu_RunSelection(void) {
+s32 CupSelect_Loop(void) {
     s16 i;
     s32 temp_v0 = 'exec';
     s32 temp_v1;
 
-    Stage_InitGraphNodes();
+    CupSelect_BuildDivisionList();
     gCupSelectCursor = gCupSelectMaxIndex;
 
     for (i = 0; i < 23; i++) {
         CupSelect_PollController();
-        Stage_DrawFrame(0, i);
+        CupSelect_RenderFrame(0, i);
     }
 
     while (temp_v0 == 'exec') {
         CupSelect_PollController();
-        Stage_DrawFrame(1, 0);
-        temp_v0 = Menu_HandleInput();
+        CupSelect_RenderFrame(1, 0);
+        temp_v0 = CupSelect_HandleInput();
     }
 
     temp_v1 = temp_v0 == 'slct';
     if (temp_v1) {
         for (i = 0; i < 23; i++) {
             CupSelect_PollController();
-            Stage_DrawFrame(2, i);
+            CupSelect_RenderFrame(2, i);
         }
     } else {
-        Stage_SetFillColor(0xFFFF);
-        Stage_FadeOut(8);
-        while (Stage_GetFadeState() != 1) {
+        StageContext_SetClearColor(0xFFFF);
+        StageFade_StartFromTransparent(8);
+        while (StageContext_GetFadeMode() != 1) {
             CupSelect_PollController();
-            Stage_DrawFrame(1, 0);
+            CupSelect_RenderFrame(1, 0);
         }
-        Stage_AdvanceN(2);
+        StageLoader_RunFrames(2);
     }
     return temp_v1;
 }
 
-void Stage_LoadResourcesAndInit(void) {
-    MemoryBlock* temp_v0 = state_pool_try_init(main_pool_get_available(), 0);
+void CupSelect_InitGeoLayouts(void) {
+    MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     s32 i;
     Fragment2_1GraphNode* var_s2;
 
     gBackgroundGraphNode = process_geo_layout(temp_v0, &gCupSelectBgGeo);
     gOverlayGraphNode = process_geo_layout(temp_v0, &gCupSelectOverlayGeo);
     gUIGraphNode = process_geo_layout(temp_v0, &gCupSelectUiGeo);
-    mem_pool_resize_block(temp_v0);
-    Graph_InitRoots();
+    MainPool_FinalizeAllocation(temp_v0);
+    ModelRenderer_InitDisplayRoots();
 
     for (var_s2 = &gCupSelectNodesA[0], i = 0; i < 4; var_s2++, i++) {
-        Graph_AddToRootList0(var_s2);
+        ModelRenderer_AttachDisplayObject(var_s2);
         gCupSelectNodesA[i].unk_000.unk_14 = i;
     }
 
     for (var_s2 = &gCupSelectNodesB[0], i = 0; i < 3; var_s2++, i++) {
-        Graph_AddToRootList0(var_s2);
+        ModelRenderer_AttachDisplayObject(var_s2);
         gCupSelectNodesB[i].unk_000.unk_14 = i;
     }
 }
 
-s32 Fragment60_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
+s32 CupSelect_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     s16 var_v1 = -1;
     s32 sp18 = 1;
 
-    switch (gBattleContext.unk_0000) {
+    switch (gSessionContext.unk_0000) {
         case 3:
             var_v1 = 9;
             break;
@@ -454,10 +454,10 @@ s32 Fragment60_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     if (var_v1 != -1) {
         main_pool_push_state('LVSL');
 
-        Text_Init(0x10, 0);
-        GbsEnsureBankLoaded(2);
-        GBAudio_ResetState(&D_82E023A0, gBattleContext.unk_11F2);
-        if (gBattleContext.unk_0000 == 3) {
+        Font_Init(0x10, 0);
+        Save_EnsureBankLoaded(2);
+        Save_GetModeSettings(&D_82E023A0, gSessionContext.unk_11F2);
+        if (gSessionContext.unk_0000 == 3) {
             gCupSelectMaxIndex = D_82E023A0.unk_05;
         } else {
             gCupSelectMaxIndex = D_82E023A0.unk_06;
@@ -473,10 +473,10 @@ s32 Fragment60_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
         gCupSelectBgArchive = ASSET_LOAD2(backgrounds, 1, 1);
         gBackgroundTextureAtlas = BinArchive_GetFile(gCupSelectBgArchive, var_v1);
 
-        Stage_LoadResourcesAndInit();
-        Menu_SetupDisplayList();
-        sp18 = Menu_RunSelection();
-        Stage_Terminate();
+        CupSelect_InitGeoLayouts();
+        StageLoader_UpdateSegments();
+        sp18 = CupSelect_Loop();
+        StageLoader_WaitForRetrace();
 
         main_pool_pop_state('LVSL');
     }

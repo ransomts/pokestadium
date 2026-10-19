@@ -32,10 +32,10 @@ static s16 D_86600AB8;
 static s16 D_86600ABA;
 static s16 D_86600ABC;
 
-void MiniGame_PollInputs(void) {
+void Minigame_Sample7Viewer_PollInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
 void Minigame_Sample7Viewer_InitCamera(void) {
@@ -48,10 +48,10 @@ void Minigame_Sample7Viewer_InitCamera(void) {
     D_86600948->unk_24.near = 10.0f;
     D_86600948->unk_24.far = 6400.0f;
 
-    Camera_SetViewParameters(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
+    Camera_ComputeEyeFromAngles(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
 }
 
-void MiniGame_UpdateCamera(void) {
+void Minigame_Sample7Viewer_UpdateCameraControls(void) {
     if (gPlayer1Controller->buttonDown & 0x800) {
         D_86600AB8 += 256;
     }
@@ -92,65 +92,65 @@ void MiniGame_UpdateCamera(void) {
         D_86600ABC = 2000;
     }
 
-    Camera_SetViewParameters(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
+    Camera_ComputeEyeFromAngles(&D_86600948->unk_60.at, &D_86600948->unk_60.eye, D_86600ABC, D_86600AB8, D_86600ABA);
 }
 
 void Minigame_Sample7Viewer_DrawDebugText(s32 arg0) {
     Color_RGB8 sp2C = { 0, 0, 30 };
     Color_RGB8 sp28 = { 0, 0, 250 };
 
-    DrawGradientPanel(0xC8, 0xBE, 0x5A, 0x20, &sp2C, &sp28);
-    DrawPanel(0x1E, 0xBE, 0xA0, 0x20, 0x141);
-    Text_ResetState();
-    Text_BeginRender();
-    Text_SetFont(4, -2);
+    Ui_DrawGradientPanel(0xC8, 0xBE, 0x5A, 0x20, &sp2C, &sp28);
+    Ui_DrawBorderedPanel(0x1E, 0xBE, 0xA0, 0x20, 0x141);
+    Font_BeginTranslucentTextRendering();
+    Font_EnableTwoCycleTexturing();
+    Font_SetActive(4, -2);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-    Text_Print(0x30, 0x14, "MINIGAME7 SAMPLE");
-    Text_EndRender();
-    Text_SetFont(2, -2);
+    Font_Printf(0x30, 0x14, "MINIGAME7 SAMPLE");
+    Font_DisableTwoCycleTexturing();
+    Font_SetActive(2, -2);
     Text_SetEnvColor(0xFF, 0xC8, 0x32, 0xFF);
 
     switch (arg0) {
         case 0:
-            Text_Print(0xCD, 0xC2, "OPENNING");
+            Font_Printf(0xCD, 0xC2, "OPENNING");
             break;
 
         case 2:
-            Text_Print(0xCD, 0xC2, "PLAYING");
+            Font_Printf(0xCD, 0xC2, "PLAYING");
             break;
 
         case 3:
-            Text_Print(0xCD, 0xC2, "ENDING");
+            Font_Printf(0xCD, 0xC2, "ENDING");
             break;
     }
 
     if (arg0 == 2) {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print(0x23, 0xC2, "CAMERA D:%d", D_86600ABC);
-        Text_Print(0x23, 0xCE, "X:%04hX Y:%04hX", D_86600AB8, D_86600ABA);
+        Font_Printf(0x23, 0xC2, "CAMERA D:%d", D_86600ABC);
+        Font_Printf(0x23, 0xCE, "X:%04hX Y:%04hX", D_86600AB8, D_86600ABA);
     }
 
-    Text_SetupDL();
+    Font_EndTexturedTextRendering();
 }
 
 void Minigame_Sample7Viewer_DrawFrame(s32 arg0) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 0xA6BF);
-    Gfx_FinishFrame();
-    Graph_SetTextureState(D_86600944);
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 0xA6BF);
+    GeoRender_AdvanceFrameCounter();
+    Geo_RenderRootNode(D_86600944);
     Minigame_Sample7Viewer_DrawDebugText(arg0);
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
 void Minigame_Sample7Viewer_OpeningLoop(void) {
-    Stage_FadeIn(0x10);
-    GraphNode_TriggerAction(&gMiniGameAnimNode, 8);
-    if (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0) {
+    StageFade_StartFromOpaque(0x10);
+    ModelAnim_SetAnimation(&gMiniGameAnimNode, 8);
+    if (ModelAnim_IsFinished(&gMiniGameAnimNode) == 0) {
         do {
-            MiniGame_PollInputs();
+            Minigame_Sample7Viewer_PollInput();
             Minigame_Sample7Viewer_DrawFrame(0);
-        } while (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0);
+        } while (ModelAnim_IsFinished(&gMiniGameAnimNode) == 0);
     }
 }
 
@@ -158,11 +158,11 @@ void Minigame_Sample7Viewer_PlayingLoop(void) {
     s32 var_s1 = 1;
     s32 var_s0 = 0;
 
-    GraphNode_TriggerAction(&gMiniGameAnimNode, 0);
+    ModelAnim_SetAnimation(&gMiniGameAnimNode, 0);
 
     while (var_s1 != 0) {
-        MiniGame_PollInputs();
-        MiniGame_UpdateCamera();
+        Minigame_Sample7Viewer_PollInput();
+        Minigame_Sample7Viewer_UpdateCameraControls();
 
         var_s0++;
 
@@ -172,8 +172,8 @@ void Minigame_Sample7Viewer_PlayingLoop(void) {
 
         if (var_s0 == 60) {
             var_s0 = 0;
-            InitAnimState(&gMiniGameAnimNode);
-            GraphNode_TriggerSound(&gMiniGameAnimNode, 0xA);
+            ModelAnim_ClearEventTrack(&gMiniGameAnimNode);
+            ModelAnim_SetEventTrack(&gMiniGameAnimNode, 0xA);
         }
 
         Minigame_Sample7Viewer_DrawFrame(2);
@@ -183,33 +183,33 @@ void Minigame_Sample7Viewer_PlayingLoop(void) {
 void Minigame_Sample7Viewer_EndingLoop(void) {
     s32 i;
 
-    GraphNode_TriggerAction(&gMiniGameAnimNode, 0xB);
-    GraphNode_TriggerSound(&gMiniGameAnimNode, 0xB);
+    ModelAnim_SetAnimation(&gMiniGameAnimNode, 0xB);
+    ModelAnim_SetEventTrack(&gMiniGameAnimNode, 0xB);
 
-    while (Anim_HasReachedEnd(&gMiniGameAnimNode) == 0) {
-        MiniGame_PollInputs();
+    while (ModelAnim_IsFinished(&gMiniGameAnimNode) == 0) {
+        Minigame_Sample7Viewer_PollInput();
         Minigame_Sample7Viewer_DrawFrame(3);
     }
 
-    Stage_FadeOut(30);
+    StageFade_StartFromTransparent(30);
 
     for (i = 0; i < 30; i++) {
-        MiniGame_PollInputs();
+        Minigame_Sample7Viewer_PollInput();
         Minigame_Sample7Viewer_DrawFrame(3);
     }
 }
 
 void Minigame_Sample7Viewer_Init(void) {
-    MemoryBlock* sp1C = state_pool_try_init(main_pool_get_available(), 0);
+    MemoryBlock* sp1C = MainPool_AllocState(main_pool_get_available(), 0);
 
     D_86600944 = process_geo_layout(sp1C, &gMiniGameGeoLayoutCommands);
-    mem_pool_resize_block(sp1C);
-    Graph_InitRoots();
-    Graph_AddToRootList0(&gMiniGameAnimNode);
-    AssetManager_LoadArchives();
-    gMiniGameGeoLayoutData = GeoLayout_LoadById(0x19);
-    GraphNode_InitChild(&gMiniGameAnimNode, 0, 0x19, gMiniGameGeoLayoutData->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&gMiniGameAnimNode, 0);
+    MainPool_FinalizeAllocation(sp1C);
+    ModelRenderer_InitDisplayRoots();
+    ModelRenderer_AttachDisplayObject(&gMiniGameAnimNode);
+    PokeIcon_OpenModelArchives();
+    gMiniGameGeoLayoutData = Model_LoadByArchiveIndex(0x19);
+    Model_InitDisplayObject(&gMiniGameAnimNode, 0, 0x19, gMiniGameGeoLayoutData->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(&gMiniGameAnimNode, 0);
     Minigame_Sample7Viewer_InitCamera();
 }
 
@@ -218,9 +218,9 @@ s32 Minigame_Sample7Viewer(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     main_pool_push_state('MINI');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(0, 1, 3, 1, 2, 1);
-    Text_Init(6, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(0, 1, 3, 1, 2, 1);
+    Font_Init(6, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
 
@@ -228,13 +228,13 @@ s32 Minigame_Sample7Viewer(UNUSED s32 arg0, UNUSED s32 arg1) {
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, pokedex_area_model_ROM_START);
 
     Minigame_Sample7Viewer_Init();
-    Stage_Set(sp24);
+    StageContext_Activate(sp24);
     Minigame_Sample7Viewer_OpeningLoop();
     Minigame_Sample7Viewer_PlayingLoop();
     Minigame_Sample7Viewer_EndingLoop();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('MINI');
     return 0;

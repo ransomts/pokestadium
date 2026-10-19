@@ -38,7 +38,7 @@ static Gfx gWaterParticleDL_Textured[] = {
     gsSPEndDisplayList(),
 };
 
-void WaterParticle_Reset(void) {
+void TexturedRibbonSheet_Init(void) {
     unk_D_843A22C0* var_v0;
     unk_D_843A22C0_038* var_a0;
     s32 i;
@@ -61,7 +61,7 @@ void WaterParticle_Reset(void) {
     }
 }
 
-void WaterParticle_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
+void TexturedRibbonSheet_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, s16 argB) {
     unk_D_843A22C0* var_v1;
     unk_D_843A22C0_038* var_s0;
@@ -72,7 +72,7 @@ void WaterParticle_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 a
     Vec3f sp5C;
     f32 temp_fv0;
 
-    temp_fv0 = GetPrimaryEntityScale();
+    temp_fv0 = BattleAnim_GetSecondaryOwnerModelScale();
 
     sp74.x = arg0;
     sp74.y = arg1 + 10.0f + 25.0f;
@@ -120,14 +120,14 @@ void WaterParticle_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 a
     }
 }
 
-void WaterParticle_TransformVertex(f32 arg0, Vec3f* arg1, f32 arg2) {
+void TexturedRibbonSheet_Update(f32 arg0, Vec3f* arg1, f32 arg2) {
     MtxF sp30;
 
     guRotateRPYF(sp30.mf, 90.0f, (arg0 * 360.0) / 6.2831854820251465, (arg0 * 360.0) / 6.2831854820251465);
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void WaterParticle_UpdateSegment(unk_D_843A22C0* arg0) {
+void TexturedRibbonSheet_UpdateRecord(unk_D_843A22C0* arg0) {
     s32 i;
     s32 j;
     Vtx* var_a1;
@@ -175,7 +175,7 @@ void WaterParticle_UpdateSegment(unk_D_843A22C0* arg0) {
     }
 }
 
-s32 WaterParticle_TickAll(void) {
+s32 TexturedRibbonSheet_IsComplete(void) {
     s32 i;
     s32 var_s2 = 0;
     unk_D_843A22C0* var_s0 = &gWaterParticlePool[0];
@@ -186,7 +186,7 @@ s32 WaterParticle_TickAll(void) {
             if ((var_s0->unk_006 + 0xA) < var_s0->unk_004) {
                 var_s0->unk_000 = 0;
             } else {
-                WaterParticle_UpdateSegment(var_s0);
+                TexturedRibbonSheet_UpdateRecord(var_s0);
                 var_s2++;
             }
         }
@@ -198,7 +198,7 @@ s32 WaterParticle_TickAll(void) {
     return -1;
 }
 
-Gfx* WaterParticle_RenderAll(Gfx* arg0) {
+Gfx* TexturedRibbonSheet_Draw(Gfx* arg0) {
     s32 i;
     unk_D_843A22C0* var_s5;
     unk_D_843A22C0_038* temp_s0;
@@ -213,7 +213,7 @@ Gfx* WaterParticle_RenderAll(Gfx* arg0) {
     Vtx* vtx2;
     f32 tmp;
 
-    gDPLoadTextureBlock_4b(arg0++, gWaterTexture[0x10], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock_4b(arg0++, gBattleAnimAssetPointers[0x10], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
     var_s5 = &gWaterParticlePool[0];
@@ -222,7 +222,7 @@ Gfx* WaterParticle_RenderAll(Gfx* arg0) {
             temp_s0 = &var_s5->unk_038[0];
             tmp = var_s5->unk_010;
 
-            temp_s1 = GfxAlloc(sizeof(Mtx) * 1);
+            temp_s1 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
 
             spB4 = (temp_s0->unk_08 * 360.0) / 6.2831854820251465;
             guTranslate(temp_s1, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
@@ -241,14 +241,14 @@ Gfx* WaterParticle_RenderAll(Gfx* arg0) {
             gSPDisplayList(arg0++, gWaterParticleDL_Textured);
             gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
 
-            var_s5->unk_018 = GfxAlloc(sizeof(Vtx) * 20);
+            var_s5->unk_018 = Gfx_AllocDisplayList(sizeof(Vtx) * 20);
             vtx = var_s5->unk_018;
 
             for (j = 0; j < 10; j++, temp_s0++) {
                 if ((j == 0) || (var_s5->unk_004 < 2)) {
                     for (k = 0, vtx2 = &temp_s0->unk_30[0]; k < 2; k++) {
                         if (temp_s0->unk_00 <= 0.0) {
-                            WaterParticle_TransformVertex(temp_s0->unk_08 + ((2.0 * k * 3.1415927410125732) / 2), &sp13C,
+                            TexturedRibbonSheet_Update(temp_s0->unk_08 + ((2.0 * k * 3.1415927410125732) / 2), &sp13C,
                                           (10.0f * tmp) * 0.8f);
                         }
 

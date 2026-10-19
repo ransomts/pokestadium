@@ -9,7 +9,7 @@ static OSMesg gFlashMsgBuf[1];   // __osFlashMsgBuf
 static s32 gFlashBlockSize;         // __osFlashVersion
 
 // osFlashReInit
-OSPiHandle* Flash_ReInitHandle(u8 latency, u8 pulse, u8 page_size, u8 rel_duration, u32 start) {
+OSPiHandle* Flash_Reinitialize(u8 latency, u8 pulse, u8 page_size, u8 rel_duration, u32 start) {
     gFlashHandle.baseAddress = PHYS_TO_K1(start);
     gFlashHandle.type++;
     gFlashHandle.latency = latency;
@@ -22,7 +22,7 @@ OSPiHandle* Flash_ReInitHandle(u8 latency, u8 pulse, u8 page_size, u8 rel_durati
 }
 
 // osFlashInit
-OSPiHandle* Flash_Init(void) {
+OSPiHandle* Flash_Initialize(void) {
     u32 flash_type;
     u32 flash_maker;
 
@@ -141,7 +141,7 @@ s32 Flash_EraseSector(s32 arg0) {
 }
 
 // osFlashWriteBuffer
-s32 Flash_WriteBuffer(OSIoMesg* mb, s32 priority, void* dramAddr, OSMesgQueue* mq) {
+s32 Flash_StartWriteBuffer(OSIoMesg* mb, s32 priority, void* dramAddr, OSMesgQueue* mq) {
     s32 sp1C;
 
     osEPiWriteIo(&gFlashHandle, gFlashHandle.baseAddress | FLASH_CMD_REG, FLASH_CMD_PAGE_PROGRAM);
@@ -177,7 +177,7 @@ s32 Flash_ProgramPage(s32 arg0) {
 }
 
 // osFlashReadArray but without handling pages individually
-s32 Flash_ReadArray(OSIoMesg* mb, s32 priority, s32 devAddr, void* dramAddr, s32 n_pages, OSMesgQueue* mq) {
+s32 Flash_StartReadArray(OSIoMesg* mb, s32 priority, s32 devAddr, void* dramAddr, s32 n_pages, OSMesgQueue* mq) {
     s32 sp1C;
     u32 sp18;
 

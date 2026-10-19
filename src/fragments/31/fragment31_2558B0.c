@@ -78,7 +78,7 @@ static s32 D_81004B50;
 static s32 D_81004B54;
 
 
-void Particle_ClearSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
+void Particle31_ResetSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
     u8 var_v0 = arg0->modelPhase;
     s32 pad[2];
     Vec3f sp50 = gVecZero;
@@ -102,20 +102,20 @@ void Particle_ClearSlot(Fragment2_1GraphNode* arg0, s32 arg1) {
     D_810047E0[var_v0 & 1][arg1].scale = sp38;
 }
 
-void Particle_ClearAllSlots(Fragment2_1GraphNode* arg0) {
+void Particle31_ResetAllSlots(Fragment2_1GraphNode* arg0) {
     s32 i;
 
     for (i = 0; i < 10; i++) {
-        Particle_ClearSlot(arg0, i);
+        Particle31_ResetSlot(arg0, i);
     }
 }
 
-void Particle_ResetCounters(void) {
+void Particle31_ResetCounters(void) {
     D_81004B50 = 0;
     D_81004B54 = 0;
 }
 
-void Particle_Activate(unk_D_810047E0* arg0) {
+void Particle31_SpawnSpeciesEffect(unk_D_810047E0* arg0) {
     s32 var_v0;
     Vec3f sp90;
     Vec3f sp84;
@@ -130,8 +130,8 @@ void Particle_Activate(unk_D_810047E0* arg0) {
     f32 var_fs0;
 
     var_s1 = 0xA;
-    guMtxXFMF(Matrix_GetRelative(-1)->mf, 0, 0, 0, &sp90.x, &sp90.y, &sp90.z);
-    guMtxXFMF(Matrix_GetRelative(0)->mf, 0, 0, 0, &sp84.x, &sp84.y, &sp84.z);
+    guMtxXFMF(GeoRender_GetRelativeMatrix(-1)->mf, 0, 0, 0, &sp90.x, &sp90.y, &sp90.z);
+    guMtxXFMF(GeoRender_GetRelativeMatrix(0)->mf, 0, 0, 0, &sp84.x, &sp84.y, &sp84.z);
     sp60 = gDefaultGraphRoot->unk_030.x;
     sp5C = gDefaultGraphRoot->unk_030.y;
     sp58 = gDefaultGraphRoot->unk_030.z;
@@ -226,7 +226,7 @@ void Particle_Activate(unk_D_810047E0* arg0) {
     }
 }
 
-void Particle_TryActivate(unk_D_810047E0* arg0) {
+void Particle31_UpdateSpeciesEffectTrigger(unk_D_810047E0* arg0) {
     s32 pad[1];
     s16 temp_v1;
     s32 var_a1;
@@ -243,7 +243,7 @@ void Particle_TryActivate(unk_D_810047E0* arg0) {
         switch(temp_v1) {
         case 4:
             if (var_a1 == gParticleConditionTable[temp_a0].unk_02) {
-                Particle_Activate(arg0);
+                Particle31_SpawnSpeciesEffect(arg0);
                 return;
             }
             break;
@@ -252,7 +252,7 @@ void Particle_TryActivate(unk_D_810047E0* arg0) {
                 var_v1 = &gParticleConditionTable[temp_a0].unk_00;
                 do {
                     if (var_a1 == var_v1[2]) {
-                        Particle_Activate(arg0);
+                        Particle31_SpawnSpeciesEffect(arg0);
                     }
                     var_v0 += 2;
                     var_v1 ++;
@@ -261,13 +261,13 @@ void Particle_TryActivate(unk_D_810047E0* arg0) {
             break;
         case 2:
             if (var_a1 == gParticleConditionTable[temp_a0].unk_0A) {
-                Particle_Activate(arg0);
+                Particle31_SpawnSpeciesEffect(arg0);
                 return;
             }
             break;
         default:
             if (var_a1 == gParticleConditionTable[temp_a0].unk_00) {
-                Particle_Activate(arg0);
+                Particle31_SpawnSpeciesEffect(arg0);
                 return;
             }
             return;
@@ -275,29 +275,29 @@ void Particle_TryActivate(unk_D_810047E0* arg0) {
         break;
     case 0x92:
         if ((guRandom() % 60) == 0) {
-            Particle_Activate(arg0);
+            Particle31_SpawnSpeciesEffect(arg0);
             return;
         }
         break;
     case 0x90:
         if ((guRandom() % 30) == 0) {
-            Particle_Activate(arg0);
+            Particle31_SpawnSpeciesEffect(arg0);
             return;
         }
         break;
     case 0x86:
         if ((guRandom() % 7) == 0) {
-            Particle_Activate(arg0);
+            Particle31_SpawnSpeciesEffect(arg0);
             return;
         }
         break;
     case 0x5C:
-        Particle_Activate(arg0);
+        Particle31_SpawnSpeciesEffect(arg0);
         return;
     case 0x4D:
     case 0x4E:
         if ((guRandom() % 7) == 0) {
-            Particle_Activate(arg0);
+            Particle31_SpawnSpeciesEffect(arg0);
         }
         break;
     }
@@ -318,8 +318,8 @@ Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2,
     f32 spFC;
     Fragment2_1GraphNode* var_v0;
 
-    sp294 = GfxAlloc(0x40);
-    Camera_CopyMatrixF(&sp14C, &gCurrentCameraNode->unk_60.mtxf);
+    sp294 = Gfx_AllocDisplayList(0x40);
+    MtxF_ExtractScale(&sp14C, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(sp14C.mf, &sp1D0);
     var_v0 = gDefaultGraphRoot;
     if (var_v0->modelPhase == 0xFE) {
@@ -330,7 +330,7 @@ Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2,
 
     if (gDefaultGraphRoot->modelPhase == 0xFF) {
         if ((gDefaultGraphRoot->unk_01A == 0x5C) || (gDefaultGraphRoot->unk_01A == 0x6D) || (gDefaultGraphRoot->unk_01A == 0x6E)) {
-            Matrix_Copy(&sp10C, Matrix_GetRelative(0));
+            MtxF_Copy(&sp10C, GeoRender_GetRelativeMatrix(0));
             guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
             guTranslate(&sp190, spFC, sp100, sp104);
             guMtxCatL(&sp250, &sp190, sp294);
@@ -339,7 +339,7 @@ Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2,
             guMtxCatL(&sp250, &sp210, sp294);
         }
     } else if (gDefaultGraphRoot->unk_01A == 0x5C) {
-        Matrix_Copy(&sp10C, Matrix_GetRelative(0));
+        MtxF_Copy(&sp10C, GeoRender_GetRelativeMatrix(0));
         guMtxXFMF(sp10C.mf, 0, 0, 0, &spFC, &sp100, &sp104);
         guTranslate(&sp190, spFC, sp100, sp104);
         guMtxCatL(&sp250, &sp190, sp294);
@@ -489,7 +489,7 @@ Gfx* Particle_Render(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2,
     return gfx;
 }
 
-Gfx* Particle_RenderAll(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
+Gfx* Particle31_BuildDisplayList(Gfx* gfx, unk_D_810047E0* arg1, DisplayListAddresses* arg2, s16 arg3) {
     s32 i;
 
     for (i = 0; i < 10; i++, arg1++) {
@@ -521,9 +521,9 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
     sp5C = state->addresses;
     if (arg0 == 2) {
         if (D_81004B54 == 0) {
-            state->gfx = GfxAlloc(0x500);
+            state->gfx = Gfx_AllocDisplayList(0x500);
         } else {
-            state->gfx = GfxAlloc(0x80);
+            state->gfx = Gfx_AllocDisplayList(0x80);
         }
         gfx = state->gfx;
         temp_v1 = gDefaultGraphRoot->modelPhase;
@@ -531,9 +531,9 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
             temp_v0 = gDefaultGraphRoot->unk_01A;
             switch (gDefaultGraphRoot->unk_01A) {
                 case 0x5C:
-                    Particle_TryActivate(&D_810047E0);
+                    Particle31_UpdateSpeciesEffectTrigger(&D_810047E0);
                     if (D_81004B54 == 0) {
-                        gfx = Particle_RenderAll(gfx, &D_810047E0, sp5C, 0);
+                        gfx = Particle31_BuildDisplayList(gfx, &D_810047E0, sp5C, 0);
                     }
                     break;
                 case 0x6D:
@@ -580,15 +580,15 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
             }
         } else if (temp_v1 == 0xFE) {
             if (D_81004B54 == 0) {
-                gfx = Particle_RenderAll(gfx, &D_810047E0, sp5C, 0);
+                gfx = Particle31_BuildDisplayList(gfx, &D_810047E0, sp5C, 0);
             }
         } else if (((s32) temp_v1 < 2) && (D_81004B50 >= 0) && (D_81004B50 < 0xB)) {
             temp_a1_3 = &D_810047E0[temp_v1 & 1][0];
             sp1C = temp_a1_3;
             sp18 = (s32) temp_v1;
-            Particle_TryActivate(temp_a1_3);
+            Particle31_UpdateSpeciesEffectTrigger(temp_a1_3);
             if (D_81004B54 == 0) {
-                gfx = Particle_RenderAll(gfx, temp_a1_3, sp5C, (s16) temp_v1);
+                gfx = Particle31_BuildDisplayList(gfx, temp_a1_3, sp5C, (s16) temp_v1);
             }
         }
         gSPEndDisplayList(gfx);
@@ -596,7 +596,7 @@ void Particle_Process(s32 arg0, DisplayListState* state) {
     D_81004B54 += 1;
 }
 
-void Particle_Serialize(u8* arg0) {
+void Particle31_PackSlotData(u8* arg0) {
     s32 i;
     s16 var_a1;
     s16 var_a2;
@@ -642,7 +642,7 @@ void Particle_Serialize(u8* arg0) {
     }
 }
 
-void Particle_Deserialize(unk_arg0_func_81002260* arg0, u8* arg1) {
+void Particle31_UnpackSlotData(unk_arg0_func_81002260* arg0, u8* arg1) {
     unk_D_810047E0* var_v1;
     f32 var_fv0;
     s16 var_a2;

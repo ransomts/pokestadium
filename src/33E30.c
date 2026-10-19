@@ -50,7 +50,7 @@ void Util_NoOp(s32 arg0) {
     }
 }
 
-Gfx* Gfx_DrawMarkerTriangle(Gfx* arg0, Vec3f* arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, f32 arg6) {
+Gfx* Gfx_DrawTriangleMarker(Gfx* arg0, Vec3f* arg1, u8 arg2, u8 arg3, u8 arg4, u8 arg5, f32 arg6) {
     f32 sp144;
     f32 sp140;
     f32 sp13C;
@@ -65,11 +65,11 @@ Gfx* Gfx_DrawMarkerTriangle(Gfx* arg0, Vec3f* arg1, u8 arg2, u8 arg3, u8 arg4, u
     sp140 = arg1->y;
     sp13C = arg1->z;
 
-    Camera_CopyMatrixF(&sp34, &gCurrentCameraNode->unk_60.mtxf);
+    MtxF_ExtractScale(&sp34, &gCurrentCameraNode->unk_60.mtxf);
     guMtxF2L(&sp34, &sp78);
     guScale(&spB8, arg6, arg6, arg6);
     guTranslate(&spF8, sp144, sp140, sp13C);
-    sp138 = GfxAlloc(sizeof(Mtx) * 1);
+    sp138 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
     guMtxCatL(&spB8, &spF8, sp138);
     guMtxCatL(&sp78, sp138, sp138);
 

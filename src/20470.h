@@ -17,22 +17,22 @@ extern Gfx gDL_TextSetup[];
 extern Gfx gDL_TextBegin[];
 extern Gfx gDL_TextEnd[];
 
-void DrawTileTextureRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4);
-void DrawWindowBorder(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+void Ui_DrawTexturedRect8x8(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4);
+void Ui_DrawBorderStyleA(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void Ui_DrawBorderStyleB(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-void DrawWindowBorderThin(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-void FillRectWithColor(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4);
-void FillRectWithColorInset(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4);
-void DrawGradientRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5);
-void DrawPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4);
-void DrawGradientPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5);
-void DrawPanelAlt(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4);
-void DrawSimplePanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
-void DrawStatusIcon(s32 arg0, s32 arg1);
-void AnimateIconOffset(s16 arg0, s16 arg1);
-void DrawBadgeIcon(s32 arg0, s32 arg1, s32 arg2);
-void DrawHealthBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-void DrawExpBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+void Ui_DrawBorderStyleC(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+void Ui_FillInsetRectangleA(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4);
+void Ui_FillInsetRectangleB(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4);
+void Ui_DrawGradientRectangle(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5);
+void Ui_DrawBorderedPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4);
+void Ui_DrawGradientPanel(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Color_RGB8* arg4, Color_RGB8* arg5);
+void Ui_DrawBorderedPanelStyleB(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u16 arg4);
+void Ui_DrawBorderedPanelNoFill(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
+void Ui_DrawTextureMarker(s32 arg0, s32 arg1);
+void Ui_DrawAnimatedTextureMarker(s16 arg0, s16 arg1);
+void Ui_Draw20x20Icon(s32 arg0, s32 arg1, s32 arg2);
+void BattleHud_DrawHpBarTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void BattleHud_DrawHpBar16x5(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void Text_LoadNameTable(void);
 
 #endif // _20470_H_

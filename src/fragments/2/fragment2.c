@@ -36,34 +36,34 @@ static s32 pad_D_8780FA4C;
 s16 gMenuOptionUsedFlags[9];
 s16 gMenuOptionFlags[4];
 
-void InitMessageBanks(void) {
-    MessageBank_Init();
-    gItemNamesBank = GetMessageBank(0x1D);
-    gMoveNamesBank = GetMessageBank(0x14);
+void Widget_Init(void) {
+    Text_InitStringTables();
+    gItemNamesBank = Text_GetStringTable(0x1D);
+    gMoveNamesBank = Text_GetStringTable(0x14);
 }
 
-void UpdateScrollingMessage(void) {
+void Widget_DrawControllerDisconnectBanner(void) {
     static s32 gScrollingMessageOffset = 0;
 
     s32 sp24;
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = MeasureTextWidth(4, 0, GetMessageString(NULL, 0, gMoveNamesBank, 0));
+        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMoveNamesBank, 0));
         temp_s0 = 0x50 - gScrollingMessageOffset;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
-        Text_ResetState();
-        Text_SetFont(4, 0);
-        Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMoveNamesBank, 0));
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(4, 0);
+        Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMoveNamesBank, 0));
 
         temp_s0 += sp24 + 0x1E;
         if (temp_s0 < 0x140) {
-            Text_Print(temp_s0, 0xB3, GetMessageString(NULL, 0, gMoveNamesBank, 0));
+            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMoveNamesBank, 0));
         }
 
-        Text_SetupDL();
+        Font_EndTexturedTextRendering();
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, 320, 240);
 
@@ -74,11 +74,11 @@ void UpdateScrollingMessage(void) {
     }
 }
 
-void IncrementRandomCounter(void) {
+void Rand_Advance(void) {
     gRandomCounter++;
 }
 
-u32 GetRandomMod(u32 arg0) {
+u32 Rand_Range(u32 arg0) {
     u32 temp_a0 = guRandom() + gRandomCounter;
     u32 var_v1;
 
@@ -91,7 +91,7 @@ u32 GetRandomMod(u32 arg0) {
     return var_v1;
 }
 
-void DrawBorderRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void Widget_DrawProgressBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     UNUSED s32 pad;
     s32 spF0 = arg2 - 2;
     s32 temp_lo = ((arg4 - arg3) * spF0) / arg4;
@@ -141,7 +141,7 @@ void DrawBorderRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawProgressBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Widget_DrawMeterBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     u32* spCC;
     s32 temp_lo = ((arg3 - arg2) * 0x30) / arg3;
     s32 sp14 = 0x30 - temp_lo;
@@ -190,7 +190,7 @@ s16 gCurrentMenuIndex = -1;
 u32* gPositiveTextureBank[] = { gResultCubeTex_0, gResultCubeTex_1, gResultCubeTex_2, gResultCubeTex_3 };
 u32* gNegativeTextureBank[] = { gResultCubeTex_4, gResultCubeTex_5, gResultCubeTex_6, gResultCubeTex_7, gResultCubeTex_8 };
 
-void Sushi_SetDemoParams(s16 arg0) {
+void Minigame_InitSharedState(s16 arg0) {
     s32 i;
     gMenuRandomSeed = 0;
     gCurrentMenuIndex = arg0;
@@ -218,10 +218,10 @@ void Sushi_SetDemoParams(s16 arg0) {
         gMenuOptionFlags[i] = 0;
         i++;
     } while (i < 4);
-    InitMessageBanks();
+    Widget_Init();
 }
 
-void FillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
+void Widget_FillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetRenderMode(gDisplayListHead++,
                      IM_RD | CVG_DST_FULL | ZMODE_OPA | CVG_X_ALPHA | FORCE_BL |
@@ -233,7 +233,7 @@ void FillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, arg0 + arg2, arg1 + arg3);
 }
 
-void ParseStringAndMeasure(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4) {
+void Widget_MeasureLabelBox(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg4) {
     s32 var_a1;
     s32 var_t2;
     s8 sp38[0x100];
@@ -292,16 +292,16 @@ void ParseStringAndMeasure(s32* arg0, s32* arg1, char* arg2, char* arg3, s32 arg
     }
 
     if (var_t2 != 0) {
-        *arg0 = MeasureTextWidth(0, 0, (char*)var_a2);
+        *arg0 = Font_MeasureTextExtent(0, 0, (char*)var_a2);
         *arg1 = arg4 * sp30;
     }
 }
 
-s32 GetTextWidth(UNUSED TextObject* arg0, char* arg1) {
-    return MeasureTextWidth(0, 0, arg1);
+s32 Text_MeasureStringWidth(UNUSED TextObject* arg0, char* arg1) {
+    return Font_MeasureTextExtent(0, 0, arg1);
 }
 
-void DrawScaledTextureRect(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
+void Widget_DrawPlayerIconScaled(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
     static u32* D_8780FA70;
 
     f32 temp_fa0;
@@ -325,15 +325,15 @@ void DrawScaledTextureRect(s32 arg0, s16 arg1, s16 arg2, f32 arg3, f32 arg4) {
         a = ROUND_MAX(36.0f * arg3);
         b = ROUND_MAX(26.0f * arg4);
 
-        Gfx_DrawTextureRect(arg1, arg2, a, b, 0, 0, 1024.0f / arg3, 1024.0f / arg4, 0);
+        Gfx_DrawTexturedRectClipped(arg1, arg2, a, b, 0, 0, 1024.0f / arg3, 1024.0f / arg4, 0);
     }
 }
 
-void DrawUniformScaledTextureRect(s32 arg0, s16 arg1, s16 arg2, f32 _scale) {
-    DrawScaledTextureRect(arg0, arg1, arg2, _scale, _scale);
+void Widget_DrawPlayerIcon(s32 arg0, s16 arg1, s16 arg2, f32 _scale) {
+    Widget_DrawPlayerIconScaled(arg0, arg1, arg2, _scale, _scale);
 }
 
-void DrawAnimatedSprite(s16 arg0, s16 arg1, AnimFrame* arg2) {
+void Widget_DrawAnimIcon16(s16 arg0, s16 arg1, AnimFrame* arg2) {
     static AnimFrame* gAnimSprite1_Current = NULL;
     static AnimFrame* gAnimSprite1_Ptr;
     static s16 gAnimSprite1_Timer;
@@ -356,10 +356,10 @@ void DrawAnimatedSprite(s16 arg0, s16 arg1, AnimFrame* arg2) {
         gAnimSprite1_Timer = gAnimSprite1_Ptr->unk_04;
     }
 
-    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, gAnimSprite1_Ptr->unk_00, 0x10, 0);
+    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite1_Ptr->unk_00, 0x10, 0);
 }
 
-void DrawAnimatedSprite2(s16 arg0, s16 arg1, AnimFrame* arg2) {
+void Widget_DrawAnimIcon16B(s16 arg0, s16 arg1, AnimFrame* arg2) {
     static AnimFrame* gAnimSprite2_Current = NULL;
     static AnimFrame* gAnimSprite2_Ptr;
     static s16 gAnimSprite2_Timer;
@@ -382,10 +382,10 @@ void DrawAnimatedSprite2(s16 arg0, s16 arg1, AnimFrame* arg2) {
         gAnimSprite2_Timer = gAnimSprite2_Ptr->unk_04;
     }
 
-    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, gAnimSprite2_Ptr->unk_00, 0x10, 0);
+    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite2_Ptr->unk_00, 0x10, 0);
 }
 
-void DrawAnimatedSprite3(s16 arg0, s16 arg1, AnimFrame* arg2) {
+void Widget_DrawAnimIcon16C(s16 arg0, s16 arg1, AnimFrame* arg2) {
     static AnimFrame* gAnimSprite3_Current = NULL;
     static AnimFrame* gAnimSprite3_Ptr;
     static s16 gAnimSprite3_Timer;
@@ -408,10 +408,10 @@ void DrawAnimatedSprite3(s16 arg0, s16 arg1, AnimFrame* arg2) {
         gAnimSprite3_Timer = gAnimSprite3_Ptr->unk_04;
     }
 
-    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x10, 0x10, gAnimSprite3_Ptr->unk_00, 0x10, 0);
+    Gfx_DrawTextureRgba32(arg0, arg1, 0x10, 0x10, gAnimSprite3_Ptr->unk_00, 0x10, 0);
 }
 
-void DrawAnimatedTexture(s16 arg0, s16 arg1, AnimFrame* arg2) {
+void Widget_DrawAnimIcon40x20(s16 arg0, s16 arg1, AnimFrame* arg2) {
     static AnimFrame* gAnimTex1_Current = NULL;
     static AnimFrame* gAnimTex1_Ptr;
     static s16 gAnimTex1_Timer;
@@ -438,10 +438,10 @@ void DrawAnimatedTexture(s16 arg0, s16 arg1, AnimFrame* arg2) {
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, 0x28, 0x14, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, 0x28, 0x14, 0, 0, 0x400, 0x400, 0);
 }
 
-void DrawAnimatedTexture2(s16 arg0, s16 arg1, AnimFrame* arg2) {
+void Widget_DrawAnimIcon40x20B(s16 arg0, s16 arg1, AnimFrame* arg2) {
     static AnimFrame* gAnimTex2_Current = NULL;
     static AnimFrame* gAnimTex2_Ptr;
     static s16 gAnimTex2_Timer;
@@ -468,10 +468,10 @@ void DrawAnimatedTexture2(s16 arg0, s16 arg1, AnimFrame* arg2) {
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, 0x28, 0x14, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, 0x28, 0x14, 0, 0, 0x400, 0x400, 0);
 }
 
-void DrawAnimatedSpriteLarge(s16 arg0, s16 arg1, AnimFrame* arg2) {
+void Widget_DrawAnimIcon24(s16 arg0, s16 arg1, AnimFrame* arg2) {
     static AnimFrame* gAnimSpriteLarge_Current = NULL;
     static AnimFrame* gAnimSpriteLarge_Ptr;
     static s16 gAnimSpriteLarge_Timer;
@@ -494,10 +494,10 @@ void DrawAnimatedSpriteLarge(s16 arg0, s16 arg1, AnimFrame* arg2) {
         gAnimSpriteLarge_Timer = gAnimSpriteLarge_Ptr->unk_04;
     }
 
-    Gfx_DrawSpriteRGBA32(arg0, arg1, 0x18, 0x13, gAnimSpriteLarge_Ptr->unk_00, 0x18, 0);
+    Gfx_DrawTextureRgba32(arg0, arg1, 0x18, 0x13, gAnimSpriteLarge_Ptr->unk_00, 0x18, 0);
 }
 
-void DrawAnimatedTextureDual(s16 arg0, s16 arg1, s16 arg2, AnimFrame* arg3) {
+void Widget_DrawAnimIcon28(s16 arg0, s16 arg1, s16 arg2, AnimFrame* arg3) {
     static AnimFrame* gAnimTexDual_Current[] = {
         NULL,
         NULL,
@@ -527,10 +527,10 @@ void DrawAnimatedTextureDual(s16 arg0, s16 arg1, s16 arg2, AnimFrame* arg3) {
                        0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg1, arg2, 0x1C, 0x1C, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg1, arg2, 0x1C, 0x1C, 0, 0, 0x400, 0x400, 0);
 }
 
-void DrawDualTexturePanel(s16 arg0, s16 arg1, s16 arg2) {
+void Widget_DrawSplitBanner(s16 arg0, s16 arg1, s16 arg2) {
     static u32 gDualTexturePanelIds[] = { 0x03049CA0, 0x0304B1C0, 0x0304C6E0, 0x0304DC00 };
 
     u32 sp34 = gDualTexturePanelIds[arg0];
@@ -539,16 +539,16 @@ void DrawDualTexturePanel(s16 arg0, s16 arg1, s16 arg2) {
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg1, arg2, 0x34, 0x1A, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg1, arg2, 0x34, 0x1A, 0, 0, 0x400, 0x400, 0);
 
     gDPLoadTextureTile(gDisplayListHead++, sp34 + 0xA90, G_IM_FMT_RGBA, G_IM_SIZ_16b, 52, 0, 0, 0, 51, 25, 0,
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg1, arg2 + 0x1A, 0x34, 0x1A, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg1, arg2 + 0x1A, 0x34, 0x1A, 0, 0, 0x400, 0x400, 0);
 }
 
-void Stage_SetBorderFadeParams(s16 arg0, s16 arg1) {
+void Widget_DrawStripedBar(s16 arg0, s16 arg1) {
     u32* ptr = D_304F120;
     s32 i;
 
@@ -557,6 +557,6 @@ void Stage_SetBorderFadeParams(s16 arg0, s16 arg1) {
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg0, arg1 + (i * 8), 0x64, 8, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(arg0, arg1 + (i * 8), 0x64, 8, 0, 0, 0x400, 0x400, 0);
     }
 }

@@ -149,35 +149,35 @@ extern unk_D_86807558 gSushiEntities[4];
 
 extern unk_D_868084D8 gSushiInstances[12];
 
-void Sushi_FadeAudio(s32 arg0);
-void ReadAllControllers(void);
-Gfx* DrawTextureStackColumn(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-void RenderPanelColumns(void);
-void InterpolateColors(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 arg4);
-void DrawSushiItem(s32 arg0, s16 arg1, s16 arg2, f32 arg3);
+void SushiGame_FadeAudio(s32 arg0);
+void SushiGame_PollInput(void);
+Gfx* SushiGame_DrawPlateStack(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+void SushiGame_DrawAllPlateStacks(void);
+void SushiGame_InterpolateColorCycle(Color_RGB8* arg0, Color_RGB8* arg1, s32 arg2, s32 arg3, s32 arg4);
+void SushiGame_DrawDishIcon(s32 arg0, s16 arg1, s16 arg2, f32 arg3);
 void RenderSushiGoRoundUI(void);
-void RenderSushiGoRoundFrame(void);
-void HandleSushiGoRoundInput(void);
-s32 IsTimerExpired(void);
+void SushiGame_DrawFrame(void);
+void SushiGame_UpdateWaitForStart(void);
+s32 SushiGame_IsRoundTimeUp(void);
 s32 UpdateSushiGoRoundState(void);
-void RunSushiGoRound(void);
-void InitSushiGoRound(void);
-void SetupSushiGoRoundStage(s32 arg0, UNUSED s32 arg1);
+void SushiGame_MainLoop(void);
+void SushiGame_LoadAssets(void);
+void SushiGame_Main(s32 arg0, UNUSED s32 arg1);
 
 
-void Sushi_SetEntityInput(u16, s32);
-s32 Sushi_CheckAllIdle(void);
-void Sushi_InitSystem(s32);
-void Sushi_MainUpdate(void);
-void Sushi_InitCamera(void);
-void Sushi_UpdateCameraPos(void);
+void SushiGame_BroadcastPlayerPhase(u16, s32);
+s32 SushiGame_AreAllPlayersIdle(void);
+void SushiGame_InitPlayerSlots(s32);
+void SushiGame_UpdatePlayers(void);
+void SushiGame_InitCamera(void);
+void SushiGame_UpdateCamera(void);
 
-f32 Sushi_CalcTargetDelta(unk_D_868084D8*, Vec3f*, Vec3f*);
-void SushiInstance_SetMode(unk_D_868084D8*, s32, unk_D_86807558*);
+f32 SushiGame_ComputePlateDistance(unk_D_868084D8*, Vec3f*, Vec3f*);
+void SushiGame_SetPlateState(unk_D_868084D8*, s32, unk_D_86807558*);
 s32 SushiGame_GetPlateValue(unk_D_868084D8*);
-s16 Sushi_GetActiveCount(s32);
-void Sushi_SetSpawnMode(s32);
-void Sushi_InitAssets(void);
-void Sushi_UpdateLogic(void);
+s16 SushiGame_GetActivePlateCount(s32);
+void SushiGame_SetGamePhase(s32);
+void SushiGame_InitConveyorBelt(void);
+void SushiGame_UpdateConveyorBelt(void);
 
 #endif // _FRAGMENT14_H_

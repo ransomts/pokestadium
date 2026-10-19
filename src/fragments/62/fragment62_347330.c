@@ -33,21 +33,21 @@ static s16 gWaterTexOffsetC;
 static unk_D_843975E8 gWaterCameraBounds;
 
 func_D_84390320 gStateCallbackTable[] = {
-    func_843593A0, func_843593A0, func_843593A0, func_843593A0, InitWaterEffectVariant2, SpawnParticleEmitters_Default, func_843593A0,
-    StartWaterParticleEffectB, func_843593A0, func_843593A0, func_843593A0, StartEffectF, func_843593A0, func_843593A0,
-    func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, StartParticleEffectA, func_843593A0,
-    func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, InitWaterParticleSystemsCombined, func_843593A0,
-    func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, StartParticleEffectC, func_843593A0,
-    func_843593A0, WaterHeightMap_InitByCameraX, func_843593A0, func_843593A0, InitWaterEffectVariant5, func_843593A0, func_843593A0,
-    InitWaterSurface, InitWaterSurfaceVariant, InitWaterEffectVariant, ResetAllParticleSystems, func_843593A0, StartWaterEffectH, func_843593A0,
-    func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, SpawnParticleEmitters_Alt2, func_843593A0,
-    func_843593A0, StartWaterParticlePoolG, func_843593A0, func_843593A0, func_843593A0, func_843593A0, ResetParticleEmittersPhaseB,
-    func_843593A0, func_843593A0, func_843593A0, func_843593A0, StartParticleSystemI, func_843593A0, func_843593A0,
-    InitWaterEffectVariant4, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
-    InitWaterEffectVariant3, StartParticleEffectD, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
+    func_843593A0, func_843593A0, func_843593A0, func_843593A0, BattleAnim_StartEffect4DoubleTextureTrail_Init, BattleAnim_Effect5RibbonMesh_Init, func_843593A0,
+    BattleAnim_StartEffect7TexturedRibbonSheet_Init, func_843593A0, func_843593A0, func_843593A0, BattleAnim_StartEffect11Trail50Alt_Init, func_843593A0, func_843593A0,
+    func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, BattleAnim_StartEffect19Radial20_Init, func_843593A0,
+    func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, BattleAnim_StartEffect26DoubleTextureTrail_Init, func_843593A0,
+    func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, BattleAnim_StartEffect33Radial20_Init, func_843593A0,
+    func_843593A0, BattleAnim_StartEffect34TerrainGrid_Init, func_843593A0, func_843593A0, BattleAnim_StartEffect39CombinedTrail_Init, func_843593A0, func_843593A0,
+    BattleAnim_StartEffect42Trail40_Init, BattleAnim_StartEffect43Trail40Variant_Init, BattleAnim_StartEffect44Trail40GridAlt_Init, BattleAnim_StartEffect45FourStreamTrail_Init, func_843593A0, BattleAnim_StartEffect47SixSlotTrail_Init, func_843593A0,
+    func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, BattleAnim_Effect54RibbonMesh_Init, func_843593A0,
+    func_843593A0, BattleAnim_StartEffect57Trail50_Init, func_843593A0, func_843593A0, func_843593A0, func_843593A0, BattleAnim_StartEffect62OwnerLinkedFourStream_Init,
+    func_843593A0, func_843593A0, func_843593A0, func_843593A0, BattleAnim_StartEffect67OwnerAnchoredFourStream_Init, func_843593A0, func_843593A0,
+    BattleAnim_StartEffect70DoubleTextureTrail_Init, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
+    BattleAnim_StartEffect77DoubleTextureTrail_Init, BattleAnim_StartEffect78Radial20_Init, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
     func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
     func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
-    StartParticleEffectE, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
+    BattleAnim_StartEffect98Radial20_Init, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
     func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
     func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
     func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0, func_843593A0,
@@ -58,13 +58,13 @@ func_D_84390320 gStateCallbackTable[] = {
 };
 
 func_D_84390320 gParticleCallbackTable[] = {
-    func_843593A8, SpawnParticleEmitters_Alt, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
-    func_843593A8, func_843593A8, InitTrailEffect, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
-    func_843593A8, func_843593A8, BattleAnim_EndEffect16_NoOpInit, func_843593A8, func_843593A8, SpawnParticleEmitters_Dual, func_843593A8,
+    func_843593A8, BattleAnim_EndEffect1RibbonMesh_Init, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
+    func_843593A8, func_843593A8, BattleAnim_EndEffect9Radial20_Init, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
+    func_843593A8, func_843593A8, BattleAnim_EndEffect16_NoOpInit, func_843593A8, func_843593A8, BattleAnim_EndEffect19RibbonMesh_Init, func_843593A8,
     func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
-    func_843593A8, func_843593A8, func_843593A8, func_843593A8, InitTrailEffectVariant, InitTrailEffectVariant2, func_843593A8,
+    func_843593A8, func_843593A8, func_843593A8, func_843593A8, BattleAnim_EndEffect32Radial20_Init, BattleAnim_EndEffect33Radial20_Init, func_843593A8,
     func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
-    func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, SpawnParticleEmitters_Default,
+    func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, BattleAnim_Effect5RibbonMesh_Init,
     func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
     func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
     func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8, func_843593A8,
@@ -76,21 +76,21 @@ func_D_84390320 gParticleCallbackTable[] = {
 };
 
 func_D_84390320 gStateEnterCallbackTable[] = {
-    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterEffectVariant2, BattleAnim_Effect5RibbonMesh_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    UpdateWaterParticleEffectB, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateEffectF, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateParticleEffectA, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterParticleSystemsCombined, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateParticleEffectC, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect34TerrainGrid_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterEffectD, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    UpdateWaterSurface, UpdateWaterSurfaceVariant, UpdateWaterEffectVariant, UpdateWaterParticleSystemPhaseA, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterEffectH, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect4DoubleTextureTrail_Update, BattleAnim_Effect5RibbonMesh_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_StartEffect7TexturedRibbonSheet_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect11Trail50Alt_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect19Radial20_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect26DoubleTextureTrail_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect33Radial20_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect34TerrainGrid_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect39CombinedTrail_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_StartEffect42Trail40_Update, BattleAnim_StartEffect43Trail40Variant_Update, BattleAnim_StartEffect44Trail40GridAlt_Update, BattleAnim_StartEffect45FourStreamTrail_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect47SixSlotTrail_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
     BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_Effect54RibbonMesh_Update, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateWaterParticlePoolG, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateParticleEmittersPhaseB,
-    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, UpdateParticleSystemI, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    UpdateWaterEffectVariant4, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    UpdateWaterEffectVariant3, UpdateParticleEffectD, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect57Trail50_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect62OwnerLinkedFourStream_Update,
+    BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_StartEffect67OwnerAnchoredFourStream_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_StartEffect70DoubleTextureTrail_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_StartEffect77DoubleTextureTrail_Update, BattleAnim_StartEffect78Radial20_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
     BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
     BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
-    UpdateParticleEffectE, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
+    BattleAnim_StartEffect98Radial20_Update, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
     BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
     BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
     BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately, BattleAnim_DefaultStartEffect_CompleteImmediately,
@@ -102,10 +102,10 @@ func_D_84390320 gStateEnterCallbackTable[] = {
 
 func_D_84390320 gParticleEnterCallbackTable[] = {
     BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_EndEffect1RibbonMesh_Update, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
-    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, UpdateTrailEffect, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_EndEffect9Radial20_Update, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
     BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_EndEffect16_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_EndEffect19RibbonMesh_Update, BattleAnim_DefaultEndEffect_CompleteImmediately,
     BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
-    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, UpdateTrailEffectVariant, UpdateTrailEffectVariant2, BattleAnim_DefaultEndEffect_CompleteImmediately,
+    BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_EndEffect32Radial20_Update, BattleAnim_EndEffect33Radial20_Update, BattleAnim_DefaultEndEffect_CompleteImmediately,
     BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
     BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_Effect5RibbonMesh_Update,
     BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately, BattleAnim_DefaultEndEffect_CompleteImmediately,
@@ -119,21 +119,21 @@ func_D_84390320 gParticleEnterCallbackTable[] = {
 };
 
 func_D_84390320 gStateExitCallbackTable[] = {
-    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderWaterEffectVariant2, BattleAnim_Effect5RibbonMesh_Draw, BattleAnim_DefaultStartEffect_Draw,
-    RenderWaterParticleEffectB, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderWaterParticleEffectF, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
-    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderParticleEffectA, BattleAnim_DefaultStartEffect_Draw,
-    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderCombinedWaterEffect, BattleAnim_DefaultStartEffect_Draw,
-    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderParticleEffectC, BattleAnim_DefaultStartEffect_Draw,
-    BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect34TerrainGrid_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderCombinedWaterEffectD, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
-    RenderWaterSurface, RenderWaterSurfaceVariant, RenderWaterEffectVariant, RenderWaterParticleSystemPhaseA, BattleAnim_DefaultStartEffect_Draw, RenderWaterEffectH, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect4DoubleTextureTrail_Draw, BattleAnim_Effect5RibbonMesh_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_StartEffect7TexturedRibbonSheet_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect11Trail50Alt_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect19Radial20_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect26DoubleTextureTrail_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect33Radial20_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect34TerrainGrid_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect39CombinedTrail_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_StartEffect42Trail40_Draw, BattleAnim_StartEffect43Trail40Variant_Draw, BattleAnim_StartEffect44Trail40GridAlt_Draw, BattleAnim_StartEffect45FourStreamTrail_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect47SixSlotTrail_Draw, BattleAnim_DefaultStartEffect_Draw,
     BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_Effect54RibbonMesh_Draw, BattleAnim_DefaultStartEffect_Draw,
-    BattleAnim_DefaultStartEffect_Draw, RenderWaterParticlePoolG, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderParticleEmittersPhaseB,
-    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, RenderParticleSystemI, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
-    RenderWaterEffectVariant4, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
-    RenderWaterEffectVariant3, RenderParticleEffectD, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect57Trail50_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect62OwnerLinkedFourStream_Draw,
+    BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_StartEffect67OwnerAnchoredFourStream_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_StartEffect70DoubleTextureTrail_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_StartEffect77DoubleTextureTrail_Draw, BattleAnim_StartEffect78Radial20_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
     BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
     BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
-    RenderParticleEffectE, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
+    BattleAnim_StartEffect98Radial20_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
     BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
     BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
     BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw, BattleAnim_DefaultStartEffect_Draw,
@@ -145,10 +145,10 @@ func_D_84390320 gStateExitCallbackTable[] = {
 
 func_D_84390320 gParticleExitCallbackTable[] = {
     BattleAnim_DefaultEndEffect_Draw, BattleAnim_EndEffect1RibbonMesh_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
-    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, RenderTrailEffect, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_EndEffect9Radial20_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
     BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_EndEffect16_NoOpDraw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_EndEffect19RibbonMesh_Draw, BattleAnim_DefaultEndEffect_Draw,
     BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
-    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, RenderTrailEffectVariant, RenderTrailEffectVariant2, BattleAnim_DefaultEndEffect_Draw,
+    BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_EndEffect32Radial20_Draw, BattleAnim_EndEffect33Radial20_Draw, BattleAnim_DefaultEndEffect_Draw,
     BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
     BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_Effect5RibbonMesh_Draw,
     BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw, BattleAnim_DefaultEndEffect_Draw,
@@ -176,7 +176,7 @@ static Gfx gWaterGfxSetup[] = {
     gsSPEndDisplayList(),
 };
 
-void ParticleEmitters_Reset(void) {
+void RibbonMesh_Init(void) {
     unk_D_843925E0* ptr = &gRibbonEmitters[0];
     s32 i;
 
@@ -186,7 +186,7 @@ void ParticleEmitters_Reset(void) {
     }
 }
 
-void ParticleEmitter_SetColors(unk_D_843925E0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8,
+void RibbonMesh_Configure(unk_D_843925E0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8,
                    s32 arg9) {
     arg0->unk_028 = arg1;
     arg0->unk_02C = arg2;
@@ -242,8 +242,8 @@ void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5
             ptr->unk_008 = (arg4 * 0.0) + arg1;
             ptr->unk_01A = 0x3C;
             ptr->unk_020 = 1.5f;
-            ParticleEmitter_SetColors(&gRibbonEmitters[var_v1], 0xFF, 0xFF, 0xC8, 0x20, 0x20, 0xFF, 0x80, 0x80, 0xFF);
-            ptr->unk_01E = GlowEmitter_Allocate();
+            RibbonMesh_Configure(&gRibbonEmitters[var_v1], 0xFF, 0xFF, 0xC8, 0x20, 0x20, 0xFF, 0x80, 0x80, 0xFF);
+            ptr->unk_01E = AuxiliaryEffect_Alloc();
             break;
 
         case 1:
@@ -251,7 +251,7 @@ void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5
             ptr->unk_01A = 0x78;
             ptr->unk_008 = (arg4 * 100.0) + arg1;
             ptr->unk_020 = 1.5f;
-            ParticleEmitter_SetColors(&gRibbonEmitters[var_v1], 0xFF, 0xFF, 0xC8, 0xFF, 0x20, 0x20, 0x80, 0x80, 0);
+            RibbonMesh_Configure(&gRibbonEmitters[var_v1], 0xFF, 0xFF, 0xC8, 0xFF, 0x20, 0x20, 0x80, 0x80, 0);
             break;
 
         default:
@@ -352,7 +352,7 @@ void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5
     }
 }
 
-void ParticleEmitter_UpdateFade(unk_D_843925E0* arg0) {
+void RibbonMesh_UpdateEnvAlpha(unk_D_843925E0* arg0) {
     s32 var_v0;
 
     if (arg0->unk_01C >= 0) {
@@ -372,7 +372,7 @@ void ParticleEmitter_UpdateFade(unk_D_843925E0* arg0) {
     }
 }
 
-s32 ParticleEmitter_Update(unk_D_843925E0* arg0) {
+s32 RibbonMesh_Update(unk_D_843925E0* arg0) {
     unk_D_843925E0_430* temp_s0;
     unk_D_843925E0_430* temp_s1;
     unk_D_843925E0_430* ptr;
@@ -407,7 +407,7 @@ s32 ParticleEmitter_Update(unk_D_843925E0* arg0) {
     sp84 = arg0->unk_020 * tmp;
 
     var_s2 = &arg0->unk_050[0];
-    ParticleEmitter_UpdateFade(arg0);
+    RibbonMesh_UpdateEnvAlpha(arg0);
 
     var_s5 = 0;
     sp94 = 0.0f;
@@ -514,8 +514,8 @@ s32 ParticleEmitter_Update(unk_D_843925E0* arg0) {
         tmp1 = __cosf(temp_fa0) * sp9C;
         tmp2 = __sinf(temp_fa0) * sp9C;
 
-        ParticleEmitter_AddParticle(arg0->unk_01E, sp80 + tmp1, sp7C + sp84, sp78 + tmp2, 0xA, 0.75f);
-        GlowEmitter_Update(arg0->unk_01E);
+        AuxiliaryEffect_Spawn(arg0->unk_01E, sp80 + tmp1, sp7C + sp84, sp78 + tmp2, 0xA, 0.75f);
+        AuxiliaryEffect_Update(arg0->unk_01E);
     }
 
     if (var_s5 >= 0x1F) {
@@ -524,7 +524,7 @@ s32 ParticleEmitter_Update(unk_D_843925E0* arg0) {
     return 0;
 }
 
-s32 ParticleEmitters_Tick(void) {
+s32 RibbonMesh_UpdatePool(void) {
     s32 i;
     s32 var_s2;
     unk_D_843925E0* ptr = &gRibbonEmitters[0];
@@ -535,7 +535,7 @@ s32 ParticleEmitters_Tick(void) {
 
     for (i = 0; i < 4; i++, ptr++) {
         if (ptr->unk_000 == 1) {
-            if (ParticleEmitter_Update(ptr) == 0) {
+            if (RibbonMesh_Update(ptr) == 0) {
                 var_s2 = 0;
             } else {
                 ptr->unk_000 = 0;
@@ -546,9 +546,9 @@ s32 ParticleEmitters_Tick(void) {
     return var_s2;
 }
 
-Gfx* ParticleEmitter_BuildVertexBuffer(Gfx* arg0, unk_D_843925E0* arg1) {
+Gfx* RibbonMesh_Draw(Gfx* arg0, unk_D_843925E0* arg1) {
     s32 i;
-    Vtx* temp_v0 = GfxAlloc(sizeof(Vtx) * 62);
+    Vtx* temp_v0 = Gfx_AllocDisplayList(sizeof(Vtx) * 62);
     Vtx* vtx = temp_v0;
     Vtx* var_a0 = &arg1->unk_050[0];
 
@@ -567,7 +567,7 @@ Gfx* ParticleEmitter_BuildVertexBuffer(Gfx* arg0, unk_D_843925E0* arg1) {
     return arg0;
 }
 
-Gfx* ParticleEmitters_Render(Gfx* arg0) {
+Gfx* RibbonMesh_DrawPool(Gfx* arg0) {
     static Gfx gWaterGfxParticleBase[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
@@ -615,10 +615,10 @@ Gfx* ParticleEmitters_Render(Gfx* arg0) {
 
     gSPDisplayList(arg0++, gWaterGfxParticleBase);
     gDPPipeSync(arg0++);
-    gDPLoadTextureTile_4b(arg0++, gWaterTexture[0x43], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[0x43], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterTexOffset0, 0, (gWaterTexOffset0 + 0x1F), 0x001F);
-    gDPLoadMultiTile_4b(arg0++, gWaterTexture[0x44], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[0x44], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     gDPSetTileSize(arg0++, 1, gWaterTexOffset1, 0, (gWaterTexOffset1 + 0x1F), 0x001F);
 
@@ -630,19 +630,19 @@ Gfx* ParticleEmitters_Render(Gfx* arg0) {
             gSPClearGeometryMode(arg0++, G_CULL_BACK);
             gSPSetGeometryMode(arg0++, G_CULL_FRONT);
 
-            arg0 = ParticleEmitter_BuildVertexBuffer(arg0, ptr);
+            arg0 = RibbonMesh_Draw(arg0, ptr);
 
             gSPClearGeometryMode(arg0++, G_CULL_FRONT);
             gSPSetGeometryMode(arg0++, G_CULL_BACK);
 
-            arg0 = ParticleEmitter_BuildVertexBuffer(arg0, ptr);
+            arg0 = RibbonMesh_Draw(arg0, ptr);
         }
     }
 
     ptr = &gRibbonEmitters[0];
     for (i = 0; i < 4; i++, ptr++) {
         if (ptr->unk_000 == 1) {
-            arg0 = ParticleEmitter_RenderAll(ptr->unk_01E, arg0);
+            arg0 = AuxiliaryEffect_Draw(ptr->unk_01E, arg0);
         }
     }
 
@@ -650,7 +650,7 @@ Gfx* ParticleEmitters_Render(Gfx* arg0) {
 }
 
 void TerrainGrid_BuildCameraBounds(unk_D_843975E8* arg0, f32 arg1) {
-    CameraStruct* spB4 = GetBattleCamera();
+    CameraStruct* spB4 = BattleAnim_GetCameraContext();
     f32 spB0;
     f32 spAC;
     f32 spA8;
@@ -699,7 +699,7 @@ void TerrainGrid_BuildCameraBounds(unk_D_843975E8* arg0, f32 arg1) {
     sp80 = spA0 - spAC;
     sp7C = spA4 - spA8;
 
-    Math_NormalizeVector(&sp84, &sp80, &sp7C);
+    Vec3f_NormalizeComponents(&sp84, &sp80, &sp7C);
 
     sp44 = (sp4C * TWO_PI) / 720.0;
     sp40 = sp8C + arg1;
@@ -715,13 +715,13 @@ void TerrainGrid_BuildCameraBounds(unk_D_843975E8* arg0, f32 arg1) {
         var_fs0 = 0.0f;
     }
 
-    var_fs0 = Math_AbsF(var_fs0);
+    var_fs0 = Math_AbsF32(var_fs0);
     sp94 = spB4->unk_24.aspect * var_fs0 * sp48 * 1.2f;
 
-    Math_CrossProductComponents(sp84, sp80, sp7C, sp78, sp74, sp70, &sp68, &sp64, &sp60);
-    Math_CrossProductComponents(sp84, sp80, sp7C, sp68, sp64, sp60, &sp5C, &sp58, &sp54);
-    Math_NormalizeVector(&sp68, &sp64, &sp60);
-    Math_NormalizeVector(&sp5C, &sp58, &sp54);
+    Vec3f_CrossProductComponents(sp84, sp80, sp7C, sp78, sp74, sp70, &sp68, &sp64, &sp60);
+    Vec3f_CrossProductComponents(sp84, sp80, sp7C, sp68, sp64, sp60, &sp5C, &sp58, &sp54);
+    Vec3f_NormalizeComponents(&sp68, &sp64, &sp60);
+    Vec3f_NormalizeComponents(&sp5C, &sp58, &sp54);
 
     arg0->unk_0C = sp68 * sp94;
     arg0->unk_10 = sp64 * sp94;
@@ -798,7 +798,7 @@ f32 TerrainGrid_SampleHeightAndSlope(f32 arg0, f32 arg1, f32* arg2) {
     temp_fa1 = sp94 - arg1;
 
     if ((SQ(temp_fv0) + SQ(temp_fv1)) <= (SQ(temp_fa0) + SQ(temp_fa1))) {
-        Math_CrossProductComponents(spB4 - spC0, spB0 - spBC, spAC - spB8, spA8 - spC0, spA4 - spBC, spA0 - spB8, &sp54, &sp50,
+        Vec3f_CrossProductComponents(spB4 - spC0, spB0 - spBC, spAC - spB8, spA8 - spC0, spA4 - spBC, spA0 - spB8, &sp54, &sp50,
                       &sp4C);
         if (sp50 != 0.0) {
             spC4 = spBC - ((((arg0 - spC0) * sp54) + (sp4C * (arg1 - spB8))) / sp50);
@@ -806,7 +806,7 @@ f32 TerrainGrid_SampleHeightAndSlope(f32 arg0, f32 arg1, f32* arg2) {
             spC4 = (spBC + spB0 + spA4) / 3.0;
         }
     } else {
-        Math_CrossProductComponents(spB4 - sp9C, spB0 - sp98, spAC - sp94, spA8 - sp9C, spA4 - sp98, spA0 - sp94, &sp54, &sp50,
+        Vec3f_CrossProductComponents(spB4 - sp9C, spB0 - sp98, spAC - sp94, spA8 - sp9C, spA4 - sp98, spA0 - sp94, &sp54, &sp50,
                       &sp4C);
         if (sp50 != 0.0) {
             spC4 = sp98 - ((((arg0 - sp9C) * sp54) + (sp4C * (arg1 - sp94))) / sp50);
@@ -829,7 +829,7 @@ f32 TerrainGrid_SampleHeightAndSlope(f32 arg0, f32 arg1, f32* arg2) {
     return spC4;
 }
 
-s32 WaterHeightMap_Update(void) {
+s32 TerrainGrid_UpdateWaves(void) {
     s32 i;
     s32 j;
     WaterHeightNode* ptr;
@@ -920,7 +920,7 @@ s32 WaterHeightMap_Update(void) {
     return 0;
 }
 
-void WaterHeightMap_Init(s32 arg0, s16 arg1, s16 arg2) {
+void TerrainGrid_Init(s32 arg0, s16 arg1, s16 arg2) {
     s32 i;
     s32 j;
     WaterHeightNode* ptr;
@@ -960,7 +960,7 @@ void WaterHeightMap_Init(s32 arg0, s16 arg1, s16 arg2) {
 
     if (arg1 > 0) {
         for (i = 0; i < arg1; i++) {
-            WaterHeightMap_Update();
+            TerrainGrid_UpdateWaves();
         }
 
         TerrainGrid_BuildCameraBounds(&gWaterCameraBounds, 50.0f);
@@ -969,7 +969,7 @@ void WaterHeightMap_Init(s32 arg0, s16 arg1, s16 arg2) {
 
 s32 TerrainGrid_Update(void) {
     UNUSED s32 pad[2];
-    s32 sp1C = WaterHeightMap_Update();
+    s32 sp1C = TerrainGrid_UpdateWaves();
 
     gWaterTexOffsetA = (gWaterTexOffsetA - 1) & 0x3FFF;
     gWaterTexOffsetB = (gWaterTexOffsetB - 1) & 0x3FFF;
@@ -981,7 +981,7 @@ s32 TerrainGrid_Update(void) {
 
 static s32 pad_D_84388F78[2] = { 0, 0 };
 
-Gfx* WaterSurface_Render(Gfx* arg0) {
+Gfx* TerrainGrid_Draw(Gfx* arg0) {
     static Gfx gWaterGfxSurfaceBase[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1037,7 +1037,7 @@ Gfx* WaterSurface_Render(Gfx* arg0) {
     s32 idx1;
     s32 idx2;
 
-    gWaterHeightMap.unk_000C = GfxAlloc(sizeof(Vtx) * 16 * 16);
+    gWaterHeightMap.unk_000C = Gfx_AllocDisplayList(sizeof(Vtx) * 16 * 16);
     vtx = gWaterHeightMap.unk_000C;
     var_v1 = &gWaterHeightMap.unk_1010[0][0];
 
@@ -1072,11 +1072,11 @@ Gfx* WaterSurface_Render(Gfx* arg0) {
     gDPSetEnvColor(arg0++, 0, 0x64, 0xC8, var_a2);
     gDPSetBlendColor(arg0++, 255, 255, 255, 255);
 
-    gDPLoadTextureTile_4b(arg0++, gWaterTexture[0xB8], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[0xB8], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
     gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterTexOffsetA, -gWaterTexOffsetA, gWaterTexOffsetA + 0x1F, 0x1F - gWaterTexOffsetA);
 
-    gDPLoadMultiTile_4b(arg0++, gWaterTexture[0xB9], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[0xB9], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
     gDPSetTileSize(arg0++, 1, gWaterTexOffsetB, gWaterTexOffsetB, gWaterTexOffsetB + 0x1F, gWaterTexOffsetB + 0x1F);
 
@@ -1104,7 +1104,7 @@ Gfx* WaterSurface_Render(Gfx* arg0) {
     temp_fv0 = TerrainGrid_SampleHeightAndSlope(sp120, sp128, &sp110);
 
     if ((sp130 < sp11C) || (sp124 < temp_fv0)) {
-        temp_v0 = GfxAlloc(sizeof(Vtx) * 4);
+        temp_v0 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
 
         temp_v0[0].v.ob[0] = (gWaterCameraBounds.unk_00 - gWaterCameraBounds.unk_0C) - gWaterCameraBounds.unk_18;
         temp_v0[0].v.ob[1] = sp11C;
@@ -1131,10 +1131,10 @@ Gfx* WaterSurface_Render(Gfx* arg0) {
         temp_v0[3].v.tc[1] = 0x3E0;
 
         gSPDisplayList(arg0++, gWaterGfxSurfaceEdge);
-        gDPLoadTextureTile_4b(arg0++, gWaterTexture[0xBA], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
+        gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[0xBA], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                               G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 15, G_TX_NOLOD);
         gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterTexOffsetC, 0, gWaterTexOffsetC + 0x1F, 0x001F);
-        gDPLoadMultiTile_4b(arg0++, gWaterTexture[0xBA], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
+        gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[0xBA], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 14, G_TX_NOLOD);
         gDPSetTileSize(arg0++, 1, -gWaterTexOffsetC, 0, 0x1F - gWaterTexOffsetC, 0x001F);
         gSPVertex(arg0++, temp_v0, 4, 0);

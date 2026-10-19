@@ -20,7 +20,7 @@ typedef struct GraphCondition {
     /* 0x14 */ GraphNodeRange* unk_14;
 } GraphCondition; // size = 0x18
 
-void GraphFlag_UpdateOnMatch(s32 arg0, GraphCondition* arg1) {
+void DisplayList_SetFlagInRange(s32 arg0, GraphCondition* arg1) {
     s32 temp_a2;
     s32 var_v1;
     GraphNodeRange* temp_v0;
@@ -45,7 +45,7 @@ void GraphFlag_UpdateOnMatch(s32 arg0, GraphCondition* arg1) {
     }
 }
 
-void GraphFlag_SetIfOutOfRange(s32 arg0, GraphCondition* arg1) {
+void DisplayList_SetFlagOutOfRange(s32 arg0, GraphCondition* arg1) {
     s32 temp_a2;
     s32 var_v1;
     GraphNodeRange* temp_v0;
@@ -70,11 +70,11 @@ void GraphFlag_SetIfOutOfRange(s32 arg0, GraphCondition* arg1) {
     }
 }
 
-void GraphOverlay_Draw(s32 arg0, DisplayListState* state) {
+void DisplayList_InitDitheredPrimColorSegment(s32 arg0, DisplayListState* state) {
     Gfx* gfx;
 
     if (arg0 == 2) {
-        gfx = GfxAlloc(0xA0);
+        gfx = Gfx_AllocDisplayList(0xA0);
         state->gfx = gfx;
         gDPSetAlphaDither(gfx++, G_AD_NOISE);
         gDPSetPrimColor(gfx++, 0, 0, 10, 10, 10, gDefaultGraphRoot->modelPhase & 0xFF);

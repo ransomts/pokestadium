@@ -3,6 +3,6 @@
 
 #include "global.h"
 
-void DecompressData(s32, void*, s32);
+void Audio_CopyDataWithCacheSync(s32, void*, s32);
 
 #endif // _51740_H_

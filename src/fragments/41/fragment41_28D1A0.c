@@ -11,7 +11,7 @@
 static unk_D_82F20A10 gBattleResultScreenState;
 static s16 gResultOptionIndex;
 
-void BattleResultScreen_Start(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
+void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
     unk_D_82F20A10* ptr = &gBattleResultScreenState;
 
     main_pool_push_state('BBRD');
@@ -28,14 +28,14 @@ void BattleResultScreen_Start(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
     ptr->unk_14 = arg1;
     ptr->unk_18 = arg0;
     ptr->unk_1C = NULL;
-    ptr->unk_20 = AssetManager_Create(1);
+    ptr->unk_20 = PokeIcon_AllocFramebuffers(1);
     ptr->unk_24 = PokeIcon_CreateModelPreview(ptr->unk_20, 0xE4, 0xA0, 0, 0, 0xE0, 0xA0, D_3014468);
     ptr->unk_24->unk_00 &= ~2;
     PokeIcon_SetPreviewMon(ptr->unk_24, ptr->unk_14, 0x108D);
-    PlaySoundEffect(4);
+    Audio_PlaySoundEffectById(4);
 }
 
-void BattleResultScreen_UpdateTimer(unk_D_82F20A10* arg0) {
+void Trade_UpdateInfoBoxOpenIn(unk_D_82F20A10* arg0) {
     arg0->unk_10--;
     arg0->unk_04 = 0x38 - (((0x38 - arg0->unk_08) * arg0->unk_10) / 6);
     arg0->unk_06 = 0x70 - (((0x70 - arg0->unk_0A) * arg0->unk_10) / 6);
@@ -48,7 +48,7 @@ void BattleResultScreen_UpdateTimer(unk_D_82F20A10* arg0) {
     }
 }
 
-void BattleResultScreen_HandleInput(unk_D_82F20A10* arg0) {
+void Trade_UpdateInfoBoxChoose(unk_D_82F20A10* arg0) {
     static Controller** D_82F13C10[] = {
         &gPlayer1Controller,
         &gPlayer1Controller,
@@ -80,7 +80,7 @@ void BattleResultScreen_HandleInput(unk_D_82F20A10* arg0) {
     }
 
     if (gResultOptionIndex != tmp) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
         var_t0 = 0;
     }
 
@@ -98,15 +98,15 @@ void BattleResultScreen_HandleInput(unk_D_82F20A10* arg0) {
         arg0->unk_1C = 0;
         if (gResultOptionIndex == 0) {
             arg0->unk_18->unk_0020 = 1;
-            PlaySoundEffect(2);
+            Audio_PlaySoundEffectById(2);
         } else {
             arg0->unk_18->unk_0020 = 0;
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
         }
     }
 }
 
-void BattleResultScreen_Close(unk_D_82F20A10* arg0) {
+void Trade_UpdateInfoBoxCloseOut(unk_D_82F20A10* arg0) {
     arg0->unk_10--;
     arg0->unk_04 = arg0->unk_08 - (((arg0->unk_08 - 0x38) * arg0->unk_10) / 6);
     arg0->unk_06 = arg0->unk_0A - (((arg0->unk_0A - 0x70) * arg0->unk_10) / 6);
@@ -119,7 +119,7 @@ void BattleResultScreen_Close(unk_D_82F20A10* arg0) {
     }
 }
 
-void Gfx_FillRectRGBA5551(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
+void Trade_DrawSolidFillRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
     s32 color = RGBA5551(arg4, arg5, arg6, 1);
 
     gDPPipeSync(gDisplayListHead++);
@@ -127,28 +127,28 @@ void Gfx_FillRectRGBA5551(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 ar
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
 }
 
-void Gfx_DrawBorderedRect(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
+void Trade_DrawFilledFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
     gDPSetRenderMode(gDisplayListHead++, G_RM_AA_OPA_SURF, G_RM_AA_OPA_SURF2);
     gDPSetEnvColor(gDisplayListHead++, arg4, arg5, arg6, 255);
 
-    Gfx_DrawSpriteIA8(arg0, arg1, 8, 8, D_30387B0, 8, 0);
-    Gfx_DrawSpriteIA8((arg0 + arg2) - 8, arg1, 8, 8, D_30387F0, 8, 0);
-    Gfx_DrawTextureRect(arg0 + 8, arg1, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
-    Gfx_DrawSpriteIA8(arg0, (arg1 + arg3) - 8, 8, 8, D_3038830, 8, 0);
-    Gfx_DrawTextureRect(arg0, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
-    Gfx_DrawSpriteIA8((arg0 + arg2) - 8, (arg1 + arg3) - 8, 8, 8, D_3038870, 8, 0);
-    Gfx_DrawTextureRect(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
-    Gfx_DrawTextureRect((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8(arg0, arg1, 8, 8, D_30387B0, 8, 0);
+    Gfx_DrawTextureIa8((arg0 + arg2) - 8, arg1, 8, 8, D_30387F0, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 8, arg1, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTextureIa8(arg0, (arg1 + arg3) - 8, 8, 8, D_3038830, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
+    Gfx_DrawTextureIa8((arg0 + arg2) - 8, (arg1 + arg3) - 8, 8, 8, D_3038870, 8, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 8, (arg1 + arg3) - 8, arg2 - 0x10, 8, 0, 0, 0, 0x400, 0);
+    Gfx_DrawTexturedRectClipped((arg0 + arg2) - 8, arg1 + 8, 8, arg3 - 0x10, 0, 0, 0x400, 0, 0);
 
     gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
 
-    Gfx_FillRectRGBA5551(arg0 + 8, arg1 + 8, arg2 - 0x10, arg3 - 0x10, arg4, arg5, arg6);
+    Trade_DrawSolidFillRect(arg0 + 8, arg1 + 8, arg2 - 0x10, arg3 - 0x10, arg4, arg5, arg6);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void Gfx_DrawVerticalFade(s16 arg0, s16 arg1, s32 arg2) {
+void Trade_DrawMovingSheen(s16 arg0, s16 arg1, s32 arg2) {
     s32 temp_v0_3;
     s16 var_a3;
     s16 i;
@@ -164,12 +164,12 @@ void Gfx_DrawVerticalFade(s16 arg0, s16 arg1, s32 arg2) {
             } else {
                 var_a3 = 8;
             }
-            Gfx_DrawSpriteRGBA16(arg0, arg1 + i, 0xE0, var_a3, (i * 0x1C8) + arg2, 0xE4, 0x200000);
+            Gfx_DrawTextureRgba16(arg0, arg1 + i, 0xE0, var_a3, (i * 0x1C8) + arg2, 0xE4, 0x200000);
         }
     }
 }
 
-void Gfx_DrawNumberSprite(s16 arg0, s16 arg1, s16 arg2) {
+void Trade_DrawNumberTwoDigits(s16 arg0, s16 arg1, s16 arg2) {
     static u8* gDigitSpriteTable[] = {
         D_302F6E0, D_302F740, D_302F7A0, D_302F800, D_302F860, D_302F8C0, D_302F928, D_302F988, D_302F9E8, D_302FA48,
     };
@@ -186,7 +186,7 @@ void Gfx_DrawNumberSprite(s16 arg0, s16 arg1, s16 arg2) {
         s32 temp_lo = arg2 / var_s0;
 
         if ((temp_lo != 0) || (var_s4 != 0) || (i == 1)) {
-            Gfx_DrawSpriteIA8(arg0, arg1, 8, 0xC, gDigitSpriteTable[temp_lo], 8, 0);
+            Gfx_DrawTextureIa8(arg0, arg1, 8, 0xC, gDigitSpriteTable[temp_lo], 8, 0);
             var_s4 = 1;
         }
 
@@ -196,7 +196,7 @@ void Gfx_DrawNumberSprite(s16 arg0, s16 arg1, s16 arg2) {
     }
 }
 
-s32 IsInvalidMoveId(s32 arg0) {
+s32 Trade_IsMoveInvalid(s32 arg0) {
     s32 var_v1 = 0;
 
     if ((arg0 <= 0) || (arg0 >= 0xA6)) {
@@ -205,7 +205,7 @@ s32 IsInvalidMoveId(s32 arg0) {
     return var_v1;
 }
 
-void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
+void Trade_DrawInfoBox(unk_D_82F20A10* arg0) {
     static Color_RGBA8 D_82F13C48 = { 0xFF, 0xFF, 0xFF, 0xFF };
     static Color_RGB8 gColorRedDarkRGB8 = { 0x82, 0x1E, 0x1E };
     static Color_RGB8 D_82F13C50 = { 0x96, 0x64, 0x1E };
@@ -231,10 +231,10 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
     s32 var_t0;
     s32 sp80;
 
-    sp8C[0] = GetMessageString(NULL, 0, D_82F13B70, 0x12);
-    sp8C[1] = GetMessageString(NULL, 0, D_82F13B70, 0x13);
+    sp8C[0] = Text_GetString(NULL, 0, D_82F13B70, 0x12);
+    sp8C[1] = Text_GetString(NULL, 0, D_82F13B70, 0x13);
     sp11C = arg0->unk_14;
-    Picker_DrawFrame(arg0->unk_04, arg0->unk_06, arg0->unk_0C, arg0->unk_0E);
+    Trade_DrawPickScreenFrame(arg0->unk_04, arg0->unk_06, arg0->unk_0C, arg0->unk_0E);
 
     if ((arg0->unk_0C == 0x210) && (arg0->unk_0E == 0x148)) {
         if (arg0->unk_18->unk_0010 == 0) {
@@ -244,34 +244,34 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
         }
 
         if (arg0->unk_02 != 0) {
-            Gfx_DrawBorderedRect(arg0->unk_04, arg0->unk_06, 0x210, 0x24, var_v0->r, var_v0->g, var_v0->b);
-            Gfx_DrawBorderedRect(arg0->unk_04 + 0xE0, arg0->unk_06 + 0x24, 0x130, 0x1C, 0x3C, 0x3C, 0x82);
-            Gfx_DrawBorderedRect(arg0->unk_04 + 0xE0, arg0->unk_06 + 0x40, 0x130, 0x84, 0x3C, 0x3C, 0x82);
-            Gfx_DrawBorderedRect(arg0->unk_04, arg0->unk_06 + 0xC4, 0x210, 0x60, 0x3C, 0x3C, 0x82);
+            Trade_DrawFilledFrame(arg0->unk_04, arg0->unk_06, 0x210, 0x24, var_v0->r, var_v0->g, var_v0->b);
+            Trade_DrawFilledFrame(arg0->unk_04 + 0xE0, arg0->unk_06 + 0x24, 0x130, 0x1C, 0x3C, 0x3C, 0x82);
+            Trade_DrawFilledFrame(arg0->unk_04 + 0xE0, arg0->unk_06 + 0x40, 0x130, 0x84, 0x3C, 0x3C, 0x82);
+            Trade_DrawFilledFrame(arg0->unk_04, arg0->unk_06 + 0xC4, 0x210, 0x60, 0x3C, 0x3C, 0x82);
         }
 
-        Gfx_DrawBorderedRect(arg0->unk_04, arg0->unk_06 + 0x124, 0x210, 0x24, 0x28, 0x28, 0x64);
-        DrawHealthBar(arg0->unk_04 + 0x140, arg0->unk_06 + 0x5A, 0x94, sp11C->unk_02, sp11C->unk_26);
+        Trade_DrawFilledFrame(arg0->unk_04, arg0->unk_06 + 0x124, 0x210, 0x24, 0x28, 0x28, 0x64);
+        BattleHud_DrawHpBarTexture(arg0->unk_04 + 0x140, arg0->unk_06 + 0x5A, 0x94, sp11C->unk_02, sp11C->unk_26);
 
         gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
 
-        Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0xD0, 0x1C, 0x1A, D_302DE68, 0x1C, 0x200000);
-        Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0xE2, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302E9C8, 0x1C, 0x200000);
-        Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0x110, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302EF78, 0x1C, 0x200000);
-        Gfx_DrawSpriteRGBA16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0x104, 0x1C, 0x1A, D_302E418, 0x1C, 0x200000);
+        Gfx_DrawTextureRgba16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0xD0, 0x1C, 0x1A, D_302DE68, 0x1C, 0x200000);
+        Gfx_DrawTextureRgba16(arg0->unk_04 + 0xE2, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302E9C8, 0x1C, 0x200000);
+        Gfx_DrawTextureRgba16(arg0->unk_04 + 0x110, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302EF78, 0x1C, 0x200000);
+        Gfx_DrawTextureRgba16(arg0->unk_04 + 0xF8, arg0->unk_06 + 0x104, 0x1C, 0x1A, D_302E418, 0x1C, 0x200000);
 
         for (i = 0; i < 4; i++) {
             if (sp11C->unk_09[i] == 0) {
                 break;
             }
 
-            if (IsInvalidMoveId(sp11C->unk_09[i]) == 0) {
-                Gfx_DrawSpriteRGBA16(D_82F13C54[i] + arg0->unk_04, D_82F13C5C[i] + arg0->unk_06, 0x14, 0x14,
-                              gMoveIconTextureTable[gMoveStrings[sp11C->unk_09[i] - 1].unk_01], 0x14, 0x200000);
+            if (Trade_IsMoveInvalid(sp11C->unk_09[i]) == 0) {
+                Gfx_DrawTextureRgba16(D_82F13C54[i] + arg0->unk_04, D_82F13C5C[i] + arg0->unk_06, 0x14, 0x14,
+                              gMoveIconTextureTable[gMoveDisplayInfo[sp11C->unk_09[i] - 1].unk_01], 0x14, 0x200000);
             }
         }
 
-        Gfx_DrawVerticalFade(arg0->unk_04, arg0->unk_06 + 0x24, arg0->unk_1C);
+        Trade_DrawMovingSheen(arg0->unk_04, arg0->unk_06 + 0x24, arg0->unk_1C);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -280,8 +280,8 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
                 break;
             }
 
-            if (IsInvalidMoveId(sp11C->unk_09[i]) == 0) {
-                ptr = &gMoveBattleData[sp11C->unk_09[i] - 1];
+            if (Trade_IsMoveInvalid(sp11C->unk_09[i]) == 0) {
+                ptr = &gMoveData[sp11C->unk_09[i] - 1];
 
                 var_t0 = ptr->unk_05 / 5;
                 if (var_t0 >= 7) {
@@ -289,73 +289,73 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
                 }
 
                 sp80 = ((sp11C->unk_20[i] >> 6) * var_t0) + ptr->unk_05;
-                Gfx_DrawSpriteIA8(D_82F13C54[i] + arg0->unk_04 + 0xB6, D_82F13C5C[i] + arg0->unk_06 + 6, 8, 0xC, D_302F528,
+                Gfx_DrawTextureIa8(D_82F13C54[i] + arg0->unk_04 + 0xB6, D_82F13C5C[i] + arg0->unk_06 + 6, 8, 0xC, D_302F528,
                               8, 0);
-                Gfx_DrawNumberSprite(D_82F13C54[i] + arg0->unk_04 + 0xA4, D_82F13C5C[i] + arg0->unk_06 + 6,
+                Trade_DrawNumberTwoDigits(D_82F13C54[i] + arg0->unk_04 + 0xA4, D_82F13C5C[i] + arg0->unk_06 + 6,
                               sp11C->unk_20[i] & 0x3F);
-                Gfx_DrawNumberSprite(D_82F13C54[i] + arg0->unk_04 + 0xC0, D_82F13C5C[i] + arg0->unk_06 + 6, sp80);
+                Trade_DrawNumberTwoDigits(D_82F13C54[i] + arg0->unk_04 + 0xC0, D_82F13C5C[i] + arg0->unk_06 + 6, sp80);
             }
         }
 
-        Text_ResetState();
-        Text_SetFont(0x10, 0);
-        Text_Print(arg0->unk_04 + 0x10, arg0->unk_06 + 6, sp11C->unk_30);
-        Text_SetFont(0x10, 0);
-        Text_Print(arg0->unk_04 + 0xA0, arg0->unk_06 + 6, "%s%d", GetMessageString(NULL, 0, D_82F13B74, 0x15),
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(0x10, 0);
+        Font_Printf(arg0->unk_04 + 0x10, arg0->unk_06 + 6, sp11C->unk_30);
+        Font_SetActive(0x10, 0);
+        Font_Printf(arg0->unk_04 + 0xA0, arg0->unk_06 + 6, "%s%d", Text_GetString(NULL, 0, D_82F13B74, 0x15),
                       sp11C->unk_24);
-        Text_SetFont(8, 0);
-        Text_Print(arg0->unk_04 + 0x12E, arg0->unk_06 + 8, "%s%03d", GetMessageString(NULL, 0, D_82F13B74, 0x16),
+        Font_SetActive(8, 0);
+        Font_Printf(arg0->unk_04 + 0x12E, arg0->unk_06 + 8, "%s%03d", Text_GetString(NULL, 0, D_82F13B74, 0x16),
                       sp11C->unk_00.unk_00);
-        Text_SetFont(8, 0);
-        Text_Print(arg0->unk_04 + 0x19C, arg0->unk_06 + 8, GetMessageStringBank24(sp11C->unk_00.unk_00));
+        Font_SetActive(8, 0);
+        Font_Printf(arg0->unk_04 + 0x19C, arg0->unk_06 + 8, Trade_GetSpeciesName(sp11C->unk_00.unk_00));
 
-        temp_s0 = RemapStadiumModeIndex(sp11C->unk_06);
-        temp_s1_2 = RemapStadiumModeIndex(sp11C->unk_07);
+        temp_s0 = PokemonType_ToDisplayIndex(sp11C->unk_06);
+        temp_s1_2 = PokemonType_ToDisplayIndex(sp11C->unk_07);
 
-        Text_SetFont(8, 0);
-        Text_Print(arg0->unk_04 + 0xE4, arg0->unk_06 + 0x28, GetMessageString(NULL, 0, D_82F13B70, 0xC));
+        Font_SetActive(8, 0);
+        Font_Printf(arg0->unk_04 + 0xE4, arg0->unk_06 + 0x28, Text_GetString(NULL, 0, D_82F13B70, 0xC));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print(arg0->unk_04 + 0x120, arg0->unk_06 + 0x28, "1/");
+        Font_Printf(arg0->unk_04 + 0x120, arg0->unk_06 + 0x28, "1/");
         Text_SetEnvColor(D_80071D88[temp_s0].color.r, D_80071D88[temp_s0].color.g, D_80071D88[temp_s0].color.b, 0xFF);
-        Text_Print(arg0->unk_04 + 0x13E, arg0->unk_06 + 0x28, "%s", GetMessageStringBank26Remapped(sp11C->unk_06));
+        Font_Printf(arg0->unk_04 + 0x13E, arg0->unk_06 + 0x28, "%s", Trade_GetTypeName(sp11C->unk_06));
 
         if (sp11C->unk_06 != sp11C->unk_07) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(arg0->unk_04 + 0x19E, arg0->unk_06 + 0x28, "2/");
+            Font_Printf(arg0->unk_04 + 0x19E, arg0->unk_06 + 0x28, "2/");
             Text_SetEnvColor(D_80071D88[temp_s1_2].color.r, D_80071D88[temp_s1_2].color.g, D_80071D88[temp_s1_2].color.b,
                           0xFF);
-            Text_Print(arg0->unk_04 + 0x1BC, arg0->unk_06 + 0x28, "%s", GetMessageStringBank26Remapped(sp11C->unk_07));
+            Font_Printf(arg0->unk_04 + 0x1BC, arg0->unk_06 + 0x28, "%s", Trade_GetTypeName(sp11C->unk_07));
         }
 
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_SetFont(8, 0);
-        Text_Print(arg0->unk_04 + 0x144, arg0->unk_06 + 0x44, GetMessageString(NULL, 0, D_82F13B74, 8));
-        Text_SetFont(8, 0);
+        Font_SetActive(8, 0);
+        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0x44, Text_GetString(NULL, 0, D_82F13B74, 8));
+        Font_SetActive(8, 0);
         sprintf(sp94, "%d", sp11C->unk_26);
-        Text_Print((arg0->unk_04 - MeasureTextWidth(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x44, sp94);
-        temp_s1_3 = 0x1D0 - MeasureTextWidth(0, 0, "999");
+        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x44, sp94);
+        temp_s1_3 = 0x1D0 - Font_MeasureTextExtent(0, 0, "999");
         sprintf(sp94, "/");
-        temp_v0_5 = MeasureTextWidth(0, 0, sp94);
-        Text_Print((arg0->unk_04 + temp_s1_3) - temp_v0_5, arg0->unk_06 + 0x44, sp94);
+        temp_v0_5 = Font_MeasureTextExtent(0, 0, sp94);
+        Font_Printf((arg0->unk_04 + temp_s1_3) - temp_v0_5, arg0->unk_06 + 0x44, sp94);
         temp_s1_3 -= temp_v0_5;
         sprintf(sp94, "%d", sp11C->unk_02);
-        Text_Print((arg0->unk_04 + temp_s1_3) - MeasureTextWidth(0, 0, sp94), arg0->unk_06 + 0x44, sp94);
-        Text_SetFont(8, 0);
-        Text_Print(arg0->unk_04 + 0x144, arg0->unk_06 + 0x6A, GetMessageString(NULL, 0, D_82F13B70, 0xD));
-        Text_Print(arg0->unk_04 + 0x144, arg0->unk_06 + 0x80, GetMessageString(NULL, 0, D_82F13B70, 0xE));
-        Text_Print(arg0->unk_04 + 0x144, arg0->unk_06 + 0x96, GetMessageString(NULL, 0, D_82F13B70, 0xF));
-        Text_Print(arg0->unk_04 + 0x144, arg0->unk_06 + 0xAC, GetMessageString(NULL, 0, D_82F13B70, 0x10));
-        Text_SetFont(8, 0);
+        Font_Printf((arg0->unk_04 + temp_s1_3) - Font_MeasureTextExtent(0, 0, sp94), arg0->unk_06 + 0x44, sp94);
+        Font_SetActive(8, 0);
+        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0x6A, Text_GetString(NULL, 0, D_82F13B70, 0xD));
+        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0x80, Text_GetString(NULL, 0, D_82F13B70, 0xE));
+        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0x96, Text_GetString(NULL, 0, D_82F13B70, 0xF));
+        Font_Printf(arg0->unk_04 + 0x144, arg0->unk_06 + 0xAC, Text_GetString(NULL, 0, D_82F13B70, 0x10));
+        Font_SetActive(8, 0);
 
         sprintf(sp94, "%d", sp11C->unk_28);
-        Text_Print((arg0->unk_04 - MeasureTextWidth(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x6A, sp94);
+        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x6A, sp94);
         sprintf(sp94, "%d", sp11C->unk_2A);
-        Text_Print((arg0->unk_04 - MeasureTextWidth(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x80, sp94);
+        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x80, sp94);
         sprintf(sp94, "%d", sp11C->unk_2C);
-        Text_Print((arg0->unk_04 - MeasureTextWidth(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x96, sp94);
+        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x96, sp94);
         sprintf(sp94, "%d", sp11C->unk_2E);
-        Text_Print((arg0->unk_04 - MeasureTextWidth(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0xAC, sp94);
-        Text_SetFont(8, 0);
+        Font_Printf((arg0->unk_04 - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0xAC, sp94);
+        Font_SetActive(8, 0);
 
         {
             char* sp74;
@@ -370,9 +370,9 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
                     break;
                 }
 
-                if (IsInvalidMoveId(sp11C->unk_09[i]) == 0) {
-                    sp70 = &D_80071D88[gMoveStrings[sp11C->unk_09[i] - 1].unk_01].color;
-                    sp74 = GetMessageStringBank25(sp11C->unk_09[i]);
+                if (Trade_IsMoveInvalid(sp11C->unk_09[i]) == 0) {
+                    sp70 = &D_80071D88[gMoveDisplayInfo[sp11C->unk_09[i] - 1].unk_01].color;
+                    sp74 = Trade_GetMoveName(sp11C->unk_09[i]);
                 } else {
                     // "？？？？？？？"
                     static const char D_29C080[] = { 0xA1, 0xA9, 0xA1, 0xA9, 0xA1, 0xA9, 0xA1,
@@ -381,18 +381,18 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
                     sp74 = D_29C080;
                 }
                 Text_SetEnvColor(sp70->r, sp70->g, sp70->b, 0xFF);
-                Text_Print(D_82F13C54[i] + arg0->unk_04 + 0x18, D_82F13C5C[i] + arg0->unk_06, sp74);
+                Font_Printf(D_82F13C54[i] + arg0->unk_04 + 0x18, D_82F13C5C[i] + arg0->unk_06, sp74);
             }
 
-            Text_SetFont(0x10, 0);
+            Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Text_Print(arg0->unk_04 + 0x10, arg0->unk_06 + 0x12A, GetMessageString(NULL, 0, D_82F13B70, 0x11));
+            Font_Printf(arg0->unk_04 + 0x10, arg0->unk_06 + 0x12A, Text_GetString(NULL, 0, D_82F13B70, 0x11));
 
             for (i = 0; i < 2; i++) {
-                Text_Print(arg0->unk_04 + D_82F13C64[i], arg0->unk_06 + 0x12A, sp8C[i]);
+                Font_Printf(arg0->unk_04 + D_82F13C64[i], arg0->unk_06 + 0x12A, sp8C[i]);
             }
 
-            Text_SetupDL();
+            Font_EndTexturedTextRendering();
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -400,10 +400,10 @@ void BattleResultScreen_Draw(unk_D_82F20A10* arg0) {
                 s16 sp60[2];
 
                 for (j = 0; j < 2; j++) {
-                    sp60[j] = MeasureTextWidth(0, 0, sp8C[j]);
+                    sp60[j] = Font_MeasureTextExtent(0, 0, sp8C[j]);
                 }
 
-                Picker_DrawCursor((D_82F13C64[gResultOptionIndex] + arg0->unk_04) - 8, arg0->unk_06 + 0x128,
+                Trade_DrawSelectionCorners((D_82F13C64[gResultOptionIndex] + arg0->unk_04) - 8, arg0->unk_06 + 0x128,
                               sp60[gResultOptionIndex] + 0x10, 0x1E);
             }
         }
@@ -436,15 +436,15 @@ void Trade_UpdateInfoBox(void) {
     if (ptr->unk_00) {
         switch (ptr->unk_00) {
             case 1:
-                BattleResultScreen_UpdateTimer(&gBattleResultScreenState);
+                Trade_UpdateInfoBoxOpenIn(&gBattleResultScreenState);
                 break;
 
             case 2:
-                BattleResultScreen_HandleInput(&gBattleResultScreenState);
+                Trade_UpdateInfoBoxChoose(&gBattleResultScreenState);
                 break;
 
             case 3:
-                BattleResultScreen_Close(&gBattleResultScreenState);
+                Trade_UpdateInfoBoxCloseOut(&gBattleResultScreenState);
                 break;
         }
     }
@@ -452,7 +452,7 @@ void Trade_UpdateInfoBox(void) {
 
 void Trade_DrawInfoBoxIfActive(void) {
     if (gBattleResultScreenState.unk_00 != 0) {
-        BattleResultScreen_Draw(&gBattleResultScreenState);
+        Trade_DrawInfoBox(&gBattleResultScreenState);
     }
 }
 

@@ -15,7 +15,7 @@ static s32 gSfxHandle_44 = 0;
 static s32 gSfxHandle_46 = 0;
 static u8 gSfx3CCooldown = 0;
 
-s32 PlaySoundEffect(u32 arg0) {
+s32 Audio_PlaySoundEffectById(u32 arg0) {
     u32 temp_v0_3;
     s32 sp28;
     f32 sp24;
@@ -25,11 +25,11 @@ s32 PlaySoundEffect(u32 arg0) {
     sp24 = 0.0f;
 
     if (temp_v0_3 == 0x01200000) {
-        return PlayResultScreenSfx(arg0, 0, 0);
+        return Audio_PlayCategory12SoundCommand(arg0, 0, 0);
     }
 
     if (temp_v0_3 == 0x01100000) {
-        return PlayUISfx(arg0, 0, 0);
+        return Audio_PlayCategory11SoundCommand(arg0, 0, 0);
     }
 
     if (arg0 == 0xF) {
@@ -144,15 +144,15 @@ s32 PlaySoundEffect(u32 arg0) {
 
         case 0x2A:
         case 0x2B:
-            PlaySoundEffect(0x1B);
+            Audio_PlaySoundEffectById(0x1B);
             break;
 
         case 0x32:
-            gLastSfxHandle = PlayBackgroundMusic(0x01000001, 0, 0);
+            gLastSfxHandle = Audio_PlayDirectSoundCommand(0x01000001, 0, 0);
             return gLastSfxHandle;
 
         case 0x33:
-            gLastSfxHandle = PlayBackgroundMusic(0x01000002, 0, 0);
+            gLastSfxHandle = Audio_PlayDirectSoundCommand(0x01000002, 0, 0);
             return gLastSfxHandle;
 
         default:

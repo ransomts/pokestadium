@@ -18,7 +18,7 @@ typedef struct MoveCategoryColorGradient {
 typedef PaletteColor* (*func8840007C)(PokemonData*);
 typedef MoveCategoryColorGradient* (*func884000C4)(s32);
 
-PaletteColor* GetPaletteColorEntry(PokemonData*);
-MoveCategoryColorGradient* GetMoveCategoryColorGradient(s32);
+PaletteColor* LabPC_GetMonStatusIcon(PokemonData*);
+MoveCategoryColorGradient* LabPC_GetTypeColor(s32);
 
 #endif // _FRAGMENT25_H_

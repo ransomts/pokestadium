@@ -45,18 +45,18 @@ unk_func_88500020 gMenuTextureInfo_Alternates[] = {
     },
 };
 
-void MenuScroll_Init(unk_func_8002D860* arg0, s32 arg1) {
-    if (MenuItem_GetPokemonSpecies(arg1) != 0) {
+void GbSave_BuildPortSummary(unk_func_8002D860* arg0, s32 arg1) {
+    if (GbSave_GetSaveState(arg1) != 0) {
         arg0->unk_00 = 1;
     } else {
         arg0->unk_00 = 0;
-        arg0->unk_08 = SaveSlot_GetPokemonId(arg1);
-        SaveSlot_GetTrainerName(arg1, &arg0[1]);
+        arg0->unk_08 = GbSave_GetTrainerId(arg1);
+        GbSave_GetPlayerName(arg1, &arg0[1]);
     }
-    arg0->unk_04 = MenuItem_GetHeldItemId(arg1);
+    arg0->unk_04 = GbSave_GetPortGame(arg1);
 }
 
-void DrawTextureRectFromInfo(unk_func_88500020* arg0, s32 arg1, s32 a2) {
+void Gfx_DrawTiledTextureStrip(unk_func_88500020* arg0, s32 arg1, s32 a2) {
     s32 temp_lo;
     s32 var_t0;
     u8* var_s2;
@@ -97,12 +97,12 @@ void DrawTextureRectFromInfo(unk_func_88500020* arg0, s32 arg1, s32 a2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 }
 
-s32 MenuScroll_ProcessInputLR(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
+s32 Ui_AdjustVerticalSelection(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
     s32 ret = 0;
 
     switch (arg1) {
         case 0x800:
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             if (arg0->unk_04 == 0) {
                 arg0->unk_04 += arg0->unk_08;
             }
@@ -111,7 +111,7 @@ s32 MenuScroll_ProcessInputLR(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
             break;
 
         case 0x400:
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             if (arg0->unk_04 >= (arg0->unk_08 - 1)) {
                 arg0->unk_04 -= arg0->unk_08;
             }
@@ -123,19 +123,19 @@ s32 MenuScroll_ProcessInputLR(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
     return ret;
 }
 
-s32 MenuScroll_HandleLeftRight(s32 arg0) {
-    s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
+s32 Ui_HandleVerticalSelectionInput(s32 arg0) {
+    s32 sp1C = Input_GetRepeatedDPad() & 0xFFFF;
 
-    MenuScroll_ProcessInputLR(arg0, sp1C);
+    Ui_AdjustVerticalSelection(arg0, sp1C);
     return sp1C;
 }
 
-s32 MenuScroll_Adjust(unk_func_8002DD98_arg0* arg0, s32 arg1) {
+s32 Ui_AdjustHorizontalSelection(unk_func_8002DD98_arg0* arg0, s32 arg1) {
     s32 ret = 0;
 
     switch (arg1) {
         case 0x200:
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             if (arg0->unk_04 == 0) {
                 arg0->unk_04 += arg0->unk_08;
             }
@@ -144,7 +144,7 @@ s32 MenuScroll_Adjust(unk_func_8002DD98_arg0* arg0, s32 arg1) {
             break;
 
         case 0x100:
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             if (arg0->unk_04 >= (arg0->unk_08 - 1)) {
                 arg0->unk_04 -= arg0->unk_08;
             }
@@ -156,15 +156,15 @@ s32 MenuScroll_Adjust(unk_func_8002DD98_arg0* arg0, s32 arg1) {
     return ret;
 }
 
-s32 MenuScroll_HandleInput(unk_func_8002DD98_arg0* arg0) {
-    s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
+s32 Ui_HandleHorizontalSelectionInput(unk_func_8002DD98_arg0* arg0) {
+    s32 sp1C = Input_GetRepeatedDPad() & 0xFFFF;
 
-    MenuScroll_Adjust(arg0, sp1C);
+    Ui_AdjustHorizontalSelection(arg0, sp1C);
     return sp1C;
 }
 
-void MenuScroll_ProcessInputAccelerated(unk_func_8002DE78_arg0* arg0) {
-    s32 temp_v0 = MenuInput_ReadDirection();
+void Ui_AdjustSteppedScrollSelection(unk_func_8002DE78_arg0* arg0) {
+    s32 temp_v0 = Input_GetRepeatedDPad();
     s32 sp18 = arg0->unk_0C;
 
     if (gPlayer1Controller->buttonDown & 0x2000) {
@@ -173,7 +173,7 @@ void MenuScroll_ProcessInputAccelerated(unk_func_8002DE78_arg0* arg0) {
 
     switch (temp_v0) {
         case 0x800:
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             if (arg0->unk_00 - sp18 < arg0->unk_04) {
                 arg0->unk_00 = arg0->unk_04;
             } else {
@@ -182,7 +182,7 @@ void MenuScroll_ProcessInputAccelerated(unk_func_8002DE78_arg0* arg0) {
             break;
 
         case 0x400:
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             if (arg0->unk_08 < arg0->unk_00 + sp18) {
                 arg0->unk_00 = arg0->unk_08;
             } else {
@@ -192,7 +192,7 @@ void MenuScroll_ProcessInputAccelerated(unk_func_8002DE78_arg0* arg0) {
     }
 }
 
-s32 NumericInput_HandleDirection(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
+s32 Ui_AdjustNumericSelection(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
     s32 temp_v0;
     s32 var_a2;
     s32 var_t1;
@@ -210,7 +210,7 @@ s32 NumericInput_HandleDirection(unk_func_8830867C_044_038_030* arg0, s32 arg1) 
             temp_v0 = arg0->unk_10 + 1;
             if (temp_v0 < arg0->unk_0C) {
                 arg0->unk_10 = temp_v0;
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 var_t1 = 9;
             } else {
                 var_t1 = 8;
@@ -220,7 +220,7 @@ s32 NumericInput_HandleDirection(unk_func_8830867C_044_038_030* arg0, s32 arg1) 
         case 0x100:
             if (arg0->unk_10 > 0) {
                 arg0->unk_10--;
-                PlaySoundEffect(1);
+                Audio_PlaySoundEffectById(1);
                 var_t1 = 9;
             } else {
                 var_t1 = 8;
@@ -239,7 +239,7 @@ s32 NumericInput_HandleDirection(unk_func_8830867C_044_038_030* arg0, s32 arg1) 
                     arg0->unk_00 = arg0->unk_08;
                 }
             }
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             var_t1 = 9;
             break;
 
@@ -252,26 +252,26 @@ s32 NumericInput_HandleDirection(unk_func_8830867C_044_038_030* arg0, s32 arg1) 
                     arg0->unk_00 = arg0->unk_04;
                 }
             }
-            PlaySoundEffect(1);
+            Audio_PlaySoundEffectById(1);
             var_t1 = 9;
             break;
     }
     return var_t1;
 }
 
-s32 NumericInput_ReadAndHandle(unk_func_8820E99C_030_030* arg0) {
-    s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
+s32 Ui_HandleNumericSelectionInput(unk_func_8820E99C_030_030* arg0) {
+    s32 sp1C = Input_GetRepeatedDPad() & 0xFFFF;
 
-    NumericInput_HandleDirection(arg0, sp1C);
+    Ui_AdjustNumericSelection(arg0, sp1C);
     return sp1C;
 }
 
-s32 NumericInput_HandleDirectionStep(unk_func_8002E128_arg0* arg0) {
-    s32 sp1C = MenuInput_ReadDirection() & 0xFFFF;
+s32 Ui_AdjustSteppedRangeSelection(unk_func_8002E128_arg0* arg0) {
+    s32 sp1C = Input_GetRepeatedDPad() & 0xFFFF;
     s32 sp18 = arg0->unk_0C;
 
     if (sp1C != 0) {
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
 
         switch (sp1C) {
             case 0x200:
@@ -305,7 +305,7 @@ s32 NumericInput_HandleDirectionStep(unk_func_8002E128_arg0* arg0) {
     return sp1C;
 }
 
-void DrawNumber(s32 arg0, s32 arg1, s32 arg2) {
+void Gfx_DrawNumber(s32 arg0, s32 arg1, s32 arg2) {
     s32 i;
     s32 temp_lo;
     s32 var_s3;
@@ -340,7 +340,7 @@ void DrawNumber(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-void DrawNumberPadded(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gfx_DrawNumberFixedWidth(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 var_t0 = 1;
 
     gDPPipeSync(gDisplayListHead++);
@@ -385,7 +385,7 @@ void Gfx_DrawNumberDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-s32 GetInputDirectionSign(unk_func_8002EBD8_arg0* arg0) {
+s32 Ui_GetSelectionDirection(unk_func_8002EBD8_arg0* arg0) {
     s32 var_v1 = 0;
 
     if (arg0->unk_08 & 0x4000) {
@@ -397,13 +397,13 @@ s32 GetInputDirectionSign(unk_func_8002EBD8_arg0* arg0) {
     return var_v1;
 }
 
-s32 GetMoveTargetType(s32 arg0) {
+s32 GbSave_GameToCategoryIndex(s32 arg0) {
     static s32 gMoveTargetTypeTable[] = { 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0 };
 
     return gMoveTargetTypeTable[arg0];
 }
 
-Color_RGBA8 FadeColorTowardGray(Color_RGBA8 arg0, f32 arg1) {
+Color_RGBA8 Color_InterpolateFromGray(Color_RGBA8 arg0, f32 arg1) {
     static Color_RGBA8 gFadeGrayColor = { 0xC8, 0xC8, 0xC8, 0xFF };
 
     Color_RGBA8 sp4;
@@ -420,7 +420,7 @@ static u8 pad_D_80075944[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-s32 Mon_CountMoves(PokemonData* arg0) {
+s32 BattleMon_CountMoves(PokemonData* arg0) {
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -432,21 +432,21 @@ s32 Mon_CountMoves(PokemonData* arg0) {
     return i;
 }
 
-ret_func_8002ED08* GetMoveEntry(s32 arg0) {
+ret_func_8002ED08* Move_GetDisplayInfo(s32 arg0) {
     if ((arg0 <= 0) || (arg0 > 165)) {
         return NULL;
     }
-    return &gMoveStrings[arg0 - 1];
+    return &gMoveDisplayInfo[arg0 - 1];
 }
 
-MoveBattleData* GetMoveBattleDataEntry(s32 arg0) {
+MoveBattleData* Move_GetData(s32 arg0) {
     if ((arg0 <= 0) || (arg0 >= 0xA6)) {
         return NULL;
     }
-    return &gMoveBattleData[arg0 - 1];
+    return &gMoveData[arg0 - 1];
 }
 
-s32 Mon_GetEvolutionLine(PokemonData* arg0, s32 arg1) {
+s32 Species_GetMoveSlot(PokemonData* arg0, s32 arg1) {
     s32 temp_v0 = arg0->unk_00.unk_00 - 1;
     s32 var_v1;
 
@@ -461,7 +461,7 @@ s32 Mon_GetEvolutionLine(PokemonData* arg0, s32 arg1) {
     return var_v1;
 }
 
-s32 MapMoveCategory(s32 arg0) {
+s32 Move_NormalizeDisplayIndex(s32 arg0) {
     s32 ret;
 
     if (arg0 >= 0x14) {
@@ -475,7 +475,7 @@ s32 MapMoveCategory(s32 arg0) {
     return ret;
 }
 
-s32 GetMonBankField(s32 arg0, s32 arg1, s32 arg2) {
+s32 Deck_GetEntryCountForType(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp1C;
 
     switch (arg0) {
@@ -483,44 +483,44 @@ s32 GetMonBankField(s32 arg0, s32 arg1, s32 arg2) {
         case 33:
         case 34:
         case 35:
-            sp1C = GetSaveBlockCurrentCount(arg0, arg1, arg2);
+            sp1C = Deck_GetCount(arg0, arg1, arg2);
             break;
 
         case 16:
         case 17:
         case 18:
-            sp1C = GbsGetBlockMaxEntries(arg0, arg2);
+            sp1C = Deck_GetSaveEntryCount(arg0, arg2);
             break;
     }
     return sp1C;
 }
 
-void ControllerMsgQueue_Init(void) {
+void Ui_InitInputMessageQueue(void) {
     osCreateMesgQueue(&gControllerMsgQueue, &gControllerMsg, 1);
 }
 
-void ControllerMsgQueue_SendAndRead(OSMesg arg0) {
+void Ui_SendMessageAndPollInput(OSMesg arg0) {
     osSendMesg(&gControllerMsgQueue, arg0, 1);
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-void ControllerMsgQueue_Flush(void) {
+void Ui_SendNullMessage(void) {
     osSendMesg(&gControllerMsgQueue, NULL, 1);
 }
 
-void ControllerMsgQueue_Recv(OSMesg arg0) {
+void Ui_ReceiveMessage(OSMesg arg0) {
     osRecvMesg(&gControllerMsgQueue, arg0, 1);
 }
 
-void Game_RunPokemonLab(void) {
+void State_PokemonLab(void) {
     s32 game_state;
     s32 var_s4;
 
     FRAGMENT_LOAD_AND_CALL(fragment33, 1, 0);
 
-    if (GetCurrentPokemonBank() == -1) {
+    if (GbSave_GetActivePort() == -1) {
         gCurrentGameState = STATE_AREA_SELECT;
         return;
     }
@@ -532,13 +532,13 @@ void Game_RunPokemonLab(void) {
         if (game_state == STATE_POKEMON_LAB) {
             main_pool_push_state('PLAB');
 
-            if (GetCurrentPokemonBank() != -1) {
-                GbsEnsureBankLoaded(3);
-                SnapSelect_SetCameraMode(GetCurrentPokemonBank());
+            if (GbSave_GetActivePort() != -1) {
+                Save_EnsureBankLoaded(3);
+                GbSave_LoadPort(GbSave_GetActivePort());
             }
 
-            Gfx_InitBuffers(0x16000, 0);
-            Stage_Set(Stage_Create(1, 1, 2, 0, 2, 1));
+            Gfx_InitDisplayListBuffers(0x16000, 0);
+            StageContext_Activate(StageContext_Allocate(1, 1, 2, 0, 2, 1));
 
             FRAGMENT_LOAD_AND_CALL2(fragment22, var_s4, 0);
 
@@ -548,8 +548,8 @@ void Game_RunPokemonLab(void) {
                                            gFragmentCallContext.arg0, gFragmentCallContext.arg1);
             }
 
-            Stage_Destroy();
-            Gfx_FreeBuffers();
+            StageContext_Deactivate();
+            Gfx_FreeDisplayListBuffers();
 
             main_pool_pop_state('PLAB');
         } else {
@@ -572,7 +572,7 @@ void Game_RunPokemonLab(void) {
     gCurrentGameState = STATE_AREA_SELECT;
 }
 
-s32 IsStageIdSpecial(s32 arg0) {
+s32 LabItem_IsQuantitylessItem(s32 arg0) {
     static u8 D_80075950[] = {
         5,    6,    8,    9,    0x1F, 0x29, 0x2A, 0x2B, 0x2D, 0x30, 0x3F, 0x40, 0x45,
         0x46, 0x47, 0x48, 0x49, 0x4A, 0x4C, 0x4D, 0x4E, 0xC4, 0xC5, 0xC6, 0xC7, 0xC8,
@@ -589,10 +589,10 @@ s32 IsStageIdSpecial(s32 arg0) {
     return 0;
 }
 
-s32 IsStageSpecial(s32 arg0) {
+s32 LabItem_IsQuantitylessItemForOperation(s32 arg0) {
     s32 sp1C = 0;
 
-    if (IsStageIdSpecial(arg0) != 0) {
+    if (LabItem_IsQuantitylessItem(arg0) != 0) {
         sp1C = 1;
     }
     return sp1C;

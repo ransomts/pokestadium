@@ -16,8 +16,8 @@ u32 gSpecialModelNormals[22] = { 0x10002, 0x3FFFF, 2, 0x40005, 0xFFFF0000, 0x100
 u32 gSpecialModelColors[6] = { 0xCE00CB, 0xCA00CD, 0x980097, 0x950094, 0x920091, 0 };
 u32 gSpecialModelSegment[8] = { 0xB0000, 0xA0008, (u32)(void*)gSpecialModelIndices, (u32)(void*)gSpecialModelNormals, (u32)(void*)gSpecialModelColors, (u32)(void*)gSpecialModelIndexCounts, (u32)(void*)gSpecialModelTextureCoords, (u32)(void*)gSpecialModelVertexData };
 
-void PlaySoundEffectById(s32 arg0) {
-    PlaySoundEffect(arg0);
+void Audio_PlaySoundEffectByIdWrapper(s32 arg0) {
+    Audio_PlaySoundEffectById(arg0);
 }
 
 s32 Stub_ReturnInvalidIndex(void) {

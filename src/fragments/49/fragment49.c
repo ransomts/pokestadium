@@ -15,13 +15,13 @@ static u8* gCurrentBackgroundData;
 static s32 gCurrentBackgroundIndex;
 static FramebufferImage* D_83A00B80;
 
-void Menu_Init(void) {
+void Snap_PrintClubInitBackgroundSelect(void) {
     gMenuSlideShowState = 0;
-    D_83A00B80 = FramebufferImage_Allocate(0, 2, 0x280, 0x1E0, 0);
+    D_83A00B80 = GfxImage_Allocate(0, 2, 0x280, 0x1E0, 0);
     gCurrentBackgroundIndex = -1;
 }
 
-void Menu_DrawFramebuffer(s32 arg0, s32 arg1) {
+void Snap_PrintClubDrawBackgroundImage(s32 arg0, s32 arg1) {
     u8* img = D_83A00B80->img_p;
     s32 i;
 
@@ -44,7 +44,7 @@ void Menu_DrawFramebuffer(s32 arg0, s32 arg1) {
     }
 }
 
-void Menu_DrawBackground(s32 arg0, u8* arg1) {
+void Snap_PrintClubDrawBackgroundMosaic(s32 arg0, u8* arg1) {
     static s32 D_83A00B50 = 4;
     static s32 D_83A00B54 = 6;
 
@@ -87,7 +87,7 @@ void Menu_DrawBackground(s32 arg0, u8* arg1) {
     }
 }
 
-void Menu_RenderFrame(void) {
+void Snap_PrintClubDrawBackgroundSelectFrame(void) {
     static u8 D_83A00B58[] = {
         0x00, 0x11, 0x01, 0x02, 0x04, 0x06, 0x03, 0x0A, 0x0B, 0x07, 0x08, 0x09, 0x0C, 0x10, 0x0F, 0x14,
     };
@@ -96,24 +96,24 @@ void Menu_RenderFrame(void) {
         main_pool_push_state('mksl');
 
         gCurrentBackgroundData = BinArchive_GetFile(gMenuBackgroundArchive, D_83A00B58[gCurrentBackgroundIndex]);
-        Gfx_SetupFrameBuffer(&gDisplayListHead, D_83A00B80);
+        GfxImage_SetRenderTarget(&gDisplayListHead, D_83A00B80);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
         gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
 
-        Menu_DrawBackground(gCurrentBackgroundIndex, gCurrentBackgroundData);
+        Snap_PrintClubDrawBackgroundMosaic(gCurrentBackgroundIndex, gCurrentBackgroundData);
     }
 
-    Stage_BeginDisplayList();
-    Menu_DrawFramebuffer(0, 0);
-    Stage_Advance();
+    BgStage_DrawFrame();
+    Snap_PrintClubDrawBackgroundImage(0, 0);
+    BgStage_AdvanceFrame();
 
     if (gCurrentBackgroundIndex >= 0) {
         main_pool_pop_state('mksl');
     }
 }
 
-s32 Menu_IsConfirmPressed(void) {
+s32 Snap_PrintClubCheckConfirmInput(void) {
     s32 var_v1 = 0;
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A | BTN_B)) {
@@ -122,14 +122,14 @@ s32 Menu_IsConfirmPressed(void) {
     return var_v1;
 }
 
-s32 Menu_Update(void) {
+s32 Snap_PrintClubUpdateBackgroundSelect(void) {
     static s32 D_83A00B68 = 2;
 
     s32 sp1C = 1;
 
     switch (gMenuSlideShowState) {
         case 0:
-            if (Stage_GetFadeState() == 0) {
+            if (StageContext_GetFadeMode() == 0) {
                 D_83A00B68--;
                 if (D_83A00B68 <= 0) {
                     gMenuSlideShowState = 1;
@@ -147,15 +147,15 @@ s32 Menu_Update(void) {
                 gCurrentBackgroundIndex = -1;
             }
 
-            if ((gCurrentBackgroundIndex == -1) && (Menu_IsConfirmPressed() != 0)) {
+            if ((gCurrentBackgroundIndex == -1) && (Snap_PrintClubCheckConfirmInput() != 0)) {
                 gMenuSlideShowState = 2;
-                PlaySoundEffect(3);
-                Stage_FadeOut(8);
+                Audio_PlaySoundEffectById(3);
+                StageFade_StartFromTransparent(8);
             }
             break;
 
         case 2:
-            if (Stage_GetFadeState() == 1) {
+            if (StageContext_GetFadeMode() == 1) {
                 sp1C = 0;
             }
             break;
@@ -163,42 +163,42 @@ s32 Menu_Update(void) {
     return sp1C;
 }
 
-void Menu_ProcessInput(void) {
+void Snap_PrintClubReadInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
 void func_83A009C0(void) {
 }
 
 void Snap_PrintClubBackgroundSelectLoop(void) {
-    Gfx_SetupFrameBuffer(&gDisplayListHead, D_83A00B80);
-    Gfx_FillRectangle(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
-    Stage_Advance();
-    Stage_FadeIn(8);
+    GfxImage_SetRenderTarget(&gDisplayListHead, D_83A00B80);
+    GfxImage_FillRectangle(&gDisplayListHead, 0, 0, 0x280, 0x1E0, 0xFFFF);
+    BgStage_AdvanceFrame();
+    StageFade_StartFromOpaque(8);
     do {
-        Menu_ProcessInput();
-        Menu_RenderFrame();
-    } while (Menu_Update() != 0);
+        Snap_PrintClubReadInput();
+        Snap_PrintClubDrawBackgroundSelectFrame();
+    } while (Snap_PrintClubUpdateBackgroundSelect() != 0);
 }
 
-s32 Menu_Entry(s32 arg0, s32 arg1) {
+s32 Snap_PrintClubBackgroundSelect(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('BNVW');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    Text_Init(8, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    Font_Init(8, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     gMenuBackgroundArchive = ASSET_LOAD2(backgrounds, 1, 1);
-    Menu_Init();
-    Stage_Set(sp24);
+    Snap_PrintClubInitBackgroundSelect();
+    StageContext_Activate(sp24);
     Snap_PrintClubBackgroundSelectLoop();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('BNVW');
 

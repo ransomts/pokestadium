@@ -25,7 +25,7 @@ u16 gBackgroundGradientMask;
 s32 gCursorCanMoveUp;
 s32 gCursorCanMoveDown;
 
-void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
+void Gallery_FilmSelectCommitPhotos(unk_D_83407B38* arg0) {
     s32 i;
     s32 sp40;
     unk_D_83403C60* temp_s0;
@@ -35,9 +35,9 @@ void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
     sp40 = 0;
 
     for (i = 35; i >= 0; i--) {
-        if (IsMonIndexDisplayable(&gGalleryEntries[i]) == 0) {
+        if (Gallery_IsPhotoSpeciesValid(&gGalleryEntries[i]) == 0) {
             idx = i;
-            while ((idx > 0) && IsMonIndexDisplayable(&gGalleryEntries[idx - 1]) == 0) {
+            while ((idx > 0) && Gallery_IsPhotoSpeciesValid(&gGalleryEntries[idx - 1]) == 0) {
                 idx--;
             }
             sp40 = idx;
@@ -47,18 +47,18 @@ void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
 
     for (i = 0; i < 24; i++) {
         if (gMonSelectionFlags[i] != 0) {
-            idx = FindNthDisplayableMonIndex(gGalleryEntries, 0x24, sp40, 0);
+            idx = Gallery_FindNthEmptySlot(gGalleryEntries, 0x24, sp40, 0);
 
             temp_s0 = arg0->unk_20[i]->unk_18;
 
             gGalleryEntries[idx] = *temp_s0;
 
-            temp_v0 = FindFirstUndisplayedMonIndex(gCurrentCamEntry, 4);
+            temp_v0 = Gallery_FindFirstEmptySlot(gCurrentCamEntry, 4);
             if (temp_v0 >= 0) {
                 gCurrentCamEntry[temp_v0] = *temp_s0;
             }
 
-            temp_v0 = FindFirstUndisplayedMonIndex(gCurrentCamEntryPage, 0x10);
+            temp_v0 = Gallery_FindFirstEmptySlot(gCurrentCamEntryPage, 0x10);
             if (temp_v0 >= 0) {
                 gCurrentCamEntryPage[temp_v0] = *temp_s0;
             }
@@ -66,12 +66,12 @@ void AddSelectedMonstersToTeam(unk_D_83407B38* arg0) {
     }
 }
 
-s32 HasUnselectedDisplayableMonsters(void) {
+s32 Gallery_FilmSelectHasUnsavedPhoto(void) {
     s32 i;
     s32 sp28 = 0;
 
     for (i = 0; i < 0x18; i++) {
-        if ((IsMonIndexDisplayable(&gDisplayableMonIndices[i]) != 0) && (gMonSelectionFlags[i] == 0)) {
+        if ((Gallery_IsPhotoSpeciesValid(&gDisplayableMonIndices[i]) != 0) && (gMonSelectionFlags[i] == 0)) {
             sp28 = 1;
             break;
         }
@@ -80,24 +80,24 @@ s32 HasUnselectedDisplayableMonsters(void) {
     return sp28;
 }
 
-void UpdateCursorEdgeFlags(unk_D_83407B38* arg0) {
+void Gallery_FilmSelectUpdatePageAvailability(unk_D_83407B38* arg0) {
     UNUSED s32 pad;
     s32 sp18 = arg0->unk_08 + 1;
 
-    if (Gallery_CountDisplayableInPage(arg0, arg0->unk_08 - 1) > 0) {
+    if (Gallery_CountReadyScenesOnPage(arg0, arg0->unk_08 - 1) > 0) {
         gCursorCanMoveUp = 1;
     } else {
         gCursorCanMoveUp = 0;
     }
 
-    if (Gallery_CountDisplayableInPage(arg0, sp18) > 0) {
+    if (Gallery_CountReadyScenesOnPage(arg0, sp18) > 0) {
         gCursorCanMoveDown = 1;
     } else {
         gCursorCanMoveDown = 0;
     }
 }
 
-s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
+s32 Gallery_FilmSelectHandleInput(unk_D_83407B38* arg0) {
     s32 sp54;
     s32 sp50;
     s32 sp4C;
@@ -118,7 +118,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
     sp40 = 0;
     sp3C = 0;
 
-    if (Cam_FindActiveIndex(arg0->unk_20, 0x25) != -1) {
+    if (Gallery_FindReadyScene(arg0->unk_20, 0x25) != -1) {
         return 0;
     }
 
@@ -181,7 +181,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
     arg0->unk_00 = sp1C + sp48;
     if (sp4C != arg0->unk_00) {
         gSelectionMessageState = 0;
-        PlaySoundEffect(1);
+        Audio_PlaySoundEffectById(1);
     }
 
     if ((gPlayer1Controller->buttonPressed & 0x20) || (sp40 != 0)) {
@@ -199,50 +199,50 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
     } else if (gPlayer1Controller->buttonPressed & 0x8000) {
         idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
         if (sp1C < 6) {
-            if (Cam_IsMonIndexDisplayable(arg0->unk_20[idx]) != 0) {
+            if (Gallery_IsSceneReady(arg0->unk_20[idx]) != 0) {
                 if (gMonSelectionFlags[idx] == 0) {
                     if (gSelectedMonCount < gMaxSelectableMonCount) {
                         gMonSelectionFlags[idx] = 1;
                         gSelectedMonCount++;
-                        PlaySoundEffect(0xD);
+                        Audio_PlaySoundEffectById(0xD);
                     } else {
                         gSelectionMessageState = 1;
-                        PlaySoundEffect(8);
+                        Audio_PlaySoundEffectById(8);
                     }
                 } else {
                     gMonSelectionFlags[idx] = 0;
                     gSelectedMonCount--;
-                    PlaySoundEffect(3);
+                    Audio_PlaySoundEffectById(3);
                 }
             } else {
-                PlaySoundEffect(8);
+                Audio_PlaySoundEffectById(8);
             }
         } else if (sp48 == 0) {
             sp54 = 1;
-            PlaySoundEffect(0x1C);
-        } else if (HasUnselectedDisplayableMonsters() != 0) {
+            Audio_PlaySoundEffectById(0x1C);
+        } else if (Gallery_FilmSelectHasUnsavedPhoto() != 0) {
             gSelectionState = 2;
             gSelectionMessageState = 2;
-            PlaySoundEffect(0x31);
+            Audio_PlaySoundEffectById(0x31);
         } else {
             sp54 = 1;
-            PlaySoundEffect(3);
+            Audio_PlaySoundEffectById(3);
         }
     } else if (gPlayer1Controller->buttonPressed & 4) {
         idx = (arg0->unk_08 * arg0->unk_14) + arg0->unk_00;
-        if ((sp1C < 6) && (Cam_IsMonIndexDisplayable(arg0->unk_20[idx]) != 0)) {
-            PlaySoundEffect(0x19);
-            Gallery_SetCurrentEntry(arg0->unk_20[idx]->unk_18);
+        if ((sp1C < 6) && (Gallery_IsSceneReady(arg0->unk_20[idx]) != 0)) {
+            Audio_PlaySoundEffectById(0x19);
+            Gallery_SetEnlargeTarget(arg0->unk_20[idx]->unk_18);
             sp54 = 2;
         } else {
-            PlaySoundEffect(8);
+            Audio_PlaySoundEffectById(8);
         }
     }
 
     if (sp50 != arg0->unk_08) {
         gSelectionMessageState = 0;
-        PlaySoundEffect(0x27);
-        UpdateCursorEdgeFlags(arg0);
+        Audio_PlaySoundEffectById(0x27);
+        Gallery_FilmSelectUpdatePageAvailability(arg0);
 
         for (i = 0; i < arg0->unk_14; i++) {
             ptr = arg0->unk_20[(arg0->unk_08 * arg0->unk_14) + i];
@@ -255,7 +255,7 @@ s32 ProcessSelectionScreenInput(unk_D_83407B38* arg0) {
     return sp54;
 }
 
-void InitializeSelectionScreen(s32 arg0) {
+void Gallery_FilmSelectInit(s32 arg0) {
     s32 i;
 
     gSelectionState = 0;
@@ -268,7 +268,7 @@ void InitializeSelectionScreen(s32 arg0) {
         }
     }
 
-    gMaxSelectableMonCount = CountDisplayableMonIndices(gGalleryEntries, 0x24, 0);
+    gMaxSelectableMonCount = Gallery_CountValidPhotos(gGalleryEntries, 0x24, 0);
     gBackgroundGradientMask = 0xFFE3;
 
     if (arg0 != 0) {
@@ -277,16 +277,16 @@ void InitializeSelectionScreen(s32 arg0) {
         gSelectionScreenFadeType = 0;
     }
 
-    CamList_Init(&gSelectionCamList, 0x88, 0x66, 6, 3, AssetManager_Create(5), D_836032F8, gDisplayableMonIndices, 0x18, 1);
+    Gallery_InitSceneGrid(&gSelectionCamList, 0x88, 0x66, 6, 3, PokeIcon_AllocFramebuffers(5), D_836032F8, gDisplayableMonIndices, 0x18, 1);
 
     if (gGallerySelection.unk_00 != -1) {
-        Gallery_SyncCamToSelection(&gSelectionCamList, &gGallerySelection);
+        Gallery_RestorePosition(&gSelectionCamList, &gGallerySelection);
     }
 
-    UpdateCursorEdgeFlags(&gSelectionCamList);
+    Gallery_FilmSelectUpdatePageAvailability(&gSelectionCamList);
 }
 
-void DrawItemList(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gallery_FilmSelectDrawBandedStrip(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     s32 sp50;
     u8* var_s6;
     s32 i;
@@ -304,7 +304,7 @@ void DrawItemList(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     if (arg3 == 0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Fill);
 
-        Gfx_FillRectRGBA(arg0, arg1, arg2, 4, 0, 0, 0, 0x80);
+        Gfx_FillRectRgba(arg0, arg1, arg2, 4, 0, 0, 0, 0x80);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -313,7 +313,7 @@ void DrawItemList(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 128);
 
     for (i = 0; i < sp50; i++) {
-        Gfx_DrawTextureRect(arg0 + 4 + i * 0x28, arg1 + 4, 0x28, 0x10, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(arg0 + 4 + i * 0x28, arg1 + 4, 0x28, 0x10, 0, 0, 0x400, 0x400, 0);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -325,18 +325,18 @@ void DrawItemList(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 
     for (i = 0; i < sp50; i++) {
-        Gfx_DrawTextureRect(arg0 + i * 0x28, arg1, 0x28, 0x10, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(arg0 + i * 0x28, arg1, 0x28, 0x10, 0, 0, 0x400, 0x400, 0);
     }
 }
 
-void DrawFilledRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Gallery_FilmSelectFillRectSolid(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
     gDPSetFillColor(gDisplayListHead++, 0x00000001);
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1);
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void DrawSelectionHighlightBar(s32 arg0, s32 arg1, s16 arg2) {
+void Gallery_FilmSelectDrawPhotoBadge(s32 arg0, s32 arg1, s16 arg2) {
     s16 end = 16;
     s32 i;
     UNUSED s32 pad;
@@ -356,7 +356,7 @@ void DrawSelectionHighlightBar(s32 arg0, s32 arg1, s16 arg2) {
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg0, arg1 + i, spC0, temp_v0_2, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(arg0, arg1 + i, spC0, temp_v0_2, 0, 0, 0x400, 0x400, 0);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -371,10 +371,10 @@ void DrawSelectionHighlightBar(s32 arg0, s32 arg1, s16 arg2) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
 }
 
-void DrawPulsatingBar(s32 arg0, s32 arg1, s16 arg2) {
+void Gallery_FilmSelectDrawCounterBadge(s32 arg0, s32 arg1, s16 arg2) {
     s32 temp_v0_2;
     s32 end = 0x20;
     s32 i;
@@ -394,7 +394,7 @@ void DrawPulsatingBar(s32 arg0, s32 arg1, s16 arg2) {
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                             G_TX_NOLOD, G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg0, arg1 + i, spC0, temp_v0_2, 0, 0, 0x400, 0x400, 0);
+        Gfx_DrawTexturedRectClipped(arg0, arg1 + i, spC0, temp_v0_2, 0, 0, 0x400, 0x400, 0);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -409,10 +409,10 @@ void DrawPulsatingBar(s32 arg0, s32 arg1, s16 arg2) {
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, spC0, spC0, 0, 0, 0x400, 0x400, 0);
 }
 
-void RenderSelectionScreenItems(unk_D_83407B38* arg0) {
+void Gallery_FilmSelectDrawPhotoGrid(unk_D_83407B38* arg0) {
     static s16 D_83603280 = 0;
 
     s32 temp_s0_2;
@@ -426,27 +426,27 @@ void RenderSelectionScreenItems(unk_D_83407B38* arg0) {
     for (i = 0; i < arg0->unk_14; i++) {
         temp_s5 = (arg0->unk_08 * arg0->unk_14) + i;
         temp_s0 = arg0->unk_20[temp_s5];
-        if ((Cam_IsMonIndexDisplayable(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
+        if ((Gallery_IsSceneReady(temp_s0) != 0) && (temp_s0->unk_00 == 2)) {
             temp_s4 = (i / 3) * 0x6E;
             temp_s1 = (i % 3) * 0xA4;
-            Gallery_DrawTextureList(temp_s0->unk_08->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);
+            Gallery_DrawPhotoThumbnail(temp_s0->unk_08->img_p, temp_s1 + 0x58, temp_s4 + 0x6E, 0x88, 0x66, 8, 0);
             if (gMonSelectionFlags[temp_s5] != 0) {
-                DrawSelectionHighlightBar(temp_s1 + 0xB0, temp_s4 + 0xA6, D_83603280);
+                Gallery_FilmSelectDrawPhotoBadge(temp_s1 + 0xB0, temp_s4 + 0xA6, D_83603280);
             }
         }
-        Text_ResetState();
-        Text_SetFont(8, 0);
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(8, 0);
         sprintf(sp70, "%d", temp_s5 + 1);
-        temp_s0_2 = MeasureTextWidth(0, 0, sp70);
+        temp_s0_2 = Font_MeasureTextExtent(0, 0, sp70);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-        Text_Print((((i % 3) * 0xA4) - temp_s0_2) + 0x54, ((i / 3) * 0x6E) + 0x6E, sp70);
-        Text_SetupDL();
+        Font_Printf((((i % 3) * 0xA4) - temp_s0_2) + 0x54, ((i / 3) * 0x6E) + 0x6E, sp70);
+        Font_EndTexturedTextRendering();
     }
 
     D_83603280 += 0x400;
 }
 
-void DrawSelectionCursor(unk_D_83407B38* arg0) {
+void Gallery_FilmSelectDrawSelectionCursor(unk_D_83407B38* arg0) {
     s32 temp_hi = arg0->unk_00 % 3;
     s32 temp_lo = arg0->unk_00 / 3;
     s32 var_a0;
@@ -454,7 +454,7 @@ void DrawSelectionCursor(unk_D_83407B38* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (temp_lo < 2) {
-        Gallery_DrawAnimatedCorners((temp_hi * 0xA4) + 0x58, (temp_lo * 0x6E) + 0x6E, 0x88, 0x66);
+        Gallery_DrawSelectionCorners((temp_hi * 0xA4) + 0x58, (temp_lo * 0x6E) + 0x6E, 0x88, 0x66);
         return;
     }
 
@@ -471,11 +471,11 @@ void DrawSelectionCursor(unk_D_83407B38* arg0) {
     }
 
     if (var_a0 >= 0) {
-        Gallery_DrawAnimatedCorners(var_a0, 0x172, 0x6C, 0x45);
+        Gallery_DrawSelectionCorners(var_a0, 0x172, 0x6C, 0x45);
     }
 }
 
-void DrawSelectionArrows(s32 arg0, s32 arg1) {
+void Gallery_FilmSelectDrawBanner(s32 arg0, s32 arg1) {
     static Color_RGBA8 D_83603284 = { 0x9A, 0x37, 0x54, 0xFF };
     static Color_RGBA8 D_83603288 = { 0xC3, 0x54, 0x84, 0xFF };
     static s16 D_8360328C = 0;
@@ -487,11 +487,11 @@ void DrawSelectionArrows(s32 arg0, s32 arg1) {
     Color_RGBA8 sp74;
     Color_RGBA8 sp70;
 
-    sp84 = Text_GetMessageString_Bank2C(2);
+    sp84 = Gallery_GetUiString(2);
     sp74 = D_83603284;
     sp70 = D_83603288;
     sp7C = SINS(D_8360328C) * 4.0f;
-    DrawPanelWithTextures(arg0, arg1, 0x1B6, &sp74, &sp70);
+    Gallery_DrawHeaderBar(arg0, arg1, 0x1B6, &sp74, &sp70);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -499,8 +499,8 @@ void DrawSelectionArrows(s32 arg0, s32 arg1) {
                        G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                        G_TX_NOLOD);
 
-    Gfx_DrawTextureRect(arg0 + 0x36, arg1 - 3, 0x64, 0x24, 0, 0, 0x400, 0x400, 0);
-    Gfx_DrawTextureRect(arg0 + 0x11C, arg1 - 3, 0x64, 0x24, 0xC60, 0, -0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 0x36, arg1 - 3, 0x64, 0x24, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0 + 0x11C, arg1 - 3, 0x64, 0x24, 0xC60, 0, -0x400, 0x400, 0);
 
     if (gCursorCanMoveUp != 0) {
         sp78 = sp7C;
@@ -513,7 +513,7 @@ void DrawSelectionArrows(s32 arg0, s32 arg1) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp80);
 
-    Gallery_DrawCursor((arg0 - sp78) - 0x27, arg1 + 0x1A, 0);
+    Gallery_DrawStatusIcon((arg0 - sp78) - 0x27, arg1 + 0x1A, 0);
 
     if (gCursorCanMoveDown != 0) {
         sp78 = sp7C;
@@ -526,21 +526,21 @@ void DrawSelectionArrows(s32 arg0, s32 arg1) {
     gDPPipeSync(gDisplayListHead++);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp80);
 
-    Gallery_DrawCursor(arg0 + sp78 + 0x1A2, arg1 + 0x1A, 1);
-    Text_ResetState();
-    Text_SetFont(0x10, 0);
+    Gallery_DrawStatusIcon(arg0 + sp78 + 0x1A2, arg1 + 0x1A, 1);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(0x10, 0);
 
-    sp78 = (0x1B6 - MeasureTextWidth(0, 0, sp84)) / 2;
+    sp78 = (0x1B6 - Font_MeasureTextExtent(0, 0, sp84)) / 2;
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(arg0 + sp78 + 2, arg1 + 5, sp84);
+    Font_Printf(arg0 + sp78 + 2, arg1 + 5, sp84);
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Text_Print(arg0 + sp78, arg1 + 3, sp84);
-    Text_SetupDL();
+    Font_Printf(arg0 + sp78, arg1 + 3, sp84);
+    Font_EndTexturedTextRendering();
 
     D_8360328C += 0x1000;
 }
 
-void DrawStatBar(int arg0, int arg1, s32 arg2, f32 arg3) {
+void Gallery_FilmSelectDrawActionPanel(int arg0, int arg1, s32 arg2, f32 arg3) {
     s32 temp_s2;
     s32 temp_s3;
     f32 tmp = 1024.0f;
@@ -553,7 +553,7 @@ void DrawStatBar(int arg0, int arg1, s32 arg2, f32 arg3) {
     u16* spE4[] = { D_04000000, D_03005F80 };
     s16 spE0[] = { 0x39, 0x37 };
     u16* spDC = spE4[arg2];
-    char* spD8 = Text_GetMessageString_Bank2C(spE0[arg2]);
+    char* spD8 = Gallery_GetUiString(spE0[arg2]);
     Color_RGB8 spD0[] = {
         { 0xE6, 0xDC, 0x0F },
         { 0xE6, 0x6E, 0x82 },
@@ -574,27 +574,27 @@ void DrawStatBar(int arg0, int arg1, s32 arg2, f32 arg3) {
                            temp_v0_2 - 1, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        Gfx_DrawTextureRect(arg0 + ((spFC - temp_ft2) / 2), arg1 + ((spF8 - temp_fv1) / 2) + temp_fa0, temp_ft2, temp_fv1_2,
+        Gfx_DrawTexturedRectClipped(arg0 + ((spFC - temp_ft2) / 2), arg1 + ((spF8 - temp_fv1) / 2) + temp_fa0, temp_ft2, temp_fv1_2,
                       0, 0, tmp / arg3, tmp / arg3, 0);
     }
 
-    temp_s3 = (spFC - MeasureTextWidth(0, 0, spD8)) / 2;
-    temp_s2 = (spF8 - (Text_CountLines(spD8) * 0x14)) / 2;
+    temp_s3 = (spFC - Font_MeasureTextExtent(0, 0, spD8)) / 2;
+    temp_s2 = (spF8 - (Gallery_CountTextLines(spD8) * 0x14)) / 2;
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
-    Text_SetLineHeight(0x14);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
+    Font_SetLineHeight(0x14);
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Text_Print(arg0 + temp_s3 + 2, arg1 + temp_s2 + 2, spD8);
-    Text_BeginRender();
+    Font_Printf(arg0 + temp_s3 + 2, arg1 + temp_s2 + 2, spD8);
+    Font_EnableTwoCycleTexturing();
     Text_SetEnvColor(spD0[arg2].r, spD0[arg2].g, spD0[arg2].b, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(arg0 + temp_s3, arg1 + temp_s2, spD8);
-    Text_EndRender();
-    Text_SetupDL();
+    Font_Printf(arg0 + temp_s3, arg1 + temp_s2, spD8);
+    Font_DisableTwoCycleTexturing();
+    Font_EndTexturedTextRendering();
 }
 
-void DrawBackgroundGradient(void) {
+void Gallery_FilmSelectDrawBackgroundGradient(void) {
     static Color_RGB8 D_836032A4 = { 0xCD, 0xD7, 0x9B };
     static Color_RGB8 D_836032A8 = { 0x28, 0x64, 0xAF };
     static Color_RGB8 D_836032AC = { 0xCD, 0xEB, 0x9B };
@@ -632,12 +632,12 @@ void DrawBackgroundGradient(void) {
 
             gDPSetEnvColor(gDisplayListHead++, r, g, b, 255);
 
-            Gfx_DrawTextureRect(0, i, 0x280, temp_v0_2, 0, 0, 0x400, 0x400, 0);
+            Gfx_DrawTexturedRectClipped(0, i, 0x280, temp_v0_2, 0, 0, 0x400, 0x400, 0);
         }
     }
 }
 
-char* GetSelectionPromptString(unk_D_83407B38* arg0) {
+char* Gallery_FilmSelectGetHelpText(unk_D_83407B38* arg0) {
     static s32 D_836032B4[] = { 0x21, 0x24 };
 
     char* var_v0;
@@ -646,32 +646,32 @@ char* GetSelectionPromptString(unk_D_83407B38* arg0) {
 
     if (gSelectionMessageState == 0) {
         if (temp_hi < 2) {
-            var_v0 = Text_GetMessageString_Bank2C(0x1E);
+            var_v0 = Gallery_GetUiString(0x1E);
         } else if (temp_lo == 0) {
-            var_v0 = Text_GetMessageString_Bank2C(0x22);
+            var_v0 = Gallery_GetUiString(0x22);
         } else {
-            var_v0 = Text_GetMessageString_Bank2C(0x23);
+            var_v0 = Gallery_GetUiString(0x23);
         }
     } else {
-        var_v0 = Text_GetMessageString_Bank2C(D_836032B4[gSelectionMessageState - 1]);
+        var_v0 = Gallery_GetUiString(D_836032B4[gSelectionMessageState - 1]);
     }
     return var_v0;
 }
 
-void DrawSelectionPrompt(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
-    char* sp1C = GetSelectionPromptString(arg0);
+void Gallery_FilmSelectDrawHelpText(unk_D_83407B38* arg0, s32 arg1, s32 arg2) {
+    char* sp1C = Gallery_FilmSelectGetHelpText(arg0);
 
-    Gallery_DrawGradientPanel(arg1, arg2, 0x136, 0x4C);
+    Gallery_DrawBluePanel(arg1, arg2, 0x136, 0x4C);
     if (sp1C != NULL) {
-        Text_ResetState();
-        Text_SetFont(8, 0);
-        Text_SetLineHeight(0x14);
-        Text_Print(arg1 + 0xA, arg2 + 8, sp1C);
-        Text_SetupDL();
+        Font_BeginTranslucentTextRendering();
+        Font_SetActive(8, 0);
+        Font_SetLineHeight(0x14);
+        Font_Printf(arg1 + 0xA, arg2 + 8, sp1C);
+        Font_EndTexturedTextRendering();
     }
 }
 
-void DrawTeamSizeBar(s32 arg0, s32 arg1) {
+void Gallery_FilmSelectDrawPhotoCounter(s32 arg0, s32 arg1) {
     static s16 D_836032BC = 0;
 
     char sp28[255];
@@ -679,42 +679,42 @@ void DrawTeamSizeBar(s32 arg0, s32 arg1) {
     s32 sp20;
     s32 sp1C;
 
-    MessageBank_SetPointer_1_9(2, 0x63);
-    sp24 = Text_GetMessageString_Bank2C_Buffered(sp28, 0x100, 0x20);
-    sp20 = MeasureTextWidth(8, 0, sp24) / 2;
-    DrawPulsatingBar((arg0 - sp20) - 0x26, arg1 - 4, D_836032BC);
-    MessageBank_SetPointer_1_9(2, gMaxSelectableMonCount - gSelectedMonCount);
+    Text_SetNumberToken(2, 0x63);
+    sp24 = Gallery_CopyUiString(sp28, 0x100, 0x20);
+    sp20 = Font_MeasureTextExtent(8, 0, sp24) / 2;
+    Gallery_FilmSelectDrawCounterBadge((arg0 - sp20) - 0x26, arg1 - 4, D_836032BC);
+    Text_SetNumberToken(2, gMaxSelectableMonCount - gSelectedMonCount);
 
-    sp24 = Text_GetMessageString_Bank2C_Buffered(sp28, 0x100, 0x20);
-    sp1C = MeasureTextWidth(8, 0, sp24);
+    sp24 = Gallery_CopyUiString(sp28, 0x100, 0x20);
+    sp1C = Font_MeasureTextExtent(8, 0, sp24);
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print((arg0 + sp20) - sp1C, arg1, sp24);
-    Text_SetupDL();
+    Font_Printf((arg0 + sp20) - sp1C, arg1, sp24);
+    Font_EndTexturedTextRendering();
 
     D_836032BC += 0x400;
 }
 
-void DrawCancelLabel(s32 arg0, s32 arg1) {
+void Gallery_FilmSelectDrawIconLabel(s32 arg0, s32 arg1) {
     char* sp2C;
     s32 sp28;
 
-    sp2C = Text_GetMessageString_Bank2C(0x3C);
-    sp28 = -MeasureTextWidth(8, 0, sp2C) / 2;
+    sp2C = Gallery_GetUiString(0x3C);
+    sp28 = -Font_MeasureTextExtent(8, 0, sp2C) / 2;
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
-    Gfx_DrawSpriteRGBA16((arg0 + sp28) - 0x20, arg1 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
-    Text_ResetState();
-    Text_SetFont(8, 0);
+    Gfx_DrawTextureRgba16((arg0 + sp28) - 0x20, arg1 - 2, 0x18, 0x18, D_30099B8, 0x18, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Text_Print(arg0 + sp28, arg1, sp2C);
-    Text_SetupDL();
+    Font_Printf(arg0 + sp28, arg1, sp2C);
+    Font_EndTexturedTextRendering();
 }
 
-f32 UpdateStatBarAnimation(s32* arg0, u32* arg1, s32 arg2) {
+f32 Gallery_FilmSelectComputeScalePulse(s32* arg0, u32* arg1, s32 arg2) {
     f32 coss;
 
     if (*arg0 < arg2) {
@@ -733,7 +733,7 @@ f32 UpdateStatBarAnimation(s32* arg0, u32* arg1, s32 arg2) {
     return coss;
 }
 
-void RenderSelectionScreen(void) {
+void Gallery_FilmSelectDraw(void) {
     static s32 D_836032C0 = 0;
     static u32 D_836032C4 = 0;
     static s32 D_836032C8 = 0;
@@ -746,45 +746,45 @@ void RenderSelectionScreen(void) {
     f32 sp1C;
     f32 sp18;
 
-    Gallery_GetPageAndIndex(&gSelectionCamList, &sp28, &sp24, gSelectionCamList.unk_00);
-    Stage_BeginDisplayList();
-    DrawBackgroundGradient();
-    DrawItemList(0, 0x4F, 0x280, 1);
-    DrawItemList(0, 0x151, 0x280, 0);
-    DrawFilledRect(0, 0x5F, 0x280, 0xF2);
-    RenderSelectionScreenItems(&gSelectionCamList);
+    Gallery_IndexToGridPos(&gSelectionCamList, &sp28, &sp24, gSelectionCamList.unk_00);
+    BgStage_DrawFrame();
+    Gallery_FilmSelectDrawBackgroundGradient();
+    Gallery_FilmSelectDrawBandedStrip(0, 0x4F, 0x280, 1);
+    Gallery_FilmSelectDrawBandedStrip(0, 0x151, 0x280, 0);
+    Gallery_FilmSelectFillRectSolid(0, 0x5F, 0x280, 0xF2);
+    Gallery_FilmSelectDrawPhotoGrid(&gSelectionCamList);
 
-    sp1C = UpdateStatBarAnimation(&D_836032C0, &D_836032C4, 0x1E);
-    sp18 = UpdateStatBarAnimation(&D_836032C8, &D_836032CC, 0xF);
+    sp1C = Gallery_FilmSelectComputeScalePulse(&D_836032C0, &D_836032C4, 0x1E);
+    sp18 = Gallery_FilmSelectComputeScalePulse(&D_836032C8, &D_836032CC, 0xF);
 
     tmp = ((sp24 >= 2) && (sp28 == 0)) ? sp18 : sp1C;
-    DrawStatBar(0x30, 0x172, 0, tmp);
+    Gallery_FilmSelectDrawActionPanel(0x30, 0x172, 0, tmp);
 
     tmp = ((sp24 >= 2) && (sp28 != 0)) ? sp18 : sp1C;
-    DrawStatBar(0x1E1, 0x172, 1, tmp);
+    Gallery_FilmSelectDrawActionPanel(0x1E1, 0x172, 1, tmp);
 
-    DrawSelectionCursor(&gSelectionCamList);
-    DrawSelectionArrows(0x65, 0x2B);
-    DrawSelectionPrompt(&gSelectionCamList, 0xA5, 0x16B);
-    DrawTeamSizeBar(0xF0, 0x14E);
-    DrawCancelLabel(0x1E0, 0x14E);
-    Stage_Advance();
+    Gallery_FilmSelectDrawSelectionCursor(&gSelectionCamList);
+    Gallery_FilmSelectDrawBanner(0x65, 0x2B);
+    Gallery_FilmSelectDrawHelpText(&gSelectionCamList, 0xA5, 0x16B);
+    Gallery_FilmSelectDrawPhotoCounter(0xF0, 0x14E);
+    Gallery_FilmSelectDrawIconLabel(0x1E0, 0x14E);
+    BgStage_AdvanceFrame();
 }
 
-void HandleSelectionConfirmCancel(void) {
+void Gallery_FilmSelectHandleCancelInput(void) {
     if (gPlayer1Controller->buttonPressed & 0x8000) {
         gSelectionState = 3;
-        Stage_SetFillColor(0xFFFF);
-        Stage_FadeOut(0xF);
-        PlaySoundEffect(0x1D);
+        StageContext_SetClearColor(0xFFFF);
+        StageFade_StartFromTransparent(0xF);
+        Audio_PlaySoundEffectById(0x1D);
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
         gSelectionMessageState = 0;
         gSelectionState = 1;
-        PlaySoundEffect(3);
+        Audio_PlaySoundEffectById(3);
     }
 }
 
-s32 UpdateSelectionStateMachine(void) {
+s32 Gallery_FilmSelectUpdate(void) {
     static s32 D_836032D0 = 2;
 
     s32 sp1C = 1;
@@ -792,7 +792,7 @@ s32 UpdateSelectionStateMachine(void) {
 
     switch (gSelectionState) {
         case 0:
-            if (Stage_GetFadeState() == 0) {
+            if (StageContext_GetFadeMode() == 0) {
                 D_836032D0--;
                 if (D_836032D0 <= 0) {
                     gSelectionState = 1;
@@ -801,25 +801,25 @@ s32 UpdateSelectionStateMachine(void) {
             break;
 
         case 1:
-            temp_v0_2 = ProcessSelectionScreenInput(&gSelectionCamList);
+            temp_v0_2 = Gallery_FilmSelectHandleInput(&gSelectionCamList);
             if (temp_v0_2 != 0) {
                 gSelectionState = 3;
                 if (temp_v0_2 == 2) {
-                    Stage_SetFillColor(1);
-                    Stage_FadeOut(1);
+                    StageContext_SetClearColor(1);
+                    StageFade_StartFromTransparent(1);
                 } else {
-                    Stage_SetFillColor(0xFFFF);
-                    Stage_FadeOut(0xF);
+                    StageContext_SetClearColor(0xFFFF);
+                    StageFade_StartFromTransparent(0xF);
                 }
             }
             break;
 
         case 2:
-            HandleSelectionConfirmCancel();
+            Gallery_FilmSelectHandleCancelInput();
             break;
 
         case 3:
-            if (Stage_GetFadeState() == 1) {
+            if (StageContext_GetFadeMode() == 1) {
                 sp1C = 0;
             }
             break;
@@ -827,21 +827,21 @@ s32 UpdateSelectionStateMachine(void) {
     return sp1C;
 }
 
-void PollControllerAndMenuInput(void) {
+void Gallery_FilmSelectReadInputs(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-void RunSelectionScreenLoop(void) {
+void Gallery_FilmSelectRunLoop(void) {
     if (gSelectionScreenFadeType == 0) {
-        Stage_FadeIn(1);
+        StageFade_StartFromOpaque(1);
     } else {
-        Stage_FadeIn(7);
+        StageFade_StartFromOpaque(7);
     }
 
     do {
-        PollControllerAndMenuInput();
+        Gallery_FilmSelectReadInputs();
 
         switch (gSelectionState) {
             case 0:
@@ -849,16 +849,16 @@ void RunSelectionScreenLoop(void) {
                 break;
 
             default:
-                CamList_Update(&gSelectionCamList);
+                Gallery_ProcessSceneGrid(&gSelectionCamList);
                 break;
         }
 
-        RenderSelectionScreen();
-        Gallery_ClearActiveCamera();
-    } while (UpdateSelectionStateMachine() != 0);
+        Gallery_FilmSelectDraw();
+        Gallery_FinishActiveScene();
+    } while (Gallery_FilmSelectUpdate() != 0);
 }
 
-s32 FinalizeSelectionAndCleanup(unk_D_83407B38* arg0) {
+s32 Gallery_FilmSelectFinalize(unk_D_83407B38* arg0) {
     s32 temp_hi = arg0->unk_00 % 3;
     s32 temp_lo = arg0->unk_00 / 3;
     s32 sp1C;
@@ -872,21 +872,21 @@ s32 FinalizeSelectionAndCleanup(unk_D_83407B38* arg0) {
     }
 
     if ((sp1C == 0) && (gSelectedMonCount > 0)) {
-        AddSelectedMonstersToTeam(arg0);
+        Gallery_FilmSelectCommitPhotos(arg0);
     }
 
-    Gallery_SyncSelectionToCam(&gSelectionCamList, &gGallerySelection);
+    Gallery_SavePosition(&gSelectionCamList, &gGallerySelection);
     return sp1C;
 }
 
-void SelectionScreen_Main(s32 arg0, UNUSED s32 arg1) {
+void Gallery_FilmSelectMain(s32 arg0, UNUSED s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('FILM');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    gTextObjectHandle = Text_Init(0x18, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    gTextObjectHandle = Font_Init(0x18, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_5000000, snap_mode_ui, 0);
@@ -894,18 +894,18 @@ void SelectionScreen_Main(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_04000000, _6A9750, 0);
     FRAGMENT_LOAD(fragment31);
 
-    AssetManager_LoadArchives();
-    D_836032F8 = Asset_Load2(stadium_models_ROM_START, stadium_models_ROM_END, 1, 1);
-    MessageBank_Init();
-    Text_LoadMessageBanks();
-    InitializeSelectionScreen(arg0);
-    Stage_Set(sp24);
-    RunSelectionScreenLoop();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    PokeIcon_OpenModelArchives();
+    D_836032F8 = BinArchive_Open(stadium_models_ROM_START, stadium_models_ROM_END, 1, 1);
+    Text_InitStringTables();
+    Gallery_InitStringTables();
+    Gallery_FilmSelectInit(arg0);
+    StageContext_Activate(sp24);
+    Gallery_FilmSelectRunLoop();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('FILM');
 
-    FinalizeSelectionAndCleanup(&gSelectionCamList);
+    Gallery_FilmSelectFinalize(&gSelectionCamList);
 }

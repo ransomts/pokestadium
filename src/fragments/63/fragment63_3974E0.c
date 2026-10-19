@@ -14,7 +14,7 @@ s16 BattlePrep_RandomStarOffset(void) {
     return temp_fv0;
 }
 
-void BattleResult_ProcessGraphics(unk_D_84B19910* arg0) {
+void BattlePrep_DrawStarfield(unk_D_84B19910* arg0) {
     Vtx* temp_v0_12;
     s32 i;
     unk_D_84B19910_002* ptr2;
@@ -27,16 +27,16 @@ void BattleResult_ProcessGraphics(unk_D_84B19910* arg0) {
                         G_TX_NOMIRROR | G_TX_CLAMP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
     for (i = 0; i < 400; i++) {
-        temp_v0_12 = GfxAlloc(sizeof(Vtx) * 4);
+        temp_v0_12 = Gfx_AllocDisplayList(sizeof(Vtx) * 4);
         if (temp_v0_12 != NULL) {
             ptr2 = &(i + ((void)0, arg0))->unk_02;
-            SetTileVertex(&temp_v0_12[0], ptr2->unk_00 - 8, ptr2->unk_02 + 8, ptr2->unk_04, 0, 0, 0xFF, 0xFF, 0x96,
+            Gfx_SetVertexAttributes(&temp_v0_12[0], ptr2->unk_00 - 8, ptr2->unk_02 + 8, ptr2->unk_04, 0, 0, 0xFF, 0xFF, 0x96,
                           0xFF);
-            SetTileVertex(&temp_v0_12[1], ptr2->unk_00 - 8, ptr2->unk_02 - 8, ptr2->unk_04, 0, 0x400, 0xFF, 0xFF, 0x96,
+            Gfx_SetVertexAttributes(&temp_v0_12[1], ptr2->unk_00 - 8, ptr2->unk_02 - 8, ptr2->unk_04, 0, 0x400, 0xFF, 0xFF, 0x96,
                           0xFF);
-            SetTileVertex(&temp_v0_12[2], ptr2->unk_00 + 8, ptr2->unk_02 - 8, ptr2->unk_04, 0x400, 0x400, 0xFF, 0xFF,
+            Gfx_SetVertexAttributes(&temp_v0_12[2], ptr2->unk_00 + 8, ptr2->unk_02 - 8, ptr2->unk_04, 0x400, 0x400, 0xFF, 0xFF,
                           0x96, 0xFF);
-            SetTileVertex(&temp_v0_12[3], ptr2->unk_00 + 8, ptr2->unk_02 + 8, ptr2->unk_04, 0x400, 0, 0xFF, 0xFF, 0x96,
+            Gfx_SetVertexAttributes(&temp_v0_12[3], ptr2->unk_00 + 8, ptr2->unk_02 + 8, ptr2->unk_04, 0x400, 0, 0xFF, 0xFF, 0x96,
                           0xFF);
 
             gSPVertex(gDisplayListHead++, temp_v0_12, 4, 0);
@@ -48,7 +48,7 @@ void BattleResult_ProcessGraphics(unk_D_84B19910* arg0) {
     gSPSetGeometryMode(gDisplayListHead++, G_CULL_BACK);
 }
 
-void Battle_UpdateInputBuffer(unk_D_84B19910* arg0) {
+void BattlePrep_UpdateStarfield(unk_D_84B19910* arg0) {
     s32 temp_s0;
     s32 temp_v0;
     s32 i;
@@ -68,7 +68,7 @@ void Battle_UpdateInputBuffer(unk_D_84B19910* arg0) {
     }
 }
 
-void Input_UpdateBuffer(unk_D_84B19910* arg0) {
+void BattlePrep_InitStarfield(unk_D_84B19910* arg0) {
     s32 temp_s0;
     s32 temp_v0;
     s32 i;

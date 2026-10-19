@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-s32 PlaySoundEffect(u32);
+s32 Audio_PlaySoundEffectById(u32);
 
 
 #endif // _49790_H_

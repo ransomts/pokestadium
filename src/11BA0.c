@@ -3,7 +3,7 @@
 #include "F420.h"
 #include "util.h"
 
-void GraphNode_Init(GraphNode* arg0, u8 arg1) {
+void GeoNode_Init(GraphNode* arg0, u8 arg1) {
     if (arg0 != NULL) {
         arg0->unk_00 = arg1;
         arg0->unk_01 = 0x11;
@@ -17,7 +17,7 @@ void GraphNode_Init(GraphNode* arg0, u8 arg1) {
     }
 }
 
-void GraphNode_SetCallback(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* arg2) {
+void GeoNode_SetCallback(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* arg2) {
     if (arg1 != NULL) {
         arg1 = Util_ConvertAddrToVirtAddr(arg1);
     }
@@ -31,54 +31,54 @@ void GraphNode_SetCallback(GraphNode* arg0, func_D_86002F34_000_010 arg1, void* 
     }
 }
 
-GraphNode* GraphNode_AllocInit(MainPoolState* arg0, GraphNode* arg1) {
+GraphNode* GeoNode_CreateContainer(MainPoolState* arg0, GraphNode* arg1) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(struct GraphNode), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(struct GraphNode), 4);
     }
 
     if (arg1 != NULL) {
-        GraphNode_Init(arg1, 0);
+        GeoNode_Init(arg1, 0);
     }
 
     return arg1;
 }
 
-unk_D_86002F34_alt2* GraphNodeAlt_AllocInitParent(MainPoolState* arg0, unk_D_86002F34_alt2* arg1, GraphNode* arg2) {
+unk_D_86002F34_alt2* GeoNode_CreateWithReference(MainPoolState* arg0, unk_D_86002F34_alt2* arg1, GraphNode* arg2) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt2), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt2), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
-        GraphNode_Init(arg1, 1);
+        GeoNode_Init(arg1, 1);
     }
 
     return arg1;
 }
 
-CameraStruct* CameraNode_Create(MemoryBlock* arg0, CameraStruct* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
+CameraStruct* GeoNode_CreateCamera(MemoryBlock* arg0, CameraStruct* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(CameraStruct), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(CameraStruct), 4);
     }
 
     if (arg1 != NULL) {
-        Viewport_SetRect(arg1, arg2, arg3, arg4, arg5);
-        Perspective_SetParams(arg1, 30.0f, 100.0f, 12800.0f);
-        Camera_SetLookAt(arg1, 0.0f, 512.0f, 4096.0f, 0.0f, 0.0f, 0.0f, 0);
-        Background_SetColor(arg1, 2, 0, 0, 0, 0);
-        GraphNode_Init(arg1, 2);
+        GeoCamera_SetViewport(arg1, arg2, arg3, arg4, arg5);
+        GeoCamera_SetPerspective(arg1, 30.0f, 100.0f, 12800.0f);
+        GeoCamera_SetEyeAtUp(arg1, 0.0f, 512.0f, 4096.0f, 0.0f, 0.0f, 0.0f, 0);
+        GeoCamera_SetBackground(arg1, 2, 0, 0, 0, 0);
+        GeoNode_Init(arg1, 2);
     }
     return arg1;
 }
 
 unk_D_86002F34_alt13* GeoNode_CreateType3(MemoryBlock* arg0, unk_D_86002F34_alt13* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt13), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt13), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
-        GraphNode_Init(arg1, 3);
+        GeoNode_Init(arg1, 3);
     }
 
     return arg1;
@@ -86,13 +86,13 @@ unk_D_86002F34_alt13* GeoNode_CreateType3(MemoryBlock* arg0, unk_D_86002F34_alt1
 
 unk_D_86002F34_alt1* GeoNode_CreateType4(MemoryBlock* arg0, unk_D_86002F34_alt1* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt1), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt1), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
         arg1->unk_1A = 0;
-        GraphNode_Init(arg1, 4);
+        GeoNode_Init(arg1, 4);
     }
 
     return arg1;
@@ -100,11 +100,11 @@ unk_D_86002F34_alt1* GeoNode_CreateType4(MemoryBlock* arg0, unk_D_86002F34_alt1*
 
 unk_D_86002F34_alt14* GeoNode_CreateOrtho(MainPoolState* arg0, unk_D_86002F34_alt14* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt14), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt14), 4);
     }
 
     if (arg1 != NULL) {
-        GraphNode_Init(arg1, 5);
+        GeoNode_Init(arg1, 5);
         arg1->unk_00.unk_02 |= arg2 & 3;
     }
 
@@ -113,11 +113,11 @@ unk_D_86002F34_alt14* GeoNode_CreateOrtho(MainPoolState* arg0, unk_D_86002F34_al
 
 unk_D_86002F34_alt15* GeoNode_CreatePerspective(MainPoolState* arg0, unk_D_86002F34_alt15* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt15), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt15), 4);
     }
 
     if (arg1 != NULL) {
-        GraphNode_Init(arg1, 6);
+        GeoNode_Init(arg1, 6);
         arg1->unk_00.unk_02 |= arg2 & 3;
     }
 
@@ -128,48 +128,48 @@ unk_D_86002F34_alt16* GeoNode_CreateBackground(MainPoolState* arg0, unk_D_86002F
     u32 temp_v0;
 
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt16), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt16), 4);
     }
 
     if (arg1 != NULL) {
         temp_v0 = ((arg2 >> 3) << 0xB) | ((arg3 >> 3) << 6) | ((arg4 >> 3) << 1) | 1;
         arg1->unk_18 = (temp_v0 << 0x10) | temp_v0;
-        GraphNode_Init(arg1, 7);
+        GeoNode_Init(arg1, 7);
     }
     return arg1;
 }
 
 unk_D_86002F34_alt17* GeoNode_CreateClearDepth(MainPoolState* arg0, unk_D_86002F34_alt17* arg1) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt17), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt17), 4);
     }
 
     if (arg1 != NULL) {
-        GraphNode_Init(arg1, 8);
+        GeoNode_Init(arg1, 8);
     }
 
     return arg1;
 }
 
-unk_D_8690A610* ColorRectNode_Create(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a) {
+unk_D_8690A610* GeoNode_CreateFog(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a) {
     if (arg0 != 0) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_8690A610), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_8690A610), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18.unk_00 = arg2;
         arg1->unk_18.unk_02 = arg3;
         arg1->unk_18.unk_04.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
-        GraphNode_Init(arg1, 0xA);
+        GeoNode_Init(arg1, 0xA);
     }
 
     return arg1;
 }
 
-unk_D_86002F34_alt18* ColoredVertexNode_Create(MainPoolState* arg0, unk_D_86002F34_alt18* arg1, s16 arg2, s16 arg3, u8 r, u8 g,
+unk_D_86002F34_alt18* GeoNode_CreateLight(MainPoolState* arg0, unk_D_86002F34_alt18* arg1, s16 arg2, s16 arg3, u8 r, u8 g,
                                     u8 b, u8 a) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt18), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt18), 4);
     }
 
     if (arg1 != NULL) {
@@ -179,7 +179,7 @@ unk_D_86002F34_alt18* ColoredVertexNode_Create(MainPoolState* arg0, unk_D_86002F
         arg1->a = a;
         arg1->unk_1C = arg2;
         arg1->unk_1E = arg3;
-        GraphNode_Init(arg1, 0xB);
+        GeoNode_Init(arg1, 0xB);
     }
 
     return arg1;
@@ -187,23 +187,23 @@ unk_D_86002F34_alt18* ColoredVertexNode_Create(MainPoolState* arg0, unk_D_86002F
 
 unk_D_86002F34_alt19* GeoNode_CreateAmbientLight(MainPoolState* arg0, unk_D_86002F34_alt19* arg1, u8 r, u8 g, u8 b) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt19), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt19), 4);
     }
 
     if (arg1 != NULL) {
         arg1->r = r;
         arg1->g = g;
         arg1->b = b;
-        GraphNode_Init(arg1, 0xD);
+        GeoNode_Init(arg1, 0xD);
     }
 
     return arg1;
 }
 
-unk_D_86002F34* MeshNode_Create(MainPoolState* arg0, unk_D_86002F34* arg1, s32 arg2, unk_D_86002F34_018* arg3, s32 arg4,
+unk_D_86002F34* GeoNode_CreateShadowContext(MainPoolState* arg0, unk_D_86002F34* arg1, s32 arg2, unk_D_86002F34_018* arg3, s32 arg4,
                               unk_D_86002F34_01C* arg5, s32 arg6, Vtx* arg7) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34), 4);
     }
 
     if (arg1 != NULL) {
@@ -214,7 +214,7 @@ unk_D_86002F34* MeshNode_Create(MainPoolState* arg0, unk_D_86002F34* arg1, s32 a
         arg1->unk_25 = arg4;
         arg1->unk_26 = arg6;
         arg1->unk_28 = NULL;
-        GraphNode_Init(arg1, 0xE);
+        GeoNode_Init(arg1, 0xE);
     }
 
     return arg1;
@@ -223,7 +223,7 @@ unk_D_86002F34* MeshNode_Create(MainPoolState* arg0, unk_D_86002F34* arg1, s32 a
 unk_D_86002F34_alt12* GeoNode_CreateShadow(MainPoolState* arg0, unk_D_86002F34_alt12* arg1, s16 arg2, s16 arg3, s16 arg4,
                                     s16 arg5) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt12), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt12), 4);
     }
 
     if (arg1 != NULL) {
@@ -231,7 +231,7 @@ unk_D_86002F34_alt12* GeoNode_CreateShadow(MainPoolState* arg0, unk_D_86002F34_a
         arg1->unk_1A = arg3;
         arg1->unk_1C = arg4;
         arg1->unk_1E = arg5;
-        GraphNode_Init(arg1, 0xF);
+        GeoNode_Init(arg1, 0xF);
     }
 
     return arg1;
@@ -239,13 +239,13 @@ unk_D_86002F34_alt12* GeoNode_CreateShadow(MainPoolState* arg0, unk_D_86002F34_a
 
 unk_D_86002F34_alt20* GeoNode_CreateCullDistance(MainPoolState* arg0, unk_D_86002F34_alt20* arg1, s16 arg2, s16 arg3) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt20), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt20), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
         arg1->unk_1A = arg3;
-        GraphNode_Init(arg1, 0x10);
+        GeoNode_Init(arg1, 0x10);
     }
 
     return arg1;
@@ -253,27 +253,27 @@ unk_D_86002F34_alt20* GeoNode_CreateCullDistance(MainPoolState* arg0, unk_D_8600
 
 unk_D_86002F34_alt21* GeoNode_CreateSwitchCase(MainPoolState* arg0, unk_D_86002F34_alt21* arg1, s16 arg2, s16 arg3) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt21), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt21), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
         arg1->unk_1A = arg3;
-        GraphNode_Init(arg1, 0x11);
+        GeoNode_Init(arg1, 0x11);
     }
 
     return arg1;
 }
 
-unk_D_86002F34_alt5* TransformNode_Create(MainPoolState* arg0, unk_D_86002F34_alt5* arg1, Vec3f* arg2, Vec3s* arg3) {
+unk_D_86002F34_alt5* GeoNode_CreateTranslateRotate(MainPoolState* arg0, unk_D_86002F34_alt5* arg1, Vec3f* arg2, Vec3s* arg3) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt5), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt5), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = *arg2;
         arg1->unk_24 = *arg3;
-        GraphNode_Init(arg1, 0x12);
+        GeoNode_Init(arg1, 0x12);
     }
 
     return arg1;
@@ -281,12 +281,12 @@ unk_D_86002F34_alt5* TransformNode_Create(MainPoolState* arg0, unk_D_86002F34_al
 
 unk_D_86002F34_alt22* GeoNode_CreateTranslate(MainPoolState* arg0, unk_D_86002F34_alt22* arg1, Vec3f* arg2) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt22), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt22), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = *arg2;
-        GraphNode_Init(arg1, 0x13);
+        GeoNode_Init(arg1, 0x13);
     }
 
     return arg1;
@@ -295,7 +295,7 @@ unk_D_86002F34_alt22* GeoNode_CreateTranslate(MainPoolState* arg0, unk_D_86002F3
 unk_D_86002F34_alt6* GeoNode_CreateAnimatedPart(MainPoolState* arg0, unk_D_86002F34_alt6* arg1, s16 arg2, s16 arg3, s16 arg4,
                                    Vec3s* arg5, Vec3s* arg6, Vec3f* arg7) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt6), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt6), 4);
     }
 
     if (arg1 != NULL) {
@@ -305,21 +305,21 @@ unk_D_86002F34_alt6* GeoNode_CreateAnimatedPart(MainPoolState* arg0, unk_D_86002
         arg1->unk_30 = arg2;
         arg1->unk_31 = arg3;
         arg1->unk_32 = arg4;
-        GraphNode_Init(arg1, 0x14);
+        GeoNode_Init(arg1, 0x14);
     }
 
     return arg1;
 }
 
-unk_D_86002F34_alt7* DisplayListNode_Create(MainPoolState* arg0, unk_D_86002F34_alt7* arg1, s32 arg2, Gfx* arg3, s16 arg4) {
+unk_D_86002F34_alt7* GeoNode_CreateDisplayListPart(MainPoolState* arg0, unk_D_86002F34_alt7* arg1, s32 arg2, Gfx* arg3, s16 arg4) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt7), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt7), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg3;
         arg1->unk_1C = arg4;
-        GraphNode_Init(arg1, 0x15);
+        GeoNode_Init(arg1, 0x15);
         arg1->unk_00.unk_03 = arg2;
     }
 
@@ -329,7 +329,7 @@ unk_D_86002F34_alt7* DisplayListNode_Create(MainPoolState* arg0, unk_D_86002F34_
 Fragment2_1GraphNode* GeoNode_CreateModelPart(MainPoolState* arg0, Fragment2_1GraphNode* arg1, s16 arg2, Vec3f* arg3,
                                       Vec3s* arg4, Vec3f* arg5) {
     if (arg0 != 0) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(Fragment2_1GraphNode), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(Fragment2_1GraphNode), 4);
     }
 
     if (arg1 != NULL) {
@@ -352,26 +352,26 @@ Fragment2_1GraphNode* GeoNode_CreateModelPart(MainPoolState* arg0, Fragment2_1Gr
         arg1->unk_054.unk_04 = NULL;
         arg1->unk_054.unk_08 = 0;
         arg1->unk_054.unk_0A = 0;
-        GraphNode_Init(&arg1->unk_000, 0x16);
+        GeoNode_Init(&arg1->unk_000, 0x16);
         arg1->unk_000.unk_02 |= 0x60;
     }
 
     return arg1;
 }
 
-unk_D_86002F34_alt8* MatrixNode_Create(MainPoolState* arg0, unk_D_86002F34_alt8* arg1, s32 arg2, Gfx* arg3, MtxF* arg4) {
+unk_D_86002F34_alt8* GeoNode_CreateDisplayListMatrix(MainPoolState* arg0, unk_D_86002F34_alt8* arg1, s32 arg2, Gfx* arg3, MtxF* arg4) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt8), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt8), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg3;
         if (arg4 == NULL) {
-            Matrix_Identity(&arg1->unk_1C);
+            MtxF_Identity(&arg1->unk_1C);
         } else {
-            Matrix_Copy(&arg1->unk_1C, arg4);
+            MtxF_Copy(&arg1->unk_1C, arg4);
         }
-        GraphNode_Init(arg1, 0x17);
+        GeoNode_Init(arg1, 0x17);
         arg1->unk_00.unk_03 = arg2;
     }
 
@@ -382,35 +382,35 @@ unk_D_86002F34_alt8* GeoNode_CreateDisplayListMatrixFromTransform(MainPoolState*
                                    Vec3s* arg5) {
     MtxF sp20;
 
-    Matrix_RotateTranslate(&sp20, arg4, arg5);
-    return MatrixNode_Create(arg0, arg1, arg2, arg3, &sp20);
+    MtxF_SetRotationTranslationF(&sp20, arg4, arg5);
+    return GeoNode_CreateDisplayListMatrix(arg0, arg1, arg2, arg3, &sp20);
 }
 
-unk_D_86002F34_alt9* BillboardNode_Create(MainPoolState* arg0, unk_D_86002F34_alt9* arg1, s32 arg2, Gfx* arg3, Vec3f* arg4,
+unk_D_86002F34_alt9* GeoNode_CreateScale(MainPoolState* arg0, unk_D_86002F34_alt9* arg1, s32 arg2, Gfx* arg3, Vec3f* arg4,
                                    f32 arg5) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt9), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt9), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_1C = *arg4;
         arg1->unk_28 = arg5;
         arg1->unk_18 = arg3;
-        GraphNode_Init(arg1, 0x18);
+        GeoNode_Init(arg1, 0x18);
         arg1->unk_00.unk_03 = arg2;
     }
 
     return arg1;
 }
 
-SimpleGfxNode* SimpleGfxNode_Create(MainPoolState* arg0, SimpleGfxNode* arg1, s32 arg2, Gfx* arg3) {
+SimpleGfxNode* GeoNode_CreateDisplayList(MainPoolState* arg0, SimpleGfxNode* arg1, s32 arg2, Gfx* arg3) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(SimpleGfxNode), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(SimpleGfxNode), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg3;
-        GraphNode_Init(arg1, 0x19);
+        GeoNode_Init(arg1, 0x19);
         arg1->unk_00.unk_03 = arg2;
     }
 
@@ -420,7 +420,7 @@ SimpleGfxNode* SimpleGfxNode_Create(MainPoolState* arg0, SimpleGfxNode* arg1, s3
 unk_D_86002F34_alt10* GeoNode_CreateShadowTexture(MainPoolState* arg0, unk_D_86002F34_alt10* arg1, s16 arg2, s16 arg3, Gfx* arg4,
                                     s16 arg5, s16 arg6, u8 r, u8 g, u8 b, u8 a) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt10), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt10), 4);
     }
 
     if (arg1 != NULL) {
@@ -430,7 +430,7 @@ unk_D_86002F34_alt10* GeoNode_CreateShadowTexture(MainPoolState* arg0, unk_D_860
         arg1->unk_1C = arg5;
         arg1->unk_1E = arg6;
         arg1->unk_24.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
-        GraphNode_Init(arg1, 0x1A);
+        GeoNode_Init(arg1, 0x1A);
     }
 
     return arg1;
@@ -438,12 +438,12 @@ unk_D_86002F34_alt10* GeoNode_CreateShadowTexture(MainPoolState* arg0, unk_D_860
 
 unk_D_86002F34_alt23* GeoNode_CreateAnchor(MainPoolState* arg0, unk_D_86002F34_alt23* arg1, s16 arg2) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt23), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt23), 4);
     }
 
     if (arg1 != NULL) {
         arg1->unk_18 = arg2;
-        GraphNode_Init(arg1, 0x1B);
+        GeoNode_Init(arg1, 0x1B);
     }
 
     return arg1;
@@ -452,7 +452,7 @@ unk_D_86002F34_alt23* GeoNode_CreateAnchor(MainPoolState* arg0, unk_D_86002F34_a
 unk_D_86002F34_alt24* GeoNode_CreateGroup(MainPoolState* arg0, unk_D_86002F34_alt24* arg1, s32 arg2, s16 arg3, s16 arg4,
                                     s16 arg5, s16 arg6, s16 arg7, s16 arg8, s32 arg9, u8 r, u8 g, u8 b, u8 a) {
     if (arg0 != NULL) {
-        arg1 = state_pool_alloc_aligned(arg0, sizeof(unk_D_86002F34_alt24), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt24), 4);
     }
 
     if (arg1 != NULL) {
@@ -464,14 +464,14 @@ unk_D_86002F34_alt24* GeoNode_CreateGroup(MainPoolState* arg0, unk_D_86002F34_al
         arg1->unk_1A = arg8;
         arg1->unk_24 = arg9;
         arg1->unk_28.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
-        GraphNode_Init(arg1, 0x1C);
+        GeoNode_Init(arg1, 0x1C);
         arg1->unk_00.unk_03 = arg2;
     }
 
     return arg1;
 }
 
-void Viewport_SetRect(CameraStruct* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void GeoCamera_SetViewport(CameraStruct* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     arg0->unk_18.x = arg1;
     arg0->unk_18.y = arg2;
     arg0->unk_18.width = arg3;
@@ -486,7 +486,7 @@ void Viewport_SetRect(CameraStruct* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4
     arg0->unk_40.scale = 1.0f;
 }
 
-void Perspective_SetParams(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3) {
+void GeoCamera_SetPerspective(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->unk_24.aspect = (f32)arg0->unk_18.width / arg0->unk_18.height;
     arg0->unk_24.fovy = arg1;
     arg0->unk_24.near = arg2;
@@ -494,7 +494,7 @@ void Perspective_SetParams(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3) {
     arg0->unk_24.scale = 1.0f;
 }
 
-void Camera_SetLookAt(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s32 arg7) {
+void GeoCamera_SetEyeAtUp(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, f32 arg6, s32 arg7) {
     unk_D_86002F34_00C_060* sp1C = &arg0->unk_60;
     f32 sp28 = arg4 - arg1;
     f32 sp24 = arg6 - arg3;
@@ -503,12 +503,12 @@ void Camera_SetLookAt(CameraStruct* arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4
     sp28 *= temp_fv1_2;
     sp24 *= temp_fv1_2;
 
-    Vec3f_Set(&sp1C->eye, arg1, arg2, arg3);
-    Vec3f_Set(&sp1C->at, arg4, arg5, arg6);
-    Vec3f_Set(&sp1C->up, SINS(arg7) * sp24, COSS(arg7), -SINS(arg7) * sp28);
+    Vec3f_SetComponentsDuplicate(&sp1C->eye, arg1, arg2, arg3);
+    Vec3f_SetComponentsDuplicate(&sp1C->at, arg4, arg5, arg6);
+    Vec3f_SetComponentsDuplicate(&sp1C->up, SINS(arg7) * sp24, COSS(arg7), -SINS(arg7) * sp28);
 }
 
-void Background_SetColor(CameraStruct* arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4, u8 arg5) {
+void GeoCamera_SetBackground(CameraStruct* arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg4, u8 arg5) {
     unk_D_86002F34_00C_0CC* ptr = &arg0->unk_CC;
 
     if (arg2 < 2) {
@@ -527,7 +527,7 @@ void Background_SetColor(CameraStruct* arg0, s16 arg1, s16 arg2, u8 arg3, u8 arg
     }
 }
 
-void Texture_SetDefault(CameraStruct* arg0, s16 arg1, s16 arg2, s32 arg3, u32 arg4) {
+void GeoCamera_SetBackgroundTexture(CameraStruct* arg0, s16 arg1, s16 arg2, s32 arg3, u32 arg4) {
     unk_D_86002F34_00C_0CC* ptr = &arg0->unk_CC;
     ptr->unk_0C = arg1;
     ptr->unk_0E = arg2;
@@ -541,7 +541,7 @@ void Texture_SetDefault(CameraStruct* arg0, s16 arg1, s16 arg2, s32 arg3, u32 ar
     ptr->texture = D_1000800;
 }
 
-void GraphNode_AddChild(GraphNode* arg0, GraphNode* arg1) {
+void GraphNode_AppendChild(GraphNode* arg0, GraphNode* arg1) {
     GraphNode* temp_v0;
     GraphNode* temp_v1;
 
@@ -573,7 +573,7 @@ void GraphNode_RemoveChild(GraphNode* arg0, GraphNode* arg1) {
     }
 }
 
-GraphNode* GraphNode_GetNthChild(GraphNode* arg0, s32 arg1) {
+GraphNode* GraphNode_GetChildAtIndex(GraphNode* arg0, s32 arg1) {
     GraphNode* var_v1;
     s32 i;
     var_v1 = (GraphNode*)arg0->unk_0C;

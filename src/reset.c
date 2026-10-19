@@ -77,7 +77,7 @@ void SoftReset_ClearLines640(u16* buf) {
 void SoftReset_UpdateFadeColor(void) {
     if (gSoftResetLineNum <= 15) {
         if (gSoftResetLineNum == 0) {
-            u16 color = Gfx_GetFrameFillColor();
+            u16 color = Display_GetFramebufferClearColor();
             // decoding a 5551 value back to the raw R/G/B values.
             gSoftResetRed = (color >> 11) & 31;  // masked red?
             gSoftResetGreen = (color >> 6) & 31; // masked green?
@@ -85,7 +85,7 @@ void SoftReset_UpdateFadeColor(void) {
         }
         // this function is supposed to only take 1 argument. huh?
         // this function packs 3 values into a RGBA5551 format.
-        Gfx_SetFrameFillColor(((((gSoftResetRed * (15 - gSoftResetLineNum)) >> 4) << 11) |
+        Display_ClearFramebufferLine(((((gSoftResetRed * (15 - gSoftResetLineNum)) >> 4) << 11) |
                        (((gSoftResetGreen * (15 - gSoftResetLineNum)) >> 4) << 6) |
                        (((gSoftResetBlue * (15 - gSoftResetLineNum)) >> 4) << 1) | 1) &
                           0xFFFF,
@@ -100,24 +100,24 @@ void SoftReset_UpdateFadeColor(void) {
  */
 void SoftReset_Thread(void* unused) {
     __osSetFpcCsr(0x01000C01);
-    ThreadList_Add(&gSoftResetThread);
+    Sched_AddClient(&gSoftResetThread);
 
     // thread loop
     while (1) {
-        MessageQueue_Recv(&gSoftResetThread.thread); // hangs here until gets a soft reset.
+        Sched_WaitClientQueue(&gSoftResetThread.thread); // hangs here until gets a soft reset.
         if (gRspTaskManager.unk_A38 == 0) {
             continue;
         }
 
         if (gSoftResetThread.gSoftResetLineNum < 0x10U) {
-            UnkStruct4* temp_v0 = GetFramebufferInfo();
+            UnkStruct4* temp_v0 = Display_GetWorkerStatus();
             if (temp_v0 != NULL) {
                 if (temp_v0->unk_04 == 320) {
                     SoftReset_ClearLines320(temp_v0->unk_08);
                 } else {
                     SoftReset_ClearLines640(temp_v0->unk_08);
                 }
-            } else if (IsSoftResetPending() != 0) {
+            } else if (Display_IsCurrentFramebuffer() != 0) {
                 SoftReset_UpdateFadeColor();
             } else {
                 SoftReset_ClearLines320(osViGetCurrentFramebuffer());
@@ -140,7 +140,7 @@ void SoftReset_Thread(void* unused) {
  * Create the soft reset effect thread.
  */
 void SoftReset_CreateThread(void) {
-    MessageQueue_Create(&gSoftResetThread.thread, 2, 1);
+    Sched_InitClientQueue(&gSoftResetThread.thread, 2, 1);
     gSoftResetThread.gSoftResetLineNum = 0;
     osCreateThread(&gSoftResetThread.thread, THREAD_ID_RESET, SoftReset_Thread, NULL, &gSoftResetLineNum, THREAD_PRI_RESET);
     osStartThread(&gSoftResetThread.thread);

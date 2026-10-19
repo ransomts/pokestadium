@@ -7,10 +7,10 @@
 static BinArchive* gMessageBankArchive;
 static char** gMessageBankFiles;
 
-void MessageBank_Init(void) {
+void Text_InitStringTables(void) {
     s32 i;
 
-    gMessageBankArchive = Asset_Load2(textdata_ROM_START, NULL, 1, 0);
+    gMessageBankArchive = BinArchive_Open(textdata_ROM_START, NULL, 1, 0);
     gMessageBankFiles = main_pool_alloc(D_800AF740_NUM_FILES * sizeof(char*), 0);
 
     for (i = 0; i < D_800AF740_NUM_FILES; i++) {
@@ -18,23 +18,23 @@ void MessageBank_Init(void) {
     }
 }
 
-char** GetMessageBank(s32 file_number) {
+char** Text_GetStringTable(s32 file_number) {
     return (char**)BinArchive_GetFile(gMessageBankArchive, file_number);
 }
 
-void MessageBank_SetPointer_0x14_0x2A(u32 arg0, u32 arg1) {
+void Text_SetStringToken(u32 arg0, u32 arg1) {
     if ((arg0 >= 0x14) && (arg0 < 0x2A)) {
         gMessageBankFiles[arg0] = (char*)arg1;
     }
 }
 
-void MessageBank_SetPointer_1_9(u32 arg0, u32 arg1) {
+void Text_SetNumberToken(u32 arg0, u32 arg1) {
     if ((arg0 != 0) && (arg0 < 0xA)) {
         gMessageBankFiles[arg0] = (char*)arg1;
     }
 }
 
-void DecompressString(char* arg0, u32 arg1, s8* arg2) {
+void Text_SubstituteTokens(char* arg0, u32 arg1, s8* arg2) {
     u32 i;
     s32 var_s2;
     s32 temp_v0;
@@ -100,7 +100,7 @@ end:
     *arg0++ = '\x00';
 }
 
-char* GetMessageString(char* arg0, s32 arg1, char** arg2, u32 file_number) {
+char* Text_GetString(char* arg0, s32 arg1, char** arg2, u32 file_number) {
     char* sp1C;
     char* sp18 = (u32)arg2 + (u32)arg2[file_number + 1];
 
@@ -108,7 +108,7 @@ char* GetMessageString(char* arg0, s32 arg1, char** arg2, u32 file_number) {
         sp1C = sp18;
     } else {
         sp1C = arg0;
-        DecompressString(arg0, arg1, sp18);
+        Text_SubstituteTokens(arg0, arg1, sp18);
     }
 
     return sp1C;

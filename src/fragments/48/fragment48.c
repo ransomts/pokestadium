@@ -42,51 +42,51 @@ void func_83900028(void) {
 void func_83900030(void) {
 }
 
-void Gallery_Debugger_Init(void) {
+void GalleryDebugger_LoadDeckEntries(void) {
     s32 i;
 
     gGalleryState = 0;
     gGalleryMenuState.unk_00 = 0;
-    GbsEnsureBankLoaded(2);
+    Save_EnsureBankLoaded(2);
 
     for (i = 0; i < 36; i++) {
-        GbsReadBlockEntry(0x16, 0, i, &gGalleryLoadData[i]);
+        Deck_ReadSaveEntry(0x16, 0, i, &gGalleryLoadData[i]);
     }
 
     for (i = 0; i < 21; i++) {
-        GbsReadBlockEntry(0x17, 0, i, &gGallerySaveData[i]);
+        Deck_ReadSaveEntry(0x17, 0, i, &gGallerySaveData[i]);
     }
 
     Gallery_Debugger_PostLoad();
 }
 
-void Gallery_Debugger_WriteBankData(void) {
+void GalleryDebugger_SaveDeckEntries(void) {
     s32 i;
 
     for (i = 0; i < 36; i++) {
-        GbsWriteBlockEntry(0x16, 0, i, &gGalleryLoadData[i]);
+        Save_WriteTypedRecord(0x16, 0, i, &gGalleryLoadData[i]);
     }
 
     for (i = 0; i < 21; i++) {
-        GbsWriteBlockEntry(0x17, 0, i, &gGallerySaveData[i]);
+        Save_WriteTypedRecord(0x17, 0, i, &gGallerySaveData[i]);
     }
 
-    GbsProcessBankWrites(2);
-    GbsSyncBank(2);
+    Save_CommitBankRecords(2);
+    Save_FlushBank(2);
 }
 
-void Gallery_Debugger_DrawMenu(void) {
+void GalleryDebugger_DrawMenu(void) {
     static char* D_83900640[] = { "Load Controller Pak", "Save Controller Pak", "Quit" };
 
     s32 i;
     s32 sp30;
     char* temp_s0 = "GALLERY DEBUGGER";
 
-    Text_ResetState();
-    Text_SetFont(8, 0);
+    Font_BeginTranslucentTextRendering();
+    Font_SetActive(8, 0);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-    sp30 = (0x280 - MeasureTextWidth(0, 0, temp_s0)) / 2;
-    Text_Print(sp30, 0x64, temp_s0);
+    sp30 = (0x280 - Font_MeasureTextExtent(0, 0, temp_s0)) / 2;
+    Font_Printf(sp30, 0x64, temp_s0);
 
     for (i = 0; i < 3; i++) {
         s32 tmp = i * 0x16;
@@ -95,21 +95,21 @@ void Gallery_Debugger_DrawMenu(void) {
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
         }
-        Text_Print(0x78, 0x82 + tmp, D_83900640[i]);
+        Font_Printf(0x78, 0x82 + tmp, D_83900640[i]);
     }
 
-    Text_Print(sp30, 0xC8, "PFS ERROR : %d", gGalleryPfsError);
-    Text_SetupDL();
+    Font_Printf(sp30, 0xC8, "PFS ERROR : %d", gGalleryPfsError);
+    Font_EndTexturedTextRendering();
 }
 
-void Gallery_Debugger_Render(void) {
-    Stage_BeginDisplayList();
-    Gfx_DrawTextureAtlas(gGalleryBackgroundTexture);
-    Gallery_Debugger_DrawMenu();
-    Stage_Advance();
+void GalleryDebugger_DrawFrame(void) {
+    BgStage_DrawFrame();
+    Gfx_DrawTiledRgba16Image(gGalleryBackgroundTexture);
+    GalleryDebugger_DrawMenu();
+    BgStage_AdvanceFrame();
 }
 
-s32 Gallery_Debugger_HandleInput(void) {
+s32 GalleryDebugger_HandleMenuInput(void) {
     s32 var_a2 = 0;
     s32 temp_a1 = gGalleryMenuState.unk_00;
 
@@ -152,25 +152,25 @@ s32 Gallery_Debugger_HandleInput(void) {
     return var_a2;
 }
 
-s32 Gallery_Debugger_MainLoop(void) {
+s32 GalleryDebugger_UpdateFadeState(void) {
     s32 sp1C = 1;
 
     switch (gGalleryState) {
         case 0:
-            if (Stage_GetFadeState() == 0) {
+            if (StageContext_GetFadeMode() == 0) {
                 gGalleryState = 1;
             }
             break;
 
         case 1:
-            if (Gallery_Debugger_HandleInput() != 0) {
+            if (GalleryDebugger_HandleMenuInput() != 0) {
                 gGalleryState = 2;
-                Stage_FadeOut(0xF);
+                StageFade_StartFromTransparent(0xF);
             }
             break;
 
         case 2:
-            if (Stage_GetFadeState() == 1) {
+            if (StageContext_GetFadeMode() == 1) {
                 sp1C = 0;
             }
             break;
@@ -178,38 +178,38 @@ s32 Gallery_Debugger_MainLoop(void) {
     return sp1C;
 }
 
-void Gallery_Debugger_UpdateController(void) {
+void GalleryDebugger_PollInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
-void Gallery_Debugger_Run(void) {
-    Stage_FadeIn(0xF);
+void GalleryDebugger_MenuLoop(void) {
+    StageFade_StartFromOpaque(0xF);
     do {
-        Gallery_Debugger_UpdateController();
-        Gallery_Debugger_Render();
-    } while (Gallery_Debugger_MainLoop() != 0);
+        GalleryDebugger_PollInput();
+        GalleryDebugger_DrawFrame();
+    } while (GalleryDebugger_UpdateFadeState() != 0);
 }
 
-s32 Gallery_Debugger_Entry(s32 arg0, s32 arg1) {
+s32 GalleryDebugger_Main(s32 arg0, s32 arg1) {
     Stage* sp24;
 
     main_pool_push_state('GLDB');
 
-    Gfx_InitBuffers(0x10000, 0);
-    sp24 = Stage_Create(1, 0, 2, 0, 2, 1);
-    Text_Init(0x18, 0);
+    Gfx_InitDisplayListBuffers(0x10000, 0);
+    sp24 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
+    Font_Init(0x18, 0);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, gallery_ui, 0);
     gGalleryBackgroundTexture = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
-    Gallery_Debugger_Init();
-    Stage_Set(sp24);
-    Gallery_Debugger_Run();
-    Gallery_Debugger_WriteBankData();
-    Stage_Destroy();
-    FontManager_Free();
-    Gfx_FreeBuffers();
+    GalleryDebugger_LoadDeckEntries();
+    StageContext_Activate(sp24);
+    GalleryDebugger_MenuLoop();
+    GalleryDebugger_SaveDeckEntries();
+    StageContext_Deactivate();
+    Font_Free();
+    Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('GLDB');
 

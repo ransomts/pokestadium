@@ -3,9 +3,9 @@
 
 #include "global.h"
 
-void LoadSaveSlotSprites(s32 arg0);
-s32 MenuStage_Frame(u8 arg0);
-void PopulateInputStructFromSprites(UnkInputStruct8000D738* arg0);
-s32 Fragment53_Main(s32 arg0, UnkInputStruct8000D738* arg1);
+void GbTower_LoadPartyFromDeck(s32 arg0);
+s32 GbTower_TeamPrepFrameCallback(u8 arg0);
+void GbTower_BuildPartyResult(UnkInputStruct8000D738* arg0);
+s32 GbTower_TeamPrep(s32 arg0, UnkInputStruct8000D738* arg1);
 
 #endif // _FRAGMENT53_H_

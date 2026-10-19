@@ -35,23 +35,23 @@ extern unk_D_86B0C264 gFragment17PresetData[];
 extern u32 gFragment17StageLayout0[];
 extern u32 gFragment17StageLayout1[];
 
-s32 Callback_UpdateColorAndPos(s32, GraphNode*);
-s32 Callback_SetScaleLarge(s32, GraphNode*);
-s32 Callback_SetScaleNormal(s32, GraphNode*);
-s32 Callback_SetObjectState(s32, GraphNode*);
+s32 Diorama_LogoRotateColorCallback(s32, GraphNode*);
+s32 Diorama_ScaleRotateCallbackA(s32, GraphNode*);
+s32 Diorama_ScaleRotateCallbackB(s32, GraphNode*);
+s32 Diorama_GroupStateCallback(s32, GraphNode*);
 
 static s16 D_86B0BBF0 = -0x3C6E;
 static s16 D_86B0BBF4 = 0x38E;
 
 static u32 gFragment17GeoLayoutCommands[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0,  0x0000000F,    0x00000000,    0x00000000,
-    0x05000000, 0x0D000000, 0x05000000, 0x1A050000, 0x08000000,  Callback_SetObjectState, 0x00000000,    0x05000000,
+    0x05000000, 0x0D000000, 0x05000000, 0x1A050000, 0x08000000,  Diorama_GroupStateCallback, 0x00000000,    0x05000000,
     0x0F000002, 0x05000000, 0x06000000, 0x0F000002, 0x05000000,  0x06000000,    0x0F000002,    0x05000000,
-    0x1F00FFFF, 0xC3920000, 0x00000000, 0xFC400000, 0x00640064,  0x00640000,    0x08000000,    Callback_SetScaleLarge,
+    0x1F00FFFF, 0xC3920000, 0x00000000, 0xFC400000, 0x00640064,  0x00640000,    0x08000000,    Diorama_ScaleRotateCallbackA,
     0x00000000, 0x05000000, 0x00000000, gFragment17StageLayout0, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
-    0x1F00FFFF, 0x00000000, 0x00000000, 0x0514F79A, 0x00640064,  0x00640000,    0x08000000,    Callback_SetScaleNormal,
+    0x1F00FFFF, 0x00000000, 0x00000000, 0x0514F79A, 0x00640064,  0x00640000,    0x08000000,    Diorama_ScaleRotateCallbackB,
     0x00000000, 0x05000000, 0x00000000, gFragment17StageLayout1, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
-    0x06000000, 0x06000000, 0x14000000, 0xF8E40000, 0xFFC89BFF,  0x08000000,    Callback_UpdateColorAndPos, 0x00000000,
+    0x06000000, 0x06000000, 0x14000000, 0xF8E40000, 0xFFC89BFF,  0x08000000,    Diorama_LogoRotateColorCallback, 0x00000000,
     0x16FFFFFF, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,    0x06000000,    0x06000000,
     0x06000000, 0x01000000,
 };
@@ -68,7 +68,7 @@ static s32 gFragment17WindowAlpha;
 static s32 gFragment17Result;
 static u16 D_86B0EBB8;
 
-s32 Callback_UpdateColorAndPos(s32 arg0, GraphNode* arg1) {
+s32 Diorama_LogoRotateColorCallback(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         unk_D_86002F34_alt18* ptr = (unk_D_86002F34_alt18*)arg1;
 
@@ -86,7 +86,7 @@ s32 Callback_UpdateColorAndPos(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 Callback_SetScaleLarge(s32 arg0, GraphNode* arg1) {
+s32 Diorama_ScaleRotateCallbackA(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
@@ -99,7 +99,7 @@ s32 Callback_SetScaleLarge(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 Callback_SetScaleNormal(s32 arg0, GraphNode* arg1) {
+s32 Diorama_ScaleRotateCallbackB(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         Fragment2_1GraphNode* ptr = (Fragment2_1GraphNode*)arg1;
 
@@ -112,7 +112,7 @@ s32 Callback_SetScaleNormal(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s32 Callback_SetObjectState(s32 arg0, GraphNode* arg1) {
+s32 Diorama_GroupStateCallback(s32 arg0, GraphNode* arg1) {
     if (arg0 == 2) {
         unk_D_86002F34_alt21* ptr = (unk_D_86002F34_alt21*)arg1;
 
@@ -131,7 +131,7 @@ void Diorama_ClearModelSlots(void) {
 
 void Diorama_FreeModelSlots(unk_D_86B0E5F0* arg0) {
     while (arg0->unk_16C != 1) {
-        GraphNode_ClearCallback(&arg0->unk_004);
+        ModelRenderer_ClearDisplayObject(&arg0->unk_004);
         arg0++;
     }
     main_pool_pop_state('MONS');
@@ -142,12 +142,12 @@ void Diorama_PushModelPool(void) {
 }
 
 void Diorama_InitModelSlot(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
-    Graph_AddToRootList0(&arg0->unk_004);
+    ModelRenderer_AttachDisplayObject(&arg0->unk_004);
 
-    arg0->unk_000 = GeoLayout_LoadById(arg1->unk_0C);
+    arg0->unk_000 = Model_LoadByArchiveIndex(arg1->unk_0C);
 
-    GraphNode_InitChild(&arg0->unk_004, 0, arg1->unk_0C, arg0->unk_000->unk_08->unk_00[0]);
-    GraphNode_TriggerAction(&arg0->unk_004, arg1->unk_10);
+    Model_InitDisplayObject(&arg0->unk_004, 0, arg1->unk_0C, arg0->unk_000->unk_08->unk_00[0]);
+    ModelAnim_SetAnimation(&arg0->unk_004, arg1->unk_10);
 
     if (arg1->unk_0C == 6) {
         arg0->unk_004.modelPhase = 0;
@@ -155,7 +155,7 @@ void Diorama_InitModelSlot(unk_D_86B0E5F0* arg0, unk_D_86B0C4C8* arg1) {
         arg0->unk_004.modelPhase = 0xFF;
     }
 
-    Anim_SetChannelBase(&arg0->unk_004, 0);
+    ModelAnim_SetFrame(&arg0->unk_004, 0);
     arg0->unk_004.unk_000.unk_02 &= ~0x40;
 }
 
@@ -176,7 +176,7 @@ void Diorama_SetGlowFromGroup(s32 arg0) {
     gFragment17ColorAnim->unk_04 = gFragment17PresetData[arg0].unk_16;
 }
 
-void Fragment_LoadObjectsForPreset(s32 arg0) {
+void Diorama_LoadModelGroup(s32 arg0) {
     unk_D_86B0C4C8* var_s0 = gFragment17ObjectDefs[arg0];
     unk_D_86B0E5F0* var_s1 = gFragment17Objects;
 
@@ -215,7 +215,7 @@ void Diorama_SwitchModelGroup(s32 arg0) {
     Diorama_SetGlowFromGroup(arg0);
 
     if (arg0 == 4) {
-        GraphNode_TriggerSound(&gFragment17Objects[0].unk_004, 0);
+        ModelAnim_SetEventTrack(&gFragment17Objects[0].unk_004, 0);
     }
 }
 
@@ -233,8 +233,8 @@ void Diorama_SetGroupCamera(s32 arg0) {
         gFragment17State->unk_04.unk_00.y = gFragment17PresetData[arg0].unk_00.y;
         gFragment17State->unk_04.unk_00.z = gFragment17PresetData[arg0].unk_00.z;
 
-        InitCameraFromConfig(&gFragment17AnimData[arg0], gFragment17State);
-        ApplyCameraViewParameters(&gFragment17State->unk_04, gFragment17State);
+        Diorama_LoadCameraKeyframe(&gFragment17AnimData[arg0], gFragment17State);
+        Diorama_SetCameraToKeyframeStart(&gFragment17State->unk_04, gFragment17State);
     }
 }
 
@@ -248,8 +248,8 @@ void Diorama_LoopIdleAnimations(void) {
         (gFragment17State->unk_04.unk_4C != 8)) {
         if (gFragment17State->unk_04.unk_44 != 4) {
             while (gFragment17ObjectDefs[gFragment17State->unk_04.unk_44][i].unk_0C != 0x98) {
-                if (GraphNode_IsAnimationFinished(&gFragment17Objects[i].unk_004) != 0) {
-                    Anim_SetChannelBase(&gFragment17Objects[i].unk_004, 0);
+                if (ModelAnim_IsAnimationDone(&gFragment17Objects[i].unk_004) != 0) {
+                    ModelAnim_SetFrame(&gFragment17Objects[i].unk_004, 0);
                 }
                 i++;
             }
@@ -259,7 +259,7 @@ void Diorama_LoopIdleAnimations(void) {
 
 void Diorama_DrawFadeOverlay(void) {
     if (gFragment17State->unk_04.unk_48 == 1) {
-        Text_DrawWindowRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0, gFragment17WindowAlpha);
+        Gfx_FillRectWithDisplayState(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0, gFragment17WindowAlpha);
     }
 }
 
@@ -286,8 +286,8 @@ s32 Diorama_SlideModelsForward(s32 arg0) {
 }
 
 void Diorama_BeginGroupTransition(void) {
-    Stage_SetFillColor(1);
-    Stage_FadeOut(0xC);
+    StageContext_SetClearColor(1);
+    StageFade_StartFromTransparent(0xC);
     gFragment17State->unk_04.unk_4C = 0;
     gFragment17State->unk_04.unk_50 = 0;
 }
@@ -320,7 +320,7 @@ void Diorama_UpdateProximityHighlight(s32 arg0) {
     f32 sp60[] = { 1.0f, 1.0f, 100.0f, 50.0f };          // D_86B0BD40
 
     while (ptr1->unk_0C != 0x98) {
-        if (IsPointInSector(gFragment17State->unk_00, &ptr2->unk_004, sp88[arg0], sp80[arg0], sp70[arg0], sp60[arg0]) != 0) {
+        if (Diorama_IsModelInCameraCone(gFragment17State->unk_00, &ptr2->unk_004, sp88[arg0], sp80[arg0], sp70[arg0], sp60[arg0]) != 0) {
             ptr2->unk_004.unk_000.unk_01 |= 1;
         } else {
             ptr2->unk_004.unk_000.unk_01 &= ~1;
@@ -333,7 +333,7 @@ void Diorama_UpdateProximityHighlight(s32 arg0) {
 void Diorama_ReadControllerInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
-    MenuInput_Init();
+    Input_ResetRepeatState();
 }
 
 void Diorama_InitSceneState(void) {
@@ -359,20 +359,20 @@ void Diorama_InitSceneState(void) {
     gFragment17State->unk_04.unk_48 = 0;
 }
 
-s32 StateMachine_Update(void) {
+s32 Diorama_UpdateStateMachine(void) {
     if (((gPlayer1Controller->buttonPressed & 0x1000) || (gPlayer1Controller->buttonPressed & 0x8000) ||
          (gPlayer1Controller->buttonPressed & 0x4000)) &&
         (gFragment17State->unk_04.unk_48 == 0)) {
         if ((gFragment17State->unk_04.unk_4C != 8) && (gFragment17State->unk_04.unk_4C != 5)) {
             gFragment17State->unk_04.unk_48 = 1;
-            Stage_SetFadeColor(0xA);
+            Audio_FadeOutAll(0xA);
             gFragment17WindowAlpha = 0;
             gFragment17Result = 2;
         }
     }
 
     if (gFragment17State->unk_04.unk_48 == 1) {
-        gFragment17WindowAlpha = Math_ApproachS32(gFragment17WindowAlpha, 0xFF, 0x1E, 0x1E);
+        gFragment17WindowAlpha = Math_StepToS32(gFragment17WindowAlpha, 0xFF, 0x1E, 0x1E);
         if (gFragment17WindowAlpha == 0xFF) {
             return 1;
         }
@@ -399,18 +399,18 @@ s32 StateMachine_Update(void) {
 
         case 6:
             if (gFragment17State->unk_04.unk_50++ >= 4) {
-                Stage_SetFillColor(1);
-                Stage_FadeIn(0x20);
+                StageContext_SetClearColor(1);
+                StageFade_StartFromOpaque(0x20);
                 gFragment17State->unk_04.unk_4C = 7;
                 if ((gFragment17State->unk_04.unk_44 == 0) || (gFragment17State->unk_04.unk_44 == 1)) {
-                    UpdateCameraTransition(&gFragment17State->unk_04, gFragment17State);
+                    Diorama_UpdateCameraKeyframe(&gFragment17State->unk_04, gFragment17State);
                 }
             }
             break;
 
         case 7:
             if (gFragment17State->unk_04.unk_44 == 4) {
-                if (GraphNode_IsAnimationFinished(&gFragment17Objects[0].unk_004) != 0) {
+                if (ModelAnim_IsAnimationDone(&gFragment17Objects[0].unk_004) != 0) {
                     Diorama_FinishSequence();
                 }
             } else {
@@ -423,7 +423,7 @@ s32 StateMachine_Update(void) {
                 }
 
                 if ((gFragment17State->unk_04.unk_44 == 0) || (gFragment17State->unk_04.unk_44 == 1)) {
-                    UpdateCameraTransition(&gFragment17State->unk_04, gFragment17State);
+                    Diorama_UpdateCameraKeyframe(&gFragment17State->unk_04, gFragment17State);
                 }
 
                 Diorama_UpdateProximityHighlight(gFragment17State->unk_04.unk_44);
@@ -436,8 +436,8 @@ s32 StateMachine_Update(void) {
                 Diorama_SetGroupCamera(gFragment17State->unk_04.unk_44);
                 gFragment17State->unk_04.unk_4C = 6;
                 gFragment17State->unk_04.unk_50 = 0;
-                Fragment_LoadObjectsForPreset(gFragment17State->unk_04.unk_44);
-                ResultScreen_SetAnimation(0x29);
+                Diorama_LoadModelGroup(gFragment17State->unk_04.unk_44);
+                Audio_StartMusicTrack(0x29);
             }
             break;
 
@@ -453,7 +453,7 @@ s32 StateMachine_Update(void) {
                 if (gFragment17State->unk_04.unk_44 >= 2) {
                     Diorama_SlideModelsForward(gFragment17State->unk_04.unk_44);
                 } else {
-                    UpdateCameraTransition(&gFragment17State->unk_04, gFragment17State);
+                    Diorama_UpdateCameraKeyframe(&gFragment17State->unk_04, gFragment17State);
                 }
             }
 
@@ -471,15 +471,15 @@ void func_86B01004(void) {
 }
 
 void Diorama_RenderFrame(void) {
-    Stage_BeginDisplayList();
-    Gfx_FillScreen(&gDisplayListHead, 1);
-    Gfx_FinishFrame();
+    BgStage_DrawFrame();
+    GfxImage_FillCurrent(&gDisplayListHead, 1);
+    GeoRender_AdvanceFrameCounter();
     Diorama_DrawGroupTransitionOverlay();
     Diorama_DrawEndBackgroundTiles(D_86B0E5E8);
-    Graph_SetTextureState(gFragment17RootNode);
+    Geo_RenderRootNode(gFragment17RootNode);
     Diorama_DrawFadeOverlay();
     Diorama_DrawEndCaption();
-    Stage_Advance();
+    BgStage_AdvanceFrame();
 }
 
 void Diorama_RunLoop(void) {
@@ -488,9 +488,9 @@ void Diorama_RunLoop(void) {
 
     while (var_s1 != 0) {
         Diorama_ReadControllerInput();
-        Timer_UpdateCounters();
+        Particle_UpdateFrameCounters();
 
-        if (StateMachine_Update() != 0) {
+        if (Diorama_UpdateStateMachine() != 0) {
             var_s1 = 0;
         }
 
@@ -511,29 +511,29 @@ void Diorama_RenderFinalFrame(void) {
 void Diorama_InitScene(void) {
     MemoryBlock* sp1C;
 
-    sp1C = state_pool_try_init(main_pool_get_available(), 0);
+    sp1C = MainPool_AllocState(main_pool_get_available(), 0);
     gFragment17RootNode = process_geo_layout(sp1C, &gFragment17GeoLayoutCommands);
 
-    mem_pool_resize_block(sp1C);
-    Graph_InitRoots();
-    AssetManager_LoadArchives();
+    MainPool_FinalizeAllocation(sp1C);
+    ModelRenderer_InitDisplayRoots();
+    PokeIcon_OpenModelArchives();
     Diorama_InitSceneState();
 
     gFragment17WindowAlpha = 0;
     D_86B0E5DC = 0;
 }
 
-s32 BattleState_Handle18(void) {
+s32 Stage_ShowBootDiorama(void) {
     main_pool_push_state('MINI');
 
-    Text_Init(6, 0);
+    Font_Init(6, 0);
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     FRAGMENT_LOAD(fragment31);
     Fragment_Load((((u32)D_8D000000 & 0x0FF00000) >> 0x14) - 0x10, _5C7A70_ROM_START, _5C7A70_ROM_END);
 
-    GbsEnsureBankLoaded(2);
-    GBAudio_ResetState(&D_86B0EBB8, 0);
+    Save_EnsureBankLoaded(2);
+    Save_GetModeSettings(&D_86B0EBB8, 0);
     D_86B0E5E4 = ASSET_LOAD2(backgrounds, 1, 1);
 
     if (D_86B0EBB8 == 0x1F8) {
@@ -542,14 +542,14 @@ s32 BattleState_Handle18(void) {
         D_86B0E5E8 = BinArchive_GetFile(D_86B0E5E4, 0);
     }
 
-    MessageBank_Init();
-    D_86B0E5E0 = GetMessageBank(0x14);
+    Text_InitStringTables();
+    D_86B0E5E0 = Text_GetStringTable(0x14);
     Diorama_InitScene();
-    Menu_SetupDisplayList();
+    StageLoader_UpdateSegments();
     Diorama_RunLoop();
     Diorama_RenderFinalFrame();
-    Stage_Terminate();
-    FontManager_Free();
+    StageLoader_WaitForRetrace();
+    Font_Free();
 
     main_pool_pop_state('MINI');
 
