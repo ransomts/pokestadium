@@ -5,7 +5,7 @@
 #include "src/F420.h"
 #include "src/math_util.h"
 
-static f32 D_84387B00[] = {
+static f32 gSpeciesScaleTable[] = {
     0.0f, 1.0f,  1.0f,  1.3f, 0.8f, 0.9f, 1.3f,  0.8f,  1.0f,  0.9f,  0.6f, 1.2f,  1.2f, 0.6f,  0.9f, 1.5f, 0.8f,
     1.5f, 1.5f,  0.8f,  1.0f, 0.8f, 1.0f, 0.65f, 1.1f,  0.75f, 0.8f,  0.8f, 0.8f,  0.8f, 1.0f,  1.0f, 0.8f, 1.2f,
     1.0f, 0.8f,  1.25f, 1.0f, 1.5f, 0.8f, 1.0f,  1.0f,  0.8f,  0.8f,  1.2f, 1.35f, 0.9f, 1.2f,  1.2f, 1.1f, 0.7f,
@@ -1487,7 +1487,7 @@ void BattleAnim_ApplyEffect125ModelScaleOffset(ParticleEffectInstance* arg0) {
     s32 temp_v0 = BattleAnim_GetOwnerSpecies(arg0->unk_10);
 
     if (temp_v0 < 0x98) {
-        sp24 = D_84387B00[temp_v0];
+        sp24 = gSpeciesScaleTable[temp_v0];
         sp20 = gParticleYOffsetTable[temp_v0];
     }
 
@@ -3607,7 +3607,7 @@ void Gfx_ParticlePaletteCallback(s32 arg0, arg1_func_84344CE8* arg1) {
     }
 }
 
-void func_84349FC8(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
+void Gfx_ParticlePaletteDL(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     Fragment2_1GraphNode* sp24 = gDefaultGraphRoot;
     s32 tmp = BattleAnim_GetOwnerContextParticle(gDefaultGraphRoot);
     UNUSED u8 sp1F;
@@ -3668,7 +3668,7 @@ void func_84349FC8(Gfx* arg0, UNUSED arg1_func_8434E21C* arg1, UNUSED u16 arg2) 
 void Gfx_ParticlePaletteCallback2(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = Gfx_AllocDisplayList(sizeof(Gfx) * 30);
-        func_84349FC8(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_ParticlePaletteDL(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 

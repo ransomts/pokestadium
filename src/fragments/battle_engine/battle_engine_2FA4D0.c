@@ -406,8 +406,8 @@ void BattleHud_DrawSpeciesNameLabelBlink(s16 arg0, s16 arg1, s32 arg2, u8* arg3,
     Font_EndTexturedTextRendering();
 }
 
-void BattleHud_DrawSpeciesNameLabelAuto(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
-    unk_BattlePlayerAnimState* ptr = &arg0->animationState;
+void BattleHud_DrawSpeciesNameLabelAuto(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4, u16 arg5, s32 arg6) {
+    BattlePlayerAnimState* ptr = &arg0->animationState;
     s32 var_t0 = 0;
     s32 i;
 
@@ -424,7 +424,7 @@ void BattleHud_DrawSpeciesNameLabelAuto(unk_BattlePlayerEntity* arg0, unk_D_800A
     }
 }
 
-void BattleHud_DrawMonInfoPanel(unk_BattlePlayerEntity* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
+void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, unk_D_84385790* arg2, s32 arg3, s32 arg4,
                    s32 arg5, s32 arg6, s32 arg7, s32 arg8, s32 arg9, s32 argA) {
     s32 sp34;
     s32 temp_a2;
@@ -577,7 +577,7 @@ void BattleHud_DrawBattleTimer(s16 arg0, s16 arg1) {
     BattleHud_DrawTranslucentShadowRect(arg0 - 3, arg1 - 3, 0x2C, 0x11, 0);
 }
 
-void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
+void BattleHud_DrawPartyBallRow(BattlePlayerEntity* arg0, s16 arg1, s16 arg2) {
     u8* sp74[] = { D_3006170, D_30061D0, D_3006230 };
     UNUSED s32 pad;
     s32 i;
@@ -663,7 +663,7 @@ void BattleHud_DrawPartyBallRow(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void BattleHud_DrawMonStatusBoxPlayer(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
+void BattleHud_DrawMonStatusBoxPlayer(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
     unk_D_800AE540_0004* sp80;
     PokemonData* sp7C;
@@ -751,7 +751,7 @@ void BattleHud_DrawMonStatusBoxPlayer(unk_BattlePlayerEntity* arg0, s16 arg1, s1
     BattleHud_DrawPartyBallRow(arg0, arg1, arg2 + 0x62);
 }
 
-void BattleHud_DrawMonStatusBoxOpponent(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
+void BattleHud_DrawMonStatusBoxOpponent(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, u16 arg3, s32 arg4) {
     UNUSED s32 pad[3];
     unk_D_800AE540_0004* sp80;
     PokemonData* sp7C;
@@ -838,7 +838,7 @@ void BattleHud_DrawMonStatusBoxOpponent(unk_BattlePlayerEntity* arg0, s16 arg1, 
     BattleHud_DrawPartyBallRow(arg0, arg1 + 0x41, arg2 - 7);
 }
 
-void BattleHud_DrawThreeOptionLabelBar(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawThreeOptionLabelBar(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
     Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xC6, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
@@ -861,7 +861,7 @@ void BattleHud_DrawThreeOptionLabelBar(unk_BattlePlayerEntity* arg0, s16 arg1, s
     BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
 }
 
-void BattleHud_DrawTwoOptionLabelBar(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawTwoOptionLabelBar(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad[2];
 
     Battle_DrawGradientRectWrapper(arg1, arg2, 0x7D, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
@@ -882,7 +882,7 @@ void BattleHud_DrawTwoOptionLabelBar(unk_BattlePlayerEntity* arg0, s16 arg1, s16
     BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
 }
 
-void BattleHud_DrawOneOptionLabelBar(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawOneOptionLabelBar(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 pad[2];
 
     Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0x47, 0x10, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
@@ -993,7 +993,7 @@ s32 BattleHud_DrawMovePpTextRTL(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     return arg0;
 }
 
-void BattleHud_DrawMoveSelectMenu(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     s32 i;
     s32 sp64[] = { 0, 0, 0, 0 };
     u8 sp60[4];
@@ -1245,7 +1245,7 @@ void BattleHud_DrawPlainText(s16 arg0, s16 arg1, char* arg2) {
     Font_EndTexturedTextRendering();
 }
 
-void BattleHud_DrawDoublesRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
+void BattleHud_DrawDoublesRosterRow(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
                    s32 arg5) {
     s32 var_t0;
 
@@ -1300,7 +1300,7 @@ void BattleHud_DrawDoublesRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540
     }
 }
 
-void BattleHud_DrawPartyRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
+void BattleHud_DrawPartyRosterRow(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, PokemonData* arg2, s32 arg3, s32 arg4,
                    s32 arg5) {
     s32 var_t0;
 
@@ -1344,7 +1344,7 @@ void BattleHud_DrawPartyRosterRow(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0
     }
 }
 
-void BattleHud_DrawTeamStatusList(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4) {
+void BattleHud_DrawTeamStatusList(BattlePlayerEntity* arg0, unk_D_800AE540_0004* arg1, s16 arg2, s16 arg3, s32 arg4) {
     UNUSED s32 pad[2];
     Color_RGB8* sp88[] = {
         gBoxColorBlue,
@@ -1389,7 +1389,7 @@ void BattleHud_DrawTeamStatusList(unk_BattlePlayerEntity* arg0, unk_D_800AE540_0
     BattleHud_DrawTranslucentShadowRect(arg2 - 2, arg3 - 2, 0x69, 0x6A, 0);
 }
 
-void BattleHud_DrawDoublesTeamStatusList(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawDoublesTeamStatusList(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     unk_D_800AE540_0004* temp_s0;
     unk_D_800AE540_0004* temp_s1;
     PokemonData* ptr = &arg0->unk_724->unk_01C[0];
@@ -1461,11 +1461,11 @@ void BattleHud_DrawDoublesTeamStatusList(unk_BattlePlayerEntity* arg0, s16 arg1,
     BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0xCE, 0x6A, 0);
 }
 
-void BattleHud_DrawCompactMonStatusBox(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawCompactMonStatusBox(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad;
     Color_RGB8* var_v0;
     u32 var_t0;
-    unk_BattlePlayerAnimState* temp_v0;
+    BattlePlayerAnimState* temp_v0;
     u16 tmp;
     PokemonData* sp40;
 
@@ -1521,7 +1521,7 @@ void BattleHud_DrawExpandingCaptionBox(unk_D_843901A0_4C8* arg0, s16 arg1, s16 a
     s16 sp2C;
     s16 sp28;
     Color_RGB8* temp_v0;
-    unk_BattlePlayerEntity* temp_v1;
+    BattlePlayerEntity* temp_v1;
     unk_D_800AE540_0004* tmp;
 
     temp_v1 = sActivePokemon[arg0->unk_0C];
@@ -1617,7 +1617,7 @@ void BattleHud_DrawTextBox(s32 arg0, s16 arg1, s16 arg2, char* arg3) {
     BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 1, 0xCD, 0x28, 0);
 }
 
-void BattleHud_DrawTwoOptionCursorMenu(unk_BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
+void BattleHud_DrawTwoOptionCursorMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, s32 arg3) {
     UNUSED s32 pad;
     s32 sp48;
     UNUSED s32 pad2[2];
@@ -1774,7 +1774,7 @@ void Battle_DrawSpectatorModeScrollingText(void) {
     }
 }
 
-void BattleHud_DrawOwnSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1) {
+void BattleHud_DrawOwnSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState* arg1) {
     unk_D_800AE540_0004* sp34 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
     UNUSED s32 pad;
     s32 var_v1;
@@ -1834,7 +1834,7 @@ void BattleHud_DrawOwnSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePlayerA
     }
 }
 
-void BattleHud_DrawOpponentSideStatus(unk_BattlePlayerEntity* arg0, unk_BattlePlayerAnimState* arg1) {
+void BattleHud_DrawOpponentSideStatus(BattlePlayerEntity* arg0, BattlePlayerAnimState* arg1) {
     unk_D_800AE540_0004* sp24 = arg0->pokemonAnimation->unk_08[arg0->unk_728.unk_16C];
     s32 sp20;
 

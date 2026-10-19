@@ -22,7 +22,7 @@ typedef struct WaterHeightMap {
     /* 0x1010 */ WaterHeightNode unk_1010[16][16];
 } WaterHeightMap; // size >= 0x2410
 
-static unk_D_843925E0 gRibbonEmitters[4];
+static RibbonEmitter gRibbonEmitters[4];
 static s16 gWaterTexOffset0;
 static s16 gWaterTexOffset1;
 static s32 pad_D_843951C8[2];
@@ -30,7 +30,7 @@ static WaterHeightMap gWaterHeightMap;
 static s16 gWaterTexOffsetA;
 static s16 gWaterTexOffsetB;
 static s16 gWaterTexOffsetC;
-static unk_D_843975E8 gWaterCameraBounds;
+static WaterCameraBounds gWaterCameraBounds;
 
 func_D_84390320 gStateCallbackTable[] = {
     func_843593A0, func_843593A0, func_843593A0, func_843593A0, BattleAnim_StartEffect4DoubleTextureTrail_Init, BattleAnim_Effect5RibbonMesh_Init, func_843593A0,
@@ -177,7 +177,7 @@ static Gfx gWaterGfxSetup[] = {
 };
 
 void RibbonMesh_Init(void) {
-    unk_D_843925E0* ptr = &gRibbonEmitters[0];
+    RibbonEmitter* ptr = &gRibbonEmitters[0];
     s32 i;
 
     for (i = 0; i < 4; i++) {
@@ -186,7 +186,7 @@ void RibbonMesh_Init(void) {
     }
 }
 
-void RibbonMesh_Configure(unk_D_843925E0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8,
+void RibbonMesh_Configure(RibbonEmitter* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6, s32 arg7, s32 arg8,
                    s32 arg9) {
     arg0->unk_028 = arg1;
     arg0->unk_02C = arg2;
@@ -200,7 +200,7 @@ void RibbonMesh_Configure(unk_D_843925E0* arg0, s32 arg1, s32 arg2, s32 arg3, s3
 }
 
 void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5) {
-    unk_D_843925E0* ptr;
+    RibbonEmitter* ptr;
     unk_D_843925E0_430* ptr1;
     unk_D_843925E0_430* ptr2;
     unk_D_843925E0_430* ptr3;
@@ -352,7 +352,7 @@ void RibbonMesh_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, s32 arg5
     }
 }
 
-void RibbonMesh_UpdateEnvAlpha(unk_D_843925E0* arg0) {
+void RibbonMesh_UpdateEnvAlpha(RibbonEmitter* arg0) {
     s32 var_v0;
 
     if (arg0->unk_01C >= 0) {
@@ -372,7 +372,7 @@ void RibbonMesh_UpdateEnvAlpha(unk_D_843925E0* arg0) {
     }
 }
 
-s32 RibbonMesh_Update(unk_D_843925E0* arg0) {
+s32 RibbonMesh_Update(RibbonEmitter* arg0) {
     unk_D_843925E0_430* temp_s0;
     unk_D_843925E0_430* temp_s1;
     unk_D_843925E0_430* ptr;
@@ -527,7 +527,7 @@ s32 RibbonMesh_Update(unk_D_843925E0* arg0) {
 s32 RibbonMesh_UpdatePool(void) {
     s32 i;
     s32 var_s2;
-    unk_D_843925E0* ptr = &gRibbonEmitters[0];
+    RibbonEmitter* ptr = &gRibbonEmitters[0];
 
     gWaterTexOffset0 = (gWaterTexOffset0 + 1) & 0x3FFF;
     gWaterTexOffset1 = (gWaterTexOffset1 - 1) & 0x3FFF;
@@ -546,7 +546,7 @@ s32 RibbonMesh_UpdatePool(void) {
     return var_s2;
 }
 
-Gfx* RibbonMesh_Draw(Gfx* arg0, unk_D_843925E0* arg1) {
+Gfx* RibbonMesh_Draw(Gfx* arg0, RibbonEmitter* arg1) {
     s32 i;
     Vtx* temp_v0 = Gfx_AllocDisplayList(sizeof(Vtx) * 62);
     Vtx* vtx = temp_v0;
@@ -610,7 +610,7 @@ Gfx* RibbonMesh_DrawPool(Gfx* arg0) {
         gsSPEndDisplayList(),
     };
 
-    unk_D_843925E0* ptr = &gRibbonEmitters[0];
+    RibbonEmitter* ptr = &gRibbonEmitters[0];
     s32 i;
 
     gSPDisplayList(arg0++, gWaterGfxParticleBase);
@@ -649,7 +649,7 @@ Gfx* RibbonMesh_DrawPool(Gfx* arg0) {
     return arg0;
 }
 
-void TerrainGrid_BuildCameraBounds(unk_D_843975E8* arg0, f32 arg1) {
+void TerrainGrid_BuildCameraBounds(WaterCameraBounds* arg0, f32 arg1) {
     CameraStruct* spB4 = BattleAnim_GetCameraContext();
     f32 spB0;
     f32 spAC;

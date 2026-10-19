@@ -199,7 +199,7 @@ void Battle_Effect_Explosion(void) {
 
 void Battle_Effect_SecondaryStatusChance(void) {
     PokemonAudioInfo* temp_a2 = &sActivePokemon[!gBattleScene.posX->unk_2C]->animationState.unk_38;
-    unk_BattlePlayerAnimState* temp_a0 = &sActivePokemon[!gBattleScene.posX->unk_2C]->animationState;
+    BattlePlayerAnimState* temp_a0 = &sActivePokemon[!gBattleScene.posX->unk_2C]->animationState;
 
     if (gBattleTarget->unk_4D & 0x10) {
         return;
@@ -858,7 +858,7 @@ void Battle_Effect_Rage(void) {
 }
 
 void Battle_Effect_Mimic(void) {
-    unk_BattlePlayerAnimState* sp24 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
+    BattlePlayerAnimState* sp24 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
     s32 var_t0;
     u8 temp_v0;
 
@@ -993,7 +993,7 @@ void Battle_Effect_Haze(void) {
 
 void Battle_Effect_Heal(void) {
     u8 temp_v0;
-    unk_BattlePlayerAnimState* temp_a1;
+    BattlePlayerAnimState* temp_a1;
     PokemonAudioInfo* temp_a2;
 
     temp_a1 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
@@ -1040,8 +1040,8 @@ void Battle_Effect_Heal(void) {
 
 void Battle_Effect_Transform(void) {
     s32 i;
-    unk_BattlePlayerAnimState* sp20;
-    unk_BattlePlayerAnimState* sp1C;
+    BattlePlayerAnimState* sp20;
+    BattlePlayerAnimState* sp1C;
     PokemonAudioInfo* ptr;
 
     sp20 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;

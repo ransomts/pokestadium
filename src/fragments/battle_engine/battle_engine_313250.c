@@ -87,7 +87,7 @@ void BattleScene_IntroWaitFirstMonAnim(UNUSED CameraStruct* arg0) {
 }
 
 void BattleScene_IntroRevealFirstMon(CameraStruct* arg0) {
-    unk_BattlePlayerAnimState* sp2C = &sActivePokemon[0]->animationState;
+    BattlePlayerAnimState* sp2C = &sActivePokemon[0]->animationState;
     unk_D_800AE540_0004* sp28 = sActivePokemon[0]->pokemonAnimation->unk_08[sp2C->unk_2C];
 
     sActivePokemon[0]->unk_728.unk_168->posX.unk_01 |= 1;
@@ -125,7 +125,7 @@ void BattleScene_IntroFirstMonSettle(CameraStruct* arg0) {
 }
 
 void BattleScene_IntroRevealSecondMon(CameraStruct* arg0) {
-    unk_BattlePlayerAnimState* sp2C = &sActivePokemon[1]->animationState;
+    BattlePlayerAnimState* sp2C = &sActivePokemon[1]->animationState;
     unk_D_800AE540_0004* sp28 = sActivePokemon[1]->pokemonAnimation->unk_08[sp2C->unk_2C];
 
     sActivePokemon[1]->unk_728.unk_168->posX.unk_01 |= 1;

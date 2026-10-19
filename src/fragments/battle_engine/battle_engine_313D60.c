@@ -41,7 +41,7 @@ void BattleScene_FinalPresentationFrameOwner0(CameraStruct* arg0) {
     gBattleScene.posX->unk_20 += 1;
 }
 
-void BattleScene_RunFinalPresentation(CameraStruct* arg0, UNUSED unk_BattlePlayerEntity* arg1, UNUSED unk_BattlePlayerEntity* arg2) {
+void BattleScene_RunFinalPresentation(CameraStruct* arg0, UNUSED BattlePlayerEntity* arg1, UNUSED BattlePlayerEntity* arg2) {
     gBattleScene.posX->unk_40 = 0;
     gBattleScene.posX->unk_60 = 30.0f;
     gBattleScene.posX->unk_6C = 10.0f;
@@ -76,10 +76,10 @@ void BattleScene_AllocateMemory(void) {
     bzero(gBattleScene.posX, sizeof(unk_D_84390240_000));
 }
 
-void func_843297E8(UNUSED CameraStruct* arg0) {
+void BattleScene_UpdateCameraState0(UNUSED CameraStruct* arg0) {
 }
 
-void func_843297F0(UNUSED CameraStruct* arg0) {
+void BattleScene_UpdateCameraState3(UNUSED CameraStruct* arg0) {
 }
 
 void BattleScene_AvoidDegenerateCameraLookAt(CameraStruct* arg0) {
@@ -249,7 +249,7 @@ void BattleScene_TickCameraSubstate(CameraStruct* arg0) {
     }
 }
 
-u16 BattleScene_IsOwnerInViewWedge(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, unk_BattlePlayerEntity* a2, s16 arg3, f32 arg4) {
+u16 BattleScene_IsOwnerInViewWedge(BattlePlayerEntity* arg0, CameraStruct* arg1, BattlePlayerEntity* a2, s16 arg3, f32 arg4) {
     UNUSED s32 pad[6];
     f32 sp6C;
     f32 sp68;
@@ -264,7 +264,7 @@ u16 BattleScene_IsOwnerInViewWedge(unk_BattlePlayerEntity* arg0, CameraStruct* a
     s16 sp46;
     s16 sp44;
     f32 sp40;
-    unk_BattlePlayerEntity* arg2;
+    BattlePlayerEntity* arg2;
     f32 sp38;
     s32 sp34 = 0;
 
@@ -291,7 +291,7 @@ u16 BattleScene_IsOwnerInViewWedge(unk_BattlePlayerEntity* arg0, CameraStruct* a
     return sp34;
 }
 
-u16 BattleScene_IsOwnerInViewWedgeAlt(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, unk_BattlePlayerEntity* a2, s16 arg3, f32 arg4) {
+u16 BattleScene_IsOwnerInViewWedgeAlt(BattlePlayerEntity* arg0, CameraStruct* arg1, BattlePlayerEntity* a2, s16 arg3, f32 arg4) {
     UNUSED s32 pad[6];
     f32 sp94;
     f32 sp90;
@@ -301,7 +301,7 @@ u16 BattleScene_IsOwnerInViewWedgeAlt(unk_BattlePlayerEntity* arg0, CameraStruct
     UNUSED s32 pad2;
     f32 sp7C;
     f32 sp78;
-    unk_BattlePlayerEntity* arg2;
+    BattlePlayerEntity* arg2;
     f32 sp70;
     s16 sp6E;
     s16 sp6C;
@@ -355,7 +355,7 @@ void BattleScene_UpdateBothOwnersVisibilityCulling(CameraStruct* arg0) {
 }
 
 void BattleScene_UpdateOpponentVisibilityCulling(CameraStruct* arg0) {
-    unk_BattlePlayerEntity* sp24 = sActivePokemon[!gBattleScene.posX->unk_2C];
+    BattlePlayerEntity* sp24 = sActivePokemon[!gBattleScene.posX->unk_2C];
 
     if (BattleScene_IsOwnerInViewWedgeAlt(sp24, arg0, sp24, 0x2AA8, 2500.0f) != 0) {
         sp24->unk_000.unk_000.unk_01 |= 1;
@@ -383,8 +383,8 @@ void BattleScene_HideActiveOwner(void) {
 }
 
 void BattleScene_HideFaintedOwners(void) {
-    unk_BattlePlayerEntity* ptr1 = sActivePokemon[0];
-    unk_BattlePlayerEntity* ptr2 = sActivePokemon[1];
+    BattlePlayerEntity* ptr1 = sActivePokemon[0];
+    BattlePlayerEntity* ptr2 = sActivePokemon[1];
 
     if ((ptr1->animationState.unk_2D == 0x10) || ((ptr1 = sActivePokemon[0])->animationState.unk_2D == 0x13)) {
         ptr1->unk_000.unk_000.unk_01 &= ~1;
@@ -397,9 +397,9 @@ void BattleScene_HideFaintedOwners(void) {
 
 void BattleScene_UpdateOwnerVisibilitySingle(CameraStruct* arg0) {
     UNUSED s32 pad;
-    unk_BattlePlayerAnimState* sp40 = &gCurrentPlayer->animationState;
+    BattlePlayerAnimState* sp40 = &gCurrentPlayer->animationState;
     s32 temp_lo;
-    unk_BattlePlayerAnimState* sp38 = &gOpponentPlayer->animationState;
+    BattlePlayerAnimState* sp38 = &gOpponentPlayer->animationState;
     f32 sp34;
     s16 sp32;
     s16 sp30;
@@ -692,7 +692,7 @@ void BattleScene_Update(CameraStruct* arg0) {
 
     switch (gBattleScene.posX->unk_1C) {
         case 0:
-            func_843297E8(arg0);
+            BattleScene_UpdateCameraState0(arg0);
             break;
 
         case 1:
@@ -705,7 +705,7 @@ void BattleScene_Update(CameraStruct* arg0) {
             break;
 
         case 3:
-            func_843297F0(arg0);
+            BattleScene_UpdateCameraState3(arg0);
             break;
 
         case 4:

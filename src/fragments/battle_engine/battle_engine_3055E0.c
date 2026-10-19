@@ -8,7 +8,7 @@ f32 gCameraDistCurrent;
 
 static s32 gBattleFrameCounter = 0;
 
-f32 BattleScene_ScaleCameraDistance(unk_BattlePlayerEntity* arg0, f32 arg1, f32 arg2) {
+f32 BattleScene_ScaleCameraDistance(BattlePlayerEntity* arg0, f32 arg1, f32 arg2) {
     f32 temp_fv1 = BattleScene_GetParticipantModelRadiusScaled(arg0) * arg1;
 
     if (arg2 < temp_fv1) {
@@ -67,7 +67,7 @@ void BattleScene_SetCameraAtAndEyeFromAngles(CameraStruct* arg0, f32 arg1, f32 a
     Camera_ComputeEyeFromAngles(&arg0->unk_60.at, &arg0->unk_60.eye, arg4, arg5, arg6);
 }
 
-void BattleScene_GetOwnerCameraAnchor(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
+void BattleScene_GetOwnerCameraAnchor(BattlePlayerEntity* arg0, Vec3f* arg1) {
     UNUSED s32 pad;
     u8 sp18[] = {
         0x52, 0x73, 0x59, 0x91, 0x5F, 0x82, 0x58, 0x66, 0x0A,
@@ -80,7 +80,7 @@ void BattleScene_GetOwnerCameraAnchor(unk_BattlePlayerEntity* arg0, Vec3f* arg1)
     }
 }
 
-void BattleScene_GetOwnerBoneOrDefaultAnchor(unk_BattlePlayerEntity* arg0, Vec3f* arg1, s32 arg2) {
+void BattleScene_GetOwnerBoneOrDefaultAnchor(BattlePlayerEntity* arg0, Vec3f* arg1, s32 arg2) {
     if (GeoRender_FindAnchorPosition(&arg0->unk_000, arg2, arg1) == NULL) {
         BattleAnim_GetOwnerDefaultAnchorPosition(arg0, arg1);
         arg1->x = BattleScene_GetParticipantModelXOffset(arg0);
@@ -116,7 +116,7 @@ void BattleScene_ApplyCameraPhaseDefaults(void) {
     }
 }
 
-void BattleScene_SetDamageShakeAmplitude(unk_BattlePlayerEntity* arg0) {
+void BattleScene_SetDamageShakeAmplitude(BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
 
     gBattleScene.posX->unk_68 = ((ptr->posY - arg0->animationState.unk_38.unk_0C) / 996.0f) * 1400.0f;
@@ -155,7 +155,7 @@ void BattleScene_ApplyCameraShake(CameraStruct* arg0) {
     arg0->unk_60.at.x += temp_fv0 * SINS(sp2A + 0x4000);
 }
 
-void BattleScene_StartCameraShake(UNUSED unk_BattlePlayerEntity* arg0) {
+void BattleScene_StartCameraShake(UNUSED BattlePlayerEntity* arg0) {
     gBattleScene.posX->unk_68 = 30.0f;
     gBattleScene.posX->unk_7A = 0;
 }
@@ -233,9 +233,9 @@ void BattleScene_SetCameraSendOutShot(CameraStruct* arg0, s32 arg1) {
     static u8 gDefaultModelId = 0x5F;
     static u16 gDefaultModelParam = 0x38F;
 
-    unk_BattlePlayerAnimState* sp6C;
+    BattlePlayerAnimState* sp6C;
     UNUSED s32 pad;
-    unk_BattlePlayerEntity* temp_s0;
+    BattlePlayerEntity* temp_s0;
     Vec3f sp58;
     f32 sp54;
     UNUSED u16 pad2;
@@ -289,7 +289,7 @@ void BattleScene_ClampCameraEyeFloor(CameraStruct* arg0) {
     }
 }
 
-void BattleScene_UpdateCameraModelOffset(unk_BattlePlayerEntity* arg0, CameraStruct* arg1) {
+void BattleScene_UpdateCameraModelOffset(BattlePlayerEntity* arg0, CameraStruct* arg1) {
     unk_D_84390010_448* sp38 = &arg0->unk_448;
     UNUSED s32 pad[5];
     f32 sp3C = 0.0f;
@@ -321,7 +321,7 @@ void BattleScene_ClearCameraOffsetVectors(void) {
     Vec3f_SetComponentsDuplicate(&gBattleScene.posX->unk_A0, 0.0f, 0.0f, 0.0f);
 }
 
-void BattleScene_SetCameraAtFromAnchor(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, Vec3f arg2, s16 arg3, s16 arg4, f32 arg5, f32 arg6) {
+void BattleScene_SetCameraAtFromAnchor(BattlePlayerEntity* arg0, CameraStruct* arg1, Vec3f arg2, s16 arg3, s16 arg4, f32 arg5, f32 arg6) {
     Camera_ComputeEyeFromAngles(&arg2, &arg1->unk_60.at, arg5, arg3, arg4);
     arg1->unk_60.at.y += arg6;
     arg1->unk_60.at.y += BattleScene_GetParticipantEyeHeight(arg0);
@@ -375,7 +375,7 @@ void BattleScene_SnapFloatPair(f32* arg0, f32* arg1) {
     }
 }
 
-void BattleScene_ApplyOwnerFramingAdjustments(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, UNUSED f32 arg2) {
+void BattleScene_ApplyOwnerFramingAdjustments(CameraStruct* arg0, BattlePlayerEntity* arg1, UNUSED f32 arg2) {
     unk_D_84390010_448* sp2C = &arg1->unk_448;
     f32 var_fv1;
     Vec3f sp64;
@@ -545,7 +545,7 @@ void BattleScene_ApplyOwnerFramingAdjustments(CameraStruct* arg0, unk_BattlePlay
     BattleScene_SnapFloatPair(&arg0->unk_60.at.z, &arg0->unk_60.eye.z);
 }
 
-void BattleScene_RecomputeCameraDistance(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_RecomputeCameraDistance(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     UNUSED s32 pad[5];
     f32 var_fv0_2;
     f32 sp44;
@@ -580,21 +580,21 @@ void BattleScene_RecomputeCameraDistance(CameraStruct* arg0, unk_BattlePlayerEnt
     Camera_ComputeEyeFromAngles(&arg0->unk_60.at, &arg0->unk_60.eye, sp44, sp36, sp34);
 }
 
-void BattleScene_ReframeAndRecomputeDistance(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_ReframeAndRecomputeDistance(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleScene_ApplyOwnerFramingAdjustments(arg0, arg1, 50.0f);
     BattleScene_RecomputeCameraDistance(arg0, arg1);
 }
 
-void BattleScene_ReframeAndRecomputeDistanceForSwitch(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_ReframeAndRecomputeDistanceForSwitch(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleScene_ApplyOwnerFramingAdjustments(arg0, arg1, 90.0f);
     BattleScene_RecomputeCameraDistance(arg0, arg1);
 }
 
-void BattleScene_ApplyOwnerFramingOnly(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_ApplyOwnerFramingOnly(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleScene_ApplyOwnerFramingAdjustments(arg0, arg1, 50.0f);
 }
 
-void BattleScene_UpdateCameraTargetFromOwner(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_UpdateCameraTargetFromOwner(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     UNUSED s32 pad;
     Vec3f sp54;
@@ -624,7 +624,7 @@ void BattleScene_UpdateCameraTargetFromOwner(CameraStruct* arg0, unk_BattlePlaye
     Camera_ComputeEyeFromAngles(&sp3C, &arg0->unk_60.at, sp38 * var_fa0, sp32, sp30);
 }
 
-s32 BattleScene_FrameCamera(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+s32 BattleScene_FrameCamera(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     Vec3f sp84;
     UNUSED s32 pad[3];
     Vec3f sp6C;
@@ -677,7 +677,7 @@ s32 BattleScene_FrameCamera(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
     return 0;
 }
 
-void BattleScene_ApproachCameraTargetFromOwner(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_ApproachCameraTargetFromOwner(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp58;
     Vec3f sp4C;
@@ -696,7 +696,7 @@ void BattleScene_ApproachCameraTargetFromOwner(CameraStruct* arg0, unk_BattlePla
     Camera_ComputeEyeFromAngles(&sp34, &arg0->unk_60.at, gBattleScene.posX->unk_94.z * sp30, sp2A, sp28);
 }
 
-void BattleScene_UpdateCameraVerticalFraming(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_UpdateCameraVerticalFraming(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp60;
     Vec3f sp54;
@@ -714,7 +714,7 @@ void BattleScene_UpdateCameraVerticalFraming(CameraStruct* arg0, unk_BattlePlaye
     BattleAnim_ApproachF(&arg0->unk_60.eye.y, BattleAnim_GetOwnerModelHeight(arg1) * 4.0f, 0.04f);
 }
 
-void BattleScene_RecenterCameraOnOwner(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_RecenterCameraOnOwner(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     Vec3f sp74;
     Vec3f sp68;
     Vec3f sp5C;
@@ -742,7 +742,7 @@ void BattleScene_RecenterCameraOnOwner(CameraStruct* arg0, unk_BattlePlayerEntit
     BattleScene_SetCameraEyeFromAt(arg0, sp4E, sp52, gCameraDistTarget, 0.0f);
 }
 
-void BattleScene_ApproachCameraTarget(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, UNUSED s32 arg2) {
+void BattleScene_ApproachCameraTarget(CameraStruct* arg0, BattlePlayerEntity* arg1, UNUSED s32 arg2) {
     unk_D_84390010_448* ptr = &arg1->unk_448;
     Vec3f sp50;
     Vec3f sp44;
@@ -759,7 +759,7 @@ void BattleScene_ApproachCameraTarget(CameraStruct* arg0, unk_BattlePlayerEntity
     Camera_ComputeEyeFromAngles(&sp38, &arg0->unk_60.at, sp34 * 0.1f, sp32, sp30);
 }
 
-void BattleScene_ApproachCameraZoom(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_ApproachCameraZoom(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     s16 sp26;
     s16 sp24;
 
@@ -770,7 +770,7 @@ void BattleScene_ApproachCameraZoom(CameraStruct* arg0, unk_BattlePlayerEntity* 
     BattleScene_SetCameraEyeFromAt(arg0, sp26, sp24, gCameraDistCurrent, 0.0f);
 }
 
-s32 BattleScene_ApproachCloseCameraShot(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+s32 BattleScene_ApproachCloseCameraShot(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     Vec3f sp3C;
     Vec3f sp30;
     f32 sp2C;
@@ -790,7 +790,7 @@ s32 BattleScene_ApproachCloseCameraShot(CameraStruct* arg0, unk_BattlePlayerEnti
     return 0;
 }
 
-s32 BattleScene_AnimateCameraPreset(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
+s32 BattleScene_AnimateCameraPreset(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
     UNUSED s32 pad;
     Vec3f sp60;
     Vec3f sp54;
@@ -830,7 +830,7 @@ s32 BattleScene_AnimateCameraPreset(CameraStruct* arg0, unk_BattlePlayerEntity* 
     return 0;
 }
 
-s32 BattleScene_AnimateCameraPresetToOwner(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+s32 BattleScene_AnimateCameraPresetToOwner(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     Vec3f sp6C;
     Vec3f sp60;
     Vec3f sp54;
@@ -890,7 +890,7 @@ void BattleScene_CameraPresetNop(UNUSED CameraStruct* arg0) {
     if (arg0) {}
 }
 
-void BattleScene_ApplyCameraPreset(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
+void BattleScene_ApplyCameraPreset(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2) {
     BattleScene_SetCameraAtFromPosition(arg0, gCameraPreset.posX, gCameraPreset.unk_0C, gCameraPreset.unk_0E, gCameraPreset.unk_18, 0.0f);
     if (arg2 == 1) {
         arg0->unk_60.at.y += BattleScene_GetParticipantEyeHeight(arg1);
@@ -929,7 +929,7 @@ void BattleScene_SetCameraPresetSmoothing(f32 arg0, f32 arg1) {
     gCameraPreset.unk_38 = arg1;
 }
 
-void BattleScene_LoadCameraPreset(DioramaAnimData* arg0, CameraStruct* arg1, unk_BattlePlayerEntity* arg2) {
+void BattleScene_LoadCameraPreset(DioramaAnimData* arg0, CameraStruct* arg1, BattlePlayerEntity* arg2) {
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -992,7 +992,7 @@ void BattleScene_LoadCameraPresetUnscaled(DioramaAnimData* arg0, CameraStruct* a
     BattleScene_SetCameraPresetSmoothing(arg0->unk_28, arg0->unk_2C);
 }
 
-s32 BattleScene_AnimateCameraIntro(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+s32 BattleScene_AnimateCameraIntro(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     Vec3f sp64;
     Vec3f sp58;
     Vec3f sp4C;
@@ -1045,7 +1045,7 @@ void BattleScene_SetCameraActivePokemonHeightShot(CameraStruct* arg0, s32 arg1) 
     Vec3f sp60;
     Vec3f sp54;
     Vec3f sp48;
-    unk_BattlePlayerEntity* sp40;
+    BattlePlayerEntity* sp40;
 
     BattleScene_ClearCameraOffsetVectors();
     arg0->unk_24.fovy = 30.0f;
@@ -1099,7 +1099,7 @@ s32 BattleScene_ApproachCameraActivePokemonHeightShot(CameraStruct* arg0, s32 ar
     return 0;
 }
 
-void BattleScene_SetCameraOwnerShot(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_SetCameraOwnerShot(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
 
     gBattleScene.posX->unk_D0.x = BattleScene_GetParticipantModelXOffset(arg1);
@@ -1122,7 +1122,7 @@ void BattleScene_SetCameraOwnerShot(CameraStruct* arg0, unk_BattlePlayerEntity* 
     BattleScene_SetCameraEyeFromPosition(arg0, gBattleScene.posX->unk_D0, 0, BattleScene_GetParticipantFacingAngle(arg1), gCameraDistTarget, 0.0f);
 }
 
-void BattleScene_SetCameraOwnerWideShot(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_SetCameraOwnerWideShot(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     f32 sp3C;
 
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
@@ -1131,7 +1131,7 @@ void BattleScene_SetCameraOwnerWideShot(CameraStruct* arg0, unk_BattlePlayerEnti
     BattleScene_SetCameraEyeFromAt(arg0, 0, arg1->sideSign << 0xE, sp3C, 0.0f);
 }
 
-void BattleScene_SetCameraPresetClose(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
+void BattleScene_SetCameraPresetClose(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = BattleScene_ScaleCameraDistance(arg1, 5.0f, 300.0f);
@@ -1148,7 +1148,7 @@ void BattleScene_SetCameraPresetClose(CameraStruct* arg0, unk_BattlePlayerEntity
     BattleScene_ReframeAndRecomputeDistance(arg0, arg1);
 }
 
-void BattleScene_SetCameraPresetAngledClose(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
+void BattleScene_SetCameraPresetAngledClose(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = BattleScene_ScaleCameraDistance(arg1, 5.0f, 300.0f);
@@ -1164,7 +1164,7 @@ void BattleScene_SetCameraPresetAngledClose(CameraStruct* arg0, unk_BattlePlayer
     BattleScene_ReframeAndRecomputeDistance(arg0, arg1);
 }
 
-void BattleScene_SetCameraPresetOffsetClose(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
+void BattleScene_SetCameraPresetOffsetClose(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 0.5f, 100.0f);
     gCameraDistCurrent = BattleScene_ScaleCameraDistance(arg1, 5.0f, 300.0f);
@@ -1179,7 +1179,7 @@ void BattleScene_SetCameraPresetOffsetClose(CameraStruct* arg0, unk_BattlePlayer
     BattleScene_ReframeAndRecomputeDistance(arg0, arg1);
 }
 
-void BattleScene_SetCameraPresetLowClose(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
+void BattleScene_SetCameraPresetLowClose(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2) {
     UNUSED s32 pad[4];
     s16 sp3E;
 
@@ -1199,7 +1199,7 @@ void BattleScene_SetCameraPresetLowClose(CameraStruct* arg0, unk_BattlePlayerEnt
     BattleScene_ReframeAndRecomputeDistance(arg0, arg1);
 }
 
-void BattleScene_SetCameraPresetWide(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
+void BattleScene_SetCameraPresetWide(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 3.5f, 300.0f);
     BattleScene_SetCameraAtFromAnchor(arg1, arg0, gBattleScene.posX->unk_D0, 0, BattleScene_GetParticipantFacingAngle(arg1), 0.0f, 0.0f);
@@ -1213,7 +1213,7 @@ void BattleScene_SetCameraPresetWide(CameraStruct* arg0, unk_BattlePlayerEntity*
     BattleScene_ReframeAndRecomputeDistance(arg0, arg1);
 }
 
-void BattleScene_SetCameraPresetWideStatic(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
+void BattleScene_SetCameraPresetWideStatic(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 3.5f, 300.0f);
     BattleScene_SetCameraAtFromAnchor(arg1, arg0, gBattleScene.posX->unk_D0, 0, BattleScene_GetParticipantFacingAngle(arg1), 0.0f, 0.0f);
@@ -1223,7 +1223,7 @@ void BattleScene_SetCameraPresetWideStatic(CameraStruct* arg0, unk_BattlePlayerE
     }
 }
 
-void BattleScene_SetCameraPresetFromTable(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
+void BattleScene_SetCameraPresetFromTable(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2, s32 arg3) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gCameraPreset.posX);
     BattleScene_LoadCameraPreset(&gBattleCameraPresetTable[arg2], arg0, arg1);
     BattleScene_ApplyCameraPreset(arg0, arg1, 1);
@@ -1233,7 +1233,7 @@ void BattleScene_SetCameraPresetFromTable(CameraStruct* arg0, unk_BattlePlayerEn
     }
 }
 
-void BattleScene_CameraShotTargetStandard(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_CameraShotTargetStandard(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleScene_ClearCameraOffsetVectors();
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 5.0f, 400.0f);
@@ -1242,7 +1242,7 @@ void BattleScene_CameraShotTargetStandard(CameraStruct* arg0, unk_BattlePlayerEn
     BattleScene_UpdateCameraModelOffset(arg1, arg0);
 }
 
-void BattleScene_CameraShotTargetAngled(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_CameraShotTargetAngled(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleScene_ClearCameraOffsetVectors();
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 5.0f, 400.0f);
@@ -1251,7 +1251,7 @@ void BattleScene_CameraShotTargetAngled(CameraStruct* arg0, unk_BattlePlayerEnti
     BattleScene_UpdateCameraModelOffset(arg1, arg0);
 }
 
-void BattleScene_CameraShotTargetHigh(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_CameraShotTargetHigh(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 5.0f, 400.0f);
     BattleScene_SetCameraAtFromAnchor(arg1, arg0, gBattleScene.posX->unk_D0, 0, arg1->sideSign << 0xE, 0.0f, 0.0f);
@@ -1259,7 +1259,7 @@ void BattleScene_CameraShotTargetHigh(CameraStruct* arg0, unk_BattlePlayerEntity
     BattleScene_UpdateCameraModelOffset(arg1, arg0);
 }
 
-void BattleScene_CameraShotTargetLow(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_CameraShotTargetLow(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 5.0f, 400.0f);
     BattleScene_SetCameraAtFromAnchor(arg1, arg0, gBattleScene.posX->unk_D0, 0, arg1->sideSign << 0xE, 0.0f, 0.0f);
@@ -1270,7 +1270,7 @@ void BattleScene_CameraShotTargetLow(CameraStruct* arg0, unk_BattlePlayerEntity*
     BattleScene_UpdateCameraModelOffset(arg1, arg0);
 }
 
-void BattleScene_CameraShotTargetClose(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_CameraShotTargetClose(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 3.5f, 300.0f);
     BattleScene_SetCameraAtFromAnchor(arg1, arg0, gBattleScene.posX->unk_D0, 0, BattleScene_GetParticipantFacingAngle(arg1), 0.0f, 0.0f);
@@ -1278,7 +1278,7 @@ void BattleScene_CameraShotTargetClose(CameraStruct* arg0, unk_BattlePlayerEntit
     BattleScene_UpdateCameraModelOffset(arg1, arg0);
 }
 
-void BattleScene_SetCameraFollowPresetNear(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, s32 arg2) {
+void BattleScene_SetCameraFollowPresetNear(CameraStruct* arg0, BattlePlayerEntity* arg1, s32 arg2) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 3.5f, 300.0f);
     gCameraDistCurrent = BattleScene_ScaleCameraDistance(arg1, 0.5f, 100.0f);
@@ -1289,7 +1289,7 @@ void BattleScene_SetCameraFollowPresetNear(CameraStruct* arg0, unk_BattlePlayerE
     }
 }
 
-void BattleScene_SetCameraOwnerStandardShot(CameraStruct* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_SetCameraOwnerStandardShot(CameraStruct* arg0, BattlePlayerEntity* arg1) {
     BattleAnim_GetOwnerDefaultAnchorPosition(arg1, &gBattleScene.posX->unk_D0);
     gCameraDistTarget = BattleScene_ScaleCameraDistance(arg1, 3.5f, 300.0f);
     BattleScene_SetCameraAtFromAnchor(arg1, arg0, gBattleScene.posX->unk_D0, 0, BattleScene_GetParticipantFacingAngle(arg1), 0.0f, 0.0f);
@@ -1297,7 +1297,7 @@ void BattleScene_SetCameraOwnerStandardShot(CameraStruct* arg0, unk_BattlePlayer
     BattleScene_UpdateCameraModelOffset(arg1, arg0);
 }
 
-void BattleScene_SelectCameraPreset(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2, s32 arg3) {
+void BattleScene_SelectCameraPreset(BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2, s32 arg3) {
     BattleScene_ClearCameraOffsetVectors();
     switch (arg2) {
         case 0:
@@ -1354,7 +1354,7 @@ void BattleScene_SelectCameraPreset(unk_BattlePlayerEntity* arg0, CameraStruct* 
     }
 }
 
-void BattleScene_SelectCameraFollowPreset(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2) {
+void BattleScene_SelectCameraFollowPreset(BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2) {
     BattleScene_ClearCameraOffsetVectors();
     switch (arg2) {
         case 0:
@@ -1378,7 +1378,7 @@ void BattleScene_SelectCameraFollowPreset(unk_BattlePlayerEntity* arg0, CameraSt
     }
 }
 
-void BattleScene_SelectCameraShot(unk_BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2) {
+void BattleScene_SelectCameraShot(BattlePlayerEntity* arg0, CameraStruct* arg1, s32 arg2) {
     BattleScene_ClearCameraOffsetVectors();
     switch (arg2) {
         case 0:

@@ -4,17 +4,17 @@
 #include "src/334D0.h"
 #include "src/F420.h"
 
-void BattleScene_TriggerOwnerModelAnimation(unk_BattlePlayerEntity* arg0) {
+void BattleScene_TriggerOwnerModelAnimation(BattlePlayerEntity* arg0) {
     ModelAnim_SetFrame(&arg0->unk_728.unk_000, arg0->unk_728.unk_180);
     ModelAnim_SetAnimation(&arg0->unk_728.unk_000, arg0->unk_728.unk_17C);
     BattleScene_SetOwnerPoseFlag(arg0->unk_728.unk_168);
 }
 
-void BattleScene_ClearParticipantOwnerActiveFlag(unk_BattlePlayerEntity* arg0) {
+void BattleScene_ClearParticipantOwnerActiveFlag(BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_170 = 0;
 }
 
-void BattleScene_SetParticipantOwnerActiveFlag(unk_BattlePlayerEntity* arg0) {
+void BattleScene_SetParticipantOwnerActiveFlag(BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_170 = 1;
 }
 
@@ -32,7 +32,7 @@ void BattleScene_SetOwnerPoseFlag(unk_D_84390010_728_0168* arg0) {
     arg0->posX.unk_01 |= 0x10;
 }
 
-void BattleScene_LoadOwnerCameraFramingConstants(unk_BattlePlayerEntity* arg0) {
+void BattleScene_LoadOwnerCameraFramingConstants(BattlePlayerEntity* arg0) {
     s32 var_v0;
 
     if (arg0 == sActivePokemon[0]) {
@@ -52,7 +52,7 @@ void BattleScene_LoadOwnerCameraFramingConstants(unk_BattlePlayerEntity* arg0) {
     arg0->unk_728.unk_168->unk_2C = gEntityInitParams[var_v0].unk_08;
 }
 
-void BattleScene_SetupOwnerCameraFraming(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_SetupOwnerCameraFraming(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
     if (gBattleScene.posX->unk_1C == 1) {
         BattleScene_SetBothOwnerActiveFlags();
     } else {
@@ -65,7 +65,7 @@ void BattleScene_SetupOwnerCameraFraming(unk_BattlePlayerEntity* arg0, unk_Battl
 void func_84307630(void) {
 }
 
-void BattleScene_ApplyOwnerCameraFraming(unk_BattlePlayerEntity* arg0) {
+void BattleScene_ApplyOwnerCameraFraming(BattlePlayerEntity* arg0) {
     s32 temp_v0;
     unk_D_84390010_728_0168* sp30;
     f32 tmp;
@@ -93,11 +93,11 @@ void BattleScene_ApplyOwnerCameraFraming(unk_BattlePlayerEntity* arg0) {
                   arg0->unk_728.unk_000.unk_024.z, arg0->unk_728.unk_188, arg0->unk_728.unk_184, arg0->unk_728.unk_186);
 }
 
-void BattleScene_TickOwnerCameraFraming(unk_BattlePlayerEntity* arg0) {
+void BattleScene_TickOwnerCameraFraming(BattlePlayerEntity* arg0) {
     BattleScene_ApplyOwnerCameraFraming(arg0);
 }
 
-void BattleScene_InitializeOwnerCameraFraming(CameraStruct* arg0, unk_BattlePlayerEntity* arg1, CameraStruct* arg2, unk_BattlePlayerEntity* arg3) {
+void BattleScene_InitializeOwnerCameraFraming(CameraStruct* arg0, BattlePlayerEntity* arg1, CameraStruct* arg2, BattlePlayerEntity* arg3) {
     arg1->unk_728.unk_168 = arg0;
     arg3->unk_728.unk_168 = arg2;
     BattleScene_SetupOwnerCameraFraming(arg1, arg3);
@@ -105,7 +105,7 @@ void BattleScene_InitializeOwnerCameraFraming(CameraStruct* arg0, unk_BattlePlay
     BattleScene_TickOwnerCameraFraming(arg3);
 }
 
-void BattleScene_TickOwnerSlideIn(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void BattleScene_TickOwnerSlideIn(BattlePlayerEntity* arg0, s32 arg1) {
     s16 var_a0;
     unk_D_84390010_728_0168* temp_v0;
 
@@ -136,7 +136,7 @@ void BattleScene_TickOwnerSlideIn(unk_BattlePlayerEntity* arg0, s32 arg1) {
     }
 }
 
-void BattleScene_TickOwnerSlideOut(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void BattleScene_TickOwnerSlideOut(BattlePlayerEntity* arg0, s32 arg1) {
     if (arg0->unk_728.unk_178 == 1) {
         arg0->unk_728.unk_18C = 0;
         arg0->unk_728.unk_168->unk_1C = Math_StepToS32(arg0->unk_728.unk_168->unk_1C, -0x48, arg1, arg1);
@@ -154,7 +154,7 @@ void BattleScene_TickOwnerSlideOut(unk_BattlePlayerEntity* arg0, s32 arg1) {
     }
 }
 
-void BattleScene_TickOwnerSlideAnimation(unk_BattlePlayerEntity* arg0) {
+void BattleScene_TickOwnerSlideAnimation(BattlePlayerEntity* arg0) {
     switch (arg0->unk_728.unk_170) {
         case 0:
             BattleScene_TickOwnerSlideOut(arg0, 9);
@@ -166,7 +166,7 @@ void BattleScene_TickOwnerSlideAnimation(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void BattleScene_TickBothOwnerSlideAnimations(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_TickBothOwnerSlideAnimations(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
     if (gSessionContext.unk_0000 != 0x10) {
         BattleScene_TickOwnerSlideAnimation(arg0);
         BattleScene_TickOwnerSlideAnimation(arg1);

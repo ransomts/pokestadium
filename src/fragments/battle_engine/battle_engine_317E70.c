@@ -344,7 +344,7 @@ void BattleAnim_UpdateParticlePool(void) {
     }
 }
 
-void BattleAnim_InitializeParticleFromEffect(ParticleEffectInstance* arg0, unk_BattlePlayerEntity* arg1, gBattleAnimEffectSlots* arg2, s16 arg3) {
+void BattleAnim_InitializeParticleFromEffect(ParticleEffectInstance* arg0, BattlePlayerEntity* arg1, gBattleAnimEffectSlots* arg2, s16 arg3) {
     if ((u32)arg0 == -1) {
         return;
     }
@@ -388,7 +388,7 @@ void BattleAnim_SpawnEffectParticles(gBattleAnimEffectSlots* arg0, s32 arg1) {
     s16 var_s2;
     ParticleEffectData* temp_a2 = arg0->rotation;
     ParticleRenderSettings* temp_a3 = arg0->rotation->rotation.a;
-    unk_BattlePlayerEntity* tmp08 = arg0->unk_08;
+    BattlePlayerEntity* tmp08 = arg0->unk_08;
     s16 tmp12 = arg0->unk_12;
 
     switch (arg1) {
@@ -422,7 +422,7 @@ void BattleAnim_SpawnBatchedParticles(gBattleAnimEffectSlots* arg0) {
 
 void BattleAnim_SpawnSingleParticle(gBattleAnimEffectSlots* arg0) {
     UNUSED s32 pad;
-    unk_BattlePlayerEntity* sp18 = arg0->unk_08;
+    BattlePlayerEntity* sp18 = arg0->unk_08;
 
     BattleAnim_InitializeParticleFromEffect(Particle_New(), sp18, arg0, 0);
 }
@@ -544,14 +544,14 @@ void BattleAnim_CleanupEffectsRetainingCategory4(void) {
 }
 
 s32 BattleAnim_GetMoveFailedFlag(void) {
-    return D_84390340;
+    return gCameraStateFlag;
 }
 
 void BattleAnim_UpdateMoveFailedFlag(void) {
     if (gBattleMoveFailed != 0) {
-        D_84390340 = 1;
+        gCameraStateFlag = 1;
     } else {
-        D_84390340 = 0;
+        gCameraStateFlag = 0;
     }
 }
 
@@ -565,24 +565,24 @@ void BattleAnim_ClearEffectCallbacks(void) {
         }
     }
 
-    D_84390340 = 0;
+    gCameraStateFlag = 0;
 }
 
 s32 BattleAnim_IsEffectSpawningEnabled(void) {
     s32 var_v1 = 0;
 
-    if (D_843902F8 == 0) {
+    if (gBattleEngineStatus == 0) {
         var_v1 = 1;
     }
     return var_v1;
 }
 
 void BattleAnim_DisableEffectSpawning(void) {
-    D_843902F8 = 1;
+    gBattleEngineStatus = 1;
 }
 
 void BattleAnim_EnableEffectSpawning(void) {
-    D_843902F8 = 0;
+    gBattleEngineStatus = 0;
 }
 
 void BattleAnim_DisableEffectSpawningAlias(void) {
@@ -608,7 +608,7 @@ void BattleAnim_CleanupEffects(s32 arg0) {
     }
 }
 
-void BattleAnim_StopParticlesForOwnerCategory(u8 arg0, unk_BattlePlayerEntity* arg1) {
+void BattleAnim_StopParticlesForOwnerCategory(u8 arg0, BattlePlayerEntity* arg1) {
     s32 i;
     ParticleEffectInstance* var_s0 = gParticlePool;
 
@@ -621,15 +621,15 @@ void BattleAnim_StopParticlesForOwnerCategory(u8 arg0, unk_BattlePlayerEntity* a
 }
 
 void BattleAnim_ResetSpawnDelay(void) {
-    D_843902A8 = 0;
+    gBattleEngineTimer = 0;
 }
 
 void BattleAnim_SetSpawnDelay(s32 arg0) {
-    D_843902A8 = arg0;
+    gBattleEngineTimer = arg0;
 }
 
 void BattleAnim_AddSpawnDelay(s32 arg0) {
-    D_843902A8 += arg0;
+    gBattleEngineTimer += arg0;
 }
 
 void BattleAnim_ResetSpawnDelayAlias(void) {
@@ -637,11 +637,11 @@ void BattleAnim_ResetSpawnDelayAlias(void) {
 }
 
 gBattleAnimEffectSlots* BattleAnim_CreateEffectSlot(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, ParticleEffectData* arg4,
-                              unk_BattlePlayerEntity* arg5, s16 arg6, s16 arg7, u8 arg8, u8 arg9, u8 argA, u8 argB) {
+                              BattlePlayerEntity* arg5, s16 arg6, s16 arg7, u8 arg8, u8 arg9, u8 argA, u8 argB) {
     gBattleAnimEffectSlots* sp1C = BattleAnim_AllocEffectSlot();
 
     if ((u32)sp1C != -1) {
-        sp1C->unk_0E = arg0 + D_843902A8;
+        sp1C->unk_0E = arg0 + gBattleEngineTimer;
         sp1C->unk_0C = arg1;
         sp1C->unk_14 = arg2;
         sp1C->posX = arg3;
@@ -816,7 +816,7 @@ s32 BattleAnim_GetTertiaryOwnerSpecies(void) {
     return BattleAnim_GetOwnerSpecies(gParticleEffectEntityB);
 }
 
-void BattleAnim_GetOwnerBonePosition(unk_BattlePlayerEntity* arg0, s16 arg1, Vec3f* arg2) {
+void BattleAnim_GetOwnerBonePosition(BattlePlayerEntity* arg0, s16 arg1, Vec3f* arg2) {
     s32 sp24 = 0;
 
     if (arg0 != NULL) {
@@ -868,21 +868,21 @@ void BattleAnim_GetTertiaryOwnerBone9Position(Vec3f* arg0) {
     BattleAnim_GetOwnerBonePosition(gParticleEffectEntityB, 9, arg0);
 }
 
-void BattleAnim_GetOwnerModelBoundsScaled(unk_BattlePlayerEntity* arg0, Vec3f* arg1) {
+void BattleAnim_GetOwnerModelBoundsScaled(BattlePlayerEntity* arg0, Vec3f* arg1) {
     BattleScene_GetParticipantModelBoundsScaled(arg0, arg1);
 }
 
-f32 BattleAnim_GetSpeciesBaseScale(unk_BattlePlayerEntity* arg0) {
+f32 BattleAnim_GetSpeciesBaseScale(BattlePlayerEntity* arg0) {
     f32 ret = gCamDistances[arg0->unk_000.unk_01A] * 0.01f;
 
     return ret;
 }
 
-f32 BattleAnim_GetOwnerModelScale(unk_BattlePlayerEntity* arg0) {
+f32 BattleAnim_GetOwnerModelScale(BattlePlayerEntity* arg0) {
     return BattleAnim_GetSpeciesBaseScale(arg0);
 }
 
-void BattleAnim_GetOwnerSpeciesBaseScaleAlias(unk_BattlePlayerEntity* arg0) {
+void BattleAnim_GetOwnerSpeciesBaseScaleAlias(BattlePlayerEntity* arg0) {
     BattleAnim_GetSpeciesBaseScale(arg0);
 }
 

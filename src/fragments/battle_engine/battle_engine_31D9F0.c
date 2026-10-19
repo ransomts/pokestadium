@@ -118,7 +118,7 @@ void BattleAnim_SetupUnusedDescriptor4FColorCycleScaleFadeVariant(ParticleEffect
 
     Particle_SetScaleFactor1(arg0, 0.25f);
     Particle_RotateY(arg0, ParticleMath_RandomSigned(0x400));
-    Particle_SetSpeed(arg0, D_84392058[0]);
+    Particle_SetSpeed(arg0, gWaterWaveTable[0]);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, 0x17);
     Particle_SetTimerA6(arg0, sp22 * 2);
     Particle_DisableRendering(arg0);
@@ -1627,7 +1627,7 @@ void ParticleEffect_InitSetC(void) {
     BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0xC, 2, 2, BattleAnim_CallbackEndEffects54And56Descriptor3DRisingColorScaleFade, &gBattleAnimParticleDescriptors[0x3D], 0, 4, 0x11, 9, 0, 0);
 }
 
-void func_84336EE8(void) {
+void ParticleEffect_InitSmokeSetA(void) {
     BattleAnim_SpawnCategory17MarkerSlot(0x64, 1);
     BattleAnim_SpawnGlobalTintColorFadeDetach(0, 8, 6);
     BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 0x3C, BattleAnim_CallbackStartEffects23And35And84Descriptor4FColorCycleScaleFade, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
@@ -1678,7 +1678,7 @@ void ParticleEffect_InitFireSet(void) {
 void func_8433765C(void) {
 }
 
-void func_84337664(void) {
+void ParticleEffect_InitEmptySet2(void) {
 }
 
 void ParticleEffect_InitSparkleSet(void) {

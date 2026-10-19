@@ -162,8 +162,8 @@ s32 BattleScene_AreBothParticipantModelsCompact(void) {
     return 0;
 }
 
-s32 BattleScene_SkipIntroIfFainted(UNUSED unk_BattlePlayerEntity* arg0, CameraStruct* arg1) {
-    unk_BattlePlayerAnimState* ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
+s32 BattleScene_SkipIntroIfFainted(UNUSED BattlePlayerEntity* arg0, CameraStruct* arg1) {
+    BattlePlayerAnimState* ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
 
     if ((ptr->unk_2D == 0x10) || ((ptr->unk_34 & 0x4000) != 0)) {
         BattleScene_SelectNextIntroCameraShot(arg1);
@@ -172,10 +172,10 @@ s32 BattleScene_SkipIntroIfFainted(UNUSED unk_BattlePlayerEntity* arg0, CameraSt
     return 0;
 }
 
-s32 BattleScene_IsEitherActivePokemonFainted(UNUSED unk_BattlePlayerEntity* arg0, UNUSED CameraStruct* arg1) {
-    unk_BattlePlayerAnimState* ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
+s32 BattleScene_IsEitherActivePokemonFainted(UNUSED BattlePlayerEntity* arg0, UNUSED CameraStruct* arg1) {
+    BattlePlayerAnimState* ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
     s32 idx = gBattleScene.posX->unk_2C == 0;
-    unk_BattlePlayerAnimState* ptr2 = &sActivePokemon[idx]->animationState;
+    BattlePlayerAnimState* ptr2 = &sActivePokemon[idx]->animationState;
 
     if ((ptr->unk_34 & 0x4000) || (ptr2->unk_34 & 0x4000)) {
         return 1;
@@ -215,10 +215,10 @@ void BattleScene_IntroCameraStep4Or6(CameraStruct* arg0, s32 arg1) {
     f32 sp50;
     f32 sp4C;
     s16 sp4A;
-    unk_BattlePlayerAnimState* sp44;
+    BattlePlayerAnimState* sp44;
     UNUSED s32 pad2;
     u16 sp3E;
-    unk_BattlePlayerEntity* temp_s0;
+    BattlePlayerEntity* temp_s0;
 
     sp44 = &sActivePokemon[arg1]->animationState;
     BattleScene_ClearCameraOffsetVectors();
@@ -265,7 +265,7 @@ void BattleScene_IntroCameraStep8Or10(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad[2];
     DioramaAnimData* sp24;
     s32 var_a0;
-    unk_BattlePlayerEntity* temp_s0;
+    BattlePlayerEntity* temp_s0;
 
     BattleScene_ClearCameraOffsetVectors();
     BattleScene_SetActivePokemonIndex(arg1);
@@ -346,7 +346,7 @@ void BattleScene_IntroCameraStep20(CameraStruct* arg0) {
 void BattleScene_IntroCameraStep22Or24(CameraStruct* arg0, s32 arg1) {
     UNUSED s32 pad[5];
     s32 var_v1;
-    unk_BattlePlayerEntity* temp_s0;
+    BattlePlayerEntity* temp_s0;
     f32 tmp1;
     s16 tmp4;
     s16 tmp3;
@@ -480,7 +480,7 @@ void BattleScene_IntroCameraRollStepNoFov(CameraStruct* arg0) {
 
 void BattleScene_IntroCameraAnimationHoldStep(CameraStruct* arg0) {
     UNUSED s32 pad;
-    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
+    BattlePlayerAnimState* sp18 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
 
     if ((sp18->unk_2D == 0x10) || ((sp18->unk_34 & 0x4000) != 0)) {
         BattleScene_SelectNextIntroCameraShot(arg0);
@@ -501,7 +501,7 @@ void BattleScene_IntroCameraAnimationHoldStep(CameraStruct* arg0) {
 }
 
 void BattleScene_IntroCameraPresetHoldStep(CameraStruct* arg0) {
-    unk_BattlePlayerEntity* sp1C = sActivePokemon[gBattleScene.posX->unk_2C];
+    BattlePlayerEntity* sp1C = sActivePokemon[gBattleScene.posX->unk_2C];
 
     if ((sp1C->animationState.unk_2D == 0x10) || (sp1C->animationState.unk_34 & 0x4000)) {
         BattleScene_SelectNextIntroCameraShot(arg0);
@@ -511,7 +511,7 @@ void BattleScene_IntroCameraPresetHoldStep(CameraStruct* arg0) {
 }
 
 void BattleScene_IntroCameraWideHoldStep(CameraStruct* arg0) {
-    unk_BattlePlayerAnimState* ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
+    BattlePlayerAnimState* ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState;
 
     if ((ptr->unk_2D == 0x10) || (ptr->unk_34 & 0x4000)) {
         BattleScene_SelectNextIntroCameraShot(arg0);

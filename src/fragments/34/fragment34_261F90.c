@@ -3,7 +3,7 @@
 #include "src/F420.h"
 #include "src/math_util.h"
 
-unk_D_8140E620* gMatrixBuffer;
+gMatrixBufferStruct* gMatrixBuffer;
 s32 gMatrixBufferIdx;
 s32 gMatrixBufferIdx;
 unk_D_8140E634 gParticleRenderContext;

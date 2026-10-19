@@ -4,7 +4,7 @@
 #include "src/math_util.h"
 #include "include/math.h"
 
-typedef struct unk_D_84397610 {
+typedef struct TrailState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -22,19 +22,19 @@ typedef struct unk_D_84397610 {
     /* 0x2C */ Vtx* unk_2C;
     /* 0x30 */ Color_RGB8 unk_30;
     /* 0x33 */ Color_RGB8 unk_33;
-} unk_D_84397610; // size = 0x38
+} TrailState; // size = 0x38
 
-typedef struct unk_D_84397648 {
+typedef struct TrailPoint {
     /* 0x00 */ f32 posX;
     /* 0x04 */ f32 rotation;
     /* 0x08 */ f32 unk_08;
     /* 0x0C */ f32 unk_0C;
-} unk_D_84397648; // size = 0x10
+} TrailPoint; // size = 0x10
 
-static unk_D_84397610 gTrailState;
-static unk_D_84397648 gTrailPoints[400];
+static TrailState gTrailState;
+static TrailPoint gTrailPoints[400];
 static s32 pad_D_84398F48[2];
-static unk_D_84398F50 D_84398F50[10];
+static RadialNode gRadialNodes[10];
 
 static Gfx D_84389060[] = {
     gsSPEndDisplayList(),
@@ -48,8 +48,8 @@ static u32 gTrailTextureData[] = {
 };
 
 void Radial20_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9) {
-    unk_D_84397610* ptr1 = &gTrailState;
-    unk_D_84397648* ptr2;
+    TrailState* ptr1 = &gTrailState;
+    TrailPoint* ptr2;
     s32 i;
 
     ptr1->posX = 0;
@@ -83,7 +83,7 @@ void Radial20_Init(f32 arg0, f32 arg1, f32 arg2, f32 arg3, u8 arg4, u8 arg5, u8 
 }
 
 f32 Strip400_GetTailFadeRatio(void) {
-    unk_D_84397610* ptr = &gTrailState;
+    TrailState* ptr = &gTrailState;
     f32 tmp;
     s32 tmp2 = ptr->posX;
 
@@ -107,8 +107,8 @@ s32 Radial20_Update(void) {
     f32 temp_fs5;
     f32 temp_ft0;
     f32 var_fs1;
-    unk_D_84397648* var_s0;
-    unk_D_84397610* ptr = &gTrailState;
+    TrailPoint* var_s0;
+    TrailState* ptr = &gTrailState;
     f32 sp98;
     f32 sp94;
     f32 sp90;
@@ -204,7 +204,7 @@ s32 Radial20_Update(void) {
 }
 
 Gfx* Strip400_Draw(Gfx* arg0) {
-    static Gfx D_843890E8[] = {
+    static Gfx gTrailDrawDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_1CYCLE),
         gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -224,8 +224,8 @@ Gfx* Strip400_Draw(Gfx* arg0) {
 
     Vtx* vtx;
     s32 i;
-    unk_D_84397648* var_a0;
-    unk_D_84397610* ptr = &gTrailState;
+    TrailPoint* var_a0;
+    TrailState* ptr = &gTrailState;
 
     if (ptr->unk_28 < 2) {
         return arg0;
@@ -264,7 +264,7 @@ Gfx* Strip400_Draw(Gfx* arg0) {
         var_a0++;
     }
 
-    gSPDisplayList(arg0++, D_843890E8);
+    gSPDisplayList(arg0++, gTrailDrawDL);
     gDPSetPrimColor(arg0++, 0, 0, ptr->unk_30.r, ptr->unk_30.g, ptr->unk_30.b, 200);
     gDPSetEnvColor(arg0++, ptr->unk_33.r, ptr->unk_33.g, ptr->unk_33.b, 0);
 
@@ -282,11 +282,11 @@ void Radial20_ResetPool(void) {
     s16 temp_v0;
     s32 i;
     s32 j;
-    unk_D_84398F50* var_a2;
-    unk_D_84398F50_048* var_v1;
+    RadialNode* var_a2;
+    RadialNodePoint* var_v1;
 
     temp_v0 = AuxiliaryEffect_Alloc();
-    var_a2 = &D_84398F50[0];
+    var_a2 = &gRadialNodes[0];
 
     for (i = 0; i < 10; i++) {
         var_a2->unk_000 = 0;
@@ -314,8 +314,8 @@ void Radial20_ResetPool(void) {
 
 void Radial20_VariantA(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, f32 argB, f32 argC, f32 argD, s16 argE) {
-    unk_D_84398F50* var_v0;
-    unk_D_84398F50_048* var_a1_2;
+    RadialNode* var_v0;
+    RadialNodePoint* var_a1_2;
     s32 i;
     s32 j;
     Vec3f sp14;
@@ -328,7 +328,7 @@ void Radial20_VariantA(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     sp8.y = arg4;
     sp8.z = arg5;
 
-    var_v0 = &D_84398F50[0];
+    var_v0 = &gRadialNodes[0];
 
     for (i = 0; i < 10; i++, var_v0++) {
         if (var_v0->unk_000 == 0) {
@@ -368,8 +368,8 @@ void Radial20_VariantA(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
 
 void Radial20_VariantB(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, f32 argB, f32 argC, f32 argD, s16 argE) {
-    unk_D_84398F50* var_v0;
-    unk_D_84398F50_048* var_v1_2;
+    RadialNode* var_v0;
+    RadialNodePoint* var_v1_2;
     s32 i;
     s32 j;
     Vec3f spC;
@@ -382,7 +382,7 @@ void Radial20_VariantB(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     sp0.y = arg4;
     sp0.z = arg5;
 
-    var_v0 = &D_84398F50[0];
+    var_v0 = &gRadialNodes[0];
 
     for (i = 0; i < 10; i++, var_v0++) {
         if (var_v0->unk_000 == 0) {
@@ -412,8 +412,8 @@ void Radial20_VariantB(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
 
 void Radial20_VariantC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC, u8 argD, f32 argE, f32 argF, f32 arg10, s16 arg11) {
-    unk_D_84398F50* var_v0;
-    unk_D_84398F50_048* var_s0;
+    RadialNode* var_v0;
+    RadialNodePoint* var_s0;
     s32 i;
     s32 j;
     Vec3f spBC;
@@ -433,7 +433,7 @@ void Radial20_VariantC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     spB0.y = arg4;
     spB0.z = arg5;
 
-    var_v0 = &D_84398F50[0];
+    var_v0 = &gRadialNodes[0];
 
     for (i = 0; i < 10; i++, var_v0++) {
         if (var_v0->unk_000 == 0) {
@@ -483,8 +483,8 @@ void Radial20_VariantC(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
 
 void Radial20_VariantD(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, u8 argB, u8 argC, u8 argD, f32 argE, f32 argF, f32 arg10, s16 arg11) {
-    unk_D_84398F50* var_v0;
-    unk_D_84398F50_048* var_s0;
+    RadialNode* var_v0;
+    RadialNodePoint* var_s0;
     s32 i;
     s32 j;
     Vec3f spBC;
@@ -504,7 +504,7 @@ void Radial20_VariantD(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     spB0.y = arg4;
     spB0.z = arg5;
 
-    var_v0 = &D_84398F50[0];
+    var_v0 = &gRadialNodes[0];
 
     for (i = 0; i < 10; i++, var_v0++) {
         if (var_v0->unk_000 == 0) {
@@ -554,8 +554,8 @@ void Radial20_VariantD(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
 
 void Radial20_VariantE(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, s16 arg6, u8 arg7, u8 arg8, u8 arg9,
                    u8 argA, f32 argB, f32 argC, f32 argD, s16 argE) {
-    unk_D_84398F50* var_v0;
-    unk_D_84398F50_048* var_s0;
+    RadialNode* var_v0;
+    RadialNodePoint* var_s0;
     s32 i;
     s32 j;
     Vec3f spBC;
@@ -572,7 +572,7 @@ void Radial20_VariantE(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg
     spB0.y = arg4;
     spB0.z = arg5;
 
-    var_v0 = &D_84398F50[0];
+    var_v0 = &gRadialNodes[0];
 
     for (i = 0; i < 10; i++, var_v0++) {
         if (var_v0->unk_000 == 0) {
@@ -625,8 +625,8 @@ void Radial20_RotateVertexOffset(f32 arg0, UNUSED Vec3f* arg1, Vec3f* arg2, f32 
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg3, &arg2->x, &arg2->y, &arg2->z);
 }
 
-void Radial20_UpdateNode(unk_D_84398F50* arg0) {
-    unk_D_84398F50_048* var_v0;
+void Radial20_UpdateNode(RadialNode* arg0) {
+    RadialNodePoint* var_v0;
     UNUSED s32 pad;
     s32 i;
     Vec3f sp28;
@@ -775,7 +775,7 @@ void Radial20_UpdateNode(unk_D_84398F50* arg0) {
 s32 Radial20_IsComplete(void) {
     s32 i;
     s32 var_s2 = 0;
-    unk_D_84398F50* var_s0 = D_84398F50;
+    RadialNode* var_s0 = gRadialNodes;
 
     for (i = 0; i < 10; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -810,8 +810,8 @@ static u32 D_84389188[] = {
     0x6F6F6F6F, 0x6F6F6F6F, 0x2F2F2F2F, 0x2F2F2F2F, 0x0D0D0D0D, 0x0D0D0D0D, 0x08080808, 0x08080808,
 };
 
-Gfx* func_84362084(Gfx* arg0) {
-    static Gfx D_84389208[] = {
+Gfx* Radial20_Draw(Gfx* arg0) {
+    static Gfx gRadialNodeDrawDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_1CYCLE),
         gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -827,7 +827,7 @@ Gfx* func_84362084(Gfx* arg0) {
                              G_TX_NOMIRROR | G_TX_WRAP, 3, 4, G_TX_NOLOD, G_TX_NOLOD),
         gsSPEndDisplayList(),
     };
-    static Gfx D_84389290[] = {
+    static Gfx gRadialNodeVertexDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_1CYCLE),
         gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -843,18 +843,18 @@ Gfx* func_84362084(Gfx* arg0) {
     static u8 gParticlePaletteR[] = { 0xFF, 0, 0xFF };
     static u8 gParticlePaletteG[] = { 0x20, 0x20, 0xFF };
     static u8 gParticlePaletteB[] = { 0, 0xFF, 0 };
-    static f32 D_843892EC[] = { 1.0f, 1.73205f, 1.0f, 0.0f, 0.0f };
+    static f32 gRadialNodeScaleTable[] = { 1.0f, 1.73205f, 1.0f, 0.0f, 0.0f };
 
     s32 i;
     s32 x;
     s32 j;
     s32 y;
-    unk_D_84398F50* sp1B4;
-    unk_D_84398F50_048* var_s2;
+    RadialNode* sp1B4;
+    RadialNodePoint* var_s2;
     Vtx* vtx;
     Vec3f sp1A0;
 
-    sp1B4 = D_84398F50;
+    sp1B4 = gRadialNodes;
 
     for (i = 0; i < 10; i++) {
         if (sp1B4->unk_000 == 1) {
@@ -1017,7 +1017,7 @@ Gfx* func_84362084(Gfx* arg0) {
                                 f32 x1, y1, z1;
 
                                 Radial20_RotateVertexOffset(var_s2->unk_0C + ((TWO_PI_F * y) / 12.0f) + ((TWO_PI_F * x) / 3.0f),
-                                              &var_s2->unk_1C, &sp1A0, D_843892EC[y] * var_s2->unk_08, 1.0f, 0.0f,
+                                              &var_s2->unk_1C, &sp1A0, gRadialNodeScaleTable[y] * var_s2->unk_08, 1.0f, 0.0f,
                                               0.0f);
 
                                 x1 = var_s2->unk_10.x + sp1A0.x;
@@ -1078,7 +1078,7 @@ Gfx* func_84362084(Gfx* arg0) {
                 switch (sp1B4->unk_008) {
                     case 0:
                     case 3:
-                        gSPDisplayList(arg0++, D_84389208);
+                        gSPDisplayList(arg0++, gRadialNodeDrawDL);
                         gDPSetPrimColor(arg0++, 0, 0, sp1B4->unk_00A.r, sp1B4->unk_00A.g, sp1B4->unk_00A.b,
                                         sp1B4->unk_00A.a);
                         gDPSetEnvColor(arg0++, sp1B4->unk_00E.r, sp1B4->unk_00E.g, sp1B4->unk_00E.b, 0);
@@ -1088,7 +1088,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         break;
 
                     default:
-                        gSPDisplayList(arg0++, D_84389290);
+                        gSPDisplayList(arg0++, gRadialNodeVertexDL);
                         gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                         gSPSetGeometryMode(arg0++, G_CULL_FRONT);
                         gSPVertex(arg0++, vtx, 6, 0);
@@ -1100,7 +1100,7 @@ Gfx* func_84362084(Gfx* arg0) {
 
                     case 6:
                     case 7:
-                        gSPDisplayList(arg0++, D_84389290);
+                        gSPDisplayList(arg0++, gRadialNodeVertexDL);
                         gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                         gSPSetGeometryMode(arg0++, G_CULL_FRONT);
                         gSPVertex(arg0++, vtx, 12, 0);
@@ -1114,7 +1114,7 @@ Gfx* func_84362084(Gfx* arg0) {
 
                     case 2:
                     case 4:
-                        gSPDisplayList(arg0++, D_84389290);
+                        gSPDisplayList(arg0++, gRadialNodeVertexDL);
                         gSPVertex(arg0++, vtx, 30, 0);
                         for (j = 0; j < 14; j++) {
                             gSP2Triangles(arg0++, j, j + 15, j + 1, 0, j + 15, j + 16, j + 1, 0);
@@ -1125,7 +1125,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         break;
 
                     case 8:
-                        gSPDisplayList(arg0++, D_84389290);
+                        gSPDisplayList(arg0++, gRadialNodeVertexDL);
                         gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                         gSPSetGeometryMode(arg0++, G_CULL_FRONT);
                         gSPVertex(arg0++, vtx, 18, 0);
@@ -1154,7 +1154,7 @@ Gfx* func_84362084(Gfx* arg0) {
                     default:
                     case 1:
                     case 5:
-                        gSPDisplayList(arg0++, D_84389290);
+                        gSPDisplayList(arg0++, gRadialNodeVertexDL);
                         gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                         gSPSetGeometryMode(arg0++, G_CULL_BACK);
                         gSPVertex(arg0++, vtx, 6, 0);
@@ -1166,7 +1166,7 @@ Gfx* func_84362084(Gfx* arg0) {
 
                     case 6:
                     case 7:
-                        gSPDisplayList(arg0++, D_84389290);
+                        gSPDisplayList(arg0++, gRadialNodeVertexDL);
                         gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                         gSPSetGeometryMode(arg0++, G_CULL_BACK);
                         gSPVertex(arg0++, vtx, 12, 0);
@@ -1179,7 +1179,7 @@ Gfx* func_84362084(Gfx* arg0) {
                         break;
 
                     case 8:
-                        gSPDisplayList(arg0++, D_84389290);
+                        gSPDisplayList(arg0++, gRadialNodeVertexDL);
                         gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                         gSPSetGeometryMode(arg0++, G_CULL_BACK);
                         gSPVertex(arg0++, vtx, 18, 0);
@@ -1199,7 +1199,7 @@ Gfx* func_84362084(Gfx* arg0) {
             vtx = sp1B4->unk_01C;
             switch (sp1B4->unk_008) {
                 case 8:
-                    gSPDisplayList(arg0++, D_84389290);
+                    gSPDisplayList(arg0++, gRadialNodeVertexDL);
                     gSPClearGeometryMode(arg0++, G_CULL_BOTH);
                     gSPVertex(arg0++, vtx, 9, 0);
                     gSP2Triangles(arg0++, 2, 1, 0, 0, 5, 4, 3, 0);

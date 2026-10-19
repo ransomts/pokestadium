@@ -217,8 +217,8 @@ void BattleScene_ResetActionSelectionTimers(void) {
     BattleScene_ResetActionSelectionTimer();
 }
 
-s32 BattleScene_ApplyForcedActionDelay(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* temp_v1 = &arg0->animationState;
+s32 BattleScene_ApplyForcedActionDelay(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* temp_v1 = &arg0->animationState;
 
     if (arg0->animationState.unk_10 == 3) {
         temp_v1->unk_1E += 0x38E;
@@ -230,8 +230,8 @@ s32 BattleScene_ApplyForcedActionDelay(unk_BattlePlayerEntity* arg0) {
 void BattleScene_SyncActiveHpToPartyState(void) {
     PokemonAudioInfo* temp_a2;
     PokemonAudioInfo* temp_a3;
-    unk_BattlePlayerAnimState* ptr1;
-    unk_BattlePlayerAnimState* ptr2;
+    BattlePlayerAnimState* ptr1;
+    BattlePlayerAnimState* ptr2;
     PokemonData* ptr3;
     PokemonData* ptr4;
 
@@ -252,10 +252,10 @@ void BattleScene_SyncActiveHpToPartyState(void) {
     }
 }
 
-s32 BattleScene_SelectFallbackWhenNoUsableMoves(unk_BattlePlayerEntity* arg0) {
+s32 BattleScene_SelectFallbackWhenNoUsableMoves(BattlePlayerEntity* arg0) {
     s32 i;
     s32 var_v1;
-    unk_BattlePlayerAnimState* temp_v1;
+    BattlePlayerAnimState* temp_v1;
     PokemonAudioInfo* temp_v0;
 
     temp_v1 = &arg0->animationState;
@@ -285,7 +285,7 @@ s32 BattleScene_SelectFallbackWhenNoUsableMoves(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-s32 BattleScene_IsMoveUnavailable(unk_BattlePlayerEntity* arg0, s32 arg1) {
+s32 BattleScene_IsMoveUnavailable(BattlePlayerEntity* arg0, s32 arg1) {
     PokemonAudioInfo* ptr = &arg0->animationState.unk_38;
 
     if (!(ptr->unk_32[arg1] & 0x3F)) {
@@ -299,9 +299,9 @@ s32 BattleScene_IsMoveUnavailable(unk_BattlePlayerEntity* arg0, s32 arg1) {
     return 0;
 }
 
-void BattleScene_AutoSelectAvailableMove(unk_BattlePlayerEntity* arg0) {
+void BattleScene_AutoSelectAvailableMove(BattlePlayerEntity* arg0) {
     s32 i;
-    unk_BattlePlayerAnimState* temp_v0 = &arg0->animationState;
+    BattlePlayerAnimState* temp_v0 = &arg0->animationState;
 
     if (BattleScene_SelectFallbackWhenNoUsableMoves(arg0) == 0) {
         for (i = 0; i < 4; i++) {
@@ -316,9 +316,9 @@ void BattleScene_AutoSelectAvailableMove(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void BattleScene_AutoSelectReplacementMon(unk_BattlePlayerEntity* arg0) {
+void BattleScene_AutoSelectReplacementMon(BattlePlayerEntity* arg0) {
     s32 i;
-    unk_BattlePlayerAnimState* sp1C = &arg0->animationState;
+    BattlePlayerAnimState* sp1C = &arg0->animationState;
 
     for (i = 0; i < arg0->pokemonAnimation->unk_08[0]->unk_002; i++) {
         if ((arg0->pokemonAnimation->unk_08[0]->unk_01C[i].posY != 0) && (i != sp1C->unk_08)) {
@@ -334,16 +334,16 @@ void BattleScene_AutoSelectReplacementMon(unk_BattlePlayerEntity* arg0) {
     BattleScene_AutoSelectAvailableMove(arg0);
 }
 
-void BattleScene_SelectActiveController(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr = &arg0->animationState;
+void BattleScene_SelectActiveController(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* ptr = &arg0->animationState;
 
     ptr->unk_2C = ptr->unk_2B;
     ptr->controller = &gControllers[arg0->pokemonAnimation->unk_08[ptr->unk_2C]->unk_001];
 }
 
 void BattleScene_HandleActionSelectionCancel(s32 arg0) {
-    unk_BattlePlayerAnimState* sp2C;
-    unk_BattlePlayerAnimState* sp28;
+    BattlePlayerAnimState* sp2C;
+    BattlePlayerAnimState* sp28;
     UNUSED s32 pad;
     Controller* cont;
 
@@ -384,7 +384,7 @@ void Battle_InitializeActiveRuntimeState(void) {
     Battle_ResetTransientRuntimeState(1, 0);
 }
 
-s32 BattleScene_CpuHasNoUsableMoves(unk_BattlePlayerEntity* arg0) {
+s32 BattleScene_CpuHasNoUsableMoves(BattlePlayerEntity* arg0) {
     PokemonAudioInfo* temp_v0 = &arg0->animationState.unk_38;
     s32 i;
     s32 var_v1 = 0;
@@ -409,10 +409,10 @@ s32 BattleScene_CpuHasNoUsableMoves(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-s32 BattleScene_WaitForCpuChoice(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+s32 BattleScene_WaitForCpuChoice(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
     UNUSED s32 pad[2];
-    unk_BattlePlayerAnimState* sp1C = &arg0->animationState;
-    unk_BattlePlayerAnimState* temp_v0 = &arg1->animationState;
+    BattlePlayerAnimState* sp1C = &arg0->animationState;
+    BattlePlayerAnimState* temp_v0 = &arg1->animationState;
 
     if ((arg0->animationState.unk_2D == 0x10) && (arg1->animationState.unk_2D == 0x10)) {
         if (sp1C->unk_10 == 3) {
@@ -456,8 +456,8 @@ s32 BattleScene_WaitForCpuChoice(unk_BattlePlayerEntity* arg0, unk_BattlePlayerE
     return 0;
 }
 
-void BattleScene_CompleteCpuForcedAction(unk_BattlePlayerEntity* arg0, UNUSED unk_BattlePlayerEntity* arg1) {
-    unk_BattlePlayerAnimState* ptr = &arg0->animationState;
+void BattleScene_CompleteCpuForcedAction(BattlePlayerEntity* arg0, UNUSED BattlePlayerEntity* arg1) {
+    BattlePlayerAnimState* ptr = &arg0->animationState;
 
     BattleScene_ApplyForcedActionDelay(arg0);
     ptr->unk_2A = 1;
@@ -466,9 +466,9 @@ void BattleScene_CompleteCpuForcedAction(unk_BattlePlayerEntity* arg0, UNUSED un
     ptr->unk_10 = 3;
 }
 
-void BattleScene_CompleteCpuMoveAction(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_BattlePlayerAnimState* sp20 = &arg1->animationState;
-    unk_BattlePlayerAnimState* sp1C = &arg0->animationState;
+void BattleScene_CompleteCpuMoveAction(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
+    BattlePlayerAnimState* sp20 = &arg1->animationState;
+    BattlePlayerAnimState* sp1C = &arg0->animationState;
 
     BattleScene_ApplyForcedActionDelay(arg0);
     sp1C->unk_2A = 1;
@@ -490,9 +490,9 @@ void BattleScene_CompleteCpuMoveAction(unk_BattlePlayerEntity* arg0, unk_BattleP
     }
 }
 
-void BattleScene_ApplyCpuChoice(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_BattlePlayerAnimState* sp18;
-    unk_BattlePlayerAnimState* sp14;
+void BattleScene_ApplyCpuChoice(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
+    BattlePlayerAnimState* sp18;
+    BattlePlayerAnimState* sp14;
     s32 var_v0;
 
     sp18 = &arg0->animationState;
@@ -526,9 +526,9 @@ void BattleScene_ApplyCpuChoice(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEn
     }
 }
 
-s32 BattleScene_ApplyCpuSwitchChoice(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_BattlePlayerAnimState* sp1C = &arg0->animationState;
-    unk_BattlePlayerAnimState* sp18 = &arg1->animationState;
+s32 BattleScene_ApplyCpuSwitchChoice(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
+    BattlePlayerAnimState* sp1C = &arg0->animationState;
+    BattlePlayerAnimState* sp18 = &arg1->animationState;
 
     if ((gBattleTimer == 30.0f) && (gRandomMoveSlot >= 4)) {
         BattleAnim_PlaySoundEffect2();
@@ -558,19 +558,19 @@ s32 BattleScene_ApplyCpuSwitchChoice(unk_BattlePlayerEntity* arg0, unk_BattlePla
     return 0;
 }
 
-void BattleScene_TriggerCpuChoice(UNUSED PokemonAudioInfo* arg0, UNUSED PokemonAudioInfo* arg1, UNUSED unk_BattlePlayerAnimState* arg2,
-                   UNUSED unk_BattlePlayerAnimState* arg3, UNUSED unk_BattlePlayerEntity* arg4) {
+void BattleScene_TriggerCpuChoice(UNUSED PokemonAudioInfo* arg0, UNUSED PokemonAudioInfo* arg1, UNUSED BattlePlayerAnimState* arg2,
+                   UNUSED BattlePlayerAnimState* arg3, UNUSED BattlePlayerEntity* arg4) {
     if ((gBattleTimer == 1.0f) && (gRandomMoveSelectedFlag == 0)) {
         gRandomMoveSelectedFlag = 1;
         gRandomMoveSlot = BattleAI_ChooseAction(0);
     }
 }
 
-s32 BattleScene_CollectCpuAction(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+s32 BattleScene_CollectCpuAction(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
     PokemonAudioInfo* sp34 = &arg0->animationState.unk_38;
     PokemonAudioInfo* sp30 = &arg1->animationState.unk_38;
-    unk_BattlePlayerAnimState* sp2C = &arg0->animationState;
-    unk_BattlePlayerAnimState* sp28 = &arg1->animationState;
+    BattlePlayerAnimState* sp2C = &arg0->animationState;
+    BattlePlayerAnimState* sp28 = &arg1->animationState;
 
     if (BattleScene_WaitForCpuChoice(arg0, arg1) != 0) {
         return 0;
@@ -627,9 +627,9 @@ s32 BattleScene_CollectCpuAction(unk_BattlePlayerEntity* arg0, unk_BattlePlayerE
     return 0;
 }
 
-void BattleScene_ForfeitPrompt(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* sp18 = &arg0->animationState;
-    unk_BattlePlayerAnimState* temp_a0 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState;
+void BattleScene_ForfeitPrompt(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* sp18 = &arg0->animationState;
+    BattlePlayerAnimState* temp_a0 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState;
 
     if (arg0->pokemonAnimation->unk_01 == 1) {
         gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
@@ -675,8 +675,8 @@ void BattleScene_ForfeitPrompt(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void BattleScene_CommitPlayerSwitchAction(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* temp_v0 = &arg0->animationState;
+void BattleScene_CommitPlayerSwitchAction(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* temp_v0 = &arg0->animationState;
     PokemonAudioInfo* temp_v1 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState.unk_38;
 
     if (temp_v1->unk_4C & 0x20) {
@@ -691,7 +691,7 @@ void BattleScene_CommitPlayerSwitchAction(unk_BattlePlayerEntity* arg0) {
     BattleScene_ClearParticipantMessageBuffer(arg0);
 }
 
-s32 BattleScene_ValidateSelectedPartyMember(unk_BattlePlayerEntity* arg0) {
+s32 BattleScene_ValidateSelectedPartyMember(BattlePlayerEntity* arg0) {
     if (arg0->pokemonAnimation->unk_08[arg0->animationState.unk_2C]->unk_01C[arg0->animationState.unk_18].posY != 0) {
         return 1;
     }
@@ -702,12 +702,12 @@ s32 BattleScene_ValidateSelectedPartyMember(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-void BattleScene_QueuePartySelectionConfirmMessage(unk_BattlePlayerEntity* arg0) {
+void BattleScene_QueuePartySelectionConfirmMessage(BattlePlayerEntity* arg0) {
     BattleScene_ClearParticipantMessageBuffer(arg0);
     BattleScene_BuildParticipantMessage(arg0, 4);
 }
 
-void BattleScene_AssignActiveCoopController(unk_BattlePlayerEntity* arg0, s32 arg1) {
+void BattleScene_AssignActiveCoopController(BattlePlayerEntity* arg0, s32 arg1) {
     if (arg1 == 1) {
         gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
         gActiveController2 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
@@ -733,8 +733,8 @@ void BattleScene_AssignActiveCoopController(unk_BattlePlayerEntity* arg0, s32 ar
     }
 }
 
-void BattleScene_HandlePartySlotCursorInput(unk_BattlePlayerEntity* arg0, Controller* arg1) {
-    unk_BattlePlayerAnimState* sp1C;
+void BattleScene_HandlePartySlotCursorInput(BattlePlayerEntity* arg0, Controller* arg1) {
+    BattlePlayerAnimState* sp1C;
     unk_D_800AE540_0004* temp_a1;
 
     sp1C = &arg0->animationState;
@@ -794,10 +794,10 @@ void BattleScene_HandlePartySlotCursorInput(unk_BattlePlayerEntity* arg0, Contro
     }
 }
 
-void BattleScene_HandlePlayerPartySelection(unk_BattlePlayerEntity* arg0) {
+void BattleScene_HandlePlayerPartySelection(BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     s32 idx;
-    unk_BattlePlayerAnimState* sp18 = &arg0->animationState;
+    BattlePlayerAnimState* sp18 = &arg0->animationState;
 
     if (arg0->pokemonAnimation->unk_01 == 1) {
         gActiveController1 = &gControllers[arg0->pokemonAnimation->unk_08[0]->unk_001];
@@ -832,8 +832,8 @@ void BattleScene_HandlePlayerPartySelection(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void BattleScene_CommitSelectedMoveAction(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* temp_v0 = &arg0->animationState;
+void BattleScene_CommitSelectedMoveAction(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* temp_v0 = &arg0->animationState;
     PokemonAudioInfo* temp_v1 = &arg0->animationState.unk_38;
 
     if (arg0->animationState.unk_14 != 4) {
@@ -855,11 +855,11 @@ void BattleScene_CommitSelectedMoveAction(unk_BattlePlayerEntity* arg0) {
     BattleScene_ClearParticipantMessageBuffer(arg0);
 }
 
-s32 BattleScene_HandleNoUsableMoveSelection(unk_BattlePlayerEntity* arg0) {
+s32 BattleScene_HandleNoUsableMoveSelection(BattlePlayerEntity* arg0) {
     s32 i;
     s32 temp_a1;
     s32 var_v1;
-    unk_BattlePlayerAnimState* temp_v0;
+    BattlePlayerAnimState* temp_v0;
     PokemonAudioInfo* temp_a0;
     Controller* cont;
 
@@ -905,9 +905,9 @@ s32 BattleScene_HandleNoUsableMoveSelection(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-s32 BattleScene_ValidateSelectedMove(unk_BattlePlayerEntity* arg0) {
+s32 BattleScene_ValidateSelectedMove(BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
-    unk_BattlePlayerAnimState* sp24 = &arg0->animationState;
+    BattlePlayerAnimState* sp24 = &arg0->animationState;
     PokemonAudioInfo* ptr = &arg0->animationState.unk_38;
 
     if (!(ptr->unk_32[sp24->unk_14] & 0x3F)) {
@@ -931,7 +931,7 @@ s32 BattleScene_ValidateSelectedMove(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-void BattleScene_SelectMoveFromButtons(unk_BattlePlayerEntity* arg0) {
+void BattleScene_SelectMoveFromButtons(BattlePlayerEntity* arg0) {
     Controller* cont = arg0->animationState.controller;
 
     if ((cont->buttonPressed & 8) != 0) {
@@ -972,10 +972,10 @@ void BattleScene_SelectMoveFromButtons(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void BattleScene_HandlePlayerMoveSelection(unk_BattlePlayerEntity* arg0) {
+void BattleScene_HandlePlayerMoveSelection(BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     Controller* sp1C = arg0->animationState.controller;
-    unk_BattlePlayerAnimState* temp_v0 = &arg0->animationState;
+    BattlePlayerAnimState* temp_v0 = &arg0->animationState;
 
     if ((temp_v0->rotation == 1) && (BattleScene_HandleNoUsableMoveSelection(arg0) == 0)) {
         if (arg0->unk_8C4.posX != 0) {
@@ -1005,15 +1005,15 @@ void BattleScene_HandlePlayerMoveSelection(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-s32 BattleScene_HandlePlayerMoveSelectionLocked(unk_BattlePlayerEntity* arg0, UNUSED Controller* arg1) {
+s32 BattleScene_HandlePlayerMoveSelectionLocked(BattlePlayerEntity* arg0, UNUSED Controller* arg1) {
     arg0->animationState.unk_2A = 1;
     BattleScene_HandlePlayerMoveSelection(arg0);
     arg0->animationState.unk_2A = 1;
     return 0;
 }
 
-void BattleScene_ConfirmForcedMoveRepeat(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr = &arg0->animationState;
+void BattleScene_ConfirmForcedMoveRepeat(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* ptr = &arg0->animationState;
 
     BattleScene_ApplyForcedActionDelay(arg0);
     ptr->unk_2A = 1;
@@ -1021,9 +1021,9 @@ void BattleScene_ConfirmForcedMoveRepeat(unk_BattlePlayerEntity* arg0) {
     ptr->unk_0C = ptr->unk_14;
 }
 
-void BattleScene_PollActionMenuRequestButtons(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* temp_v1 = &arg0->animationState;
-    unk_BattlePlayerAnimState* temp_t0 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState;
+void BattleScene_PollActionMenuRequestButtons(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* temp_v1 = &arg0->animationState;
+    BattlePlayerAnimState* temp_t0 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState;
 
     if (temp_v1->unk_10 == 0) {
         if (arg0->pokemonAnimation->unk_01 == 1) {
@@ -1052,7 +1052,7 @@ void BattleScene_PollActionMenuRequestButtons(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-s32 BattleScene_HandlePlayerActionInput(unk_BattlePlayerEntity* arg0) {
+s32 BattleScene_HandlePlayerActionInput(BattlePlayerEntity* arg0) {
     BattleScene_GetParticipantSideIndex(arg0);
 
     if (BattleScene_ApplyForcedActionDelay(arg0) != 0) {
@@ -1085,9 +1085,9 @@ s32 BattleScene_HandlePlayerActionInput(unk_BattlePlayerEntity* arg0) {
     return 0;
 }
 
-s32 BattleScene_HandlePlayerForcedActionState(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
-    unk_BattlePlayerAnimState* sp1C = &arg0->animationState;
-    unk_BattlePlayerAnimState* temp_v0 = &arg1->animationState;
+s32 BattleScene_HandlePlayerForcedActionState(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
+    BattlePlayerAnimState* sp1C = &arg0->animationState;
+    BattlePlayerAnimState* temp_v0 = &arg1->animationState;
 
     if ((sp1C->unk_2D == 0x10) && (temp_v0->unk_2D == 0x10)) {
         if (sp1C->unk_10 == 3) {
@@ -1158,7 +1158,7 @@ void BattleScene_AdvanceAttractInputScript(void) {
     }
 }
 
-void BattleScene_CheckForcedActionCondition(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_CheckForcedActionCondition(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
     PokemonAudioInfo* temp_v0 = &arg0->animationState.unk_38;
     PokemonAudioInfo* temp_v1 = &arg1->animationState.unk_38;
 
@@ -1174,8 +1174,8 @@ void BattleScene_CheckForcedActionCondition(unk_BattlePlayerEntity* arg0, unk_Ba
 }
 
 void BattleScene_TickAttractModeInput(void) {
-    unk_BattlePlayerAnimState* sp24 = &sActivePokemon[0]->animationState;
-    unk_BattlePlayerAnimState* sp20 = &sActivePokemon[1]->animationState;
+    BattlePlayerAnimState* sp24 = &sActivePokemon[0]->animationState;
+    BattlePlayerAnimState* sp20 = &sActivePokemon[1]->animationState;
     PokemonAudioInfo* sp1C = &sActivePokemon[0]->animationState.unk_38;
     PokemonAudioInfo* sp18 = &sActivePokemon[1]->animationState.unk_38;
     Controller* cont = &gDemoController;
@@ -1226,7 +1226,7 @@ void BattleScene_TickAttractModeInput(void) {
     }
 }
 
-void BattleScene_CollectPlayerAction(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+void BattleScene_CollectPlayerAction(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
     UNUSED s32 pad;
     PokemonAudioInfo* sp20 = &arg0->animationState.unk_38;
     PokemonAudioInfo* sp1C = &arg1->animationState.unk_38;
@@ -1262,8 +1262,8 @@ void BattleScene_CollectPlayerAction(unk_BattlePlayerEntity* arg0, unk_BattlePla
 }
 
 void BattleScene_CollectActions(void) {
-    unk_BattlePlayerAnimState* sp24 = &sActivePokemon[0]->animationState;
-    unk_BattlePlayerAnimState* sp20 = &sActivePokemon[1]->animationState;
+    BattlePlayerAnimState* sp24 = &sActivePokemon[0]->animationState;
+    BattlePlayerAnimState* sp20 = &sActivePokemon[1]->animationState;
     PokemonAudioInfo* sp1C = &sActivePokemon[0]->animationState.unk_38;
     PokemonAudioInfo* sp18 = &sActivePokemon[1]->animationState.unk_38;
 
@@ -1326,8 +1326,8 @@ void BattleScene_UpdateActionCollection(void) {
 }
 
 void BattleScene_UpdateActionSelectPhase(void) {
-    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->animationState;
-    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->animationState;
+    BattlePlayerAnimState* sp1C = &sActivePokemon[0]->animationState;
+    BattlePlayerAnimState* sp18 = &sActivePokemon[1]->animationState;
 
     if (BattleScene_UpdateResultPresentation() == 0) {
         sActivePokemon[0]->unk_4C8 = 0;

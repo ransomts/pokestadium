@@ -16743,3 +16743,74 @@ D_84211870	gTeamCardXOffsets	w10		s16 array of X offsets used to position cards 
 D_8421187C	gTeamCardYOffsets	w10		s16 array of Y offsets used to position cards in TeamSelection_RegisteredTeam_DrawCard	applied@c4159dfb
 D_84211888	gScrollbarAnimFrame	w10		static variable incremented in TeamSelection_RegisteredTeam_DrawScrollbar to animate the handle	applied@c4159dfb
 unk_D_84229EB0	RegisteredTeamMenu	w10		main state struct for the registered team selection menu, including cursor and scroll positions	applied@c4159dfb
+unk_BattlePlayerAnimState	BattlePlayerAnimState	w11		struct containing animation state and PokemonAudioInfo	applied@fa54a830
+unk_BattleAnimDataEntry	BattleAnimDataEntry	w11		struct containing animation pointers used in Phase12 and Phase16	applied@fa54a830
+unk_BattlePlayerEntity	BattlePlayerEntity	w11		base entity struct for Pokemon in battle	applied@fa54a830
+func_843297E8	BattleScene_UpdateCameraState0	w11		called during BattleScene_Update when gBattleScene.posX->unk_1C is 0	applied@fa54a830
+func_843297F0	BattleScene_UpdateCameraState3	w11		called during BattleScene_Update when gBattleScene.posX->unk_1C is 3	applied@fa54a830
+D_843902A0	gBattleEngineState	w11		Global s32 at the start of the battle engine fragment.	applied@fa54a830
+D_843902A8	gBattleEngineTimer	w11		Global s32 adjacent to gPanelDrawCount.	applied@fa54a830
+D_843902B4	gBattleEngineFlag	w11		Global s32 adjacent to gCurrentActionScriptId.	applied@fa54a830
+D_843902F8	gBattleEngineStatus	w11		Global s32 adjacent to gGameStateFlag.	applied@fa54a830
+D_84390340	gCameraStateFlag	w11		Global s32 adjacent to gCameraUpdateFuncs.	applied@fa54a830
+D_84390380	gSavedPrimColorA	w11		Global s16 adjacent to gSavedPrimColorB and gPrimColorR.	applied@fa54a830
+unk_D_84392040	WaterAnimParams	w11		Struct used by gWaterAnimParams to store water animation timing and scale.	applied@fa54a830
+D_84392058	gWaterWaveTable	w11		Array of 26 f32s used for water surface animation.	applied@fa54a830
+D_843868EC	gBattleScriptCmd_0B_0E	w11		contains commands 0x0B and 0x0E	applied@fa54a830
+D_84386924	gBattleScriptCmd_2C_Alt	w11		duplicate of gBattleScriptCmd_2C containing 0x2C	applied@fa54a830
+D_84386980	gBattleScriptCmd_66_04_05	w11		contains jump 0x66 to 0x04 and command 0x05	applied@fa54a830
+D_8438698C	gBattleScriptCmd_3A_Alt	w11		contains command 0x3A	applied@fa54a830
+D_84386994	gBattleScriptCmd_08_09	w11		contains commands 0x08 and 0x09	applied@fa54a830
+D_843869A0	gBattleScriptCmd_66_0B_0C	w11		contains jump 0x66 to 0x0B and command 0x0C	applied@fa54a830
+D_843869C8	gBattleScriptCmd_13_14	w11		contains commands 0x13 and 0x14	applied@fa54a830
+D_843869D0	gBattleScriptCmd_15_Alt	w11		contains command 0x15	applied@fa54a830
+D_843869DC	gBattleScriptCmd_18_Alt	w11		contains command 0x18	applied@fa54a830
+D_84386A1C	gBattleScriptCmd_28_Alt	w11		contains command 0x28	applied@fa54a830
+D_84386A20	gBattleScriptCmd_29_Alt	w11		contains command 0x29	applied@fa54a830
+D_84386A28	gBattleScriptCmd_2B_Alt	w11		contains command 0x2B	applied@fa54a830
+D_84386A2C	gBattleScriptCmd_2C_Alt2	w11		contains command 0x2C	applied@fa54a830
+D_84386A60	gBattleScriptCmd_35_05	w11		contains command 0x35 with parameter 0x05	applied@fa54a830
+D_84386A9C	gBattleScriptCmd_38_Alt	w11		contains command 0x38	applied@fa54a830
+D_8438682C	gBattleScript_NullParam	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_84386894	gBattleScript_NullParam2	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_84386BBC	gBattleScript_NullParam3	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_843868CC	gBattleScript_NullParam4	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_84386868	gBattleScript_NullParam5	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_84386874	gBattleScript_NullParam6	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_8438685C	gBattleScript_NullParam7	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_84386844	gBattleScript_NullParam8	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_843868A0	gBattleScript_NullParam9	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_84386878	gBattleScript_NullParam10	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_8438686C	gBattleScript_NullParam11	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+D_843868C8	gBattleScript_NullParam12	w11		Commonly used as a filler or null parameter in the battle script table.	applied@fa54a830
+func_84336EE8	ParticleEffect_InitSmokeSetA	w11		calls BattleAnim_SpawnCategory17MarkerSlot and creates repeating effects identical to InitSmokeSetB/C but with different counts/textures	applied@fa54a830
+func_84337664	ParticleEffect_InitEmptySet2	w11		empty function located among other ParticleEffect_Init functions	applied@fa54a830
+D_84387B00	gSpeciesScaleTable	w11		Table of floats used to adjust particle/model scales based on species ID	applied@fa54a830
+func_84349FC8	Gfx_ParticlePaletteDL	w11		sets prim and env colors based on a particle field value and submits the display list	applied@fa54a830
+unk_D_8140E620	gMatrixBufferStruct	w11		used as the size for Gfx_AllocDisplayList to initialize gMatrixBuffer	applied@fa54a830
+func_84362084	Radial20_Draw	w11		calls Radial20_VariantC/D and is used in the Draw functions of Radial20 effects	applied@fa54a830
+D_84387FC0	gDoubleTextureTrailCombineParams0	w11		CombineParams used in BattleAnim_StartEffect26DoubleTextureTrail_Seed	applied@fa54a830
+D_84387FE0	gDoubleTextureTrailCombineParams1	w11		CombineParams used in BattleAnim_StartEffect26DoubleTextureTrail_Seed	applied@fa54a830
+D_84388000	gDoubleTextureTrailCombineParams2	w11		CombineParams used in BattleAnim_StartEffect26DoubleTextureTrail_Seed	applied@fa54a830
+D_84388020	gDoubleTextureTrailCombineParams3	w11		CombineParams used in BattleAnim_StartEffect26DoubleTextureTrail_Seed	applied@fa54a830
+D_84388040	gSixSlotTrailCombineParams0	w11		CombineParams used in BattleAnim_StartEffect47SixSlotTrail_Seed	applied@fa54a830
+D_84388060	gSixSlotTrailCombineParams1	w11		CombineParams used in BattleAnim_StartEffect47SixSlotTrail_Seed	applied@fa54a830
+D_84388080	gDoubleTextureTrailCombineParams4	w11		CombineParams used in BattleAnim_StartEffect4DoubleTextureTrail_Seed	applied@fa54a830
+D_843880A0	gDoubleTextureTrailCombineParams5	w11		CombineParams used in BattleAnim_StartEffect4DoubleTextureTrail_Seed	applied@fa54a830
+D_843880C0	gDoubleTextureTrailCombineParams6	w11		CombineParams used in BattleAnim_StartEffect4DoubleTextureTrail_Seed	applied@fa54a830
+D_843880E0	gDoubleTextureTrailCombineParams7	w11		CombineParams used in BattleAnim_StartEffect4DoubleTextureTrail_Seed	applied@fa54a830
+D_84388100	gDoubleTextureTrailCombineParams8	w11		CombineParams used in BattleAnim_StartEffect77DoubleTextureTrail_Seed	applied@fa54a830
+D_84388120	gDoubleTextureTrailCombineParams9	w11		CombineParams used in BattleAnim_StartEffect77DoubleTextureTrail_Seed	applied@fa54a830
+D_84388140	gDoubleTextureTrailCombineParams10	w11		CombineParams used in BattleAnim_StartEffect77DoubleTextureTrail_Seed	applied@fa54a830
+D_84388160	gDoubleTextureTrailCombineParams11	w11		CombineParams used in BattleAnim_StartEffect77DoubleTextureTrail_Seed	applied@fa54a830
+unk_D_843925E0	RibbonEmitter	w11		Used in RibbonMesh_Init, Spawn, and Update to manage ribbon particle effects.	applied@fa54a830
+unk_D_843975E8	WaterCameraBounds	w11		Used in TerrainGrid_BuildCameraBounds and TerrainGrid_Draw to calculate water clipping.	applied@fa54a830
+unk_D_84397610	TrailState	w11		stores the current state, colors, and vertex buffer pointer for the trail effect	applied@fa54a830
+unk_D_84397648	TrailPoint	w11		stores position, rotation, and size for a single point in the trail	applied@fa54a830
+D_84398F50	gRadialNodes	w11		array of 10 nodes used by the Radial20 effect system, each containing a set of 20 points	applied@fa54a830
+unk_D_84398F50	RadialNode	w11		stores the active state, timer, type, colors, and an array of 20 points for a radial effect	applied@fa54a830
+unk_D_84398F50_048	RadialNodePoint	w11		stores the individual point data (position, rotation, velocity) for a RadialNode	applied@fa54a830
+D_843890E8	gTrailDrawDL	w11		display list used to set up the rendering state for the trail effect	applied@fa54a830
+D_84389208	gRadialNodeDrawDL	w11		display list used for rendering the basic textured nodes (types 0 and 3)	applied@fa54a830
+D_84389290	gRadialNodeVertexDL	w11		display list used for rendering the vertex-colored nodes (types 1, 2, 4-8)	applied@fa54a830
+D_843892EC	gRadialNodeScaleTable	w11		table of scale factors used in the vertex offset calculations for node type 8	applied@fa54a830

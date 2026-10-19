@@ -5,7 +5,7 @@
 
 struct ParticleEffectInstance;
 struct ParticleRenderSettings;
-struct unk_BattlePlayerEntity;
+struct BattlePlayerEntity;
 struct gBattleAnimEffectSlots;
 
 typedef void (*func_unk_D_8140E724_008)(struct ParticleEffectInstance*);
@@ -64,7 +64,7 @@ typedef struct ParticleEffectInstance {
     /* 0x04 */ struct ParticleEffectInstance* prev;
     /* 0x08 */ func_unk_D_8140E724_008 unk_08;
     /* 0x0C */ ParticleEffectData* unk_0C;
-    /* 0x10 */ struct unk_BattlePlayerEntity* unk_10;
+    /* 0x10 */ struct BattlePlayerEntity* unk_10;
     /* 0x14 */ Fragment2_1GraphNode* unk_14;
     /* 0x18 */ u32 unk_18;
     /* 0x1C */ f32 unk_1C;
@@ -121,7 +121,7 @@ typedef void (*func_unk_D_8140E724)(struct ParticleEffectInstance*);
 typedef struct gBattleAnimEffectSlots {
     /* 0x00 */ func_unk_D_8140E724 posX;
     /* 0x04 */ ParticleEffectData* rotation;
-    /* 0x08 */ struct unk_BattlePlayerEntity* unk_08;
+    /* 0x08 */ struct BattlePlayerEntity* unk_08;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
@@ -248,12 +248,12 @@ typedef struct unk_D_8140E634 {
     /* 0x10 */ ParticleCameraInfo unk_10;
 } unk_D_8140E634; // size = 0x8C
 
-typedef struct unk_D_8140E620 {
+typedef struct gMatrixBufferStruct {
     /* 0x0000 */ MtxF unk_0000[364];
     /* 0x5B00 */ char unk5B00[0x80];
     /* 0x5B80 */ Mtx unk_5B80;
     /* 0x5BC0 */ char unk5BC0[0x20];
-} unk_D_8140E620; // size = 0x5BE0
+} gMatrixBufferStruct; // size = 0x5BE0
 
 extern Gfx gDL_End3D[];
 extern Gfx gDL_Begin3D[];
@@ -296,7 +296,7 @@ extern ParticleEffectData gParticleDefaultCallback;
 
 extern u8 gPrimColorPalette[];
 
-extern unk_D_8140E620* gMatrixBuffer;
+extern gMatrixBufferStruct* gMatrixBuffer;
 extern s32 gMatrixBufferIdx;
 extern s32 gMatrixBufferIdx;
 extern unk_D_8140E634 gParticleRenderContext;

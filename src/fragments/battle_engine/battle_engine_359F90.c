@@ -189,7 +189,7 @@ u8 Battle_RandomAccuracy(void) {
 void ShowDamageMessage(s32 arg0, s32 arg1) {
     unk_D_800AE540_0004* temp_a3;
     PokemonAudioInfo* temp_a2_2;
-    unk_BattlePlayerAnimState* temp_v1;
+    BattlePlayerAnimState* temp_v1;
     s32 sp18;
 
     temp_v1 = &sActivePokemon[arg0]->animationState;
@@ -240,9 +240,9 @@ void Battle_ResetTransientRuntimeState(s32 arg0, s32 arg1) {
     gBattleMessageFlag = 1;
 }
 
-void func_8436FA80(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* sp1C = &sActivePokemon[0]->animationState;
-    unk_BattlePlayerAnimState* sp18 = &sActivePokemon[1]->animationState;
+void func_8436FA80(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* sp1C = &sActivePokemon[0]->animationState;
+    BattlePlayerAnimState* sp18 = &sActivePokemon[1]->animationState;
     PokemonAudioInfo* temp_a1 = &sActivePokemon[0]->animationState.unk_38;
     PokemonAudioInfo* temp_a2 = &sActivePokemon[1]->animationState.unk_38;
     s32 var_v0;
@@ -280,7 +280,7 @@ void Battle_ApplyDamageRandomFactor(void) {
     }
 }
 
-u16 Battle_DetermineMoveOrder(unk_BattlePlayerEntity* arg0, unk_BattlePlayerEntity* arg1) {
+u16 Battle_DetermineMoveOrder(BattlePlayerEntity* arg0, BattlePlayerEntity* arg1) {
     PokemonAudioInfo* ptr1 = &arg0->animationState.unk_38;
     PokemonAudioInfo* ptr2 = &arg1->animationState.unk_38;
 
@@ -578,7 +578,7 @@ void Battle_ApplyDamage(void) {
 
 void Battle_DecrementPP(s32 arg0) {
     PokemonAudioInfo* temp_v0;
-    unk_BattlePlayerAnimState* temp_a1;
+    BattlePlayerAnimState* temp_a1;
     PokemonData* temp_a2;
 
     temp_v0 = &sActivePokemon[arg0]->animationState.unk_38;
@@ -684,13 +684,13 @@ void HandleMoveEffectFlags(void) {
     }
 }
 
-void Battle_ApplyAnimStateEffects(unk_BattlePlayerEntity* arg0) {
+void Battle_ApplyAnimStateEffects(BattlePlayerEntity* arg0) {
     PokemonData* ptr = &arg0->unk_724->unk_01C[arg0->animationState.unk_08];
 
     ptr->unk_05 = arg0->animationState.unk_38.unk_15;
 }
 
-void ApplyParalysisSpeedCut(unk_BattlePlayerEntity* arg0) {
+void ApplyParalysisSpeedCut(BattlePlayerEntity* arg0) {
     PokemonAudioInfo* temp_v0 = &arg0->animationState.unk_38;
 
     if (arg0->animationState.unk_38.unk_15 & 0x40) {
@@ -701,7 +701,7 @@ void ApplyParalysisSpeedCut(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void ApplyBurnAttackCut(unk_BattlePlayerEntity* arg0) {
+void ApplyBurnAttackCut(BattlePlayerEntity* arg0) {
     PokemonAudioInfo* temp_v0 = &arg0->animationState.unk_38;
 
     if (arg0->animationState.unk_38.unk_15 & 0x10) {
@@ -712,8 +712,8 @@ void ApplyBurnAttackCut(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void Battle_InitPokemonRuntimeState(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* sp28;
+void Battle_InitPokemonRuntimeState(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* sp28;
     PokemonAudioInfo* sp24;
     PokemonData* sp34;
     s32 i;
@@ -789,7 +789,7 @@ void Battle_InitPokemonRuntimeState(unk_BattlePlayerEntity* arg0) {
     // clang-format on
 }
 
-s32 Battle_IsPartyMemberAlive(unk_BattlePlayerEntity* arg0) {
+s32 Battle_IsPartyMemberAlive(BattlePlayerEntity* arg0) {
     if (arg0->unk_724->unk_01C[arg0->animationState.unk_18 - 1].posY != 0) {
         return 1;
     }
@@ -960,7 +960,7 @@ void Battle_QueueMoveFailureAndApplyRecoil(void) {
 void func_843714D8(void) {
     PokemonAudioInfo* ptr;
     PokemonData* temp_a0;
-    unk_BattlePlayerAnimState* temp_a1;
+    BattlePlayerAnimState* temp_a1;
 
     ptr = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
     temp_a0 =
@@ -1259,7 +1259,7 @@ s32 Battle_CheckCriticalHit(void) {
 
 s32 Battle_CheckMonCanAct(void) {
     PokemonAudioInfo* sp2C;
-    unk_BattlePlayerAnimState* temp_v0;
+    BattlePlayerAnimState* temp_v0;
     u16 sp26;
     u8 sp25;
     PokemonAudioInfo* temp_v1;
@@ -1612,9 +1612,9 @@ end:
     gBattleUnusedFlag17 = 0;
 }
 
-void Battle_HandleFaint(unk_BattlePlayerEntity* arg0) {
+void Battle_HandleFaint(BattlePlayerEntity* arg0) {
     s32 sp1C = BattleScene_GetParticipantSideIndex(arg0);
-    unk_BattlePlayerAnimState* temp_a10;
+    BattlePlayerAnimState* temp_a10;
     PokemonAudioInfo* temp_a11;
     PokemonAudioInfo* temp_a01;
 
@@ -1645,8 +1645,8 @@ void Battle_HandleFaint(unk_BattlePlayerEntity* arg0) {
     Battle_QueueMessage(gBattleMessageQueues->unk_448[sp1C], 3);
 }
 
-void CheckAllPartyFainted_HP(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
+void CheckAllPartyFainted_HP(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
@@ -1675,8 +1675,8 @@ void CheckAllPartyFainted_HP(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void CheckAllPartyFainted_Status(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
+void CheckAllPartyFainted_Status(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
@@ -1705,8 +1705,8 @@ void CheckAllPartyFainted_Status(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void CheckAllPartyFainted_PP(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
+void CheckAllPartyFainted_PP(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
@@ -1735,8 +1735,8 @@ void CheckAllPartyFainted_PP(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-void CheckAllPartyFainted_Level(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
+void CheckAllPartyFainted_Level(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2 = 0;
@@ -1765,8 +1765,8 @@ void CheckAllPartyFainted_Level(unk_BattlePlayerEntity* arg0) {
     }
 }
 
-s32 Battle_CheckSideDefeatAfterResidualStatus(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* ptr1 = &arg0->animationState;
+s32 Battle_CheckSideDefeatAfterResidualStatus(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
     s32 var_s2;
@@ -1823,8 +1823,8 @@ s32 Battle_CheckFaintAfterMove(void) {
 void Battle_ResolveMonAction(void) {
     PokemonAudioInfo* sp1C = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
     PokemonAudioInfo* sp18 = &sActivePokemon[!gBattleScene.posX->unk_2C]->animationState.unk_38;
-    unk_BattlePlayerAnimState* ptr1 = &sActivePokemon[0]->animationState;
-    unk_BattlePlayerAnimState* ptr2 = &sActivePokemon[1]->animationState;
+    BattlePlayerAnimState* ptr1 = &sActivePokemon[0]->animationState;
+    BattlePlayerAnimState* ptr2 = &sActivePokemon[1]->animationState;
 
     ptr1->unk_2A = 0;
     ptr2->unk_2A = 0;
@@ -1856,9 +1856,9 @@ void Battle_ResolveMonAction(void) {
     }
 }
 
-void BeginBattleForEntity(unk_BattlePlayerEntity* arg0) {
-    unk_BattlePlayerAnimState* sp24;
-    unk_BattlePlayerAnimState* sp20;
+void BeginBattleForEntity(BattlePlayerEntity* arg0) {
+    BattlePlayerAnimState* sp24;
+    BattlePlayerAnimState* sp20;
     PokemonAudioInfo* ptr1;
     PokemonAudioInfo* ptr2;
 

@@ -208,7 +208,7 @@ void MiniFx_DrawParticles(void) {
     gSPMatrix(gDisplayListHead++, gMiniCameraPtr->unk_24.mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(gDisplayListHead++, gMiniCameraPtr->unk_60.p_mtxf, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
 
-    gMatrixBuffer = Gfx_AllocDisplayList(sizeof(unk_D_8140E620));
+    gMatrixBuffer = Gfx_AllocDisplayList(sizeof(gMatrixBufferStruct));
     gMatrixBufferIdx = 0;
 
     gSPDisplayList(gDisplayListHead++, gDL_Begin3D);

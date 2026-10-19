@@ -18,7 +18,7 @@ void BattleAnim_DrawFullScreenColorOverlay(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
 
 void BattleAnim_RenderEffectsFrame(CameraStruct* arg0) {
     BattleAnim_DrawEffectCallbacks(arg0);
-    gMatrixBuffer = Gfx_AllocDisplayList(sizeof(unk_D_8140E620));
+    gMatrixBuffer = Gfx_AllocDisplayList(sizeof(gMatrixBufferStruct));
     gMatrixBufferIdx = 0;
     gPanelDrawCount += 1;
 
