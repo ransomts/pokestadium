@@ -21,7 +21,7 @@ s16 ModelAnim_AdvanceEventFrame(unk_D_86002F58_004_000_054* arg0, u16 arg1);
 void ModelAnim_ResetEventContext(void);
 void ModelAnim_BeginEventContext(unk_D_86002F58_004_000_054* arg0, u16 arg1, s32 arg2);
 void ModelAnim_EndEventContext(void);
-void ModelAnim_GetEventAtFrame(unk_D_86002F34_alt11_018** arg0, unk_D_86002F34_alt11_018* arg1, s32 arg2);
+void ModelAnim_GetEventAtFrame(TextureInfo** arg0, TextureInfo* arg1, s32 arg2);
 void ModelAnim_ClearEventTrack(Fragment2_1GraphNode* arg0);
 s16 ModelAnim_BindEventTrack(Fragment2_1GraphNode* arg0, s16 arg1, s32 arg2);
 void ModelAnim_SetEventFrame(Fragment2_1GraphNode* arg0, s16 arg1);

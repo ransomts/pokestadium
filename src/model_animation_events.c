@@ -73,7 +73,7 @@ void ModelAnim_EndEventContext(void) {
     }
 }
 
-void ModelAnim_GetEventAtFrame(unk_D_86002F34_alt11_018** arg0, unk_D_86002F34_alt11_018* arg1, s32 arg2) {
+void ModelAnim_GetEventAtFrame(TextureInfo** arg0, TextureInfo* arg1, s32 arg2) {
     AnimStackEntry* sp1C;
 
     if ((gAnimStackDepth >= 0) && (gAnimStackDepth < 2)) {

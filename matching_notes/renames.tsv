@@ -17338,3 +17338,29 @@ unk_func_88205880_00D0.unk_690	unk_func_88205880_00D0.count	c3		Number of Pokemo
 unk_func_88205880_00D0.unk_694	unk_func_88205880_00D0.deckType	c3		Deck type the box was loaded from. LabPC_LoadAllBoxes stores arg1, the first argument passed to Deck_Open via LabPC_ReadBoxEntries (lab_pc_1A9780.c:85); it is compared against 0x21 (GB-cartridge boxes on the active port) and 0x11 (Stadium storage) in LabPC_GetDirtyBoxMask (lines 1229, 1246) alongside Deck_GetEntryCountForType.	applied@7364635b
 unk_func_88205880_00D0.unk_698	unk_func_88205880_00D0.boxIndex	c3		Index of the box within its deck. LabPC_LoadAllBoxes stores the loop index i that is passed as the box index to LabPC_ReadBoxEntries (lab_pc_1A9780.c:86); LabPC_GetDirtyBoxMask checks i != unk_698 to detect that a cached box slot no longer corresponds to its storage index (lines 1229, 1246).	applied@7364635b
 unk_func_88205880_00D0.unk_69C	unk_func_88205880_00D0.dirty	c3		Dirty flag for the box contents. Cleared on load (lab_pc_1A9780.c:87), set to 1 when changes are suspected (lines 315, 1232, 1249), updated from LabPC_BoxHasUnsavedChanges (lines 1236, 1253), and used by LabPC_SaveModifiedBoxes to decide which boxes to write back (lines 1274, 1283).	applied@7364635b
+func_8003733C	Audio_NullTask	w5		empty function in audio_commands.c	applied@50856224
+D_80079064	gCat12SfxState2	w5		tracks a state flag for category 12 sound commands, used to trigger music tracks 0x10 and 0x13	applied@50856224
+func_80049A60	GbAudio_RenderSamples	w5		mixes square and noise channels and applies a fade/interpolation buffer	applied@50856224
+func_80049DF0	GbAudio_RenderSquare1	w5		renders Game Boy channel 1 (square wave with frequency sweep)	applied@50856224
+func_8004A474	GbAudio_RenderSquare2	w5		renders Game Boy channel 2 (square wave)	applied@50856224
+func_8004A89C	GbAudio_RenderWave	w5		renders Game Boy channel 3 (wave channel) using sample data	applied@50856224
+D_800FCF60	gSquare1State	w5		state for GB channel 1 including sweep and duty phase	applied@50856224
+D_800FCF90	gSquare2State	w5		state for GB channel 2 including duty phase	applied@50856224
+D_800FCFB8	gNoiseState	w5		state for GB noise channel	applied@50856224
+D_800FCFD8	gWaveState	w5		state for GB wave channel including sample index and volume	applied@50856224
+D_800FD008	gGbSoundRegs	w5		array of Game Boy sound registers (NR10-NR52) with dirty flags	applied@50856224
+D_800FD068	gQueuedRegisterWrites	w5		circular buffer of pending register writes to be applied	applied@50856224
+D_800FD6A0	gGbRegCache	w5		cache of current Game Boy register values	applied@50856224
+D_800FD6A8	gQueuedWriteIndex	w5		current index into the queued register writes buffer	applied@50856224
+D_800FD6F4	gOutputBufferPos	w5		current write position in the gMusicFadeBuffer	applied@50856224
+D_800FD6F8	gInterpolationHistory	w5		buffer used for sample interpolation/smoothing	applied@50856224
+D_800FF978	gInterpolationPos	w5		current read/write index for the interpolation history buffer	applied@50856224
+D_8006F0A4	GeoNodeHandlerTable	w5		D_8006F0A4 is a table of function pointers indexed by GraphNode->posX to handle different node types (Camera, ModelRoot, etc.)	applied@50856224
+D_8006F124	gRenderModeTable	w5		Used in GeoRender_SetRenderMode to look up render mode constants based on gRenderModeIndex and state	applied@50856224
+D_8006F1B4	gCombineModeTable	w5		Used in GeoRender_ApplyMaterialState to look up combine mode settings via gCurrentRenderState->unk_25	applied@50856224
+D_8006F2A4	gScaleFactors	w5		A table of decreasing powers of 2 (16, 8, 4, 2, 0, 0) likely used for LOD or scaling	applied@50856224
+unk_D_800AA8C8	MatrixStack	w5		unk_D_800AA8C8:MatrixStack stores a stack of MtxF and their corresponding display list allocations	applied@50856224
+unk_D_800AB970	ScaleStack	w5		unk_D_800AB970:ScaleStack stores a stack of Vec3f for hierarchical scaling in GeoRender_PushScale	applied@50856224
+unk_D_800ABB10	RenderState	w5		unk_D_800ABB10:RenderState tracks current material parameters like colors, fog, and combine modes	applied@50856224
+unk_D_800ABB28	LayerState	w5		unk_D_800ABB28:LayerState is used in gLayerStates array to manage rendering states per layer	applied@50856224
+unk_D_86002F34_alt11_018	TextureInfo	w5		struct containing texture format, image, and address used in GeoRender_BindTexture	applied@50856224

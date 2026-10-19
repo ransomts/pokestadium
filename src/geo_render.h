@@ -3,12 +3,12 @@
 
 #include "global.h"
 
-typedef struct unk_D_800AB970 {
+typedef struct ScaleStack {
     /* 0x000 */ Vec3f unk_000[1];
     /* 0x00C */ char unk00C[0x174];
     /* 0x180 */ s32 unk_180;
     /* 0x184 */ char unk184[0xC];
-} unk_D_800AB970; // size = 0x190?
+} ScaleStack; // size = 0x190?
 
 typedef struct unk_D_800ABB00 {
     /* 0x00 */ void* posX;
@@ -16,33 +16,33 @@ typedef struct unk_D_800ABB00 {
     /* 0x08 */ char unk08[0x8];
 } unk_D_800ABB00; // size >= 0x10?
 
-typedef struct unk_D_800ABB28 {
+typedef struct LayerState {
     /* 0x00 */ s32 posX;
     /* 0x04 */ Gfx* rotation;
     /* 0x08 */ Gfx* unk_08;
     /* 0x0C */ MtxF* unk_0C;
     /* 0x10 */ Color_RGBA8_u32 unk_10;
     /* 0x14 */ Color_RGBA8_u32 unk_14;
-    /* 0x18 */ unk_D_86002F34_alt11_018* unk_18;
-    /* 0x1C */ struct unk_D_800ABB28* unk_1C;
+    /* 0x18 */ TextureInfo* unk_18;
+    /* 0x1C */ struct LayerState* unk_1C;
     /* 0x20 */ Gfx* unk_20;
     /* 0x24 */ u8 unk_24;
     /* 0x24 */ u8 unk_25;
     /* 0x24 */ u8 unk_26;
     /* 0x24 */ u8 texGenActive;
-} unk_D_800ABB28; // size = 0x28
+} LayerState; // size = 0x28
 
-typedef struct unk_D_800ABB10 {
+typedef struct RenderState {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ Color_RGBA8_u32 rotation;
     /* 0x08 */ Color_RGBA8_u32 unk_08;
-    /* 0x0C */ unk_D_86002F34_alt11_018* unk_0C;
-    /* 0x10 */ unk_D_800ABB28* unk_10;
+    /* 0x0C */ TextureInfo* unk_0C;
+    /* 0x10 */ LayerState* unk_10;
     /* 0x14 */ Gfx* unk_14;
-} unk_D_800ABB10; // size = 0x18?
+} RenderState; // size = 0x18?
 
 extern s32 gRenderFrameCounter;
 extern u16 gAnimationFrame;
@@ -110,20 +110,20 @@ void GeoRender_SetCombineMode(Gfx* arg0, arg1_func_81407874_014_000_010* arg1);
 void GeoRender_SyncMaterialState(void);
 void GeoRender_SetRenderMode(void);
 void GeoRender_ApplyMaterialState(void);
-void GeoRender_SetFogColor(unk_D_800ABB10* arg0);
-void GeoRender_RestoreRenderMode(UNUSED unk_D_800ABB10* arg0);
-void GeoRender_SetPrimitiveColor(unk_D_800ABB10* arg0);
-void GeoRender_SetCombineTableEntry(unk_D_800ABB10* arg0);
-void GeoRender_DisableTexture(UNUSED unk_D_800ABB10* arg0);
-void GeoRender_BindTexture(unk_D_800ABB10* arg0);
-void GeoRender_EnableTextureGeneration(UNUSED unk_D_800ABB10* arg0);
+void GeoRender_SetFogColor(RenderState* arg0);
+void GeoRender_RestoreRenderMode(UNUSED RenderState* arg0);
+void GeoRender_SetPrimitiveColor(RenderState* arg0);
+void GeoRender_SetCombineTableEntry(RenderState* arg0);
+void GeoRender_DisableTexture(UNUSED RenderState* arg0);
+void GeoRender_BindTexture(RenderState* arg0);
+void GeoRender_EnableTextureGeneration(UNUSED RenderState* arg0);
 void GeoRender_SelectMaterialSlot(s16 arg0);
 void GeoRender_SetTextureMode(s16 arg0);
 s16 GeoRender_NormalizeTextureFormat(s16 arg0);
 void GeoRender_SubmitMaterial(s16 arg0, MtxF* arg1);
 void GeoRender_SubmitDisplayList(Gfx* arg0, s32 arg1);
 void GeoRender_SetMaterialParams(Color_RGBA8_u32 arg0, u8 arg1, u32 arg2);
-void GeoRender_SetMaterialTexture(s32 arg0, Color_RGBA8_u32 arg1, unk_D_86002F34_alt11_018* arg2, unk_D_86002F34_alt11_018* arg3, s32 arg4);
+void GeoRender_SetMaterialTexture(s32 arg0, Color_RGBA8_u32 arg1, TextureInfo* arg2, TextureInfo* arg3, s32 arg4);
 void GeoRender_InitMaterialState(s32 arg0, s32 arg1);
 void GeoRender_FlushMaterialSlots(void);
 

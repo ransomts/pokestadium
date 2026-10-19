@@ -70,16 +70,16 @@ typedef struct unk_D_800FCF60 {
 } unk_D_800FCF60; // size = 0x30
 
 // .bss
-unk_D_800FCF60 D_800FCF60;
-unk_D_800FCF90 D_800FCF90;
-unk_D_800FCFB8 D_800FCFB8;
-unk_D_800FCFD8 D_800FCFD8;
+unk_D_800FCF60 gSquare1State;
+unk_D_800FCF90 gSquare2State;
+unk_D_800FCFB8 gNoiseState;
+unk_D_800FCFD8 gWaveState;
 u32 D_800FD004;
-GbSoundReg D_800FD008[0x20];
+GbSoundReg gGbSoundRegs[0x20];
 u8 D_800FD048[32];
-unk_D_800FD068 D_800FD068[199];
-u8 D_800FD6A0[8];
-u32 D_800FD6A8;
+unk_D_800FD068 gQueuedRegisterWrites[199];
+u8 gGbRegCache[8];
+u32 gQueuedWriteIndex;
 u32 D_800FD6AC;
 static u8 D_800FD6B0[0x30]; // pad
 u8 D_800FD6E0;
@@ -88,32 +88,32 @@ f32 D_800FD6E4;
 s32 D_800FD6E8;
 static u8 D_800FD6EC[0x4]; // pad
 u32 gMusicFadePos;
-u32 D_800FD6F4;
-s16 D_800FD6F8[0x1140];
-u32 D_800FF978;
+u32 gOutputBufferPos;
+s16 gInterpolationHistory[0x1140];
+u32 gInterpolationPos;
 u8 D_800FF97C;
 s32 D_800FF980;
 
-void func_80049A60(u32);
+void GbAudio_RenderSamples(u32);
 void GbAudio_ClearInterpolationHistory();
 void GbAudio_ClearOutputBuffer();
 
 void GbAudio_GenerateSamples(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
-    func_80049A60(arg2);
+    GbAudio_RenderSamples(arg2);
 }
 
 void GbAudio_QueueRegisterWrite(u16 arg0, u8 arg1, u16 arg2) {
-    D_800FD068[D_800FD6AC].posX = &D_800FD008[(arg0 & 0xFF) - 0x10].value;
-    D_800FD068[D_800FD6AC].rotation = arg1;
-    D_800FD068[D_800FD6AC].unk_06 = arg2 + 1;
-    D_800FD6A0[arg0 & 0xFF] = arg1;
+    gQueuedRegisterWrites[D_800FD6AC].posX = &gGbSoundRegs[(arg0 & 0xFF) - 0x10].value;
+    gQueuedRegisterWrites[D_800FD6AC].rotation = arg1;
+    gQueuedRegisterWrites[D_800FD6AC].unk_06 = arg2 + 1;
+    gGbRegCache[arg0 & 0xFF] = arg1;
     D_800FD6AC++;
     D_800FD6AC %= 200;
-    D_800FD068[D_800FD6AC].unk_06 = 0;
+    gQueuedRegisterWrites[D_800FD6AC].unk_06 = 0;
 }
 
 u8 GbAudio_GetRegisterValue(u16 arg0) {
-    return D_800FD6A0[arg0 & 0xFF];
+    return gGbRegCache[arg0 & 0xFF];
 }
 
 void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
@@ -123,11 +123,11 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
     D_800FD004 = arg0 >> 1;
     D_800FD6E4 = 1048576.0f / (f32) D_800FD004;
 
-    p = (u8*) D_800FD008;
+    p = (u8*) gGbSoundRegs;
     for (i = 0; i < 48; i++) {
        p[i * 2 + 1] = 1;
     }
-    p = (u8*) D_800FD008;
+    p = (u8*) gGbSoundRegs;
     p[0x00] = 8;
     p[0x02] = 0;
     p[0x04] = 0;
@@ -155,20 +155,20 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
         p[i * 2] = 0;
     }
     D_800FD6AC = 0;
-    D_800FD068[0].unk_06 = 0;
-    D_800FD6A8 = 0;
-    D_800FCF60.posX = 0;
-    D_800FCF60.unk_2C = 0;
+    gQueuedRegisterWrites[0].unk_06 = 0;
+    gQueuedWriteIndex = 0;
+    gSquare1State.posX = 0;
+    gSquare1State.unk_2C = 0;
 
-    D_800FCF90.posX = 0;
-    D_800FCF90.unk_24 = 0;
+    gSquare2State.posX = 0;
+    gSquare2State.unk_24 = 0;
 
-    D_800FCFB8.posX = 0;
-    D_800FCFB8.unk_1C = 0;
+    gNoiseState.posX = 0;
+    gNoiseState.unk_1C = 0;
 
-    D_800FCFD8.posX = 0;
-    D_800FCFD8.unk_28 = 0;
-    D_800FCFD8.rotation = 0xFF;
+    gWaveState.posX = 0;
+    gWaveState.unk_28 = 0;
+    gWaveState.rotation = 0xFF;
 
     GbAudio_ClearOutputBuffer();
     GbAudio_ClearInterpolationHistory();
@@ -183,11 +183,11 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
 }
 
 void GbAudio_ApplyQueuedWrites(u16);
-s16 func_80049DF0(void);
-s16 func_8004A474(void);
-s16 func_8004A89C(void);
+s16 GbAudio_RenderSquare1(void);
+s16 GbAudio_RenderSquare2(void);
+s16 GbAudio_RenderWave(void);
 
-void func_80049A60(u32 arg0) {
+void GbAudio_RenderSamples(u32 arg0) {
     s32 pad[3];
     s16 sp4C[4];
     u32 i;
@@ -201,7 +201,7 @@ void func_80049A60(u32 arg0) {
     var_s4 = 1;
     arg0 >>= 1;
 
-    if ((tmp2 = D_800FD6F4) < gMusicFadePos) {
+    if ((tmp2 = gOutputBufferPos) < gMusicFadePos) {
         if ((0xB80 - (arg0 * 4)) < (gMusicFadePos - tmp2)) {
             arg0++;
         }
@@ -214,18 +214,18 @@ void func_80049A60(u32 arg0) {
             GbAudio_ApplyQueuedWrites(var_s4);
         }
 
-        if (D_800FD008[0x16].value & 0x80) {
-            if (D_800FD008[0x14].dirty != 0) {
-                D_800FD6E0 = D_800FD008[0x14].value & 7;
-                D_800FD6E1 = (D_800FD008[0x14].value & 0x70) >> 4;
-                D_800FD008[0x14].dirty = 0;
+        if (gGbSoundRegs[0x16].value & 0x80) {
+            if (gGbSoundRegs[0x14].dirty != 0) {
+                D_800FD6E0 = gGbSoundRegs[0x14].value & 7;
+                D_800FD6E1 = (gGbSoundRegs[0x14].value & 0x70) >> 4;
+                gGbSoundRegs[0x14].dirty = 0;
             }
 
-            sp4C[0] = func_80049DF0();
-            sp4C[1] = func_8004A474();
-            sp4C[3] = func_8004A89C();
+            sp4C[0] = GbAudio_RenderSquare1();
+            sp4C[1] = GbAudio_RenderSquare2();
+            sp4C[3] = GbAudio_RenderWave();
 
-            tmp2 = D_800FD008[0x15].value;
+            tmp2 = gGbSoundRegs[0x15].value;
             var_a0 = ((u32)((sp4C[0] & ((tmp2 & 1) ? -1 : 0)) + (sp4C[1] & ((tmp2 & 2) ? -1 : 0)) +
                             (sp4C[3] & ((tmp2 & 8) ? -1 : 0))) >>
                       5) *
@@ -234,27 +234,27 @@ void func_80049A60(u32 arg0) {
             var_a0 = 0;
         }
 
-        tmp2 = D_800FD6F4;
+        tmp2 = gOutputBufferPos;
         if (D_800FF97C != 0) {
             if (1) {}
             if (1) {}
             if (1) {}
             if (1) {}
-            tmp = (f32)D_800FD6F8[((D_800FF978 - D_800FF980) + 0x1140) % 4416];
+            tmp = (f32)gInterpolationHistory[((gInterpolationPos - D_800FF980) + 0x1140) % 4416];
 
             var_a0 += (s16)(((tmp - var_a0) * D_800FF97C) >> 8);
-            D_800FD6F8[D_800FF978++] = var_a0;
-            if (D_800FF978 >= 0x1140) {
-                D_800FF978 -= 0x1140;
+            gInterpolationHistory[gInterpolationPos++] = var_a0;
+            if (gInterpolationPos >= 0x1140) {
+                gInterpolationPos -= 0x1140;
             }
         }
 
         gMusicFadeBuffer[tmp2 + 0] = var_a0;
-        gMusicFadeBuffer[D_800FD6F4 + 1] = var_a0;
+        gMusicFadeBuffer[gOutputBufferPos + 1] = var_a0;
 
-        D_800FD6F4 += 2;
-        if (D_800FD6F4 >= 0xB80) {
-            D_800FD6F4 -= 0xB80;
+        gOutputBufferPos += 2;
+        if (gOutputBufferPos >= 0xB80) {
+            gOutputBufferPos -= 0xB80;
         }
 
         var_s4++;
@@ -263,12 +263,12 @@ void func_80049A60(u32 arg0) {
 }
 
 void GbAudio_ApplyQueuedWrites(u16 arg0) {
-    while (D_800FD068[D_800FD6A8].unk_06 >= arg0) {
-        D_800FD068[D_800FD6A8].posX[0] = D_800FD068[D_800FD6A8].rotation;
-        D_800FD068[D_800FD6A8].posX[1] = 1;
-        D_800FD6A8++;
-        if (D_800FD6A8 >= 0xC8) {
-            D_800FD6A8 -= 0xC8;
+    while (gQueuedRegisterWrites[gQueuedWriteIndex].unk_06 >= arg0) {
+        gQueuedRegisterWrites[gQueuedWriteIndex].posX[0] = gQueuedRegisterWrites[gQueuedWriteIndex].rotation;
+        gQueuedRegisterWrites[gQueuedWriteIndex].posX[1] = 1;
+        gQueuedWriteIndex++;
+        if (gQueuedWriteIndex >= 0xC8) {
+            gQueuedWriteIndex -= 0xC8;
         }
     }
 }
@@ -277,10 +277,10 @@ void GbAudio_ApplyQueuedWrites(u16 arg0) {
 // Matching notes: `dir` is ONE variable shared by the trigger and the tail (t2 in both), declared as a
 // one-element array: as a plain s32 uopt computes `duty & 8` into a global temp (t3) and copies it to dir,
 // and as1 cannot fold that move because the remu's divide-by-zero break keeps t3 live (permuter farm,
-// job t). NR12/NR11 in the sweep are read through `p = (u8*)D_800FD008` (fresh lui loads straight into
+// job t). NR12/NR11 in the sweep are read through `p = (u8*)gGbSoundRegs` (fresh lui loads straight into
 // the variable instead of the a1 base); dir and duty are assigned in each predecessor (goto path and
 // before `skip:`; both sweep directions); `(u8)duty & 0xF0` for unk_0C; `default:` last with no break.
-s16 func_80049DF0(void) {
+s16 GbAudio_RenderSquare1(void) {
     s32 changed;
     s32 i;
     u32 nr14;
@@ -294,208 +294,208 @@ s16 func_80049DF0(void) {
     s16 value;
     u8* p;
 
-    p = (u8*)D_800FD008;
+    p = (u8*)gGbSoundRegs;
     changed = 0;
     for (i = 0; i < 5; i++) {
-        if (D_800FD008[i].dirty != 0) {
+        if (gGbSoundRegs[i].dirty != 0) {
             changed = 1;
-            D_800FD008[i].dirty = 0;
+            gGbSoundRegs[i].dirty = 0;
         }
     }
 
     if (changed) {
-        nr14 = D_800FD008[4].value;
-        D_800FCF60.rotation = D_800FD008[3].value | ((u8)(nr14 & 7) << 8);
-        D_800FCF60.unk_24 = ((0x800 - D_800FCF60.rotation) * D_800FD004) >> 11;
-        duty = (D_800FD008[1].value & 0xC0) >> 6;
-        nr11 = D_800FD008[1].value;
+        nr14 = gGbSoundRegs[4].value;
+        gSquare1State.rotation = gGbSoundRegs[3].value | ((u8)(nr14 & 7) << 8);
+        gSquare1State.unk_24 = ((0x800 - gSquare1State.rotation) * D_800FD004) >> 11;
+        duty = (gGbSoundRegs[1].value & 0xC0) >> 6;
+        nr11 = gGbSoundRegs[1].value;
         switch (duty) {
             case 0:
-                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 3;
-                if (D_800FCF60.unk_18[1] < 0x40) {
-                    D_800FCF60.unk_18[1] = 0x40;
+                gSquare1State.unk_18[1] = gSquare1State.unk_24 >> 3;
+                if (gSquare1State.unk_18[1] < 0x40) {
+                    gSquare1State.unk_18[1] = 0x40;
                 }
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                gSquare1State.unk_18[0] = gSquare1State.unk_24 - gSquare1State.unk_18[1];
                 phase = 1;
                 break;
             case 1:
-                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 2;
-                if (D_800FCF60.unk_18[1] < 0x40) {
-                    D_800FCF60.unk_18[1] = 0x40;
+                gSquare1State.unk_18[1] = gSquare1State.unk_24 >> 2;
+                if (gSquare1State.unk_18[1] < 0x40) {
+                    gSquare1State.unk_18[1] = 0x40;
                 }
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                gSquare1State.unk_18[0] = gSquare1State.unk_24 - gSquare1State.unk_18[1];
                 phase = 0;
                 break;
             case 2:
-                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 1;
-                if (D_800FCF60.unk_18[1] < 0x40) {
-                    D_800FCF60.unk_18[1] = 0x40;
+                gSquare1State.unk_18[1] = gSquare1State.unk_24 >> 1;
+                if (gSquare1State.unk_18[1] < 0x40) {
+                    gSquare1State.unk_18[1] = 0x40;
                 }
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                gSquare1State.unk_18[0] = gSquare1State.unk_24 - gSquare1State.unk_18[1];
                 phase = 0;
                 break;
             case 3:
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 >> 2;
-                if (D_800FCF60.unk_18[0] < 0x40) {
-                    D_800FCF60.unk_18[0] = 0x40;
+                gSquare1State.unk_18[0] = gSquare1State.unk_24 >> 2;
+                if (gSquare1State.unk_18[0] < 0x40) {
+                    gSquare1State.unk_18[0] = 0x40;
                 }
-                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 - D_800FCF60.unk_18[0];
+                gSquare1State.unk_18[1] = gSquare1State.unk_24 - gSquare1State.unk_18[0];
                 phase = 1;
                 break;
             default:
-                D_800FCF60.unk_18[1] = 0;
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24;
+                gSquare1State.unk_18[1] = 0;
+                gSquare1State.unk_18[0] = gSquare1State.unk_24;
                 phase = 1;
         }
 
-        duty = D_800FD008[2].value;
+        duty = gGbSoundRegs[2].value;
         dir[0] = duty & 8;
         if (!dir[0] && !(duty & 0xF0)) {
-            D_800FCF60.unk_2C = 0;
-            D_800FD008[0x16].value &= ~1;
+            gSquare1State.unk_2C = 0;
+            gGbSoundRegs[0x16].value &= ~1;
             return 0;
         }
         if (dir[0] && !(duty & 0xF0) && !(duty & 7)) {
-            D_800FCF60.unk_2C = 0;
-            D_800FD008[0x16].value &= ~1;
+            gSquare1State.unk_2C = 0;
+            gGbSoundRegs[0x16].value &= ~1;
             return 0;
         }
 
         if (nr14 & 0x80) {
-            D_800FCF60.posX = 0;
-            D_800FCF60.unk_2C = 1;
-            D_800FCF60.unk_1E = phase;
-            D_800FCF60.unk_1C = 0;
-            D_800FCF60.unk_20 = 0;
-            D_800FCF60.unk_0C = ((u8)duty & 0xF0) << 7;
+            gSquare1State.posX = 0;
+            gSquare1State.unk_2C = 1;
+            gSquare1State.unk_1E = phase;
+            gSquare1State.unk_1C = 0;
+            gSquare1State.unk_20 = 0;
+            gSquare1State.unk_0C = ((u8)duty & 0xF0) << 7;
             if (duty & 7) {
                 if (dir[0]) {
-                    D_800FCF60.unk_0E = 0x800;
+                    gSquare1State.unk_0E = 0x800;
                 } else {
-                    D_800FCF60.unk_0E = -0x800;
+                    gSquare1State.unk_0E = -0x800;
                 }
-                D_800FCF60.unk_14 = D_800FCF60.unk_10 = (duty & 7) * D_800FD004;
+                gSquare1State.unk_14 = gSquare1State.unk_10 = (duty & 7) * D_800FD004;
             } else {
-                D_800FCF60.unk_0E = 0;
-                D_800FCF60.unk_10 = -1;
-                D_800FCF60.unk_14 = -1;
+                gSquare1State.unk_0E = 0;
+                gSquare1State.unk_10 = -1;
+                gSquare1State.unk_14 = -1;
             }
-            D_800FCF60.unk_08 = (((D_800FD008[0].value & 0x70) >> 4) * D_800FD004) >> 1;
-            if (D_800FCF60.unk_08 == 0) {
-                D_800FCF60.unk_08 = -1;
+            gSquare1State.unk_08 = (((gGbSoundRegs[0].value & 0x70) >> 4) * D_800FD004) >> 1;
+            if (gSquare1State.unk_08 == 0) {
+                gSquare1State.unk_08 = -1;
             }
             if (nr14 & 0x40) {
-                D_800FCF60.unk_28 = ((0x40 - (nr11 & 0x3F)) * D_800FD004) >> 2;
+                gSquare1State.unk_28 = ((0x40 - (nr11 & 0x3F)) * D_800FD004) >> 2;
             } else {
-                D_800FCF60.unk_28 = -1;
+                gSquare1State.unk_28 = -1;
             }
-            D_800FD008[4].value = nr14 & ~0x80;
+            gGbSoundRegs[4].value = nr14 & ~0x80;
         }
-        if (D_800FCF60.unk_2C == 0) {
+        if (gSquare1State.unk_2C == 0) {
             return 0;
         }
-    } else if (D_800FCF60.unk_2C == 0) {
+    } else if (gSquare1State.unk_2C == 0) {
         return 0;
     }
 
-    if (D_800FCF60.unk_28 < D_800FCF60.posX) {
-        D_800FCF60.unk_2C = 0;
-        D_800FD008[0x16].value &= ~1;
+    if (gSquare1State.unk_28 < gSquare1State.posX) {
+        gSquare1State.unk_2C = 0;
+        gGbSoundRegs[0x16].value &= ~1;
         return 0;
     }
 
-    if ((D_800FCF60.unk_08 - (D_800FCF60.posX % D_800FCF60.unk_08)) <= 0x40) {
-        duty = D_800FD008[0].value;
+    if ((gSquare1State.unk_08 - (gSquare1State.posX % gSquare1State.unk_08)) <= 0x40) {
+        duty = gGbSoundRegs[0].value;
         if (!(duty & 8)) {
-            freq = (u16)((D_800FCF60.rotation >> (duty & 7)) + D_800FCF60.rotation);
+            freq = (u16)((gSquare1State.rotation >> (duty & 7)) + gSquare1State.rotation);
             if (freq >= 0x800) {
-                D_800FCF60.unk_2C = 0;
-                D_800FD008[0x16].value &= ~1;
+                gSquare1State.unk_2C = 0;
+                gGbSoundRegs[0x16].value &= ~1;
                 return 0;
             }
-            D_800FCF60.rotation = freq;
+            gSquare1State.rotation = freq;
             duty = (p[2] & 0xC0) >> 6;
         } else {
-            freq = (u16)(D_800FCF60.rotation - (D_800FCF60.rotation >> (duty & 7)));
+            freq = (u16)(gSquare1State.rotation - (gSquare1State.rotation >> (duty & 7)));
             if (freq >= 0x800 || freq < 0) {
                 dir[0] = p[4] & 8;
                 goto skip;
             }
-            D_800FCF60.rotation = freq;
+            gSquare1State.rotation = freq;
             duty = (p[2] & 0xC0) >> 6;
         }
-        D_800FCF60.unk_24 = ((0x800 - D_800FCF60.rotation) * D_800FD004) >> 11;
+        gSquare1State.unk_24 = ((0x800 - gSquare1State.rotation) * D_800FD004) >> 11;
         switch (duty) {
             case 0:
-                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 3;
-                if (D_800FCF60.unk_18[1] < 0x40) {
-                    D_800FCF60.unk_18[1] = 0x40;
+                gSquare1State.unk_18[1] = gSquare1State.unk_24 >> 3;
+                if (gSquare1State.unk_18[1] < 0x40) {
+                    gSquare1State.unk_18[1] = 0x40;
                 }
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                gSquare1State.unk_18[0] = gSquare1State.unk_24 - gSquare1State.unk_18[1];
                 break;
             case 1:
-                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 2;
-                if (D_800FCF60.unk_18[1] < 0x40) {
-                    D_800FCF60.unk_18[1] = 0x40;
+                gSquare1State.unk_18[1] = gSquare1State.unk_24 >> 2;
+                if (gSquare1State.unk_18[1] < 0x40) {
+                    gSquare1State.unk_18[1] = 0x40;
                 }
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                gSquare1State.unk_18[0] = gSquare1State.unk_24 - gSquare1State.unk_18[1];
                 break;
             case 2:
-                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 >> 1;
-                if (D_800FCF60.unk_18[1] < 0x40) {
-                    D_800FCF60.unk_18[1] = 0x40;
+                gSquare1State.unk_18[1] = gSquare1State.unk_24 >> 1;
+                if (gSquare1State.unk_18[1] < 0x40) {
+                    gSquare1State.unk_18[1] = 0x40;
                 }
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 - D_800FCF60.unk_18[1];
+                gSquare1State.unk_18[0] = gSquare1State.unk_24 - gSquare1State.unk_18[1];
                 break;
             case 3:
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24 >> 2;
-                if (D_800FCF60.unk_18[0] < 0x40) {
-                    D_800FCF60.unk_18[0] = 0x40;
+                gSquare1State.unk_18[0] = gSquare1State.unk_24 >> 2;
+                if (gSquare1State.unk_18[0] < 0x40) {
+                    gSquare1State.unk_18[0] = 0x40;
                 }
-                D_800FCF60.unk_18[1] = D_800FCF60.unk_24 - D_800FCF60.unk_18[0];
+                gSquare1State.unk_18[1] = gSquare1State.unk_24 - gSquare1State.unk_18[0];
                 break;
             default:
-                D_800FCF60.unk_18[1] = 0;
-                D_800FCF60.unk_18[0] = D_800FCF60.unk_24;
+                gSquare1State.unk_18[1] = 0;
+                gSquare1State.unk_18[0] = gSquare1State.unk_24;
         }
     }
     dir[0] = p[4] & 8;
 skip:
-    if (D_800FCF60.unk_14 < D_800FCF60.posX) {
-        D_800FCF60.unk_0C += D_800FCF60.unk_0E;
-        D_800FCF60.unk_14 += D_800FCF60.unk_10;
+    if (gSquare1State.unk_14 < gSquare1State.posX) {
+        gSquare1State.unk_0C += gSquare1State.unk_0E;
+        gSquare1State.unk_14 += gSquare1State.unk_10;
     }
-    while (D_800FCF60.unk_20 < D_800FCF60.posX) {
-        D_800FCF60.unk_1E ^= 1;
-        D_800FCF60.unk_20 += D_800FCF60.unk_18[D_800FCF60.unk_1E];
+    while (gSquare1State.unk_20 < gSquare1State.posX) {
+        gSquare1State.unk_1E ^= 1;
+        gSquare1State.unk_20 += gSquare1State.unk_18[gSquare1State.unk_1E];
     }
 
-    if (!dir[0] && (D_800FCF60.unk_0C < 0)) {
-        D_800FCF60.unk_2C = 0;
+    if (!dir[0] && (gSquare1State.unk_0C < 0)) {
+        gSquare1State.unk_2C = 0;
         return 0;
     }
 
-    if ((u16)D_800FCF60.unk_0C > 0x7800) {
-        D_800FCF60.unk_0C = 0x7800;
-        D_800FCF60.unk_0E = 0;
-        D_800FCF60.unk_14 = -1;
+    if ((u16)gSquare1State.unk_0C > 0x7800) {
+        gSquare1State.unk_0C = 0x7800;
+        gSquare1State.unk_0E = 0;
+        gSquare1State.unk_14 = -1;
     }
 
-    value = D_800FCF60.unk_0C;
-    if (D_800FCF60.unk_1E == 0) {
+    value = gSquare1State.unk_0C;
+    if (gSquare1State.unk_1E == 0) {
         value = -value;
     }
-    D_800FCF60.posX = D_800FCF60.posX + 0x40;
+    gSquare1State.posX = gSquare1State.posX + 0x40;
     return value;
 }
 
-// Game Boy sound channel 2 (square wave), registers NR21-NR24. Same shape as func_80049DF0 minus the sweep.
+// Game Boy sound channel 2 (square wave), registers NR21-NR24. Same shape as GbAudio_RenderSquare1 minus the sweep.
 // Matching notes: NR22 is read through p (a pointer local) in the tail so uopt does not fold it into the
 // a0-based CSE; `dir` must be one real variable shared by the trigger and the tail (so it gets t1 in both).
 // `dir = duty & 8` alone is copy-propagated away (its uses become a `duty & 8` temp and the tail dir is
-// then colored separately into v0); the redundant `duty = D_800FD008[7].value` between the two kill
+// then colored separately into v0); the redundant `duty = gGbSoundRegs[7].value` between the two kill
 // tests redefines duty (no code: the load is CSE'd) and so blocks that propagation.
-s16 func_8004A474(void) {
+s16 GbAudio_RenderSquare2(void) {
     s32 changed;
     s32 i;
     u32 nr24;
@@ -507,138 +507,138 @@ s16 func_8004A474(void) {
     s16 value;
     u8* p;
 
-    p = (u8*)D_800FD008;
+    p = (u8*)gGbSoundRegs;
     changed = 0;
     for (i = 6; i < 10; i++) {
-        if (D_800FD008[i].dirty != 0) {
+        if (gGbSoundRegs[i].dirty != 0) {
             changed = 1;
-            D_800FD008[i].dirty = 0;
+            gGbSoundRegs[i].dirty = 0;
         }
     }
 
     if (changed) {
-        nr24 = D_800FD008[9].value;
-        D_800FCF90.unk_1C = ((0x800 - (D_800FD008[8].value | ((u8)(nr24 & 7) << 8))) * D_800FD004) >> 11;
-        duty = (D_800FD008[6].value & 0xC0) >> 6;
+        nr24 = gGbSoundRegs[9].value;
+        gSquare2State.unk_1C = ((0x800 - (gGbSoundRegs[8].value | ((u8)(nr24 & 7) << 8))) * D_800FD004) >> 11;
+        duty = (gGbSoundRegs[6].value & 0xC0) >> 6;
         switch (duty) {
             case 0:
-                D_800FCF90.unk_10[1] = D_800FCF90.unk_1C >> 3;
-                if (D_800FCF90.unk_10[1] < 0x40) {
-                    D_800FCF90.unk_10[1] = 0x40;
+                gSquare2State.unk_10[1] = gSquare2State.unk_1C >> 3;
+                if (gSquare2State.unk_10[1] < 0x40) {
+                    gSquare2State.unk_10[1] = 0x40;
                 }
-                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C - D_800FCF90.unk_10[1];
+                gSquare2State.unk_10[0] = gSquare2State.unk_1C - gSquare2State.unk_10[1];
                 phase = 1;
                 break;
             case 1:
-                D_800FCF90.unk_10[1] = D_800FCF90.unk_1C >> 2;
-                if (D_800FCF90.unk_10[1] < 0x40) {
-                    D_800FCF90.unk_10[1] = 0x40;
+                gSquare2State.unk_10[1] = gSquare2State.unk_1C >> 2;
+                if (gSquare2State.unk_10[1] < 0x40) {
+                    gSquare2State.unk_10[1] = 0x40;
                 }
-                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C - D_800FCF90.unk_10[1];
+                gSquare2State.unk_10[0] = gSquare2State.unk_1C - gSquare2State.unk_10[1];
                 phase = 0;
                 break;
             case 2:
-                D_800FCF90.unk_10[1] = D_800FCF90.unk_1C >> 1;
-                if (D_800FCF90.unk_10[1] < 0x40) {
-                    D_800FCF90.unk_10[1] = 0x40;
+                gSquare2State.unk_10[1] = gSquare2State.unk_1C >> 1;
+                if (gSquare2State.unk_10[1] < 0x40) {
+                    gSquare2State.unk_10[1] = 0x40;
                 }
-                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C - D_800FCF90.unk_10[1];
+                gSquare2State.unk_10[0] = gSquare2State.unk_1C - gSquare2State.unk_10[1];
                 phase = 0;
                 break;
             case 3:
-                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C >> 2;
-                if (D_800FCF90.unk_10[0] < 0x40) {
-                    D_800FCF90.unk_10[0] = 0x40;
+                gSquare2State.unk_10[0] = gSquare2State.unk_1C >> 2;
+                if (gSquare2State.unk_10[0] < 0x40) {
+                    gSquare2State.unk_10[0] = 0x40;
                 }
-                D_800FCF90.unk_10[1] = D_800FCF90.unk_1C - D_800FCF90.unk_10[0];
+                gSquare2State.unk_10[1] = gSquare2State.unk_1C - gSquare2State.unk_10[0];
                 phase = 1;
                 break;
             default:
-                D_800FCF90.unk_10[1] = 0;
-                D_800FCF90.unk_10[0] = D_800FCF90.unk_1C;
+                gSquare2State.unk_10[1] = 0;
+                gSquare2State.unk_10[0] = gSquare2State.unk_1C;
                 phase = 1;
         }
 
-        duty = D_800FD008[7].value;
+        duty = gGbSoundRegs[7].value;
         dir = duty & 8;
         if (!dir && !(duty & 0xF0)) {
-            D_800FCF90.unk_24 = 0;
-            D_800FD008[0x16].value &= ~2;
+            gSquare2State.unk_24 = 0;
+            gGbSoundRegs[0x16].value &= ~2;
             return 0;
         }
-        duty = D_800FD008[7].value;
+        duty = gGbSoundRegs[7].value;
         if (dir && !(duty & 0xF0) && !(duty & 7)) {
-            D_800FCF90.unk_24 = 0;
-            D_800FD008[0x16].value &= ~2;
+            gSquare2State.unk_24 = 0;
+            gGbSoundRegs[0x16].value &= ~2;
             return 0;
         }
 
         if (nr24 & 0x80) {
-            D_800FCF90.posX = 0;
-            D_800FCF90.unk_24 = 1;
-            D_800FCF90.unk_16 = phase;
-            D_800FCF90.unk_14 = 0;
-            D_800FCF90.unk_18 = 0;
-            D_800FCF90.rotation = ((u8)duty & 0xF0) << 7;
+            gSquare2State.posX = 0;
+            gSquare2State.unk_24 = 1;
+            gSquare2State.unk_16 = phase;
+            gSquare2State.unk_14 = 0;
+            gSquare2State.unk_18 = 0;
+            gSquare2State.rotation = ((u8)duty & 0xF0) << 7;
             if (duty & 7) {
                 if (dir) {
-                    D_800FCF90.unk_06 = 0x800;
+                    gSquare2State.unk_06 = 0x800;
                 } else {
-                    D_800FCF90.unk_06 = -0x800;
+                    gSquare2State.unk_06 = -0x800;
                 }
-                D_800FCF90.unk_0C = D_800FCF90.unk_08 = (duty & 7) * D_800FD004;
+                gSquare2State.unk_0C = gSquare2State.unk_08 = (duty & 7) * D_800FD004;
             } else {
-                D_800FCF90.unk_06 = 0;
-                D_800FCF90.unk_08 = -1;
-                D_800FCF90.unk_0C = -1;
+                gSquare2State.unk_06 = 0;
+                gSquare2State.unk_08 = -1;
+                gSquare2State.unk_0C = -1;
             }
             if (nr24 & 0x40) {
-                D_800FCF90.unk_20 = ((0x40 - (D_800FD008[6].value & 0x3F)) * D_800FD004) >> 2;
+                gSquare2State.unk_20 = ((0x40 - (gGbSoundRegs[6].value & 0x3F)) * D_800FD004) >> 2;
             } else {
-                D_800FCF90.unk_20 = -1;
+                gSquare2State.unk_20 = -1;
             }
-            D_800FD008[9].value = nr24 & ~0x80;
+            gGbSoundRegs[9].value = nr24 & ~0x80;
         }
-        if (D_800FCF90.unk_24 == 0) {
+        if (gSquare2State.unk_24 == 0) {
             return 0;
         }
-    } else if (D_800FCF90.unk_24 == 0) {
+    } else if (gSquare2State.unk_24 == 0) {
         return 0;
     }
 
-    pos = D_800FCF90.posX;
-    if (D_800FCF90.unk_20 < pos) {
-        D_800FCF90.unk_24 = 0;
-        D_800FD008[0x16].value &= ~2;
+    pos = gSquare2State.posX;
+    if (gSquare2State.unk_20 < pos) {
+        gSquare2State.unk_24 = 0;
+        gGbSoundRegs[0x16].value &= ~2;
         return 0;
     }
 
     dir = p[0xE] & 8;
-    if (D_800FCF90.unk_0C < pos) {
-        D_800FCF90.rotation += D_800FCF90.unk_06;
-        D_800FCF90.unk_0C += D_800FCF90.unk_08;
+    if (gSquare2State.unk_0C < pos) {
+        gSquare2State.rotation += gSquare2State.unk_06;
+        gSquare2State.unk_0C += gSquare2State.unk_08;
     }
-    while (D_800FCF90.unk_18 <= pos) {
-        D_800FCF90.unk_16 ^= 1;
-        D_800FCF90.unk_18 += D_800FCF90.unk_10[D_800FCF90.unk_16];
+    while (gSquare2State.unk_18 <= pos) {
+        gSquare2State.unk_16 ^= 1;
+        gSquare2State.unk_18 += gSquare2State.unk_10[gSquare2State.unk_16];
     }
 
-    if (!dir && (D_800FCF90.rotation < 0)) {
-        D_800FCF90.unk_24 = 0;
+    if (!dir && (gSquare2State.rotation < 0)) {
+        gSquare2State.unk_24 = 0;
         return 0;
     }
 
-    if ((u16)D_800FCF90.rotation > 0x7800) {
-        D_800FCF90.rotation = 0x7800;
-        D_800FCF90.unk_06 = 0;
-        D_800FCF90.unk_0C = -1;
+    if ((u16)gSquare2State.rotation > 0x7800) {
+        gSquare2State.rotation = 0x7800;
+        gSquare2State.unk_06 = 0;
+        gSquare2State.unk_0C = -1;
     }
 
-    value = D_800FCF90.rotation;
-    if (D_800FCF90.unk_16 == 0) {
+    value = gSquare2State.rotation;
+    if (gSquare2State.unk_16 == 0) {
         value = -value;
     }
-    D_800FCF90.posX = pos + 0x40;
+    gSquare2State.posX = pos + 0x40;
     return value;
 }
 
@@ -654,8 +654,8 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // nr (1035 -> 1000) -- the target keeps one register per variable across disjoint ranges; NR41 read into the sample local before the
 // unk_24 length computation (farm candidate n1; 1120 -> 1035; into nr 1075, dir/changed 1110, len 1135,
 // idx 1170, i 1415, flags 1935); `if (unk_20 < posX)` re-reading the field
-// instead of pos (farm candidate func_8004A89C__l1, 1510 -> 1120: no pos copy into v0); tail `dir = D_800FD008[k].value & 8` with a
-// non-constant index (k = 0x11 set after pos; trick from the func_8004A474 farm candidate) right after
+// instead of pos (farm candidate func_8004A89C__l1, 1510 -> 1120: no pos copy into v0); tail `dir = gGbSoundRegs[k].value & 8` with a
+// non-constant index (k = 0x11 set after pos; trick from the GbAudio_RenderSquare2 farm candidate) right after
 // `sample = rotation`, tested `!dir`: fresh-lui load + andi in the unk_20 beqz delay slot, in a1 like the
 // target (2000 -> 1510; with a constant index or a u8* pointer the load folds into the t0 base; other
 // locals for it 2345-2400); clamp stores in 14/18/20 order (2195 -> 2000); `unk_10 = 0` (int literal) stops IDO sharing one
@@ -671,7 +671,7 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // pos, u8* access, &= 0xF7, ternary +0x10, comma-expr unk_0C, gAudioSeqTOC[sample] in the call (2865 but
 // loses the target's andi 0xFF re-read), entry pointer variable, u16/s32 `col` local (back to 2985),
 // NR42&8 into any local (dir/idx/len/i/nr/flags, before or after the unk_20 test: 3235+), idx re-read
-// from D_800FD008 instead of a local, reusing idx for dir / sample for len, s32/u16 value/sample/idx,
+// from gGbSoundRegs instead of a local, reusing idx for dir / sample for len, s32/u16 value/sample/idx,
 // declaration order (no effect), chained 0x20-first store; single (u8) casts on idx/nr/flags/len/dir uses
 // (best 2110 = (u8)flags or (u8)nr in the kill tests, before the clamp fix; pairs of them are worse).
 // At 955: tail `value = rotation` (sample through the value local; target a0 + uopt copy t5 suggests
@@ -681,33 +681,33 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // Round 8 pass 4 (agent-14): 955 -> 345: `f32 fv = D_8007D4D0` right after `if (flags & 0x80) {` used for unk_14 and
 // unk_18 (farm candidate t, 470 -> 345: fixes the li 1 / lwc1 order); before that 955 -> 470: `(u8)(nr & 0xF0) * D_8007D4D0` for unk_14 (810 -> 695) and NR41 read inline
 // in the unk_24 length (no sample local there: 695 -> 470; into nr/value 625, i 930, via p 690), on top of
-// (a) + (b) below + the call index written `gAudioSeqTOC[D_800FCFD8.rotation & 0xFF]`
-// (both args; the extra and consumes the target's missing ring temp t6, like the (u8) trick in func_80049DF0;
-// (u8)/(u16)/(s8)/(s16) casts there: 1045-1655). Leads (see func_80049DF0's notes):
+// (a) + (b) below + the call index written `gAudioSeqTOC[gWaveState.rotation & 0xFF]`
+// (both args; the extra and consumes the target's missing ring temp t6, like the (u8) trick in GbAudio_RenderSquare1;
+// (u8)/(u16)/(s8)/(s16) casts there: 1045-1655). Leads (see GbAudio_RenderSquare1's notes):
 // (a) the target's col is a REAL variable (a2: andi/sra/andi 0xffff in place, no ring temps), which shifts
 // every later ring temp by the target's offset. `u16 col = (idx & 0xF0) >> 4` alone is copy-propagated
-// away (expression of a register variable); `col = ...; if (idx) {} idx = D_800FD008[0x12].value;` (block
+// away (expression of a register variable); `col = ...; if (idx) {} idx = gGbSoundRegs[0x12].value;` (block
 // boundary + no-code redefinition of idx) keeps it real: the whole top block then matches except col/row
 // colours swapped (col a3, row ptr a2; target a2/a3): 960. u32/s32/s16/u8 col 1065-1250, an ent pointer
-// local, col read from D_800FD008 (2275-2620) worse. (b) on top of (a), `p = (u8*)D_800FD008` + tail
-// `dir = p[0x22] & 8` + reload `nr = D_800FD008[0x11].value` between the kill tests makes dir ONE shared
+// local, col read from gGbSoundRegs (2275-2620) worse. (b) on top of (a), `p = (u8*)gGbSoundRegs` + tail
+// `dir = p[0x22] & 8` + reload `nr = gGbSoundRegs[0x11].value` between the kill tests makes dir ONE shared
 // variable with the target's tail shape (lui/lbu/andi into dir): 1045, but dir lands in a2 and flags in a1
 // (target dir a1, flags a2, pos a2). Tail pos into flags/k/i instead of nr: 1095-1400 (860 at 810).
 // Remaining at 345: top idx a0 / row a1 / sample v0 / load temp a3 (target a1/a3/a0/v0); tail sample a3 and
 // no `move t5,a0` copy before the value lh (target a0 + copy). `ent2 = &gAudioSeqTOC[(u8)value]` with value =
-// rotation materialises the copy early (andi instead of move): 375. One-element arrays (the func_80049DF0
+// rotation materialises the copy early (andi instead of move): 375. One-element arrays (the GbAudio_RenderSquare1
 // fix) for dir/sample/idx/col/flags/nr/ent2: 640-2390.
 // Remaining at 810: col/row ptr a3/a2 (target a2/a3), dir/flags a2/a1 (target a1/a2), pos a3 (target a2),
 // `li 1` for unk_28 scheduled after the lui, tail sample/value v0/a0 (target a0 + move t5,a0).
-// Round 9 F1 (farm v1/v2/v3/320): writing the unk_20 wrap test as `(D_800FCFD8.unk_20 < D_800FCFD8.posX) != 0`
+// Round 9 F1 (farm v1/v2/v3/320): writing the unk_20 wrap test as `(gWaveState.unk_20 < gWaveState.posX) != 0`
 // (an explicit boolean compare instead of the bare condition): 345 -> 320. The other candidate edits
-// (`!= 0U`, comma-noise `((0, D_800FCFD8)).rotation`, statement line joins) are equivalent or worse noise.
+// (`!= 0U`, comma-noise `((0, gWaveState)).rotation`, statement line joins) are equivalent or worse noise.
 
 extern unk_D_80078A60 D_80078A60[8][16];
 extern f32 D_8007D4D0;
 extern f32 D_8007D4D4;
 
-s16 func_8004A89C(void) {
+s16 GbAudio_RenderWave(void) {
     s32 i;
     s32 nr43;
     s32 row;
@@ -722,121 +722,121 @@ s16 func_8004A89C(void) {
 
     changed = 0;
     for (i = 0x10; i < 0x14; i++) {
-        if (((u8*)&D_800FD008[i])[1] != 0) {
+        if (((u8*)&gGbSoundRegs[i])[1] != 0) {
             changed = 1;
-            ((u8*)&D_800FD008[i])[1] = 0;
+            ((u8*)&gGbSoundRegs[i])[1] = 0;
         }
     }
 
     if (changed) {
-        nr43 = ((u8*)&D_800FD008[0x12])[0];
+        nr43 = ((u8*)&gGbSoundRegs[0x12])[0];
         row = nr43 & 7;
-        col = (((u8*)&D_800FD008[0x12])[0] & 0xF0) >> 4;
+        col = (((u8*)&gGbSoundRegs[0x12])[0] & 0xF0) >> 4;
         entry = &D_80078A60[row][col];
         sampleId = entry->posX;
         if (sampleId == 0xFF) {
-            D_800FCFD8.unk_28 = 0;
+            gWaveState.unk_28 = 0;
             return 0;
         }
-        if (((u8*)&D_800FD008[0x12])[0] & 8) {
+        if (((u8*)&gGbSoundRegs[0x12])[0] & 8) {
             sampleId += 0x10;
         }
-        D_800FCFD8.unk_0C = D_80078A60[nr43 & 7][col].rotation;
-        if (sampleId != D_800FCFD8.rotation) {
-            D_800FCFD8.rotation = sampleId;
-            ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (D_800FCFD8.rotation << 1));
+        gWaveState.unk_0C = D_80078A60[nr43 & 7][col].rotation;
+        if (sampleId != gWaveState.rotation) {
+            gWaveState.rotation = sampleId;
+            ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (gWaveState.rotation << 1));
             Rom_DmaRead(ent->posX, (u32)gAudioSfxDataBuffer, ent->rotation);
         }
 
-        D_800FCFD8.unk_08 = 0;
-        D_800FCFD8.unk_10 = 0;
-        if (!(((u8*)&D_800FD008[0x11])[0] & 8) && !(((u8*)&D_800FD008[0x11])[0] & 0xF0)) {
-            D_800FCFD8.unk_28 = 0;
-            ((u8*)&D_800FD008[0x16])[0] &= 0xFFF7;
+        gWaveState.unk_08 = 0;
+        gWaveState.unk_10 = 0;
+        if (!(((u8*)&gGbSoundRegs[0x11])[0] & 8) && !(((u8*)&gGbSoundRegs[0x11])[0] & 0xF0)) {
+            gWaveState.unk_28 = 0;
+            ((u8*)&gGbSoundRegs[0x16])[0] &= 0xFFF7;
             return 0;
         }
-        if ((((u8*)&D_800FD008[0x11])[0] & 8) && !(((u8*)&D_800FD008[0x11])[0] & 0xF0) && !(((u8*)&D_800FD008[0x11])[0] & 7)) {
-            D_800FCFD8.unk_28 = 0;
-            ((u8*)&D_800FD008[0x16])[0] &= 0xFFF7;
+        if ((((u8*)&gGbSoundRegs[0x11])[0] & 8) && !(((u8*)&gGbSoundRegs[0x11])[0] & 0xF0) && !(((u8*)&gGbSoundRegs[0x11])[0] & 7)) {
+            gWaveState.unk_28 = 0;
+            ((u8*)&gGbSoundRegs[0x16])[0] &= 0xFFF7;
             return 0;
         }
 
-        nr44 = ((u8*)&D_800FD008[0x13])[0];
+        nr44 = ((u8*)&gGbSoundRegs[0x13])[0];
         if (nr44 & 0x80) {
             fv = D_8007D4D0;
-            D_800FCFD8.posX = 0;
-            D_800FCFD8.unk_28 = 1;
-            D_800FCFD8.unk_14 = (u8)(((u8*)&D_800FD008[0x11])[0] & 0xF0) * fv;
-            if (((u8*)&D_800FD008[0x11])[0] & 7) {
-                if (((u8*)&D_800FD008[0x11])[0] & 8) {
-                    D_800FCFD8.unk_18 = fv;
+            gWaveState.posX = 0;
+            gWaveState.unk_28 = 1;
+            gWaveState.unk_14 = (u8)(((u8*)&gGbSoundRegs[0x11])[0] & 0xF0) * fv;
+            if (((u8*)&gGbSoundRegs[0x11])[0] & 7) {
+                if (((u8*)&gGbSoundRegs[0x11])[0] & 8) {
+                    gWaveState.unk_18 = fv;
                 } else {
-                    D_800FCFD8.unk_18 = D_8007D4D4;
+                    gWaveState.unk_18 = D_8007D4D4;
                 }
-                D_800FCFD8.unk_20 = D_800FCFD8.unk_1C = (((u8*)&D_800FD008[0x11])[0] & 7) * D_800FD004 * 4;
+                gWaveState.unk_20 = gWaveState.unk_1C = (((u8*)&gGbSoundRegs[0x11])[0] & 7) * D_800FD004 * 4;
             } else {
-                D_800FCFD8.unk_1C = -1;
-                D_800FCFD8.unk_20 = -1;
-                D_800FCFD8.unk_18 = 0.0f;
+                gWaveState.unk_1C = -1;
+                gWaveState.unk_20 = -1;
+                gWaveState.unk_18 = 0.0f;
             }
             if (nr44 & 0x40) {
-                D_800FCFD8.unk_24 = (0x40 - (((u8*)&D_800FD008[0x10])[0] & 0x3F)) * D_800FD004;
+                gWaveState.unk_24 = (0x40 - (((u8*)&gGbSoundRegs[0x10])[0] & 0x3F)) * D_800FD004;
             } else {
-                D_800FCFD8.unk_24 = -1;
+                gWaveState.unk_24 = -1;
             }
-            ((u8*)&D_800FD008[0x13])[0] = nr44 & 0xFF7F;
+            ((u8*)&gGbSoundRegs[0x13])[0] = nr44 & 0xFF7F;
         }
-        if (D_800FCFD8.unk_28 == 0) {
+        if (gWaveState.unk_28 == 0) {
             return 0;
         }
-    } else if (D_800FCFD8.unk_28 == 0) {
+    } else if (gWaveState.unk_28 == 0) {
         return 0;
     }
 
-    if (D_800FCFD8.unk_24 < D_800FCFD8.posX) {
-        D_800FCFD8.unk_28 = 0;
-        ((u8*)&D_800FD008[0x16])[0] &= 0xFFF7;
+    if (gWaveState.unk_24 < gWaveState.posX) {
+        gWaveState.unk_28 = 0;
+        ((u8*)&gGbSoundRegs[0x16])[0] &= 0xFFF7;
         return 0;
     }
 
-    if (D_800FCFD8.unk_20 < D_800FCFD8.posX) {
-        D_800FCFD8.unk_20 += D_800FCFD8.unk_1C;
-        D_800FCFD8.unk_14 += D_800FCFD8.unk_18;
+    if (gWaveState.unk_20 < gWaveState.posX) {
+        gWaveState.unk_20 += gWaveState.unk_1C;
+        gWaveState.unk_14 += gWaveState.unk_18;
     }
 
-    ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (D_800FCFD8.rotation << 1));
+    ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (gWaveState.rotation << 1));
     if (1) {}
-    sample = ((s16*)gAudioSfxDataBuffer)[D_800FCFD8.unk_08];
-    D_800FCFD8.unk_10 += 1.0f;
-    if (D_800FCFD8.unk_0C <= D_800FCFD8.unk_10) {
-        D_800FCFD8.unk_08++;
-        D_800FCFD8.unk_10 -= D_800FCFD8.unk_0C;
-        if (D_800FCFD8.unk_08 >= (ent->rotation >> 1)) {
-            D_800FCFD8.unk_08 = 0;
+    sample = ((s16*)gAudioSfxDataBuffer)[gWaveState.unk_08];
+    gWaveState.unk_10 += 1.0f;
+    if (gWaveState.unk_0C <= gWaveState.unk_10) {
+        gWaveState.unk_08++;
+        gWaveState.unk_10 -= gWaveState.unk_0C;
+        if (gWaveState.unk_08 >= (ent->rotation >> 1)) {
+            gWaveState.unk_08 = 0;
         }
     }
 
-    if (!(((u8*)&D_800FD008[0x11])[0] & 8) && (D_800FCFD8.unk_14 < 0.0f)) {
-        D_800FCFD8.unk_28 = 0;
+    if (!(((u8*)&gGbSoundRegs[0x11])[0] & 8) && (gWaveState.unk_14 < 0.0f)) {
+        gWaveState.unk_28 = 0;
         return 0;
     }
-    if (D_800FCFD8.unk_14 > 0.75f) {
-        D_800FCFD8.unk_14 = 0.75f;
-        D_800FCFD8.unk_18 = 0.0f;
-        D_800FCFD8.unk_20 = -1;
+    if (gWaveState.unk_14 > 0.75f) {
+        gWaveState.unk_14 = 0.75f;
+        gWaveState.unk_18 = 0.0f;
+        gWaveState.unk_20 = -1;
     }
-    sample = sample * D_800FCFD8.unk_14;
-    D_800FCFD8.posX += 0x100;
+    sample = sample * gWaveState.unk_14;
+    gWaveState.posX += 0x100;
     return sample;
 }
 
 void GbAudio_ClearInterpolationHistory(void) {
     s32 i;
 
-    for (i = 0; i < ARRAY_COUNT(D_800FD6F8); i++) {
-        D_800FD6F8[i] = 0;
+    for (i = 0; i < ARRAY_COUNT(gInterpolationHistory); i++) {
+        gInterpolationHistory[i] = 0;
     }
-    D_800FF978 = 0;
+    gInterpolationPos = 0;
 }
 
 void GbAudio_ClearOutputBuffer(void) {
@@ -846,7 +846,7 @@ void GbAudio_ClearOutputBuffer(void) {
         gMusicFadeBuffer[i] = 0;
     }
     gMusicFadePos = 0;
-    D_800FD6F4 = 0;
+    gOutputBufferPos = 0;
 }
 
 void func_8004AD2C(void) {

@@ -474,7 +474,7 @@ s32 Audio_FadeCommand(s32 arg0, u32 arg1) {
     return 1;
 }
 
-void func_8003733C(void) {
+void Audio_NullTask(void) {
 }
 
 void Audio_CreateFrameTaskWrapper(void* arg0) {

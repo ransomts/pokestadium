@@ -1329,7 +1329,7 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
     static s32 gCat12SfxHandle4 = 0x00000000;
     static s32 gCat12SfxHandle5 = 0x00000000;
     static u8 gCat12SfxState1 = 0;
-    static u8 D_80079064 = 0;
+    static u8 gCat12SfxState2 = 0;
 
     UNUSED s32 pad[2];
     s32 sp4C;
@@ -1366,7 +1366,7 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
         case 0x1200002:
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 1, 0x80, 0x80, -1);
             gCat12SfxHandle2 = sp4C;
-            D_80079064 = 0;
+            gCat12SfxState2 = 0;
             break;
 
         case 0x1200003:
@@ -1402,21 +1402,21 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
         case 0x1200007:
             gCat12SfxHandle5 = sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 6, 0x80, 0x80, -1);
             Audio_FadeOutAll(0x78);
-            D_80079064 = 1;
+            gCat12SfxState2 = 1;
             break;
 
         case 0x1200008:
             MusSetDurationScale(gCat12SfxHandle5, 6);
             Audio_StartMusicTrack(0x13);
-            D_80079064 = 1;
+            gCat12SfxState2 = 1;
             break;
 
         case 0x1200009:
-            if (D_80079064 != 0) {
+            if (gCat12SfxState2 != 0) {
                 Audio_StartMusicTrack(0x10);
             }
             Audio_PlaySoundEffectById(2);
-            D_80079064 = 0;
+            gCat12SfxState2 = 0;
             break;
 
         case 0x120000C:

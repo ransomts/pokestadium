@@ -328,18 +328,18 @@ typedef struct unk_D_86002F34_alt10 {
     /* 0x24 */ Color_RGBA8_u32 unk_24;
 } unk_D_86002F34_alt10; // size >= 0x28
 
-typedef struct unk_D_86002F34_alt11_018 {
+typedef struct TextureInfo {
     /* 0x00 */ u8 fmt;
     /* 0x01 */ u8 unk_01;
     /* 0x02 */ s16 posY;
     /* 0x04 */ char unk04[0x4];
     /* 0x08 */ u8* texture;
-} unk_D_86002F34_alt11_018; // size >= 0xC
+} TextureInfo; // size >= 0xC
 
 typedef struct unk_D_86002F34_alt11 {
     /* 0x00 */ GraphNode posX;
-    /* 0x18 */ unk_D_86002F34_alt11_018* unk_18;
-    /* 0x1C */ unk_D_86002F34_alt11_018* unk_1C;
+    /* 0x18 */ TextureInfo* unk_18;
+    /* 0x1C */ TextureInfo* unk_1C;
 } unk_D_86002F34_alt11; // size >= 0x20
 
 typedef struct unk_D_86002F34_alt12 {

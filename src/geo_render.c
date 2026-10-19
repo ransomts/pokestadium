@@ -13,12 +13,12 @@
 
 typedef void (*func_D_8006F0A4)(GraphNode* arg0);
 
-typedef struct unk_D_800AA8C8 {
+typedef struct MatrixStack {
     /* 0x0000 */ MtxF unk_0000[64];
     /* 0x1000 */ MtxF* unk_1000[32];
     /* 0x1080 */ s8 unk_1080[32];
     /* 0x10A0 */ s32 unk_10A0;
-} unk_D_800AA8C8; // size >= 0x10A4
+} MatrixStack; // size >= 0x10A4
 
 s32 gRenderFrameCounter = 0;
 u16 gAnimationFrame = 0;
@@ -29,7 +29,7 @@ CameraStruct* gActiveCameraNode = NULL;
 unk_D_86002F34_alt1* gActiveNode = NULL;
 Fragment2_1GraphNode* gDefaultGraphRoot = NULL;
 unk_D_86002F34_alt11* gActiveLayerNode = NULL;
-static func_D_8006F0A4 D_8006F0A4[] = {
+static func_D_8006F0A4 GeoNodeHandlerTable[] = {
     Geo_ProcessNodeChildren, Geo_NodeReference, Geo_NodeCamera, Geo_NodeType3Pass, Geo_NodeModelRoot, Geo_NodeOrtho, Geo_NodePerspective,
     Geo_NodeBackground, Geo_NodeClearDepth, Geo_NodeType9Empty, Geo_NodeFog, Graph_AddLight, Geo_NodeType12Empty, Geo_NodeAmbientLight,
     Geo_NodeShadowContext, Geo_NodeShadow, Geo_NodeCullDistance, Geo_NodeSwitchCase, Geo_NodeTranslateRotate, Geo_NodeTranslate, Geo_NodeAnimatedPart,
@@ -39,7 +39,7 @@ static func_D_8006F0A4 D_8006F0A4[] = {
 
 static s32 gIsRenderInitialized = 0;
 
-static u32 D_8006F124[4][9] = {
+static u32 gRenderModeTable[4][9] = {
     {
         0x3024000,
         0x3024000,
@@ -86,7 +86,7 @@ static u32 D_8006F124[4][9] = {
     },
 };
 
-static u8 D_8006F1B4[15][16] = {
+static u8 gCombineModeTable[15][16] = {
     { 0x1F, 0x1F, 0x1F, 3, 7, 7, 7, 3, 0, 0x1F, 4, 0x1F, 0, 7, 6, 7 },
     { 1, 0x1F, 3, 0x1F, 7, 7, 7, 1, 0, 0x1F, 4, 0x1F, 0, 7, 6, 7 },
     { 1, 3, 8, 3, 7, 7, 3, 7, 0, 0x1F, 4, 0x1F, 0, 7, 6, 7 },
@@ -104,19 +104,19 @@ static u8 D_8006F1B4[15][16] = {
     { 1, 0x1F, 4, 0x1F, 1, 7, 4, 7, 0x1F, 0x1F, 0x1F, 0, 0, 7, 6, 7 },
 };
 
-static s16 D_8006F2A4[] = { 16, 8, 4, 2, 0, 0 };
+static s16 gScaleFactors[] = { 16, 8, 4, 2, 0, 0 };
 
 static s32 gGraphNodeReturnVal;
 static MtxF* gNodeMatrixCache[8];
 static u8 pad_D_800AA6E8[0x1E0];
-static unk_D_800AA8C8 gMatrixStack;
-static unk_D_800AB970 gScaleStack;
+static MatrixStack gMatrixStack;
+static ScaleStack gScaleStack;
 static s32 gRenderModeIndex;
 static s32 gRenderFlags;
 static s32 gPipeSynced;
-static unk_D_800ABB10 gRenderState;
-static unk_D_800ABB28 gLayerStates[10];
-static unk_D_800ABB28* gCurrentRenderState;
+static RenderState gRenderState;
+static LayerState gLayerStates[10];
+static LayerState* gCurrentRenderState;
 static s32 gRenderStateCount;
 
 void GeoRender_InitMatrixStack(void) {
@@ -389,7 +389,7 @@ void Geo_ProcessNodeChildren(GraphNode* arg0) {
                 if (var_s0->unk_10 != NULL) {
                     gGraphNodeReturnVal = var_s0->unk_10(2, var_s0);
                 }
-                D_8006F0A4[var_s0->posX](var_s0);
+                GeoNodeHandlerTable[var_s0->posX](var_s0);
             }
             var_s0 = var_s0->unk_08;
         } while (var_s0 != temp_s2);
@@ -405,7 +405,7 @@ void Geo_NodeReference(GraphNode* arg0) {
         if (temp_a1->unk_10 != NULL) {
             gGraphNodeReturnVal = temp_a1->unk_10(2, temp_a1);
         }
-        D_8006F0A4[temp_a1->posX](temp_a1);
+        GeoNodeHandlerTable[temp_a1->posX](temp_a1);
     }
 
     Geo_ProcessNodeChildren(arg0);
@@ -678,7 +678,7 @@ void Geo_NodeSwitchCase(GraphNode* arg0) {
     }
 
     if (var_a1->unk_01 & 1) {
-        D_8006F0A4[var_a1->posX](var_a1);
+        GeoNodeHandlerTable[var_a1->posX](var_a1);
     }
 }
 
@@ -870,8 +870,8 @@ void Geo_NodeDisplayList(GraphNode* arg0) {
 void Geo_NodeShadowTexture(GraphNode* arg0) {
     Color_RGBA8_u32 sp44;
     unk_D_86002F34_alt10* arg = (unk_D_86002F34_alt10*)arg0;
-    unk_D_86002F34_alt11_018* sp3C;
-    unk_D_86002F34_alt11_018* sp38;
+    TextureInfo* sp3C;
+    TextureInfo* sp38;
     s32 sp34;
 
     sp3C = NULL;
@@ -1119,7 +1119,7 @@ void GeoRender_SyncMaterialState(void) {
 }
 
 void GeoRender_SetRenderMode(void) {
-    s32 var_v0 = D_8006F124[gRenderModeIndex][gCurrentRenderState->unk_24];
+    s32 var_v0 = gRenderModeTable[gRenderModeIndex][gCurrentRenderState->unk_24];
 
     gPipeSynced = 1;
 
@@ -1156,7 +1156,7 @@ void GeoRender_ApplyMaterialState(void) {
     gDPSetTextureLUT(gDisplayListHead++, G_TT_NONE);
     gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
 
-    GeoRender_SetCombineMode(gDisplayListHead++, D_8006F1B4[gCurrentRenderState->unk_25]);
+    GeoRender_SetCombineMode(gDisplayListHead++, gCombineModeTable[gCurrentRenderState->unk_25]);
 
     gSPSetGeometryMode(gDisplayListHead++, G_SHADE | G_CULL_BACK | G_SHADING_SMOOTH);
     gSPClearGeometryMode(gDisplayListHead++, G_FOG | G_TEXTURE_GEN);
@@ -1168,24 +1168,24 @@ void GeoRender_ApplyMaterialState(void) {
     }
 }
 
-void GeoRender_SetFogColor(unk_D_800ABB10* arg0) {
+void GeoRender_SetFogColor(RenderState* arg0) {
     if (arg0->unk_08.rgba != gCurrentRenderState->unk_14.rgba) {
         GeoRender_SyncMaterialState();
 
         gDPSetColor(gDisplayListHead++, G_SETFOGCOLOR, arg0->unk_08.rgba);
-        gDPSetRenderMode(gDisplayListHead++, D_8006F124[gRenderModeIndex][gCurrentRenderState->unk_24], 0xC4000000);
+        gDPSetRenderMode(gDisplayListHead++, gRenderModeTable[gRenderModeIndex][gCurrentRenderState->unk_24], 0xC4000000);
 
         gCurrentRenderState->unk_14.rgba = arg0->unk_08.rgba;
     }
 }
 
-void GeoRender_RestoreRenderMode(UNUSED unk_D_800ABB10* arg0) {
+void GeoRender_RestoreRenderMode(UNUSED RenderState* arg0) {
     if (gCurrentRenderState->unk_14.rgba & 0xFF) {
         GeoRender_SetRenderMode();
     }
 }
 
-void GeoRender_SetPrimitiveColor(unk_D_800ABB10* arg0) {
+void GeoRender_SetPrimitiveColor(RenderState* arg0) {
     if ((arg0->rotation.rgba != gCurrentRenderState->unk_10.rgba) || (arg0->unk_01 != gCurrentRenderState->unk_26)) {
         GeoRender_SyncMaterialState();
 
@@ -1197,15 +1197,15 @@ void GeoRender_SetPrimitiveColor(unk_D_800ABB10* arg0) {
     }
 }
 
-void GeoRender_SetCombineTableEntry(unk_D_800ABB10* arg0) {
+void GeoRender_SetCombineTableEntry(RenderState* arg0) {
     if (arg0->posX != gCurrentRenderState->unk_25) {
         GeoRender_SyncMaterialState();
-        GeoRender_SetCombineMode(gDisplayListHead++, D_8006F1B4[arg0->posX]);
+        GeoRender_SetCombineMode(gDisplayListHead++, gCombineModeTable[arg0->posX]);
         gCurrentRenderState->unk_25 = arg0->posX;
     }
 }
 
-void GeoRender_DisableTexture(UNUSED unk_D_800ABB10* arg0) {
+void GeoRender_DisableTexture(UNUSED RenderState* arg0) {
     if (gCurrentRenderState->unk_18 != NULL) {
         gSPTexture(gDisplayListHead++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF);
     }
@@ -1215,8 +1215,8 @@ void GeoRender_DisableTexture(UNUSED unk_D_800ABB10* arg0) {
     gCurrentRenderState->unk_20 = NULL;
 }
 
-void GeoRender_BindTexture(unk_D_800ABB10* arg0) {
-    unk_D_86002F34_alt11_018* temp_t0;
+void GeoRender_BindTexture(RenderState* arg0) {
+    TextureInfo* temp_t0;
     s32 var_a3;
 
     if (gCurrentRenderState->unk_18 == NULL) {
@@ -1233,13 +1233,13 @@ void GeoRender_BindTexture(unk_D_800ABB10* arg0) {
         }
 
         if (temp_t0->unk_01 == 0) {
-            if ((temp_t0->posY % D_8006F2A4[0]) == 0) {
+            if ((temp_t0->posY % gScaleFactors[0]) == 0) {
                 gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, G_IM_SIZ_16b, 1, temp_t0->texture);
             } else {
                 gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, G_IM_SIZ_8b, temp_t0->posY >> 1,
                                    temp_t0->texture);
             }
-        } else if ((temp_t0->posY % D_8006F2A4[temp_t0->unk_01]) == 0) {
+        } else if ((temp_t0->posY % gScaleFactors[temp_t0->unk_01]) == 0) {
             if (temp_t0->unk_01 == 3) {
                 var_a3 = 3;
             } else {
@@ -1259,7 +1259,7 @@ void GeoRender_BindTexture(unk_D_800ABB10* arg0) {
     gCurrentRenderState->unk_20 = arg0->unk_14;
 }
 
-void GeoRender_EnableTextureGeneration(UNUSED unk_D_800ABB10* arg0) {
+void GeoRender_EnableTextureGeneration(UNUSED RenderState* arg0) {
     if (gCurrentRenderState->texGenActive == 0) {
         gDPLoadTextureBlock(gDisplayListHead++, D_1001800, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
@@ -1387,7 +1387,7 @@ void GeoRender_SetMaterialParams(Color_RGBA8_u32 arg0, u8 arg1, u32 arg2) {
     gRenderState.posY = arg2;
 }
 
-void GeoRender_SetMaterialTexture(s32 arg0, Color_RGBA8_u32 arg1, unk_D_86002F34_alt11_018* arg2, unk_D_86002F34_alt11_018* arg3,
+void GeoRender_SetMaterialTexture(s32 arg0, Color_RGBA8_u32 arg1, TextureInfo* arg2, TextureInfo* arg3,
                    s32 arg4) {
     gRenderState.posX = arg0;
     gRenderState.rotation.rgba = arg1.rgba;
@@ -1398,7 +1398,7 @@ void GeoRender_SetMaterialTexture(s32 arg0, Color_RGBA8_u32 arg1, unk_D_86002F34
 
 void GeoRender_InitMaterialState(s32 arg0, s32 arg1) {
     s32 i;
-    unk_D_800ABB28* ptr = gLayerStates;
+    LayerState* ptr = gLayerStates;
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_2CYCLE);
