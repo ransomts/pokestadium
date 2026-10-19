@@ -1,4 +1,4 @@
-#include "fragment32.h"
+#include "fatal_error_screen.h"
 #include "src/1CF30.h"
 #include "src/20470.h"
 #include "src/2E110.h"

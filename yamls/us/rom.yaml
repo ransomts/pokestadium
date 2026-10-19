@@ -1393,10 +1393,10 @@
     start: 0x255230
     vram: 0x88A00000 # unknown vram, since nothing loads this. probably 88A00000?
     subsegments:
-    - [0x255230, textbin,   fragments/30/fragment30_header]
-    - [0x255250, c,      fragments/30/fragment30]
+    - [0x255230, textbin,   fragments/pokemon_lab_unused/pokemon_lab_unused_header]
+    - [0x255250, c,      fragments/pokemon_lab_unused/pokemon_lab_unused]
 
-    - {vram: 0x88A00080, type: .bss, name: fragments/30/fragment30}
+    - {vram: 0x88A00080, type: .bss, name: fragments/pokemon_lab_unused/pokemon_lab_unused}
 
   - name: fragment30_relocs
     type: code
@@ -1454,11 +1454,11 @@
     start: 0x25A740
     vram: 0x81100000
     subsegments:
-    - [0x25A740, textbin,   fragments/32/fragment32_header]
-    - [0x25A760, c,      fragments/32/fragment32]
-    - [0x25B060, .data,   fragments/32/fragment32]
+    - [0x25A740, textbin,   fragments/fatal_error_screen/fatal_error_screen_header]
+    - [0x25A760, c,      fragments/fatal_error_screen/fatal_error_screen]
+    - [0x25B060, .data,   fragments/fatal_error_screen/fatal_error_screen]
 
-    - {vram: 0x81100930, type:  .bss, name: fragments/32/fragment32}
+    - {vram: 0x81100930, type:  .bss, name: fragments/fatal_error_screen/fatal_error_screen}
 
   - name: fragment32_relocs
     type: code
