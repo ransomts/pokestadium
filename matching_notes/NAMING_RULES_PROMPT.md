@@ -273,3 +273,32 @@ Skip if ANY of these is true:
 
 Skipping produces NO output for that symbol. This is the CORRECT
 behavior. A parked placeholder is better than a wrong name.
+
+## ADDITIONAL SEMANTIC PATTERNS (from full audit)
+
+These patterns are SEMANTIC and should be allowed:
+
+### N64 pixel formats (NOT bare digits or letters):
+- I4, I8, IA4, IA8, RGBA16, RGBA32, CI4, CI8
+- These are the actual N64 texture format names
+
+### Vertex/array indices (NOT bare digits):
+- Vtx0, Vtx1, Vertices0, Vertices1, PanelVtx0
+- The digit indexes into an array of vertex data
+
+### Indexed game entities (NOT bare digits):
+- Root0, Root1, Node0, Node1, Entry0, Entry1
+- Page0, Page1, Frame0, Frame1, Layer0, Layer1
+- These number sequential instances of the same concept
+
+### Compound suffixes (NOT bare letters):
+- DMA, RGB, RGBA, RTC, BEA, LEA
+- The final letter is part of a compound word, not a variant marker
+
+### Audio channels (NOT bare digits):
+- Square1, Square2, Pulse1, Pulse2, Noise1
+- These are GBA sound channel names
+
+### RGB color components:
+- Color_R, Color_G, Color_B, Color_A
+- The letter is the color channel (Red, Green, Blue, Alpha)
