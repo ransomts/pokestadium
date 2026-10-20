@@ -258,6 +258,11 @@ SEMANTIC_DIGIT = re.compile(
     r"|NoopStub[0-9]$"                      # michiiik's convention for identical dead stubs (ParticleGfx_NoopStub1/2/10)
     r"|[0-9]x[0-9]$"                                   # 4x4, 8x8 (small dimensions)
     r"|^I[0-9]$"                                        # I4, I8 (pixel format)
+    r"|NoopStub[0-9]+$"                                # multi-digit dead stubs (NoopStub10)
+    r"|[SU](?:8|16|32|64)$"                          # scalar widths: ApproachS8, BounceS16 (power-of-two, no underscore)
+    r"|(?:Rgba|Ia|Ci)[0-9]+$"                          # pixel formats, mixed-case suffix (LoadTextureRgba32/Ia4/Ci8)
+    r"|(?<!_)I[0-9]+$"                                 # I4/I8 as suffix (LoadTextureI4, DualRgba16I8)
+    r"|Texture(?:Multi)?Block[0-9]+$"                   # texel-size texture loads (LoadTextureBlock32)
 )
 
 # Known hex-fragment prefixes (allowed when followed by hex index)
