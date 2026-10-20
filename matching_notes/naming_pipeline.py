@@ -212,18 +212,41 @@ def parse_proposals(content):
     return proposals
 
 
+# Semantic digit suffix patterns (allowed)
+SEMANTIC_DIGIT = re.compile(
+    r"(?:BE|LE)[0-9]+$"                    # ReadBE16, WriteLE32 (bit widths)
+    r"|RGBA[0-9]+$|IA[0-9]+$|CI[0-9]+$"    # RGBA16, IA8 (pixel formats)
+    r"|[0-9]+x[0-9]+$"                      # 32x32, 64x64 (dimensions)
+    r"|(?:Square|Pulse|Noise|Wave)[0-9]$"   # GBA audio channels
+    r"|(?:Player|Controller)[0-9]$"          # Player indices
+    r"|(?:Effect|Start|End|Palette|Texture|Descriptor|Model)"
+    r"[_]?[0-9A-F]{1,4}$"                   # Effect table indices (with optional _)
+    r"|(?:Channel|Track|Voice|Bank|Archive)[0-9]$"  # Audio
+    r"|(?:Version|Rev|Phase|Stage|Step|Level|Mode)[0-9]$"  # States
+    r"|(?:Slot|Bank)[0-9]$"                 # Hardware slots
+    r"|Log[0-9]$"                           # Log2, Log10 (math)
+)
+
+# Known hex-fragment prefixes (allowed when followed by hex index)
+HEX_PREFIX = re.compile(
+    r"(?:Palette|Texture|Descriptor|Effect|Model)[_]?[0-9A-F]+$"
+)
+
+
 def needs_revision(name):
     """Check if a draft name needs revision by the 31b model."""
-    # Bare digits at end (not semantic table/palette indices)
-    if re.search(r"[0-9]$", name) and not re.search(r"(Effect|Start|End|Palette|Texture|Descriptor|Model)[0-9A-F]", name):
-        return True
-    # Bare letters at end
+    # Hex fragments: check FIRST (before digit check, since hex ends in digits)
+    if re.search(r"_[0-9A-F]{4,}", name):
+        if not HEX_PREFIX.search(name):
+            return True  # raw address, not a prefixed table index
+    # Bare digits at end — check against semantic patterns
+    if re.search(r"[0-9]$", name):
+        if not SEMANTIC_DIGIT.search(name):
+            return True  # non-semantic digit
+    # Bare letters at end (A/B/C without differentiator)
     if re.search(r"[A-C]$", name) and not re.search(r"(Color|Config|Variant|Setup)[A-C]$", name):
         return True
-    # Address fragments
-    if re.search(r"_[0-9A-F]{4,}", name):
-        return True
-    # Banned terminology — check for yaw/pitch/roll ANYWHERE (not just standalone)
+    # Banned terminology — check for yaw/pitch/roll ANYWHERE
     if re.search(r"yaw|pitch|roll", name, re.I) and not re.search(r"Rollout|Rolling", name, re.I):
         return True
     if re.search(r"Custom$|Variant$|Type$", name):

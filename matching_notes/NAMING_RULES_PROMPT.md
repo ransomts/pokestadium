@@ -87,13 +87,40 @@ Local var:  {snake_case}       e.g., cpu_pokemon
 
 ### Now apply these HARD RULES (check each one):
 
-R1. Does the name end in a bare digit? (Foo2, Bar3)
-    → If yes: the digit must be a palette index, texture ID, or table
-      index. If you can't say what the digit MEANS, investigate the
-      sibling functions. If you still can't tell, SKIP.
+R1. Does the name end in a bare digit or have a digit suffix?
+    → The digit MUST fall into one of these SEMANTIC categories:
+      - Bit width: BE16, LE32 (I/O read/write sizes)
+      - Pixel format: RGBA16, RGBA32, IA8, I4, CI4 (texture formats)
+      - Texture dimension: 32x32, 64x64 (size in pixels)
+      - Audio channel: Square1, Square2, Pulse1, Pulse2 (GBA channels)
+      - Player/controller index: Player1, Player2 (game entities)
+      - Effect/descriptor table index: Effect47, Descriptor34
+      - Palette index: Palette1B (color table lookup)
+      - Version/revision: Rev1, V2
+      - Mode/phase: Phase0, Phase1 (state machine steps)
+      - Mathematical: Log2, Sqrt2 (operations)
+      
+      NOT allowed (variant counters):
+      - Load2, Call2 (what's different from 1?)
+      - Handler3, Process4 (incrementing without meaning)
+      - Type2, Kind3 (categorized without description)
+      
+      If the digit doesn't fit a semantic category above, investigate
+      what differentiates the siblings. If you can't tell, SKIP.
 
-R2. Does the name end in a bare letter? (FooA, BarB)
-    → Same rule as R1. A/B/C without meaning = SKIP.
+R1b. Does the name contain a hex fragment (4+ hex digits)?
+    → The fragment must be PREFIXED with what it indexes:
+      - Palette5F92 (palette table index)
+      - Descriptor34 (particle descriptor ID)
+      - Effect47 (dispatch table index)
+      
+      NOT allowed (bare addresses):
+      - _5F92 (raw address, no context)
+      - Handler_49628 (function address)
+      - ProcessBC20 (ROM address fragment)
+      
+      If you can't articulate what the hex indexes, remove it entirely
+      and use the semantic name instead.
 
 R3. Does the name contain "_" followed by 4+ hex digits? (_49628)
     → This is an ADDRESS FRAGMENT. Remove it. Replace with what the
