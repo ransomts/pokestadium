@@ -76,7 +76,7 @@ static f32 gFragment50FloatBuffer[150];
 static s32 gPokedexPanelAllMonsSeen;
 static s32 gPokedexPanelAllMonsSeenTimer;
 static s32 gPokedexPanelListAnimAlpha;
-static char** gFragment50StringTable;
+static char** gMonSummaryLabelsBank;
 
 static u32 gFragment50TextTable[] = {
     0xA4CAA4DE, 0xA4A80000, 0xA5ECA5D9, 0xA5EB0000, 0xA4AAA4E4, 0x00000000, 0xA4C7A4F3, 0xA4C9A4A6, 0xA4A4A4EA,
@@ -1334,7 +1334,7 @@ static PokedexStageParam gFragment50StageParams[] = {
         0.0f,
     },
 };
-static Gfx gEmptyDisplayList50[] = {
+static Gfx gPokedexPanelCornerBottomDlEnd[] = {
     gsSPEndDisplayList(),
 };
 static u32 gPokedexPanelCornerBottomTex[] = {
@@ -1396,7 +1396,7 @@ static u32 gPokedexPanelCornerBottomTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
-static Gfx gEmptyDisplayList51[] = {
+static Gfx gPokedexPanelCornerTopDlEnd[] = {
     gsSPEndDisplayList(),
 };
 static u32 gPokedexPanelCornerTopTex[] = {
@@ -1458,7 +1458,7 @@ static u32 gPokedexPanelCornerTopTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x080110C3, 0x31473189, 0x294518C3, 0x10410001, 0x6B0D6B0D, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
-static Gfx gEmptyDisplayList52[] = {
+static Gfx gPokedexPanelEdgeDlEnd[] = {
     gsSPEndDisplayList(),
 };
 static u32 gPokedexPanelEdgeTex[] = {
@@ -1478,7 +1478,7 @@ static u32 gPokedexPanelEdgeTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000,
 };
-static Gfx gEmptyDisplayList53[] = {
+static Gfx gPokedexPanelCornerBottomCaughtDlEnd[] = {
     gsSPEndDisplayList(),
 };
 static u32 gPokedexPanelCornerBottomCaughtTex[] = {
@@ -1540,7 +1540,7 @@ static u32 gPokedexPanelCornerBottomCaughtTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
-static Gfx gEmptyDisplayList54[] = {
+static Gfx gPokedexPanelCornerTopCaughtDlEnd[] = {
     gsSPEndDisplayList(),
 };
 static u32 gPokedexPanelCornerTopCaughtTex[] = {
@@ -1602,7 +1602,7 @@ static u32 gPokedexPanelCornerTopCaughtTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x080120C3, 0x398949CB, 0x394520C5, 0x10810001, 0x9CDF9CDF, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
-static Gfx gEmptyDisplayList55[] = {
+static Gfx gPokedexPanelEdgeCaughtDlEnd[] = {
     gsSPEndDisplayList(),
 };
 static u32 gPokedexPanelEdgeCaughtTex[] = {
@@ -1817,10 +1817,10 @@ s32 HallOfFame_UpdateRightPillarGlow(s32 arg0, PillarGlowParams* arg1) {
     return 0;
 }
 
-void HallOfFame_EmptyFunc1(void) {
+void HallOfFame_NoopStub1(void) {
 }
 
-void HallOfFame_EmptyFunc2(void) {
+void HallOfFame_NoopStub2(void) {
 }
 
 void HallOfFame_InitCamera(void) {
@@ -1838,7 +1838,7 @@ void HallOfFame_InitCamera(void) {
     gCurrentCameraNode = gFragment50Camera;
 }
 
-void HallOfFame_EmptyFunc3(void) {
+void HallOfFame_NoopStub3(void) {
 }
 
 void HallOfFame_PollInput(void) {
@@ -1847,10 +1847,10 @@ void HallOfFame_PollInput(void) {
     Input_ResetRepeatState();
 }
 
-void HallOfFame_EmptyFunc4(void) {
+void HallOfFame_NoopStub4(void) {
 }
 
-void HallOfFame_EmptyFunc5(void) {
+void HallOfFame_NoopStub5(void) {
 }
 
 void HallOfFame_DrawSpeciesIcon(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
@@ -1969,7 +1969,7 @@ void HallOfFame_DrawOverlay(void) {
                                 G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
 
-            temp_v0_2 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gFragment50StringTable, (((sp158.posX & 0x7F) - 1) % 7) + 7));
+            temp_v0_2 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMonSummaryLabelsBank, (((sp158.posX & 0x7F) - 1) % 7) + 7));
 
             gSPTextureRectangle(gDisplayListHead++, (temp_v0_2 + 0x49) << 2, 0x0264, (temp_v0_2 + 0x59) << 2, 0x02A4,
                                 G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
@@ -2021,15 +2021,15 @@ void HallOfFame_DrawOverlay(void) {
         HallOfFame_LoadSpeciesRecord(&sp58, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetActive(2, 0);
-        Font_Printf(0x58, 0x2E, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 0));
-        Font_Printf(0x58, 0x42, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 1));
-        Font_Printf(0x58, 0x56, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 2));
+        Font_Printf(0x58, 0x2E, "%s", Text_GetString(NULL, 0, gMonSummaryLabelsBank, 0));
+        Font_Printf(0x58, 0x42, "%s", Text_GetString(NULL, 0, gMonSummaryLabelsBank, 1));
+        Font_Printf(0x58, 0x56, "%s", Text_GetString(NULL, 0, gMonSummaryLabelsBank, 2));
         Font_Printf(0x58, 0x6A, "ID");
-        Font_Printf(0x4C, 0x86, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 4));
+        Font_Printf(0x4C, 0x86, "%s", Text_GetString(NULL, 0, gMonSummaryLabelsBank, 4));
 
         if (HallOfFame_IsCurrentSpeciesOwnedByPlayer() > 0) {
             Text_SetEnvColor(0x64, 0x64, 0xC8, 0xFF);
-            Font_Printf(0xD4, 0x6C, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 3));
+            Font_Printf(0xD4, 0x6C, "%s", Text_GetString(NULL, 0, gMonSummaryLabelsBank, 3));
         }
 
         Font_EnableTwoCycleTexturing();
@@ -2047,7 +2047,7 @@ void HallOfFame_DrawOverlay(void) {
         Font_Printf(0x8C, 0x42, "%d", sp58.TrainerSlotSaveData_GamePort);
         Font_Printf(0x8C, 0x56, "%s", sp58.unk_14);
         Font_Printf(0x8C, 0x6A, "%05d", sp58.posY);
-        Font_Printf(0x46, 0x98, "%s", Text_GetString(NULL, 0, gFragment50StringTable, (((sp58.posX & 0x7F) - 1) % 7) + 7));
+        Font_Printf(0x46, 0x98, "%s", Text_GetString(NULL, 0, gMonSummaryLabelsBank, (((sp58.posX & 0x7F) - 1) % 7) + 7));
         Font_DisableTwoCycleTexturing();
     }
 
@@ -2060,8 +2060,8 @@ void HallOfFame_DrawOverlay(void) {
 
         Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
         Text_SetNumberToken(3, gPokedexPanelMessageBankId);
-        Font_Printf(0xBE, 0xC2, "%s", Text_GetString(sp38, 0x20, gFragment50StringTable, 5));
-        Font_Printf(0x2A, 0xC3, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 6));
+        Font_Printf(0xBE, 0xC2, "%s", Text_GetString(sp38, 0x20, gMonSummaryLabelsBank, 5));
+        Font_Printf(0x2A, 0xC3, "%s", Text_GetString(NULL, 0, gMonSummaryLabelsBank, 6));
     } else if ((gPokedexPanelListActive == 1) && (gPokedexPanelShowInfo == 0) && (gPokedexPanelInputState == 2) && (gPokedexPanelHighlightPhase == 5)) {
         u16 temp_v1_70 = gPokedexPanelListAnimAlpha % 32;
         char* sp2C;
@@ -2072,7 +2072,7 @@ void HallOfFame_DrawOverlay(void) {
         } else {
             Text_SetEnvColor(0xFF, 0xFF, 0x64, ((-temp_v1_70 * 0xFF) + 0x1EE1) / 15);
         }
-        sp2C = Text_GetString(NULL, 0, gFragment50StringTable, 0x14);
+        sp2C = Text_GetString(NULL, 0, gMonSummaryLabelsBank, 0x14);
         Font_Printf(0xA0 - (Font_MeasureTextExtent(0, 0, sp2C) / 2), 0xA2, "%s", sp2C);
     } else if (gPokedexPanelListActive == 1) {
         gPokedexPanelListAnimAlpha = 0;
@@ -2133,7 +2133,7 @@ void HallOfFame_SpawnCarouselEntry(s16 arg0) {
     HallOfFame_SpawnPokeIcon(sp1C, arg0 * 600.0f);
 }
 
-void HallOfFame_EmptyFunc6(void) {
+void HallOfFame_NoopStub6(void) {
 }
 
 void HallOfFame_ClearCarouselSlot(s16 arg0) {
@@ -2186,7 +2186,7 @@ void HallOfFame_SetBackgroundPositionX(f32 arg0) {
     gFragment50LeftPillarNode.unk_024.x = arg0;
 }
 
-void HallOfFame_EmptyFunc7(void) {
+void HallOfFame_NoopStub7(void) {
 }
 
 void HallOfFame_UpdateCarouselModelRotation(void) {
@@ -2717,7 +2717,7 @@ s32 HallOfFame_Main(s32 arg0, s32 arg1) {
     Save_EnsureBankLoaded(2);
     HallOfFame_InitGallery();
     Text_InitStringTables();
-    gFragment50StringTable = Text_GetStringTable(0x1F);
+    gMonSummaryLabelsBank = Text_GetStringTable(0x1F);
     D_8267E760 = Text_GetStringTable(0x24);
     StageContext_Activate(sp24);
     HallOfFame_RunGallery();

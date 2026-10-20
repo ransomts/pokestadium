@@ -158,7 +158,7 @@ extern s16 miniInputLockTimer;
 extern s16 gMiniGameIdleTimer;
 extern s16 miniShowHUB;
 extern s16 miniDifficulty;
-extern s16 gMiniGameUnusedVar1;
+extern s16 gMiniGameResetOnlyFlag;
 extern s16 gMetapodAudioMuted;
 extern CameraStruct* gMiniCameraStruct;      // geo layout
 extern CameraStruct* gMiniCameraPtr;

@@ -30,73 +30,73 @@ static u32 gCupSelectBgGeo[] = {
     0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static u8* gCupSelectBgTextures[] = { D_3000000, D_3009000, D_3012000, D_301B000 };
-static Vtx gCupSelectVtx_0[] = {
+static Vtx gCupSelectVtx0[] = {
     VTX(-128, 36, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-128, 12, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, 12, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, 36, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_1[] = {
+static Vtx gCupSelectVtx1[] = {
     VTX(-64, 36, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, 12, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 12, 0, 4096, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 36, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_2[] = {
+static Vtx gCupSelectVtx2[] = {
     VTX(0, 36, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 12, 0, 4096, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, 12, 0, 6144, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, 36, 0, 6144, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_3[] = {
+static Vtx gCupSelectVtx3[] = {
     VTX(64, 36, 0, 6144, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, 12, 0, 6144, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(128, 12, 0, 8192, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(128, 36, 0, 8192, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_4[] = {
+static Vtx gCupSelectVtx4[] = {
     VTX(-128, 12, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-128, -12, 0, 0, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, -12, 0, 2048, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, 12, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_5[] = {
+static Vtx gCupSelectVtx5[] = {
     VTX(-64, 12, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, -12, 0, 2048, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -12, 0, 4096, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 12, 0, 4096, 768, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_6[] = {
+static Vtx gCupSelectVtx6[] = {
     VTX(0, 12, 0, 4096, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -12, 0, 4096, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, -12, 0, 6144, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, 12, 0, 6144, 768, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_7[] = {
+static Vtx gCupSelectVtx7[] = {
     VTX(64, 12, 0, 6144, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, -12, 0, 6144, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(128, -12, 0, 8192, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(128, 12, 0, 8192, 768, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_8[] = {
+static Vtx gCupSelectVtx8[] = {
     VTX(-128, -12, 0, 0, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-128, -36, 0, 0, 2304, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, -36, 0, 2048, 2304, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, -12, 0, 2048, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_9[] = {
+static Vtx gCupSelectVtx9[] = {
     VTX(-64, -12, 0, 2048, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, -36, 0, 2048, 2304, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -36, 0, 4096, 2304, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -12, 0, 4096, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_10[] = {
+static Vtx gCupSelectVtx10[] = {
     VTX(0, -12, 0, 4096, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -36, 0, 4096, 2304, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, -36, 0, 6144, 2304, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, -12, 0, 6144, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gCupSelectVtx_11[] = {
+static Vtx gCupSelectVtx11[] = {
     VTX(64, -12, 0, 6144, 1536, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, -36, 0, 6144, 2304, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(128, -36, 0, 8192, 2304, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -108,60 +108,60 @@ static Gfx gCupSelectBgDL[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 0, 0, 63, 23, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_0, 4, 0),
+    gsSPVertex(gCupSelectVtx0, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 64, 0, 127, 23, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_1, 4, 0),
+    gsSPVertex(gCupSelectVtx1, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 128, 0, 191, 23, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_2, 4, 0),
+    gsSPVertex(gCupSelectVtx2, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 192, 0, 255, 23, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_3, 4, 0),
+    gsSPVertex(gCupSelectVtx3, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 0, 24, 63, 47, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_4, 4, 0),
+    gsSPVertex(gCupSelectVtx4, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 64, 24, 127, 47, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_5, 4, 0),
+    gsSPVertex(gCupSelectVtx5, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 128, 24, 191, 47, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_6, 4, 0),
+    gsSPVertex(gCupSelectVtx6, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 192, 24, 255, 47, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_7, 4, 0),
+    gsSPVertex(gCupSelectVtx7, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 0, 48, 63, 71, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_8, 4, 0),
+    gsSPVertex(gCupSelectVtx8, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 64, 48, 127, 71, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_9, 4, 0),
+    gsSPVertex(gCupSelectVtx9, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 128, 48, 191, 71, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_10, 4, 0),
+    gsSPVertex(gCupSelectVtx10, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 256, 0, 192, 48, 255, 71, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(gCupSelectVtx_11, 4, 0),
+    gsSPVertex(gCupSelectVtx11, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 static u32 gCupSelectOverlayGeo[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gCupSelectVtx_0, 0x05000000, 0x22050000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gCupSelectVtx0, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, CupSelect_IconGeoPostCallback, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gCupSelectOverlayVtx[] = {

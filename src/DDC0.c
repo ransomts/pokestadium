@@ -22,16 +22,16 @@ static s32 gAudioTaskBufferIndex;
 static s32 gCurrentMusicId;
 static AudioThreadData gAudioThreadData;
 
-void Audio_Stub1(void) {
+void Audio_NoopStub1(void) {
 }
 
-void Audio_Stub2(void) {
+void Audio_NoopStub2(void) {
 }
 
-void Audio_Stub3(void) {
+void Audio_NoopStub3(void) {
 }
 
-void Audio_Stub4(void) {
+void Audio_NoopStub4(void) {
 }
 
 void Audio_ResetCurrentMusic(void) {

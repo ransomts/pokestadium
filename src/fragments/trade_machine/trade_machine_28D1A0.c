@@ -301,10 +301,10 @@ void Trade_DrawInfoBox(TradeInfoBoxState* arg0) {
         Font_SetActive(0x10, 0);
         Font_Printf(arg0->rotation + 0x10, arg0->unk_06 + 6, sp11C->unk_30);
         Font_SetActive(0x10, 0);
-        Font_Printf(arg0->rotation + 0xA0, arg0->unk_06 + 6, "%s%d", Text_GetString(NULL, 0, gTradeMiscStrings, 0x15),
+        Font_Printf(arg0->rotation + 0xA0, arg0->unk_06 + 6, "%s%d", Text_GetString(NULL, 0, gTradeMoveMenuStringsBank, 0x15),
                       sp11C->unk_24);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->rotation + 0x12E, arg0->unk_06 + 8, "%s%03d", Text_GetString(NULL, 0, gTradeMiscStrings, 0x16),
+        Font_Printf(arg0->rotation + 0x12E, arg0->unk_06 + 8, "%s%03d", Text_GetString(NULL, 0, gTradeMoveMenuStringsBank, 0x16),
                       sp11C->posX.posX);
         Font_SetActive(8, 0);
         Font_Printf(arg0->rotation + 0x19C, arg0->unk_06 + 8, Trade_GetSpeciesName(sp11C->posX.posX));
@@ -329,7 +329,7 @@ void Trade_DrawInfoBox(TradeInfoBoxState* arg0) {
 
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetActive(8, 0);
-        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x44, Text_GetString(NULL, 0, gTradeMiscStrings, 8));
+        Font_Printf(arg0->rotation + 0x144, arg0->unk_06 + 0x44, Text_GetString(NULL, 0, gTradeMoveMenuStringsBank, 8));
         Font_SetActive(8, 0);
         sprintf(sp94, "%d", sp11C->unk_26);
         Font_Printf((arg0->rotation - Font_MeasureTextExtent(0, 0, sp94)) + 0x1D0, arg0->unk_06 + 0x44, sp94);

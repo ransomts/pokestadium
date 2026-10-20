@@ -10,7 +10,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static char** gFragment54MessageBank;
+static char** gSessionModeNamesBank;
 static BinArchive* gBattleHeaderArchive;
 static void* gFragment54TextureAtlas;
 static s16 gMenuCursorIndex;
@@ -56,9 +56,9 @@ void RentalHub_DrawHeader(void) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     Text_SetEnvColor(0, 0, 0, 0xFF);
-    Font_Printf(0x6A, 0x2C, Text_GetString(NULL, 0, gFragment54MessageBank, gMessageIdOffsetTable[gSessionContext.unk_0000]));
+    Font_Printf(0x6A, 0x2C, Text_GetString(NULL, 0, gSessionModeNamesBank, gMessageIdOffsetTable[gSessionContext.unk_0000]));
     Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Font_Printf(0x68, 0x2A, Text_GetString(NULL, 0, gFragment54MessageBank, gMessageIdOffsetTable[gSessionContext.unk_0000]));
+    Font_Printf(0x68, 0x2A, Text_GetString(NULL, 0, gSessionModeNamesBank, gMessageIdOffsetTable[gSessionContext.unk_0000]));
     Font_EndTexturedTextRendering();
 }
 
@@ -121,9 +121,9 @@ void RentalHub_DrawMenuItemBox(s16 arg0, s16 arg1, s16 arg2, char* arg3) {
 void RentalHub_DrawMenuItems(s16 arg0) {
     UNUSED s32 pad;
 
-    RentalHub_DrawMenuItemBox(0x50, 0x180, arg0 * 6, Text_GetString(NULL, 0, gFragment54MessageBank, 4));
-    RentalHub_DrawMenuItemBox(0xF4, 0x180, arg0 * 6, Text_GetString(NULL, 0, gFragment54MessageBank, 5));
-    RentalHub_DrawMenuItemBox(0x198, 0x180, arg0 * 6, Text_GetString(NULL, 0, gFragment54MessageBank, 6));
+    RentalHub_DrawMenuItemBox(0x50, 0x180, arg0 * 6, Text_GetString(NULL, 0, gSessionModeNamesBank, 4));
+    RentalHub_DrawMenuItemBox(0xF4, 0x180, arg0 * 6, Text_GetString(NULL, 0, gSessionModeNamesBank, 5));
+    RentalHub_DrawMenuItemBox(0x198, 0x180, arg0 * 6, Text_GetString(NULL, 0, gSessionModeNamesBank, 6));
 }
 
 s32 RentalHub_HandleInput(void) {
@@ -259,7 +259,7 @@ s32 RentalHub_MenuMain(void) {
     RentalHub_LoadBackgroundImage(&sp1C);
     Text_InitStringTables();
 
-    gFragment54MessageBank = Text_GetStringTable(0x18);
+    gSessionModeNamesBank = Text_GetStringTable(0x18);
     gMenuCursorIndex = 0;
 
     if (gSessionContext.unk_0000 == 7) {

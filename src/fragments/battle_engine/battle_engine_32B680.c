@@ -3881,9 +3881,9 @@ void Gfx_PokemonPortraitCallback(Gfx* arg0, u8 arg1, UNUSED u16 arg2) {
     s32 idx = arg1 * 0xB48;
 
     if (BattleScene_GetParticipantSideIndex(BattleAnim_GetOwnerContextParticle(gDefaultGraphRoot)->unk_10) == 0) {
-        var_a3 = gPokemonPortraitImage0 + idx;
+        var_a3 = gBattlePortraitFb0Pixels + idx;
     } else {
-        var_a3 = gPokemonPortraitImage1 + idx;
+        var_a3 = gBattlePortraitFb1Pixels + idx;
     }
 
     gDPLoadTextureTile(arg0++, var_a3, G_IM_FMT_RGBA, G_IM_SIZ_16b, 76, 0, 0, 0, 75, 18, 0, G_TX_NOMIRROR | G_TX_CLAMP,

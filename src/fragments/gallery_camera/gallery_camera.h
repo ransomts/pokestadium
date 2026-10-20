@@ -78,8 +78,8 @@ extern Color_RGB8 gStagePanelGradientStartColor;
 extern Color_RGB8 gStagePanelGradientEndColor;
 
 extern const char gCupNameFreeBattle[];
-extern const char gCupNamePokeCup[];
-extern const char gCupNamePokeCup2[];
+extern const char gCupNameNintendoCup[];
+extern const char gCupNameNintendoCupRound2[];
 extern const char gCupNamePetitCup[];
 extern const char gCupNamePikaCup[];
 extern const char gCupNamePrimeCup[];
@@ -94,7 +94,7 @@ extern const char gCupNameViridianGym[];
 extern const char gCupNameEliteFour[];
 extern const char gCupNameMewtwo[];
 
-extern char** gMessageBankPtr;
+extern char** gPhotoHowToStringsBank;
 extern f32 gCameraZoomOffset;
 extern GalleryCameraParams* gCameraParams;
 extern GalleryCameraConfigState gCameraConfig;

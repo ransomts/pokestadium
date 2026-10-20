@@ -132,19 +132,19 @@ s32 Species_FromInternalIndex(s32 arg0) {
     return D_800732FF[arg0];
 }
 
-u8 GetPokemonMoveData(s32 arg0) {
+u8 Species_GetMoveData(s32 arg0) {
     extern u8 D_800733BF[];
 
     return D_800733BF[arg0];
 }
 
-u8 GetPokemonEvolutionData(s32 arg0) {
+u8 Species_GetEvolutionData(s32 arg0) {
     extern u8 D_80073457[];
 
     return D_80073457[arg0];
 }
 
-s32 GetPokemonEggGroup(s32 arg0) {
+s32 Species_GetEggGroup(s32 arg0) {
     extern u8 D_800734EF[];
 
     if (arg0 == 0) {
@@ -153,7 +153,7 @@ s32 GetPokemonEggGroup(s32 arg0) {
     return D_800734EF[arg0] + 1;
 }
 
-s32 GetPokemonGrowthRate(s32 arg0) {
+s32 Species_GetGrowthRate(s32 arg0) {
     extern u8 D_80073597[];
 
     if (arg0 == 0) {

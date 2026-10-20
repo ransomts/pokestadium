@@ -28,8 +28,8 @@ static ModelData* gMiniGameGeoLayoutData;
 static GraphNode* D_86600944;
 static CameraStruct* gMiniGameCamera;
 static Fragment2_1GraphNode gMiniGameAnimNode;
-static s16 gMiniGameCamYaw;
-static s16 gMiniGameCamPitch;
+static s16 gMiniGameCamRotationY;
+static s16 gMiniGameCamRotationX;
 static s16 D_86600ABC;
 
 void Minigame_Sample7Viewer_PollInput(void) {
@@ -41,31 +41,31 @@ void Minigame_Sample7Viewer_PollInput(void) {
 void Minigame_Sample7Viewer_InitCamera(void) {
     gMiniGameCamera = D_86600944->unk_0C;
 
-    gMiniGameCamYaw = 0x100;
-    gMiniGameCamPitch = 0;
+    gMiniGameCamRotationY = 0x100;
+    gMiniGameCamRotationX = 0;
     D_86600ABC = 0x78;
 
     gMiniGameCamera->unk_24.near = 10.0f;
     gMiniGameCamera->unk_24.far = 6400.0f;
 
-    Camera_ComputeEyeFromAngles(&gMiniGameCamera->unk_60.at, &gMiniGameCamera->unk_60.eye, D_86600ABC, gMiniGameCamYaw, gMiniGameCamPitch);
+    Camera_ComputeEyeFromAngles(&gMiniGameCamera->unk_60.at, &gMiniGameCamera->unk_60.eye, D_86600ABC, gMiniGameCamRotationY, gMiniGameCamRotationX);
 }
 
 void Minigame_Sample7Viewer_UpdateCameraControls(void) {
     if (gPlayer1Controller->buttonDown & 0x800) {
-        gMiniGameCamYaw += 256;
+        gMiniGameCamRotationY += 256;
     }
 
     if (gPlayer1Controller->buttonDown & 0x400) {
-        gMiniGameCamYaw -= 256;
+        gMiniGameCamRotationY -= 256;
     }
 
     if (gPlayer1Controller->buttonDown & 0x200) {
-        gMiniGameCamPitch += 256;
+        gMiniGameCamRotationX += 256;
     }
 
     if (gPlayer1Controller->buttonDown & 0x100) {
-        gMiniGameCamPitch -= 256;
+        gMiniGameCamRotationX -= 256;
     }
 
     if (gPlayer1Controller->buttonDown & 8) {
@@ -76,12 +76,12 @@ void Minigame_Sample7Viewer_UpdateCameraControls(void) {
         D_86600ABC += 10;
     }
 
-    if (gMiniGameCamYaw > 16128) {
-        gMiniGameCamYaw = 16128;
+    if (gMiniGameCamRotationY > 16128) {
+        gMiniGameCamRotationY = 16128;
     }
 
-    if (gMiniGameCamYaw < 0) {
-        gMiniGameCamYaw = 0;
+    if (gMiniGameCamRotationY < 0) {
+        gMiniGameCamRotationY = 0;
     }
 
     if (D_86600ABC < 50) {
@@ -92,7 +92,7 @@ void Minigame_Sample7Viewer_UpdateCameraControls(void) {
         D_86600ABC = 2000;
     }
 
-    Camera_ComputeEyeFromAngles(&gMiniGameCamera->unk_60.at, &gMiniGameCamera->unk_60.eye, D_86600ABC, gMiniGameCamYaw, gMiniGameCamPitch);
+    Camera_ComputeEyeFromAngles(&gMiniGameCamera->unk_60.at, &gMiniGameCamera->unk_60.eye, D_86600ABC, gMiniGameCamRotationY, gMiniGameCamRotationX);
 }
 
 void Minigame_Sample7Viewer_DrawDebugText(s32 arg0) {
@@ -128,7 +128,7 @@ void Minigame_Sample7Viewer_DrawDebugText(s32 arg0) {
     if (arg0 == 2) {
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_Printf(0x23, 0xC2, "CAMERA D:%d", D_86600ABC);
-        Font_Printf(0x23, 0xCE, "X:%04hX Y:%04hX", gMiniGameCamYaw, gMiniGameCamPitch);
+        Font_Printf(0x23, 0xCE, "X:%04hX Y:%04hX", gMiniGameCamRotationY, gMiniGameCamRotationX);
     }
 
     Font_EndTexturedTextRendering();

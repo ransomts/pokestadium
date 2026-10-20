@@ -6,13 +6,13 @@
 #include "src/audio_data.h"
 
 static s32 gLastSfxHandle = 0;
-static s32 gSfxHandle_1 = 0;
-static s32 gSfxHandle_3 = 0;
-static s32 gSfxHandle_2 = 0;
-static s32 gSfxHandle_4 = 0;
-static s32 gSfxHandle_8 = 0;
-static s32 gSfxHandle_44 = 0;
-static s32 gSfxHandle_46 = 0;
+static s32 gSfxHandle_MenuCursorMove = 0;
+static s32 gSfxHandle_MenuCancel = 0;
+static s32 gSfxHandle_MenuAccept = 0;
+static s32 gSfxHandle_MenuScreenOpen = 0;
+static s32 gSfxHandle_MenuError = 0;
+static s32 gSfxHandle_GalleryCameraShutter = 0;
+static s32 gSfxHandle_GalleryCameraExit = 0;
 static u8 gSfx3CCooldown = 0;
 
 s32 Audio_PlaySoundEffectById(u32 arg0) {
@@ -62,7 +62,7 @@ s32 Audio_PlaySoundEffectById(u32 arg0) {
 
     switch (arg0) {
         case 0x1:
-            MusSetDurationScale(gSfxHandle_1, 1);
+            MusSetDurationScale(gSfxHandle_MenuCursorMove, 1);
             break;
 
         case 0x5:
@@ -101,32 +101,32 @@ s32 Audio_PlaySoundEffectById(u32 arg0) {
             break;
 
         case 0x2:
-            MusSetDurationScale(gSfxHandle_2, 1);
+            MusSetDurationScale(gSfxHandle_MenuAccept, 1);
             break;
 
         case 0x3:
-            MusSetDurationScale(gSfxHandle_3, 1);
+            MusSetDurationScale(gSfxHandle_MenuCancel, 1);
             break;
 
         case 0x4:
-            MusSetDurationScale(gSfxHandle_4, 0x14);
+            MusSetDurationScale(gSfxHandle_MenuScreenOpen, 0x14);
             break;
 
         case 0x8:
-            MusSetDurationScale(gSfxHandle_8, 2);
+            MusSetDurationScale(gSfxHandle_MenuError, 2);
             break;
 
         case 0x2C:
-            MusSetDurationScale(gSfxHandle_44, 2);
+            MusSetDurationScale(gSfxHandle_GalleryCameraShutter, 2);
             sp28 = 0xA0;
             break;
 
         case 0x2D:
-            MusSetDurationScale(gSfxHandle_44, 2);
+            MusSetDurationScale(gSfxHandle_GalleryCameraShutter, 2);
             break;
 
         case 0x2E:
-            MusSetDurationScale(gSfxHandle_46, 2);
+            MusSetDurationScale(gSfxHandle_GalleryCameraExit, 2);
             break;
 
         case 0xA:
@@ -166,31 +166,31 @@ s32 Audio_PlaySoundEffectById(u32 arg0) {
 
     switch (arg0) {
         case 1:
-            gSfxHandle_1 = gLastSfxHandle;
+            gSfxHandle_MenuCursorMove = gLastSfxHandle;
             break;
 
         case 2:
-            gSfxHandle_2 = gLastSfxHandle;
+            gSfxHandle_MenuAccept = gLastSfxHandle;
             break;
 
         case 3:
-            gSfxHandle_3 = gLastSfxHandle;
+            gSfxHandle_MenuCancel = gLastSfxHandle;
             break;
 
         case 4:
-            gSfxHandle_4 = gLastSfxHandle;
+            gSfxHandle_MenuScreenOpen = gLastSfxHandle;
             break;
 
         case 8:
-            gSfxHandle_8 = gLastSfxHandle;
+            gSfxHandle_MenuError = gLastSfxHandle;
             break;
 
         case 44:
-            gSfxHandle_44 = gLastSfxHandle;
+            gSfxHandle_GalleryCameraShutter = gLastSfxHandle;
             break;
 
         case 45:
-            gSfxHandle_46 = gLastSfxHandle;
+            gSfxHandle_GalleryCameraExit = gLastSfxHandle;
             break;
     }
 

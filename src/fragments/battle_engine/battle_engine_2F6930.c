@@ -254,16 +254,16 @@ void Battle_ComputeSplineWeightsVariantD(f32* arg0, f32 arg1) {
 void Battle_ComputeSplineWeightsVariantE(f32* arg0, f32 arg1) {
     static f32 gSplineE_CB;
     static f32 gSplineE_InvT;
-    static f32 gSplineE_T2;
-    static f32 gSplineE_T3;
+    static f32 gSplineE_InvT2;
+    static f32 gSplineE_InvT3;
 
     gSplineE_InvT = 1.0f - arg1;
-    gSplineE_T2 = SQ(gSplineE_InvT);
-    gSplineE_T3 = gSplineE_T2 * gSplineE_InvT;
+    gSplineE_InvT2 = SQ(gSplineE_InvT);
+    gSplineE_InvT3 = gSplineE_InvT2 * gSplineE_InvT;
     gSplineE_CB = CB(arg1);
 
-    arg0[0] = gSplineE_T3 / 6.0f;
-    arg0[1] = ((-11.0f * gSplineE_T3) / 12.0f) + (3.0f * gSplineE_T2 * 0.5f);
-    arg0[2] = (((21.0f * gSplineE_T3) / 12.0f) - (9.0f * gSplineE_T2 * 0.5f)) + (3.0f * gSplineE_InvT);
+    arg0[0] = gSplineE_InvT3 / 6.0f;
+    arg0[1] = ((-11.0f * gSplineE_InvT3) / 12.0f) + (3.0f * gSplineE_InvT2 * 0.5f);
+    arg0[2] = (((21.0f * gSplineE_InvT3) / 12.0f) - (9.0f * gSplineE_InvT2 * 0.5f)) + (3.0f * gSplineE_InvT);
     arg0[3] = gSplineE_CB;
 }

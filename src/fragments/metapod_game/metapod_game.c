@@ -1614,30 +1614,30 @@ void MetapodGame_DrawTutorialText(void) {
     Font_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Font_Printf(0xA0 - (Text_MeasureStringWidth(gMetapodTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0x44)) / 2), 0x20,
-                  Text_GetString(NULL, 0, gItemNamesBank, 0x44));
+    Font_Printf(0xA0 - (Text_MeasureStringWidth(gMetapodTextObject, Text_GetString(NULL, 0, gMinigameNamesBank, 0x44)) / 2), 0x20,
+                  Text_GetString(NULL, 0, gMinigameNamesBank, 0x44));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x45));
-    Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gItemNamesBank, 0x46));
-    Font_Printf(0x28, 0x7C, Text_GetString(NULL, 0, gItemNamesBank, 0x47));
-    Font_Printf(0x28, 0x94, Text_GetString(NULL, 0, gItemNamesBank, 0x48));
+    Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x45));
+    Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gMinigameNamesBank, 0x46));
+    Font_Printf(0x28, 0x7C, Text_GetString(NULL, 0, gMinigameNamesBank, 0x47));
+    Font_Printf(0x28, 0x94, Text_GetString(NULL, 0, gMinigameNamesBank, 0x48));
     Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
     Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x45), Text_GetString(NULL, 0, gItemNamesBank, 0x5F),
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x45), Text_GetString(NULL, 0, gMinigameNamesBank, 0x5F),
                   0xC);
-    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x5F));
-    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x46), Text_GetString(NULL, 0, gItemNamesBank, 0x5F),
+    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5F));
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x46), Text_GetString(NULL, 0, gMinigameNamesBank, 0x5F),
                   0xC);
-    Font_Printf(sp38 + 0x28, sp34 + 0x58, Text_GetString(NULL, 0, gItemNamesBank, 0x5F));
-    Font_Printf(0x8B, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-    Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+    Font_Printf(sp38 + 0x28, sp34 + 0x58, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5F));
+    Font_Printf(0x8B, 0xB2, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+    Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
     Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
     Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-    Font_Printf(0xA2, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x49));
+    Font_Printf(0xA2, 0xB2, Text_GetString(NULL, 0, gMinigameNamesBank, 0x49));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-    Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
+    Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x14));
     Font_DisableTwoCycleTexturing();
     Font_EndTexturedTextRendering();
 }

@@ -226,7 +226,7 @@ extern s32 gFragment41FrameCounter;
 extern PlayerTradeInfo gPlayerInfo[4];
 
 extern char** gTradeMenuStrings;
-extern char** gTradeMiscStrings;
+extern char** gTradeMoveMenuStringsBank;
 
 char* Trade_GetSpeciesName(s32 arg0);
 char* Trade_GetMoveName(s32 arg0);
@@ -281,7 +281,7 @@ void Trade_DrawRoundedFrameLarge(s16, s16, s16, s16, u8, u8, u8, u8);
 void Trade_DrawBoxTabIcon(s16 arg0, s16 arg1, u8* arg2, s16 arg3);
 void Trade_DrawBoxTabBar(PickerState* arg0, s16 arg1, s16 arg2, s32 arg3);
 void Trade_DrawPortInfoPanel(s16 arg0, s16 arg1, s16 arg2);
-void UpdateAndRenderPicker(PickerState* arg0);
+void Trade_UpdateAndRenderPicker(PickerState* arg0);
 void Trade_ResetPickScreens(void);
 void Trade_UpdatePickScreens(void);
 void Trade_DrawPickScreens(void);

@@ -270,7 +270,7 @@ s32 Battle_GetTrainerId(BattlePlayerEntity* arg0, UNUSED s32 arg1) {
 }
 
 char* Battle_GetActiveMoveName(BattlePlayerEntity* arg0) {
-    return Text_GetString(NULL, 0, gPokemonMessageBank, arg0->animationState.unk_38.currentMoveId - 1);
+    return Text_GetString(NULL, 0, gBattleMoveNamesBank, arg0->animationState.unk_38.currentMoveId - 1);
 }
 
 u8* Battle_GetActiveMonNickname(BattlePlayerEntity* arg0) {

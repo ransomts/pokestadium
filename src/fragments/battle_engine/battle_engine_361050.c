@@ -52,15 +52,15 @@ static u8 gAiThresholdTable[] = {
     0x00, 0x02, 0x01, 0x00, 0x03, 0x02, 0x03, 0x01, 0x03, 0x03, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x02,
     0x00, 0x01, 0x01, 0x03, 0x02, 0x02, 0x03, 0x02, 0x03, 0x03, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
-static u8 gAiMoveList_0[] = {
+static u8 gAiBannedRandomMoves[] = {
     0x32, 0x75, 0x66, 0x76, 0x82,
 };
 
-static u8 gAiMoveList_1[] = {
+static u8 gAiRestrictedRandomMoves[] = {
     0x63, 0x68, 0x80, 0x78, 0x14, 0x26, 0x99, 0x64, 0x5C, 0x24, 0x9C, 0x22, 0x3F, 0x53, 0x23, 0xA4, 0x66,
 };
 
-static u8 gAiMoveList_2[] = {
+static u8 gAiRepeatCategoryMoves[] = {
     0xA,  0xB,  0xC,  0xD,  0xE,  0xF,  0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x32,
     0x33, 0x34, 0x35, 0x36, 0x37, 0x3A, 0x3B, 0x3C, 0x3D, 0x3E, 0x3F, 0x40, 0x41,
 };
@@ -5164,8 +5164,8 @@ s32 BattleAI_MatchesLastMoveCategory(u8 arg0, u8 arg1) {
         return 1;
     }
 
-    if ((IsByteInArray(gMoveData[arg1 - 1].TrainerSlotSaveData_GamePort, gAiMoveList_2, 0x1A) != 0) &&
-        (IsByteInArray(sp18->TrainerSlotSaveData_GamePort, gAiMoveList_2, 0x1A) != 0)) {
+    if ((IsByteInArray(gMoveData[arg1 - 1].TrainerSlotSaveData_GamePort, gAiRepeatCategoryMoves, 0x1A) != 0) &&
+        (IsByteInArray(sp18->TrainerSlotSaveData_GamePort, gAiRepeatCategoryMoves, 0x1A) != 0)) {
         return 1;
     }
     return 0;
@@ -5183,14 +5183,14 @@ s32 BattleAI_IsDiscouragedRepeatCategory(u8 arg0, u8 arg1) {
 }
 
 s32 BattleAI_IsBannedRandomMove(u8 arg0) {
-    if (IsByteInArray(arg0, gAiMoveList_0, 5) != 0) {
+    if (IsByteInArray(arg0, gAiBannedRandomMoves, 5) != 0) {
         return 1;
     }
     return 0;
 }
 
 s32 BattleAI_IsRestrictedRandomMove(u8 arg0) {
-    if ((IsByteInArray(arg0, gAiMoveList_1, 0x11) != 0) && (BattleAI_RandomBelowInclusive(0xF) != 0)) {
+    if ((IsByteInArray(arg0, gAiRestrictedRandomMoves, 0x11) != 0) && (BattleAI_RandomBelowInclusive(0xF) != 0)) {
         return 1;
     }
     return 0;

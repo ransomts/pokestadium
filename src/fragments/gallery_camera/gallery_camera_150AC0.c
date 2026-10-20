@@ -7,8 +7,8 @@
 #include "src/matrix.h"
 
 const char gCupNameFreeBattle[] = "FREE BATTLE";
-const char gCupNamePokeCup[] = "POK\xE9 CUP";
-const char gCupNamePokeCup2[] = "POK\xE9 CUP2";
+const char gCupNameNintendoCup[] = "POK\xE9 CUP";
+const char gCupNameNintendoCupRound2[] = "POK\xE9 CUP2";
 const char gCupNamePetitCup[] = "PETIT CUP";
 const char gCupNamePikaCup[] = "PIKA CUP";
 const char gCupNamePrimeCup[] = "PRIME CUP";
@@ -615,8 +615,8 @@ void Gallery_CameraDrawHelpBalloon(void) {
         if (gStagePanelFadeData.unk_0E >= 0x1F) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(4, 0);
-            sp3C = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMessageBankPtr, 0));
-            sp38 = Text_GetString(NULL, 0, gMessageBankPtr, 0);
+            sp3C = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gPhotoHowToStringsBank, 0));
+            sp38 = Text_GetString(NULL, 0, gPhotoHowToStringsBank, 0);
             Font_Printf((gStagePanelFadeData.RentalSlotAnimData_PosePhase - (sp3C / 2)) + (gStagePanelFadeData.unk_0C / 2), gStagePanelFadeData.unk_0A - 8, sp38);
             Font_EndTexturedTextRendering();
         }

@@ -129,7 +129,7 @@ UIWidget* MiniGameSelect_FindFreeWidgetSlot(void);
 UIWidget* MiniGameSelect_CreateMenuWidget(s16 arg0, s16 arg1, GraphNode* arg2);
 void MiniGameSelect_LinkWidgets(UIWidget* arg0, UIWidget* arg1);
 void MiniGameSelect_ChainWidget(UIWidget* arg0, UIWidget* arg1);
-void SetUIElementState(UIWidget* arg0, s16 arg1);
+void MiniGameSelect_SetWidgetState(UIWidget* arg0, s16 arg1);
 void MiniGameSelect_SetWidgetTargetState(UIWidget* arg0, s16 arg1, s32 arg2);
 s32 MiniGameSelect_IsWidgetInState(UIWidget* arg0, s16 arg1);
 void MiniGameSelect_UpdateWidgetFade(UIElement* arg0);

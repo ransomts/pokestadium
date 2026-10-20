@@ -10,7 +10,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static char** gFragment23ItemNameBank;
+static char** gLabPcMenuGbSaveIdLabelBank;
 static char** gFragment23CommonStringBank;
 
 static u16 gFragment23DescriptionStringIds[4] = { 6, 7, 8, 9 };
@@ -236,7 +236,7 @@ void LabPC_BuildMenuWidget(unk_func_88200FA0* arg0, s32 arg1, s32 arg2, s32 arg3
 
     sp44 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
     ((func88509A2C)Memmap_GetFragmentVaddr(WidgetTree_InitSaveSlotLabel))(sp44, 0x38, 0x22, GbSave_GetActivePort(),
-                                                           Text_GetString(NULL, 0, gFragment23ItemNameBank, 0));
+                                                           Text_GetString(NULL, 0, gLabPcMenuGbSaveIdLabelBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, sp44);
 
     sp40 = mem_pool_alloc(arg4, sizeof(unk_func_88509E34));
@@ -302,7 +302,7 @@ s32 LabPC_ShowMenu(s32 arg0, UNUSED s32 arg1) {
     sp34 = mem_pool_try_init(0x8000, 0);
 
     Text_InitStringTables();
-    gFragment23ItemNameBank = Text_GetStringTable(0x2A);
+    gLabPcMenuGbSaveIdLabelBank = Text_GetStringTable(0x2A);
     gFragment23CommonStringBank = Text_GetStringTable(1);
 
     sp30 = mem_pool_alloc(sp34, sizeof(unk_func_88200FA0));

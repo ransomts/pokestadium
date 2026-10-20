@@ -31,7 +31,7 @@ gStarBurstState gBattlePrepStarBurstP2State;
 gStarBurstState gBattlePrepStarBurstP1State;
 unk_D_84B26640 gBattleMenuState;
 SessionModeSettings gBattleProgress;
-char** gBattleMessageTable;
+char** gBattlePrepCupNamesBank;
 
 static u8* gTrainerIconTextures[] = {
     D_3015100,
@@ -130,11 +130,11 @@ void BattlePrep_MarkNewRoundRecord(void) {
 }
 
 char* BattlePrep_GetString(s32 arg0) {
-    return Text_GetString(NULL, 0, gBattleMessageTable, arg0);
+    return Text_GetString(NULL, 0, gBattlePrepCupNamesBank, arg0);
 }
 
 char* BattlePrep_FormatString(char* arg0, s32 arg1, u32 arg2) {
-    return Text_GetString(arg0, arg1, gBattleMessageTable, arg2);
+    return Text_GetString(arg0, arg1, gBattlePrepCupNamesBank, arg2);
 }
 
 s32 BattlePrep_StarfieldGeoCallback(s32 arg0, unk_D_86002F34_alt8* arg1) {
@@ -1226,7 +1226,7 @@ s32 BattlePrep_RunRulesScreen(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_3000000, common_menu0_ui, 0);
 
     Text_InitStringTables();
-    gBattleMessageTable = Text_GetStringTable(0x1B);
+    gBattlePrepCupNamesBank = Text_GetStringTable(0x1B);
     PokeIcon_OpenModelArchive();
 
     gBattleGraphics.battleArchive = BinArchive_Open(0x898000, NULL, 1, 1);

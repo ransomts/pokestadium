@@ -19,9 +19,9 @@ const Gfx gCommonGfxInit[] = {
 };
 
 const char gFullwidthAChar[0x4] = "Ａ";
-const char gEmptyString1[0x4] = "";
-const char gEmptyString2[0x4] = "";
-const char gEmptyString3[0x4] = "";
+const char gParticleNoopString1[0x4] = "";
+const char gParticleNoopString2[0x4] = "";
+const char gParticleNoopString3[0x4] = "";
 
 Gfx* DisplayList_BuildIndexedTextureSegment(Gfx* gfx, DisplayListAddresses* addresses, s32 index) {
     gSPDisplayList(gfx++, addresses->segments[0]);

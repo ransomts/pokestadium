@@ -41,62 +41,62 @@ static char* gBattleModeSubtitle_8;
 RentalRulesStringTable gMenuStaticStrings;
 RentalRulesStringTable gMenuOptionStrings;
 
-char** gQualifyingSpeciesCountString = NULL;
-static char** gBattleModeMessageBank = NULL;
+char** gRulesCheckLabelsBank = NULL;
+static char** gRentalSpeciesNamesBank = NULL;
 static u8 gBattleModeAssetIndices[] = {
     0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0F,
 };
-static s16 gMenuOptions_Mode1_S1[] = {
+static s16 gNintendoCupStadiumRuleIds[] = {
     0x0007, 0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF,
 };
-static s16 gMenuOptions_Mode1_S10[] = {
+static s16 gNintendoCupEventBattleRuleIds[] = {
     0x0007, 0x0000, 0x0001, 0x001D, 0x0003, 0x0004, 0x0005, 0x0009, 0x0023, 0xFFFF,
 };
-static s16 gMenuOptions_Mode1_S0[] = {
+static s16 gNintendoCupFreeBattleRuleIds[] = {
     0x0007, 0x0000, 0x0001, 0x0002, 0x0003, 0x0004, 0x0005, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 gMenuOptions_Mode2_S2[] = {
+static s16 gNintendoCup2StadiumRuleIds[] = {
     0x000B, 0x0000, 0x0001, 0x000A, 0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 gMenuOptions_Mode2_S10[] = {
+static s16 gNintendoCup2EventBattleRuleIds[] = {
     0x000B, 0x0000, 0x0001, 0x001E, 0x0004, 0x0005, 0x0009, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 gMenuOptions_Mode2_S0[] = {
+static s16 gNintendoCup2FreeBattleRuleIds[] = {
     0x000B, 0x0000, 0x0001, 0x000A, 0x0004, 0x0005, 0x0023, 0xFFFF, 0x000E, 0x0000, 0x0001, 0x000C, 0x000D,
     0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF, 0x000E, 0x0000, 0x0001, 0x001F, 0x000D, 0x0004, 0x0005, 0x0009,
     0x0023, 0xFFFF, 0x000E, 0x0000, 0x0001, 0x000C, 0x000D, 0x0004, 0x0005, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 gMenuOptions_Mode4_S4[] = {
+static s16 gPetitCupStadiumRuleIds[] = {
     0x0013, 0x0000, 0x0001, 0x000F, 0x0010, 0x0011, 0x0012, 0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF,
 };
-static s16 gMenuOptions_Mode4_S10[] = {
+static s16 gPetitCupEventBattleRuleIds[] = {
     0x0013, 0x0000, 0x0001, 0x0020, 0x0010, 0x0011, 0x0012, 0x0004, 0x0005, 0x0009, 0x0023, 0xFFFF,
 };
-static s16 gMenuOptions_Mode4_S0[] = {
+static s16 gPetitCupFreeBattleRuleIds[] = {
     0x0013, 0x0000, 0x0001, 0x000F, 0x0010, 0x0011, 0x0012, 0x0004, 0x0005, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 gMenuOptions_Mode5_S5[] = {
+static s16 gPikaCupStadiumRuleIds[] = {
     0x0000, 0x0001, 0x0016, 0x0017, 0x0004, 0x0005, 0x0006, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 gMenuOptions_Mode5_S10[] = {
+static s16 gPikaCupEventBattleRuleIds[] = {
     0x0000, 0x0001, 0x0021, 0x0017, 0x0004, 0x0005, 0x0009, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 gMenuOptions_Mode5_S0[] = {
+static s16 gPikaCupFreeBattleRuleIds[] = {
     0x0000, 0x0001, 0x0016, 0x0017, 0x0004, 0x0005, 0x0023, 0xFFFF,
 };
-static s16 gMenuOptions_Mode6_S6[] = {
+static s16 gPrimeCupStadiumRuleIds[] = {
     0x0015, 0x0000, 0x0001, 0x0024, 0x0004, 0x0006, 0x0023, 0xFFFF,
 };
-static s16 gMenuOptions_Mode6_S10[] = {
+static s16 gPrimeCupEventBattleRuleIds[] = {
     0x0015, 0x0000, 0x0001, 0x0014, 0x0004, 0x0009, 0x0023, 0xFFFF,
 };
-static s16 gMenuOptions_Mode6_S0[] = {
+static s16 gPrimeCupFreeBattleRuleIds[] = {
     0x0015, 0x0000, 0x0001, 0x0014, 0x0004, 0x0023, 0xFFFF, 0x0000,
 };
-static s16 gMenuOptions_Mode0_S0[] = {
+static s16 gAnythingGoesFreeBattleRuleIds[] = {
     0x0015, 0x001A, 0x0014, 0x0025, 0x0022, 0x0026, 0x0023, 0xFFFF,
 };
-static s16 gMenuOptions_Mode7_S7[] = {
+static s16 gGymLeaderCastleRuleIds[] = {
     0x0015, 0x0000, 0x0001, 0x0014, 0x0019, 0x0004, 0x0023, 0xFFFF,
 };
 static s16 gMenuOptions_Mode8_S8[] = {
@@ -104,7 +104,7 @@ static s16 gMenuOptions_Mode8_S8[] = {
 };
 
 char* RentalRules_GetPokemonName(s32 arg0) {
-    return Text_GetString(NULL, 0, gBattleModeMessageBank, arg0 - 1);
+    return Text_GetString(NULL, 0, gRentalSpeciesNamesBank, arg0 - 1);
 }
 
 void RentalRules_LoadBackgroundArchive(void) {
@@ -139,13 +139,13 @@ s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
         case 1:
             switch (arg0->unk_0000) {
                 case 1:
-                    var_v1 = gMenuOptions_Mode1_S1;
+                    var_v1 = gNintendoCupStadiumRuleIds;
                     break;
                 case 10:
-                    var_v1 = gMenuOptions_Mode1_S10;
+                    var_v1 = gNintendoCupEventBattleRuleIds;
                     break;
                 case 0:
-                    var_v1 = gMenuOptions_Mode1_S0;
+                    var_v1 = gNintendoCupFreeBattleRuleIds;
                     break;
             }
             break;
@@ -153,13 +153,13 @@ s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
         case 2:
             switch (arg0->unk_0000) {
                 case 2:
-                    var_v1 = gMenuOptions_Mode2_S2;
+                    var_v1 = gNintendoCup2StadiumRuleIds;
                     break;
                 case 10:
-                    var_v1 = gMenuOptions_Mode2_S10;
+                    var_v1 = gNintendoCup2EventBattleRuleIds;
                     break;
                 case 0:
-                    var_v1 = gMenuOptions_Mode2_S0;
+                    var_v1 = gNintendoCup2FreeBattleRuleIds;
                     break;
             }
             break;
@@ -167,13 +167,13 @@ s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
         case 3:
             switch (arg0->unk_0000) {
                 case 3:
-                    var_v1 = gMenuOptions_Mode1_S1;
+                    var_v1 = gNintendoCupStadiumRuleIds;
                     break;
                 case 10:
-                    var_v1 = gMenuOptions_Mode1_S10;
+                    var_v1 = gNintendoCupEventBattleRuleIds;
                     break;
                 case 0:
-                    var_v1 = gMenuOptions_Mode1_S0;
+                    var_v1 = gNintendoCupFreeBattleRuleIds;
                     break;
             }
             break;
@@ -181,13 +181,13 @@ s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
         case 4:
             switch (arg0->unk_0000) {
                 case 4:
-                    var_v1 = gMenuOptions_Mode4_S4;
+                    var_v1 = gPetitCupStadiumRuleIds;
                     break;
                 case 10:
-                    var_v1 = gMenuOptions_Mode4_S10;
+                    var_v1 = gPetitCupEventBattleRuleIds;
                     break;
                 case 0:
-                    var_v1 = gMenuOptions_Mode4_S0;
+                    var_v1 = gPetitCupFreeBattleRuleIds;
                     break;
             }
             break;
@@ -195,13 +195,13 @@ s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
         case 5:
             switch (arg0->unk_0000) {
                 case 5:
-                    var_v1 = gMenuOptions_Mode5_S5;
+                    var_v1 = gPikaCupStadiumRuleIds;
                     break;
                 case 10:
-                    var_v1 = gMenuOptions_Mode5_S10;
+                    var_v1 = gPikaCupEventBattleRuleIds;
                     break;
                 case 0:
-                    var_v1 = gMenuOptions_Mode5_S0;
+                    var_v1 = gPikaCupFreeBattleRuleIds;
                     break;
             }
             break;
@@ -209,13 +209,13 @@ s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
         case 6:
             switch (arg0->unk_0000) {
                 case 6:
-                    var_v1 = gMenuOptions_Mode6_S6;
+                    var_v1 = gPrimeCupStadiumRuleIds;
                     break;
                 case 10:
-                    var_v1 = gMenuOptions_Mode6_S10;
+                    var_v1 = gPrimeCupEventBattleRuleIds;
                     break;
                 case 0:
-                    var_v1 = gMenuOptions_Mode6_S0;
+                    var_v1 = gPrimeCupFreeBattleRuleIds;
                     break;
             }
             break;
@@ -223,7 +223,7 @@ s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
         case 0:
             switch (arg0->unk_0000) {
                 case 0:
-                    var_v1 = gMenuOptions_Mode0_S0;
+                    var_v1 = gAnythingGoesFreeBattleRuleIds;
                     break;
             }
             break;
@@ -231,7 +231,7 @@ s16* RentalRules_GetRuleIdList(SessionContext* arg0) {
         case 7:
             switch (arg0->unk_0000) {
                 case 7:
-                    var_v1 = gMenuOptions_Mode7_S7;
+                    var_v1 = gGymLeaderCastleRuleIds;
                     break;
             }
             break;
@@ -505,7 +505,7 @@ void RentalRules_DrawHeaderBanner(void) {
 
             Text_SetEnvColor(0, 0, 0, 0xFF);
             Text_SetStringToken(0x26, gCurrentBattleModeTitle);
-            temp_v0_21 = Text_GetString(sp48, sizeof(sp48), gQualifyingSpeciesCountString, 0);
+            temp_v0_21 = Text_GetString(sp48, sizeof(sp48), gRulesCheckLabelsBank, 0);
             Font_Printf(0x6A, temp_s1 + 4, temp_v0_21);
             Text_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
             Font_Printf(0x68, temp_s1 + 2, temp_v0_21);
@@ -571,13 +571,13 @@ void RentalRules_DrawRuleListText(s16 arg0, s16 arg1) {
     if (gCurrentBattleModeSubtitle != NULL) {
         if (gCurrentBattleModeSubtitle != gBattleModeSubtitle_0) {
             Text_SetStringToken(0x27, gCurrentBattleModeSubtitle);
-            Font_Printf(arg0 + 0x10, arg1 + 4, Text_GetString(sp48, sizeof(sp48), gQualifyingSpeciesCountString, 1));
+            Font_Printf(arg0 + 0x10, arg1 + 4, Text_GetString(sp48, sizeof(sp48), gRulesCheckLabelsBank, 1));
         } else {
             Font_Printf(arg0 + 0x10, arg1 + 4, gCurrentBattleModeSubtitle);
         }
     }
 
-    Font_Printf(arg0 + 0x30, arg1 + 0x134, Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 2));
+    Font_Printf(arg0 + 0x30, arg1 + 0x134, Text_GetString(NULL, 0, gRulesCheckLabelsBank, 2));
     Font_SetActive(8, 0);
 
     for (i = 0; i < gCurrentMenuOptionCount; i++) {
@@ -662,7 +662,7 @@ void RentalRules_LoadCategoryStrings(void) {
     s32 i;
 
     for (i = 0; i < 29; i++) {
-        gMenuStaticStrings.posX[i] = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, i + 4);
+        gMenuStaticStrings.posX[i] = Text_GetString(NULL, 0, gRulesCheckLabelsBank, i + 4);
     }
 
     gMenuStaticStrings.unk_74 = gMenuStaticStrings.posX[2];
@@ -671,10 +671,10 @@ void RentalRules_LoadCategoryStrings(void) {
     gMenuStaticStrings.unk_80 = gMenuStaticStrings.posX[15];
     gMenuStaticStrings.unk_84 = gMenuStaticStrings.posX[22];
     gMenuStaticStrings.unk_88 = gMenuStaticStrings.posX[27];
-    gMenuStaticStrings.unk_8C = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x21);
+    gMenuStaticStrings.unk_8C = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x21);
     gMenuStaticStrings.unk_90 = gMenuStaticStrings.posX[20];
     gMenuStaticStrings.unk_94 = gMenuStaticStrings.posX[4];
-    gMenuStaticStrings.unk_98 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x22);
+    gMenuStaticStrings.unk_98 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x22);
 }
 
 void RentalRules_LoadDescriptionStrings(void) {
@@ -692,7 +692,7 @@ void RentalRules_LoadDescriptionStrings(void) {
                 break;
 
             default:
-                gMenuOptionStrings.posX[i] = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, var_s2 + 0x23);
+                gMenuOptionStrings.posX[i] = Text_GetString(NULL, 0, gRulesCheckLabelsBank, var_s2 + 0x23);
                 var_s2++;
                 break;
         }
@@ -723,18 +723,18 @@ void RentalRules_Init(void) {
     RentalRules_LoadCategoryStrings();
     RentalRules_LoadDescriptionStrings();
 
-    gBattleModeTitle_Default = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x46);
-    gBattleModeTitle_0 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x45);
-    gBattleModeTitle_10 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x49);
-    gBattleModeTitle_7 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x47);
-    gBattleModeTitle_8 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x48);
-    gBattleModeSubtitle_0 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4A);
-    gBattleModeSubtitle_1 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4D);
-    gBattleModeSubtitle_2 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4C);
-    gBattleModeSubtitle_3 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4B);
-    gBattleModeSubtitle_4 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4E);
-    gBattleModeSubtitle_5 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x4F);
-    gBattleModeSubtitle_6 = Text_GetString(NULL, 0, gQualifyingSpeciesCountString, 0x50);
+    gBattleModeTitle_Default = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x46);
+    gBattleModeTitle_0 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x45);
+    gBattleModeTitle_10 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x49);
+    gBattleModeTitle_7 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x47);
+    gBattleModeTitle_8 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x48);
+    gBattleModeSubtitle_0 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x4A);
+    gBattleModeSubtitle_1 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x4D);
+    gBattleModeSubtitle_2 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x4C);
+    gBattleModeSubtitle_3 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x4B);
+    gBattleModeSubtitle_4 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x4E);
+    gBattleModeSubtitle_5 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x4F);
+    gBattleModeSubtitle_6 = Text_GetString(NULL, 0, gRulesCheckLabelsBank, 0x50);
 
     gBattleModeSubtitle_7 = gBattleModeTitle_7;
     gBattleModeSubtitle_8 = gBattleModeTitle_8;
@@ -813,8 +813,8 @@ s32 RentalRules_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     RentalRules_LoadBackgroundArchive();
     PokeIcon_OpenModelArchive();
     Text_InitStringTables();
-    gQualifyingSpeciesCountString = Text_GetStringTable(0x20);
-    gBattleModeMessageBank = Text_GetStringTable(0x24);
+    gRulesCheckLabelsBank = Text_GetStringTable(0x20);
+    gRentalSpeciesNamesBank = Text_GetStringTable(0x24);
     StageLoader_UpdateSegments();
     RentalRules_Loop();
     StageLoader_WaitForRetrace();

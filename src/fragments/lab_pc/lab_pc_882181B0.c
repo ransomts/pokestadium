@@ -782,7 +782,7 @@ u32 gPanelTexturePink[] = {
     0x00F000F0, 0x00F000F0, 0x00F000F0, 0x00F100E6, 0x00D300B6, 0x00840038, 0x00020000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
-static Gfx gPanelDlEndS1[] = {
+static Gfx gPanelIconDlEnd[] = {
     gsSPEndDisplayList(),
 };
 u32 gPanelIconTexture[] = {
@@ -1252,7 +1252,7 @@ u32 gPanelVertexData[] = {
     0x2909294B, 0x21092909, 0x21091085, 0x18C72109, 0x21092109, 0x21092109, 0x20C718C9, 0x21092107, 0x210B18C5,
     0x00000000, 0x00000000,
 };
-static Gfx Gfx_MoveTargetSmall_DL1[] = {
+static Gfx Gfx_MoveTargetSmall0_DL[] = {
     gsSPEndDisplayList(),
 };
 u32 gTexture_MoveTargetSmall_0[] = {
@@ -1292,7 +1292,7 @@ u32 gTexture_MoveTargetSmall_0[] = {
     0xBD2BBD2B, 0xBD2BBD2B, 0xBD2B0001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
 };
-static Gfx Gfx_MoveTargetSmall_DL2[] = {
+static Gfx Gfx_MoveTargetSmall1_DL[] = {
     gsSPEndDisplayList(),
 };
 u32 gTexture_MoveTargetSmall_1[] = {
@@ -1332,7 +1332,7 @@ u32 gTexture_MoveTargetSmall_1[] = {
     0xBD2BBD2B, 0xBD2BBD2B, 0xBD2B0001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
 };
-static Gfx Gfx_MoveTargetSmall_DL3[] = {
+static Gfx Gfx_MoveTargetSmall2_DL[] = {
     gsSPEndDisplayList(),
 };
 u32 gTexture_MoveTargetSmall_2[] = {
@@ -1372,7 +1372,7 @@ u32 gTexture_MoveTargetSmall_2[] = {
     0xBD2BBD2B, 0xBD2BBD2B, 0xBD2B0001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
 };
-static Gfx Gfx_MoveTargetSmall_DL4[] = {
+static Gfx Gfx_MoveTargetSmall3_DL[] = {
     gsSPEndDisplayList(),
 };
 u32 gTexture_MoveTargetSmall_3[] = {

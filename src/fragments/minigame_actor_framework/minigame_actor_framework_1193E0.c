@@ -7,7 +7,7 @@ s16 miniInputLockTimer;
 s16 gMiniGameIdleTimer;
 s16 miniShowHUB;
 s16 miniDifficulty;
-s16 gMiniGameUnusedVar1; //  unused?
+s16 gMiniGameResetOnlyFlag; //  unused?
 s16 gMetapodAudioMuted;
 s32 pad_D_8790604C; //	unused?
 CameraStruct* gMiniCameraStruct;

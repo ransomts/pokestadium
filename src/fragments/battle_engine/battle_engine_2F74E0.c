@@ -14,8 +14,8 @@ static s32 gRandomMoveSlot;
 static s32 gRandomMoveSelectedFlag;
 static s32 pad_D_84390140;
 static u16 gBattleControllerId;
-static Controller* gActiveController1;
-static Controller* gActiveController2;
+static Controller* gActiveCoopController1;
+static Controller* gActiveCoopController2;
 static Controller gDemoController;
 s32 gBattleInitFlag;
 BattleInitState gBattleInitStruct;
@@ -632,11 +632,11 @@ void BattleScene_ForfeitPrompt(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* temp_a0 = &sActivePokemon[BattleScene_GetParticipantSideIndex(arg0) == 0]->animationState;
 
     if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 1) {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveCoopController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveCoopController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
     } else {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
+        gActiveCoopController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveCoopController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
     }
 
     if (temp_a0->unk_10 == 4) {
@@ -652,23 +652,23 @@ void BattleScene_ForfeitPrompt(BattlePlayerEntity* arg0) {
     sp18->unk_10 = 4;
 
     if ((gBattleScene.posX->unk_40 == 0) &&
-        (BTN_IS_PRESSED(gActiveController1, BTN_DLEFT) || BTN_IS_PRESSED(gActiveController2, BTN_DLEFT))) {
+        (BTN_IS_PRESSED(gActiveCoopController1, BTN_DLEFT) || BTN_IS_PRESSED(gActiveCoopController2, BTN_DLEFT))) {
         sp18->unk_2F = 0;
         Audio_PlaySoundEffectById(1);
     }
 
     if ((gBattleScene.posX->unk_40 == 0) &&
-        (BTN_IS_PRESSED(gActiveController1, BTN_DRIGHT) || BTN_IS_PRESSED(gActiveController2, BTN_DRIGHT))) {
+        (BTN_IS_PRESSED(gActiveCoopController1, BTN_DRIGHT) || BTN_IS_PRESSED(gActiveCoopController2, BTN_DRIGHT))) {
         sp18->unk_2F = 1;
         Audio_PlaySoundEffectById(1);
     }
 
-    if ((sp18->unk_2F == 1) && (BTN_IS_PRESSED(gActiveController1, BTN_A) || BTN_IS_PRESSED(gActiveController2, BTN_A)) &&
+    if ((sp18->unk_2F == 1) && (BTN_IS_PRESSED(gActiveCoopController1, BTN_A) || BTN_IS_PRESSED(gActiveCoopController2, BTN_A)) &&
         (gBattleScene.posX->unk_40 == 0)) {
         Audio_PlaySoundEffectById(2);
         gBattleScene.posX->unk_40 = (BattleScene_GetParticipantSideIndex(arg0) == 0) + 1;
         Audio_FadeOutAll(0x14);
-    } else if ((sp18->unk_2F == 0) && (BTN_IS_PRESSED(gActiveController1, BTN_A) || BTN_IS_PRESSED(gActiveController2, BTN_A))) {
+    } else if ((sp18->unk_2F == 0) && (BTN_IS_PRESSED(gActiveCoopController1, BTN_A) || BTN_IS_PRESSED(gActiveCoopController2, BTN_A))) {
         sp18->unk_10 = 0;
         sp18->rotation = 0;
         Audio_PlaySoundEffectById(3);
@@ -709,26 +709,26 @@ void BattleScene_QueuePartySelectionConfirmMessage(BattlePlayerEntity* arg0) {
 
 void BattleScene_AssignActiveCoopController(BattlePlayerEntity* arg0, s32 arg1) {
     if (arg1 == 1) {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveCoopController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveCoopController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
     } else {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
+        gActiveCoopController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveCoopController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
     }
 
     if (arg1 == 1) {
-        if (BTN_IS_PRESSED(gActiveController1, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
+        if (BTN_IS_PRESSED(gActiveCoopController1, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
             arg0->animationState.unk_2C = 0;
-            BattleScene_SetParticipantController(arg0, gActiveController1);
-        } else if (BTN_IS_PRESSED(gActiveController2, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
-            BattleScene_SetParticipantController(arg0, gActiveController2);
+            BattleScene_SetParticipantController(arg0, gActiveCoopController1);
+        } else if (BTN_IS_PRESSED(gActiveCoopController2, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
+            BattleScene_SetParticipantController(arg0, gActiveCoopController2);
             arg0->animationState.unk_2C = 0;
         }
-    } else if (BTN_IS_PRESSED(gActiveController1, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
-        BattleScene_SetParticipantController(arg0, gActiveController1);
+    } else if (BTN_IS_PRESSED(gActiveCoopController1, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
+        BattleScene_SetParticipantController(arg0, gActiveCoopController1);
         arg0->animationState.unk_2C = 0;
-    } else if (BTN_IS_PRESSED(gActiveController2, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
-        BattleScene_SetParticipantController(arg0, gActiveController2);
+    } else if (BTN_IS_PRESSED(gActiveCoopController2, BTN_A | BTN_B | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT)) {
+        BattleScene_SetParticipantController(arg0, gActiveCoopController2);
         arg0->animationState.unk_2C = 1;
     }
 }
@@ -800,13 +800,13 @@ void BattleScene_HandlePlayerPartySelection(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* sp18 = &arg0->animationState;
 
     if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 1) {
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveCoopController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+        gActiveCoopController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
     } else {
 
-        gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp18->unk_2C]->unk_001];
+        gActiveCoopController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[sp18->unk_2C]->unk_001];
         idx = sp18->unk_2C == 0;
-        gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[idx]->unk_001];
+        gActiveCoopController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[idx]->unk_001];
     }
 
     if (arg0->messageBuffer.posX != 0) {
@@ -815,15 +815,15 @@ void BattleScene_HandlePlayerPartySelection(BattlePlayerEntity* arg0) {
         }
     } else if (sp18->unk_10 == 0) {
         sp18->unk_10 = 2;
-    } else if (((gActiveController1->buttonPressed & 0x20) || (gActiveController2->buttonPressed & 0x20)) && (sp18->unk_2D != 0x10) &&
-               !(gActiveController1->buttonDown & 0x10) && !(gActiveController2->buttonDown & 0x10)) {
+    } else if (((gActiveCoopController1->buttonPressed & 0x20) || (gActiveCoopController2->buttonPressed & 0x20)) && (sp18->unk_2D != 0x10) &&
+               !(gActiveCoopController1->buttonDown & 0x10) && !(gActiveCoopController2->buttonDown & 0x10)) {
         BattleScene_SelectActiveController(arg0);
         BattleAnim_PlaySoundEffect3();
         sp18->unk_10 = 0;
     } else {
         sp18->unk_1C = 0;
-        if ((gActiveController1->buttonDown & 0x10) || (gActiveController2->buttonDown & 0x10)) {
-            if ((gActiveController1->buttonPressed & 0x10) || (gActiveController2->buttonPressed & 0x10)) {
+        if ((gActiveCoopController1->buttonDown & 0x10) || (gActiveCoopController2->buttonDown & 0x10)) {
+            if ((gActiveCoopController1->buttonPressed & 0x10) || (gActiveCoopController2->buttonPressed & 0x10)) {
                 BattleAnim_PlaySoundEffect1();
             }
             sp18->unk_1C = 1;
@@ -1027,26 +1027,26 @@ void BattleScene_PollActionMenuRequestButtons(BattlePlayerEntity* arg0) {
 
     if (temp_v1->unk_10 == 0) {
         if (arg0->pokemonAnimation->TrainerSlotSaveData_GamePort == 1) {
-            gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
-            gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+            gActiveCoopController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+            gActiveCoopController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
         } else {
-            gActiveController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
-            gActiveController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
+            gActiveCoopController1 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[0]->unk_001];
+            gActiveCoopController2 = &gControllers[arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[1]->unk_001];
         }
 
         if (temp_v1->controller->buttonPressed & 0x8000) {
             temp_v1->rotation = 1;
-        } else if ((gActiveController1->buttonPressed | gActiveController2->buttonPressed) & 0x4000) {
+        } else if ((gActiveCoopController1->buttonPressed | gActiveCoopController2->buttonPressed) & 0x4000) {
             temp_v1->rotation = 2;
-        } else if ((gActiveController1->buttonPressed | gActiveController2->buttonPressed) & 0x1000) {
+        } else if ((gActiveCoopController1->buttonPressed | gActiveCoopController2->buttonPressed) & 0x1000) {
             temp_v1->rotation = 3;
         } else {
             temp_v1->rotation = 0;
         }
 
         if ((temp_v1->controller->buttonPressed & 0x8000) ||
-            (((gActiveController1->buttonPressed | gActiveController2->buttonPressed) & 0x4000) != 0) ||
-            (((gActiveController1->buttonPressed | gActiveController2->buttonPressed) & 0x1000) && (temp_t0->unk_10 != 4))) {
+            (((gActiveCoopController1->buttonPressed | gActiveCoopController2->buttonPressed) & 0x4000) != 0) ||
+            (((gActiveCoopController1->buttonPressed | gActiveCoopController2->buttonPressed) & 0x1000) && (temp_t0->unk_10 != 4))) {
             BattleAnim_PlaySoundEffect2();
         }
     }

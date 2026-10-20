@@ -17,7 +17,7 @@
 #include "src/pokemon_stats.h"
 
 static char** gMessageBankMain;
-static char** gMessageBankSecondary;
+static char** gEventBattleUiLabelsBank;
 static EventBattleState gModeSelectState;
 static AnimState gPanelAnimState;
 static AnimState gStatBarAnimState;
@@ -428,7 +428,7 @@ void EventBattle_DrawRuleCard(RuleCard* arg0) {
             Font_Printf(temp_s1 + 0x34, sp3C, arg0->unk_10);
             Font_SetActive(4, 0);
             Text_SetEnvColor(0x92, 0xC1, 0xFF, 0xFF);
-            sprintf(sp44, "%s%d~%d", Text_GetString(NULL, 0, gMessageBankSecondary, 0x15), arg0->unk_14, arg0->unk_16);
+            sprintf(sp44, "%s%d~%d", Text_GetString(NULL, 0, gEventBattleUiLabelsBank, 0x15), arg0->unk_14, arg0->unk_16);
             Font_Printf((temp_s1 - (s16)Font_MeasureTextExtent(4, 0, sp44)) + 0xEA, temp_s2 + 0x20, sp44);
         } else {
             Font_SetActive(8, 0);
@@ -598,7 +598,7 @@ void EventBattle_DrawTrainerCard(TrainerCard* arg0) {
         for (i = 0; i < 6; i++) {
             tmp3 = gIconXOffsets[i] + sp58 + 0x2C;
             tmp4 = gIconYOffsets[i] + sp56 + 0x17;
-            Font_Printf(tmp3, tmp4, "%s%d", Text_GetString(NULL, 0, gMessageBankSecondary, 0x15), arg0->party[i].unk_24);
+            Font_Printf(tmp3, tmp4, "%s%d", Text_GetString(NULL, 0, gEventBattleUiLabelsBank, 0x15), arg0->party[i].unk_24);
         }
 
         Font_EndTexturedTextRendering();
@@ -1649,7 +1649,7 @@ s32 EventBattle_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     StageContext_Activate(StageContext_Allocate(1, 0, 2, 0, 2, 1));
     Text_InitStringTables();
     gMessageBankMain = Text_GetStringTable(0x10);
-    gMessageBankSecondary = Text_GetStringTable(6);
+    gEventBattleUiLabelsBank = Text_GetStringTable(6);
 
     while (temp_v0 == STATE_EVENT_BATTLE) {
         temp_v0 = EventBattle_ShowSelect();

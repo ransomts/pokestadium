@@ -138,8 +138,8 @@ static unk_D_86B0FA50* gUIElementHealthFill;
 static unk_D_86B0FA50* gUIElementStatus;
 static unk_D_86B0FA50* gUIElementBorder;
 static s16 gCameraZoomSlew;
-static s16 gCameraZoomPitch;
-static s16 gCameraZoomYaw;
+static s16 gCameraZoomRotationX;
+static s16 gCameraZoomRotationY;
 static f32 gCameraZoomFov;
 static s32 gBattleSequenceFrameCount;
 static s32 gBattleSequenceStage;
@@ -623,7 +623,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
             }
             if (gCameraTarget->unk_178++ >= 0x41) {
                 gCameraZoomSlew = 0;
-                Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraZoomFov, &gCameraZoomPitch, &gCameraZoomYaw);
+                Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraZoomFov, &gCameraZoomRotationX, &gCameraZoomRotationY);
                 gCameraTarget->unk_16C++;
             }
             break;
@@ -644,8 +644,8 @@ s32 Intro_UpdateShowcaseSequence(void) {
             }
 
             gCameraZoomSlew = Math_StepToS32(gCameraZoomSlew, 0x3C, 1, 1);
-            gCameraZoomYaw += gCameraZoomSlew;
-            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraZoomFov, gCameraZoomPitch, gCameraZoomYaw);
+            gCameraZoomRotationY += gCameraZoomSlew;
+            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraZoomFov, gCameraZoomRotationX, gCameraZoomRotationY);
             break;
     }
 

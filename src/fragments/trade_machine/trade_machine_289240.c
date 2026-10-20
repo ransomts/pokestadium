@@ -719,7 +719,7 @@ void Trade_DrawPortInfoPanel(s16 arg0, s16 arg1, s16 arg2) {
 // The (s16)(spEE * spF8) uses are strength-reduced into the stack temp at 0x68; the unused named
 // initialised copy makes that product appear before sp64 (so the temp takes the slot above the
 // sp64 spill), and the explicit guard + do-while gives the target's loop-end store order.
-void UpdateAndRenderPicker(PickerState* arg0) {
+void Trade_UpdateAndRenderPicker(PickerState* arg0) {
     static s16 D_82F13C0C[] = { 0x34, 0x148 };
 
     s32 i;
@@ -968,7 +968,7 @@ void Trade_DrawPickScreens(void) {
         if (ptr->unk_0000 != 0) {
             var_s3 = 1;
             if (ptr->unk_0002 != 0) {
-                UpdateAndRenderPicker(ptr);
+                Trade_UpdateAndRenderPicker(ptr);
             }
         }
     }

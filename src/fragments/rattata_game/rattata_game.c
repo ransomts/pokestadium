@@ -136,8 +136,8 @@ static ModelData* gRaceStageAssets;
 static MiniHudMainGraph* gRaceGraphRoot;
 static CameraStruct* gRaceCamera;
 static s16 gRaceCameraDist;
-static s16 gRaceCameraYaw;
-static s16 gRaceCameraPitch;
+static s16 gRaceCameraRotationY;
+static s16 gRaceCameraRotationX;
 static u16 gRaceFrameCounter;
 static s32 gRacePhase;
 static s16 gRaceFinishOrder;
@@ -273,8 +273,8 @@ void RattataGame_InitCamera(void) {
 
     MiniCam_SetActive(gRaceCamera);
     gRaceCameraDist = 0x1300;
-    gRaceCameraYaw = -0x6700;
-    gRaceCameraPitch = 0x14A;
+    gRaceCameraRotationY = -0x6700;
+    gRaceCameraRotationX = 0x14A;
 
     gRaceCamera->unk_24.near = 50.0f;
     gRaceCamera->unk_24.far = 6400.0f;
@@ -284,15 +284,15 @@ void RattataGame_InitCamera(void) {
     gRaceCamera->unk_60.at.y = 0.0f;
     gRaceCamera->unk_60.at.z = 5.0f;
 
-    Camera_ComputeEyeFromAngles(&gRaceCamera->unk_60.at, &gRaceCamera->unk_60.eye, gRaceCameraPitch, gRaceCameraDist, gRaceCameraYaw);
+    Camera_ComputeEyeFromAngles(&gRaceCamera->unk_60.at, &gRaceCamera->unk_60.eye, gRaceCameraRotationX, gRaceCameraDist, gRaceCameraRotationY);
 }
 
 void RattataGame_UpdateCamera(void) {
     switch (gRacePhase) {
         case 0:
             gRaceCameraDist = 0xD00;
-            gRaceCameraYaw = -0x1D00;
-            gRaceCameraPitch = 0x1F4;
+            gRaceCameraRotationY = -0x1D00;
+            gRaceCameraRotationX = 0x1F4;
             break;
 
         case 1:
@@ -300,26 +300,26 @@ void RattataGame_UpdateCamera(void) {
                 gRaceCameraDist -= 0x20;
             }
 
-            if (gRaceCameraYaw > 0x9900u) {
-                gRaceCameraYaw -= 0x100;
-                if (gRaceCameraYaw < 0x9900u) {
-                    gRaceCameraYaw = -0x6700;
+            if (gRaceCameraRotationY > 0x9900u) {
+                gRaceCameraRotationY -= 0x100;
+                if (gRaceCameraRotationY < 0x9900u) {
+                    gRaceCameraRotationY = -0x6700;
                 }
             }
 
-            if (gRaceCameraPitch > 0x14A) {
-                gRaceCameraPitch -= 2;
+            if (gRaceCameraRotationX > 0x14A) {
+                gRaceCameraRotationX -= 2;
             }
             break;
 
         case 2:
             if (gResultMenuVisible == 0) {
-                if (gRaceCameraPitch > 0x14A) {
-                    gRaceCameraPitch -= 2;
+                if (gRaceCameraRotationX > 0x14A) {
+                    gRaceCameraRotationX -= 2;
                 }
 
-                gRaceCameraYaw += 0x20;
-                if ((u16)gRaceCameraYaw < 0xC000) {
+                gRaceCameraRotationY += 0x20;
+                if ((u16)gRaceCameraRotationY < 0xC000) {
                     gRaceCameraDist += 0xA;
 
                     if (gRaceCameraDist > 0x1500) {
@@ -333,10 +333,10 @@ void RattataGame_UpdateCamera(void) {
 
         case 3:
         case 4:
-            if (gRaceCameraPitch > 0xF0) {
-                gRaceCameraPitch -= 1;
-                if (gRaceCameraPitch < 0xF0) {
-                    gRaceCameraPitch = 0xF0;
+            if (gRaceCameraRotationX > 0xF0) {
+                gRaceCameraRotationX -= 1;
+                if (gRaceCameraRotationX < 0xF0) {
+                    gRaceCameraRotationX = 0xF0;
                 }
             }
 
@@ -346,11 +346,11 @@ void RattataGame_UpdateCamera(void) {
                     gRaceCameraDist = 0x2FC;
                 }
             }
-            gRaceCameraYaw += 0x40;
+            gRaceCameraRotationY += 0x40;
             break;
 
         case 5:
-            gRaceCameraYaw += 0x60;
+            gRaceCameraRotationY += 0x60;
             break;
 
         default:
@@ -365,11 +365,11 @@ void RattataGame_UpdateCamera(void) {
         gRaceCameraDist = 0;
     }
 
-    if (gRaceCameraPitch < 0x32) {
-        gRaceCameraPitch = 0x32;
+    if (gRaceCameraRotationX < 0x32) {
+        gRaceCameraRotationX = 0x32;
     }
 
-    Camera_ComputeEyeFromAngles(&gRaceCamera->unk_60.at, &gRaceCamera->unk_60.eye, gRaceCameraPitch, gRaceCameraDist, gRaceCameraYaw);
+    Camera_ComputeEyeFromAngles(&gRaceCamera->unk_60.at, &gRaceCamera->unk_60.eye, gRaceCameraRotationX, gRaceCameraDist, gRaceCameraRotationY);
 }
 
 void RattataGame_Stub(void) {
@@ -409,18 +409,18 @@ void RattataGame_DrawTutorialScreen(s32 arg0) {
             Font_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-            Font_Printf(0xA0 - (Text_MeasureStringWidth(gRaceTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0x23)) / 2), 0x20,
-                          Text_GetString(NULL, 0, gItemNamesBank, 0x23));
+            Font_Printf(0xA0 - (Text_MeasureStringWidth(gRaceTextObject, Text_GetString(NULL, 0, gMinigameNamesBank, 0x23)) / 2), 0x20,
+                          Text_GetString(NULL, 0, gMinigameNamesBank, 0x23));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x24));
-            Font_Printf(0x28, 0x4C, Text_GetString(NULL, 0, gItemNamesBank, 0x25));
-            Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gItemNamesBank, 0x26));
+            Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x24));
+            Font_Printf(0x28, 0x4C, Text_GetString(NULL, 0, gMinigameNamesBank, 0x25));
+            Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gMinigameNamesBank, 0x26));
             Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
             Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
 
-            sp40 = Text_GetString(NULL, 0, gItemNamesBank, 0x5F);
-            Widget_MeasureLabelBox(&sp48, &sp44, Text_GetString(NULL, 0, gItemNamesBank, 0x24), sp40, 0xC);
+            sp40 = Text_GetString(NULL, 0, gMinigameNamesBank, 0x5F);
+            Widget_MeasureLabelBox(&sp48, &sp44, Text_GetString(NULL, 0, gMinigameNamesBank, 0x24), sp40, 0xC);
             if (sp48 >= 0) {
                 Font_Printf(sp48 + 0x28, sp44 + 0x34, sp40);
             }
@@ -428,26 +428,26 @@ void RattataGame_DrawTutorialScreen(s32 arg0) {
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
 
-            sp34 = Text_GetString(NULL, 0, gItemNamesBank, 0x61);
-            Widget_MeasureLabelBox(&sp3C, &sp38, Text_GetString(NULL, 0, gItemNamesBank, 0x25), sp34, 0xC);
+            sp34 = Text_GetString(NULL, 0, gMinigameNamesBank, 0x61);
+            Widget_MeasureLabelBox(&sp3C, &sp38, Text_GetString(NULL, 0, gMinigameNamesBank, 0x25), sp34, 0xC);
             if (sp3C >= 0) {
                 Font_Printf(sp3C + 0x28, sp38 + 0x4C, sp34);
             }
 
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-            Font_Printf(0x8C, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x19));
+            Font_Printf(0x8C, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x19));
             Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
             Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-            Font_Printf(0xFC, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x27));
+            Font_Printf(0xFC, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x27));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-            Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
+            Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x14));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(0x75, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-            Font_Printf(0xE5, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-            Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+            Font_Printf(0x75, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+            Font_Printf(0xE5, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+            Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
             Font_DisableTwoCycleTexturing();
             break;
     }

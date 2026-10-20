@@ -51,14 +51,14 @@ static SushiPanelTexture gTexPanelBottom = { 0x400CE00, 32, 4 };
 static SushiPanelTexture gTexPanelSide = { 0x400CF00, 32, 8 };
 static SushiPanelTexture gTexPanelCornerLower = { 0x400D100, 32, 4 };
 static SushiPanelTexture gTexPanelCornerMiddle = { 0x400D200, 32, 4 };
-static SushiPanelTexture* gPanelSet0[] = { &gTexPanelMid, &gTexPanelBase, NULL };
-static SushiPanelTexture* gPanelSet1[] = { &gTexPanelBottom, &gTexPanelTop, &gTexPanelBase, NULL };
-static SushiPanelTexture* gPanelSet2[] = { &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelSide, &gTexPanelBase, NULL };
-static SushiPanelTexture* gPanelSet3[] = { &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPanelSide, &gTexPanelBase, NULL };
-static SushiPanelTexture* gPanelSet4[] = {
+static SushiPanelTexture* gSushiPlateStack1Textures[] = { &gTexPanelMid, &gTexPanelBase, NULL };
+static SushiPanelTexture* gSushiPlateStack2Textures[] = { &gTexPanelBottom, &gTexPanelTop, &gTexPanelBase, NULL };
+static SushiPanelTexture* gSushiPlateStack3Textures[] = { &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelSide, &gTexPanelBase, NULL };
+static SushiPanelTexture* gSushiPlateStack4Textures[] = { &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPanelSide, &gTexPanelBase, NULL };
+static SushiPanelTexture* gSushiPlateStack5Textures[] = {
     &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPanelCornerMiddle, &gTexPanelSide, &gTexPanelBase,
 };
-static SushiPanelTexture** gPanelTextureSets[] = { NULL, gPanelSet0, gPanelSet1, gPanelSet2, gPanelSet3, gPanelSet4 };
+static SushiPanelTexture** gPanelTextureSets[] = { NULL, gSushiPlateStack1Textures, gSushiPlateStack2Textures, gSushiPlateStack3Textures, gSushiPlateStack4Textures, gSushiPlateStack5Textures };
 static AnimFrame gSushiHudBottomRightIconFrames[] = {
     { 0x0303ED80, 0xE }, { 0x0303F180, 2 }, { 0x0303F580, 6 }, { 0x0303F180, 2 }, { NULL, 0 },
 };
@@ -163,7 +163,7 @@ Gfx* SushiGame_DrawPlateStack(Gfx* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4)
             var_a3 = gPanelTextureSets[arg4];
             arg4 = 0;
         } else {
-            var_a3 = &gPanelSet4[0];
+            var_a3 = &gSushiPlateStack5Textures[0];
             arg4 -= 5;
         }
 
@@ -313,30 +313,30 @@ void RenderSushiGoRoundUI(void) {
         Font_SetActive(2, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-        Font_Printf(0xA0 - (Text_MeasureStringWidth(gSushiGoRoundTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0xC)) / 2), 0x20,
-                      Text_GetString(NULL, 0, gItemNamesBank, 0xC));
+        Font_Printf(0xA0 - (Text_MeasureStringWidth(gSushiGoRoundTextObject, Text_GetString(NULL, 0, gMinigameNamesBank, 0xC)) / 2), 0x20,
+                      Text_GetString(NULL, 0, gMinigameNamesBank, 0xC));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetLineHeight(0xC);
-        Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x32));
-        Font_Printf(0x28, 0x4C, Text_GetString(NULL, 0, gItemNamesBank, 0x33));
-        Font_Printf(0x78, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-        Font_Printf(0xDA, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-        Font_Printf(0x86, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+        Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x32));
+        Font_Printf(0x28, 0x4C, Text_GetString(NULL, 0, gMinigameNamesBank, 0x33));
+        Font_Printf(0x78, 0xB2, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+        Font_Printf(0xDA, 0xB2, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+        Font_Printf(0x86, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
         Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
         Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-        Font_Printf(0x8C, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x34));
+        Font_Printf(0x8C, 0xB2, Text_GetString(NULL, 0, gMinigameNamesBank, 0x34));
         Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
         Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-        Font_Printf(0xEE, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x35));
+        Font_Printf(0xEE, 0xB2, Text_GetString(NULL, 0, gMinigameNamesBank, 0x35));
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-        Font_Printf(0x9A, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
-        Widget_MeasureLabelBox(&spA4, &spA0, Text_GetString(NULL, 0, gItemNamesBank, 0x32), Text_GetString(NULL, 0, gItemNamesBank, 0x5F),
+        Font_Printf(0x9A, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x14));
+        Widget_MeasureLabelBox(&spA4, &spA0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x32), Text_GetString(NULL, 0, gMinigameNamesBank, 0x5F),
                       0xC);
         Text_SetEnvColor(0xC8, 0xC8, 0xFF, 0xFF);
         Text_SetPrimColor(0x50, 0x50, 0xFF, 0xFF);
-        Font_Printf(spA4 + 0x28, spA0 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x5F));
+        Font_Printf(spA4 + 0x28, spA0 + 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5F));
         Font_SetActive(1, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -346,11 +346,11 @@ void RenderSushiGoRoundUI(void) {
             pad1 = i % 4;
             if (pad1) {}
 
-            sp9C = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gItemNamesBank, 0x36));
-            sp98 = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gItemNamesBank, i + 0x36));
+            sp9C = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x36));
+            sp98 = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gMinigameNamesBank, i + 0x36));
 
             Font_Printf((((var_v0 * pad1) + sp9C) - sp98) + 0x46, ((i / 4) << 5) + 0x72,
-                          Text_GetString(NULL, 0, gItemNamesBank, i + 0x36));
+                          Text_GetString(NULL, 0, gMinigameNamesBank, i + 0x36));
         }
     }
 
@@ -436,7 +436,7 @@ void RenderSushiGoRoundUI(void) {
 
                 Text_SetNumberToken(6, ptr->unk_01C);
                 Font_Printf(gPanelColumnX[i] + var_s7, gPanelColumnY[i] + var_s4,
-                              Text_GetString(&sp78, 0x20, gItemNamesBank, 0x5E));
+                              Text_GetString(&sp78, 0x20, gMinigameNamesBank, 0x5E));
             }
             break;
     }
@@ -531,7 +531,7 @@ s32 SushiGame_IsRoundTimeUp(void) {
     return var_v1;
 }
 
-s32 UpdateSushiGoRoundState(void) {
+s32 SushiGame_UpdateGoRoundState(void) {
     s32 sp1C;
     s32 sp18;
     SushiPlayerEntity* ptr;
@@ -676,7 +676,7 @@ void SushiGame_MainLoop(void) {
         MiniFx_UpdateParticles();
         SushiGame_DrawFrame();
 
-        if (UpdateSushiGoRoundState() != 0) {
+        if (SushiGame_UpdateGoRoundState() != 0) {
             var_s0 = 0;
         }
 

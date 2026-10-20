@@ -8,7 +8,7 @@ typedef struct AnimFrame {
     /* 0x04 */ s16 rotation;
 } AnimFrame; // size = 0x8
 
-extern char** gItemNamesBank;
+extern char** gMinigameNamesBank;
 extern s16 gCurrentMenuIndex;
 extern u32* gPositiveTextureBank[];
 extern u32* gNegativeTextureBank[];
@@ -61,7 +61,7 @@ s32 Widget_CountdownGetState(void);
 
 void Widget_PauseMenuInit(void);
 void Widget_PauseMenuResetWinStreak(void);
-void UpdateDeltaTime(void);
+void Widget_UpdateDeltaTime(void);
 void Widget_PauseMenuTrigger(s16 arg0);
 void Widget_PauseMenuRecordWin(s32 arg0);
 void Widget_PauseMenuCheckTournamentEnd(void);

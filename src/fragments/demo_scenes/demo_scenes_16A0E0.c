@@ -272,7 +272,7 @@ void FirstClearBonus_ReadControllerInput(void) {
     Input_ResetRepeatState();
 }
 
-void FirstClearBonus_EmptyFunc2(void) {
+void FirstClearBonus_NoopStub2(void) {
 }
 
 void FirstClearBonus_DrawBackgroundTiles(u8* arg0) {

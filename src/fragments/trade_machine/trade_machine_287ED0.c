@@ -55,7 +55,7 @@ static char** D_82F144C8;
 static char** gTypeNames;
 
 char** gTradeMenuStrings = NULL;
-char** gTradeMiscStrings = NULL;
+char** gTradeMoveMenuStringsBank = NULL;
 static TextMenuListEntry gTradeMenuEntries[2] = {
     { 0x0140, 0x0168, NULL },
     { 0x0000, 0x0000, NULL },
@@ -321,7 +321,7 @@ void Trade_Init(void) {
     ModelRenderer_InitDisplayRoots();
     Text_InitStringTables();
     gTradeMenuStrings = Text_GetStringTable(0x21);
-    gTradeMiscStrings = Text_GetStringTable(6);
+    gTradeMoveMenuStringsBank = Text_GetStringTable(6);
     gSpeciesNames = Text_GetStringTable(0x24);
     D_82F144C8 = Text_GetStringTable(0x25);
     gTypeNames = Text_GetStringTable(0x26);

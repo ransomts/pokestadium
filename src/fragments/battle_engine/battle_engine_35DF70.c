@@ -72,7 +72,7 @@ void Battle_Effect_Sleep(void) {
         }
 
         if (gBattleTarget->unk_15 == 0) {
-            HandleMoveEffectFlags();
+            Battle_HandleMoveEffectFlags();
             if ((gBattleMoveFailed == 0) &&
                 ((Battle_HasUsableMajorStatusTarget(sActivePokemon[!gBattleScene.posX->unk_2C]) == 0) || (gBattleRuleFlags[0] == 2))) {
                 goto block_9;
@@ -139,7 +139,7 @@ void Battle_Effect_Poison(void) {
             default:
                 gBattleScene.posX->unk_48 = 0x16;
                 gAnimTimer = 0xA;
-                HandleMoveEffectFlags();
+                Battle_HandleMoveEffectFlags();
                 if (gBattleMoveFailed != 0) {
                     Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
                     Battle_QueueMessage(sp1C, -0x7D);
@@ -468,7 +468,7 @@ void Battle_Effect_LowerStat(void) {
             goto block_14;
         }
     } else {
-        HandleMoveEffectFlags();
+        Battle_HandleMoveEffectFlags();
 
         if (gBattleMoveFailed != 0) {
             goto end;
@@ -783,7 +783,7 @@ void Battle_Effect_Confuse(void) {
     gIsBattleMode = 0;
 
     if (!(gBattleTarget->statusFlags2 & 0x10)) {
-        HandleMoveEffectFlags();
+        Battle_HandleMoveEffectFlags();
         if ((gBattleMoveFailed == 0) && !(gBattleTarget->unk_4C & 0x80)) {
             gIsBattleMode = 1;
             gBattleTarget->unk_4C |= 0x80;
@@ -803,7 +803,7 @@ void Battle_Effect_Paralyze(void) {
     gBattleScene.posX->unk_48 = 0x16;
     if (gBattleTarget->unk_15 == 0) {
         if ((gBattleUser->unk_44.unk_03 != 0x17) || ((gBattleTarget->unk_16[6] != 4) && (gBattleTarget->unk_16[7] != 4))) {
-            HandleMoveEffectFlags();
+            Battle_HandleMoveEffectFlags();
             if (gBattleMoveFailed == 0) {
                 gBattleTarget->unk_15 |= 0x40;
                 ApplyParalysisSpeedCut(sActivePokemon[!gBattleScene.posX->unk_2C]);
@@ -863,7 +863,7 @@ void Battle_Effect_Mimic(void) {
     u8 temp_v0;
 
     gBattleScene.posX->unk_48 = 7;
-    HandleMoveEffectFlags();
+    Battle_HandleMoveEffectFlags();
 
     if ((gBattleMoveFailed == 0) && !(gBattleTarget->unk_4C & 0x40)) {
         gBattleUnusedFlag5 = 1;
@@ -876,7 +876,7 @@ void Battle_Effect_Mimic(void) {
         } while (temp_v0 == 0);
 
         gBattleUser->unk_1F[sp24->unk_0C] = temp_v0;
-        Text_SetStringToken(0x1E, Text_GetString(NULL, 0, gPokemonMessageBank, gBattleTarget->unk_1F[var_t0] - 1));
+        Text_SetStringToken(0x1E, Text_GetString(NULL, 0, gBattleMoveNamesBank, gBattleTarget->unk_1F[var_t0] - 1));
         Battle_QueueMessage(gBattleMessageQueues->unk_088, -0x40);
         return;
     }
@@ -885,7 +885,7 @@ void Battle_Effect_Mimic(void) {
 }
 
 void Battle_Effect_LeechSeed(void) {
-    HandleMoveEffectFlags();
+    Battle_HandleMoveEffectFlags();
 
     if ((gBattleMoveFailed == 0) && (gBattleTarget->unk_16[6] != 0x16) && (gBattleTarget->unk_16[7] != 0x16)) {
         if (!(gBattleTarget->statusFlags2 & 0x80)) {
@@ -910,7 +910,7 @@ void Battle_Effect_Disable(void) {
     s32 sp24;
     s32 temp_v1;
 
-    HandleMoveEffectFlags();
+    Battle_HandleMoveEffectFlags();
 
     if (gBattleMoveFailed == 0) {
         gBattleScene.posX->unk_48 = 0x20;
@@ -921,7 +921,7 @@ void Battle_Effect_Disable(void) {
             temp_v1 = (Battle_Random() & 7) + 1;
             gBattleTarget->unk_52 = (sp24 * 0x10) + temp_v1;
             gBattleTarget->disabledMoveId = gBattleTarget->unk_1F[sp24];
-            Text_SetStringToken(0x1E, Text_GetString(NULL, 0, gPokemonMessageBank, gBattleTarget->disabledMoveId - 1));
+            Text_SetStringToken(0x1E, Text_GetString(NULL, 0, gBattleMoveNamesBank, gBattleTarget->disabledMoveId - 1));
             Battle_QueueMessage(gBattleMessageQueues->unk_088, -0x3B);
             return;
         }

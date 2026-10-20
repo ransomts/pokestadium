@@ -23,8 +23,8 @@ static GraphNode gBattleGraphNode1;
 static GraphNode gBattleGraphNode2;
 static CameraStruct gBattlePortraitCamera0;
 static CameraStruct gBattlePortraitCamera1;
-u8* gPokemonPortraitImage0;
-u8* gPokemonPortraitImage1;
+u8* gBattlePortraitFb0Pixels;
+u8* gBattlePortraitFb1Pixels;
 static void* gBattleBgTexture;
 static GraphNode* gBattleMainGraph;
 static GraphNode* gBattlePortraitGraph0;
@@ -523,8 +523,8 @@ void BattleScene_Init(Stage* arg0) {
     GfxImage_AttachDepthBuffer(gBattlePortraitFb0, sp2C);
     GfxImage_AttachDepthBuffer(gBattlePortraitFb1, sp2C);
 
-    gPokemonPortraitImage0 = gBattlePortraitFb0->img_p;
-    gPokemonPortraitImage1 = gBattlePortraitFb1->img_p;
+    gBattlePortraitFb0Pixels = gBattlePortraitFb0->img_p;
+    gBattlePortraitFb1Pixels = gBattlePortraitFb1->img_p;
 
     FRAGMENT_LOAD(fragment31);
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);

@@ -18,8 +18,8 @@
 static unk_D_84803760 gSelectionStates[2];
 static BinArchive* gBinArchive;
 static void* gPanelTextureAtlas;
-static char** gOrderSelectStrings;
-static char** gModeNames;
+static char** gOrderSelectMoveNamesBank;
+static char** gTypeNamesBank;
 static char** gMsgBank_Common;
 static char** gPanelStrings;
 static s16 gTransferPakErrorTimer;
@@ -72,8 +72,8 @@ static unk_D_848035FC gModeColors[] = {
 static Color_RGB8 gSidebarGradStart = { 0x00, 0x0A, 0x41 };
 static Color_RGB8 gSidebarGradEnd = { 0x00, 0x00, 0xD2 };
 static u8* gLeadIconTextures[] = { D_3008FD0, D_3009720, D_3009E70 };
-static u8* gLeadIconTextures_Alt1[] = { D_300A5C0, D_300AD10 };
-static u8* gLeadIconTextures_Alt2[] = { D_300B9B8 };
+static u8* gLeadIconPairPlayer1Textures[] = { D_300A5C0, D_300AD10 };
+static u8* gLeadIconPairPlayer2Textures[] = { D_300B9B8 };
 static u8* gTypeIconTextures[][3] = {
     {
         D_300C660,
@@ -213,11 +213,11 @@ void BattleMenu_DrawSidebarLeadIcon(s32 arg0, s32 arg1, unk_D_84803760* arg2) {
     } else {
         switch (arg2->unk_0E) {
             case 0:
-                sp2C = gLeadIconTextures_Alt1[arg2->unk_0F];
+                sp2C = gLeadIconPairPlayer1Textures[arg2->unk_0F];
                 break;
 
             case 1:
-                sp2C = gLeadIconTextures_Alt2[arg2->unk_0F];
+                sp2C = gLeadIconPairPlayer2Textures[arg2->unk_0F];
                 break;
 
             case 2:
@@ -624,12 +624,12 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
 
     idx = PokemonType_ToDisplayIndex(sp78->unk_06);
     Text_SetEnvColor(gModeColors[idx].posX.r, gModeColors[idx].posX.g, gModeColors[idx].posX.b, 0xFF);
-    Font_Printf(temp_fp + 0x7A, sp7C + 0x2F, Text_GetString(NULL, 0, gModeNames, PokemonType_ToDisplayIndex(sp78->unk_06)));
+    Font_Printf(temp_fp + 0x7A, sp7C + 0x2F, Text_GetString(NULL, 0, gTypeNamesBank, PokemonType_ToDisplayIndex(sp78->unk_06)));
 
     if (sp78->unk_06 != sp78->unk_07) {
         idx = PokemonType_ToDisplayIndex(sp78->unk_07);
         Text_SetEnvColor(gModeColors[idx].posX.r, gModeColors[idx].posX.g, gModeColors[idx].posX.b, 0xFF);
-        Font_Printf(temp_fp + 0x7A, sp7C + 0x43, Text_GetString(NULL, 0, gModeNames, PokemonType_ToDisplayIndex(sp78->unk_07)));
+        Font_Printf(temp_fp + 0x7A, sp7C + 0x43, Text_GetString(NULL, 0, gTypeNamesBank, PokemonType_ToDisplayIndex(sp78->unk_07)));
     }
 
     Font_SetActive(4, 0);
@@ -649,7 +649,7 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
         temp_v1 = &gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].TrainerSlotSaveData_GamePort];
         Font_SetActive(4, 0);
         Text_SetEnvColor(temp_v1->posX.r, temp_v1->posX.g, temp_v1->posX.b, 0xFF);
-        Font_Printf(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, Text_GetString(NULL, 0, gOrderSelectStrings, sp78->unk_09[i] - 1));
+        Font_Printf(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, Text_GetString(NULL, 0, gOrderSelectMoveNamesBank, sp78->unk_09[i] - 1));
         Font_SetActive(4, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_Printf(temp_fp + 0x1B3, (i * 0x14) + sp7C + 7, "%2d", sp78->unk_20[i] & 0x3F);
@@ -1267,8 +1267,8 @@ s32 BattleMenu_RunOrderSelectScreen(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, order_select_ui, 0);
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
-    gOrderSelectStrings = Text_GetStringTable(0x25);
-    gModeNames = Text_GetStringTable(0x26);
+    gOrderSelectMoveNamesBank = Text_GetStringTable(0x25);
+    gTypeNamesBank = Text_GetStringTable(0x26);
     gMsgBank_Common = Text_GetStringTable(0x12);
     gPanelStrings = Text_GetStringTable(6);
 

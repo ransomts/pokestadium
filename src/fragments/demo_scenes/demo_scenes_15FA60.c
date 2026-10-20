@@ -60,7 +60,7 @@ static GraphNode* gFragment17RootNode;
 static DioramaState* gFragment17State;
 static DioramaColorAnim* gFragment17ColorAnim;
 s32 gDioramaEndScreenActive;
-char** gDioramaEndCaptionStringId;
+char** gDemoScenesControllerWarningBank;
 static BinArchive* D_86B0E5E4;
 static u8* D_86B0E5E8;
 static DioramaModelSlot gFragment17Objects[4];
@@ -543,7 +543,7 @@ s32 Stage_ShowBootDiorama(void) {
     }
 
     Text_InitStringTables();
-    gDioramaEndCaptionStringId = Text_GetStringTable(0x14);
+    gDemoScenesControllerWarningBank = Text_GetStringTable(0x14);
     Diorama_InitScene();
     StageLoader_UpdateSegments();
     Diorama_RunLoop();

@@ -3208,8 +3208,8 @@ static Vec3f sCameraAtStep;
 static f32 sCameraFovStep;
 Vec3f gCreditsCameraPivot;
 static CameraStruct* sCurrentCamera;
-static s16 sCameraYawRate;
-static s16* sCameraYawPtr;
+static s16 sCameraRotationYRate;
+static s16* sCameraRotationYPtr;
 
 void Credits_InitCameraKeyframeBlend(CameraStruct* arg0, u16 arg1, s8 arg2, u8 arg3) {
     f32 scale = 1.0f;
@@ -3257,28 +3257,28 @@ void Credits_StepCameraKeyframeBlend(void) {
 }
 
 void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u16 arg4, s8 arg5, u8 arg6) {
-    sCameraYawPtr = arg1;
+    sCameraRotationYPtr = arg1;
     sCurrentCamera = arg3;
     sCameraElapsed = 0;
     sCameraDuration = arg4;
 
     if (arg6 < 6) {
-        *sCameraYawPtr = gStageCameraPositions[arg5][arg6].posX;
+        *sCameraRotationYPtr = gStageCameraPositions[arg5][arg6].posX;
     } else if (arg6 < 9) {
-        *sCameraYawPtr = sCreditsPivotCameras[arg5][arg6 - 6].posX;
+        *sCameraRotationYPtr = sCreditsPivotCameras[arg5][arg6 - 6].posX;
     }
 
     if (arg6 < 6) {
         if (gStageCameraPositions[arg5][arg6].rotation == 1) {
             if (gStageCameraPositions[arg5][arg6].posX < gStageCameraPositions[arg5][arg6].posY) {
-                sCameraYawRate = (gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) / arg4;
+                sCameraRotationYRate = (gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) / arg4;
             } else {
-                sCameraYawRate = ((gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) + 0x10000) / arg4;
+                sCameraRotationYRate = ((gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) + 0x10000) / arg4;
             }
         } else if (gStageCameraPositions[arg5][arg6].posX < gStageCameraPositions[arg5][arg6].posY) {
-            sCameraYawRate = (s32)((gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) + 0xFFFF0000) / arg4;
+            sCameraRotationYRate = (s32)((gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) + 0xFFFF0000) / arg4;
         } else {
-            sCameraYawRate = (s32)(gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) / arg4;
+            sCameraRotationYRate = (s32)(gStageCameraPositions[arg5][arg6].posY - gStageCameraPositions[arg5][arg6].posX) / arg4;
         }
 
         *arg0 = gStageCameraPositions[arg5][arg6].unk_06;
@@ -3294,16 +3294,16 @@ void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u
     } else if (arg6 < 9) {
         if (sCreditsPivotCameras[arg5][arg6 - 6].rotation == 1) {
             if (sCreditsPivotCameras[arg5][arg6 - 6].posX < sCreditsPivotCameras[arg5][arg6 - 6].posY) {
-                sCameraYawRate = (s32)(sCreditsPivotCameras[arg5][arg6 - 6].posY - sCreditsPivotCameras[arg5][arg6 - 6].posX) / arg4;
+                sCameraRotationYRate = (s32)(sCreditsPivotCameras[arg5][arg6 - 6].posY - sCreditsPivotCameras[arg5][arg6 - 6].posX) / arg4;
             } else {
-                sCameraYawRate =
+                sCameraRotationYRate =
                     (s32)((sCreditsPivotCameras[arg5][arg6 - 6].posY - sCreditsPivotCameras[arg5][arg6 - 6].posX) + 0x10000) / arg4;
             }
         } else if (sCreditsPivotCameras[arg5][arg6 - 6].posX < sCreditsPivotCameras[arg5][arg6 - 6].posY) {
-            sCameraYawRate =
+            sCameraRotationYRate =
                 (s32)(sCreditsPivotCameras[arg5][arg6 - 6].posY + sCreditsPivotCameras[arg5][arg6 - 6].posX + 0xFFFF0000) / arg4;
         } else {
-            sCameraYawRate = (s32)(sCreditsPivotCameras[arg5][arg6 - 6].posY - sCreditsPivotCameras[arg5][arg6 - 6].posX) / arg4;
+            sCameraRotationYRate = (s32)(sCreditsPivotCameras[arg5][arg6 - 6].posY - sCreditsPivotCameras[arg5][arg6 - 6].posX) / arg4;
         }
 
         *arg0 = sCreditsPivotCameras[arg5][arg6 - 6].unk_06;
@@ -3322,7 +3322,7 @@ void Camera_SetupForPhase(s16* arg0, s16* arg1, s16* arg2, CameraStruct* arg3, u
 void Credits_StepCameraYawBlend(void) {
     if (sCameraElapsed < sCameraDuration) {
         sCameraElapsed += gPhaseDelta;
-        *sCameraYawPtr += sCameraYawRate * gPhaseDelta;
+        *sCameraRotationYPtr += sCameraRotationYRate * gPhaseDelta;
     }
 }
 

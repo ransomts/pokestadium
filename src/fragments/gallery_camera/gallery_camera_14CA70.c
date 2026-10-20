@@ -86,7 +86,7 @@ Color_RGB8 gStagePanelBlueColor = { 0, 0, 150 };
 Color_RGB8 gStagePanelWhiteColor = { 0, 0, 250 };
 
 char* gStagePanelLabelStrings[] = {
-    gCupNameFreeBattle, gCupNamePokeCup, gCupNamePokeCup2, gCupNamePetitCup, gCupNamePikaCup, gCupNamePrimeCup, gCupNamePewterGym, gCupNameCeruleanGym,
+    gCupNameFreeBattle, gCupNameNintendoCup, gCupNameNintendoCupRound2, gCupNamePetitCup, gCupNamePikaCup, gCupNamePrimeCup, gCupNamePewterGym, gCupNameCeruleanGym,
     gCupNameVermilionGym, gCupNameCeladonGym, gCupNameFuchsiaGym, gCupNameSaffronGym, gCupNameCinnabarGym, gCupNameViridianGym, gCupNameEliteFour, gCupNameMewtwo,
 };
 
@@ -296,7 +296,7 @@ static FogRect gStagePanelRootNode;
 static GraphRootNode gStagePanelGraphRoot0;
 static GraphRootNode gStagePanelGraphRoot1;
 static GraphRootNode gStagePanelGraphRoot2;
-char** gMessageBankPtr;
+char** gPhotoHowToStringsBank;
 static s32 gStageReturnCode;
 static s32 gCameraNavRepeatCounter;
 static s32 pad_D_8690A684;
@@ -808,7 +808,7 @@ void Gallery_CameraUpdateTutorialText(void) {
                 for (i = 0; i < 255; i++) { gTutorialTextBoxCharBuffer[i] = 0; }
                 // clang-format on
 
-                sprintf(gTutorialTextBoxStringBuffer, Text_GetString(NULL, 0, gMessageBankPtr, gTutorialMessageIds[gTutorialMessageIndex]));
+                sprintf(gTutorialTextBoxStringBuffer, Text_GetString(NULL, 0, gPhotoHowToStringsBank, gTutorialMessageIds[gTutorialMessageIndex]));
                 gTutorialTextBoxState.posX++;
                 break;
 
@@ -1144,7 +1144,7 @@ s32 Gallery_CameraMain(s32 arg0, UNUSED s32 arg1) {
 
     D_8690A698 = ASSET_LOAD2(stadium_models, 1, 1);
     Text_InitStringTables();
-    gMessageBankPtr = Text_GetStringTable(0x2B);
+    gPhotoHowToStringsBank = Text_GetStringTable(0x2B);
     Gallery_CameraInit(arg0);
     StageContext_Activate(sp24);
     Gallery_CameraIntro();

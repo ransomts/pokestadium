@@ -160,7 +160,7 @@ typedef struct DioramaPresetData {
 
 extern DioramaAnimData gScrollBarSegmentData[];
 extern s32 gDioramaEndScreenActive;
-extern char** gDioramaEndCaptionStringId;
+extern char** gDemoScenesControllerWarningBank;
 extern unk_D_86B0FA78* gCameraTarget;
 extern unk_D_86B0FA7C* gCameraState;
 extern unk_70D3A0 gMonsterStageData;
@@ -338,7 +338,7 @@ void FirstClearBonus_DrawDialogBox(void);
 void FirstClearBonus_DrawDialogText(void);
 void FirstClearBonus_UpdateDialogSequence(void);
 void FirstClearBonus_ReadControllerInput(void);
-void FirstClearBonus_EmptyFunc2(void);
+void FirstClearBonus_NoopStub2(void);
 void FirstClearBonus_DrawBackgroundTiles(u8* arg0);
 void FirstClearBonus_RenderFrame(void);
 s32 FirstClearBonus_UpdateScene(void);

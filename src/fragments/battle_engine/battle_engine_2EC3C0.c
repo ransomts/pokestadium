@@ -94,9 +94,9 @@ u8 gAnchorLiftHighSpeciesIds[] = { 0x55, 0x54 };
 
 char** gMessageBank_0x1E;
 char** gMessageBank_0x24;
-char** gPokemonMessageBank;
+char** gBattleMoveNamesBank;
 char** gMessageBank_0x29;
-char** gMarqueeMessageBank;
+char** gControllerDisconnectWarningBank;
 
 void BattleScene_ClearStateTickCallbacks(void) {
     s32 i;
@@ -1236,7 +1236,7 @@ void BattleScene_TickQueueList3Selector2OrCFollowup(BattlePlayerEntity* arg0) {
     }
 }
 
-void UpdateAnimChannelForEntity(BattlePlayerEntity* arg0) {
+void BattleAnim_UpdateChannelForEntity(BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     s32 sp48;
     UNUSED s32 pad2;
@@ -1319,7 +1319,7 @@ void BattleScene_TickRow14PlayMoveEffectEnd(BattlePlayerEntity* arg0) {
     }
 }
 
-s32 GetAnimStateResultCode(BattlePlayerEntity* arg0) {
+s32 BattleAnim_GetStateResultCode(BattlePlayerEntity* arg0) {
     PokemonAudioInfo* ptr = &arg0->animationState.unk_38;
     s32 temp_v1;
 
@@ -2113,9 +2113,9 @@ void BattleScene_InitializeRuntime(BattlePokemon* arg0) {
 
     gMessageBank_0x1E = Text_GetStringTable(0x1E);
     gMessageBank_0x24 = Text_GetStringTable(0x24);
-    gPokemonMessageBank = Text_GetStringTable(0x25);
+    gBattleMoveNamesBank = Text_GetStringTable(0x25);
     gMessageBank_0x29 = Text_GetStringTable(0x29);
-    gMarqueeMessageBank = Text_GetStringTable(0x14);
+    gControllerDisconnectWarningBank = Text_GetStringTable(0x14);
 
     for (i = 0; i < 7; i++) {
         gBattleSceneStateTickSlots[i].rotation = gAnimStateIdle;

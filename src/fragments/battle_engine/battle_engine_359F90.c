@@ -445,7 +445,7 @@ void ComputeAllPokemonStats(PokemonData* arg0) {
     ComputePokemonStat(4, arg0);
 }
 
-void InitBattleParameters(void) {
+void Battle_InitDamageParameters(void) {
     gBattleDamage = 0;
     gMovePower = gBattleUser->unk_44.posY;
     if (gMovePower) {
@@ -631,7 +631,7 @@ void MarkAttackFailed(void) {
     gBattleUser->unk_4C &= ~0x20;
 }
 
-void HandleMoveEffectFlags(void) {
+void Battle_HandleMoveEffectFlags(void) {
     if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x50) {
         if (!(gBattleUser->statusFlags2 & 0x20) && (gBattleRuleFlags[0] == 1)) {
             gBattleUser->statusFlags2 |= 0x20;
@@ -1188,7 +1188,7 @@ s32 Battle_Effect_Counter(void) {
 
         gBattleMoveFailed = 0;
         gBattleCritOrOhkoState = 0;
-        HandleMoveEffectFlags();
+        Battle_HandleMoveEffectFlags();
         return 0;
     }
     return 0;
@@ -1356,7 +1356,7 @@ s32 Battle_CheckMonCanAct(void) {
                 gBattleCritOrOhkoState = 0;
                 gBattleUser->unk_44.posY = 0x28;
                 gBattleUser->unk_44.unk_03 = 0;
-                InitBattleParameters();
+                Battle_InitDamageParameters();
                 Battle_CalcDamage();
                 gBattleUser->unk_44.TrainerSlotSaveData_GamePort = sp25;
                 gBattleTarget->unk_2C = sp26;
@@ -1453,7 +1453,7 @@ s32 Battle_CheckMonCanAct(void) {
 static const char gFmtInt[] = "%d";
 static const char D_8438DC04[] = " SpAttackTbl6\n";
 
-void ProcessBattleTurn(void) {
+void Battle_ProcessTurn(void) {
     UNUSED s32 pad;
     char sp2C[8];
 
@@ -1506,7 +1506,7 @@ void ProcessBattleTurn(void) {
                         goto case_5;
                     }
 
-                    InitBattleParameters();
+                    Battle_InitDamageParameters();
                     if (Battle_CalcDamage() == 0) {
                         goto case_6;
                     }
@@ -1518,7 +1518,7 @@ void ProcessBattleTurn(void) {
                 if (gBattleRuleFlags[0] == 1) {
                     gBattleUser->unk_44.rotation = gMoveData[gBattleUser->currentMoveId - 1].rotation;
                 }
-                HandleMoveEffectFlags();
+                Battle_HandleMoveEffectFlags();
 
             case 5:
             case_5:
@@ -1848,7 +1848,7 @@ void Battle_ResolveMonAction(void) {
 
     gBattleUser = sp1C;
     gBattleTarget = sp18;
-    ProcessBattleTurn();
+    Battle_ProcessTurn();
     Battle_ApplyResidualEffects();
 
     if (gBattleUpdateHPFlag == 0) {

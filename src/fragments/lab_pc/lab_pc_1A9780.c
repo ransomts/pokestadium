@@ -33,8 +33,8 @@ typedef struct unk_func_88201488_arg2 {
 
 extern u8 D_4006A08[];
 
-static char** gItemMessageBank;
-static char** gBattleMessageBank;
+static char** gMessageBankBoxMenuGbSaveIdLabel;
+static char** gBoxScreenMessageBank;
 
 void LabPC_MarkBoxSeen(unk_func_88205880_00D0* arg0) {
     s32 i;
@@ -261,7 +261,7 @@ void LabPC_CheckBox_SetTitle(unk_func_88201DA0* arg0, u32 arg1, u32 arg2) {
         { 0x32, 0x64, 0x64, 0xFF },
     };
 
-    HAL_Strcpy(arg0->unk_54, Text_GetString(NULL, 0, gBattleMessageBank, gMoveSlotMessageIds[arg1 - 1]));
+    HAL_Strcpy(arg0->unk_54, Text_GetString(NULL, 0, gBoxScreenMessageBank, gMoveSlotMessageIds[arg1 - 1]));
     sprintf(&arg0->unk_54[strlen(arg0->unk_54)], " No.%d", arg2 + 1);
 
     arg0->unk_50->posX.unk_10.posX =
@@ -400,7 +400,7 @@ void LabPC_BuildBoxPairSelector(unk_func_882025E0_1A9780* arg0, unk_func_88200FA
     arg0->unk_2C = 0;
 
     for (i = 0; i < 5; i++) {
-        temp_s2 = Text_GetString(NULL, 0, gBattleMessageBank, i + 6);
+        temp_s2 = Text_GetString(NULL, 0, gBoxScreenMessageBank, i + 6);
 
         arg0->unk_3C[i].posX = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
         ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(arg0->unk_3C[i].posX, 0, 0, temp_s2, 0x10);
@@ -792,7 +792,7 @@ void DrawBoxPanel(s32 arg0, s32 arg1, char* arg2, s32 arg3, s32 arg4, unk_func_8
     if (arg4 & 4) {
         sp88.a = 0x4C;
     }
-    sp80 = Text_GetString(0, 0, gBattleMessageBank, 0x31);
+    sp80 = Text_GetString(0, 0, gBoxScreenMessageBank, 0x31);
     sp78 = Font_MeasureTextExtent(8, 0, sp80);
     sp74 = Font_MeasureTextExtent(8, 0, " 00");
     sp70 = Font_MeasureTextExtent(4, 0, "00");
@@ -826,9 +826,9 @@ s32 LabPC_DrawBoxLabelTab(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
     s32 var_s0;
 
     if (arg0->unk_30 == 0) {
-        sp2C = Text_GetString(NULL, 0, gBattleMessageBank, 0xB);
+        sp2C = Text_GetString(NULL, 0, gBoxScreenMessageBank, 0xB);
     } else {
-        sp2C = Text_GetString(NULL, 0, gBattleMessageBank, 0xC);
+        sp2C = Text_GetString(NULL, 0, gBoxScreenMessageBank, 0xC);
     }
     temp_v0 = Font_MeasureTextExtent(8, 0, sp2C);
 
@@ -1057,7 +1057,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s0_2, arg0->unk_58);
 
     for (x = 0; x < 5; x++) {
-        temp_s1_2 = Text_GetString(NULL, 0, gBattleMessageBank, x + 1);
+        temp_s1_2 = Text_GetString(NULL, 0, gBoxScreenMessageBank, x + 1);
 
         temp_s0_3 = mem_pool_alloc(arg8, sizeof(unk_func_8850878C));
         ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(temp_s0_3, (0x228 - Font_MeasureTextExtent(0, 0, temp_s1_2)) / 2,
@@ -1069,7 +1069,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
         ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_58, temp_s0_3);
     }
 
-    Font_MeasureTextExtent(8, 0, Text_GetString(NULL, 0, gBattleMessageBank, 0x31));
+    Font_MeasureTextExtent(8, 0, Text_GetString(NULL, 0, gBoxScreenMessageBank, 0x31));
     Font_MeasureTextExtent(8, 0, " 00");
     spB4 = Font_MeasureTextExtent(4, 0, "00");
 
@@ -1559,11 +1559,11 @@ void BoxPC_InitScreen(LabPC_BuildBoxScreenWidget* arg0, s32 arg1, s32 arg2, Text
 
     sp54 = mem_pool_alloc(arg4, sizeof(unk_func_88509A2C));
     ((func88509A2C)Memmap_GetFragmentVaddr(WidgetTree_InitSaveSlotLabel))(sp54, 0x38, 0x22, GbSave_GetActivePort(),
-                                                           Text_GetString(NULL, 0, gItemMessageBank, 0));
+                                                           Text_GetString(NULL, 0, gMessageBankBoxMenuGbSaveIdLabel, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp58, sp54);
 
     sp50 = mem_pool_alloc(arg4, sizeof(unk_func_88509E34));
-    ((func88509E34)Memmap_GetFragmentVaddr(WidgetTree_InitTextMessage))(sp50, 0, 0, Text_GetString(NULL, 0, gBattleMessageBank, 0));
+    ((func88509E34)Memmap_GetFragmentVaddr(WidgetTree_InitTextMessage))(sp50, 0, 0, Text_GetString(NULL, 0, gBoxScreenMessageBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp58, sp50);
 
     sp78 = mem_pool_alloc(arg4, sizeof(unk_func_88001300_000));
@@ -1655,8 +1655,8 @@ void LabPC_ShowBoxes(TextObject* arg0) {
     sp64 = main_pool_alloc(0x1000, 0);
     sp6C = mem_pool_try_init(0x10000, 0);
     Text_InitStringTables();
-    gItemMessageBank = Text_GetStringTable(0x2A);
-    gBattleMessageBank = Text_GetStringTable(4);
+    gMessageBankBoxMenuGbSaveIdLabel = Text_GetStringTable(0x2A);
+    gBoxScreenMessageBank = Text_GetStringTable(4);
     sp5C = Text_GetStringTable(7);
     sp58 = Text_GetStringTable(6);
     sp54 = Text_GetStringTable(0x24);

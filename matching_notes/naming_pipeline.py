@@ -263,6 +263,9 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?:_T|_InvT)[0-9]$"                             # spline exponents (T3 = t^3, InvT2 = (1-t)^2)
     r"|(?:Small|Large)_[0-9]+$"                       # paired texture indices (MoveTargetSmall_0-3)
     r"|Node[0-9]+$"                                        # multi-digit indexed entities (gChainLinkNode10)
+    r"|N64$"                                                    # console name (gText_LeavingN64)
+    r"|CreditsString[0-9]+$"                            # credits decompress-table string indices (bank 0x2D)
+    r"|Vec[XYZ][0-9]+$"                                  # vector component literal magnitudes (gVecY10)
     r"|[0-9]x[0-9]$"                                   # 4x4, 8x8 (small dimensions)
     r"|^I[0-9]$"                                        # I4, I8 (pixel format)
     r"|NoopStub[0-9]+$"                                # multi-digit dead stubs (NoopStub10)
@@ -319,6 +322,8 @@ COMPOUND_SUFFIX = re.compile(
     r"|[Rr][Tt][Cc]$"                                     # RTC
     r"|(?:Prim|Env)[RGB]$"                              # color channel accessors (ApproachPrimB = blue channel)
     r"|(?:AA|ZB)$"                                          # render mode abbreviations (G_RM_AA_XLU_SURF2)
+    r"|_CB$"                                                    # spline cube macro CB(x)=x*x*x (gSplineD_CB)
+    r"|TOC$"                                                    # table-of-contents acronym (gAudioSeqTOC)
     r"|LoadGfx[0-9A-F]{1,4}(?:_[0-9A-F]{1,4})?(?:_Alt[0-9])?$"  # gfx file IDs (script resource lists)
     r"|Palette[0-9A-F]{1,2}$"                            # palette IDs (TriggerDefaultPalette1B)
     r"|(?:Get|Set|Approach)FieldOffset[0-9A-F]{2}$"       # struct-field offset accessors (FieldOffsetAC)

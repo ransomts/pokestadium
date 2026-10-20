@@ -170,10 +170,10 @@ static Gfx gDefaultGfxSetup[] = {
 void BattleHud_InitEmpty(void) {
 }
 
-void BattleHud_InitEmpty2(void) {
+void BattleHud_NoopStub2(void) {
 }
 
-void BattleHud_InitEmpty3(void) {
+void BattleHud_NoopStub3(void) {
 }
 
 void BattleHud_DrawTranslucentShadowRect(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
@@ -245,7 +245,7 @@ void Battle_DrawGradientRectWrapper(s32 arg0, s32 arg1, s32 arg2, s32 arg3, Colo
     BattleHud_DrawGradientRect(arg0, arg1, arg2, arg3, arg4, arg5);
 }
 
-void BattleHud_InitEmpty4(void) {
+void BattleHud_NoopStub4(void) {
 }
 
 void BattleHud_DrawHpBar(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
@@ -484,7 +484,7 @@ s32 BattleHud_DrawBorderTile(s32 arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4) {
     Gfx_DrawTextureRectFromCorners(arg0, arg1, (arg0 + arg2) - 1, (arg1 + arg3) - 1, sp2C, sp28, 0);
 }
 
-void BattleHud_InitEmpty6(void) {
+void BattleHud_NoopStub6(void) {
 }
 
 void BattleHud_DrawBoxBorder(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -1121,7 +1121,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Battle_DrawRightAlignedText(arg1 + 0x5A, arg2 + 4, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
+            Battle_DrawRightAlignedText(arg1 + 0x5A, arg2 + 4, Text_GetString(NULL, 0, gBattleMoveNamesBank, temp_s0->unk_1F[0] - 1));
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
@@ -1130,7 +1130,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Font_Printf(arg1 + 0x7C, arg2 + 0x11, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[1] - 1));
+            Font_Printf(arg1 + 0x7C, arg2 + 0x11, Text_GetString(NULL, 0, gBattleMoveNamesBank, temp_s0->unk_1F[1] - 1));
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
@@ -1139,7 +1139,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Font_Printf(arg1 + 0x6E, arg2 + 0x25, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[2] - 1));
+            Font_Printf(arg1 + 0x6E, arg2 + 0x25, Text_GetString(NULL, 0, gBattleMoveNamesBank, temp_s0->unk_1F[2] - 1));
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
@@ -1148,7 +1148,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Battle_DrawRightAlignedText(arg1 + 0x4C, arg2 + 0x18, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
+            Battle_DrawRightAlignedText(arg1 + 0x4C, arg2 + 0x18, Text_GetString(NULL, 0, gBattleMoveNamesBank, temp_s0->unk_1F[3] - 1));
         }
     } else {
         if ((temp_s0->unk_1F[0] != 0) && (temp_s0->unk_1F[0] < 0xA6)) {
@@ -1157,7 +1157,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Battle_DrawRightAlignedText(arg1 + 0x5A, arg2 + 4, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[0] - 1));
+            Battle_DrawRightAlignedText(arg1 + 0x5A, arg2 + 4, Text_GetString(NULL, 0, gBattleMoveNamesBank, temp_s0->unk_1F[0] - 1));
         }
 
         if ((temp_s0->unk_1F[1] != 0) && (temp_s0->unk_1F[1] < 0xA6)) {
@@ -1166,7 +1166,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Font_Printf(arg1 + 0x7C, arg2 + 0x11, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[1] - 1));
+            Font_Printf(arg1 + 0x7C, arg2 + 0x11, Text_GetString(NULL, 0, gBattleMoveNamesBank, temp_s0->unk_1F[1] - 1));
         }
 
         if ((temp_s0->unk_1F[2] != 0) && (temp_s0->unk_1F[2] < 0xA6)) {
@@ -1175,7 +1175,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Font_Printf(arg1 + 0x6E, arg2 + 0x25, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[2] - 1));
+            Font_Printf(arg1 + 0x6E, arg2 + 0x25, Text_GetString(NULL, 0, gBattleMoveNamesBank, temp_s0->unk_1F[2] - 1));
         }
 
         if ((temp_s0->unk_1F[3] != 0) && (temp_s0->unk_1F[3] < 0xA6)) {
@@ -1184,7 +1184,7 @@ void BattleHud_DrawMoveSelectMenu(BattlePlayerEntity* arg0, s16 arg1, s16 arg2, 
             } else {
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             }
-            Battle_DrawRightAlignedText(arg1 + 0x4C, arg2 + 0x18, Text_GetString(NULL, 0, gPokemonMessageBank, temp_s0->unk_1F[3] - 1));
+            Battle_DrawRightAlignedText(arg1 + 0x4C, arg2 + 0x18, Text_GetString(NULL, 0, gBattleMoveNamesBank, temp_s0->unk_1F[3] - 1));
         }
     }
 
@@ -1750,18 +1750,18 @@ void Battle_DrawSpectatorModeScrollingText(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMarqueeMessageBank, 0));
+        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gControllerDisconnectWarningBank, 0));
         temp_s0 = 0x50 - D_84385988;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
         Font_BeginTranslucentTextRendering();
         Font_SetActive(4, 0);
-        Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMarqueeMessageBank, 0));
+        Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gControllerDisconnectWarningBank, 0));
 
         temp_s0 += sp24 + 0x1E;
         if (temp_s0 < 0x140) {
-            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMarqueeMessageBank, 0));
+            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gControllerDisconnectWarningBank, 0));
         }
         Font_EndTexturedTextRendering();
 

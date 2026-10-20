@@ -1409,7 +1409,7 @@ static Gfx gSandshrewMiniActorDisplayList9[] = {
     gsSP1Triangle(3, 9, 4, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList10[] = {
+static Gfx gSandshrewGroundDL[] = {
     gsSPVertex(gFragment21VtxGround, 10, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),
@@ -1418,7 +1418,7 @@ static Gfx gSandshrewMiniActorDisplayList10[] = {
     gsSP2Triangles(2, 9, 0, 0, 9, 2, 7, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList11[] = {
+static Gfx gSandshrewGroundWallDL[] = {
     gsSPVertex(gFragment21VtxGroundWall, 16, 0),
     gsSP2Triangles(0, 1, 2, 0, 3, 0, 2, 0),
     gsSP2Triangles(3, 2, 4, 0, 5, 6, 7, 0),
@@ -1433,8 +1433,8 @@ static Gfx gSandshrewMiniActorDisplayList11[] = {
 static u32 gSandshrewStageObjectTable[] = {
     0x09000000, 0x05000000, 0x1D0B0100, 0x00000000, 0xFDA80000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
     0x05000000, 0x1D0A0101, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000,
-    0x2301FFFF, gFragment21GfxSetupGround, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList10, 0x2301FFFF, gFragment21GfxSetupGroundWall, 0x0001FFFF,
-    0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList11, 0x1D090102, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000,
+    0x2301FFFF, gFragment21GfxSetupGround, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewGroundDL, 0x2301FFFF, gFragment21GfxSetupGroundWall, 0x0001FFFF,
+    0xFFFFFFFF, 0x22010000, gSandshrewGroundWallDL, 0x1D090102, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000,
     0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupRockLeft, 0x0002FFFF, 0xE7DA8A8A, 0x22010000, gSandshrewMiniActorDisplayList9, 0x06000000,
     0x1D080103, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF,
     gFragment21GfxSetupRockBack, 0x0003FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList8, 0x06000000, 0x1D070104, 0x00000000, 0x00000000,
@@ -2242,26 +2242,26 @@ void SandshrewGame_DrawTutorialText(void) {
     Font_SetLineHeight(0xC);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Font_Printf(0xA0 - (Text_MeasureStringWidth(gMiniHUDTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0x4A)) / 2), 0x20,
-                  Text_GetString(NULL, 0, gItemNamesBank, 0x4A));
+    Font_Printf(0xA0 - (Text_MeasureStringWidth(gMiniHUDTextObject, Text_GetString(NULL, 0, gMinigameNamesBank, 0x4A)) / 2), 0x20,
+                  Text_GetString(NULL, 0, gMinigameNamesBank, 0x4A));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x4B));
-    Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gItemNamesBank, 0x4C));
-    Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gItemNamesBank, 0x4D));
+    Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x4B));
+    Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gMinigameNamesBank, 0x4C));
+    Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gMinigameNamesBank, 0x4D));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x4B), Text_GetString(NULL, 0, gItemNamesBank, 0x63),
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x4B), Text_GetString(NULL, 0, gMinigameNamesBank, 0x63),
                   0xC);
-    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x63));
-    Font_Printf(0xB8, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-    Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x63));
+    Font_Printf(0xB8, 0xB2, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+    Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Font_Printf(0xCF, 0xB2, Text_GetString(NULL, 0, gItemNamesBank, 0x4E));
+    Font_Printf(0xCF, 0xB2, Text_GetString(NULL, 0, gMinigameNamesBank, 0x4E));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-    Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
+    Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x14));
     Font_DisableTwoCycleTexturing();
     Font_SetActive(4, -2);
     Font_EndTexturedTextRendering();

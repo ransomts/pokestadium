@@ -3,11 +3,11 @@
 #include "src/stage_loader.h"
 #include "src/fragments/minigame_actor_framework/minigame_actor_framework.h"
 
-static s16 gCameraYaw;
-static s16 gCameraPitch;
+static s16 gCameraRotationY;
+static s16 gCameraRotationX;
 static f32 gCameraDistance;
-static s16 gCameraPitchTmp;
-static s16 gCameraYawTmp;
+static s16 gCameraRotationXTemp;
+static s16 gCameraRotationYTemp;
 static f32 gHorizontalDist;
 static f32 gGalleryCameraTimer;
 static Vec3f gCameraInitialPos;
@@ -34,8 +34,8 @@ void GalleryCamera_NullUpdate(void) {
 
 void GalleryCamera_InitFreeView(void) {
     gMiniCameraPtr = gMiniCameraStruct->posX.unk_0C;
-    gCameraYaw = 0;
-    gCameraPitch = 0;
+    gCameraRotationY = 0;
+    gCameraRotationX = 0;
     gCameraDistance = GalleryCamera_ComputeZoomDistance(4.0f);
 
     if (gCameraConfig.RentalSlotAnimData_PosePhase != 0.0f) {
@@ -44,11 +44,11 @@ void GalleryCamera_InitFreeView(void) {
         gMiniCameraPtr->unk_60.at.y = gCameraConfig.rotation + gCameraConfig.unk_0C;
     }
 
-    Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
+    Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraRotationY, gCameraRotationX);
 
     if (gMiniCameraPtr->unk_60.eye.y < 12.0f) {
         gMiniCameraPtr->unk_60.eye.y = 12.5f;
-        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
     }
 
     gMiniCameraPtr->unk_24.near = 20.0f;
@@ -85,8 +85,8 @@ void GalleryCamera_DebugAdjustZoomOffset(void) {
 }
 
 void GalleryCamera_ResetFreeView(void) {
-    gCameraYaw = 0;
-    gCameraPitch = 0;
+    gCameraRotationY = 0;
+    gCameraRotationX = 0;
     gCameraDistance = GalleryCamera_ComputeZoomDistance(4.0f);
     gMiniCameraPtr->unk_60.at.x = 0.0f;
     gMiniCameraPtr->unk_60.at.z = 0.0f;
@@ -97,11 +97,11 @@ void GalleryCamera_ResetFreeView(void) {
         gMiniCameraPtr->unk_60.at.y = gCameraConfig.rotation + gCameraConfig.unk_0C;
     }
 
-    Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraYaw, gCameraPitch);
+    Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraDistance, gCameraRotationY, gCameraRotationX);
 
     if (gMiniCameraPtr->unk_60.eye.y < 12.0f) {
         gMiniCameraPtr->unk_60.eye.y = 12.5f;
-        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
     }
 
     gMiniCameraPtr->unk_24.near = 20.0f;
@@ -150,9 +150,9 @@ void GalleryCamera_OrbitAtPoint(s16 arg0) {
     UNUSED s32 pad2;
 
     Vec3f_SetComponentsDuplicate(&sp38, 0, 0.0f, 0.0f);
-    Vec3f_CalculateDistanceAngles(&sp38, &gMiniCameraPtr->unk_60.eye, &gHorizontalDist, &gCameraPitchTmp, &gCameraYawTmp);
+    Vec3f_CalculateDistanceAngles(&sp38, &gMiniCameraPtr->unk_60.eye, &gHorizontalDist, &gCameraRotationXTemp, &gCameraRotationYTemp);
     Vec3f_SetComponentsDuplicate(&sp50, gMiniCameraPtr->unk_60.at.x, 0.0f, gMiniCameraPtr->unk_60.at.z);
-    Vec3s_SetComponents(&sp68, 0, gCameraYawTmp + arg0, 0);
+    Vec3s_SetComponents(&sp68, 0, gCameraRotationYTemp + arg0, 0);
     Vec3f_SetComponentsDuplicate(&sp5C, gCameraParams->unk_004 * 4.0f, 0.0f, 0.0f);
     MtxF_SetRotationAndTransformTranslation(&sp70, &gMiniCameraPtr->unk_60.at, &sp68);
     GalleryCamera_RotateVecByMatrix(&sp5C, &sp70);
@@ -163,14 +163,14 @@ void GalleryCamera_OrbitAtPoint(s16 arg0) {
     gMiniCameraPtr->unk_60.at.x = sp50.x;
     gMiniCameraPtr->unk_60.at.z = sp50.z;
 
-    Vec3f_CalculateDistanceAngles(&sp38, &gMiniCameraPtr->unk_60.at, &gHorizontalDist, &gCameraPitchTmp, &gCameraYawTmp);
+    Vec3f_CalculateDistanceAngles(&sp38, &gMiniCameraPtr->unk_60.at, &gHorizontalDist, &gCameraRotationXTemp, &gCameraRotationYTemp);
     gHorizontalDist = GalleryCamera_DistanceXZ(sp38, gMiniCameraPtr->unk_60.at);
     if ((GalleryCamera_ComputeZoomDistance(1.9f) - 1.0f) <= gHorizontalDist) {
-        Camera_ComputeEyeFromAngles(&sp38, &sp50, GalleryCamera_ComputeZoomDistance(1.9f) - 1.0f, 0, gCameraYawTmp);
+        Camera_ComputeEyeFromAngles(&sp38, &sp50, GalleryCamera_ComputeZoomDistance(1.9f) - 1.0f, 0, gCameraRotationYTemp);
         gMiniCameraPtr->unk_60.at.x = sp50.x;
         gMiniCameraPtr->unk_60.at.z = sp50.z;
     }
-    Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+    Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
 }
 
 void GalleryCamera_HandleDPadInput(void) {
@@ -183,28 +183,28 @@ void GalleryCamera_HandleDPadInput(void) {
 
     if ((gControllerInput.buttonDown & 8) && (gMiniCameraPtr->unk_60.at.y < 300.0f)) {
         gMiniCameraPtr->unk_60.at.y += 4.0f * gCameraParams->unk_004;
-        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
-        if (gCameraYaw < -0x38E3) {
+        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
+        if (gCameraRotationY < -0x38E3) {
             gMiniCameraPtr->unk_60.at.y -= 4.0f * gCameraParams->unk_004;
         }
-        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
     } else if ((gControllerInput.buttonDown & 4) && (gMiniCameraPtr->unk_60.at.y > 5.0f)) {
         gMiniCameraPtr->unk_60.at.y -= 4.0f * gCameraParams->unk_004;
-        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
-        if (gCameraYaw >= 0x38E4) {
+        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
+        if (gCameraRotationY >= 0x38E4) {
             gMiniCameraPtr->unk_60.at.y += 4.0f * gCameraParams->unk_004;
         }
-        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
     }
 
     if (gMiniCameraPtr->unk_60.at.y > 200.0f) {
         gMiniCameraPtr->unk_60.at.y = 200.0f;
-        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
     }
 
     if (gMiniCameraPtr->unk_60.at.y < 5.0f) {
         gMiniCameraPtr->unk_60.at.y = 5.0f;
-        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+        Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
     }
 
     if (gControllerInput.buttonDown & 1) {
@@ -288,7 +288,7 @@ void GalleryCamera_ClampToBoundaryCircle(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f
 
     Vec3f_SetComponentsDuplicate(arg0, arg1->x, arg1->y, arg1->z);
     Vec3f_SetComponentsDuplicate(arg1, sp7C.x, sp7C.y, sp7C.z);
-    Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+    Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
 }
 
 void GalleryCamera_ClampAtToBoundaryCircle(Vec3f* arg0, Vec3f* arg1, Vec3f arg2, f32 arg3) {
@@ -340,7 +340,7 @@ void GalleryCamera_ClampAtToBoundaryCircle(Vec3f* arg0, Vec3f* arg1, Vec3f arg2,
     tmp.y = arg0->y;
 
     Vec3f_SetComponentsDuplicate(arg1, tmp.x, tmp.y, tmp.z);
-    Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+    Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
 }
 
 void GalleryCamera_ClampHeight(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3, s32 arg4) {
@@ -364,7 +364,7 @@ void GalleryCamera_ClampHeight(Vec3f* arg0, Vec3f* arg1, f32 arg2, f32 arg3, s32
     }
 
     arg1->y = arg2;
-    Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraYaw, &gCameraPitch);
+    Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, arg1, &gCameraDistance, &gCameraRotationY, &gCameraRotationX);
 }
 
 void GalleryCamera_ClampEyeToPanBounds(Vec3f* arg0, Vec3f* arg1) {
@@ -456,10 +456,10 @@ void GalleryCamera_HandleFreeMoveInput(void) {
         Vec3f_SetComponentsDuplicate(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
         if (gControllerInput.stickY >= 0.0f) {
             mag = -(gControllerInput.stickMag / 6.0f);
-            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraYaw, gCameraPitch);
+            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraRotationY, gCameraRotationX);
         } else {
             mag = gControllerInput.stickMag / 6.0f;
-            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraYaw, gCameraPitch);
+            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.eye, &sp38, mag, gCameraRotationY, gCameraRotationX);
         }
         gCameraDistance = GalleryCamera_Distance3D(gMiniCameraPtr->unk_60.at, sp38);
         GalleryCamera_ClampEyeToPanBounds(&sp44, &sp38);
@@ -467,31 +467,31 @@ void GalleryCamera_HandleFreeMoveInput(void) {
     }
 
     if (gControllerInput.buttonDown & 0x200) {
-        gCameraPitch -= 0x100;
+        gCameraRotationX -= 0x100;
     }
 
     if (gControllerInput.buttonDown & 0x100) {
-        gCameraPitch += 0x100;
+        gCameraRotationX += 0x100;
     }
 
     if (gControllerInput.buttonDown & 0x300) {
         Vec3f_SetComponentsDuplicate(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
-        Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraYaw, gCameraPitch);
+        Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraRotationY, gCameraRotationX);
         GalleryCamera_ClampOrbitBounds(&sp44, &sp38, 1);
         Vec3f_SetComponentsDuplicate(&gMiniCameraPtr->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }
 
     if (gControllerInput.buttonDown & 0x800) {
-        gCameraYaw += 0x100;
+        gCameraRotationY += 0x100;
     }
 
     if (gControllerInput.buttonDown & 0x400) {
-        gCameraYaw -= 0x100;
+        gCameraRotationY -= 0x100;
     }
 
     if (gControllerInput.buttonDown & 0xC00) {
         Vec3f_SetComponentsDuplicate(&sp44, gMiniCameraPtr->unk_60.eye.x, gMiniCameraPtr->unk_60.eye.y, gMiniCameraPtr->unk_60.eye.z);
-        Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraYaw, gCameraPitch);
+        Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &sp38, gCameraDistance, gCameraRotationY, gCameraRotationX);
         GalleryCamera_ClampOrbitBounds(&sp44, &sp38, 0);
         Vec3f_SetComponentsDuplicate(&gMiniCameraPtr->unk_60.eye, sp38.x, sp38.y, sp38.z);
     }

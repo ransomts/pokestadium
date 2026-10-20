@@ -3,10 +3,10 @@
 
 #include "global.h"
 
-void Audio_Stub1(void);
-void Audio_Stub2(void);
-void Audio_Stub3(void);
-void Audio_Stub4(void);
+void Audio_NoopStub1(void);
+void Audio_NoopStub2(void);
+void Audio_NoopStub3(void);
+void Audio_NoopStub4(void);
 void Audio_ResetCurrentMusic(void);
 void Audio_PlayMusicIfChanged(s32 arg0);
 void Audio_PlayMusicIfChangedImmediate(s32 arg0);

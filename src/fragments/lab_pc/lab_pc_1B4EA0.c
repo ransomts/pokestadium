@@ -29,10 +29,10 @@ typedef struct unk_D_88218070 {
     /* 0x10 */ Color_RGBA8* unk_10;
 } unk_D_88218070; // size = 0x14
 
-static char** gMessageBank_0x2A;
+static char** gMessageBankItemScreenGbSaveIdLabel;
 static char** gCommonStrings;
-static char** gStageNames;
-static char** gMessageBank_0xC;
+static char** gItemScreenItemNamesBank;
+static char** gMessageBankItemDescriptions;
 
 void LabItem_ReadDeckEntries(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3) {
     DeckHandle* sp1C = Deck_Open(arg0, arg1, arg2, 0);
@@ -480,7 +480,7 @@ s32 LabItem_DrawItemRow(u8* arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 
     Text_SetEnvColor(sp34.r, sp34.g, sp34.b, sp34.a);
-    Font_Printf(arg1 + 0x19, arg2 + 4, Text_GetString(NULL, 0, gStageNames, arg0[0] - 1));
+    Font_Printf(arg1 + 0x19, arg2 + 4, Text_GetString(NULL, 0, gItemScreenItemNamesBank, arg0[0] - 1));
 
     if (LabItem_IsQuantitylessItemForOperation(arg0[0]) == 0) {
         sp24 = Text_GetString(NULL, 0, gCommonStrings, 0x19);
@@ -1168,7 +1168,7 @@ s32 LabItem_BoxScreen_UpdatePageSelection(unk_func_8821421C_038* arg0) {
             temp_t0 = &((u8*)arg0->unk_30->posX.unk_2C
                             ->posX)[arg0->unk_30->posX.unk_2C->unk_0C * arg0->unk_30->posX.unk_38];
             if (temp_t0 != NULL) {
-                sp2C = Text_GetString(NULL, 0, gMessageBank_0xC, temp_t0[0] - 1);
+                sp2C = Text_GetString(NULL, 0, gMessageBankItemDescriptions, temp_t0[0] - 1);
             }
             arg0->unk_40->unk_40 = sp2C;
             break;
@@ -2527,7 +2527,7 @@ s32 LabItem_RefreshDescriptionPanel(unk_func_8821421C_02C* arg0) {
             ((func88500A6C)Memmap_GetFragmentVaddr(WidgetTree_SelectPage))(arg0->unk_5C, 2);
             temp_v0_2 = LabItem_GetHighlightedEntry(arg0->unk_6C->unk_2C);
             if (temp_v0_2 != NULL) {
-                sp2C = Text_GetString(NULL, 0, gMessageBank_0xC, temp_v0_2[0] - 1);
+                sp2C = Text_GetString(NULL, 0, gMessageBankItemDescriptions, temp_v0_2[0] - 1);
             }
             arg0->unk_68->unk_40 = sp2C;
             break;
@@ -2942,7 +2942,7 @@ void LabPC_BuildItemScreenWidget(ItemPCScreen* arg0, s32 arg1, s32 arg2, MemoryP
 
     sp60 = mem_pool_alloc(arg3, sizeof(unk_func_88509A2C));
     ((func88509A2C)Memmap_GetFragmentVaddr(WidgetTree_InitSaveSlotLabel))(sp60, 0x38, 0x22, GbSave_GetActivePort(),
-                                                           Text_GetString(NULL, 0, gMessageBank_0x2A, 0));
+                                                           Text_GetString(NULL, 0, gMessageBankItemScreenGbSaveIdLabel, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp64, sp60);
 
     sp5C = mem_pool_alloc(arg3, sizeof(unk_func_88509E34));
@@ -3013,10 +3013,10 @@ void LabPC_ShowItems(UNUSED TextObject* arg0) {
 
     Text_InitStringTables();
 
-    gMessageBank_0x2A = Text_GetStringTable(0x2A);
+    gMessageBankItemScreenGbSaveIdLabel = Text_GetStringTable(0x2A);
     gCommonStrings = Text_GetStringTable(3);
-    gStageNames = Text_GetStringTable(0x27);
-    gMessageBank_0xC = Text_GetStringTable(0xC);
+    gItemScreenItemNamesBank = Text_GetStringTable(0x27);
+    gMessageBankItemDescriptions = Text_GetStringTable(0xC);
     sp24 = Text_GetStringTable(7);
 
     sp30 = mem_pool_alloc(sp34, sizeof(ItemPCScreen));

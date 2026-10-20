@@ -11,7 +11,7 @@ static s16 gEffect45FourStreamTrailPhaseCounter;
 static s16 gEffect62OwnerLinkedFourStreamPhaseCounter;
 static Mtx gEffectMatrix;
 static s16 gParticleSpawnTimerI;
-static s16 gParticleSpawnTimerD0;
+static s16 gEffect78Radial20SpawnTimer;
 static s16 gParticleSpawnTimerH;
 static s16 gEffect19Radial20SpawnTimer;
 static s16 gEffect7TexturedRibbonSheetSpawnTimer;
@@ -854,15 +854,15 @@ void BattleAnim_StartEffect78Radial20_EmitVariantA(void) {
 }
 
 void BattleAnim_StartEffect78Radial20_Init(void) {
-    gParticleSpawnTimerD0 = 0;
+    gEffect78Radial20SpawnTimer = 0;
     BattleAnim_ResetSharedEffectMatrix();
     Radial20_ResetPool();
     BattleAnim_StartEffect78Radial20_EmitVariantA();
 }
 
 s32 BattleAnim_StartEffect78Radial20_Update(void) {
-    gParticleSpawnTimerD0++;
-    if (gParticleSpawnTimerD0 >= 0xB5) {
+    gEffect78Radial20SpawnTimer++;
+    if (gEffect78Radial20SpawnTimer >= 0xB5) {
         return -1;
     }
     return Radial20_IsComplete();

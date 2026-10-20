@@ -28,11 +28,11 @@ s32 Pokedex_HandleEntryMenuInput(unk_func_888044BC_040*, Controller*);
 s32 Pokedex_DrawDataPanel(unk_func_888044BC_044_02C*, s32, s32);
 s32 Pokedex_DrawPreview(unk_func_888044BC_04C_02C*, s32, s32);
 
-static char** gTrainerCardMsgBank;
+static char** gPokedexStatLabelsBank;
 static char** gSpeciesNameMsgBank;
 static char** gSpeciesDexMsgBank;
-static char** gSpeciesTypeMsgBank;
-static char** gSpeciesCategoryMsgBank;
+static char** gSpeciesCategoryNamesBank;
+static char** gPokedexAreaNamesBank;
 static Fragment2_1GraphNode gTrainerCardGraphNode;
 static ModelPreview* gTrainerCardSpriteMgr;
 static Stage* gTrainerCardStage;
@@ -364,12 +364,12 @@ void Pokedex_DrawTrainerInfoCard(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 
     Font_SetActive(0x10, 0);
     Font_Printf(arg1 + 0x10, arg2 + 6, arg0->unk_30);
     Font_SetActive(0x10, 0);
-    Font_Printf(arg1 + 0x10, arg2 + 0x24, "%s%05d", Text_GetString(NULL, 0, gTrainerCardMsgBank, 7), arg0->unk_2C);
+    Font_Printf(arg1 + 0x10, arg2 + 0x24, "%s%05d", Text_GetString(NULL, 0, gPokedexStatLabelsBank, 7), arg0->unk_2C);
     Font_SetActive(8, 0);
     Text_SetPrimColor(0x80, 0xFF, 0x80, 0xFF);
-    Font_Printf(arg1 + 0x24, arg2 + 0x4C, Text_GetString(NULL, 0, gTrainerCardMsgBank, 8));
-    Font_Printf(arg1 + 0x24, arg2 + 0x64, Text_GetString(NULL, 0, gTrainerCardMsgBank, 9));
-    Font_Printf(arg1 + 0x24, arg2 + 0x7C, Text_GetString(NULL, 0, gTrainerCardMsgBank, 0xA));
+    Font_Printf(arg1 + 0x24, arg2 + 0x4C, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 8));
+    Font_Printf(arg1 + 0x24, arg2 + 0x64, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 9));
+    Font_Printf(arg1 + 0x24, arg2 + 0x7C, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0xA));
     Font_DisableTwoCycleTexturing();
     Text_SetEnvColor(gTrainerCardStatTextColor.r, gTrainerCardStatTextColor.g, gTrainerCardStatTextColor.b, gTrainerCardStatTextColor.a);
     Font_SetActive(8, 0);
@@ -422,11 +422,11 @@ s32 Pokedex_DrawSortOrderLabel(unk_func_888044BC_040_030* arg0, s32 arg1, s32 ar
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
     Text_SetEnvColor(0x9C, 0xCC, 0x98, 0xFF);
-    sp74 = Text_GetString(NULL, 0, gTrainerCardMsgBank, 0);
+    sp74 = Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0);
     Font_Printf((arg1 - (Font_MeasureTextExtent(0, 0, sp74) / 2)) + 0x7C, arg2 + 0xA, sp74);
     Font_SetActive(0x10, 0);
-    sp74 = Text_GetString(NULL, 0, gTrainerCardMsgBank, 1);
-    sp70 = Text_GetString(NULL, 0, gTrainerCardMsgBank, 2);
+    sp74 = Text_GetString(NULL, 0, gPokedexStatLabelsBank, 1);
+    sp70 = Text_GetString(NULL, 0, gPokedexStatLabelsBank, 2);
     sp6C = Font_MeasureTextExtent(0, 0, sp74);
     temp_v0_3 = Font_MeasureTextExtent(0, 0, sp70);
 
@@ -496,10 +496,10 @@ void Pokedex_BuildEntryMenuWidget(unk_func_888044BC_040* arg0, s32 arg1, s32 arg
     Pokedex_InitSortOrderLabel(arg0->unk_30, 0, 0);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp58->posX.posX, &arg0->unk_30->posX.posX);
     PointerList_Allocate(&arg0->unk_38, 4, arg3);
-    PointerList_Insert(&arg0->unk_38, Text_GetString(NULL, 0, gTrainerCardMsgBank, 3), 0);
-    PointerList_Insert(&arg0->unk_38, Text_GetString(NULL, 0, gTrainerCardMsgBank, 4), 1);
-    PointerList_Insert(&arg0->unk_38, Text_GetString(NULL, 0, gTrainerCardMsgBank, 5), 2);
-    PointerList_Insert(&arg0->unk_38, Text_GetString(NULL, 0, gTrainerCardMsgBank, 6), 3);
+    PointerList_Insert(&arg0->unk_38, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 3), 0);
+    PointerList_Insert(&arg0->unk_38, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 4), 1);
+    PointerList_Insert(&arg0->unk_38, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 5), 2);
+    PointerList_Insert(&arg0->unk_38, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 6), 3);
 
     arg0->unk_34 = mem_pool_alloc(arg3, sizeof(unk_func_88200FA0_030_030));
     ((func885060BC)Memmap_GetFragmentVaddr(WidgetTree_InitPagedGrid))(arg0->unk_34, 0x154, 4, Pokedex_DrawEntryMenuItem, 0x70, 0x18, 4, 1,
@@ -531,7 +531,7 @@ void Pokedex_FormatHeightString(s32 arg0, s32 arg1, s32 arg2) {
     char sp2C[12];
     UNUSED s32 pad[2];
 
-    sprintf(sp2C, "%d%s%02d", arg2 / 100, Text_GetString(NULL, 0, gTrainerCardMsgBank, 0x11), arg2 % 100);
+    sprintf(sp2C, "%d%s%02d", arg2 / 100, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0x11), arg2 % 100);
     Font_Printf(arg0 - Font_MeasureTextExtent(0, 0, sp2C), arg1, sp2C);
 }
 
@@ -561,19 +561,19 @@ s32 Pokedex_DrawDataPanel(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0x96, 0xFF);
     Font_SetActive(0x10, 0);
-    Font_Printf(arg1 + 0x10, arg2 + 6, "%s%03d", Text_GetString(NULL, 0, gTrainerCardMsgBank, 0x10), sp54->posX);
+    Font_Printf(arg1 + 0x10, arg2 + 6, "%s%03d", Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0x10), sp54->posX);
     Font_SetActive(0x10, 0);
     Font_Printf(arg1 + 0x10, arg2 + 0x24, Text_GetString(NULL, 0, gSpeciesNameMsgBank, sp54->posX - 1));
     Font_SetActive(8, 0);
     Text_SetPrimColor(0x80, 0xFF, 0x80, 0xFF);
-    Font_Printf(arg1 + 0x24, arg2 + 0x4C, Text_GetString(NULL, 0, gSpeciesTypeMsgBank, sp54->posX - 1));
-    Font_Printf(arg1 + 0x24, arg2 + 0x64, Text_GetString(NULL, 0, gTrainerCardMsgBank, 0xC));
-    Font_Printf(arg1 + 0x24, arg2 + 0x7C, Text_GetString(NULL, 0, gTrainerCardMsgBank, 0xD));
+    Font_Printf(arg1 + 0x24, arg2 + 0x4C, Text_GetString(NULL, 0, gSpeciesCategoryNamesBank, sp54->posX - 1));
+    Font_Printf(arg1 + 0x24, arg2 + 0x64, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0xC));
+    Font_Printf(arg1 + 0x24, arg2 + 0x7C, Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0xD));
     Font_DisableTwoCycleTexturing();
     Font_SetActive(8, 0);
     Text_SetEnvColor(gTrainerCardDexLabelColor.r, gTrainerCardDexLabelColor.g, gTrainerCardDexLabelColor.b, gTrainerCardDexLabelColor.a);
-    sp4C = Text_GetString(NULL, 0, gTrainerCardMsgBank, 0xE);
-    sp48 = Text_GetString(NULL, 0, gTrainerCardMsgBank, 0xF);
+    sp4C = Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0xE);
+    sp48 = Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0xF);
     sp44 = Font_MeasureTextExtent(0, 0, sp4C);
 
     temp_v0_2 = Font_MeasureTextExtent(0, 0, sp48);
@@ -588,7 +588,7 @@ s32 Pokedex_DrawDataPanel(unk_func_888044BC_044_02C* arg0, s32 arg1, s32 arg2) {
         Pokedex_FormatHeightString(arg1 + sp44, arg2 + 0x64, gMenuItemCoords[sp54->posX].posX);
         Pokedex_FormatWeightString(arg1 + sp44, arg2 + 0x7C, gMenuItemCoords[sp54->posX].posY);
     } else {
-        sprintf(sp34, "?%s??", Text_GetString(NULL, 0, gTrainerCardMsgBank, 0x11));
+        sprintf(sp34, "?%s??", Text_GetString(NULL, 0, gPokedexStatLabelsBank, 0x11));
         Font_Printf((arg1 + sp44) - Font_MeasureTextExtent(0, 0, sp34), arg2 + 0x64, sp34);
         sp48 = "???";
         Font_Printf((arg1 + sp44) - Font_MeasureTextExtent(0, 0, sp48), arg2 + 0x7C, sp48);
@@ -6181,7 +6181,7 @@ void Pokedex_EnterAreaMapScreen(void) {
     StageLoader_RunFrames(2);
     sp2C = Pokedex_GetSelectedSpeciesIndex(gTrainerCardMenu->unk_38->unk_2C) + 1;
     PictureQuiz_ShowSpeciesInfo(sp2C, gTrainerCardState, 0x70800, gTrainerCardSubstate, 0x4B000, Text_GetString(NULL, 0, gSpeciesNameMsgBank, sp2C - 1),
-                  gSpeciesCategoryMsgBank);
+                  gPokedexAreaNamesBank);
     StageFade_Start(8);
     BgStage_RunUntilCondition(0xA, Pokedex_DrawAreaMapFrame);
 }
@@ -6318,11 +6318,11 @@ s32 Pokedex_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
 
     sp2C = mem_pool_try_init(0x8000, 0);
     Text_InitStringTables();
-    gTrainerCardMsgBank = Text_GetStringTable(8);
+    gPokedexStatLabelsBank = Text_GetStringTable(8);
     gSpeciesNameMsgBank = Text_GetStringTable(0x24);
     gSpeciesDexMsgBank = Text_GetStringTable(0xA);
-    gSpeciesTypeMsgBank = Text_GetStringTable(0x28);
-    gSpeciesCategoryMsgBank = Text_GetStringTable(9);
+    gSpeciesCategoryNamesBank = Text_GetStringTable(0x28);
+    gPokedexAreaNamesBank = Text_GetStringTable(9);
     gTrainerCardUnusedInt = GbSave_GetActivePort();
 
     if (gTrainerCardUnusedInt != -1) {

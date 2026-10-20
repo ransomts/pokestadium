@@ -171,7 +171,7 @@ static DLParam gResultScreenDLParams1 = { 0, 0, 30 };
 static DLParam gResultScreenDLParams2 = { 0, 0, 150 };
 
 static s32 pad_86104B64[] = { 0, 0, 0 };
-static Gfx gEmptyDL1[] = {
+static Gfx gPatternTileMaskDlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -182,7 +182,7 @@ static u32 gPatternTileMask[] = {
     0x0001F7CB, 0xF7CB0001, 0x0001F7CB, 0xF7CB0001, 0xFFFE0001, 0x0001FFFE, 0xFFFE0001, 0x0001FFFE,
 };
 
-static Gfx gEmptyDL2[] = {
+static Gfx gPatternTile0DlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -196,7 +196,7 @@ u32 gPatternTile0[] = {
     0xFFFEFFFE, 0xFFFED6B5, 0xD6B5D6B5, 0xD6B5FFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-static Gfx gEmptyDL3[] = {
+static Gfx gPatternTile1DlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -210,7 +210,7 @@ u32 gPatternTile1[] = {
     0xFFFEFFFE, 0xFFFED6B5, 0xD6B5D6B5, 0xD6B5FFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-static Gfx gEmptyDL4[] = {
+static Gfx gPatternTile2DlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -224,7 +224,7 @@ u32 gPatternTile2[] = {
     0xFFFEFFFE, 0xFFFED6B5, 0xD6B5D6B5, 0xD6B5FFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-static Gfx gEmptyDL5[] = {
+static Gfx gPatternTile3DlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -238,7 +238,7 @@ u32 gPatternTile3[] = {
     0xFFFEFFFE, 0xFFFED6B5, 0xD6B5D6B5, 0xD6B5FFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-static Gfx gEmptyDL6[] = {
+static Gfx gPatternTile4DlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -252,7 +252,7 @@ u32 gPatternTile4[] = {
     0xFFFEFFFE, 0xFFFED6B5, 0xD6B5D6B5, 0xD6B5FFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-static Gfx gEmptyDL7[] = {
+static Gfx gPatternTile5DlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -266,7 +266,7 @@ u32 gPatternTile5[] = {
     0xFFFEFFFE, 0xFFFED6B5, 0xD6B5D6B5, 0xD6B5FFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-static Gfx gEmptyDL8[] = {
+static Gfx gPatternTile6DlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -280,7 +280,7 @@ u32 gPatternTile6[] = {
     0xFFFEFFFE, 0xFFFED6B5, 0xD6B5D6B5, 0xD6B5FFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-static Gfx gEmptyDL9[] = {
+static Gfx gPatternTile7DlEnd[] = {
     gsSPEndDisplayList(),
 };
 
@@ -309,12 +309,12 @@ static s16 gWinnerPlayerIndex;
 static s16 gPlayerItemRows;
 static s16 gResultScreenFlag;
 static s16 gResultScreenAlpha;
-static s32 gUnusedAC;
+static s32 gWinnerScore;
 static s32 gRunnerUpScore;
 static TextObject* gResultScreenTextObj;
 static s16 gClefairyGameDifficultyTier;
 static s16 gInputReadyFlag;
-static s32 gUnusedBC;
+static s32 gMaxRemainingHealth;
 static unk_D_861054C0 gPlayerStates[4];
 static s32 gResultScreenBarMax;
 static unk_D_861054C0* gCurrentPlayerState;
@@ -588,54 +588,54 @@ void ClefairyGame_DrawOverlay(s32 arg0) {
             Font_SetLineHeight(0xC);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-            Font_Printf(0xA0 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gItemNamesBank, 0x1A)) / 2), 0x20,
-                          Text_GetString(NULL, 0, gItemNamesBank, 0x1A));
+            Font_Printf(0xA0 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x1A)) / 2), 0x20,
+                          Text_GetString(NULL, 0, gMinigameNamesBank, 0x1A));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x1B));
-            Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gItemNamesBank, 0x1C));
+            Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x1B));
+            Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gMinigameNamesBank, 0x1C));
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-            Widget_MeasureLabelBox(&sp48, &sp44, Text_GetString(NULL, 0, gItemNamesBank, 0x1B),
-                          Text_GetString(NULL, 0, gItemNamesBank, 0x61), 0xC);
+            Widget_MeasureLabelBox(&sp48, &sp44, Text_GetString(NULL, 0, gMinigameNamesBank, 0x1B),
+                          Text_GetString(NULL, 0, gMinigameNamesBank, 0x61), 0xC);
 
             if (sp48 >= 0) {
-                Font_Printf(sp48 + 0x28, sp44 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x61));
+                Font_Printf(sp48 + 0x28, sp44 + 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x61));
             }
 
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-            Font_Printf(0x8C, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x1D));
+            Font_Printf(0x8C, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x1D));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-            Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
+            Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x14));
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(0x75, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-            Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+            Font_Printf(0x75, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+            Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
             Font_DisableTwoCycleTexturing();
             break;
 
         case 3:
             Font_SetActive(4, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gItemNamesBank, 0x1E)) / 2), 0x40,
-                          Text_GetString(NULL, 0, gItemNamesBank, 0x1E));
+            Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x1E)) / 2), 0x40,
+                          Text_GetString(NULL, 0, gMinigameNamesBank, 0x1E));
             break;
 
         case 5:
             Font_SetActive(4, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-            Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gItemNamesBank, 0x1F)) / 2), 0x40,
-                          Text_GetString(NULL, 0, gItemNamesBank, 0x1F));
+            Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x1F)) / 2), 0x40,
+                          Text_GetString(NULL, 0, gMinigameNamesBank, 0x1F));
             break;
 
         case 8:
             if (gResultScreenTimer < 0x3C) {
                 Font_SetActive(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gItemNamesBank, 0x20)) / 2), 0x40,
-                              Text_GetString(NULL, 0, gItemNamesBank, 0x20));
+                Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x20)) / 2), 0x40,
+                              Text_GetString(NULL, 0, gMinigameNamesBank, 0x20));
             }
             break;
 
@@ -644,8 +644,8 @@ void ClefairyGame_DrawOverlay(s32 arg0) {
             if (gResultScreenTimer < 0x3C) {
                 Font_SetActive(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gItemNamesBank, 0x21)) / 2), 0x40,
-                              Text_GetString(NULL, 0, gItemNamesBank, 0x21));
+                Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x21)) / 2), 0x40,
+                              Text_GetString(NULL, 0, gMinigameNamesBank, 0x21));
             }
             break;
 
@@ -653,8 +653,8 @@ void ClefairyGame_DrawOverlay(s32 arg0) {
             if ((gResultScreenTimer >= 0x10) && (gResultScreenTimer < 0x3C)) {
                 Font_SetActive(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
-                Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gItemNamesBank, 0x22)) / 2), 0x40,
-                              Text_GetString(NULL, 0, gItemNamesBank, 0x22));
+                Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x22)) / 2), 0x40,
+                              Text_GetString(NULL, 0, gMinigameNamesBank, 0x22));
             }
             break;
     }
@@ -1321,7 +1321,7 @@ s32 ClefairyGame_UpdatePatternPlayback(void) {
 
     temp_lo = gResultScreenTimer / 17;
     if ((temp_lo + 1) == gPlayerItemCount) {
-        gUnusedBC = ClefairyGame_ComputeMaxRemainingHealth();
+        gMaxRemainingHealth = ClefairyGame_ComputeMaxRemainingHealth();
     }
 
     if (temp_lo >= gPlayerItemCount) {
@@ -1536,11 +1536,11 @@ s32 ClefairyGame_UpdatePenaltyPhase(void) {
 
 void ClefairyGame_MainLoop(void) {
     ClefairyGame_BeginRound();
-    gUnusedBC = 0;
+    gMaxRemainingHealth = 0;
 
     while (true) {
         Audio_UpdateSpecialSequence(0x1E, 0);
-        Audio_UpdateSpecialSequence(0x20, gUnusedBC);
+        Audio_UpdateSpecialSequence(0x20, gMaxRemainingHealth);
 
         if (gResultMenuVisible == 0) {
             switch (gResultScreenState) {
@@ -1656,7 +1656,7 @@ void ClefairyGame_ShowWinnerSequence(void) {
         gCurrentPlayerState = &gPlayerStates[i];
         gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
         if ((i == gWinnerPlayerIndex) ||
-            ((gWinnerPlayerIndex < 0) && (gUnusedAC == gCurrentPlayerState->unk_1A8) && (gCurrentPlayerState->unk_1A8 > 0))) {
+            ((gWinnerPlayerIndex < 0) && (gWinnerScore == gCurrentPlayerState->unk_1A8) && (gCurrentPlayerState->unk_1A8 > 0))) {
             ModelAnim_SetAnimation(gCurrentPlayerGraphNode, 0xB);
             ModelAnim_ClearEventTrack(gCurrentPlayerGraphNode);
             ModelAnim_SetEventTrack(gCurrentPlayerGraphNode, 3);
@@ -1844,9 +1844,9 @@ s32 ClefairyGame_DetermineWinner(void) {
     s32 var_s4;
     s32 var_v1;
     s32 i;
-    s32* new_var = &gUnusedAC;
+    s32* new_var = &gWinnerScore;
 
-    gUnusedAC = 0;
+    gWinnerScore = 0;
     gRunnerUpScore = 0;
     var_s4 = -1;
 
@@ -1855,7 +1855,7 @@ s32 ClefairyGame_DetermineWinner(void) {
             gRunnerUpScore = var_v1;
             var_s4 = i;
             var_v1 = gPlayerStates[i].unk_1A8;
-            gUnusedAC = gPlayerStates[i].unk_1A8;
+            gWinnerScore = gPlayerStates[i].unk_1A8;
         }
     }
 

@@ -25,7 +25,7 @@ static Fragment2_1GraphNode gMenuOptionNodes[8];
 static unk_D_82D0AB38 gMenuItemData[4];
 static SessionModeSettings gGbAudioState;
 static u16 gPlayerMoney;
-static char** gMenuMessageBank;
+static char** gTransferPakCheckLabelsBank;
 static s32 gIsStickerStationConnected;
 static s32 gAudioModeFlag;
 static s32 gMenuAnimationFlag;
@@ -33,7 +33,7 @@ static GraphNode* gPartyCardGraphNode;
 static GraphNode* gIconPanelGraphNode;
 static GraphNode* gBottomBannerGraphNode;
 static FramebufferImage* gMenuFramebufferImages[4];
-static FramebufferImage* gMenuFramebufferImageB;
+static FramebufferImage* gMenuIconPanelFramebuffer;
 static FramebufferImage* gMenuGraphNodeD;
 static unk_D_82D0ABD0 gStatusPopup;
 static FramebufferImage* gMenuFramebufferImagesAlt[8];
@@ -1187,7 +1187,7 @@ s32 PakUi_RenderIconPanelTexture(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
 
-        gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuFramebufferImageB[0].img_p & 0x1FFFFFFF);
+        gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuIconPanelFramebuffer[0].img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, MenuTextureB_DisplayList);
 
         GeoRender_ApplyMaterialState();
@@ -1217,9 +1217,9 @@ void PakUi_DrawPartyProgressBar(s32 arg0) {
         if (arg0 == 10) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
-            sp30 = Text_GetString(NULL, 0, gMenuMessageBank, 0x1D);
+            sp30 = Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x1D);
             Font_Printf(0x8C - (Font_MeasureTextExtent(0x10, 0, sp30) / 2), 0x2C, sp30);
-            sp30 = Text_GetString(NULL, 0, gMenuMessageBank, 0x1E);
+            sp30 = Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x1E);
             Font_Printf(0x8C - (Font_MeasureTextExtent(0x10, 0, sp30) / 2), 0x48, sp30);
             Font_EndTexturedTextRendering();
         }
@@ -1378,9 +1378,9 @@ void PakUi_BuildPartyCard(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
         }
     } else {
         Font_SetActive(4, 0);
-        sp40 = Text_GetString(NULL, 0, gMenuMessageBank, 0x1D);
+        sp40 = Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x1D);
         Font_Printf(0x40 - (Font_MeasureTextExtent(4, 0, sp40) / 2), 0x24, sp40);
-        sp40 = Text_GetString(NULL, 0, gMenuMessageBank, 0x1F);
+        sp40 = Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x1F);
         Font_Printf(0x40 - (Font_MeasureTextExtent(4, 0, sp40) / 2), 0x38, sp40);
     }
 
@@ -1390,15 +1390,15 @@ void PakUi_BuildPartyCard(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s8* arg4) {
 
         switch (arg2) {
             case 20:
-                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gMenuMessageBank, 0x20));
+                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x20));
                 break;
 
             case 19:
-                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gMenuMessageBank, 0x21));
+                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x21));
                 break;
 
             case 21:
-                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gMenuMessageBank, 0x22));
+                Font_Printf(0xE, 0x70, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x22));
                 break;
         }
     }
@@ -1429,8 +1429,8 @@ void PakUi_InitPartyCard(s32 arg0) {
 }
 
 void PakUi_BuildIconPanel(void) {
-    gMenuFramebufferImageB = GfxImage_Allocate(0, 2, 0x21A, 0x64, 1);
-    PakUi_BuildFrameBuffer(gMenuFramebufferImageB, 0x216, 0x60);
+    gMenuIconPanelFramebuffer = GfxImage_Allocate(0, 2, 0x21A, 0x64, 1);
+    PakUi_BuildFrameBuffer(gMenuIconPanelFramebuffer, 0x216, 0x60);
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -1462,7 +1462,7 @@ void PakUi_BuildIconPanel(void) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     Font_SetLineHeight(0x1C);
-    Font_Printf(0x6E, 8, Text_GetString(NULL, 0, gMenuMessageBank, 0x23));
+    Font_Printf(0x6E, 8, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x23));
     Font_EndTexturedTextRendering();
 }
 
@@ -1479,7 +1479,7 @@ void PakUi_BuildBottomBanner(void) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    sp28 = Text_GetString(NULL, 0, gMenuMessageBank, 0x24);
+    sp28 = Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x24);
     sp2C = Font_MeasureTextExtent(0x10, 0, sp28);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
@@ -1687,12 +1687,12 @@ void PakUi_DrawRulesPanel(s16 arg0, s16 arg1) {
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
             Font_SetLineHeight(0x1A);
-            Font_Printf(0x9B, sp24 + 0xC, Text_GetString(NULL, 0, gMenuMessageBank, 0x25));
-            Font_Printf(0x9B, sp24 + 0x44, Text_GetString(NULL, 0, gMenuMessageBank, 0x26));
+            Font_Printf(0x9B, sp24 + 0xC, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x25));
+            Font_Printf(0x9B, sp24 + 0x44, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x26));
             Text_SetEnvColor(0xFF, 0xFF, ((arg1 * 0x1C) == 0) ? 0 : 0xFF, 0xFF);
-            Font_Printf(0x163, sp24 + 0x48, Text_GetString(NULL, 0, gMenuMessageBank, 0x27));
+            Font_Printf(0x163, sp24 + 0x48, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x27));
             Text_SetEnvColor(0xFF, 0xFF, ((arg1 * 0x1C) == 0x1C) ? 0 : 0xFF, 0xFF);
-            Font_Printf(0x163, sp24 + 0x64, Text_GetString(NULL, 0, gMenuMessageBank, 0x28));
+            Font_Printf(0x163, sp24 + 0x64, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x28));
             Font_EndTexturedTextRendering();
         }
     }
@@ -1715,52 +1715,52 @@ void PakUi_DrawDataSummaryPanel(s16 arg0, s16 arg1, ContinueRecord* arg2, s32 ar
             }
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
-            Font_Printf(0x99, temp_s0 + 0xD, Text_GetString(NULL, 0, gMenuMessageBank, 0x29));
-            Font_Printf(0x99, temp_s0 + 0xA5, Text_GetString(NULL, 0, gMenuMessageBank, 0x2A));
-            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 0, arg1, Text_GetString(NULL, 0, gMenuMessageBank, 0x2B));
-            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 1, arg1, Text_GetString(NULL, 0, gMenuMessageBank, 0x2C));
-            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 2, arg1, Text_GetString(NULL, 0, gMenuMessageBank, 0x2D));
+            Font_Printf(0x99, temp_s0 + 0xD, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x29));
+            Font_Printf(0x99, temp_s0 + 0xA5, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x2A));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 0, arg1, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x2B));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 1, arg1, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x2C));
+            PakUi_DrawMenuOptionText(0xC5, temp_s0 + 0xC7, 2, arg1, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x2D));
             Text_SetEnvColor(0xFF, 0x64, 0x64, 0xFF);
 
             if (arg2->posX == 7) {
-                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
-                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->TrainerSlotSaveData_GamePort + 0x13));
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg2->posX - 1));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg2->TrainerSlotSaveData_GamePort + 0x13));
 
                 if (arg2->TrainerSlotSaveData_GamePort < 8) {
                     if (arg2->posY < 4) {
                         Text_SetNumberToken(1, arg2->posY);
-                        Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gMenuMessageBank, 0x2E));
+                        Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gTransferPakCheckLabelsBank, 0x2E));
                     } else {
-                        Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gMenuMessageBank, 0x2F));
+                        Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x2F));
                     }
                 } else {
                     Text_SetNumberToken(1, arg2->posY);
-                    Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gMenuMessageBank, 0x30));
+                    Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(sp50, sizeof(sp50), gTransferPakCheckLabelsBank, 0x30));
                 }
             } else if ((arg2->posX == 3) || (arg2->posX == 6)) {
-                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
-                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->TrainerSlotSaveData_GamePort + 7));
-                Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posY + 0xA));
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg2->posX - 1));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg2->TrainerSlotSaveData_GamePort + 7));
+                Font_Printf(0xA9, temp_s0 + 0x69, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg2->posY + 0xA));
             } else {
-                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
-                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posY + 0xA));
+                Font_Printf(0xA9, temp_s0 + 0x2D, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg2->posX - 1));
+                Font_Printf(0xA9, temp_s0 + 0x4B, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg2->posY + 0xA));
             }
 
             if (arg2->posX != 7) {
                 Font_SetActive(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 Text_SetNumberToken(1, arg2->rotation);
-                Font_Printf(0x12D, temp_s0 + 0x85, Text_GetString(&sp50, 0x100, gMenuMessageBank, 0x31));
+                Font_Printf(0x12D, temp_s0 + 0x85, Text_GetString(&sp50, 0x100, gTransferPakCheckLabelsBank, 0x31));
             }
 
             Font_SetActive(8, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
             Font_SetLineHeight(0x1A);
-            Font_Printf(0xA1, temp_s0 + 0x124, Text_GetString(NULL, 0, gMenuMessageBank, 0x32));
+            Font_Printf(0xA1, temp_s0 + 0x124, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x32));
             Font_EndTexturedTextRendering();
 
             if (arg2->unk_03 == 1) {
-                s32 temp_v0_3 = Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gMenuMessageBank, arg2->posX - 1));
+                s32 temp_v0_3 = Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg2->posX - 1));
 
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -1963,11 +1963,11 @@ void PakUi_DrawStatusPopup(unk_D_82D0ABD0* arg0) {
             Font_SetLineHeight(0x1C);
 
             if (arg0->RentalSlotAnimData_PosePhase != 0) {
-                Font_Printf(sp4A + 0x76, temp_s0 + 0x18, Text_GetString(NULL, 0, gMenuMessageBank, arg0->RentalSlotAnimData_PosePhase + 0x32));
+                Font_Printf(sp4A + 0x76, temp_s0 + 0x18, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg0->RentalSlotAnimData_PosePhase + 0x32));
             }
 
             if (arg0->unk_0A != 0) {
-                Font_Printf(sp4A + 0x76, temp_s0 + 0x5A, Text_GetString(NULL, 0, gMenuMessageBank, arg0->unk_0A + 0x32));
+                Font_Printf(sp4A + 0x76, temp_s0 + 0x5A, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, arg0->unk_0A + 0x32));
             }
 
             Font_EndTexturedTextRendering();
@@ -2181,14 +2181,14 @@ void PakUi_DrawHeaderProgressBar(s32 arg0, s32 arg1) {
 
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
-            tmp = (Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gMenuMessageBank, 0x3B)));
-            Font_Printf(0x140 - tmp / 2, 0x36, Text_GetString(NULL, 0, gMenuMessageBank, 0x3B));
+            tmp = (Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3B)));
+            Font_Printf(0x140 - tmp / 2, 0x36, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3B));
 
             if (gGbAudioState.posX == 0x1F8) {
                 Font_SetActive(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, sp48);
-                Font_Printf(0x1D6, 0x2D, Text_GetString(NULL, 0, gMenuMessageBank, 0x3C));
-                Font_Printf(0x1D6, 0x43, Text_GetString(NULL, 0, gMenuMessageBank, 0x3D));
+                Font_Printf(0x1D6, 0x2D, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3C));
+                Font_Printf(0x1D6, 0x43, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3D));
             }
 
             Font_EndTexturedTextRendering();
@@ -2221,9 +2221,9 @@ void PakUi_DrawBodyProgressBar(s32 arg0, s32 arg1) {
             Font_SetActive(0x10, 0);
             Font_SetLineHeight(0x1C);
             if (gAudioModeFlag == 0) {
-                Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gMenuMessageBank, gAudioMessageIndices[gAudioMessageIndex]));
+                Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, gAudioMessageIndices[gAudioMessageIndex]));
             } else {
-                Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gMenuMessageBank, 0x46));
+                Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x46));
             }
             Font_EndTexturedTextRendering();
         }
@@ -2339,9 +2339,9 @@ FramebufferImage* PakUi_BuildGameIconBuffer(s32 arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
     Font_BeginTranslucentTextRendering();
-    temp_s0 = Font_MeasureTextExtent(8, 0, Text_GetString(NULL, 0, gMenuMessageBank, 0x3E));
+    temp_s0 = Font_MeasureTextExtent(8, 0, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3E));
     Font_SetActive(8, 0);
-    Font_Printf(0x54 - (temp_s0 / 2), 0x74, Text_GetString(NULL, 0, gMenuMessageBank, 0x3E));
+    Font_Printf(0x54 - (temp_s0 / 2), 0x74, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3E));
     Font_EndTexturedTextRendering();
 
     return sp3C;
@@ -2367,7 +2367,7 @@ FramebufferImage* PakUi_BuildControllerIconBuffer(void) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
     Font_SetLineHeight(0x16);
-    Font_Printf(0x50, 0x17, Text_GetString(NULL, 0, gMenuMessageBank, 0x3F));
+    Font_Printf(0x50, 0x17, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3F));
     Font_EndTexturedTextRendering();
 
     return sp34;
@@ -2393,7 +2393,7 @@ FramebufferImage* PakUi_BuildControllerIconBufferAlt(void) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
     Font_SetLineHeight(0x16);
-    Font_Printf(0x50, 0x17, Text_GetString(NULL, 0, gMenuMessageBank, 0x40));
+    Font_Printf(0x50, 0x17, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x40));
     Font_EndTexturedTextRendering();
 
     return sp34;
@@ -2419,7 +2419,7 @@ FramebufferImage* PakUi_BuildMonIconBuffer(void) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
     Font_SetLineHeight(0x16);
-    Font_Printf(0x40, 0x14, Text_GetString(NULL, 0, gMenuMessageBank, 0x44));
+    Font_Printf(0x40, 0x14, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x44));
     Font_EndTexturedTextRendering();
 
     return sp34;
@@ -2456,11 +2456,11 @@ void TransferPak_MenuIconsInit(void) {
     gMenuFramebufferImagesAlt[0] = PakUi_BuildGameIconBuffer(0);
     gMenuFramebufferImagesAlt[7] = PakUi_BuildGameIconBuffer(1);
     gMenuFramebufferImagesAlt[1] = PakUi_BuildControllerIconBufferAlt();
-    gMenuFramebufferImagesAlt[2] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gMenuMessageBank, 0x41), 0x1E, 0x64, 0x1E);
+    gMenuFramebufferImagesAlt[2] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x41), 0x1E, 0x64, 0x1E);
     gMenuFramebufferImagesAlt[3] = PakUi_BuildMonIconBuffer();
     gMenuFramebufferImagesAlt[4] = PakUi_BuildControllerIconBuffer();
-    gMenuFramebufferImagesAlt[5] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gMenuMessageBank, 0x42), 0x1E, 0x64, 0x1E);
-    gMenuFramebufferImagesAlt[6] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gMenuMessageBank, 0x43), 0x1E, 0x64, 0x1E);
+    gMenuFramebufferImagesAlt[5] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x42), 0x1E, 0x64, 0x1E);
+    gMenuFramebufferImagesAlt[6] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x43), 0x1E, 0x64, 0x1E);
 
     Model_InitDisplayObject(&gMenuOptionNodes[0], 0, 0, gMenuGraphNodeE);
     Model_InitDisplayObject(&gMenuOptionNodes[1], 0, 0, gMenuGraphNodeF);
@@ -2811,7 +2811,7 @@ s32 TransferPak_CheckMain(s32 arg0, s32 arg1) {
 
     TransferPak_InitMenuGraphics();
     Text_InitStringTables();
-    gMenuMessageBank = Text_GetStringTable(0xE);
+    gTransferPakCheckLabelsBank = Text_GetStringTable(0xE);
     Audio_PlayMusicIfChanged(0x28);
     StageContext_Activate(sp54);
 

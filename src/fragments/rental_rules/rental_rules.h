@@ -45,7 +45,7 @@ typedef struct QualifyingSpeciesWindow {
 extern RentalRulesStringTable gMenuStaticStrings;
 extern RentalRulesStringTable gMenuOptionStrings;
 
-extern char** gQualifyingSpeciesCountString;
+extern char** gRulesCheckLabelsBank;
 
 char* RentalRules_GetPokemonName(s32 arg0);
 void RentalRules_LoadBackgroundArchive(void);

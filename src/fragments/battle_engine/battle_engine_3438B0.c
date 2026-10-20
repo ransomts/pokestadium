@@ -4,7 +4,7 @@
 void BattleAnim_RenderNop1(void) {
 }
 
-void BattleAnim_RenderNop2(void) {
+void BattleAnim_RenderNoopStub2(void) {
 }
 
 void BattleAnim_DrawFullScreenColorOverlay(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {

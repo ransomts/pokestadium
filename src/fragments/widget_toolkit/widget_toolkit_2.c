@@ -1222,9 +1222,9 @@ static u8 gResultPlayerMaxScore[4];
 static u8 gResultPlayerCurrentScore[4];
 static s8 gResultSelectedOption;
 static u8 gResultOptionLimit;
-static s32 gResultAnimTimer_0;
-static s32 gResultAnimTimer_1;
-static s32 gResultAnimTimer_2;
+static s32 gResultGraphicsActive;
+static s32 gResultSlideInActive;
+static s32 gResultEndSequenceActive;
 static s32 gResultSpecialWinActive;
 static s32 gResultMenuActive;
 static s32 gResultCubesActive;
@@ -1282,7 +1282,7 @@ void Widget_PauseMenuInit(void) {
     gResultScoreThresholdMet = 0;
     gResultSelectedOption = 0;
     gResultController = gPlayer1Controller;
-    gResultAnimTimer_0 = gResultAnimTimer_1 = gResultAnimTimer_2 = gResultSpecialWinActive = gResultMenuActive = gResultCubesActive = 0;
+    gResultGraphicsActive = gResultSlideInActive = gResultEndSequenceActive = gResultSpecialWinActive = gResultMenuActive = gResultCubesActive = 0;
     gResultFlag_Special = 0;
     gResultMenuVisible = 0;
     gResultExitPending = 0;
@@ -1310,14 +1310,14 @@ void Widget_PauseMenuInit(void) {
     gResultMusicChangePending = 0;
     gResultAnimCountdown = 0xC;
 
-    gResultMenuStrings_PlayAgainDiffGameQuit[0] = gResultMenuStrings_PlayAgainQuit[0] = Text_GetString(NULL, 0, gItemNamesBank, 0x51);
+    gResultMenuStrings_PlayAgainDiffGameQuit[0] = gResultMenuStrings_PlayAgainQuit[0] = Text_GetString(NULL, 0, gMinigameNamesBank, 0x51);
 
-    gResultMenuStrings_PlayAgainDiffGameQuit[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x52);
+    gResultMenuStrings_PlayAgainDiffGameQuit[1] = Text_GetString(NULL, 0, gMinigameNamesBank, 0x52);
 
-    gResultMenuStrings_PlayAgainDiffGameQuit[2] = gResultMenuStrings_ContinueRestartQuit[2] = gResultMenuStrings_PlayAgainQuit[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x53);
+    gResultMenuStrings_PlayAgainDiffGameQuit[2] = gResultMenuStrings_ContinueRestartQuit[2] = gResultMenuStrings_PlayAgainQuit[1] = Text_GetString(NULL, 0, gMinigameNamesBank, 0x53);
 
-    gResultMenuStrings_ContinueRestartQuit[0] = Text_GetString(NULL, 0, gItemNamesBank, 0x54);
-    gResultMenuStrings_ContinueRestartQuit[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x55);
+    gResultMenuStrings_ContinueRestartQuit[0] = Text_GetString(NULL, 0, gMinigameNamesBank, 0x54);
+    gResultMenuStrings_ContinueRestartQuit[1] = Text_GetString(NULL, 0, gMinigameNamesBank, 0x55);
 
     Font_SetActive(4, 0);
 
@@ -1341,7 +1341,7 @@ void Widget_PauseMenuResetWinStreak(void) {
     }
 }
 
-void UpdateDeltaTime(void) {
+void Widget_UpdateDeltaTime(void) {
     static u32 gLastRspTimestamp;
 
     u32 v0 = gRspTaskManager.frameCount;
@@ -1846,10 +1846,10 @@ void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
         char sp8C[0x60];
         char* var_s0_3;
 
-        var_s0_3 = Text_GetString(sp8C, 0x60, gItemNamesBank, 0x13);
+        var_s0_3 = Text_GetString(sp8C, 0x60, gMinigameNamesBank, 0x13);
 
         if ((gMiniHudColorDefaults[0] + gMiniHudColorDefaults[1] + gMiniHudColorDefaults[2] + gMiniHudColorDefaults[3]) != 0) {
-            sprintf(sp8C, "%s - %s", var_s0_3, Text_GetString(NULL, 0, gItemNamesBank, gResultStateMessageIds[gMenuState]));
+            sprintf(sp8C, "%s - %s", var_s0_3, Text_GetString(NULL, 0, gMinigameNamesBank, gResultStateMessageIds[gMenuState]));
             var_s0_3 = sp8C;
         }
 
@@ -1890,14 +1890,14 @@ s32 Widget_PauseMenuUpdate(void) {
         sp66 = 1;
     }
 
-    UpdateDeltaTime();
+    Widget_UpdateDeltaTime();
 
     switch (gResultState) {
         case 0:
             if (gResultFlag_Win != 0) {
                 gResultFlag_Win = 0;
                 gResultAnimFrame = 0xB;
-                gResultAnimTimer_0 = 1;
+                gResultGraphicsActive = 1;
                 gResultState = 1;
                 gResultMenuVisible = 0;
                 gResultAnimDelayTimer = 0xB4;
@@ -1966,7 +1966,7 @@ s32 Widget_PauseMenuUpdate(void) {
                 } else {
                     Audio_PlayPersistentSoundCommand(0x12, 0);
                     gResultState = 2;
-                    gResultAnimTimer_1 = 1;
+                    gResultSlideInActive = 1;
                     gResultIconYOffset = 0x190;
                     Widget_PauseMenuCheckTournamentEnd();
                     if (gResultScoreThresholdMet != 0) {
@@ -1982,7 +1982,7 @@ s32 Widget_PauseMenuUpdate(void) {
         case 2:
             if (gResultIconYOffset == 0) {
                 if (gResultScoreThresholdMet == 1) {
-                    if (gResultAnimTimer_2 == 0) {
+                    if (gResultEndSequenceActive == 0) {
                         for (i = 0; i < 4; i++) {
                             if (gResultCubeStateFlag[i] == 1) {
                                 break;
@@ -1990,7 +1990,7 @@ s32 Widget_PauseMenuUpdate(void) {
                         }
 
                         if (i == 4) {
-                            gResultAnimTimer_2 = 1;
+                            gResultEndSequenceActive = 1;
                             gResultAnimYOffset = 0xF0;
                             gResultAnimStep = 0xA;
                         }
@@ -2135,7 +2135,7 @@ s32 Widget_PauseMenuUpdate(void) {
 
         Font_EndTexturedTextRendering();
     } else {
-        if (gResultAnimTimer_0 != 0) {
+        if (gResultGraphicsActive != 0) {
             if (gResultAnimFrame > 0) {
                 gResultAnimFrame--;
             }
@@ -2146,7 +2146,7 @@ s32 Widget_PauseMenuUpdate(void) {
             Gfx_FillRectWithDisplayState(0, 0, 0x140, 0xF0, 0, 0, 0, 0xB4);
         }
 
-        if (gResultAnimTimer_1 != 0) {
+        if (gResultSlideInActive != 0) {
             gResultIconYOffset -= 0x14;
             if (gResultIconYOffset <= 0) {
                 gResultIconYOffset = 0;
@@ -2181,7 +2181,7 @@ s32 Widget_PauseMenuUpdate(void) {
             Widget_PauseMenuDrawWinIcons(gResultIconYOffset);
         }
 
-        if (gResultAnimTimer_2 != 0) {
+        if (gResultEndSequenceActive != 0) {
             switch (gResultAnimState) {
                 case 0:
                     gResultAnimYOffset -= gResultDeltaTime;
@@ -2208,8 +2208,8 @@ s32 Widget_PauseMenuUpdate(void) {
         }
 
         if (gResultSpecialWinActive != 0) {
-            sp60 = Text_GetString(0, 0, gItemNamesBank, 0x57);
-            sp5C = Text_GetString(0, 0, gItemNamesBank, 0x58);
+            sp60 = Text_GetString(0, 0, gMinigameNamesBank, 0x57);
+            sp5C = Text_GetString(0, 0, gMinigameNamesBank, 0x58);
             sp44 = CountTextLines(sp60);
             tmp = CountTextLines(sp5C);
             tmp = sp44 + tmp;
@@ -2271,8 +2271,8 @@ s32 Widget_PauseMenuUpdate(void) {
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
             Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-            Font_Printf(0xA0 - (Text_MeasureStringWidth(NULL, Text_GetString(0, 0, gItemNamesBank, 0x56)) / 2), 0x6C,
-                          Text_GetString(0, 0, gItemNamesBank, 0x56));
+            Font_Printf(0xA0 - (Text_MeasureStringWidth(NULL, Text_GetString(0, 0, gMinigameNamesBank, 0x56)) / 2), 0x6C,
+                          Text_GetString(0, 0, gMinigameNamesBank, 0x56));
             Font_DisableTwoCycleTexturing();
             Font_EndTexturedTextRendering();
         }

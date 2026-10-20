@@ -591,13 +591,13 @@ typedef struct PokemonListEntry {
     /* 0x43 */ u8 unk_43;
 } PokemonListEntry; // size >= 0x44
 
-extern char** gLabPCListMessageBank;
-extern char** gMoveListMessageTable;
-extern char** gMsgBank_ItemNames;
+extern char** gLabPcListGbSaveIdLabelBank;
+extern char** gLabPcListColumnLabelsBank;
+extern char** gLabPcListItemDescriptionsBank;
 extern char** gMoveNamesTable;
-extern char** gLabPCListStatNames;
+extern char** gLabPcListSpeciesNamesBank;
 extern char** gMessageBank_MoveNames;
-extern char** gMsgBank_StatNames;
+extern char** gLabPcListItemNamesBank;
 extern Color_RGBA8 gPartyLabelColor;
 extern Color_RGBA8 gGbLabelColor;
 extern Color_RGBA8 gN64LabelColor;
@@ -769,7 +769,7 @@ s32 BattleInfoWidget_HandleTypePanelInput(unk_func_8830867C_03C* arg0, Controlle
 s32 BattleInfoWidget_RunTypeSelectionModal(unk_func_8830867C_03C* arg0, Controller* arg1);
 void BattleInfoWidget_InitTypeSelectionProxy(unk_func_8830867C_03C_04C* arg0, unk_func_8830867C_03C* arg1);
 s32 BattleInfoWidget_HandleTypeSelectionProxyInput(unk_func_8830867C_03C_04C* arg0, Controller* arg1);
-void UnusedFragmentFunctionA(void);
+void BattleInfoWidget_NoopStub1(void);
 void func_8830FA18(void);
 void BattleInfoWidget_CenterTypeLabel(unk_func_8830867C_040* arg0, unk_func_8850878C* arg1, char* arg2);
 void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, MemoryPool* arg4);

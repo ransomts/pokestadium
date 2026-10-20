@@ -86,18 +86,18 @@ void Diorama_DrawEndCaption(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gDioramaEndCaptionStringId, 0));
+        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gDemoScenesControllerWarningBank, 0));
         temp_s0 = 0x50 - gDioramaCaptionYOffset;
         if (gDioramaEndScreenActive != 1) {
             gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
             Font_BeginTranslucentTextRendering();
             Font_SetActive(4, 0);
-            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gDioramaEndCaptionStringId, 0));
+            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gDemoScenesControllerWarningBank, 0));
 
             temp_s0 += sp24 + 0x1E;
             if (temp_s0 < 0x140) {
-                Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gDioramaEndCaptionStringId, 0));
+                Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gDemoScenesControllerWarningBank, 0));
             }
 
             Font_EndTexturedTextRendering();

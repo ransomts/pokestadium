@@ -3169,36 +3169,36 @@ void EkansGame_DrawTutorialText(void) {
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xF9, 0xF4, 0, 0xFF);
-    Font_Printf(0xA0 - (Text_MeasureStringWidth(gMinigameTextObject, Text_GetString(NULL, 0, gItemNamesBank, 0x3E)) / 2), 0x20,
-                  Text_GetString(NULL, 0, gItemNamesBank, 0x3E));
+    Font_Printf(0xA0 - (Text_MeasureStringWidth(gMinigameTextObject, Text_GetString(NULL, 0, gMinigameNamesBank, 0x3E)) / 2), 0x20,
+                  Text_GetString(NULL, 0, gMinigameNamesBank, 0x3E));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0xFF, 0xFF, 0xFF);
-    Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x3F));
-    Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gItemNamesBank, 0x40));
-    Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gItemNamesBank, 0x41));
+    Font_Printf(0x28, 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x3F));
+    Font_Printf(0x28, 0x58, Text_GetString(NULL, 0, gMinigameNamesBank, 0x40));
+    Font_Printf(0x28, 0x70, Text_GetString(NULL, 0, gMinigameNamesBank, 0x41));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x3F), Text_GetString(NULL, 0, gItemNamesBank, 0x61),
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x3F), Text_GetString(NULL, 0, gMinigameNamesBank, 0x61),
                   0xC);
-    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x61));
-    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x3F), Text_GetString(NULL, 0, gItemNamesBank, 0x62),
+    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x61));
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x3F), Text_GetString(NULL, 0, gMinigameNamesBank, 0x62),
                   0xC);
-    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gItemNamesBank, 0x62));
-    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gItemNamesBank, 0x41), Text_GetString(NULL, 0, gItemNamesBank, 0x62),
+    Font_Printf(sp38 + 0x28, sp34 + 0x34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x62));
+    Widget_MeasureLabelBox(&sp38, &sp34, Text_GetString(NULL, 0, gMinigameNamesBank, 0x41), Text_GetString(NULL, 0, gMinigameNamesBank, 0x62),
                   0xC);
-    Font_Printf(sp38 + 0x28, sp34 + 0x70, Text_GetString(NULL, 0, gItemNamesBank, 0x62));
-    Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-    Font_Printf(0x75, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
-    Font_Printf(0xE5, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x5C));
+    Font_Printf(sp38 + 0x28, sp34 + 0x70, Text_GetString(NULL, 0, gMinigameNamesBank, 0x62));
+    Font_Printf(0x8B, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+    Font_Printf(0x75, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
+    Font_Printf(0xE5, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5C));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Font_Printf(0x8C, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x42));
+    Font_Printf(0x8C, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x42));
     Text_SetEnvColor(0xE6, 0xD2, 0xFF, 0xFF);
     Text_SetPrimColor(0x82, 0x50, 0xD2, 0xFF);
-    Font_Printf(0xFC, 0xB0, Text_GetString(NULL, 0, gItemNamesBank, 0x43));
+    Font_Printf(0xFC, 0xB0, Text_GetString(NULL, 0, gMinigameNamesBank, 0x43));
     Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     Text_SetPrimColor(0xFF, 0x80, 0x80, 0xFF);
-    Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gItemNamesBank, 0x14));
+    Font_Printf(0xA2, 0xC8, Text_GetString(NULL, 0, gMinigameNamesBank, 0x14));
     Font_DisableTwoCycleTexturing();
     Font_EndTexturedTextRendering();
 }
@@ -3236,7 +3236,7 @@ void EkansGame_DrawTutorialScreen(void) {
 void miniEkansDrawCountdown(void) {
     Text_SetEnvColor(0xFF, 0xC8, 0x32, 0xFF);                               // set color
     Font_SetActive(8, 0);                                                 // set style
-    Font_Printf(0x80, 0x14, Text_GetString(NULL, 0, gItemNamesBank, 0x5D)); // TIME text
+    Font_Printf(0x80, 0x14, Text_GetString(NULL, 0, gMinigameNamesBank, 0x5D)); // TIME text
     Font_Printf(0xAA, 0x14, "%d", miniEkansCountdown);
 }
 

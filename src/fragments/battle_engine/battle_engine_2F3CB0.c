@@ -1770,7 +1770,7 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         11,
         {
-            UpdateAnimChannelForEntity,
+            BattleAnim_UpdateChannelForEntity,
             BattleScene_StateCallbackNop,
             BattleScene_StateCallbackNop,
             BattleScene_TickPlayMoveEffectEnd,
@@ -1815,7 +1815,7 @@ unk_D_84385384 gMoveAnimData[] = {
     {
         14,
         {
-            UpdateAnimChannelForEntity,
+            BattleAnim_UpdateChannelForEntity,
             BattleScene_StateCallbackNop,
             BattleScene_StateCallbackNop,
             BattleScene_TickRow14PlayMoveEffectEnd,

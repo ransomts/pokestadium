@@ -375,7 +375,7 @@ void RentalRules_QualifyingSpeciesWindowDraw(void) {
         Text_SetNumberToken(3, ptr->unk_06);
         {
             char sp4C[64];
-            Font_Printf(spA6 + 0x2C, spA4 + 8, Text_GetString(sp4C, sizeof(sp4C), gQualifyingSpeciesCountString, 3));
+            Font_Printf(spA6 + 0x2C, spA4 + 8, Text_GetString(sp4C, sizeof(sp4C), gRulesCheckLabelsBank, 3));
         }
         Font_EndTexturedTextRendering();
 

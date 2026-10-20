@@ -1827,7 +1827,7 @@ void BattleScene_RunConditionalHpTransition(CameraStruct* arg0) {
             BattleScene_FrameCamera(arg0, gOpponentPlayer);
             gPlayer0ReadyFlag = BattleScene_AnimateDisplayedHpToRuntime(gOpponentPlayer);
             gPlayer1ReadyFlag = BattleScene_AnimateDisplayedHpToRuntime(gCurrentPlayer);
-            sp1C = GetAnimStateResultCode(gCurrentPlayer);
+            sp1C = BattleAnim_GetStateResultCode(gCurrentPlayer);
             if ((sp1C == 2) && ((BattleScene_IsOpponentRowCheckpointReached(gOpponentPlayer) != 0) || (BattleScene_AdvanceCameraFrameCounter(0x64) != 0))) {
                 BattleScene_CompleteHpUpdateTransition(arg0, &gPlayer0ReadyFlag, &gPlayer1ReadyFlag);
             } else if (sp1C == 1) {
@@ -1967,10 +1967,10 @@ void BattleScene_RunActionEffectHpTransition(CameraStruct* arg0) {
     }
 }
 
-void BattleScene_EmptyFunc1(void) {
+void BattleScene_NoopStub1(void) {
 }
 
-void BattleScene_EmptyFunc2(void) {
+void BattleScene_NoopStub2(void) {
 }
 
 void BattleScene_RunRepeatedHitHpTransition(CameraStruct* arg0) {

@@ -72,18 +72,18 @@ typedef struct unk_D_8120D7F3 {
 extern unk_D_8120D7F3 gStadiumUILayout;
 
 // .data
-extern s16 Palette_Default0[];
-extern s16 Palette_Default1[];
-extern s16 Palette_Default2[];
-extern s16 Palette_Default3[];
-extern s16 Palette_Default4[];
-extern s16 Palette_Default5[];
-extern s16 Palette_Default6[];
-extern s16 Palette_Default7[];
-extern s16 Palette_Default8[];
-extern s16 Palette_Default9[];
-extern s16 Palette_Default10[];
-extern s16 Palette_Default11[];
+extern s16 gGbEmuTextPaletteGray[];
+extern s16 gGbEmuTextPaletteYellow[];
+extern s16 gGbEmuTextPaletteBlackWhite[];
+extern s16 gGbEmuTextPaletteBlackGray[];
+extern s16 gGbEmuTextPaletteRed[];
+extern s16 gGbEmuTextPaletteGreen[];
+extern s16 gGbEmuTextPaletteBlue[];
+extern s16 gGbEmuTextPaletteGrayAlt[];
+extern s16 gGbEmuTextPaletteYellowPale[];
+extern s16 gGbEmuTextPaletteCyan[];
+extern s16 gGbEmuTextPaletteGrayDark[];
+extern s16 gGbEmuTextPalettePink[];
 extern u8 TileMap_8x8[0x100];
 extern u8 TileMap_12x12[256];
 extern u16 Palette_StageColors[4];
@@ -94,13 +94,13 @@ const u8 gStadiumScreenText[] = {
 };
 
 // .bss
-extern FramebufferImage* FramebufferImage0;
-extern FramebufferImage* FramebufferImage1;
+extern FramebufferImage* gGbScreenFb0;
+extern FramebufferImage* gGbScreenFb1;
 extern u8 gStadiumUIMap[234];
 extern u8 gGameTitle_PokemonYellow[16];
 extern GbPakThreadContext GbPakThreadData[2];
 extern s32 gGbPakMessageQueue[];
-extern s32 UnknownCounterB;
+extern s32 gGbPakTaskBufferIndex;
 extern GbPakDeviceState* GbPakDevice;
 extern TileAssetFragment* TileAssetFragments[3];
 extern FramebufferImage* FramebufferImages[2];
@@ -795,41 +795,41 @@ void Gfx_DrawTileMap(u16* fb, u8* cmd) {
 
         switch (ptr[4]) {
             case 1:
-                pal = (u16*) &Palette_Default1;
+                pal = (u16*) &gGbEmuTextPaletteYellow;
                 break;
             case 2:
-                pal = (u16*) &Palette_Default2;
+                pal = (u16*) &gGbEmuTextPaletteBlackWhite;
                 break;
             case 3:
-                pal = (u16*) &Palette_Default3;
+                pal = (u16*) &gGbEmuTextPaletteBlackGray;
                 break;
             case 4:
-                pal = (u16*) &Palette_Default4;
+                pal = (u16*) &gGbEmuTextPaletteRed;
                 break;
             case 5:
-                pal = (u16*) &Palette_Default5;
+                pal = (u16*) &gGbEmuTextPaletteGreen;
                 break;
             case 6:
-                pal = (u16*) &Palette_Default6;
+                pal = (u16*) &gGbEmuTextPaletteBlue;
                 break;
             case 7:
-                pal = (u16*) &Palette_Default7;
+                pal = (u16*) &gGbEmuTextPaletteGrayAlt;
                 break;
             case 8:
-                pal = (u16*) &Palette_Default8;
+                pal = (u16*) &gGbEmuTextPaletteYellowPale;
                 break;
             case 9:
-                pal = (u16*) &Palette_Default9;
+                pal = (u16*) &gGbEmuTextPaletteCyan;
                 break;
             case 10:
-                pal = (u16*) &Palette_Default10;
+                pal = (u16*) &gGbEmuTextPaletteGrayDark;
                 break;
             case 11:
-                pal = (u16*) &Palette_Default11;
+                pal = (u16*) &gGbEmuTextPalettePink;
                 break;
             case 0:
             default:
-                pal = (u16*) &Palette_Default0;
+                pal = (u16*) &gGbEmuTextPaletteGray;
                 break;
         }
 
@@ -1378,8 +1378,8 @@ void GbEmu_ResetEmulatorState(GbPakDeviceState* arg0) {
 }
 
 void GbEmu_ClearFramebuffers(void) {
-  bzero(FramebufferImage0->img_p, 0x2D000);
-  bzero(FramebufferImage1->img_p, 0x2D000);
+  bzero(gGbScreenFb0->img_p, 0x2D000);
+  bzero(gGbScreenFb1->img_p, 0x2D000);
 }
 
 void GbEmu_Delay(OSTime arg0) {
@@ -1407,8 +1407,8 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     s32 pad[2];
     s32 i;
 
-    FramebufferImage0 = GfxImage_Allocate(0, 2, 320, 288, 1);
-    FramebufferImage1 = GfxImage_Allocate(0, 2, 320, 288, 1);
+    gGbScreenFb0 = GfxImage_Allocate(0, 2, 320, 288, 1);
+    gGbScreenFb1 = GfxImage_Allocate(0, 2, 320, 288, 1);
     TileAssetPtr = main_pool_alloc(0x1FEAE8, 0);
     if (TileAssetPtr == NULL) {
         GbPakRetryCounter = 1;
@@ -1442,7 +1442,7 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     osCreateThread(&gGbPakServiceThread.thread, arg2, (void (*)(void*)) GbPak_ThreadMain, NULL, gGbPakServiceThread.stack + sizeof(gGbPakServiceThread.stack), arg3);
     osStartThread(&gGbPakServiceThread.thread);
 
-    UnknownCounterB = 0;
+    gGbPakTaskBufferIndex = 0;
     UnknownPtr = TempScreenBufferPtr;
     TempScreenBufferPtr += 0xC410;
 
@@ -1488,7 +1488,7 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
     for (i = 0; i < 2; i++) {
         GbPakThreadData[i].unk_20 = 2;
         GbPakThreadData[i].unk_24 = 0;
-        DrawFullScreenBackground((u16*)(&FramebufferImage0)[i]->img_p, arg5, arg1, 0);
+        DrawFullScreenBackground((u16*)(&gGbScreenFb0)[i]->img_p, arg5, arg1, 0);
         gImageDataPtrs[i] = gCurrentFramebufferPtr;
     }
 
@@ -1565,14 +1565,14 @@ void EmuMainInit(s32 arg0, s32 arg1, OSId arg2, s32 arg3, OSMesgQueue* arg4, u16
             return;
         }
         GbPakRetryCounter = 5;
-        DrawFullScreenBackground((u16*)FramebufferImage0->img_p, arg5, arg1, (emu->headerMatchIndex != 0) ? emu->headerMatchIndex - 1 : 0);
-        DrawFullScreenBackground((u16*)FramebufferImage1->img_p, arg5, arg1, (emu->headerMatchIndex != 0) ? emu->headerMatchIndex - 1 : 0);
+        DrawFullScreenBackground((u16*)gGbScreenFb0->img_p, arg5, arg1, (emu->headerMatchIndex != 0) ? emu->headerMatchIndex - 1 : 0);
+        DrawFullScreenBackground((u16*)gGbScreenFb1->img_p, arg5, arg1, (emu->headerMatchIndex != 0) ? emu->headerMatchIndex - 1 : 0);
     }
 
     gStadiumTimer = osGetCount();
     gStadiumInterval = gStadiumTimer;
-    osViSwapBuffer((&FramebufferImage0)[UnknownCounterB]->img_p);
-    UnknownCounterB ^= 1;
+    osViSwapBuffer((&gGbScreenFb0)[gGbPakTaskBufferIndex]->img_p);
+    gGbPakTaskBufferIndex ^= 1;
 }
 void LoadCompressedBank(GbPakDeviceState* arg0) {
     u16* list;
@@ -1677,7 +1677,7 @@ void AudioStateMachine(GbPakDeviceState* arg0) {
                 return;
             }
             {
-                ((GbPakThreadContext*) gGbPakMessageQueue)[UnknownCounterB].mesg[0] = NULL;
+                ((GbPakThreadContext*) gGbPakMessageQueue)[gGbPakTaskBufferIndex].mesg[0] = NULL;
                 switch (Flag_GbPakInitialized) {
                     case 1:
                         arg0->unk_53FD -= 4;
@@ -2034,9 +2034,9 @@ void GbPak_DrawMenu(s32 arg0) {
             Gfx_DrawTileMap(base, gText_GBGamePakInfo);
         transition:
             DrawVerticalMarker((u16*)((u8*)FramebufferImages[gCurrentBufferIndex] + 0x9C), 1, Flag_ScreenRefreshPending);
-            GbPakThreadData[UnknownCounterB].unk_3C = 0x1010;
-            GbPakThreadData[UnknownCounterB].unk_38 = (s32)FramebufferImages[gCurrentBufferIndex];
-            GbPakThreadData[UnknownCounterB].unk_5C &= 0xFFFF;
+            GbPakThreadData[gGbPakTaskBufferIndex].unk_3C = 0x1010;
+            GbPakThreadData[gGbPakTaskBufferIndex].unk_38 = (s32)FramebufferImages[gCurrentBufferIndex];
+            GbPakThreadData[gGbPakTaskBufferIndex].unk_5C &= 0xFFFF;
             Gfx_DrawTileMap(base, gText_LeavingN64);
             return;
 
@@ -2302,18 +2302,18 @@ u8 gItemDataTableAlt[396] = { 0, 0, 0xD3, 0xE2, 2, 0x4C, 0x80, 0, 0x80, 1, 0x80,
 u8 gAudioSampleTable[396] = { 0, 0, 0x73, 0xDE, 0x18, 0x5A, 0x80, 0, 0x80, 1, 0x80, 2, 0x80, 3, 0, 2, 0x28, 0x15, 0x9A, 0x70, 0, 8, 0xD0, 0x27, 0x90, 0x80, 0, 1, 0xF9, 0xED, 0xE6, 0xF9, 0, 0x3D, 0x86, 0xAD, 0x2E, 0x7C, 0, 0x1C, 0x73, 0xFE, 0x4D, 0xCF, 0, 3, 0xDB, 0xD0, 0x13, 0x41, 0, 0x10, 0xF5, 0x91, 0, 0, 0, 4, 0x72, 0xC5, 0x44, 0xE7, 0, 0x1E, 0xD7, 0xC1, 0x18, 0x82, 0, 0x1F, 0x26, 0xD1, 0x52, 0x71, 0, 0x3E, 0x7E, 0x93, 0xB3, 0xB7, 0, 0x3C, 0xF, 0xCE, 0xD5, 0x23, 0, 0x21, 0x23, 0xEF, 0x20, 0x9C, 0, 0x24, 0x26, 0xB1, 0x52, 0x98, 0, 0x3F, 0xD2, 0x81, 0xD0, 8, 0, 6, 0xD6, 0x89, 0x4B, 0x99, 0, 5, 0x2F, 0xD, 0xAB, 0xBD, 0, 7, 2, 0xDC, 0xBC, 0x1E, 0, 0x15, 0xCB, 0x6E, 0xBA, 0xD2, 0, 0x19, 0x2E, 0xEE, 0x36, 0xB3, 0, 0x3A, 0x17, 0xFA, 0x89, 0xD0, 0, 0xF, 0xE5, 0x2F, 0xBA, 0x81, 0, 0x14, 0xDB, 0x93, 0x76, 0xF3, 0, 0x29, 0x19, 0x36, 0xD9, 0xE, 0, 0x13, 0x90, 0x64, 0xD5, 0x90, 0, 0x28, 6, 0x55, 0xF7, 0x47, 0, 0xE, 0x4A, 0xD9, 0x4C, 0x88, 0, 0xB, 0xF3, 0x2A, 9, 0x22, 0, 0x17, 0x86, 0x2F, 0, 0, 0, 0x27, 0x43, 0x8E, 0x23, 0x9B, 0, 9, 0x74, 0x49, 0xD3, 6, 0, 0xA, 0xAE, 0x10, 0xD1, 0xF5, 0, 0xC, 0xF9, 0x7D, 0xAC, 0xB2, 0, 0xD, 0xE3, 0xEE, 0x21, 0xB, 0, 0x11, 0xC6, 0x6A, 0x87, 0x38, 0, 0x12, 0xE2, 0xAD, 0x73, 0, 0, 0x16, 0x8C, 0xF6, 0xDF, 0x57, 0, 0x18, 0x23, 0xA8, 0x95, 0xA7, 0, 0x1A, 0x41, 0xAD, 0xB, 0x25, 0, 0x1B, 0x30, 0x82, 0xC5, 0x60, 0, 0x1D, 0x58, 0xB0, 0x84, 0x51, 0, 0x20, 0x97, 0xF9, 0x44, 0x22, 0, 0x22, 0x64, 0xD9, 0xDD, 0x45, 0, 0x23, 3, 0xF1, 0x65, 0x6F, 0, 0x25, 0xD2, 0x46, 0x63, 0xCC, 0, 0x26, 0x36, 0xCF, 0x16, 0xBB, 0, 0x2A, 0x22, 0x49, 0xA7, 0, 0, 0x2B, 0x77, 0xCA, 0x92, 0x97, 0, 0x2C, 0x42, 0x8A, 0xF6, 0x13, 0, 0x2D, 0xB, 0x68, 0x20, 0x45, 0, 0x2E, 0xBA, 0x3E, 0xC3, 0x37, 0, 0x2F, 0x24, 0xD4, 0x98, 0x8D, 0, 0x30, 0xA8, 0x32, 0x98, 0x1C, 0, 0x31, 0xFB, 0xCA, 0x50, 0x5D, 0, 0x32, 0x79, 0x76, 0x99, 0xF8, 0, 0x33, 0x6C, 0x79, 0x1B, 0xC2, 0, 0x34, 0x35, 0xE, 0x74, 0x28, 0, 0x35, 0x19, 0xFD, 0x4D, 0x4C, 0, 0x36, 0xFB, 0xF7, 0xE4, 0x44, 0, 0x37, 0xCE, 0x4B, 0xDA, 0x69, 0, 0x38, 0x1F, 0xF6, 0xDE, 0xF8, 0, 0x39, 0xAE, 0xC5, 0x25, 0x57, 0, 0x3B, 0, 0, 0, 0, 0, 0, 0, 0 };
 u8 gAudioConfigTable[44] = { 0, 0x17, 0x18, 0xF8, 0, 0x18, 0x1A, 0xA0, 0, 0x20, 0x1A, 0x7C, 0, 0x23, 0x1A, 0x40, 0, 0x24, 0x19, 0, 0, 0x25, 0x1A, 0x54, 0, 0x26, 0x1A, 0xAC, 0, 0x28, 0x1A, 0x7C, 0, 0x2A, 3, 4, 0, 0x2C, 5, 0x64, 0, 0, 0, 0 };
 u8 gAudioVolumeTable[176] = { 0, 5, 0x26, 0x94, 0, 6, 0x1F, 0x28, 0, 7, 0x1D, 0xB8, 0, 0x10, 0x1A, 0x2C, 0, 0x11, 0x22, 0xD4, 0, 0x12, 0x1D, 0x6C, 0, 0x14, 0x1E, 0xA8, 0, 0x15, 0x1D, 0x38, 0, 0x16, 0x1C, 0x88, 0, 0x17, 0x19, 0x14, 0, 0x18, 0x1B, 0x90, 0, 0x19, 0x25, 0x38, 0, 0x1A, 0x23, 0xF0, 0, 0x1B, 0x22, 0x84, 0, 0x1D, 0x1B, 0xA8, 0, 0x20, 0x25, 0x70, 0, 0x21, 0x1C, 0x7C, 0, 0x22, 0x24, 0x28, 0, 0x24, 0x18, 0xEC, 0, 0x25, 0x1C, 0xFC, 0, 0x26, 0x23, 0x48, 0, 0x27, 0x23, 0x88, 0, 0x28, 0x23, 0x44, 0, 0x29, 0x20, 0xB4, 0, 0x2A, 0x23, 0x30, 0, 0x2B, 0x23, 0x54, 0, 0x2C, 0x23, 0x10, 0, 0x2D, 0x1F, 0x10, 0, 0x2E, 0x21, 0x94, 0, 0x2F, 7, 4, 0, 0x30, 0xD, 0xA0, 0, 0x31, 0x1F, 0xC4, 0, 0x32, 0x13, 0x68, 0, 0x33, 0x1D, 0x98, 0, 0x34, 0x11, 0x8C, 0, 0x35, 0x1C, 0x54, 0, 0x36, 0x1B, 0xEC, 0, 0x37, 0x1D, 0x74, 0, 0x38, 0x22, 0x74, 0, 0x39, 0x20, 0xD4, 0, 0x3A, 0x1D, 0xBC, 0, 0x3C, 0x21, 0x6C, 0, 0x3D, 0x20, 0x9C, 0, 0, 0, 0 };
-s16 Palette_Default0[16] = { 0, 4228, 8456, 12684, 16912, 21140, 25368, 29596, -31712, -27484, -23256, -19028, -14800, -10572, -6344, -2116 };
-s16 Palette_Default1[16] = { 0, 4226, 8452, 12612, 16838, 21064, 25290, 29452, -29810, -25586, -21360, -17134, -12972, -8746, -4522, -296 };
-s16 Palette_Default2[16] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
-s16 Palette_Default3[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21140 };
-s16 Palette_Default4[16] = { -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048 };
-s16 Palette_Default5[16] = { 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984 };
-s16 Palette_Default6[16] = { 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62 };
-s16 Palette_Default7[16] = { 0, 2114, 6342, 10570, 14798, 19026, 23254, 27482, 31710, -29598, -25370, -21142, -16914, -12686, -8458, -4230 };
-s16 Palette_Default8[16] = { 0, 4226, 8452, 12680, 16906, 21132, 25358, 29586, -29612, -25386, -21160, -16934, -12706, -8480, -4254, -28 };
-s16 Palette_Default9[16] = { 0, 2180, 4360, 8588, 10768, 12948, 15128, 19356, 21602, 23782, 25962, 28142, 32370, -30986, -28806, -26626 };
-s16 Palette_Default10[16] = { 0, 4228, 6342, 10570, 14798, 16912, 21140, 23254, 27482, 31710, -31712, -27484, -25370, -21142, -16914, -14800 };
-s16 Palette_Default11[16] = { 0, 4228, 8390, 12618, 16846, 21008, 25236, 29398, -29862, -25634, -21472, -17244, -13082, -8854, -4626, -464 };
+s16 gGbEmuTextPaletteGray[16] = { 0, 4228, 8456, 12684, 16912, 21140, 25368, 29596, -31712, -27484, -23256, -19028, -14800, -10572, -6344, -2116 };
+s16 gGbEmuTextPaletteYellow[16] = { 0, 4226, 8452, 12612, 16838, 21064, 25290, 29452, -29810, -25586, -21360, -17134, -12972, -8746, -4522, -296 };
+s16 gGbEmuTextPaletteBlackWhite[16] = { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 };
+s16 gGbEmuTextPaletteBlackGray[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 21140 };
+s16 gGbEmuTextPaletteRed[16] = { -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048, -2048 };
+s16 gGbEmuTextPaletteGreen[16] = { 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984, 1984 };
+s16 gGbEmuTextPaletteBlue[16] = { 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62, 62 };
+s16 gGbEmuTextPaletteGrayAlt[16] = { 0, 2114, 6342, 10570, 14798, 19026, 23254, 27482, 31710, -29598, -25370, -21142, -16914, -12686, -8458, -4230 };
+s16 gGbEmuTextPaletteYellowPale[16] = { 0, 4226, 8452, 12680, 16906, 21132, 25358, 29586, -29612, -25386, -21160, -16934, -12706, -8480, -4254, -28 };
+s16 gGbEmuTextPaletteCyan[16] = { 0, 2180, 4360, 8588, 10768, 12948, 15128, 19356, 21602, 23782, 25962, 28142, 32370, -30986, -28806, -26626 };
+s16 gGbEmuTextPaletteGrayDark[16] = { 0, 4228, 6342, 10570, 14798, 16912, 21140, 23254, 27482, 31710, -31712, -27484, -25370, -21142, -16914, -14800 };
+s16 gGbEmuTextPalettePink[16] = { 0, 4228, 8390, 12618, 16846, 21008, 25236, 29398, -29862, -25634, -21472, -17244, -13082, -8854, -4626, -464 };
 u8 TileMap_8x8[256] = { 4, 0, 7, 7, 7, 7, 7, 7, 7, 0, 7, 0, 0, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 7, 7, 5, 7, 7, 5, 7, 4, 7, 5, 7, 7, 7, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x34, 0x35, 0, 0, 6, 0xD, 0x37, 3, 4, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x3E, 0x42, 0, 0x3E, 0, 0x40, 0x76, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33, 7, 0, 8, 0, 0, 0, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0, 0x50, 0, 0xE, 0 };
 u8 TileMap_12x12[256] = { 4, 0, 7, 7, 7, 7, 7, 7, 7, 0, 7, 0, 0, 7, 7, 0, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 5, 7, 7, 5, 7, 7, 5, 7, 4, 7, 5, 7, 7, 7, 5, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x34, 0x35, 0, 0, 6, 0xD, 0x37, 3, 4, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x3E, 0x42, 0, 0x3E, 0, 0x40, 0x76, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33, 7, 0, 8, 0, 0, 0, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51, 0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0, 0x50, 0, 0xE, 0 };
 u16 Palette_StageColors[4] = { 0xFCA4, 0xCFE4, 0x96BE, 0xFFE4 };
@@ -2365,8 +2365,8 @@ s32 EmuMainLoop(s32 arg0) {
             for (i = 0; i < 0x10; i++) {
                 emu->unk_559C[i] = 0xFF;
             }
-            GbPakThreadData[UnknownCounterB].unk_3C = 0x1010;
-            GbPakThreadData[UnknownCounterB].unk_38 = ScreenBasePtr;
+            GbPakThreadData[gGbPakTaskBufferIndex].unk_3C = 0x1010;
+            GbPakThreadData[gGbPakTaskBufferIndex].unk_38 = ScreenBasePtr;
         case 0:
             if (emu->unk_5DC8 == 0) {
                 Cont_StartReadInputs();
@@ -2418,16 +2418,16 @@ s32 EmuMainLoop(s32 arg0) {
                         Flag_ScreenRefreshPending = 0;
                     }
                     DrawVerticalMarker((u16*) ((u8*) FramebufferImages[gCurrentBufferIndex] + 0x9C), emu->inputCooldown, Flag_ScreenRefreshPending);
-                    GbPakThreadData[UnknownCounterB].unk_3C = 0x1010;
-                    GbPakThreadData[UnknownCounterB].unk_38 = (s32) FramebufferImages[gCurrentBufferIndex];
+                    GbPakThreadData[gGbPakTaskBufferIndex].unk_3C = 0x1010;
+                    GbPakThreadData[gGbPakTaskBufferIndex].unk_38 = (s32) FramebufferImages[gCurrentBufferIndex];
                 } else {
                     gCurrentBufferIndex ^= 1;
                     if (!(GbPakStateByte & (1 << gCurrentBufferIndex))) {
                         GbPakStateByte |= (1 << gCurrentBufferIndex);
                         DrawStadiumScreen(gCurrentBufferIndex, 1);
                     }
-                    GbPakThreadData[UnknownCounterB].unk_3C = 0x1010;
-                    GbPakThreadData[UnknownCounterB].unk_38 = ScreenBasePtr;
+                    GbPakThreadData[gGbPakTaskBufferIndex].unk_3C = 0x1010;
+                    GbPakThreadData[gGbPakTaskBufferIndex].unk_38 = ScreenBasePtr;
                 }
             }
             break;
@@ -2519,10 +2519,10 @@ s32 EmuMainLoop(s32 arg0) {
                 goto stop;
             }
             if ((GbPakRetryCounter != 0) &&
-                (EmuTick((s32) gImageDataPtrs[UnknownCounterB], (&FramebufferImage0)[UnknownCounterB]->img_p) != 0)) {
+                (EmuTick((s32) gImageDataPtrs[gGbPakTaskBufferIndex], (&gGbScreenFb0)[gGbPakTaskBufferIndex]->img_p) != 0)) {
                 osWritebackDCacheAll();
-                osViSwapBuffer((&FramebufferImage0)[UnknownCounterB]->img_p);
-                UnknownCounterB ^= 1;
+                osViSwapBuffer((&gGbScreenFb0)[gGbPakTaskBufferIndex]->img_p);
+                gGbPakTaskBufferIndex ^= 1;
             }
             return 0;
 
@@ -2591,8 +2591,8 @@ s32 EmuMainLoop(s32 arg0) {
                     goto case2;
             }
             GbEmu_ClearFramebuffers();
-            osViSwapBuffer((&FramebufferImage0)[UnknownCounterB]->img_p);
-            UnknownCounterB ^= 1;
+            osViSwapBuffer((&gGbScreenFb0)[gGbPakTaskBufferIndex]->img_p);
+            gGbPakTaskBufferIndex ^= 1;
             osViBlack(0);
             osViSetXScale(0.888f);
             osSendMesg(&gGbPakServiceQueue, emu, 1);
@@ -2621,11 +2621,11 @@ s32 EmuMainLoop(s32 arg0) {
                 if ((gGbScreenRefreshCounter >= 3) && (gGbScreenRefreshCounter < 0x20)) {
                     gGbScreenRefreshCounter++;
                 }
-                GbPakThreadData[UnknownCounterB].unk_3C = (gGbScreenRefreshCounter / 2) | 0x1000;
-                GbPakThreadData[UnknownCounterB].unk_38 = (s32) FramebufferImages[gCurrentBufferIndex];
+                GbPakThreadData[gGbPakTaskBufferIndex].unk_3C = (gGbScreenRefreshCounter / 2) | 0x1000;
+                GbPakThreadData[gGbPakTaskBufferIndex].unk_38 = (s32) FramebufferImages[gCurrentBufferIndex];
             } else {
-                GbPakThreadData[UnknownCounterB].unk_3C = 0x1010;
-                GbPakThreadData[UnknownCounterB].unk_38 = ScreenBasePtr;
+                GbPakThreadData[gGbPakTaskBufferIndex].unk_3C = 0x1010;
+                GbPakThreadData[gGbPakTaskBufferIndex].unk_38 = ScreenBasePtr;
                 if ((emu->command == 0) && (emu->unk_5DCA != 0)) {
                     GbPakRetryCounter = 0;
                 }
@@ -2775,31 +2775,31 @@ reset:
         goto stop;
     }
     if (emu->monoGame != 0) {
-        GbPakThreadData[UnknownCounterB].unk_28 = (s32) D_8122A260;
-        GbPakThreadData[UnknownCounterB].unk_2C = D_8122ACA0 - D_8122A260;
+        GbPakThreadData[gGbPakTaskBufferIndex].unk_28 = (s32) D_8122A260;
+        GbPakThreadData[gGbPakTaskBufferIndex].unk_2C = D_8122ACA0 - D_8122A260;
     } else {
-        GbPakThreadData[UnknownCounterB].unk_28 = (s32) D_812297C0;
-        GbPakThreadData[UnknownCounterB].unk_2C = D_8122A1A4 - D_812297C0;
+        GbPakThreadData[gGbPakTaskBufferIndex].unk_28 = (s32) D_812297C0;
+        GbPakThreadData[gGbPakTaskBufferIndex].unk_2C = D_8122A1A4 - D_812297C0;
     }
-    GbPakThreadData[UnknownCounterB].unk_40 = (s32) emu->tileCache;
-    GbPakThreadData[UnknownCounterB].unk_48 = (s32) (&FramebufferImage0)[UnknownCounterB]->img_p;
-    GbPakThreadData[UnknownCounterB].unk_4C = (s32) UnknownPtr;
-    GbPakThreadData[UnknownCounterB].unk_50 = emu->readyFrameBuffer;
-    GbPakThreadData[UnknownCounterB].unk_54 = (emu->unk_53FE << 24) | emu->unk_539C;
-    GbPakThreadData[UnknownCounterB].unk_58 = (s32) TileAssetFragments[gDataSetLoadResult];
-    GbPakThreadData[UnknownCounterB].unk_5C = (emu->unk_53FC << 24) | (emu->unk_53FD << 16) | (emu->unk_53EE << 6) | emu->unk_53F0;
+    GbPakThreadData[gGbPakTaskBufferIndex].unk_40 = (s32) emu->tileCache;
+    GbPakThreadData[gGbPakTaskBufferIndex].unk_48 = (s32) (&gGbScreenFb0)[gGbPakTaskBufferIndex]->img_p;
+    GbPakThreadData[gGbPakTaskBufferIndex].unk_4C = (s32) UnknownPtr;
+    GbPakThreadData[gGbPakTaskBufferIndex].unk_50 = emu->readyFrameBuffer;
+    GbPakThreadData[gGbPakTaskBufferIndex].unk_54 = (emu->unk_53FE << 24) | emu->unk_539C;
+    GbPakThreadData[gGbPakTaskBufferIndex].unk_58 = (s32) TileAssetFragments[gDataSetLoadResult];
+    GbPakThreadData[gGbPakTaskBufferIndex].unk_5C = (emu->unk_53FC << 24) | (emu->unk_53FD << 16) | (emu->unk_53EE << 6) | emu->unk_53F0;
     if (UnknownCounter != 0) {
-        osRecvMesg(&GbPakThreadData[UnknownCounterB ^ 1].queue, NULL, 1);
-        GbPak_DrawMenu((&FramebufferImage0)[UnknownCounterB ^ 1]->img_p);
+        osRecvMesg(&GbPakThreadData[gGbPakTaskBufferIndex ^ 1].queue, NULL, 1);
+        GbPak_DrawMenu((&gGbScreenFb0)[gGbPakTaskBufferIndex ^ 1]->img_p);
     }
     if (gRspTaskManager.preNmiState == 0) {
         osWritebackDCacheAll();
-        osViSwapBuffer((&FramebufferImage0)[UnknownCounterB ^ 1]->img_p);
+        osViSwapBuffer((&gGbScreenFb0)[gGbPakTaskBufferIndex ^ 1]->img_p);
         if (emu->readyFrameBuffer != 0) {
             emu->rspTaskStatus = 0;
-            Sched_SubmitTask((UnkStruct80001380*) &GbPakThreadData[UnknownCounterB], 0);
+            Sched_SubmitTask((UnkStruct80001380*) &GbPakThreadData[gGbPakTaskBufferIndex], 0);
         }
-        UnknownCounterB ^= 1;
+        gGbPakTaskBufferIndex ^= 1;
         UnknownCounter = 1;
     } else {
         UnknownCounter = 0;

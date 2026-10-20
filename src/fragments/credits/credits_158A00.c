@@ -34,8 +34,8 @@ static BinArchive* gStageArchive;
 static Color_RGBA8_u32 gGlobalBackgroundColor;
 static GraphNode* sSceneGraphRoot;
 static CameraStruct* sSceneCamera;
-static s16 sCameraPitch;
-static s16 sCameraYaw;
+static s16 sCameraRotationX;
+static s16 sCameraRotationY;
 static s16 sCameraDistance;
 static s32 pad_D_86A061F8[2];
 static TextObject* gStageTextObject;
@@ -184,9 +184,9 @@ void Credits_LoadBackgroundScene(s8 arg0, u8 arg1) {
     Credits_SetBackgroundTint(0xFF, 0xFF, 0xFF);
 
     if (arg1 < 6) {
-        Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY, arg0, arg1);
+        Camera_SetupForPhase(&sCameraRotationX, &sCameraRotationY, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY, arg0, arg1);
     } else if (arg1 < 9) {
-        Camera_SetupForPhase(&sCameraPitch, &sCameraYaw, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY, arg0, arg1);
+        Camera_SetupForPhase(&sCameraRotationX, &sCameraRotationY, &sCameraDistance, sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY, arg0, arg1);
     } else if (arg1 < 0xF) {
         if (gCurrentPhaseIndex == 7) {
             Credits_InitCameraKeyframeBlend(sSceneCamera, gStagePhases[gCurrentPhaseIndex].posY - 0x28, arg0, arg1);
@@ -207,10 +207,10 @@ void Credits_PollInput(void) {
 
 void Credits_UpdateCamera(void) {
     if (gCurrentSubStageId < 6) {
-        Camera_ComputeEyeFromAngles(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
+        Camera_ComputeEyeFromAngles(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraRotationX, sCameraRotationY);
     } else if (gCurrentSubStageId < 9) {
-        Camera_ComputeEyeFromAngles(&gCreditsCameraPivot, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
-        Camera_ComputeEyeFromAngles(&gCreditsCameraPivot, &sSceneCamera->unk_60.at, sCameraDistance + 500.0f, sCameraPitch, sCameraYaw);
+        Camera_ComputeEyeFromAngles(&gCreditsCameraPivot, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraRotationX, sCameraRotationY);
+        Camera_ComputeEyeFromAngles(&gCreditsCameraPivot, &sSceneCamera->unk_60.at, sCameraDistance + 500.0f, sCameraRotationX, sCameraRotationY);
     }
 }
 
@@ -1416,13 +1416,13 @@ void Credits_OutroLoop(void) {
 
 void Credits_InitCamera(void) {
     sSceneCamera = sSceneGraphRoot->unk_0C;
-    sCameraPitch = 0x100;
-    sCameraYaw = 0;
+    sCameraRotationX = 0x100;
+    sCameraRotationY = 0;
     sCameraDistance = 0x78;
 
     sSceneCamera->unk_24.near = 50.0f;
     sSceneCamera->unk_24.far = 6400.0f;
-    Camera_ComputeEyeFromAngles(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraPitch, sCameraYaw);
+    Camera_ComputeEyeFromAngles(&sSceneCamera->unk_60.at, &sSceneCamera->unk_60.eye, sCameraDistance, sCameraRotationX, sCameraRotationY);
 }
 
 void Credits_InitScene(s32 arg0) {

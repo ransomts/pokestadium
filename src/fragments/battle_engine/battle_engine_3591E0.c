@@ -245,7 +245,7 @@ Gfx* AuxiliaryEffect_Draw(s16 arg0, Gfx* arg1) {
 void AuxEffect_None(void) {
 }
 
-void AuxEffect_None2(void) {
+void AuxEffect_NoopStub2(void) {
 }
 
 s32 AuxEffect_GetId(s32 arg0) {

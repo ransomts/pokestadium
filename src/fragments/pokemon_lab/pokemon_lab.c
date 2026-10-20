@@ -1932,7 +1932,7 @@ static u32 gFragment22GfxDataYellowIconShimmerMask[] = {
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
 };
-static Gfx gEmptyGfxDL10[] = {
+static Gfx gFragment22GfxDataRedIconDlEnd[] = {
     gsSPEndDisplayList(),
 };
 static u32 gFragment22GfxDataRedIconTex[] = {
@@ -2444,8 +2444,8 @@ u32 gFragment22MonIconTiles[] = {
     0x20C11843, 0x10811041, 0x00011001, 0x10411041, 0x08410801, 0x08410801, 0x00010001, 0x00010001,
 };
 
-static char** gLaboMessageBankMain;
-static char** gLaboMessageBankSystem;
+static char** gLabGbSaveIdLabelBank;
+static char** gLabMachineDescriptionsBank;
 
 void Lab_InitTiledBackgroundWidget(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88001300_000));
@@ -2681,7 +2681,7 @@ void Lab_ShowMenuItemDescription(unk_func_88001300* arg0) {
             break;
     }
 
-    ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34, Text_GetString(NULL, 0, gLaboMessageBankSystem, var_a3));
+    ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34, Text_GetString(NULL, 0, gLabMachineDescriptionsBank, var_a3));
 }
 
 void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8* arg4, TextObject* arg5,
@@ -2763,7 +2763,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
 
     sp68 = mem_pool_alloc(arg6, sizeof(unk_func_88509A2C));
     ((func88509A2C)Memmap_GetFragmentVaddr(WidgetTree_InitSaveSlotLabel))(sp68, 0xE, 8, GbSave_GetActivePort(),
-                                                           Text_GetString(NULL, 0, gLaboMessageBankMain, 0));
+                                                           Text_GetString(NULL, 0, gLabGbSaveIdLabelBank, 0));
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&temp_s0->posX, &sp68->posX.posX);
 
     temp_v0_6 = mem_pool_alloc(arg6, sizeof(unk_func_88000C18));
@@ -2881,15 +2881,15 @@ s32 Lab_HandleMainMenuInput(unk_func_88001300* arg0) {
                 case 4:
                     if (GbSave_GetSaveState(arg0->unk_40) != 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 7));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 7));
                         var_s1 |= 0x80000101;
                     } else if (GbSave_HasPokedex(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 0xA));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 0xA));
                         var_s1 |= 0x80000101;
                     } else if (GbSave_SavedAtPokemonCenter(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 8));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 8));
                         var_s1 |= 0x80000101;
                     } else {
                         Audio_PlaySoundEffectById(0x1C);
@@ -2908,11 +2908,11 @@ s32 Lab_HandleMainMenuInput(unk_func_88001300* arg0) {
                 case 7:
                     if (GbSave_GetSaveState(arg0->unk_40) != 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 7));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 7));
                         var_s1 |= 0x80000101;
                     } else if (GbSave_HasPokedex(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 9));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 9));
                         var_s1 |= 0x80000101;
                     } else {
                         Audio_PlaySoundEffectById(0x1C);
@@ -2925,19 +2925,19 @@ s32 Lab_HandleMainMenuInput(unk_func_88001300* arg0) {
                 case 5:
                     if (GbSave_GetSaveState(arg0->unk_40) != 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 7));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 7));
                         var_s1 |= 0x80000101;
                     } else if (GbSave_HasPokedex(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 0xA));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 0xA));
                         var_s1 |= 0x80000101;
                     } else if (GbSave_SavedAtPokemonCenter(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 8));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 8));
                         var_s1 |= 0x80000101;
                     } else if (Lab_CountConnectedCarts() < 2) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 0xB));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 0xB));
                         var_s1 |= 0x80000101;
                     } else {
                         Audio_PlaySoundEffectById(0x1C);
@@ -2949,19 +2949,19 @@ s32 Lab_HandleMainMenuInput(unk_func_88001300* arg0) {
                 case 3:
                     if (GbSave_GetSaveState(arg0->unk_40) != 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 7));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 7));
                         var_s1 |= 0x80000101;
                     } else if (GbSave_HasPokedex(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 0xA));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 0xA));
                         var_s1 |= 0x80000101;
                     } else if (GbSave_SavedAtPokemonCenter(arg0->unk_40) == 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 8));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 8));
                         var_s1 |= 0x80000101;
                     } else if (arg0->unk_50 != 0) {
                         ((func88506074)Memmap_GetFragmentVaddr(WidgetTree_SetTextList))(arg0->unk_34,
-                                                                               Text_GetString(NULL, 0, gLaboMessageBankSystem, 0xC));
+                                                                               Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 0xC));
                         var_s1 |= 0x80000101;
                     } else {
                         Audio_PlaySoundEffectById(0x1C);
@@ -3011,7 +3011,7 @@ void Lab_MainMenuThread(unk_func_88001300* arg0) {
     if (Save_GetSelectedPokemonId() != 0) {
         if (arg0->unk_54 == 0) {
             // clang-format off
-            temp_s0 = Memmap_GetFragmentVaddr(WidgetTree_SetTextList); temp_s0(arg0->unk_34, Text_GetString(NULL, 0, gLaboMessageBankSystem, 5));
+            temp_s0 = Memmap_GetFragmentVaddr(WidgetTree_SetTextList); temp_s0(arg0->unk_34, Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 5));
             // clang-format on
 
             for (i = 0; i < 60; i++) {
@@ -3025,7 +3025,7 @@ void Lab_MainMenuThread(unk_func_88001300* arg0) {
             }
 
             // clang-format off
-            temp_s0 = Memmap_GetFragmentVaddr(WidgetTree_SetTextList); temp_s0(arg0->unk_34, Text_GetString(NULL, 0, gLaboMessageBankSystem, 6));
+            temp_s0 = Memmap_GetFragmentVaddr(WidgetTree_SetTextList); temp_s0(arg0->unk_34, Text_GetString(NULL, 0, gLabMachineDescriptionsBank, 6));
             // clang-format on
         } else {
             arg0->unk_38->posX.unk_28 |= 0x201;
@@ -3101,8 +3101,8 @@ s32 Lab_Main(s32 arg0, UNUSED s32 arg1) {
 
     Save_EnsureBankLoaded(2);
     Text_InitStringTables();
-    gLaboMessageBankMain = Text_GetStringTable(0x2A);
-    gLaboMessageBankSystem = Text_GetStringTable(0);
+    gLabGbSaveIdLabelBank = Text_GetStringTable(0x2A);
+    gLabMachineDescriptionsBank = Text_GetStringTable(0);
 
     sp34 = main_pool_alloc(0x1000, 0);
     sp44 = mem_pool_try_init(0x8000, 0);

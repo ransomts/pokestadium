@@ -7,7 +7,7 @@
 #include "src/hal_libc.h"
 #include "src/memory.h"
 
-static Gfx gEmptyDl_1[] = {
+static Gfx gLabPCListHeaderSelectIconDlEnd[] = {
     gsSPEndDisplayList(),
 };
 u32 gLabPCListHeaderSelectIconTexture[] = {
@@ -76,7 +76,7 @@ u32 gLabPCListHeaderLeftOrnamentTexture[] = {
     0x42104210, 0x42104210, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211,
     0x42114211, 0x42114211, 0x42114210, 0x42104210, 0x42104210, 0x42104210,
 };
-static Gfx gEmptyDl_2[] = {
+static Gfx gLabPCListHeaderTitleOrnamentDlEnd[] = {
     gsSPEndDisplayList(),
 };
 u32 gLabPCListHeaderTitleOrnamentTexture[] = {
@@ -124,7 +124,7 @@ u32 gLabPCListHeaderTitleOrnamentTexture[] = {
     0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211,
     0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210,
 };
-static Gfx gEmptyDl_3[] = {
+static Gfx gCheckerboardPatternDlEnd[] = {
     gsSPEndDisplayList(),
 };
 u32 gCheckerboardPattern[] = {
@@ -141,7 +141,7 @@ u32 gCheckerboardPattern[] = {
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFDB, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
     0xFFFE5289, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x52895289, 0x5289FFFE,
 };
-static Gfx gEmptyDl_4[] = {
+static Gfx gCheckerboardPatternStatusEntryDlEnd[] = {
     gsSPEndDisplayList(),
 };
 u32 gCheckerboardPatternStatusEntry[] = {
@@ -274,7 +274,7 @@ u32 gTitleScreenImage[] = {
     0x9AAA9A9A, 0x9999889A, 0xBBA989A9, 0xBA9BAA9A, 0x98888888, 0x9AAA9889, 0x9AA8AAA9, 0x99988888, 0x889AAA88,
     0x88000000, 0x00000000, 0x0008BDB9, 0x99586000, 0x00000000, 0x00000000, 0x024699BA,
 };
-static Gfx gEmptyDl_5[] = {
+static Gfx gFontBitmapDataDlEnd[] = {
     gsSPEndDisplayList(),
 };
 u32 gFontBitmapData[] = {

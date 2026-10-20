@@ -159,7 +159,7 @@ void RenderSushiGoRoundUI(void);
 void SushiGame_DrawFrame(void);
 void SushiGame_UpdateWaitForStart(void);
 s32 SushiGame_IsRoundTimeUp(void);
-s32 UpdateSushiGoRoundState(void);
+s32 SushiGame_UpdateGoRoundState(void);
 void SushiGame_MainLoop(void);
 void SushiGame_LoadAssets(void);
 void SushiGame_Main(s32 arg0, UNUSED s32 arg1);

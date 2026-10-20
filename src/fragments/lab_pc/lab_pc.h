@@ -530,7 +530,7 @@ s32 LabPC_BoxScreen_HandleInput(LabPC_BuildBoxScreenWidget* arg0, Controller* ar
 void LabPC_BoxScreen_DrawLoop(LabPC_BuildBoxScreenWidget* arg0);
 void LabPC_BoxScreen_InputThread(LabPC_BuildBoxScreenWidget* arg0);
 
-void InitMonData(PokemonData* arg0);
+void LabPC_InitMonData(PokemonData* arg0);
 s32 LabPC_ReadDeckEntries(unk_func_882062E4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 s32 LabPC_BoxNumberSelectorInput(unk_func_8820BE14_02C_078_034* arg0, Controller* arg1);
 s32 LabPC_RunBoxNumberSelectorModal(unk_func_88001300_034* arg0, Controller* arg1);

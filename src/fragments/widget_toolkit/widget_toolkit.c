@@ -17,10 +17,10 @@ extern u32 gBorderTexture_Middle[];
 extern u32 gBorderTexture_Fill[];
 extern u32 gBorderTexture_Right[];
 
-char** gItemNamesBank = NULL;
+char** gMinigameNamesBank = NULL;
 
 static s32 gRandomCounter;
-static char** gMoveNamesBank;
+static char** gControllerWarningBank;
 u16 gMenuRandomSeed;
 s16 gMenuCursorX;
 s16 gMenuCursorY;
@@ -38,8 +38,8 @@ s16 gMenuOptionFlags[4];
 
 void Widget_Init(void) {
     Text_InitStringTables();
-    gItemNamesBank = Text_GetStringTable(0x1D);
-    gMoveNamesBank = Text_GetStringTable(0x14);
+    gMinigameNamesBank = Text_GetStringTable(0x1D);
+    gControllerWarningBank = Text_GetStringTable(0x14);
 }
 
 void Widget_DrawControllerDisconnectBanner(void) {
@@ -49,18 +49,18 @@ void Widget_DrawControllerDisconnectBanner(void) {
     s16 temp_s0;
 
     if (!(Cont_GetControllerBits() & 1)) {
-        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gMoveNamesBank, 0));
+        sp24 = Font_MeasureTextExtent(4, 0, Text_GetString(NULL, 0, gControllerWarningBank, 0));
         temp_s0 = 0x50 - gScrollingMessageOffset;
 
         gDPSetScissor(gDisplayListHead++, G_SC_NON_INTERLACE, 16, 0, 304, 240);
 
         Font_BeginTranslucentTextRendering();
         Font_SetActive(4, 0);
-        Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMoveNamesBank, 0));
+        Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gControllerWarningBank, 0));
 
         temp_s0 += sp24 + 0x1E;
         if (temp_s0 < 0x140) {
-            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gMoveNamesBank, 0));
+            Font_Printf(temp_s0, 0xB3, Text_GetString(NULL, 0, gControllerWarningBank, 0));
         }
 
         Font_EndTexturedTextRendering();
