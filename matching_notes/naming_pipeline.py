@@ -262,6 +262,7 @@ SEMANTIC_DIGIT = re.compile(
     r"|Type[0-9]+$"                                         # dispatch type indices (michiiik's GeoNode_CreateType3)
     r"|(?:_T|_InvT)[0-9]$"                             # spline exponents (T3 = t^3, InvT2 = (1-t)^2)
     r"|(?:Small|Large)_[0-9]+$"                       # paired texture indices (MoveTargetSmall_0-3)
+    r"|GbGamePak_[0-9]+$"                              # GB game-category indices from GbSave_GameToCategoryIndex
     r"|Node[0-9]+$"                                        # multi-digit indexed entities (gChainLinkNode10)
     r"|N64$"                                                    # console name (gText_LeavingN64)
     r"|CreditsString[0-9]+$"                            # credits decompress-table string indices (bank 0x2D)
