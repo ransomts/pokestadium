@@ -285,6 +285,7 @@ SEMANTIC_DIGIT = re.compile(
     r"|Trail[0-9]+$"                                      # michiiik's Trail40 water-trail family citations
     r"|EffectType$"                                       # effectType struct field setters (Particle_SetEffectType)
     r"|Motion[0-9]+$"                                   # motion switch-case indices (ConfigMotion6 = scale 1.5 case)
+    r"|Round[0-9]+$"                                       # round numbers (NintendoCupRound2 = R2, battle rounds)
     r"|ByVariant$"                                        # tables indexed by variant (gCatASoundPitchOffsetByVariant)
     r"|RGB[0-9]+$"                                        # RGB5551, RGB8 pixel formats
     r"|F(?:32|64)$"                                        # float widths (Math_AbsF32)
@@ -351,8 +352,9 @@ def needs_revision(name):
     # British spellings
     if re.search(r"colour|centre|behaviour|favour|honour", name, re.I):
         return True
-    # Too generic
-    if re.match(r"^(Process|Update|Handle|Register|Init|Set|Get)\w*$", name):
+    # Too generic — verb-first with no domain prefix. "RegisteredTeam" is
+    # michiiik's established domain (40+ uses), not the verb "Register".
+    if re.match(r"^(Process|Update|Handle|Register|Init|Set|Get)\w*$", name) and not name.startswith("Registered"):
         return True
     # Too long — calibrated to michiiik's practice (p99=72, max=94; their
     # multi-effect callback chains are deliberately long). Hard fail above
