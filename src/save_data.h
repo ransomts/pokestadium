@@ -61,20 +61,20 @@ typedef struct SaveBank_OptionsRecord {
     /* 0x20 */ char unk20[0x8];
 } SaveBank_OptionsRecord; // size = 0x28
 
-typedef struct SaveBank_VictoryPalaceEntry {
+typedef struct SaveBank_HallOfFameEntry {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u16 posY;
     /* 0x04 */ char rotation[11];
     /* 0x0F */ char unk_0F[11];
-} SaveBank_VictoryPalaceEntry; // size = 0x1A
+} SaveBank_HallOfFameEntry; // size = 0x1A
 
-typedef struct SaveBank_VictoryPalaceRecord {
+typedef struct SaveBank_HallOfFameRecord {
     /* 0x000 */ u8 unk_000;
     /* 0x001 */ char unk001[0x1];
-    /* 0x002 */ SaveBank_VictoryPalaceEntry unk_002[1];
+    /* 0x002 */ SaveBank_HallOfFameEntry unk_002[1];
     /* 0x01C */ char unk01C[0xF44];
-} SaveBank_VictoryPalaceRecord; // size = 0xF60
+} SaveBank_HallOfFameRecord; // size = 0xF60
 
 typedef struct unk_D_800AE4E8_004_2_1D20_024 {
     /* 0x00 */ char unk00[0x37];
@@ -110,7 +110,7 @@ typedef struct unk_D_800AE4E8_004_2_3280 {
 
 typedef struct unk_D_800AE4E8_004_2 {
     /* 0x0000 */ char unk0000[0xDC0];
-    /* 0x0DC0 */ SaveBank_VictoryPalaceRecord hallOfFame;
+    /* 0x0DC0 */ SaveBank_HallOfFameRecord hallOfFame;
     /* 0x1D20 */ SaveBank_ContinueRecord continueRecord;
     /* 0x1EA0 */ SaveBank_OptionsRecord options;
     /* 0x1EC8 */ SaveBank_GalleryRecord galleryPhotos;

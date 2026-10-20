@@ -2,15 +2,15 @@
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
 #include "src/save_data.h"
 
-void KidsClub_LoadDifficultySetting(void) {
+void Minigames_LoadDifficultySetting(void) {
     gMenuRandomSeed = Save_GetOptionsField1E() & 0xFF;
 }
 
-void KidsClub_SetSelectedGameId(s16 arg0) {
+void Minigames_SetSelectedGameId(s16 arg0) {
     gCurrentMenuIndex = arg0;
 }
 
-void KidsClub_ResetTournamentState(s16 arg0) {
+void Minigames_ResetTournamentState(s16 arg0) {
     s32 i;
     s32 j;
 
@@ -47,7 +47,7 @@ void KidsClub_ResetTournamentState(s16 arg0) {
     }
 }
 
-s16 KidsClub_PickUnplayedGame(void) {
+s16 Minigames_PickUnplayedGame(void) {
     u32 var_a2;
     s32 i;
     s16 sp24[9];

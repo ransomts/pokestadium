@@ -174,7 +174,7 @@ typedef struct RuleWindowLayout {
 extern SpeciesDisplayParams gSpeciesDisplayParamsFront[];
 extern SpeciesDisplayParams gSpeciesDisplayParamsBack[];
 
-void BattlePrep_SaveVictoryPalaceRecords(void);
+void BattlePrep_SaveHallOfFameRecords(void);
 void BattlePrep_MarkFirstClearBonus(void);
 void BattlePrep_MarkCupCleared(void);
 void BattlePrep_MarkNewRoundRecord(void);

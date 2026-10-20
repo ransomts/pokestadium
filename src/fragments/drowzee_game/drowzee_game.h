@@ -62,6 +62,6 @@ void DrowzeeGame_InitPlayerOverlays(void);
 void DrowzeeGame_LoadAssets(void);
 void DrowzeeGame_Main(UNUSED s32 arg0, UNUSED s32 arg1);
 
-s8 DrowzeeGame_ComputeAITimingBias(u8 arg0, s32 arg1);
+s8 DrowzeeGame_ComputeAiTimingBias(u8 arg0, s32 arg1);
 
 #endif // _FRAGMENT10_H_

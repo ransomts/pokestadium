@@ -173,7 +173,7 @@ static TextObject* gMiniHudTextObj;
 static s32 gMiniHudMaxWheelValue;
 static Fragment2_1GraphNode gMiniHudWheelNodes[4];
 
-void MagikarpGame_UpdateAIInputBias(void) {
+void MagikarpGame_UpdateAiInputBias(void) {
     s32 i;
     s32 j;
 
@@ -278,7 +278,7 @@ s32 MagikarpGame_ReadInputs(void) {
     Input_ResetRepeatState();
 
     if (gResultMenuVisible != 1) {
-        MagikarpGame_UpdateAIInputBias();
+        MagikarpGame_UpdateAiInputBias();
     }
 
     return 0;

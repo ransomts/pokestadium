@@ -34,8 +34,8 @@ typedef struct SpeciesRecord {
 u16 Pokemon_LevelFromExp(s32 arg0, u32 arg1);
 void Pokemon_PrepareBattleMon(PokemonData* arg0);
 void Pokemon_SetDisplayNameFromOt(PokemonData* arg0);
-s32 VictoryPalace_LoadSpeciesRecord(SpeciesRecord*, u16);
-void VictoryPalace_SaveSpeciesRecord(PokemonData* arg0, s16 arg1, u8 arg2);
+s32 HallOfFame_LoadSpeciesRecord(SpeciesRecord*, u16);
+void HallOfFame_SaveSpeciesRecord(PokemonData* arg0, s16 arg1, u8 arg2);
 s32 GbSave_PlayerIdentityMatches(u16* arg0, Gen1StringDecodeBuffer* arg1);
 u8 Move_GetIdFromTableIndex(s32 arg0);
 u8 Species_ToInternalIndex(s32 arg0);

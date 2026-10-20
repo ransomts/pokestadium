@@ -409,7 +409,7 @@ void Save_ClearTypedRecord(s32 arg0, s32 arg1) {
     SaveBank_PokemonRecord* sp38;
     SaveBank_TrainerRecord* sp34;
     SaveBank_ItemBoxRecord* sp30;
-    SaveBank_VictoryPalaceRecord* sp2C;
+    SaveBank_HallOfFameRecord* sp2C;
     SaveBank_OptionsRecord* sp28;
     SaveBank_ContinueRecord* sp24;
     SaveBank_GalleryRecord* sp20;
@@ -817,7 +817,7 @@ s32 Deck_ReadSaveEntry(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
                 break;
 
             case 19:
-                *(SaveBank_VictoryPalaceEntry*)arg3 = gGbsSaveBanks[2].rotation.unk2->hallOfFame.unk_002[arg2];
+                *(SaveBank_HallOfFameEntry*)arg3 = gGbsSaveBanks[2].rotation.unk2->hallOfFame.unk_002[arg2];
                 break;
 
             case 22:
@@ -855,7 +855,7 @@ s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
                 gGbsSaveBanks[3].rotation.unk3->gamePakItemBoxes[arg1].unk_10[arg2] = *(SaveBank_ItemBoxEntry*)arg3;
                 break;
             case 19:
-                gGbsSaveBanks[2].rotation.unk2->hallOfFame.unk_002[arg2] = *(SaveBank_VictoryPalaceEntry*)arg3;
+                gGbsSaveBanks[2].rotation.unk2->hallOfFame.unk_002[arg2] = *(SaveBank_HallOfFameEntry*)arg3;
                 break;
             case 22:
                 _bcopy(arg3, &gGbsSaveBanks[2].rotation.unk2->galleryPhotos.unk_0002[arg2], 0x8C);

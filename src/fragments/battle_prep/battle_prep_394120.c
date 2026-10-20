@@ -49,7 +49,7 @@ static u32 gGeoLayoutCommands[] = {
     0x06000000, 0x06000000,    0x06000000, 0x06000000, 0x01000000,
 };
 
-void BattlePrep_SaveVictoryPalaceRecords(void) {
+void BattlePrep_SaveHallOfFameRecords(void) {
     s16 temp_s0;
     unk_D_800AE540_0874* temp_v0;
     PokemonData* var_s1;
@@ -67,7 +67,7 @@ void BattlePrep_SaveVictoryPalaceRecords(void) {
     }
 
     while (temp_s0-- > 0) {
-        VictoryPalace_SaveSpeciesRecord(var_s1++, gSessionContext.unk_0000, gSessionContext.inRound2);
+        HallOfFame_SaveSpeciesRecord(var_s1++, gSessionContext.unk_0000, gSessionContext.inRound2);
     }
 
     Save_CommitTypedRecord(0x13, 0);
@@ -855,7 +855,7 @@ s32 BattlePrep_ConfirmCupRules(void) {
                 }
             }
 
-            BattlePrep_SaveVictoryPalaceRecords();
+            BattlePrep_SaveHallOfFameRecords();
             BattlePrep_MarkFirstClearBonus();
             BattlePrep_MarkCupCleared();
             BattlePrep_MarkNewRoundRecord();
@@ -944,7 +944,7 @@ s32 BattlePrep_ConfirmCastleRules(void) {
         if ((gSessionContext.unk_0003 == 4) || (gSessionContext.unk_0002 == 9)) {
             BattlePrep_MarkCupCleared();
             BattlePrep_MarkNewRoundRecord();
-            BattlePrep_SaveVictoryPalaceRecords();
+            BattlePrep_SaveHallOfFameRecords();
             Save_CommitTypedRecord(0x14, 0);
             Save_FlushBank(2);
 

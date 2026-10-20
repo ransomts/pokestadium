@@ -268,7 +268,7 @@ Gfx gHealthBarDL[] = {
     gsSPEndDisplayList(),
 };
 
-s8 DrowzeeGame_ComputeAITimingBias(u8 arg0, s32 arg1) {
+s8 DrowzeeGame_ComputeAiTimingBias(u8 arg0, s32 arg1) {
     u8 i;
     u16 var_a0;
     u16 var_a1;

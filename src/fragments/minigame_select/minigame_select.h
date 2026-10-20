@@ -158,30 +158,30 @@ void MiniGameSelect_MainLoop(s16 arg0, s16 arg1);
 void MiniGameSelect_LoadScene(void);
 s32 MiniGameSelect_Entry(s32 arg0, s32 arg1);
 
-void KidsClub_InitMatchBanner(char** arg0);
-s32 KidsClub_GetMatchBannerState(void);
-void KidsClub_SetMatchBannerState(s16 arg0);
-void KidsClub_AdvanceMatchBannerOpen(MatchBanner* arg0);
-void KidsClub_UpdateMatchBannerIdle(MatchBanner* arg0);
-void KidsClub_AdvanceMatchBannerClose(MatchBanner* arg0);
-void KidsClub_UpdateMatchBanner(void);
-void KidsClub_DrawRoundedFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
-void KidsClub_DrawWavyText(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4);
-void KidsClub_DrawMatchBanner(void);
-void KidsClub_InitRoundBanner(char** arg0);
+void Minigames_InitMatchBanner(char** arg0);
+s32 Minigames_GetMatchBannerState(void);
+void Minigames_SetMatchBannerState(s16 arg0);
+void Minigames_AdvanceMatchBannerOpen(MatchBanner* arg0);
+void Minigames_UpdateMatchBannerIdle(MatchBanner* arg0);
+void Minigames_AdvanceMatchBannerClose(MatchBanner* arg0);
+void Minigames_UpdateMatchBanner(void);
+void Minigames_DrawRoundedFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7);
+void Minigames_DrawWavyText(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4);
+void Minigames_DrawMatchBanner(void);
+void Minigames_InitRoundBanner(char** arg0);
 void Minigames_NoOp(void);
-void KidsClub_SetRoundBannerLabel(s16 arg0);
-void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1);
-void KidsClub_AdvanceRoundBannerOpen(RoundBanner* arg0);
-void KidsClub_UpdateRoundBannerCrossfade(RoundBanner* arg0);
-void KidsClub_AdvanceRoundBannerClose(RoundBanner* arg0);
-void KidsClub_UpdateRoundBanner(void);
-void KidsClub_DrawRoundBanner(void);
+void Minigames_SetRoundBannerLabel(s16 arg0);
+void Minigames_SetRoundBannerState(s16 arg0, s16 arg1);
+void Minigames_AdvanceRoundBannerOpen(RoundBanner* arg0);
+void Minigames_UpdateRoundBannerCrossfade(RoundBanner* arg0);
+void Minigames_AdvanceRoundBannerClose(RoundBanner* arg0);
+void Minigames_UpdateRoundBanner(void);
+void Minigames_DrawRoundBanner(void);
 
-void KidsClub_LoadDifficultySetting(void);
-void KidsClub_SetSelectedGameId(s16);
-void KidsClub_ResetTournamentState(s16);
-s16 KidsClub_PickUnplayedGame(void);
+void Minigames_LoadDifficultySetting(void);
+void Minigames_SetSelectedGameId(s16);
+void Minigames_ResetTournamentState(s16);
+s16 Minigames_PickUnplayedGame(void);
 
 #endif // _FRAGMENT39_H_
 

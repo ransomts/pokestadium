@@ -119,7 +119,7 @@ static IconPosition gPlayerIconPositions[4] = {
     { 0xF7, 0xD4, -1, -1, -1, 0xFF },
 };
 
-static s16 gPlayerAIParams[5][6] = {
+static s16 gPlayerAiParams[5][6] = {
     { 0x87A0, 0x1190, 0x0028, 0x003C, 0x005A, 0x000A }, { 0x87A0, 0x1178, 0x0014, 0x0046, 0x005A, 0x0006 },
     { 0x87A0, 0x1180, 0x001E, 0x004B, 0x005F, 0x0002 }, { 0x87A0, 0x11A4, 0x0028, 0x005A, 0x0063, 0x0001 },
     { 0x0032, 0x001E, 0x0019, 0x0019, 0x000F, 0x0014 },
@@ -1183,12 +1183,12 @@ s32 ClefairyGame_UpdatePatternResponse(void) {
                     } else {
                         if (((temp_a0 > 0) && (gItemPairStates[temp_a0].unk_000 == gItemPairStates[temp_a0 - 1].unk_000)) ||
                             ((temp_a0 < 0xB) && (gItemPairStates[temp_a0].unk_000 == gItemPairStates[temp_a0 + 1].unk_000))) {
-                            var_s0 = ClefairyGame_ChooseCpuMove(gPlayerAIParams[gCurrentPlayerState->unk_000 - 1][4]);
+                            var_s0 = ClefairyGame_ChooseCpuMove(gPlayerAiParams[gCurrentPlayerState->unk_000 - 1][4]);
                         } else {
-                            var_s0 = ClefairyGame_ChooseCpuMove(gPlayerAIParams[gCurrentPlayerState->unk_000 - 1][3]);
+                            var_s0 = ClefairyGame_ChooseCpuMove(gPlayerAiParams[gCurrentPlayerState->unk_000 - 1][3]);
                         }
 
-                        gCurrentPlayerState->unk_1B0 = Rand_Range(0xA) + gPlayerAIParams[gCurrentPlayerState->unk_000 - 1][5] + 5;
+                        gCurrentPlayerState->unk_1B0 = Rand_Range(0xA) + gPlayerAiParams[gCurrentPlayerState->unk_000 - 1][5] + 5;
                     }
                 }
 

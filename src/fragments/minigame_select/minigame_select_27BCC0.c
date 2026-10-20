@@ -1127,9 +1127,9 @@ s32 MiniGameSelect_ResolveGameID(void) {
     }
 
     if (sp1C != 0) {
-        KidsClub_SetSelectedGameId(sp1C);
+        Minigames_SetSelectedGameId(sp1C);
     } else {
-        KidsClub_SetSelectedGameId(-1);
+        Minigames_SetSelectedGameId(-1);
     }
     return sp1C;
 }
@@ -1717,7 +1717,7 @@ void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
 
     gSubMenuState = arg0;
     if (arg1 == 0) {
-        KidsClub_LoadDifficultySetting();
+        Minigames_LoadDifficultySetting();
     }
 
     D_8250A26C = 0;
@@ -1727,7 +1727,7 @@ void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
     }
 
     MiniGameSelect_ResetSelection();
-    KidsClub_ResetTournamentState(gSubMenuState);
+    Minigames_ResetTournamentState(gSubMenuState);
     gSelectionTimer = -1;
 
     switch (gSubMenuState) {
@@ -1739,7 +1739,7 @@ void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
             if (gMiniHudColorDefaults[gMenuSelectedOption] == 0) {
                 gSelectionTimer = -1;
             } else {
-                gSelectionTimer = KidsClub_PickUnplayedGame();
+                gSelectionTimer = Minigames_PickUnplayedGame();
                 gSelectionDelay = 0x1E;
             }
             break;
@@ -1795,8 +1795,8 @@ void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
         MiniGameSelect_ChainWidget(gItemGridElements[i], gItemGridElements[i + 1]);
     }
 
-    KidsClub_InitMatchBanner(gStringTable);
-    KidsClub_InitRoundBanner(gStringTable);
+    Minigames_InitMatchBanner(gStringTable);
+    Minigames_InitRoundBanner(gStringTable);
     MiniGameSelect_ClearOptionPanelState();
     MiniGameSelect_CreateCursor();
 }
@@ -1974,8 +1974,8 @@ void MiniGameSelect_DrawFrame(void) {
     BgStage_DrawFrame();
     Gfx_DrawTiledRgba16Image(gItemDataPtr);
     Geo_RenderRootNode(gCursorNode);
-    KidsClub_DrawMatchBanner();
-    KidsClub_DrawRoundBanner();
+    Minigames_DrawMatchBanner();
+    Minigames_DrawRoundBanner();
     MiniGameSelect_DrawOptionPanel();
     UI_DrawStatusIcon();
     BgStage_AdvanceFrame();
@@ -1999,7 +1999,7 @@ void MiniGameSelect_ReturnToIdle(void) {
         D_8250A288.posX = sp1C;
     }
     gSubMenuState = 0;
-    KidsClub_ResetTournamentState(gSubMenuState);
+    Minigames_ResetTournamentState(gSubMenuState);
 }
 
 void MiniGameSelect_UpdateMainMenu(void) {
@@ -2034,7 +2034,7 @@ void MiniGameSelect_UpdateMainMenu(void) {
     if (gControllerInputs->rotation & 0x8000) {
         gMenuCursorX = D_8250A288.posX;
         D_8250A26C = 2;
-        KidsClub_SetMatchBannerState(1);
+        Minigames_SetMatchBannerState(1);
         D_8250A288.posY = 0;
 
         for (i = 0; i < 4; i++) {
@@ -2062,11 +2062,11 @@ void MiniGameSelect_UpdateMainMenu(void) {
 }
 
 void MiniGameSelect_LeaveJoinMenu(void) {
-    KidsClub_SetMatchBannerState(3);
+    Minigames_SetMatchBannerState(3);
     if (D_8250A288.posX == 0) {
         D_8250A26C = 5;
         MiniGameSelect_LinkWidgets(gComputerUIElements[0], gItemGridElements[0]);
-        KidsClub_SetRoundBannerState(1, D_8250A288.unk_06);
+        Minigames_SetRoundBannerState(1, D_8250A288.unk_06);
     } else {
         D_8250A26C = 3;
         gUnused0 = 0;
@@ -2085,7 +2085,7 @@ void MiniGameSelect_PlayerJoinUpdate(void) {
     s32 i;
 
     gComputerUIElements[1]->unk_0A = gMenuCursorX;
-    if ((MiniGameSelect_IsWidgetInState(gComputerUIElements[0], 2) != 0) && (KidsClub_GetMatchBannerState() == 2)) {
+    if ((MiniGameSelect_IsWidgetInState(gComputerUIElements[0], 2) != 0) && (Minigames_GetMatchBannerState() == 2)) {
         var_v1 = D_8250A288.posY;
         if ((gControllerInputs->rotation & 0x800) && (gMiniHudColorDefaults[0] == 0)) {
             D_8250A288.posY--;
@@ -2146,7 +2146,7 @@ void MiniGameSelect_PlayerJoinUpdate(void) {
 
         if ((var_s4 == 0) && (gControllerInputs->rotation & 0x4000)) {
             MiniGameSelect_ReturnToIdle();
-            KidsClub_SetMatchBannerState(3);
+            Minigames_SetMatchBannerState(3);
             SetUIElementState(gComputerUIElements[0], 8);
             Audio_PlaySoundEffectById(3);
         }
@@ -2285,10 +2285,10 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
                     D_8250A26C = 5;
                     SetUIElementState(gComputerUIRoot, 3);
                     Audio_PlaySoundEffectById(0xE);
-                    KidsClub_SetRoundBannerState(1, D_8250A288.unk_06);
+                    Minigames_SetRoundBannerState(1, D_8250A288.unk_06);
                 } else if (gControllerInputs->rotation & 0x4000) {
                     D_8250A26C = 2;
-                    KidsClub_SetMatchBannerState(1);
+                    Minigames_SetMatchBannerState(1);
                     SetUIElementState(gComputerUIRoot, 8);
                     Audio_PlaySoundEffectById(3);
                 } else if ((gControllerInputs->RentalSlotAnimData_PosePhase & 0x800) && (D_8250A288.rotation < 9)) {
@@ -2414,7 +2414,7 @@ s32 MiniGameSelect_UpdateGridCursor(s16* arg0, s16 arg1) {
 
     *arg0 = (var_t0 * 3) + var_a3;
     if (sp2C != *arg0) {
-        KidsClub_SetRoundBannerLabel(*arg0);
+        Minigames_SetRoundBannerLabel(*arg0);
         Audio_PlaySoundEffectById(1);
     }
 
@@ -2433,7 +2433,7 @@ s32 MiniGameSelect_AttractCursorShuffle(s16* arg0, s16 arg1) {
         Rand_Range(2);
         if ((arg1 % 6) == 0) {
             *arg0 = Rand_Range(9);
-            KidsClub_SetRoundBannerLabel(*arg0);
+            Minigames_SetRoundBannerLabel(*arg0);
 
             if (arg1 != 0) {
                 for (i = 0; i < 9; i++) {
@@ -2507,10 +2507,10 @@ void MiniGameSelect_GameGridUpdate(void) {
             gMenuOptionUsedFlags[D_8250A288.unk_06] = 1;
             Audio_PlaySoundEffectById(0x11);
         } else if (sp18 != 0) {
-            KidsClub_SetRoundBannerState(3, -1);
+            Minigames_SetRoundBannerState(3, -1);
             SetUIElementState(gItemGridElements[0], 8);
             D_8250A26C = 2;
-            KidsClub_SetMatchBannerState(1);
+            Minigames_SetMatchBannerState(1);
             Audio_PlaySoundEffectById(3);
         }
     }
@@ -2549,8 +2549,8 @@ void MiniGameSelect_MainLoop(s16 arg0, s16 arg1) {
 
     while (var_s6 != 0) {
         MiniGameSelect_PollInputs();
-        KidsClub_UpdateMatchBanner();
-        KidsClub_UpdateRoundBanner();
+        Minigames_UpdateMatchBanner();
+        Minigames_UpdateRoundBanner();
         MiniGameSelect_UpdateWidgets();
         MiniGameSelect_DrawFrame();
 
@@ -2568,7 +2568,7 @@ void MiniGameSelect_MainLoop(s16 arg0, s16 arg1) {
                             for (i = 0; i < 9; i++) {
                                 SetUIElementState(gItemGridElements[i], 1);
                             }
-                            KidsClub_SetRoundBannerState(1, D_8250A288.unk_06);
+                            Minigames_SetRoundBannerState(1, D_8250A288.unk_06);
                             break;
 
                         case 4:
@@ -2576,7 +2576,7 @@ void MiniGameSelect_MainLoop(s16 arg0, s16 arg1) {
                             for (i = 0; i < 2; i++) {
                                 SetUIElementState(gComputerUIElements[i], 1);
                             }
-                            KidsClub_SetMatchBannerState(1);
+                            Minigames_SetMatchBannerState(1);
                             break;
                     }
                 }

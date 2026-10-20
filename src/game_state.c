@@ -1050,7 +1050,7 @@ void State_VsMewtwo(void) {
     gCurrentGameState = STATE_AREA_SELECT;
 }
 
-void State_KidsClub(void) {
+void State_Minigames(void) {
     MiniGame_Dispatch();
     gCurrentGameState = STATE_AREA_SELECT;
 }
@@ -1060,7 +1060,7 @@ void State_Gallery(void) {
     gCurrentGameState = STATE_MENU_SELECT;
 }
 
-void State_VictoryPalace(void) {
+void State_HallOfFame(void) {
     if (FRAGMENT_LOAD_AND_CALL(fragment50, 0, 0) == 1) {
         Stage_RunDemoScene(0x1A);
     }
@@ -1298,7 +1298,7 @@ void State_FastBattle(void) {
 void State_Empty(void) {
 }
 
-void State_KidsClubTitle(void) {
+void State_MinigamesTitle(void) {
     MiniGame_Dispatch();
     gCurrentGameState = STATE_TITLE_SCREEN;
 }
@@ -1376,10 +1376,10 @@ void Game_Thread(UNUSED LEODiskID* arg) {
                 State_VsMewtwo();
                 break;
             case STATE_KIDS_CLUB:
-                State_KidsClub();
+                State_Minigames();
                 break;
             case STATE_VICTORY_PALACE:
-                State_VictoryPalace();
+                State_HallOfFame();
                 break;
             case STATE_POKEMON_LAB:
                 State_PokemonLab();
@@ -1406,7 +1406,7 @@ void Game_Thread(UNUSED LEODiskID* arg) {
                 State_FastBattle();
                 break;
             case STATE_KIDS_CLUB_TITLE:
-                State_KidsClubTitle();
+                State_MinigamesTitle();
                 break;
             case STATE_FAST_N64_LOGO:
                 State_FastN64Logo();

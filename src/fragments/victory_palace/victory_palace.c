@@ -1647,8 +1647,8 @@ static Gfx gPokedexPanelSetupDL[] = {
 };
 static u32 gPokedexPanelScript[] = {
     0x0C00FFFF,  0x05000000, 0x0B00001E, 0x00000000,    0x014000F0, 0x00000000, 0x00000005,    0x000003E8, 0x05000000,
-    0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, VictoryPalace_UpdateLeftPillarGlow, 0x00000000, 0x14000000,
-    0x002D0019,  0x96966428, 0x08000000, VictoryPalace_UpdateRightPillarGlow, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
+    0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, HallOfFame_UpdateLeftPillarGlow, 0x00000000, 0x14000000,
+    0x002D0019,  0x96966428, 0x08000000, HallOfFame_UpdateRightPillarGlow, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,    0x06000000, 0x01000000, 0x00000000,
 };
 static Gfx gPokedexPanelMainDL[] = {
@@ -1670,14 +1670,14 @@ static Gfx gPokedexPanelMainDL[] = {
 };
 static s32 pad_82607320[2] = { 0, 0 };
 
-void VictoryPalace_CheckAllCaught(void) {
+void HallOfFame_CheckAllCaught(void) {
     s32 i;
     s32 var_s1;
 
     if (Save_GetOptionsField1F() != 1) {
         var_s1 = 0;
         for (i = 0; i < 151; i++) {
-            if (VictoryPalace_SpeciesObtained(i + 1) != 0) {
+            if (HallOfFame_SpeciesObtained(i + 1) != 0) {
                 var_s1++;
             }
         }
@@ -1688,7 +1688,7 @@ void VictoryPalace_CheckAllCaught(void) {
     }
 }
 
-s32 VictoryPalace_StringsEqual(s8* arg0, s8* arg1) {
+s32 HallOfFame_StringsEqual(s8* arg0, s8* arg1) {
     while (*arg0 == *arg1) {
         if (*arg0 == 0) {
             return 1;
@@ -1699,21 +1699,21 @@ s32 VictoryPalace_StringsEqual(s8* arg0, s8* arg1) {
     return 0;
 }
 
-s32 VictoryPalace_IsCurrentSpeciesOwnedByPlayer(void) {
+s32 HallOfFame_IsCurrentSpeciesOwnedByPlayer(void) {
     s32 sp44 = 0;
     SpeciesRecord sp20;
     char* tmp;
 
-    VictoryPalace_LoadSpeciesRecord(&sp20, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
+    HallOfFame_LoadSpeciesRecord(&sp20, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
     tmp = Text_GetPlayerLabel(1);
-    if ((sp20.posY == 0) && (VictoryPalace_StringsEqual(&sp20.unk_14, tmp) == 1)) {
+    if ((sp20.posY == 0) && (HallOfFame_StringsEqual(&sp20.unk_14, tmp) == 1)) {
         sp44 = 1;
     }
     return sp44;
 }
 
-Gfx* VictoryPalace_DrawFrameBorder(Gfx* arg0) {
-    s32 temp_v0 = VictoryPalace_IsCurrentSpeciesOwnedByPlayer();
+Gfx* HallOfFame_DrawFrameBorder(Gfx* arg0) {
+    s32 temp_v0 = HallOfFame_IsCurrentSpeciesOwnedByPlayer();
 
     gSPDisplayList(arg0++, gPokedexPanelSetupDL);
 
@@ -1755,14 +1755,14 @@ Gfx* VictoryPalace_DrawFrameBorder(Gfx* arg0) {
     return arg0;
 }
 
-s32 VictoryPalace_SpeciesObtained(s32 arg0) {
+s32 HallOfFame_SpeciesObtained(s32 arg0) {
     UNUSED s32 pad;
     SpeciesRecord sp18;
 
-    return VictoryPalace_LoadSpeciesRecord(&sp18, arg0);
+    return HallOfFame_LoadSpeciesRecord(&sp18, arg0);
 }
 
-s32 VictoryPalace_UpdateLeftPillarGlow(s32 arg0, PillarGlowParams* arg1) {
+s32 HallOfFame_UpdateLeftPillarGlow(s32 arg0, PillarGlowParams* arg1) {
     u8* ptr;
     s16 idx = 5;
     s16 sp30; // purposely the wrong type to fix the stack, should be f32
@@ -1797,7 +1797,7 @@ s32 VictoryPalace_UpdateLeftPillarGlow(s32 arg0, PillarGlowParams* arg1) {
     return 0;
 }
 
-s32 VictoryPalace_UpdateRightPillarGlow(s32 arg0, PillarGlowParams* arg1) {
+s32 HallOfFame_UpdateRightPillarGlow(s32 arg0, PillarGlowParams* arg1) {
     UNUSED s32 pad;
     f32 sp30;
     s16 sp2E;
@@ -1820,10 +1820,10 @@ s32 VictoryPalace_UpdateRightPillarGlow(s32 arg0, PillarGlowParams* arg1) {
 void HallOfFame_EmptyFunc1(void) {
 }
 
-void VictoryPalace_EmptyFunc2(void) {
+void HallOfFame_EmptyFunc2(void) {
 }
 
-void VictoryPalace_InitCamera(void) {
+void HallOfFame_InitCamera(void) {
     gFragment50Camera = gFragment50GraphRoot->unk_0C;
     gPokedexPanelCameraFovY = 0x450;
     gPokedexPanelCameraFovZ = 0;
@@ -1841,23 +1841,23 @@ void VictoryPalace_InitCamera(void) {
 void HallOfFame_EmptyFunc3(void) {
 }
 
-void VictoryPalace_PollInput(void) {
+void HallOfFame_PollInput(void) {
     Cont_StartReadInputs();
     Cont_ReadInputs();
     Input_ResetRepeatState();
 }
 
-void VictoryPalace_EmptyFunc4(void) {
+void HallOfFame_EmptyFunc4(void) {
 }
 
-void VictoryPalace_EmptyFunc5(void) {
+void HallOfFame_EmptyFunc5(void) {
 }
 
-void VictoryPalace_DrawSpeciesIcon(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
+void HallOfFame_DrawSpeciesIcon(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
     s32 tmp1 = 2560.0f / arg2;
     s32 tmp2 = 2560.0f / arg2;
 
-    if (VictoryPalace_SpeciesObtained(arg3 + 1) != 0) {
+    if (HallOfFame_SpeciesObtained(arg3 + 1) != 0) {
 
         gDPLoadTextureBlock(gDisplayListHead++, gFragment50ImageBuffer[arg3], G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 40, 0,
                             G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK,
@@ -1869,7 +1869,7 @@ void VictoryPalace_DrawSpeciesIcon(s32 arg0, s32 arg1, f32 arg2, s32 arg3) {
     }
 }
 
-void VictoryPalace_DrawSpeciesGrid(void) {
+void HallOfFame_DrawSpeciesGrid(void) {
     s32 i;
     f32 tmp;
 
@@ -1891,15 +1891,15 @@ void VictoryPalace_DrawSpeciesGrid(void) {
                 3.0f;
         }
         tmp = gFragment50FloatBuffer[i];
-        VictoryPalace_DrawSpeciesIcon(((i % 15) * 0x10) + 0x12, ((i / 15) * 0x10) + 0x12, tmp, i);
+        HallOfFame_DrawSpeciesIcon(((i % 15) * 0x10) + 0x12, ((i / 15) * 0x10) + 0x12, tmp, i);
     }
 
-    if (VictoryPalace_SpeciesObtained(0x97) != 0) {
-        VictoryPalace_DrawSpeciesIcon(0x82, 0xB2, 1.25f, 0x96);
+    if (HallOfFame_SpeciesObtained(0x97) != 0) {
+        HallOfFame_DrawSpeciesIcon(0x82, 0xB2, 1.25f, 0x96);
     }
 }
 
-void VictoryPalace_DrawOverlay(void) {
+void HallOfFame_DrawOverlay(void) {
     static u8 gPokedexPanelFillTexture[] = {
         0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
     };
@@ -1935,7 +1935,7 @@ void VictoryPalace_DrawOverlay(void) {
         SpeciesRecord sp158;
         UNUSED s32 pad2[1];
 
-        VictoryPalace_LoadSpeciesRecord(&sp158, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
+        HallOfFame_LoadSpeciesRecord(&sp158, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
 
         gDPSetPrimColor(gDisplayListHead++, 0, 0, 0, 0, 0, 150);
 
@@ -1955,7 +1955,7 @@ void VictoryPalace_DrawOverlay(void) {
                             G_TX_NOLOD, G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, 0x00A8, 0x0060, 0x0458, 0x02F0, G_TX_RENDERTILE, 0, 0, 0, 0);
 
-        gDisplayListHead = VictoryPalace_DrawFrameBorder(gDisplayListHead);
+        gDisplayListHead = HallOfFame_DrawFrameBorder(gDisplayListHead);
 
         if (sp158.posX & 0x80) {
             s32 temp_v0_2;
@@ -1997,7 +1997,7 @@ void VictoryPalace_DrawOverlay(void) {
     }
 
     if (gPokedexPanelShowList == 1) {
-        VictoryPalace_DrawSpeciesGrid();
+        HallOfFame_DrawSpeciesGrid();
 
         gSPTextureRectangle(gDisplayListHead++, 0x0080, 0x0058, 0x0480, 0x0370, G_TX_RENDERTILE, 0, 0, 0, 0);
     }
@@ -2015,10 +2015,10 @@ void VictoryPalace_DrawOverlay(void) {
         Font_Printf(0x1E, 0xBC, " POS-X %3.1f", sp7C->RentalSlotAnimData_PosePhase);
         Font_Printf(0x1E, 0xC8, " POS-Y %3.1f", sp7C->unk_0C);
         Font_Printf(0x1E, 0xD4, " POS-Z %3.1f", sp7C->unk_10);
-    } else if ((gPokedexPanelShowInfo == 1) && (VictoryPalace_SpeciesObtained((gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1) != 0)) {
+    } else if ((gPokedexPanelShowInfo == 1) && (HallOfFame_SpeciesObtained((gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1) != 0)) {
         SpeciesRecord sp58;
 
-        VictoryPalace_LoadSpeciesRecord(&sp58, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
+        HallOfFame_LoadSpeciesRecord(&sp58, (gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
         Font_SetActive(2, 0);
         Font_Printf(0x58, 0x2E, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 0));
@@ -2027,7 +2027,7 @@ void VictoryPalace_DrawOverlay(void) {
         Font_Printf(0x58, 0x6A, "ID");
         Font_Printf(0x4C, 0x86, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 4));
 
-        if (VictoryPalace_IsCurrentSpeciesOwnedByPlayer() > 0) {
+        if (HallOfFame_IsCurrentSpeciesOwnedByPlayer() > 0) {
             Text_SetEnvColor(0x64, 0x64, 0xC8, 0xFF);
             Font_Printf(0xD4, 0x6C, "%s", Text_GetString(NULL, 0, gFragment50StringTable, 3));
         }
@@ -2035,7 +2035,7 @@ void VictoryPalace_DrawOverlay(void) {
         Font_EnableTwoCycleTexturing();
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
-        if (VictoryPalace_IsCurrentSpeciesOwnedByPlayer() == 0) {
+        if (HallOfFame_IsCurrentSpeciesOwnedByPlayer() == 0) {
             Text_SetPrimColor(0xC8, 0xC8, 0, 0xFF);
         } else {
             Text_SetPrimColor(0x64, 0x64, 0xC8, 0xFF);
@@ -2081,16 +2081,16 @@ void VictoryPalace_DrawOverlay(void) {
     Font_EndTexturedTextRendering();
 }
 
-void VictoryPalace_DrawFrame(void) {
+void HallOfFame_DrawFrame(void) {
     BgStage_DrawFrame();
     GfxImage_FillCurrent(&gDisplayListHead, 0x2A9);
     GfxImage_ClearDepthRectangle(&gDisplayListHead, 0, 0, 0x140, 0xF0);
     Geo_RenderRootNode(gFragment50GraphRoot);
-    VictoryPalace_DrawOverlay();
+    HallOfFame_DrawOverlay();
     BgStage_AdvanceFrame();
 }
 
-void VictoryPalace_InitCarouselModel(s16 arg0) {
+void HallOfFame_InitCarouselModel(s16 arg0) {
     UNUSED s32 pad[3];
     s32 tmp = 0xF000;
     f32 temp_fs0;
@@ -2098,7 +2098,7 @@ void VictoryPalace_InitCarouselModel(s16 arg0) {
     PokedexGraphNode* temp_s0 = &gFragment50GraphNodes[idx];
     PokedexStageParam* temp_s1 = &gFragment50StageParams[temp_s0->unk_000 - 1];
 
-    if (VictoryPalace_SpeciesObtained(temp_s0->unk_000) == 0) {
+    if (HallOfFame_SpeciesObtained(temp_s0->unk_000) == 0) {
         return;
     }
 
@@ -2126,24 +2126,24 @@ void VictoryPalace_InitCarouselModel(s16 arg0) {
     temp_s0->unk_008.unk_01C = gPokedexPanelModelId;
 }
 
-void VictoryPalace_SpawnCarouselEntry(s16 arg0) {
+void HallOfFame_SpawnCarouselEntry(s16 arg0) {
     s32 sp1C = (gPokedexPanelGraphNodeIndex + arg0 + 5) % 5;
 
-    VictoryPalace_InitCarouselModel(arg0);
+    HallOfFame_InitCarouselModel(arg0);
     HallOfFame_SpawnPokeIcon(sp1C, arg0 * 600.0f);
 }
 
-void VictoryPalace_EmptyFunc6(void) {
+void HallOfFame_EmptyFunc6(void) {
 }
 
-void VictoryPalace_ClearCarouselSlot(s16 arg0) {
+void HallOfFame_ClearCarouselSlot(s16 arg0) {
     s32 sp1C = (gPokedexPanelGraphNodeIndex + arg0 + 5) % 5;
 
     ModelRenderer_ClearDisplayObject(&gFragment50GraphNodes[sp1C].unk_008);
     ModelRenderer_ClearDisplayObject(&gFragment50GraphNodeArray[sp1C]);
 }
 
-void VictoryPalace_RequestCarouselIconLoad(s16 arg0) {
+void HallOfFame_RequestCarouselIconLoad(s16 arg0) {
     arg1_func_80010CA8 sp24;
     s16 idx = ((gPokedexPanelCurrentMonIndex + arg0 + gPokedexPanelMonCount) % gPokedexPanelMonCount) + 1;
 
@@ -2153,13 +2153,13 @@ void VictoryPalace_RequestCarouselIconLoad(s16 arg0) {
     PokeIcon_RequestFrameLoadWithVariant(gFragment50AssetManager, gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_000, sp24, gPokedexPanelGraphNodeIndex2);
 }
 
-void VictoryPalace_LoadCurrentCarouselIcon(s16 arg0) {
+void HallOfFame_LoadCurrentCarouselIcon(s16 arg0) {
     arg1_func_80010CA8 sp54;
     s16 temp_s1 = ((gPokedexPanelCurrentMonIndex + arg0 + gPokedexPanelMonCount) % gPokedexPanelMonCount) + 1;
     SpeciesRecord sp2C;
 
-    if (VictoryPalace_SpeciesObtained(temp_s1) != 0) {
-        VictoryPalace_LoadSpeciesRecord(&sp2C, temp_s1);
+    if (HallOfFame_SpeciesObtained(temp_s1) != 0) {
+        HallOfFame_LoadSpeciesRecord(&sp2C, temp_s1);
         Model_ComputeSizeVariantFromRecord(&sp54, &sp2C, temp_s1);
     } else {
         sp54.raw = 0;
@@ -2171,7 +2171,7 @@ void VictoryPalace_LoadCurrentCarouselIcon(s16 arg0) {
     gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_004 = gFragment50AssetManager->unk_24;
 }
 
-void VictoryPalace_ScrollCarousel(f32 arg0) {
+void HallOfFame_ScrollCarousel(f32 arg0) {
     s32 i;
 
     // clang-format off
@@ -2181,7 +2181,7 @@ void VictoryPalace_ScrollCarousel(f32 arg0) {
     gFragment50GraphNodeB.unk_024.x += arg0;
 }
 
-void VictoryPalace_SetBackgroundPositionX(f32 arg0) {
+void HallOfFame_SetBackgroundPositionX(f32 arg0) {
     gFragment50GraphNodeA.unk_024.x = arg0;
     gFragment50GraphNodeB.unk_024.x = arg0;
 }
@@ -2189,7 +2189,7 @@ void VictoryPalace_SetBackgroundPositionX(f32 arg0) {
 void HallOfFame_EmptyFunc7(void) {
 }
 
-void VictoryPalace_UpdateCarouselModelRotation(void) {
+void HallOfFame_UpdateCarouselModelRotation(void) {
     s32 idx = (gPokedexPanelGraphNodeIndex + 5) % 5;
     PokedexStageParam* temp_s1;
     PokedexGraphNode* temp_s0;
@@ -2211,12 +2211,12 @@ void VictoryPalace_UpdateCarouselModelRotation(void) {
     temp_s0->unk_008.unk_024.z = (temp_s1->RentalSlotAnimData_PosePhase * __sinf(temp_fs0)) - (__cosf(temp_fs0) * temp_s1->unk_10);
 }
 
-void VictoryPalace_ShowSpeciesInfo(void) {
+void HallOfFame_ShowSpeciesInfo(void) {
     Audio_PlaySoundEffectById(2);
     gPokedexPanelShowInfo = 1;
 }
 
-void VictoryPalace_ShowSpeciesGrid(void) {
+void HallOfFame_ShowSpeciesGrid(void) {
     s32 i;
 
     Audio_PlaySoundEffectById(2);
@@ -2228,20 +2228,20 @@ void VictoryPalace_ShowSpeciesGrid(void) {
     // clang-format on
 }
 
-void VictoryPalace_HideSpeciesGrid(void) {
+void HallOfFame_HideSpeciesGrid(void) {
     Audio_PlaySoundEffectById(3);
     gPokedexPanelShowList = 0;
 }
 
-void VictoryPalace_HideOverlays(void) {
+void HallOfFame_HideOverlays(void) {
     Audio_PlaySoundEffectById(3);
     gPokedexPanelShowInfo = 0;
     gPokedexPanelShowList = 0;
 }
 
-void VictoryPalace_ResetPillarGlow(s32 arg0) {
+void HallOfFame_ResetPillarGlow(s32 arg0) {
     if ((gPokedexPanelShowInfo != 0) || (gPokedexPanelShowList != 0)) {
-        VictoryPalace_HideOverlays();
+        HallOfFame_HideOverlays();
     } else {
         Audio_PlaySoundEffectById(1);
     }
@@ -2249,44 +2249,44 @@ void VictoryPalace_ResetPillarGlow(s32 arg0) {
     gPokedexPanelLoadTimer = 5;
 }
 
-s32 VictoryPalace_HandleInput(s16* arg0) {
+s32 HallOfFame_HandleInput(s16* arg0) {
     if (BTN_IS_DOWN(gPlayer1Controller, BTN_L)) {
-        VictoryPalace_SpawnCarouselEntry(-2);
+        HallOfFame_SpawnCarouselEntry(-2);
         gPokedexPanelGraphNodeIndex = (gPokedexPanelGraphNodeIndex + 4) % 5;
         gPokedexPanelCurrentMonIndex = ((gPokedexPanelCurrentMonIndex + gPokedexPanelMonCount) - 1) % gPokedexPanelMonCount;
-        VictoryPalace_RequestCarouselIconLoad(-2);
+        HallOfFame_RequestCarouselIconLoad(-2);
         *arg0 = 6;
-        VictoryPalace_ResetPillarGlow(gPokedexPanelCurrentMonIndex + 1);
+        HallOfFame_ResetPillarGlow(gPokedexPanelCurrentMonIndex + 1);
         return 1;
     }
 
     if (BTN_IS_DOWN(gPlayer1Controller, BTN_R)) {
-        VictoryPalace_SpawnCarouselEntry(2);
+        HallOfFame_SpawnCarouselEntry(2);
         gPokedexPanelGraphNodeIndex = (gPokedexPanelGraphNodeIndex + 1) % 5;
         gPokedexPanelCurrentMonIndex = (gPokedexPanelCurrentMonIndex + 1) % gPokedexPanelMonCount;
-        VictoryPalace_RequestCarouselIconLoad(2);
+        HallOfFame_RequestCarouselIconLoad(2);
         *arg0 = 7;
-        VictoryPalace_ResetPillarGlow(gPokedexPanelCurrentMonIndex + 1);
+        HallOfFame_ResetPillarGlow(gPokedexPanelCurrentMonIndex + 1);
         return 1;
     }
 
     if (BTN_IS_DOWN(gPlayer1Controller, BTN_DLEFT)) {
-        VictoryPalace_SpawnCarouselEntry(-2);
+        HallOfFame_SpawnCarouselEntry(-2);
         gPokedexPanelGraphNodeIndex = (gPokedexPanelGraphNodeIndex + 4) % 5;
         gPokedexPanelCurrentMonIndex = ((gPokedexPanelCurrentMonIndex + gPokedexPanelMonCount) - 1) % gPokedexPanelMonCount;
-        VictoryPalace_RequestCarouselIconLoad(-2);
+        HallOfFame_RequestCarouselIconLoad(-2);
         *arg0 = 3;
-        VictoryPalace_ResetPillarGlow(gPokedexPanelCurrentMonIndex + 1);
+        HallOfFame_ResetPillarGlow(gPokedexPanelCurrentMonIndex + 1);
         return 1;
     }
 
     if (BTN_IS_DOWN(gPlayer1Controller, BTN_DRIGHT)) {
-        VictoryPalace_SpawnCarouselEntry(2);
+        HallOfFame_SpawnCarouselEntry(2);
         gPokedexPanelGraphNodeIndex = (gPokedexPanelGraphNodeIndex + 1) % 5;
         gPokedexPanelCurrentMonIndex = (gPokedexPanelCurrentMonIndex + 1) % gPokedexPanelMonCount;
-        VictoryPalace_RequestCarouselIconLoad(2);
+        HallOfFame_RequestCarouselIconLoad(2);
         *arg0 = 4;
-        VictoryPalace_ResetPillarGlow(gPokedexPanelCurrentMonIndex + 1);
+        HallOfFame_ResetPillarGlow(gPokedexPanelCurrentMonIndex + 1);
         return 1;
     }
 
@@ -2294,11 +2294,11 @@ s32 VictoryPalace_HandleInput(s16* arg0) {
         if (gPokedexPanelShowList == 1) {
             gPokedexPanelShowList = 0;
         }
-        if (VictoryPalace_SpeciesObtained((gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1) != 0) {
+        if (HallOfFame_SpeciesObtained((gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1) != 0) {
             if (gPokedexPanelShowInfo == 0) {
-                VictoryPalace_ShowSpeciesInfo();
+                HallOfFame_ShowSpeciesInfo();
             } else {
-                VictoryPalace_HideOverlays();
+                HallOfFame_HideOverlays();
             }
         }
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
@@ -2309,12 +2309,12 @@ s32 VictoryPalace_HandleInput(s16* arg0) {
                 return 1;
             }
         }
-        VictoryPalace_HideOverlays();
+        HallOfFame_HideOverlays();
     } else if ((gPokedexPanelListActive == 1) && (BTN_IS_PRESSED(gPlayer1Controller, BTN_START))) {
         if (gPokedexPanelShowList == 0) {
-            VictoryPalace_ShowSpeciesGrid();
+            HallOfFame_ShowSpeciesGrid();
         } else {
-            VictoryPalace_HideSpeciesGrid();
+            HallOfFame_HideSpeciesGrid();
         }
         gPokedexPanelShowInfo = 0;
     }
@@ -2329,15 +2329,15 @@ s32 HallOfFame_HandleGalleryInput(void) {
     PokedexGraphNode* temp_v0;
 
     while (sp54 == 2) {
-        VictoryPalace_PollInput();
+        HallOfFame_PollInput();
         temp_s0 = &gFragment50StageParams[gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount];
 
         if (gPokedexPanelLoadState == 0) {
             if (gPokedexPanelLoadTimer > 0) {
                 gPokedexPanelLoadTimer -= 1;
             } else {
-                if (VictoryPalace_SpeciesObtained((gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1) != 0) {
-                    VictoryPalace_LoadCurrentCarouselIcon(0);
+                if (HallOfFame_SpeciesObtained((gPokedexPanelCurrentMonIndex % gPokedexPanelMonCount) + 1) != 0) {
+                    HallOfFame_LoadCurrentCarouselIcon(0);
                 }
                 gPokedexPanelLoadState = 1;
                 gPokedexPanelHighlightPhase = 0;
@@ -2346,7 +2346,7 @@ s32 HallOfFame_HandleGalleryInput(void) {
 
         if (gPokedexPanelShowDebug == 0) {
             if (gPokedexPanelAllMonsSeen == 0) {
-                if (VictoryPalace_HandleInput(&sp54) != 0) {
+                if (HallOfFame_HandleInput(&sp54) != 0) {
                     break;
                 }
             } else {
@@ -2398,12 +2398,12 @@ s32 HallOfFame_HandleGalleryInput(void) {
             }
         }
 
-        VictoryPalace_UpdateCarouselModelRotation();
+        HallOfFame_UpdateCarouselModelRotation();
         temp_v0 = &gFragment50GraphNodes[gPokedexPanelGraphNodeIndex % 5];
         if ((gPokedexPanelLoadState == 1) && (gFragment50EnableSlide == 1)) {
             temp_v0->unk_008.unk_01E.y += 0x100;
         }
-        VictoryPalace_DrawFrame();
+        HallOfFame_DrawFrame();
     }
     return sp54;
 }
@@ -2414,19 +2414,19 @@ s32 HallOfFame_ScrollRight(void) {
 
     for (i = 0; i < 12; i++) {
         if (i == 0xB) {
-            VictoryPalace_ClearCarouselSlot(2);
+            HallOfFame_ClearCarouselSlot(2);
         }
-        VictoryPalace_PollInput();
+        HallOfFame_PollInput();
 
         for (j = 0; j < 5; j++) {
             gFragment50GraphNodes[j].unk_008.unk_024.x += 50.0f;
         }
 
-        VictoryPalace_ScrollCarousel(50.0f);
-        VictoryPalace_DrawFrame();
+        HallOfFame_ScrollCarousel(50.0f);
+        HallOfFame_DrawFrame();
     }
 
-    VictoryPalace_SetBackgroundPositionX(0.0f);
+    HallOfFame_SetBackgroundPositionX(0.0f);
     return 5;
 }
 
@@ -2436,19 +2436,19 @@ s32 HallOfFame_ScrollLeft(void) {
 
     for (i = 0; i < 12; i++) {
         if (i == 0xB) {
-            VictoryPalace_ClearCarouselSlot(-2);
+            HallOfFame_ClearCarouselSlot(-2);
         }
-        VictoryPalace_PollInput();
+        HallOfFame_PollInput();
 
         for (j = 0; j < 5; j++) {
             gFragment50GraphNodes[j].unk_008.unk_024.x -= 50.0f;
         }
 
-        VictoryPalace_ScrollCarousel(-50.0f);
-        VictoryPalace_DrawFrame();
+        HallOfFame_ScrollCarousel(-50.0f);
+        HallOfFame_DrawFrame();
     }
 
-    VictoryPalace_SetBackgroundPositionX(0.0f);
+    HallOfFame_SetBackgroundPositionX(0.0f);
     return 5;
 }
 
@@ -2458,19 +2458,19 @@ s32 HallOfFame_PageRight(void) {
 
     for (i = 0; i < 6; i++) {
         if (i == 5) {
-            VictoryPalace_ClearCarouselSlot(2);
+            HallOfFame_ClearCarouselSlot(2);
         }
-        VictoryPalace_PollInput();
+        HallOfFame_PollInput();
 
         for (j = 0; j < 5; j++) {
             gFragment50GraphNodes[j].unk_008.unk_024.x += 100.0f;
         }
 
-        VictoryPalace_ScrollCarousel(100.0f);
-        VictoryPalace_DrawFrame();
+        HallOfFame_ScrollCarousel(100.0f);
+        HallOfFame_DrawFrame();
     }
 
-    VictoryPalace_SetBackgroundPositionX(0.0f);
+    HallOfFame_SetBackgroundPositionX(0.0f);
     return 5;
 }
 
@@ -2480,26 +2480,26 @@ s32 HallOfFame_PageLeft(void) {
 
     for (i = 0; i < 6; i++) {
         if (i == 5) {
-            VictoryPalace_ClearCarouselSlot(-2);
+            HallOfFame_ClearCarouselSlot(-2);
         }
-        VictoryPalace_PollInput();
+        HallOfFame_PollInput();
 
         for (j = 0; j < 5; j++) {
             gFragment50GraphNodes[j].unk_008.unk_024.x -= 100.0f;
         }
 
-        VictoryPalace_ScrollCarousel(-100.0f);
-        VictoryPalace_DrawFrame();
+        HallOfFame_ScrollCarousel(-100.0f);
+        HallOfFame_DrawFrame();
     }
 
-    VictoryPalace_SetBackgroundPositionX(0.0f);
+    HallOfFame_SetBackgroundPositionX(0.0f);
     return 5;
 }
 
 s32 HallOfFame_WaitFramebuffer(void) {
     while (PokeIcon_PollFrameLoad(gFragment50AssetManager) == 0) {
-        VictoryPalace_PollInput();
-        VictoryPalace_DrawFrame();
+        HallOfFame_PollInput();
+        HallOfFame_DrawFrame();
     }
     gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_004 = gFragment50AssetManager->unk_24;
     return 2;
@@ -2512,7 +2512,7 @@ void HallOfFame_RunGallery(void) {
 
     StageLoader_RunFrames(0xA);
     StageFade_StartFromOpaque(0x10);
-    VictoryPalace_CheckAllCaught();
+    HallOfFame_CheckAllCaught();
 
     if (gPokedexPanelAllMonsSeen == 1) {
         Audio_StartMusicTrack(0x47);
@@ -2523,8 +2523,8 @@ void HallOfFame_RunGallery(void) {
     }
 
     while (StageContext_GetFadeMode() != 0) {
-        VictoryPalace_PollInput();
-        VictoryPalace_DrawFrame();
+        HallOfFame_PollInput();
+        HallOfFame_DrawFrame();
     }
 
     while (tmp != 0) {
@@ -2564,13 +2564,13 @@ void HallOfFame_RunGallery(void) {
     Audio_FadeOutAll(0x3C);
 
     while (StageContext_GetFadeMode() != 1) {
-        VictoryPalace_PollInput();
-        VictoryPalace_DrawFrame();
+        HallOfFame_PollInput();
+        HallOfFame_DrawFrame();
     }
 }
 
 void HallOfFame_SpawnPokeIcon(s32 arg0, f32 arg1) {
-    if ((gFragment50GraphNodes[arg0].unk_000 != 151) || (VictoryPalace_SpeciesObtained(151) != 0)) {
+    if ((gFragment50GraphNodes[arg0].unk_000 != 151) || (HallOfFame_SpeciesObtained(151) != 0)) {
         Fragment2_1GraphNode* temp_s0 = &gFragment50GraphNodeArray[arg0];
 
         temp_s0->modelPhase = arg0;
@@ -2618,7 +2618,7 @@ void HallOfFame_InitGallery(void) {
     gPokedexPanelMessageBankId = 0;
 
     for (i = 0; i < 150; i++) {
-        if (VictoryPalace_SpeciesObtained(i + 1) != 0) {
+        if (HallOfFame_SpeciesObtained(i + 1) != 0) {
             gPokedexPanelMessageBankId += 1;
         } else {
             gPokedexPanelListActive = 0;
@@ -2626,7 +2626,7 @@ void HallOfFame_InitGallery(void) {
     }
 
     gPokedexPanelMonCount = 150;
-    if (VictoryPalace_SpeciesObtained(151) != 0) {
+    if (HallOfFame_SpeciesObtained(151) != 0) {
         gPokedexPanelMessageBankId++;
         gPokedexPanelMonCount = 151;
     }
@@ -2672,13 +2672,13 @@ void HallOfFame_InitGallery(void) {
     gFragment50AssetManager = PokeIcon_AllocFramebuffers(9);
 
     for (j = -2; j < 3; j++) {
-        VictoryPalace_RequestCarouselIconLoad(j);
+        HallOfFame_RequestCarouselIconLoad(j);
         PokeIcon_WaitFrameLoad(gFragment50AssetManager);
         gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_004 = gFragment50AssetManager->unk_24;
     }
 
     for (j = -1; j < 2; j++) {
-        VictoryPalace_InitCarouselModel(j);
+        HallOfFame_InitCarouselModel(j);
     }
 
     for (i = 0; i < 5; i++) {
@@ -2696,7 +2696,7 @@ void HallOfFame_InitGallery(void) {
     gPokedexPanelHighlightPhase = 0;
     gPokedexPanelLoadTimer = 5;
 
-    VictoryPalace_InitCamera();
+    HallOfFame_InitCamera();
 }
 
 s32 HallOfFame_Main(s32 arg0, s32 arg1) {

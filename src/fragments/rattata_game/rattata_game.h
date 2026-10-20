@@ -49,10 +49,10 @@ typedef struct RacePlayerState {
 
 extern u32 gRacePlayerScreenY[4];
 
-void RattataGame_InitAIDifficulty(RacePlayerState* arg0);
+void RattataGame_InitAiDifficulty(RacePlayerState* arg0);
 void RattataGame_DrawRankBanners(void);
 void Race_Stub(void);
-void RattataGame_UpdateAIInput(void);
+void RattataGame_UpdateAiInput(void);
 void RattataGame_PollInput(void);
 void RattataGame_InitCamera(void);
 void RattataGame_UpdateCamera(void);

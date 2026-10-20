@@ -24,11 +24,11 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct RaceAIDifficulty {
+typedef struct RaceAiDifficulty {
     /* 0x0 */ void* posX;
     /* 0x4 */ s16 rotation;
     /* 0x6 */ s16 unk_06;
-} RaceAIDifficulty; // size = 0x8
+} RaceAiDifficulty; // size = 0x8
 
 static u32 gRaceTextTable[] = {
     0xFFFFFFD8, 0xFFFFFF65, 0x00000056, 0x00000097, 0xA4CFA4B7, 0xA4ECA5B3, 0xA5E9A5C3, 0xA5BF0000, 0xA1A1A1A1,
@@ -110,7 +110,7 @@ static AnimFrame gRacePanelAnim3[] = {
     { 0x03042E00, 0x0E }, { 0x03044360, 0x02 }, { 0x03044A80, 0x06 }, { 0x03044360, 0x02 }, { 0, 0 },
 };
 
-static RaceAIDifficulty gRaceAIDifficultyTable[] = {
+static RaceAiDifficulty gRaceAiDifficultyTable[] = {
     { gStageSubtitles_Alt2, 0x0019, 0x000F },
     { gTextTable_StageSubtitles, 0x0019, 0x0014 },
     { gStageSubtitles_Alt1, 0x001E, 0x0028 },
@@ -163,7 +163,7 @@ static s32 gRaceFinishCount;
 static s16 gRaceCameraInitFlag;
 u32 gRacePlayerScreenY[4];
 
-void RattataGame_InitAIDifficulty(RacePlayerState* arg0) {
+void RattataGame_InitAiDifficulty(RacePlayerState* arg0) {
     arg0->unk_002 = gMenuState + 1;
 }
 
@@ -209,10 +209,10 @@ void RattataGame_DrawRankBanners(void) {
 void Race_Stub(void) {
 }
 
-void RattataGame_UpdateAIInput(void) {
+void RattataGame_UpdateAiInput(void) {
     UNUSED s32 pad[2];
     s32 i;
-    RaceAIDifficulty* temp_s0;
+    RaceAiDifficulty* temp_s0;
     u16 sp60[4];
     f32 temp_fv0;
     f32 temp_fv1;
@@ -231,7 +231,7 @@ void RattataGame_UpdateAIInput(void) {
             } else {
                 gRacePlayerState->unk_170 = 0;
                 if (gRacePlayerState->unk_002 > 0) {
-                    temp_s0 = &gRaceAIDifficultyTable[gRacePlayerState->unk_002 - 1];
+                    temp_s0 = &gRaceAiDifficultyTable[gRacePlayerState->unk_002 - 1];
 
                     if (Rand_Range(0x64) < temp_s0->rotation) {
                         gRacePlayerState->unk_170 |= 0x8000;
@@ -263,7 +263,7 @@ void RattataGame_PollInput(void) {
         Cont_StartReadInputs();
         Cont_ReadInputs();
         Input_ResetRepeatState();
-        RattataGame_UpdateAIInput();
+        RattataGame_UpdateAiInput();
     }
 }
 
@@ -520,7 +520,7 @@ s32 RattataGame_WaitForStart(void) {
         if ((gMiniHudColorDefaults[i] == 0) && (gRaceIsResultScreen == 0)) {
             gRacePlayerState->unk_002 = 0;
         } else {
-            RattataGame_InitAIDifficulty(gRacePlayerState);
+            RattataGame_InitAiDifficulty(gRacePlayerState);
         }
     }
 
@@ -1289,7 +1289,7 @@ void RattataGame_LoadAssets(void) {
         temp_s0 = &gRacePlayerState->unk_008;
         gRacePlayerState->unk_000 = i;
 
-        RattataGame_InitAIDifficulty(gRacePlayerState);
+        RattataGame_InitAiDifficulty(gRacePlayerState);
         ModelRenderer_AttachDisplayObject(temp_s0);
         Model_InitDisplayObject(temp_s0, 0, 0xAF, gRaceStageData->RentalSlotAnimData_PosePhase->posX[0]);
         temp_s0->unk_024.x = -(i - 1.5f) * 40.0f;
@@ -1340,7 +1340,7 @@ void RattataGame_InitPlayerSlots(void) {
 
         gRacePlayerState->unk_000 = i;
         gRacePlayerState->finishState = 0;
-        RattataGame_InitAIDifficulty(gRacePlayerState);
+        RattataGame_InitAiDifficulty(gRacePlayerState);
         gRacePlayerState->unk_1A2 = 0;
         gRacePlayerState->unk_1AE = 0;
         gRacePlayerState->unk_1B0 = 0;

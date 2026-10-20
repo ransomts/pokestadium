@@ -75,7 +75,7 @@ void Pokemon_SetDisplayNameFromOt(PokemonData* arg0) {
     _bcopy(&sp18, arg0->unk_46, 0xB);
 }
 
-s32 VictoryPalace_LoadSpeciesRecord(SpeciesRecord* arg0, u16 arg1) {
+s32 HallOfFame_LoadSpeciesRecord(SpeciesRecord* arg0, u16 arg1) {
     unk_func_800228F0_sp24 sp24;
     s32 var_v1;
 
@@ -91,8 +91,8 @@ s32 VictoryPalace_LoadSpeciesRecord(SpeciesRecord* arg0, u16 arg1) {
     return var_v1;
 }
 
-void VictoryPalace_SaveSpeciesRecord(PokemonData* arg0, s16 arg1, u8 arg2) {
-    SaveBank_VictoryPalaceEntry sp24;
+void HallOfFame_SaveSpeciesRecord(PokemonData* arg0, s16 arg1, u8 arg2) {
+    SaveBank_HallOfFameEntry sp24;
 
     if (arg2) {
         sp24.posX = arg1 + 0x80;

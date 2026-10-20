@@ -41,7 +41,7 @@ extern u32 HealthBarPalette2[];
 extern u32 HealthBarPalette3[];
 extern u32 HealthBarPalette4[];
 
-s8 DynamoGame_RollAIChargeBias(s32, s32);
+s8 DynamoGame_RollAiChargeBias(s32, s32);
 void DynamoGame_DrawSparkEffects(s32 arg0);
 void DynamoGame_InitSparkEffects(void);
 void DynamoGame_PickNextCrankCue(void);

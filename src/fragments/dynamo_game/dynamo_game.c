@@ -81,7 +81,7 @@ static Fragment2_1GraphNode* gCurrentHealthBarNode;
 DynamoHealthBarEffect gHealthBarEffects[4];
 DynamoHealthBarEffect* gHealthBarEffectData;
 
-void DynamoGame_ComputeAIChargeDelta(DynamoHealthBar* arg0, u8 arg1) {
+void DynamoGame_ComputeAiChargeDelta(DynamoHealthBar* arg0, u8 arg1) {
     if (arg0->unk_000 == 4) {
         arg0->chargeDelta = 0;
         return;
@@ -90,9 +90,9 @@ void DynamoGame_ComputeAIChargeDelta(DynamoHealthBar* arg0, u8 arg1) {
     if (arg1 == 0) {
         arg0->chargeDelta = MiniGame_RandomRange(3);
     } else if ((gHealthBarTimer + 1) == gHealthBarDuration) {
-        arg0->chargeDelta = DynamoGame_RollAIChargeBias(arg0->unk_000, 1);
+        arg0->chargeDelta = DynamoGame_RollAiChargeBias(arg0->unk_000, 1);
     } else {
-        arg0->chargeDelta = DynamoGame_RollAIChargeBias(arg0->unk_000, 0);
+        arg0->chargeDelta = DynamoGame_RollAiChargeBias(arg0->unk_000, 0);
     }
 }
 
@@ -559,7 +559,7 @@ void DynamoGame_DrawFrame(s32 arg0) {
                             gDrowzeeGameIsOver = 1;
                         }
                         gCurrentHealthBar->lastChargeDelta = gCurrentHealthBar->chargeDelta;
-                        DynamoGame_ComputeAIChargeDelta(gCurrentHealthBar, 1);
+                        DynamoGame_ComputeAiChargeDelta(gCurrentHealthBar, 1);
                     }
 
                     if (gDrowzeeGameIsOver != 0) {
@@ -784,7 +784,7 @@ void DynamoGame_LoadAssets(void) {
                 gCurrentHealthBar->unk_00C = 0;
                 gCurrentHealthBar->lastChargeDelta = 0;
 
-                DynamoGame_ComputeAIChargeDelta(gCurrentHealthBar, 0);
+                DynamoGame_ComputeAiChargeDelta(gCurrentHealthBar, 0);
 
                 gCurrentHealthBar->charge = 0;
                 gCurrentHealthBar->chargeTarget = 0x28;
@@ -848,7 +848,7 @@ void DynamoGame_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
 
 static s32 pad_D_86502E98 = 0;
 
-s8 DynamoGame_RollAIChargeBias(s32 arg0, s32 arg1) {
+s8 DynamoGame_RollAiChargeBias(s32 arg0, s32 arg1) {
     static u16 sHealthBarAnimStateTableNormal[4][8] = {
         { 0x0001, 0x0001, 0x0001, 0x0032, 0x0032, 0x0005, 0x0000, 0x0000 },
         { 0x0000, 0x0001, 0x0001, 0x0005, 0x0032, 0x0032, 0x0001, 0x0000 },

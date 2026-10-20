@@ -83,9 +83,9 @@ void DrowzeeGame_UpdatePlayerTimingWindows(void) {
         }
 
         gCurrentHudState->unk_008 =
-            gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][2] + DrowzeeGame_ComputeAITimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
+            gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][2] + DrowzeeGame_ComputeAiTimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
         gCurrentHudState->unk_00A =
-            gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][6] + DrowzeeGame_ComputeAITimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
+            gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][6] + DrowzeeGame_ComputeAiTimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
     }
 }
 

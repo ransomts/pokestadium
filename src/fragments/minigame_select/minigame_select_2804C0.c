@@ -7,17 +7,17 @@ static MatchBanner gMessageBox;
 static RoundBanner gOptionMenu;
 static char* gOptionMenuItems[9];
 
-void KidsClub_InitMatchBanner(char** arg0) {
+void Minigames_InitMatchBanner(char** arg0) {
     gMessageBox.posX = 0;
     gMessageBox.posY = 0;
     gMessageBox.unk_14 = arg0;
 }
 
-s32 KidsClub_GetMatchBannerState(void) {
+s32 Minigames_GetMatchBannerState(void) {
     return gMessageBox.posX;
 }
 
-void KidsClub_SetMatchBannerState(s16 arg0) {
+void Minigames_SetMatchBannerState(s16 arg0) {
     MatchBanner* ptr = &gMessageBox;
 
     ptr->posX = arg0;
@@ -52,16 +52,16 @@ void KidsClub_SetMatchBannerState(s16 arg0) {
     }
 }
 
-void KidsClub_AdvanceMatchBannerOpen(MatchBanner* arg0) {
+void Minigames_AdvanceMatchBannerOpen(MatchBanner* arg0) {
     arg0->posY--;
     arg0->rotation = ((arg0->posY * -0x1B4) / 10) + 0xBC;
     arg0->RentalSlotAnimData_PosePhase = ((arg0->posY * 0x224) / 10) + 0x5C;
     if (arg0->posY <= 0) {
-        KidsClub_SetMatchBannerState(2);
+        Minigames_SetMatchBannerState(2);
     }
 }
 
-void KidsClub_UpdateMatchBannerIdle(MatchBanner* arg0) {
+void Minigames_UpdateMatchBannerIdle(MatchBanner* arg0) {
     arg0->posY = 0x12C;
     arg0->unk_10 = 0.0f;
     if (arg0->posY <= 0) {
@@ -73,34 +73,34 @@ void KidsClub_UpdateMatchBannerIdle(MatchBanner* arg0) {
     }
 }
 
-void KidsClub_AdvanceMatchBannerClose(MatchBanner* arg0) {
+void Minigames_AdvanceMatchBannerClose(MatchBanner* arg0) {
     arg0->posY--;
     arg0->rotation = ((arg0->posY * -0x1C4) / 10) + 0x280;
     arg0->RentalSlotAnimData_PosePhase = ((arg0->posY * 0x224) / 10) - 0x1C8;
     if (arg0->posY <= 0) {
-        KidsClub_SetMatchBannerState(0);
+        Minigames_SetMatchBannerState(0);
     }
 }
 
-void KidsClub_UpdateMatchBanner(void) {
+void Minigames_UpdateMatchBanner(void) {
     MatchBanner* ptr = &gMessageBox;
 
     if (ptr->posX != 0) {
         switch (ptr->posX) {
             case 1:
-                KidsClub_AdvanceMatchBannerOpen(ptr);
+                Minigames_AdvanceMatchBannerOpen(ptr);
                 break;
             case 2:
-                KidsClub_UpdateMatchBannerIdle(ptr);
+                Minigames_UpdateMatchBannerIdle(ptr);
                 break;
             case 3:
-                KidsClub_AdvanceMatchBannerClose(ptr);
+                Minigames_AdvanceMatchBannerClose(ptr);
                 break;
         }
     }
 }
 
-void KidsClub_DrawRoundedFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
+void Minigames_DrawRoundedFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, u8 arg5, u8 arg6, u8 arg7) {
     s16 sp48;
     s16 temp_s0_32;
     s16 var_s2;
@@ -159,7 +159,7 @@ void KidsClub_DrawRoundedFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3, u8 arg4, 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 }
 
-void KidsClub_DrawWavyText(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
+void Minigames_DrawWavyText(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
     s16 var_s2;
     s8* var_v1;
     s32 i;
@@ -186,15 +186,15 @@ void KidsClub_DrawWavyText(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
     }
 }
 
-void KidsClub_DrawMatchBanner(void) {
+void Minigames_DrawMatchBanner(void) {
     UNUSED s32 pad;
     MatchBanner* ptr = &gMessageBox;
     char* sp2C = Text_GetString(NULL, 0, ptr->unk_14, 0);
     char* sp28 = Text_GetString(NULL, 0, ptr->unk_14, 1);
 
     if (ptr->posX != 0) {
-        KidsClub_DrawRoundedFrame(ptr->rotation, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
-        KidsClub_DrawRoundedFrame(ptr->RentalSlotAnimData_PosePhase, ptr->unk_0A, 0x1C8, 0x2C, 0x64, 0, 0x50, 0x80);
+        Minigames_DrawRoundedFrame(ptr->rotation, ptr->unk_06, 0xF8, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
+        Minigames_DrawRoundedFrame(ptr->RentalSlotAnimData_PosePhase, ptr->unk_0A, 0x1C8, 0x2C, 0x64, 0, 0x50, 0x80);
         Font_BeginTranslucentTextRendering();
         Font_SetActive(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
@@ -202,14 +202,14 @@ void KidsClub_DrawMatchBanner(void) {
             Font_Printf((ptr->rotation - (Font_MeasureTextExtent(0, 0, sp2C) / 2)) + 0x7C, ptr->unk_06 + 0xA, sp2C);
             Font_Printf((ptr->RentalSlotAnimData_PosePhase - (Font_MeasureTextExtent(0, 0, sp28) / 2)) + 0xE4, ptr->unk_0A + 0xA, sp28);
         } else {
-            KidsClub_DrawWavyText(ptr->rotation + 0x18, ptr->unk_06 + 0xA, sp2C, ptr->unk_10, ptr->unk_0C);
-            KidsClub_DrawWavyText(ptr->RentalSlotAnimData_PosePhase + 0x18, ptr->unk_0A + 0xA, sp28, ptr->unk_10, ptr->unk_0C);
+            Minigames_DrawWavyText(ptr->rotation + 0x18, ptr->unk_06 + 0xA, sp2C, ptr->unk_10, ptr->unk_0C);
+            Minigames_DrawWavyText(ptr->RentalSlotAnimData_PosePhase + 0x18, ptr->unk_0A + 0xA, sp28, ptr->unk_10, ptr->unk_0C);
         }
         Font_EndTexturedTextRendering();
     }
 }
 
-void KidsClub_InitRoundBanner(char** arg0) {
+void Minigames_InitRoundBanner(char** arg0) {
     s32 i;
 
     gOptionMenu.posX = 0;
@@ -224,7 +224,7 @@ void KidsClub_InitRoundBanner(char** arg0) {
 void Minigames_NoOp(void) {
 }
 
-void KidsClub_SetRoundBannerLabel(s16 arg0) {
+void Minigames_SetRoundBannerLabel(s16 arg0) {
     RoundBanner* ptr = &gOptionMenu;
 
     if (ptr->unk_12 != ptr->unk_10) {
@@ -238,7 +238,7 @@ void KidsClub_SetRoundBannerLabel(s16 arg0) {
     ptr->posY = 5;
 }
 
-void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1) {
+void Minigames_SetRoundBannerState(s16 arg0, s16 arg1) {
     RoundBanner* ptr = &gOptionMenu;
 
     ptr->posX = arg0;
@@ -267,16 +267,16 @@ void KidsClub_SetRoundBannerState(s16 arg0, s16 arg1) {
     }
 }
 
-void KidsClub_AdvanceRoundBannerOpen(RoundBanner* arg0) {
+void Minigames_AdvanceRoundBannerOpen(RoundBanner* arg0) {
     arg0->posY--;
     arg0->RentalSlotAnimData_PosePhase = ((arg0->posY * -0x68) / 10) + 0x3C;
     arg0->unk_0A = ((arg0->posY * 0x56) / 10) + 0x18A;
     if (arg0->posY <= 0) {
-        KidsClub_SetRoundBannerState(2, -1);
+        Minigames_SetRoundBannerState(2, -1);
     }
 }
 
-void KidsClub_UpdateRoundBannerCrossfade(RoundBanner* arg0) {
+void Minigames_UpdateRoundBannerCrossfade(RoundBanner* arg0) {
     if (arg0->unk_10 != arg0->unk_12) {
         arg0->posY--;
         if (arg0->posY <= 0) {
@@ -287,36 +287,36 @@ void KidsClub_UpdateRoundBannerCrossfade(RoundBanner* arg0) {
     }
 }
 
-void KidsClub_AdvanceRoundBannerClose(RoundBanner* arg0) {
+void Minigames_AdvanceRoundBannerClose(RoundBanner* arg0) {
     arg0->posY--;
     arg0->RentalSlotAnimData_PosePhase = ((arg0->posY * 0x68) / 10) - 0x2C;
     arg0->unk_0A = ((arg0->posY * -0x56) / 10) + 0x1E0;
     if (arg0->posY <= 0) {
-        KidsClub_SetRoundBannerState(0, -1);
+        Minigames_SetRoundBannerState(0, -1);
     }
 }
 
-void KidsClub_UpdateRoundBanner(void) {
+void Minigames_UpdateRoundBanner(void) {
     RoundBanner* ptr = &gOptionMenu;
 
     if (ptr->posX != 0) {
         switch (ptr->posX) {
             case 1:
-                KidsClub_AdvanceRoundBannerOpen(ptr);
+                Minigames_AdvanceRoundBannerOpen(ptr);
                 break;
 
             case 2:
-                KidsClub_UpdateRoundBannerCrossfade(ptr);
+                Minigames_UpdateRoundBannerCrossfade(ptr);
                 break;
 
             case 3:
-                KidsClub_AdvanceRoundBannerClose(ptr);
+                Minigames_AdvanceRoundBannerClose(ptr);
                 break;
         }
     }
 }
 
-void KidsClub_DrawRoundBanner(void) {
+void Minigames_DrawRoundBanner(void) {
     UNUSED s32 pad;
     RoundBanner* ptr = &gOptionMenu;
     char* sp3C;
@@ -325,16 +325,16 @@ void KidsClub_DrawRoundBanner(void) {
 
     if (ptr->posX != 0) {
         if (ptr->unk_10 == ptr->unk_12) {
-            KidsClub_DrawRoundedFrame(ptr->rotation, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
+            Minigames_DrawRoundedFrame(ptr->rotation, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, 0x80);
         } else {
             tmp = (ptr->posY << 7) / 5;
-            KidsClub_DrawRoundedFrame(ptr->rotation, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, tmp);
+            Minigames_DrawRoundedFrame(ptr->rotation, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0C, 0x2C, 0x1E, 0x1E, 0x82, tmp);
             tmp = ((-ptr->posY * 0x80) + 0x280) / 5;
-            KidsClub_DrawRoundedFrame(ptr->unk_06, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0E, 0x2C, 0x1E, 0x1E, 0x82, tmp);
+            Minigames_DrawRoundedFrame(ptr->unk_06, ptr->RentalSlotAnimData_PosePhase, ptr->unk_0E, 0x2C, 0x1E, 0x1E, 0x82, tmp);
         }
 
         if (gMenuSelectedOption == -1) {
-            KidsClub_DrawRoundedFrame(0x98, ptr->unk_0A, 0x140, 0x2C, 0x64, 0, 0x50, 0x80);
+            Minigames_DrawRoundedFrame(0x98, ptr->unk_0A, 0x140, 0x2C, 0x64, 0, 0x50, 0x80);
         }
 
         Font_BeginTranslucentTextRendering();
