@@ -147,6 +147,27 @@ Use "Flag" suffix for boolean variables (73 uses).
 Use "Callback" suffix, not "Handler" (except in 9 rare cases where Handler
 has a specific meaning in the Audio domain).
 
+## Length Calibration (from michiiik's 7,378 names)
+
+| Percentile | Length |
+|---|---|
+| median | 27 |
+| p95 | 50 |
+| p99 | 72 |
+| max | 94 |
+
+**RULE**: Long names are sanctioned when the length buys semantics. Their
+multi-effect callback chains are deliberately explicit:
+`BattleAnim_CallbackEndEffects39And41And45And46And83Descriptor3DMetadataBurstChild_InitParticle` (94 chars).
+Do not truncate multi-effect And-chains to fit an arbitrary limit. Hard-fail
+only above their demonstrated maximum (94).
+
+## Identical Dead Stub Convention
+
+For multiple identical unreferenced no-op stubs, michiiik numbers by address
+order: `ParticleGfx_NoopStub1` (0x8140138C), `NoopStub2` (0x814024C0),
+`NoopStub10` (0x81404AB4). Ordinal digits ARE semantic here.
+
 ## State Machine Naming
 
 | Pattern | Example |

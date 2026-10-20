@@ -255,6 +255,7 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?:Address|Pointer|Handle|Flag|Bit|Mask)[0-9]$"  # Hardware
     r"|(?:Byte|Word|Long|Short)[0-9]$"                  # Data widths
     r"|(?:Object|Widget|Window)[0-9]$"                  # UI entities
+    r"|NoopStub[0-9]$"                      # michiiik's convention for identical dead stubs (ParticleGfx_NoopStub1/2/10)
     r"|[0-9]x[0-9]$"                                   # 4x4, 8x8 (small dimensions)
     r"|^I[0-9]$"                                        # I4, I8 (pixel format)
 )
@@ -305,8 +306,10 @@ def needs_revision(name):
     # Too generic
     if re.match(r"^(Process|Update|Handle|Register|Init|Set|Get)\w*$", name):
         return True
-    # Over 50 chars
-    if len(name) > 55:
+    # Too long — calibrated to michiiik's practice (p99=72, max=94; their
+    # multi-effect callback chains are deliberately long). Hard fail above
+    # their demonstrated maximum; the multi-effect And-chains are sanctioned.
+    if len(name) > 94:
         return True
     return False
 
