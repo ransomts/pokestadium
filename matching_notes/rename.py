@@ -455,6 +455,8 @@ class Rewriter:
         self._member_scopes = {}  # path -> {old_field: new_field}: struct-scoped
         # field rewrites (shared names renamable when their struct's file set
         # is disjoint from every other struct sharing the name)
+        self._member_decls = {}    # (owner_type, field) -> new: decl rewrites
+        self._member_decl_global = {}  # field -> new (globally-unique rows)
         self._sa_map = {}
         self._sa_appends = []  # (new, addr, size_or_None)
         self._batch_files = set()
@@ -476,17 +478,23 @@ class Rewriter:
         self._batch_files.update(files)
         return 0
 
-    def rewrite_member(self, old_field, new_field, files, scope_files=None):
-        """`.field` / `->field` accesses + header decl rewrites. Global by name
-        (backwards-compatible), or scoped to an explicit file set when the
-        field name is shared across structs (see field_scopes.tsv)."""
+    def rewrite_member(self, old_field, new_field, files, scope_files=None, owner_type=None):
+        """`.field`/`->field` accesses + header decl rewrites. Access rewrites
+        are name-keyed per file (global, or scoped via scope_files). DECL
+        rewrites are keyed by (owner_type, field) and only apply inside the
+        owning struct's block - same-header structs sharing a field name must
+        not contaminate each other (the unk_00A/primColor lesson)."""
         if scope_files is not None:
             for f in scope_files:
                 self._member_scopes.setdefault(f, {})[old_field] = new_field
             self._batch_files.update(scope_files)
-            return 0
-        self._member_map[old_field] = new_field
-        self._batch_files.update(files)
+        else:
+            self._member_map[old_field] = new_field
+            self._batch_files.update(files)
+        if owner_type is not None:
+            self._member_decls[(owner_type, old_field)] = new_field
+        else:
+            self._member_decl_global[old_field] = new_field
         return 0
 
     def rewrite_sa_line(self, old, new):
@@ -534,24 +542,24 @@ class Rewriter:
                     pat = re.compile(pre + "(" + alt + r")(?![A-Za-z0-9_])")
                     text, k = pat.subn(mrepl, text)
                     changed |= bool(k)
-                if path.endswith(".h"):
+                # DECL rewrites: type-scoped inside the owning struct's block.
+                # Same-header structs sharing a field name must not
+                # contaminate each other (the unk_00A/primColor lesson).
+                for start, end, btype in reversed(_struct_spans(text)):
+                    if btype is None:
+                        continue
+                    dm = dict(self._member_decl_global)
+                    dm.update({f: n for (t, f), n in self._member_decls.items()
+                               if t == btype})
+                    if not dm:
+                        continue
                     pat = re.compile(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s*\**\s*)("
-                                     + alt + r")((?:\[[^\]]*\])*)\s*;", re.M)
-                    text, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3) + ";", text)
-                    changed |= bool(k)
-                else:
-                    # .c-local structs (HPHistoryEntry lesson): rewrite decls
-                    # ONLY inside braced struct blocks - a bare full-file pass
-                    # would also rename same-named LOCAL variables. Reverse
-                    # order keeps earlier spans valid as text shifts.
-                    pat = re.compile(r"^(\s*(?:/\*[^*]*\*/\s*)?[A-Za-z_][A-Za-z0-9_ ]*?\s*\**\s*)("
-                                     + alt + r")((?:\[[^\]]*\])*)\s*;", re.M)
-                    for start, end in reversed(_struct_spans(text)):
-                        seg = text[start:end]
-                        seg, k = pat.subn(lambda m: m.group(1) + mmap[m.group(2)] + m.group(3) + ";", seg)
-                        if k:
-                            text = text[:start] + seg + text[end:]
-                            changed = True
+                                     + self._alt(dm) + r")((?:\[[^\]]*\])*)\s*;", re.M)
+                    seg = text[start:end]
+                    seg, k = pat.subn(lambda m: m.group(1) + dm[m.group(2)] + m.group(3) + ";", seg)
+                    if k:
+                        text = text[:start] + seg + text[end:]
+                        changed = True
         if changed:
             self._save(path, text)
         return changed
@@ -631,8 +639,9 @@ _FIELD_SCOPES_CACHE = None
 
 
 def _struct_spans(text):
-    """[(start, end)] inner-text spans of braced `struct`/`typedef struct`
-    blocks (brace-matched, naive but adequate for this codebase's headers)."""
+    """[(start, end, typedef_name_or_None)] inner-text spans of braced
+    `struct`/`typedef struct` blocks (brace-matched). The name comes from the
+    `} NAME;` closer or the `typedef struct NAME {` opener."""
     out, i, n = [], 0, len(text)
     while i < n:
         ob = text.find("{", i)
@@ -651,7 +660,15 @@ def _struct_spans(text):
             break
         head = re.sub(r"\s+", " ", text[max(0, ob - 160):ob]).strip()
         if "struct" in head or "union" in head:
-            out.append((ob + 1, j))
+            name = None
+            cm = re.match(r"\}\s*([A-Za-z_][A-Za-z0-9_]*)\s*;", text[j:j + 80])
+            if cm:
+                name = cm.group(1)
+            else:
+                om = re.search(r"(?:typedef\s+)?(?:struct|union)\s+([A-Za-z_][A-Za-z0-9_]*)\s*$", head)
+                if om and "typedef" in head:
+                    name = om.group(1)
+            out.append((ob + 1, j, name))
         i = j + 1
     return out
 
@@ -690,8 +707,13 @@ def do_rewrites(rows, files):
     for r in rows:
         if r.is_field_row():
             ot, of, nt, nf = parse_field(r)
+            if r.also:
+                for pair in r.also.split(","):
+                    a, b = pair.split(":")
+                    rw.rewrite_word(a.strip(), b.strip(), files)
             scope = _field_scopes().get(ot)
-            rw.rewrite_member(of, nf, files, scope_files=set(scope) if scope else None)
+            rw.rewrite_member(of, nf, files, scope_files=set(scope) if scope else None,
+                              owner_type=ot)
             continue
         rw.rewrite_sa_line(r.old, r.new)
         rw.rewrite_word(r.old, r.new, files)
