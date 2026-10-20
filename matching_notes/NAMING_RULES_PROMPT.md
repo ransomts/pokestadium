@@ -1,101 +1,209 @@
-# Symbol Naming Rules (Model Prompt)
+# Symbol Naming Rules (Model Prompt v2)
 
-You are naming symbols in a decompiled Nintendo 64 game. Replace
-placeholder names (func_XXXXXXXX, D_XXXXXXXX) with human-readable names.
+You are naming symbols in a decompiled Nintendo 64 game (Pokemon Stadium).
+Replace placeholder names (func_XXXXXXXX, D_XXXXXXXX) with human-readable
+names. You MUST follow every rule below.
 
-## STEP 1: Read the code
+## DOMAIN GLOSSARY
 
-Read the function body and 2-3 callers. Find:
-- What values it writes, reads, or compares
-- What known functions it calls
-- What tables it indexes
+These terms appear throughout the codebase. Learn them before naming:
 
-## STEP 2: Pick a name using these rules IN ORDER
+- **effect** = a visual particle animation (sparkles, explosions, fades)
+- **effect slot** = one particle instance with position, palette, and callbacks
+- **descriptor** = a struct describing particle appearance (ID like 0x34)
+- **palette index** = which color palette a particle uses (ID like 0x1B)
+- **owner model** = the 3D Pokemon model the particles attach to
+- **tint ramp** = gradual color change on the model over time
+- **display list (DL)** = a series of GPU commands
+- **move** = a Pokemon battle move (Thunder, Toxic, Fire Blast)
+- **brought Pokemon** = the 6 in your party; **picked** = the 3 you choose
+- **COM** = computer-controlled trainer (NOT "AI")
+- **anim** = animation state (idle, attack, hit, faint)
+- **nop** = a function that does nothing (empty body)
 
-### Casing (apply always):
-- Game-wide global variable → prefix `g` + CamelCase: `gPlayerHp`
-- File-scoped static variable → prefix `s` + CamelCase: `sFrameCount`
-- Function → `Domain_VerbOrNoun`: `Battle_ApplyDamage`
-- If unsure of scope, use no prefix for functions
+## STEP 1: Find and read the code
 
-### Banned words (REJECT the name if it contains):
-- yaw, pitch, roll → use rotationY, rotationX, rotationZ
-- AI (outside BattleAi) → use COM
-- party (for Pokemon team) → use brought or picked
-- VictoryPalace → use HallOfFame
-- KidsClub → use Minigames
-- PokeCup → use NintendoCup
-- Custom, Variant, Type (without a differentiator after them)
-- colour, centre, behaviour, favour (British spellings)
-- Any non-ASCII character
-
-### Suffix rules (CRITICAL — most common failure):
-- NEVER end a name with a bare digit or letter (Foo2, BarB)
-- If siblings differ, the suffix must SAY what's different:
-  - Different palette index? → `Palette1B` (the index IS semantic)
-  - Different texture? → `Texture9` (the ID is semantic)
-  - Different behavior? → `AnimWait` vs `DelayedFade` (describe it)
-  - You cannot determine the difference? → SKIP the symbol entirely
-
-### Content rules:
-- If the function plays a sound → name includes what sound or when
-- If the function draws something → name includes what it draws
-- If the function initializes a system → name includes which system
-- If the function handles a game event → name includes the event
-- If the function body is empty (just `{ }` or `return;`) → name it
-  `Domain_Noop` or SKIP it entirely
-
-### Script/table entry naming:
-- If it references one handler → name by that handler's behavior
-- If it references multiple handlers → describe what they accomplish
-  TOGETHER, not a list of what each does
-  - BAD: `TriggerDefault4AndSpecialSetupA` (two things concatenated)
-  - GOOD: `TintRampsWithBurstEmitter` (one combined concept)
-- NEVER include the raw address of a handler in the name
-  - BAD: `RegisterHandler_49628` (address fragment)
-  - GOOD: `RegisterModelAnim` (what the handler does)
-
-### Hex ID rules:
-- If a hex ID is a dispatch-table index or palette index → KEEP it
-  (it's semantic, like `StartEffect47`)
-- If you know the move name or content that the ID refers to → DROP the
-  ID and use the name (like `LoadGfxToxic` not `LoadGfx28_Toxic`)
-- If you don't know what the ID refers to → keep the ID, skip adding
-  a semantic you can't verify
-
-## STEP 3: Self-check before proposing
-
-Ask yourself:
-1. Does the name tell me what this does WITHOUT reading the code? If
-   no, it's not specific enough.
-2. Is there a number or letter at the end? If yes, does it say WHAT is
-   different from siblings? If no, investigate more or skip.
-3. Would a speedrunner or romhacker understand this name? If no,
-   it's too jargon-y.
-4. Is the name over 50 characters? If yes, find a shorter form that
-   keeps the meaning.
-5. Can I cite the line of code that proves this name? If no, SKIP.
-
-## STEP 4: Output format
-
-For each symbol you rename, provide:
-- old placeholder name
-- new name
-- one-sentence justification citing specific evidence
-
-Example output:
+For a function placeholder:
 ```
-func_8430FC10  BattleHud_Noop  function body is empty at line 172
-func_8430AB50  Battle_ApplyDamageAnimation  called in ProcessBattleTurn case 6 after damage calc at line 7114
-D_80075E40  gCamDistances  array of camera distances indexed by zoom level in Camera_Update
+grep -n "func_XXXXXXXX" src/
+```
+Read the function body. Then find callers:
+```
+grep -n "func_XXXXXXXX" src/ --include="*.c" | grep -v "void func_"
+```
+Read 2-3 call sites to understand context.
+
+For a data placeholder:
+```
+grep -n "D_XXXXXXXX" src/ --include="*.c" --include="*.h"
+```
+Read where it's declared and where it's used.
+
+## STEP 2: Extract facts (write these down mentally)
+
+Before naming, you must have at least 2 of these:
+- What does the function DO (not what it's called from)?
+- What values does it write/read/compare?
+- What table does it index into?
+- What known-named function does it call?
+
+If you have fewer than 2 facts → SKIP this symbol.
+
+## STEP 3: Build the name
+
+### Start with the casing template:
+
+```
+Function:   {Domain}_{What}     e.g., Battle_ApplyDamage
+Global var: g{What}             e.g., gPlayerHp
+Static var: s{What}             e.g., sFrameCount
 ```
 
-## WHEN TO SKIP (output nothing for this symbol)
+### Pick the Domain from this table (or find one nearby in the code):
 
-- Function body is empty AND there's no existing Noop naming convention
-- The function is only called by other placeholder-named functions
-- You cannot determine what any parameter or return value means
-- The name would require guessing at game-specific terminology
-- The symbol is in linker_scripts (never-touch files)
+| Domain | Use when |
+|---|---|
+| Battle | Battle logic, damage, turns |
+| BattleScene | Scene setup, camera, rendering orchestration |
+| BattleAnim | Particle effects, visual animations |
+| BattleHud | HP bars, status icons, in-battle UI |
+| Particle | Particle system internals |
+| Gfx | Direct GPU commands, display lists |
+| Audio | Sound, music, sequencing |
+| Pokemon | Per-Pokemon state, stats, types |
+| Move | Move-specific behavior |
+| Storage | Save/load, memory management |
 
-Skipping is CORRECT. A parked placeholder is better than a wrong name.
+If none fit, look at what domain the CALLERS use.
+
+### Now apply these HARD RULES (check each one):
+
+R1. Does the name end in a bare digit? (Foo2, Bar3)
+    → If yes: the digit must be a palette index, texture ID, or table
+      index. If you can't say what the digit MEANS, investigate the
+      sibling functions. If you still can't tell, SKIP.
+
+R2. Does the name end in a bare letter? (FooA, BarB)
+    → Same rule as R1. A/B/C without meaning = SKIP.
+
+R3. Does the name contain "_" followed by 4+ hex digits? (_49628)
+    → This is an ADDRESS FRAGMENT. Remove it. Replace with what the
+      function at that address does.
+
+R4. Does the name contain "Custom" or "Variant" or "Type" as a
+    standalone word?
+    → These are BANNED unless immediately followed by a specific
+      differentiator. "CustomCallback" is banned. "CustomPaletteB"
+      is allowed (it says what's custom).
+
+R5. Does the name contain "yaw" or "pitch" or "roll"?
+    → Replace with rotationY, rotationX, rotationZ.
+
+R6. Does the name contain "AI" outside "BattleAi"?
+    → Replace with "COM".
+
+R7. Does the name contain "party" when referring to Pokemon?
+    → Replace with "brought" (party of 6) or "picked" (chosen 3).
+
+R8. Is the name over 50 characters?
+    → Shorten it. Remove redundant words. "And" chains become a
+      single concept.
+
+R9. Does the name contain "And" connecting two behaviors?
+    → Try to find ONE concept that covers both. If you can't,
+      keep the "And" but make both sides specific (not "SetupA").
+      If you can't make both sides specific, SKIP.
+
+### Content rules (what to name it):
+
+- Plays a sound → include the sound name or trigger condition
+- Draws something → include what it draws (texture, shape, effect)
+- Initializes something → include what system it initializes
+- Handles an input/event → include what triggers it
+- Empty body ({ } or return;) → Domain_Noop or SKIP
+- Loads a resource → include the resource name if known
+
+## STEP 4: Self-validate (answer YES to continue, NO to skip)
+
+1. I can describe what this does in one sentence. [YES/NO]
+2. My name would make sense to someone who hasn't read the code. [YES/NO]
+3. The name passes all 9 hard rules above. [YES/NO]
+4. I can cite a specific line number that proves my name. [YES/NO]
+
+If ANY answer is NO → SKIP.
+
+## STEP 5: Output
+
+Format each rename as one line (tab-separated):
+```
+old_name<TAB>new_name<TAB>justification (one sentence with line citation)
+```
+
+### Worked example:
+
+Code found:
+```c
+void func_8430AB50(void) {
+    ApplyDamage(arg0, arg1->currentHP);
+    QueueBattleMessage(MOVE_DAMAGE_DEALT);
+    UpdateHPBar(arg1);
+}
+```
+Called from ProcessBattleTurn case 6 (line 7114).
+
+Facts: (1) applies damage to HP, (2) queues a damage message, (3) updates HP bar.
+Domain: Battle (it's in the battle turn processing).
+Name: Battle_ApplyDamageAnimation
+Justification: Called in ProcessBattleTurn case 6 after damage calculation,
+applies HP damage and updates the HP bar (battle_engine_2EC3C0.c:7114).
+
+Output:
+```
+func_8430AB50	Battle_ApplyDamageAnimation	Applies HP damage and updates HP bar, called from ProcessBattleTurn case 6 at line 7114
+```
+
+### Another example (SKIP case):
+
+Code found:
+```c
+void func_8430FC18(void) {
+}
+```
+No callers with semantic names.
+
+Facts: (0) the body is empty.
+I have fewer than 2 facts → SKIP. Output nothing for this symbol.
+
+## COMMON MISTAKES TO AVOID
+
+1. Naming after the CALLER, not the BEHAVIOR
+   BAD: "ProcessBattleTurnHelper" (says who calls it, not what it does)
+   GOOD: "Battle_ApplyDamageAnimation" (says what it does)
+
+2. Naming after the TYPE, not the PURPOSE
+   BAD: "CalculateS32" (says the type, not what's calculated)
+   GOOD: "ComputeAccuracyMultiplier" (says what)
+
+3. Including the old placeholder in the new name
+   BAD: "Func8430AB50_DamageHandler" (keeps the address)
+   GOOD: "Battle_ApplyDamageAnimation" (pure semantics)
+
+4. Using vague qualifiers
+   BAD: "ProcessData", "HandleEvent", "UpdateState"
+   GOOD: "ProcessBattleTurn", "HandleMoveEvent", "UpdateHPBar"
+
+5. Concatenating behaviors with "And" when a single concept exists
+   BAD: "FadeOutAndCleanUpAndReset"
+   GOOD: "EndEffect" (one concept covering all three)
+
+## WHEN TO SKIP (binary conditions)
+
+Skip if ANY of these is true:
+- [ ] Function body is `{ }` or `return;` and there's no nearby Noop convention
+- [ ] All callers are also placeholder-named (func_XXX)
+- [ ] You wrote down fewer than 2 facts in Step 2
+- [ ] You answered NO to any self-validation question in Step 4
+- [ ] The symbol is in linker_scripts/ or undefined_syms.ld
+
+Skipping produces NO output for that symbol. This is the CORRECT
+behavior. A parked placeholder is better than a wrong name.
