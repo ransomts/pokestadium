@@ -258,6 +258,11 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?:Object|Widget|Window)[0-9]$"                  # UI entities
     r"|NoopStub[0-9]$"                      # michiiik's convention for identical dead stubs (ParticleGfx_NoopStub1/2/10)
     r"|NoopString[0-9]+$"                    # dead empty-string literals, NoopStubN analogue (gParticleNoopString1-3)
+    r"|DL(?:8|16|32)$"                                    # G_IM_SIZ texture bit depths (gMinigameTileSetupDL16)
+    r"|Type[0-9]+$"                                         # dispatch type indices (michiiik's GeoNode_CreateType3)
+    r"|(?:_T|_InvT)[0-9]$"                             # spline exponents (T3 = t^3, InvT2 = (1-t)^2)
+    r"|(?:Small|Large)_[0-9]+$"                       # paired texture indices (MoveTargetSmall_0-3)
+    r"|Node[0-9]+$"                                        # multi-digit indexed entities (gChainLinkNode10)
     r"|[0-9]x[0-9]$"                                   # 4x4, 8x8 (small dimensions)
     r"|^I[0-9]$"                                        # I4, I8 (pixel format)
     r"|NoopStub[0-9]+$"                                # multi-digit dead stubs (NoopStub10)
@@ -313,6 +318,7 @@ COMPOUND_SUFFIX = re.compile(
     r"|[Dd][Mm][Aa]$"                                     # DMA
     r"|[Rr][Tt][Cc]$"                                     # RTC
     r"|(?:Prim|Env)[RGB]$"                              # color channel accessors (ApproachPrimB = blue channel)
+    r"|(?:AA|ZB)$"                                          # render mode abbreviations (G_RM_AA_XLU_SURF2)
     r"|LoadGfx[0-9A-F]{1,4}(?:_[0-9A-F]{1,4})?(?:_Alt[0-9])?$"  # gfx file IDs (script resource lists)
     r"|Palette[0-9A-F]{1,2}$"                            # palette IDs (TriggerDefaultPalette1B)
     r"|(?:Get|Set|Approach)FieldOffset[0-9A-F]{2}$"       # struct-field offset accessors (FieldOffsetAC)
