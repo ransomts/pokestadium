@@ -264,6 +264,37 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?<!_)I[0-9]+$"                                 # I4/I8 as suffix (LoadTextureI4, DualRgba16I8)
     r"|Texture(?:Multi)?Block[0-9]+$"                   # texel-size texture loads (LoadTextureBlock32)
     r"|Moves[0-9]+To[0-9]+$"                            # ID-range endpoints (AnnouncerMoveDataMoves1To68)
+    r"|Sub[0-9]+$"                                       # substate handlers (StatusIdleCase2Sub0, switch on animationSubstate)
+    r"|State[0-9]+$"                                    # state IDs, multi-digit (CleanupAndEnterState18)
+    r"|Row[0-9]+$|Seq[0-9]+$"                           # gMoveAnimData row/sequence IDs
+    r"|Team[0-9]$|Framing[0-9]$|Anchor[0-9]$"           # side/camera indices
+    r"|Timing[0-9]+$"                                    # camera-timing codes (gCameraShotPoolTiming20)
+    r"|Patch[0-9]+$"                                     # vertex-limit split chunks (VtxSandPatch1..7)
+    r"|Scheme[0-9]+$"                                    # color-scheme table indices
+    r"|Variant[0-9]+$"                                  # variant/category IDs (CreateVariant47)
+    r"|Radial[0-9]+$"                                   # radial burst param (cites existing StartEffect33Radial20)
+    r"|Step[0-9]+Or[0-9]+$"                             # intro shot pairs (IntroCameraStep4Or5)
+    r"|LoadGfx[0-9A-F]{1,4}(?:_[0-9A-F]{1,4})?(?:_Alt[0-9])?$"  # gfx file IDs (script resource lists)
+    r"|Field[0-9A-F]{2}$|Offset[0-9A-F]{2}$"           # unresolved struct-field offsets (FieldB0, OffsetAC)
+    r"|Case[0-9]+$"                                       # switch-dispatched handlers (StatusIdleCase2, key = animationMode)
+    r"|(?:Title|Subtitle)_[0-9]+$"                         # mode strings keyed by switch ID (gBattleModeTitle_7)
+    r"|(?:Camera|Fb|Graph)[0-9]$"                          # portrait buffers by player side (gBattlePortraitFb0)
+    r"|Fragment[0-9]+$"                                  # fragment IDs (Fragment76_CallFragment67)
+    r"|(?:ObjDef|TileAttr|TileMisc|GfxDL)[0-9]$"          # diorama/lab tile sets (gFragment17TileAttr0, gFragment22GfxDL2)
+    r"|Trail[0-9]+$"                                      # michiiik's Trail40 water-trail family citations
+    r"|EffectType$"                                       # effectType struct field setters (Particle_SetEffectType)
+    r"|ByVariant$"                                        # tables indexed by variant (gCatASoundPitchOffsetByVariant)
+    r"|RGB[0-9]+$"                                        # RGB5551, RGB8 pixel formats
+    r"|F(?:32|64)$"                                        # float widths (Math_AbsF32)
+    r"|Palette[0-9A-F]{1,2}$"                            # palette IDs (Descriptor34Palette17)
+    r"|Sequence[0-9]+$"                                  # sequence IDs (PlaySpeciesSequence33)
+    r"|Categor(?:y|ies)[0-9]+$"                           # particle category values (RetainingCategories47)
+    r"|And[0-9]+$"                                        # compound indices (BadgeTextures2And3, Sequences14And21)
+    r"|Owner[0-9]$|Record[0-9]$"                          # owner indices, anim record indices
+    r"|Texel[0-9]+$"                                      # texel sizes (TintTexel16)
+    r"|Tex_[0-9]+$"                                       # texture bank indices (gResultCubeTex_0)
+    r"|(?:Div|Mod|Shift)[0-9]+$"                         # literal timer math (counter>>n, %3, /3)
+    r"|TileAttrTable[0-9]$"                               # diorama tile attr tables
 )
 
 # Known hex-fragment prefixes (allowed when followed by hex index)
@@ -277,6 +308,10 @@ COMPOUND_SUFFIX = re.compile(
     r"|[Rr][Gg][Bb]$"                                    # RGB
     r"|[Dd][Mm][Aa]$"                                     # DMA
     r"|[Rr][Tt][Cc]$"                                     # RTC
+    r"|(?:Prim|Env)[RGB]$"                              # color channel accessors (ApproachPrimB = blue channel)
+    r"|LoadGfx[0-9A-F]{1,4}(?:_[0-9A-F]{1,4})?(?:_Alt[0-9])?$"  # gfx file IDs (script resource lists)
+    r"|Palette[0-9A-F]{1,2}$"                            # palette IDs (TriggerDefaultPalette1B)
+    r"|(?:Get|Set|Approach)FieldOffset[0-9A-F]{2}$"       # struct-field offset accessors (FieldOffsetAC)
 )
 
 
@@ -296,10 +331,12 @@ def needs_revision(name):
         if not re.search(r"(?:Color|Config|Variant|Setup)[A-C]$", name):
             if not re.search(r"(?:Seed|Rng)[ABC]$", name):  # RNG variants are semantic
                 return True
-    # Banned terminology — check for yaw/pitch/roll ANYWHERE
-    if re.search(r"yaw|pitch|roll", name, re.I) and not re.search(r"Rollout|Rolling", name, re.I):
+    # Banned terminology — check for yaw/roll ANYWHERE; pitch only outside audio domain
+    if re.search(r"yaw|roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll", name, re.I):
         return True
-    if re.search(r"Custom$|Variant$|Type$", name):
+    if re.search(r"pitch", name, re.I) and not re.search(r"(?:Sfx|Audio|Bgm|Music|Sound|Tone|Note|PitchTable)", name, re.I):
+        return True
+    if re.search(r"Custom$|Variant$|Type$", name) and not re.search(r"(?:Any|To|By|Of)Type$|SushiType$|EffectType$|TypeIndex$|ByVariant$|Trail40Variant$", name):
         return True
     if re.search(r"VictoryPalace|KidsClub|PokeCup|PokemonLab", name):
         return True
