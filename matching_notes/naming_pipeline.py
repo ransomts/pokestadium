@@ -29,66 +29,89 @@ TOKEN_FILE = os.path.expanduser("~/.config/rcd-llm/api-key")
 DRAFT_MODEL = "gemma-4-12b"
 REVISE_MODEL = "gemma-4-31b"
 
-RULES = """# Symbol Naming Rules (michiiik/pokestadium CONTRIBUTING.md compliant)
+RULES = """# Symbol Naming Rules (michiiik/pokestadium CONTRIBUTING.md + conventions)
 
 ## FORMAT
 - Function: Domain_VerbOrNoun (e.g., Battle_ApplyDamage)
 - Global var (game-wide): gCamelCase (e.g., gPlayerHp)
 - Static var (fragment-scoped): sCamelCase (e.g., sFrameCount)
 - Struct: TitleCase (e.g., HallOfFameSlot)
-- Local var: snake_case (e.g., cpu_pokemon)
-- Function names up to 50 characters tolerated
 
-## DOMAINS (non-exhaustive, look at callers for more)
-Battle (logic/damage/turns) | BattleScene (setup/camera/render)
-BattleAnim (particle effects) | BattleHud (HP bars/status UI)
-BattleAi (AI procedures, note this exact casing)
-Particle (particle internals) | Gfx (GPU commands/display lists)
-Audio (sound/music) | Pokemon (per-Pokemon state/stats)
-Move (move behavior) | Storage (save/load/memory)
-RentalHub (rental system) | Trade (trade system)
-Gym (gym leader castle) | Gallery (photo gallery)
-Lab (Pokemon Lab) | Title (title screen)
+## DOMAIN (pick from michiiik's most common, by frequency)
+Battle(2019) | Particle(513) | Lab(506) | Gb(374) | Gallery(308)
+Audio(209) | Trade(205) | Widget(178) | Rental(154) | Team(146)
+Geo(112) | Mini(98) | Model(86) | Gfx(47) | Storage(34)
 
-## BANNED WORDS AND REPLACEMENTS
-- yaw/pitch/roll → rotationY/rotationX/rotationZ (world-relative)
-- AI (outside BattleAi domain) → COM
-- party (for team) → brought (party of 6) or picked (battle 3)
-- VictoryPalace → HallOfFame
-- KidsClub → Minigames
-- PokeCup → NintendoCup
-- PokemonLab → ProfessorOaksLab
-- Custom, Variant, Type (without specific differentiator after)
-- colour, centre, behaviour, favour (British spellings)
-- Any non-ASCII character (including é, ♂, etc.)
+## VERB CONVENTIONS (michiiik's actual usage frequency)
+- Draw (699) for rendering — NOT Render, Paint, Display
+- Set (408) for setting values
+- Update (373) for per-frame changes
+- Init (329) for initialization — NOT Initialize (only 48)
+- Get (252) for simple retrieval — NOT Fetch, Retrieve
+- Load (249) for IO/complex retrieval
+- Build (109) for constructing structures
+- Reset (103) for restoring initial state
+- Is (97) for boolean checks
+- Handle (84) for input/commands
+- Approach (58) for gradual/lamped changes — NOT Lerp, Interpolate
+- Queue (54) for deferred operations
+- Advance (54) for state progression
+- Play (52) for audio/animation — NOT Start
+- Show (49) for UI display — NOT Draw (Show is higher-level)
 
-## STYLE PREFERENCES
-- Prefer technically correct obscure language over ambiguous common
-  (e.g., alpha NOT fadeLevel, descriptor NOT thing)
-- Use English names for Pokemon and Characters
-- Use "Kangaskid" for the creature in Kangaskhan's pouch
-- Use "original color" / "purple color" for Jynx (never "blackface")
-- Numbers in names must be semantic (palette index, effect ID, table index)
-- NEVER end with a bare digit or letter without meaning
-- NEVER include raw address fragments (_49628)
-- American English spelling
+## NOUN CONVENTIONS
+- Table (364) for lookup arrays — NOT Array, List
+- State (206) for state machines
+- Count (82) for quantities — NOT Size, Length, Num
+- Flag (73) for boolean variables
+- Alpha (73) for opacity — NOT FadeLevel
+- Speed (86) for velocity — NOT Vel
+- Rot in fields, Rotation in function names
+- Pos in fields, Position in function names
+- Callback (385) — NOT Handler (only 9 uses in entire codebase)
 
-## SENSITIVE LANGUAGE
-- Never use "blackface" or "purpleface" → "original color" / "purple color"
-- For Nidoqueen documentation: use "breasts" (clinical term, not slang)
-- These rules apply to identifiers AND justifications
+## BANNED
+- yaw/pitch/roll (use rotationX/Y/Z)
+- AI outside BattleAi (use COM)
+- party for team (use brought/picked)
+- VictoryPalace→HallOfFame | KidsClub→Minigames
+- PokeCup→NintendoCup | PokemonLab→ProfessorOaksLab
+- Custom, Variant, Type without differentiator
+- Bare digits/letters at end (see rules below)
+- Address fragments (_49628)
+- Non-ASCII | British spellings
+- Handler suffix (use Callback)
+- Initialize (use Init)
+- Render (use Draw)
+- Fetch/Retrieve (use Get or Load)
+
+## DIGIT RULES
+Allowed digits (semantic):
+- Bit widths: BE16, LE32
+- Pixel formats: RGBA16, I4, IA8, CI4
+- Audio channels: Square1, Square2, Pulse1, Pulse2
+- Player indices: Player1, Player2
+- Effect table indices: Effect47, Descriptor34
+- Texture dimensions: 32x32, 64x64
+- Vertex indices: Vtx0, Vertices1
+- State phases: Phase0, Phase1, Step1, Level2
+
+NOT allowed (non-semantic):
+- Variant counters: Load2, Call2, Handler3
+- Raw addresses: _5F92, _BC20
+- If you can't say what the digit MEANS, skip
 
 ## METHOD
 1. Read the code snippet
 2. Identify 2+ facts about what it does
 3. Name by BEHAVIOR (what it does) not by CALLER (who calls it)
-4. Skip if <2 facts or function body is empty ({ } or return;)
+4. Check verb: Draw/Init/Get/Set/Update (not Render/Initialize/Fetch)
+5. Skip if <2 facts or body is empty
 
 ## OUTPUT
-placeholder_name<TAB>new_name<TAB>justification (cite evidence)
+placeholder_name<TAB>new_name<TAB>justification
 
 If you cannot name a symbol, output NOTHING for it.
-Skipping is correct — a parked placeholder is better than a wrong name.
 """
 
 REVISE_RULES = """# Symbol Naming Review Rules (CONTRIBUTING.md compliant)
