@@ -63,27 +63,45 @@ Struct:     {TitleCase}         e.g., HallOfFameSlot
 Local var:  {snake_case}       e.g., cpu_pokemon
 ```
 
-### Pick the Domain from this table (or find one nearby in the code):
+### Pick the Domain from this table (by frequency in michiiik's codebase):
 
-| Domain | Use when |
-|---|---|
-| Battle | Battle logic, damage, turns |
-| BattleScene | Scene setup, camera, rendering orchestration |
-| BattleAnim | Particle effects, visual animations |
-| BattleAi | AI procedures (exact casing, not BattleAI) |
-| BattleHud | HP bars, status icons, in-battle UI |
-| Particle | Particle system internals |
-| Gfx | Direct GPU commands, display lists |
-| Audio | Sound, music, sequencing |
-| Pokemon | Per-Pokemon state, stats, types |
-| Move | Move-specific behavior |
-| Storage | Save/load, memory management |
-| RentalHub | Rental system |
-| Trade | Trade system |
-| Gym | Gym Leader Castle |
-| Gallery | Photo gallery |
-| Lab | Pokemon Lab (Professor Oak's Lab) |
-| Title | Title screen |
+| Domain | Frequency | Use for |
+|---|---|---|
+| Battle | 2019 | Battle logic, damage, turns |
+| Particle | 513 | Particle system internals |
+| Lab | 506 | Pokemon Lab screens |
+| Gb | 374 | Game Boy pak/transfer/emulation |
+| Gallery | 308 | Photo gallery |
+| Audio | 209 | Sound, music, sequencing |
+| Trade | 205 | Trade system |
+| Widget | 178 | UI widget framework |
+| Rental | 154 | Rental system |
+| Team | 146 | Team selection |
+| Geo | 112 | Geometry, graph nodes |
+| Mini | 98 | Minigames |
+| Model | 86 | 3D model system |
+| Storage | 34 | Storage system |
+| Gfx | 47 | GPU commands, display lists |
+
+**Verb conventions** (follow michiiik's frequency):
+- Use **Draw** for rendering (NOT Render, Paint, Display) — 699 uses
+- Use **Init** for initialization (NOT Initialize) — 329 vs 48 uses
+- Use **Callback** (NOT Handler) — 385 vs 9 uses
+- Use **Is** prefix for boolean checks — 97 uses
+- Use **Approach** for gradual/lamped changes — 58 uses
+- Use **Setup** for configuration, **Init** for allocation
+- Use **Table** for lookup arrays (NOT Array, List) — 364 uses
+- Use **Count** for quantities (NOT Size, Length, Num) — 82 uses
+- Use **Flag** for boolean variables — 73 uses
+- Use **Alpha** for opacity (NOT FadeLevel) — 73 uses
+
+**Noun conventions**:
+- Use **Speed** for velocity magnitude (NOT Vel) — 86 uses
+- Use **Rot** abbreviation in fields, **Rotation** in function names
+- Use **Pos** abbreviation in fields, **Position** in function names
+- Use **State** for state machines — 206 uses
+- Use **Phase** for sub-states within a state
+- Use **Mode** for operational modes
 
 ### Now apply these HARD RULES (check each one):
 
