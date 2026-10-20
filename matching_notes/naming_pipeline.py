@@ -263,6 +263,7 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?:Rgba|Ia|Ci)[0-9]+$"                          # pixel formats, mixed-case suffix (LoadTextureRgba32/Ia4/Ci8)
     r"|(?<!_)I[0-9]+$"                                 # I4/I8 as suffix (LoadTextureI4, DualRgba16I8)
     r"|Texture(?:Multi)?Block[0-9]+$"                   # texel-size texture loads (LoadTextureBlock32)
+    r"|Moves[0-9]+To[0-9]+$"                            # ID-range endpoints (AnnouncerMoveDataMoves1To68)
 )
 
 # Known hex-fragment prefixes (allowed when followed by hex index)
