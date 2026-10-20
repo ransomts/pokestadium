@@ -131,7 +131,7 @@ s32 Trade_DrawBox3DModel(s32 arg0, GraphNode* arg1) {
     return 0;
 }
 
-s16 Trade_GetBoxSlotType(PlayerTradeInfo* arg0) {
+s16 Trade_GetBoxSlotSaveReadiness(PlayerTradeInfo* arg0) {
     s16 ret;
 
     switch (arg0->posX) {
@@ -177,7 +177,7 @@ void Trade_SetupBoxSlots(s16 arg0) {
     gActiveSlotCount = 1;
 
     for (i = 0; i < 4; i++) {
-        temp_v0 = Trade_GetBoxSlotType(&gPlayerInfo[i]);
+        temp_v0 = Trade_GetBoxSlotSaveReadiness(&gPlayerInfo[i]);
         if (temp_v0 == -1) {
             continue;
         }

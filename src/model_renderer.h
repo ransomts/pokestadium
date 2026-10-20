@@ -33,7 +33,7 @@ void Model_SetMaterialColor(Fragment2_1GraphNode* arg0, u8 arg1, u8 arg2, u8 arg
 void Model_SetMaterialAlpha(Fragment2_1GraphNode* arg0, u8 arg1);
 void Model_SetMaterialTextureMode(Fragment2_1GraphNode* arg0, u8 arg1);
 unk_D_86002F58_004_000_00C_028* ModelAnim_GetAnimationRecord(Fragment2_1GraphNode* arg0, s32 arg1);
-arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, PokemonData* arg1);
+arg1_func_80010CA8* Model_ComputeMonSizeFromNickname(arg1_func_80010CA8* arg0, PokemonData* arg1);
 void Model_ComputeSizeVariantFromRecord(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2);
 void Trainer_RequestPokeIcon(BattlePokemon* arg0);
 void PokeIcon_PollFrameLoadForObject(unk_func_8001C248* arg0);

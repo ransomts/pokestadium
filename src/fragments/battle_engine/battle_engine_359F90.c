@@ -31,7 +31,7 @@ static u16 gAccumulatedDamage;
 static u8 gAccuracyCheckRandom;
 static u8 gBattleMessageFlag;
 u8 gBattleMoveFailed;
-u8 gBattleEffectType;
+u8 gBattleCritOrOhkoState;
 static u8 gBattleUnusedFlag1;
 static u8 gBattleUnusedFlag2;
 static u8 gBattleUnusedFlag3;
@@ -114,36 +114,36 @@ u8 gTypeEffectivenessTable[] = {
     5,    7,    0x14, 5,    0x19, 0x14, 8,    0,    0,    8,    0x18, 0,    0x14, 0x1A, 5,    0x15, 0x1A, 5,
     0x17, 0x1A, 5,    0x16, 0x1A, 5,    0x19, 0x1A, 0x14, 0x1A, 0x1A, 0x14, 0xFF, 0,    0,
 };
-static u32 gBattleMoveEffectTable1[] = {
+static u32 gBattleMoveEffectsExecuteOnly[] = {
     0x18191C2E,
     0x2F313839,
     0x40414243,
     0x4F525455,
 };
-static u32 gBattleMoveEffectTable2[] = {
+static u32 gBattleMoveEffectsExecuteBeforeDamageCalc[] = {
     0x1B000000,
 };
-static u32 gBattleMoveEffectTable3[] = {
+static u32 gBattleMoveEffectsSkipDamageCalc[] = {
     0x28290000,
 };
-static u32 gBattleMoveEffectTable4[] = {
+static u32 gBattleMoveEffectsExecuteInsteadOfDamage[] = {
     0x010A0B0C, 0x0D0E0F12, 0x13141516, 0x171A2032, 0x33343536, 0x373A3B3C, 0x3D3E3F00,
 };
-static u32 gBattleMoveEffectTable5[] = {
+static u32 gBattleMoveEffectsExecuteAfterDamage[] = {
     0x03070810,
     0x1D1E2C30,
     0x4D510000,
 };
-static u32 gBattleMoveEffectTable6[] = {
+static u32 gBattleMoveEffectsSkipFinalExecute[] = {
     0x03070810,
     0x111D1E27,
     0x28292B2C,
     0x2D301B00,
 };
-static s32 gBattleRngSeed1 = 0x4D2;
-static u32 gBattleRngSeed2 = 0x1A85;
-static u32 gBattleRngSeed3 = 0x3039;
-static u32 gBattleRngSeed4 = 0x10932;
+static s32 gBattleRngLcgSeed = 0x4D2;
+static u32 gBattleRngLfsrSeed = 0x1A85;
+static u32 gBattleRngAccuracyLcgSeed = 0x3039;
+static u32 gBattleRngAccuracyLfsrSeed = 0x10932;
 static u8 gBattleTypeEffectivenessParams[] = { 2, 0x4B, 0x98, 0xA3 };
 
 void func_8436F6D0(void) {
@@ -156,15 +156,15 @@ u8 Battle_Random(void) {
     var_v1 = (osGetCount() & 0xFF0) >> 4;
 
     while (var_v1 > 0) {
-        gBattleRngSeed1 = (gBattleRngSeed1 * 0x41C64E6D) + 0x303B;
-        if (gBattleRngSeed2 & 1) {
-            gBattleRngSeed2 ^= 0x11020;
+        gBattleRngLcgSeed = (gBattleRngLcgSeed * 0x41C64E6D) + 0x303B;
+        if (gBattleRngLfsrSeed & 1) {
+            gBattleRngLfsrSeed ^= 0x11020;
         }
-        gBattleRngSeed2 >>= 1;
+        gBattleRngLfsrSeed >>= 1;
         var_v1--;
     }
 
-    ret = gBattleRngSeed1 ^ gBattleRngSeed2;
+    ret = gBattleRngLcgSeed ^ gBattleRngLfsrSeed;
     return ret;
 }
 
@@ -175,14 +175,14 @@ u8 Battle_RandomAccuracy(void) {
     var_v1 = (osGetCount() & 0xFF0) >> 4;
 
     while (var_v1 > 0) {
-        gBattleRngSeed3 = (gBattleRngSeed3 * 0x41C64E6D) + 0x303B;
-        if (gBattleRngSeed4 & 1) {
-            gBattleRngSeed4 ^= 0x11020;
+        gBattleRngAccuracyLcgSeed = (gBattleRngAccuracyLcgSeed * 0x41C64E6D) + 0x303B;
+        if (gBattleRngAccuracyLfsrSeed & 1) {
+            gBattleRngAccuracyLfsrSeed ^= 0x11020;
         }
-        gBattleRngSeed4 >>= 1;
+        gBattleRngAccuracyLfsrSeed >>= 1;
         var_v1--;
     }
-    ret = gBattleRngSeed3 ^ gBattleRngSeed4;
+    ret = gBattleRngAccuracyLcgSeed ^ gBattleRngAccuracyLfsrSeed;
     return ret;
 }
 
@@ -455,7 +455,7 @@ void InitBattleParameters(void) {
                 gDefenderStat *= 2;
             }
 
-            if (gBattleEffectType != 0) {
+            if (gBattleCritOrOhkoState != 0) {
                 gDefenderStat = gBattleTarget->unk_3A;
                 gAttackerStat = gBattleUser->unk_38;
             } else {
@@ -467,7 +467,7 @@ void InitBattleParameters(void) {
                 gDefenderStat *= 2;
             }
 
-            if (gBattleEffectType != 0) {
+            if (gBattleCritOrOhkoState != 0) {
                 gDefenderStat = gBattleTarget->unk_3E;
                 gAttackerStat = gBattleUser->unk_3E;
             } else {
@@ -486,7 +486,7 @@ void InitBattleParameters(void) {
         }
 
         gAttackerLevel = gBattleUser->unk_26;
-        if (gBattleEffectType != 0) {
+        if (gBattleCritOrOhkoState != 0) {
             gAttackerLevel *= 2;
         }
     }
@@ -844,7 +844,7 @@ void Battle_UpdateBattleLog(void) {
 void Battle_PlayMoveSound(void) {
     PokemonAudioInfo* sp1C = &sActivePokemon[!gBattleScene.posX->unk_2C]->animationState.unk_38;
 
-    switch (gBattleEffectType) {
+    switch (gBattleCritOrOhkoState) {
         case 1:
             Battle_QueueMessage(gBattleMessageQueues->secondaryMessage, 0x1D);
             gBattleScene.posX->unk_1A = 2;
@@ -854,8 +854,8 @@ void Battle_PlayMoveSound(void) {
             gBattleScene.posX->unk_1A = 2;
             break;
     }
-    sp1C->battleEffectType = gBattleEffectType;
-    gBattleEffectType = 0;
+    sp1C->battleEffectType = gBattleCritOrOhkoState;
+    gBattleCritOrOhkoState = 0;
 }
 
 void Battle_ApplyDamageAnimation(void) {
@@ -922,7 +922,7 @@ void Battle_QueueMoveFailureAndApplyRecoil(void) {
     PokemonAudioInfo* sp1C;
 
     if (gTypeEffectivenessMsgState & 0x7F) {
-        if (gBattleEffectType == 0xFF) {
+        if (gBattleCritOrOhkoState == 0xFF) {
             Text_SetStringToken(0x19, Battle_GetActiveMonNickname(sActivePokemon[!gBattleScene.posX->unk_2C]));
             Battle_QueueMessage(gBattleMessageQueues->unk_088, 0x19);
         } else {
@@ -934,7 +934,7 @@ void Battle_QueueMoveFailureAndApplyRecoil(void) {
         Battle_QueueMessage(gBattleMessageQueues->unk_088, 0x1B);
     }
 
-    gBattleEffectType = 0;
+    gBattleCritOrOhkoState = 0;
 
     if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort == 0x2D) {
         gBattleScene.posX->unk_48 = 0x10;
@@ -1187,7 +1187,7 @@ s32 Battle_Effect_Counter(void) {
         }
 
         gBattleMoveFailed = 0;
-        gBattleEffectType = 0;
+        gBattleCritOrOhkoState = 0;
         HandleMoveEffectFlags();
         return 0;
     }
@@ -1198,7 +1198,7 @@ s32 Battle_CheckCriticalHit(void) {
     UNUSED s32 pad;
     s32 sp18;
 
-    gBattleEffectType = 0;
+    gBattleCritOrOhkoState = 0;
     if (gBattleRuleFlags[0] == 1) {
         sp18 = (D_80070F84[gBattleUser->unk_0B].baseDefense + 0x4C) >> 2;
     } else {
@@ -1253,7 +1253,7 @@ s32 Battle_CheckCriticalHit(void) {
     if (gAccuracyCheckRandom >= sp18) {
         return 0;
     }
-    gBattleEffectType = 1;
+    gBattleCritOrOhkoState = 1;
     return 1;
 }
 
@@ -1353,7 +1353,7 @@ s32 Battle_CheckMonCanAct(void) {
                 gBattleTarget->unk_2C = gBattleUser->unk_2C;
                 sp25 = gBattleUser->unk_44.TrainerSlotSaveData_GamePort;
                 gBattleUser->unk_44.TrainerSlotSaveData_GamePort = 0;
-                gBattleEffectType = 0;
+                gBattleCritOrOhkoState = 0;
                 gBattleUser->unk_44.posY = 0x28;
                 gBattleUser->unk_44.unk_03 = 0;
                 InitBattleParameters();
@@ -1487,7 +1487,7 @@ void ProcessBattleTurn(void) {
                 Battle_QueueMoveCategoryUsedMessage();
                 Battle_DecrementPP(gBattleScene.posX->unk_2C);
 
-                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectTable1, 0x10) != 0) {
+                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectsExecuteOnly, 0x10) != 0) {
                     if (gBattleRuleFlags[0] == 1) {
                         gBattleDamage = 0;
                     }
@@ -1495,12 +1495,12 @@ void ProcessBattleTurn(void) {
                     return;
                 }
 
-                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectTable2, 1) != 0) {
+                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectsExecuteBeforeDamageCalc, 1) != 0) {
                     Battle_ExecuteMoveEffect();
                 }
 
             case 4:
-                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectTable3, 2) == 0) {
+                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectsSkipDamageCalc, 2) == 0) {
                     Battle_CheckCriticalHit();
                     if (Battle_Effect_Counter() == 0) {
                         goto case_5;
@@ -1547,7 +1547,7 @@ void ProcessBattleTurn(void) {
                         goto block_5;
                 }
 
-                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectTable4, 0x1B) != 0) {
+                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectsExecuteInsteadOfDamage, 0x1B) != 0) {
                     Battle_ExecuteMoveEffect();
                     return;
                 }
@@ -1565,7 +1565,7 @@ void ProcessBattleTurn(void) {
                     gBattleUnusedFlag4 = 1;
                 }
 
-                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectTable5, 0xA) != 0) {
+                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectsExecuteAfterDamage, 0xA) != 0) {
                     Battle_ExecuteMoveEffect();
                 }
 
@@ -1600,7 +1600,7 @@ void ProcessBattleTurn(void) {
                     goto end;
                 }
 
-                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectTable6, 0xF) != 0) {
+                if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectsSkipFinalExecute, 0xF) != 0) {
                     goto end;
                 }
 

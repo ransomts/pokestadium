@@ -283,6 +283,7 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?:ObjDef|TileAttr|TileMisc|GfxDL)[0-9]$"          # diorama/lab tile sets (gFragment17TileAttr0, gFragment22GfxDL2)
     r"|Trail[0-9]+$"                                      # michiiik's Trail40 water-trail family citations
     r"|EffectType$"                                       # effectType struct field setters (Particle_SetEffectType)
+    r"|Motion[0-9]+$"                                   # motion switch-case indices (ConfigMotion6 = scale 1.5 case)
     r"|ByVariant$"                                        # tables indexed by variant (gCatASoundPitchOffsetByVariant)
     r"|RGB[0-9]+$"                                        # RGB5551, RGB8 pixel formats
     r"|F(?:32|64)$"                                        # float widths (Math_AbsF32)

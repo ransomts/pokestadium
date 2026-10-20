@@ -359,7 +359,7 @@ static u32 gHPBarNodeDataAlt[] = {
     0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gHPBarSegmentDLAlt,
     0x22050000, gHPBarBackDLAlt, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static u32 gHPBarNodeDataAlt2[] = {
+static u32 gHPBarNodeDataDoubleBadgeMirror[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtxAlt, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gHPBarSegmentDLAlt,
     0x22050000, gHPBarBackDLAlt, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
@@ -1212,7 +1212,7 @@ void BattlePrepTeamIcons_Init(gTeamIconsState* arg0) {
         arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gHPBarNodeData);
         arg0->unk_0C = process_geo_layout(sp2C, gHPBarNodeData_Alt);
         arg0->unk_10 = process_geo_layout(sp2C, gHPBarNodeDataAlt);
-        arg0->unk_14 = process_geo_layout(sp2C, gHPBarNodeDataAlt2);
+        arg0->unk_14 = process_geo_layout(sp2C, gHPBarNodeDataDoubleBadgeMirror);
     } else {
         arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gHealthBarNodeData_Status);
         arg0->unk_10 = process_geo_layout(sp2C, gItemIconNodeData);

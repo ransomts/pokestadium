@@ -56,9 +56,9 @@ static s16 gItemSelectionRandom;
 static ItemSelectionCoords gSelectionCoords;
 static s32 pad_D_8250A2B0[18];
 static s32 pad_D_8250A2F8;
-static s16 gUnused0;
-static s16 gUnused1;
-static s16 gUnused2;
+static s16 gRoundSpinnerState;
+static s16 gRoundSpinnerTimer;
+static s16 gRoundSpinnerScrollOffset;
 TextObject* gTextObjectHandle;
 static unk_D_8250A308 gCursor;
 static char** gStringTable;
@@ -1270,7 +1270,7 @@ void MiniGameSelect_RenderNumberSpinner(UIElement* arg0) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    if ((gUnused0 == 1) || (gUnused0 == 2)) {
+    if ((gRoundSpinnerState == 1) || (gRoundSpinnerState == 2)) {
         var_v1 = D_8250A288.rotation - 1;
         for (i = 0; i < 3; i++) {
             temp_v0 = var_v1++;
@@ -1295,7 +1295,7 @@ void MiniGameSelect_RenderNumberSpinner(UIElement* arg0) {
         if (sp90[i] == -1) {
             continue;
         }
-        Font_Printf(0x76, (gUnused2 - (i * 0x1A)) + 0x28, "%d", sp90[i]);
+        Font_Printf(0x76, (gRoundSpinnerScrollOffset - (i * 0x1A)) + 0x28, "%d", sp90[i]);
     }
 
     Font_EndTexturedTextRendering();
@@ -2069,9 +2069,9 @@ void MiniGameSelect_LeaveJoinMenu(void) {
         Minigames_SetRoundBannerState(1, D_8250A288.unk_06);
     } else {
         D_8250A26C = 3;
-        gUnused0 = 0;
-        gUnused1 = 0;
-        gUnused2 = 0;
+        gRoundSpinnerState = 0;
+        gRoundSpinnerTimer = 0;
+        gRoundSpinnerScrollOffset = 0;
         MiniGameSelect_LinkWidgets(gComputerUIElements[0], gComputerUIRoot);
         MiniGameSelect_LinkWidgets(gComputerUIRoot, gItemGridElements[0]);
     }
@@ -2272,7 +2272,7 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
     s32 i;
 
     if (MiniGameSelect_IsWidgetInState(gComputerUIRoot, 2) != 0) {
-        switch (gUnused0) {
+        switch (gRoundSpinnerState) {
             case 0:
                 if (gControllerInputs->rotation & 0x8000) {
                     gMenuSubState = D_8250A288.rotation;
@@ -2292,34 +2292,34 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
                     SetUIElementState(gComputerUIRoot, 8);
                     Audio_PlaySoundEffectById(3);
                 } else if ((gControllerInputs->RentalSlotAnimData_PosePhase & 0x800) && (D_8250A288.rotation < 9)) {
-                    gUnused0 = 2;
-                    gUnused1 = 5;
+                    gRoundSpinnerState = 2;
+                    gRoundSpinnerTimer = 5;
                 } else if ((gControllerInputs->RentalSlotAnimData_PosePhase & 0x400) && (D_8250A288.rotation >= 2)) {
-                    gUnused0 = 1;
-                    gUnused1 = 5;
+                    gRoundSpinnerState = 1;
+                    gRoundSpinnerTimer = 5;
                 }
 
-                if ((gUnused0 == 2) || (gUnused0 == 1)) {
+                if ((gRoundSpinnerState == 2) || (gRoundSpinnerState == 1)) {
                     Audio_PlaySoundEffectById(0x10);
                 }
                 break;
 
             case 1:
-                gUnused1 -= 1;
-                gUnused2 = ((gUnused1 * 0x1A) / 5) - 0x1A;
-                if (gUnused1 <= 0) {
-                    gUnused0 = 0;
-                    gUnused2 = 0;
+                gRoundSpinnerTimer -= 1;
+                gRoundSpinnerScrollOffset = ((gRoundSpinnerTimer * 0x1A) / 5) - 0x1A;
+                if (gRoundSpinnerTimer <= 0) {
+                    gRoundSpinnerState = 0;
+                    gRoundSpinnerScrollOffset = 0;
                     D_8250A288.rotation -= 1;
                 }
                 break;
 
             case 2:
-                gUnused1 -= 1;
-                gUnused2 = 0x1A - ((gUnused1 * 0x1A) / 5);
-                if (gUnused1 <= 0) {
-                    gUnused0 = 0;
-                    gUnused2 = 0;
+                gRoundSpinnerTimer -= 1;
+                gRoundSpinnerScrollOffset = 0x1A - ((gRoundSpinnerTimer * 0x1A) / 5);
+                if (gRoundSpinnerTimer <= 0) {
+                    gRoundSpinnerState = 0;
+                    gRoundSpinnerScrollOffset = 0;
                     D_8250A288.rotation += 1;
                 }
                 break;

@@ -162,7 +162,7 @@ void SpriteDisplay_ConfigSlotWithAnim(SpriteDisplay* arg0, s32 arg1, PokemonData
             arg0->RentalSlotAnimData_PosePhase[arg1].unk_14.raw = arg2;;
             arg0->RentalSlotAnimData_PosePhase[arg1].posY = arg3 & ~1;
             arg0->RentalSlotAnimData_PosePhase[arg1].RentalSlotAnimData_PosePhase = arg0->unk_18[arg2->posX.posX - 1].posY / 100.0f;
-            Model_ComputeSizeVariant(&arg0->RentalSlotAnimData_PosePhase[arg1].unk_10, arg2);
+            Model_ComputeMonSizeFromNickname(&arg0->RentalSlotAnimData_PosePhase[arg1].unk_10, arg2);
             if (arg0->unk_18[arg2->posX.posX - 1].name == NULL) {
                 arg0->RentalSlotAnimData_PosePhase[arg1].rotation = arg0->unk_18[arg2->posX.posX - 1].RentalSlotAnimData_PosePhase - 0xE38;;
                 return;
@@ -458,7 +458,7 @@ void PokeIcon_LoadModelTextureForMon(u16* arg0, s32 arg1, PokemonData* arg2) {
         return;
     }
 
-    Model_ComputeSizeVariant(&sp1C, arg2);
+    Model_ComputeMonSizeFromNickname(&sp1C, arg2);
     PokeIcon_LoadModelTexture(arg0, arg2->posX.posX);
     PokeIcon_AdjustImageColors(arg0, 0x640, sp1C);
 }
@@ -527,7 +527,7 @@ void PokeIcon_SetPreviewMon(ModelPreview* arg0, PokemonData* arg1, u16 arg2) {
     arg0->unk_24->unk_024.z = tmp3;
 
     arg0->unk_24->unk_01E = gSpriteAnimUpdateFunc;
-    Model_ComputeSizeVariant(&sp2C, arg1);
+    Model_ComputeMonSizeFromNickname(&sp2C, arg1);
     PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1->posX.posX, sp2C);
     PokeIcon_WaitFrameLoad(arg0->unk_1C);
     ModelRenderer_ClearDisplayObject(arg0->unk_24);

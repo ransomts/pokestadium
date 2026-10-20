@@ -39,7 +39,7 @@ void Gfx_DrawTexturedRectClipped(s16 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg
     }
 }
 
-void Gfx_DrawTextureRect2(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
+void Gfx_DrawTextureRectFromCorners(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
     Gfx_DrawTexturedRectClipped(arg0, arg1, (arg2 - arg0) + 1, (arg3 - arg1) + 1, 0, 0, arg4, arg5, arg6);
 }
 

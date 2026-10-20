@@ -1102,7 +1102,7 @@ static u32 gResultScreenTextureData[] = {
 };
 
 // Meant to be 32, this is only 30, it uses 2 vertices from the next list
-static Vtx gResultCubeVertexData1[] = {
+static Vtx gResultCubeVertexBatchFirst[] = {
     VTX(0, 0, -11, 512, 566, 0x2D, 0x18, 0x94, 0xFF),    VTX(0, 50, 0, 512, 0, 0x2D, 0x18, 0x94, 0xFF),
     VTX(15, 21, 0, 677, 326, 0x2D, 0x18, 0x94, 0xFF),    VTX(15, 21, 0, 677, 326, 0x2D, 0x18, 0x6C, 0xFF),
     VTX(0, 50, 0, 512, 0, 0x2D, 0x18, 0x6C, 0xFF),       VTX(0, 0, 11, 512, 566, 0x2D, 0x18, 0x6C, 0xFF),
@@ -1120,7 +1120,7 @@ static Vtx gResultCubeVertexData1[] = {
     VTX(48, 15, 0, 1024, 391, 0x24, 0xDD, 0x6C, 0xFF),   VTX(0, 0, 11, 512, 566, 0x24, 0xDD, 0x6C, 0xFF),
 };
 
-static Vtx gResultCubeVertexData2[] = {
+static Vtx gResultCubeVertexBatchSecond[] = {
     VTX(0, 0, 11, 512, 566, 0x32, 0x07, 0x6C, 0xFF),     VTX(29, -40, 0, 828, 1023, 0x32, 0x07, 0x6C, 0xFF),
     VTX(25, -8, 0, 779, 657, 0x32, 0x07, 0x6C, 0xFF),    VTX(25, -8, 0, 779, 657, 0x32, 0x07, 0x94, 0xFF),
     VTX(29, -40, 0, 828, 1023, 0x32, 0x07, 0x94, 0xFF),  VTX(0, 0, -11, 512, 566, 0x32, 0x07, 0x94, 0xFF),
@@ -1157,13 +1157,13 @@ static Gfx gResultCubeSetupDL[] = {
 };
 
 static Gfx gResultCubeRenderDL[] = {
-    gsSPVertex(gResultCubeVertexData1, 32, 0),
+    gsSPVertex(gResultCubeVertexBatchFirst, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 5, 0),
     gsSP2Triangles(6, 7, 8, 0, 9, 10, 11, 0),
     gsSP2Triangles(12, 13, 14, 0, 15, 16, 17, 0),
     gsSP2Triangles(18, 19, 20, 0, 21, 22, 23, 0),
     gsSP2Triangles(24, 25, 26, 0, 27, 28, 29, 0),
-    gsSPVertex(gResultCubeVertexData2, 30, 0),
+    gsSPVertex(gResultCubeVertexBatchSecond, 30, 0),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 5, 0),
     gsSP2Triangles(6, 7, 8, 0, 9, 10, 11, 0),
     gsSP2Triangles(12, 13, 14, 0, 15, 16, 17, 0),
@@ -1265,13 +1265,13 @@ static u8 gResultSfxTriggered;
 static u8 gResultCubeStateFlag[4];
 static s8 gResultAnimCountdown;
 static u8 gResultMusicChangePending;
-static char* gResultMenuStrings_0[4];
-static char* gResultMenuStrings_1[4];
-static char* gResultMenuStrings_2[2];
-static u16 gResultMenuWidth_0;
-static u16 gResultMenuWidth_1;
-static u16 gResultMenuWidth_2;
-static u16 gResultMenuWidth_3;
+static char* gResultMenuStrings_PlayAgainDiffGameQuit[4];
+static char* gResultMenuStrings_ContinueRestartQuit[4];
+static char* gResultMenuStrings_PlayAgainQuit[2];
+static u16 gResultPauseMenuWidth;
+static u16 gResultMenuWidth_PlayAgainDiffGameQuit;
+static u16 gResultMenuWidth_ContinueRestartQuit;
+static u16 gResultMenuWidth_PlayAgainQuit;
 
 void Widget_PauseMenuInit(void) {
     u8 i;
@@ -1310,24 +1310,24 @@ void Widget_PauseMenuInit(void) {
     gResultMusicChangePending = 0;
     gResultAnimCountdown = 0xC;
 
-    gResultMenuStrings_0[0] = gResultMenuStrings_2[0] = Text_GetString(NULL, 0, gItemNamesBank, 0x51);
+    gResultMenuStrings_PlayAgainDiffGameQuit[0] = gResultMenuStrings_PlayAgainQuit[0] = Text_GetString(NULL, 0, gItemNamesBank, 0x51);
 
-    gResultMenuStrings_0[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x52);
+    gResultMenuStrings_PlayAgainDiffGameQuit[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x52);
 
-    gResultMenuStrings_0[2] = gResultMenuStrings_1[2] = gResultMenuStrings_2[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x53);
+    gResultMenuStrings_PlayAgainDiffGameQuit[2] = gResultMenuStrings_ContinueRestartQuit[2] = gResultMenuStrings_PlayAgainQuit[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x53);
 
-    gResultMenuStrings_1[0] = Text_GetString(NULL, 0, gItemNamesBank, 0x54);
-    gResultMenuStrings_1[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x55);
+    gResultMenuStrings_ContinueRestartQuit[0] = Text_GetString(NULL, 0, gItemNamesBank, 0x54);
+    gResultMenuStrings_ContinueRestartQuit[1] = Text_GetString(NULL, 0, gItemNamesBank, 0x55);
 
     Font_SetActive(4, 0);
 
-    gResultMenuWidth_0 = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_1[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_1[2]));
-    gResultMenuWidth_1 = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_0[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_0[1]));
-    gResultMenuWidth_1 = MAX(gResultMenuWidth_1, Font_MeasureTextExtent(0, 0, gResultMenuStrings_0[2]));
-    gResultMenuWidth_2 = MAX(gResultMenuWidth_0, Font_MeasureTextExtent(0, 0, gResultMenuStrings_1[1]));
-    gResultMenuWidth_3 = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_2[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_2[1]));
+    gResultPauseMenuWidth = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_ContinueRestartQuit[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_ContinueRestartQuit[2]));
+    gResultMenuWidth_PlayAgainDiffGameQuit = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_PlayAgainDiffGameQuit[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_PlayAgainDiffGameQuit[1]));
+    gResultMenuWidth_PlayAgainDiffGameQuit = MAX(gResultMenuWidth_PlayAgainDiffGameQuit, Font_MeasureTextExtent(0, 0, gResultMenuStrings_PlayAgainDiffGameQuit[2]));
+    gResultMenuWidth_ContinueRestartQuit = MAX(gResultPauseMenuWidth, Font_MeasureTextExtent(0, 0, gResultMenuStrings_ContinueRestartQuit[1]));
+    gResultMenuWidth_PlayAgainQuit = MAX(Font_MeasureTextExtent(0, 0, gResultMenuStrings_PlayAgainQuit[0]), Font_MeasureTextExtent(0, 0, gResultMenuStrings_PlayAgainQuit[1]));
 
-    if (gResultMenuWidth_1) {}
+    if (gResultMenuWidth_PlayAgainDiffGameQuit) {}
 
     Save_EnsureBankLoaded(2);
 }
@@ -2113,7 +2113,7 @@ s32 Widget_PauseMenuUpdate(void) {
     }
 
     if (gResultMenuVisible != 0) {
-        Widget_DrawPanel(((0x140 - gResultMenuWidth_0) / 2) - 0xA, 0x61, gResultMenuWidth_0 + 0x14, 0x30, &sp70[0], &sp70[3]);
+        Widget_DrawPanel(((0x140 - gResultPauseMenuWidth) / 2) - 0xA, 0x61, gResultPauseMenuWidth + 0x14, 0x30, &sp70[0], &sp70[3]);
         Font_BeginTranslucentTextRendering();
         Font_SetActive(4, 0);
 
@@ -2130,7 +2130,7 @@ s32 Widget_PauseMenuUpdate(void) {
                 temp_t0 = i;
             }
 
-            Font_Printf((0x140 - gResultMenuWidth_0) / 2, (i * 0x12) + 0x68, "%s", gResultMenuStrings_1[temp_t0]);
+            Font_Printf((0x140 - gResultPauseMenuWidth) / 2, (i * 0x12) + 0x68, "%s", gResultMenuStrings_ContinueRestartQuit[temp_t0]);
         }
 
         Font_EndTexturedTextRendering();
@@ -2234,12 +2234,12 @@ s32 Widget_PauseMenuUpdate(void) {
         if (gResultMenuActive != 0) {
             if (gResultScoreThresholdMet == 0) {
                 if (gMenuCursorX == 0) {
-                    Widget_DrawPanel(((0x140 - gResultMenuWidth_1) / 2) - 0xA, 0x58, gResultMenuWidth_1 + 0x14, 0x42, &sp70[0], &sp70[3]);
+                    Widget_DrawPanel(((0x140 - gResultMenuWidth_PlayAgainDiffGameQuit) / 2) - 0xA, 0x58, gResultMenuWidth_PlayAgainDiffGameQuit + 0x14, 0x42, &sp70[0], &sp70[3]);
                 } else {
-                    Widget_DrawPanel(((0x140 - gResultMenuWidth_2) / 2) - 0xA, 0x58, gResultMenuWidth_2 + 0x14, 0x42, &sp70[0], &sp70[3]);
+                    Widget_DrawPanel(((0x140 - gResultMenuWidth_ContinueRestartQuit) / 2) - 0xA, 0x58, gResultMenuWidth_ContinueRestartQuit + 0x14, 0x42, &sp70[0], &sp70[3]);
                 }
             } else {
-                Widget_DrawPanel(((0x140 - gResultMenuWidth_3) / 2) - 0xA, 0x61, gResultMenuWidth_3 + 0x14, 0x30, &sp70[0], &sp70[3]);
+                Widget_DrawPanel(((0x140 - gResultMenuWidth_PlayAgainQuit) / 2) - 0xA, 0x61, gResultMenuWidth_PlayAgainQuit + 0x14, 0x30, &sp70[0], &sp70[3]);
             }
             Font_BeginTranslucentTextRendering();
             Font_SetActive(4, 0);
@@ -2253,12 +2253,12 @@ s32 Widget_PauseMenuUpdate(void) {
 
                 if (gResultScoreThresholdMet == 0) {
                     if (gMenuCursorX == 0) {
-                        Font_Printf((0x140 - gResultMenuWidth_1) / 2, (i * 0x12) + 0x5F, "%s", gResultMenuStrings_0[i]);
+                        Font_Printf((0x140 - gResultMenuWidth_PlayAgainDiffGameQuit) / 2, (i * 0x12) + 0x5F, "%s", gResultMenuStrings_PlayAgainDiffGameQuit[i]);
                     } else {
-                        Font_Printf((0x140 - gResultMenuWidth_2) / 2, (i * 0x12) + 0x5F, "%s", gResultMenuStrings_1[i]);
+                        Font_Printf((0x140 - gResultMenuWidth_ContinueRestartQuit) / 2, (i * 0x12) + 0x5F, "%s", gResultMenuStrings_ContinueRestartQuit[i]);
                     }
                 } else {
-                    Font_Printf((0x140 - gResultMenuWidth_3) / 2, (i * 0x12) + 0x68, "%s", gResultMenuStrings_2[i]);
+                    Font_Printf((0x140 - gResultMenuWidth_PlayAgainQuit) / 2, (i * 0x12) + 0x68, "%s", gResultMenuStrings_PlayAgainQuit[i]);
                 }
             }
 

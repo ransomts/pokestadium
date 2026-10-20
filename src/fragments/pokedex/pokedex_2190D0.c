@@ -89,45 +89,45 @@ static char* gTextLabelSeparator;
 static Mtx* gMapMatrix;
 static MapAreaMarker gMapAreaMarkers[36];
 
-static MapMarkerPos PokedexPos_0[3] = { { 0x13, 2, 4, 0x32 }, { 0x10, 2, 5, 0x32 }, { -1, -1, -1, -1 } };
-static MapMarkerPos PokedexPos_1[4] = {
+static MapMarkerPos PokedexRoute1EncounterTable[3] = { { 0x13, 2, 4, 0x32 }, { 0x10, 2, 5, 0x32 }, { -1, -1, -1, -1 } };
+static MapMarkerPos PokedexRoute2EncounterTable[4] = {
     { 0x000D, 0x0003, 0x0005, 0x000F },
     { 0x0013, 0x0002, 0x0005, 0x0028 },
     { 0x0010, 0x0003, 0x0005, 0x002D },
     { 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF },
 };
-static MapMarkerPos PokedexPos_2[5] = {
+static MapMarkerPos PokedexRoute22EncounterTable[5] = {
     { 0x15, 3, 5, 0xA }, { 0x20, 2, 4, 0x28 }, { 0x13, 2, 4, 0x2D }, { 0x1D, 3, 4, 5 }, { -1, -1, -1, -1 },
 };
-static MapMarkerPos PokedexPos_3[6] = {
+static MapMarkerPos PokedexViridianForestEncounterTable[6] = {
     { 0xE, 4, 6, 0x28 }, { 0xD, 3, 5, 0x2D }, { 0x19, 3, 5, 5 }, { 0xB, 4, 4, 5 }, { 0xA, 3, 3, 5 }, { -1, -1, -1, -1 },
 };
-static MapMarkerPos PokedexPos_4[4] = {
+static MapMarkerPos PokedexRoute3EncounterTable[4] = {
     { 0x27, 3, 7, 0xA },
     { 0x10, 6, 8, 0x2D },
     { 0x15, 5, 8, 0x2D },
     { -1, -1, -1, -1 },
 };
-static MapMarkerPos PokedexPos_5[5] = {
+static MapMarkerPos PokedexMtMoon1FEncounterTable[5] = {
     { 0x23, 8, 8, 1 }, { 0x4A, 8, 0xA, 0xF }, { 0x2E, 8, 8, 5 }, { 0x29, 6, 0xB, 0x4F }, { -1, -1, -1, -1 },
 };
-static MapMarkerPos PokedexPos_6[5] = {
+static MapMarkerPos PokedexMtMoonB1FEncounterTable[5] = {
     { 0x2E, 0xA, 0xA, 0xA }, { 0x4A, 7, 9, 0x1A }, { 0x23, 9, 9, 4 }, { 0x29, 7, 0xB, 0x3C }, { -1, -1, -1, -1 },
 };
-static MapMarkerPos PokedexPos_7[5] = {
+static MapMarkerPos PokedexMtMoonB2FEncounterTable[5] = {
     { 0x2E, 0xA, 0xC, 0xF }, { 0x4A, 9, 0xA, 0x1E }, { 0x29, 9, 0xC, 0x31 }, { 0x23, 0xA, 0xC, 6 }, { -1, -1, -1, -1 },
 };
-static MapMarkerPos PokedexPos_8[4] = {
+static MapMarkerPos PokedexRoute4EncounterTable[4] = {
     { 0x17, 6, 0xC, 0x19 },
     { 0x15, 8, 0xC, 0x23 },
     { 0x13, 8, 0xC, 0x28 },
     { -1, -1, -1, -1 },
 };
-static MapMarkerPos PokedexPos_9[6] = {
+static MapMarkerPos PokedexRoute24EncounterTable[6] = {
     { 0x3F, 8, 0xC, 0xF },    { 0xD, 7, 7, 0x14 },      { 0xE, 8, 8, 0x14 },
     { 0x10, 0xC, 0xD, 0x14 }, { 0x2B, 0xC, 0xE, 0x19 }, { -1, -1, -1, -1 },
 };
-static MapMarkerPos PokedexPos_10[8] = {
+static MapMarkerPos PokedexRoute25EncounterTable[8] = {
     { 0xA, 8, 8, 1 },    { 0x3F, 0xA, 0xC, 0xF },  { 0x10, 0xD, 0xD, 0xF }, { 0xD, 8, 8, 0x14 },
     { 0xE, 9, 9, 0x14 }, { 0x2B, 0xC, 0xE, 0x19 }, { 0xB, 7, 7, 4 },        { -1, -1, -1, -1 },
 };
@@ -341,12 +341,12 @@ static MapMarkerPos D_88820CC8[9] = {
 static MapMarkerPos D_88820D10[3] = { { 0x33, 0x1D, 0x1F, 5 }, { 0x32, 0xF, 0x16, 0x5F }, { -1, -1, -1, -1 } };
 static MapMarkerPos* gPokedexPosTable[] = {
     D_88820A08, D_88820A40, D_88820A78, D_88820788, D_888207D8, D_88820828, D_88820738, D_88820B40, D_88820B90,
-    D_88820CC8, D_888204B0, D_888208E0, D_88820920, D_88820960, D_88820998, PokedexPos_3, PokedexPos_5, PokedexPos_6,
-    PokedexPos_7, D_88820D10, D_88820C80, D_88820488, D_88820BD8, D_88820898, D_88820C38, D_88820AE8, D_88820570,
-    D_88820578, D_88820580, D_888205A0, D_888205C0, D_888205E0, D_88820600, D_888209D0, PokedexPos_0, PokedexPos_1,
-    PokedexPos_4, PokedexPos_8, D_88820428, D_88820448, D_88820548, D_88820520, D_88820408, D_888204D8, D_88820468,
+    D_88820CC8, D_888204B0, D_888208E0, D_88820920, D_88820960, D_88820998, PokedexViridianForestEncounterTable, PokedexMtMoon1FEncounterTable, PokedexMtMoonB1FEncounterTable,
+    PokedexMtMoonB2FEncounterTable, D_88820D10, D_88820C80, D_88820488, D_88820BD8, D_88820898, D_88820C38, D_88820AE8, D_88820570,
+    D_88820578, D_88820580, D_888205A0, D_888205C0, D_888205E0, D_88820600, D_888209D0, PokedexRoute1EncounterTable, PokedexRoute2EncounterTable,
+    PokedexRoute3EncounterTable, PokedexRoute4EncounterTable, D_88820428, D_88820448, D_88820548, D_88820520, D_88820408, D_888204D8, D_88820468,
     D_888204F8, D_88820620, D_88820650, D_88820688, D_888206C0, D_888206E8, D_88820710, D_88820878, D_88820888,
-    D_88820AB0, PokedexPos_2, D_88820C08, PokedexPos_9, PokedexPos_10,
+    D_88820AB0, PokedexRoute22EncounterTable, D_88820C08, PokedexRoute24EncounterTable, PokedexRoute25EncounterTable,
 };
 static MapMarkerPos D_88820E14[3] = { { 0x13, 2, 4, 0x32 }, { 0x10, 2, 5, 0x32 }, { -1, -1, -1, -1 } };
 static MapMarkerPos D_88820E2C[4] = {
@@ -1260,7 +1260,7 @@ static u8 gMapLabelBottomBorderTex[] = {
     0x4B, 0xC6, 0x31, 0xC6, 0x31, 0xC6, 0x31, 0xC6, 0x31, 0xC6, 0x31, 0xC6, 0x31, 0x94, 0xA5, 0x29, 0x4B, 0x29, 0x4B,
     0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B,
 };
-static Gfx Pokedex_IconEndDL2[] = {
+static Gfx Pokedex_MapLabelBottomEndDL[] = {
     gsSPEndDisplayList(),
 };
 static u8 gMapLabelLeftBorderTex[] = {
@@ -1272,7 +1272,7 @@ static u8 gMapLabelLeftBorderTex[] = {
     0x5B, 0x6B, 0x5B, 0x9C, 0xE7, 0xBD, 0xEF, 0xC6, 0x31, 0xC6, 0x31, 0xC6, 0x31, 0xC6, 0x31, 0xC6, 0x31, 0x6B, 0x5B,
     0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B, 0x29, 0x4B,
 };
-static Gfx Pokedex_IconEndDL3[] = {
+static Gfx Pokedex_MapLabelLeftEndDL[] = {
     gsSPEndDisplayList(),
 };
 static u8 gMapLabelRightBorderTex[] = {
@@ -1284,7 +1284,7 @@ static u8 gMapLabelRightBorderTex[] = {
     0xFE, 0x6B, 0x5B, 0xC6, 0x31, 0x31, 0x8D, 0xFF, 0xFE, 0xFF, 0xFE, 0xFF, 0xFE, 0xFF, 0xFE, 0xFF, 0xFE, 0x6B, 0x5B,
     0xC6, 0x31, 0x31, 0x8D, 0xFF, 0xFE, 0xFF, 0xFE, 0xFF, 0xFE, 0xFF, 0xFE, 0xFF, 0xFE,
 };
-static Gfx Pokedex_IconEndDL4[] = {
+static Gfx Pokedex_MapLabelRightEndDL[] = {
     gsSPEndDisplayList(),
 };
 static u8 gMapLabelTailBottomLeftTex[] = {
@@ -1296,7 +1296,7 @@ static u8 gMapLabelTailBottomLeftTex[] = {
     0x53, 0x6B, 0x5B, 0x73, 0x9D, 0x4A, 0x53, 0x4A, 0x53, 0x4A, 0x53, 0x4A, 0x53, 0x4A, 0x53, 0x4A, 0x53, 0x6B, 0x5B,
     0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D,
 };
-static Gfx Pokedex_IconEndDL5[] = {
+static Gfx Pokedex_MapLabelTailLeftEndDL[] = {
     gsSPEndDisplayList(),
 };
 static u8 gMapLabelTailBottomRightTex[] = {
@@ -1315,7 +1315,7 @@ static u8 gMapLabelTailBottomRightTex[] = {
     0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31,
     0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D, 0x31, 0x8D,
 };
-static Gfx Pokedex_IconEndDL6[] = {
+static Gfx Pokedex_MapLabelTailRightEndDL[] = {
     gsSPEndDisplayList(),
 };
 static u8 D_888239C8[] = {
@@ -1657,7 +1657,7 @@ static u8 D_888250E0[] = {
     0x6F, 0x5F, 0x5F, 0x6F, 0x6F, 0x5F, 0x5F, 0x3F, 0x09, 0x01, 0x00, 0x00, 0x00, 0x00, 0x09, 0x1C, 0x1C, 0x1C,
     0x1C, 0x1C, 0x1C, 0x1C, 0x1A, 0x05, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
-static Gfx Pokedex_SmallIconEndDL2[] = {
+static Gfx Pokedex_MapPinEndDL[] = {
     gsSPEndDisplayList(),
 };
 static u8 gMapLabelBgTex[] = {
@@ -1751,7 +1751,7 @@ static Gfx D_888254E8[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static Gfx Pokedex_IconResetDL2[] = {
+static Gfx Pokedex_MarkerLabelResetDL[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsSPSetGeometryMode(G_CULL_BACK | G_LIGHTING),
     gsSPEndDisplayList(),
@@ -1779,7 +1779,7 @@ static Gfx D_88825570[] = {
     gsDPSetTexturePersp(G_TP_NONE),
     gsSPEndDisplayList(),
 };
-static Gfx Pokedex_SmallIconResetDL2[] = {
+static Gfx Pokedex_MapPinResetDL[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsSPSetGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING),
@@ -3478,7 +3478,7 @@ void Pokedex_BuildMapMarkersDisplayList(void) {
         }
     }
 
-    gSPDisplayList(temp_v0++, Pokedex_IconResetDL2);
+    gSPDisplayList(temp_v0++, Pokedex_MarkerLabelResetDL);
     gSPEndDisplayList(temp_v0++);
 }
 
@@ -3542,7 +3542,7 @@ Gfx* Pokedex_DrawMapPinIcon(Gfx* arg0, s16 arg1, s16 arg2) {
     gDPPipeSync(arg0++);
     gSPTextureRectangle(arg0++, arg1 << 2, arg2 << 2, (arg1 + 0xF) << 2, (arg2 + 0xB) << 2, G_TX_RENDERTILE, 0, 0,
                         0x0400, 0x0400);
-    gSPDisplayList(arg0++, Pokedex_SmallIconResetDL2);
+    gSPDisplayList(arg0++, Pokedex_MapPinResetDL);
     return arg0;
 }
 

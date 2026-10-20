@@ -324,8 +324,8 @@ void geo_layout_cmd_set_callback(void); // cmd  8
 void geo_layout_cmd_create_container(void); // cmd  9
 void geo_layout_cmd_create_reference(void); // cmd 10
 void geo_layout_cmd_create_camera(void); // cmd 11
-void geo_layout_cmd_create_type3(void); // cmd 12
-void geo_layout_cmd_create_type4(void); // cmd 13
+void geo_layout_cmd_create_texture_node(void); // cmd 12
+void geo_layout_cmd_create_model_root(void); // cmd 13
 void geo_layout_cmd_create_ortho(void); // cmd 14
 void geo_layout_cmd_create_perspective(void); // cmd 15
 void geo_layout_cmd_create_background(void); // cmd 16

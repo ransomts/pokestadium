@@ -116,9 +116,9 @@ s32 LabPC_AllBoxesEmpty(unk_func_88205880_A030* arg0) {
 
 void LabPC_DrawSlot(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030* arg5) {
     static Color_RGBA8 gSlotTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
-    static Color_RGBA8 gSlotBgColor1 = { 0x28, 0x28, 0x64, 0xFF };
-    static Color_RGBA8 gSlotBgColor2 = { 0x3C, 0x3C, 0x82, 0xFF };
-    static Color_RGBA8 gSlotBgColor3 = { 0x78, 0x78, 0x96, 0xFF };
+    static Color_RGBA8 gSlotBgColorUpper = { 0x28, 0x28, 0x64, 0xFF };
+    static Color_RGBA8 gSlotBgColorLower = { 0x3C, 0x3C, 0x82, 0xFF };
+    static Color_RGBA8 gSlotBorderColor = { 0x78, 0x78, 0x96, 0xFF };
     UNUSED s32 pad[2];
 
     gDPPipeSync(gDisplayListHead++);
@@ -126,27 +126,27 @@ void LabPC_DrawSlot(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, 
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
 
     {
-        u32 color = GPACK_RGBA5551(gSlotBgColor1.r, gSlotBgColor1.g, gSlotBgColor1.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBgColorUpper.r, gSlotBgColorUpper.g, gSlotBgColorUpper.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0 + 1, arg1 + 1, ((arg0 - 2) + arg5->unk_3C), arg1 + 0x31);
     }
 
     {
-        u32 color = GPACK_RGBA5551(gSlotBgColor2.r, gSlotBgColor2.g, gSlotBgColor2.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBgColorLower.r, gSlotBgColorLower.g, gSlotBgColorLower.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0 + 1, arg1 + 0x32, ((arg0 - 2) + arg5->unk_3C), arg1 + 0x49);
     }
 
     {
-        u32 color = GPACK_RGBA5551(gSlotBgColor3.r, gSlotBgColor3.g, gSlotBgColor3.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBorderColor.r, gSlotBorderColor.g, gSlotBorderColor.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0, arg1, ((arg5->unk_3C + arg0) - 1), arg1);
     }
     {
-        u32 color = GPACK_RGBA5551(gSlotBgColor3.r, gSlotBgColor3.g, gSlotBgColor3.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBorderColor.r, gSlotBorderColor.g, gSlotBorderColor.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, arg0, ((arg1 + arg5->unk_3E) - 1), ((arg5->unk_3C + arg0) - 1),
@@ -156,7 +156,7 @@ void LabPC_DrawSlot(s32 arg0, s32 arg1, unk_func_88201488_arg2* arg2, s32 arg3, 
         gDPFillRectangle(gDisplayListHead++, arg0, arg1 + 1, arg0, ((arg1 + arg5->unk_3E) - 2));
     }
     {
-        u32 color = GPACK_RGBA5551(gSlotBgColor3.r, gSlotBgColor3.g, gSlotBgColor3.b, 1);
+        u32 color = GPACK_RGBA5551(gSlotBorderColor.r, gSlotBorderColor.g, gSlotBorderColor.b, 1);
         gDPPipeSync(gDisplayListHead++);
         gDPSetFillColor(gDisplayListHead++, (color << 16) | color);
         gDPFillRectangle(gDisplayListHead++, ((arg5->unk_3C + arg0) - 1), arg1 + 1, ((arg5->unk_3C + arg0) - 1),
@@ -912,7 +912,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
             180,
             54,
             42,
-            gTexture_PanelA,
+            gItemBoxTabCheckItemsTex,
             48,
             gPanelColorA,
             1,
@@ -929,9 +929,9 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
         },
     };
     static Color_RGBA8 gFlashingElementColor = { 0xFF, 0xFF, 0x00, 0xFF };
-    static Color_RGBA8 gBottomPanelColor1 = { 0x2D, 0x1A, 0x41, 0xFF };
-    static Color_RGBA8 gBottomPanelColor2 = { 0x6F, 0x5F, 0x7F, 0xFF };
-    static Color_RGBA8* gMenuItemTextColors[5] = { gPanelTextureAlt1, gPanelTextureAlt2, gPanelTextureAlt3, gTexture_MainMenuOption1, gPanelTextureAlt4 };
+    static Color_RGBA8 gBottomPanelBaseColor = { 0x2D, 0x1A, 0x41, 0xFF };
+    static Color_RGBA8 gBottomPanelPatternColor = { 0x6F, 0x5F, 0x7F, 0xFF };
+    static Color_RGBA8* gMenuItemTextColors[5] = { gPanelColorCyan, gPanelColorGreen, gPanelColorYellow, gBoxMenuColorCheckItems, gPanelColorWhite };
 
     UNUSED s32 pad[6];
     s32 i;
@@ -1049,7 +1049,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     arg0->unk_68->unk_1C = temp_s0;
 
     temp_s0_2 = mem_pool_alloc(arg8, sizeof(unk_func_8850143C));
-    ((func8850143C)Memmap_GetFragmentVaddr(WidgetTree_InitPatternTexture))(temp_s0_2, 0, 0x13E, 0x228, 0x34, gBottomPanelColor1, gBottomPanelColor2);
+    ((func8850143C)Memmap_GetFragmentVaddr(WidgetTree_InitPatternTexture))(temp_s0_2, 0, 0x13E, 0x228, 0x34, gBottomPanelBaseColor, gBottomPanelPatternColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, temp_s0_2);
 
     arg0->unk_58 = mem_pool_alloc(arg8, sizeof(unk_func_88500994));
@@ -1227,7 +1227,7 @@ s32 LabPC_GetDirtyBoxMask(unk_func_88203ED8* arg0) {
 
     for (i = 0; i < 12; i++) {
         if ((var_s1[i]->deckType != 0x21) || (i != var_s1[i]->boxIndex)) {
-            if ((var_s1[i]->count != 0) || (Deck_GetEntryCountForType(0x21, temp_s3, i) != 0)) {
+            if ((var_s1[i]->count != 0) || (Deck_GetEntryCountForSection(0x21, temp_s3, i) != 0)) {
                 var_s2 |= 2;
                 var_s1[i]->dirty = 1;
             }
@@ -1244,7 +1244,7 @@ s32 LabPC_GetDirtyBoxMask(unk_func_88203ED8* arg0) {
 
     for (i = 0; i < 12; i++) {
         if ((var_s1[i]->deckType != 0x11) || (i != var_s1[i]->boxIndex)) {
-            if ((var_s1[i]->count != 0) || (Deck_GetEntryCountForType(0x11, 0, i) != 0)) {
+            if ((var_s1[i]->count != 0) || (Deck_GetEntryCountForSection(0x11, 0, i) != 0)) {
                 var_s2 |= 4;
                 var_s1[i]->dirty = 1;
             }

@@ -20,7 +20,7 @@ BinArchive* D_836032F8;
 GallerySceneGrid gSelectionCamList;
 s32 gSelectedMonCount;
 s32 gMaxSelectableMonCount;
-s32 gSelectionScreenFadeType;
+s32 gFilmSelectSlowFadeInFlag;
 u16 gBackgroundGradientMask;
 s32 gCursorCanMoveUp;
 s32 gCursorCanMoveDown;
@@ -272,9 +272,9 @@ void Gallery_FilmSelectInit(s32 arg0) {
     gBackgroundGradientMask = 0xFFE3;
 
     if (arg0 != 0) {
-        gSelectionScreenFadeType = 1;
+        gFilmSelectSlowFadeInFlag = 1;
     } else {
-        gSelectionScreenFadeType = 0;
+        gFilmSelectSlowFadeInFlag = 0;
     }
 
     Gallery_InitSceneGrid(&gSelectionCamList, 0x88, 0x66, 6, 3, PokeIcon_AllocFramebuffers(5), D_836032F8, gDisplayableMonIndices, 0x18, 1);
@@ -834,7 +834,7 @@ void Gallery_FilmSelectReadInputs(void) {
 }
 
 void Gallery_FilmSelectRunLoop(void) {
-    if (gSelectionScreenFadeType == 0) {
+    if (gFilmSelectSlowFadeInFlag == 0) {
         StageFade_StartFromOpaque(1);
     } else {
         StageFade_StartFromOpaque(7);

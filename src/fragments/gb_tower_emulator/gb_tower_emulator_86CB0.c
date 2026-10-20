@@ -48,8 +48,8 @@ typedef struct unk_D_8122EEA8 {
 
 extern u8 D_811FEB60[];
 extern u8 gGbWaveLevelTable[];
-extern u8 gGbNoiseStepTable0[];
-extern u8 gGbNoiseStepTable1[];
+extern u8 gGbNoiseStepTable15BitLfsr[];
+extern u8 gGbNoiseStepTable7BitLfsr[];
 extern u16 D_8120EA86;
 extern f32 D_8120EAC0;
 extern s32 D_8120EAC8;
@@ -97,8 +97,8 @@ s32 D_8120EAD0 = 0;
 u16 gGbNoiseFreqTable[32] = { 0x1120, 0x201, 0x1100, 0xF50, 0x800, 0x723, 0x800, 0x922, 0x800, 0x980, 0x1010, 0xBA6, 0x800, 0xBA6, 0x800, 0xBA5, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800 };
 u8 gGbEnvStepTable[16] = { 0, 1, 3, 6, 0xA, 0xE, 0x12, 0x15, 0x18, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20 };
 u8 gGbWaveLevelTable[4] = { 0, 0x20, 0x10, 8 };
-u8 gGbNoiseStepTable0[16] = { 0, 6, 0xA, 0xE, 0x11, 0x16, 0x1A, 0x1D, 0x20, 0x22, 0x24, 0x26, 0x28, 0x2B, 0x2E, 0x32 };
-u8 gGbNoiseStepTable1[16] = { 0, 6, 0xA, 0xE, 0x11, 0x16, 0x1A, 0x1D, 0x20, 0x22, 0x24, 0x26, 0x29, 0x2C, 0x2F, 0x34 };
+u8 gGbNoiseStepTable15BitLfsr[16] = { 0, 6, 0xA, 0xE, 0x11, 0x16, 0x1A, 0x1D, 0x20, 0x22, 0x24, 0x26, 0x28, 0x2B, 0x2E, 0x32 };
+u8 gGbNoiseStepTable7BitLfsr[16] = { 0, 6, 0xA, 0xE, 0x11, 0x16, 0x1A, 0x1D, 0x20, 0x22, 0x24, 0x26, 0x29, 0x2C, 0x2F, 0x34 };
 u32 gGbNoisePeriodTable[9] = { 0x20000, 0x10000, 0x8000, 0x5555, 0x4000, 0x3333, 0x2AAA, 0x2492, 0x12345678 };
 
 // Game Boy sound registers NR10 (0xFF10) through NR52 (0xFF26), mirrored in
@@ -571,10 +571,10 @@ u16 GbAudio_StepNoiseChannel(void) {
             }
             switch ((D_8120EA80 << 0x14) >> 0x1F) {                    /* switch 1; irregular */
             case 0:                                 /* switch 1 */
-                gGbApuNoise.unk_20 = gGbNoiseStepTable0[gGbApuNoise.unk_2D];
+                gGbApuNoise.unk_20 = gGbNoiseStepTable15BitLfsr[gGbApuNoise.unk_2D];
                 break;
             case 1:                                 /* switch 1 */
-                gGbApuNoise.unk_20 = gGbNoiseStepTable1[gGbApuNoise.unk_2D];
+                gGbApuNoise.unk_20 = gGbNoiseStepTable7BitLfsr[gGbApuNoise.unk_2D];
                 break;
             }
         }
@@ -788,10 +788,10 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
                 gGbApuNoise.unk_2D = gGbApuNoise.unk_21;
                 switch ((s32)GB_APU_REGS.width4) {
                     case 0:
-                        gGbApuNoise.unk_20 = gGbNoiseStepTable0[gGbApuNoise.unk_2D];
+                        gGbApuNoise.unk_20 = gGbNoiseStepTable15BitLfsr[gGbApuNoise.unk_2D];
                         break;
                     case 1:
-                        gGbApuNoise.unk_20 = gGbNoiseStepTable1[gGbApuNoise.unk_2D];
+                        gGbApuNoise.unk_20 = gGbNoiseStepTable7BitLfsr[gGbApuNoise.unk_2D];
                         break;
                 }
                 if ((gGbApuNoise.posX == 0) || (gGbApuNoise.unk_3C < gGbApuNoise.unk_20)) {

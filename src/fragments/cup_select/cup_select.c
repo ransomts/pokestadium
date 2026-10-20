@@ -18,8 +18,8 @@ static void* gBackgroundTextureAtlas;
 static GraphNode* gBackgroundGraphNode;
 static GraphNode* gOverlayGraphNode;
 static GraphNode* gUIGraphNode;
-static Fragment2_1GraphNode gCupSelectNodesA[4];
-static Fragment2_1GraphNode gCupSelectNodesB[3];
+static Fragment2_1GraphNode gCupSelectEvenRowNodes[4];
+static Fragment2_1GraphNode gCupSelectOddRowNodes[3];
 static SessionModeSettings gCupSelectModeSettings;
 static s16 gCupSelectCursor;
 static s16 gCupSelectMaxIndex;
@@ -267,61 +267,61 @@ void CupSelect_RenderFrame(s32 arg0, s32 arg1) {
 
     if (arg0 == 0) {
         if ((arg1 >= 0) && (arg1 < 0xB)) {
-            gCupSelectNodesA[0].unk_01E.y = ((0xA - arg1) * -0x5000) / 10;
+            gCupSelectEvenRowNodes[0].unk_01E.y = ((0xA - arg1) * -0x5000) / 10;
         }
 
         if ((arg1 >= 2) && (arg1 < 0xD)) {
-            gCupSelectNodesB[0].unk_01E.y = ((0xC - arg1) * -0x5000) / 10;
+            gCupSelectOddRowNodes[0].unk_01E.y = ((0xC - arg1) * -0x5000) / 10;
         }
 
         if ((arg1 >= 4) && (arg1 < 0xF)) {
-            gCupSelectNodesA[1].unk_01E.y = ((0xE - arg1) * -0x5000) / 10;
+            gCupSelectEvenRowNodes[1].unk_01E.y = ((0xE - arg1) * -0x5000) / 10;
         }
 
         if ((arg1 >= 6) && (arg1 < 0x11)) {
-            gCupSelectNodesB[1].unk_01E.y = ((0x10 - arg1) * -0x5000) / 10;
+            gCupSelectOddRowNodes[1].unk_01E.y = ((0x10 - arg1) * -0x5000) / 10;
         }
 
         if ((arg1 >= 8) && (arg1 < 0x13)) {
-            gCupSelectNodesA[2].unk_01E.y = ((0x12 - arg1) * -0x5000) / 10;
+            gCupSelectEvenRowNodes[2].unk_01E.y = ((0x12 - arg1) * -0x5000) / 10;
         }
 
         if ((arg1 >= 0xA) && (arg1 < 0x15)) {
-            gCupSelectNodesB[2].unk_01E.y = ((0x14 - arg1) * -0x5000) / 10;
+            gCupSelectOddRowNodes[2].unk_01E.y = ((0x14 - arg1) * -0x5000) / 10;
         }
 
         if ((arg1 >= 0xC) && (arg1 < 0x17)) {
-            gCupSelectNodesA[3].unk_01E.y = ((0x16 - arg1) * -0x5000) / 10;
+            gCupSelectEvenRowNodes[3].unk_01E.y = ((0x16 - arg1) * -0x5000) / 10;
         }
     }
 
     if (arg0 == 2) {
         if ((arg1 >= 0) && (arg1 < 0xB)) {
-            gCupSelectNodesA[0].unk_01E.y = ((arg1 - 0) * 0x5000) / 10;
+            gCupSelectEvenRowNodes[0].unk_01E.y = ((arg1 - 0) * 0x5000) / 10;
         }
 
         if ((arg1 >= 2) && (arg1 < 0xD)) {
-            gCupSelectNodesB[0].unk_01E.y = (((arg1 - 0x2) * 0x5000)) / 10;
+            gCupSelectOddRowNodes[0].unk_01E.y = (((arg1 - 0x2) * 0x5000)) / 10;
         }
 
         if ((arg1 >= 4) && (arg1 < 0xF)) {
-            gCupSelectNodesA[1].unk_01E.y = (((arg1 - 0x4) * 0x5000)) / 10;
+            gCupSelectEvenRowNodes[1].unk_01E.y = (((arg1 - 0x4) * 0x5000)) / 10;
         }
 
         if ((arg1 >= 6) && (arg1 < 0x11)) {
-            gCupSelectNodesB[1].unk_01E.y = (((arg1 - 0x6) * 0x5000)) / 10;
+            gCupSelectOddRowNodes[1].unk_01E.y = (((arg1 - 0x6) * 0x5000)) / 10;
         }
 
         if ((arg1 >= 8) && (arg1 < 0x13)) {
-            gCupSelectNodesA[2].unk_01E.y = (((arg1 - 0x8) * 0x5000)) / 10;
+            gCupSelectEvenRowNodes[2].unk_01E.y = (((arg1 - 0x8) * 0x5000)) / 10;
         }
 
         if ((arg1 >= 0xA) && (arg1 < 0x15)) {
-            gCupSelectNodesB[2].unk_01E.y = (((arg1 - 0xA) * 0x5000)) / 10;
+            gCupSelectOddRowNodes[2].unk_01E.y = (((arg1 - 0xA) * 0x5000)) / 10;
         }
 
         if ((arg1 >= 0xC) && (arg1 < 0x17)) {
-            gCupSelectNodesA[3].unk_01E.y = (((arg1 - 0xC) * 0x5000)) / 10;
+            gCupSelectEvenRowNodes[3].unk_01E.y = (((arg1 - 0xC) * 0x5000)) / 10;
         }
     }
 
@@ -336,24 +336,24 @@ void CupSelect_BuildDivisionList(void) {
     Fragment2_1GraphNode* var_s1;
     Fragment2_1GraphNode* var_s2;
 
-    for (var_s1 = &gCupSelectNodesA[0], i = 0; i < 4; i++, var_s1++) {
+    for (var_s1 = &gCupSelectEvenRowNodes[0], i = 0; i < 4; i++, var_s1++) {
         Model_InitDisplayObject(var_s1, 0, 0, gOverlayGraphNode);
-        gCupSelectNodesA[i].unk_01E.y = -0x5000;
+        gCupSelectEvenRowNodes[i].unk_01E.y = -0x5000;
     }
 
-    Vec3f_SetComponentsDuplicate(&gCupSelectNodesA[0].unk_024, 0.0f, 162.0f, -579.0f);
-    Vec3f_SetComponentsDuplicate(&gCupSelectNodesA[1].unk_024, 0.0f, 54.0f, -579.0f);
-    Vec3f_SetComponentsDuplicate(&gCupSelectNodesA[2].unk_024, 0.0f, -54.0f, -579.0f);
-    Vec3f_SetComponentsDuplicate(&gCupSelectNodesA[3].unk_024, 0.0f, -162.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectEvenRowNodes[0].unk_024, 0.0f, 162.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectEvenRowNodes[1].unk_024, 0.0f, 54.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectEvenRowNodes[2].unk_024, 0.0f, -54.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectEvenRowNodes[3].unk_024, 0.0f, -162.0f, -579.0f);
 
-    for (var_s2 = &gCupSelectNodesB[0], i = 0; i < 3; i++, var_s2++) {
+    for (var_s2 = &gCupSelectOddRowNodes[0], i = 0; i < 3; i++, var_s2++) {
         Model_InitDisplayObject(var_s2, 0, 0, gUIGraphNode);
-        gCupSelectNodesB[i].unk_01E.y = -0x5000;
+        gCupSelectOddRowNodes[i].unk_01E.y = -0x5000;
     }
 
-    Vec3f_SetComponentsDuplicate(&gCupSelectNodesB[0].unk_024, 0.0f, 108.0f, -579.0f);
-    Vec3f_SetComponentsDuplicate(&gCupSelectNodesB[1].unk_024, 0.0f, 0, -579.0f);
-    Vec3f_SetComponentsDuplicate(&gCupSelectNodesB[2].unk_024, 0.0f, -108.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectOddRowNodes[0].unk_024, 0.0f, 108.0f, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectOddRowNodes[1].unk_024, 0.0f, 0, -579.0f);
+    Vec3f_SetComponentsDuplicate(&gCupSelectOddRowNodes[2].unk_024, 0.0f, -108.0f, -579.0f);
 }
 
 s32 CupSelect_HandleInput(void) {
@@ -426,14 +426,14 @@ void CupSelect_InitGeoLayouts(void) {
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
 
-    for (var_s2 = &gCupSelectNodesA[0], i = 0; i < 4; var_s2++, i++) {
+    for (var_s2 = &gCupSelectEvenRowNodes[0], i = 0; i < 4; var_s2++, i++) {
         ModelRenderer_AttachDisplayObject(var_s2);
-        gCupSelectNodesA[i].unk_000.unk_14 = i;
+        gCupSelectEvenRowNodes[i].unk_000.unk_14 = i;
     }
 
-    for (var_s2 = &gCupSelectNodesB[0], i = 0; i < 3; var_s2++, i++) {
+    for (var_s2 = &gCupSelectOddRowNodes[0], i = 0; i < 3; var_s2++, i++) {
         ModelRenderer_AttachDisplayObject(var_s2);
-        gCupSelectNodesB[i].unk_000.unk_14 = i;
+        gCupSelectOddRowNodes[i].unk_000.unk_14 = i;
     }
 }
 

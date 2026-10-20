@@ -369,14 +369,14 @@ void BattleScene_IntroCameraStep22Or24(CameraStruct* arg0, s32 arg1) {
             var_v1 = (temp_s0->unk_000.unk_01A - 1) & 0xFF;
         }
 
-        tmp2 = (gAnimDataSetC[arg1]->posX.y + temp_s0->unk_000.unk_024.y) + gCameraOffsetTable[var_v1].z;
-        tmp1 = ((gAnimDataSetC[arg1]->posX.z + gCameraOffsetTable[var_v1].y) * temp_s0->sideSign) + temp_s0->unk_000.unk_024.x;
+        tmp2 = (gStageCameraAnchorSet[arg1]->posX.y + temp_s0->unk_000.unk_024.y) + gCameraOffsetTable[var_v1].z;
+        tmp1 = ((gStageCameraAnchorSet[arg1]->posX.z + gCameraOffsetTable[var_v1].y) * temp_s0->sideSign) + temp_s0->unk_000.unk_024.x;
 
         Vec3f_SetComponentsDuplicate(&arg0->unk_60.at, tmp1, tmp2, temp_s0->unk_000.unk_024.z);
 
-        tmp1 = gAnimDataSetC[gBattleScene.posX->unk_2C]->posX.x * gCameraOffsetTable[var_v1].x;
-        tmp4 = gAnimDataSetC[gBattleScene.posX->unk_2C]->unk_0C;
-        tmp3 = (temp_s0->sideSign * gAnimDataSetC[gBattleScene.posX->unk_2C]->unk_0E) + BattleScene_GetParticipantFacingAngle(temp_s0);
+        tmp1 = gStageCameraAnchorSet[gBattleScene.posX->unk_2C]->posX.x * gCameraOffsetTable[var_v1].x;
+        tmp4 = gStageCameraAnchorSet[gBattleScene.posX->unk_2C]->unk_0C;
+        tmp3 = (temp_s0->sideSign * gStageCameraAnchorSet[gBattleScene.posX->unk_2C]->unk_0E) + BattleScene_GetParticipantFacingAngle(temp_s0);
 
         Camera_ComputeEyeFromAngles(&arg0->unk_60.at, &arg0->unk_60.eye, tmp1, tmp4, tmp3);
         gBattleScene.posX->unk_20++;

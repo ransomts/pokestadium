@@ -69,7 +69,7 @@ void PokeIcon_StartThread(void);
 AssetManager* PokeIcon_AllocFramebuffers(u32 arg0);
 void PokeIcon_OpenModelArchives(void);
 s32 PokeIcon_RequestFrameLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2);
-s32 PokeIcon_RequestFrameLoadWithVariant(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3);
+s32 PokeIcon_RequestFrameLoadToSlot(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3);
 s32 PokeIcon_RequestBackgroundLoad(AssetManager* arg0, s32 arg1, s32 arg2);
 s32 PokeIcon_ApplyLoadResult(AssetManager* arg0, sp18_func_800198E4* arg1);
 s32 PokeIcon_PollFrameLoad(AssetManager* arg0);

@@ -1208,7 +1208,7 @@ static TiledTexture gFragment22HpBarConfig = {
 static Gfx gEmptyGfxDL[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData0[] = {
+static u32 gFragment22GfxDataMenuIconTopIdle[] = {
     0x9B91ABD1, 0xAC13B415, 0xBC55CC97, 0xD519DD19, 0xE59DF5DF, 0xF61FFE63, 0xFE61FE65, 0xFEA5FEA5, 0xFEA7FEA7,
     0xFEE7FEE7, 0xFEE7FEE9, 0xFEEBFEE9, 0xFEE9FEE9, 0xFF2BFEE9, 0xFEEBFEE9, 0xFEA7FEA5, 0xFEA5FE65, 0xFE65FEA7,
     0xFEA7FEE9, 0xFEE9FEEB, 0xFEE9FF2D, 0xFF2DFF2F, 0xFF71FFB3, 0xFFB7FFB5, 0xFF35F735, 0xFFF9FFF9, 0xFFB9FFB9,
@@ -1327,7 +1327,7 @@ static u32 gFragment22GfxData0[] = {
 static Gfx gEmptyGfxDL2[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData1[] = {
+static u32 gFragment22GfxDataMenuIconTopFlicker[] = {
     0x9B91ABD1, 0xAC13B415, 0xBC55CC97, 0xD519DD19, 0xE59DF5DF, 0xF61FFE63, 0xFE61FE65, 0xFEA5FEA5, 0xFEA7FEA7,
     0xFEE7FEE7, 0xFEE7FEE9, 0xFEEBFEE9, 0xFEE9FEE9, 0xFF2BFEE9, 0xFEEBFEE9, 0xFEA7FEA5, 0xFEA5FE65, 0xFE65FEA7,
     0xFEA7FEE9, 0xFEE9FEEB, 0xFEE9FF2D, 0xFF2DFF2F, 0xFF71FFB3, 0xFFB7FFB5, 0xFF35F735, 0xFFF9FFF9, 0xFFB9FFB9,
@@ -1446,7 +1446,7 @@ static u32 gFragment22GfxData1[] = {
 static Gfx gEmptyGfxDL3[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData2[] = {
+static u32 gFragment22GfxDataMenuIconBottomSwirlLeft[] = {
     0x0001624B, 0xB415B413, 0xB455C455, 0xD519DD5B, 0xE59DF59F, 0xEDDDF621, 0xFE21F663, 0xFE65FE65, 0xFEE9FEAB,
     0xFEA9F6A7, 0xEDE3CD5B, 0xC499A3D3, 0x728F5A4B, 0xC4D9F5DF, 0xF661FE63, 0xFEEBFF31, 0xFFB3FF73, 0xFF73FF2F,
     0xFEEBFEA9, 0xFEA7FEA9, 0xFEE9FEE9, 0xFEEBFEED, 0xFF2FFF2D, 0xFF31FF71, 0xFF73FF73, 0xFFB5FF77, 0xFFF7FFB9,
@@ -1565,7 +1565,7 @@ static u32 gFragment22GfxData2[] = {
 static Gfx gEmptyGfxDL4[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData3[] = {
+static u32 gFragment22GfxDataMenuIconBottomSwirlTop[] = {
     0x0001624B, 0xBC15AC13, 0xBC55BC55, 0xD519DD5D, 0xED9DEDDD, 0xF5DFF621, 0xF621F663, 0xFE65FE67, 0xFEA9FEE9,
     0xFEA9F6A7, 0xEDE3CD5D, 0xC497A3D5, 0x728D5A4B, 0xC4D9F5E1, 0xF65FFE65, 0xFEE9FF31, 0xFF75FFB3, 0xFF73FEEF,
     0xFEEBFEE9, 0xFEA7FEA9, 0xFEE9FEE9, 0xFEEDFEEB, 0xFF2FFF2F, 0xFF2FFF71, 0xFF73FF73, 0xFFB5FF77, 0xFFB9FFF7,
@@ -1684,7 +1684,7 @@ static u32 gFragment22GfxData3[] = {
 static Gfx gEmptyGfxDL5[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData4[] = {
+static u32 gFragment22GfxDataMenuIconBottomSwirlOpen[] = {
     0x0001624B, 0xB415B413, 0xB455C455, 0xD519DD5B, 0xE59DF59F, 0xEDDFF61F, 0xFE23F663, 0xFE65FEA7, 0xFEA9FEEB,
     0xFEEBF6A9, 0xEDE3CD5D, 0xC499A3D3, 0x728D624D, 0xBCD7F5E1, 0xFE61FE63, 0xFEEBFF31, 0xFFB3FF73, 0xFF73FEEF,
     0xFEEBFEE9, 0xFEA9FEA9, 0xFEE9FEE9, 0xFEEDFF2D, 0xFF2FFF2F, 0xFF2FFF73, 0xFF73FF73, 0xFFB7FFB7, 0xFFB7FFB7,
@@ -1803,7 +1803,7 @@ static u32 gFragment22GfxData4[] = {
 static Gfx gEmptyGfxDL6[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData5[] = {
+static u32 gFragment22GfxDataGreenIconTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x01111111, 0x11111111,
     0x11000000, 0x00000000, 0x00000000, 0x00000011, 0x22222222, 0x22222222, 0x22211000, 0x00000000, 0x00000000,
     0x00000123, 0x44555555, 0x55555555, 0x54432100, 0x00000000, 0x00000000, 0x00001235, 0x67888888, 0x88888888,
@@ -1836,7 +1836,7 @@ static u32 gFragment22GfxData5[] = {
 static Gfx gEmptyGfxDL7[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData6[] = {
+static u32 gFragment22GfxDataGreenIconShimmerMask[] = {
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
@@ -1869,7 +1869,7 @@ static u32 gFragment22GfxData6[] = {
 static Gfx gEmptyGfxDL8[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData7[] = {
+static u32 gFragment22GfxDataYellowIconTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00001111, 0x11111111, 0x11111111, 0x00000000, 0x00000000,
     0x00000000, 0x01122223, 0x33333222, 0x22222222, 0x22111000, 0x00000000, 0x00000000, 0x12344555, 0x55555555,
@@ -1902,7 +1902,7 @@ static u32 gFragment22GfxData7[] = {
 static Gfx gEmptyGfxDL9[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData8[] = {
+static u32 gFragment22GfxDataYellowIconShimmerMask[] = {
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
     0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222, 0x22222222,
@@ -1935,7 +1935,7 @@ static u32 gFragment22GfxData8[] = {
 static Gfx gEmptyGfxDL10[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData9[] = {
+static u32 gFragment22GfxDataRedIconTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00011000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1980,7 +1980,7 @@ static u32 gFragment22GfxData9[] = {
 static Gfx gFragment22GfxDL0[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22GfxData10[] = {
+static u32 gFragment22GfxDataRedIconShimmerMask[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00011000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -2737,15 +2737,15 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &sp78->posX.posX);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Lab_InitDualLayerIconWidget(temp_v0_2, 0x2C, 0x52, 0x28, 0x2A, gFragment22GfxData5, gFragment22GfxData6, gHpBarColorGreen, gHpBarColorGreenBright);
+    Lab_InitDualLayerIconWidget(temp_v0_2, 0x2C, 0x52, 0x28, 0x2A, gFragment22GfxDataGreenIconTex, gFragment22GfxDataGreenIconShimmerMask, gHpBarColorGreen, gHpBarColorGreenBright);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp78->posX.posX, &temp_v0_2->posX.posX);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Lab_InitDualLayerIconWidget(temp_v0_2, 0x64, 0x3A, 0x30, 0x2A, gFragment22GfxData7, gFragment22GfxData8, gHpBarColorYellow, gHpBarColorYellowBright);
+    Lab_InitDualLayerIconWidget(temp_v0_2, 0x64, 0x3A, 0x30, 0x2A, gFragment22GfxDataYellowIconTex, gFragment22GfxDataYellowIconShimmerMask, gHpBarColorYellow, gHpBarColorYellowBright);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp78->posX.posX, &temp_v0_2->posX.posX);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Lab_InitDualLayerIconWidget(temp_v0_2, 0xE2, 0x68, 0x40, 0x20, gFragment22GfxData9, gFragment22GfxData10, gHpBarColorRed, gHpBarColorRedBright);
+    Lab_InitDualLayerIconWidget(temp_v0_2, 0xE2, 0x68, 0x40, 0x20, gFragment22GfxDataRedIconTex, gFragment22GfxDataRedIconShimmerMask, gHpBarColorRed, gHpBarColorRedBright);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp78->posX.posX, &temp_v0_2->posX.posX);
 
     temp_v0_5 = mem_pool_alloc(arg6, sizeof(unk_func_88000830));
@@ -2833,7 +2833,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->posX, &arg0->unk_34->posX.posX);
 
     temp_v0_16 = mem_pool_alloc(arg6, sizeof(unk_func_88000CC8));
-    Lab_InitAnimatedIconWidget(temp_v0_16, 0xA, -0x2B, &gFragment22HpBarConfig, gFragment22GfxData0, gFragment22GfxData1, gFragment22GfxData3, gFragment22GfxData4, gFragment22GfxData2,
+    Lab_InitAnimatedIconWidget(temp_v0_16, 0xA, -0x2B, &gFragment22HpBarConfig, gFragment22GfxDataMenuIconTopIdle, gFragment22GfxDataMenuIconTopFlicker, gFragment22GfxDataMenuIconBottomSwirlTop, gFragment22GfxDataMenuIconBottomSwirlOpen, gFragment22GfxDataMenuIconBottomSwirlLeft,
                   arg0->unk_34);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->posX, &temp_v0_16->posX.posX);
 }

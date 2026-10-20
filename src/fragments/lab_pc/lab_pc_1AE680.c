@@ -1415,7 +1415,7 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         88,
         54,
         42,
-        gTexture_PanelA,
+        gItemBoxTabCheckItemsTex,
         0x30,
         0x0000,
         gPanelColorA,
@@ -1463,10 +1463,10 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         184,
         54,
         42,
-        gPanelTexture_S1,
+        gPanelTexturePink,
         0x30,
         0x0000,
-        gPanelAccent_S1,
+        gPanelAccentPink,
         1,
         1,
     },
@@ -1475,9 +1475,9 @@ static Color_RGBA8 gDialogTitleColor = { 0xFF, 0xFF, 0x00, 0xFF };
 static Color_RGBA8 gDialogBodyColor = { 0x2D, 0x1A, 0x41, 0xFF };
 static Color_RGBA8 gDialogShadowColor = { 0x6F, 0x5F, 0x7F, 0xFF };
 static Color_RGBA8* gDialogColorPalette[] = {
-    gPanelTextureDefault, gPanelTextureDefault, gPanelTextureAlt1, gTexture_MainMenuOption1, gPanelTextureAlt3, gPanelTextureAlt2, gPanelTextureAlt4, gPanelTexture_S2,
+    gPanelTextureDefault, gPanelTextureDefault, gPanelColorCyan, gBoxMenuColorCheckItems, gPanelColorYellow, gPanelColorGreen, gPanelColorWhite, gPanelColorPink,
 };
-static Color_RGBA8* gDialogAccentPalette[] = { gPanelTextureAlt4, gPanelTextureAlt4 };
+static Color_RGBA8* gDialogAccentPalette[] = { gPanelColorWhite, gPanelColorWhite };
 static Color_RGBA8 gDialogDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
 void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C_000* arg3,
@@ -1889,7 +1889,7 @@ s32 LabPC_DeckHasChanged(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s3
 
     arg0->posX = 0;
 
-    if (Deck_GetEntryCountForType(arg1, arg2, arg3) != arg0->rotation.RentalSlotAnimData_PosePhase) {
+    if (Deck_GetEntryCountForSection(arg1, arg2, arg3) != arg0->rotation.RentalSlotAnimData_PosePhase) {
         arg0->posX = 1;
         sp90 = 1;
     } else {

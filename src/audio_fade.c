@@ -328,11 +328,11 @@ s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
     gBankRemapIndex %= 3;
 
     arg0--;
-    if (arg0 < (gSfxSubHeader2->num_files - 1)) {
-        romAddr = ((u32*)gSfxSubHeader2)[arg0 + 3];
-        size = ((u32*)gSfxSubHeader2)[arg0 + 4] - romAddr;
+    if (arg0 < (gSfxSecondarySubHeader->num_files - 1)) {
+        romAddr = ((u32*)gSfxSecondarySubHeader)[arg0 + 3];
+        size = ((u32*)gSfxSecondarySubHeader)[arg0 + 4] - romAddr;
     } else {
-        romAddr = ((u32*)gSfxSubHeader2)[arg0 + 3];
+        romAddr = ((u32*)gSfxSecondarySubHeader)[arg0 + 3];
         size = gMoveSoundSeqInfo->seqArray[2].offset - romAddr;
     }
     Rom_DmaRead(romAddr, gMoveSoundTempBuffer, size);

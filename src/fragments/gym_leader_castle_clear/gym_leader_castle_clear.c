@@ -56,18 +56,18 @@ static unk_D_83101F00* gNode2State;
 static Glc_CircleWipeState gBorderAnimState;
 static Glc_FadeAnimState gFadeAnimState;
 
-static Vtx gClearScreenVerts1[] = {
+static Vtx gClearBannerVerts[] = {
     VTX(-100, 14, 0, 0, 0, 0x78, 0x32, 0xFF, 0xFF),      VTX(-100, 0, 0, 0, 448, 0xBB, 0x28, 0x8E, 0xFF),
     VTX(100, 0, 0, 6400, 448, 0xBB, 0x28, 0x8E, 0xFF),   VTX(100, 14, 0, 6400, 0, 0x78, 0x32, 0xFF, 0xFF),
     VTX(-100, 0, 0, 0, 0, 0xBB, 0x28, 0x8E, 0xFF),       VTX(-100, -14, 0, 0, 448, 0xFF, 0x1E, 0x1E, 0xFF),
     VTX(100, -14, 0, 6400, 448, 0xFF, 0x1E, 0x1E, 0xFF), VTX(100, 0, 0, 6400, 0, 0xBB, 0x28, 0x8E, 0xFF),
 };
 
-static Gfx gClearScreenDL1[] = {
+static Gfx gClearBannerDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(SHADE, 0, TEXEL0, 0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gClearScreenVerts1, 8, 0),
+    gsSPVertex(gClearBannerVerts, 8, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_IA, G_IM_SIZ_8b, 200, 14, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -77,31 +77,31 @@ static Gfx gClearScreenDL1[] = {
     gsSPEndDisplayList(),
 };
 
-static u32 gClearScreenGeo1[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gClearScreenVerts1, 0x05000000, 0x22050000,
+static u32 gClearBannerGeo[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gClearBannerVerts, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, Glc_GeoBannerCallback, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-static Vtx gClearScreenVerts2[] = {
+static Vtx gClearSpriteVerts[] = {
     VTX(-64, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-64, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, -16, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(64, 16, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-static Gfx gClearScreenDL2[] = {
+static Gfx gClearSpriteDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_BLENDPEDECALA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gClearScreenVerts2, 4, 0),
+    gsSPVertex(gClearSpriteVerts, 4, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_IA, G_IM_SIZ_8b, 128, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 
-static u32 gClearScreenGeo2[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gClearScreenVerts2, 0x05000000, 0x22050000,
+static u32 gClearSpriteGeo[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gClearSpriteVerts, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, Glc_GeoSpriteCallback, 0x00000000, 0x06000000, 0x01000000,
 };
 
@@ -174,7 +174,7 @@ s32 Glc_GeoBannerCallback(s32 arg0, UNUSED GraphNode* arg1) {
             gDPPipeSync(gDisplayListHead++);
 
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_3000000));
-            gSPDisplayList(gDisplayListHead++, gClearScreenDL1);
+            gSPDisplayList(gDisplayListHead++, gClearBannerDL);
 
             GeoRender_ApplyMaterialState();
             break;
@@ -252,7 +252,7 @@ s32 Glc_GeoSpriteCallback(s32 arg0, GraphNode* arg1) {
             gSPSegment(gDisplayListHead++, 0x0F, Memmap_GetSegmentVaddr(D_30015E0));
             gDPSetPrimColor(gDisplayListHead++, 0, 0, ptr->primR, ptr->unk_174, ptr->primColorB, 0xFF);
             gDPSetEnvColor(gDisplayListHead++, ptr->unk_178, ptr->envG, ptr->unk_17C, 0xFF);
-            gSPDisplayList(gDisplayListHead++, gClearScreenDL2);
+            gSPDisplayList(gDisplayListHead++, gClearSpriteDL);
 
             GeoRender_ApplyMaterialState();
             break;
@@ -593,8 +593,8 @@ void Glc_ClearInitGraphics(void) {
     s32 i;
 
     gClearScreenRoot = process_geo_layout(temp_v0, gClearScreenRootGeo);
-    gClearScreenNode1 = process_geo_layout(temp_v0, gClearScreenGeo1);
-    gClearScreenNode2 = process_geo_layout(temp_v0, gClearScreenGeo2);
+    gClearScreenNode1 = process_geo_layout(temp_v0, gClearBannerGeo);
+    gClearScreenNode2 = process_geo_layout(temp_v0, gClearSpriteGeo);
 
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();

@@ -792,13 +792,13 @@ s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
         -1.0f,
         0.6000000238f,
     };
-    static f32 gCatASoundFreqOffset1[4] = {
+    static f32 gCatASoundPitchOffsetByVariant[4] = {
         0.0f,
         0.0f,
         2.0f,
         2.0f,
     };
-    static f32 gCatASoundFreqOffset2[4] = {
+    static f32 gCatASoundPriorityOffsetByVariant[4] = {
         0.0f,
         4.0f,
         8.0f,
@@ -845,10 +845,10 @@ s32 Audio_PlayCategoryASoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             }
 
             var_fv0 += gCatASoundPitchDelta[arg1];
-            var_fv0 += gCatASoundFreqOffset1[arg2];
+            var_fv0 += gCatASoundPitchOffsetByVariant[arg2];
             var_t0 = gCatASoundVolumeDelta[arg1] + 0x7F;
             var_a3 = 240.0f;
-            var_a3 += gCatASoundFreqOffset2[arg2];
+            var_a3 += gCatASoundPriorityOffsetByVariant[arg2];
 
             if (var_t0 >= 0x100) {
                 var_t0 = 0xFF;
@@ -1036,7 +1036,7 @@ s32 Audio_DispatchSoundBankCommand(s32 arg0, s32 arg1, s32 arg2) {
     }
 
     if (temp_v1 != gCurrentSfxBankId) {
-        sp24 = gAudioSeqHeader2->seqArray[(temp_v1 >> 0x10) - 2].offset;
+        sp24 = gAudioSeqHeaderNested->seqArray[(temp_v1 >> 0x10) - 2].offset;
 
         Rom_DmaRead(sp24, (u32)gAudioHeaderTemp, 0xC);
         Audio_RelocateOffsets((u32)gAudioHeaderTemp, sp24, 3);
@@ -1145,7 +1145,7 @@ s32 Audio_PlayDirectSoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2) {
     sp2C = arg0 & 0xFFFF;
 
     if (sp28 != gCurrentSfxBankId) {
-        sp34 = gAudioSeqHeader1->seqArray[2].offset;
+        sp34 = gAudioSfxBankSeqHeader->seqArray[2].offset;
 
         Rom_DmaRead(sp34, &gAudioHeaderTemp[0], 0xC);
         Audio_RelocateOffsets(gAudioHeaderTemp, sp34, 3);
@@ -1186,13 +1186,13 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     static s32 gCat11SfxHandle2 = 0x00000000;
     static s32 gCat11SfxHandle3 = 0x00000000;
     static s32 gCat11SfxHandle4 = 0;
-    static u8 gSfxPitchTable1[] = {
+    static u8 gSfxPitchTableSingleFaint[] = {
         0x60, 0xA0, 0xE0, 0x20, 0x60, 0xA0,
     };
-    static u8 gSfxPitchTable2[] = {
+    static u8 gSfxPitchTableDoubleFaint[] = {
         0x60, 0xA0, 0xE0, 0x60, 0xA0, 0xE0, 0x20, 0x60, 0xA0, 0x20, 0x60, 0xA0,
     };
-    static u8 gSfxPitchTable3[] = {
+    static u8 gSfxPitchTableBadge[] = {
         0x20, 0x60, 0xA0, 0xE0, 0x20, 0x60, 0xA0, 0xE0, 0x20, 0x60, 0xA0, 0xE0,
     };
 
@@ -1210,7 +1210,7 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
     sp34 = 0x80;
 
     if (sp20 != gCurrentSfxBankId) {
-        sp2C = gAudioSeqHeader1->seqArray[3].offset;
+        sp2C = gAudioSfxBankSeqHeader->seqArray[3].offset;
 
         Rom_DmaRead(sp2C, (u32)gAudioHeaderTemp, 0xC);
         Audio_RelocateOffsets((u32)gAudioHeaderTemp, sp2C, 3);
@@ -1271,12 +1271,12 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
                 if ((arg1 <= 0) || (arg1 >= 7)) {
                     return 0;
                 }
-                sp38 = gSfxPitchTable1[arg1 - 1];
+                sp38 = gSfxPitchTableSingleFaint[arg1 - 1];
             } else {
                 if ((arg1 <= 0) || (arg1 >= 0xD)) {
                     return 0;
                 }
-                sp38 = gSfxPitchTable2[arg1 - 1];
+                sp38 = gSfxPitchTableDoubleFaint[arg1 - 1];
             }
             MusSetDurationScale(gCat11SfxHandle4, 0xA);
             break;
@@ -1286,7 +1286,7 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             if (arg2 == 1) {
                 sp38 = 0x7F;
             } else {
-                sp38 = gSfxPitchTable3[(arg1 - 1) % 4];
+                sp38 = gSfxPitchTableBadge[(arg1 - 1) % 4];
             }
             break;
 
@@ -1294,7 +1294,7 @@ s32 Audio_PlayCategory11SoundCommand(s32 arg0, s32 arg1, s32 arg2) {
             if ((arg1 < 0) || (arg1 >= 9)) {
                 return 0;
             }
-            sp38 = gSfxPitchTable3[3 + arg1];
+            sp38 = gSfxPitchTableBadge[3 + arg1];
             break;
 
         default:
@@ -1328,8 +1328,8 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
     static s32 gCat12SfxHandle3 = 0x00000000;
     static s32 gCat12SfxHandle4 = 0x00000000;
     static s32 gCat12SfxHandle5 = 0x00000000;
-    static u8 gCat12SfxState1 = 0;
-    static u8 gCat12SfxState2 = 0;
+    static u8 gCat12SfxFirstPlayFlag = 0;
+    static u8 gCat12MusicStoppedFlag = 0;
 
     UNUSED s32 pad[2];
     s32 sp4C;
@@ -1340,7 +1340,7 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
 
     sp24 = arg0 & 0xFFFF0000;
     if (sp24 != gCurrentSfxBankId) {
-        sp3C = gAudioSeqHeader1->seqArray[4].offset;
+        sp3C = gAudioSfxBankSeqHeader->seqArray[4].offset;
 
         Rom_DmaRead(sp3C, (u32)gAudioHeaderTemp, 0xC);
         Audio_RelocateOffsets((u32)gAudioHeaderTemp, sp3C, 3);
@@ -1366,22 +1366,22 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
         case 0x1200002:
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 1, 0x80, 0x80, -1);
             gCat12SfxHandle2 = sp4C;
-            gCat12SfxState2 = 0;
+            gCat12MusicStoppedFlag = 0;
             break;
 
         case 0x1200003:
             MusSetDurationScale(gCat12SfxHandle2, 0x3C);
             MusSetDurationScale(gCat12SfxHandle3, 0x3C);
-            gCat12SfxState1 = 0;
+            gCat12SfxFirstPlayFlag = 0;
             sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 3, 0x80, 0x80, -1);
             break;
 
         case 0x1200004:
-            if (gCat12SfxState1 == 0) {
+            if (gCat12SfxFirstPlayFlag == 0) {
                 sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 2, 0x80, 0x80, -1);
                 gCat12SfxHandle3 = sp4C;
                 var_fv1 = 2.0f;
-                gCat12SfxState1 = 1;
+                gCat12SfxFirstPlayFlag = 1;
             } else {
                 var_fv1 = 4.0f;
             }
@@ -1402,21 +1402,21 @@ s32 Audio_PlayCategory12SoundCommand(s32 arg0, UNUSED s32 arg1, UNUSED s32 arg2)
         case 0x1200007:
             gCat12SfxHandle5 = sp4C = MusStartSoundEffect(gAudioSfxBank, gAudioSfxInstBank, 6, 0x80, 0x80, -1);
             Audio_FadeOutAll(0x78);
-            gCat12SfxState2 = 1;
+            gCat12MusicStoppedFlag = 1;
             break;
 
         case 0x1200008:
             MusSetDurationScale(gCat12SfxHandle5, 6);
             Audio_StartMusicTrack(0x13);
-            gCat12SfxState2 = 1;
+            gCat12MusicStoppedFlag = 1;
             break;
 
         case 0x1200009:
-            if (gCat12SfxState2 != 0) {
+            if (gCat12MusicStoppedFlag != 0) {
                 Audio_StartMusicTrack(0x10);
             }
             Audio_PlaySoundEffectById(2);
-            gCat12SfxState2 = 0;
+            gCat12MusicStoppedFlag = 0;
             break;
 
         case 0x120000C:

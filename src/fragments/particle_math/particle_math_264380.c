@@ -72,7 +72,7 @@ static Gfx gDL_UI_DecalState[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx gDL_BaseUI2[] = {
+Gfx gDL_UI_DecalBilerpTexEdge[] = {
     gsSPDisplayList(gDL_UI_DecalState),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_TEX_EDGE2),
     gsDPSetTextureFilter(G_TF_BILERP),
@@ -96,7 +96,7 @@ Gfx gDL_UI_ModulatePoint[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx gDL_OverlayUI2[] = {
+Gfx gDL_UI_ModulateBilerpXlu[] = {
     gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
@@ -190,13 +190,13 @@ static Gfx gDL_CycleCopy[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx gDL_Cycle1[] = {
+static Gfx gDL_CycleOneCycle[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPEndDisplayList(),
 };
 
-static Gfx gDL_Cycle2[] = {
+static Gfx gDL_CycleTwoCycle[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPEndDisplayList(),

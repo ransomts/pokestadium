@@ -16,10 +16,10 @@
 
 static unk_D_8438E7B0 gAnimDataPlayer0;
 static unk_D_8438E7B0 gAnimDataPlayer1;
-static unk_D_8438FF70 gAnimDataSetB0;
-static unk_D_8438FF70 gAnimDataSetB1;
-static unk_D_8438FF70 gAnimDataSetC0;
-static unk_D_8438FF70 gAnimDataSetC1;
+static unk_D_8438FF70 gOwnerCameraFraming0;
+static unk_D_8438FF70 gOwnerCameraFraming1;
+static unk_D_8438FF70 gStageCameraAnchor0;
+static unk_D_8438FF70 gStageCameraAnchor1;
 static unk_D_84384588 gAnimExtraDataPlayer0;
 static unk_D_84384588 gAnimExtraDataPlayer1;
 BattlePlayerEntity* sActivePokemon[2];
@@ -34,13 +34,13 @@ static s32 gAnimStateQueueCount;
 f32 gPlayerScaleFactors[2];
 
 unk_D_8438E7B0* gAnimDataByPlayer[] = { &gAnimDataPlayer0, &gAnimDataPlayer1 };
-unk_D_8438FF70* gAnimDataSetB[] = {
-    &gAnimDataSetB0,
-    &gAnimDataSetB1,
+unk_D_8438FF70* gOwnerCameraFramingSet[] = {
+    &gOwnerCameraFraming0,
+    &gOwnerCameraFraming1,
 };
-unk_D_8438FF70* gAnimDataSetC[] = {
-    &gAnimDataSetC0,
-    &gAnimDataSetC1,
+unk_D_8438FF70* gStageCameraAnchorSet[] = {
+    &gStageCameraAnchor0,
+    &gStageCameraAnchor1,
 };
 unk_D_84384588* gAnimExtraDataByPlayer[] = { &gAnimExtraDataPlayer0, &gAnimExtraDataPlayer1 };
 u8 gSpecialMoveIDs[] = { 0x39, 0x67, 0x64, 0x6D, 0x28, 0x6E, 0x2A, 0x47 };
@@ -87,10 +87,10 @@ static u8 gStatMaskEntry8[] = {
 static u8* gStatMaskTable[] = {
     gStatMaskEntry0, gStatMaskEntry1, gStatMaskEntry2, gStatMaskEntry3, gStatMaskEntry4, gStatMaskEntry5, gStatMaskEntry6, gStatMaskEntry7, gStatMaskEntry8,
 };
-u8 gPokemonSfxId_0 = 0x8E;
-u8 gPokemonSfxId_1 = 0x16;
-u8 gPokemonSfxId_2 = 0x53;
-u8 gPokemonSfxId_3[] = { 0x55, 0x54 };
+u8 gAnchorLiftLowSpeciesIds = 0x8E;
+u8 gAnchorLiftHalfSpeciesIds = 0x16;
+u8 gAnchorLiftDoubleSpeciesIds = 0x53;
+u8 gAnchorLiftHighSpeciesIds[] = { 0x55, 0x54 };
 
 char** gMessageBank_0x1E;
 char** gMessageBank_0x24;
@@ -378,24 +378,24 @@ void LoadPlayerAnimationData(BattlePlayerEntity* arg0, s32 arg1) {
     Dma_WriteChunks(gAnimDataByPlayer[sp68], var_a1, var_a1 + 0xBC0, 0);
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-    Dma_WriteChunks(gAnimDataSetC[sp68], var_a1, var_a1 + 0x20, 0);
+    Dma_WriteChunks(gStageCameraAnchorSet[sp68], var_a1, var_a1 + 0x20, 0);
 
     if (sp68 == 1) {
         var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-        Dma_WriteChunks(gAnimDataSetB[sp68], var_a1, var_a1 + 0x20, 0);
+        Dma_WriteChunks(gOwnerCameraFramingSet[sp68], var_a1, var_a1 + 0x20, 0);
 
-        ptr2 = gAnimDataSetB[sp68];
+        ptr2 = gOwnerCameraFramingSet[sp68];
         if (ptr2->unk_10 != 0xFF) {
             sp6E = ptr2->unk_10;
 
             var_a1 = ((u32)_70D3A0_ROM_START) + (((u32)(D_6E910 + ((ptr2->unk_10 - (tmp = 2)) * 0x20))) & 0xFFFFFF);
             Dma_WriteChunks(ptr2, var_a1, var_a1 + 0x20, 0);
 
-            gAnimDataSetB[sp68]->unk_10 = sp6E;
+            gOwnerCameraFramingSet[sp68]->unk_10 = sp6E;
         }
     } else {
         var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_6E910 + (sp66 << 5)) & 0xFFFFFF);
-        Dma_WriteChunks(gAnimDataSetB[sp68], var_a1, var_a1 + 0x20, 0);
+        Dma_WriteChunks(gOwnerCameraFramingSet[sp68], var_a1, var_a1 + 0x20, 0);
     }
 
     var_a1 = (u32)_70D3A0_ROM_START + ((u32)(D_70B10 + (sp66 * 0x20)) & 0xFFFFFF);
@@ -1215,7 +1215,7 @@ void BattleScene_TickQueueList3Selector2OrC(BattlePlayerEntity* arg0) {
     }
 }
 
-void BattleScene_TickQueueList3Selector2OrCFromB10(BattlePlayerEntity* arg0) {
+void BattleScene_TickQueueList3Selector2OrCFollowup(BattlePlayerEntity* arg0) {
     s32 sp24;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->followupSendOutAnimChannel;

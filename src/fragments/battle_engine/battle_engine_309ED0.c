@@ -10,39 +10,39 @@
 
 BattlePlayerEntity* gOpponentPlayer;
 BattlePlayerEntity* gCurrentPlayer;
-static f32 gBattleUnusedFloat_84390208;
+static f32 gBattleUnusedFloat;
 static s32 pad_D_84390210[4];
 static s32 gPlayer0ReadyFlag;
 static s32 gPlayer1ReadyFlag;
-static s32 gBattleUnusedInt_84390228;
+static s32 gBattleUnusedInt;
 s32 gTotalMoveCount;
 s32 gCurrentMoveIndex;
 s32 gInitialMoveIndex;
 
-u8 gMoveIdSetA[] = {
+u8 gCameraShotPoolTiming20[] = {
     0x00, 0x03, 0x02, 0x06, 0x07,
 };
-u8 gMoveIdSetB[] = {
+u8 gCameraShotPoolTiming21[] = {
     0x00,
     0x02,
     0x06,
     0x07,
 };
-u8 gMoveIdSetC[] = {
+u8 gCameraShotPoolTiming22[] = {
     0x02,
     0x06,
     0x07,
 };
-u8 gMoveIdSetD[] = {
+u8 gCameraShotPoolTiming23[] = {
     0x04, 0x05, 0x08, 0x09, 0x0A, 0x0B,
 };
-u8 gMoveIdSetE[] = {
+u8 gCameraShotPoolTiming24[] = {
     0x05,
     0x09,
     0x0A,
     0x0B,
 };
-u16 gAnimFlagMask_5F92 = 0x5F92;
+u16 gAnimFlagMask = 0x5F92;
 Vec3f gCameraFarSettings = { 0.0f, 100.0f, 0.0f };
 Vec3f gCameraCloseSettings = { 0.0f, 10.0f, 0.0f };
 
@@ -102,7 +102,7 @@ s32 BattleScene_AdvanceOwnerAnimation(BattlePlayerEntity* arg0) {
     return sp1C;
 }
 
-s32 BattleScene_AdvanceOwnerAnimation98(BattlePlayerEntity* arg0) {
+s32 BattleScene_AdvanceOwnerAnimationNeutralModel(BattlePlayerEntity* arg0) {
     UNUSED s32 pad[2];
     s32 sp1C = 0;
 
@@ -471,7 +471,7 @@ s32 BattleScene_PrepareReplacementTransition(void) {
             gBattleScene.posX->unk_38 = 0x12;
         } else {
             BattleAnim_GetOwnerDefaultAnchorPosition(sActivePokemon[gBattleScene.posX->unk_2C], &gCameraPreset.posX);
-            BattleScene_LoadCameraPreset(&gCameraPosB, gBattleScene.posX->camera, sActivePokemon[gBattleScene.posX->unk_2C]);
+            BattleScene_LoadCameraPreset(&gCameraPresetAngled, gBattleScene.posX->camera, sActivePokemon[gBattleScene.posX->unk_2C]);
             gBattleScene.posX->unk_38 = 0xB;
         }
         return 1;
@@ -1028,15 +1028,15 @@ void BattleScene_SetupSendOutOwnerShot(CameraStruct* arg0) {
             sp3B = 0x97;
         }
 
-        sp44 = (gAnimDataSetC[gBattleScene.posX->unk_2C]->posX.y + temp_s0->unk_000.unk_024.y) + gCameraOffsetTable[sp3B].z;
-        sp40 = ((gAnimDataSetC[gBattleScene.posX->unk_2C]->posX.z + gCameraOffsetTable[sp3B].y) * temp_s0->sideSign) +
+        sp44 = (gStageCameraAnchorSet[gBattleScene.posX->unk_2C]->posX.y + temp_s0->unk_000.unk_024.y) + gCameraOffsetTable[sp3B].z;
+        sp40 = ((gStageCameraAnchorSet[gBattleScene.posX->unk_2C]->posX.z + gCameraOffsetTable[sp3B].y) * temp_s0->sideSign) +
                temp_s0->unk_000.unk_024.x;
 
         Vec3f_SetComponentsDuplicate(&arg0->unk_60.at, sp40, sp44, temp_s0->unk_000.unk_024.z);
 
-        sp40 = gAnimDataSetC[gBattleScene.posX->unk_2C]->posX.x * gCameraOffsetTable[sp3B].x;
-        sp3E = gAnimDataSetC[gBattleScene.posX->unk_2C]->unk_0C;
-        tmp1 = (temp_s0->sideSign * gAnimDataSetC[gBattleScene.posX->unk_2C]->unk_0E) + BattleScene_GetParticipantFacingAngle(temp_s0);
+        sp40 = gStageCameraAnchorSet[gBattleScene.posX->unk_2C]->posX.x * gCameraOffsetTable[sp3B].x;
+        sp3E = gStageCameraAnchorSet[gBattleScene.posX->unk_2C]->unk_0C;
+        tmp1 = (temp_s0->sideSign * gStageCameraAnchorSet[gBattleScene.posX->unk_2C]->unk_0E) + BattleScene_GetParticipantFacingAngle(temp_s0);
         Camera_ComputeEyeFromAngles(&arg0->unk_60.at, &arg0->unk_60.eye, sp40, sp3E, tmp1);
         gBattleScene.posX->unk_20++;
     }
@@ -1221,7 +1221,7 @@ void BattleScene_InitializeIntroCamera(CameraStruct* arg0) {
     }
 
     BattleAnim_Vec3fCopy(&gCameraPreset.posX, &gCameraFarSettings);
-    BattleScene_LoadCameraPresetUnscaled(&gBattleCameraPresetTable2[sp24], arg0);
+    BattleScene_LoadCameraPresetUnscaled(&gBattleIntroCameraPresetTable[sp24], arg0);
     BattleScene_ApplyCameraPreset(arg0, gCurrentPlayer, 0);
     gBattleScene.posX->unk_20++;
 }
@@ -1278,27 +1278,27 @@ void BattleScene_SelectActionCameraPreset(CameraStruct* arg0) {
     switch (var_t0) {
         case 20:
             BattleScene_SelectCameraPreset(gCurrentPlayer, arg0,
-                          gBattleScene.posX->unk_50 = gMoveIdSetA[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetA))], 1);
+                          gBattleScene.posX->unk_50 = gCameraShotPoolTiming20[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming20))], 1);
             break;
 
         case 21:
             BattleScene_SelectCameraPreset(gCurrentPlayer, arg0,
-                          gBattleScene.posX->unk_50 = gMoveIdSetB[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetB))], 1);
+                          gBattleScene.posX->unk_50 = gCameraShotPoolTiming21[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming21))], 1);
             break;
 
         case 22:
             BattleScene_SelectCameraPreset(gCurrentPlayer, arg0,
-                          gBattleScene.posX->unk_50 = gMoveIdSetC[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetC))], 1);
+                          gBattleScene.posX->unk_50 = gCameraShotPoolTiming22[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming22))], 1);
             break;
 
         case 23:
             BattleScene_SelectCameraPreset(gCurrentPlayer, arg0,
-                          gBattleScene.posX->unk_50 = gMoveIdSetD[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetD))], 1);
+                          gBattleScene.posX->unk_50 = gCameraShotPoolTiming23[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming23))], 1);
             break;
 
         case 24:
             BattleScene_SelectCameraPreset(gCurrentPlayer, arg0,
-                          gBattleScene.posX->unk_50 = gMoveIdSetE[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetE))], 1);
+                          gBattleScene.posX->unk_50 = gCameraShotPoolTiming24[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming24))], 1);
             break;
 
         default:
@@ -1377,9 +1377,9 @@ void BattleScene_ActionSetupCameraStep(CameraStruct* arg0) {
                     Battle_ResetModelToIdleAnim(gCurrentPlayer);
                 } else if ((gBattleScene.posX->unk_48 == 0x1C) || (gBattleScene.posX->unk_48 == 0x11) ||
                            (gBattleScene.posX->unk_48 == 0x1F)) {
-                    BattleScene_LoadCameraPreset(&gCameraPosA, arg0, gCurrentPlayer);
+                    BattleScene_LoadCameraPreset(&gCameraPresetStraightOn, arg0, gCurrentPlayer);
                 } else {
-                    BattleScene_LoadCameraPreset(&gCameraPosB, arg0, gCurrentPlayer);
+                    BattleScene_LoadCameraPreset(&gCameraPresetAngled, arg0, gCurrentPlayer);
                 }
             }
             break;
@@ -1428,7 +1428,7 @@ void BattleScene_RefreshActionCameraPreset(CameraStruct* arg0) {
         switch (temp_v0) {
             case 20:
                 do {
-                    temp_t0 = gMoveIdSetA[BattleAnim_RandomIntWithWarmup(5.0f)];
+                    temp_t0 = gCameraShotPoolTiming20[BattleAnim_RandomIntWithWarmup(5.0f)];
                 } while (temp_t0 == gBattleScene.posX->unk_50);
                 gBattleScene.posX->unk_50 = temp_t0;
                 BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
@@ -1436,7 +1436,7 @@ void BattleScene_RefreshActionCameraPreset(CameraStruct* arg0) {
 
             case 21:
                 do {
-                    temp_t0 = gMoveIdSetB[BattleAnim_RandomIntWithWarmup(4.0f)];
+                    temp_t0 = gCameraShotPoolTiming21[BattleAnim_RandomIntWithWarmup(4.0f)];
                 } while (temp_t0 == gBattleScene.posX->unk_50);
                 gBattleScene.posX->unk_50 = temp_t0;
                 BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
@@ -1444,7 +1444,7 @@ void BattleScene_RefreshActionCameraPreset(CameraStruct* arg0) {
 
             case 22:
                 do {
-                    temp_t0 = gMoveIdSetC[BattleAnim_RandomIntWithWarmup(3.0f)];
+                    temp_t0 = gCameraShotPoolTiming22[BattleAnim_RandomIntWithWarmup(3.0f)];
                 } while (temp_t0 == gBattleScene.posX->unk_50);
                 gBattleScene.posX->unk_50 = temp_t0;
                 BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
@@ -1452,7 +1452,7 @@ void BattleScene_RefreshActionCameraPreset(CameraStruct* arg0) {
 
             case 23:
                 do {
-                    temp_t0 = gMoveIdSetD[BattleAnim_RandomIntWithWarmup(6.0f)];
+                    temp_t0 = gCameraShotPoolTiming23[BattleAnim_RandomIntWithWarmup(6.0f)];
                 } while (temp_t0 == gBattleScene.posX->unk_50);
                 gBattleScene.posX->unk_50 = temp_t0;
                 if (1) {}
@@ -1464,7 +1464,7 @@ void BattleScene_RefreshActionCameraPreset(CameraStruct* arg0) {
 
             case 24:
                 do {
-                    temp_t0 = gMoveIdSetE[BattleAnim_RandomIntWithWarmup(4.0f)];
+                    temp_t0 = gCameraShotPoolTiming24[BattleAnim_RandomIntWithWarmup(4.0f)];
                 } while (temp_t0 == gBattleScene.posX->unk_50);
                 gBattleScene.posX->unk_50 = temp_t0;
                 BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
@@ -1502,35 +1502,35 @@ void BattleScene_SelectActionCameraPresetFromTiming(CameraStruct* arg0, s32 arg1
 
         switch (sp18) {
             case 20:
-                gBattleScene.posX->unk_50 = gMoveIdSetA[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetA))];
+                gBattleScene.posX->unk_50 = gCameraShotPoolTiming20[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming20))];
                 if (sp18 != gBattleScene.posX->unk_50) {
                     BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
                 }
                 break;
 
             case 21:
-                gBattleScene.posX->unk_50 = gMoveIdSetB[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetB))];
+                gBattleScene.posX->unk_50 = gCameraShotPoolTiming21[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming21))];
                 if (sp18 != gBattleScene.posX->unk_50) {
                     BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
                 }
                 break;
 
             case 22:
-                gBattleScene.posX->unk_50 = gMoveIdSetC[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetC))];
+                gBattleScene.posX->unk_50 = gCameraShotPoolTiming22[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming22))];
                 if (sp18 != gBattleScene.posX->unk_50) {
                     BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
                 }
                 break;
 
             case 23:
-                gBattleScene.posX->unk_50 = gMoveIdSetD[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetD))];
+                gBattleScene.posX->unk_50 = gCameraShotPoolTiming23[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming23))];
                 if (sp18 != gBattleScene.posX->unk_50) {
                     BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
                 }
                 break;
 
             case 24:
-                gBattleScene.posX->unk_50 = gMoveIdSetE[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gMoveIdSetE))];
+                gBattleScene.posX->unk_50 = gCameraShotPoolTiming24[BattleAnim_RandomIntWithWarmup(ARRAY_COUNT(gCameraShotPoolTiming24))];
                 if (sp18 != gBattleScene.posX->unk_50) {
                     BattleScene_SelectCameraPreset(gCurrentPlayer, arg0, gBattleScene.posX->unk_50, 1);
                 }
@@ -1677,7 +1677,7 @@ void BattleScene_ActionSetupAnimationVariantC(CameraStruct* arg0) {
             BattleScene_ResetCameraFrameCounter();
             BattleScene_SetPhaseFlag();
             Vec3f_SetComponentsDuplicate(&gCameraPreset.posX, gCurrentPlayer->sideSign * -175.0f, 25.0f, 0.0f);
-            BattleScene_LoadCameraPreset(&gCameraPosC, arg0, gCurrentPlayer);
+            BattleScene_LoadCameraPreset(&gCameraPresetAttackerSide, arg0, gCurrentPlayer);
             if ((gCurrentPlayer->unk_000.unk_01A != 0x33) && (gCurrentPlayer->unk_000.unk_01A != 0x32)) {
                 BattleAnim_PlayMoveEffectScriptA(gCurrentPlayer, sp18->currentMoveId);
             }
@@ -1699,7 +1699,7 @@ void BattleScene_ActionSetupAnimationVariantD(CameraStruct* arg0) {
             BattleScene_ResetCameraFrameCounter();
             BattleScene_SetPhaseFlag();
             BattleAnim_GetOwnerDefaultAnchorPosition(gCurrentPlayer, &gCameraPreset.posX);
-            BattleScene_LoadCameraPreset(&gCameraPosD, arg0, gCurrentPlayer);
+            BattleScene_LoadCameraPreset(&gCameraPresetOwnerAnchor, arg0, gCurrentPlayer);
             break;
 
         case 1:
@@ -1785,7 +1785,7 @@ void BattleScene_CompleteHpUpdateTransition(CameraStruct* arg0, s32* arg1, s32* 
 void BattleScene_RunBasicHpTransition(CameraStruct* arg0) {
     switch (gBattleScene.posX->unk_3C) {
         case 0:
-            if (BattleScene_AdvanceOwnerAnimation98(gOpponentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gOpponentPlayer) == 0) {
                 BattleScene_SelectCameraShot(gOpponentPlayer, arg0, 0);
                 BattleScene_ResetCameraFrameCounter();
                 BattleScene_SetPhaseFlag();
@@ -1812,7 +1812,7 @@ void BattleScene_RunConditionalHpTransition(CameraStruct* arg0) {
 
     switch (gBattleScene.posX->unk_3C) {
         case 0:
-            if (BattleScene_AdvanceOwnerAnimation98(gOpponentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gOpponentPlayer) == 0) {
                 Battle_ApplyAnimStateEffects(gOpponentPlayer);
                 BattleScene_SelectCameraShot(gOpponentPlayer, arg0, 0);
                 BattleScene_ResetCameraFrameCounter();
@@ -1845,7 +1845,7 @@ void BattleScene_RunMoveEffectEndHpTransition(CameraStruct* arg0) {
 
     switch (gBattleScene.posX->unk_3C) {
         case 0:
-            if (BattleScene_AdvanceOwnerAnimation98(gOpponentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gOpponentPlayer) == 0) {
                 Battle_ApplyAnimStateEffects(gOpponentPlayer);
                 BattleScene_SelectCameraShot(gOpponentPlayer, arg0, 0);
                 BattleScene_ResetCameraFrameCounter();
@@ -1878,7 +1878,7 @@ void BattleScene_RunActionEffectHpTransition(CameraStruct* arg0) {
 
     switch (gBattleScene.posX->unk_3C) {
         case 0:
-            if (BattleScene_AdvanceOwnerAnimation98(gOpponentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gOpponentPlayer) == 0) {
                 BattleScene_StopSpecialOwnerAnimation(gCurrentPlayer);
                 BattleBox_Open(1);
                 BattleScene_ResetCameraFrameCounter();
@@ -1989,7 +1989,7 @@ void BattleScene_RunRepeatedHitHpTransition(CameraStruct* arg0) {
 
     switch (gBattleScene.posX->unk_3C) {
         case 0:
-            if (BattleScene_AdvanceOwnerAnimation98(gOpponentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gOpponentPlayer) == 0) {
                 BattleScene_ResetAnimationStep();
                 BattleScene_SetDamageShakeAmplitude(gOpponentPlayer);
                 BattleScene_EnterStateRow(gCurrentPlayer, 4);
@@ -2342,7 +2342,7 @@ void BattleScene_Phase30(CameraStruct* arg0) {
             break;
 
         case 2:
-            if (BattleScene_AdvanceOwnerAnimation98(gOpponentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gOpponentPlayer) == 0) {
                 BattleAnim_CleanupEffects(1);
                 Audio_FadeAndClearStoredSounds();
                 BattleScene_SelectCameraShot(gOpponentPlayer, arg0, BattleAnim_RandomRange(2));
@@ -2609,9 +2609,9 @@ void BattleScene_Phase12(CameraStruct* arg0) {
             if (gCurrentPlayer->unk_000.unk_024.y >= 100.0f) {
                 BattleAnim_GetOwnerDefaultAnchorPosition(gCurrentPlayer, &sp3C);
                 sp3C.y += BattleAnim_GetOwnerModelHeight(gCurrentPlayer);
-                gBattleUnusedFloat_84390208 = BattleScene_ScaleCameraDistance(gCurrentPlayer, 3.0f, 500.0f);
+                gBattleUnusedFloat = BattleScene_ScaleCameraDistance(gCurrentPlayer, 3.0f, 500.0f);
                 BattleScene_SetCameraEyeFromPosition(arg0, sp3C, 0x11C6, BattleScene_GetParticipantFacingAngle(gCurrentPlayer) - (gCurrentPlayer->sideSign * 0x754E),
-                              gBattleUnusedFloat_84390208, BattleAnim_GetOwnerModelHeight(gCurrentPlayer));
+                              gBattleUnusedFloat, BattleAnim_GetOwnerModelHeight(gCurrentPlayer));
                 Vec3f_SetComponentsDuplicate(&sp3C, 0.0f, 200.0f, 0.0f);
                 BattleAnim_Vec3fCopy(&arg0->unk_60.at, &sp3C);
                 BattleAnim_CleanupEffects(2);
@@ -2648,7 +2648,7 @@ void BattleScene_Phase13(CameraStruct* arg0) {
     UNUSED s32 pad;
     f32 sp28;
     UNUSED s16 pad2;
-    u16 sp24 = gAnimFlagMask_5F92;
+    u16 sp24 = gAnimFlagMask;
 
     switch (gBattleScene.posX->unk_20) {
         case 0:
@@ -2759,7 +2759,7 @@ void BattleScene_PhaseFaint(CameraStruct* arg0) {
 
     switch (gBattleScene.posX->unk_20) {
         case 0:
-            if (BattleScene_AdvanceOwnerAnimation98(gCurrentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gCurrentPlayer) == 0) {
                 BattleBox_Open(2);
                 BattleScene_ResetOwnerPresentationFlags(gCurrentPlayer);
                 gBattleScene.posX->unk_20 += 1;
@@ -2859,7 +2859,7 @@ void BattleScene_Phase16(CameraStruct* arg0) {
             break;
 
         case 1:
-            if (BattleScene_AdvanceOwnerAnimation98(gCurrentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gCurrentPlayer) == 0) {
                 Battle_ResetModelToIdleAnim(gCurrentPlayer);
                 BattleAnim_CleanupEffects(1);
                 BattleScene_EnterStateRow(gCurrentPlayer, 0xF);
@@ -2900,19 +2900,19 @@ void BattleScene_PhaseMoveFailedMessage(CameraStruct* arg0) {
 
     switch (gBattleScene.posX->unk_20) {
         case 0:
-            if (BattleScene_AdvanceOwnerAnimation98(gOpponentPlayer) == 0) {
+            if (BattleScene_AdvanceOwnerAnimationNeutralModel(gOpponentPlayer) == 0) {
                 BattleBox_Open(2);
                 BattleScene_StopSpecialOwnerAnimation(gCurrentPlayer);
                 BattleScene_ResetCameraFov(arg0);
                 BattleAnim_CleanupEffects(1);
 
                 if (sp1C->unk_34 & 0x200) {
-                    BattleScene_SelectCameraShot(gOpponentPlayer, arg0, gBattleUnusedInt_84390228 = 2);
+                    BattleScene_SelectCameraShot(gOpponentPlayer, arg0, gBattleUnusedInt = 2);
                 } else {
                     if (gOpponentPlayer->unk_000.unk_01A == 0xF) {
                         BattleScene_SelectCameraShot(gOpponentPlayer, arg0, 0);
                     }
-                    BattleScene_SelectCameraShot(gOpponentPlayer, arg0, gBattleUnusedInt_84390228 = BattleAnim_RandomRange(2));
+                    BattleScene_SelectCameraShot(gOpponentPlayer, arg0, gBattleUnusedInt = BattleAnim_RandomRange(2));
                 }
 
                 BattleScene_EnterStateRow(gCurrentPlayer, 0xC);

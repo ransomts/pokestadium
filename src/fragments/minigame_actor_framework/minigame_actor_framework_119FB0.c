@@ -220,11 +220,11 @@ void MiniFx_DrawParticles(void) {
 
 void MiniFx_InitRandomVelocityGravityParticle(ParticleEffectInstance* arg0) {
     Vec3s sp28;
-    s16 sp26 = Particle_FieldAC_GetS16_0C038(arg0);
+    s16 sp26 = Particle_GetFieldOffsetAC(arg0);
 
     Particle_SetPrimColor(arg0, 0xC8, 0xAA, 0x64);
     Particle_SetEnvColor(arg0, 0x3A, 0x18, 0x18);
-    Particle_SetScaleFactor1(arg0, (ParticleMath_RandomRange(0xA) * 0.03f) + 0.15f);
+    Particle_SetScaleScaled(arg0, (ParticleMath_RandomRange(0xA) * 0.03f) + 0.15f);
 
     sp28.x = ParticleMath_RandomSigned(0x400) - 0x3000;
     sp28.y = (ParticleMath_RandomSigned(0x400) + (sp26 << 0xD)) - 0x3000;
@@ -232,7 +232,7 @@ void MiniFx_InitRandomVelocityGravityParticle(ParticleEffectInstance* arg0) {
 
     Particle_AddRotationDeltaVec(arg0, sp28);
     Particle_SetSpeed(arg0, (ParticleMath_RandomRange(0xA) * 0.3f) + 6.0f);
-    Particle_Field7C_SetVecFromField74AnglesXY_0B2B4(arg0);
+    Particle_SetVelocityImpulseFromRotationXY(arg0);
     Particle_SetPrimAlpha(arg0, 0xFF);
     Particle_AdvanceLifecycle(arg0);
 }
@@ -251,16 +251,16 @@ void MiniFx_UpdateRandomVelocityGravityParticle(ParticleEffectInstance* arg0) {
     }
 
     if (Particle_IsRunning(arg0) != 0) {
-        Particle_Field7C_DecrementYUntilAtMost_0B0A4(arg0, -8.0f, 1.0f);
+        Particle_DecrementVelocityImpulseYUntilAtMost(arg0, -8.0f, 1.0f);
         Particle_AddVelocityFromTarget(arg0);
     }
 }
 
 void MiniFx_InitPalette10FastRiseFadeParticle(ParticleEffectInstance* arg0) {
-    Particle_SetScaleFactor1(arg0, 0.25f);
+    Particle_SetScaleScaled(arg0, 0.25f);
     Particle_RotateY(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
-    Particle_Field7C_SetYScaled_0AF24(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
+    Particle_SetVelocityImpulseY(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, 0xA);
     Particle_SetPrimAlpha(arg0, 0x64);
     Particle_SetTimerA6(arg0, 7);
@@ -275,10 +275,10 @@ void MiniFx_UpdatePalette10FastRiseFadeParticle(ParticleEffectInstance* arg0) {
 
         case 2:
             Particle_AnimateFramesForwardAndAdvanceLifecycle(arg0, 0, 7, 1, 2, 0);
-            Particle_ApproachScaleFactor1(arg0, 0.8f, 0.1f);
+            Particle_ApproachScaleScaled(arg0, 0.8f, 0.1f);
             Particle_ApproachSpeedScaled(arg0, 1.0f, 1);
             if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                Particle_Field7C_ApproachY_0B180(arg0, 0.5f, 0.4f);
+                Particle_ApproachVelocityImpulseY(arg0, 0.5f, 0.4f);
                 Particle_AddVelocityYFromTarget(arg0);
             }
             break;
@@ -294,10 +294,10 @@ void MiniFx_UpdatePalette10FastRiseFadeParticle(ParticleEffectInstance* arg0) {
 }
 
 void MiniFx_InitPalette10SlowRiseFadeParticle(ParticleEffectInstance* arg0) {
-    Particle_SetScaleFactor1(arg0, 0.25f);
+    Particle_SetScaleScaled(arg0, 0.25f);
     Particle_RotateY(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetSpeed(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 2.0f);
-    Particle_Field7C_SetYScaled_0AF24(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
+    Particle_SetVelocityImpulseY(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 1.0f);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, 0xA);
     Particle_SetPrimAlpha(arg0, 0x64);
     Particle_SetTimerA6(arg0, 7);
@@ -312,10 +312,10 @@ void MiniFx_UpdatePalette10SlowRiseFadeParticle(ParticleEffectInstance* arg0) {
 
         case 2:
             Particle_AnimateFramesForwardAndAdvanceLifecycle(arg0, 0, 7, 1, 2, 0);
-            Particle_ApproachScaleFactor1(arg0, 0.8f, 0.1f);
+            Particle_ApproachScaleScaled(arg0, 0.8f, 0.1f);
             Particle_ApproachSpeedScaled(arg0, 1.0f, 1);
             if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                Particle_Field7C_ApproachY_0B180(arg0, 0.5f, 0.4f);
+                Particle_ApproachVelocityImpulseY(arg0, 0.5f, 0.4f);
                 Particle_AddVelocityYFromTarget(arg0);
             }
             break;
@@ -331,11 +331,11 @@ void MiniFx_UpdatePalette10SlowRiseFadeParticle(ParticleEffectInstance* arg0) {
 }
 
 void MiniFx_InitRandomOffsetPalette10RiseFadeParticle(ParticleEffectInstance* arg0) {
-    Particle_SetScaleFactor1(arg0, 0.5f);
+    Particle_SetScaleScaled(arg0, 0.5f);
     Particle_SetRandomVelocityXYZ(arg0, 3, 0, 3);
     Particle_RotateY(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetSpeed(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 3.0f);
-    Particle_Field7C_SetYScaled_0AF24(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
+    Particle_SetVelocityImpulseY(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, 0xA);
     Particle_SetPrimAlpha(arg0, 0x64);
     Particle_SetTimerA6(arg0, 7);
@@ -350,10 +350,10 @@ void MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle(ParticleEffectInstance* 
 
         case 2:
             Particle_AnimateFramesForwardAndAdvanceLifecycle(arg0, 0, 7, 1, 2, 0);
-            Particle_ApproachScaleFactor1(arg0, 1.0f, 0.05f);
+            Particle_ApproachScaleScaled(arg0, 1.0f, 0.05f);
             Particle_ApproachSpeedScaled(arg0, 1.0f, 1);
             if (Particle_DecrementTimerA6ToZero(arg0) != 0) {
-                Particle_Field7C_ApproachY_0B180(arg0, 1.0f, 0.2f);
+                Particle_ApproachVelocityImpulseY(arg0, 1.0f, 0.2f);
                 Particle_AddVelocityYFromTarget(arg0);
             }
             break;
@@ -373,7 +373,7 @@ void MiniFx_InitSurfaceCrossingGravityParticle(ParticleEffectInstance* arg0) {
 
     Particle_SetPrimColor(arg0, 0xC8, 0xAA, 0x64);
     Particle_SetEnvColor(arg0, 0x3A, 0x18, 0x18);
-    Particle_SetScaleFactor1(arg0, (MathUtil_Random_ZeroOne() * 0.1f) + 0.1f);
+    Particle_SetScaleScaled(arg0, (MathUtil_Random_ZeroOne() * 0.1f) + 0.1f);
 
     sp28.x = ParticleMath_RandomSigned(0x800) - 0x3800;
     sp28.y = ParticleMath_RandomSigned(0x1000) + 0x8000;
@@ -381,7 +381,7 @@ void MiniFx_InitSurfaceCrossingGravityParticle(ParticleEffectInstance* arg0) {
 
     Particle_AddRotationDeltaVec(arg0, sp28);
     Particle_SetSpeed(arg0, (ParticleMath_RandomRange(0xA) * 0.3f) + 6.0f);
-    Particle_Field7C_SetVecFromField74AnglesXY_0B2B4(arg0);
+    Particle_SetVelocityImpulseFromRotationXY(arg0);
     Particle_SetPrimAlpha(arg0, 0xFF);
     Particle_AdvanceLifecycle(arg0);
 }
@@ -405,16 +405,16 @@ void MiniFx_UpdateSurfaceCrossingGravityParticle(ParticleEffectInstance* arg0) {
         } else {
             Particle_DisableRendering(arg0);
         }
-        Particle_Field7C_DecrementYUntilAtMost_0B0A4(arg0, -8.0f, 1.0f);
+        Particle_DecrementVelocityImpulseYUntilAtMost(arg0, -8.0f, 1.0f);
         Particle_AddVelocityFromTarget(arg0);
     }
 }
 
 void MiniFx_InitPalette17DelayedRevealFallParticle(ParticleEffectInstance* arg0) {
     Vec3s sp28;
-    s16 sp26 = Particle_FieldAC_GetS16_0C038(arg0);
+    s16 sp26 = Particle_GetFieldOffsetAC(arg0);
 
-    Particle_FieldCE_GetS32_0C040(arg0);
+    Particle_GetMetadata(arg0);
 
     sp28.x = ParticleMath_RandomRange(0x10000);
     sp28.y = ParticleMath_RandomRange(0x10000);
@@ -424,7 +424,7 @@ void MiniFx_InitPalette17DelayedRevealFallParticle(ParticleEffectInstance* arg0)
     Particle_SetSpeed(arg0, 0.0f);
     Particle_SetAcceleration(arg0, 0);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, 0x17);
-    Particle_SetScaleFactor1(arg0, 0.0f);
+    Particle_SetScaleScaled(arg0, 0.0f);
     Particle_SetScaleSpeed(arg0, 0.6f);
     Particle_SetScaleTarget(arg0, 0.1f);
     Particle_SetRandomVelocityXSymmetric(arg0, 0x14, 0xA);
@@ -472,7 +472,7 @@ void MiniFx_UpdatePalette17DelayedRevealFallParticle(ParticleEffectInstance* arg
 
 void MiniFx_InitPalette17SmallDelayedRevealFallParticle(ParticleEffectInstance* arg0) {
     Vec3s sp28;
-    s16 sp26 = Particle_FieldAC_GetS16_0C038(arg0);
+    s16 sp26 = Particle_GetFieldOffsetAC(arg0);
 
     sp28.x = ParticleMath_RandomRange(0x10000);
     sp28.y = ParticleMath_RandomRange(0x10000);
@@ -482,7 +482,7 @@ void MiniFx_InitPalette17SmallDelayedRevealFallParticle(ParticleEffectInstance* 
     Particle_SetSpeed(arg0, 0.0f);
     Particle_SetAcceleration(arg0, 0.0f);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, 0x17);
-    Particle_SetScaleFactor1(arg0, 0.0f);
+    Particle_SetScaleScaled(arg0, 0.0f);
     Particle_SetScaleSpeed(arg0, 0.2f);
     Particle_SetScaleTarget(arg0, 0.035f);
     Particle_SetRandomVelocityXSymmetric(arg0, 7, 3);
@@ -533,7 +533,7 @@ void MiniFx_InitCoolGravityParticle(ParticleEffectInstance* arg0) {
 
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     Particle_SetEnvColor(arg0, 0x64, 0xC8, 0xFF);
-    Particle_SetScaleFactor1(arg0, (MathUtil_Random_ZeroOne() * 0.2f) + 0.3f);
+    Particle_SetScaleScaled(arg0, (MathUtil_Random_ZeroOne() * 0.2f) + 0.3f);
 
     sp30.x = ParticleMath_RandomSigned(0x1800) - 0x3000;
     sp30.y = ParticleMath_RandomSigned(0x10000);
@@ -543,7 +543,7 @@ void MiniFx_InitCoolGravityParticle(ParticleEffectInstance* arg0) {
 
     Particle_AddVelocityScaledXYZ(arg0, ParticleMath_RandomSigned(0xA) * 0.1f, ParticleMath_RandomRange(0xA) * 0.25f, ParticleMath_RandomSigned(0xA) * 0.1f);
     Particle_SetSpeed(arg0, (ParticleMath_RandomRange(5) * 0.35f) + 4.0f);
-    Particle_Field7C_SetVecFromField74AnglesXY_0B2B4(arg0);
+    Particle_SetVelocityImpulseFromRotationXY(arg0);
     Particle_SetPrimAlpha(arg0, 0xFF);
     Particle_AdvanceLifecycle(arg0);
 }
@@ -562,7 +562,7 @@ void MiniFx_UpdateCoolGravityParticle(ParticleEffectInstance* arg0) {
     }
 
     if (Particle_IsRunning(arg0) != 0) {
-        Particle_Field7C_DecrementYUntilAtMost_0B0A4(arg0, -8.0f, 0.8f);
+        Particle_DecrementVelocityImpulseYUntilAtMost(arg0, -8.0f, 0.8f);
         Particle_AddVelocityFromTarget(arg0);
     }
 }

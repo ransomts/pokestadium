@@ -1741,8 +1741,8 @@ void TradeCable_DrawTubeEndCap(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4,
 void TradeCable_RenderReflectionTexture(void) {
     static f32 gMenuPanelBGScrollX = 0.0f;
     static f32 gMenuPanelBGScrollY = 0.0f;
-    static f32 gMenuPanelBGScrollX2 = 0.0f;
-    static f32 gMenuPanelBGScrollY2 = 0.0f;
+    static f32 gMenuPanelBGTex1ScrollX = 0.0f;
+    static f32 gMenuPanelBGTex1ScrollY = 0.0f;
     static Gfx gMenuPanelBGDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
@@ -1766,10 +1766,10 @@ void TradeCable_RenderReflectionTexture(void) {
     gDPLoadMultiBlock_4b(gDisplayListHead++, D_3009BC0, 0x0100, 1, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                          G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, 1);
 
-    temp_fa8 = gMenuPanelBGScrollX2 + 31.0f;
-    temp_faC = gMenuPanelBGScrollY2 + 31.0f;
+    temp_fa8 = gMenuPanelBGTex1ScrollX + 31.0f;
+    temp_faC = gMenuPanelBGTex1ScrollY + 31.0f;
     if (1) {}
-    gDPSetTileSize(gDisplayListHead++, 1, gMenuPanelBGScrollX2 * 4.0f, gMenuPanelBGScrollY2 * 4.0f, temp_fa8 * 4.0f, temp_faC * 4.0f);
+    gDPSetTileSize(gDisplayListHead++, 1, gMenuPanelBGTex1ScrollX * 4.0f, gMenuPanelBGTex1ScrollY * 4.0f, temp_fa8 * 4.0f, temp_faC * 4.0f);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30099B8, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, 2);
@@ -1791,9 +1791,9 @@ void TradeCable_RenderReflectionTexture(void) {
         gMenuPanelBGScrollY -= 32.0f;
     }
 
-    gMenuPanelBGScrollY2 -= 2.5f;
-    if (gMenuPanelBGScrollY2 < 0.0f) {
-        gMenuPanelBGScrollY2 += 32.0f;
+    gMenuPanelBGTex1ScrollY -= 2.5f;
+    if (gMenuPanelBGTex1ScrollY < 0.0f) {
+        gMenuPanelBGTex1ScrollY += 32.0f;
     }
 
     gDPPipeSync(gDisplayListHead++);

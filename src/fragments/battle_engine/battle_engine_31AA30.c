@@ -129,7 +129,7 @@ void BattleAnim_DrawAsset1AFrameI4Quad(ParticleEffectInstance* arg0, UNUSED Came
 }
 
 void BattleAnim_DrawAsset1CRgba16Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
-    gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
+    gSPDisplayList(gDisplayListHead++, gDL_UI_DecalBilerpTexEdge);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     ParticleGfx_LoadTextureRgba16(gBattleAnimAssetPointers[0x1C], 0x20, 0x20);
@@ -139,7 +139,7 @@ void BattleAnim_DrawAsset1CRgba16Quad(ParticleEffectInstance* arg0, UNUSED Camer
 }
 
 void BattleAnim_DrawAsset1ERgba16Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
-    gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
+    gSPDisplayList(gDisplayListHead++, gDL_UI_DecalBilerpTexEdge);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     ParticleGfx_LoadTextureRgba16(gBattleAnimAssetPointers[0x1E], 0x20, 0x20);
@@ -149,7 +149,7 @@ void BattleAnim_DrawAsset1ERgba16Quad(ParticleEffectInstance* arg0, UNUSED Camer
 }
 
 void BattleAnim_DrawAssetC3Rgba16Quad(ParticleEffectInstance* arg0, UNUSED CameraStruct* arg1) {
-    gSPDisplayList(gDisplayListHead++, gDL_BaseUI2);
+    gSPDisplayList(gDisplayListHead++, gDL_UI_DecalBilerpTexEdge);
     gSPClearGeometryMode(gDisplayListHead++, G_CULL_BACK);
 
     ParticleGfx_LoadTextureRgba16(gBattleAnimAssetPointers[0xC3], 0x20, 0x20);

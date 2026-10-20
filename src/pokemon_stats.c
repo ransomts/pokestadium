@@ -1417,7 +1417,7 @@ void GbSave_SetSeenOwnedBits(s32 arg0, s32 arg1, s32 arg2) {
     }
 }
 
-s32 GbSave_CountSpeciesProgressField036(s32 arg0) {
+s32 GbSave_CountPokedexSeen(s32 arg0) {
     s32 i;
     s32 temp_v1 = 0;
 
@@ -1428,7 +1428,7 @@ s32 GbSave_CountSpeciesProgressField036(s32 arg0) {
     return temp_v1;
 }
 
-s32 GbSave_CountSpeciesProgressField023(s32 arg0) {
+s32 GbSave_CountPokedexOwned(s32 arg0) {
     s32 i;
     s32 temp_v1 = 0;
 
@@ -1439,7 +1439,7 @@ s32 GbSave_CountSpeciesProgressField023(s32 arg0) {
     return temp_v1;
 }
 
-s32 GbSave_CountSpeciesProgressField06(s32 arg0) {
+s32 GbSave_CountPokedexCaught(s32 arg0) {
     s32 i;
     s32 temp_v1 = 0;
 

@@ -33,7 +33,7 @@ static s32 gInputTimerValue;
 static s16 gStatusIconFrames[4];
 
 static u16 gPanelColors[] = { 0x1D, 0x341, 0x6947, 0x6A41 };
-static unk_D_84803548 gInputTimingTable_0[] = {
+static unk_D_84803548 gComAutoInputScriptSingleBrought[] = {
     { 0x001E, 0x0000 },
     { 0x001E, 0x4000 },
     { 0x0001, 0x8000 },
@@ -59,7 +59,7 @@ static unk_D_84803548 D_848035C0[] = {
     { 0x000A, 0x8000 }, { 0x000A, 0x0004 }, { 0x001E, 0x0001 }, { 0x0001, 0x8000 },
 };
 static unk_D_84803548* gInputTimingTable[] = {
-    NULL, gInputTimingTable_0, D_84803558, D_8480356C, D_84803584, D_848035A0, D_848035C0,
+    NULL, gComAutoInputScriptSingleBrought, D_84803558, D_8480356C, D_84803584, D_848035A0, D_848035C0,
 };
 static unk_D_848035FC gModeColors[] = {
     { { 0xF0, 0xF0, 0xF0 }, D_2017740 }, { { 0xF0, 0x96, 0x32 }, D_2019040 }, { { 0x50, 0x96, 0xF0 }, D_20199A0 },

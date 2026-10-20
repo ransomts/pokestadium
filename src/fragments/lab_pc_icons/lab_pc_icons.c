@@ -127,15 +127,15 @@ s32 LabPC_DrawDualArrowHeader(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 
     return 0;
 }
 
-void LabPC_InitArrowLabelA(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
+void LabPC_InitMoveDetailHeader(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = LabPC_DrawArrowLabelA;
+    arg0->unk_18 = LabPC_DrawMoveDetailHeader;
     arg0->unk_10.posX = arg1;
     arg0->unk_10.posY = arg2;
 }
 
-s32 LabPC_DrawArrowLabelA(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 gSummaryTextColor2 = { 0xF0, 0xF0, 0xF0, 0xFF };
+s32 LabPC_DrawMoveDetailHeader(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+    static Color_RGBA8 gSummaryTextColorMoveDetail = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -154,24 +154,24 @@ s32 LabPC_DrawArrowLabelA(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Text_SetEnvColor(gSummaryTextColor2.r, gSummaryTextColor2.g, gSummaryTextColor2.b, gSummaryTextColor2.a);
+    Text_SetEnvColor(gSummaryTextColorMoveDetail.r, gSummaryTextColorMoveDetail.g, gSummaryTextColorMoveDetail.b, gSummaryTextColorMoveDetail.a);
     Font_Printf(arg1 + 0x2C, arg2 + 6, Text_GetString(NULL, 0, gMonSummaryStrings, 2));
     Font_EndTexturedTextRendering();
     return 0;
 }
 
-void LabPC_InitArrowLabelB(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
+void LabPC_InitMoveReorderHeader(unk_func_88001300_000* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88001300_000));
-    arg0->unk_18 = LabPC_DrawArrowLabelB;
+    arg0->unk_18 = LabPC_DrawMoveReorderHeader;
     arg0->unk_10.posX = arg1;
     arg0->unk_10.posY = arg2;
 }
 
-s32 LabPC_DrawArrowLabelB(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 gSummaryTextColor3 = { 0xF0, 0xF0, 0xF0, 0xFF };
+s32 LabPC_DrawMoveReorderHeader(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
+    static Color_RGBA8 gSummaryTextColorMoveReorder = { 0xF0, 0xF0, 0xF0, 0xFF };
     UNUSED static Color_RGBA8 gSummaryTextColorDefault = { 0xF0, 0xF0, 0xF0, 0xFF };
-    UNUSED static Color_RGBA8 gSummaryTextColorGreen1 = { 0x1E, 0x78, 0x32, 0xFF };
-    UNUSED static Color_RGBA8 gSummaryTextColorGreen2 = { 0x32, 0xB4, 0x64, 0xFF };
+    UNUSED static Color_RGBA8 gSummaryTextColorDarkGreen = { 0x1E, 0x78, 0x32, 0xFF };
+    UNUSED static Color_RGBA8 gSummaryTextColorLightGreen = { 0x32, 0xB4, 0x64, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -190,7 +190,7 @@ s32 LabPC_DrawArrowLabelB(UNUSED unk_func_88001300_000* arg0, s32 arg1, s32 arg2
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Text_SetEnvColor(gSummaryTextColor3.r, gSummaryTextColor3.g, gSummaryTextColor3.b, gSummaryTextColor3.a);
+    Text_SetEnvColor(gSummaryTextColorMoveReorder.r, gSummaryTextColorMoveReorder.g, gSummaryTextColorMoveReorder.b, gSummaryTextColorMoveReorder.a);
     Font_Printf(arg1 + 0x2C, arg2 + 6, Text_GetString(NULL, 0, gMonSummaryStrings, 3));
     Font_EndTexturedTextRendering();
     return 0;
@@ -681,13 +681,13 @@ void LabPC_InitMovesPanel(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 ar
         { 0x00FB, 0x003D },
         { 0x00E1, 0x0023 },
     };
-    static PosTable gMovesPanelFlyPos_A[] = {
+    static PosTable gMovesPanelPpFlyPos[] = {
         { 0x01BF, 0x0010 },
         { 0x01D9, 0x002A },
         { 0x00C1, 0x0044 },
         { 0x00A7, 0x002A },
     };
-    static PosTable gMovesPanelFlyPos_B[] = {
+    static PosTable gMovesPanelMoveNameFlyPos[] = {
         { 0x0120, 0x000C },
         { 0x013A, 0x0026 },
         { 0x0022, 0x0040 },
@@ -719,7 +719,7 @@ void LabPC_InitMovesPanel(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 ar
 
     for (x = 0; x < 4; x++) {
         arg0->unk_6C[x] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_06C));
-        LabPC_InitFlyWidget(arg0->unk_6C[x], gMovesPanelFlyPos_A[x].posX, gMovesPanelFlyPos_A[x].posY);
+        LabPC_InitFlyWidget(arg0->unk_6C[x], gMovesPanelPpFlyPos[x].posX, gMovesPanelPpFlyPos[x].posY);
         ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_6C[x]->posX.posX);
 
         arg0->unk_5C[x] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_05C));
@@ -730,7 +730,7 @@ void LabPC_InitMovesPanel(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 ar
 
     for (y = 0; y < 4; y++) {
         arg0->unk_4C[y] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_06C));
-        LabPC_InitFlyWidget(arg0->unk_4C[y], gMovesPanelFlyPos_B[y].posX, gMovesPanelFlyPos_B[y].posY);
+        LabPC_InitFlyWidget(arg0->unk_4C[y], gMovesPanelMoveNameFlyPos[y].posX, gMovesPanelMoveNameFlyPos[y].posY);
         ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_4C[y]->posX.posX);
 
         arg0->unk_3C[y] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_03C));
@@ -1025,8 +1025,8 @@ s32 LabPC_HandleMoveGridInput(unk_func_88205880_0098_008_070* arg0, Controller* 
 
 void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, ModelPreview* arg3,
                    unk_func_88001300_000* arg4, MemoryPool* arg5) {
-    static Color_RGBA8 gDetailPanelFrameColor1 = { 0x80, 0x18, 0x18, 0xFF };
-    static Color_RGBA8 gDetailPanelFrameColor2 = { 0x38, 0x38, 0x80, 0xFF };
+    static Color_RGBA8 gDetailPanelSummaryFrameColor = { 0x80, 0x18, 0x18, 0xFF };
+    static Color_RGBA8 gDetailPanelTypeListFrameColor = { 0x38, 0x38, 0x80, 0xFF };
     static Color_RGBA8 gDetailPanelStatBgColor = { 0x38, 0x38, 0x80, 0xFF };
     static Color_RGBA8 gDetailPanelTrainerBgColor = { 0x38, 0x38, 0x80, 0xFF };
     static Color_RGBA8 gMovesPanelSelectionColor = { 0xFF, 0xFF, 0x00, 0xFF };
@@ -1072,7 +1072,7 @@ void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, Mode
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX.posX, &arg0->unk_30->posX.posX);
 
     arg0->unk_68 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(arg0->unk_68, 0, 0, 0x210, 0x24, gDetailPanelFrameColor1);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(arg0->unk_68, 0, 0, 0x210, 0x24, gDetailPanelSummaryFrameColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->posX.posX, &arg0->unk_68->posX.posX);
 
     arg0->unk_44 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_044));
@@ -1080,7 +1080,7 @@ void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, Mode
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_68->posX.posX, &arg0->unk_44->posX.posX);
 
     sp8C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp8C, 0xE0, 0x24, 0x130, 0x1C, gDetailPanelFrameColor2);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp8C, 0xE0, 0x24, 0x130, 0x1C, gDetailPanelTypeListFrameColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->posX.posX, &sp8C->posX.posX);
 
     arg0->unk_48 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_048));
@@ -1160,7 +1160,7 @@ void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, Mode
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp7C->posX);
 
     sp74 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_000));
-    LabPC_InitArrowLabelA(sp74, 0, 0, arg5);
+    LabPC_InitMoveDetailHeader(sp74, 0, 0, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->posX.posX, &sp74->posX);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
@@ -1168,7 +1168,7 @@ void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, Mode
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp7C->posX);
 
     sp70 = mem_pool_alloc(arg5, sizeof(unk_func_88001300_000));
-    LabPC_InitArrowLabelB(sp70, 0, 0, arg5);
+    LabPC_InitMoveReorderHeader(sp70, 0, 0, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->posX.posX, &sp70->posX);
 
     arg0->unk_6C = mem_pool_alloc(arg5, sizeof(GridMenu));
@@ -2405,7 +2405,7 @@ static u8 gSummaryNatureIconPaletteTex[] = {
 static Gfx gMoveTypeIconDisplayList[] = {
     gsSPEndDisplayList(),
 };
-static u8 gMoveTypeIconTex0[] = {
+static u8 gMoveTypeIconGrassTex[] = {
     0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A,
     0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1,
     0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0xB7, 0x2D, 0x8E, 0xA3, 0x86, 0xA1, 0x86, 0xA1, 0x86, 0xA1, 0x86, 0xA1, 0x86,
@@ -2453,7 +2453,7 @@ static u8 gMoveTypeIconTex0[] = {
 static Gfx gMoveTypeIconDisplayList2[] = {
     gsSPEndDisplayList(),
 };
-static u8 gMoveTypeIconTex1[] = {
+static u8 gMoveTypeIconElectricTex[] = {
     0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72,
     0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87,
     0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0xEF, 0x2D, 0xE6, 0xA5, 0xDE, 0x63, 0xDE, 0x63, 0xDE, 0x63, 0xDE, 0x63, 0xDE,
@@ -2501,7 +2501,7 @@ static u8 gMoveTypeIconTex1[] = {
 static Gfx gMoveTypeIconDisplayList3[] = {
     gsSPEndDisplayList(),
 };
-static u8 gMoveTypeIconTex2[] = {
+static u8 gMoveTypeIconPsychicTex[] = {
     0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71,
     0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57,
     0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0xE5, 0x73, 0xDC, 0xB1, 0xE4, 0x6F, 0xDC, 0x6F, 0xDC, 0x6F, 0xDC, 0x6F, 0xDC,
@@ -2549,7 +2549,7 @@ static u8 gMoveTypeIconTex2[] = {
 static Gfx gMoveTypeIconDisplayList4[] = {
     gsSPEndDisplayList(),
 };
-static u8 gMoveTypeIconTex3[] = {
+static u8 gMoveTypeIconIceTex[] = {
     0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33,
     0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23,
     0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0xC6, 0xFB, 0xB6, 0xB9, 0xA6, 0xB7, 0xA6, 0x79, 0xA6, 0x79, 0xA6, 0x79, 0xA6,
@@ -2597,7 +2597,7 @@ static u8 gMoveTypeIconTex3[] = {
 static Gfx gMoveTypeIconDisplayList5[] = {
     gsSPEndDisplayList(),
 };
-static u8 gMoveTypeIconTex4[] = {
+static u8 gMoveTypeIconDragonTex[] = {
     0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13,
     0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15,
     0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0xB6, 0xF5, 0x8E, 0xB3, 0x86, 0x71, 0x86, 0x71, 0x86, 0x71, 0x86, 0x71, 0x86,
@@ -2644,7 +2644,7 @@ static u8 gMoveTypeIconTex4[] = {
 };
 u8* gMoveTypeIconTextures[] = {
     gSummaryBallIconPaletteTex, gSummaryAbilityIconMaskTex, gSummaryAbilityIconPaletteTex, gSummaryRibbonsIconMaskTex, gSummaryRibbonsIconPaletteTex, gSummaryRibbonBarMaskTex, gSummaryRibbonBarPaletteTex, gSummaryNatureIconTex,
-    gSummaryNatureIconMaskTex, gSummaryNatureIconPaletteTex, gMoveTypeIconTex0, gMoveTypeIconTex1, gMoveTypeIconTex2, gMoveTypeIconTex3, gMoveTypeIconTex4,
+    gSummaryNatureIconMaskTex, gSummaryNatureIconPaletteTex, gMoveTypeIconGrassTex, gMoveTypeIconElectricTex, gMoveTypeIconPsychicTex, gMoveTypeIconIceTex, gMoveTypeIconDragonTex,
 };
 static Gfx gMoveTypeIconDisplayList6[] = {
     gsSPEndDisplayList(),

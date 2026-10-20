@@ -25,10 +25,10 @@ unk_D_84B1A598 gBattleGraphics;
 gBannerState gErrorScreenState;
 gBadgeCarouselAnim gErrorScreenAnim;
 BattleUiState gUIState;
-gTeamIconsState gUIElementA;
-gBadgeAwardState gUIElementB;
-gStarBurstState gUIBarA;
-gStarBurstState gUIBarB;
+gTeamIconsState gBattlePrepTeamIconsState;
+gBadgeAwardState gBattlePrepBadgeAwardState;
+gStarBurstState gBattlePrepStarBurstP2State;
+gStarBurstState gBattlePrepStarBurstP1State;
 unk_D_84B26640 gBattleMenuState;
 SessionModeSettings gBattleProgress;
 char** gBattleMessageTable;
@@ -498,11 +498,11 @@ void BattlePrep_CheckPikachuNeedsSurf(void) {
 void BattlePrep_UpdateRoundIntroScene(void) {
     Controller_PollInputs();
     BattlePrep_UpdateStarfield(gInputBuffer);
-    BattlePrepTeamIcons_Update(&gUIElementA);
+    BattlePrepTeamIcons_Update(&gBattlePrepTeamIconsState);
     BattlePrep_UpdateBadgeCarousel(&gErrorScreenAnim);
-    BattlePrepBadgeAward_Update(&gUIElementB);
-    BattlePrepStarBurst_Update(&gUIBarA);
-    BattlePrepStarBurst_Update(&gUIBarB);
+    BattlePrepBadgeAward_Update(&gBattlePrepBadgeAwardState);
+    BattlePrepStarBurst_Update(&gBattlePrepStarBurstP2State);
+    BattlePrepStarBurst_Update(&gBattlePrepStarBurstP1State);
     BattlePrep_UpdateTrophyModel(&gBattleMenuState.posX);
     BattlePrep_UpdateTrophyModel(&gBattleMenuState.unk_10);
     BattlePrep_UpdateRuleWindow(&gBattleMenuState.unk_1C);
@@ -513,17 +513,17 @@ void BattlePrep_UpdateRoundIntroScene(void) {
 void BattlePrep_InitRoundIntroSubScenes(void) {
     s32 tmp;
 
-    BattlePrepTeamIcons_Init(&gUIElementA);
+    BattlePrepTeamIcons_Init(&gBattlePrepTeamIconsState);
     BattlePrep_InitBadgeCarouselScene(&gErrorScreenAnim, gBattleGraphics.battleArchive, gBattleGraphics.portraitsArchive);
-    BattlePrepBadgeAward_Init(&gUIElementB);
+    BattlePrepBadgeAward_Init(&gBattlePrepBadgeAwardState);
 
     if (gBattleGraphics.unk_0003 != 0) {
-        BattlePrepStarBurst_Init(&gUIBarA, 1, -1);
-        BattlePrepStarBurst_Init(&gUIBarB, 0, -1);
+        BattlePrepStarBurst_Init(&gBattlePrepStarBurstP2State, 1, -1);
+        BattlePrepStarBurst_Init(&gBattlePrepStarBurstP1State, 0, -1);
     } else {
-        BattlePrepStarBurst_Init(&gUIBarA, 1, gBattleGraphics.unk_0001);
+        BattlePrepStarBurst_Init(&gBattlePrepStarBurstP2State, 1, gBattleGraphics.unk_0001);
         tmp = gBattleGraphics.unk_0001 == 0;
-        BattlePrepStarBurst_Init(&gUIBarB, 0, tmp);
+        BattlePrepStarBurst_Init(&gBattlePrepStarBurstP1State, 0, tmp);
     }
 
     BattlePrep_InitTrophyModel(&gBattleMenuState.posX, 0);
@@ -533,7 +533,7 @@ void BattlePrep_InitRoundIntroSubScenes(void) {
 void BattlePrep_RunNormalRoundIntro(void) {
     s32 i;
 
-    BattlePrepTeamIcons_Load(&gUIElementA, gBattleGraphics.portraitsArchive);
+    BattlePrepTeamIcons_Load(&gBattlePrepTeamIconsState, gBattleGraphics.portraitsArchive);
 
     for (i = 0; i < 8; i++) {
         BattlePrep_UpdateRoundIntroScene();
@@ -551,18 +551,18 @@ void BattlePrep_RunNormalRoundIntro(void) {
 
     StageFade_StartFromOpaque(8);
 
-    while (BattlePrepTeamIcons_InitDisplayObjects(&gUIElementA, gBattleGraphics.unk_0008) == 0) {
+    while (BattlePrepTeamIcons_InitDisplayObjects(&gBattlePrepTeamIconsState, gBattleGraphics.unk_0008) == 0) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
-    while (gUIElementA.posX != 0) {
+    while (gBattlePrepTeamIconsState.posX != 0) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
-    BattlePrepStarBurst_Launch(&gUIBarA, &gBattleGraphics.unk_0008[0x1C], &gBattleGraphics.unk_0008[0x20]);
-    BattlePrepStarBurst_Launch(&gUIBarB, &gBattleGraphics.unk_0008[0x1E], &gBattleGraphics.unk_0008[0x20]);
+    BattlePrepStarBurst_Launch(&gBattlePrepStarBurstP2State, &gBattleGraphics.unk_0008[0x1C], &gBattleGraphics.unk_0008[0x20]);
+    BattlePrepStarBurst_Launch(&gBattlePrepStarBurstP1State, &gBattleGraphics.unk_0008[0x1E], &gBattleGraphics.unk_0008[0x20]);
 
-    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.state != 0)) {
+    while ((gErrorScreenAnim.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 }
@@ -570,7 +570,7 @@ void BattlePrep_RunNormalRoundIntro(void) {
 void BattlePrep_RunFinalRoundIntro(void) {
     s32 i;
 
-    BattlePrepTeamIcons_Load(&gUIElementA, gBattleGraphics.portraitsArchive);
+    BattlePrepTeamIcons_Load(&gBattlePrepTeamIconsState, gBattleGraphics.portraitsArchive);
 
     for (i = 0; i < 8; i++) {
         BattlePrep_UpdateRoundIntroScene();
@@ -579,7 +579,7 @@ void BattlePrep_RunFinalRoundIntro(void) {
     Audio_PlayMusicIfChanged(0x32);
     StageFade_StartFromOpaque(8);
 
-    while (BattlePrepTeamIcons_InitDisplayObjects(&gUIElementA, gBattleGraphics.unk_0008) == 0) {
+    while (BattlePrepTeamIcons_InitDisplayObjects(&gBattlePrepTeamIconsState, gBattleGraphics.unk_0008) == 0) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
@@ -590,13 +590,13 @@ void BattlePrep_RunFinalRoundIntro(void) {
     BattlePrep_StartTrophyModelGrow(&gBattleMenuState.posX, &gBattleGraphics.unk_0008[0x1A]);
     Audio_PlayCategory11SoundCommand(0x01100013, 0, 0);
 
-    while (gUIElementA.posX != 0) {
+    while (gBattlePrepTeamIconsState.posX != 0) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
     BattlePrep_StartTrophyModelShrink(&gBattleMenuState.posX);
-    BattlePrepStarBurst_Launch(&gUIBarA, &gBattleGraphics.unk_0008[0x1C], &gBattleGraphics.unk_0008[0x20]);
-    BattlePrepStarBurst_Launch(&gUIBarB, &gBattleGraphics.unk_0008[0x1E], &gBattleGraphics.unk_0008[0x20]);
+    BattlePrepStarBurst_Launch(&gBattlePrepStarBurstP2State, &gBattleGraphics.unk_0008[0x1C], &gBattleGraphics.unk_0008[0x20]);
+    BattlePrepStarBurst_Launch(&gBattlePrepStarBurstP1State, &gBattleGraphics.unk_0008[0x1E], &gBattleGraphics.unk_0008[0x20]);
 
     if (gSessionContext.unk_0003 < 8) {
         for (i = 0; i < 16; i++) {
@@ -606,7 +606,7 @@ void BattlePrep_RunFinalRoundIntro(void) {
         Audio_PlaySoundEffectById(0x28);
     }
 
-    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.state != 0)) {
+    while ((gErrorScreenAnim.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 }
@@ -615,11 +615,11 @@ void BattlePrep_RunBadgeCarouselIntro(void) {
     s32 i;
     s32 tmp;
 
-    BattlePrepStarBurst_StartExit(&gUIBarB);
+    BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP1State);
     tmp = gBattleGraphics.unk_0001 == 0;
     BattlePrep_InitBadgeCarousel(&gErrorScreenAnim, gBattleGraphics.unk_0008, tmp + 1);
 
-    while ((gErrorScreenAnim.posX != 0) || (gUIBarB.state != 0)) {
+    while ((gErrorScreenAnim.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
@@ -632,7 +632,7 @@ void BattlePrep_RunBallBurstTransition(void) {
     s32 i;
     s32 j;
 
-    while ((gUIBarA.state != 0) || (gUIBarB.state != 0)) {
+    while ((gBattlePrepStarBurstP2State.state != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
@@ -794,8 +794,8 @@ s32 BattlePrep_ConfirmDefaultRules(void) {
             break;
     }
 
-    BattlePrepStarBurst_StartExit(&gUIBarB);
-    BattlePrepStarBurst_StartExit(&gUIBarA);
+    BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP1State);
+    BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
     Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
     BattlePrep_RunBallBurstTransition();
     BattlePrep_FadeToTransparentEnding();
@@ -810,8 +810,8 @@ s32 BattlePrep_ConfirmSimpleRules(void) {
         BattlePrep_UpdateRoundIntroScene();
     } while (!(BTN_IS_PRESSED(gPlayer1Controller, BTN_A)));
 
-    BattlePrepStarBurst_StartExit(&gUIBarB);
-    BattlePrepStarBurst_StartExit(&gUIBarA);
+    BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP1State);
+    BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
     Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
     BattlePrep_RunBallBurstTransition();
     BattlePrep_FadeToTransparentEnding();
@@ -840,10 +840,10 @@ s32 BattlePrep_ConfirmCupRules(void) {
             BattlePrep_StartTrophyModelShrink(&gBattleMenuState.unk_10);
         }
 
-        BattlePrepStarBurst_StartExit(&gUIBarA);
-        BattlePrepBadgeAward_InitDisplayObjects(&gUIElementB, gBattleGraphics.unk_0008);
+        BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
+        BattlePrepBadgeAward_InitDisplayObjects(&gBattlePrepBadgeAwardState, gBattleGraphics.unk_0008);
 
-        while (gUIElementB.posX != 3) {
+        while (gBattlePrepBadgeAwardState.posX != 3) {
             BattlePrep_UpdateRoundIntroScene();
         }
 
@@ -919,7 +919,7 @@ s32 BattlePrep_ConfirmCupRules(void) {
         }
 
         if (sp2C == 4) {
-            BattlePrepStarBurst_StartExit(&gUIBarA);
+            BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
             BattlePrep_RunBallBurstTransition();
             BattlePrep_FadeToTransparentEnding();
         } else {
@@ -955,7 +955,7 @@ s32 BattlePrep_ConfirmCastleRules(void) {
                 }
             }
 
-            BattlePrepStarBurst_StartExit(&gUIBarA);
+            BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
             Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
             BattlePrep_RunBallBurstTransition();
             Audio_StopMusic(0x10);
@@ -972,13 +972,13 @@ s32 BattlePrep_ConfirmCastleRules(void) {
             }
             sp24 = 3;
         } else if (BattlePrep_HandleRoundContinue() == 1) {
-            BattlePrepStarBurst_StartExit(&gUIBarA);
+            BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
             Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
             BattlePrep_RunBallBurstTransition();
             BattlePrep_FadeToTransparentEnding();
             gSessionContext.transitionFlags |= 0x41;
         } else {
-            BattlePrepStarBurst_StartExit(&gUIBarA);
+            BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
             Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
             BattlePrep_RunBallBurstTransition();
             Audio_StopMusic(0x50);
@@ -1009,7 +1009,7 @@ s32 BattlePrep_ConfirmCastleRules(void) {
                 break;
         }
 
-        BattlePrepStarBurst_StartExit(&gUIBarA);
+        BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
         BattlePrep_RunBallBurstTransition();
         BattlePrep_FadeToTransparentEnding();
 
@@ -1037,8 +1037,8 @@ s32 BattlePrep_ConfirmMewtwoRules(void) {
         BattlePrep_MarkCupCleared();
         Save_CommitTypedRecord(0x14, 0);
         Save_FlushBank(2);
-        BattlePrepStarBurst_StartExit(&gUIBarB);
-        BattlePrepStarBurst_StartExit(&gUIBarA);
+        BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP1State);
+        BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
         Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
         BattlePrep_RunBallBurstTransition();
         BattlePrep_FadeToTransparentEnding();
@@ -1062,8 +1062,8 @@ s32 BattlePrep_ConfirmMewtwoRules(void) {
                 break;
         }
 
-        BattlePrepStarBurst_StartExit(&gUIBarB);
-        BattlePrepStarBurst_StartExit(&gUIBarA);
+        BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP1State);
+        BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP2State);
         Audio_PlayCategory11SoundCommand(0x0110000D, 0, 0);
         BattlePrep_RunBallBurstTransition();
         BattlePrep_FadeToTransparentEnding();

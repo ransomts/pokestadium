@@ -58,8 +58,8 @@ static Color_RGBA8 gDialogColorLightBlue = { 0x74, 0x87, 0xB2, 0xFF };
 static Color_RGBA8 gSavingWidgetBgColor = { 0x58, 0x08, 0x00, 0xFF };
 static Color_RGBA8 gSavingWidgetTextColor = { 0xFF, 0xFF, 0xFF, 0xFF };
 static Color_RGBA8 gSavingWidgetTextHighlight = { 0xFF, 0xF1, 0x78, 0xFF };
-static char gSavingWidgetEmptyString1[] = "";
-static char gSavingWidgetEmptyString2[] = "";
+static char gSavingWidgetBlankPageText[] = "";
+static char gSavingWidgetEmptyBottomText[] = "";
 
 void LabUI_DrawConfirmOptionLabel(s32 arg0, s32 arg1, char* arg2, UNUSED s32 arg3, s32 arg4, UNUSED unk_func_88200FA0_030_030* arg5) {
     Color_RGBA8 sp24;
@@ -320,7 +320,7 @@ void LabUI_BuildSavingStatusWidget(unk_func_889000C4_044* arg0, char** arg1, unk
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_30, &sp4C->posX);
 
     sp48 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp48, 0, 0x30, gSavingWidgetEmptyString1, 0x10);
+    ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp48, 0, 0x30, gSavingWidgetBlankPageText, 0x10);
     sp48->unk_30 = (0, gSavingWidgetTextColor);
     sp48->unk_44 = sp48->unk_44;
     sp48->unk_34 = (0, gSavingWidgetTextHighlight);
@@ -356,7 +356,7 @@ void LabUI_BuildSavingStatusWidget(unk_func_889000C4_044* arg0, char** arg1, unk
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX.posX, &arg0->unk_34->posX.posX);
 
     arg0->unk_38 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(arg0->unk_38, 0xC, 0x78, gSavingWidgetEmptyString2, 0x10);
+    ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(arg0->unk_38, 0xC, 0x78, gSavingWidgetEmptyBottomText, 0x10);
     arg0->unk_38->unk_3C = 0x24;
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX.posX, &arg0->unk_38->posX.posX);
 }

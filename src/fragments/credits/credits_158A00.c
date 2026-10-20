@@ -25,7 +25,7 @@ typedef struct StageFadePalette {
 } StageFadePalette; // size = 0x10
 
 static FogRect gStageFragmentState;
-static struct GraphNode w27;
+static struct GraphNode gStageBackgroundNode;
 static struct GraphNode gStageOverlayNode;
 static struct GraphNode gStageForegroundNode;
 static s8 gCurrentStageId;
@@ -99,7 +99,7 @@ u32 gStageDisplayListCommands[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,    0x00000000, 0x014000F0,  0x0000000F, 0x00000000,  0x00000000,
     0x05000000, 0x0D000000, 0x05000000,    0x07000000, &gStageFragmentState, 0x14000000, 0x002D0019,  0xFFFFFF28,
     0x16646464, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
-    0x00640000, 0x08000000, Credits_BackgroundNodePostCallback, 0x00000000, 0x05000000,  0x07000000, &w27, 0x06000000,
+    0x00640000, 0x08000000, Credits_BackgroundNodePostCallback, 0x00000000, 0x05000000,  0x07000000, &gStageBackgroundNode, 0x06000000,
     0x06000000, 0x0F000003, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
     0x00640000, 0x08000000, Credits_BackgroundNodePostCallback, 0x00000000, 0x05000000,  0x07000000, &gStageOverlayNode, 0x06000000,
     0x06000000, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
@@ -141,7 +141,7 @@ void Credits_LoadBackgroundScene(s8 arg0, u8 arg1) {
 
     while (Display_IsFrameReady() == 0) {}
 
-    GeoNode_CreateContainer(NULL, &w27);
+    GeoNode_CreateContainer(NULL, &gStageBackgroundNode);
     GeoNode_CreateContainer(NULL, &gStageOverlayNode);
     GeoNode_CreateContainer(NULL, &gStageForegroundNode);
 
@@ -154,7 +154,7 @@ void Credits_LoadBackgroundScene(s8 arg0, u8 arg1) {
 
     temp_v0 = sp28(0, 0);
     if (temp_v0 != NULL) {
-        GraphNode_AppendChild(&w27, process_geo_layout(sp2C, temp_v0));
+        GraphNode_AppendChild(&gStageBackgroundNode, process_geo_layout(sp2C, temp_v0));
     }
 
     temp_v0 = sp28(1, 0);
@@ -353,7 +353,7 @@ void Credits_MainLoop(s32 arg0) {
                     gCurrentStageId = -1;
                     gScreenFadeAlpha = 0;
 
-                    GeoNode_CreateContainer(NULL, &w27);
+                    GeoNode_CreateContainer(NULL, &gStageBackgroundNode);
                     GeoNode_CreateContainer(NULL, &gStageOverlayNode);
                     GeoNode_CreateContainer(NULL, &gStageForegroundNode);
 
@@ -1431,7 +1431,7 @@ void Credits_InitScene(s32 arg0) {
 
     gStageArchive = ASSET_LOAD2(stadium_models, 1, 1);
     GeoNode_CreateFog(0, &gStageFragmentState, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
-    GeoNode_CreateContainer(NULL, &w27);
+    GeoNode_CreateContainer(NULL, &gStageBackgroundNode);
     GeoNode_CreateContainer(NULL, &gStageOverlayNode);
     GeoNode_CreateContainer(NULL, &gStageForegroundNode);
     Credits_SetBackgroundTint(0xFF, 0xFF, 0xFF);

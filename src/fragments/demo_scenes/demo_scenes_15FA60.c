@@ -32,8 +32,8 @@ extern u32 gFragment17MaskTable[];
 extern DioramaObjectDef* gFragment17ObjectDefs[];
 extern DioramaAnimData gFragment17AnimData[];
 extern DioramaPresetData gFragment17PresetData[];
-extern u32 gFragment17StageLayout0[];
-extern u32 gFragment17StageLayout1[];
+extern u32 gFragment17LandStageLayout[];
+extern u32 gFragment17SeaStageLayout[];
 
 s32 Diorama_LogoRotateColorCallback(s32, GraphNode*);
 s32 Diorama_ScaleRotateCallbackA(s32, GraphNode*);
@@ -48,9 +48,9 @@ static u32 gFragment17GeoLayoutCommands[] = {
     0x05000000, 0x0D000000, 0x05000000, 0x1A050000, 0x08000000,  Diorama_GroupStateCallback, 0x00000000,    0x05000000,
     0x0F000002, 0x05000000, 0x06000000, 0x0F000002, 0x05000000,  0x06000000,    0x0F000002,    0x05000000,
     0x1F00FFFF, 0xC3920000, 0x00000000, 0xFC400000, 0x00640064,  0x00640000,    0x08000000,    Diorama_ScaleRotateCallbackA,
-    0x00000000, 0x05000000, 0x00000000, gFragment17StageLayout0, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
+    0x00000000, 0x05000000, 0x00000000, gFragment17LandStageLayout, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
     0x1F00FFFF, 0x00000000, 0x00000000, 0x0514F79A, 0x00640064,  0x00640000,    0x08000000,    Diorama_ScaleRotateCallbackB,
-    0x00000000, 0x05000000, 0x00000000, gFragment17StageLayout1, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
+    0x00000000, 0x05000000, 0x00000000, gFragment17SeaStageLayout, 0x06000000,  0x06000000,    0x0F000002,    0x05000000,
     0x06000000, 0x06000000, 0x14000000, 0xF8E40000, 0xFFC89BFF,  0x08000000,    Diorama_LogoRotateColorCallback, 0x00000000,
     0x16FFFFFF, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,    0x06000000,    0x06000000,
     0x06000000, 0x01000000,

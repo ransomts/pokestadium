@@ -39,11 +39,11 @@ static Gfx gFragment63_BarDL[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static u32 gFragment63_GeoLayoutBarA[] = {
+static u32 gFragment63_GeoLayoutStarBar[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gFragment63_BarVtx, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, BattlePrepStarBurst_DrawStarIcon, gFragment63_BarDL, 0x06000000, 0x01000000,
 };
-static u32 gFragment63_GeoLayoutBarB[] = {
+static u32 gFragment63_GeoLayoutTrailBar[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gFragment63_BarVtx, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, BattlePrepStarBurst_DrawTrailIcon, gFragment63_BarDL, 0x06000000, 0x01000000,
 };
@@ -629,9 +629,9 @@ void BattlePrepStarBurst_Init(gStarBurstState* arg0, s8 arg1, s8 arg2) {
 
     temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
     if (arg2 == -1) {
-        arg0->barGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutBarB);
+        arg0->barGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutTrailBar);
     } else {
-        arg0->barGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutBarA);
+        arg0->barGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutStarBar);
     }
     arg0->sparkGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutSmallQuad);
     arg0->rainbowGraph = process_geo_layout(temp_v0, gFragment63_GeoLayoutIcon);

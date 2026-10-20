@@ -74,19 +74,19 @@ void BattleScene_ApplyOwnerCameraFraming(BattlePlayerEntity* arg0) {
     sp30 = arg0->ownerModel.unk_168;
     temp_v0 = BattleScene_GetParticipantSideIndex(arg0);
 
-    arg0->ownerModel.cameraPitch = gAnimDataSetB[temp_v0]->unk_0C;
-    if (gAnimDataSetB[temp_v0]->unk_10 == 0xFF) {
-        arg0->ownerModel.cameraRotationY = gAnimDataSetB[temp_v0]->unk_0E * arg0->ownerModel.unk_178;
-        tmp = gAnimDataSetB[temp_v0]->posX.z * arg0->ownerModel.unk_178;
+    arg0->ownerModel.cameraPitch = gOwnerCameraFramingSet[temp_v0]->unk_0C;
+    if (gOwnerCameraFramingSet[temp_v0]->unk_10 == 0xFF) {
+        arg0->ownerModel.cameraRotationY = gOwnerCameraFramingSet[temp_v0]->unk_0E * arg0->ownerModel.unk_178;
+        tmp = gOwnerCameraFramingSet[temp_v0]->posX.z * arg0->ownerModel.unk_178;
     } else {
-        arg0->ownerModel.cameraRotationY = gAnimDataSetB[temp_v0]->unk_0E;
-        tmp = gAnimDataSetB[temp_v0]->posX.z;
+        arg0->ownerModel.cameraRotationY = gOwnerCameraFramingSet[temp_v0]->unk_0E;
+        tmp = gOwnerCameraFramingSet[temp_v0]->posX.z;
     }
 
     arg0->ownerModel.cameraAtOffsetX = tmp;
-    arg0->ownerModel.unk_188 = gAnimDataSetB[temp_v0]->posX.x;
-    arg0->ownerModel.unk_180 = gAnimDataSetB[temp_v0]->unk_12;
-    tmp2 = gAnimDataSetB[temp_v0]->posX.y;
+    arg0->ownerModel.unk_188 = gOwnerCameraFramingSet[temp_v0]->posX.x;
+    arg0->ownerModel.unk_180 = gOwnerCameraFramingSet[temp_v0]->unk_12;
+    tmp2 = gOwnerCameraFramingSet[temp_v0]->posX.y;
     arg0->ownerModel.cameraAtOffsetY = tmp2;
 
     BattleScene_SetCameraAtAndEyeFromAngles(sp30, arg0->ownerModel.unk_000.unk_024.x + arg0->ownerModel.cameraAtOffsetX, arg0->ownerModel.unk_000.unk_024.y + tmp2,

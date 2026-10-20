@@ -35,13 +35,13 @@ static s32 gCurrentActionScriptSubId;
 static s32 gPendingActionScriptFlag2;
 static s32 gWaterEffectParam;
 static s32 gWaterEffectTimerMax;
-static s8 gCurrentActionScriptType;
+static s8 gCurrentEffectListSource;
 s16 gParticleTexture_Default;
 s16 gParticleEffectPrimaryId;
 static s16 gParticleEffectSecondaryId;
-BattlePlayerEntity* gParticleEffectEntityA;
-BattlePlayerEntity* gParticleEffectData_42;
-BattlePlayerEntity* gParticleEffectEntityB;
+BattlePlayerEntity* gParticleEffectAttackerEntity;
+BattlePlayerEntity* gParticleEffectUserEntity;
+BattlePlayerEntity* gParticleEffectTargetEntity;
 s32 gGameStateFlag;
 s32 gBattleEngineStatus;
 static s8 gStateCallbackSlot;
@@ -948,191 +948,191 @@ static func_D_84390320 gStateFunctionTable[] = {
     BattleAnim_EffectStartNop, BattleAnim_StartEffect1Descriptor2FPhaseFadeOut, BattleAnim_StartEffect2Descriptor08IndexedScaleDelayFade, BattleAnim_StartEffect3ModelTintAndVerticalFade, BattleAnim_StartEffect4TintDescriptor53ScalePulse, BattleAnim_EffectStartNop, BattleAnim_StartEffect6AnimatedScaleAndBurstEmitter,
     BattleAnim_StartEffect7GlobalTintFade, BattleAnim_StartEffect8ModelBurstAndVerticalFade, BattleAnim_EffectStartNop, BattleAnim_StartEffect10Model60AndModelAnimWait, BattleAnim_StartEffect11GlobalTintFade, BattleAnim_StartEffect12DelayedModelAnim, BattleAnim_StartEffect13SecondaryOwnerSpeciesBranch,
     BattleAnim_StartEffect14ModelAnimAndMoveKeyedTintParticles, BattleAnim_StartEffect15Descriptor08IndexedScaleDelayFade, BattleAnim_StartEffect16TintDescriptor34Sequence, BattleAnim_StartEffect17ModelAnimFinish, BattleAnim_StartEffect18ScatterRadialAndColumnSequence, BattleAnim_EffectStartNop, BattleAnim_EffectStart_Generic,
-    ParticleEffect_WaterAnimBurst, ParticleEffect_InitSetA, ParticleEffect_InitSmokeSetA, ParticleEffect_PaletteScriptBurst, BattleAnim_EffectStartNop, InitParticleEffectSet_Alt2, BattleAnim_EffectStartNop,
-    ParticleEffect_RegisterEffectE0, ParticleEffect_GroupSetupA, ParticleEffect_FinalGroupSetup, ParticleEffect_ComplexNodeSetup, BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, ParticleEffect_RegisterSparkle,
-    ParticleEffect_InitSmokeSetB, ParticleEffect_BasicMultiBurst2, ParticleEffect_SimpleBurstScript, ParticleEffect_RegisterExplosion, InitParticleEffectSet_WithFade, ParticleEffect_RegisterLargeExplosion, ParticleEffect_TextureSetup,
-    BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, ParticleEffect_SetMode, BattleAnim_EffectStartNop, InitParticleEffectSet_WithTexture53, SpawnTimedFireballEffect,
-    ParticleEffect_SimpleNodeEntry, ParticleEffect_RegisterAll_48630, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandler_49628, ParticleEffect_RegisterEffectE0Alt2, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandler_49830,
-    ParticleEffect_AdditionalNodeSetup, ParticleEffect_SmallNodeSetupB, InitExplosionEffectSet, BattleAnim_CreateStreamSprayColumnEffect, ParticleEffect_GroupSetupA, ParticleEffect_HandleStateSetup, BattleAnim_EffectStartNop,
-    ParticleEffect_RegisterHandlers_Default, ParticleEffect_RegisterHandler_416B0, ParticleEffect_RegisterParticleNodes, ParticleEffect_RegisterMultipleHandlers, BattleAnim_EffectStartNop, ParticleEffect_RegisterHandler_49384, ParticleEffect_RegisterHandlers_49504,
-    InitParticleEffectSet_WithDifferentTiming, ParticleEffect_RegisterHandler_49058, ParticleEffect_RegisterHandler_47448, BattleAnim_CreateCollisionRandomEffect, ParticleEffect_RegisterHandler_49108, ParticleEffect_RegisterHandlers_Alternate, ParticleEffect_RegisterEffectE0Alt,
-    InitSmallGlowEffectSet, InitParticleEffectSet_Single, ParticleEffect_RegisterHandler_498D8, ParticleEffect_RegisterDefaultTexture, ParticleEffect_AdvancedModeSetup, ParticleEffect_RegisterAll_48630, ParticleEffect_SimpleBurst,
-    ParticleEffect_InitSmokeSetC, ParticleEffect_FinalSetupA, ParticleEffect_RegisterLargeExplosionAndEffects, BattleAnim_EffectStart_Custom, ParticleEffect_MultiNodeC2, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
-    ParticleEffect_PortraitBurstNode, ParticleEffect_PortraitBurstCheck, ParticleEffect_WaterAnimFirework, ParticleEffect_SimpleBurst2, ParticleEffect_PaletteMultiBurst2, ParticleEffect_PaletteBurst4, ParticleEffect_PaletteBurst5,
-    BattleAnim_EffectStartNop, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurst4, ParticleEffect_RotationEntry, BattleAnim_DisableEffectSpawningAlias, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
-    ParticleEffect_TriggerSpecial, ParticleEffect_AlphaBurst, ParticleEffect_AlphaBurst2, ParticleEffect_AdditionalSetupA, ParticleEffect_SimpleGroupSetup, ParticleEffect_ComplexGroupSetup, ParticleEffect_RegisterHandler_490A8,
-    ParticleEffect_PortraitBurstInit, ParticleEffect_TriggerDefault1, ParticleEffect_FinalSetupB, ParticleEffect_FinalSetupC, ParticleEffect_AdditionalNodeA, ParticleEffect_StateCollisionSetupA, ParticleEffect_CreateWithCallback,
-    ParticleEffect_CreateCallback, InitSmallGlowEffectSet, ParticleEffect_TriggerDefault3, BattleAnim_StartEffect122GlobalAndOwnerTintFade, ParticleEffect_ConditionalStateSetup, ParticleEffect_CollisionResponseSwitch, ParticleEffect_RegisterCallbacks,
-    BattleAnim_EffectStart_Special, ParticleEffect_CreateVariant45, ParticleEffect_CreateVariant47, ParticleEffect_CreateTypeX, ParticleEffect_CreateSmoke, ParticleEffect_CreateSmokeHighPriority, ParticleEffect_CreateDual,
+    ParticleEffect_WaterAnimBurst, BattleAnim_StartEffect22RotatingPaletteNoTint, BattleAnim_StartEffect23SmokeWithMarker, ParticleEffect_PaletteScriptBurst, BattleAnim_EffectStartNop, BattleAnim_StartEffect26TintDescriptor53ScalePulse, BattleAnim_EffectStartNop,
+    ParticleEffect_RegisterEffectE0, ParticleEffect_GroupSetupTintAndDefaultBurst, ParticleEffect_FinalGroupSetup, ParticleEffect_ComplexNodeSetup, BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, ParticleEffect_RegisterSparkle,
+    BattleAnim_StartEffect35SmokeTexture1, ParticleEffect_BasicMultiBurstDelayedSprayOnly, ParticleEffect_SimpleBurstScript, ParticleEffect_RegisterExplosion, InitParticleEffectSet_WithFade, ParticleEffect_RegisterLargeExplosion, ParticleEffect_TextureSetup,
+    BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, BattleAnim_EffectStartNop, ParticleEffect_SetMode, BattleAnim_EffectStartNop, BattleAnim_StartEffect47TintDescriptor53ScalePulseAndDescriptor4AFade, SpawnTimedFireballEffect,
+    ParticleEffect_SimpleNodeEntry, BattleAnim_StartEffects50And82TintRampAndModelScaleFade, BattleAnim_EffectStartNop, BattleAnim_StartEffect52ModelAnim, BattleAnim_StartEffect53Descriptor33FadeAndDescriptor47ScaleMotion, BattleAnim_EffectStartNop, BattleAnim_StartEffect55ModelAnimWaitMarkerSlotAndScaleFall,
+    ParticleEffect_AdditionalNodeSetup, BattleAnim_StartEffect57GlobalTintFade, InitExplosionEffectSet, BattleAnim_CreateStreamSprayColumnEffect, ParticleEffect_GroupSetupTintAndDefaultBurst, ParticleEffect_HandleStateSetup, BattleAnim_EffectStartNop,
+    ParticleEffect_RegisterHandlers_Default, BattleAnim_StartEffect64ModelAnimWait, ParticleEffect_RegisterParticleNodes, ParticleEffect_RegisterMultipleHandlers, BattleAnim_EffectStartNop, BattleAnim_StartEffect68ModelAnimWaitAndDescriptor42ScaleFall, BattleAnim_StartEffect69ModelPhaseWaitAndFallingParticles,
+    InitParticleEffectSet_WithDifferentTiming, BattleAnim_StartEffect71SpecialModelColorCycle, BattleAnim_StartEffect72ModelAnimWait, BattleAnim_CreateCollisionRandomEffect, BattleAnim_StartEffect74SpecialModelColorCycle, ParticleEffect_RegisterHandlers_Alternate, BattleAnim_StartEffect76Descriptor33FadeAndDescriptor47ScaleMotion,
+    InitSmallGlowEffectSet, InitParticleEffectSet_Single, BattleAnim_StartEffect79ModelAnimWaitAndDescriptor25AlphaFade, ParticleEffect_RegisterDefaultTexture, ParticleEffect_AdvancedModeSetup, BattleAnim_StartEffects50And82TintRampAndModelScaleFade, ParticleEffect_SimpleBurst,
+    BattleAnim_StartEffect84SmokeLongDuration, ParticleEffect_FinalSetupSpiralAndVerticalFade, ParticleEffect_RegisterLargeExplosionAndEffects, BattleAnim_StartEffect87TintRampAnimVerticalFade, ParticleEffect_MultiNodeEffect88Palette7, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
+    ParticleEffect_PortraitBurstNode, ParticleEffect_PortraitBurstCheck, ParticleEffect_WaterAnimFirework, ParticleEffect_SimpleBurstAnimWaitDelayedTintFade, ParticleEffect_PaletteMultiBurstCleanupWithTintFade, ParticleEffect_PaletteBurstVariant4Model8D, ParticleEffect_PaletteBurstVariant2Model8EDelayedFadeOut,
+    BattleAnim_EffectStartNop, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurstAnimWaitDelayedAlphaFadeOut, ParticleEffect_RotationEntry, BattleAnim_DisableEffectSpawningAlias, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
+    ParticleEffect_TriggerSpecial, ParticleEffect_AlphaBurst, ParticleEffect_AlphaBurstPalette17, ParticleEffect_AdditionalSetupDualRiseFade, ParticleEffect_SimpleGroupSetup, ParticleEffect_ComplexGroupSetup, BattleAnim_StartEffect111GlobalTintAndSpecialModelColorCycle,
+    ParticleEffect_PortraitBurstInit, ParticleEffect_TriggerDefaultPalette1B, ParticleEffect_FinalSetupRiseAndVerticalFade, ParticleEffect_FinalSetupPortraitBurst, ParticleEffect_AdditionalRiseFade, ParticleEffect_StateCollisionSetupDesc29ScaleAnimFade, ParticleEffect_CreateWithCallback,
+    ParticleEffect_CreateCallback, InitSmallGlowEffectSet, ParticleEffect_TriggerDefaultPalette1BWithTintFade, BattleAnim_StartEffect122GlobalAndOwnerTintFade, ParticleEffect_ConditionalStateSetup, ParticleEffect_CollisionResponseSwitch, ParticleEffect_RegisterCallbacks,
+    BattleAnim_EffectStart_Special, BattleAnim_StartEffect127Descriptor39ScaleFade, BattleAnim_StartEffect128Descriptor39ScaleFade, ParticleEffect_CreateTypeX, ParticleEffect_CreateSmoke, ParticleEffect_CreateSmokeHighPriority, ParticleEffect_CreateDual,
     BattleAnim_StartEffect133ModeOrbitBurstAndEffect135Followup, BattleAnim_StartEffect134ModeOrbitAndMetadataBurst, BattleAnim_StartEffect135ExpandingFlashAndRisingScaleFade, BattleAnim_EffectStartNop, BattleAnim_StartEffect137Descriptor3FRisingFade, ParticleEffect_TextureNodeSetup, BattleAnim_StartEffect139DualRepeatingSparks,
     BattleAnim_StartEffect140StartEffect139Alias, BattleAnim_StartEffect141GridRiseAndFallingBurst, BattleAnim_StartEffect142StartEffect141Alias, BattleAnim_StartEffect143ModeOrbitAndMetadataBurst, BattleAnim_EffectStartNop,
 };
 static func_D_84390320 gParticleStateFunctionTable[] = {
     BattleAnim_EffectEndNop, BattleAnim_EffectEndNop, InitComplexParticleSequence, ParticleEffect_SpecialCollisionSetup, ParticleEffect_MultiTextureSetup, ParticleEffect_DynamicCollisionSetup, ParticleEffect_RegisterPaletteVariants,
     ParticleEffect_PaletteMultiBurst, BattleAnim_CreateSprayColumnEffect, BattleAnim_EffectEndNop, ParticleEffect_RegisterAnimationCallbacks, BattleAnim_EffectEndNop, BattleAnim_EffectEndNop, ParticleEffect_RegisterSpecific,
-    ParticleEffect_InitializeGroup, ParticleEffect_InitExplosionSetB, ParticleEffect_AdvancedMultiBurst, ParticleEffect_RegisterSmoke, ParticleEffect_ModeSpecificSetup, BattleAnim_EffectEndNop, InitParticleComboVariant,
+    ParticleEffect_InitializeGroup, BattleAnim_EndEffect15ExplosionTintPalette35, ParticleEffect_AdvancedMultiBurst, ParticleEffect_RegisterSmoke, ParticleEffect_ModeSpecificSetup, BattleAnim_EffectEndNop, BattleAnim_EndEffect20ParticleComboBasic,
     ParticleEffect_RegisterModeSpecific, ParticleEffect_InitExplosionSet, ParticleEffect_RegisterAll, BattleAnim_EffectEndNop, ParticleEffect_PlaySoundAndReset, RegisterParticleEffect_ComplexMovement, InitAdvancedParticleCombo,
     BattleAnim_CreateBurstStreamEffect, ParticleEffect_InitFireSet, ParticleEffect_HandleCollisionSetup, ParticleEffect_RegisterMultiple, BattleAnim_EffectEndNop, BattleAnim_EffectEndNop, InitParticleEffectGroup_Basic,
-    ParticleEffect_ConfigB, ParticleEffect_ConfigA, ParticleEffect_SpecialSetupA, ParticleEffect_SpecialSetupB, ParticleEffect_AdditionalSetupB, ParticleEffect_InitSparkleSet, ParticleEffect_Trigger56A74,
-    ParticleEffect_ModeSetup, ParticleEffect_CollisionSetup, ParticleEffect_ConfigVariantA, ParticleEffect_CombinedSetupA, ParticleEffect_CombinedSetupB, ParticleEffect_SpecialSetupC, BattleAnim_EffectEndNop,
-    ParticleEffect_RegisterColorAnim, ParticleEffect_RegisterHandler_WithParticleData, ParticleEffect_WaterAnimBurst2, ParticleEffect_MultiHandleSetup, InitParticleEffectSet_WithCustomCallback, ParticleEffect_InitSetC, ParticleEffect_SimpleNodeSetup,
-    ParticleEffect_InitSetB, ParticleEffect_FullSetupB, BattleAnim_EffectEnd_Custom, ParticleEffect_InitCombinedSet, ParticleEffect_WaterAnimFirework2, ParticleEffect_SimpleBurst3, ParticleEffect_PaletteMultiBurst3,
-    ParticleEffect_FireworkBurst, ParticleEffect_FireballBurst, ParticleEffect_FireworkEntry, ParticleEffect_SimpleNodeBurst, InitParticleEffectSet_WithMultiple, InitParticleEffectSet_WithTimedFireball, InitParticleEffectSet_Variant2,
-    InitParticleEffectSet_WithComplex, InitParticleEffectSet_Variant3, BattleAnim_CreateSprayColumnEffectTrigger, ParticleEffect_AlphaFirework2, ParticleEffect_AlphaFirework, ParticleEffect_MultiNodeAEntry, ParticleEffect_TriggerAnother,
-    ParticleEffect_TriggerDefault2, ParticleEffect_RegisterHandlers_4967C, ParticleEffect_CreateColorVariant, ParticleEffect_ConfigVariantB, ParticleEffect_RegisterAll_489FC, ParticleEffect_RegisterAll_489FC, ParticleEffect_ConfigureAndTrigger_4917C,
-    ParticleEffect_TriggerDefault4, ParticleEffect_StateCollisionSetupB, InitParticleEffectSet_ThreeInstances, RegisterParticleEffect_Burst, ParticleEffect_CollisionAndBurstSetup, BattleAnim_EffectEndNop,
+    ParticleEffect_ConfigTexture7Palette1, ParticleEffect_ConfigTexture9Palette2, ParticleEffect_SpecialSetupBurstPalette3, ParticleEffect_SpecialSetupBurstPalette4, ParticleEffect_AdditionalSetupBurstAndRiseFade, ParticleEffect_InitSparkleSet, BattleAnim_EndEffect41Descriptor34Burst,
+    ParticleEffect_ModeSetup, ParticleEffect_CollisionSetup, BattleAnim_EndEffect44ConfigMotion6, ParticleEffect_CombinedSetupBurst3DRandom, ParticleEffect_CombinedSetupBurstHorizontalRandom, ParticleEffect_SpecialSetupDelayedScatterPalette1, BattleAnim_EffectEndNop,
+    ParticleEffect_RegisterColorAnim, ParticleEffect_RegisterHandler_WithParticleData, ParticleEffect_WaterAnimBurstTintFadeOnly, ParticleEffect_MultiHandleSetup, InitParticleEffectSet_WithCustomCallback, BattleAnim_EndEffect54TintRampDelayedColorFade, ParticleEffect_SimpleNodeSetup,
+    BattleAnim_EndEffect56TintRampRisingSpread, ParticleEffect_FullSetupTintFadeOutAndRestore, BattleAnim_EndEffect58ModelAnimVerticalFade, ParticleEffect_InitCombinedSet, ParticleEffect_WaterAnimFireworkModel42RotationFollow, ParticleEffect_SimpleBurstTintPulseAnimWaitPaletteC, ParticleEffect_PaletteMultiBurstNoCleanupNoTintFade,
+    ParticleEffect_FireworkBurst, ParticleEffect_FireballBurst, ParticleEffect_FireworkEntry, ParticleEffect_SimpleNodeBurst, InitParticleEffectSet_WithMultiple, InitParticleEffectSet_WithTimedFireball, BattleAnim_EndEffect69PaletteRotateWithExpandingHoldFade,
+    InitParticleEffectSet_WithComplex, BattleAnim_EndEffect71PaletteApproachWithExpandingScaleFades, BattleAnim_CreateSprayColumnEffectTrigger, ParticleEffect_AlphaFireworkPalette17, ParticleEffect_AlphaFirework, ParticleEffect_MultiNodeAEntry, ParticleEffect_TriggerAnother,
+    ParticleEffect_TriggerDefaultPalette1C, BattleAnim_EndEffect78ModelAnimDelayedMotionAndFallingParticles, BattleAnim_EndEffect79ModelPaletteFade, BattleAnim_EndEffect80ConfigMotion16, BattleAnim_EndEffects81And82TintRampAndModelScaleFade, BattleAnim_EndEffects81And82TintRampAndModelScaleFade, BattleAnim_EndEffect83TintRampAndDescriptor34Burst,
+    ParticleEffect_TriggerDefaultPalette1CWithTintRamps, ParticleEffect_StateCollisionSetupDesc2BGravityFall, InitParticleEffectSet_ThreeInstances, RegisterParticleEffect_Burst, ParticleEffect_CollisionAndBurstSetup, BattleAnim_EffectEndNop,
 };
-static u8 gBattleScript_NullParam[] = {
+static u8 gBattleScript_LoadGfxEmpty[] = {
     0x3F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00,
     0x3F, 0x00, 0x00, 0x00, 0x01, 0x3F, 0x00, 0x00, 0x3F, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScript_NullParam8[] = {
+static u8 gBattleScript_LoadGfx03[] = {
     0x03,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_48[] = {
+static u8 gBattleScript_LoadGfx04[] = {
     0x04,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_Param05[] = {
+static u8 gBattleScript_LoadGfx05[] = {
     0x05,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_Param06[] = {
+static u8 gBattleScript_LoadGfx06[] = {
     0x06,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_Param09[] = {
+static u8 gBattleScript_LoadGfx09[] = {
     0x09,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_Param0A[] = {
+static u8 gBattleScript_LoadGfx0A[] = {
     0x0A,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_NullParam7[] = {
+static u8 gBattleScript_LoadGfx0B[] = {
     0x0B,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_60[] = {
+static u8 gBattleScript_LoadGfx0C[] = {
     0x0C, 0x3F, 0x00, 0x00, 0x0D, 0x3F, 0x00, 0x00,
 
 };
-static u8 gBattleScript_NullParam5[] = {
+static u8 gBattleScript_LoadGfx0E[] = {
     0x0E,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_NullParam11[] = {
+static u8 gBattleScript_LoadGfx0F[] = {
     0x0F,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_Param10[] = {
+static u8 gBattleScript_LoadGfx10[] = {
     0x10,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_NullParam6[] = {
+static u8 gBattleScript_LoadGfx11[] = {
     0x11,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_NullParam10[] = {
+static u8 gBattleScript_LoadGfx11_3D[] = {
     0x11,
     0x3D,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptCmd_46[] = {
+static u8 gBattleScript_LoadGfx12[] = {
     0x12,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_Param13[] = {
+static u8 gBattleScript_LoadGfx13[] = {
     0x13,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_84[] = {
+static u8 gBattleScript_LoadGfx14[] = {
     0x14, 0x3F, 0x00, 0x00, 0x15, 0x3F, 0x00, 0x00,
 
 };
-static u8 gBattleScript_Param16[] = {
+static u8 gBattleScript_LoadGfx16[] = {
     0x16, 0x3F, 0x00, 0x00, 0x17, 0x3F, 0x00, 0x00,
 
 };
-static u8 gBattleScript_NullParam2[] = {
+static u8 gBattleScript_LoadGfx18[] = {
     0x18,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_Param19[] = {
+static u8 gBattleScript_LoadGfx19_32[] = {
     0x19,
     0x32,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScript_Param1A[] = {
+static u8 gBattleScript_LoadGfx1A[] = {
     0x1A,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_NullParam9[] = {
+static u8 gBattleScript_LoadGfx1B_27[] = {
     0x1B,
     0x27,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptTable_A4[] = {
+static u8 gBattleScript_LoadGfx1C[] = {
     0x1C,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_Param27[] = {
+static u8 gBattleScript_LoadGfx27[] = {
     0x27,
     0x3F,
     0x00,
@@ -1153,7 +1153,7 @@ static u8 gBattleScript_AnimAttack[] = {
     0x00,
 
 };
-static u8 gBattleScriptTable_B4[] = {
+static u8 gBattleScript_LoadGfx20[] = {
     0x20,
     0x3F,
     0x00,
@@ -1178,1213 +1178,1213 @@ static u8 gBattleScript_AnimFaint[] = {
     0x23, 0x3F, 0x00, 0x00, 0x24, 0x3F, 0x00, 0x00,
 
 };
-static u8 gBattleScript_NullParam12[] = {
+static u8 gBattleScript_LoadGfx25[] = {
     0x25,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_NullParam4[] = {
+static u8 gBattleScript_LoadGfx26_11[] = {
     0x26,
     0x11,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptTable_D0[] = {
+static u8 gBattleScript_LoadGfx27_32[] = {
     0x27,
     0x32,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptCmd_28[] = {
+static u8 gBattleScript_LoadGfx28[] = {
     0x28,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_29[] = {
+static u8 gBattleScript_LoadGfx29_03[] = {
     0x29,
     0x03,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptCmd_2A[] = {
+static u8 gBattleScript_LoadGfx2A[] = {
     0x2A,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_2B[] = {
+static u8 gBattleScript_LoadGfx2B_11[] = {
     0x2B,
     0x11,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptCmd_17[] = {
+static u8 gBattleScript_LoadGfx17[] = {
     0x17,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_09[] = {
+static u8 gBattleScript_LoadGfx09_Alt[] = {
     0x09,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_0B_0E[] = {
+static u8 gBattleScript_LoadGfx0B_Alt[] = {
     0x0B, 0x3F, 0x00, 0x00, 0x0E, 0x3F, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_14[] = {
+static u8 gBattleScript_LoadGfx14_Alt[] = {
     0x14,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_15[] = {
+static u8 gBattleScript_LoadGfx15[] = {
     0x15,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_1E[] = {
+static u8 gBattleScript_LoadGfx1E[] = {
     0x1E,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_10[] = {
+static u8 gBattleScript_LoadGfx10_Alt[] = {
     0x10,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_904[] = {
+static u8 gBattleScript_LoadGfx14_Alt2[] = {
     0x14,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_0C[] = {
+static u8 gBattleScript_LoadGfx0C_Alt[] = {
     0x0C,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_07[] = {
+static u8 gBattleScript_LoadGfx07[] = {
     0x07,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_36[] = {
+static u8 gBattleScript_LoadGfx36[] = {
     0x36,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_18[] = {
+static u8 gBattleScript_LoadGfx18_0D[] = {
     0x18,
     0x0D,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptTable_918[] = {
+static u8 gBattleScript_LoadGfx03_Alt[] = {
     0x03, 0x3F, 0x00, 0x00, 0x14, 0x3F, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_2C[] = {
+static u8 gBattleScript_LoadGfx2C[] = {
     0x2C,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_2C_Alt[] = {
+static u8 gBattleScript_LoadGfx2C_Alt[] = {
     0x2C,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_3C[] = {
+static u8 gBattleScript_LoadGfx3C[] = {
     0x3C,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_2D[] = {
+static u8 gBattleScript_LoadGfx2D[] = {
     0x2D,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_08[] = {
+static u8 gBattleScript_LoadGfx08[] = {
     0x08,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_2E[] = {
+static u8 gBattleScript_LoadGfx2E[] = {
     0x2E,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_2F[] = {
+static u8 gBattleScript_LoadGfx2F[] = {
     0x2F,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_30[] = {
+static u8 gBattleScript_LoadGfx30[] = {
     0x30,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_31[] = {
+static u8 gBattleScript_LoadGfx31[] = {
     0x31,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_32[] = {
+static u8 gBattleScript_LoadGfx32[] = {
     0x32,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_33[] = {
+static u8 gBattleScript_LoadGfx33[] = {
     0x33,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_34[] = {
+static u8 gBattleScript_LoadGfx34[] = {
     0x34,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_35[] = {
+static u8 gBattleScript_LoadGfx35[] = {
     0x35,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_37[] = {
+static u8 gBattleScript_LoadGfx37[] = {
     0x37,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_38[] = {
+static u8 gBattleScript_LoadGfx38[] = {
     0x38,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_39[] = {
+static u8 gBattleScript_LoadGfx39[] = {
     0x39,
     0x3F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_3A[] = {
+static u8 gBattleScript_LoadGfx3A_0B[] = {
     0x3A,
     0x0B,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptCmd_3B[] = {
+static u8 gBattleScript_LoadGfx3B_2C[] = {
     0x3B,
     0x2C,
     0x3F,
     0x00,
 
 };
-static u8 gBattleScriptCmd_00[] = {
+static u8 gBattleScript_StartEmpty[] = {
     0x00, 0x00, 0x00, 0x00, 0x66, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_90[] = {
+static u8 gBattleScript_Start90Nop[] = {
     0x90,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_01[] = {
+static u8 gBattleScript_Start01Descriptor2FPhaseFadeOut[] = {
     0x01,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_02[] = {
+static u8 gBattleScript_Start02Descriptor08IndexedScaleDelayFade[] = {
     0x02,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_03[] = {
+static u8 gBattleScript_Start03ModelTintAndVerticalFade[] = {
     0x03,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_66_04_05[] = {
+static u8 gBattleScript_NoSpawnThen04TintDescriptor53ScalePulse[] = {
     0x66, 0x04, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_06[] = {
+static u8 gBattleScript_Start06AnimatedScaleAndBurstEmitter[] = {
     0x06,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_3A_Alt[] = {
+static u8 gBattleScript_Start3AInitExplosionEffectSet[] = {
     0x3A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_07[] = {
+static u8 gBattleScript_NoSpawnThen07TexturedRibbonSheet[] = {
     0x66,
     0x07,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_08_09[] = {
+static u8 gBattleScript_Start08ModelBurstAndVerticalFade[] = {
     0x08, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_0A[] = {
+static u8 gBattleScript_Start0AModel60AndModelAnimWait[] = {
     0x0A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_66_0B_0C[] = {
+static u8 gBattleScript_NoSpawnThen0BGlobalTintFade[] = {
     0x66, 0x0B, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_0D[] = {
+static u8 gBattleScript_Start0DSecondaryOwnerSpeciesBranch[] = {
     0x0D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_7B[] = {
+static u8 gBattleScript_Start7BConditionalStateSetup[] = {
     0x7B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_7C[] = {
+static u8 gBattleScript_Start7CCollisionResponseSwitch[] = {
     0x7C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_0E[] = {
+static u8 gBattleScript_Start0EModelAnimAndMoveKeyedTintParticles[] = {
     0x0E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_0F[] = {
+static u8 gBattleScript_Start0FDescriptor08IndexedScaleDelayFade[] = {
     0x0F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_9BC[] = {
+static u8 gBattleScript_Start10TintDescriptor34Sequence[] = {
     0x10,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_11[] = {
+static u8 gBattleScript_Start11ModelAnimFinish[] = {
     0x11,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_12[] = {
+static u8 gBattleScript_Start12ScatterRadialAndColumnSequence[] = {
     0x12,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_13_14[] = {
+static u8 gBattleScript_Start13Radial20[] = {
     0x13, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_15_Alt[] = {
+static u8 gBattleScript_Start15WaterAnimBurst[] = {
     0x15,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_16[] = {
+static u8 gBattleScript_Start16Effect22RotatingPaletteNoTint[] = {
     0x16,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_4D[] = {
+static u8 gBattleScript_Start17Effect23SmokeWithMarker[] = {
     0x17,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_18_Alt[] = {
+static u8 gBattleScript_Start18PaletteScriptBurst[] = {
     0x18,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_4E[] = {
+static u8 gBattleScript_Start19Nop[] = {
     0x19, 0x00, 0x00, 0x00, 0x1B, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_1C[] = {
+static u8 gBattleScript_Start1CRegisterEffectE0[] = {
     0x1C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_4C[] = {
+static u8 gBattleScript_Start4CRegisterEffectE0Alt[] = {
     0x4C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_9F0[] = {
+static u8 gBattleScript_Start1DGroupSetupA[] = {
     0x1D, 0x00, 0x00, 0x00, 0x1E, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptCmd_1F[] = {
+static u8 gBattleScript_Start1FComplexNodeSetup[] = {
     0x1F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_20[] = {
+static u8 gBattleScript_Start20Nop[] = {
     0x20,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_21[] = {
+static u8 gBattleScript_Start21Radial20[] = {
     0x21,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_22[] = {
+static u8 gBattleScript_Start22RegisterSparkle[] = {
     0x22,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_23[] = {
+static u8 gBattleScript_Start23Effect35SmokeTexture1[] = {
     0x23,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_24[] = {
+static u8 gBattleScript_NoSpawnThen24TerrainGrid[] = {
     0x66,
     0x24,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_25[] = {
+static u8 gBattleScript_Start25SimpleBurstScript[] = {
     0x25,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_26[] = {
+static u8 gBattleScript_Start26RegisterExplosion[] = {
     0x26,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_27[] = {
+static u8 gBattleScript_NoSpawnThen27InitSetWithFade[] = {
     0x66,
     0x27,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_28_Alt[] = {
+static u8 gBattleScript_Start28RegisterLargeExplosion[] = {
     0x28,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_29_Alt[] = {
+static u8 gBattleScript_Start29TextureSetup[] = {
     0x29,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_2A[] = {
+static u8 gBattleScript_NoSpawnThen2ATrail40[] = {
     0x66,
     0x2A,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_2B_Alt[] = {
+static u8 gBattleScript_Start2BTrail40Variant[] = {
     0x2B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_2C_Alt2[] = {
+static u8 gBattleScript_Start2CTrail40GridAlt[] = {
     0x2C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_2D[] = {
+static u8 gBattleScript_NoSpawnThen2DSetMode[] = {
     0x66, 0x2D, 0x00, 0x00, 0x2E, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptJump_2F[] = {
+static u8 gBattleScript_NoSpawnThen2FInitSetWithTexture53[] = {
     0x66,
     0x2F,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A3C[] = {
+static u8 gBattleScript_Start30TimedFireball[] = {
     0x30,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A40[] = {
+static u8 gBattleScript_Start31SimpleNodeEntry[] = {
     0x31,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A44[] = {
+static u8 gBattleScript_Start32TintRampAndModelScaleFade[] = {
     0x32,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_52[] = {
+static u8 gBattleScript_Start52TintRampAndModelScaleFade[] = {
     0x52,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_59[] = {
+static u8 gBattleScript_Start59MultiNodeD[] = {
     0x59,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A50[] = {
+static u8 gBattleScript_Start34ModelAnim[] = {
     0x34, 0x00, 0x00, 0x00, 0x35, 0x00, 0x00, 0x00, 0x36, 0x00, 0x00, 0x00,
 
 };
-static u8 gBattleScriptTable_A5C[] = {
+static u8 gBattleScript_Start37ModelAnimWaitMarkerSlotAndScaleFall[] = {
     0x37,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_35_05[] = {
+static u8 gBattleScript_Start35RegisterEffectE0Alt2_05RibbonMesh[] = {
     0x35,
     0x05,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_6A[] = {
+static u8 gBattleScript_Start6AAlphaBurst[] = {
     0x6A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_6B[] = {
+static u8 gBattleScript_Start6BAlphaBurstPalette17[] = {
     0x6B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_1B[] = {
+static u8 gBattleScript_Start1BNop[] = {
     0x1B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_56[] = {
+static u8 gBattleScript_Start56RegisterLargeExplosionAndEffects[] = {
     0x56,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A74[] = {
+static u8 gBattleScript_Start1EFinalGroupSetup[] = {
     0x1E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_5D[] = {
+static u8 gBattleScript_Start5DWaterAnimFirework[] = {
     0x5D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A7C[] = {
+static u8 gBattleScript_Start1CRegisterEffectE0_36RibbonMesh[] = {
     0x1C,
     0x36,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A80[] = {
+static u8 gBattleScript_Start0EModelAnimAndMoveKeyedTintParticles_Alt[] = {
     0x0E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_40[] = {
+static u8 gBattleScript_Start40ModelAnimWait[] = {
     0x40,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A88[] = {
+static u8 gBattleScript_Start0CDelayedModelAnim[] = {
     0x0C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_42[] = {
+static u8 gBattleScript_Start42RegisterMultipleHandlers[] = {
     0x42,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_5F[] = {
+static u8 gBattleScript_Start5FPaletteMultiBurstCleanupWithTintFade[] = {
     0x5F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_4E[] = {
+static u8 gBattleScript_NoSpawnThen4EInitSetSingle[] = {
     0x66,
     0x4E,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_A98[] = {
+static u8 gBattleScript_Start3BCreateStreamSprayColumnEffect[] = {
     0x3B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_38_Alt[] = {
+static u8 gBattleScript_Start38AdditionalNodeSetup[] = {
     0x38,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_39[] = {
+static u8 gBattleScript_NoSpawnThen39SmallNodeSetupB[] = {
     0x66,
     0x39,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_3D[] = {
+static u8 gBattleScript_Start3DHandleStateSetup[] = {
     0x3D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_3E[] = {
+static u8 gBattleScript_Start3EOwnerLinkedFourStream[] = {
     0x3E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_7D[] = {
+static u8 gBattleScript_Start7DRegisterCallbacks[] = {
     0x7D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_7E[] = {
+static u8 gBattleScript_Start7ESpecial[] = {
     0x7E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_7F[] = {
+static u8 gBattleScript_Start7FCreateVariant45[] = {
     0x7F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_80[] = {
+static u8 gBattleScript_Start80CreateVariant47[] = {
     0x80,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_81[] = {
+static u8 gBattleScript_Start81CreateTypeX[] = {
     0x81,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_82[] = {
+static u8 gBattleScript_Start82CreateSmoke[] = {
     0x82,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_83[] = {
+static u8 gBattleScript_Start83CreateSmokeHighPriority[] = {
     0x83,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_84[] = {
+static u8 gBattleScript_Start84CreateDual[] = {
     0x84,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_8B[] = {
+static u8 gBattleScript_Start8BDualRepeatingSparks[] = {
     0x8B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_8C[] = {
+static u8 gBattleScript_Start8CDualRepeatingSparksAlias[] = {
     0x8C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_8D[] = {
+static u8 gBattleScript_Start8DGridRiseAndFallingBurst[] = {
     0x8D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_8E[] = {
+static u8 gBattleScript_Start8EGridRiseAndFallingBurstAlias[] = {
     0x8E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_85[] = {
+static u8 gBattleScript_Start85ModeOrbitBurstAndFollowup[] = {
     0x85,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_86[] = {
+static u8 gBattleScript_Start86ModeOrbitAndMetadataBurst[] = {
     0x86,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_8F[] = {
+static u8 gBattleScript_Start8FModeOrbitAndMetadataBurst[] = {
     0x8F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_87[] = {
+static u8 gBattleScript_Start87ExpandingFlashAndRisingScaleFade[] = {
     0x87,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_88[] = {
+static u8 gBattleScript_Start88Nop[] = {
     0x88,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_89[] = {
+static u8 gBattleScript_Start89Descriptor3FRisingFade[] = {
     0x89,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_8A[] = {
+static u8 gBattleScript_Start8ATextureNodeSetup[] = {
     0x8A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_3F[] = {
+static u8 gBattleScript_Start3FRegisterHandlersDefault[] = {
     0x3F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_41[] = {
+static u8 gBattleScript_Start41RegisterParticleNodes[] = {
     0x41,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_43[] = {
+static u8 gBattleScript_Start43OwnerAnchoredFourStream[] = {
     0x43,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_71[] = {
+static u8 gBattleScript_Start71TriggerDefaultPalette1B[] = {
     0x71,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_79[] = {
+static u8 gBattleScript_Start79TriggerDefaultPalette1BWithTintFade[] = {
     0x79,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_44[] = {
+static u8 gBattleScript_Start44ModelAnimWaitAndDescriptor42ScaleFall[] = {
     0x44,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_45[] = {
+static u8 gBattleScript_Start45ModelPhaseWaitAndFallingParticles[] = {
     0x45,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_46[] = {
+static u8 gBattleScript_NoSpawnThen46InitSetWithDifferentTiming[] = {
     0x66,
     0x46,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_47[] = {
+static u8 gBattleScript_Start47SpecialModelColorCycle[] = {
     0x47,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_6F[] = {
+static u8 gBattleScript_Start6FGlobalTintAndSpecialModelColorCycle[] = {
     0x6F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_48[] = {
+static u8 gBattleScript_Start48ModelAnimWait[] = {
     0x48,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_49[] = {
+static u8 gBattleScript_Start49CreateCollisionRandomEffect[] = {
     0x49,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_4A[] = {
+static u8 gBattleScript_Start4ASpecialModelColorCycle[] = {
     0x4A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_4B[] = {
+static u8 gBattleScript_Start4BRegisterHandlersAlternate[] = {
     0x4B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_78[] = {
+static u8 gBattleScript_NoSpawnThen78InitSmallGlowEffectSet[] = {
     0x66,
     0x78,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_4F[] = {
+static u8 gBattleScript_Start4FModelAnimWaitAndDescriptor25AlphaFade[] = {
     0x4F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_50[] = {
+static u8 gBattleScript_Start50RegisterDefaultTexture[] = {
     0x50,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_51[] = {
+static u8 gBattleScript_Start51AdvancedModeSetup[] = {
     0x51,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_53[] = {
+static u8 gBattleScript_Start53SimpleBurst[] = {
     0x53,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_54[] = {
+static u8 gBattleScript_Start54Effect84SmokeLongDuration[] = {
     0x54,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_55[] = {
+static u8 gBattleScript_Start55FinalSetupA[] = {
     0x55,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_72[] = {
+static u8 gBattleScript_Start72FinalSetupB[] = {
     0x72,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_73[] = {
+static u8 gBattleScript_Start73FinalSetupC[] = {
     0x73,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_74[] = {
+static u8 gBattleScript_Start74AdditionalRiseFade[] = {
     0x74,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_57[] = {
+static u8 gBattleScript_Start57Effect87TintRampAnimVerticalFade[] = {
     0x57,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_58[] = {
+static u8 gBattleScript_Start58MultiNodeEffect88Palette7[] = {
     0x58,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptTable_B60[] = {
+static u8 gBattleScript_Start59MultiNodeD_Alt[] = {
     0x59,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_5A[] = {
+static u8 gBattleScript_Start5APortraitBurst[] = {
     0x5A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_5B[] = {
+static u8 gBattleScript_Start5BPortraitBurstNode[] = {
     0x5B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_5C[] = {
+static u8 gBattleScript_Start5CPortraitBurstCheck[] = {
     0x5C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_5E[] = {
+static u8 gBattleScript_Start5ESimpleBurstAnimWaitDelayedTintFade[] = {
     0x5E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_60[] = {
+static u8 gBattleScript_Start60PaletteBurstVariant4Model8D[] = {
     0x60,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_61[] = {
+static u8 gBattleScript_Start61PaletteBurstVariant2Model8EDelayedFadeOut[] = {
     0x61,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_62[] = {
+static u8 gBattleScript_Start62Radial20[] = {
     0x62,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_63[] = {
+static u8 gBattleScript_Start63BasicMultiBurst[] = {
     0x63,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_64[] = {
+static u8 gBattleScript_Start64SimpleBurstAnimWaitDelayedAlphaFadeOut[] = {
     0x64,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_65[] = {
+static u8 gBattleScript_Start65RotationEntry[] = {
     0x65,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptJump_1A[] = {
+static u8 gBattleScript_NoSpawnThen1AEffect26DoubleTextureTrail[] = {
     0x66,
     0x1A,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_67[] = {
+static u8 gBattleScript_Start67InitSmoke[] = {
     0x67,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_68[] = {
+static u8 gBattleScript_Start68InitFire[] = {
     0x68,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_69[] = {
+static u8 gBattleScript_Start69TriggerSpecial[] = {
     0x69,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_6C[] = {
+static u8 gBattleScript_Start6CAdditionalSetupA[] = {
     0x6C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_6D[] = {
+static u8 gBattleScript_Start6DSimpleGroupSetup[] = {
     0x6D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_6E[] = {
+static u8 gBattleScript_Start6EComplexGroupSetup[] = {
     0x6E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_70[] = {
+static u8 gBattleScript_Start70PortraitBurstInit[] = {
     0x70,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_75[] = {
+static u8 gBattleScript_Start75StateCollisionSetupA[] = {
     0x75,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_76[] = {
+static u8 gBattleScript_Start76CreateWithCallback[] = {
     0x76,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_77[] = {
+static u8 gBattleScript_Start77CreateCallback[] = {
     0x77,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScriptCmd_7A[] = {
+static u8 gBattleScript_Start7AGlobalAndOwnerTintFade[] = {
     0x7A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 gBattleScript_NullParam3[] = {
+static u8 gBattleScript_EndEmpty[] = {
     0x00, 0x00, 0x00, 0x00, 0x59, 0x00, 0x00, 0x00,
 
 };
@@ -2399,550 +2399,550 @@ static u8 gBattleScript_MsgEnd[] = {
     0x30, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00,
 
 };
-static u8 Fragment62_Byte04[] = {
+static u8 gBattleScript_End04_MultiTextureSetup[] = {
     0x04,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte05[] = {
+static u8 gBattleScript_End05_DynamicCollisionSetup[] = {
     0x05,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Entry58_06[] = {
+static u8 gBattleScript_End58_CollisionAndBurstSetup[] = {
     0x58, 0x00, 0x00, 0x00, 0x06, 0x00, 0x00, 0x00,
 
 };
-static u8 Fragment62_Byte07[] = {
+static u8 gBattleScript_End07_PaletteMultiBurst[] = {
     0x07,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte08[] = {
+static u8 gBattleScript_End08_SprayColumnEffect[] = {
     0x08,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte48[] = {
+static u8 gBattleScript_End48_SprayColumnEffectTrigger[] = {
     0x48,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte09[] = {
+static u8 gBattleScript_End09_Radial20[] = {
     0x09,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes0A_0B_0C_0D[] = {
+static u8 gBattleScript_End0A_RegisterAnimationCallbacks[] = {
     0x0A, 0x00, 0x00, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x0D, 0x00, 0x00, 0x00,
 
 };
-static u8 Fragment62_Byte0E[] = {
+static u8 gBattleScript_End0E_InitializeGroup[] = {
     0x0E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte23[] = {
+static u8 gBattleScript_End23_ConfigTexture7Palette1[] = {
     0x23,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte24[] = {
+static u8 gBattleScript_End24_ConfigTexture9Palette2[] = {
     0x24,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte25[] = {
+static u8 gBattleScript_End25_SpecialSetupBurstPalette3[] = {
     0x25,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes54_25[] = {
+static u8 gBattleScript_End54_25_TriggerDefault4AndSpecialSetupBurstPalette3[] = {
     0x54,
     0x25,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes4D_0E[] = {
+static u8 gBattleScript_End4D_0E_TriggerDefault2AndInitializeGroup[] = {
     0x4D,
     0x0E,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte26[] = {
+static u8 gBattleScript_End26_SpecialSetupBurstPalette4[] = {
     0x26,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte0F[] = {
+static u8 gBattleScript_End0F_ExplosionTintPalette35[] = {
     0x0F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte10[] = {
+static u8 gBattleScript_End10_AdvancedMultiBurst[] = {
     0x10,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte11[] = {
+static u8 gBattleScript_End11_RegisterSmoke[] = {
     0x11,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes12_13_14[] = {
+static u8 gBattleScript_End12_ModeSpecificSetup[] = {
     0x12, 0x00, 0x00, 0x00, 0x13, 0x00, 0x00, 0x00, 0x14, 0x00, 0x00, 0x00,
 
 };
-static u8 Fragment62_Byte15[] = {
+static u8 gBattleScript_End15_RegisterModeSpecific[] = {
     0x15,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte16[] = {
+static u8 gBattleScript_End16_ExplosionSet[] = {
     0x16,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte17[] = {
+static u8 gBattleScript_End17_RegisterAll[] = {
     0x17,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte18[] = {
+static u8 gBattleScript_End18_NoOp[] = {
     0x18,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte19[] = {
+static u8 gBattleScript_End19_PlaySoundAndReset[] = {
     0x19,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes0D_0E[] = {
+static u8 gBattleScript_End0D_0E_RegisterSpecificAndInitializeGroup[] = {
     0x0D,
     0x0E,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte03[] = {
+static u8 gBattleScript_End03_SpecialCollisionSetup[] = {
     0x03,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte07b[] = {
+static u8 gBattleScript_End07_PaletteMultiBurst_Alt[] = {
     0x07,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte22[] = {
+static u8 gBattleScript_End22_InitParticleGroupBasic[] = {
     0x22,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte35[] = {
+static u8 gBattleScript_End35_SetWithCustomCallback[] = {
     0x35,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes45_0E_04[] = {
+static u8 gBattleScript_End45_SetVariant2[] = {
     0x45, 0x00, 0x00, 0x00, 0x0E, 0x04, 0x00, 0x00,
 
 };
-static u8 Fragment62_Byte1A[] = {
+static u8 gBattleScript_End1A_ComplexMovement[] = {
     0x1A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte09b[] = {
+static u8 gBattleScript_End09_Radial20_Alt[] = {
     0x09,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes06_0E[] = {
+static u8 gBattleScript_End06_0E_RegisterPaletteVariantsAndInitializeGroup[] = {
     0x06,
     0x0E,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes1B_1C[] = {
+static u8 gBattleScript_End1B_AdvancedParticleCombo[] = {
     0x1B, 0x00, 0x00, 0x00, 0x1C, 0x00, 0x00, 0x00,
 
 };
-static u8 Fragment62_Byte1D[] = {
+static u8 gBattleScript_End1D_FireSet[] = {
     0x1D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte1E[] = {
+static u8 gBattleScript_End1E_HandleCollisionSetup[] = {
     0x1E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte55[] = {
+static u8 gBattleScript_End55_StateCollisionSetupDesc2BGravityFall[] = {
     0x55,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte1F[] = {
+static u8 gBattleScript_End1F_RegisterMultiple[] = {
     0x1F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte20[] = {
+static u8 gBattleScript_End20_Radial20[] = {
     0x20,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte21[] = {
+static u8 gBattleScript_End21_Radial20[] = {
     0x21,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes4F_27[] = {
+static u8 gBattleScript_End4F_27_ColorVariantAndAdditionalSetupBurstAndRiseFade[] = {
     0x4F,
     0x27,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte28[] = {
+static u8 gBattleScript_End28_SparkleSet[] = {
     0x28,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte29[] = {
+static u8 gBattleScript_End29_Descriptor34Burst[] = {
     0x29,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte2A[] = {
+static u8 gBattleScript_End2A_ModeSetup[] = {
     0x2A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte2B[] = {
+static u8 gBattleScript_End2B_CollisionSetup[] = {
     0x2B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte2C[] = {
+static u8 gBattleScript_End2C_ConfigMotion6[] = {
     0x2C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte2D[] = {
+static u8 gBattleScript_End2D_CombinedSetupBurst3DRandom[] = {
     0x2D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes4F_2D[] = {
+static u8 gBattleScript_End4F_2D_ColorVariantAndCombinedSetupBurst3DRandom[] = {
     0x4F,
     0x2D,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte2E[] = {
+static u8 gBattleScript_End2E_CombinedSetupBurstHorizontalRandom[] = {
     0x2E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte2F[] = {
+static u8 gBattleScript_End2F_SpecialSetupDelayedScatterPalette1[] = {
     0x2F,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte31[] = {
+static u8 gBattleScript_End31_RegisterColorAnim[] = {
     0x31,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte32[] = {
+static u8 gBattleScript_End32_RegisterHandlerWithParticleData[] = {
     0x32,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes3F_23_33[] = {
+static u8 gBattleScript_End3F_23_FireworkBurstAndConfigTexture7Palette1[] = {
     0x3F, 0x23, 0x00, 0x00, 0x33, 0x00, 0x00, 0x00,
 
 };
-static u8 Fragment62_Byte34[] = {
+static u8 gBattleScript_End34_MultiHandleSetup[] = {
     0x34,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte36[] = {
+static u8 gBattleScript_End36_TintRampDelayedColorFade[] = {
     0x36,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte37[] = {
+static u8 gBattleScript_End37_SimpleNodeSetup[] = {
     0x37,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte39[] = {
+static u8 gBattleScript_End39_FullSetupTintFadeOutAndRestore[] = {
     0x39,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte49[] = {
+static u8 gBattleScript_End49_AlphaFireworkPalette17[] = {
     0x49,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte4A[] = {
+static u8 gBattleScript_End4A_AlphaFirework[] = {
     0x4A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte3A[] = {
+static u8 gBattleScript_End3A_ModelAnimVerticalFade[] = {
     0x3A,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte4B[] = {
+static u8 gBattleScript_End4B_MultiNodeAEntry[] = {
     0x4B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte3B[] = {
+static u8 gBattleScript_End3B_InitCombinedSet[] = {
     0x3B,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte3C[] = {
+static u8 gBattleScript_End3C_WaterAnimFireworkModel42RotationFollow[] = {
     0x3C,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte3D[] = {
+static u8 gBattleScript_End3D_SimpleBurstTintPulseAnimWaitPaletteC[] = {
     0x3D,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte3E[] = {
+static u8 gBattleScript_End3E_PaletteMultiBurstNoCleanupNoTintFade[] = {
     0x3E,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte40[] = {
+static u8 gBattleScript_End40_FireballBurst[] = {
     0x40,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes2D_1E[] = {
+static u8 gBattleScript_End2D_1E_CombinedSetupBurst3DRandomAndHandleCollisionSetup[] = {
     0x2D,
     0x1E,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte41[] = {
+static u8 gBattleScript_End41_FireworkEntry[] = {
     0x41,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte42[] = {
+static u8 gBattleScript_End42_SimpleNodeBurst[] = {
     0x42,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte43[] = {
+static u8 gBattleScript_End43_SetWithMultiple[] = {
     0x43,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte44[] = {
+static u8 gBattleScript_End44_SetWithTimedFireball[] = {
     0x44,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte46[] = {
+static u8 gBattleScript_End46_SetWithComplex[] = {
     0x46,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte47[] = {
+static u8 gBattleScript_End47_SetVariant3[] = {
     0x47,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes50_4C[] = {
+static u8 gBattleScript_End50_4C_ConfigMotion16AndTriggerAnother[] = {
     0x50,
     0x4C,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes38_4D[] = {
+static u8 gBattleScript_End38_TintRampRisingSpread[] = {
     0x38, 0x00, 0x00, 0x00, 0x4D, 0x00, 0x00, 0x00,
 
 };
-static u8 Fragment62_Bytes4E_4F[] = {
+static u8 gBattleScript_End4E_ModelAnimDelayedMotionAndFallingParticles[] = {
     0x4E, 0x00, 0x00, 0x00, 0x4F, 0x00, 0x00, 0x00,
 
 };
-static u8 Fragment62_Byte51[] = {
+static u8 gBattleScript_End51_TintRampAndModelScaleFade[] = {
     0x51,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte52[] = {
+static u8 gBattleScript_End52_TintRampAndModelScaleFade[] = {
     0x52,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte02[] = {
+static u8 gBattleScript_End02_ComplexParticleSequence[] = {
     0x02,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte56[] = {
+static u8 gBattleScript_End56_ThreeInstanceSet[] = {
     0x56,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Byte53[] = {
+static u8 gBattleScript_End53_TintRampAndDescriptor34Burst[] = {
     0x53,
     0x00,
     0x00,
     0x00,
 
 };
-static u8 Fragment62_Bytes57_23[] = {
+static u8 gBattleScript_End57_23_BurstAndConfigTexture7Palette1[] = {
     0x57,
     0x23,
     0x00,
@@ -2950,1236 +2950,1236 @@ static u8 Fragment62_Bytes57_23[] = {
 };
 static u8* Fragment62_SubTablePtr2D[][2] = {
     {
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_85,
-        gBattleScriptCmd_2C,
+        gBattleScript_Start85ModeOrbitBurstAndFollowup,
+        gBattleScript_LoadGfx2C,
     },
     {
-        gBattleScriptCmd_86,
-        gBattleScriptCmd_2C,
+        gBattleScript_Start86ModeOrbitAndMetadataBurst,
+        gBattleScript_LoadGfx2C,
     },
     {
-        gBattleScriptCmd_87,
-        gBattleScriptCmd_2C_Alt,
+        gBattleScript_Start87ExpandingFlashAndRisingScaleFade,
+        gBattleScript_LoadGfx2C_Alt,
     },
     {
-        gBattleScriptCmd_88,
-        gBattleScriptCmd_2C_Alt,
+        gBattleScript_Start88Nop,
+        gBattleScript_LoadGfx2C_Alt,
     },
     {
-        gBattleScriptCmd_89,
-        gBattleScriptCmd_2D,
+        gBattleScript_Start89Descriptor3FRisingFade,
+        gBattleScript_LoadGfx2D,
     },
     {
-        gBattleScriptCmd_8A,
-        gBattleScript_NullParam,
+        gBattleScript_Start8ATextureNodeSetup,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_8B,
-        gBattleScriptCmd_2C_Alt,
+        gBattleScript_Start8BDualRepeatingSparks,
+        gBattleScript_LoadGfx2C_Alt,
     },
     {
-        gBattleScriptCmd_15_Alt,
-        gBattleScript_Param10,
+        gBattleScript_Start15WaterAnimBurst,
+        gBattleScript_LoadGfx10,
     },
     {
-        gBattleScriptCmd_8C,
-        gBattleScriptCmd_3C,
+        gBattleScript_Start8CDualRepeatingSparksAlias,
+        gBattleScript_LoadGfx3C,
     },
     {
-        gBattleScriptCmd_8D,
-        gBattleScriptCmd_3C,
+        gBattleScript_Start8DGridRiseAndFallingBurst,
+        gBattleScript_LoadGfx3C,
     },
     {
-        gBattleScriptCmd_8F,
-        gBattleScriptCmd_2C,
+        gBattleScript_Start8FModeOrbitAndMetadataBurst,
+        gBattleScript_LoadGfx2C,
     },
     {
-        gBattleScriptCmd_8E,
-        gBattleScriptCmd_3C,
+        gBattleScript_Start8EGridRiseAndFallingBurstAlias,
+        gBattleScript_LoadGfx3C,
     },
     {
-        gBattleScriptCmd_7A,
-        gBattleScript_NullParam,
+        gBattleScript_Start7AGlobalAndOwnerTintFade,
+        gBattleScript_LoadGfxEmpty,
     },
 };
 static u8* Fragment62_DataPtrArray[] = {
-    gBattleScriptCmd_00, gBattleScriptCmd_7D, gBattleScriptCmd_7E, gBattleScriptCmd_01, gBattleScriptCmd_45, gBattleScriptCmd_7F,
-    gBattleScriptCmd_80, gBattleScriptCmd_81, gBattleScriptCmd_82, gBattleScriptCmd_83, gBattleScriptCmd_84, gBattleScriptCmd_90,
+    gBattleScript_StartEmpty, gBattleScript_Start7DRegisterCallbacks, gBattleScript_Start7ESpecial, gBattleScript_Start01Descriptor2FPhaseFadeOut, gBattleScript_Start45ModelPhaseWaitAndFallingParticles, gBattleScript_Start7FCreateVariant45,
+    gBattleScript_Start80CreateVariant47, gBattleScript_Start81CreateTypeX, gBattleScript_Start82CreateSmoke, gBattleScript_Start83CreateSmokeHighPriority, gBattleScript_Start84CreateDual, gBattleScript_Start90Nop,
 };
 static u8* Fragment62_GroupPtrArray[] = {
-    gBattleScript_NullParam3, gBattleScript_MsgStart, Fragment62_Byte09, gBattleScript_MsgEnd, Fragment62_Byte31,
+    gBattleScript_EndEmpty, gBattleScript_MsgStart, gBattleScript_End09_Radial20, gBattleScript_MsgEnd, gBattleScript_End31_RegisterColorAnim,
 };
-static u8* Fragment62_SpecialPairPtr[] = { gBattleScriptCmd_00, gBattleScriptCmd_2C_Alt2 };
+static u8* Fragment62_SpecialPairPtr[] = { gBattleScript_StartEmpty, gBattleScript_Start2CTrail40GridAlt };
 static u8* Fragment62_ComplexPtrTable[][5] = {
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte0E,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End0E_InitializeGroup,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte23,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End23_ConfigTexture7Palette1,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_0F,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes50_4C,
-        gBattleScript_NullParam8,
-        gBattleScript_NullParam2,
+        gBattleScript_Start0FDescriptor08IndexedScaleDelayFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End50_4C_ConfigMotion16AndTriggerAnother,
+        gBattleScript_LoadGfx03,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes0D_0E,
-        gBattleScript_NullParam,
-        gBattleScriptCmd_17,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End0D_0E_RegisterSpecificAndInitializeGroup,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx17,
     },
     {
-        gBattleScriptCmd_38_Alt,
-        gBattleScriptCmd_00,
-        Fragment62_Byte36,
-        gBattleScript_NullParam6,
-        gBattleScript_NullParam2,
+        gBattleScript_Start38AdditionalNodeSetup,
+        gBattleScript_StartEmpty,
+        gBattleScript_End36_TintRampDelayedColorFade,
+        gBattleScript_LoadGfx11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_29_Alt,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2A,
+        gBattleScript_Start29TextureSetup,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2A_ModeSetup,
         gBattleScript_AnimAttack,
-        gBattleScript_NullParam2,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_49,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2B,
-        gBattleScript_NullParam11,
-        gBattleScript_NullParam2,
+        gBattleScript_Start49CreateCollisionRandomEffect,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2B_CollisionSetup,
+        gBattleScript_LoadGfx0F,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_0D,
-        gBattleScriptCmd_00,
-        Fragment62_Byte05,
-        gBattleScript_NullParam7,
-        gBattleScript_NullParam,
+        gBattleScript_Start0DSecondaryOwnerSpeciesBranch,
+        gBattleScript_StartEmpty,
+        gBattleScript_End05_DynamicCollisionSetup,
+        gBattleScript_LoadGfx0B,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_47,
-        gBattleScriptCmd_00,
-        Fragment62_Byte29,
-        gBattleScriptCmd_08,
-        gBattleScript_NullParam2,
+        gBattleScript_Start47SpecialModelColorCycle,
+        gBattleScript_StartEmpty,
+        gBattleScript_End29_Descriptor34Burst,
+        gBattleScript_LoadGfx08,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_6F,
-        gBattleScriptCmd_00,
-        Fragment62_Byte53,
-        gBattleScriptCmd_08,
-        gBattleScript_NullParam2,
+        gBattleScript_Start6FGlobalTintAndSpecialModelColorCycle,
+        gBattleScript_StartEmpty,
+        gBattleScript_End53_TintRampAndDescriptor34Burst,
+        gBattleScript_LoadGfx08,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_0A,
-        gBattleScriptCmd_48,
-        Fragment62_Byte03,
-        gBattleScriptCmd_09,
-        gBattleScriptCmd_0B_0E,
+        gBattleScript_Start0AModel60AndModelAnimWait,
+        gBattleScript_Start48ModelAnimWait,
+        gBattleScript_End03_SpecialCollisionSetup,
+        gBattleScript_LoadGfx09_Alt,
+        gBattleScript_LoadGfx0B_Alt,
     },
     {
-        gBattleScriptCmd_44,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_2E,
-        gBattleScript_NullParam,
+        gBattleScript_Start44ModelAnimWaitAndDescriptor42ScaleFall,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx2E,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_3D,
-        gBattleScriptCmd_00,
-        Fragment62_Byte1E,
-        gBattleScript_NullParam7,
-        gBattleScript_NullParam,
+        gBattleScript_Start3DHandleStateSetup,
+        gBattleScript_StartEmpty,
+        gBattleScript_End1E_HandleCollisionSetup,
+        gBattleScript_LoadGfx0B,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_0A,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2F,
-        gBattleScript_Param09,
-        gBattleScript_NullParam2,
+        gBattleScript_Start0AModel60AndModelAnimWait,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2F_SpecialSetupDelayedScatterPalette1,
+        gBattleScript_LoadGfx09,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes57_23,
-        gBattleScript_Param0A,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End57_23_BurstAndConfigTexture7Palette1,
+        gBattleScript_LoadGfx0A,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_0A,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_Param09,
-        gBattleScript_NullParam,
+        gBattleScript_Start0AModel60AndModelAnimWait,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx09,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_28_Alt,
-        Fragment62_Bytes4F_2D,
+        gBattleScript_StartEmpty,
+        gBattleScript_Start28RegisterLargeExplosion,
+        gBattleScript_End4F_2D_ColorVariantAndCombinedSetupBurst3DRandom,
         D_843868AC,
-        gBattleScript_NullParam2,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_13_14,
-        gBattleScriptCmd_00,
-        Fragment62_Byte09,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start13Radial20,
+        gBattleScript_StartEmpty,
+        gBattleScript_End09_Radial20,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2D,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2D_CombinedSetupBurst3DRandom,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_75,
-        gBattleScriptCmd_00,
-        Fragment62_Byte55,
-        gBattleScript_NullParam7,
-        gBattleScript_Param0A,
+        gBattleScript_Start75StateCollisionSetupA,
+        gBattleScript_StartEmpty,
+        gBattleScript_End55_StateCollisionSetupDesc2BGravityFall,
+        gBattleScript_LoadGfx0B,
+        gBattleScript_LoadGfx0A,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes4F_27,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End4F_27_ColorVariantAndAdditionalSetupBurstAndRiseFade,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte23,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End23_ConfigTexture7Palette1,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_02,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes50_4C,
-        gBattleScript_NullParam8,
-        gBattleScript_NullParam2,
+        gBattleScript_Start02Descriptor08IndexedScaleDelayFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End50_4C_ConfigMotion16AndTriggerAnother,
+        gBattleScript_LoadGfx03,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_1F,
-        gBattleScriptCmd_00,
-        Fragment62_Byte37,
-        gBattleScript_Param16,
-        gBattleScript_NullParam2,
+        gBattleScript_Start1FComplexNodeSetup,
+        gBattleScript_StartEmpty,
+        gBattleScript_End37_SimpleNodeSetup,
+        gBattleScript_LoadGfx16,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte0E,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End0E_InitializeGroup,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_77,
-        gBattleScriptCmd_00,
-        Fragment62_Byte25,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start77CreateCallback,
+        gBattleScript_StartEmpty,
+        gBattleScript_End25_SpecialSetupBurstPalette3,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_76,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2F,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start76CreateWithCallback,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2F_SpecialSetupDelayedScatterPalette1,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_79,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes54_25,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start79TriggerDefaultPalette1BWithTintFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End54_25_TriggerDefault4AndSpecialSetupBurstPalette3,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_74,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes4F_2D,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_Start74AdditionalRiseFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End4F_2D_ColorVariantAndCombinedSetupBurst3DRandom,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_13_14,
-        gBattleScriptCmd_00,
-        Fragment62_Byte09,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start13Radial20,
+        gBattleScript_StartEmpty,
+        gBattleScript_End09_Radial20,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_73,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScriptCmd_32,
-        gBattleScript_NullParam2,
+        gBattleScript_Start73FinalSetupC,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfx32,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_72,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2D,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_Start72FinalSetupB,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2D_CombinedSetupBurst3DRandom,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_73,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2D,
-        gBattleScriptCmd_32,
-        gBattleScript_NullParam2,
+        gBattleScript_Start73FinalSetupC,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2D_CombinedSetupBurst3DRandom,
+        gBattleScript_LoadGfx32,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_43,
-        gBattleScriptCmd_00,
-        Fragment62_Byte26,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start43OwnerAnchoredFourStream,
+        gBattleScript_StartEmpty,
+        gBattleScript_End26_SpecialSetupBurstPalette4,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_43,
-        gBattleScriptCmd_00,
-        Fragment62_Byte26,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start43OwnerAnchoredFourStream,
+        gBattleScript_StartEmpty,
+        gBattleScript_End26_SpecialSetupBurstPalette4,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_43,
-        gBattleScriptCmd_00,
-        Fragment62_Byte25,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start43OwnerAnchoredFourStream,
+        gBattleScript_StartEmpty,
+        gBattleScript_End25_SpecialSetupBurstPalette3,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_53,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_30,
-        gBattleScript_NullParam,
+        gBattleScript_Start53SimpleBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx30,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_4A,
-        gBattleScriptCmd_00,
-        Fragment62_Byte29,
-        gBattleScriptCmd_08,
-        gBattleScript_NullParam2,
+        gBattleScript_Start4ASpecialModelColorCycle,
+        gBattleScript_StartEmpty,
+        gBattleScript_End29_Descriptor34Burst,
+        gBattleScript_LoadGfx08,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_2B_Alt,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
+        gBattleScript_Start2BTrail40Variant,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
         gBattleScript_AnimHit,
-        gBattleScript_NullParam,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_2C_Alt2,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
+        gBattleScript_Start2CTrail40GridAlt,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
         gBattleScript_AnimMiss,
-        gBattleScript_NullParam,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptJump_2D,
-        gBattleScriptCmd_00,
-        Fragment62_Byte23,
+        gBattleScript_NoSpawnThen2DSetMode,
+        gBattleScript_StartEmpty,
+        gBattleScript_End23_ConfigTexture7Palette1,
         gBattleScript_AnimFaint,
-        gBattleScript_NullParam2,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_62,
-        gBattleScriptCmd_00,
-        Fragment62_Byte21,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start62Radial20,
+        gBattleScript_StartEmpty,
+        gBattleScript_End21_Radial20,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_11,
-        gBattleScriptCmd_00,
-        Fragment62_Byte07b,
-        gBattleScript_NullParam5,
-        gBattleScript_NullParam,
+        gBattleScript_Start11ModelAnimFinish,
+        gBattleScript_StartEmpty,
+        gBattleScript_End07_PaletteMultiBurst_Alt,
+        gBattleScript_LoadGfx0E,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_16,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes38_4D,
-        gBattleScript_NullParam6,
-        gBattleScript_NullParam2,
+        gBattleScript_Start16Effect22RotatingPaletteNoTint,
+        gBattleScript_StartEmpty,
+        gBattleScript_End38_TintRampRisingSpread,
+        gBattleScript_LoadGfx11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_4D,
-        gBattleScriptCmd_00,
-        Fragment62_Byte16,
-        gBattleScript_NullParam6,
-        gBattleScript_NullParam2,
+        gBattleScript_Start17Effect23SmokeWithMarker,
+        gBattleScript_StartEmpty,
+        gBattleScript_End16_ExplosionSet,
+        gBattleScript_LoadGfx11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_35_05,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_14,
-        gBattleScript_NullParam,
+        gBattleScript_Start35RegisterEffectE0Alt2_05RibbonMesh,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx14_Alt,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_06,
-        gBattleScriptCmd_00,
-        Fragment62_Byte02,
-        gBattleScript_NullParam8,
-        gBattleScript_NullParam5,
+        gBattleScript_Start06AnimatedScaleAndBurstEmitter,
+        gBattleScript_StartEmpty,
+        gBattleScript_End02_ComplexParticleSequence,
+        gBattleScript_LoadGfx03,
+        gBattleScript_LoadGfx0E,
     },
     {
-        gBattleScriptCmd_3A_Alt,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes1B_1C,
-        gBattleScript_NullParam8,
-        gBattleScript_NullParam5,
+        gBattleScript_Start3AInitExplosionEffectSet,
+        gBattleScript_StartEmpty,
+        gBattleScript_End1B_AdvancedParticleCombo,
+        gBattleScript_LoadGfx03,
+        gBattleScript_LoadGfx0E,
     },
     {
-        gBattleScriptJump_24,
-        gBattleScriptCmd_00,
-        Fragment62_Byte10,
-        gBattleScript_Param1A,
-        gBattleScript_NullParam8,
+        gBattleScript_NoSpawnThen24TerrainGrid,
+        gBattleScript_StartEmpty,
+        gBattleScript_End10_AdvancedMultiBurst,
+        gBattleScript_LoadGfx1A,
+        gBattleScript_LoadGfx03,
     },
     {
-        gBattleScriptJump_2F,
-        gBattleScriptCmd_00,
-        Fragment62_Byte43,
-        gBattleScriptCmd_29,
-        gBattleScript_NullParam,
+        gBattleScript_NoSpawnThen2FInitSetWithTexture53,
+        gBattleScript_StartEmpty,
+        gBattleScript_End43_SetWithMultiple,
+        gBattleScript_LoadGfx29_03,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_22,
-        gBattleScriptCmd_00,
-        Fragment62_Byte17,
-        gBattleScript_Param19,
-        gBattleScript_NullParam8,
+        gBattleScript_Start22RegisterSparkle,
+        gBattleScript_StartEmpty,
+        gBattleScript_End17_RegisterAll,
+        gBattleScript_LoadGfx19_32,
+        gBattleScript_LoadGfx03,
     },
     {
-        gBattleScriptCmd_66_04_05,
-        gBattleScriptCmd_00,
-        Fragment62_Byte44,
-        gBattleScript_NullParam,
-        gBattleScriptCmd_29,
+        gBattleScript_NoSpawnThen04TintDescriptor53ScalePulse,
+        gBattleScript_StartEmpty,
+        gBattleScript_End44_SetWithTimedFireball,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx29_03,
     },
     {
-        gBattleScriptJump_78,
-        gBattleScriptCmd_00,
-        Fragment62_Byte35,
-        gBattleScript_NullParam,
-        gBattleScriptCmd_29,
+        gBattleScript_NoSpawnThen78InitSmallGlowEffectSet,
+        gBattleScript_StartEmpty,
+        gBattleScript_End35_SetWithCustomCallback,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx29_03,
     },
     {
-        gBattleScriptJump_1A,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes45_0E_04,
-        gBattleScript_NullParam,
-        gBattleScriptCmd_29,
+        gBattleScript_NoSpawnThen1AEffect26DoubleTextureTrail,
+        gBattleScript_StartEmpty,
+        gBattleScript_End45_SetVariant2,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx29_03,
     },
     {
-        gBattleScriptJump_27,
-        gBattleScriptCmd_00,
-        Fragment62_Byte46,
-        gBattleScript_Param27,
-        gBattleScriptCmd_29,
+        gBattleScript_NoSpawnThen27InitSetWithFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End46_SetWithComplex,
+        gBattleScript_LoadGfx27,
+        gBattleScript_LoadGfx29_03,
     },
     {
-        gBattleScriptCmd_76,
-        gBattleScriptCmd_00,
-        Fragment62_Byte25,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start76CreateWithCallback,
+        gBattleScript_StartEmpty,
+        gBattleScript_End25_SpecialSetupBurstPalette3,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_71,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes4D_0E,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start71TriggerDefaultPalette1B,
+        gBattleScript_StartEmpty,
+        gBattleScript_End4D_0E_TriggerDefault2AndInitializeGroup,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_6C,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2E,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_Start6CAdditionalSetupA,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2E_CombinedSetupBurstHorizontalRandom,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte24,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End24_ConfigTexture9Palette2,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_4E,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes4F_2D,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_Start19Nop,
+        gBattleScript_StartEmpty,
+        gBattleScript_End4F_2D_ColorVariantAndCombinedSetupBurst3DRandom,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_4B,
-        gBattleScriptCmd_00,
-        Fragment62_Byte32,
-        gBattleScriptCmd_46,
-        gBattleScript_NullParam,
+        gBattleScript_Start4BRegisterHandlersAlternate,
+        gBattleScript_StartEmpty,
+        gBattleScript_End32_RegisterHandlerWithParticleData,
+        gBattleScript_LoadGfx12,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_18_Alt,
-        gBattleScriptCmd_00,
-        Fragment62_Byte15,
-        gBattleScript_Param13,
-        gBattleScript_NullParam4,
+        gBattleScript_Start18PaletteScriptBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_End15_RegisterModeSpecific,
+        gBattleScript_LoadGfx13,
+        gBattleScript_LoadGfx26_11,
     },
     {
-        gBattleScriptCmd_18_Alt,
-        gBattleScriptCmd_00,
-        Fragment62_Byte15,
-        gBattleScript_Param13,
-        gBattleScript_NullParam4,
+        gBattleScript_Start18PaletteScriptBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_End15_RegisterModeSpecific,
+        gBattleScript_LoadGfx13,
+        gBattleScript_LoadGfx26_11,
     },
     {
-        gBattleScriptCmd_08_09,
-        gBattleScriptCmd_00,
-        Fragment62_Byte1F,
-        gBattleScript_Param05,
-        gBattleScript_NullParam,
+        gBattleScript_Start08ModelBurstAndVerticalFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End1F_RegisterMultiple,
+        gBattleScript_LoadGfx05,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_6D,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start6DSimpleGroupSetup,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_66_0B_0C,
-        gBattleScriptCmd_00,
-        Fragment62_Byte04,
-        gBattleScript_Param0A,
-        gBattleScript_NullParam2,
+        gBattleScript_NoSpawnThen0BGlobalTintFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End04_MultiTextureSetup,
+        gBattleScript_LoadGfx0A,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptJump_46,
-        gBattleScriptCmd_69,
-        Fragment62_Byte47,
-        gBattleScriptCmd_15,
-        gBattleScriptCmd_29,
+        gBattleScript_NoSpawnThen46InitSetWithDifferentTiming,
+        gBattleScript_Start69TriggerSpecial,
+        gBattleScript_End47_SetVariant3,
+        gBattleScript_LoadGfx15,
+        gBattleScript_LoadGfx29_03,
     },
     {
-        gBattleScriptCmd_41,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes12_13_14,
-        gBattleScript_NullParam12,
-        gBattleScript_NullParam2,
+        gBattleScript_Start41RegisterParticleNodes,
+        gBattleScript_StartEmpty,
+        gBattleScript_End12_ModeSpecificSetup,
+        gBattleScript_LoadGfx25,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_41,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes12_13_14,
-        gBattleScript_NullParam12,
-        gBattleScript_NullParam2,
+        gBattleScript_Start41RegisterParticleNodes,
+        gBattleScript_StartEmpty,
+        gBattleScript_End12_ModeSpecificSetup,
+        gBattleScript_LoadGfx25,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_41,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes12_13_14,
-        gBattleScript_NullParam12,
-        gBattleScript_NullParam2,
+        gBattleScript_Start41RegisterParticleNodes,
+        gBattleScript_StartEmpty,
+        gBattleScript_End12_ModeSpecificSetup,
+        gBattleScript_LoadGfx25,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptJump_39,
-        gBattleScriptCmd_00,
-        Fragment62_Byte1A,
-        gBattleScript_Param0A,
-        gBattleScript_NullParam2,
+        gBattleScript_NoSpawnThen39SmallNodeSetupB,
+        gBattleScript_StartEmpty,
+        gBattleScript_End1A_ComplexMovement,
+        gBattleScript_LoadGfx0A,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_21,
-        gBattleScriptCmd_00,
-        Fragment62_Byte20,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start21Radial20,
+        gBattleScript_StartEmpty,
+        gBattleScript_End20_Radial20,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_23,
-        gBattleScriptCmd_00,
-        Fragment62_Byte0F,
-        gBattleScript_NullParam6,
-        gBattleScript_NullParam2,
+        gBattleScript_Start23Effect35SmokeTexture1,
+        gBattleScript_StartEmpty,
+        gBattleScript_End0F_ExplosionTintPalette35,
+        gBattleScript_LoadGfx11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_54,
-        gBattleScriptCmd_00,
-        Fragment62_Byte1D,
-        gBattleScript_NullParam10,
-        gBattleScript_NullParam2,
+        gBattleScript_Start54Effect84SmokeLongDuration,
+        gBattleScript_StartEmpty,
+        gBattleScript_End1D_FireSet,
+        gBattleScript_LoadGfx11_3D,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptTable_A98,
-        gBattleScriptCmd_00,
-        Fragment62_Byte08,
-        gBattleScript_NullParam11,
-        gBattleScript_NullParam,
+        gBattleScript_Start3BCreateStreamSprayColumnEffect,
+        gBattleScript_StartEmpty,
+        gBattleScript_End08_SprayColumnEffect,
+        gBattleScript_LoadGfx0F,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_12,
-        gBattleScriptCmd_00,
-        Fragment62_Byte08,
-        gBattleScript_NullParam11,
-        gBattleScript_NullParam,
+        gBattleScript_Start12ScatterRadialAndColumnSequence,
+        gBattleScript_StartEmpty,
+        gBattleScript_End08_SprayColumnEffect,
+        gBattleScript_LoadGfx0F,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_26,
-        gBattleScriptCmd_00,
-        Fragment62_Byte11,
-        gBattleScriptTable_A4,
-        gBattleScript_NullParam,
+        gBattleScript_Start26RegisterExplosion,
+        gBattleScript_StartEmpty,
+        gBattleScript_End11_RegisterSmoke,
+        gBattleScript_LoadGfx1C,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_12,
-        gBattleScriptCmd_00,
-        Fragment62_Byte48,
-        gBattleScript_NullParam11,
-        gBattleScript_NullParam,
+        gBattleScript_Start12ScatterRadialAndColumnSequence,
+        gBattleScript_StartEmpty,
+        gBattleScript_End48_SprayColumnEffectTrigger,
+        gBattleScript_LoadGfx0F,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_3F,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes0A_0B_0C_0D,
-        gBattleScript_NullParam,
-        gBattleScriptCmd_46,
+        gBattleScript_Start3FRegisterHandlersDefault,
+        gBattleScript_StartEmpty,
+        gBattleScript_End0A_RegisterAnimationCallbacks,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx12,
     },
     {
-        gBattleScriptCmd_25,
-        gBattleScriptCmd_00,
-        Fragment62_Byte4B,
-        gBattleScript_NullParam9,
-        gBattleScript_NullParam2,
+        gBattleScript_Start25SimpleBurstScript,
+        gBattleScript_StartEmpty,
+        gBattleScript_End4B_MultiNodeAEntry,
+        gBattleScript_LoadGfx1B_27,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_25,
-        gBattleScriptCmd_00,
-        Fragment62_Byte3A,
-        gBattleScript_NullParam9,
-        gBattleScript_NullParam2,
+        gBattleScript_Start25SimpleBurstScript,
+        gBattleScript_StartEmpty,
+        gBattleScript_End3A_ModelAnimVerticalFade,
+        gBattleScript_LoadGfx1B_27,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptTable_A50,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes4E_4F,
-        gBattleScriptCmd_28,
-        gBattleScript_NullParam2,
+        gBattleScript_Start34ModelAnim,
+        gBattleScript_StartEmpty,
+        gBattleScript_End4E_ModelAnimDelayedMotionAndFallingParticles,
+        gBattleScript_LoadGfx28,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_11,
-        gBattleScriptCmd_00,
-        Fragment62_Byte07,
-        gBattleScript_NullParam5,
-        gBattleScript_NullParam,
+        gBattleScript_Start11ModelAnimFinish,
+        gBattleScript_StartEmpty,
+        gBattleScript_End07_PaletteMultiBurst,
+        gBattleScript_LoadGfx0E,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_6B,
-        gBattleScriptCmd_00,
-        Fragment62_Byte49,
-        gBattleScript_NullParam4,
-        gBattleScript_NullParam2,
+        gBattleScript_Start6BAlphaBurstPalette17,
+        gBattleScript_StartEmpty,
+        gBattleScript_End49_AlphaFireworkPalette17,
+        gBattleScript_LoadGfx26_11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_6A,
-        gBattleScriptCmd_00,
-        Fragment62_Byte4A,
-        gBattleScript_NullParam4,
-        gBattleScript_NullParam2,
+        gBattleScript_Start6AAlphaBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_End4A_AlphaFirework,
+        gBattleScript_LoadGfx26_11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptJump_2A,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptTable_B4,
-        gBattleScript_NullParam,
+        gBattleScript_NoSpawnThen2ATrail40,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx20,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_60,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_37,
-        gBattleScript_NullParam,
+        gBattleScript_Start60PaletteBurstVariant4Model8D,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx37,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_1B,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start1BNop,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_5A,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScriptCmd_32,
-        gBattleScript_NullParam2,
+        gBattleScript_Start5APortraitBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfx32,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_55,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam4,
-        gBattleScript_NullParam2,
+        gBattleScript_Start55FinalSetupA,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfx26_11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_56,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_1E,
-        gBattleScript_NullParam,
+        gBattleScript_Start56RegisterLargeExplosionAndEffects,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx1E,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_61,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes3F_23_33,
-        gBattleScriptCmd_38,
-        gBattleScript_NullParam2,
+        gBattleScript_Start61PaletteBurstVariant2Model8EDelayedFadeOut,
+        gBattleScript_StartEmpty,
+        gBattleScript_End3F_23_FireworkBurstAndConfigTexture7Palette1,
+        gBattleScript_LoadGfx38,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptTable_9F0,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start1DGroupSetupA,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptJump_2A,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptTable_B4,
-        gBattleScript_NullParam,
+        gBattleScript_NoSpawnThen2ATrail40,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx20,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_1B,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start1BNop,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_6E,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start6EComplexGroupSetup,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptTable_A74,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start1EFinalGroupSetup,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_1C,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptTable_84,
-        gBattleScript_NullParam2,
+        gBattleScript_Start1CRegisterEffectE0,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx14,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_5D,
-        gBattleScriptCmd_00,
-        Fragment62_Byte3C,
-        gBattleScriptCmd_10,
-        gBattleScript_NullParam2,
+        gBattleScript_Start5DWaterAnimFirework,
+        gBattleScript_StartEmpty,
+        gBattleScript_End3C_WaterAnimFireworkModel42RotationFollow,
+        gBattleScript_LoadGfx10_Alt,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_5B,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_33,
-        gBattleScript_NullParam,
+        gBattleScript_Start5BPortraitBurstNode,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx33,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_57,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_31,
-        gBattleScript_NullParam2,
+        gBattleScript_Start57Effect87TintRampAnimVerticalFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx31,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_0E,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptTable_60,
-        gBattleScript_NullParam,
+        gBattleScript_Start0EModelAnimAndMoveKeyedTintParticles,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx0C,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_0E,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptTable_60,
-        gBattleScript_NullParam,
+        gBattleScript_Start0EModelAnimAndMoveKeyedTintParticles,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx0C,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptTable_A7C,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptTable_904,
-        gBattleScript_NullParam,
+        gBattleScript_Start1CRegisterEffectE0_36RibbonMesh,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx14_Alt2,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptTable_A80,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_0C,
-        gBattleScript_NullParam,
+        gBattleScript_Start0EModelAnimAndMoveKeyedTintParticles_Alt,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx0C_Alt,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_03,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam4,
-        gBattleScript_NullParam,
+        gBattleScript_Start03ModelTintAndVerticalFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx26_11,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_55,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam4,
-        gBattleScript_NullParam2,
+        gBattleScript_Start55FinalSetupA,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfx26_11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_20,
-        gBattleScriptCmd_00,
-        Fragment62_Byte18,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start20Nop,
+        gBattleScript_StartEmpty,
+        gBattleScript_End18_NoOp,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Byte18,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End18_NoOp,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptTable_A44,
-        gBattleScriptCmd_00,
-        Fragment62_Byte51,
-        gBattleScriptTable_D0,
-        gBattleScript_NullParam6,
+        gBattleScript_Start32TintRampAndModelScaleFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End51_TintRampAndModelScaleFade,
+        gBattleScript_LoadGfx27_32,
+        gBattleScript_LoadGfx11,
     },
     {
-        gBattleScriptCmd_40,
-        gBattleScriptCmd_00,
-        Fragment62_Byte28,
-        gBattleScriptCmd_07,
-        gBattleScript_NullParam6,
+        gBattleScript_Start40ModelAnimWait,
+        gBattleScript_StartEmpty,
+        gBattleScript_End28_SparkleSet,
+        gBattleScript_LoadGfx07,
+        gBattleScript_LoadGfx11,
     },
     {
-        gBattleScriptCmd_5C,
-        gBattleScriptCmd_00,
-        Fragment62_Byte07,
-        gBattleScriptCmd_34,
-        gBattleScript_NullParam5,
+        gBattleScript_Start5CPortraitBurstCheck,
+        gBattleScript_StartEmpty,
+        gBattleScript_End07_PaletteMultiBurst,
+        gBattleScript_LoadGfx34,
+        gBattleScript_LoadGfx0E,
     },
     {
-        gBattleScriptCmd_4C,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes12_13_14,
-        gBattleScriptTable_84,
-        gBattleScript_NullParam2,
+        gBattleScript_Start4CRegisterEffectE0Alt,
+        gBattleScript_StartEmpty,
+        gBattleScript_End12_ModeSpecificSetup,
+        gBattleScript_LoadGfx14,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_11,
-        gBattleScriptCmd_00,
-        Fragment62_Byte07,
-        gBattleScript_NullParam5,
-        gBattleScript_NullParam,
+        gBattleScript_Start11ModelAnimFinish,
+        gBattleScript_StartEmpty,
+        gBattleScript_End07_PaletteMultiBurst,
+        gBattleScript_LoadGfx0E,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_4F,
-        gBattleScriptCmd_00,
-        Fragment62_Byte0E,
-        gBattleScriptCmd_2F,
-        gBattleScript_NullParam2,
+        gBattleScript_Start4FModelAnimWaitAndDescriptor25AlphaFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End0E_InitializeGroup,
+        gBattleScript_LoadGfx2F,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_4D,
-        gBattleScriptCmd_00,
-        Fragment62_Byte3B,
-        gBattleScript_NullParam6,
-        gBattleScript_NullParam2,
+        gBattleScript_Start17Effect23SmokeWithMarker,
+        gBattleScript_StartEmpty,
+        gBattleScript_End3B_InitCombinedSet,
+        gBattleScript_LoadGfx11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_63,
-        gBattleScriptCmd_00,
-        Fragment62_Byte40,
-        gBattleScriptCmd_39,
-        gBattleScript_NullParam8,
+        gBattleScript_Start63BasicMultiBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_End40_FireballBurst,
+        gBattleScript_LoadGfx39,
+        gBattleScript_LoadGfx03,
     },
     {
-        gBattleScriptCmd_47,
-        gBattleScriptCmd_00,
-        Fragment62_Byte29,
-        gBattleScriptCmd_08,
-        gBattleScript_NullParam2,
+        gBattleScript_Start47SpecialModelColorCycle,
+        gBattleScript_StartEmpty,
+        gBattleScript_End29_Descriptor34Burst,
+        gBattleScript_LoadGfx08,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptJump_07,
-        gBattleScriptCmd_00,
-        Fragment62_Byte34,
-        gBattleScriptTable_48,
-        gBattleScript_NullParam2,
+        gBattleScript_NoSpawnThen07TexturedRibbonSheet,
+        gBattleScript_StartEmpty,
+        gBattleScript_End34_MultiHandleSetup,
+        gBattleScript_LoadGfx04,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_70,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes50_4C,
-        gBattleScriptCmd_32,
-        gBattleScript_NullParam2,
+        gBattleScript_Start70PortraitBurstInit,
+        gBattleScript_StartEmpty,
+        gBattleScript_End50_4C_ConfigMotion16AndTriggerAnother,
+        gBattleScript_LoadGfx32,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_3E,
-        gBattleScriptCmd_00,
-        Fragment62_Byte25,
-        gBattleScript_Param06,
-        gBattleScript_NullParam2,
+        gBattleScript_Start3EOwnerLinkedFourStream,
+        gBattleScript_StartEmpty,
+        gBattleScript_End25_SpecialSetupBurstPalette3,
+        gBattleScript_LoadGfx06,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_13_14,
-        gBattleScriptCmd_00,
-        Fragment62_Byte09b,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start13Radial20,
+        gBattleScript_StartEmpty,
+        gBattleScript_End09_Radial20_Alt,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptTable_A88,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start0CDelayedModelAnim,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptTable_A5C,
-        gBattleScriptCmd_2C_Alt2,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_2A,
+        gBattleScript_Start37ModelAnimWaitMarkerSlotAndScaleFall,
+        gBattleScript_Start2CTrail40GridAlt,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx2A,
         gBattleScript_AnimMiss,
     },
     {
-        gBattleScriptCmd_42,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_07,
-        gBattleScript_NullParam,
+        gBattleScript_Start42RegisterMultipleHandlers,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx07,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_5A,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScriptCmd_32,
-        gBattleScript_NullParam2,
+        gBattleScript_Start5APortraitBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfx32,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_53,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_30,
-        gBattleScript_NullParam,
+        gBattleScript_Start53SimpleBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx30,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_5F,
-        gBattleScriptCmd_00,
-        Fragment62_Byte3E,
-        gBattleScriptCmd_36,
-        gBattleScript_NullParam,
+        gBattleScript_Start5FPaletteMultiBurstCleanupWithTintFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End3E_PaletteMultiBurstNoCleanupNoTintFade,
+        gBattleScript_LoadGfx36,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_1C,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes12_13_14,
-        gBattleScriptTable_84,
-        gBattleScript_NullParam2,
+        gBattleScript_Start1CRegisterEffectE0,
+        gBattleScript_StartEmpty,
+        gBattleScript_End12_ModeSpecificSetup,
+        gBattleScript_LoadGfx14,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_65,
-        gBattleScriptCmd_00,
-        Fragment62_Byte41,
-        gBattleScriptCmd_3B,
-        gBattleScript_NullParam2,
+        gBattleScript_Start65RotationEntry,
+        gBattleScript_StartEmpty,
+        gBattleScript_End41_FireworkEntry,
+        gBattleScript_LoadGfx3B_2C,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_18_Alt,
-        gBattleScriptCmd_00,
-        Fragment62_Byte15,
-        gBattleScript_Param13,
-        gBattleScript_NullParam4,
+        gBattleScript_Start18PaletteScriptBurst,
+        gBattleScript_StartEmpty,
+        gBattleScript_End15_RegisterModeSpecific,
+        gBattleScript_LoadGfx13,
+        gBattleScript_LoadGfx26_11,
     },
     {
-        gBattleScriptCmd_5E,
-        gBattleScriptCmd_00,
-        Fragment62_Byte3D,
-        gBattleScriptCmd_35,
-        gBattleScript_NullParam,
+        gBattleScript_Start5ESimpleBurstAnimWaitDelayedTintFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End3D_SimpleBurstTintPulseAnimWaitPaletteC,
+        gBattleScript_LoadGfx35,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_67,
-        gBattleScriptCmd_68,
-        Fragment62_Byte19,
-        gBattleScriptCmd_2B,
-        gBattleScriptCmd_29,
+        gBattleScript_Start67InitSmoke,
+        gBattleScript_Start68InitFire,
+        gBattleScript_End19_PlaySoundAndReset,
+        gBattleScript_LoadGfx2B_11,
+        gBattleScript_LoadGfx29_03,
     },
     {
-        gBattleScriptTable_B60,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start59MultiNodeD_Alt,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptTable_A3C,
-        gBattleScriptCmd_00,
-        Fragment62_Byte22,
-        gBattleScript_NullParam8,
-        gBattleScript_NullParam2,
+        gBattleScript_Start30TimedFireball,
+        gBattleScript_StartEmpty,
+        gBattleScript_End22_InitParticleGroupBasic,
+        gBattleScript_LoadGfx03,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes06_0E,
-        gBattleScript_NullParam,
-        gBattleScriptCmd_18,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_End06_0E_RegisterPaletteVariantsAndInitializeGroup,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18_0D,
     },
     {
-        gBattleScriptCmd_41,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes12_13_14,
-        gBattleScript_NullParam12,
-        gBattleScript_NullParam2,
+        gBattleScript_Start41RegisterParticleNodes,
+        gBattleScript_StartEmpty,
+        gBattleScript_End12_ModeSpecificSetup,
+        gBattleScript_LoadGfx25,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptTable_9BC,
-        gBattleScriptCmd_00,
-        Fragment62_Byte39,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_Start10TintDescriptor34Sequence,
+        gBattleScript_StartEmpty,
+        gBattleScript_End39_FullSetupTintFadeOutAndRestore,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptTable_A40,
-        gBattleScriptCmd_00,
-        Fragment62_Byte42,
-        gBattleScript_NullParam4,
-        gBattleScript_NullParam2,
+        gBattleScript_Start31SimpleNodeEntry,
+        gBattleScript_StartEmpty,
+        gBattleScript_End42_SimpleNodeBurst,
+        gBattleScript_LoadGfx26_11,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_51,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam5,
-        gBattleScript_NullParam2,
+        gBattleScript_Start51AdvancedModeSetup,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx0E,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_64,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes2D_1E,
-        gBattleScriptCmd_3A,
-        gBattleScript_NullParam2,
+        gBattleScript_Start64SimpleBurstAnimWaitDelayedAlphaFadeOut,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2D_1E_CombinedSetupBurst3DRandomAndHandleCollisionSetup,
+        gBattleScript_LoadGfx3A_0B,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_52,
-        gBattleScriptCmd_00,
-        Fragment62_Byte52,
-        gBattleScriptTable_D0,
-        gBattleScript_NullParam6,
+        gBattleScript_Start52TintRampAndModelScaleFade,
+        gBattleScript_StartEmpty,
+        gBattleScript_End52_TintRampAndModelScaleFade,
+        gBattleScript_LoadGfx27_32,
+        gBattleScript_LoadGfx11,
     },
     {
-        gBattleScriptCmd_7C,
-        gBattleScriptCmd_7B,
-        Fragment62_Entry58_06,
-        gBattleScript_NullParam7,
-        gBattleScript_NullParam,
+        gBattleScript_Start7CCollisionResponseSwitch,
+        gBattleScript_Start7BConditionalStateSetup,
+        gBattleScript_End58_CollisionAndBurstSetup,
+        gBattleScript_LoadGfx0B,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_50,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScriptCmd_2F,
-        gBattleScript_NullParam2,
+        gBattleScript_Start50RegisterDefaultTexture,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfx2F,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_00,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_StartEmpty,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_3F,
-        gBattleScriptCmd_00,
-        Fragment62_Bytes0A_0B_0C_0D,
-        gBattleScript_NullParam,
-        gBattleScriptCmd_46,
+        gBattleScript_Start3FRegisterHandlersDefault,
+        gBattleScript_StartEmpty,
+        gBattleScript_End0A_RegisterAnimationCallbacks,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx12,
     },
     {
-        gBattleScriptCmd_4A,
-        gBattleScriptCmd_00,
-        Fragment62_Byte29,
-        gBattleScriptCmd_08,
-        gBattleScript_NullParam2,
+        gBattleScript_Start4ASpecialModelColorCycle,
+        gBattleScript_StartEmpty,
+        gBattleScript_End29_Descriptor34Burst,
+        gBattleScript_LoadGfx08,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_58,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScriptCmd_31,
-        gBattleScript_NullParam2,
+        gBattleScript_Start58MultiNodeEffect88Palette7,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfx31,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptTable_9F0,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start1DGroupSetupA,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptJump_4E,
-        gBattleScriptCmd_00,
-        Fragment62_Byte56,
-        gBattleScriptTable_918,
-        gBattleScript_NullParam2,
+        gBattleScript_NoSpawnThen4EInitSetSingle,
+        gBattleScript_StartEmpty,
+        gBattleScript_End56_ThreeInstanceSet,
+        gBattleScript_LoadGfx03_Alt,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_4A,
-        gBattleScriptCmd_00,
-        Fragment62_Byte29,
-        gBattleScriptCmd_08,
-        gBattleScript_NullParam2,
+        gBattleScript_Start4ASpecialModelColorCycle,
+        gBattleScript_StartEmpty,
+        gBattleScript_End29_Descriptor34Burst,
+        gBattleScript_LoadGfx08,
+        gBattleScript_LoadGfx18,
     },
     {
-        gBattleScriptCmd_0D,
-        gBattleScriptCmd_00,
-        Fragment62_Byte05,
-        gBattleScript_NullParam7,
-        gBattleScript_NullParam,
+        gBattleScript_Start0DSecondaryOwnerSpeciesBranch,
+        gBattleScript_StartEmpty,
+        gBattleScript_End05_DynamicCollisionSetup,
+        gBattleScript_LoadGfx0B,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_59,
-        gBattleScriptCmd_00,
-        gBattleScript_NullParam3,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam,
+        gBattleScript_Start59MultiNodeD,
+        gBattleScript_StartEmpty,
+        gBattleScript_EndEmpty,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScriptCmd_72,
-        gBattleScriptCmd_00,
-        Fragment62_Byte2C,
-        gBattleScript_NullParam,
-        gBattleScript_NullParam2,
+        gBattleScript_Start72FinalSetupB,
+        gBattleScript_StartEmpty,
+        gBattleScript_End2C_ConfigMotion6,
+        gBattleScript_LoadGfxEmpty,
+        gBattleScript_LoadGfx18,
     },
 };
 
@@ -4647,7 +4647,7 @@ void BattleAnim_RegisterEffectSlot(func_D_84390300 arg0, func_D_84390320 arg1) {
 void BattleAnim_RunEffectList(s32 arg0, s32 arg1, s32 arg2) {
     u8* sp2C;
 
-    gCurrentActionScriptType = arg1;
+    gCurrentEffectListSource = arg1;
 
     if (arg2 == 1) {
         switch (arg1) {
@@ -4733,7 +4733,7 @@ void BattleAnim_SetQueuedEffectList(u8 arg0) {
 }
 
 u8 BattleAnim_GetCurrentEffectList(void) {
-    return gCurrentActionScriptType;
+    return gCurrentEffectListSource;
 }
 
 void BattleAnim_SetQueuedResourceListId(u8 arg0) {
@@ -4755,9 +4755,9 @@ void BattleAnim_QueueMoveEffect(s32 arg0, BattlePlayerEntity* arg1, BattlePlayer
     gPanelDrawCount = 0;
     gParticleEffectPrimaryId = arg3;
     gParticleEffectSecondaryId = arg4;
-    gParticleEffectEntityA = arg1;
-    gParticleEffectData_42 = arg1;
-    gParticleEffectEntityB = arg2;
+    gParticleEffectAttackerEntity = arg1;
+    gParticleEffectUserEntity = arg1;
+    gParticleEffectTargetEntity = arg2;
 }
 
 void BattleAnim_QueueMoveEffectScriptA(s32 arg0, BattlePlayerEntity* arg1, BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
@@ -4767,7 +4767,7 @@ void BattleAnim_QueueMoveEffectScriptA(s32 arg0, BattlePlayerEntity* arg1, Battl
 void BattleAnim_QueueMoveEffectEnd(s32 arg0, BattlePlayerEntity* arg1, BattlePlayerEntity* arg2, s16 arg3, s16 arg4) {
     BattleAnim_QueueMoveEffect(arg0, arg1, arg2, arg3, arg4);
     BattleAnim_SetQueuedEffectList(2);
-    gParticleEffectEntityA = arg2;
+    gParticleEffectAttackerEntity = arg2;
     gPendingActionScriptFlag0 = 2;
 }
 
@@ -4787,9 +4787,9 @@ void BattleAnim_QueueEffectList6(s32 arg0, BattlePlayerEntity* arg1) {
     gCurrentActionScriptSubId = 6;
     gParticleEffectPrimaryId = 0xFF;
     gParticleEffectSecondaryId = 0xFF;
-    gParticleEffectEntityA = arg1;
-    gParticleEffectData_42 = arg1;
-    gParticleEffectEntityB = arg1;
+    gParticleEffectAttackerEntity = arg1;
+    gParticleEffectUserEntity = arg1;
+    gParticleEffectTargetEntity = arg1;
 }
 
 void BattleAnim_QueueEffectList5(s32 arg0, BattlePlayerEntity* arg1) {
@@ -4813,7 +4813,7 @@ void BattleAnim_QueueEffectList9(s32 arg0) {
 void BattleAnim_QueueEffectList(u8 arg0, BattlePlayerEntity* arg1) {
     gPendingActionScriptFlag3 = 1;
     BattleAnim_SetQueuedResourceListId(arg0);
-    gParticleEffectEntityA = arg1;
+    gParticleEffectAttackerEntity = arg1;
     gParticleEffectPrimaryId = 0xFF;
     gParticleEffectSecondaryId = 0xFF;
     if (arg0 == 3) {
@@ -5101,7 +5101,7 @@ void BattleAnim_Initialize(void) {
 void BattleAnim_Reset(void) {
     s32 i;
 
-    gParticleEffectEntityA = NULL;
+    gParticleEffectAttackerEntity = NULL;
     gWaterEffectCounter = 0;
     gParticleRenderContext.posX.x = 1.0f;
     gParticleRenderContext.posX.y = 1.0f;
@@ -5185,20 +5185,20 @@ void BattleAnim_GetCameraLookYaw(s16* arg0) {
     *arg0 = MathUtil_Atan2s(z, x);
 }
 
-void BattleAnim_GetCameraStoredAngles76(s16* arg0, s16* arg1) {
+void BattleAnim_GetCameraStoredEyeAngles(s16* arg0, s16* arg1) {
     *arg0 = gParticleCameraInfo->eyeRotationX;
     *arg1 = gParticleCameraInfo->unk_78;
 }
 
-void BattleAnim_GetCameraStoredYaw78(s16* arg0) {
+void BattleAnim_GetCameraStoredEyeRotationY(s16* arg0) {
     *arg0 = gParticleCameraInfo->unk_78;
 }
 
-void BattleAnim_GetCameraStoredAngles70(s16* arg0, s16* arg1) {
+void BattleAnim_GetCameraStoredLookAngles(s16* arg0, s16* arg1) {
     *arg0 = gParticleCameraInfo->unk_70;
     *arg1 = gParticleCameraInfo->lookRotationY;
 }
 
-void BattleAnim_GetCameraStoredYaw72(s16* arg0) {
+void BattleAnim_GetCameraStoredLookRotationY(s16* arg0) {
     *arg0 = gParticleCameraInfo->lookRotationY;
 }

@@ -368,7 +368,7 @@ s32 PokeIcon_RequestFrameLoad(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 a
     return sp1C;
 }
 
-s32 PokeIcon_RequestFrameLoadWithVariant(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3) {
+s32 PokeIcon_RequestFrameLoadToSlot(AssetManager* arg0, u16 arg1, arg1_func_80010CA8 arg2, s16 arg3) {
     if ((arg0->posX & 8) && !(arg0->TrainerSlotSaveData_GamePort & 1)) {
         arg0->posY = arg3;
         PokeIcon_RequestFrameLoad(arg0, arg1, arg2);
@@ -492,7 +492,7 @@ ModelData* Model_LoadForPokemon(PokemonData* arg0) {
     sp2C = BinArchive_GetFile(gAssetManager.modelArchives.posX, arg0->posX.posX - 1);
     if (sp2C != NULL) {
         sp20 = MainPool_AllocState(main_pool_get_available(), 0);
-        Model_ComputeSizeVariant(&sp28, arg0);
+        Model_ComputeMonSizeFromNickname(&sp28, arg0);
         sp24 = Fragment_ProcessGeoLayout(sp20, sp2C, sp28);
         MainPool_FinalizeAllocation(sp20);
     }

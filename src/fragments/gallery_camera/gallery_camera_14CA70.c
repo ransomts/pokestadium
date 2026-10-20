@@ -310,8 +310,8 @@ static PokemonData gStagePanelPlayerData;
 static s32 gStageAnimTimer;
 static s32 gStageSoundTimer;
 static s32 gStageAnimStateFlag;
-static s32 gStageAnimIndexA;
-static s32 gStageAnimIndexB;
+static s32 gGalleryPrimaryAnimIndex;
+static s32 gGallerySecondaryAnimIndex;
 f32 gCameraZoomOffset;
 static s32 gStagePanelMode;
 GalleryCameraParams* gCameraParams;
@@ -414,7 +414,7 @@ unk_D_86002F58_004_000_010_024* Gallery_LoadSurfingPikachuIcon(PokemonData* arg0
 
     arg0->posX.posX = 25;
     sp18 = PokeIcon_AllocFramebuffers(1);
-    Model_ComputeSizeVariant(&sp1C, arg0);
+    Model_ComputeMonSizeFromNickname(&sp1C, arg0);
     PokeIcon_RequestFrameLoad(sp18, arg0->posX.posX = 153, sp1C);
     PokeIcon_WaitFrameLoad(sp18);
 
@@ -426,8 +426,8 @@ void Gallery_SetupPhotoModel(void) {
     gStagePanelState->unk_16C = gGallerySpecialSpecies.posY;
 
     gCameraZoomOffset = gStageCameraConfig[gStagePanelState->unk_16C - 1].rotation;
-    gStageAnimIndexA = gStageCameraConfig[gStagePanelState->unk_16C - 1].posX - 6;
-    gStageAnimIndexB = gStageCameraConfig[gStagePanelState->unk_16C - 1].TrainerSlotSaveData_GamePort - 6;
+    gGalleryPrimaryAnimIndex = gStageCameraConfig[gStagePanelState->unk_16C - 1].posX - 6;
+    gGallerySecondaryAnimIndex = gStageCameraConfig[gStagePanelState->unk_16C - 1].TrainerSlotSaveData_GamePort - 6;
 
     ModelRenderer_AttachDisplayObject(&gStagePanelState->unk_004);
     PokeIcon_OpenModelArchives();
@@ -440,7 +440,7 @@ void Gallery_SetupPhotoModel(void) {
 
     Model_InitDisplayObject(&gStagePanelState->unk_004, 0, gStagePanelState->unk_16C, gStagePanelState->unk_000->RentalSlotAnimData_PosePhase->posX[0]);
     Gallery_LoadPhotoTextures();
-    ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].posX);
+    ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gGalleryPrimaryAnimIndex].posX);
 
     gStagePanelState->unk_004.unk_024.y += gCameraConfig.RentalSlotAnimData_PosePhase;
     gStagePanelState->unk_004.modelPhase = 0;
@@ -610,15 +610,15 @@ void GalleryCamera_UpdatePokemonIdleAnim(void) {
     }
 
     if ((gStageAnimTimer >= 0x96) && (ModelAnim_IsAnimationDone(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 0)) {
-        ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].posX);
+        ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gGallerySecondaryAnimIndex].posX);
         ModelAnim_SetFrame(&gStagePanelState->unk_004, 0);
         ModelAnim_SetEventFrame(&gStagePanelState->unk_004, 0);
-        ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexB].TrainerSlotSaveData_GamePort);
+        ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gGallerySecondaryAnimIndex].TrainerSlotSaveData_GamePort);
         gStageAnimStateFlag = 1;
     }
 
     if ((ModelAnim_IsAnimationDone(&gStagePanelState->unk_004) != 0) && (gStageAnimStateFlag == 1)) {
-        ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].posX);
+        ModelAnim_SetAnimation(&gStagePanelState->unk_004, gStageAnimScriptTable[gGalleryPrimaryAnimIndex].posX);
         ModelAnim_SetFrame(&gStagePanelState->unk_004, 0);
         gStageAnimTimer = 0;
         gStageAnimStateFlag = 0;
@@ -631,7 +631,7 @@ void GalleryCamera_UpdatePokemonEventLoop(void) {
         gStageSoundTimer = 0;
         if (gStageAnimStateFlag == 0) {
             ModelAnim_SetEventFrame(&gStagePanelState->unk_004, 0);
-            ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gStageAnimIndexA].TrainerSlotSaveData_GamePort);
+            ModelAnim_SetEventTrack(&gStagePanelState->unk_004, gStageAnimScriptTable[gGalleryPrimaryAnimIndex].TrainerSlotSaveData_GamePort);
         }
     }
 }

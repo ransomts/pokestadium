@@ -9,23 +9,23 @@ u32 gTextTable_StageNames[] = {
     0xA5F3A5D7, 0x00000000, 0xA1A6A1A6, 0xA1A60000, 0xA5B2A5C3, 0xA5C8A4C0, 0xA4BCA1AA, 0x00000000,
 };
 
-u32 gTextTable_StageSubtitles[] = {
+u32 gRaceComNameSatoshi[] = {
     0xA5B5A5C8,
     0xA5B70000,
 };
 
-u32 gStageSubtitles_Alt1[] = {
+u32 gRaceComNameKasumi[] = {
     0xA5ABA5B9,
     0xA5DF0000,
     0xA5BFA5B1,
     0xA5B70000,
 };
 
-u32 gStageSubtitles_Alt2[] = {
+u32 gRaceComNameMusashi[] = {
     0xA5E0A5B5, 0xA5B70000, 0xA5B3A5B8, 0xA5EDA5A6, 0x00000000,
 };
 
-u32 gStageSubtitles_Alt3[] = {
+u32 gRaceComNameShigeru[] = {
     0xA5B7A5B2, 0xA5EB0000, 0xA4CEA4AB, 0xA4C10000, 0xA4D2A4AD, 0xA4EFA4B1, 0x00000000,
 };
 

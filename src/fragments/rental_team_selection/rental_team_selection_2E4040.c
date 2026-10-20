@@ -371,7 +371,7 @@ void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(RulePromptConfig* arg0) {
     Font_EndTexturedTextRendering();
 }
 
-void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(RulePromptConfig* arg0) {
+void TeamSelection_RulePrompt_DrawTeamSavedThreeRow(RulePromptConfig* arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     Gfx_DrawTextureRgba16(arg0->posX + 0x10, arg0->posY + 0x10, 0x4C, 0x14, D_2029CE0, 0x4C, 0);
@@ -479,7 +479,7 @@ void TeamSelection_RulePrompt_DrawFrame(s32 arg0) {
                     TeamSelection_RulePrompt_DrawOptionSetThreeB(temp_s0);
                     break;
                 case 11:
-                    TeamSelection_RulePrompt_DrawSmallThreeRowVariant(temp_s0);
+                    TeamSelection_RulePrompt_DrawTeamSavedThreeRow(temp_s0);
                     break;
                 case 12:
                     TeamSelection_RulePrompt_DrawOptionSetTwoB(temp_s0);

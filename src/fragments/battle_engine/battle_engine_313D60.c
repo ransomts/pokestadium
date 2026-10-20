@@ -76,10 +76,10 @@ void BattleScene_AllocateMemory(void) {
     bzero(gBattleScene.posX, sizeof(unk_D_84390240_000));
 }
 
-void BattleScene_UpdateCameraState0(UNUSED CameraStruct* arg0) {
+void BattleScene_UpdateCameraDefaultModeNoop(UNUSED CameraStruct* arg0) {
 }
 
-void BattleScene_UpdateCameraState3(UNUSED CameraStruct* arg0) {
+void BattleScene_UpdateCameraOwner0FramingModeNoop(UNUSED CameraStruct* arg0) {
 }
 
 void BattleScene_AvoidDegenerateCameraLookAt(CameraStruct* arg0) {
@@ -692,7 +692,7 @@ void BattleScene_Update(CameraStruct* arg0) {
 
     switch (gBattleScene.posX->unk_1C) {
         case 0:
-            BattleScene_UpdateCameraState0(arg0);
+            BattleScene_UpdateCameraDefaultModeNoop(arg0);
             break;
 
         case 1:
@@ -705,7 +705,7 @@ void BattleScene_Update(CameraStruct* arg0) {
             break;
 
         case 3:
-            BattleScene_UpdateCameraState3(arg0);
+            BattleScene_UpdateCameraOwner0FramingModeNoop(arg0);
             break;
 
         case 4:

@@ -68,7 +68,7 @@ static MiniHudTextureRect gMiniHudTextureRects[4] = {
     { 0x00E6, 0x00D7, 0xFFFF, 0xFFFF, 0xFFFF, 0x00FF },
 };
 
-static AnimFrame gMiniHudDL_Panel1[] = {
+static AnimFrame gMagikarpTutoAButtonIconAnim[] = {
     {
         0x0303ED80,
         0x000E,
@@ -91,7 +91,7 @@ static AnimFrame gMiniHudDL_Panel1[] = {
     },
 };
 
-static AnimFrame gMiniHudDL_Panel2[] = {
+static AnimFrame gMagikarpTutoStartButtonIconAnim[] = {
     {
         0x03040580,
         0x0012,
@@ -415,8 +415,8 @@ void MagikarpGame_DrawOverlay(s32 arg0) {
     if (arg0 == 0) {
         // D_800A7420 is gDisplayListHead under its second name (see variables.h).
         gSPDisplayList(D_800A7420++, gPrefDL_Border);
-        Widget_DrawAnimIcon16(0x74, 0xB0, gMiniHudDL_Panel1);
-        Widget_DrawAnimIcon16C(0x74, 0xC6, gMiniHudDL_Panel2);
+        Widget_DrawAnimIcon16(0x74, 0xB0, gMagikarpTutoAButtonIconAnim);
+        Widget_DrawAnimIcon16C(0x74, 0xC6, gMagikarpTutoStartButtonIconAnim);
         Widget_DrawSplitBanner(2, 0x19, 0xA6);
     }
 }

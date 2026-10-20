@@ -43,11 +43,11 @@ static u8 gHealthBarSegmentTable[][8] = {
     { 0x04, 0x05, 0x06, 0x07, 0x10, 0x11, 0x12, 0x13 }, { 0x03, 0x04, 0x05, 0x06, 0x0D, 0x0E, 0x0F, 0x10 },
 };
 
-static AnimFrame gPrefLayoutTable1[] = {
+static AnimFrame gDrowzeeTutoAButtonIconAnim[] = {
     { 0x0303ED80, 14 }, { 0x0303F180, 2 }, { 0x0303F580, 6 }, { 0x0303F180, 2 }, { NULL, 0 },
 };
 
-static AnimFrame gPrefLayoutTable2[] = {
+static AnimFrame gDrowzeeTutoStartButtonIconAnim[] = {
     { 0x03040580, 18 }, { 0x03040980, 2 }, { 0x03040D80, 8 }, { 0x03040980, 2 }, { NULL, 0 },
 };
 
@@ -583,8 +583,8 @@ void DrowzeeGame_DrawTutorialScreen(s32 arg0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Widget_DrawSplitBanner(2, 0x19, 0xA6);
-        Widget_DrawAnimIcon16(0x74, 0xB0, gPrefLayoutTable1);
-        Widget_DrawAnimIcon16C(0x74, 0xC6, gPrefLayoutTable2);
+        Widget_DrawAnimIcon16(0x74, 0xB0, gDrowzeeTutoAButtonIconAnim);
+        Widget_DrawAnimIcon16C(0x74, 0xC6, gDrowzeeTutoStartButtonIconAnim);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 

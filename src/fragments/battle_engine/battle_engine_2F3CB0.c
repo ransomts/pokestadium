@@ -1207,19 +1207,19 @@ DioramaAnimData gCameraFovyPresetSpecial[] = {
     },
 };
 
-DioramaAnimData gCameraPosB = {
+DioramaAnimData gCameraPresetAngled = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 0, 5461, 0.0f, 3.5f, 0.20000000298023224f, 0.05999999865889549f, 200.0f,
 };
 
-DioramaAnimData gCameraPosD = {
+DioramaAnimData gCameraPresetOwnerAnchor = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 4550, 31850, 0.0f, 6.0f, 0.20000000298023224f, 0.03999999910593033f, 200.0f,
 };
 
-DioramaAnimData gCameraPosC = {
+DioramaAnimData gCameraPresetAttackerSide = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 3640, -32768, 0.0f, 6.0f, 0.20000000298023224f, 0.07999999821186066f, 200.0f,
 };
 
-DioramaAnimData gCameraPosA = {
+DioramaAnimData gCameraPresetStraightOn = {
     0, 0, 0, 0, 0, 0.0f, 0.0f, 0, 0, 0, 0, 0, 0.0f, 3.5f, 0.20000000298023224f, 0.05999999865889549f, 200.0f,
 };
 
@@ -1344,7 +1344,7 @@ DioramaAnimData gBattleCameraPresetE = {
     0, 0, 0, 2184, 0, 0.0f, 10.5f, 0, 0, 0, 182, 0, 0.0f, 2.0f, 0.20000000298023224f, 0.014999999664723873f, 50.0f,
 };
 
-DioramaAnimData gBattleCameraPresetTable2[] = {
+DioramaAnimData gBattleIntroCameraPresetTable[] = {
     {
         0,
         0,
@@ -1864,7 +1864,7 @@ unk_D_84385384 gMoveAnimData[] = {
             BattleScene_StateCallbackNop,
             BattleScene_StateCallbackNop,
             BattleScene_TickStartRowAnimRecord,
-            BattleScene_TickQueueList3Selector2OrCFromB10,
+            BattleScene_TickQueueList3Selector2OrCFollowup,
             BattleScene_StateCallbackNop,
             BattleScene_StateCallbackNop,
         },

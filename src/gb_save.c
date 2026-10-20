@@ -475,7 +475,7 @@ s32 Move_NormalizeDisplayIndex(s32 arg0) {
     return ret;
 }
 
-s32 Deck_GetEntryCountForType(s32 arg0, s32 arg1, s32 arg2) {
+s32 Deck_GetEntryCountForSection(s32 arg0, s32 arg1, s32 arg2) {
     s32 sp1C;
 
     switch (arg0) {

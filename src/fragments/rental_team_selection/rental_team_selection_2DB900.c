@@ -120,7 +120,7 @@ static u32 gMenuGeoLayout_Slot[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_Slot, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_Slot, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx gMenuVtx_Special1[] = {
+static Vtx gMenuVtx_RegisteredPokemon[] = {
     VTX(-38, 60, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-38, 40, 0, 0, 640, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(38, 40, 0, 2432, 640, 0xFF, 0xFF, 0xFF, 0xFF), VTX(38, 60, 0, 2432, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-38, 40, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-38, 20, 0, 0, 640, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -128,11 +128,11 @@ static Vtx gMenuVtx_Special1[] = {
     VTX(-38, 20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-38, 0, 0, 0, 640, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(38, 0, 0, 2432, 640, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(38, 20, 0, 2432, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gMenuGfx_Special1[] = {
+static Gfx gMenuGfx_RegisteredPokemon[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gMenuVtx_Special1, 12, 0),
+    gsSPVertex(gMenuVtx_RegisteredPokemon, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 76, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -144,11 +144,11 @@ static Gfx gMenuGfx_Special1[] = {
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
     gsSPEndDisplayList(),
 };
-static u32 gMenuGeoLayout_Special1[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_Special1, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_Special1, 0x06000000, 0x01000000, 0x00000000,
+static u32 gMenuGeoLayout_RegisteredPokemon[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_RegisteredPokemon, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_RegisteredPokemon, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx gMenuVtx_Special2[] = {
+static Vtx gMenuVtx_RentalOnly[] = {
     VTX(-50, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 48, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(50, 48, 0, 3200, 512, 0xFF, 0xFF, 0xFF, 0xFF), VTX(50, 64, 0, 3200, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-50, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 32, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -158,11 +158,11 @@ static Vtx gMenuVtx_Special2[] = {
     VTX(-50, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 0, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(50, 0, 0, 3200, 512, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(50, 16, 0, 3200, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gMenuGfx_Special2[] = {
+static Gfx gMenuGfx_RentalOnly[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gMenuVtx_Special2, 16, 0),
+    gsSPVertex(gMenuVtx_RentalOnly, 16, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 100, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -177,9 +177,9 @@ static Gfx gMenuGfx_Special2[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static u32 gMenuGeoLayout_Special2[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_Special2, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_Special2, 0x06000000, 0x01000000, 0x00000000,
+static u32 gMenuGeoLayout_RentalOnly[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gMenuVtx_RentalOnly, 0x05000000, 0x22040000,
+    0x00000000, 0x08000000, TeamSelection_TrainerSlots_GraphCallback, gMenuGfx_RentalOnly, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gMenuVtx_Common[] = {
     VTX(-36, 12, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -766,8 +766,8 @@ s32 TeamSelection_TrainerSlots_Initialize(s16 arg0) {
     gMenuGraphRoot = process_geo_layout(temp_v0, gMenuRootLayout);
     gMenuMode = arg0;
     gMenuGeoLayouts[3] = gMenuGeoLayouts[2] = gMenuGeoLayouts[1] = gMenuGeoLayouts[0] = process_geo_layout(temp_v0, gMenuGeoLayout_Slot);
-    gMenuGeoLayouts[4] = process_geo_layout(temp_v0, gMenuGeoLayout_Special1);
-    gMenuGeoLayouts[5] = process_geo_layout(temp_v0, gMenuGeoLayout_Special2);
+    gMenuGeoLayouts[4] = process_geo_layout(temp_v0, gMenuGeoLayout_RegisteredPokemon);
+    gMenuGeoLayouts[5] = process_geo_layout(temp_v0, gMenuGeoLayout_RentalOnly);
     gMenuCommonGeoLayout = process_geo_layout(temp_v0, gMenuGeoLayout_Common);
 
     MainPool_FinalizeAllocation(temp_v0);

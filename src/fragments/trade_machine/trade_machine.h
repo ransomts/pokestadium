@@ -306,7 +306,7 @@ void Trade_DrawInfoBoxIfActive(void);
 s32 Trade_GetInfoBoxState(void);
 
 s32 Trade_DrawBox3DModel(s32 arg0, GraphNode* arg1);
-s16 Trade_GetBoxSlotType(PlayerTradeInfo* arg0);
+s16 Trade_GetBoxSlotSaveReadiness(PlayerTradeInfo* arg0);
 void Trade_SetupBoxSlots(s16 arg0);
 void Trade_SetBoxSlotAnimState(TradeSlotInfo* arg0, s16 arg1);
 void Trade_UpdateBoxSlotFlyIn(TradeSlotInfo* arg0);

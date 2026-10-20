@@ -47,8 +47,8 @@ static s16 gPokedexPanelGraphNodeIndex2;
 static s16 gPokedexPanelCurrentMonIndex;
 static s32 pad_D_82607B58[2];
 static Fragment2_1GraphNode gFragment50GraphNodeArray[5];
-static Fragment2_1GraphNode gFragment50GraphNodeA;
-static Fragment2_1GraphNode gFragment50GraphNodeB;
+static Fragment2_1GraphNode gFragment50RightPillarNode;
+static Fragment2_1GraphNode gFragment50LeftPillarNode;
 static ModelData* gFragment50ObjData;
 static s16 gPokedexPanelCameraFovY;
 static s16 gPokedexPanelCameraFovZ;
@@ -1337,7 +1337,7 @@ static PokedexStageParam gFragment50StageParams[] = {
 static Gfx gEmptyDisplayList50[] = {
     gsSPEndDisplayList(),
 };
-static u32 gPokedexPanelTextureA[] = {
+static u32 gPokedexPanelCornerBottomTex[] = {
     0x00000000, 0x00000000, 0x080110C3, 0x31473189, 0x294518C3, 0x10410001, 0x6B0D6B0D, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x080110C3, 0x31473187, 0x294718C3, 0x10430841, 0x62CB6B0D, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1399,7 +1399,7 @@ static u32 gPokedexPanelTextureA[] = {
 static Gfx gEmptyDisplayList51[] = {
     gsSPEndDisplayList(),
 };
-static u32 gPokedexPanelTextureB[] = {
+static u32 gPokedexPanelCornerTopTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x08000000, 0x08000800, 0x08000000, 0x08000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1461,7 +1461,7 @@ static u32 gPokedexPanelTextureB[] = {
 static Gfx gEmptyDisplayList52[] = {
     gsSPEndDisplayList(),
 };
-static u32 gPokedexPanelTextureC[] = {
+static u32 gPokedexPanelEdgeTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1481,7 +1481,7 @@ static u32 gPokedexPanelTextureC[] = {
 static Gfx gEmptyDisplayList53[] = {
     gsSPEndDisplayList(),
 };
-static u32 gPokedexPanelTextureD[] = {
+static u32 gPokedexPanelCornerBottomCaughtTex[] = {
     0x00000000, 0x00000000, 0x080120C3, 0x398949CB, 0x394520C5, 0x10810001, 0x9CDF9CDF, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x080120C3, 0x398941C9, 0x394728C5, 0x10810801, 0x94DF9CDF, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1543,7 +1543,7 @@ static u32 gPokedexPanelTextureD[] = {
 static Gfx gEmptyDisplayList54[] = {
     gsSPEndDisplayList(),
 };
-static u32 gPokedexPanelTextureE[] = {
+static u32 gPokedexPanelCornerTopCaughtTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000840, 0x00000840, 0x08400000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1605,7 +1605,7 @@ static u32 gPokedexPanelTextureE[] = {
 static Gfx gEmptyDisplayList55[] = {
     gsSPEndDisplayList(),
 };
-static u32 gPokedexPanelTextureF[] = {
+static u32 gPokedexPanelEdgeCaughtTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1718,10 +1718,10 @@ Gfx* HallOfFame_DrawFrameBorder(Gfx* arg0) {
     gSPDisplayList(arg0++, gPokedexPanelSetupDL);
 
     if (temp_v0 == 0) {
-        gDPLoadTextureBlock(arg0++, gPokedexPanelTextureB, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
+        gDPLoadTextureBlock(arg0++, gPokedexPanelCornerTopTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
                             G_TX_MIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     } else {
-        gDPLoadTextureBlock(arg0++, gPokedexPanelTextureE, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
+        gDPLoadTextureBlock(arg0++, gPokedexPanelCornerTopCaughtTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
                             G_TX_MIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     }
 
@@ -1729,10 +1729,10 @@ Gfx* HallOfFame_DrawFrameBorder(Gfx* arg0) {
     gSPTextureRectangle(arg0++, 0x03E0, 0x0058, 0x0460, 0x00D8, G_TX_RENDERTILE, 0x0400, 0, 0x0400, 0x0400);
 
     if (temp_v0 == 0) {
-        gDPLoadTextureBlock(arg0++, gPokedexPanelTextureA, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
+        gDPLoadTextureBlock(arg0++, gPokedexPanelCornerBottomTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
                             G_TX_MIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     } else {
-        gDPLoadTextureBlock(arg0++, gPokedexPanelTextureD, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
+        gDPLoadTextureBlock(arg0++, gPokedexPanelCornerBottomCaughtTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_MIRROR | G_TX_WRAP,
                             G_TX_MIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
     }
 
@@ -1740,10 +1740,10 @@ Gfx* HallOfFame_DrawFrameBorder(Gfx* arg0) {
     gSPTextureRectangle(arg0++, 0x03E0, 0x0278, 0x0460, 0x02F8, G_TX_RENDERTILE, 0x0400, 0, 0x0400, 0x0400);
 
     if (temp_v0 == 0) {
-        gDPLoadTextureBlock(arg0++, gPokedexPanelTextureC, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0, G_TX_MIRROR | G_TX_WRAP,
+        gDPLoadTextureBlock(arg0++, gPokedexPanelEdgeTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0, G_TX_MIRROR | G_TX_WRAP,
                             G_TX_MIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
     } else {
-        gDPLoadTextureBlock(arg0++, gPokedexPanelTextureF, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0, G_TX_MIRROR | G_TX_WRAP,
+        gDPLoadTextureBlock(arg0++, gPokedexPanelEdgeCaughtTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 16, 0, G_TX_MIRROR | G_TX_WRAP,
                             G_TX_MIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
     }
 
@@ -1792,7 +1792,7 @@ s32 HallOfFame_UpdateLeftPillarGlow(s32 arg0, PillarGlowParams* arg1) {
         arg1->a = (gPokedexPanelHighlightPhase * 0x28) / 5;
 
         *ptr = (gPokedexPanelHighlightPhase * 0xFF) / 5;
-        gFragment50GraphNodeB.modelPhase = *ptr;
+        gFragment50LeftPillarNode.modelPhase = *ptr;
     }
     return 0;
 }
@@ -2150,7 +2150,7 @@ void HallOfFame_RequestCarouselIconLoad(s16 arg0) {
     gPokedexPanelGraphNodeIndex2 = (gPokedexPanelGraphNodeIndex + arg0 + 5) % 5;
     sp24.raw = 0;
     gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_000 = idx;
-    PokeIcon_RequestFrameLoadWithVariant(gFragment50AssetManager, gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_000, sp24, gPokedexPanelGraphNodeIndex2);
+    PokeIcon_RequestFrameLoadToSlot(gFragment50AssetManager, gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_000, sp24, gPokedexPanelGraphNodeIndex2);
 }
 
 void HallOfFame_LoadCurrentCarouselIcon(s16 arg0) {
@@ -2166,7 +2166,7 @@ void HallOfFame_LoadCurrentCarouselIcon(s16 arg0) {
     }
     gPokedexPanelGraphNodeIndex2 = (gPokedexPanelGraphNodeIndex + arg0 + 5) % 5;
     gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_000 = temp_s1;
-    PokeIcon_RequestFrameLoadWithVariant(gFragment50AssetManager, temp_s1, sp54, gPokedexPanelGraphNodeIndex2);
+    PokeIcon_RequestFrameLoadToSlot(gFragment50AssetManager, temp_s1, sp54, gPokedexPanelGraphNodeIndex2);
     PokeIcon_WaitFrameLoad(gFragment50AssetManager);
     gFragment50GraphNodes[gPokedexPanelGraphNodeIndex2].unk_004 = gFragment50AssetManager->unk_24;
 }
@@ -2177,13 +2177,13 @@ void HallOfFame_ScrollCarousel(f32 arg0) {
     // clang-format off
     for (i = 0; i < 5; i++) { gFragment50GraphNodeArray[i].unk_024.x += arg0; }
     // clang-format on
-    gFragment50GraphNodeA.unk_024.x += arg0;
-    gFragment50GraphNodeB.unk_024.x += arg0;
+    gFragment50RightPillarNode.unk_024.x += arg0;
+    gFragment50LeftPillarNode.unk_024.x += arg0;
 }
 
 void HallOfFame_SetBackgroundPositionX(f32 arg0) {
-    gFragment50GraphNodeA.unk_024.x = arg0;
-    gFragment50GraphNodeB.unk_024.x = arg0;
+    gFragment50RightPillarNode.unk_024.x = arg0;
+    gFragment50LeftPillarNode.unk_024.x = arg0;
 }
 
 void HallOfFame_EmptyFunc7(void) {
@@ -2632,9 +2632,9 @@ void HallOfFame_InitGallery(void) {
     }
     temp_s0 = Model_LoadByArchiveIndex(0xB7);
 
-    ptr = &gFragment50GraphNodeA;
-    ModelRenderer_AttachDisplayObject(&gFragment50GraphNodeA);
-    Model_InitDisplayObject(&gFragment50GraphNodeA, 0, 0xB7, temp_s0->RentalSlotAnimData_PosePhase->posX[0]);
+    ptr = &gFragment50RightPillarNode;
+    ModelRenderer_AttachDisplayObject(&gFragment50RightPillarNode);
+    Model_InitDisplayObject(&gFragment50RightPillarNode, 0, 0xB7, temp_s0->RentalSlotAnimData_PosePhase->posX[0]);
 
     ptr->unk_000.posY &= ~0x40;
     ptr->unk_024.x = 0.0f;
@@ -2649,9 +2649,9 @@ void HallOfFame_InitGallery(void) {
     ptr->unk_040.unk_0C = 0;
 
     temp_s0 = Model_LoadByArchiveIndex(0xB7);
-    ptr = &gFragment50GraphNodeB;
-    ModelRenderer_AttachDisplayObject(&gFragment50GraphNodeB);
-    Model_InitDisplayObject(&gFragment50GraphNodeB, 0, 0xB7, temp_s0->RentalSlotAnimData_PosePhase->posX[1]);
+    ptr = &gFragment50LeftPillarNode;
+    ModelRenderer_AttachDisplayObject(&gFragment50LeftPillarNode);
+    Model_InitDisplayObject(&gFragment50LeftPillarNode, 0, 0xB7, temp_s0->RentalSlotAnimData_PosePhase->posX[1]);
 
     ptr->unk_000.posY &= ~0x40;
     ptr->unk_024.x = 0.0f;

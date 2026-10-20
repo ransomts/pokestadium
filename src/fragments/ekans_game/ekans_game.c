@@ -60,8 +60,8 @@ static MiniActor miniDiglettHoles[9];
 static MiniActor miniEkanses[4];
 static TextObject* gMinigameTextObject;
 static ActiveDiglettInfo activeDigletts[3];
-static s32 gMinigameStateVar1;
-static s16 gMinigameStateVar2;
+static s32 gGoldDiglettCount;
+static s16 gForceGoldDiglettFlag;
 static s16 gMinigameScoreTable[9][4];
 static s16 ekansMinigameCountdownStarted;
 
@@ -1706,7 +1706,7 @@ void EkansGame_PlaySoundEvent(s16 arg0, s16 arg1) {
     }
 
     if (var_s0 != 0) {
-        gMiniGameStateVar2++;
+        gMiniGameSoundDispatchCount++;
         Audio_DispatchSoundBankCommand(var_s0, isGold, sp2C);
     }
 }
@@ -2798,11 +2798,11 @@ void EkansGame_RollDiglettGoldChance(MiniActor* diglett) {
     s32 temp_v0;
     s32 sp18 = 0;
 
-    if (gMinigameStateVar2 != 0) {
-        gMinigameStateVar2 = 0;
+    if (gForceGoldDiglettFlag != 0) {
+        gForceGoldDiglettFlag = 0;
         sp18 = 1;
     } else if (ekansMinigameCountdownStarted == false) {
-        if ((miniEkansCountdown < 0xA) && (gMinigameStateVar1 == 0)) {
+        if ((miniEkansCountdown < 0xA) && (gGoldDiglettCount == 0)) {
             sp18 = 1;
         } else {
             sp18 = 0;
@@ -2825,7 +2825,7 @@ void EkansGame_RollDiglettGoldChance(MiniActor* diglett) {
     }
 
     if (sp18 != 0) {
-        gMinigameStateVar1 += 1;
+        gGoldDiglettCount += 1;
         diglett->diglettIsGold = true;
         diglett->unk_000.unk_01C = 1;
     }
@@ -2976,9 +2976,9 @@ void ekansMinigameInitObjects(void) {
     miniEkansInitCam();
 
     miniEkansCountdown = 0x3C;
-    gMiniGameUnusedVar2 = miniEkansCountdown * 0x1E;
-    gMinigameStateVar2 = 0;
-    gMinigameStateVar1 = 0;
+    gEkansGameCountdownFrames = miniEkansCountdown * 0x1E;
+    gForceGoldDiglettFlag = 0;
+    gGoldDiglettCount = 0;
 }
 
 s32 EkansGame_AllEkansIdle(void) {
@@ -3040,14 +3040,14 @@ s32 EkansGame_UpdateStartCountdown(void) {
 s32 EkansGame_UpdateMainCountdown(void) {
     s32 sp1C = 0;
 
-    gMiniGameUnusedVar2--;
-    if (gMiniGameUnusedVar2 == 0) {
+    gEkansGameCountdownFrames--;
+    if (gEkansGameCountdownFrames == 0) {
         miniEkansCountdown = 0;
         EkansGame_PlaySoundEventGuarded(0xB, 0);
         sp1C = 1;
     } else {
-        miniEkansCountdown = (gMiniGameUnusedVar2 / 30) + 1;
-        if ((gMiniGameUnusedVar2 % 30) == 0) {
+        miniEkansCountdown = (gEkansGameCountdownFrames / 30) + 1;
+        if ((gEkansGameCountdownFrames % 30) == 0) {
             if (miniEkansCountdown == 0xB) {
                 sp1C = 0;
                 EkansGame_PlaySoundEventGuarded(0xC, 0);

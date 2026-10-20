@@ -4,10 +4,10 @@
 #include "global.h"
 
 extern u32 gTextTable_StageNames[];
-extern u32 gTextTable_StageSubtitles[];
-extern u32 gStageSubtitles_Alt1[];
-extern u32 gStageSubtitles_Alt2[];
-extern u32 gStageSubtitles_Alt3[];
+extern u32 gRaceComNameSatoshi[];
+extern u32 gRaceComNameKasumi[];
+extern u32 gRaceComNameMusashi[];
+extern u32 gRaceComNameShigeru[];
 
 void MiniCam_SetActive(CameraStruct*);
 Gfx* MiniCam_ApplyProjection(Gfx*);

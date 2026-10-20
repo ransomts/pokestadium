@@ -905,8 +905,8 @@ void LabItem_InitBoxScreen(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_
     static Color_RGBA8 gColor_MainMenuTertiary = { 0x2D, 0x1A, 0x41, 0xFF };
     static Color_RGBA8 gColor_MainMenuQuaternary = { 0x6F, 0x5F, 0x7F, 0xFF };
     static unk_D_88218060 gMainMenuOptionInfo[] = {
-        { 17, gTexture_MainMenuOption1 },
-        { 18, gTexture_MainMenuOption2 },
+        { 17, gBoxMenuColorCheckItems },
+        { 18, gBoxMenuColorDeleteBox },
     };
     static unk_D_88218070 gPanelConfig[] = {
         {
@@ -914,7 +914,7 @@ void LabItem_InitBoxScreen(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_
             110,
             54,
             42,
-            gTexture_PanelA,
+            gItemBoxTabCheckItemsTex,
             48,
             gPanelColorA,
         },
@@ -923,7 +923,7 @@ void LabItem_InitBoxScreen(unk_func_8821421C_038* arg0, s32 arg1, s32 arg2, unk_
             168,
             54,
             42,
-            gTexture_PanelB,
+            gItemBoxTabDeleteBoxTex,
             48,
             gPanelColorB,
         },
@@ -2080,13 +2080,13 @@ u8* LabItem_GetHighlightedEntry(unk_func_8821421C_02C_06C_02C* arg0) {
 void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_func_8821421C_03C* arg3, s32* arg4,
                    ItemBlockInfo* arg5, unk_func_88001300_000* arg6, unk_func_8821421C_038* arg7,
                    YesNoPanel* arg8, WidgetTree_InitMessagePanel* arg9, s8** argA, MemoryPool* argB) {
-    static Color_RGBA8 gPanelBackgroundColor1 = { 0x6C, 0x6C, 0x7E, 0xFF };
-    static Color_RGBA8 gPanelBorderColor1 = { 0x50, 0x50, 0x86, 0xFF };
-    static Color_RGBA8 gPanelBorderColor2 = { 0x79, 0x79, 0xCB, 0xFF };
-    static Color_RGBA8 gPanelBackgroundColor2 = { 0x40, 0x40, 0x6C, 0xFF };
-    static Color_RGBA8 gPanelBackgroundColor3 = { 0x6A, 0x6A, 0xB2, 0xFF };
-    static Color_RGBA8 gPanelBackgroundColor4 = { 0x2D, 0x1A, 0x41, 0xFF };
-    static Color_RGBA8 gPanelBorderColor3 = { 0x6F, 0x5F, 0x7F, 0xFF };
+    static Color_RGBA8 gItemMenuPanelBackground = { 0x6C, 0x6C, 0x7E, 0xFF };
+    static Color_RGBA8 gBoxLocationPatternDark = { 0x50, 0x50, 0x86, 0xFF };
+    static Color_RGBA8 gBoxLocationPatternLight = { 0x79, 0x79, 0xCB, 0xFF };
+    static Color_RGBA8 gPanelBackgroundDarkBlue = { 0x40, 0x40, 0x6C, 0xFF };
+    static Color_RGBA8 gPanelBackgroundLightBlue = { 0x6A, 0x6A, 0xB2, 0xFF };
+    static Color_RGBA8 gItemMenuBottomPanelBackground = { 0x2D, 0x1A, 0x41, 0xFF };
+    static Color_RGBA8 gItemMenuBottomPanelBorder = { 0x6F, 0x5F, 0x7F, 0xFF };
     static unk_D_88218060 gPanelStyleTable[] = {
         {
             0x00000001,
@@ -2098,29 +2098,29 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
         },
         {
             0x00000003,
-            gPanelTextureAlt1,
+            gPanelColorCyan,
         },
         {
             0x00000004,
-            gPanelTextureAlt2,
+            gPanelColorGreen,
         },
         {
             0x00000005,
-            gPanelTextureAlt3,
+            gPanelColorYellow,
         },
         {
             0x00000006,
-            gPanelTextureAlt4,
+            gPanelColorWhite,
         },
     };
     static unk_D_88218060 gSpecialPanelStyle[] = {
         {
             0x00000007,
-            gPanelTextureAlt4,
+            gPanelColorWhite,
         },
         {
             0x00000007,
-            gPanelTextureAlt4,
+            gPanelColorWhite,
         },
     };
     static unk_D_88217C6C gPanelLayoutData[] = {
@@ -2257,23 +2257,23 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_2C);
 
     spC8 = mem_pool_alloc(argB, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spC8, 0, 0, 0x228, 6, gPanelBackgroundColor1);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spC8, 0, 0, 0x228, 6, gItemMenuPanelBackground);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spC8);
 
     spCC = mem_pool_alloc(argB, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spCC, 0, 0x124, 0x228, 6, gPanelBackgroundColor1);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spCC, 0, 0x124, 0x228, 6, gItemMenuPanelBackground);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spCC);
 
     spD0 = mem_pool_alloc(argB, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spD0, 0, 6, 6, 0x11E, gPanelBackgroundColor1);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spD0, 0, 6, 6, 0x11E, gItemMenuPanelBackground);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spD0);
 
     spD4 = mem_pool_alloc(argB, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spD4, 0x222, 6, 6, 0x11E, gPanelBackgroundColor1);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spD4, 0x222, 6, 6, 0x11E, gItemMenuPanelBackground);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spD4);
 
     spD8 = mem_pool_alloc(argB, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spD8, 0xF2, 6, 0x44, 0x11E, gPanelBackgroundColor1);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spD8, 0xF2, 6, 0x44, 0x11E, gItemMenuPanelBackground);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spD8);
 
     spC0 = mem_pool_alloc(argB, sizeof(unk_func_88001300_000));
@@ -2285,11 +2285,11 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spC4);
 
     spB8 = mem_pool_alloc(argB, sizeof(unk_func_8850143C));
-    ((func8850143C)Memmap_GetFragmentVaddr(WidgetTree_InitPatternTexture))(spB8, 6, 6, 0xEC, 0x1E, gPanelBorderColor1, gPanelBorderColor2);
+    ((func8850143C)Memmap_GetFragmentVaddr(WidgetTree_InitPatternTexture))(spB8, 6, 6, 0xEC, 0x1E, gBoxLocationPatternDark, gBoxLocationPatternLight);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spB8);
 
     spBC = mem_pool_alloc(argB, sizeof(unk_func_8850143C));
-    ((func8850143C)Memmap_GetFragmentVaddr(WidgetTree_InitPatternTexture))(spBC, 0x136, 6, 0xEC, 0x1E, gPanelBorderColor1, gPanelBorderColor2);
+    ((func8850143C)Memmap_GetFragmentVaddr(WidgetTree_InitPatternTexture))(spBC, 0x136, 6, 0xEC, 0x1E, gBoxLocationPatternDark, gBoxLocationPatternLight);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spBC);
 
     arg0->unk_30[0] = mem_pool_alloc(argB, sizeof(unk_func_8821421C_02C_030));
@@ -2303,7 +2303,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
     LabItem_BoxLocationWidget_SetSelection(arg0->unk_30[1], 1);
 
     temp_s0_2 = mem_pool_alloc(argB, sizeof(unk_func_8850143C));
-    ((func8850143C)Memmap_GetFragmentVaddr(WidgetTree_InitPatternTexture))(temp_s0_2, 0, 0x12A, 0x228, 0x38, gPanelBackgroundColor4, gPanelBorderColor3);
+    ((func8850143C)Memmap_GetFragmentVaddr(WidgetTree_InitPatternTexture))(temp_s0_2, 0, 0x12A, 0x228, 0x38, gItemMenuBottomPanelBackground, gItemMenuBottomPanelBorder);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, temp_s0_2);
 
     arg0->unk_5C = mem_pool_alloc(argB, sizeof(unk_func_88500994));
@@ -2364,7 +2364,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
 
         LabPC_InitTabWidget(arg0->unk_44[x], gPanelLayoutData[x].posX, gPanelLayoutData[x].posY, gPanelLayoutData[x].rotation,
                       gPanelLayoutData[x].unk_06, gPanelLayoutData[x].RentalSlotAnimData_PosePhase, gPanelLayoutData[x].unk_0C, gPanelLayoutData[x].unk_10[0],
-                      gPanelLayoutData[x].unk_10[1], gPanelBackgroundColor1);
+                      gPanelLayoutData[x].unk_10[1], gItemMenuPanelBackground);
 
         if (gPanelLayoutData[x].unk_14 != 0) {
             LabPC_TabWidget_ToggleFlip(arg0->unk_44[x]);
@@ -2605,7 +2605,7 @@ s32 LabItem_DeckHasChanged(unk_func_8821421C_03C* arg0, s32 arg1, s32 arg2, s32 
     }
 
     arg0->posX = 0;
-    if (Deck_GetEntryCountForType(arg1, arg2, arg3) != arg0->rotation.RentalSlotAnimData_PosePhase) {
+    if (Deck_GetEntryCountForSection(arg1, arg2, arg3) != arg0->rotation.RentalSlotAnimData_PosePhase) {
         arg0->posX = 1;
         sp40 = 1;
     } else {

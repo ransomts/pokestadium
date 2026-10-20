@@ -82,7 +82,7 @@ void BattleAnim_CloneParticleState(ParticleEffectInstance* arg0, ParticleEffectI
     arg0->category = arg1->category;
     arg0->unk_74 = arg1->unk_74;
 
-    Particle_FieldAC_SetS16_0BED8(arg0, arg4);
+    Particle_SetFieldOffsetAC(arg0, arg4);
 
     ParticleMath_CopyVec3f(&arg0->unk_38, &arg1->unk_38);
     ParticleMath_CopyVec3f(&arg0->unk_50, &arg1->unk_50);
@@ -661,12 +661,12 @@ gBattleAnimEffectSlots* BattleAnim_CreateEffectSlot(s32 arg0, s32 arg1, s8 arg2,
 
 gBattleAnimEffectSlots* BattleAnim_CreateEffectSlotForCurrentOwner(s32 arg0, func_unk_D_8140E724 arg1, ParticleEffectData* arg2, s16 arg3, s16 arg4, u8 arg5,
                               u8 arg6, u8 arg7, u8 arg8) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, arg1, arg2, gParticleEffectEntityA, arg3, arg4, arg5, arg6, arg7, arg8);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, arg1, arg2, gParticleEffectAttackerEntity, arg3, arg4, arg5, arg6, arg7, arg8);
 }
 
 gBattleAnimEffectSlots* BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(s32 arg0, s32 arg1, s8 arg2, func_unk_D_8140E724 arg3, ParticleEffectData* arg4, s16 arg5,
                               s16 arg6, u8 arg7, u8 arg8, u8 arg9, u8 argA) {
-    return BattleAnim_CreateEffectSlot(arg0, arg1, arg2, arg3, arg4, gParticleEffectEntityA, arg5, arg6, arg7, arg8, arg9, argA);
+    return BattleAnim_CreateEffectSlot(arg0, arg1, arg2, arg3, arg4, gParticleEffectAttackerEntity, arg5, arg6, arg7, arg8, arg9, argA);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnGlobalTintColorFadeDetach(s32 arg0, s16 arg1, u8 arg2) {
@@ -722,55 +722,55 @@ gBattleAnimEffectSlots* BattleAnim_SpawnDescriptor25PaletteFadeIn(s32 arg0, s16 
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintRampDetach(s32 arg0, u8 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintRampDetach, &gParticleDefaultCallback, gParticleEffectEntityA, arg2, arg4, 0x1A, arg3, arg1, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintRampDetach, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg2, arg4, 0x1A, arg3, arg1, 0);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintPulseDetach(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPulseDetach, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg5, 0x1A, arg4, arg2, arg3);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPulseDetach, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg1, arg5, 0x1A, arg4, arg2, arg3);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintHoldFadeDetach(s32 arg0, s16 arg1, u8 arg2, s16 arg3, s16 arg4) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintHoldFadeDetach, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg4, 0x1A, 0, arg2, arg3);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintHoldFadeDetach, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg1, arg4, 0x1A, 0, arg2, arg3);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintPaletteApproachInactive(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteApproachInactive, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteApproachInactive, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintPaletteApproachInactiveAlt(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteApproachInactive, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteApproachInactive, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg4, arg3, 0x1A, arg2, arg1, 0);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintPaletteCycle(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteCycle, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteCycle, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
-gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintPaletteCycleVariant(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteCycle, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
+gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintPaletteCycleAlt(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteCycle, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintPaletteFade(s32 arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteFade, &gParticleDefaultCallback, gParticleEffectEntityA, arg4, arg3, 0x1A, arg2, arg1, arg5);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteFade, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg4, arg3, 0x1A, arg2, arg1, arg5);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintRandomPaletteCycle(s32 arg0, s16 arg1, u8 arg2) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintRandomPaletteCycle, &gParticleDefaultCallback, gParticleEffectEntityA, 0, arg1, 0x1A, arg2, 0, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintRandomPaletteCycle, &gParticleDefaultCallback, gParticleEffectAttackerEntity, 0, arg1, 0x1A, arg2, 0, 0);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelTintPaletteRotateFadeDetach(s32 arg0, s16 arg1, s16 arg2, u8 arg3) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteRotateFadeDetach, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg2, 0x1A, arg3, 0, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelTintPaletteRotateFadeDetach, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg1, arg2, 0x1A, arg3, 0, 0);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelAlphaFade(s32 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelAlphaFade, &gParticleDefaultCallback, gParticleEffectEntityA, arg1, arg3, 0x1A, arg2, 0, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelAlphaFade, &gParticleDefaultCallback, gParticleEffectAttackerEntity, arg1, arg3, 0x1A, arg2, 0, 0);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelAlphaFadeFullPreset(s32 arg0) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelAlphaFade, &gParticleDefaultCallback, gParticleEffectEntityA, 0xFF, 0xFF, 0x1A, 0xFF, 0, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelAlphaFade, &gParticleDefaultCallback, gParticleEffectAttackerEntity, 0xFF, 0xFF, 0x1A, 0xFF, 0, 0);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnOwnerModelAlphaFadeZeroStartPreset(s32 arg0) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelAlphaFade, &gParticleDefaultCallback, gParticleEffectEntityA, 0, 0xFF, 0x1A, 0, 0, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, BattleAnim_CallbackOwnerModelAlphaFade, &gParticleDefaultCallback, gParticleEffectAttackerEntity, 0, 0xFF, 0x1A, 0, 0, 0);
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnCategory17MarkerSlot(s32 arg0, u8 arg1) {
@@ -778,7 +778,7 @@ gBattleAnimEffectSlots* BattleAnim_SpawnCategory17MarkerSlot(s32 arg0, u8 arg1) 
 }
 
 gBattleAnimEffectSlots* BattleAnim_SpawnCategory19MarkerSlot(s32 arg0, u8 arg1) {
-    return BattleAnim_CreateEffectSlot(arg0, 0, 1, NULL, NULL, gParticleEffectEntityA, 0, 0, 0x19, arg1, 0, 0);
+    return BattleAnim_CreateEffectSlot(arg0, 0, 1, NULL, NULL, gParticleEffectAttackerEntity, 0, 0, 0x19, arg1, 0, 0);
 }
 
 void BattleAnim_EffectStartNop(void) {
@@ -802,18 +802,18 @@ s32 BattleAnim_GetEffectStateFlag(void) {
 s32 BattleAnim_IsCurrentOwnerSpecies(s32 arg0) {
     s32 sp1C = 0;
 
-    if (BattleAnim_GetOwnerSpecies(gParticleEffectEntityA) == arg0) {
+    if (BattleAnim_GetOwnerSpecies(gParticleEffectAttackerEntity) == arg0) {
         sp1C = 1;
     }
     return sp1C;
 }
 
 s32 BattleAnim_GetSecondaryOwnerSpecies(void) {
-    return BattleAnim_GetOwnerSpecies(gParticleEffectData_42);
+    return BattleAnim_GetOwnerSpecies(gParticleEffectUserEntity);
 }
 
 s32 BattleAnim_GetTertiaryOwnerSpecies(void) {
-    return BattleAnim_GetOwnerSpecies(gParticleEffectEntityB);
+    return BattleAnim_GetOwnerSpecies(gParticleEffectTargetEntity);
 }
 
 void BattleAnim_GetOwnerBonePosition(BattlePlayerEntity* arg0, s16 arg1, Vec3f* arg2) {
@@ -845,27 +845,27 @@ void BattleAnim_GetOwnerBonePosition(BattlePlayerEntity* arg0, s16 arg1, Vec3f* 
 }
 
 void BattleAnim_GetCurrentOwnerBonePosition(Vec3f* arg0) {
-    BattleAnim_GetOwnerBonePosition(gParticleEffectEntityA, 0x64, arg0);
+    BattleAnim_GetOwnerBonePosition(gParticleEffectAttackerEntity, 0x64, arg0);
 }
 
 void BattleAnim_GetSecondaryOwnerBonePosition(Vec3f* arg0) {
-    BattleAnim_GetOwnerBonePosition(gParticleEffectData_42, 0x64, arg0);
+    BattleAnim_GetOwnerBonePosition(gParticleEffectUserEntity, 0x64, arg0);
 }
 
 void BattleAnim_GetTertiaryOwnerBonePosition(Vec3f* arg0) {
-    BattleAnim_GetOwnerBonePosition(gParticleEffectEntityB, 0x64, arg0);
+    BattleAnim_GetOwnerBonePosition(gParticleEffectTargetEntity, 0x64, arg0);
 }
 
 void BattleAnim_GetSecondaryOwnerAnchorPosition(Vec3f* arg0) {
     if (gParticleEffectPrimaryId == 0xFF) {
-        BattleAnim_GetOwnerDefaultAnchorPosition(gParticleEffectData_42, arg0);
+        BattleAnim_GetOwnerDefaultAnchorPosition(gParticleEffectUserEntity, arg0);
     } else {
-        BattleAnim_GetOwnerBonePosition(gParticleEffectData_42, gParticleTexture_Default, arg0);
+        BattleAnim_GetOwnerBonePosition(gParticleEffectUserEntity, gParticleTexture_Default, arg0);
     }
 }
 
 void BattleAnim_GetTertiaryOwnerBone9Position(Vec3f* arg0) {
-    BattleAnim_GetOwnerBonePosition(gParticleEffectEntityB, 9, arg0);
+    BattleAnim_GetOwnerBonePosition(gParticleEffectTargetEntity, 9, arg0);
 }
 
 void BattleAnim_GetOwnerModelBoundsScaled(BattlePlayerEntity* arg0, Vec3f* arg1) {
@@ -887,19 +887,19 @@ void BattleAnim_GetOwnerSpeciesBaseScaleAlias(BattlePlayerEntity* arg0) {
 }
 
 f32 BattleAnim_GetSecondaryOwnerModelScale(void) {
-    return BattleAnim_GetOwnerModelScale(gParticleEffectData_42);
+    return BattleAnim_GetOwnerModelScale(gParticleEffectUserEntity);
 }
 
 void BattleAnim_GetSecondaryOwnerSpeciesBaseScale(void) {
-    BattleAnim_GetOwnerSpeciesBaseScaleAlias(gParticleEffectData_42);
+    BattleAnim_GetOwnerSpeciesBaseScaleAlias(gParticleEffectUserEntity);
 }
 
 f32 BattleAnim_GetTertiaryOwnerModelScale(void) {
-    return BattleAnim_GetOwnerModelScale(gParticleEffectEntityB);
+    return BattleAnim_GetOwnerModelScale(gParticleEffectTargetEntity);
 }
 
 void BattleAnim_GetTertiaryOwnerSpeciesBaseScale(void) {
-    BattleAnim_GetOwnerSpeciesBaseScaleAlias(gParticleEffectEntityB);
+    BattleAnim_GetOwnerSpeciesBaseScaleAlias(gParticleEffectTargetEntity);
 }
 
 CameraStruct* BattleAnim_GetCameraContext(void) {
@@ -911,8 +911,8 @@ ParticleEffectInstance* BattleAnim_SpawnSecondaryOwnerParticle(Vec3f arg0, u8 ar
 
     if ((u32)sp1C != -1) {
         ParticleMath_CopyVec3f(&sp1C->unk_68, &arg0);
-        BattleAnim_ConfigureSecondaryOwnerParticleVariant(sp1C, arg1);
-        sp1C->unk_10 = gParticleEffectData_42;
+        BattleAnim_SetSecondaryOwnerBlueParticleMode(sp1C, arg1);
+        sp1C->unk_10 = gParticleEffectUserEntity;
         sp1C->unk_14 = NULL;
         sp1C->targetAlpha = 0xFF;
         sp1C->unk_CC = 0x15;
@@ -937,7 +937,7 @@ s16 BattleAnim_GetParticleAngleYToTertiaryOwner(ParticleEffectInstance* arg0) {
     Vec3f sp24;
     s16 ret;
 
-    BattleAnim_GetOwnerDefaultAnchorPosition(gParticleEffectEntityB, &sp24);
+    BattleAnim_GetOwnerDefaultAnchorPosition(gParticleEffectTargetEntity, &sp24);
     ret = ParticleMath_AngleYBetweenPoints(arg0->unk_68, sp24) + arg0->unk_94.y;
     return ret;
 }

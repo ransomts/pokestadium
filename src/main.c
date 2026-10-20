@@ -10,10 +10,10 @@ extern void Game_Thread(void* arg); // thread 6 function
 // entry .bss
 u8 D_8007ED80[0xF180 - 0xED80]; // unknown, start of .bss
 OSThread gIdleThread;
-u8 gBssPadding1[0x400];
+u8 gIdleThreadStack[0x400];
 OSThread pThreads;
-u8 gBssPadding2[0x720];
-u8 gBssPadding3[0x18E0];
+u8 gGameThreadStackLow[0x720];
+u8 gGameThreadStackHigh[0x18E0];
 LEODiskID gLeoDiskId;
 
 /**

@@ -449,7 +449,7 @@ s32 BattleInfoWidget_DrawEntryMarker(unk_func_8830867C_034_034* arg0, s32 arg1, 
     gDPSetRenderMode(gDisplayListHead++, G_RM_NOOP, G_RM_NOOP2);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
-    gDPLoadTextureBlock(gDisplayListHead++, (arg0->unk_30 != 0) ? gCheckerboardPattern2 : gCheckerboardPattern, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+    gDPLoadTextureBlock(gDisplayListHead++, (arg0->unk_30 != 0) ? gCheckerboardPatternStatusEntry : gCheckerboardPattern, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                         12, 18, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                         G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg1 + 0xA) << 2, (arg2 + 0x11) << 2,
@@ -2634,15 +2634,15 @@ void BattleInfoWidget_BuildItemMenu(unk_func_8830867C_04C* arg0, s32 arg1, s32 a
     static Color_RGBA8 gMenuItemSecondaryColor = { 0x3C, 0x64, 0x78, 0xFF };
     static Color_RGBA8 D_88317550 = { 0x43, 0x35, 0x1C, 0xFF };
     static Color_RGBA8 gMenuItemHighlightColor = { 0xFF, 0xFF, 0xFF, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor1 = { 0x14, 0xF0, 0xB4, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor2 = { 0x71, 0xE9, 0xF9, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor3 = { 0x3C, 0x7B, 0x84, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor4 = { 0x93, 0xFA, 0x71, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor5 = { 0x51, 0x89, 0x3E, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor6 = { 0xFE, 0x73, 0xFE, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor7 = { 0x97, 0x44, 0x97, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor8 = { 0xFF, 0x73, 0x73, 0xFF };
-    static Color_RGBA8 gMenuItemAccentColor9 = { 0x83, 0x3B, 0x3B, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorMint = { 0x14, 0xF0, 0xB4, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorLightCyan = { 0x71, 0xE9, 0xF9, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorDarkTeal = { 0x3C, 0x7B, 0x84, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorLightGreen = { 0x93, 0xFA, 0x71, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorDarkGreen = { 0x51, 0x89, 0x3E, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorPink = { 0xFE, 0x73, 0xFE, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorDarkMagenta = { 0x97, 0x44, 0x97, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorSalmon = { 0xFF, 0x73, 0x73, 0xFF };
+    static Color_RGBA8 gMenuItemAccentColorDarkRed = { 0x83, 0x3B, 0x3B, 0xFF };
 
     UNUSED s32 pad[3];
     DashedBorderFrame* sp88;
@@ -2720,39 +2720,39 @@ void BattleInfoWidget_BuildItemMenu(unk_func_8830867C_04C* arg0, s32 arg1, s32 a
     ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp70, 0x12, 8, Text_GetString(NULL, 0, gMoveListMessageTable, 0x52), 8);
     sp70->unk_30 = (0, gMenuItemHighlightColor);
     sp70->unk_44 = sp70->unk_44;
-    sp70->unk_34 = (0, gMenuItemAccentColor1);
+    sp70->unk_34 = (0, gMenuItemAccentColorMint);
     sp70->unk_44 = 1;
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_34, sp70);
 
     sp6C = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
     ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp6C, 0x17, 8, Text_GetString(NULL, 0, gMoveListMessageTable, 0x53), 8);
-    sp6C->unk_30 = (0, gMenuItemAccentColor2);
+    sp6C->unk_30 = (0, gMenuItemAccentColorLightCyan);
     sp6C->unk_44 = sp6C->unk_44;
-    sp6C->unk_34 = (0, gMenuItemAccentColor3);
+    sp6C->unk_34 = (0, gMenuItemAccentColorDarkTeal);
     sp6C->unk_44 = 1;
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_34, sp6C);
 
     sp68 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
     ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp68, 0x1C, 8, Text_GetString(NULL, 0, gMoveListMessageTable, 0x54), 8);
-    sp68->unk_30 = (0, gMenuItemAccentColor4);
+    sp68->unk_30 = (0, gMenuItemAccentColorLightGreen);
     sp68->unk_44 = sp68->unk_44;
-    sp68->unk_34 = (0, gMenuItemAccentColor5);
+    sp68->unk_34 = (0, gMenuItemAccentColorDarkGreen);
     sp68->unk_44 = 1;
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_34, sp68);
 
     sp64 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
     ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp64, 0x21, 8, Text_GetString(NULL, 0, gMoveListMessageTable, 0x55), 8);
-    sp64->unk_30 = (0, gMenuItemAccentColor6);
+    sp64->unk_30 = (0, gMenuItemAccentColorPink);
     sp64->unk_44 = sp64->unk_44;
-    sp64->unk_34 = (0, gMenuItemAccentColor7);
+    sp64->unk_34 = (0, gMenuItemAccentColorDarkMagenta);
     sp64->unk_44 = 1;
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_34, sp64);
 
     sp60 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
     ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp60, 0x26, 8, Text_GetString(NULL, 0, gMoveListMessageTable, 0x56), 8);
-    sp60->unk_30 = (0, gMenuItemAccentColor8);
+    sp60->unk_30 = (0, gMenuItemAccentColorSalmon);
     sp60->unk_44 = sp60->unk_44;
-    sp60->unk_34 = (0, gMenuItemAccentColor9);
+    sp60->unk_34 = (0, gMenuItemAccentColorDarkRed);
     sp60->unk_44 = 1;
     ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_34, sp60);
 
@@ -3272,7 +3272,7 @@ void BattleInfoWidget_SetItemMenuState(unk_func_8830867C_04C* arg0, s32 arg1) {
     arg0->unk_80->posX.unk_14(arg0->unk_80, arg1);
 }
 
-s32 BattleInfoWidget_GetItemMenuActionType(unk_func_8830867C_04C* arg0, s32* arg1) {
+s32 BattleInfoWidget_GetItemMenuMoveSelectMode(unk_func_8830867C_04C* arg0, s32* arg1) {
     s32 sp1C = 0;
     unk_func_8830867C_04C_030_02C_000_000* ptr = arg0->unk_30->unk_2C->posX[arg0->unk_30->unk_38].posX[0];
 
@@ -3332,7 +3332,7 @@ s32 BattleInfoWidget_ItemMenuBackFromMoveSelect(unk_func_8830867C_04C_080* arg0)
 }
 
 void BattleInfoWidget_ItemMenuConfirmSelection(unk_func_8830867C_04C_080* arg0) {
-    arg0->unk_24->unk_84 = BattleInfoWidget_GetItemMenuActionType(arg0->unk_24, arg0->unk_24->unk_88);
+    arg0->unk_24->unk_84 = BattleInfoWidget_GetItemMenuMoveSelectMode(arg0->unk_24, arg0->unk_24->unk_88);
     if (arg0->unk_24->unk_84 > 0) {
         BattleMoveListWidget_SetMoves(arg0->unk_24->unk_78, arg0->unk_24->unk_88);
         if (arg0->unk_24->unk_84 == 1) {
@@ -3974,9 +3974,9 @@ void BattleInfoWidget_DrawSaveConfirmLabel(s32 arg0, s32 arg1, s8* arg2, s32 arg
 }
 
 void BattleInfoWidget_BuildSaveConfirmDialog(YesNoDialog* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
-    static Color_RGBA8 gListBgColor2 = { 0x64, 0x96, 0xB4, 0xFF };
-    static Color_RGBA8 gListHighlightColor2 = { 0x3C, 0x64, 0x78, 0xFF };
-    static Color_RGBA8 gFrameColor2 = { 0xA0, 0x96, 0x64, 0xFF };
+    static Color_RGBA8 gSaveConfirmFramePrimaryColor = { 0x64, 0x96, 0xB4, 0xFF };
+    static Color_RGBA8 gSaveConfirmFrameSecondaryColor = { 0x3C, 0x64, 0x78, 0xFF };
+    static Color_RGBA8 gSaveConfirmBodyColor = { 0xA0, 0x96, 0x64, 0xFF };
 
     UNUSED s32 pad;
     s32 sp68;
@@ -3996,7 +3996,7 @@ void BattleInfoWidget_BuildSaveConfirmDialog(YesNoDialog* arg0, s32 arg1, s32 ar
     temp_v1 = Font_MeasureTextExtent(8, 0, sp50) + 0x10;
     sp68 = temp_v1;
     sp5C = temp_v1;
-    ((func8850B254)Memmap_GetFragmentVaddr(WidgetTree_InitDashedBorderFrame))(sp54, 0, 0, sp5C, 0x14, gListBgColor2, gListHighlightColor2);
+    ((func8850B254)Memmap_GetFragmentVaddr(WidgetTree_InitDashedBorderFrame))(sp54, 0, 0, sp5C, 0x14, gSaveConfirmFramePrimaryColor, gSaveConfirmFrameSecondaryColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp54, sp4C);
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, 0x40);
 
@@ -4013,7 +4013,7 @@ void BattleInfoWidget_BuildSaveConfirmDialog(YesNoDialog* arg0, s32 arg1, s32 ar
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, sp54);
 
     sp48 = mem_pool_alloc(arg3, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(sp48, 0, 0x18, sp5C, 0x40, gFrameColor2);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(sp48, 0, 0x18, sp5C, 0x40, gSaveConfirmBodyColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, sp48);
 
     arg0->unk_30 = mem_pool_alloc(arg3, sizeof(unk_func_8830867C_02C_0B4_030));
@@ -4423,7 +4423,7 @@ s32 LabPCList_LocationCrossfadeWidget_Update(unk_func_882173EC* arg0) {
 }
 
 void LabPCList_DrawLocationCaption(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, s32 arg6) {
-    static Color_RGBA8 gTextColor_Default2 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gLocationNumberTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Color_RGBA8 sp2C;
     char sp24[8];
@@ -4440,7 +4440,7 @@ void LabPCList_DrawLocationCaption(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 a
             break;
 
         case 33:
-            Text_SetEnvColor(gTextColor_Default2.r, gTextColor_Default2.g, gTextColor_Default2.b, arg6);
+            Text_SetEnvColor(gLocationNumberTextColor.r, gLocationNumberTextColor.g, gLocationNumberTextColor.b, arg6);
             sprintf(sp24, "%d", arg5 + 1);
             Font_Printf(((arg0 + arg2) - Font_MeasureTextExtent(0, 0, sp24)) - 4, ((arg3 - 0x10) / 2) + arg1, sp24);
 
@@ -4450,7 +4450,7 @@ void LabPCList_DrawLocationCaption(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 a
             break;
 
         case 17:
-            Text_SetEnvColor(gTextColor_Default2.r, gTextColor_Default2.g, gTextColor_Default2.b, arg6);
+            Text_SetEnvColor(gLocationNumberTextColor.r, gLocationNumberTextColor.g, gLocationNumberTextColor.b, arg6);
             sprintf(sp24, "%d", arg5 + 1);
             Font_Printf(((arg0 + arg2) - Font_MeasureTextExtent(0, 0, sp24)) - 4, ((arg3 - 0x10) / 2) + arg1, sp24);
 

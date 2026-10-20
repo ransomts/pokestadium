@@ -12,7 +12,7 @@ extern u32 gMiniTutoScreenPalette[];
 extern u32 gMiniTutoScreenSettings[];
 extern u32 gMiniTutoScreenGraphics[];
 
-Gfx_TextureConfig gMiniTutoScreenConfig0 = {
+Gfx_TextureConfig gMiniTutoScreenConfig_Tilemap = {
     0x00000001,
     ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
@@ -21,10 +21,10 @@ Gfx_TextureConfig gMiniTutoScreenConfig0 = {
 
 Gfx_TextureNode gMiniTutoScreenNode0 = {
     0x00000001,
-    &gMiniTutoScreenConfig0,
+    &gMiniTutoScreenConfig_Tilemap,
 };
 
-Gfx_TextureConfig gMiniTutoScreenConfig1 = {
+Gfx_TextureConfig gMiniTutoScreenConfig_Palette = {
     0x01000001,
     ParticleGfx_LoadTextureCallbackIa8_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
@@ -33,10 +33,10 @@ Gfx_TextureConfig gMiniTutoScreenConfig1 = {
 
 Gfx_TextureNode gMiniTutoScreenNode1 = {
     0x00000001,
-    &gMiniTutoScreenConfig1,
+    &gMiniTutoScreenConfig_Palette,
 };
 
-Gfx_TextureConfig gMiniTutoScreenConfig2 = {
+Gfx_TextureConfig gMiniTutoScreenConfig_Settings = {
     0x01000002,
     ParticleGfx_LoadTextureCallbackIa8_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
@@ -45,10 +45,10 @@ Gfx_TextureConfig gMiniTutoScreenConfig2 = {
 
 Gfx_TextureNode gMiniTutoScreenNode2 = {
     0x00000001,
-    &gMiniTutoScreenConfig2,
+    &gMiniTutoScreenConfig_Settings,
 };
 
-Gfx_TextureConfig gMiniTutoScreenConfig3 = {
+Gfx_TextureConfig gMiniTutoScreenConfig_Graphics = {
     0x00000001,
     ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
@@ -57,7 +57,7 @@ Gfx_TextureConfig gMiniTutoScreenConfig3 = {
 
 Gfx_TextureNode gMiniTutoScreenNode3 = {
     0x00000001,
-    &gMiniTutoScreenConfig3,
+    &gMiniTutoScreenConfig_Graphics,
 };
 
 s16 gMiniActorPosOffsets[4][4] = {
@@ -312,23 +312,23 @@ void miniTutoScreenBegin(void) {
     if (miniTutoScreenState > 0) {
         gMiniTutoTimer2 = miniTutoScreenState;
         miniTutoScreenState = -2;
-        gMiniGameStateVar3 = 1;
+        gMiniTutoScreenPhase = 1;
     }
 }
 
 void miniTutoScreenEnd(void) {
     miniTutoScreenState = -1;
-    gMiniGameStateVar3 = 0;
+    gMiniTutoScreenPhase = 0;
     gMiniTutoTimer2 = 0;
     gMiniTutoTimer3 = 0;
 }
 
 void miniTutoScreenShow(s16 arg0) {
-    switch (gMiniGameStateVar3) {
+    switch (gMiniTutoScreenPhase) {
         case 1:
             gMiniTutoTimer3 = 0x18;
             gMiniTutoTimer1 = arg0;
-            gMiniGameStateVar3++;
+            gMiniTutoScreenPhase++;
             break;
 
         case 2:
@@ -341,11 +341,11 @@ void miniTutoScreenShow(s16 arg0) {
 }
 
 void miniTutoScreenShowTimed(s16 arg0, s16 arg1) {
-    switch (gMiniGameStateVar3) {
+    switch (gMiniTutoScreenPhase) {
         case 1:
             gMiniTutoTimer3 = arg0; // 0x11
             gMiniTutoTimer1 = arg1;
-            gMiniGameStateVar3++;
+            gMiniTutoScreenPhase++;
             break;
 
         case 2:

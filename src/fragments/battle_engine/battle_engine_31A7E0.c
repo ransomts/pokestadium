@@ -1,7 +1,7 @@
 #include "battle_engine.h"
 
 void BattleAnim_InitSecondaryOwnerParticleBlueFadeGrow(ParticleEffectInstance* arg0) {
-    Particle_SetScaleFactor1(arg0, 0.1f);
+    Particle_SetScaleScaled(arg0, 0.1f);
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     Particle_SetEnvColor(arg0, 0x64, 0xC8, 0xFF);
     Particle_SetPrimAlpha(arg0, 0xFF);
@@ -16,7 +16,7 @@ void BattleAnim_UpdateSecondaryOwnerParticleBlueFadeGrow(ParticleEffectInstance*
 
         case 2:
             Particle_AnimateFramesForwardAndAdvanceLifecycle(arg0, 0, 7, 1, 2, 0);
-            Particle_PrimAlpha_Approach_0BC2C(arg0, 0x20, 8);
+            Particle_ApproachPrimAlpha(arg0, 0x20, 8);
             break;
 
         case 3:
@@ -25,12 +25,12 @@ void BattleAnim_UpdateSecondaryOwnerParticleBlueFadeGrow(ParticleEffectInstance*
     }
 
     if (Particle_IsRunning(arg0) != 0) {
-        Particle_ApproachScaleFactor1(arg0, 0.5f, 0.05f);
+        Particle_ApproachScaleScaled(arg0, 0.5f, 0.05f);
     }
 }
 
 void BattleAnim_InitSecondaryOwnerParticleBlueGrow(ParticleEffectInstance* arg0) {
-    Particle_SetScaleFactor1(arg0, 0.1f);
+    Particle_SetScaleScaled(arg0, 0.1f);
     Particle_SetPrimColor(arg0, 0xFF, 0xFF, 0xFF);
     Particle_SetEnvColor(arg0, 0x64, 0xC8, 0xFF);
     Particle_SetPrimAlpha(arg0, 0xFF);
@@ -43,11 +43,11 @@ void BattleAnim_UpdateSecondaryOwnerParticleBlueGrow(ParticleEffectInstance* arg
     }
 
     if (Particle_IsRunning(arg0) != 0) {
-        Particle_ApproachScaleFactor1(arg0, 0.8f, 0.08f);
+        Particle_ApproachScaleScaled(arg0, 0.8f, 0.08f);
     }
 }
 
-void BattleAnim_ConfigureSecondaryOwnerParticleVariant(ParticleEffectInstance* arg0, u8 arg1) {
+void BattleAnim_SetSecondaryOwnerBlueParticleMode(ParticleEffectInstance* arg0, u8 arg1) {
     switch (arg1) {
         case 1:
             arg0->RentalSlotAnimData_PosePhase = BattleAnim_UpdateSecondaryOwnerParticleBlueFadeGrow;

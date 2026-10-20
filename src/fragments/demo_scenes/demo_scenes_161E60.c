@@ -285,17 +285,17 @@ static DioramaObjectDef gFragment17ObjDef1[] = {
     { { -120.0f, 10.0f, -30.0f }, 123, 2, 0, 0 }, { { -180.0f, 0.0f, 0.0f }, 141, 2, 0, 0 },
     { { -140.0f, 0.0f, 0.0f }, 152, 2, 0, 0 },
 };
-static DioramaObjectDef gFragment17ObjDef2[] = {
+static DioramaObjectDef gFragment17ObjDefFlyingGroup[] = {
     { { 0.0f, -100.0f, -750.0f }, 18, 2, 0, 0 },  { { -35.0f, 40.0f, -350.0f }, 22, 2, 0, 0 },
     { { 78.0f, -50.0f, -150.0f }, 142, 2, 0, 0 }, { { -18.0f, -30.0f, 450.0f }, 6, 2, 10, 0 },
     { { -140.0f, 0.0f, 0.0f }, 152, 2, 0, 0 },
 };
-static DioramaObjectDef gFragment17ObjDef3[] = {
+static DioramaObjectDef gFragment17ObjDefWaterGroup[] = {
     { { 0.0f, 30.0f, -900.0f }, 119, 2, 0, 0 },   { { 15.0f, 10.0f, -250.0f }, 87, 2, 0, 0 },
     { { -38.0f, 20.0f, -550.0f }, 118, 2, 0, 0 }, { { 18.0f, 30.0f, 150.0f }, 73, 2, 0, 0 },
     { { -140.0f, 0.0f, 0.0f }, 152, 2, 0, 0 },
 };
-static DioramaObjectDef gFragment17ObjDef4[] = {
+static DioramaObjectDef gFragment17ObjDefFinaleGroup[] = {
     {
         { 0.0f, 0.0f, 0.0f },
         0xD7,
@@ -322,10 +322,10 @@ static DioramaObjectDef gFragment17ObjDef4[] = {
 static s32 pad_D_86B0C4BC[3] = { 0, 0, 0 };
 
 DioramaObjectDef* gFragment17ObjectDefs[] = {
-    gFragment17ObjDef0, gFragment17ObjDef1, gFragment17ObjDef2, gFragment17ObjDef3, gFragment17ObjDef4, NULL,
+    gFragment17ObjDef0, gFragment17ObjDef1, gFragment17ObjDefFlyingGroup, gFragment17ObjDefWaterGroup, gFragment17ObjDefFinaleGroup, NULL,
 };
 
-static u32 gFragment17TileData0[] = {
+static u32 gFragment17LandTileData[] = {
     0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF,
     0xE6FFEEFF, 0xF8FEFFFB, 0xFFD3FB4D, 0xF309E701, 0xD405C12D, 0xBAA1C5E9, 0xD7F9E2FF, 0xE4FFE4FF, 0xE4FFE4FF,
     0xE5FFE5FF, 0xE5FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE4FFE4FF, 0xE5FFE6FF, 0xEAFFF2FF, 0xFCFFFFFC,
@@ -385,11 +385,11 @@ static u32 gFragment17TileData0[] = {
     0xE4FFE4FF, 0xE5FFECFF, 0xF6FEFDFB, 0xFFDCFC6C, 0xF11DE50A, 0xD611C849, 0xC2A3C5DD, 0xCDF7D9FE,
 };
 
-static GfxTextureInfo gFragment17GfxTileParams0 = {
-    0x03, unk_D_86002F34_018_GFX_TYPE_2, 32, 32, 0x0400, gFragment17TileData0,
+static GfxTextureInfo gFragment17LandGfxTileParams = {
+    0x03, unk_D_86002F34_018_GFX_TYPE_2, 32, 32, 0x0400, gFragment17LandTileData,
 };
 
-static Gfx gFragment17GfxSetupDL0[] = {
+static Gfx gFragment17LandGfxSetupDL[] = {
     gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_MIRROR | G_TX_WRAP, 5, G_TX_NOLOD,
                 G_TX_MIRROR | G_TX_WRAP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -400,7 +400,7 @@ static Gfx gFragment17GfxSetupDL0[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x007C, 0x007C),
     gsSPEndDisplayList(),
 };
-static Vtx gFragment17TileVerts0[] = {
+static Vtx gFragment17LandTileVerts[] = {
     VTX(-3000, -9000, 0, 1024, -2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-3000, -3000, 0, 1024, -1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-9000, -3000, 0, 0, -1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -418,14 +418,14 @@ static Vtx gFragment17TileVerts0[] = {
     VTX(3000, -9000, 0, 2048, -2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(9000, -9000, 0, 3072, -2048, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gFragment17TileDrawDL0[] = {
+static Gfx gFragment17LandTileDrawDL[] = {
     gsSPClearGeometryMode(G_LIGHTING),
     gsDPSetCombineLERP(TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, COMBINED, 0, SHADE, 0,
                        COMBINED, 0, PRIMITIVE, 0),
     gsDPSetEnvColor(255, 255, 255, 125),
     gsDPSetFogColor(191, 248, 255, 255),
     gsSPFogPosition(995, 1000),
-    gsSPVertex(gFragment17TileVerts0, 16, 0),
+    gsSPVertex(gFragment17LandTileVerts, 16, 0),
     gsSPSetGeometryMode(G_CULL_BACK | G_FOG),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(1, 4, 5, 0, 1, 5, 2, 0),
@@ -454,28 +454,28 @@ static u8 gFragment17TileMisc1[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFC, 0x00, 0x01, 0x00, 0x00,
 };
 static u8* gFragment17TileAttrTable0[] = {
-    gFragment17TileData0, gFragment17TileAttr0, gFragment17TileMisc0, NULL, NULL, NULL, NULL, NULL,
+    gFragment17LandTileData, gFragment17TileAttr0, gFragment17TileMisc0, NULL, NULL, NULL, NULL, NULL,
 };
 static u8* gFragment17TileAttrTable1[] = {
-    gFragment17TileData0, gFragment17TileAttr1, gFragment17TileMisc1, NULL, NULL, NULL, NULL, NULL,
+    gFragment17LandTileData, gFragment17TileAttr1, gFragment17TileMisc1, NULL, NULL, NULL, NULL, NULL,
 };
 static unk_D_86002F34_000_014 gFragment17TileAttrSet = {
     gFragment17TileAttrTable0,
     gFragment17TileAttrTable1,
 };
 
-static u32 gFragment17TileLayout0[] = {
+static u32 gFragment17LandTileLayout[] = {
     0x09000000, 0x05000000, 0x09000000, 0x05000000, 0x09000000, 0x05000000, 0x13000005, 0x03E303E8,
     0x2309FFFF, 0x86B0CCF0, 0x0000FFFF, 0xFFFFFFFF, 0x22050000, 0x00000000, 0x08000000, 0x810001D0,
     0x86B0CF38, 0x22050000, 0x86B0CE28, 0x06000000, 0x06000000, 0x06000000, 0x04000000,
 };
 
-u32 gFragment17StageLayout0[] = {
-    0x17000001, 0x00000010, &gFragment17GfxTileParams0, 0x00000000, gFragment17TileVerts0, 0x05000000, 0x1C000000, 0x00008000, 0x00008000,
-    0x00008000, 0x05000000, 0x03000000,  gFragment17TileLayout0, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+u32 gFragment17LandStageLayout[] = {
+    0x17000001, 0x00000010, &gFragment17LandGfxTileParams, 0x00000000, gFragment17LandTileVerts, 0x05000000, 0x1C000000, 0x00008000, 0x00008000,
+    0x00008000, 0x05000000, 0x03000000,  gFragment17LandTileLayout, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-static u32 gFragment17MaskTable1[] = {
+static u32 gFragment17SeaTileData[] = {
     0x322B3AB3, 0x63B77C77, 0x5B73322F, 0x21ED21ED, 0x21EB21AB, 0x21A919A9, 0x19A921A9, 0x19A51963, 0x29E93A71,
     0x42F16BF1, 0x84735B2B, 0x3A2729E5, 0x2161215F, 0x21A52A2D, 0x29E7191B, 0x191B29E1, 0x32335B79, 0x747963B7,
     0x2A2F116D, 0x19AD21AD, 0x21AB1167, 0x112508E3, 0x09231123, 0x08DF08DD, 0x196729ED, 0x3A29636B, 0x63AD4269,
@@ -534,10 +534,10 @@ static u32 gFragment17MaskTable1[] = {
     0x10D71919, 0x29E129ED, 0x32334AF5, 0x6BF763B3, 0x42AF29ED, 0x21AD21AB, 0x196721A7, 0x19A921A9, 0x21E929EB,
     0x29EB3A71, 0x4B357439, 0x6BF7532F, 0x532B4AA9, 0x3A273229, 0x326F3AB3, 0x2A2B195D, 0x1919299D,
 };
-static GfxTextureInfo gFragment17GfxTileParams1 = {
-    0x00, unk_D_86002F34_018_GFX_TYPE_2, 32, 32, 0x0400, gFragment17MaskTable1,
+static GfxTextureInfo gFragment17SeaGfxTileParams = {
+    0x00, unk_D_86002F34_018_GFX_TYPE_2, 32, 32, 0x0400, gFragment17SeaTileData,
 };
-static Gfx gFragment17GfxSetupDL1[] = {
+static Gfx gFragment17SeaGfxSetupDL[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_MIRROR | G_TX_WRAP, 5, G_TX_NOLOD,
                 G_TX_MIRROR | G_TX_WRAP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -548,7 +548,7 @@ static Gfx gFragment17GfxSetupDL1[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x007C, 0x007C),
     gsSPEndDisplayList(),
 };
-static Vtx gFragment17TileVerts1[] = {
+static Vtx gFragment17SeaTileVerts[] = {
     VTX(-18000, 0, 9000, 0, 4710, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(-18000, 0, 3000, 0, 3482, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-6000, 0, 3000, 2458, 3482, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(-6000, 0, 9000, 2458, 4710, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-18000, 0, -3000, 0, 2253, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(-6000, 0, -3000, 2458, 2253, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -558,14 +558,14 @@ static Vtx gFragment17TileVerts1[] = {
     VTX(18000, 0, 3000, 7373, 3482, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(6000, 0, 3000, 4915, 3482, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(18000, 0, 9000, 7373, 4710, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(6000, 0, 9000, 4915, 4710, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gFragment17TileDrawDL1[] = {
+static Gfx gFragment17SeaTileDrawDL[] = {
     gsSPClearGeometryMode(G_LIGHTING),
     gsDPSetCombineLERP(TEXEL1, TEXEL0, ENV_ALPHA, TEXEL0, TEXEL1, TEXEL0, ENVIRONMENT, TEXEL0, COMBINED, 0, SHADE, 0,
                        COMBINED, 0, PRIMITIVE, 0),
     gsDPSetEnvColor(255, 255, 255, 115),
     gsDPSetFogColor(0, 0, 0, 255),
     gsSPFogPosition(987, 1000),
-    gsSPVertex(gFragment17TileVerts1, 16, 0),
+    gsSPVertex(gFragment17SeaTileVerts, 16, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(1, 4, 5, 0, 1, 5, 2, 0),
@@ -594,23 +594,23 @@ static u8 gFragment17TileMisc3[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x01, 0x00, 0x00,
 };
 static u8* gFragment17TileAttrTable2[] = {
-    gFragment17MaskTable1, gFragment17TileAttr2, gFragment17TileMisc2, NULL, NULL, NULL, NULL, NULL,
+    gFragment17SeaTileData, gFragment17TileAttr2, gFragment17TileMisc2, NULL, NULL, NULL, NULL, NULL,
 };
 static u8* gFragment17TileAttrTable3[] = {
-    gFragment17MaskTable1, gFragment17TileAttr3, gFragment17TileMisc3, NULL, NULL, NULL, NULL, NULL,
+    gFragment17SeaTileData, gFragment17TileAttr3, gFragment17TileMisc3, NULL, NULL, NULL, NULL, NULL,
 };
-static unk_D_86002F34_000_014 gFragment17TileAttrSet1 = {
+static unk_D_86002F34_000_014 gFragment17SeaTileAttrSet = {
     gFragment17TileAttrTable2,
     gFragment17TileAttrTable3,
 };
-static u32 gFragment17TileLayout1[] = {
+static u32 gFragment17SeaTileLayout[] = {
     0x09000000,  0x05000000, 0x09000000, 0x05000000, 0x09000000, 0x05000000, 0x13000005, 0x03E303E8,
-    0x2306FFFF,  gFragment17GfxSetupDL1, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, 0x00000000, 0x08000000, 0x810001D0,
-    &gFragment17TileAttrSet1, 0x22010000, gFragment17TileDrawDL1, 0x06000000, 0x06000000, 0x06000000, 0x04000000,
+    0x2306FFFF,  gFragment17SeaGfxSetupDL, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, 0x00000000, 0x08000000, 0x810001D0,
+    &gFragment17SeaTileAttrSet, 0x22010000, gFragment17SeaTileDrawDL, 0x06000000, 0x06000000, 0x06000000, 0x04000000,
 };
-u32 gFragment17StageLayout1[] = {
-    0x17000001, 0x00000010, &gFragment17GfxTileParams1, 0x00000000, gFragment17TileVerts1, 0x05000000, 0x1C000000, 0x00008000, 0x00008000,
-    0x00008000, 0x05000000, 0x03000000,  gFragment17TileLayout1, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+u32 gFragment17SeaStageLayout[] = {
+    0x17000001, 0x00000010, &gFragment17SeaGfxTileParams, 0x00000000, gFragment17SeaTileVerts, 0x05000000, 0x1C000000, 0x00008000, 0x00008000,
+    0x00008000, 0x05000000, 0x03000000,  gFragment17SeaTileLayout, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static GfxTileParams gFragment17TileParams[] = {
     { {
@@ -702,9 +702,9 @@ static GfxTileParams gFragment17TileParams[] = {
 static u32 gFragment17MsgId_Intro = 0x95;
 static u32 gFragment17MsgId_Confirm = 0x97;
 static u32 gFragment17MsgId_Success = 0x98;
-static u32 gFragment17MsgId_Intro2 = 0x95;
-static u32 gFragment17MsgId_Confirm2 = 0x99;
-static u32 gFragment17MsgId_Success2 = 0x9A;
+static u32 gFragment17MsgId_IntroWithExisting = 0x95;
+static u32 gFragment17MsgId_ConfirmWithExisting = 0x99;
+static u32 gFragment17MsgId_SuccessWithExisting = 0x9A;
 static u32 gFragment17MsgId_Failure = 0x9B;
 static u32 gFragment17MsgId_Timeout = 0x9C;
 static u32 gFragment17MsgId_Complete = 0x98;
@@ -1086,7 +1086,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                 sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, 0x96));
             } else {
                 Text_SetStringToken(0x1F, Text_GetString(NULL, 0, gFragment17MsgBank1, gCompletionSceneState->unk_2EC - 1));
-                Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_Intro2);
+                Text_GetString(gFragment17TextBuffer, 0xFF, gFragment17MsgBank0, gFragment17MsgId_IntroWithExisting);
             }
             gFragment17TextState->rotation = 0;
             gFragment17TextState->RentalSlotAnimData_PosePhase = 0xB4;
@@ -1124,7 +1124,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Confirm2));
+                    sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_ConfirmWithExisting));
                     gFragment17TextState->posX++;
                 }
             }
@@ -1142,7 +1142,7 @@ void Completion_UpdateGiftDialogWithExisting(void) {
                     for (i = 0; i < 255; i++) { gFragment17TextBuffer2[i] = 0; }
                     // clang-format on
 
-                    sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_Success2));
+                    sprintf(gFragment17TextBuffer, Text_GetString(NULL, 0, gFragment17MsgBank0, gFragment17MsgId_SuccessWithExisting));
                     gFragment17TextState->posX++;
                 }
             }

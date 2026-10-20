@@ -68,7 +68,7 @@ static u32 gPlayerInfoPanelGeo[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gPlayerInfoPanelVerts, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, Gallery_RentalViewerNodePostCallback, gPlayerInfoPanelDL, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx gPlayerInfoPanelVerts2[] = {
+static Vtx gPlayerInfoPanelTintedCardVerts[] = {
     VTX(-50, 68, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 51, 0, 0, 544, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(50, 51, 0, 3200, 544, 0xFF, 0xFF, 0xFF, 0xFF), VTX(50, 68, 0, 3200, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-50, 51, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 34, 0, 0, 544, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -78,11 +78,11 @@ static Vtx gPlayerInfoPanelVerts2[] = {
     VTX(-50, 17, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 0, 0, 0, 544, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(50, 0, 0, 3200, 544, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(50, 17, 0, 3200, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gPlayerInfoPanelDL2[] = {
+static Gfx gPlayerInfoPanelTintedCardDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gPlayerInfoPanelVerts2, 16, 0),
+    gsSPVertex(gPlayerInfoPanelTintedCardVerts, 16, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 100, 17, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -97,11 +97,11 @@ static Gfx gPlayerInfoPanelDL2[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static u32 gPlayerInfoPanelGeo2[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gPlayerInfoPanelVerts2, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, Gallery_RentalViewerNodePostCallback, gPlayerInfoPanelDL2, 0x06000000, 0x01000000, 0x00000000,
+static u32 gPlayerInfoPanelTintedCardGeo[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gPlayerInfoPanelTintedCardVerts, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, Gallery_RentalViewerNodePostCallback, gPlayerInfoPanelTintedCardDL, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx gPlayerInfoPanelVerts3[] = {
+static Vtx gPlayerInfoPanelCardVerts[] = {
     VTX(-50, 64, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 48, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(50, 48, 0, 3200, 512, 0xFF, 0xFF, 0xFF, 0xFF), VTX(50, 64, 0, 3200, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-50, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 32, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -111,11 +111,11 @@ static Vtx gPlayerInfoPanelVerts3[] = {
     VTX(-50, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-50, 0, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(50, 0, 0, 3200, 512, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(50, 16, 0, 3200, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gPlayerInfoPanelDL3[] = {
+static Gfx gPlayerInfoPanelCardDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineMode(G_CC_DECALRGBA, G_CC_PASS2),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gPlayerInfoPanelVerts3, 16, 0),
+    gsSPVertex(gPlayerInfoPanelCardVerts, 16, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 100, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -130,29 +130,29 @@ static Gfx gPlayerInfoPanelDL3[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static u32 gPlayerInfoPanelGeo3[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gPlayerInfoPanelVerts3, 0x05000000, 0x22040000,
-    0x00000000, 0x08000000, Gallery_RentalViewerNodePostCallback, gPlayerInfoPanelDL3, 0x06000000, 0x01000000, 0x00000000,
+static u32 gPlayerInfoPanelCardGeo[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gPlayerInfoPanelCardVerts, 0x05000000, 0x22040000,
+    0x00000000, 0x08000000, Gallery_RentalViewerNodePostCallback, gPlayerInfoPanelCardDL, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx gPlayerInfoPanelVerts4[] = {
+static Vtx gPlayerInfoPanelOverlayVerts[] = {
     VTX(-36, 12, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-36, -12, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(36, -12, 0, 2304, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(36, 12, 0, 2304, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gPlayerInfoPanelDL4[] = {
+static Gfx gPlayerInfoPanelOverlayDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gPlayerInfoPanelVerts4, 4, 0),
+    gsSPVertex(gPlayerInfoPanelOverlayVerts, 4, 0),
     gsDPLoadTextureBlock_4b(0x0F000000, G_IM_FMT_I, 80, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 gPlayerInfoPanelGeo4[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gPlayerInfoPanelVerts4, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, Gallery_RentalViewerNodePostCallback, gPlayerInfoPanelDL4, 0x06000000, 0x01000000,
+static u32 gPlayerInfoPanelOverlayGeo[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gPlayerInfoPanelOverlayVerts, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, Gallery_RentalViewerNodePostCallback, gPlayerInfoPanelOverlayDL, 0x06000000, 0x01000000,
 };
 static RentalSlotAnimData gPlayerIconAnimData[] = {
     {
@@ -380,9 +380,9 @@ void Gallery_RentalViewerInitScene(void) {
     gSnapSelectNodes[1] = temp_v0_2;
     gSnapSelectNodes[2] = temp_v0_2;
     gSnapSelectNodes[3] = temp_v0_2;
-    gSnapSelectNodes[4] = process_geo_layout(temp_s1, gPlayerInfoPanelGeo3);
-    gSnapSelectNodes[5] = process_geo_layout(temp_s1, gPlayerInfoPanelGeo2);
-    gSnapSelectRentalNode = process_geo_layout(temp_s1, gPlayerInfoPanelGeo4);
+    gSnapSelectNodes[4] = process_geo_layout(temp_s1, gPlayerInfoPanelCardGeo);
+    gSnapSelectNodes[5] = process_geo_layout(temp_s1, gPlayerInfoPanelTintedCardGeo);
+    gSnapSelectRentalNode = process_geo_layout(temp_s1, gPlayerInfoPanelOverlayGeo);
     MainPool_FinalizeAllocation(temp_s1);
     ModelRenderer_InitDisplayRoots();
 

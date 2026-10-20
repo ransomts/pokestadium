@@ -23,13 +23,13 @@ typedef struct WaterHeightMap {
 } WaterHeightMap; // size >= 0x2410
 
 static RibbonEmitter gRibbonEmitters[4];
-static s16 gWaterTexOffset0;
-static s16 gWaterTexOffset1;
+static s16 gWaterTexOffsetForward;
+static s16 gWaterTexOffsetReverse;
 static s32 pad_D_843951C8[2];
 static WaterHeightMap gWaterHeightMap;
-static s16 gWaterTexOffsetA;
-static s16 gWaterTexOffsetB;
-static s16 gWaterTexOffsetC;
+static s16 gWaterSurfaceMainTexOffset;
+static s16 gWaterSurfaceOverlayTexOffset;
+static s16 gWaterEdgeTexOffset;
 static WaterCameraBounds gWaterCameraBounds;
 
 func_D_84390320 gStateCallbackTable[] = {
@@ -529,8 +529,8 @@ s32 RibbonMesh_UpdatePool(void) {
     s32 var_s2;
     RibbonEmitter* ptr = &gRibbonEmitters[0];
 
-    gWaterTexOffset0 = (gWaterTexOffset0 + 1) & 0x3FFF;
-    gWaterTexOffset1 = (gWaterTexOffset1 - 1) & 0x3FFF;
+    gWaterTexOffsetForward = (gWaterTexOffsetForward + 1) & 0x3FFF;
+    gWaterTexOffsetReverse = (gWaterTexOffsetReverse - 1) & 0x3FFF;
     var_s2 = -1;
 
     for (i = 0; i < 4; i++, ptr++) {
@@ -617,10 +617,10 @@ Gfx* RibbonMesh_DrawPool(Gfx* arg0) {
     gDPPipeSync(arg0++);
     gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[0x43], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterTexOffset0, 0, (gWaterTexOffset0 + 0x1F), 0x001F);
+    gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterTexOffsetForward, 0, (gWaterTexOffsetForward + 0x1F), 0x001F);
     gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[0x44], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gDPSetTileSize(arg0++, 1, gWaterTexOffset1, 0, (gWaterTexOffset1 + 0x1F), 0x001F);
+    gDPSetTileSize(arg0++, 1, gWaterTexOffsetReverse, 0, (gWaterTexOffsetReverse + 0x1F), 0x001F);
 
     for (i = 0; i < 4; i++, ptr++) {
         if (ptr->unk_000 == 1) {
@@ -954,9 +954,9 @@ void TerrainGrid_Init(s32 arg0, s16 arg1, s16 arg2) {
         }
     }
 
-    gWaterTexOffsetA = 0;
-    gWaterTexOffsetB = 8;
-    gWaterTexOffsetC = 0;
+    gWaterSurfaceMainTexOffset = 0;
+    gWaterSurfaceOverlayTexOffset = 8;
+    gWaterEdgeTexOffset = 0;
 
     if (arg1 > 0) {
         for (i = 0; i < arg1; i++) {
@@ -971,9 +971,9 @@ s32 TerrainGrid_Update(void) {
     UNUSED s32 pad[2];
     s32 sp1C = TerrainGrid_UpdateWaves();
 
-    gWaterTexOffsetA = (gWaterTexOffsetA - 1) & 0x3FFF;
-    gWaterTexOffsetB = (gWaterTexOffsetB - 1) & 0x3FFF;
-    gWaterTexOffsetC = (gWaterTexOffsetC - 1) & 0x3FFF;
+    gWaterSurfaceMainTexOffset = (gWaterSurfaceMainTexOffset - 1) & 0x3FFF;
+    gWaterSurfaceOverlayTexOffset = (gWaterSurfaceOverlayTexOffset - 1) & 0x3FFF;
+    gWaterEdgeTexOffset = (gWaterEdgeTexOffset - 1) & 0x3FFF;
     TerrainGrid_BuildCameraBounds(&gWaterCameraBounds, 50.0f);
 
     return sp1C;
@@ -1074,11 +1074,11 @@ Gfx* TerrainGrid_Draw(Gfx* arg0) {
 
     gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[0xB8], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                           G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
-    gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterTexOffsetA, -gWaterTexOffsetA, gWaterTexOffsetA + 0x1F, 0x1F - gWaterTexOffsetA);
+    gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterSurfaceMainTexOffset, -gWaterSurfaceMainTexOffset, gWaterSurfaceMainTexOffset + 0x1F, 0x1F - gWaterSurfaceMainTexOffset);
 
     gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[0xB9], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
-    gDPSetTileSize(arg0++, 1, gWaterTexOffsetB, gWaterTexOffsetB, gWaterTexOffsetB + 0x1F, gWaterTexOffsetB + 0x1F);
+    gDPSetTileSize(arg0++, 1, gWaterSurfaceOverlayTexOffset, gWaterSurfaceOverlayTexOffset, gWaterSurfaceOverlayTexOffset + 0x1F, gWaterSurfaceOverlayTexOffset + 0x1F);
 
     vtx = gWaterHeightMap.unk_000C;
     for (i = 0; i < 15; i++) {
@@ -1133,10 +1133,10 @@ Gfx* TerrainGrid_Draw(Gfx* arg0) {
         gSPDisplayList(arg0++, gWaterGfxSurfaceEdge);
         gDPLoadTextureTile_4b(arg0++, gBattleAnimAssetPointers[0xBA], G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0, G_TX_NOMIRROR | G_TX_WRAP,
                               G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 15, G_TX_NOLOD);
-        gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterTexOffsetC, 0, gWaterTexOffsetC + 0x1F, 0x001F);
+        gDPSetTileSize(arg0++, G_TX_RENDERTILE, gWaterEdgeTexOffset, 0, gWaterEdgeTexOffset + 0x1F, 0x001F);
         gDPLoadMultiTile_4b(arg0++, gBattleAnimAssetPointers[0xBA], 0x0100, 1, G_IM_FMT_I, 32, 0, 0, 0, 31, 31, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 14, G_TX_NOLOD);
-        gDPSetTileSize(arg0++, 1, -gWaterTexOffsetC, 0, 0x1F - gWaterTexOffsetC, 0x001F);
+        gDPSetTileSize(arg0++, 1, -gWaterEdgeTexOffset, 0, 0x1F - gWaterEdgeTexOffset, 0x001F);
         gSPVertex(arg0++, temp_v0, 4, 0);
         gSP2Triangles(arg0++, 0, 2, 1, 0, 2, 3, 1, 0);
     }

@@ -134,8 +134,8 @@ extern OSMesg D_8122B250;
 extern OSMesgQueue* gGbPakSiEventQueue;
 extern s32 GbPakRetryCounter;
 extern volatile u8 gGbPakServiceThreadActive;
-extern u8 Buffer_GbPakRead1[];
-extern u8 Buffer_GbPakRead2[];
+extern u8 Buffer_GbPakReadFirstPass[];
+extern u8 Buffer_GbPakReadSecondPass[];
 extern u8 gGbEmuPresentationMode;
 extern u8 gAudioInitialized;
 extern u8 gPrevDataSetIndex;
@@ -184,7 +184,7 @@ extern u32 gSubTimer;
 extern u32 gTimerInterval;
 extern u32 gStadiumInterval;
 extern u8 gStadiumScreenFlag0;
-extern u8 gPlayerInfoBoxType;
+extern u8 gPlayerInfoBoxPort;
 
 s32 GbPak_CheckConnectorReady(GbPakDeviceState* arg0) {
   s32 result;
@@ -492,7 +492,7 @@ s32 GbPak_TransferBankedRam(GbPakDeviceState* arg0, s32 arg1) {
   return var_v1;
 }
 
-s32 GbPak_DetectSupportedCartridgeVariant(GbPakHeader* arg0) {
+s32 GbPak_MatchCartridgeTitleIndex(GbPakHeader* arg0) {
   u8* var_s1;
   s32 i;
 
@@ -571,7 +571,7 @@ void GbPak_ThreadMain(s32 arg0) {
                 if (!(emu->status & 1)) {
                     goto retry;
                 }
-                emu->headerMatchIndex = GbPak_DetectSupportedCartridgeVariant((GbPakHeader*)&emu->detectedGbpakId);
+                emu->headerMatchIndex = GbPak_MatchCartridgeTitleIndex((GbPakHeader*)&emu->detectedGbpakId);
                 emu->unk_5DC9 = 2;
                 /* fallthrough */
             case 2:
@@ -595,11 +595,11 @@ void GbPak_ThreadMain(s32 arg0) {
                         }
                         break;
                     case 5:
-                        emu->transferBuffer = Buffer_GbPakRead1;
+                        emu->transferBuffer = Buffer_GbPakReadFirstPass;
                         emu->transferSize = 0x100;
                         if ((GbPak_TransferBankedRam(emu, 1) == 0) &&
-                            (emu->transferBuffer = Buffer_GbPakRead2, GbPak_TransferBankedRam(emu, 0) == 0) &&
-                            (bcmp(Buffer_GbPakRead1, Buffer_GbPakRead2, 0x100) == 0)) {
+                            (emu->transferBuffer = Buffer_GbPakReadSecondPass, GbPak_TransferBankedRam(emu, 0) == 0) &&
+                            (bcmp(Buffer_GbPakReadFirstPass, Buffer_GbPakReadSecondPass, 0x100) == 0)) {
                             if (emu->blockReadStatus[emu->gbAddress >> 8] != 0) {
                                 emu->blockReadStatus[emu->gbAddress >> 8] = 2;
                             }
@@ -717,10 +717,10 @@ void GbPak_ThreadMain(s32 arg0) {
                 }
                 break;
             case 10:
-                emu->transferBuffer = Buffer_GbPakRead1;
+                emu->transferBuffer = Buffer_GbPakReadFirstPass;
                 if ((GbPak_TransferBankedRam(emu, 1) == 0) &&
-                    (emu->transferBuffer = Buffer_GbPakRead2, GbPak_TransferBankedRam(emu, 0) == 0) &&
-                    (bcmp(Buffer_GbPakRead1, Buffer_GbPakRead2, 0x100) == 0)) {
+                    (emu->transferBuffer = Buffer_GbPakReadSecondPass, GbPak_TransferBankedRam(emu, 0) == 0) &&
+                    (bcmp(Buffer_GbPakReadFirstPass, Buffer_GbPakReadSecondPass, 0x100) == 0)) {
                     if (emu->blockReadStatus[emu->gbAddress >> 8] != 0) {
                         emu->blockReadStatus[emu->gbAddress >> 8] = 2;
                     }
@@ -1122,7 +1122,7 @@ void DrawPlayerInfoBox(s32 arg0, s32 arg1) {
     }
     GbEmu_BlitWithPixelOp((u16*) (arg0), (u16*) (temp_s6 + DataStruct_TileAssets + 0x8510), 0, 8, 8);
     arg0 += 0x10;
-    switch (gPlayerInfoBoxType) {
+    switch (gPlayerInfoBoxPort) {
     case 1:
         i = 7;
         break;
@@ -1251,7 +1251,7 @@ void DrawFullScreenBackground(u16* dst, u16 (*arg1)[6][0x640], s32 arg2, s32 arg
             break;
     }
 
-    gPlayerInfoBoxType = arg2;
+    gPlayerInfoBoxPort = arg2;
     DrawPlayerInfoBox((s32) (gCurrentFramebufferPtr + 0x87BA), 0);
     gStadiumScreenFlag0 = 0;
     gTimerInterval = 0x800000;
@@ -2374,7 +2374,7 @@ s32 EmuMainLoop(s32 arg0) {
                 if (emu->unk_5DC9 == 2) {
                     for (; i < (emu->ramSize >> 8); i++) {
                         if ((emu->blockReadStatus[i] < 2) && (emu->blockWriteMask[i] == 0)) {
-                            _bcopy((u8*) emu + (i << 8) + 0x12DF0, Buffer_GbPakRead1, 0x100);
+                            _bcopy((u8*) emu + (i << 8) + 0x12DF0, Buffer_GbPakReadFirstPass, 0x100);
                             emu->gbAddress = i << 8;
                             emu->blockReadStatus[i] = 1;
                             i = 0xFFFF;

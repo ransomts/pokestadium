@@ -132,7 +132,7 @@ u8 ModelRenderer_GetActiveMode(void) {
     return ret;
 }
 
-s16 ModelRenderer_GetObjectType(void) {
+s16 ModelRenderer_GetActiveSpeciesId(void) {
     s16 ret = *(s16*)Util_ConvertAddrToVirtAddr(&gDefaultGraphRoot->unk_01A);
     return ret;
 }

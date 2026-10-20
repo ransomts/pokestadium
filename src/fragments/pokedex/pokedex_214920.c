@@ -343,9 +343,9 @@ void Pokedex_InitTrainerInfoWidget(unk_func_888044BC_03C_02C* arg0, s32 arg1, s3
 void Pokedex_LoadTrainerInfo(unk_func_888044BC_03C_02C* arg0, s32 arg1) {
     arg0->unk_2C = GbSave_GetTrainerId(arg1);
     GbSave_GetPlayerName(arg1, arg0->unk_30);
-    arg0->unk_3C = GbSave_CountSpeciesProgressField036(arg1);
-    arg0->unk_40 = GbSave_CountSpeciesProgressField023(arg1);
-    arg0->unk_44 = GbSave_CountSpeciesProgressField06(arg1);
+    arg0->unk_3C = GbSave_CountPokedexSeen(arg1);
+    arg0->unk_40 = GbSave_CountPokedexOwned(arg1);
+    arg0->unk_44 = GbSave_CountPokedexCaught(arg1);
 }
 
 void Pokedex_DrawTrainerInfoCard(unk_func_888044BC_03C_02C* arg0, s32 arg1, s32 arg2) {

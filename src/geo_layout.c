@@ -16,8 +16,8 @@ static GeoLayoutCommandProc GeoLayoutJumpTable[] = {
     geo_layout_cmd_create_container,
     geo_layout_cmd_create_reference,
     geo_layout_cmd_create_camera,
-    geo_layout_cmd_create_type3,
-    geo_layout_cmd_create_type4,
+    geo_layout_cmd_create_texture_node,
+    geo_layout_cmd_create_model_root,
     geo_layout_cmd_create_ortho,
     geo_layout_cmd_create_perspective,
     geo_layout_cmd_create_background,
@@ -184,7 +184,7 @@ void geo_layout_cmd_create_camera(void) {
     gGeoLayoutCommand += sizeof(GeoCmd_CreateCamera);
 }
 
-void geo_layout_cmd_create_type3(void) {
+void geo_layout_cmd_create_texture_node(void) {
     GeoCmd_CreateType3* cmd = (GeoCmd_CreateType3*)gGeoLayoutCommand;
 
     register_graph_node(GeoNode_CreateType3(gGraphNodePool, NULL, cmd->posY));
@@ -192,7 +192,7 @@ void geo_layout_cmd_create_type3(void) {
     gGeoLayoutCommand += sizeof(GeoCmd_CreateType3);
 }
 
-void geo_layout_cmd_create_type4(void) {
+void geo_layout_cmd_create_model_root(void) {
     GeoCmd_CreateType4* cmd = (GeoCmd_CreateType4*)gGeoLayoutCommand;
 
     register_graph_node(GeoNode_CreateType4(gGraphNodePool, NULL, cmd->posY));

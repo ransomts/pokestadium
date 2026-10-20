@@ -872,7 +872,7 @@ static GfxTextureInfo gFragment21TextureInfoTable[9] = {
     },
 };
 
-static Gfx gFragment21GfxSetup0[] = {
+static Gfx gFragment21GfxSetupHole[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 6, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -883,7 +883,7 @@ static Gfx gFragment21GfxSetup0[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x007C, 0x00FC),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup1[] = {
+static Gfx gFragment21GfxSetupSandPatch[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_MIRROR | G_TX_CLAMP, 6, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -894,7 +894,7 @@ static Gfx gFragment21GfxSetup1[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x00FC, 0x007C),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup2[] = {
+static Gfx gFragment21GfxSetupSmallRock[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -906,7 +906,7 @@ static Gfx gFragment21GfxSetup2[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x00FC, 0x007C),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup3[] = {
+static Gfx gFragment21GfxSetupWallSide[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_32b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_MIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -918,7 +918,7 @@ static Gfx gFragment21GfxSetup3[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x00FC, 0x007C),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup4[] = {
+static Gfx gFragment21GfxSetupWallBack[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_MIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -930,7 +930,7 @@ static Gfx gFragment21GfxSetup4[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x027C, 0x007C),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup5[] = {
+static Gfx gFragment21GfxSetupRockRight[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -942,7 +942,7 @@ static Gfx gFragment21GfxSetup5[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x05FC, 0x017C),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup6[] = {
+static Gfx gFragment21GfxSetupRockBack[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -954,7 +954,7 @@ static Gfx gFragment21GfxSetup6[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x077C, 0x017C),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup7[] = {
+static Gfx gFragment21GfxSetupRockLeft[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_MIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_MIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -966,7 +966,7 @@ static Gfx gFragment21GfxSetup7[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x08FC, 0x01FC),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup8[] = {
+static Gfx gFragment21GfxSetupGroundWall[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -978,7 +978,7 @@ static Gfx gFragment21GfxSetup8[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x09FC, 0x007C),
     gsSPEndDisplayList(),
 };
-static Gfx gFragment21GfxSetup9[] = {
+static Gfx gFragment21GfxSetupGround[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_MIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_MIRROR | G_TX_CLAMP, 6, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -1008,7 +1008,7 @@ static Vtx gFragment21VtxGroundWall[] = {
     VTX(-1900, 0, -450, 7787, 1024, 0x40, 0x64, 0x0C, 0xFF),  VTX(-2000, 300, 1500, 9172, 0, 0x77, 0x00, 0x06, 0xFF),
     VTX(-2000, 0, 1500, 9172, 1024, 0x54, 0x54, 0x04, 0xFF),  VTX(1400, 300, -1900, 2924, 0, 0x9B, 0x00, 0x3F, 0xFF),
 };
-static Vtx gFragment21VtxRock1[] = {
+static Vtx gFragment21VtxRockLeft[] = {
     VTX(-974, 61, -787, 612, 2702, 0xD0, 0x69, 0x1C, 0xFF),   VTX(-941, 0, -538, 2544, 4096, 0xE7, 0x6D, 0x2A, 0xFF),
     VTX(-766, 75, -630, 3748, 2397, 0xFC, 0x6B, 0x34, 0xFF),  VTX(-599, 0, -487, 4847, 4096, 0x0D, 0x6D, 0x2F, 0xFF),
     VTX(-417, 47, -747, 6818, 3023, 0x2D, 0x6E, 0x0F, 0xFF),  VTX(-597, 162, -859, 7917, 404, 0x29, 0x70, 0x06, 0xFF),
@@ -1017,7 +1017,7 @@ static Vtx gFragment21VtxRock1[] = {
     VTX(-817, 180, -824, 10155, 0, 0xE6, 0x73, 0x13, 0xFF),   VTX(-766, 75, -630, 14500, 2397, 0xFC, 0x6B, 0x34, 0xFF),
     VTX(-693, 167, -972, 9548, 294, 0x07, 0x70, 0xD6, 0xFF),  VTX(-1177, 0, -791, 605, 4096, 0xD7, 0x6F, 0x11, 0xFF),
 };
-static Vtx gFragment21VtxRock2[] = {
+static Vtx gFragment21VtxRockBack[] = {
     VTX(-816, 516, -1963, 1210, 0, 0xC5, 0x65, 0x18, 0xFF),
     VTX(-1011, 354, -2018, 877, 389, 0xB1, 0x5A, 0x03, 0xFF),
     VTX(-925, 256, -1650, 1576, 1315, 0xCE, 0x5F, 0x34, 0xFF),
@@ -1038,7 +1038,7 @@ static Vtx gFragment21VtxRock2[] = {
     VTX(-327, 410, -2087, 7194, 103, 0x21, 0x6C, 0xDA, 0xFF),
     VTX(-1266, 0, -2281, 355, 992, 0xB6, 0x4E, 0xCD, 0xFF),
 };
-static Vtx gFragment21VtxRock3[] = {
+static Vtx gFragment21VtxRockRight[] = {
     VTX(360, 173, -974, 1245, 1635, 0xBA, 0x5B, 0x1F, 0xFF), VTX(381, 0, -576, 1944, 2983, 0xDA, 0x5F, 0x3D, 0xFF),
     VTX(646, 211, -743, 2676, 1953, 0xE9, 0x57, 0x4E, 0xFF), VTX(875, 0, -530, 3318, 3072, 0x1C, 0x57, 0x4D, 0xFF),
     VTX(382, 158, -1318, 142, 1022, 0xBC, 0x5C, 0xDE, 0xFF), VTX(593, 510, -1050, 2335, 361, 0xDC, 0x6E, 0x1E, 0xFF),
@@ -1048,32 +1048,32 @@ static Vtx gFragment21VtxRock3[] = {
     VTX(918, 460, -1129, 4130, 377, 0x42, 0x63, 0x07, 0xFF), VTX(166, 0, -1423, 141, 1347, 0xC8, 0x64, 0xDE, 0xFF),
     VTX(1257, 0, -848, 4336, 2459, 0x4D, 0x53, 0x25, 0xFF),
 };
-static Vtx gFragment21VtxWallA[] = {
+static Vtx gFragment21VtxBackWall[] = {
     VTX(-4000, 0, -3000, 0, 1024, 0x00, 0x00, 0x78, 0xFF),
     VTX(4000, 0, -3000, 5120, 1024, 0x00, 0x00, 0x78, 0xFF),
     VTX(4000, 1350, -3000, 5120, 0, 0x00, 0x00, 0x78, 0xFF),
     VTX(-4000, 1350, -3000, 0, 0, 0x00, 0x00, 0x78, 0xFF),
 };
-static Vtx gFragment21VtxWallB[] = {
+static Vtx gFragment21VtxLeftWall[] = {
     VTX(-929, 0, -1211, 0, 1024, 0xDD, 0x00, 0x72, 0xFF),
     VTX(-164, 0, -977, 2048, 1024, 0xDD, 0x00, 0x72, 0xFF),
     VTX(-164, 135, -977, 2048, 0, 0xDD, 0x00, 0x72, 0xFF),
     VTX(-929, 135, -1211, 0, 0, 0xDD, 0x00, 0x72, 0xFF),
 };
-static Vtx gFragment21VtxWallC[] = {
+static Vtx gFragment21VtxRightWall[] = {
     VTX(318, 0, -544, 0, 1024, 0xEC, 0x00, 0x76, 0xFF),
     VTX(1106, 0, -405, 2048, 1024, 0xEC, 0x00, 0x76, 0xFF),
     VTX(1106, 135, -405, 2048, 0, 0xEC, 0x00, 0x76, 0xFF),
     VTX(318, 135, -544, 0, 0, 0xEC, 0x00, 0x76, 0xFF),
 };
-static Vtx gFragment21VtxSmallRockA[] = {
+static Vtx gFragment21VtxSmallRockLeft[] = {
     VTX(-469, 34, -488, 545, 283, 0xAC, 0x45, 0x31, 0xFF),  VTX(-426, 42, -477, 819, 82, 0x21, 0x61, 0x3D, 0xFF),
     VTX(-433, 53, -558, 266, 506, 0x05, 0x6F, 0xD3, 0xFF),  VTX(-428, 3, -452, 773, 331, 0x11, 0xFF, 0x76, 0xFF),
     VTX(-391, 8, -496, 947, 450, 0x76, 0x0D, 0x10, 0xFF),   VTX(-469, -17, -474, 665, 487, 0xAC, 0xBE, 0x35, 0xFF),
     VTX(-422, -37, -492, 792, 640, 0x36, 0x98, 0x13, 0xFF), VTX(-433, 53, -558, 1290, 506, 0x05, 0x6F, 0xD3, 0xFF),
     VTX(-426, 10, -582, 1264, 776, 0x37, 0xE9, 0x98, 0xFF),
 };
-static Vtx gFragment21VtxSmallRockB[] = {
+static Vtx gFragment21VtxSmallRockCenter[] = {
     VTX(633, 20, -440, 1266, 731, 0x6B, 0xE4, 0x2C, 0xFF),  VTX(508, 18, -382, 963, 387, 0xF5, 0x12, 0x76, 0xFF),
     VTX(499, -27, -428, 800, 533, 0xF4, 0x92, 0x2B, 0xFF),  VTX(476, 52, -433, 808, 101, 0xD1, 0x69, 0x1E, 0xFF),
     VTX(439, 13, -434, 774, 277, 0x8B, 0x02, 0x17, 0xFF),   VTX(468, -7, -497, 648, 405, 0xCB, 0xB5, 0xB4, 0xFF),
@@ -1081,7 +1081,7 @@ static Vtx gFragment21VtxSmallRockB[] = {
     VTX(597, 63, -450, 267, 523, 0x24, 0x72, 0x03, 0xFF),   VTX(597, 63, -450, 1291, 523, 0x24, 0x72, 0x03, 0xFF),
     VTX(607, -18, -484, 1428, 827, 0x2D, 0x95, 0xE5, 0xFF),
 };
-static Vtx gFragment21VtxSmallRockC[] = {
+static Vtx gFragment21VtxSmallRockRight[] = {
     VTX(558, 36, -384, 1224, 734, 0x95, 0x18, 0x2F, 0xFF),  VTX(734, 39, -271, 983, 442, 0x1C, 0xEA, 0x72, 0xFF),
     VTX(737, 129, -380, 832, 587, 0x13, 0x70, 0x25, 0xFF),  VTX(768, -30, -396, 917, 106, 0x3F, 0x9D, 0x14, 0xFF),
     VTX(817, 49, -405, 802, 300, 0x77, 0x00, 0x07, 0xFF),   VTX(766, 89, -545, 631, 456, 0x3A, 0x4B, 0xB8, 0xFF),
@@ -1089,7 +1089,7 @@ static Vtx gFragment21VtxSmallRockC[] = {
     VTX(558, 36, -384, 200, 734, 0x95, 0x18, 0x2F, 0xFF),   VTX(593, 65, -571, 473, 646, 0xB3, 0xF8, 0xA5, 0xFF),
     VTX(585, 112, -490, 1503, 833, 0xCB, 0x69, 0xEF, 0xFF), VTX(604, -51, -413, 1273, 456, 0xD2, 0x92, 0x0A, 0xFF),
 };
-static Vtx gFragment21VtxSandPatchA[] = {
+static Vtx gFragment21VtxSandPatch1[] = {
     VTX(94, 157, -546, 217, 82, 0x2A, 0x54, 0x49, 0xFF),    VTX(69, 157, -532, 39, 82, 0x2A, 0x54, 0x49, 0xFF),
     VTX(76, 124, -520, 39, 281, 0x3B, 0xFF, 0x67, 0xFF),    VTX(101, 124, -534, 217, 281, 0x3B, 0xFF, 0x67, 0xFF),
     VTX(298, 165, -703, 1829, 39, 0x00, 0x78, 0x00, 0xFF),  VTX(80, 165, -577, 238, 39, 0x00, 0x78, 0x00, 0xFF),
@@ -1107,7 +1107,7 @@ static Vtx gFragment21VtxSandPatchA[] = {
     VTX(18, 86, -620, 39, 507, 0xE2, 0x67, 0xCD, 0xFF),     VTX(43, 86, -634, 217, 507, 0xE2, 0x67, 0xCD, 0xFF),
     VTX(66, 4, -593, 217, 995, 0x1E, 0x99, 0x34, 0xFF),     VTX(42, 4, -579, 39, 995, 0x1E, 0x99, 0x34, 0xFF),
 };
-static Vtx gFragment21VtxSandPatchB[] = {
+static Vtx gFragment21VtxSandPatch2[] = {
     VTX(285, 91, -733, 1850, 479, 0xF9, 0x76, 0xF3, 0xFF),  VTX(309, 91, -747, 2028, 479, 0xF9, 0x76, 0xF3, 0xFF),
     VTX(291, 86, -778, 2028, 507, 0xE2, 0x67, 0xCD, 0xFF),  VTX(267, 86, -764, 1850, 507, 0xE2, 0x67, 0xCD, 0xFF),
     VTX(77, 33, -575, 217, 824, 0x30, 0xB9, 0x53, 0xFF),    VTX(53, 33, -561, 39, 824, 0x30, 0xB9, 0x53, 0xFF),
@@ -1124,7 +1124,7 @@ static Vtx gFragment21VtxSandPatchB[] = {
     VTX(277, 124, -745, 1850, 281, 0x89, 0x00, 0x00, 0xFF), VTX(277, 124, -739, 1829, 281, 0x89, 0x00, 0x00, 0xFF),
     VTX(285, 91, -733, 1850, 479, 0x8B, 0xE6, 0x00, 0xFF),  VTX(286, 87, -724, 1829, 503, 0x8B, 0xE6, 0x00, 0xFF),
 };
-static Vtx gFragment21VtxSandPatchC[] = {
+static Vtx gFragment21VtxSandPatch3[] = {
     VTX(267, 86, -764, 1850, 507, 0x98, 0x33, 0x1B, 0xFF),  VTX(266, 82, -759, 1829, 535, 0x98, 0x33, 0x1B, 0xFF),
     VTX(286, 87, -724, 1829, 503, 0xA5, 0x40, 0x2B, 0xFF),  VTX(285, 91, -733, 1850, 479, 0xA5, 0x40, 0x2B, 0xFF),
     VTX(256, 58, -783, 1850, 678, 0x8A, 0x0E, 0x05, 0xFF),  VTX(256, 56, -776, 1829, 686, 0x8A, 0x0E, 0x05, 0xFF),
@@ -1141,7 +1141,7 @@ static Vtx gFragment21VtxSandPatchC[] = {
     VTX(101, 124, -534, 217, 281, 0x3B, 0xFF, 0x67, 0xFF),  VTX(76, 124, -520, 39, 281, 0x3B, 0xFF, 0x67, 0xFF),
     VTX(69, 91, -532, 39, 479, 0x36, 0xD0, 0x5F, 0xFF),     VTX(93, 91, -547, 217, 479, 0x36, 0xD0, 0x5F, 0xFF),
 };
-static Vtx gFragment21VtxSandPatchD[] = {
+static Vtx gFragment21VtxSandPatch4[] = {
     VTX(335, 86, -645, 1850, 507, 0x1E, 0x67, 0x33, 0xFF),  VTX(360, 86, -659, 2028, 507, 0x1E, 0x67, 0x33, 0xFF),
     VTX(342, 91, -690, 2028, 479, 0x07, 0x76, 0x0D, 0xFF),  VTX(317, 91, -676, 1850, 479, 0x07, 0x76, 0x0D, 0xFF),
     VTX(346, 58, -626, 1850, 678, 0x39, 0x1F, 0x64, 0xFF),  VTX(371, 58, -640, 2028, 678, 0x39, 0x1F, 0x64, 0xFF),
@@ -1158,7 +1158,7 @@ static Vtx gFragment21VtxSandPatchD[] = {
     VTX(256, 58, -783, 1850, 678, 0xC7, 0x1F, 0x9C, 0xFF),  VTX(280, 58, -797, 2028, 678, 0xC7, 0x1F, 0x9C, 0xFF),
     VTX(267, 86, -764, 1850, 507, 0xE2, 0x67, 0xCD, 0xFF),  VTX(291, 86, -778, 2028, 507, 0xE2, 0x67, 0xCD, 0xFF),
 };
-static Vtx gFragment21VtxSandPatchE[] = {
+static Vtx gFragment21VtxSandPatch5[] = {
     VTX(43, 86, -634, 217, 507, 0xE2, 0x67, 0xCD, 0xFF),    VTX(18, 86, -620, 39, 507, 0xE2, 0x67, 0xCD, 0xFF),
     VTX(36, 91, -589, 39, 479, 0xF9, 0x76, 0xF3, 0xFF),     VTX(61, 91, -603, 217, 479, 0xF9, 0x76, 0xF3, 0xFF),
     VTX(61, 91, -603, 217, 479, 0xCA, 0xD0, 0xA1, 0xFF),    VTX(36, 91, -589, 39, 479, 0xCA, 0xD0, 0xA1, 0xFF),
@@ -1176,7 +1176,7 @@ static Vtx gFragment21VtxSandPatchE[] = {
     VTX(120, 22, -500, 217, 892, 0x73, 0xE1, 0xF9, 0xFF),   VTX(120, 23, -507, 238, 884, 0x73, 0xE1, 0xF9, 0xFF),
     VTX(106, 0, -525, 217, 1024, 0x6A, 0xCB, 0xF1, 0xFF),   VTX(108, 5, -529, 238, 992, 0x6A, 0xCB, 0xF1, 0xFF),
 };
-static Vtx gFragment21VtxSandPatchF[] = {
+static Vtx gFragment21VtxSandPatch6[] = {
     VTX(284, 154, -728, 1829, 104, 0xD7, 0x56, 0xB9, 0xFF), VTX(65, 154, -602, 238, 104, 0xD7, 0x56, 0xB9, 0xFF),
     VTX(80, 165, -577, 238, 39, 0x00, 0x78, 0x00, 0xFF),    VTX(298, 165, -703, 1829, 39, 0x00, 0x78, 0x00, 0xFF),
     VTX(277, 124, -739, 1829, 281, 0xC5, 0xFF, 0x99, 0xFF), VTX(59, 124, -613, 238, 281, 0xC5, 0xFF, 0x99, 0xFF),
@@ -1193,7 +1193,7 @@ static Vtx gFragment21VtxSandPatchF[] = {
     VTX(60, 157, -604, 217, 82, 0x46, 0x29, 0xA8, 0xFF),    VTX(65, 154, -602, 238, 104, 0x46, 0x29, 0xA8, 0xFF),
     VTX(77, 171, -575, 217, 0, 0x5B, 0x39, 0xCC, 0xFF),     VTX(80, 165, -577, 238, 39, 0x5B, 0x39, 0xCC, 0xFF),
 };
-static Vtx gFragment21VtxSandPatchG[] = {
+static Vtx gFragment21VtxSandPatch7[] = {
     VTX(318, 157, -675, 1850, 82, 0x2A, 0x54, 0x49, 0xFF),  VTX(342, 157, -689, 2028, 82, 0x2A, 0x54, 0x49, 0xFF),
     VTX(325, 171, -718, 2028, 0, 0x00, 0x78, 0x00, 0xFF),   VTX(301, 171, -704, 1850, 0, 0x00, 0x78, 0x00, 0xFF),
     VTX(313, 154, -677, 1829, 104, 0x29, 0x56, 0x47, 0xFF), VTX(94, 154, -551, 238, 104, 0x29, 0x56, 0x47, 0xFF),
@@ -1222,7 +1222,7 @@ static Vtx gSandshrewHoleVerts[] = {
 };
 
 static Gfx gSandshrewStageDisplayList[] = {
-    gsSPVertex(gFragment21VtxSandPatchA, 32, 0),
+    gsSPVertex(gFragment21VtxSandPatch1, 32, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
@@ -1234,7 +1234,7 @@ static Gfx gSandshrewStageDisplayList[] = {
     gsSP2Triangles(26, 27, 23, 0, 26, 23, 22, 0),
     gsSP2Triangles(25, 24, 28, 0, 25, 28, 29, 0),
     gsSP2Triangles(30, 31, 27, 0, 30, 27, 26, 0),
-    gsSPVertex(gFragment21VtxSandPatchB, 32, 0),
+    gsSPVertex(gFragment21VtxSandPatch2, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
@@ -1246,7 +1246,7 @@ static Gfx gSandshrewStageDisplayList[] = {
     gsSP2Triangles(22, 23, 24, 0, 22, 24, 25, 0),
     gsSP2Triangles(26, 27, 23, 0, 26, 23, 22, 0),
     gsSP2Triangles(28, 29, 27, 0, 28, 27, 26, 0),
-    gsSPVertex(gFragment21VtxSandPatchC, 32, 0),
+    gsSPVertex(gFragment21VtxSandPatch3, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 1, 0, 4, 1, 0, 0),
     gsSP2Triangles(6, 7, 5, 0, 6, 5, 4, 0),
@@ -1257,7 +1257,7 @@ static Gfx gSandshrewStageDisplayList[] = {
     gsSP2Triangles(18, 19, 20, 0, 18, 20, 21, 0),
     gsSP2Triangles(22, 23, 24, 0, 22, 24, 25, 0),
     gsSP2Triangles(26, 27, 28, 0, 26, 28, 29, 0),
-    gsSPVertex(gFragment21VtxSandPatchD, 32, 0),
+    gsSPVertex(gFragment21VtxSandPatch4, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 1, 0, 4, 1, 0, 0),
     gsSP2Triangles(6, 7, 5, 0, 6, 5, 4, 0),
@@ -1269,7 +1269,7 @@ static Gfx gSandshrewStageDisplayList[] = {
     gsSP2Triangles(22, 23, 24, 0, 22, 24, 25, 0),
     gsSP2Triangles(26, 27, 23, 0, 26, 23, 22, 0),
     gsSP2Triangles(28, 29, 27, 0, 28, 27, 26, 0),
-    gsSPVertex(gFragment21VtxSandPatchE, 32, 0),
+    gsSPVertex(gFragment21VtxSandPatch5, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
@@ -1281,7 +1281,7 @@ static Gfx gSandshrewStageDisplayList[] = {
     gsSP2Triangles(25, 24, 26, 0, 25, 26, 27, 0),
     gsSP2Triangles(27, 26, 28, 0, 27, 28, 29, 0),
     gsSP2Triangles(29, 28, 30, 0, 29, 30, 31, 0),
-    gsSPVertex(gFragment21VtxSandPatchF, 32, 0),
+    gsSPVertex(gFragment21VtxSandPatch6, 32, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 1, 0, 4, 1, 0, 0),
     gsSP2Triangles(6, 7, 5, 0, 6, 5, 4, 0),
@@ -1293,7 +1293,7 @@ static Gfx gSandshrewStageDisplayList[] = {
     gsSP2Triangles(22, 23, 24, 0, 22, 24, 25, 0),
     gsSP2Triangles(25, 24, 26, 0, 25, 26, 27, 0),
     gsSP2Triangles(27, 26, 28, 0, 27, 28, 29, 0),
-    gsSPVertex(gFragment21VtxSandPatchG, 28, 0),
+    gsSPVertex(gFragment21VtxSandPatch7, 28, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSP2Triangles(7, 6, 8, 0, 7, 8, 9, 0),
@@ -1319,7 +1319,7 @@ static Gfx gSandshrewHoleDisplayList[] = {
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList1[] = {
-    gsSPVertex(gFragment21VtxSmallRockC, 12, 0),
+    gsSPVertex(gFragment21VtxSmallRockRight, 12, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),
     gsSP2Triangles(2, 5, 6, 0, 5, 2, 4, 0),
@@ -1330,7 +1330,7 @@ static Gfx gSandshrewMiniActorDisplayList1[] = {
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList2[] = {
-    gsSPVertex(gFragment21VtxSmallRockB, 11, 0),
+    gsSPVertex(gFragment21VtxSmallRockCenter, 11, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),
     gsSP2Triangles(2, 5, 6, 0, 5, 2, 4, 0),
@@ -1341,7 +1341,7 @@ static Gfx gSandshrewMiniActorDisplayList2[] = {
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList3[] = {
-    gsSPVertex(gFragment21VtxSmallRockA, 9, 0),
+    gsSPVertex(gFragment21VtxSmallRockLeft, 9, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),
     gsSP2Triangles(1, 4, 2, 0, 5, 6, 3, 0),
@@ -1350,25 +1350,25 @@ static Gfx gSandshrewMiniActorDisplayList3[] = {
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList4[] = {
-    gsSPVertex(gFragment21VtxWallC, 4, 0),
+    gsSPVertex(gFragment21VtxRightWall, 4, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList5[] = {
-    gsSPVertex(gFragment21VtxWallB, 4, 0),
+    gsSPVertex(gFragment21VtxLeftWall, 4, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList6[] = {
-    gsSPVertex(gFragment21VtxWallA, 4, 0),
+    gsSPVertex(gFragment21VtxBackWall, 4, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList7[] = {
-    gsSPVertex(gFragment21VtxRock3, 15, 0),
+    gsSPVertex(gFragment21VtxRockRight, 15, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 2, 1, 3, 0),
     gsSP2Triangles(4, 0, 5, 0, 6, 0, 4, 0),
@@ -1381,7 +1381,7 @@ static Gfx gSandshrewMiniActorDisplayList7[] = {
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList8[] = {
-    gsSPVertex(gFragment21VtxRock2, 19, 0),
+    gsSPVertex(gFragment21VtxRockBack, 19, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),
     gsSP2Triangles(2, 4, 5, 0, 0, 2, 6, 0),
@@ -1398,7 +1398,7 @@ static Gfx gSandshrewMiniActorDisplayList8[] = {
     gsSPEndDisplayList(),
 };
 static Gfx gSandshrewMiniActorDisplayList9[] = {
-    gsSPVertex(gFragment21VtxRock1, 14, 0),
+    gsSPVertex(gFragment21VtxRockLeft, 14, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 2, 1, 3, 0),
     gsSP2Triangles(2, 4, 5, 0, 6, 5, 4, 0),
@@ -1433,24 +1433,24 @@ static Gfx gSandshrewMiniActorDisplayList11[] = {
 static u32 gSandshrewStageObjectTable[] = {
     0x09000000, 0x05000000, 0x1D0B0100, 0x00000000, 0xFDA80000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
     0x05000000, 0x1D0A0101, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000,
-    0x2301FFFF, gFragment21GfxSetup9, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList10, 0x2301FFFF, gFragment21GfxSetup8, 0x0001FFFF,
+    0x2301FFFF, gFragment21GfxSetupGround, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList10, 0x2301FFFF, gFragment21GfxSetupGroundWall, 0x0001FFFF,
     0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList11, 0x1D090102, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000,
-    0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetup7, 0x0002FFFF, 0xE7DA8A8A, 0x22010000, gSandshrewMiniActorDisplayList9, 0x06000000,
+    0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupRockLeft, 0x0002FFFF, 0xE7DA8A8A, 0x22010000, gSandshrewMiniActorDisplayList9, 0x06000000,
     0x1D080103, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF,
-    gFragment21GfxSetup6, 0x0003FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList8, 0x06000000, 0x1D070104, 0x00000000, 0x00000000,
-    0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetup5, 0x0002FFFF, 0xFFD87E7E,
+    gFragment21GfxSetupRockBack, 0x0003FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList8, 0x06000000, 0x1D070104, 0x00000000, 0x00000000,
+    0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupRockRight, 0x0002FFFF, 0xFFD87E7E,
     0x22010000, gSandshrewMiniActorDisplayList7, 0x06000000, 0x1D060105, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000,
-    0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetup4, 0x0004FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList6, 0x06000000,
+    0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupWallBack, 0x0004FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList6, 0x06000000,
     0x1D050106, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF,
-    gFragment21GfxSetup3, 0x0005FFFF, 0xFFFFFFFF, 0x22050000, gSandshrewMiniActorDisplayList5, 0x06000000, 0x1D040107, 0x00000000, 0x00000000,
+    gFragment21GfxSetupWallSide, 0x0005FFFF, 0xFFFFFFFF, 0x22050000, gSandshrewMiniActorDisplayList5, 0x06000000, 0x1D040107, 0x00000000, 0x00000000,
     0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x22050000, gSandshrewMiniActorDisplayList4, 0x06000000, 0x1D030108,
-    0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetup2,
+    0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupSmallRock,
     0x0006FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList3, 0x06000000, 0x1D020109, 0x00000000, 0x00000000, 0x00000000,
-    0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetup2, 0x0006FFFF, 0xFFFFBEBE, 0x22010000,
+    0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupSmallRock, 0x0006FFFF, 0xFFFFBEBE, 0x22010000,
     gSandshrewMiniActorDisplayList2, 0x06000000, 0x1D01010A, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
     0x05000000, 0x22010000, gSandshrewMiniActorDisplayList1, 0x06000000, 0x1D00010B, 0x00000000, 0x00000000, 0x00000000, 0x00010000,
-    0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetup1, 0x0007FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewStageDisplayList,
-    0x2301FFFF, gFragment21GfxSetup0, 0x0008FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewHoleDisplayList, 0x06000000, 0x06000000, 0x06000000,
+    0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupSandPatch, 0x0007FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewStageDisplayList,
+    0x2301FFFF, gFragment21GfxSetupHole, 0x0008FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewHoleDisplayList, 0x06000000, 0x06000000, 0x06000000,
     0x06000000, 0x04000000,
 };
 static u32 gSandshrewStageInitTable[] = {
@@ -1500,13 +1500,13 @@ static s16 gSandshrewAngleOffsets[] = {
     0xA000,
 };
 
-static AnimFrame gSandshrewTutoAnimTable1[5] = {
+static AnimFrame gSandshrewTutoSmallIconAnim[5] = {
     { D_03040580, 0x12 }, { D_03040980, 2 }, { D_03040D80, 8 }, { D_03040980, 2 }, { NULL, 0 },
 };
-static AnimFrame gSandshrewTutoAnimTable2[5] = {
+static AnimFrame gSandshrewTutoLeftIconAnim[5] = {
     { D_030451A0, 8 }, { D_03045E20, 2 }, { D_03046AA0, 2 }, { D_03045E20, 2 }, { NULL, 0 },
 };
-static AnimFrame gSandshrewTutoAnimTable3[6] = {
+static AnimFrame gSandshrewTutoRightIconAnim[6] = {
     { D_03047720, 2 }, { D_030483A0, 2 }, { D_03049020, 2 }, { D_030483A0, 2 }, { D_03047720, 6 }, { NULL, 0 },
 };
 
@@ -1579,7 +1579,7 @@ void SandshrewGame_PlaySoundEvent(s16 arg0, s16 arg1) {
     }
 
     if (var_s0 != 0) {
-        gMiniGameStateVar2++;
+        gMiniGameSoundDispatchCount++;
         Audio_DispatchSoundBankCommand(var_s0, sp30, sp2C);
     }
 }
@@ -2275,9 +2275,9 @@ void SandshrewGame_DrawTutorialScreen(void) {
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             Widget_DrawSplitBanner(2, 0x19, 0xA6);
-            Widget_DrawAnimIcon40x20(0x63, 0xAB, gSandshrewTutoAnimTable2);
-            Widget_DrawAnimIcon40x20B(0x8B, 0xAB, gSandshrewTutoAnimTable3);
-            Widget_DrawAnimIcon16C(0x74, 0xC6, gSandshrewTutoAnimTable1);
+            Widget_DrawAnimIcon40x20(0x63, 0xAB, gSandshrewTutoLeftIconAnim);
+            Widget_DrawAnimIcon40x20B(0x8B, 0xAB, gSandshrewTutoRightIconAnim);
+            Widget_DrawAnimIcon16C(0x74, 0xC6, gSandshrewTutoSmallIconAnim);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;

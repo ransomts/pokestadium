@@ -9,16 +9,16 @@
 #include "src/memory.h"
 #include "src/util.h"
 
-s32 BattlePrep_BindCarouselSegment0(s32, SimpleGfxNode*);
-s32 BattlePrep_BindCarouselSegment1(s32, SimpleGfxNode*);
-s32 BattlePrep_BindCarouselSegment2(s32, SimpleGfxNode*);
+s32 BattlePrep_BindCarouselBackgroundTexture(s32, SimpleGfxNode*);
+s32 BattlePrep_BindCarouselBadgeTexture0(s32, SimpleGfxNode*);
+s32 BattlePrep_BindCarouselBadgeTexture1(s32, SimpleGfxNode*);
 s32 BattlePrep_CarouselDepthCallback(s32, unk_D_86002F34_alt5*);
-s32 BattlePrep_BindCarouselSegment3(s32, SimpleGfxNode*);
+s32 BattlePrep_BindCarouselBadgeTextures2And3(s32, SimpleGfxNode*);
 
 s32 BattlePrep_BadgeCarouselGeoCallback(s32, SimpleGfxNode*);
 s32 BattlePrep_BadgeCarouselGlowCallback(s32, SimpleGfxNode*);
 s32 BattlePrep_BadgeCarouselTextureCallback(s32, SimpleGfxNode*);
-s32 BattlePrep_BadgeCarouselGlowCallback2(s32, SimpleGfxNode*);
+s32 BattlePrep_BadgeCarouselLargeBarGlowCallback(s32, SimpleGfxNode*);
 
 static u8 gBattleModeBackgroundIds[] = {
     0x00, 0x00, 0x00, 0x01, 0x02, 0x03,
@@ -134,7 +134,7 @@ static Gfx gUIBarDisplayList[] = {
 };
 static u32 gUIBarGeoLayout[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, 0x84B0FD40, 0x05000000, 0x22010000,
-    0x00000000, 0x08000000, BattlePrep_BindCarouselSegment0, gUIBarDisplayList, 0x06000000, 0x01000000, 0x00000000,
+    0x00000000, 0x08000000, BattlePrep_BindCarouselBackgroundTexture, gUIBarDisplayList, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarSmallTopVerts[] = {
     VTX(-100, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(-36, 14, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -194,7 +194,7 @@ static u32 gUIBarSmallTopGeoLayout[] = {
 static u32 gUIBarSmallBottomGeoLayout[] = {
     0x17000000,    0x0000000C, 0x00000000, 0x00000000, gUIBarSmallTopVerts, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00120000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    BattlePrep_BindCarouselSegment1, gUIBarSmallBottomDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    BattlePrep_BindCarouselBadgeTexture0, gUIBarSmallBottomDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarWideTopVerts[] = {
     VTX(86, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(114, 14, 0, 896, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -260,7 +260,7 @@ static u32 gUIBarWideTopGeoLayout[] = {
 static u32 gUIBarWideBottomGeoLayout[] = {
     0x17000000,    0x00000010, 0x00000000, 0x00000000, gUIBarWideTopVerts, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00120000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    BattlePrep_BindCarouselSegment1, gUIBarWideBottomDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    BattlePrep_BindCarouselBadgeTexture0, gUIBarWideBottomDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarMidVerts[] = {
     VTX(-76, 10, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 10, 0, 2432, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -298,7 +298,7 @@ static Gfx gUIBarMidDisplayList[] = {
 static u32 gUIBarMidGeoLayout[] = {
     0x17000000,    0x00000008, 0x00000000, 0x00000000, gUIBarMidVerts, 0x05000000, 0x1B000000,
     0x00000000,    0x00000000, 0x00020000, 0x05000000, 0x22050000, 0x00000000, 0x08000000,
-    BattlePrep_BindCarouselSegment2, gUIBarMidDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    BattlePrep_BindCarouselBadgeTexture1, gUIBarMidDisplayList, 0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarTwoLayerVerts[] = {
     VTX(-100, 14, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-36, 14, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -348,7 +348,7 @@ static Gfx gUIBarTwoLayerDisplayList[] = {
 static u32 gUIBarTwoLayerGeoLayout[] = {
     0x17000000, 0x0000000C,    0x00000000, 0x00000000,    gUIBarTwoLayerVerts, 0x05000000, 0x1B000000, 0x00000000,
     0x00000000, 0xFFEE0000,    0x08000000, BattlePrep_CarouselDepthCallback, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, BattlePrep_BindCarouselSegment3, gUIBarTwoLayerDisplayList, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    0x08000000, BattlePrep_BindCarouselBadgeTextures2And3, gUIBarTwoLayerDisplayList, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx gUIBarMiniVerts[] = {
     VTX(-64, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, 16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -386,7 +386,7 @@ static Gfx gUIBarMiniDisplayList[] = {
 static u32 gUIBarMiniGeoLayout[] = {
     0x17000000, 0x00000008,    0x00000000, 0x00000000,    gUIBarMiniVerts, 0x05000000, 0x1B000000, 0x00000000,
     0x00000000, 0xFFEE0000,    0x08000000, BattlePrep_CarouselDepthCallback, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, BattlePrep_BindCarouselSegment3, gUIBarMiniDisplayList, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
+    0x08000000, BattlePrep_BindCarouselBadgeTextures2And3, gUIBarMiniDisplayList, 0x06000000,    0x06000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Gfx gUIBarMiniAltDisplayList[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
@@ -460,7 +460,7 @@ static Gfx gUIBarSpecialDisplayList[] = {
 static u32 gUIBarSpecialGeoLayout[] = {
     0x17000000, 0x0000000C,    0x00000000, 0x00000000,    gUIBarSpecialVerts, 0x05000000, 0x1B000000, 0x00000000,
     0x00000000, 0xFFEE0000,    0x08000000, BattlePrep_CarouselDepthCallback, 0x00000000, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, BattlePrep_BindCarouselSegment3, gUIBarSpecialDisplayList, 0x06000000,    0x06000000, 0x01000000, 0x00000000, 0x00000000,
+    0x08000000, BattlePrep_BindCarouselBadgeTextures2And3, gUIBarSpecialDisplayList, 0x06000000,    0x06000000, 0x01000000, 0x00000000, 0x00000000,
 };
 static Vtx gUIBarBarSegmentVerts[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -610,10 +610,10 @@ static Gfx gUIBarLargeDetailDisplayList[] = {
 };
 static u32 gUIBarLargeGeoLayout[] = {
     0x17000000,    0x00000000, 0x00000000, 0x00000000, gUIBarLargeVerts, 0x05000000,    0x22050000, 0x00000000, 0x08000000,
-    BattlePrep_BadgeCarouselTextureCallback, gUIBarLargeDisplayList, 0x22050000, 0x00000000, 0x08000000, BattlePrep_BadgeCarouselGlowCallback2, gUIBarLargeDetailDisplayList, 0x06000000, 0x01000000,
+    BattlePrep_BadgeCarouselTextureCallback, gUIBarLargeDisplayList, 0x22050000, 0x00000000, 0x08000000, BattlePrep_BadgeCarouselLargeBarGlowCallback, gUIBarLargeDetailDisplayList, 0x06000000, 0x01000000,
 };
 
-s32 BattlePrep_BindCarouselSegment0(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BindCarouselBackgroundTexture(s32 arg0, SimpleGfxNode* arg1) {
     gBadgeCarouselAnim* temp_a0;
 
     if (arg0 == 5) {
@@ -628,7 +628,7 @@ s32 BattlePrep_BindCarouselSegment0(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 BattlePrep_BindCarouselSegment1(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BindCarouselBadgeTexture0(s32 arg0, SimpleGfxNode* arg1) {
     gBadgeCarouselAnim* temp_a0;
 
     if (arg0 == 5) {
@@ -643,7 +643,7 @@ s32 BattlePrep_BindCarouselSegment1(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 BattlePrep_BindCarouselSegment3(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BindCarouselBadgeTextures2And3(s32 arg0, SimpleGfxNode* arg1) {
     gBadgeCarouselAnim* temp_a0;
 
     if (arg0 == 5) {
@@ -659,7 +659,7 @@ s32 BattlePrep_BindCarouselSegment3(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 BattlePrep_BindCarouselSegment2(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BindCarouselBadgeTexture1(s32 arg0, SimpleGfxNode* arg1) {
     gBadgeCarouselAnim* temp_a0;
 
     if (arg0 == 5) {
@@ -1332,7 +1332,7 @@ s32 BattlePrep_BadgeCarouselTextureCallback(s32 arg0, SimpleGfxNode* arg1) {
     return 0;
 }
 
-s32 BattlePrep_BadgeCarouselGlowCallback2(s32 arg0, SimpleGfxNode* arg1) {
+s32 BattlePrep_BadgeCarouselLargeBarGlowCallback(s32 arg0, SimpleGfxNode* arg1) {
     static s16 gSegmentHighlightAnimPhase = 0;
 
     gBadgeCarouselAnim* temp_v0;

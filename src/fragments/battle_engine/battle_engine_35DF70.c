@@ -649,13 +649,13 @@ void Battle_Effect_Flinch(void) {
 
 void Battle_Effect_OHKO(void) {
     gBattleDamage = 0;
-    gBattleEffectType = 0xFF;
+    gBattleCritOrOhkoState = 0xFF;
     if (gBattleUser->unk_2E < gBattleTarget->unk_2E) {
         gBattleMoveFailed = 1;
         return;
     }
     gBattleDamage = 0xFFFF;
-    gBattleEffectType = 2;
+    gBattleCritOrOhkoState = 2;
 }
 
 void Battle_Effect_TwoTurnMove(void) {

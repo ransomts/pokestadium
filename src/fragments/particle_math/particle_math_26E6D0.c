@@ -17,11 +17,11 @@ static u8 gParticleColorPalette[][3] = {
     { 0x78, 0x1E, 0x78 },
 };
 
-u8 gPrimColorPalette[] = {
+u8 gParticleColorScheme1[] = {
     0x0C, 0x19, 0x23, 0x36, 0x2F, 0x3B,
 };
 
-static u8 gParticleColorSetB[] = {
+static u8 gParticleColorScheme2[] = {
     0x17, 0x19, 0x25, 0x23, 0x35, 0x14,
 };
 
@@ -245,30 +245,30 @@ void ParticleGfx_RecolorPrimEnvFromPalettePair(ParticleEffectInstance* arg0, u16
 }
 
 void ParticleGfx_RecolorPrimFromPaletteSetA(ParticleEffectInstance* arg0, s16 arg1) {
-    ParticleGfx_RecolorPrim(arg0, gPrimColorPalette[arg1]);
+    ParticleGfx_RecolorPrim(arg0, gParticleColorScheme1[arg1]);
 }
 
 void ParticleGfx_RecolorEnvFromPaletteSetA(ParticleEffectInstance* arg0, s16 arg1) {
-    ParticleGfx_RecolorEnv(arg0, gPrimColorPalette[arg1]);
+    ParticleGfx_RecolorEnv(arg0, gParticleColorScheme1[arg1]);
 }
 
 void ParticleGfx_RecolorPrimFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
-    ParticleGfx_RecolorPrim(arg0, gParticleColorSetB[arg1]);
+    ParticleGfx_RecolorPrim(arg0, gParticleColorScheme2[arg1]);
 }
 
 void ParticleGfx_RecolorEnvFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
-    ParticleGfx_RecolorEnv(arg0, gParticleColorSetB[arg1]);
+    ParticleGfx_RecolorEnv(arg0, gParticleColorScheme2[arg1]);
 }
 
 void ParticleGfx_RecolorPrimEnvFromPaletteSetA(ParticleEffectInstance* arg0, s16 arg1) {
-    u8 sp1F = gPrimColorPalette[arg1];
+    u8 sp1F = gParticleColorScheme1[arg1];
 
     ParticleGfx_RecolorPrim(arg0, sp1F);
     ParticleGfx_RecolorEnv(arg0, sp1F);
 }
 
 void ParticleGfx_RecolorPrimEnvFromPaletteSetB(ParticleEffectInstance* arg0, s16 arg1) {
-    u8 sp1F = gParticleColorSetB[arg1];
+    u8 sp1F = gParticleColorScheme2[arg1];
 
     ParticleGfx_RecolorPrim(arg0, sp1F);
     ParticleGfx_RecolorEnv(arg0, sp1F);
@@ -291,9 +291,9 @@ s32 ParticleGfx_ApproachPrimPalette(ParticleEffectInstance* arg0, u16 arg1, u8 a
 
     ParticleGfx_CopyPaletteRgb(sp1C, arg1);
 
-    sp28 = Particle_PrimR_Approach_0BAE4(arg0, sp1C[0], arg2);
-    sp24 = Particle_PrimG_Approach_0BB14(arg0, sp1C[1], arg2);
-    sp20 = Particle_PrimB_Approach_0BB44(arg0, sp1C[2], arg2);
+    sp28 = Particle_ApproachPrimR(arg0, sp1C[0], arg2);
+    sp24 = Particle_ApproachPrimG(arg0, sp1C[1], arg2);
+    sp20 = Particle_ApproachPrimB(arg0, sp1C[2], arg2);
 
     if ((sp28 * sp24 * sp20) != 0) {
         sp2C = 1;
@@ -310,9 +310,9 @@ s32 ParticleGfx_ApproachEnvPalette(ParticleEffectInstance* arg0, u16 arg1, u8 ar
 
     ParticleGfx_CopyPaletteRgb(&sp1C, arg1);
 
-    sp28 = Particle_EnvR_Approach_0BB90(arg0, sp1C[0], arg2);
-    sp24 = Particle_EnvG_Approach_0BBF0(arg0, sp1C[1], arg2);
-    sp20 = Particle_EnvB_Approach_0BBC0(arg0, sp1C[2], arg2);
+    sp28 = Particle_ApproachEnvR(arg0, sp1C[0], arg2);
+    sp24 = Particle_ApproachEnvG(arg0, sp1C[1], arg2);
+    sp20 = Particle_ApproachEnvB(arg0, sp1C[2], arg2);
 
     if ((sp28 * sp24 * sp20) != 0) {
         sp2C = 1;
@@ -333,12 +333,12 @@ s32 ParticleGfx_ApproachPrimEnvPalettePair(ParticleEffectInstance* arg0, u16 arg
 
     ParticleGfx_CopyPalettePairRgb(sp28, sp24, arg1);
 
-    sp40 = Particle_PrimR_Approach_0BAE4(arg0, sp28[0], arg2);
-    sp3C = Particle_PrimG_Approach_0BB14(arg0, sp28[1], arg2);
-    sp38 = Particle_PrimB_Approach_0BB44(arg0, sp28[2], arg2);
-    sp34 = Particle_EnvR_Approach_0BB90(arg0, sp24[0], arg2);
-    sp30 = Particle_EnvG_Approach_0BBF0(arg0, sp24[1], arg2);
-    sp2C = Particle_EnvB_Approach_0BBC0(arg0, sp24[2], arg2);
+    sp40 = Particle_ApproachPrimR(arg0, sp28[0], arg2);
+    sp3C = Particle_ApproachPrimG(arg0, sp28[1], arg2);
+    sp38 = Particle_ApproachPrimB(arg0, sp28[2], arg2);
+    sp34 = Particle_ApproachEnvR(arg0, sp24[0], arg2);
+    sp30 = Particle_ApproachEnvG(arg0, sp24[1], arg2);
+    sp2C = Particle_ApproachEnvB(arg0, sp24[2], arg2);
 
     if ((sp40 * sp3C * sp38 * sp34 * sp30 * sp2C) != 0) {
         sp44 = 1;

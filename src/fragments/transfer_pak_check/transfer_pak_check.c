@@ -29,9 +29,9 @@ static char** gMenuMessageBank;
 static s32 gIsStickerStationConnected;
 static s32 gAudioModeFlag;
 static s32 gMenuAnimationFlag;
-static GraphNode* gMenuGraphNodeA;
-static GraphNode* gMenuGraphNodeB;
-static GraphNode* gMenuGraphNodeC;
+static GraphNode* gPartyCardGraphNode;
+static GraphNode* gIconPanelGraphNode;
+static GraphNode* gBottomBannerGraphNode;
 static FramebufferImage* gMenuFramebufferImages[4];
 static FramebufferImage* gMenuFramebufferImageB;
 static FramebufferImage* gMenuGraphNodeD;
@@ -1522,13 +1522,13 @@ void TransferPak_InitPartyDisplay(void) {
 
     for (i = 0; i < 4; i++) {
         PakUi_InitPartyCard(i);
-        Model_InitDisplayObject(&gMenuOptionNodes[i], 0, 0, gMenuGraphNodeA);
+        Model_InitDisplayObject(&gMenuOptionNodes[i], 0, 0, gPartyCardGraphNode);
     }
 
     PakUi_BuildIconPanel();
-    Model_InitDisplayObject(&gMenuOptionNodes[4], 0, 0, gMenuGraphNodeB);
+    Model_InitDisplayObject(&gMenuOptionNodes[4], 0, 0, gIconPanelGraphNode);
     PakUi_BuildBottomBanner();
-    Model_InitDisplayObject(&gMenuOptionNodes[5], 0, 0, gMenuGraphNodeC);
+    Model_InitDisplayObject(&gMenuOptionNodes[5], 0, 0, gBottomBannerGraphNode);
     Vec3f_SetComponentsDuplicate(&gMenuOptionNodes->unk_024, -204.0f, 104.0f, -579.0f);
     Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[1].unk_024, -68.0f, 104.0f, -579.0f);
     Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[2].unk_024, 68.0f, 104.0f, -579.0f);
@@ -2761,9 +2761,9 @@ void TransferPak_InitMenuGraphics(void) {
     Fragment2_1GraphNode* var_s1;
 
     gTextureStateNode = process_geo_layout(temp_v0, &gMenuDisplayListCommands);
-    gMenuGraphNodeA = process_geo_layout(temp_v0, &MenuTextureA_CommandList);
-    gMenuGraphNodeB = process_geo_layout(temp_v0, &MenuTextureB_CommandList);
-    gMenuGraphNodeC = process_geo_layout(temp_v0, &MenuTextureC_CommandList);
+    gPartyCardGraphNode = process_geo_layout(temp_v0, &MenuTextureA_CommandList);
+    gIconPanelGraphNode = process_geo_layout(temp_v0, &MenuTextureB_CommandList);
+    gBottomBannerGraphNode = process_geo_layout(temp_v0, &MenuTextureC_CommandList);
     gMenuGraphNodeE = process_geo_layout(temp_v0, &MenuTextureD_CommandList);
     gMenuGraphNodeH = process_geo_layout(temp_v0, &MenuTextureE_CommandList);
     gMenuGraphNodeF = process_geo_layout(temp_v0, &MenuTextureF_CommandList);

@@ -10,7 +10,7 @@
 static Gfx gEmptyDl_1[] = {
     gsSPEndDisplayList(),
 };
-u32 gTitleScreenImageData_1[] = {
+u32 gLabPCListHeaderSelectIconTexture[] = {
     0x00000000, 0x00000000, 0x0000051D, 0x4F0C0300, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x020B5FDF, 0xFFBF2F08, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000007,
     0x1FAFFFFF, 0xFFFFFF7F, 0x0D040000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00030C6F, 0xEFFFFFFF,
@@ -31,7 +31,7 @@ u32 gTitleScreenImageData_1[] = {
 static Gfx gEmptyDisplayList2[] = {
     gsSPEndDisplayList(),
 };
-u32 gTitleScreenImageData_2[] = {
+u32 gLabPCListHeaderLeftOrnamentTexture[] = {
     0x42104210, 0x42104210, 0x42104210, 0x421139CF, 0x39CF39CF, 0x39CF39CF, 0x39CF39CF, 0x39CF39CF, 0x39CF39CF,
     0x39CF39CF, 0x39CF39CF, 0x39CF39CF, 0x42114210, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210,
     0x421139CF, 0x4A538C63, 0xC631D6B5, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7,
@@ -79,7 +79,7 @@ u32 gTitleScreenImageData_2[] = {
 static Gfx gEmptyDl_2[] = {
     gsSPEndDisplayList(),
 };
-u32 gTitleScreenImageData_3[] = {
+u32 gLabPCListHeaderTitleOrnamentTexture[] = {
     0x421039CF, 0x4A534211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211, 0x42114211,
     0x39CF4211, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x42104210, 0x39CF6B5B, 0xD6B5DEF7,
     0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xDEF7DEF7, 0xD6B5B5AD, 0x7BDF39CF, 0x42114211,
@@ -144,7 +144,7 @@ u32 gCheckerboardPattern[] = {
 static Gfx gEmptyDl_4[] = {
     gsSPEndDisplayList(),
 };
-u32 gCheckerboardPattern2[] = {
+u32 gCheckerboardPatternStatusEntry[] = {
     0x52895289, 0x5289FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFD9, 0xFFDB5287, 0xFFFEFFFE,
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFD9, 0xFFDBFFDB, 0x5287FFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
     0x5289FFD9, 0xFFDBFFDB, 0xFFDB5287, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0x5289FFD9, 0xFFDBFFDB, 0xFFDBFFDB,
@@ -862,7 +862,7 @@ s32 LabPCList_CheckDirtyBoxes(unk_func_8830867C_02C_144* arg0) {
                 }
 
                 var_s3->unk_0C = 0;
-                if (Deck_GetEntryCountForType(var_s5->posX, var_s5->rotation, j) != var_s3->unk_10.RentalSlotAnimData_PosePhase) {
+                if (Deck_GetEntryCountForSection(var_s5->posX, var_s5->rotation, j) != var_s3->unk_10.RentalSlotAnimData_PosePhase) {
                     var_s3->unk_0C = 1;
                     var_s7 |= LabPCList_GetCategoryDirtyFlag(var_s5->posX);
                 } else {

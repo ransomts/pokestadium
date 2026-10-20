@@ -124,7 +124,7 @@ unk_D_86002F58_004_000_00C_028* ModelAnim_GetAnimationRecord(Fragment2_1GraphNod
     return var_v1;
 }
 
-arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, PokemonData* arg1) {
+arg1_func_80010CA8* Model_ComputeMonSizeFromNickname(arg1_func_80010CA8* arg0, PokemonData* arg1) {
     UNUSED s32 pad;
     char sp38[0xB];
     arg1_func_80010CA8 sp34;
@@ -170,7 +170,7 @@ void Model_ComputeSizeVariantFromRecord(arg1_func_80010CA8* arg0, unk_func_8001C
 
     _bcopy(arg1->rotation, stack.unk_30, 0x10);
     _bcopy(arg1->unk_14, stack.unk_3B, 0x10);
-    Model_ComputeSizeVariant(arg0, &stack);
+    Model_ComputeMonSizeFromNickname(arg0, &stack);
 }
 
 void Trainer_RequestPokeIcon(BattlePokemon* arg0) {
@@ -183,7 +183,7 @@ void Trainer_RequestPokeIcon(BattlePokemon* arg0) {
     if (!(arg0->posX & 0x40) && (arg0->posX & 0x80)) {
         temp_a1 = arg0->rotation;
         if ((temp_a1 != NULL) && (sp2A == arg0->rotation->unk_000)) {
-            Model_ComputeSizeVariant(&sp2C, (PokemonData*)arg0->rotation);
+            Model_ComputeMonSizeFromNickname(&sp2C, (PokemonData*)arg0->rotation);
             if ((sp2A == 0x19) && (arg0->rotation->unk_01C[0].unk_30[6] & 0x80)) {
                 sp2A = 0x99;
             }

@@ -66,7 +66,7 @@ static u32 gRacePanelParams[] = {
     0xFFFFFFFF, 0xFF0000FF, 0x00EE000E, 0xFFFFFFFF, 0xFFFF00FF, 0x00000000,
 };
 
-static AnimFrame gRacePanelAnim1[] = {
+static AnimFrame gRacePanelRightIconAnim[] = {
     {
         0x303ED80,
         0x02,
@@ -89,7 +89,7 @@ static AnimFrame gRacePanelAnim1[] = {
     },
 };
 
-static AnimFrame gRacePanelAnim2[] = {
+static AnimFrame gRacePanelLowerIconAnim[] = {
     {
         0x3040580,
         0x12,
@@ -106,15 +106,15 @@ static AnimFrame gRacePanelAnim2[] = {
     { 0x0, 0x0 },
 };
 
-static AnimFrame gRacePanelAnim3[] = {
+static AnimFrame gRacePanelLeftIconAnim[] = {
     { 0x03042E00, 0x0E }, { 0x03044360, 0x02 }, { 0x03044A80, 0x06 }, { 0x03044360, 0x02 }, { 0, 0 },
 };
 
 static RaceAiDifficulty gRaceAiDifficultyTable[] = {
-    { gStageSubtitles_Alt2, 0x0019, 0x000F },
-    { gTextTable_StageSubtitles, 0x0019, 0x0014 },
-    { gStageSubtitles_Alt1, 0x001E, 0x0028 },
-    { gStageSubtitles_Alt3, 0x0028, 0x005A },
+    { gRaceComNameMusashi, 0x0019, 0x000F },
+    { gRaceComNameSatoshi, 0x0019, 0x0014 },
+    { gRaceComNameKasumi, 0x001E, 0x0028 },
+    { gRaceComNameShigeru, 0x0028, 0x005A },
 };
 
 static u32 gRaceStageScript[] = {
@@ -457,9 +457,9 @@ void RattataGame_DrawTutorialScreen(s32 arg0) {
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
     if (arg0 == 0) {
-        Widget_DrawAnimIcon24(0x56, 0xAC, gRacePanelAnim3);
-        Widget_DrawAnimIcon16(0xCC, 0xB0, gRacePanelAnim1);
-        Widget_DrawAnimIcon16C(0x74, 0xC6, gRacePanelAnim2);
+        Widget_DrawAnimIcon24(0x56, 0xAC, gRacePanelLeftIconAnim);
+        Widget_DrawAnimIcon16(0xCC, 0xB0, gRacePanelRightIconAnim);
+        Widget_DrawAnimIcon16C(0x74, 0xC6, gRacePanelLowerIconAnim);
         Widget_DrawSplitBanner(2, 0x19, 0xA6);
     } else if (gRaceIsResultScreen == 1) {
         Widget_DrawStripedBar(0x1E, 0x17);

@@ -49,23 +49,23 @@ static SushiPanelTexture gTexPanelMid = { 0x400CA00, 32, 8 };
 static SushiPanelTexture gTexPanelTop = { 0x400CC00, 32, 8 };
 static SushiPanelTexture gTexPanelBottom = { 0x400CE00, 32, 4 };
 static SushiPanelTexture gTexPanelSide = { 0x400CF00, 32, 8 };
-static SushiPanelTexture gTexPanelCorner1 = { 0x400D100, 32, 4 };
-static SushiPanelTexture gTexPanelCorner2 = { 0x400D200, 32, 4 };
+static SushiPanelTexture gTexPanelCornerLower = { 0x400D100, 32, 4 };
+static SushiPanelTexture gTexPanelCornerMiddle = { 0x400D200, 32, 4 };
 static SushiPanelTexture* gPanelSet0[] = { &gTexPanelMid, &gTexPanelBase, NULL };
 static SushiPanelTexture* gPanelSet1[] = { &gTexPanelBottom, &gTexPanelTop, &gTexPanelBase, NULL };
-static SushiPanelTexture* gPanelSet2[] = { &gTexPanelBottom, &gTexPanelCorner1, &gTexPanelSide, &gTexPanelBase, NULL };
-static SushiPanelTexture* gPanelSet3[] = { &gTexPanelBottom, &gTexPanelCorner1, &gTexPanelCorner2, &gTexPanelSide, &gTexPanelBase, NULL };
+static SushiPanelTexture* gPanelSet2[] = { &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelSide, &gTexPanelBase, NULL };
+static SushiPanelTexture* gPanelSet3[] = { &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPanelSide, &gTexPanelBase, NULL };
 static SushiPanelTexture* gPanelSet4[] = {
-    &gTexPanelBottom, &gTexPanelCorner1, &gTexPanelCorner2, &gTexPanelCorner2, &gTexPanelSide, &gTexPanelBase,
+    &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPanelCornerMiddle, &gTexPanelSide, &gTexPanelBase,
 };
 static SushiPanelTexture** gPanelTextureSets[] = { NULL, gPanelSet0, gPanelSet1, gPanelSet2, gPanelSet3, gPanelSet4 };
-static AnimFrame gSushiUI_TextPosA[] = {
+static AnimFrame gSushiHudBottomRightIconFrames[] = {
     { 0x0303ED80, 0xE }, { 0x0303F180, 2 }, { 0x0303F580, 6 }, { 0x0303F180, 2 }, { NULL, 0 },
 };
-static AnimFrame gSushiUI_TextPosB[] = {
+static AnimFrame gSushiHudBottomCenterIconFrames[] = {
     { 0x03040580, 0x12 }, { 0x03040980, 2 }, { 0x03040D80, 8 }, { 0x03040980, 2 }, { NULL, 0 },
 };
-static AnimFrame gSushiUI_TextPosC[] = {
+static AnimFrame gSushiHudLeftIconFrames[] = {
     { 0x030397C0, 0xE }, { 0x03034E40, 2 }, { 0x03035A80, 2 }, { 0x03034E40, 2 }, { 0x030397C0, 2 }, { 0x0303D500, 2 },
     { 0x0303E140, 2 },   { 0x03038B80, 2 }, { 0x03037300, 2 }, { 0x03037F40, 2 }, { 0x03035A80, 2 }, { 0x0303BC80, 2 },
     { 0x0303B040, 2 },   { 0x0303A400, 2 }, { 0x030397C0, 2 }, { 0x030366C0, 2 }, { 0x03037300, 2 }, { 0x030366C0, 2 },
@@ -78,17 +78,17 @@ static Color_RGB8 gPanelTextColors[] = {
     { 0xFF, 0, 0 },
     { 0xFF, 0xFF, 0 },
 };
-static Color_RGB8 gSushiColorGradA[] = {
+static Color_RGB8 gSushiTargetReachedEnvGradient[] = {
     { 255, 0, 0 },
     { 0, 255, 0 },
     { 255, 255, 100 },
 };
-static Color_RGB8 gSushiColorGradB[] = {
+static Color_RGB8 gSushiTargetReachedPrimGradient[] = {
     { 0, 255, 0 },
     { 255, 255, 100 },
     { 255, 0, 0 },
 };
-static Color_RGB8 gSushiColorGradC[] = {
+static Color_RGB8 gSushiHighComboTextGradient[] = {
     { 0, 0, 255 },
     { 255, 0, 0 },
     { 255, 255, 100 },
@@ -385,7 +385,7 @@ void RenderSushiGoRoundUI(void) {
                             Text_SetPrimColor(gPanelTextColors[i].r, gPanelTextColors[i].g, gPanelTextColors[i].b,
                                           ptr->unk_040.unk_18);
                         } else {
-                            SushiGame_InterpolateColorCycle(spD8, gSushiColorGradC, 4, 4, 0);
+                            SushiGame_InterpolateColorCycle(spD8, gSushiHighComboTextGradient, 4, 4, 0);
                             Text_SetEnvColor(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                             Text_SetPrimColor(spD8[0].r, spD8[0].g, spD8[0].b, ptr->unk_040.unk_18);
                         }
@@ -425,9 +425,9 @@ void RenderSushiGoRoundUI(void) {
 
                 if ((ptr->unk_028 == 1) && (ptr->unk_018 == ptr->unk_01C) &&
                     (ptr->unk_018 > 0)) {
-                    SushiGame_InterpolateColorCycle(&spD8, &gSushiColorGradA, 3, 4, 0);
+                    SushiGame_InterpolateColorCycle(&spD8, &gSushiTargetReachedEnvGradient, 3, 4, 0);
                     Text_SetEnvColor(spD8[0].r, spD8[0].g, spD8[0].b, 0xFF);
-                    SushiGame_InterpolateColorCycle(&spD8, &gSushiColorGradB, 3, 4, 0);
+                    SushiGame_InterpolateColorCycle(&spD8, &gSushiTargetReachedPrimGradient, 3, 4, 0);
                     Text_SetPrimColor(spD8[0].r, spD8[0].g, spD8[0].b, 0xFF);
                 } else {
                     Text_SetEnvColor(spB8[0][i].r, spB8[0][i].g, spB8[0][i].b, 0xFF);
@@ -458,9 +458,9 @@ void RenderSushiGoRoundUI(void) {
             SushiGame_DrawDishIcon(gSushiOrderIndices[i], (var_v0 * pad1) + 0x28, ((i / 4) << 5) + 0x68, 0.75f);
         }
 
-        Widget_DrawAnimIcon28(0, 0x5A, 0xA8, gSushiUI_TextPosC);
-        Widget_DrawAnimIcon16(0xC8, 0xB0, gSushiUI_TextPosA);
-        Widget_DrawAnimIcon16C(0x74, 0xC6, gSushiUI_TextPosB);
+        Widget_DrawAnimIcon28(0, 0x5A, 0xA8, gSushiHudLeftIconFrames);
+        Widget_DrawAnimIcon16(0xC8, 0xB0, gSushiHudBottomRightIconFrames);
+        Widget_DrawAnimIcon16C(0x74, 0xC6, gSushiHudBottomCenterIconFrames);
         Widget_DrawSplitBanner(0, 0x19, 0xA6);
     }
 }

@@ -92,7 +92,7 @@ ret_func_8002ED08* Move_GetDisplayInfo(s32 arg0);
 MoveBattleData* Move_GetData(s32 arg0);
 s32 Species_GetMoveSlot(PokemonData* arg0, s32 arg1);
 s32 Move_NormalizeDisplayIndex(s32 arg0);
-s32 Deck_GetEntryCountForType(s32 arg0, s32 arg1, s32 arg2);
+s32 Deck_GetEntryCountForSection(s32 arg0, s32 arg1, s32 arg2);
 void Ui_InitInputMessageQueue(void);
 void Ui_SendMessageAndPollInput(OSMesg arg0);
 void Ui_SendNullMessage(void);

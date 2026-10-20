@@ -199,13 +199,13 @@ void BattleScene_GetParticipantModelPosition(BattlePlayerEntity* arg0, Vec3f* ar
 void BattleAnim_GetOwnerDefaultAnchorPosition(BattlePlayerEntity* arg0, Vec3f* arg1) {
     f32 var_fs0 = 0.0f;
 
-    if (BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, &gPokemonSfxId_0, 1) != 0) {
+    if (BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, &gAnchorLiftLowSpeciesIds, 1) != 0) {
         var_fs0 = BattleAnim_GetOwnerModelHeight(arg0) / 1.5f;
-    } else if (BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, &gPokemonSfxId_1, 1) != 0) {
+    } else if (BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, &gAnchorLiftHalfSpeciesIds, 1) != 0) {
         var_fs0 = BattleAnim_GetOwnerModelHeight(arg0) * 0.5f;
-    } else if ((BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, &gPokemonSfxId_2, 1) != 0) && (arg0->animationState.unk_34 & 0x200)) {
+    } else if ((BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, &gAnchorLiftDoubleSpeciesIds, 1) != 0) && (arg0->animationState.unk_34 & 0x200)) {
         var_fs0 = 2.0f * BattleAnim_GetOwnerModelHeight(arg0);
-    } else if ((BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, gPokemonSfxId_3, 2) != 0) && (arg0->animationState.unk_34 & 0x200)) {
+    } else if ((BattleScene_ByteArrayContains(arg0->unk_000.unk_01A, gAnchorLiftHighSpeciesIds, 2) != 0) && (arg0->animationState.unk_34 & 0x200)) {
         var_fs0 = BattleAnim_GetOwnerModelHeight(arg0) * 1.5f;
     }
 

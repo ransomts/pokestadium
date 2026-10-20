@@ -16,12 +16,12 @@ void BattleAnim_CallbackUnusedGenericFadeApproach(ParticleEffectInstance* arg0) 
             break;
 
         case 2:
-            Particle_ApproachScaleFactor1(arg0, 3.0f, 0.025f);
+            Particle_ApproachScaleScaled(arg0, 3.0f, 0.025f);
             Particle_TickDelayAndAdvanceLifecycle(arg0, 0x12C);
             break;
 
         case 3:
-            if (Particle_PrimAlpha_Approach_0BC2C(arg0, 0x20, 0x20) != 0) {
+            if (Particle_ApproachPrimAlpha(arg0, 0x20, 0x20) != 0) {
                 Particle_AdvanceLifecycle(arg0);
             }
             break;
@@ -35,10 +35,10 @@ void BattleAnim_CallbackUnusedGenericFadeApproach(ParticleEffectInstance* arg0) 
 }
 
 void BattleAnim_SetupOrphanDescriptor2BSpinFade(ParticleEffectInstance* arg0) {
-    s16 sp26 = Particle_FieldAC_GetS16_0C038(arg0);
+    s16 sp26 = Particle_GetFieldOffsetAC(arg0);
 
-    Particle_SetScaleFactor1(arg0, 0.2f);
-    Particle_Field7C_SetYScaled_0AF24(arg0, 1.0f);
+    Particle_SetScaleScaled(arg0, 0.2f);
+    Particle_SetVelocityImpulseY(arg0, 1.0f);
     Particle_SetRotationX(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetRotationZ(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetRotationDeltaY(arg0, ParticleMath_RandomRange(0x10000));
@@ -81,24 +81,24 @@ void BattleAnim_CallbackOrphanDescriptor2BSpinFade(ParticleEffectInstance* arg0)
             Particle_ApproachSpeedScaled(arg0, 50.0f, 0.5f);
             Particle_AddScaledVelocityY(arg0, 1.0f);
             Particle_UpdateRotatingVelocityXZ(arg0, arg0->unk_74, 0x1000);
-            Particle_Field94_AddX_0A578(arg0, 0x2000);
-            Particle_Field94_AddZ_0A5B0(arg0, 0x3000);
+            Particle_RotateX(arg0, 0x2000);
+            Particle_RotateZ(arg0, 0x3000);
             break;
 
         case 2:
             Particle_ApproachSpeedScaled(arg0, 0.0f, 1.0f);
             Particle_AddScaledVelocityY(arg0, -2.0f);
             Particle_UpdateRotatingVelocityXZ(arg0, arg0->unk_74, 0x1000);
-            Particle_Field94_AddX_0A578(arg0, 0x2000);
-            Particle_Field94_AddZ_0A5B0(arg0, 0x3000);
+            Particle_RotateX(arg0, 0x2000);
+            Particle_RotateZ(arg0, 0x3000);
             break;
     }
 }
 
 void BattleAnim_SetupOrphanDescriptor2EScatterFade(ParticleEffectInstance* arg0) {
-    s16 sp2E = Particle_FieldAC_GetS16_0C038(arg0);
+    s16 sp2E = Particle_GetFieldOffsetAC(arg0);
 
-    Particle_SetScaleFactor1(arg0, 0.5f);
+    Particle_SetScaleScaled(arg0, 0.5f);
     Particle_SetSpeed(arg0, 10.0f);
     Particle_AddRotationDeltaXYZ(arg0, ParticleMath_RandomSigned(0x1000), ParticleMath_RandomSigned(0x1000), 0);
     Particle_SetTimerA6(arg0, sp2E * 4);
@@ -130,22 +130,22 @@ void BattleAnim_CallbackOrphanDescriptor2EScatterFade(ParticleEffectInstance* ar
     }
 
     if (Particle_IsRenderingEnabled(arg0) != 0) {
-        Particle_AddVelocityFromRotationTemplate1(arg0);
-        Particle_Field94_AddZ_0A5B0(arg0, 0x2000);
+        Particle_AddVelocityFromRotationXY(arg0);
+        Particle_RotateZ(arg0, 0x2000);
     }
 }
 
 void BattleAnim_SetupEndEffect26Descriptor2CGravityScatterFall(ParticleEffectInstance* arg0) {
-    s16 sp26 = Particle_FieldAC_GetS16_0C038(arg0);
+    s16 sp26 = Particle_GetFieldOffsetAC(arg0);
 
-    Particle_SetScaleFactor1(arg0, 0.12f);
-    Particle_Field7C_SetYScaled_0AF24(arg0, (ParticleMath_RandomRange(0x14) * 0.02f) + 0.25f);
+    Particle_SetScaleScaled(arg0, 0.12f);
+    Particle_SetVelocityImpulseY(arg0, (ParticleMath_RandomRange(0x14) * 0.02f) + 0.25f);
     Particle_SetRotationX(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetRotationZ(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetSpeed(arg0, 5.0f);
-    Particle_FieldAE_SetS16_0BF4C(arg0, ParticleMath_RandomRange(0x800) + 0xC00);
+    Particle_SetAlpha(arg0, ParticleMath_RandomRange(0x800) + 0xC00);
     Particle_SetRotationDeltaX(arg0, ParticleMath_RandomSignedOffsetBySign(0x800, 0x300));
-    Particle_FieldB0_SetS16_0BFEC(arg0, ParticleMath_RandomSignedOffsetBySign(0x800, 0x300));
+    Particle_SetFieldB0(arg0, ParticleMath_RandomSignedOffsetBySign(0x800, 0x300));
     Particle_SetRotationDeltaY(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetRotationDeltaZ(arg0, ParticleMath_RandomSignedOffsetBySign(0x800, 0x300));
     Particle_AddVelocityYScaled(arg0, ParticleMath_RandomRange(0x1E));
@@ -178,7 +178,7 @@ void BattleAnim_CallbackEndEffect26Descriptor2CGravityScatterFall(ParticleEffect
         case 4:
             if (Particle_DecrementTimerA6ToZeroWithCallback(arg0) != 0) {
                 Particle_SetRotationDeltaX(arg0, ParticleMath_RandomSignedOffsetBySign(0x1000, 0x600));
-                Particle_FieldB0_SetS16_0BFEC(arg0, ParticleMath_RandomSignedOffsetBySign(0x400, 0x400));
+                Particle_SetFieldB0(arg0, ParticleMath_RandomSignedOffsetBySign(0x400, 0x400));
                 Particle_SetRotationDeltaZ(arg0, ParticleMath_RandomSignedOffsetBySign(0x1000, 0x600));
                 arg0->unk_38.x += arg0->unk_50.x;
                 arg0->unk_50.x = 0;
@@ -206,7 +206,7 @@ void BattleAnim_CallbackEndEffect26Descriptor2CGravityScatterFall(ParticleEffect
             break;
 
         case 2:
-            Particle_FieldAE_Approach_0BF60(arg0, 0, 0x200);
+            Particle_ApproachAlpha(arg0, 0, 0x200);
             Particle_AddScaledVelocityY(arg0, arg0->unk_7C.y);
             Particle_UpdateRotatingVelocityXZ(arg0, arg0->unk_74, arg0->alpha);
             break;
@@ -228,14 +228,14 @@ void BattleAnim_CallbackEndEffect26Descriptor2CGravityScatterFall(ParticleEffect
 }
 
 void BattleAnim_SetupEndEffects85And87GravityFallDelay(ParticleEffectInstance* arg0) {
-    s16 sp26 = Particle_FieldAC_GetS16_0C038(arg0);
-    s16 sp24 = Particle_FieldCE_GetS32_0C040(arg0);
+    s16 sp26 = Particle_GetFieldOffsetAC(arg0);
+    s16 sp24 = Particle_GetMetadata(arg0);
 
-    Particle_Field7C_SetYScaled_0AF24(arg0, 0.5f);
+    Particle_SetVelocityImpulseY(arg0, 0.5f);
 
     switch (sp24) {
         case 0:
-            Particle_SetScaleFactor1(arg0, 0.12f);
+            Particle_SetScaleScaled(arg0, 0.12f);
             arg0->unk_5C.y = -((ParticleMath_RandomRange(0xA) * 0.1f) + 0.5f);
             Particle_AddVelocityYScaled(arg0, ParticleMath_RandomRange(0x28) + 0x1E);
             Particle_SetRandomVelocityXSymmetric(arg0, 0x1E, 0);
@@ -243,7 +243,7 @@ void BattleAnim_SetupEndEffects85And87GravityFallDelay(ParticleEffectInstance* a
             break;
 
         case 1:
-            Particle_SetScaleFactor1(arg0, 0.2f);
+            Particle_SetScaleScaled(arg0, 0.2f);
             arg0->unk_5C.y = -((ParticleMath_RandomRange(4) * 0.1f) + 0.2f);
             Particle_AddVelocityYScaled(arg0, ParticleMath_RandomSigned(0x14) + 0x1E);
             Particle_SetRandomVelocityXSymmetric(arg0, 0xF, 5);
@@ -254,7 +254,7 @@ void BattleAnim_SetupEndEffects85And87GravityFallDelay(ParticleEffectInstance* a
     Particle_SetRotationX(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetRotationZ(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetSpeed(arg0, ParticleMath_RandomRange(0x14) + 15.0f);
-    Particle_FieldAE_SetS16_0BF4C(arg0, ParticleMath_RandomRange(0x300) + 0x400);
+    Particle_SetAlpha(arg0, ParticleMath_RandomRange(0x300) + 0x400);
     Particle_SetRotationDeltaY(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetRotationDeltaX(arg0, ParticleMath_RandomSignedOffsetBySign(0x800, 0x400));
     Particle_SetRotationDeltaZ(arg0, ParticleMath_RandomSignedOffsetBySign(0x800, 0x400));
@@ -264,7 +264,7 @@ void BattleAnim_SetupEndEffects85And87GravityFallDelay(ParticleEffectInstance* a
 }
 
 void BattleAnim_CallbackEndEffects85And87GravityFallDelay(ParticleEffectInstance* arg0) {
-    s16 sp26 = Particle_FieldCE_GetS32_0C040(arg0);
+    s16 sp26 = Particle_GetMetadata(arg0);
 
     switch (arg0->updateState) {
         case 1:

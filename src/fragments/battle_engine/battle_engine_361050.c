@@ -492,7 +492,7 @@ f32 Battle_GetTypeEffectiveness(u8 arg0, PokemonAudioInfo* arg1) {
     return var_fv1;
 }
 
-s32 BattleAI_AllCandidatesResistType(u8 arg0, BattleAI_TeamState* arg1) {
+s32 BattleAi_AllCandidatesImmuneToType(u8 arg0, BattleAI_TeamState* arg1) {
     u8 i;
     u8 j;
     u8 var_s0;
@@ -1684,7 +1684,7 @@ void BattleAI_BuildMoveCandidateScores(BattleAI_MonData* arg0, BattleAI_MonData*
             case 0x27:
             case 0x2B:
                 if ((gBattleAI_ForceRandom != 0) && (var_s1 != 0)) {
-                    if (BattleAI_AllCandidatesResistType(gMoveData[var_s2->posX - 1].unk_03, gBattleAI_TypeResistance) == 0) {
+                    if (BattleAi_AllCandidatesImmuneToType(gMoveData[var_s2->posX - 1].unk_03, gBattleAI_TypeResistance) == 0) {
                         var_s1 = 0;
                     } else {
                         var_s1 *= 0.75;

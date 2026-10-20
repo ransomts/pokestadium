@@ -301,7 +301,7 @@ void TeamSelection_RulePrompt_DrawSingleLabel(RulePromptConfig* arg0);
 void TeamSelection_RulePrompt_DrawThreeRowPanel(RulePromptConfig* arg0);
 void TeamSelection_RulePrompt_DrawOffsetThreeRowPanel(RulePromptConfig* arg0);
 void TeamSelection_RulePrompt_DrawSmallThreeRowPanel(RulePromptConfig* arg0);
-void TeamSelection_RulePrompt_DrawSmallThreeRowVariant(RulePromptConfig* arg0);
+void TeamSelection_RulePrompt_DrawTeamSavedThreeRow(RulePromptConfig* arg0);
 void TeamSelection_RulePrompt_DrawOptionSetTwoB(RulePromptConfig* arg0);
 void TeamSelection_RulePrompt_DrawNumberAndLabel(RulePromptConfig* arg0, s16 arg1);
 void TeamSelection_RulePrompt_DrawBinaryLabel(RulePromptConfig* arg0, s16 arg1);

@@ -142,7 +142,7 @@ static s16 gCameraZoomPitch;
 static s16 gCameraZoomYaw;
 static f32 gCameraZoomFov;
 static s32 gBattleSequenceFrameCount;
-static s32 gBattleSequenceType;
+static s32 gBattleSequenceStage;
 unk_D_86B0FA78* gCameraTarget;
 unk_D_86B0FA7C* gCameraState;
 static u8 gMonsterModelData[0xBE0];
@@ -649,7 +649,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
             break;
     }
 
-    if ((gBattleSequenceType == 2) && (gBattleSequenceFrameCount == 0x12C)) {
+    if ((gBattleSequenceStage == 2) && (gBattleSequenceFrameCount == 0x12C)) {
         Audio_StartMusicTrack(0x5B);
     }
     return 0;
@@ -855,7 +855,7 @@ void Intro_FadeInSequence(void) {
         }
     }
 
-    if (gBattleSequenceType == 2) {
+    if (gBattleSequenceStage == 2) {
         Audio_StartMusicTrack(0x44);
     } else {
         Audio_StartMusicTrack(8);
@@ -1051,17 +1051,17 @@ void Stage_LoadModels(void) {
             Intro_StartFirstShowcase();
             Intro_BeginOrbitCamera();
             Intro_TriggerTextPanelExit();
-            gBattleSequenceType = 0;
+            gBattleSequenceStage = 0;
             break;
 
         default:
             if (gSessionContext.unk_0002 == 3) {
-                gBattleSequenceType = 1;
+                gBattleSequenceStage = 1;
                 Intro_StartFirstShowcase();
                 Intro_BeginOrbitCamera();
                 Intro_TriggerTextPanelExit();
             } else {
-                gBattleSequenceType = 2;
+                gBattleSequenceStage = 2;
                 Intro_StartFinalStageModel();
                 Intro_BeginStaticCamera();
                 Intro_TriggerTextPanelExit();

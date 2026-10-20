@@ -42,7 +42,7 @@ static MiniActor miniMetapodRocks[20];
 static s16 gMetapodGameTimer;
 static TextObject* gMetapodTextObject;
 
-static u32 gMetapodTextureData1[] = {
+static u32 gMetapodModelTextureData[] = {
     0xE8E0CBB4, 0xAAAAAFB6, 0xB6AEABBC, 0xD6BBA5A5, 0xA6BCC4C9, 0xC3B5BBBB, 0xB8B5B9C0, 0xBDB9C3D7, 0xDED2CBBD,
     0xB9BBC8E6, 0xDEB2A7BB, 0xD6BAA5A5, 0xA5ADAEA9, 0xABB1BBCD, 0xD1CCCEDA, 0xDCD4D4D8, 0xDECEC9C0, 0xCCDEE3EF,
     0xE5B5A9AD, 0xB3AAA5A5, 0xA6A9ACAE, 0xB1B8C1E0, 0xF3E9DADC, 0xE8ECF0E9, 0xE5C2B4B4, 0xBAC6C5C1, 0xBBAFAFC9,
@@ -74,7 +74,7 @@ static u32 gMetapodTextureData1[] = {
     0xA5B0C1E4, 0xDBB7AFAC, 0xB1B2AEAD, 0xB2BED0E6,
 };
 
-static u32 gMetapodTextureData2[] = {
+static u32 gMetapodFloorTextureData[] = {
     0x34BD34BD, 0x34BD34BD, 0x34FD34BD, 0x3CBD34FD, 0x3CFD3CFD, 0x3CFD34FD, 0x3CFD3CFD, 0x3CFD3CFD, 0x3CFD3CFD,
     0x3CFD3CFD, 0x3CFD3CFD, 0x3CFD3CFD, 0x3CFD3CFD, 0x3CFD3CFD, 0x3CFB3CFB, 0x3CFD3CFD, 0x3CFB3CFB, 0x3CFB3CFB,
     0x3D3B3CFB, 0x3D3B3D3B, 0x3D3B3D3B, 0x3D3B3D3B, 0x3D3B3D3B, 0x3D3B3D3B, 0x453B453B, 0x453B453B, 0x453B453B,
@@ -92,7 +92,7 @@ static u32 gMetapodTextureData2[] = {
     0xC73DC73D, 0xC73DC73D,
 };
 
-static u32 gMetapodTextureData3[] = {
+static u32 gMetapodRockTextureData[] = {
     0xA45BA45B, 0x9C179BD7, 0x93D593D5, 0x9C179C17, 0x9C199C19, 0x9C199C19, 0xA45BAC9D, 0xA45B9C19, 0x9C199C19,
     0x9C1993D7, 0x8B538351, 0x8B518B93, 0x93959C17, 0xA49BB4DF, 0xB4DFAC9F, 0xB4DFB521, 0xAC9DA45B, 0xA4599C17,
     0x9BD793D5, 0x93D593D5, 0x93D79BD7, 0x93D593D5, 0x9BD7A45B, 0xA45B9BD7, 0x93D79C19, 0xA45B9C19, 0x93958B51,
@@ -159,7 +159,7 @@ static GfxTextureInfo gMetapodTextureDefs[3] = {
         32,
         32,
         1024,
-        gMetapodTextureData1,
+        gMetapodModelTextureData,
     },
     {
         0x00,
@@ -167,7 +167,7 @@ static GfxTextureInfo gMetapodTextureDefs[3] = {
         4,
         64,
         256,
-        gMetapodTextureData2,
+        gMetapodFloorTextureData,
     },
     {
         0x00,
@@ -175,7 +175,7 @@ static GfxTextureInfo gMetapodTextureDefs[3] = {
         32,
         32,
         1024,
-        gMetapodTextureData3,
+        gMetapodRockTextureData,
     },
 };
 static Gfx gMetapodTilingDL[] = {
@@ -189,7 +189,7 @@ static Gfx gMetapodTilingDL[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x007C, 0x007C),
     gsSPEndDisplayList(),
 };
-static Gfx gMetapodTilingDL2[] = {
+static Gfx gMetapodFloorTilingDL[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 6, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 2, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -200,7 +200,7 @@ static Gfx gMetapodTilingDL2[] = {
     gsDPSetTileSize(G_TX_RENDERTILE, 0, 0, 0x000C, 0x00FC),
     gsSPEndDisplayList(),
 };
-static Gfx gMetapodTilingDL3[] = {
+static Gfx gMetapodModelTilingDL[] = {
     gsDPSetTile(G_IM_FMT_I, G_IM_SIZ_16b, 0, 0x0000, G_TX_LOADTILE, 0, G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD,
                 G_TX_NOMIRROR | G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -440,10 +440,10 @@ static Gfx gMetapodModelDL[] = {
 static u32 gMetapodGfxSequence[] = {
     0x09000000, 0x05000000, 0x1D030100, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
     0x05000000, 0x1D020101, 0x0000FF06, 0x00000000, 0x00000000, 0x0000CCCC, 0x00010000, 0x00010000, 0x05000000,
-    0x2303FFFF, gMetapodTilingDL3, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, gMetapodModelDL, 0x1D010102, 0x03F400E0, 0xFB500000,
+    0x2303FFFF, gMetapodModelTilingDL, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, gMetapodModelDL, 0x1D010102, 0x03F400E0, 0xFB500000,
     0x00000000, 0x00014000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gMetapodTilingDL, 0x0002FFFF, 0xFFFFFFFF,
     0x22010000, gMetapodRockDL, 0x06000000, 0x1D000103, 0x000000FA, 0xE3D40000, 0x00000000, 0x00117869, 0x0005FADE,
-    0x00010000, 0x05000000, 0x2306FFFF, gMetapodTilingDL2, 0x0001FFFF, 0xFFFFFFFF, 0x22010000, gMetapodFloorDL, 0x06000000,
+    0x00010000, 0x05000000, 0x2306FFFF, gMetapodFloorTilingDL, 0x0001FFFF, 0xFFFFFFFF, 0x22010000, gMetapodFloorDL, 0x06000000,
     0x06000000, 0x06000000, 0x06000000, 0x04000000,
 };
 
@@ -476,10 +476,10 @@ static MiniRockInfo miniRockInfos[] = {
     { { 18.0f, 0.0f, -300.0f }, { 0, 0, 0 }, 20, 40, 0 },
     { { 54.0f, 0.0f, -300.0f }, { 0, 0, 0 }, 20, 40, 0 },
 };
-static AnimFrame gMetapodAudioEvents1[] = {
+static AnimFrame gMetapodTutoAButtonIconAnim[] = {
     { D_0303ED80, 0xE }, { D_0303F180, 2 }, { D_0303F580, 6 }, { D_0303F180, 2 }, { NULL, 0 },
 };
-static AnimFrame gMetapodAudioEvents2[] = {
+static AnimFrame gMetapodTutoStartButtonIconAnim[] = {
     { D_03040580, 0x12 }, { D_03040980, 2 }, { D_03040D80, 8 }, { D_03040980, 2 }, { NULL, 0 },
 };
 
@@ -557,7 +557,7 @@ void MetapodGame_PlaySoundEvent(s16 arg0, s16 arg1) {
     }
 
     if (var_s0 != 0) {
-        gMiniGameStateVar2++;
+        gMiniGameSoundDispatchCount++;
         Audio_DispatchSoundBankCommand(var_s0, sp28, sp24);
     }
 }
@@ -712,7 +712,7 @@ s32 MetapodGame_ChooseRockDelayMode(UNUSED MiniActor* metapod, s32 arg1) {
     return var_v1;
 }
 
-void MetapodGame_ComputeRockDelay_Type0(MiniActor* metapod, s32 arg1) {
+void MetapodGame_ComputeRockDelay_WaitThenHardenRest(MiniActor* metapod, s32 arg1) {
     s32 sp2C;
     s32 sp28;
     u32 sp24;
@@ -753,7 +753,7 @@ void MetapodGame_ComputeRockDelay_Type0(MiniActor* metapod, s32 arg1) {
     metapod->unk_2B2 = sp24;
 }
 
-void MetapodGame_ComputeRockDelay_Type1(MiniActor* arg0, s32 arg1) {
+void MetapodGame_ComputeRockDelay_RandomThreeWaySplit(MiniActor* arg0, s32 arg1) {
     u32 sp2C;
     UNUSED s32 pad[3];
     u32 sp1C;
@@ -778,7 +778,7 @@ void MetapodGame_ComputeRockDelay_Type1(MiniActor* arg0, s32 arg1) {
     arg0->unk_2B2 = var_a2;
 }
 
-void MetapodGame_ComputeRockDelay_Type2(MiniActor* metapod, s32 arg1) {
+void MetapodGame_ComputeRockDelay_FullWaitNoHarden(MiniActor* metapod, s32 arg1) {
     metapod->unk_244 = arg1;
     metapod->unk_29E = 0;
     metapod->unk_2B2 = 0;
@@ -827,15 +827,15 @@ void MetapodGame_CompDecideRockAvoidance(MiniActor* metapod, s32 player) {
 
             switch (MetapodGame_ChooseRockDelayMode(metapod, sp20)) {
                 case 0:
-                    MetapodGame_ComputeRockDelay_Type0(metapod, sp20);
+                    MetapodGame_ComputeRockDelay_WaitThenHardenRest(metapod, sp20);
                     break;
 
                 case 1:
-                    MetapodGame_ComputeRockDelay_Type1(metapod, sp20);
+                    MetapodGame_ComputeRockDelay_RandomThreeWaySplit(metapod, sp20);
                     break;
 
                 case 2:
-                    MetapodGame_ComputeRockDelay_Type2(metapod, sp20);
+                    MetapodGame_ComputeRockDelay_FullWaitNoHarden(metapod, sp20);
                     break;
             }
         }
@@ -1650,8 +1650,8 @@ void MetapodGame_DrawTutorialScreen(void) {
             gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
             Widget_DrawSplitBanner(2, 0x19, 0xA6);
-            Widget_DrawAnimIcon16(0x74, 0xB0, gMetapodAudioEvents1);
-            Widget_DrawAnimIcon16C(0x74, 0xC6, gMetapodAudioEvents2);
+            Widget_DrawAnimIcon16(0x74, 0xB0, gMetapodTutoAButtonIconAnim);
+            Widget_DrawAnimIcon16C(0x74, 0xC6, gMetapodTutoStartButtonIconAnim);
 
             gSPDisplayList(gDisplayListHead++, gPrefDL_End);
             break;
@@ -1746,7 +1746,7 @@ void MetapodGame_LockPlayerInputOnPress(void) {
 void MetapodGame_MainLoop(void) {
     s32 var_s1 = 1;
 
-    gMiniGameStateVar2 = 0;
+    gMiniGameSoundDispatchCount = 0;
 
     MiniFx_Init();
     hideMiniGameHUD();

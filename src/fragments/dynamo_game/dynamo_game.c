@@ -49,19 +49,19 @@ static Fragment2_1GraphNode* gHealthBarGraphNodePtrs[] = {
 static u8 gHealthBarUpdateCounter = 0;
 static u16 gResultTimer = 0;
 
-static AnimFrame gResultScreenUIElements1[] = {
+static AnimFrame gDynamoTutoBButtonIconAnim[] = {
     { 0x0303F980, 2 }, { 0x0303FD80, 2 }, { 0x03040180, 2 },    { 0x0303FD80, 2 }, { 0x0303F980, 2 },
     { 0x0303FD80, 2 }, { 0x03040180, 2 }, { 0x0303FD80, 2 },    { 0x0303F980, 2 }, { 0x0303FD80, 2 },
     { 0x03040180, 2 }, { 0x0303FD80, 2 }, { 0x0303F980, 0x18 }, { NULL, 0 },
 };
 
-static AnimFrame gResultScreenUIElements2[] = {
+static AnimFrame gDynamoTutoAButtonIconAnim[] = {
     { 0x0303ED80, 0x18 }, { 0x0303F180, 2 }, { 0x0303F580, 2 }, { 0x0303F180, 2 }, { 0x0303ED80, 2 },
     { 0x0303F180, 2 },    { 0x0303F580, 2 }, { 0x0303F180, 2 }, { 0x0303ED80, 2 }, { 0x0303F180, 2 },
     { 0x0303F580, 2 },    { 0x0303F180, 2 }, { 0x0303ED80, 2 }, { NULL, 0 },
 };
 
-static AnimFrame gResultScreenUIElements3[] = {
+static AnimFrame gDynamoTutoStartButtonIconAnim[] = {
     { 0x03040580, 0x12 }, { 0x03040980, 2 }, { 0x03040D80, 8 }, { 0x03040980, 2 }, { NULL, 0 },
 };
 
@@ -72,8 +72,8 @@ static u32 gResultScreenGeoLayoutData[] = {
     0x06000000, 0x06000000, 0x06000000, 0x03000000, 0x87806398, 0x06000000, 0x01000000,
 };
 
-static u8 gHealthBarAnimFlagA = 0;
-static u8 gHealthBarAnimFlagB = 0;
+static u8 gHealthBarAnimFlagTeam0 = 0;
+static u8 gHealthBarAnimFlagTeam1 = 0;
 
 DynamoHealthBar gHealthBarData[4];
 DynamoHealthBar* gCurrentHealthBar;
@@ -168,9 +168,9 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                         case 6:
                             var_s1 = 1;
                             if (gCurrentHealthBar->team == 0) {
-                                gHealthBarAnimFlagA = 1;
+                                gHealthBarAnimFlagTeam0 = 1;
                             } else if (gCurrentHealthBar->team == 1) {
-                                gHealthBarAnimFlagB = 1;
+                                gHealthBarAnimFlagTeam1 = 1;
                             }
                             break;
 
@@ -186,8 +186,8 @@ void DynamoGame_UpdatePlayerAnimState(void) {
                             break;
                     }
                 } else if ((gCurrentHealthBar->unk_008 == 6) &&
-                           (((gHealthBarAnimFlagA != 0) && ((gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x37)) ||
-                            ((gHealthBarAnimFlagB != 0) && ((gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x5E)))) {
+                           (((gHealthBarAnimFlagTeam0 != 0) && ((gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x37)) ||
+                            ((gHealthBarAnimFlagTeam1 != 0) && ((gCurrentHealthBar->unk_014.unk_040.RentalSlotAnimData_PosePhase >> 0x10) == 0x5E)))) {
                     var_s1 = 1;
                 }
             } else if ((gHealthBarUpdateCounter == 0) && (gCurrentHealthBar->lastChargeDelta >= 3) &&
@@ -439,9 +439,9 @@ void DynamoGame_DrawTutorialScreen(s32 arg0) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Widget_DrawSplitBanner(2, 0x19, 0xA6);
-        Widget_DrawAnimIcon16B(0x62, 0xB0, gResultScreenUIElements1);
-        Widget_DrawAnimIcon16(0x74, 0xB0, gResultScreenUIElements2);
-        Widget_DrawAnimIcon16C(0x74, 0xC6, gResultScreenUIElements3);
+        Widget_DrawAnimIcon16B(0x62, 0xB0, gDynamoTutoBButtonIconAnim);
+        Widget_DrawAnimIcon16(0x74, 0xB0, gDynamoTutoAButtonIconAnim);
+        Widget_DrawAnimIcon16C(0x74, 0xC6, gDynamoTutoStartButtonIconAnim);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (gDrowzeeTutorialPage == 0))) {
