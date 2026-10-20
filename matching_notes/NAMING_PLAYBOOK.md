@@ -158,6 +158,10 @@ filename, hex in `Text_GetStringTable` calls).
    appending needs explicit newlines (a `"\t".join()` without the line ending
    collapses rows — the w19 corruption, restored from backup). Take a
    `cp renames.tsv /tmp/opencode/renames_backup_<batch>.tsv` BEFORE appending.
+   NOTE: /tmp/opencode is NOT durable — it gets wiped by the system reaper.
+   Regenerable workloads and reference files (michi_syms, claim chunks) must
+   be re-creatable from in-repo sources; the ledger itself is git-tracked, so
+   git history is the real backup.
 9. **Two-stage naming produces stage-1 intermediates** (`func_843490A8 →
    ParticleEffect_RegisterHandler_490A8` then `→ BattleAnim_StartEffect111...`).
    The intermediate stays in the ledger; that's fine — just remember audits
