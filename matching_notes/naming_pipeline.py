@@ -257,6 +257,7 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?:Byte|Word|Long|Short)[0-9]$"                  # Data widths
     r"|(?:Object|Widget|Window)[0-9]$"                  # UI entities
     r"|NoopStub[0-9]$"                      # michiiik's convention for identical dead stubs (ParticleGfx_NoopStub1/2/10)
+    r"|NoopString[0-9]+$"                    # dead empty-string literals, NoopStubN analogue (gParticleNoopString1-3)
     r"|[0-9]x[0-9]$"                                   # 4x4, 8x8 (small dimensions)
     r"|^I[0-9]$"                                        # I4, I8 (pixel format)
     r"|NoopStub[0-9]+$"                                # multi-digit dead stubs (NoopStub10)
