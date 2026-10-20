@@ -215,7 +215,7 @@ def parse_proposals(content):
 # Semantic digit suffix patterns (allowed)
 SEMANTIC_DIGIT = re.compile(
     r"(?:BE|LE)[0-9]+$"                    # ReadBE16, WriteLE32 (bit widths)
-    r"|RGBA[0-9]+$|IA[0-9]+$|CI[0-9]+$"    # RGBA16, IA8 (pixel formats)
+    r"|RGBA[0-9]+$|IA[0-9]+$|CI[0-9]+$"    # RGBA16, IA8, CI4 (N64 pixel formats)
     r"|[0-9]+x[0-9]+$"                      # 32x32, 64x64 (dimensions)
     r"|(?:Square|Pulse|Noise|Wave)[0-9]$"   # GBA audio channels
     r"|(?:Player|Controller)[0-9]$"          # Player indices
@@ -225,11 +225,28 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?:Version|Rev|Phase|Stage|Step|Level|Mode)[0-9]$"  # States
     r"|(?:Slot|Bank)[0-9]$"                 # Hardware slots
     r"|Log[0-9]$"                           # Log2, Log10 (math)
+    r"|(?:Vtx|Vertices|PanelVtx|GfxVtx)[0-9]$"       # Vertex array indices
+    r"|(?:Root|Node|Entry|Page|Frame|Layer)[0-9]$"   # Indexed entities
+    r"|(?:Icon|Sprite|Tile)[0-9]$"                     # Indexed graphics
+    r"|(?:Timer|Counter|Index|Buffer|Pool|List|Queue)[0-9]$"  # Data structures
+    r"|(?:Address|Pointer|Handle|Flag|Bit|Mask)[0-9]$"  # Hardware
+    r"|(?:Byte|Word|Long|Short)[0-9]$"                  # Data widths
+    r"|(?:Object|Widget|Window)[0-9]$"                  # UI entities
+    r"|[0-9]x[0-9]$"                                   # 4x4, 8x8 (small dimensions)
+    r"|^I[0-9]$"                                        # I4, I8 (pixel format)
 )
 
 # Known hex-fragment prefixes (allowed when followed by hex index)
 HEX_PREFIX = re.compile(
     r"(?:Palette|Texture|Descriptor|Effect|Model)[_]?[0-9A-F]+$"
+)
+
+# Compound suffixes that end in A/B/C (NOT bare letters)
+COMPOUND_SUFFIX = re.compile(
+    r"(?:RGB|RGBA|DMA|RTC|BEA|LEA|LEA|DMA)$"
+    r"|[Rr][Gg][Bb]$"                                    # RGB
+    r"|[Dd][Mm][Aa]$"                                     # DMA
+    r"|[Rr][Tt][Cc]$"                                     # RTC
 )
 
 
@@ -244,8 +261,11 @@ def needs_revision(name):
         if not SEMANTIC_DIGIT.search(name):
             return True  # non-semantic digit
     # Bare letters at end (A/B/C without differentiator)
-    if re.search(r"[A-C]$", name) and not re.search(r"(Color|Config|Variant|Setup)[A-C]$", name):
-        return True
+    # Skip compound suffixes (DMA, RGB, RTC) and pixel formats
+    if re.search(r"[A-C]$", name) and not COMPOUND_SUFFIX.search(name):
+        if not re.search(r"(?:Color|Config|Variant|Setup)[A-C]$", name):
+            if not re.search(r"(?:Seed|Rng)[ABC]$", name):  # RNG variants are semantic
+                return True
     # Banned terminology — check for yaw/pitch/roll ANYWHERE
     if re.search(r"yaw|pitch|roll", name, re.I) and not re.search(r"Rollout|Rolling", name, re.I):
         return True
