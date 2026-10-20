@@ -105,8 +105,9 @@ R4. Does the name contain "Custom" or "Variant" or "Type" as a
       differentiator. "CustomCallback" is banned. "CustomPaletteB"
       is allowed (it says what's custom).
 
-R5. Does the name contain "yaw" or "pitch" or "roll"?
-    → Replace with rotationY, rotationX, rotationZ.
+R5. Does the name contain "yaw" or "pitch" or "roll" anywhere?
+    → Replace with rotationY, rotationX, rotationZ. (Exception: "Rollout"
+      is a legitimate Gen 1 move name. Use judgment for move names.)
 
 R6. Does the name contain "AI" outside "BattleAi"?
     → Replace with "COM".

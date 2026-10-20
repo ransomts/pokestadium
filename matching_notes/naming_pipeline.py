@@ -223,8 +223,8 @@ def needs_revision(name):
     # Address fragments
     if re.search(r"_[0-9A-F]{4,}", name):
         return True
-    # Banned terminology
-    if re.search(r"(?<![A-Za-z])yaw|(?<![A-Za-z])pitch(?![A-Za-z])|(?<![A-Za-z])roll(?![A-Za-z])", name, re.I):
+    # Banned terminology — check for yaw/pitch/roll ANYWHERE (not just standalone)
+    if re.search(r"yaw|pitch|roll", name, re.I) and not re.search(r"Rollout|Rolling", name, re.I):
         return True
     if re.search(r"Custom$|Variant$|Type$", name):
         return True
