@@ -248,7 +248,8 @@ SEMANTIC_DIGIT = re.compile(
     r"|(?:Version|Rev|Phase|Stage|Step|Level|Mode)[0-9]$"  # States
     r"|(?:Slot|Bank)[0-9]$"                 # Hardware slots
     r"|Log[0-9]$"                           # Log2, Log10 (math)
-    r"|(?:Vtx|Vertices|PanelVtx|GfxVtx)[0-9]$"       # Vertex array indices
+    r"|(?:Vtx|Vertices|PanelVtx|GfxVtx)[0-9]+$"     # vertex array indices incl. multi-digit (Vtx10)
+    r"|WaveTable[0-9]$"                                 # GB wave channel tables (gGbWaveTable0)
     r"|(?:Root|Node|Entry|Page|Frame|Layer)[0-9]$"   # Indexed entities
     r"|(?:Icon|Sprite|Tile)[0-9]$"                     # Indexed graphics
     r"|(?:Timer|Counter|Index|Buffer|Pool|List|Queue)[0-9]$"  # Data structures
@@ -333,9 +334,12 @@ def needs_revision(name):
             if not re.search(r"(?:Seed|Rng)[ABC]$", name):  # RNG variants are semantic
                 return True
     # Banned terminology — check for yaw/roll ANYWHERE; pitch only outside audio domain
-    if re.search(r"yaw|roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll", name, re.I):
+    # (Controller/Scroll contain the "roll" substring; audio pitch is a frequency term)
+    if re.search(r"yaw|roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll|Controller", name, re.I):
         return True
-    if re.search(r"pitch", name, re.I) and not re.search(r"(?:Sfx|Audio|Bgm|Music|Sound|Tone|Note|PitchTable)", name, re.I):
+    if re.search(r"pitch", name, re.I) and not re.search(r"(?:Sfx|Audio|Bgm|Music|Sound|Tone|Note|PitchTable|Cry|MenuPitch|PlayerPitch|ChannelPitch|TrackPitch|PitchModifier)", name, re.I):
+        return True
+    if re.search(r"roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll|Controller|RollAi", name, re.I):
         return True
     if re.search(r"Custom$|Variant$|Type$", name) and not re.search(r"(?:Any|To|By|Of)Type$|SushiType$|EffectType$|TypeIndex$|ByVariant$|Trail40Variant$", name):
         return True
