@@ -25,11 +25,11 @@ typedef struct {
     MtxF mtx[16];   // 16 (0x10) × 0x40 = 0x400
 } MtxBuffer; // size = 0x400
 
-extern s32 gIdentityMtx[16];
+extern s32 gOrthoProjectionMtx[16];
 extern Gfx gModelSetupDL[3];
 extern Gfx gModelRenderDL[];
 
-s32 gIdentityMtx[16] = { 65536, 0, 1, 0, 0, 65536, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
+s32 gOrthoProjectionMtx[16] = { 65536, 0, 1, 0, 0, 65536, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 Gfx gModelSetupDL[3] = { { { 0xE3000A01, 0x100000 } }, { { 0xE7000000, 0 } }, { { 0xDF000000, 0 } } };
 Gfx gModelRenderDL[5] = { { { 0xD9FDFFFF, 0 } }, { { 0xE7000000, 0 } }, { { 0xFC309680, 0x5F1AFFFF } }, { { 0xE3001001, 0 } }, { { 0xDF000000, 0 } } };
 extern u32 gNormalModelSegment[];
@@ -240,7 +240,7 @@ Gfx* ModelRenderer_RenderActiveSlot(Gfx* gfx) {
         case 2:
         case 3:
             vtx = Gfx_AllocDisplayList(0xA0);
-            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = &gIdentityMtx;    }
+            {    Gfx *_gfx = (Gfx *)(gfx++);    _gfx->words.w0 = 0xDA380002;    _gfx->words.w1 = &gOrthoProjectionMtx;    }
             gfx = ModelRenderer_SetupSlotColors(gfx);
             var_v1 = &gModelUpdateFlag[mode & 1];
             gfx = Model_Draw(gfx, &gStadiumModelSlots[mode][*var_v1].model, vtx);
