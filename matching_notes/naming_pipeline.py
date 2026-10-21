@@ -325,6 +325,9 @@ COMPOUND_SUFFIX = re.compile(
     r"|(?:AA|ZB)$"                                          # render mode abbreviations (G_RM_AA_XLU_SURF2)
     r"|_CB$"                                                    # spline cube macro CB(x)=x*x*x (gSplineD_CB)
     r"|TOC$"                                                    # table-of-contents acronym (gAudioSeqTOC)
+    r"|(?:ID|3D|2D)$"                                      # acronyms: flash ID, 3D display lists
+    r"|Nidoran[FM]$"                                        # Gen 1 species names (Nidoran-F/M)
+    r"|(?:Variant[0-9]+)?Model[0-9A-F]{1,2}$"            # hex model IDs (PaletteBurstVariant4Model8D)
     r"|LoadGfx[0-9A-F]{1,4}(?:_[0-9A-F]{1,4})?(?:_Alt[0-9])?$"  # gfx file IDs (script resource lists)
     r"|Palette[0-9A-F]{1,2}$"                            # palette IDs (TriggerDefaultPalette1B)
     r"|(?:Get|Set|Approach)FieldOffset[0-9A-F]{2}$"       # struct-field offset accessors (FieldOffsetAC)
