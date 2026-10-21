@@ -351,7 +351,7 @@ def needs_revision(name):
     # (Controller/Scroll contain the "roll" substring; audio pitch is a frequency term)
     if re.search(r"yaw|roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll|Controller", name, re.I):
         return True
-    if re.search(r"pitch", name, re.I) and not re.search(r"(?:Sfx|Audio|Bgm|Music|Sound|Tone|Note|PitchTable|Cry|MenuPitch|PlayerPitch|ChannelPitch|TrackPitch|PitchModifier)", name, re.I):
+    if re.search(r"pitch", name, re.I) and not re.search(r"(?:Sfx|Audio|Bgm|Music|Sound|Tone|Note|PitchTable|Cry|MenuPitch|PlayerPitch|ChannelPitch|TrackPitch|PitchModifier|PitchSlide)", name, re.I):
         return True
     if re.search(r"roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll|Controller|RollAi", name, re.I):
         return True
