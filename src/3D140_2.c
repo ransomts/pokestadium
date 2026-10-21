@@ -102,21 +102,21 @@ extern f32 gMusicChannel1Volume;
 extern f32 gMusicChannel1Step;
 extern u8 mus_sound_effect_blocked;
 
-extern u16 gAudioCueTable_0x24F[];
-extern u16 gAudioCueTable_0x269[];
-extern u16 gAudioCueTable_0x281[];
-extern u16 gAudioCueTable_0x27E[];
-extern u16 gAudioCueTable_0x24D[];
+extern u16 gAnnouncerCueGenericIdle[];
+extern u16 gAnnouncerCueGenericFaint[];
+extern u16 gAnnouncerCuePostFaintLevelMismatch[];
+extern u16 gAnnouncerCuePostFaintTypeMismatch[];
+extern u16 gAnnouncerCueOneSidedDamage[];
 extern u16 gAnnouncerCueEvenMatchLowHp[];
 extern u16 gAnnouncerCueEvenMatch[];
 extern u16 gAnnouncerCueFrozenReaction[];
 extern u16 gAnnouncerCueAsleepReaction[];
-extern u16 gAudioCueTable_0x252[];
-extern u16 gAudioCueTable_0x284[];
-extern u16 gAudioCueTable_0x259[];
+extern u16 gAnnouncerCueEarlyBattleFaint[];
+extern u16 gAnnouncerCueDefeatReaction[];
+extern u16 gAnnouncerCueBothHeavyDamage[];
 extern u16 gAnnouncerCueBothHeavyDamageLowHp[];
-extern u16 gAudioCueTable_0x24E[];
-extern u16 gAudioCueTable_0x251[];
+extern u16 gAnnouncerCueEarlyBattleBothHealthy[];
+extern u16 gAnnouncerCueBigLeadFaint[];
 extern u16 gAudioCueTable_GenericLow[];
 extern u16 gAudioCueTable_GenericMid[];
 extern u16 gAudioCueTable_GenericZero[];
@@ -246,21 +246,21 @@ f32 gMusicChannel1Volume = 0.0f;
 f32 gMusicChannel1Step = 0.0f;
 u8 mus_sound_effect_blocked = 0;
 u32 gAudioDmaBufferCount[2] = { 0, 0 };
-u16 gAudioCueTable_0x24F[8] = { 7, 0x24F, 0x250, 0x255, 0x271, 0x273, 0x289, 0x28F };
-u16 gAudioCueTable_0x269[8] = { 6, 0x269, 0x26C, 0x26D, 0x26E, 0x287, 0x288, 0 };
-u16 gAudioCueTable_0x281[4] = { 3, 0x281, 0x282, 0x283 };
-u16 gAudioCueTable_0x27E[4] = { 3, 0x27E, 0x27F, 0x280 };
-u16 gAudioCueTable_0x24D[4] = { 3, 0x24D, 0x278, 0x279 };
+u16 gAnnouncerCueGenericIdle[8] = { 7, 0x24F, 0x250, 0x255, 0x271, 0x273, 0x289, 0x28F };
+u16 gAnnouncerCueGenericFaint[8] = { 6, 0x269, 0x26C, 0x26D, 0x26E, 0x287, 0x288, 0 };
+u16 gAnnouncerCuePostFaintLevelMismatch[4] = { 3, 0x281, 0x282, 0x283 };
+u16 gAnnouncerCuePostFaintTypeMismatch[4] = { 3, 0x27E, 0x27F, 0x280 };
+u16 gAnnouncerCueOneSidedDamage[4] = { 3, 0x24D, 0x278, 0x279 };
 u16 gAnnouncerCueEvenMatchLowHp[4] = { 3, 0x24C, 0x274, 0x275 };
 u16 gAnnouncerCueEvenMatch[4] = { 3, 0x24B, 0x276, 0x277 };
 u16 gAnnouncerCueFrozenReaction[4] = { 2, 0x27C, 0x27D, 0 };
 u16 gAnnouncerCueAsleepReaction[4] = { 2, 0x27A, 0x27B, 0 };
-u16 gAudioCueTable_0x252[4] = { 3, 0x252, 0x270, 0x272 };
-u16 gAudioCueTable_0x284[4] = { 3, 0x284, 0x285, 0x286 };
-u16 gAudioCueTable_0x259[4] = { 3, 0x259, 0x28B, 0x28C };
+u16 gAnnouncerCueEarlyBattleFaint[4] = { 3, 0x252, 0x270, 0x272 };
+u16 gAnnouncerCueDefeatReaction[4] = { 3, 0x284, 0x285, 0x286 };
+u16 gAnnouncerCueBothHeavyDamage[4] = { 3, 0x259, 0x28B, 0x28C };
 u16 gAnnouncerCueBothHeavyDamageLowHp[4] = { 3, 0x25A, 0x28A, 0x28C };
-u16 gAudioCueTable_0x24E[4] = { 3, 0x24E, 0x258, 0x28E };
-u16 gAudioCueTable_0x251[4] = { 2, 0x251, 0x28D, 0 };
+u16 gAnnouncerCueEarlyBattleBothHealthy[4] = { 3, 0x24E, 0x258, 0x28E };
+u16 gAnnouncerCueBigLeadFaint[4] = { 2, 0x251, 0x28D, 0 };
 u16 gAudioCueTable_GenericLow[8] = { 6, 0x24F, 0x250, 0x255, 0x271, 0x289, 0x28F, 0 };
 u16 gAudioCueTable_GenericMid[4] = { 3, 0x253, 0x26F, 0x291 };
 u16 gAudioCueTable_GenericZero[4] = { 2, 0x252, 0x270, 0 };
@@ -718,7 +718,7 @@ void AudioFrameUpdate(s32 arg0) {
                 if ((gAudioInfoPtr[0]->unk_0C == 0) && (gAudioInfoPtr[1]->unk_0C == 0)) {
                     Audio_QueueSoundAvoidingRecent(gAudioCueTable_GenericZero);
                 } else {
-                    Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x252);
+                    Audio_QueueSoundAvoidingRecent(gAnnouncerCueEarlyBattleFaint);
                 }
                 return;
             }
@@ -741,11 +741,11 @@ void AudioFrameUpdate(s32 arg0) {
 
             if (((((u32)gAudioInfoPtr[0]->unk_0C * 100) / gAudioInfoPtr[0]->unk_28) >= 0x5B) &&
                 ((((u32)gAudioInfoPtr[1]->unk_0C * 100) / gAudioInfoPtr[1]->unk_28) >= 0x5B)) {
-                Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x24E);
+                Audio_QueueSoundAvoidingRecent(gAnnouncerCueEarlyBattleBothHealthy);
             } else if (gAudioEffectId == 0) {
                 Audio_QueueSoundAvoidingRecent(gAudioCueTable_GenericLow);
             } else {
-                Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x24F);
+                Audio_QueueSoundAvoidingRecent(gAnnouncerCueGenericIdle);
             }
             return;
         }
@@ -768,7 +768,7 @@ void AudioFrameUpdate(s32 arg0) {
             }
 
             if (var_v0 >= 2) {
-                Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x251);
+                Audio_QueueSoundAvoidingRecent(gAnnouncerCueBigLeadFaint);
                 return;
             }
 
@@ -786,7 +786,7 @@ void AudioFrameUpdate(s32 arg0) {
             } else if (gPlayerRemainingPokemon[gAudioFaintedSidePlusOne - 1] == 1) {
                 Audio_QueueSequenceId(0x26A);
             } else {
-                Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x269);
+                Audio_QueueSoundAvoidingRecent(gAnnouncerCueGenericFaint);
             }
             return;
         }
@@ -851,7 +851,7 @@ void AudioFrameUpdate(s32 arg0) {
             if (gAudioSfxCrossoverFlag != 0) {
                 if ((osGetTime() % 2) != 0) {
                     gAudioFaintedSidePlusOne = 0;
-                    Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x281);
+                    Audio_QueueSoundAvoidingRecent(gAnnouncerCuePostFaintLevelMismatch);
                     return;
                 }
             }
@@ -861,7 +861,7 @@ void AudioFrameUpdate(s32 arg0) {
                     if ((gAudioInfoPtr[0]->unk_16[7] != gAudioInfoPtr[1]->unk_16[6]) &&
                         (gAudioInfoPtr[0]->unk_16[7] != gAudioInfoPtr[1]->unk_16[7])) {
                         gAudioFaintedSidePlusOne = 0;
-                        Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x27E);
+                        Audio_QueueSoundAvoidingRecent(gAnnouncerCuePostFaintTypeMismatch);
                         return;
                     }
                 }
@@ -900,7 +900,7 @@ void AudioFrameUpdate(s32 arg0) {
                     if (gAudioEffectId == 0) {
                         Audio_QueueSoundAvoidingRecent(gAudioCueTable_GenericLow);
                     } else {
-                        Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x24F);
+                        Audio_QueueSoundAvoidingRecent(gAnnouncerCueGenericIdle);
                     }
                     break;
             }
@@ -921,7 +921,7 @@ void AudioFrameUpdate(s32 arg0) {
         }
 
         if (gAudioPendingDefeatReaction != 0) {
-            Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x284);
+            Audio_QueueSoundAvoidingRecent(gAnnouncerCueDefeatReaction);
             gAudioPendingDefeatReaction = 0;
             return;
         }
@@ -936,7 +936,7 @@ void AudioFrameUpdate(s32 arg0) {
                     ((((u32)gAudioInfoPtr[1]->unk_0C * 100) / gAudioInfoPtr[1]->unk_28) < 0x14U)) {
                     Audio_QueueSoundAvoidingRecent(gAnnouncerCueBothHeavyDamageLowHp);
                 } else {
-                    Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x259);
+                    Audio_QueueSoundAvoidingRecent(gAnnouncerCueBothHeavyDamage);
                 }
                 return;
             }
@@ -953,7 +953,7 @@ void AudioFrameUpdate(s32 arg0) {
             (gAudioInfoPtr[0]->unk_0C != gAudioInfoPtr[0]->unk_28) && (gAudioInfoPtr[1]->unk_0C != gAudioInfoPtr[1]->unk_28)) {
             if ((gAudioInfoPtr[var_t5]->unk_28 * 0.6) < gAudioInfoPtr[var_t5]->unk_0C) {
                 if (gAudioInfoPtr[var_t0]->unk_0C < (gAudioInfoPtr[var_t0]->unk_28 * 0.4)) {
-                    Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x24D);
+                    Audio_QueueSoundAvoidingRecent(gAnnouncerCueOneSidedDamage);
                     return;
                 }
             }
@@ -994,7 +994,7 @@ void AudioFrameUpdate(s32 arg0) {
         if (gAudioEffectId == 0) {
             Audio_QueueSoundAvoidingRecent(gAudioCueTable_GenericLow);
         } else {
-            Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x24F);
+            Audio_QueueSoundAvoidingRecent(gAnnouncerCueGenericIdle);
         }
 
         return;
