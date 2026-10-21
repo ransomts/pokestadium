@@ -490,7 +490,7 @@ typedef struct WaterSurfaceVertex {
     /* 0x1A */ s16 unk_1A;
 } WaterSurfaceVertex; // size = 0x1C
 
-typedef struct WaterSurfaceData {
+typedef struct Trail40GridData {
     /* 0x0000 */ s16 unk_0000;
     /* 0x0002 */ s16 unk_0002;
     /* 0x0004 */ s16 unk_0004;
@@ -498,7 +498,7 @@ typedef struct WaterSurfaceData {
     /* 0x000C */ Vtx* unk_000C;
     /* 0x0010 */ Mtx* unk_0010;
     /* 0x0014 */ WaterSurfaceVertex unk_0014[16][16];
-} WaterSurfaceData; // size >= 0x1C14
+} Trail40GridData; // size >= 0x1C14
 
 typedef struct WaterNode {
     /* 0x00 */ f32 posX;
@@ -934,7 +934,7 @@ extern DioramaAnimData gBattleCameraPresetE;
 extern DioramaAnimData gBattleIntroCameraPresetTable[];
 extern Vec3f gCameraOffsetTable[];
 extern unk_D_84385384_func gAnimStateIdle;
-extern unk_D_84385384 gMoveAnimData[];
+extern unk_D_84385384 gBattleSceneStateRows[];
 extern Vec3f gCameraFarSettings;
 extern Vec3f gCameraCloseSettings;
 extern u32 gMessageIdLookup[];
@@ -947,10 +947,10 @@ extern Vtx gPanelBgLargeVerts[];
 extern ParticleEffectData gBattleAnimParticleDescriptors[86];
 extern func_D_84390320 gStateCallbackTable[];
 extern func_D_84390320 gParticleCallbackTable[];
-extern func_D_84390320 gStateEnterCallbackTable[];
-extern func_D_84390320 gParticleEnterCallbackTable[];
-extern func_D_84390320 gStateExitCallbackTable[];
-extern func_D_84390320 gParticleExitCallbackTable[];
+extern func_D_84390320 gStateUpdateCallbackTable[];
+extern func_D_84390320 gParticleUpdateCallbackTable[];
+extern func_D_84390320 gStateDrawCallbackTable[];
+extern func_D_84390320 gParticleDrawCallbackTable[];
 extern Gfx gWaterParticleQuadDL[];
 extern u32 gBeamTexture[];
 extern Gfx gParticleQuadDL[];
@@ -1001,7 +1001,7 @@ extern unk_D_84390240 gBattleScene;
 extern s32 gBattleUpdateHPFlag;
 extern s32 gPanelDrawCount;
 extern s32 gBattleEngineTimer;
-extern s16 gParticleTexture_Default;
+extern s16 gParticleEffectParam;
 extern s16 gParticleEffectPrimaryId;
 extern BattlePlayerEntity* gParticleEffectAttackerEntity;
 extern BattlePlayerEntity* gParticleEffectUserEntity;
@@ -1034,8 +1034,8 @@ extern s16 gBlendColorB;
 extern s16 gBlendColorA;
 extern f32 gWaterWaveTable[26];
 extern u8* gBattleAnimAssetPointers[256];
-extern s16 gMessageBuffer[0x10];
-extern arg1_func_80019420* gMessageStringLists[40];
+extern s16 gBattleAnimResourceListBuffer[0x10];
+extern arg1_func_80019420* gBattleAnimAssetTables[40];
 
 
 

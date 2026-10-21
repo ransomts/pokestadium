@@ -95,7 +95,7 @@ StagePhaseInfo gStagePhases[9] = {
 u8 gCurrentPhaseIndex = 0;
 u32 gScreenFadeAlpha = 0;
 u16 gCreditsShotTimer = 0;
-u32 gStageDisplayListCommands[] = {
+u32 gCreditsGeoLayout[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E,    0x00000000, 0x014000F0,  0x0000000F, 0x00000000,  0x00000000,
     0x05000000, 0x0D000000, 0x05000000,    0x07000000, &gStageFragmentState, 0x14000000, 0x002D0019,  0xFFFFFF28,
     0x16646464, 0x0F000002, 0x05000000,    0x1F00FFFF, 0x00000000,  0x00000000, 0x00000000,  0x00640064,
@@ -442,10 +442,10 @@ StageFadePalette gStageFadePalettes[] = {
     },
 };
 
-static MessageDecompressEntry gMessageDecompressTable[] = {
+static CreditRoleEntry gCreditsRoleLines[] = {
     {
         0,
-        { &gMessageDecompressBuffer, &gCreditsMessageTable },
+        { &gCreditsString00, &gCreditsMessageTable },
     },
     {
         1,
@@ -1199,7 +1199,7 @@ StageCameraConfig gStageCameraConfigs[29] = {
         360,
         40,
         6,
-        gMessageDecompressTable,
+        gCreditsRoleLines,
     },
     {
         0,
@@ -1436,7 +1436,7 @@ void Credits_InitScene(s32 arg0) {
     GeoNode_CreateContainer(NULL, &gStageForegroundNode);
     Credits_SetBackgroundTint(0xFF, 0xFF, 0xFF);
     sp2C = MainPool_AllocState(main_pool_get_available(), 0);
-    sSceneGraphRoot = process_geo_layout(sp2C, &gStageDisplayListCommands);
+    sSceneGraphRoot = process_geo_layout(sp2C, &gCreditsGeoLayout);
     MainPool_FinalizeAllocation(sp2C);
     ModelRenderer_InitDisplayRoots();
     Credits_InitCamera();
@@ -1540,13 +1540,13 @@ void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2) {
 
     u16 i;
     u16 sp2C;
-    MessageDecompressEntry* ptr;
+    CreditRoleEntry* ptr;
 
     sp2C = Credits_GetRoleCount();
     Text_InitStringTables();
     sCreditsMessageBank = Text_GetStringTable(0x2D);
 
-    for (i = 0, ptr = gMessageDecompressTable; i < sp2C; i++, ptr++) {
+    for (i = 0, ptr = gCreditsRoleLines; i < sp2C; i++, ptr++) {
         ptr->rotation[0] = Text_GetString(NULL, 0, sCreditsMessageBank, i);
     }
 
@@ -1581,7 +1581,7 @@ void Credits_DrawRoleList(void) {
     s32 var_s5;
     Color_RGBA8_u32 sp60[4];
     u16 var_s11;
-    MessageDecompressEntry* ptr;
+    CreditRoleEntry* ptr;
     StageCameraConfig sp4C;
 
     if (gStageLayoutPtr == NULL) {

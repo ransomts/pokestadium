@@ -188,7 +188,7 @@ void ParticleGfx_DrawBillboardPrimEnvQuadVariantB(ParticleEffectInstance* arg0, 
 
 void ParticleGfx_DrawBillboardPrimEnvQuadVariantC(ParticleEffectInstance* arg0, CameraStruct* arg1) {
     ParticleGfx_SetPrimEnvColorCombine(arg0->prim_r, arg0->prim_g, arg0->prim_b, arg0->env_r, arg0->env_g, arg0->env_b, arg0->prim_a);
-    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectWide);
+    ParticleGfx_DrawModelQuad(arg1, arg0->unk_2C, arg0->unk_1C, gVtx_UI_RectTallAnchoredTop);
 }
 
 void ParticleGfx_DrawBillboardPrimEnvComposite(ParticleEffectInstance* arg0, CameraStruct* arg1) {

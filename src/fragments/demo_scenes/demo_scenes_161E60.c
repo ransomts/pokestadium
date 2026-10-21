@@ -90,7 +90,7 @@ typedef struct unk_D_86B0EBE0 {
     /* 0x1C */ s16 unk_1C;
 } unk_D_86B0EBE0; // size = 0x20
 
-u32 gFragment17MaskTable[] = {
+u32 gFragment17TransitionGradientTex[] = {
     0xCFFFCFFF, 0xCFFFCFFF, 0xCFFFCFFF, 0xCFFFCFFF, 0xCFFFCFFF, 0xCFFFCFFF, 0xCFFFCFFF, 0xCFFFCFFF, 0xC7FFC7FF,
     0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF,
     0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF, 0xC7FFC7FF,
@@ -710,7 +710,7 @@ static u32 gFragment17MsgId_Timeout = 0x9C;
 static u32 gFragment17MsgId_Complete = 0x98;
 static u32 gFragment17MsgId_Extra = 0x9D;
 
-static unk_D_86B0DB98 gFragment17MsgBankTable[] = {
+static unk_D_86B0DB98 gFragment17CursorIconAnimTable[] = {
     { D_300BAD0, 14 }, { D_300BED0, 2 }, { D_300C2D0, 6 }, { D_300BED0, 2 }, { NULL, 0 },
 };
 
@@ -932,7 +932,7 @@ s32 Completion_WrapDialogText(void) {
     if (gFragment17TextBuffer[gFragment17TextState->rotation] == 0) {
         gFragment17TextState->unk_18 = 1;
         gFragment17TextState->unk_1C = 0;
-        gFragment17TextState->unk_1A = gFragment17MsgBankTable[gFragment17TextState->unk_1C].rotation;
+        gFragment17TextState->unk_1A = gFragment17CursorIconAnimTable[gFragment17TextState->unk_1C].rotation;
     }
 
     return 0;
@@ -1288,16 +1288,16 @@ Gfx* Completion_DrawBlinkingCursorIcon(void) {
     if (gFragment17TextState->unk_18 == 1) {
         if (!gFragment17TextState->unk_1A--) {
             gFragment17TextState->unk_1C++;
-            if (gFragment17MsgBankTable[gFragment17TextState->unk_1C].posX == 0) {
+            if (gFragment17CursorIconAnimTable[gFragment17TextState->unk_1C].posX == 0) {
                 gFragment17TextState->unk_1C = 0;
             }
-            gFragment17TextState->unk_1A = gFragment17MsgBankTable[gFragment17TextState->unk_1C].rotation;
+            gFragment17TextState->unk_1A = gFragment17CursorIconAnimTable[gFragment17TextState->unk_1C].rotation;
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
         Gfx_DrawTextureRgba32(gFragment17TextState->unk_16 + 0x9E, gFragment17TextState->unk_14 + 9, 0x10, 0x10,
-                      gFragment17MsgBankTable[gFragment17TextState->unk_1C].posX, 0x10, 0);
+                      gFragment17CursorIconAnimTable[gFragment17TextState->unk_1C].posX, 0x10, 0);
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     }

@@ -30,14 +30,14 @@ static PortGraphNode gEntryGraphNodes[4];
 static GraphNode* gMenuGeoNode;
 static GraphNode* gPortSelectRootNode;
 static s16 gIsEntrySelectionActive;
-static s32 gPlayerNameLength;
+static s32 gPresentationMode;
 static char** gEntryMessageBank;
 static char gEntryIdBuffer[0x400];
 static s16 gPulseAlpha;
 static s16 gPrevSelectedEntryIndex;
 static s32 gEntryConfirmState;
 
-static u32 gPortSelectAnimData[] = {
+static u32 gPortSelectErrMsgsJp[] = {
     0xA4B3A4CE, 0xA5ABA1BC, 0xA5C8A5EA, 0x0AA5C3A5, 0xB8A4CFA1, 0xA2A4C4A4, 0xAB0AA4A8, 0xA4DEA4BB, 0xA4F3A1A3,
     0x00000000, 0xA5ECA5DD, 0xA1BCA5C8, 0xA4ACA1A2, 0x0AA4DFA4, 0xC4A4ABA4, 0xEAA4DEA4, 0xBB0AA4F3, 0xA1A30000,
     0xA5DDA5B1, 0xA5E2A5F3, 0xA5BBA5F3, 0x0AA5BFA1, 0xBCA4C7A1, 0xA2A5ECA5, 0xDD0AA1BC, 0xA5C8A4B5, 0xA4ECA4C6,
@@ -95,7 +95,7 @@ static u32 gPortGradientColors[] = {
 
 static Color_RGB8 gGradientColor = { 0x64, 0x1E, 0x1E };
 static s32 pad_D_81303F18 = 0;
-static u8* gBgTextureSequence[] = { D_3000008, D_03000FD0, D_03001F98, D_03002F60, D_03003F28 };
+static u8* gPakIconAnimFrames[] = { D_3000008, D_03000FD0, D_03001F98, D_03002F60, D_03003F28 };
 
 s32 TransferPak_RenderPortNodeCallback(s32 arg0, GraphNode* arg1) {
     s32 idx;
@@ -124,7 +124,7 @@ s32 TransferPak_RenderPortNodeCallback(s32 arg0, GraphNode* arg1) {
 }
 
 s32 TransferPak_GetPresentationMode(void) {
-    PlayerName sp18;
+    GbsSaveOptions sp18;
 
     Save_EnsureBankLoaded(2);
     Save_GetOptions(&sp18);
@@ -439,7 +439,7 @@ void TransferPak_DrawPortSelectOverlay(void) {
     TransferPak_UpdatePulseAlpha();
 
     if (gCurrentGameState == 0x25) {
-        TransferPak_DrawSpinningPakIcon(gBgTextureSequence[gBgTextureIndex], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
+        TransferPak_DrawSpinningPakIcon(gPakIconAnimFrames[gBgTextureIndex], 0x112, 0x11A, 0x30, 0x2A, 2.0f);
         gBgTextureIndex = (gBgTextureIndex + 1) % 5;
         TransferPak_DrawPulsingGuideIcon(D_30055B0, 0x98, 0xEE, 0x20, 0x23, 2.0f, 1);
         TransferPak_DrawPulsingGuideIcon(D_3004EF0, 0xC2, 0x100, 0x28, 0x2B, 2.0f, 1);
@@ -818,7 +818,7 @@ s32 TransferPak_SelectMain(s32 arg0, UNUSED s32 arg1) {
     Text_InitStringTables();
     gEntryMessageBank = Text_GetStringTable(0x1F);
     TransferPak_InitScene();
-    gPlayerNameLength = TransferPak_GetPresentationMode();
+    gPresentationMode = TransferPak_GetPresentationMode();
 
     gMenuMiscAssets = ASSET_LOAD(0, fragment33_misc, 0);
 
@@ -896,7 +896,7 @@ void Gfx_DrawMenuBackground(void) {
                             0x0400);
     }
 
-    switch (gPlayerNameLength) {
+    switch (gPresentationMode) {
         default:
             sp30 = D_3009678;
             break;

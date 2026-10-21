@@ -3,7 +3,7 @@
 #include "src/gallery.h"
 #include "src/gfx_buffer.h"
 
-static WaterSurfaceData gWaterSurfaceAltData;
+static Trail40GridData gWaterSurfaceAltData;
 
 static Lights2 gWaterSurfaceAltLights = gdSPDefLights2(255, 255, 255, 255, 255, 255, 30, 30, 10, 255, 255, 255, 226, 30, 10);
 static Gfx D_84389588[] = {

@@ -1010,7 +1010,7 @@ void Sushi_UpdateAi(SushiPlayerEntity* arg0) {
             if (arg0->unk_060 == 2) {
                 arg0->tintColor.g = arg0->tintColor.b = 255.0f * spB8;
                 if (!(arg0->unk_006 & 0xF)) {
-                    Particle_EmitBurstAtTransform(1.0f, arg0->modelNode.anchor5Position, gSpriteAnimUpdateFunc, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0, 4);
+                    Particle_EmitBurstAtTransform(1.0f, arg0->modelNode.anchor5Position, gZeroVec3s, MiniFx_UpdateRandomOffsetPalette10RiseFadeParticle, &gMiniTutoScreenNode0, 4);
                 }
             } else {
                 arg0->tintColor.r = arg0->tintColor.b = 255.0f * spB8;

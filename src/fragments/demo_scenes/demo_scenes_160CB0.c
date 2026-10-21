@@ -5,7 +5,7 @@ u16 MathUtil_RandomU16Range(s32 arg0) {
     return ((f32)(u32)MathUtil_Random16() / 65535.0) * arg0;
 }
 
-Vec3f* func_86B01404(Vec3f* arg0, Vec3f* arg1) {
+Vec3f* Vec3f_Copy(Vec3f* arg0, Vec3f* arg1) {
     arg0->x = arg1->x;
     arg0->y = arg1->y;
     arg0->z = arg1->z;

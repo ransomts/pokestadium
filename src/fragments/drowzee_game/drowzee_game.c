@@ -33,7 +33,7 @@ static u16 gPlayerButtonPressed = 0;
 
 u8 gUseAlphaBlend = 0;
 
-static u8 gHealthBarSegmentTable[][8] = {
+static u8 gDrowzeeTimingWindowTable[][8] = {
     { 0x12, 0x13, 0x14, 0x15, 0x3A, 0x3B, 0x3C, 0x3D }, { 0x10, 0x11, 0x12, 0x13, 0x34, 0x35, 0x36, 0x37 },
     { 0x0E, 0x0F, 0x10, 0x11, 0x2E, 0x2F, 0x30, 0x31 }, { 0x0D, 0x0E, 0x0F, 0x10, 0x2B, 0x2C, 0x2D, 0x2E },
     { 0x0C, 0x0D, 0x0E, 0x0F, 0x28, 0x29, 0x2A, 0x2B }, { 0x0B, 0x0C, 0x0D, 0x0E, 0x25, 0x26, 0x27, 0x28 },
@@ -83,9 +83,9 @@ void DrowzeeGame_UpdatePlayerTimingWindows(void) {
         }
 
         gCurrentHudState->unk_008 =
-            gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][2] + DrowzeeGame_ComputeAiTimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
+            gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][2] + DrowzeeGame_ComputeAiTimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
         gCurrentHudState->unk_00A =
-            gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][6] + DrowzeeGame_ComputeAiTimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
+            gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][6] + DrowzeeGame_ComputeAiTimingBias(gDrowzeeGameStatePtr->unk_000, gCurrentHudState->unk_000);
     }
 }
 
@@ -375,7 +375,7 @@ void DrowzeeGame_UpdateRoundTick(s32 arg0) {
 
             for (i = 0; i < 8; i++) {
                 temp = gCurrentHealthSegment;
-                if (temp == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][i]) {
+                if (temp == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][i]) {
                     gHealthSegmentExactMatch = 1;
                     break;
                 }
@@ -386,7 +386,7 @@ void DrowzeeGame_UpdateRoundTick(s32 arg0) {
             if (gDrowzeeGameIsOver == 0) {
                 for (i = 0; i < 8; i++) {
                     temp = gCurrentHealthSegment;
-                    if ((temp + 1) == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][i]) {
+                    if ((temp + 1) == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][i]) {
                         gUseAlphaBlend = 1;
                         break;
                     }
@@ -525,25 +525,25 @@ void DrowzeeGame_JudgePlayerTiming(void) {
                         var_a2 = 6;
                     }
 
-                    if ((gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] - 3) >= gCurrentHealthSegment) {
+                    if ((gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][var_a2] - 3) >= gCurrentHealthSegment) {
                         gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][0]++;
-                    } else if ((gCurrentHealthSegment + 2) == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
+                    } else if ((gCurrentHealthSegment + 2) == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
                         gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][1]++;
-                    } else if ((gCurrentHealthSegment + 1) == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
+                    } else if ((gCurrentHealthSegment + 1) == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
                         gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][2]++;
-                    } else if (gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
+                    } else if (gCurrentHealthSegment == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][var_a2]) {
                         gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][3]++;
-                    } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 1)) {
+                    } else if (gCurrentHealthSegment == (gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 1)) {
                         gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][4]++;
-                    } else if (gCurrentHealthSegment == (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 2)) {
+                    } else if (gCurrentHealthSegment == (gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 2)) {
                         gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][5]++;
-                    } else if (gCurrentHealthSegment >= (gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 3)) {
+                    } else if (gCurrentHealthSegment >= (gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][var_a2] + 3)) {
                         gCurrentHudState->timingStats[gDrowzeeGameStatePtr->unk_000][6]++;
                     }
                 }
 
-                if ((gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][3]) ||
-                    (gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][7])) {
+                if ((gCurrentHealthSegment == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][3]) ||
+                    (gCurrentHealthSegment == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][7])) {
                     if (gCurrentHudState->unk_014 == 0) {
                         gCurrentHudState->unk_010--;
                         if (gCurrentHudState->unk_018 == 0) {
@@ -558,7 +558,7 @@ void DrowzeeGame_JudgePlayerTiming(void) {
             }
         }
 
-        if ((gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][3]) || (gCurrentHealthSegment == gHealthBarSegmentTable[gDrowzeeGameStatePtr->unk_000][7])) {
+        if ((gCurrentHealthSegment == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][3]) || (gCurrentHealthSegment == gDrowzeeTimingWindowTable[gDrowzeeGameStatePtr->unk_000][7])) {
             D_864029C8 = 0;
         }
 

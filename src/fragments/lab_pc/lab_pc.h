@@ -425,14 +425,14 @@ typedef struct ItemPCScreen {
     /* 0x7C */ ItemBlockInfo unk_7C[4];
 } ItemPCScreen; // size = 0xCC
 
-extern Color_RGBA8 gPanelAccentTexture1[2];
-extern Color_RGBA8 gPanelAccentTexture2[2];
-extern Color_RGBA8 gPanelAccentTexture3[2];
-extern Color_RGBA8 gPanelAccentTexture4[2];
+extern Color_RGBA8 gPanelAccentColorWhiteGray[2];
+extern Color_RGBA8 gPanelAccentColorCyan[2];
+extern Color_RGBA8 gPanelAccentColorGreen[2];
+extern Color_RGBA8 gPanelAccentColorYellow[2];
 extern Color_RGBA8 gPanelColorA[2];
 extern Color_RGBA8 gPanelColorB[2];
 extern Color_RGBA8 gPanelAccentPink[2];
-extern Color_RGBA8 gPanelOverlayTexture[2];
+extern Color_RGBA8 gPanelOverlayColor[2];
 extern Color_RGBA8 gPanelColorCyan[2];
 extern Color_RGBA8 gPanelColorWhite[2];
 extern Color_RGBA8 gPanelColorYellow[2];
@@ -440,8 +440,8 @@ extern Color_RGBA8 gPanelColorGreen[2];
 extern Color_RGBA8 gBoxMenuColorCheckItems[2];
 extern Color_RGBA8 gBoxMenuColorDeleteBox[2];
 extern Color_RGBA8 gPanelColorPink[2];
-extern Color_RGBA8 gPanelTextureDefault[2];
-extern Color_RGBA8 gGridBorderTextures[2];
+extern Color_RGBA8 gPanelColorDefault[2];
+extern Color_RGBA8 gGridBorderColors[2];
 extern Color_RGBA8 gModeToggleColors[2];
 
 extern u32 gPanelIconTexture[];
@@ -453,12 +453,12 @@ extern u32 gPanelBackgroundTexture4[];
 extern u32 gItemBoxTabDeleteBoxTex[];
 extern u32 gPanelTexturePink[];
 extern u32 gSwapArrowsTexture[];
-extern u32 gTexture_MoveTargetSmall_0[];
-extern u32 gTexture_MoveTargetSmall_1[];
-extern u32 gTexture_MoveTargetSmall_2[];
-extern u32 gTexture_MoveTargetSmall_3[];
-extern u32* gTexture_MoveTargetSmall[];
-extern u32 gTexture_MoveTargetLarge[];
+extern u32 gTexture_GbGamePak_0[];
+extern u32 gTexture_GbGamePak_1[];
+extern u32 gTexture_GbGamePak_2[];
+extern u32 gTexture_GbGamePak_3[];
+extern u32* gTexture_GbPakIcons[];
+extern u32 gTexture_N64PakIcon[];
 extern u32 gPcBackdropTile[];
 
 TextObject* LabPC_Enter(void);

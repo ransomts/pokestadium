@@ -42,7 +42,7 @@ static GraphNode* gMenuGraphNodeF;
 static GraphNode* gMenuGraphNodeG;
 static GraphNode* gMenuGraphNodeH;
 
-static s16 gAudioMessageIndex = 7;
+static s16 gMainMenuCursorIndex = 7;
 static u32 gMenuDisplayListCommands[] = {
     0x0C000000,  0x05000000, 0x0B00002D, 0x00000000, 0x028001E0, 0x00000000, 0xFDBD0000, 0x00000243, 0x05000000,
     0x0D000000,  0x05000000, 0x14000000, 0x00000000, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002, 0x05000000, 0x0A000000,
@@ -188,79 +188,79 @@ static u32 MenuTextureA_CommandList[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureA_Vtx0, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, PakUi_RenderPartyCardTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx MenuTextureA_PanelVtx0[] = {
+static Vtx MenuTextureB_PanelVtx0[] = {
     VTX(0, 50, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 0, 0, 0, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(40, 0, 0, 1280, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(40, 50, 0, 1280, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx1[] = {
+static Vtx MenuTextureB_PanelVtx1[] = {
     VTX(40, 50, 0, 1280, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(40, 0, 0, 1280, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(80, 0, 0, 2560, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(80, 50, 0, 2560, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx2[] = {
+static Vtx MenuTextureB_PanelVtx2[] = {
     VTX(80, 50, 0, 2560, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(80, 0, 0, 2560, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(120, 0, 0, 3840, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(120, 50, 0, 3840, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx3[] = {
+static Vtx MenuTextureB_PanelVtx3[] = {
     VTX(120, 50, 0, 3840, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(120, 0, 0, 3840, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(160, 0, 0, 5120, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(160, 50, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx4[] = {
+static Vtx MenuTextureB_PanelVtx4[] = {
     VTX(160, 50, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(160, 0, 0, 5120, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(200, 0, 0, 6400, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(200, 50, 0, 6400, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx5[] = {
+static Vtx MenuTextureB_PanelVtx5[] = {
     VTX(200, 50, 0, 6400, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(200, 0, 0, 6400, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(240, 0, 0, 7680, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(240, 50, 0, 7680, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx6[] = {
+static Vtx MenuTextureB_PanelVtx6[] = {
     VTX(240, 50, 0, 7680, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(240, 0, 0, 7680, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(280, 0, 0, 8960, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(280, 50, 0, 8960, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx7[] = {
+static Vtx MenuTextureB_PanelVtx7[] = {
     VTX(280, 50, 0, 8960, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(280, 0, 0, 8960, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(320, 0, 0, 10240, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(320, 50, 0, 10240, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx8[] = {
+static Vtx MenuTextureB_PanelVtx8[] = {
     VTX(320, 50, 0, 10240, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(320, 0, 0, 10240, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(360, 0, 0, 11520, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(360, 50, 0, 11520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx9[] = {
+static Vtx MenuTextureB_PanelVtx9[] = {
     VTX(360, 50, 0, 11520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(360, 0, 0, 11520, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(400, 0, 0, 12800, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(400, 50, 0, 12800, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx10[] = {
+static Vtx MenuTextureB_PanelVtx10[] = {
     VTX(400, 50, 0, 12800, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(400, 0, 0, 12800, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(440, 0, 0, 14080, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(440, 50, 0, 14080, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx11[] = {
+static Vtx MenuTextureB_PanelVtx11[] = {
     VTX(440, 50, 0, 14080, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(440, 0, 0, 14080, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(480, 0, 0, 15360, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(480, 50, 0, 15360, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx12[] = {
+static Vtx MenuTextureB_PanelVtx12[] = {
     VTX(480, 50, 0, 15360, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(480, 0, 0, 15360, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(520, 0, 0, 16640, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -272,79 +272,79 @@ static Vtx MenuTextureA_PanelVtx13_Extra[] = {
     VTX(538, 0, 0, 17216, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(538, 50, 0, 17216, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx13[] = {
+static Vtx MenuTextureB_PanelVtx13[] = {
     VTX(0, 0, 0, 0, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -50, 0, 0, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(40, -50, 0, 1280, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(40, 0, 0, 1280, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx14[] = {
+static Vtx MenuTextureB_PanelVtx14[] = {
     VTX(40, 0, 0, 1280, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(40, -50, 0, 1280, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(80, -50, 0, 2560, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(80, 0, 0, 2560, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx15[] = {
+static Vtx MenuTextureB_PanelVtx15[] = {
     VTX(80, 0, 0, 2560, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(80, -50, 0, 2560, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(120, -50, 0, 3840, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(120, 0, 0, 3840, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx16[] = {
+static Vtx MenuTextureB_PanelVtx16[] = {
     VTX(120, 0, 0, 3840, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(120, -50, 0, 3840, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(160, -50, 0, 5120, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(160, 0, 0, 5120, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx17[] = {
+static Vtx MenuTextureB_PanelVtx17[] = {
     VTX(160, 0, 0, 5120, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(160, -50, 0, 5120, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(200, -50, 0, 6400, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(200, 0, 0, 6400, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx18[] = {
+static Vtx MenuTextureB_PanelVtx18[] = {
     VTX(200, 0, 0, 6400, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(200, -50, 0, 6400, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(240, -50, 0, 7680, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(240, 0, 0, 7680, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx19[] = {
+static Vtx MenuTextureB_PanelVtx19[] = {
     VTX(240, 0, 0, 7680, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(240, -50, 0, 7680, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(280, -50, 0, 8960, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(280, 0, 0, 8960, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx20[] = {
+static Vtx MenuTextureB_PanelVtx20[] = {
     VTX(280, 0, 0, 8960, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(280, -50, 0, 8960, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(320, -50, 0, 10240, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(320, 0, 0, 10240, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx21[] = {
+static Vtx MenuTextureB_PanelVtx21[] = {
     VTX(320, 0, 0, 10240, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(320, -50, 0, 10240, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(360, -50, 0, 11520, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(360, 0, 0, 11520, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx22[] = {
+static Vtx MenuTextureB_PanelVtx22[] = {
     VTX(360, 0, 0, 11520, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(360, -50, 0, 11520, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(400, -50, 0, 12800, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(400, 0, 0, 12800, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx23[] = {
+static Vtx MenuTextureB_PanelVtx23[] = {
     VTX(400, 0, 0, 12800, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(400, -50, 0, 12800, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(440, -50, 0, 14080, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(440, 0, 0, 14080, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx24[] = {
+static Vtx MenuTextureB_PanelVtx24[] = {
     VTX(440, 0, 0, 14080, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(440, -50, 0, 14080, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(480, -50, 0, 15360, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(480, 0, 0, 15360, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureA_PanelVtx25[] = {
+static Vtx MenuTextureB_PanelVtx25[] = {
     VTX(480, 0, 0, 15360, 1600, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(480, -50, 0, 15360, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(520, -50, 0, 16640, 3200, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -362,55 +362,55 @@ static Gfx MenuTextureB_DisplayList[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 0, 0, 39, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx0, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx0, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 40, 0, 79, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx1, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx1, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 80, 0, 119, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx2, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx2, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 120, 0, 159, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx3, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx3, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 160, 0, 199, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx4, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx4, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 200, 0, 239, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx5, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx5, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 240, 0, 279, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx6, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx6, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 280, 0, 319, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx7, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx7, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 320, 0, 359, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx8, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx8, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 360, 0, 399, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx9, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx9, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 400, 0, 439, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx10, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx10, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 440, 0, 479, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx11, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx11, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 480, 0, 519, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx12, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx12, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 520, 0, 559, 49, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
@@ -418,65 +418,65 @@ static Gfx MenuTextureB_DisplayList[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 0, 50, 39, 99, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx13, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx13, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 40, 50, 79, 99, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx14, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx14, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 80, 50, 119, 99, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx15, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx15, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 120, 50, 159, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx16, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx16, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 160, 50, 199, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx17, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx17, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 200, 50, 239, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx18, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx18, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 240, 50, 279, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx19, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx19, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 280, 50, 319, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx20, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx20, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 320, 50, 359, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx21, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx21, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 360, 50, 399, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx22, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx22, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 400, 50, 439, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx23, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx23, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 440, 50, 479, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx24, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx24, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 480, 50, 519, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD),
-    gsSPVertex(MenuTextureA_PanelVtx25, 4, 0),
+    gsSPVertex(MenuTextureB_PanelVtx25, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 538, 0, 520, 50, 559, 99, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -486,22 +486,22 @@ static Gfx MenuTextureB_DisplayList[] = {
     gsSPEndDisplayList(),
 };
 static u32 MenuTextureB_CommandList[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureA_PanelVtx0, 0x05000000, 0x22040000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureB_PanelVtx0, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, PakUi_RenderIconPanelTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx MenuTextureB_Vtx0[] = {
+static Vtx MenuBanner_Vtx0[] = {
     VTX(0, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 6, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(124, 6, 0, 3968, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(124, 22, 0, 3968, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureB_Vtx1[] = {
+static Vtx MenuBanner_Vtx1[] = {
     VTX(0, 6, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -10, 0, 0, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(124, -10, 0, 3968, 512, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(124, 6, 0, 3968, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx MenuTextureB_Vtx2[] = {
+static Vtx MenuBanner_Vtx2[] = {
     VTX(0, -10, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -22, 0, 0, 384, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(124, -22, 0, 3968, 384, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -513,20 +513,20 @@ static Gfx gMenuInfoDisplayList[] = {
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureB_Vtx0, 4, 0),
+    gsSPVertex(MenuBanner_Vtx0, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureBlock(0x0F001000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureB_Vtx1, 4, 0),
+    gsSPVertex(MenuBanner_Vtx1, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureBlock(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 12, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(MenuTextureB_Vtx2, 4, 0),
+    gsSPVertex(MenuBanner_Vtx2, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 static u32 MenuTextureC_CommandList[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuTextureB_Vtx0, 0x05000000, 0x22040000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, MenuBanner_Vtx0, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, PakUi_RenderBannerTexture, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 static Vtx MenuTextureC_Vtx0[] = {
@@ -2018,7 +2018,7 @@ void PakUi_OpenStatusPopup(unk_D_82D0ABD0* arg0, s16 arg1, s16 arg2) {
 }
 
 s32 PakUi_RenderMenuIconTexture(s32 arg0, UNUSED SimpleGfxNode* arg1) {
-    static Gfx* gBattleOverlayGfxList[] = {
+    static Gfx* gMenuIconDisplayLists[] = {
         MenuTextureC_DisplayList, MenuTextureE_DisplayList, MenuTextureF_DisplayList, MenuTextureD_DisplayList, MenuTextureE_DisplayList, MenuTextureF_DisplayList, MenuTextureF_DisplayList,
     };
 
@@ -2044,7 +2044,7 @@ s32 PakUi_RenderMenuIconTexture(s32 arg0, UNUSED SimpleGfxNode* arg1) {
             gDPSetCombineMode(gDisplayListHead++, G_CC_DECALRGBA, G_CC_PASS2);
         }
 
-        gSPDisplayList(gDisplayListHead++, gBattleOverlayGfxList[var_a3]);
+        gSPDisplayList(gDisplayListHead++, gMenuIconDisplayLists[var_a3]);
 
         GeoRender_ApplyMaterialState();
     }
@@ -2216,12 +2216,12 @@ void PakUi_DrawBodyProgressBar(s32 arg0, s32 arg1) {
     if (arg0 > 0) {
         temp_lo_2 = (arg0 * 0x64) / 10;
         PakUi_DrawThinBoxBorder(0x38, (s16)((0x64 - temp_lo_2) / 2) + 0x154, 0x210, temp_lo_2, 0x1E, 0x1E, 0x82, 0x96);
-        if ((arg0 == 10) && (gAudioMessageIndex < 7)) {
+        if ((arg0 == 10) && (gMainMenuCursorIndex < 7)) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Font_SetLineHeight(0x1C);
             if (gAudioModeFlag == 0) {
-                Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, gAudioMessageIndices[gAudioMessageIndex]));
+                Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, gAudioMessageIndices[gMainMenuCursorIndex]));
             } else {
                 Font_Printf(0x50, 0x15E, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x46));
             }
@@ -2267,8 +2267,8 @@ void PakUi_UpdateMenuDisplayFrame(s32 arg0, s32 arg1) {
         temp_lo_4 = (arg0 * 0x5000) + 0xFFF7E000;
         var_a0 = temp_lo_4 / 10;
         for (i = 0; i < 7; i++) {
-            if ((gMenuAnimationFlag == 0) || (gAudioMessageIndex != 0)) {
-                if ((i != gAudioMessageIndex) && (gMenuOptionNodes[i].unk_01E.x >= 0)) {
+            if ((gMenuAnimationFlag == 0) || (gMainMenuCursorIndex != 0)) {
+                if ((i != gMainMenuCursorIndex) && (gMenuOptionNodes[i].unk_01E.x >= 0)) {
                     if (gMenuOptionNodes[i].unk_01E.x < var_a0) {
                         gMenuOptionNodes[i].unk_01E.x = var_a0;
                     }
@@ -2280,12 +2280,12 @@ void PakUi_UpdateMenuDisplayFrame(s32 arg0, s32 arg1) {
             }
         }
 
-        if (gAudioMessageIndex >= 5) {
+        if (gMainMenuCursorIndex >= 5) {
             gMenuOptionNodes[4].unk_01E.x = 0;
         }
     }
 
-    if ((gMenuAnimationFlag == 0) || (gAudioMessageIndex != 0)) {
+    if ((gMenuAnimationFlag == 0) || (gMainMenuCursorIndex != 0)) {
         sp30 = 0;
     } else {
         sp30 = 1;
@@ -2298,7 +2298,7 @@ void PakUi_UpdateMenuDisplayFrame(s32 arg0, s32 arg1) {
     PakUi_DrawBodyProgressBar(arg0, sp30);
 
     if (arg1 != 0) {
-        unk_D_82D09F1C* ptr = &gMenuNavigationTable[gAudioMessageIndex];
+        unk_D_82D09F1C* ptr = &gMenuNavigationTable[gMainMenuCursorIndex];
         PakUi_DrawRotatingCorners(ptr->posX, ptr->posY, ptr->rotation, ptr->unk_06, 0xFF, 0xF0, 0x64, 0xFF);
     }
 
@@ -2531,11 +2531,11 @@ s32 TransferPak_MenuHandleInput(void) {
     s16 var_a2;
 
     sp24 = -1;
-    sp22 = gAudioMessageIndex;
+    sp22 = gMainMenuCursorIndex;
     var_a3 = -1;
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        if (gMenuOptionNodes[gAudioMessageIndex].unk_01D == 0xFF) {
-            var_a3 = gAudioMessageIndex;
+        if (gMenuOptionNodes[gMainMenuCursorIndex].unk_01D == 0xFF) {
+            var_a3 = gMainMenuCursorIndex;
         } else {
             gAudioModeFlag = 1;
             Audio_PlaySoundEffectById(8);
@@ -2544,13 +2544,13 @@ s32 TransferPak_MenuHandleInput(void) {
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B)) {
         var_a3 = 7;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP)) {
-        sp24 = gMenuNavigationTable[gAudioMessageIndex].RentalSlotAnimData_PosePhase;
+        sp24 = gMenuNavigationTable[gMainMenuCursorIndex].RentalSlotAnimData_PosePhase;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN)) {
-        sp24 = gMenuNavigationTable[gAudioMessageIndex].unk_09;
+        sp24 = gMenuNavigationTable[gMainMenuCursorIndex].unk_09;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DLEFT)) {
-        sp24 = gMenuNavigationTable[gAudioMessageIndex].unk_0A;
+        sp24 = gMenuNavigationTable[gMainMenuCursorIndex].unk_0A;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT)) {
-        sp24 = gMenuNavigationTable[gAudioMessageIndex].unk_0B;
+        sp24 = gMenuNavigationTable[gMainMenuCursorIndex].unk_0B;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (gGbAudioState.posX == 0x1F8)) {
         Audio_PlaySoundEffectById(2);
         var_a3 = -1;
@@ -2603,7 +2603,7 @@ s32 TransferPak_MenuHandleInput(void) {
 
     if (sp24 != -1) {
         Audio_PlaySoundEffectById(1);
-        gAudioMessageIndex = sp24;
+        gMainMenuCursorIndex = sp24;
     }
     return var_a3;
 }
@@ -2611,7 +2611,7 @@ s32 TransferPak_MenuHandleInput(void) {
 s32 TransferPak_MenuCursorToCode(void) {
     s32 sp4;
 
-    switch (gAudioMessageIndex) {
+    switch (gMainMenuCursorIndex) {
         case 0:
             sp4 = 0x10;
             break;
@@ -2655,7 +2655,7 @@ s16 TransferPak_MenuLoop(void) {
     var_s0 = -1;
     gAudioModeFlag = 0;
     TransferPak_MenuIconsInit();
-    gAudioMessageIndex = 0;
+    gMainMenuCursorIndex = 0;
     if (StageContext_GetFadeMode() != 0) {
         StageFade_StartFromOpaque(8);
         while (StageContext_GetFadeMode() != 0) {
@@ -2679,15 +2679,15 @@ s16 TransferPak_MenuLoop(void) {
             }
             PakUi_UpdateMenuDisplayFrame(i, var_s0 == -1);
         }
-        gAudioMessageIndex = var_s0;
+        gMainMenuCursorIndex = var_s0;
 
-        if (gAudioMessageIndex == 4) {
+        if (gMainMenuCursorIndex == 4) {
             for (i = 11; i < 26; i++) {
                 Controller_PollInputs();
                 PakUi_UpdateMenuDisplayFrame(i, 0);
             }
 
-            gAudioMessageIndex = 5;
+            gMainMenuCursorIndex = 5;
 
             var_s0 = -1;
             while (var_s0 < 0) {
@@ -2699,33 +2699,33 @@ s16 TransferPak_MenuLoop(void) {
                 }
                 PakUi_UpdateMenuDisplayFrame(i, var_s0 == -1);
             }
-            gAudioMessageIndex = var_s0;
+            gMainMenuCursorIndex = var_s0;
 
-            if (gAudioMessageIndex == 7) {
+            if (gMainMenuCursorIndex == 7) {
                 for (i = 25; i >= 11; i--) {
                     Controller_PollInputs();
                     PakUi_UpdateMenuDisplayFrame(i, 0);
                 }
-                gAudioMessageIndex = 4;
+                gMainMenuCursorIndex = 4;
                 var_s0 = -1;
             }
         }
     }
 
-    if (gAudioMessageIndex < 7) {
+    if (gMainMenuCursorIndex < 7) {
         for (i = 27; i < 36; i++) {
             Controller_PollInputs();
             PakUi_UpdateMenuDisplayFrame(i, 0);
         }
     }
 
-    if (gAudioMessageIndex == 0) {
+    if (gMainMenuCursorIndex == 0) {
         Audio_PlayMusicIfChangedImmediate(0x50);
-    } else if (gAudioMessageIndex != 2) {
+    } else if (gMainMenuCursorIndex != 2) {
         Audio_StopMusic(0x10);
     }
 
-    if ((gMenuAnimationFlag == 0) || (gAudioMessageIndex != 0)) {
+    if ((gMenuAnimationFlag == 0) || (gMainMenuCursorIndex != 0)) {
         StageContext_SetClearColor(0xFFFF);
         StageFade_StartFromTransparent(8);
         while (StageContext_GetFadeMode() != 1) {

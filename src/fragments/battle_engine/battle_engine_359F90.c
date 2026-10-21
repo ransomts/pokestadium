@@ -3,7 +3,7 @@
 #include "src/text_system.h"
 #include "src/matrix.h"
 
-typedef struct BattleMoveData {
+typedef struct BattleDamageCalcState {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
@@ -25,7 +25,7 @@ typedef struct BattleMoveData {
     /* 0x2A */ u16 unk_2A;
     /* 0x2C */ u16 unk_2C;
     /* 0x2E */ char unk2E[0x1E];
-} BattleMoveData; // size = 0x4C
+} BattleDamageCalcState; // size = 0x4C
 
 static u16 gAccumulatedDamage;
 static u8 gAccuracyCheckRandom;

@@ -33,7 +33,7 @@ static FramebufferImage* gBattlePortraitFb0;
 static FramebufferImage* gBattlePortraitFb1;
 static BattlePokemon* gBattlePokemonData;
 static s32 gBattleSceneState;
-static s32 gPokemonSelectionIndex;
+static s32 gFaintBatchCounter;
 static Color_RGBA8_u32 gBattleGlobalColor;
 static f32 gBattleGlobalScale;
 static s32 gBattleCompletionTimer;
@@ -309,14 +309,14 @@ void Battle_UpdateFaintBatches(void) {
             for (x = 0; x < temp_a3->unk_002; x++) {
                 if ((temp_a3->unk_01C[x].unk_25 == 0) && (temp_a3->unk_01C[x].posY == 0)) {
                     var_v0 = 1;
-                    temp_a3->unk_01C[x].unk_25 = gPokemonSelectionIndex;
+                    temp_a3->unk_01C[x].unk_25 = gFaintBatchCounter;
                 }
             }
         }
     }
 
     if (var_v0 != 0) {
-        gPokemonSelectionIndex += 1;
+        gFaintBatchCounter += 1;
     }
 }
 
@@ -603,7 +603,7 @@ void BattleScene_Init(Stage* arg0) {
     BattleScene_Dispatch(3, &gBattleMainCamera);
     BattleAnim_DispatchPresentation(3, &gBattleMainCamera);
 
-    gPokemonSelectionIndex = 1;
+    gFaintBatchCounter = 1;
     gBattleSceneState = 0;
 }
 

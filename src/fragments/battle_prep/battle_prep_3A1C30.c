@@ -289,7 +289,7 @@ void BattlePrep_DrawCastleRuleSummary(RuleWindowState* arg0, RuleWindowLayout* a
 }
 
 void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, BattlePokemon* arg2) {
-    static u8* sItemIconTextures[] = { D_3025950, D_30260A0, D_30267F0, D_3026F40 };
+    static u8* sRankBadgeTextures[] = { D_3025950, D_30260A0, D_30267F0, D_3026F40 };
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
 
@@ -298,7 +298,7 @@ void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, BattlePokemon* arg2) {
             Gfx_DrawTextureRgba16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, D_3025200, 0x24, 0);
             if (0) {}
         } else {
-            Gfx_DrawTextureRgba16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
+            Gfx_DrawTextureRgba16(arg0 + 0x1A, arg1 + 3, 0x24, 0x1A, sRankBadgeTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
         }
 
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -306,11 +306,11 @@ void BattlePrep_DrawRankBadge(s16 arg0, s16 arg1, BattlePokemon* arg2) {
     }
 
     if (arg2->RentalSlotAnimData_PosePhase[0]->unk_001 < arg2->RentalSlotAnimData_PosePhase[1]->unk_001) {
-        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
-        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[1]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sRankBadgeTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sRankBadgeTextures[arg2->RentalSlotAnimData_PosePhase[1]->unk_001], 0x24, 0);
     } else {
-        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[1]->unk_001], 0x24, 0);
-        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sItemIconTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 6, arg1 + 3, 0x24, 0x1A, sRankBadgeTextures[arg2->RentalSlotAnimData_PosePhase[1]->unk_001], 0x24, 0);
+        Gfx_DrawTextureRgba16(arg0 + 0x30, arg1 + 3, 0x24, 0x1A, sRankBadgeTextures[arg2->RentalSlotAnimData_PosePhase[0]->unk_001], 0x24, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);

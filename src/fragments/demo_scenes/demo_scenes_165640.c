@@ -132,7 +132,7 @@ static s16 gCurrentMonsterSpawnIdx;
 static s16 gMonsterLandingState;
 static f32 gMonsterLandingYVel;
 static void* gMonsterModelArchive;
-static unk_D_86B0FA50* gUIElementName;
+static unk_D_86B0FA50* gIntroTextPanelState;
 static unk_D_86B0FA50* gUIElementHealthBar;
 static unk_D_86B0FA50* gUIElementHealthFill;
 static unk_D_86B0FA50* gUIElementStatus;
@@ -270,7 +270,7 @@ void Intro_SetupOrbitCamera(void) {
     gCameraState->posX->unk_24.near = 30.0f;
     gCameraState->posX->unk_24.far = 6400.0f;
     Intro_ComputeFollowPoint(gCameraTarget, &gCameraState->rotation);
-    Intro_LoadCameraKeyframe(&gScrollBarSegmentData[gCameraTarget->unk_17C], gCameraState->posX);
+    Intro_LoadCameraKeyframe(&gIntroCameraKeyframes[gCameraTarget->unk_17C], gCameraState->posX);
     Intro_UpdateOrbitCamera();
 }
 
@@ -519,7 +519,7 @@ void Intro_BeginStaticCamera(void) {
 }
 
 void Intro_TriggerTextPanelExit(void) {
-    gUIElementName->unk_90 = 3;
+    gIntroTextPanelState->unk_90 = 3;
 }
 
 void Intro_SelectPartyRoster(void) {
@@ -550,7 +550,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
         case 1:
             Intro_UpdateCryEventTrack();
             if (gCameraTarget->unk_178++ == 0x19) {
-                gUIElementName->unk_90 = 0;
+                gIntroTextPanelState->unk_90 = 0;
             }
 
             if (Intro_UpdateCameraKeyframe(gCameraState->posX) != 0) {
@@ -570,7 +570,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
                     gCameraTarget->unk_170 = 0;
                     Intro_LoadStageModel();
                     Intro_SetupStaticCamera();
-                    gUIElementName->unk_90 = 3;
+                    gIntroTextPanelState->unk_90 = 3;
                     gCameraTarget->unk_178 = 0;
                     WipeTransition_Start(2, 0x1E);
                     gCameraTarget->unk_16C = 6;
@@ -578,7 +578,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
                     gCameraTarget->unk_170 = 0;
                     Intro_ReplaceShowcaseModel();
                     Intro_SetupOrbitCamera();
-                    gUIElementName->unk_90 = 3;
+                    gIntroTextPanelState->unk_90 = 3;
                     gCameraTarget->unk_178 = 0;
                     WipeTransition_Start(2, 0x1E);
                     gCameraTarget->unk_16C++;
@@ -610,7 +610,7 @@ s32 Intro_UpdateShowcaseSequence(void) {
         case 7:
             if (Intro_UpdateModelLanding() != 0) {
                 gCameraTarget->unk_178 = 0;
-                gUIElementName->unk_90 = 0;
+                gIntroTextPanelState->unk_90 = 0;
                 Audio_PlayCategory11SoundCommand(0x01100002, 0, 0);
                 gMonsterSfxTriggered = 0;
                 gCameraTarget->unk_16C++;
@@ -703,13 +703,13 @@ s32 Intro_StepPanelBounce(unk_D_86B0FA50* arg0, f32 arg1, f32 arg2, f32 arg3, f3
 
 void Intro_DrawTextPanels(void) {
     if (gCameraTarget->unk_17C == 6) {
-        switch (gUIElementName->unk_90) {
+        switch (gIntroTextPanelState->unk_90) {
             case 3:
                 break;
 
             case 0:
                 Intro_ConfigureTextPanels();
-                gUIElementName->unk_90++;
+                gIntroTextPanelState->unk_90++;
                 break;
 
             case 1:
@@ -760,7 +760,7 @@ void Intro_DrawTextPanels(void) {
 
                         gUIElementHealthBar->unk_88++;
                         if (gUIElementHealthBar->unk_88 == 4) {
-                            gUIElementName->unk_90++;
+                            gIntroTextPanelState->unk_90++;
                         }
                     }
                 }
@@ -784,17 +784,17 @@ void Intro_DrawTextPanels(void) {
                 break;
         }
     } else {
-        switch (gUIElementName->unk_90) {
+        switch (gIntroTextPanelState->unk_90) {
             case 3:
                 break;
 
             case 0:
-                gUIElementName->unk_98 = -80.0f;
-                gUIElementName->unk_9C = 0xB4;
-                gUIElementName->unk_A4 = 0.0f;
-                gUIElementName->unk_AC = 0.0f;
-                sprintf(gUIElementName->unk00, "%s", gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C].unk_30);
-                gUIElementName->unk_90++;
+                gIntroTextPanelState->unk_98 = -80.0f;
+                gIntroTextPanelState->unk_9C = 0xB4;
+                gIntroTextPanelState->unk_A4 = 0.0f;
+                gIntroTextPanelState->unk_AC = 0.0f;
+                sprintf(gIntroTextPanelState->unk00, "%s", gMonsterDataPtr->unk_01C[gCameraTarget->unk_17C].unk_30);
+                gIntroTextPanelState->unk_90++;
                 break;
 
             case 1:
@@ -803,9 +803,9 @@ void Intro_DrawTextPanels(void) {
                 Font_SetActive(0x10, 0);
                 Text_SetPrimColor(0, 0x82, 0xFF, 0xFF);
                 Text_SetEnvColor(0xC8, 0xFF, 0xFF, 0xFF);
-                Intro_StepPanelBounce(gUIElementName, 0.35f, 0.0f, 4.0f, 160.0f, 1.4f);
-                Font_Printf((s32)gUIElementName->unk_98 - (Font_MeasureTextExtent(0x10, 0, gUIElementName->unk00) / 2),
-                              gUIElementName->unk_9C, gUIElementName->unk00);
+                Intro_StepPanelBounce(gIntroTextPanelState, 0.35f, 0.0f, 4.0f, 160.0f, 1.4f);
+                Font_Printf((s32)gIntroTextPanelState->unk_98 - (Font_MeasureTextExtent(0x10, 0, gIntroTextPanelState->unk00) / 2),
+                              gIntroTextPanelState->unk_9C, gIntroTextPanelState->unk00);
                 Font_DisableTwoCycleTexturing();
                 Font_EndTexturedTextRendering();
                 break;
@@ -1025,8 +1025,8 @@ void Stage_LoadModels(void) {
     gCameraState = main_pool_alloc(sizeof(unk_D_86B0FA7C), 0);
     bzero(gCameraState, sizeof(unk_D_86B0FA7C));
 
-    gUIElementName = main_pool_alloc(sizeof(unk_D_86B0FA50), 0);
-    bzero(gUIElementName, sizeof(unk_D_86B0FA50));
+    gIntroTextPanelState = main_pool_alloc(sizeof(unk_D_86B0FA50), 0);
+    bzero(gIntroTextPanelState, sizeof(unk_D_86B0FA50));
 
     gUIElementHealthBar = main_pool_alloc(sizeof(unk_D_86B0FA50), 0);
     bzero(gUIElementHealthBar, sizeof(unk_D_86B0FA50));

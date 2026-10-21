@@ -30,7 +30,7 @@ Mtx gCamProjectionMatrix = { {
 } };
 
 Vec3f gRootNodePosition = { 0.0f, 0.0f, 0.0f };
-Vec3s gSpriteAnimUpdateFunc = { 0, 0, 0 };
+Vec3s gZeroVec3s = { 0, 0, 0 };
 Vec3f gRootNodeScale = { 1.0f, 1.0f, 1.0f };
 u16 gRootNodeScaleDefault[] = { 1, 1, 1 };
 
@@ -91,7 +91,7 @@ Vec3f* Vec3f_SubtractInPlace(Vec3f* arg0, Vec3f* arg1) {
     return arg0;
 }
 
-Vec3f* func_8000E958(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
+Vec3f* Vec3f_Subtract(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2) {
     arg0->x = arg1->x - arg2->x;
     arg0->y = arg1->y - arg2->y;
     arg0->z = arg1->z - arg2->z;
@@ -165,7 +165,7 @@ Vec3s* Vec3s_SubtractInPlace(Vec3s* arg0, Vec3s* arg1) {
     return arg0;
 }
 
-Vec3s* func_8000EC50(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2) {
+Vec3s* Vec3s_Subtract(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2) {
     arg0->x = arg1->x - arg2->x;
     arg0->y = arg1->y - arg2->y;
     arg0->z = arg1->z - arg2->z;
@@ -921,7 +921,7 @@ u16 Color_AdjustRGB5551(u16 arg0, arg1_func_80010CA8 arg1) {
                 b = arg1.unk_03 + 8;
             }
 
-            sp24.z = (2.0f * (gSincosTable[b][a] / 65535.0f)) - 1.0f;
+            sp24.z = (2.0f * (gBrightnessCurveTable[b][a] / 65535.0f)) - 1.0f;
         }
 
         arg0 = Color_HSVToRGB5551(&sp24);
@@ -961,7 +961,7 @@ u32 Color_AdjustRGBA8(u32 arg0, arg1_func_80010CA8 arg1) {
                 b = arg1.unk_03 + 8;
             }
 
-            sp2C.z = (2.0f * (gSincosTable[b][a] / 65535.0f)) - 1.0f;
+            sp2C.z = (2.0f * (gBrightnessCurveTable[b][a] / 65535.0f)) - 1.0f;
         }
 
         Color_HSVToRGBA8(&arg, &sp2C, arg.a);

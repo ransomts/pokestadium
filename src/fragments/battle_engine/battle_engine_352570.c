@@ -3,7 +3,7 @@
 
 static WaterParticleEmitter gWaterParticleEmitters[4];
 
-static Vtx gWaterSplashQuadVtx[] = {
+static Vtx gFourStreamTrailQuadVtx[] = {
     VTX(-30, 0, -20, 2048, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, -20, 0, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(-30, 0, 20, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xC8),

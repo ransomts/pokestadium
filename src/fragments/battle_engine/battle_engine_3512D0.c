@@ -3,13 +3,13 @@
 
 static unk_D_843A22C0 gWaterParticlePool[40];
 
-static Vtx gWaterParticleQuadVertices[] = {
+static Vtx gTexturedRibbonSheetQuadVtx[] = {
     VTX(-10, 0, -10, 2048, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, -10, 0, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(-10, 0, 10, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, 10, 0, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
 };
-static Gfx gWaterParticleDL_NoTexture[] = {
+static Gfx gTexturedRibbonSheetDL_NoTexture[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -22,7 +22,7 @@ static Gfx gWaterParticleDL_NoTexture[] = {
     gsDPSetColorDither(G_CD_NOISE),
     gsSPEndDisplayList(),
 };
-static Gfx gWaterParticleDL_Textured[] = {
+static Gfx gTexturedRibbonSheetDL_Textured[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -33,7 +33,7 @@ static Gfx gWaterParticleDL_Textured[] = {
     gsDPSetRenderMode(G_RM_ZB_XLU_SURF, G_RM_ZB_XLU_SURF2),
     gsDPSetCombineMode(G_CC_BLENDIA, G_CC_BLENDIA),
     gsDPSetEnvColor(255, 255, 64, 255),
-    gsSPVertex(gWaterParticleQuadVertices, 4, 0),
+    gsSPVertex(gTexturedRibbonSheetQuadVtx, 4, 0),
     gsSP2Triangles(0, 2, 1, 0, 2, 3, 1, 0),
     gsSPEndDisplayList(),
 };
@@ -238,7 +238,7 @@ Gfx* TexturedRibbonSheet_Draw(Gfx* arg0) {
             guMtxCatL(&spB8, temp_s1, temp_s1);
 
             gSPMatrix(arg0++, temp_s1, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-            gSPDisplayList(arg0++, gWaterParticleDL_Textured);
+            gSPDisplayList(arg0++, gTexturedRibbonSheetDL_Textured);
             gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
 
             var_s5->unk_018 = Gfx_AllocDisplayList(sizeof(Vtx) * 20);
@@ -277,7 +277,7 @@ Gfx* TexturedRibbonSheet_Draw(Gfx* arg0) {
                 vtx = var_s5->unk_018;
 
                 for (k = 0; k < 9; k++) {
-                    gSPDisplayList(arg0++, gWaterParticleDL_NoTexture);
+                    gSPDisplayList(arg0++, gTexturedRibbonSheetDL_NoTexture);
                     gSPVertex(arg0++, vtx, 4, 0);
                     gSP2Triangles(arg0++, 0, 1, 2, 0, 1, 3, 2, 0);
 

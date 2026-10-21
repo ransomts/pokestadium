@@ -11,7 +11,7 @@ typedef struct AnimHeader {
     s16 unkE;
 } AnimHeader; // size 0x10
 
-typedef struct AnimPackedData {
+typedef struct GsmPackedFrame {
     u8 unk0;
     u8 unk1;
     u8 unk2;
@@ -19,7 +19,7 @@ typedef struct AnimPackedData {
     u8 unk4;
     u8 unk5;
     u8 unk6;
-} AnimPackedData; // size 0x7
+} GsmPackedFrame; // size 0x7
 
 typedef struct AnimBlock19 {
     s16 xRotA;
@@ -78,7 +78,7 @@ void Gsm_Decoder(AnimProcessor* arg0, AnimHeader* arg1, s16* arg2, s16* arg3, s1
     Decoding_of_the_coded_Log_Area_Ratios(arg0, arg1, arg0, arg7);
 }
 
-s32 Gsm_Decode(AnimProcessor* arg0, AnimPackedData* arg1, s32 arg2) {
+s32 Gsm_Decode(AnimProcessor* arg0, GsmPackedFrame* arg1, s32 arg2) {
     AnimHeader header;
     s16 spC8[4];
     s16 spC0[4];

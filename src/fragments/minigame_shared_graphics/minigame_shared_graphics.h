@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-extern u32 gTextTable_StageNames[];
+extern u32 gMinigameSharedStrings[];
 extern u32 gRaceComNameSatoshi[];
 extern u32 gRaceComNameKasumi[];
 extern u32 gRaceComNameMusashi[];

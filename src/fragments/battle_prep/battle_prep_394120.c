@@ -19,7 +19,7 @@
 
 s32 BattlePrep_StarfieldGeoCallback(s32, unk_D_86002F34_alt8*);
 
-unk_D_84B19910 gInputBuffer[400];
+unk_D_84B19910 gBattlePrepStarfield[400];
 s32 pad_D_84B1A590[2];
 unk_D_84B1A598 gBattleGraphics;
 gBannerState gErrorScreenState;
@@ -42,7 +42,7 @@ static u8* gTrainerIconTextures[] = {
 static u32 gGeoLayoutCommands[] = {
     0x0C000000, 0x05000000,    0x0B00002D, 0x00000000, 0x014000F0, 0x00000000,  0xFEDF0000,  0x00000121,  0x05000000,
     0x0D000000, 0x05000000,    0x0F000000, 0x05000000, 0x20050000, 0x00000000,  0x00000000,  0x00000000,  0x00000000,
-    0x08000000, BattlePrep_StarfieldGeoCallback, gInputBuffer, 0x06000000, 0x0F000002, 0x05000000,  0x0A000000,  &gGraphRoot0, 0x06000000,
+    0x08000000, BattlePrep_StarfieldGeoCallback, gBattlePrepStarfield, 0x06000000, 0x0F000002, 0x05000000,  0x0A000000,  &gGraphRoot0, 0x06000000,
     0x06000000, 0x0D000001,    0x05000000, 0x0F000002, 0x05000000, 0x0A000000,  &gGraphRoot0, 0x06000000,  0x06000000,
     0x0D000002, 0x05000000,    0x0F000000, 0x05000000, 0x0A000000, &gGraphRoot0, 0x06000000,  0x06000000,  0x0D000003,
     0x05000000, 0x14000000,    0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,  0x05000000,  0x0A000000,  &gGraphRoot0,
@@ -74,7 +74,7 @@ void BattlePrep_SaveHallOfFameRecords(void) {
 }
 
 void BattlePrep_MarkFirstClearBonus(void) {
-    PlayerName sp20;
+    GbsSaveOptions sp20;
     s32 sp1C = 0;
 
     Save_GetOptions(&sp20);
@@ -327,7 +327,7 @@ void BattlePrep_RenderFrame(void) {
 
 void BattlePrep_UpdateSingleBattleIntroFrame(void) {
     Controller_PollInputs();
-    BattlePrep_UpdateStarfield(gInputBuffer);
+    BattlePrep_UpdateStarfield(gBattlePrepStarfield);
     BattlePrepRoster_Update(&gUIState);
     BattlePrep_RenderFrame();
 }
@@ -380,7 +380,7 @@ s32 BattlePrep_ShowSingleBattleIntro(void) {
 
 void BattlePrep_UpdateRoundIntroFrame(void) {
     Controller_PollInputs();
-    BattlePrep_UpdateStarfield(gInputBuffer);
+    BattlePrep_UpdateStarfield(gBattlePrepStarfield);
     BattlePrep_UpdateCarouselState(&gErrorScreenState);
     BattlePrep_UpdateBadgeCarousel(&gErrorScreenAnim);
     BattlePrepRoster_Update(&gUIState);
@@ -497,7 +497,7 @@ void BattlePrep_CheckPikachuNeedsSurf(void) {
 
 void BattlePrep_UpdateRoundIntroScene(void) {
     Controller_PollInputs();
-    BattlePrep_UpdateStarfield(gInputBuffer);
+    BattlePrep_UpdateStarfield(gBattlePrepStarfield);
     BattlePrepTeamIcons_Update(&gBattlePrepTeamIconsState);
     BattlePrep_UpdateBadgeCarousel(&gErrorScreenAnim);
     BattlePrepBadgeAward_Update(&gBattlePrepBadgeAwardState);
@@ -645,7 +645,7 @@ void BattlePrep_RunBallBurstTransition(void) {
     for (j = 0; j < 16; j++) {
         Controller_PollInputs();
         BattlePrep_AnimateBallBurstEffect(j);
-        BattlePrep_UpdateStarfield(gInputBuffer);
+        BattlePrep_UpdateStarfield(gBattlePrepStarfield);
         BattlePrep_RenderFrame();
     }
 
@@ -655,7 +655,7 @@ void BattlePrep_RunBallBurstTransition(void) {
 
     for (j = 0; j < 16; j++) {
         Controller_PollInputs();
-        BattlePrep_UpdateStarfield(gInputBuffer);
+        BattlePrep_UpdateStarfield(gBattlePrepStarfield);
         BattlePrep_RenderFrame();
     }
 }
@@ -668,7 +668,7 @@ void BattlePrep_FadeInBallBurstTransition(void) {
     for (i = 0; i < 16; i++) {
         Controller_PollInputs();
         BattlePrep_FadeInBallBurstObjects(i);
-        BattlePrep_UpdateStarfield(gInputBuffer);
+        BattlePrep_UpdateStarfield(gBattlePrepStarfield);
         BattlePrep_RenderFrame();
     }
 }
@@ -682,13 +682,13 @@ void BattlePrep_FadeToTransparentEnding(void) {
 
     for (i = 0; i < 18; i++) {
         Controller_PollInputs();
-        BattlePrep_UpdateStarfield(gInputBuffer);
+        BattlePrep_UpdateStarfield(gBattlePrepStarfield);
         BattlePrep_RenderFrame();
     }
 
     for (i = 0; i < 16; i++) {
         Controller_PollInputs();
-        BattlePrep_UpdateStarfield(gInputBuffer);
+        BattlePrep_UpdateStarfield(gBattlePrepStarfield);
         BattlePrep_RenderFrame();
     }
 }
@@ -1159,7 +1159,7 @@ s32 BattlePrep_ShowCastleClearOutro(void) {
 
     for (i = 0; i < var_s1; i++) {
         Controller_PollInputs();
-        BattlePrep_UpdateStarfield(gInputBuffer);
+        BattlePrep_UpdateStarfield(gBattlePrepStarfield);
         BattlePrep_UpdateCarouselState(&gErrorScreenState);
         BattlePrep_RenderFrame();
     }
@@ -1169,7 +1169,7 @@ s32 BattlePrep_ShowCastleClearOutro(void) {
 
     for (i = 0; i < 18; i++) {
         Controller_PollInputs();
-        BattlePrep_UpdateStarfield(gInputBuffer);
+        BattlePrep_UpdateStarfield(gBattlePrepStarfield);
         BattlePrep_UpdateCarouselState(&gErrorScreenState);
         BattlePrep_RenderFrame();
     }
@@ -1206,7 +1206,7 @@ void BattlePrep_InitScene(void) {
     ptr->unk_24.near = 10.0f;
     ptr->unk_24.far = 6000.0f;
 
-    BattlePrep_InitStarfield(&gInputBuffer);
+    BattlePrep_InitStarfield(&gBattlePrepStarfield);
     BattlePrep_CloseRuleWindow(&gBattleMenuState.unk_1C);
     BattlePrep_CloseRuleWindow(&gBattleMenuState.unk_28);
 }

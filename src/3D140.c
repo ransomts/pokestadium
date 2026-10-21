@@ -72,10 +72,10 @@ typedef struct HPHistoryEntry {
     /* 0x80 */ s32 unk_80;
 } HPHistoryEntry; // size = 0x84
 
-typedef struct AudioCommandMapEntry {
+typedef struct AudioMultiHitMovePair {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
-} AudioCommandMapEntry;
+} AudioMultiHitMovePair;
 
 // .data
 extern u8 gMusicEnabled[];// = { 0, 0, 0, 0 };
@@ -120,13 +120,13 @@ extern u16 gAudioCueTable_0x251[];
 extern u16 gAudioCueTable_GenericLow[];
 extern u16 gAudioCueTable_GenericMid[];
 extern u16 gAudioCueTable_GenericZero[];
-extern u16 gAudioCueTable_ItemUse[6];
-extern u16 gAudioCueTable_ItemConsume[7];
-extern u16 gAudioCueTable_ItemEquip[6];
-extern u16 gAudioCueTable_ItemUnequip[6];
-extern u16 gAudioCueTable_ItemThrow[6];
-extern u16 gAudioCueTable_ItemPickup[5];
-extern u16 gAudioCueTable_ItemDrop[6];
+extern u16 gAnnouncerCueMultiHitHeavyDamage[6];
+extern u16 gAnnouncerCueMultiHitMediumDamage[7];
+extern u16 gAnnouncerCueMultiHitLightDamage[6];
+extern u16 gAnnouncerCueCriticalHitDamage[6];
+extern u16 gAnnouncerCueSuperEffectiveDamage[6];
+extern u16 gAnnouncerCueNotVeryEffectiveDamage[5];
+extern u16 gAnnouncerCueCriticalSuperEffectiveDamage[6];
 extern u16 gAnnouncerCueCriticalHitLowDamage[4];
 extern u16 gAnnouncerCueNotVeryEffectiveHeavy[5];
 extern u16 gAnnouncerCueLightHitLowHp[3];
@@ -137,7 +137,7 @@ extern u16 gAnnouncerCueNoEffectGhost[3];
 extern u16 gAnnouncerCueLeechSeed[3];
 extern u16 gAnnouncerCueBadlyPoisoned[3];
 extern u16 gAnnouncerCuePoison[3];
-extern u16 gAudioCueTable_ItemUseAlt[6];
+extern u16 gAnnouncerCueMultiHitHeavyDamageAlt[6];
 extern u16 gAnnouncerCueMissRepeated[3];
 extern u16 gAnnouncerCueSuperEffectiveEarly[3];
 extern u16 gAnnouncerCueMultiHitLowHp[6];
@@ -219,7 +219,7 @@ extern u16 MenuSelectionSoundTable[17][9];
 extern u16 D_80078446[1][9];
 extern u16 D_800784EA[1][9];
 extern u32 gCommandQueueCount;
-extern AudioCommandMapEntry AudioCommandMap[];
+extern AudioMultiHitMovePair AudioCommandMap[];
 extern u8 AudioEffectTriggerIds[];
 extern u8 AudioEffectSecondaryIds[];
 

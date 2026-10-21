@@ -158,7 +158,7 @@ typedef struct DioramaPresetData {
     /* 0x1A */ s16 unk_1A;
 } DioramaPresetData; // size = 0x1C
 
-extern DioramaAnimData gScrollBarSegmentData[];
+extern DioramaAnimData gIntroCameraKeyframes[];
 extern s32 gDioramaEndScreenActive;
 extern char** gDemoScenesControllerWarningBank;
 extern unk_D_86B0FA78* gCameraTarget;
@@ -199,7 +199,7 @@ void Diorama_InitScene(void);
 s32 Stage_ShowBootDiorama(void);
 
 u16 MathUtil_RandomU16Range(s32);
-Vec3f* func_86B01404(Vec3f*, Vec3f*);
+Vec3f* Vec3f_Copy(Vec3f*, Vec3f*);
 void Math_EaseTowardF(f32*, f32, f32);
 
 u16 Diorama_IsModelInCameraCone(CameraStruct* arg0, Fragment2_1GraphNode* arg1, s16 arg2, s16 arg3, f32 arg4, f32 arg5);

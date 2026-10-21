@@ -2,7 +2,7 @@
 #include "src/graphics_textures.h"
 #include "src/gfx_rect.h"
 
-static Gfx gGfxSetup_ScrollBar[] = {
+static Gfx gGfxSetup_BrickWipe[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_CULL_BACK | G_LIGHTING),
@@ -14,7 +14,7 @@ static Gfx gGfxSetup_ScrollBar[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx gGfxRestore_ScrollBar[] = {
+static Gfx gGfxRestore_BrickWipe[] = {
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsDPSetTexturePersp(G_TP_PERSP),
@@ -22,7 +22,7 @@ static Gfx gGfxRestore_ScrollBar[] = {
     gsSPEndDisplayList(),
 };
 
-DioramaAnimData gScrollBarSegmentData[] = {
+DioramaAnimData gIntroCameraKeyframes[] = {
     {
         0,
         0,
@@ -269,7 +269,7 @@ Gfx* WipeTransition_BuildBrickDisplayList(Gfx* gfx, u32 arg1) {
     s16 xl;
     s16 yl;
 
-    gSPDisplayList(gfx++, gGfxSetup_ScrollBar);
+    gSPDisplayList(gfx++, gGfxSetup_BrickWipe);
 
     gDPLoadTextureBlock_4b(gfx++, D_3000000, G_IM_FMT_I, 12, 48, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -295,7 +295,7 @@ Gfx* WipeTransition_BuildBrickDisplayList(Gfx* gfx, u32 arg1) {
                                 -(1 << 6), 1 << 10);
     }
 
-    gSPDisplayList(gfx++, gGfxRestore_ScrollBar);
+    gSPDisplayList(gfx++, gGfxRestore_BrickWipe);
 
     return gfx;
 }

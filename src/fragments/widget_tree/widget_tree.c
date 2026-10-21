@@ -2317,7 +2317,7 @@ void WidgetTree_InitSaveSlotLabel(unk_func_88509A2C* arg0, s32 arg1, s32 arg2, s
 }
 
 s32 WidgetTree_DrawSaveSlotLabel(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
-    static Gfx* Gfx_MoveTargetIcons[] = { D_04005C48, D_04005F70, D_04006298, D_040065C0 };
+    static Gfx* Gfx_GamePakIcons[] = { D_04005C48, D_04005F70, D_04006298, D_040065C0 };
     static Color_RGBA8 Color_TrainerInfoEnv = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char* var_a2;
@@ -2347,7 +2347,7 @@ s32 WidgetTree_DrawSaveSlotLabel(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-        gDPLoadTextureBlock(gDisplayListHead++, Gfx_MoveTargetIcons[arg0->unk_34], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, Gfx_GamePakIcons[arg0->unk_34], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, arg1 << 2, (arg2 + 4) << 2, (arg1 + 0x13) << 2, (arg2 + 0x17) << 2,

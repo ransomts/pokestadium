@@ -30,7 +30,7 @@ static SessionContext* gCurrentSessionContext;
 static Controller gPanelController;
 static s32 gInputTimerIndex;
 static s32 gInputTimerValue;
-static s16 gStatusIconFrames[4];
+static s16 gCursorWagFrames[4];
 
 static u16 gPanelColors[] = { 0x1D, 0x341, 0x6947, 0x6A41 };
 static unk_D_84803548 gComAutoInputScriptSingleBrought[] = {
@@ -414,13 +414,13 @@ void BattleMenu_DrawOrderSelectPanel_PartyGrid(unk_D_848037A0* arg0) {
 }
 
 void BattleMenu_DrawCursorArrow(s16 arg0, s16 arg1, s16 arg2) {
-    if (gStatusIconFrames[arg2] < 6) {
-        arg0 += gStatusIconFrames[arg2];
+    if (gCursorWagFrames[arg2] < 6) {
+        arg0 += gCursorWagFrames[arg2];
     } else {
-        arg0 = (arg0 - gStatusIconFrames[arg2]) + 0xC;
+        arg0 = (arg0 - gCursorWagFrames[arg2]) + 0xC;
     }
     Ui_DrawTextureMarker(arg0, arg1);
-    gStatusIconFrames[arg2] = (gStatusIconFrames[arg2] + 1) % 12;
+    gCursorWagFrames[arg2] = (gCursorWagFrames[arg2] + 1) % 12;
 }
 
 void BattleMenu_DrawOrderSelectPanel_ConfirmPrompt(unk_D_848037A0* arg0) {

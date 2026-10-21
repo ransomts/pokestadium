@@ -25,7 +25,7 @@
 #include "lib/ultralib/include/PR/os_internal_reg.h"
 
 // .data
-u16 gSincosTable[16][256] = {
+u16 gBrightnessCurveTable[16][256] = {
     {
         0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0002, 0x0003, 0x0005,
         0x0008, 0x000A, 0x000E, 0x0012, 0x0017, 0x001C, 0x0022, 0x0029,
@@ -1070,7 +1070,7 @@ void State_HallOfFame(void) {
 void State_GbTower(void) {
     s32 sp34;
     UnkInputStruct8000D738 sp2C;
-    PlayerName sp24;
+    GbsSaveOptions sp24;
 
     main_pool_push_state('EMU0');
 

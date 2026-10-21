@@ -1,16 +1,16 @@
 #include "global.h"
 #include "22630.h"
 
-extern u8 gGen1BoxSprite0[];
-extern u8 gGen1BoxSprite1[];
-extern u8 gGen1BoxSprite2[];
-extern u8 gGen1BoxSprite3[];
-extern u8 gGen1BoxSprite4[];
-extern u8 gGen1BoxSprite5[];
-extern u8 gGen1BoxSprite6[];
-extern u8 gGen1BoxSprite7[];
-extern u8 gGen1BoxSprite8[];
-extern u8 gGen1BoxSprite9[];
+extern u8 gItemNameMasterBall[];
+extern u8 gItemNameUltraBall[];
+extern u8 gItemNameGreatBall[];
+extern u8 gItemNamePokeBall[];
+extern u8 gItemNameTownMap[];
+extern u8 gItemNameBicycle[];
+extern u8 gItemNameSurfboard[];
+extern u8 gItemNameSafariBall[];
+extern u8 gItemNamePokedex[];
+extern u8 gItemNameMoonStone[];
 extern u8 gItemNameAntidote[];
 extern u8 gItemNameBurnHeal[];
 extern u8 gItemNameIceHeal[];

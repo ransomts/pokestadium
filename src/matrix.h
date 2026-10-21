@@ -4,7 +4,7 @@
 #include "global.h"
 
 extern Vec3f gRootNodePosition;
-extern Vec3s gSpriteAnimUpdateFunc;
+extern Vec3s gZeroVec3s;
 extern Vec3f gRootNodeScale;
 extern u16 gRootNodeScaleDefault[];
 
@@ -15,7 +15,7 @@ Vec3f* Vec3f_SetComponentsDuplicate(Vec3f* arg0, f32 arg1, f32 arg2, f32 arg3);
 Vec3f* Vec3f_AddInPlace(Vec3f* arg0, Vec3f* arg1);
 Vec3f* Vec3f_Sum(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
 Vec3f* Vec3f_SubtractInPlace(Vec3f* arg0, Vec3f* arg1);
-Vec3f* func_8000E958(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
+Vec3f* Vec3f_Subtract(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
 Vec3f* Vec3f_FromVec3s(Vec3f* arg0, Vec3s* arg1);
 Vec3f* Vec3f_CrossProductFromPoints(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2, Vec3f* arg3);
 Vec3f* Vec3f_CrossProduct(Vec3f* arg0, Vec3f* arg1, Vec3f* arg2);
@@ -24,7 +24,7 @@ Vec3s* Vec3s_SetComponents(Vec3s* arg0, s16 arg1, s16 arg2, s16 arg3);
 Vec3s* Vec3s_AddInPlace(Vec3s* arg0, Vec3s* arg1);
 Vec3s* Vec3s_Sum(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2);
 Vec3s* Vec3s_SubtractInPlace(Vec3s* arg0, Vec3s* arg1);
-Vec3s* func_8000EC50(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2);
+Vec3s* Vec3s_Subtract(Vec3s* arg0, Vec3s* arg1, Vec3s* arg2);
 Vec3s* Vec3s_FromVec3f(Vec3s* arg0, Vec3f* arg1);
 void MtxF_Copy(MtxF* dest, MtxF* src);
 void MtxF_Identity(MtxF* arg0);

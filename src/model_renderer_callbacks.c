@@ -51,7 +51,7 @@ extern u32 gSpecialModelSegment[];
 s16 gModelPhase[4];
 static MtxBuffer gModelMtxBuffers[2];
 static StadiumModelSlot gStadiumModelSlots[2][3];
-static unk_D_800B2EA8 gModelTextureData[1];
+static unk_D_800B2EA8 gModelNormalAccumulators[1];
 
 void ModelRenderer_OnSlotReady(s32 arg0) {
 
@@ -141,10 +141,10 @@ void ModelRenderer_UpdateSlotModel(void) {
         ModelRenderer_ApplySlotScale(index);
 
         if (gDefaultGraphRoot->unk_01A == 0x92) {
-            Model_DrawWithSegment(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gSpecialModelSegment);
+            Model_DrawWithSegment(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, gModelNormalAccumulators, gModelMtxBuffers[index].mtx, &gSpecialModelSegment);
             return;
         }
-        Model_DrawWithSegment(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, gModelTextureData, gModelMtxBuffers[index].mtx, &gNormalModelSegment);
+        Model_DrawWithSegment(&gStadiumModelSlots[index][gModelUpdateFlag[index & 1]].model, gModelNormalAccumulators, gModelMtxBuffers[index].mtx, &gNormalModelSegment);
     }
 }
 

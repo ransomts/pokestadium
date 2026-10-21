@@ -269,7 +269,7 @@ Vtx gVtx_UI_ColorQuad[] = {
     VTX(-16, 15, 0, 0, 0, 0x00, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx gVtx_UI_PanelQuad[] = {
+Vtx gVtx_UI_PanelTriangle[] = {
     VTX(0, 18, 0, 480, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, -9, 0, 992, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, -9, 0, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -282,7 +282,7 @@ Vtx gVtx_UI_RectTall[] = {
     VTX(-16, 31, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx gVtx_UI_RectWide[] = {
+Vtx gVtx_UI_RectTallAnchoredTop[] = {
     VTX(-16, 0, 0, 0, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 0, 0, 992, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 63, 0, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -337,7 +337,7 @@ static Gfx gDL_DrawQuad[] = {
 };
 
 Gfx gDL_PanelBackground[] = {
-    gsSPVertex(gVtx_UI_PanelQuad, 4, 0),
+    gsSPVertex(gVtx_UI_PanelTriangle, 4, 0),
     gsSPDisplayList(gDL_DrawTriangle),
     gsSPEndDisplayList(),
 };

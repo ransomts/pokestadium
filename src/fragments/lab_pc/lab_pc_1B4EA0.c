@@ -125,7 +125,7 @@ s32 LabItem_DrawBoxLocationLabel(unk_func_8821421C_02C_030* arg0, s32 arg1, s32 
     if ((arg0->unk_34 == 0) || (arg0->unk_34 == 1)) {
         var_s0 = (((arg0->posX.unk_14.posX - temp_v0) - 0x20) / 2) + arg1 + 0x20;
 
-        gDPLoadTextureBlock(gDisplayListHead++, gTexture_MoveTargetSmall[arg0->unk_30], G_IM_FMT_RGBA, G_IM_SIZ_16b, 24, 26, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gTexture_GbPakIcons[arg0->unk_30], G_IM_FMT_RGBA, G_IM_SIZ_16b, 24, 26, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (var_s0 - 0x20) << 2, (arg2 + 2) << 2, (var_s0 - 9) << 2,
@@ -133,7 +133,7 @@ s32 LabItem_DrawBoxLocationLabel(unk_func_8821421C_02C_030* arg0, s32 arg1, s32 
     } else {
         var_s0 = (((arg0->posX.unk_14.posX - temp_v0) - 0x30) / 2) + arg1 + 0x30;
 
-        gDPLoadTextureBlock(gDisplayListHead++, gTexture_MoveTargetLarge, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 26, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gTexture_N64PakIcon, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 26, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (var_s0 - 0x30) << 2, (arg2 + 2) << 2, (var_s0 - 9) << 2,
@@ -458,8 +458,8 @@ void LabItem_DropdownMenu_SetDisabledIndex(unk_func_8821421C_02C_070* arg0, s32 
 }
 
 s32 LabItem_DrawItemRow(u8* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    static Color_RGBA8 gColor_StageNameDefault = { 0xF0, 0xF0, 0xF0, 0xFF };
-    static Color_RGBA8 gColor_StageNameSpecial[] = {
+    static Color_RGBA8 gColor_ItemNameDefault = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gColor_ItemNameQuantityless[] = {
         { 0xFF, 0xCB, 0xDE, 0xFF },
         { 0xFF, 0xBF, 0xD6, 0xFF },
         { 0x5A, 0x5A, 0xA6, 0xFF },
@@ -474,9 +474,9 @@ s32 LabItem_DrawItemRow(u8* arg0, s32 arg1, s32 arg2, s32 arg3) {
     Font_SetActive(8, 0);
 
     if (LabItem_IsQuantitylessItem(arg0[0]) != 0) {
-        sp34 = gColor_StageNameSpecial[0];
+        sp34 = gColor_ItemNameQuantityless[0];
     } else {
-        sp34 = gColor_StageNameDefault;
+        sp34 = gColor_ItemNameDefault;
     }
 
     Text_SetEnvColor(sp34.r, sp34.g, sp34.b, sp34.a);
@@ -785,7 +785,7 @@ s32 LabItem_DrawGamePakLabel(unk_func_8821421C_038_02C* arg0, s32 arg1, s32 arg2
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, gTexture_MoveTargetLarge, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 26, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gTexture_N64PakIcon, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 26, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 5) << 2, (arg2 + 2) << 2, (arg1 + 0x2C) << 2, (arg2 + 0x1B) << 2,
@@ -2090,11 +2090,11 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
     static unk_D_88218060 gPanelStyleTable[] = {
         {
             0x00000001,
-            gPanelTextureDefault,
+            gPanelColorDefault,
         },
         {
             0x00000002,
-            gPanelTextureDefault,
+            gPanelColorDefault,
         },
         {
             0x00000003,
@@ -2131,7 +2131,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
             42,
             gPanelIconTexture,
             48,
-            gPanelOverlayTexture,
+            gPanelOverlayColor,
             1,
         },
         {
@@ -2141,7 +2141,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
             42,
             gPanelIconTexture,
             48,
-            gPanelOverlayTexture,
+            gPanelOverlayColor,
             0,
         },
         {
@@ -2151,7 +2151,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
             42,
             gPanelBackgroundTexture1,
             48,
-            gPanelAccentTexture2,
+            gPanelAccentColorCyan,
             0,
         },
         {
@@ -2161,7 +2161,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
             42,
             gPanelBackgroundTexture2,
             48,
-            gPanelAccentTexture3,
+            gPanelAccentColorGreen,
             1,
         },
         {
@@ -2171,7 +2171,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
             42,
             gPanelBackgroundTexture3,
             48,
-            gPanelAccentTexture4,
+            gPanelAccentColorYellow,
             0,
         },
         {
@@ -2181,7 +2181,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
             42,
             gPanelBackgroundTexture4,
             48,
-            gPanelAccentTexture1,
+            gPanelAccentColorWhiteGray,
             0,
         },
     };

@@ -140,7 +140,7 @@ void MiniGameSelect_ClearOptionPanelState(void);
 void MiniGameSelect_ResetSelection(void);
 void MiniGameSelect_LoadSavedSelection(s16 arg0, s16 arg1);
 void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1);
-void UI_DrawStatusIcon(void);
+void MiniGameSelect_DrawSelectionMarker(void);
 void MiniGameSelect_RenderDirtyPanels(void);
 void MiniGameSelect_DrawOptionPanel(void);
 void MiniGameSelect_DrawFrame(void);

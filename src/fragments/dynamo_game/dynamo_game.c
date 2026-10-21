@@ -65,7 +65,7 @@ static AnimFrame gDynamoTutoStartButtonIconAnim[] = {
     { 0x03040580, 0x12 }, { 0x03040980, 2 }, { 0x03040D80, 8 }, { 0x03040980, 2 }, { NULL, 0 },
 };
 
-static u32 gResultScreenGeoLayoutData[] = {
+static u32 gDynamoStageGeoLayoutData[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000, 0x05000000,
     0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003, 0x05000000, 0x1F00FFFF,
     0x00000000, 0x00000000, 0x00000000, 0x00640064, 0x00640000, 0x06000000, 0x05000000, 0x0A000000, 0x800AC840,
@@ -75,7 +75,7 @@ static u32 gResultScreenGeoLayoutData[] = {
 static u8 gHealthBarAnimFlagTeam0 = 0;
 static u8 gHealthBarAnimFlagTeam1 = 0;
 
-DynamoHealthBar gHealthBarData[4];
+DynamoHealthBar gDynamoChargeBarData[4];
 DynamoHealthBar* gCurrentHealthBar;
 static Fragment2_1GraphNode* gCurrentHealthBarNode;
 DynamoHealthBarEffect gHealthBarEffects[4];
@@ -101,9 +101,9 @@ void DynamoGame_InitPlayerSlots(void) {
 
     for (i = 0; i < 4; i++) {
         if (gMiniHudColorDefaults[i] == 0) {
-            gHealthBarData[i].unk_000 = 4;
+            gDynamoChargeBarData[i].unk_000 = 4;
         } else {
-            gHealthBarData[i].unk_000 = gMenuState;
+            gDynamoChargeBarData[i].unk_000 = gMenuState;
         }
     }
 }
@@ -114,18 +114,18 @@ void DynamoGame_AssignTeams(void) {
     for (i = 0; i < 4; i++) {
         switch (gMenuOptionFlags[i]) {
             case 1:
-                gHealthBarData[i].team = 1;
+                gDynamoChargeBarData[i].team = 1;
                 break;
 
             case 2:
-                gHealthBarData[i].team = 0;
+                gDynamoChargeBarData[i].team = 0;
                 break;
 
             default:
                 if (MiniGame_RandomRange(2) != 0) {
-                    gHealthBarData[i].team = 0;
+                    gDynamoChargeBarData[i].team = 0;
                 } else {
-                    gHealthBarData[i].team = 1;
+                    gDynamoChargeBarData[i].team = 1;
                 }
                 break;
         }
@@ -142,7 +142,7 @@ void DynamoGame_UpdatePlayerAnimState(void) {
 
     if (gResultMenuVisible != 1) {
         for (i = 0; i < 4; i++) {
-            gCurrentHealthBar = &gHealthBarData[i];
+            gCurrentHealthBar = &gDynamoChargeBarData[i];
             sp58 = gCurrentHealthBar->unk_008;
 
             var_s1 = 0;
@@ -284,12 +284,12 @@ void DynamoGame_SyncChainLinkAnimations(void) {
             case 2:
             case 3:
             case 4:
-                if (gHealthBarData[i - 1].unk_00C != 1) {
+                if (gDynamoChargeBarData[i - 1].unk_00C != 1) {
                     var_a0 = 1;
-                    if (gHealthBarData[i - 1].team == 0) {
-                        gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.anchor4Position;
-                    } else if (gHealthBarData[i - 1].team == 1) {
-                        gHealthBarGraphNodePtrs[i]->unk_024 = gHealthBarData[i - 1].unk_014.unk_0DC;
+                    if (gDynamoChargeBarData[i - 1].team == 0) {
+                        gHealthBarGraphNodePtrs[i]->unk_024 = gDynamoChargeBarData[i - 1].unk_014.anchor4Position;
+                    } else if (gDynamoChargeBarData[i - 1].team == 1) {
+                        gHealthBarGraphNodePtrs[i]->unk_024 = gDynamoChargeBarData[i - 1].unk_014.unk_0DC;
                     }
                 }
                 break;
@@ -298,7 +298,7 @@ void DynamoGame_SyncChainLinkAnimations(void) {
             case 6:
             case 7:
             case 8:
-                if (gHealthBarData[i - 5].unk_00C == 1) {
+                if (gDynamoChargeBarData[i - 5].unk_00C == 1) {
                     var_a0 = 1;
                 }
                 break;
@@ -307,7 +307,7 @@ void DynamoGame_SyncChainLinkAnimations(void) {
             case 10:
             case 11:
             case 12:
-                if (gHealthBarData[i - 9].unk_00C != 1) {
+                if (gDynamoChargeBarData[i - 9].unk_00C != 1) {
                     var_a0 = 1;
                 }
                 break;
@@ -326,7 +326,7 @@ void DynamoGame_DetermineWinners(void) {
     s16 var_s4 = 0;
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &gHealthBarData[i];
+        gCurrentHealthBar = &gDynamoChargeBarData[i];
 
         if ((gCurrentHealthBar->charge >= gCurrentHealthBar->chargeTarget) && (var_s4 < gCurrentHealthBar->charge)) {
             var_s4 = gCurrentHealthBar->charge;
@@ -334,7 +334,7 @@ void DynamoGame_DetermineWinners(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &gHealthBarData[i];
+        gCurrentHealthBar = &gDynamoChargeBarData[i];
 
         if ((gCurrentHealthBar->charge >= gCurrentHealthBar->chargeTarget) && (var_s4 == gCurrentHealthBar->charge)) {
             gCurrentHealthBar->unk_00C = 1;
@@ -349,7 +349,7 @@ void DynamoGame_DetermineWinners(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &gHealthBarData[i];
+        gCurrentHealthBar = &gDynamoChargeBarData[i];
 
         if (gCurrentHealthBar->charge >= gCurrentHealthBar->chargeTarget) {
             if (gCurrentHealthBar->unk_00C == 1) {
@@ -374,7 +374,7 @@ void DynamoGame_ReadPlayerCrankInput(void) {
     }
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &gHealthBarData[i];
+        gCurrentHealthBar = &gDynamoChargeBarData[i];
 
         if (gCurrentHealthBar->unk_000 == 4) {
             if ((gHealthBarPaletteIndex == 1) || (gHealthBarPaletteIndex == 3) || ((gHealthBarPaletteIndex == 0) && (gHealthBarMode == 1))) {
@@ -456,7 +456,7 @@ void DynamoGame_DrawTutorialScreen(s32 arg0) {
         gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, 255);
 
         for (i = 0; i < 4; i++) {
-            if (gHealthBarData[i].unk_000 == 4) {
+            if (gDynamoChargeBarData[i].unk_000 == 4) {
                 Widget_DrawPlayerIcon(i, sp5C[i], 0xC6, 0.75f);
             } else {
                 Widget_DrawPlayerIcon(-1 - i, sp5C[i], 0xC6, 0.75f);
@@ -468,7 +468,7 @@ void DynamoGame_DrawTutorialScreen(s32 arg0) {
 
     if ((arg0 == 1) || (arg0 == 2) || ((arg0 == 3) && (gDrowzeeTutorialPage == 0))) {
         for (i = 0; i < 4; i++) {
-            gCurrentHealthBar = &gHealthBarData[i];
+            gCurrentHealthBar = &gDynamoChargeBarData[i];
 
             Widget_DrawProgressBar((i * 0x47) + 0x1C, 0xDB, 0x32, gCurrentHealthBar->charge, gCurrentHealthBar->chargeTarget + 1);
         }
@@ -550,7 +550,7 @@ void DynamoGame_DrawFrame(s32 arg0) {
                     gHealthBarUpdateCounter = 0;
 
                     for (i = 0; i < 4; i++) {
-                        gCurrentHealthBar = &gHealthBarData[i];
+                        gCurrentHealthBar = &gDynamoChargeBarData[i];
 
                         gCurrentHealthBar->charge += gCurrentHealthBar->chargeDelta;
                         if (gCurrentHealthBar->charge < 0) {
@@ -733,7 +733,7 @@ void DynamoGame_LoadAssets(void) {
     MemoryBlock* temp_v0;
 
     temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
-    gDrowzeeStageRoot = process_geo_layout(temp_v0, gResultScreenGeoLayoutData);
+    gDrowzeeStageRoot = process_geo_layout(temp_v0, gDynamoStageGeoLayoutData);
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
     PokeIcon_OpenModelArchives();
@@ -748,8 +748,8 @@ void DynamoGame_LoadAssets(void) {
         }
 
         for (j = 0; j < 4; j++) {
-            if (i == gHealthBarData[j].team) {
-                gCurrentHealthBar = &gHealthBarData[j];
+            if (i == gDynamoChargeBarData[j].team) {
+                gCurrentHealthBar = &gDynamoChargeBarData[j];
                 gCurrentHealthBarNode = &gCurrentHealthBar->unk_014;
 
                 ModelRenderer_AttachDisplayObject(gCurrentHealthBarNode);
@@ -849,14 +849,14 @@ void DynamoGame_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
 static s32 pad_D_86502E98 = 0;
 
 s8 DynamoGame_RollAiChargeBias(s32 arg0, s32 arg1) {
-    static u16 sHealthBarAnimStateTableNormal[4][8] = {
+    static u16 sAiChargeBiasWeightsNormal[4][8] = {
         { 0x0001, 0x0001, 0x0001, 0x0032, 0x0032, 0x0005, 0x0000, 0x0000 },
         { 0x0000, 0x0001, 0x0001, 0x0005, 0x0032, 0x0032, 0x0001, 0x0000 },
         { 0x0000, 0x0000, 0x0001, 0x0001, 0x0005, 0x005A, 0x001E, 0x0005 },
         { 0x0000, 0x0000, 0x0000, 0x0000, 0x0005, 0x001E, 0x005A, 0x000A },
     };
 
-    static u16 sHealthBarAnimStateTableExtended[4][13] = {
+    static u16 sAiChargeBiasWeightsExtended[4][13] = {
         { 0x0003, 0x0006, 0x0014, 0x0014, 0x0014, 0x0014, 0x000A, 0x0005, 0x0003, 0x0001, 0x0000, 0x0000, 0x0000 },
         { 0x0003, 0x0006, 0x0014, 0x0014, 0x0014, 0x0014, 0x000A, 0x000A, 0x0005, 0x0003, 0x0001, 0x0000, 0x0000 },
         { 0x0003, 0x0006, 0x0014, 0x0014, 0x0014, 0x0014, 0x000A, 0x000A, 0x000A, 0x0007, 0x0005, 0x0003, 0x0001 },
@@ -872,11 +872,11 @@ s8 DynamoGame_RollAiChargeBias(s32 arg0, s32 arg1) {
     u16 temp_v0;
 
     if (arg1 == 0) {
-        sp24 = sHealthBarAnimStateTableNormal[arg0];
+        sp24 = sAiChargeBiasWeightsNormal[arg0];
         sp23 = -1;
         sp22 = 8;
     } else if (arg1 == 1) {
-        sp24 = sHealthBarAnimStateTableExtended[arg0];
+        sp24 = sAiChargeBiasWeightsExtended[arg0];
         sp23 = -8;
         sp22 = 0xD;
     }

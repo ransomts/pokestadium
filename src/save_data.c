@@ -876,11 +876,11 @@ s32 Save_WriteTypedRecord(s32 arg0, s32 arg1, s32 arg2, void* arg3) {
     return sp34;
 }
 
-void Save_GetOptions(PlayerName* arg0) {
+void Save_GetOptions(GbsSaveOptions* arg0) {
     *arg0 = gGbsSaveBanks[2].rotation.unk2->options.rotation;
 }
 
-void Save_SetOptions(PlayerName* arg0) {
+void Save_SetOptions(GbsSaveOptions* arg0) {
     if (bcmp(arg0, &gGbsSaveBanks[2].rotation.unk2->options.rotation, 8) != 0) {
         gGbsSaveBanks[2].rotation.unk2->options.rotation = *arg0;
         Save_MarkRecordDirty(0x14, 0, 2);

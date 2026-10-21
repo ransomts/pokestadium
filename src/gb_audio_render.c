@@ -80,10 +80,10 @@ u8 D_800FD048[32];
 unk_D_800FD068 gQueuedRegisterWrites[199];
 u8 gGbRegCache[8];
 u32 gQueuedWriteIndex;
-u32 D_800FD6AC;
+u32 gQueuedWriteAppendIndex;
 static u8 D_800FD6B0[0x30]; // pad
 u8 D_800FD6E0;
-u8 D_800FD6E1;
+u8 gGbMasterVolumeLeft;
 f32 D_800FD6E4;
 s32 D_800FD6E8;
 static u8 D_800FD6EC[0x4]; // pad
@@ -91,7 +91,7 @@ u32 gMusicFadePos;
 u32 gOutputBufferPos;
 s16 gInterpolationHistory[0x1140];
 u32 gInterpolationPos;
-u8 D_800FF97C;
+u8 gMusicEchoLevel;
 s32 D_800FF980;
 
 void GbAudio_RenderSamples(u32);
@@ -103,13 +103,13 @@ void GbAudio_GenerateSamples(s16* arg0, s32 arg1, u32 arg2, f32 arg3) {
 }
 
 void GbAudio_QueueRegisterWrite(u16 arg0, u8 arg1, u16 arg2) {
-    gQueuedRegisterWrites[D_800FD6AC].posX = &gGbSoundRegs[(arg0 & 0xFF) - 0x10].value;
-    gQueuedRegisterWrites[D_800FD6AC].rotation = arg1;
-    gQueuedRegisterWrites[D_800FD6AC].unk_06 = arg2 + 1;
+    gQueuedRegisterWrites[gQueuedWriteAppendIndex].posX = &gGbSoundRegs[(arg0 & 0xFF) - 0x10].value;
+    gQueuedRegisterWrites[gQueuedWriteAppendIndex].rotation = arg1;
+    gQueuedRegisterWrites[gQueuedWriteAppendIndex].unk_06 = arg2 + 1;
     gGbRegCache[arg0 & 0xFF] = arg1;
-    D_800FD6AC++;
-    D_800FD6AC %= 200;
-    gQueuedRegisterWrites[D_800FD6AC].unk_06 = 0;
+    gQueuedWriteAppendIndex++;
+    gQueuedWriteAppendIndex %= 200;
+    gQueuedRegisterWrites[gQueuedWriteAppendIndex].unk_06 = 0;
 }
 
 u8 GbAudio_GetRegisterValue(u16 arg0) {
@@ -154,7 +154,7 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
     for (i = 0; i < 16; i++) {
         p[i * 2] = 0;
     }
-    D_800FD6AC = 0;
+    gQueuedWriteAppendIndex = 0;
     gQueuedRegisterWrites[0].unk_06 = 0;
     gQueuedWriteIndex = 0;
     gSquare1State.posX = 0;
@@ -173,7 +173,7 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
     GbAudio_ClearOutputBuffer();
     GbAudio_ClearInterpolationHistory();
 
-    D_800FF97C = arg1;
+    gMusicEchoLevel = arg1;
     D_800FF980 = arg2;
     D_800FF980 *= 2;
     if (D_800FF980 >= 0x1141U) {
@@ -217,7 +217,7 @@ void GbAudio_RenderSamples(u32 arg0) {
         if (gGbSoundRegs[0x16].value & 0x80) {
             if (gGbSoundRegs[0x14].dirty != 0) {
                 D_800FD6E0 = gGbSoundRegs[0x14].value & 7;
-                D_800FD6E1 = (gGbSoundRegs[0x14].value & 0x70) >> 4;
+                gGbMasterVolumeLeft = (gGbSoundRegs[0x14].value & 0x70) >> 4;
                 gGbSoundRegs[0x14].dirty = 0;
             }
 
@@ -235,14 +235,14 @@ void GbAudio_RenderSamples(u32 arg0) {
         }
 
         tmp2 = gOutputBufferPos;
-        if (D_800FF97C != 0) {
+        if (gMusicEchoLevel != 0) {
             if (1) {}
             if (1) {}
             if (1) {}
             if (1) {}
             tmp = (f32)gInterpolationHistory[((gInterpolationPos - D_800FF980) + 0x1140) % 4416];
 
-            var_a0 += (s16)(((tmp - var_a0) * D_800FF97C) >> 8);
+            var_a0 += (s16)(((tmp - var_a0) * gMusicEchoLevel) >> 8);
             gInterpolationHistory[gInterpolationPos++] = var_a0;
             if (gInterpolationPos >= 0x1140) {
                 gInterpolationPos -= 0x1140;
@@ -647,7 +647,7 @@ typedef struct unk_D_80078A60 {
     /* 0x04 */ f32 rotation;
 } unk_D_80078A60; // size = 0x8
 
-unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.5f }, { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xD, 8.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.25f }, { 4, 1.25f }, { 5, 1.25f }, { 6, 1.25f }, { 7, 1.25f }, { 8, 1.25f }, { 9, 1.25f }, { 0xA, 1.25f }, { 0xB, 1.25f }, { 0xC, 1.25f }, { 0xD, 1.25f }, { 0xD, 2.5f }, { 0xD, 5.0f }, { 0xD, 10.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xD, 12.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.75f }, { 4, 1.75f }, { 5, 1.75f }, { 6, 1.75f }, { 7, 1.75f }, { 8, 1.75f }, { 9, 1.75f }, { 0xA, 1.75f }, { 0xB, 1.75f }, { 0xC, 1.75f }, { 0xD, 1.75f }, { 0xD, 3.5f }, { 0xD, 7.0f }, { 0xD, 14.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } } };
+unk_D_80078A60 gGbNoiseSampleTable[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 1, 1.0f }, { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.0f }, { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 2, 1.5f }, { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.0f }, { 4, 1.0f }, { 5, 1.0f }, { 6, 1.0f }, { 7, 1.0f }, { 8, 1.0f }, { 9, 1.0f }, { 0xA, 1.0f }, { 0xB, 1.0f }, { 0xC, 1.0f }, { 0xD, 1.0f }, { 0xD, 2.0f }, { 0xD, 4.0f }, { 0xD, 8.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.25f }, { 4, 1.25f }, { 5, 1.25f }, { 6, 1.25f }, { 7, 1.25f }, { 8, 1.25f }, { 9, 1.25f }, { 0xA, 1.25f }, { 0xB, 1.25f }, { 0xC, 1.25f }, { 0xD, 1.25f }, { 0xD, 2.5f }, { 0xD, 5.0f }, { 0xD, 10.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.5f }, { 4, 1.5f }, { 5, 1.5f }, { 6, 1.5f }, { 7, 1.5f }, { 8, 1.5f }, { 9, 1.5f }, { 0xA, 1.5f }, { 0xB, 1.5f }, { 0xC, 1.5f }, { 0xD, 1.5f }, { 0xD, 3.0f }, { 0xD, 6.0f }, { 0xD, 12.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } }, { { 3, 1.75f }, { 4, 1.75f }, { 5, 1.75f }, { 6, 1.75f }, { 7, 1.75f }, { 8, 1.75f }, { 9, 1.75f }, { 0xA, 1.75f }, { 0xB, 1.75f }, { 0xC, 1.75f }, { 0xD, 1.75f }, { 0xD, 3.5f }, { 0xD, 7.0f }, { 0xD, 14.0f }, { 0xFF, 1.0f }, { 0xFF, 1.0f } } };
 // Score 955 (diff.py without -s; was 3355, 5415). Wins: no len local, `(nr & 7)` written twice (farm
 // candidate p2, 970 -> 955); ONE local for the dirty flag and the final
 // sample value (`value`, s16: 1000 -> 970; idx and sample then get the target a1/a0) and pos merged into
@@ -659,7 +659,7 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // `sample = rotation`, tested `!dir`: fresh-lui load + andi in the unk_20 beqz delay slot, in a1 like the
 // target (2000 -> 1510; with a constant index or a u8* pointer the load folds into the t0 base; other
 // locals for it 2345-2400); clamp stores in 14/18/20 order (2195 -> 2000); `unk_10 = 0` (int literal) stops IDO sharing one
-// 0.0f register across the function; table row read TWICE as D_80078A60[..][..].posX / .rotation (no entry
+// 0.0f register across the function; table row read TWICE as gGbNoiseSampleTable[..][..].posX / .rotation (no entry
 // pointer) puts the unk_0C store in the beq delay slot with 0xc(v1) addressing (3215 -> 2195);
 // `unk_20 = unk_1C = len*D_800FD004*4` (no pos temp; 0x1C stored first like the target); `sample = rotation`
 // before the unk_20 test, NR42&8 read inline in the final test (fresh lui like the target), ent2 taken
@@ -703,7 +703,7 @@ unk_D_80078A60 D_80078A60[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1.0f }, { 
 // (an explicit boolean compare instead of the bare condition): 345 -> 320. The other candidate edits
 // (`!= 0U`, comma-noise `((0, gWaveState)).rotation`, statement line joins) are equivalent or worse noise.
 
-extern unk_D_80078A60 D_80078A60[8][16];
+extern unk_D_80078A60 gGbNoiseSampleTable[8][16];
 extern f32 D_8007D4D0;
 extern f32 D_8007D4D4;
 
@@ -732,7 +732,7 @@ s16 GbAudio_RenderWave(void) {
         nr43 = ((u8*)&gGbSoundRegs[0x12])[0];
         row = nr43 & 7;
         col = (((u8*)&gGbSoundRegs[0x12])[0] & 0xF0) >> 4;
-        entry = &D_80078A60[row][col];
+        entry = &gGbNoiseSampleTable[row][col];
         sampleId = entry->posX;
         if (sampleId == 0xFF) {
             gWaveState.unk_28 = 0;
@@ -741,7 +741,7 @@ s16 GbAudio_RenderWave(void) {
         if (((u8*)&gGbSoundRegs[0x12])[0] & 8) {
             sampleId += 0x10;
         }
-        gWaveState.unk_0C = D_80078A60[nr43 & 7][col].rotation;
+        gWaveState.unk_0C = gGbNoiseSampleTable[nr43 & 7][col].rotation;
         if (sampleId != gWaveState.rotation) {
             gWaveState.rotation = sampleId;
             ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (gWaveState.rotation << 1));

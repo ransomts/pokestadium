@@ -36,7 +36,7 @@ static s32 gPendingActionScriptFlag2;
 static s32 gWaterEffectParam;
 static s32 gWaterEffectTimerMax;
 static s8 gCurrentEffectListSource;
-s16 gParticleTexture_Default;
+s16 gParticleEffectParam;
 s16 gParticleEffectPrimaryId;
 static s16 gParticleEffectSecondaryId;
 BattlePlayerEntity* gParticleEffectAttackerEntity;
@@ -4619,16 +4619,16 @@ void BattleAnim_PlayBattleSequenceById(BattlePlayerEntity* arg0, s32 arg1) {
 }
 
 void BattleAnim_RunEffectInitStart(s16 arg0) {
-    gParticleTexture_Default = gParticleEffectPrimaryId;
+    gParticleEffectParam = gParticleEffectPrimaryId;
     gStateFunctionTable[arg0]();
     if (gParticleEffectSecondaryId != 0xFF) {
-        gParticleTexture_Default = gParticleEffectSecondaryId;
+        gParticleEffectParam = gParticleEffectSecondaryId;
         gStateFunctionTable[arg0]();
     }
 }
 
 void BattleAnim_RunEffectInitEnd(s16 arg0) {
-    gParticleTexture_Default = gParticleEffectPrimaryId;
+    gParticleEffectParam = gParticleEffectPrimaryId;
     gParticleStateFunctionTable[arg0]();
 }
 
@@ -4675,7 +4675,7 @@ void BattleAnim_RunEffectList(s32 arg0, s32 arg1, s32 arg2) {
         while (*sp2C != 0) {
             BattleAnim_RunEffectInitStart(*sp2C);
             gStateCallbackTable[*sp2C]();
-            BattleAnim_RegisterEffectSlot(gStateEnterCallbackTable[*sp2C], gStateExitCallbackTable[*sp2C]);
+            BattleAnim_RegisterEffectSlot(gStateUpdateCallbackTable[*sp2C], gStateDrawCallbackTable[*sp2C]);
             sp2C++;
         }
     } else {
@@ -4692,7 +4692,7 @@ void BattleAnim_RunEffectList(s32 arg0, s32 arg1, s32 arg2) {
         while (*sp2C != 0) {
             BattleAnim_RunEffectInitEnd(*sp2C);
             gParticleCallbackTable[*sp2C]();
-            BattleAnim_RegisterEffectSlot(gParticleEnterCallbackTable[*sp2C], gParticleExitCallbackTable[*sp2C]);
+            BattleAnim_RegisterEffectSlot(gParticleUpdateCallbackTable[*sp2C], gParticleDrawCallbackTable[*sp2C]);
             sp2C++;
         }
     }
@@ -4851,27 +4851,27 @@ void BattleAnim_BuildResourceListForMove(s16 arg0) {
     u8* temp_a1 = Fragment62_ComplexPtrTable[arg0][3];
 
     while (*temp_a1 != 0x3F) {
-        gMessageBuffer[var_v0] = *temp_a1;
+        gBattleAnimResourceListBuffer[var_v0] = *temp_a1;
         temp_a1++;
         var_v0++;
     }
 
     temp_a1 = Fragment62_ComplexPtrTable[arg0][4];
     while (*temp_a1 != 0x3F) {
-        gMessageBuffer[var_v0] = *temp_a1;
+        gBattleAnimResourceListBuffer[var_v0] = *temp_a1;
         temp_a1++;
         var_v0++;
     }
 
-    gMessageBuffer[var_v0] = -1;
+    gBattleAnimResourceListBuffer[var_v0] = -1;
 }
 
 void BattleAnim_LoadMoveResourceList(BattlePokemon* arg0, s16 arg1) {
     if (arg1 != 0xFF) {
         BattleAnim_BuildResourceListForMove(arg1);
         arg0->unk_1D |= 0x80;
-        arg0->unk_20 = gMessageBuffer;
-        arg0->unk_24 = gMessageStringLists;
+        arg0->unk_20 = gBattleAnimResourceListBuffer;
+        arg0->unk_24 = gBattleAnimAssetTables;
     }
 }
 
@@ -4880,21 +4880,21 @@ void BattleAnim_LoadModeResourceList(BattlePokemon* arg0, s16 arg1) {
     u8* var_v1 = Fragment62_SubTablePtr2D[arg1][1];
 
     while (*var_v1 != 0x3F) {
-        gMessageBuffer[var_v0] = *var_v1;
+        gBattleAnimResourceListBuffer[var_v0] = *var_v1;
         var_v1++;
         var_v0++;
     }
 
-    gMessageBuffer[var_v0] = -1;
-    arg0->unk_20 = gMessageBuffer;
+    gBattleAnimResourceListBuffer[var_v0] = -1;
+    arg0->unk_20 = gBattleAnimResourceListBuffer;
     arg0->unk_1D |= 0x80;
-    arg0->unk_24 = gMessageStringLists;
+    arg0->unk_24 = gBattleAnimAssetTables;
 }
 
 void BattleAnim_RegisterAllAssetTables(void) {
     s32 i = 0;
     arg1_func_80019420* var_v0;
-    arg1_func_80019420** var_s1 = gMessageStringLists;
+    arg1_func_80019420** var_s1 = gBattleAnimAssetTables;
 
     while (*var_s1 != NULL) {
         var_v0 = *var_s1;

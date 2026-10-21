@@ -1318,7 +1318,7 @@ static Gfx gSandshrewHoleDisplayList[] = {
     gsSP2Triangles(1, 16, 17, 0, 1, 17, 2, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList1[] = {
+static Gfx gSandshrewSmallRockRightDisplayList[] = {
     gsSPVertex(gFragment21VtxSmallRockRight, 12, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),
@@ -1329,7 +1329,7 @@ static Gfx gSandshrewMiniActorDisplayList1[] = {
     gsSP1Triangle(3, 1, 11, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList2[] = {
+static Gfx gSandshrewSmallRockCenterDisplayList[] = {
     gsSPVertex(gFragment21VtxSmallRockCenter, 11, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 1, 0),
@@ -1340,7 +1340,7 @@ static Gfx gSandshrewMiniActorDisplayList2[] = {
     gsSP1Triangle(3, 1, 8, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList3[] = {
+static Gfx gSandshrewSmallRockLeftDisplayList[] = {
     gsSPVertex(gFragment21VtxSmallRockLeft, 9, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),
@@ -1349,25 +1349,25 @@ static Gfx gSandshrewMiniActorDisplayList3[] = {
     gsSP2Triangles(4, 3, 6, 0, 7, 4, 8, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList4[] = {
+static Gfx gSandshrewRightWallDisplayList[] = {
     gsSPVertex(gFragment21VtxRightWall, 4, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList5[] = {
+static Gfx gSandshrewLeftWallDisplayList[] = {
     gsSPVertex(gFragment21VtxLeftWall, 4, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList6[] = {
+static Gfx gSandshrewBackWallDisplayList[] = {
     gsSPVertex(gFragment21VtxBackWall, 4, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList7[] = {
+static Gfx gSandshrewRockRightDisplayList[] = {
     gsSPVertex(gFragment21VtxRockRight, 15, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 2, 1, 3, 0),
@@ -1380,7 +1380,7 @@ static Gfx gSandshrewMiniActorDisplayList7[] = {
     gsSP1Triangle(3, 14, 7, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList8[] = {
+static Gfx gSandshrewRockBackDisplayList[] = {
     gsSPVertex(gFragment21VtxRockBack, 19, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),
@@ -1397,7 +1397,7 @@ static Gfx gSandshrewMiniActorDisplayList8[] = {
     gsSP1Triangle(17, 8, 10, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gSandshrewMiniActorDisplayList9[] = {
+static Gfx gSandshrewRockLeftDisplayList[] = {
     gsSPVertex(gFragment21VtxRockLeft, 14, 0),
     gsSPSetGeometryMode(G_CULL_BACK),
     gsSP2Triangles(0, 1, 2, 0, 2, 1, 3, 0),
@@ -1435,20 +1435,20 @@ static u32 gSandshrewStageObjectTable[] = {
     0x05000000, 0x1D0A0101, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000,
     0x2301FFFF, gFragment21GfxSetupGround, 0x0000FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewGroundDL, 0x2301FFFF, gFragment21GfxSetupGroundWall, 0x0001FFFF,
     0xFFFFFFFF, 0x22010000, gSandshrewGroundWallDL, 0x1D090102, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000,
-    0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupRockLeft, 0x0002FFFF, 0xE7DA8A8A, 0x22010000, gSandshrewMiniActorDisplayList9, 0x06000000,
+    0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupRockLeft, 0x0002FFFF, 0xE7DA8A8A, 0x22010000, gSandshrewRockLeftDisplayList, 0x06000000,
     0x1D080103, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF,
-    gFragment21GfxSetupRockBack, 0x0003FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList8, 0x06000000, 0x1D070104, 0x00000000, 0x00000000,
+    gFragment21GfxSetupRockBack, 0x0003FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewRockBackDisplayList, 0x06000000, 0x1D070104, 0x00000000, 0x00000000,
     0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupRockRight, 0x0002FFFF, 0xFFD87E7E,
-    0x22010000, gSandshrewMiniActorDisplayList7, 0x06000000, 0x1D060105, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000,
-    0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupWallBack, 0x0004FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList6, 0x06000000,
+    0x22010000, gSandshrewRockRightDisplayList, 0x06000000, 0x1D060105, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000,
+    0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupWallBack, 0x0004FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewBackWallDisplayList, 0x06000000,
     0x1D050106, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF,
-    gFragment21GfxSetupWallSide, 0x0005FFFF, 0xFFFFFFFF, 0x22050000, gSandshrewMiniActorDisplayList5, 0x06000000, 0x1D040107, 0x00000000, 0x00000000,
-    0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x22050000, gSandshrewMiniActorDisplayList4, 0x06000000, 0x1D030108,
+    gFragment21GfxSetupWallSide, 0x0005FFFF, 0xFFFFFFFF, 0x22050000, gSandshrewLeftWallDisplayList, 0x06000000, 0x1D040107, 0x00000000, 0x00000000,
+    0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x22050000, gSandshrewRightWallDisplayList, 0x06000000, 0x1D030108,
     0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupSmallRock,
-    0x0006FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewMiniActorDisplayList3, 0x06000000, 0x1D020109, 0x00000000, 0x00000000, 0x00000000,
+    0x0006FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewSmallRockLeftDisplayList, 0x06000000, 0x1D020109, 0x00000000, 0x00000000, 0x00000000,
     0x00010000, 0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupSmallRock, 0x0006FFFF, 0xFFFFBEBE, 0x22010000,
-    gSandshrewMiniActorDisplayList2, 0x06000000, 0x1D01010A, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
-    0x05000000, 0x22010000, gSandshrewMiniActorDisplayList1, 0x06000000, 0x1D00010B, 0x00000000, 0x00000000, 0x00000000, 0x00010000,
+    gSandshrewSmallRockCenterDisplayList, 0x06000000, 0x1D01010A, 0x00000000, 0x00000000, 0x00000000, 0x00010000, 0x00010000, 0x00010000,
+    0x05000000, 0x22010000, gSandshrewSmallRockRightDisplayList, 0x06000000, 0x1D00010B, 0x00000000, 0x00000000, 0x00000000, 0x00010000,
     0x00010000, 0x00010000, 0x05000000, 0x2301FFFF, gFragment21GfxSetupSandPatch, 0x0007FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewStageDisplayList,
     0x2301FFFF, gFragment21GfxSetupHole, 0x0008FFFF, 0xFFFFFFFF, 0x22010000, gSandshrewHoleDisplayList, 0x06000000, 0x06000000, 0x06000000,
     0x06000000, 0x04000000,
@@ -1467,7 +1467,7 @@ static u32 gSandshrewStageScript[] = {
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0xFFFE0000, 0x00640064, 0x00640000, 0x05000000,
     0x00000000, gSandshrewStageInitTable, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0,
-    0x06000000, 0x06000000, 0x06000000, 0x03000000, gFragment2_1DisplayList, 0x06000000, 0x01000000,
+    0x06000000, 0x06000000, 0x06000000, 0x03000000, gFragment2_1GeoLayout, 0x06000000, 0x01000000,
 };
 static Vec3f sandshrewPositions[4] = {
     {

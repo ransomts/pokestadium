@@ -7,7 +7,7 @@ void func_80057FD0(void *, int);
 s32 func_8005A990(OSPiHandle *);
 
 // 517A0.s
-void Audio_CopyData(s32, void*);
+void Audio_Yay0Decompress(s32, void*);
 
 // 49190.s
 void Gsm_Short_Term_Synthesis_Filter(s32, s32, s32);

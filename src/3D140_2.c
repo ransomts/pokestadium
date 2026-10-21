@@ -72,10 +72,10 @@ typedef struct HPHistoryEntry {
     /* 0x80 */ s32 unk_80;
 } HPHistoryEntry; // size = 0x84
 
-typedef struct AudioCommandMapEntry {
+typedef struct AudioMultiHitMovePair {
     /* 0x00 */ u8 posX;
     /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
-} AudioCommandMapEntry;
+} AudioMultiHitMovePair;
 
 // .data
 extern u8 gMusicEnabled[];// = { 0, 0, 0, 0 };
@@ -120,13 +120,13 @@ extern u16 gAudioCueTable_0x251[];
 extern u16 gAudioCueTable_GenericLow[];
 extern u16 gAudioCueTable_GenericMid[];
 extern u16 gAudioCueTable_GenericZero[];
-extern u16 gAudioCueTable_ItemUse[6];
-extern u16 gAudioCueTable_ItemConsume[7];
-extern u16 gAudioCueTable_ItemEquip[6];
-extern u16 gAudioCueTable_ItemUnequip[6];
-extern u16 gAudioCueTable_ItemThrow[6];
-extern u16 gAudioCueTable_ItemPickup[5];
-extern u16 gAudioCueTable_ItemDrop[6];
+extern u16 gAnnouncerCueMultiHitHeavyDamage[6];
+extern u16 gAnnouncerCueMultiHitMediumDamage[7];
+extern u16 gAnnouncerCueMultiHitLightDamage[6];
+extern u16 gAnnouncerCueCriticalHitDamage[6];
+extern u16 gAnnouncerCueSuperEffectiveDamage[6];
+extern u16 gAnnouncerCueNotVeryEffectiveDamage[5];
+extern u16 gAnnouncerCueCriticalSuperEffectiveDamage[6];
 extern u16 gAnnouncerCueCriticalHitLowDamage[4];
 extern u16 gAnnouncerCueNotVeryEffectiveHeavy[5];
 extern u16 gAnnouncerCueLightHitLowHp[3];
@@ -137,7 +137,7 @@ extern u16 gAnnouncerCueNoEffectGhost[3];
 extern u16 gAnnouncerCueLeechSeed[3];
 extern u16 gAnnouncerCueBadlyPoisoned[3];
 extern u16 gAnnouncerCuePoison[3];
-extern u16 gAudioCueTable_ItemUseAlt[6];
+extern u16 gAnnouncerCueMultiHitHeavyDamageAlt[6];
 extern u16 gAnnouncerCueMissRepeated[3];
 extern u16 gAnnouncerCueSuperEffectiveEarly[3];
 extern u16 gAnnouncerCueMultiHitLowHp[6];
@@ -219,7 +219,7 @@ extern u16 MenuSelectionSoundTable[17][9];
 extern u16 D_80078446[1][9];
 extern u16 D_800784EA[1][9];
 extern u32 gCommandQueueCount;
-extern AudioCommandMapEntry AudioCommandMap[];
+extern AudioMultiHitMovePair AudioCommandMap[];
 extern u8 AudioEffectTriggerIds[];
 extern u8 AudioEffectSecondaryIds[];
 
@@ -264,13 +264,13 @@ u16 gAudioCueTable_0x251[4] = { 2, 0x251, 0x28D, 0 };
 u16 gAudioCueTable_GenericLow[8] = { 6, 0x24F, 0x250, 0x255, 0x271, 0x289, 0x28F, 0 };
 u16 gAudioCueTable_GenericMid[4] = { 3, 0x253, 0x26F, 0x291 };
 u16 gAudioCueTable_GenericZero[4] = { 2, 0x252, 0x270, 0 };
-u16 gAudioCueTable_ItemUse[6] = { 5, 0x62, 0x67, 0x6E, 0x8D, 0x8E };
-u16 gAudioCueTable_ItemConsume[7] = { 6, 0x6D, 0x72, 0x89, 0x8A, 0x8B, 0x8C };
-u16 gAudioCueTable_ItemEquip[6] = { 5, 0x6F, 0x70, 0x9F, 0xA0, 0xA1 };
-u16 gAudioCueTable_ItemUnequip[6] = { 5, 0x60, 0x65, 0x92, 0x93, 0x94 };
-u16 gAudioCueTable_ItemThrow[6] = { 5, 0x61, 0x66, 0x95, 0x96, 0x97 };
-u16 gAudioCueTable_ItemPickup[5] = { 4, 0x69, 0x98, 0x99, 0x9A };
-u16 gAudioCueTable_ItemDrop[6] = { 5, 0x63, 0x64, 0x8F, 0x90, 0x91 };
+u16 gAnnouncerCueMultiHitHeavyDamage[6] = { 5, 0x62, 0x67, 0x6E, 0x8D, 0x8E };
+u16 gAnnouncerCueMultiHitMediumDamage[7] = { 6, 0x6D, 0x72, 0x89, 0x8A, 0x8B, 0x8C };
+u16 gAnnouncerCueMultiHitLightDamage[6] = { 5, 0x6F, 0x70, 0x9F, 0xA0, 0xA1 };
+u16 gAnnouncerCueCriticalHitDamage[6] = { 5, 0x60, 0x65, 0x92, 0x93, 0x94 };
+u16 gAnnouncerCueSuperEffectiveDamage[6] = { 5, 0x61, 0x66, 0x95, 0x96, 0x97 };
+u16 gAnnouncerCueNotVeryEffectiveDamage[5] = { 4, 0x69, 0x98, 0x99, 0x9A };
+u16 gAnnouncerCueCriticalSuperEffectiveDamage[6] = { 5, 0x63, 0x64, 0x8F, 0x90, 0x91 };
 u16 gAnnouncerCueCriticalHitLowDamage[4] = { 3, 0x6A, 0x9B, 0x9C };
 u16 gAnnouncerCueNotVeryEffectiveHeavy[5] = { 4, 0x6B, 0x6C, 0x9D, 0x9E };
 u16 gAnnouncerCueLightHitLowHp[3] = { 2, 0x8A, 0x8B };
@@ -281,7 +281,7 @@ u16 gAnnouncerCueNoEffectGhost[3] = { 2, 0x82, 0x83 };
 u16 gAnnouncerCueLeechSeed[3] = { 2, 0x72, 0x8A };
 u16 gAnnouncerCueBadlyPoisoned[3] = { 2, 0x85, 0x84 };
 u16 gAnnouncerCuePoison[3] = { 2, 0x88, 0x71 };
-u16 gAudioCueTable_ItemUseAlt[6] = { 5, 0x62, 0x67, 0x6E, 0x8D, 0x8E };
+u16 gAnnouncerCueMultiHitHeavyDamageAlt[6] = { 5, 0x62, 0x67, 0x6E, 0x8D, 0x8E };
 u16 gAnnouncerCueMissRepeated[3] = { 2, 0x80, 0x81 };
 u16 gAnnouncerCueSuperEffectiveEarly[3] = { 2, 0xB3, 0xB4 };
 u16 gAnnouncerCueMultiHitLowHp[6] = { 5, 0x72, 0x89, 0x8A, 0x8B, 0x8C };
@@ -360,7 +360,7 @@ s32 gStadiumPhaseSubstate = 0;
 u8 gAudioStadiumSfxEnabled = 0;
 u16 MenuSelectionSoundTable[17][9] = { { 0x35, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x35, 0x2B, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x35, 0x2C, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x35, 0x2D, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x37, 0x2F, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x36, 0x2E, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x30, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x31, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x32, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x33, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x30, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0x38, 0x30, 0x24, 0x25, 0x26, 0x27, 0x28, 0x29, 0x2A }, { 0, 0x39, 0x4C, 0x4E, 0x3A, 0x4A, 0x4D, 0x4F, 0x3B }, { 0, 0x4B, 0x4C, 0x4E, 0x3C, 0x4A, 0x4D, 0x4F, 0x3D }, { 0, 0x4B, 0x4C, 0x4E, 0x3E, 0x4A, 0x4D, 0x4F, 0x3F }, { 0, 0x4B, 0x4C, 0x4E, 0x40, 0x4A, 0x4D, 0x4F, 0x41 }, { 0, 0x42, 0x43, 0x44, 0x45, 0x46, 0, 0, 0 } };  // tail holds D_80078446, D_800784EA (linker-defined symbols)
 u32 gCommandQueueCount = 0;
-AudioCommandMapEntry AudioCommandMap[6] = { { 3, 0x29 }, { 0x8C, 0x83 }, { 0x18, 0x1F }, { 0x9A, 4 }, { 0x9B, 0x2A }, { 0, 0 } };
+AudioMultiHitMovePair AudioCommandMap[6] = { { 3, 0x29 }, { 0x8C, 0x83 }, { 0x18, 0x1F }, { 0x9A, 4 }, { 0x9B, 0x2A }, { 0, 0 } };
 u8 AudioEffectTriggerIds[20] = { 0xE, 0x36, 0x4A, 0x60, 0x61, 0x68, 0x6A, 0x6B, 0x6E, 0x6F, 0x70, 0x71, 0x73, 0x74, 0x85, 0x97, 0x9F, 0, 0, 0 };
 u8 AudioEffectSecondaryIds[24] = { 0x1C, 0x27, 0x2B, 0x2D, 0x51, 0x67, 0x6C, 0x86, 0x94, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
@@ -1831,7 +1831,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
                 if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (gPlayerActiveFlag[temp_s0 ^ 1] >= 2)) {
                     Audio_QueueSoundAvoidingRecent(gAnnouncerCueSuperEffectiveEarly);
                 } else {
-                    Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemDrop);
+                    Audio_QueueSoundAvoidingRecent(gAnnouncerCueCriticalSuperEffectiveDamage);
                 }
                 Audio_PlayCommand(0x16, gAudioEffectId, 0);
             }
@@ -1842,7 +1842,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
                 Audio_QueueSoundAvoidingRecent(gAnnouncerCueLightHitLowHp);
             }
         } else {
-            Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemUnequip);
+            Audio_QueueSoundAvoidingRecent(gAnnouncerCueCriticalHitDamage);
             Audio_PlayCommand(0x16, gAudioEffectId, 0);
         }
     } else if (sp39 != 0) {
@@ -1853,7 +1853,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
         if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (gPlayerActiveFlag[temp_s0 ^ 1] >= 2)) {
             Audio_QueueSoundAvoidingRecent(gAnnouncerCueSuperEffectiveEarly);
         } else {
-            Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemThrow);
+            Audio_QueueSoundAvoidingRecent(gAnnouncerCueSuperEffectiveDamage);
         }
         Audio_PlayCommand(0x16, gAudioEffectId, 0);
     } else if (sp38 != 0) {
@@ -1864,23 +1864,23 @@ void Audio_ProcessCommandQueue(s32 arg0) {
             Audio_QueueSoundAvoidingRecent(gAnnouncerCueNotVeryEffectiveHeavy);
             Audio_PlayCommand(0x16, gAudioEffectId, 0);
         } else if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-            Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemPickup);
+            Audio_QueueSoundAvoidingRecent(gAnnouncerCueNotVeryEffectiveDamage);
         } else {
             Audio_QueueSoundAvoidingRecent(gAnnouncerCueLightHitLowHp);
             Audio_PlayCommand(0x16, gAudioEffectId, 0);
         }
     } else if ((sp32 != 0) && (gAudioHPChangePercent != 0)) {
         if (gAudioHPChangePercent >= 0x29) {
-            Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemUse);
+            Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitHeavyDamage);
             Audio_PlayCommand(0x16, gAudioEffectId, 0);
         } else if (gAudioHPChangePercent >= 6) {
             if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-                Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemConsume);
+                Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitMediumDamage);
             } else {
                 Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitLowHp);
             }
         } else if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-            Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemEquip);
+            Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitLightDamage);
         } else {
             Audio_QueueSoundAvoidingRecent(gAnnouncerCueLightHitLowHp);
         }
@@ -2248,18 +2248,18 @@ void Audio_UpdateBattleAudioFrame(void) {
                          (gAudioCurrentCommandId == 0x16) || (gAudioCurrentCommandId == 0x53) || (gAudioCurrentCommandId == 0x54) ||
                          (gAudioCurrentCommandId == 0x55)) &&
                         ((gAudioCurrentMoveId == 0x34) || (gAudioCurrentMoveId == 0x35) || (gAudioCurrentMoveId == 0x7E))) {
-                        Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemUseAlt);
+                        Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitHeavyDamageAlt);
                     } else {
-                        Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemUse);
+                        Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitHeavyDamage);
                     }
                 } else if (gAudioHPChangePercent >= 6) {
                     if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-                        Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemConsume);
+                        Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitMediumDamage);
                     } else {
                         Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitLowHp);
                     }
                 } else if ((gAudioInfoPtr[0]->unk_0C > 0) && (gAudioInfoPtr[1]->unk_0C > 0)) {
-                    Audio_QueueSoundAvoidingRecent(gAudioCueTable_ItemEquip);
+                    Audio_QueueSoundAvoidingRecent(gAnnouncerCueMultiHitLightDamage);
                 } else {
                     Audio_QueueSoundAvoidingRecent(gAnnouncerCueLightHitLowHp);
                 }

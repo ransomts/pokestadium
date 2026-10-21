@@ -1605,9 +1605,9 @@ void BattleAnim_CallbackEndEffect59Descriptor4FColorScaleFade(ParticleEffectInst
 
 void BattleAnim_StartEffect22RotatingPaletteNoTint(void) {
     BattleAnim_SpawnDescriptor25AlphaHoldFadeOut(0, 0, 0x40, 0xA, 0xC8);
-    BattleAnim_CreateEffectSlotForCurrentOwner(1, BattleAnim_CallbackStartEffect22Descriptor34RotatingPaletteScaleFade, &gBattleAnimParticleDescriptors[0x34], 0, 1, 0x10, gParticleTexture_Default, 0, 0);
-    BattleAnim_CreateEffectSlotForCurrentOwner(2, BattleAnim_CallbackStartEffect22Descriptor3DRotatingAlphaPaletteFade, &gBattleAnimParticleDescriptors[0x3D], 0, 3, 0x11, gParticleTexture_Default, 0, 0);
-    BattleAnim_CreateEffectSlotForCurrentOwner(4, BattleAnim_CallbackStartEffect22Descriptor46BurstEmitter, &gBattleAnimParticleDescriptors[0x46], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(1, BattleAnim_CallbackStartEffect22Descriptor34RotatingPaletteScaleFade, &gBattleAnimParticleDescriptors[0x34], 0, 1, 0x10, gParticleEffectParam, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(2, BattleAnim_CallbackStartEffect22Descriptor3DRotatingAlphaPaletteFade, &gBattleAnimParticleDescriptors[0x3D], 0, 3, 0x11, gParticleEffectParam, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(4, BattleAnim_CallbackStartEffect22Descriptor46BurstEmitter, &gBattleAnimParticleDescriptors[0x46], 0, 1, 0x11, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_EndEffect56TintRampRisingSpread(void) {
@@ -1630,9 +1630,9 @@ void BattleAnim_EndEffect54TintRampDelayedColorFade(void) {
 void BattleAnim_StartEffect23SmokeWithMarker(void) {
     BattleAnim_SpawnCategory17MarkerSlot(0x64, 1);
     BattleAnim_SpawnGlobalTintColorFadeDetach(0, 8, 6);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 0x3C, BattleAnim_CallbackStartEffects23And35And84Descriptor4FColorCycleScaleFade, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x1E, BattleAnim_CallbackStartEffects23And35And84Descriptor3DAlphaScaleFade, &gBattleAnimParticleDescriptors[0x3D], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x1E, BattleAnim_CallbackStartEffects23And35And84Descriptor4FRotatingFallColorCycle, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 0x3C, BattleAnim_CallbackStartEffects23And35And84Descriptor4FColorCycleScaleFade, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleEffectParam, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x1E, BattleAnim_CallbackStartEffects23And35And84Descriptor3DAlphaScaleFade, &gBattleAnimParticleDescriptors[0x3D], 0, 1, 0x11, gParticleEffectParam, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x1E, BattleAnim_CallbackStartEffects23And35And84Descriptor4FRotatingFallColorCycle, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleEffectParam, 0, 0);
 }
 
 void ParticleEffect_InitExplosionSet(void) {
@@ -1647,9 +1647,9 @@ void ParticleEffect_InitExplosionSet(void) {
 
 void BattleAnim_StartEffect35SmokeTexture1(void) {
     BattleAnim_SpawnGlobalTintColorFadeDetach(0, 8, 6);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 0x3C, BattleAnim_CallbackStartEffects23And35And84Descriptor4FColorCycleScaleFade, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleTexture_Default, 1, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x1E, BattleAnim_CallbackStartEffects23And35And84Descriptor3DAlphaScaleFade, &gBattleAnimParticleDescriptors[0x3D], 0, 1, 0x11, gParticleTexture_Default, 1, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x1E, BattleAnim_CallbackStartEffects23And35And84Descriptor4FRotatingFallColorCycle, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleTexture_Default, 1, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 0x3C, BattleAnim_CallbackStartEffects23And35And84Descriptor4FColorCycleScaleFade, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleEffectParam, 1, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x1E, BattleAnim_CallbackStartEffects23And35And84Descriptor3DAlphaScaleFade, &gBattleAnimParticleDescriptors[0x3D], 0, 1, 0x11, gParticleEffectParam, 1, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x1E, BattleAnim_CallbackStartEffects23And35And84Descriptor4FRotatingFallColorCycle, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleEffectParam, 1, 0);
 }
 
 void BattleAnim_EndEffect15ExplosionTintPalette35(void) {
@@ -1664,9 +1664,9 @@ void BattleAnim_EndEffect15ExplosionTintPalette35(void) {
 
 void BattleAnim_StartEffect84SmokeLongDuration(void) {
     BattleAnim_SpawnGlobalTintColorFadeDetach(0, 8, 6);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 0x50, BattleAnim_CallbackStartEffects23And35And84Descriptor4FColorCycleScaleFade, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x28, BattleAnim_CallbackStartEffects23And35And84Descriptor3DAlphaScaleFade, &gBattleAnimParticleDescriptors[0x3D], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x28, BattleAnim_CallbackStartEffects23And35And84Descriptor4FRotatingFallColorCycle, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 0x50, BattleAnim_CallbackStartEffects23And35And84Descriptor4FColorCycleScaleFade, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleEffectParam, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x28, BattleAnim_CallbackStartEffects23And35And84Descriptor3DAlphaScaleFade, &gBattleAnimParticleDescriptors[0x3D], 0, 1, 0x11, gParticleEffectParam, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 0x28, BattleAnim_CallbackStartEffects23And35And84Descriptor4FRotatingFallColorCycle, &gBattleAnimParticleDescriptors[0x4F], 0, 1, 0x11, gParticleEffectParam, 0, 0);
 }
 
 void ParticleEffect_InitFireSet(void) {

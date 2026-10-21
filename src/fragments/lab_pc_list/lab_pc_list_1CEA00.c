@@ -21,7 +21,7 @@ char** gLabPcListColumnLabelsBank;
 char** gLabPcListItemDescriptionsBank;
 char** gMoveNamesTable;
 char** gLabPcListSpeciesNamesBank;
-char** gMessageBank_MoveNames;
+char** gTypeNamesTable;
 char** gLabPcListItemNamesBank;
 s32 pad_D_8831A4DC[8];
 
@@ -682,7 +682,7 @@ s32 LabPCList_DrawCornerIcon(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, gFontBitmapData, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gLabPCListCornerIconTexture, G_IM_FMT_RGBA, G_IM_SIZ_16b, 40, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0x100) << 2, (arg2 + 2) << 2, (arg1 + 0x127) << 2,
@@ -1172,7 +1172,7 @@ void LabPCList_DrawTypeName(s32 arg0, s32 arg1, s32 arg2, u8* arg3, s32 arg4) {
         sp28 = Species_GetMoveSlot(arg3, arg4);
         if (sp28 != -1) {
             sp2C = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(sp28)->rotation;
-            sp20 = Text_GetString(NULL, 0, gMessageBank_MoveNames, PokemonType_ToDisplayIndex(sp28));
+            sp20 = Text_GetString(NULL, 0, gTypeNamesTable, PokemonType_ToDisplayIndex(sp28));
         } else {
             return;
         }
@@ -2207,33 +2207,33 @@ s32 LabPCList_HandleColumnHeaderClick(unk_func_8830867C_02C* arg0, unk_func_8800
         0x001E,
         0x001F,
     };
-    static s16 gSortOptionStrings_HP[] = {
+    static s16 gSortOptionStrings_Id[] = {
         0x001D,
         0x0000,
     };
-    static s16 gSortOptionStrings_Atk[] = {
+    static s16 gSortOptionStrings_AtoZ[] = {
         0x0021,
         0x0000,
     };
-    static s16 gSortOptionStrings_Def[] = {
+    static s16 gSortOptionStrings_Area[] = {
         0x0022,
         0x0000,
     };
     static unk_D_883172F4 ColumnMenuOption[] = {
         {
-            gSortOptionStrings_Atk,
+            gSortOptionStrings_AtoZ,
             0x00000001,
         },
         {
-            gSortOptionStrings_HP,
+            gSortOptionStrings_Id,
             0x00000001,
         },
         {
-            gSortOptionStrings_Atk,
+            gSortOptionStrings_AtoZ,
             0x00000001,
         },
         {
-            gSortOptionStrings_Def,
+            gSortOptionStrings_Area,
             0x00000001,
         },
         {
@@ -3101,7 +3101,7 @@ void LabPCList_BuildWidget(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPo
     arg0->unk_70 = arg6;
     arg0->unk_74 = gLabPcListSpeciesNamesBank;
     arg0->unk_78 = gMoveNamesTable;
-    arg0->unk_7C = gMessageBank_MoveNames;
+    arg0->unk_7C = gTypeNamesTable;
     arg0->unk_80 = arg7;
     arg0->unk_84 = arg8;
     arg0->unk_88 = arg9;
@@ -3194,7 +3194,7 @@ s32 LabPCList_ShowListScreen(UNUSED s32 arg0, UNUSED s32 arg1) {
     gLabPcListGbSaveIdLabelBank = Text_GetStringTable(0x2A);
     gMoveNamesTable = Text_GetStringTable(0x25);
     gLabPcListSpeciesNamesBank = Text_GetStringTable(0x24);
-    gMessageBank_MoveNames = Text_GetStringTable(0x26);
+    gTypeNamesTable = Text_GetStringTable(0x26);
     gLabPcListColumnLabelsBank = Text_GetStringTable(5);
     gLabPcListItemNamesBank = Text_GetStringTable(0x27);
     gLabPcListItemDescriptionsBank = Text_GetStringTable(0xC);

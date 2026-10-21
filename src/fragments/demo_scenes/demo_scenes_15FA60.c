@@ -28,7 +28,7 @@ typedef struct DioramaColorAnim {
     /* 0x0A */ s16 unk_0A;
 } DioramaColorAnim; // size = 0xC
 
-extern u32 gFragment17MaskTable[];
+extern u32 gFragment17TransitionGradientTex[];
 extern DioramaObjectDef* gFragment17ObjectDefs[];
 extern DioramaAnimData gFragment17AnimData[];
 extern DioramaPresetData gFragment17PresetData[];
@@ -265,7 +265,7 @@ void Diorama_DrawFadeOverlay(void) {
 
 void Diorama_DrawGroupTransitionOverlay(void) {
     if (gFragment17State->rotation.unk_44 == 2) {
-        Diorama_DrawFullscreenTexture(&gFragment17MaskTable, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 4, 0x80);
+        Diorama_DrawFullscreenTexture(&gFragment17TransitionGradientTex, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 4, 0x80);
     }
 }
 

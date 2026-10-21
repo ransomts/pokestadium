@@ -12,7 +12,7 @@
 
 static char** gSessionModeNamesBank;
 static BinArchive* gBattleHeaderArchive;
-static void* gFragment54TextureAtlas;
+static void* gFragment54BackgroundImage;
 static s16 gMenuCursorIndex;
 
 static u8 gBackgroundFileIndexTable[] = {
@@ -155,7 +155,7 @@ s32 RentalHub_HandleInput(void) {
 
 void RentalHub_Draw(s16 arg0) {
     BgStage_DrawFrame();
-    Gfx_DrawTiledRgba16Image(gFragment54TextureAtlas);
+    Gfx_DrawTiledRgba16Image(gFragment54BackgroundImage);
     RentalHub_DrawHeader();
     RentalHub_DrawMenuItems(arg0);
     if (arg0 == 8) {
@@ -233,12 +233,12 @@ void RentalHub_LoadBackgroundImage(SessionModeSettings* arg0) {
 
     if (gSessionContext.unk_0000 == 7) {
         if (arg0->rotation < 8) {
-            gFragment54TextureAtlas = BinArchive_GetFile(gBattleHeaderArchive, 0xD);
+            gFragment54BackgroundImage = BinArchive_GetFile(gBattleHeaderArchive, 0xD);
         } else {
-            gFragment54TextureAtlas = BinArchive_GetFile(gBattleHeaderArchive, 0x10);
+            gFragment54BackgroundImage = BinArchive_GetFile(gBattleHeaderArchive, 0x10);
         }
     } else {
-        gFragment54TextureAtlas = BinArchive_GetFile(gBattleHeaderArchive, gBackgroundFileIndexTable[gSessionContext.unk_0000]);
+        gFragment54BackgroundImage = BinArchive_GetFile(gBattleHeaderArchive, gBackgroundFileIndexTable[gSessionContext.unk_0000]);
     }
 }
 

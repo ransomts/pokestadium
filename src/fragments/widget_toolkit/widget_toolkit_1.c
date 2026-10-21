@@ -9,7 +9,7 @@ static Gfx gFragment2_1EmptyDL[] = {
     gsSPEndDisplayList(),
 };
 
-u32 gFragment2_1DisplayList[] = {
+u32 gFragment2_1GeoLayout[] = {
     0x0B00001E, 0x00000000, 0x014000F0, 0x00000000,  0x000016A8, 0x00000190, 0x05000000, 0x0D000000, 0x05000000,
     0x0F000002, 0x05000000, 0x0A000000, &gGraphRoot1, 0x06000000, 0x06000000, 0x06000000, 0x04000000, 0x00000000,
 };

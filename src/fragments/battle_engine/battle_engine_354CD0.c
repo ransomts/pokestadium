@@ -16,7 +16,7 @@ static Gfx gWaterParticleSetupDL[] = {
     gsDPSetColorDither(G_CD_NOISE),
     gsSPEndDisplayList(),
 };
-static Vtx gWaterParticleQuadVtx[] = {
+static Vtx gTrail50QuadVtx[] = {
     VTX(-6, 0, -6, 2048, 0, 0xFF, 0xFF, 0xFF, 0x14),
     VTX(6, 0, -6, 0, 0, 0xFF, 0xFF, 0xFF, 0x14),
     VTX(-6, 0, 6, 2048, 2048, 0xFF, 0xFF, 0xFF, 0x14),
@@ -36,7 +36,7 @@ Gfx gWaterParticleQuadDL[] = {
     gsDPSetTextureLUT(G_TT_NONE),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPPipeSync(),
-    gsSPVertex(gWaterParticleQuadVtx, 4, 0),
+    gsSPVertex(gTrail50QuadVtx, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 2, 0),
     gsSPEndDisplayList(),
 };

@@ -24,7 +24,7 @@ static u32 gMiniGameGeoLayoutCommands[] = {
     0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-static ModelData* gMiniGameGeoLayoutData;
+static ModelData* gMiniGameSample7ModelData;
 static GraphNode* D_86600944;
 static CameraStruct* gMiniGameCamera;
 static Fragment2_1GraphNode gMiniGameAnimNode;
@@ -207,8 +207,8 @@ void Minigame_Sample7Viewer_Init(void) {
     ModelRenderer_InitDisplayRoots();
     ModelRenderer_AttachDisplayObject(&gMiniGameAnimNode);
     PokeIcon_OpenModelArchives();
-    gMiniGameGeoLayoutData = Model_LoadByArchiveIndex(0x19);
-    Model_InitDisplayObject(&gMiniGameAnimNode, 0, 0x19, gMiniGameGeoLayoutData->RentalSlotAnimData_PosePhase->posX[0]);
+    gMiniGameSample7ModelData = Model_LoadByArchiveIndex(0x19);
+    Model_InitDisplayObject(&gMiniGameAnimNode, 0, 0x19, gMiniGameSample7ModelData->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gMiniGameAnimNode, 0);
     Minigame_Sample7Viewer_InitCamera();
 }

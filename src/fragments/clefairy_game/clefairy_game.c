@@ -58,7 +58,7 @@ typedef struct ItemPairState {
 void ClefairyGame_DespawnPatternIcons(void);
 void ClefairyGame_SpawnPatternIcons(void);
 
-static u32 gPatternTileData[] = {
+static u32 gClefairyGameTextTable[] = {
     0xFFFFFFD8, 0xFFFFFFF6, 0x00000014, 0x00000032, 0xA5D4A5C3, 0xA5D4A4CE, 0xA4E6A4D3, 0xA4D5A4EA, 0xA4ADA4E7,
     0xA4A6A4B7, 0xA4C40000, 0xA4B3A4AF, 0xA4D0A4F3, 0xA4CBA4AB, 0xA4ABA4EC, 0xA4BFA1A1, 0xA4E4A4B8, 0xA4EBA4B7,
     0xA4CEA1A1, 0xA4E0A4AD, 0xA4F2A1A1, 0xA4AAA4DC, 0xA4A8A4C6, 0x00000000, 0xA4BBA4F3, 0xA4BBA4A4, 0xA4ACA1A1,
@@ -77,7 +77,7 @@ typedef struct PatternEntry {
     /* 0x06 */ u8 unk_06[4];
 } PatternEntry; // size = 0xA
 
-static PatternEntry gWeightedItemTable[0x2E] = {
+static PatternEntry gWeightedPatternTable[0x2E] = {
     { { 1, 1, 3, 2, 0, 0 }, { 1, 0, 0, 0 } }, { { 0, 1, 0, 1, 2, 2 }, { 1, 0, 0, 0 } },
     { { 2, 0, 2, 1, 0, 0 }, { 1, 1, 0, 0 } }, { { 0, 1, 2, 3, 0, 1 }, { 1, 1, 0, 0 } },
     { { 3, 3, 3, 2, 0, 2 }, { 1, 0, 0, 0 } }, { { 2, 3, 3, 2, 3, 2 }, { 1, 1, 0, 0 } },
@@ -175,7 +175,7 @@ static Gfx gPatternTileMaskDlEnd[] = {
     gsSPEndDisplayList(),
 };
 
-static u32 gPatternTileMask[] = {
+static u32 gPenaltyDotTile[] = {
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFE0001, 0x0001FFFE, 0xFFFE0001, 0x0001FFFE,
     0x0001F7CB, 0xF7CB0001, 0x0001F7CB, 0xF7CB0001, 0xFFFE0001, 0xFFCDF7CB, 0xF7CBF7CB, 0x0001FFFE,
     0xFFFEFFFE, 0x0001FFCD, 0xF7CB0001, 0xFFFEFFFE, 0xFFFE0001, 0xFFCDF7CB, 0xF7CBF7CB, 0x0001FFFE,
@@ -353,7 +353,7 @@ PatternEntry* ClefairyGame_ChoosePatternEntry(s32 arg0, s32 arg1) {
     s16 tmp;
     u8 val;
 
-    var_s0 = gWeightedItemTable;
+    var_s0 = gWeightedPatternTable;
     tmp = 0;
 
     for (i = 0; i < arg0; i++) {
@@ -395,7 +395,7 @@ void ClefairyGame_GeneratePattern(void) {
 
     gPlayerItemCount = 4;
     var_s2 = 0;
-    var_a0 = gWeightedItemTable;
+    var_a0 = gWeightedPatternTable;
     var_a1 = 1;
     var_a3 = var_a3;
     ptr = &gItemPairStates[0];
@@ -485,7 +485,7 @@ void ClefairyGame_DrawPenaltyDot(s16 arg0, s16 arg1, f32 arg2) {
         gDPSetRenderMode(gfx++, G_RM_TEX_EDGE, G_RM_TEX_EDGE2);
         gDPSetTexturePersp(gfx++, G_TP_NONE);
         gDPSetCombineMode(gfx++, G_CC_DECALRGBA, G_CC_PASS2);
-        gDPLoadTextureTile(gfx++, gPatternTileMask, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, 8, 8, 0,
+        gDPLoadTextureTile(gfx++, gPenaltyDotTile, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, 8, 8, 0,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 

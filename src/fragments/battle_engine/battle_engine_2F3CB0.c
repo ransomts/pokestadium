@@ -1601,7 +1601,7 @@ Vec3f gCameraOffsetTable[] = {
     { 0.0f, 0.0f, 0.0f },
 };
 unk_D_84385384_func gAnimStateIdle = BattleScene_StateCallbackNop;
-unk_D_84385384 gMoveAnimData[] = {
+unk_D_84385384 gBattleSceneStateRows[] = {
     {
         0,
         {

@@ -12,7 +12,7 @@ extern char** gMinigameNamesBank;
 extern s16 gCurrentMenuIndex;
 extern u32* gPositiveTextureBank[];
 extern u32* gNegativeTextureBank[];
-extern u32 gFragment2_1DisplayList[];
+extern u32 gFragment2_1GeoLayout[];
 
 extern u16 gMenuRandomSeed;
 extern s16 gMenuCursorX;

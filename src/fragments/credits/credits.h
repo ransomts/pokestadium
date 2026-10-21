@@ -9,17 +9,17 @@ typedef struct StagePhaseInfo {
     /* 0x02 */ u16 posY;
 } StagePhaseInfo; // size = 0x4
 
-typedef struct MessageDecompressEntry {
+typedef struct CreditRoleEntry {
     /* 0x00 */ s32 posX;
     /* 0x04 */ char* rotation[2];
-} MessageDecompressEntry; // size = 0xC
+} CreditRoleEntry; // size = 0xC
 
 typedef struct StageCameraConfig {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
-    /* 0x08 */ MessageDecompressEntry* RentalSlotAnimData_PosePhase;
+    /* 0x08 */ CreditRoleEntry* RentalSlotAnimData_PosePhase;
 } StageCameraConfig; // size = 0xC
 
 typedef struct CameraPosition {
@@ -50,7 +50,7 @@ typedef struct CreditsMovingCamera {
 extern CameraPosition gStageCameraPositions[17][6];
 
 extern u16 gBorderFadeCycleCount;
-extern char gMessageDecompressBuffer;
+extern char gCreditsString00;
 extern char gCreditsMessageTable;
 extern char gCreditsString01;
 extern char gCreditsString01Len;

@@ -51,13 +51,13 @@ extern u8 gGbWaveLevelTable[];
 extern u8 gGbNoiseStepTable15BitLfsr[];
 extern u8 gGbNoiseStepTable7BitLfsr[];
 extern u16 D_8120EA86;
-extern f32 D_8120EAC0;
-extern s32 D_8120EAC8;
-extern s32 D_8120EACC;
-extern s32 D_8120EAC4;
-extern s32 D_8120EA60;
-extern u32 D_8120EA80;
-extern s32 D_8120EAD0;
+extern f32 gGbApuFreqToStepScale;
+extern s32 gGbApuNoisePeriodMin;
+extern s32 gGbApuNoisePeriodMax;
+extern s32 gGbApuClockRate;
+extern s32 gGbApuActiveFlag;
+extern u32 gGbApuNoiseRegs;
+extern s32 gGbApuLastWriteTime;
 extern u16 gGbNoiseFreqTable[32];
 extern u8 gGbEnvStepTable[];
 extern u32 gGbNoisePeriodTable[9];
@@ -82,18 +82,18 @@ extern GbApu_ResetChannels gGbApuSquare2;
 extern GbApu_ResetChannels gGbApuWave;
 extern GbApu_ResetChannels gGbApuNoise;
 extern u8 gGbWaveRamMirror[40];
-extern u8 D_8120EA70[];
+extern u8 gGbApuRegs[];
 
-s32 D_8120EA60 = 0;
+s32 gGbApuActiveFlag = 0;
 static u32 pad_D_8120EA60_0[3] = { 0, 0, 0 };
-u8 D_8120EA70[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-u32 D_8120EA80 = 0;  // tail holds D_8120EA86 (linker-defined symbols)
+u8 gGbApuRegs[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+u32 gGbApuNoiseRegs = 0;  // tail holds D_8120EA86 (linker-defined symbols)
 static u32 D_8120EA80_tail_0[15] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-f32 D_8120EAC0 = 1500.0f;
-s32 D_8120EAC4 = 17784;
-s32 D_8120EAC8 = 2048;
-s32 D_8120EACC = 16384;
-s32 D_8120EAD0 = 0;
+f32 gGbApuFreqToStepScale = 1500.0f;
+s32 gGbApuClockRate = 17784;
+s32 gGbApuNoisePeriodMin = 2048;
+s32 gGbApuNoisePeriodMax = 16384;
+s32 gGbApuLastWriteTime = 0;
 u16 gGbNoiseFreqTable[32] = { 0x1120, 0x201, 0x1100, 0xF50, 0x800, 0x723, 0x800, 0x922, 0x800, 0x980, 0x1010, 0xBA6, 0x800, 0xBA6, 0x800, 0xBA5, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800, 0x800 };
 u8 gGbEnvStepTable[16] = { 0, 1, 3, 6, 0xA, 0xE, 0x12, 0x15, 0x18, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20 };
 u8 gGbWaveLevelTable[4] = { 0, 0x20, 0x10, 8 };
@@ -102,7 +102,7 @@ u8 gGbNoiseStepTable7BitLfsr[16] = { 0, 6, 0xA, 0xE, 0x11, 0x16, 0x1A, 0x1D, 0x2
 u32 gGbNoisePeriodTable[9] = { 0x20000, 0x10000, 0x8000, 0x5555, 0x4000, 0x3333, 0x2AAA, 0x2492, 0x12345678 };
 
 // Game Boy sound registers NR10 (0xFF10) through NR52 (0xFF26), mirrored in
-// D_8120EA70 (indexed by register address - 0xFF10).
+// gGbApuRegs (indexed by register address - 0xFF10).
 typedef struct GbApuRegs {
     /* 0x00 NR10 */ u32 : 1;
                     u32 sweepTime : 3;
@@ -169,7 +169,7 @@ typedef struct GbApuRegs {
     /* 0x17 */      u32 : 8;
 } GbApuRegs; // size = 0x18
 
-#define GB_APU_REGS (*(GbApuRegs*)D_8120EA70)
+#define GB_APU_REGS (*(GbApuRegs*)gGbApuRegs)
 
 // A queued APU register write, packed into an OSMesg as (reg << 24) | (value << 16) | time.
 typedef struct GbApuWrite {
@@ -197,11 +197,11 @@ void func_81207330(void) {
 }
 
 void GbApu_SetActiveFlag(void) {
-    D_8120EA60 = 1;
+    gGbApuActiveFlag = 1;
 }
 
 void GbApu_ClearActiveFlag(void) {
-    D_8120EA60 = 0;
+    gGbApuActiveFlag = 0;
 }
 
 void func_81207354(void) {
@@ -209,17 +209,17 @@ void func_81207354(void) {
 
 void GbApu_SelectRegionClock(s32 arg0) {
     if (arg0 == 0) {
-        D_8120EAC4 = 0x4578;
-        D_8120EAC0 = 1500.0f;
+        gGbApuClockRate = 0x4578;
+        gGbApuFreqToStepScale = 1500.0f;
         return;
     }
-    D_8120EAC4 = 0x8AF0;
-    D_8120EAC0 = 1500.0f;
+    gGbApuClockRate = 0x8AF0;
+    gGbApuFreqToStepScale = 1500.0f;
 }
 
 void GbApu_SetNoisePeriodBounds(s32 arg0, s32 arg1) {
-    D_8120EAC8 = arg0;
-    D_8120EACC = arg1;
+    gGbApuNoisePeriodMin = arg0;
+    gGbApuNoisePeriodMax = arg1;
 }
 
 u32 GbApu_FreqToStep(u16 arg0) {
@@ -227,11 +227,11 @@ u32 GbApu_FreqToStep(u16 arg0) {
   if (arg0 == 0) {
       return 0;
   }
-  temp = ((65536.0f / (0x800 - arg0)) / D_8120EAC0) * 65536;
+  temp = ((65536.0f / (0x800 - arg0)) / gGbApuFreqToStepScale) * 65536;
   return temp;
 }
 
-u32 func_81207494(u16 arg0, u16 arg1, u16 arg2) {
+u32 GbApu_SetupNoiseChannel(u16 arg0, u16 arg1, u16 arg2) {
     u32 temp;
     s32 temp2;
 
@@ -239,13 +239,13 @@ u32 func_81207494(u16 arg0, u16 arg1, u16 arg2) {
     temp = gGbNoisePeriodTable[arg2];
     temp2 = (f32)temp;
     temp = (temp2 / 48000.0f) * 24000.0f;
-    D_8120EAC8 = gGbNoiseFreqTable[arg0 * 2 + arg1];
+    gGbApuNoisePeriodMin = gGbNoiseFreqTable[arg0 * 2 + arg1];
     return temp;
 }
 
 u32 GbApu_FreqToStep2x(u16 arg0) {
   u32 temp;
-  temp = ((131072.0f / (0x800 - arg0)) / D_8120EAC0) * 65536;
+  temp = ((131072.0f / (0x800 - arg0)) / gGbApuFreqToStepScale) * 65536;
   return temp;
 }
 
@@ -512,10 +512,10 @@ u16 func_81207C5C_Empty(void) {
     
 }
 
-// D_8120EB6C is a function-local static: its .data slot lies between gGbNoisePeriodTable and gGbAudioMode,
+// sGbApuNoiseVolStepCounter is a function-local static: its .data slot lies between gGbNoisePeriodTable and gGbAudioMode,
 // so the data after it is defined below this function.
 u16 GbAudio_StepNoiseChannel(void) {
-    static s32 D_8120EB6C = 0;
+    static s32 sGbApuNoiseVolStepCounter = 0;
     u16 temp_v0;
     u32 var_a2;
 
@@ -539,18 +539,18 @@ u16 GbAudio_StepNoiseChannel(void) {
     }
     temp_v0 = GbAudio_GetDutyVolume(6, gGbApuNoise.RentalSlotAnimData_PosePhase.posX);
     gGbApuNoise.RentalSlotAnimData_PosePhase.posY += var_a2;
-    if (gGbApuNoise.RentalSlotAnimData_PosePhase.posX  >= (u32)D_8120EACC) {
-        gGbApuNoise.RentalSlotAnimData_PosePhase.posX  = D_8120EAC8;
+    if (gGbApuNoise.RentalSlotAnimData_PosePhase.posX  >= (u32)gGbApuNoisePeriodMax) {
+        gGbApuNoise.RentalSlotAnimData_PosePhase.posX  = gGbApuNoisePeriodMin;
     }
     temp_v0 *= gGbApuNoise.unk_3C;
-    if ((gGbApuNoise.unk_3C != gGbApuNoise.unk_20) && ((D_8120EB6C % 95) == 0)) {
+    if ((gGbApuNoise.unk_3C != gGbApuNoise.unk_20) && ((sGbApuNoiseVolStepCounter % 95) == 0)) {
         if (gGbApuNoise.unk_3C > gGbApuNoise.unk_20) {
             gGbApuNoise.unk_3C--;
         } else {
             gGbApuNoise.unk_3C++;
         }
     }
-    D_8120EB6C++;
+    sGbApuNoiseVolStepCounter++;
     if (gGbApuNoise.unk_28 != 0) {
         gGbApuNoise.unk_24++;
         if ((gGbApuNoise.unk_24 % (u32) gGbApuNoise.unk_28) == 0) {
@@ -569,7 +569,7 @@ u16 GbAudio_StepNoiseChannel(void) {
                 }
                 break;
             }
-            switch ((D_8120EA80 << 0x14) >> 0x1F) {                    /* switch 1; irregular */
+            switch ((gGbApuNoiseRegs << 0x14) >> 0x1F) {                    /* switch 1; irregular */
             case 0:                                 /* switch 1 */
                 gGbApuNoise.unk_20 = gGbNoiseStepTable15BitLfsr[gGbApuNoise.unk_2D];
                 break;
@@ -623,7 +623,7 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
         return;
     }
 
-    D_8120EA70[reg - 0x10] = value;
+    gGbApuRegs[reg - 0x10] = value;
 
     switch (reg) {
         case 0x10:
@@ -750,8 +750,8 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
         case 0x3D:
         case 0x3E:
         case 0x3F:
-            gGbWaveRamMirror[(reg - 0x30) * 2 + 0] = (D_8120EA70[reg - 0x10] >> 4) & 0xF;
-            gGbWaveRamMirror[(reg - 0x30) * 2 + 1] = D_8120EA70[reg - 0x10] & 0xF;
+            gGbWaveRamMirror[(reg - 0x30) * 2 + 0] = (gGbApuRegs[reg - 0x10] >> 4) & 0xF;
+            gGbWaveRamMirror[(reg - 0x30) * 2 + 1] = gGbApuRegs[reg - 0x10] & 0xF;
             break;
         case 0x20:
             gGbApuNoise.unk_1C = 0x40 - GB_APU_REGS.length4;
@@ -764,7 +764,7 @@ void GbAudio_WriteReg(u16 reg, u8 value) {
             break;
         case 0x22:
             gGbApuNoise.unk_10 = GB_APU_REGS.shift4;
-            gGbApuNoise.unk_0C = func_81207494(GB_APU_REGS.shift4, GB_APU_REGS.width4, GB_APU_REGS.ratio4);
+            gGbApuNoise.unk_0C = GbApu_SetupNoiseChannel(GB_APU_REGS.shift4, GB_APU_REGS.width4, GB_APU_REGS.ratio4);
             if (gGbApuNoise.posX == 0) {
                 gGbApuNoise.unk_40 = gGbApuNoise.unk_0C;
             }
@@ -856,7 +856,7 @@ void GbAudio_MixChannels(s32 numSamples, s16* out) {
             first = FALSE;
         }
         if (msg.time < lastTime) {
-            if (startTime < D_8120EAD0) {
+            if (startTime < gGbApuLastWriteTime) {
                 osJamMesg(&gGbAudioMesgQueue, *(OSMesg*)&msg, OS_MESG_NOBLOCK);
                 break;
             }
@@ -870,7 +870,7 @@ void GbAudio_MixChannels(s32 numSamples, s16* out) {
     }
 
     pos = 0.0f;
-    step = (f32)D_8120EAC4 / (f32)numSamples;
+    step = (f32)gGbApuClockRate / (f32)numSamples;
     if (numSamples < count) {
         flush = TRUE;
     } else {
@@ -940,7 +940,7 @@ void GbAudio_QueueWrite(u16 arg0, u8 arg1, u16 arg2) {
 
     temp_v1 = arg0 + 0xFFFF0100;
     osSendMesg(&gGbAudioMesgQueue, (temp_v1 << 0x18) | (arg1 << 0x10) | arg2, 0);
-    D_8120EAD0 = (s32) arg2;
+    gGbApuLastWriteTime = (s32) arg2;
     switch (temp_v1) {
     case 20:
         if (arg1 & 0x80) {
@@ -1016,7 +1016,7 @@ void GbApu_Reset(s32 arg0) {
   GbAudio_Reset();
 }
 
-void func_81208E4C(void) {
+void GbApu_ResetWithFadeOut(void) {
     void* sp34 = gApuSampleBuffers[0];
     f32 x = (f32) D_8122C790;
     f32 y = (f32) D_8122C792;

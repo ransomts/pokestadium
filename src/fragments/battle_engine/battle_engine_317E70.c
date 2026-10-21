@@ -860,7 +860,7 @@ void BattleAnim_GetSecondaryOwnerAnchorPosition(Vec3f* arg0) {
     if (gParticleEffectPrimaryId == 0xFF) {
         BattleAnim_GetOwnerDefaultAnchorPosition(gParticleEffectUserEntity, arg0);
     } else {
-        BattleAnim_GetOwnerBonePosition(gParticleEffectUserEntity, gParticleTexture_Default, arg0);
+        BattleAnim_GetOwnerBonePosition(gParticleEffectUserEntity, gParticleEffectParam, arg0);
     }
 }
 

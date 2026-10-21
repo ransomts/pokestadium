@@ -5,8 +5,8 @@
 #include "src/math_util.h"
 
 u8* gBattleAnimAssetPointers[256];
-s16 gMessageBuffer[0x10];
-arg1_func_80019420* gMessageStringLists[40];
+s16 gBattleAnimResourceListBuffer[0x10];
+arg1_func_80019420* gBattleAnimAssetTables[40];
 static s16 gEffect45FourStreamTrailPhaseCounter;
 static s16 gEffect62OwnerLinkedFourStreamPhaseCounter;
 static Mtx gEffectMatrix;

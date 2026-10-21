@@ -1526,14 +1526,14 @@ static s16 miniEkansDifficulties[4][4] = {
 };
 
 static s16 gMiniEkansDefaultDifficulty[] = { 0, 1, 2, 2 };
-static s32 gMiniDiglettGoldScoreTable[] = { 0, 1, 2, 4, 5, 6, 8, 9, 0xA };
+static s32 gMiniDiglettSoundParamTable[] = { 0, 1, 2, 4, 5, 6, 8, 9, 0xA };
 
 static u32 gMiniEkansGameScript[] = {
     0x0C00FFFF, 0x05000000, 0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
     0x05000000, 0x0D000000, 0x05000000, 0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000002,
     0x05000000, 0x1F00FFFF, 0x00000000, 0x00000000, 0x00000000, 0x00640064, 0x00640000, 0x05000000,
     0x00000000, gMiniEkansArenaSetup, 0x06000000, 0x06000000, 0x0F000003, 0x05000000, 0x0A000000, &gGraphRoot0,
-    0x06000000, 0x06000000, 0x06000000, 0x03000000, gFragment2_1DisplayList, 0x06000000, 0x01000000,
+    0x06000000, 0x06000000, 0x06000000, 0x03000000, gFragment2_1GeoLayout, 0x06000000, 0x01000000,
 };
 
 static ActorOriginPosition skansActorInfo[] = {
@@ -1600,7 +1600,7 @@ void miniDiglettGoldCheck(s16 nDiglett, s32* isGold, s32* arg2) {
         *isGold = 0;
     }
 
-    *arg2 = gMiniDiglettGoldScoreTable[ActiveDiglettId];
+    *arg2 = gMiniDiglettSoundParamTable[ActiveDiglettId];
 }
 
 void EkansGame_PlaySoundEvent(s16 arg0, s16 arg1) {

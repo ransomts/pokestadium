@@ -596,7 +596,7 @@ extern char** gLabPcListColumnLabelsBank;
 extern char** gLabPcListItemDescriptionsBank;
 extern char** gMoveNamesTable;
 extern char** gLabPcListSpeciesNamesBank;
-extern char** gMessageBank_MoveNames;
+extern char** gTypeNamesTable;
 extern char** gLabPcListItemNamesBank;
 extern Color_RGBA8 gPartyLabelColor;
 extern Color_RGBA8 gGbLabelColor;
@@ -607,7 +607,7 @@ extern u32 gLabPCListHeaderTitleOrnamentTexture[];
 extern u32 gCheckerboardPattern[];
 extern u32 gCheckerboardPatternStatusEntry[];
 extern u32 gTitleScreenImage[];
-extern u32 gFontBitmapData[];
+extern u32 gLabPCListCornerIconTexture[];
 extern SortComparatorFunc gListSortComparators[];
 
 void LabPCList_InitHeaderSelectIcon(unk_func_88001300_000* arg0, s32 arg1, s32 arg2);

@@ -7,7 +7,7 @@ void ParticleGfx_DrawBillboardPrimEnvQuad();
 void ParticleGfx_LoadTextureCallbackIa8_32x32();
 void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32();
 
-extern u32 gMiniTutoScreenTilemap[];
+extern u32 gMiniTutoScreenFrames[];
 extern u32 gMiniTutoScreenPalette[];
 extern u32 gMiniTutoScreenSettings[];
 extern u32 gMiniTutoScreenGraphics[];
@@ -16,7 +16,7 @@ Gfx_TextureConfig gMiniTutoScreenConfig_Tilemap = {
     0x00000001,
     ParticleGfx_LoadTextureCallbackI4ParticleFrame_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
-    gMiniTutoScreenTilemap,
+    gMiniTutoScreenFrames,
 };
 
 Gfx_TextureNode gMiniTutoScreenNode0 = {
@@ -67,7 +67,7 @@ s16 gMiniActorPosOffsets[4][4] = {
     { 0x0046, 0x0060, 0x007C, 0x0096 },
 };
 
-u32 gMiniTutoScreenTilemap[] = {
+u32 gMiniTutoScreenFrames[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,

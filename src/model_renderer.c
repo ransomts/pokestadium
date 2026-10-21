@@ -21,14 +21,14 @@ void ModelRenderer_InitDisplayRoots(void) {
 }
 
 void ModelRenderer_AttachDisplayObject(Fragment2_1GraphNode* arg0) {
-    GeoNode_CreateModelPart(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
+    GeoNode_CreateModelPart(NULL, arg0, 0, &gRootNodePosition, &gZeroVec3s, &gRootNodeScale);
     GraphNode_AppendChild(&gGraphRoot0, &arg0->unk_000);
     arg0->modelPhase = 0;
     arg0->unk_000.TrainerSlotSaveData_GamePort &= ~1;
 }
 
 void ModelRenderer_AttachSecondaryDisplayObject(Fragment2_1GraphNode* arg0) {
-    GeoNode_CreateModelPart(NULL, arg0, 0, &gRootNodePosition, &gSpriteAnimUpdateFunc, &gRootNodeScale);
+    GeoNode_CreateModelPart(NULL, arg0, 0, &gRootNodePosition, &gZeroVec3s, &gRootNodeScale);
     GraphNode_AppendChild(&gGraphRoot1, &arg0->unk_000);
     arg0->unk_000.TrainerSlotSaveData_GamePort &= ~1;
 }

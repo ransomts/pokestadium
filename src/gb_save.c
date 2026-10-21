@@ -398,9 +398,9 @@ s32 Ui_GetSelectionDirection(SelectionDirection* arg0) {
 }
 
 s32 GbSave_GameToCategoryIndex(s32 arg0) {
-    static s32 gMoveTargetTypeTable[] = { 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0 };
+    static s32 gGameCategoryTable[] = { 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0 };
 
-    return gMoveTargetTypeTable[arg0];
+    return gGameCategoryTable[arg0];
 }
 
 Color_RGBA8 Color_InterpolateFromGray(Color_RGBA8 arg0, f32 arg1) {

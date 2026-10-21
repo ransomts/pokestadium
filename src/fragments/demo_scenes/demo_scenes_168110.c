@@ -144,7 +144,7 @@ s32 Intro_UpdateCameraKeyframe(CameraStruct* arg0) {
         sp50.y = 10.0f;
     }
 
-    func_86B01404(&sp44, &arg0->unk_60.eye);
+    Vec3f_Copy(&sp44, &arg0->unk_60.eye);
     Vec3f_CalculateDistanceAngles(&sp44, &sp50, &sp34, &sp2E, &sp2C);
     Camera_ComputeEyeFromAngles(&sp44, &arg0->unk_60.eye, gCameraState->unk_44 * sp34, sp2E, sp2C);
     Camera_ComputeEyeFromAngles(&gCameraState->rotation, &sp38, gCameraState->unk_30, gCameraState->unk_24,
@@ -152,7 +152,7 @@ s32 Intro_UpdateCameraKeyframe(CameraStruct* arg0) {
 
     sp38.y += gMonsterStageData.unk_0C;
 
-    func_86B01404(&sp5C, &arg0->unk_60.at);
+    Vec3f_Copy(&sp5C, &arg0->unk_60.at);
     Vec3f_CalculateDistanceAngles(&sp5C, &sp38, &sp30, &sp2E, &sp2C);
     Camera_ComputeEyeFromAngles(&sp5C, &arg0->unk_60.at, gCameraState->unk_44 * sp30, sp2E, sp2C);
 

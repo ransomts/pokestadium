@@ -124,7 +124,7 @@ typedef struct SessionContext {
     /* 0x11F6 */ u16 transitionFlags;
 } SessionContext; // size = 0x11F8
 
-extern u16 gSincosTable[16][256];
+extern u16 gBrightnessCurveTable[16][256];
 extern s32 gCurrentGameState;
 extern FragmentCallContext gFragmentCallContext;
 extern SessionContext gSessionContext;

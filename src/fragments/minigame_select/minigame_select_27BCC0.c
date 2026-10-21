@@ -39,7 +39,7 @@ static UIWidget* gComputerUIElements[2];
 static UIWidget* gComputerUIRoot;
 static UIWidget* gItemGridElements[9];
 static BinArchive* gItemArchive;
-static void* gItemDataPtr;
+static void* gMinigameSelectBackground;
 static s16 D_8250A26C;
 static s16 gSubMenuState;
 static GraphNode* gCursorNode;
@@ -185,85 +185,85 @@ static Vtx gStatusBarVertices19[] = {
     VTX(300, -40, 0, 9600, 128, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, -36, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices0[] = {
+static Vtx gStatusIconAnimVertices0[] = {
     VTX(130, 35, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, 25, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 25, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 35, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices1[] = {
+static Vtx gStatusIconAnimVertices1[] = {
     VTX(130, 25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, 15, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 15, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 25, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices2[] = {
+static Vtx gStatusIconAnimVertices2[] = {
     VTX(130, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, 5, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 5, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 15, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices3[] = {
+static Vtx gStatusIconAnimVertices3[] = {
     VTX(130, 5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, -5, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -5, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, 5, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices4[] = {
+static Vtx gStatusIconAnimVertices4[] = {
     VTX(130, -5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, -15, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -15, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -5, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices5[] = {
+static Vtx gStatusIconAnimVertices5[] = {
     VTX(130, -15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, -25, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -25, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -15, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices6[] = {
+static Vtx gStatusIconAnimVertices6[] = {
     VTX(130, -25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(130, -35, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -35, 0, 5120, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(290, -25, 0, 5120, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices7[] = {
+static Vtx gStatusIconAltAnimVertices7[] = {
     VTX(150, 35, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, 25, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 25, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 35, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices8[] = {
+static Vtx gStatusIconAltAnimVertices8[] = {
     VTX(150, 25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, 15, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 15, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 25, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices9[] = {
+static Vtx gStatusIconAltAnimVertices9[] = {
     VTX(150, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, 5, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 5, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 15, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices10[] = {
+static Vtx gStatusIconAltAnimVertices10[] = {
     VTX(150, 5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, -5, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -5, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, 5, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices11[] = {
+static Vtx gStatusIconAltAnimVertices11[] = {
     VTX(150, -5, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, -15, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -15, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -5, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices12[] = {
+static Vtx gStatusIconAltAnimVertices12[] = {
     VTX(150, -15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, -25, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -25, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -15, 0, 3520, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gComputerSelectionVertices13[] = {
+static Vtx gStatusIconAltAnimVertices6[] = {
     VTX(150, -25, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(150, -35, 0, 0, 320, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(260, -35, 0, 3520, 320, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -359,62 +359,62 @@ static Gfx gStatusIconDL[] = {
 static Gfx gStatusIconAnimDL[] = {
     gsDPLoadTextureTile(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices0, 4, 0),
+    gsSPVertex(gStatusIconAnimVertices0, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E000C80, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices1, 4, 0),
+    gsSPVertex(gStatusIconAnimVertices1, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E001900, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices2, 4, 0),
+    gsSPVertex(gStatusIconAnimVertices2, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E002580, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices3, 4, 0),
+    gsSPVertex(gStatusIconAnimVertices3, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E003200, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices4, 4, 0),
+    gsSPVertex(gStatusIconAnimVertices4, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E003E80, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices5, 4, 0),
+    gsSPVertex(gStatusIconAnimVertices5, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E004B00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 160, 0, 0, 0, 159, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices6, 4, 0),
+    gsSPVertex(gStatusIconAnimVertices6, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 static Gfx gStatusIconAltAnimDL[] = {
     gsDPLoadTextureTile(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices7, 4, 0),
+    gsSPVertex(gStatusIconAltAnimVertices7, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E000898, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices8, 4, 0),
+    gsSPVertex(gStatusIconAltAnimVertices8, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E001130, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices9, 4, 0),
+    gsSPVertex(gStatusIconAltAnimVertices9, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E0019C8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices10, 4, 0),
+    gsSPVertex(gStatusIconAltAnimVertices10, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E002260, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices11, 4, 0),
+    gsSPVertex(gStatusIconAltAnimVertices11, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E002AF8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices12, 4, 0),
+    gsSPVertex(gStatusIconAltAnimVertices12, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0E003390, G_IM_FMT_RGBA, G_IM_SIZ_16b, 110, 0, 0, 0, 109, 9, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPVertex(gComputerSelectionVertices13, 4, 0),
+    gsSPVertex(gStatusIconAltAnimVertices6, 4, 0),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
@@ -597,7 +597,7 @@ static u32 gComputerSelectionDescriptor[] = {
     0x00000000, 0x08000000, MiniGameSelect_DrawGameBackdrop, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
-static Vtx gComputerSelectionVertices[] = {
+static Vtx gRoundSpinnerPanelVertices[] = {
     VTX(0, 40, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),         VTX(0, 35, 0, 0, 160, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(300, 35, 0, 9600, 160, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(300, 40, 0, 9600, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 35, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),         VTX(0, 30, 0, 0, 160, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -702,7 +702,7 @@ static Gfx gComputerRootDL[] = {
     gsSPEndDisplayList(),
 };
 static u32 gItemSelectionDescriptor[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gComputerSelectionVertices, 0x05000000, 0x22040000,
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gRoundSpinnerPanelVertices, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, MiniGameSelect_DrawStaticBackdrop, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
 
@@ -769,7 +769,7 @@ static u32 gUILayoutConfig[] = {
     &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000, 0x06000000, 0x01000000,
 };
 
-static s32 gItemIdList[] = { 1, 2, 3, 5, 6, 9, 0xD, 0xF, 0x10 };
+static s32 gMinigameIdList[] = { 1, 2, 3, 5, 6, 9, 0xD, 0xF, 0x10 };
 static u8* gStatusIconAnimTextures[] = {
     D_0302EE00, D_03034580, D_03039D00, D_0303F480, D_03044C00,
     D_0304A380, D_0304FB00, D_03055280, D_0305AA00, D_03060180,
@@ -780,7 +780,7 @@ static u8* gStatusIconAltAnimTextures[] = {
 };
 static s16 gComLevelRowToDifficultyNoHyper[] = { 2, 1, 0, 0 };
 static s16 gComLevelRowToDifficultyWithHyper[] = { 3, 2, 1, 0 };
-static s16 gItemCategoryMap[] = { 4, 0, 1, 6, 3, 2, 7, 8, 5, 0 };
+static s16 gAttractShufflePermutation[] = { 4, 0, 1, 6, 3, 2, 7, 8, 5, 0 };
 static s16 gExtendedItemMap[] = { 2, 0, 1, 4, 5, 3, 8, 6, 7, 0, 0x8250, 0x8A20 };
 static u8* gIconTexturePointers[] = { D_0300BB80, D_03017700 };
 static u8* gItemSelectionIconTextures[9][4] = {
@@ -1121,7 +1121,7 @@ s32 MiniGameSelect_ResolveGameID(void) {
     s32 sp1C;
 
     if ((D_8250A288.unk_06 >= 0) && (D_8250A288.unk_06 < 9)) {
-        sp1C = gItemIdList[D_8250A288.unk_06];
+        sp1C = gMinigameIdList[D_8250A288.unk_06];
     } else {
         sp1C = 0;
     }
@@ -1139,7 +1139,7 @@ s32 MiniGameSelect_GameIDToIndex(s32 arg0) {
     s32 i;
 
     for (i = 0; i < 9; i++) {
-        if (arg0 == gItemIdList[i]) {
+        if (arg0 == gMinigameIdList[i]) {
             ret = i;
             break;
         }
@@ -1801,7 +1801,7 @@ void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
     MiniGameSelect_CreateCursor();
 }
 
-void UI_DrawStatusIcon(void) {
+void MiniGameSelect_DrawSelectionMarker(void) {
     u32 var_a2_2;
     s32 sp40;
     s32 pad3C;
@@ -1972,12 +1972,12 @@ void MiniGameSelect_DrawOptionPanel(void) {
 void MiniGameSelect_DrawFrame(void) {
     MiniGameSelect_RenderDirtyPanels();
     BgStage_DrawFrame();
-    Gfx_DrawTiledRgba16Image(gItemDataPtr);
+    Gfx_DrawTiledRgba16Image(gMinigameSelectBackground);
     Geo_RenderRootNode(gCursorNode);
     Minigames_DrawMatchBanner();
     Minigames_DrawRoundBanner();
     MiniGameSelect_DrawOptionPanel();
-    UI_DrawStatusIcon();
+    MiniGameSelect_DrawSelectionMarker();
     BgStage_AdvanceFrame();
 }
 
@@ -2452,7 +2452,7 @@ s32 MiniGameSelect_AttractCursorShuffle(s16* arg0, s16 arg1) {
                             break;
 
                         case 1:
-                            tmp = gItemCategoryMap[i];
+                            tmp = gAttractShufflePermutation[i];
                             MiniGameSelect_SetWidgetTargetState(gItemGridElements[i], sp50[tmp], 0);
                             break;
 
@@ -2646,7 +2646,7 @@ s32 MiniGameSelect_Entry(s32 arg0, s32 arg1) {
     ASSET_LOAD(D_3000000, kids_club_select_ui, 0);
     gItemArchive = ASSET_LOAD2(backgrounds, 1, 1);
 
-    gItemDataPtr = BinArchive_GetFile(gItemArchive, 4);
+    gMinigameSelectBackground = BinArchive_GetFile(gItemArchive, 4);
     gStringTable = gMinigameNamesBank;
     Save_EnsureBankLoaded(2);
     MiniGameSelect_LoadScene();

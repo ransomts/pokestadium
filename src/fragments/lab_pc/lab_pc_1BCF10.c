@@ -147,7 +147,7 @@ void LabPC_SetGridBorderActive(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     } else {
         var_v0 = 1;
     }
-    arg0->unk_44->unk_2C = gGridBorderTextures[var_v0];
+    arg0->unk_44->unk_2C = gGridBorderColors[var_v0];
 }
 
 void LabPC_BoxGrid_BindMessagePanel(unk_func_8820BE14_02C_038* arg0, unk_func_88507D4C* arg1) {

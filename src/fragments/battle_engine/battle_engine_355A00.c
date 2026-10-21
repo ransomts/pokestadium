@@ -22,7 +22,7 @@ static Vtx gWaterParticleVertices[] = {
     VTX(-6, 0, 6, 2048, 2048, 0xFF, 0xFF, 0xFF, 0x14),
     VTX(6, 0, 6, 0, 2048, 0xFF, 0xFF, 0xFF, 0x14),
 };
-static Gfx gWaterParticleTextureDL[] = {
+static Gfx gTrail50AltQuadDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -253,7 +253,7 @@ Gfx* Trail50EffectAlt_Draw(Gfx* arg0) {
                 guMtxCatL(&spC0, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, gWaterParticleTextureDL);
+                gSPDisplayList(arg0++, gTrail50AltQuadDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 

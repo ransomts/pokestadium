@@ -62,18 +62,18 @@ static GraphNode* gPokedexGraphNode;
 static char** D_88826A48;
 static s16 gMapPinToggle;
 static s16 gCurrentMapAreaId;
-static s16 gMapPinActive;
+static s16 gMapPrevAreaId;
 static s16 gMapZoomMode;
 static s16 gMapLabelState;
 static s16 gCurrentGameCategory;
-static s16 gMapCategory;
+static s16 gMapSelectedSpeciesIndex;
 static char gCurrentAreaNameBuf[0x1E];
-static u16 gMapAreaId;
+static u16 gMapMarkerBlinkTimer;
 static s16 gCameraIsMoving;
 static unk_D_88826A88 D_88826A88[6];
-static s16 gMapXOffset;
-static s16 gMapYOffset;
-static s16 gMapZoomLevel;
+static s16 gMapAreaLabelBoxWidth;
+static s16 gMapInfoLabelBoxWidth;
+static s16 gMapInfoBoxWidthCopy;
 static s16 D_88826CB8[7];
 static s16 D_88826CC6;
 static s16 D_88826CC8;
@@ -81,7 +81,7 @@ static s16 D_88826CCA;
 static s16 D_88826CCC;
 static s16 gMapLabelMaxWidth;
 static s16 D_88826CD0;
-static u8* gMapAreaData;
+static u8* gMapSpeciesIconImage;
 static f32 gCameraEaseSpeed;
 static s32 gCameraEaseFrames;
 static char* gTextLabelCount;
@@ -3342,7 +3342,7 @@ static s16 gPokedexMapAreaSequence[] = {
     1,    2,    3,    4,    5,    6,    7,    8,    9,    0xA,  0xB,  0xE,  0xF,  0x11, 0x12, 0xC,  0xD,  0x13,
     0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x24, 0x1F, 0x20, 0x21, 0x22, 0x10, 0x23,
 };
-static s16 gPokedexMapAreaTypes[] = {
+static s16 gPokedexSubAreaToAreaIndex[] = {
     0x1D, 0x1D, 0x1D, 0x19, 0x19, 0x19, 0x19, -1,   -1,   0x21, 0xC,  0x1B, 0x1B, 0x1B, 0x1B, 2,    5,    5, 5, 3,
     0x21, 0xC,  0x22, 0x1B, 0x21, -1,   0xE,  0xE,  0xE,  0xE,  0xE,  0xE,  0xE,  0x1D, 0,    1,    4,    6, 9, 0xA,
     0x10, 0xF,  0xB,  0xD,  0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x1A, 0x1C, 0x1E, 0x1F, 0x20, 7, 8, 0,
@@ -3461,7 +3461,7 @@ void Pokedex_BuildMapMarkersDisplayList(void) {
     gSPDisplayList(temp_v0++, D_888254B8);
 
     for (j = 0, var_t5 = 0x2580; j < 4; j++, var_t5 -= 0xC80) {
-        gDPLoadTextureTile(temp_v0++, var_t5 + gMapAreaData, G_IM_FMT_RGBA, G_IM_SIZ_16b, 80, 0, 0, 0, 80, 20, 0,
+        gDPLoadTextureTile(temp_v0++, var_t5 + gMapSpeciesIconImage, G_IM_FMT_RGBA, G_IM_SIZ_16b, 80, 0, 0, 0, 80, 20, 0,
                            G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, 7, 5, G_TX_NOLOD, G_TX_NOLOD);
         gDPPipeSync(temp_v0++);
 
@@ -3496,7 +3496,7 @@ void Pokedex_BuildOverviewMarkersDisplayList(void) {
     if (gMapPinToggle == 1) {
         gSPDisplayList(temp_v0++, gPokedexSmallIconTextureDL);
 
-        if ((gMapAreaId % 16) >= 8) {
+        if ((gMapMarkerBlinkTimer % 16) >= 8) {
             for (i = 0; i < 36; i++) {
                 if (gMapAreaMarkers[i].posX == 1) {
                     temp_a0 = gPokedexMapMarkerCoords[i].posX * 8;
@@ -3787,19 +3787,19 @@ void Pokedex_BuildMapLabelsDisplayList(void) {
     temp_v0 = Pokedex_DrawMapLabelBox(temp_v0, 0x1E, 0x14, D_88826CC8, 0x10, 2, 1);
 
     if (gMapLabelState == 1) {
-        if (gMapYOffset > 0) {
-            sp46 = 0xA0 - (gMapYOffset / 2);
-            sp44 = gMapYOffset;
-            temp_v0 = Pokedex_DrawMapLabelBox(temp_v0, sp46, 0x78, gMapYOffset, 0x14, 2, 1);
+        if (gMapInfoLabelBoxWidth > 0) {
+            sp46 = 0xA0 - (gMapInfoLabelBoxWidth / 2);
+            sp44 = gMapInfoLabelBoxWidth;
+            temp_v0 = Pokedex_DrawMapLabelBox(temp_v0, sp46, 0x78, gMapInfoLabelBoxWidth, 0x14, 2, 1);
         }
     } else {
         if (gMapPinToggle == 0) {
             sp2C = gPokedexMapAreaSequence[gCurrentMapAreaId] - 1;
             temp_v0 = Pokedex_DrawMapLabelBox(temp_v0, 0xB9, 0xD2, 0x73, 0x10, 2, 1);
-            if ((gMapZoomMode == 1) && (sp2C >= 0) && (gCameraIsMoving == 0) && (gMapXOffset > 0) && (gCameraEaseFrames != 0)) {
+            if ((gMapZoomMode == 1) && (sp2C >= 0) && (gCameraIsMoving == 0) && (gMapAreaLabelBoxWidth > 0) && (gCameraEaseFrames != 0)) {
                 temp_v0_2 = (gMapAreaMarkers[sp2C].posY * 0xA) - 0xA;
                 sp42 = 0x5A - gMapLabelMaxWidth;
-                sp3E = gMapXOffset + 0xA;
+                sp3E = gMapAreaLabelBoxWidth + 0xA;
                 sp40 = 0xB4 - temp_v0_2;
                 sp3C = temp_v0_2 + 0x14;
                 temp_v0 = Pokedex_DrawMapLabelBox(temp_v0, sp42, sp40, sp3E, sp3C, 2, 1);
@@ -3822,7 +3822,7 @@ void Pokedex_BuildMapLabelsDisplayList(void) {
 
     gSPDisplayList(temp_v0++, D_88825A80);
 
-    if ((gMapLabelState == 1) && (gMapYOffset > 0)) {
+    if ((gMapLabelState == 1) && (gMapInfoLabelBoxWidth > 0)) {
         gDPFillRectangle(temp_v0++, sp46 - 1, 119, sp46 + sp44 + 1, 141);
     }
 
@@ -3834,7 +3834,7 @@ void Pokedex_BuildMapLabelsDisplayList(void) {
         gDPFillRectangle(temp_v0++, 79, 47, 232, 199);
     }
 
-    if ((gMapZoomMode == 1) && (gCameraIsMoving == 0) && (gMapXOffset > 0)) {
+    if ((gMapZoomMode == 1) && (gCameraIsMoving == 0) && (gMapAreaLabelBoxWidth > 0)) {
         gDPFillRectangle(temp_v0++, sp42 - 1, sp40 - 1, sp42 + sp3E + 1, sp40 + sp3C + 1);
     }
 
@@ -3922,7 +3922,7 @@ void Pokedex_UpdateAreaMapFrame(void) {
     Pokedex_UpdateCameraEaseSpeed();
     node->unk_24.near = 100.0f;
     node->unk_24.far = 12800.0f;
-    gMapAreaId++;
+    gMapMarkerBlinkTimer++;
 
     Pokedex_BuildMapMarkerDisplayList();
     Pokedex_BuildMapMarkersDisplayList();
@@ -3984,14 +3984,14 @@ s32 Pokedex_DrawAreaMapFrame(UNUSED u8 arg0) {
     temp_v0 = Text_GetString(spD0, 0x20, gPokedexTextBank, 4);
     Font_Printf(0x23, 0x17, temp_v0);
     D_88826CC8 = Font_MeasureTextExtent(0, 0, temp_v0) + 0xA;
-    gMapYOffset = 0;
-    gMapXOffset = 0;
+    gMapInfoLabelBoxWidth = 0;
+    gMapAreaLabelBoxWidth = 0;
     gMapLabelMaxWidth = 0;
     D_88826CD0 = 0;
     if (gMapLabelState == 1) {
         sprintf(D_88826A88[0].posX, "%s", Text_GetString(NULL, 0, gPokedexTextBank, 7));
-        gMapYOffset = Font_MeasureTextExtent(0, 0, D_88826A88[0].posX) + 0x1E;
-        Font_Printf(0xAF - (gMapYOffset / 2), 0x7D, "%s", D_88826A88[0].posX);
+        gMapInfoLabelBoxWidth = Font_MeasureTextExtent(0, 0, D_88826A88[0].posX) + 0x1E;
+        Font_Printf(0xAF - (gMapInfoLabelBoxWidth / 2), 0x7D, "%s", D_88826A88[0].posX);
     } else {
         if (gMapPinToggle == 0) {
             temp_s0 = gPokedexMapAreaSequence[gCurrentMapAreaId];
@@ -4049,8 +4049,8 @@ s32 Pokedex_DrawAreaMapFrame(UNUSED u8 arg0) {
                                 }
                             }
 
-                            if (gMapXOffset < gMapYOffset) {
-                                gMapXOffset = gMapYOffset;
+                            if (gMapAreaLabelBoxWidth < gMapInfoLabelBoxWidth) {
+                                gMapAreaLabelBoxWidth = gMapInfoLabelBoxWidth;
                             }
 
                             temp_s0_3 = Font_MeasureTextExtent(0, 0, D_88826A88[i].unk_2D);
@@ -4062,9 +4062,9 @@ s32 Pokedex_DrawAreaMapFrame(UNUSED u8 arg0) {
                                 D_88826CD0 = temp_v0_3;
                             }
 
-                            gMapYOffset = gMapLabelMaxWidth + D_88826CD0 + 0x64;
-                            gMapXOffset = gMapYOffset;
-                            D_88826A88[i].unk_5A = gMapYOffset;
+                            gMapInfoLabelBoxWidth = gMapLabelMaxWidth + D_88826CD0 + 0x64;
+                            gMapAreaLabelBoxWidth = gMapInfoLabelBoxWidth;
+                            D_88826A88[i].unk_5A = gMapInfoLabelBoxWidth;
                         }
 
                         var_a1 = 0;
@@ -4104,7 +4104,7 @@ s32 Pokedex_DrawAreaMapFrame(UNUSED u8 arg0) {
             Font_Printf(0x65, 0xB8, " %s", Text_GetString(NULL, 0, gPokedexTextBank, 6));
         }
 
-        if ((gCameraIsMoving == 0) || (gCurrentMapAreaId == gMapPinActive)) {
+        if ((gCameraIsMoving == 0) || (gCurrentMapAreaId == gMapPrevAreaId)) {
             D_88826CCA = Font_MeasureTextExtent(0, 0, spF4);
             if (D_88826CCA == D_88826CCC) {
                 Font_Printf(0x5A - (D_88826CCA / 2), 0xD5, "%s", spF4);
@@ -4112,7 +4112,7 @@ s32 Pokedex_DrawAreaMapFrame(UNUSED u8 arg0) {
         }
     }
 
-    gMapZoomLevel = gMapYOffset;
+    gMapInfoBoxWidthCopy = gMapInfoLabelBoxWidth;
     Font_EndTexturedTextRendering();
     return 0;
 }
@@ -4136,18 +4136,18 @@ s32 Pokedex_CheckAreaMapExit(void) {
         }
 
         if (gPlayer1Controller->buttonPressed & 0x800) {
-            gMapPinActive = gCurrentMapAreaId;
+            gMapPrevAreaId = gCurrentMapAreaId;
             gCurrentMapAreaId = Pokedex_FindNextMapArea(gCurrentMapAreaId);
-            if (gMapPinActive != gCurrentMapAreaId) {
+            if (gMapPrevAreaId != gCurrentMapAreaId) {
                 Audio_PlaySoundEffectByIdWrapper(1);
                 Pokedex_ResetCameraEase();
             }
         }
 
         if (gPlayer1Controller->buttonPressed & 0x400) {
-            gMapPinActive = gCurrentMapAreaId;
+            gMapPrevAreaId = gCurrentMapAreaId;
             gCurrentMapAreaId = Pokedex_FindPrevMapArea(gCurrentMapAreaId);
-            if (gMapPinActive != gCurrentMapAreaId) {
+            if (gMapPrevAreaId != gCurrentMapAreaId) {
                 Audio_PlaySoundEffectByIdWrapper(1);
                 Pokedex_ResetCameraEase();
             }
@@ -4160,7 +4160,7 @@ s32 Pokedex_CheckAreaMapExit(void) {
                     if (gMapPinToggle == 1) {
                         gMapPinToggle = 0;
                     }
-                    gMapPinActive = gCurrentMapAreaId;
+                    gMapPrevAreaId = gCurrentMapAreaId;
                     Audio_PlaySoundEffectByIdWrapper(0x19);
                     Pokedex_ResetCameraEase();
                 }
@@ -4170,7 +4170,7 @@ s32 Pokedex_CheckAreaMapExit(void) {
                 if (gPlayer1Controller->buttonPressed & 0x4000) {
                     gMapZoomMode = 0;
                     gCameraIsMoving = 1;
-                    gMapPinActive = gCurrentMapAreaId;
+                    gMapPrevAreaId = gCurrentMapAreaId;
                     Audio_PlaySoundEffectByIdWrapper(0x1A);
                     Pokedex_ResetCameraEase();
                 }
@@ -4181,13 +4181,13 @@ s32 Pokedex_CheckAreaMapExit(void) {
 }
 
 // PictureQuiz_ShowSpeciesInfo: score 705, 6 diff lines, all as1 scheduling in the block after
-// `if (gPokedexMapAreaTypes[i] >= 0)` (temp_s0 compute). Draft hoists `lui %hi(gPokedexMapAreaSequence)` and
+// `if (gPokedexSubAreaToAreaIndex[i] >= 0)` (temp_s0 compute). Draft hoists `lui %hi(gPokedexMapAreaSequence)` and
 // `lui %hi(gMapAreaMarkers)` above the bltz (into the lh stall) and puts `addu s0` in the
 // jal delay slot; target hoists nothing and puts `sll s4,s1,2` (i*4 for the table switch)
 // there. ido_bisect: only as1-noxbb moves it (160). cc -S (ugen) order already equals the
 // target order, so uopt output is right; as1 cross-bb hoisting is the whole diff.
 // Dead ends (all 705 unless noted): temp_s0 declared outer/inner, `idx` temp (s32/s16,
-// worse 3276+), `gMapAreaMarkers + x - 1`, `&gMapAreaMarkers[x] - 1`, s16 temp for gPokedexMapAreaTypes[i],
+// worse 3276+), `gMapAreaMarkers + x - 1`, `&gMapAreaMarkers[x] - 1`, s16 temp for gPokedexSubAreaToAreaIndex[i],
 // `< 0 continue`, `< 0 {} else`, goto next, labels, do{}while(0), if(1){} / if(i){} /
 // if(temp_s0){} at several spots, `> -1`, u32 i, s16 i (worse), merging case 1/2 (worse),
 // dropping `case 3:` (worse). `!= -1` gives 530 (only the branch differs). Wrapping the
@@ -4214,7 +4214,7 @@ s32 Pokedex_CheckAreaMapExit(void) {
 // original ugen output probably had something at the loop latch that reads t0/t3/s4 and
 // dies in as1 (dead code after the if-body), e.g. a strength-reduced `s4 += 4` that the
 // body's own `sll s4` makes dead. Dead C statements there (else-branch / after the if)
-// are removed by uopt, and a function-local `static` gPokedexMapAreaTypes changes nothing.
+// are removed by uopt, and a function-local `static` gPokedexSubAreaToAreaIndex changes nothing.
 void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, char *arg5, char **arg6)
 {
   s32 i;
@@ -4227,7 +4227,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
   gMapPinToggle = 0;
   gCameraIsMoving = 0;
   gMapZoomMode = 0;
-  gMapZoomLevel = 0;
+  gMapInfoBoxWidthCopy = 0;
   D_88826CC6 = 0;
   for (i = 0; i < 36; i++)
   {
@@ -4237,12 +4237,12 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
 
   main_pool_push_state('MAPV');
   gPokedexTextBank = arg6;
-  gMapCategory = arg0 - 1;
+  gMapSelectedSpeciesIndex = arg0 - 1;
   sprintf(gCurrentAreaNameBuf, "%s", arg5);
   gTextLabelCount = Text_GetString(0, 0, gPokedexTextBank, 9);
   gTextLabelSeparator = Text_GetString(0, 0, gPokedexTextBank, 0x37);
-  gMapAreaData = main_pool_alloc(0x3200, 0);
-  Pokedex_LoadIcon(gMapAreaData, arg0);
+  gMapSpeciesIconImage = main_pool_alloc(0x3200, 0);
+  Pokedex_LoadIcon(gMapSpeciesIconImage, arg0);
   Asset_LoadToSegment((((u32) D_3000000) & 0x0F000000) >> 0x18, kanto_gb_map_ROM_START, kanto_gb_map_ROM_END, 0);
   Fragment_LoadAndRelocateFromRomRange(sp4C, ((((u32) (&D_8C000000)) & 0x0FF00000) >> 0x14) - 0x10, pokedex_area_model_ROM_START, pokedex_area_model_ROM_END, arg3, arg4);
   D_88826A48 = BinArchive_GetFile(BinArchive_Open(_6EB340_ROM_START, _6EB340_ROM_END, 1, 1), 0);
@@ -4250,7 +4250,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
   gMapLabelState = 1;
   for (i = 0; i < 59; i++)
   {
-    new_var = gPokedexMapAreaTypes[i];
+    new_var = gPokedexSubAreaToAreaIndex[i];
     if ((i && i) && i)
     {
     }
@@ -4301,7 +4301,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
         {
           break;
         }
-        if (gMapCategory == (var_v1_2->posX - 1))
+        if (gMapSelectedSpeciesIndex == (var_v1_2->posX - 1))
         {
           temp_s0->posX = 1;
           temp_s0->rotation[temp_s0->posY] = var_v1_2;
@@ -4321,7 +4321,7 @@ void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 ar
   }
 
   gCurrentMapAreaId = Pokedex_FindNextMapArea(0);
-  gMapPinActive = gCurrentMapAreaId;
+  gMapPrevAreaId = gCurrentMapAreaId;
   GeoNode_CreateDisplayList(0, &D_88826A20, 5, 0);
   GeoNode_CreateDisplayList(0, &D_88826A00, 5, 0);
   GeoNode_CreateDisplayList(0, &D_888269E0, 4, 0);

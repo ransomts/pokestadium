@@ -97,10 +97,10 @@ typedef struct StadiumModel {
     /* 0x170 */ ModelVertex mvtx;
 } StadiumModel; // size = 0x204
 
-void func_80033D1C(StadiumModel* model, MtxF* mtx);
+void Model_BuildVertexDataAndCommands(StadiumModel* model, MtxF* mtx);
 void Model_InitializeVertexPositions(ModelSegment*, MtxF*, ModelVertex*);
-void func_800357F4(StadiumModel* model);
+void Model_BuildTransformCommands(StadiumModel* model);
 void Model_ApplyTransformCommands(ModelSegment*, ModelVertex*, StadiumModel*, f32);
-void func_80035FA8(ModelSegment*, ModelVertex*);
+void Model_IntegrateVertexOffsets(ModelSegment*, ModelVertex*);
 
 #endif // _33E30_H_

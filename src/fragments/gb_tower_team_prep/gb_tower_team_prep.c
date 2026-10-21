@@ -42,7 +42,7 @@ s32 GbTower_TeamPrepFrameCallback(u8 arg0) {
 
 void GbTower_BuildPartyResult(UnkInputStruct8000D738* arg0) {
     s32 i;
-    PlayerName sp34;
+    GbsSaveOptions sp34;
     u16(*var_s1)[0x640] = arg0->rotation[0];
 
     Save_GetOptions(&sp34);

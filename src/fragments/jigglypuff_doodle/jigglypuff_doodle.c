@@ -156,7 +156,7 @@ void JigglypuffGame_DrawHud(s32 arg0) {
             Text_SetPrimColor(0xC8, 0xC8, 0x64, 0xFF);
             Font_Printf(0xA0 - (Text_MeasureStringWidth(gHudTextObj, gText_DrawInstructions) / 2), 0x46, gText_DrawInstructions);
             Font_SetActive(2, -2);
-            Font_Printf(0xA0 - (Text_MeasureStringWidth(gHudTextObj, (char*)gTextTable_StageNames) / 2), 0x5A, (char*)gTextTable_StageNames);
+            Font_Printf(0xA0 - (Text_MeasureStringWidth(gHudTextObj, (char*)gMinigameSharedStrings) / 2), 0x5A, (char*)gMinigameSharedStrings);
             Font_Printf(0xA0 - (Text_MeasureStringWidth(gHudTextObj, gText_JumpWithCStick) / 2), 0x6E, gText_JumpWithCStick);
             Font_Printf(0xA0 - (Text_MeasureStringWidth(gHudTextObj, gText_DrawWithAButton) / 2), 0x7D, gText_DrawWithAButton);
 

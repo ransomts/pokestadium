@@ -1168,7 +1168,7 @@ s32 LabPC_DrawBoxLocationLabel(unk_func_88208C5C* arg0, s32 arg1, s32 arg2) {
     if ((arg0->unk_34 == 0) || (arg0->unk_34 == 1)) {
         var_s0 = (((arg0->posX.unk_14.posX - temp_v0) - 0x20) / 2) + arg1 + 0x20;
 
-        gDPLoadTextureBlock(gDisplayListHead++, gTexture_MoveTargetSmall[arg0->unk_30], G_IM_FMT_RGBA, G_IM_SIZ_16b, 24, 26, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gTexture_GbPakIcons[arg0->unk_30], G_IM_FMT_RGBA, G_IM_SIZ_16b, 24, 26, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (var_s0 - 0x20) << 2, (arg2 + 2) << 2, (var_s0 - 9) << 2,
@@ -1176,7 +1176,7 @@ s32 LabPC_DrawBoxLocationLabel(unk_func_88208C5C* arg0, s32 arg1, s32 arg2) {
     } else {
         var_s0 = (((arg0->posX.unk_14.posX - temp_v0) - 0x30) / 2) + arg1 + 0x30;
 
-        gDPLoadTextureBlock(gDisplayListHead++, gTexture_MoveTargetLarge, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 26, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gTexture_N64PakIcon, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 26, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (var_s0 - 0x30) << 2, (arg2 + 2) << 2, (var_s0 - 9) << 2,
@@ -1382,7 +1382,7 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         gPanelIconTexture,
         0x30,
         0x0000,
-        gPanelOverlayTexture,
+        gPanelOverlayColor,
         1,
         1,
     },
@@ -1394,7 +1394,7 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         gPanelIconTexture,
         0x30,
         0x0000,
-        gPanelOverlayTexture,
+        gPanelOverlayColor,
         0,
         3,
     },
@@ -1406,7 +1406,7 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         gPanelBackgroundTexture1,
         0x30,
         0x0000,
-        gPanelAccentTexture2,
+        gPanelAccentColorCyan,
         0,
         3,
     },
@@ -1430,7 +1430,7 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         gPanelBackgroundTexture3,
         0x30,
         0x0000,
-        gPanelAccentTexture4,
+        gPanelAccentColorYellow,
         0,
         1,
     },
@@ -1442,7 +1442,7 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         gPanelBackgroundTexture2,
         0x30,
         0x0000,
-        gPanelAccentTexture3,
+        gPanelAccentColorGreen,
         1,
         1,
     },
@@ -1454,7 +1454,7 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         gPanelBackgroundTexture4,
         0x30,
         0x0000,
-        gPanelAccentTexture1,
+        gPanelAccentColorWhiteGray,
         0,
         3,
     },
@@ -1475,7 +1475,7 @@ static Color_RGBA8 gDialogTitleColor = { 0xFF, 0xFF, 0x00, 0xFF };
 static Color_RGBA8 gDialogBodyColor = { 0x2D, 0x1A, 0x41, 0xFF };
 static Color_RGBA8 gDialogShadowColor = { 0x6F, 0x5F, 0x7F, 0xFF };
 static Color_RGBA8* gDialogColorPalette[] = {
-    gPanelTextureDefault, gPanelTextureDefault, gPanelColorCyan, gBoxMenuColorCheckItems, gPanelColorYellow, gPanelColorGreen, gPanelColorWhite, gPanelColorPink,
+    gPanelColorDefault, gPanelColorDefault, gPanelColorCyan, gBoxMenuColorCheckItems, gPanelColorYellow, gPanelColorGreen, gPanelColorWhite, gPanelColorPink,
 };
 static Color_RGBA8* gDialogAccentPalette[] = { gPanelColorWhite, gPanelColorWhite };
 static Color_RGBA8 gDialogDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };

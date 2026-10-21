@@ -12,7 +12,7 @@
 #include "src/memory.h"
 #include "src/pokemon_stats.h"
 
-static u8 gMoveIdToCategoryMap[] = {
+static u8 gMoveIdToAlphabeticalRankMap[] = {
     0x5F, 0x45, 0x21, 0x12, 0x51, 0x58, 0x2A, 0x43, 0x96, 0x6F, 0x9C, 0x36, 0x66, 0x8D, 0x19, 0x37, 0xA1, 0xA0, 0x2F,
     9,    0x77, 0x9D, 0x83, 0x1E, 0x50, 0x44, 0x6D, 0x6E, 0x3A, 0x3C, 0x31, 0x3D, 0x8E, 0xC,  0xA3, 0x90, 0x92, 0x20,
     0x8F, 0x5D, 0x9B, 0x5B, 0x49, 0xA,  0x34, 0x6A, 0x74, 0x8A, 0x7F, 0x1C, 1,    0x27, 0x2D, 0x56, 0x9E, 0x3E, 0x8B,
@@ -270,7 +270,7 @@ void BattleInfoWidget_DrawIndicator(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 void BattleInfoWidget_DrawEntry(s32 arg0, s32 arg1, unk_func_88309C38_arg2* arg2, s32 arg3, s32 arg4,
                    unk_func_8830867C_034_03C_038* arg5) {
     static Color_RGBA8 gMoveEntryHighlightColor = { 0xB2, 0xFF, 0xC3, 0xFF };
-    static Color_RGBA8 gMoveEntryTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gBoxEntryTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     UNUSED s32 pad;
     char* sp38;
@@ -287,7 +287,7 @@ void BattleInfoWidget_DrawEntry(s32 arg0, s32 arg1, unk_func_88309C38_arg2* arg2
     }
 
     Font_BeginTranslucentTextRendering();
-    Text_SetEnvColor(gMoveEntryTextColor.r, gMoveEntryTextColor.g, gMoveEntryTextColor.b, gMoveEntryTextColor.a);
+    Text_SetEnvColor(gBoxEntryTextColor.r, gBoxEntryTextColor.g, gBoxEntryTextColor.b, gBoxEntryTextColor.a);
     Font_SetActive(8, 0);
     Font_Printf(arg0 + 0x2C, arg1 + 2, sp38);
 
@@ -1750,7 +1750,7 @@ void BattleInfoWidget_DrawStatusListEntry(s32 arg0, s32 arg1, unk_func_88309C38_
     Font_Printf(((arg0 + sp7C) - Font_MeasureTextExtent(0, 0, sp74)) + 8, arg1 + 8, sp74);
     Text_SetEnvColor(arg2->rotation->rotation.r, arg2->rotation->rotation.g, arg2->rotation->rotation.b, arg2->rotation->rotation.a);
     Font_SetActive(8, 0);
-    sp70 = Text_GetString(NULL, 0, gMessageBank_MoveNames, arg2->rotation->posX);
+    sp70 = Text_GetString(NULL, 0, gTypeNamesTable, arg2->rotation->posX);
     Font_Printf(((sp78 - Font_MeasureTextExtent(0, 0, sp70)) / 2) + arg0 + sp7C + 0x10, arg1 + 4, sp70);
     Font_EndTexturedTextRendering();
 }
@@ -1932,7 +1932,7 @@ void BattleInfoWidget_SetTypeEntries(unk_func_8830867C_03C* arg0, unk_func_88308
         if (i < arg1->posX) {
             arg0->unk_30[i].rotation = arg1->rotation[i];
             var_s3 =
-                Text_GetString(NULL, 0, gMessageBank_MoveNames,
+                Text_GetString(NULL, 0, gTypeNamesTable,
                               ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(arg0->unk_30[i].rotation)->posX);
             arg0->unk_30[i].posX->unk_30 =
                 ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(arg0->unk_30[i].rotation)->rotation;
@@ -2091,7 +2091,7 @@ s32 BattleInfoWidget_HandleTypeSelectionProxyInput(unk_func_8830867C_03C_04C* ar
                         arg0->unk_24->unk_58[arg0->unk_24->unk_54->posX.unk_38].posX;
                     BattleInfoWidget_CenterLabel(
                         arg0->unk_24, arg0->unk_24->unk_30[arg0->unk_24->unk_50->unk_24].posX,
-                        Text_GetString(NULL, 0, gMessageBank_MoveNames,
+                        Text_GetString(NULL, 0, gTypeNamesTable,
                                       arg0->unk_24->unk_58[arg0->unk_24->unk_54->posX.unk_38].rotation->posX));
                     arg0->unk_24->unk_30[arg0->unk_24->unk_50->unk_24].posX->unk_30 =
                         arg0->unk_24->unk_58[arg0->unk_24->unk_54->posX.unk_38].rotation->rotation;
@@ -2109,8 +2109,8 @@ s32 BattleInfoWidget_HandleTypeSelectionProxyInput(unk_func_8830867C_03C_04C* ar
 
 void BattleInfoWidget_DrawTypeEntry(s32 arg0, s32 arg1, unk_func_88309C38_arg2* arg2, s32 arg3, s32 arg4,
                    unk_func_8821421C_038_034* arg5) {
-    static Color_RGBA8 gColor_PokemonEntryBackground = { 0x54, 0x4B, 0x3A, 0xFF };
-    static Color_RGBA8 gColor_PokemonEntryBorder = { 0x99, 0x89, 0x6A, 0xFF };
+    static Color_RGBA8 gColor_MoveEntryBackground = { 0x54, 0x4B, 0x3A, 0xFF };
+    static Color_RGBA8 gColor_MoveEntryBorder = { 0x99, 0x89, 0x6A, 0xFF };
 
     Color_RGBA8 sp84;
     UNUSED s32 pad;
@@ -2125,9 +2125,9 @@ void BattleInfoWidget_DrawTypeEntry(s32 arg0, s32 arg1, unk_func_88309C38_arg2* 
     sp7C = Font_MeasureTextExtent(4, 0, "000");
     sp78 = (arg5->posX.unk_3C - sp7C) - 0x18;
     if (arg4 & 2) {
-        sp84 = Color_ScaleRgb(gColor_PokemonEntryBackground, 1.4f);
+        sp84 = Color_ScaleRgb(gColor_MoveEntryBackground, 1.4f);
     } else {
-        sp84 = (0, gColor_PokemonEntryBackground);
+        sp84 = (0, gColor_MoveEntryBackground);
     }
 
     gDPPipeSync(gDisplayListHead++);
@@ -2141,12 +2141,12 @@ void BattleInfoWidget_DrawTypeEntry(s32 arg0, s32 arg1, unk_func_88309C38_arg2* 
     gDPFillRectangle(gDisplayListHead++, arg0, arg1 + 1, (arg5->posX.unk_3C + arg0) - 1,
                      (arg1 + arg5->posX.unk_3E) - 2);
 
-    temp_a0 = ((gColor_PokemonEntryBorder.r << 8) & 0xF800) | ((gColor_PokemonEntryBorder.g << 3) & 0x7C0) | ((gColor_PokemonEntryBorder.b >> 2) & 0x3E) | 1;
+    temp_a0 = ((gColor_MoveEntryBorder.r << 8) & 0xF800) | ((gColor_MoveEntryBorder.g << 3) & 0x7C0) | ((gColor_MoveEntryBorder.b >> 2) & 0x3E) | 1;
     gDPPipeSync(gDisplayListHead++);
     gDPSetFillColor(gDisplayListHead++, (temp_a0 << 0x10) | temp_a0);
     gDPFillRectangle(gDisplayListHead++, arg0, arg1, (arg5->posX.unk_3C + arg0) - 1, arg1);
 
-    temp_a0 = ((gColor_PokemonEntryBorder.r << 8) & 0xF800) | ((gColor_PokemonEntryBorder.g << 3) & 0x7C0) | ((gColor_PokemonEntryBorder.b >> 2) & 0x3E) | 1;
+    temp_a0 = ((gColor_MoveEntryBorder.r << 8) & 0xF800) | ((gColor_MoveEntryBorder.g << 3) & 0x7C0) | ((gColor_MoveEntryBorder.b >> 2) & 0x3E) | 1;
     gDPPipeSync(gDisplayListHead++);
     gDPSetFillColor(gDisplayListHead++, (temp_a0 << 0x10) | temp_a0);
     gDPFillRectangle(gDisplayListHead++, arg0, (arg1 + arg5->posX.unk_3E) - 1, (arg5->posX.unk_3C + arg0) - 1,
@@ -2179,10 +2179,10 @@ void BattleInfoWidget_CenterTypeLabel(unk_func_8830867C_040* arg0, unk_func_8850
 }
 
 void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, unk_func_88001300_000* arg3, MemoryPool* arg4) {
-    static Color_RGBA8 gColor_PokemonListBackground = { 0x64, 0x96, 0xB4, 0xFF };
-    static Color_RGBA8 gColor_PokemonListBorder = { 0x3C, 0x64, 0x78, 0xFF };
-    static Color_RGBA8 gColor_PokemonListHighlight = { 0xA0, 0x96, 0x64, 0xFF };
-    static Color_RGBA8 gColor_PokemonListAccent = { 0xFF, 0xFF, 0x00, 0xFF };
+    static Color_RGBA8 gColor_MovePanelBackground = { 0x64, 0x96, 0xB4, 0xFF };
+    static Color_RGBA8 gColor_MovePanelBorder = { 0x3C, 0x64, 0x78, 0xFF };
+    static Color_RGBA8 gColor_MovePanelHighlight = { 0xA0, 0x96, 0x64, 0xFF };
+    static Color_RGBA8 gColor_MovePanelAccent = { 0xFF, 0xFF, 0x00, 0xFF };
 
     s32 spCC;
     s32 i;
@@ -2238,7 +2238,7 @@ void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_2C);
 
     temp_s1 = mem_pool_alloc(arg4, sizeof(DashedBorderFrame));
-    ((func8850B254)Memmap_GetFragmentVaddr(WidgetTree_InitDashedBorderFrame))(temp_s1, 0, 0, spCC, 0x14, gColor_PokemonListBackground, gColor_PokemonListBorder);
+    ((func8850B254)Memmap_GetFragmentVaddr(WidgetTree_InitDashedBorderFrame))(temp_s1, 0, 0, spCC, 0x14, gColor_MovePanelBackground, gColor_MovePanelBorder);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, temp_s1);
 
     temp_s0 = mem_pool_alloc(arg4, sizeof(unk_func_8850878C));
@@ -2246,7 +2246,7 @@ void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s1, temp_s0);
 
     spA0 = mem_pool_alloc(arg4, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spA0, 0, 0x18, spCC, 0x114, gColor_PokemonListHighlight);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(spA0, 0, 0x18, spCC, 0x114, gColor_MovePanelHighlight);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, spA0);
 
     arg0->unk_60 = mem_pool_alloc(arg4, sizeof(GridMenu));
@@ -2291,14 +2291,14 @@ void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 
     ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(arg0->unk_60);
 
     temp_s0_2 = mem_pool_alloc(arg4, sizeof(WidgetAnimatedFrame));
-    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(temp_s0_2, 0, 0, 0x10, 0x10, gColor_PokemonListAccent);
+    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(temp_s0_2, 0, 0, 0x10, 0x10, gColor_MovePanelAccent);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(spA0, temp_s0_2);
     arg0->unk_60->unk_1C = temp_s0_2;
 
     temp_s2_3 = mem_pool_alloc(arg4, sizeof(s32) * 0xA4);
 
     for (i = 0; i < 0xA4; i++) {
-        temp_s2_3[gMoveIdToCategoryMap[i]] = Move_GetDisplayInfo(i + 1);
+        temp_s2_3[gMoveIdToAlphabeticalRankMap[i]] = Move_GetDisplayInfo(i + 1);
     }
 
     PointerList_Initialize(&arg0->unk_68, temp_s2_3, 0xA4, 0xA4);
@@ -2350,7 +2350,7 @@ void BattleInfoWidget_SetMoveSlots(unk_func_8830867C_040* arg0, unk_func_8830867
             arg0->unk_30[i].posX->unk_30 =
                 (((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(arg0->unk_30[i].rotation[1]))->rotation;
             arg0->unk_30[i].posX->unk_44 = arg0->unk_30[i].posX->unk_44;
-            arg0->unk_64->posX.unk_34[gMoveIdToCategoryMap[arg0->unk_30[i].rotation[0] - 1]] |= 2;
+            arg0->unk_64->posX.unk_34[gMoveIdToAlphabeticalRankMap[arg0->unk_30[i].rotation[0] - 1]] |= 2;
         } else {
             arg0->unk_30[i].rotation = NULL;
             var_s1 = "-------";
@@ -2499,7 +2499,7 @@ s32 MenuItem_ProcessInput(unk_func_8830867C_040_05C* arg0, Controller* arg1) {
                 } else {
                     if (arg0->unk_24->unk_30[arg0->unk_24->unk_60->unk_24].rotation != NULL) {
                         arg0->unk_24->unk_64->posX
-                            .unk_34[gMoveIdToCategoryMap[arg0->unk_24->unk_30[arg0->unk_24->unk_60->unk_24].rotation[0] - 1]] &= ~2;
+                            .unk_34[gMoveIdToAlphabeticalRankMap[arg0->unk_24->unk_30[arg0->unk_24->unk_60->unk_24].rotation[0] - 1]] &= ~2;
                     }
                     arg0->unk_24->unk_64->posX.unk_34[arg0->unk_24->unk_64->posX.unk_38] |= 2;
 

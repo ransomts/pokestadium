@@ -10,10 +10,10 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static s8 gHealthBarSpriteLookup[] = {
+static s8 gTeamIconSlotLookup[] = {
     0xFF, 0x00, 0x01, 0x02, 0x06, 0x07, 0x08, 0xFF, 0xFF, 0x03, 0x04, 0x05, 0x09, 0x0A, 0x0B, 0xFF,
 };
-static Vtx gHealthBarQuadVtx[] = {
+static Vtx gTeamBadgeQuadVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -25,7 +25,7 @@ static Gfx gHealthBarBadgeDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, SHADE, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gHealthBarQuadVtx, 12, 0),
+    gsSPVertex(gTeamBadgeQuadVtx, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -37,11 +37,11 @@ static Gfx gHealthBarBadgeDL[] = {
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
     gsSPEndDisplayList(),
 };
-static u32 gHealthBarNodeData[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, gHealthBarQuadVtx, 0x05000000, 0x22050000,
+static u32 gTeamBadgeNodeData[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gTeamBadgeQuadVtx, 0x05000000, 0x22050000,
     0x00000000, 0x08000000, BattlePrepTeamIcons_DrawActiveTeamBadge, gHealthBarBadgeDL, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx gHealthBarVtx[] = {
+static Vtx gMonIconFrameVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -49,43 +49,43 @@ static Vtx gHealthBarVtx[] = {
     VTX(-32, -16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, -48, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -48, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHealthBarSegmentVtx0[] = {
+static Vtx gMonIconRowVtx0[] = {
     VTX(-30, 45, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, 30, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 45, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 45, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 30, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 45, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHealthBarSegmentVtx1[] = {
+static Vtx gMonIconRowVtx1[] = {
     VTX(-30, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, 15, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 15, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 30, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHealthBarSegmentVtx2[] = {
+static Vtx gMonIconRowVtx2[] = {
     VTX(-30, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-30, 0, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 0, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(0, 0, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 0, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 15, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHealthBarSegmentVtx3[] = {
+static Vtx gMonIconRowVtx3[] = {
     VTX(-30, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(-30, -15, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(0, -15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -15, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 0, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHealthBarSegmentVtx4[] = {
+static Vtx gMonIconRowVtx4[] = {
     VTX(-30, -15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, -30, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, -30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -30, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -15, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHealthBarSegmentVtx5[] = {
+static Vtx gMonIconRowVtx5[] = {
     VTX(-30, -30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, -45, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -45, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, -45, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -45, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -30, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHealthBarBackVtx[] = {
+static Vtx gMonIconBackdropVtx[] = {
     VTX(-30, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-30, -30, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -30, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -95,7 +95,7 @@ static Gfx gHealthBarDL_Segments[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gHealthBarVtx, 12, 0),
+    gsSPVertex(gMonIconFrameVtx, 12, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -105,42 +105,42 @@ static Gfx gHealthBarDL_Segments[] = {
     gsDPLoadTextureBlock(0x0E002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
-    gsSPVertex(gHealthBarSegmentVtx0, 8, 0),
+    gsSPVertex(gMonIconRowVtx0, 8, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(gHealthBarSegmentVtx1, 8, 0),
+    gsSPVertex(gMonIconRowVtx1, 8, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(gHealthBarSegmentVtx2, 8, 0),
+    gsSPVertex(gMonIconRowVtx2, 8, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(gHealthBarSegmentVtx3, 8, 0),
+    gsSPVertex(gMonIconRowVtx3, 8, 0),
     gsDPLoadTextureTile(0x0F006000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F006000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(gHealthBarSegmentVtx4, 8, 0),
+    gsSPVertex(gMonIconRowVtx4, 8, 0),
     gsDPLoadTextureTile(0x0F008000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F008000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(gHealthBarSegmentVtx5, 8, 0),
+    gsSPVertex(gMonIconRowVtx5, 8, 0),
     gsDPLoadTextureTile(0x0F00A000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -154,18 +154,18 @@ static Gfx gHealthBarBackDL[] = {
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gHealthBarBackVtx, 4, 0),
+    gsSPVertex(gMonIconBackdropVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 gHealthBarNodeData_Status[] = {
-    0x17000000, 0x00000000,    0x00000000, 0x00000000, gHealthBarVtx, 0x05000000, 0x22050000, 0x00000000,
+static u32 gMonIconNodeData[] = {
+    0x17000000, 0x00000000,    0x00000000, 0x00000000, gMonIconFrameVtx, 0x05000000, 0x22050000, 0x00000000,
     0x08000000, BattlePrepTeamIcons_DrawIconSingle, gHealthBarDL_Segments, 0x22050000, gHealthBarBackDL, 0x25000000, 0x06000000, 0x01000000,
 };
-static Vtx gItemIconVtx[] = {
+static Vtx gMonIconDoubleVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -177,17 +177,17 @@ static Vtx gItemIconVtx[] = {
     VTX(-24, -20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-24, -44, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(24, -44, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(24, -20, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gItemIconBackVtx[] = {
+static Vtx gMonIconDoubleBackdropVtx[] = {
     VTX(-20, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-20, -10, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(20, -10, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(20, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gItemIconDL[] = {
+static Gfx gMonIconDoubleDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gItemIconVtx, 20, 0),
+    gsSPVertex(gMonIconDoubleVtx, 20, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -205,47 +205,47 @@ static Gfx gItemIconDL[] = {
     gsSP2Triangles(16, 17, 18, 0, 16, 18, 19, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gItemIconBackDL[] = {
+static Gfx gMonIconDoubleBackdropDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gItemIconBackVtx, 4, 0),
+    gsSPVertex(gMonIconDoubleBackdropVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 gItemIconNodeData[] = {
-    0x17000000, 0x00000000,    0x00000000, 0x00000000, gItemIconVtx, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, BattlePrepTeamIcons_DrawIconDouble, gItemIconDL, 0x22050000, gItemIconBackDL, 0x25000000, 0x06000000, 0x01000000,
+static u32 gMonIconDoubleNodeData[] = {
+    0x17000000, 0x00000000,    0x00000000, 0x00000000, gMonIconDoubleVtx, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, BattlePrepTeamIcons_DrawIconDouble, gMonIconDoubleDL, 0x22050000, gMonIconDoubleBackdropDL, 0x25000000, 0x06000000, 0x01000000,
 };
-static Vtx gHPBarSegmentVtx[] = {
+static Vtx gSmallMonIconVtx[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 0, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(32, 24, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -24, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -24, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHPBarSegmentVtx0[] = {
+static Vtx gSmallMonIconRowVtx0[] = {
     VTX(-30, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-30, 7, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(0, 7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 7, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 22, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHPBarSegmentVtx1[] = {
+static Vtx gSmallMonIconRowVtx1[] = {
     VTX(-30, 7, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-30, -7, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, -7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -7, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 7, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHPBarSegmentVtx2[] = {
+static Vtx gSmallMonIconRowVtx2[] = {
     VTX(-30, -7, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-30, -22, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -22, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, -22, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -22, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -7, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHPBarBackVtx[] = {
+static Vtx gSmallMonIconBackdropVtx[] = {
     VTX(-22, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-22, -22, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(22, -22, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -255,28 +255,28 @@ static Gfx gHPBarSegmentDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gHPBarSegmentVtx, 8, 0),
+    gsSPVertex(gSmallMonIconVtx, 8, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureBlock(0x0E000C00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(gHPBarSegmentVtx0, 8, 0),
+    gsSPVertex(gSmallMonIconRowVtx0, 8, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(gHPBarSegmentVtx1, 8, 0),
+    gsSPVertex(gSmallMonIconRowVtx1, 8, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(gHPBarSegmentVtx2, 8, 0),
+    gsSPVertex(gSmallMonIconRowVtx2, 8, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -290,24 +290,24 @@ static Gfx gHPBarBackDL[] = {
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gHPBarBackVtx, 4, 0),
+    gsSPVertex(gSmallMonIconBackdropVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 gHPBarNodeData[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtx, 0x05000000, 0x1B000000,    0x00000000,
+static u32 gSmallMonIconNodeData[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconVtx, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, gHPBarSegmentDL,
     0x22050000, gHPBarBackDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static u32 gHPBarNodeData_Alt[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtx, 0x05000000, 0x1B000000,    0x00000000,
+static u32 gSmallMonIconNodeDataOffset[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconVtx, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, gHPBarSegmentDL,
     0x22050000, gHPBarBackDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static Vtx gHPBarSegmentVtxAlt[] = {
+static Vtx gSmallMonIconDoubleVtx[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 0, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(32, 24, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(-32, -24, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -317,7 +317,7 @@ static Vtx gHPBarSegmentVtxAlt[] = {
     VTX(-12, -8, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-12, -20, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(12, -20, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(12, -8, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx gHPBarBackVtxAlt[] = {
+static Vtx gSmallMonIconDoubleBackdropVtx[] = {
     VTX(-14, 20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-14, -8, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(14, -8, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -327,7 +327,7 @@ static Gfx gHPBarSegmentDLAlt[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gHPBarSegmentVtxAlt, 16, 0),
+    gsSPVertex(gSmallMonIconDoubleVtx, 16, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -347,20 +347,20 @@ static Gfx gHPBarBackDLAlt[] = {
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(gHPBarBackVtxAlt, 4, 0),
+    gsSPVertex(gSmallMonIconDoubleBackdropVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 gHPBarNodeDataAlt[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtxAlt, 0x05000000, 0x1B000000,    0x00000000,
+static u32 gSmallMonIconDoubleNodeData[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconDoubleVtx, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gHPBarSegmentDLAlt,
     0x22050000, gHPBarBackDLAlt, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static u32 gHPBarNodeDataDoubleBadgeMirror[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, gHPBarSegmentVtxAlt, 0x05000000, 0x1B000000,    0x00000000,
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconDoubleVtx, 0x05000000, 0x1B000000,    0x00000000,
     0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gHPBarSegmentDLAlt,
     0x22050000, gHPBarBackDLAlt, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
 };
@@ -452,7 +452,7 @@ s32 BattlePrepTeamIcons_DrawBadgeIconSingle(s32 arg0, SimpleGfxNode* arg1) {
         if (temp_a1 >= 0x10) {
             temp_a1 = (temp_a1 - 0x10) % 12;
         } else {
-            temp_a1 = gHealthBarSpriteLookup[temp_a1];
+            temp_a1 = gTeamIconSlotLookup[temp_a1];
         }
 
         if (temp_a1 < 6) {
@@ -489,7 +489,7 @@ s32 BattlePrepTeamIcons_DrawBadgeIconDouble(s32 arg0, SimpleGfxNode* arg1) {
         if (temp_a3 >= 0x10) {
             temp_a3 = (temp_a3 - 0x10) % 12;
         } else {
-            temp_a3 = gHealthBarSpriteLookup[temp_a3];
+            temp_a3 = gTeamIconSlotLookup[temp_a3];
         }
 
         if (temp_a3 < 6) {
@@ -1209,16 +1209,16 @@ void BattlePrepTeamIcons_Init(gTeamIconsState* arg0) {
 
     sp2C = MainPool_AllocState(main_pool_get_available(), 0);
     if (arg0->posY == 1) {
-        arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gHPBarNodeData);
-        arg0->unk_0C = process_geo_layout(sp2C, gHPBarNodeData_Alt);
-        arg0->unk_10 = process_geo_layout(sp2C, gHPBarNodeDataAlt);
+        arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gSmallMonIconNodeData);
+        arg0->unk_0C = process_geo_layout(sp2C, gSmallMonIconNodeDataOffset);
+        arg0->unk_10 = process_geo_layout(sp2C, gSmallMonIconDoubleNodeData);
         arg0->unk_14 = process_geo_layout(sp2C, gHPBarNodeDataDoubleBadgeMirror);
     } else {
-        arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gHealthBarNodeData_Status);
-        arg0->unk_10 = process_geo_layout(sp2C, gItemIconNodeData);
+        arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gMonIconNodeData);
+        arg0->unk_10 = process_geo_layout(sp2C, gMonIconDoubleNodeData);
     }
 
-    arg0->unk_18 = process_geo_layout(sp2C, gHealthBarNodeData);
+    arg0->unk_18 = process_geo_layout(sp2C, gTeamBadgeNodeData);
     MainPool_FinalizeAllocation(sp2C);
 
     if (arg0->posY == 1) {

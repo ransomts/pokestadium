@@ -502,8 +502,8 @@ void BattleAnim_CreateBurstStreamEffect(void) {
 }
 
 void BattleAnim_CreateCollisionRandomEffect(void) {
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 5, BattleAnim_CallbackStartEffects18And73Descriptor11ScatterRiseFade, &gBattleAnimParticleDescriptors[0x11], 8, 4, 0x10, gParticleTexture_Default, 0x25, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 1, 0x24, BattleAnim_CallbackStartEffect73Descriptor15AnimatedColorImpulseFade, &gBattleAnimParticleDescriptors[0x15], 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 5, BattleAnim_CallbackStartEffects18And73Descriptor11ScatterRiseFade, &gBattleAnimParticleDescriptors[0x11], 8, 4, 0x10, gParticleEffectParam, 0x25, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 1, 0x24, BattleAnim_CallbackStartEffect73Descriptor15AnimatedColorImpulseFade, &gBattleAnimParticleDescriptors[0x15], 0, 1, 0x11, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_EndEffect70Descriptor0F_13SprayColumnSequence(void) {

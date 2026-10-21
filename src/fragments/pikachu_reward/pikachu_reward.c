@@ -26,7 +26,7 @@ static GraphNode* gCameraGraphNode;
 static GraphNode* gPikachuGeoNode;
 static ModelData* gPikachuModelData;
 static char** gMoveNameBank;
-static char** gStadiumMessageBank;
+static char** gPikachuRewardMsgBank;
 static Fragment2_1GraphNode gPikachuNodes[4];
 static TextFadeState gTextFadeState;
 static PikachuSession gPikachuSession;
@@ -364,7 +364,7 @@ s32 PikachuReward_ConfirmYesNoPrompt(char* arg0) {
         }
 
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-        Font_Printf(0xF2, 0x5C, Text_GetString(NULL, 0, gStadiumMessageBank, 0x10));
+        Font_Printf(0xF2, 0x5C, Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0x10));
 
         if (var_s1 == 1) {
             var_a2 = 0;
@@ -373,7 +373,7 @@ s32 PikachuReward_ConfirmYesNoPrompt(char* arg0) {
         }
 
         Text_SetEnvColor(0xFF, 0xFF, var_a2, 0xFF);
-        Font_Printf(0xF2, 0x6C, Text_GetString(NULL, 0, gStadiumMessageBank, 0x11));
+        Font_Printf(0xF2, 0x6C, Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0x11));
         Font_EndTexturedTextRendering();
         BgStage_AdvanceFrame();
     }
@@ -482,15 +482,15 @@ s32 PikachuReward_SelectMoveToForget(char* arg0) {
 }
 
 void PikachuReward_ShowDeclinedEnding(void) {
-    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 4));
+    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 4));
     gPikachuNodes->unk_01E.y = -0x800;
     ModelAnim_SetAnimation(gPikachuNodes, 5);
     ModelAnim_SetEventTrack(gPikachuNodes, 0);
     gPikachuActive = 1;
-    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gStadiumMessageBank, 4), 0x46);
+    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 4), 0x46);
     StageFade_Start(0x1E);
     Audio_StopMusic(0x3C);
-    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gStadiumMessageBank, 4), 0x1E);
+    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 4), 0x1E);
 }
 
 void PikachuReward_ShowSuccessEnding(void) {
@@ -499,10 +499,10 @@ void PikachuReward_ShowSuccessEnding(void) {
     PlayMoveSoundEffect(0, 0x39, 0x19, 0);
     gPikachuActive = 1;
     Audio_PlayMusicIfChanged(0x4A);
-    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 0xF));
-    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gStadiumMessageBank, 0xF), 0x98);
+    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xF));
+    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xF), 0x98);
     StageFade_Start(0x1E);
-    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gStadiumMessageBank, 0xF), 0x1E);
+    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xF), 0x1E);
 }
 
 void PikachuReward_PlayIntroCamera(void) {
@@ -537,18 +537,18 @@ s32 PikachuReward_ShowIntroAndConfirm(void) {
         var_s1 += 4;
     }
 
-    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 0), 1);
-    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 1));
-    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 1), 1);
+    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0), 1);
+    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 1));
+    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 1), 1);
 
     while (true) {
-        PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 2));
-        if (PikachuReward_ConfirmYesNoPrompt(Text_GetString(NULL, 0, gStadiumMessageBank, 2)) != 0) {
+        PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 2));
+        if (PikachuReward_ConfirmYesNoPrompt(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 2)) != 0) {
             return 1;
         }
 
-        PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 3));
-        if (PikachuReward_ConfirmYesNoPrompt(Text_GetString(NULL, 0, gStadiumMessageBank, 3)) != 0) {
+        PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 3));
+        if (PikachuReward_ConfirmYesNoPrompt(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 3)) != 0) {
             PikachuReward_ShowDeclinedEnding();
             return 0;
         }
@@ -563,37 +563,37 @@ s32 PikachuReward_ResolveMoveSlot(void) {
     temp_v0 = PikachuReward_CountKnownMoves();
     if (temp_v0 == 4) {
         while (true) {
-            PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 5));
-            PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 5), 1);
-            PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 6));
-            PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 6), 1);
-            PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 7));
+            PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 5));
+            PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 5), 1);
+            PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 6));
+            PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 6), 1);
+            PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 7));
 
-            if (PikachuReward_ConfirmYesNoPrompt(Text_GetString(NULL, 0, gStadiumMessageBank, 7)) != 0) {
-                PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 9));
+            if (PikachuReward_ConfirmYesNoPrompt(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 7)) != 0) {
+                PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 9));
 
-                spAC = PikachuReward_SelectMoveToForget(Text_GetString(NULL, 0, gStadiumMessageBank, 9));
+                spAC = PikachuReward_SelectMoveToForget(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 9));
                 if (spAC >= 0) {
-                    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gStadiumMessageBank, 0xA), 0x1E);
+                    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xA), 0x1E);
                     ModelAnim_SetAnimation(gPikachuNodes, 9);
                     gPikachuVisibilityState = 0;
                     Effect_TriggerMoveVisual(0x85, 0x19, 0);
-                    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 0xB), 1);
+                    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xB), 1);
                     Text_SetStringToken(0x1D, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.rotation.unk_09[spAC] - 1));
-                    Text_GetString(sp2C, sizeof(sp2C), gStadiumMessageBank, 0xC);
+                    Text_GetString(sp2C, sizeof(sp2C), gPikachuRewardMsgBank, 0xC);
                     Audio_StopMusic(0x3C);
                     PikachuReward_ScrollTextIn(sp2C);
                     PikachuReward_ShowTextWaitForA(sp2C, 1);
-                    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 0xD));
-                    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 0xD), 1);
+                    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xD));
+                    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xD), 1);
                     gPikachuVisibilityState = -1;
                     return spAC;
                 }
             }
 
-            PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 8));
+            PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 8));
 
-            if (PikachuReward_ConfirmYesNoPrompt(Text_GetString(NULL, 0, gStadiumMessageBank, 8)) != 0) {
+            if (PikachuReward_ConfirmYesNoPrompt(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 8)) != 0) {
                 PikachuReward_ShowDeclinedEnding();
                 return -1;
             }
@@ -617,24 +617,24 @@ void PikachuReward_ShowSaveStatusScreen(s32 arg0) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
     Font_SetLineHeight(0x10);
-    Font_Printf(0x2E, 0x28, Text_GetString(NULL, 0, gStadiumMessageBank, 0xE));
+    Font_Printf(0x2E, 0x28, Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xE));
 
     if (arg0 == 0) {
         Font_BeginTranslucentTextRendering();
         Font_SetActive(4, 0);
-        Font_Printf(0x5C, 0x70, Text_GetString(NULL, 0, gStadiumMessageBank, 0x12));
+        Font_Printf(0x5C, 0x70, Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0x12));
         Font_EndTexturedTextRendering();
     } else {
         Font_SetLineHeight(0x10);
-        Font_Printf(0x40, 0x84, Text_GetString(NULL, 0, gStadiumMessageBank, 0x13));
+        Font_Printf(0x40, 0x84, Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0x13));
         Text_SetEnvColor(0xFF, 0xFF, 0x64, 0xFF);
 
         if (arg0 == 2) {
             Font_SetActive(4, 0);
-            Font_Printf(0x4C, 0x64, Text_GetString(NULL, 0, gStadiumMessageBank, 0x14));
+            Font_Printf(0x4C, 0x64, Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0x14));
         } else if (arg0 == 3) {
             Font_SetLineHeight(0x10);
-            Font_Printf(0x40, 0x5C, Text_GetString(NULL, 0, gStadiumMessageBank, 0x15));
+            Font_Printf(0x40, 0x5C, Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0x15));
         }
     }
 
@@ -685,8 +685,8 @@ void PikachuReward_TeachSurfToPikachu(s32 arg0) {
     s32 i;
 
     Cry_Play(0x19, 0);
-    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gStadiumMessageBank, 0xE));
-    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gStadiumMessageBank, 0xE), 1);
+    PikachuReward_ScrollTextIn(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xE));
+    PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xE), 1);
 
     for (i = PikachuReward_CountKnownMoves(); i < 4; i++) {
         gPikachuSession.rotation.unk_09[i] = 0;
@@ -697,7 +697,7 @@ void PikachuReward_TeachSurfToPikachu(s32 arg0) {
     gPikachuSession.rotation.unk_20[arg0] = gMoveData[0x38].unk_05;
 
     PikachuReward_SaveToCartridge();
-    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gStadiumMessageBank, 0xE), 1);
+    PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xE), 1);
     PikachuReward_ShowSuccessEnding();
 }
 
@@ -769,7 +769,7 @@ s32 Stadium_BonusPikachuReward(UNUSED s32 arg0, UNUSED s32 arg1) {
 
         Text_InitStringTables();
         gMoveNameBank = Text_GetStringTable(0x25);
-        gStadiumMessageBank = Text_GetStringTable(0x1C);
+        gPikachuRewardMsgBank = Text_GetStringTable(0x1C);
         PokeIcon_OpenModelArchives();
         gPikachuModelData = Model_LoadForPokemon(&gPikachuSession.rotation);
         PikachuReward_SetupScene();

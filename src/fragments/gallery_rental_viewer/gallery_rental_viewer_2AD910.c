@@ -14,7 +14,7 @@
 static s32 gSnapSelectMode;
 static s32 gSnapSelectState;
 static void* gSnapSelectBackground;
-static RentalViewerBgData* gSnapSelectBgData;
+static RentalViewerBgData* gSnapSelectRosterData;
 static s32 gRentalViewerConfirmResult;
 static s32 gRentalViewerSelectedSlot;
 static s32 gRentalViewerFadeCounter;
@@ -27,7 +27,7 @@ void Gallery_RentalViewerInit(s32 arg0) {
     Text_InitStringTables();
     Gallery_InitStringTables();
     Gallery_RentalViewerInitScene();
-    Gallery_RentalViewerInitBoxPicker(0x68, 0x8A, gSnapSelectBgData);
+    Gallery_RentalViewerInitBoxPicker(0x68, 0x8A, gSnapSelectRosterData);
     Gallery_ResetConfirmPrompt();
 }
 
@@ -161,7 +161,7 @@ s32 Gallery_RentalViewerHandleInput(void) {
 
                 case 5:
                     sp78 = 1;
-                    _bcopy(&gSnapSelectBgData->battleMon, &sp20, sizeof(PokemonData));
+                    _bcopy(&gSnapSelectRosterData->battleMon, &sp20, sizeof(PokemonData));
                     Gallery_CopyPhotoMonFromBattleMon(&gGallerySpecialSpecies, &sp20);
                     break;
             }
@@ -263,7 +263,7 @@ s32 Gallery_RentalViewerMain(s32 arg0, s32 arg1) {
     ASSET_LOAD(gRentalViewerIconTop, snap_select_ui, 0);
 
     gSnapSelectBackground = BinArchive_GetFile(ASSET_LOAD2(backgrounds, 1, 1), 0x14);
-    gSnapSelectBgData = BinArchive_GetFile(BinArchive_Open(0x898000, NULL, 1, 0), 0x1A);
+    gSnapSelectRosterData = BinArchive_GetFile(BinArchive_Open(0x898000, NULL, 1, 0), 0x1A);
 
     PokeIcon_OpenModelArchive();
     Gallery_RentalViewerInit(arg0);

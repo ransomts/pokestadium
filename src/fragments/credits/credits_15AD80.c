@@ -32,7 +32,7 @@ void Credits_DrawContinuePrompt(u8 arg0) {
 
 s32 pad_D_86A05B58[2] = { 0, 0 };
 
-char gMessageDecompressBuffer = '\x00';
+char gCreditsString00 = '\x00';
 char gCreditsMessageTable = '\x00';
 char gCreditsString01 = '\x00';
 char gCreditsString01Len = '\x00';

@@ -526,7 +526,7 @@ void PokeIcon_SetPreviewMon(ModelPreview* arg0, PokemonData* arg1, u16 arg2) {
     arg0->unk_24->unk_024.y = tmp2;
     arg0->unk_24->unk_024.z = tmp3;
 
-    arg0->unk_24->unk_01E = gSpriteAnimUpdateFunc;
+    arg0->unk_24->unk_01E = gZeroVec3s;
     Model_ComputeMonSizeFromNickname(&sp2C, arg1);
     PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1->posX.posX, sp2C);
     PokeIcon_WaitFrameLoad(arg0->unk_1C);
@@ -554,7 +554,7 @@ void PokeIcon_SetPreviewSpecies(ModelPreview* arg0, s32 arg1, u16 arg2) {
     arg0->unk_24->unk_024.y = tmp2;
     arg0->unk_24->unk_024.z = tmp3;
 
-    arg0->unk_24->unk_01E = gSpriteAnimUpdateFunc;
+    arg0->unk_24->unk_01E = gZeroVec3s;
     sp34.raw = 0;
     PokeIcon_RequestFrameLoad(arg0->unk_1C, arg1, sp34);
     PokeIcon_WaitFrameLoad(arg0->unk_1C);

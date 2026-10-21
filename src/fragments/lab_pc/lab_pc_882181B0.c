@@ -1,18 +1,18 @@
 #include "lab_pc.h"
 
-Color_RGBA8 gPanelAccentTexture1[2] = {
+Color_RGBA8 gPanelAccentColorWhiteGray[2] = {
     { 0xFF, 0xFF, 0xFF, 0xFF },
     { 0xB3, 0xB3, 0xB3, 0xFF },
 };
-Color_RGBA8 gPanelAccentTexture2[2] = {
+Color_RGBA8 gPanelAccentColorCyan[2] = {
     { 0x73, 0xEF, 0xFF, 0xFF },
     { 0x23, 0x9D, 0xB3, 0xFF },
 };
-Color_RGBA8 gPanelAccentTexture3[2] = {
+Color_RGBA8 gPanelAccentColorGreen[2] = {
     { 0x96, 0xFF, 0x73, 0xFF },
     { 0x47, 0xB3, 0x23, 0xFF },
 };
-Color_RGBA8 gPanelAccentTexture4[2] = {
+Color_RGBA8 gPanelAccentColorYellow[2] = {
     { 0xFF, 0xED, 0x73, 0xFF },
     { 0xB3, 0xA0, 0x23, 0xFF },
 };
@@ -28,7 +28,7 @@ Color_RGBA8 gPanelAccentPink[2] = {
     { 0xFF, 0x73, 0xFF, 0xFF },
     { 0xB3, 0x23, 0xB3, 0xFF },
 };
-Color_RGBA8 gPanelOverlayTexture[2] = {
+Color_RGBA8 gPanelOverlayColor[2] = {
     { 0x96, 0x96, 0xE6, 0xFF },
     { 0x64, 0x64, 0xC8, 0xFF },
 };
@@ -61,11 +61,11 @@ Color_RGBA8 gPanelColorPink[2] = {
     { 0xFE, 0x73, 0xFE, 0xFF },
     { 0x97, 0x44, 0x97, 0xFF },
 };
-Color_RGBA8 gPanelTextureDefault[2] = {
+Color_RGBA8 gPanelColorDefault[2] = {
     { 0x96, 0x96, 0xE6, 0xFF },
     { 0x64, 0x64, 0xC8, 0xFF },
 };
-Color_RGBA8 gGridBorderTextures[2] = {
+Color_RGBA8 gGridBorderColors[2] = {
     { 0xFF, 0xFF, 0x00, 0xFF },
     { 0x40, 0xFF, 0x40, 0xFF },
 };
@@ -1107,7 +1107,7 @@ u32 gSwapArrowsTexture[] = {
 static Gfx gPanelDlEnd9[] = {
     gsSPEndDisplayList(),
 };
-u32 gPanelVertexData[] = {
+u32 gItemInfoShadowTexture[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x108418C7, 0x294B39CF, 0x4A115295, 0x5AD75AD7, 0x62D962D9, 0x62D75B17, 0x5AD75A97, 0x52954A51,
     0x398F294B, 0x18C71084, 0x08420000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1255,7 +1255,7 @@ u32 gPanelVertexData[] = {
 static Gfx Gfx_MoveTargetSmall0_DL[] = {
     gsSPEndDisplayList(),
 };
-u32 gTexture_MoveTargetSmall_0[] = {
+u32 gTexture_GbGamePak_0[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x0001BD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B,
     0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2B0001, 0x0001BD2B, 0xBD2B83DD, 0x190B2109,
@@ -1295,7 +1295,7 @@ u32 gTexture_MoveTargetSmall_0[] = {
 static Gfx Gfx_MoveTargetSmall1_DL[] = {
     gsSPEndDisplayList(),
 };
-u32 gTexture_MoveTargetSmall_1[] = {
+u32 gTexture_GbGamePak_1[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x0001BD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B,
     0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2B0001, 0x0001BD2B, 0xBD2B83DD, 0x190B2109,
@@ -1335,7 +1335,7 @@ u32 gTexture_MoveTargetSmall_1[] = {
 static Gfx Gfx_MoveTargetSmall2_DL[] = {
     gsSPEndDisplayList(),
 };
-u32 gTexture_MoveTargetSmall_2[] = {
+u32 gTexture_GbGamePak_2[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x0001BD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B,
     0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2B0001, 0x0001BD2B, 0xBD2B83DD, 0x190B2109,
@@ -1375,7 +1375,7 @@ u32 gTexture_MoveTargetSmall_2[] = {
 static Gfx Gfx_MoveTargetSmall3_DL[] = {
     gsSPEndDisplayList(),
 };
-u32 gTexture_MoveTargetSmall_3[] = {
+u32 gTexture_GbGamePak_3[] = {
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x0001BD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B,
     0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2BBD2B, 0xBD2B0001, 0x0001BD2B, 0xBD2B83DD, 0x190B2109,
@@ -1412,11 +1412,11 @@ u32 gTexture_MoveTargetSmall_3[] = {
     0xBD2BBD2B, 0xBD2BBD2B, 0xBD2B0001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010001,
 };
-u32* gTexture_MoveTargetSmall[] = { gTexture_MoveTargetSmall_0, gTexture_MoveTargetSmall_1, gTexture_MoveTargetSmall_2, gTexture_MoveTargetSmall_3 };
+u32* gTexture_GbPakIcons[] = { gTexture_GbGamePak_0, gTexture_GbGamePak_1, gTexture_GbGamePak_2, gTexture_GbGamePak_3 };
 static Gfx Gfx_MoveTargetLarge_DL[] = {
     gsSPEndDisplayList(),
 };
-u32 gTexture_MoveTargetLarge[] = {
+u32 gTexture_N64PakIcon[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00001044, 0x00000001, 0x00010001, 0x00010001,
     0x00010001, 0x00010001, 0x00010001, 0x00010001, 0x00010000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,

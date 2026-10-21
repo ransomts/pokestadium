@@ -6,7 +6,7 @@ static s16 gTransitionSpeed;
 
 static f32 gTransitionDefaultSpeed = 30.0f;
 
-static Vtx gTransitionVertices[] = {
+static Vtx gFourStreamHeadStarVtx[] = {
     VTX(1, -35, -35, 0, 0, 0x88, 0x00, 0x00, 0xFF), VTX(1, -50, 0, 0, 0, 0x88, 0x00, 0x00, 0xFF),
     VTX(1, 0, 0, 0, 0, 0x88, 0x00, 0x00, 0xFF),     VTX(1, -50, 0, 0, 0, 0x1D, 0x8C, 0x00, 0xFF),
     VTX(1, -35, -35, 0, 0, 0x1D, 0xAE, 0xAE, 0xFF), VTX(200, 0, 0, 0, 0, 0x78, 0x00, 0x00, 0xFF),
@@ -17,7 +17,7 @@ static Vtx gTransitionVertices[] = {
     VTX(1, 0, 49, 0, 0, 0x88, 0x00, 0x00, 0xFF),    VTX(1, 0, 49, 0, 0, 0x1D, 0x00, 0x74, 0xFF),
     VTX(1, -35, 35, 0, 0, 0x88, 0x00, 0x00, 0xFF),  VTX(1, -35, 35, 0, 0, 0x1D, 0xAE, 0x52, 0xFF),
 };
-static u32 gTransitionTextureData[] = {
+static u32 gFourStreamHeadStarTex[] = {
     0x77777777,
     0x77777777,
 };
@@ -29,13 +29,13 @@ Gfx gParticleQuadDL[] = {
     gsSPSetGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsSPTexture(0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON),
     gsDPPipeSync(),
-    gsDPLoadTextureBlock_4b(gTransitionTextureData, G_IM_FMT_I, 4, 4, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 2, 2,
+    gsDPLoadTextureBlock_4b(gFourStreamHeadStarTex, G_IM_FMT_I, 4, 4, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 2, 2,
                             G_TX_NOLOD, G_TX_NOLOD),
     gsDPSetCombineMode(G_CC_BLENDIA, G_CC_BLENDIA),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsDPSetPrimColor(0xFF, 0xFF, 197, 184, 122, 255),
     gsDPSetEnvColor(197, 184, 122, 255),
-    gsSPVertex(gTransitionVertices, 18, 0),
+    gsSPVertex(gFourStreamHeadStarVtx, 18, 0),
     gsSP2Triangles(0, 1, 2, 0, 3, 4, 5, 0),
     gsSP2Triangles(6, 0, 2, 0, 4, 7, 5, 0),
     gsSP2Triangles(8, 6, 2, 0, 7, 9, 5, 0),

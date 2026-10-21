@@ -22,15 +22,15 @@ typedef void (*func88000CC8)(unk_func_88000CC8*, s32, s32, TiledTexture*, u8*, u
 typedef void (*func88001CBC)(unk_func_88001300*, s32);
 typedef void (*func88001D0C)(unk_func_88001300*);
 
-extern u32 gFragment22MonIconTiles[];
+extern u32 gFragment22TiledBackgroundPixels[];
 
-static TiledTexture gHpBarPalette = {
+static TiledTexture gFragment22TiledBackgroundTexture = {
     0x0000004C,
     0x0000004C,
     0x0000004C,
-    gFragment22MonIconTiles,
+    gFragment22TiledBackgroundPixels,
 };
-static s32 gQuadDirectionTable[4] = { 0, 1, 2, 1 };
+static s32 gLabIconSwirlAnimSequence[4] = { 0, 1, 2, 1 };
 static Color_RGBA8 gHpBarColorGreen = { 0xC8, 0xFF, 0xFF, 0x96 };
 static Color_RGBA8 gHpBarColorGreenBright = { 0x00, 0xFF, 0x00, 0xFF };
 static Color_RGBA8 gHpBarColorYellow = { 0xC8, 0xFF, 0xFF, 0x82 };
@@ -45,7 +45,7 @@ static Color_RGBA8 gHpBarColorWhite = { 0xF0, 0xF0, 0xF0, 0xFF };
 static Gfx gHpBarDisplayListEnd[] = {
     gsSPEndDisplayList(),
 };
-static u32 gHpBarPixelData[] = {
+static u32 gFragment22MenuIconBasePixels[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1203,7 +1203,7 @@ static TiledTexture gFragment22HpBarConfig = {
     0x00000090,
     0x00000090,
     0x00000090,
-    gHpBarPixelData,
+    gFragment22MenuIconBasePixels,
 };
 static Gfx gEmptyGfxDL[] = {
     gsSPEndDisplayList(),
@@ -2025,7 +2025,7 @@ static u32 gFragment22GfxDataRedIconShimmerMask[] = {
 static Gfx gFragment22GfxDL1[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22MonIconPalette0[] = {
+static u32 gFragment22LoopAnimFrame0[] = {
     0xCEB5CE59, 0xDE8FBDD9, 0xD6F3DF3B, 0xE739CE75, 0xBE31BDEF, 0xBDEFCE73, 0xE73BF7BD, 0xE739D6B5, 0xC671E739,
     0xDF39C5A9, 0xEF7DCEA5, 0xDE91CE6F, 0xD6F7C62F, 0x7BDF5293, 0x4A534A13, 0x4A534A53, 0x6B9DC62F, 0xF77DEFBF,
     0xDEF5C62F, 0xF7BFD6F5, 0xF7BFD6A7, 0xC619CEB1, 0x94A55A95, 0x41D14251, 0x42134211, 0x4A134211, 0x42114253,
@@ -2047,7 +2047,7 @@ static u32 gFragment22MonIconPalette0[] = {
 static Gfx gFragment22GfxDL2[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22MonIconPalette1[] = {
+static u32 gFragment22LoopAnimFrame1[] = {
     0xCEB5CE59, 0xDE8FBDD9, 0xD6F3DF3B, 0xE739CE75, 0xBE31BDEF, 0xBDEFCE73, 0xE73BF7BD, 0xE739D6B5, 0xC671E739,
     0xDF39C5A9, 0xEF7DCEA5, 0xDE91CE6F, 0xD6F7C62F, 0x7BDF5293, 0x4A534A13, 0x4A534A53, 0x6B9DC62F, 0xF77DEFBF,
     0xDEF5C62F, 0xF7BFD6F5, 0xF7BFD6A7, 0xC619CEB1, 0x94A55A95, 0x41D14251, 0x42134211, 0x4A134211, 0x42114253,
@@ -2069,7 +2069,7 @@ static u32 gFragment22MonIconPalette1[] = {
 static Gfx gFragment22GfxDL3[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22MonIconPalette2[] = {
+static u32 gFragment22LoopAnimFrame2[] = {
     0xCEB5CE59, 0xDE8FBDD9, 0xD6F3DF3B, 0xE739CE75, 0xBE31BDEF, 0xBDEFCE73, 0xE73BF7BD, 0xE739D6B5, 0xC671E739,
     0xDF39C5A9, 0xEF7DCEA5, 0xDE91CE6F, 0xD6F7C62F, 0x7BDF5293, 0x4A534A13, 0x4A534A53, 0x6B9DC62F, 0xF77DEFBF,
     0xDEF5C62F, 0xF7BFD6F5, 0xF7BFD6A7, 0xC619CEB1, 0x94A55A95, 0x41D14211, 0x42534211, 0x4A134211, 0x42114A53,
@@ -2091,7 +2091,7 @@ static u32 gFragment22MonIconPalette2[] = {
 static Gfx gFragment22GfxDL_Empty[] = {
     gsSPEndDisplayList(),
 };
-static u32 gFragment22MonIconPalette3[] = {
+static u32 gFragment22LoopAnimFrame3[] = {
     0xCEB5CE59, 0xDE8FBDD9, 0xD6F3DF3B, 0xE739CE75, 0xBE31BDEF, 0xBDEFCE73, 0xE73BF7BD, 0xE739D6B5, 0xC671E739,
     0xDF39C5A9, 0xEF7DCEA5, 0xDE91CE6F, 0xD6F7C62F, 0x7BDF5293, 0x4A534A13, 0x4A534A53, 0x6B9DC62F, 0xF77DEFBF,
     0xDEF5C62F, 0xF7BFD6F5, 0xF7BFD6A7, 0xC619CEB1, 0x94A55A95, 0x41D14211, 0x42534211, 0x4A134211, 0x42114A53,
@@ -2110,17 +2110,17 @@ static u32 gFragment22MonIconPalette3[] = {
     0x841F9CE3, 0xADABBDEB, 0xB5A9A525, 0x7C1FA527, 0xB5EB8C61, 0x841F841F, 0x94A3AD67, 0xA527841F, 0x73DD8C61,
     0x94E3A525, 0xA5279D25, 0x9CE59CE5, 0x8C5F7C1F, 0xAD279D25, 0x841FC631,
 };
-static u8* gFragment22MonIconPalettes[] = {
-    gFragment22MonIconPalette0,
-    gFragment22MonIconPalette1,
-    gFragment22MonIconPalette2,
-    gFragment22MonIconPalette3,
+static u8* gFragment22LoopAnimFrames[] = {
+    gFragment22LoopAnimFrame0,
+    gFragment22LoopAnimFrame1,
+    gFragment22LoopAnimFrame2,
+    gFragment22LoopAnimFrame3,
 };
 static Gfx gFragment22GfxDL4[] = {
     gsSPEndDisplayList(),
 };
 
-u32 gFragment22MonIconTiles[] = {
+u32 gFragment22TiledBackgroundPixels[] = {
     0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97,
     0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97,
     0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97, 0x0A970A97,
@@ -2464,7 +2464,7 @@ s32 Lab_DrawTiledBackgroundWidget(unk_func_88001300_000* arg0, s32 arg1, s32 arg
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    ((func88500020)Memmap_GetFragmentVaddr(WidgetTree_DrawTiledTexture))(&gHpBarPalette, arg1, arg2);
+    ((func88500020)Memmap_GetFragmentVaddr(WidgetTree_DrawTiledTexture))(&gFragment22TiledBackgroundTexture, arg1, arg2);
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -2646,7 +2646,7 @@ s32 Lab_DrawAnimatedIconWidget(unk_func_88001300_000* arg0, s32 arg1, s32 arg2) 
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0x28) << 2, (arg2 + 0x36) << 2, (arg1 + 0x67) << 2,
                         (arg2 + 0x55) << 2, G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
-    gDPLoadTextureBlock(gDisplayListHead++, ptr->unk_38[gQuadDirectionTable[ptr->unk_4C / 4]], G_IM_FMT_RGBA, G_IM_SIZ_16b, 64,
+    gDPLoadTextureBlock(gDisplayListHead++, ptr->unk_38[gLabIconSwirlAnimSequence[ptr->unk_4C / 4]], G_IM_FMT_RGBA, G_IM_SIZ_16b, 64,
                         32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                         G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0x28) << 2, (arg2 + 0x56) << 2, (arg1 + 0x67) << 2,
@@ -2749,7 +2749,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp78->posX.posX, &temp_v0_2->posX.posX);
 
     temp_v0_5 = mem_pool_alloc(arg6, sizeof(unk_func_88000830));
-    Lab_InitLoopAnimWidget(temp_v0_5, 0xBE, 0x61, 0x14, 0xF, 0x14, gFragment22MonIconPalettes);
+    Lab_InitLoopAnimWidget(temp_v0_5, 0xBE, 0x61, 0x14, 0xF, 0x14, gFragment22LoopAnimFrames);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp78->posX.posX, &temp_v0_5->posX.posX);
 
     arg0->unk_2C = mem_pool_alloc(arg6, sizeof(unk_func_88001300_02C));

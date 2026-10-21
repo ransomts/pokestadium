@@ -761,7 +761,7 @@ void ParticleEffect_RegisterExplosion(void) {
 
 void ParticleEffect_RegisterSmoke(void) {
     BattleAnim_SpawnGlobalTintColorFadeDetach(0x30, 0x20, 0xA);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 0xC, 0xA, BattleAnim_CallbackMove86EndDescriptor24, &gBattleAnimParticleDescriptors[0x24], 0x14, 1, 4, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 0xC, 0xA, BattleAnim_CallbackMove86EndDescriptor24, &gBattleAnimParticleDescriptors[0x24], 0x14, 1, 4, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_ApplyEffect1SpeciesMotion(ParticleEffectInstance* arg0) {
@@ -904,7 +904,7 @@ void BattleAnim_CallbackStartEffect1Descriptor2FPhaseFadeOut(ParticleEffectInsta
 }
 
 void BattleAnim_StartEffect1Descriptor2FPhaseFadeOut(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffect1Descriptor2FPhaseFadeOut, &gBattleAnimParticleDescriptors[0x2F], 0, 1, 0x10, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffect1Descriptor2FPhaseFadeOut, &gBattleAnimParticleDescriptors[0x2F], 0, 1, 0x10, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_ApplyModelSpeciesOffset(ParticleEffectInstance* arg0) {
@@ -1648,17 +1648,17 @@ void BattleAnim_CallbackStartEffects28And53And76Descriptor33FadeIn(ParticleEffec
 
 void ParticleEffect_RegisterEffectE0(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(8, BattleAnim_CallbackStartEffects28And53And76Descriptor33FadeIn, &gBattleAnimParticleDescriptors[0x33], 0, 1, 0x18, 0, 0x1C, 0);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects28And53And65And76Descriptor47AnimatedScaleMotion, &gBattleAnimParticleDescriptors[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects28And53And65And76Descriptor47AnimatedScaleMotion, &gBattleAnimParticleDescriptors[0x47], 0, 0xF, 0x11, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_StartEffect76Descriptor33FadeAndDescriptor47ScaleMotion(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(8, BattleAnim_CallbackStartEffects28And53And76Descriptor33FadeIn, &gBattleAnimParticleDescriptors[0x33], 0, 1, 0x18, 0, 0x1E, 0);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects28And53And65And76Descriptor47AnimatedScaleMotion, &gBattleAnimParticleDescriptors[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects28And53And65And76Descriptor47AnimatedScaleMotion, &gBattleAnimParticleDescriptors[0x47], 0, 0xF, 0x11, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_StartEffect53Descriptor33FadeAndDescriptor47ScaleMotion(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(8, BattleAnim_CallbackStartEffects28And53And76Descriptor33FadeIn, &gBattleAnimParticleDescriptors[0x33], 0, 1, 0x18, 0, 0x1D, 0);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects28And53And65And76Descriptor47AnimatedScaleMotion, &gBattleAnimParticleDescriptors[0x47], 0, 0xF, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects28And53And65And76Descriptor47AnimatedScaleMotion, &gBattleAnimParticleDescriptors[0x47], 0, 0xF, 0x11, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_InitEffect8Descriptor4A(ParticleEffectInstance* arg0) {
@@ -1781,8 +1781,8 @@ void BattleAnim_CallbackMove73EndEffect31SpawnDescriptor42(ParticleEffectInstanc
 }
 
 void BattleAnim_StartEffect8ModelBurstAndVerticalFade(void) {
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 5, BattleAnim_CallbackStartEffect8ModelBurstEmitter, &gParticleDefaultCallback, 0, 2, 0x11, gParticleTexture_Default, 0, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 8, 3, BattleAnim_CallbackSharedAnimatedVerticalFade, &gBattleAnimParticleDescriptors[0x4A], 0, 1, 0x11, gParticleTexture_Default, 0x33, 6);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 5, BattleAnim_CallbackStartEffect8ModelBurstEmitter, &gParticleDefaultCallback, 0, 2, 0x11, gParticleEffectParam, 0, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 8, 3, BattleAnim_CallbackSharedAnimatedVerticalFade, &gBattleAnimParticleDescriptors[0x4A], 0, 1, 0x11, gParticleEffectParam, 0x33, 6);
 }
 
 void ParticleEffect_RegisterMultiple(void) {
@@ -1911,7 +1911,7 @@ void ParticleEffect_RegisterAll(void) {
     BattleAnim_SetSpawnDelay(4);
     BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 5, 5, BattleAnim_CallbackEndEffect23Descriptor4AAnimatedFade, &gBattleAnimParticleDescriptors[0x4A], 0, 4, 0xB, 9, 0x13, 0);
     BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 3, 8, BattleAnim_CallbackEndEffect23Descriptor44ScalePulse, &gBattleAnimParticleDescriptors[0x44], 0, 4, 0xB, 9, 0x18, 0xB);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 7, 3, BattleAnim_CallbackEndEffect23Descriptor19AnimatedFade, &gBattleAnimParticleDescriptors[0x19], 0, 6, 0x10, gParticleTexture_Default, 0x26, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 7, 3, BattleAnim_CallbackEndEffect23Descriptor19AnimatedFade, &gBattleAnimParticleDescriptors[0x19], 0, 6, 0x10, gParticleEffectParam, 0x26, 0);
     BattleAnim_SpawnGlobalTintColorFadeDetach(0x32, 0x20, 0xA);
 }
 
@@ -2072,9 +2072,9 @@ void BattleAnim_CallbackMove146EndEffect6ModelAnimWait(ParticleEffectInstance* a
 }
 
 void ParticleEffect_RegisterPaletteVariants(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackMove146EndEffect6ModelAnimWait, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleTexture_Default, 0, 0);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackMove146EndEffect6ModelAnimWait, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleTexture_Default, 1, 0);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackMove146EndEffect6ModelAnimWait, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleTexture_Default, 2, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackMove146EndEffect6ModelAnimWait, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleEffectParam, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackMove146EndEffect6ModelAnimWait, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleEffectParam, 1, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackMove146EndEffect6ModelAnimWait, &gParticleDefaultCallback, 0x1E, 1, 6, gParticleEffectParam, 2, 0);
 }
 
 void BattleAnim_InitEffect49Model(ParticleEffectInstance* arg0) {
@@ -2167,7 +2167,7 @@ void BattleAnim_AllocateEffect49DisplayList(s32 arg0, arg1_func_84344CE8* arg1) 
 }
 
 void ParticleEffect_RegisterColorAnim(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackEndEffect49Model33Anim34WaitCleanup, &gParticleDefaultCallback, 0, 1, 2, gParticleTexture_Default, 1, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackEndEffect49Model33Anim34WaitCleanup, &gParticleDefaultCallback, 0, 1, 2, gParticleEffectParam, 1, 0);
 }
 
 void ParticleEffect_RegisterModeSpecific(void) {
@@ -2185,7 +2185,7 @@ void ParticleEffect_RegisterModeSpecific(void) {
             break;
     }
 
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackEndEffect21ModelAnimWait, &gParticleDefaultCallback, 0, 1, 2, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackEndEffect21ModelAnimWait, &gParticleDefaultCallback, 0, 1, 2, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_InitEffect40Model(ParticleEffectInstance* arg0) {
@@ -3458,7 +3458,7 @@ void BattleAnim_ApplySpeciesYOffsetVariantB(ParticleEffectInstance* arg0) {
 }
 
 void ParticleEffect_RegisterDefaultTexture(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0xB, gParticleTexture_Default, 2, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0xB, gParticleEffectParam, 2, 0);
 }
 
 void BattleAnim_CallbackStartEffect17ModelAnimFinish_InitParticle(ParticleEffectInstance* arg0) {
@@ -3745,7 +3745,7 @@ s16 BattleAnim_GetMoveKeyedTrailVariantParam(void) {
 }
 
 void BattleAnim_StartEffect17ModelAnimFinish(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffect17ModelAnimFinish, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, BattleAnim_GetMoveKeyedModelVariantIndex(), 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffect17ModelAnimFinish, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, BattleAnim_GetMoveKeyedModelVariantIndex(), 0);
 }
 
 void ParticleEffect_PaletteMultiBurst(void) {
@@ -3930,7 +3930,7 @@ void ParticleEffect_PortraitBurstCheck(void) {
     }
 
     if (var_s0 == 0) {
-        BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x10, gParticleTexture_Default, 0xA, 0);
+        BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x10, gParticleEffectParam, 0xA, 0);
     }
 }
 
@@ -4530,9 +4530,9 @@ void ParticleEffect_BasicMultiBurst(void) {
 void ParticleEffect_FireballBurst(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimMode2Update, &gParticleDefaultCallback, 0xFF, 1, 0xC, 0, 0xF, 0x40);
     BattleAnim_SpawnOwnerModelTintPaletteApproachInactive(4, 0xA, 0x35, 0xC, 0xFF);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackSharedDescriptor04GrowFade, &gBattleAnimParticleDescriptors[4], 0, 1, 0x10, gParticleTexture_Default, 0x35, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 5, 3, BattleAnim_CallbackSharedDescriptor19AnimatedFadeMotion, &gBattleAnimParticleDescriptors[0x19], 0, 8, 0x10, gParticleTexture_Default, 0x4D, 0);
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0xA, 1, 3, BattleAnim_CallbackSharedDescriptor19DelayedAnimatedGrowFade, &gBattleAnimParticleDescriptors[0x19], 0, 8, 0x11, gParticleTexture_Default, 0x4D, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackSharedDescriptor04GrowFade, &gBattleAnimParticleDescriptors[4], 0, 1, 0x10, gParticleEffectParam, 0x35, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 5, 3, BattleAnim_CallbackSharedDescriptor19AnimatedFadeMotion, &gBattleAnimParticleDescriptors[0x19], 0, 8, 0x10, gParticleEffectParam, 0x4D, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0xA, 1, 3, BattleAnim_CallbackSharedDescriptor19DelayedAnimatedGrowFade, &gBattleAnimParticleDescriptors[0x19], 0, 8, 0x11, gParticleEffectParam, 0x4D, 0);
     BattleAnim_AddSpawnDelay(0x10);
     BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 4, 5, BattleAnim_CallbackSharedAnimatedVerticalFade, &gBattleAnimParticleDescriptors[0xA], 0, 1, 0xE, 0, 0x4D, 4);
 }
@@ -4554,7 +4554,7 @@ void ParticleEffect_AdvancedMultiBurst(void) {
 }
 
 void ParticleEffect_SimpleBurstAnimWaitDelayedAlphaFadeOut(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x13, gParticleTexture_Default, 0x10, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x13, gParticleEffectParam, 0x10, 0);
     BattleAnim_SpawnDescriptor25AlphaHoldFadeOutFullAlpha(0x22, 0, 0x10, 0xA);
 }
 
@@ -4633,7 +4633,7 @@ void BattleAnim_CallbackStartEffect101ModelBurstEmitter(ParticleEffectInstance* 
 }
 
 void ParticleEffect_RotationEntry(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffect101ModelBurstEmitter, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffect101ModelBurstEmitter, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, 0, 0);
 }
 
 void BattleAnim_CallbackMove140EndEffect65EmitDescriptor4A_InitParticle(ParticleEffectInstance* arg0) {
@@ -4671,7 +4671,7 @@ void BattleAnim_CallbackMove140EndEffect65EmitDescriptor4A(ParticleEffectInstanc
 }
 
 void ParticleEffect_FireworkEntry(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackMove140EndEffect65EmitDescriptor4A, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0, 0);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackMove140EndEffect65EmitDescriptor4A, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, 0, 0);
     BattleAnim_CreateEffectSlotForCurrentOwner(5, BattleAnim_CallbackSharedDescriptor34DelayedFrameMotion, &gBattleAnimParticleDescriptors[0x34], 0, 1, 0x11, 9, 0, 6);
     BattleAnim_CreateEffectSlotForCurrentOwner(7, BattleAnim_CallbackSharedDescriptor3DAnimatedColorMotion, &gBattleAnimParticleDescriptors[0x3D], 0, 8, 0x11, 9, 0, 0);
 }
@@ -4817,7 +4817,7 @@ void BattleAnim_StartEffect3ModelTintAndVerticalFade(void) {
     s16 sp46 = 7;
 
     if (BattleAnim_IsCurrentOwnerSpecies(0x14) != 0) {
-        sp46 = gParticleTexture_Default;
+        sp46 = gParticleEffectParam;
     }
     BattleAnim_SpawnGlobalTintColorFadeDetach(0, 0x10, 6);
     BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimMode2Update, &gParticleDefaultCallback, 0x80, 1, 0xC, 0xA, 0x1A, 4);
@@ -4843,7 +4843,7 @@ void ParticleEffect_InitSmoke(void) {
     BattleAnim_SpawnGlobalTintColorFadeDetach(0, 0x20, 6);
     BattleAnim_SpawnOwnerModelTintRampDetach(0, 0x14, 0, 0x80, 0x10);
     BattleAnim_SpawnOwnerModelAlphaFade(0, 0xFF, 0, 0x10);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects83And103ModelAlphaFadeIn, &gParticleDefaultCallback, 0xFF, 1, 9, gParticleTexture_Default, 0x12, 0x20);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects83And103ModelAlphaFadeIn, &gParticleDefaultCallback, 0xFF, 1, 9, gParticleEffectParam, 0x12, 0x20);
     BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 1, 0xC, BattleAnim_CallbackSharedAnimatedVerticalFade, &gBattleAnimParticleDescriptors[0x3D], 0, 1, 9, 0, 0x16, 5);
 }
 
@@ -5014,21 +5014,21 @@ void ParticleEffect_TriggerAnother(void) {
 }
 
 void ParticleEffect_TriggerDefaultPalette1B(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x1B, 1);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, 0x1B, 1);
 }
 
 void ParticleEffect_TriggerDefaultPalette1C(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x1C, 1);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, 0x1C, 1);
 }
 
 void ParticleEffect_TriggerDefaultPalette1BWithTintFade(void) {
     BattleAnim_SpawnGlobalTintColorFadeDetach(0, 0x20, 0);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x1B, 1);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, 0x1B, 1);
 }
 
 void ParticleEffect_TriggerDefaultPalette1CWithTintRamps(void) {
     BattleAnim_SpawnOwnerModelTintRampDetach(0, 0xC, 0, 0xFF, 0x40);
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x1C, 1);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, 0x1C, 1);
     BattleAnim_SpawnOwnerModelTintRampDetach(0x30, 0xC, 0xFF, 0, 2);
 }
 
@@ -5061,11 +5061,11 @@ void BattleAnim_CallbackStartEffects118And119ModelPalettePulse(ParticleEffectIns
 }
 
 void ParticleEffect_CreateWithCallback(void) {
-    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 3, BattleAnim_CallbackStartEffects118And119ModelPalettePulse, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x20, 0);
+    BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 2, 3, BattleAnim_CallbackStartEffects118And119ModelPalettePulse, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, 0x20, 0);
 }
 
 void ParticleEffect_CreateCallback(void) {
-    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects118And119ModelPalettePulse, &gParticleDefaultCallback, 0, 1, 0x11, gParticleTexture_Default, 0x20, 1);
+    BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackStartEffects118And119ModelPalettePulse, &gParticleDefaultCallback, 0, 1, 0x11, gParticleEffectParam, 0x20, 1);
 }
 
 void BattleAnim_CallbackEndEffect79DefaultDescriptorPaletteFade(ParticleEffectInstance* arg0) {

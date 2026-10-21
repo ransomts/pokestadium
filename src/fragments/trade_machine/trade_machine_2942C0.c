@@ -14,7 +14,7 @@
 #include "src/stage_loader.h"
 
 static TradeCableState gTradeCableState;
-static FramebufferImage* gMenuFramebuffer;
+static FramebufferImage* gTradeCableReflectionBuffer;
 static TradeCableLight gMenuPanels[2];
 static TradeBall gTradeBalls[2];
 static TradeEvoState gScreenTransition;
@@ -1759,7 +1759,7 @@ void TradeCable_RenderReflectionTexture(void) {
     f32 temp_fa8;
     f32 temp_faC;
 
-    GfxImage_SetRenderTarget(&gDisplayListHead, gMenuFramebuffer);
+    GfxImage_SetRenderTarget(&gDisplayListHead, gTradeCableReflectionBuffer);
 
     gSPDisplayList(gDisplayListHead++, gMenuPanelBGDL);
 
@@ -1831,7 +1831,7 @@ void TradeCable_DrawTubeEndCapReflective(s16 arg0, s16 arg1, f32 arg2, s16 arg3,
     temp_fa0_3 = ROUND_MAX(-1024.0f / arg2);
 
     gSPDisplayList(gDisplayListHead++, gMenuPanelSquareBGAlphaDL);
-    gDPLoadMultiBlock(gDisplayListHead++, gMenuFramebuffer->img_p, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
+    gDPLoadMultiBlock(gDisplayListHead++, gTradeCableReflectionBuffer->img_p, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30081A8, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -1845,7 +1845,7 @@ void TradeCable_InitSequence(void) {
     TradeCable_ResetLights();
     TradeCable_ResetBalls();
     TradeEvo_ResetState();
-    gMenuFramebuffer = GfxImage_Allocate(0, 2, 0x20, 0x20, 1);
+    gTradeCableReflectionBuffer = GfxImage_Allocate(0, 2, 0x20, 0x20, 1);
 }
 
 void TradeCable_UpdateSequence(void) {

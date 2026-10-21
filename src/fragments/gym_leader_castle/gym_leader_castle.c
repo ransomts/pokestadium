@@ -12,7 +12,7 @@
 #include "src/stage_loader.h"
 
 static char** gGymMessageBank;
-static char** gRoomMessageBank;
+static char** gTrainerClassNameBank;
 static TrainerPortrait gTrainerPortraits[4];
 static BinArchive* gTrainerDataArchive;
 static BinArchive* gPortraitGfxArchive;
@@ -159,7 +159,7 @@ void Glc_DrawRoomDescription(void) {
             } else {
                 temp_v0 = gRoomDefinitions[gCurrentRoomIndex].unk_22;
                 if (temp_v0 >= 0x1E) {
-                    Text_SetStringToken(0x24, Text_GetString(NULL, 0, gRoomMessageBank, temp_v0));
+                    Text_SetStringToken(0x24, Text_GetString(NULL, 0, gTrainerClassNameBank, temp_v0));
                 } else if (temp_v0 >= 0) {
                     Text_SetStringToken(0x24, Text_GetString(NULL, 0, gGymMessageBank, temp_v0));
                 } else {
@@ -168,7 +168,7 @@ void Glc_DrawRoomDescription(void) {
 
                 temp_v0 = gRoomDefinitions[gCurrentRoomIndex + 1].unk_22;
                 if (temp_v0 >= 0x1E) {
-                    Text_SetStringToken(0x29, Text_GetString(NULL, 0, gRoomMessageBank, temp_v0));
+                    Text_SetStringToken(0x29, Text_GetString(NULL, 0, gTrainerClassNameBank, temp_v0));
                 } else if (temp_v0 >= 0) {
                     Text_SetStringToken(0x29, Text_GetString(NULL, 0, gGymMessageBank, temp_v0));
                 } else {
@@ -328,7 +328,7 @@ void Glc_DrawRoomLabels(void) {
     for (; var_s2 > 0; var_s2--, var_s1++) {
         if (var_s1->TrainerSlotSaveData_GamePort != 0) {
             if (var_s1->unk_22 >= 0x1E) {
-                var_s0 = Text_GetString(NULL, 0, gRoomMessageBank, var_s1->unk_22);
+                var_s0 = Text_GetString(NULL, 0, gTrainerClassNameBank, var_s1->unk_22);
             } else if (var_s1->unk_22 >= 0) {
                 var_s0 = Text_GetString(NULL, 0, gGymMessageBank, var_s1->unk_22);
             } else {
@@ -376,7 +376,7 @@ void Glc_DrawGymLeaderInfoPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
         Font_SetActive(0x20, 0);
 
         if (arg0->unk_22 >= 0x1E) {
-            sp54 = Text_GetString(NULL, 0, gRoomMessageBank, arg0->unk_22);
+            sp54 = Text_GetString(NULL, 0, gTrainerClassNameBank, arg0->unk_22);
         } else if (arg0->unk_22 >= 0) {
             sp54 = Text_GetString(NULL, 0, gGymMessageBank, arg0->unk_22);
         } else {
@@ -418,7 +418,7 @@ void Glc_DrawEliteFourRoomInfoPanel(RoomDef* arg0, u8 arg1, u8 arg2) {
     Font_SetActive(0x10, 0);
 
     if (arg0->unk_22 >= 0x1E) {
-        var_s0 = Text_GetString(NULL, 0, gRoomMessageBank, arg0->unk_22);
+        var_s0 = Text_GetString(NULL, 0, gTrainerClassNameBank, arg0->unk_22);
     } else if (arg0->unk_22 >= 0) {
         var_s0 = Text_GetString(NULL, 0, gGymMessageBank, arg0->unk_22);
     } else {
@@ -868,7 +868,7 @@ s32 GymLeaderCastle_Main(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_3000000, gym_leader_castle_ui, 0);
     Text_InitStringTables();
     gGymMessageBank = Text_GetStringTable(0x19);
-    gRoomMessageBank = Text_GetStringTable(0x22);
+    gTrainerClassNameBank = Text_GetStringTable(0x22);
     Save_EnsureBankLoaded(2);
     Save_GetModeSettings(&gSessionSettings, gSessionContext.inRound2);
     gTrainerDataArchive = BinArchive_Open(0x898000, NULL, 1, 1);

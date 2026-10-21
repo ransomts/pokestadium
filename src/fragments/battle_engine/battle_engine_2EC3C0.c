@@ -150,7 +150,7 @@ void BattleScene_TickClearAnimRecordIfLoaded(BattlePlayerEntity* arg0) {
 void BattleScene_TickStartRowAnimRecord(BattlePlayerEntity* arg0) {
     UNUSED s32 pad;
     s32 idx = arg0->moveAnimIndex;
-    s32 sp24 = gMoveAnimData[idx].unk_20;
+    s32 sp24 = gBattleSceneStateRows[idx].unk_20;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_000[sp24];
     if (BattleAnim_TryRegisterAssetTables(arg0) != 0) {
@@ -164,13 +164,13 @@ void BattleScene_TickStartRowAnimRecord(BattlePlayerEntity* arg0) {
 
 void BattleScene_TickQueueRowEffectList3AtAnimEnd(BattlePlayerEntity* arg0) {
     s32 idx = arg0->moveAnimIndex;
-    s32 sp28 = gMoveAnimData[idx].unk_20;
+    s32 sp28 = gBattleSceneStateRows[idx].unk_20;
 
     gCurrentAnimChannel = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_000[sp28];
     if (BattleScene_GetParticipantModelHeight(arg0) != 0.0f) {
         gBattleSceneStateTickSlots[gAnimStateQueueIndex].rotation = gAnimStateIdle;
     } else if ((arg0->animationStateIndex == (gCurrentAnimChannel->rotation + 1)) && (BattleAnim_IsAssetLoadBusy(arg0) == 0)) {
-        BattleScene_QueueRowEffectList3(arg0, gMoveAnimData[idx].unk_24);
+        BattleScene_QueueRowEffectList3(arg0, gBattleSceneStateRows[idx].unk_24);
         gBattleSceneStateTickSlots[gAnimStateQueueIndex].rotation = gAnimStateIdle;
     }
 }
@@ -229,7 +229,7 @@ void BattleScene_LoadMoveResourceList(BattlePlayerEntity* arg0) {
 void BattleScene_LoadRowResourceList(BattlePlayerEntity* arg0) {
     s32 idx = arg0->moveAnimIndex;
 
-    BattleAnim_LoadModeResourceList(arg0->pokemonAnimation, gMoveAnimData[idx].unk_24);
+    BattleAnim_LoadModeResourceList(arg0->pokemonAnimation, gBattleSceneStateRows[idx].unk_24);
 }
 
 void BattleScene_ReloadMoveResourceList(BattlePlayerEntity* arg0) {
@@ -894,7 +894,7 @@ void BattleScene_EnterRowAnim166WithCry(BattlePlayerEntity* arg0) {
     PokemonData* sp30;
     BattlePlayerAnimState* sp24;
 
-    sp34 = gMoveAnimData[idx].unk_20;
+    sp34 = gBattleSceneStateRows[idx].unk_20;
     sp30 = &arg0->boundRoster->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase];
     sp24 = &arg0->animationState;
     gCurrentAnimChannel = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_000[sp34];
@@ -1022,7 +1022,7 @@ void BattleScene_TickAssetLoadQueueRowEffectList3(BattlePlayerEntity* arg0) {
     if (BattleAnim_TryRegisterAssetTables(arg0) != 0) {
         arg0->pokemonAnimation->posY = arg0->animationState.unk_38.unk_0B;
         arg0->animationStateIndex = 0;
-        BattleScene_QueueRowEffectList3(arg0, gMoveAnimData[sp24].unk_24);
+        BattleScene_QueueRowEffectList3(arg0, gBattleSceneStateRows[sp24].unk_24);
         Audio_PlayCommand(3, 0, 0);
         arg0->pokemonAnimation->rotation = &arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[temp_v1->unk_2B]->unk_01C[temp_v1->unk_18];
         gBattleSceneStateTickSlots[gAnimStateQueueIndex].rotation = gAnimStateIdle;
@@ -1034,7 +1034,7 @@ void Pokemon_HandleMoveHitSimple(BattlePlayerEntity* arg0) {
     if ((arg0->animationStateIndex == 1) && (BattleAnim_IsAssetLoadBusy(arg0) == 0)) {
         s32 idx = arg0->moveAnimIndex;
 
-        BattleScene_QueueRowEffectList3(arg0, gMoveAnimData[idx].unk_24);
+        BattleScene_QueueRowEffectList3(arg0, gBattleSceneStateRows[idx].unk_24);
         Audio_PlayCommand(3, 0, 0);
         gBattleSceneStateTickSlots[gAnimStateQueueIndex].rotation = gAnimStateIdle;
     }
@@ -1397,14 +1397,14 @@ void BattleScene_SetOpponentEventTrackA6(BattlePlayerEntity* arg0) {
 void BattleScene_EnterStateRow(BattlePlayerEntity* arg0, s32 arg1) {
     arg0->moveAnimIndex = arg1;
 
-    gMoveAnimData[arg1].rotation[0](arg0);
-    gMoveAnimData[arg1].rotation[1](arg0);
-    gMoveAnimData[arg1].rotation[2](arg0);
+    gBattleSceneStateRows[arg1].rotation[0](arg0);
+    gBattleSceneStateRows[arg1].rotation[1](arg0);
+    gBattleSceneStateRows[arg1].rotation[2](arg0);
 
-    BattleScene_RegisterStateTickCallback(arg0, gMoveAnimData[arg1].rotation[3]);
-    BattleScene_RegisterStateTickCallback(arg0, gMoveAnimData[arg1].rotation[4]);
-    BattleScene_RegisterStateTickCallback(arg0, gMoveAnimData[arg1].rotation[5]);
-    BattleScene_RegisterStateTickCallback(arg0, gMoveAnimData[arg1].rotation[6]);
+    BattleScene_RegisterStateTickCallback(arg0, gBattleSceneStateRows[arg1].rotation[3]);
+    BattleScene_RegisterStateTickCallback(arg0, gBattleSceneStateRows[arg1].rotation[4]);
+    BattleScene_RegisterStateTickCallback(arg0, gBattleSceneStateRows[arg1].rotation[5]);
+    BattleScene_RegisterStateTickCallback(arg0, gBattleSceneStateRows[arg1].rotation[6]);
 }
 
 void BattleScene_TickStateCallbacks(void) {

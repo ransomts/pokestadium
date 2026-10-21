@@ -34,19 +34,19 @@ static char** gSpeciesDexMsgBank;
 static char** gSpeciesCategoryNamesBank;
 static char** gPokedexAreaNamesBank;
 static Fragment2_1GraphNode gTrainerCardGraphNode;
-static ModelPreview* gTrainerCardSpriteMgr;
+static ModelPreview* gPokedexModelPreview;
 static Stage* gTrainerCardStage;
 static Stage* gNextStage;
 static AssetManager* gTrainerCardAssetManager;
 static s32 gTrainerCardState;
 static s32 gTrainerCardSubstate;
 static s32 gTrainerCardSaveSlot;
-static s32 gTrainerCardSpeciesIndex;
+static s32 gPokedexSpeciesIndex;
 static PokedexMenu* gTrainerCardMenu;
 static u8 pad_D_88826948[0x58];
 static s32 gTrainerCardUnusedInt;
 static u32 pad_D_888269A4;
-static PortSummary gTrainerCardGfxState;
+static PortSummary gTrainerCardPortSummary;
 
 extern u8 gTrainerCardSpriteTileData[];
 
@@ -661,7 +661,7 @@ void Pokedex_InitPreviewWidget(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 ar
 }
 
 void Pokedex_SetPreviewSpecies(unk_func_888044BC_04C_02C* arg0, s32 arg1) {
-    PokeIcon_SetPreviewSpecies(gTrainerCardSpriteMgr, arg1 + 1, 0x108D);
+    PokeIcon_SetPreviewSpecies(gPokedexModelPreview, arg1 + 1, 0x108D);
     arg0->unk_2C = GbSave_GetSpeciesProgressLevel(gTrainerCardSaveSlot, arg1 + 1);
 }
 
@@ -676,7 +676,7 @@ s32 Pokedex_DrawPreview(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2) {
     // clang-format off
     sp58.posX = 0x100; sp58.rotation = 0xC0; sp58.RentalSlotAnimData_PosePhase = 0xF8;
     // clang-format on
-    sp58.unk_0C = PokeIcon_RenderPreview(gTrainerCardSpriteMgr);
+    sp58.unk_0C = PokeIcon_RenderPreview(gPokedexModelPreview);
 
     BgStage_DrawFrame();
 
@@ -6114,7 +6114,7 @@ s32 Pokedex_ShowEntry(void) {
     var_s1 = 3;
     temp_s0 = Pokedex_GetSelectedSpeciesIndex(gTrainerCardMenu->unk_38->unk_2C);
     main_pool_push_state('PICT');
-    gTrainerCardSpriteMgr = PokeIcon_CreateModelPreview(gTrainerCardAssetManager, 0x100, 0xC0, 0, 0, 0xF8, 0xC0, gTrainerCardSpriteTileData);
+    gPokedexModelPreview = PokeIcon_CreateModelPreview(gTrainerCardAssetManager, 0x100, 0xC0, 0, 0, 0xF8, 0xC0, gTrainerCardSpriteTileData);
     Pokedex_SetPreviewSpecies(gTrainerCardMenu->unk_4C->unk_2C, temp_s0);
     Pokedex_SetDataPanelSpecies(gTrainerCardMenu->unk_44->unk_2C, temp_s0);
     Pokedex_SetFlavorText(gTrainerCardMenu->unk_48, GbSave_GetActivePort(), temp_s0);
@@ -6294,7 +6294,7 @@ s32 Pokedex_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     u8* sp28;
 
     gTrainerCardSaveSlot = GbSave_GetActivePort();
-    gTrainerCardSpeciesIndex = Pokedex_GetHighestSeenSpeciesIndex() - 1;
+    gPokedexSpeciesIndex = Pokedex_GetHighestSeenSpeciesIndex() - 1;
 
     main_pool_push_state('BOOK');
 
@@ -6326,7 +6326,7 @@ s32 Pokedex_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     gTrainerCardUnusedInt = GbSave_GetActivePort();
 
     if (gTrainerCardUnusedInt != -1) {
-        GbSave_BuildPortSummary(&gTrainerCardGfxState, gTrainerCardUnusedInt);
+        GbSave_BuildPortSummary(&gTrainerCardPortSummary, gTrainerCardUnusedInt);
     }
 
     gTrainerCardMenu = mem_pool_alloc(sp2C, sizeof(PokedexMenu));

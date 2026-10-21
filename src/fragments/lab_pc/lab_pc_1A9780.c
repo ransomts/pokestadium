@@ -842,7 +842,7 @@ s32 LabPC_DrawBoxLabelTab(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
     if (arg0->unk_30 == 0) {
         var_s0 = (((arg0->posX.unk_14.posX - temp_v0) - 0x20) / 2) + arg1 + 0x20;
 
-        gDPLoadTextureBlock(gDisplayListHead++, gTexture_MoveTargetSmall[arg0->unk_2C], G_IM_FMT_RGBA, G_IM_SIZ_16b, 24, 26, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gTexture_GbPakIcons[arg0->unk_2C], G_IM_FMT_RGBA, G_IM_SIZ_16b, 24, 26, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (var_s0 - 0x20) << 2, (arg2 + 2) << 2, (var_s0 - 9) << 2,
@@ -850,7 +850,7 @@ s32 LabPC_DrawBoxLabelTab(unk_func_8820399C* arg0, s32 arg1, s32 arg2) {
     } else {
         var_s0 = (((arg0->posX.unk_14.posX - temp_v0) - 0x30) / 2) + arg1 + 0x30;
 
-        gDPLoadTextureBlock(gDisplayListHead++, gTexture_MoveTargetLarge, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 26, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gTexture_N64PakIcon, G_IM_FMT_RGBA, G_IM_SIZ_16b, 48, 26, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (var_s0 - 0x30) << 2, (arg2 + 2) << 2, (var_s0 - 9) << 2,
@@ -884,7 +884,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
             42,
             gPanelBackgroundTexture1,
             48,
-            gPanelAccentTexture2,
+            gPanelAccentColorCyan,
             0,
         },
         {
@@ -894,7 +894,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
             42,
             gPanelBackgroundTexture2,
             48,
-            gPanelAccentTexture3,
+            gPanelAccentColorGreen,
             1,
         },
         {
@@ -904,7 +904,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
             42,
             gPanelBackgroundTexture3,
             48,
-            gPanelAccentTexture4,
+            gPanelAccentColorYellow,
             0,
         },
         {
@@ -924,7 +924,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
             42,
             gPanelBackgroundTexture4,
             48,
-            gPanelAccentTexture1,
+            gPanelAccentColorWhiteGray,
             0,
         },
     };

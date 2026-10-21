@@ -1143,7 +1143,7 @@ void DynamoGame_DrawSparkEffects(s32 arg0) {
     Mtx* var_s4 = Gfx_AllocDisplayList(sizeof(Mtx) * 4 * 12);
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &gHealthBarData[i];
+        gCurrentHealthBar = &gDynamoChargeBarData[i];
         gHealthBarEffectData = &gHealthBarEffects[i];
 
         var_s1 = Gfx_AllocDisplayList(sizeof(Gfx) * 256);
@@ -1248,7 +1248,7 @@ void DynamoGame_InitSparkEffects(void) {
     temp_s5 = MainPool_AllocState(main_pool_get_available(), 0);
 
     for (i = 0; i < 4; i++) {
-        gCurrentHealthBar = &gHealthBarData[i];
+        gCurrentHealthBar = &gDynamoChargeBarData[i];
 
         gCurrentHealthBar->unk_17C = GeoNode_CreateScale(temp_s5, NULL, 4, NULL, &gRootNodePosition, 1.0f);
         GraphNode_AppendChild(&gGraphRoot0, &gCurrentHealthBar->unk_17C->posX);

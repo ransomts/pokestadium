@@ -91,7 +91,7 @@ static s16 gCurrentAreaIndex;
 static s16 gPreviousAreaIndex;
 static s16 gTransitionFrame;
 static SessionModeSettings gAreaAudioState;
-static PlayerName gAreaPlayerName;
+static GbsSaveOptions gAreaPlayerName;
 
 s32 AreaSelect_CheckCartRemoved(s32 arg0) {
     u32 temp_a0 = osSetIntMask(1);
