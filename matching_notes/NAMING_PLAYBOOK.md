@@ -170,6 +170,126 @@ filename, hex in `Text_GetStringTable` calls).
     screen by its dominant functions (LabPC_BoxMenu → box menu screen) before
     differentiating same-purpose statics across siblings.
 
+## 5. Misname Pattern Catalog (the failure modes, ~16% of model-draft names)
+
+Every pattern below was found in production names. Check new drafts against it:
+
+1. **Bank swap** — variable named for the wrong text bank's content
+   (`gMessageBank_MoveNames` held TYPE names; `gSpeciesCategoryMsgBank` held
+   area names). Verify the `Text_GetStringTable(N)` argument against the bank
+   map, AND the fetched string indices (banks are mixed content — check the
+   INDICES, not just the bank).
+2. **Era vocabulary** (see ERA CHECK in section 4) — modern-Pokémon concepts
+   in Gen 1.
+3. **Domain misattribution by one caller** — `gAudioMessageIndex` was "audio"
+   because ONE description string mentioned sound settings; it was the main-menu
+   cursor. Read THREE+ usages before trusting a domain.
+4. **Adjacency guessing** — `gCameraStateFlag` named for its BSS neighbors.
+   Names must come from the symbol's own accesses.
+5. **Mechanism mistaken for content** — `gGen1BoxSprite*` held item-name
+   STRINGS; `gPatternTileData` held EUC-JP text. Decode the bytes: text
+   (EUC-JP), floats (IEEE-754 — "14681.355f" spells "Feel"), tables
+   (Gen-1-known data), graphics.
+6. **Plausible-but-invented citations** — justifications citing functions that
+   don't exist (`Sushi_Init`, `UI_DrawMenuItem`). Grep every cited identifier;
+   hallucinated citations correlate strongly with wrong names.
+7. **A/B letter swaps** — `MenuTextureA_PanelVtx*` used only by texture B's DL.
+   The name says A; grep which DL's `gsSPVertex` actually references it.
+8. **Screen misidentification** — "TrainerCard" in the Pokédex, "ResultScreen"
+   in Clefairy Says, "HealthBar" for roster icons. Identify the SCREEN via its
+   message-bank strings, not the name's claim.
+9. **Typedef/function name collisions** — our type rename taking michiiik's
+   function name (`WidgetTree_InitMessagePanel`). Check michi_syms for the
+   exact name in ANY kind.
+10. **Kind confusion** — color pairs named "textures", geometry named
+    "sprites", a matrix named "identity" (it was ortho). Decode the SHAPE:
+    RGBA16 = texture, 2×Color_RGBA8 = color pair, MtxF words = matrix (check
+    the identity pattern!), Vtx array = vertices.
+
+## 6. Evidence Strategies (ranked by power)
+
+1. **ROM decode** (strongest): xxd the bytes; strings are EUC-JP (2 chars per
+   u32, high half first); floats via struct.unpack; tables against Gen-1 data
+   (base stats, TM/HM list, high-crit moves {Karate Chop, Razor Leaf,
+   Crabhammer, Slash}).
+2. **Fetch-index tracing**: what indexes the symbol? `moveId - 1`, partySize,
+   species ID — the index's domain IS the content domain.
+3. **Condition decoding**: the if-ladder selecting a table reveals its meaning
+   (the announcer mood-picker named 15 tables this way).
+4. **Positive-control deadness scan**: to prove dead, scan the full ROM image
+   for aligned pointers AND verify the scan detects a known-live neighbor.
+5. **Sibling body diff**: "differs from X by Y" with both bodies read.
+6. **Struct-shape induction**: consecutive same-size symbols = split array
+   (`gZeroBuffer12` = one gMoveDisplayInfo stride = the blank 166th entry).
+7. **Cross-referencing parallel agents' outputs** for lockstep (script names
+   citing handler names MUST follow handler renames — a batch must be
+   self-consistent before applying).
+
+## 7. Agent Operational Rules
+
+1. **ABSOLUTE TOOL RULE** (crashes otherwise): never `read` binary/asset files
+   (.bin/.dat/.z64/.elf/.map/.png) — use `xxd -l 64` / `hexdump -C` via shell.
+2. **Chunk size**: 150-170 names per agent balances throughput vs crash
+   exposure. Crashes are random per-run (~1 in 8); split-and-relaunch halves.
+3. **Workloads in durable storage** (`scratch/qa/`), never `/tmp/opencode`
+   (reaper-wiped twice mid-campaign). michi_syms.txt regenerates from
+   `git -C /scratch/tsranso/pr1/hippo show origin/master:linker_scripts/us/symbol_addrs*.txt`.
+4. **Verification agents output ONLY failures** (claim holds → no row) — plus
+   REVIEW rows for michiiik-owned names. Never "improve" vague-but-true names.
+5. **Prompt must include**: the tool rule, ERA CHECK, the bank map (§1),
+   this pattern catalog (§5), and the sibling conventions to follow.
+6. **Cross-check between concurrent agents**: instruct each to read sibling
+   outputs for consistency (both directions: handlers citing scripts,
+   scripts citing handlers).
+
+## 8. Ledger & Batch Mechanics (the trap list)
+
+1. **Batch tags are a shared namespace** — w18, w21, w22, w23, w24, w25, w26,
+   w27, w29 are ALL taken by prior sessions. Check `awk -F'\t' '$3=="wNN"'
+   renames.tsv | wc -l` before appending; zero rows ≠ free (an old session may
+   have applied+renamed everything — check for ANY rows with the tag).
+2. **Append with explicit `\n` per row** — a `"\t".join()` without the line
+   ending collapses rows (happened TWICE). Always `wc -l` and row-count after
+   appending; restore from `scratch/qa/renames_backup_<batch>.tsv` on mismatch.
+3. **mark-committed can glue lines** if run on a dirty ledger — audit with
+   `awk -F'\t' 'NF>6'` (should be ~5 known-good: tabs inside old
+   justifications) and `grep -c '^[0-9a-f]\{1,3\}$'` (orphan sha fragments = 0).
+4. **Chain-resolve old names before preflight**: agent outputs may use the
+   original placeholder while the tree has an intermediate; walk the ledger
+   (`old → last applied new`) to the current name.
+5. **Preflight hard requirements**: unique new names (even file-local statics
+   need distinct names — screen-scope them); new names must have ≥1 post-rewrite
+   reference (dead data and interior overlay labels are unrenamable BY DESIGN);
+   old names must exist in the tree.
+6. **The audit must chain-resolve** (finals = names not any row's old_name)
+   AND filter field rows (`"." not in name`) — else counts are ~50% inflated.
+
+## 9. PR-Staging Mechanics (applying to michiiik's tree)
+
+1. **File trees to cover**: `src/` + `include/` (typedefs!) + `asm/*.s`
+   (contents AND filenames) + `linker_scripts/*/symbol_addrs*` (all 10
+   versions) + **build/linker_scripts/*/auto/*.ld** (generated, stale copies
+   break the link — patch or delete-and-regenerate).
+2. **Never-touch**: `linker_scripts/*/undefined_syms.ld` on OUR tree; on
+   michiiik's, `PROVIDE()` symbols there define the DMEM segment addresses.
+3. **Collision classes**: our symbol name = michiiik's name for a DIFFERENT
+   address (address-join to detect); our TYPEDEF = michiiik's function name
+   (rename the type semantically: `WidgetTree_MessagePanel`,
+   `LabPC_BoxScreenWidget`); our name for X = michiiik's name for X's neighbor.
+4. **Build needs**: `.venv` symlink to our venv; `make` regenerates asm/ from
+   baserom; the gate target is checksum `ed1378bc12115f1209a77844965ba50`.
+5. **The collapsed map**: placeholder → final via ledger chains; include
+   PR-308-name stage-2 renames; skip chains rooted in michiiik's own names
+   (divergence class → review dossier, never unilateral).
+
+## 10. What Reviewers Want (from PR #308's review)
+
+- Evidence per name, in the PR or the gist companion
+- No renames of empty functions or unverifiable symbols
+- Honest process description (LLM-assisted, human-gated)
+- CONTRIBUTING compliance BEFORE the first push (the lint exists for this)
+- Their own names are their naming authority — park improvements, don't push
+
 ## 4. Game-Knowledge Discoveries (context for future names)
 
 - **ERA CHECK (the #1 misname cause, ~22% of model-draft content claims)**: the
