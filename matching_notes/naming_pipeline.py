@@ -321,7 +321,7 @@ COMPOUND_SUFFIX = re.compile(
     r"|[Rr][Gg][Bb]$"                                    # RGB
     r"|[Dd][Mm][Aa]$"                                     # DMA
     r"|[Rr][Tt][Cc]$"                                     # RTC
-    r"|(?:Prim|Env)[RGB]$"                              # color channel accessors (ApproachPrimB = blue channel)
+    r"|(?:Prim|Env)[RGBA]$"                         # color channel accessors incl. alpha (PrimA = alpha channel)
     r"|(?:AA|ZB)$"                                          # render mode abbreviations (G_RM_AA_XLU_SURF2)
     r"|_CB$"                                                    # spline cube macro CB(x)=x*x*x (gSplineD_CB)
     r"|TOC$"                                                    # table-of-contents acronym (gAudioSeqTOC)
