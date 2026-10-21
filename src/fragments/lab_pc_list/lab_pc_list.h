@@ -429,7 +429,7 @@ typedef struct unk_func_8830867C_02C {
     /* 0x084 */ unk_func_88001300_000* specialHeader;
     /* 0x088 */ unk_func_88001300_000* unk_088;
     /* 0x08C */ unk_func_8830867C_030* dropdownMenu;
-    /* 0x090 */ WidgetTree_InitMessagePanel* messagePanel;
+    /* 0x090 */ WidgetTree_MessagePanel* messagePanel;
     /* 0x094 */ unk_func_8830867C_034* boxSelectWidget;
     /* 0x098 */ unk_func_8830867C_038* statusMenu;
     /* 0x09C */ unk_func_8830867C_03C* typePanel;

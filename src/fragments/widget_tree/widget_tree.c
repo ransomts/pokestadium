@@ -2383,11 +2383,11 @@ void WidgetTree_InitTextMessageBuffer(unk_func_88509F0C* arg0) {
     arg0->unk_2C = 0;
 }
 
-void WidgetTree_InitMessagePanelWidget(WidgetTree_InitMessagePanel* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
+void WidgetTree_InitMessagePanelWidget(WidgetTree_MessagePanel* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
                    TextObject* arg6) {
     static Color_RGBA8 Color_DarkRed = { 0x64, 0x1E, 0x1E, 0xFF };
 
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(WidgetTree_InitMessagePanel));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(WidgetTree_MessagePanel));
     arg0->posX.unk_20 = WidgetTree_HandleMessagePanelInput;
     arg0->posX.unk_10.posX = arg1;
     arg0->posX.unk_10.posY = arg2;
@@ -2411,7 +2411,7 @@ void WidgetTree_InitMessagePanelWidget(WidgetTree_InitMessagePanel* arg0, s32 ar
     arg0->unk_38 = arg6;
 }
 
-void WidgetTree_SetMessagePanelText(WidgetTree_InitMessagePanel* arg0, unk_func_8850878C* arg1, s32 arg2, s32 arg3) {
+void WidgetTree_SetMessagePanelText(WidgetTree_MessagePanel* arg0, unk_func_8850878C* arg1, s32 arg2, s32 arg3) {
     s16 temp_v1;
 
     *arg0->unk_34 = *arg1;
@@ -2441,7 +2441,7 @@ void WidgetTree_SetMessagePanelText(WidgetTree_InitMessagePanel* arg0, unk_func_
     arg0->unk_34->posX.unk_10.posY = temp_v1 / 2;
 }
 
-s32 WidgetTree_HandleMessagePanelInput(WidgetTree_InitMessagePanel* arg0, Controller* arg1) {
+s32 WidgetTree_HandleMessagePanelInput(WidgetTree_MessagePanel* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -2455,15 +2455,15 @@ s32 WidgetTree_HandleMessagePanelInput(WidgetTree_InitMessagePanel* arg0, Contro
     return var_v1;
 }
 
-void WidgetTree_OpenMessagePanel(WidgetTree_InitMessagePanel* arg0) {
+void WidgetTree_OpenMessagePanel(WidgetTree_MessagePanel* arg0) {
     WidgetTree_OpenAnimatedPanel(arg0->unk_2C);
 }
 
-void WidgetTree_ResetMessagePanelAnimation(WidgetTree_InitMessagePanel* arg0) {
+void WidgetTree_ResetMessagePanelAnimation(WidgetTree_MessagePanel* arg0) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-void WidgetTree_RunMessagePanel(WidgetTree_InitMessagePanel* arg0, Controller* arg1, s32 arg2) {
+void WidgetTree_RunMessagePanel(WidgetTree_MessagePanel* arg0, Controller* arg1, s32 arg2) {
     s32 temp_v0;
     s32 var_s0 = 0;
 
@@ -2485,11 +2485,11 @@ void WidgetTree_RunMessagePanel(WidgetTree_InitMessagePanel* arg0, Controller* a
     WidgetTree_ResetMessagePanelAnimation(arg0);
 }
 
-void WidgetTree_RunMessagePanelWithSound(WidgetTree_InitMessagePanel* arg0, Controller* arg1) {
+void WidgetTree_RunMessagePanelWithSound(WidgetTree_MessagePanel* arg0, Controller* arg1) {
     WidgetTree_RunMessagePanel(arg0, arg1, 1);
 }
 
-void WidgetTree_RunMessagePanelSilent(WidgetTree_InitMessagePanel* arg0, Controller* arg1) {
+void WidgetTree_RunMessagePanelSilent(WidgetTree_MessagePanel* arg0, Controller* arg1) {
     WidgetTree_RunMessagePanel(arg0, arg1, 0);
 }
 

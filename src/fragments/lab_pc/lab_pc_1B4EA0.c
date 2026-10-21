@@ -1324,7 +1324,7 @@ s32 Fragment_InputHandler(unk_func_8821421C_038_04C* arg0, Controller* arg1) {
 
 void LabItem_InitOperationController(unk_func_8821421C_02C_06C_02C* arg0, unk_func_8820BE14_02C_038* arg1,
                    unk_func_8820BE14_02C_038* arg2, QuantityEntry* arg3, unk_func_88217740* arg4,
-                   WidgetTree_InitMessagePanel* arg5, MemoryPool* arg6) {
+                   WidgetTree_MessagePanel* arg5, MemoryPool* arg6) {
     static u16 gMenuOptionIds[] = { 8, 9, 0xA, 0xB, 0xC };
     static Color_RGBA8 gTextWhite = { 0xF0, 0xF0, 0xF0, 0xFF };
 
@@ -2079,7 +2079,7 @@ u8* LabItem_GetHighlightedEntry(unk_func_8821421C_02C_06C_02C* arg0) {
 
 void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2, unk_func_8821421C_03C* arg3, s32* arg4,
                    ItemBlockInfo* arg5, unk_func_88001300_000* arg6, unk_func_8821421C_038* arg7,
-                   YesNoPanel* arg8, WidgetTree_InitMessagePanel* arg9, s8** argA, MemoryPool* argB) {
+                   YesNoPanel* arg8, WidgetTree_MessagePanel* arg9, s8** argA, MemoryPool* argB) {
     static Color_RGBA8 gItemMenuPanelBackground = { 0x6C, 0x6C, 0x7E, 0xFF };
     static Color_RGBA8 gBoxLocationPatternDark = { 0x50, 0x50, 0x86, 0xFF };
     static Color_RGBA8 gBoxLocationPatternLight = { 0x79, 0x79, 0xCB, 0xFF };
@@ -2960,7 +2960,7 @@ void LabPC_BuildItemScreenWidget(ItemPCScreen* arg0, s32 arg1, s32 arg2, MemoryP
     LabItem_InitBoxScreen(arg0->unk_38, 0x2C, 0x4B, sp88, arg0->unk_34, arg3);
     LabItem_BindBoxScreenSlot(arg0->unk_38, &arg0->unk_7C);
 
-    arg0->unk_30 = mem_pool_alloc(arg3, sizeof(WidgetTree_InitMessagePanel));
+    arg0->unk_30 = mem_pool_alloc(arg3, sizeof(WidgetTree_MessagePanel));
     ((func88509F48)Memmap_GetFragmentVaddr(WidgetTree_InitMessagePanelWidget))(arg0->unk_30, 0x2C, 0x4B, 0x228, 0x162, arg3, arg4);
 
     arg0->unk_2C = mem_pool_alloc(arg3, sizeof(unk_func_8821421C_02C));

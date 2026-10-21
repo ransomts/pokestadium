@@ -1111,7 +1111,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(temp_s0_4, arg0->unk_2C, arg4);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_4);
 
-    arg0->unk_60 = mem_pool_alloc(arg8, sizeof(WidgetTree_InitMessagePanel));
+    arg0->unk_60 = mem_pool_alloc(arg8, sizeof(WidgetTree_MessagePanel));
     ((func88509F48)Memmap_GetFragmentVaddr(WidgetTree_InitMessagePanelWidget))(arg0->unk_60, 0, 0, 0x228, 0x172, arg8, arg6);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_60);
 

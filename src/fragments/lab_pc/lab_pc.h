@@ -116,7 +116,7 @@ typedef struct unk_func_8820B12C_02C {
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ s32 unk_34;
     /* 0x38 */ unk_func_88217740* unk_38;
-    /* 0x3C */ WidgetTree_InitMessagePanel* unk_3C;
+    /* 0x3C */ WidgetTree_MessagePanel* unk_3C;
     /* 0x40 */ ChildWidgetGroup* unk_40;
     /* 0x44 */ FragmentEntry unk_44;
     /* 0x48 */ unk_func_8820BE14_030* unk_48;
@@ -186,7 +186,7 @@ typedef struct LabPC_SwapScreen {
     /* 0x70 */ unk_func_8820BE14_02C_070* unk_70;
     /* 0x74 */ unk_func_8820B12C* unk_74;
     /* 0x78 */ unk_func_8820BE14_02C_078* unk_78[2];
-    /* 0x80 */ WidgetTree_InitMessagePanel* unk_80;
+    /* 0x80 */ WidgetTree_MessagePanel* unk_80;
     /* 0x84 */ unk_func_889000C4* unk_84;
     /* 0x88 */ unk_func_8850878C* unk_88;
     /* 0x8C */ unk_func_8820BE14_06C* unk_8C;
@@ -204,7 +204,7 @@ typedef struct LabPC_ScreenContext {
     /* 0x5C */ char** unk_5C;
     /* 0x60 */ char** unk_60;
     /* 0x64 */ char** unk_64;
-    /* 0x68 */ WidgetTree_InitMessagePanel* unk_68;
+    /* 0x68 */ WidgetTree_MessagePanel* unk_68;
     /* 0x6C */ unk_func_8820BE14_06C unk_6C;
     /* 0x7C */ unk_func_8820BE14_06C unk_7C;
     /* 0x8C */ unk_func_8820BE14_06C unk_8C;
@@ -301,7 +301,7 @@ typedef struct unk_func_8821421C_02C_06C_02C {
     /* 0x40 */ s32 unk_40;
     /* 0x44 */ s32 unk_44;
     /* 0x48 */ unk_func_88217740* unk_48;
-    /* 0x4C */ WidgetTree_InitMessagePanel* unk_4C;
+    /* 0x4C */ WidgetTree_MessagePanel* unk_4C;
     /* 0x50 */ ChildWidgetGroup* unk_50;
     /* 0x54 */ char unk54[0x4];
     /* 0x58 */ unk_func_882173EC* unk_58[2];
@@ -358,7 +358,7 @@ typedef struct unk_func_8821421C_02C {
     /* 0x80 */ s32 unk_80;
     /* 0x84 */ struct unk_func_8821421C_038* unk_84;
     /* 0x88 */ struct YesNoPanel* unk_88;
-    /* 0x8C */ WidgetTree_InitMessagePanel* unk_8C;
+    /* 0x8C */ WidgetTree_MessagePanel* unk_8C;
     /* 0x90 */ struct ItemBlockInfo* unk_90;
     /* 0x94 */ unk_func_882025E0_03C unk_94[1];
     /* 0xA0 */ unk_func_889000C4* unk_A0;
@@ -417,7 +417,7 @@ typedef struct unk_func_8821421C_038 {
 typedef struct ItemPCScreen {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_8821421C_02C* unk_2C;
-    /* 0x34 */ WidgetTree_InitMessagePanel* unk_30;
+    /* 0x34 */ WidgetTree_MessagePanel* unk_30;
     /* 0x34 */ YesNoPanel* unk_34;
     /* 0x38 */ unk_func_8821421C_038* unk_38;
     /* 0x3C */ unk_func_8821421C_03C unk_3C[3];

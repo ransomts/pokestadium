@@ -648,7 +648,7 @@ s32 LabPC_MonNameLevelWidget_Draw(unk_func_882079D8* arg0, s32 arg1, s32 arg2) {
 }
 
 void LabPC_InitSwapMenu(unk_func_8820B12C_02C* arg0, unk_func_8820B12C_02C_020* arg1, unk_func_8820B12C_02C_020* arg2,
-                   unk_func_88217740* arg3, WidgetTree_InitMessagePanel* arg4, s32 arg5, MemoryPool* arg6) {
+                   unk_func_88217740* arg3, WidgetTree_MessagePanel* arg4, s32 arg5, MemoryPool* arg6) {
     static Color_RGBA8 gMenuItemColor_White = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     s32 i;
@@ -1482,7 +1482,7 @@ static Color_RGBA8 gDialogDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
 void TextObjectRenderer_Init(LabPC_SwapScreen* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C_000* arg3,
                    unk_func_8820BE14_06C_000* arg4, unk_func_88001300_000* arg5, FragmentEntry arg6,
-                   unk_func_8820BE14_030* arg7, WidgetTree_InitMessagePanel* arg8, char** arg9, MemoryPool* argA) {
+                   unk_func_8820BE14_030* arg7, WidgetTree_MessagePanel* arg8, char** arg9, MemoryPool* argA) {
     s32 i;
     UNUSED s32 pad1;
     UNUSED s32 pad2;
@@ -2412,7 +2412,7 @@ void Fragment_Init(LabPC_ScreenContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memo
 
     temp_v0_7(0, &arg0->unk_30);
 
-    arg0->unk_68 = mem_pool_alloc(arg4, sizeof(WidgetTree_InitMessagePanel));
+    arg0->unk_68 = mem_pool_alloc(arg4, sizeof(WidgetTree_MessagePanel));
     ((func88509F48)Memmap_GetFragmentVaddr(WidgetTree_InitMessagePanelWidget))(arg0->unk_68, 0x2C, 0x4C, 0x228, 0x160, arg4, arg5);
 
     arg0->unk_2C = mem_pool_alloc(arg4, sizeof(LabPC_SwapScreen));

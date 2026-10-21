@@ -1116,7 +1116,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     arg0->dropdownMenu->unk_4C = 0x228;
     arg0->dropdownMenu->unk_50 = 0x13E;
 
-    arg0->messagePanel = mem_pool_alloc(argF, sizeof(WidgetTree_InitMessagePanel));
+    arg0->messagePanel = mem_pool_alloc(argF, sizeof(WidgetTree_MessagePanel));
     ((func88509F48)Memmap_GetFragmentVaddr(WidgetTree_InitMessagePanelWidget))(arg0->messagePanel, 0, 0, 0x228, 0x1A0, argF, arg10);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->messagePanel);
 

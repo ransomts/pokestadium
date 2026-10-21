@@ -312,13 +312,13 @@ typedef struct unk_func_8820399C {
     /* 0x30 */ unk_func_8850143C* unk_30;
 } unk_func_8820399C; // size = 0x34
 
-typedef struct WidgetTree_InitMessagePanel {
+typedef struct WidgetTree_MessagePanel {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_885012A4* unk_30;
     /* 0x34 */ unk_func_8850878C* unk_34;
     /* 0x38 */ TextObject* unk_38;
-} WidgetTree_InitMessagePanel; // size = 0x3C
+} WidgetTree_MessagePanel; // size = 0x3C
 
 typedef s32 (*unk_func_8850CD44_010)(struct ChildWidgetGroup* arg0, Controller* arg1);
 typedef void (*unk_func_8850CD44_014)(struct ChildWidgetGroup* arg0, s32 arg1);
@@ -585,7 +585,7 @@ typedef struct unk_func_88203ED8 {
     /* 0x44 */ unk_func_882149A0* unk_44[5];
     /* 0x58 */ unk_func_88500994* unk_58;
     /* 0x5C */ unk_func_88201DA0* unk_5C;
-    /* 0x60 */ WidgetTree_InitMessagePanel* unk_60;
+    /* 0x60 */ WidgetTree_MessagePanel* unk_60;
     /* 0x64 */ unk_func_88203ED8_064* unk_64;
     /* 0x68 */ GridMenu* unk_68;
     /* 0x6C */ unk_func_882025E0* unk_6C;
@@ -773,10 +773,10 @@ typedef void (*func8850878C)(unk_func_8850878C*, s32, s32, char*, s32);
 typedef void (*func885088F4)(unk_func_885088F4*, s32, s32, s32);
 typedef void (*func88509A2C)(unk_func_88509A2C*, s32, s32, s32, char*);
 typedef void (*func88509E34)(unk_func_88509F0C*, s32, s32, char*);
-typedef void (*func88509F48)(WidgetTree_InitMessagePanel*, s32, s32, s32, s32, MemoryPool*, s32);
-typedef void (*func8850A10C)(WidgetTree_InitMessagePanel*, unk_func_8850878C*, s32, s32);
-typedef void (*func8850A3CC)(WidgetTree_InitMessagePanel*, Controller*);
-typedef void (*func8850A3EC)(WidgetTree_InitMessagePanel*, Controller*);
+typedef void (*func88509F48)(WidgetTree_MessagePanel*, s32, s32, s32, s32, MemoryPool*, s32);
+typedef void (*func8850A10C)(WidgetTree_MessagePanel*, unk_func_8850878C*, s32, s32);
+typedef void (*func8850A3CC)(WidgetTree_MessagePanel*, Controller*);
+typedef void (*func8850A3EC)(WidgetTree_MessagePanel*, Controller*);
 typedef void (*func8850A40C)(unk_func_88001300_000*, s32, s32, s32, s32);
 typedef void (*func8850AB48)(unk_func_88001300_000*, s32, s32, s32, s32);
 typedef void (*func8850B254)(DashedBorderFrame*, s32, s32, s32, s32, Color_RGBA8, Color_RGBA8);
@@ -893,11 +893,11 @@ void WidgetTree_InitSaveSlotLabel(unk_func_88509A2C*, s32, s32, s32, char*);
 s32 WidgetTree_DrawSaveSlotLabel(unk_func_88509A2C*, s32, s32);
 void WidgetTree_InitTextMessage(unk_func_88509E34*, s32, s32, char*);
 s32 WidgetTree_DrawTextMessage(unk_func_88509F0C*, s32, s32);
-void WidgetTree_InitMessagePanelWidget(WidgetTree_InitMessagePanel*, s32, s32, s32, s32, MemoryPool*, TextObject*);
-void WidgetTree_SetMessagePanelText(WidgetTree_InitMessagePanel*, unk_func_8850878C*, s32, s32);
-s32 WidgetTree_HandleMessagePanelInput(WidgetTree_InitMessagePanel*, Controller*);
-void WidgetTree_RunMessagePanelWithSound(WidgetTree_InitMessagePanel*, Controller*);
-void WidgetTree_RunMessagePanelSilent(WidgetTree_InitMessagePanel*, Controller*);
+void WidgetTree_InitMessagePanelWidget(WidgetTree_MessagePanel*, s32, s32, s32, s32, MemoryPool*, TextObject*);
+void WidgetTree_SetMessagePanelText(WidgetTree_MessagePanel*, unk_func_8850878C*, s32, s32);
+s32 WidgetTree_HandleMessagePanelInput(WidgetTree_MessagePanel*, Controller*);
+void WidgetTree_RunMessagePanelWithSound(WidgetTree_MessagePanel*, Controller*);
+void WidgetTree_RunMessagePanelSilent(WidgetTree_MessagePanel*, Controller*);
 void WidgetTree_InitBorderFrame(unk_func_88001300_000*, s32, s32, s32, s32);
 s32 WidgetTree_DrawBorderFrame(unk_func_88001300_000*, s32, s32);
 void WidgetTree_InitInsetBorderFrame(unk_func_88001300_000*, s32, s32, s32, s32);
