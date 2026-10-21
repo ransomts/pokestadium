@@ -172,6 +172,14 @@ filename, hex in `Text_GetStringTable` calls).
 
 ## 4. Game-Knowledge Discoveries (context for future names)
 
+- **ERA CHECK (the #1 misname cause, ~22% of model-draft content claims)**: the
+  model drafts applied modern-Pokémon vocabulary to a Gen 1 game — "items" for
+  battle announcer pools (Stadium battles have no item events), "Ability"/
+  "Ribbons" icons (neither concept exists in Gen 1), "TrainerCard" for Pokédex
+  statics, item/seed/audio tables for GB-cart header tables (the "random seed
+  table" literally contained ASCII "POKEMON RED"). Before accepting any
+  domain word, verify the concept EXISTS in this game: no abilities, no
+  ribbons, no held items, no natures, no genders in Gen 1.
 - **The announcer**: entire cue-table system = announcer voice, VOICE toggle
   gated, mood-keyed pools (even match / low HP / both heavy damage / delayed
   freeze/sleep reactions via `gAudioPendingFreezeReaction`)
