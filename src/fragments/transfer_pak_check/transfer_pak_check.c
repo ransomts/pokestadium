@@ -37,8 +37,8 @@ static FramebufferImage* gMenuIconPanelFramebuffer;
 static FramebufferImage* gMenuBannerFramebuffer;
 static unk_D_82D0ABD0 gStatusPopup;
 static FramebufferImage* gMenuFramebufferImagesAlt[8];
-static GraphNode* gMenuGraphNodeE;
-static GraphNode* gMenuGraphNodeF;
+static GraphNode* gGameIconGraphNode;
+static GraphNode* gControllerIconGraphNode;
 static GraphNode* gMenuGraphNodeG;
 static GraphNode* gMenuGraphNodeH;
 
@@ -2462,11 +2462,11 @@ void TransferPak_MenuIconsInit(void) {
     gMenuFramebufferImagesAlt[5] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x42), 0x1E, 0x64, 0x1E);
     gMenuFramebufferImagesAlt[6] = PakUi_BuildTextLabelBuffer(Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x43), 0x1E, 0x64, 0x1E);
 
-    Model_InitDisplayObject(&gMenuOptionNodes[0], 0, 0, gMenuGraphNodeE);
-    Model_InitDisplayObject(&gMenuOptionNodes[1], 0, 0, gMenuGraphNodeF);
+    Model_InitDisplayObject(&gMenuOptionNodes[0], 0, 0, gGameIconGraphNode);
+    Model_InitDisplayObject(&gMenuOptionNodes[1], 0, 0, gControllerIconGraphNode);
     Model_InitDisplayObject(&gMenuOptionNodes[2], 0, 0, gMenuGraphNodeG);
     Model_InitDisplayObject(&gMenuOptionNodes[3], 0, 0, gMenuGraphNodeH);
-    Model_InitDisplayObject(&gMenuOptionNodes[4], 0, 0, gMenuGraphNodeF);
+    Model_InitDisplayObject(&gMenuOptionNodes[4], 0, 0, gControllerIconGraphNode);
     Model_InitDisplayObject(&gMenuOptionNodes[5], 0, 0, gMenuGraphNodeG);
     Model_InitDisplayObject(&gMenuOptionNodes[6], 0, 0, gMenuGraphNodeG);
     Vec3f_SetComponentsDuplicate(&gMenuOptionNodes[0].unk_024, -84.0f, 48.0f, -579.0f);
@@ -2764,9 +2764,9 @@ void TransferPak_InitMenuGraphics(void) {
     gPartyCardGraphNode = process_geo_layout(temp_v0, &MenuTextureA_CommandList);
     gIconPanelGraphNode = process_geo_layout(temp_v0, &MenuTextureB_CommandList);
     gBottomBannerGraphNode = process_geo_layout(temp_v0, &MenuTextureC_CommandList);
-    gMenuGraphNodeE = process_geo_layout(temp_v0, &MenuTextureD_CommandList);
+    gGameIconGraphNode = process_geo_layout(temp_v0, &MenuTextureD_CommandList);
     gMenuGraphNodeH = process_geo_layout(temp_v0, &MenuTextureE_CommandList);
-    gMenuGraphNodeF = process_geo_layout(temp_v0, &MenuTextureF_CommandList);
+    gControllerIconGraphNode = process_geo_layout(temp_v0, &MenuTextureF_CommandList);
     gMenuGraphNodeG = process_geo_layout(temp_v0, &MenuTextureG_CommandList);
 
     MainPool_FinalizeAllocation(temp_v0);

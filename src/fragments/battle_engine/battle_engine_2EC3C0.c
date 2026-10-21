@@ -92,10 +92,10 @@ u8 gAnchorLiftHalfSpeciesIds = 0x16;
 u8 gAnchorLiftDoubleSpeciesIds = 0x53;
 u8 gAnchorLiftHighSpeciesIds[] = { 0x55, 0x54 };
 
-char** gMessageBank_0x1E;
-char** gMessageBank_0x24;
+char** gBattleMessagesBank;
+char** gBattleSpeciesNamesBank;
 char** gBattleMoveNamesBank;
-char** gMessageBank_0x29;
+char** gBattleStatusNamesBank;
 char** gControllerDisconnectWarningBank;
 
 void BattleScene_ClearStateTickCallbacks(void) {
@@ -2111,10 +2111,10 @@ void BattleScene_InitializeRuntime(BattlePokemon* arg0) {
 
     Text_InitStringTables();
 
-    gMessageBank_0x1E = Text_GetStringTable(0x1E);
-    gMessageBank_0x24 = Text_GetStringTable(0x24);
+    gBattleMessagesBank = Text_GetStringTable(0x1E);
+    gBattleSpeciesNamesBank = Text_GetStringTable(0x24);
     gBattleMoveNamesBank = Text_GetStringTable(0x25);
-    gMessageBank_0x29 = Text_GetStringTable(0x29);
+    gBattleStatusNamesBank = Text_GetStringTable(0x29);
     gControllerDisconnectWarningBank = Text_GetStringTable(0x14);
 
     for (i = 0; i < 7; i++) {

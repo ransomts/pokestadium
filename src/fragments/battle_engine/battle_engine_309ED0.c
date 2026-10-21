@@ -844,7 +844,7 @@ void BattleScene_SendOutPresentationFinalize(CameraStruct* arg0) {
     Vec3f_SetComponentsDuplicate(&sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_030, 1.0f, 1.0f, 1.0f);
     sActivePokemon[gBattleScene.posX->unk_2C]->unk_000.unk_024.y = BattleScene_GetParticipantModelHeight(sActivePokemon[gBattleScene.posX->unk_2C]);
     BattleAnim_GetOwnerDefaultAnchorPosition(sActivePokemon[gBattleScene.posX->unk_2C], &gCameraPreset.posX);
-    BattleScene_LoadCameraPreset(&gBattleCameraPresetE, arg0, sActivePokemon[gBattleScene.posX->unk_2C]);
+    BattleScene_LoadCameraPreset(&gCameraPresetSendOutPushIn, arg0, sActivePokemon[gBattleScene.posX->unk_2C]);
     BattleScene_ApplyCameraPreset(arg0, sActivePokemon[gBattleScene.posX->unk_2C], 1);
     Audio_StartBattleMusicSequence();
     gBattleScene.posX->unk_20 = 6;

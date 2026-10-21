@@ -1340,7 +1340,7 @@ DioramaAnimData gBattleCameraPresetTable[] = {
     },
 };
 
-DioramaAnimData gBattleCameraPresetE = {
+DioramaAnimData gCameraPresetSendOutPushIn = {
     0, 0, 0, 2184, 0, 0.0f, 10.5f, 0, 0, 0, 182, 0, 0.0f, 2.0f, 0.20000000298023224f, 0.014999999664723873f, 50.0f,
 };
 

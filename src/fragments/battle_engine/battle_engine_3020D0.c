@@ -100,12 +100,12 @@ void Battle_QueueMessage(s8* arg0, s8 arg1) {
 
     if (tmp >= 0x80) {
         if ((tmp - 0x80) >= 0xB) {
-            Text_GetString(arg0 + 1, 0x40, gMessageBank_0x1E, tmp - 0x48);
+            Text_GetString(arg0 + 1, 0x40, gBattleMessagesBank, tmp - 0x48);
         } else {
-            Text_GetString(arg0 + 1, 0x40, gMessageBank_0x1E, tmp - 0x49);
+            Text_GetString(arg0 + 1, 0x40, gBattleMessagesBank, tmp - 0x49);
         }
     } else {
-        Text_GetString(arg0 + 1, 0x40, gMessageBank_0x1E, gMessageIdLookup[arg1]);
+        Text_GetString(arg0 + 1, 0x40, gBattleMessagesBank, gMessageIdLookup[arg1]);
     }
 }
 
@@ -500,8 +500,8 @@ void BattleBox_DrawMessage(unk_D_843901A0_4C8* arg0, s16 arg1, s16 arg2) {
             break;
 
         case 13:
-            temp_s1 = Font_MeasureTextExtent(1, 0, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA4)) / 2;
-            Battle_DrawTextIfNonEmpty(Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA4), 0xA1 - temp_s1, 0x71);
+            temp_s1 = Font_MeasureTextExtent(1, 0, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA4)) / 2;
+            Battle_DrawTextIfNonEmpty(Text_GetString(NULL, 0, gBattleMessagesBank, 0xA4), 0xA1 - temp_s1, 0x71);
             break;
 
         case 14:
@@ -699,7 +699,7 @@ void BattleScene_BuildParticipantMessage(BattlePlayerEntity* arg0, s32 arg1) {
     gBattleMessageQueues->unk_000 = arg0->pokemonAnimation->RentalSlotAnimData_PosePhase[arg0->animationState.unk_2C]->unk_001;
     arg0->messageBuffer.posX = 1;
     Text_SetStringToken(0x19, arg0->boundRoster->unk_01C[arg0->animationState.RentalSlotAnimData_PosePhase].unk_30);
-    Text_GetString(arg0->messageBuffer.unk_48, 0x40, gMessageBank_0x1E, arg1);
+    Text_GetString(arg0->messageBuffer.unk_48, 0x40, gBattleMessagesBank, arg1);
 }
 
 void BattleScene_RevealParticipantMessageChars(BattlePlayerEntity* arg0) {

@@ -16,9 +16,9 @@ static s16 gParticleSpawnTimerH;
 static s16 gEffect19Radial20SpawnTimer;
 static s16 gEffect7TexturedRibbonSheetSpawnTimer;
 static s16 gEffect33Radial20SpawnTimer;
-static s16 gParticleSpawnTimerD;
-static s16 gParticleSpawnTimerE;
-static s16 gParticleSpawnTimerF;
+static s16 gEffect39CombinedTrailSpawnTimer;
+static s16 gEffect98Radial20SpawnTimer;
+static s16 gEffect11Trail50AltSpawnTimer;
 static s16 gParticleSpawnTimerG;
 
 static const char gCalcVectorATtoDMErrorMsg[] = "calc_vector_ATtoDM() normal error!!!\n";
@@ -543,19 +543,19 @@ void BattleAnim_StartEffect98Radial20_EmitVariantD(void) {
 }
 
 void BattleAnim_StartEffect98Radial20_Init(void) {
-    gParticleSpawnTimerE = 0;
+    gEffect98Radial20SpawnTimer = 0;
     BattleAnim_ResetSharedEffectMatrix();
     Radial20_ResetPool();
     BattleAnim_StartEffect98Radial20_EmitVariantD();
 }
 
 s32 BattleAnim_StartEffect98Radial20_Update(void) {
-    gParticleSpawnTimerE++;
-    if (gParticleSpawnTimerE >= 0xB5) {
+    gEffect98Radial20SpawnTimer++;
+    if (gEffect98Radial20SpawnTimer >= 0xB5) {
         return -1;
     }
 
-    if ((gParticleSpawnTimerE < 0x78) && ((gParticleSpawnTimerE % 7) == 0)) {
+    if ((gEffect98Radial20SpawnTimer < 0x78) && ((gEffect98Radial20SpawnTimer % 7) == 0)) {
         BattleAnim_StartEffect98Radial20_EmitVariantD();
     }
 
@@ -569,7 +569,7 @@ void BattleAnim_StartEffect98Radial20_Draw(void) {
 }
 
 void BattleAnim_StartEffect11Trail50Alt_Init(void) {
-    gParticleSpawnTimerF = 0;
+    gEffect11Trail50AltSpawnTimer = 0;
     BattleAnim_ResetSharedEffectMatrix();
     Trail50EffectAlt_Init();
 }
@@ -584,8 +584,8 @@ s32 BattleAnim_StartEffect11Trail50Alt_Update(void) {
     f32 var_fv0;
     f32 sp44;
 
-    gParticleSpawnTimerF++;
-    if (!(gParticleSpawnTimerF & 1)) {
+    gEffect11Trail50AltSpawnTimer++;
+    if (!(gEffect11Trail50AltSpawnTimer & 1)) {
         sp44 = BattleAnim_EffectSecondaryOwnerModelScale();
         BattleAnim_EffectSecondaryOwnerAnchorPosition(&sp60);
         sp5C = (((guRandom() % 50) - 0x19) * sp44) + sp60.x;
@@ -1146,8 +1146,8 @@ void BattleAnim_StartEffect39CombinedTrail_Init(void) {
 }
 
 s32 BattleAnim_StartEffect39CombinedTrail_Update(void) {
-    gParticleSpawnTimerD++;
-    if ((gParticleSpawnTimerD % 10) == 0) {
+    gEffect39CombinedTrailSpawnTimer++;
+    if ((gEffect39CombinedTrailSpawnTimer % 10) == 0) {
         BattleAnim_StartEffect39SixSlotTrail_Seed();
     }
     BattleAnim_SixSlotTrail_UpdateAll();

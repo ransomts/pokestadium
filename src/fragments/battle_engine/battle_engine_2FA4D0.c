@@ -397,8 +397,8 @@ void BattleHud_DrawSpeciesNameLabelBlink(s16 arg0, s16 arg1, s32 arg2, u8* arg3,
     }
 
     if (sp22 > 0) {
-        sp24 = Font_MeasureTextExtent(2, 0, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xAA)) / 2;
-        Font_Printf((arg0 - sp24) + 0x23, arg1 + 2, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xAA));
+        sp24 = Font_MeasureTextExtent(2, 0, Text_GetString(NULL, 0, gBattleMessagesBank, 0xAA)) / 2;
+        Font_Printf((arg0 - sp24) + 0x23, arg1 + 2, Text_GetString(NULL, 0, gBattleMessagesBank, 0xAA));
     } else {
         Font_Printf((arg0 - (Font_MeasureTextExtent(2, 0, arg3) / 2)) + 0x23, arg1 + 2, arg3);
     }
@@ -448,7 +448,7 @@ void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, Sta
 
     sp34 = Font_MeasureTextExtent(2, 0, Battle_GetActiveMonNickname(arg0)) / 2;
     Font_Printf((arg3 - sp34) + 0x23, arg4 + 2, Battle_GetActiveMonNickname(arg0));
-    sp34 = Font_MeasureTextExtent(1, 0, Text_GetString(NULL, 0, gMessageBank_0x29, arg2->posX));
+    sp34 = Font_MeasureTextExtent(1, 0, Text_GetString(NULL, 0, gBattleStatusNamesBank, arg2->posX));
 
     if (sp34 >= 0x28) {
         Font_SetActive(1, -1);
@@ -459,7 +459,7 @@ void BattleHud_DrawMonInfoPanel(BattlePlayerEntity* arg0, PokemonData* arg1, Sta
     }
 
     Text_SetEnvColor(arg2->rotation.r, arg2->rotation.g, arg2->rotation.b, 0xFF);
-    Font_Printf(sp34, arg4 + 0xE, Text_GetString(NULL, 0, gMessageBank_0x29, arg2->posX));
+    Font_Printf(sp34, arg4 + 0xE, Text_GetString(NULL, 0, gBattleStatusNamesBank, arg2->posX));
     Font_EndTexturedTextRendering();
 }
 
@@ -854,9 +854,9 @@ void BattleHud_DrawThreeOptionLabelBar(BattlePlayerEntity* arg0, s16 arg1, s16 a
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(1, 0);
-    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0x9E));
-    Font_Printf(arg1 + 0x58, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0x9F));
-    Font_Printf(arg1 + 0x98, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA0));
+    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gBattleMessagesBank, 0x9E));
+    Font_Printf(arg1 + 0x58, arg2 + 3, Text_GetString(NULL, 0, gBattleMessagesBank, 0x9F));
+    Font_Printf(arg1 + 0x98, arg2 + 3, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA0));
     Font_EndTexturedTextRendering();
     BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0xCC, 0x16, 0);
 }
@@ -876,8 +876,8 @@ void BattleHud_DrawTwoOptionLabelBar(BattlePlayerEntity* arg0, s16 arg1, s16 arg
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(1, 0);
-    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA9));
-    Font_Printf(arg1 + 0x51, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA8));
+    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA9));
+    Font_Printf(arg1 + 0x51, arg2 + 3, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA8));
     Font_EndTexturedTextRendering();
     BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0x83, 0x16, 0);
 }
@@ -896,7 +896,7 @@ void BattleHud_DrawOneOptionLabelBar(BattlePlayerEntity* arg0, s16 arg1, s16 arg
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(1, 0);
-    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA8));
+    Font_Printf(arg1 + 0x18, arg2 + 3, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA8));
     Font_EndTexturedTextRendering();
     BattleHud_DrawTranslucentShadowRect(arg1 - 2, arg2 - 2, 0x4A, 0x16, 0);
 }
@@ -1625,10 +1625,10 @@ void BattleHud_DrawTwoOptionCursorMenu(BattlePlayerEntity* arg0, s16 arg1, s16 a
     Battle_DrawGradientRectWrapper(arg1 + 1, arg2 + 1, 0xC8, 0x24, &gBoxColorPrimary[arg3], &gBoxColorSecondary[arg3]);
     Font_BeginTranslucentTextRendering();
     Font_SetActive(2, 0);
-    sp48 = Font_MeasureTextExtent(2, 0, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA1)) / 2;
-    Font_Printf((arg1 - sp48) + 0x61, arg2 + 5, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA1));
-    Font_Printf(arg1 + 0x32, arg2 + 0x14, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA3));
-    Font_Printf(arg1 + 0x7A, arg2 + 0x14, Text_GetString(NULL, 0, gMessageBank_0x1E, 0xA2));
+    sp48 = Font_MeasureTextExtent(2, 0, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA1)) / 2;
+    Font_Printf((arg1 - sp48) + 0x61, arg2 + 5, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA1));
+    Font_Printf(arg1 + 0x32, arg2 + 0x14, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA3));
+    Font_Printf(arg1 + 0x7A, arg2 + 0x14, Text_GetString(NULL, 0, gBattleMessagesBank, 0xA2));
     Font_EndTexturedTextRendering();
 
     gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);

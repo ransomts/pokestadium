@@ -957,7 +957,7 @@ static func_D_84390320 gStateFunctionTable[] = {
     ParticleEffect_RegisterHandlers_Default, BattleAnim_StartEffect64ModelAnimWait, ParticleEffect_RegisterParticleNodes, ParticleEffect_RegisterMultipleHandlers, BattleAnim_EffectStartNop, BattleAnim_StartEffect68ModelAnimWaitAndDescriptor42ScaleFall, BattleAnim_StartEffect69ModelPhaseWaitAndFallingParticles,
     BattleAnim_StartEffect70TintDescriptor53ScalePulse, BattleAnim_StartEffect71SpecialModelColorCycle, BattleAnim_StartEffect72ModelAnimWait, BattleAnim_CreateCollisionRandomEffect, BattleAnim_StartEffect74SpecialModelColorCycle, ParticleEffect_RegisterHandlers_Alternate, BattleAnim_StartEffect76Descriptor33FadeAndDescriptor47ScaleMotion,
     BattleAnim_StartEffects77And120SparkFades, BattleAnim_StartEffect78TintDescriptor53ScaleGrow, BattleAnim_StartEffect79ModelAnimWaitAndDescriptor25AlphaFade, ParticleEffect_RegisterDefaultTexture, ParticleEffect_AdvancedModeSetup, BattleAnim_StartEffects50And82TintRampAndModelScaleFade, ParticleEffect_SimpleBurst,
-    BattleAnim_StartEffect84SmokeLongDuration, ParticleEffect_FinalSetupSpiralAndVerticalFade, ParticleEffect_RegisterLargeExplosionAndEffects, BattleAnim_StartEffect87TintRampAnimVerticalFade, ParticleEffect_MultiNodeEffect88Palette7, ParticleEffect_MultiNodeD, ParticleEffect_PortraitBurst,
+    BattleAnim_StartEffect84SmokeLongDuration, ParticleEffect_FinalSetupSpiralAndVerticalFade, ParticleEffect_RegisterLargeExplosionAndEffects, BattleAnim_StartEffect87TintRampAnimVerticalFade, ParticleEffect_MultiNodeEffect88Palette7, BattleAnim_StartEffect89TintRampsAndDescriptor3DVerticalFadeSequence, ParticleEffect_PortraitBurst,
     ParticleEffect_PortraitBurstNode, ParticleEffect_PortraitBurstCheck, ParticleEffect_WaterAnimFirework, ParticleEffect_SimpleBurstAnimWaitDelayedTintFade, ParticleEffect_PaletteMultiBurstCleanupWithTintFade, ParticleEffect_PaletteBurstVariant4Model8D, ParticleEffect_PaletteBurstVariant2Model8EDelayedFadeOut,
     BattleAnim_EffectStartNop, ParticleEffect_BasicMultiBurst, ParticleEffect_SimpleBurstAnimWaitDelayedAlphaFadeOut, ParticleEffect_RotationEntry, BattleAnim_DisableEffectSpawningAlias, ParticleEffect_InitSmoke, ParticleEffect_InitFire,
     ParticleEffect_TriggerSpecial, ParticleEffect_AlphaBurst, ParticleEffect_AlphaBurstPalette17, ParticleEffect_AdditionalSetupDualRiseFade, BattleAnim_StartEffect109OwnerModelTintPulse, ParticleEffect_ComplexGroupSetup, BattleAnim_StartEffect111GlobalTintAndSpecialModelColorCycle,
@@ -1757,7 +1757,7 @@ static u8 gBattleScript_Start52TintRampAndModelScaleFade[] = {
     0x00,
 
 };
-static u8 gBattleScript_Start59MultiNodeD[] = {
+static u8 gBattleScript_Start59TintRampsAndDescriptor3DVerticalFade[] = {
     0x59,
     0x00,
     0x00,
@@ -2223,7 +2223,7 @@ static u8 gBattleScript_Start58MultiNodeEffect88Palette7[] = {
     0x00,
 
 };
-static u8 gBattleScript_Start59MultiNodeD_Alt[] = {
+static u8 gBattleScript_Start59TintRampsAndDescriptor3DVerticalFade_Alt[] = {
     0x59,
     0x00,
     0x00,
@@ -2948,7 +2948,7 @@ static u8 gBattleScript_End57_23_BurstAndConfigTexture7Palette1[] = {
     0x00,
     0x00,
 };
-static u8* Fragment62_SubTablePtr2D[][2] = {
+static u8* gBattleSceneModeScriptPairs[][2] = {
     {
         gBattleScript_StartEmpty,
         gBattleScript_LoadGfxEmpty,
@@ -4028,7 +4028,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScript_LoadGfx29_03,
     },
     {
-        gBattleScript_Start59MultiNodeD_Alt,
+        gBattleScript_Start59TintRampsAndDescriptor3DVerticalFade_Alt,
         gBattleScript_StartEmpty,
         gBattleScript_EndEmpty,
         gBattleScript_LoadGfxEmpty,
@@ -4168,7 +4168,7 @@ static u8* Fragment62_ComplexPtrTable[][5] = {
         gBattleScript_LoadGfxEmpty,
     },
     {
-        gBattleScript_Start59MultiNodeD,
+        gBattleScript_Start59TintRampsAndDescriptor3DVerticalFade,
         gBattleScript_StartEmpty,
         gBattleScript_EndEmpty,
         gBattleScript_LoadGfxEmpty,
@@ -4660,7 +4660,7 @@ void BattleAnim_RunEffectList(s32 arg0, s32 arg1, s32 arg2) {
                 break;
 
             case 3:
-                sp2C = Fragment62_SubTablePtr2D[arg0][0];
+                sp2C = gBattleSceneModeScriptPairs[arg0][0];
                 break;
 
             case 4:
@@ -4877,7 +4877,7 @@ void BattleAnim_LoadMoveResourceList(BattlePokemon* arg0, s16 arg1) {
 
 void BattleAnim_LoadModeResourceList(BattlePokemon* arg0, s16 arg1) {
     s32 var_v0 = 0;
-    u8* var_v1 = Fragment62_SubTablePtr2D[arg1][1];
+    u8* var_v1 = gBattleSceneModeScriptPairs[arg1][1];
 
     while (*var_v1 != 0x3F) {
         gBattleAnimResourceListBuffer[var_v0] = *var_v1;
