@@ -136,7 +136,7 @@ typedef struct unk_func_8820B12C_000 {
     /* 0x18 */ char unk18[0x4];
     /* 0x1C */ s32 unk_1C;
     /* 0x20 */ s32 unk_20;
-    /* 0x24 */ struct TextObjectRenderer* unk_24;
+    /* 0x24 */ struct LabPC_SwapScreen* unk_24;
 } unk_func_8820B12C_000; // size = 0x28
 
 typedef struct unk_func_8820B12C {
@@ -173,7 +173,7 @@ typedef struct unk_func_8820BE14_02C_078 {
     /* 0x5C */ s32 unk_5C;
 } unk_func_8820BE14_02C_078; // size = 0x60
 
-typedef struct TextObjectRenderer {
+typedef struct LabPC_SwapScreen {
     /* 0x00 */ unk_func_88001300_000 posX;
     /* 0x2C */ unk_func_88001300_038* unk_2C;
     /* 0x30 */ unk_func_88208C5C* unk_30[2];
@@ -191,11 +191,11 @@ typedef struct TextObjectRenderer {
     /* 0x88 */ unk_func_8850878C* unk_88;
     /* 0x8C */ unk_func_8820BE14_06C* unk_8C;
     /* 0x90 */ char unk90[0x10];
-} TextObjectRenderer; // size = 0xA0
+} LabPC_SwapScreen; // size = 0xA0
 
-typedef struct TextObjectContext {
+typedef struct LabPC_ScreenContext {
     /* 0x00 */ unk_func_88001300_000 posX;
-    /* 0x2C */ TextObjectRenderer* unk_2C;
+    /* 0x2C */ LabPC_SwapScreen* unk_2C;
     /* 0x30 */ unk_func_8820BE14_030 unk_30;
     /* 0x4C */ char** unk_4C;
     /* 0x50 */ char** unk_50;
@@ -208,7 +208,7 @@ typedef struct TextObjectContext {
     /* 0x6C */ unk_func_8820BE14_06C unk_6C;
     /* 0x7C */ unk_func_8820BE14_06C unk_7C;
     /* 0x8C */ unk_func_8820BE14_06C unk_8C;
-} TextObjectContext; // size = 0x9C
+} LabPC_ScreenContext; // size = 0x9C
 
 typedef struct unk_func_882170A8 {
     /* 0x00 */ unk_func_88001300_000 posX;
@@ -575,23 +575,23 @@ void LabPC_DrawMoveName(s32 arg0, s32 arg1, ret_func_8002ED08* arg2, s32 arg3);
 s32 LabPC_DrawPokemonInfoCard(unk_func_8820BE14_02C_070* arg0, s32 arg1, s32 arg2);
 void LabPC_InfoCard_SetMon(unk_func_8820BE14_02C_070* arg0, unk_func_88205880_00D0* arg1);
 s32 LabPC_FindDirtyDeck(unk_func_8820BE14_06C* arg0);
-s32 LabPC_SwapScreen_UpdatePageSelection(TextObjectRenderer* arg0);
-s32 LabPC_HandleInput(TextObjectRenderer* arg0, Controller* arg1);
-s32 LabPC_RunSwapScreenModal(TextObjectRenderer* arg0, Controller* arg1);
-void LabPC_SwapScreen_SetMenuState(TextObjectRenderer* arg0, s32 arg1);
+s32 LabPC_SwapScreen_UpdatePageSelection(LabPC_SwapScreen* arg0);
+s32 LabPC_HandleInput(LabPC_SwapScreen* arg0, Controller* arg1);
+s32 LabPC_RunSwapScreenModal(LabPC_SwapScreen* arg0, Controller* arg1);
+void LabPC_SwapScreen_SetMenuState(LabPC_SwapScreen* arg0, s32 arg1);
 void LabPC_ReleaseSwapWidgets(unk_func_8820B12C_02C* arg0);
-void LabPC_InitSwapController(unk_func_8820B12C* arg0, TextObjectRenderer* arg1);
+void LabPC_InitSwapController(unk_func_8820B12C* arg0, LabPC_SwapScreen* arg1);
 s32 LabPC_DeckHasChanged(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s32 arg3);
-s32 LabPC_CheckDirtyDecks(TextObjectRenderer* arg0);
-s32 LabPC_IsPrizeDeckEmpty(TextObjectRenderer* arg0);
+s32 LabPC_CheckDirtyDecks(LabPC_SwapScreen* arg0);
+s32 LabPC_IsPrizeDeckEmpty(LabPC_SwapScreen* arg0);
 void LabPC_WriteDeckBack(s32 arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_038* arg3);
 void LabPC_MarkSeenOwned(unk_func_88200FA0_030_038* arg0, s32 arg1);
-void LabPC_CommitChanges(TextObjectRenderer* arg0, s32 arg1);
-s32 LabPC_RunConfirmSaveFlow(TextObjectRenderer* arg0, Controller* arg1);
+void LabPC_CommitChanges(LabPC_SwapScreen* arg0, s32 arg1);
+s32 LabPC_RunConfirmSaveFlow(LabPC_SwapScreen* arg0, Controller* arg1);
 s32 LabPC_SwapControllerInput(unk_func_8820B12C* arg0, Controller* arg1);
-void LabPC_RunSwapScreenLoop(TextObjectContext* arg0);
-void LabPC_PokemonSessionThread(TextObjectContext* arg0);
-void LabPC_PrizePokemonThread(TextObjectContext* arg0);
+void LabPC_RunSwapScreenLoop(LabPC_ScreenContext* arg0);
+void LabPC_PokemonSessionThread(LabPC_ScreenContext* arg0);
+void LabPC_PrizePokemonThread(LabPC_ScreenContext* arg0);
 void LabPC_ShowPokemon(TextObject* arg0, s32 arg1);
 
 void LabItem_ReadDeckEntries(s32 arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C* arg3);

@@ -2,7 +2,7 @@
 #include "src/battle_hud.h"
 #include "src/gfx_buffer.h"
 
-static WaterParticleSystem D_843C2C00[4];
+static DoubleTextureTrailSystem D_843C2C00[4];
 
 static Gfx gWaterParticleDisplayList[] = {
     gsDPPipeSync(),
@@ -25,8 +25,8 @@ static Gfx gWaterParticleDisplayList[] = {
 void DoubleTextureTrail_InitPool(void) {
     s32 i;
     s32 j;
-    WaterParticleSystem* var_v0 = &D_843C2C00[0];
-    WaterParticleVertex* var_a0;
+    DoubleTextureTrailSystem* var_v0 = &D_843C2C00[0];
+    DoubleTextureTrailVertex* var_a0;
 
     for (i = 0; i < 4; i++, var_v0++) {
         var_v0->unk_000 = 0;
@@ -54,8 +54,8 @@ void DoubleTextureTrail_Spawn(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, 
                    s16 arg13, s16 arg14, s16 arg15, CombineParams* arg16, CombineParams* arg17, u8 arg18,
                    u8 arg19, u8 arg1A, u8 arg1B, u8 arg1C, u8 arg1D, u8 arg1E, u8 arg1F, u8 arg20, u8 arg21, u8 arg22,
                    u8 arg23, u8 arg24) {
-    WaterParticleSystem* var_v0;
-    WaterParticleVertex* var_a0;
+    DoubleTextureTrailSystem* var_v0;
+    DoubleTextureTrailVertex* var_a0;
     s32 i;
     s32 j;
     Vec3f sp3C;
@@ -146,8 +146,8 @@ void DoubleTextureTrail_RotateVertexOffset(f32 arg0, Vec3f* arg1, f32 arg2) {
     guMtxXFMF(sp30.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void DoubleTextureTrail_Update(WaterParticleSystem* arg0) {
-    WaterParticleVertex* var_v0;
+void DoubleTextureTrail_Update(DoubleTextureTrailSystem* arg0) {
+    DoubleTextureTrailVertex* var_v0;
     UNUSED s32 pad;
     s32 i;
     Vec3f sp58;
@@ -215,7 +215,7 @@ void DoubleTextureTrail_Update(WaterParticleSystem* arg0) {
 
 s32 DoubleTextureTrail_UpdateAll(void) {
     s32 i;
-    WaterParticleSystem* var_s0 = &D_843C2C00[0];
+    DoubleTextureTrailSystem* var_s0 = &D_843C2C00[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -227,7 +227,7 @@ s32 DoubleTextureTrail_UpdateAll(void) {
     return 0;
 }
 
-Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 arg3) {
+Gfx* WaterParticle_DrawPass(Gfx* arg0, DoubleTextureTrailSystem* arg1, s16 arg2, s16 arg3) {
     s32 i;
     s32 j;
     Vtx* sp44;
@@ -281,7 +281,7 @@ Gfx* WaterParticle_DrawPass(Gfx* arg0, WaterParticleSystem* arg1, s16 arg2, s16 
     return arg0;
 }
 
-Gfx* DoubleTextureTrail_LoadTextures(Gfx* arg0, WaterParticleSystem* arg1) {
+Gfx* DoubleTextureTrail_LoadTextures(Gfx* arg0, DoubleTextureTrailSystem* arg1) {
     TextureTileInfo* ptr;
 
     ptr = &arg1->texture0Tile;
@@ -301,8 +301,8 @@ Gfx* DoubleTextureTrail_DrawAll(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
-    WaterParticleSystem* var_fp;
-    WaterParticleVertex* var_s2;
+    DoubleTextureTrailSystem* var_fp;
+    DoubleTextureTrailVertex* var_s2;
     Vec3f sp100;
     Vec3f spF4;
     Vec3f spE8;

@@ -3,22 +3,22 @@
 #include "src/text_system.h"
 #include "src/fragments/widget_toolkit/widget_toolkit.h"
 
-static MatchBanner gMessageBox;
-static RoundBanner gOptionMenu;
-static char* gOptionMenuItems[9];
+static MatchBanner gMatchBanner;
+static RoundBanner gRoundBanner;
+static char* gRoundBannerGameNames[9];
 
 void Minigames_InitMatchBanner(char** arg0) {
-    gMessageBox.posX = 0;
-    gMessageBox.posY = 0;
-    gMessageBox.unk_14 = arg0;
+    gMatchBanner.posX = 0;
+    gMatchBanner.posY = 0;
+    gMatchBanner.unk_14 = arg0;
 }
 
 s32 Minigames_GetMatchBannerState(void) {
-    return gMessageBox.posX;
+    return gMatchBanner.posX;
 }
 
 void Minigames_SetMatchBannerState(s16 arg0) {
-    MatchBanner* ptr = &gMessageBox;
+    MatchBanner* ptr = &gMatchBanner;
 
     ptr->posX = arg0;
 
@@ -83,7 +83,7 @@ void Minigames_AdvanceMatchBannerClose(MatchBanner* arg0) {
 }
 
 void Minigames_UpdateMatchBanner(void) {
-    MatchBanner* ptr = &gMessageBox;
+    MatchBanner* ptr = &gMatchBanner;
 
     if (ptr->posX != 0) {
         switch (ptr->posX) {
@@ -188,7 +188,7 @@ void Minigames_DrawWavyText(s16 arg0, s16 arg1, s8* arg2, f32 arg3, s16 arg4) {
 
 void Minigames_DrawMatchBanner(void) {
     UNUSED s32 pad;
-    MatchBanner* ptr = &gMessageBox;
+    MatchBanner* ptr = &gMatchBanner;
     char* sp2C = Text_GetString(NULL, 0, ptr->unk_14, 0);
     char* sp28 = Text_GetString(NULL, 0, ptr->unk_14, 1);
 
@@ -212,12 +212,12 @@ void Minigames_DrawMatchBanner(void) {
 void Minigames_InitRoundBanner(char** arg0) {
     s32 i;
 
-    gOptionMenu.posX = 0;
-    gOptionMenu.posY = 0;
-    gOptionMenu.unk_14 = arg0;
+    gRoundBanner.posX = 0;
+    gRoundBanner.posY = 0;
+    gRoundBanner.unk_14 = arg0;
 
     for (i = 0; i < 9; i++) {
-        gOptionMenuItems[i] = Text_GetString(NULL, 0, arg0, i + 7);
+        gRoundBannerGameNames[i] = Text_GetString(NULL, 0, arg0, i + 7);
     }
 }
 
@@ -225,7 +225,7 @@ void Minigames_NoOp(void) {
 }
 
 void Minigames_SetRoundBannerLabel(s16 arg0) {
-    RoundBanner* ptr = &gOptionMenu;
+    RoundBanner* ptr = &gRoundBanner;
 
     if (ptr->unk_12 != ptr->unk_10) {
         ptr->unk_10 = ptr->unk_12;
@@ -233,13 +233,13 @@ void Minigames_SetRoundBannerLabel(s16 arg0) {
         ptr->rotation = ptr->unk_06;
     }
     ptr->unk_12 = arg0;
-    ptr->unk_0E = Font_MeasureTextExtent(0, 0, gOptionMenuItems[ptr->unk_12], arg0) + 0x30;
+    ptr->unk_0E = Font_MeasureTextExtent(0, 0, gRoundBannerGameNames[ptr->unk_12], arg0) + 0x30;
     ptr->unk_06 = (0x280 - ptr->unk_0E) / 2;
     ptr->posY = 5;
 }
 
 void Minigames_SetRoundBannerState(s16 arg0, s16 arg1) {
-    RoundBanner* ptr = &gOptionMenu;
+    RoundBanner* ptr = &gRoundBanner;
 
     ptr->posX = arg0;
 
@@ -251,7 +251,7 @@ void Minigames_SetRoundBannerState(s16 arg0, s16 arg1) {
         case 1:
             ptr->posY = 0xA;
             ptr->unk_10 = ptr->unk_12 = arg1;
-            ptr->unk_0C = ptr->unk_0E = Font_MeasureTextExtent(0, 0, gOptionMenuItems[ptr->unk_12], arg1) + 0x30;
+            ptr->unk_0C = ptr->unk_0E = Font_MeasureTextExtent(0, 0, gRoundBannerGameNames[ptr->unk_12], arg1) + 0x30;
             ptr->rotation = ptr->unk_06 = (0x280 - ptr->unk_0C) / 2;
             ptr->RentalSlotAnimData_PosePhase = -0x2C;
             ptr->unk_0A = 0x1E0;
@@ -297,7 +297,7 @@ void Minigames_AdvanceRoundBannerClose(RoundBanner* arg0) {
 }
 
 void Minigames_UpdateRoundBanner(void) {
-    RoundBanner* ptr = &gOptionMenu;
+    RoundBanner* ptr = &gRoundBanner;
 
     if (ptr->posX != 0) {
         switch (ptr->posX) {
@@ -318,7 +318,7 @@ void Minigames_UpdateRoundBanner(void) {
 
 void Minigames_DrawRoundBanner(void) {
     UNUSED s32 pad;
-    RoundBanner* ptr = &gOptionMenu;
+    RoundBanner* ptr = &gRoundBanner;
     char* sp3C;
     s16 tmp;
     char* sp34 = Text_GetString(NULL, 0, ptr->unk_14, 0x10);
@@ -339,7 +339,7 @@ void Minigames_DrawRoundBanner(void) {
 
         Font_BeginTranslucentTextRendering();
         Font_SetActive(0x10, 0);
-        sp3C = gOptionMenuItems[ptr->unk_10];
+        sp3C = gRoundBannerGameNames[ptr->unk_10];
         if (ptr->unk_10 == ptr->unk_12) {
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_Printf(ptr->rotation + 0x18, ptr->RentalSlotAnimData_PosePhase + 0xA, sp3C);
@@ -347,7 +347,7 @@ void Minigames_DrawRoundBanner(void) {
             tmp = (ptr->posY * 0xFF) / 5;
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
             Font_Printf(ptr->rotation + 0x18, ptr->RentalSlotAnimData_PosePhase + 0xA, sp3C);
-            sp3C = gOptionMenuItems[ptr->unk_12];
+            sp3C = gRoundBannerGameNames[ptr->unk_12];
             tmp = ((5 - ptr->posY) * 0xFF) / 5;
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, tmp);
             Font_Printf(ptr->unk_06 + 0x18, ptr->RentalSlotAnimData_PosePhase + 0xA, sp3C);

@@ -15,10 +15,10 @@
 
 BattleMessageBuffers* gBattleMessageQueues;
 
-static u8 gMoveCat_Physical[] = { 0xE, 0x4A };
-static u8 gMoveCat_Special[] = { 0x60, 0x69, 0x75, 0x78, 0x85 };
-static u8 gMoveCat_Status[] = { 0x61, 0x64, 0x66, 0x68, 0x8C };
-static u8 gMoveCat_Other[] = {
+static u8 gMoveUsedMsgVariant0Moves[] = { 0xE, 0x4A };
+static u8 gMoveUsedMsgVariant1Moves[] = { 0x60, 0x69, 0x75, 0x78, 0x85 };
+static u8 gMoveUsedMsgVariant2Moves[] = { 0x61, 0x64, 0x66, 0x68, 0x8C };
+static u8 gMoveUsedMsgVariant3Moves[] = {
     1,    0xA,  0xB,  0x11, 0x13, 0x14, 0x15, 0x1E, 0x22, 0x23, 0x25, 0x27, 0x2B, 0x2C, 0x2D, 0x2E,
     0x2F, 0x40, 0x44, 0x46, 0x47, 0x51, 0x59, 0x5A, 0x5B, 0x5C, 0x67, 0x6A, 0x6B, 0x6E, 0x6F, 0x76,
     0x7A, 0x80, 0x84, 0x8B, 0x8D, 0x91, 0x94, 0x96, 0x97, 0x9A, 0x9C, 0x9F, 0xA3, 0xA4,
@@ -139,13 +139,13 @@ void Battle_QueueMoveCategoryUsedMessage(void) {
 
     sp18->unk_58 = sp18->unk_44.posX;
 
-    if (BattleScene_ByteArrayContains(sp18->unk_44.posX, gMoveCat_Physical, 2) != 0) {
+    if (BattleScene_ByteArrayContains(sp18->unk_44.posX, gMoveUsedMsgVariant0Moves, 2) != 0) {
         sp1C = 0;
-    } else if (BattleScene_ByteArrayContains(sp18->unk_44.posX, gMoveCat_Special, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp18->unk_44.posX, gMoveUsedMsgVariant1Moves, 5) != 0) {
         sp1C = 1;
-    } else if (BattleScene_ByteArrayContains(sp18->unk_44.posX, gMoveCat_Status, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp18->unk_44.posX, gMoveUsedMsgVariant2Moves, 5) != 0) {
         sp1C = 2;
-    } else if (BattleScene_ByteArrayContains(sp18->unk_44.posX, gMoveCat_Other, 0x2E) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp18->unk_44.posX, gMoveUsedMsgVariant3Moves, 0x2E) != 0) {
         sp1C = 3;
     } else {
         sp1C = 4;
@@ -209,13 +209,13 @@ void Battle_QueueMoveCategoryMessage(void) {
     UNUSED s32 pad;
     PokemonAudioInfo* sp1C = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
 
-    if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveCat_Physical, 2) != 0) {
+    if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveUsedMsgVariant0Moves, 2) != 0) {
         sp24 = 0;
-    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveCat_Special, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveUsedMsgVariant1Moves, 5) != 0) {
         sp24 = 1;
-    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveCat_Status, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveUsedMsgVariant2Moves, 5) != 0) {
         sp24 = 2;
-    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveCat_Other, 0x2E) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp1C->currentMoveId, gMoveUsedMsgVariant3Moves, 0x2E) != 0) {
         sp24 = 3;
     } else {
         sp24 = 4;
@@ -254,13 +254,13 @@ void Battle_QueueMetronomeMoveMessage(void) {
 
     sp24 = &sActivePokemon[gBattleScene.posX->unk_2C]->animationState.unk_38;
 
-    if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveCat_Physical, 2) != 0) {
+    if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveUsedMsgVariant0Moves, 2) != 0) {
         sp2C = 0;
-    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveCat_Special, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveUsedMsgVariant1Moves, 5) != 0) {
         sp2C = 1;
-    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveCat_Status, 5) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveUsedMsgVariant2Moves, 5) != 0) {
         sp2C = 2;
-    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveCat_Other, 0x2E) != 0) {
+    } else if (BattleScene_ByteArrayContains(sp24->currentMoveId, gMoveUsedMsgVariant3Moves, 0x2E) != 0) {
         sp2C = 3;
     } else {
         sp2C = 4;

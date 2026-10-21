@@ -22,8 +22,8 @@ s32 BattlePrep_StarfieldGeoCallback(s32, unk_D_86002F34_alt8*);
 unk_D_84B19910 gBattlePrepStarfield[400];
 s32 pad_D_84B1A590[2];
 unk_D_84B1A598 gBattleGraphics;
-gBannerState gErrorScreenState;
-gBadgeCarouselAnim gErrorScreenAnim;
+gBannerState gRoundIntroCarouselState;
+gBadgeCarouselAnim gRoundIntroBadgeCarousel;
 BattleUiState gUIState;
 gTeamIconsState gBattlePrepTeamIconsState;
 gBadgeAwardState gBattlePrepBadgeAwardState;
@@ -232,7 +232,7 @@ void BattlePrep_DrawTrainerStatusIcon(FramebufferImage* arg0, s16 arg1, u8* arg2
 
     GfxImage_SetRenderTarget(&gDisplayListHead, arg0);
 
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
     Gfx_DrawTextureRgba16(0, 0, 0x40, 0x20, arg3, 0x40, 0x200000);
     Gfx_DrawTextureRgba16(0, 0x20, 0x40, 0x20, arg3 + 0x1000, 0x40, 0x200000);
@@ -381,15 +381,15 @@ s32 BattlePrep_ShowSingleBattleIntro(void) {
 void BattlePrep_UpdateRoundIntroFrame(void) {
     Controller_PollInputs();
     BattlePrep_UpdateStarfield(gBattlePrepStarfield);
-    BattlePrep_UpdateCarouselState(&gErrorScreenState);
-    BattlePrep_UpdateBadgeCarousel(&gErrorScreenAnim);
+    BattlePrep_UpdateCarouselState(&gRoundIntroCarouselState);
+    BattlePrep_UpdateBadgeCarousel(&gRoundIntroBadgeCarousel);
     BattlePrepRoster_Update(&gUIState);
     BattlePrep_RenderFrame();
 }
 
 void BattlePrep_InitRoundIntroScene(void) {
-    BattlePrep_InitBannerScene(&gErrorScreenState);
-    BattlePrep_InitBadgeCarouselScene(&gErrorScreenAnim, gBattleGraphics.battleArchive, gBattleGraphics.portraitsArchive);
+    BattlePrep_InitBannerScene(&gRoundIntroCarouselState);
+    BattlePrep_InitBadgeCarouselScene(&gRoundIntroBadgeCarousel, gBattleGraphics.battleArchive, gBattleGraphics.portraitsArchive);
     BattlePrepRoster_Init(&gUIState, gBattleGraphics.unk_0004->unk_0C);
 }
 
@@ -417,16 +417,16 @@ s32 BattlePrep_ShowRoundIntro(void) {
         BattlePrep_UpdateRoundIntroFrame();
     }
 
-    BattlePrep_InitCarouselEntry(&gErrorScreenState, &gBattleGraphics.unk_0008[0x10]);
-    BattlePrep_InitBadgeCarousel(&gErrorScreenAnim, gBattleGraphics.unk_0008, 0);
+    BattlePrep_InitCarouselEntry(&gRoundIntroCarouselState, &gBattleGraphics.unk_0008[0x10]);
+    BattlePrep_InitBadgeCarousel(&gRoundIntroBadgeCarousel, gBattleGraphics.unk_0008, 0);
     Audio_PlayMusicIfChanged(0x33);
 
     for (i = 0; i < var_s1; i++) {
         BattlePrep_UpdateRoundIntroFrame();
     }
 
-    BattlePrep_StartCarouselExit(&gErrorScreenState);
-    gErrorScreenAnim.posX = 2;
+    BattlePrep_StartCarouselExit(&gRoundIntroCarouselState);
+    gRoundIntroBadgeCarousel.posX = 2;
 
     for (i = 0; i < 16; i++) {
         BattlePrep_UpdateRoundIntroFrame();
@@ -499,7 +499,7 @@ void BattlePrep_UpdateRoundIntroScene(void) {
     Controller_PollInputs();
     BattlePrep_UpdateStarfield(gBattlePrepStarfield);
     BattlePrepTeamIcons_Update(&gBattlePrepTeamIconsState);
-    BattlePrep_UpdateBadgeCarousel(&gErrorScreenAnim);
+    BattlePrep_UpdateBadgeCarousel(&gRoundIntroBadgeCarousel);
     BattlePrepBadgeAward_Update(&gBattlePrepBadgeAwardState);
     BattlePrepStarBurst_Update(&gBattlePrepStarBurstP2State);
     BattlePrepStarBurst_Update(&gBattlePrepStarBurstP1State);
@@ -514,7 +514,7 @@ void BattlePrep_InitRoundIntroSubScenes(void) {
     s32 tmp;
 
     BattlePrepTeamIcons_Init(&gBattlePrepTeamIconsState);
-    BattlePrep_InitBadgeCarouselScene(&gErrorScreenAnim, gBattleGraphics.battleArchive, gBattleGraphics.portraitsArchive);
+    BattlePrep_InitBadgeCarouselScene(&gRoundIntroBadgeCarousel, gBattleGraphics.battleArchive, gBattleGraphics.portraitsArchive);
     BattlePrepBadgeAward_Init(&gBattlePrepBadgeAwardState);
 
     if (gBattleGraphics.unk_0003 != 0) {
@@ -562,7 +562,7 @@ void BattlePrep_RunNormalRoundIntro(void) {
     BattlePrepStarBurst_Launch(&gBattlePrepStarBurstP2State, &gBattleGraphics.unk_0008[0x1C], &gBattleGraphics.unk_0008[0x20]);
     BattlePrepStarBurst_Launch(&gBattlePrepStarBurstP1State, &gBattleGraphics.unk_0008[0x1E], &gBattleGraphics.unk_0008[0x20]);
 
-    while ((gErrorScreenAnim.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
+    while ((gRoundIntroBadgeCarousel.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 }
@@ -606,7 +606,7 @@ void BattlePrep_RunFinalRoundIntro(void) {
         Audio_PlaySoundEffectById(0x28);
     }
 
-    while ((gErrorScreenAnim.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
+    while ((gRoundIntroBadgeCarousel.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 }
@@ -617,9 +617,9 @@ void BattlePrep_RunBadgeCarouselIntro(void) {
 
     BattlePrepStarBurst_StartExit(&gBattlePrepStarBurstP1State);
     tmp = gBattleGraphics.unk_0001 == 0;
-    BattlePrep_InitBadgeCarousel(&gErrorScreenAnim, gBattleGraphics.unk_0008, tmp + 1);
+    BattlePrep_InitBadgeCarousel(&gRoundIntroBadgeCarousel, gBattleGraphics.unk_0008, tmp + 1);
 
-    while ((gErrorScreenAnim.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
+    while ((gRoundIntroBadgeCarousel.posX != 0) || (gBattlePrepStarBurstP1State.state != 0)) {
         BattlePrep_UpdateRoundIntroScene();
     }
 
@@ -1153,14 +1153,14 @@ s32 BattlePrep_ShowCastleClearOutro(void) {
         var_s1 = 0x4B;
     }
 
-    BattlePrep_InitBannerScene(&gErrorScreenState);
-    BattlePrep_InitCarouselExit(&gErrorScreenState, &gBattleGraphics.unk_0008[0x10]);
+    BattlePrep_InitBannerScene(&gRoundIntroCarouselState);
+    BattlePrep_InitCarouselExit(&gRoundIntroCarouselState, &gBattleGraphics.unk_0008[0x10]);
     Audio_PlayMusicIfChanged(0x3F);
 
     for (i = 0; i < var_s1; i++) {
         Controller_PollInputs();
         BattlePrep_UpdateStarfield(gBattlePrepStarfield);
-        BattlePrep_UpdateCarouselState(&gErrorScreenState);
+        BattlePrep_UpdateCarouselState(&gRoundIntroCarouselState);
         BattlePrep_RenderFrame();
     }
 
@@ -1170,7 +1170,7 @@ s32 BattlePrep_ShowCastleClearOutro(void) {
     for (i = 0; i < 18; i++) {
         Controller_PollInputs();
         BattlePrep_UpdateStarfield(gBattlePrepStarfield);
-        BattlePrep_UpdateCarouselState(&gErrorScreenState);
+        BattlePrep_UpdateCarouselState(&gRoundIntroCarouselState);
         BattlePrep_RenderFrame();
     }
 

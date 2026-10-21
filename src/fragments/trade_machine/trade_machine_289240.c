@@ -995,7 +995,7 @@ void Trade_LoadPickBufferIcon(s16 arg0, PokemonData* arg1) {
     PokeIcon_LoadModelTextureForMon(gPickerState[arg0].pickBuffer, 0, arg1);
 }
 
-s32 Trade_GetPickScreenSnapshot(s32 arg0, RentalItemInfo* arg1) {
+s32 Trade_GetPickScreenSnapshot(s32 arg0, PickerSelectionInfo* arg1) {
     s32 ret = 0;
     PickerState* ptr;
 

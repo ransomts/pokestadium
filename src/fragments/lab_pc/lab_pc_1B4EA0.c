@@ -162,10 +162,10 @@ void LabItem_BoxLocationWidget_SetSelection(unk_func_8821421C_02C_030* arg0, s32
 }
 
 void LabItem_InitConfirmDialog(YesNoPanel* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
-    static Color_RGBA8 gColor_NumericBg = { 0x64, 0x96, 0xB4, 0xFF };
-    static Color_RGBA8 gColor_NumericBorder = { 0x3C, 0x64, 0x78, 0xFF };
-    static Color_RGBA8 gColor_NumericText = { 0x99, 0x99, 0x89, 0xFF };
-    static Color_RGBA8 gColor_NumericHighlight = { 0xFF, 0xFF, 0x00, 0xFF };
+    static Color_RGBA8 gColor_ConfirmDialogBg = { 0x64, 0x96, 0xB4, 0xFF };
+    static Color_RGBA8 gColor_ConfirmDialogBorder = { 0x3C, 0x64, 0x78, 0xFF };
+    static Color_RGBA8 gColor_ConfirmDialogOptionsBg = { 0x99, 0x99, 0x89, 0xFF };
+    static Color_RGBA8 gColor_ConfirmDialogHighlight = { 0xFF, 0xFF, 0x00, 0xFF };
 
     UNUSED s32 pad[2];
     GridMenu* ptr;
@@ -194,7 +194,7 @@ void LabItem_InitConfirmDialog(YesNoPanel* arg0, s32 arg1, s32 arg2, MemoryPool*
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_2C);
 
     sp60 = mem_pool_alloc(arg3, sizeof(DashedBorderFrame));
-    ((func8850B254)Memmap_GetFragmentVaddr(WidgetTree_InitDashedBorderFrame))(sp60, 0, 0, 0x100, 0x14, gColor_NumericBg, gColor_NumericBorder);
+    ((func8850B254)Memmap_GetFragmentVaddr(WidgetTree_InitDashedBorderFrame))(sp60, 0, 0, 0x100, 0x14, gColor_ConfirmDialogBg, gColor_ConfirmDialogBorder);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, sp60);
 
     arg0->unk_34 = mem_pool_alloc(arg3, sizeof(unk_func_8850878C));
@@ -203,7 +203,7 @@ void LabItem_InitConfirmDialog(YesNoPanel* arg0, s32 arg1, s32 arg2, MemoryPool*
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, arg0->unk_34);
 
     sp5C = mem_pool_alloc(arg3, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(sp5C, 0, 0x18, 0x100, 0x24, gColor_NumericText);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(sp5C, 0, 0x18, 0x100, 0x24, gColor_ConfirmDialogOptionsBg);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, sp5C);
 
     arg0->unk_30 = mem_pool_alloc(arg3, sizeof(GridMenu));
@@ -231,7 +231,7 @@ void LabItem_InitConfirmDialog(YesNoPanel* arg0, s32 arg1, s32 arg2, MemoryPool*
     ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(arg0->unk_30);
 
     sp48 = mem_pool_alloc(arg3, sizeof(WidgetAnimatedFrame));
-    ((func88503340)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantA))(sp48, 0, 0, 0x10, 0x10, gColor_NumericHighlight);
+    ((func88503340)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantA))(sp48, 0, 0, 0x10, 0x10, gColor_ConfirmDialogHighlight);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(sp5C, sp48);
     arg0->unk_30->unk_1C = sp48;
 }
@@ -492,8 +492,8 @@ s32 LabItem_DrawItemRow(u8* arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 void LabItem_DrawItemGridCell(s32 arg0, s32 arg1, u8* arg2, s32 arg3, s32 arg4, unk_func_8820BE14_02C_038* arg5) {
-    static Color_RGBA8 gColor_StageInfoBg[] = { 0x40, 0x40, 0x74, 0xFF };
-    static Color_RGBA8 gColor_StageInfoBorder[] = {
+    static Color_RGBA8 gColor_ItemListCellBg[] = { 0x40, 0x40, 0x74, 0xFF };
+    static Color_RGBA8 gColor_ItemListCellBorder[] = {
         { 0x78, 0x78, 0xF1, 0xFF },
         { 0x5E, 0x5E, 0xBE, 0xFF },
     };
@@ -507,9 +507,9 @@ void LabItem_DrawItemGridCell(s32 arg0, s32 arg1, u8* arg2, s32 arg3, s32 arg4, 
         s32 temp_a3;
 
         if (arg4 & 2) {
-            spD4 = Color_ScaleRgb(gColor_StageInfoBg[0], 1.4f);
+            spD4 = Color_ScaleRgb(gColor_ItemListCellBg[0], 1.4f);
         } else {
-            spD4 = gColor_StageInfoBg[0];
+            spD4 = gColor_ItemListCellBg[0];
         }
 
         gDPPipeSync(gDisplayListHead++);
@@ -525,7 +525,7 @@ void LabItem_DrawItemGridCell(s32 arg0, s32 arg1, u8* arg2, s32 arg3, s32 arg4, 
         gDPFillRectangle(gDisplayListHead++, arg0, arg1 + 1, arg0 + 0xEB, arg1 + 0x1A);
 
         temp_a3 =
-            ((gColor_StageInfoBorder[1].r << 8) & 0xF800) | ((gColor_StageInfoBorder[1].g << 3) & 0x7C0) | ((gColor_StageInfoBorder[1].b >> 2) & 0x3E) | 1;
+            ((gColor_ItemListCellBorder[1].r << 8) & 0xF800) | ((gColor_ItemListCellBorder[1].g << 3) & 0x7C0) | ((gColor_ItemListCellBorder[1].b >> 2) & 0x3E) | 1;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -533,7 +533,7 @@ void LabItem_DrawItemGridCell(s32 arg0, s32 arg1, u8* arg2, s32 arg3, s32 arg4, 
         gDPFillRectangle(gDisplayListHead++, arg0, arg1, arg0 + 0xEB, arg1);
 
         temp_t4 =
-            ((gColor_StageInfoBorder[1].r << 8) & 0xF800) | ((gColor_StageInfoBorder[1].g << 3) & 0x7C0) | ((gColor_StageInfoBorder[1].b >> 2) & 0x3E) | 1;
+            ((gColor_ItemListCellBorder[1].r << 8) & 0xF800) | ((gColor_ItemListCellBorder[1].g << 3) & 0x7C0) | ((gColor_ItemListCellBorder[1].b >> 2) & 0x3E) | 1;
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -550,7 +550,7 @@ void LabItem_DrawItemGridCell(s32 arg0, s32 arg1, u8* arg2, s32 arg3, s32 arg4, 
         s32 temp_a3;
 
         if (arg4 & 1) {
-            spD4 = gColor_StageInfoBg[0];
+            spD4 = gColor_ItemListCellBg[0];
 
             gDPPipeSync(gDisplayListHead++);
 
@@ -564,23 +564,23 @@ void LabItem_DrawItemGridCell(s32 arg0, s32 arg1, u8* arg2, s32 arg3, s32 arg4, 
             gDPSetFillColor(gDisplayListHead++, temp_t1 | (temp_t1 << 0x10));
             gDPFillRectangle(gDisplayListHead++, arg0, arg1 + 1, arg0 + 0xEB, arg1 + 0x1A);
 
-            temp_a3 = ((gColor_StageInfoBorder[1].r << 8) & 0xF800) | ((gColor_StageInfoBorder[1].g << 3) & 0x7C0) |
-                      ((gColor_StageInfoBorder[1].b >> 2) & 0x3E) | 1;
+            temp_a3 = ((gColor_ItemListCellBorder[1].r << 8) & 0xF800) | ((gColor_ItemListCellBorder[1].g << 3) & 0x7C0) |
+                      ((gColor_ItemListCellBorder[1].b >> 2) & 0x3E) | 1;
 
             gDPPipeSync(gDisplayListHead++);
 
             gDPSetFillColor(gDisplayListHead++, temp_a3 | (temp_a3 << 0x10));
             gDPFillRectangle(gDisplayListHead++, arg0, arg1, arg0 + 0xEB, arg1);
 
-            temp_t4 = ((gColor_StageInfoBorder[1].r << 8) & 0xF800) | ((gColor_StageInfoBorder[1].g << 3) & 0x7C0) |
-                      ((gColor_StageInfoBorder[1].b >> 2) & 0x3E) | 1;
+            temp_t4 = ((gColor_ItemListCellBorder[1].r << 8) & 0xF800) | ((gColor_ItemListCellBorder[1].g << 3) & 0x7C0) |
+                      ((gColor_ItemListCellBorder[1].b >> 2) & 0x3E) | 1;
 
             gDPPipeSync(gDisplayListHead++);
 
             gDPSetFillColor(gDisplayListHead++, temp_t4 | (temp_t4 << 0x10));
             gDPFillRectangle(gDisplayListHead++, arg0, arg1 + 0x1B, arg0 + 0xEB, arg1 + 0x1B);
         } else {
-            spD4 = Color_ScaleRgb(gColor_StageInfoBg[0], 0.8f);
+            spD4 = Color_ScaleRgb(gColor_ItemListCellBg[0], 0.8f);
 
             gDPPipeSync(gDisplayListHead++);
 
@@ -2186,7 +2186,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
         },
     };
     static Color_RGBA8 gHighlightColor = { 0xFF, 0xFF, 0x00, 0xFF };
-    static u16 gSomeConstantArray[] = { 0xD };
+    static u16 gErrorLabelMessageIds[] = { 0xD };
     static Color_RGBA8 gDefaultPanelColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     UNUSED s32 pad[6];
@@ -2469,7 +2469,7 @@ void LabItem_BuildOperationNode(unk_func_8821421C_02C* arg0, s32 arg1, s32 arg2,
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_6);
 
     for (i = 0; i < 1; i++) {
-        sp6C = Text_GetString(NULL, 0, gCommonStrings, gSomeConstantArray[i]);
+        sp6C = Text_GetString(NULL, 0, gCommonStrings, gErrorLabelMessageIds[i]);
 
         arg0->unk_94[i].posX = mem_pool_alloc(argB, sizeof(unk_func_8850878C));
         ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(arg0->unk_94[i].posX, 0, 0, sp6C, 0x10);
@@ -2961,7 +2961,7 @@ void LabPC_BuildItemScreenWidget(ItemPCScreen* arg0, s32 arg1, s32 arg2, MemoryP
     LabItem_BindBoxScreenSlot(arg0->unk_38, &arg0->unk_7C);
 
     arg0->unk_30 = mem_pool_alloc(arg3, sizeof(WidgetTree_InitMessagePanel));
-    ((func88509F48)Memmap_GetFragmentVaddr(TextObjectGraphics_Init))(arg0->unk_30, 0x2C, 0x4B, 0x228, 0x162, arg3, arg4);
+    ((func88509F48)Memmap_GetFragmentVaddr(WidgetTree_InitMessagePanelWidget))(arg0->unk_30, 0x2C, 0x4B, 0x228, 0x162, arg3, arg4);
 
     arg0->unk_2C = mem_pool_alloc(arg3, sizeof(unk_func_8821421C_02C));
     LabItem_BuildOperationNode(arg0->unk_2C, 0x2C, 0x4B, arg0->unk_3C, &arg0->unk_78, arg0->unk_7C, sp8C, arg0->unk_38, arg0->unk_34,

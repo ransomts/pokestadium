@@ -68,7 +68,7 @@ typedef struct MenuItemCoord {
 
 extern TiledTexture gMenuTextureInfo_Default;
 extern TiledTexture gMenuTextureInfo_Alternates[];
-extern MenuItemCoord gMenuItemCoords[];
+extern MenuItemCoord gPokedexSpeciesHeightWeight[];
 extern s32 gStageRomOffsets[];
 
 void GbSave_BuildPortSummary(PortSummary* arg0, s32 arg1);

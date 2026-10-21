@@ -18,7 +18,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-typedef struct ItemSelectionCoords {
+typedef struct OptionPanelState {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -27,7 +27,7 @@ typedef struct ItemSelectionCoords {
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
-} ItemSelectionCoords; // size >= 0x10
+} OptionPanelState; // size >= 0x10
 
 static u16 gSelectionFlags;
 static s32 gSelectionFrameCounter;
@@ -36,24 +36,24 @@ static ControllerState gControllerStates[4];
 static UIElement gUIElements[14];
 static UIWidget* gUIElementArray[2];
 static UIWidget* gComputerUIElements[2];
-static UIWidget* gComputerUIRoot;
+static UIWidget* gRoundSelectRoot;
 static UIWidget* gItemGridElements[9];
-static BinArchive* gItemArchive;
+static BinArchive* gBackgroundArchive;
 static void* gMinigameSelectBackground;
 static s16 D_8250A26C;
 static s16 gSubMenuState;
-static GraphNode* gCursorNode;
+static GraphNode* gSceneGraphRoot;
 static GraphNode* gStatusIconNode;
 static GraphNode* gComputerSelectionNode;
-static GraphNode* gItemSelectionNode;
-static GraphNode* gBackgroundNode;
+static GraphNode* gRoundSpinnerNode;
+static GraphNode* gGameGridIconNode;
 static GraphNode* gSelectionHighlightNode;
 static unk_D_8250A288 D_8250A288;
-static s16 gSelectionTimer;
+static s16 gAutoPickGameIndex;
 static s16 gSelectionDelay;
 static s16 gItemSelectionTimer;
 static s16 gItemSelectionRandom;
-static ItemSelectionCoords gSelectionCoords;
+static OptionPanelState gOptionPanelState;
 static s32 pad_D_8250A2B0[18];
 static s32 pad_D_8250A2F8;
 static s16 gRoundSpinnerState;
@@ -701,7 +701,7 @@ static Gfx gComputerRootDL[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 gItemSelectionDescriptor[] = {
+static u32 gRoundSpinnerDescriptor[] = {
     0x17000000, 0x00000000, 0x00000000,    0x00000000, gRoundSpinnerPanelVertices, 0x05000000, 0x22040000,
     0x00000000, 0x08000000, MiniGameSelect_DrawStaticBackdrop, 0x00000000, 0x06000000, 0x01000000, 0x00000000,
 };
@@ -858,7 +858,7 @@ s32 MiniGameSelect_DrawGameBackdrop(s32 arg0, GraphNode* arg1) {
 s32 MiniGameSelect_DrawStaticBackdrop(s32 arg0, GraphNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
-        gSPSegment(gDisplayListHead++, 0x0F, (u32)gComputerUIRoot->unk_38->img_p & 0x1FFFFFFF);
+        gSPSegment(gDisplayListHead++, 0x0F, (u32)gRoundSelectRoot->unk_38->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, gComputerRootDL);
 
         GeoRender_ApplyMaterialState();
@@ -964,7 +964,7 @@ void MiniGameSelect_UpdateCursor(Fragment2_1GraphNode* a0) {
             break;
 
         case 3:
-            if (MiniGameSelect_IsWidgetInState(gComputerUIRoot, 2) != 0) {
+            if (MiniGameSelect_IsWidgetInState(gRoundSelectRoot, 2) != 0) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0xE4;
                 arg0->unk_16A = 0xDA;
@@ -972,7 +972,7 @@ void MiniGameSelect_UpdateCursor(Fragment2_1GraphNode* a0) {
             break;
 
         case 4:
-            if (gSelectionCoords.posX == 2) {
+            if (gOptionPanelState.posX == 2) {
                 arg0->unk_16E = 1;
                 arg0->unk_168 = 0xF0;
                 if (gSelectionFlags & 1) {
@@ -1679,14 +1679,14 @@ void MiniGameSelect_UpdateWidgets(void) {
 }
 
 void MiniGameSelect_ClearOptionPanelState(void) {
-    gSelectionCoords.posX = 0;
-    gSelectionCoords.posY = 0;
-    gSelectionCoords.rotation = 0;
-    gSelectionCoords.unk_06 = 0;
-    gSelectionCoords.RentalSlotAnimData_PosePhase = 0;
-    gSelectionCoords.unk_0A = 0;
-    gSelectionCoords.unk_0C = 0;
-    gSelectionCoords.unk_0E = 0;
+    gOptionPanelState.posX = 0;
+    gOptionPanelState.posY = 0;
+    gOptionPanelState.rotation = 0;
+    gOptionPanelState.unk_06 = 0;
+    gOptionPanelState.RentalSlotAnimData_PosePhase = 0;
+    gOptionPanelState.unk_0A = 0;
+    gOptionPanelState.unk_0C = 0;
+    gOptionPanelState.unk_0E = 0;
 }
 
 void MiniGameSelect_ResetSelection(void) {
@@ -1705,9 +1705,9 @@ void MiniGameSelect_ResetSelection(void) {
 void MiniGameSelect_LoadSavedSelection(s16 arg0, s16 arg1) {
     D_8250A288.posX = gMenuCursorX;
     D_8250A288.posY = arg0;
-    D_8250A288.rotation = gMenuSubState;
+    D_8250A288.rotation = gWinsToChampion;
     D_8250A288.unk_06 = MiniGameSelect_GameIDToIndex(arg1);
-    D_8250A288.RentalSlotAnimData_PosePhase = MiniGameSelect_FindTableIndex(gMenuState, gSelectionFlags & 1);
+    D_8250A288.RentalSlotAnimData_PosePhase = MiniGameSelect_FindTableIndex(gMinigameComDifficulty, gSelectionFlags & 1);
 }
 
 void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
@@ -1722,13 +1722,13 @@ void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
 
     D_8250A26C = 0;
     gSelectionFlags = 0;
-    if (gMenuRandomSeed & 1) {
+    if (gComHyperUnlocked & 1) {
         gSelectionFlags |= 1;
     }
 
     MiniGameSelect_ResetSelection();
     Minigames_ResetTournamentState(gSubMenuState);
-    gSelectionTimer = -1;
+    gAutoPickGameIndex = -1;
 
     switch (gSubMenuState) {
         case 0:
@@ -1737,9 +1737,9 @@ void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
         case 1:
             MiniGameSelect_LoadSavedSelection(0, arg1);
             if (gMiniHudColorDefaults[gMenuSelectedOption] == 0) {
-                gSelectionTimer = -1;
+                gAutoPickGameIndex = -1;
             } else {
-                gSelectionTimer = Minigames_PickUnplayedGame();
+                gAutoPickGameIndex = Minigames_PickUnplayedGame();
                 gSelectionDelay = 0x1E;
             }
             break;
@@ -1772,15 +1772,15 @@ void MiniGameSelect_InitMenuNodes(s16 arg0, s16 arg1) {
         gComputerUIElements[i] = MiniGameSelect_CreateMenuWidget(2, i, gComputerSelectionNode);
     }
 
-    gComputerUIRoot = MiniGameSelect_CreateMenuWidget(3, 0, gItemSelectionNode);
+    gRoundSelectRoot = MiniGameSelect_CreateMenuWidget(3, 0, gRoundSpinnerNode);
 
     for (i = 0; i < 9; i++) {
         if (i != 4) {
-            gItemGridElements[i] = MiniGameSelect_CreateMenuWidget(4, i, gBackgroundNode);
+            gItemGridElements[i] = MiniGameSelect_CreateMenuWidget(4, i, gGameGridIconNode);
         }
     }
 
-    gItemGridElements[4] = MiniGameSelect_CreateMenuWidget(4, 4, gBackgroundNode);
+    gItemGridElements[4] = MiniGameSelect_CreateMenuWidget(4, 4, gGameGridIconNode);
     MiniGameSelect_LinkWidgets(gUIElementArray[0], gComputerUIElements[0]);
 
     for (i = 0; i < 1; i++) {
@@ -1837,7 +1837,7 @@ void MiniGameSelect_DrawSelectionMarker(void) {
 
         case 3:
             sp30 = 0;
-            if (MiniGameSelect_IsWidgetInState(gComputerUIRoot, 2) != 0) {
+            if (MiniGameSelect_IsWidgetInState(gRoundSelectRoot, 2) != 0) {
                 sp30 = 1;
                 sp40 = 0xE4;
                 sp38 = 0xDA;
@@ -1846,7 +1846,7 @@ void MiniGameSelect_DrawSelectionMarker(void) {
             break;
 
         case 4:
-            if (gSelectionCoords.posX == 2) {
+            if (gOptionPanelState.posX == 2) {
                 sp30 = 1;
                 sp40 = 0xDC;
                 sp38 = ((gSelectionFlags & 1) ? 0x36 : 0x48) + (D_8250A288.RentalSlotAnimData_PosePhase * 0x18) + 0xA4;
@@ -1935,14 +1935,14 @@ void MiniGameSelect_DrawOptionPanel(void) {
     sp5C[2] = Text_GetString(NULL, 0, gStringTable, 5);
     sp5C[3] = Text_GetString(NULL, 0, gStringTable, 6);
 
-    if (gSelectionCoords.posX != 0) {
-        Ui_DrawGradientPanel(gSelectionCoords.RentalSlotAnimData_PosePhase, gSelectionCoords.unk_0A, gSelectionCoords.unk_0C, gSelectionCoords.unk_0E, &sp80, &sp7C);
-        if (gSelectionCoords.posX == 2) {
+    if (gOptionPanelState.posX != 0) {
+        Ui_DrawGradientPanel(gOptionPanelState.RentalSlotAnimData_PosePhase, gOptionPanelState.unk_0A, gOptionPanelState.unk_0C, gOptionPanelState.unk_0E, &sp80, &sp7C);
+        if (gOptionPanelState.posX == 2) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_Printf(0x140 - (Text_MeasureStringWidth(gTextObjectHandle, Text_GetString(NULL, 0, gStringTable, 2)) / 2),
-                          gSelectionCoords.unk_0A + 0x18, Text_GetString(NULL, 0, gStringTable, 2));
+                          gOptionPanelState.unk_0A + 0x18, Text_GetString(NULL, 0, gStringTable, 2));
 
             if (gSelectionFlags & 1) {
                 var_s4 = 4;
@@ -1961,7 +1961,7 @@ void MiniGameSelect_DrawOptionPanel(void) {
                     Text_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
                 }
                 Font_Printf(0x140 - (Text_MeasureStringWidth(gTextObjectHandle, var_v0[i]) / 2),
-                              gSelectionCoords.unk_0A + var_s5 + (i * 0x18), var_v0[i]);
+                              gOptionPanelState.unk_0A + var_s5 + (i * 0x18), var_v0[i]);
             }
 
             Font_EndTexturedTextRendering();
@@ -1973,7 +1973,7 @@ void MiniGameSelect_DrawFrame(void) {
     MiniGameSelect_RenderDirtyPanels();
     BgStage_DrawFrame();
     Gfx_DrawTiledRgba16Image(gMinigameSelectBackground);
-    Geo_RenderRootNode(gCursorNode);
+    Geo_RenderRootNode(gSceneGraphRoot);
     Minigames_DrawMatchBanner();
     Minigames_DrawRoundBanner();
     MiniGameSelect_DrawOptionPanel();
@@ -2072,8 +2072,8 @@ void MiniGameSelect_LeaveJoinMenu(void) {
         gRoundSpinnerState = 0;
         gRoundSpinnerTimer = 0;
         gRoundSpinnerScrollOffset = 0;
-        MiniGameSelect_LinkWidgets(gComputerUIElements[0], gComputerUIRoot);
-        MiniGameSelect_LinkWidgets(gComputerUIRoot, gItemGridElements[0]);
+        MiniGameSelect_LinkWidgets(gComputerUIElements[0], gRoundSelectRoot);
+        MiniGameSelect_LinkWidgets(gRoundSelectRoot, gItemGridElements[0]);
     }
     MiniGameSelect_SetWidgetState(*gComputerUIElements, 3);
 }
@@ -2162,25 +2162,25 @@ void MiniGameSelect_UpdateOptionPanel(void) {
     s32 var_v0;
     s32 tmp;
 
-    switch (gSelectionCoords.posX) {
+    switch (gOptionPanelState.posX) {
         case 0:
-            gSelectionCoords.posX = 1;
-            gSelectionCoords.posY = 0;
-            gSelectionCoords.rotation = 8;
-            gSelectionCoords.unk_06 = 0x12C;
-            gSelectionCoords.RentalSlotAnimData_PosePhase = 0x140;
-            gSelectionCoords.unk_0A = 0xF0;
-            gSelectionCoords.unk_0C = gSelectionCoords.unk_0E = 0;
+            gOptionPanelState.posX = 1;
+            gOptionPanelState.posY = 0;
+            gOptionPanelState.rotation = 8;
+            gOptionPanelState.unk_06 = 0x12C;
+            gOptionPanelState.RentalSlotAnimData_PosePhase = 0x140;
+            gOptionPanelState.unk_0A = 0xF0;
+            gOptionPanelState.unk_0C = gOptionPanelState.unk_0E = 0;
             break;
 
         case 1:
-            gSelectionCoords.rotation -= 1;
-            gSelectionCoords.RentalSlotAnimData_PosePhase = ((gSelectionCoords.rotation * 0x8C) / 8) + 0xB4;
-            gSelectionCoords.unk_0A = ((gSelectionCoords.rotation * 0x54) / 8) + 0x9C;
-            gSelectionCoords.unk_0C = 0x118 - ((gSelectionCoords.rotation * 0x118) / 8);
-            gSelectionCoords.unk_0E = 0xA8 - ((gSelectionCoords.rotation * 0xA8) / 8);
-            if (gSelectionCoords.rotation <= 0) {
-                gSelectionCoords.posX = 2;
+            gOptionPanelState.rotation -= 1;
+            gOptionPanelState.RentalSlotAnimData_PosePhase = ((gOptionPanelState.rotation * 0x8C) / 8) + 0xB4;
+            gOptionPanelState.unk_0A = ((gOptionPanelState.rotation * 0x54) / 8) + 0x9C;
+            gOptionPanelState.unk_0C = 0x118 - ((gOptionPanelState.rotation * 0x118) / 8);
+            gOptionPanelState.unk_0E = 0xA8 - ((gOptionPanelState.rotation * 0xA8) / 8);
+            if (gOptionPanelState.rotation <= 0) {
+                gOptionPanelState.posX = 2;
             }
             break;
 
@@ -2196,9 +2196,9 @@ void MiniGameSelect_UpdateOptionPanel(void) {
             }
 
             if (var_v0 == 0) {
-                gSelectionCoords.unk_06 = 0x12C;
-            } else if (gSelectionCoords.unk_06 > 0) {
-                gSelectionCoords.unk_06 -= 1;
+                gOptionPanelState.unk_06 = 0x12C;
+            } else if (gOptionPanelState.unk_06 > 0) {
+                gOptionPanelState.unk_06 -= 1;
             }
 
             tmp = D_8250A288.RentalSlotAnimData_PosePhase;
@@ -2222,39 +2222,39 @@ void MiniGameSelect_UpdateOptionPanel(void) {
 
             if (gControllerInputs->rotation & 0x8000) {
                 if (gSelectionFlags & 1) {
-                    gMenuState = gComLevelRowToDifficultyWithHyper[D_8250A288.RentalSlotAnimData_PosePhase];
+                    gMinigameComDifficulty = gComLevelRowToDifficultyWithHyper[D_8250A288.RentalSlotAnimData_PosePhase];
                 } else {
-                    gMenuState = gComLevelRowToDifficultyNoHyper[D_8250A288.RentalSlotAnimData_PosePhase];
+                    gMinigameComDifficulty = gComLevelRowToDifficultyNoHyper[D_8250A288.RentalSlotAnimData_PosePhase];
                 }
-                gSelectionCoords.posX = 3;
-                gSelectionCoords.posY = 1;
-                gSelectionCoords.rotation = 8;
-                gSelectionCoords.RentalSlotAnimData_PosePhase = 0xB4;
-                gSelectionCoords.unk_0A = 0x9C;
-                gSelectionCoords.unk_0C = 0x118;
-                gSelectionCoords.unk_0E = 0xA8;
+                gOptionPanelState.posX = 3;
+                gOptionPanelState.posY = 1;
+                gOptionPanelState.rotation = 8;
+                gOptionPanelState.RentalSlotAnimData_PosePhase = 0xB4;
+                gOptionPanelState.unk_0A = 0x9C;
+                gOptionPanelState.unk_0C = 0x118;
+                gOptionPanelState.unk_0E = 0xA8;
                 Audio_PlaySoundEffectById(2);
             } else if (gControllerInputs->rotation & 0x4000) {
-                gSelectionCoords.posX = 3;
-                gSelectionCoords.posY = 0;
-                gSelectionCoords.rotation = 8;
-                gSelectionCoords.RentalSlotAnimData_PosePhase = 0xB4;
-                gSelectionCoords.unk_0A = 0x9C;
-                gSelectionCoords.unk_0C = 0x118;
-                gSelectionCoords.unk_0E = 0xA8;
+                gOptionPanelState.posX = 3;
+                gOptionPanelState.posY = 0;
+                gOptionPanelState.rotation = 8;
+                gOptionPanelState.RentalSlotAnimData_PosePhase = 0xB4;
+                gOptionPanelState.unk_0A = 0x9C;
+                gOptionPanelState.unk_0C = 0x118;
+                gOptionPanelState.unk_0E = 0xA8;
                 Audio_PlaySoundEffectById(3);
             }
             break;
 
         case 3:
-            gSelectionCoords.rotation -= 1;
-            gSelectionCoords.RentalSlotAnimData_PosePhase = ((gSelectionCoords.rotation * -0x8C) / 8) + 0x140;
-            gSelectionCoords.unk_0A = ((gSelectionCoords.rotation * -0x54) / 8) + 0xF0;
-            gSelectionCoords.unk_0C = (gSelectionCoords.rotation * 0x118) / 8;
-            gSelectionCoords.unk_0E = (gSelectionCoords.rotation * 0xA8) / 8;
-            if (gSelectionCoords.rotation <= 0) {
-                gSelectionCoords.posX = 0;
-                if (gSelectionCoords.posY != 0) {
+            gOptionPanelState.rotation -= 1;
+            gOptionPanelState.RentalSlotAnimData_PosePhase = ((gOptionPanelState.rotation * -0x8C) / 8) + 0x140;
+            gOptionPanelState.unk_0A = ((gOptionPanelState.rotation * -0x54) / 8) + 0xF0;
+            gOptionPanelState.unk_0C = (gOptionPanelState.rotation * 0x118) / 8;
+            gOptionPanelState.unk_0E = (gOptionPanelState.rotation * 0xA8) / 8;
+            if (gOptionPanelState.rotation <= 0) {
+                gOptionPanelState.posX = 0;
+                if (gOptionPanelState.posY != 0) {
                     MiniGameSelect_LeaveJoinMenu();
                 } else {
                     D_8250A26C = 2;
@@ -2263,7 +2263,7 @@ void MiniGameSelect_UpdateOptionPanel(void) {
             break;
     }
 
-    if (gSelectionCoords.posX != 2) {
+    if (gOptionPanelState.posX != 2) {
         gComputerUIElements[0]->unk_06 |= 1;
     }
 }
@@ -2271,25 +2271,25 @@ void MiniGameSelect_UpdateOptionPanel(void) {
 void MiniGameSelect_UpdateRoundSpinner(void) {
     s32 i;
 
-    if (MiniGameSelect_IsWidgetInState(gComputerUIRoot, 2) != 0) {
+    if (MiniGameSelect_IsWidgetInState(gRoundSelectRoot, 2) != 0) {
         switch (gRoundSpinnerState) {
             case 0:
                 if (gControllerInputs->rotation & 0x8000) {
-                    gMenuSubState = D_8250A288.rotation;
+                    gWinsToChampion = D_8250A288.rotation;
 
                     for (i = 0; i < 4; i++) {
-                        gMenuOptionTimers[i] = 0;
+                        gPlayerWinCounts[i] = 0;
                     }
 
                     Widget_PauseMenuResetWinStreak();
                     D_8250A26C = 5;
-                    MiniGameSelect_SetWidgetState(gComputerUIRoot, 3);
+                    MiniGameSelect_SetWidgetState(gRoundSelectRoot, 3);
                     Audio_PlaySoundEffectById(0xE);
                     Minigames_SetRoundBannerState(1, D_8250A288.unk_06);
                 } else if (gControllerInputs->rotation & 0x4000) {
                     D_8250A26C = 2;
                     Minigames_SetMatchBannerState(1);
-                    MiniGameSelect_SetWidgetState(gComputerUIRoot, 8);
+                    MiniGameSelect_SetWidgetState(gRoundSelectRoot, 8);
                     Audio_PlaySoundEffectById(3);
                 } else if ((gControllerInputs->RentalSlotAnimData_PosePhase & 0x800) && (D_8250A288.rotation < 9)) {
                     gRoundSpinnerState = 2;
@@ -2324,7 +2324,7 @@ void MiniGameSelect_UpdateRoundSpinner(void) {
                 }
                 break;
         }
-        gComputerUIRoot->unk_06 |= 1;
+        gRoundSelectRoot->unk_06 |= 1;
     }
 }
 
@@ -2342,7 +2342,7 @@ s32 MiniGameSelect_UpdateGridCursor(s16* arg0, s16 arg1) {
     var_a3 = *arg0 % 3;
     var_t0 = *arg0 / 3;
 
-    if (gSelectionTimer == -1) {
+    if (gAutoPickGameIndex == -1) {
         if (gControllerStates[arg1].rotation & 0x800) {
             var_t0 -= 1;
             if (var_t0 < 0) {
@@ -2394,13 +2394,13 @@ s32 MiniGameSelect_UpdateGridCursor(s16* arg0, s16 arg1) {
         if (gSelectionDelay <= 0) {
             gSelectionDelay = 0xF;
 
-            temp_v0_2 = (gSelectionTimer % 3) - var_a3;
+            temp_v0_2 = (gAutoPickGameIndex % 3) - var_a3;
             if (temp_v0_2 > 0) {
                 var_a3 += 1;
             } else if (temp_v0_2 < 0) {
                 var_a3 -= 1;
             } else {
-                temp_v0_2 = (gSelectionTimer / 3) - var_t0;
+                temp_v0_2 = (gAutoPickGameIndex / 3) - var_t0;
                 if (temp_v0_2 > 0) {
                     var_t0 += 1;
                 } else if (temp_v0_2 < 0) {
@@ -2621,11 +2621,11 @@ void MiniGameSelect_LoadScene(void) {
 
     gControllerInputs = &gControllerStates;
     temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
-    gCursorNode = process_geo_layout(temp_v0, gUILayoutConfig);
+    gSceneGraphRoot = process_geo_layout(temp_v0, gUILayoutConfig);
     gStatusIconNode = process_geo_layout(temp_v0, gStatusIconDescriptor);
     gComputerSelectionNode = process_geo_layout(temp_v0, gComputerSelectionDescriptor);
-    gItemSelectionNode = process_geo_layout(temp_v0, gItemSelectionDescriptor);
-    gBackgroundNode = process_geo_layout(temp_v0, gItemSelectionUIDescriptor);
+    gRoundSpinnerNode = process_geo_layout(temp_v0, gRoundSpinnerDescriptor);
+    gGameGridIconNode = process_geo_layout(temp_v0, gItemSelectionUIDescriptor);
     gSelectionHighlightNode = process_geo_layout(temp_v0, gUIDrawIconDescriptor);
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
@@ -2644,9 +2644,9 @@ s32 MiniGameSelect_Entry(s32 arg0, s32 arg1) {
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
     ASSET_LOAD(D_3000000, kids_club_select_ui, 0);
-    gItemArchive = ASSET_LOAD2(backgrounds, 1, 1);
+    gBackgroundArchive = ASSET_LOAD2(backgrounds, 1, 1);
 
-    gMinigameSelectBackground = BinArchive_GetFile(gItemArchive, 4);
+    gMinigameSelectBackground = BinArchive_GetFile(gBackgroundArchive, 4);
     gStringTable = gMinigameNamesBank;
     Save_EnsureBankLoaded(2);
     MiniGameSelect_LoadScene();

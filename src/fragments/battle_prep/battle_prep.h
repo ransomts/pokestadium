@@ -49,12 +49,12 @@ typedef struct gBannerState {
     /* 0x18 */ void* unk_18;
     /* 0x1C */ void* unk_1C;
     /* 0x20 */ Fragment2_1GraphNode* unk_20;
-    /* 0x24 */ MiniHudMainGraph* unk_24;
-    /* 0x28 */ MiniHudMainGraph* unk_28;
-    /* 0x2C */ MiniHudMainGraph* unk_2C;
-    /* 0x30 */ MiniHudMainGraph* unk_30;
-    /* 0x34 */ MiniHudMainGraph* unk_34;
-    /* 0x38 */ MiniHudMainGraph* unk_38;
+    /* 0x24 */ ShadowContextNode* unk_24;
+    /* 0x28 */ ShadowContextNode* unk_28;
+    /* 0x2C */ ShadowContextNode* unk_2C;
+    /* 0x30 */ ShadowContextNode* unk_30;
+    /* 0x34 */ ShadowContextNode* unk_34;
+    /* 0x38 */ ShadowContextNode* unk_38;
     /* 0x3C */ char unk3C[0x4];
 } gBannerState; // size >= 0x40
 
@@ -75,11 +75,11 @@ typedef struct gTeamIconsState {
     /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ u8 posY;
     /* 0x04 */ Fragment2_1GraphNode* rotation;
-    /* 0x08 */ MiniHudMainGraph* RentalSlotAnimData_PosePhase;
-    /* 0x0C */ MiniHudMainGraph* unk_0C;
-    /* 0x10 */ MiniHudMainGraph* unk_10;
-    /* 0x14 */ MiniHudMainGraph* unk_14;
-    /* 0x18 */ MiniHudMainGraph* unk_18;
+    /* 0x08 */ ShadowContextNode* RentalSlotAnimData_PosePhase;
+    /* 0x0C */ ShadowContextNode* unk_0C;
+    /* 0x10 */ ShadowContextNode* unk_10;
+    /* 0x14 */ ShadowContextNode* unk_14;
+    /* 0x18 */ ShadowContextNode* unk_18;
     /* 0x1C */ SpriteDisplay* unk_1C;
     /* 0x20 */ u16 (*unk_20)[0x640];
     /* 0x24 */ FramebufferImage* unk_24;
@@ -91,11 +91,11 @@ typedef struct gBadgeAwardState {
     /* 0x00 */ u8 posX;
     /* 0x00 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x04 */ Fragment2_1GraphNode* rotation;
-    /* 0x08 */ MiniHudMainGraph* RentalSlotAnimData_PosePhase;
-    /* 0x0C */ MiniHudMainGraph* unk_0C;
-    /* 0x10 */ MiniHudMainGraph* unk_10;
-    /* 0x14 */ MiniHudMainGraph* unk_14;
-    /* 0x18 */ MiniHudMainGraph* unk_18;
+    /* 0x08 */ ShadowContextNode* RentalSlotAnimData_PosePhase;
+    /* 0x0C */ ShadowContextNode* unk_0C;
+    /* 0x10 */ ShadowContextNode* unk_10;
+    /* 0x14 */ ShadowContextNode* unk_14;
+    /* 0x18 */ ShadowContextNode* unk_18;
     /* 0x1C */ u8* unk_1C;
     /* 0x20 */ u8* unk_20;
     /* 0x24 */ u8** unk_24;
@@ -129,9 +129,9 @@ typedef struct gStarBurstState {
     /* 0x5A4 */ f32 yVelocity;
     /* 0x5A8 */ Fragment2_1GraphNode* barNode;
     /* 0x5AC */ Fragment2_1GraphNode* particleNodeBase;
-    /* 0x5B0 */ MiniHudMainGraph* barGraph;
-    /* 0x5B4 */ MiniHudMainGraph* sparkGraph;
-    /* 0x5B8 */ MiniHudMainGraph* rainbowGraph;
+    /* 0x5B0 */ ShadowContextNode* barGraph;
+    /* 0x5B4 */ ShadowContextNode* sparkGraph;
+    /* 0x5B8 */ ShadowContextNode* rainbowGraph;
     /* 0x5BC */ char unk5BC[0x4];
 } gStarBurstState; // size = 0x5C0
 
@@ -140,7 +140,7 @@ typedef struct unk_D_84B26640_010_010 {
     /* 0x01 */ s8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s8 posY;
     /* 0x04 */ Fragment2_1GraphNode* rotation;
-    /* 0x08 */ MiniHudMainGraph* RentalSlotAnimData_PosePhase;
+    /* 0x08 */ ShadowContextNode* RentalSlotAnimData_PosePhase;
 } BarState; // size = 0xC
 
 typedef struct unk_D_84B26640 {
@@ -245,7 +245,7 @@ void BattlePrep_InitCarouselExit(gBannerState* arg0, Fragment2_1GraphNode* arg1)
 void BattlePrep_LoadBannerAssets(gBannerState* arg0);
 void BattlePrep_AdjustBannerTextureOffset(gBannerState* arg0);
 void BattlePrep_LoadBannerGeoLayouts(gBannerState* arg0);
-void BattlePrep_SetVertexGradientColors(MiniHudMainGraph* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2);
+void BattlePrep_SetVertexGradientColors(ShadowContextNode* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2);
 void BattlePrep_ApplyBannerColors(gBannerState* arg0);
 void BattlePrep_InitBannerScene(gBannerState* arg0);
 s32 BattlePrep_BadgeCarouselGeoCallback(s32 arg0, SimpleGfxNode* arg1);
@@ -334,13 +334,13 @@ void BattlePrepBadgeAward_Init(gBadgeAwardState* arg0);
 s32 BattlePrepStarBurst_DrawStarIcon(s32 arg0, SimpleGfxNode* arg1);
 s32 BattlePrepStarBurst_DrawTrailIcon(s32 arg0, SimpleGfxNode* arg1);
 s32 BattlePrepStarBurst_DrawSparkParticle(s32 arg0, SimpleGfxNode* arg1);
-void BattlePrepStarBurst_InitSparkSlot(unk_D_84B25AC0_000* arg0, MiniHudMainGraph* arg1, s16 arg2, s16 arg3, s16 arg4);
+void BattlePrepStarBurst_InitSparkSlot(unk_D_84B25AC0_000* arg0, ShadowContextNode* arg1, s16 arg2, s16 arg3, s16 arg4);
 void BattlePrepStarBurst_UpdateSparkSlot(unk_D_84B25AC0_000* arg0);
 s32 BattlePrepStarBurst_DrawRainbowParticle(s32 arg0, SimpleGfxNode* arg1);
-void BattlePrepStarBurst_InitRainbowParticle(unk_D_84B25AC0_0A0* arg0, MiniHudMainGraph* arg1, s16 arg2, s16 arg3, s16 arg4);
+void BattlePrepStarBurst_InitRainbowParticle(unk_D_84B25AC0_0A0* arg0, ShadowContextNode* arg1, s16 arg2, s16 arg3, s16 arg4);
 void BattlePrepStarBurst_SpawnTrailCopy(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1);
 void BattlePrepStarBurst_SpawnFlashCopy(unk_D_84B25AC0_0A0* arg0, unk_D_84B25AC0_0A0* arg1, s16 arg2);
-void BattlePrepStarBurst_SpawnScatterParticle(unk_D_84B25AC0_0A0* arg0, MiniHudMainGraph* arg1, Vec3f* arg2);
+void BattlePrepStarBurst_SpawnScatterParticle(unk_D_84B25AC0_0A0* arg0, ShadowContextNode* arg1, Vec3f* arg2);
 void BattlePrepStarBurst_UpdateRainbowGradientStep(unk_D_84B25AC0_0A0* arg0);
 void BattlePrepStarBurst_UpdateTrailFadeStep(unk_D_84B25AC0_0A0* arg0);
 void BattlePrepStarBurst_UpdateFlashFadeStep(unk_D_84B25AC0_0A0* arg0);

@@ -1715,7 +1715,7 @@ void metapodMinigameInit(void) {
     StageLoader_RunFrames(0xA);
     StageFade_StartFromOpaque(0x10);
     miniTutoScreenState = 3;
-    miniDifficulty = gMenuState;
+    miniDifficulty = gMinigameComDifficulty;
 }
 
 void MetapodGame_NoOp(void) {

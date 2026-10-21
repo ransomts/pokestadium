@@ -43,7 +43,7 @@ static s32 pad_D_86A06208[2];
 u8 gPhaseDelta;
 u8 gUnusedTimer1;
 u8 gUnusedTimer2;
-StageCameraConfig* gStageLayoutPtr;
+CreditsRolePage* gStageLayoutPtr;
 
 StagePhaseInfo gStagePhases[9] = {
     {
@@ -1193,7 +1193,7 @@ static CreditRoleEntry gCreditsRoleLines[] = {
     },
 };
 
-StageCameraConfig gStageCameraConfigs[29] = {
+CreditsRolePage gCreditsRolePages[29] = {
     {
         0,
         360,
@@ -1440,7 +1440,7 @@ void Credits_InitScene(s32 arg0) {
     MainPool_FinalizeAllocation(sp2C);
     ModelRenderer_InitDisplayRoots();
     Credits_InitCamera();
-    MessageSequence_Init(1, arg0, gStageCameraConfigs);
+    MessageSequence_Init(1, arg0, gCreditsRolePages);
     gCurrentStageId = -1;
 
     main_pool_push_state('BACK');
@@ -1535,7 +1535,7 @@ s32 Credits_InterpolateRoleColor(Color_RGBA8_u32* arg0, u16 arg1, u16 arg2, u8 a
     return 1;
 }
 
-void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2) {
+void MessageSequence_Init(u8 arg0, u8 arg1, CreditsRolePage* arg2) {
     static char** sCreditsMessageBank;
 
     u16 i;
@@ -1582,7 +1582,7 @@ void Credits_DrawRoleList(void) {
     Color_RGBA8_u32 sp60[4];
     u16 var_s11;
     CreditRoleEntry* ptr;
-    StageCameraConfig sp4C;
+    CreditsRolePage sp4C;
 
     if (gStageLayoutPtr == NULL) {
         Credits_DrawContinuePrompt(1);

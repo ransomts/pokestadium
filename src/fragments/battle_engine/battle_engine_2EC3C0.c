@@ -24,7 +24,7 @@ static unk_D_84384588 gAnimExtraDataPlayer0;
 static unk_D_84384588 gAnimExtraDataPlayer1;
 BattlePlayerEntity* sActivePokemon[2];
 BattlePlayerEntity* gPrimaryPokemonEntity;
-BattlePlayerEntity* gPokemonEntityUnused;
+BattlePlayerEntity* gSecondaryPokemonEntity;
 static BattleAnimDataEntry* gCurrentAnimChannel;
 unk_D_84390028 gPokemonModelDimensions[2];
 static unk_D_84390048 gAnimTempVector;
@@ -637,7 +637,7 @@ void BattleScene_EnterRow21StartAnimRecord0(BattlePlayerEntity* arg0) {
 void BattleScene_TickRow21PlaySpeciesSound(BattlePlayerEntity* arg0) {
     gCurrentAnimChannel = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_000[0];
     if ((arg0->animationStateIndex == (gCurrentAnimChannel->rotation + 1)) && (BattleAnim_IsAssetLoadBusy(arg0) == 0)) {
-        Effect_TriggerMoveVisual(1, arg0->unk_000.unk_01A, 0);
+        Audio_PlayMoveSoundEffect(1, arg0->unk_000.unk_01A, 0);
         gBattleSceneStateTickSlots[gAnimStateQueueIndex].rotation = gAnimStateIdle;
     }
 }
@@ -1925,7 +1925,7 @@ void BattleScene_AllocateParticipants(BattlePokemon* arg0) {
     BattleScene_AllocateParticipantRecord(&arg0[1], 1);
     Battle_InitMessageQueues();
     gPrimaryPokemonEntity = sActivePokemon[0];
-    gPokemonEntityUnused = sActivePokemon[1];
+    gSecondaryPokemonEntity = sActivePokemon[1];
 }
 
 void BattleScene_InitializeParticipantController(BattlePlayerEntity* arg0) {
@@ -2052,8 +2052,8 @@ void BattleScene_InitializeParticipantAuxiliaryModel(BattlePlayerEntity* arg0) {
 }
 
 void BattleScene_InitializePresentation(BattlePokemon* arg0) {
-    gBattleInitFlag = 0;
-    gBattleInitStruct.posX = 0;
+    gAttractInputScriptIndex = 0;
+    gAttractInputTimer.posX = 0;
 
     BattleScene_InitializeParticipantController(sActivePokemon[0]);
     BattleScene_InitializeParticipantController(sActivePokemon[1]);

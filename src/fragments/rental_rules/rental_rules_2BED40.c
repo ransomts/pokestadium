@@ -18,7 +18,7 @@ static BinArchive* gBattleAssetArchive;
 static void* gBattleBackgroundAtlas;
 static s16 gMenuBackgroundTimer;
 static s16 gMenuFadeAlpha;
-static s16 gLoadingBarProgress;
+static s16 gHeaderBannerProgress;
 static s32 gCurrentBattleModeTitle;
 static char* gCurrentBattleModeSubtitle;
 static s16* gCurrentMenuOptionIds;
@@ -355,7 +355,7 @@ void RentalRules_UpdateFadeIn(void) {
     gMenuFadeAlpha = temp_lo = ((0xA - gMenuFadeTimer) << 0xA) / 10;
 
     if (D_83003C84 & 4) {
-        gLoadingBarProgress = temp_lo;
+        gHeaderBannerProgress = temp_lo;
     }
 
     if (gMenuFadeTimer <= 0) {
@@ -419,7 +419,7 @@ void RentalRules_UpdateFadeOut(void) {
 
     gMenuFadeAlpha = temp_lo;
     if (D_83003C84 & 4) {
-        gLoadingBarProgress = temp_lo;
+        gHeaderBannerProgress = temp_lo;
     }
 
     if (gMenuFadeTimer <= 0) {
@@ -464,12 +464,12 @@ void RentalRules_DrawHeaderBanner(void) {
     s16 temp_s1;
     s16 spD8;
 
-    if (gLoadingBarProgress == 0) {
+    if (gHeaderBannerProgress == 0) {
         return;
     }
 
-    temp_s1 = (((-gLoadingBarProgress * 0x10) + 0x4000) / 1024) + 0x28;
-    spD8 = (gLoadingBarProgress << 5) / 1024;
+    temp_s1 = (((-gHeaderBannerProgress * 0x10) + 0x4000) / 1024) + 0x28;
+    spD8 = (gHeaderBannerProgress << 5) / 1024;
 
     gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, 100, 100, 200, 255);
@@ -486,7 +486,7 @@ void RentalRules_DrawHeaderBanner(void) {
     Gfx_DrawTexturedRectClipped(0x240, temp_s1, 0x10, spD8, 0, 0, 0x400, 0x8000 / spD8, 0);
     Gfx_DrawTexturedRectClipped(0x48, temp_s1, 0x1F8, spD8, 0, 0, 0, 0x8000 / spD8, 0);
 
-    if (gLoadingBarProgress < 0x400) {
+    if (gHeaderBannerProgress < 0x400) {
         gSPDisplayList(gDisplayListHead++, gPrefDL_End);
     } else {
         gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
@@ -751,9 +751,9 @@ void RentalRules_Init(void) {
     }
 
     if (D_83003C84 & 4) {
-        gLoadingBarProgress = 0;
+        gHeaderBannerProgress = 0;
     } else {
-        gLoadingBarProgress = 0x400;
+        gHeaderBannerProgress = 0x400;
     }
 
     RentalRules_PopupReset();

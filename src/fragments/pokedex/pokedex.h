@@ -158,7 +158,7 @@ void Pokedex_SetPreviewSpecies(unk_func_888044BC_04C_02C* arg0, s32 arg1);
 s32 Pokedex_DrawPreview(unk_func_888044BC_04C_02C* arg0, s32 arg1, s32 arg2);
 void Pokedex_BuildPreviewPanel(unk_func_888044BC_04C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
 void Pokedex_BuildRootWidget(PokedexMenu* arg0, s32 arg1, s32 arg2, u8* arg3, MemoryPool* arg4);
-s32 TrainerCardMenuLoopSpecies(void);
+s32 Pokedex_MenuLoopSpecies(void);
 s32 Pokedex_ShowEntryMenu(void);
 void Pokedex_LoadIcon(u8* arg0, s32 arg1);
 s32 Pokedex_ShowEntry(void);
@@ -189,7 +189,7 @@ void Pokedex_UpdateAreaMapFrame(void);
 s32 Pokedex_GetCountTier(s32 arg0);
 s32 Pokedex_DrawAreaMapFrame(UNUSED u8 arg0);
 s32 Pokedex_CheckAreaMapExit(void);
-void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32 arg4, char* arg5, char** arg6);
+void Pokedex_InitSpeciesAreaMap(s32 arg0, MainPoolState* arg1, UNUSED s32 arg2, s32 arg3, s32 arg4, char* arg5, char** arg6);
 void Pokedex_ExitAreaMapPool(void);
 
 #endif // _FRAGMENT28_H_

@@ -3,7 +3,7 @@
 #include "src/gallery.h"
 #include "src/gfx_buffer.h"
 
-static WaterSurface D_8439E680;
+static Trail40VariantData D_8439E680;
 
 static Lights2 D_84389430 = gdSPDefLights2(255, 255, 255, 255, 255, 255, 30, 30, 10, 255, 255, 255, 226, 30, 10);
 static Gfx D_84389458[] = {
@@ -23,7 +23,7 @@ static Gfx D_84389458[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx gWaterSurfaceDL_Unlit[] = {
+static Gfx gTrail40VariantDL_Unlit[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |

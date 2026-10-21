@@ -26,11 +26,11 @@ typedef struct AreaConfig {
     /* 0x0A */ Color_RGBA8 unk_0A;
 } AreaConfig; // size = 0xE
 
-typedef struct ParticlePos {
+typedef struct ParticlePosRot {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
-} ParticlePos; // size = 0x6
+} ParticlePosRot; // size = 0x6
 
 typedef struct ParticleTrail {
     /* 0x00 */ s16 posX;
@@ -39,7 +39,7 @@ typedef struct ParticleTrail {
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
-    /* 0x0C */ ParticlePos unk_0C[4];
+    /* 0x0C */ ParticlePosRot unk_0C[4];
 } ParticleTrail; // size = 0x24
 
 typedef struct TileOverlay {
@@ -90,7 +90,7 @@ static s32 pad_D_822031D0[0x2];
 static s16 gCurrentAreaIndex;
 static s16 gPreviousAreaIndex;
 static s16 gTransitionFrame;
-static SessionModeSettings gAreaAudioState;
+static SessionModeSettings gAreaModeSettings;
 static GbsSaveOptions gAreaPlayerName;
 
 s32 AreaSelect_CheckCartRemoved(s32 arg0) {
@@ -392,7 +392,7 @@ void AreaSelect_DrawMewtwoMarker(s16 arg0, s16 arg1) {
     };
     static s16 gMewtwoMarkerFrame = 0;
 
-    if (gAreaAudioState.unk_07 != 0) {
+    if (gAreaModeSettings.unk_07 != 0) {
         gDPPipeSync(gDisplayListHead++);
         gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
         gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
@@ -417,7 +417,7 @@ void AreaSelect_DrawMewtwoMarker(s16 arg0, s16 arg1) {
 }
 
 void AreaSelect_DrawGlowCircle(s16 arg0, s16 arg1, s16 arg2) {
-    if ((gAreaAudioState.unk_07 == 0) || (arg2 <= 0)) {
+    if ((gAreaModeSettings.unk_07 == 0) || (arg2 <= 0)) {
         return;
     }
 
@@ -739,7 +739,7 @@ void AreaSelect_Loop(void) {
         i = 8;
     }
 
-    if (gAreaAudioState.unk_07 == 0) {
+    if (gAreaModeSettings.unk_07 == 0) {
         gTileConfigTable[0].unk_06 = 8;
         gTileConfigTable[2].unk_09 = 8;
         gTileConfigTable[7].unk_06 = 8;
@@ -818,11 +818,11 @@ s32 AreaSelect_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     gAreaMessageBank = Text_GetStringTable(0x17);
     Save_EnsureBankLoaded(2);
     Save_GetOptions(&gAreaPlayerName);
-    Save_GetModeSettings(&gAreaAudioState, gSessionContext.inRound2);
+    Save_GetModeSettings(&gAreaModeSettings, gSessionContext.inRound2);
     AreaSelect_LoadBackgroundArt();
     gCurrentAreaIndex = 8;
 
-    if ((gAreaAudioState.unk_07 != 0) && !(gSessionContext.sessionFlags & 4) && !(gAreaAudioState.posX & 0x100)) {
+    if ((gAreaModeSettings.unk_07 != 0) && !(gSessionContext.sessionFlags & 4) && !(gAreaModeSettings.posX & 0x100)) {
         gOverlayAlpha = 0xFF;
     }
 

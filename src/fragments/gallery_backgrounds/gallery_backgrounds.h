@@ -39,7 +39,7 @@ extern PhotoSceneData* gCurrentCamEntryPage;
 extern PhotoMonSpecies gGallerySpecialSpecies;
 extern s32 gGallerySpecialUnlocked;
 extern s32 gGallerySpecialViewed;
-extern s32 gGalleryAudioStateFlag;
+extern s32 gGallerySpecialUnlockEnabled;
 extern GalleryCursor gGallerySelection;
 extern GalleryCursor gGalleryMainSelectionCam;
 extern GalleryCursor gGallerySubSelection;

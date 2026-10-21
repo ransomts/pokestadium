@@ -186,7 +186,7 @@ extern u8 gAnnouncerMoveDataMoves101To165[];
 extern u8 gAnnouncerTypeEffectivenessTable[];
 extern s32 gAudioActiveFlag;
 extern u8 gTeamScores[4];
-extern u8 gPlayerActiveFlag[2];
+extern u8 gPlayerRemainingPokemon[2];
 extern u8 gPlayerSideActiveIndex[4];
 extern u8 gPlayerSideMap[4];
 extern u8 gRecentMoveCount[];
@@ -625,7 +625,7 @@ void __clearAudioDMA(void) {
 void Cry_SetEnabled(s32 arg0) {
     const f32 D_8007C7C0 = 0.8000000119f;
     if (arg0 != 0) {
-        Audio_LoadMusicTrack(0x7D00, 0x78, 0x640);
+        GbAudio_InitMusicPlayback(0x7D00, 0x78, 0x640);
         gMusicEnabled[0] = 1;
         gMusicVolume = D_8007C7C0;
         return;
@@ -635,7 +635,7 @@ void Cry_SetEnabled(s32 arg0) {
 
 void Cry_PlayFromPokedex(s32 arg0) {
     if (gMusicEnabled[0] == 0) {
-        Audio_LoadMusicTrack(0x7D00, 0x78, 0x320);
+        GbAudio_InitMusicPlayback(0x7D00, 0x78, 0x320);
         gMusicEnabled[0] = 1;
         gMusicFadeState[0] = 1;
         gMusicVolume = 0.0f;

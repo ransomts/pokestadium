@@ -49,7 +49,7 @@ u32 gBorderTexture_Right[] = {
     0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE, 0xFFFEFFFE,
 };
 
-u32 gResultCubeTex_0[] = {
+u32 gPlayerIconTex_0[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -156,7 +156,7 @@ u32 gResultCubeTex_0[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 gResultCubeTex_1[] = {
+u32 gPlayerIconTex_1[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -263,7 +263,7 @@ u32 gResultCubeTex_1[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 gResultCubeTex_2[] = {
+u32 gPlayerIconTex_2[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -370,7 +370,7 @@ u32 gResultCubeTex_2[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 gResultCubeTex_3[] = {
+u32 gPlayerIconTex_3[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -584,7 +584,7 @@ u32 gResultCubeTex_8[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 gResultCubeTex_4[] = {
+u32 gPlayerIconTex_4[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -691,7 +691,7 @@ u32 gResultCubeTex_4[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 gResultCubeTex_5[] = {
+u32 gPlayerIconTex_5[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -798,7 +798,7 @@ u32 gResultCubeTex_5[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 gResultCubeTex_6[] = {
+u32 gPlayerIconTex_6[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -905,7 +905,7 @@ u32 gResultCubeTex_6[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
 };
 
-u32 gResultCubeTex_7[] = {
+u32 gPlayerIconTex_7[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -1179,18 +1179,18 @@ static s32 pad_D_8780F8A8[] = {
 
 static f32 gResultScaleFactors[] = { 0.8f, 0.75f, 0.7f, 0.75f, 0.8f, 0.75f, 0.7f, 0.65f, 0.6f, 0.55f, 0.5f };
 
-static f32 gResultRotationAngles[] = { 1.0f, 1.1f, 1.0f, 1.57f, 2.14f, 2.71f, 3.29f, 3.86f, 4.43f, 5.0f };
+static f32 gResultEndSequenceZoomFactors[] = { 1.0f, 1.1f, 1.0f, 1.57f, 2.14f, 2.71f, 3.29f, 3.86f, 4.43f, 5.0f };
 
-static u8 gResultCubeScaleIndices[] = {
+static u8 gResultFadeAlphas[] = {
     0xFF, 0xFF, 0xFF, 0xE2, 0xC4, 0xA7, 0x8A, 0x6D, 0x4F, 0x32,
 };
 
 static u32* gResultCubeTextureTable[2][4] = {
-    { gResultCubeTex_0, gResultCubeTex_1, gResultCubeTex_2, gResultCubeTex_3 },
-    { gResultCubeTex_4, gResultCubeTex_5, gResultCubeTex_6, gResultCubeTex_7 },
+    { gPlayerIconTex_0, gPlayerIconTex_1, gPlayerIconTex_2, gPlayerIconTex_3 },
+    { gPlayerIconTex_4, gPlayerIconTex_5, gPlayerIconTex_6, gPlayerIconTex_7 },
 };
 
-static f32 gResultCubeRotationScale[] = {
+static f32 gResultPlayerIconPulseScales[] = {
     0.9f,
     1.0f,
     1.1f,
@@ -1248,8 +1248,8 @@ static u8 gResultAnimStep;
 static u8 gResultBankSyncDone;
 static u8 gResultAnimTimer;
 static s16 gResultIconYOffset;
-static u8 gResultCubeAnimFrame[4];
-static u8 gResultCubeAnimTimer[4];
+static u8 gResultPlayerIconAnimFrame[4];
+static u8 gResultPlayerIconAnimTimer[4];
 static char pad_D_8780FCB4[0x4];
 static u16 gResultTiledTexX[10];
 static u16 gResultTiledTexY[3];
@@ -1295,8 +1295,8 @@ void Widget_PauseMenuInit(void) {
     for (i = 0; i < 4; i++) {
         gResultPlayerScored[i] = 0;
         gResultCubeStateFlag[i] = 0;
-        gResultCubeAnimFrame[i] = 0;
-        gResultCubeAnimTimer[i] = 0;
+        gResultPlayerIconAnimFrame[i] = 0;
+        gResultPlayerIconAnimTimer[i] = 0;
     }
 
     for (i = 0; i < 4; i++) {
@@ -1372,7 +1372,7 @@ void Widget_PauseMenuTrigger(s16 arg0) {
 
 void Widget_PauseMenuRecordWin(s32 arg0) {
     if ((arg0 >= 0) && (arg0 < 4)) {
-        gMenuOptionTimers[arg0]++;
+        gPlayerWinCounts[arg0]++;
         gResultPlayerScored[arg0] = 1;
         gResultCubeStateFlag[arg0] = 1;
     }
@@ -1382,7 +1382,7 @@ void Widget_PauseMenuCheckTournamentEnd(void) {
     u8 i;
 
     for (i = 0; i < 4; i++) {
-        if (gMenuOptionTimers[i] >= gMenuSubState) {
+        if (gPlayerWinCounts[i] >= gWinsToChampion) {
             gResultScoreThresholdMet = 1;
             break;
         }
@@ -1390,8 +1390,8 @@ void Widget_PauseMenuCheckTournamentEnd(void) {
 }
 
 s32 Widget_PauseMenuCheckHyperUnlock(void) {
-    if ((gMenuCursorX == 1) && (gMenuSubState >= 5) && (gMenuState == 2) && (gMiniHudColorDefaults[0] == 0) && (gMiniHudColorDefaults[1] == 1) &&
-        (gMiniHudColorDefaults[2] == 1) && (gMiniHudColorDefaults[3] == 1) && (*gResultPlayerCurrentScore == 5) && !(gMenuRandomSeed & 1)) {
+    if ((gMenuCursorX == 1) && (gWinsToChampion >= 5) && (gMinigameComDifficulty == 2) && (gMiniHudColorDefaults[0] == 0) && (gMiniHudColorDefaults[1] == 1) &&
+        (gMiniHudColorDefaults[2] == 1) && (gMiniHudColorDefaults[3] == 1) && (*gResultPlayerCurrentScore == 5) && !(gComHyperUnlocked & 1)) {
         return 1;
     }
     return 0;
@@ -1402,15 +1402,15 @@ void Widget_PauseMenuFindLeaders(void) {
     s8 var_v0 = 9;
 
     for (i = 0; i < 4; i++) {
-        if (gMenuOptionTimers[i] < var_v0) {
-            var_v0 = gMenuOptionTimers[i];
+        if (gPlayerWinCounts[i] < var_v0) {
+            var_v0 = gPlayerWinCounts[i];
         }
     }
 
     gResultLowestScorerCount = 0;
 
     for (i = 0; i < 4; i++) {
-        if (var_v0 == gMenuOptionTimers[i]) {
+        if (var_v0 == gPlayerWinCounts[i]) {
             gResultIsLowestScorer[i] = 1;
             gResultLowestScorerIndices[gResultLowestScorerCount] = i;
             gResultLowestScorerCount++;
@@ -1510,15 +1510,15 @@ void Widget_PauseMenuDrawWinIcons(s16 arg0) {
     gSPMatrix(gDisplayListHead++, (u32)temp_s3 & 0x1FFFFFFF, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
     for (i = 0; i < 4; i++) {
-        for (j = 0; j < gMenuOptionTimers[i]; j++) {
-            if ((gMenuOptionTimers[i] >= gMenuSubState) && (gResultCubeStateFlag[i] == 2)) {
+        for (j = 0; j < gPlayerWinCounts[i]; j++) {
+            if ((gPlayerWinCounts[i] >= gWinsToChampion) && (gResultCubeStateFlag[i] == 2)) {
                 gResultCubes[i][j].rotation += 7.5f;
                 if (gResultCubes[i][j].rotation >= 360.0f) {
                     gResultCubes[i][j].rotation -= 360.0f;
                 }
             }
 
-            if (((j + 1) == gMenuOptionTimers[i]) && (gResultPlayerScored[i] == 1)) {
+            if (((j + 1) == gPlayerWinCounts[i]) && (gResultPlayerScored[i] == 1)) {
                 if (arg0 != 0) {
                     break;
                 }
@@ -1546,7 +1546,7 @@ void Widget_PauseMenuDrawWinIcons(s16 arg0) {
                         }
                     }
 
-                    if (gMenuOptionTimers[i] < gMenuSubState) {
+                    if (gPlayerWinCounts[i] < gWinsToChampion) {
                         gResultCubes[i][j].rotation += 7.5f;
                         if (gResultCubes[i][j].rotation >= 360.0f) {
                             gResultCubes[i][j].rotation -= 360.0f;
@@ -1651,11 +1651,11 @@ void ResultScreen_RenderResultGraphics(u8 arg0, s8 arg1, s8 arg2, s8 arg3, s8 ar
     gSPDisplayList(gDisplayListHead++, gResultScreenSetupDL);
 
     if (temp_s2 == -4) {
-        var_fv1 = gResultRotationAngles[arg0];
+        var_fv1 = gResultEndSequenceZoomFactors[arg0];
 
         gDPSetCombineLERP(gDisplayListHead++, 0, 0, 0, TEXEL0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, TEXEL0, TEXEL0, 0,
                           ENVIRONMENT, 0);
-        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gResultCubeScaleIndices[arg0]);
+        gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gResultFadeAlphas[arg0]);
     } else {
         var_fv1 = gResultScaleFactors[arg0];
 
@@ -1794,26 +1794,26 @@ void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
                 }
             }
 
-            gResultCubeAnimFrame[i] = 0;
-            gResultCubeAnimTimer[i] = 0;
+            gResultPlayerIconAnimFrame[i] = 0;
+            gResultPlayerIconAnimTimer[i] = 0;
         } else {
             if (gResultCubeStateFlag[i] == 2) {
-                gResultCubeAnimFrame[i]++;
-                if (gResultCubeAnimFrame[i] == 4u) {
-                    gResultCubeAnimFrame[i] = 0;
+                gResultPlayerIconAnimFrame[i]++;
+                if (gResultPlayerIconAnimFrame[i] == 4u) {
+                    gResultPlayerIconAnimFrame[i] = 0;
                 }
 
-                if (gMenuOptionTimers[i] >= gMenuSubState) {
-                    gResultCubeAnimTimer[i]++;
-                    if (gResultCubeAnimTimer[i] == 0x14) {
-                        gResultCubeAnimTimer[i] = 0;
+                if (gPlayerWinCounts[i] >= gWinsToChampion) {
+                    gResultPlayerIconAnimTimer[i]++;
+                    if (gResultPlayerIconAnimTimer[i] == 0x14) {
+                        gResultPlayerIconAnimTimer[i] = 0;
                     }
                 }
             }
         }
         Widget_PauseMenuDrawIconQuad(var_a0, gResultCubeTextureTable[gMiniHudColorDefaults[i]][i], 0x24, 0x1A, ((i * 0x36) + arg0) + 0x3E, 0xBF,
-                      ((i * 0x36) + arg0) + 0x62, 0xD9, gResultCubeRotationScale[gResultCubeAnimFrame[i]], gResultCubeRotationScale[gResultCubeAnimFrame[i]],
-                      gResultCubeRotationScale[gResultCubeAnimFrame[i]], gResultCubeRotationOffset[gResultCubeAnimTimer[i]], 0.0f, 0.0f, 1.0f);
+                      ((i * 0x36) + arg0) + 0x62, 0xD9, gResultPlayerIconPulseScales[gResultPlayerIconAnimFrame[i]], gResultPlayerIconPulseScales[gResultPlayerIconAnimFrame[i]],
+                      gResultPlayerIconPulseScales[gResultPlayerIconAnimFrame[i]], gResultCubeRotationOffset[gResultPlayerIconAnimTimer[i]], 0.0f, 0.0f, 1.0f);
     }
 
     Font_BeginTranslucentTextRendering();
@@ -1830,9 +1830,9 @@ void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
         }
 
         if (gResultCubeStateFlag[i] == 1) {
-            Font_Printf((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gMenuOptionTimers[i] - 1);
+            Font_Printf((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gPlayerWinCounts[i] - 1);
         } else {
-            Font_Printf((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gMenuOptionTimers[i]);
+            Font_Printf((i * 0x36) + arg0 + 0x4C, 0xD8, "%d", gPlayerWinCounts[i]);
         }
     }
 
@@ -1840,7 +1840,7 @@ void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
     Font_EnableTwoCycleTexturing();
     Text_SetEnvColor(0xF0, 0xF0, 0xF0, 0xFF);
     Text_SetPrimColor(0x8C, 0x8C, 0x8C, 0xFF);
-    Text_SetNumberToken(1, gMenuSubState);
+    Text_SetNumberToken(1, gWinsToChampion);
 
     {
         char sp8C[0x60];
@@ -1849,7 +1849,7 @@ void Widget_PauseMenuDrawPlayerIcons(s16 arg0) {
         var_s0_3 = Text_GetString(sp8C, 0x60, gMinigameNamesBank, 0x13);
 
         if ((gMiniHudColorDefaults[0] + gMiniHudColorDefaults[1] + gMiniHudColorDefaults[2] + gMiniHudColorDefaults[3]) != 0) {
-            sprintf(sp8C, "%s - %s", var_s0_3, Text_GetString(NULL, 0, gMinigameNamesBank, gResultStateMessageIds[gMenuState]));
+            sprintf(sp8C, "%s - %s", var_s0_3, Text_GetString(NULL, 0, gMinigameNamesBank, gResultStateMessageIds[gMinigameComDifficulty]));
             var_s0_3 = sp8C;
         }
 
@@ -2027,8 +2027,8 @@ s32 Widget_PauseMenuUpdate(void) {
                                     gResultSpecialWinActive = 0;
                                 }
                             } else if ((gResultAnimDelayTimer < 0xAB) && (gResultBankSyncDone == 0)) {
-                                gMenuRandomSeed |= 1;
-                                Save_SetOptionsField1E(gMenuRandomSeed & 0xFF);
+                                gComHyperUnlocked |= 1;
+                                Save_SetOptionsField1E(gComHyperUnlocked & 0xFF);
                                 Save_CommitTypedRecord(0x14, 0);
                                 Save_FlushBank(2);
                                 gResultBankSyncDone = 1;
@@ -2156,11 +2156,11 @@ s32 Widget_PauseMenuUpdate(void) {
 
                     for (i = 0; i < 4; i++) {
                         if (gResultPlayerScored[i] != 0) {
-                            gResultCubes[i][gMenuOptionTimers[i] - 1].posX = (i * 0x36) + 0x4F;
-                            gResultCubes[i][gMenuOptionTimers[i] - 1].posY = -0x58;
-                            gResultCubes[i][gMenuOptionTimers[i] - 1].rotation =
+                            gResultCubes[i][gPlayerWinCounts[i] - 1].posX = (i * 0x36) + 0x4F;
+                            gResultCubes[i][gPlayerWinCounts[i] - 1].posY = -0x58;
+                            gResultCubes[i][gPlayerWinCounts[i] - 1].rotation =
                                 360.0f -
-                                ((((s32)((0xC8 - gMenuOptionTimers[i] * 0x12) - gResultCubes[i][gMenuOptionTimers[i] - 1].posY) / 6) %
+                                ((((s32)((0xC8 - gPlayerWinCounts[i] * 0x12) - gResultCubes[i][gPlayerWinCounts[i] - 1].posY) / 6) %
                                   24) *
                                  15.0f);
                         }

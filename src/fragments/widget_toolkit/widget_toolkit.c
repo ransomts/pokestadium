@@ -3,14 +3,14 @@
 #include "src/text_system.h"
 #include "src/controller.h"
 
-extern u32 gResultCubeTex_0[];
-extern u32 gResultCubeTex_1[];
-extern u32 gResultCubeTex_2[];
-extern u32 gResultCubeTex_3[];
-extern u32 gResultCubeTex_4[];
-extern u32 gResultCubeTex_5[];
-extern u32 gResultCubeTex_6[];
-extern u32 gResultCubeTex_7[];
+extern u32 gPlayerIconTex_0[];
+extern u32 gPlayerIconTex_1[];
+extern u32 gPlayerIconTex_2[];
+extern u32 gPlayerIconTex_3[];
+extern u32 gPlayerIconTex_4[];
+extern u32 gPlayerIconTex_5[];
+extern u32 gPlayerIconTex_6[];
+extern u32 gPlayerIconTex_7[];
 extern u32 gResultCubeTex_8[];
 extern u32 gBorderTexture_Left[];
 extern u32 gBorderTexture_Middle[];
@@ -21,14 +21,14 @@ char** gMinigameNamesBank = NULL;
 
 static s32 gRandomCounter;
 static char** gControllerWarningBank;
-u16 gMenuRandomSeed;
+u16 gComHyperUnlocked;
 s16 gMenuCursorX;
 s16 gMenuCursorY;
 
 s16 gMiniHudColorDefaults[4];
-s16 gMenuState;
-s16 gMenuSubState;
-s16 gMenuOptionTimers[4];
+s16 gMinigameComDifficulty;
+s16 gWinsToChampion;
+s16 gPlayerWinCounts[4];
 s16 gMenuSelectedOption;
 
 static s32 pad_D_8780FA4C;
@@ -187,12 +187,12 @@ void Widget_DrawMeterBar(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 }
 
 s16 gCurrentMenuIndex = -1;
-u32* gPositiveTextureBank[] = { gResultCubeTex_0, gResultCubeTex_1, gResultCubeTex_2, gResultCubeTex_3 };
-u32* gNegativeTextureBank[] = { gResultCubeTex_4, gResultCubeTex_5, gResultCubeTex_6, gResultCubeTex_7, gResultCubeTex_8 };
+u32* gPositiveTextureBank[] = { gPlayerIconTex_0, gPlayerIconTex_1, gPlayerIconTex_2, gPlayerIconTex_3 };
+u32* gNegativeTextureBank[] = { gPlayerIconTex_4, gPlayerIconTex_5, gPlayerIconTex_6, gPlayerIconTex_7, gResultCubeTex_8 };
 
 void Minigame_InitSharedState(s16 arg0) {
     s32 i;
-    gMenuRandomSeed = 0;
+    gComHyperUnlocked = 0;
     gCurrentMenuIndex = arg0;
     gMenuCursorX = 0;
     gMenuCursorY = 0;
@@ -202,15 +202,15 @@ void Minigame_InitSharedState(s16 arg0) {
     }
 
     if (arg0 == 3) {
-        gMenuState = 1;
+        gMinigameComDifficulty = 1;
     } else {
-        gMenuState = 3;
+        gMinigameComDifficulty = 3;
     }
 
-    gMenuSubState = 3;
+    gWinsToChampion = 3;
 
     for (i = 0; i < 4; i++) {
-        gMenuOptionTimers[i] = 0;
+        gPlayerWinCounts[i] = 0;
     }
 
     i = 0;

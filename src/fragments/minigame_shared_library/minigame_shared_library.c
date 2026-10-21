@@ -11,11 +11,11 @@ u8 gDrowzeeWinnerCount = 0;
 
 TextObject* gCurrentTextObject;
 ModelData* gDrowzeeModelTemp;
-MiniHudMainGraph* gDrowzeeStageRoot;
+ShadowContextNode* gDrowzeeStageRoot;
 CameraStruct* gDrowzeeCamera;
 s16 gDrowzeeCamDist;
 s16 gDrowzeeCamRotationY;
-s16 gDrowzeeCamRotationX;
+s16 gDrowzeeCamDistance;
 
 void MenuInput_FrameUpdate(void) {
     Cont_StartReadInputs();

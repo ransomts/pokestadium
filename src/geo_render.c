@@ -28,7 +28,7 @@ unk_D_86002F34_alt1* gCurrentLightNode = NULL;
 CameraStruct* gActiveCameraNode = NULL;
 unk_D_86002F34_alt1* gActiveNode = NULL;
 Fragment2_1GraphNode* gDefaultGraphRoot = NULL;
-unk_D_86002F34_alt11* gActiveLayerNode = NULL;
+unk_D_86002F34_alt11* gActiveShadowContextNode = NULL;
 static func_D_8006F0A4 GeoNodeHandlerTable[] = {
     Geo_ProcessNodeChildren, Geo_NodeReference, Geo_NodeCamera, Geo_NodeType3Pass, Geo_NodeModelRoot, Geo_NodeOrtho, Geo_NodePerspective,
     Geo_NodeBackground, Geo_NodeClearDepth, Geo_NodeType9Empty, Geo_NodeFog, Graph_AddLight, Geo_NodeType12Empty, Geo_NodeAmbientLight,
@@ -104,7 +104,7 @@ static u8 gCombineModeTable[15][16] = {
     { 1, 0x1F, 4, 0x1F, 1, 7, 4, 7, 0x1F, 0x1F, 0x1F, 0, 0, 7, 6, 7 },
 };
 
-static s16 gScaleFactors[] = { 16, 8, 4, 2, 0, 0 };
+static s16 gTexelsPerWord[] = { 16, 8, 4, 2, 0, 0 };
 
 static s32 gGraphNodeReturnVal;
 static MtxF* gNodeMatrixCache[8];
@@ -398,7 +398,7 @@ void Geo_ProcessNodeChildren(GraphNode* arg0) {
 
 void Geo_NodeReference(GraphNode* arg0) {
     UNUSED s32 pad;
-    GraphNode* temp_a1 = ((MiniHudMainGraph*)arg0)->unk_18;
+    GraphNode* temp_a1 = ((ShadowContextNode*)arg0)->unk_18;
 
     if ((temp_a1 != NULL) && (temp_a1->TrainerSlotSaveData_GamePort & 1)) {
         gGraphNodeReturnVal = 0;
@@ -648,9 +648,9 @@ void Geo_NodeShadowContext(GraphNode* arg0) {
         gMatrixStack.unk_10A0--;
     }
 
-    gActiveLayerNode = arg;
+    gActiveShadowContextNode = arg;
     Geo_ProcessNodeChildren(arg0);
-    gActiveLayerNode = NULL;
+    gActiveShadowContextNode = NULL;
 }
 
 void Geo_NodeCullDistance(GraphNode* arg0) {
@@ -885,11 +885,11 @@ void Geo_NodeShadowTexture(GraphNode* arg0) {
     }
 
     if (arg->unk_1C >= 0) {
-        sp3C = &gActiveLayerNode->unk_18[arg->unk_1C];
+        sp3C = &gActiveShadowContextNode->unk_18[arg->unk_1C];
     }
 
     if (arg->unk_1E >= 0) {
-        sp38 = &gActiveLayerNode->unk_1C[arg->unk_1E];
+        sp38 = &gActiveShadowContextNode->unk_1C[arg->unk_1E];
     }
 
     if (gDefaultGraphRoot != NULL) {
@@ -898,7 +898,7 @@ void Geo_NodeShadowTexture(GraphNode* arg0) {
         sp44.b = (sp44.b * gDefaultGraphRoot->unk_03C.b) / 255;
     }
 
-    ModelAnim_GetEventAtFrame(&sp3C, gActiveLayerNode->unk_18, arg->unk_20);
+    ModelAnim_GetEventAtFrame(&sp3C, gActiveShadowContextNode->unk_18, arg->unk_20);
     GeoRender_SetMaterialTexture(arg->unk_22, sp44, sp3C, sp38, sp34);
     Geo_ProcessNodeChildren(arg0);
 }
@@ -1233,13 +1233,13 @@ void GeoRender_BindTexture(RenderState* arg0) {
         }
 
         if (temp_t0->TrainerSlotSaveData_GamePort == 0) {
-            if ((temp_t0->posY % gScaleFactors[0]) == 0) {
+            if ((temp_t0->posY % gTexelsPerWord[0]) == 0) {
                 gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, G_IM_SIZ_16b, 1, temp_t0->texture);
             } else {
                 gDPSetTextureImage(gDisplayListHead++, temp_t0->fmt, G_IM_SIZ_8b, temp_t0->posY >> 1,
                                    temp_t0->texture);
             }
-        } else if ((temp_t0->posY % gScaleFactors[temp_t0->TrainerSlotSaveData_GamePort]) == 0) {
+        } else if ((temp_t0->posY % gTexelsPerWord[temp_t0->TrainerSlotSaveData_GamePort]) == 0) {
             if (temp_t0->TrainerSlotSaveData_GamePort == 3) {
                 var_a3 = 3;
             } else {

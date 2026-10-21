@@ -720,7 +720,7 @@ void BattleScene_Update(CameraStruct* arg0) {
     BattleScene_UpdateOwnerVisibilityDouble(arg0);
     BattleScene_TickStateCallbacks();
     BattleAnim_TickParticipantStatusAnimation(gPrimaryPokemonEntity);
-    BattleAnim_TickParticipantStatusAnimation(gPokemonEntityUnused);
+    BattleAnim_TickParticipantStatusAnimation(gSecondaryPokemonEntity);
     BattleScene_ApplyCameraShake(arg0);
     BattleScene_ClampCameraEyeFloor(arg0);
     BattleScene_CameraHelperNop(arg0);

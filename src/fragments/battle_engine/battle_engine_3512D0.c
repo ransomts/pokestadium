@@ -1,7 +1,7 @@
 #include "battle_engine.h"
 #include "src/gfx_buffer.h"
 
-static unk_D_843A22C0 gWaterParticlePool[40];
+static unk_D_843A22C0 gTexturedRibbonSheetPool[40];
 
 static Vtx gTexturedRibbonSheetQuadVtx[] = {
     VTX(-10, 0, -10, 2048, 0, 0xFF, 0xFF, 0xFF, 0xC8),
@@ -44,7 +44,7 @@ void TexturedRibbonSheet_Init(void) {
     s32 i;
     s32 j;
 
-    var_v0 = &gWaterParticlePool[0];
+    var_v0 = &gTexturedRibbonSheetPool[0];
     for (i = 0; i < 40; i++, var_v0++) {
         var_v0->unk_000 = 0;
         var_v0->unk_004 = 0;
@@ -86,7 +86,7 @@ void TexturedRibbonSheet_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4,
     sp5C.y = -1.0f;
     sp5C.z = 0.0f;
 
-    var_v1 = &gWaterParticlePool[0];
+    var_v1 = &gTexturedRibbonSheetPool[0];
 
     for (i = 0; i < 40; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
@@ -178,7 +178,7 @@ void TexturedRibbonSheet_UpdateRecord(unk_D_843A22C0* arg0) {
 s32 TexturedRibbonSheet_IsComplete(void) {
     s32 i;
     s32 var_s2 = 0;
-    unk_D_843A22C0* var_s0 = &gWaterParticlePool[0];
+    unk_D_843A22C0* var_s0 = &gTexturedRibbonSheetPool[0];
 
     for (i = 0; i < 40; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -216,7 +216,7 @@ Gfx* TexturedRibbonSheet_Draw(Gfx* arg0) {
     gDPLoadTextureBlock_4b(arg0++, gBattleAnimAssetPointers[0x10], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    var_s5 = &gWaterParticlePool[0];
+    var_s5 = &gTexturedRibbonSheetPool[0];
     for (i = 0; i < 40; i++, var_s5++) {
         if (var_s5->unk_000 == 1) {
             temp_s0 = &var_s5->unk_038[0];

@@ -52,7 +52,7 @@ extern unk_D_86002F34_alt1* gCurrentLightNode;
 extern CameraStruct* gActiveCameraNode;
 extern unk_D_86002F34_alt1* gActiveNode;
 extern Fragment2_1GraphNode* gDefaultGraphRoot;
-extern unk_D_86002F34_alt11* gActiveLayerNode;
+extern unk_D_86002F34_alt11* gActiveShadowContextNode;
 
 void GeoRender_InitMatrixStack(void);
 void GeoRender_CommitMatrix(void);

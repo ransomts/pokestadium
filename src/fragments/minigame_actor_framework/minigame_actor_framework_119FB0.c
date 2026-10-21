@@ -332,7 +332,7 @@ void MiniFx_UpdatePalette10SlowRiseFadeParticle(ParticleEffectInstance* arg0) {
 
 void MiniFx_InitRandomOffsetPalette10RiseFadeParticle(ParticleEffectInstance* arg0) {
     Particle_SetScaleScaled(arg0, 0.5f);
-    Particle_SetRandomVelocityXYZ(arg0, 3, 0, 3);
+    Particle_SetRandomPositionXYZ(arg0, 3, 0, 3);
     Particle_RotateY(arg0, ParticleMath_RandomRange(0x10000));
     Particle_SetSpeed(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 3.0f);
     Particle_SetVelocityImpulseY(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
@@ -427,9 +427,9 @@ void MiniFx_InitPalette17DelayedRevealFallParticle(ParticleEffectInstance* arg0)
     Particle_SetScaleScaled(arg0, 0.0f);
     Particle_SetScaleSpeed(arg0, 0.6f);
     Particle_SetScaleTarget(arg0, 0.1f);
-    Particle_SetRandomVelocityXSymmetric(arg0, 0x14, 0xA);
-    Particle_SetRandomVelocityYOffset(arg0, 0xF, 0xF);
-    Particle_SetRandomVelocityZSymmetric(arg0, 0x14, 0xA);
+    Particle_SetRandomPositionXSymmetric(arg0, 0x14, 0xA);
+    Particle_SetRandomPositionYOffset(arg0, 0xF, 0xF);
+    Particle_SetRandomPositionZSymmetric(arg0, 0x14, 0xA);
     Particle_SetTimerA6(arg0, sp26);
     Particle_DisableRendering(arg0);
     Particle_AdvanceLifecycle(arg0);
@@ -485,9 +485,9 @@ void MiniFx_InitPalette17SmallDelayedRevealFallParticle(ParticleEffectInstance* 
     Particle_SetScaleScaled(arg0, 0.0f);
     Particle_SetScaleSpeed(arg0, 0.2f);
     Particle_SetScaleTarget(arg0, 0.035f);
-    Particle_SetRandomVelocityXSymmetric(arg0, 7, 3);
-    Particle_SetRandomVelocityYOffset(arg0, 0x14, 0xA);
-    Particle_SetRandomVelocityZSymmetric(arg0, 7, 3);
+    Particle_SetRandomPositionXSymmetric(arg0, 7, 3);
+    Particle_SetRandomPositionYOffset(arg0, 0x14, 0xA);
+    Particle_SetRandomPositionZSymmetric(arg0, 7, 3);
     Particle_SetTimerA6(arg0, sp26);
     Particle_DisableRendering(arg0);
     Particle_AdvanceLifecycle(arg0);

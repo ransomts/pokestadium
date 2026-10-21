@@ -689,7 +689,7 @@ typedef struct unk_func_8830867C_044_040 {
 
 typedef struct unk_func_8830867C_03C_058 {
     /* 0x00 */ s32 posX;
-    /* 0x04 */ MoveCategoryColorGradient* rotation;
+    /* 0x04 */ MoveTypeColorGradient* rotation;
 } unk_func_8830867C_03C_058; // size = 0x8
 
 typedef struct unk_func_8830867C_03C_0D0 {
@@ -893,7 +893,7 @@ void WidgetTree_InitSaveSlotLabel(unk_func_88509A2C*, s32, s32, s32, char*);
 s32 WidgetTree_DrawSaveSlotLabel(unk_func_88509A2C*, s32, s32);
 void WidgetTree_InitTextMessage(unk_func_88509E34*, s32, s32, char*);
 s32 WidgetTree_DrawTextMessage(unk_func_88509F0C*, s32, s32);
-void TextObjectGraphics_Init(WidgetTree_InitMessagePanel*, s32, s32, s32, s32, MemoryPool*, TextObject*);
+void WidgetTree_InitMessagePanelWidget(WidgetTree_InitMessagePanel*, s32, s32, s32, s32, MemoryPool*, TextObject*);
 void WidgetTree_SetMessagePanelText(WidgetTree_InitMessagePanel*, unk_func_8850878C*, s32, s32);
 s32 WidgetTree_HandleMessagePanelInput(WidgetTree_InitMessagePanel*, Controller*);
 void WidgetTree_RunMessagePanelWithSound(WidgetTree_InitMessagePanel*, Controller*);

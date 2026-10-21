@@ -27,7 +27,7 @@ const f32 gViYScaleTable[4] = {
 };
 
 // .bss
-UnkStruct80083CA0_2 gIntroTaskState;
+UnkStruct80083CA0_2 gDisplayWorkerState;
 u64 gRdpBootUcode[0x100 / sizeof(u64)];
 u64 gRdpDramStack[0x408 / sizeof(u64)];
 u64 gRdpYieldData[0xC08 / sizeof(u64)];
@@ -81,20 +81,20 @@ void Video_SetMode(s8 arg0, s8 arg1) {
 
 void DisplayWorker_SetBufferConfig(struct UnkArray4* arg0) {
     if (arg0 == NULL) {
-        gIntroTaskState.pendingTask.rotation = 0;
-        gIntroTaskState.pendingTask.RentalSlotAnimData_PosePhase = 0;
-        gIntroTaskState.pendingTask.unk_0C = NULL;
-        gIntroTaskState.pendingTask.TrainerSlotSaveData_GamePort = gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort;
-        gIntroTaskState.pendingTask.posY = gIntroTaskState.currentTask.posY;
-        gIntroTaskState.pendingTask.posX = gIntroTaskState.currentTask.posX;
+        gDisplayWorkerState.pendingTask.rotation = 0;
+        gDisplayWorkerState.pendingTask.RentalSlotAnimData_PosePhase = 0;
+        gDisplayWorkerState.pendingTask.unk_0C = NULL;
+        gDisplayWorkerState.pendingTask.TrainerSlotSaveData_GamePort = gDisplayWorkerState.currentTask.TrainerSlotSaveData_GamePort;
+        gDisplayWorkerState.pendingTask.posY = gDisplayWorkerState.currentTask.posY;
+        gDisplayWorkerState.pendingTask.posX = gDisplayWorkerState.currentTask.posX;
     } else {
-        gIntroTaskState.pendingTask.TrainerSlotSaveData_GamePort = arg0->TrainerSlotSaveData_GamePort;
-        gIntroTaskState.pendingTask.posY = arg0->posY;
-        gIntroTaskState.pendingTask.posX = arg0->posX;
-        gIntroTaskState.pendingTask.rotation = arg0->rotation;
-        gIntroTaskState.pendingTask.RentalSlotAnimData_PosePhase = arg0->RentalSlotAnimData_PosePhase;
-        gIntroTaskState.pendingTask.unk_0C = arg0->unk_0C;
-        gIntroTaskState.pendingTask.unk_03 = arg0->unk_03;
+        gDisplayWorkerState.pendingTask.TrainerSlotSaveData_GamePort = arg0->TrainerSlotSaveData_GamePort;
+        gDisplayWorkerState.pendingTask.posY = arg0->posY;
+        gDisplayWorkerState.pendingTask.posX = arg0->posX;
+        gDisplayWorkerState.pendingTask.rotation = arg0->rotation;
+        gDisplayWorkerState.pendingTask.RentalSlotAnimData_PosePhase = arg0->RentalSlotAnimData_PosePhase;
+        gDisplayWorkerState.pendingTask.unk_0C = arg0->unk_0C;
+        gDisplayWorkerState.pendingTask.unk_03 = arg0->unk_03;
     }
 }
 
@@ -102,71 +102,71 @@ void DisplayWorker_ProcessFrame(void) {
     s32 i;
     s32 sp20 = 0;
 
-    if (gIntroTaskState.currentTask.rotation != 0) {
-        Sched_WaitForTaskMessage(&gIntroTaskState.unk_A20);
+    if (gDisplayWorkerState.currentTask.rotation != 0) {
+        Sched_WaitForTaskMessage(&gDisplayWorkerState.unk_A20);
     }
 
-    if ((gIntroTaskState.pendingTask.rotation != 0) && (gIntroTaskState.previousTask.unk_0C != gIntroTaskState.pendingTask.unk_0C) &&
-        (gIntroTaskState.previousTask.unk_03 != gIntroTaskState.pendingTask.unk_03)) {
-        DisplayTask_Submit(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 1);
+    if ((gDisplayWorkerState.pendingTask.rotation != 0) && (gDisplayWorkerState.previousTask.unk_0C != gDisplayWorkerState.pendingTask.unk_0C) &&
+        (gDisplayWorkerState.previousTask.unk_03 != gDisplayWorkerState.pendingTask.unk_03)) {
+        DisplayTask_Submit(&gDisplayWorkerState.unk_A20, &gDisplayWorkerState.pendingTask, 1);
         sp20 = 1;
     }
 
-    for (i = 1; i < gIntroTaskState.previousTask.posX; i++) {
-        Sched_WaitClientQueue(&gIntroTaskState);
+    for (i = 1; i < gDisplayWorkerState.previousTask.posX; i++) {
+        Sched_WaitClientQueue(&gDisplayWorkerState);
     }
 
-    while (gIntroTaskState.messageQueue.validCount > 0) {
-        Sched_TryReceiveClientQueue(&gIntroTaskState);
+    while (gDisplayWorkerState.messageQueue.validCount > 0) {
+        Sched_TryReceiveClientQueue(&gDisplayWorkerState);
     }
 
-    if (gIntroTaskState.currentTask.unk_0C != NULL) {
-        osViSwapBuffer(gIntroTaskState.currentTask.unk_0C->img_p);
+    if (gDisplayWorkerState.currentTask.unk_0C != NULL) {
+        osViSwapBuffer(gDisplayWorkerState.currentTask.unk_0C->img_p);
         osViRepeatLine(0);
-        if ((gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort != gIntroTaskState.previousTask.TrainerSlotSaveData_GamePort) ||
-            (gIntroTaskState.currentTask.posY != gIntroTaskState.previousTask.posY)) {
-            Video_SetMode((s8)gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort, (s8)gIntroTaskState.currentTask.posY);
+        if ((gDisplayWorkerState.currentTask.TrainerSlotSaveData_GamePort != gDisplayWorkerState.previousTask.TrainerSlotSaveData_GamePort) ||
+            (gDisplayWorkerState.currentTask.posY != gDisplayWorkerState.previousTask.posY)) {
+            Video_SetMode((s8)gDisplayWorkerState.currentTask.TrainerSlotSaveData_GamePort, (s8)gDisplayWorkerState.currentTask.posY);
         }
         if (gForceBlackScreen != 0) {
             osViBlack(1U);
         } else {
             osViBlack(0U);
         }
-        crash_screen_set_draw_info((u16*)gIntroTaskState.currentTask.unk_0C->img_p, gIntroTaskState.currentTask.unk_0C->width, 0x10);
+        crash_screen_set_draw_info((u16*)gDisplayWorkerState.currentTask.unk_0C->img_p, gDisplayWorkerState.currentTask.unk_0C->width, 0x10);
     } else {
         osViRepeatLine(1);
-        osViSwapBuffer(gIntroTaskState.framebufferImage->img_p);
-        if ((gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort != gIntroTaskState.previousTask.TrainerSlotSaveData_GamePort) ||
-            (gIntroTaskState.currentTask.posY != gIntroTaskState.previousTask.posY)) {
-            Video_SetMode((s8)gIntroTaskState.currentTask.TrainerSlotSaveData_GamePort, (s8)gIntroTaskState.currentTask.posY);
+        osViSwapBuffer(gDisplayWorkerState.framebufferImage->img_p);
+        if ((gDisplayWorkerState.currentTask.TrainerSlotSaveData_GamePort != gDisplayWorkerState.previousTask.TrainerSlotSaveData_GamePort) ||
+            (gDisplayWorkerState.currentTask.posY != gDisplayWorkerState.previousTask.posY)) {
+            Video_SetMode((s8)gDisplayWorkerState.currentTask.TrainerSlotSaveData_GamePort, (s8)gDisplayWorkerState.currentTask.posY);
         }
     }
 
-    if ((sp20 == 0) && (gIntroTaskState.pendingTask.rotation != 0)) {
-        DisplayTask_Submit(&gIntroTaskState.unk_A20, &gIntroTaskState.pendingTask, 0);
+    if ((sp20 == 0) && (gDisplayWorkerState.pendingTask.rotation != 0)) {
+        DisplayTask_Submit(&gDisplayWorkerState.unk_A20, &gDisplayWorkerState.pendingTask, 0);
     }
 
-    gIntroTaskState.previousTask = gIntroTaskState.currentTask;
-    gIntroTaskState.currentTask = gIntroTaskState.pendingTask;
+    gDisplayWorkerState.previousTask = gDisplayWorkerState.currentTask;
+    gDisplayWorkerState.currentTask = gDisplayWorkerState.pendingTask;
     profiler_log_thread5_time(THREAD5_END);
-    Sched_WaitClientQueue(&gIntroTaskState);
+    Sched_WaitClientQueue(&gDisplayWorkerState);
 }
 
 void DisplayWorker_DrainEvents(void) {
-    Sched_WaitClientQueue(&gIntroTaskState);
-    while (gIntroTaskState.messageQueue.validCount > 0) {
-        Sched_TryReceiveClientQueue(&gIntroTaskState);
+    Sched_WaitClientQueue(&gDisplayWorkerState);
+    while (gDisplayWorkerState.messageQueue.validCount > 0) {
+        Sched_TryReceiveClientQueue(&gDisplayWorkerState);
     }
-    Sched_WaitClientQueue(&gIntroTaskState);
+    Sched_WaitClientQueue(&gDisplayWorkerState);
 }
 
 void DisplayWorker_ThreadMain(UNUSED void* arg) {
     __osSetFpcCsr(0x01000C01);
-    Display_SetBufferConfig(&gIntroTaskState.previousTask, 0, 1, 2, 0xFF, 0, 0, 0);
-    Display_SetBufferConfig(&gIntroTaskState.currentTask, 0, 1, 2, 0xFF, 0, 0, 0);
-    Sched_InitClientQueue(&gIntroTaskState.thread, 0, 4);
-    Sched_AddClient(&gIntroTaskState);
-    DisplayTask_Initialize(&gIntroTaskState.unk_A20);
+    Display_SetBufferConfig(&gDisplayWorkerState.previousTask, 0, 1, 2, 0xFF, 0, 0, 0);
+    Display_SetBufferConfig(&gDisplayWorkerState.currentTask, 0, 1, 2, 0xFF, 0, 0, 0);
+    Sched_InitClientQueue(&gDisplayWorkerState.thread, 0, 4);
+    Sched_AddClient(&gDisplayWorkerState);
+    DisplayTask_Initialize(&gDisplayWorkerState.unk_A20);
     while (1) {
         void* sp4C;
         if (gRspTaskManager.preNmiState > 0) {
@@ -174,14 +174,14 @@ void DisplayWorker_ThreadMain(UNUSED void* arg) {
             continue;
         }
         profiler_log_thread5_time(THREAD5_START);
-        gIntroTaskState.waitingForMessage = 1;
-        osRecvMesg(&gIntroTaskState.unk_9EC, &sp4C, 1);
-        gIntroTaskState.waitingForMessage = 0;
+        gDisplayWorkerState.waitingForMessage = 1;
+        osRecvMesg(&gDisplayWorkerState.unk_9EC, &sp4C, 1);
+        gDisplayWorkerState.waitingForMessage = 0;
         profiler_log_thread5_time(UNK_EVENT_1);
         profiler_log_thread5_time(UNK_EVENT_2);
         DisplayWorker_SetBufferConfig(sp4C);
         DisplayWorker_ProcessFrame();
-        osSendMesg(&gIntroTaskState.doneQueue, (void*)'DONE', 0);
+        osSendMesg(&gDisplayWorkerState.doneQueue, (void*)'DONE', 0);
     }
 }
 
@@ -199,13 +199,13 @@ void DisplayWorker_Initialize(void) {
             break;
     }
 
-    osCreateThread(&gIntroTaskState.thread, 5, DisplayWorker_ThreadMain, NULL, &gIntroTaskState.framebufferImage, 0x28);
-    osStartThread(&gIntroTaskState.thread);
-    osCreateMesgQueue(&gIntroTaskState.unk_9EC, &gIntroTaskState.unk_9E4, 1);
-    osCreateMesgQueue(&gIntroTaskState.doneQueue, &gIntroTaskState.doneMessage, 1);
-    gIntroTaskState.unk_A88 = 0;
-    gIntroTaskState.waitingForMessage = 0;
-    gIntroTaskState.framebufferImage = GfxImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
+    osCreateThread(&gDisplayWorkerState.thread, 5, DisplayWorker_ThreadMain, NULL, &gDisplayWorkerState.framebufferImage, 0x28);
+    osStartThread(&gDisplayWorkerState.thread);
+    osCreateMesgQueue(&gDisplayWorkerState.unk_9EC, &gDisplayWorkerState.unk_9E4, 1);
+    osCreateMesgQueue(&gDisplayWorkerState.doneQueue, &gDisplayWorkerState.doneMessage, 1);
+    gDisplayWorkerState.unk_A88 = 0;
+    gDisplayWorkerState.waitingForMessage = 0;
+    gDisplayWorkerState.framebufferImage = GfxImage_Allocate(0, IMAGE_SIZE_BITS_16b, 0x280, 1, MEMORY_POOL_RIGHT);
     Display_ClearFramebufferLine(1);
     Dma_WriteChunks(&gRdpBootUcode, 0xB0000B70, 0xB0000C70, 0);
 }
@@ -215,24 +215,24 @@ void DisplayWorker_Initialize(void) {
  */
 void Display_ClearFramebufferLine(u16 color) {
     s32 width = 640;
-    u16* buf = (u16*)gIntroTaskState.framebufferImage->img_p;
+    u16* buf = (u16*)gDisplayWorkerState.framebufferImage->img_p;
 
     while (width-- > 0) {
         *(buf)++ = color;
     }
 
-    osWritebackDCache(gIntroTaskState.framebufferImage->img_p, 0x500);
+    osWritebackDCache(gDisplayWorkerState.framebufferImage->img_p, 0x500);
 }
 
 u16 Display_GetFramebufferClearColor(void) {
-    u16* ptr = (u16*)gIntroTaskState.framebufferImage->img_p;
+    u16* ptr = (u16*)gDisplayWorkerState.framebufferImage->img_p;
     return *ptr;
 }
 
 s32 Display_IsCurrentFramebuffer(void) {
     s32 result = 0;
 
-    if (osViGetCurrentFramebuffer() == gIntroTaskState.framebufferImage->img_p) {
+    if (osViGetCurrentFramebuffer() == gDisplayWorkerState.framebufferImage->img_p) {
         result = 1;
     }
 
@@ -240,11 +240,11 @@ s32 Display_IsCurrentFramebuffer(void) {
 }
 
 void Display_WaitForCompletion(void) {
-    osRecvMesg(&gIntroTaskState.doneQueue, NULL, 1);
+    osRecvMesg(&gDisplayWorkerState.doneQueue, NULL, 1);
 }
 
 void Display_QueueFramebufferRequest(void* arg0) {
-    osSendMesg(&gIntroTaskState.unk_9EC, arg0, 0);
+    osSendMesg(&gDisplayWorkerState.unk_9EC, arg0, 0);
 }
 
 void Display_WaitForFrames(s32 arg0) {
@@ -265,18 +265,18 @@ void Display_SetBufferConfig(struct UnkArray4* arg0, u8 arg1, u8 arg2, u8 arg3, 
 }
 
 s32 Display_GetWorkerStatus(void) {
-    return (s32)gIntroTaskState.previousTask.unk_0C;
+    return (s32)gDisplayWorkerState.previousTask.unk_0C;
 }
 
 void Display_ApplyPendingVideoMode(void) {
-    Video_SetMode((s8)gIntroTaskState.previousTask.TrainerSlotSaveData_GamePort, (s8)gIntroTaskState.previousTask.posY);
+    Video_SetMode((s8)gDisplayWorkerState.previousTask.TrainerSlotSaveData_GamePort, (s8)gDisplayWorkerState.previousTask.posY);
 }
 
 s32 Display_IsFrameReady(void) {
     s32 result = 1;
 
-    if (gIntroTaskState.currentTask.rotation != 0) {
-        result = gIntroTaskState.unk_A20.queue.validCount > 0;
+    if (gDisplayWorkerState.currentTask.rotation != 0) {
+        result = gDisplayWorkerState.unk_A20.queue.validCount > 0;
     }
     return result;
 }

@@ -31,17 +31,17 @@ static TiledTexture gFragment22TiledBackgroundTexture = {
     gFragment22TiledBackgroundPixels,
 };
 static s32 gLabIconSwirlAnimSequence[4] = { 0, 1, 2, 1 };
-static Color_RGBA8 gHpBarColorGreen = { 0xC8, 0xFF, 0xFF, 0x96 };
-static Color_RGBA8 gHpBarColorGreenBright = { 0x00, 0xFF, 0x00, 0xFF };
-static Color_RGBA8 gHpBarColorYellow = { 0xC8, 0xFF, 0xFF, 0x82 };
-static Color_RGBA8 gHpBarColorYellowBright = { 0x00, 0x64, 0x00, 0xFF };
-static Color_RGBA8 gHpBarColorRed = { 0xC8, 0xFF, 0xFF, 0x96 };
-static Color_RGBA8 gHpBarColorRedBright = { 0x00, 0xFF, 0xFF, 0xFF };
-static Color_RGBA8 gHpBarColorBlue = { 0x1E, 0x1E, 0x82, 0x96 };
-static Color_RGBA8 gHpBarColorBlueBright = { 0x82, 0xDC, 0x82, 0x7F };
-static Color_RGBA8 gHpBarColorOrange = { 0xFF, 0xFF, 0x00, 0xFF };
-static Color_RGBA8 gHpBarColorPurple = { 0x1E, 0x1E, 0x82, 0x96 };
-static Color_RGBA8 gHpBarColorWhite = { 0xF0, 0xF0, 0xF0, 0xFF };
+static Color_RGBA8 gLabGreenIconPrimColor = { 0xC8, 0xFF, 0xFF, 0x96 };
+static Color_RGBA8 gLabGreenIconEnvColor = { 0x00, 0xFF, 0x00, 0xFF };
+static Color_RGBA8 gLabYellowIconPrimColor = { 0xC8, 0xFF, 0xFF, 0x82 };
+static Color_RGBA8 gLabYellowIconEnvColor = { 0x00, 0x64, 0x00, 0xFF };
+static Color_RGBA8 gLabRedIconPrimColor = { 0xC8, 0xFF, 0xFF, 0x96 };
+static Color_RGBA8 gLabRedIconEnvColor = { 0x00, 0xFF, 0xFF, 0xFF };
+static Color_RGBA8 gLabAnimatedPanelColorBlue = { 0x1E, 0x1E, 0x82, 0x96 };
+static Color_RGBA8 gLabFrameTimerColor = { 0x82, 0xDC, 0x82, 0x7F };
+static Color_RGBA8 gLabAnimatedFrameColorYellow = { 0xFF, 0xFF, 0x00, 0xFF };
+static Color_RGBA8 gLabAnimatedPanelColorBlueAlt = { 0x1E, 0x1E, 0x82, 0x96 };
+static Color_RGBA8 gLabTextListColorWhite = { 0xF0, 0xF0, 0xF0, 0xFF };
 static Gfx gHpBarDisplayListEnd[] = {
     gsSPEndDisplayList(),
 };
@@ -1199,7 +1199,7 @@ static u32 gFragment22MenuIconBasePixels[] = {
     0xD73FE77D, 0xF7BFF7FF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
     0xEFBF4A55, 0x0003BE33, 0xE77FFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xF7FF314B, 0x00010000, 0x00000000
 };
-static TiledTexture gFragment22HpBarConfig = {
+static TiledTexture gFragment22MenuIconTexture = {
     0x00000090,
     0x00000090,
     0x00000090,
@@ -2737,15 +2737,15 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &sp78->posX.posX);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Lab_InitDualLayerIconWidget(temp_v0_2, 0x2C, 0x52, 0x28, 0x2A, gFragment22GfxDataGreenIconTex, gFragment22GfxDataGreenIconShimmerMask, gHpBarColorGreen, gHpBarColorGreenBright);
+    Lab_InitDualLayerIconWidget(temp_v0_2, 0x2C, 0x52, 0x28, 0x2A, gFragment22GfxDataGreenIconTex, gFragment22GfxDataGreenIconShimmerMask, gLabGreenIconPrimColor, gLabGreenIconEnvColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp78->posX.posX, &temp_v0_2->posX.posX);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Lab_InitDualLayerIconWidget(temp_v0_2, 0x64, 0x3A, 0x30, 0x2A, gFragment22GfxDataYellowIconTex, gFragment22GfxDataYellowIconShimmerMask, gHpBarColorYellow, gHpBarColorYellowBright);
+    Lab_InitDualLayerIconWidget(temp_v0_2, 0x64, 0x3A, 0x30, 0x2A, gFragment22GfxDataYellowIconTex, gFragment22GfxDataYellowIconShimmerMask, gLabYellowIconPrimColor, gLabYellowIconEnvColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp78->posX.posX, &temp_v0_2->posX.posX);
 
     temp_v0_2 = mem_pool_alloc(arg6, sizeof(unk_func_8800071C));
-    Lab_InitDualLayerIconWidget(temp_v0_2, 0xE2, 0x68, 0x40, 0x20, gFragment22GfxDataRedIconTex, gFragment22GfxDataRedIconShimmerMask, gHpBarColorRed, gHpBarColorRedBright);
+    Lab_InitDualLayerIconWidget(temp_v0_2, 0xE2, 0x68, 0x40, 0x20, gFragment22GfxDataRedIconTex, gFragment22GfxDataRedIconShimmerMask, gLabRedIconPrimColor, gLabRedIconEnvColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp78->posX.posX, &temp_v0_2->posX.posX);
 
     temp_v0_5 = mem_pool_alloc(arg6, sizeof(unk_func_88000830));
@@ -2758,7 +2758,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_2C->posX);
 
     temp_s0 = mem_pool_alloc(arg6, sizeof(unk_func_88001300_030));
-    ((func885054D8)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedPanelVariantB))(temp_s0, 0x28, 0x30, 0x140, 0x28, gHpBarColorBlue);
+    ((func885054D8)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedPanelVariantB))(temp_s0, 0x28, 0x30, 0x140, 0x28, gLabAnimatedPanelColorBlue);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX, &temp_s0->posX);
 
     sp68 = mem_pool_alloc(arg6, sizeof(unk_func_88509A2C));
@@ -2767,22 +2767,22 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&temp_s0->posX, &sp68->posX.posX);
 
     temp_v0_6 = mem_pool_alloc(arg6, sizeof(unk_func_88000C18));
-    Lab_InitFrameTimerWidget(temp_v0_6, 0x36, 0xA0, 0x66, 0x7C, gHpBarColorBlueBright);
+    Lab_InitFrameTimerWidget(temp_v0_6, 0x36, 0xA0, 0x66, 0x7C, gLabFrameTimerColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX, &temp_v0_6->posX.posX);
     arg0->unk_3C->unk_18[arg0->unk_3C->unk_2C] = &temp_v0_6->posX;
 
     temp_v0_6 = mem_pool_alloc(arg6, sizeof(unk_func_88000C18));
-    Lab_InitFrameTimerWidget(temp_v0_6, 0x92, 0x6E, 0xC0, 0x98, gHpBarColorBlueBright);
+    Lab_InitFrameTimerWidget(temp_v0_6, 0x92, 0x6E, 0xC0, 0x98, gLabFrameTimerColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX, &temp_v0_6->posX.posX);
     arg0->unk_3C->unk_18[arg0->unk_3C->unk_2C + 1] = &temp_v0_6->posX;
 
     temp_v0_6 = mem_pool_alloc(arg6, sizeof(unk_func_88000C18));
-    Lab_InitFrameTimerWidget(temp_v0_6, 0x170, 0x9E, 0x7C, 0x60, gHpBarColorBlueBright);
+    Lab_InitFrameTimerWidget(temp_v0_6, 0x170, 0x9E, 0x7C, 0x60, gLabFrameTimerColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX, &temp_v0_6->posX.posX);
     arg0->unk_3C->unk_18[arg0->unk_3C->unk_2C + 2] = &temp_v0_6->posX;
 
     temp_v0_6 = mem_pool_alloc(arg6, sizeof(unk_func_88000C18));
-    Lab_InitFrameTimerWidget(temp_v0_6, 0x1C8, 0xCE, 0x88, 0x70, gHpBarColorBlueBright);
+    Lab_InitFrameTimerWidget(temp_v0_6, 0x1C8, 0xCE, 0x88, 0x70, gLabFrameTimerColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX, &temp_v0_6->posX.posX);
     arg0->unk_3C->unk_18[arg0->unk_3C->unk_2C + 3] = &temp_v0_6->posX;
 
@@ -2810,7 +2810,7 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     }
 
     temp_s0_3 = mem_pool_alloc(arg6, sizeof(WidgetAnimatedFrame));
-    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(temp_s0_3, 0, 0, 0x10, 0x10, gHpBarColorOrange);
+    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(temp_s0_3, 0, 0, 0x10, 0x10, gLabAnimatedFrameColorYellow);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_3);
     arg0->unk_3C->unk_1C = temp_s0_3;
 
@@ -2825,15 +2825,15 @@ void Lab_BuildMainMenu(unk_func_88001300* arg0, s32 arg1, s32 arg2, s32 arg3, u8
     }
 
     arg0->unk_30 = mem_pool_alloc(arg6, sizeof(unk_func_88001300_030));
-    ((func885054D8)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedPanelVariantB))(arg0->unk_30, 0x37, 0x154, 0x212, 0x64, gHpBarColorPurple);
+    ((func885054D8)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedPanelVariantB))(arg0->unk_30, 0x37, 0x154, 0x212, 0x64, gLabAnimatedPanelColorBlueAlt);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX, &arg0->unk_30->posX);
 
     arg0->unk_34 = mem_pool_alloc(arg6, sizeof(unk_func_88001300_034));
-    ((func88505E2C)Memmap_GetFragmentVaddr(WidgetTree_InitTextList))(arg0->unk_34, 0x9D, 0xA, 0x10, -1, 0x1C, gHpBarColorWhite, arg5);
+    ((func88505E2C)Memmap_GetFragmentVaddr(WidgetTree_InitTextList))(arg0->unk_34, 0x9D, 0xA, 0x10, -1, 0x1C, gLabTextListColorWhite, arg5);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->posX, &arg0->unk_34->posX.posX);
 
     temp_v0_16 = mem_pool_alloc(arg6, sizeof(unk_func_88000CC8));
-    Lab_InitAnimatedIconWidget(temp_v0_16, 0xA, -0x2B, &gFragment22HpBarConfig, gFragment22GfxDataMenuIconTopIdle, gFragment22GfxDataMenuIconTopFlicker, gFragment22GfxDataMenuIconBottomSwirlTop, gFragment22GfxDataMenuIconBottomSwirlOpen, gFragment22GfxDataMenuIconBottomSwirlLeft,
+    Lab_InitAnimatedIconWidget(temp_v0_16, 0xA, -0x2B, &gFragment22MenuIconTexture, gFragment22GfxDataMenuIconTopIdle, gFragment22GfxDataMenuIconTopFlicker, gFragment22GfxDataMenuIconBottomSwirlTop, gFragment22GfxDataMenuIconBottomSwirlOpen, gFragment22GfxDataMenuIconBottomSwirlLeft,
                   arg0->unk_34);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->posX, &temp_v0_16->posX.posX);
 }

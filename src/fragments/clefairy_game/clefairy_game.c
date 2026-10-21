@@ -125,7 +125,7 @@ static s16 gPlayerAiParams[5][6] = {
     { 0x0032, 0x001E, 0x0019, 0x0019, 0x000F, 0x0014 },
 };
 
-static u8 gItemPairCounts[] = { 0, 5, 0, 10 };
+static u8 gClefairyGameUnusedCounts[] = { 0, 5, 0, 10 };
 
 static AnimFrame gClefairyTutoStartButtonIconAnim[] = {
     { 0x3040580, 0x12 }, { 0x3040980, 2 }, { 0x3040D80, 8 }, { 0x3040980, 2 }, { 0x0, 0x0 },
@@ -139,7 +139,7 @@ static AnimFrame gClefairyTutoControlPadIconAnim[] = {
     { 0x00000000, 0x0000 },
 };
 
-static u32 gResultScreenParams[] = {
+static u32 gClefairyGameGeoLayout[] = {
     0x0C00FFFF, 0x5000000,  0x0B00001E, 0x00000000, 0x014000F0, 0x0000000F, 0x00000000, 0x00000000,
     0x5000000,  0x0D000000, 0x5000000,  0x14000000, 0x002B0012, 0xFFFFFF32, 0x16FFFFFF, 0x0F000003,
     0x5000000,  0x1F00FFFF, 0x00000000, 0x00000000, 0x00000000, 0x03E803E8, 0x03E80000, 0x5000000,
@@ -295,19 +295,19 @@ u32 gPatternTile7[] = {
 };
 
 static ModelData* gFragment7ModelTemp;
-static MiniHudMainGraph* gFragment7ResultScreenGeoRoot;
+static ShadowContextNode* gFragment7ResultScreenGeoRoot;
 static CameraStruct* gFragment7Camera;
 static ModelData* gFragment7PatternIconModel;
-static s16 gCameraX;
-static s16 gCameraY;
-static s16 gCameraZ;
+static s16 gClefairyGameUnusedCameraX;
+static s16 gClefairyGameUnusedCameraY;
+static s16 gClefairyGameUnusedCameraZ;
 static u16 gGameFrameCounter;
-static s32 gResultScreenState;
-static s32 gResultScreenTimer;
-static s16 gPlayerItemCount;
+static s32 gClefairyGameState;
+static s32 gClefairyGameTimer;
+static s16 gPatternIconCount;
 static s16 gWinnerPlayerIndex;
-static s16 gPlayerItemRows;
-static s16 gResultScreenFlag;
+static s16 gPatternIconSpawnInterval;
+static s16 gRoundNumber;
 static s16 gResultScreenAlpha;
 static s32 gWinnerScore;
 static s32 gRunnerUpScore;
@@ -316,15 +316,15 @@ static s16 gClefairyGameDifficultyTier;
 static s16 gInputReadyFlag;
 static s32 gMaxRemainingHealth;
 static unk_D_861054C0 gPlayerStates[4];
-static s32 gResultScreenBarMax;
+static s32 gPatternResponseBarMax;
 static unk_D_861054C0* gCurrentPlayerState;
 static Fragment2_1GraphNode* gCurrentPlayerGraphNode;
-static s16 gResultScreenActionFlag;
-static s16 gResultScreenActionTimer;
-static Fragment2_1GraphNode gResultScreenGraphNode1;
-static Fragment2_1GraphNode gResultScreenGraphNode2;
-static PlayerGraphNodeState gResultScreenGraphNodes[4];
-static ItemPairState gItemPairStates[12];
+static s16 gStartCountdownActive;
+static s16 gClefairyGameUnusedTimer;
+static Fragment2_1GraphNode gClefairyGameActorNode;
+static Fragment2_1GraphNode gPatternIconAnchorNode;
+static PlayerGraphNodeState gPlayerPenaltyNodes[4];
+static ItemPairState gPatternIconStates[12];
 static s16 gPauseState;
 
 void ClefairyGame_HidePatternIcons(void) {
@@ -393,12 +393,12 @@ void ClefairyGame_GeneratePattern(void) {
     PatternEntry* var_a0;
     s32 i;
 
-    gPlayerItemCount = 4;
+    gPatternIconCount = 4;
     var_s2 = 0;
     var_a0 = gWeightedPatternTable;
     var_a1 = 1;
     var_a3 = var_a3;
-    ptr = &gItemPairStates[0];
+    ptr = &gPatternIconStates[0];
 
     while (var_a1 != 0) {
         if (var_a0->posX[0] != 0xFF) {
@@ -525,9 +525,9 @@ void ClefairyGame_InitCamera(void) {
     gFragment7Camera = gFragment7ResultScreenGeoRoot->posX.unk_0C;
     MiniCam_SetActive(gFragment7Camera);
 
-    gCameraX = 0x600;
-    gCameraY = 0;
-    gCameraZ = 0xBB8;
+    gClefairyGameUnusedCameraX = 0x600;
+    gClefairyGameUnusedCameraY = 0;
+    gClefairyGameUnusedCameraZ = 0xBB8;
 
     gFragment7Camera->unk_24.near = 100.0f;
     gFragment7Camera->unk_24.far = 12800.0f;
@@ -631,7 +631,7 @@ void ClefairyGame_DrawOverlay(s32 arg0) {
             break;
 
         case 8:
-            if (gResultScreenTimer < 0x3C) {
+            if (gClefairyGameTimer < 0x3C) {
                 Font_SetActive(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x20)) / 2), 0x40,
@@ -641,7 +641,7 @@ void ClefairyGame_DrawOverlay(s32 arg0) {
 
         case 9:
         case 10:
-            if (gResultScreenTimer < 0x3C) {
+            if (gClefairyGameTimer < 0x3C) {
                 Font_SetActive(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x21)) / 2), 0x40,
@@ -650,7 +650,7 @@ void ClefairyGame_DrawOverlay(s32 arg0) {
             break;
 
         case 11:
-            if ((gResultScreenTimer >= 0x10) && (gResultScreenTimer < 0x3C)) {
+            if ((gClefairyGameTimer >= 0x10) && (gClefairyGameTimer < 0x3C)) {
                 Font_SetActive(4, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 Font_Printf(0xA4 - (Text_MeasureStringWidth(gResultScreenTextObj, Text_GetString(NULL, 0, gMinigameNamesBank, 0x22)) / 2), 0x40,
@@ -694,7 +694,7 @@ void ClefairyGame_DrawEnteredPatterns(void) {
         gCurrentPlayerState = &gPlayerStates[i];
 
         if (gCurrentPlayerState->unk_1AC == 0) {
-            for (j = 0; j < gPlayerItemCount; j++) {
+            for (j = 0; j < gPatternIconCount; j++) {
                 s16 a = j % 6;
                 s16 b = j / 6;
 
@@ -714,8 +714,8 @@ void ClefairyGame_DrawProgressBars(s32 arg0) {
         Widget_DrawProgressBar(ptr->posX - 0xE, ptr->posY - 5, 0x32, gCurrentPlayerState->unk_1A8, gCurrentPlayerState->unk_1AA);
     }
 
-    if ((arg0 == 8) && (gResultScreenBarMax != 0)) {
-        Widget_DrawProgressBar(0x78, 0x37, 0x50, gResultScreenBarMax - gResultScreenTimer, gResultScreenBarMax);
+    if ((arg0 == 8) && (gPatternResponseBarMax != 0)) {
+        Widget_DrawProgressBar(0x78, 0x37, 0x50, gPatternResponseBarMax - gClefairyGameTimer, gPatternResponseBarMax);
     }
 }
 
@@ -812,9 +812,9 @@ s32 ClefairyGame_WaitForStart(void) {
         }
     }
 
-    gResultScreenFlag = 0;
+    gRoundNumber = 0;
     var_s0 = 1;
-    gResultScreenState = 0;
+    gClefairyGameState = 0;
 
     while (var_s0 == 1) {
         Rand_Range(0x3E8);
@@ -830,7 +830,7 @@ s32 ClefairyGame_WaitForStart(void) {
             return -1;
         }
 
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 
     return 0;
@@ -849,17 +849,17 @@ void ClefairyGame_UpdateStartCountdown(void) {
         }
     }
 
-    ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
-    ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
+    ModelAnim_SetAnimation(&gClefairyGameActorNode, 0);
+    ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
 
-    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
-    gResultScreenActionFlag = 1;
-    gResultScreenActionTimer = 0x5A;
+    gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
+    gStartCountdownActive = 1;
+    gClefairyGameUnusedTimer = 0x5A;
 
     Widget_CountdownStart(1);
-    gResultScreenState = 1;
+    gClefairyGameState = 1;
 
-    while (gResultScreenActionFlag == 1) {
+    while (gStartCountdownActive == 1) {
         switch (Widget_CountdownGetState()) {
             case 3:
                 MiniSound_DispatchCommand(0x90001, 0, 0);
@@ -872,11 +872,11 @@ void ClefairyGame_UpdateStartCountdown(void) {
 
             case 0:
                 MiniSound_DispatchCommand(0x90001, 0, 0);
-                gResultScreenActionFlag = 0;
+                gStartCountdownActive = 0;
                 break;
         }
 
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 }
 
@@ -896,30 +896,30 @@ void ClefairyGame_ResetFinishedAnims(void) {
 }
 
 void ClefairyGame_BeginRound(void) {
-    gResultScreenState = 2;
-    gResultScreenTimer = 0;
+    gClefairyGameState = 2;
+    gClefairyGameTimer = 0;
 }
 
 void ClefairyGame_BeginPatternDemo(void) {
-    gResultScreenState = 3;
-    gResultScreenTimer = 0;
+    gClefairyGameState = 3;
+    gClefairyGameTimer = 0;
     MiniSound_DispatchCommand(0x90005, 0, 0);
     MiniSound_DispatchCommand(0x90003, 0, 0);
-    ModelAnim_SetAnimation(&gResultScreenGraphNode1, 1);
-    ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
-    ModelAnim_SetEventTrack(&gResultScreenGraphNode1, 0);
+    ModelAnim_SetAnimation(&gClefairyGameActorNode, 1);
+    ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+    gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
+    ModelAnim_SetEventTrack(&gClefairyGameActorNode, 0);
 }
 
 void ClefairyGame_BeginDemoPlayerAnims(void) {
     s32 i;
     Fragment2_1GraphNode* temp_s0;
 
-    gResultScreenState = 4;
-    gResultScreenTimer = 0;
-    ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
-    ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
+    gClefairyGameState = 4;
+    gClefairyGameTimer = 0;
+    ModelAnim_SetAnimation(&gClefairyGameActorNode, 0);
+    ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+    gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
 
     for (i = 0; i < 4; i++) {
         temp_s0 = &gPlayerStates[i].unk_008;
@@ -933,21 +933,21 @@ void ClefairyGame_BeginDemoPlayerAnims(void) {
 
 s32 ClefairyGame_WaitRoundStart(void) {
     ClefairyGame_ResetFinishedAnims();
-    if ((gResultScreenTimer >= 0x19) || (ModelAnim_IsFinished(&gResultScreenGraphNode1) != 0)) {
+    if ((gClefairyGameTimer >= 0x19) || (ModelAnim_IsFinished(&gClefairyGameActorNode) != 0)) {
         return -1;
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
 s32 ClefairyGame_WaitDemoIntro(void) {
     ClefairyGame_ResetFinishedAnims();
-    if (gResultScreenTimer >= 0xF) {
+    if (gClefairyGameTimer >= 0xF) {
         return -1;
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
@@ -964,38 +964,38 @@ s32 ClefairyGame_UpdateDemoPlayerAnims(void) {
         }
     }
 
-    if (gResultScreenTimer >= 0x19) {
+    if (gClefairyGameTimer >= 0x19) {
         ClefairyGame_SetAllPlayerAnimSpeed(0x10000);
         return -1;
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
 void ClefairyGame_AdvancePatternDemo(void) {
-    gResultScreenState = 5;
-    gResultScreenTimer = 0;
+    gClefairyGameState = 5;
+    gClefairyGameTimer = 0;
     MiniSound_DispatchCommand(0x90006, 0, 0);
-    ModelAnim_SetAnimation(&gResultScreenGraphNode1, 2);
-    ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
+    ModelAnim_SetAnimation(&gClefairyGameActorNode, 2);
+    ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+    gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
 }
 
 void ClefairyGame_PreparePatternIconSpawn(void) {
-    gResultScreenState = 6;
-    gResultScreenTimer = 0;
-    ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
-    ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
+    gClefairyGameState = 6;
+    gClefairyGameTimer = 0;
+    ModelAnim_SetAnimation(&gClefairyGameActorNode, 0);
+    ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+    gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
 }
 
 s32 ClefairyGame_WaitDemoAdvance(void) {
-    if ((ModelAnim_IsFinished(&gResultScreenGraphNode1) != 0) || (gResultScreenTimer >= 0x1E)) {
+    if ((ModelAnim_IsFinished(&gClefairyGameActorNode) != 0) || (gClefairyGameTimer >= 0x1E)) {
         return -1;
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
@@ -1004,20 +1004,20 @@ s32 ClefairyGame_SpawnPatternIconStep(void) {
     ItemPairState* sp1C;
     s16 index;
 
-    if (((gPlayerItemCount - 1) * gPlayerItemRows) < gResultScreenTimer) {
-        gResultScreenState = 7;
-        gResultScreenTimer = 0;
+    if (((gPatternIconCount - 1) * gPatternIconSpawnInterval) < gClefairyGameTimer) {
+        gClefairyGameState = 7;
+        gClefairyGameTimer = 0;
         return -1;
     }
 
-    index = (gResultScreenTimer / gPlayerItemRows) % 12;
-    sp1C = &gItemPairStates[index];
+    index = (gClefairyGameTimer / gPatternIconSpawnInterval) % 12;
+    sp1C = &gPatternIconStates[index];
     if (sp1C->unk_002 == 0) {
         Model_InitDisplayObject(&sp1C->unk_004, 0, 0xB4, sp1C->unk_16C);
         sp1C->unk_002 = 1;
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
 
     return 0;
 }
@@ -1025,30 +1025,30 @@ s32 ClefairyGame_SpawnPatternIconStep(void) {
 s32 ClefairyGame_FinishPatternIconSpawn(void) {
     s32 i;
 
-    if ((gPlayerItemCount * gPlayerItemRows) < gResultScreenTimer) {
-        for (i = 0; i < gPlayerItemCount; i++) {
-            ItemPairState* ptr = &gItemPairStates[i];
+    if ((gPatternIconCount * gPatternIconSpawnInterval) < gClefairyGameTimer) {
+        for (i = 0; i < gPatternIconCount; i++) {
+            ItemPairState* ptr = &gPatternIconStates[i];
 
             ModelRenderer_ClearDisplayObject(&ptr->unk_004);
             ptr->unk_002 = 0;
         }
 
-        ModelAnim_SetAnimation(&gResultScreenGraphNode1, 1);
-        ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-        gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
+        ModelAnim_SetAnimation(&gClefairyGameActorNode, 1);
+        ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+        gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
         return -1;
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
 void ClefairyGame_DespawnPatternIcons(void) {
     s32 i;
 
-    for (i = 0; i < gPlayerItemCount; i++) {
-        if (gItemPairStates[i].unk_002 == 1) {
-            ModelRenderer_ClearDisplayObject(&gItemPairStates[i].unk_004);
+    for (i = 0; i < gPatternIconCount; i++) {
+        if (gPatternIconStates[i].unk_002 == 1) {
+            ModelRenderer_ClearDisplayObject(&gPatternIconStates[i].unk_004);
         }
     }
 }
@@ -1056,9 +1056,9 @@ void ClefairyGame_DespawnPatternIcons(void) {
 void ClefairyGame_SpawnPatternIcons(void) {
     s32 i;
 
-    for (i = 0; i < gPlayerItemCount; i++) {
-        if (gItemPairStates[i].unk_002 == 1) {
-            Model_InitDisplayObject(&gItemPairStates[i].unk_004, 0, 0xB4, gItemPairStates[i].unk_16C);
+    for (i = 0; i < gPatternIconCount; i++) {
+        if (gPatternIconStates[i].unk_002 == 1) {
+            Model_InitDisplayObject(&gPatternIconStates[i].unk_004, 0, 0xB4, gPatternIconStates[i].unk_16C);
         }
     }
 }
@@ -1068,7 +1068,7 @@ s16 ClefairyGame_ChooseCpuMove(s32 arg0) {
     u32 temp_v0;
 
     if (Rand_Range(0x64) < arg0) {
-        var_v1 = gItemPairStates[gCurrentPlayerState->unk_18C].unk_000;
+        var_v1 = gPatternIconStates[gCurrentPlayerState->unk_18C].unk_000;
     } else {
         temp_v0 = Rand_Range(4);
         switch (temp_v0) {
@@ -1100,9 +1100,9 @@ void ClefairyGame_BeginPatternResponse(void) {
     s32 i;
     s32 j;
 
-    gResultScreenState = 8;
-    gResultScreenBarMax = (gPlayerItemCount * 0xF) + 0x1E;
-    gResultScreenTimer = 0;
+    gClefairyGameState = 8;
+    gPatternResponseBarMax = (gPatternIconCount * 0xF) + 0x1E;
+    gClefairyGameTimer = 0;
     MiniSound_DispatchCommand(0x90007, 0, 0);
 
     for (i = 0; i < 4; i++) {
@@ -1119,11 +1119,11 @@ void ClefairyGame_BeginPatternResponse(void) {
 }
 
 void ClefairyGame_EndPatternResponse(void) {
-    gResultScreenState = 9;
-    gResultScreenTimer = 0;
-    ModelAnim_SetAnimation(&gResultScreenGraphNode1, 1);
-    ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
+    gClefairyGameState = 9;
+    gClefairyGameTimer = 0;
+    ModelAnim_SetAnimation(&gClefairyGameActorNode, 1);
+    ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+    gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
     MiniSound_DispatchCommand(0x90008, 0, 0);
     MiniSound_DispatchCommand(0x90003, 0, 0);
 }
@@ -1131,8 +1131,8 @@ void ClefairyGame_EndPatternResponse(void) {
 void ClefairyGame_StartPlaybackTransition(void) {
     s32 i;
 
-    gResultScreenState = 0xA;
-    gResultScreenTimer = 0;
+    gClefairyGameState = 0xA;
+    gClefairyGameTimer = 0;
 
     for (i = 0; i < 4; i++) {
         gCurrentPlayerState = &gPlayerStates[i];
@@ -1151,7 +1151,7 @@ s32 ClefairyGame_UpdatePatternResponse(void) {
     s32 var_s0;
     s32 i;
 
-    if (((gPlayerItemCount * 0xF) + 0x1E) < gResultScreenTimer) {
+    if (((gPatternIconCount * 0xF) + 0x1E) < gClefairyGameTimer) {
         return -1;
     }
 
@@ -1159,7 +1159,7 @@ s32 ClefairyGame_UpdatePatternResponse(void) {
         gCurrentPlayerState = &gPlayerStates[i];
         if (gCurrentPlayerState->unk_1AC == 0) {
             temp_a0 = gCurrentPlayerState->unk_18C;
-            if (temp_a0 < gPlayerItemCount) {
+            if (temp_a0 < gPatternIconCount) {
                 var_s0 = 4;
                 if (gCurrentPlayerState->unk_000 == 0) {
                     if (gCurrentPlayerState->unk_172 & 0x800) {
@@ -1181,8 +1181,8 @@ s32 ClefairyGame_UpdatePatternResponse(void) {
                     if (gCurrentPlayerState->unk_1B0 > 0) {
                         gCurrentPlayerState->unk_1B0--;
                     } else {
-                        if (((temp_a0 > 0) && (gItemPairStates[temp_a0].unk_000 == gItemPairStates[temp_a0 - 1].unk_000)) ||
-                            ((temp_a0 < 0xB) && (gItemPairStates[temp_a0].unk_000 == gItemPairStates[temp_a0 + 1].unk_000))) {
+                        if (((temp_a0 > 0) && (gPatternIconStates[temp_a0].unk_000 == gPatternIconStates[temp_a0 - 1].unk_000)) ||
+                            ((temp_a0 < 0xB) && (gPatternIconStates[temp_a0].unk_000 == gPatternIconStates[temp_a0 + 1].unk_000))) {
                             var_s0 = ClefairyGame_ChooseCpuMove(gPlayerAiParams[gCurrentPlayerState->unk_000 - 1][4]);
                         } else {
                             var_s0 = ClefairyGame_ChooseCpuMove(gPlayerAiParams[gCurrentPlayerState->unk_000 - 1][3]);
@@ -1203,21 +1203,21 @@ s32 ClefairyGame_UpdatePatternResponse(void) {
         }
     }
 
-    if (ModelAnim_IsFinished(&gResultScreenGraphNode1) != 0) {
-        ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
-        ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
+    if (ModelAnim_IsFinished(&gClefairyGameActorNode) != 0) {
+        ModelAnim_SetAnimation(&gClefairyGameActorNode, 0);
+        ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
 s32 ClefairyGame_WaitPatternResponseEnd(void) {
-    if (gResultScreenTimer >= 0x1E) {
+    if (gClefairyGameTimer >= 0x1E) {
         return -1;
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
@@ -1232,15 +1232,15 @@ s32 ClefairyGame_WaitPlaybackTransition(void) {
         }
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
 void ClefairyGame_PreparePatternPlayback(void) {
     s32 i;
 
-    gResultScreenState = 0xB;
-    gResultScreenTimer = 0;
+    gClefairyGameState = 0xB;
+    gClefairyGameTimer = 0;
 
     for (i = 0; i < 4; i++) {
         gCurrentPlayerState = &gPlayerStates[i];
@@ -1255,17 +1255,17 @@ void ClefairyGame_PreparePatternPlayback(void) {
         }
     }
 
-    ModelAnim_SetAnimation(&gResultScreenGraphNode1, 3);
-    ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
-    ModelAnim_SetEventTrack(&gResultScreenGraphNode1, 1);
+    ModelAnim_SetAnimation(&gClefairyGameActorNode, 3);
+    ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+    gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
+    ModelAnim_SetEventTrack(&gClefairyGameActorNode, 1);
 }
 
 s32 ClefairyGame_WaitPlaybackIntro(void) {
     s32 i;
 
-    if (gResultScreenTimer == 0x10) {
-        Audio_UpdateSpecialSequence(0x1F, gResultScreenFlag);
+    if (gClefairyGameTimer == 0x10) {
+        Audio_UpdateSpecialSequence(0x1F, gRoundNumber);
     }
 
     for (i = 0; i < 4; i++) {
@@ -1274,7 +1274,7 @@ s32 ClefairyGame_WaitPlaybackIntro(void) {
         }
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
@@ -1303,11 +1303,11 @@ s32 ClefairyGame_ComputeMaxRemainingHealth(void) {
 void ClefairyGame_BeginPatternPlayback(void) {
     s32 i;
 
-    gResultScreenState = 0xC;
-    gResultScreenTimer = 0;
-    ModelAnim_SetAnimation(&gResultScreenGraphNode1, 4);
-    ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-    gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
+    gClefairyGameState = 0xC;
+    gClefairyGameTimer = 0;
+    ModelAnim_SetAnimation(&gClefairyGameActorNode, 4);
+    ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+    gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
 
     for (i = 0; i < 4; i++) {
         gCurrentPlayerState = &gPlayerStates[i];
@@ -1319,15 +1319,15 @@ s32 ClefairyGame_UpdatePatternPlayback(void) {
     s32 temp_lo;
     s32 i;
 
-    temp_lo = gResultScreenTimer / 17;
-    if ((temp_lo + 1) == gPlayerItemCount) {
+    temp_lo = gClefairyGameTimer / 17;
+    if ((temp_lo + 1) == gPatternIconCount) {
         gMaxRemainingHealth = ClefairyGame_ComputeMaxRemainingHealth();
     }
 
-    if (temp_lo >= gPlayerItemCount) {
-        ModelAnim_SetAnimation(&gResultScreenGraphNode1, 0);
-        ModelAnim_ClearEventTrack(&gResultScreenGraphNode1);
-        gResultScreenGraphNode1.unk_040.RentalSlotAnimData_PosePhase = 0;
+    if (temp_lo >= gPatternIconCount) {
+        ModelAnim_SetAnimation(&gClefairyGameActorNode, 0);
+        ModelAnim_ClearEventTrack(&gClefairyGameActorNode);
+        gClefairyGameActorNode.unk_040.RentalSlotAnimData_PosePhase = 0;
 
         for (i = 0; i < 4; i++) {
             gCurrentPlayerState = &gPlayerStates[i];
@@ -1342,7 +1342,7 @@ s32 ClefairyGame_UpdatePatternPlayback(void) {
         return -1;
     }
 
-    if ((gResultScreenTimer % 17) == 0) {
+    if ((gClefairyGameTimer % 17) == 0) {
         for (i = 0; i < 4; i++) {
             gCurrentPlayerState = &gPlayerStates[i];
             if (gCurrentPlayerState->unk_1AC == 0) {
@@ -1374,7 +1374,7 @@ s32 ClefairyGame_UpdatePatternPlayback(void) {
                 gCurrentPlayerGraphNode->unk_040.RentalSlotAnimData_PosePhase = 0;
                 gCurrentPlayerGraphNode->unk_040.unk_0C = 0x10000;
 
-                if (gCurrentPlayerState->unk_18E[temp_lo] != gItemPairStates[temp_lo].unk_000) {
+                if (gCurrentPlayerState->unk_18E[temp_lo] != gPatternIconStates[temp_lo].unk_000) {
                     gCurrentPlayerState->unk_1A6++;
                 }
             }
@@ -1383,7 +1383,7 @@ s32 ClefairyGame_UpdatePatternPlayback(void) {
         MiniSound_DispatchCommand(0x9000C, temp_lo + 1, 0);
     }
 
-    gResultScreenTimer++;
+    gClefairyGameTimer++;
     return 0;
 }
 
@@ -1420,8 +1420,8 @@ void ClefairyGame_ClearLastSurvivorMistakes(void) {
 }
 
 void ClefairyGame_BeginRoundScoring(void) {
-    gResultScreenState = 0xD;
-    gResultScreenFlag++;
+    gClefairyGameState = 0xD;
+    gRoundNumber++;
 }
 
 s32 ClefairyGame_UpdateRoundScoring(void) {
@@ -1445,7 +1445,7 @@ s32 ClefairyGame_UpdateRoundScoring(void) {
         if (gCurrentPlayerState->unk_1AC == 0) {
             gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
             if (gCurrentPlayerState->unk_1A6 > 0) {
-                temp_s0 = &gResultScreenGraphNodes[i].unk_004;
+                temp_s0 = &gPlayerPenaltyNodes[i].unk_004;
                 ModelAnim_SetAnimation(temp_s0, 0);
                 ModelAnim_ClearEventTrack(temp_s0);
                 temp_s0->unk_040.RentalSlotAnimData_PosePhase = 0;
@@ -1453,7 +1453,7 @@ s32 ClefairyGame_UpdateRoundScoring(void) {
         }
     }
 
-    gResultScreenState = 0xE;
+    gClefairyGameState = 0xE;
     return 0;
 }
 
@@ -1469,11 +1469,11 @@ s32 ClefairyGame_UpdatePenaltyPhase(void) {
         gCurrentPlayerState = &gPlayerStates[i];
         gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
         if (gCurrentPlayerState->unk_1AC == 0) {
-            if ((gCurrentPlayerState->unk_1A6 > 0) && (ModelAnim_IsFinished(&gResultScreenGraphNodes[i].unk_004) == 0)) {
+            if ((gCurrentPlayerState->unk_1A6 > 0) && (ModelAnim_IsFinished(&gPlayerPenaltyNodes[i].unk_004) == 0)) {
                 var_fp++;
             }
 
-            if ((gCurrentPlayerState->unk_1B2 == 1) && (ModelAnim_IsFinished(&gResultScreenGraphNodes[i].unk_004) != 0)) {
+            if ((gCurrentPlayerState->unk_1B2 == 1) && (ModelAnim_IsFinished(&gPlayerPenaltyNodes[i].unk_004) != 0)) {
                 gCurrentPlayerState->unk_1B2 = 0;
                 ClefairyGame_DeductPlayerHealth();
                 gCurrentPlayerState->unk_1A6--;
@@ -1499,7 +1499,7 @@ s32 ClefairyGame_UpdatePenaltyPhase(void) {
             gCurrentPlayerState = &gPlayerStates[i];
             if ((gCurrentPlayerState->unk_1B2 == 0) && (gCurrentPlayerState->unk_1AC == 0)) {
                 gCurrentPlayerGraphNode = &gCurrentPlayerState->unk_008;
-                if (gResultScreenGraphNodes[i].unk_004.unk_040.RentalSlotAnimData_PosePhase == 0xD0000) {
+                if (gPlayerPenaltyNodes[i].unk_004.unk_040.RentalSlotAnimData_PosePhase == 0xD0000) {
                     if (var_s5 == 0) {
                         MiniSound_DispatchCommand(0x90004, 0, 0);
                         var_s5 = 1;
@@ -1527,7 +1527,7 @@ s32 ClefairyGame_UpdatePenaltyPhase(void) {
     }
 
     if (var_fp == 0) {
-        gResultScreenState = 0xD;
+        gClefairyGameState = 0xD;
         return 0;
     }
 
@@ -1543,7 +1543,7 @@ void ClefairyGame_MainLoop(void) {
         Audio_UpdateSpecialSequence(0x20, gMaxRemainingHealth);
 
         if (gResultMenuVisible == 0) {
-            switch (gResultScreenState) {
+            switch (gClefairyGameState) {
                 case 2:
                     if (ClefairyGame_WaitRoundStart() != 0) {
                         ClefairyGame_BeginPatternDemo();
@@ -1609,8 +1609,8 @@ void ClefairyGame_MainLoop(void) {
 
                 case 13:
                     if (ClefairyGame_UpdateRoundScoring() != 0) {
-                        gPlayerItemCount += 2;
-                        if (gPlayerItemCount < 0xD) {
+                        gPatternIconCount += 2;
+                        if (gPatternIconCount < 0xD) {
                             ClefairyGame_BeginRound();
                             break;
                         }
@@ -1630,7 +1630,7 @@ void ClefairyGame_MainLoop(void) {
             break;
         }
 
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 }
 
@@ -1638,16 +1638,16 @@ void ClefairyGame_ShowWinnerSequence(void) {
     s32 i;
     s32 j;
 
-    gResultScreenState = 0xF;
+    gClefairyGameState = 0xF;
 
     while ((gResultMenuVisible != 0) || (Audio_GetSpecialSequenceState() != 1)) {
         Audio_UpdateSpecialSequence(0x1E, 1);
         Audio_UpdateSpecialSequence(0x20, 0);
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 
     for (i = 0; i < 2; i++) {
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 
     Widget_PauseMenuTrigger(1);
@@ -1674,12 +1674,12 @@ void ClefairyGame_ShowWinnerSequence(void) {
         MiniSound_DispatchCommand(0x9000A, 0, 0);
     }
 
-    if (gPlayerItemCount >= 0xD) {
-        gPlayerItemCount = 0xC;
+    if (gPatternIconCount >= 0xD) {
+        gPatternIconCount = 0xC;
     }
 
-    for (i = 0; i < gPlayerItemCount; i++) {
-        ItemPairState* ptr = &gItemPairStates[i];
+    for (i = 0; i < gPatternIconCount; i++) {
+        ItemPairState* ptr = &gPatternIconStates[i];
 
         if (ptr->unk_002 == 0) {
             Model_InitDisplayObject(&ptr->unk_004, 0, 0xB4, ptr->unk_16C);
@@ -1688,7 +1688,7 @@ void ClefairyGame_ShowWinnerSequence(void) {
     }
 
     for (j = 0; j < 0x5A; j++) {
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 }
 
@@ -1699,23 +1699,23 @@ void ClefairyGame_FadeOutLoop(void) {
     StageFade_StartFromTransparent(0x1E);
 
     for (i = 0; i < 30; i++) {
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 }
 
 void ClefairyGame_DrawIdleFrames(s32 arg0) {
     s32 i;
 
-    gResultScreenState = 0x12;
+    gClefairyGameState = 0x12;
 
     for (i = 0; i < arg0; i++) {
         ClefairyGame_PollInputs();
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 }
 
 void ClefairyGame_WaitForExit(void) {
-    gResultScreenState = 0x11;
+    gClefairyGameState = 0x11;
 
     while (gResultExitPending == 0) {
         if ((gMenuCursorX == 1) && (gResultScreenAlpha > 0)) {
@@ -1724,7 +1724,7 @@ void ClefairyGame_WaitForExit(void) {
                 gResultScreenAlpha = 0;
             }
         }
-        ClefairyGame_DrawFrame(gResultScreenState);
+        ClefairyGame_DrawFrame(gClefairyGameState);
     }
 }
 
@@ -1732,13 +1732,13 @@ void ClefairyGame_LoadAssets(void) {
     s32 i;
     MemoryBlock* temp_v0 = MainPool_AllocState(main_pool_get_available(), 0);
 
-    gClefairyGameDifficultyTier = gMenuState;
+    gClefairyGameDifficultyTier = gMinigameComDifficulty;
 
     if (gMenuCursorY == 4) {
         gClefairyGameDifficultyTier = 2;
     }
 
-    gFragment7ResultScreenGeoRoot = (MiniHudMainGraph*)process_geo_layout(temp_v0, gResultScreenParams);
+    gFragment7ResultScreenGeoRoot = (ShadowContextNode*)process_geo_layout(temp_v0, gClefairyGameGeoLayout);
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
     PokeIcon_OpenModelArchives();
@@ -1779,7 +1779,7 @@ void ClefairyGame_LoadAssets(void) {
     }
 
     gFragment7ModelTemp = Model_LoadByArchiveIndex(0xB2);
-    gCurrentPlayerGraphNode = &gResultScreenGraphNode1;
+    gCurrentPlayerGraphNode = &gClefairyGameActorNode;
     ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
     Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB2, gFragment7ModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
     gCurrentPlayerGraphNode->unk_024.x = 0.0f;
@@ -1791,21 +1791,21 @@ void ClefairyGame_LoadAssets(void) {
     ModelAnim_SetAnimation(gCurrentPlayerGraphNode, 0);
     ModelAnim_ClearEventTrack(gCurrentPlayerGraphNode);
     gFragment7ModelTemp = Model_LoadByArchiveIndex(0xB3);
-    gCurrentPlayerGraphNode = &gResultScreenGraphNode2;
+    gCurrentPlayerGraphNode = &gPatternIconAnchorNode;
     ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
     Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB3, gFragment7ModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
     gFragment7PatternIconModel = Model_LoadByArchiveIndex(0xB4);
 
     for (i = 0; i < 12; i++) {
-        gItemPairStates[i].unk_002 = 0;
-        gCurrentPlayerGraphNode = &gItemPairStates[i].unk_004;
+        gPatternIconStates[i].unk_002 = 0;
+        gCurrentPlayerGraphNode = &gPatternIconStates[i].unk_004;
         ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
     }
 
     gFragment7ModelTemp = Model_LoadByArchiveIndex(0xB5);
 
     for (i = 0; i < 4; i++) {
-        gCurrentPlayerGraphNode = &gResultScreenGraphNodes[i].unk_004;
+        gCurrentPlayerGraphNode = &gPlayerPenaltyNodes[i].unk_004;
         ModelRenderer_AttachDisplayObject(gCurrentPlayerGraphNode);
         Model_InitDisplayObject(gCurrentPlayerGraphNode, 0, 0xB5, gFragment7ModelTemp->RentalSlotAnimData_PosePhase->posX[0]);
         gCurrentPlayerGraphNode->unk_024.x = (i - 1.5f) * 40.0f;
@@ -1829,8 +1829,8 @@ void ClefairyGame_PositionPatternIcons(void) {
     Geo_RenderRootNode(gFragment7ResultScreenGeoRoot);
 
     for (i = 0; i < 12; i++) {
-        if (GeoRender_FindAnchorPosition(&gResultScreenGraphNode2, (s16)(i + 1), &sp48) != 0) {
-            gCurrentPlayerGraphNode = &gItemPairStates[i].unk_004;
+        if (GeoRender_FindAnchorPosition(&gPatternIconAnchorNode, (s16)(i + 1), &sp48) != 0) {
+            gCurrentPlayerGraphNode = &gPatternIconStates[i].unk_004;
             gCurrentPlayerGraphNode->unk_024.x = sp48.x / 10.0f;
             gCurrentPlayerGraphNode->unk_024.y = sp48.y / 10.0f;
             gCurrentPlayerGraphNode->unk_024.z = sp48.z / 10.0f;
@@ -1899,7 +1899,7 @@ void ClefairyGame_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     if (ClefairyGame_WaitForStart() != -1) {
         Audio_FadeOutAll(0x3C);
         ClefairyGame_DrawIdleFrames(5);
-        gPlayerItemRows = 0xA;
+        gPatternIconSpawnInterval = 0xA;
         ClefairyGame_GeneratePattern();
         ClefairyGame_UpdateStartCountdown();
         gPauseState = gResultMenuVisible;

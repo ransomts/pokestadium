@@ -143,7 +143,7 @@ typedef struct SushiItemDef {
 extern s32 gSushiOrderIndices[];
 extern SushiItemDef gSushiItemDefs[];
 
-extern MiniHudMainGraph* gSushiGoRoundGraphNode;
+extern ShadowContextNode* gSushiGoRoundGraphNode;
 extern s32 gSushiGoRoundTimer;
 extern SushiPlayerEntity gSushiEntities[4];
 

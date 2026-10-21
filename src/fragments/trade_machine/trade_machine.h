@@ -49,14 +49,14 @@ typedef struct PickerState {
     /* 0x6294 */ char unk6294[0x4];
 } PickerState; // size = 0x6298
 
-typedef struct RentalItemInfo {
+typedef struct PickerSelectionInfo {
     /* 0x00 */ s16 posX;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0C */ PickerPokemonEntry* unk_0C;
-} RentalItemInfo; // size = 0x10
+} PickerSelectionInfo; // size = 0x10
 
 typedef struct PlayerTradeInfo {
     /* 0x00 */ u8 posX;
@@ -287,7 +287,7 @@ void Trade_UpdatePickScreens(void);
 void Trade_DrawPickScreens(void);
 u16* Trade_GetPickBuffer(s32);
 void Trade_SwapPickBuffers(void);
-s32 Trade_GetPickScreenSnapshot(s32 arg0, RentalItemInfo* arg1);
+s32 Trade_GetPickScreenSnapshot(s32 arg0, PickerSelectionInfo* arg1);
 
 void Trade_LoadPickBufferIcon(s16, PokemonData*);
 void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3);
@@ -342,7 +342,7 @@ void Trade_InitBoxMachine(void);
 void Trade_UpdateBoxMachine(void);
 void Trade_DrawBoxMachine(void);
 
-s32 Trade_WriteDeckAndCommitCart(RentalItemInfo* arg0);
+s32 Trade_WriteDeckAndCommitCart(PickerSelectionInfo* arg0);
 s32 Trade_StepCartWriteSequence(RentalMenuState* arg0);
 void Trade_InitSaveSequence(s32 arg0);
 void Trade_UpdateSaveSeqPanelSlideIn(RentalMenuState* arg0);
@@ -427,7 +427,7 @@ void TradeCable_UpdateSequenceSlideToEvoSlot1(TradeCableState* arg0);
 void TradeCable_UpdateSequenceWaitEvoSlot1(TradeCableState* arg0);
 void TradeCable_UpdateSequenceFinishEvo(TradeCableState* arg0);
 void TradeCable_UpdateSequenceClose(TradeCableState* arg0);
-void MenuPanel_DrawMainBG(s16 arg0, s16 arg1, f32 arg2);
+void TradeCable_DrawSequenceBG(s16 arg0, s16 arg1, f32 arg2);
 void TradeCable_DrawTubeRailBar(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5);
 void TradeCable_DrawTubeCenterBar(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5);
 void TradeCable_DrawTubeJoint(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5);

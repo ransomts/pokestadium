@@ -16,12 +16,12 @@
 static s32 gItemSelectState;
 static GallerySceneGrid gItemSelectContext;
 static s32 gItemSelectMode;
-static s32 ItemSelect_ShowResult;
+static s32 gGalleryAlbumShowResult;
 static BinArchive* gStadiumModelArchive;
-static u16 ItemSelect_HighlightFlags;
-static s32 ItemSelect_FadeInFlag;
+static u16 gGalleryAlbumHighlightFlags;
+static s32 gGalleryAlbumFadeInFlag;
 static u16 gSlotStatusFlags[0x24];
-static s32 ItemSelect_ResultAnimTimer;
+static s32 gGalleryAlbumResultAnimTimer;
 
 s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
     s32 sp64;
@@ -50,7 +50,7 @@ s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
     sp4C = 0;
     sp48 = 0;
 
-    if (ItemSelect_ShowResult != 0) {
+    if (gGalleryAlbumShowResult != 0) {
         sp50 = 3;
     } else {
         sp50 = 2;
@@ -169,7 +169,7 @@ s32 Gallery_AlbumHandleGridInput(GallerySceneGrid* arg0) {
             arg0->rotation = -1;
         } else {
             gItemSelectState = 2;
-            ItemSelect_ResultAnimTimer = 0;
+            gGalleryAlbumResultAnimTimer = 0;
             Audio_PlayCategory12SoundCommand(0x0120000C, 0, 0);
         }
     } else if (gPlayer1Controller->buttonPressed & 0x4000) {
@@ -206,19 +206,19 @@ void Gallery_AlbumInit(s32 arg0, s32 arg1) {
     gItemSelectMode = arg0;
 
     if (arg1 != 0) {
-        ItemSelect_FadeInFlag = 1;
+        gGalleryAlbumFadeInFlag = 1;
     } else {
-        ItemSelect_FadeInFlag = 0;
+        gGalleryAlbumFadeInFlag = 0;
     }
 
     if (gItemSelectMode != 2) {
-        ItemSelect_ShowResult = 1;
+        gGalleryAlbumShowResult = 1;
     } else {
-        ItemSelect_ShowResult = 0;
+        gGalleryAlbumShowResult = 0;
     }
 
-    ItemSelect_HighlightFlags = -1;
-    ItemSelect_ResultAnimTimer = 0;
+    gGalleryAlbumHighlightFlags = -1;
+    gGalleryAlbumResultAnimTimer = 0;
 
     tmp = PokeIcon_AllocFramebuffers(5);
     Gallery_InitSceneGrid(&gItemSelectContext, 0x88, 0x66, 6, 3, tmp, gStadiumModelArchive, gGalleryEntries, 0x24, 1);
@@ -444,7 +444,7 @@ void Gallery_AlbumComputeEnlargeMotion(s32 arg0, s32* arg1, s32* arg2, f32* arg3
 
 // tmp2 is computed before the early return and the x position is written as arg1 + tmp2 at each use
 // (no named x): that is what puts its spilled CSE temp at 0x90 below six unused temp slots.
-void DrawResultPanelImage(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
+void Gallery_AlbumDrawEnlargedPhoto(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5) {
     s32 i;
     s32 tmp;
     f32 a;
@@ -544,8 +544,8 @@ void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, GallerySceneGrid* arg2) {
                 Gallery_DrawPhotoThumbnail(ptr->RentalSlotAnimData_PosePhase->img_p, ((sp70 * 0xA0) + arg0) - 0x10, ((sp6C * 0x76) + arg1) - 0x10, 0x88,
                               0x66, 8, 1);
             } else {
-                Gallery_AlbumComputeEnlargeMotion(ItemSelect_ResultAnimTimer, &sp68, &sp64, &sp60);
-                DrawResultPanelImage(ptr->RentalSlotAnimData_PosePhase->img_p, sp68, sp64, 0x88, 0x66, sp60);
+                Gallery_AlbumComputeEnlargeMotion(gGalleryAlbumResultAnimTimer, &sp68, &sp64, &sp60);
+                Gallery_AlbumDrawEnlargedPhoto(ptr->RentalSlotAnimData_PosePhase->img_p, sp68, sp64, 0x88, 0x66, sp60);
             }
         }
     }
@@ -680,7 +680,7 @@ void Gallery_AlbumDrawGradientBackground(void) {
     for (i = 0; i < end; i += 0x40, idx++) {
         temp_v0_11 = CLAMP_MIN(end - i, 0x40);
 
-        if (ItemSelect_HighlightFlags & (1 << idx)) {
+        if (gGalleryAlbumHighlightFlags & (1 << idx)) {
             r = (((D_83503EA0.r - D_83503E98.r) * idx) / 8) + D_83503E98.r;
             g = (((D_83503EA0.g - D_83503E98.g) * idx) / 8) + D_83503E98.g;
             b = (((D_83503EA0.b - D_83503E98.b) * idx) / 8) + D_83503E98.b;
@@ -1021,7 +1021,7 @@ void Gallery_AlbumDraw(void) {
     BgStage_DrawFrame();
     Gallery_AlbumDrawGradientBackground();
     Gallery_AlbumDrawGridPanel(0x1E, 0x2A, &gItemSelectContext);
-    if (ItemSelect_ShowResult != 0) {
+    if (gGalleryAlbumShowResult != 0) {
         if (gItemSelectContext.rotation == -1) {
             var_a2 = 1;
         } else {
@@ -1059,13 +1059,13 @@ void Gallery_AlbumDraw(void) {
 }
 
 void Gallery_AlbumAdvanceDeleteAnimation(GallerySceneGrid* arg0) {
-    ItemSelect_ResultAnimTimer++;
-    if (ItemSelect_ResultAnimTimer >= 0x15) {
+    gGalleryAlbumResultAnimTimer++;
+    if (gGalleryAlbumResultAnimTimer >= 0x15) {
         Gallery_ClearPhotoRecord(arg0->unk_20[arg0->rotation]->unk_18);
         gSlotStatusFlags[arg0->rotation] = 0;
         arg0->rotation = -1;
         gItemSelectState = 1;
-        ItemSelect_ResultAnimTimer = 0;
+        gGalleryAlbumResultAnimTimer = 0;
     }
 }
 
@@ -1074,7 +1074,7 @@ void Gallery_AlbumConfirmAndExit(GallerySceneGrid* arg0) {
 
     if ((Gallery_IsSceneReady(sp1C) != 0) && (sp1C->posX == 2)) {
         gItemSelectState = 4;
-        ItemSelect_HighlightFlags = 0xFFFF;
+        gGalleryAlbumHighlightFlags = 0xFFFF;
         StageContext_SetClearColor(0xFFFF);
         StageFade_StartFromTransparent(0xF);
     }
@@ -1098,11 +1098,11 @@ s32 Gallery_AlbumUpdate(void) {
             break;
 
         case 1:
-            ItemSelect_HighlightFlags &= 0xFF60;
+            gGalleryAlbumHighlightFlags &= 0xFF60;
             temp_v0_2 = Gallery_AlbumHandleGridInput(&gItemSelectContext);
             if (temp_v0_2 != 0) {
                 gItemSelectState = 4;
-                ItemSelect_HighlightFlags = 0xFFFF;
+                gGalleryAlbumHighlightFlags = 0xFFFF;
                 if (temp_v0_2 != 2) {
                     StageContext_SetClearColor(0xFFFF);
                     var_a0 = 0xF;
@@ -1138,7 +1138,7 @@ void Gallery_AlbumReadInput(void) {
 }
 
 void Gallery_AlbumLoop(void) {
-    if (ItemSelect_FadeInFlag != 0) {
+    if (gGalleryAlbumFadeInFlag != 0) {
         StageFade_StartFromOpaque(7);
     } else {
         StageFade_StartFromOpaque(1);

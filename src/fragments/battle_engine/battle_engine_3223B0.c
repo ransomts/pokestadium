@@ -96,7 +96,7 @@ void BattleAnim_CallbackStartEffects77And120Descriptor45DeceleratingSparkFade_In
 
     Particle_GetPaletteIndex(arg0);
     Particle_SetScaleScaled(arg0, 0.05f);
-    Particle_SetRandomVelocityXYZ(arg0, 4, 2, 2);
+    Particle_SetRandomPositionXYZ(arg0, 4, 2, 2);
     Particle_RotateX(arg0, ParticleMath_RandomSignedOffset(0x200, 0xE00));
     Particle_SetRotationDeltaX(arg0, ParticleMath_RandomRange(0x1000) + 0x100);
     Particle_SetFieldB0(arg0, -0x1800 - ParticleMath_RandomRange(0x1000));
@@ -166,7 +166,7 @@ void BattleAnim_CallbackStartEffects77And120Descriptor45AimedSparkFade_InitParti
     }
     sp2E = -MathUtil_Atan2s(var_fa0, sp30.y - sp3C.y);
     Particle_AddRotationDeltaXYZ(arg0, sp2E + ParticleMath_RandomSigned(0x800), ParticleMath_RandomSigned(0x800), 0);
-    Particle_SetRandomVelocityXYZ(arg0, 4, 2, 2);
+    Particle_SetRandomPositionXYZ(arg0, 4, 2, 2);
     ParticleGfx_RecolorEnvRandomPalette(arg0);
     Particle_SetSpeed(arg0, (ParticleMath_RandomRange(6) * 0.5f) + 5.0f);
     Particle_SetTimerA6(arg0, sp56 * 2);
@@ -594,7 +594,7 @@ void BattleAnim_CallbackStartEffect47Descriptor4AAnimatedScaleFade_InitParticle(
     s16 sp20 = Particle_GetPaletteIndex(arg0);
 
     Particle_SetScaleScaled(arg0, 0.25f);
-    Particle_SetRandomVelocityXYZ(arg0, 4, 2, 2);
+    Particle_SetRandomPositionXYZ(arg0, 4, 2, 2);
     Particle_RotateX(arg0, ParticleMath_RandomSignedOffset(0x200, -0xE00));
     Particle_SetRotationDeltaX(arg0, ParticleMath_RandomRange(0x400) + 0x100);
     Particle_SetFieldB0(arg0, ParticleMath_RandomRange(0x1000) + 0x1000);
@@ -1092,7 +1092,7 @@ void BattleAnim_CallbackSharedDescriptor19DelayedAnimatedGrowFade_InitParticle(P
     s16 sp2E = Particle_GetFieldOffsetAC(arg0);
     s16 sp2C = Particle_GetPaletteIndex(arg0);
 
-    Particle_SetRandomVelocityXYZ(arg0, 0, 0xF, 0x14);
+    Particle_SetRandomPositionXYZ(arg0, 0, 0xF, 0x14);
     Particle_AddVelocityYScaled(arg0, 5.0f);
     Particle_SetScaleScaled(arg0, 0.2f);
     Particle_SetSpeed(arg0, 2.5f);
@@ -1135,7 +1135,7 @@ void BattleAnim_SetupUnusedIndexedFadeVariantA(ParticleEffectInstance* arg0) {
     s16 sp2E = Particle_GetFieldOffsetAC(arg0);
 
     Particle_GetPaletteIndex(arg0);
-    Particle_SetRandomVelocityXYZ(arg0, 0xA, 0x14, 0x14);
+    Particle_SetRandomPositionXYZ(arg0, 0xA, 0x14, 0x14);
     Particle_SetScaleScaled(arg0, 0.25f);
     Particle_SetSpeed(arg0, 2.5f);
     Particle_AddRotationDeltaXYZ(arg0, ParticleMath_RandomSigned(0x2000), ParticleMath_RandomSigned(0x2000), 0);
@@ -1178,7 +1178,7 @@ void BattleAnim_SetupUnusedIndexedFadeVariantB(ParticleEffectInstance* arg0) {
     s16 sp2E = Particle_GetFieldOffsetAC(arg0);
 
     Particle_GetPaletteIndex(arg0);
-    Particle_SetRandomVelocityXYZ(arg0, 0xA, 0x14, 0x14);
+    Particle_SetRandomPositionXYZ(arg0, 0xA, 0x14, 0x14);
     Particle_SetScaleScaled(arg0, 0.4f);
     Particle_SetSpeed(arg0, 2.5f);
     Particle_AddRotationDeltaXYZ(arg0, ParticleMath_RandomSigned(0x2000), ParticleMath_RandomSigned(0x2000), 0);
@@ -1335,7 +1335,7 @@ void BattleAnim_CallbackEndEffect2Descriptor4BModeColorShiftFade_InitParticle(Pa
             break;
     }
 
-    Particle_AddVelocityFromDirVector(arg0, 10.0f);
+    Particle_AddPositionFromRotationY(arg0, 10.0f);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, Particle_GetPaletteIndex(arg0));
     Particle_SetPrimAlpha(arg0, 0xC8);
     Particle_SetTimerA6(arg0, 0x18);

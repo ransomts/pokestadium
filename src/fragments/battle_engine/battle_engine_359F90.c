@@ -29,13 +29,13 @@ typedef struct BattleDamageCalcState {
 
 static u16 gAccumulatedDamage;
 static u8 gAccuracyCheckRandom;
-static u8 gBattleMessageFlag;
+static u8 gBattleUnusedMsgFlag;
 u8 gBattleMoveFailed;
 u8 gBattleCritOrOhkoState;
 static u8 gBattleUnusedFlag1;
 static u8 gBattleUnusedFlag2;
 static u8 gBattleUnusedFlag3;
-u8 gBattleUnusedFlag4;
+u8 gSuppressMoveFailMessages;
 u8 gBattleUnusedFlag5;
 static u8 gBattleUnusedFlag6;
 static u8 gBattleUnusedFlag7;
@@ -144,7 +144,7 @@ static s32 gBattleRngLcgSeed = 0x4D2;
 static u32 gBattleRngLfsrSeed = 0x1A85;
 static u32 gBattleRngAccuracyLcgSeed = 0x3039;
 static u32 gBattleRngAccuracyLfsrSeed = 0x10932;
-static u8 gBattleTypeEffectivenessParams[] = { 2, 0x4B, 0x98, 0xA3 };
+static u8 gHighCritMoveIds[] = { 2, 0x4B, 0x98, 0xA3 };
 
 void func_8436F6D0(void) {
 }
@@ -237,7 +237,7 @@ void Battle_ResetTransientRuntimeState(s32 arg0, s32 arg1) {
     sp1C->disabledMoveId = 0;
     sp1C->unk_56 = 0;
     sp18->unk_4C &= ~0x20;
-    gBattleMessageFlag = 1;
+    gBattleUnusedMsgFlag = 1;
 }
 
 void Battle_ResetEntityState(BattlePlayerEntity* arg0) {
@@ -796,10 +796,10 @@ s32 Battle_IsPartyMemberAlive(BattlePlayerEntity* arg0) {
     return 0;
 }
 
-void Battle_InitEffectState(void) {
+void Battle_InitEffectState_NoOp(void) {
 }
 
-void Battle_ResetEffectState(void) {
+void Battle_ResetEffectState_NoOp(void) {
 }
 
 void Battle_ExecuteMoveAnimation(void) {
@@ -1080,7 +1080,7 @@ s32 Battle_ApplyResidualEffects(void) {
     return 1;
 }
 
-void Battle_ClearEffectState(void) {
+void Battle_ClearEffectState_NoOp(void) {
 }
 
 s32 Battle_TryLoadFollowupMoveFromTarget(void) {
@@ -1216,7 +1216,7 @@ s32 Battle_CheckCriticalHit(void) {
             sp18 *= 2;
         }
 
-        if (IsByteInArray(gBattleUser->unk_44.posX, gBattleTypeEffectivenessParams, 4) != 0) {
+        if (IsByteInArray(gBattleUser->unk_44.posX, gHighCritMoveIds, 4) != 0) {
             sp18 *= 4;
         } else {
             sp18 >>= 1;
@@ -1231,7 +1231,7 @@ s32 Battle_CheckCriticalHit(void) {
             }
         }
 
-        if (IsByteInArray(gBattleUser->unk_44.posX, gBattleTypeEffectivenessParams, 4) != 0) {
+        if (IsByteInArray(gBattleUser->unk_44.posX, gHighCritMoveIds, 4) != 0) {
             sp18 *= 4;
             if (sp18 >= 0x100) {
                 sp18 = 0xFF;
@@ -1460,7 +1460,7 @@ void Battle_ProcessTurn(void) {
     if (gBattleUser->currentMoveId != 0xFF) {
         gBattleMoveFailed = 0;
         gBattleUnusedFlag15 = 0;
-        gBattleUnusedFlag4 = 0;
+        gSuppressMoveFailMessages = 0;
         gTypeEffectivenessMsgState = 0xA;
 
         switch (Battle_CheckMonCanAct()) {
@@ -1562,7 +1562,7 @@ void Battle_ProcessTurn(void) {
                     Battle_ApplyDamageAnimation();
                     Battle_PlayMoveSound();
                     Battle_UpdateBattleLog();
-                    gBattleUnusedFlag4 = 1;
+                    gSuppressMoveFailMessages = 1;
                 }
 
                 if (IsByteInArray(gBattleUser->unk_44.TrainerSlotSaveData_GamePort, gBattleMoveEffectsExecuteAfterDamage, 0xA) != 0) {
@@ -1705,7 +1705,7 @@ void CheckAllPartyFainted_Status(BattlePlayerEntity* arg0) {
     }
 }
 
-void CheckAllPartyFainted_PP(BattlePlayerEntity* arg0) {
+void CheckAllPartyFainted_Recoil(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
@@ -1735,7 +1735,7 @@ void CheckAllPartyFainted_PP(BattlePlayerEntity* arg0) {
     }
 }
 
-void CheckAllPartyFainted_Level(BattlePlayerEntity* arg0) {
+void CheckAllPartyFainted_CurrentHP(BattlePlayerEntity* arg0) {
     BattlePlayerAnimState* ptr1 = &arg0->animationState;
     PokemonData* temp_v0;
     s32 i;
@@ -1799,15 +1799,15 @@ s32 Battle_CheckSideDefeatAfterResidualStatus(BattlePlayerEntity* arg0) {
 
 s32 Battle_CheckFaintAfterMove(void) {
     if (gBattleTarget->unk_0C == 0) {
-        CheckAllPartyFainted_Level(sActivePokemon[!gBattleScene.posX->unk_2C]);
+        CheckAllPartyFainted_CurrentHP(sActivePokemon[!gBattleScene.posX->unk_2C]);
     }
 
     if (gBattleUser->unk_0C == 0) {
-        CheckAllPartyFainted_Level(sActivePokemon[gBattleScene.posX->unk_2C]);
+        CheckAllPartyFainted_CurrentHP(sActivePokemon[gBattleScene.posX->unk_2C]);
     }
 
     if ((gBattleUser->unk_0C != 0) && (gBattleTarget->unk_0C != 0) && (gBattleUser->unk_12 == 0)) {
-        CheckAllPartyFainted_PP(sActivePokemon[gBattleScene.posX->unk_2C]);
+        CheckAllPartyFainted_Recoil(sActivePokemon[gBattleScene.posX->unk_2C]);
         return 0;
     } else if ((gBattleUser->unk_0C != 0) && (gBattleTarget->unk_0C != 0) && (gBattleUser->unk_15 & 0x18) &&
                (gBattleUser->unk_0E == 0)) {

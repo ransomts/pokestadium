@@ -4180,7 +4180,7 @@ s32 Pokedex_CheckAreaMapExit(void) {
     return 0;
 }
 
-// PictureQuiz_ShowSpeciesInfo: score 705, 6 diff lines, all as1 scheduling in the block after
+// Pokedex_InitSpeciesAreaMap: score 705, 6 diff lines, all as1 scheduling in the block after
 // `if (gPokedexSubAreaToAreaIndex[i] >= 0)` (temp_s0 compute). Draft hoists `lui %hi(gPokedexMapAreaSequence)` and
 // `lui %hi(gMapAreaMarkers)` above the bltz (into the lh stall) and puts `addu s0` in the
 // jal delay slot; target hoists nothing and puts `sll s4,s1,2` (i*4 for the table switch)
@@ -4215,7 +4215,7 @@ s32 Pokedex_CheckAreaMapExit(void) {
 // dies in as1 (dead code after the if-body), e.g. a strength-reduced `s4 += 4` that the
 // body's own `sll s4` makes dead. Dead C statements there (else-branch / after the if)
 // are removed by uopt, and a function-local `static` gPokedexSubAreaToAreaIndex changes nothing.
-void PictureQuiz_ShowSpeciesInfo(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, char *arg5, char **arg6)
+void Pokedex_InitSpeciesAreaMap(s32 arg0, MainPoolState *arg1, s32 arg2, s32 arg3, s32 arg4, char *arg5, char **arg6)
 {
   s32 i;
   CameraStruct *ptr;

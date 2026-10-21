@@ -2230,9 +2230,9 @@ s32 WidgetTree_UpdateSlideTransition(unk_func_885088F4* arg0) {
 }
 
 s32 WidgetTree_DrawSlideTransition(unk_func_885088F4* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 Color_ProgressBarFill = { 0x38, 0x38, 0x68, 0xFF };
+    static Color_RGBA8 Color_SlideTransitionFill = { 0x38, 0x38, 0x68, 0xFF };
 
-    u32 color = RGBA5551(Color_ProgressBarFill.r, Color_ProgressBarFill.g, Color_ProgressBarFill.b, 1);
+    u32 color = RGBA5551(Color_SlideTransitionFill.r, Color_SlideTransitionFill.g, Color_SlideTransitionFill.b, 1);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
@@ -2255,7 +2255,7 @@ s32 WidgetTree_DrawSlideTransition(unk_func_885088F4* arg0, s32 arg1, s32 arg2) 
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
-    gDPSetPrimColor(gDisplayListHead++, 0, 0, Color_ProgressBarFill.r, Color_ProgressBarFill.g, Color_ProgressBarFill.b, Color_ProgressBarFill.a);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, Color_SlideTransitionFill.r, Color_SlideTransitionFill.g, Color_SlideTransitionFill.b, Color_SlideTransitionFill.a);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4007948, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 5, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -2383,7 +2383,7 @@ void WidgetTree_InitTextMessageBuffer(unk_func_88509F0C* arg0) {
     arg0->unk_2C = 0;
 }
 
-void TextObjectGraphics_Init(WidgetTree_InitMessagePanel* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
+void WidgetTree_InitMessagePanelWidget(WidgetTree_InitMessagePanel* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
                    TextObject* arg6) {
     static Color_RGBA8 Color_DarkRed = { 0x64, 0x1E, 0x1E, 0xFF };
 

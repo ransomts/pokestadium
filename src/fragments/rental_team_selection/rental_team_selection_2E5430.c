@@ -1073,7 +1073,7 @@ s32 TeamSelection_RegisteredTeam_Update(RegisteredTeamMenu* arg0) {
     return sp1C;
 }
 
-s32 TeamSelection_RegisteredTeam_Initialize(RegisteredTeamMenu* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3, s16 arg4,
+s32 TeamSelection_RegisteredTeam_Initialize(RegisteredTeamMenu* arg0, TeamTrayPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3, s16 arg4,
                   s16 arg5, s16 arg6, s16 arg7) {
     s32 i;
 

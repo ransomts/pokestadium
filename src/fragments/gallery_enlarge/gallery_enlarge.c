@@ -15,7 +15,7 @@ static s32 gFragment46_State;
 static BinArchive* gStadiumModelsArchive;
 static Stage* gFragment46_Stage;
 
-static Camera* gFragment46_Camera = NULL;
+static Camera* gFragment46_PhotoScene = NULL;
 
 void Gallery_EnlargeInit(void) {
     UNUSED s32 pad;
@@ -24,7 +24,7 @@ void Gallery_EnlargeInit(void) {
     gFragment46_State = 0;
     sp28 = PokeIcon_AllocFramebuffers(1);
     Gallery_ResetActiveScene();
-    gFragment46_Camera = Geo_CreateSceneInstance(0x280, 0x1E0, NULL, gFragment46_Stage->unk_18[0], sp28, gStadiumModelsArchive, Gallery_GetEnlargeTarget(1));
+    gFragment46_PhotoScene = Geo_CreateSceneInstance(0x280, 0x1E0, NULL, gFragment46_Stage->unk_18[0], sp28, gStadiumModelsArchive, Gallery_GetEnlargeTarget(1));
 }
 
 void Gallery_EnlargeEmptyHandler(void) {
@@ -34,8 +34,8 @@ void Gallery_EnlargeDraw(void) {
     static s16 gFragment46_FrameCounter = 0;
 
     BgStage_DrawFrame();
-    if (gFragment46_Camera->posX == 2) {
-        Gallery_DrawPhotoThumbnail(gFragment46_Camera->RentalSlotAnimData_PosePhase->img_p, 0, 0, gFragment46_Camera->rotation, gFragment46_Camera->unk_06, 1, 0);
+    if (gFragment46_PhotoScene->posX == 2) {
+        Gallery_DrawPhotoThumbnail(gFragment46_PhotoScene->RentalSlotAnimData_PosePhase->img_p, 0, 0, gFragment46_PhotoScene->rotation, gFragment46_PhotoScene->unk_06, 1, 0);
     }
     BgStage_AdvanceFrame();
     gFragment46_FrameCounter += 0x1000;
@@ -44,7 +44,7 @@ void Gallery_EnlargeDraw(void) {
 s32 Gallery_EnlargeCheckExitInput(void) {
     s32 sp1C = 0;
 
-    if (Gallery_FindReadyScene(&gFragment46_Camera, 1) != -1) {
+    if (Gallery_FindReadyScene(&gFragment46_PhotoScene, 1) != -1) {
         return 0;
     }
 
@@ -95,8 +95,8 @@ void Gallery_EnlargeReadInput(void) {
 
 void Gallery_EnlargeLoop(void) {
     do {
-        Gallery_ProcessSceneInstance(gFragment46_Camera);
-    } while (gFragment46_Camera->posX != 2);
+        Gallery_ProcessSceneInstance(gFragment46_PhotoScene);
+    } while (gFragment46_PhotoScene->posX != 2);
 
     StageFade_StartFromOpaque(1);
 

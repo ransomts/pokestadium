@@ -684,7 +684,7 @@ void Particle_AddVelocityLeft(ParticleEffectInstance* arg0, f32 arg1) {
     arg0->unk_38.z += arg1 * COSS(arg0->unk_94.y - 0x4000) * gParticleRenderContext.posX.y;
 }
 
-void Particle_AddVelocityFromDirVector(ParticleEffectInstance* arg0, f32 arg1) {
+void Particle_AddPositionFromRotationY(ParticleEffectInstance* arg0, f32 arg1) {
     Vec3f sp1C;
 
     Particle_ComputeVectorFromRotationY(arg0, arg1, &sp1C);
@@ -714,31 +714,31 @@ void Particle_AddPositionRotatedVectorByYaw(ParticleEffectInstance* arg0, Vec3f 
     Particle_AddVelocityScaledVec(arg0, sp24);
 }
 
-void Particle_SetRandomVelocityX(ParticleEffectInstance* arg0, s32 arg1) {
+void Particle_SetRandomPositionX(ParticleEffectInstance* arg0, s32 arg1) {
     arg0->unk_38.x = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y;
 }
 
-void Particle_SetRandomVelocityY(ParticleEffectInstance* arg0, s32 arg1) {
+void Particle_SetRandomPositionY(ParticleEffectInstance* arg0, s32 arg1) {
     arg0->unk_38.y = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y;
 }
 
-void Particle_SetRandomVelocityZ(ParticleEffectInstance* arg0, s32 arg1) {
+void Particle_SetRandomPositionZ(ParticleEffectInstance* arg0, s32 arg1) {
     arg0->unk_38.z = ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y;
 }
 
-void Particle_SetRandomVelocityXOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
+void Particle_SetRandomPositionXOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
     arg0->unk_38.x = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y) + arg2;
 }
 
-void Particle_SetRandomVelocityYOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
+void Particle_SetRandomPositionYOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
     arg0->unk_38.y = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y) + arg2;
 }
 
-void Particle_SetRandomVelocityZOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
+void Particle_SetRandomPositionZOffset(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
     arg0->unk_38.z = (ParticleMath_RandomSigned(arg1) * gParticleRenderContext.posX.y) + arg2;
 }
 
-void Particle_SetRandomVelocityXSymmetric(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
+void Particle_SetRandomPositionXSymmetric(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
     f32 temp_fv0 = ParticleMath_RandomSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
@@ -748,7 +748,7 @@ void Particle_SetRandomVelocityXSymmetric(ParticleEffectInstance* arg0, s32 arg1
     }
 }
 
-void Particle_SetRandomVelocityYSymmetric(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
+void Particle_SetRandomPositionYSymmetric(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
     f32 temp_fv0 = ParticleMath_RandomSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
@@ -758,7 +758,7 @@ void Particle_SetRandomVelocityYSymmetric(ParticleEffectInstance* arg0, s32 arg1
     }
 }
 
-void Particle_SetRandomVelocityZSymmetric(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
+void Particle_SetRandomPositionZSymmetric(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
     f32 temp_fv0 = ParticleMath_RandomSigned(arg1);
 
     if (temp_fv0 >= 0.0f) {
@@ -768,7 +768,7 @@ void Particle_SetRandomVelocityZSymmetric(ParticleEffectInstance* arg0, s32 arg1
     }
 }
 
-void Particle_SetRandomVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Particle_SetRandomPositionXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 arg2, s32 arg3) {
     Vec3f sp18;
 
     sp18.x = ParticleMath_RandomSigned(arg1);
@@ -780,7 +780,7 @@ void Particle_SetRandomVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 a
     arg0->unk_38.z = sp18.z * gParticleRenderContext.posX.y;
 }
 
-void Particle_SetRandomModVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Particle_SetRandomModPositionXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 arg2, s32 arg3) {
     Vec3f sp1C;
 
     sp1C.x = ParticleMath_RandomRange(arg1);
@@ -792,7 +792,7 @@ void Particle_SetRandomModVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s3
     arg0->unk_38.z = sp1C.z * gParticleRenderContext.posX.y;
 }
 
-void Particle_SetRandomRotatedVelocityXY(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
+void Particle_SetRandomRotatedPositionXY(ParticleEffectInstance* arg0, s32 arg1, s32 arg2) {
     Vec3f sp2C;
     Vec3f sp20;
 
@@ -807,7 +807,7 @@ void Particle_SetRandomRotatedVelocityXY(ParticleEffectInstance* arg0, s32 arg1,
     arg0->unk_38.z = sp20.z * gParticleRenderContext.posX.y;
 }
 
-void Particle_AddRandomVelocityXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 arg2, s32 arg3) {
+void Particle_AddRandomPositionXYZ(ParticleEffectInstance* arg0, s32 arg1, s32 arg2, s32 arg3) {
     Vec3f sp24;
 
     sp24.x = ParticleMath_RandomSigned(arg1);

@@ -1,7 +1,7 @@
 #include "battle_engine.h"
 #include "src/gfx_buffer.h"
 
-static WaterParticleEmitter gWaterParticleEmitters[4];
+static FourStreamTrailEmitter gFourStreamTrailEmitters[4];
 
 static Vtx gFourStreamTrailQuadVtx[] = {
     VTX(-30, 0, -20, 2048, 0, 0xFF, 0xFF, 0xFF, 0xC8),
@@ -9,7 +9,7 @@ static Vtx gFourStreamTrailQuadVtx[] = {
     VTX(-30, 0, 20, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, 20, 0, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
 };
-static Gfx gWaterSplashDL[] = {
+static Gfx gFourStreamTrailGroundQuadDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -25,7 +25,7 @@ static Gfx gWaterSplashDL[] = {
     gsSP2Triangles(0, 2, 1, 0, 2, 3, 1, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gWaterParticleDL[] = {
+static Gfx gFourStreamTrailDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -43,11 +43,11 @@ void FourStreamTrail_Init(void) {
     s32 i;
     s32 j;
     f32 temp_fa0;
-    WaterParticleEmitter* var_a2;
-    WaterParticleParticle* var_v0;
+    FourStreamTrailEmitter* var_a2;
+    FourStreamTrailParticle* var_v0;
 
     temp_fa0 = BattleAnim_GetSecondaryOwnerModelScale() * 0.75f;
-    var_a2 = &gWaterParticleEmitters[0];
+    var_a2 = &gFourStreamTrailEmitters[0];
 
     for (i = 0; i < 4; i++, var_a2++) {
         var_a2->unk_000 = 0;
@@ -68,8 +68,8 @@ void FourStreamTrail_Init(void) {
 
 void FourStreamTrail_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32 arg5, u8 arg6, u8 arg7, u8 arg8, u8 arg9,
                    f32 argA, f32 argB, f32 argC, s16 argD) {
-    WaterParticleEmitter* var_v1;
-    WaterParticleParticle* var_s0;
+    FourStreamTrailEmitter* var_v1;
+    FourStreamTrailParticle* var_s0;
     s32 i;
     s32 j;
     Vec3f sp64;
@@ -78,7 +78,7 @@ void FourStreamTrail_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32
     sp64.x = arg0;
     sp64.y = arg1;
     sp64.z = arg2;
-    var_v1 = &gWaterParticleEmitters[0];
+    var_v1 = &gFourStreamTrailEmitters[0];
 
     for (i = 0; i < 4; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
@@ -130,8 +130,8 @@ void FourStreamTrail_Update(f32 arg0, Vec3f* arg1, f32 arg2, f32 arg3) {
     guMtxXFMF(spB0.mf, 0.0f, 0.0f, arg2, &arg1->x, &arg1->y, &arg1->z);
 }
 
-void FourStreamTrail_UpdateNodeChain(WaterParticleEmitter* arg0) {
-    WaterParticleParticle* var_v0 = &arg0->unk_034[0];
+void FourStreamTrail_UpdateNodeChain(FourStreamTrailEmitter* arg0) {
+    FourStreamTrailParticle* var_v0 = &arg0->unk_034[0];
     s32 i;
     f32 temp_fa0;
     f32 temp_fa1;
@@ -195,7 +195,7 @@ void FourStreamTrail_UpdateNodeChain(WaterParticleEmitter* arg0) {
 
 s32 FourStreamTrail_IsComplete(void) {
     s32 i;
-    WaterParticleEmitter* var_s0 = &gWaterParticleEmitters[0];
+    FourStreamTrailEmitter* var_s0 = &gFourStreamTrailEmitters[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -215,8 +215,8 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
     s32 k;
-    WaterParticleEmitter* var_s4;
-    WaterParticleParticle* temp_s0;
+    FourStreamTrailEmitter* var_s4;
+    FourStreamTrailParticle* temp_s0;
     Mtx* temp_v0;
     Vec3f sp134;
     Vtx* var_s0;
@@ -229,7 +229,7 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
     gDPLoadTextureBlock_4b(arg0++, gBattleAnimAssetPointers[0x49], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    var_s4 = &gWaterParticleEmitters[0];
+    var_s4 = &gFourStreamTrailEmitters[0];
     for (i = 0; i < 4; i++, var_s4++) {
         if (var_s4->unk_000 == 1) {
             guScale(&spB0, var_s4->unk_00C, var_s4->unk_00C, var_s4->unk_00C);
@@ -244,7 +244,7 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
                 guMtxCatL(&spB0, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, gWaterSplashDL);
+                gSPDisplayList(arg0++, gFourStreamTrailGroundQuadDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
@@ -287,7 +287,7 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
 
             var_s0 = var_s4->unk_018;
 
-            gSPDisplayList(arg0++, gWaterParticleDL);
+            gSPDisplayList(arg0++, gFourStreamTrailDL);
 
             for (k = 0; k < 14; k++) {
                 gSPVertex(arg0++, var_s0, 4, 0);

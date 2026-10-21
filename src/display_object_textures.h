@@ -50,7 +50,7 @@ typedef struct unk_D_800ABE10 {
 
 extern unk_D_800ABE10 gAssetManager;
 
-void GeoLayout_ConvertTextures(MiniHudMainGraph* arg0, arg1_func_80010CA8 arg1);
+void GeoLayout_ConvertTextures(ShadowContextNode* arg0, arg1_func_80010CA8 arg1);
 Fragment* Jpeg_AllocAndDecodeFragment(MemoryBlock* arg0, PRESJPEG* arg1, PRESJPEG* arg2);
 Fragment* Yay0_AllocAndDecompressFragment(MainPoolState* arg0, PERSSZP* arg1, PERSSZP* arg2);
 Fragment* Asset_AllocAndCopyFragment(MainPoolState* arg0, PERSSZP* arg1, s32 arg2, u32 arg3);

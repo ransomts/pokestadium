@@ -9,7 +9,7 @@ void ParticleGfx_LoadTextureCallbackI4FrameDiv2Mod4_32x32();
 
 extern u32 gMiniTutoScreenFrames[];
 extern u32 gMiniTutoScreenPalette[];
-extern u32 gMiniTutoScreenSettings[];
+extern u32 gMiniParticleSparkTex[];
 extern u32 gMiniTutoScreenGraphics[];
 
 Gfx_TextureConfig gMiniTutoScreenConfig_Tilemap = {
@@ -40,7 +40,7 @@ Gfx_TextureConfig gMiniTutoScreenConfig_Settings = {
     0x01000002,
     ParticleGfx_LoadTextureCallbackIa8_32x32,
     ParticleGfx_DrawBillboardPrimEnvQuad,
-    gMiniTutoScreenSettings,
+    gMiniParticleSparkTex,
 };
 
 Gfx_TextureNode gMiniTutoScreenNode2 = {
@@ -216,7 +216,7 @@ u32 gMiniTutoScreenPalette[] = {
     0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0, 0xF0F0F0F0,
 };
 
-u32 gMiniTutoScreenSettings[] = {
+u32 gMiniParticleSparkTex[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000001, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000002, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
@@ -370,7 +370,7 @@ void miniDrawResultIcons(MiniActor* arg0) {
     var_s2 = 0;
     for (i = 0; i < 4; i++) {
         if (arg0[i].isWinner != 0) {
-            temp_a2 = gMiniActorPosOffsets[gMiniTutoTimer4][var_s2];
+            temp_a2 = gMiniActorPosOffsets[gMiniResultIconRow][var_s2];
             if (arg0[i].isComp != 0) {
                 Widget_DrawPlayerIcon(-1 - i, 0x78, temp_a2, 1.0f);
             } else {

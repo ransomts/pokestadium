@@ -18,7 +18,7 @@ s32 gBattleAI_ForceRandom;
 BattleAI_MoveScoreStruct gBattleAiMoveScores[2];
 u8 gBattleAI_CurrentMoveCount;
 BattleAI_ConfigStruct gAiConfig;
-u8 gAiLastMoveCategory[2];
+u8 gAiLastMoveId[2];
 u16 gAiCurrentDamage;
 u16 gAiMovePower;
 u16 gAiAttackStat;
@@ -29,7 +29,7 @@ BattleAI_CurrentMoveStruct gAiCurrentMove;
 s32 gAiRandomState;
 u32 gAiRandomSeed;
 
-s32 gAiTurnCounter = 0;
+s32 gAiSwitchStreak = 0;
 
 static u8 gAiHeuristicMoveTable[] = {
     0x05, 0x0D, 0x0E, 0x12, 0x19, 0x5C, 0x20, 0x22, 0x24, 0x26, 0x3D, 0x37, 0x3A, 0x3B, 0x3F, 0x06, 0x42, 0x44, 0x45,
@@ -1414,7 +1414,7 @@ s32 BattleAI_ScoreAllCandidateMovesRatioToCurrentHp(BattleAI_MonData* arg0, Batt
     return BattleAI_ScaleSignedRatio(BattleAI_ScoreAllCandidateMoves(arg0, arg1, arg2, arg3), arg1->unk_12.unk_0C);
 }
 
-void BattleAI_Init(void) {
+void BattleAI_NoOp(void) {
 }
 
 u8 BattleAI_CalcStagedMovePower(PokemonAudioInfo* arg0, PokemonAudioInfo* arg1, u8 arg2, u8 arg3) {
@@ -5154,13 +5154,13 @@ s32 BattleAI_MatchesLastMoveCategory(u8 arg0, u8 arg1) {
     UNUSED s32 pad;
     MoveBattleData* sp18;
 
-    if (gAiLastMoveCategory[arg0] == 0) {
+    if (gAiLastMoveId[arg0] == 0) {
         return 0;
     }
 
-    sp18 = &gMoveData[gAiLastMoveCategory[arg0] - 1];
+    sp18 = &gMoveData[gAiLastMoveId[arg0] - 1];
 
-    if (arg1 == gAiLastMoveCategory[arg0]) {
+    if (arg1 == gAiLastMoveId[arg0]) {
         return 1;
     }
 
@@ -5172,7 +5172,7 @@ s32 BattleAI_MatchesLastMoveCategory(u8 arg0, u8 arg1) {
 }
 
 s32 BattleAI_IsDiscouragedRepeatCategory(u8 arg0, u8 arg1) {
-    if (gAiLastMoveCategory[arg0] == 0) {
+    if (gAiLastMoveId[arg0] == 0) {
         return 0;
     }
 
@@ -5691,11 +5691,11 @@ s32 BattleAI_ChooseAction(UNUSED s32 arg0) {
         }
 
         if (gBattleAI_TypeResistance->unk_10 != (sActivePokemon[0]->animationState.RentalSlotAnimData_PosePhase + var_v1)) {
-            gAiTurnCounter += 1;
+            gAiSwitchStreak += 1;
             goto label1;
         }
     }
-    gAiTurnCounter = 0;
+    gAiSwitchStreak = 0;
 
 label1:
     BattleAI_SyncTeamStateFromRuntime();
@@ -5723,7 +5723,7 @@ label1:
     gBattleAI_ForceRandom = 0;
     if ((gBattleAI_DefaultMon->unk_0C != 0) && (gBattleAI_State->posX & 4)) {
         if ((gBattleAI_State->RentalSlotAnimData_PosePhase + 0x33) < BattleAI_ScaleSignedRatio(gBattleAiStatsContext->unk_0C, gBattleAiStatsContext->unk_28)) {
-            sp42 = BattleAI_ScoreAttackVsSwitch(gBattleAI_OpponentMon, gBattleAI_PlayerMon, gBattleAI_TypeResistance, gBattleAI_MonContext, &sp40, 0) >> gAiTurnCounter;
+            sp42 = BattleAI_ScoreAttackVsSwitch(gBattleAI_OpponentMon, gBattleAI_PlayerMon, gBattleAI_TypeResistance, gBattleAI_MonContext, &sp40, 0) >> gAiSwitchStreak;
             if (BattleAI_RandomBelowInclusive(0xFE) < sp42) {
                 gBattleAI_TypeResistance->unk_10 = sp40;
                 gBattleAI_OpponentMon = &gBattleAI_TypeResistance->unk_14[sp40];
@@ -5776,7 +5776,7 @@ void BattleAI_InitTrainerRecords(void) {
     u8 temp_a0;
 
     for (i = 0; i < 2; i++) {
-        gAiLastMoveCategory[i] = 0;
+        gAiLastMoveId[i] = 0;
         temp_a0 = sActivePokemon[i]->animationState.unk_38.unk_0B;
         gAiSpeciesList[i] = temp_a0;
         Battle_DmaLoadAnimRecord(temp_a0, &gAiSpeciesAnimRecords[i]);
@@ -5822,6 +5822,6 @@ s32 BattleAI_ResolveRandomMove(s32 arg0, s32 arg1) {
         }
     }
 
-    gAiLastMoveCategory[arg0] = var_s0;
+    gAiLastMoveId[arg0] = var_s0;
     return var_s0;
 }

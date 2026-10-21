@@ -271,7 +271,7 @@ void TradeEvo_CreatePreviewModel(TradeEvoState* arg0, s32 arg1) {
 }
 
 void TradeEvo_BeginSequence(s16 arg0) {
-    RentalItemInfo sp20;
+    PickerSelectionInfo sp20;
     TradeEvoState* ptr = &gScreenTransition;
 
     main_pool_push_state('intr');
@@ -1509,7 +1509,7 @@ void TradeCable_UpdateSequenceClose(TradeCableState* arg0) {
     }
 }
 
-void MenuPanel_DrawMainBG(s16 arg0, s16 arg1, f32 arg2) {
+void TradeCable_DrawSequenceBG(s16 arg0, s16 arg1, f32 arg2) {
     s16 sp58;
     s16 temp_ft1;
     s16 temp_ft2;
@@ -1648,7 +1648,7 @@ void TradeCable_DrawTubeSparkBandDim(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16
 }
 
 void TradeCable_DrawTubeSparkBandBright(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    static Gfx gMenuPanelTallBarHighlightDL[] = {
+    static Gfx gTradeCableSparkBandBrightDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
         gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
@@ -1684,7 +1684,7 @@ void TradeCable_DrawTubeSparkBandBright(s16 arg0, s16 arg1, f32 arg2, s16 arg3, 
     var_fp = D_300B768;
     i = 0x83;
 
-    gSPDisplayList(gDisplayListHead++, gMenuPanelTallBarHighlightDL);
+    gSPDisplayList(gDisplayListHead++, gTradeCableSparkBandBrightDL);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, 100, 100, 255, arg6);
 
     for (; i > 0;) {
@@ -1739,11 +1739,11 @@ void TradeCable_DrawTubeEndCap(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4,
 }
 
 void TradeCable_RenderReflectionTexture(void) {
-    static f32 gMenuPanelBGScrollX = 0.0f;
-    static f32 gMenuPanelBGScrollY = 0.0f;
+    static f32 gTradeCableReflectionScrollX = 0.0f;
+    static f32 gTradeCableReflectionScrollY = 0.0f;
     static f32 gMenuPanelBGTex1ScrollX = 0.0f;
     static f32 gMenuPanelBGTex1ScrollY = 0.0f;
-    static Gfx gMenuPanelBGDL[] = {
+    static Gfx gTradeCableReflectionDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
         gsDPSetRenderMode(G_RM_OPA_SURF, G_RM_OPA_SURF2),
@@ -1761,7 +1761,7 @@ void TradeCable_RenderReflectionTexture(void) {
 
     GfxImage_SetRenderTarget(&gDisplayListHead, gTradeCableReflectionBuffer);
 
-    gSPDisplayList(gDisplayListHead++, gMenuPanelBGDL);
+    gSPDisplayList(gDisplayListHead++, gTradeCableReflectionDL);
 
     gDPLoadMultiBlock_4b(gDisplayListHead++, D_3009BC0, 0x0100, 1, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                          G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, 1);
@@ -1774,21 +1774,21 @@ void TradeCable_RenderReflectionTexture(void) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30099B8, G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, 2);
 
-    temp_fa0 = gMenuPanelBGScrollX + 31.0f;
-    temp_fa4 = gMenuPanelBGScrollY + 31.0f;
-    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, gMenuPanelBGScrollX * 4.0f, gMenuPanelBGScrollY * 4.0f, temp_fa0 * 4.0f,
+    temp_fa0 = gTradeCableReflectionScrollX + 31.0f;
+    temp_fa4 = gTradeCableReflectionScrollY + 31.0f;
+    gDPSetTileSize(gDisplayListHead++, G_TX_RENDERTILE, gTradeCableReflectionScrollX * 4.0f, gTradeCableReflectionScrollY * 4.0f, temp_fa0 * 4.0f,
                    temp_fa4 * 4.0f);
 
     Gfx_DrawTexturedRectClipped(0, 0, 0x20, 0x20, 0, 0, 0x400, 0x400, 0x100000);
 
-    gMenuPanelBGScrollX += 0.75f;
-    if (gMenuPanelBGScrollX >= 32.0f) {
-        gMenuPanelBGScrollX -= 32.0f;
+    gTradeCableReflectionScrollX += 0.75f;
+    if (gTradeCableReflectionScrollX >= 32.0f) {
+        gTradeCableReflectionScrollX -= 32.0f;
     }
 
-    gMenuPanelBGScrollY += 5.75f;
-    if (gMenuPanelBGScrollY >= 32.0f) {
-        gMenuPanelBGScrollY -= 32.0f;
+    gTradeCableReflectionScrollY += 5.75f;
+    if (gTradeCableReflectionScrollY >= 32.0f) {
+        gTradeCableReflectionScrollY -= 32.0f;
     }
 
     gMenuPanelBGTex1ScrollY -= 2.5f;
@@ -1802,7 +1802,7 @@ void TradeCable_RenderReflectionTexture(void) {
 }
 
 void TradeCable_DrawTubeEndCapReflective(s16 arg0, s16 arg1, f32 arg2, s16 arg3, s16 arg4, s16 arg5) {
-    static Gfx gMenuPanelSquareBGAlphaDL[] = {
+    static Gfx gTradeCableEndCapReflectiveDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
         gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
@@ -1830,7 +1830,7 @@ void TradeCable_DrawTubeEndCapReflective(s16 arg0, s16 arg1, f32 arg2, s16 arg3,
     sp80 = ROUND_MAX(1024.0f / arg2);
     temp_fa0_3 = ROUND_MAX(-1024.0f / arg2);
 
-    gSPDisplayList(gDisplayListHead++, gMenuPanelSquareBGAlphaDL);
+    gSPDisplayList(gDisplayListHead++, gTradeCableEndCapReflectiveDL);
     gDPLoadMultiBlock(gDisplayListHead++, gTradeCableReflectionBuffer->img_p, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0,
                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, 1);
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_30081A8, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP,
@@ -1932,7 +1932,7 @@ void TradeCable_DrawSequence(void) {
     gDPSetRenderMode(gDisplayListHead++, G_RM_OPA_SURF, G_RM_OPA_SURF2);
     gDPSetEnvColor(gDisplayListHead++, ptr->unk_14, ptr->unk_14, ptr->unk_14, 255);
 
-    MenuPanel_DrawMainBG(ptr->posY, ptr->rotation, ptr->unk_10);
+    TradeCable_DrawSequenceBG(ptr->posY, ptr->rotation, ptr->unk_10);
     tmp1 = gFragment41FrameCounter & 0x3F;
     sp83 = (ptr->unk_16 * tmp1) / 63u;
     if (gFragment41FrameCounter & 0x40) {

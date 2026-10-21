@@ -11,7 +11,7 @@ PaletteColor gUiColorPalette[] = {
     { 0x00000006, { 0xFF, 0xFF, 0x00, 0xFF } },
 };
 
-MoveCategoryColorGradient gMoveCategoryGradients[] = {
+MoveTypeColorGradient gMoveCategoryGradients[] = {
     { 0, { 0xF0, 0xF0, 0xF0, 0xFF }, { 0xF0, 0xF0, 0xF0, 0xFF } },
     { 1, { 0xF0, 0x96, 0x32, 0xFF }, { 0xF0, 0x78, 0x32, 0xFF } },
     { 2, { 0x50, 0x96, 0xF0, 0xFF }, { 0x3C, 0x64, 0xF0, 0xFF } },
@@ -65,6 +65,6 @@ PaletteColor* LabPC_GetMonStatusIcon(PokemonData* arg0) {
     return &gUiColorPalette[var_v1];
 }
 
-MoveCategoryColorGradient* LabPC_GetTypeColor(s32 arg0) {
+MoveTypeColorGradient* LabPC_GetTypeColor(s32 arg0) {
     return &gMoveCategoryGradients[Move_NormalizeDisplayIndex(arg0)];
 }

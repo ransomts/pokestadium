@@ -1117,7 +1117,7 @@ void LabPCList_BuildListScreen(unk_func_8830867C_02C* arg0, s32 arg1, s32 arg2, 
     arg0->dropdownMenu->unk_50 = 0x13E;
 
     arg0->messagePanel = mem_pool_alloc(argF, sizeof(WidgetTree_InitMessagePanel));
-    ((func88509F48)Memmap_GetFragmentVaddr(TextObjectGraphics_Init))(arg0->messagePanel, 0, 0, 0x228, 0x1A0, argF, arg10);
+    ((func88509F48)Memmap_GetFragmentVaddr(WidgetTree_InitMessagePanelWidget))(arg0->messagePanel, 0, 0, 0x228, 0x1A0, argF, arg10);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->messagePanel);
 
     arg0->messageLabel = mem_pool_alloc(argF, sizeof(unk_func_8850878C));
@@ -3040,7 +3040,7 @@ void LabPCList_BuildWidget(unk_func_8830867C* arg0, s32 arg1, s32 arg2, MemoryPo
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &sp8C->posX);
 
     sp80 = mem_pool_alloc(arg3, sizeof(unk_func_88500EE4));
-    ((func88500EE4)Memmap_GetFragmentVaddr(WidgetTree_InitTintedTexture))(sp80, 0, 0, 0x280, 0x1E0, gTitleScreenImage, D_88317354,
+    ((func88500EE4)Memmap_GetFragmentVaddr(WidgetTree_InitTintedTexture))(sp80, 0, 0, 0x280, 0x1E0, gLabPCListBackgroundImage, D_88317354,
                                                            D_88317358);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp8C->posX, &sp80->posX.posX);
 

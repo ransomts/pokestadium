@@ -64,10 +64,10 @@ static Fragment2_1GraphNode gPlayerResultNodes[4];
 
 static HudState gPlayerHudStates[4];
 
-static ResultGameState gGameState;
+static DrowzeeGameState gGameState;
 
 static HudState* gCurrentHudState;
-static ResultGameState* gDrowzeeGameStatePtr;
+static DrowzeeGameState* gDrowzeeGameStatePtr;
 static Fragment2_1GraphNode* gCurrentGraphNode;
 static u8 gHealthSegmentExactMatch;
 static s16 gCurrentHealthSegment;
@@ -110,7 +110,7 @@ void DrowzeeGame_InitPlayerSlots(void) {
         if (gMiniHudColorDefaults[i] == 0) {
             gPlayerHudStates[i].unk_000 = 4;
         } else {
-            gPlayerHudStates[i].unk_000 = gMenuState;
+            gPlayerHudStates[i].unk_000 = gMinigameComDifficulty;
         }
     }
 }
@@ -121,7 +121,7 @@ void DrowzeeGame_LoopDrowzeeIdleAnim(void) {
     }
 }
 
-void DrowzeeGame_AdvanceBreathPhase(ResultGameState* arg0) {
+void DrowzeeGame_AdvanceBreathPhase(DrowzeeGameState* arg0) {
     static u8 gBreathPhaseIndex = 0;
     static u8 D_86402998[] = {
         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x08, 0x08, 0x09,
@@ -817,7 +817,7 @@ void DrowzeeGame_InitCamera(void) {
 
     gDrowzeeCamDist = 0x900;
     gDrowzeeCamRotationY = 0;
-    gDrowzeeCamRotationX = 0x190;
+    gDrowzeeCamDistance = 0x190;
 
     gDrowzeeCamera->unk_24.near = 50.0f;
     gDrowzeeCamera->unk_24.far = 6400.0f;
@@ -825,7 +825,7 @@ void DrowzeeGame_InitCamera(void) {
 
     gDrowzeeCamera->unk_60.at.y = 25.0f;
 
-    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamRotationX, gDrowzeeCamDist, gDrowzeeCamRotationY);
+    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamDistance, gDrowzeeCamDist, gDrowzeeCamRotationY);
 }
 
 void DrowzeeGame_InitPlayerOverlays(void) {

@@ -25,12 +25,12 @@ static void* gTitleScratchBuffer;
 static void* gAudioBankBuffer;
 static u16 gMenuOption;
 static s16* gMenuStatePtr;
-static s32 gBorderEnabled;
+static s32 gPressStartEnabled;
 
 void Title_Init(void) {
 }
 
-void Title_DrawMenuOption(UNUSED s32 arg0, UNUSED s32 arg1) {
+void Title_DrawMenuOptionStub(UNUSED s32 arg0, UNUSED s32 arg1) {
 }
 
 void Title_PollDPad(void) {
@@ -165,11 +165,11 @@ void Title_DrawBackgroundImage(u8* arg0) {
 void Title_DrawFrame(void) {
     BgStage_DrawFrame();
     Title_DrawBackgroundImage(gTitleBgTexture);
-    if ((Cont_GetControllerBits() & 1) && (gBorderEnabled != 0)) {
+    if ((Cont_GetControllerBits() & 1) && (gPressStartEnabled != 0)) {
         Title_DrawPressStartBlink(0x6E, 0xAF);
     }
     Title_DrawNoControllerWarning();
-    Title_DrawMenuOption(0x64, 0x50);
+    Title_DrawMenuOptionStub(0x64, 0x50);
     BgStage_AdvanceFrame();
 }
 
@@ -290,16 +290,16 @@ s32 Title_Loop(void) {
     Input_SetRepeatController(gPlayer1Controller);
 
     while (var_s0 == 0) {
-        if (gBorderEnabled == 0) {
+        if (gPressStartEnabled == 0) {
             var_s2--;
             if (var_s2 <= 0) {
-                gBorderEnabled = 1;
+                gPressStartEnabled = 1;
             }
         }
 
         Controller_PollInputs();
 
-        if ((gPlayer1Controller->buttonPressed & 0x9000) && (gBorderEnabled != 0)) {
+        if ((gPlayer1Controller->buttonPressed & 0x9000) && (gPressStartEnabled != 0)) {
             Audio_PlaySoundEffectById(0xF);
             var_s0 = Title_ResolveStartPressState();
         } else if (Title_ShouldStartAttractDemo() != 0) {
@@ -358,7 +358,7 @@ void Title_LoadAssets(void) {
         gTitleBgTexture = BinArchive_GetFile(gTitleBgArchive, 0);
     }
 
-    gBorderEnabled = 0;
+    gPressStartEnabled = 0;
 }
 
 s32 Title_Main(UNUSED s32 arg0, s16* arg1) {

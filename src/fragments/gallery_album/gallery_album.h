@@ -14,7 +14,7 @@ void DrawGridPageCounter(GallerySceneGrid* arg0, s32 arg1, s32 arg2);
 void Gallery_AlbumDrawThumbnailFrame(s32 arg0, s32 arg1, s32 arg2, s32 arg3);
 void Gallery_AlbumDrawStickerBadge(s32 arg0, s32 arg1, u16 arg2);
 void Gallery_AlbumComputeEnlargeMotion(s32 arg0, s32* arg1, s32* arg2, f32* arg3);
-void DrawResultPanelImage(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5);
+void Gallery_AlbumDrawEnlargedPhoto(u16* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, f32 arg5);
 void Gallery_AlbumDrawThumbnails(s32 arg0, s32 arg1, GallerySceneGrid* arg2);
 void Gallery_AlbumDrawTitleBar(GallerySceneGrid* arg0, s32 arg1, s32 arg2);
 void Gallery_AlbumDrawEnlargeHint(s32 arg0);

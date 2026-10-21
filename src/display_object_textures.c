@@ -12,7 +12,7 @@ typedef struct ret_func_unk_D_800ABE10 {
     /* 0x00 */ char unk00[0x3];
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ MiniHudMainGraph** RentalSlotAnimData_PosePhase;
+    /* 0x08 */ ShadowContextNode** RentalSlotAnimData_PosePhase;
     /* 0x0C */ char unk0C[0x8];
     /* 0x14 */ func_unk_D_800ABE10 unk_14;
 } ret_func_unk_D_800ABE10;
@@ -20,7 +20,7 @@ typedef struct ret_func_unk_D_800ABE10 {
 // .bss
 unk_D_800ABE10 gAssetManager;
 
-void GeoLayout_ConvertTextures(MiniHudMainGraph* arg0, arg1_func_80010CA8 arg1) {
+void GeoLayout_ConvertTextures(ShadowContextNode* arg0, arg1_func_80010CA8 arg1) {
     s32 i;
     s32 j;
     GfxTextureInfo* var_s2 = arg0->unk_18;
@@ -184,7 +184,7 @@ Fragment* BinArchive_LoadFileToPool(MainPoolState* arg0, BinArchive* arg1, s32 a
 
 s32 Fragment_ProcessGeoLayout(MemoryBlock* arg0, Fragment* arg1, arg1_func_80010CA8 arg2) {
     s32 i;
-    MiniHudMainGraph* temp_v0_2;
+    ShadowContextNode* temp_v0_2;
     ret_func_unk_D_800ABE10* temp_v0;
     ret_func_unk_D_800ABE10* (*func)(s32, s32) = arg1;
 

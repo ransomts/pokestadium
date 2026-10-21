@@ -24,12 +24,12 @@ static char** gUnusedStringBank1;
 static char** gStatusConditionNames;
 static char** gMoveDescriptions;
 
-extern u8 gSummaryRibbonBar1Tex[];
-extern u8 gSummaryRibbonBar2Tex[];
-extern u8 gSummaryRibbonBar3Tex[];
-extern u8 gSummaryRibbonBar4Tex[];
+extern u8 gMoveDetailFrameTopTex[];
+extern u8 gMoveDetailFrameRightTex[];
+extern u8 gMoveDetailFrameBottomTex[];
+extern u8 gMoveDetailFrameLeftTex[];
 extern u8 gMoveDetailPanelOverlayTex[];
-extern u8 gMonPreviewModel[];
+extern u8 gMonPreviewBackdropTex[];
 extern u8 gSummaryBallIconTex[];
 extern u8 gSummaryReorderIconTex[];
 extern u8 gSummaryMoveDetailIconTex[];
@@ -277,7 +277,7 @@ s32 LabPC_DrawMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1,
 
     sp6C = Move_GetDisplayInfo(arg0->unk_2C);
     if (sp6C != NULL) {
-        MoveCategoryColorGradient* sp68 = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(sp6C->posX[1]);
+        MoveTypeColorGradient* sp68 = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(sp6C->posX[1]);
         s32 temp_v0_2 = Move_NormalizeDisplayIndex(sp6C->posX[1]);
 
         gDPPipeSync(gDisplayListHead++);
@@ -302,7 +302,7 @@ s32 LabPC_DrawMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1,
         Font_Printf(arg1 + 0x16, arg2, Text_GetString(NULL, 0, gMoveNames, sp6C->posX[0] - 1));
         Font_EndTexturedTextRendering();
     } else {
-        MoveCategoryColorGradient* sp1C = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(0);
+        MoveTypeColorGradient* sp1C = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(0);
 
         Font_BeginTranslucentTextRendering();
         Text_SetEnvColor(sp1C->rotation.r, sp1C->rotation.g, sp1C->rotation.b, sp1C->rotation.a);
@@ -490,7 +490,7 @@ s32 LabPC_DrawTypeListWidget(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32
     s32 var_s4;
     Color_RGBA8 sp68;
     char* temp_v0;
-    MoveCategoryColorGradient* temp_v0_3;
+    MoveTypeColorGradient* temp_v0_3;
     s32 tmp;
 
     if (arg0->unk_2C == NULL) {
@@ -873,7 +873,7 @@ s32 LabPC_DrawMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s
     s32 sp138;
     ret_func_8002ED08* sp134;
     MoveBattleData* sp130;
-    MoveCategoryColorGradient* sp12C;
+    MoveTypeColorGradient* sp12C;
     char* sp128;
     char* sp124;
     char* sp120;
@@ -899,24 +899,24 @@ s32 LabPC_DrawMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, sp12C->RentalSlotAnimData_PosePhase.r, sp12C->RentalSlotAnimData_PosePhase.g, sp12C->RentalSlotAnimData_PosePhase.b, sp12C->RentalSlotAnimData_PosePhase.a);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, gSummaryRibbonBar1Tex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailFrameTopTex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->posX.unk_14.posX + arg1) - 0x10) << 2,
                         (arg2 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, gSummaryRibbonBar2Tex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailFrameRightTex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, ((arg0->posX.unk_14.posX + arg1) - 0x10) << 2, arg2 << 2,
                         (arg0->posX.unk_14.posX + arg1) << 2, ((arg2 + arg0->posX.unk_14.posY) - 8) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, gSummaryRibbonBar3Tex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailFrameBottomTex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0x10) << 2, ((arg2 + arg0->posX.unk_14.posY) - 8) << 2,
                         (arg0->posX.unk_14.posX + arg1) << 2, (arg2 + arg0->posX.unk_14.posY) << 2,
                         G_TX_RENDERTILE, (arg0->posX.unk_14.posX * -0x20) + 0x400, 0, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, gSummaryRibbonBar4Tex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailFrameLeftTex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, (arg2 + 8) << 2, (arg1 + 0x10) << 2,
                         (arg2 + arg0->posX.unk_14.posY) << 2, G_TX_RENDERTILE, 0,
@@ -1036,7 +1036,7 @@ void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, Mode
     static Color_RGBA8 D_88605B70 = { 0x3C, 0x7B, 0x84, 0xFF };
     static Color_RGBA8 D_88605B74 = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 D_88605B78 = { 0x00, 0xF0, 0x00, 0xFF };
-    static Color_RGBA8 gWidgetFrameTex = { 0xFF, 0xFF, 0x00, 0xFF };
+    static Color_RGBA8 gWidgetFrameColor = { 0xFF, 0xFF, 0x00, 0xFF };
 
     UNUSED s32 pad;
     GridMenu* tmp;
@@ -1200,7 +1200,7 @@ void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, Mode
     ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(arg0->unk_6C);
 
     sp60 = mem_pool_alloc(arg5, sizeof(WidgetAnimatedFrame));
-    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(sp60, 0, 0, 0x10, 0x10, gWidgetFrameTex);
+    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(sp60, 0, 0, 0x10, 0x10, gWidgetFrameColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->posX.posX, &sp60->posX.posX);
     arg0->unk_6C->unk_1C = sp60;
 
@@ -1219,7 +1219,7 @@ void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, Mode
 }
 
 void LabPC_SetDetailPanelMon(LabPC_DetailPanel* arg0, PokemonData* arg1, s32 arg2) {
-    static Color_RGBA8 gSummaryNatureColors[] = { { 0x80, 0x18, 0x18, 0xFF },
+    static Color_RGBA8 gDetailPanelListFrameColors[] = { { 0x80, 0x18, 0x18, 0xFF },
                                         { 0x90, 0x60, 0x18, 0xFF },
                                         { 0x30, 0x60, 0x60, 0xFF } };
     UNUSED static Gfx gSummaryUnusedEndDL[] = {
@@ -1239,7 +1239,7 @@ void LabPC_SetDetailPanelMon(LabPC_DetailPanel* arg0, PokemonData* arg1, s32 arg
     LabPC_SetPreviewMon(arg0->unk_50, arg1);
     LabPC_SetTrainerInfoMon(arg0->unk_54, arg1);
 
-    arg0->unk_68->unk_2C = gSummaryNatureColors[arg2];
+    arg0->unk_68->unk_2C = gDetailPanelListFrameColors[arg2];
 }
 
 void LabPC_SetDetailPanelMode(LabPC_DetailPanel* arg0, s32 arg1) {
@@ -1463,7 +1463,7 @@ LabPC_DetailPanel* LabPC_CreateMonDetailPanel(LabPC_DetailPanelParams* arg0) {
     LabPC_DetailPanel* sp34;
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
-    sp38 = PokeIcon_CreateModelPreview(PokeIcon_AllocFramebuffers(1), 228, 160, 0, 0, 0xE0, 0xA0, gMonPreviewModel);
+    sp38 = PokeIcon_CreateModelPreview(PokeIcon_AllocFramebuffers(1), 228, 160, 0, 0, 0xE0, 0xA0, gMonPreviewBackdropTex);
     PokeIcon_OpenModelArchives();
     FRAGMENT_LOAD(fragment31);
 
@@ -1776,40 +1776,40 @@ u8 gSummaryReorderIconTex[] = {
 static Gfx gSummaryRibbonsIconEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 gSummaryRibbonBar1Tex[] = {
+u8 gMoveDetailFrameTopTex[] = {
     0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x48, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88,
     0x48, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x48, 0xFE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
     0x48, 0xFE, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0x48, 0xFE, 0xC9, 0x99, 0x99, 0x99, 0x99, 0x99,
     0x48, 0xFE, 0xC9, 0x88, 0x88, 0x88, 0x88, 0x88, 0x48, 0xFE, 0xC9, 0x84, 0x44, 0x44, 0x44, 0x44,
 };
-static Gfx gSummaryRibbonBar1EndDL[] = {
+static Gfx gMoveDetailFrameTopEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 gSummaryRibbonBar2Tex[] = {
+u8 gMoveDetailFrameRightTex[] = {
     0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84,
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x84, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEF, 0x84,
     0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xEF, 0x84, 0x99, 0x99, 0x99, 0x99, 0x99, 0x9C, 0xEF, 0x84,
     0x88, 0x88, 0x88, 0x88, 0x88, 0x9C, 0xEF, 0x84, 0x44, 0x44, 0x44, 0x44, 0x48, 0x9C, 0xEF, 0x84,
 };
-static Gfx gSummaryRibbonBar2EndDL[] = {
+static Gfx gMoveDetailFrameRightEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 gSummaryRibbonBar3Tex[] = {
+u8 gMoveDetailFrameBottomTex[] = {
     0x44, 0x44, 0x44, 0x44, 0x48, 0x9C, 0xEF, 0x84, 0x88, 0x88, 0x88, 0x88, 0x88, 0x9C, 0xEF, 0x84,
     0x99, 0x99, 0x99, 0x99, 0x99, 0x9C, 0xEF, 0x84, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xEF, 0x84,
     0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEF, 0x84, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x84,
     0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44,
 };
-static Gfx gSummaryRibbonBar3EndDL[] = {
+static Gfx gMoveDetailFrameBottomEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 gSummaryRibbonBar4Tex[] = {
+u8 gMoveDetailFrameLeftTex[] = {
     0x48, 0xFE, 0xC9, 0x84, 0x44, 0x44, 0x44, 0x44, 0x48, 0xFE, 0xC9, 0x88, 0x88, 0x88, 0x88, 0x88,
     0x48, 0xFE, 0xC9, 0x99, 0x99, 0x99, 0x99, 0x99, 0x48, 0xFE, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC,
     0x48, 0xFE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0x48, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
     0x48, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44,
 };
-static Gfx gSummaryRibbonBar4EndDL[] = {
+static Gfx gMoveDetailFrameLeftEndDL[] = {
     gsSPEndDisplayList(),
 };
 u8 gMoveDetailPanelOverlayTex[] = {
@@ -2165,7 +2165,7 @@ static u8 gMoveTypeIconGroundTex[] = {
 static Gfx gMoveTypeIconGroundEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 gSummaryRibbonBarMaskTex[] = {
+static u8 gMoveTypeIconRockTex[] = {
     0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01,
     0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF,
     0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0xA5, 0xEF, 0x9D, 0x6B, 0x8D, 0x69, 0x8D, 0x29, 0x8D, 0x29, 0x8D, 0x29, 0x8D,
@@ -2210,7 +2210,7 @@ static u8 gSummaryRibbonBarMaskTex[] = {
     0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF,
     0x01, 0xCF
 };
-static Gfx gSummaryRibbonBarMaskEndDL[] = {
+static Gfx gMoveTypeIconRockEndDL[] = {
     gsSPEndDisplayList(),
 };
 static u8 gMoveTypeIconBugTex[] = {
@@ -2643,13 +2643,13 @@ static u8 gMoveTypeIconDragonTex[] = {
     0x13, 0x15
 };
 u8* gMoveTypeIconTextures[] = {
-    gMoveTypeIconNormalTex, gMoveTypeIconFightingTex, gMoveTypeIconFlyingTex, gMoveTypeIconPoisonTex, gMoveTypeIconGroundTex, gSummaryRibbonBarMaskTex, gMoveTypeIconBugTex, gMoveTypeIconGhostTex,
+    gMoveTypeIconNormalTex, gMoveTypeIconFightingTex, gMoveTypeIconFlyingTex, gMoveTypeIconPoisonTex, gMoveTypeIconGroundTex, gMoveTypeIconRockTex, gMoveTypeIconBugTex, gMoveTypeIconGhostTex,
     gMoveTypeIconFireTex, gMoveTypeIconWaterTex, gMoveTypeIconGrassTex, gMoveTypeIconElectricTex, gMoveTypeIconPsychicTex, gMoveTypeIconIceTex, gMoveTypeIconDragonTex,
 };
 static Gfx gMoveTypeIconDisplayList6[] = {
     gsSPEndDisplayList(),
 };
-u8 gMonPreviewModel[] = {
+u8 gMonPreviewBackdropTex[] = {
     0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00,
     0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B,
     0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00,

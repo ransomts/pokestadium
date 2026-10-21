@@ -22,7 +22,7 @@ static Gfx D_84389588[] = {
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
     gsSPEndDisplayList(),
 };
-static Gfx gWaterSurfaceAltDL[] = {
+static Gfx gTrail40GridAltDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -43,7 +43,7 @@ static Gfx gWaterSurfaceAltDL[] = {
 };
 
 void Trail40GridAlt_Init(s16 arg0) {
-    WaterSurfaceVertex* var_v0;
+    Trail40Vertex* var_v0;
     s32 i;
     s32 j;
     s16 tmp1;
@@ -182,7 +182,7 @@ void Trail40GridAlt_Start(s32 arg0, s32 arg1) {
     }
 }
 
-void Trail40GridAlt_FillVertex(WaterSurfaceVertex* arg0, Vtx* arg1) {
+void Trail40GridAlt_FillVertex(Trail40Vertex* arg0, Vtx* arg1) {
     f32 r;
     f32 g;
     f32 b;
@@ -205,7 +205,7 @@ void Trail40GridAlt_FillVertex(WaterSurfaceVertex* arg0, Vtx* arg1) {
 }
 
 s32 Trail40GridAlt_IsComplete(void) {
-    WaterSurfaceVertex* var_s1;
+    Trail40Vertex* var_s1;
     s32 i;
     s32 j;
     f32 temp_fv1_2;
@@ -305,7 +305,7 @@ void Trail40GridAlt_Reset(void) {
 Gfx* Trail40GridAlt_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
-    WaterSurfaceVertex* var_s2;
+    Trail40Vertex* var_s2;
     s32 var_s4;
     Vtx* vtx;
     s32 idx;

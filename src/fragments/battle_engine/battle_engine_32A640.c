@@ -238,16 +238,16 @@ void BattleAnim_SetupEndEffects85And87GravityFallDelay(ParticleEffectInstance* a
             Particle_SetScaleScaled(arg0, 0.12f);
             arg0->unk_5C.y = -((ParticleMath_RandomRange(0xA) * 0.1f) + 0.5f);
             Particle_AddVelocityYScaled(arg0, ParticleMath_RandomRange(0x28) + 0x1E);
-            Particle_SetRandomVelocityXSymmetric(arg0, 0x1E, 0);
-            Particle_SetRandomVelocityZSymmetric(arg0, 0x1E, 0);
+            Particle_SetRandomPositionXSymmetric(arg0, 0x1E, 0);
+            Particle_SetRandomPositionZSymmetric(arg0, 0x1E, 0);
             break;
 
         case 1:
             Particle_SetScaleScaled(arg0, 0.2f);
             arg0->unk_5C.y = -((ParticleMath_RandomRange(4) * 0.1f) + 0.2f);
             Particle_AddVelocityYScaled(arg0, ParticleMath_RandomSigned(0x14) + 0x1E);
-            Particle_SetRandomVelocityXSymmetric(arg0, 0xF, 5);
-            Particle_SetRandomVelocityZSymmetric(arg0, 0x14, 5);
+            Particle_SetRandomPositionXSymmetric(arg0, 0xF, 5);
+            Particle_SetRandomPositionZSymmetric(arg0, 0x14, 5);
             break;
     }
 

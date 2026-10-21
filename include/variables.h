@@ -902,7 +902,7 @@ extern u8 gAudioStadiumSfxEnabled;
 extern s32 gMusicHandle;
 extern s32 gCurrentBgmHandle;
 extern u8 gBgmFadeState;
-extern u8 gPlayerActiveFlag[];
+extern u8 gPlayerRemainingPokemon[];
 extern u32 gCurrentStadiumPhase;
 extern s32 gStadiumPhaseSubstate;
 extern s32 gDefaultMusicVolume;

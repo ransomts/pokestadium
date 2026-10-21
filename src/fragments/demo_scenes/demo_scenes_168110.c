@@ -1,11 +1,11 @@
 #include "src/fragments/demo_scenes/demo_scenes.h"
 #include "src/matrix.h"
 
-typedef struct CameraModeFlag {
+typedef struct CameraFollowModelIds {
     u8 posX[1];
-} CameraModeFlag; // size = ??
+} CameraFollowModelIds; // size = ??
 
-static CameraModeFlag gCameraModeFlag = { 0x8E };
+static CameraFollowModelIds gCameraFollowModelIds = { 0x8E };
 
 s16 Intro_GetTrackedModelFacingOffset(void) {
     return gCameraTarget->unk_004.unk_01E.y + 0x8000;
@@ -23,7 +23,7 @@ s32 Util_ByteInArray(u8 arg0, u8* arg1, s32 arg2) {
 
 void Intro_ComputeFollowPoint(unk_D_86B0FA78* arg0, Vec3f* arg1) {
     f32 sp24 = 0.0f;
-    CameraModeFlag sp20 = gCameraModeFlag;
+    CameraFollowModelIds sp20 = gCameraFollowModelIds;
 
     if (Util_ByteInArray(gCameraTarget->modelId, sp20.posX, 1) != 0) {
         sp24 = gMonsterStageData.rotation / 1.5f;

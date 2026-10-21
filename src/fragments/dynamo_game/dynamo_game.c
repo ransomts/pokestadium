@@ -103,7 +103,7 @@ void DynamoGame_InitPlayerSlots(void) {
         if (gMiniHudColorDefaults[i] == 0) {
             gDynamoChargeBarData[i].unk_000 = 4;
         } else {
-            gDynamoChargeBarData[i].unk_000 = gMenuState;
+            gDynamoChargeBarData[i].unk_000 = gMinigameComDifficulty;
         }
     }
 }
@@ -716,7 +716,7 @@ void DynamoGame_InitCamera(void) {
 
     gDrowzeeCamDist = -0x200;
     gDrowzeeCamRotationY = 0;
-    gDrowzeeCamRotationX = 0xBE;
+    gDrowzeeCamDistance = 0xBE;
 
     gDrowzeeCamera->unk_24.near = 50.0f;
     gDrowzeeCamera->unk_24.far = 6400.0f;
@@ -724,7 +724,7 @@ void DynamoGame_InitCamera(void) {
 
     gDrowzeeCamera->unk_60.at.y = 51.0f;
 
-    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamRotationX, gDrowzeeCamDist, gDrowzeeCamRotationY);
+    Camera_ComputeEyeFromAngles(&gDrowzeeCamera->unk_60.at, &gDrowzeeCamera->unk_60.eye, gDrowzeeCamDistance, gDrowzeeCamDist, gDrowzeeCamRotationY);
 }
 
 void DynamoGame_LoadAssets(void) {

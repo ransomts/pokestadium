@@ -91,7 +91,7 @@ static Vtx gMonIconBackdropVtx[] = {
     VTX(30, -30, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gHealthBarDL_Segments[] = {
+static Gfx gMonIconDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -149,7 +149,7 @@ static Gfx gHealthBarDL_Segments[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gHealthBarBackDL[] = {
+static Gfx gMonIconBackdropDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
@@ -163,7 +163,7 @@ static Gfx gHealthBarBackDL[] = {
 };
 static u32 gMonIconNodeData[] = {
     0x17000000, 0x00000000,    0x00000000, 0x00000000, gMonIconFrameVtx, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, BattlePrepTeamIcons_DrawIconSingle, gHealthBarDL_Segments, 0x22050000, gHealthBarBackDL, 0x25000000, 0x06000000, 0x01000000,
+    0x08000000, BattlePrepTeamIcons_DrawIconSingle, gMonIconDL, 0x22050000, gMonIconBackdropDL, 0x25000000, 0x06000000, 0x01000000,
 };
 static Vtx gMonIconDoubleVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -251,7 +251,7 @@ static Vtx gSmallMonIconBackdropVtx[] = {
     VTX(22, -22, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(22, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gHPBarSegmentDL[] = {
+static Gfx gSmallMonIconDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -285,7 +285,7 @@ static Gfx gHPBarSegmentDL[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gHPBarBackDL[] = {
+static Gfx gSmallMonIconBackdropDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
@@ -299,13 +299,13 @@ static Gfx gHPBarBackDL[] = {
 };
 static u32 gSmallMonIconNodeData[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconVtx, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, gHPBarSegmentDL,
-    0x22050000, gHPBarBackDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, gSmallMonIconDL,
+    0x22050000, gSmallMonIconBackdropDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static u32 gSmallMonIconNodeDataOffset[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconVtx, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, gHPBarSegmentDL,
-    0x22050000, gHPBarBackDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, gSmallMonIconDL,
+    0x22050000, gSmallMonIconBackdropDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static Vtx gSmallMonIconDoubleVtx[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -323,7 +323,7 @@ static Vtx gSmallMonIconDoubleBackdropVtx[] = {
     VTX(14, -8, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(14, 20, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx gHPBarSegmentDLAlt[] = {
+static Gfx gSmallMonIconDoubleDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -342,7 +342,7 @@ static Gfx gHPBarSegmentDLAlt[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static Gfx gHPBarBackDLAlt[] = {
+static Gfx gSmallMonIconDoubleBackdropDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
@@ -356,13 +356,13 @@ static Gfx gHPBarBackDLAlt[] = {
 };
 static u32 gSmallMonIconDoubleNodeData[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconDoubleVtx, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gHPBarSegmentDLAlt,
-    0x22050000, gHPBarBackDLAlt, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gSmallMonIconDoubleDL,
+    0x22050000, gSmallMonIconDoubleBackdropDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
 static u32 gHPBarNodeDataDoubleBadgeMirror[] = {
     0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconDoubleVtx, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gHPBarSegmentDLAlt,
-    0x22050000, gHPBarBackDLAlt, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gSmallMonIconDoubleDL,
+    0x22050000, gSmallMonIconDoubleBackdropDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
 };
 
 s32 BattlePrepTeamIcons_DrawActiveTeamBadge(s32 arg0, SimpleGfxNode* arg1) {

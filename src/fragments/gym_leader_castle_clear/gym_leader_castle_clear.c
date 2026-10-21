@@ -53,7 +53,7 @@ static GraphNode* gClearScreenNode2;
 static unk_D_83101F00 gClearScreenNodes[2];
 static unk_D_83101F00* gNode1State;
 static unk_D_83101F00* gNode2State;
-static Glc_CircleWipeState gBorderAnimState;
+static Glc_CircleWipeState gCircleWipeState;
 static Glc_FadeAnimState gFadeAnimState;
 
 static Vtx gClearBannerVerts[] = {
@@ -261,24 +261,24 @@ s32 Glc_GeoSpriteCallback(s32 arg0, GraphNode* arg1) {
 }
 
 void Glc_InitCircleWipe(void) {
-    gBorderAnimState.posX = 0;
-    gBorderAnimState.posY = 0;
-    gBorderAnimState.RentalSlotAnimData_PosePhase = 7.0f;
+    gCircleWipeState.posX = 0;
+    gCircleWipeState.posY = 0;
+    gCircleWipeState.RentalSlotAnimData_PosePhase = 7.0f;
 }
 
 void Glc_UpdateCircleWipe(void) {
     s32 tmp;
 
-    switch (gBorderAnimState.posX) {
+    switch (gCircleWipeState.posX) {
         case 1:
-            gBorderAnimState.posY--;
-            gBorderAnimState.RentalSlotAnimData_PosePhase = (gBorderAnimState.posY * 7.0f) / gBorderAnimState.rotation;
+            gCircleWipeState.posY--;
+            gCircleWipeState.RentalSlotAnimData_PosePhase = (gCircleWipeState.posY * 7.0f) / gCircleWipeState.rotation;
 
-            tmp = gBorderAnimState.posY <= 0;
+            tmp = gCircleWipeState.posY <= 0;
             if (tmp) {
-                gBorderAnimState.posX = 2;
-                gBorderAnimState.posY = gBorderAnimState.rotation = 0;
-                gBorderAnimState.RentalSlotAnimData_PosePhase = 0.0f;
+                gCircleWipeState.posX = 2;
+                gCircleWipeState.posY = gCircleWipeState.rotation = 0;
+                gCircleWipeState.RentalSlotAnimData_PosePhase = 0.0f;
             }
             break;
 
@@ -300,20 +300,20 @@ void Glc_DrawCircleWipe(void) {
     s32 temp_ft2;
 
     Gfx_SetScissorRect(&gDisplayListHead, 0, 0, 0x280, 0x1E0);
-    if (gBorderAnimState.posX == 0) {
+    if (gCircleWipeState.posX == 0) {
         return;
     }
 
-    if ((gBorderAnimState.RentalSlotAnimData_PosePhase <= 0.0f) || (gBorderAnimState.posX == 2)) {
+    if ((gCircleWipeState.RentalSlotAnimData_PosePhase <= 0.0f) || (gCircleWipeState.posX == 2)) {
         gSPDisplayList(gDisplayListHead++, gDL_FillCycle);
         gDPSetFillColor(gDisplayListHead++, 0x00010001);
         gDPFillRectangle(gDisplayListHead++, 0, 0, 639, 479);
         return;
     }
 
-    temp_ft2 = ROUND_MAX(1024.0f / gBorderAnimState.RentalSlotAnimData_PosePhase);
-    sp9E = ROUND_MAX(128.0f * gBorderAnimState.RentalSlotAnimData_PosePhase);
-    sp9C = ROUND_MAX(128.0f * gBorderAnimState.RentalSlotAnimData_PosePhase);
+    temp_ft2 = ROUND_MAX(1024.0f / gCircleWipeState.RentalSlotAnimData_PosePhase);
+    sp9E = ROUND_MAX(128.0f * gCircleWipeState.RentalSlotAnimData_PosePhase);
+    sp9C = ROUND_MAX(128.0f * gCircleWipeState.RentalSlotAnimData_PosePhase);
 
     sp38 = (0x280 - sp9E) / 2;
     sp40 = (0x1E0 - sp9C) / 2;
@@ -371,9 +371,9 @@ void Glc_DrawCircleWipe(void) {
 
 void Glc_StartCircleWipe(s16 arg0) {
     if (arg0 > 0) {
-        gBorderAnimState.posX = 1;
-        gBorderAnimState.posY = gBorderAnimState.rotation = arg0;
-        gBorderAnimState.RentalSlotAnimData_PosePhase = 7.0f;
+        gCircleWipeState.posX = 1;
+        gCircleWipeState.posY = gCircleWipeState.rotation = arg0;
+        gCircleWipeState.RentalSlotAnimData_PosePhase = 7.0f;
     }
 }
 
@@ -566,7 +566,7 @@ s32 Glc_ClearAdvanceState(void) {
             break;
 
         case 2:
-            if (gBorderAnimState.posX == 2) {
+            if (gCircleWipeState.posX == 2) {
                 sp1C = 0;
             }
             break;

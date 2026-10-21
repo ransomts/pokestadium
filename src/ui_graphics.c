@@ -70,7 +70,7 @@ Gfx gDL_FillCycle[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx gTransferPakErrorBorderDL[] = {
+Gfx gDL_CopyDecal[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_COPY),
     gsDPSetTexturePersp(G_TP_NONE),
@@ -115,7 +115,7 @@ Gfx gDL_PalettedIcon[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx gDL_ExpBarPalCycle[] = {
+Gfx gDL_UnusedPalCycle[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
@@ -379,7 +379,7 @@ void Ui_DrawBorderedPanelNoFill(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
 void Ui_DrawTextureMarker(s32 arg0, s32 arg1) {
     if (StageContext_IsHighResolution() != 0) {
-        gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+        gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
         Gfx_DrawTextureRgba16(arg0, arg1, 0x20, 0x16, D_10031D0, 0x20, 0x200000);
     } else {
         gSPDisplayList(gDisplayListHead++, gDL_PalettedIcon);
@@ -564,7 +564,7 @@ void Ui_Draw20x20Icon(s32 arg0, s32 arg1, s32 arg2) {
         var_t4 = D_2004000;
     }
 
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
     gDPLoadTextureBlock(gDisplayListHead++, var_t4, G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + 0x13) << 2, (arg1 + 0x13) << 2,
@@ -586,7 +586,7 @@ void BattleHud_DrawHpBarTexture(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4
         spDC = D_1003B70;
     }
 
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_1003930, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 12, 0,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,

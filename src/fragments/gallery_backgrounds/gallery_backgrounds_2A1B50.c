@@ -19,7 +19,7 @@ static PhotoSceneControl* gCurrentCamEntrySpecial;
 PhotoMonSpecies gGallerySpecialSpecies;
 s32 gGallerySpecialUnlocked;
 s32 gGallerySpecialViewed;
-s32 gGalleryAudioStateFlag;
+s32 gGallerySpecialUnlockEnabled;
 static SessionModeSettings gGallerySessionSettings;
 GalleryCursor gGallerySelection;
 GalleryCursor gGalleryMainSelectionCam;
@@ -57,9 +57,9 @@ void Gallery_LoadUnlockedBackgrounds(void) {
 
     Save_GetModeSettings(&gGallerySessionSettings, 1);
     if (gGallerySessionSettings.posX == 0x1F8) {
-        gGalleryAudioStateFlag = 1;
+        gGallerySpecialUnlockEnabled = 1;
     } else {
-        gGalleryAudioStateFlag = 0;
+        gGallerySpecialUnlockEnabled = 0;
     }
 
     gCurrentCamEntry = &gGalleryCamEntries[0];

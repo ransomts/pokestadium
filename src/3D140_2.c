@@ -186,7 +186,7 @@ extern u8 gAnnouncerMoveDataMoves101To165[];
 extern u8 gAnnouncerTypeEffectivenessTable[];
 extern s32 gAudioActiveFlag;
 extern u8 gTeamScores[4];
-extern u8 gPlayerActiveFlag[2];
+extern u8 gPlayerRemainingPokemon[2];
 extern u8 gPlayerSideActiveIndex[4];
 extern u8 gPlayerSideMap[4];
 extern u8 gRecentMoveCount[];
@@ -329,7 +329,7 @@ u8 gAnnouncerMoveDataMoves101To165[196] = { 0x29, 0, 8, 0x52, 0, 0, 0x3B, 0, 0, 
 u8 gAnnouncerTypeEffectivenessTable[228] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 2, 2, 0, 3, 3, 0, 0, 0, 0, 0, 3, 2, 0, 2, 0, 3, 2, 2, 2, 0, 0, 0, 3, 0, 0, 0, 3, 0, 2, 0, 0, 3, 2, 2, 0, 0, 0, 1, 3, 0, 0, 0, 0, 2, 0, 2, 3, 0, 2, 0, 0, 2, 3, 2, 0, 2, 3, 0, 2, 0, 2, 2, 0, 3, 2, 0, 0, 3, 3, 0, 0, 3, 0, 3, 3, 0, 0, 0, 0, 3, 0, 2, 0, 2, 2, 2, 3, 1, 0, 0, 0, 0, 0, 3, 0, 0, 2, 2, 0, 0, 3, 2, 2, 0, 0, 3, 0, 3, 2, 0, 0, 3, 0, 1, 0, 2, 3, 0, 0, 0, 0, 0, 2, 3, 0, 3, 0, 0, 0, 0, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 3, 3, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 3, 0, 2, 0, 0, 2, 3, 0, 0, 2, 0, 0, 3, 0, 0, 0, 3, 2, 0, 2, 3, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0 };
 s32 gAudioActiveFlag = 1;
 u8 gTeamScores[4] = { 3, 3, 3, 3 };
-u8 gPlayerActiveFlag[2] = { 3, 3 };
+u8 gPlayerRemainingPokemon[2] = { 3, 3 };
 u8 gPlayerSideActiveIndex[4] = { 0, 1, 0, 0 };
 u8 gPlayerSideMap[4] = { 1, 2, 1, 2 };
 u8 gRecentMoveCount[4] = { 0, 0, 0, 0 };
@@ -543,12 +543,12 @@ void Audio_ConfigureChannelGroups(u8 arg0, u8 arg1, u8 arg2, u8 arg3) {
     gPlayerSideMap[3] = arg3;
     gPlayerSideActiveIndex[0] = 0xFF;
     gPlayerSideActiveIndex[1] = 0xFF;
-    gPlayerActiveFlag[0] = 0;
-    gPlayerActiveFlag[1] = 0;
+    gPlayerRemainingPokemon[0] = 0;
+    gPlayerRemainingPokemon[1] = 0;
     for (i = 0; i < 2; i++) {
         for (j = 0; j < 4; j++) {
             if (i + 1 == gPlayerSideMap[j]) {
-                gPlayerActiveFlag[i] += gTeamScores[j];
+                gPlayerRemainingPokemon[i] += gTeamScores[j];
             }
         }
     }
@@ -761,10 +761,10 @@ void AudioFrameUpdate(s32 arg0) {
                 gAudioFaintedSidePlusOne = 2;
             }
 
-            if (gPlayerActiveFlag[0] >= gPlayerActiveFlag[1]) {
-                var_v0 = gPlayerActiveFlag[0] - gPlayerActiveFlag[1];
+            if (gPlayerRemainingPokemon[0] >= gPlayerRemainingPokemon[1]) {
+                var_v0 = gPlayerRemainingPokemon[0] - gPlayerRemainingPokemon[1];
             } else {
-                var_v0 = gPlayerActiveFlag[1] - gPlayerActiveFlag[0];
+                var_v0 = gPlayerRemainingPokemon[1] - gPlayerRemainingPokemon[0];
             }
 
             if (var_v0 >= 2) {
@@ -772,7 +772,7 @@ void AudioFrameUpdate(s32 arg0) {
                 return;
             }
 
-            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+            if ((gPlayerRemainingPokemon[0] == 1) && (gPlayerRemainingPokemon[1] == 1)) {
                 if (gAudioClimaxMusicPlayed != 0) {
                     gAudioClimaxMusicPlayed = 0;
                     var_a0 = 0x290;
@@ -783,7 +783,7 @@ void AudioFrameUpdate(s32 arg0) {
                 }
             block_53:
                 Audio_QueueSequenceId(var_a0);
-            } else if (gPlayerActiveFlag[gAudioFaintedSidePlusOne - 1] == 1) {
+            } else if (gPlayerRemainingPokemon[gAudioFaintedSidePlusOne - 1] == 1) {
                 Audio_QueueSequenceId(0x26A);
             } else {
                 Audio_QueueSoundAvoidingRecent(gAudioCueTable_0x269);
@@ -792,10 +792,10 @@ void AudioFrameUpdate(s32 arg0) {
         }
 
         if (gAudioFaintedSidePlusOne != 0) {
-            if (((gPlayerActiveFlag[0] == 1) || (gPlayerActiveFlag[1] == 1)) && (gPlayerActiveFlag[0] < 4) &&
-                (gPlayerActiveFlag[1] < 4)) {
-                if (gPlayerActiveFlag[0] == 1) {
-                    switch (gPlayerActiveFlag[1]) {
+            if (((gPlayerRemainingPokemon[0] == 1) || (gPlayerRemainingPokemon[1] == 1)) && (gPlayerRemainingPokemon[0] < 4) &&
+                (gPlayerRemainingPokemon[1] < 4)) {
+                if (gPlayerRemainingPokemon[0] == 1) {
+                    switch (gPlayerRemainingPokemon[1]) {
                         case 1:
                             Audio_QueueSequenceId(0x260);
                             Audio_QueueSequenceId(0x266);
@@ -824,7 +824,7 @@ void AudioFrameUpdate(s32 arg0) {
                     return;
                 }
 
-                switch (gPlayerActiveFlag[0]) {
+                switch (gPlayerRemainingPokemon[0]) {
                     case 2:
                         Audio_QueueSequenceId(0x25E);
                         if (gAudioFaintedSidePlusOne == 2) {
@@ -868,9 +868,9 @@ void AudioFrameUpdate(s32 arg0) {
             }
 
             gAudioFaintedSidePlusOne = 0;
-            switch (gPlayerActiveFlag[0]) {
+            switch (gPlayerRemainingPokemon[0]) {
                 case 2:
-                    switch (gPlayerActiveFlag[1]) {
+                    switch (gPlayerRemainingPokemon[1]) {
                         case 2:
                             Audio_QueueSequenceId(0x25D);
                             Audio_QueueSequenceId(0x268);
@@ -888,7 +888,7 @@ void AudioFrameUpdate(s32 arg0) {
                     break;
 
                 case 3:
-                    if (gPlayerActiveFlag[1] == 2) {
+                    if (gPlayerRemainingPokemon[1] == 2) {
                         Audio_QueueSequenceId(0x25B);
                         Audio_QueueSequenceId(0x263);
                     } else {
@@ -1136,7 +1136,7 @@ void Audio_ProcessBattleInfo(s32 arg0, PokemonAudioInfo* arg1) {
             return;
         }
 
-        if ((gPlayerActiveFlag[side] == 2) && (gPlayerActiveFlag[side ^ 1] == 3)) {
+        if ((gPlayerRemainingPokemon[side] == 2) && (gPlayerRemainingPokemon[side ^ 1] == 3)) {
             if ((((u32)gAudioInfoPtr[side ^ 1]->unk_0C * 100) / gAudioInfoPtr[side ^ 1]->unk_28) < 0x32) {
                 if (gAudioLowHPWarningFlag == 0) {
                     if (changed == 0) {
@@ -1154,7 +1154,7 @@ void Audio_ProcessBattleInfo(s32 arg0, PokemonAudioInfo* arg1) {
 found_value:
     if (MoveQueueFlag[side] == 0) {
         if (gAudioQueueSfxToggle == 0) {
-            if (gPlayerActiveFlag[side] < 2) {
+            if (gPlayerRemainingPokemon[side] < 2) {
                 if ((osGetTime() % 2) == 0) {
                     Audio_QueueSequenceId(2);
                 } else {
@@ -1226,7 +1226,7 @@ void RemovePlayer(u32 arg0) {
     }
     sp1F--;
     gTeamScores[arg0]--;
-    gPlayerActiveFlag[sp1F]--;
+    gPlayerRemainingPokemon[sp1F]--;
     MoveQueueFlag[sp1F] = 0;
     if (gAudioInfoPtr[0] == 0 || gAudioInfoPtr[1] == 0) {
         return;
@@ -1452,7 +1452,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0x5:
-            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+            if ((gPlayerRemainingPokemon[0] == 1) && (gPlayerRemainingPokemon[1] == 1)) {
                 Audio_QueueSoundWithFallbackList(0x17D, &gAnnouncerCueBothLastPokemon, &gAudioEffectStateSleepCount[temp_s0]);
             } else {
                 Audio_QueueSoundWithFallbackList(0x17D, gAnnouncerCueSleep, &gAudioEffectStateSleepCount[temp_s0]);
@@ -1460,7 +1460,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0x7:
-            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+            if ((gPlayerRemainingPokemon[0] == 1) && (gPlayerRemainingPokemon[1] == 1)) {
                 Audio_QueueSoundWithFallbackList(0x17E, gAnnouncerCueFreezeLastPokemon, &gAudioEffectStateFreezeCount[temp_s0]);
             } else {
                 Audio_QueueSoundWithFallbackList(0x17E, gAnnouncerCueFreeze, &gAudioEffectStateFreezeCount[temp_s0]);
@@ -1468,7 +1468,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0x10:
-            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+            if ((gPlayerRemainingPokemon[0] == 1) && (gPlayerRemainingPokemon[1] == 1)) {
                 Audio_QueueSoundWithFallbackList(0x17F, &gAnnouncerCueBothLastPokemon, &gAudioEffectStateParalysisCount[temp_s0]);
             } else {
                 Audio_QueueSoundWithFallbackList(0x17F, gAnnouncerCueParalysis, &gAudioEffectStateParalysisCount[temp_s0]);
@@ -1476,7 +1476,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
             gCommandQueueCount = 0;
             return;
         case 0x8:
-            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+            if ((gPlayerRemainingPokemon[0] == 1) && (gPlayerRemainingPokemon[1] == 1)) {
                 Audio_QueueSoundWithFallbackList(0x17C, &gAnnouncerCueBothLastPokemon, &gAudioEffectStateCantMoveCount[temp_s0]);
             } else {
                 Audio_QueueSoundWithFallbackList(0x17C, &gAnnouncerCueCantMove, &gAudioEffectStateCantMoveCount[temp_s0]);
@@ -1485,7 +1485,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
             return;
         case 0x9:
         case 0xA:
-            if ((gPlayerActiveFlag[0] == 1) && (gPlayerActiveFlag[1] == 1)) {
+            if ((gPlayerRemainingPokemon[0] == 1) && (gPlayerRemainingPokemon[1] == 1)) {
                 Audio_QueueSequenceId(0x180);
             } else {
                 Audio_QueueSequenceId(0x17C);
@@ -1640,7 +1640,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
             if (gAudioEffectMissCrashPlayed[temp_s0 ^ 1] != 0) {
                 Audio_QueueSoundAvoidingRecent(gAnnouncerCueMissRepeated);
             } else {
-                if ((gAudioEstimateMinus3Latched != 0) || ((gPlayerActiveFlag[temp_s0 ^ 1] == 1) && (gAudioInfoPtr[temp_s0 ^ 1]->unk_0C < 0x13))) {
+                if ((gAudioEstimateMinus3Latched != 0) || ((gPlayerRemainingPokemon[temp_s0 ^ 1] == 1) && (gAudioInfoPtr[temp_s0 ^ 1]->unk_0C < 0x13))) {
                     Audio_QueueSoundAvoidingRecent(gAnnouncerCueMissNearKnockout);
                     Audio_PlayCommand(0x16, gAudioEffectId, 0);
                 } else {
@@ -1828,7 +1828,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
                 Audio_QueueSequenceId(0x68);
                 Audio_PlayCommand(0x16, gAudioEffectId, 0);
             } else {
-                if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (gPlayerActiveFlag[temp_s0 ^ 1] >= 2)) {
+                if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (gPlayerRemainingPokemon[temp_s0 ^ 1] >= 2)) {
                     Audio_QueueSoundAvoidingRecent(gAnnouncerCueSuperEffectiveEarly);
                 } else {
                     Audio_QueueSoundAvoidingRecent(gAnnouncerCueCriticalSuperEffectiveDamage);
@@ -1850,7 +1850,7 @@ void Audio_ProcessCommandQueue(s32 arg0) {
         gAudioQueueDelayCounter = 0;
         osSetIntMask(mask);
         gAudioRecentHeavyHitFlag = 1;
-        if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (gPlayerActiveFlag[temp_s0 ^ 1] >= 2)) {
+        if ((gHPHistory[temp_s0 ^ 1].unk_78 < 2U) && (gPlayerRemainingPokemon[temp_s0 ^ 1] >= 2)) {
             Audio_QueueSoundAvoidingRecent(gAnnouncerCueSuperEffectiveEarly);
         } else {
             Audio_QueueSoundAvoidingRecent(gAnnouncerCueSuperEffectiveDamage);
@@ -2173,7 +2173,7 @@ void Audio_StartBattleMusicSequence(void) {
         Audio_StartMusicTrack(0x3D);
         Audio_PlayCommand(0x16, gAudioEffectId, 0);
         if (gCurrentStadiumPhase == 0xC) {
-            if (!(gStadiumPhaseSubstate & 3) && (*gPlayerActiveFlag != 0)) {
+            if (!(gStadiumPhaseSubstate & 3) && (*gPlayerRemainingPokemon != 0)) {
                 Audio_QueueSequenceId(0xCA);
                 return;
             }
@@ -2181,18 +2181,18 @@ void Audio_StartBattleMusicSequence(void) {
             return;
         }
         if (gCurrentStadiumPhase == 0xD) {
-            if ((gStadiumPhaseSubstate == 4) && (*gPlayerActiveFlag != 0)) {
+            if ((gStadiumPhaseSubstate == 4) && (*gPlayerRemainingPokemon != 0)) {
                 Audio_QueueSequenceId(0xCA);
                 return;
             }
-            if ((gStadiumPhaseSubstate == 5) && (*gPlayerActiveFlag != 0)) {
+            if ((gStadiumPhaseSubstate == 5) && (*gPlayerRemainingPokemon != 0)) {
                 Audio_QueueSequenceId(0xCB);
                 return;
             }
             Audio_QueueSequenceId(0xC8);
             return;
         }
-        if ((gStadiumPhaseSubstate == 8) && (*gPlayerActiveFlag != 0)) {
+        if ((gStadiumPhaseSubstate == 8) && (*gPlayerRemainingPokemon != 0)) {
             Audio_QueueSequenceId(0xC9);
             return;
         }
@@ -2618,7 +2618,7 @@ u32 Battle_EstimateMoveDamage(u32 arg0, PokemonAudioInfo* arg1, PokemonAudioInfo
         prevA = 1;
     }
     hpA = (u32)arg2->unk_28;
-    if (gPlayerActiveFlag[side ^ 1] == 1) {
+    if (gPlayerRemainingPokemon[side ^ 1] == 1) {
         mulA = 1.1f;
     } else {
         mulA = 1.0f;
@@ -2629,7 +2629,7 @@ u32 Battle_EstimateMoveDamage(u32 arg0, PokemonAudioInfo* arg1, PokemonAudioInfo
         prevB = 1;
     }
     hpB = (u32)arg1->unk_28;
-    if (gPlayerActiveFlag[side] == 1) {
+    if (gPlayerRemainingPokemon[side] == 1) {
         mulB = 1.1f;
     } else {
         mulB = 1.0f;

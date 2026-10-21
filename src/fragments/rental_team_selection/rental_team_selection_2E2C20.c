@@ -222,7 +222,7 @@ void TeamSelection_Preview_DrawMovePanel(s16 arg0, s16 arg1, s32 arg2) {
     s16 var_a3;
 
     if (arg2 != 0) {
-        gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+        gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 
         for (i = 0; i < 0x54; i += 0x14) {

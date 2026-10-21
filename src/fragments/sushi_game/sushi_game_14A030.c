@@ -20,7 +20,7 @@ static const u32 gSushiName_Uni[] = { 0xA4A6A4CB, 0x00000000 }; // "うに"
 static f32 gSushiOrbitRadius = 230.0f;
 static Vec3f gSushiOrbitCenter = { 0.0f, 35.0f, 0.0f };
 static Vec3f gSushiTargetOffset = { 3.0f, 0.0f, 17.0f };
-static f32 gSushiHeightOffset = 10.0f;
+static f32 gSushiPlateAngleOffset = 10.0f;
 s32 gSushiOrderIndices[] = {
     8, 5, 2, 3, 6, 7, 4, 1,
 };
@@ -169,7 +169,7 @@ f32 SushiGame_ComputePlateDistance(SushiPlate* arg0, Vec3f* arg1, Vec3f* arg2) {
     f32 var_fv1;
     SushiPlateNode* ptr = arg0->unk_38;
 
-    var_fv1 = (0.5f * gSushiHeightOffset) + gSushiRotationAngle + (30.0f * ptr->unk_000);
+    var_fv1 = (0.5f * gSushiPlateAngleOffset) + gSushiRotationAngle + (30.0f * ptr->unk_000);
     if (var_fv1 >= 360.0f) {
         var_fv1 -= 360.0f;
     }

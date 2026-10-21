@@ -1144,7 +1144,7 @@ void BattlePrep_LoadBannerAssets(gBannerState* arg0) {
 }
 
 void BattlePrep_AdjustBannerTextureOffset(gBannerState* arg0) {
-    MiniHudMainGraph* ptr;
+    ShadowContextNode* ptr;
     s32 var_v0;
     s32 var_v1;
     u8* var_a0;
@@ -1219,7 +1219,7 @@ void BattlePrep_LoadBannerGeoLayouts(gBannerState* arg0) {
     MainPool_FinalizeAllocation(temp_v0);
 }
 
-void BattlePrep_SetVertexGradientColors(MiniHudMainGraph* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2) {
+void BattlePrep_SetVertexGradientColors(ShadowContextNode* arg0, Color_RGBA8* arg1, Color_RGBA8* arg2) {
     Vtx* var_v0 = arg0->unk_20;
     s16 temp_v1 = arg0->unk_26 / 2;
     s16 i;
@@ -1451,7 +1451,7 @@ void BattlePrep_BadgeRevealSpin(gBadgeCarouselAnim* arg0) {
         if (gSessionContext.unk_0000 == 7) {
             GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_30[gSessionContext.unk_0003 - 1]);
 
-            gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+            gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
             Gfx_DrawTextureRgba16(4, 0x24, 0x38, 0x1C, &arg0->unk_10[gSessionContext.unk_0003 - 1][0x208], 0x40, 0x200000);
             Gfx_DrawTextureRgba16(4, 0x40, 0x38, 0x1C, &arg0->unk_10[gSessionContext.unk_0003 - 1][0x1008], 0x40, 0x200000);
@@ -1537,7 +1537,7 @@ void BattlePrep_InitBadgeCarousel(gBadgeCarouselAnim* arg0, Fragment2_1GraphNode
 void BattlePrep_RenderBadgeBackground(gBadgeCarouselAnim* arg0, s16 arg1, char* arg2) {
     GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_30[arg1]);
 
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
     Gfx_DrawTextureRgba16(0, 0, 0x40, 0x20, D_3012000, 0x40, 0x200000);
     Gfx_DrawTextureRgba16(0, 0x20, 0x40, 0x20, D_3013000, 0x40, 0x200000);

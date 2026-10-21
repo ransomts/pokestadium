@@ -234,20 +234,20 @@ void geo_layout_cmd_noop(void) {
 }
 
 void geo_layout_cmd_create_fog(void) {
-    GeoCmd_CreateColorRect* cmd = (GeoCmd_CreateColorRect*)gGeoLayoutCommand;
+    GeoCmd_CreateFog* cmd = (GeoCmd_CreateFog*)gGeoLayoutCommand;
 
     register_graph_node(GeoNode_CreateFog(gGraphNodePool, NULL, cmd->rotation, cmd->unk_06, cmd->r, cmd->g, cmd->b, 0xFF));
 
-    gGeoLayoutCommand += sizeof(GeoCmd_CreateColorRect);
+    gGeoLayoutCommand += sizeof(GeoCmd_CreateFog);
 }
 
 void geo_layout_cmd_create_light(void) {
-    GeoCmd_CreateColoredVertex* cmd = (GeoCmd_CreateColoredVertex*)gGeoLayoutCommand;
+    GeoCmd_CreateLight* cmd = (GeoCmd_CreateLight*)gGeoLayoutCommand;
 
     register_graph_node(GeoNode_CreateLight(gGraphNodePool, NULL, (cmd->rotation << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, cmd->r,
                                 cmd->g, cmd->b, cmd->a));
 
-    gGeoLayoutCommand += sizeof(GeoCmd_CreateColoredVertex);
+    gGeoLayoutCommand += sizeof(GeoCmd_CreateLight);
 }
 
 void geo_layout_cmd_skip(void) {
@@ -356,7 +356,7 @@ void geo_layout_cmd_create_model_part(void) {
     Vec3f sp34;
     Vec3f sp28;
     Fragment2_1GraphNode* tmp;
-    GeoCmd_CreateShadowNode* cmd = (GeoCmd_CreateShadowNode*)gGeoLayoutCommand;
+    GeoCmd_CreateModelPart* cmd = (GeoCmd_CreateModelPart*)gGeoLayoutCommand;
 
     Vec3f_FromVec3s(&sp34, &cmd->unk_0A);
 
@@ -368,21 +368,21 @@ void geo_layout_cmd_create_model_part(void) {
     tmp = GeoNode_CreateModelPart(gGraphNodePool, NULL, cmd->posY, &sp34, &sp40, &sp28);
     register_graph_node(tmp);
 
-    gGeoLayoutCommand += sizeof(GeoCmd_CreateShadowNode);
+    gGeoLayoutCommand += sizeof(GeoCmd_CreateModelPart);
 }
 
 void geo_layout_cmd_create_display_list_matrix(void) {
     Vec3f sp34;
     Vec3s sp2C;
     unk_D_86002F34_alt8* tmp;
-    GeoCmd_CreateBillboard* cmd = (GeoCmd_CreateBillboard*)gGeoLayoutCommand;
+    GeoCmd_CreateDisplayListMatrix* cmd = (GeoCmd_CreateDisplayListMatrix*)gGeoLayoutCommand;
 
     Vec3f_FromVec3s(&sp34, &cmd->unk_0A);
     Vec3s_SetComponents(&sp2C, (cmd->rotation << 0xF) / 180, (cmd->unk_06 << 0xF) / 180, (cmd->RentalSlotAnimData_PosePhase << 0xF) / 180);
     tmp = GeoNode_CreateDisplayListMatrixFromTransform(gGraphNodePool, NULL, cmd->TrainerSlotSaveData_GamePort, cmd->unk_10, &sp34, &sp2C);
     register_graph_node(tmp);
 
-    gGeoLayoutCommand += sizeof(GeoCmd_CreateBillboard);
+    gGeoLayoutCommand += sizeof(GeoCmd_CreateDisplayListMatrix);
 }
 
 void geo_layout_cmd_create_scale(void) {

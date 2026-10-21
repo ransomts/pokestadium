@@ -17,7 +17,7 @@
 #include "src/stage_loader.h"
 #include "src/pokemon_stats.h"
 
-typedef void (*ThreadEntries)(TextObjectContext*);
+typedef void (*ThreadEntries)(LabPC_ScreenContext*);
 
 typedef struct unk_D_88217D10 {
     /* 0x00 */ s32 posX;
@@ -59,16 +59,16 @@ typedef struct unk_func_8820634C_arg2 {
     /* 0x0C */ s32 unk_0C;
 } unk_func_8820634C_arg2; // size = 0x54
 
-void LabPC_PokemonSessionThread(TextObjectContext*);
-void LabPC_PrizePokemonThread(TextObjectContext*);
+void LabPC_PokemonSessionThread(LabPC_ScreenContext*);
+void LabPC_PrizePokemonThread(LabPC_ScreenContext*);
 void LabPC_SwapMenu_RefreshHighlight(unk_func_8820B12C_02C*);
-s32 LabPC_SwapScreen_UpdatePageSelection(TextObjectRenderer*);
+s32 LabPC_SwapScreen_UpdatePageSelection(LabPC_SwapScreen*);
 void LabPC_SwapMenu_SetSelectMode(unk_func_8820B12C_02C*, s32);
 void LabPC_SwapMenu_SetState(unk_func_8820B12C_02C*, s32);
 s32 LabPC_SwapMenuInput(unk_func_8820B12C_02C*, Controller*);
-s32 LabPC_HandleInput(TextObjectRenderer*, Controller*);
-void LabPC_SwapScreen_SetMenuState(TextObjectRenderer*, s32);
-void LabPC_InitSwapController(unk_func_8820B12C*, TextObjectRenderer*);
+s32 LabPC_HandleInput(LabPC_SwapScreen*, Controller*);
+void LabPC_SwapScreen_SetMenuState(LabPC_SwapScreen*, s32);
+void LabPC_InitSwapController(unk_func_8820B12C*, LabPC_SwapScreen*);
 s32 LabPC_SwapControllerInput(unk_func_8820B12C*, Controller*);
 void LabPC_MonNameLevelWidget_SetMon(unk_func_882079D8* arg0, unk_func_88205880_00D0* arg1);
 s32 LabPC_MonNameLevelWidget_Draw(unk_func_882079D8*, s32, s32);
@@ -231,7 +231,7 @@ void LabPC_DrawBoxNumberCell(s32 arg0, s32 arg1, unk_func_8820634C_arg2* arg2, s
 }
 
 
-static u8 gLevelOptionMessageIds[] = {
+static u8 gBoxTypeMessageIds[] = {
     0x18,
     0x19,
     0x1A,
@@ -264,7 +264,7 @@ void LabPC_DrawBoxTypeCell(s32 arg0, s32 arg1, unk_func_8820634C_arg2* arg2, s32
     }
     Text_SetEnvColor(sp48.r, sp48.g, sp48.b, sp48.a);
     Font_SetActive(8, 0);
-    Font_Printf(arg0 + 8, arg1 + 4, Text_GetString(0, 0, gMessageBankPokemonStorageLabels, gLevelOptionMessageIds[arg3]));
+    Font_Printf(arg0 + 8, arg1 + 4, Text_GetString(0, 0, gMessageBankPokemonStorageLabels, gBoxTypeMessageIds[arg3]));
     Font_EndTexturedTextRendering();
     if (arg2->RentalSlotAnimData_PosePhase == 1) {
         temp_v0_7 = arg2->posX;
@@ -349,14 +349,14 @@ void LabPC_InitBoxNumberSelector(unk_func_8820BE14_02C_078_034* arg0, s32 arg1, 
 }
 
 s32 LabPC_MeasureBoxTypeLabelWidth(void) {
-    static u8 gLevelOptionMessageIds_Local[3] = { 0x18, 0x19, 0x1A };
+    static u8 gBoxTypeMessageIds_Local[3] = { 0x18, 0x19, 0x1A };
 
     s32 i;
     s32 var_v1;
     s32 var_s1 = 0;
 
     for (i = 0; i < 3; i++) {
-        var_v1 = Font_MeasureTextExtent(8, 0, Text_GetString(NULL, 0, gMessageBankPokemonStorageLabels, gLevelOptionMessageIds_Local[i]));
+        var_v1 = Font_MeasureTextExtent(8, 0, Text_GetString(NULL, 0, gMessageBankPokemonStorageLabels, gBoxTypeMessageIds_Local[i]));
 
         if (i == 0) {
             var_v1 += 0x3D;
@@ -1471,7 +1471,7 @@ static UIComponentInfoEntry gUIComponentInfo[] = {
         1,
     },
 };
-static Color_RGBA8 gDialogTitleColor = { 0xFF, 0xFF, 0x00, 0xFF };
+static Color_RGBA8 gMenuCursorFrameColor = { 0xFF, 0xFF, 0x00, 0xFF };
 static Color_RGBA8 gDialogBodyColor = { 0x2D, 0x1A, 0x41, 0xFF };
 static Color_RGBA8 gDialogShadowColor = { 0x6F, 0x5F, 0x7F, 0xFF };
 static Color_RGBA8* gDialogColorPalette[] = {
@@ -1480,7 +1480,7 @@ static Color_RGBA8* gDialogColorPalette[] = {
 static Color_RGBA8* gDialogAccentPalette[] = { gPanelColorWhite, gPanelColorWhite };
 static Color_RGBA8 gDialogDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
-void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C_000* arg3,
+void TextObjectRenderer_Init(LabPC_SwapScreen* arg0, s32 arg1, s32 arg2, unk_func_8820BE14_06C_000* arg3,
                    unk_func_8820BE14_06C_000* arg4, unk_func_88001300_000* arg5, FragmentEntry arg6,
                    unk_func_8820BE14_030* arg7, WidgetTree_InitMessagePanel* arg8, char** arg9, MemoryPool* argA) {
     s32 i;
@@ -1515,7 +1515,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     arg0->unk_8C = arg4;
     arg0->unk_80 = arg8;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(TextObjectRenderer));
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(LabPC_SwapScreen));
 
     arg0->posX.unk_1C = LabPC_SwapScreen_UpdatePageSelection;
     arg0->posX.unk_20 = LabPC_HandleInput;
@@ -1620,7 +1620,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(arg0->unk_74->unk_28, 2);
 
     temp_s0_2 = mem_pool_alloc(argA, sizeof(WidgetAnimatedFrame));
-    ((func88503340)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantA))(temp_s0_2, 0, 0, 0x10, 0x10, gDialogTitleColor);
+    ((func88503340)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantA))(temp_s0_2, 0, 0, 0x10, 0x10, gMenuCursorFrameColor);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, temp_s0_2);
     arg0->unk_74->unk_28->unk_1C = temp_s0_2;
 
@@ -1788,7 +1788,7 @@ void TextObjectRenderer_Init(TextObjectRenderer* arg0, s32 arg1, s32 arg2, unk_f
     arg0->unk_88->unk_44 = arg0->unk_88->unk_44;
 }
 
-s32 LabPC_SwapScreen_UpdatePageSelection(TextObjectRenderer* arg0) {
+s32 LabPC_SwapScreen_UpdatePageSelection(LabPC_SwapScreen* arg0) {
     switch (arg0->unk_74->posX.unk_1C) {
         case 0:
             if ((arg0->unk_74->unk_28->unk_20 == 0x100) && (arg0->unk_74->unk_28->unk_24 < 2)) {
@@ -1815,7 +1815,7 @@ s32 LabPC_SwapScreen_UpdatePageSelection(TextObjectRenderer* arg0) {
     return 0;
 }
 
-s32 LabPC_HandleInput(TextObjectRenderer* arg0, Controller* arg1) {
+s32 LabPC_HandleInput(LabPC_SwapScreen* arg0, Controller* arg1) {
     s32 var_v1;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -1826,7 +1826,7 @@ s32 LabPC_HandleInput(TextObjectRenderer* arg0, Controller* arg1) {
     return var_v1;
 }
 
-s32 LabPC_RunSwapScreenModal(TextObjectRenderer* arg0, Controller* arg1) {
+s32 LabPC_RunSwapScreenModal(LabPC_SwapScreen* arg0, Controller* arg1) {
     s32 temp_v0;
     s32 var_s2 = 0;
 
@@ -1850,7 +1850,7 @@ s32 LabPC_RunSwapScreenModal(TextObjectRenderer* arg0, Controller* arg1) {
     return var_s2;
 }
 
-void LabPC_SwapScreen_SetMenuState(TextObjectRenderer* arg0, s32 arg1) {
+void LabPC_SwapScreen_SetMenuState(LabPC_SwapScreen* arg0, s32 arg1) {
     arg0->posX.unk_2A = arg1;
     ((func8850BF60)Memmap_GetFragmentVaddr(WidgetTree_SetVerticalMenuState))(arg0->unk_74, arg1);
 }
@@ -1863,7 +1863,7 @@ void LabPC_ReleaseSwapWidgets(unk_func_8820B12C_02C* arg0) {
     LabPC_TabWidget_ToggleFlip(arg0->unk_5C[1]);
 }
 
-void LabPC_InitSwapController(unk_func_8820B12C* arg0, TextObjectRenderer* arg1) {
+void LabPC_InitSwapController(unk_func_8820B12C* arg0, LabPC_SwapScreen* arg1) {
     ((func8850BDF0)Memmap_GetFragmentVaddr(WidgetTree_InitVerticalMenu))(&arg0->posX);
 
     arg0->posX.unk_10 = LabPC_SwapControllerInput;
@@ -1911,7 +1911,7 @@ s32 LabPC_DeckHasChanged(unk_func_8820BE14_06C_000* arg0, s32 arg1, s32 arg2, s3
     return sp90;
 }
 
-s32 LabPC_CheckDirtyDecks(TextObjectRenderer* arg0) {
+s32 LabPC_CheckDirtyDecks(LabPC_SwapScreen* arg0) {
     s32 i;
     s32 temp_s2;
     s32 var_s4;
@@ -1947,7 +1947,7 @@ s32 LabPC_CheckDirtyDecks(TextObjectRenderer* arg0) {
     return var_s4;
 }
 
-s32 LabPC_IsPrizeDeckEmpty(TextObjectRenderer* arg0) {
+s32 LabPC_IsPrizeDeckEmpty(LabPC_SwapScreen* arg0) {
     return arg0->unk_8C->posX->rotation.RentalSlotAnimData_PosePhase == 0;
 }
 
@@ -1981,7 +1981,7 @@ void LabPC_MarkSeenOwned(unk_func_88200FA0_030_038* arg0, s32 arg1) {
     }
 }
 
-void LabPC_CommitChanges(TextObjectRenderer* arg0, s32 arg1) {
+void LabPC_CommitChanges(LabPC_SwapScreen* arg0, s32 arg1) {
     s32 i;
     s32 temp_s5;
     unk_func_8820BE14_06C_000* temp_s4;
@@ -2034,7 +2034,7 @@ void LabPC_CommitChanges(TextObjectRenderer* arg0, s32 arg1) {
     }
 }
 
-s32 LabPC_RunConfirmSaveFlow(TextObjectRenderer* arg0, Controller* arg1) {
+s32 LabPC_RunConfirmSaveFlow(LabPC_SwapScreen* arg0, Controller* arg1) {
     s32 sp34;
     s32 sp30;
     UNUSED s32 pad[2];
@@ -2251,7 +2251,7 @@ s32 LabPC_SwapControllerInput(unk_func_8820B12C* arg0, Controller* arg1) {
 
 // Inner loops: dead `j = 0;` before LabPC_ReadDeckEntries plus for (j = 0; ...) gives the target's delay-slot
 // move; indexing ptr[i] with ptr2 = &ptr[i].rotation (count stored through ptr2) puts ptr2 in s0.
-void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4, s32 arg5, char** arg6,
+void Fragment_Init(LabPC_ScreenContext* arg0, s32 arg1, s32 arg2, s32 arg3, MemoryPool* arg4, s32 arg5, char** arg6,
                    char** arg7, char** arg8, char** arg9, char** argA, char** argB) {
     static Color_RGBA8 gUIBorderColor = { 0x1E, 0x50, 0x50, 0xFF };
     static Color_RGBA8 gUIBackgroundColor = { 0x00, 0x0A, 0x0A, 0xFF };
@@ -2413,9 +2413,9 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     temp_v0_7(0, &arg0->unk_30);
 
     arg0->unk_68 = mem_pool_alloc(arg4, sizeof(WidgetTree_InitMessagePanel));
-    ((func88509F48)Memmap_GetFragmentVaddr(TextObjectGraphics_Init))(arg0->unk_68, 0x2C, 0x4C, 0x228, 0x160, arg4, arg5);
+    ((func88509F48)Memmap_GetFragmentVaddr(WidgetTree_InitMessagePanelWidget))(arg0->unk_68, 0x2C, 0x4C, 0x228, 0x160, arg4, arg5);
 
-    arg0->unk_2C = mem_pool_alloc(arg4, sizeof(TextObjectRenderer));
+    arg0->unk_2C = mem_pool_alloc(arg4, sizeof(LabPC_SwapScreen));
     TextObjectRenderer_Init(arg0->unk_2C, 0x2C, 0x4C, spA0, &arg0->unk_6C, spC4, temp_v0_7, &arg0->unk_30, arg0->unk_68, arg6,
                   arg4);
 
@@ -2424,7 +2424,7 @@ void Fragment_Init(TextObjectContext* arg0, s32 arg1, s32 arg2, s32 arg3, Memory
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(temp_s0_4, arg0->unk_68);
 }
 
-void LabPC_RunSwapScreenLoop(TextObjectContext* arg0) {
+void LabPC_RunSwapScreenLoop(LabPC_ScreenContext* arg0) {
     volatile s32 sp34 = 0;
 
     while (sp34 == 0) {
@@ -2439,7 +2439,7 @@ void LabPC_RunSwapScreenLoop(TextObjectContext* arg0) {
     }
 }
 
-void LabPC_PokemonSessionThread(TextObjectContext* arg0) {
+void LabPC_PokemonSessionThread(LabPC_ScreenContext* arg0) {
     s32 sp24 = LabPC_RunSwapScreenModal(arg0->unk_2C, gPlayer1Controller);
 
     while (arg0->unk_2C->unk_2C->posX.unk_28 & 1) {
@@ -2450,7 +2450,7 @@ void LabPC_PokemonSessionThread(TextObjectContext* arg0) {
     osStopThread(NULL);
 }
 
-void LabPC_PrizePokemonThread(TextObjectContext* arg0) {
+void LabPC_PrizePokemonThread(LabPC_ScreenContext* arg0) {
     s32 sp24;
     s32 var_s0;
 
@@ -2480,7 +2480,7 @@ void LabPC_PrizePokemonThread(TextObjectContext* arg0) {
 }
 
 void LabPC_ShowPokemon(TextObject* arg0, s32 arg1) {
-    static ThreadEntries gTextObjectThreadFuncs[] = { LabPC_PokemonSessionThread, LabPC_PrizePokemonThread };
+    static ThreadEntries gLabPC_ThreadFuncs[] = { LabPC_PokemonSessionThread, LabPC_PrizePokemonThread };
 
     MemoryPool* sp5C;
     void* sp58;
@@ -2519,12 +2519,12 @@ void LabPC_ShowPokemon(TextObject* arg0, s32 arg1) {
     sp3C = Text_GetStringTable(0x29);
     sp38 = Text_GetStringTable(0xB);
 
-    sp58 = mem_pool_alloc(sp5C, sizeof(TextObjectContext));
+    sp58 = mem_pool_alloc(sp5C, sizeof(LabPC_ScreenContext));
     Fragment_Init(sp58, 0, 0, arg1, sp5C, arg0, sp4C, sp48, sp44, sp40, sp3C, sp38);
 
     sp50 = ALIGN16((u32)mem_pool_alloc(sp5C, sizeof(TextObjectThreadData)));
 
-    osCreateThread(&sp50->thread, 0x32, gTextObjectThreadFuncs[arg1], sp58, sp54 + 0x10000, osGetThreadPri(NULL) - 1);
+    osCreateThread(&sp50->thread, 0x32, gLabPC_ThreadFuncs[arg1], sp58, sp54 + 0x10000, osGetThreadPri(NULL) - 1);
 
     Ui_InitInputMessageQueue();
     Input_SetRepeatController(gPlayer1Controller);

@@ -148,7 +148,7 @@ extern s16 miniTutoScreenState;
 extern s16 gMiniTutoTimer1;
 extern s16 gMiniTutoTimer2;
 extern s16 gMiniTutoTimer3;
-extern s16 gMiniTutoTimer4;
+extern s16 gMiniResultIconRow;
 
 extern Gfx_TextureNode gMiniTutoScreenNode0;
 extern Gfx_TextureNode gMiniTutoScreenNode1;
@@ -169,7 +169,7 @@ extern s16 miniCameraFov;
 extern s16 miniCameraNear;
 extern s16 miniCameraFar;
 extern Vec3s miniCameraCoords;
-extern s16 gMiniCameraNearBackup;
+extern s16 gMiniWinCamPhase;
 extern s16 gMiniCameraXRotBackup;
 extern s16 gMiniCameraYRotBackup;
 extern f32 gMiniCameraDistanceBackup;

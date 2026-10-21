@@ -47,7 +47,7 @@ PlayerTradeInfo gPlayerInfo[4];
 static s16 gActivePlayerIndex;
 static s16 gSelectedOptionId;
 static s32 pad_D_82F144AC;
-static FadeRectState gProgressBarRect;
+static FadeRectState gTradeFadeRect;
 static s32 gPoolStatePushed;
 static s32 gPollControllerFlag;
 static char** gSpeciesNames;
@@ -60,7 +60,7 @@ static TextMenuListEntry gTradeMenuEntries[2] = {
     { 0x0140, 0x0168, NULL },
     { 0x0000, 0x0000, NULL },
 };
-static u16 gTextRainbowTimer = 0;
+static u16 gTextBlinkTimer = 0;
 
 char* Trade_GetSpeciesName(s32 arg0) {
     return Text_GetString(NULL, 0, gSpeciesNames, arg0 - 1);
@@ -75,7 +75,7 @@ char* Trade_GetTypeName(s32 arg0) {
 }
 
 void Trade_SetFadeRect(s16 arg0) {
-    FadeRectState* ptr = &gProgressBarRect;
+    FadeRectState* ptr = &gTradeFadeRect;
 
     switch (arg0) {
         case 0:
@@ -95,12 +95,12 @@ void Trade_SetFadeRect(s16 arg0) {
 }
 
 void Trade_ResetFade(void) {
-    gProgressBarRect.posX = -1;
+    gTradeFadeRect.posX = -1;
     Trade_SetFadeRect(0);
 }
 
 void Trade_DrawFadeRect(void) {
-    FadeRectState* ptr = &gProgressBarRect;
+    FadeRectState* ptr = &gTradeFadeRect;
 
     if ((ptr->posX != 0) && (TradeCable_IsSequenceActive() != 0)) {
         if (ptr->posX > 0) {
@@ -235,7 +235,7 @@ void Trade_DrawTextPrinter(void) {
         Font_SetActive(0x10, 0);
 
         if (gCurrentTextBox->unk_0C & 1) {
-            s32 a = gTextRainbowTimer;
+            s32 a = gTextBlinkTimer;
             u8 arg = a & 0xF;
 
             arg = (arg * 0xFF) / 15;
@@ -263,7 +263,7 @@ void Trade_DrawTextPrinter(void) {
             Font_Printf(gCurrentTextBox->rotation - temp_t0, gCurrentTextBox->unk_06, &sp38);
         }
         Font_EndTexturedTextRendering();
-        gTextRainbowTimer++;
+        gTextBlinkTimer++;
     }
 }
 
@@ -301,7 +301,7 @@ void Trade_ScanPorts(void) {
 void Trade_SwapSelections(void) {
     s32 i;
     PickerPokemonEntry sp50;
-    RentalItemInfo sp30[2];
+    PickerSelectionInfo sp30[2];
 
     for (i = 0; i < 2; i++) {
         Trade_GetPickScreenSnapshot(i, &sp30[i]);
@@ -467,11 +467,11 @@ void Trade_UpdateWaitForCableCondition(void) {
 
         case 12:
             if (TradeCable_CheckSequenceCondition(0xC) != 0) {
-                if (gProgressBarRect.posX == -1) {
-                    gProgressBarRect.posX = 5;
+                if (gTradeFadeRect.posX == -1) {
+                    gTradeFadeRect.posX = 5;
                 }
             } else {
-                gProgressBarRect.posX = -1;
+                gTradeFadeRect.posX = -1;
             }
 
             if (TradeCable_CheckSequenceCondition(0xA) != 0) {
@@ -482,7 +482,7 @@ void Trade_UpdateWaitForCableCondition(void) {
 }
 
 void Trade_UpdateWaitForPickSelection(void) {
-    RentalItemInfo sp20;
+    PickerSelectionInfo sp20;
 
     if (Trade_IsPickScreenActive() == 0) {
         Trade_GetPickScreenSnapshot(gActivePlayerIndex, &sp20);
@@ -510,11 +510,11 @@ void Trade_UpdateWaitForDepositSave(void) {
     Trade_SetFadeRect(1);
 
     if (Trade_GetSaveSeqState() == 2) {
-        if (gProgressBarRect.posX == -1) {
-            gProgressBarRect.posX = 3;
+        if (gTradeFadeRect.posX == -1) {
+            gTradeFadeRect.posX = 3;
         }
     } else {
-        gProgressBarRect.posX = -1;
+        gTradeFadeRect.posX = -1;
     }
 
     if (Trade_GetSaveSeqState() == 0) {
@@ -530,11 +530,11 @@ void Trade_UpdateWaitForWithdrawSave(void) {
     Trade_SetFadeRect(1);
 
     if (Trade_GetSaveSeqState() == 2) {
-        if (gProgressBarRect.posX == -1) {
-            gProgressBarRect.posX = 3;
+        if (gTradeFadeRect.posX == -1) {
+            gTradeFadeRect.posX = 3;
         }
     } else {
-        gProgressBarRect.posX = -1;
+        gTradeFadeRect.posX = -1;
     }
 
     if (Trade_GetSaveSeqState() == 7) {

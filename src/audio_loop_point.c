@@ -88,12 +88,12 @@ s32 Audio_StartMusicTrack(s32 arg0) {
     }
 
     if (arg0 == 0x32) {
-        if ((gCurrentStadiumPhase < 0xC) && (gPlayerActiveFlag[0] > 0) && (gPlayerActiveFlag[1] == 0) && (gStadiumPhaseSubstate == 8)) {
+        if ((gCurrentStadiumPhase < 0xC) && (gPlayerRemainingPokemon[0] > 0) && (gPlayerRemainingPokemon[1] == 0) && (gStadiumPhaseSubstate == 8)) {
             arg0 = 0x3C;
-        } else if ((gCurrentStadiumPhase == 0xD) && (gPlayerActiveFlag[0] > 0) && (gPlayerActiveFlag[1] == 0) && (gStadiumPhaseSubstate == 5)) {
+        } else if ((gCurrentStadiumPhase == 0xD) && (gPlayerRemainingPokemon[0] > 0) && (gPlayerRemainingPokemon[1] == 0) && (gStadiumPhaseSubstate == 5)) {
             arg0 = 0x3E;
             gCurrentAnimationId = 0x3E;
-        } else if ((gCurrentStadiumPhase == 0xF) && (gPlayerActiveFlag[0] > 0) && (gPlayerActiveFlag[1] == 0)) {
+        } else if ((gCurrentStadiumPhase == 0xF) && (gPlayerRemainingPokemon[0] > 0) && (gPlayerRemainingPokemon[1] == 0)) {
             arg0 = 0x40;
         }
     }

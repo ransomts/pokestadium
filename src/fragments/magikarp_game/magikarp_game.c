@@ -122,11 +122,11 @@ static u32 gMiniHudGeoLayout[] = {
     0x87806398, (u32)&D_6000000,  (u32)&D_1000000,
 };
 
-static ModelData* gMiniHudGeoLayoutObj;
-static MiniHudMainGraph* gMiniHudMainGraph;
+static ModelData* gMiniHudModelData;
+static ShadowContextNode* gMiniHudMainGraph;
 static CameraStruct* gMiniHudCamera;
-static s16 gMiniHudCamAtY;
-static s16 gMiniHudCamAtZ;
+static s16 gMiniHudCamRotationX;
+static s16 gMiniHudCamRotationY;
 static s16 gMiniHudCamDist;
 static u16 gMiniHudFrameCount;
 static s16 gMiniHudWinnerCount;
@@ -202,42 +202,42 @@ void MagikarpGame_UpdateAiInputBias(void) {
                 case 0:
                 case 12:
                 case 13:
-                    if (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].unk_06) {
+                    if (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMinigameComDifficulty].unk_06) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 5:
                 case 7:
-                    if (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].rotation) {
+                    if (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMinigameComDifficulty].rotation) {
                         D_86003B5C->unk_174 = 0x8000;
                     }
                     break;
 
                 case 8:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.RentalSlotAnimData_PosePhase > 0x90000) &&
-                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].RentalSlotAnimData_PosePhase)) {
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMinigameComDifficulty].RentalSlotAnimData_PosePhase)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 9:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.RentalSlotAnimData_PosePhase > 0xD0000) &&
-                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].RentalSlotAnimData_PosePhase)) {
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMinigameComDifficulty].RentalSlotAnimData_PosePhase)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 10:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.RentalSlotAnimData_PosePhase > 0xB0000) &&
-                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].RentalSlotAnimData_PosePhase)) {
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMinigameComDifficulty].RentalSlotAnimData_PosePhase)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
 
                 case 11:
                     if ((D_86003B5C->unk_004.unk_000.unk_040.RentalSlotAnimData_PosePhase > 0xF0000) &&
-                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMenuState].RentalSlotAnimData_PosePhase)) {
+                        (Rand_Range(0x64) < gMiniHudRandomChanceTable[gMinigameComDifficulty].RentalSlotAnimData_PosePhase)) {
                         D_86003B5C->unk_17A = 0x8000;
                     }
                     break;
@@ -287,8 +287,8 @@ s32 MagikarpGame_ReadInputs(void) {
 void MagikarpGame_InitCamera(void) {
     gMiniHudCamera = gMiniHudMainGraph->posX.unk_0C;
     MiniCam_SetActive(gMiniHudCamera);
-    gMiniHudCamAtY = 0x600;
-    gMiniHudCamAtZ = 0;
+    gMiniHudCamRotationX = 0x600;
+    gMiniHudCamRotationY = 0;
     gMiniHudCamDist = 1000;
 
     gMiniHudCamera->unk_24.near = 100.0f;
@@ -299,11 +299,11 @@ void MagikarpGame_InitCamera(void) {
     gMiniHudCamera->unk_60.at.y = 70.0f;
     gMiniHudCamera->unk_60.at.z = 0.0f;
 
-    Camera_ComputeEyeFromAngles(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamAtY, gMiniHudCamAtZ);
+    Camera_ComputeEyeFromAngles(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamRotationX, gMiniHudCamRotationY);
 }
 
 void MagikarpGame_UpdateCameraLookAt(void) {
-    Camera_ComputeEyeFromAngles(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamAtY, gMiniHudCamAtZ);
+    Camera_ComputeEyeFromAngles(&gMiniHudCamera->unk_60.at, &gMiniHudCamera->unk_60.eye, gMiniHudCamDist, gMiniHudCamRotationX, gMiniHudCamRotationY);
 }
 
 void MagikarpGame_DrawOverlay(s32 arg0) {
@@ -574,7 +574,7 @@ s32 MagikarpGame_WaitForStart(void) {
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &gMiniHudPlayerStates[i];
-        D_86003B5C->unk_000 = (gMiniHudColorDefaults[i] == 0) ? 0 : gMenuState + 1;
+        D_86003B5C->unk_000 = (gMiniHudColorDefaults[i] == 0) ? 0 : gMinigameComDifficulty + 1;
     }
 
     gMiniHudState = 0;
@@ -1111,19 +1111,19 @@ void MagikarpGame_InitActors(void) {
     MemoryBlock* temp_v0;
 
     temp_v0 = (MemoryBlock*)MainPool_AllocState(main_pool_get_available(), 0);
-    gMiniHudMainGraph = (MiniHudMainGraph*)process_geo_layout(temp_v0, gMiniHudGeoLayout);
+    gMiniHudMainGraph = (ShadowContextNode*)process_geo_layout(temp_v0, gMiniHudGeoLayout);
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
     PokeIcon_OpenModelArchives();
     gMiniHudAlpha = 0xFF;
-    gMiniHudGeoLayoutObj = (ModelData*)Model_LoadByArchiveIndex(0xAD);
+    gMiniHudModelData = (ModelData*)Model_LoadByArchiveIndex(0xAD);
 
     for (i = 0; i < 4; i++) {
         D_86003B5C = &gMiniHudPlayerStates[i];
         gCurrentPlayerGraph = &D_86003B5C->unk_004;
 
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
-        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudGeoLayoutObj->RentalSlotAnimData_PosePhase->posX[0]);
+        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAD, gMiniHudModelData->RentalSlotAnimData_PosePhase->posX[0]);
 
         gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * gKarpPlayerSpacing;
 
@@ -1142,7 +1142,7 @@ void MagikarpGame_InitActors(void) {
         if (i == 0) {
             D_86003B5C->unk_000 = 0;
         } else {
-            D_86003B5C->unk_000 = gMenuState + 1;
+            D_86003B5C->unk_000 = gMinigameComDifficulty + 1;
         }
 
         ModelAnim_SetAnimation(&gCurrentPlayerGraph->unk_000, 0);
@@ -1151,14 +1151,14 @@ void MagikarpGame_InitActors(void) {
         gCurrentPlayerGraph->unk_000.unk_01E.y = -0x2800;
     }
 
-    gMiniHudGeoLayoutObj = (ModelData*)Model_LoadByArchiveIndex(0xAE);
+    gMiniHudModelData = (ModelData*)Model_LoadByArchiveIndex(0xAE);
 
     for (i = 0; i < 4; i++) {
         gCurrentPlayerWheel = &gMiniHudScoreWheels[i];
         gCurrentPlayerGraph = gCurrentPlayerWheel;
 
         ModelRenderer_AttachDisplayObject(&gCurrentPlayerGraph->unk_000);
-        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudGeoLayoutObj->RentalSlotAnimData_PosePhase->posX[0]);
+        Model_InitDisplayObject(&gCurrentPlayerGraph->unk_000, 0, 0xAE, gMiniHudModelData->RentalSlotAnimData_PosePhase->posX[0]);
         gCurrentPlayerGraph->unk_000.unk_024.x = (i - 1.5f) * gKarpPlayerSpacing;
         gCurrentPlayerGraph->unk_000.unk_024.z = 0.0f;
         gCurrentPlayerGraph->unk_000.unk_024.y = 200.0f;

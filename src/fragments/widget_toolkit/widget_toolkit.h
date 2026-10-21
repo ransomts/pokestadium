@@ -14,13 +14,13 @@ extern u32* gPositiveTextureBank[];
 extern u32* gNegativeTextureBank[];
 extern u32 gFragment2_1GeoLayout[];
 
-extern u16 gMenuRandomSeed;
+extern u16 gComHyperUnlocked;
 extern s16 gMenuCursorX;
 extern s16 gMenuCursorY;
 extern s16 gMiniHudColorDefaults[4];
-extern s16 gMenuState;
-extern s16 gMenuSubState;
-extern s16 gMenuOptionTimers[4];
+extern s16 gMinigameComDifficulty;
+extern s16 gWinsToChampion;
+extern s16 gPlayerWinCounts[4];
 extern s16 gMenuSelectedOption;
 extern s16 gMenuOptionUsedFlags[9];
 extern s16 gMenuOptionFlags[4];

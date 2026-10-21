@@ -5,14 +5,14 @@
 
 static Trail40GridData gWaterSurface;
 
-static Lights2 gWaterSurfaceLights = gdSPDefLights2(255, 255, 255, 255, 255, 255, 30, 30, 10, 255, 255, 255, 226, 30, 10);
-static Gfx gWaterSurfaceDL[] = {
+static Lights2 gTrail40Lights = gdSPDefLights2(255, 255, 255, 255, 255, 255, 30, 30, 10, 255, 255, 255, 226, 30, 10);
+static Gfx gTrail40DL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
                           G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING | 0x0040F9FA),
     gsSPSetGeometryMode(G_SHADE | G_LIGHTING | G_TEXTURE_GEN | G_SHADING_SMOOTH),
-    gsSPSetLights2(gWaterSurfaceLights),
+    gsSPSetLights2(gTrail40Lights),
     gsSPTexture(0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON),
     gsDPPipeSync(),
     gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA2),
@@ -22,7 +22,7 @@ static Gfx gWaterSurfaceDL[] = {
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
     gsSPEndDisplayList(),
 };
-static Gfx gWaterSurfaceShadingDL[] = {
+static Gfx gTrail40ShadingDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -48,7 +48,7 @@ void Trail40_Init(s16 arg0) {
     s16 tmp1;
     s16 tmp2;
     s16 tmp3;
-    WaterSurfaceVertex* var_v0 = &gWaterSurface.unk_0014[0][0];
+    Trail40Vertex* var_v0 = &gWaterSurface.unk_0014[0][0];
 
     gWaterSurface.unk_0000 = 0;
     gWaterSurface.unk_0002 = arg0;
@@ -180,7 +180,7 @@ void Trail40_Start(s32 arg0, s32 arg1) {
     }
 }
 
-void Trail40Node_FillVertex(WaterSurfaceVertex* arg0, Vtx* arg1) {
+void Trail40Node_FillVertex(Trail40Vertex* arg0, Vtx* arg1) {
     f32 r;
     f32 g;
     f32 b;
@@ -203,7 +203,7 @@ void Trail40Node_FillVertex(WaterSurfaceVertex* arg0, Vtx* arg1) {
 }
 
 s32 Trail40_IsComplete(void) {
-    WaterSurfaceVertex* var_s1;
+    Trail40Vertex* var_s1;
     s32 i;
     s32 j;
     f32 temp_fv1_2;
@@ -303,7 +303,7 @@ void Trail40_Reset(void) {
 Gfx* Trail40_Draw(Gfx* arg0) {
     s32 i;
     s32 j;
-    WaterSurfaceVertex* var_s2;
+    Trail40Vertex* var_s2;
     s32 var_s4;
     Vtx* vtx;
     s32 idx;
@@ -325,7 +325,7 @@ Gfx* Trail40_Draw(Gfx* arg0) {
 
     gDPLoadTextureBlock(arg0++, gBattleAnimAssetPointers[0xA8], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gSPDisplayList(arg0++, gWaterSurfaceDL);
+    gSPDisplayList(arg0++, gTrail40DL);
     gDPSetPrimColor(arg0++, 0, 0, 255, 255, 255, gWaterSurface.unk_0004);
     gSPMatrix(arg0++, gWaterSurface.unk_0010, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 

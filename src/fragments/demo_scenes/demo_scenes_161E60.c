@@ -730,7 +730,7 @@ static unk_D_86B0DBCC gFragment17ObjPresetTable[] = {
     { 1200.0f, 0.0f, 27.0f, 0.0f },
 };
 
-static u32 gFragment17CameraScript[] = {
+static u32 gFragment17GeoLayout[] = {
     0x0C00FFFF,  0x05000000, 0x0B00001E, 0x00000000,    0x014000F0, 0x0000000F, 0x00000000,    0x00000000, 0x05000000,
     0x0D000000,  0x05000000, 0x14000000, 0x002D0019,    0xFFFFFF28, 0x08000000, Completion_LightAngleCallbackA, 0x00000000, 0x14000000,
     0x002D0019,  0x80808028, 0x08000000, Completion_LightAngleCallbackB, 0x00000000, 0x16646464, 0x0F000003,    0x05000000, 0x0A000000,
@@ -1612,7 +1612,7 @@ void Completion_InitScene(void) {
     MemoryBlock* sp1C;
 
     sp1C = MainPool_AllocState(main_pool_get_available(), 0);
-    gFragment17GraphRoot = process_geo_layout(sp1C, &gFragment17CameraScript);
+    gFragment17GraphRoot = process_geo_layout(sp1C, &gFragment17GeoLayout);
     MainPool_FinalizeAllocation(sp1C);
     ModelRenderer_InitDisplayRoots();
 

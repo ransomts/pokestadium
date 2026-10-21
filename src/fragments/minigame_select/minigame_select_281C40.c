@@ -3,7 +3,7 @@
 #include "src/save_data.h"
 
 void Minigames_LoadDifficultySetting(void) {
-    gMenuRandomSeed = Save_GetOptionsField1E() & 0xFF;
+    gComHyperUnlocked = Save_GetOptionsField1E() & 0xFF;
 }
 
 void Minigames_SetSelectedGameId(s16 arg0) {
@@ -28,11 +28,11 @@ void Minigames_ResetTournamentState(s16 arg0) {
                 gMiniHudColorDefaults[i] = 1;
             }
 
-            gMenuState = 1;
-            gMenuSubState = 3;
+            gMinigameComDifficulty = 1;
+            gWinsToChampion = 3;
 
             for (i = 0; i < 4; i++) {
-                gMenuOptionTimers[i] = 0;
+                gPlayerWinCounts[i] = 0;
             }
 
             gMenuSelectedOption = 0;

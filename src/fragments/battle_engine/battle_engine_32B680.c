@@ -1863,7 +1863,7 @@ void BattleAnim_CallbackEndEffect23Descriptor4AAnimatedFade_InitParticle(Particl
     Particle_SetScaleScaled(arg0, 1.2f);
     Particle_SetScaleSpeed(arg0, 1.0f);
     Particle_SetScaleTarget(arg0, 0.02f);
-    Particle_SetRandomVelocityXYZ(arg0, 5, 0xF, 0xF);
+    Particle_SetRandomPositionXYZ(arg0, 5, 0xF, 0xF);
     Particle_AddVelocityYScaled(arg0, 10.0f);
     Particle_SetSpeed(arg0, (ParticleMath_RandomRange(0xA) * 0.5f) + 8.0f);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, sp22);
@@ -2541,7 +2541,7 @@ void Particle_CreateDisplayList_Texture4b(s32 arg0, arg1_func_84344CE8* arg1) {
     }
 }
 
-void Gfx_DrawParticleGreenPrim(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
+void Gfx_DrawParticleYellowAlphaFromPrimG(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
     ParticleEffectInstance* temp_v0 = BattleAnim_GetOwnerContextParticle(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
@@ -2561,7 +2561,7 @@ void Gfx_DrawParticleGreenPrim(Gfx* arg0, u8* arg1, UNUSED u16 arg2) {
 void Particle_CreateDisplayList_GreenPrim(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = Gfx_AllocDisplayList(sizeof(Gfx) * 30);
-        Gfx_DrawParticleGreenPrim(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleYellowAlphaFromPrimG(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
@@ -2655,7 +2655,7 @@ void Particle_CreateDisplayList_CyanEnv(s32 arg0, arg1_func_84344CE8* arg1) {
     }
 }
 
-void Gfx_DrawParticleBluePrim(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
+void Gfx_DrawParticleCyanAlphaFromPrimA(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 arg2) {
     ParticleEffectInstance* temp_v0 = BattleAnim_GetOwnerContextParticle(gDefaultGraphRoot);
 
     gDPPipeSync(arg0++);
@@ -2670,7 +2670,7 @@ void Gfx_DrawParticleBluePrim(Gfx* arg0, arg1_func_8434E21C* arg1, UNUSED u16 ar
 void Particle_CreateDisplayList_BluePrim(s32 arg0, arg1_func_84344CE8* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = Gfx_AllocDisplayList(sizeof(Gfx) * 30);
-        Gfx_DrawParticleBluePrim(arg1->unk_18, arg1->unk_14, gAnimationFrame);
+        Gfx_DrawParticleCyanAlphaFromPrimA(arg1->unk_18, arg1->unk_14, gAnimationFrame);
     }
 }
 
@@ -2799,7 +2799,7 @@ void BattleAnim_CallbackStartEffects50And82Descriptor48AnimatedScaleFade_InitPar
 
     Particle_GetFieldOffsetAC(arg0);
     sp34 = Particle_GetPaletteIndex(arg0);
-    Particle_SetRandomVelocityXYZ(arg0, 5, 5, 5);
+    Particle_SetRandomPositionXYZ(arg0, 5, 5, 5);
     Particle_SetScaleScaled(arg0, 1.5f);
     Particle_SetSpeed(arg0, 1.5f);
     sp2C.x = ParticleMath_RandomRange(0x2000) - 0x1000;
@@ -2855,7 +2855,7 @@ void BattleAnim_CallbackStartEffects50And82Descriptor4AAnimatedVerticalFade_Init
     sp24 = Particle_GetPaletteIndex(arg0);
     Particle_GetMetadata(arg0);
     Particle_SetScaleScaled(arg0, 1.0f);
-    Particle_SetRandomVelocityXYZ(arg0, 0xF, 0xF, 0x14);
+    Particle_SetRandomPositionXYZ(arg0, 0xF, 0xF, 0x14);
     Particle_SetSpeed(arg0, (ParticleMath_RandomRange(0x32) * 0.02f) + 1.0f);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, sp24);
     Particle_SetPrimAlpha(arg0, 0x80);
@@ -3046,7 +3046,7 @@ void BattleAnim_CallbackEndEffects81And82Descriptor4AAnimatedColorFade_InitParti
     Particle_SetScaleScaled(arg0, 1.2f);
     Particle_SetScaleSpeed(arg0, 1.0f);
     Particle_SetScaleTarget(arg0, 0.02f);
-    Particle_SetRandomVelocityXYZ(arg0, 5, 0xF, 0xF);
+    Particle_SetRandomPositionXYZ(arg0, 5, 0xF, 0xF);
     Particle_AddVelocityYScaled(arg0, 10.0f);
     Particle_SetSpeed(arg0, (ParticleMath_RandomRange(0xA) * 0.5f) + 8.0f);
     ParticleGfx_RecolorPrim(arg0, 0x19);
@@ -3100,7 +3100,7 @@ void BattleAnim_CallbackEndEffects81And82Descriptor4FAnimatedPaletteFade_InitPar
     Particle_SetScaleScaled(arg0, 1.0f);
     Particle_SetScaleSpeed(arg0, 0.5f);
     Particle_SetScaleTarget(arg0, 0.01f);
-    Particle_SetRandomVelocityXYZ(arg0, 0xA, 0, 0xF);
+    Particle_SetRandomPositionXYZ(arg0, 0xA, 0, 0xF);
     Particle_AddVelocityForward(arg0, 10.0f);
     Particle_AddVelocityYScaled(arg0, 5.0f);
     Particle_SetSpeed(arg0, (ParticleMath_RandomRange(0xA) * 0.5f) + 8.0f);
@@ -4847,7 +4847,7 @@ void ParticleEffect_InitSmoke(void) {
     BattleAnim_CreateRepeatingEffectSlotForCurrentOwner(0, 1, 0xC, BattleAnim_CallbackSharedAnimatedVerticalFade, &gBattleAnimParticleDescriptors[0x3D], 0, 1, 9, 0, 0x16, 5);
 }
 
-void ParticleEffect_PlaySoundAndReset(void) {
+void ParticleEffect_InitModelAnimWaitAndDelegate(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackInitModelAnimWait, &gParticleDefaultCallback, 0, 1, 9, 0, 0x13, 0);
     BattleAnim_SetSpawnDelay(4);
     BattleAnim_EndEffect25Descriptor13DelegateSequence();
@@ -5088,7 +5088,7 @@ void BattleAnim_EndEffect79ModelPaletteFade(void) {
     BattleAnim_CreateEffectSlotForCurrentOwner(0, BattleAnim_CallbackEndEffect79DefaultDescriptorPaletteFade, &gParticleDefaultCallback, 0, 1, 0xA, 0, 0x1F, 0);
 }
 
-void ParticleEffect_SetMode(void) {
+void BattleAnim_StartEffect45GlobalTintFade(void) {
     BattleAnim_SpawnGlobalTintColorFadeDetach(0, 8, 0x22);
 }
 

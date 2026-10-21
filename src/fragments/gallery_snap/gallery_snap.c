@@ -302,7 +302,7 @@ s32 Gallery_SnapUpdateMenuInput(void) {
         gMenuInputLocked = 0;
     }
 
-    if ((gGalleryAudioStateFlag != 0) && (gMenuInputLocked == 0)) {
+    if ((gGallerySpecialUnlockEnabled != 0) && (gMenuInputLocked == 0)) {
         if ((gPlayer1Controller->buttonDown & 0x20) && (gPlayer1Controller->buttonDown & 0x10) && (gGalleryPhotoPoolMax == 5)) {
             gGallerySpecialViewed = 1;
         } else {

@@ -561,7 +561,7 @@ end:
     if (gBattleUser->unk_44.TrainerSlotSaveData_GamePort < 0x44) {
         gIsBattleMode = 0;
         gAnimStateFlag = 0;
-        if (gBattleUnusedFlag4 == 0) {
+        if (gSuppressMoveFailMessages == 0) {
             Battle_QueueMessage(gBattleMessageQueues->unk_088, -0x59);
         }
     } else {
@@ -794,7 +794,7 @@ void Battle_Effect_Confuse(void) {
         }
     }
 
-    if (gBattleUnusedFlag4 == 0) {
+    if (gSuppressMoveFailMessages == 0) {
         Battle_QueueMessage(gBattleMessageQueues->unk_088, -0x44);
     }
 }

@@ -171,7 +171,7 @@ s32 gActiveSoundHandle = 0;
 u8 gBankRemapIndex = 0;
 u8 gSoundEffectFlag[16] = { 0 };
 
-s32 Effect_TriggerMoveVisual(u32 arg0, s32 arg1, u32 arg2) {
+s32 Audio_PlayMoveSoundEffect(u32 arg0, s32 arg1, u32 arg2) {
     u32 sound;
     s32 romAddr;
     s32 size;

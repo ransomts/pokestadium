@@ -83,7 +83,7 @@ Vec3f gCameraConstraintCenter = { 0.0f, 0.0f, 0.0f };
 Vec3f gCameraConstraintCenterMode = { 0.0f, 0.0f, 0.0f };
 
 Color_RGB8 gStagePanelBlueColor = { 0, 0, 150 };
-Color_RGB8 gStagePanelWhiteColor = { 0, 0, 250 };
+Color_RGB8 gStagePanelBrightBlueColor = { 0, 0, 250 };
 
 char* gStagePanelLabelStrings[] = {
     gCupNameFreeBattle, gCupNameNintendoCup, gCupNameNintendoCupRound2, gCupNamePetitCup, gCupNamePikaCup, gCupNamePrimeCup, gCupNamePewterGym, gCupNameCeruleanGym,
@@ -292,7 +292,7 @@ static GalleryScriptInput gControllerScriptInputs[] = {
     { 1, 0x1000, 0.0f, 0.0f, 0.0f, 0xFF, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
 };
 
-static FogRect gStagePanelRootNode;
+static FogRect gStageBackgroundFog;
 static GraphRootNode gStagePanelGraphRoot0;
 static GraphRootNode gStagePanelGraphRoot1;
 static GraphRootNode gStagePanelGraphRoot2;
@@ -323,7 +323,7 @@ s32 gStageSnapshotCount;
 s32 gStagePanelStateIndex;
 GalleryFadeData gStagePanelFadeData;
 GalleryAnimState gStagePanelAnimState;
-static SessionModeSettings gStagePanelGbAudioState;
+static SessionModeSettings gGallerySessionModeSettings;
 s32 gCameraNavActiveFlag;
 s32 gCameraNavSubIndex;
 s32 gCameraNavTransition;
@@ -384,11 +384,11 @@ void Gallery_SetBackgroundTint(u8 arg0, u8 arg1, u8 arg2) {
     gGlobalColorRGBA.b = arg2;
 
     if (v == 0xFF) {
-        if (gStagePanelRootNode.posX.unk_14 == 1) {
-            gStagePanelRootNode.posX.TrainerSlotSaveData_GamePort |= 1;
+        if (gStageBackgroundFog.posX.unk_14 == 1) {
+            gStageBackgroundFog.posX.TrainerSlotSaveData_GamePort |= 1;
         }
     } else {
-        gStagePanelRootNode.posX.TrainerSlotSaveData_GamePort &= ~1;
+        gStageBackgroundFog.posX.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 
@@ -487,13 +487,13 @@ void Gallery_LoadBackgroundSet(s32 arg0) {
 
     temp_v1 = sp18(4, 0);
     if (temp_v1 == NULL) {
-        gStagePanelRootNode.posX.unk_14 = 0;
-        gStagePanelRootNode.posX.TrainerSlotSaveData_GamePort &= ~1;
+        gStageBackgroundFog.posX.unk_14 = 0;
+        gStageBackgroundFog.posX.TrainerSlotSaveData_GamePort &= ~1;
     } else {
-        gStagePanelRootNode.unk_18.posX = temp_v1->posX;
-        gStagePanelRootNode.unk_18.posY = temp_v1->posY;
-        gStagePanelRootNode.unk_18.rotation.rgba = temp_v1->rotation.rgba;
-        gStagePanelRootNode.posX.unk_14 = 1;
+        gStageBackgroundFog.unk_18.posX = temp_v1->posX;
+        gStageBackgroundFog.unk_18.posY = temp_v1->posY;
+        gStageBackgroundFog.unk_18.rotation.rgba = temp_v1->rotation.rgba;
+        gStageBackgroundFog.posX.unk_14 = 1;
     }
 
     Gallery_SetBackgroundTint(0xFF, 0xFF, 0xFF);
@@ -502,7 +502,7 @@ void Gallery_LoadBackgroundSet(s32 arg0) {
 void Gallery_InitBackgroundScene(void) {
     MemoryBlock* sp2C;
 
-    GeoNode_CreateFog(0, &gStagePanelRootNode, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    GeoNode_CreateFog(0, &gStageBackgroundFog, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     GeoNode_CreateContainer(NULL, &gStagePanelGraphRoot0);
     GeoNode_CreateContainer(NULL, &gStagePanelGraphRoot1);
     GeoNode_CreateContainer(NULL, &gStagePanelGraphRoot2);
@@ -727,14 +727,14 @@ s32 Gallery_HandleBackgroundSwitchInput(void) {
     }
 
     gCameraNavMaxIndex = 0xF;
-    if (gStagePanelGbAudioState.unk_07 == 0) {
-        if (gStagePanelGbAudioState.rotation == 8) {
+    if (gGallerySessionModeSettings.unk_07 == 0) {
+        if (gGallerySessionModeSettings.rotation == 8) {
             gCameraNavMaxIndex--;
-        } else if (gStagePanelGbAudioState.rotation == 7) {
+        } else if (gGallerySessionModeSettings.rotation == 7) {
             gCameraNavMaxIndex -= 2;
         } else {
             gCameraNavMaxIndex -= 2;
-            gCameraNavMaxIndex += gStagePanelGbAudioState.rotation - 7;
+            gCameraNavMaxIndex += gGallerySessionModeSettings.rotation - 7;
         }
     }
 
@@ -1140,7 +1140,7 @@ s32 Gallery_CameraMain(s32 arg0, UNUSED s32 arg1) {
     ASSET_LOAD(D_2000000, common_menu2_ui, 0);
 
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&gStagePanelGbAudioState, 0);
+    Save_GetModeSettings(&gGallerySessionModeSettings, 0);
 
     D_8690A698 = ASSET_LOAD2(stadium_models, 1, 1);
     Text_InitStringTables();

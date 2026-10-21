@@ -11,7 +11,7 @@ static s16 gRentalMenuCursorIndex;
 static s32 gRentalMenuSaveDirection;
 static s32 gRentalMenuSaveSlotIndex;
 
-s32 Trade_WriteDeckAndCommitCart(RentalItemInfo* arg0) {
+s32 Trade_WriteDeckAndCommitCart(PickerSelectionInfo* arg0) {
     DeckHandle* sp24;
     s32 var_v1;
 
@@ -33,8 +33,8 @@ s32 Trade_WriteDeckAndCommitCart(RentalItemInfo* arg0) {
 
 s32 Trade_StepCartWriteSequence(RentalMenuState* arg0) {
     s32 i;
-    RentalItemInfo* ptr;
-    RentalItemInfo sp30[2];
+    PickerSelectionInfo* ptr;
+    PickerSelectionInfo sp30[2];
     s32 sp2C = 0;
 
     for (i = 0; i < 2; i++) {
@@ -89,7 +89,7 @@ void Trade_InitSaveSequence(s32 arg0) {
     UNUSED s32 pad;
     RentalMenuState* ptr = &gRentalMenuState;
     s32 i;
-    RentalItemInfo sp2C;
+    PickerSelectionInfo sp2C;
 
     ptr->posX = 1;
     ptr->posY = 0xA;
@@ -311,7 +311,7 @@ void Trade_UpdateSaveSeqBeginWrite(RentalMenuState* arg0) {
 
 void Trade_UpdateSaveSeqWriteCarts(RentalMenuState* arg0) {
     s32 temp_v0;
-    RentalItemInfo sp24;
+    PickerSelectionInfo sp24;
 
     arg0->posY--;
     if (arg0->posY <= 0) {
@@ -636,7 +636,7 @@ void RentalMenu_DrawMessage(RentalMenuState* arg0) {
     s32 pad[2];
     char sp38[64];
     s32 pad2[2];
-    RentalItemInfo sp20;
+    PickerSelectionInfo sp20;
 
     if (arg0->RentalSlotAnimData_PosePhase < 2) {
         Trade_GetPickScreenSnapshot(arg0->RentalSlotAnimData_PosePhase, &sp20);

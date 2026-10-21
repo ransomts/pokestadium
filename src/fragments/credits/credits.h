@@ -14,13 +14,13 @@ typedef struct CreditRoleEntry {
     /* 0x04 */ char* rotation[2];
 } CreditRoleEntry; // size = 0xC
 
-typedef struct StageCameraConfig {
+typedef struct CreditsRolePage {
     /* 0x00 */ u16 posX;
     /* 0x02 */ u16 posY;
     /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x08 */ CreditRoleEntry* RentalSlotAnimData_PosePhase;
-} StageCameraConfig; // size = 0xC
+} CreditsRolePage; // size = 0xC
 
 typedef struct CameraPosition {
     /* 0x00 */ s16 posX;
@@ -431,7 +431,7 @@ extern u8 gUnusedTimer1;
 extern Vec3f gCreditsCameraPivot;
 
 s32 Credits_BackgroundNodePostCallback(s32 arg0, GraphNode* arg1);
-void MessageSequence_Init(u8 arg0, u8 arg1, StageCameraConfig* arg2);
+void MessageSequence_Init(u8 arg0, u8 arg1, CreditsRolePage* arg2);
 void Stage_UpdateLogic(void);
 void Credits_DrawRoleList(void);
 

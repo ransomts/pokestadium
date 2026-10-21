@@ -13,7 +13,7 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static ModelData* gGeoLayout_StageBackground;
+static ModelData* gViewerStageModel;
 static GraphNode* gStageTextureNode;
 static Fragment2_1GraphNode gViewerGraphNode;
 static BinArchive* gViewerAssetArchive;
@@ -97,8 +97,8 @@ void Minigame2SampleViewer_Init(void) {
     ModelRenderer_InitDisplayRoots();
     ModelRenderer_AttachDisplayObject(&gViewerGraphNode);
     PokeIcon_OpenModelArchives();
-    gGeoLayout_StageBackground = Model_LoadByArchiveIndex(0x96);
-    Model_InitDisplayObject(&gViewerGraphNode, 0, 0x96, gGeoLayout_StageBackground->RentalSlotAnimData_PosePhase->posX[0]);
+    gViewerStageModel = Model_LoadByArchiveIndex(0x96);
+    Model_InitDisplayObject(&gViewerGraphNode, 0, 0x96, gViewerStageModel->RentalSlotAnimData_PosePhase->posX[0]);
     ModelAnim_SetAnimation(&gViewerGraphNode, 0);
 }
 

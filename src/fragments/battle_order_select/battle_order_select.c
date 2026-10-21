@@ -22,8 +22,8 @@ static char** gOrderSelectMoveNamesBank;
 static char** gTypeNamesBank;
 static char** gMsgBank_Common;
 static char** gPanelStrings;
-static s16 gTransferPakErrorTimer;
-static s16 gTransferPakScrollPos;
+static s16 gBottomActionButtonsTimer;
+static s16 gRulesTextScrollPos;
 static s32 gPanelCount;
 static unk_D_848037A0 gPanels[4];
 static SessionContext* gCurrentSessionContext;
@@ -61,7 +61,7 @@ static unk_D_84803548 D_848035C0[] = {
 static unk_D_84803548* gInputTimingTable[] = {
     NULL, gComAutoInputScriptSingleBrought, D_84803558, D_8480356C, D_84803584, D_848035A0, D_848035C0,
 };
-static unk_D_848035FC gModeColors[] = {
+static unk_D_848035FC gMoveTypeColors[] = {
     { { 0xF0, 0xF0, 0xF0 }, D_2017740 }, { { 0xF0, 0x96, 0x32 }, D_2019040 }, { { 0x50, 0x96, 0xF0 }, D_20199A0 },
     { { 0xC8, 0x96, 0xF0 }, D_2019680 }, { { 0xF0, 0xC8, 0x78 }, D_2018D20 }, { { 0x64, 0xB4, 0xB4 }, D_2018A00 },
     { { 0x50, 0x96, 0xF0 }, D_20199A0 }, { { 0xC8, 0xF0, 0x50 }, D_2019360 }, { { 0xDC, 0xC8, 0xF0 }, D_2019FE0 },
@@ -106,7 +106,7 @@ static u8* gLeadIconDefault = D_30084C0;
 void BattleMenu_DrawBottomActionButtons(void) {
     Gfx_DrawTiledRgba16Image(gPanelTextureAtlas);
 
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
     Gfx_DrawTextureRgba16(0x71, 0x1A8, 0x20, 0x18, D_3002220, 0x20, 0x200000);
     Gfx_DrawTextureRgba16(0x162, 0x1A8, 0x20, 0x18, D_3002820, 0x20, 0x200000);
@@ -132,8 +132,8 @@ void BattleMenu_DrawScrollingRulesText(void) {
     Color_RGB8 sp54;
     Color_RGB8 sp50;
 
-    var_s4 = 0x30 - (gTransferPakScrollPos % 24);
-    var_s2 = gTransferPakScrollPos / 24;
+    var_s4 = 0x30 - (gRulesTextScrollPos % 24);
+    var_s2 = gRulesTextScrollPos / 24;
     sp58 = StageContext_GetCurrentImage();
     sp54 = gSidebarGradStart;
     sp50 = gSidebarGradEnd;
@@ -163,9 +163,9 @@ void BattleMenu_DrawScrollingRulesText(void) {
 
     gDPSetScissorFrac(gDisplayListHead++, G_SC_NON_INTERLACE, 0, 0, sp58->width * 4.0f, sp58->height * 4.0f);
 
-    gTransferPakScrollPos += 2;
-    if (gTransferPakScrollPos >= ((strlen(var_v0) * 0x18) + 0x18)) {
-        gTransferPakScrollPos = 0;
+    gRulesTextScrollPos += 2;
+    if (gRulesTextScrollPos >= ((strlen(var_v0) * 0x18) + 0x18)) {
+        gRulesTextScrollPos = 0;
     }
 }
 
@@ -270,7 +270,7 @@ void BattleMenu_DrawTeamOrderSidebarTeam0(void) {
         var_s2 = 0x4A;
     }
 
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
     Gfx_DrawTextureRgba16(0x2D, var_s2, 0x20, 0xC, D_3003C80, 0x20, 0x200000);
     Gfx_DrawTextureRgba16(0x2D, var_s2 + 0xC, 0x20, 0x17, D_30050C0, 0x20, 0x200000);
@@ -305,7 +305,7 @@ void BattleMenu_DrawTeamOrderSidebarTeam1(void) {
         var_s2 = 0xE6;
     }
 
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
     Gfx_DrawTextureRgba16(0x2D, var_s2, 0x28, 0x2C, D_3003F80, 0x28, 0x200000);
     Gfx_DrawTextureRgba16(0x2D, var_s2 + 0x2C, 0x20, 0x17, D_30050C0, 0x20, 0x200000);
@@ -363,7 +363,7 @@ void BattleMenu_DrawOrderSelectPanel_PartyGrid(unk_D_848037A0* arg0) {
 
     BattleMenu_DrawBorderedPanel(temp_s7, temp_fp, 0x1D7, 0x5E, arg0->unk_0001);
 
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
     Gfx_DrawTextureRgba16(temp_s7 + 7, temp_fp + 0xB, 0x1A, 0x1A, &D_30005B0, 0x1C, 0x200000);
     Gfx_DrawTextureRgba16(temp_s7 + 0xA1, temp_fp + 0xB, 0x1A, 0x1A, &D_3001110, 0x1C, 0x200000);
@@ -623,12 +623,12 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
     }
 
     idx = PokemonType_ToDisplayIndex(sp78->unk_06);
-    Text_SetEnvColor(gModeColors[idx].posX.r, gModeColors[idx].posX.g, gModeColors[idx].posX.b, 0xFF);
+    Text_SetEnvColor(gMoveTypeColors[idx].posX.r, gMoveTypeColors[idx].posX.g, gMoveTypeColors[idx].posX.b, 0xFF);
     Font_Printf(temp_fp + 0x7A, sp7C + 0x2F, Text_GetString(NULL, 0, gTypeNamesBank, PokemonType_ToDisplayIndex(sp78->unk_06)));
 
     if (sp78->unk_06 != sp78->unk_07) {
         idx = PokemonType_ToDisplayIndex(sp78->unk_07);
-        Text_SetEnvColor(gModeColors[idx].posX.r, gModeColors[idx].posX.g, gModeColors[idx].posX.b, 0xFF);
+        Text_SetEnvColor(gMoveTypeColors[idx].posX.r, gMoveTypeColors[idx].posX.g, gMoveTypeColors[idx].posX.b, 0xFF);
         Font_Printf(temp_fp + 0x7A, sp7C + 0x43, Text_GetString(NULL, 0, gTypeNamesBank, PokemonType_ToDisplayIndex(sp78->unk_07)));
     }
 
@@ -646,7 +646,7 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
         if (sp78->unk_09[i] == 0) {
             break;
         }
-        temp_v1 = &gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].TrainerSlotSaveData_GamePort];
+        temp_v1 = &gMoveTypeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].TrainerSlotSaveData_GamePort];
         Font_SetActive(4, 0);
         Text_SetEnvColor(temp_v1->posX.r, temp_v1->posX.g, temp_v1->posX.b, 0xFF);
         Font_Printf(temp_fp + 0x14C, (i * 0x14) + sp7C + 7, Text_GetString(NULL, 0, gOrderSelectMoveNamesBank, sp78->unk_09[i] - 1));
@@ -664,7 +664,7 @@ void BattleMenu_DrawOrderSelectPanel_MonDetail(unk_D_848037A0* arg0) {
             break;
         }
         Gfx_DrawTextureRgba16(temp_fp + 0x136, (i * 0x14) + sp7C + 7, 0x14, 0x14,
-                      gModeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].TrainerSlotSaveData_GamePort].rotation, 0x14, 0);
+                      gMoveTypeColors[gMoveDisplayInfo[sp78->unk_09[i] - 1].TrainerSlotSaveData_GamePort].rotation, 0x14, 0);
     }
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
@@ -701,8 +701,8 @@ void BattleMenu_DrawConfirmButtonLabel(unk_D_848037A0* arg0) {
 }
 
 void BattleMenu_DrawOrderSelectPanel(unk_D_848037A0* arg0) {
-    if ((gTransferPakErrorTimer != 0) || (arg0->displayTimer != 0)) {
-        if ((gTransferPakErrorTimer != 0) && (arg0->unk_0002 == -1)) {
+    if ((gBottomActionButtonsTimer != 0) || (arg0->displayTimer != 0)) {
+        if ((gBottomActionButtonsTimer != 0) && (arg0->unk_0002 == -1)) {
             BattleMenu_DrawConfirmButtonLabel(arg0);
         }
 
@@ -1091,7 +1091,7 @@ s32 BattleMenu_UpdateOrderSelect(s32 arg0) {
     GeoRender_AdvanceFrameCounter();
     BgStage_DrawFrame();
 
-    if (gTransferPakErrorTimer != 0) {
+    if (gBottomActionButtonsTimer != 0) {
         BattleMenu_DrawBottomActionButtons();
     }
 
@@ -1111,11 +1111,11 @@ s32 BattleMenu_UpdateOrderSelect(s32 arg0) {
             Audio_StopMusic(0x10);
         }
 
-        if (gTransferPakErrorTimer > 0) {
-            gTransferPakErrorTimer -= 1;
+        if (gBottomActionButtonsTimer > 0) {
+            gBottomActionButtonsTimer -= 1;
         }
     } else {
-        gTransferPakErrorTimer = 2;
+        gBottomActionButtonsTimer = 2;
     }
     return sp30;
 }
@@ -1219,8 +1219,8 @@ void BattleMenu_InitOrderSelectPanels(SessionContext* arg0) {
 
     gCurrentSessionContext = arg0;
     gPanelCount = 0;
-    gTransferPakErrorTimer = 2;
-    gTransferPakScrollPos = 0;
+    gBottomActionButtonsTimer = 2;
+    gRulesTextScrollPos = 0;
     gInputTimerIndex = 0;
     gInputTimerValue = 0;
     gPanelController.buttonPressed = 0;

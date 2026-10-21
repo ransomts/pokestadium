@@ -73,7 +73,7 @@ typedef struct unk_D_800FCF60 {
 unk_D_800FCF60 gSquare1State;
 unk_D_800FCF90 gSquare2State;
 unk_D_800FCFB8 gNoiseState;
-unk_D_800FCFD8 gWaveState;
+unk_D_800FCFD8 gNoiseChannelState;
 u32 D_800FD004;
 GbSoundReg gGbSoundRegs[0x20];
 u8 D_800FD048[32];
@@ -116,7 +116,7 @@ u8 GbAudio_GetRegisterValue(u16 arg0) {
     return gGbRegCache[arg0 & 0xFF];
 }
 
-void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
+void GbAudio_InitMusicPlayback(u32 arg0, u8 arg1, u32 arg2) {
     u32 temp_t3;
     u8* p;
     s32 i;
@@ -166,9 +166,9 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
     gNoiseState.posX = 0;
     gNoiseState.unk_1C = 0;
 
-    gWaveState.posX = 0;
-    gWaveState.unk_28 = 0;
-    gWaveState.rotation = 0xFF;
+    gNoiseChannelState.posX = 0;
+    gNoiseChannelState.unk_28 = 0;
+    gNoiseChannelState.rotation = 0xFF;
 
     GbAudio_ClearOutputBuffer();
     GbAudio_ClearInterpolationHistory();
@@ -185,7 +185,7 @@ void Audio_LoadMusicTrack(u32 arg0, u8 arg1, u32 arg2) {
 void GbAudio_ApplyQueuedWrites(u16);
 s16 GbAudio_RenderSquare1(void);
 s16 GbAudio_RenderSquare2(void);
-s16 GbAudio_RenderWave(void);
+s16 GbAudio_RenderNoise(void);
 
 void GbAudio_RenderSamples(u32 arg0) {
     s32 pad[3];
@@ -223,7 +223,7 @@ void GbAudio_RenderSamples(u32 arg0) {
 
             sp4C[0] = GbAudio_RenderSquare1();
             sp4C[1] = GbAudio_RenderSquare2();
-            sp4C[3] = GbAudio_RenderWave();
+            sp4C[3] = GbAudio_RenderNoise();
 
             tmp2 = gGbSoundRegs[0x15].value;
             var_a0 = ((u32)((sp4C[0] & ((tmp2 & 1) ? -1 : 0)) + (sp4C[1] & ((tmp2 & 2) ? -1 : 0)) +
@@ -681,7 +681,7 @@ unk_D_80078A60 gGbNoiseSampleTable[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1
 // Round 8 pass 4 (agent-14): 955 -> 345: `f32 fv = D_8007D4D0` right after `if (flags & 0x80) {` used for unk_14 and
 // unk_18 (farm candidate t, 470 -> 345: fixes the li 1 / lwc1 order); before that 955 -> 470: `(u8)(nr & 0xF0) * D_8007D4D0` for unk_14 (810 -> 695) and NR41 read inline
 // in the unk_24 length (no sample local there: 695 -> 470; into nr/value 625, i 930, via p 690), on top of
-// (a) + (b) below + the call index written `gAudioSeqTOC[gWaveState.rotation & 0xFF]`
+// (a) + (b) below + the call index written `gAudioSeqTOC[gNoiseChannelState.rotation & 0xFF]`
 // (both args; the extra and consumes the target's missing ring temp t6, like the (u8) trick in GbAudio_RenderSquare1;
 // (u8)/(u16)/(s8)/(s16) casts there: 1045-1655). Leads (see GbAudio_RenderSquare1's notes):
 // (a) the target's col is a REAL variable (a2: andi/sra/andi 0xffff in place, no ring temps), which shifts
@@ -699,15 +699,15 @@ unk_D_80078A60 gGbNoiseSampleTable[8][16] = { { { 0, 1.0f }, { 1, 1.0f }, { 2, 1
 // fix) for dir/sample/idx/col/flags/nr/ent2: 640-2390.
 // Remaining at 810: col/row ptr a3/a2 (target a2/a3), dir/flags a2/a1 (target a1/a2), pos a3 (target a2),
 // `li 1` for unk_28 scheduled after the lui, tail sample/value v0/a0 (target a0 + move t5,a0).
-// Round 9 F1 (farm v1/v2/v3/320): writing the unk_20 wrap test as `(gWaveState.unk_20 < gWaveState.posX) != 0`
+// Round 9 F1 (farm v1/v2/v3/320): writing the unk_20 wrap test as `(gNoiseChannelState.unk_20 < gNoiseChannelState.posX) != 0`
 // (an explicit boolean compare instead of the bare condition): 345 -> 320. The other candidate edits
-// (`!= 0U`, comma-noise `((0, gWaveState)).rotation`, statement line joins) are equivalent or worse noise.
+// (`!= 0U`, comma-noise `((0, gNoiseChannelState)).rotation`, statement line joins) are equivalent or worse noise.
 
 extern unk_D_80078A60 gGbNoiseSampleTable[8][16];
 extern f32 D_8007D4D0;
 extern f32 D_8007D4D4;
 
-s16 GbAudio_RenderWave(void) {
+s16 GbAudio_RenderNoise(void) {
     s32 i;
     s32 nr43;
     s32 row;
@@ -735,28 +735,28 @@ s16 GbAudio_RenderWave(void) {
         entry = &gGbNoiseSampleTable[row][col];
         sampleId = entry->posX;
         if (sampleId == 0xFF) {
-            gWaveState.unk_28 = 0;
+            gNoiseChannelState.unk_28 = 0;
             return 0;
         }
         if (((u8*)&gGbSoundRegs[0x12])[0] & 8) {
             sampleId += 0x10;
         }
-        gWaveState.unk_0C = gGbNoiseSampleTable[nr43 & 7][col].rotation;
-        if (sampleId != gWaveState.rotation) {
-            gWaveState.rotation = sampleId;
-            ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (gWaveState.rotation << 1));
+        gNoiseChannelState.unk_0C = gGbNoiseSampleTable[nr43 & 7][col].rotation;
+        if (sampleId != gNoiseChannelState.rotation) {
+            gNoiseChannelState.rotation = sampleId;
+            ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (gNoiseChannelState.rotation << 1));
             Rom_DmaRead(ent->posX, (u32)gAudioSfxDataBuffer, ent->rotation);
         }
 
-        gWaveState.RentalSlotAnimData_PosePhase = 0;
-        gWaveState.unk_10 = 0;
+        gNoiseChannelState.RentalSlotAnimData_PosePhase = 0;
+        gNoiseChannelState.unk_10 = 0;
         if (!(((u8*)&gGbSoundRegs[0x11])[0] & 8) && !(((u8*)&gGbSoundRegs[0x11])[0] & 0xF0)) {
-            gWaveState.unk_28 = 0;
+            gNoiseChannelState.unk_28 = 0;
             ((u8*)&gGbSoundRegs[0x16])[0] &= 0xFFF7;
             return 0;
         }
         if ((((u8*)&gGbSoundRegs[0x11])[0] & 8) && !(((u8*)&gGbSoundRegs[0x11])[0] & 0xF0) && !(((u8*)&gGbSoundRegs[0x11])[0] & 7)) {
-            gWaveState.unk_28 = 0;
+            gNoiseChannelState.unk_28 = 0;
             ((u8*)&gGbSoundRegs[0x16])[0] &= 0xFFF7;
             return 0;
         }
@@ -764,69 +764,69 @@ s16 GbAudio_RenderWave(void) {
         nr44 = ((u8*)&gGbSoundRegs[0x13])[0];
         if (nr44 & 0x80) {
             fv = D_8007D4D0;
-            gWaveState.posX = 0;
-            gWaveState.unk_28 = 1;
-            gWaveState.unk_14 = (u8)(((u8*)&gGbSoundRegs[0x11])[0] & 0xF0) * fv;
+            gNoiseChannelState.posX = 0;
+            gNoiseChannelState.unk_28 = 1;
+            gNoiseChannelState.unk_14 = (u8)(((u8*)&gGbSoundRegs[0x11])[0] & 0xF0) * fv;
             if (((u8*)&gGbSoundRegs[0x11])[0] & 7) {
                 if (((u8*)&gGbSoundRegs[0x11])[0] & 8) {
-                    gWaveState.unk_18 = fv;
+                    gNoiseChannelState.unk_18 = fv;
                 } else {
-                    gWaveState.unk_18 = D_8007D4D4;
+                    gNoiseChannelState.unk_18 = D_8007D4D4;
                 }
-                gWaveState.unk_20 = gWaveState.unk_1C = (((u8*)&gGbSoundRegs[0x11])[0] & 7) * D_800FD004 * 4;
+                gNoiseChannelState.unk_20 = gNoiseChannelState.unk_1C = (((u8*)&gGbSoundRegs[0x11])[0] & 7) * D_800FD004 * 4;
             } else {
-                gWaveState.unk_1C = -1;
-                gWaveState.unk_20 = -1;
-                gWaveState.unk_18 = 0.0f;
+                gNoiseChannelState.unk_1C = -1;
+                gNoiseChannelState.unk_20 = -1;
+                gNoiseChannelState.unk_18 = 0.0f;
             }
             if (nr44 & 0x40) {
-                gWaveState.unk_24 = (0x40 - (((u8*)&gGbSoundRegs[0x10])[0] & 0x3F)) * D_800FD004;
+                gNoiseChannelState.unk_24 = (0x40 - (((u8*)&gGbSoundRegs[0x10])[0] & 0x3F)) * D_800FD004;
             } else {
-                gWaveState.unk_24 = -1;
+                gNoiseChannelState.unk_24 = -1;
             }
             ((u8*)&gGbSoundRegs[0x13])[0] = nr44 & 0xFF7F;
         }
-        if (gWaveState.unk_28 == 0) {
+        if (gNoiseChannelState.unk_28 == 0) {
             return 0;
         }
-    } else if (gWaveState.unk_28 == 0) {
+    } else if (gNoiseChannelState.unk_28 == 0) {
         return 0;
     }
 
-    if (gWaveState.unk_24 < gWaveState.posX) {
-        gWaveState.unk_28 = 0;
+    if (gNoiseChannelState.unk_24 < gNoiseChannelState.posX) {
+        gNoiseChannelState.unk_28 = 0;
         ((u8*)&gGbSoundRegs[0x16])[0] &= 0xFFF7;
         return 0;
     }
 
-    if (gWaveState.unk_20 < gWaveState.posX) {
-        gWaveState.unk_20 += gWaveState.unk_1C;
-        gWaveState.unk_14 += gWaveState.unk_18;
+    if (gNoiseChannelState.unk_20 < gNoiseChannelState.posX) {
+        gNoiseChannelState.unk_20 += gNoiseChannelState.unk_1C;
+        gNoiseChannelState.unk_14 += gNoiseChannelState.unk_18;
     }
 
-    ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (gWaveState.rotation << 1));
+    ent = (unk_D_800FC6CC*)((u32*)gAudioSeqTOC + (gNoiseChannelState.rotation << 1));
     if (1) {}
-    sample = ((s16*)gAudioSfxDataBuffer)[gWaveState.RentalSlotAnimData_PosePhase];
-    gWaveState.unk_10 += 1.0f;
-    if (gWaveState.unk_0C <= gWaveState.unk_10) {
-        gWaveState.RentalSlotAnimData_PosePhase++;
-        gWaveState.unk_10 -= gWaveState.unk_0C;
-        if (gWaveState.RentalSlotAnimData_PosePhase >= (ent->rotation >> 1)) {
-            gWaveState.RentalSlotAnimData_PosePhase = 0;
+    sample = ((s16*)gAudioSfxDataBuffer)[gNoiseChannelState.RentalSlotAnimData_PosePhase];
+    gNoiseChannelState.unk_10 += 1.0f;
+    if (gNoiseChannelState.unk_0C <= gNoiseChannelState.unk_10) {
+        gNoiseChannelState.RentalSlotAnimData_PosePhase++;
+        gNoiseChannelState.unk_10 -= gNoiseChannelState.unk_0C;
+        if (gNoiseChannelState.RentalSlotAnimData_PosePhase >= (ent->rotation >> 1)) {
+            gNoiseChannelState.RentalSlotAnimData_PosePhase = 0;
         }
     }
 
-    if (!(((u8*)&gGbSoundRegs[0x11])[0] & 8) && (gWaveState.unk_14 < 0.0f)) {
-        gWaveState.unk_28 = 0;
+    if (!(((u8*)&gGbSoundRegs[0x11])[0] & 8) && (gNoiseChannelState.unk_14 < 0.0f)) {
+        gNoiseChannelState.unk_28 = 0;
         return 0;
     }
-    if (gWaveState.unk_14 > 0.75f) {
-        gWaveState.unk_14 = 0.75f;
-        gWaveState.unk_18 = 0.0f;
-        gWaveState.unk_20 = -1;
+    if (gNoiseChannelState.unk_14 > 0.75f) {
+        gNoiseChannelState.unk_14 = 0.75f;
+        gNoiseChannelState.unk_18 = 0.0f;
+        gNoiseChannelState.unk_20 = -1;
     }
-    sample = sample * gWaveState.unk_14;
-    gWaveState.posX += 0x100;
+    sample = sample * gNoiseChannelState.unk_14;
+    gNoiseChannelState.posX += 0x100;
     return sample;
 }
 

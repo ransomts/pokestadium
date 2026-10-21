@@ -969,7 +969,7 @@ void BattleAnim_CallbackEndEffect40Descriptor3DSpreadRisingColorFade_InitParticl
     Vec3s sp30;
     UNUSED s32 pad[3];
 
-    Particle_SetRandomVelocityXYZ(arg0, 5, 5, 5);
+    Particle_SetRandomPositionXYZ(arg0, 5, 5, 5);
     Particle_SetScaleScaled(arg0, 0.5f);
     Particle_SetSpeed(arg0, 1.0f);
     sp30.x = 0x2000 - ParticleMath_RandomRange(0x4000);
@@ -1071,7 +1071,7 @@ void BattleAnim_CallbackEndEffect56Descriptor47SpreadScaleAlphaRise_InitParticle
     Vec3s sp30;
     UNUSED s32 pad[3];
 
-    Particle_SetRandomVelocityXYZ(arg0, 5, 0xA, 0xA);
+    Particle_SetRandomPositionXYZ(arg0, 5, 0xA, 0xA);
     Particle_SetScaleScaled(arg0, 0.90000004f);
     Particle_SetSpeed(arg0, 1.0f);
     sp30.x = ParticleMath_RandomSigned(0x2000);
@@ -1121,7 +1121,7 @@ void BattleAnim_CallbackEndEffects54And56Descriptor3DRisingColorScaleFade_InitPa
     Vec3s sp30;
     UNUSED s32 pad[3];
 
-    Particle_SetRandomVelocityXYZ(arg0, 5, 5, 5);
+    Particle_SetRandomPositionXYZ(arg0, 5, 5, 5);
     Particle_SetScaleScaled(arg0, 0.75f);
     Particle_SetSpeed(arg0, 1.0f);
     sp30.x = 0x2000 - ParticleMath_RandomRange(0x4000);
@@ -1560,9 +1560,9 @@ void BattleAnim_CallbackEndEffect59Descriptor4FColorScaleFade_InitParticle(Parti
 
     Particle_GetPaletteIndex(arg0);
     Particle_SetScaleScaled(arg0, 0.7f);
-    Particle_SetRandomVelocityX(arg0, 0xF);
-    Particle_SetRandomVelocityYOffset(arg0, 0xF, 0xA);
-    Particle_SetRandomVelocityZ(arg0, 0xF);
+    Particle_SetRandomPositionX(arg0, 0xF);
+    Particle_SetRandomPositionYOffset(arg0, 0xF, 0xA);
+    Particle_SetRandomPositionZ(arg0, 0xF);
     ParticleGfx_RecolorPrimEnvFromPalettePair(arg0, 0x1A);
     Particle_SetPrimAlpha(arg0, 0xC8);
     Particle_SetTimerA6(arg0, sp22 * 4);

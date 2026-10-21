@@ -3494,7 +3494,7 @@ s32 ekansMinigameLoad(s32 arg0, UNUSED s32 arg1) {
         ekansMinigameCountdownStarted = false;
     }
 
-    miniDifficulty = gMenuState; // difficulty ?
+    miniDifficulty = gMinigameComDifficulty; // difficulty ?
 
     main_pool_push_state('MINI');
 

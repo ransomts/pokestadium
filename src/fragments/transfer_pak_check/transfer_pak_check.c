@@ -23,8 +23,8 @@
 static GraphNode* gTextureStateNode;
 static Fragment2_1GraphNode gMenuOptionNodes[8];
 static unk_D_82D0AB38 gMenuItemData[4];
-static SessionModeSettings gGbAudioState;
-static u16 gPlayerMoney;
+static SessionModeSettings gTransferPakSessionSettings;
+static u16 gOptionsField02;
 static char** gTransferPakCheckLabelsBank;
 static s32 gIsStickerStationConnected;
 static s32 gAudioModeFlag;
@@ -34,7 +34,7 @@ static GraphNode* gIconPanelGraphNode;
 static GraphNode* gBottomBannerGraphNode;
 static FramebufferImage* gMenuFramebufferImages[4];
 static FramebufferImage* gMenuIconPanelFramebuffer;
-static FramebufferImage* gMenuGraphNodeD;
+static FramebufferImage* gMenuBannerFramebuffer;
 static unk_D_82D0ABD0 gStatusPopup;
 static FramebufferImage* gMenuFramebufferImagesAlt[8];
 static GraphNode* gMenuGraphNodeE;
@@ -1199,7 +1199,7 @@ s32 PakUi_RenderBannerTexture(s32 arg0, SimpleGfxNode* arg1) {
     if (arg0 == 5) {
         gDPPipeSync(gDisplayListHead++);
 
-        gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuGraphNodeD->img_p & 0x1FFFFFFF);
+        gSPSegment(gDisplayListHead++, 0x0F, (u32)gMenuBannerFramebuffer->img_p & 0x1FFFFFFF);
         gSPDisplayList(gDisplayListHead++, gMenuInfoDisplayList);
 
         GeoRender_ApplyMaterialState();
@@ -1470,8 +1470,8 @@ void PakUi_BuildBottomBanner(void) {
     s32 sp2C;
     char* sp28;
 
-    gMenuGraphNodeD = GfxImage_Allocate(0, 2, 0x80, 0x2C, 1);
-    PakUi_BuildFrameBuffer(gMenuGraphNodeD, 0x78, 0x28);
+    gMenuBannerFramebuffer = GfxImage_Allocate(0, 2, 0x80, 0x2C, 1);
+    PakUi_BuildFrameBuffer(gMenuBannerFramebuffer, 0x78, 0x28);
 
     gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
@@ -2170,7 +2170,7 @@ void PakUi_DrawHeaderProgressBar(s32 arg0, s32 arg1) {
         PakUi_DrawThickBoxBorder(0x38, (s16)((0x3C - tmp) / 2) + 0x24, 0x210, tmp, 0x1E, 0x1E, 0x82, 0x96);
         if (arg0 == 10) {
             sp48 = PakUi_ComputeBlinkAlpha();
-            if (gGbAudioState.posX == 0x1F8) {
+            if (gTransferPakSessionSettings.posX == 0x1F8) {
                 gSPDisplayList(gDisplayListHead++, gPrefDL_Border);
                 gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sp48);
 
@@ -2184,7 +2184,7 @@ void PakUi_DrawHeaderProgressBar(s32 arg0, s32 arg1) {
             tmp = (Font_MeasureTextExtent(0x10, 0, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3B)));
             Font_Printf(0x140 - tmp / 2, 0x36, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3B));
 
-            if (gGbAudioState.posX == 0x1F8) {
+            if (gTransferPakSessionSettings.posX == 0x1F8) {
                 Font_SetActive(8, 0);
                 Text_SetEnvColor(0xFF, 0xFF, 0xFF, sp48);
                 Font_Printf(0x1D6, 0x2D, Text_GetString(NULL, 0, gTransferPakCheckLabelsBank, 0x3C));
@@ -2551,7 +2551,7 @@ s32 TransferPak_MenuHandleInput(void) {
         sp24 = gMenuNavigationTable[gMainMenuCursorIndex].unk_0A;
     } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DRIGHT)) {
         sp24 = gMenuNavigationTable[gMainMenuCursorIndex].unk_0B;
-    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (gGbAudioState.posX == 0x1F8)) {
+    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_CRIGHT) && (gTransferPakSessionSettings.posX == 0x1F8)) {
         Audio_PlaySoundEffectById(2);
         var_a3 = -1;
         gSessionContext.inRound2 ^= 1;
@@ -2797,9 +2797,9 @@ s32 TransferPak_CheckMain(s32 arg0, s32 arg1) {
     main_pool_push_state('GBCK');
 
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&gGbAudioState, 0);
-    Save_GetOptionsField02(&gPlayerMoney);
-    sp53 = (gPlayerMoney & 4) != 0;
+    Save_GetModeSettings(&gTransferPakSessionSettings, 0);
+    Save_GetOptionsField02(&gOptionsField02);
+    sp53 = (gOptionsField02 & 4) != 0;
     gSessionContext.inRound2 = sp53;
     Gfx_InitDisplayListBuffers(0x10000, 0);
     sp54 = StageContext_Allocate(1, 0, 2, 0, 2, 1);
@@ -2838,11 +2838,11 @@ s32 TransferPak_CheckMain(s32 arg0, s32 arg1) {
 
     if (gSessionContext.inRound2 != sp53) {
         if (gSessionContext.inRound2 == 0) {
-            gPlayerMoney &= ~4;
+            gOptionsField02 &= ~4;
         } else {
-            gPlayerMoney |= 4;
+            gOptionsField02 |= 4;
         }
-        Save_SetOptionsField02(&gPlayerMoney);
+        Save_SetOptionsField02(&gOptionsField02);
         Save_CommitTypedRecord(0x14, 0);
     }
 

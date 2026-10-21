@@ -28,7 +28,7 @@ char** gTeamSelectionMoveNamesBank;
 char** gMessageBankTypeNames;
 char** gTeamSelectionUiLabelsBank;
 char** gMessageBankStatusScreenLabels;
-gItemPanel gPartyInfo;
+TeamTrayPanel gPartyInfo;
 unk_D_842168A0 gControllerInfo;
 RegisteredTeamMenu gPokemonData;
 unk_D_8423D3A8 gMoveScreenInfo;

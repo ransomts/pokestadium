@@ -606,7 +606,7 @@ extern u32 gLabPCListHeaderLeftOrnamentTexture[];
 extern u32 gLabPCListHeaderTitleOrnamentTexture[];
 extern u32 gCheckerboardPattern[];
 extern u32 gCheckerboardPatternStatusEntry[];
-extern u32 gTitleScreenImage[];
+extern u32 gLabPCListBackgroundImage[];
 extern u32 gLabPCListCornerIconTexture[];
 extern SortComparatorFunc gListSortComparators[];
 

@@ -120,7 +120,7 @@ static u8 gMonsterModelIds[] = {
     0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01,
 };
 
-static FogRect gBattleOverlayRect;
+static FogRect gIntroOverlayRect;
 static GraphRootNode gMiniCameraRoot0;
 static GraphRootNode gMiniCameraRoot1;
 static GraphRootNode gMiniCameraRoot2;
@@ -137,10 +137,10 @@ static unk_D_86B0FA50* gUIElementHealthBar;
 static unk_D_86B0FA50* gUIElementHealthFill;
 static unk_D_86B0FA50* gUIElementStatus;
 static unk_D_86B0FA50* gUIElementBorder;
-static s16 gCameraZoomSlew;
+static s16 gCameraRotationYSlew;
 static s16 gCameraZoomRotationX;
 static s16 gCameraZoomRotationY;
-static f32 gCameraZoomFov;
+static f32 gCameraZoomDist;
 static s32 gBattleSequenceFrameCount;
 static s32 gBattleSequenceStage;
 unk_D_86B0FA78* gCameraTarget;
@@ -153,7 +153,7 @@ static BattlePokemon* gMonsterContextPtr;
 
 static u32 gMiniCameraLayout[] = {
     0x0C00FFFF, 0x05000000,    0x0B00001E,  0x00000000,    0x014000F0,  0x0000000F,  0x00000000, 0x00000000,
-    0x05000000, 0x0D000000,    0x05000000,  0x07000000,    &gBattleOverlayRect, 0x14000000,  0x002D0019, 0xFFFFFF28,
+    0x05000000, 0x0D000000,    0x05000000,  0x07000000,    &gIntroOverlayRect, 0x14000000,  0x002D0019, 0xFFFFFF28,
     0x08000000, Intro_LightAngleCallbackA, 0x00000000,  0x14000000,    0x002D0019,  0x80808028,  0x08000000, Intro_LightAngleCallbackB,
     0x00000000, 0x16646464,    0x0F000002,  0x05000000,    0x1F00FFFF,  0x00000000,  0x00000000, 0x00000000,
     0x00640064, 0x00640000,    0x08000000,  Intro_FogColorCallback, 0x00000000,  0x05000000,  0x07000000, &gMiniCameraRoot0,
@@ -214,11 +214,11 @@ void Intro_SetBackgroundTint(u8 arg0, u8 arg1, u8 arg2) {
     gOverlayColor.b = arg2;
 
     if (v == 0xFF) {
-        if (gBattleOverlayRect.posX.unk_14 == 1) {
-            gBattleOverlayRect.posX.TrainerSlotSaveData_GamePort |= 1;
+        if (gIntroOverlayRect.posX.unk_14 == 1) {
+            gIntroOverlayRect.posX.TrainerSlotSaveData_GamePort |= 1;
         }
     } else {
-        gBattleOverlayRect.posX.TrainerSlotSaveData_GamePort &= ~1;
+        gIntroOverlayRect.posX.TrainerSlotSaveData_GamePort &= ~1;
     }
 }
 
@@ -622,8 +622,8 @@ s32 Intro_UpdateShowcaseSequence(void) {
                 Intro_EmitLandingParticles();
             }
             if (gCameraTarget->unk_178++ >= 0x41) {
-                gCameraZoomSlew = 0;
-                Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraZoomFov, &gCameraZoomRotationX, &gCameraZoomRotationY);
+                gCameraRotationYSlew = 0;
+                Vec3f_CalculateDistanceAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, &gCameraZoomDist, &gCameraZoomRotationX, &gCameraZoomRotationY);
                 gCameraTarget->unk_16C++;
             }
             break;
@@ -643,9 +643,9 @@ s32 Intro_UpdateShowcaseSequence(void) {
                 gCameraTarget->unk_178 = 0x64;
             }
 
-            gCameraZoomSlew = Math_StepToS32(gCameraZoomSlew, 0x3C, 1, 1);
-            gCameraZoomRotationY += gCameraZoomSlew;
-            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraZoomFov, gCameraZoomRotationX, gCameraZoomRotationY);
+            gCameraRotationYSlew = Math_StepToS32(gCameraRotationYSlew, 0x3C, 1, 1);
+            gCameraZoomRotationY += gCameraRotationYSlew;
+            Camera_ComputeEyeFromAngles(&gMiniCameraPtr->unk_60.at, &gMiniCameraPtr->unk_60.eye, gCameraZoomDist, gCameraZoomRotationX, gCameraZoomRotationY);
             break;
     }
 
@@ -979,7 +979,7 @@ void Stage_LoadModels(void) {
     sp2C = BinArchive_GetFile(BinArchive_Open(stadium_models_ROM_START, _5C7A70_ROM_START, 1, 1), gCurrentMonsterModelId);
 
     gMonsterModelArchive = sp2C(2, 0);
-    GeoNode_CreateFog(0, &gBattleOverlayRect, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
+    GeoNode_CreateFog(0, &gIntroOverlayRect, 0x3C0, 0x3E8, 0xFF, 0xFF, 0xFF, 0xFF);
     GeoNode_CreateContainer(NULL, &gMiniCameraRoot0);
     GeoNode_CreateContainer(NULL, &gMiniCameraRoot1);
     GeoNode_CreateContainer(NULL, &gMiniCameraRoot2);
@@ -1006,13 +1006,13 @@ void Stage_LoadModels(void) {
 
     temp_v0_6 = sp2C(4, 0);
     if (temp_v0_6 == NULL) {
-        gBattleOverlayRect.posX.unk_14 = 0;
-        gBattleOverlayRect.posX.TrainerSlotSaveData_GamePort &= ~1;
+        gIntroOverlayRect.posX.unk_14 = 0;
+        gIntroOverlayRect.posX.TrainerSlotSaveData_GamePort &= ~1;
     } else {
-        gBattleOverlayRect.unk_18.posX = temp_v0_6->posX;
-        gBattleOverlayRect.unk_18.posY = temp_v0_6->posY;
-        gBattleOverlayRect.unk_18.rotation.rgba = temp_v0_6->rotation.rgba;
-        gBattleOverlayRect.posX.unk_14 = 1;
+        gIntroOverlayRect.unk_18.posX = temp_v0_6->posX;
+        gIntroOverlayRect.unk_18.posY = temp_v0_6->posY;
+        gIntroOverlayRect.unk_18.rotation.rgba = temp_v0_6->rotation.rgba;
+        gIntroOverlayRect.posX.unk_14 = 1;
     }
 
     ModelRenderer_InitDisplayRoots();

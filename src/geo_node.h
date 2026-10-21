@@ -34,7 +34,7 @@ unk_D_86002F34_alt17* GeoNode_CreateClearDepth(MainPoolState* arg0, unk_D_86002F
 FogRect* GeoNode_CreateFog(s32 arg0, FogRect* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a);
 PillarGlowParams* GeoNode_CreateLight(MainPoolState* arg0, PillarGlowParams* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a);
 unk_D_86002F34_alt19* GeoNode_CreateAmbientLight(MainPoolState* arg0, unk_D_86002F34_alt19* arg1, u8 r, u8 g, u8 b);
-MiniHudMainGraph* GeoNode_CreateShadowContext(MainPoolState* arg0, MiniHudMainGraph* arg1, s32 arg2, 
+ShadowContextNode* GeoNode_CreateShadowContext(MainPoolState* arg0, ShadowContextNode* arg1, s32 arg2, 
                               GfxTextureInfo* arg3, s32 arg4, unk_D_86002F34_01C* arg5, 
                               s32 arg6, Vtx* arg7);
 unk_D_86002F34_alt12* GeoNode_CreateShadow(MainPoolState* arg0, unk_D_86002F34_alt12* arg1, s16 arg2, s16 arg3, s16 arg4, s16 arg5);

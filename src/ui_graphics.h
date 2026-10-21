@@ -6,7 +6,7 @@
 extern Gfx gMenuDL_BackgroundFill[];
 extern Gfx gPrefDL_Fill[];
 extern Gfx gDL_FillCycle[];
-extern Gfx gTransferPakErrorBorderDL[];
+extern Gfx gDL_CopyDecal[];
 extern Gfx gPrefDL_Border[];
 extern Gfx gDL_XluBorder[];
 extern Gfx gDL_PalettedIcon[];

@@ -4,8 +4,8 @@
 #include "src/gallery.h"
 #include "src/battle_hud.h"
 
-static s16 gWaterEffectFrameCounter;
-static unk_D_843C3508 gWaterEffects[6];
+static s16 gSixSlotTrailFrameCounter;
+static unk_D_843C3508 gSixSlotTrailEffects[6];
 
 void BattleAnim_SixSlotTrail_ResetPool(void) {
     s32 i;
@@ -17,9 +17,9 @@ void BattleAnim_SixSlotTrail_ResetPool(void) {
         0,
     };
 
-    gWaterEffectFrameCounter = 0;
+    gSixSlotTrailFrameCounter = 0;
 
-    var_v0 = &gWaterEffects[0];
+    var_v0 = &gSixSlotTrailEffects[0];
     for (i = 0; i < 6; i++, var_v0++) {
         var_v0->unk_000 = 0;
         var_v0->unk_004 = 0;
@@ -53,7 +53,7 @@ void BattleAnim_SixSlotTrail_Spawn(s16 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     Vec3f spC;
     Vec3f sp0;
 
-    var_v0 = &gWaterEffects[0];
+    var_v0 = &gSixSlotTrailEffects[0];
     spC.x = arg1;
     spC.y = arg2;
     spC.z = arg3;
@@ -211,9 +211,9 @@ s32 BattleAnim_SixSlotTrail_UpdateAll(void) {
     s32 var_s2;
     unk_D_843C3508* var_s0;
 
-    gWaterEffectFrameCounter++;
+    gSixSlotTrailFrameCounter++;
     var_s2 = 0;
-    var_s0 = &gWaterEffects[0];
+    var_s0 = &gSixSlotTrailEffects[0];
 
     for (i = 0; i < 6; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -225,8 +225,8 @@ s32 BattleAnim_SixSlotTrail_UpdateAll(void) {
                 var_s2++;
             }
 
-            if (var_s0->unk_01C < gWaterEffectFrameCounter) {
-                s16 tmp = gWaterEffectFrameCounter - var_s0->unk_01C;
+            if (var_s0->unk_01C < gSixSlotTrailFrameCounter) {
+                s16 tmp = gSixSlotTrailFrameCounter - var_s0->unk_01C;
 
                 temp_fv0 = tmp * 0.02f;
                 var_s0->unk_014 = 1.0f - temp_fv0;
@@ -280,7 +280,7 @@ Gfx* BattleAnim_SixSlotTrail_LoadTextures(Gfx* arg0, unk_D_843C3508* arg1) {
 }
 
 Gfx* BattleAnim_SixSlotTrail_DrawAll(Gfx* arg0) {
-    static Gfx sWaterEffectRenderStateDL[] = {
+    static Gfx sSixSlotTrailRenderStateDL[] = {
         gsDPPipeSync(),
         gsDPSetCycleType(G_CYC_2CYCLE),
         gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -309,7 +309,7 @@ Gfx* BattleAnim_SixSlotTrail_DrawAll(Gfx* arg0) {
 
     BattleAnim_GetCameraContext();
 
-    var_s6 = &gWaterEffects[0];
+    var_s6 = &gSixSlotTrailEffects[0];
     for (i = 0; i < 6; i++, var_s6++) {
         if (var_s6->unk_000 == 1) {
             var_s0 = &var_s6->points[0];
@@ -350,7 +350,7 @@ Gfx* BattleAnim_SixSlotTrail_DrawAll(Gfx* arg0) {
                 }
             }
 
-            gSPDisplayList(arg0++, sWaterEffectRenderStateDL);
+            gSPDisplayList(arg0++, sSixSlotTrailRenderStateDL);
 
             Gfx_SetCombineRaw(
                 arg0++, var_s6->unk_028.posX, var_s6->unk_028.rotation, var_s6->unk_028.RentalSlotAnimData_PosePhase, var_s6->unk_028.unk_0C,

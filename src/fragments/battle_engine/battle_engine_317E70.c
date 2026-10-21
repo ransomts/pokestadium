@@ -544,14 +544,14 @@ void BattleAnim_CleanupEffectsRetainingCategory4(void) {
 }
 
 s32 BattleAnim_GetMoveFailedFlag(void) {
-    return gCameraStateFlag;
+    return gBattleAnimMoveFailedFlag;
 }
 
 void BattleAnim_UpdateMoveFailedFlag(void) {
     if (gBattleMoveFailed != 0) {
-        gCameraStateFlag = 1;
+        gBattleAnimMoveFailedFlag = 1;
     } else {
-        gCameraStateFlag = 0;
+        gBattleAnimMoveFailedFlag = 0;
     }
 }
 
@@ -559,13 +559,13 @@ void BattleAnim_ClearEffectCallbacks(void) {
     s32 i;
 
     for (i = 0; i < 8; i++) {
-        if (gCameraCallbackFuncs[i] != NULL) {
-            gCameraCallbackFuncs[i] = NULL;
-            gCameraUpdateFuncs[i] = NULL;
+        if (gEffectUpdateCallbacks[i] != NULL) {
+            gEffectUpdateCallbacks[i] = NULL;
+            gEffectDrawCallbacks[i] = NULL;
         }
     }
 
-    gCameraStateFlag = 0;
+    gBattleAnimMoveFailedFlag = 0;
 }
 
 s32 BattleAnim_IsEffectSpawningEnabled(void) {
@@ -621,15 +621,15 @@ void BattleAnim_StopParticlesForOwnerCategory(u8 arg0, BattlePlayerEntity* arg1)
 }
 
 void BattleAnim_ResetSpawnDelay(void) {
-    gBattleEngineTimer = 0;
+    gEffectSpawnDelay = 0;
 }
 
 void BattleAnim_SetSpawnDelay(s32 arg0) {
-    gBattleEngineTimer = arg0;
+    gEffectSpawnDelay = arg0;
 }
 
 void BattleAnim_AddSpawnDelay(s32 arg0) {
-    gBattleEngineTimer += arg0;
+    gEffectSpawnDelay += arg0;
 }
 
 void BattleAnim_ResetSpawnDelayAlias(void) {
@@ -641,7 +641,7 @@ gBattleAnimEffectSlots* BattleAnim_CreateEffectSlot(s32 arg0, s32 arg1, s8 arg2,
     gBattleAnimEffectSlots* sp1C = BattleAnim_AllocEffectSlot();
 
     if ((u32)sp1C != -1) {
-        sp1C->unk_0E = arg0 + gBattleEngineTimer;
+        sp1C->unk_0E = arg0 + gEffectSpawnDelay;
         sp1C->unk_0C = arg1;
         sp1C->unk_14 = arg2;
         sp1C->posX = arg3;
@@ -788,15 +788,15 @@ void BattleAnim_EffectEndNop(void) {
 }
 
 void BattleAnim_SetEffectStateFlag(s32 arg0) {
-    gGameStateFlag = arg0;
+    gEffectStateFlag = arg0;
 }
 
 void BattleAnim_ClearEffectStateFlag(void) {
-    gGameStateFlag = 0;
+    gEffectStateFlag = 0;
 }
 
 s32 BattleAnim_GetEffectStateFlag(void) {
-    return gGameStateFlag;
+    return gEffectStateFlag;
 }
 
 s32 BattleAnim_IsCurrentOwnerSpecies(s32 arg0) {

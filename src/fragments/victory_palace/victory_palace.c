@@ -50,14 +50,14 @@ static Fragment2_1GraphNode gFragment50GraphNodeArray[5];
 static Fragment2_1GraphNode gFragment50RightPillarNode;
 static Fragment2_1GraphNode gFragment50LeftPillarNode;
 static ModelData* gFragment50ObjData;
-static s16 gPokedexPanelCameraFovY;
-static s16 gPokedexPanelCameraFovZ;
-static s16 gPokedexPanelCameraFovX;
+static s16 gPokedexPanelCameraRotationX;
+static s16 gPokedexPanelCameraRotationY;
+static s16 gPokedexPanelCameraDist;
 static s16 gPokedexPanelShowInfo;
 static s16 gPokedexPanelShowList;
 static s16 gPokedexPanelModelId;
 static s16 gPokedexPanelShowDebug;
-static s16 gFragment50EnableSlide;
+static s16 gFragment50EnableIdleRotation;
 static s16 gPokedexPanelLoadState;
 static s16 gPokedexPanelLoadTimer;
 static s16 gPokedexPanelHighlightPhase;
@@ -73,8 +73,8 @@ static u16 gPokedexPanelListAnimFrame;
 static u32 gPokedexPanelMonCount;
 static s32 gPokedexPanelListAnimCounter;
 static f32 gFragment50FloatBuffer[150];
-static s32 gPokedexPanelAllMonsSeen;
-static s32 gPokedexPanelAllMonsSeenTimer;
+static s32 gPokedexPanelAllMonsObtained;
+static s32 gPokedexPanelAllMonsObtainedTimer;
 static s32 gPokedexPanelListAnimAlpha;
 static char** gMonSummaryLabelsBank;
 
@@ -1683,7 +1683,7 @@ void HallOfFame_CheckAllCaught(void) {
         }
 
         if (var_s1 == 0x97) {
-            gPokedexPanelAllMonsSeen = 1;
+            gPokedexPanelAllMonsObtained = 1;
         }
     }
 }
@@ -1825,16 +1825,16 @@ void HallOfFame_NoopStub2(void) {
 
 void HallOfFame_InitCamera(void) {
     gFragment50Camera = gFragment50GraphRoot->unk_0C;
-    gPokedexPanelCameraFovY = 0x450;
-    gPokedexPanelCameraFovZ = 0;
-    gPokedexPanelCameraFovX = 0x578;
+    gPokedexPanelCameraRotationX = 0x450;
+    gPokedexPanelCameraRotationY = 0;
+    gPokedexPanelCameraDist = 0x578;
     gFragment50Camera->unk_24.near = 100.0f;
     gFragment50Camera->unk_24.far = 12800.0f;
     gFragment50Camera->unk_24.fovy = 30.0f;
     gFragment50Camera->unk_60.at.x = 0.0f;
     gFragment50Camera->unk_60.at.y = 20.0f;
     gFragment50Camera->unk_60.at.z = 0.0f;
-    Camera_ComputeEyeFromAngles(&gFragment50Camera->unk_60.at, &gFragment50Camera->unk_60.eye, gPokedexPanelCameraFovX, gPokedexPanelCameraFovY, gPokedexPanelCameraFovZ);
+    Camera_ComputeEyeFromAngles(&gFragment50Camera->unk_60.at, &gFragment50Camera->unk_60.eye, gPokedexPanelCameraDist, gPokedexPanelCameraRotationX, gPokedexPanelCameraRotationY);
     gCurrentCameraNode = gFragment50Camera;
 }
 
@@ -1879,7 +1879,7 @@ void HallOfFame_DrawSpeciesGrid(void) {
 
     for (i = 0; i < 150; i++) {
 
-        if (gPokedexPanelAllMonsSeen == 1) {
+        if (gPokedexPanelAllMonsObtained == 1) {
             gFragment50FloatBuffer[i] +=
                 (((__sinf(((((gPokedexPanelListAnimFrame - ((i % 15) * 2)) + 0x1C) % 30) * 6.28f) / 30.0f) * 0.2f) + 1.25f) -
                  gFragment50FloatBuffer[i]) /
@@ -2345,13 +2345,13 @@ s32 HallOfFame_HandleGalleryInput(void) {
         }
 
         if (gPokedexPanelShowDebug == 0) {
-            if (gPokedexPanelAllMonsSeen == 0) {
+            if (gPokedexPanelAllMonsObtained == 0) {
                 if (HallOfFame_HandleInput(&sp54) != 0) {
                     break;
                 }
             } else {
-                gPokedexPanelAllMonsSeenTimer--;
-                if (gPokedexPanelAllMonsSeenTimer <= 0) {
+                gPokedexPanelAllMonsObtainedTimer--;
+                if (gPokedexPanelAllMonsObtainedTimer <= 0) {
                     sp54 = 0;
                     break;
                 }
@@ -2400,7 +2400,7 @@ s32 HallOfFame_HandleGalleryInput(void) {
 
         HallOfFame_UpdateCarouselModelRotation();
         temp_v0 = &gFragment50GraphNodes[gPokedexPanelGraphNodeIndex % 5];
-        if ((gPokedexPanelLoadState == 1) && (gFragment50EnableSlide == 1)) {
+        if ((gPokedexPanelLoadState == 1) && (gFragment50EnableIdleRotation == 1)) {
             temp_v0->unk_008.unk_01E.y += 0x100;
         }
         HallOfFame_DrawFrame();
@@ -2514,9 +2514,9 @@ void HallOfFame_RunGallery(void) {
     StageFade_StartFromOpaque(0x10);
     HallOfFame_CheckAllCaught();
 
-    if (gPokedexPanelAllMonsSeen == 1) {
+    if (gPokedexPanelAllMonsObtained == 1) {
         Audio_StartMusicTrack(0x47);
-        gPokedexPanelAllMonsSeenTimer = 0xA0;
+        gPokedexPanelAllMonsObtainedTimer = 0xA0;
         gPokedexPanelShowList = 1;
     } else {
         Audio_PlayMusicIfChanged(0xF);
@@ -2599,7 +2599,7 @@ void HallOfFame_InitGallery(void) {
 
     gPokedexPanelModelId = 0;
     gPokedexPanelShowDebug = 0;
-    gFragment50EnableSlide = 1;
+    gFragment50EnableIdleRotation = 1;
     gPokedexPanelGraphNodeIndex = 2;
     gPokedexPanelCurrentMonIndex = 0;
 
@@ -2702,7 +2702,7 @@ void HallOfFame_InitGallery(void) {
 s32 HallOfFame_Main(s32 arg0, s32 arg1) {
     Stage* sp24;
 
-    gPokedexPanelAllMonsSeen = 0;
+    gPokedexPanelAllMonsObtained = 0;
 
     main_pool_push_state('VICH');
 
@@ -2726,5 +2726,5 @@ s32 HallOfFame_Main(s32 arg0, s32 arg1) {
 
     main_pool_pop_state('VICH');
 
-    return gPokedexPanelAllMonsSeen;
+    return gPokedexPanelAllMonsObtained;
 }

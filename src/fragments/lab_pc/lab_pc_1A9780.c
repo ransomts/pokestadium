@@ -255,19 +255,19 @@ void BoxList_Init(unk_func_88201DA0* arg0, s32 arg1, s32 arg2, unk_func_88001300
 }
 
 void LabPC_CheckBox_SetTitle(unk_func_88201DA0* arg0, u32 arg1, u32 arg2) {
-    static u16 gMoveSlotMessageIds[] = { 0x32, 0x33 };
-    static Color_RGBA8 gTeamTextColors[] = {
+    static u16 gBoxTitleMessageIds[] = { 0x32, 0x33 };
+    static Color_RGBA8 gBoxTitleColors[] = {
         { 0x96, 0x64, 0x1E, 0xFF },
         { 0x32, 0x64, 0x64, 0xFF },
     };
 
-    HAL_Strcpy(arg0->unk_54, Text_GetString(NULL, 0, gBoxScreenMessageBank, gMoveSlotMessageIds[arg1 - 1]));
+    HAL_Strcpy(arg0->unk_54, Text_GetString(NULL, 0, gBoxScreenMessageBank, gBoxTitleMessageIds[arg1 - 1]));
     sprintf(&arg0->unk_54[strlen(arg0->unk_54)], " No.%d", arg2 + 1);
 
     arg0->unk_50->posX.unk_10.posX =
         (arg0->unk_2C->posX.unk_14.posX - Font_MeasureTextExtent(arg0->unk_50->unk_2C, arg0->unk_50->unk_38, arg0->unk_54)) /
         2;
-    arg0->unk_58->unk_2C = gTeamTextColors[arg1 - 1];
+    arg0->unk_58->unk_2C = gBoxTitleColors[arg1 - 1];
 }
 
 void LabPC_CheckBox_ShowBox(unk_func_88201DA0* arg0, unk_func_88205880_00D0* arg1, u32 arg2) {
@@ -343,7 +343,7 @@ void LabPC_CheckBox_ModalLoop(unk_func_88201DA0* arg0, Controller* arg1) {
 }
 
 void LabPC_DrawBoxCount(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 gItemCountTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gBoxCountTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char sp28[8];
     s32 sp24 = Font_MeasureTextExtent(4, 0, "00");
@@ -351,7 +351,7 @@ void LabPC_DrawBoxCount(unk_func_88205880_00D0* arg0, s32 arg1, s32 arg2) {
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(4, 0);
-    Text_SetEnvColor(gItemCountTextColor.r, gItemCountTextColor.g, gItemCountTextColor.b, gItemCountTextColor.a);
+    Text_SetEnvColor(gBoxCountTextColor.r, gBoxCountTextColor.g, gBoxCountTextColor.b, gBoxCountTextColor.a);
     sprintf(sp28, "%d", arg0->count);
     Font_Printf(((arg1 + sp24) - Font_MeasureTextExtent(0, 0, sp28)) + 0x1C, arg2 + 4, sp28);
     Font_EndTexturedTextRendering();
@@ -1112,7 +1112,7 @@ void BoxPCMenu_Init(unk_func_88203ED8* arg0, s32 arg1, s32 arg2, unk_func_882058
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, temp_s0_4);
 
     arg0->unk_60 = mem_pool_alloc(arg8, sizeof(WidgetTree_InitMessagePanel));
-    ((func88509F48)Memmap_GetFragmentVaddr(TextObjectGraphics_Init))(arg0->unk_60, 0, 0, 0x228, 0x172, arg8, arg6);
+    ((func88509F48)Memmap_GetFragmentVaddr(WidgetTree_InitMessagePanelWidget))(arg0->unk_60, 0, 0, 0x228, 0x172, arg8, arg6);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_60);
 
     arg0->unk_84 = mem_pool_alloc(arg8, sizeof(unk_func_889000C4));

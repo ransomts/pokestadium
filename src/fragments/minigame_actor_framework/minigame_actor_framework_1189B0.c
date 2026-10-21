@@ -21,7 +21,7 @@ s16 miniTutoScreenState = 0;
 s16 gMiniTutoTimer1 = 0;
 s16 gMiniTutoTimer2 = 0;
 s16 gMiniTutoTimer3 = 0;
-s16 gMiniTutoTimer4 = 0;
+s16 gMiniResultIconRow = 0;
 
 ret_func_80004454 MiniGame_GetFragmentFunc(void) {
     return MiniGame_GetFragmentFunc;
@@ -319,7 +319,7 @@ void miniResetGlobalState(void) {
     gMiniTutoTimer1 = 0;
     gMiniTutoTimer2 = 0;
     gMiniTutoTimer3 = 0;
-    gMiniCameraNearBackup = 0;
+    gMiniWinCamPhase = 0;
 
     Widget_PauseMenuInit();
     Widget_CountdownInit();

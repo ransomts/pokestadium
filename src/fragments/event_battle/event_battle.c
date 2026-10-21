@@ -20,11 +20,11 @@ static char** gMessageBankMain;
 static char** gEventBattleUiLabelsBank;
 static EventBattleState gModeSelectState;
 static AnimState gPanelAnimState;
-static AnimState gStatBarAnimState;
+static AnimState gNoticeBannerAnimState;
 static BattleSettings gBattleSettingsState;
 static RuleCard gMenuItems[6];
 static TrainerCard gTrainerPanels[2];
-static OptionLabel gResultPanels[3];
+static OptionLabel gOptionPanels[3];
 
 static unk_D_82305920 gEventBattleModes[] = {
     {
@@ -87,7 +87,7 @@ static unk_D_82305920 gEventBattleModes[] = {
 static s16 gEventBattleModeOffsets[] = {
     0x0198, 0x0181, 0x0098, 0x0030, 0, 0,
 };
-static unk_D_82305978 gStatThresholds[] = {
+static unk_D_82305978 gEventBattleLevelRules[] = {
     {
         50,
         55,
@@ -484,8 +484,8 @@ void EventBattle_InitRuleCard(RuleCard* arg0, s16 arg1, s16 arg2, u8* arg3, s8* 
     arg0->TrainerSlotSaveData_GamePort = 1;
 
     if (arg5 != 0) {
-        arg0->unk_14 = gStatThresholds[arg5 - 1].posX;
-        arg0->unk_16 = gStatThresholds[arg5 - 1].posY;
+        arg0->unk_14 = gEventBattleLevelRules[arg5 - 1].posX;
+        arg0->unk_16 = gEventBattleLevelRules[arg5 - 1].posY;
         arg0->TrainerSlotSaveData_GamePort = EventBattle_CheckTeamLegality(&gTrainerPanels[0], arg5);
         arg0->TrainerSlotSaveData_GamePort &= EventBattle_CheckTeamLegality(&gTrainerPanels[1], arg5);
     }
@@ -538,7 +538,7 @@ void EventBattle_DrawRuleNotice(TrainerCard* arg0, s16 arg1, s16 arg2) {
         Font_SetActive(0x10, 0);
         Text_SetEnvColor(0xFF, 0xFF, 0, sp3E);
         Font_SetLineHeight(0x20);
-        Text_SetNumberToken(3, gStatThresholds[arg0->unk_0004 - 1].rotation);
+        Text_SetNumberToken(3, gEventBattleLevelRules[arg0->unk_0004 - 1].rotation);
         Font_Printf(arg1 + 0x88, arg2 + 0x14, Text_GetString(sp40, 0x100, gMessageBankMain, 9));
         Font_EndTexturedTextRendering();
         arg0->unk_0010 += 0x300;
@@ -689,7 +689,7 @@ u8 EventBattle_CheckTeamLegality(TrainerCard* arg0, s16 arg1) {
         var_s1->unk_25 = 1;
         if ((var_s1->posX.posX > 0) && (var_s1->posX.posX < 0x98)) {
             if (EventBattle_HasLegalMoves(var_s1) != 0) {
-                ptr1 = &gStatThresholds[(arg1 - 1) & 0xFFFFFFFF];
+                ptr1 = &gEventBattleLevelRules[(arg1 - 1) & 0xFFFFFFFF];
 
                 if (gSpeciesDisplayTable[var_s1->posX.posX - 1].unk_0C & ptr1->unk_06) {
                     if ((var_s1->unk_24 >= ptr1->posX) && (ptr1->posY >= var_s1->unk_24)) {
@@ -729,7 +729,7 @@ u8 EventBattle_CheckTeamLegality(TrainerCard* arg0, s16 arg1) {
 
     arg0->unk_0002 = j == 6;
     if (arg0->unk_0002) {
-        arg0->unk_0003 = gStatThresholds[arg1 - 1].rotation >= (sp54[0] + sp54[1] + sp54[2]);
+        arg0->unk_0003 = gEventBattleLevelRules[arg1 - 1].rotation >= (sp54[0] + sp54[1] + sp54[2]);
     } else {
         arg0->unk_0003 = 1;
     }
@@ -1119,7 +1119,7 @@ void EventBattle_DrawFrame(s16 arg0) {
     EventBattle_DrawBackground();
     EventBattle_DrawTitleBar();
     EventBattle_DrawInfoBox(&gPanelAnimState);
-    EventBattle_DrawNoticeBanner(&gStatBarAnimState);
+    EventBattle_DrawNoticeBanner(&gNoticeBannerAnimState);
     EventBattle_DrawSettingsPanel(&gBattleSettingsState);
     EventBattle_DrawTrainerCard(&gTrainerPanels[0]);
     EventBattle_DrawTrainerCard(&gTrainerPanels[1]);
@@ -1129,7 +1129,7 @@ void EventBattle_DrawFrame(s16 arg0) {
     }
 
     for (i = 0; i < 3; i++) {
-        EventBattle_DrawOptionLabel(&gResultPanels[i]);
+        EventBattle_DrawOptionLabel(&gOptionPanels[i]);
     }
 
     if (arg0 >= 0) {
@@ -1145,7 +1145,7 @@ void EventBattle_UpdateWidgets(void) {
 
     Controller_PollInputs();
     EventBattle_UpdateInfoBox(&gPanelAnimState);
-    EventBattle_UpdateNoticeBanner(&gStatBarAnimState);
+    EventBattle_UpdateNoticeBanner(&gNoticeBannerAnimState);
     EventBattle_UpdateSettingsPanel(&gBattleSettingsState);
     EventBattle_UpdateTrainerCardSlide(&gTrainerPanels[0]);
     EventBattle_UpdateTrainerCardSlide(&gTrainerPanels[1]);
@@ -1155,7 +1155,7 @@ void EventBattle_UpdateWidgets(void) {
     }
 
     for (i = 0; i < 3; i++) {
-        EventBattle_UpdateOptionLabel(&gResultPanels[i]);
+        EventBattle_UpdateOptionLabel(&gOptionPanels[i]);
     }
 }
 
@@ -1283,13 +1283,13 @@ void EventBattle_ValidateTeamSelection(EventBattleState* arg0) {
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
     arg0->TrainerSlotSaveData_GamePort = EventBattle_ValidateTeamForRule(&gTrainerPanels[0], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
     arg0->TrainerSlotSaveData_GamePort &= EventBattle_ValidateTeamForRule(&gTrainerPanels[1], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
-    EventBattle_ShowNoticeBanner(&gStatBarAnimState, arg0->TrainerSlotSaveData_GamePort);
+    EventBattle_ShowNoticeBanner(&gNoticeBannerAnimState, arg0->TrainerSlotSaveData_GamePort);
 
     tmp1 = !arg0->TrainerSlotSaveData_GamePort;
     arg0->rotation = tmp1;
 
     for (i = tmp1; i < 3; i++) {
-        gResultPanels[i].posX = 1;
+        gOptionPanels[i].posX = 1;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1308,10 +1308,10 @@ void EventBattle_ReturnToModeSelect(EventBattleState* arg0) {
     temp_v1 = !arg0->TrainerSlotSaveData_GamePort;
     gTrainerPanels[0].unk_0000 = 3;
     gTrainerPanels[1].unk_0000 = 3;
-    gStatBarAnimState.posX = 2;
+    gNoticeBannerAnimState.posX = 2;
 
     for (i = temp_v1; i < 3; i++) {
-        gResultPanels[i].posX = 2;
+        gOptionPanels[i].posX = 2;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1342,13 +1342,13 @@ void EventBattle_ValidateInitialSelection(EventBattleState* arg0) {
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
     arg0->TrainerSlotSaveData_GamePort = EventBattle_ValidateTeamForRule(&gTrainerPanels[0], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
     arg0->TrainerSlotSaveData_GamePort &= EventBattle_ValidateTeamForRule(&gTrainerPanels[1], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
-    EventBattle_ShowNoticeBanner(&gStatBarAnimState, arg0->TrainerSlotSaveData_GamePort);
+    EventBattle_ShowNoticeBanner(&gNoticeBannerAnimState, arg0->TrainerSlotSaveData_GamePort);
 
     temp_v1 = !arg0->TrainerSlotSaveData_GamePort;
     arg0->rotation = temp_v1;
 
     for (i = temp_v1; i < 3; i++) {
-        gResultPanels[i].posX = 1;
+        gOptionPanels[i].posX = 1;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1400,10 +1400,10 @@ void EventBattle_StartBattle(EventBattleState* arg0) {
     }
     gTrainerPanels[0].unk_0000 = 3;
     gTrainerPanels[1].unk_0000 = 3;
-    gStatBarAnimState.posX = 2;
+    gNoticeBannerAnimState.posX = 2;
 
     for (i = 0; i < 3; i++) {
-        gResultPanels[i].posX = 2;
+        gOptionPanels[i].posX = 2;
     }
 
     for (j = 0; j < 6; j++) {
@@ -1514,10 +1514,10 @@ void EventBattle_ExitWithMode(EventBattleState* arg0) {
 
     gTrainerPanels[0].unk_0000 = 3;
     gTrainerPanels[1].unk_0000 = 3;
-    gStatBarAnimState.posX = 2;
+    gNoticeBannerAnimState.posX = 2;
 
     for (i = 0; i < 3; i++) {
-        gResultPanels[i].posX = 2;
+        gOptionPanels[i].posX = 2;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1588,7 +1588,7 @@ void EventBattle_InitSelect(EventBattleState* arg0, s16 arg1) {
     arg0->unk_06 = 0x12;
 
     EventBattle_InitInfoBox(&gPanelAnimState, 0x38, 0x17C);
-    EventBattle_InitNoticeBanner(&gStatBarAnimState, 0x10E, 0xC0);
+    EventBattle_InitNoticeBanner(&gNoticeBannerAnimState, 0x10E, 0xC0);
     EventBattle_InitSettingsPanel(&gBattleSettingsState, 0x68, 0x93, (arg1 + 1) == 0);
 
     EventBattle_InitTrainerCard(&gTrainerPanels[0], 0x40, 0x5C, 0);
@@ -1601,9 +1601,9 @@ void EventBattle_InitSelect(EventBattleState* arg0, s16 arg1) {
     EventBattle_InitRuleCard(&gMenuItems[4], 0x44, 0x10C, NULL, Text_GetString(NULL, 0, gMessageBankMain, 0x1B), 0, 6);
     EventBattle_InitRuleCard(&gMenuItems[5], 0x144, 0x10C, NULL, Text_GetString(NULL, 0, gMessageBankMain, 0x1C), 0, 7);
 
-    EventBattle_InitOptionLabel(&gResultPanels[0], 0x50, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1D));
-    EventBattle_InitOptionLabel(&gResultPanels[1], 0xF4, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1E));
-    EventBattle_InitOptionLabel(&gResultPanels[2], 0x198, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1F));
+    EventBattle_InitOptionLabel(&gOptionPanels[0], 0x50, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1D));
+    EventBattle_InitOptionLabel(&gOptionPanels[1], 0xF4, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1E));
+    EventBattle_InitOptionLabel(&gOptionPanels[2], 0x198, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1F));
 
     if (arg1 == -1) {
         for (i = 2; i >= 0; i--) {

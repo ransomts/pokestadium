@@ -12,11 +12,11 @@ extern u8 gDrowzeeWinnerCount;
 
 extern TextObject* gCurrentTextObject;
 extern ModelData* gDrowzeeModelTemp;
-extern MiniHudMainGraph* gDrowzeeStageRoot;
+extern ShadowContextNode* gDrowzeeStageRoot;
 extern CameraStruct* gDrowzeeCamera;
 extern s16 gDrowzeeCamDist;
 extern s16 gDrowzeeCamRotationY;
-extern s16 gDrowzeeCamRotationX;
+extern s16 gDrowzeeCamDistance;
 
 void MenuInput_FrameUpdate(void);
 u32 MiniGame_RandomRange(u32);

@@ -20,7 +20,7 @@ s16 miniCameraFov;
 s16 miniCameraNear;
 s16 miniCameraFar;
 Vec3s miniCameraCoords;
-s16 gMiniCameraNearBackup;
+s16 gMiniWinCamPhase;
 s16 pad_D_87906074;
 s16 gMiniCameraXRotBackup;
 s16 gMiniCameraYRotBackup;

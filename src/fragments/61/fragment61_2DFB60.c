@@ -857,7 +857,7 @@ s32 Rental_BuildBoxFilterIndex(unk_D_842168A0* arg0, s16 arg1, s16 arg2) {
     return ptr->posX;
 }
 
-s32 Rental_PrimeCarousel(unk_D_842168A0* arg0, gItemPanel* arg1, unk_D_8423D3A8* arg2, s16 arg3, s16 arg4, s16 arg5,
+s32 Rental_PrimeCarousel(unk_D_842168A0* arg0, TeamTrayPanel* arg1, unk_D_8423D3A8* arg2, s16 arg3, s16 arg4, s16 arg5,
                   s16 arg6, s16 arg7, unk_D_842168A0_0013C* arg8) {
     s16 i;
 

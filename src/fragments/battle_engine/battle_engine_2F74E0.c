@@ -13,12 +13,12 @@ u8 gBattleResultPhase;
 static s32 gRandomMoveSlot;
 static s32 gRandomMoveSelectedFlag;
 static s32 pad_D_84390140;
-static u16 gBattleControllerId;
+static u16 gBattleDamageBackup;
 static Controller* gActiveCoopController1;
 static Controller* gActiveCoopController2;
 static Controller gDemoController;
-s32 gBattleInitFlag;
-BattleInitState gBattleInitStruct;
+s32 gAttractInputScriptIndex;
+BattleInitState gAttractInputTimer;
 
 static u8 gBattleBitmaskTable[] = {
     0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80,
@@ -1144,17 +1144,17 @@ void BattleScene_AdvanceAttractInputScript(void) {
 
     controller->buttonPressed = 0;
 
-    if (gBattleInitStruct.posX == 0) {
-        gBattleInitStruct.posX = gAttractInputScript[gBattleInitFlag][0];
-        if (gBattleInitStruct.posX != 0) {
-            controller->buttonPressed = gAttractInputScript[gBattleInitFlag][1];
-            controller->buttonDown = gAttractInputScript[gBattleInitFlag][2];
-            gBattleInitFlag++;
+    if (gAttractInputTimer.posX == 0) {
+        gAttractInputTimer.posX = gAttractInputScript[gAttractInputScriptIndex][0];
+        if (gAttractInputTimer.posX != 0) {
+            controller->buttonPressed = gAttractInputScript[gAttractInputScriptIndex][1];
+            controller->buttonDown = gAttractInputScript[gAttractInputScriptIndex][2];
+            gAttractInputScriptIndex++;
         }
     }
 
-    if (gBattleInitStruct.posX > 0) {
-        gBattleInitStruct.posX--;
+    if (gAttractInputTimer.posX > 0) {
+        gAttractInputTimer.posX--;
     }
 }
 
@@ -1217,8 +1217,8 @@ void BattleScene_TickAttractModeInput(void) {
     BattleScene_SyncActiveHpToPartyState();
 
     if (cont->buttonPressed & 0x2000) {
-        gBattleInitFlag = 0;
-        gBattleInitStruct.posX = 0;
+        gAttractInputScriptIndex = 0;
+        gAttractInputTimer.posX = 0;
     }
 
     if (cont->buttonPressed & 0x8000) {
@@ -1268,17 +1268,17 @@ void BattleScene_CollectActions(void) {
     PokemonAudioInfo* sp18 = &sActivePokemon[1]->animationState.unk_38;
 
     if (sActivePokemon[0]->boundRoster->unk_000 & 2) {
-        gBattleControllerId = gBattleDamage;
+        gBattleDamageBackup = gBattleDamage;
         BattleScene_CollectCpuAction(sActivePokemon[0], sActivePokemon[1]);
-        gBattleDamage = gBattleControllerId;
+        gBattleDamage = gBattleDamageBackup;
     } else {
         BattleScene_CollectPlayerAction(sActivePokemon[0], sActivePokemon[1]);
     }
 
     if (sActivePokemon[1]->boundRoster->unk_000 & 2) {
-        gBattleControllerId = gBattleDamage;
+        gBattleDamageBackup = gBattleDamage;
         BattleScene_CollectCpuAction(sActivePokemon[1], sActivePokemon[0]);
-        gBattleDamage = gBattleControllerId;
+        gBattleDamage = gBattleDamageBackup;
     } else {
         BattleScene_CollectPlayerAction(sActivePokemon[1], sActivePokemon[0]);
     }

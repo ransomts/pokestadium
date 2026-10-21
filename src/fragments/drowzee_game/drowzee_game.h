@@ -27,13 +27,13 @@ typedef struct HudState {
     /* 0x274 */ u8 pressedThisRound;
 } HudState; // size = 0x278
 
-typedef struct ResultGameState {
+typedef struct DrowzeeGameState {
     /* 0x000 */ u8 unk_000;
     /* 0x001 */ u8 unk_001;
     /* 0x004 */ Fragment2_1GraphNode unk_004;
     /* 0x16C */ u8 unk_16C;
     /* 0x16D */ u8 previousHealthState;
-} ResultGameState; // size = 0x170
+} DrowzeeGameState; // size = 0x170
 
 extern u8 gUseAlphaBlend;
 extern u16 gGaugeSegmentLengths[4][14][8];
@@ -46,7 +46,7 @@ u16 DrowzeeGame_IsWindowMatch(u8 arg0);
 void DrowzeeGame_SetPlayerState(HudState* arg0, s32 arg1, u8 arg2, s32 arg3, u8 arg4);
 void DrowzeeGame_InitPlayerSlots(void);
 void DrowzeeGame_LoopDrowzeeIdleAnim(void);
-void DrowzeeGame_AdvanceBreathPhase(ResultGameState* arg0);
+void DrowzeeGame_AdvanceBreathPhase(DrowzeeGameState* arg0);
 void DrowzeeGame_UpdatePlayerAnimations(void);
 void DrowzeeGame_ProcessElimination(u8 arg0);
 void DrowzeeGame_DrawPlayerOverlay(UNUSED s32 arg0);

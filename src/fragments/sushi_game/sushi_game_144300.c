@@ -44,19 +44,19 @@ static Controller** gPlayer4ControllerPtr = &gPlayer4Controller;
 static s16 gPanelColumnX[] = { 0x1E, 0x1E, 0x108, 0x108 };
 static s16 gPanelColumnY[] = { 0xCC, 0x10, 0x10, 0xCC };
 
-static SushiPanelTexture gTexPanelBase = { 0x400C800, 32, 8 };
-static SushiPanelTexture gTexPanelMid = { 0x400CA00, 32, 8 };
-static SushiPanelTexture gTexPanelTop = { 0x400CC00, 32, 8 };
-static SushiPanelTexture gTexPanelBottom = { 0x400CE00, 32, 4 };
-static SushiPanelTexture gTexPanelSide = { 0x400CF00, 32, 8 };
+static SushiPanelTexture gTexPlateStackBase = { 0x400C800, 32, 8 };
+static SushiPanelTexture gTexPlateStackMid = { 0x400CA00, 32, 8 };
+static SushiPanelTexture gTexPlateStackTop = { 0x400CC00, 32, 8 };
+static SushiPanelTexture gTexPlateStackBottom = { 0x400CE00, 32, 4 };
+static SushiPanelTexture gTexPlateStackSide = { 0x400CF00, 32, 8 };
 static SushiPanelTexture gTexPanelCornerLower = { 0x400D100, 32, 4 };
 static SushiPanelTexture gTexPanelCornerMiddle = { 0x400D200, 32, 4 };
-static SushiPanelTexture* gSushiPlateStack1Textures[] = { &gTexPanelMid, &gTexPanelBase, NULL };
-static SushiPanelTexture* gSushiPlateStack2Textures[] = { &gTexPanelBottom, &gTexPanelTop, &gTexPanelBase, NULL };
-static SushiPanelTexture* gSushiPlateStack3Textures[] = { &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelSide, &gTexPanelBase, NULL };
-static SushiPanelTexture* gSushiPlateStack4Textures[] = { &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPanelSide, &gTexPanelBase, NULL };
+static SushiPanelTexture* gSushiPlateStack1Textures[] = { &gTexPlateStackMid, &gTexPlateStackBase, NULL };
+static SushiPanelTexture* gSushiPlateStack2Textures[] = { &gTexPlateStackBottom, &gTexPlateStackTop, &gTexPlateStackBase, NULL };
+static SushiPanelTexture* gSushiPlateStack3Textures[] = { &gTexPlateStackBottom, &gTexPanelCornerLower, &gTexPlateStackSide, &gTexPlateStackBase, NULL };
+static SushiPanelTexture* gSushiPlateStack4Textures[] = { &gTexPlateStackBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPlateStackSide, &gTexPlateStackBase, NULL };
 static SushiPanelTexture* gSushiPlateStack5Textures[] = {
-    &gTexPanelBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPanelCornerMiddle, &gTexPanelSide, &gTexPanelBase,
+    &gTexPlateStackBottom, &gTexPanelCornerLower, &gTexPanelCornerMiddle, &gTexPanelCornerMiddle, &gTexPlateStackSide, &gTexPlateStackBase,
 };
 static SushiPanelTexture** gPanelTextureSets[] = { NULL, gSushiPlateStack1Textures, gSushiPlateStack2Textures, gSushiPlateStack3Textures, gSushiPlateStack4Textures, gSushiPlateStack5Textures };
 static AnimFrame gSushiHudBottomRightIconFrames[] = {
@@ -96,7 +96,7 @@ static Color_RGB8 gSushiHighComboTextGradient[] = {
 };
 static s32 gResultSoundCategories[] = { 0x50002, 0x50002, 0x50001, 0x50002, 0, 0, 0 };
 
-MiniHudMainGraph* gSushiGoRoundGraphNode;
+ShadowContextNode* gSushiGoRoundGraphNode;
 static TextObject* gSushiGoRoundTextObject;
 static u32 gSushiGoRoundFrameCounter;
 static s32 gSushiGoRoundState;

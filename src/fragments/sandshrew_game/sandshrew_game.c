@@ -2072,10 +2072,10 @@ void SandshrewGame_InitCamera(void) {
 }
 
 void SandshrewGame_UpdateWinCamera(void) {
-    switch (gMiniCameraNearBackup) {
+    switch (gMiniWinCamPhase) {
         case 1:
             miniSaveCameraState();
-            gMiniCameraNearBackup++;
+            gMiniWinCamPhase++;
             break;
 
         case 2:
@@ -2086,7 +2086,7 @@ void SandshrewGame_UpdateWinCamera(void) {
             break;
     }
 
-    if (gMiniCameraNearBackup != 0) {
+    if (gMiniWinCamPhase != 0) {
         miniRestoreCameraState();
     }
 }
@@ -2139,7 +2139,7 @@ s32 SandshrewGame_CheckWinCondition(void) {
         miniSandshrewGeiserPtr++;
     }
 
-    gMiniTutoTimer4 = var_s4;
+    gMiniResultIconRow = var_s4;
     return var_s7;
 }
 
@@ -2199,7 +2199,7 @@ void SandshrewGame_MinigameStateMachine(void) {
             if (SandshrewGame_CheckWinCondition() != 0) {
                 SandshrewGame_ResetDigSpeeds();
                 minigameInputLock = false;
-                gMiniCameraNearBackup = 1;
+                gMiniWinCamPhase = 1;
                 minigameState++;
                 miniInputLockTimer = 0x28;
             }
@@ -2371,7 +2371,7 @@ void sandshrewMinigameInit(void) {
     StageLoader_RunFrames(0xA);
     StageFade_StartFromOpaque(0x10);
     miniTutoScreenState = 3;
-    miniDifficulty = gMenuState;
+    miniDifficulty = gMinigameComDifficulty;
 }
 
 void SandshrewGame_MainLoop(void) {

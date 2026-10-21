@@ -136,16 +136,16 @@ typedef struct unk_D_800ABE00_cmd12 {
     /* 0x01 */ char pad[3];
 } unk_D_800ABE00_cmd12; // size = 0x4
 
-typedef struct GeoCmd_CreateColorRect {
+typedef struct GeoCmd_CreateFog {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ u8 r;
     /* 0x02 */ u8 g;
     /* 0x03 */ u8 b;
     /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-} GeoCmd_CreateColorRect; // size = 0x8
+} GeoCmd_CreateFog; // size = 0x8
 
-typedef struct GeoCmd_CreateColoredVertex {
+typedef struct GeoCmd_CreateLight {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[0x3];
     /* 0x04 */ s16 rotation;
@@ -154,7 +154,7 @@ typedef struct GeoCmd_CreateColoredVertex {
     /* 0x09 */ u8 g;
     /* 0x0A */ u8 b;
     /* 0x0B */ u8 a;
-} GeoCmd_CreateColoredVertex; // size = 0xC
+} GeoCmd_CreateLight; // size = 0xC
 
 typedef struct GeoCmd_Skip {
     /* 0x00 */ u8 cmd;
@@ -235,7 +235,7 @@ typedef struct GeoCmd_CreateDisplayList {
     /* 0x04 */ Gfx* rotation;
 } GeoCmd_CreateDisplayList; // size = 0x8
 
-typedef struct GeoCmd_CreateShadowNode {
+typedef struct GeoCmd_CreateModelPart {
     /* 0x00 */ u8 cmd;
     /* 0x02 */ s16 posY;
     /* 0x04 */ s16 rotation;
@@ -246,9 +246,9 @@ typedef struct GeoCmd_CreateShadowNode {
     /* 0x12 */ s16 unk_12;
     /* 0x14 */ s16 unk_14;
     /* 0x16 */ char pad[0x2];
-} GeoCmd_CreateShadowNode; // size = 0x18
+} GeoCmd_CreateModelPart; // size = 0x18
 
-typedef struct GeoCmd_CreateBillboard {
+typedef struct GeoCmd_CreateDisplayListMatrix {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 posY;
@@ -257,7 +257,7 @@ typedef struct GeoCmd_CreateBillboard {
     /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ Vec3s unk_0A;
     /* 0x10 */ Gfx* unk_10;
-} GeoCmd_CreateBillboard; // size = 0x14
+} GeoCmd_CreateDisplayListMatrix; // size = 0x14
 
 typedef struct GeoCmd_CreateScaleBillboard {
     /* 0x00 */ u8 cmd;

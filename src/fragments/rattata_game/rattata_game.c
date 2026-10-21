@@ -61,7 +61,7 @@ static f32 gLaneBaseY[4][10] = {
     { 60.0f, 61.0f, 62.0f, 63.0f, 64.0f, 65.0f, 66.0f, 67.0f, 68.0f, 69.0f },
 };
 
-static u32 gRacePanelParams[] = {
+static u32 gRaceUnusedPanelParams[] = {
     0x001C000E, 0xFFFFFFFF, 0x0000FFFF, 0x0062000E, 0xFFFFFFFF, 0x00FF00FF, 0x00A8000E,
     0xFFFFFFFF, 0xFF0000FF, 0x00EE000E, 0xFFFFFFFF, 0xFFFF00FF, 0x00000000,
 };
@@ -133,7 +133,7 @@ const char gRaceStringFmt[] = "%s";
 
 static ModelData* gRaceStageData;
 static ModelData* gRaceStageAssets;
-static MiniHudMainGraph* gRaceGraphRoot;
+static ShadowContextNode* gRaceGraphRoot;
 static CameraStruct* gRaceCamera;
 static s16 gRaceCameraDist;
 static s16 gRaceCameraRotationY;
@@ -145,12 +145,12 @@ static RacePlayerState gRacePlayerStates[4];
 static RacePlayerState* gRacePlayerState;
 static Fragment2_1GraphNode* gRacePlayerGraphNode;
 static Fragment2_1GraphNode gRacePlayerGraphNodeTemp;
-static s16 gRaceResultScreenActive;
+static s16 gRaceStartCountdownActive;
 static u32 gRaceFinishFrame;
 static s16 gRaceWinnersCount;
 static s16 gRaceMultipleWinners;
 static s16 gRaceUnusedFlag1;
-static s16 gRaceUnusedFlag2;
+static s16 gRaceExitFadeCounter;
 static f32 gRaceBestFinishTime;
 static TextObject* gRaceTextObject;
 static s16 gRaceIsResultScreen;
@@ -164,7 +164,7 @@ static s16 gRaceCameraInitFlag;
 u32 gRacePlayerScreenY[4];
 
 void RattataGame_InitAiDifficulty(RacePlayerState* arg0) {
-    arg0->unk_002 = gMenuState + 1;
+    arg0->unk_002 = gMinigameComDifficulty + 1;
 }
 
 void RattataGame_DrawRankBanners(void) {
@@ -562,11 +562,11 @@ void RattataGame_UpdateStartCountdown(void) {
         ModelAnim_SetAnimation(&gRacePlayerStates[i].unk_008, 0);
     }
 
-    gRaceResultScreenActive = 1;
+    gRaceStartCountdownActive = 1;
     Widget_CountdownStart(1);
     gRacePhase = 1;
 
-    while (gRaceResultScreenActive == 1) {
+    while (gRaceStartCountdownActive == 1) {
         switch (Widget_CountdownGetState()) {
             case 1:
             case 2:
@@ -574,7 +574,7 @@ void RattataGame_UpdateStartCountdown(void) {
                 MiniSound_DispatchCommand(0x60001, 0, 0);
                 break;
             case 0:
-                gRaceResultScreenActive = 0;
+                gRaceStartCountdownActive = 0;
                 break;
         }
 
@@ -585,7 +585,7 @@ void RattataGame_UpdateStartCountdown(void) {
               gPlayer3Controller->buttonPressed | (gPlayer4Controller->buttonPressed != 0)) != 0)) {
             StageFade_StartFromTransparent(0x1E);
             Audio_BeginVolumeTransition(0x1E);
-            gRaceResultScreenActive = 0;
+            gRaceStartCountdownActive = 0;
 
             for (i = 0; i < 30; i++) {
                 RattataGame_UpdateCamera();
@@ -1252,10 +1252,10 @@ void RattataGame_WaitForContinue(void) {
     gRacePhase = 5;
 
     while (gResultExitPending == 0) {
-        if ((gMenuCursorX == 1) && (gRaceUnusedFlag2 > 0)) {
-            gRaceUnusedFlag2 -= 0xA;
-            if (gRaceUnusedFlag2 < 0) {
-                gRaceUnusedFlag2 = 0;
+        if ((gMenuCursorX == 1) && (gRaceExitFadeCounter > 0)) {
+            gRaceExitFadeCounter -= 0xA;
+            if (gRaceExitFadeCounter < 0) {
+                gRaceExitFadeCounter = 0;
             }
         }
 
@@ -1276,7 +1276,7 @@ void RattataGame_LoadAssets(void) {
     MainPool_FinalizeAllocation(temp_v0);
     ModelRenderer_InitDisplayRoots();
     PokeIcon_OpenModelArchives();
-    gRaceUnusedFlag2 = 0xFF;
+    gRaceExitFadeCounter = 0xFF;
     gRaceStageReady = 0;
     gRaceStageData = Model_LoadByArchiveIndex(0xB8);
     ModelRenderer_AttachDisplayObject(&gRacePlayerGraphNodeTemp);

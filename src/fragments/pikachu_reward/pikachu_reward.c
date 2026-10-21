@@ -254,7 +254,7 @@ void PikachuReward_DrawTextBoxPanel(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 }
 
 void PikachuReward_DrawSelectionCursor(s16 arg0, s16 arg1) {
-    gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+    gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
     Gfx_DrawTextureRgba16(arg0, arg1, 0x18, 0xE, Util_ConvertAddrToVirtAddr(D_8C200090), 0x18, 0x200000);
 
@@ -577,7 +577,7 @@ s32 PikachuReward_ResolveMoveSlot(void) {
                     PikachuReward_ShowTextForFrames(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xA), 0x1E);
                     ModelAnim_SetAnimation(gPikachuNodes, 9);
                     gPikachuVisibilityState = 0;
-                    Effect_TriggerMoveVisual(0x85, 0x19, 0);
+                    Audio_PlayMoveSoundEffect(0x85, 0x19, 0);
                     PikachuReward_ShowTextWaitForA(Text_GetString(NULL, 0, gPikachuRewardMsgBank, 0xB), 1);
                     Text_SetStringToken(0x1D, Text_GetString(NULL, 0, gMoveNameBank, gPikachuSession.rotation.unk_09[spAC] - 1));
                     Text_GetString(sp2C, sizeof(sp2C), gPikachuRewardMsgBank, 0xC);

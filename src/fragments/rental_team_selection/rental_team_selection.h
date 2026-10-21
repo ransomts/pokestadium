@@ -43,7 +43,7 @@ typedef struct unk_D_84229EB0_00024 {
     /* 0x4D2C */ char unk4D2C[0x4];
 } unk_D_84229EB0_00024; // size = 0x4D30
 
-typedef struct gItemPanel {
+typedef struct TeamTrayPanel {
     /* 0x0000 */ u8 unk_0000;
     /* 0x0001 */ u8 unk_0001;
     /* 0x0002 */ u8 unk_0002;
@@ -67,7 +67,7 @@ typedef struct gItemPanel {
     /* 0x4D40 */ struct unk_D_842168A0* pokemonPanel;
     /* 0x4D44 */ unk_D_8423D3A8* moveScreen;
     /* 0x4D48 */ struct RegisteredTeamMenu* registrationManager;
-} gItemPanel; // size = 0x4D4C
+} TeamTrayPanel; // size = 0x4D4C
 
 typedef struct unk_D_842168A0_0013C {
     /* 0x00 */ u32 posX;
@@ -100,7 +100,7 @@ typedef struct unk_D_842168A0 {
     /* 0x00140 */ unk_D_838067F0_0168* currentPage;
     /* 0x00144 */ char unk00144[0x4];
     /* 0x00148 */ unk_D_838067F0_0168 pages[8];
-    /* 0x13608 */ gItemPanel* teamTray;
+    /* 0x13608 */ TeamTrayPanel* teamTray;
     /* 0x1360C */ unk_D_8423D3A8* moveScreen;
 } unk_D_842168A0; // size = 0x13610
 
@@ -130,7 +130,7 @@ typedef struct RegisteredTeamMenu {
     /* 0x00024 */ unk_D_84229EB0_00024* currentPage;
     /* 0x00028 */ unk_D_84229EB0_00024 pages[3];
     /* 0x0E7B8 */ char unk0E7B8[0x4D30];
-    /* 0x134E8 */ gItemPanel* teamTray;
+    /* 0x134E8 */ TeamTrayPanel* teamTray;
     /* 0x134EC */ unk_D_842168A0* pokemonPanel;
     /* 0x134F0 */ unk_D_8423D3A8* moveScreen;
     /* 0x134F4 */ char unk134F4[0x4];
@@ -226,47 +226,47 @@ s32 TeamSelection_TrainerSlots_Open(s16 arg0, s32 arg1);
 s16 TeamSelection_TrainerSlots_GetSelection(void);
 
 void Rental_DrawTeamSlotFrame(s16 arg0, s16 arg1, s32 arg2);
-void Rental_DrawTeamTrayFrame(gItemPanel* arg0, s16 arg1, s16 arg2);
-void Rental_DrawTeamCursor(gItemPanel* arg0);
-void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1);
-void Rental_BeginSlotReplace(gItemPanel* arg0);
-s32 Rental_SaveTeamToDeck(gItemPanel* arg0);
-s32 Rental_CheckTeamLevelCap(gItemPanel* arg0);
-void Rental_TeamTrayHide(gItemPanel* arg0);
-void Rental_TeamTrayShow(gItemPanel* arg0);
-void Rental_OpenSlotAssignmentDialog(gItemPanel* a0);
-void Rental_ResolveSlotPick(gItemPanel* arg0);
-void Rental_TeamTraySlideIn(gItemPanel* arg0);
-void Rental_TeamTraySlideOut(gItemPanel* arg0);
-void Rental_BeginSlotReplacement(gItemPanel* arg0);
-void Rental_TeamCursorLeft(gItemPanel* arg0);
-void Rental_TeamCursorRight(gItemPanel* arg0);
-void Rental_TeamCursorUp(gItemPanel* arg0);
-void Rental_TeamCursorDown(gItemPanel* arg0);
-void Rental_TeamGridHandleInput(gItemPanel* arg0);
-void Rental_ConfirmTeam(gItemPanel* arg0);
-void Rental_HandleTeamConfirmation(gItemPanel* arg0);
-void Rental_HandleRegisteredTeamConfirmation(gItemPanel* arg0);
-void Rental_HandleLevelCapWarning(gItemPanel* arg0);
-void Rental_HandleTeamSaveResult(gItemPanel* arg0);
-void Rental_HandleTeamCancel(gItemPanel* arg0);
-void Rental_TeamTraySlideTick(gItemPanel* arg0);
-s32 Rental_TeamSlotsUpdate(gItemPanel* arg0);
-s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, RegisteredTeamMenu* arg3, s16 arg4, u16 arg5,
+void Rental_DrawTeamTrayFrame(TeamTrayPanel* arg0, s16 arg1, s16 arg2);
+void Rental_DrawTeamCursor(TeamTrayPanel* arg0);
+void Rental_DrawTeamTray(TeamTrayPanel* arg0, s32 arg1);
+void Rental_BeginSlotReplace(TeamTrayPanel* arg0);
+s32 Rental_SaveTeamToDeck(TeamTrayPanel* arg0);
+s32 Rental_CheckTeamLevelCap(TeamTrayPanel* arg0);
+void Rental_TeamTrayHide(TeamTrayPanel* arg0);
+void Rental_TeamTrayShow(TeamTrayPanel* arg0);
+void Rental_OpenSlotAssignmentDialog(TeamTrayPanel* a0);
+void Rental_ResolveSlotPick(TeamTrayPanel* arg0);
+void Rental_TeamTraySlideIn(TeamTrayPanel* arg0);
+void Rental_TeamTraySlideOut(TeamTrayPanel* arg0);
+void Rental_BeginSlotReplacement(TeamTrayPanel* arg0);
+void Rental_TeamCursorLeft(TeamTrayPanel* arg0);
+void Rental_TeamCursorRight(TeamTrayPanel* arg0);
+void Rental_TeamCursorUp(TeamTrayPanel* arg0);
+void Rental_TeamCursorDown(TeamTrayPanel* arg0);
+void Rental_TeamGridHandleInput(TeamTrayPanel* arg0);
+void Rental_ConfirmTeam(TeamTrayPanel* arg0);
+void Rental_HandleTeamConfirmation(TeamTrayPanel* arg0);
+void Rental_HandleRegisteredTeamConfirmation(TeamTrayPanel* arg0);
+void Rental_HandleLevelCapWarning(TeamTrayPanel* arg0);
+void Rental_HandleTeamSaveResult(TeamTrayPanel* arg0);
+void Rental_HandleTeamCancel(TeamTrayPanel* arg0);
+void Rental_TeamTraySlideTick(TeamTrayPanel* arg0);
+s32 Rental_TeamSlotsUpdate(TeamTrayPanel* arg0);
+s32 Rental_InitTeamTray(TeamTrayPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, RegisteredTeamMenu* arg3, s16 arg4, u16 arg5,
                   char* arg6, s16 arg7, s16 arg8, s16 arg9);
-s32 Rental_TeamTrayOpen(gItemPanel* arg0, s16 arg1);
-s32 Rental_TeamTrayResume(gItemPanel*);
-s32 Rental_ResetTeamSlots(gItemPanel*);
-s32 Rental_RemoveHighlightedSlot(gItemPanel*);
-s32 Rental_AssignMonToSlot(gItemPanel*, unk_D_838067F0_0168_0000*);
-s32 Rental_ClearCurrentSlotSelection(gItemPanel*);
-s32 Rental_CanAddMonToTeam(gItemPanel*, unk_D_838067F0_0168_0000*);
-s32 Rental_TeamContainsMon(gItemPanel*, unk_D_838067F0_0168_0000*);
-s32 Rental_TeamTrayIsIdle(gItemPanel* arg0);
-void Rental_CopyRosterToTeam(gItemPanel* arg0, PokemonData* arg1, s16 arg2);
+s32 Rental_TeamTrayOpen(TeamTrayPanel* arg0, s16 arg1);
+s32 Rental_TeamTrayResume(TeamTrayPanel*);
+s32 Rental_ResetTeamSlots(TeamTrayPanel*);
+s32 Rental_RemoveHighlightedSlot(TeamTrayPanel*);
+s32 Rental_AssignMonToSlot(TeamTrayPanel*, unk_D_838067F0_0168_0000*);
+s32 Rental_ClearCurrentSlotSelection(TeamTrayPanel*);
+s32 Rental_CanAddMonToTeam(TeamTrayPanel*, unk_D_838067F0_0168_0000*);
+s32 Rental_TeamContainsMon(TeamTrayPanel*, unk_D_838067F0_0168_0000*);
+s32 Rental_TeamTrayIsIdle(TeamTrayPanel* arg0);
+void Rental_CopyRosterToTeam(TeamTrayPanel* arg0, PokemonData* arg1, s16 arg2);
 
 void Rental_CarouselDraw(unk_D_842168A0*, s32);
-s32 Rental_PrimeCarousel(unk_D_842168A0*, gItemPanel*, unk_D_8423D3A8*, s16, s16, s16, s16, s16, unk_D_842168A0_0013C*);
+s32 Rental_PrimeCarousel(unk_D_842168A0*, TeamTrayPanel*, unk_D_8423D3A8*, s16, s16, s16, s16, s16, unk_D_842168A0_0013C*);
 s32 Rental_CarouselTick(unk_D_842168A0*);
 s32 Rental_CarouselOpen(unk_D_842168A0*, s16);
 s32 Rental_CarouselResumeAfterAssign(unk_D_842168A0*);
@@ -350,7 +350,7 @@ void RegisteredTeam_SaveFromTray(RegisteredTeamMenu* arg0);
 void TeamSelection_RegisteredTeam_HandleDiscardPrompt(RegisteredTeamMenu* arg0);
 void TeamSelection_RegisteredTeam_LoadVisible(RegisteredTeamMenu* arg0);
 s32 TeamSelection_RegisteredTeam_Update(RegisteredTeamMenu* arg0);
-s32 TeamSelection_RegisteredTeam_Initialize(RegisteredTeamMenu* arg0, gItemPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3,
+s32 TeamSelection_RegisteredTeam_Initialize(RegisteredTeamMenu* arg0, TeamTrayPanel* arg1, unk_D_842168A0* arg2, unk_D_8423D3A8* arg3,
                   s16 arg4, s16 arg5, s16 arg6, s16 arg7);
 s32 RegistrationManager_Begin(RegisteredTeamMenu* arg0);
 s32 RegistrationManager_Initialize(RegisteredTeamMenu* arg0, u16 arg1, char* arg2, unk_D_838067F0_0168_0000* arg3);

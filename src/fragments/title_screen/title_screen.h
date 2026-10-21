@@ -4,7 +4,7 @@
 #include "global.h"
 
 void Title_Init(void);
-void Title_DrawMenuOption(UNUSED s32 arg0, UNUSED s32 arg1);
+void Title_DrawMenuOptionStub(UNUSED s32 arg0, UNUSED s32 arg1);
 void Title_PollDPad(void);
 s32 Title_ResolveStartPressState(void);
 void Title_DrawPressStartBlink(s16 arg0, s16 arg1);

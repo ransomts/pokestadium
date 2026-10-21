@@ -19,7 +19,7 @@ void Rental_DrawTeamSlotFrame(s16 arg0, s16 arg1, s32 arg2) {
     }
 }
 
-void Rental_DrawTeamTrayFrame(gItemPanel* arg0, s16 arg1, s16 arg2) {
+void Rental_DrawTeamTrayFrame(TeamTrayPanel* arg0, s16 arg1, s16 arg2) {
     s16 i;
 
     TeamSelection_DrawCornerFrame(arg1, arg2, 0x208, 0x60);
@@ -44,7 +44,7 @@ void Rental_DrawTeamTrayFrame(gItemPanel* arg0, s16 arg1, s16 arg2) {
     }
 }
 
-void Rental_DrawTeamCursor(gItemPanel* arg0) {
+void Rental_DrawTeamCursor(TeamTrayPanel* arg0) {
     s16 temp_s0 = arg0->unk_0018 + (arg0->unk_0010 * 0x84) + 0x78;
     s16 temp_a1 = arg0->unk_001A + (arg0->cursorRow * 0x2C) + 4;
 
@@ -67,7 +67,7 @@ void Rental_DrawTeamCursor(gItemPanel* arg0) {
     }
 }
 
-void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1) {
+void Rental_DrawTeamTray(TeamTrayPanel* arg0, s32 arg1) {
     char* temp_v0_10;
     char* temp_v0_4;
     char* temp_v0_5;
@@ -167,7 +167,7 @@ void Rental_DrawTeamTray(gItemPanel* arg0, s32 arg1) {
     }
 }
 
-void Rental_ClearTeamSlot(gItemPanel* arg0) {
+void Rental_ClearTeamSlot(TeamTrayPanel* arg0) {
     s16 temp_v0 = arg0->unk_0010 + (arg0->cursorRow * 3);
 
     if (arg0->unk_0030[temp_v0].unk_004.posX.posX != 0) {
@@ -177,7 +177,7 @@ void Rental_ClearTeamSlot(gItemPanel* arg0) {
     }
 }
 
-void Rental_BeginSlotReplace(gItemPanel* arg0) {
+void Rental_BeginSlotReplace(TeamTrayPanel* arg0) {
     s16 sp1E = arg0->unk_0010 + (arg0->cursorRow * 3);
 
     if (Rental_CarouselResumeInput(arg0->pokemonPanel) != 0) {
@@ -192,7 +192,7 @@ void Rental_BeginSlotReplace(gItemPanel* arg0) {
     }
 }
 
-s32 Rental_SaveTeamToDeck(gItemPanel* arg0) {
+s32 Rental_SaveTeamToDeck(TeamTrayPanel* arg0) {
     s16 i;
     s16 temp_v0;
     s32 var_s0 = 0;
@@ -213,7 +213,7 @@ s32 Rental_SaveTeamToDeck(gItemPanel* arg0) {
     return var_s0;
 }
 
-s32 Rental_CheckTeamLevelCap(gItemPanel* arg0) {
+s32 Rental_CheckTeamLevelCap(TeamTrayPanel* arg0) {
     UNUSED s32 pad;
     s32 temp_v1;
     s16 i;
@@ -263,18 +263,18 @@ s32 Rental_CheckTeamLevelCap(gItemPanel* arg0) {
     return temp_v1;
 }
 
-void Rental_TeamTrayHide(gItemPanel* arg0) {
+void Rental_TeamTrayHide(TeamTrayPanel* arg0) {
     arg0->unk_0018 = arg0->unk_0014 + 0x280;
     arg0->unk_001A = arg0->baseY;
 }
 
-void Rental_TeamTrayShow(gItemPanel* arg0) {
+void Rental_TeamTrayShow(TeamTrayPanel* arg0) {
     arg0->unk_0018 = arg0->unk_0014;
     arg0->unk_001A = arg0->baseY;
 }
 
-void Rental_OpenSlotAssignmentDialog(gItemPanel* a0) {
-    gItemPanel* arg0 = a0;
+void Rental_OpenSlotAssignmentDialog(TeamTrayPanel* a0) {
+    TeamTrayPanel* arg0 = a0;
     s16 temp_v0;
     s16 temp_v1;
     s16 tmp;
@@ -295,7 +295,7 @@ void Rental_OpenSlotAssignmentDialog(gItemPanel* a0) {
     a0->unk_0003 = 2;
 }
 
-void Rental_ResolveSlotPick(gItemPanel* arg0) {
+void Rental_ResolveSlotPick(TeamTrayPanel* arg0) {
     s16 sp26 = arg0->unk_0010 + (arg0->cursorRow * 3);
     s32 temp_v0 = TeamSelection_Preview_GetSelectionState(arg0->moveScreen);
 
@@ -313,7 +313,7 @@ void Rental_ResolveSlotPick(gItemPanel* arg0) {
     arg0->unk_001A = arg0->baseY;
 }
 
-void Rental_TeamTraySlideIn(gItemPanel* arg0) {
+void Rental_TeamTraySlideIn(TeamTrayPanel* arg0) {
     arg0->unk_000A++;
     if (arg0->unk_000A <= 0) {
         arg0->unk_0018 = arg0->unk_0014 + 0x280;
@@ -336,7 +336,7 @@ void Rental_TeamTraySlideIn(gItemPanel* arg0) {
     arg0->unk_001A = arg0->baseY;
 }
 
-void Rental_TeamTraySlideOut(gItemPanel* arg0) {
+void Rental_TeamTraySlideOut(TeamTrayPanel* arg0) {
     arg0->unk_000A++;
     if (arg0->unk_000A == 0xA) {
         arg0->unk_0001 = 0;
@@ -349,14 +349,14 @@ void Rental_TeamTraySlideOut(gItemPanel* arg0) {
     arg0->unk_0003 = 2;
 }
 
-void Rental_BeginSlotReplacement(gItemPanel* arg0) {
+void Rental_BeginSlotReplacement(TeamTrayPanel* arg0) {
     Rental_BeginSlotReplace(arg0);
     arg0->unk_0018 = arg0->unk_0014;
     arg0->unk_001A = arg0->baseY;
     arg0->unk_0003 = 2;
 }
 
-void Rental_TeamCursorLeft(gItemPanel* arg0) {
+void Rental_TeamCursorLeft(TeamTrayPanel* arg0) {
     if (arg0->unk_0010 > 0) {
         arg0->unk_0010--;
         arg0->unk_000C = -1;
@@ -366,7 +366,7 @@ void Rental_TeamCursorLeft(gItemPanel* arg0) {
     }
 }
 
-void Rental_TeamCursorRight(gItemPanel* arg0) {
+void Rental_TeamCursorRight(TeamTrayPanel* arg0) {
     if (arg0->unk_0010 < 2) {
         arg0->unk_0010++;
         arg0->unk_000C = 1;
@@ -376,7 +376,7 @@ void Rental_TeamCursorRight(gItemPanel* arg0) {
     }
 }
 
-void Rental_TeamCursorUp(gItemPanel* arg0) {
+void Rental_TeamCursorUp(TeamTrayPanel* arg0) {
     if (arg0->cursorRow > 0) {
         arg0->cursorRow--;
         arg0->unk_000C = -1;
@@ -386,7 +386,7 @@ void Rental_TeamCursorUp(gItemPanel* arg0) {
     }
 }
 
-void Rental_TeamCursorDown(gItemPanel* arg0) {
+void Rental_TeamCursorDown(TeamTrayPanel* arg0) {
     if (arg0->cursorRow <= 0) {
         arg0->cursorRow++;
         arg0->unk_000C = 1;
@@ -396,7 +396,7 @@ void Rental_TeamCursorDown(gItemPanel* arg0) {
     }
 }
 
-void Rental_TeamGridHandleInput(gItemPanel* arg0) {
+void Rental_TeamGridHandleInput(TeamTrayPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
 
     if (arg0->unk_000A < 8) {
@@ -426,7 +426,7 @@ void Rental_TeamGridHandleInput(gItemPanel* arg0) {
     arg0->unk_0003 = 2;
 }
 
-void Rental_ConfirmTeam(gItemPanel* arg0) {
+void Rental_ConfirmTeam(TeamTrayPanel* arg0) {
     TeamSelection_RulePrompt_BeginClose(1);
     if (TeamSelection_RulePrompt_TryFinish(1) >= 0) {
         if (Rental_CheckTeamLevelCap(arg0) != 0) {
@@ -440,7 +440,7 @@ void Rental_ConfirmTeam(gItemPanel* arg0) {
     arg0->unk_0003 = 2;
 }
 
-void Rental_HandleTeamConfirmation(gItemPanel* arg0) {
+void Rental_HandleTeamConfirmation(TeamTrayPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
     s16 i;
 
@@ -499,7 +499,7 @@ void Rental_HandleTeamConfirmation(gItemPanel* arg0) {
     arg0->unk_001A = arg0->baseY;
 }
 
-void Rental_HandleRegisteredTeamConfirmation(gItemPanel* arg0) {
+void Rental_HandleRegisteredTeamConfirmation(TeamTrayPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
     s16 i;
 
@@ -550,7 +550,7 @@ void Rental_HandleRegisteredTeamConfirmation(gItemPanel* arg0) {
     arg0->unk_001A = arg0->baseY;
 }
 
-void Rental_HandleLevelCapWarning(gItemPanel* arg0) {
+void Rental_HandleLevelCapWarning(TeamTrayPanel* arg0) {
     UNUSED s16 pad;
     s16 sp1C = 0xD;
     s32 temp_v0_2;
@@ -591,7 +591,7 @@ void Rental_HandleLevelCapWarning(gItemPanel* arg0) {
     arg0->unk_001A = arg0->baseY;
 }
 
-void Rental_HandleTeamSaveResult(gItemPanel* arg0) {
+void Rental_HandleTeamSaveResult(TeamTrayPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
 
     TeamSelection_RulePrompt_Open(2, cont);
@@ -602,7 +602,7 @@ void Rental_HandleTeamSaveResult(gItemPanel* arg0) {
     }
 }
 
-void Rental_HandleTeamCancel(gItemPanel* arg0) {
+void Rental_HandleTeamCancel(TeamTrayPanel* arg0) {
     Controller* cont = &gControllers[arg0->unk_0002];
 
     TeamSelection_RulePrompt_Open(3, cont);
@@ -611,7 +611,7 @@ void Rental_HandleTeamCancel(gItemPanel* arg0) {
     }
 }
 
-void Rental_TeamTraySlideTick(gItemPanel* arg0) {
+void Rental_TeamTraySlideTick(TeamTrayPanel* arg0) {
     if (arg0->cursorSlideTarget > 0) {
         arg0->unk_000C++;
         if (arg0->unk_000C >= arg0->cursorSlideTarget) {
@@ -628,7 +628,7 @@ void Rental_TeamTraySlideTick(gItemPanel* arg0) {
     arg0->unk_0003 = 2;
 }
 
-s32 Rental_TeamSlotsUpdate(gItemPanel* arg0) {
+s32 Rental_TeamSlotsUpdate(TeamTrayPanel* arg0) {
     s32 sp1C = 0;
 
     switch (arg0->unk_0001) {
@@ -705,7 +705,7 @@ s32 Rental_TeamSlotsUpdate(gItemPanel* arg0) {
     return sp1C;
 }
 
-s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, RegisteredTeamMenu* arg3, s16 arg4,
+s32 Rental_InitTeamTray(TeamTrayPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* arg2, RegisteredTeamMenu* arg3, s16 arg4,
                   u16 arg5, char* arg6, s16 arg7, s16 arg8, s16 arg9) {
     s32 i;
 
@@ -737,7 +737,7 @@ s32 Rental_InitTeamTray(gItemPanel* arg0, unk_D_842168A0* arg1, unk_D_8423D3A8* 
     return 1;
 }
 
-s32 Rental_TeamTrayOpen(gItemPanel* arg0, s16 arg1) {
+s32 Rental_TeamTrayOpen(TeamTrayPanel* arg0, s16 arg1) {
     if (arg0->unk_0001 != 1) {
         return 0;
     }
@@ -746,7 +746,7 @@ s32 Rental_TeamTrayOpen(gItemPanel* arg0, s16 arg1) {
     return 1;
 }
 
-s32 Rental_TeamTrayResume(gItemPanel* arg0) {
+s32 Rental_TeamTrayResume(TeamTrayPanel* arg0) {
     if (arg0->unk_0001 != 3) {
         return 0;
     }
@@ -755,7 +755,7 @@ s32 Rental_TeamTrayResume(gItemPanel* arg0) {
     return 1;
 }
 
-s32 Rental_ResetTeamSlots(gItemPanel* arg0) {
+s32 Rental_ResetTeamSlots(TeamTrayPanel* arg0) {
     s16 i;
 
     if (arg0->unk_0001 != 3) {
@@ -776,7 +776,7 @@ s32 Rental_ResetTeamSlots(gItemPanel* arg0) {
     return 1;
 }
 
-s32 Rental_RemoveHighlightedSlot(gItemPanel* arg0) {
+s32 Rental_RemoveHighlightedSlot(TeamTrayPanel* arg0) {
     s32 temp_v0;
     s32 temp_v1;
 
@@ -808,7 +808,7 @@ s32 Rental_RemoveHighlightedSlot(gItemPanel* arg0) {
     return 0;
 }
 
-s32 Rental_AssignMonToSlot(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
+s32 Rental_AssignMonToSlot(TeamTrayPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     s32 var_v0 = arg0->unk_0010 + (arg0->cursorRow * 3);
 
     if (arg0->unk_0001 != 3) {
@@ -842,7 +842,7 @@ s32 Rental_AssignMonToSlot(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     return 1;
 }
 
-s32 Rental_ClearCurrentSlotSelection(gItemPanel* arg0) {
+s32 Rental_ClearCurrentSlotSelection(TeamTrayPanel* arg0) {
     s32 idx = (arg0->unk_0010 + (arg0->cursorRow * 3));
 
     if (arg0->unk_0001 != 3) {
@@ -874,7 +874,7 @@ s32 Rental_ClearCurrentSlotSelection(gItemPanel* arg0) {
     return 1;
 }
 
-s32 Rental_CanAddMonToTeam(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
+s32 Rental_CanAddMonToTeam(TeamTrayPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     s32 i;
     u8 temp_a2;
     unk_D_838067F0_0168_0000* ptr;
@@ -901,7 +901,7 @@ s32 Rental_CanAddMonToTeam(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     return 1;
 }
 
-s32 Rental_TeamContainsMon(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
+s32 Rental_TeamContainsMon(TeamTrayPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     s32 i;
     unk_D_838067F0_0168_0000* ptr;
 
@@ -919,11 +919,11 @@ s32 Rental_TeamContainsMon(gItemPanel* arg0, unk_D_838067F0_0168_0000* arg1) {
     return 0;
 }
 
-s32 Rental_TeamTrayIsIdle(gItemPanel* arg0) {
+s32 Rental_TeamTrayIsIdle(TeamTrayPanel* arg0) {
     return arg0->unk_0001 == 0;
 }
 
-void Rental_CopyRosterToTeam(gItemPanel* arg0, PokemonData* arg1, s16 arg2) {
+void Rental_CopyRosterToTeam(TeamTrayPanel* arg0, PokemonData* arg1, s16 arg2) {
     s32 i;
 
     arg0->unk_0006 = arg2;

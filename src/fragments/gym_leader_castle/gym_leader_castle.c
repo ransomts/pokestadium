@@ -233,7 +233,7 @@ void Glc_DrawTrainerIntroPanels(void) {
 
 void Glc_DrawMapBorder(void) {
     static s16 D_84A030F4 = 0;
-    static s16 gScrollDirection = 1;
+    static s16 gMapBorderScrollDirection = 1;
 
     s16 i;
     s16 var_s1 = (D_84A030F4 / 4) + 0x22;
@@ -247,13 +247,13 @@ void Glc_DrawMapBorder(void) {
 
     gSPDisplayList(gDisplayListHead++, gPrefDL_End);
 
-    D_84A030F4 += gScrollDirection;
+    D_84A030F4 += gMapBorderScrollDirection;
     if (D_84A030F4 == 0) {
-        gScrollDirection = 1;
+        gMapBorderScrollDirection = 1;
     }
 
     if (D_84A030F4 == 0x23) {
-        gScrollDirection = -1;
+        gMapBorderScrollDirection = -1;
     }
 }
 

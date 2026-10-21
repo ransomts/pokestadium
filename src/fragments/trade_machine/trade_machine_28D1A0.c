@@ -8,11 +8,11 @@
 #include "src/audio_sfx.h"
 #include "src/memory.h"
 
-static TradeInfoBoxState gBattleResultScreenState;
+static TradeInfoBoxState gTradeInfoBoxState;
 static s16 gResultOptionIndex;
 
 void Trade_OpenInfoBox(PickerState* arg0, u8* arg1, s16 arg2, s16 arg3) {
-    TradeInfoBoxState* ptr = &gBattleResultScreenState;
+    TradeInfoBoxState* ptr = &gTradeInfoBoxState;
 
     main_pool_push_state('BBRD');
 
@@ -253,7 +253,7 @@ void Trade_DrawInfoBox(TradeInfoBoxState* arg0) {
         Trade_DrawFilledFrame(arg0->rotation, arg0->unk_06 + 0x124, 0x210, 0x24, 0x28, 0x28, 0x64);
         BattleHud_DrawHpBarTexture(arg0->rotation + 0x140, arg0->unk_06 + 0x5A, 0x94, sp11C->posY, sp11C->unk_26);
 
-        gSPDisplayList(gDisplayListHead++, gTransferPakErrorBorderDL);
+        gSPDisplayList(gDisplayListHead++, gDL_CopyDecal);
 
         Gfx_DrawTextureRgba16(arg0->rotation + 0xF8, arg0->unk_06 + 0xD0, 0x1C, 0x1A, D_302DE68, 0x1C, 0x200000);
         Gfx_DrawTextureRgba16(arg0->rotation + 0xE2, arg0->unk_06 + 0xEA, 0x1C, 0x1A, D_302E9C8, 0x1C, 0x200000);
@@ -417,45 +417,45 @@ void Trade_DrawInfoBox(TradeInfoBoxState* arg0) {
 }
 
 void Trade_ResetInfoBox(void) {
-    gBattleResultScreenState.posX = 0;
-    gBattleResultScreenState.rotation = 0;
-    gBattleResultScreenState.unk_06 = 0;
-    gBattleResultScreenState.unk_0C = 0;
-    gBattleResultScreenState.unk_0E = 0;
-    gBattleResultScreenState.unk_10 = 0;
-    gBattleResultScreenState.unk_14 = NULL;
-    gBattleResultScreenState.unk_18 = NULL;
-    gBattleResultScreenState.unk_1C = 0;
-    gBattleResultScreenState.unk_20 = NULL;
-    gBattleResultScreenState.unk_24 = NULL;
+    gTradeInfoBoxState.posX = 0;
+    gTradeInfoBoxState.rotation = 0;
+    gTradeInfoBoxState.unk_06 = 0;
+    gTradeInfoBoxState.unk_0C = 0;
+    gTradeInfoBoxState.unk_0E = 0;
+    gTradeInfoBoxState.unk_10 = 0;
+    gTradeInfoBoxState.unk_14 = NULL;
+    gTradeInfoBoxState.unk_18 = NULL;
+    gTradeInfoBoxState.unk_1C = 0;
+    gTradeInfoBoxState.unk_20 = NULL;
+    gTradeInfoBoxState.unk_24 = NULL;
 }
 
 void Trade_UpdateInfoBox(void) {
-    TradeInfoBoxState* ptr = &gBattleResultScreenState;
+    TradeInfoBoxState* ptr = &gTradeInfoBoxState;
 
     if (ptr->posX) {
         switch (ptr->posX) {
             case 1:
-                Trade_UpdateInfoBoxOpenIn(&gBattleResultScreenState);
+                Trade_UpdateInfoBoxOpenIn(&gTradeInfoBoxState);
                 break;
 
             case 2:
-                Trade_UpdateInfoBoxChoose(&gBattleResultScreenState);
+                Trade_UpdateInfoBoxChoose(&gTradeInfoBoxState);
                 break;
 
             case 3:
-                Trade_UpdateInfoBoxCloseOut(&gBattleResultScreenState);
+                Trade_UpdateInfoBoxCloseOut(&gTradeInfoBoxState);
                 break;
         }
     }
 }
 
 void Trade_DrawInfoBoxIfActive(void) {
-    if (gBattleResultScreenState.posX != 0) {
-        Trade_DrawInfoBox(&gBattleResultScreenState);
+    if (gTradeInfoBoxState.posX != 0) {
+        Trade_DrawInfoBox(&gTradeInfoBoxState);
     }
 }
 
 s32 Trade_GetInfoBoxState(void) {
-    return gBattleResultScreenState.posX;
+    return gTradeInfoBoxState.posX;
 }
