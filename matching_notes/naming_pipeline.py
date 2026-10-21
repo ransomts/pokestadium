@@ -239,7 +239,7 @@ def parse_proposals(content):
 SEMANTIC_DIGIT = re.compile(
     r"(?:BE|LE)[0-9]+$"                    # ReadBE16, WriteLE32 (bit widths)
     r"|RGBA[0-9]+$|IA[0-9]+$|CI[0-9]+$"    # RGBA16, IA8, CI4 (N64 pixel formats)
-    r"|[0-9]+x[0-9]+$"                      # 32x32, 64x64 (dimensions)
+    r"|[1-9][0-9]*x[1-9][0-9]*$"                      # 32x32, 64x64 (dimensions)
     r"|(?:Square|Pulse|Noise|Wave)[0-9]$"   # GBA audio channels
     r"|(?:Player|Controller)[0-9]$"          # Player indices
     r"|(?:Effect|Start|End|Palette|Texture|Descriptor|Model)"
@@ -267,7 +267,7 @@ SEMANTIC_DIGIT = re.compile(
     r"|N64$"                                                    # console name (gText_LeavingN64)
     r"|CreditsString[0-9]+$"                            # credits decompress-table string indices (bank 0x2D)
     r"|Vec[XYZ][0-9]+$"                                  # vector component literal magnitudes (gVecY10)
-    r"|[0-9]x[0-9]$"                                   # 4x4, 8x8 (small dimensions)
+    r"|[1-9][0-9]*x[1-9][0-9]*$"                          # 4x4, 8x8 (dimensions; no leading 0 — blocks 0xNNN hex ids)
     r"|^I[0-9]$"                                        # I4, I8 (pixel format)
     r"|NoopStub[0-9]+$"                                # multi-digit dead stubs (NoopStub10)
     r"|[SU](?:8|16|32|64)$"                          # scalar widths: ApproachS8, BounceS16 (power-of-two, no underscore)
@@ -343,7 +343,7 @@ def needs_revision(name):
             return True  # non-semantic digit
     # Bare letters at end (A/B/C without differentiator)
     # Skip compound suffixes (DMA, RGB, RTC) and pixel formats
-    if re.search(r"[A-C]$", name) and not COMPOUND_SUFFIX.search(name):
+    if re.search(r"[A-F]$", name) and not COMPOUND_SUFFIX.search(name):
         if not re.search(r"(?:Color|Config|Variant|Setup)[A-C]$", name):
             if not re.search(r"(?:Seed|Rng)[ABC]$", name):  # RNG variants are semantic
                 return True
