@@ -59,7 +59,7 @@ void BattleAnim_InitializeParticleChain(Particle* arg0, Vec3f arg1, Vec3s arg2, 
     while (arg0 != NULL) {
         ParticleMath_CopyVec3f(&arg0->unk_68, &arg1);
         ParticleMath_CopyVec3s(&arg0->unk_94, &arg2);
-        arg0->unk_08 = arg3;
+        arg0->RentalSlotAnimData_PosePhase = arg3;
         arg0->unk_0C = arg4;
         arg0->unk_10 = 0;
         arg0->unk_14 = 0;
@@ -71,7 +71,7 @@ void BattleAnim_InitializeParticleChain(Particle* arg0, Vec3f arg1, Vec3s arg2, 
 
 void BattleAnim_CloneParticleState(Particle* arg0, Particle* arg1, ParticleUpdateCallback arg2, ParticleDescriptor* arg3,
                    s32 arg4) {
-    arg0->unk_08 = arg2;
+    arg0->RentalSlotAnimData_PosePhase = arg2;
     arg0->unk_0C = arg3;
     arg0->unk_10 = arg1->unk_10;
     arg0->unk_CF = arg1->unk_CF;
@@ -312,13 +312,13 @@ void BattleAnim_UpdateParticleAnchor(Particle* arg0) {
 
 void BattleAnim_UpdateParticleCameraScale(Particle* arg0) {
     if ((arg0->unk_10 == NULL) || (Particle_HasFlags(arg0, 0x108) != 0)) {
-        gParticleRenderContext.unk_00.x = 1.0f;
-        gParticleRenderContext.unk_00.y = 1.0f;
-        gParticleRenderContext.unk_00.z = 1.0f;
+        gParticleRenderContext.posX.x = 1.0f;
+        gParticleRenderContext.posX.y = 1.0f;
+        gParticleRenderContext.posX.z = 1.0f;
     } else if (Particle_LacksFlags(arg0, 0x800) != 0) {
-        gParticleRenderContext.unk_00.x = BattleAnim_GetOwnerModelScale(arg0->unk_10);
-        gParticleRenderContext.unk_00.y = BattleAnim_GetOwnerModelScale(arg0->unk_10);
-        gParticleRenderContext.unk_00.z = BattleAnim_GetOwnerModelScale(arg0->unk_10);
+        gParticleRenderContext.posX.x = BattleAnim_GetOwnerModelScale(arg0->unk_10);
+        gParticleRenderContext.posX.y = BattleAnim_GetOwnerModelScale(arg0->unk_10);
+        gParticleRenderContext.posX.z = BattleAnim_GetOwnerModelScale(arg0->unk_10);
     }
 }
 
@@ -338,7 +338,7 @@ void BattleAnim_UpdateParticlePool(void) {
         if (var_s0->unk_D0 != 0) {
             BattleAnim_UpdateParticleAnchor(var_s0);
             BattleAnim_UpdateParticleCameraScale(var_s0);
-            var_s0->unk_08(var_s0);
+            var_s0->RentalSlotAnimData_PosePhase(var_s0);
             BattleAnim_UpdateOrDestroyParticle(var_s0);
         }
     }
@@ -359,8 +359,8 @@ void BattleAnim_InitializeParticleFromEffect(Particle* arg0, ActivePokemon* arg1
     while (arg0 != NULL) {
         arg0->unk_10 = arg1;
         arg0->unk_AC = arg3++;
-        arg0->unk_08 = arg2->unk_00;
-        arg0->unk_0C = arg2->unk_04;
+        arg0->RentalSlotAnimData_PosePhase = arg2->posX;
+        arg0->unk_0C = arg2->rotation;
         arg0->unk_CD = arg2->unk_19;
         arg0->unk_CE = arg2->unk_1A;
         arg0->unk_AA = arg2->unk_12;
@@ -386,9 +386,9 @@ void BattleAnim_InitializeParticleFromEffect(Particle* arg0, ActivePokemon* arg1
 void BattleAnim_SpawnEffectParticles(BattleAnimEffectSlot* arg0, s32 arg1) {
     s16 i;
     s16 var_s2;
-    ParticleDescriptor* temp_a2 = arg0->unk_04;
-    ParticleDescriptorChild* temp_a3 = arg0->unk_04->unk_04.a;
-    ActivePokemon* tmp08 = arg0->unk_08;
+    ParticleDescriptor* temp_a2 = arg0->rotation;
+    ParticleDescriptorChild* temp_a3 = arg0->rotation->rotation.a;
+    ActivePokemon* tmp08 = arg0->RentalSlotAnimData_PosePhase;
     s16 tmp12 = arg0->unk_12;
 
     switch (arg1) {
@@ -402,7 +402,7 @@ void BattleAnim_SpawnEffectParticles(BattleAnimEffectSlot* arg0, s32 arg1) {
             break;
     }
 
-    if ((temp_a2->unk_00 == 1) && (temp_a3->unk_00 == 1)) {
+    if ((temp_a2->posX == 1) && (temp_a3->posX == 1)) {
         BattleAnim_InitializeParticleFromEffect(Particle_AllocChain(var_s2), tmp08, arg0, 0);
         return;
     }
@@ -422,7 +422,7 @@ void BattleAnim_SpawnBatchedParticles(BattleAnimEffectSlot* arg0) {
 
 void BattleAnim_SpawnSingleParticle(BattleAnimEffectSlot* arg0) {
     UNUSED s32 pad;
-    ActivePokemon* sp18 = arg0->unk_08;
+    ActivePokemon* sp18 = arg0->RentalSlotAnimData_PosePhase;
 
     BattleAnim_InitializeParticleFromEffect(Particle_New(), sp18, arg0, 0);
 }
@@ -544,14 +544,14 @@ void BattleAnim_CleanupEffectsRetainingCategory4(void) {
 }
 
 s32 BattleAnim_GetMoveFailedFlag(void) {
-    return D_84390340;
+    return gBattleAnimMoveFailedFlag;
 }
 
 void BattleAnim_UpdateMoveFailedFlag(void) {
     if (sBattleMoveFailed != 0) {
-        D_84390340 = 1;
+        gBattleAnimMoveFailedFlag = 1;
     } else {
-        D_84390340 = 0;
+        gBattleAnimMoveFailedFlag = 0;
     }
 }
 
@@ -565,24 +565,24 @@ void BattleAnim_ClearEffectCallbacks(void) {
         }
     }
 
-    D_84390340 = 0;
+    gBattleAnimMoveFailedFlag = 0;
 }
 
 s32 BattleAnim_IsEffectSpawningEnabled(void) {
     s32 var_v1 = 0;
 
-    if (D_843902F8 == 0) {
+    if (gBattleEngineStatus == 0) {
         var_v1 = 1;
     }
     return var_v1;
 }
 
 void BattleAnim_DisableEffectSpawning(void) {
-    D_843902F8 = 1;
+    gBattleEngineStatus = 1;
 }
 
 void BattleAnim_EnableEffectSpawning(void) {
-    D_843902F8 = 0;
+    gBattleEngineStatus = 0;
 }
 
 void BattleAnim_DisableEffectSpawningAlias(void) {
@@ -644,9 +644,9 @@ BattleAnimEffectSlot* BattleAnim_CreateEffectSlot(s32 arg0, s32 arg1, s8 arg2, f
         sp1C->unk_0E = arg0 + gBattleAnimSpawnDelay;
         sp1C->unk_0C = arg1;
         sp1C->unk_14 = arg2;
-        sp1C->unk_00 = arg3;
-        sp1C->unk_04 = arg4;
-        sp1C->unk_08 = arg5;
+        sp1C->posX = arg3;
+        sp1C->rotation = arg4;
+        sp1C->RentalSlotAnimData_PosePhase = arg5;
         sp1C->unk_16 = arg8;
         sp1C->unk_10 = arg6;
         sp1C->unk_12 = arg7;
@@ -788,15 +788,15 @@ void BattleAnim_EffectEndNop(void) {
 }
 
 void BattleAnim_SetEffectStateFlag(s32 arg0) {
-    D_843902F4 = arg0;
+    gEffectStateFlag = arg0;
 }
 
 void BattleAnim_ClearEffectStateFlag(void) {
-    D_843902F4 = 0;
+    gEffectStateFlag = 0;
 }
 
 s32 BattleAnim_GetEffectStateFlag(void) {
-    return D_843902F4;
+    return gEffectStateFlag;
 }
 
 s32 BattleAnim_IsCurrentOwnerSpecies(s32 arg0) {

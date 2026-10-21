@@ -16,15 +16,15 @@
 #include "src/stage_loader.h"
 #include "src/pokemon_stats.h"
 
-static char** D_82305A20;
-static char** D_82305A24;
-static unk_D_82305A28 D_82305A28;
-static SlidingPanel D_82305A30;
-static SlidingPanel D_82305A38;
-static unk_D_82305A40 D_82305A40;
-static unk_D_82305A50 D_82305A50[6];
-static unk_D_82305AF8 D_82305AF8[2];
-static unk_D_8230F528 D_8230F528[3];
+static char** gMessageBankMain;
+static char** gEventBattleUiLabelsBank;
+static EventBattleState gModeSelectState;
+static SlidingPanel gPanelAnimState;
+static SlidingPanel gNoticeBannerAnimState;
+static BattleSettings gBattleSettingsState;
+static RuleCard gMenuItems[6];
+static TrainerCard gTrainerPanels[2];
+static OptionLabel gOptionPanels[3];
 
 static EventBattleModeEntry gEventBattleModes[] = {
     {
@@ -84,10 +84,10 @@ static EventBattleModeEntry gEventBattleModes[] = {
         2,
     },
 };
-static s16 D_82305970[] = {
+static s16 gEventBattleModeOffsets[] = {
     0x0198, 0x0181, 0x0098, 0x0030, 0, 0,
 };
-static unk_D_82305978 D_8230597C[] = {
+static unk_D_82305978 gEventBattleLevelRules[] = {
     {
         50,
         55,
@@ -127,9 +127,9 @@ static unk_D_82305978 D_8230597C[] = {
 };
 
 void EventBattle_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    static s16 D_823059AC = 0;
+    static s16 gSelectionCornerAnim = 0;
 
-    s16 temp_ft3 = SINS(D_823059AC) * 2;
+    s16 temp_ft3 = SINS(gSelectionCornerAnim) * 2;
     UNUSED s32 pad[2];
 
     gSPDisplayList(gDisplayListHead++, gUiEnvTintTextureDL);
@@ -142,7 +142,7 @@ void EventBattle_DrawSelectionCorners(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 
     gSPDisplayList(gDisplayListHead++, gUiRestoreTextureDL);
 
-    D_823059AC += 0x2000;
+    gSelectionCornerAnim += 0x2000;
 }
 
 void EventBattle_DrawPanelFrame(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
@@ -308,7 +308,7 @@ void EventBattle_DrawHeaderImage(s16 arg0, s16 arg1) {
 }
 
 void EventBattle_DrawTintedBar(s16 arg0, s16 arg1, s16 arg2, Color_RGBA8* arg3, Color_RGBA8* arg4) {
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
 
     gDPSetEnvColor(gDisplayListHead++, arg3->r, arg3->g, arg3->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, arg4->r, arg4->g, arg4->b, 255);
@@ -331,9 +331,9 @@ void EventBattle_DrawTitleBar(void) {
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
     Gfx_SetEnvColor(0, 0, 0, 0xFF);
-    Font_Printf(0x6A, 0x2C, Text_GetString(NULL, 0, D_82305A20, 8));
+    Font_Printf(0x6A, 0x2C, Text_GetString(NULL, 0, gMessageBankMain, 8));
     Gfx_SetEnvColor(0xFF, 0xFF, 0x77, 0xFF);
-    Font_Printf(0x68, 0x2A, Text_GetString(NULL, 0, D_82305A20, 8));
+    Font_Printf(0x68, 0x2A, Text_GetString(NULL, 0, gMessageBankMain, 8));
     Font_EndTexturedTextRendering();
 }
 
@@ -342,62 +342,62 @@ void EventBattle_DrawInfoBox(SlidingPanel* arg0) {
     s16 tmp2;
     s16 sp3A;
 
-    if (arg0->unk_02 >= 0x10) {
-        tmp1 = arg0->unk_02;
-        tmp2 = arg0->unk_04;
+    if (arg0->posY >= 0x10) {
+        tmp1 = arg0->posY;
+        tmp2 = arg0->rotation;
         sp3A = arg0->unk_06 + ((0x3C - tmp1) / 2);
 
         EventBattle_DrawThinSlicedFrame(tmp2, sp3A, 0x210, tmp1, 0x1E, 0x1E, 0x82, 0x96);
-        if (((0x3C - tmp1) == 0) && (D_82305A28.unk_02 < 8)) {
+        if (((0x3C - tmp1) == 0) && (gModeSelectState.posY < 8)) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(8, 0);
             Font_SetLineHeight(0x18);
             Font_Printf(tmp2 + 0x20, sp3A + 8,
-                          Text_GetString(NULL, 0, D_82305A20, D_82305A50[D_82305A28.unk_02].unk_18));
+                          Text_GetString(NULL, 0, gMessageBankMain, gMenuItems[gModeSelectState.posY].unk_18));
             Font_EndTexturedTextRendering();
         }
     }
 }
 
 void EventBattle_UpdateInfoBox(SlidingPanel* arg0) {
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 1:
-            arg0->unk_02 += 6;
-            if (arg0->unk_02 == 0x3C) {
-                arg0->unk_00 = 0;
+            arg0->posY += 6;
+            if (arg0->posY == 0x3C) {
+                arg0->posX = 0;
             }
             break;
 
         case 2:
-            arg0->unk_02 -= 6;
-            if (arg0->unk_02 == 0) {
-                arg0->unk_00 = 0;
+            arg0->posY -= 6;
+            if (arg0->posY == 0) {
+                arg0->posX = 0;
             }
             break;
     }
 }
 
 void EventBattle_InitInfoBox(SlidingPanel* arg0, s16 arg1, s16 arg2) {
-    arg0->unk_00 = 0;
-    arg0->unk_02 = 0;
-    arg0->unk_04 = arg1;
+    arg0->posX = 0;
+    arg0->posY = 0;
+    arg0->rotation = arg1;
     arg0->unk_06 = arg2;
 }
 
-void EventBattle_DrawRuleCard(unk_D_82305A50* arg0) {
+void EventBattle_DrawRuleCard(RuleCard* arg0) {
     s16 temp_s1;
     s16 temp_s2;
 
-    if (arg0->unk_00 != 0) {
-        temp_s1 = arg0->unk_08;
+    if (arg0->posX != 0) {
+        temp_s1 = arg0->RentalSlotAnimData_PosePhase;
         temp_s2 = arg0->unk_0A;
 
         EventBattle_DrawPanelFrame(temp_s1, temp_s2, 0xF8, 0x38);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F470);
+        gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
         if (arg0->unk_0C != NULL) {
-            if (arg0->unk_01 != 0) {
+            if (arg0->TrainerSlotSaveData_GamePort != 0) {
                 Gfx_FillRectRgb(temp_s1 + 4, temp_s2 + 4, 0xF0, 0x30, 0x1E, 0x1E, 0x64);
             } else {
                 Gfx_FillRectRgb(temp_s1 + 4, temp_s2 + 4, 0xF0, 0x30, 0x64, 0x1E, 0x1E);
@@ -419,7 +419,7 @@ void EventBattle_DrawRuleCard(unk_D_82305A50* arg0) {
 
             Font_SetActive(8, 0);
 
-            if (arg0->unk_01 != 0) {
+            if (arg0->TrainerSlotSaveData_GamePort != 0) {
                 Gfx_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             } else {
                 Gfx_SetEnvColor(0xDC, 0x37, 0x37, 0xFF);
@@ -428,7 +428,7 @@ void EventBattle_DrawRuleCard(unk_D_82305A50* arg0) {
             Font_Printf(temp_s1 + 0x34, sp3C, arg0->unk_10);
             Font_SetActive(4, 0);
             Gfx_SetEnvColor(0x92, 0xC1, 0xFF, 0xFF);
-            sprintf(sp44, "%s%d~%d", Text_GetString(NULL, 0, D_82305A24, 0x15), arg0->unk_14, arg0->unk_16);
+            sprintf(sp44, "%s%d~%d", Text_GetString(NULL, 0, gEventBattleUiLabelsBank, 0x15), arg0->unk_14, arg0->unk_16);
             Font_Printf((temp_s1 - (s16)Font_MeasureTextExtent(4, 0, sp44)) + 0xEA, temp_s2 + 0x20, sp44);
         } else {
             Font_SetActive(8, 0);
@@ -439,55 +439,55 @@ void EventBattle_DrawRuleCard(unk_D_82305A50* arg0) {
     }
 }
 
-void EventBattle_UpdateRuleCardSlide(unk_D_82305A50* arg0) {
-    switch (arg0->unk_00) {
+void EventBattle_UpdateRuleCardSlide(RuleCard* arg0) {
+    switch (arg0->posX) {
         case 2:
-            arg0->unk_02 -= 1;
-            if (arg0->unk_02 == 0) {
-                arg0->unk_00 = 1;
+            arg0->posY -= 1;
+            if (arg0->posY == 0) {
+                arg0->posX = 1;
             }
 
-            if (arg0->unk_04 < 0x140) {
-                arg0->unk_08 = arg0->unk_04 - (arg0->unk_02 << 5);
+            if (arg0->rotation < 0x140) {
+                arg0->RentalSlotAnimData_PosePhase = arg0->rotation - (arg0->posY << 5);
             } else {
-                arg0->unk_08 = arg0->unk_04 + (arg0->unk_02 << 5);
+                arg0->RentalSlotAnimData_PosePhase = arg0->rotation + (arg0->posY << 5);
             }
             break;
 
         case 3:
-            arg0->unk_02 += 1;
-            if (arg0->unk_02 == 0xA) {
-                arg0->unk_00 = 0;
+            arg0->posY += 1;
+            if (arg0->posY == 0xA) {
+                arg0->posX = 0;
             }
 
-            if (arg0->unk_04 < 0x140) {
-                arg0->unk_08 = arg0->unk_04 - (arg0->unk_02 << 5);
+            if (arg0->rotation < 0x140) {
+                arg0->RentalSlotAnimData_PosePhase = arg0->rotation - (arg0->posY << 5);
             } else {
-                arg0->unk_08 = arg0->unk_04 + (arg0->unk_02 << 5);
+                arg0->RentalSlotAnimData_PosePhase = arg0->rotation + (arg0->posY << 5);
             }
             break;
     }
 }
 
-void EventBattle_InitRuleCard(unk_D_82305A50* arg0, s16 arg1, s16 arg2, u8* arg3, s8* arg4, s16 arg5, s16 arg6) {
-    arg0->unk_00 = 0;
-    arg0->unk_02 = 0xA;
-    arg0->unk_04 = arg1;
+void EventBattle_InitRuleCard(RuleCard* arg0, s16 arg1, s16 arg2, u8* arg3, s8* arg4, s16 arg5, s16 arg6) {
+    arg0->posX = 0;
+    arg0->posY = 0xA;
+    arg0->rotation = arg1;
     arg0->unk_06 = arg2;
-    arg0->unk_08 = arg1;
+    arg0->RentalSlotAnimData_PosePhase = arg1;
     arg0->unk_0A = arg2;
     arg0->unk_0C = arg3;
     arg0->unk_10 = arg4;
     arg0->unk_14 = 0;
     arg0->unk_16 = 0;
     arg0->unk_18 = arg6;
-    arg0->unk_01 = 1;
+    arg0->TrainerSlotSaveData_GamePort = 1;
 
     if (arg5 != 0) {
-        arg0->unk_14 = D_8230597C[arg5 - 1].unk_00;
-        arg0->unk_16 = D_8230597C[arg5 - 1].unk_02;
-        arg0->unk_01 = EventBattle_CheckTeamLegality(&D_82305AF8[0], arg5);
-        arg0->unk_01 &= EventBattle_CheckTeamLegality(&D_82305AF8[1], arg5);
+        arg0->unk_14 = gEventBattleLevelRules[arg5 - 1].posX;
+        arg0->unk_16 = gEventBattleLevelRules[arg5 - 1].posY;
+        arg0->TrainerSlotSaveData_GamePort = EventBattle_CheckTeamLegality(&gTrainerPanels[0], arg5);
+        arg0->TrainerSlotSaveData_GamePort &= EventBattle_CheckTeamLegality(&gTrainerPanels[1], arg5);
     }
 }
 
@@ -501,10 +501,10 @@ void EventBattle_DrawMonCell(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
     }
 }
 
-static s16 D_823059B0[] = { 0x78, 0xFC, 0x180, 0x78, 0xFC, 0x180 };
-static s16 D_823059BC[] = { 4, 4, 4, 0x30, 0x30, 0x30 };
+static s16 gIconXOffsets[] = { 0x78, 0xFC, 0x180, 0x78, 0xFC, 0x180 };
+static s16 gIconYOffsets[] = { 4, 4, 4, 0x30, 0x30, 0x30 };
 
-void EventBattle_DrawTeamPanel(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
+void EventBattle_DrawTeamPanel(TrainerCard* arg0, s16 arg1, s16 arg2) {
     s16 i;
     s16 tmp1;
     s16 tmp2;
@@ -519,13 +519,13 @@ void EventBattle_DrawTeamPanel(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
 
     for (i = 0; i < 6; i++) {
         tmp1 = arg0->unk_0001;
-        tmp2 = D_823059B0[i] + arg1;
-        tmp3 = D_823059BC[i] + arg2;
+        tmp2 = gIconXOffsets[i] + arg1;
+        tmp3 = gIconYOffsets[i] + arg2;
         EventBattle_DrawMonCell(tmp1, tmp2, tmp3, arg0->unk_0020[i].unk_25);
     }
 }
 
-void EventBattle_DrawRuleNotice(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
+void EventBattle_DrawRuleNotice(TrainerCard* arg0, s16 arg1, s16 arg2) {
     char sp40[256];
     s16 sp3E;
 
@@ -538,14 +538,14 @@ void EventBattle_DrawRuleNotice(unk_D_82305AF8* arg0, s16 arg1, s16 arg2) {
         Font_SetActive(0x10, 0);
         Gfx_SetEnvColor(0xFF, 0xFF, 0, sp3E);
         Font_SetLineHeight(0x20);
-        Text_SetNumberToken(3, D_8230597C[arg0->unk_0004 - 1].unk_04);
-        Font_Printf(arg1 + 0x88, arg2 + 0x14, Text_GetString(sp40, 0x100, D_82305A20, 9));
+        Text_SetNumberToken(3, gEventBattleLevelRules[arg0->unk_0004 - 1].rotation);
+        Font_Printf(arg1 + 0x88, arg2 + 0x14, Text_GetString(sp40, 0x100, gMessageBankMain, 9));
         Font_EndTexturedTextRendering();
         arg0->unk_0010 += 0x300;
     }
 }
 
-void EventBattle_DrawTrainerCard(unk_D_82305AF8* arg0) {
+void EventBattle_DrawTrainerCard(TrainerCard* arg0) {
     u8* var_s0;
     s16 i;
     s16 sp58;
@@ -573,8 +573,8 @@ void EventBattle_DrawTrainerCard(unk_D_82305AF8* arg0) {
         Gfx_DrawTextureRgba16(sp58 + 0x1A, sp56 + 0x1A, 0x48, 0x12, var_s0 + 0xA20, 0x48, 0);
 
         for (i = 0; i < 6; i++) {
-            tmp1 = D_823059B0[i] + sp58 + 2;
-            tmp2 = D_823059BC[i] + sp56 + 2;
+            tmp1 = gIconXOffsets[i] + sp58 + 2;
+            tmp2 = gIconYOffsets[i] + sp56 + 2;
             Gfx_DrawTextureRgba16(tmp1, tmp2, 0x28, 0x28, arg0->unk_0218[i], 0x28, 0);
         }
 
@@ -588,17 +588,17 @@ void EventBattle_DrawTrainerCard(unk_D_82305AF8* arg0) {
         Font_SetActive(4, 0);
 
         for (i = 0; i < 6; i++) {
-            tmp1 = D_823059B0[i] + sp58 + 0x2C;
-            tmp2 = D_823059BC[i] + sp56 + 5;
+            tmp1 = gIconXOffsets[i] + sp58 + 0x2C;
+            tmp2 = gIconYOffsets[i] + sp56 + 5;
             Font_Printf(tmp1, tmp2, arg0->unk_0020[i].unk_30);
         }
 
         Font_SetActive(4, 0);
 
         for (i = 0; i < 6; i++) {
-            tmp3 = D_823059B0[i] + sp58 + 0x2C;
-            tmp4 = D_823059BC[i] + sp56 + 0x17;
-            Font_Printf(tmp3, tmp4, "%s%d", Text_GetString(NULL, 0, D_82305A24, 0x15), arg0->unk_0020[i].unk_24);
+            tmp3 = gIconXOffsets[i] + sp58 + 0x2C;
+            tmp4 = gIconYOffsets[i] + sp56 + 0x17;
+            Font_Printf(tmp3, tmp4, "%s%d", Text_GetString(NULL, 0, gEventBattleUiLabelsBank, 0x15), arg0->unk_0020[i].unk_24);
         }
 
         Font_EndTexturedTextRendering();
@@ -606,7 +606,7 @@ void EventBattle_DrawTrainerCard(unk_D_82305AF8* arg0) {
     }
 }
 
-void EventBattle_UpdateTrainerCardSlide(unk_D_82305AF8* arg0) {
+void EventBattle_UpdateTrainerCardSlide(TrainerCard* arg0) {
     switch (arg0->unk_0000) {
         case 2:
             arg0->unk_0006 -= 1;
@@ -636,7 +636,7 @@ void EventBattle_UpdateTrainerCardSlide(unk_D_82305AF8* arg0) {
     }
 }
 
-void EventBattle_InitTrainerCard(unk_D_82305AF8* arg0, s16 arg1, s16 arg2, s16 arg3) {
+void EventBattle_InitTrainerCard(TrainerCard* arg0, s16 arg1, s16 arg2, s16 arg3) {
     s16 i;
 
     arg0->unk_0000 = 0;
@@ -672,7 +672,7 @@ s32 EventBattle_HasLegalMoves(BattleMon* arg0) {
     return var_v1;
 }
 
-u8 EventBattle_CheckTeamLegality(unk_D_82305AF8* arg0, s16 arg1) {
+u8 EventBattle_CheckTeamLegality(TrainerCard* arg0, s16 arg1) {
     unk_D_82305978* ptr1;
     s16 sp54[3];
     BattleMon* var_s1;
@@ -687,18 +687,18 @@ u8 EventBattle_CheckTeamLegality(unk_D_82305AF8* arg0, s16 arg1) {
 
     for (i = 0; i < 6; i++, var_s1++) {
         var_s1->unk_25 = 1;
-        if ((var_s1->unk_00.unk_00 > 0) && (var_s1->unk_00.unk_00 < 0x98)) {
+        if ((var_s1->posX.posX > 0) && (var_s1->posX.posX < 0x98)) {
             if (EventBattle_HasLegalMoves(var_s1) != 0) {
-                ptr1 = &D_8230597C[(arg1 - 1) & 0xFFFFFFFF];
+                ptr1 = &gEventBattleLevelRules[(arg1 - 1) & 0xFFFFFFFF];
 
-                if (D_8006FF00[var_s1->unk_00.unk_00 - 1].unk_0C & ptr1->unk_06) {
-                    if ((var_s1->unk_24 >= ptr1->unk_00) && (ptr1->unk_02 >= var_s1->unk_24)) {
+                if (gSpeciesDisplayTable[var_s1->posX.posX - 1].unk_0C & ptr1->unk_06) {
+                    if ((var_s1->unk_24 >= ptr1->posX) && (ptr1->posY >= var_s1->unk_24)) {
                         var_s1->unk_25 = 0;
                     }
                 }
 
                 for (j = 0; j < i; j++) {
-                    if (var_s1->unk_00.unk_00 == arg0->unk_0020[j].unk_00.unk_00) {
+                    if (var_s1->posX.posX == arg0->unk_0020[j].posX.posX) {
                         var_s1->unk_25 = 1;
                         arg0->unk_0020[j].unk_25 = 1;
                     }
@@ -729,14 +729,14 @@ u8 EventBattle_CheckTeamLegality(unk_D_82305AF8* arg0, s16 arg1) {
 
     arg0->unk_0002 = j == 6;
     if (arg0->unk_0002) {
-        arg0->unk_0003 = D_8230597C[arg1 - 1].unk_04 >= (sp54[0] + sp54[1] + sp54[2]);
+        arg0->unk_0003 = gEventBattleLevelRules[arg1 - 1].rotation >= (sp54[0] + sp54[1] + sp54[2]);
     } else {
         arg0->unk_0003 = 1;
     }
     return arg0->unk_0002;
 }
 
-u8 EventBattle_ValidateTeamForRule(unk_D_82305AF8* arg0, s16 arg1) {
+u8 EventBattle_ValidateTeamForRule(TrainerCard* arg0, s16 arg1) {
     arg0->unk_0004 = arg1;
     arg0->unk_0010 = 0;
     arg0->unk_0000 = 2;
@@ -749,10 +749,10 @@ void EventBattle_DrawNoticeBanner(SlidingPanel* arg0) {
     s16 i;
     s16 sp58;
 
-    if (arg0->unk_02 > 0) {
-        temp_s2 = arg0->unk_02 / 4;
-        temp_s3 = arg0->unk_04;
-        sp58 = arg0->unk_06 + ((0x38 - arg0->unk_02) / 2);
+    if (arg0->posY > 0) {
+        temp_s2 = arg0->posY / 4;
+        temp_s3 = arg0->rotation;
+        sp58 = arg0->unk_06 + ((0x38 - arg0->posY) / 2);
 
         gSPDisplayList(gDisplayListHead++, gUiEnvTintTextureDL);
 
@@ -764,7 +764,7 @@ void EventBattle_DrawNoticeBanner(SlidingPanel* arg0) {
             Gfx_DrawTexturedRectClipped(temp_s3, sp58 + (i * temp_s2), 0x64, temp_s2, 0, 0, 0x400, 0x3800 / temp_s2, 0);
         }
 
-        if ((arg0->unk_01 == 0) && (arg0->unk_02 == 0x38)) {
+        if ((arg0->TrainerSlotSaveData_GamePort == 0) && (arg0->posY == 0x38)) {
             EventBattle_DrawSlicedFrame(0x70, sp58 + 8, 0x1A0, 0x28, 0, 0, 0, 0x96);
 
             gSPDisplayList(gDisplayListHead++, gUiRestoreTextureDL);
@@ -772,7 +772,7 @@ void EventBattle_DrawNoticeBanner(SlidingPanel* arg0) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Gfx_SetEnvColor(0xFF, 0x50, 0x64, 0xFF);
-            Font_Printf(0x90, sp58 + 0xE, Text_GetString(NULL, 0, D_82305A20, 0xA));
+            Font_Printf(0x90, sp58 + 0xE, Text_GetString(NULL, 0, gMessageBankMain, 0xA));
             Font_EndTexturedTextRendering();
         } else {
             gSPDisplayList(gDisplayListHead++, gUiRestoreTextureDL);
@@ -781,96 +781,96 @@ void EventBattle_DrawNoticeBanner(SlidingPanel* arg0) {
 }
 
 void EventBattle_UpdateNoticeBanner(SlidingPanel* arg0) {
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 1:
-            arg0->unk_02 += 7;
-            if (arg0->unk_02 == 0x38) {
-                if (arg0->unk_01 == 0) {
+            arg0->posY += 7;
+            if (arg0->posY == 0x38) {
+                if (arg0->TrainerSlotSaveData_GamePort == 0) {
                     Audio_PlaySoundEffectById(SFX_MENU_ERROR);
                 }
-                arg0->unk_00 = 0;
+                arg0->posX = 0;
             }
             break;
 
         case 2:
-            arg0->unk_02 -= 7;
-            if (arg0->unk_02 == 0) {
-                arg0->unk_00 = 0;
+            arg0->posY -= 7;
+            if (arg0->posY == 0) {
+                arg0->posX = 0;
             }
             break;
     }
 }
 
 void EventBattle_InitNoticeBanner(SlidingPanel* arg0, s16 arg1, s16 arg2) {
-    arg0->unk_00 = 0;
-    arg0->unk_02 = 0;
-    arg0->unk_04 = arg1;
+    arg0->posX = 0;
+    arg0->posY = 0;
+    arg0->rotation = arg1;
     arg0->unk_06 = arg2;
 }
 
 void EventBattle_ShowNoticeBanner(SlidingPanel* arg0, s32 arg1) {
-    arg0->unk_01 = arg1;
-    arg0->unk_00 = 1;
+    arg0->TrainerSlotSaveData_GamePort = arg1;
+    arg0->posX = 1;
 }
 
-void EventBattle_DrawOptionLabel(unk_D_8230F528* arg0) {
+void EventBattle_DrawOptionLabel(OptionLabel* arg0) {
     UNUSED s32 pad;
     s16 sp3A;
     s16 sp38;
     s16 sp36;
 
-    if (arg0->unk_02 >= 0xA) {
-        sp3A = arg0->unk_02;
-        sp38 = arg0->unk_04;
+    if (arg0->posY >= 0xA) {
+        sp3A = arg0->posY;
+        sp38 = arg0->rotation;
         sp36 = arg0->unk_06 + ((0x30 - sp3A) / 2);
         EventBattle_DrawPanelFrame(sp38, sp36, 0x98, sp3A);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F470);
+        gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
         Gfx_FillRectRgb(sp38 + 4, sp36 + 4, 0x90, sp3A - 8, 0x3C, 0x3C, 0xA0);
 
         gSPDisplayList(gDisplayListHead++, gUiRestoreTextureDL);
 
-        if (arg0->unk_02 == 0x30) {
+        if (arg0->posY == 0x30) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
-            Font_Printf((sp38 - ((s16)Font_MeasureTextExtent(0x10, 0, arg0->unk_08) / 2)) + 0x4C, sp36 + 0xB, arg0->unk_08);
+            Font_Printf((sp38 - ((s16)Font_MeasureTextExtent(0x10, 0, arg0->RentalSlotAnimData_PosePhase) / 2)) + 0x4C, sp36 + 0xB, arg0->RentalSlotAnimData_PosePhase);
             Font_EndTexturedTextRendering();
         }
     }
 }
 
-void EventBattle_UpdateOptionLabel(unk_D_8230F528* arg0) {
-    switch (arg0->unk_00) {
+void EventBattle_UpdateOptionLabel(OptionLabel* arg0) {
+    switch (arg0->posX) {
         case 1:
-            arg0->unk_02 += 6;
-            if (arg0->unk_02 == 0x30) {
-                arg0->unk_00 = 0;
+            arg0->posY += 6;
+            if (arg0->posY == 0x30) {
+                arg0->posX = 0;
             }
             break;
 
         case 2:
-            arg0->unk_02 -= 6;
-            if (arg0->unk_02 == 6) {
-                arg0->unk_00 = 0;
+            arg0->posY -= 6;
+            if (arg0->posY == 6) {
+                arg0->posX = 0;
             }
             break;
     }
 }
 
-void EventBattle_InitOptionLabel(unk_D_8230F528* arg0, s16 arg1, s16 arg2, s8* arg3) {
-    arg0->unk_00 = 0;
-    arg0->unk_02 = 6;
-    arg0->unk_04 = arg1;
+void EventBattle_InitOptionLabel(OptionLabel* arg0, s16 arg1, s16 arg2, s8* arg3) {
+    arg0->posX = 0;
+    arg0->posY = 6;
+    arg0->rotation = arg1;
     arg0->unk_06 = arg2;
-    arg0->unk_08 = arg3;
+    arg0->RentalSlotAnimData_PosePhase = arg3;
 }
 
-void EventBattle_DrawSettingLine(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
+void EventBattle_DrawSettingLine(BattleSettings* arg0, s16 arg1, s16 arg2, s16 arg3, s16 arg4) {
     char sp30[64];
     UNUSED s32 pad;
 
-    if (((arg1 == 1) || (arg1 == 2)) && (arg0->unk_01 == 0)) {
+    if (((arg1 == 1) || (arg1 == 2)) && (arg0->TrainerSlotSaveData_GamePort == 0)) {
         Gfx_SetEnvColor(0x50, 0x50, 0xB4, 0xFF);
     } else if (arg1 == arg0->unk_0C) {
         Gfx_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
@@ -878,12 +878,12 @@ void EventBattle_DrawSettingLine(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s16 a
         Gfx_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
     }
 
-    Font_Printf(arg0->unk_08 + 0x34, arg0->unk_0A + arg1 * 0x21 + 0x2F, Text_GetString(NULL, 0, D_82305A20, arg2));
+    Font_Printf(arg0->RentalSlotAnimData_PosePhase + 0x34, arg0->unk_0A + arg1 * 0x21 + 0x2F, Text_GetString(NULL, 0, gMessageBankMain, arg2));
 
     if (arg3 >= 0) {
         Text_SetNumberToken(2, arg4);
-        Text_GetString(sp30, sizeof(sp30), D_82305A20, arg3);
-        Font_Printf((arg0->unk_08 - (Font_MeasureTextExtent(0, 0, sp30) / 2)) + 0x158, arg0->unk_0A + arg1 * 0x21 + 0x2F, sp30,
+        Text_GetString(sp30, sizeof(sp30), gMessageBankMain, arg3);
+        Font_Printf((arg0->RentalSlotAnimData_PosePhase - (Font_MeasureTextExtent(0, 0, sp30) / 2)) + 0x158, arg0->unk_0A + arg1 * 0x21 + 0x2F, sp30,
                       arg4);
     }
 }
@@ -901,9 +901,9 @@ void EventBattle_DrawSettingBar(s16 arg0, s16 arg1, s16 arg2) {
 }
 
 void EventBattle_DrawSpinnerArrows(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
-    static s16 D_823059C8 = 0;
+    static s16 gSpinnerArrowAnim = 0;
 
-    s16 sp36 = SINS(D_823059C8) * 2;
+    s16 sp36 = SINS(gSpinnerArrowAnim) * 2;
 
     if (arg2 == 1) {
         if (arg3 >= 6) {
@@ -922,10 +922,10 @@ void EventBattle_DrawSpinnerArrows(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
             Gfx_DrawTextureRgba16(arg0 + sp36 + 0x94, arg1 + (arg2 * 0x21), 0x14, 0x20, D_30300C0, 0x14, 0);
         }
     }
-    D_823059C8 += 0x2000;
+    gSpinnerArrowAnim += 0x2000;
 }
 
-void EventBattle_DrawSettingsPanel(unk_D_82305A40* arg0) {
+void EventBattle_DrawSettingsPanel(BattleSettings* arg0) {
     char* sp54;
     s16 var_a3;
     s16 temp_s1;
@@ -935,7 +935,7 @@ void EventBattle_DrawSettingsPanel(unk_D_82305A40* arg0) {
 
     if (arg0->unk_06 >= 0xF) {
         sp4A = arg0->unk_06;
-        temp_s2 = arg0->unk_08;
+        temp_s2 = arg0->RentalSlotAnimData_PosePhase;
         temp_s1 = arg0->unk_0A + ((0xBA - sp4A) / 2);
 
         Ui_DrawBorderedPanelNoFill(temp_s2, temp_s1, 0x1BE, sp4A);
@@ -947,36 +947,36 @@ void EventBattle_DrawSettingsPanel(unk_D_82305A40* arg0) {
 
             gSPDisplayList(gDisplayListHead++, gUiEnvTintTextureDL);
 
-            if (arg0->unk_01 == 1) {
+            if (arg0->TrainerSlotSaveData_GamePort == 1) {
                 if (arg0->unk_0C == 1) {
-                    EventBattle_DrawSpinnerArrows(temp_s2 + 0x104, temp_s1 + 0x2D, arg0->unk_0C, arg0->unk_02);
+                    EventBattle_DrawSpinnerArrows(temp_s2 + 0x104, temp_s1 + 0x2D, arg0->unk_0C, arg0->posY);
                 }
 
                 if (arg0->unk_0C == 2) {
-                    EventBattle_DrawSpinnerArrows(temp_s2 + 0x104, temp_s1 + 0x2D, arg0->unk_0C, arg0->unk_04);
+                    EventBattle_DrawSpinnerArrows(temp_s2 + 0x104, temp_s1 + 0x2D, arg0->unk_0C, arg0->rotation);
                 }
             }
 
             EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x2E, 1);
-            EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x4F, arg0->unk_01);
-            EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x70, arg0->unk_01);
+            EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x4F, arg0->TrainerSlotSaveData_GamePort);
+            EventBattle_DrawSettingBar(temp_s2 + 0x11C, temp_s1 + 0x70, arg0->TrainerSlotSaveData_GamePort);
 
             gSPDisplayList(gDisplayListHead++, gUiRestoreTextureDL);
 
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
-            sp54 = Text_GetString(NULL, 0, D_82305A20, 0xB);
+            sp54 = Text_GetString(NULL, 0, gMessageBankMain, 0xB);
             Font_Printf((temp_s2 - (Font_MeasureTextExtent(0x10, 0, sp54) / 2)) + 0xDF, temp_s1 + 0xA, sp54);
 
-            if (arg0->unk_01 == 1) {
+            if (arg0->TrainerSlotSaveData_GamePort == 1) {
                 var_a3 = 0xC;
             } else {
                 var_a3 = 0xD;
             }
 
             EventBattle_DrawSettingLine(arg0, 0, 0xE, var_a3, 0);
-            EventBattle_DrawSettingLine(arg0, 1, 0x10, 0xF, arg0->unk_02);
-            EventBattle_DrawSettingLine(arg0, 2, 0x11, 0x12, arg0->unk_04);
+            EventBattle_DrawSettingLine(arg0, 1, 0x10, 0xF, arg0->posY);
+            EventBattle_DrawSettingLine(arg0, 2, 0x11, 0x12, arg0->rotation);
             EventBattle_DrawSettingLine(arg0, 3, 0x13, -1, 0);
             Font_EndTexturedTextRendering();
         } else {
@@ -985,37 +985,37 @@ void EventBattle_DrawSettingsPanel(unk_D_82305A40* arg0) {
     }
 }
 
-void EventBattle_UpdateSettingsPanel(unk_D_82305A40* arg0) {
+void EventBattle_UpdateSettingsPanel(BattleSettings* arg0) {
     s32 temp_v0_2;
 
-    switch (arg0->unk_00) {
+    switch (arg0->posX) {
         case 1:
             temp_v0_2 = Input_GetRepeatedDPad();
-            if ((temp_v0_2 == 0x200) && (arg0->unk_01 == 1)) {
+            if ((temp_v0_2 == 0x200) && (arg0->TrainerSlotSaveData_GamePort == 1)) {
                 if (arg0->unk_0C == 1) {
-                    if (arg0->unk_02 >= 6) {
-                        arg0->unk_02 -= 5;
+                    if (arg0->posY >= 6) {
+                        arg0->posY -= 5;
                         Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                     }
                 }
 
                 if (arg0->unk_0C == 2) {
-                    if (arg0->unk_04 >= 0xB) {
-                        arg0->unk_04 -= 0xA;
+                    if (arg0->rotation >= 0xB) {
+                        arg0->rotation -= 0xA;
                         Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                     }
                 }
-            } else if ((temp_v0_2 == 0x100) && (arg0->unk_01 == 1)) {
+            } else if ((temp_v0_2 == 0x100) && (arg0->TrainerSlotSaveData_GamePort == 1)) {
                 if (arg0->unk_0C == 1) {
-                    if (arg0->unk_02 < 0x5A) {
-                        arg0->unk_02 += 5;
+                    if (arg0->posY < 0x5A) {
+                        arg0->posY += 5;
                         Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                     }
                 }
 
                 if (arg0->unk_0C == 2) {
-                    if (arg0->unk_04 < 0x5A) {
-                        arg0->unk_04 += 0xA;
+                    if (arg0->rotation < 0x5A) {
+                        arg0->rotation += 0xA;
                         Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                     }
                 }
@@ -1032,23 +1032,23 @@ void EventBattle_UpdateSettingsPanel(unk_D_82305A40* arg0) {
                     }
                 } else if (gPlayer1Controller->buttonPressed & 0x8000) {
                     if (arg0->unk_0C == 0) {
-                        arg0->unk_01 ^= 1;
+                        arg0->TrainerSlotSaveData_GamePort ^= 1;
                         Audio_PlaySoundEffectById(SFX_MENU_CONFIRM);
                     }
 
                     if (arg0->unk_0C == 3) {
-                        D_80075680[0] = arg0->unk_01;
-                        D_80075680[1] = arg0->unk_02;
-                        D_80075680[2] = arg0->unk_04;
-                        arg0->unk_00 = 3;
+                        gBattleTimerLimits[0] = arg0->TrainerSlotSaveData_GamePort;
+                        gBattleTimerLimits[1] = arg0->posY;
+                        gBattleTimerLimits[2] = arg0->rotation;
+                        arg0->posX = 3;
                         Audio_PlaySoundEffectById(0x1D);
                     }
                 } else {
                     if (gPlayer1Controller->buttonPressed & 0x4000) {
-                        arg0->unk_01 = D_80075680[0];
-                        arg0->unk_02 = D_80075680[1];
-                        arg0->unk_04 = D_80075680[2];
-                        arg0->unk_00 = 3;
+                        arg0->TrainerSlotSaveData_GamePort = gBattleTimerLimits[0];
+                        arg0->posY = gBattleTimerLimits[1];
+                        arg0->rotation = gBattleTimerLimits[2];
+                        arg0->posX = 3;
                         Audio_PlaySoundEffectById(SFX_MENU_BACK);
                     }
                 }
@@ -1059,36 +1059,36 @@ void EventBattle_UpdateSettingsPanel(unk_D_82305A40* arg0) {
             arg0->unk_06 += 0x16;
             if (arg0->unk_06 == 0xBA) {
                 Input_SetRepeatController(gPlayer1Controller);
-                arg0->unk_00 = 1;
+                arg0->posX = 1;
             }
             break;
 
         case 3:
             arg0->unk_06 -= 0x16;
             if (arg0->unk_06 == 0xA) {
-                arg0->unk_00 = 0;
+                arg0->posX = 0;
             }
             break;
     }
 }
 
-void EventBattle_InitSettingsPanel(unk_D_82305A40* arg0, s16 arg1, s16 arg2, s32 arg3) {
-    arg0->unk_00 = 0;
+void EventBattle_InitSettingsPanel(BattleSettings* arg0, s16 arg1, s16 arg2, s32 arg3) {
+    arg0->posX = 0;
     arg0->unk_06 = 0xA;
-    arg0->unk_08 = arg1;
+    arg0->RentalSlotAnimData_PosePhase = arg1;
     arg0->unk_0A = arg2;
     arg0->unk_0C = 0;
 
     if (arg3 != 0) {
-        arg0->unk_01 = D_80075680[0];
-        arg0->unk_02 = D_80075680[1];
-        arg0->unk_04 = D_80075680[2];
+        arg0->TrainerSlotSaveData_GamePort = gBattleTimerLimits[0];
+        arg0->posY = gBattleTimerLimits[1];
+        arg0->rotation = gBattleTimerLimits[2];
     }
 }
 
-void EventBattle_OpenSettingsPanel(unk_D_82305A40* arg0) {
+void EventBattle_OpenSettingsPanel(BattleSettings* arg0) {
     Audio_PlaySoundEffectById(SFX_PANEL_OPEN);
-    arg0->unk_00 = 2;
+    arg0->posX = 2;
     arg0->unk_0C = 0;
 }
 
@@ -1118,22 +1118,22 @@ void EventBattle_DrawFrame(s16 arg0) {
     BgStage_DrawFrame();
     EventBattle_DrawBackground();
     EventBattle_DrawTitleBar();
-    EventBattle_DrawInfoBox(&D_82305A30);
-    EventBattle_DrawNoticeBanner(&D_82305A38);
-    EventBattle_DrawSettingsPanel(&D_82305A40);
-    EventBattle_DrawTrainerCard(&D_82305AF8[0]);
-    EventBattle_DrawTrainerCard(&D_82305AF8[1]);
+    EventBattle_DrawInfoBox(&gPanelAnimState);
+    EventBattle_DrawNoticeBanner(&gNoticeBannerAnimState);
+    EventBattle_DrawSettingsPanel(&gBattleSettingsState);
+    EventBattle_DrawTrainerCard(&gTrainerPanels[0]);
+    EventBattle_DrawTrainerCard(&gTrainerPanels[1]);
 
     for (i = 0; i < 6; i++) {
-        EventBattle_DrawRuleCard(&D_82305A50[i]);
+        EventBattle_DrawRuleCard(&gMenuItems[i]);
     }
 
     for (i = 0; i < 3; i++) {
-        EventBattle_DrawOptionLabel(&D_8230F528[i]);
+        EventBattle_DrawOptionLabel(&gOptionPanels[i]);
     }
 
     if (arg0 >= 0) {
-        EventBattle_DrawSelectionCorners(gEventBattleModes[arg0].unk_00, gEventBattleModes[arg0].unk_02, gEventBattleModes[arg0].unk_04,
+        EventBattle_DrawSelectionCorners(gEventBattleModes[arg0].posX, gEventBattleModes[arg0].posY, gEventBattleModes[arg0].rotation,
                       gEventBattleModes[arg0].unk_06);
     }
 
@@ -1144,73 +1144,73 @@ void EventBattle_UpdateWidgets(void) {
     s16 i;
 
     Controller_PollInputs();
-    EventBattle_UpdateInfoBox(&D_82305A30);
-    EventBattle_UpdateNoticeBanner(&D_82305A38);
-    EventBattle_UpdateSettingsPanel(&D_82305A40);
-    EventBattle_UpdateTrainerCardSlide(&D_82305AF8[0]);
-    EventBattle_UpdateTrainerCardSlide(&D_82305AF8[1]);
+    EventBattle_UpdateInfoBox(&gPanelAnimState);
+    EventBattle_UpdateNoticeBanner(&gNoticeBannerAnimState);
+    EventBattle_UpdateSettingsPanel(&gBattleSettingsState);
+    EventBattle_UpdateTrainerCardSlide(&gTrainerPanels[0]);
+    EventBattle_UpdateTrainerCardSlide(&gTrainerPanels[1]);
 
     for (i = 0; i < 6; i++) {
-        EventBattle_UpdateRuleCardSlide(&D_82305A50[i]);
+        EventBattle_UpdateRuleCardSlide(&gMenuItems[i]);
     }
 
     for (i = 0; i < 3; i++) {
-        EventBattle_UpdateOptionLabel(&D_8230F528[i]);
+        EventBattle_UpdateOptionLabel(&gOptionPanels[i]);
     }
 }
 
-void EventBattle_UpdateModeSelect(unk_D_82305A28* arg0) {
-    if (arg0->unk_00 == 3) {
+void EventBattle_UpdateModeSelect(EventBattleState* arg0) {
+    if (arg0->posX == 3) {
         do {
             EventBattle_UpdateWidgets();
             if (gPlayer1Controller->buttonPressed & 0x800) {
-                if (arg0->unk_02 >= 2) {
-                    arg0->unk_02 -= 2;
+                if (arg0->posY >= 2) {
+                    arg0->posY -= 2;
                     Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                 }
             } else if (gPlayer1Controller->buttonPressed & 0x400) {
-                if (arg0->unk_02 < 4) {
-                    arg0->unk_02 += 2;
+                if (arg0->posY < 4) {
+                    arg0->posY += 2;
                     Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                 }
             } else if (gPlayer1Controller->buttonPressed & 0x200) {
-                if ((arg0->unk_02 & 1) == 1) {
-                    arg0->unk_02--;
+                if ((arg0->posY & 1) == 1) {
+                    arg0->posY--;
                     Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                 }
             } else if (gPlayer1Controller->buttonPressed & 0x100) {
-                if (!(arg0->unk_02 & 1)) {
-                    arg0->unk_02++;
+                if (!(arg0->posY & 1)) {
+                    arg0->posY++;
                     Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                 }
             } else if (gPlayer1Controller->buttonPressed & 0x8000) {
-                switch (arg0->unk_02) {
+                switch (arg0->posY) {
                     case 4:
-                        arg0->unk_00 = 5;
+                        arg0->posX = 5;
                         Audio_PlaySoundEffectById(0x1C);
                         break;
 
                     case 5:
-                        arg0->unk_00 = 2;
+                        arg0->posX = 2;
                         Audio_PlaySoundEffectById(SFX_MENU_BACK);
                         break;
 
                     default:
-                        arg0->unk_00 = 7;
+                        arg0->posX = 7;
                         Audio_PlaySoundEffectById(0x1C);
                         break;
                 }
             } else if (gPlayer1Controller->buttonPressed & 0x4000) {
                 Audio_PlaySoundEffectById(SFX_MENU_BACK);
-                arg0->unk_00 = 2;
+                arg0->posX = 2;
             }
-            EventBattle_DrawFrame(arg0->unk_02);
-        } while (arg0->unk_00 == 3);
+            EventBattle_DrawFrame(arg0->posY);
+        } while (arg0->posX == 3);
     }
     arg0->unk_06 = 4;
 }
 
-void EventBattle_EnterModeSelect(unk_D_82305A28* arg0) {
+void EventBattle_EnterModeSelect(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
@@ -1222,11 +1222,11 @@ void EventBattle_EnterModeSelect(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    D_82305A30.unk_00 = 1;
+    gPanelAnimState.posX = 1;
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
 
     for (j = 0; j < 6; j++) {
-        D_82305A50[j].unk_00 = 2;
+        gMenuItems[j].posX = 2;
     }
 
     for (i = 0; i < 12; i++) {
@@ -1234,17 +1234,17 @@ void EventBattle_EnterModeSelect(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    arg0->unk_00 = 3;
+    arg0->posX = 3;
 }
 
-void EventBattle_ExitModeSelect(unk_D_82305A28* arg0) {
+void EventBattle_ExitModeSelect(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
-    D_82305A30.unk_00 = 2;
+    gPanelAnimState.posX = 2;
 
     for (i = 0; i < 6; i++) {
-        D_82305A50[i].unk_00 = 3;
+        gMenuItems[i].posX = 3;
     }
 
     for (j = 0; j < 6; j++) {
@@ -1261,18 +1261,18 @@ void EventBattle_ExitModeSelect(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
 }
 
-void EventBattle_ValidateTeamSelection(unk_D_82305A28* arg0) {
+void EventBattle_ValidateTeamSelection(EventBattleState* arg0) {
     s16 i;
     s16 j;
     u8 tmp1;
 
-    D_82305A30.unk_00 = 2;
+    gPanelAnimState.posX = 2;
 
     for (i = 0; i < 6; i++) {
-        D_82305A50[i].unk_00 = 3;
+        gMenuItems[i].posX = 3;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1281,15 +1281,15 @@ void EventBattle_ValidateTeamSelection(unk_D_82305A28* arg0) {
     }
 
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
-    arg0->unk_01 = EventBattle_ValidateTeamForRule(&D_82305AF8[0], gEventBattleModes[arg0->unk_02].unk_08);
-    arg0->unk_01 &= EventBattle_ValidateTeamForRule(&D_82305AF8[1], gEventBattleModes[arg0->unk_02].unk_08);
-    EventBattle_ShowNoticeBanner(&D_82305A38, arg0->unk_01);
+    arg0->TrainerSlotSaveData_GamePort = EventBattle_ValidateTeamForRule(&gTrainerPanels[0], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
+    arg0->TrainerSlotSaveData_GamePort &= EventBattle_ValidateTeamForRule(&gTrainerPanels[1], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
+    EventBattle_ShowNoticeBanner(&gNoticeBannerAnimState, arg0->TrainerSlotSaveData_GamePort);
 
-    tmp1 = !arg0->unk_01;
-    arg0->unk_04 = tmp1;
+    tmp1 = !arg0->TrainerSlotSaveData_GamePort;
+    arg0->rotation = tmp1;
 
     for (i = tmp1; i < 3; i++) {
-        D_8230F528[i].unk_00 = 1;
+        gOptionPanels[i].posX = 1;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1297,21 +1297,21 @@ void EventBattle_ValidateTeamSelection(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    arg0->unk_00 = 4;
+    arg0->posX = 4;
 }
 
-void EventBattle_ReturnToModeSelect(unk_D_82305A28* arg0) {
+void EventBattle_ReturnToModeSelect(EventBattleState* arg0) {
     u8 temp_v1;
     s16 i;
     s16 j;
 
-    temp_v1 = !arg0->unk_01;
-    D_82305AF8[0].unk_0000 = 3;
-    D_82305AF8[1].unk_0000 = 3;
-    D_82305A38.unk_00 = 2;
+    temp_v1 = !arg0->TrainerSlotSaveData_GamePort;
+    gTrainerPanels[0].unk_0000 = 3;
+    gTrainerPanels[1].unk_0000 = 3;
+    gNoticeBannerAnimState.posX = 2;
 
     for (i = temp_v1; i < 3; i++) {
-        D_8230F528[i].unk_00 = 2;
+        gOptionPanels[i].posX = 2;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1319,11 +1319,11 @@ void EventBattle_ReturnToModeSelect(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    D_82305A30.unk_00 = 1;
+    gPanelAnimState.posX = 1;
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
 
     for (i = 0; i < 6; i++) {
-        D_82305A50[i].unk_00 = 2;
+        gMenuItems[i].posX = 2;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1331,24 +1331,24 @@ void EventBattle_ReturnToModeSelect(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    arg0->unk_00 = 3;
+    arg0->posX = 3;
 }
 
-void EventBattle_ValidateInitialSelection(unk_D_82305A28* arg0) {
+void EventBattle_ValidateInitialSelection(EventBattleState* arg0) {
     u8 temp_v1;
     s16 i;
     s16 j;
 
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
-    arg0->unk_01 = EventBattle_ValidateTeamForRule(&D_82305AF8[0], gEventBattleModes[arg0->unk_02].unk_08);
-    arg0->unk_01 &= EventBattle_ValidateTeamForRule(&D_82305AF8[1], gEventBattleModes[arg0->unk_02].unk_08);
-    EventBattle_ShowNoticeBanner(&D_82305A38, arg0->unk_01);
+    arg0->TrainerSlotSaveData_GamePort = EventBattle_ValidateTeamForRule(&gTrainerPanels[0], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
+    arg0->TrainerSlotSaveData_GamePort &= EventBattle_ValidateTeamForRule(&gTrainerPanels[1], gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase);
+    EventBattle_ShowNoticeBanner(&gNoticeBannerAnimState, arg0->TrainerSlotSaveData_GamePort);
 
-    temp_v1 = !arg0->unk_01;
-    arg0->unk_04 = temp_v1;
+    temp_v1 = !arg0->TrainerSlotSaveData_GamePort;
+    arg0->rotation = temp_v1;
 
     for (i = temp_v1; i < 3; i++) {
-        D_8230F528[i].unk_00 = 1;
+        gOptionPanels[i].posX = 1;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1356,24 +1356,24 @@ void EventBattle_ValidateInitialSelection(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    arg0->unk_00 = 4;
+    arg0->posX = 4;
 }
 
 void EventBattle_MarkPartnerPikachu(BattleMon* arg0, s16 arg1) {
     GbSavePlayerIdentity sp30;
     GbSavePlayerIdentity sp20;
 
-    if ((GbSave_GetPortGame(arg1) == 7) && (arg0->unk_00.unk_00 == 0x19)) {
+    if ((GbSave_GetPortGame(arg1) == 7) && (arg0->posX.posX == 0x19)) {
         GbSave_CopyPlayerIdentity(arg1, &sp20);
-        _bcopy(arg0->unk_46, sp30.unk_02, 11);
-        sp30.unk_00 = arg0->unk_0E;
+        _bcopy(arg0->unk_46, sp30.posY, 11);
+        sp30.posX = arg0->unk_0E;
         if (GbSave_PlayerIdentityMatches(&sp30, &sp20)) {
             arg0->unk_52 |= 0x80;
         }
     }
 }
 
-void EventBattle_BuildTrainerFromCard(unk_D_82305AF8* arg0) {
+void EventBattle_BuildTrainerFromCard(TrainerCard* arg0) {
     s16 i;
     TeamRoster* temp_s4 = Trainer_Create(arg0->unk_0001, arg0->unk_0012, arg0->unk_0014, Text_GetPlayerLabel(1));
 
@@ -1385,25 +1385,25 @@ void EventBattle_BuildTrainerFromCard(unk_D_82305AF8* arg0) {
     Team_AddTrainer(arg0->unk_0001, temp_s4);
 }
 
-void EventBattle_StartBattle(unk_D_82305A28* arg0) {
+void EventBattle_StartBattle(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
-    Session_SetMode(0xA, gEventBattleModes[arg0->unk_02].unk_08, 0);
-    EventBattle_BuildTrainerFromCard(&D_82305AF8[0]);
-    EventBattle_BuildTrainerFromCard(&D_82305AF8[1]);
+    Session_SetMode(0xA, gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase, 0);
+    EventBattle_BuildTrainerFromCard(&gTrainerPanels[0]);
+    EventBattle_BuildTrainerFromCard(&gTrainerPanels[1]);
 
-    if (D_82305A40.unk_01 == 1) {
-        gSessionContext.timeLimitsEnabled = D_82305A40.unk_01;
-        gSessionContext.battleLimitMinutes = D_82305A40.unk_02;
-        gSessionContext.moveLimitSeconds = D_82305A40.unk_04;
+    if (gBattleSettingsState.TrainerSlotSaveData_GamePort == 1) {
+        gSessionContext.timeLimitsEnabled = gBattleSettingsState.TrainerSlotSaveData_GamePort;
+        gSessionContext.battleLimitMinutes = gBattleSettingsState.posY;
+        gSessionContext.moveLimitSeconds = gBattleSettingsState.rotation;
     }
-    D_82305AF8[0].unk_0000 = 3;
-    D_82305AF8[1].unk_0000 = 3;
-    D_82305A38.unk_00 = 2;
+    gTrainerPanels[0].unk_0000 = 3;
+    gTrainerPanels[1].unk_0000 = 3;
+    gNoticeBannerAnimState.posX = 2;
 
     for (i = 0; i < 3; i++) {
-        D_8230F528[i].unk_00 = 2;
+        gOptionPanels[i].posX = 2;
     }
 
     for (j = 0; j < 6; j++) {
@@ -1421,62 +1421,62 @@ void EventBattle_StartBattle(unk_D_82305A28* arg0) {
     }
 
     arg0->unk_06 = 0x2A;
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
 }
 
-void EventBattle_UpdateActionMenu(unk_D_82305A28* arg0) {
+void EventBattle_UpdateActionMenu(EventBattleState* arg0) {
     u8 temp_s7;
 
-    temp_s7 = !arg0->unk_01;
+    temp_s7 = !arg0->TrainerSlotSaveData_GamePort;
 
-    if (arg0->unk_00 == 4) {
+    if (arg0->posX == 4) {
         do {
             EventBattle_UpdateWidgets();
             if (gPlayer1Controller->buttonPressed & 0x200) {
-                if (temp_s7 < arg0->unk_04) {
-                    arg0->unk_04--;
+                if (temp_s7 < arg0->rotation) {
+                    arg0->rotation--;
                     Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                 }
             } else if (gPlayer1Controller->buttonPressed & 0x100) {
-                if (arg0->unk_04 < 2) {
-                    arg0->unk_04++;
+                if (arg0->rotation < 2) {
+                    arg0->rotation++;
                     Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
                 }
             } else if (gPlayer1Controller->buttonPressed & 0x8000) {
-                switch (arg0->unk_04) {
+                switch (arg0->rotation) {
                     case 0:
-                        arg0->unk_00 = 6;
+                        arg0->posX = 6;
                         Audio_PlaySoundEffectById(0x20);
                         break;
 
                     case 1:
-                        arg0->unk_00 = 9;
+                        arg0->posX = 9;
                         Audio_PlaySoundEffectById(0x1C);
                         break;
 
                     case 2:
-                        arg0->unk_00 = 8;
+                        arg0->posX = 8;
                         Audio_PlaySoundEffectById(SFX_MENU_BACK);
                         break;
                 }
             } else if (gPlayer1Controller->buttonPressed & 0x4000) {
                 Audio_PlaySoundEffectById(SFX_MENU_BACK);
-                arg0->unk_04 = 2;
-                arg0->unk_00 = 8;
+                arg0->rotation = 2;
+                arg0->posX = 8;
             }
-            EventBattle_DrawFrame(arg0->unk_04 + 6);
-        } while (arg0->unk_00 == 4);
+            EventBattle_DrawFrame(arg0->rotation + 6);
+        } while (arg0->posX == 4);
     }
 }
 
-void EventBattle_RunSettingsPanel(unk_D_82305A28* arg0) {
+void EventBattle_RunSettingsPanel(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
-    D_82305A30.unk_00 = 2;
+    gPanelAnimState.posX = 2;
 
     for (i = 0; i < 6; i++) {
-        D_82305A50[i].unk_00 = 3;
+        gMenuItems[i].posX = 3;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1484,18 +1484,18 @@ void EventBattle_RunSettingsPanel(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    EventBattle_OpenSettingsPanel(&D_82305A40);
+    EventBattle_OpenSettingsPanel(&gBattleSettingsState);
 
-    while (D_82305A40.unk_00 != 0) {
+    while (gBattleSettingsState.posX != 0) {
         EventBattle_UpdateWidgets();
         EventBattle_DrawFrame(-1);
     }
 
-    D_82305A30.unk_00 = 1;
+    gPanelAnimState.posX = 1;
     Audio_PlayCategory11SoundCommand(0x01100001, 0, 0);
 
     for (i = 0; i < 6; i++) {
-        D_82305A50[i].unk_00 = 2;
+        gMenuItems[i].posX = 2;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1503,21 +1503,21 @@ void EventBattle_RunSettingsPanel(unk_D_82305A28* arg0) {
         EventBattle_DrawFrame(-1);
     }
 
-    arg0->unk_00 = 3;
+    arg0->posX = 3;
 }
 
-void EventBattle_ExitWithMode(unk_D_82305A28* arg0) {
+void EventBattle_ExitWithMode(EventBattleState* arg0) {
     s16 i;
     s16 j;
 
-    Session_SetMode(0xA, gEventBattleModes[arg0->unk_02].unk_08, 0);
+    Session_SetMode(0xA, gEventBattleModes[arg0->posY].RentalSlotAnimData_PosePhase, 0);
 
-    D_82305AF8[0].unk_0000 = 3;
-    D_82305AF8[1].unk_0000 = 3;
-    D_82305A38.unk_00 = 2;
+    gTrainerPanels[0].unk_0000 = 3;
+    gTrainerPanels[1].unk_0000 = 3;
+    gNoticeBannerAnimState.posX = 2;
 
     for (i = 0; i < 3; i++) {
-        D_8230F528[i].unk_00 = 2;
+        gOptionPanels[i].posX = 2;
     }
 
     for (j = 0; j < 12; j++) {
@@ -1526,12 +1526,12 @@ void EventBattle_ExitWithMode(unk_D_82305A28* arg0) {
     }
 
     arg0->unk_06 = 0x12;
-    arg0->unk_00 = 0;
+    arg0->posX = 0;
 }
 
-void EventBattle_RunSelect(unk_D_82305A28* arg0) {
-    while (arg0->unk_00 != 0) {
-        switch (arg0->unk_00) {
+void EventBattle_RunSelect(EventBattleState* arg0) {
+    while (arg0->posX != 0) {
+        switch (arg0->posX) {
             case 1:
                 EventBattle_EnterModeSelect(arg0);
                 break;
@@ -1575,47 +1575,47 @@ void EventBattle_RunSelect(unk_D_82305A28* arg0) {
     }
 }
 
-void EventBattle_InitSelect(unk_D_82305A28* arg0, s16 arg1) {
+void EventBattle_InitSelect(EventBattleState* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == -1) {
-        arg0->unk_00 = 1;
-        arg0->unk_02 = 2;
+        arg0->posX = 1;
+        arg0->posY = 2;
     } else {
-        arg0->unk_00 = 0xA;
-        arg0->unk_02 = arg1;
+        arg0->posX = 0xA;
+        arg0->posY = arg1;
     }
     arg0->unk_06 = 0x12;
 
-    EventBattle_InitInfoBox(&D_82305A30, 0x38, 0x17C);
-    EventBattle_InitNoticeBanner(&D_82305A38, 0x10E, 0xC0);
-    EventBattle_InitSettingsPanel(&D_82305A40, 0x68, 0x93, (arg1 + 1) == 0);
+    EventBattle_InitInfoBox(&gPanelAnimState, 0x38, 0x17C);
+    EventBattle_InitNoticeBanner(&gNoticeBannerAnimState, 0x10E, 0xC0);
+    EventBattle_InitSettingsPanel(&gBattleSettingsState, 0x68, 0x93, (arg1 + 1) == 0);
 
-    EventBattle_InitTrainerCard(&D_82305AF8[0], 0x40, 0x5C, 0);
-    EventBattle_InitTrainerCard(&D_82305AF8[1], 0x40, 0xF8, 1);
+    EventBattle_InitTrainerCard(&gTrainerPanels[0], 0x40, 0x5C, 0);
+    EventBattle_InitTrainerCard(&gTrainerPanels[1], 0x40, 0xF8, 1);
 
-    EventBattle_InitRuleCard(&D_82305A50[0], 0x44, 0x84, D_3028E00, Text_GetString(NULL, 0, D_82305A20, 0x15), 3, 0);
-    EventBattle_InitRuleCard(&D_82305A50[1], 0x144, 0x84, D_3029A80, Text_GetString(NULL, 0, D_82305A20, 0x18), 4, 1);
-    EventBattle_InitRuleCard(&D_82305A50[2], 0x44, 0xC8, D_302A700, Text_GetString(NULL, 0, D_82305A20, 0x1A), 6, 5);
-    EventBattle_InitRuleCard(&D_82305A50[3], 0x144, 0xC8, D_302B380, Text_GetString(NULL, 0, D_82305A20, 0x19), 5, 3);
-    EventBattle_InitRuleCard(&D_82305A50[4], 0x44, 0x10C, NULL, Text_GetString(NULL, 0, D_82305A20, 0x1B), 0, 6);
-    EventBattle_InitRuleCard(&D_82305A50[5], 0x144, 0x10C, NULL, Text_GetString(NULL, 0, D_82305A20, 0x1C), 0, 7);
+    EventBattle_InitRuleCard(&gMenuItems[0], 0x44, 0x84, D_3028E00, Text_GetString(NULL, 0, gMessageBankMain, 0x15), 3, 0);
+    EventBattle_InitRuleCard(&gMenuItems[1], 0x144, 0x84, D_3029A80, Text_GetString(NULL, 0, gMessageBankMain, 0x18), 4, 1);
+    EventBattle_InitRuleCard(&gMenuItems[2], 0x44, 0xC8, D_302A700, Text_GetString(NULL, 0, gMessageBankMain, 0x1A), 6, 5);
+    EventBattle_InitRuleCard(&gMenuItems[3], 0x144, 0xC8, D_302B380, Text_GetString(NULL, 0, gMessageBankMain, 0x19), 5, 3);
+    EventBattle_InitRuleCard(&gMenuItems[4], 0x44, 0x10C, NULL, Text_GetString(NULL, 0, gMessageBankMain, 0x1B), 0, 6);
+    EventBattle_InitRuleCard(&gMenuItems[5], 0x144, 0x10C, NULL, Text_GetString(NULL, 0, gMessageBankMain, 0x1C), 0, 7);
 
-    EventBattle_InitOptionLabel(&D_8230F528[0], 0x50, 0x181, Text_GetString(NULL, 0, D_82305A20, 0x1D));
-    EventBattle_InitOptionLabel(&D_8230F528[1], 0xF4, 0x181, Text_GetString(NULL, 0, D_82305A20, 0x1E));
-    EventBattle_InitOptionLabel(&D_8230F528[2], 0x198, 0x181, Text_GetString(NULL, 0, D_82305A20, 0x1F));
+    EventBattle_InitOptionLabel(&gOptionPanels[0], 0x50, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1D));
+    EventBattle_InitOptionLabel(&gOptionPanels[1], 0xF4, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1E));
+    EventBattle_InitOptionLabel(&gOptionPanels[2], 0x198, 0x181, Text_GetString(NULL, 0, gMessageBankMain, 0x1F));
 
     if (arg1 == -1) {
         for (i = 2; i >= 0; i--) {
-            if (D_82305A50[i].unk_01 != 0) {
-                arg0->unk_02 = i;
+            if (gMenuItems[i].TrainerSlotSaveData_GamePort != 0) {
+                arg0->posY = i;
             }
         }
     }
 }
 
 s16 EventBattle_ShowSelect(void) {
-    static s16 D_823059CC = -1;
+    static s16 gLastSelectedMode = -1;
 
     main_pool_push_state('EVSL');
 
@@ -1629,15 +1629,15 @@ s16 EventBattle_ShowSelect(void) {
     GbSave_EnsureMainDataLoaded(0);
     GbSave_EnsureMainDataLoaded(1);
     StageLoader_UpdateSegments();
-    EventBattle_InitSelect(&D_82305A28, D_823059CC);
-    EventBattle_RunSelect(&D_82305A28);
-    D_823059CC = D_82305A28.unk_02;
+    EventBattle_InitSelect(&gModeSelectState, gLastSelectedMode);
+    EventBattle_RunSelect(&gModeSelectState);
+    gLastSelectedMode = gModeSelectState.posY;
     StageLoader_WaitForRetrace();
     Gfx_FreeDisplayListBuffers();
 
     main_pool_pop_state('EVSL');
 
-    return D_82305A28.unk_06;
+    return gModeSelectState.unk_06;
 }
 
 s32 EventBattle_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
@@ -1648,8 +1648,8 @@ s32 EventBattle_Main(UNUSED s32 arg0, UNUSED s32 arg1) {
     Gfx_InitDisplayListBuffers(0x10000, 0);
     StageContext_Activate(StageContext_Allocate(1, 0, 2, 0, 2, 1));
     Text_InitStringTables();
-    D_82305A20 = Text_GetStringTable(0x10);
-    D_82305A24 = Text_GetStringTable(6);
+    gMessageBankMain = Text_GetStringTable(0x10);
+    gEventBattleUiLabelsBank = Text_GetStringTable(6);
 
     while (temp_v0 == STATE_EVENT_BATTLE) {
         temp_v0 = EventBattle_ShowSelect();

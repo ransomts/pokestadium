@@ -22,7 +22,7 @@
 // Thumbnail cameras render to separate 76 x 76 images before the main scene.
 
 static CameraNode sStageCamera;
-static unk_D_8690A610 sStageFog;
+static FogRect sStageFog;
 static GraphNode sStageLayout0;
 static GraphNode sStageLayout1;
 static GraphNode sStageLayout3;
@@ -78,18 +78,18 @@ static u32 sStageGeoLayout[] = {
     0x00000000,  0x05000000,  0x07000000,    &sStageLayout1,   0x06000000, 0x06000000,    0x0F000002,  0x05000000,
     0x1F00FFFF,  0x00000000,  0x00000000,    0x00000000,    0x00640064, 0x00640000,    0x08000000,  Battle_StageMaterialTintCallback,
     0x00000000,  0x05000000,  0x07000000,    &sStageLayout3,   0x06000000, 0x06000000,    0x0F000003,  0x05000000,
-    0x0A000000,  &D_800AC840, 0x06000000,    0x0F000002,    0x05000000, 0x0A000000,    &D_800AC858, 0x06000000,
+    0x0A000000,  &gGraphRoot0, 0x06000000,    0x0F000002,    0x05000000, 0x0A000000,    &gGraphRoot1, 0x06000000,
     0x09000000,  0x08000000,  Battle_StageGeoDispatchCallback, 0x00000000,    0x06000000, 0x06000000,    0x06000000,  0x01000000,
 };
 static u32 sSide1ThumbnailLayout[] = {
     0x0C00FFFF,  0x05000000, 0x07000000, &sSide1ThumbnailCamera, 0x05000000, 0x0D000001, 0x05000000,
     0x14000000,  0x002D0019, 0xFFFFFF28, 0x16FFFFFF,  0x0F000003, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
 };
 static u32 sSide2ThumbnailLayout[] = {
     0x0C00FFFF,  0x05000000, 0x07000000, &sSide2ThumbnailCamera, 0x05000000, 0x0D000002, 0x05000000,
     0x14000000,  0x002D0019, 0xFFFFFF28, 0x16FFFFFF,  0x0F000003, 0x05000000, 0x0A000000,
-    &D_800AC840, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
+    &gGraphRoot0, 0x06000000, 0x06000000, 0x06000000,  0x06000000, 0x01000000,
 };
 
 // called every frame: bug boy in GLC
@@ -103,14 +103,14 @@ s32 Battle_StageGeoDispatchCallback(s32 event, GraphNode* node) {
 }
 // called every frame: bug boy in GLC
 // Orient the first stage light relative to the current camera's viewing axis.
-s32 Battle_StageLightAngleCallbackA(s32 event, unk_D_86002F34_alt18* light) {
+s32 Battle_StageLightAngleCallbackA(s32 event, PillarGlowParams* light) {
     UNUSED s32 pad;
     f32 distance;
     s16 angle_x;
     s16 angle_y;
 
     if (event == 2) {
-        Vec3f_CalculateDistanceAngles(&D_8006F088->view.targetPosition, &D_8006F088->view.eyePosition, &distance, &angle_x, &angle_y);
+        Vec3f_CalculateDistanceAngles(&gCurrentCameraNode->view.targetPosition, &gCurrentCameraNode->view.eyePosition, &distance, &angle_x, &angle_y);
         light->unk_1C = angle_x + 0x2000;
         light->unk_1E = angle_y - 0x2000;
     }
@@ -119,14 +119,14 @@ s32 Battle_StageLightAngleCallbackA(s32 event, unk_D_86002F34_alt18* light) {
 
 // called every frame: bug boy in GLC
 // The second light uses the opposite elevation and an azimuth offset of 135 degrees.
-s32 Battle_StageLightAngleCallbackB(s32 event, unk_D_86002F34_alt18* light) {
+s32 Battle_StageLightAngleCallbackB(s32 event, PillarGlowParams* light) {
     UNUSED s32 pad;
     f32 distance;
     s16 angle_x;
     s16 angle_y;
 
     if (event == 2) {
-        Vec3f_CalculateDistanceAngles(&D_8006F088->view.targetPosition, &D_8006F088->view.eyePosition, &distance, &angle_x, &angle_y);
+        Vec3f_CalculateDistanceAngles(&gCurrentCameraNode->view.targetPosition, &gCurrentCameraNode->view.eyePosition, &distance, &angle_x, &angle_y);
         light->unk_1C = -0x2000 - angle_x;
         light->unk_1E = angle_y + 0x6000;
     }
@@ -348,7 +348,7 @@ void Battle_ResetFaintBatches(void) {
     BattleSessionTeams* side = &sBattleSides[0];
 
     for (side_index = 0; side_index < 2; side_index++, side++) {
-        for (trainer_index = 0; trainer_index < side->unk_01; trainer_index++) {
+        for (trainer_index = 0; trainer_index < side->TrainerSlotSaveData_GamePort; trainer_index++) {
             roster = side->teamMember[trainer_index];
             for (pokemon_index = 0; pokemon_index < roster->numberOfPokemonChosen; pokemon_index++) {
                 roster->pokemonPicked[pokemon_index].unk_25 = 0;
@@ -369,10 +369,10 @@ void Battle_UpdateFaintBatches(void) {
     BattleSessionTeams* side = &sBattleSides[0];
 
     for (side_index = 0; side_index < 2; side_index++, side++) {
-        for (trainer_index = 0; trainer_index < side->unk_01; trainer_index++) {
+        for (trainer_index = 0; trainer_index < side->TrainerSlotSaveData_GamePort; trainer_index++) {
             roster = side->teamMember[trainer_index];
             for (pokemon_index = 0; pokemon_index < roster->numberOfPokemonChosen; pokemon_index++) {
-                if ((roster->pokemonPicked[pokemon_index].unk_25 == 0) && (roster->pokemonPicked[pokemon_index].unk_02 == 0)) {
+                if ((roster->pokemonPicked[pokemon_index].unk_25 == 0) && (roster->pokemonPicked[pokemon_index].posY == 0)) {
                     found_faint = 1;
                     roster->pokemonPicked[pokemon_index].unk_25 = sNextFaintBatch;
                 }
@@ -553,14 +553,14 @@ void Battle_SelectComRoster(void) {
             } else {
                 number_of_pokemon_picked = 3;
             }
-            func_843831A0(player_roster, player_teammate_roster, com_roster, gSessionContext.aiDifficulty, order_of_picked_pokemon, gSessionContext.ruleCategory, number_of_pokemon_picked);
+            BattleAi_InitializeBattle(player_roster, player_teammate_roster, com_roster, gSessionContext.aiDifficulty, order_of_picked_pokemon, gSessionContext.ruleCategory, number_of_pokemon_picked);
         } else {
             if (gSessionContext.ruleCategory == RULE_CATEGORY_VS_MEWTWO) {
                 number_of_pokemon_picked = com_roster->rosterInfo->numberOfPokemonCanBePicked;
             } else {
                 number_of_pokemon_picked = 3;
             }
-            func_843831A0(player_roster, NULL, com_roster, com_roster->unk_018 & 0xFF, order_of_picked_pokemon, gSessionContext.ruleCategory, number_of_pokemon_picked);
+            BattleAi_InitializeBattle(player_roster, NULL, com_roster, com_roster->unk_018 & 0xFF, order_of_picked_pokemon, gSessionContext.ruleCategory, number_of_pokemon_picked);
         }
         Battle_CompleteRosterOrder(order_of_picked_pokemon, number_of_pokemon_picked);
         com_roster->numberOfPokemonChosen = number_of_pokemon_picked;
@@ -573,28 +573,28 @@ void Battle_SelectComRoster(void) {
 
 // triggers at the start of battle: bug boy in glc
 // Seed icon/presentation state from the side's first trainer and first picked Pokemon.
-void BattleScene_InitializeParticipantPresentation(BattleSessionTeams* side, unk_D_86002F30* model) {
+void BattleScene_InitializeParticipantPresentation(BattleSessionTeams* side, ModelData* model) {
     TeamRoster* first_trainer = side->teamMember[0];
 
-    side->unk_18 = model->unk_08->unk_00[0];
+    side->unk_18 = model->RentalSlotAnimData_PosePhase->posX[0];
     side->uniqueStatusFlags |= 0xA0;
     side->unk_1C = 0;
-    side->displayModel = first_trainer->pokemonPicked[0].unk_00.unk_00;
-    side->unk_04 = first_trainer->pokemonPicked;
+    side->displayModel = first_trainer->pokemonPicked[0].posX.posX;
+    side->rotation = first_trainer->pokemonPicked;
     Trainer_RequestPokeIcon(side);
 }
 
 // triggers at the start of battle: bug boy in glc
 // Allocate thumbnail targets, load the mode/ruleset arena, and construct all three roots.
-void BattleScene_Init(unk_func_80007444* stage_context) {
+void BattleScene_Init(Stage* stage_context) {
     MemoryBlock* layout_pool;
     u32* stage_layout;
     FragmentEntry arena_entry;
-    unk_D_8690A610_018* fog_parameters;
+    CreditsSceneData* fog_parameters;
     s32 pad;
     s16 arena_index;
     DepthBuffer* thumbnail_depth;
-    unk_D_86002F30* model;
+    ModelData* model;
 
     Battle_SetStageTintColor(0xFF, 0xFF, 0xFF);
     Battle_SetStageScale(1.0f);
@@ -692,9 +692,9 @@ void BattleScene_Init(unk_func_80007444* stage_context) {
         sStageFog.node.callbackArg = 0;
         sStageFog.node.flags &= ~1;
     } else {
-        sStageFog.unk_18.unk_00 = fog_parameters->unk_00;
-        sStageFog.unk_18.unk_02 = fog_parameters->unk_02;
-        sStageFog.unk_18.unk_04.rgba = fog_parameters->unk_04.rgba;
+        sStageFog.unk_18.posX = fog_parameters->posX;
+        sStageFog.unk_18.posY = fog_parameters->posY;
+        sStageFog.unk_18.rotation.rgba = fog_parameters->rotation.rgba;
         sStageFog.node.callbackArg = 1;
     }
 
@@ -715,7 +715,7 @@ void func_84301A24(void) {
 // The fragment entry uses global session state; both entry arguments are unused.
 // Pool state BATL owns the scene allocations until the fade-driven loop completes.
 s32 Battle_Main(s32 arg0, SessionContext* arg1) {
-    unk_func_80007444* stage_context;
+    Stage* stage_context;
 
     sBattleSides = gSessionContext.battleSides;
     sCompletionGate = -2;

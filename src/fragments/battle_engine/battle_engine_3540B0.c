@@ -1,9 +1,9 @@
 #include "battle_engine.h"
 #include "src/gfx_buffer.h"
 
-static OwnerAnchoredFourStream D_843ACA10[4];
+static OwnerAnchoredFourStream gParticleSystems[4];
 
-static Gfx D_84389A00[] = {
+static Gfx gParticleBlendDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -20,7 +20,7 @@ static Gfx D_84389A00[] = {
 void OwnerAnchoredFourStream_Init(void) {
     s32 i;
     s32 j;
-    OwnerAnchoredFourStream* var_v0 = &D_843ACA10[0];
+    OwnerAnchoredFourStream* var_v0 = &gParticleSystems[0];
     OwnerAnchoredFourStreamNode* var_a0;
 
     for (i = 0; i < 4; i++, var_v0++) {
@@ -31,9 +31,9 @@ void OwnerAnchoredFourStream_Init(void) {
 
         var_a0 = &var_v0->unk_01C[0];
         for (j = 0; j < 15; j++, var_a0++) {
-            var_a0->unk_00 = 0;
-            var_a0->unk_04 = 1.0f;
-            var_a0->unk_08 = 0.0f;
+            var_a0->posX = 0;
+            var_a0->rotation = 1.0f;
+            var_a0->RentalSlotAnimData_PosePhase = 0.0f;
             var_a0->unk_0C.x = 0.0f;
             var_a0->unk_0C.y = 0.0f;
             var_a0->unk_0C.z = 0.0f;
@@ -60,7 +60,7 @@ void OwnerAnchoredFourStream_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
     sp58.y = arg4;
     sp58.z = arg5;
 
-    var_v1 = &D_843ACA10[0];
+    var_v1 = &gParticleSystems[0];
     for (i = 0; i < 4; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
             var_v1->unk_000 = 1;
@@ -88,9 +88,9 @@ void OwnerAnchoredFourStream_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 a
 
             var_s0 = &var_v1->unk_01C[0];
             for (j = 0; j < 15; j++, var_s0++) {
-                var_s0->unk_00 = (arg9 * (0xE - j)) / 15;
-                var_s0->unk_04 = argB;
-                var_s0->unk_08 = (RAND(120) * 6.2831855f) / 120.0;
+                var_s0->posX = (arg9 * (0xE - j)) / 15;
+                var_s0->rotation = argB;
+                var_s0->RentalSlotAnimData_PosePhase = (RAND(120) * 6.2831855f) / 120.0;
                 var_s0->unk_0C = sp64;
                 var_s0->unk_18 = sp58;
             }
@@ -114,8 +114,8 @@ void OwnerAnchoredFourStream_UpdateNodeChain(OwnerAnchoredFourStream* arg0) {
 
     for (i = 0; i < 15; i++, var_s0++) {
         if (i == 0) {
-            var_s0->unk_24 = var_s0->unk_04;
-            var_s0->unk_28 = var_s0->unk_08;
+            var_s0->unk_24 = var_s0->rotation;
+            var_s0->unk_28 = var_s0->RentalSlotAnimData_PosePhase;
 
             var_s0->unk_2C = var_s0->unk_0C;
             var_s0->unk_38 = var_s0->unk_18;
@@ -124,7 +124,7 @@ void OwnerAnchoredFourStream_UpdateNodeChain(OwnerAnchoredFourStream* arg0) {
             var_s0->unk_0C.y += var_s0->unk_18.y;
             var_s0->unk_0C.z += var_s0->unk_18.z;
 
-            var_s0->unk_08 += arg0->unk_010;
+            var_s0->RentalSlotAnimData_PosePhase += arg0->unk_010;
             if (arg0->unk_006 > 0) {
                 var_s0->unk_18.x += 0.4;
                 if (var_s0->unk_18.x > 20.0) {
@@ -139,28 +139,28 @@ void OwnerAnchoredFourStream_UpdateNodeChain(OwnerAnchoredFourStream* arg0) {
 
             BattleAnim_SetParticlePosition(arg0->unk_018, var_s0->unk_0C);
 
-            var_s0->unk_04 += 2.0;
-            if (arg0->unk_00C < var_s0->unk_04) {
-                var_s0->unk_04 = arg0->unk_00C;
+            var_s0->rotation += 2.0;
+            if (arg0->unk_00C < var_s0->rotation) {
+                var_s0->rotation = arg0->unk_00C;
             }
         } else {
-            var_s0->unk_24 = var_s0->unk_04;
-            var_s0->unk_28 = var_s0->unk_08;
+            var_s0->unk_24 = var_s0->rotation;
+            var_s0->unk_28 = var_s0->RentalSlotAnimData_PosePhase;
 
             var_s0->unk_2C = var_s0->unk_0C;
             var_s0->unk_38 = var_s0->unk_18;
 
             var_s0->unk_0C = var_s0[-1].unk_2C;
-            var_s0->unk_08 = var_s0[-1].unk_28;
+            var_s0->RentalSlotAnimData_PosePhase = var_s0[-1].unk_28;
             var_s0->unk_18 = var_s0[-1].unk_38;
-            var_s0->unk_04 = var_s0[-1].unk_24;
+            var_s0->rotation = var_s0[-1].unk_24;
         }
     }
 }
 
 s32 OwnerAnchoredFourStream_IsComplete(void) {
     s32 i;
-    OwnerAnchoredFourStream* var_s0 = &D_843ACA10[0];
+    OwnerAnchoredFourStream* var_s0 = &gParticleSystems[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -190,21 +190,21 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
     Mtx spC0;
     s16 var_s3;
 
-    var_s5 = &D_843ACA10[0];
+    var_s5 = &gParticleSystems[0];
     for (i = 0; i < 4; i++, var_s5++) {
         if (var_s5->unk_000 == 1) {
             temp_s0 = &var_s5->unk_01C[0];
             if (temp_s0->unk_0C.y > 0.0f) {
                 temp_v0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
                 guTranslate(temp_v0, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
-                guRotateRPY(&sp100, (temp_s0->unk_08 * -360.0f * var_s5->unk_006) / 6.2831854820251465,
+                guRotateRPY(&sp100, (temp_s0->RentalSlotAnimData_PosePhase * -360.0f * var_s5->unk_006) / 6.2831854820251465,
                             0x5A - (var_s5->unk_006 * 0x5A), 0.0f);
                 guMtxCatL(&sp100, temp_v0, temp_v0);
                 guScale(&spC0, var_s5->unk_418, var_s5->unk_418, var_s5->unk_418);
                 guMtxCatL(&spC0, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, D_8438A980);
+                gSPDisplayList(arg0++, gParticleQuadDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
@@ -212,7 +212,7 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
 
             var_s0 = var_s5->unk_014;
             for (j = 0; j < 15; j++) {
-                OwnerAnchoredFourStream_Update(temp_s0->unk_08, &sp154, temp_s0->unk_04);
+                OwnerAnchoredFourStream_Update(temp_s0->RentalSlotAnimData_PosePhase, &sp154, temp_s0->rotation);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -225,10 +225,10 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s5->unk_008.r;
                 var_s0->v.cn[1] = var_s5->unk_008.g;
                 var_s0->v.cn[2] = var_s5->unk_008.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
-                OwnerAnchoredFourStream_Update(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
+                OwnerAnchoredFourStream_Update(temp_s0->RentalSlotAnimData_PosePhase + 3.1415927f, &sp154, temp_s0->rotation);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -241,7 +241,7 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s5->unk_008.r;
                 var_s0->v.cn[1] = var_s5->unk_008.g;
                 var_s0->v.cn[2] = var_s5->unk_008.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
                 temp_s0++;
@@ -249,7 +249,7 @@ Gfx* OwnerAnchoredFourStream_Draw(Gfx* arg0) {
 
             var_s0 = var_s5->unk_014;
 
-            gSPDisplayList(arg0++, D_84389A00);
+            gSPDisplayList(arg0++, gParticleBlendDL);
 
             for (k = 0; k < 14; k++) {
                 gSPVertex(arg0++, var_s0, 4, 0);

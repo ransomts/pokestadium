@@ -13,8 +13,8 @@ void BattleAnim_StartFreezeStatusAnimation(ActivePokemon* arg0) {
 
     sp28 = &arg0->state.runtime;
     sp2C = &arg0->state;
-    ptr = &arg0->unk_724->pokemonPicked[sp2C->unk_08];
-    sp20 = &D_84384570[idx]->unk_A80;
+    ptr = &arg0->unk_724->pokemonPicked[sp2C->RentalSlotAnimData_PosePhase];
+    sp20 = &gAnimDataByPlayer[idx]->unk_A80;
 
     if ((ptr->unk_05 & 0x20) && (sp2C->unk_34 & 2)) {
         arg0->displayObject.node.renderFlags &= ~0x20;
@@ -24,7 +24,7 @@ void BattleAnim_StartFreezeStatusAnimation(ActivePokemon* arg0) {
         ((arg0->displayObject.transformAnim.frameFixed >> 0x10) >= 3)) {
         ModelAnim_SetAnimation(&arg0->displayObject, sp20->id);
         ModelAnim_SetFrame(&arg0->displayObject, 4);
-        ModelAnim_SetEventTrack(&arg0->displayObject, sp20->unk_01);
+        ModelAnim_SetEventTrack(&arg0->displayObject, sp20->TrainerSlotSaveData_GamePort);
         ModelAnim_SetEventFrame(&arg0->displayObject, 3);
         arg0->displayObject.node.renderFlags &= ~0x20;
         Battle_SetRuntimeFlags(arg0, 2);
@@ -34,7 +34,7 @@ void BattleAnim_StartFreezeStatusAnimation(ActivePokemon* arg0) {
 }
 
 void BattleAnim_RestoreBaseModelAnimation(ActivePokemon* arg0) {
-    MovePresentationCue* ptr = &D_84384570[BattleScene_GetParticipantSideIndex(arg0)]->unk_A50;
+    MovePresentationCue* ptr = &gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_A50;
 
     ModelAnim_SetAnimation(&arg0->displayObject, ptr->id);
 }
@@ -49,7 +49,7 @@ void BattleAnim_ClearFreezeStatusAnimation(ActivePokemon* arg0) {
 }
 
 void BattleAnim_ResetFreezeStatusAndRestoreAnimation(ActivePokemon* arg0) {
-    BattleMon* ptr = &arg0->unk_724->pokemonPicked[arg0->state.unk_08];
+    BattleMon* ptr = &arg0->unk_724->pokemonPicked[arg0->state.RentalSlotAnimData_PosePhase];
 
     if (arg0->state.unk_34 & 2) {
         ptr->unk_05 = 0;
@@ -72,9 +72,9 @@ void BattleAnim_ClearFreezeStatusAnimationIfThawed(ActivePokemon* arg0) {
 void BattleAnim_UpdateSleepStatusAnimation(ActivePokemon* arg0) {
     ActivePokemonState* sp24 = &arg0->state;
     BattleMonRuntime* sp28 = &sp24->runtime;
-    BattleMon* sp2C = &arg0->unk_724->pokemonPicked[arg0->state.unk_08];
+    BattleMon* sp2C = &arg0->unk_724->pokemonPicked[arg0->state.RentalSlotAnimData_PosePhase];
 
-    if ((sBattleScene.unk_00->unk_38 != 0xB) || (sBattleScene.unk_00->unk_20 >= 6)) {
+    if ((sBattleScene.posX->unk_38 != 0xB) || (sBattleScene.posX->unk_20 >= 6)) {
         if ((sp2C->unk_05 & 7) && (sp28->unk_15 & 7) && !(arg0->state.unk_34 & 1)) {
             BattleAnim_SetModelEventTrackAndState(arg0, 0xAF, 2);
             BattleAnim_QueueEffectList(3, arg0);
@@ -83,7 +83,7 @@ void BattleAnim_UpdateSleepStatusAnimation(ActivePokemon* arg0) {
         }
 
         if (!(sp2C->unk_05 & 7) && (sp24->unk_34 & 1)) {
-            if (D_84384570[BattleScene_GetParticipantSideIndex(arg0)]->unk_B81 == 0xFF) {
+            if (gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_B81 == 0xFF) {
                 sp24->unk_36 = 0;
                 BattleAnim_SetModelEventTrackFromRow(arg0, 0xA5);
             } else {
@@ -96,11 +96,11 @@ void BattleAnim_UpdateSleepStatusAnimation(ActivePokemon* arg0) {
 }
 
 void BattleAnim_EndSleepStatusAnimation(ActivePokemon* arg0) {
-    BattleMon* ptr = &arg0->unk_724->pokemonPicked[arg0->state.unk_08];
+    BattleMon* ptr = &arg0->unk_724->pokemonPicked[arg0->state.RentalSlotAnimData_PosePhase];
 
     if (arg0->state.unk_34 & 1) {
         ptr->unk_05 = 0;
-        if (D_84384570[BattleScene_GetParticipantSideIndex(arg0)]->unk_B81 == 0xFF) {
+        if (gAnimDataByPlayer[BattleScene_GetParticipantSideIndex(arg0)]->unk_B81 == 0xFF) {
             arg0->state.unk_36 = 0;
             BattleAnim_SetModelEventTrackFromRow(arg0, 0xA5);
         } else {

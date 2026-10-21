@@ -9,14 +9,14 @@
 #include "src/memory.h"
 #include "src/controller.h"
 
-u8 D_80075680[3] = { 1, 15, 30 };
-static s16 D_80075684 = 0;
+u8 gBattleTimerLimits[3] = { 1, 15, 30 };
+static s16 gBattleToggleFlag = 0;
 
 void Team_ClearTrainerSlot(BattleSessionTeams* arg0) {
     arg0->uniqueStatusFlags = 0;
-    arg0->unk_01 = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
     arg0->displayModel = 0;
-    arg0->unk_04 = 0;
+    arg0->rotation = 0;
     arg0->unk_14 = 0;
     arg0->teamMember[0] = 0;
     arg0->teamMember[1] = 0;
@@ -114,11 +114,11 @@ TeamRoster* Trainer_Create(s32 arg0, s16 arg1, char* arg2, char* arg3) {
 
 void Team_AddTrainer(s32 arg0, TeamRoster* arg1) {
     BattleSessionTeams* temp_v0 = &gSessionContext.battleSides[arg0];
-    u8 idx = temp_v0->unk_01;
+    u8 idx = temp_v0->TrainerSlotSaveData_GamePort;
 
     if (idx < 2) {
         temp_v0->teamMember[idx] = arg1;
-        temp_v0->unk_01++;
+        temp_v0->TrainerSlotSaveData_GamePort++;
     }
 }
 
@@ -136,8 +136,8 @@ void Trainer_AddPokemon(TeamRoster* arg0, BattleMon* arg1) {
 }
 
 BattleMon* Pokemon_CreateDefault(BattleMon* arg0, u8 arg1, s16 arg2) {
-    arg0->unk_00.unk_00 = arg1;
-    arg0->unk_04 = 0;
+    arg0->posX.posX = arg1;
+    arg0->rotation = 0;
     arg0->unk_05 = 0;
 
     arg0->unk_06 = gSpeciesData[arg1 - 1].type1;
@@ -149,7 +149,7 @@ BattleMon* Pokemon_CreateDefault(BattleMon* arg0, u8 arg1, s16 arg2) {
     arg0->unk_1A = 0x6400;
     arg0->unk_1C = 0x6400;
 
-    arg0->unk_08 = 0;
+    arg0->RentalSlotAnimData_PosePhase = 0;
 
     arg0->unk_09[0] = 0;
     arg0->unk_09[1] = 0;
@@ -170,7 +170,7 @@ BattleMon* Pokemon_CreateDefault(BattleMon* arg0, u8 arg1, s16 arg2) {
 
     Pokemon_RecalcStats(arg0);
 
-    arg0->unk_02 = arg0->unk_26;
+    arg0->posY = arg0->unk_26;
 
     Text_CopySpeciesName(arg0->unk_30, arg1);
     HAL_Strcpy(arg0->unk_3B, Text_GetPlayerLabel(0));
@@ -352,16 +352,16 @@ void Team_ScaleOpponentToLevel(s16 arg0) {
 
     for (i = 0; i < gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen; i++, var_s1++, var_s0++) {
         var_s0->unk_24 = arg0;
-        var_s0->unk_10 = Pokemon_ExpForLevel(var_s0->unk_00.unk_00, arg0);
+        var_s0->unk_10 = Pokemon_ExpForLevel(var_s0->posX.posX, arg0);
         Pokemon_RecalcStats(var_s0);
-        var_s0->unk_02 = var_s0->unk_26;
+        var_s0->posY = var_s0->unk_26;
 
         *var_s1 = *var_s0;
     }
 }
 
 typedef struct PresetTrainer {
-    /* 0x000 */ char unk_00[0x4];
+    /* 0x000 */ char posX[0x4];
     /* 0x004 */ char unk04[0x8];
     /* 0x00C */ char unk_0C[0x4];
     /* 0x010 */ char unk10[0x24];
@@ -371,7 +371,7 @@ typedef struct PresetTrainer {
 } PresetTrainer; // size >= 0x8C
 
 typedef struct PresetTrainerSlot {
-    /* 0x000 */ s32 unk_00;
+    /* 0x000 */ s32 posX;
     /* 0x004 */ PresetTrainer unk_004;
     /* 0x090 */ char unk090[0x1A0];
 } PresetTrainerSlot; // size = 0x230
@@ -391,7 +391,7 @@ void Team_LoadPresetTrainer(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
         arg1 += 0x1F;
     }
 
-    ptr = BinArchive_GetFile(D_800AF738, arg1);
+    ptr = BinArchive_GetFile(gBattleArchive, arg1);
     ptr += arg2;
 
     temp_s2 = &ptr->unk_004;
@@ -405,8 +405,8 @@ void Team_LoadPresetTrainer(s16 arg0, s16 arg1, s16 arg2, s32 arg3) {
         Trainer_AddPokemon(temp_s3, &temp_s2->unk_38[i]);
     }
 
-    HAL_Strcpy(temp_s3->unk_008, temp_s2->unk_00);
-    HAL_Strcpy(temp_s3->rosterInfo->unk_014, temp_s2->unk_00);
+    HAL_Strcpy(temp_s3->unk_008, temp_s2->posX);
+    HAL_Strcpy(temp_s3->rosterInfo->unk_014, temp_s2->posX);
     HAL_Strcpy(temp_s3->rosterInfo->unk_220, temp_s2->unk_0C);
 
     temp_s3->rosterInfo->unk_003 = (temp_s2->unk_34 >> 8) & 0xFF;
@@ -456,7 +456,7 @@ void Team_LoadOpponentPreset(void) {
 
     main_pool_push_state('RIVL');
 
-    D_800AF738 = BinArchive_Open(TRAINER_DATA_ROM_START, NULL, 1, 0);
+    gBattleArchive = BinArchive_Open(TRAINER_DATA_ROM_START, NULL, 1, 0);
 
     switch (gSessionContext.mode) {
         case 1:
@@ -498,7 +498,7 @@ void Team_LoadOpponentPreset(void) {
 void Team_BuildQuickBattleTeams(s16 arg0) {
     main_pool_push_state('RIVL');
 
-    D_800AF738 = BinArchive_Open(TRAINER_DATA_ROM_START, NULL, 1, 0);
+    gBattleArchive = BinArchive_Open(TRAINER_DATA_ROM_START, NULL, 1, 0);
     Session_SetMode(9, 6, 0);
 
     if (arg0 == 1) {
@@ -509,7 +509,7 @@ void Team_BuildQuickBattleTeams(s16 arg0) {
         Team_AddTrainer(1, Trainer_Create(1, 0, "2P", Text_GetPlayerLabel(1)));
     }
 
-    if (D_80075684 == 0) {
+    if (gBattleToggleFlag == 0) {
         Team_LoadPresetTrainer(0, 0x1D, 0, 0);
         Team_LoadPresetTrainer(1, 0x1D, 1, 0);
     } else {
@@ -517,7 +517,7 @@ void Team_BuildQuickBattleTeams(s16 arg0) {
         Team_LoadPresetTrainer(1, 0x1D, 0, 0);
     }
 
-    D_80075684 ^= 1;
+    gBattleToggleFlag ^= 1;
 
     main_pool_pop_state('RIVL');
 }
@@ -526,10 +526,10 @@ void Session_SaveContinueData(void) {
     SessionContinueData sp20;
     ExtendedRosterInfo* sp1C = gSessionContext.battleSides[0].teamMember[0]->rosterInfo;
 
-    sp20.unk_00 = gSessionContext.mode;
-    sp20.unk_01 = gSessionContext.modeSelection;
-    sp20.unk_02 = gSessionContext.roundOrDemoId;
-    sp20.unk_04 = gSessionContext.continueCount;
+    sp20.posX = gSessionContext.mode;
+    sp20.TrainerSlotSaveData_GamePort = gSessionContext.modeSelection;
+    sp20.posY = gSessionContext.roundOrDemoId;
+    sp20.rotation = gSessionContext.continueCount;
     sp20.unk_03 = gSessionContext.inRound2;
 
     sp20.unk_0D = gSessionContext.gbStarterChoice;
@@ -551,11 +551,11 @@ s32 Session_LoadContinueData(void) {
 
     temp_v0 = Session_LoadContinueRecord(&sp250, sp58);
     if (temp_v0 != -1) {
-        Session_SetMode(sp250.unk_00, sp250.unk_00, sp250.unk_01);
+        Session_SetMode(sp250.posX, sp250.posX, sp250.TrainerSlotSaveData_GamePort);
 
         _bcopy(sp250.unk_05, gSessionContext.opponentHistory[0], 8);
-        gSessionContext.roundOrDemoId = sp250.unk_02;
-        gSessionContext.continueCount = sp250.unk_04;
+        gSessionContext.roundOrDemoId = sp250.posY;
+        gSessionContext.continueCount = sp250.rotation;
         gSessionContext.inRound2 = sp250.unk_03;
         gSessionContext.gbStarterChoice = sp250.unk_0D;
         tmp = sp250.unk_0E;

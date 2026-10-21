@@ -41,19 +41,19 @@ void BattleScene_LoadOwnerCameraFramingConstants(ActivePokemon* arg0) {
         var_v0 = 1;
     }
 
-    arg0->unk_728.unk_168->unk_20 = D_843847BC[var_v0].unk_04;
-    arg0->unk_728.unk_168->unk_1C = D_843847BC[var_v0].unk_00;
-    arg0->unk_728.unk_168->unk_1E = D_843847BC[var_v0].unk_02;
+    arg0->unk_728.unk_168->unk_20 = gEntityInitParams[var_v0].rotation;
+    arg0->unk_728.unk_168->unk_1C = gEntityInitParams[var_v0].posX;
+    arg0->unk_728.unk_168->unk_1E = gEntityInitParams[var_v0].posY;
 
-    arg0->unk_728.unk_178 = D_843847BC[var_v0].unk_14;
+    arg0->unk_728.unk_178 = gEntityInitParams[var_v0].unk_14;
 
-    arg0->unk_728.unk_168->unk_34 = D_843847BC[var_v0].unk_0C;
-    arg0->unk_728.unk_168->unk_38 = D_843847BC[var_v0].unk_10;
-    arg0->unk_728.unk_168->unk_2C = D_843847BC[var_v0].unk_08;
+    arg0->unk_728.unk_168->unk_34 = gEntityInitParams[var_v0].unk_0C;
+    arg0->unk_728.unk_168->unk_38 = gEntityInitParams[var_v0].unk_10;
+    arg0->unk_728.unk_168->unk_2C = gEntityInitParams[var_v0].RentalSlotAnimData_PosePhase;
 }
 
 void BattleScene_SetupOwnerCameraFraming(ActivePokemon* arg0, ActivePokemon* arg1) {
-    if (sBattleScene.unk_00->unk_1C == 1) {
+    if (sBattleScene.posX->unk_1C == 1) {
         BattleScene_SetBothOwnerActiveFlags();
     } else {
         BattleScene_ClearBothOwnerActiveFlags();
@@ -74,19 +74,19 @@ void BattleScene_ApplyOwnerCameraFraming(ActivePokemon* arg0) {
     sp30 = arg0->unk_728.unk_168;
     temp_v0 = BattleScene_GetParticipantSideIndex(arg0);
 
-    arg0->unk_728.unk_184 = D_84384578[temp_v0]->unk_0C;
-    if (D_84384578[temp_v0]->unk_10 == 0xFF) {
-        arg0->unk_728.unk_186 = D_84384578[temp_v0]->unk_0E * arg0->unk_728.unk_178;
-        tmp = D_84384578[temp_v0]->unk_00.z * arg0->unk_728.unk_178;
+    arg0->unk_728.unk_184 = gOwnerCameraFramingSet[temp_v0]->unk_0C;
+    if (gOwnerCameraFramingSet[temp_v0]->unk_10 == 0xFF) {
+        arg0->unk_728.unk_186 = gOwnerCameraFramingSet[temp_v0]->unk_0E * arg0->unk_728.unk_178;
+        tmp = gOwnerCameraFramingSet[temp_v0]->posX.z * arg0->unk_728.unk_178;
     } else {
-        arg0->unk_728.unk_186 = D_84384578[temp_v0]->unk_0E;
-        tmp = D_84384578[temp_v0]->unk_00.z;
+        arg0->unk_728.unk_186 = gOwnerCameraFramingSet[temp_v0]->unk_0E;
+        tmp = gOwnerCameraFramingSet[temp_v0]->posX.z;
     }
 
     arg0->unk_728.unk_190 = tmp;
-    arg0->unk_728.unk_188 = D_84384578[temp_v0]->unk_00.x;
-    arg0->unk_728.unk_180 = D_84384578[temp_v0]->unk_12;
-    tmp2 = D_84384578[temp_v0]->unk_00.y;
+    arg0->unk_728.unk_188 = gOwnerCameraFramingSet[temp_v0]->posX.x;
+    arg0->unk_728.unk_180 = gOwnerCameraFramingSet[temp_v0]->unk_12;
+    tmp2 = gOwnerCameraFramingSet[temp_v0]->posX.y;
     arg0->unk_728.unk_194 = tmp2;
 
     BattleScene_SetCameraAtAndEyeFromAngles(sp30, arg0->unk_728.unk_000.position.x + arg0->unk_728.unk_190, arg0->unk_728.unk_000.position.y + tmp2,

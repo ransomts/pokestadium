@@ -5,14 +5,14 @@
 
 static Trail40 sWaterSurface;
 
-static Lights2 D_84389300 = gdSPDefLights2(255, 255, 255, 255, 255, 255, 30, 30, 10, 255, 255, 255, 226, 30, 10);
-static Gfx D_84389328[] = {
+static Lights2 gTrail40Lights = gdSPDefLights2(255, 255, 255, 255, 255, 255, 30, 30, 10, 255, 255, 255, 226, 30, 10);
+static Gfx gTrail40DL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
                           G_TEXTURE_GEN_LINEAR | G_LOD | G_SHADING_SMOOTH | G_CLIPPING | 0x0040F9FA),
     gsSPSetGeometryMode(G_SHADE | G_LIGHTING | G_TEXTURE_GEN | G_SHADING_SMOOTH),
-    gsSPSetLights2(D_84389300),
+    gsSPSetLights2(gTrail40Lights),
     gsSPTexture(0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON),
     gsDPPipeSync(),
     gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA2),
@@ -22,7 +22,7 @@ static Gfx D_84389328[] = {
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
     gsSPEndDisplayList(),
 };
-static Gfx D_843893A8[] = {
+static Gfx gTrail40ShadingDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -61,9 +61,9 @@ void Trail40_Init(s16 arg0) {
             tmp3 = tmp1 * 0x10;
             tmp2 = j * 0x20;
 
-            var_v0->unk_00 = (i * 9.0f) - 72.0f;
-            var_v0->unk_04 = 1.0f;
-            var_v0->unk_08 = (j * 7.0f) - 56.0f;
+            var_v0->posX = (i * 9.0f) - 72.0f;
+            var_v0->rotation = 1.0f;
+            var_v0->RentalSlotAnimData_PosePhase = (j * 7.0f) - 56.0f;
 
             var_v0->unk_18 = tmp1 * 0x10;
             var_v0->unk_1A = tmp2 * 0x10;
@@ -92,22 +92,22 @@ void Trail40_Start(s32 arg0, s32 arg1) {
     UNUSED s32 pad;
     s16 sp46;
 
-    sp6C = sWaterSurface.unk_0014[arg0][arg1].unk_00;
-    sp68 = sWaterSurface.unk_0014[arg0][arg1].unk_04;
-    sp64 = sWaterSurface.unk_0014[arg0][arg1].unk_08;
+    sp6C = sWaterSurface.unk_0014[arg0][arg1].posX;
+    sp68 = sWaterSurface.unk_0014[arg0][arg1].rotation;
+    sp64 = sWaterSurface.unk_0014[arg0][arg1].RentalSlotAnimData_PosePhase;
     sp84 = 0.0f;
     sp80 = 0.0f;
     sp7C = 0.0f;
     sp46 = 0;
 
     if ((arg0 > 0) && (arg1 >= 1)) {
-        sp60 = sWaterSurface.unk_0014[arg0 - 1][arg1].unk_00 - sp6C;
-        sp5C = sWaterSurface.unk_0014[arg0 - 1][arg1].unk_04 - sp68;
-        sp58 = sWaterSurface.unk_0014[arg0 - 1][arg1].unk_08 - sp64;
+        sp60 = sWaterSurface.unk_0014[arg0 - 1][arg1].posX - sp6C;
+        sp5C = sWaterSurface.unk_0014[arg0 - 1][arg1].rotation - sp68;
+        sp58 = sWaterSurface.unk_0014[arg0 - 1][arg1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
-        sp54 = sWaterSurface.unk_0014[arg0][arg1 - 1].unk_00 - sp6C;
-        sp50 = sWaterSurface.unk_0014[arg0][arg1 - 1].unk_04 - sp68;
-        sp4C = sWaterSurface.unk_0014[arg0][arg1 - 1].unk_08 - sp64;
+        sp54 = sWaterSurface.unk_0014[arg0][arg1 - 1].posX - sp6C;
+        sp50 = sWaterSurface.unk_0014[arg0][arg1 - 1].rotation - sp68;
+        sp4C = sWaterSurface.unk_0014[arg0][arg1 - 1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
         Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
         Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
@@ -118,13 +118,13 @@ void Trail40_Start(s32 arg0, s32 arg1) {
     }
 
     if ((0 < arg0) && (arg1 < 15)) {
-        sp60 = sWaterSurface.unk_0014[arg0 - 1][arg1].unk_00 - sp6C;
-        sp5C = sWaterSurface.unk_0014[arg0 - 1][arg1].unk_04 - sp68;
-        sp58 = sWaterSurface.unk_0014[arg0 - 1][arg1].unk_08 - sp64;
+        sp60 = sWaterSurface.unk_0014[arg0 - 1][arg1].posX - sp6C;
+        sp5C = sWaterSurface.unk_0014[arg0 - 1][arg1].rotation - sp68;
+        sp58 = sWaterSurface.unk_0014[arg0 - 1][arg1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
-        sp54 = sWaterSurface.unk_0014[arg0][arg1 + 1].unk_00 - sp6C;
-        sp50 = sWaterSurface.unk_0014[arg0][arg1 + 1].unk_04 - sp68;
-        sp4C = sWaterSurface.unk_0014[arg0][arg1 + 1].unk_08 - sp64;
+        sp54 = sWaterSurface.unk_0014[arg0][arg1 + 1].posX - sp6C;
+        sp50 = sWaterSurface.unk_0014[arg0][arg1 + 1].rotation - sp68;
+        sp4C = sWaterSurface.unk_0014[arg0][arg1 + 1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
         Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
         Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
@@ -135,13 +135,13 @@ void Trail40_Start(s32 arg0, s32 arg1) {
     }
 
     if ((arg0 < 15) && (arg1 >= 1)) {
-        sp60 = sWaterSurface.unk_0014[arg0 + 1][arg1].unk_00 - sp6C;
-        sp5C = sWaterSurface.unk_0014[arg0 + 1][arg1].unk_04 - sp68;
-        sp58 = sWaterSurface.unk_0014[arg0 + 1][arg1].unk_08 - sp64;
+        sp60 = sWaterSurface.unk_0014[arg0 + 1][arg1].posX - sp6C;
+        sp5C = sWaterSurface.unk_0014[arg0 + 1][arg1].rotation - sp68;
+        sp58 = sWaterSurface.unk_0014[arg0 + 1][arg1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
-        sp54 = sWaterSurface.unk_0014[arg0][arg1 - 1].unk_00 - sp6C;
-        sp50 = sWaterSurface.unk_0014[arg0][arg1 - 1].unk_04 - sp68;
-        sp4C = sWaterSurface.unk_0014[arg0][arg1 - 1].unk_08 - sp64;
+        sp54 = sWaterSurface.unk_0014[arg0][arg1 - 1].posX - sp6C;
+        sp50 = sWaterSurface.unk_0014[arg0][arg1 - 1].rotation - sp68;
+        sp4C = sWaterSurface.unk_0014[arg0][arg1 - 1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
         Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
         Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
@@ -152,13 +152,13 @@ void Trail40_Start(s32 arg0, s32 arg1) {
     }
 
     if ((arg0 < 15) && (arg1 < 15)) {
-        sp60 = sWaterSurface.unk_0014[arg0 + 1][arg1].unk_00 - sp6C;
-        sp5C = sWaterSurface.unk_0014[arg0 + 1][arg1].unk_04 - sp68;
-        sp58 = sWaterSurface.unk_0014[arg0 + 1][arg1].unk_08 - sp64;
+        sp60 = sWaterSurface.unk_0014[arg0 + 1][arg1].posX - sp6C;
+        sp5C = sWaterSurface.unk_0014[arg0 + 1][arg1].rotation - sp68;
+        sp58 = sWaterSurface.unk_0014[arg0 + 1][arg1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
-        sp54 = sWaterSurface.unk_0014[arg0][arg1 + 1].unk_00 - sp6C;
-        sp50 = sWaterSurface.unk_0014[arg0][arg1 + 1].unk_04 - sp68;
-        sp4C = sWaterSurface.unk_0014[arg0][arg1 + 1].unk_08 - sp64;
+        sp54 = sWaterSurface.unk_0014[arg0][arg1 + 1].posX - sp6C;
+        sp50 = sWaterSurface.unk_0014[arg0][arg1 + 1].rotation - sp68;
+        sp4C = sWaterSurface.unk_0014[arg0][arg1 + 1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
         Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
         Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
@@ -185,9 +185,9 @@ void Trail40Node_FillVertex(Trail40Node* arg0, Vtx* arg1) {
     f32 g;
     f32 b;
 
-    arg1->v.ob[0] = arg0->unk_00;
-    arg1->v.ob[1] = arg0->unk_04;
-    arg1->v.ob[2] = arg0->unk_08;
+    arg1->v.ob[0] = arg0->posX;
+    arg1->v.ob[1] = arg0->rotation;
+    arg1->v.ob[2] = arg0->RentalSlotAnimData_PosePhase;
 
     arg1->v.tc[0] = arg0->unk_18;
     arg1->v.tc[1] = arg0->unk_1A;
@@ -232,10 +232,10 @@ s32 Trail40_IsComplete(void) {
     var_s1 = &sWaterSurface.unk_0014[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            temp_fv1_2 = 1.0 - (sqrtf(SQ(var_s1->unk_00) + SQ(var_s1->unk_08)) / 101.8224f);
+            temp_fv1_2 = 1.0 - (sqrtf(SQ(var_s1->posX) + SQ(var_s1->RentalSlotAnimData_PosePhase)) / 101.8224f);
             tmp = __sinf((((f32)(sWaterSurface.unk_0000 % 20) / 20.0) + (3.0 * temp_fv1_2)) * 6.2831854820251465) *
                   ((f64)sWaterSurface.unk_0008 * temp_fv1_2);
-            var_s1->unk_04 = tmp;
+            var_s1->rotation = tmp;
             var_s1++;
         }
     }
@@ -325,7 +325,7 @@ Gfx* Trail40_Draw(Gfx* arg0) {
 
     gDPLoadTextureBlock(arg0++, sBattleAnimAssetPointers[0xA8], G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
-    gSPDisplayList(arg0++, D_84389328);
+    gSPDisplayList(arg0++, gTrail40DL);
     gDPSetPrimColor(arg0++, 0, 0, 255, 255, 255, sWaterSurface.unk_0004);
     gSPMatrix(arg0++, sWaterSurface.unk_0010, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
 

@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-void func_83900020(void);
+void Gallery_Debugger_PostLoad(void);
 void GalleryDebugger_SaveControllerPak(void);
 void GalleryDebugger_LoadControllerPak(void);
 void GalleryDebugger_LoadDeckEntries(void);

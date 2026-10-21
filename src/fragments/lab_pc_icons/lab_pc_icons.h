@@ -5,7 +5,7 @@
 #include "fragments/lab_pc_list/lab_pc_list.h"
 
 typedef struct unk_func_8860439C_sp64 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ char* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ Color_RGBA8 unk_34;
@@ -47,7 +47,7 @@ s32 LabPC_DrawMonPreviewWidget(unk_func_88205880_0098_008_050* arg0, s32 arg1, s
 void LabPC_SetPreviewMon(unk_func_88205880_0098_008_050* arg0, BattleMon* arg1);
 void LabPC_InitMovesPanel(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
 void LabPC_SetMovesPanelMon(unk_func_88205880_0098_008_040* arg0, BattleMon* arg1);
-void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, unk_func_8850CD44* arg1, MemoryPool* arg2);
+void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, ChildWidgetGroup* arg1, MemoryPool* arg2);
 void LabPC_SwapMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2);
 void LabPC_ResetMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2);
 void LabPC_InitTrainerInfoWidget(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2);
@@ -59,15 +59,15 @@ s32 LabPC_DrawMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s
 void LabPC_SetGridMenuItemCount(unk_func_88205880_0098_008_070* arg0, s32 arg1);
 void LabPC_InitMoveGridMenu(unk_func_88205880_0098_008_070* arg0, MemoryPool* arg1);
 s32 LabPC_HandleMoveGridInput(unk_func_88205880_0098_008_070* arg0, Controller* arg1);
-void LabPC_SetDetailPanelMon(unk_func_88205880_0098_008* arg0, BattleMon* arg1, s32 arg2);
-void LabPC_SetDetailPanelMode(unk_func_88205880_0098_008* arg0, s32 arg1);
-s32 LabPC_GetDetailPanelMode(unk_func_88205880_0098_008* arg0);
-void LabPC_ShowMoveDetailPage(unk_func_88205880_0098_008* arg0, s32 arg1);
-void LabPC_SelectDetailPanelPage(unk_func_88205880_0098_008* arg0, s32 arg1);
-s32 LabPC_HandleDetailPanelInput(unk_func_88205880_0098_008* arg0, Controller* arg1);
+void LabPC_SetDetailPanelMon(LabPC_DetailPanel* arg0, BattleMon* arg1, s32 arg2);
+void LabPC_SetDetailPanelMode(LabPC_DetailPanel* arg0, s32 arg1);
+s32 LabPC_GetDetailPanelMode(LabPC_DetailPanel* arg0);
+void LabPC_ShowMoveDetailPage(LabPC_DetailPanel* arg0, s32 arg1);
+void LabPC_SelectDetailPanelPage(LabPC_DetailPanel* arg0, s32 arg1);
+s32 LabPC_HandleDetailPanelInput(LabPC_DetailPanel* arg0, Controller* arg1);
 s32 LabPC_DispatchDetailPanelInput(WidgetNode* arg0, Controller* arg1);
-s32 LabPC_RunDetailPanel(unk_func_88205880_0098_008* arg0);
-unk_func_88205880_0098_008* LabPC_CreateMonDetailPanel(unk_func_88205880_0098* arg0);
-s32 LabPC_IconListDispatch(u32 arg0, unk_func_88205880_0098* arg1);
+s32 LabPC_RunDetailPanel(LabPC_DetailPanel* arg0);
+LabPC_DetailPanel* LabPC_CreateMonDetailPanel(LabPC_DetailPanelParams* arg0);
+s32 LabPC_IconListDispatch(u32 arg0, LabPC_DetailPanelParams* arg1);
 
 #endif // _FRAGMENT27_H_

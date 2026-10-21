@@ -14,9 +14,9 @@ typedef struct unk_func_88205880_00D0 {
 } unk_func_88205880_00D0; // size = 0x6A0
 
 typedef struct unk_func_88200FA0_030_038 {
-    /* 0x00 */ unk_func_88205880_00D0** unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ unk_func_88205880_00D0** posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_88200FA0_030_038; // size = 0xC
 
 typedef struct unk_func_88201DA0_034 {
@@ -26,69 +26,69 @@ typedef struct unk_func_88201DA0_034 {
 } unk_func_88201DA0_034; // size = 0xC88
 
 typedef struct unk_func_88201DA0_038 {
-    /* 0x00 */ unk_func_88201DA0_034* unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ unk_func_88201DA0_034* posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } unk_func_88201DA0_038; // size = 0x10
 
 typedef struct unk_func_88205880_A030 {
-    /* 0x00 */ unk_func_88205880_00D0** unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ unk_func_88205880_00D0** posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_88205880_A030; // size = 0xC
 
 typedef struct unk_func_8820BE14_06C_000 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_func_88200FA0_030_038 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ unk_func_88200FA0_030_038 rotation;
 } unk_func_8820BE14_06C_000; // size = 0x10
 
 typedef struct unk_func_8820BE14_06C_000_alt {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_func_88200FA0_030_038 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ unk_func_88200FA0_030_038 rotation;
     /* 0x10 */ unk_func_88205880_A030 unk_10;
 } unk_func_8820BE14_06C_000_alt; // size = 0x1C
 
 typedef struct unk_func_8820BE14_06C {
-    /* 0x00 */ unk_func_8820BE14_06C_000* unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ unk_func_8820BE14_06C_000* posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } unk_func_8820BE14_06C; // size = 0x10
 
 typedef struct unk_func_8830867C_02C_0CC_000_000_000 {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_0CC_000_000_000; // size >= 0xC
 
 typedef struct unk_func_8830867C_02C_0CC_000_000_010_000_000 {
-    /* 0x00 */ struct unk_func_8830867C_02C_0CC_000_000* unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ BattleMon unk_08;
+    /* 0x00 */ struct unk_func_8830867C_02C_0CC_000_000* posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ BattleMon RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_0CC_000_000_010_000_000; // size >= 0x5C
 
 typedef struct unk_func_8830867C_02C_0CC_000_000_010_000 {
-    /* 0x00 */ unk_func_8830867C_02C_0CC_000_000_010_000_000* unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_0CC_000_000_010_000_000* posX;
 } unk_func_8830867C_02C_0CC_000_000_010_000; // size >= 0x4
 
 typedef struct unk_func_8830867C_02C_0CC_000_000_010 {
-    /* 0x00 */ unk_func_8830867C_02C_0CC_000_000_010_000* unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_0CC_000_000_010_000* posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_0CC_000_000_010; // size = 0xC
 
 typedef struct unk_func_8830867C_02C_0CC_000_000 {
-    /* 0x00 */ unk_func_8830867C_02C_0CC_000_000_000* unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ unk_func_8830867C_02C_0CC_000_000_000* posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ unk_func_8830867C_02C_0CC_000_000_010 unk_10;
 } unk_func_8830867C_02C_0CC_000_000; // size = 0x1C
 
 typedef struct unk_func_8830867C_02C_0CC_000_008 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ char unk01[0x1];
-    /* 0x02 */ u16 unk_02;
+    /* 0x02 */ u16 posY;
     /* 0x04 */ char unk04[0x5];
     /* 0x09 */ u8 unk_09[4];
     /* 0x0D */ char unk0D[0x3];
@@ -110,27 +110,27 @@ typedef struct unk_func_8830867C_02C_0CC_000_008 {
     /* 0x2E */ u16 unk_2E;
 } unk_func_8830867C_02C_0CC_000_008; // size = 0x30
 
-typedef struct unk_func_8830867C_02C_0CC_000 {
-    /* 0x00 */ unk_func_8830867C_02C_0CC_000_000* unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ unk_func_8830867C_02C_0CC_000_008 unk_08;
+typedef struct LabPCListEntry {
+    /* 0x00 */ unk_func_8830867C_02C_0CC_000_000* posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ unk_func_8830867C_02C_0CC_000_008 RentalSlotAnimData_PosePhase;
     /* 0x38 */ char unk_38[4];
     /* 0x3C */ char unk3C[0x20];
-} unk_func_8830867C_02C_0CC_000; // size = 0x5C
+} LabPCListEntry; // size = 0x5C
 
 typedef struct unk_func_8830867C_02C_0CC {
-    /* 0x00 */ unk_func_8830867C_02C_0CC_000** unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ LabPCListEntry** posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_0CC; // size = 0xC
 
 typedef struct unk_func_8830867C_04C_030_02C_000_000_00C {
-    /* 0x00 */ s32 unk_00;
+    /* 0x00 */ s32 posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_04C_030_02C_000_000_00C; // size >= 0xC
 
-typedef s32 (*func_func_8002D1AC)(unk_func_8830867C_02C_0CC_000*, s32*);
+typedef s32 (*func_func_8002D1AC)(LabPCListEntry*, s32*);
 typedef s32 (*unk_D_8831A1F8)(s32, s32);
 
 void TableView_Initialize(unk_func_88201DA0_038*, unk_func_88201DA0_034*, s32, s32, s32);

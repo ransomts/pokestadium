@@ -13,10 +13,10 @@
 
 static char** menu_string_array;
 static BinArchive* background_bin_archive;
-static void* D_82B01148;
+static void* gFragment54BackgroundImage;
 static s16 hovered_menu_item;
 
-static u8 D_82B01120[] = {
+static u8 gBackgroundFileIndexTable[] = {
     0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0F, 0x00, 0x00,
 };
 
@@ -34,7 +34,7 @@ void RentalHub_DrawHeaderIcon(s16 x, s16 y) {
 }
 
 void RentalHub_DrawHeaderBar(s16 x, s16 y, s16 clip_width, Color_RGBA8* fill_color, Color_RGBA8* border_color) {
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
 
     gDPSetEnvColor(gDisplayListHead++, fill_color->r, fill_color->g, fill_color->b, 255);
     gDPSetPrimColor(gDisplayListHead++, 0, 0, border_color->r, border_color->g, border_color->b, 255);
@@ -104,7 +104,7 @@ void RentalHub_DrawMenuItemBox(s16 x, s16 y, s16 height, char* text) {
         y += ((0x30 - height) / 2);
         RentalHub_DrawMenuItemBorder(x, y, 152, height);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F470);
+        gSPDisplayList(gDisplayListHead++, gMenuDL_BackgroundFill);
 
         Gfx_FillRectRgb(x + 4, y + 4, 144, height - 8, 0x1E, 0x1E, 0x82);
 
@@ -156,7 +156,7 @@ s32 RentalHub_HandleInput(void) {
 
 void RentalHub_Draw(s16 height) {
     BgStage_DrawFrame();
-    Gfx_DrawTiledRgba16Image(D_82B01148);
+    Gfx_DrawTiledRgba16Image(gFragment54BackgroundImage);
     RentalHub_DrawHeader();
     RentalHub_DrawMenuItems(height);
     if (height == 8) {
@@ -234,12 +234,12 @@ void RentalHub_LoadBackgroundImage(ModeSettings* arg0) {
 
     if (gSessionContext.mode == 7) {
         if (arg0->castleClears < 8) {
-            D_82B01148 = BinArchive_GetFile(background_bin_archive, 0xD);
+            gFragment54BackgroundImage = BinArchive_GetFile(background_bin_archive, 0xD);
         } else {
-            D_82B01148 = BinArchive_GetFile(background_bin_archive, 0x10);
+            gFragment54BackgroundImage = BinArchive_GetFile(background_bin_archive, 0x10);
         }
     } else {
-        D_82B01148 = BinArchive_GetFile(background_bin_archive, D_82B01120[gSessionContext.mode]);
+        gFragment54BackgroundImage = BinArchive_GetFile(background_bin_archive, gBackgroundFileIndexTable[gSessionContext.mode]);
     }
 }
 

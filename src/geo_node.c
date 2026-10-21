@@ -151,25 +151,25 @@ unk_D_86002F34_alt17* GeoNode_CreateClearDepth(MainPoolState* arg0, unk_D_86002F
     return arg1;
 }
 
-unk_D_8690A610* GeoNode_CreateFog(s32 arg0, unk_D_8690A610* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a) {
+FogRect* GeoNode_CreateFog(s32 arg0, FogRect* arg1, s16 arg2, s16 arg3, u8 r, u8 g, u8 b, u8 a) {
     if (arg0 != 0) {
-        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_8690A610), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(FogRect), 4);
     }
 
     if (arg1 != NULL) {
-        arg1->unk_18.unk_00 = arg2;
-        arg1->unk_18.unk_02 = arg3;
-        arg1->unk_18.unk_04.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
+        arg1->unk_18.posX = arg2;
+        arg1->unk_18.posY = arg3;
+        arg1->unk_18.rotation.rgba = (r << 0x18) | (g << 0x10) | (b << 8) | a;
         GeoNode_Init(arg1, 0xA);
     }
 
     return arg1;
 }
 
-unk_D_86002F34_alt18* GeoNode_CreateLight(MainPoolState* arg0, unk_D_86002F34_alt18* arg1, s16 arg2, s16 arg3, u8 r, u8 g,
+PillarGlowParams* GeoNode_CreateLight(MainPoolState* arg0, PillarGlowParams* arg1, s16 arg2, s16 arg3, u8 r, u8 g,
                                     u8 b, u8 a) {
     if (arg0 != NULL) {
-        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34_alt18), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(PillarGlowParams), 4);
     }
 
     if (arg1 != NULL) {
@@ -200,10 +200,10 @@ unk_D_86002F34_alt19* GeoNode_CreateAmbientLight(MainPoolState* arg0, unk_D_8600
     return arg1;
 }
 
-unk_D_86002F34* GeoNode_CreateShadowContext(MainPoolState* arg0, unk_D_86002F34* arg1, s32 arg2, unk_D_86002F34_018* arg3, s32 arg4,
+ShadowContextNode* GeoNode_CreateShadowContext(MainPoolState* arg0, ShadowContextNode* arg1, s32 arg2, GfxTextureInfo* arg3, s32 arg4,
                               unk_D_86002F34_01C* arg5, s32 arg6, Vtx* arg7) {
     if (arg0 != NULL) {
-        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_D_86002F34), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(ShadowContextNode), 4);
     }
 
     if (arg1 != NULL) {
@@ -403,9 +403,9 @@ unk_D_86002F34_alt9* GeoNode_CreateScale(MainPoolState* arg0, unk_D_86002F34_alt
     return arg1;
 }
 
-unk_func_80011B94* GeoNode_CreateDisplayList(MainPoolState* arg0, unk_func_80011B94* arg1, s32 arg2, Gfx* arg3) {
+SimpleGfxNode* GeoNode_CreateDisplayList(MainPoolState* arg0, SimpleGfxNode* arg1, s32 arg2, Gfx* arg3) {
     if (arg0 != NULL) {
-        arg1 = MainPool_AllocAligned(arg0, sizeof(unk_func_80011B94), 4);
+        arg1 = MainPool_AllocAligned(arg0, sizeof(SimpleGfxNode), 4);
     }
 
     if (arg1 != NULL) {
@@ -477,8 +477,8 @@ void GeoCamera_SetViewport(CameraNode* arg0, s16 arg1, s16 arg2, s16 arg3, s16 a
     arg0->viewport.width = arg3;
     arg0->viewport.height = arg4;
 
-    arg0->orthographic.unk_04 = -arg3 * 0.5f;
-    arg0->orthographic.unk_08 = arg3 * 0.5f;
+    arg0->orthographic.rotation = -arg3 * 0.5f;
+    arg0->orthographic.RentalSlotAnimData_PosePhase = arg3 * 0.5f;
     arg0->orthographic.unk_10 = arg4 * 0.5f;
     arg0->orthographic.unk_0C = -arg4 * 0.5f;
     arg0->orthographic.unk_14 = -2.0f;
@@ -537,7 +537,7 @@ void GeoCamera_SetBackgroundTexture(CameraNode* arg0, s16 arg1, s16 arg2, s32 ar
     ptr->unk_16 = 0;
     ptr->unk_18 = 0;
     ptr->unk_1A = 0;
-    ptr->unk_02 = 0;
+    ptr->posY = 0;
     ptr->unk_1C = D_1000800;
 }
 

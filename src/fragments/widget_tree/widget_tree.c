@@ -10,11 +10,11 @@
 #include "src/memory.h"
 #include "src/pokemon_stats.h"
 
-static Color_RGBA8 D_8850CF80 = { 0xF0, 0xF0, 0xF0, 0xFF };
+static Color_RGBA8 gDefaultColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
-void WidgetTree_DrawTiledTexture(unk_func_88500020* arg0, s32 arg1, s32 arg2) {
-    s32 temp_lo = 0x1000 / (arg0->unk_00 * 2);
-    s32 var_t3 = arg0->unk_04;
+void WidgetTree_DrawTiledTexture(TiledTexture* arg0, s32 arg1, s32 arg2) {
+    s32 temp_lo = 0x1000 / (arg0->posX * 2);
+    s32 var_t3 = arg0->rotation;
     u8* var_s2 = arg0->unk_0C;
     s32 var_s3 = arg2;
     s32 var_t0;
@@ -26,23 +26,23 @@ void WidgetTree_DrawTiledTexture(unk_func_88500020* arg0, s32 arg1, s32 arg2) {
             var_t0 = var_t3;
         }
 
-        gDPLoadTextureBlock(gDisplayListHead++, var_s2, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg0->unk_00, var_t0, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, var_s2, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg0->posX, var_t0, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
 
-        gSPTextureRectangle(gDisplayListHead++, arg1 << 2, var_s3 << 2, ((arg0->unk_08 + arg1) - 1) << 2,
+        gSPTextureRectangle(gDisplayListHead++, arg1 << 2, var_s3 << 2, ((arg0->RentalSlotAnimData_PosePhase + arg1) - 1) << 2,
                             ((var_s3 + var_t0) - 1) << 2, G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
         var_s3 += var_t0;
-        var_s2 += var_t0 * arg0->unk_00 * 2;
+        var_s2 += var_t0 * arg0->posX * 2;
         var_t3 -= var_t0;
     }
 }
 
-void WidgetTree_DrawTiledTextureFmt(unk_func_88500020* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 temp_lo = 0x1000 / (arg0->unk_00 * 2);
+void WidgetTree_DrawTiledTextureFmt(TiledTexture* arg0, s32 arg1, s32 arg2, s32 arg3) {
+    s32 temp_lo = 0x1000 / (arg0->posX * 2);
     s32 var_t0;
-    s32 var_t3 = arg0->unk_04;
+    s32 var_t3 = arg0->rotation;
     u8* var_s2 = arg0->unk_0C;
     s32 var_s3 = arg3;
 
@@ -53,72 +53,72 @@ void WidgetTree_DrawTiledTextureFmt(unk_func_88500020* arg0, s32 arg1, s32 arg2,
             var_t0 = var_t3;
         }
 
-        gDPLoadTextureBlock(gDisplayListHead++, var_s2, arg1, G_IM_SIZ_16b, arg0->unk_00, var_t0, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, var_s2, arg1, G_IM_SIZ_16b, arg0->posX, var_t0, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        gSPTextureRectangle(gDisplayListHead++, arg2 << 2, var_s3 << 2, (arg0->unk_08 + arg2) << 2,
+        gSPTextureRectangle(gDisplayListHead++, arg2 << 2, var_s3 << 2, (arg0->RentalSlotAnimData_PosePhase + arg2) << 2,
                             (var_s3 + var_t0) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
         var_s3 += var_t0;
-        var_s2 += var_t0 * arg0->unk_00 * 2;
+        var_s2 += var_t0 * arg0->posX * 2;
         var_t3 -= var_t0;
     }
 }
 
 void WidgetTree_InitNode(WidgetLinkHeader* arg0, s32 arg1) {
-    arg0->unk_00 = arg1;
-    arg0->unk_04 = NULL;
-    arg0->unk_08 = NULL;
+    arg0->posX = arg1;
+    arg0->rotation = NULL;
+    arg0->RentalSlotAnimData_PosePhase = NULL;
     arg0->unk_0C = NULL;
 }
 
 void WidgetTree_PrependChild(WidgetLinkHeader* arg0, WidgetLinkHeader* arg1) {
-    arg1->unk_08 = arg0->unk_04;
-    arg0->unk_04 = arg1;
+    arg1->RentalSlotAnimData_PosePhase = arg0->rotation;
+    arg0->rotation = arg1;
 }
 
 void WidgetTree_AppendChild(WidgetLinkHeader* arg0, WidgetLinkHeader* arg1) {
     WidgetLinkHeader* var_a0;
     WidgetLinkHeader* var_v1;
 
-    if (arg0->unk_04 == NULL) {
-        arg0->unk_04 = arg1;
+    if (arg0->rotation == NULL) {
+        arg0->rotation = arg1;
         return;
     }
 
-    var_v1 = arg0->unk_04;
-    var_a0 = arg0->unk_04->unk_08;
+    var_v1 = arg0->rotation;
+    var_a0 = arg0->rotation->RentalSlotAnimData_PosePhase;
 
     while (var_a0 != NULL) {
         var_v1 = var_a0;
-        var_a0 = var_a0->unk_08;
+        var_a0 = var_a0->RentalSlotAnimData_PosePhase;
     }
 
-    var_v1->unk_08 = arg1;
+    var_v1->RentalSlotAnimData_PosePhase = arg1;
 }
 
 void WidgetTree_FreeChildren(WidgetLinkHeader* arg0, MemoryPool* arg1) {
     WidgetLinkHeader* temp_s1;
-    WidgetLinkHeader* var_s0 = arg0->unk_04;
+    WidgetLinkHeader* var_s0 = arg0->rotation;
 
     while (var_s0 != NULL) {
         WidgetTree_FreeChildren(var_s0, arg1);
         if (var_s0->unk_0C != NULL) {
             var_s0->unk_0C(var_s0, arg1);
         }
-        temp_s1 = var_s0->unk_08;
+        temp_s1 = var_s0->RentalSlotAnimData_PosePhase;
         mem_pool_free(arg1, var_s0);
         var_s0 = temp_s1;
     }
-    arg0->unk_04 = NULL;
+    arg0->rotation = NULL;
 }
 
 void WidgetTree_FreeTree(WidgetLinkHeader* arg0, MemoryPool* arg1) {
     WidgetLinkHeader* temp_s1;
-    WidgetLinkHeader* var_s0 = arg0->unk_04;
+    WidgetLinkHeader* var_s0 = arg0->rotation;
 
     while (var_s0 != NULL) {
-        temp_s1 = var_s0->unk_08;
+        temp_s1 = var_s0->RentalSlotAnimData_PosePhase;
         WidgetTree_FreeTree(var_s0, arg1);
         var_s0 = temp_s1;
     }
@@ -130,11 +130,11 @@ void WidgetTree_FreeTree(WidgetLinkHeader* arg0, MemoryPool* arg1) {
 }
 
 void WidgetTree_InitWidget(WidgetNode* arg0, s32 arg1) {
-    WidgetTree_InitNode(&arg0->unk_00, arg1);
-    arg0->unk_10.unk_00 = 0;
-    arg0->unk_10.unk_02 = 0;
-    arg0->unk_14.unk_00 = 0x10;
-    arg0->unk_14.unk_02 = 0x10;
+    WidgetTree_InitNode(&arg0->posX, arg1);
+    arg0->unk_10.posX = 0;
+    arg0->unk_10.posY = 0;
+    arg0->unk_14.posX = 0x10;
+    arg0->unk_14.posY = 0x10;
     arg0->unk_18 = NULL;
     arg0->unk_1C = NULL;
     arg0->unk_20 = NULL;
@@ -148,18 +148,18 @@ void WidgetTree_Draw(WidgetNode* arg0, s32 arg1, s32 arg2) {
     WidgetLinkHeader* var_s0;
 
     if (arg0->unk_28 & 1) {
-        arg1 += arg0->unk_10.unk_00;
-        arg2 += arg0->unk_10.unk_02;
+        arg1 += arg0->unk_10.posX;
+        arg2 += arg0->unk_10.posY;
 
         if (arg0->unk_18 != NULL) {
             var_v1 = arg0->unk_18(arg0, arg1, arg2);
         }
 
         if (var_v1 == 0) {
-            var_s0 = arg0->unk_00.unk_04;
+            var_s0 = arg0->posX.rotation;
             while (var_s0 != NULL) {
                 WidgetTree_Draw(var_s0, arg1, arg2);
-                var_s0 = var_s0->unk_08;
+                var_s0 = var_s0->RentalSlotAnimData_PosePhase;
             }
         }
     }
@@ -175,31 +175,31 @@ void WidgetTree_Update(WidgetNode* arg0) {
         }
 
         if (var_v1 == 0) {
-            var_s0 = arg0->unk_00.unk_04;
+            var_s0 = arg0->posX.rotation;
             while (var_s0 != NULL) {
                 WidgetTree_Update(var_s0);
-                var_s0 = var_s0->unk_08;
+                var_s0 = var_s0->RentalSlotAnimData_PosePhase;
             }
         }
     }
 }
 
 void WidgetTree_SetStateDefault(WidgetNode* arg0, s32 arg1) {
-    WidgetNode* var_s0 = arg0->unk_00.unk_04;
+    WidgetNode* var_s0 = arg0->posX.rotation;
 
     arg0->unk_2A = arg1;
 
     while (var_s0 != NULL) {
         var_s0->unk_24(var_s0, arg1);
-        var_s0 = var_s0->unk_00.unk_08;
+        var_s0 = var_s0->posX.RentalSlotAnimData_PosePhase;
     }
 }
 
 void WidgetTree_InitPagedContainer(unk_func_88500994* arg0, s32 arg1, s32 arg2) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_88500994));
-    arg0->unk_00.unk_18 = WidgetTree_DrawCurrentPage;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88500994));
+    arg0->posX.unk_18 = WidgetTree_DrawCurrentPage;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
     arg0->unk_2C = 0;
     arg0->unk_30 = 0;
 }
@@ -209,10 +209,10 @@ s32 WidgetTree_DrawCurrentPage(unk_func_88500994* arg0, s32 arg1, s32 arg2) {
     WidgetLinkHeader* var_a0;
 
     if (arg0->unk_30 > 0) {
-        var_a0 = arg0->unk_00.unk_00.unk_04;
+        var_a0 = arg0->posX.posX.rotation;
 
         for (i = 0; i < arg0->unk_2C; i++) {
-            var_a0 = var_a0->unk_08;
+            var_a0 = var_a0->RentalSlotAnimData_PosePhase;
         }
         WidgetTree_Draw(var_a0, arg1, arg2);
     }
@@ -220,7 +220,7 @@ s32 WidgetTree_DrawCurrentPage(unk_func_88500994* arg0, s32 arg1, s32 arg2) {
 }
 
 void WidgetTree_AddPage(unk_func_88500994* arg0, WidgetNode* arg1) {
-    WidgetTree_AppendChild(&arg0->unk_00.unk_00, &arg1->unk_00);
+    WidgetTree_AppendChild(&arg0->posX.posX, &arg1->posX);
     arg0->unk_30++;
 }
 
@@ -228,7 +228,7 @@ void WidgetTree_SelectPage(unk_func_88500994* arg0, s32 arg1) {
     arg0->unk_2C = arg1;
 }
 
-void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
+void DrawTiledBackground(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     s32 var_x;
     s32 var_y;
     s32 sp34;
@@ -267,28 +267,28 @@ void func_88500A74(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 }
 
 void WidgetTree_InitTiledTextureRegion(unk_func_88500E34* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8* arg5) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_88500E34));
-    arg0->unk_00.unk_18 = WidgetTree_DrawTiledTextureRegion;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88500E34));
+    arg0->posX.unk_18 = WidgetTree_DrawTiledTextureRegion;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
 }
 
 s32 WidgetTree_DrawTiledTextureRegion(unk_func_88500E34* arg0, s32 arg1, s32 arg2) {
-    func_88500A74(arg1, arg2, arg0->unk_00.unk_14.unk_00, arg0->unk_00.unk_14.unk_02, arg0->unk_2C);
+    DrawTiledBackground(arg1, arg2, arg0->posX.unk_14.posX, arg0->posX.unk_14.posY, arg0->unk_2C);
     return 0;
 }
 
 void WidgetTree_InitTintedTexture(unk_func_88500EE4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, u8* arg5, Color_RGBA8 arg6,
                    Color_RGBA8 arg7) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_88500EE4));
-    arg0->unk_00.unk_18 = WidgetTree_DrawTintedTexture;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88500EE4));
+    arg0->posX.unk_18 = WidgetTree_DrawTintedTexture;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
     arg0->unk_30 = arg6;
     arg0->unk_34 = arg7;
@@ -312,19 +312,19 @@ s32 WidgetTree_DrawTintedTexture(unk_func_88500EE4* arg0, s32 arg1, s32 arg2) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, arg0->unk_2C, G_IM_FMT_I, h, w, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 7, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->unk_00.unk_14.unk_00 + arg1) - 1) << 2,
-                        ((arg2 + arg0->unk_00.unk_14.unk_02) - 1) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
+    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->posX.unk_14.posX + arg1) - 1) << 2,
+                        ((arg2 + arg0->posX.unk_14.posY) - 1) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
     return 0;
 }
 
 void WidgetTree_InitSolidColor(unk_func_885012A4* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_885012A4));
-    arg0->unk_00.unk_18 = WidgetTree_DrawSolidColor;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_885012A4));
+    arg0->posX.unk_18 = WidgetTree_DrawSolidColor;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
 }
 
@@ -340,20 +340,20 @@ s32 WidgetTree_DrawSolidColor(unk_func_885012A4* arg0, s32 arg1, s32 arg2) {
     temp_t1 = ((arg0->unk_2C.r << 8) & 0xF800) | ((arg0->unk_2C.g << 3) & 0x7C0) | ((arg0->unk_2C.b >> 2) & 0x3E) | 1; gDPPipeSync(gDisplayListHead++);
     // clang-format on
     gDPSetFillColor(gDisplayListHead++, (temp_t1 << 0x10) | temp_t1);
-    gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_00.unk_14.unk_00 + arg1) - 1,
-                     (arg2 + arg0->unk_00.unk_14.unk_02) - 1);
+    gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->posX.unk_14.posX + arg1) - 1,
+                     (arg2 + arg0->posX.unk_14.posY) - 1);
 
     return 0;
 }
 
 void WidgetTree_InitPatternTexture(unk_func_8850143C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
                    Color_RGBA8 arg6) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_8850143C));
-    arg0->unk_00.unk_18 = WidgetTree_DrawPatternTexture;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_8850143C));
+    arg0->posX.unk_18 = WidgetTree_DrawPatternTexture;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
     arg0->unk_30 = arg6;
 }
@@ -378,20 +378,20 @@ s32 WidgetTree_DrawPatternTexture(unk_func_8850143C* arg0, s32 arg1, s32 arg2) {
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4000008, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg0->unk_00.unk_14.unk_00 + arg1) << 2,
-                        (arg2 + arg0->unk_00.unk_14.unk_02) << 2, G_TX_RENDERTILE, 0, 0,
-                        0x10000 / arg0->unk_00.unk_14.unk_00, 0x10000 / arg0->unk_00.unk_14.unk_02);
+    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg0->posX.unk_14.posX + arg1) << 2,
+                        (arg2 + arg0->posX.unk_14.posY) << 2, G_TX_RENDERTILE, 0, 0,
+                        0x10000 / arg0->posX.unk_14.posX, 0x10000 / arg0->posX.unk_14.posY);
 
     return 0;
 }
 
 void WidgetTree_InitCornerFrame(unk_func_8850182C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_8850182C));
-    arg0->unk_00.unk_18 = WidgetTree_DrawCornerFrame;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_8850182C));
+    arg0->posX.unk_18 = WidgetTree_DrawCornerFrame;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
 }
 
@@ -411,31 +411,31 @@ s32 WidgetTree_DrawCornerFrame(unk_func_8850182C* arg0, s32 arg1, s32 arg2) {
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_4007750, G_IM_FMT_I, w, h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->unk_00.unk_14.unk_00 + arg1) - w) << 2,
+    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->posX.unk_14.posX + arg1) - w) << 2,
                         (arg2 + h) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_4007798, G_IM_FMT_I, w, h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSPTextureRectangle(gDisplayListHead++, ((arg0->unk_00.unk_14.unk_00 + arg1) - w) << 2, arg2 << 2,
-                        (arg0->unk_00.unk_14.unk_00 + arg1) << 2, ((arg2 + arg0->unk_00.unk_14.unk_02) - h) << 2,
+    gSPTextureRectangle(gDisplayListHead++, ((arg0->posX.unk_14.posX + arg1) - w) << 2, arg2 << 2,
+                        (arg0->posX.unk_14.posX + arg1) << 2, ((arg2 + arg0->posX.unk_14.posY) - h) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_40077E0, G_IM_FMT_I, w, h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSPTextureRectangle(gDisplayListHead++, (arg1 + w) << 2, ((arg2 + arg0->unk_00.unk_14.unk_02) - h) << 2,
-                        (arg0->unk_00.unk_14.unk_00 + arg1) << 2, (arg2 + arg0->unk_00.unk_14.unk_02) << 2,
-                        G_TX_RENDERTILE, (arg0->unk_00.unk_14.unk_00 * -0x20) + 0x400, 0, 0x0400, 0x0400);
+    gSPTextureRectangle(gDisplayListHead++, (arg1 + w) << 2, ((arg2 + arg0->posX.unk_14.posY) - h) << 2,
+                        (arg0->posX.unk_14.posX + arg1) << 2, (arg2 + arg0->posX.unk_14.posY) << 2,
+                        G_TX_RENDERTILE, (arg0->posX.unk_14.posX * -0x20) + 0x400, 0, 0x0400, 0x0400);
 
     gDPLoadTextureBlock_4b(gDisplayListHead++, D_4007828, G_IM_FMT_I, w, h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, (arg2 + h) << 2, (arg1 + w) << 2,
-                        (arg2 + arg0->unk_00.unk_14.unk_02) << 2, G_TX_RENDERTILE, 0,
-                        (arg0->unk_00.unk_14.unk_02 * -0x20) + 0x200, 0x0400, 0x0400);
+                        (arg2 + arg0->posX.unk_14.posY) << 2, G_TX_RENDERTILE, 0,
+                        (arg0->posX.unk_14.posY * -0x20) + 0x200, 0x0400, 0x0400);
 
-    if ((arg0->unk_00.unk_14.unk_00 > 0x20) && (arg0->unk_00.unk_14.unk_02 > 0x10)) {
+    if ((arg0->posX.unk_14.posX > 0x20) && (arg0->posX.unk_14.posY > 0x10)) {
         gDPPipeSync(gDisplayListHead++);
 
         gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
@@ -448,28 +448,28 @@ s32 WidgetTree_DrawCornerFrame(unk_func_8850182C* arg0, s32 arg1, s32 arg2) {
             gDPSetFillColor(gDisplayListHead++, (temp_a3 << 0x10) | temp_a3);
         }
 
-        gDPFillRectangle(gDisplayListHead++, arg1 + w, arg2 + h, ((arg1 + w) + arg0->unk_00.unk_14.unk_00) - 0x21,
-                         ((arg2 + h) + arg0->unk_00.unk_14.unk_02) - 0x11);
+        gDPFillRectangle(gDisplayListHead++, arg1 + w, arg2 + h, ((arg1 + w) + arg0->posX.unk_14.posX) - 0x21,
+                         ((arg2 + h) + arg0->posX.unk_14.posY) - 0x11);
     }
 
     return 0;
 }
 
 void WidgetTree_InitAnimatedPanel(WidgetAnimatedPanel* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(WidgetAnimatedPanel));
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetAnimatedPanel));
 
-    arg0->unk_00.unk_18 = WidgetTree_DrawAnimatedPanel;
-    arg0->unk_00.unk_1C = WidgetTree_UpdateAnimatedPanel;
-    arg0->unk_00.unk_20 = WidgetTree_GetAnimatedPanelInputState;
+    arg0->posX.unk_18 = WidgetTree_DrawAnimatedPanel;
+    arg0->posX.unk_1C = WidgetTree_UpdateAnimatedPanel;
+    arg0->posX.unk_20 = WidgetTree_GetAnimatedPanelInputState;
 
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_30 = 0;
     arg0->unk_2C = -1;
-    arg0->unk_00.unk_28 |= 0x400;
-    arg0->unk_00.unk_28 &= ~1;
+    arg0->posX.unk_28 |= 0x400;
+    arg0->posX.unk_28 &= ~1;
 }
 
 s32 WidgetTree_UpdateAnimatedPanel(WidgetAnimatedPanel* arg0) {
@@ -482,8 +482,8 @@ s32 WidgetTree_UpdateAnimatedPanel(WidgetAnimatedPanel* arg0) {
     } else if (arg0->unk_2C >= 0x14) {
         arg0->unk_2C = -1;
         arg0->unk_30 = 0;
-        if (arg0->unk_00.unk_28 & 0x400) {
-            arg0->unk_00.unk_28 &= ~1;
+        if (arg0->posX.unk_28 & 0x400) {
+            arg0->posX.unk_28 &= ~1;
         }
     } else if (arg0->unk_2C >= 0xC) {
         arg0->unk_30 = 4;
@@ -518,11 +518,11 @@ s32 WidgetTree_DrawAnimatedPanel(WidgetAnimatedPanel* arg0, s32 arg1, s32 arg2) 
 
     temp_a1 = arg2 - 7;
 
-    if ((arg0->unk_30 & 0xD) || ((arg0->unk_30 & 2) && (arg0->unk_00.unk_28 & 0x200))) {
+    if ((arg0->unk_30 & 0xD) || ((arg0->unk_30 & 2) && (arg0->posX.unk_28 & 0x200))) {
         temp_a0 = arg1 - 7;
 
-        var_v0 = arg0->unk_00.unk_14.unk_00 + 0xE;
-        var_v1_2 = arg0->unk_00.unk_14.unk_02 + 0xE;
+        var_v0 = arg0->posX.unk_14.posX + 0xE;
+        var_v1_2 = arg0->posX.unk_14.posY + 0xE;
 
         if (var_v0 < val) {
             var_v0 = val;
@@ -606,7 +606,7 @@ s32 WidgetTree_GetAnimatedPanelInputState(WidgetAnimatedPanel* arg0, UNUSED Cont
     } else if (arg0->unk_30 & 4) {
         ret = 0x20;
     } else if (arg0->unk_30 & 2) {
-        if ((arg0->unk_2C == 0xA) && (arg0->unk_00.unk_28 & 0x100)) {
+        if ((arg0->unk_2C == 0xA) && (arg0->posX.unk_28 & 0x100)) {
             arg0->unk_2C = 0xB;
             ret = 0x20;
         } else {
@@ -620,21 +620,21 @@ s32 WidgetTree_GetAnimatedPanelInputState(WidgetAnimatedPanel* arg0, UNUSED Cont
 }
 
 void WidgetTree_OpenAnimatedPanel(WidgetAnimatedPanel* arg0) {
-    if ((arg0->unk_2C >= 0xB) && (arg0->unk_00.unk_28 & 1)) {
+    if ((arg0->unk_2C >= 0xB) && (arg0->posX.unk_28 & 1)) {
         do {
             Ui_SendMessageAndPollInput(NULL);
-        } while (arg0->unk_00.unk_28 & 1);
+        } while (arg0->posX.unk_28 & 1);
     }
-    arg0->unk_00.unk_28 |= 1;
+    arg0->posX.unk_28 |= 1;
 }
 
 void WidgetTree_InitHorizontalFrame(WidgetNode* arg0, s32 arg1, s32 arg2, s32 arg3) {
     WidgetTree_InitWidget(arg0, sizeof(WidgetNode));
     arg0->unk_18 = WidgetTree_DrawHorizontalFrame;
-    arg0->unk_10.unk_00 = arg1;
-    arg0->unk_10.unk_02 = arg2;
-    arg0->unk_14.unk_00 = arg3;
-    arg0->unk_14.unk_02 = 8;
+    arg0->unk_10.posX = arg1;
+    arg0->unk_10.posY = arg2;
+    arg0->unk_14.posX = arg3;
+    arg0->unk_14.posY = 8;
 }
 
 s32 WidgetTree_DrawHorizontalFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
@@ -651,7 +651,7 @@ s32 WidgetTree_DrawHorizontalFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
 
     // clang-format off
     sp84 = arg1 - 7; sp80 = arg2 - 1; 
-    sp7C = arg0->unk_14.unk_00 + 0xE;
+    sp7C = arg0->unk_14.posX + 0xE;
     // clang-format on
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4007060, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
@@ -668,13 +668,13 @@ s32 WidgetTree_DrawHorizontalFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
 }
 
 void WidgetTree_InitDelayedWidget(WidgetDelayedNode* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(WidgetDelayedNode));
-    arg0->unk_00.unk_18 = WidgetTree_DrawDelayedWidget;
-    arg0->unk_00.unk_1C = WidgetTree_UpdateDelayedWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetDelayedNode));
+    arg0->posX.unk_18 = WidgetTree_DrawDelayedWidget;
+    arg0->posX.unk_1C = WidgetTree_UpdateDelayedWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = -1;
 }
 
@@ -698,10 +698,10 @@ void WidgetTree_InitVisibilityGate(WidgetNode* arg0, s32 arg1, s32 arg2, s32 arg
     WidgetTree_InitWidget(arg0, sizeof(WidgetNode));
     arg0->unk_18 = WidgetTree_DrawVisibilityGate;
     arg0->unk_1C = WidgetTree_ClearVisibilityGateFlags;
-    arg0->unk_10.unk_00 = arg1;
-    arg0->unk_10.unk_02 = arg2;
-    arg0->unk_14.unk_00 = arg3;
-    arg0->unk_14.unk_02 = arg4;
+    arg0->unk_10.posX = arg1;
+    arg0->unk_10.posY = arg2;
+    arg0->unk_14.posX = arg3;
+    arg0->unk_14.posY = arg4;
 }
 
 s32 WidgetTree_ClearVisibilityGateFlags(WidgetNode* arg0) {
@@ -713,36 +713,36 @@ s32 WidgetTree_DrawVisibilityGate(WidgetNode* arg0, s32 arg1, s32 arg2) {
     return ((arg0->unk_28 & 0x100) || !(arg0->unk_28 & 0x200)) ? 0 : 1;
 }
 
-void WidgetTree_InitVisibilityGateBridge(unk_func_88503298* arg0, WidgetAnimatedPanel* arg1, WidgetNode* arg2) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_88503298));
-    arg0->unk_00.unk_1C = WidgetTree_UpdateVisibilityGateBridge;
+void WidgetTree_InitVisibilityGateBridge(WidgetVisibilityGate* arg0, WidgetAnimatedPanel* arg1, WidgetNode* arg2) {
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetVisibilityGate));
+    arg0->posX.unk_1C = WidgetTree_UpdateVisibilityGateBridge;
     arg0->unk_2C = arg1;
     arg0->unk_30 = arg2;
 }
 
-s32 WidgetTree_UpdateVisibilityGateBridge(unk_func_88503298* arg0) {
-    if (!(arg0->unk_2C->unk_00.unk_28 & 1)) {
+s32 WidgetTree_UpdateVisibilityGateBridge(WidgetVisibilityGate* arg0) {
+    if (!(arg0->unk_2C->posX.unk_28 & 1)) {
         return 0;
     }
 
     if (arg0->unk_2C->unk_30 & 2) {
-        arg0->unk_30->unk_00.unk_28 |= 0x200;
+        arg0->unk_30->posX.unk_28 |= 0x200;
     } else {
-        arg0->unk_30->unk_00.unk_28 |= 0x100;
+        arg0->unk_30->posX.unk_28 |= 0x100;
     }
 
     return 0;
 }
 
 void WidgetTree_InitAnimatedFrameVariantA(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(WidgetAnimatedFrame));
-    arg0->unk_00.unk_18 = WidgetTree_DrawAnimatedFrameVariantA;
-    arg0->unk_00.unk_1C = WidgetTree_UpdateAnimatedFrameVariantA;
-    arg0->unk_00.unk_24 = WidgetTree_SetAnimatedFrameVariantAState;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetAnimatedFrame));
+    arg0->posX.unk_18 = WidgetTree_DrawAnimatedFrameVariantA;
+    arg0->posX.unk_1C = WidgetTree_UpdateAnimatedFrameVariantA;
+    arg0->posX.unk_24 = WidgetTree_SetAnimatedFrameVariantAState;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
     arg0->unk_30 = 0;
 }
@@ -765,11 +765,11 @@ s32 WidgetTree_DrawAnimatedFrameVariantA(WidgetAnimatedFrame* arg0, s32 arg1, s3
     sp104 = arg1 - 3; sp100 = arg2 - 3;
     // clang-format on
 
-    spFC = arg0->unk_00.unk_14.unk_00 + 6;
-    spF8 = arg0->unk_00.unk_14.unk_02 + 6;
+    spFC = arg0->posX.unk_14.posX + 6;
+    spF8 = arg0->posX.unk_14.posY + 6;
     spF4 = arg0->unk_2C;
 
-    if (!(arg0->unk_00.unk_2A & 1) && ((arg0->unk_00.unk_28 & 0x100) || !(arg0->unk_00.unk_2A & 0x100))) {
+    if (!(arg0->posX.unk_2A & 1) && ((arg0->posX.unk_28 & 0x100) || !(arg0->posX.unk_2A & 0x100))) {
         return 0;
     }
 
@@ -780,7 +780,7 @@ s32 WidgetTree_DrawAnimatedFrameVariantA(WidgetAnimatedFrame* arg0, s32 arg1, s3
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEIDECALA_PRIM, G_CC_MODULATEIDECALA_PRIM);
 
-    if (arg0->unk_00.unk_2A & 0x100) {
+    if (arg0->posX.unk_2A & 0x100) {
         spF4.r /= 2;
         spF4.g /= 2;
         spF4.b /= 2;
@@ -823,19 +823,19 @@ s32 WidgetTree_DrawAnimatedFrameVariantA(WidgetAnimatedFrame* arg0, s32 arg1, s3
 }
 
 void WidgetTree_SetAnimatedFrameVariantAState(WidgetAnimatedFrame* arg0, s32 arg1) {
-    arg0->unk_00.unk_2A = arg1;
+    arg0->posX.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
 void WidgetTree_InitAnimatedFrameVariantB(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(WidgetAnimatedFrame));
-    arg0->unk_00.unk_18 = WidgetTree_DrawAnimatedFrameVariantB;
-    arg0->unk_00.unk_1C = WidgetTree_UpdateAnimatedFrameVariantB;
-    arg0->unk_00.unk_24 = WidgetTree_SetAnimatedFrameVariantBState;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetAnimatedFrame));
+    arg0->posX.unk_18 = WidgetTree_DrawAnimatedFrameVariantB;
+    arg0->posX.unk_1C = WidgetTree_UpdateAnimatedFrameVariantB;
+    arg0->posX.unk_24 = WidgetTree_SetAnimatedFrameVariantBState;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
     arg0->unk_30 = 0;
 }
@@ -858,11 +858,11 @@ s32 WidgetTree_DrawAnimatedFrameVariantB(WidgetAnimatedFrame* arg0, s32 arg1, s3
 
     sp10C = arg1;
     sp108 = arg2;
-    sp104 = arg0->unk_00.unk_14.unk_00;
-    sp100 = arg0->unk_00.unk_14.unk_02;
+    sp104 = arg0->posX.unk_14.posX;
+    sp100 = arg0->posX.unk_14.posY;
     spFC = arg0->unk_2C;
 
-    if (!(arg0->unk_00.unk_2A & 1) && ((arg0->unk_00.unk_28 & 0x100) || !(arg0->unk_00.unk_2A & 0x100))) {
+    if (!(arg0->posX.unk_2A & 1) && ((arg0->posX.unk_28 & 0x100) || !(arg0->posX.unk_2A & 0x100))) {
         return 0;
     }
 
@@ -873,7 +873,7 @@ s32 WidgetTree_DrawAnimatedFrameVariantB(WidgetAnimatedFrame* arg0, s32 arg1, s3
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEIDECALA_PRIM, G_CC_MODULATEIDECALA_PRIM);
 
-    if (arg0->unk_00.unk_2A & 0x100) {
+    if (arg0->posX.unk_2A & 0x100) {
         spFC.r /= 2;
         spFC.g /= 2;
         spFC.b /= 2;
@@ -916,19 +916,19 @@ s32 WidgetTree_DrawAnimatedFrameVariantB(WidgetAnimatedFrame* arg0, s32 arg1, s3
 }
 
 void WidgetTree_SetAnimatedFrameVariantBState(WidgetAnimatedFrame* arg0, s32 arg1) {
-    arg0->unk_00.unk_2A = arg1;
+    arg0->posX.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
 void WidgetTree_InitAnimatedFrameVariantC(WidgetAnimatedFrame* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(WidgetAnimatedFrame));
-    arg0->unk_00.unk_18 = WidgetTree_DrawAnimatedFrameVariantC;
-    arg0->unk_00.unk_1C = WidgetTree_UpdateAnimatedFrameVariantC;
-    arg0->unk_00.unk_24 = WidgetTree_SetAnimatedFrameVariantCState;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetAnimatedFrame));
+    arg0->posX.unk_18 = WidgetTree_DrawAnimatedFrameVariantC;
+    arg0->posX.unk_1C = WidgetTree_UpdateAnimatedFrameVariantC;
+    arg0->posX.unk_24 = WidgetTree_SetAnimatedFrameVariantCState;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
     arg0->unk_30 = 0;
 }
@@ -951,11 +951,11 @@ s32 WidgetTree_DrawAnimatedFrameVariantC(WidgetAnimatedFrame* arg0, s32 arg1, s3
 
     spFC = arg1;
     spF8 = arg2;
-    spF4 = arg0->unk_00.unk_14.unk_00 + 2;
-    spF0 = arg0->unk_00.unk_14.unk_02 + 2;
+    spF4 = arg0->posX.unk_14.posX + 2;
+    spF0 = arg0->posX.unk_14.posY + 2;
     spEC = arg0->unk_2C;
 
-    if (!(arg0->unk_00.unk_2A & 1) && !(arg0->unk_00.unk_2A & 0x100)) {
+    if (!(arg0->posX.unk_2A & 1) && !(arg0->posX.unk_2A & 0x100)) {
         return 0;
     }
 
@@ -966,7 +966,7 @@ s32 WidgetTree_DrawAnimatedFrameVariantC(WidgetAnimatedFrame* arg0, s32 arg1, s3
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEIDECALA_PRIM, G_CC_MODULATEIDECALA_PRIM);
 
-    if (arg0->unk_00.unk_2A & 0x100) {
+    if (arg0->posX.unk_2A & 0x100) {
         spEC.r = (spEC.r * 0x46) / 100;
         spEC.g = (spEC.g * 0x46) / 100;
         spEC.b = (spEC.b * 0x46) / 100;
@@ -1009,19 +1009,19 @@ s32 WidgetTree_DrawAnimatedFrameVariantC(WidgetAnimatedFrame* arg0, s32 arg1, s3
 }
 
 void WidgetTree_SetAnimatedFrameVariantCState(WidgetAnimatedFrame* arg0, s32 arg1) {
-    arg0->unk_00.unk_2A = arg1;
+    arg0->posX.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
 void WidgetTree_InitDirectionalIndicator(unk_func_8820E99C_030_044* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_8820E99C_030_044));
-    arg0->unk_00.unk_18 = WidgetTree_DrawDirectionalIndicator;
-    arg0->unk_00.unk_1C = WidgetTree_UpdateDirectionalIndicator;
-    arg0->unk_00.unk_24 = WidgetTree_SetDirectionalIndicatorState;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_8820E99C_030_044));
+    arg0->posX.unk_18 = WidgetTree_DrawDirectionalIndicator;
+    arg0->posX.unk_1C = WidgetTree_UpdateDirectionalIndicator;
+    arg0->posX.unk_24 = WidgetTree_SetDirectionalIndicatorState;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_30 = 0;
 }
 
@@ -1034,13 +1034,13 @@ s32 WidgetTree_UpdateDirectionalIndicator(unk_func_8820E99C_030_044* arg0) {
 s32 WidgetTree_DrawDirectionalIndicator(unk_func_8820E99C_030_044* arg0, s32 arg1, s32 arg2) {
     UNUSED s32 pad[2];
     s32 var_t4;
-    s32 sp80 = ((arg0->unk_00.unk_14.unk_00 - 0xE) / 2) + arg1;
+    s32 sp80 = ((arg0->posX.unk_14.posX - 0xE) / 2) + arg1;
 
-    if (!(arg0->unk_00.unk_2A & 1) && ((arg0->unk_00.unk_28 & 0x100) || !(arg0->unk_00.unk_2A & 0x100))) {
+    if (!(arg0->posX.unk_2A & 1) && ((arg0->posX.unk_28 & 0x100) || !(arg0->posX.unk_2A & 0x100))) {
         return 0;
     }
 
-    if (arg0->unk_00.unk_2A & 0x100) {
+    if (arg0->posX.unk_2A & 0x100) {
         var_t4 = 2;
     } else if (gPlayer1Controller->buttonDown & 0xC00) {
         var_t4 = 2;
@@ -1066,8 +1066,8 @@ s32 WidgetTree_DrawDirectionalIndicator(unk_func_8820E99C_030_044* arg0, s32 arg
     gDPLoadTextureBlock(gDisplayListHead++, (gPlayer1Controller->buttonDown & 0x400) ? D_4001530 : D_4001320,
                         G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, sp80 << 2, (arg2 + arg0->unk_00.unk_14.unk_02 + var_t4) << 2,
-                        (sp80 + 0xD) << 2, (arg2 + arg0->unk_00.unk_14.unk_02 + var_t4 + 7) << 2, G_TX_RENDERTILE, 0, 0,
+    gSPTextureRectangle(gDisplayListHead++, sp80 << 2, (arg2 + arg0->posX.unk_14.posY + var_t4) << 2,
+                        (sp80 + 0xD) << 2, (arg2 + arg0->posX.unk_14.posY + var_t4 + 7) << 2, G_TX_RENDERTILE, 0, 0,
                         0x1000, 0x0400);
 
     gDPPipeSync(gDisplayListHead++);
@@ -1077,18 +1077,18 @@ s32 WidgetTree_DrawDirectionalIndicator(unk_func_8820E99C_030_044* arg0, s32 arg
 }
 
 void WidgetTree_SetDirectionalIndicatorState(unk_func_8820E99C_030_044* arg0, s32 arg1) {
-    arg0->unk_00.unk_2A = arg1;
+    arg0->posX.unk_2A = arg1;
     arg0->unk_30 = 0;
 }
 
 void WidgetTree_InitAnimatedPanelVariantB(WidgetAnimatedPanelVariantB* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(WidgetAnimatedPanelVariantB));
-    arg0->unk_00.unk_18 = WidgetTree_DrawAnimatedPanelVariantB;
-    arg0->unk_00.unk_1C = WidgetTree_UpdateAnimatedPanelVariantB;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetAnimatedPanelVariantB));
+    arg0->posX.unk_18 = WidgetTree_DrawAnimatedPanelVariantB;
+    arg0->posX.unk_1C = WidgetTree_UpdateAnimatedPanelVariantB;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
     arg0->unk_30 = 0;
     arg0->unk_34 = 0;
@@ -1098,7 +1098,7 @@ s32 WidgetTree_UpdateAnimatedPanelVariantB(WidgetAnimatedPanelVariantB* arg0) {
     if (arg0->unk_30 >= 0xB) {
         arg0->unk_30 = 0;
         arg0->unk_34 = 0;
-        arg0->unk_00.unk_28 &= ~1;
+        arg0->posX.unk_28 &= ~1;
     } else if (arg0->unk_30 >= 7) {
         arg0->unk_34 = 4;
         arg0->unk_30++;
@@ -1132,8 +1132,8 @@ s32 WidgetTree_DrawAnimatedPanelVariantB(WidgetAnimatedPanelVariantB* arg0, s32 
     s32 val = 0x10;
 
     if (arg0->unk_34 & 0xF) {
-        var_v0 = arg0->unk_00.unk_14.unk_00;
-        var_v1_2 = arg0->unk_00.unk_14.unk_02;
+        var_v0 = arg0->posX.unk_14.posX;
+        var_v1_2 = arg0->posX.unk_14.posY;
 
         if (var_v0 < val) {
             var_v0 = val;
@@ -1208,11 +1208,11 @@ s32 WidgetTree_DrawAnimatedPanelVariantB(WidgetAnimatedPanelVariantB* arg0, s32 
 
 void WidgetTree_InitTextList(WidgetTextList* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5, Color_RGBA8 arg6,
                    FontContext* arg7) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(WidgetTextList));
-    arg0->unk_00.unk_18 = WidgetTree_DrawTextList;
-    arg0->unk_00.unk_1C = WidgetTree_UpdateTextList;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(WidgetTextList));
+    arg0->posX.unk_18 = WidgetTree_DrawTextList;
+    arg0->posX.unk_1C = WidgetTree_UpdateTextList;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
     arg0->unk_34 = arg3;
     arg0->unk_35 = arg4;
     arg0->unk_36 = arg5;
@@ -1244,7 +1244,7 @@ s32 WidgetTree_DrawTextList(WidgetTextList* arg0, s32 arg1, s32 arg2) {
 
     var_s2 = arg1;
     var_s5 = arg2;
-    var_s4 = &arg0->unk_2C->unk_00.unk_00.unk_00;
+    var_s4 = &arg0->unk_2C->posX.posX.posX;
     temp_fp = ((arg0->unk_40 * 0xF) / 5) + 1;
 
     Font_BeginTranslucentTextRendering();
@@ -1260,7 +1260,7 @@ s32 WidgetTree_DrawTextList(WidgetTextList* arg0, s32 arg1, s32 arg2) {
                 var_s5 += arg0->unk_36;
             } else {
                 Font_DrawCharAt(var_s2, var_s5, var_s0);
-                temp_v0_3 = Font_GetGlyphAdvance(&arg0->unk_3C->unk_00[arg0->unk_3C->unk_50], temp_v0_3 = var_s0);
+                temp_v0_3 = Font_GetGlyphAdvance(&arg0->unk_3C->posX[arg0->unk_3C->unk_50], temp_v0_3 = var_s0);
                 if (arg0->unk_3C->unk_50 >= 2) {
                     var_v1 = temp_v0_3 - 2;
                 } else {
@@ -1307,21 +1307,21 @@ void WidgetTree_SetTextList(WidgetTextList* arg0, u8* arg1) {
 
 void WidgetTree_InitPagedGrid(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_030_040 arg3, s32 arg4,
                    s32 arg5, s32 arg6, s32 arg7, MemoryPool* arg8) {
-    static Color_RGBA8 D_8850CF84 = { 255, 255, 0, 255 };
+    static Color_RGBA8 Color_Yellow = { 255, 255, 0, 255 };
 
     s32 var_v0;
     WidgetAnimatedFrame* temp_v0;
 
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_88200FA0_030_030));
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88200FA0_030_030));
 
-    arg0->unk_00.unk_18 = WidgetTree_DrawPagedGrid;
-    arg0->unk_00.unk_20 = func_885065E0;
-    arg0->unk_00.unk_24 = WidgetTree_SetPagedGridState;
+    arg0->posX.unk_18 = WidgetTree_DrawPagedGrid;
+    arg0->posX.unk_20 = List_HandleInput;
+    arg0->posX.unk_24 = WidgetTree_SetPagedGridState;
 
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg4 * arg7;
-    arg0->unk_00.unk_14.unk_02 = arg5 * arg6;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg4 * arg7;
+    arg0->posX.unk_14.posY = arg5 * arg6;
 
     arg0->unk_3C = arg4;
     arg0->unk_3E = arg5;
@@ -1352,9 +1352,9 @@ void WidgetTree_InitPagedGrid(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg
         var_v0 = 3;
     }
 
-    WidgetTree_InitAnimatedFrameVariantC(arg0->unk_44, 0, 0, (var_v0 << 1) + arg4, arg5 + 6, D_8850CF84);
-    arg0->unk_44->unk_00.unk_28 &= ~1;
-    WidgetTree_AppendChild(&arg0->unk_00.unk_00, &arg0->unk_44->unk_00.unk_00);
+    WidgetTree_InitAnimatedFrameVariantC(arg0->unk_44, 0, 0, (var_v0 << 1) + arg4, arg5 + 6, Color_Yellow);
+    arg0->unk_44->posX.unk_28 &= ~1;
+    WidgetTree_AppendChild(&arg0->posX.posX, &arg0->unk_44->posX.posX);
     ((func88506BFC)Memmap_GetFragmentVaddr(WidgetTree_SetPagedGridSelection))(arg0, 0);
 }
 
@@ -1368,17 +1368,17 @@ void WidgetTree_AllocateEntryFlags(unk_func_88200FA0_030_030* arg0, s32 arg1, Me
 void WidgetTree_ClearEntryFlags(unk_func_88200FA0_030_030* arg0) {
     s32 i;
 
-    for (i = 0; i < arg0->unk_2C->unk_04; i++) {
+    for (i = 0; i < arg0->unk_2C->rotation; i++) {
         arg0->unk_34[i] = 0;
     }
 }
 
 void WidgetTree_SetPagedGridState(unk_func_88200FA0_030_030* arg0, s32 arg1) {
-    arg0->unk_00.unk_2A = arg1;
-    arg0->unk_44->unk_00.unk_24(&arg0->unk_44->unk_00, arg1);
-    arg0->unk_44->unk_00.unk_28 &= ~1;
+    arg0->posX.unk_2A = arg1;
+    arg0->unk_44->posX.unk_24(&arg0->unk_44->posX, arg1);
+    arg0->unk_44->posX.unk_28 &= ~1;
     if (arg1 & 0x101) {
-        arg0->unk_44->unk_00.unk_28 |= 1;
+        arg0->unk_44->posX.unk_28 |= 1;
     }
 }
 
@@ -1390,7 +1390,7 @@ void WidgetTree_BindPagedGridData(unk_func_88200FA0_030_030_1CEA00* arg0, unk_fu
 }
 
 void WidgetTree_BindPagedGridPage(unk_func_88200FA0_030_030* arg0, unk_func_88200FA0_030_038* arg1, MemoryPool* arg2) {
-    WidgetTree_AllocateEntryFlags(arg0, arg1->unk_04, arg2);
+    WidgetTree_AllocateEntryFlags(arg0, arg1->rotation, arg2);
     WidgetTree_BindPagedGridData(arg0, arg1);
 }
 
@@ -1402,7 +1402,7 @@ void WidgetTree_BindPagedGridStridedData(unk_func_88200FA0_030_030* arg0, unk_fu
 }
 
 void WidgetTree_BindPagedGridStridedPage(unk_func_88200FA0_030_030* arg0, unk_func_8820BE14_06C* arg1, MemoryPool* arg2) {
-    WidgetTree_AllocateEntryFlags(arg0, arg1->unk_04, arg2);
+    WidgetTree_AllocateEntryFlags(arg0, arg1->rotation, arg2);
     WidgetTree_BindPagedGridStridedData(arg0, arg1);
 }
 
@@ -1421,11 +1421,11 @@ s32 WidgetTree_DrawPagedGrid(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2
     var_s5 = 0;
     var_s3 = 0;
     if (arg0->unk_2C != NULL) {
-        var_s2 = arg0->unk_2C->unk_00;
+        var_s2 = arg0->unk_2C->posX;
         if (arg0->unk_30 != 0) {
             var_s5 = arg0->unk_2C->unk_0C;
         }
-        var_s3 = arg0->unk_2C->unk_08;
+        var_s3 = arg0->unk_2C->RentalSlotAnimData_PosePhase;
     }
 
     for (i = 0; i < temp_lo; i++) {
@@ -1451,7 +1451,7 @@ s32 WidgetTree_DrawPagedGrid(unk_func_88200FA0_030_030* arg0, s32 arg1, s32 arg2
     return 0;
 }
 
-s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
+s32 List_HandleInput(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
     s32 sp5C;
     s32 sp58;
     s32 sp54;
@@ -1467,10 +1467,10 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
 
     var_t4 = 0;
     sp5C = 0;
-    if ((arg0->unk_2C == NULL) || (arg0->unk_2C->unk_08 == 0)) {
+    if ((arg0->unk_2C == NULL) || (arg0->unk_2C->RentalSlotAnimData_PosePhase == 0)) {
         return 0;
     }
-    sp48 = ((arg0->unk_2C->unk_08 + arg0->unk_48) - 1) / arg0->unk_48;
+    sp48 = ((arg0->unk_2C->RentalSlotAnimData_PosePhase + arg0->unk_48) - 1) / arg0->unk_48;
     sp58 = arg0->unk_38 % arg0->unk_48;
     sp54 = arg0->unk_38 / arg0->unk_48;
     sp24 = Input_GetRepeatedDPad() & 0xFFFF;
@@ -1486,7 +1486,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             var_a3 = arg0->unk_4C;
             while (j < arg0->unk_48) {
                 var_v0 = (arg0->unk_48 * var_t1) + var_a3;
-                if ((var_v0 < arg0->unk_2C->unk_08) && (!(arg0->unk_34[var_v0] & 4))) {
+                if ((var_v0 < arg0->unk_2C->RentalSlotAnimData_PosePhase) && (!(arg0->unk_34[var_v0] & 4))) {
                     var_t4 = 1;
                     break;
                 }
@@ -1504,7 +1504,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             }
         }
 
-        if ((arg0->unk_00.unk_28 & 0x200) && ((var_t4 == 0) || (sp54 < var_t1))) {
+        if ((arg0->posX.unk_28 & 0x200) && ((var_t4 == 0) || (sp54 < var_t1))) {
             sp5C = 8;
             var_t4 = 0;
         }
@@ -1519,7 +1519,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             var_a3 = arg0->unk_4C;
             while (j < arg0->unk_48) {
                 var_v0 = (arg0->unk_48 * var_t1) + var_a3;
-                if ((var_v0 < arg0->unk_2C->unk_08) && (!(arg0->unk_34[var_v0] & 4))) {
+                if ((var_v0 < arg0->unk_2C->RentalSlotAnimData_PosePhase) && (!(arg0->unk_34[var_v0] & 4))) {
                     var_t4 = 1;
                     break;
                 }
@@ -1537,7 +1537,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             }
         }
 
-        if ((arg0->unk_00.unk_28 & 0x200) && ((var_t4 == 0) || (var_t1 < sp54))) {
+        if ((arg0->posX.unk_28 & 0x200) && ((var_t4 == 0) || (var_t1 < sp54))) {
             sp5C = 8;
             var_t4 = 0;
         }
@@ -1551,7 +1551,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             var_t1 = arg0->unk_4E;
             for (i = 0; i < sp48; i++) {
                 var_v0 = (arg0->unk_48 * var_t1) + var_a3;
-                if ((var_v0 < arg0->unk_2C->unk_08) && (!(arg0->unk_34[var_v0] & 4))) {
+                if ((var_v0 < arg0->unk_2C->RentalSlotAnimData_PosePhase) && (!(arg0->unk_34[var_v0] & 4))) {
                     var_t4 = 1;
                     break;
                 }
@@ -1568,7 +1568,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             }
         }
 
-        if ((arg0->unk_00.unk_28 & 0x100) && ((var_t4 == 0) || (var_a3 < sp58))) {
+        if ((arg0->posX.unk_28 & 0x100) && ((var_t4 == 0) || (var_a3 < sp58))) {
             sp5C = 8;
             var_t4 = 0;
         }
@@ -1583,7 +1583,7 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             var_t1 = arg0->unk_4E;
             for (i = 0; i < sp48; i++) {
                 var_v0 = (arg0->unk_48 * var_t1) + var_a3;
-                if ((var_v0 < arg0->unk_2C->unk_08) && (!(arg0->unk_34[var_v0] & 4))) {
+                if ((var_v0 < arg0->unk_2C->RentalSlotAnimData_PosePhase) && (!(arg0->unk_34[var_v0] & 4))) {
                     var_t4 = 1;
                     break;
                 }
@@ -1600,15 +1600,15 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
             }
         }
 
-        if ((arg0->unk_00.unk_28 & 0x100) && ((var_t4 == 0) || (sp58 < var_a3))) {
+        if ((arg0->posX.unk_28 & 0x100) && ((var_t4 == 0) || (sp58 < var_a3))) {
             sp5C = 8;
             var_t4 = 0;
         }
     }
     if (var_t4 != 0) {
         arg0->unk_38 = (arg0->unk_48 * var_t1) + var_a3;
-        arg0->unk_44->unk_00.unk_10.unk_00 = ((arg0->unk_38 % arg0->unk_48) * arg0->unk_3C) + arg0->unk_50;
-        arg0->unk_44->unk_00.unk_10.unk_02 = ((arg0->unk_38 / arg0->unk_48) * arg0->unk_3E) + arg0->unk_52;
+        arg0->unk_44->posX.unk_10.posX = ((arg0->unk_38 % arg0->unk_48) * arg0->unk_3C) + arg0->unk_50;
+        arg0->unk_44->posX.unk_10.posY = ((arg0->unk_38 / arg0->unk_48) * arg0->unk_3E) + arg0->unk_52;
         if ((sp24 == 0x800) || (sp24 == 0x400)) {
             arg0->unk_4E = var_t1;
         } else {
@@ -1621,8 +1621,8 @@ s32 func_885065E0(unk_func_88200FA0_030_030* arg0, Controller* arg1) {
 
 void WidgetTree_SetPagedGridSelection(unk_func_88200FA0_030_030* arg0, s32 arg1) {
     arg0->unk_38 = arg1;
-    arg0->unk_44->unk_00.unk_10.unk_00 = ((arg1 % arg0->unk_48) * arg0->unk_3C) + arg0->unk_50;
-    arg0->unk_44->unk_00.unk_10.unk_02 = ((arg0->unk_38 / arg0->unk_48) * arg0->unk_3E) + arg0->unk_52;
+    arg0->unk_44->posX.unk_10.posX = ((arg1 % arg0->unk_48) * arg0->unk_3C) + arg0->unk_50;
+    arg0->unk_44->posX.unk_10.posY = ((arg0->unk_38 / arg0->unk_48) * arg0->unk_3E) + arg0->unk_52;
     arg0->unk_4C = arg0->unk_38 % arg0->unk_48;
     arg0->unk_4E = arg0->unk_38 / arg0->unk_48;
 }
@@ -1630,16 +1630,16 @@ void WidgetTree_SetPagedGridSelection(unk_func_88200FA0_030_030* arg0, s32 arg1)
 s32 WidgetTree_FindSelectableGridEntry(unk_func_88200FA0_030_030* arg0) {
     s32 var_a1 = arg0->unk_38;
 
-    if (arg0->unk_38 < arg0->unk_2C->unk_08) {
+    if (arg0->unk_38 < arg0->unk_2C->RentalSlotAnimData_PosePhase) {
         while (arg0->unk_34[var_a1] & 4) {
             var_a1++;
-            if (var_a1 >= arg0->unk_2C->unk_08) {
+            if (var_a1 >= arg0->unk_2C->RentalSlotAnimData_PosePhase) {
                 break;
             }
         }
     }
 
-    if (var_a1 < arg0->unk_2C->unk_08) {
+    if (var_a1 < arg0->unk_2C->RentalSlotAnimData_PosePhase) {
         WidgetTree_SetPagedGridSelection(arg0, var_a1);
         return var_a1;
     }
@@ -1664,15 +1664,15 @@ s32 WidgetTree_FindSelectableGridEntry(unk_func_88200FA0_030_030* arg0) {
 
 void WidgetTree_InitScrollableGrid(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2, unk_func_88200FA0_030_030_040 arg3, s32 arg4,
                    s32 arg5, s32 arg6, MemoryPool* arg7) {
-    WidgetTree_InitPagedGrid(&arg0->unk_00, arg1, arg2, arg3, arg4, arg5, arg6, 1, arg7);
-    arg0->unk_00.unk_00.unk_1C = WidgetTree_UpdateScrollableGridScroll;
-    arg0->unk_00.unk_00.unk_18 = func_8850734C;
-    arg0->unk_00.unk_00.unk_20 = WidgetTree_HandleScrollableGridInput;
-    arg0->unk_00.unk_4A = arg6;
+    WidgetTree_InitPagedGrid(&arg0->posX, arg1, arg2, arg3, arg4, arg5, arg6, 1, arg7);
+    arg0->posX.posX.unk_1C = WidgetTree_UpdateScrollableGridScroll;
+    arg0->posX.posX.unk_18 = ScrollListFragment_Draw;
+    arg0->posX.posX.unk_20 = WidgetTree_HandleScrollableGridInput;
+    arg0->posX.unk_4A = arg6;
     arg0->unk_54 = arg0->unk_56 = 0;
-    arg0->unk_64 = (arg0->unk_00.unk_3E * 4) / 10;
-    arg0->unk_68 = (arg0->unk_00.unk_3E * arg0->unk_00.unk_4A * 2) / 10;
-    arg0->unk_00.unk_38 = 0;
+    arg0->unk_64 = (arg0->posX.unk_3E * 4) / 10;
+    arg0->unk_68 = (arg0->posX.unk_3E * arg0->posX.unk_4A * 2) / 10;
+    arg0->posX.unk_38 = 0;
     arg0->unk_5C = 0;
     arg0->unk_60 = 0;
     arg0->unk_58 = 0;
@@ -1680,34 +1680,34 @@ void WidgetTree_InitScrollableGrid(unk_func_8821421C_038_034* arg0, s32 arg1, s3
 }
 
 void WidgetTree_BindScrollableGridData(unk_func_8820BE14_02C_038* arg0, unk_func_88200FA0_030_038* arg1) {
-    arg0->unk_00.unk_2C = arg1;
-    arg0->unk_00.unk_30 = 0;
-    arg0->unk_00.unk_38 = 0;
+    arg0->posX.unk_2C = arg1;
+    arg0->posX.unk_30 = 0;
+    arg0->posX.unk_38 = 0;
     arg0->unk_5C = 0;
     arg0->unk_60 = 0;
     arg0->unk_58 = 0;
     arg0->unk_6C = 0;
-    WidgetTree_ClearEntryFlags(&arg0->unk_00);
+    WidgetTree_ClearEntryFlags(&arg0->posX);
 }
 
 void WidgetTree_BindScrollableGridPage(unk_func_8830867C_02C_034* arg0, unk_func_88200FA0_030_038* arg1, MemoryPool* arg2) {
-    WidgetTree_AllocateEntryFlags(arg0, arg1->unk_04, arg2);
+    WidgetTree_AllocateEntryFlags(arg0, arg1->rotation, arg2);
     WidgetTree_BindScrollableGridData(arg0, arg1);
 }
 
 void WidgetTree_BindScrollableGridStridedData(unk_func_8821421C_038_034* arg0, unk_func_8821421C_038_050** arg1) {
-    arg0->unk_00.unk_2C = arg1;
-    arg0->unk_00.unk_30 = 1;
-    arg0->unk_00.unk_38 = 0;
+    arg0->posX.unk_2C = arg1;
+    arg0->posX.unk_30 = 1;
+    arg0->posX.unk_38 = 0;
     arg0->unk_5C = 0;
     arg0->unk_60 = 0;
     arg0->unk_58 = 0;
     arg0->unk_6C = 0;
-    WidgetTree_ClearEntryFlags(&arg0->unk_00);
+    WidgetTree_ClearEntryFlags(&arg0->posX);
 }
 
 void WidgetTree_BindScrollableGridStridedPage(unk_func_8821421C_038_034* arg0, unk_func_8830867C_03C_0D0* arg1, MemoryPool* arg2) {
-    WidgetTree_AllocateEntryFlags(&arg0->unk_00, arg1->unk_04, arg2);
+    WidgetTree_AllocateEntryFlags(&arg0->posX, arg1->rotation, arg2);
     WidgetTree_BindScrollableGridStridedData(arg0, arg1);
 }
 
@@ -1718,7 +1718,7 @@ void WidgetTree_ClampScrollableGridTop(unk_func_8820BE14_02C_038* arg0) {
 }
 
 void WidgetTree_ClampScrollableGridBottom(unk_func_8820BE14_02C_038* arg0) {
-    s32 temp_v0 = (arg0->unk_5C - (arg0->unk_00.unk_3E * arg0->unk_00.unk_4A)) + 1;
+    s32 temp_v0 = (arg0->unk_5C - (arg0->posX.unk_3E * arg0->posX.unk_4A)) + 1;
 
     if (arg0->unk_58 < temp_v0) {
         arg0->unk_58 = temp_v0;
@@ -1737,7 +1737,7 @@ s32 WidgetTree_UpdateScrollableGridScroll(unk_func_8821421C_038_034* arg0) {
 
     if (arg0->unk_56 & 0x800) {
         if (!(arg0->unk_54 & 0x800)) {
-            sp24 = arg0->unk_00.unk_38 * arg0->unk_00.unk_3E;
+            sp24 = arg0->posX.unk_38 * arg0->posX.unk_3E;
             temp_a3 = arg0->unk_5C - sp24;
             arg0->unk_5C -= (temp_a3 < arg0->unk_64) ? temp_a3 : arg0->unk_64;
             WidgetTree_ClampScrollableGridTop(arg0);
@@ -1747,13 +1747,13 @@ s32 WidgetTree_UpdateScrollableGridScroll(unk_func_8821421C_038_034* arg0) {
         }
     } else if (arg0->unk_56 & 0x400) {
         if (!(arg0->unk_54 & 0x400)) {
-            sp1C = ((arg0->unk_00.unk_38 + 1) * arg0->unk_00.unk_3E) - 1;
+            sp1C = ((arg0->posX.unk_38 + 1) * arg0->posX.unk_3E) - 1;
             temp_a3_2 = sp1C - arg0->unk_5C;
             arg0->unk_5C += (temp_a3_2 < arg0->unk_64) ? temp_a3_2 : arg0->unk_64;
             WidgetTree_ClampScrollableGridBottom(arg0);
             if (sp1C == arg0->unk_5C) {
                 arg0->unk_56 &= ~0x400;
-                arg0->unk_5C = (arg0->unk_5C - arg0->unk_00.unk_3E) + 1;
+                arg0->unk_5C = (arg0->unk_5C - arg0->posX.unk_3E) + 1;
             }
         }
     } else if (arg0->unk_56 & 0x200) {
@@ -1762,14 +1762,14 @@ s32 WidgetTree_UpdateScrollableGridScroll(unk_func_8821421C_038_034* arg0) {
             var_v1 = (temp_a2_2 < arg0->unk_68) ? temp_a2_2 : arg0->unk_68;
             arg0->unk_5C -= var_v1;
             arg0->unk_58 -= (arg0->unk_58 < var_v1) ? arg0->unk_58 : var_v1;
-            arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
+            arg0->posX.unk_38 = arg0->unk_5C / arg0->posX.unk_3E;
             if (arg0->unk_60 == arg0->unk_5C) {
                 arg0->unk_56 &= ~0x200;
             }
         }
     } else if ((arg0->unk_56 & 0x100) && !(arg0->unk_54 & 0x100)) {
-        s32 tmp = arg0->unk_00.unk_3E * arg0->unk_00.unk_2C->unk_08;
-        s32 tmp2 = arg0->unk_00.unk_3E * arg0->unk_00.unk_4A;
+        s32 tmp = arg0->posX.unk_3E * arg0->posX.unk_2C->RentalSlotAnimData_PosePhase;
+        s32 tmp2 = arg0->posX.unk_3E * arg0->posX.unk_4A;
 
         temp_a2_4 = arg0->unk_60 - arg0->unk_5C;
 
@@ -1783,7 +1783,7 @@ s32 WidgetTree_UpdateScrollableGridScroll(unk_func_8821421C_038_034* arg0) {
         }
 
         arg0->unk_58 += (var_v1 < var_a3) ? var_v1 : var_a3;
-        arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
+        arg0->posX.unk_38 = arg0->unk_5C / arg0->posX.unk_3E;
         if (arg0->unk_60 == arg0->unk_5C) {
             arg0->unk_56 &= ~0x100;
         }
@@ -1792,14 +1792,14 @@ s32 WidgetTree_UpdateScrollableGridScroll(unk_func_8821421C_038_034* arg0) {
     arg0->unk_54 = 0;
     var_v1 = arg0->unk_5C - arg0->unk_58;
     if (arg0->unk_56 & 0x400) {
-        var_v1 = (var_v1 - arg0->unk_00.unk_3E) + 1;
+        var_v1 = (var_v1 - arg0->posX.unk_3E) + 1;
     }
-    arg0->unk_00.unk_44->unk_00.unk_10.unk_00 = arg0->unk_00.unk_50;
-    arg0->unk_00.unk_44->unk_00.unk_10.unk_02 = arg0->unk_00.unk_52 + var_v1;
+    arg0->posX.unk_44->posX.unk_10.posX = arg0->posX.unk_50;
+    arg0->posX.unk_44->posX.unk_10.posY = arg0->posX.unk_52 + var_v1;
     return 0;
 }
 
-s32 func_8850734C(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
+s32 ScrollListFragment_Draw(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
     s16 temp_v0_2;
     s32 temp_a0;
     s32 temp_lo;
@@ -1813,43 +1813,43 @@ s32 func_8850734C(unk_func_8821421C_038_034* arg0, s32 arg1, s32 arg2) {
     void* var_s3;
     void* var_a2;
 
-    temp_lo = arg0->unk_00.unk_3E * arg0->unk_00.unk_4A;
+    temp_lo = arg0->posX.unk_3E * arg0->posX.unk_4A;
     var_s3 = NULL;
     var_s6 = 0;
     var_s4 = 0;
 
-    if (arg0->unk_00.unk_2C != NULL) {
-        var_s3 = arg0->unk_00.unk_2C->unk_00;
-        if (arg0->unk_00.unk_30 != 0) {
-            var_s6 = arg0->unk_00.unk_2C->unk_0C;
+    if (arg0->posX.unk_2C != NULL) {
+        var_s3 = arg0->posX.unk_2C->posX;
+        if (arg0->posX.unk_30 != 0) {
+            var_s6 = arg0->posX.unk_2C->unk_0C;
         }
-        var_s4 = arg0->unk_00.unk_2C->unk_08;
+        var_s4 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase;
     }
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetScissorFrac(gDisplayListHead++, G_SC_NON_INTERLACE, 0, arg2 * 4.0f, 0x0A00, (arg2 + temp_lo) * 4.0f);
 
-    var_s2 = arg2 - (arg0->unk_58 % arg0->unk_00.unk_3E);
-    var_s0 = arg0->unk_58 / arg0->unk_00.unk_3E;
-    temp_s5 = (((arg0->unk_58 + temp_lo) - 1) / arg0->unk_00.unk_3E) + 1;
+    var_s2 = arg2 - (arg0->unk_58 % arg0->posX.unk_3E);
+    var_s0 = arg0->unk_58 / arg0->posX.unk_3E;
+    temp_s5 = (((arg0->unk_58 + temp_lo) - 1) / arg0->posX.unk_3E) + 1;
 
     while (var_s0 < temp_s5) {
         var_a2 = NULL;
         var_v0 = 0;
         if (var_s0 < var_s4) {
-            if (arg0->unk_00.unk_30 != 0) {
+            if (arg0->posX.unk_30 != 0) {
                 var_a2 = &((s8*)var_s3)[var_s6 * var_s0];
             } else {
                 var_a2 = ((s32*)var_s3)[var_s0];
             }
 
-            var_v0 = arg0->unk_00.unk_34[var_s0];
-            if (var_s0 == arg0->unk_00.unk_38) {
+            var_v0 = arg0->posX.unk_34[var_s0];
+            if (var_s0 == arg0->posX.unk_38) {
                 var_v0 |= 1;
             }
         }
-        arg0->unk_00.unk_40(arg1, var_s2, var_a2, var_s0, var_v0, arg0);
-        var_s2 += arg0->unk_00.unk_3E;
+        arg0->posX.unk_40(arg1, var_s2, var_a2, var_s0, var_v0, arg0);
+        var_s2 += arg0->posX.unk_3E;
         var_s0++;
     }
 
@@ -1865,7 +1865,7 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
     s32 var_t4;
 
     temp_t3 = arg0->unk_60;
-    temp_t0 = arg0->unk_00.unk_38;
+    temp_t0 = arg0->posX.unk_38;
     var_t2 = 0;
     var_t4 = 0;
 
@@ -1885,7 +1885,7 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
     }
     // clang-format on
 
-    if ((arg0->unk_00.unk_2C == NULL) || !(arg0->unk_00.unk_2C->unk_08)) {
+    if ((arg0->posX.unk_2C == NULL) || !(arg0->posX.unk_2C->RentalSlotAnimData_PosePhase)) {
         return (arg1->buttonPressed & 0xF00) ? 8 : 0;
     }
 
@@ -1896,16 +1896,16 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
         arg0->unk_56 |= 0x800;
         arg0->unk_5C -= (arg0->unk_5C < arg0->unk_64) ? arg0->unk_5C : arg0->unk_64;
         WidgetTree_ClampScrollableGridTop(arg0);
-        arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
-        if (temp_t0 != arg0->unk_00.unk_38) {
+        arg0->posX.unk_38 = arg0->unk_5C / arg0->posX.unk_3E;
+        if (temp_t0 != arg0->posX.unk_38) {
             var_t2 = 0x80000000;
         }
     } else if ((arg0->unk_54 & 0x400) && ((arg0->unk_56 & ~0x400) == 0)) {
         s32 temp_a3_2;
-        s32 temp_lo_2 = arg0->unk_00.unk_3E * arg0->unk_00.unk_2C->unk_08;
+        s32 temp_lo_2 = arg0->posX.unk_3E * arg0->posX.unk_2C->RentalSlotAnimData_PosePhase;
 
         if (arg0->unk_56 == 0) {
-            arg0->unk_5C = (arg0->unk_5C + arg0->unk_00.unk_3E) - 1;
+            arg0->unk_5C = (arg0->unk_5C + arg0->posX.unk_3E) - 1;
             if (temp_lo_2 == (arg0->unk_5C + 1)) {
                 var_t4 = 1;
             }
@@ -1914,12 +1914,12 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
         arg0->unk_56 |= 0x400;
         arg0->unk_5C += (temp_a3_2 < arg0->unk_64) ? temp_a3_2 : arg0->unk_64;
         WidgetTree_ClampScrollableGridBottom(arg0);
-        arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
-        if (temp_t0 != arg0->unk_00.unk_38) {
+        arg0->posX.unk_38 = arg0->unk_5C / arg0->posX.unk_3E;
+        if (temp_t0 != arg0->posX.unk_38) {
             var_t2 = 0x80000000;
         }
     } else if ((arg0->unk_54 & 0x200) && ((arg0->unk_56 & ~0x200) == 0)) {
-        s32 temp_lo_2 = arg0->unk_00.unk_3E * arg0->unk_00.unk_4A;
+        s32 temp_lo_2 = arg0->posX.unk_3E * arg0->posX.unk_4A;
 
         if (arg0->unk_56 == 0) {
             arg0->unk_60 = arg0->unk_5C;
@@ -1932,16 +1932,16 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
         if (arg0->unk_5C < arg0->unk_60) {
             arg0->unk_60 -= (temp_lo_2 < arg0->unk_60) ? temp_lo_2 : arg0->unk_60;
         }
-        arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
+        arg0->posX.unk_38 = arg0->unk_5C / arg0->posX.unk_3E;
         arg0->unk_58 -= (arg0->unk_58 < arg0->unk_68) ? arg0->unk_58 : arg0->unk_68;
         if (temp_t3 != arg0->unk_60) {
             var_t2 |= 0x80000000;
         }
     } else if (arg0->unk_54 & 0x100) {
         if (!(arg0->unk_56 & ~0x100)) {
-            s32 temp_lo_5 = arg0->unk_00.unk_3E * arg0->unk_00.unk_2C->unk_08;
-            s32 temp_lo_6 = arg0->unk_00.unk_3E * arg0->unk_00.unk_4A;
-            s32 temp_a2 = (temp_lo_5 - arg0->unk_5C) - arg0->unk_00.unk_3E;
+            s32 temp_lo_5 = arg0->posX.unk_3E * arg0->posX.unk_2C->RentalSlotAnimData_PosePhase;
+            s32 temp_lo_6 = arg0->posX.unk_3E * arg0->posX.unk_4A;
+            s32 temp_a2 = (temp_lo_5 - arg0->unk_5C) - arg0->posX.unk_3E;
             s32 var_a2;
 
             if (arg0->unk_56 == 0) {
@@ -1953,10 +1953,10 @@ s32 WidgetTree_HandleScrollableGridInput(unk_func_8821421C_038_034* arg0, Contro
             arg0->unk_56 |= 0x100;
             arg0->unk_5C += (temp_a2 < arg0->unk_68) ? temp_a2 : arg0->unk_68;
             if (arg0->unk_60 < arg0->unk_5C) {
-                var_a2 = (temp_lo_5 - arg0->unk_60) - arg0->unk_00.unk_3E;
+                var_a2 = (temp_lo_5 - arg0->unk_60) - arg0->posX.unk_3E;
                 arg0->unk_60 += (temp_lo_6 < var_a2) ? temp_lo_6 : var_a2;
             }
-            arg0->unk_00.unk_38 = arg0->unk_5C / arg0->unk_00.unk_3E;
+            arg0->posX.unk_38 = arg0->unk_5C / arg0->posX.unk_3E;
             var_a2 = (temp_lo_5 - arg0->unk_58) - temp_lo_6;
             if (var_a2 <= 0) {
                 var_a2 = 0;
@@ -1985,24 +1985,24 @@ void WidgetTree_SetScrollableGridIndex(unk_func_8820BE14_02C_038* arg0, s32 arg1
     s32 var_a3;
 
     arg0->unk_6C = 0;
-    arg0->unk_5C = arg0->unk_00.unk_3E * arg1;
-    arg0->unk_00.unk_38 = arg1;
+    arg0->unk_5C = arg0->posX.unk_3E * arg1;
+    arg0->posX.unk_38 = arg1;
 
     if (arg0->unk_5C < arg0->unk_58) {
         arg0->unk_58 = arg0->unk_5C;
         return;
     }
 
-    temp_v1 = (arg0->unk_5C + arg0->unk_00.unk_3E) - (arg0->unk_00.unk_4A * arg0->unk_00.unk_3E);
+    temp_v1 = (arg0->unk_5C + arg0->posX.unk_3E) - (arg0->posX.unk_4A * arg0->posX.unk_3E);
     if (arg0->unk_58 < temp_v1) {
         arg0->unk_58 = temp_v1;
         return;
     }
 
-    if (arg0->unk_00.unk_4A >= arg0->unk_00.unk_2C->unk_08) {
+    if (arg0->posX.unk_4A >= arg0->posX.unk_2C->RentalSlotAnimData_PosePhase) {
         var_a3 = 0;
     } else {
-        var_a3 = (arg0->unk_00.unk_2C->unk_08 - arg0->unk_00.unk_4A) * arg0->unk_00.unk_3E;
+        var_a3 = (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - arg0->posX.unk_4A) * arg0->posX.unk_3E;
     }
 
     if (var_a3 < arg0->unk_58) {
@@ -2017,14 +2017,14 @@ void WidgetTree_SetScrollableGridIndexPreserveScroll(unk_func_8820BE14_02C_038* 
     s32 var_v0;
 
     arg0->unk_6C = 0;
-    arg0->unk_00.unk_38 = arg1;
+    arg0->posX.unk_38 = arg1;
     temp_v0 = arg0->unk_5C - arg0->unk_58;
-    arg0->unk_5C = arg0->unk_00.unk_3E * arg1;
+    arg0->unk_5C = arg0->posX.unk_3E * arg1;
 
-    temp_a2 = arg0->unk_00.unk_2C->unk_08 - arg0->unk_00.unk_4A;
+    temp_a2 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - arg0->posX.unk_4A;
 
     var_a1 = temp_a2 = (temp_a2 > 0) ? temp_a2 : 0;
-    temp_a2 *= arg0->unk_00.unk_3E;
+    temp_a2 *= arg0->posX.unk_3E;
 
     var_v0 = (arg0->unk_5C - temp_v0 > 0) ? arg0->unk_5C - temp_v0 : 0;
 
@@ -2042,19 +2042,19 @@ void WidgetTree_SetPagedGridSelectionWithOffset(unk_func_8830867C_02C_034* arg0,
     s32 temp_v1;
     s32 var_v0_2;
 
-    if (arg0->unk_00.unk_2C->unk_08 != 0) {
+    if (arg0->posX.unk_2C->RentalSlotAnimData_PosePhase != 0) {
         arg0->unk_6C = 0;
-        temp_v1 = arg0->unk_00.unk_2C->unk_08 - 1;
+        temp_v1 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - 1;
         if (arg1 >= temp_v1) {
             arg1 = temp_v1;
         }
-        arg0->unk_00.unk_38 = arg1;
-        arg0->unk_5C = arg0->unk_00.unk_3E * arg1;
+        arg0->posX.unk_38 = arg1;
+        arg0->unk_5C = arg0->posX.unk_3E * arg1;
 
-        temp_a2 = arg0->unk_00.unk_2C->unk_08 - arg0->unk_00.unk_4A;
-        temp_lo = ((temp_a2 > 0) ? temp_a2 : 0) * arg0->unk_00.unk_3E;
+        temp_a2 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - arg0->posX.unk_4A;
+        temp_lo = ((temp_a2 > 0) ? temp_a2 : 0) * arg0->posX.unk_3E;
 
-        temp_a2_2 = arg0->unk_5C - (arg2 * arg0->unk_00.unk_3E);
+        temp_a2_2 = arg0->unk_5C - (arg2 * arg0->posX.unk_3E);
         if (temp_a2_2 > 0) {
             var_v0_2 = temp_a2_2;
         } else {
@@ -2070,28 +2070,28 @@ void WidgetTree_SetPagedGridSelectionWithOffset(unk_func_8830867C_02C_034* arg0,
 }
 
 void WidgetTree_SetScrollableGridEntryText(unk_func_8820BE14_02C_038* arg0, unk_func_88205880_00D0* arg1) {
-    PointerList_Insert(arg0->unk_00.unk_2C, arg1, arg0->unk_00.unk_38);
+    PointerList_Insert(arg0->posX.unk_2C, arg1, arg0->posX.unk_38);
 }
 
 void WidgetTree_RemoveScrollableGridEntry(unk_func_8820BE14_02C_038* arg0) {
     s32 var_a1;
 
-    PointerList_Remove(arg0->unk_00.unk_2C, arg0->unk_00.unk_38);
-    var_a1 = arg0->unk_00.unk_38;
-    if ((var_a1 >= arg0->unk_00.unk_2C->unk_08) && (var_a1 > 0)) {
-        var_a1 = arg0->unk_00.unk_2C->unk_08 - 1;
-        arg0->unk_00.unk_38 = var_a1;
+    PointerList_Remove(arg0->posX.unk_2C, arg0->posX.unk_38);
+    var_a1 = arg0->posX.unk_38;
+    if ((var_a1 >= arg0->posX.unk_2C->RentalSlotAnimData_PosePhase) && (var_a1 > 0)) {
+        var_a1 = arg0->posX.unk_2C->RentalSlotAnimData_PosePhase - 1;
+        arg0->posX.unk_38 = var_a1;
     }
     WidgetTree_SetScrollableGridIndexPreserveScroll(arg0, var_a1);
 }
 
 void WidgetTree_InitScrollableGridScrollbar(unk_func_88507D4C* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, unk_func_8820BE14_02C_038* arg5) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_88507D4C));
-    arg0->unk_00.unk_18 = WidgetTree_DrawScrollableGridScrollbar;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = 0x10;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88507D4C));
+    arg0->posX.unk_18 = WidgetTree_DrawScrollableGridScrollbar;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = 0x10;
     arg0->unk_30 = arg4;
     arg0->unk_2C = arg5;
 }
@@ -2102,8 +2102,8 @@ s32 WidgetTree_DrawScrollableGridScrollbar(unk_func_88507D4C* arg0, s32 arg1, s3
     s32 w = 8;
     s32 h = 16;
 
-    sp12C = arg0->unk_2C->unk_00.unk_3E * arg0->unk_2C->unk_00.unk_4A;
-    temp_s0 = ((arg0->unk_00.unk_14.unk_00 / 2) + arg1) - 9;
+    sp12C = arg0->unk_2C->posX.unk_3E * arg0->unk_2C->posX.unk_4A;
+    temp_s0 = ((arg0->posX.unk_14.posX / 2) + arg1) - 9;
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -2114,7 +2114,7 @@ s32 WidgetTree_DrawScrollableGridScrollbar(unk_func_88507D4C* arg0, s32 arg1, s3
 
     gDPLoadTextureBlock(gDisplayListHead++, D_40022E0, G_IM_FMT_I, G_IM_SIZ_8b, w, h, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg0->unk_00.unk_14.unk_00 + arg1) << 2,
+    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg0->posX.unk_14.posX + arg1) << 2,
                         (arg2 + 0x10) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
     gDPPipeSync(gDisplayListHead++);
@@ -2138,8 +2138,8 @@ s32 WidgetTree_DrawScrollableGridScrollbar(unk_func_88507D4C* arg0, s32 arg1, s3
     } else {
         s32 var_t5 = 0;
 
-        if ((arg0->unk_2C->unk_00.unk_2C != NULL) &&
-            ((arg0->unk_2C->unk_58 + sp12C) < (arg0->unk_2C->unk_00.unk_3E * arg0->unk_2C->unk_00.unk_2C->unk_08))) {
+        if ((arg0->unk_2C->posX.unk_2C != NULL) &&
+            ((arg0->unk_2C->unk_58 + sp12C) < (arg0->unk_2C->posX.unk_3E * arg0->unk_2C->posX.unk_2C->RentalSlotAnimData_PosePhase))) {
             var_t5 = 1;
         }
 
@@ -2162,15 +2162,15 @@ s32 WidgetTree_DrawScrollableGridScrollbar(unk_func_88507D4C* arg0, s32 arg1, s3
 }
 
 void WidgetTree_InitTextLabel(unk_func_8850878C* arg0, s32 arg1, s32 arg2, char* arg3, s32 arg4) {
-    Color_RGBA8 D_8850CF88 = { 240, 240, 240, 255 };
+    Color_RGBA8 Color_TextDefault = { 240, 240, 240, 255 };
 
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_8850878C));
-    arg0->unk_00.unk_18 = WidgetTree_DrawTextLabel;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    arg0->posX.unk_18 = WidgetTree_DrawTextLabel;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
     arg0->unk_40 = arg3;
     arg0->unk_2C = arg4;
-    arg0->unk_30 = D_8850CF88;
+    arg0->unk_30 = Color_TextDefault;
     arg0->unk_38 = 0;
     arg0->unk_3C = 0x28;
     arg0->unk_44 = 0;
@@ -2197,14 +2197,14 @@ s32 WidgetTree_DrawTextLabel(unk_func_8850878C* arg0, s32 arg1, s32 arg2) {
 }
 
 void WidgetTree_InitSlideTransition(unk_func_885088F4* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_885088F4));
-    arg0->unk_00.unk_1C = WidgetTree_UpdateSlideTransition;
-    arg0->unk_00.unk_18 = WidgetTree_DrawSlideTransition;
-    arg0->unk_00.unk_10.unk_00 = 0;
-    arg0->unk_00.unk_14.unk_00 = 0x280;
-    arg0->unk_00.unk_14.unk_02 = arg1;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_885088F4));
+    arg0->posX.unk_1C = WidgetTree_UpdateSlideTransition;
+    arg0->posX.unk_18 = WidgetTree_DrawSlideTransition;
+    arg0->posX.unk_10.posX = 0;
+    arg0->posX.unk_14.posX = 0x280;
+    arg0->posX.unk_14.posY = arg1;
     arg0->unk_2C = -1;
-    arg0->unk_00.unk_10.unk_02 = -arg0->unk_00.unk_14.unk_02;
+    arg0->posX.unk_10.posY = -arg0->posX.unk_14.posY;
     arg0->unk_30 = 0;
     arg0->unk_34 = arg2;
     arg0->unk_38 = arg3;
@@ -2216,9 +2216,9 @@ s32 WidgetTree_UpdateSlideTransition(unk_func_885088F4* arg0) {
         arg0->unk_30 = 1;
     } else if (arg0->unk_2C >= 0x10) {
         arg0->unk_2C = -1;
-        arg0->unk_00.unk_10.unk_02 = -arg0->unk_00.unk_14.unk_02;
+        arg0->posX.unk_10.posY = -arg0->posX.unk_14.posY;
         arg0->unk_30 = 0;
-        arg0->unk_00.unk_28 &= ~1;
+        arg0->posX.unk_28 &= ~1;
     } else if (arg0->unk_2C >= 0xA) {
         arg0->unk_30 = 4;
     } else {
@@ -2233,21 +2233,21 @@ s32 WidgetTree_UpdateSlideTransition(unk_func_885088F4* arg0) {
     if (arg0->unk_30 & 4) {
         s32 tmp = 0xF - arg0->unk_2C;
 
-        arg0->unk_00.unk_10.unk_02 = ((arg0->unk_00.unk_14.unk_02 * tmp) / 6) - arg0->unk_00.unk_14.unk_02;
+        arg0->posX.unk_10.posY = ((arg0->posX.unk_14.posY * tmp) / 6) - arg0->posX.unk_14.posY;
     } else if (arg0->unk_30 & 1) {
         s32 tmp = arg0->unk_2C;
 
-        arg0->unk_00.unk_10.unk_02 = ((arg0->unk_00.unk_14.unk_02 * tmp) / 6) - arg0->unk_00.unk_14.unk_02;
+        arg0->posX.unk_10.posY = ((arg0->posX.unk_14.posY * tmp) / 6) - arg0->posX.unk_14.posY;
     } else {
-        arg0->unk_00.unk_10.unk_02 = 0;
+        arg0->posX.unk_10.posY = 0;
     }
     return 0;
 }
 
 s32 WidgetTree_DrawSlideTransition(unk_func_885088F4* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_8850CF8C = { 0x38, 0x38, 0x68, 0xFF };
+    static Color_RGBA8 Color_SlideTransitionFill = { 0x38, 0x38, 0x68, 0xFF };
 
-    u32 color = RGBA5551(D_8850CF8C.r, D_8850CF8C.g, D_8850CF8C.b, 1);
+    u32 color = RGBA5551(Color_SlideTransitionFill.r, Color_SlideTransitionFill.g, Color_SlideTransitionFill.b, 1);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_FILL);
@@ -2255,14 +2255,14 @@ s32 WidgetTree_DrawSlideTransition(unk_func_885088F4* arg0, s32 arg1, s32 arg2) 
     gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
 
     gDPFillRectangle(gDisplayListHead++, CLAMP_MAX(arg1, 0), CLAMP_MAX(arg2, 0), CLAMP_MAX(arg1 + 0x27F, 0),
-                     CLAMP_MAX((arg0->unk_00.unk_14.unk_02 + arg2) - 0x16, 0));
+                     CLAMP_MAX((arg0->posX.unk_14.posY + arg2) - 0x16, 0));
 
-    gDPFillRectangle(gDisplayListHead++, CLAMP_MAX(arg1, 0), CLAMP_MAX((arg0->unk_00.unk_14.unk_02 + arg2) - 0x15, 0),
-                     CLAMP_MAX((arg0->unk_34 + arg1) - 1, 0), CLAMP_MAX((arg0->unk_00.unk_14.unk_02 + arg2) - 6, 0));
+    gDPFillRectangle(gDisplayListHead++, CLAMP_MAX(arg1, 0), CLAMP_MAX((arg0->posX.unk_14.posY + arg2) - 0x15, 0),
+                     CLAMP_MAX((arg0->unk_34 + arg1) - 1, 0), CLAMP_MAX((arg0->posX.unk_14.posY + arg2) - 6, 0));
 
     gDPFillRectangle(gDisplayListHead++, CLAMP_MAX((arg1 - arg0->unk_38) + 0x280, 0),
-                     CLAMP_MAX((arg0->unk_00.unk_14.unk_02 + arg2) - 0x15, 0), CLAMP_MAX(arg1 + 0x27F, 0),
-                     CLAMP_MAX((arg0->unk_00.unk_14.unk_02 + arg2) - 6, 0));
+                     CLAMP_MAX((arg0->posX.unk_14.posY + arg2) - 0x15, 0), CLAMP_MAX(arg1 + 0x27F, 0),
+                     CLAMP_MAX((arg0->posX.unk_14.posY + arg2) - 6, 0));
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_1CYCLE);
@@ -2270,22 +2270,22 @@ s32 WidgetTree_DrawSlideTransition(unk_func_885088F4* arg0, s32 arg1, s32 arg2) 
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
-    gDPSetPrimColor(gDisplayListHead++, 0, 0, D_8850CF8C.r, D_8850CF8C.g, D_8850CF8C.b, D_8850CF8C.a);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, Color_SlideTransitionFill.r, Color_SlideTransitionFill.g, Color_SlideTransitionFill.b, Color_SlideTransitionFill.a);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4007948, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 5, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSPScisTextureRectangle(gDisplayListHead++, arg1 << 2, ((arg0->unk_00.unk_14.unk_02 + arg2) - 5) << 2,
-                            (arg0->unk_34 + arg1) << 2, (arg0->unk_00.unk_14.unk_02 + arg2) << 2, G_TX_RENDERTILE, 0, 0,
+    gSPScisTextureRectangle(gDisplayListHead++, arg1 << 2, ((arg0->posX.unk_14.posY + arg2) - 5) << 2,
+                            (arg0->unk_34 + arg1) << 2, (arg0->posX.unk_14.posY + arg2) << 2, G_TX_RENDERTILE, 0, 0,
                             0x400, 0x400);
 
     gSPScisTextureRectangle(gDisplayListHead++, ((arg1 - arg0->unk_38) + 0x280) << 2,
-                            ((arg0->unk_00.unk_14.unk_02 + arg2) - 5) << 2, (arg1 + 0x280) << 2,
-                            (arg0->unk_00.unk_14.unk_02 + arg2) << 2, G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
+                            ((arg0->posX.unk_14.posY + arg2) - 5) << 2, (arg1 + 0x280) << 2,
+                            (arg0->posX.unk_14.posY + arg2) << 2, G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
 
     gSPScisTextureRectangle(gDisplayListHead++, (arg0->unk_34 + arg1 + 0x10) << 2,
-                            ((arg0->unk_00.unk_14.unk_02 + arg2) - 0x15) << 2, ((arg1 - arg0->unk_38) + 0x270) << 2,
-                            ((arg0->unk_00.unk_14.unk_02 + arg2) - 0x10) << 2, G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
+                            ((arg0->posX.unk_14.posY + arg2) - 0x15) << 2, ((arg1 - arg0->unk_38) + 0x270) << 2,
+                            ((arg0->posX.unk_14.posY + arg2) - 0x10) << 2, G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetRenderMode(gDisplayListHead++, G_RM_XLU_SURF, G_RM_XLU_SURF2);
@@ -2295,26 +2295,26 @@ s32 WidgetTree_DrawSlideTransition(unk_func_885088F4* arg0, s32 arg1, s32 arg2) 
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPScisTextureRectangle(gDisplayListHead++, (arg0->unk_34 + arg1) << 2,
-                            ((arg0->unk_00.unk_14.unk_02 + arg2) - 0x15) << 2, ((arg1 - arg0->unk_38) + 0x270) << 2,
-                            (arg0->unk_00.unk_14.unk_02 + arg2) << 2, G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
+                            ((arg0->posX.unk_14.posY + arg2) - 0x15) << 2, ((arg1 - arg0->unk_38) + 0x270) << 2,
+                            (arg0->posX.unk_14.posY + arg2) << 2, G_TX_RENDERTILE, 0, 0, 0x400, 0x400);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4007978, G_IM_FMT_IA, G_IM_SIZ_8b, 16, 21, 0, G_TX_MIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, 4, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPScisTextureRectangle(gDisplayListHead++, ((arg1 - arg0->unk_38) + 0x270) << 2,
-                            ((arg0->unk_00.unk_14.unk_02 + arg2) - 0x15) << 2, ((arg1 - arg0->unk_38) + 0x280) << 2,
-                            (arg0->unk_00.unk_14.unk_02 + arg2) << 2, G_TX_RENDERTILE, 0x200, 0, 0x400, 0x400);
+                            ((arg0->posX.unk_14.posY + arg2) - 0x15) << 2, ((arg1 - arg0->unk_38) + 0x280) << 2,
+                            (arg0->posX.unk_14.posY + arg2) << 2, G_TX_RENDERTILE, 0x200, 0, 0x400, 0x400);
 
     return 0;
 }
 
 void WidgetTree_InitSaveSlotLabel(unk_func_88509A2C* arg0, s32 arg1, s32 arg2, s32 arg3, char* arg4) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_88509A2C));
-    arg0->unk_00.unk_18 = WidgetTree_DrawSaveSlotLabel;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88509A2C));
+    arg0->posX.unk_18 = WidgetTree_DrawSaveSlotLabel;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
     // clang-format off
-    arg0->unk_00.unk_14.unk_00 = 0x124; arg0->unk_00.unk_14.unk_02 = 0x18;
+    arg0->posX.unk_14.posX = 0x124; arg0->posX.unk_14.posY = 0x18;
     // clang-format on
     arg0->unk_2C = arg3;
 
@@ -2332,14 +2332,14 @@ void WidgetTree_InitSaveSlotLabel(unk_func_88509A2C* arg0, s32 arg1, s32 arg2, s
 }
 
 s32 WidgetTree_DrawSaveSlotLabel(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
-    static Gfx* D_8850CF90[] = { D_04005C48, D_04005F70, D_04006298, D_040065C0 };
-    static Color_RGBA8 D_8850CFA0 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Gfx* Gfx_GamePakIcons[] = { D_04005C48, D_04005F70, D_04006298, D_040065C0 };
+    static Color_RGBA8 Color_TrainerInfoEnv = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char* var_a2;
 
     if (arg0->unk_2C != -1) {
         Font_BeginTranslucentTextRendering();
-        Gfx_SetEnvColor(D_8850CFA0.r, D_8850CFA0.g, D_8850CFA0.b, D_8850CFA0.a);
+        Gfx_SetEnvColor(Color_TrainerInfoEnv.r, Color_TrainerInfoEnv.g, Color_TrainerInfoEnv.b, Color_TrainerInfoEnv.a);
         Font_SetActive(0x10, 0);
         Font_Printf(arg1 + 0x1A, arg2, "%dP", arg0->unk_2C + 1);
         if (arg0->unk_30 == 0) {
@@ -2362,7 +2362,7 @@ s32 WidgetTree_DrawSaveSlotLabel(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-        gDPLoadTextureBlock(gDisplayListHead++, D_8850CF90[arg0->unk_34], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, Gfx_GamePakIcons[arg0->unk_34], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, arg1 << 2, (arg2 + 4) << 2, (arg1 + 0x13) << 2, (arg2 + 0x17) << 2,
@@ -2375,19 +2375,19 @@ s32 WidgetTree_DrawSaveSlotLabel(unk_func_88509A2C* arg0, s32 arg1, s32 arg2) {
 }
 
 void WidgetTree_InitTextMessage(unk_func_88509E34* arg0, s32 arg1, s32 arg2, char* arg3) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_88509E34));
-    arg0->unk_00.unk_00.unk_18 = WidgetTree_DrawTextMessage;
-    arg0->unk_00.unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_2C = arg3;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(unk_func_88509E34));
+    arg0->posX.posX.unk_18 = WidgetTree_DrawTextMessage;
+    arg0->posX.posX.unk_10.posX = arg1;
+    arg0->posX.posX.unk_10.posY = arg2;
+    arg0->posX.unk_2C = arg3;
 }
 
 s32 WidgetTree_DrawTextMessage(unk_func_88509F0C* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_8850CFA4 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 Color_LabelEnv = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
-    Gfx_SetEnvColor(D_8850CFA4.r, D_8850CFA4.g, D_8850CFA4.b, D_8850CFA4.a);
+    Gfx_SetEnvColor(Color_LabelEnv.r, Color_LabelEnv.g, Color_LabelEnv.b, Color_LabelEnv.a);
     Font_Printf(arg1 + 0x1AC, arg2 + 0x26, arg0->unk_2C);
     Font_EndTexturedTextRendering();
     return 0;
@@ -2398,39 +2398,39 @@ void WidgetTree_InitTextMessageBuffer(unk_func_88509F0C* arg0) {
     arg0->unk_2C = 0;
 }
 
-void WidgetTree_InitMessagePanel(unk_func_88509F48* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
+void WidgetTree_InitMessagePanel(WidgetTree_MessagePanel* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, MemoryPool* arg5,
                    FontContext* arg6) {
-    static Color_RGBA8 D_8850CFA8 = { 0x64, 0x1E, 0x1E, 0xFF };
+    static Color_RGBA8 Color_DarkRed = { 0x64, 0x1E, 0x1E, 0xFF };
 
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(unk_func_88509F48));
-    arg0->unk_00.unk_20 = WidgetTree_HandleMessagePanelInput;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(WidgetTree_MessagePanel));
+    arg0->posX.unk_20 = WidgetTree_HandleMessagePanelInput;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
 
     arg0->unk_2C = mem_pool_alloc(arg5, sizeof(WidgetAnimatedPanel));
     ((func88502274)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedPanel))(arg0->unk_2C, 0, 0, 0x10, 0x10);
-    arg0->unk_2C->unk_00.unk_28 |= 0x200;
-    arg0->unk_2C->unk_00.unk_28 |= 0x400;
-    arg0->unk_2C->unk_00.unk_28 &= ~1;
+    arg0->unk_2C->posX.unk_28 |= 0x200;
+    arg0->unk_2C->posX.unk_28 |= 0x400;
+    arg0->unk_2C->posX.unk_28 &= ~1;
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0, arg0->unk_2C);
 
     arg0->unk_30 = mem_pool_alloc(arg5, sizeof(unk_func_885012A4));
-    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(arg0->unk_30, 0, 0, 0x10, 0x10, D_8850CFA8);
+    ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(arg0->unk_30, 0, 0, 0x10, 0x10, Color_DarkRed);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_2C, arg0->unk_30);
     arg0->unk_34 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
     ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(arg0->unk_34, 0, 0, "-----", 0x10);
     ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(arg0->unk_30, arg0->unk_34);
-    arg0->unk_34->unk_00.unk_28 &= ~1;
+    arg0->unk_34->posX.unk_28 &= ~1;
     arg0->unk_38 = arg6;
 }
 
-void WidgetTree_SetMessagePanelText(unk_func_88509F48* arg0, unk_func_8850878C* arg1, s32 arg2, s32 arg3) {
+void WidgetTree_SetMessagePanelText(WidgetTree_MessagePanel* arg0, unk_func_8850878C* arg1, s32 arg2, s32 arg3) {
     s16 temp_v1;
 
     *arg0->unk_34 = *arg1;
-    arg0->unk_34->unk_00.unk_28 |= 1;
+    arg0->unk_34->posX.unk_28 |= 1;
     Font_SetActive(arg1->unk_2C, arg1->unk_38);
     Font_SetLineHeight(arg1->unk_3C);
 
@@ -2442,21 +2442,21 @@ void WidgetTree_SetMessagePanelText(unk_func_88509F48* arg0, unk_func_8850878C* 
         arg2 = Text_CountLines(arg1->unk_40);
     }
 
-    temp_v1 = arg0->unk_38->unk_00[arg0->unk_38->unk_50].unk_02;
+    temp_v1 = arg0->unk_38->posX[arg0->unk_38->unk_50].posY;
 
-    arg0->unk_2C->unk_00.unk_14.unk_00 = temp_v1 + arg3;
+    arg0->unk_2C->posX.unk_14.posX = temp_v1 + arg3;
 
-    arg0->unk_2C->unk_00.unk_14.unk_02 = (((arg1->unk_3C * arg2) + temp_v1) - arg1->unk_3C) + temp_v1;
-    arg0->unk_2C->unk_00.unk_10.unk_00 = (arg0->unk_00.unk_14.unk_00 - arg0->unk_2C->unk_00.unk_14.unk_00) / 2;
-    arg0->unk_2C->unk_00.unk_10.unk_02 = (arg0->unk_00.unk_14.unk_02 - arg0->unk_2C->unk_00.unk_14.unk_02) / 2;
+    arg0->unk_2C->posX.unk_14.posY = (((arg1->unk_3C * arg2) + temp_v1) - arg1->unk_3C) + temp_v1;
+    arg0->unk_2C->posX.unk_10.posX = (arg0->posX.unk_14.posX - arg0->unk_2C->posX.unk_14.posX) / 2;
+    arg0->unk_2C->posX.unk_10.posY = (arg0->posX.unk_14.posY - arg0->unk_2C->posX.unk_14.posY) / 2;
 
-    arg0->unk_30->unk_00.unk_14 = arg0->unk_2C->unk_00.unk_14;
+    arg0->unk_30->posX.unk_14 = arg0->unk_2C->posX.unk_14;
 
-    arg0->unk_34->unk_00.unk_10.unk_00 = temp_v1 / 2;
-    arg0->unk_34->unk_00.unk_10.unk_02 = temp_v1 / 2;
+    arg0->unk_34->posX.unk_10.posX = temp_v1 / 2;
+    arg0->unk_34->posX.unk_10.posY = temp_v1 / 2;
 }
 
-s32 WidgetTree_HandleMessagePanelInput(unk_func_88509F48* arg0, Controller* arg1) {
+s32 WidgetTree_HandleMessagePanelInput(WidgetTree_MessagePanel* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
     if (arg0->unk_2C->unk_30 & 2) {
@@ -2470,15 +2470,15 @@ s32 WidgetTree_HandleMessagePanelInput(unk_func_88509F48* arg0, Controller* arg1
     return var_v1;
 }
 
-void WidgetTree_OpenMessagePanel(unk_func_88509F48* arg0) {
+void WidgetTree_OpenMessagePanel(WidgetTree_MessagePanel* arg0) {
     WidgetTree_OpenAnimatedPanel(arg0->unk_2C);
 }
 
-void WidgetTree_ResetMessagePanelAnimation(unk_func_88509F48* arg0) {
+void WidgetTree_ResetMessagePanelAnimation(WidgetTree_MessagePanel* arg0) {
     arg0->unk_2C->unk_2C = 0xB;
 }
 
-void WidgetTree_RunMessagePanel(unk_func_88509F48* arg0, Controller* arg1, s32 arg2) {
+void WidgetTree_RunMessagePanel(WidgetTree_MessagePanel* arg0, Controller* arg1, s32 arg2) {
     s32 temp_v0;
     s32 var_s0 = 0;
 
@@ -2487,7 +2487,7 @@ void WidgetTree_RunMessagePanel(unk_func_88509F48* arg0, Controller* arg1, s32 a
     while (var_s0 == 0) {
         Ui_SendMessageAndPollInput(var_s0);
 
-        temp_v0 = arg0->unk_00.unk_20(arg0, arg1);
+        temp_v0 = arg0->posX.unk_20(arg0, arg1);
         if (!(temp_v0 & 1) && (temp_v0 & 2)) {
             var_s0 = 1;
         }
@@ -2500,21 +2500,21 @@ void WidgetTree_RunMessagePanel(unk_func_88509F48* arg0, Controller* arg1, s32 a
     WidgetTree_ResetMessagePanelAnimation(arg0);
 }
 
-void WidgetTree_RunMessagePanelWithSound(unk_func_88509F48* arg0, Controller* arg1) {
+void WidgetTree_RunMessagePanelWithSound(WidgetTree_MessagePanel* arg0, Controller* arg1) {
     WidgetTree_RunMessagePanel(arg0, arg1, 1);
 }
 
-void WidgetTree_RunMessagePanelSilent(unk_func_88509F48* arg0, Controller* arg1) {
+void WidgetTree_RunMessagePanelSilent(WidgetTree_MessagePanel* arg0, Controller* arg1) {
     WidgetTree_RunMessagePanel(arg0, arg1, 0);
 }
 
 void WidgetTree_InitBorderFrame(WidgetNode* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(WidgetNode));
     arg0->unk_18 = WidgetTree_DrawBorderFrame;
-    arg0->unk_10.unk_00 = arg1;
-    arg0->unk_10.unk_02 = arg2;
-    arg0->unk_14.unk_00 = arg3;
-    arg0->unk_14.unk_02 = arg4;
+    arg0->unk_10.posX = arg1;
+    arg0->unk_10.posY = arg2;
+    arg0->unk_14.posX = arg3;
+    arg0->unk_14.posY = arg4;
 }
 
 s32 WidgetTree_DrawBorderFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
@@ -2528,25 +2528,25 @@ s32 WidgetTree_DrawBorderFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4001638, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->unk_14.unk_00 + arg1) - 8) << 2,
+    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->unk_14.posX + arg1) - 8) << 2,
                         (arg2 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4001710, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, ((arg0->unk_14.unk_00 + arg1) - 8) << 2, arg2 << 2,
-                        (arg0->unk_14.unk_00 + arg1) << 2, ((arg2 + arg0->unk_14.unk_02) - 8) << 2, G_TX_RENDERTILE, 0,
+    gSPTextureRectangle(gDisplayListHead++, ((arg0->unk_14.posX + arg1) - 8) << 2, arg2 << 2,
+                        (arg0->unk_14.posX + arg1) << 2, ((arg2 + arg0->unk_14.posY) - 8) << 2, G_TX_RENDERTILE, 0,
                         0, 0x0400, 0x0400);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_40016C8, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, (arg1 + 8) << 2, ((arg2 + arg0->unk_14.unk_02) - 8) << 2,
-                        (arg0->unk_14.unk_00 + arg1) << 2, (arg2 + arg0->unk_14.unk_02) << 2, G_TX_RENDERTILE,
-                        (arg0->unk_14.unk_00 * -0x20) + 0x200, 0, 0x0400, 0x0400);
+    gSPTextureRectangle(gDisplayListHead++, (arg1 + 8) << 2, ((arg2 + arg0->unk_14.posY) - 8) << 2,
+                        (arg0->unk_14.posX + arg1) << 2, (arg2 + arg0->unk_14.posY) << 2, G_TX_RENDERTILE,
+                        (arg0->unk_14.posX * -0x20) + 0x200, 0, 0x0400, 0x0400);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4001680, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, (arg2 + 8) << 2, (arg1 + 8) << 2,
-                        (arg2 + arg0->unk_14.unk_02) << 2, G_TX_RENDERTILE, 0, (arg0->unk_14.unk_02 * -0x20) + 0x200,
+                        (arg2 + arg0->unk_14.posY) << 2, G_TX_RENDERTILE, 0, (arg0->unk_14.posY * -0x20) + 0x200,
                         0x0400, 0x0400);
     return 0;
 }
@@ -2554,10 +2554,10 @@ s32 WidgetTree_DrawBorderFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
 void WidgetTree_InitInsetBorderFrame(WidgetNode* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(WidgetNode));
     arg0->unk_18 = WidgetTree_DrawInsetBorderFrame;
-    arg0->unk_10.unk_00 = arg1;
-    arg0->unk_10.unk_02 = arg2;
-    arg0->unk_14.unk_00 = arg3;
-    arg0->unk_14.unk_02 = arg4;
+    arg0->unk_10.posX = arg1;
+    arg0->unk_10.posY = arg2;
+    arg0->unk_14.posX = arg3;
+    arg0->unk_14.posY = arg4;
 }
 
 s32 WidgetTree_DrawInsetBorderFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
@@ -2569,8 +2569,8 @@ s32 WidgetTree_DrawInsetBorderFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
     // clang-format off
     spE4 = arg1 - 2; spE0 = arg2 - 2;
     // clang-format on
-    spDC = arg0->unk_14.unk_00 + 4;
-    spD8 = arg0->unk_14.unk_02 + 4;
+    spDC = arg0->unk_14.posX + 4;
+    spD8 = arg0->unk_14.posY + 4;
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -2602,19 +2602,19 @@ s32 WidgetTree_DrawInsetBorderFrame(WidgetNode* arg0, s32 arg1, s32 arg2) {
     return 0;
 }
 
-void WidgetTree_InitDashedBorderFrame(unk_func_8850B254* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
+void WidgetTree_InitDashedBorderFrame(DashedBorderFrame* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, Color_RGBA8 arg5,
                    Color_RGBA8 arg6) {
-    WidgetTree_InitWidget(&arg0->unk_00, sizeof(unk_func_8850B254));
-    arg0->unk_00.unk_18 = func_8850B2D4;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    WidgetTree_InitWidget(&arg0->posX, sizeof(DashedBorderFrame));
+    arg0->posX.unk_18 = ColoredBox_Draw;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
     arg0->unk_30 = arg6;
 }
 
-s32 func_8850B2D4(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
+s32 ColoredBox_Draw(DashedBorderFrame* arg0, s32 arg1, s32 arg2) {
     s32 h = 8;
     s32 w = 8;
 
@@ -2630,26 +2630,26 @@ s32 func_8850B2D4(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
     gDPLoadTextureBlock(gDisplayListHead++, D_4007AD0, G_IM_FMT_IA, G_IM_SIZ_8b, w, h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 - 7) << 2, (arg2 - 7) << 2,
-                        ((arg1 - 1) + arg0->unk_00.unk_14.unk_00) << 2, ((arg2 - 7) + h) << 2, G_TX_RENDERTILE, 0, 0,
+                        ((arg1 - 1) + arg0->posX.unk_14.posX) << 2, ((arg2 - 7) + h) << 2, G_TX_RENDERTILE, 0, 0,
                         0x0400, 0x0400);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4007B18, G_IM_FMT_IA, G_IM_SIZ_8b, w, h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, ((arg1 - 1) + arg0->unk_00.unk_14.unk_00) << 2, (arg2 - 7) << 2,
-                        ((arg1 + 7) + arg0->unk_00.unk_14.unk_00) << 2, ((arg2 - 1) + arg0->unk_00.unk_14.unk_02) << 2,
+    gSPTextureRectangle(gDisplayListHead++, ((arg1 - 1) + arg0->posX.unk_14.posX) << 2, (arg2 - 7) << 2,
+                        ((arg1 + 7) + arg0->posX.unk_14.posX) << 2, ((arg2 - 1) + arg0->posX.unk_14.posY) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4007B60, G_IM_FMT_IA, G_IM_SIZ_8b, w, h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, (arg1 + 1) << 2, ((arg2 - 1) + arg0->unk_00.unk_14.unk_02) << 2,
-                        ((arg1 + 7) + arg0->unk_00.unk_14.unk_00) << 2, ((arg2 + 7) + arg0->unk_00.unk_14.unk_02) << 2,
-                        G_TX_RENDERTILE, (arg0->unk_00.unk_14.unk_00 * -0x20) + 0x40, 0, 0x0400, 0x0400);
+    gSPTextureRectangle(gDisplayListHead++, (arg1 + 1) << 2, ((arg2 - 1) + arg0->posX.unk_14.posY) << 2,
+                        ((arg1 + 7) + arg0->posX.unk_14.posX) << 2, ((arg2 + 7) + arg0->posX.unk_14.posY) << 2,
+                        G_TX_RENDERTILE, (arg0->posX.unk_14.posX * -0x20) + 0x40, 0, 0x0400, 0x0400);
 
     gDPLoadTextureBlock(gDisplayListHead++, D_4007BA8, G_IM_FMT_IA, G_IM_SIZ_8b, w, h, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 - 7) << 2, ((arg2 - 7) + h) << 2, (arg1 + 1) << 2,
-                        ((arg2 + 7) + arg0->unk_00.unk_14.unk_02) << 2, G_TX_RENDERTILE, 0,
-                        (arg0->unk_00.unk_14.unk_02 * -0x20) + 0x40, 0x0400, 0x0400);
+                        ((arg2 + 7) + arg0->posX.unk_14.posY) << 2, G_TX_RENDERTILE, 0,
+                        (arg0->posX.unk_14.posY * -0x20) + 0x40, 0x0400, 0x0400);
 
     gDPPipeSync(gDisplayListHead++);
 
@@ -2662,8 +2662,8 @@ s32 func_8850B2D4(unk_func_8850B254* arg0, s32 arg1, s32 arg2) {
         // clang-format on
         gDPSetFillColor(gDisplayListHead++, (color << 0x10) | color);
     }
-    gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->unk_00.unk_14.unk_00 + arg1) - 1,
-                     (arg2 + arg0->unk_00.unk_14.unk_02) - 1);
+    gDPFillRectangle(gDisplayListHead++, arg1, arg2, (arg0->posX.unk_14.posX + arg1) - 1,
+                     (arg2 + arg0->posX.unk_14.posY) - 1);
 
     return 0;
 }
@@ -2717,18 +2717,18 @@ void WidgetTree_InitScrollableGridInputProxy(unk_func_8850BD40* arg0, unk_func_8
 s32 WidgetTree_HandleScrollableGridInputProxy(unk_func_8850BD40* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
-    if (arg0->unk_1C->unk_00.unk_00.unk_20 != NULL) {
-        var_v1 = arg0->unk_1C->unk_00.unk_00.unk_20(arg0->unk_1C, arg1);
+    if (arg0->unk_1C->posX.posX.unk_20 != NULL) {
+        var_v1 = arg0->unk_1C->posX.posX.unk_20(arg0->unk_1C, arg1);
     }
     return var_v1;
 }
 
 void WidgetTree_SetScrollableGridInputProxyState(unk_func_8850BD40* arg0, s32 arg1) {
-    arg0->unk_1C->unk_00.unk_00.unk_24(&arg0->unk_1C->unk_00.unk_00, arg1);
+    arg0->unk_1C->posX.posX.unk_24(&arg0->unk_1C->posX.posX, arg1);
 }
 
-void WidgetTree_InitVerticalMenu(unk_func_8830867C_02C_048_000* arg0) {
-    WidgetTree_InitNode(arg0, sizeof(unk_func_8830867C_02C_048_000));
+void WidgetTree_InitVerticalMenu(VerticalMenu* arg0) {
+    WidgetTree_InitNode(arg0, sizeof(VerticalMenu));
     arg0->unk_10 = WidgetTree_HandleVerticalMenuInput;
     arg0->unk_14 = WidgetTree_SetVerticalMenuState;
     arg0->unk_18 = 0;
@@ -2736,15 +2736,15 @@ void WidgetTree_InitVerticalMenu(unk_func_8830867C_02C_048_000* arg0) {
     arg0->unk_20 = 0;
 }
 
-s32 WidgetTree_HandleVerticalMenuInput(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
+s32 WidgetTree_HandleVerticalMenuInput(VerticalMenu* arg0, Controller* arg1) {
     s32 ret = 0;
 
     if (arg0->unk_20 > 0) {
-        unk_func_8830867C_02C_048_000* var_a0 = arg0->unk_00.unk_04;
+        VerticalMenu* var_a0 = arg0->posX.rotation;
         s32 i;
 
         for (i = 0; i < arg0->unk_1C; i++) {
-            var_a0 = var_a0->unk_00.unk_08;
+            var_a0 = var_a0->posX.RentalSlotAnimData_PosePhase;
         }
         ret = var_a0->unk_10(var_a0, arg1);
     }
@@ -2778,25 +2778,25 @@ s32 WidgetTree_HandleVerticalMenuInput(unk_func_8830867C_02C_048_000* arg0, Cont
     return ret;
 }
 
-void WidgetTree_SetVerticalMenuState(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void WidgetTree_SetVerticalMenuState(VerticalMenu* arg0, s32 arg1) {
     arg0->unk_18 = arg1;
     WidgetTree_UpdateVerticalMenuItems(arg0);
 }
 
-void WidgetTree_AppendVerticalMenuItem(unk_func_8830867C_02C_048_000* arg0, WidgetLinkHeader* arg1) {
-    WidgetTree_AppendChild(&arg0->unk_00, arg1);
+void WidgetTree_AppendVerticalMenuItem(VerticalMenu* arg0, WidgetLinkHeader* arg1) {
+    WidgetTree_AppendChild(&arg0->posX, arg1);
     arg0->unk_20++;
 }
 
-void WidgetTree_UpdateVerticalMenuItems(unk_func_8830867C_02C_048_000* arg0) {
+void WidgetTree_UpdateVerticalMenuItems(VerticalMenu* arg0) {
     s32 temp_s3;
     s32 temp_s4;
     s32 var_v0;
     s32 var_v1;
-    unk_func_8830867C_02C_048_000* var_s1;
+    VerticalMenu* var_s1;
     s32 i;
 
-    var_s1 = arg0->unk_00.unk_04;
+    var_s1 = arg0->posX.rotation;
     temp_s4 = arg0->unk_18 & 0xFF;
     temp_s3 = arg0->unk_18 & 0xFF00;
 
@@ -2810,17 +2810,17 @@ void WidgetTree_UpdateVerticalMenuItems(unk_func_8830867C_02C_048_000* arg0) {
         }
 
         var_s1->unk_14(var_s1, (var_v0 & temp_s4) | var_v1);
-        var_s1 = var_s1->unk_00.unk_08;
+        var_s1 = var_s1->posX.RentalSlotAnimData_PosePhase;
     }
 }
 
-void WidgetTree_SetVerticalMenuSelection(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void WidgetTree_SetVerticalMenuSelection(VerticalMenu* arg0, s32 arg1) {
     arg0->unk_1C = arg1;
     WidgetTree_UpdateVerticalMenuItems(arg0);
 }
 
-void WidgetTree_InitHorizontalMenu(unk_func_8830867C_02C_048_000* arg0) {
-    WidgetTree_InitNode(arg0, sizeof(unk_func_8830867C_02C_048_000));
+void WidgetTree_InitHorizontalMenu(VerticalMenu* arg0) {
+    WidgetTree_InitNode(arg0, sizeof(VerticalMenu));
     arg0->unk_10 = WidgetTree_HandleHorizontalMenuInput;
     arg0->unk_14 = WidgetTree_SetHorizontalMenuState;
     arg0->unk_18 = 0;
@@ -2828,15 +2828,15 @@ void WidgetTree_InitHorizontalMenu(unk_func_8830867C_02C_048_000* arg0) {
     arg0->unk_20 = 0;
 }
 
-s32 WidgetTree_HandleHorizontalMenuInput(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
+s32 WidgetTree_HandleHorizontalMenuInput(VerticalMenu* arg0, Controller* arg1) {
     s32 var_a3 = 0;
 
     if (arg0->unk_20 > 0) {
-        unk_func_8830867C_02C_048_000* var_a0 = arg0->unk_00.unk_04;
+        VerticalMenu* var_a0 = arg0->posX.rotation;
         s32 i;
 
         for (i = 0; i < arg0->unk_1C; i++) {
-            var_a0 = var_a0->unk_00.unk_08;
+            var_a0 = var_a0->posX.RentalSlotAnimData_PosePhase;
         }
         var_a3 = var_a0->unk_10(var_a0, arg1);
     }
@@ -2867,18 +2867,18 @@ s32 WidgetTree_HandleHorizontalMenuInput(unk_func_8830867C_02C_048_000* arg0, Co
     return var_a3;
 }
 
-void WidgetTree_SetHorizontalMenuState(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void WidgetTree_SetHorizontalMenuState(VerticalMenu* arg0, s32 arg1) {
     arg0->unk_18 = arg1;
     WidgetTree_UpdateHorizontalMenuItems(arg0);
 }
 
-void WidgetTree_AppendHorizontalMenuItem(unk_func_8830867C_02C_048_000* arg0, WidgetLinkHeader* arg1) {
-    WidgetTree_AppendChild(&arg0->unk_00, arg1);
+void WidgetTree_AppendHorizontalMenuItem(VerticalMenu* arg0, WidgetLinkHeader* arg1) {
+    WidgetTree_AppendChild(&arg0->posX, arg1);
     arg0->unk_20++;
 }
 
-void WidgetTree_UpdateHorizontalMenuItems(unk_func_8830867C_02C_048_000* arg0) {
-    unk_func_8830867C_02C_048_000* var_s0 = arg0->unk_00.unk_04;
+void WidgetTree_UpdateHorizontalMenuItems(VerticalMenu* arg0) {
+    VerticalMenu* var_s0 = arg0->posX.rotation;
     s32 i;
 
     for (i = 0; i < arg0->unk_20; i++) {
@@ -2888,7 +2888,7 @@ void WidgetTree_UpdateHorizontalMenuItems(unk_func_8830867C_02C_048_000* arg0) {
             var_a1 = arg0->unk_18;
         }
         var_s0->unk_14(var_s0, var_a1);
-        var_s0 = var_s0->unk_00.unk_08;
+        var_s0 = var_s0->posX.RentalSlotAnimData_PosePhase;
     }
 }
 
@@ -3075,7 +3075,7 @@ void WidgetTree_UpdateGridMenuItems(WidgetGridMenu* arg0) {
     s32 i;
 
     if (arg0->unk_1C != NULL) {
-        arg0->unk_1C->unk_00.unk_28 &= 0xFFFE;
+        arg0->unk_1C->posX.unk_28 &= 0xFFFE;
     }
 
     for (i = 0; i < arg0->unk_2C * arg0->unk_30; i++) {
@@ -3087,15 +3087,15 @@ void WidgetTree_UpdateGridMenuItems(WidgetGridMenu* arg0) {
             if (i == arg0->unk_24) {
                 var_s2 = arg0->unk_20;
                 if (arg0->unk_1C != NULL) {
-                    arg0->unk_1C->unk_00.unk_10 = temp_s1->unk_10;
-                    arg0->unk_1C->unk_00.unk_14 = temp_s1->unk_14;
-                    arg0->unk_1C->unk_00.unk_10.unk_00 = temp_s1->unk_10.unk_00 + arg0->unk_38;
-                    arg0->unk_1C->unk_00.unk_10.unk_02 = temp_s1->unk_10.unk_02 + arg0->unk_3A;
-                    arg0->unk_1C->unk_00.unk_14.unk_00 = temp_s1->unk_14.unk_00 + arg0->unk_3C;
-                    arg0->unk_1C->unk_00.unk_14.unk_02 = temp_s1->unk_14.unk_02 + arg0->unk_3E;
-                    arg0->unk_1C->unk_00.unk_24(&arg0->unk_1C->unk_00, var_s2);
+                    arg0->unk_1C->posX.unk_10 = temp_s1->unk_10;
+                    arg0->unk_1C->posX.unk_14 = temp_s1->unk_14;
+                    arg0->unk_1C->posX.unk_10.posX = temp_s1->unk_10.posX + arg0->unk_38;
+                    arg0->unk_1C->posX.unk_10.posY = temp_s1->unk_10.posY + arg0->unk_3A;
+                    arg0->unk_1C->posX.unk_14.posX = temp_s1->unk_14.posX + arg0->unk_3C;
+                    arg0->unk_1C->posX.unk_14.posY = temp_s1->unk_14.posY + arg0->unk_3E;
+                    arg0->unk_1C->posX.unk_24(&arg0->unk_1C->posX, var_s2);
                     if (var_s2 & 0x101) {
-                        arg0->unk_1C->unk_00.unk_28 |= 1;
+                        arg0->unk_1C->posX.unk_28 |= 1;
                     }
                 }
             }
@@ -3124,8 +3124,8 @@ void WidgetTree_SetGridMenuSelection(WidgetGridMenu* arg0, s32 arg1) {
     WidgetTree_UpdateGridMenuItems(arg0);
 }
 
-void WidgetTree_InitChildSelectionProxy(unk_func_8830867C_02C_048_000* arg0) {
-    WidgetTree_InitNode(&arg0->unk_00, sizeof(unk_func_8830867C_02C_048_000));
+void WidgetTree_InitChildSelectionProxy(VerticalMenu* arg0) {
+    WidgetTree_InitNode(&arg0->posX, sizeof(VerticalMenu));
     arg0->unk_10 = WidgetTree_HandleChildSelectionProxyInput;
     arg0->unk_14 = WidgetTree_SetChildSelectionProxyState;
     arg0->unk_18 = 0;
@@ -3133,35 +3133,35 @@ void WidgetTree_InitChildSelectionProxy(unk_func_8830867C_02C_048_000* arg0) {
     arg0->unk_20 = 0;
 }
 
-s32 WidgetTree_HandleChildSelectionProxyInput(unk_func_8830867C_02C_048_000* arg0, Controller* arg1) {
+s32 WidgetTree_HandleChildSelectionProxyInput(VerticalMenu* arg0, Controller* arg1) {
     s32 i;
     s32 var_v1 = 0;
 
     if (arg0->unk_20 > 0) {
-        unk_func_8830867C_02C_048_000* var_a0 = arg0->unk_00.unk_04;
+        VerticalMenu* var_a0 = arg0->posX.rotation;
 
         for (i = 0; i < arg0->unk_1C; i++) {
-            var_a0 = var_a0->unk_00.unk_08;
+            var_a0 = var_a0->posX.RentalSlotAnimData_PosePhase;
         }
         var_v1 = var_a0->unk_10(var_a0, arg1);
     }
     return var_v1;
 }
 
-void WidgetTree_SetChildSelectionProxyState(unk_func_8830867C_02C_048_000* arg0, s32 arg1) {
+void WidgetTree_SetChildSelectionProxyState(VerticalMenu* arg0, s32 arg1) {
     arg0->unk_18 = arg1;
     WidgetTree_UpdateChildSelectionProxyItems(arg0);
 }
 
-void WidgetTree_AppendChildSelectionProxyItem(unk_func_8830867C_02C_048_000* arg0, WidgetNode* arg1) {
-    WidgetTree_AppendChild(&arg0->unk_00.unk_00, &arg1->unk_00);
+void WidgetTree_AppendChildSelectionProxyItem(VerticalMenu* arg0, WidgetNode* arg1) {
+    WidgetTree_AppendChild(&arg0->posX.posX, &arg1->posX);
     arg0->unk_20++;
 }
 
-void WidgetTree_UpdateChildSelectionProxyItems(unk_func_8830867C_02C_048_000* arg0) {
+void WidgetTree_UpdateChildSelectionProxyItems(VerticalMenu* arg0) {
     s32 var_a1;
     s32 i;
-    unk_func_8830867C_02C_048_000* var_s0 = arg0->unk_00.unk_04;
+    VerticalMenu* var_s0 = arg0->posX.rotation;
 
     for (i = 0; i < arg0->unk_20; i++) {
         if (i == arg0->unk_1C) {
@@ -3170,19 +3170,19 @@ void WidgetTree_UpdateChildSelectionProxyItems(unk_func_8830867C_02C_048_000* ar
             var_a1 = 0;
         }
         var_s0->unk_14(var_s0, var_a1);
-        var_s0 = var_s0->unk_00.unk_08;
+        var_s0 = var_s0->posX.RentalSlotAnimData_PosePhase;
     }
 }
 
-void WidgetTree_SetChildSelectionProxySelection(unk_func_8830867C_02C_048* arg0, s32 arg1) {
-    arg0->unk_00.unk_1C = arg1;
-    WidgetTree_UpdateChildSelectionProxyItems(&arg0->unk_00);
+void WidgetTree_SetChildSelectionProxySelection(ChildSelectionProxy* arg0, s32 arg1) {
+    arg0->posX.unk_1C = arg1;
+    WidgetTree_UpdateChildSelectionProxyItems(&arg0->posX);
 }
 
-void WidgetTree_InitChildWidgetGroup(unk_func_8850CD44* arg0, s32 arg1, MemoryPool* arg2) {
+void WidgetTree_InitChildWidgetGroup(ChildWidgetGroup* arg0, s32 arg1, MemoryPool* arg2) {
     s32 i;
 
-    ((func88500668)Memmap_GetFragmentVaddr(WidgetTree_InitNode))(arg0, sizeof(unk_func_8850CD44));
+    ((func88500668)Memmap_GetFragmentVaddr(WidgetTree_InitNode))(arg0, sizeof(ChildWidgetGroup));
     arg0->unk_10 = WidgetTree_HandleChildWidgetGroupInput;
     arg0->unk_14 = WidgetTree_SetChildWidgetGroupState;
     arg0->unk_18 = 0;
@@ -3194,26 +3194,26 @@ void WidgetTree_InitChildWidgetGroup(unk_func_8850CD44* arg0, s32 arg1, MemoryPo
     }
 }
 
-s32 WidgetTree_HandleChildWidgetGroupInput(unk_func_8850CD44* arg0, Controller* arg1) {
+s32 WidgetTree_HandleChildWidgetGroupInput(ChildWidgetGroup* arg0, Controller* arg1) {
     s32 i;
 
     for (i = 0; i < arg0->unk_20; i++) {
-        if (arg0->unk_1C[i]->unk_00.unk_28 & 0x100) {
+        if (arg0->unk_1C[i]->posX.unk_28 & 0x100) {
             return 0x40;
         }
     }
     return 4;
 }
 
-void WidgetTree_SetChildWidgetGroupState(unk_func_8850CD44* arg0, s32 arg1) {
+void WidgetTree_SetChildWidgetGroupState(ChildWidgetGroup* arg0, s32 arg1) {
     s32 i;
 
     for (i = 0; i < arg0->unk_20; i++) {
-        arg0->unk_1C[i]->unk_00.unk_24(arg0->unk_1C[i], arg1);
+        arg0->unk_1C[i]->posX.unk_24(arg0->unk_1C[i], arg1);
     }
 }
 
-void WidgetTree_RunChildWidgetGroup(unk_func_8850CD44* arg0, Controller* arg1) {
+void WidgetTree_RunChildWidgetGroup(ChildWidgetGroup* arg0, Controller* arg1) {
     s32 temp_v0;
     s32 var_s0 = 0;
 

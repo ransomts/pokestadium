@@ -7,13 +7,13 @@
 #include "PR/leo.h"
 
 typedef struct arg1_func_80019420 {
-    /* 0x00 */ s8 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ void* unk_04;
+    /* 0x00 */ s8 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ void* rotation;
 } arg1_func_80019420; // size = 0x8
 
 typedef struct unk_D_800AE520 {
-    /* 0x00 */ s16 unk_00;
+    /* 0x00 */ s16 posX;
     /* 0x02 */ s16 fragment_id;
     /* 0x04 */ u8* rom_start;
     /* 0x08 */ u8* rom_end;
@@ -22,18 +22,18 @@ typedef struct unk_D_800AE520 {
 } unk_D_800AE520; // size >= 0x14
 
 typedef struct BattleMonSpecies {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
 } BattleMonSpecies; // size = 0x2
 
 typedef struct BattleMon {
-    /* 0x00 */ BattleMonSpecies unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u8 unk_04;
+    /* 0x00 */ BattleMonSpecies posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09[4];
     /* 0x0D */ u8 pad0D;
     /* 0x0E */ u16 unk_0E;
@@ -117,9 +117,9 @@ typedef struct TeamRoster {
 
 typedef struct BattleSessionTeams {
     /* 0x00 */ u8 uniqueStatusFlags;
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ s16 displayModel;
-    /* 0x04 */ TeamRoster* unk_04;
+    /* 0x04 */ TeamRoster* rotation;
     /* 0x08 */ TeamRoster* teamMember[2];
     /* 0x10 */ ModelLoadContext* unk_10;
     /* 0x14 */ ModelNodeView* unk_14;
@@ -185,11 +185,11 @@ typedef struct SessionContext {
 
 
 
-extern u16 D_80073660[16][256];
+extern u16 gBrightnessCurveTable[16][256];
 extern s32 gCurrentGameState;
-extern unk_D_800AE520 D_800AE520;
+extern unk_D_800AE520 gFragmentCallContext;
 extern SessionContext gSessionContext;
-extern BinArchive* D_800AF738;
+extern BinArchive* gBattleArchive;
 
 s32 Game_DoCopyProtection(s32 state);
 s32 Fragment_LoadAndCall(s32 arg0, u8* romStart, u8* romEnd, u32 arg3, u32 arg4);
@@ -224,7 +224,7 @@ void State_BattleNow(s32 arg0);
 void State_BattleFromEvent(void);
 void State_FastN64Logo(void);
 void State_FastBattle(void);
-void func_8002B244(void);
+void State_Empty(void);
 void State_KidsClubTitle(void);
 void Game_ShutdownAndLoadFragment(s32 arg0, s32 arg1);
 void Game_ResetStorageDevice(void);

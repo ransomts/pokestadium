@@ -76,9 +76,9 @@ void DioramaCamKeyframe_SetTransitionSpeed(unk_D_86B0E5D4_04* arg0, f32 arg1, f3
     arg0->unk_38 = arg2;
 }
 
-void Diorama_LoadCameraKeyframe(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
-    unk_D_86B0E5D4_04* ptr = &arg1->unk_04;
-    CameraNode* ptr2 = arg1->unk_00;
+void Diorama_LoadCameraKeyframe(DioramaAnimData* arg0, DioramaState* arg1) {
+    unk_D_86B0E5D4_04* ptr = &arg1->rotation;
+    CameraNode* ptr2 = arg1->posX;
     f32 sp34;
     f32 sp30;
     f32 sp2C;
@@ -98,22 +98,22 @@ void Diorama_LoadCameraKeyframe(unk_D_86B0C160* arg0, unk_D_86B0E5D4* arg1) {
     sp2C = arg0->unk_10;
     sp28 = arg0->unk_24;
 
-    DioramaCamKeyframe_SetAngles(ptr, arg0->unk_00, arg0->unk_02, arg0->unk_14, arg0->unk_16);
+    DioramaCamKeyframe_SetAngles(ptr, arg0->posX, arg0->posY, arg0->unk_14, arg0->unk_16);
     DioramaCamKeyframe_SetDistance(ptr, sp34, sp30);
-    DioramaCamKeyframe_SetAtAngles(ptr, arg0->unk_06, arg0->unk_08, arg0->unk_1A, arg0->unk_1C);
+    DioramaCamKeyframe_SetAtAngles(ptr, arg0->unk_06, arg0->RentalSlotAnimData_PosePhase, arg0->unk_1A, arg0->unk_1C);
     DioramaCamKeyframe_SetAtDistance(ptr, sp2C, sp28);
     DioramaCamKeyframe_SetTransitionSpeed(ptr, arg0->unk_28, arg0->unk_2C);
 }
 
-void Diorama_SetCameraToKeyframeStart(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
-    CameraNode* sp2C = arg1->unk_00;
+void Diorama_SetCameraToKeyframeStart(unk_D_86B0E5D4_04* arg0, DioramaState* arg1) {
+    CameraNode* sp2C = arg1->posX;
 
-    Camera_ComputeEyeFromAngles(&arg0->unk_00, &sp2C->view.targetPosition, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
+    Camera_ComputeEyeFromAngles(&arg0->posX, &sp2C->view.targetPosition, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
     Camera_ComputeEyeFromAngles(&sp2C->view.targetPosition, &sp2C->view.eyePosition, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 }
 
-s32 Diorama_UpdateCameraKeyframe(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) {
-    CameraNode* temp_s2 = arg1->unk_00;
+s32 Diorama_UpdateCameraKeyframe(unk_D_86B0E5D4_04* arg0, DioramaState* arg1) {
+    CameraNode* temp_s2 = arg1->posX;
     Vec3f sp58;
     Vec3f sp4C;
     UNUSED s32 pad[3];
@@ -127,17 +127,17 @@ s32 Diorama_UpdateCameraKeyframe(unk_D_86B0E5D4_04* arg0, unk_D_86B0E5D4* arg1) 
         Math_EaseTowardF(&temp_s2->perspective.verticalFieldOfView, 30.0f, 0.06f);
     }
 
-    Camera_ComputeEyeFromAngles(&arg0->unk_00, &sp58, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
-    Camera_ComputeEyeFromAngles(&arg0->unk_00, &sp4C, arg0->unk_2C, arg0->unk_20, arg0->unk_22);
+    Camera_ComputeEyeFromAngles(&arg0->posX, &sp58, arg0->unk_18, arg0->unk_0C, arg0->unk_0E);
+    Camera_ComputeEyeFromAngles(&arg0->posX, &sp4C, arg0->unk_2C, arg0->unk_20, arg0->unk_22);
     Vec3f_CalculateDistanceAngles(&sp58, &sp4C, &sp3C, &sp3A, &sp38);
 
-    arg1->unk_04.unk_68 = Math_StepToF(arg1->unk_04.unk_68, sp3C, arg0->unk_34, arg0->unk_34);
+    arg1->rotation.unk_68 = Math_StepToF(arg1->rotation.unk_68, sp3C, arg0->unk_34, arg0->unk_34);
 
-    Camera_ComputeEyeFromAngles(&sp58, &temp_s2->view.targetPosition, arg1->unk_04.unk_68, sp3A, sp38);
+    Camera_ComputeEyeFromAngles(&sp58, &temp_s2->view.targetPosition, arg1->rotation.unk_68, sp3A, sp38);
     Camera_ComputeEyeFromAngles(&temp_s2->view.targetPosition, &temp_s2->view.eyePosition, arg0->unk_1C, arg0->unk_12, arg0->unk_14);
 
-    arg1->unk_04.unk_6C = sp3C - arg1->unk_04.unk_68;
-    if (arg1->unk_04.unk_6C <= 5.0f) {
+    arg1->rotation.unk_6C = sp3C - arg1->rotation.unk_68;
+    if (arg1->rotation.unk_6C <= 5.0f) {
         return 1;
     }
 

@@ -4,7 +4,7 @@
 #include "src/geo_render.h"
 #include "src/memory.h"
 
-static MiniActor* D_87906120;
+static MiniActor* gMiniActorArray;
 
 #if defined(VERSION_US_REV2)
 #pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/minigame_actor_framework/minigame_actor_framework_11BF90/miniRankingActorsInit.s")
@@ -13,13 +13,13 @@ void miniRankingActorsInit(void) {
     s32 i;
     MiniActor* ptr;
 
-    D_87906120 = main_pool_alloc(sizeof(MiniActor) * 3, 0);
-    ptr = D_87906120;
+    gMiniActorArray = main_pool_alloc(sizeof(MiniActor) * 3, 0);
+    ptr = gMiniActorArray;
 
     for (i = 0; i < 3; i++, ptr++) {
         ModelRenderer_AttachDisplayObject(&ptr->unk_000);
         ptr->unk_168 = Model_LoadByArchiveIndex(0xAB);
-        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->unk_08->unk_00[0]);
+        Model_InitDisplayObject(&ptr->unk_000, 0, ptr->unk_23C, ptr->unk_168->RentalSlotAnimData_PosePhase->posX[0]);
         ModelAnim_SetAnimation(&ptr->unk_000, 0);
         ptr->unk_000.node.flags &= ~1;
         miniActorAllToZero(ptr);
@@ -37,7 +37,7 @@ void miniRankingActorSpawn(MiniActor* arg0) {
 
 void miniRankingActorsUpdate(void) {
     s32 i;
-    MiniActor* ptr = D_87906120;
+    MiniActor* ptr = gMiniActorArray;
 
     Particle_UpdateFrameCounters();
 
@@ -65,21 +65,21 @@ void miniRankingActorSetup(MiniActor* arg0, f32 arg1, f32 arg2, f32 arg3, f32 ar
 }
 
 void miniRankingActorSetup1st(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    MiniActor* sp34 = D_87906120;
+    MiniActor* sp34 = gMiniActorArray;
 
     miniRankingActorSetup(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 0);
     sp34->unk_000.node.callbackArg = 0;
 }
 
 void miniRankingActorSetup2nd(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    MiniActor* sp34 = &D_87906120[1];
+    MiniActor* sp34 = &gMiniActorArray[1];
 
     miniRankingActorSetup(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 1);
     sp34->unk_000.node.callbackArg = 1;
 }
 
 void miniRankingActorSetup3rd(f32 arg0, f32 arg1, f32 arg2, f32 arg3, s16 arg4, s16 arg5, s16 arg6) {
-    MiniActor* sp34 = &D_87906120[2];
+    MiniActor* sp34 = &gMiniActorArray[2];
 
     miniRankingActorSetup(sp34, arg0, arg1, arg2, arg3, arg4, arg5, arg6, 2);
     sp34->unk_000.node.callbackArg = 2;
@@ -98,18 +98,18 @@ Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, arg1_func_87903D64_014* arg1
     u32 sp38;
     u32 sp34;
     u32 sp30;
-    unk_D_86002F34_000_014_004* sp2C;
-    unk_D_86002F34_000_014_004* sp28;
-    unk_D_86002F34_000_014_010* sp24;
-    unk_D_86002F34_000_014_010* sp20;
+    ColorLerpEntry5* sp2C;
+    ColorLerpEntry5* sp28;
+    ColorLerpEntry4* sp24;
+    ColorLerpEntry4* sp20;
     u32 pad;
     u32 temp_a2;
     u32 temp_a3;
 
-    temp_a2 = D_8006F09C->node.callbackArg;
-    temp_a3 = (D_8006F09C->transformAnim.frameFixed >> 0x10) + 1;
+    temp_a2 = gDefaultGraphRoot->node.callbackArg;
+    temp_a3 = (gDefaultGraphRoot->transformAnim.frameFixed >> 0x10) + 1;
 
-    pad = arg1->unk_00;
+    pad = arg1->posX;
     switch (pad) {
         case 1:
             if (temp_a3 < 0xF) {
@@ -150,15 +150,15 @@ Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, arg1_func_87903D64_014* arg1
 
     switch (temp_a2) {
         case 0:
-            sp2C = &arg1->unk_04[sp38];
-            sp28 = &arg1->unk_04[sp34];
+            sp2C = &arg1->rotation[sp38];
+            sp28 = &arg1->rotation[sp34];
             sp24 = &arg1->unk_10[sp38];
             sp20 = &arg1->unk_10[sp34];
             break;
 
         case 1:
-            sp2C = &arg1->unk_08[sp38];
-            sp28 = &arg1->unk_08[sp34];
+            sp2C = &arg1->RentalSlotAnimData_PosePhase[sp38];
+            sp28 = &arg1->RentalSlotAnimData_PosePhase[sp34];
             sp24 = &arg1->unk_14[sp38];
             sp20 = &arg1->unk_14[sp34];
             break;
@@ -173,16 +173,16 @@ Gfx* MiniFx_BuildNodeColorRampDisplayList(Gfx* gfx, arg1_func_87903D64_014* arg1
 
 
 
-    tmp1 = ((sp28->unk_00[0] * sp30) + (sp2C->unk_00[0] * (0x100 - sp30))) >> 8;
-    tmp2 = ((sp28->unk_00[1] * sp30) + (sp2C->unk_00[1] * (0x100 - sp30))) >> 8;
-    tmp3 = ((sp28->unk_00[2] * sp30) + (sp2C->unk_00[2] * (0x100 - sp30))) >> 8;
-    tmp4 = ((sp28->unk_00[3] * sp30) + (sp2C->unk_00[3] * (0x100 - sp30))) >> 8;
-    tmp5 = ((sp28->unk_00[4] * sp30) + (sp2C->unk_00[4] * (0x100 - sp30))) >> 8;
+    tmp1 = ((sp28->posX[0] * sp30) + (sp2C->posX[0] * (0x100 - sp30))) >> 8;
+    tmp2 = ((sp28->posX[1] * sp30) + (sp2C->posX[1] * (0x100 - sp30))) >> 8;
+    tmp3 = ((sp28->posX[2] * sp30) + (sp2C->posX[2] * (0x100 - sp30))) >> 8;
+    tmp4 = ((sp28->posX[3] * sp30) + (sp2C->posX[3] * (0x100 - sp30))) >> 8;
+    tmp5 = ((sp28->posX[4] * sp30) + (sp2C->posX[4] * (0x100 - sp30))) >> 8;
 
-    tmp6 = ((sp20->unk_00[0] * sp30) + (sp24->unk_00[0] * (0x100 - sp30))) >> 8;
-    tmp7 = ((sp20->unk_00[1] * sp30) + (sp24->unk_00[1] * (0x100 - sp30))) >> 8;
-    tmp8 = ((sp20->unk_00[2] * sp30) + (sp24->unk_00[2] * (0x100 - sp30))) >> 8;
-    tmp9 = ((sp20->unk_00[3] * sp30) + (sp24->unk_00[3] * (0x100 - sp30))) >> 8;
+    tmp6 = ((sp20->posX[0] * sp30) + (sp24->posX[0] * (0x100 - sp30))) >> 8;
+    tmp7 = ((sp20->posX[1] * sp30) + (sp24->posX[1] * (0x100 - sp30))) >> 8;
+    tmp8 = ((sp20->posX[2] * sp30) + (sp24->posX[2] * (0x100 - sp30))) >> 8;
+    tmp9 = ((sp20->posX[3] * sp30) + (sp24->posX[3] * (0x100 - sp30))) >> 8;
 
     gDPPipeSync(gfx++);
     gDPSetPrimColor(gfx++, 0, tmp5, tmp1, tmp2, tmp3, tmp4);

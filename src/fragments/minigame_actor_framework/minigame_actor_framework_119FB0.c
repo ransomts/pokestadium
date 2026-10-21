@@ -63,11 +63,11 @@ s32 MiniFx_ConfigureEmitter(s32 arg0, s32 arg1, s8 arg2, f32 arg3, Vec3f arg4, V
         temp_v0->unk_2A = arg2;
         temp_v0->unk_2C = argC;
 
-        temp_v0->unk_00 = arg3;
+        temp_v0->posX = arg3;
 
-        temp_v0->unk_04.x = arg4.x;
-        temp_v0->unk_04.y = arg4.y;
-        temp_v0->unk_04.z = arg4.z;
+        temp_v0->rotation.x = arg4.x;
+        temp_v0->rotation.y = arg4.y;
+        temp_v0->rotation.z = arg4.z;
 
         temp_v0->unk_10.x = arg7.x;
         temp_v0->unk_10.y = arg7.y;
@@ -106,14 +106,14 @@ void MiniFx_ConfigureEmitterWithPeriodAndRepeat(s32 arg0, s32 arg1, s8 arg2, f32
 void MiniFx_ApplyEmitterToParticle(Particle* arg0, ParticleEmitter* arg1, s16 arg2) {
     if ((s32)arg0 != -1) {
         while (arg0 != NULL) {
-            arg0->unk_28 = arg1->unk_00;
+            arg0->unk_28 = arg1->posX;
 
-            ParticleMath_CopyVec3f(&arg0->unk_68, &arg1->unk_04);
+            ParticleMath_CopyVec3f(&arg0->unk_68, &arg1->rotation);
             ParticleMath_CopyVec3s(&arg0->unk_94, &arg1->unk_10);
 
             arg0->unk_AC = arg2++;
 
-            arg0->unk_08 = arg1->unk_18;
+            arg0->RentalSlotAnimData_PosePhase = arg1->unk_18;
             arg0->unk_0C = arg1->unk_1C;
 
             arg0->unk_CD = arg1->unk_2F;
@@ -131,9 +131,9 @@ void MiniFx_EmitParticles(ParticleEmitter* arg0) {
     s16 sp2C;
     ParticleDescriptor* temp_v0 = arg0->unk_1C;
     s16 temp_v1 = arg0->unk_24;
-    ParticleDescriptorChild* unk_04 = temp_v0->unk_04.a;
+    ParticleDescriptorChild* rotation = temp_v0->rotation.a;
 
-    if ((temp_v0->unk_00 == 1) && (unk_04->unk_00 == 1)) {
+    if ((temp_v0->posX == 1) && (rotation->posX == 1)) {
         MiniFx_ApplyEmitterToParticle(Particle_AllocChain(temp_v1), arg0, 0);
     } else {
         for (i = 0; i < sp2C; i++) {
@@ -171,9 +171,9 @@ void MiniFx_TickEmitters(void) {
 }
 
 void MiniFx_SetParticleRenderScale(Particle* arg0) {
-    gParticleRenderContext.unk_00.x = arg0->unk_28;
-    gParticleRenderContext.unk_00.y = arg0->unk_28;
-    gParticleRenderContext.unk_00.z = arg0->unk_28;
+    gParticleRenderContext.posX.x = arg0->unk_28;
+    gParticleRenderContext.posX.y = arg0->unk_28;
+    gParticleRenderContext.posX.z = arg0->unk_28;
 }
 
 void MiniFx_RetireParticle(Particle* arg0) {
@@ -196,7 +196,7 @@ void MiniFx_UpdateParticles(void) {
         if (var_s0->unk_D0 != 0) {
             MiniFx_SetParticleRenderScale(var_s0);
 
-            var_s0->unk_08(var_s0);
+            var_s0->RentalSlotAnimData_PosePhase(var_s0);
 
             MiniFx_RetireParticle(var_s0);
         }
@@ -204,18 +204,18 @@ void MiniFx_UpdateParticles(void) {
 }
 
 void MiniFx_DrawParticles(void) {
-    gSPPerspNormalize(gDisplayListHead++, D_87906054->perspective.unk_04);
-    gSPMatrix(gDisplayListHead++, D_87906054->perspective.projectionMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
-    gSPMatrix(gDisplayListHead++, D_87906054->view.fixedMatrix, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    gSPPerspNormalize(gDisplayListHead++, gMiniCameraPtr->perspective.rotation);
+    gSPMatrix(gDisplayListHead++, gMiniCameraPtr->perspective.projectionMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
+    gSPMatrix(gDisplayListHead++, gMiniCameraPtr->view.fixedMatrix, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
 
     gParticleMatrixPool = Gfx_AllocDisplayList(sizeof(ParticleMatrixPool));
     gParticleMatrixPoolIndex = 0;
 
-    gSPDisplayList(gDisplayListHead++, D_8140DB30);
+    gSPDisplayList(gDisplayListHead++, gDL_Begin3D);
 
-    Particle_RenderWorldChains(D_87906054);
+    Particle_RenderWorldChains(gMiniCameraPtr);
 
-    gSPDisplayList(gDisplayListHead++, D_8140DAE0);
+    gSPDisplayList(gDisplayListHead++, gDL_End3D);
 }
 
 void MiniFx_InitRandomVelocityGravityParticle(Particle* arg0) {
@@ -332,7 +332,7 @@ void MiniFx_UpdatePalette10SlowRiseFadeParticle(Particle* arg0) {
 
 void MiniFx_InitRandomOffsetPalette10RiseFadeParticle(Particle* arg0) {
     Particle_Field1C_SetScaled_0B938(arg0, 0.5f);
-    Particle_SetRandomVelocityXYZ(arg0, 3, 0, 3);
+    Particle_SetRandomPositionXYZ(arg0, 3, 0, 3);
     Particle_Field94_AddY_0A594(arg0, ParticleMath_RandomRange(0x10000));
     Particle_Field74_SetScaled_0AD8C(arg0, (MathUtil_Random_ZeroOne() * 3.0f) + 3.0f);
     Particle_Field7C_SetYScaled_0AF24(arg0, (2.0f * MathUtil_Random_ZeroOne()) + 4.0f);
@@ -427,9 +427,9 @@ void MiniFx_InitPalette17DelayedRevealFallParticle(Particle* arg0) {
     Particle_Field1C_SetScaled_0B938(arg0, 0.0f);
     Particle_SetScaleSpeed(arg0, 0.6f);
     Particle_SetScaleTarget(arg0, 0.1f);
-    Particle_SetRandomVelocityXSymmetric(arg0, 0x14, 0xA);
-    Particle_SetRandomVelocityYOffset(arg0, 0xF, 0xF);
-    Particle_SetRandomVelocityZSymmetric(arg0, 0x14, 0xA);
+    Particle_SetRandomPositionXSymmetric(arg0, 0x14, 0xA);
+    Particle_SetRandomPositionYOffset(arg0, 0xF, 0xF);
+    Particle_SetRandomPositionZSymmetric(arg0, 0x14, 0xA);
     Particle_FieldA6_SetS16_0BCA8(arg0, sp26);
     Particle_DisableRendering(arg0);
     Particle_AdvanceLifecycle(arg0);
@@ -485,9 +485,9 @@ void MiniFx_InitPalette17SmallDelayedRevealFallParticle(Particle* arg0) {
     Particle_Field1C_SetScaled_0B938(arg0, 0.0f);
     Particle_SetScaleSpeed(arg0, 0.2f);
     Particle_SetScaleTarget(arg0, 0.035f);
-    Particle_SetRandomVelocityXSymmetric(arg0, 7, 3);
-    Particle_SetRandomVelocityYOffset(arg0, 0x14, 0xA);
-    Particle_SetRandomVelocityZSymmetric(arg0, 7, 3);
+    Particle_SetRandomPositionXSymmetric(arg0, 7, 3);
+    Particle_SetRandomPositionYOffset(arg0, 0x14, 0xA);
+    Particle_SetRandomPositionZSymmetric(arg0, 7, 3);
     Particle_FieldA6_SetS16_0BCA8(arg0, sp26);
     Particle_DisableRendering(arg0);
     Particle_AdvanceLifecycle(arg0);
@@ -575,12 +575,12 @@ void MiniFx_BuildParticleRenderListVariantA(Gfx* arg0, unk_D_86002F34_000_014* a
     gDPSetCombineLERP(arg0++, TEXEL0, TEXEL1, PRIM_LOD_FRAC, TEXEL1, TEXEL0, TEXEL1, PRIMITIVE, TEXEL1, 0, 0, 0,
                       COMBINED, COMBINED, 0, SHADE, 0);
 
-    gDPLoadTextureTile(arg0++, arg1->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadTextureTile(arg0++, arg1->posX, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 12, G_TX_NOLOD);
 
     ParticleGfx_SetAnimatedTileSizeOnList(arg0++, 0xA, 0xE, 0x20, 0x20);
 
-    gDPLoadMultiTile(arg0++, arg1->unk_04, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile(arg0++, arg1->rotation, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
                      G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, G_TX_NOLOD);
 
     ParticleGfx_SetAnimatedAuxTileSizeOnList(arg0++, 5, 7, 0x20, 0x20);
@@ -591,7 +591,7 @@ void MiniFx_BuildParticleRenderListVariantA(Gfx* arg0, unk_D_86002F34_000_014* a
 void MiniFx_GraphNodeBuildParticleRenderListVariantA(s32 arg0, arg1_func_87902F80* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = Gfx_AllocDisplayList(sizeof(Gfx) * 30);
-        MiniFx_BuildParticleRenderListVariantA(arg1->unk_18, arg1->node.callbackArg, D_8006F084);
+        MiniFx_BuildParticleRenderListVariantA(arg1->unk_18, arg1->node.callbackArg, gAnimationFrame);
     }
 }
 
@@ -603,12 +603,12 @@ void MiniFx_BuildParticleRenderListVariantB(Gfx* arg0, unk_D_86002F34_000_014* a
     gDPSetCombineLERP(arg0++, TEXEL0, TEXEL1, PRIM_LOD_FRAC, TEXEL1, TEXEL0, TEXEL1, PRIMITIVE, TEXEL1, 0, 0, 0,
                       COMBINED, COMBINED, 0, SHADE, 0);
 
-    gDPLoadTextureTile(arg0++, arg1->unk_00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadTextureTile(arg0++, arg1->posX, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 15, 1);
 
     ParticleGfx_SetAnimatedTileSizeOnList(arg0++, 2, 6, 0x20, 0x20);
 
-    gDPLoadMultiTile(arg0++, arg1->unk_04, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
+    gDPLoadMultiTile(arg0++, arg1->rotation, 0x0100, 1, G_IM_FMT_RGBA, G_IM_SIZ_16b, 32, 0, 0, 0, 31, 31, 0,
                      G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 1, G_TX_NOLOD);
 
     ParticleGfx_SetAnimatedAuxTileSizeOnList(arg0++, -2, 0xC, 0x20, 0x20);
@@ -619,6 +619,6 @@ void MiniFx_BuildParticleRenderListVariantB(Gfx* arg0, unk_D_86002F34_000_014* a
 void MiniFx_GraphNodeBuildParticleRenderListVariantB(s32 arg0, arg1_func_87902F80* arg1) {
     if (arg0 == 2) {
         arg1->unk_18 = Gfx_AllocDisplayList(sizeof(Gfx) * 30);
-        MiniFx_BuildParticleRenderListVariantB(arg1->unk_18, arg1->node.callbackArg, D_8006F084);
+        MiniFx_BuildParticleRenderListVariantB(arg1->unk_18, arg1->node.callbackArg, gAnimationFrame);
     }
 }

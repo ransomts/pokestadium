@@ -2,9 +2,9 @@
 #include "src/gfx_buffer.h"
 #include "src/math_util.h"
 
-static OwnerLinkedFourStream D_843AB940[4];
+static OwnerLinkedFourStream gOwnerLinkedFourStreams[4];
 
-static Gfx D_843899B0[] = {
+static Gfx Gfx_ParticleRenderDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -21,7 +21,7 @@ static Gfx D_843899B0[] = {
 void OwnerLinkedFourStream_Init(void) {
     s32 i;
     s32 j;
-    OwnerLinkedFourStream* var_a2 = &D_843AB940[0];
+    OwnerLinkedFourStream* var_a2 = &gOwnerLinkedFourStreams[0];
     OwnerLinkedFourStreamNode* var_v0;
 
     for (i = 0; i < 4; i++, var_a2++) {
@@ -31,9 +31,9 @@ void OwnerLinkedFourStream_Init(void) {
 
         var_v0 = &var_a2->unk_038[0];
         for (j = 0; j < 15; j++, var_v0++) {
-            var_v0->unk_00 = 0;
-            var_v0->unk_04 = 1.0f;
-            var_v0->unk_08 = 0.0f;
+            var_v0->posX = 0;
+            var_v0->rotation = 1.0f;
+            var_v0->RentalSlotAnimData_PosePhase = 0.0f;
             var_v0->unk_0C.z = var_v0->unk_0C.y = var_v0->unk_0C.x = 0.0f;
             var_v0->unk_18.z = var_v0->unk_18.y = var_v0->unk_18.x = 0.0f;
         }
@@ -57,7 +57,7 @@ void OwnerLinkedFourStream_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg
     sp58.y = arg4;
     sp58.z = arg5;
 
-    var_v1 = &D_843AB940[0];
+    var_v1 = &gOwnerLinkedFourStreams[0];
     for (i = 0; i < 4; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
             var_v1->unk_000 = 1;
@@ -79,9 +79,9 @@ void OwnerLinkedFourStream_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg
 
             var_s0 = &var_v1->unk_038[0];
             for (j = 0; j < 15; j++, var_s0++) {
-                var_s0->unk_00 = (arg9 * (0xE - j)) / 15;
-                var_s0->unk_04 = argB;
-                var_s0->unk_08 = (RAND(120) * 6.2831855f) / 120.0;
+                var_s0->posX = (arg9 * (0xE - j)) / 15;
+                var_s0->rotation = argB;
+                var_s0->RentalSlotAnimData_PosePhase = (RAND(120) * 6.2831855f) / 120.0;
                 var_s0->unk_0C = sp64;
                 var_s0->unk_18 = sp58;
             }
@@ -106,8 +106,8 @@ void OwnerLinkedFourStream_UpdateNodeChain(OwnerLinkedFourStream* arg0) {
 
     for (i = 0; i < 15; i++, var_s0++) {
         if (i == 0) {
-            var_s0->unk_24 = var_s0->unk_04;
-            var_s0->unk_28 = var_s0->unk_08;
+            var_s0->unk_24 = var_s0->rotation;
+            var_s0->unk_28 = var_s0->RentalSlotAnimData_PosePhase;
             var_s0->unk_2C = var_s0->unk_0C;
             var_s0->unk_38 = var_s0->unk_18;
 
@@ -115,7 +115,7 @@ void OwnerLinkedFourStream_UpdateNodeChain(OwnerLinkedFourStream* arg0) {
             var_s0->unk_0C.y += var_s0->unk_18.y;
             var_s0->unk_0C.z += var_s0->unk_18.z;
 
-            var_s0->unk_08 += arg0->unk_010;
+            var_s0->RentalSlotAnimData_PosePhase += arg0->unk_010;
             if (arg0->unk_006 > 0) {
                 var_s0->unk_18.x += 0.4;
                 if (var_s0->unk_18.x > 20.0) {
@@ -147,28 +147,28 @@ void OwnerLinkedFourStream_UpdateNodeChain(OwnerLinkedFourStream* arg0) {
                 BattleAnim_SpawnSecondaryOwnerParticle(var_s0->unk_0C, 1);
             }
 
-            var_s0->unk_04 += 2.0;
-            if (arg0->unk_00C < var_s0->unk_04) {
-                var_s0->unk_04 = arg0->unk_00C;
+            var_s0->rotation += 2.0;
+            if (arg0->unk_00C < var_s0->rotation) {
+                var_s0->rotation = arg0->unk_00C;
             }
         } else {
-            var_s0->unk_24 = var_s0->unk_04;
-            var_s0->unk_28 = var_s0->unk_08;
+            var_s0->unk_24 = var_s0->rotation;
+            var_s0->unk_28 = var_s0->RentalSlotAnimData_PosePhase;
 
             var_s0->unk_2C = var_s0->unk_0C;
             var_s0->unk_38 = var_s0->unk_18;
 
             var_s0->unk_0C = var_s0[-1].unk_2C;
-            var_s0->unk_08 = var_s0[-1].unk_28;
+            var_s0->RentalSlotAnimData_PosePhase = var_s0[-1].unk_28;
             var_s0->unk_18 = var_s0[-1].unk_38;
-            var_s0->unk_04 = var_s0[-1].unk_24;
+            var_s0->rotation = var_s0[-1].unk_24;
         }
     }
 }
 
 s32 OwnerLinkedFourStream_IsComplete(void) {
     s32 i;
-    OwnerLinkedFourStream* var_s0 = &D_843AB940[0];
+    OwnerLinkedFourStream* var_s0 = &gOwnerLinkedFourStreams[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -199,21 +199,21 @@ Gfx* OwnerLinkedFourStream_Draw(Gfx* arg0) {
     Mtx sp90;
     UNUSED s32 pad2;
 
-    var_s5 = &D_843AB940[0];
+    var_s5 = &gOwnerLinkedFourStreams[0];
     for (i = 0; i < 4; i++, var_s5++) {
         if (var_s5->unk_000 == 1) {
             temp_s0 = &var_s5->unk_038[0];
             if (temp_s0->unk_0C.y > 0.0f) {
                 temp_v0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
                 guTranslate(temp_v0, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
-                guRotateRPY(&spD0, (temp_s0->unk_08 * -360.0f * var_s5->unk_006) / 6.2831854820251465, 0.0f,
+                guRotateRPY(&spD0, (temp_s0->RentalSlotAnimData_PosePhase * -360.0f * var_s5->unk_006) / 6.2831854820251465, 0.0f,
                             var_s5->unk_014);
                 guMtxCatL(&spD0, temp_v0, temp_v0);
                 guScale(&sp90, 0.09f, 0.09f, 0.09f);
                 guMtxCatL(&sp90, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, D_8438A980);
+                gSPDisplayList(arg0++, gParticleQuadDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
@@ -221,7 +221,7 @@ Gfx* OwnerLinkedFourStream_Draw(Gfx* arg0) {
             var_s0 = var_s5->unk_018;
 
             for (j = 0; j < 15; j++) {
-                OwnerLinkedFourStream_Update(temp_s0->unk_08, &sp154, temp_s0->unk_04);
+                OwnerLinkedFourStream_Update(temp_s0->RentalSlotAnimData_PosePhase, &sp154, temp_s0->rotation);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -234,10 +234,10 @@ Gfx* OwnerLinkedFourStream_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s5->unk_008.r;
                 var_s0->v.cn[1] = var_s5->unk_008.g;
                 var_s0->v.cn[2] = var_s5->unk_008.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
-                OwnerLinkedFourStream_Update(temp_s0->unk_08 + 3.1415927f, &sp154, temp_s0->unk_04);
+                OwnerLinkedFourStream_Update(temp_s0->RentalSlotAnimData_PosePhase + 3.1415927f, &sp154, temp_s0->rotation);
 
                 var_s3 = temp_s0->unk_0C.y + sp154.y;
                 if (var_s3 < 0) {
@@ -250,7 +250,7 @@ Gfx* OwnerLinkedFourStream_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s5->unk_008.r;
                 var_s0->v.cn[1] = var_s5->unk_008.g;
                 var_s0->v.cn[2] = var_s5->unk_008.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
                 temp_s0++;
@@ -258,7 +258,7 @@ Gfx* OwnerLinkedFourStream_Draw(Gfx* arg0) {
 
             var_s0 = var_s5->unk_018;
 
-            gSPDisplayList(arg0++, D_843899B0);
+            gSPDisplayList(arg0++, Gfx_ParticleRenderDL);
 
             for (k = 0; k < 14; k++) {
                 gSPVertex(arg0++, var_s0, 4, 0);

@@ -5,36 +5,36 @@
 #include "src/text_system.h"
 #include "src/audio_sfx.h"
 
-static unk_D_82F210E0 D_82F210E0;
-static unk_func_82F00838_sp30_00C* D_82F21120[2];
-static s16 D_82F21128;
-static s32 D_82F2112C;
-static s32 D_82F21130;
+static RentalMenuState gRentalMenuState;
+static PickerPokemonEntry* gRentalItemPtrs[2];
+static s16 gRentalMenuCursorIndex;
+static s32 gRentalMenuSaveDirection;
+static s32 gRentalMenuSaveSlotIndex;
 
-s32 Trade_WriteDeckAndCommitCart(unk_func_82F00838_sp30* arg0) {
+s32 Trade_WriteDeckAndCommitCart(PickerSelectionInfo* arg0) {
     DeckHandle* sp24;
     s32 var_v1;
 
-    if (arg0->unk_04 == 0) {
-        sp24 = Deck_Open(0x20, arg0->unk_02, 0, 1);
+    if (arg0->rotation == 0) {
+        sp24 = Deck_Open(0x20, arg0->posY, 0, 1);
     } else {
-        sp24 = Deck_Open(0x21, arg0->unk_02, arg0->unk_04 - 1, 1);
+        sp24 = Deck_Open(0x21, arg0->posY, arg0->rotation - 1, 1);
     }
 
-    Deck_WriteEntries(&arg0->unk_0C->unk_00, arg0->unk_08, sp24);
+    Deck_WriteEntries(&arg0->unk_0C->posX, arg0->RentalSlotAnimData_PosePhase, sp24);
     Deck_CloseAndFlush(sp24);
 
-    var_v1 = GbSave_WriteBoxBanks(arg0->unk_02);
+    var_v1 = GbSave_WriteBoxBanks(arg0->posY);
     if (var_v1 != 0) {
-        var_v1 = GbSave_CommitMainData(arg0->unk_02);
+        var_v1 = GbSave_CommitMainData(arg0->posY);
     }
     return var_v1;
 }
 
-s32 Trade_StepCartWriteSequence(unk_D_82F210E0* arg0) {
+s32 Trade_StepCartWriteSequence(RentalMenuState* arg0) {
     s32 i;
-    unk_func_82F00838_sp30* ptr;
-    unk_func_82F00838_sp30 sp30[2];
+    PickerSelectionInfo* ptr;
+    PickerSelectionInfo sp30[2];
     s32 sp2C = 0;
 
     for (i = 0; i < 2; i++) {
@@ -44,25 +44,25 @@ s32 Trade_StepCartWriteSequence(unk_D_82F210E0* arg0) {
     if (arg0->unk_06 < 0) {
         arg0->unk_06 = 0;
         for (i = 0, ptr = &sp30[0]; i < 2; i++, ptr++) {
-            GbSave_ValidateBeforeWrite(ptr->unk_02);
+            GbSave_ValidateBeforeWrite(ptr->posY);
         }
     }
 
-    if (arg0->unk_08 < 2) {
+    if (arg0->RentalSlotAnimData_PosePhase < 2) {
         for (i = 0, ptr = &sp30[0]; i < 2; i++, ptr++) {
-            if (i < arg0->unk_08) {
+            if (i < arg0->RentalSlotAnimData_PosePhase) {
                 continue;
             }
 
-            if (GbSave_InvalidateMainDataChecksum(ptr->unk_02) != 0) {
-                arg0->unk_08++;
+            if (GbSave_InvalidateMainDataChecksum(ptr->posY) != 0) {
+                arg0->RentalSlotAnimData_PosePhase++;
             } else {
                 break;
             }
         }
     }
 
-    if (arg0->unk_08 < 2) {
+    if (arg0->RentalSlotAnimData_PosePhase < 2) {
         return 0;
     }
 
@@ -73,7 +73,7 @@ s32 Trade_StepCartWriteSequence(unk_D_82F210E0* arg0) {
 
         if (Trade_WriteDeckAndCommitCart(ptr) != 0) {
             arg0->unk_0A += 1;
-            GbSave_RequirePakPresent(ptr->unk_02);
+            GbSave_RequirePakPresent(ptr->posY);
         } else {
             break;
         }
@@ -87,51 +87,51 @@ s32 Trade_StepCartWriteSequence(unk_D_82F210E0* arg0) {
 
 void Trade_InitSaveSequence(s32 arg0) {
     UNUSED s32 pad;
-    unk_D_82F210E0* ptr = &D_82F210E0;
+    RentalMenuState* ptr = &gRentalMenuState;
     s32 i;
-    unk_func_82F00838_sp30 sp2C;
+    PickerSelectionInfo sp2C;
 
-    ptr->unk_00 = 1;
-    ptr->unk_02 = 0xA;
-    ptr->unk_04 = 0;
+    ptr->posX = 1;
+    ptr->posY = 0xA;
+    ptr->rotation = 0;
     ptr->unk_06 = -1;
-    ptr->unk_08 = 0;
+    ptr->RentalSlotAnimData_PosePhase = 0;
     ptr->unk_0A = 0;
     ptr->unk_0C = 0;
     ptr->unk_0E = 0;
     ptr->unk_10 = -1;
     ptr->unk_12 = -1;
     if (arg0 != 0) {
-        ptr->unk_04 |= 1;
+        ptr->rotation |= 1;
     }
 
     for (i = 0; i < 2; i++) {
         Trade_GetPickScreenSnapshot(i, &sp2C);
-        D_82F21120[i] = &sp2C.unk_0C[sp2C.unk_06];
+        gRentalItemPtrs[i] = &sp2C.unk_0C[sp2C.unk_06];
     }
 
-    D_82F21128 = 0;
-    D_82F2112C = 0;
-    D_82F21130 = 0;
+    gRentalMenuCursorIndex = 0;
+    gRentalMenuSaveDirection = 0;
+    gRentalMenuSaveSlotIndex = 0;
 
     for (i = 0; i < 2; i++) {
-        ptr->unk_14[i].unk_00 = ptr->unk_14[i].unk_02 = 0;
-        ptr->unk_14[i].unk_04 = 0xC8;
+        ptr->unk_14[i].posX = ptr->unk_14[i].posY = 0;
+        ptr->unk_14[i].rotation = 0xC8;
         ptr->unk_14[i].unk_06 = 0;
     }
 
-    ptr->unk_24.unk_00 = 0;
-    ptr->unk_24.unk_04 = 0xE8;
+    ptr->unk_24.posX = 0;
+    ptr->unk_24.rotation = 0xE8;
     ptr->unk_24.unk_06 = 0;
-    ptr->unk_2C.unk_00 = 0;
-    ptr->unk_2C.unk_04 = 0x210;
+    ptr->unk_2C.posX = 0;
+    ptr->unk_2C.rotation = 0x210;
     ptr->unk_2C.unk_06 = 0;
-    ptr->unk_34.unk_00 = 0;
-    ptr->unk_34.unk_04 = 0xE8;
+    ptr->unk_34.posX = 0;
+    ptr->unk_34.rotation = 0xE8;
     ptr->unk_34.unk_06 = 0;
-    ptr->unk_24.unk_02 = 0;
-    ptr->unk_2C.unk_02 = 0;
-    ptr->unk_34.unk_02 = 0;
+    ptr->unk_24.posY = 0;
+    ptr->unk_2C.posY = 0;
+    ptr->unk_34.posY = 0;
 
     if (arg0 != 0) {
         Audio_PlaySoundEffectById(0x1E);
@@ -140,114 +140,114 @@ void Trade_InitSaveSequence(s32 arg0) {
     }
 }
 
-void Trade_UpdateSaveSeqPanelSlideIn(unk_D_82F210E0* arg0) {
+void Trade_UpdateSaveSeqPanelSlideIn(RentalMenuState* arg0) {
     s32 i;
-    unk_D_82F20A40_00E* ptr;
+    PanelRect* ptr;
 
-    arg0->unk_02--;
+    arg0->posY--;
 
     for (i = 0; i < 2; i++) {
-        arg0->unk_14[i].unk_00 = ((i * 0x118) - ((arg0->unk_02 * 0) / 10)) + 0x50;
-        arg0->unk_14[i].unk_02 = 0x60 - ((arg0->unk_02 * -0x54) / 10);
-        arg0->unk_14[i].unk_04 = 0xC8 - ((arg0->unk_02 * 0) / 10);
-        arg0->unk_14[i].unk_06 = 0xA8 - ((arg0->unk_02 * 0xA8) / 10);
+        arg0->unk_14[i].posX = ((i * 0x118) - ((arg0->posY * 0) / 10)) + 0x50;
+        arg0->unk_14[i].posY = 0x60 - ((arg0->posY * -0x54) / 10);
+        arg0->unk_14[i].rotation = 0xC8 - ((arg0->posY * 0) / 10);
+        arg0->unk_14[i].unk_06 = 0xA8 - ((arg0->posY * 0xA8) / 10);
     }
 
     ptr = &arg0->unk_24;
-    if (!(arg0->unk_04 & 1)) {
-        ptr->unk_00 = 0xCC - ((arg0->unk_02 * 0) / 10);
-        ptr->unk_02 = 0x11C - ((arg0->unk_02 * -0x38) / 10);
-        ptr->unk_04 = 0xE8 - ((arg0->unk_02 * 0) / 10);
-        ptr->unk_06 = 0x70 - ((arg0->unk_02 * 0x70) / 10);
+    if (!(arg0->rotation & 1)) {
+        ptr->posX = 0xCC - ((arg0->posY * 0) / 10);
+        ptr->posY = 0x11C - ((arg0->posY * -0x38) / 10);
+        ptr->rotation = 0xE8 - ((arg0->posY * 0) / 10);
+        ptr->unk_06 = 0x70 - ((arg0->posY * 0x70) / 10);
     }
 
     ptr = &arg0->unk_2C;
-    if (arg0->unk_04 & 1) {
-        ptr->unk_00 = 0x38 - ((arg0->unk_02 * 0) / 10);
-        ptr->unk_02 = 0x190 - ((arg0->unk_02 * -0x14) / 10);
-        ptr->unk_04 = 0x210 - ((arg0->unk_02 * 0) / 10);
-        ptr->unk_06 = 0x28 - ((arg0->unk_02 * 0x28) / 10);
+    if (arg0->rotation & 1) {
+        ptr->posX = 0x38 - ((arg0->posY * 0) / 10);
+        ptr->posY = 0x190 - ((arg0->posY * -0x14) / 10);
+        ptr->rotation = 0x210 - ((arg0->posY * 0) / 10);
+        ptr->unk_06 = 0x28 - ((arg0->posY * 0x28) / 10);
     }
 
-    if (arg0->unk_02 <= 0) {
-        if (arg0->unk_04 & 1) {
-            arg0->unk_00 = 3;
-            arg0->unk_02 = 0x14;
-            arg0->unk_04 |= 4;
+    if (arg0->posY <= 0) {
+        if (arg0->rotation & 1) {
+            arg0->posX = 3;
+            arg0->posY = 0x14;
+            arg0->rotation |= 4;
         } else {
-            arg0->unk_00 = 2;
-            arg0->unk_02 = 0;
-            arg0->unk_04 |= 6;
+            arg0->posX = 2;
+            arg0->posY = 0;
+            arg0->rotation |= 6;
         }
     }
 }
 
-void Trade_UpdateSaveSeqMenuInput(unk_D_82F210E0* arg0) {
+void Trade_UpdateSaveSeqMenuInput(RentalMenuState* arg0) {
     s32 var_t0 = 0;
     s32 var_a2;
     s16 tmp;
 
-    if (arg0->unk_04 & 1) {
+    if (arg0->rotation & 1) {
         var_a2 = 3;
     } else {
         var_a2 = 2;
     }
 
-    tmp = D_82F21128;
-    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP) && (D_82F21128 > 0)) {
-        D_82F21128--;
+    tmp = gRentalMenuCursorIndex;
+    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DUP) && (gRentalMenuCursorIndex > 0)) {
+        gRentalMenuCursorIndex--;
     }
 
-    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN) && (D_82F21128 < (var_a2 - 1))) {
-        D_82F21128++;
+    if (BTN_IS_PRESSED(gPlayer1Controller, BTN_DDOWN) && (gRentalMenuCursorIndex < (var_a2 - 1))) {
+        gRentalMenuCursorIndex++;
     }
 
-    if (D_82F21128 != tmp) {
+    if (gRentalMenuCursorIndex != tmp) {
         var_t0 = 0;
         Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
     }
 
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
         var_t0 = 1;
-    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B) && !(arg0->unk_04 & 1)) {
+    } else if (BTN_IS_PRESSED(gPlayer1Controller, BTN_B) && !(arg0->rotation & 1)) {
         var_t0 = 1;
-        D_82F21128 = 1;
+        gRentalMenuCursorIndex = 1;
     }
 
     if (var_t0 != 0) {
-        if (arg0->unk_04 & 1) {
-            switch (D_82F21128) {
+        if (arg0->rotation & 1) {
+            switch (gRentalMenuCursorIndex) {
                 case 0:
-                    arg0->unk_00 = 5;
-                    arg0->unk_02 = 0xA;
-                    D_82F21130 = 0;
+                    arg0->posX = 5;
+                    arg0->posY = 0xA;
+                    gRentalMenuSaveSlotIndex = 0;
                     Audio_PlaySoundEffectById(0x1D);
                     break;
 
                 case 1:
-                    arg0->unk_00 = 5;
-                    arg0->unk_02 = 0xA;
-                    D_82F21130 = 1;
+                    arg0->posX = 5;
+                    arg0->posY = 0xA;
+                    gRentalMenuSaveSlotIndex = 1;
                     Audio_PlaySoundEffectById(0x22);
                     break;
 
                 default:
-                    arg0->unk_00 = 8;
-                    arg0->unk_02 = 0xA;
-                    arg0->unk_04 &= ~4;
-                    D_82F21130 = 0;
+                    arg0->posX = 8;
+                    arg0->posY = 0xA;
+                    arg0->rotation &= ~4;
+                    gRentalMenuSaveSlotIndex = 0;
                     Audio_PlaySoundEffectById(SFX_MENU_BACK);
                     break;
             }
         } else {
-            arg0->unk_00 = 8;
-            arg0->unk_02 = 0xA;
-            arg0->unk_04 &= ~6;
-            if (D_82F21128 == 0) {
-                D_82F2112C = 1;
+            arg0->posX = 8;
+            arg0->posY = 0xA;
+            arg0->rotation &= ~6;
+            if (gRentalMenuCursorIndex == 0) {
+                gRentalMenuSaveDirection = 1;
                 Audio_PlaySoundEffectById(SFX_MENU_CONFIRM);
             } else {
-                D_82F2112C = 0;
+                gRentalMenuSaveDirection = 0;
                 Audio_PlaySoundEffectById(SFX_MENU_BACK);
             }
         }
@@ -255,53 +255,53 @@ void Trade_UpdateSaveSeqMenuInput(unk_D_82F210E0* arg0) {
     }
 }
 
-void Trade_UpdateSaveSeqConfirmWait(unk_D_82F210E0* arg0) {
-    arg0->unk_02--;
+void Trade_UpdateSaveSeqConfirmWait(RentalMenuState* arg0) {
+    arg0->posY--;
     if (BTN_IS_PRESSED(gPlayer1Controller, BTN_A)) {
-        arg0->unk_02 = 0;
+        arg0->posY = 0;
     }
 
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 4;
-        arg0->unk_02 = 0xA;
-    }
-}
-
-void Trade_UpdateSaveSeqPanelClose(unk_D_82F210E0* arg0) {
-    arg0->unk_02--;
-    arg0->unk_24.unk_00 = 0xA2 - (arg0->unk_02 * 0) / 10;
-    arg0->unk_24.unk_02 = 0x116 - ((arg0->unk_02 * -0x2E) / 10);
-    arg0->unk_24.unk_04 = 0x13C - (arg0->unk_02 * 0) / 10;
-    arg0->unk_24.unk_06 = 0x70 - ((arg0->unk_02 * 0x70) / 10);
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 2;
-        arg0->unk_02 = 0;
+    if (arg0->posY <= 0) {
+        arg0->posX = 4;
+        arg0->posY = 0xA;
     }
 }
 
-void Trade_UpdateSaveSeqPanelReopen(unk_D_82F210E0* arg0) {
-    arg0->unk_02--;
-    arg0->unk_24.unk_00 = 0xA2 - (arg0->unk_02 * 0) / 10;
-    arg0->unk_24.unk_02 = 0x144 - ((arg0->unk_02 * 0x2E) / 10);
-    arg0->unk_24.unk_04 = 0x13C - (arg0->unk_02 * 0) / 10;
-    arg0->unk_24.unk_06 = -((arg0->unk_02 * -0x70) / 10);
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 6;
-        arg0->unk_02 = 0xA;
+void Trade_UpdateSaveSeqPanelClose(RentalMenuState* arg0) {
+    arg0->posY--;
+    arg0->unk_24.posX = 0xA2 - (arg0->posY * 0) / 10;
+    arg0->unk_24.posY = 0x116 - ((arg0->posY * -0x2E) / 10);
+    arg0->unk_24.rotation = 0x13C - (arg0->posY * 0) / 10;
+    arg0->unk_24.unk_06 = 0x70 - ((arg0->posY * 0x70) / 10);
+    if (arg0->posY <= 0) {
+        arg0->posX = 2;
+        arg0->posY = 0;
     }
 }
 
-void Trade_UpdateSaveSeqBeginWrite(unk_D_82F210E0* arg0) {
-    arg0->unk_02--;
-    arg0->unk_34.unk_00 = 0xCC - (arg0->unk_02 * 0) / 10;
-    arg0->unk_34.unk_02 = 0x134 - ((arg0->unk_02 * -0x1C) / 10);
-    arg0->unk_34.unk_04 = 0xE8 - (arg0->unk_02 * 0) / 10;
-    arg0->unk_34.unk_06 = 0x38 - ((arg0->unk_02 * 0x38) / 10);
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 7;
-        arg0->unk_02 = 5;
+void Trade_UpdateSaveSeqPanelReopen(RentalMenuState* arg0) {
+    arg0->posY--;
+    arg0->unk_24.posX = 0xA2 - (arg0->posY * 0) / 10;
+    arg0->unk_24.posY = 0x144 - ((arg0->posY * 0x2E) / 10);
+    arg0->unk_24.rotation = 0x13C - (arg0->posY * 0) / 10;
+    arg0->unk_24.unk_06 = -((arg0->posY * -0x70) / 10);
+    if (arg0->posY <= 0) {
+        arg0->posX = 6;
+        arg0->posY = 0xA;
+    }
+}
+
+void Trade_UpdateSaveSeqBeginWrite(RentalMenuState* arg0) {
+    arg0->posY--;
+    arg0->unk_34.posX = 0xCC - (arg0->posY * 0) / 10;
+    arg0->unk_34.posY = 0x134 - ((arg0->posY * -0x1C) / 10);
+    arg0->unk_34.rotation = 0xE8 - (arg0->posY * 0) / 10;
+    arg0->unk_34.unk_06 = 0x38 - ((arg0->posY * 0x38) / 10);
+    if (arg0->posY <= 0) {
+        arg0->posX = 7;
+        arg0->posY = 5;
         arg0->unk_06 = -1;
-        arg0->unk_08 = 0;
+        arg0->RentalSlotAnimData_PosePhase = 0;
         arg0->unk_0A = 0;
         arg0->unk_0C = 0;
         arg0->unk_0E = 0;
@@ -309,16 +309,16 @@ void Trade_UpdateSaveSeqBeginWrite(unk_D_82F210E0* arg0) {
     }
 }
 
-void Trade_UpdateSaveSeqWriteCarts(unk_D_82F210E0* arg0) {
+void Trade_UpdateSaveSeqWriteCarts(RentalMenuState* arg0) {
     s32 temp_v0;
-    unk_func_82F00838_sp30 sp24;
+    PickerSelectionInfo sp24;
 
-    arg0->unk_02--;
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_02 = 0;
+    arg0->posY--;
+    if (arg0->posY <= 0) {
+        arg0->posY = 0;
         if (arg0->unk_0C == 1) {
             Trade_GetPickScreenSnapshot(arg0->unk_0A, &sp24);
-            temp_v0 = GbSave_PollCartRemoval(sp24.unk_02);
+            temp_v0 = GbSave_PollCartRemoval(sp24.posY);
             if (temp_v0 == 1) {
                 arg0->unk_10 = 1;
             }
@@ -344,9 +344,9 @@ void Trade_UpdateSaveSeqWriteCarts(unk_D_82F210E0* arg0) {
 
         if (arg0->unk_0C == 0) {
             if (Trade_StepCartWriteSequence(arg0) != 0) {
-                arg0->unk_00 = 8;
-                arg0->unk_02 = 0xA;
-                arg0->unk_04 &= ~4;
+                arg0->posX = 8;
+                arg0->posY = 0xA;
+                arg0->rotation &= ~4;
                 arg0->unk_10 = -1;
                 Audio_PlaySoundEffectById(9);
             } else {
@@ -354,7 +354,7 @@ void Trade_UpdateSaveSeqWriteCarts(unk_D_82F210E0* arg0) {
                 arg0->unk_0C = 1;
                 arg0->unk_10 = 2;
                 Trade_GetPickScreenSnapshot(arg0->unk_0A, &sp24);
-                temp_v0 = GbSave_PollCartRemoval(sp24.unk_02);
+                temp_v0 = GbSave_PollCartRemoval(sp24.posY);
                 if (temp_v0 == 1) {
                     arg0->unk_10 = 1;
                 }
@@ -367,54 +367,54 @@ void Trade_UpdateSaveSeqWriteCarts(unk_D_82F210E0* arg0) {
     }
 }
 
-void Trade_UpdateSaveSeqPanelSlideOut(unk_D_82F210E0* arg0) {
-    unk_D_82F20A40_00E* temp_v1;
+void Trade_UpdateSaveSeqPanelSlideOut(RentalMenuState* arg0) {
+    PanelRect* temp_v1;
     s32 i;
 
-    arg0->unk_02--;
+    arg0->posY--;
 
     for (i = 0; i < 2; i++) {
-        arg0->unk_14[i].unk_00 = ((i * 0x118) - ((arg0->unk_02 * 0) / 10)) + 0x50;
-        arg0->unk_14[i].unk_02 = 0xB4 - ((arg0->unk_02 * 0x54) / 10);
-        arg0->unk_14[i].unk_04 = 0xC8 - ((arg0->unk_02 * 0) / 10);
-        arg0->unk_14[i].unk_06 = -((arg0->unk_02 * -0xA8) / 10);
+        arg0->unk_14[i].posX = ((i * 0x118) - ((arg0->posY * 0) / 10)) + 0x50;
+        arg0->unk_14[i].posY = 0xB4 - ((arg0->posY * 0x54) / 10);
+        arg0->unk_14[i].rotation = 0xC8 - ((arg0->posY * 0) / 10);
+        arg0->unk_14[i].unk_06 = -((arg0->posY * -0xA8) / 10);
     }
 
     temp_v1 = &arg0->unk_24;
-    if (arg0->unk_04 & 1) {
-        if ((temp_v1->unk_04 != 0x13C) || (temp_v1->unk_06 != 0)) {
-            temp_v1->unk_00 = 0xA2 - ((arg0->unk_02 * 0) / 10);
-            temp_v1->unk_02 = 0x144 - ((arg0->unk_02 * 0x2E) / 10);
-            temp_v1->unk_04 = 0x13C - ((arg0->unk_02 * 0) / 10);
-            temp_v1->unk_06 = -((arg0->unk_02 * -0x70) / 10);
+    if (arg0->rotation & 1) {
+        if ((temp_v1->rotation != 0x13C) || (temp_v1->unk_06 != 0)) {
+            temp_v1->posX = 0xA2 - ((arg0->posY * 0) / 10);
+            temp_v1->posY = 0x144 - ((arg0->posY * 0x2E) / 10);
+            temp_v1->rotation = 0x13C - ((arg0->posY * 0) / 10);
+            temp_v1->unk_06 = -((arg0->posY * -0x70) / 10);
         }
-    } else if ((temp_v1->unk_04 != 0xE8) || (temp_v1->unk_06 != 0)) {
-        temp_v1->unk_00 = 0xCC - ((arg0->unk_02 * 0) / 10);
-        temp_v1->unk_02 = 0x154 - ((arg0->unk_02 * 0x38) / 10);
-        temp_v1->unk_04 = 0xE8 - ((arg0->unk_02 * 0) / 10);
-        temp_v1->unk_06 = -((arg0->unk_02 * -0x70) / 10);
+    } else if ((temp_v1->rotation != 0xE8) || (temp_v1->unk_06 != 0)) {
+        temp_v1->posX = 0xCC - ((arg0->posY * 0) / 10);
+        temp_v1->posY = 0x154 - ((arg0->posY * 0x38) / 10);
+        temp_v1->rotation = 0xE8 - ((arg0->posY * 0) / 10);
+        temp_v1->unk_06 = -((arg0->posY * -0x70) / 10);
     }
 
     temp_v1 = &arg0->unk_2C;
-    if ((arg0->unk_2C.unk_04 != 0x210) || (arg0->unk_2C.unk_06 != 0)) {
-        temp_v1->unk_00 = 0x38 - ((arg0->unk_02 * 0) / 10);
-        temp_v1->unk_02 = 0x1A4 - ((arg0->unk_02 * 0x14) / 10);
-        temp_v1->unk_04 = 0x210 - ((arg0->unk_02 * 0) / 10);
-        temp_v1->unk_06 = -((arg0->unk_02 * -0x28) / 10);
+    if ((arg0->unk_2C.rotation != 0x210) || (arg0->unk_2C.unk_06 != 0)) {
+        temp_v1->posX = 0x38 - ((arg0->posY * 0) / 10);
+        temp_v1->posY = 0x1A4 - ((arg0->posY * 0x14) / 10);
+        temp_v1->rotation = 0x210 - ((arg0->posY * 0) / 10);
+        temp_v1->unk_06 = -((arg0->posY * -0x28) / 10);
     }
 
     temp_v1 = &arg0->unk_34;
-    if ((arg0->unk_34.unk_04 != 0xE8) || (arg0->unk_34.unk_06 != 0)) {
-        temp_v1->unk_00 = 0xCC - ((arg0->unk_02 * 0) / 10);
-        temp_v1->unk_02 = 0x150 - ((arg0->unk_02 * 0x1C) / 10);
-        temp_v1->unk_04 = 0xE8 - ((arg0->unk_02 * 0) / 10);
-        temp_v1->unk_06 = -((arg0->unk_02 * -0x38) / 10);
+    if ((arg0->unk_34.rotation != 0xE8) || (arg0->unk_34.unk_06 != 0)) {
+        temp_v1->posX = 0xCC - ((arg0->posY * 0) / 10);
+        temp_v1->posY = 0x150 - ((arg0->posY * 0x1C) / 10);
+        temp_v1->rotation = 0xE8 - ((arg0->posY * 0) / 10);
+        temp_v1->unk_06 = -((arg0->posY * -0x38) / 10);
     }
 
-    if (arg0->unk_02 <= 0) {
-        arg0->unk_00 = 0;
-        arg0->unk_02 = 0;
-        arg0->unk_04 = 0;
+    if (arg0->posY <= 0) {
+        arg0->posX = 0;
+        arg0->posY = 0;
+        arg0->rotation = 0;
     }
 }
 
@@ -431,10 +431,10 @@ void Trade_DrawSaveSeqBoxThumbnail(s16 arg0, s16 arg1, s16 arg2) {
 #if defined(VERSION_US_REV2)
 #pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/trade_machine/trade_machine_291D60/Trade_DrawSaveSeqBoxPanels.s")
 #else
-void Trade_DrawSaveSeqBoxPanels(unk_D_82F210E0* arg0) {
-    unk_D_82F20A40_00E* var_s0;
+void Trade_DrawSaveSeqBoxPanels(RentalMenuState* arg0) {
+    PanelRect* var_s0;
     s32 sp74[2];
-    unk_func_82F00838_sp30_00C* temp_s3;
+    PickerPokemonEntry* temp_s3;
     s32 i;
 
     if (arg0->unk_12 > 0) {
@@ -443,13 +443,13 @@ void Trade_DrawSaveSeqBoxPanels(unk_D_82F210E0* arg0) {
 
     for (i = 0; i < 2; i++) {
         var_s0 = &arg0->unk_14[i];
-        if ((var_s0->unk_04 != 0xC8) || (var_s0->unk_06 != 0)) {
-            Trade_DrawPickScreenFrame(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06);
+        if ((var_s0->rotation != 0xC8) || (var_s0->unk_06 != 0)) {
+            Trade_DrawPickScreenFrame(var_s0->posX, var_s0->posY, var_s0->rotation, var_s0->unk_06);
         }
     }
 
     for (i = 0; i < 2; i++) {
-        if ((arg0->unk_14[i].unk_04 == 0xC8) && (arg0->unk_14[i].unk_06 == 0xA8)) {
+        if ((arg0->unk_14[i].rotation == 0xC8) && (arg0->unk_14[i].unk_06 == 0xA8)) {
             sp74[i] = 1;
         } else {
             sp74[i] = 0;
@@ -461,7 +461,7 @@ void Trade_DrawSaveSeqBoxPanels(unk_D_82F210E0* arg0) {
     for (i = 0; i < 2; i++) {
         var_s0 = &arg0->unk_14[i];
         if (sp74[i] != 0) {
-            Gfx_FillRectRgba(var_s0->unk_00, var_s0->unk_02, var_s0->unk_04, var_s0->unk_06, 0x32, 0x32, 0x96, 0xFF);
+            Gfx_FillRectRgba(var_s0->posX, var_s0->posY, var_s0->rotation, var_s0->unk_06, 0x32, 0x32, 0x96, 0xFF);
         }
     }
 
@@ -470,7 +470,7 @@ void Trade_DrawSaveSeqBoxPanels(unk_D_82F210E0* arg0) {
 
     for (i = 0; i < 2; i++) {
         if (sp74[i] != 0) {
-            Trade_DrawSaveSeqBoxThumbnail(i, arg0->unk_14[i].unk_00 + 0x46, arg0->unk_14[i].unk_02 + 0xA);
+            Trade_DrawSaveSeqBoxThumbnail(i, arg0->unk_14[i].posX + 0x46, arg0->unk_14[i].posY + 0xA);
         }
     }
 
@@ -481,20 +481,20 @@ void Trade_DrawSaveSeqBoxPanels(unk_D_82F210E0* arg0) {
 
     for (i = 0; i < 2; i++) {
         if (sp74[i] != 0) {
-            temp_s3 = D_82F21120[i];
+            temp_s3 = gRentalItemPtrs[i];
             var_s0 = &arg0->unk_14[i];
             Font_SetActive(4, 0);
-            Font_Printf(var_s0->unk_00 + 0xA, var_s0->unk_02 + 0x4A, "No.");
+            Font_Printf(var_s0->posX + 0xA, var_s0->posY + 0x4A, "No.");
             Font_SetActive(4, 0);
-            Font_Printf(var_s0->unk_00 + 0x26, var_s0->unk_02 + 0x4A, "%03d", temp_s3->unk_00);
+            Font_Printf(var_s0->posX + 0x26, var_s0->posY + 0x4A, "%03d", temp_s3->posX);
             Font_SetActive(8, 0);
-            Font_Printf(var_s0->unk_00 + 0x62, var_s0->unk_02 + 0x46, Trade_GetSpeciesName(temp_s3->unk_00));
+            Font_Printf(var_s0->posX + 0x62, var_s0->posY + 0x46, Trade_GetSpeciesName(temp_s3->posX));
             Font_SetActive(8, 0);
-            Font_Printf(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x5E, Text_GetString(NULL, 0, gTradeStrings, 0x14));
-            Font_Printf(var_s0->unk_00 + 0x46, var_s0->unk_02 + 0x5E, "/%s", temp_s3->unk_30);
-            Font_Printf(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x74, Text_GetString(NULL, 0, gTradeStrings, 0x15));
-            Font_Printf(var_s0->unk_00 + 0x46, var_s0->unk_02 + 0x74, "/%s", temp_s3->unk_3B);
-            Font_Printf(var_s0->unk_00 + 0x10, var_s0->unk_02 + 0x8A, "ID%05d", temp_s3->unk_0E);
+            Font_Printf(var_s0->posX + 0x10, var_s0->posY + 0x5E, Text_GetString(NULL, 0, gTradeStrings, 0x14));
+            Font_Printf(var_s0->posX + 0x46, var_s0->posY + 0x5E, "/%s", temp_s3->unk_30);
+            Font_Printf(var_s0->posX + 0x10, var_s0->posY + 0x74, Text_GetString(NULL, 0, gTradeStrings, 0x15));
+            Font_Printf(var_s0->posX + 0x46, var_s0->posY + 0x74, "/%s", temp_s3->unk_3B);
+            Font_Printf(var_s0->posX + 0x10, var_s0->posY + 0x8A, "ID%05d", temp_s3->unk_0E);
         }
     }
 
@@ -502,126 +502,126 @@ void Trade_DrawSaveSeqBoxPanels(unk_D_82F210E0* arg0) {
 }
 #endif
 
-void Trade_DrawSaveSeqMenuPanel(unk_D_82F210E0* arg0) {
+void Trade_DrawSaveSeqMenuPanel(RentalMenuState* arg0) {
     s32 i;
-    unk_D_82F20A40_00E* var_s4 = &arg0->unk_24;
+    PanelRect* var_s4 = &arg0->unk_24;
     Color_RGB8* var_v0;
     s16 temp_ft3;
     s16 arg2;
     Color_RGB8 sp64 = { 0x1E, 0x1E, 0x82 };
     Color_RGB8 sp60 = { 0x64, 0x1E, 0x1E };
 
-    if (arg0->unk_04 & 1) {
-        if ((var_s4->unk_04 == 0x13C) && (var_s4->unk_06 == 0)) {
+    if (arg0->rotation & 1) {
+        if ((var_s4->rotation == 0x13C) && (var_s4->unk_06 == 0)) {
             return;
         }
-    } else if ((var_s4->unk_04 == 0xE8) && (var_s4->unk_06 == 0)) {
+    } else if ((var_s4->rotation == 0xE8) && (var_s4->unk_06 == 0)) {
         return;
     }
 
-    if (arg0->unk_04 & 1) {
+    if (arg0->rotation & 1) {
         var_v0 = &sp60;
     } else {
         var_v0 = &sp64;
     }
 
-    if ((var_s4->unk_04 >= 0xE) && (var_s4->unk_06 >= 0xE)) {
-        Ui_DrawGradientPanel(var_s4->unk_00, var_s4->unk_02, var_s4->unk_04, var_s4->unk_06, var_v0, var_v0);
+    if ((var_s4->rotation >= 0xE) && (var_s4->unk_06 >= 0xE)) {
+        Ui_DrawGradientPanel(var_s4->posX, var_s4->posY, var_s4->rotation, var_s4->unk_06, var_v0, var_v0);
     }
 
-    if (arg0->unk_04 & 1) {
-        if ((var_s4->unk_04 != 0x13C) || (var_s4->unk_06 != 0x70)) {
+    if (arg0->rotation & 1) {
+        if ((var_s4->rotation != 0x13C) || (var_s4->unk_06 != 0x70)) {
             return;
         }
-    } else if ((var_s4->unk_04 != 0xE8) || (var_s4->unk_06 != 0x70)) {
+    } else if ((var_s4->rotation != 0xE8) || (var_s4->unk_06 != 0x70)) {
         return;
     }
 
     {
-        static s16 D_82F13F78 = 0;
+        static s16 gSaveSeqMenuMarkerAnim = 0;
 
-        temp_ft3 = SINS(D_82F13F78) * 3.0f;
+        temp_ft3 = SINS(gSaveSeqMenuMarkerAnim) * 3.0f;
 
-        if (arg0->unk_04 & 1) {
-            Ui_DrawTextureMarker(var_s4->unk_00 + temp_ft3 + 0x10, var_s4->unk_02 + (D_82F21128 * 0x1C) + 0x14);
+        if (arg0->rotation & 1) {
+            Ui_DrawTextureMarker(var_s4->posX + temp_ft3 + 0x10, var_s4->posY + (gRentalMenuCursorIndex * 0x1C) + 0x14);
         } else {
-            Ui_DrawTextureMarker(var_s4->unk_00 + temp_ft3 + 0x18, var_s4->unk_02 + (D_82F21128 * 0x1C) + 0x32);
+            Ui_DrawTextureMarker(var_s4->posX + temp_ft3 + 0x18, var_s4->posY + (gRentalMenuCursorIndex * 0x1C) + 0x32);
         }
 
         Font_BeginTranslucentTextRendering();
         Font_SetActive(0x10, 0);
         Gfx_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
 
-        if (arg0->unk_04 & 1) {
+        if (arg0->rotation & 1) {
             char* sp54[3];
             for (i = 0; i < 3; i++) {
                 sp54[0] = Text_GetString(NULL, 0, gTradeStrings, 0x1A);
                 sp54[1] = Text_GetString(NULL, 0, gTradeStrings, 0x1B);
                 sp54[2] = Text_GetString(NULL, 0, gTradeStrings, 0x1C);
-                Font_Printf(var_s4->unk_00 + 0x38, var_s4->unk_02 + i * 0x1C + 0x10, sp54[i]);
+                Font_Printf(var_s4->posX + 0x38, var_s4->posY + i * 0x1C + 0x10, sp54[i]);
             }
         } else {
             char* temp_v0 = Text_GetString(NULL, 0, gTradeStrings, 0x16);
             char* sp48[2];
 
             arg2 = Font_MeasureTextExtent(0, 0, temp_v0);
-            Font_Printf((var_s4->unk_00 + (var_s4->unk_04 / 2)) - (arg2 / 2), var_s4->unk_02 + 0x10, temp_v0);
+            Font_Printf((var_s4->posX + (var_s4->rotation / 2)) - (arg2 / 2), var_s4->posY + 0x10, temp_v0);
 
             for (i = 0; i < 2; i++) {
                 sp48[0] = Text_GetString(NULL, 0, gTradeStrings, 0x17);
                 sp48[1] = Text_GetString(NULL, 0, gTradeStrings, 0x18);
-                if (i != D_82F21128) {
+                if (i != gRentalMenuCursorIndex) {
                     Gfx_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
                 } else {
                     Gfx_SetEnvColor(0xFF, 0xFF, 0, 0xFF);
                 }
                 arg2 = Font_MeasureTextExtent(0, 0, sp48[i]);
-                Font_Printf((var_s4->unk_00 + (var_s4->unk_04 / 2)) - (arg2 / 2), var_s4->unk_02 + i * 0x1C + 0x2C,
+                Font_Printf((var_s4->posX + (var_s4->rotation / 2)) - (arg2 / 2), var_s4->posY + i * 0x1C + 0x2C,
                               sp48[i]);
             }
         }
 
         Font_EndTexturedTextRendering();
-        D_82F13F78 += 0x1000;
+        gSaveSeqMenuMarkerAnim += 0x1000;
     }
 }
 
-void Trade_DrawSaveSeqBannerPanel(unk_D_82F210E0* arg0) {
+void Trade_DrawSaveSeqBannerPanel(RentalMenuState* arg0) {
     s32 sp34;
-    unk_D_82F20A40_00E* temp_s0 = &arg0->unk_2C;
+    PanelRect* temp_s0 = &arg0->unk_2C;
 
-    if ((arg0->unk_2C.unk_04 != 0x210) || (arg0->unk_2C.unk_06 != 0)) {
-        Trade_DrawRoundedFrameLarge(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
-        if ((temp_s0->unk_04 == 0x210) && (temp_s0->unk_06 == 0x28)) {
+    if ((arg0->unk_2C.rotation != 0x210) || (arg0->unk_2C.unk_06 != 0)) {
+        Trade_DrawRoundedFrameLarge(temp_s0->posX, temp_s0->posY, temp_s0->rotation, temp_s0->unk_06, 0x1E, 0x1E, 0x82, 0xFF);
+        if ((temp_s0->rotation == 0x210) && (temp_s0->unk_06 == 0x28)) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Gfx_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             sp34 = Font_MeasureTextExtent(0, 0, Text_GetString(NULL, 0, gTradeStrings, 0x1D)) / 2;
-            Font_Printf((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - sp34, temp_s0->unk_02 + 8,
+            Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - sp34, temp_s0->posY + 8,
                           Text_GetString(NULL, 0, gTradeStrings, 0x1D));
             Font_EndTexturedTextRendering();
         }
     }
 }
 
-void Trade_DrawSaveSeqSubBanner(unk_D_82F210E0* arg0) {
-    unk_D_82F20A40_00E* temp_s0 = &arg0->unk_34;
+void Trade_DrawSaveSeqSubBanner(RentalMenuState* arg0) {
+    PanelRect* temp_s0 = &arg0->unk_34;
     char* sp40;
     UNUSED s32 pad;
     Color_RGB8 sp38 = { 0x64, 0x1E, 0x1E };
 
-    if ((arg0->unk_34.unk_04 != 0xE8) || (arg0->unk_34.unk_06 != 0)) {
-        if ((temp_s0->unk_04 >= 0xE) && (temp_s0->unk_06 >= 0xE)) {
-            Ui_DrawGradientPanel(temp_s0->unk_00, temp_s0->unk_02, temp_s0->unk_04, temp_s0->unk_06, &sp38, &sp38);
+    if ((arg0->unk_34.rotation != 0xE8) || (arg0->unk_34.unk_06 != 0)) {
+        if ((temp_s0->rotation >= 0xE) && (temp_s0->unk_06 >= 0xE)) {
+            Ui_DrawGradientPanel(temp_s0->posX, temp_s0->posY, temp_s0->rotation, temp_s0->unk_06, &sp38, &sp38);
         }
 
-        if ((temp_s0->unk_04 == 0xE8) && (temp_s0->unk_06 == 0x38)) {
+        if ((temp_s0->rotation == 0xE8) && (temp_s0->unk_06 == 0x38)) {
             Font_BeginTranslucentTextRendering();
             Font_SetActive(0x10, 0);
             Gfx_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             sp40 = Text_GetString(NULL, 0, gTradeStrings, 0x1E);
-            Font_Printf((temp_s0->unk_00 + (temp_s0->unk_04 / 2)) - (Font_MeasureTextExtent(0, 0, sp40) / 2),
-                          temp_s0->unk_02 + 0x10, sp40);
+            Font_Printf((temp_s0->posX + (temp_s0->rotation / 2)) - (Font_MeasureTextExtent(0, 0, sp40) / 2),
+                          temp_s0->posY + 0x10, sp40);
             Font_EndTexturedTextRendering();
         }
     }
@@ -639,18 +639,18 @@ void Trade_DrawSaveSeqMessageBackdrop(s16 arg0, s16 arg1, s16 arg2, s16 arg3) {
 #define U64_NOP(x) ((u32)((u64)(x) | 0ULL))
 
 #if defined(VERSION_US_REV2)
-#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/trade_machine/trade_machine_291D60/func_82F0BEF8.s")
+#pragma GLOBAL_ASM("asm/us/nonmatchings/fragments/trade_machine/trade_machine_291D60/RentalMenu_DrawMessage.s")
 #else
-void func_82F0BEF8(unk_D_82F210E0* arg0) {
-    static s16 D_82F13F88 = 0;
+void RentalMenu_DrawMessage(RentalMenuState* arg0) {
+    static s16 gSaveSeqMessageAnim = 0;
 
     s32 pad[2];
     char sp38[64];
     s32 pad2[2];
-    unk_func_82F00838_sp30 sp20;
+    PickerSelectionInfo sp20;
 
-    if (arg0->unk_08 < 2) {
-        Trade_GetPickScreenSnapshot(arg0->unk_08, &sp20);
+    if (arg0->RentalSlotAnimData_PosePhase < 2) {
+        Trade_GetPickScreenSnapshot(arg0->RentalSlotAnimData_PosePhase, &sp20);
     } else {
         Trade_GetPickScreenSnapshot(arg0->unk_0A, &sp20);
     }
@@ -676,7 +676,7 @@ void func_82F0BEF8(unk_D_82F210E0* arg0) {
             Font_EnableTwoCycleTexturing();
             Gfx_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Gfx_SetPrimColor(0xFF, 0xF1, 0x78, 0xFF);
-            Text_SetNumberToken(1, sp20.unk_02 + 1);
+            Text_SetNumberToken(1, sp20.posY + 1);
             Font_Printf(0xB0, 0x90,
                         (char*)U64_NOP(U64_NOP(U64_NOP(
                             U64_NOP(Text_GetString((char*)U64_NOP(sp38), sizeof(sp38), gTradeStrings, 0x20))))));
@@ -700,92 +700,92 @@ void func_82F0BEF8(unk_D_82F210E0* arg0) {
     }
 
     Font_EndTexturedTextRendering();
-    D_82F13F88 += 0x800;
+    gSaveSeqMessageAnim += 0x800;
 }
 #endif
 
 s32 Trade_GetSaveSeqState(void) {
-    return D_82F210E0.unk_00;
+    return gRentalMenuState.posX;
 }
 
 s32 Trade_GetSaveDirection(void) {
-    return D_82F2112C;
+    return gRentalMenuSaveDirection;
 }
 
 s32 Trade_GetSaveSlotIndex(void) {
-    return D_82F21130;
+    return gRentalMenuSaveSlotIndex;
 }
 
 void Trade_ResetSaveSeq(void) {
-    unk_D_82F210E0* ptr = &D_82F210E0;
+    RentalMenuState* ptr = &gRentalMenuState;
     s32 i;
 
-    ptr->unk_00 = 0;
-    ptr->unk_02 = 0;
-    ptr->unk_04 = 0;
+    ptr->posX = 0;
+    ptr->posY = 0;
+    ptr->rotation = 0;
 
     for (i = 0; i < 2; i++) {
-        D_82F210E0.unk_14[i].unk_00 = D_82F210E0.unk_14[i].unk_02 = 0;
-        D_82F210E0.unk_14[i].unk_04 = 0xC8;
-        D_82F210E0.unk_14[i].unk_06 = 0;
+        gRentalMenuState.unk_14[i].posX = gRentalMenuState.unk_14[i].posY = 0;
+        gRentalMenuState.unk_14[i].rotation = 0xC8;
+        gRentalMenuState.unk_14[i].unk_06 = 0;
     }
 
-    ptr->unk_24.unk_00 = 0;
-    ptr->unk_24.unk_04 = 0xE8;
+    ptr->unk_24.posX = 0;
+    ptr->unk_24.rotation = 0xE8;
     ptr->unk_24.unk_06 = 0;
-    ptr->unk_2C.unk_00 = 0;
-    ptr->unk_2C.unk_04 = 0x210;
+    ptr->unk_2C.posX = 0;
+    ptr->unk_2C.rotation = 0x210;
     ptr->unk_2C.unk_06 = 0;
-    ptr->unk_34.unk_00 = 0;
-    ptr->unk_34.unk_04 = 0xE8;
+    ptr->unk_34.posX = 0;
+    ptr->unk_34.rotation = 0xE8;
     ptr->unk_34.unk_06 = 0;
 
-    ptr->unk_24.unk_02 = 0;
-    ptr->unk_2C.unk_02 = ptr->unk_34.unk_02 = 0;
+    ptr->unk_24.posY = 0;
+    ptr->unk_2C.posY = ptr->unk_34.posY = 0;
 
     for (i = 0; i < 2; i++) {
-        D_82F21120[i] = NULL;
+        gRentalItemPtrs[i] = NULL;
     }
 }
 
 void Trade_UpdateSaveSeq(void) {
-    unk_D_82F210E0* ptr = &D_82F210E0;
+    RentalMenuState* ptr = &gRentalMenuState;
 
-    if (ptr->unk_00 == 0) {
+    if (ptr->posX == 0) {
         return;
     }
 
-    switch (ptr->unk_00) {
+    switch (ptr->posX) {
         case 1:
-            Trade_UpdateSaveSeqPanelSlideIn(&D_82F210E0);
+            Trade_UpdateSaveSeqPanelSlideIn(&gRentalMenuState);
             break;
 
         case 2:
-            Trade_UpdateSaveSeqMenuInput(&D_82F210E0);
+            Trade_UpdateSaveSeqMenuInput(&gRentalMenuState);
             break;
 
         case 3:
-            Trade_UpdateSaveSeqConfirmWait(&D_82F210E0);
+            Trade_UpdateSaveSeqConfirmWait(&gRentalMenuState);
             break;
 
         case 4:
-            Trade_UpdateSaveSeqPanelClose(&D_82F210E0);
+            Trade_UpdateSaveSeqPanelClose(&gRentalMenuState);
             break;
 
         case 5:
-            Trade_UpdateSaveSeqPanelReopen(&D_82F210E0);
+            Trade_UpdateSaveSeqPanelReopen(&gRentalMenuState);
             break;
 
         case 6:
-            Trade_UpdateSaveSeqBeginWrite(&D_82F210E0);
+            Trade_UpdateSaveSeqBeginWrite(&gRentalMenuState);
             break;
 
         case 7:
-            Trade_UpdateSaveSeqWriteCarts(&D_82F210E0);
+            Trade_UpdateSaveSeqWriteCarts(&gRentalMenuState);
             break;
 
         case 8:
-            Trade_UpdateSaveSeqPanelSlideOut(&D_82F210E0);
+            Trade_UpdateSaveSeqPanelSlideOut(&gRentalMenuState);
             break;
     }
 }
@@ -794,29 +794,29 @@ void Trade_DrawSaveSeq(void) {
 #if defined(VERSION_US_REV2)
     static s32 D_82F13F8C_us_rev2 = 0;
 #endif
-    static s16 D_82F13F8C[] = { 0x32, 0x14A };
+    static s16 gPortPanelYOffsets[] = { 0x32, 0x14A };
 
-    unk_D_82F210E0* ptr = &D_82F210E0;
+    RentalMenuState* ptr = &gRentalMenuState;
     s32 i;
 
-    if (ptr->unk_00 != 0) {
+    if (ptr->posX != 0) {
         if (ptr->unk_12 != 0) {
-            Trade_DrawSaveSeqBoxPanels(&D_82F210E0);
+            Trade_DrawSaveSeqBoxPanels(&gRentalMenuState);
         }
 
-        Trade_DrawSaveSeqMenuPanel(&D_82F210E0);
-        Trade_DrawSaveSeqBannerPanel(&D_82F210E0);
-        Trade_DrawSaveSeqSubBanner(&D_82F210E0);
+        Trade_DrawSaveSeqMenuPanel(&gRentalMenuState);
+        Trade_DrawSaveSeqBannerPanel(&gRentalMenuState);
+        Trade_DrawSaveSeqSubBanner(&gRentalMenuState);
 
-        if (ptr->unk_04 & 2) {
+        if (ptr->rotation & 2) {
             Trade_DrawBoxMachineTransferArrows(0x120, 0x8C);
         }
 
-        if (ptr->unk_04 & 4) {
+        if (ptr->rotation & 4) {
             for (i = 0; i < 2; i++) {
-                Trade_DrawPortInfoPanel(i, D_82F13F8C[i], 0x2A);
+                Trade_DrawPortInfoPanel(i, gPortPanelYOffsets[i], 0x2A);
             }
         }
-        func_82F0BEF8(&D_82F210E0);
+        RentalMenu_DrawMessage(&gRentalMenuState);
     }
 }

@@ -10,27 +10,27 @@
 #include "src/memory.h"
 #include "src/stage_loader.h"
 
-static OSMesgQueue D_800AF750;
-static s32 D_800AF768;
+static OSMesgQueue gControllerMsgQueue;
+static s32 gControllerMsg;
 
-static Color_RGBA8 D_800758A0[] = {
+static Color_RGBA8 gMenuGrayColors[] = {
     { 0xF0, 0xF0, 0xF0, 0xFF },
     { 0xE1, 0xE1, 0xE1, 0xFF },
 };
 
-static u32 D_800758A8[] = {
+static u32 gDigitTextureIds[] = {
     D_04001878, D_040018E0, D_04001948, D_040019B0, D_04001A18, D_04001A80, D_04001AF0,
     D_04001B58, D_04001BC0, D_04001C28, 0x10,       0x10,       0x10,       D_4001010,
 };
 
-unk_func_88500020 D_800758E0 = {
+TiledTexture gMenuTextureInfo_Default = {
     0x00000014,
     0x00000014,
     0x00000014,
     D_4001C90,
 };
 
-unk_func_88500020 D_800758F0[] = {
+TiledTexture gMenuTextureInfo_Alternates[] = {
     {
         0x00000014,
         0x00000014,
@@ -45,18 +45,18 @@ unk_func_88500020 D_800758F0[] = {
     },
 };
 
-void GbSave_BuildPortSummary(unk_func_8002D860* arg0, s32 arg1) {
+void GbSave_BuildPortSummary(PortSummary* arg0, s32 arg1) {
     if (GbSave_GetSaveState(arg1) != 0) {
-        arg0->unk_00 = 1;
+        arg0->posX = 1;
     } else {
-        arg0->unk_00 = 0;
-        arg0->unk_08 = GbSave_GetTrainerId(arg1);
+        arg0->posX = 0;
+        arg0->RentalSlotAnimData_PosePhase = GbSave_GetTrainerId(arg1);
         GbSave_GetPlayerName(arg1, &arg0[1]);
     }
-    arg0->unk_04 = GbSave_GetPortGame(arg1);
+    arg0->rotation = GbSave_GetPortGame(arg1);
 }
 
-void Gfx_DrawTiledTextureStrip(unk_func_88500020* arg0, s32 arg1, s32 a2) {
+void Gfx_DrawTiledTextureStrip(TiledTexture* arg0, s32 arg1, s32 a2) {
     s32 temp_lo;
     s32 var_t0;
     u8* var_s2;
@@ -70,10 +70,10 @@ void Gfx_DrawTiledTextureStrip(unk_func_88500020* arg0, s32 arg1, s32 a2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    temp_lo = 0x1000 / (arg0->unk_00 * 2);
+    temp_lo = 0x1000 / (arg0->posX * 2);
     var_s2 = arg0->unk_0C;
     arg2 = a2;
-    i = arg0->unk_04;
+    i = arg0->rotation;
 
     while (i > 0) {
         if (temp_lo < i) {
@@ -82,40 +82,40 @@ void Gfx_DrawTiledTextureStrip(unk_func_88500020* arg0, s32 arg1, s32 a2) {
             var_t0 = i;
         }
 
-        gDPLoadTextureBlock(gDisplayListHead++, var_s2, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg0->unk_00, var_t0, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, var_s2, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg0->posX, var_t0, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg1 + arg0->unk_08) - 1) << 2,
+        gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg1 + arg0->RentalSlotAnimData_PosePhase) - 1) << 2,
                             ((arg2 + var_t0) - 1) << 2, G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
         i -= var_t0;
         arg2 += var_t0;
-        var_s2 += var_t0 * arg0->unk_00 * 2;
+        var_s2 += var_t0 * arg0->posX * 2;
     }
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 }
 
-s32 Ui_AdjustVerticalSelection(unk_func_8002DCB8_arg0* arg0, s32 arg1) {
+s32 Ui_AdjustVerticalSelection(VerticalSelection* arg0, s32 arg1) {
     s32 ret = 0;
 
     switch (arg1) {
         case 0x800:
             Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
-            if (arg0->unk_04 == 0) {
-                arg0->unk_04 += arg0->unk_08;
+            if (arg0->rotation == 0) {
+                arg0->rotation += arg0->RentalSlotAnimData_PosePhase;
             }
-            arg0->unk_04--;
+            arg0->rotation--;
             ret = 1;
             break;
 
         case 0x400:
             Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
-            if (arg0->unk_04 >= (arg0->unk_08 - 1)) {
-                arg0->unk_04 -= arg0->unk_08;
+            if (arg0->rotation >= (arg0->RentalSlotAnimData_PosePhase - 1)) {
+                arg0->rotation -= arg0->RentalSlotAnimData_PosePhase;
             }
-            arg0->unk_04++;
+            arg0->rotation++;
             ret = 1;
             break;
     }
@@ -130,25 +130,25 @@ s32 Ui_HandleVerticalSelectionInput(s32 arg0) {
     return sp1C;
 }
 
-s32 Ui_AdjustHorizontalSelection(unk_func_8002DD98_arg0* arg0, s32 arg1) {
+s32 Ui_AdjustHorizontalSelection(HorizontalSelection* arg0, s32 arg1) {
     s32 ret = 0;
 
     switch (arg1) {
         case 0x200:
             Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
-            if (arg0->unk_04 == 0) {
-                arg0->unk_04 += arg0->unk_08;
+            if (arg0->rotation == 0) {
+                arg0->rotation += arg0->RentalSlotAnimData_PosePhase;
             }
-            arg0->unk_04--;
+            arg0->rotation--;
             ret = 1;
             break;
 
         case 0x100:
             Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
-            if (arg0->unk_04 >= (arg0->unk_08 - 1)) {
-                arg0->unk_04 -= arg0->unk_08;
+            if (arg0->rotation >= (arg0->RentalSlotAnimData_PosePhase - 1)) {
+                arg0->rotation -= arg0->RentalSlotAnimData_PosePhase;
             }
-            arg0->unk_04++;
+            arg0->rotation++;
             ret = 1;
             break;
     }
@@ -156,43 +156,43 @@ s32 Ui_AdjustHorizontalSelection(unk_func_8002DD98_arg0* arg0, s32 arg1) {
     return ret;
 }
 
-s32 Ui_HandleHorizontalSelectionInput(unk_func_8002DD98_arg0* arg0) {
+s32 Ui_HandleHorizontalSelectionInput(HorizontalSelection* arg0) {
     s32 sp1C = Input_GetRepeatedDPad() & 0xFFFF;
 
     Ui_AdjustHorizontalSelection(arg0, sp1C);
     return sp1C;
 }
 
-void Ui_AdjustSteppedScrollSelection(unk_func_8002DE78_arg0* arg0) {
+void Ui_AdjustSteppedScrollSelection(SteppedScrollSelection* arg0) {
     s32 temp_v0 = Input_GetRepeatedDPad();
     s32 sp18 = arg0->unk_0C;
 
     if (gPlayer1Controller->buttonDown & 0x2000) {
-        sp18 = ((arg0->unk_08 - arg0->unk_04) + 1) / 10;
+        sp18 = ((arg0->RentalSlotAnimData_PosePhase - arg0->rotation) + 1) / 10;
     }
 
     switch (temp_v0) {
         case 0x800:
             Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
-            if (arg0->unk_00 - sp18 < arg0->unk_04) {
-                arg0->unk_00 = arg0->unk_04;
+            if (arg0->posX - sp18 < arg0->rotation) {
+                arg0->posX = arg0->rotation;
             } else {
-                arg0->unk_00 -= sp18;
+                arg0->posX -= sp18;
             }
             break;
 
         case 0x400:
             Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
-            if (arg0->unk_08 < arg0->unk_00 + sp18) {
-                arg0->unk_00 = arg0->unk_08;
+            if (arg0->RentalSlotAnimData_PosePhase < arg0->posX + sp18) {
+                arg0->posX = arg0->RentalSlotAnimData_PosePhase;
             } else {
-                arg0->unk_00 += sp18;
+                arg0->posX += sp18;
             }
             break;
     }
 }
 
-s32 Ui_AdjustNumericSelection(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
+s32 Ui_AdjustNumericSelection(NumericSelection* arg0, s32 arg1) {
     s32 temp_v0;
     s32 var_a2;
     s32 var_t1;
@@ -228,15 +228,15 @@ s32 Ui_AdjustNumericSelection(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
             break;
 
         case 0x800:
-            if (arg0->unk_00 == arg0->unk_08) {
-                arg0->unk_00 = arg0->unk_00 - ((arg0->unk_00 / var_a2) * var_a2);
-                if (arg0->unk_00 < arg0->unk_04) {
-                    arg0->unk_00 = arg0->unk_04;
+            if (arg0->posX == arg0->RentalSlotAnimData_PosePhase) {
+                arg0->posX = arg0->posX - ((arg0->posX / var_a2) * var_a2);
+                if (arg0->posX < arg0->rotation) {
+                    arg0->posX = arg0->rotation;
                 }
             } else {
-                arg0->unk_00 += var_a2;
-                if (arg0->unk_08 < arg0->unk_00) {
-                    arg0->unk_00 = arg0->unk_08;
+                arg0->posX += var_a2;
+                if (arg0->RentalSlotAnimData_PosePhase < arg0->posX) {
+                    arg0->posX = arg0->RentalSlotAnimData_PosePhase;
                 }
             }
             Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
@@ -244,12 +244,12 @@ s32 Ui_AdjustNumericSelection(unk_func_8830867C_044_038_030* arg0, s32 arg1) {
             break;
 
         case 0x400:
-            if (arg0->unk_00 == arg0->unk_04) {
-                arg0->unk_00 = arg0->unk_08;
+            if (arg0->posX == arg0->rotation) {
+                arg0->posX = arg0->RentalSlotAnimData_PosePhase;
             } else {
-                arg0->unk_00 -= var_a2;
-                if (arg0->unk_00 < arg0->unk_04) {
-                    arg0->unk_00 = arg0->unk_04;
+                arg0->posX -= var_a2;
+                if (arg0->posX < arg0->rotation) {
+                    arg0->posX = arg0->rotation;
                 }
             }
             Audio_PlaySoundEffectById(SFX_MENU_SCROLL);
@@ -266,7 +266,7 @@ s32 Ui_HandleNumericSelectionInput(unk_func_8820E99C_030_030* arg0) {
     return sp1C;
 }
 
-s32 Ui_AdjustSteppedRangeSelection(unk_func_8002E128_arg0* arg0) {
+s32 Ui_AdjustSteppedRangeSelection(SteppedRangeSelection* arg0) {
     s32 sp1C = Input_GetRepeatedDPad() & 0xFFFF;
     s32 sp18 = arg0->unk_0C;
 
@@ -278,12 +278,12 @@ s32 Ui_AdjustSteppedRangeSelection(unk_func_8002E128_arg0* arg0) {
                 sp18 *= 0xA;
 
             case 0x800:
-                if (arg0->unk_00 >= arg0->unk_08) {
-                    arg0->unk_00 = arg0->unk_04;
-                } else if (arg0->unk_08 < (arg0->unk_00 + sp18)) {
-                    arg0->unk_00 = arg0->unk_08;
+                if (arg0->posX >= arg0->RentalSlotAnimData_PosePhase) {
+                    arg0->posX = arg0->rotation;
+                } else if (arg0->RentalSlotAnimData_PosePhase < (arg0->posX + sp18)) {
+                    arg0->posX = arg0->RentalSlotAnimData_PosePhase;
                 } else {
-                    arg0->unk_00 = arg0->unk_00 + sp18;
+                    arg0->posX = arg0->posX + sp18;
                 }
                 break;
 
@@ -291,12 +291,12 @@ s32 Ui_AdjustSteppedRangeSelection(unk_func_8002E128_arg0* arg0) {
                 sp18 *= 0xA;
 
             case 0x400:
-                if (arg0->unk_04 >= arg0->unk_00) {
-                    arg0->unk_00 = arg0->unk_08;
-                } else if ((arg0->unk_00 - sp18) < arg0->unk_04) {
-                    arg0->unk_00 = arg0->unk_04;
+                if (arg0->rotation >= arg0->posX) {
+                    arg0->posX = arg0->RentalSlotAnimData_PosePhase;
+                } else if ((arg0->posX - sp18) < arg0->rotation) {
+                    arg0->posX = arg0->rotation;
                 } else {
-                    arg0->unk_00 = arg0->unk_00 - sp18;
+                    arg0->posX = arg0->posX - sp18;
                 }
                 break;
         }
@@ -327,7 +327,7 @@ void Gfx_DrawNumber(s32 arg0, s32 arg1, s32 arg2) {
         if ((temp_lo != 0) || (var_s3 != 0) || (i == 0)) {
             var_s3 = 1;
 
-            gDPLoadTextureBlock(gDisplayListHead++, D_800758A8[temp_lo], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
+            gDPLoadTextureBlock(gDisplayListHead++, gDigitTextureIds[temp_lo], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, arg0 << 2, arg1 << 2, (arg0 + 8) << 2, (arg1 + 0xC) << 2,
@@ -354,7 +354,7 @@ void Gfx_DrawNumberFixedWidth(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     while (arg3 > 0) {
         arg3--;
         if ((arg2 > 0) || (var_t0 != 0)) {
-            gDPLoadTextureBlock(gDisplayListHead++, D_800758A8[arg2 % 10], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
+            gDPLoadTextureBlock(gDisplayListHead++, gDigitTextureIds[arg2 % 10], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
             gSPTextureRectangle(gDisplayListHead++, (arg0 + (arg3 * 9)) << 2, arg1 << 2, ((arg0 + (arg3 * 9)) + 8) << 2,
@@ -376,7 +376,7 @@ void Gfx_DrawNumberDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
 
     while (arg3 > 0) {
         arg3--;
-        gDPLoadTextureBlock(gDisplayListHead++, D_800758A8[arg2 % 10], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gDigitTextureIds[arg2 % 10], G_IM_FMT_IA, G_IM_SIZ_8b, 8, 12, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, (arg0 + (arg3 * 9)) << 2, arg1 << 2, ((arg0 + (arg3 * 9)) + 8) << 2,
@@ -385,12 +385,12 @@ void Gfx_DrawNumberDigits(s32 arg0, s32 arg1, s32 arg2, s32 arg3) {
     }
 }
 
-s32 Ui_GetSelectionDirection(unk_func_8002EBD8_arg0* arg0) {
+s32 Ui_GetSelectionDirection(SelectionDirection* arg0) {
     s32 var_v1 = 0;
 
-    if (arg0->unk_08 & 0x4000) {
+    if (arg0->RentalSlotAnimData_PosePhase & 0x4000) {
         var_v1 = -1;
-    } else if (arg0->unk_08 & 0x8000) {
+    } else if (arg0->RentalSlotAnimData_PosePhase & 0x8000) {
         var_v1 = 1;
     }
 
@@ -398,19 +398,19 @@ s32 Ui_GetSelectionDirection(unk_func_8002EBD8_arg0* arg0) {
 }
 
 s32 GbSave_GameToCategoryIndex(s32 arg0) {
-    static s32 D_80075910[] = { 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0 };
+    static s32 gGameCategoryTable[] = { 0, 0, 1, 2, 0, 0, 0, 3, 0, 0, 0, 0 };
 
-    return D_80075910[arg0];
+    return gGameCategoryTable[arg0];
 }
 
 Color_RGBA8 Color_InterpolateFromGray(Color_RGBA8 arg0, f32 arg1) {
-    static Color_RGBA8 D_80075940 = { 0xC8, 0xC8, 0xC8, 0xFF };
+    static Color_RGBA8 gFadeGrayColor = { 0xC8, 0xC8, 0xC8, 0xFF };
 
     Color_RGBA8 sp4;
 
-    sp4.r = (s32)((arg0.r - D_80075940.r) * arg1) + D_80075940.r;
-    sp4.g = (s32)((arg0.g - D_80075940.g) * arg1) + D_80075940.g;
-    sp4.b = (s32)((arg0.b - D_80075940.b) * arg1) + D_80075940.b;
+    sp4.r = (s32)((arg0.r - gFadeGrayColor.r) * arg1) + gFadeGrayColor.r;
+    sp4.g = (s32)((arg0.g - gFadeGrayColor.g) * arg1) + gFadeGrayColor.g;
+    sp4.b = (s32)((arg0.b - gFadeGrayColor.b) * arg1) + gFadeGrayColor.b;
     sp4.a = arg0.a;
 
     return sp4;
@@ -447,7 +447,7 @@ MoveData* Move_GetData(s32 arg0) {
 }
 
 s32 Species_GetMoveSlot(BattleMon* arg0, s32 arg1) {
-    s32 temp_v0 = arg0->unk_00.unk_00 - 1;
+    s32 temp_v0 = arg0->posX.posX - 1;
     s32 var_v1;
 
     if (arg1 == 1) {
@@ -496,22 +496,22 @@ s32 Deck_GetEntryCountForType(s32 arg0, s32 arg1, s32 arg2) {
 }
 
 void Ui_InitInputMessageQueue(void) {
-    osCreateMesgQueue(&D_800AF750, &D_800AF768, 1);
+    osCreateMesgQueue(&gControllerMsgQueue, &gControllerMsg, 1);
 }
 
 void Ui_SendMessageAndPollInput(OSMesg arg0) {
-    osSendMesg(&D_800AF750, arg0, 1);
+    osSendMesg(&gControllerMsgQueue, arg0, 1);
     Cont_StartReadInputs();
     Cont_ReadInputs();
     Input_ResetRepeatState();
 }
 
 void Ui_SendNullMessage(void) {
-    osSendMesg(&D_800AF750, NULL, 1);
+    osSendMesg(&gControllerMsgQueue, NULL, 1);
 }
 
 void Ui_ReceiveMessage(OSMesg arg0) {
-    osRecvMesg(&D_800AF750, arg0, 1);
+    osRecvMesg(&gControllerMsgQueue, arg0, 1);
 }
 
 void State_PokemonLab(void) {
@@ -546,10 +546,10 @@ void State_PokemonLab(void) {
 
             FRAGMENT_LOAD_AND_CALL2(FRAGMENT_PROFESSOR_OAK_LAB, var_s4, 0);
 
-            while ((game_state == STATE_POKEMON_LAB) && (D_800AE520.unk_00 != 0)) {
-                D_800AE520.unk_00 = 0;
-                game_state = Fragment_LoadAndCall(D_800AE520.fragment_id, D_800AE520.rom_start, D_800AE520.rom_end,
-                                           D_800AE520.arg0, D_800AE520.arg1);
+            while ((game_state == STATE_POKEMON_LAB) && (gFragmentCallContext.posX != 0)) {
+                gFragmentCallContext.posX = 0;
+                game_state = Fragment_LoadAndCall(gFragmentCallContext.fragment_id, gFragmentCallContext.rom_start, gFragmentCallContext.rom_end,
+                                           gFragmentCallContext.arg0, gFragmentCallContext.arg1);
             }
 
             StageContext_Deactivate();

@@ -84,7 +84,7 @@ void RentalRules_PopupDraw(void) {
             Font_SetActive(8, 0);
             Gfx_SetEnvColor(0xFF, 0xFF, 0xFF, 0xFF);
             Font_SetLineHeight(0x18);
-            Font_Printf(0x50, y + 6, D_83003CE0.unk_00[rules_text_index]);
+            Font_Printf(0x50, y + 6, gMenuStaticStrings.posX[rules_text_index]);
 #if defined(VERSION_JP)
             // The Japanese build clears the active index with -1 here (the call before the
             // first Font_Printf still passes 0).
@@ -92,7 +92,7 @@ void RentalRules_PopupDraw(void) {
 #else
             Font_SetActive(8, 0);
 #endif
-            Font_Printf(0x50, y + 40, D_83003DE0.unk_00[rules_text_index]);
+            Font_Printf(0x50, y + 40, gMenuOptionStrings.posX[rules_text_index]);
             Font_EndTexturedTextRendering();
         }
     }
@@ -105,7 +105,7 @@ void RentalRules_PopupOpen(s16 text_index) {
     popup_close_progress = 5;
     popup_open_progress = 0;
     rules_text_index = text_index;
-    units_for_text_fit = (RentalRules_CountTextLines(D_83003DE0.unk_00[rules_text_index]) * 0x18);
+    units_for_text_fit = (RentalRules_CountTextLines(gMenuOptionStrings.posX[rules_text_index]) * 0x18);
     window_top = 44 + units_for_text_fit;
     window_bottom = ((480 - window_top) / 2) + 20;
 }

@@ -35,7 +35,7 @@ typedef struct CastleMapNode {
 
 void Glc_DrawBackgroundCrossFade(u8* fade_in_texture, u8* fade_out_texture, u8 alpha);
 void Glc_DrawScaledTextureRgba(s16 x_start, s16 y_start, s16 draw_width, s16 height, s16 load_width, u8* texture, f32 scale);
-void func_84A00630(void);
+void Glc_NoOp(void);
 void Glc_DrawScaledTextureIa8(s16 x_start, s16 y_start, s16 width, s16 height, u8* texture, f32 scale);
 void Glc_DrawRoomDescription(void);
 void Glc_DrawTrainerIntroPanels(void);
@@ -47,7 +47,7 @@ void Glc_DrawEliteFourRoomInfoPanel(CastleMapNode* node, u8 alpha1, u8 alpha2);
 void Glc_UpdateRoomInfoPanelFade(void);
 void Glc_UpdateMapCursor(void);
 void Glc_Draw(void);
-s32 func_84A02074(void);
+s32 Glc_GetInputStatus(void);
 s32 Glc_SelectRoom(void);
 void Glc_LoadTrainerPanels(void);
 void Glc_ClearTrainerPanels(void);

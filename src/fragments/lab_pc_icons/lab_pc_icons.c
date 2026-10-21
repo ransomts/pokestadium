@@ -16,28 +16,28 @@
 #include "fragments/widget_tree/widget_tree.h"
 #include "fragments/pokemon_lab_support/pokemon_lab_support.h"
 
-static char** D_8861C510;
-static char** D_8861C514;
-static char** D_8861C518;
-static char** D_8861C51C;
-static char** D_8861C520;
-static char** D_8861C524;
-static char** D_8861C528;
+static char** gMonSummaryStrings;
+static char** gMonSpeciesNames;
+static char** gMoveNames;
+static char** gMoveTypeNames;
+static char** gUnusedStringBank1;
+static char** gStatusConditionNames;
+static char** gMoveDescriptions;
 
-extern u8 D_88606E10[];
-extern u8 D_88606E58[];
-extern u8 D_88606EA0[];
-extern u8 D_88606EE8[];
-extern u8 D_88606F30[];
-extern u8 D_8860A6D0[];
-extern u8 D_88605B98[];
-extern u8 D_886067E8[];
-extern u8 D_886061C0[];
-extern u8* D_8860A688[];
+extern u8 gMoveDetailFrameTopTex[];
+extern u8 gMoveDetailFrameRightTex[];
+extern u8 gMoveDetailFrameBottomTex[];
+extern u8 gMoveDetailFrameLeftTex[];
+extern u8 gMoveDetailPanelOverlayTex[];
+extern u8 gMonPreviewBackdropTex[];
+extern u8 gSummaryBallIconTex[];
+extern u8 gSummaryReorderIconTex[];
+extern u8 gSummaryMoveDetailIconTex[];
+extern u8* gMoveTypeIconTextures[];
 
 typedef struct unk_D_88605B00 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
 } unk_D_88605B00; // size = 0x4
 
 s32 LabPC_ComputeExpForLevel(s32 arg0, s32 arg1) {
@@ -90,12 +90,12 @@ void func_88600240(void) {
 void LabPC_InitDualArrowHeader(WidgetNode* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(WidgetNode));
     arg0->unk_18 = LabPC_DrawDualArrowHeader;
-    arg0->unk_10.unk_00 = arg1;
-    arg0->unk_10.unk_02 = arg2;
+    arg0->unk_10.posX = arg1;
+    arg0->unk_10.posY = arg2;
 }
 
 s32 LabPC_DrawDualArrowHeader(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AC0 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gSummaryTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -103,13 +103,13 @@ s32 LabPC_DrawDualArrowHeader(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_88605B98, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gSummaryBallIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0xC) << 2, (arg2 + 4) << 2, (arg1 + 0x27) << 2, (arg2 + 0x1F) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_886067E8, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gSummaryReorderIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0xF8) << 2, (arg2 + 4) << 2, (arg1 + 0x113) << 2,
@@ -120,9 +120,9 @@ s32 LabPC_DrawDualArrowHeader(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Gfx_SetEnvColor(D_88605AC0.r, D_88605AC0.g, D_88605AC0.b, D_88605AC0.a);
-    Font_Printf(arg1 + 0x2C, arg2 + 6, Text_GetString(NULL, 0, D_8861C510, 0));
-    Font_Printf(arg1 + 0x118, arg2 + 6, Text_GetString(NULL, 0, D_8861C510, 1));
+    Gfx_SetEnvColor(gSummaryTextColor.r, gSummaryTextColor.g, gSummaryTextColor.b, gSummaryTextColor.a);
+    Font_Printf(arg1 + 0x2C, arg2 + 6, Text_GetString(NULL, 0, gMonSummaryStrings, 0));
+    Font_Printf(arg1 + 0x118, arg2 + 6, Text_GetString(NULL, 0, gMonSummaryStrings, 1));
     Font_EndTexturedTextRendering();
     return 0;
 }
@@ -130,12 +130,12 @@ s32 LabPC_DrawDualArrowHeader(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
 void LabPC_InitArrowLabelA(WidgetNode* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(WidgetNode));
     arg0->unk_18 = LabPC_DrawArrowLabelA;
-    arg0->unk_10.unk_00 = arg1;
-    arg0->unk_10.unk_02 = arg2;
+    arg0->unk_10.posX = arg1;
+    arg0->unk_10.posY = arg2;
 }
 
 s32 LabPC_DrawArrowLabelA(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AC4 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gSummaryTextColorMoveDetail = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -143,7 +143,7 @@ s32 LabPC_DrawArrowLabelA(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_886061C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gSummaryMoveDetailIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0xC) << 2, (arg2 + 4) << 2, (arg1 + 0x27) << 2, (arg2 + 0x1F) << 2,
@@ -154,8 +154,8 @@ s32 LabPC_DrawArrowLabelA(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Gfx_SetEnvColor(D_88605AC4.r, D_88605AC4.g, D_88605AC4.b, D_88605AC4.a);
-    Font_Printf(arg1 + 0x2C, arg2 + 6, Text_GetString(NULL, 0, D_8861C510, 2));
+    Gfx_SetEnvColor(gSummaryTextColorMoveDetail.r, gSummaryTextColorMoveDetail.g, gSummaryTextColorMoveDetail.b, gSummaryTextColorMoveDetail.a);
+    Font_Printf(arg1 + 0x2C, arg2 + 6, Text_GetString(NULL, 0, gMonSummaryStrings, 2));
     Font_EndTexturedTextRendering();
     return 0;
 }
@@ -163,15 +163,15 @@ s32 LabPC_DrawArrowLabelA(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
 void LabPC_InitArrowLabelB(WidgetNode* arg0, s32 arg1, s32 arg2, UNUSED MemoryPool* arg3) {
     ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(arg0, sizeof(WidgetNode));
     arg0->unk_18 = LabPC_DrawArrowLabelB;
-    arg0->unk_10.unk_00 = arg1;
-    arg0->unk_10.unk_02 = arg2;
+    arg0->unk_10.posX = arg1;
+    arg0->unk_10.posY = arg2;
 }
 
 s32 LabPC_DrawArrowLabelB(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AC8 = { 0xF0, 0xF0, 0xF0, 0xFF };
-    UNUSED static Color_RGBA8 D_88605ACC = { 0xF0, 0xF0, 0xF0, 0xFF };
-    UNUSED static Color_RGBA8 D_88605AD0 = { 0x1E, 0x78, 0x32, 0xFF };
-    UNUSED static Color_RGBA8 D_88605AD4 = { 0x32, 0xB4, 0x64, 0xFF };
+    static Color_RGBA8 gSummaryTextColorMoveReorder = { 0xF0, 0xF0, 0xF0, 0xFF };
+    UNUSED static Color_RGBA8 gSummaryTextColorDefault = { 0xF0, 0xF0, 0xF0, 0xFF };
+    UNUSED static Color_RGBA8 gSummaryTextColorDarkGreen = { 0x1E, 0x78, 0x32, 0xFF };
+    UNUSED static Color_RGBA8 gSummaryTextColorLightGreen = { 0x32, 0xB4, 0x64, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -179,7 +179,7 @@ s32 LabPC_DrawArrowLabelB(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_886061C0, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gSummaryMoveDetailIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 28, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 0xC) << 2, (arg2 + 4) << 2, (arg1 + 0x27) << 2, (arg2 + 0x1F) << 2,
@@ -190,20 +190,20 @@ s32 LabPC_DrawArrowLabelB(UNUSED WidgetNode* arg0, s32 arg1, s32 arg2) {
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Gfx_SetEnvColor(D_88605AC8.r, D_88605AC8.g, D_88605AC8.b, D_88605AC8.a);
-    Font_Printf(arg1 + 0x2C, arg2 + 6, Text_GetString(NULL, 0, D_8861C510, 3));
+    Gfx_SetEnvColor(gSummaryTextColorMoveReorder.r, gSummaryTextColorMoveReorder.g, gSummaryTextColorMoveReorder.b, gSummaryTextColorMoveReorder.a);
+    Font_Printf(arg1 + 0x2C, arg2 + 6, Text_GetString(NULL, 0, gMonSummaryStrings, 3));
     Font_EndTexturedTextRendering();
     return 0;
 }
 
 void LabPC_InitCenteredLabel(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, char* arg5, Color_RGBA8 arg6,
                    Color_RGBA8 arg7, UNUSED MemoryPool* arg8) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_8860439C_sp64));
-    arg0->unk_00.unk_18 = LabPC_DrawCenteredLabel;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_8860439C_sp64));
+    arg0->posX.unk_18 = LabPC_DrawCenteredLabel;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     arg0->unk_2C = arg5;
     arg0->unk_30 = Font_MeasureTextExtent(8, 0, arg5);
     arg0->unk_34 = arg6;
@@ -211,30 +211,30 @@ void LabPC_InitCenteredLabel(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2, s
 }
 
 s32 LabPC_DrawCenteredLabel(unk_func_8860439C_sp64* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AD8 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gCenteredLabelColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
-    Gfx_SetEnvColor(D_88605AD8.r, D_88605AD8.g, D_88605AD8.b, D_88605AD8.a);
-    Font_Printf(((arg0->unk_00.unk_14.unk_00 - arg0->unk_30) / 2) + arg1,
-                  ((arg0->unk_00.unk_14.unk_02 - 0x14) / 2) + arg2, arg0->unk_2C);
+    Gfx_SetEnvColor(gCenteredLabelColor.r, gCenteredLabelColor.g, gCenteredLabelColor.b, gCenteredLabelColor.a);
+    Font_Printf(((arg0->posX.unk_14.posX - arg0->unk_30) / 2) + arg1,
+                  ((arg0->posX.unk_14.posY - 0x14) / 2) + arg2, arg0->unk_2C);
     Font_EndTexturedTextRendering();
     return 0;
 }
 
 void LabPC_InitIconWidget(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_02C));
-    arg0->unk_00.unk_18 = LabPC_DrawIconWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_02 = 0x1A;
-    arg0->unk_00.unk_14.unk_00 = 0x1A;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_040_02C));
+    arg0->posX.unk_18 = LabPC_DrawIconWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posY = 0x1A;
+    arg0->posX.unk_14.posX = 0x1A;
     arg0->unk_2C = arg3;
 }
 
 s32 LabPC_DrawIconWidget(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32 arg2) {
-    static u8* D_88605ADC[] = { D_4004448, D_4004A00, D_4004FB8, D_4005570 };
-    UNUSED static Color_RGBA8 D_88605AEC = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static u8* gIconWidgetTextures[] = { D_4004448, D_4004A00, D_4004FB8, D_4005570 };
+    UNUSED static Color_RGBA8 gIconWidgetColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     gDPPipeSync(gDisplayListHead++);
     gDPSetCycleType(gDisplayListHead++, G_CYC_COPY);
@@ -242,7 +242,7 @@ s32 LabPC_DrawIconWidget(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-    gDPLoadTextureBlock(gDisplayListHead++, D_88605ADC[arg0->unk_2C], G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 26, 0,
+    gDPLoadTextureBlock(gDisplayListHead++, gIconWidgetTextures[arg0->unk_2C], G_IM_FMT_RGBA, G_IM_SIZ_16b, 28, 26, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg1 + 0x19) << 2, (arg2 + 0x19) << 2,
@@ -254,12 +254,12 @@ s32 LabPC_DrawIconWidget(unk_func_88205880_0098_008_040_02C* arg0, s32 arg1, s32
 }
 
 void LabPC_InitMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_03C));
-    arg0->unk_00.unk_18 = LabPC_DrawMoveNameWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_040_03C));
+    arg0->posX.unk_18 = LabPC_DrawMoveNameWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
     // clang-format off
-    arg0->unk_00.unk_14.unk_00 = Font_MeasureTextExtent(8, 0, "WWWWWWWWWWWW") + 0x16; arg0->unk_00.unk_14.unk_02 = 0x14;
+    arg0->posX.unk_14.posX = Font_MeasureTextExtent(8, 0, "WWWWWWWWWWWW") + 0x16; arg0->posX.unk_14.posY = 0x14;
     // clang-format on
     LabPC_SetMoveNameId(arg0, 0);
 }
@@ -277,8 +277,8 @@ s32 LabPC_DrawMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1,
 
     sp6C = Move_GetDisplayInfo(arg0->unk_2C);
     if (sp6C != NULL) {
-        unk_D_88400138* sp68 = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(sp6C->unk_00[1]);
-        s32 temp_v0_2 = Move_NormalizeDisplayIndex(sp6C->unk_00[1]);
+        MoveTypeColorGradient* sp68 = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(sp6C->posX[1]);
+        s32 temp_v0_2 = Move_NormalizeDisplayIndex(sp6C->posX[1]);
 
         gDPPipeSync(gDisplayListHead++);
 
@@ -287,7 +287,7 @@ s32 LabPC_DrawMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1,
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_THRESHOLD);
         gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
 
-        gDPLoadTextureBlock(gDisplayListHead++, D_8860A688[temp_v0_2], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
+        gDPLoadTextureBlock(gDisplayListHead++, gMoveTypeIconTextures[temp_v0_2], G_IM_FMT_RGBA, G_IM_SIZ_16b, 20, 20, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, (arg1 + 0x13) << 2, (arg2 + 0x13) << 2,
@@ -297,15 +297,15 @@ s32 LabPC_DrawMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1,
         gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 
         Font_BeginTranslucentTextRendering();
-        Gfx_SetEnvColor(sp68->unk_04.r, sp68->unk_04.g, sp68->unk_04.b, sp68->unk_04.a);
+        Gfx_SetEnvColor(sp68->rotation.r, sp68->rotation.g, sp68->rotation.b, sp68->rotation.a);
         Font_SetActive(8, 0);
-        Font_Printf(arg1 + 0x16, arg2, Text_GetString(NULL, 0, D_8861C518, sp6C->unk_00[0] - 1));
+        Font_Printf(arg1 + 0x16, arg2, Text_GetString(NULL, 0, gMoveNames, sp6C->posX[0] - 1));
         Font_EndTexturedTextRendering();
     } else {
-        unk_D_88400138* sp1C = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(0);
+        MoveTypeColorGradient* sp1C = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(0);
 
         Font_BeginTranslucentTextRendering();
-        Gfx_SetEnvColor(sp1C->unk_04.r, sp1C->unk_04.g, sp1C->unk_04.b, sp1C->unk_04.a);
+        Gfx_SetEnvColor(sp1C->rotation.r, sp1C->rotation.g, sp1C->rotation.b, sp1C->rotation.a);
         Font_SetActive(8, 0);
         Font_Printf(arg1 + 0x16, arg2, "???????");
         Font_EndTexturedTextRendering();
@@ -314,12 +314,12 @@ s32 LabPC_DrawMoveNameWidget(unk_func_88205880_0098_008_040_03C* arg0, s32 arg1,
 }
 
 void LabPC_InitPpWidget(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_05C));
-    arg0->unk_00.unk_18 = LabPC_DrawPpWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_040_05C));
+    arg0->posX.unk_18 = LabPC_DrawPpWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
     // clang-format off
-    arg0->unk_00.unk_14.unk_00 = 0x2D; arg0->unk_00.unk_14.unk_02 = 0xC;
+    arg0->posX.unk_14.posX = 0x2D; arg0->posX.unk_14.posY = 0xC;
     // clang-format on
     LabPC_SetPpWidgetMove(arg0, 0, 0);
 }
@@ -361,10 +361,10 @@ s32 LabPC_DrawPpWidget(unk_func_88205880_0098_008_040_05C* arg0, s32 arg1, s32 a
 }
 
 void LabPC_InitFlyWidget(unk_func_88205880_0098_008_040_06C* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040_06C));
-    arg0->unk_00.unk_1C = LabPC_UpdateFlyWidget;
-    arg0->unk_30.unk_00 = arg1;
-    arg0->unk_30.unk_02 = arg2;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_040_06C));
+    arg0->posX.unk_1C = LabPC_UpdateFlyWidget;
+    arg0->unk_30.posX = arg1;
+    arg0->unk_30.posY = arg2;
     LabPC_StopFlyWidget(arg0);
 }
 
@@ -381,14 +381,14 @@ s32 LabPC_UpdateFlyWidget(unk_func_88205880_0098_008_040_06C* arg0) {
 
     sp1C = (tmp * 2.0f) / 7.5f;
     sp38 = -sp1C / 7.5f;
-    arg0->unk_00.unk_28 &= ~0x100;
+    arg0->posX.unk_28 &= ~0x100;
     if (arg0->unk_2C >= 0x10) {
         return 0;
     }
-    arg0->unk_00.unk_28 |= 0x100;
+    arg0->posX.unk_28 |= 0x100;
 
-    sp30 = arg0->unk_34.unk_00 - arg0->unk_30.unk_00;
-    sp34 = arg0->unk_34.unk_02 - arg0->unk_30.unk_02;
+    sp30 = arg0->unk_34.posX - arg0->unk_30.posX;
+    sp34 = arg0->unk_34.posY - arg0->unk_30.posY;
 
     sp28[0] = sp34;
     sp28[1] = -sp30;
@@ -406,29 +406,29 @@ s32 LabPC_UpdateFlyWidget(unk_func_88205880_0098_008_040_06C* arg0) {
     sp30 += sp28[0];
     sp34 += sp28[1];
 
-    arg0->unk_00.unk_10.unk_00 = arg0->unk_30.unk_00 + (s16)sp30;
-    arg0->unk_00.unk_10.unk_02 = arg0->unk_30.unk_02 + (s16)sp34;
+    arg0->posX.unk_10.posX = arg0->unk_30.posX + (s16)sp30;
+    arg0->posX.unk_10.posY = arg0->unk_30.posY + (s16)sp34;
     arg0->unk_2C++;
 
     return 0;
 }
 
 void LabPC_StartFlyWidget(unk_func_88205880_0098_008_040_06C* arg0, WidgetPoint arg1) {
-    arg0->unk_30 = arg0->unk_00.unk_10;
+    arg0->unk_30 = arg0->posX.unk_10;
     arg0->unk_34 = arg1;
     arg0->unk_2C = 0;
 }
 
 void LabPC_StopFlyWidget(unk_func_88205880_0098_008_040_06C* arg0) {
-    arg0->unk_00.unk_10 = arg0->unk_30;
+    arg0->posX.unk_10 = arg0->unk_30;
     arg0->unk_2C = 0x10;
 }
 
 void LabPC_InitMonSummaryWidget(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_044));
-    arg0->unk_00.unk_18 = LabPC_DrawMonSummaryWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_044));
+    arg0->posX.unk_18 = LabPC_DrawMonSummaryWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
     arg0->unk_2C = NULL;
 }
 
@@ -437,13 +437,13 @@ void LabPC_SetSummaryMon(unk_func_88205880_0098_008_044* arg0, BattleMon* arg1) 
 }
 
 s32 LabPC_DrawMonSummaryWidget(unk_func_88205880_0098_008_044* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AF0 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gSummarySpeciesTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     char* sp34;
     char* sp30;
 
-    sp34 = Text_GetString(NULL, 0, D_8861C510, 0x15);
-    sp30 = Text_GetString(NULL, 0, D_8861C510, 0x16);
+    sp34 = Text_GetString(NULL, 0, gMonSummaryStrings, 0x15);
+    sp30 = Text_GetString(NULL, 0, gMonSummaryStrings, 0x16);
 
     if (arg0->unk_2C == NULL) {
         return 0;
@@ -451,9 +451,9 @@ s32 LabPC_DrawMonSummaryWidget(unk_func_88205880_0098_008_044* arg0, s32 arg1, s
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(0x10, 0);
-    Gfx_SetEnvColor(D_88605AF0.r, D_88605AF0.g, D_88605AF0.b, D_88605AF0.a);
+    Gfx_SetEnvColor(gSummarySpeciesTextColor.r, gSummarySpeciesTextColor.g, gSummarySpeciesTextColor.b, gSummarySpeciesTextColor.a);
     Font_Printf(arg1 + 0x10, arg2 + 6, (char*)arg0->unk_2C->unk_30);
-    if ((arg0->unk_2C->unk_00.unk_00 <= 0) || (arg0->unk_2C->unk_00.unk_00 >= 0x98)) {
+    if ((arg0->unk_2C->posX.posX <= 0) || (arg0->unk_2C->posX.posX >= 0x98)) {
         Font_SetActive(0x10, 0);
         Font_Printf(arg1 + 0x9B, arg2 + 6, "%s?", sp34);
         Font_SetActive(8, 0);
@@ -463,20 +463,20 @@ s32 LabPC_DrawMonSummaryWidget(unk_func_88205880_0098_008_044* arg0, s32 arg1, s
         Font_SetActive(0x10, 0);
         Font_Printf(arg1 + 0x9B, arg2 + 6, "%s%d", sp34, arg0->unk_2C->unk_24);
         Font_SetActive(8, 0);
-        Font_Printf(arg1 + 0x11E, arg2 + 0xA, "%s%03d", sp30, arg0->unk_2C->unk_00.unk_00);
-        Font_Printf(arg1 + 0x1A0, arg2 + 0xA, Text_GetString(NULL, 0, D_8861C514, arg0->unk_2C->unk_00.unk_00 - 1));
+        Font_Printf(arg1 + 0x11E, arg2 + 0xA, "%s%03d", sp30, arg0->unk_2C->posX.posX);
+        Font_Printf(arg1 + 0x1A0, arg2 + 0xA, Text_GetString(NULL, 0, gMonSpeciesNames, arg0->unk_2C->posX.posX - 1));
     }
     Font_EndTexturedTextRendering();
     return 0;
 }
 
 void LabPC_InitTypeListWidget(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2, unk_func_8850182C* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_048));
-    arg0->unk_00.unk_18 = LabPC_DrawTypeListWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3->unk_00.unk_14.unk_00;
-    arg0->unk_00.unk_14.unk_02 = arg3->unk_00.unk_14.unk_02;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_048));
+    arg0->posX.unk_18 = LabPC_DrawTypeListWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3->posX.unk_14.posX;
+    arg0->posX.unk_14.posY = arg3->posX.unk_14.posY;
     arg0->unk_2C = 0;
 }
 
@@ -485,12 +485,12 @@ void LabPC_SetTypeListMon(unk_func_88205880_0098_008_048* arg0, BattleMon* arg1)
 }
 
 s32 LabPC_DrawTypeListWidget(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AF4 = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gTypeListTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     s32 var_s4;
     Color_RGBA8 sp68;
     char* temp_v0;
-    unk_D_88400138* temp_v0_3;
+    MoveTypeColorGradient* temp_v0_3;
     s32 tmp;
 
     if (arg0->unk_2C == NULL) {
@@ -499,20 +499,20 @@ s32 LabPC_DrawTypeListWidget(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
-    Gfx_SetEnvColor(D_88605AF4.r, D_88605AF4.g, D_88605AF4.b, D_88605AF4.a);
-    temp_v0 = Text_GetString(NULL, 0, D_8861C510, 7);
+    Gfx_SetEnvColor(gTypeListTextColor.r, gTypeListTextColor.g, gTypeListTextColor.b, gTypeListTextColor.a);
+    temp_v0 = Text_GetString(NULL, 0, gMonSummaryStrings, 7);
     tmp = Font_MeasureTextExtent(8, 0, temp_v0) + Font_MeasureTextExtent(8, 0, "1/WWWWWWWW2/WWWWWWWW");
-    var_s4 = ((arg0->unk_00.unk_14.unk_00 - tmp) - 0xA) / 2;
+    var_s4 = ((arg0->posX.unk_14.posX - tmp) - 0xA) / 2;
     Font_Printf(arg1 + var_s4, arg2 + 4, temp_v0);
     var_s4 += Font_MeasureTextExtent(0, 0, temp_v0);
 
-    if ((arg0->unk_2C->unk_00.unk_00 <= 0) || (arg0->unk_2C->unk_00.unk_00 >= 0x98)) {
+    if ((arg0->unk_2C->posX.posX <= 0) || (arg0->unk_2C->posX.posX >= 0x98)) {
         char* tmp = "1/";
 
-        Gfx_SetEnvColor(D_88605AF4.r, D_88605AF4.g, D_88605AF4.b, D_88605AF4.a);
+        Gfx_SetEnvColor(gTypeListTextColor.r, gTypeListTextColor.g, gTypeListTextColor.b, gTypeListTextColor.a);
         Font_Printf(arg1 + var_s4, arg2 + 4, tmp);
         temp_v0_3 = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(0);
-        sp68 = temp_v0_3->unk_04;
+        sp68 = temp_v0_3->rotation;
         Gfx_SetEnvColor(sp68.r, sp68.g, sp68.b, sp68.a);
         Font_Printf(Font_MeasureTextExtent(0, 0, tmp) + arg1 + var_s4, arg2 + 4, "????");
     } else {
@@ -523,13 +523,13 @@ s32 LabPC_DrawTypeListWidget(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32
             tmp = Species_GetMoveSlot(arg0->unk_2C, i);
             if (tmp != -1) {
                 temp_v0_3 = ((func884000C4)Memmap_GetFragmentVaddr(LabPC_GetTypeColor))(tmp);
-                sp68 = temp_v0_3->unk_04;
-                Gfx_SetEnvColor(D_88605AF4.r, D_88605AF4.g, D_88605AF4.b, D_88605AF4.a);
+                sp68 = temp_v0_3->rotation;
+                Gfx_SetEnvColor(gTypeListTextColor.r, gTypeListTextColor.g, gTypeListTextColor.b, gTypeListTextColor.a);
                 sprintf(sp50, "%d/", i + 1);
                 Font_Printf(arg1 + var_s4, arg2 + 4, sp50);
                 Gfx_SetEnvColor(sp68.r, sp68.g, sp68.b, sp68.a);
                 Font_Printf(Font_MeasureTextExtent(0, 0, sp50) + arg1 + var_s4, arg2 + 4,
-                              Text_GetString(NULL, 0, D_8861C51C, temp_v0_3->unk_00));
+                              Text_GetString(NULL, 0, gMoveTypeNames, temp_v0_3->posX));
                 var_s4 += Font_MeasureTextExtent(0, 0, "1/WWWWWWWW") + 0xA;
             }
         }
@@ -539,12 +539,12 @@ s32 LabPC_DrawTypeListWidget(unk_func_88205880_0098_008_048* arg0, s32 arg1, s32
 }
 
 void LabPC_InitStatWidget(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2, unk_func_8850182C* arg3) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_04C));
-    arg0->unk_00.unk_18 = LabPC_DrawStatWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3->unk_00.unk_14.unk_00;
-    arg0->unk_00.unk_14.unk_02 = arg3->unk_00.unk_14.unk_02;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_04C));
+    arg0->posX.unk_18 = LabPC_DrawStatWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3->posX.unk_14.posX;
+    arg0->posX.unk_14.posY = arg3->posX.unk_14.posY;
     arg0->unk_2C = NULL;
 }
 
@@ -553,10 +553,10 @@ void LabPC_SetStatMon(unk_func_88205880_0098_008_04C* arg0, BattleMon* arg1) {
 }
 
 s32 LabPC_DrawStatWidget(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605AF8 = { 0xF0, 0xF0, 0xF0, 0xFF };
-    static char D_88605AFC[] = "?";
+    static Color_RGBA8 gStatWidgetTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static char gStatWidgetEmptyStr[] = "?";
 
-    s32 sp54 = ((arg0->unk_00.unk_14.unk_00 - 0x90) / 2) + arg1;
+    s32 sp54 = ((arg0->posX.unk_14.posX - 0x90) / 2) + arg1;
     s32 sp50;
     char sp4C[4];
 
@@ -564,29 +564,29 @@ s32 LabPC_DrawStatWidget(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg
         return 0;
     }
 
-    if ((arg0->unk_2C->unk_00.unk_00 > 0) && (arg0->unk_2C->unk_00.unk_00 < 0x98)) {
-        BattleHud_DrawHpBarTexture(sp54, arg2 + 0x18, 0x90, arg0->unk_2C->unk_02, arg0->unk_2C->unk_26);
+    if ((arg0->unk_2C->posX.posX > 0) && (arg0->unk_2C->posX.posX < 0x98)) {
+        BattleHud_DrawHpBarTexture(sp54, arg2 + 0x18, 0x90, arg0->unk_2C->posY, arg0->unk_2C->unk_26);
     }
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
-    Gfx_SetEnvColor(D_88605AF8.r, D_88605AF8.g, D_88605AF8.b, D_88605AF8.a);
-    Font_Printf(sp54 + 4, arg2 + 4, Text_GetString(NULL, 0, D_8861C510, 8));
-    Font_Printf(sp54 + 4, arg2 + 0x2A, Text_GetString(NULL, 0, D_8861C510, 9));
-    Font_Printf(sp54 + 4, arg2 + 0x40, Text_GetString(NULL, 0, D_8861C510, 0xA));
-    Font_Printf(sp54 + 4, arg2 + 0x56, Text_GetString(NULL, 0, D_8861C510, 0xB));
-    Font_Printf(sp54 + 4, arg2 + 0x6C, Text_GetString(NULL, 0, D_8861C510, 0xC));
+    Gfx_SetEnvColor(gStatWidgetTextColor.r, gStatWidgetTextColor.g, gStatWidgetTextColor.b, gStatWidgetTextColor.a);
+    Font_Printf(sp54 + 4, arg2 + 4, Text_GetString(NULL, 0, gMonSummaryStrings, 8));
+    Font_Printf(sp54 + 4, arg2 + 0x2A, Text_GetString(NULL, 0, gMonSummaryStrings, 9));
+    Font_Printf(sp54 + 4, arg2 + 0x40, Text_GetString(NULL, 0, gMonSummaryStrings, 0xA));
+    Font_Printf(sp54 + 4, arg2 + 0x56, Text_GetString(NULL, 0, gMonSummaryStrings, 0xB));
+    Font_Printf(sp54 + 4, arg2 + 0x6C, Text_GetString(NULL, 0, gMonSummaryStrings, 0xC));
 
-    if ((arg0->unk_2C->unk_00.unk_00 <= 0) || (arg0->unk_2C->unk_00.unk_00 >= 0x98)) {
-        sp50 = Font_MeasureTextExtent(0, 0, D_88605AFC);
-        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 4, D_88605AFC);
+    if ((arg0->unk_2C->posX.posX <= 0) || (arg0->unk_2C->posX.posX >= 0x98)) {
+        sp50 = Font_MeasureTextExtent(0, 0, gStatWidgetEmptyStr);
+        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 4, gStatWidgetEmptyStr);
         Font_Printf((sp54 - Font_MeasureTextExtent(0, 0, "?/000")) + 0x8C, arg2 + 4, "?/");
-        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 0x2A, D_88605AFC);
-        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 0x40, D_88605AFC);
-        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 0x56, D_88605AFC);
-        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 0x6C, D_88605AFC);
+        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 0x2A, gStatWidgetEmptyStr);
+        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 0x40, gStatWidgetEmptyStr);
+        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 0x56, gStatWidgetEmptyStr);
+        Font_Printf((sp54 - sp50) + 0x8C, arg2 + 0x6C, gStatWidgetEmptyStr);
     } else {
-        sprintf(sp4C, "%d", arg0->unk_2C->unk_02);
+        sprintf(sp4C, "%d", arg0->unk_2C->posY);
         Font_Printf(((sp54 - Font_MeasureTextExtent(0, 0, "/000")) - Font_MeasureTextExtent(0, 0, sp4C)) + 0x8C, arg2 + 4, "%s/", sp4C);
         sprintf(sp4C, "%d", arg0->unk_2C->unk_26);
         Font_Printf((sp54 - Font_MeasureTextExtent(0, 0, sp4C)) + 0x8C, arg2 + 4, sp4C);
@@ -604,13 +604,13 @@ s32 LabPC_DrawStatWidget(unk_func_88205880_0098_008_04C* arg0, s32 arg1, s32 arg
 }
 
 void LabPC_InitMonPreviewWidget(unk_func_88205880_0098_008_050* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4, s32 arg5,
-                   unk_func_8001B1FC* arg6) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_050));
-    arg0->unk_00.unk_18 = LabPC_DrawMonPreviewWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg4;
-    arg0->unk_00.unk_14.unk_02 = arg5;
+                   ModelPreview* arg6) {
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_050));
+    arg0->posX.unk_18 = LabPC_DrawMonPreviewWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg4;
+    arg0->posX.unk_14.posY = arg5;
     arg0->unk_2C = arg3;
     arg0->unk_34 = arg6;
     LabPC_SetPreviewMon(arg0, NULL);
@@ -637,8 +637,8 @@ s32 LabPC_DrawMonPreviewWidget(unk_func_88205880_0098_008_050* arg0, s32 arg1, s
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetAlphaCompare(gDisplayListHead++, G_AC_NONE);
 
-    for (i = 0; i < arg0->unk_00.unk_14.unk_02;) {
-        temp_v0 = arg0->unk_00.unk_14.unk_02 - i;
+    for (i = 0; i < arg0->posX.unk_14.posY;) {
+        temp_v0 = arg0->posX.unk_14.posY - i;
         if (temp_v0 < 8) {
             var_t1 = temp_v0;
         } else {
@@ -648,7 +648,7 @@ s32 LabPC_DrawMonPreviewWidget(unk_func_88205880_0098_008_050* arg0, s32 arg1, s
         gDPLoadTextureBlock(gDisplayListHead++, var_s1, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg0->unk_2C, var_t1, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
-        gSPTextureRectangle(gDisplayListHead++, a1 << 2, (arg2 + i) << 2, ((arg0->unk_00.unk_14.unk_00 + a1) - 1) << 2,
+        gSPTextureRectangle(gDisplayListHead++, a1 << 2, (arg2 + i) << 2, ((arg0->posX.unk_14.posX + a1) - 1) << 2,
                             (((arg2 + i) + var_t1) - 1) << 2, G_TX_RENDERTILE, 0, 0, 0x1000, 0x0400);
 
         i += var_t1;
@@ -668,26 +668,26 @@ void LabPC_SetPreviewMon(unk_func_88205880_0098_008_050* arg0, BattleMon* arg1) 
 }
 
 void LabPC_InitMovesPanel(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
-    static unk_D_88605B00 D_88605B00[] = {
+    static unk_D_88605B00 LabPC_PosTable[] = {
         { 0x00F7, 0x0007 },
         { 0x0111, 0x0021 },
         { 0x001E, 0x003B },
         { 0x0004, 0x0021 },
     };
-    static Color_RGBA8 D_88605B10 = { 0x2D, 0x2D, 0x61, 0xFF };
-    static unk_D_88605B00 D_88605B14[] = {
+    static Color_RGBA8 gMovesPanelBgColor = { 0x2D, 0x2D, 0x61, 0xFF };
+    static unk_D_88605B00 gMovesPanelIconPos[] = {
         { 0x00FB, 0x0009 },
         { 0x0115, 0x0023 },
         { 0x00FB, 0x003D },
         { 0x00E1, 0x0023 },
     };
-    static unk_D_88605B00 D_88605B24[] = {
+    static unk_D_88605B00 gMovesPanelPpFlyPos[] = {
         { 0x01BF, 0x0010 },
         { 0x01D9, 0x002A },
         { 0x00C1, 0x0044 },
         { 0x00A7, 0x002A },
     };
-    static unk_D_88605B00 D_88605B34[] = {
+    static unk_D_88605B00 gMovesPanelMoveNameFlyPos[] = {
         { 0x0120, 0x000C },
         { 0x013A, 0x0026 },
         { 0x0022, 0x0040 },
@@ -699,44 +699,44 @@ void LabPC_InitMovesPanel(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 ar
     s32 x;
     s32 y;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_040));
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_040));
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
 
     for (i = 0; i < 4; i++) {
         arg0->unk_7C[i] = mem_pool_alloc(arg3, sizeof(unk_func_885012A4));
-        ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(arg0->unk_7C[i], D_88605B00[i].unk_00,
-                                                               D_88605B00[i].unk_02, 0xFB, 0x1E, D_88605B10);
-        arg0->unk_7C[i]->unk_00.unk_28 &= ~1;
-        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_00.unk_00, &arg0->unk_7C[i]->unk_00.unk_00);
+        ((func885012A4)Memmap_GetFragmentVaddr(WidgetTree_InitSolidColor))(arg0->unk_7C[i], LabPC_PosTable[i].posX,
+                                                               LabPC_PosTable[i].posY, 0xFB, 0x1E, gMovesPanelBgColor);
+        arg0->unk_7C[i]->posX.unk_28 &= ~1;
+        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_7C[i]->posX.posX);
     }
 
     for (j = 0; j < 4; j++) {
         arg0->unk_2C[j] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_02C));
-        LabPC_InitIconWidget(arg0->unk_2C[j], D_88605B14[j].unk_00, D_88605B14[j].unk_02, j);
-        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_00.unk_00, &arg0->unk_2C[j]->unk_00.unk_00);
+        LabPC_InitIconWidget(arg0->unk_2C[j], gMovesPanelIconPos[j].posX, gMovesPanelIconPos[j].posY, j);
+        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_2C[j]->posX.posX);
     }
 
     for (x = 0; x < 4; x++) {
         arg0->unk_6C[x] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_06C));
-        LabPC_InitFlyWidget(arg0->unk_6C[x], D_88605B24[x].unk_00, D_88605B24[x].unk_02);
-        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_00.unk_00, &arg0->unk_6C[x]->unk_00.unk_00);
+        LabPC_InitFlyWidget(arg0->unk_6C[x], gMovesPanelPpFlyPos[x].posX, gMovesPanelPpFlyPos[x].posY);
+        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_6C[x]->posX.posX);
 
         arg0->unk_5C[x] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_05C));
         LabPC_InitPpWidget(arg0->unk_5C[x], 0, 0);
-        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_6C[x]->unk_00.unk_00,
-                                                               &arg0->unk_5C[x]->unk_00.unk_00);
+        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_6C[x]->posX.posX,
+                                                               &arg0->unk_5C[x]->posX.posX);
     }
 
     for (y = 0; y < 4; y++) {
         arg0->unk_4C[y] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_06C));
-        LabPC_InitFlyWidget(arg0->unk_4C[y], D_88605B34[y].unk_00, D_88605B34[y].unk_02);
-        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_00.unk_00, &arg0->unk_4C[y]->unk_00.unk_00);
+        LabPC_InitFlyWidget(arg0->unk_4C[y], gMovesPanelMoveNameFlyPos[y].posX, gMovesPanelMoveNameFlyPos[y].posY);
+        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_4C[y]->posX.posX);
 
         arg0->unk_3C[y] = mem_pool_alloc(arg3, sizeof(unk_func_88205880_0098_008_040_03C));
         LabPC_InitMoveNameWidget(arg0->unk_3C[y], 0, 0);
-        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_4C[y]->unk_00.unk_00,
-                                                               &arg0->unk_3C[y]->unk_00.unk_00);
+        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_4C[y]->posX.posX,
+                                                               &arg0->unk_3C[y]->posX.posX);
     }
 }
 
@@ -757,15 +757,15 @@ void LabPC_SetMovesPanelMon(unk_func_88205880_0098_008_040* arg0, BattleMon* arg
 
 void LabPC_BindMovesPanelGrid(unk_func_88205880_0098_008_040* arg0, WidgetAnimatedFrame* arg1,
                    unk_func_88205880_0098_008_070* arg2) {
-    arg2->unk_00.unk_18[0] = &arg0->unk_7C[0]->unk_00;
-    arg2->unk_00.unk_18[1] = &arg0->unk_7C[1]->unk_00;
-    arg2->unk_00.unk_18[2] = &arg0->unk_7C[2]->unk_00;
-    arg2->unk_00.unk_18[3] = &arg0->unk_7C[3]->unk_00;
-    arg2->unk_00.unk_1C = arg1;
-    ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(&arg2->unk_00);
+    arg2->posX.unk_18[0] = &arg0->unk_7C[0]->posX;
+    arg2->posX.unk_18[1] = &arg0->unk_7C[1]->posX;
+    arg2->posX.unk_18[2] = &arg0->unk_7C[2]->posX;
+    arg2->posX.unk_18[3] = &arg0->unk_7C[3]->posX;
+    arg2->posX.unk_1C = arg1;
+    ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(&arg2->posX);
 }
 
-void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, unk_func_8850CD44* arg1, MemoryPool* arg2) {
+void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, ChildWidgetGroup* arg1, MemoryPool* arg2) {
     s32 i;
 
     ((func8850CD44)Memmap_GetFragmentVaddr(WidgetTree_InitChildWidgetGroup))(arg1, 8, arg2);
@@ -780,10 +780,10 @@ void LabPC_GroupMovesPanelFlyWidgets(unk_func_88205880_0098_008_040* arg0, unk_f
 }
 
 void LabPC_SwapMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2) {
-    LabPC_StartFlyWidget(arg0->unk_4C[arg1], arg0->unk_4C[arg2]->unk_00.unk_10);
-    LabPC_StartFlyWidget(arg0->unk_4C[arg2], arg0->unk_4C[arg1]->unk_00.unk_10);
-    LabPC_StartFlyWidget(arg0->unk_6C[arg1], arg0->unk_6C[arg2]->unk_00.unk_10);
-    LabPC_StartFlyWidget(arg0->unk_6C[arg2], arg0->unk_6C[arg1]->unk_00.unk_10);
+    LabPC_StartFlyWidget(arg0->unk_4C[arg1], arg0->unk_4C[arg2]->posX.unk_10);
+    LabPC_StartFlyWidget(arg0->unk_4C[arg2], arg0->unk_4C[arg1]->posX.unk_10);
+    LabPC_StartFlyWidget(arg0->unk_6C[arg1], arg0->unk_6C[arg2]->posX.unk_10);
+    LabPC_StartFlyWidget(arg0->unk_6C[arg2], arg0->unk_6C[arg1]->posX.unk_10);
 }
 
 void LabPC_ResetMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, s32 arg2) {
@@ -794,10 +794,10 @@ void LabPC_ResetMovesPanelSlots(unk_func_88205880_0098_008_040* arg0, s32 arg1, 
 }
 
 void LabPC_InitTrainerInfoWidget(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_054));
-    arg0->unk_00.unk_18 = LabPC_DrawTrainerInfoWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_054));
+    arg0->posX.unk_18 = LabPC_DrawTrainerInfoWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
     arg0->unk_2C = NULL;
 }
 
@@ -806,10 +806,10 @@ void LabPC_SetTrainerInfoMon(unk_func_88205880_0098_008_054* arg0, BattleMon* ar
 }
 
 s32 LabPC_DrawTrainerInfoWidget(unk_func_88205880_0098_008_054* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605B44 = { 0xF0, 0xF0, 0xF0, 0xFF };
-    UNUSED static Color_RGBA8 D_88605B48 = { 0xD2, 0xBE, 0x32, 0xFF };
+    static Color_RGBA8 gTrainerInfoTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
+    UNUSED static Color_RGBA8 gTrainerInfoAccentColor = { 0xD2, 0xBE, 0x32, 0xFF };
 
-    unk_D_88400100* sp74;
+    PaletteColor* sp74;
     char* sp70;
 
     if (arg0->unk_2C == NULL) {
@@ -818,34 +818,34 @@ s32 LabPC_DrawTrainerInfoWidget(unk_func_88205880_0098_008_054* arg0, s32 arg1, 
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(8, 0);
-    Gfx_SetEnvColor(D_88605B44.r, D_88605B44.g, D_88605B44.b, D_88605B44.a);
-    sp70 = Text_GetString(NULL, 0, D_8861C510, 0xD);
+    Gfx_SetEnvColor(gTrainerInfoTextColor.r, gTrainerInfoTextColor.g, gTrainerInfoTextColor.b, gTrainerInfoTextColor.a);
+    sp70 = Text_GetString(NULL, 0, gMonSummaryStrings, 0xD);
     Font_Printf(arg1 + 0x18, arg2 + 0x2C, sp70);
     Font_Printf(Font_MeasureTextExtent(0, 0, sp70) + arg1 + 0x18, arg2 + 0x2C, "%05d", arg0->unk_2C->unk_0E);
-    sp70 = Text_GetString(NULL, 0, D_8861C510, 0xE);
+    sp70 = Text_GetString(NULL, 0, gMonSummaryStrings, 0xE);
     Font_Printf(arg1 + 0x18, arg2 + 0x44, sp70);
     Font_Printf(Font_MeasureTextExtent(0, 0, sp70) + arg1 + 0x18, arg2 + 0x44, (char*)arg0->unk_2C->unk_3B);
-    sp70 = Text_GetString(NULL, 0, D_8861C510, 0xF);
+    sp70 = Text_GetString(NULL, 0, gMonSummaryStrings, 0xF);
     Font_Printf(arg1 + 0xE8, arg2 + 0x2C, sp70);
     Font_Printf(Font_MeasureTextExtent(0, 0, sp70) + arg1 + 0xE8, arg2 + 0x2C, "%d", arg0->unk_2C->unk_10);
 
-    if ((arg0->unk_2C->unk_00.unk_00 > 0) && (arg0->unk_2C->unk_00.unk_00 < 0x98)) {
+    if ((arg0->unk_2C->posX.posX > 0) && (arg0->unk_2C->posX.posX < 0x98)) {
         s32 sp6C = (arg0->unk_2C->unk_24 == 0x64) ? 0x64 : arg0->unk_2C->unk_24 + 1;
         UNUSED s32 pad;
         char sp48[32];
         s32 sp44;
 
-        Text_SetNumberToken(6, (char*)(LabPC_ComputeExpForLevel(arg0->unk_2C->unk_00.unk_00, sp6C) - arg0->unk_2C->unk_10));
-        Text_GetString(sp48, sizeof(sp48), D_8861C510, 0x10);
+        Text_SetNumberToken(6, (char*)(LabPC_ComputeExpForLevel(arg0->unk_2C->posX.posX, sp6C) - arg0->unk_2C->unk_10));
+        Text_GetString(sp48, sizeof(sp48), gMonSummaryStrings, 0x10);
         sp44 = Font_MeasureTextExtent(0, 0, sp48);
         Font_Printf(arg1 + 0xE8, arg2 + 0x44, sp48);
-        Font_Printf(arg1 + sp44 + 0xE8, arg2 + 0x44, " %s%d", Text_GetString(NULL, 0, D_8861C510, 0x15), sp6C);
-        sp70 = Text_GetString(NULL, 0, D_8861C510, 0x11);
+        Font_Printf(arg1 + sp44 + 0xE8, arg2 + 0x44, " %s%d", Text_GetString(NULL, 0, gMonSummaryStrings, 0x15), sp6C);
+        sp70 = Text_GetString(NULL, 0, gMonSummaryStrings, 0x11);
         Font_Printf(arg1 + 0x18, arg2 + 8, sp70);
         sp74 = ((func8840007C)Util_ConvertAddrToVirtAddr((uintptr_t)LabPC_GetMonStatusIcon))(arg0->unk_2C);
-        Gfx_SetEnvColor(sp74->unk_04.r, sp74->unk_04.g, sp74->unk_04.b, sp74->unk_04.a);
+        Gfx_SetEnvColor(sp74->rotation.r, sp74->rotation.g, sp74->rotation.b, sp74->rotation.a);
         Font_Printf(Font_MeasureTextExtent(0, 0, sp70) + arg1 + 0x18, arg2 + 8,
-                      Text_GetString(NULL, 0, D_8861C524, sp74->unk_00));
+                      Text_GetString(NULL, 0, gStatusConditionNames, sp74->posX));
     }
 
     Font_EndTexturedTextRendering();
@@ -853,12 +853,12 @@ s32 LabPC_DrawTrainerInfoWidget(unk_func_88205880_0098_008_054* arg0, s32 arg1, 
 }
 
 void LabPC_InitMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008_058));
-    arg0->unk_00.unk_18 = LabPC_DrawMoveDetailWidget;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
-    arg0->unk_00.unk_14.unk_00 = arg3;
-    arg0->unk_00.unk_14.unk_02 = arg4;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(unk_func_88205880_0098_008_058));
+    arg0->posX.unk_18 = LabPC_DrawMoveDetailWidget;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
+    arg0->posX.unk_14.posX = arg3;
+    arg0->posX.unk_14.posY = arg4;
     LabPC_SetMoveDetailId(arg0, 0);
 }
 
@@ -867,13 +867,13 @@ void LabPC_SetMoveDetailId(unk_func_88205880_0098_008_058* arg0, s32 arg1) {
 }
 
 s32 LabPC_DrawMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s32 arg2) {
-    static Color_RGBA8 D_88605B4C = { 0xF0, 0xF0, 0xF0, 0xFF };
+    static Color_RGBA8 gMoveDetailTextColor = { 0xF0, 0xF0, 0xF0, 0xFF };
 
     s32 sp13C;
     s32 sp138;
     ret_func_8002ED08* sp134;
     MoveData* sp130;
-    unk_D_88400138* sp12C;
+    MoveTypeColorGradient* sp12C;
     char* sp128;
     char* sp124;
     char* sp120;
@@ -897,49 +897,49 @@ s32 LabPC_DrawMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s
     gDPSetTexturePersp(gDisplayListHead++, G_TP_NONE);
     gDPSetTextureFilter(gDisplayListHead++, G_TF_POINT);
     gDPSetCombineMode(gDisplayListHead++, G_CC_MODULATEI_PRIM, G_CC_MODULATEI_PRIM);
-    gDPSetPrimColor(gDisplayListHead++, 0, 0, sp12C->unk_08.r, sp12C->unk_08.g, sp12C->unk_08.b, sp12C->unk_08.a);
+    gDPSetPrimColor(gDisplayListHead++, 0, 0, sp12C->RentalSlotAnimData_PosePhase.r, sp12C->RentalSlotAnimData_PosePhase.g, sp12C->RentalSlotAnimData_PosePhase.b, sp12C->RentalSlotAnimData_PosePhase.a);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, D_88606E10, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailFrameTopTex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->unk_00.unk_14.unk_00 + arg1) - 0x10) << 2,
+    gSPTextureRectangle(gDisplayListHead++, arg1 << 2, arg2 << 2, ((arg0->posX.unk_14.posX + arg1) - 0x10) << 2,
                         (arg2 + 8) << 2, G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, D_88606E58, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailFrameRightTex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, ((arg0->unk_00.unk_14.unk_00 + arg1) - 0x10) << 2, arg2 << 2,
-                        (arg0->unk_00.unk_14.unk_00 + arg1) << 2, ((arg2 + arg0->unk_00.unk_14.unk_02) - 8) << 2,
+    gSPTextureRectangle(gDisplayListHead++, ((arg0->posX.unk_14.posX + arg1) - 0x10) << 2, arg2 << 2,
+                        (arg0->posX.unk_14.posX + arg1) << 2, ((arg2 + arg0->posX.unk_14.posY) - 8) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, D_88606EA0, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailFrameBottomTex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-    gSPTextureRectangle(gDisplayListHead++, (arg1 + 0x10) << 2, ((arg2 + arg0->unk_00.unk_14.unk_02) - 8) << 2,
-                        (arg0->unk_00.unk_14.unk_00 + arg1) << 2, (arg2 + arg0->unk_00.unk_14.unk_02) << 2,
-                        G_TX_RENDERTILE, (arg0->unk_00.unk_14.unk_00 * -0x20) + 0x400, 0, 0x0400, 0x0400);
+    gSPTextureRectangle(gDisplayListHead++, (arg1 + 0x10) << 2, ((arg2 + arg0->posX.unk_14.posY) - 8) << 2,
+                        (arg0->posX.unk_14.posX + arg1) << 2, (arg2 + arg0->posX.unk_14.posY) << 2,
+                        G_TX_RENDERTILE, (arg0->posX.unk_14.posX * -0x20) + 0x400, 0, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, D_88606EE8, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailFrameLeftTex, G_IM_FMT_I, 16, 8, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, arg1 << 2, (arg2 + 8) << 2, (arg1 + 0x10) << 2,
-                        (arg2 + arg0->unk_00.unk_14.unk_02) << 2, G_TX_RENDERTILE, 0,
-                        (arg0->unk_00.unk_14.unk_02 * -0x20) + 0x200, 0x0400, 0x0400);
+                        (arg2 + arg0->posX.unk_14.posY) << 2, G_TX_RENDERTILE, 0,
+                        (arg0->posX.unk_14.posY * -0x20) + 0x200, 0x0400, 0x0400);
 
-    gDPLoadTextureBlock_4b(gDisplayListHead++, D_88606F30, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
+    gDPLoadTextureBlock_4b(gDisplayListHead++, gMoveDetailPanelOverlayTex, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
     gSPTextureRectangle(gDisplayListHead++, (arg1 + 8) << 2, (arg2 + 8) << 2,
-                        ((arg0->unk_00.unk_14.unk_00 + arg1) - 8) << 2, ((arg2 + arg0->unk_00.unk_14.unk_02) - 8) << 2,
+                        ((arg0->posX.unk_14.posX + arg1) - 8) << 2, ((arg2 + arg0->posX.unk_14.posY) - 8) << 2,
                         G_TX_RENDERTILE, 0, 0, 0x0400, 0x0400);
 
     Font_BeginTranslucentTextRendering();
     Font_SetActive(4, 0);
-    Gfx_SetEnvColor(D_88605B4C.r, D_88605B4C.g, D_88605B4C.b, D_88605B4C.a);
-    sp128 = Text_GetString(NULL, 0, D_8861C510, 0x12);
+    Gfx_SetEnvColor(gMoveDetailTextColor.r, gMoveDetailTextColor.g, gMoveDetailTextColor.b, gMoveDetailTextColor.a);
+    sp128 = Text_GetString(NULL, 0, gMonSummaryStrings, 0x12);
     Font_Printf(sp13C + 0x90, sp138 + 8, sp128);
-    sp124 = Text_GetString(NULL, 0, D_8861C510, 0x13);
+    sp124 = Text_GetString(NULL, 0, gMonSummaryStrings, 0x13);
     Font_Printf(sp13C + 0xE, sp138 + 0x1C, sp124);
-    sp120 = Text_GetString(NULL, 0, D_8861C510, 0x14);
+    sp120 = Text_GetString(NULL, 0, gMonSummaryStrings, 0x14);
     Font_Printf(sp13C + 0x90, sp138 + 0x1C, sp120);
 
     if (sp130 == NULL) {
-        Gfx_SetEnvColor(sp12C->unk_04.r, sp12C->unk_04.g, sp12C->unk_04.b, sp12C->unk_04.a);
+        Gfx_SetEnvColor(sp12C->rotation.r, sp12C->rotation.g, sp12C->rotation.b, sp12C->rotation.a);
         Font_SetActive(8, 0);
         Font_Printf(sp13C + 8, sp138 + 4, "???????");
         Font_SetActive(4, 0);
@@ -950,19 +950,19 @@ s32 LabPC_DrawMoveDetailWidget(unk_func_88205880_0098_008_058* arg0, s32 arg1, s
         s32 sp38;
         s32 sp34;
 
-        sp38 = ((((sp130->unk_04 * 0x64) / 255) + 2) / 5) * 5;
-        Gfx_SetEnvColor(sp12C->unk_04.r, sp12C->unk_04.g, sp12C->unk_04.b, sp12C->unk_04.a);
+        sp38 = ((((sp130->rotation * 0x64) / 255) + 2) / 5) * 5;
+        Gfx_SetEnvColor(sp12C->rotation.r, sp12C->rotation.g, sp12C->rotation.b, sp12C->rotation.a);
         Font_SetActive(8, 0);
-        Font_Printf(sp13C + 8, sp138 + 4, Text_GetString(NULL, 0, D_8861C518, sp134->unk_00[0] - 1));
+        Font_Printf(sp13C + 8, sp138 + 4, Text_GetString(NULL, 0, gMoveNames, sp134->posX[0] - 1));
         Font_SetActive(4, 0);
         Font_Printf(Font_MeasureTextExtent(0, 0, sp128) + sp13C + 0x90, sp138 + 8, " %s",
-                      Text_GetString(NULL, 0, D_8861C51C, sp12C->unk_00));
+                      Text_GetString(NULL, 0, gMoveTypeNames, sp12C->posX));
         Font_SetLineHeight(0x12);
-        Font_Printf(sp13C + 0xE, sp138 + 0x3A, Text_GetString(NULL, 0, D_8861C528, sp134->unk_00[0] - 1));
-        Gfx_SetEnvColor(D_88605B4C.r, D_88605B4C.g, D_88605B4C.b, D_88605B4C.a);
+        Font_Printf(sp13C + 0xE, sp138 + 0x3A, Text_GetString(NULL, 0, gMoveDescriptions, sp134->posX[0] - 1));
+        Gfx_SetEnvColor(gMoveDetailTextColor.r, gMoveDetailTextColor.g, gMoveDetailTextColor.b, gMoveDetailTextColor.a);
         Font_SetActive(4, 0);
 
-        sp34 = sp130->unk_02;
+        sp34 = sp130->posY;
         if ((arg0->unk_2C == 0x78) || (arg0->unk_2C == 0x99)) {
             sp34 *= 2;
         }
@@ -983,17 +983,17 @@ void LabPC_SetGridMenuItemCount(unk_func_88205880_0098_008_070* arg0, s32 arg1) 
 }
 
 void LabPC_InitMoveGridMenu(unk_func_88205880_0098_008_070* arg0, MemoryPool* arg1) {
-    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(&arg0->unk_00, 1, 4, arg1);
-    arg0->unk_00.unk_10 = LabPC_HandleMoveGridInput;
+    ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(&arg0->posX, 1, 4, arg1);
+    arg0->posX.unk_10 = LabPC_HandleMoveGridInput;
     LabPC_SetGridMenuItemCount(arg0, 0);
 }
 
 s32 LabPC_HandleMoveGridInput(unk_func_88205880_0098_008_070* arg0, Controller* arg1) {
     s32 var_v1 = 0;
 
-    if (arg0->unk_00.unk_18[arg0->unk_00.unk_24] != NULL) {
-        if (arg0->unk_00.unk_18[arg0->unk_00.unk_24]->unk_20 != NULL) {
-            var_v1 = arg0->unk_00.unk_18[arg0->unk_00.unk_24]->unk_20(arg0->unk_00.unk_18[arg0->unk_00.unk_24], arg1);
+    if (arg0->posX.unk_18[arg0->posX.unk_24] != NULL) {
+        if (arg0->posX.unk_18[arg0->posX.unk_24]->unk_20 != NULL) {
+            var_v1 = arg0->posX.unk_18[arg0->posX.unk_24]->unk_20(arg0->posX.unk_18[arg0->posX.unk_24], arg1);
         }
     }
 
@@ -1001,42 +1001,42 @@ s32 LabPC_HandleMoveGridInput(unk_func_88205880_0098_008_070* arg0, Controller* 
 
     if (var_v1 == 0) {
         if ((arg1->buttonPressed & 8) && (arg0->unk_40 > 0)) {
-            if (arg0->unk_00.unk_18[0] != NULL) {
-                ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->unk_00, 0);
+            if (arg0->posX.unk_18[0] != NULL) {
+                ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->posX, 0);
                 var_v1 = 0x80000009;
             }
         } else if ((arg1->buttonPressed & 1) && (arg0->unk_40 >= 2)) {
-            if (arg0->unk_00.unk_18[1] != NULL) {
-                ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->unk_00, 1);
+            if (arg0->posX.unk_18[1] != NULL) {
+                ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->posX, 1);
                 var_v1 = 0x80000009;
             }
         } else if ((arg1->buttonPressed & 4) && (arg0->unk_40 >= 3)) {
-            if (arg0->unk_00.unk_18[2] != NULL) {
-                ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->unk_00, 2);
+            if (arg0->posX.unk_18[2] != NULL) {
+                ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->posX, 2);
                 var_v1 = 0x80000009;
             }
-        } else if ((arg1->buttonPressed & 2) && (arg0->unk_40 >= 4) && (arg0->unk_00.unk_18[3] != NULL)) {
-            ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->unk_00, 3);
+        } else if ((arg1->buttonPressed & 2) && (arg0->unk_40 >= 4) && (arg0->posX.unk_18[3] != NULL)) {
+            ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->posX, 3);
             var_v1 = 0x80000009;
         }
     }
     return var_v1;
 }
 
-void LabPC_BuildMonDetailPanel(unk_func_88205880_0098_008* arg0, s32 arg1, s32 arg2, unk_func_8001B1FC* arg3,
+void LabPC_BuildMonDetailPanel(LabPC_DetailPanel* arg0, s32 arg1, s32 arg2, ModelPreview* arg3,
                    WidgetNode* arg4, MemoryPool* arg5) {
-    static Color_RGBA8 D_88605B50 = { 0x80, 0x18, 0x18, 0xFF };
-    static Color_RGBA8 D_88605B54 = { 0x38, 0x38, 0x80, 0xFF };
-    static Color_RGBA8 D_88605B58 = { 0x38, 0x38, 0x80, 0xFF };
-    static Color_RGBA8 D_88605B5C = { 0x38, 0x38, 0x80, 0xFF };
-    static Color_RGBA8 D_88605B60 = { 0xFF, 0xFF, 0x00, 0xFF };
+    static Color_RGBA8 gDetailPanelSummaryFrameColor = { 0x80, 0x18, 0x18, 0xFF };
+    static Color_RGBA8 gDetailPanelTypeListFrameColor = { 0x38, 0x38, 0x80, 0xFF };
+    static Color_RGBA8 gDetailPanelStatBgColor = { 0x38, 0x38, 0x80, 0xFF };
+    static Color_RGBA8 gDetailPanelTrainerBgColor = { 0x38, 0x38, 0x80, 0xFF };
+    static Color_RGBA8 gMovesPanelSelectionColor = { 0xFF, 0xFF, 0x00, 0xFF };
     static Color_RGBA8 D_88605B64 = { 0x28, 0x28, 0x60, 0xFF };
     static Color_RGBA8 D_88605B68 = { 0x28, 0x28, 0x60, 0xFF };
     static Color_RGBA8 D_88605B6C = { 0x71, 0xE9, 0xF9, 0xFF };
     static Color_RGBA8 D_88605B70 = { 0x3C, 0x7B, 0x84, 0xFF };
     static Color_RGBA8 D_88605B74 = { 0xF0, 0xF0, 0xF0, 0xFF };
     static Color_RGBA8 D_88605B78 = { 0x00, 0xF0, 0x00, 0xFF };
-    static Color_RGBA8 D_88605B7C = { 0xFF, 0xFF, 0x00, 0xFF };
+    static Color_RGBA8 gWidgetFrameColor = { 0xFF, 0xFF, 0x00, 0xFF };
 
     UNUSED s32 pad;
     WidgetGridMenu* tmp;
@@ -1052,177 +1052,177 @@ void LabPC_BuildMonDetailPanel(unk_func_88205880_0098_008* arg0, s32 arg1, s32 a
     unk_func_8850878C* sp68;
     unk_func_8860439C_sp64* sp64;
     WidgetAnimatedFrame* sp60;
-    unk_func_88503298* sp5C;
+    WidgetVisibilityGate* sp5C;
 
-    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->unk_00, sizeof(unk_func_88205880_0098_008));
-    arg0->unk_00.unk_20 = LabPC_DispatchDetailPanelInput;
-    arg0->unk_00.unk_10.unk_00 = arg1;
-    arg0->unk_00.unk_10.unk_02 = arg2;
+    ((func885007CC)Memmap_GetFragmentVaddr(WidgetTree_InitWidget))(&arg0->posX, sizeof(LabPC_DetailPanel));
+    arg0->posX.unk_20 = LabPC_DispatchDetailPanelInput;
+    arg0->posX.unk_10.posX = arg1;
+    arg0->posX.unk_10.posY = arg2;
 
     arg0->unk_2C = mem_pool_alloc(arg5, sizeof(WidgetAnimatedPanel));
     ((func88502274)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedPanel))(arg0->unk_2C, 0, 0, 0x210, 0x148);
-    arg0->unk_2C->unk_00.unk_28 |= 0x200;
-    arg0->unk_2C->unk_00.unk_28 |= 0x400;
-    arg0->unk_2C->unk_00.unk_28 &= ~1;
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_00.unk_00, &arg0->unk_2C->unk_00.unk_00);
+    arg0->unk_2C->posX.unk_28 |= 0x200;
+    arg0->unk_2C->posX.unk_28 |= 0x400;
+    arg0->unk_2C->posX.unk_28 &= ~1;
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &arg0->unk_2C->posX.posX);
 
     arg0->unk_30 = mem_pool_alloc(arg5, sizeof(WidgetDelayedNode));
     ((func88503118)Memmap_GetFragmentVaddr(WidgetTree_InitDelayedWidget))(arg0->unk_30, 0, 0, 0x210, 0x148);
     arg0->unk_30->unk_2C = 0;
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_30->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX.posX, &arg0->unk_30->posX.posX);
 
     arg0->unk_68 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(arg0->unk_68, 0, 0, 0x210, 0x24, D_88605B50);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->unk_00.unk_00, &arg0->unk_68->unk_00.unk_00);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(arg0->unk_68, 0, 0, 0x210, 0x24, gDetailPanelSummaryFrameColor);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->posX.posX, &arg0->unk_68->posX.posX);
 
     arg0->unk_44 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_044));
     LabPC_InitMonSummaryWidget(arg0->unk_44, 0, 0);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_68->unk_00.unk_00, &arg0->unk_44->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_68->posX.posX, &arg0->unk_44->posX.posX);
 
     sp8C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp8C, 0xE0, 0x24, 0x130, 0x1C, D_88605B54);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->unk_00.unk_00, &sp8C->unk_00.unk_00);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp8C, 0xE0, 0x24, 0x130, 0x1C, gDetailPanelTypeListFrameColor);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_30->posX.posX, &sp8C->posX.posX);
 
     arg0->unk_48 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_048));
     LabPC_InitTypeListWidget(arg0->unk_48, 0, 0, sp8C);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp8C->unk_00.unk_00, &arg0->unk_48->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp8C->posX.posX, &arg0->unk_48->posX.posX);
 
     arg0->unk_34 = mem_pool_alloc(arg5, sizeof(WidgetDelayedNode));
     ((func88503118)Memmap_GetFragmentVaddr(WidgetTree_InitDelayedWidget))(arg0->unk_34, 0, 0, 0x210, 0x148);
     arg0->unk_34->unk_2C = 0;
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_34->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX.posX, &arg0->unk_34->posX.posX);
 
     arg0->unk_5C = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
     ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_5C, 0xE0, 0x40);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_34->unk_00.unk_00, &arg0->unk_5C->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_34->posX.posX, &arg0->unk_5C->posX.posX);
 
     sp88 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp88, 0, 0, 0x130, 0x84, D_88605B58);
-    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_5C, &sp88->unk_00);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp88, 0, 0, 0x130, 0x84, gDetailPanelStatBgColor);
+    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_5C, &sp88->posX);
 
     arg0->unk_4C = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_04C));
     LabPC_InitStatWidget(arg0->unk_4C, 0, 0, sp88);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp88->unk_00.unk_00, &arg0->unk_4C->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp88->posX.posX, &arg0->unk_4C->posX.posX);
 
     arg0->unk_58 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_058));
     LabPC_InitMoveDetailWidget(arg0->unk_58, 0, 0, 0x130, 0x84);
-    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_5C, &arg0->unk_58->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_5C, &arg0->unk_58->posX);
 
     arg0->unk_38 = mem_pool_alloc(arg5, sizeof(WidgetDelayedNode));
     ((func88503118)Memmap_GetFragmentVaddr(WidgetTree_InitDelayedWidget))(arg0->unk_38, 0, 0, 0x210, 0x148);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_38->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX.posX, &arg0->unk_38->posX.posX);
 
     sp84 = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
-    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp84, 0, 0xC4, 0x210, 0x60, D_88605B5C);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_38->unk_00.unk_00, &sp84->unk_00.unk_00);
+    ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp84, 0, 0xC4, 0x210, 0x60, gDetailPanelTrainerBgColor);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_38->posX.posX, &sp84->posX.posX);
 
     arg0->unk_60 = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
     ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_60, 0, 0);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp84->unk_00.unk_00, &arg0->unk_60->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp84->posX.posX, &arg0->unk_60->posX.posX);
 
     arg0->unk_54 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_054));
     LabPC_InitTrainerInfoWidget(arg0->unk_54, 0, 0);
-    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_60, &arg0->unk_54->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_60, &arg0->unk_54->posX);
 
     arg0->unk_40 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_040));
     LabPC_InitMovesPanel(arg0->unk_40, 0, 0, arg5);
-    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_60, &arg0->unk_40->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_60, &arg0->unk_40->posX);
 
     arg0->unk_70 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_070));
     LabPC_InitMoveGridMenu(arg0->unk_70, arg5);
 
     sp80 = mem_pool_alloc(arg5, sizeof(WidgetAnimatedFrame));
-    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(sp80, 0, 0, 0x20, 0x20, D_88605B60);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_40->unk_00.unk_00, &sp80->unk_00.unk_00);
+    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(sp80, 0, 0, 0x20, 0x20, gMovesPanelSelectionColor);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_40->posX.posX, &sp80->posX.posX);
     LabPC_BindMovesPanelGrid(arg0->unk_40, sp80, arg0->unk_70);
 
-    arg0->unk_74 = mem_pool_alloc(arg5, sizeof(unk_func_8850CD44));
+    arg0->unk_74 = mem_pool_alloc(arg5, sizeof(ChildWidgetGroup));
     LabPC_GroupMovesPanelFlyWidgets(arg0->unk_40, arg0->unk_74, arg5);
 
     arg0->unk_3C = mem_pool_alloc(arg5, sizeof(WidgetDelayedNode));
     ((func88503118)Memmap_GetFragmentVaddr(WidgetTree_InitDelayedWidget))(arg0->unk_3C, 0, 0, 0x210, 0x148);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_3C->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX.posX, &arg0->unk_3C->posX.posX);
 
     arg0->unk_64 = mem_pool_alloc(arg5, sizeof(unk_func_88500994));
     ((func88500994)Memmap_GetFragmentVaddr(WidgetTree_InitPagedContainer))(arg0->unk_64, 0, 0x124);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_3C->unk_00.unk_00, &arg0->unk_64->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_3C->posX.posX, &arg0->unk_64->posX.posX);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
-    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp7C->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp7C->posX);
 
     sp78 = mem_pool_alloc(arg5, sizeof(WidgetNode));
     LabPC_InitDualArrowHeader(sp78, 0, 0, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->unk_00.unk_00, &sp78->unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->posX.posX, &sp78->posX);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
-    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp7C->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp7C->posX);
 
     sp74 = mem_pool_alloc(arg5, sizeof(WidgetNode));
     LabPC_InitArrowLabelA(sp74, 0, 0, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->unk_00.unk_00, &sp74->unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->posX.posX, &sp74->posX);
 
     sp7C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp7C, 0, 0, 0x210, 0x24, D_88605B64);
-    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp7C->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp7C->posX);
 
     sp70 = mem_pool_alloc(arg5, sizeof(WidgetNode));
     LabPC_InitArrowLabelB(sp70, 0, 0, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->unk_00.unk_00, &sp70->unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp7C->posX.posX, &sp70->posX);
 
     arg0->unk_6C = mem_pool_alloc(arg5, sizeof(WidgetGridMenu));
     ((func8850C284)Memmap_GetFragmentVaddr(WidgetTree_InitGridMenu))(arg0->unk_6C, 1, 2, arg5);
 
     sp6C = mem_pool_alloc(arg5, sizeof(unk_func_8850182C));
     ((func8850182C)Memmap_GetFragmentVaddr(WidgetTree_InitCornerFrame))(sp6C, 0, 0, 0x210, 0x24, D_88605B68);
-    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp6C->unk_00);
+    ((func88500A3C)Memmap_GetFragmentVaddr(WidgetTree_AddPage))(arg0->unk_64, &sp6C->posX);
 
     sp68 = mem_pool_alloc(arg5, sizeof(unk_func_8850878C));
-    ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp68, 0x14, 5, Text_GetString(NULL, 0, D_8861C510, 4), 0x10);
+    ((func8850878C)Memmap_GetFragmentVaddr(WidgetTree_InitTextLabel))(sp68, 0x14, 5, Text_GetString(NULL, 0, gMonSummaryStrings, 4), 0x10);
     sp68->unk_30 = (0, D_88605B6C);
     sp68->unk_44 = sp68->unk_44;
     sp68->unk_34 = (0, D_88605B70);
     sp68->unk_44 = 1;
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->unk_00.unk_00, &sp68->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->posX.posX, &sp68->posX.posX);
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
-    LabPC_InitCenteredLabel(sp64, 0x126, 2, 0x6E, 0x1E, Text_GetString(NULL, 0, D_8861C510, 5), D_88605B74, D_88605B78, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
+    LabPC_InitCenteredLabel(sp64, 0x126, 2, 0x6E, 0x1E, Text_GetString(NULL, 0, gMonSummaryStrings, 5), D_88605B74, D_88605B78, arg5);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->posX.posX, &sp64->posX.posX);
     tmp = arg0->unk_6C;
-    tmp->unk_18[0] = &sp64->unk_00;
+    tmp->unk_18[0] = &sp64->posX;
 
     sp64 = mem_pool_alloc(arg5, sizeof(unk_func_8860439C_sp64));
-    LabPC_InitCenteredLabel(sp64, 0x19A, 2, 0x6E, 0x1E, Text_GetString(NULL, 0, D_8861C510, 6), D_88605B74, D_88605B78, arg5);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->unk_00.unk_00, &sp64->unk_00.unk_00);
+    LabPC_InitCenteredLabel(sp64, 0x19A, 2, 0x6E, 0x1E, Text_GetString(NULL, 0, gMonSummaryStrings, 6), D_88605B74, D_88605B78, arg5);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->posX.posX, &sp64->posX.posX);
     tmp = arg0->unk_6C;
-    tmp->unk_18[1] = &sp64->unk_00;
+    tmp->unk_18[1] = &sp64->posX;
     ((func8850CAB4)Memmap_GetFragmentVaddr(WidgetTree_SelectFirstEnabledGridItem))(arg0->unk_6C);
 
     sp60 = mem_pool_alloc(arg5, sizeof(WidgetAnimatedFrame));
-    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(sp60, 0, 0, 0x10, 0x10, D_88605B7C);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->unk_00.unk_00, &sp60->unk_00.unk_00);
+    ((func88504570)Memmap_GetFragmentVaddr(WidgetTree_InitAnimatedFrameVariantC))(sp60, 0, 0, 0x10, 0x10, gWidgetFrameColor);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&sp6C->posX.posX, &sp60->posX.posX);
     arg0->unk_6C->unk_1C = sp60;
 
     arg0->unk_50 = mem_pool_alloc(arg5, sizeof(unk_func_88205880_0098_008_050));
     LabPC_InitMonPreviewWidget(arg0->unk_50, 0, 0x24, 0xE4, 0xE0, 0xA0, arg3);
-    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->unk_00.unk_00, &arg0->unk_50->unk_00.unk_00);
+    ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_2C->posX.posX, &arg0->unk_50->posX.posX);
 
     if (arg4 != NULL) {
-        sp5C = mem_pool_alloc(arg5, sizeof(unk_func_88503298));
+        sp5C = mem_pool_alloc(arg5, sizeof(WidgetVisibilityGate));
         ((func88503298)Memmap_GetFragmentVaddr(WidgetTree_InitVisibilityGateBridge))(sp5C, arg0->unk_2C, arg4);
-        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->unk_00.unk_00, &sp5C->unk_00.unk_00);
+        ((func8850068C)Memmap_GetFragmentVaddr(WidgetTree_AppendChild))(&arg0->posX.posX, &sp5C->posX.posX);
     }
 
     arg0->unk_88 = 0;
     arg0->unk_80 = 0;
 }
 
-void LabPC_SetDetailPanelMon(unk_func_88205880_0098_008* arg0, BattleMon* arg1, s32 arg2) {
-    static Color_RGBA8 D_88605B80[] = { { 0x80, 0x18, 0x18, 0xFF },
+void LabPC_SetDetailPanelMon(LabPC_DetailPanel* arg0, BattleMon* arg1, s32 arg2) {
+    static Color_RGBA8 gDetailPanelListFrameColors[] = { { 0x80, 0x18, 0x18, 0xFF },
                                         { 0x90, 0x60, 0x18, 0xFF },
                                         { 0x30, 0x60, 0x60, 0xFF } };
-    UNUSED static Gfx D_88605B90[] = {
+    UNUSED static Gfx gSummaryUnusedEndDL[] = {
         gsSPEndDisplayList(),
     };
 
@@ -1239,25 +1239,25 @@ void LabPC_SetDetailPanelMon(unk_func_88205880_0098_008* arg0, BattleMon* arg1, 
     LabPC_SetPreviewMon(arg0->unk_50, arg1);
     LabPC_SetTrainerInfoMon(arg0->unk_54, arg1);
 
-    arg0->unk_68->unk_2C = D_88605B80[arg2];
+    arg0->unk_68->unk_2C = gDetailPanelListFrameColors[arg2];
 }
 
-void LabPC_SetDetailPanelMode(unk_func_88205880_0098_008* arg0, s32 arg1) {
+void LabPC_SetDetailPanelMode(LabPC_DetailPanel* arg0, s32 arg1) {
     arg0->unk_88 = arg1;
 }
 
-s32 LabPC_GetDetailPanelMode(unk_func_88205880_0098_008* arg0) {
+s32 LabPC_GetDetailPanelMode(LabPC_DetailPanel* arg0) {
     return arg0->unk_88;
 }
 
-void LabPC_ShowMoveDetailPage(unk_func_88205880_0098_008* arg0, s32 arg1) {
+void LabPC_ShowMoveDetailPage(LabPC_DetailPanel* arg0, s32 arg1) {
     arg0->unk_34->unk_2C = 0;
     ((func88500A6C)Memmap_GetFragmentVaddr(WidgetTree_SelectPage))(arg0->unk_5C, 1);
     LabPC_SetMoveDetailId(arg0->unk_58, arg0->unk_78->unk_09[arg1]);
 }
 
-void LabPC_SelectDetailPanelPage(unk_func_88205880_0098_008* arg0, s32 arg1) {
-    arg0->unk_00.unk_24(&arg0->unk_00, 0);
+void LabPC_SelectDetailPanelPage(LabPC_DetailPanel* arg0, s32 arg1) {
+    arg0->posX.unk_24(&arg0->posX, 0);
 
     switch (arg1) {
         case 0:
@@ -1270,11 +1270,11 @@ void LabPC_SelectDetailPanelPage(unk_func_88205880_0098_008* arg0, s32 arg1) {
 
         case 1:
             LabPC_ShowMoveDetailPage(arg0, 0);
-            ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->unk_70->unk_00, 0);
+            ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->unk_70->posX, 0);
             arg0->unk_3C->unk_2C = 0;
             ((func88500A6C)Memmap_GetFragmentVaddr(WidgetTree_SelectPage))(arg0->unk_64, 1);
             ((func88500A6C)Memmap_GetFragmentVaddr(WidgetTree_SelectPage))(arg0->unk_60, 1);
-            arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 1);
+            arg0->unk_70->posX.unk_14(&arg0->unk_70->posX, 1);
             break;
 
         case 2:
@@ -1283,11 +1283,11 @@ void LabPC_SelectDetailPanelPage(unk_func_88205880_0098_008* arg0, s32 arg1) {
             arg0->unk_3C->unk_2C = 0;
             ((func88500A6C)Memmap_GetFragmentVaddr(WidgetTree_SelectPage))(arg0->unk_64, 2);
             ((func88500A6C)Memmap_GetFragmentVaddr(WidgetTree_SelectPage))(arg0->unk_60, 1);
-            arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 1);
+            arg0->unk_70->posX.unk_14(&arg0->unk_70->posX, 1);
             break;
 
         case 3:
-            arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 1);
+            arg0->unk_70->posX.unk_14(&arg0->unk_70->posX, 1);
             break;
 
         case 4:
@@ -1303,7 +1303,7 @@ void LabPC_SelectDetailPanelPage(unk_func_88205880_0098_008* arg0, s32 arg1) {
     arg0->unk_80 = arg1;
 }
 
-s32 LabPC_HandleDetailPanelInput(unk_func_88205880_0098_008* arg0, Controller* arg1) {
+s32 LabPC_HandleDetailPanelInput(LabPC_DetailPanel* arg0, Controller* arg1) {
     s32 var_a2 = 0;
 
     switch (arg0->unk_80) {
@@ -1315,15 +1315,15 @@ s32 LabPC_HandleDetailPanelInput(unk_func_88205880_0098_008* arg0, Controller* a
                 var_a2 = 0x80000005;
             } else if (arg1->buttonPressed & 0x1000) {
                 LabPC_SelectDetailPanelPage(arg0, 2);
-                ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->unk_70->unk_00, 0);
+                ((func8850CB48)Memmap_GetFragmentVaddr(WidgetTree_SetGridMenuSelection))(&arg0->unk_70->posX, 0);
                 var_a2 = 0x80000005;
             }
             break;
 
         case 1:
-            var_a2 = arg0->unk_70->unk_00.unk_10(&arg0->unk_70->unk_00, arg1);
+            var_a2 = arg0->unk_70->posX.unk_10(&arg0->unk_70->posX, arg1);
             if (var_a2 != 0) {
-                LabPC_ShowMoveDetailPage(arg0, arg0->unk_70->unk_00.unk_24);
+                LabPC_ShowMoveDetailPage(arg0, arg0->unk_70->posX.unk_24);
             } else if (arg1->buttonPressed & 0x4000) {
                 var_a2 = 0x80000003;
                 LabPC_SelectDetailPanelPage(arg0, 0);
@@ -1333,12 +1333,12 @@ s32 LabPC_HandleDetailPanelInput(unk_func_88205880_0098_008* arg0, Controller* a
             break;
 
         case 2:
-            var_a2 = arg0->unk_70->unk_00.unk_10(&arg0->unk_70->unk_00, arg1);
+            var_a2 = arg0->unk_70->posX.unk_10(&arg0->unk_70->posX, arg1);
             if (var_a2 != 0) {
-                s32 tmp = arg0->unk_70->unk_00.unk_24;
+                s32 tmp = arg0->unk_70->posX.unk_24;
 
                 arg0->unk_84 = tmp;
-                arg0->unk_40->unk_7C[tmp]->unk_00.unk_28 |= 1;
+                arg0->unk_40->unk_7C[tmp]->posX.unk_28 |= 1;
                 LabPC_SelectDetailPanelPage(arg0, 3);
                 Audio_PlaySoundEffectById(SFX_MENU_CONFIRM);
                 var_a2 = 1;
@@ -1349,29 +1349,29 @@ s32 LabPC_HandleDetailPanelInput(unk_func_88205880_0098_008* arg0, Controller* a
             break;
 
         case 3:
-            var_a2 = arg0->unk_70->unk_00.unk_10(&arg0->unk_70->unk_00, arg1);
+            var_a2 = arg0->unk_70->posX.unk_10(&arg0->unk_70->posX, arg1);
             if (var_a2 != 0) {
-                if (arg0->unk_70->unk_00.unk_24 == arg0->unk_84) {
+                if (arg0->unk_70->posX.unk_24 == arg0->unk_84) {
                     var_a2 = 0x80000101;
                 } else {
                     Audio_PlaySoundEffectById(SFX_MOVE_SWAP);
-                    arg0->unk_40->unk_7C[arg0->unk_70->unk_00.unk_24]->unk_00.unk_28 |= 1;
-                    arg0->unk_70->unk_00.unk_14(&arg0->unk_70->unk_00, 0);
-                    LabPC_SwapMovesPanelSlots(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
+                    arg0->unk_40->unk_7C[arg0->unk_70->posX.unk_24]->posX.unk_28 |= 1;
+                    arg0->unk_70->posX.unk_14(&arg0->unk_70->posX, 0);
+                    LabPC_SwapMovesPanelSlots(arg0->unk_40, arg0->unk_84, arg0->unk_70->posX.unk_24);
 
                     ((func8850CF00)Memmap_GetFragmentVaddr(WidgetTree_RunChildWidgetGroup))(arg0->unk_74, arg1);
 
-                    LabPC_ResetMovesPanelSlots(arg0->unk_40, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
-                    LabPC_SwapMonMoves(arg0->unk_78, arg0->unk_84, arg0->unk_70->unk_00.unk_24);
+                    LabPC_ResetMovesPanelSlots(arg0->unk_40, arg0->unk_84, arg0->unk_70->posX.unk_24);
+                    LabPC_SwapMonMoves(arg0->unk_78, arg0->unk_84, arg0->unk_70->posX.unk_24);
                     LabPC_SetMovesPanelMon(arg0->unk_40, arg0->unk_78);
-                    arg0->unk_40->unk_7C[arg0->unk_84]->unk_00.unk_28 &= ~1;
-                    arg0->unk_40->unk_7C[arg0->unk_70->unk_00.unk_24]->unk_00.unk_28 &= ~1;
+                    arg0->unk_40->unk_7C[arg0->unk_84]->posX.unk_28 &= ~1;
+                    arg0->unk_40->unk_7C[arg0->unk_70->posX.unk_24]->posX.unk_28 &= ~1;
                     arg0->unk_8C = 1;
                     LabPC_SelectDetailPanelPage(arg0, 2);
                     var_a2 = 0x80000081;
                 }
             } else if (arg1->buttonPressed & 0x4000) {
-                arg0->unk_40->unk_7C[arg0->unk_84]->unk_00.unk_28 &= ~1;
+                arg0->unk_40->unk_7C[arg0->unk_84]->posX.unk_28 &= ~1;
                 LabPC_SelectDetailPanelPage(arg0, 2);
                 var_a2 = 0x80000003;
             }
@@ -1399,7 +1399,7 @@ s32 LabPC_HandleDetailPanelInput(unk_func_88205880_0098_008* arg0, Controller* a
 }
 
 s32 LabPC_DispatchDetailPanelInput(WidgetNode* arg0, Controller* arg1) {
-    unk_func_88205880_0098_008* ptr = (unk_func_88205880_0098_008*)arg0;
+    LabPC_DetailPanel* ptr = (LabPC_DetailPanel*)arg0;
     s32 var_v1;
 
     if (ptr->unk_2C->unk_30 & 2) {
@@ -1410,7 +1410,7 @@ s32 LabPC_DispatchDetailPanelInput(WidgetNode* arg0, Controller* arg1) {
     return var_v1;
 }
 
-s32 LabPC_RunDetailPanel(unk_func_88205880_0098_008* arg0) {
+s32 LabPC_RunDetailPanel(LabPC_DetailPanel* arg0) {
     s32 var_s1 = 0;
 
     arg0->unk_30->unk_2C = 0;
@@ -1433,7 +1433,7 @@ s32 LabPC_RunDetailPanel(unk_func_88205880_0098_008* arg0) {
         s32 temp_v0_5;
 
         Ui_SendMessageAndPollInput((OSMesg*)var_s1);
-        temp_v0_5 = arg0->unk_00.unk_20(&arg0->unk_00, gPlayer1Controller);
+        temp_v0_5 = arg0->posX.unk_20(&arg0->posX, gPlayer1Controller);
 
         if (!(temp_v0_5 & 1)) {
             if (temp_v0_5 & 2) {
@@ -1457,62 +1457,62 @@ s32 LabPC_RunDetailPanel(unk_func_88205880_0098_008* arg0) {
     return var_s1;
 }
 
-unk_func_88205880_0098_008* LabPC_CreateMonDetailPanel(unk_func_88205880_0098* arg0) {
+LabPC_DetailPanel* LabPC_CreateMonDetailPanel(LabPC_DetailPanelParams* arg0) {
     UNUSED s32 pad;
-    unk_func_8001B1FC* sp38;
-    unk_func_88205880_0098_008* sp34;
+    ModelPreview* sp38;
+    LabPC_DetailPanel* sp34;
 
     ASSET_LOAD(D_1000000, common_menu1_ui, 0);
-    sp38 = PokeIcon_CreateModelPreview(PokeIcon_AllocFramebuffers(1), 228, 160, 0, 0, 0xE0, 0xA0, D_8860A6D0);
+    sp38 = PokeIcon_CreateModelPreview(PokeIcon_AllocFramebuffers(1), 228, 160, 0, 0, 0xE0, 0xA0, gMonPreviewBackdropTex);
     PokeIcon_OpenModelArchives();
     FRAGMENT_LOAD(FRAGMENT_PARTICLE_DATA_LIBRARY);
 
-    D_8861C510 = arg0->unk_1C;
-    D_8861C514 = arg0->unk_20;
-    D_8861C518 = arg0->unk_24;
-    D_8861C51C = arg0->unk_28;
-    D_8861C520 = arg0->unk_2C;
-    D_8861C524 = arg0->unk_30;
-    D_8861C528 = arg0->unk_34;
+    gMonSummaryStrings = arg0->unk_1C;
+    gMonSpeciesNames = arg0->unk_20;
+    gMoveNames = arg0->unk_24;
+    gMoveTypeNames = arg0->unk_28;
+    gUnusedStringBank1 = arg0->unk_2C;
+    gStatusConditionNames = arg0->unk_30;
+    gMoveDescriptions = arg0->unk_34;
 
-    sp34 = mem_pool_alloc(arg0->unk_04, sizeof(unk_func_88205880_0098_008));
-    LabPC_BuildMonDetailPanel(sp34, arg0->unk_00, arg0->unk_02, sp38, arg0->unk_14, arg0->unk_04);
+    sp34 = mem_pool_alloc(arg0->rotation, sizeof(LabPC_DetailPanel));
+    LabPC_BuildMonDetailPanel(sp34, arg0->posX, arg0->posY, sp38, arg0->unk_14, arg0->rotation);
     LabPC_SetDetailPanelMode(sp34, arg0->unk_18);
     return sp34;
 }
 
-s32 LabPC_IconListDispatch(u32 arg0, unk_func_88205880_0098* arg1) {
+s32 LabPC_IconListDispatch(u32 arg0, LabPC_DetailPanelParams* arg1) {
     UNUSED s32 pad;
     s32 var_v1 = 0;
 
     switch (arg0) {
         case 0:
             var_v1 = 0;
-            arg1->unk_08 = LabPC_CreateMonDetailPanel(arg1);
+            arg1->RentalSlotAnimData_PosePhase = LabPC_CreateMonDetailPanel(arg1);
             break;
 
         case 1:
-            LabPC_SetDetailPanelMon(arg1->unk_08, arg1->unk_0C, arg1->unk_10);
+            LabPC_SetDetailPanelMon(arg1->RentalSlotAnimData_PosePhase, arg1->unk_0C, arg1->unk_10);
             var_v1 = 0;
             break;
 
         case 2:
-            LabPC_SetDetailPanelMode(arg1->unk_08, arg1->unk_18);
+            LabPC_SetDetailPanelMode(arg1->RentalSlotAnimData_PosePhase, arg1->unk_18);
             var_v1 = 0;
             break;
 
         case 3:
-            var_v1 = LabPC_GetDetailPanelMode(arg1->unk_08);
+            var_v1 = LabPC_GetDetailPanelMode(arg1->RentalSlotAnimData_PosePhase);
             break;
 
         case 4:
-            var_v1 = LabPC_RunDetailPanel(arg1->unk_08);
+            var_v1 = LabPC_RunDetailPanel(arg1->RentalSlotAnimData_PosePhase);
             break;
     }
     return var_v1;
 }
 
-u8 D_88605B98[] = {
+u8 gSummaryBallIconTex[] = {
     0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00,
     0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66,
     0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00,
@@ -1597,10 +1597,10 @@ u8 D_88605B98[] = {
     0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66,
     0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66, 0x00, 0x66,
 };
-static Gfx D_886061B8[] = {
+static Gfx gSummaryBallIconEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 D_886061C0[] = {
+u8 gSummaryMoveDetailIconTex[] = {
     0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82,
     0x80, 0x82, 0x80, 0x8A, 0x40, 0x82, 0x80, 0x82, 0x40, 0x82, 0x40, 0x82, 0x80, 0x82, 0x80, 0x8A, 0x40, 0x82, 0x80,
     0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82,
@@ -1685,10 +1685,10 @@ u8 D_886061C0[] = {
     0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x8A, 0x40, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80,
     0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80, 0x82, 0x80
 };
-static Gfx D_886067E0[] = {
+static Gfx gSummaryAbilityIconEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 D_886067E8[] = {
+u8 gSummaryReorderIconTex[] = {
     0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88,
     0xC6, 0x88, 0xC6, 0x88, 0xC8, 0x88, 0xC6, 0x80, 0xC6, 0x88, 0xC6, 0x80, 0xC6, 0x88, 0xC6, 0x88, 0xC8, 0x88, 0xC6,
     0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88,
@@ -1773,46 +1773,46 @@ u8 D_886067E8[] = {
     0xC6, 0x88, 0xC6, 0x88, 0xC8, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6,
     0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6, 0x88, 0xC6,
 };
-static Gfx D_88606E08[] = {
+static Gfx gSummaryRibbonsIconEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 D_88606E10[] = {
+u8 gMoveDetailFrameTopTex[] = {
     0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x48, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88,
     0x48, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x48, 0xFE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
     0x48, 0xFE, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0x48, 0xFE, 0xC9, 0x99, 0x99, 0x99, 0x99, 0x99,
     0x48, 0xFE, 0xC9, 0x88, 0x88, 0x88, 0x88, 0x88, 0x48, 0xFE, 0xC9, 0x84, 0x44, 0x44, 0x44, 0x44,
 };
-static Gfx D_88606E50[] = {
+static Gfx gMoveDetailFrameTopEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 D_88606E58[] = {
+u8 gMoveDetailFrameRightTex[] = {
     0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84,
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x84, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEF, 0x84,
     0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xEF, 0x84, 0x99, 0x99, 0x99, 0x99, 0x99, 0x9C, 0xEF, 0x84,
     0x88, 0x88, 0x88, 0x88, 0x88, 0x9C, 0xEF, 0x84, 0x44, 0x44, 0x44, 0x44, 0x48, 0x9C, 0xEF, 0x84,
 };
-static Gfx D_88606E98[] = {
+static Gfx gMoveDetailFrameRightEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 D_88606EA0[] = {
+u8 gMoveDetailFrameBottomTex[] = {
     0x44, 0x44, 0x44, 0x44, 0x48, 0x9C, 0xEF, 0x84, 0x88, 0x88, 0x88, 0x88, 0x88, 0x9C, 0xEF, 0x84,
     0x99, 0x99, 0x99, 0x99, 0x99, 0x9C, 0xEF, 0x84, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xEF, 0x84,
     0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEF, 0x84, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x84,
     0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44,
 };
-static Gfx D_88606EE0[] = {
+static Gfx gMoveDetailFrameBottomEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 D_88606EE8[] = {
+u8 gMoveDetailFrameLeftTex[] = {
     0x48, 0xFE, 0xC9, 0x84, 0x44, 0x44, 0x44, 0x44, 0x48, 0xFE, 0xC9, 0x88, 0x88, 0x88, 0x88, 0x88,
     0x48, 0xFE, 0xC9, 0x99, 0x99, 0x99, 0x99, 0x99, 0x48, 0xFE, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC,
     0x48, 0xFE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0x48, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
     0x48, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44,
 };
-static Gfx D_88606F28[] = {
+static Gfx gMoveDetailFrameLeftEndDL[] = {
     gsSPEndDisplayList(),
 };
-u8 D_88606F30[] = {
+u8 gMoveDetailPanelOverlayTex[] = {
     0x01, 0x11, 0x10, 0x00, 0x12, 0x21, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x12, 0x22, 0x21, 0x10, 0x00, 0x01,
     0x12, 0x22, 0x21, 0x22, 0x22, 0x22, 0x21, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x21, 0x10, 0x01, 0x12, 0x22,
     0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x22, 0x22, 0x11, 0x10, 0x00, 0x01, 0x12, 0x22, 0x11, 0x12, 0x22, 0x22,
@@ -1922,10 +1922,10 @@ u8 D_88606F30[] = {
     0x00, 0x00, 0x00, 0x11, 0x11, 0x11, 0x11, 0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x22, 0x21, 0x00,
     0x11, 0x11, 0x22, 0x33, 0x22, 0x22, 0x22, 0x21, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
-static Gfx D_88607730[] = {
+static Gfx gMoveDetailPanelOverlayEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_88607738[] = {
+static u8 gMoveTypeIconNormalTex[] = {
     0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52,
     0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95,
     0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0xD6, 0xF5, 0xCE, 0x73, 0xCE, 0x33, 0xC6, 0x31, 0xC6, 0x31, 0xC6, 0x31, 0xC6,
@@ -1970,10 +1970,10 @@ static u8 D_88607738[] = {
     0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95, 0x52, 0x95,
     0x52, 0x95
 };
-static Gfx D_88607A58[] = {
+static Gfx gMoveTypeIconNormalEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_88607A60[] = {
+static u8 gMoveTypeIconFightingTex[] = {
     0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71,
     0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5,
     0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0xF5, 0xE9, 0xE5, 0x61, 0xED, 0x1F, 0xE5, 0x1F, 0xE5, 0x1F, 0xE5, 0x1F, 0xE5,
@@ -2018,10 +2018,10 @@ static u8 D_88607A60[] = {
     0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5, 0x71, 0xC5,
     0x71, 0xC5
 };
-static Gfx D_88607D80[] = {
+static Gfx gMoveTypeIconFightingEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_88607D88[] = {
+static u8 gMoveTypeIconFlyingTex[] = {
     0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A,
     0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5,
     0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0xBE, 0x7D, 0xA5, 0xBD, 0x95, 0x7B, 0x95, 0x7B, 0x95, 0x7B, 0x95, 0x7B, 0x95,
@@ -2066,10 +2066,10 @@ static u8 D_88607D88[] = {
     0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5, 0x3A, 0xA5,
     0x3A, 0xA5
 };
-static Gfx D_886080A8[] = {
+static Gfx gMoveTypeIconFlyingEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_886080B0[] = {
+static u8 gMoveTypeIconPoisonTex[] = {
     0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61,
     0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D,
     0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0xDD, 0xBD, 0xD4, 0xFB, 0xCC, 0x7B, 0xCC, 0x7B, 0xCC, 0x7B, 0xCC, 0x7B, 0xCC,
@@ -2114,10 +2114,10 @@ static u8 D_886080B0[] = {
     0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D, 0x61, 0x5D,
     0x61, 0x5D
 };
-static Gfx D_886083D0[] = {
+static Gfx gMoveTypeIconPoisonEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_886083D8[] = {
+static u8 gMoveTypeIconGroundTex[] = {
     0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62,
     0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07,
     0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0xDE, 0xAF, 0xCD, 0xE7, 0xC5, 0xA5, 0xC5, 0xA5, 0xC5, 0xA5, 0xC5, 0xA5, 0xC5,
@@ -2162,10 +2162,10 @@ static u8 D_886083D8[] = {
     0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07, 0x62, 0x07,
     0x62, 0x07
 };
-static Gfx D_886086F8[] = {
+static Gfx gMoveTypeIconGroundEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_88608700[] = {
+static u8 gMoveTypeIconRockTex[] = {
     0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01,
     0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF,
     0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0xA5, 0xEF, 0x9D, 0x6B, 0x8D, 0x69, 0x8D, 0x29, 0x8D, 0x29, 0x8D, 0x29, 0x8D,
@@ -2210,10 +2210,10 @@ static u8 D_88608700[] = {
     0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF, 0x01, 0xCF,
     0x01, 0xCF
 };
-static Gfx D_88608A20[] = {
+static Gfx gMoveTypeIconRockEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_88608A28[] = {
+static u8 gMoveTypeIconBugTex[] = {
     0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32,
     0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87,
     0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0xC6, 0xED, 0xB6, 0x63, 0xA6, 0x61, 0xA6, 0x21, 0xA6, 0x21, 0xA6, 0x21, 0xA6,
@@ -2258,10 +2258,10 @@ static u8 D_88608A28[] = {
     0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87, 0x32, 0x87,
     0x32, 0x87
 };
-static Gfx D_88608D48[] = {
+static Gfx gMoveTypeIconBugEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_88608D50[] = {
+static u8 gMoveTypeIconGhostTex[] = {
     0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59,
     0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19,
     0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0xDE, 0x79, 0xD5, 0xB7, 0xCD, 0x77, 0xCD, 0x77, 0xCD, 0x77, 0xCD, 0x77, 0xCD,
@@ -2306,10 +2306,10 @@ static u8 D_88608D50[] = {
     0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19, 0x59, 0x19,
     0x59, 0x19
 };
-static Gfx D_88609070[] = {
+static Gfx gMoveTypeIconGhostEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_88609078[] = {
+static u8 gMoveTypeIconFireTex[] = {
     0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70,
     0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7,
     0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0xED, 0x29, 0xE4, 0xA5, 0xDB, 0xDF, 0xE4, 0x21, 0xE4, 0x21, 0xE4, 0x21, 0xE4,
@@ -2354,10 +2354,10 @@ static u8 D_88609078[] = {
     0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7, 0x70, 0xC7,
     0x70, 0xC7
 };
-static Gfx D_88609398[] = {
+static Gfx gMoveTypeIconFireEndDL[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_886093A0[] = {
+static u8 gMoveTypeIconWaterTex[] = {
     0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01,
     0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF,
     0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0xBE, 0xFF, 0x96, 0x7B, 0x96, 0x7D, 0x8E, 0x3B, 0x8E, 0x3B, 0x8E, 0x3B, 0x8E,
@@ -2402,10 +2402,10 @@ static u8 D_886093A0[] = {
     0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF, 0x01, 0xDF,
     0x01, 0xDF
 };
-static Gfx D_886096C0[] = {
+static Gfx gMoveTypeIconDisplayList[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_886096C8[] = {
+static u8 gMoveTypeIconGrassTex[] = {
     0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A,
     0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1,
     0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0xB7, 0x2D, 0x8E, 0xA3, 0x86, 0xA1, 0x86, 0xA1, 0x86, 0xA1, 0x86, 0xA1, 0x86,
@@ -2450,10 +2450,10 @@ static u8 D_886096C8[] = {
     0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1, 0x0A, 0xC1,
     0x0A, 0xC1
 };
-static Gfx D_886099E8[] = {
+static Gfx gMoveTypeIconDisplayList2[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_886099F0[] = {
+static u8 gMoveTypeIconElectricTex[] = {
     0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72,
     0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87,
     0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0xEF, 0x2D, 0xE6, 0xA5, 0xDE, 0x63, 0xDE, 0x63, 0xDE, 0x63, 0xDE, 0x63, 0xDE,
@@ -2498,10 +2498,10 @@ static u8 D_886099F0[] = {
     0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87, 0x72, 0x87,
     0x72, 0x87
 };
-static Gfx D_88609D10[] = {
+static Gfx gMoveTypeIconDisplayList3[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_88609D18[] = {
+static u8 gMoveTypeIconPsychicTex[] = {
     0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71,
     0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57,
     0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0xE5, 0x73, 0xDC, 0xB1, 0xE4, 0x6F, 0xDC, 0x6F, 0xDC, 0x6F, 0xDC, 0x6F, 0xDC,
@@ -2546,10 +2546,10 @@ static u8 D_88609D18[] = {
     0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57, 0x71, 0x57,
     0x71, 0x57
 };
-static Gfx D_8860A038[] = {
+static Gfx gMoveTypeIconDisplayList4[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_8860A040[] = {
+static u8 gMoveTypeIconIceTex[] = {
     0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33,
     0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23,
     0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0xC6, 0xFB, 0xB6, 0xB9, 0xA6, 0xB7, 0xA6, 0x79, 0xA6, 0x79, 0xA6, 0x79, 0xA6,
@@ -2594,10 +2594,10 @@ static u8 D_8860A040[] = {
     0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23, 0x33, 0x23,
     0x33, 0x23
 };
-static Gfx D_8860A360[] = {
+static Gfx gMoveTypeIconDisplayList5[] = {
     gsSPEndDisplayList(),
 };
-static u8 D_8860A368[] = {
+static u8 gMoveTypeIconDragonTex[] = {
     0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13,
     0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15,
     0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0xB6, 0xF5, 0x8E, 0xB3, 0x86, 0x71, 0x86, 0x71, 0x86, 0x71, 0x86, 0x71, 0x86,
@@ -2642,14 +2642,14 @@ static u8 D_8860A368[] = {
     0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15, 0x13, 0x15,
     0x13, 0x15
 };
-u8* D_8860A688[] = {
-    D_88607738, D_88607A60, D_88607D88, D_886080B0, D_886083D8, D_88608700, D_88608A28, D_88608D50,
-    D_88609078, D_886093A0, D_886096C8, D_886099F0, D_88609D18, D_8860A040, D_8860A368,
+u8* gMoveTypeIconTextures[] = {
+    gMoveTypeIconNormalTex, gMoveTypeIconFightingTex, gMoveTypeIconFlyingTex, gMoveTypeIconPoisonTex, gMoveTypeIconGroundTex, gMoveTypeIconRockTex, gMoveTypeIconBugTex, gMoveTypeIconGhostTex,
+    gMoveTypeIconFireTex, gMoveTypeIconWaterTex, gMoveTypeIconGrassTex, gMoveTypeIconElectricTex, gMoveTypeIconPsychicTex, gMoveTypeIconIceTex, gMoveTypeIconDragonTex,
 };
-static Gfx D_8860A6C8[] = {
+static Gfx gMoveTypeIconDisplayList6[] = {
     gsSPEndDisplayList(),
 };
-u8 D_8860A6D0[] = {
+u8 gMonPreviewBackdropTex[] = {
     0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00,
     0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B,
     0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x00,

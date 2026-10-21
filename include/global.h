@@ -21,8 +21,8 @@ struct ModelAssetNode;
 
 typedef union arg1_func_80010CA8 {
     struct {
-        /* 0x00 */ s16 unk_00;
-        /* 0x02 */ s8 unk_02;
+        /* 0x00 */ s16 posX;
+        /* 0x02 */ s8 posY;
         /* 0x03 */ s8 unk_03;
     };
     u32 raw;
@@ -67,7 +67,7 @@ typedef struct ModelLoadContext {
 typedef struct ModelNodeView {
     // Legacy graph-header view: preserve pointer declarations for matching.
     // The four-slot overlay is also indexed by asset callers; its full role is unresolved.
-    /* 0x00 */ struct ModelNodeView* unk_00[4];
+    /* 0x00 */ struct ModelNodeView* posX[4];
     /* 0x10 */ struct ModelAssetNode* callback;
     /* 0x14 */ ModelLoadContext* callbackArg;
 } ModelNodeView; // size >= 0x18
@@ -115,7 +115,7 @@ typedef struct TransformAnimState {
 
 typedef struct EventTrackData {
     /* 0x00 */ s16 flags; // bit 0x2 clamps at the boundary; otherwise playback wraps
-    /* 0x02 */ char unk_02[0x2];
+    /* 0x02 */ char posY[0x2];
     /* 0x04 */ s16 startFrame;
     /* 0x06 */ s16 loopStart;
     /* 0x08 */ u16 trackCount;
@@ -133,7 +133,7 @@ typedef struct EventTrackState {
 
 typedef struct ModelAnchor {
     /* 0x00 */ u16 id;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x04 */ Vec3f position;
 } ModelAnchor; // size = 0x10
 
@@ -158,17 +158,17 @@ typedef struct DisplayObject {
     /* 0x0A8 */ ModelAnchor anchors[12];
 } DisplayObject; // size = 0x168
 
-typedef struct unk_D_86002F34_000_014_004 {
-    /* 0x00 */ u8 unk_00[5];
-} unk_D_86002F34_000_014_004; // size = 0x5
+typedef struct ColorLerpEntry5 {
+    /* 0x00 */ u8 posX[5];
+} ColorLerpEntry5; // size = 0x5
 
-typedef struct unk_D_86002F34_000_014_010 {
-    /* 0x00 */ u8 unk_00[4];
-} unk_D_86002F34_000_014_010; // size = 0x4
+typedef struct ColorLerpEntry4 {
+    /* 0x00 */ u8 posX[4];
+} ColorLerpEntry4; // size = 0x4
 
 typedef struct unk_D_86002F34_000_014 {
-    /* 0x00 */ u8* unk_00;
-    /* 0x04 */ u8* unk_04;
+    /* 0x00 */ u8* posX;
+    /* 0x04 */ u8* rotation;
 } unk_D_86002F34_000_014; // size >= 0x8
 
 struct GraphNode;
@@ -200,7 +200,7 @@ typedef struct CameraViewport {
 //@src/geo_render.c
 typedef struct CameraPerspective {
     /* 0x00 */ Mtx* projectionMatrix;
-    /* 0x04 */ u16 unk_04;
+    /* 0x04 */ u16 rotation;
     /* 0x08 */ f32 verticalFieldOfView; // Degrees; guPerspective converts to radians.
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 nearPlane;
@@ -211,9 +211,9 @@ typedef struct CameraPerspective {
 // Orthographic projection block consumed by Geo_NodeCamera and GeoOverlay_Draw.
 //@src/geo_render.c
 typedef struct CameraOrthographic {
-    /* 0x00 */ Mtx* unk_00;
-    /* 0x04 */ f32 unk_04;
-    /* 0x08 */ f32 unk_08;
+    /* 0x00 */ Mtx* posX;
+    /* 0x04 */ f32 rotation;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -239,7 +239,7 @@ typedef struct CameraView {
 //@src/geo_render.c
 typedef struct CameraOverlay {
     /* 0x00 */ u16 mode; // 0 = disabled, 1 = solid, 2/3 = fade, 4/5 = textured transition.
-    /* 0x02 */ u16 unk_02;
+    /* 0x02 */ u16 posY;
     /* 0x04 */ Color_RGBA8_u32 color;
     /* 0x08 */ u16 stepCount;
     /* 0x0A */ u16 stepIndex; // Starts at 1; reaching stepCount selects the terminal mode.
@@ -342,18 +342,18 @@ typedef struct unk_D_86002F34_alt10 {
     /* 0x24 */ Color_RGBA8_u32 unk_24;
 } unk_D_86002F34_alt10; // size >= 0x28
 
-typedef struct unk_D_86002F34_alt11_018 {
+typedef struct TextureInfo {
     /* 0x00 */ u8 fmt;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ s16 posY;
     /* 0x04 */ char unk04[0x4];
     /* 0x08 */ u8* texture;
-} unk_D_86002F34_alt11_018; // size >= 0xC
+} TextureInfo; // size >= 0xC
 
 typedef struct unk_D_86002F34_alt11 {
     /* 0x00 */ GraphNode node;
-    /* 0x18 */ unk_D_86002F34_alt11_018* unk_18;
-    /* 0x1C */ unk_D_86002F34_alt11_018* unk_1C;
+    /* 0x18 */ TextureInfo* unk_18;
+    /* 0x1C */ TextureInfo* unk_1C;
 } unk_D_86002F34_alt11; // size >= 0x20
 
 typedef struct unk_D_86002F34_alt12 {
@@ -386,7 +386,7 @@ typedef struct unk_D_86002F34_alt17 {
     /* 0x00 */ GraphNode node;
 } unk_D_86002F34_alt17; // size = 0x18
 
-typedef struct unk_D_86002F34_alt18 {
+typedef struct PillarGlowParams {
     /* 0x00 */ GraphNode node;
     /* 0x18 */ u8 r;
     /* 0x19 */ u8 g;
@@ -394,7 +394,7 @@ typedef struct unk_D_86002F34_alt18 {
     /* 0x1B */ u8 a;
     /* 0x1C */ s16 unk_1C;
     /* 0x1E */ s16 unk_1E;
-} unk_D_86002F34_alt18; // size = 0x20
+} PillarGlowParams; // size = 0x20
 
 typedef struct unk_D_86002F34_alt19 {
     /* 0x00 */ GraphNode node;
@@ -443,50 +443,50 @@ typedef void* (*func_unk_D_800ABE10)(s32, s32);
 #define unk_D_86002F34_018_GFX_TYPE_2 2 // 16-bit per texel
 #define unk_D_86002F34_018_GFX_TYPE_3 3 // 32-bit per texel
 
-typedef struct unk_D_86002F34_018 {
-    /* 0x00 */ u8 unk_00;
+typedef struct GfxTextureInfo {
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 type;
     /* 0x02 */ s16 width;
     /* 0x04 */ s16 height;
     /* 0x06 */ s16 num_texels;
     /* 0x08 */ u32* texture;
-} unk_D_86002F34_018; // size = 0xC
+} GfxTextureInfo; // size = 0xC
 
 typedef struct unk_D_86002F34_01C {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s16* unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s16* rotation;
     /* 0x08 */ char unk08[0x4];
 } unk_D_86002F34_01C; // size = 0xC
 
-typedef struct unk_D_86002F34 {
+typedef struct ShadowContextNode {
     /* 0x00 */ GraphNode node;
-    /* 0x18 */ unk_D_86002F34_018* unk_18;
+    /* 0x18 */ GfxTextureInfo* unk_18;
     /* 0x1C */ unk_D_86002F34_01C* unk_1C;
     /* 0x20 */ Vtx* unk_20;
     /* 0x24 */ u8 unk_24;
     /* 0x25 */ u8 unk_25;
     /* 0x26 */ s16 unk_26;
     /* 0x28 */ func_unk_D_800ABE10 unk_28;
-} unk_D_86002F34; // size = 0x2C
+} ShadowContextNode; // size = 0x2C
 
-// Are unk_D_86002F30 and unk_D_800AC840 the same?
-typedef struct unk_D_86002F30 {
+// Are ModelData and unk_D_800AC840 the same?
+typedef struct ModelData {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ ModelNodeView* unk_08;
-} unk_D_86002F30; // size = 0x18 ??
+    /* 0x08 */ ModelNodeView* RentalSlotAnimData_PosePhase;
+} ModelData; // size = 0x18 ??
 
 typedef struct UnkInputStruct8000D738 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u16 (*unk_04)[6][0x640];
+    /* 0x04 */ u16 (*rotation)[6][0x640];
 } UnkInputStruct8000D738; // size = 0x8
 
-typedef struct unk_D_800AA660 {
+typedef struct GbEmuState {
     /* 0x0000 */ OSThread thread;
     /* 0x01B0 */ char unk01B0[0x10];
     /* 0x01C0 */ OSMesgQueue queue1;
-    /* 0x01D8 */ struct unk_D_800AA660* unk_01D8;
+    /* 0x01D8 */ struct GbEmuState* unk_01D8;
     /* 0x01DC */ s32 unk_01DC;
     /* 0x01E0 */ char unk01E0[0x2000];
     /* 0x21E0 */ OSMesg mesg;
@@ -495,12 +495,12 @@ typedef struct unk_D_800AA660 {
     /* 0x2200 */ u8* font2;
     /* 0x2204 */ UnkInputStruct8000D738 unk_2204;
     /* 0x220C */ char unk220C[4];
-} unk_D_800AA660; // size = 0x2210
+} GbEmuState; // size = 0x2210
 
 typedef struct unk_D_864027C0 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
-    /* 0x08 */ f32 unk_08;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
     /* 0x10 */ f32 unk_10;
     /* 0x14 */ f32 unk_14;
@@ -510,15 +510,15 @@ typedef struct unk_D_864027C0 {
 } unk_D_864027C0; // size = 0x20
 
 typedef struct arg1_func_81407874_014_000_010 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09;
     /* 0x0A */ u8 unk_0A;
     /* 0x0B */ u8 unk_0B;
@@ -528,17 +528,17 @@ typedef struct arg1_func_81407874_014_000_010 {
     /* 0x0F */ u8 unk_0F;
 } arg1_func_81407874_014_000_010; // size >= 0x10
 
-typedef struct func_88002628_sp38 {
+typedef struct TextObjectThreadData {
     /* 0x000 */ OSThread thread;
     /* 0x1B0 */ char unk1B0[0x10];
-} func_88002628_sp38; // size = 0x1C0
+} TextObjectThreadData; // size = 0x1C0
 
-typedef struct unk_func_88500020 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+typedef struct TiledTexture {
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ u8* unk_0C;
-} unk_func_88500020; // size = 0x10
+} TiledTexture; // size = 0x10
 
 // offset 0x898000 in the rom
 typedef struct TrainerData {
@@ -550,8 +550,8 @@ typedef struct TrainerData {
 } TrainerData; // size = 0x230
 
 // GB Emulator State
-typedef struct unk_D_8122B2C0 {
-    /* 0x00000 */ u8 unk_00[0x208];
+typedef struct GbPakDeviceState {
+    /* 0x00000 */ u8 posX[0x208];
     /* 0x00208 */ u8 unk_208[0x40];
     /* 0x00248 */ u8 unk_248[0x40];
     /* 0x00288 */ u8 unk_288[0x100];
@@ -631,7 +631,7 @@ typedef struct unk_D_8122B2C0 {
     /* 0x05DCF */ u8 unk_5DCF;
     /* 0x05DD0 */ u8 unk_5DD0;
     /* 0x05DD1 */ u8 unk05DD1[0x15287];
-  } unk_D_8122B2C0; // size = 0x1B058
+  } GbPakDeviceState; // size = 0x1B058
 
 #define GB_HEADER(emu, offset) (((u8*)(emu)->unk_53BC)[offset])
 

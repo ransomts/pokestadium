@@ -19,8 +19,8 @@ static BinArchive* portrait_archive;
 static BinArchive* background_archive ;
 static u8* gym_leader_castle_texture;
 static u8* elite_four_texture;
-static u8* D_84A0317C;
-static ModeSettings D_84A03180;
+static u8* gBgTexture3;
+static ModeSettings gSessionSettings;
 static s16 current_hover_node_index;
 
 #define CHAMPION 0xB
@@ -82,7 +82,7 @@ static CastleMapNode castle_map_nodes[] = {
 
 static s16 selected_map_node = 0;
 static s16 cursor_move_timer = 0;
-static s16 D_84A030E8 = 0xFF;
+static s16 gPanelFadeAlpha = 0xFF;
 static s16 room_description_height = 0;
 static s16 glc_to_e4_transition = 0;
 
@@ -128,7 +128,7 @@ void Glc_DrawScaledTextureRgba(s16 x_start, s16 y_start, s16 draw_width, s16 hei
     Gfx_DrawTexturedRectClipped(x_start, y_start, draw_width, height, 0, 0, 1024.0f / scale, 1024.0f / scale, 0);
 }
 
-void func_84A00630(void) {
+void Glc_NoOp(void) {
 }
 
 void Glc_DrawScaledTextureIa8(s16 x_start, s16 y_start, s16 width, s16 height, u8* texture, f32 scale) {
@@ -240,7 +240,7 @@ void Glc_DrawTrainerIntroPanels(void) {
 
 void Glc_DrawMapBorder(void) {
     static s16 D_84A030F4 = 0;
-    static s16 D_84A030F8 = 1;
+    static s16 gMapBorderScrollDirection = 1;
 
     s16 i;
     s16 var_s1 = (D_84A030F4 / 4) + 0x22;
@@ -254,13 +254,13 @@ void Glc_DrawMapBorder(void) {
 
     gSPDisplayList(gDisplayListHead++, gUiRestoreTextureDL);
 
-    D_84A030F4 += D_84A030F8;
+    D_84A030F4 += gMapBorderScrollDirection;
     if (D_84A030F4 == 0) {
-        D_84A030F8 = 1;
+        gMapBorderScrollDirection = 1;
     }
 
     if (D_84A030F4 == 0x23) {
-        D_84A030F8 = -1;
+        gMapBorderScrollDirection = -1;
     }
 }
 
@@ -360,7 +360,7 @@ void Glc_DrawGymLeaderInfoPanel(CastleMapNode* node, u8 alpha1, u8 alpha2) {
         Glc_DrawScaledTextureRgba(502, 352, 96, 48, 96, node->info_panel_texture, 1.5f);
         Glc_DrawScaledTextureRgba(502, 400, 96, 48, 96, node->info_panel_texture + 0x1000, 1.5f);
 
-        gSPDisplayList(gDisplayListHead++, D_8006F558);
+        gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
         gDPSetEnvColor(gDisplayListHead++, node->color.r, node->color.g, node->color.b, (alpha2 * 0x96) / 255);
 
         Gfx_DrawTextureIa16(358, 372, 16, 76, D_300C290, 0x10, 0);
@@ -411,7 +411,7 @@ void Glc_DrawEliteFourRoomInfoPanel(CastleMapNode* node, u8 alpha1, u8 alpha2) {
     Glc_DrawScaledTextureRgba(470, 396, 128, 26, 128, node->info_panel_texture + 0x2EE0, 1.28f);
     Glc_DrawScaledTextureRgba(470, 422, 128, 26, 128, node->info_panel_texture + 0x3E80, 1.28f);
 
-    gSPDisplayList(gDisplayListHead++, D_8006F558);
+    gSPDisplayList(gDisplayListHead++, gDL_XluBorder);
     gDPSetEnvColor(gDisplayListHead++, node->color.r, node->color.g, node->color.b, (alpha2 * 0x96) / 255);
     gDPLoadTextureBlock(gDisplayListHead++, D_300C290, G_IM_FMT_IA, G_IM_SIZ_16b, 16, 76, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -444,12 +444,12 @@ void Glc_DrawEliteFourRoomInfoPanel(CastleMapNode* node, u8 alpha1, u8 alpha2) {
 void Glc_UpdateRoomInfoPanelFade(void) {
     u8 sp1F;
 
-    if (D_84A030E8 > 0) {
-        if (D_84A030E8 < 0xFF) {
+    if (gPanelFadeAlpha > 0) {
+        if (gPanelFadeAlpha < 0xFF) {
             if (selected_map_node == ELITE_4) {
-                Glc_DrawEliteFourRoomInfoPanel(&castle_map_nodes[selected_map_node], D_84A030E8, D_84A030E8);
+                Glc_DrawEliteFourRoomInfoPanel(&castle_map_nodes[selected_map_node], gPanelFadeAlpha, gPanelFadeAlpha);
             } else {
-                Glc_DrawGymLeaderInfoPanel(&castle_map_nodes[selected_map_node], D_84A030E8, D_84A030E8);
+                Glc_DrawGymLeaderInfoPanel(&castle_map_nodes[selected_map_node], gPanelFadeAlpha, gPanelFadeAlpha);
             }
         } else if (cursor_move_timer == 0) {
             if (selected_map_node == ELITE_4) {
@@ -511,7 +511,7 @@ void Glc_Draw(void) {
             }
         }
     } else {
-        Gfx_DrawTiledRgba16Image(D_84A0317C);
+        Gfx_DrawTiledRgba16Image(gBgTexture3);
         glc_to_e4_transition = 0xFF;
     }
 
@@ -533,7 +533,7 @@ void Glc_Draw(void) {
     BgStage_AdvanceFrame();
 }
 
-s32 func_84A02074(void) {
+s32 Glc_GetInputStatus(void) {
     return 0;
 }
 
@@ -552,7 +552,7 @@ s32 Glc_SelectRoom(void) {
 
         Controller_PollInputs();
 
-        if (func_84A02074() == 0) {
+        if (Glc_GetInputStatus() == 0) {
             if (StageContext_GetFadeMode() == 0) {
                 if (cursor_move_timer == 0) {
                     current_hover_node_index = selected_map_node;
@@ -669,7 +669,7 @@ s32 Glc_ShowIntro(void) {
     Audio_StopMusic(8);
 
     for (i = 3; i >= 0; i--) {
-        D_84A030E8 = i << 6;
+        gPanelFadeAlpha = i << 6;
         Controller_PollInputs();
         Glc_Draw();
     }
@@ -725,14 +725,14 @@ s32 Glc_ShowIntro(void) {
         }
         Glc_ClearTrainerPanels();
 
-        if (D_84A03180.castleClears < 8) {
+        if (gSessionSettings.castleClears < 8) {
             Audio_PlayMusicIfChanged(0x2A);
         } else {
             Audio_PlayMusicIfChanged(0x27);
         }
 
         for (i = 1; i < 5; i++) {
-            D_84A030E8 = (i << 6) - 1;
+            gPanelFadeAlpha = (i << 6) - 1;
             Controller_PollInputs();
             Glc_Draw();
         }
@@ -767,10 +767,10 @@ s32 Glc_AdvanceRoom(void) {
     if (gSessionContext.modeSelection == 8) {
         castle_map_nodes[11].node_state = 0x3C;
     } else {
-        castle_map_nodes[D_84A03180.castleClears].node_state = 0x3C;
+        castle_map_nodes[gSessionSettings.castleClears].node_state = 0x3C;
     }
 
-    if (D_84A03180.castleClears == 8) {
+    if (gSessionSettings.castleClears == 8) {
         castle_map_nodes[9].node_state = 0x3C;
         castle_map_nodes[10].node_state = 0x3C;
     }
@@ -826,7 +826,7 @@ s16 Glc_RunMenu(s16 action) {
 s16 Glc_InitMenu(s16 arg0) {
     s16 i;
     s16 sp2C = 2;
-    s16 var_v1 = D_84A03180.castleClears;
+    s16 var_v1 = gSessionSettings.castleClears;
 
     if (gSessionContext.modeSelection < 8) {
         selected_map_node = gSessionContext.modeSelection;
@@ -881,17 +881,17 @@ s32 GymLeaderCastle_Main(s32 arg0, UNUSED s32 arg1) {
     glc_text_ui = Text_GetStringTable(0x19);
     glc_text_trainer_names = Text_GetStringTable(0x22);
     Save_EnsureBankLoaded(2);
-    Save_GetModeSettings(&D_84A03180, gSessionContext.inRound2);
+    Save_GetModeSettings(&gSessionSettings, gSessionContext.inRound2);
     trainer_data_archive = BinArchive_Open(TRAINER_DATA_ROM_START, NULL, 1, 1);
     portrait_archive = ASSET_LOAD2(battle_portraits, 1, 1);
     background_archive  = ASSET_LOAD2(backgrounds, 1, 1);
     gym_leader_castle_texture = BinArchive_GetFile(background_archive , 0xD);
     elite_four_texture = BinArchive_GetFile(background_archive , 0x10);
-    D_84A0317C = BinArchive_GetFile(background_archive , 0xE);
+    gBgTexture3 = BinArchive_GetFile(background_archive , 0xE);
     StageLoader_UpdateSegments();
 
     sp1E = Glc_InitMenu(arg0);
-    if (D_84A03180.castleClears < 8) {
+    if (gSessionSettings.castleClears < 8) {
         Audio_PlayMusicIfChanged(0x2A);
     } else {
         Audio_PlayMusicIfChanged(0x27);

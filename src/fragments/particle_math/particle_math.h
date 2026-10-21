@@ -23,11 +23,11 @@ typedef union unk_D_8140E728_01C_00C {
 } unk_D_8140E728_01C_00C;
 
 typedef struct ParticleDescriptorChild {
-    /* 0x00 */ u8 unk_00;
-    /* 0x00 */ u8 unk_01;
-    /* 0x00 */ s16 unk_02;
-    /* 0x04 */ unk_D_8140E728_01C_004_1_04 unk_04;
-    /* 0x08 */ unk_D_8140E728_01C_004_1_08 unk_08;
+    /* 0x00 */ u8 posX;
+    /* 0x00 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x00 */ s16 posY;
+    /* 0x04 */ unk_D_8140E728_01C_004_1_04 rotation;
+    /* 0x08 */ unk_D_8140E728_01C_004_1_08 RentalSlotAnimData_PosePhase;
     /* 0x0C */ unk_D_8140E728_01C_00C unk_0C;
 } ParticleDescriptorChild; // size = 0x10
 
@@ -37,13 +37,13 @@ typedef union ParticleDescriptorPayload {
 } ParticleDescriptorPayload;
 
 typedef struct ParticleDescriptor {
-    /* 0x00 */ s32 unk_00; /* unk_04: 1 = a, 3 = func */
-    /* 0x04 */ ParticleDescriptorPayload unk_04;
+    /* 0x00 */ s32 posX; /* rotation: 1 = a, 3 = func */
+    /* 0x04 */ ParticleDescriptorPayload rotation;
 } ParticleDescriptor; // size = 0x08
 
 typedef struct ParticleEmitter {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ Vec3f unk_04;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ Vec3f rotation;
     /* 0x10 */ Vec3s unk_10;
     /* 0x18 */ ParticleUpdateCallback unk_18;
     /* 0x1C */ ParticleDescriptor* unk_1C;
@@ -62,7 +62,7 @@ typedef struct ParticleEmitter {
 typedef struct Particle {
     /* 0x00 */ struct Particle* next;
     /* 0x04 */ struct Particle* prev;
-    /* 0x08 */ ParticleUpdateCallback unk_08;
+    /* 0x08 */ ParticleUpdateCallback RentalSlotAnimData_PosePhase;
     /* 0x0C */ ParticleDescriptor* unk_0C;
     /* 0x10 */ struct ActivePokemon* unk_10;
     /* 0x14 */ DisplayObject* unk_14;
@@ -119,9 +119,9 @@ typedef struct Particle {
 typedef void (*func_unk_D_8140E724)(struct Particle*);
 
 typedef struct BattleAnimEffectSlot {
-    /* 0x00 */ func_unk_D_8140E724 unk_00;
-    /* 0x04 */ ParticleDescriptor* unk_04;
-    /* 0x08 */ struct ActivePokemon* unk_08;
+    /* 0x00 */ func_unk_D_8140E724 posX;
+    /* 0x04 */ ParticleDescriptor* rotation;
+    /* 0x08 */ struct ActivePokemon* RentalSlotAnimData_PosePhase;
     /* 0x0C */ s16 unk_0C;
     /* 0x0E */ s16 unk_0E;
     /* 0x10 */ s16 unk_10;
@@ -137,13 +137,13 @@ typedef struct BattleAnimEffectSlot {
 } BattleAnimEffectSlot; // size = 0x1C
 
 typedef struct arg1_func_87903D64_014 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_D_86002F34_000_014_004* unk_04;
-    /* 0x08 */ unk_D_86002F34_000_014_004* unk_08;
-    /* 0x0C */ unk_D_86002F34_000_014_004* unk_0C;
-    /* 0x10 */ unk_D_86002F34_000_014_010* unk_10;
-    /* 0x14 */ unk_D_86002F34_000_014_010* unk_14;
-    /* 0x18 */ unk_D_86002F34_000_014_010* unk_18;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ ColorLerpEntry5* rotation;
+    /* 0x08 */ ColorLerpEntry5* RentalSlotAnimData_PosePhase;
+    /* 0x0C */ ColorLerpEntry5* unk_0C;
+    /* 0x10 */ ColorLerpEntry4* unk_10;
+    /* 0x14 */ ColorLerpEntry4* unk_14;
+    /* 0x18 */ ColorLerpEntry4* unk_18;
 } arg1_func_87903D64_014; // size = 0x1C
 
 // Possibly unk_D_86002F34_alt7, unk_D_86002F34_alt8,
@@ -171,19 +171,19 @@ typedef union arg1_func_81407874_014_000_014_000 {
 } arg1_func_81407874_014_000_014_000; // size = 0x4
 
 typedef struct arg1_func_81407874_014_000_014 {
-    /* 0x00 */ arg1_func_81407874_014_000_014_000 unk_00;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ arg1_func_81407874_014_000_014_000 posX;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
 } arg1_func_81407874_014_000_014; // size >= 0x08
 
 typedef struct arg1_func_81407874_014_000_01C {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
 } arg1_func_81407874_014_000_01C; // size >= 0x04
 
 typedef struct arg1_func_81407874_014_000 {
-    /* 0x00 */ struct arg1_func_81407874_014_000* unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ struct arg1_func_81407874_014_000* posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ char unk08[0x8];
     /* 0x10 */ arg1_func_81407874_014_000_010* unk_10;
     /* 0x14 */ arg1_func_81407874_014_000_014* unk_14;
@@ -192,11 +192,11 @@ typedef struct arg1_func_81407874_014_000 {
 } arg1_func_81407874_014_000; // size >= 0x20
 
 typedef struct arg1_func_81407874_014_004_008 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
 } arg1_func_81407874_014_004_008; // size >= 0xA
 
 typedef struct arg1_func_81407874_014_004_004 {
@@ -213,15 +213,15 @@ typedef struct arg1_func_81407874_014_004_004 {
 } arg1_func_81407874_014_004_004; // size >= 0x14
 
 typedef struct arg1_func_81407874_014_004 {
-    /* 0x00 */ arg1_func_81407874_014_000* unk_00;
-    /* 0x04 */ arg1_func_81407874_014_004_004* unk_04;
-    /* 0x08 */ arg1_func_81407874_014_004_008* unk_08;
+    /* 0x00 */ arg1_func_81407874_014_000* posX;
+    /* 0x04 */ arg1_func_81407874_014_004_004* rotation;
+    /* 0x08 */ arg1_func_81407874_014_004_008* RentalSlotAnimData_PosePhase;
     /* 0x0C */ arg1_func_81407874_014_000_014* unk_0C;
 } arg1_func_81407874_014_004; // size >= 0x4
 
 typedef struct arg1_func_81407874_014 {
-    /* 0x00 */ arg1_func_81407874_014_000* unk_00;
-    /* 0x04 */ arg1_func_81407874_014_004* unk_04;
+    /* 0x00 */ arg1_func_81407874_014_000* posX;
+    /* 0x04 */ arg1_func_81407874_014_004* rotation;
 } arg1_func_81407874_014; // size >= 0x8
 
 typedef struct arg1_func_81407874 {
@@ -230,7 +230,7 @@ typedef struct arg1_func_81407874 {
 } arg1_func_81407874; // size >= 0x18
 
 typedef struct ParticleCameraState {
-    /* 0x00 */ MtxF unk_00;
+    /* 0x00 */ MtxF posX;
     /* 0x40 */ Vec3f unk_40;
     /* 0x4C */ Vec3f unk_4C;
     /* 0x58 */ Vec3f unk_58;
@@ -243,7 +243,7 @@ typedef struct ParticleCameraState {
 } ParticleCameraState; // size = 0x7C
 
 typedef struct ParticleRenderContext {
-    /* 0x00 */ Vec3f unk_00;
+    /* 0x00 */ Vec3f posX;
     /* 0x0C */ CameraNode* unk_0C;
     /* 0x10 */ ParticleCameraState unk_10;
 } ParticleRenderContext; // size = 0x8C
@@ -255,43 +255,43 @@ typedef struct ParticleMatrixPool {
     /* 0x5BC0 */ char unk5BC0[0x20];
 } ParticleMatrixPool; // size = 0x5BE0
 
-extern Gfx D_8140DAE0[];
-extern Gfx D_8140DB30[];
+extern Gfx gDL_End3D[];
+extern Gfx gDL_Begin3D[];
 extern Gfx gDL_ItemIcon[];
-extern Gfx D_8140DC00[];
-extern Gfx D_8140DC58[];
-extern Gfx D_8140DC78[];
-extern Gfx D_8140DC98[];
-extern Gfx D_8140DCB8[];
-extern Gfx D_8140DCD8[];
-extern Gfx D_8140DCF8[];
-extern Gfx D_8140DD18[];
-extern Gfx D_8140DD38[];
-extern Gfx D_8140DD58[];
+extern Gfx gDL_UI_DecalBilerpTexEdge[];
+extern Gfx gDL_UI_ModulatePoint[];
+extern Gfx gDL_UI_ModulateBilerpXlu[];
+extern Gfx gDL_UI_ModulateBilerpCld[];
+extern Gfx gDL_UI_ModulatePointAA[];
+extern Gfx gDL_BaseUI[];
+extern Gfx gDL_UI_ModulatePointZB[];
+extern Gfx gDL_UI_ModulateBilerpZB[];
+extern Gfx gDL_UI_ModulateBilerpZbCld[];
+extern Gfx gDL_OverlayUI[];
 extern Gfx gDL_BeginUIOverlay[];
 extern Gfx gDL_EndColorFill[];
 extern Gfx gDL_BeginColorFill[];
-extern Vtx D_8140DE78[];
-extern Vtx D_8140DEF8[];
+extern Vtx gVtx_UI_SmallQuad[];
+extern Vtx gVtx_UI_LargeQuad[];
 extern Vtx gVtx_UI_TriangleSmall[];
 extern Vtx gVtx_UI_TriangleLarge[];
-extern Vtx D_8140DFD8[];
-extern Vtx D_8140E018[];
-extern Vtx D_8140E058[];
+extern Vtx gVtx_UI_MediumQuad[];
+extern Vtx gMatrix_UITransform[];
+extern Vtx gVtx_UI_RectHorizontal[];
 extern Vtx gVtx_UI_RectVertical[];
-extern Vtx D_8140E0D8[];
-extern Vtx D_8140E108[];
-extern Vtx D_8140E148[];
-extern Vtx D_8140E178[];
-extern Vtx D_8140E1B8[];
-extern Vtx D_8140E1F8[];
+extern Vtx gVtx_UI_TriangleDown[];
+extern Vtx gVtx_UI_ColorQuad[];
+extern Vtx gVtx_UI_PanelTriangle[];
+extern Vtx gVtx_UI_RectTall[];
+extern Vtx gVtx_UI_RectTallAnchoredTop[];
+extern Vtx gVtx_UI_Square[];
 extern Vtx gVtx_UI_ComplexQuad[];
-extern Vtx D_8140E2B8[];
-extern Vtx D_8140E378[];
+extern Vtx gVtx_UI_GridQuad[];
+extern Vtx gGroundQuadVtx[];
 extern Vtx gFullscreenQuadVtx[];
 extern Gfx gDL_PanelBackground[];
-extern Gfx D_8140E430[];
-extern Gfx D_8140E448[];
+extern Gfx gDL_PanelQuad[];
+extern Gfx gDL_UITransformQuad[];
 extern ParticleDescriptor gDefaultParticleDescriptor;
 
 extern u8 gParticlePaletteSetA[];
@@ -513,7 +513,7 @@ Gfx* ParticleGfx_LoadDescriptorTextureAndTile(Gfx* arg0, arg1_func_81407874_014_
 Gfx* ParticleGfx_LoadPrimaryDescriptorTexture(Gfx* arg0, arg1_func_81407874_014* arg1);
 Gfx* ParticleGfx_LoadSecondaryDescriptorTexture(Gfx* arg0, arg1_func_81407874_014* arg1);
 void ParticleGfx_SetCombineModeFromDescriptor(Gfx* arg0, arg1_func_81407874_014_000_010* arg1);
-Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1);
+Gfx* Gfx_ApplyTextureState(Gfx* arg0, arg1_func_81407874_014* arg1);
 void ParticleGfx_GraphNodeBuildDescriptorMaterialList(s32 arg0, arg1_func_87903D64* arg1);
 
 
@@ -579,23 +579,23 @@ void Particle_Field38_AddXZFromField94Y_08ED0(Particle* arg0, f32 arg1);
 void Particle_Field38_AddXZFromField94YOffset180_08F38(Particle* arg0, f32 arg1);
 void Particle_Field38_AddXZFromField94YOffset90_08FAC(Particle* arg0, f32 arg1);
 void Particle_Field38_AddXZFromField94YOffsetMinus90_0901C(Particle* arg0, f32 arg1);
-void Particle_AddVelocityFromDirVector(Particle* arg0, f32 arg1);
+void Particle_AddPositionFromRotationY(Particle* arg0, f32 arg1);
 void Particle_AddPositionFromRotationTemplate1(Particle* arg0, f32 arg1);
 void Particle_AddPositionFromRotationTemplate2(Particle* arg0, f32 arg1);
 void Particle_AddPositionRotatedVectorByYaw(Particle* arg0, Vec3f arg1);
-void Particle_SetRandomVelocityX(Particle* arg0, s32 arg1);
-void func_81409288(Particle* arg0, s32 arg1);
-void Particle_SetRandomVelocityZ(Particle* arg0, s32 arg1);
-void func_81409308(Particle* arg0, s32 arg1, s32 arg2);
-void Particle_SetRandomVelocityYOffset(Particle* arg0, s32 arg1, s32 arg2);
-void func_814093B0(Particle* arg0, s32 arg1, s32 arg2);
-void Particle_SetRandomVelocityXSymmetric(Particle* arg0, s32 arg1, s32 arg2);
-void func_8140948C(Particle* arg0, s32 arg1, s32 arg2);
-void Particle_SetRandomVelocityZSymmetric(Particle* arg0, s32 arg1, s32 arg2);
-void Particle_SetRandomVelocityXYZ(Particle* arg0, s32 arg1, s32 arg2, s32 arg3);
-void func_81409634(Particle* arg0, s32 arg1, s32 arg2, s32 arg3);
-void Particle_SetRandomRotatedVelocityXY(Particle* arg0, s32 arg1, s32 arg2);
-void func_814097D8(Particle* arg0, s32 arg1, s32 arg2, s32 arg3);
+void Particle_SetRandomPositionX(Particle* arg0, s32 arg1);
+void Particle_SetRandomPositionY(Particle* arg0, s32 arg1);
+void Particle_SetRandomPositionZ(Particle* arg0, s32 arg1);
+void Particle_SetRandomPositionXOffset(Particle* arg0, s32 arg1, s32 arg2);
+void Particle_SetRandomPositionYOffset(Particle* arg0, s32 arg1, s32 arg2);
+void Particle_SetRandomPositionZOffset(Particle* arg0, s32 arg1, s32 arg2);
+void Particle_SetRandomPositionXSymmetric(Particle* arg0, s32 arg1, s32 arg2);
+void Particle_SetRandomPositionYSymmetric(Particle* arg0, s32 arg1, s32 arg2);
+void Particle_SetRandomPositionZSymmetric(Particle* arg0, s32 arg1, s32 arg2);
+void Particle_SetRandomPositionXYZ(Particle* arg0, s32 arg1, s32 arg2, s32 arg3);
+void Particle_SetRandomModPositionXYZ(Particle* arg0, s32 arg1, s32 arg2, s32 arg3);
+void Particle_SetRandomRotatedPositionXY(Particle* arg0, s32 arg1, s32 arg2);
+void Particle_AddRandomPositionXYZ(Particle* arg0, s32 arg1, s32 arg2, s32 arg3);
 void Particle_SetOrigin(Particle* arg0, f32 arg1, f32 arg2, f32 arg3);
 void Particle_SetVelocity(Particle* arg0, f32 arg1, f32 arg2, f32 arg3);
 void Particle_Field50_SetXScaled_098E8(Particle* arg0, f32 arg1);

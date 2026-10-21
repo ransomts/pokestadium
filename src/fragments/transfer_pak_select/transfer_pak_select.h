@@ -3,7 +3,7 @@
 
 #include "global.h"
 
-typedef struct unk_D_81304008 {
+typedef struct PortGraphNode {
     /* 0x000 */ s16 unk_000;
     /* 0x002 */ s16 unk_002;
     /* 0x004 */ s16 unk_004;
@@ -19,19 +19,19 @@ typedef struct unk_D_81304008 {
     /* 0x020 */ f32 unk_020;
     /* 0x020 */ f32 unk_024;
     /* 0x020 */ DisplayObject unk_028;
-} unk_D_81304008; // size = 0x190
+} PortGraphNode; // size = 0x190
 
-typedef struct unk_D_81303FA8 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+typedef struct PortStatus {
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ char unk05[0x1];
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ char unk_08[1];
+    /* 0x08 */ char RentalSlotAnimData_PosePhase[1];
     /* 0x09 */ char unk09[0xD];
-} unk_D_81303FA8; // size = 0x16
+} PortStatus; // size = 0x16
 
 s32 TransferPak_RenderPortNodeCallback(s32 arg0, GraphNode* arg1);
 s32 TransferPak_GetPresentationMode(void);
@@ -55,7 +55,7 @@ s32 TransferPak_PortSelectLoop(s32 arg0);
 void TransferPak_InitPortModels(void);
 void TransferPak_InitScene(void);
 s32 TransferPak_SelectMain(s32 arg0, s32 arg1);
-void func_8130306C(u8* arg0);
-void func_8130337C(void);
+void Gfx_DrawBackgroundGrid(u8* arg0);
+void Gfx_DrawMenuBackground(void);
 
 #endif // _FRAGMENT33_H_

@@ -255,7 +255,7 @@ void Gfx_DrawTiledImageMesh(s16 arg0, s16 arg1, s16 arg2, f32 arg3, Vtx* arg4, u
     }
 }
 
-Vtx* func_8001E490(void) {
+Vtx* AllocateTileMapVertices(void) {
     Vtx* sp54;
     Vtx* var_s0;
     s16 i;
@@ -308,7 +308,7 @@ u8 Font_MapGlyphCode(u16 arg0) {
     if ((arg0 >= 0x20) && (arg0 < 0x80)) {
         var_v1 = ((u8*)gUiRestoreTextureDL)[arg0];
     } else if ((arg0 >= 0xA0) && (arg0 < 0x100)) {
-        var_v1 = ((u8*)D_8006F608)[sizeof(Gfx) + arg0];
+        var_v1 = ((u8*)gFontCharTableExtended)[sizeof(Gfx) + arg0];
     }
 
     return var_v1;
@@ -317,7 +317,7 @@ u8 Font_MapGlyphCode(u16 arg0) {
 u8 Font_GetGlyphAdvance(FontSet* arg0, u16 arg1) {
     s32 idx = Font_MapGlyphCode(arg1);
 
-    return arg0->unk_04[idx];
+    return arg0->rotation[idx];
 }
 
 void Font_ResetContext(UNUSED s32 arg0, UNUSED s32 arg1) {
@@ -326,8 +326,8 @@ void Font_ResetContext(UNUSED s32 arg0, UNUSED s32 arg1) {
 
 void Font_FreeSetAsset(UNUSED s32 arg0, s32 arg1) {
     if (font_context != NULL) {
-        font_context->unk_00[arg1].unk_04 = 0;
-        font_context->unk_00[arg1].unk_08 = 0;
+        font_context->posX[arg1].rotation = 0;
+        font_context->posX[arg1].RentalSlotAnimData_PosePhase = 0;
     }
 }
 
@@ -356,13 +356,13 @@ void Font_LoadSet(s32 arg0, s32 arg1, s32 arg2) {
     ret_func_8000484C* temp_v0_2;
 
     sp1C = Font_GetSetIndexFromMask(arg0);
-    if (font_context->unk_00[sp1C].unk_04 == 0) {
+    if (font_context->posX[sp1C].rotation == 0) {
         temp_v0_2 = BinArchive_GetFile(font_context->unk_48, sp1C);
         font_context->unk_50 = sp1C;
-        font_context->unk_00[sp1C].unk_00 = arg1;
-        font_context->unk_00[sp1C].unk_02 = arg2;
-        font_context->unk_00[sp1C].unk_04 = temp_v0_2;
-        font_context->unk_00[sp1C].unk_08 = &temp_v0_2->unk_90;
+        font_context->posX[sp1C].posX = arg1;
+        font_context->posX[sp1C].posY = arg2;
+        font_context->posX[sp1C].rotation = temp_v0_2;
+        font_context->posX[sp1C].RentalSlotAnimData_PosePhase = &temp_v0_2->unk_90;
         main_pool_set_func(temp_v0_2, sp1C, &Font_FreeSetAsset);
     }
 }
@@ -411,38 +411,38 @@ void Font_LoadSizes(s32 arg0) {
 void Font_UnloadSizes(s32 arg0) {
     if (font_context != NULL) {
         if (arg0 & 1) {
-            if (font_context->unk_00[0].unk_04 != NULL) {
-                main_pool_try_free(font_context->unk_00[0].unk_04);
+            if (font_context->posX[0].rotation != NULL) {
+                main_pool_try_free(font_context->posX[0].rotation);
             }
         }
 
         if (arg0 & 2) {
-            if (font_context->unk_00[1].unk_04 != NULL) {
-                main_pool_try_free(font_context->unk_00[1].unk_04);
+            if (font_context->posX[1].rotation != NULL) {
+                main_pool_try_free(font_context->posX[1].rotation);
             }
         }
 
         if (arg0 & 4) {
-            if (font_context->unk_00[2].unk_04 != NULL) {
-                main_pool_try_free(font_context->unk_00[2].unk_04);
+            if (font_context->posX[2].rotation != NULL) {
+                main_pool_try_free(font_context->posX[2].rotation);
             }
         }
 
         if (arg0 & 8) {
-            if (font_context->unk_00[3].unk_04 != NULL) {
-                main_pool_try_free(font_context->unk_00[3].unk_04);
+            if (font_context->posX[3].rotation != NULL) {
+                main_pool_try_free(font_context->posX[3].rotation);
             }
         }
 
         if (arg0 & 0x10) {
-            if (font_context->unk_00[4].unk_04 != NULL) {
-                main_pool_try_free(font_context->unk_00[4].unk_04);
+            if (font_context->posX[4].rotation != NULL) {
+                main_pool_try_free(font_context->posX[4].rotation);
             }
         }
 
         if (arg0 & 0x20) {
-            if (font_context->unk_00[5].unk_04 != NULL) {
-                main_pool_try_free(font_context->unk_00[5].unk_04);
+            if (font_context->posX[5].rotation != NULL) {
+                main_pool_try_free(font_context->posX[5].rotation);
             }
         }
     }
@@ -460,7 +460,7 @@ s32 Font_GetSetInfo(s32 arg0, FontSet* arg1) {
     s32 var_v1 = 0;
 
     if ((arg1 != NULL) && (font_context != NULL)) {
-        *arg1 = font_context->unk_00[Font_GetSetIndexFromMask(arg0)];
+        *arg1 = font_context->posX[Font_GetSetIndexFromMask(arg0)];
         var_v1 = 1;
     }
 
@@ -472,27 +472,27 @@ s16 Font_DrawChar(s16 arg0, s16 arg1, s16 arg2) {
     s32 sp88;
     s16 sp86;
 
-    temp_s0 = &font_context->unk_00[font_context->unk_50];
-    sp88 = Font_MapGlyphCode(arg2) * temp_s0->unk_00 * temp_s0->unk_02;
+    temp_s0 = &font_context->posX[font_context->unk_50];
+    sp88 = Font_MapGlyphCode(arg2) * temp_s0->posX * temp_s0->posY;
     sp86 = Font_GetGlyphAdvance(temp_s0, arg2);
 
     if ((font_context->line_break_flag & 1) && !(font_context->line_break_flag & 2)) {
         font_context->line_break_flag |= 2;
 
-        gDPLoadMultiBlock(gDisplayListHead++, (u32)temp_s0->unk_08 + (temp_s0->unk_00 * 0x90 * temp_s0->unk_02), 0x0100,
-                          1, G_IM_FMT_I, G_IM_SIZ_8b, temp_s0->unk_00, temp_s0->unk_02, 0, G_TX_NOMIRROR | G_TX_CLAMP,
+        gDPLoadMultiBlock(gDisplayListHead++, (u32)temp_s0->RentalSlotAnimData_PosePhase + (temp_s0->posX * 0x90 * temp_s0->posY), 0x0100,
+                          1, G_IM_FMT_I, G_IM_SIZ_8b, temp_s0->posX, temp_s0->posY, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                           G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
 
-    if ((u32)temp_s0->unk_08 + sp88 != font_context->unk_4C) {
-        font_context->unk_4C = (u32)temp_s0->unk_08 + sp88;
+    if ((u32)temp_s0->RentalSlotAnimData_PosePhase + sp88 != font_context->unk_4C) {
+        font_context->unk_4C = (u32)temp_s0->RentalSlotAnimData_PosePhase + sp88;
 
-        gDPLoadTextureBlock(gDisplayListHead++, (u32)temp_s0->unk_08 + sp88, G_IM_FMT_IA, G_IM_SIZ_8b, temp_s0->unk_00,
-                            temp_s0->unk_02, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
+        gDPLoadTextureBlock(gDisplayListHead++, (u32)temp_s0->RentalSlotAnimData_PosePhase + sp88, G_IM_FMT_IA, G_IM_SIZ_8b, temp_s0->posX,
+                            temp_s0->posY, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
 
-    Gfx_DrawTexturedRectClipped(arg0, arg1, sp86, temp_s0->unk_02, 0, 0, 0x400, 0x400, 0);
+    Gfx_DrawTexturedRectClipped(arg0, arg1, sp86, temp_s0->posY, 0, 0, 0x400, 0x400, 0);
 
     arg0 += sp86 + font_context->unk_51;
     if (font_context->unk_50 >= 2) {
@@ -577,23 +577,23 @@ void Font_BeginTranslucentTextRendering(void) {
     font_context->line_height = 0x28;
     font_context->unk_4C = 0;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F710);
+    gSPDisplayList(gDisplayListHead++, gDL_TextResetState);
 }
 
 void Font_EndTexturedTextRendering(void) {
-    gSPDisplayList(gDisplayListHead++, D_8006F750);
+    gSPDisplayList(gDisplayListHead++, gDL_TextSetup);
 }
 
 void Font_EnableTwoCycleTexturing(void) {
     font_context->line_break_flag |= 1;
     font_context->line_break_flag &= ~2;
 
-    gSPDisplayList(gDisplayListHead++, D_8006F768);
+    gSPDisplayList(gDisplayListHead++, gDL_TextBegin);
 }
 
 void Font_DisableTwoCycleTexturing(void) {
     font_context->line_break_flag &= ~3;
-    gSPDisplayList(gDisplayListHead++, D_8006F798);
+    gSPDisplayList(gDisplayListHead++, gDL_TextEnd);
 }
 
 void Gfx_FillRectWithDisplayState(s32 x1, s32 y1, s32 width, s32 length, s32 r, s32 g, s32 b, s32 alpha) {
@@ -624,8 +624,8 @@ s32 Font_MeasureTextExtent(s32 x, s32 y, const char* fmt, ...) {
         var_a0 = Font_GetSetIndexFromMask(x);
     }
 
-    temp_s4 = &font_context->unk_00[var_a0];
-    if (temp_s4->unk_04 != NULL) {
+    temp_s4 = &font_context->posX[var_a0];
+    if (temp_s4->rotation != NULL) {
         temp_s0 = 0;
         temp_v0 = _Printf(String_CopyBytesAndAdvance, sp5C, fmt, args);
         if (temp_v0 > 0) {
@@ -662,5 +662,5 @@ s32 Font_MeasureTextExtent(s32 x, s32 y, const char* fmt, ...) {
 }
 
 u8 Font_GetCharWidth(s32 arg0, s32 arg1) {
-    return Font_GetGlyphAdvance(&font_context->unk_00[font_context->unk_50], arg1 & 0xFF);
+    return Font_GetGlyphAdvance(&font_context->posX[font_context->unk_50], arg1 & 0xFF);
 }

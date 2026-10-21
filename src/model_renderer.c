@@ -12,24 +12,24 @@
 #include "hal_libc.h"
 #include "src/geo_render.h"
 
-struct DisplayNodeHeader D_800AC840;
-struct DisplayNodeHeader D_800AC858;
+struct DisplayNodeHeader gGraphRoot0;
+struct DisplayNodeHeader gGraphRoot1;
 
 void ModelRenderer_InitDisplayRoots(void) {
-    GeoNode_CreateContainer(0, &D_800AC840);
-    GeoNode_CreateContainer(0, &D_800AC858);
+    GeoNode_CreateContainer(0, &gGraphRoot0);
+    GeoNode_CreateContainer(0, &gGraphRoot1);
 }
 
 void ModelRenderer_AttachDisplayObject(DisplayObject* arg0) {
-    GeoNode_CreateModelPart(NULL, arg0, 0, &D_8006F050, &D_8006F05C, &D_8006F064);
-    GraphNode_AppendChild(&D_800AC840, &arg0->node);
+    GeoNode_CreateModelPart(NULL, arg0, 0, &gRootNodePosition, &gZeroVec3s, &gRootNodeScale);
+    GraphNode_AppendChild(&gGraphRoot0, &arg0->node);
     arg0->effectSlot = 0;
     arg0->node.flags &= ~1;
 }
 
 void ModelRenderer_AttachSecondaryDisplayObject(DisplayObject* arg0) {
-    GeoNode_CreateModelPart(NULL, arg0, 0, &D_8006F050, &D_8006F05C, &D_8006F064);
-    GraphNode_AppendChild(&D_800AC858, &arg0->node);
+    GeoNode_CreateModelPart(NULL, arg0, 0, &gRootNodePosition, &gZeroVec3s, &gRootNodeScale);
+    GraphNode_AppendChild(&gGraphRoot1, &arg0->node);
     arg0->node.flags &= ~1;
 }
 
@@ -116,7 +116,7 @@ ModelAnimationBank* ModelAnim_GetAnimationRecord(DisplayObject* arg0, s32 arg1) 
     ModelAnimationBank* var_v1 = NULL;
 
     if (arg0 == NULL) {
-        arg0 = D_8006F09C;
+        arg0 = gDefaultGraphRoot;
     }
 
     if (arg0 != NULL) {
@@ -137,10 +137,10 @@ arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, BattleMon
     u8 var_a0;
     s8* var_v1;
 
-    sp30 = &D_8006FF00[arg1->unk_00.unk_00 - 1];
+    sp30 = &gSpeciesDisplayTable[arg1->posX.posX - 1];
     sp34.raw = 0;
 
-    Text_CopySpeciesName(sp38, arg1->unk_00.unk_00);
+    Text_CopySpeciesName(sp38, arg1->posX.posX);
 
     if (HAL_Strcmp(arg1->unk_30, sp38) != 0) {
         var_a0 = ((arg1->unk_0E >> 8) & 0xFF) + (arg1->unk_0E & 0xFF);
@@ -159,7 +159,7 @@ arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, BattleMon
             var_a0 += 0;
         }
 
-        sp34.unk_00 = ((((sp30->unk_12 - sp30->unk_10) << 6) * var_a0) / 255) + (sp30->unk_10 << 6);
+        sp34.posX = ((((sp30->unk_12 - sp30->unk_10) << 6) * var_a0) / 255) + (sp30->unk_10 << 6);
     }
 
     *arg0 = sp34;
@@ -169,10 +169,10 @@ arg1_func_80010CA8* Model_ComputeSizeVariant(arg1_func_80010CA8* arg0, BattleMon
 void Model_ComputeSizeVariantFromRecord(arg1_func_80010CA8* arg0, unk_func_8001C014* arg1, u16 arg2) {
     BattleMon stack;
 
-    stack.unk_00.unk_00 = arg2;
-    stack.unk_0E = arg1->unk_02;
+    stack.posX.posX = arg2;
+    stack.unk_0E = arg1->posY;
 
-    _bcopy(arg1->unk_04, stack.unk_30, 0x10);
+    _bcopy(arg1->rotation, stack.unk_30, 0x10);
     _bcopy(arg1->unk_14, stack.unk_3B, 0x10);
     Model_ComputeSizeVariant(arg0, &stack);
 }
@@ -185,10 +185,10 @@ void Trainer_RequestPokeIcon(BattleSessionTeams* arg0) {
     sp2A = arg0->displayModel;
     sp2C.raw = 0;
     if (!(arg0->uniqueStatusFlags & 0x40) && (arg0->uniqueStatusFlags & 0x80)) {
-        temp_a1 = arg0->unk_04;
-        if ((temp_a1 != NULL) && (sp2A == arg0->unk_04->unk_000)) {
-            Model_ComputeSizeVariant(&sp2C, (BattleMon*)arg0->unk_04);
-            if ((sp2A == 0x19) && (arg0->unk_04->pokemonPicked[0].unk_30[6] & 0x80)) {
+        temp_a1 = arg0->rotation;
+        if ((temp_a1 != NULL) && (sp2A == arg0->rotation->unk_000)) {
+            Model_ComputeSizeVariant(&sp2C, (BattleMon*)arg0->rotation);
+            if ((sp2A == 0x19) && (arg0->rotation->pokemonPicked[0].unk_30[6] & 0x80)) {
                 sp2A = 0x99;
             }
         }

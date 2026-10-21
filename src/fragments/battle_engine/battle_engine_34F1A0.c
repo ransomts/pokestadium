@@ -23,7 +23,7 @@ static Gfx D_84389458[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_843894D8[] = {
+static Gfx gTrail40VariantDL_Unlit[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -81,14 +81,14 @@ void Trail40Variant_InitPool(s16 arg0) {
         for (j = 0; j < 16; j++) {
             tmp1 = i * 0x20;
 
-            var_v0->unk_00 = (i * 9.0f) - 72.0f;
+            var_v0->posX = (i * 9.0f) - 72.0f;
 
             var_v0->unk_1C = 0.0f;
-            var_v0->unk_04 = (__sinf(var_v0->unk_1C) * 0.5) + 1.0;
+            var_v0->rotation = (__sinf(var_v0->unk_1C) * 0.5) + 1.0;
 
             tmp2 = j * 0x20;
 
-            var_v0->unk_08 = (j * 7.0f) - 56.0f;
+            var_v0->RentalSlotAnimData_PosePhase = (j * 7.0f) - 56.0f;
 
             var_v0->unk_18 = tmp1 * 0x10;
             var_v0->unk_1A = tmp2 * 0x10;
@@ -108,7 +108,7 @@ void Trail40Variant_InitPool(s16 arg0) {
     var_v0 = &D_8439E680.unk_0014[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            var_v0->unk_04 = (__sinf(var_v0->unk_1C) * 0.5) + 1.0;
+            var_v0->rotation = (__sinf(var_v0->unk_1C) * 0.5) + 1.0;
             var_v0++;
         }
     }
@@ -133,22 +133,22 @@ void Trail40Variant_UpdateNodes(s32 arg0, s32 arg1) {
     UNUSED s32 pad;
     s16 sp46;
 
-    sp6C = D_8439E680.unk_0014[arg0][arg1].unk_00;
-    sp68 = D_8439E680.unk_0014[arg0][arg1].unk_04;
-    sp64 = D_8439E680.unk_0014[arg0][arg1].unk_08;
+    sp6C = D_8439E680.unk_0014[arg0][arg1].posX;
+    sp68 = D_8439E680.unk_0014[arg0][arg1].rotation;
+    sp64 = D_8439E680.unk_0014[arg0][arg1].RentalSlotAnimData_PosePhase;
     sp84 = 0.0f;
     sp80 = 0.0f;
     sp7C = 0.0f;
     sp46 = 0;
 
     if ((arg0 > 0) && (arg1 >= 1)) {
-        sp60 = D_8439E680.unk_0014[arg0 - 1][arg1].unk_00 - sp6C;
-        sp5C = D_8439E680.unk_0014[arg0 - 1][arg1].unk_04 - sp68;
-        sp58 = D_8439E680.unk_0014[arg0 - 1][arg1].unk_08 - sp64;
+        sp60 = D_8439E680.unk_0014[arg0 - 1][arg1].posX - sp6C;
+        sp5C = D_8439E680.unk_0014[arg0 - 1][arg1].rotation - sp68;
+        sp58 = D_8439E680.unk_0014[arg0 - 1][arg1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
-        sp54 = D_8439E680.unk_0014[arg0][arg1 - 1].unk_00 - sp6C;
-        sp50 = D_8439E680.unk_0014[arg0][arg1 - 1].unk_04 - sp68;
-        sp4C = D_8439E680.unk_0014[arg0][arg1 - 1].unk_08 - sp64;
+        sp54 = D_8439E680.unk_0014[arg0][arg1 - 1].posX - sp6C;
+        sp50 = D_8439E680.unk_0014[arg0][arg1 - 1].rotation - sp68;
+        sp4C = D_8439E680.unk_0014[arg0][arg1 - 1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
         Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
         Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
@@ -159,13 +159,13 @@ void Trail40Variant_UpdateNodes(s32 arg0, s32 arg1) {
     }
 
     if ((0 < arg0) && (arg1 < 15)) {
-        sp60 = D_8439E680.unk_0014[arg0 - 1][arg1].unk_00 - sp6C;
-        sp5C = D_8439E680.unk_0014[arg0 - 1][arg1].unk_04 - sp68;
-        sp58 = D_8439E680.unk_0014[arg0 - 1][arg1].unk_08 - sp64;
+        sp60 = D_8439E680.unk_0014[arg0 - 1][arg1].posX - sp6C;
+        sp5C = D_8439E680.unk_0014[arg0 - 1][arg1].rotation - sp68;
+        sp58 = D_8439E680.unk_0014[arg0 - 1][arg1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
-        sp54 = D_8439E680.unk_0014[arg0][arg1 + 1].unk_00 - sp6C;
-        sp50 = D_8439E680.unk_0014[arg0][arg1 + 1].unk_04 - sp68;
-        sp4C = D_8439E680.unk_0014[arg0][arg1 + 1].unk_08 - sp64;
+        sp54 = D_8439E680.unk_0014[arg0][arg1 + 1].posX - sp6C;
+        sp50 = D_8439E680.unk_0014[arg0][arg1 + 1].rotation - sp68;
+        sp4C = D_8439E680.unk_0014[arg0][arg1 + 1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
         Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
         Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
@@ -176,13 +176,13 @@ void Trail40Variant_UpdateNodes(s32 arg0, s32 arg1) {
     }
 
     if ((arg0 < 15) && (arg1 >= 1)) {
-        sp60 = D_8439E680.unk_0014[arg0 + 1][arg1].unk_00 - sp6C;
-        sp5C = D_8439E680.unk_0014[arg0 + 1][arg1].unk_04 - sp68;
-        sp58 = D_8439E680.unk_0014[arg0 + 1][arg1].unk_08 - sp64;
+        sp60 = D_8439E680.unk_0014[arg0 + 1][arg1].posX - sp6C;
+        sp5C = D_8439E680.unk_0014[arg0 + 1][arg1].rotation - sp68;
+        sp58 = D_8439E680.unk_0014[arg0 + 1][arg1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
-        sp54 = D_8439E680.unk_0014[arg0][arg1 - 1].unk_00 - sp6C;
-        sp50 = D_8439E680.unk_0014[arg0][arg1 - 1].unk_04 - sp68;
-        sp4C = D_8439E680.unk_0014[arg0][arg1 - 1].unk_08 - sp64;
+        sp54 = D_8439E680.unk_0014[arg0][arg1 - 1].posX - sp6C;
+        sp50 = D_8439E680.unk_0014[arg0][arg1 - 1].rotation - sp68;
+        sp4C = D_8439E680.unk_0014[arg0][arg1 - 1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
         Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
         Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
@@ -193,13 +193,13 @@ void Trail40Variant_UpdateNodes(s32 arg0, s32 arg1) {
     }
 
     if ((arg0 < 15) && (arg1 < 15)) {
-        sp60 = D_8439E680.unk_0014[arg0 + 1][arg1].unk_00 - sp6C;
-        sp5C = D_8439E680.unk_0014[arg0 + 1][arg1].unk_04 - sp68;
-        sp58 = D_8439E680.unk_0014[arg0 + 1][arg1].unk_08 - sp64;
+        sp60 = D_8439E680.unk_0014[arg0 + 1][arg1].posX - sp6C;
+        sp5C = D_8439E680.unk_0014[arg0 + 1][arg1].rotation - sp68;
+        sp58 = D_8439E680.unk_0014[arg0 + 1][arg1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp60, &sp5C, &sp58);
-        sp54 = D_8439E680.unk_0014[arg0][arg1 + 1].unk_00 - sp6C;
-        sp50 = D_8439E680.unk_0014[arg0][arg1 + 1].unk_04 - sp68;
-        sp4C = D_8439E680.unk_0014[arg0][arg1 + 1].unk_08 - sp64;
+        sp54 = D_8439E680.unk_0014[arg0][arg1 + 1].posX - sp6C;
+        sp50 = D_8439E680.unk_0014[arg0][arg1 + 1].rotation - sp68;
+        sp4C = D_8439E680.unk_0014[arg0][arg1 + 1].RentalSlotAnimData_PosePhase - sp64;
         Vec3f_NormalizeComponents(&sp54, &sp50, &sp4C);
         Vec3f_CrossProductComponents(sp60, sp5C, sp58, sp54, sp50, sp4C, &sp78, &sp74, &sp70);
         Vec3f_NormalizeComponents(&sp78, &sp74, &sp70);
@@ -226,9 +226,9 @@ void Trail40Variant_WriteVertex(Trail40VariantNode* arg0, Vtx* arg1) {
     f32 g;
     f32 b;
 
-    arg1->v.ob[0] = arg0->unk_00;
-    arg1->v.ob[1] = arg0->unk_04;
-    arg1->v.ob[2] = arg0->unk_08;
+    arg1->v.ob[0] = arg0->posX;
+    arg1->v.ob[1] = arg0->rotation;
+    arg1->v.ob[2] = arg0->RentalSlotAnimData_PosePhase;
 
     arg1->v.tc[0] = arg0->unk_18;
     arg1->v.tc[1] = arg0->unk_1A;
@@ -271,7 +271,7 @@ s32 Trail40Variant_AdvanceTimer(void) {
     var_s1 = &D_8439E680.unk_0014[0][0];
     for (i = 0; i < 16; i++) {
         for (j = 0; j < 16; j++) {
-            var_s1->unk_04 = (__sinf(var_s1->unk_1C) * 0.5) + 1.0;
+            var_s1->rotation = (__sinf(var_s1->unk_1C) * 0.5) + 1.0;
             var_s1->unk_1C += 0.1;
 
             var_s1++;

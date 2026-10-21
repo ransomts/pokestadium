@@ -1,15 +1,15 @@
 #include "battle_engine.h"
 #include "src/gfx_buffer.h"
 
-static FourStreamTrail D_843AA880[4];
+static FourStreamTrail gFourStreamTrailEmitters[4];
 
-static Vtx D_843898B0[] = {
+static Vtx gFourStreamTrailQuadVtx[] = {
     VTX(-30, 0, -20, 2048, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, -20, 0, 0, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(-30, 0, 20, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
     VTX(10, 0, 20, 0, 2048, 0xFF, 0xFF, 0xFF, 0xC8),
 };
-static Gfx D_843898F0[] = {
+static Gfx gFourStreamTrailGroundQuadDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -21,11 +21,11 @@ static Gfx D_843898F0[] = {
     gsDPSetCombineMode(G_CC_BLENDIA, G_CC_BLENDIA),
     gsDPSetPrimColor(0, 0, 255, 255, 255, 255),
     gsDPSetEnvColor(255, 255, 255, 255),
-    gsSPVertex(D_843898B0, 4, 0),
+    gsSPVertex(gFourStreamTrailQuadVtx, 4, 0),
     gsSP2Triangles(0, 2, 1, 0, 2, 3, 1, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84389958[] = {
+static Gfx gFourStreamTrailDL[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPClearGeometryMode(G_ZBUFFER | G_SHADE | G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN |
@@ -47,7 +47,7 @@ void FourStreamTrail_Init(void) {
     FourStreamTrailNode* var_v0;
 
     temp_fa0 = BattleAnim_GetSecondaryOwnerModelScale() * 0.75f;
-    var_a2 = &D_843AA880[0];
+    var_a2 = &gFourStreamTrailEmitters[0];
 
     for (i = 0; i < 4; i++, var_a2++) {
         var_a2->unk_000 = 0;
@@ -57,9 +57,9 @@ void FourStreamTrail_Init(void) {
 
         var_v0 = &var_a2->unk_034[0];
         for (j = 0; j < 15; j++, var_v0++) {
-            var_v0->unk_00 = 0;
-            var_v0->unk_04 = 1.0f;
-            var_v0->unk_08 = 0.0f;
+            var_v0->posX = 0;
+            var_v0->rotation = 1.0f;
+            var_v0->RentalSlotAnimData_PosePhase = 0.0f;
             var_v0->unk_0C.z = var_v0->unk_0C.y = var_v0->unk_0C.x = 0.0f;
             var_v0->unk_18.z = var_v0->unk_18.y = var_v0->unk_18.x = 0.0f;
         }
@@ -78,7 +78,7 @@ void FourStreamTrail_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32
     sp64.x = arg0;
     sp64.y = arg1;
     sp64.z = arg2;
-    var_v1 = &D_843AA880[0];
+    var_v1 = &gFourStreamTrailEmitters[0];
 
     for (i = 0; i < 4; i++, var_v1++) {
         if (var_v1->unk_000 == 0) {
@@ -107,9 +107,9 @@ void FourStreamTrail_Start(f32 arg0, f32 arg1, f32 arg2, f32 arg3, f32 arg4, f32
 
             var_s0 = &var_v1->unk_034[0];
             for (j = 0; j < 15; j++, var_s0++) {
-                var_s0->unk_00 = (arg9 * (0xE - j)) / 15;
-                var_s0->unk_04 = argB;
-                var_s0->unk_08 = (RAND(120) * 6.2831855f) / 120.0;
+                var_s0->posX = (arg9 * (0xE - j)) / 15;
+                var_s0->rotation = argB;
+                var_s0->RentalSlotAnimData_PosePhase = (RAND(120) * 6.2831855f) / 120.0;
                 var_s0->unk_0C = sp64;
                 var_s0->unk_18 = sp58;
             }
@@ -138,8 +138,8 @@ void FourStreamTrail_UpdateNodeChain(FourStreamTrail* arg0) {
 
     for (i = 0; i < 15; i++, var_v0++) {
         if (i == 0) {
-            var_v0->unk_24 = var_v0->unk_04;
-            var_v0->unk_28 = var_v0->unk_08;
+            var_v0->unk_24 = var_v0->rotation;
+            var_v0->unk_28 = var_v0->RentalSlotAnimData_PosePhase;
             var_v0->unk_2C = var_v0->unk_0C;
             var_v0->unk_38 = var_v0->unk_18;
 
@@ -147,7 +147,7 @@ void FourStreamTrail_UpdateNodeChain(FourStreamTrail* arg0) {
             var_v0->unk_0C.y += var_v0->unk_18.y;
             var_v0->unk_0C.z += var_v0->unk_18.z;
 
-            var_v0->unk_08 += arg0->unk_014;
+            var_v0->RentalSlotAnimData_PosePhase += arg0->unk_014;
             if (arg0->unk_006 < 0) {
                 var_v0->unk_18.x += 1.5;
                 if (var_v0->unk_18.x > 20.0) {
@@ -174,28 +174,28 @@ void FourStreamTrail_UpdateNodeChain(FourStreamTrail* arg0) {
                 var_v0->unk_0C.z += (arg0->unk_01C.z - var_v0->unk_0C.z) * 0.15;
             }
 
-            var_v0->unk_04 += 2.0;
-            if (arg0->unk_010 < var_v0->unk_04) {
-                var_v0->unk_04 = arg0->unk_010;
+            var_v0->rotation += 2.0;
+            if (arg0->unk_010 < var_v0->rotation) {
+                var_v0->rotation = arg0->unk_010;
             }
         } else {
-            var_v0->unk_24 = var_v0->unk_04;
-            var_v0->unk_28 = var_v0->unk_08;
+            var_v0->unk_24 = var_v0->rotation;
+            var_v0->unk_28 = var_v0->RentalSlotAnimData_PosePhase;
 
             var_v0->unk_2C = var_v0->unk_0C;
             var_v0->unk_38 = var_v0->unk_18;
 
             var_v0->unk_0C = var_v0[-1].unk_2C;
-            var_v0->unk_08 = var_v0[-1].unk_28;
+            var_v0->RentalSlotAnimData_PosePhase = var_v0[-1].unk_28;
             var_v0->unk_18 = var_v0[-1].unk_38;
-            var_v0->unk_04 = var_v0[-1].unk_24;
+            var_v0->rotation = var_v0[-1].unk_24;
         }
     }
 }
 
 s32 FourStreamTrail_IsComplete(void) {
     s32 i;
-    FourStreamTrail* var_s0 = &D_843AA880[0];
+    FourStreamTrail* var_s0 = &gFourStreamTrailEmitters[0];
 
     for (i = 0; i < 4; i++, var_s0++) {
         if (var_s0->unk_000 == 1) {
@@ -229,7 +229,7 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
     gDPLoadTextureBlock_4b(arg0++, sBattleAnimAssetPointers[0x49], G_IM_FMT_I, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                            G_TX_NOMIRROR | G_TX_WRAP, 5, 5, G_TX_NOLOD, G_TX_NOLOD);
 
-    var_s4 = &D_843AA880[0];
+    var_s4 = &gFourStreamTrailEmitters[0];
     for (i = 0; i < 4; i++, var_s4++) {
         if (var_s4->unk_000 == 1) {
             guScale(&spB0, var_s4->unk_00C, var_s4->unk_00C, var_s4->unk_00C);
@@ -238,13 +238,13 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
             if (temp_s0->unk_0C.y > 0.0f) {
                 temp_v0 = Gfx_AllocDisplayList(sizeof(Mtx) * 1);
                 guTranslate(temp_v0, temp_s0->unk_0C.x, temp_s0->unk_0C.y, temp_s0->unk_0C.z);
-                guRotateRPY(&spF0, (temp_s0->unk_08 * -360.0f * var_s4->unk_006) / 6.2831854820251465,
+                guRotateRPY(&spF0, (temp_s0->RentalSlotAnimData_PosePhase * -360.0f * var_s4->unk_006) / 6.2831854820251465,
                             (var_s4->unk_006 * 0x5A) + 0x5A, 0.0f);
                 guMtxCatL(&spF0, temp_v0, temp_v0);
                 guMtxCatL(&spB0, temp_v0, temp_v0);
 
                 gSPMatrix(arg0++, temp_v0, G_MTX_PUSH | G_MTX_MUL | G_MTX_MODELVIEW);
-                gSPDisplayList(arg0++, D_843898F0);
+                gSPDisplayList(arg0++, gFourStreamTrailGroundQuadDL);
                 gSPPopMatrix(arg0++, G_MTX_MODELVIEW);
             }
 
@@ -252,7 +252,7 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
             var_s0 = var_s4->unk_018;
 
             for (j = 0; j < 15; j++) {
-                FourStreamTrail_Update(temp_s0->unk_08, &sp134, temp_s0->unk_04, var_s4->unk_00C);
+                FourStreamTrail_Update(temp_s0->RentalSlotAnimData_PosePhase, &sp134, temp_s0->rotation, var_s4->unk_00C);
                 var_s3 = temp_s0->unk_0C.y + sp134.y;
                 if (var_s3 < 0) {
                     var_s3 = 0;
@@ -264,10 +264,10 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s4->unk_008.r;
                 var_s0->v.cn[1] = var_s4->unk_008.g;
                 var_s0->v.cn[2] = var_s4->unk_008.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
-                FourStreamTrail_Update(temp_s0->unk_08 + M_PI_F, &sp134, temp_s0->unk_04, var_s4->unk_00C);
+                FourStreamTrail_Update(temp_s0->RentalSlotAnimData_PosePhase + M_PI_F, &sp134, temp_s0->rotation, var_s4->unk_00C);
 
                 var_s3 = temp_s0->unk_0C.y + sp134.y;
                 if (var_s3 < 0) {
@@ -279,7 +279,7 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
                 var_s0->v.cn[0] = var_s4->unk_008.r;
                 var_s0->v.cn[1] = var_s4->unk_008.g;
                 var_s0->v.cn[2] = var_s4->unk_008.b;
-                var_s0->v.cn[3] = temp_s0->unk_00;
+                var_s0->v.cn[3] = temp_s0->posX;
                 var_s0++;
 
                 temp_s0++;
@@ -287,7 +287,7 @@ Gfx* FourStreamTrail_Draw(Gfx* arg0) {
 
             var_s0 = var_s4->unk_018;
 
-            gSPDisplayList(arg0++, D_84389958);
+            gSPDisplayList(arg0++, gFourStreamTrailDL);
 
             for (k = 0; k < 14; k++) {
                 gSPVertex(arg0++, var_s0, 4, 0);

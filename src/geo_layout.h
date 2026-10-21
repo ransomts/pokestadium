@@ -31,8 +31,8 @@ typedef void (*GeoLayoutCommandProc)(void);
 
 typedef struct unk_D_800ABE00_cmd0 {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u8* unk_04;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u8* rotation;
 } unk_D_800ABE00_cmd0; // size = 0x8
 
 typedef struct unk_D_800ABE00_cmd1 {
@@ -42,12 +42,12 @@ typedef struct unk_D_800ABE00_cmd1 {
 
 typedef struct unk_D_800ABE00_cmd2 {
     /* 0x00 */ u8 cmd;
-    /* 0x04 */ u8* unk_04;
+    /* 0x04 */ u8* rotation;
 } unk_D_800ABE00_cmd2; // size = 0x8
 
 typedef struct unk_D_800ABE00_cmd3 {
     /* 0x00 */ u8 cmd;
-    /* 0x04 */ u8* unk_04;
+    /* 0x04 */ u8* rotation;
 } unk_D_800ABE00_cmd3; // size = 0x8
 
 typedef struct unk_D_800ABE00_cmd4 {
@@ -65,252 +65,252 @@ typedef struct unk_D_800ABE00_cmd6 {
     /* 0x01 */ char pad[3];
 } unk_D_800ABE00_cmd6; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd7 {
+typedef struct GeoCmd_AddNode {
     /* 0x00 */ u8 cmd;
-    /* 0x04 */ unk_D_8690A610* unk_04;
-} unk_D_800ABE00_cmd7; // size = 0x8
+    /* 0x04 */ FogRect* rotation;
+} GeoCmd_AddNode; // size = 0x8
 
-typedef struct unk_D_800ABE00_cmd8 {
+typedef struct GeoCmd_SetCallback {
     /* 0x00 */ u8 cmd;
-    /* 0x04 */ GraphNodeCallback unk_04;
-    /* 0x08 */ unk_D_86002F34_000_014* unk_08;
-} unk_D_800ABE00_cmd8; // size = 0xC
+    /* 0x04 */ GraphNodeCallback rotation;
+    /* 0x08 */ unk_D_86002F34_000_014* RentalSlotAnimData_PosePhase;
+} GeoCmd_SetCallback; // size = 0xC
 
-typedef struct unk_D_800ABE00_cmd9 {
+typedef struct GeoCmd_AllocNode {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[3];
-} unk_D_800ABE00_cmd9; // size = 0x4
+} GeoCmd_AllocNode; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmdA {
+typedef struct GeoCmd_AllocAltNode {
     /* 0x00 */ u8 cmd;
-    /* 0x04 */ GraphNode* unk_04;
-} unk_D_800ABE00_cmdA; // size = 0x8
+    /* 0x04 */ GraphNode* rotation;
+} GeoCmd_AllocAltNode; // size = 0x8
 
-typedef struct unk_D_800ABE00_cmdB {
+typedef struct GeoCmd_CreateCamera {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ u16 unk_04;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ u16 rotation;
     /* 0x06 */ u16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ Vec3s unk_0C;
     /* 0x12 */ s16 unk_12;
     /* 0x14 */ s16 unk_14;
     /* 0x16 */ s16 unk_16;
-} unk_D_800ABE00_cmdB; // size = 0x18
+} GeoCmd_CreateCamera; // size = 0x18
 
-typedef struct unk_D_800ABE00_cmdC {
+typedef struct GeoCmd_CreateType3 {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ s16 unk_02;
-} unk_D_800ABE00_cmdC; // size = 0x4
+    /* 0x02 */ s16 posY;
+} GeoCmd_CreateType3; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmdD {
+typedef struct GeoCmd_CreateType4 {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ s16 unk_02;
-} unk_D_800ABE00_cmdD; // size = 0x4
+    /* 0x02 */ s16 posY;
+} GeoCmd_CreateType4; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmdE {
+typedef struct GeoCmd_CreateOrtho {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ s16 unk_02;
-} unk_D_800ABE00_cmdE; // size = 0x4
+    /* 0x02 */ s16 posY;
+} GeoCmd_CreateOrtho; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmdF {
+typedef struct GeoCmd_CreatePerspective {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ s16 unk_02;
-} unk_D_800ABE00_cmdF; // size = 0x4
+    /* 0x02 */ s16 posY;
+} GeoCmd_CreatePerspective; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd10 {
+typedef struct GeoCmd_CreateBackground {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-} unk_D_800ABE00_cmd10; // size = 0x4
+} GeoCmd_CreateBackground; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd11 {
+typedef struct GeoCmd_CreateClearDepth {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[3];
-} unk_D_800ABE00_cmd11; // size = 0x4
+} GeoCmd_CreateClearDepth; // size = 0x4
 
 typedef struct unk_D_800ABE00_cmd12 {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[3];
 } unk_D_800ABE00_cmd12; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd13 {
+typedef struct GeoCmd_CreateFog {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ u8 r;
     /* 0x02 */ u8 g;
     /* 0x03 */ u8 b;
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-} unk_D_800ABE00_cmd13; // size = 0x8
+} GeoCmd_CreateFog; // size = 0x8
 
-typedef struct unk_D_800ABE00_cmd14 {
+typedef struct GeoCmd_CreateLight {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[0x3];
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
     /* 0x08 */ u8 r;
     /* 0x09 */ u8 g;
     /* 0x0A */ u8 b;
     /* 0x0B */ u8 a;
-} unk_D_800ABE00_cmd14; // size = 0xC
+} GeoCmd_CreateLight; // size = 0xC
 
-typedef struct unk_D_800ABE00_cmd15 {
+typedef struct GeoCmd_Skip {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[0xB];
-} unk_D_800ABE00_cmd15; // size = 0xC
+} GeoCmd_Skip; // size = 0xC
 
-typedef struct unk_D_800ABE00_cmd16 {
+typedef struct GeoCmd_CreateAmbientLight {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ u8 r;
     /* 0x02 */ u8 g;
     /* 0x03 */ u8 b;
-} unk_D_800ABE00_cmd16; // size = 0x4
+} GeoCmd_CreateAmbientLight; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd17 {
+typedef struct GeoCmd_CreateMesh {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ unk_D_86002F34_018* unk_08;
+    /* 0x08 */ GfxTextureInfo* RentalSlotAnimData_PosePhase;
     /* 0x0C */ unk_D_86002F34_01C* unk_0C;
     /* 0x10 */ Vtx* unk_10;
-} unk_D_800ABE00_cmd17; // size = 0x14
+} GeoCmd_CreateMesh; // size = 0x14
 
-typedef struct unk_D_800ABE00_cmd18 {
+typedef struct GeoCmd_CreateShadow {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-} unk_D_800ABE00_cmd18; // size = 0x8
+} GeoCmd_CreateShadow; // size = 0x8
 
-typedef struct unk_D_800ABE00_cmd19 {
+typedef struct GeoCmd_CreateCullDist {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[0x3];
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-} unk_D_800ABE00_cmd19; // size = 0x8
+} GeoCmd_CreateCullDist; // size = 0x8
 
-typedef struct unk_D_800ABE00_cmd1A {
+typedef struct GeoCmd_CreateSwitchCase {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-} unk_D_800ABE00_cmd1A; // size = 0x4
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ s16 posY;
+} GeoCmd_CreateSwitchCase; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd1B {
+typedef struct GeoCmd_CreateTransform {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[0x3];
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ Vec3s unk_0A;
-} unk_D_800ABE00_cmd1B; // size = 0x10
+} GeoCmd_CreateTransform; // size = 0x10
 
-typedef struct unk_D_800ABE00_cmd1C {
+typedef struct GeoCmd_CreateScale {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[0x3];
-    /* 0x04 */ u32 unk_04;
-    /* 0x08 */ u32 unk_08;
+    /* 0x04 */ u32 rotation;
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ u32 unk_0C;
-} unk_D_800ABE00_cmd1C; // size = 0x10
+} GeoCmd_CreateScale; // size = 0x10
 
-typedef struct unk_D_800ABE00_cmd1D {
+typedef struct GeoCmd_CreateAnimatedPart {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ Vec3s unk_04;
+    /* 0x04 */ Vec3s rotation;
     /* 0x0A */ Vec3s unk_0A;
     /* 0x10 */ u32 unk_10;
     /* 0x14 */ u32 unk_14;
     /* 0x18 */ u32 unk_18;
-} unk_D_800ABE00_cmd1D; // size = 0x1C
+} GeoCmd_CreateAnimatedPart; // size = 0x1C
 
-typedef struct unk_D_800ABE00_cmd1E {
+typedef struct GeoCmd_CreateDisplayList {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ Gfx* unk_04;
-} unk_D_800ABE00_cmd1E; // size = 0x8
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ Gfx* rotation;
+} GeoCmd_CreateDisplayList; // size = 0x8
 
-typedef struct unk_D_800ABE00_cmd1F {
+typedef struct GeoCmd_CreateModelPart {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ Vec3s unk_0A;
     /* 0x10 */ s16 unk_10;
     /* 0x12 */ s16 unk_12;
     /* 0x14 */ s16 unk_14;
     /* 0x16 */ char pad[0x2];
-} unk_D_800ABE00_cmd1F; // size = 0x18
+} GeoCmd_CreateModelPart; // size = 0x18
 
-typedef struct unk_D_800ABE00_cmd20 {
+typedef struct GeoCmd_CreateDisplayListMatrix {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ s16 unk_04;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ Vec3s unk_0A;
     /* 0x10 */ Gfx* unk_10;
-} unk_D_800ABE00_cmd20; // size = 0x14
+} GeoCmd_CreateDisplayListMatrix; // size = 0x14
 
-typedef struct unk_D_800ABE00_cmd21 {
+typedef struct GeoCmd_CreateScaleBillboard {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ Vec3s unk_02;
-    /* 0x08 */ u32 unk_08;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ Vec3s posY;
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ Gfx* unk_0C;
-} unk_D_800ABE00_cmd21; // size = 0x10
+} GeoCmd_CreateScaleBillboard; // size = 0x10
 
-typedef struct unk_D_800ABE00_cmd22 {
+typedef struct GeoCmd_CreateSimpleGfx {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x04 */ Gfx* unk_04;
-} unk_D_800ABE00_cmd22; // size = 0x8
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x04 */ Gfx* rotation;
+} GeoCmd_CreateSimpleGfx; // size = 0x8
 
-typedef struct unk_D_800ABE00_cmd23 {
+typedef struct GeoCmd_CreateShadowTex {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ Gfx* unk_04;
-    /* 0x07 */ s16 unk_08;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ Gfx* rotation;
+    /* 0x07 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ u8 r;
     /* 0x0D */ u8 g;
     /* 0x0E */ u8 b;
     /* 0x0F */ u8 a;
-} unk_D_800ABE00_cmd23; // size = 0x10
+} GeoCmd_CreateShadowTex; // size = 0x10
 
-typedef struct unk_D_800ABE00_cmd24 {
+typedef struct GeoCmd_CreateAnchor {
     /* 0x00 */ u8 cmd;
-    /* 0x02 */ s16 unk_02;
-} unk_D_800ABE00_cmd24; // size = 0x4
+    /* 0x02 */ s16 posY;
+} GeoCmd_CreateAnchor; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd25 {
+typedef struct GeoCmd_SetNodeFlag4 {
     /* 0x00 */ u8 cmd;
     /* 0x01 */ char pad[3];
-} unk_D_800ABE00_cmd25; // size = 0x4
+} GeoCmd_SetNodeFlag4; // size = 0x4
 
-typedef struct unk_D_800ABE00_cmd26 {
+typedef struct GeoCmd_CreateGroup {
     /* 0x00 */ u8 cmd;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ s8 unk_03;
-    /* 0x04 */ s16 unk_04;
+    /* 0x04 */ s16 rotation;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ u8 r;
     /* 0x11 */ u8 g;
     /* 0x12 */ u8 b;
     /* 0x13 */ u8 a;
-} unk_D_800ABE00_cmd26; // size = 0x14
+} GeoCmd_CreateGroup; // size = 0x14
 
 void geo_layout_cmd_branch_and_link(void); // cmd  0
 void geo_layout_cmd_end(void); // cmd  1

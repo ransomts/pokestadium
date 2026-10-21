@@ -1,21 +1,21 @@
 #include "table_view.h"
 
 void TableView_Initialize(unk_func_88201DA0_038* arg0, unk_func_88201DA0_034* arg1, s32 arg2, s32 arg3, s32 arg4) {
-    arg0->unk_00 = arg1;
+    arg0->posX = arg1;
     arg0->unk_0C = arg2;
-    arg0->unk_04 = arg3;
-    arg0->unk_08 = arg4;
+    arg0->rotation = arg3;
+    arg0->RentalSlotAnimData_PosePhase = arg4;
 }
 
 void ByteMatrix_Allocate(unk_func_8820BE14_06C* arg0, s32 arg1, s32 arg2, MemoryPool* arg3) {
-    arg0->unk_00 = mem_pool_alloc(arg3, arg1 * arg2);
+    arg0->posX = mem_pool_alloc(arg3, arg1 * arg2);
     arg0->unk_0C = arg1;
-    arg0->unk_04 = arg2;
-    arg0->unk_08 = 0;
+    arg0->rotation = arg2;
+    arg0->RentalSlotAnimData_PosePhase = 0;
 }
 
 void ByteMatrix_Free(unk_func_8820BE14_06C* arg0, MemoryPool* arg1) {
-    mem_pool_free(arg1, arg0->unk_00);
+    mem_pool_free(arg1, arg0->posX);
 }
 
 s32 ByteMatrix_AppendRow(unk_func_8820BE14_06C* arg0, s8* a1) {
@@ -23,18 +23,18 @@ s32 ByteMatrix_AppendRow(unk_func_8820BE14_06C* arg0, s8* a1) {
     s32 i;
     s8* arg1;
 
-    if (arg0->unk_08 >= arg0->unk_04) {
+    if (arg0->RentalSlotAnimData_PosePhase >= arg0->rotation) {
         return 1;
     }
 
-    var_v0 = (u8*)arg0->unk_00 + (arg0->unk_0C * arg0->unk_08);
+    var_v0 = (u8*)arg0->posX + (arg0->unk_0C * arg0->RentalSlotAnimData_PosePhase);
     arg1 = a1;
 
     for (i = arg0->unk_0C; i > 0; i--) {
         *var_v0++ = *arg1++;
     }
 
-    arg0->unk_08++;
+    arg0->RentalSlotAnimData_PosePhase++;
     return 0;
 }
 
@@ -43,13 +43,13 @@ s32 ByteMatrix_InsertRow(unk_func_8820BE14_06C* arg0, s8* arg1, s32 arg2) {
     s8* var_t0;
     s8* var_v1;
 
-    if ((arg0->unk_08 >= arg0->unk_04) || (arg0->unk_08 < arg2)) {
+    if ((arg0->RentalSlotAnimData_PosePhase >= arg0->rotation) || (arg0->RentalSlotAnimData_PosePhase < arg2)) {
         return 1;
     }
 
-    var_v1 = (s8*)arg0->unk_00 + (arg0->unk_0C * arg0->unk_08);
+    var_v1 = (s8*)arg0->posX + (arg0->unk_0C * arg0->RentalSlotAnimData_PosePhase);
     var_t0 = var_v1 + arg0->unk_0C;
-    var_t1 = (arg0->unk_08 - arg2) * arg0->unk_0C;
+    var_t1 = (arg0->RentalSlotAnimData_PosePhase - arg2) * arg0->unk_0C;
 
     while (var_t1 > 0) {
         *--var_t0 = *--var_v1;
@@ -58,14 +58,14 @@ s32 ByteMatrix_InsertRow(unk_func_8820BE14_06C* arg0, s8* arg1, s32 arg2) {
 
     var_v1 = arg1;
     var_t1 = arg0->unk_0C;
-    var_t0 = (u8*)arg0->unk_00 + (arg0->unk_0C * arg2);
+    var_t0 = (u8*)arg0->posX + (arg0->unk_0C * arg2);
 
     while (var_t1 > 0) {
         *var_t0++ = *var_v1++;
         var_t1--;
     }
 
-    arg0->unk_08 += 1;
+    arg0->RentalSlotAnimData_PosePhase += 1;
     return 0;
 }
 
@@ -74,16 +74,16 @@ s32 ByteMatrix_RemoveRow(unk_func_8820BE14_06C* arg0, s32 arg1) {
     s8* var_a3;
     s8* var_v1;
 
-    if (arg1 >= arg0->unk_08) {
+    if (arg1 >= arg0->RentalSlotAnimData_PosePhase) {
         return 1;
     }
 
-    var_v1 = (s8*)arg0->unk_00 + (arg0->unk_0C * arg1);
+    var_v1 = (s8*)arg0->posX + (arg0->unk_0C * arg1);
 
-    arg0->unk_08--;
+    arg0->RentalSlotAnimData_PosePhase--;
 
     var_a3 = arg0->unk_0C + var_v1;
-    var_t0 = (arg0->unk_08 - arg1) * arg0->unk_0C;
+    var_t0 = (arg0->RentalSlotAnimData_PosePhase - arg1) * arg0->unk_0C;
 
     while (var_t0 > 0) {
         *var_v1++ = *var_a3++;
@@ -98,11 +98,11 @@ s32 ByteMatrix_CopyRow(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
     s32 i;
     s8* arg1;
 
-    if (arg2 >= arg0->unk_08) {
+    if (arg2 >= arg0->RentalSlotAnimData_PosePhase) {
         return 1;
     }
 
-    var_v0 = (s8*)arg0->unk_00 + (arg0->unk_0C * arg2);
+    var_v0 = (s8*)arg0->posX + (arg0->unk_0C * arg2);
     arg1 = a1;
 
     for (i = arg0->unk_0C; i > 0; i--) {
@@ -117,11 +117,11 @@ s32 ByteMatrix_CopyRowAt(unk_func_8820BE14_06C* arg0, s8* a1, s32 arg2) {
     s32 i;
     s8* arg1;
 
-    if (arg2 >= arg0->unk_08) {
+    if (arg2 >= arg0->RentalSlotAnimData_PosePhase) {
         return 1;
     }
 
-    var_v0 = (s8*)arg0->unk_00 + (arg0->unk_0C * arg2);
+    var_v0 = (s8*)arg0->posX + (arg0->unk_0C * arg2);
     arg1 = a1;
 
     for (i = arg0->unk_0C; i > 0; i--) {
@@ -136,16 +136,16 @@ s32 WordList_Remove(unk_func_8830867C_04C_030_02C_000_000_00C* arg0, s32 arg1) {
     s32 var_a3;
     s16* var_v1;
 
-    if (arg1 >= arg0->unk_08) {
+    if (arg1 >= arg0->RentalSlotAnimData_PosePhase) {
         return 1;
     }
 
-    var_v1 = (s16*)arg0->unk_00 + arg1;
+    var_v1 = (s16*)arg0->posX + arg1;
 
-    arg0->unk_08--;
+    arg0->RentalSlotAnimData_PosePhase--;
 
     var_a2 = var_v1 + 1;
-    var_a3 = arg0->unk_08 - arg1;
+    var_a3 = arg0->RentalSlotAnimData_PosePhase - arg1;
 
     while (var_a3 > 0) {
         *var_v1++ = *var_a2++;
@@ -156,19 +156,19 @@ s32 WordList_Remove(unk_func_8830867C_04C_030_02C_000_000_00C* arg0, s32 arg1) {
 }
 
 void PointerList_Initialize(unk_func_88205880_A030* arg0, void** arg1, s32 arg2, s32 arg3) {
-    arg0->unk_00 = arg1;
-    arg0->unk_04 = arg2;
-    arg0->unk_08 = arg3;
+    arg0->posX = arg1;
+    arg0->rotation = arg2;
+    arg0->RentalSlotAnimData_PosePhase = arg3;
 }
 
 void PointerList_Allocate(unk_func_88200FA0_030_038* arg0, s32 arg1, MemoryPool* arg2) {
-    arg0->unk_00 = mem_pool_alloc(arg2, arg1 * 4);
-    arg0->unk_04 = arg1;
-    arg0->unk_08 = 0;
+    arg0->posX = mem_pool_alloc(arg2, arg1 * 4);
+    arg0->rotation = arg1;
+    arg0->RentalSlotAnimData_PosePhase = 0;
 }
 
 void PointerList_Free(unk_func_88200FA0_030_038* arg0, MemoryPool* arg1) {
-    mem_pool_free(arg1, arg0->unk_00);
+    mem_pool_free(arg1, arg0->posX);
 }
 
 void PointerList_Insert(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
@@ -176,30 +176,30 @@ void PointerList_Insert(unk_func_88200FA0_030_038* arg0, char* arg1, s32 arg2) {
     unk_func_88205880_00D0** var_t0;
     unk_func_88205880_00D0** var_v0;
 
-    var_v0 = &arg0->unk_00[arg0->unk_08];
+    var_v0 = &arg0->posX[arg0->RentalSlotAnimData_PosePhase];
     var_t0 = var_v0 + 1;
-    var_t1 = arg0->unk_08 - arg2;
+    var_t1 = arg0->RentalSlotAnimData_PosePhase - arg2;
 
     while (var_t1 > 0) {
         *--var_t0 = *--var_v0;
         var_t1--;
     }
 
-    arg0->unk_00[arg2] = arg1;
-    arg0->unk_08++;
+    arg0->posX[arg2] = arg1;
+    arg0->RentalSlotAnimData_PosePhase++;
 }
 
 void PointerList_Remove(unk_func_8830867C_02C_0CC* arg0, s32 arg1) {
     s32 var_a2;
-    unk_func_8830867C_02C_0CC_000** var_v0;
-    unk_func_8830867C_02C_0CC_000** var_v1;
+    LabPCListEntry** var_v0;
+    LabPCListEntry** var_v1;
 
-    var_v0 = &arg0->unk_00[arg1];
+    var_v0 = &arg0->posX[arg1];
     var_v1 = var_v0 + 1;
 
-    arg0->unk_08--;
+    arg0->RentalSlotAnimData_PosePhase--;
 
-    var_a2 = arg0->unk_08 - arg1;
+    var_a2 = arg0->RentalSlotAnimData_PosePhase - arg1;
 
     while (var_a2 > 0) {
         *var_v0++ = *var_v1++;
@@ -354,18 +354,18 @@ void Sort_QuickSort(void** base, s32 n, s32 (*cmp)(s32, s32)) {
 }
 
 void PointerList_Sort(unk_func_8830867C_02C_0CC* arg0, s32 (*arg1)(s32, s32)) {
-    Sort_QuickSort(arg0->unk_00, arg0->unk_08, arg1);
+    Sort_QuickSort(arg0->posX, arg0->RentalSlotAnimData_PosePhase, arg1);
 }
 
 void PointerList_Filter(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC* arg1,
-                   s32 (*arg2)(unk_func_8830867C_02C_0CC_000*, s32*), s32* arg3) {
+                   s32 (*arg2)(LabPCListEntry*, s32*), s32* arg3) {
     s32 var_s2;
-    unk_func_8830867C_02C_0CC_000** var_s0;
-    unk_func_8830867C_02C_0CC_000** var_s1;
+    LabPCListEntry** var_s0;
+    LabPCListEntry** var_s1;
 
-    var_s1 = arg1->unk_00;
-    var_s2 = arg0->unk_08;
-    var_s0 = arg0->unk_00;
+    var_s1 = arg1->posX;
+    var_s2 = arg0->RentalSlotAnimData_PosePhase;
+    var_s0 = arg0->posX;
 
     while (var_s2 > 0) {
         if (arg2(*var_s0, arg3) != 0) {
@@ -375,7 +375,7 @@ void PointerList_Filter(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0
         var_s0++;
     }
 
-    arg1->unk_08 = ((s32)var_s1 - (s32)arg1->unk_00) >> 2;
+    arg1->RentalSlotAnimData_PosePhase = ((s32)var_s1 - (s32)arg1->posX) >> 2;
 }
 
 s32 Text_CompareU16Terminated(u16* a0, u16* a1) {
@@ -459,7 +459,7 @@ s32 Text_CompareGlyphCodes(u8* a0, u8* a1) {
     return 0;
 }
 #else
-static u16 D_80075690[0x100] = {
+static u16 gByteToTileIdTable[0x100] = {
     0,      0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
     0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
     0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0x7000, 0x7100, 0x7200, 0xFFFF, 0xFFFF, 0x7500, 0x7600, 0x7700, 0x7800, 0x7900,
@@ -489,26 +489,26 @@ void Text_ExpandGlyphCodes(u16* arg0, u8* a1) {
         temp_v1 = *arg1++;
         switch (temp_v1) {
             case 0xDF:
-                *arg0++ = D_80075690[temp_v1];
-                *arg0++ = D_80075690[temp_v1];
+                *arg0++ = gByteToTileIdTable[temp_v1];
+                *arg0++ = gByteToTileIdTable[temp_v1];
                 continue;
 
             case 0xBC:
-                *arg0++ = D_80075690[0x50] + 4;
-                *arg0++ = D_80075690[0x4B] + 4;
+                *arg0++ = gByteToTileIdTable[0x50] + 4;
+                *arg0++ = gByteToTileIdTable[0x4B] + 4;
                 continue;
 
             case 0xBD:
-                *arg0++ = D_80075690[0x4D] + 4;
-                *arg0++ = D_80075690[0x4E] + 4;
+                *arg0++ = gByteToTileIdTable[0x4D] + 4;
+                *arg0++ = gByteToTileIdTable[0x4E] + 4;
                 continue;
         }
-        *arg0++ = D_80075690[temp_v1];
+        *arg0++ = gByteToTileIdTable[temp_v1];
     } while (temp_v1 != 0);
 }
 
 s32 Text_CompareGlyphCodes(u8* arg0, u8* arg1) {
-    static u16 D_80075890[3] = { 0xFF00, 0xFFFC, 0xFFFF };
+    static u16 gStringCompareMasks[3] = { 0xFF00, 0xFFFC, 0xFFFF };
 
     u16 sp74[22];
     u16 sp48[22];
@@ -527,8 +527,8 @@ s32 Text_CompareGlyphCodes(u8* arg0, u8* arg1) {
         var_a0 = sp48;
 
         while (true) {
-            temp_a1 = D_80075890[i] & *var_v1++;
-            temp_a2 = D_80075890[i] & *var_a0++;
+            temp_a1 = gStringCompareMasks[i] & *var_v1++;
+            temp_a2 = gStringCompareMasks[i] & *var_a0++;
             temp_a3 = temp_a1 - temp_a2;
 
             if (temp_a3 != 0) {

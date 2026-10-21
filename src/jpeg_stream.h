@@ -23,7 +23,7 @@ typedef struct PERSSZP {
 
 typedef struct PRESJPEG {
     /* 0x00 */ char magic[0x8]; // PRESJPEG
-    /* 0x08 */ u32 unk_08; // header size? always 0x10
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase; // header size? always 0x10
     /* 0x0C */ u32 unk_0C;
 } PRESJPEG; // size = 0x10
 
@@ -37,12 +37,12 @@ typedef struct Yay0 {
 typedef struct BinArchive {
     union {
         struct {
-            /* 0x00 */ u16 unk_00;
-            /* 0x02 */ u16 unk_02;
+            /* 0x00 */ u16 posX;
+            /* 0x02 */ u16 posY;
         };
         s32 raw;
     };
-    /* 0x04 */ u32 unk_04;
+    /* 0x04 */ u32 rotation;
     /* 0x08 */ u32 total_size;
     /* 0x0C */ u32 num_files;
 } BinArchive; // size = 0x10
@@ -50,20 +50,20 @@ typedef struct BinArchive {
 typedef struct BinArchiveFile {
     /* 0x00 */ u32 offset;
     /* 0x04 */ u32 size;
-    /* 0x08 */ u32 unk_08;
+    /* 0x08 */ u32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ char unk0C[0x4];
 } BinArchiveFile; // size = 0x10
 
-typedef struct unk_func_800041C0 {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
-} unk_func_800041C0; // size >= 0x8
+typedef struct StorageRange {
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
+} StorageRange; // size >= 0x8
 
-typedef struct unk_func_80003680_sp300 {
-    /* 0x00 */ u8 unk_00; // mode
-    /* 0x01 */ u8 unk_01;
+typedef struct JpegStreamInfo {
+    /* 0x00 */ u8 posX; // mode
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x2];
     /* 0x04 */ s16 width;
     /* 0x06 */ s16 height;
@@ -71,24 +71,24 @@ typedef struct unk_func_80003680_sp300 {
     /* 0x0C */ u8* huffman_table;
     /* 0x10 */ u8* start_of_frame;
     /* 0x14 */ u8* start_of_scan;
-} unk_func_80003680_sp300; // size = 0x18
+} JpegStreamInfo; // size = 0x18
 
-typedef struct unk_func_80003680_sp90 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+typedef struct JpegDspTaskData {
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;
-} unk_func_80003680_sp90; // size >= 0x18
+} JpegDspTaskData; // size >= 0x18
 
 typedef void (*ret_func_80004454)(void);
 
 s32 Jpeg_ReadBigEndianU16(u8* arg0);
-void Jpeg_ParseStreamMarkers(unk_func_80003680_sp300* arg0, u8* arg1);
-void Jpeg_InitializeDspTask(UnkStruct80001380* arg0, unk_func_80003680_sp90* arg1);
-void Jpeg_BuildDspInput(JpegDecoder* arg0, JpegHuffmanTable* arg1, unk_func_80003680_sp300* arg2);
-void Jpeg_BuildDspOutput(unk_func_80003680_sp90* arg0, u8(arg1)[2][0x80], unk_func_80003680_sp300* arg2);
+void Jpeg_ParseStreamMarkers(JpegStreamInfo* arg0, u8* arg1);
+void Jpeg_InitializeDspTask(UnkStruct80001380* arg0, JpegDspTaskData* arg1);
+void Jpeg_BuildDspInput(JpegDecoder* arg0, JpegHuffmanTable* arg1, JpegStreamInfo* arg2);
+void Jpeg_BuildDspOutput(JpegDspTaskData* arg0, u8(arg1)[2][0x80], JpegStreamInfo* arg2);
 s32 Jpeg_DecodeImage(u32 addr, s32 arg1, u8* arg2);
 void Dma_InitializeCompletionQueue(void);
 void Yay0_DecompressAndRelocate(u8* in_header, u8* memory);
@@ -101,9 +101,9 @@ void* Jpeg_LoadDecodedImage(u8* addr, PRESJPEG* arg1, s32 side);
 s32 Yay0_LoadDecompressedAsset(s32 arg0, PERSSZP* arg1, s32 side);
 u32* Asset_CopyUncompressed(u8* arg0, s32 arg1, u32 arg2, s32 arg3);
 void* Asset_LoadCompressed(u8* romStart, u8* romEnd, s32 arg2, s32 arg3);
-void* Storage_LoadAssetByLbaRange(unk_func_800041C0* arg0, s32 arg1);
-unk_func_800041C0* Storage_SetLbaRange(unk_func_800041C0* arg0, s32 arg1, s32 arg2);
-unk_func_800041C0* Storage_SetByteRange(unk_func_800041C0* arg0, u32 arg1, u32 offset, u32 size);
+void* Storage_LoadAssetByLbaRange(StorageRange* arg0, s32 arg1);
+StorageRange* Storage_SetLbaRange(StorageRange* arg0, s32 arg1, s32 arg2);
+StorageRange* Storage_SetByteRange(StorageRange* arg0, u32 arg1, u32 offset, u32 size);
 void Storage_PrefetchLbaRange(s32 arg0, s32 arg1, s32 arg2);
 void Memmap_ClearSegmentOnBlockFree(u32 block_addr, u32 addr);
 u8* Asset_LoadToSegment(s32 id, u8* rom_start, u8* rom_end, s32 arg3);

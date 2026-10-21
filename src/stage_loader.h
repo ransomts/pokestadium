@@ -5,12 +5,12 @@
 #include "src/gfx_rect.h"
 
 typedef struct unk_D_800A7450 {
-    /* 0x00 */ u8 unk_00;
+    /* 0x00 */ u8 posX;
     /* 0x01 */ u8 zoom;
-    /* 0x02 */ u8 unk_02;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ Gfx* unk_04;
-    /* 0x08 */ Gfx* unk_08;
+    /* 0x04 */ Gfx* rotation;
+    /* 0x08 */ Gfx* RentalSlotAnimData_PosePhase;
     /* 0x0C */ void* unk_0C;
     /* 0x10 */ char unk10[0x4];
 } unk_D_800A7450; // size >= 0x14
@@ -42,7 +42,7 @@ typedef struct StageContext {
     };
 } StageContext; // size = 0x24
 
-typedef StageContext unk_func_80007444;
+typedef StageContext Stage;
 
 void StageFade_Update(void);
 s32 StageFade_Start(s32 arg0);

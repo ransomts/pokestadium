@@ -10,10 +10,10 @@
 #include "src/memmap.h"
 #include "src/memory.h"
 
-static s8 D_84B14C10[] = {
+static s8 gTeamIconSlotLookup[] = {
     0xFF, 0x00, 0x01, 0x02, 0x06, 0x07, 0x08, 0xFF, 0xFF, 0x03, 0x04, 0x05, 0x09, 0x0A, 0x0B, 0xFF,
 };
-static Vtx D_84B14C20[] = {
+static Vtx gTeamBadgeQuadVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -21,11 +21,11 @@ static Vtx D_84B14C20[] = {
     VTX(-32, -16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, -48, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -48, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B14CE0[] = {
+static Gfx gHealthBarBadgeDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, SHADE, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B14C20, 12, 0),
+    gsSPVertex(gTeamBadgeQuadVtx, 12, 0),
     gsDPLoadTextureBlock(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -37,11 +37,11 @@ static Gfx D_84B14CE0[] = {
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B14DC8[] = {
-    0x17000000, 0x00000000, 0x00000000,    0x00000000, D_84B14C20, 0x05000000, 0x22050000,
-    0x00000000, 0x08000000, BattlePrepTeamIcons_DrawActiveTeamBadge, D_84B14CE0, 0x06000000, 0x01000000, 0x00000000,
+static u32 gTeamBadgeNodeData[] = {
+    0x17000000, 0x00000000, 0x00000000,    0x00000000, gTeamBadgeQuadVtx, 0x05000000, 0x22050000,
+    0x00000000, 0x08000000, BattlePrepTeamIcons_DrawActiveTeamBadge, gHealthBarBadgeDL, 0x06000000, 0x01000000, 0x00000000,
 };
-static Vtx D_84B14E00[] = {
+static Vtx gMonIconFrameVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -49,53 +49,53 @@ static Vtx D_84B14E00[] = {
     VTX(-32, -16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, -48, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -48, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, -16, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B14EC0[] = {
+static Vtx gMonIconRowVtx0[] = {
     VTX(-30, 45, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, 30, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 45, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 45, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 30, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 45, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B14F40[] = {
+static Vtx gMonIconRowVtx1[] = {
     VTX(-30, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, 15, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, 15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 15, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 30, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B14FC0[] = {
+static Vtx gMonIconRowVtx2[] = {
     VTX(-30, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-30, 0, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 0, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(0, 0, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 0, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 15, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15040[] = {
+static Vtx gMonIconRowVtx3[] = {
     VTX(-30, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(-30, -15, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(0, -15, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -15, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 0, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B150C0[] = {
+static Vtx gMonIconRowVtx4[] = {
     VTX(-30, -15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, -30, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -15, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, -30, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -30, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -15, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15140[] = {
+static Vtx gMonIconRowVtx5[] = {
     VTX(-30, -30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-30, -45, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -45, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(0, -45, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -45, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -30, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B151C0[] = {
+static Vtx gMonIconBackdropVtx[] = {
     VTX(-30, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-30, -30, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -30, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B15200[] = {
+static Gfx gMonIconDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B14E00, 12, 0),
+    gsSPVertex(gMonIconFrameVtx, 12, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -105,42 +105,42 @@ static Gfx D_84B15200[] = {
     gsDPLoadTextureBlock(0x0E002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
-    gsSPVertex(D_84B14EC0, 8, 0),
+    gsSPVertex(gMonIconRowVtx0, 8, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B14F40, 8, 0),
+    gsSPVertex(gMonIconRowVtx1, 8, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B14FC0, 8, 0),
+    gsSPVertex(gMonIconRowVtx2, 8, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15040, 8, 0),
+    gsSPVertex(gMonIconRowVtx3, 8, 0),
     gsDPLoadTextureTile(0x0F006000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F006000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B150C0, 8, 0),
+    gsSPVertex(gMonIconRowVtx4, 8, 0),
     gsDPLoadTextureTile(0x0F008000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F008000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15140, 8, 0),
+    gsSPVertex(gMonIconRowVtx5, 8, 0),
     gsDPLoadTextureTile(0x0F00A000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -149,23 +149,23 @@ static Gfx D_84B15200[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B15618[] = {
+static Gfx gMonIconBackdropDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B151C0, 4, 0),
+    gsSPVertex(gMonIconBackdropVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B15688[] = {
-    0x17000000, 0x00000000,    0x00000000, 0x00000000, D_84B14E00, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, BattlePrepTeamIcons_DrawIconSingle, D_84B15200, 0x22050000, D_84B15618, 0x25000000, 0x06000000, 0x01000000,
+static u32 gMonIconNodeData[] = {
+    0x17000000, 0x00000000,    0x00000000, 0x00000000, gMonIconFrameVtx, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, BattlePrepTeamIcons_DrawIconSingle, gMonIconDL, 0x22050000, gMonIconBackdropDL, 0x25000000, 0x06000000, 0x01000000,
 };
-static Vtx D_84B156C8[] = {
+static Vtx gMonIconDoubleVtx[] = {
     VTX(-32, 48, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 16, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(32, 48, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 16, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -16, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -177,17 +177,17 @@ static Vtx D_84B156C8[] = {
     VTX(-24, -20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-24, -44, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(24, -44, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(24, -20, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15808[] = {
+static Vtx gMonIconDoubleBackdropVtx[] = {
     VTX(-20, 30, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-20, -10, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(20, -10, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(20, 30, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B15848[] = {
+static Gfx gMonIconDoubleDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B156C8, 20, 0),
+    gsSPVertex(gMonIconDoubleVtx, 20, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 32, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -205,78 +205,78 @@ static Gfx D_84B15848[] = {
     gsSP2Triangles(16, 17, 18, 0, 16, 18, 19, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B159B0[] = {
+static Gfx gMonIconDoubleBackdropDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B15808, 4, 0),
+    gsSPVertex(gMonIconDoubleBackdropVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B15A20[] = {
-    0x17000000, 0x00000000,    0x00000000, 0x00000000, D_84B156C8, 0x05000000, 0x22050000, 0x00000000,
-    0x08000000, BattlePrepTeamIcons_DrawIconDouble, D_84B15848, 0x22050000, D_84B159B0, 0x25000000, 0x06000000, 0x01000000,
+static u32 gMonIconDoubleNodeData[] = {
+    0x17000000, 0x00000000,    0x00000000, 0x00000000, gMonIconDoubleVtx, 0x05000000, 0x22050000, 0x00000000,
+    0x08000000, BattlePrepTeamIcons_DrawIconDouble, gMonIconDoubleDL, 0x22050000, gMonIconDoubleBackdropDL, 0x25000000, 0x06000000, 0x01000000,
 };
-static Vtx D_84B15A60[] = {
+static Vtx gSmallMonIconVtx[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 0, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(32, 24, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, -24, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, -24, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF), VTX(32, 0, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15AE0[] = {
+static Vtx gSmallMonIconRowVtx0[] = {
     VTX(-30, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-30, 7, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(0, 7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, 7, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 22, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15B60[] = {
+static Vtx gSmallMonIconRowVtx1[] = {
     VTX(-30, 7, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-30, -7, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, 7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, 7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, -7, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -7, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, 7, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15BE0[] = {
+static Vtx gSmallMonIconRowVtx2[] = {
     VTX(-30, -7, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-30, -22, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -22, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),  VTX(0, -7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(0, -7, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),      VTX(0, -22, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(30, -22, 0, 4096, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(30, -7, 0, 4096, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B15C60[] = {
+static Vtx gSmallMonIconBackdropVtx[] = {
     VTX(-22, 22, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-22, -22, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(22, -22, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(22, 22, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B15CA0[] = {
+static Gfx gSmallMonIconDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B15A60, 8, 0),
+    gsSPVertex(gSmallMonIconVtx, 8, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureBlock(0x0E000C00, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15AE0, 8, 0),
+    gsSPVertex(gSmallMonIconRowVtx0, 8, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15B60, 8, 0),
+    gsSPVertex(gSmallMonIconRowVtx1, 8, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsDPLoadTextureTile(0x0F002000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 64, 0, 127, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
-    gsSPVertex(D_84B15BE0, 8, 0),
+    gsSPVertex(gSmallMonIconRowVtx2, 8, 0),
     gsDPLoadTextureTile(0x0F004000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 128, 0, 0, 0, 63, 31, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                         G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -285,29 +285,29 @@ static Gfx D_84B15CA0[] = {
     gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B15EE0[] = {
+static Gfx gSmallMonIconBackdropDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B15C60, 4, 0),
+    gsSPVertex(gSmallMonIconBackdropVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B15F50[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B15A60, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, D_84B15CA0,
-    0x22050000, D_84B15EE0, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+static u32 gSmallMonIconNodeData[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconVtx, 0x05000000, 0x1B000000,    0x00000000,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, gSmallMonIconDL,
+    0x22050000, gSmallMonIconBackdropDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static u32 D_84B15FA8[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B15A60, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, D_84B15CA0,
-    0x22050000, D_84B15EE0, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+static u32 gSmallMonIconNodeDataOffset[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconVtx, 0x05000000, 0x1B000000,    0x00000000,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconSingle, gSmallMonIconDL,
+    0x22050000, gSmallMonIconBackdropDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static Vtx D_84B16000[] = {
+static Vtx gSmallMonIconDoubleVtx[] = {
     VTX(-32, 24, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-32, 0, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 0, 0, 2048, 768, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(32, 24, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),        VTX(-32, -24, 0, 0, 768, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -317,17 +317,17 @@ static Vtx D_84B16000[] = {
     VTX(-12, -8, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),       VTX(-12, -20, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(12, -20, 0, 2048, 1024, 0xFF, 0xFF, 0xFF, 0xFF), VTX(12, -8, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Vtx D_84B16100[] = {
+static Vtx gSmallMonIconDoubleBackdropVtx[] = {
     VTX(-14, 20, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-14, -8, 0, 0, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(14, -8, 0, 2048, 2048, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(14, 20, 0, 2048, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
-static Gfx D_84B16140[] = {
+static Gfx gSmallMonIconDoubleDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(0, 0, 0, TEXEL0, 0, 0, 0, TEXEL0, 0, 0, 0, COMBINED, COMBINED, 0, PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16000, 16, 0),
+    gsSPVertex(gSmallMonIconDoubleVtx, 16, 0),
     gsDPLoadTextureBlock(0x0E000000, G_IM_FMT_RGBA, G_IM_SIZ_16b, 64, 24, 0, G_TX_NOMIRROR | G_TX_CLAMP,
                          G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
@@ -342,36 +342,36 @@ static Gfx D_84B16140[] = {
     gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
     gsSPEndDisplayList(),
 };
-static Gfx D_84B16268[] = {
+static Gfx gSmallMonIconDoubleBackdropDL[] = {
     gsSPSetGeometryMode(G_CULL_BACK),
     gsDPSetCombineLERP(TEXEL0, 0, ENVIRONMENT, 0, TEXEL0, 0, ENVIRONMENT, 0, 0, 0, 0, COMBINED, COMBINED, 0,
                        PRIM_LOD_FRAC, 0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
-    gsSPVertex(D_84B16100, 4, 0),
+    gsSPVertex(gSmallMonIconDoubleBackdropVtx, 4, 0),
     gsDPSetEnvColor(255, 50, 20, 160),
     gsDPLoadTextureBlock_4b(D_3017F00, G_IM_FMT_I, 64, 64, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP,
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD),
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
-static u32 D_84B162D8[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B16000, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, D_84B16140,
-    0x22050000, D_84B16268, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
+static u32 gSmallMonIconDoubleNodeData[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconDoubleVtx, 0x05000000, 0x1B000000,    0x00000000,
+    0x00000000, 0x00180000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gSmallMonIconDoubleDL,
+    0x22050000, gSmallMonIconDoubleBackdropDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000,
 };
-static u32 D_84B16330[] = {
-    0x17000000, 0x00000000, 0x00000000, 0x00000000, D_84B16000, 0x05000000, 0x1B000000,    0x00000000,
-    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, D_84B16140,
-    0x22050000, D_84B16268, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
+static u32 gHPBarNodeDataDoubleBadgeMirror[] = {
+    0x17000000, 0x00000000, 0x00000000, 0x00000000, gSmallMonIconDoubleVtx, 0x05000000, 0x1B000000,    0x00000000,
+    0x00000000, 0xFFE80000, 0x05000000, 0x22050000, 0x00000000, 0x08000000, BattlePrepTeamIcons_DrawBadgeIconDouble, gSmallMonIconDoubleDL,
+    0x22050000, gSmallMonIconDoubleBackdropDL, 0x25000000, 0x06000000, 0x06000000, 0x01000000, 0x00000000,    0x00000000,
 };
 
-s32 BattlePrepTeamIcons_DrawActiveTeamBadge(s32 arg0, unk_func_80011B94* arg1) {
-    unk_D_84B25A58* temp_v1;
+s32 BattlePrepTeamIcons_DrawActiveTeamBadge(s32 arg0, SimpleGfxNode* arg1) {
+    gTeamIconsState* temp_v1;
     u8* var_a3;
 
     if (arg0 == 5) {
-        temp_v1 = (unk_D_84B25A58*)D_8006F09C->node.callbackArg;
-        if (temp_v1->unk_04->effectSlot == D_8006F09C->effectSlot) {
+        temp_v1 = (gTeamIconsState*)gDefaultGraphRoot->node.callbackArg;
+        if (temp_v1->rotation->effectSlot == gDefaultGraphRoot->effectSlot) {
             var_a3 = temp_v1->unk_24->img_p;
         } else {
             var_a3 = temp_v1->unk_28->img_p;
@@ -386,14 +386,14 @@ s32 BattlePrepTeamIcons_DrawActiveTeamBadge(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 BattlePrepTeamIcons_DrawIconSingle(s32 arg0, unk_func_80011B94* arg1) {
-    unk_D_84B25A58* temp_t1;
+s32 BattlePrepTeamIcons_DrawIconSingle(s32 arg0, SimpleGfxNode* arg1) {
+    gTeamIconsState* temp_t1;
     s32 temp_t2;
     u8* var_a3;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)D_8006F09C->node.callbackArg;
-        temp_t2 = D_8006F09C->effectSlot - temp_t1->unk_04->effectSlot;
+        temp_t1 = (gTeamIconsState*)gDefaultGraphRoot->node.callbackArg;
+        temp_t2 = gDefaultGraphRoot->effectSlot - temp_t1->rotation->effectSlot;
         if (temp_t2 < 4) {
             var_a3 = D_3006000;
         } else {
@@ -416,14 +416,14 @@ s32 BattlePrepTeamIcons_DrawIconSingle(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 BattlePrepTeamIcons_DrawIconDouble(s32 arg0, unk_func_80011B94* arg1) {
-    unk_D_84B25A58* temp_a3;
+s32 BattlePrepTeamIcons_DrawIconDouble(s32 arg0, SimpleGfxNode* arg1) {
+    gTeamIconsState* temp_a3;
     s32 temp_t0;
     u8* var_a0;
 
     if (arg0 == 5) {
-        temp_a3 = (unk_D_84B25A58*)D_8006F09C->node.callbackArg;
-        temp_t0 = (D_8006F09C->effectSlot - temp_a3->unk_04->effectSlot) % 8;
+        temp_a3 = (gTeamIconsState*)gDefaultGraphRoot->node.callbackArg;
+        temp_t0 = (gDefaultGraphRoot->effectSlot - temp_a3->rotation->effectSlot) % 8;
         if (temp_t0 < 4) {
             var_a0 = D_3006000;
         } else {
@@ -440,19 +440,19 @@ s32 BattlePrepTeamIcons_DrawIconDouble(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 BattlePrepTeamIcons_DrawBadgeIconSingle(s32 arg0, unk_func_80011B94* arg1) {
+s32 BattlePrepTeamIcons_DrawBadgeIconSingle(s32 arg0, SimpleGfxNode* arg1) {
     u8* var_a3;
-    unk_D_84B25A58* temp_t1;
+    gTeamIconsState* temp_t1;
     s32 temp_a1;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)D_8006F09C->node.callbackArg;
-        temp_a1 = D_8006F09C->effectSlot - temp_t1->unk_04->effectSlot;
+        temp_t1 = (gTeamIconsState*)gDefaultGraphRoot->node.callbackArg;
+        temp_a1 = gDefaultGraphRoot->effectSlot - temp_t1->rotation->effectSlot;
 
         if (temp_a1 >= 0x10) {
             temp_a1 = (temp_a1 - 0x10) % 12;
         } else {
-            temp_a1 = D_84B14C10[temp_a1];
+            temp_a1 = gTeamIconSlotLookup[temp_a1];
         }
 
         if (temp_a1 < 6) {
@@ -477,19 +477,19 @@ s32 BattlePrepTeamIcons_DrawBadgeIconSingle(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-s32 BattlePrepTeamIcons_DrawBadgeIconDouble(s32 arg0, unk_func_80011B94* arg1) {
+s32 BattlePrepTeamIcons_DrawBadgeIconDouble(s32 arg0, SimpleGfxNode* arg1) {
     s32 temp_a3;
-    unk_D_84B25A58* temp_t1;
+    gTeamIconsState* temp_t1;
     u8* var_a0;
 
     if (arg0 == 5) {
-        temp_t1 = (unk_D_84B25A58*)D_8006F09C->node.callbackArg;
-        temp_a3 = D_8006F09C->effectSlot - temp_t1->unk_04->effectSlot;
+        temp_t1 = (gTeamIconsState*)gDefaultGraphRoot->node.callbackArg;
+        temp_a3 = gDefaultGraphRoot->effectSlot - temp_t1->rotation->effectSlot;
 
         if (temp_a3 >= 0x10) {
             temp_a3 = (temp_a3 - 0x10) % 12;
         } else {
-            temp_a3 = D_84B14C10[temp_a3];
+            temp_a3 = gTeamIconSlotLookup[temp_a3];
         }
 
         if (temp_a3 < 6) {
@@ -508,7 +508,7 @@ s32 BattlePrepTeamIcons_DrawBadgeIconDouble(s32 arg0, unk_func_80011B94* arg1) {
     return 0;
 }
 
-void BattlePrepTeamIcons_DrawHpBarsSingle(unk_D_84B25A58* arg0, s32 arg1) {
+void BattlePrepTeamIcons_DrawHpBarsSingle(gTeamIconsState* arg0, s32 arg1) {
     s32 i;
     s32 j;
     UNUSED s32 pad;
@@ -521,17 +521,17 @@ void BattlePrepTeamIcons_DrawHpBarsSingle(unk_D_84B25A58* arg0, s32 arg1) {
 
         for (j = 0; j < temp_s5->numberOfPokemonChosen; j++) {
             temp_lo = temp_s5->pokemonPicked[j].unk_26 * arg1;
-            var_s0 = temp_s5->pokemonPicked[j].unk_02 * 0x64;
+            var_s0 = temp_s5->pokemonPicked[j].posY * 0x64;
             if (var_s0 < temp_lo) {
                 var_s0 = temp_lo;
             }
-            GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_1C->unk_08[i * 3 + j].unk_0C);
+            GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_1C->RentalSlotAnimData_PosePhase[i * 3 + j].unk_0C);
             BattleHud_DrawHpBarTexture(4, 0xB4, 0x78, var_s0, temp_s5->pokemonPicked[j].unk_26 * 0x64);
         }
     }
 }
 
-void BattlePrepTeamIcons_DrawHpBarsDouble(unk_D_84B25A58* arg0, s32 arg1) {
+void BattlePrepTeamIcons_DrawHpBarsDouble(gTeamIconsState* arg0, s32 arg1) {
     s32 i;
     s32 j;
     s32 x;
@@ -546,11 +546,11 @@ void BattlePrepTeamIcons_DrawHpBarsDouble(unk_D_84B25A58* arg0, s32 arg1) {
             if (temp_s5 != NULL) {
                 for (x = 0; x < temp_s5->numberOfPokemonChosen; x++) {
                     temp_lo = temp_s5->pokemonPicked[x].unk_26 * arg1;
-                    var_s0 = temp_s5->pokemonPicked[x].unk_02 * 0x64;
+                    var_s0 = temp_s5->pokemonPicked[x].posY * 0x64;
                     if (var_s0 < temp_lo) {
                         var_s0 = temp_lo;
                     }
-                    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_1C->unk_08[(i * 6) + (j * 3) + x].unk_0C);
+                    GfxImage_SetRenderTarget(&gDisplayListHead, arg0->unk_1C->RentalSlotAnimData_PosePhase[(i * 6) + (j * 3) + x].unk_0C);
                     BattleHud_DrawHpBarTexture(4, 0x54, 0x78, var_s0, temp_s5->pokemonPicked[x].unk_26 * 0x64);
                 }
             }
@@ -558,7 +558,7 @@ void BattlePrepTeamIcons_DrawHpBarsDouble(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_MarkFaintedSingle(unk_D_84B25A58* arg0, s32 arg1) {
+void BattlePrepTeamIcons_MarkFaintedSingle(gTeamIconsState* arg0, s32 arg1) {
     UNUSED s32 pad;
     TeamRoster* temp_s5;
     s32 temp_v0;
@@ -578,7 +578,7 @@ void BattlePrepTeamIcons_MarkFaintedSingle(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_MarkFaintedDouble(unk_D_84B25A58* arg0, s32 arg1) {
+void BattlePrepTeamIcons_MarkFaintedDouble(gTeamIconsState* arg0, s32 arg1) {
     s32 i;
     s32 j;
     s32 x;
@@ -602,105 +602,105 @@ void BattlePrepTeamIcons_MarkFaintedDouble(unk_D_84B25A58* arg0, s32 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_InitDisplayObjectsSingleVisible(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_InitDisplayObjectsSingleVisible(gTeamIconsState* arg0) {
     s32 i;
 
     for (i = 1; i < 7; i++) {
-        Model_InitDisplayObject(&arg0->unk_04[i], 0, 0, arg0->unk_08);
-        arg0->unk_04[i].node.callbackArg = arg0;
+        Model_InitDisplayObject(&arg0->rotation[i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
+        arg0->rotation[i].node.callbackArg = arg0;
     }
 
     for (i = 1; i < 4; i++) {
-        arg0->unk_04[i].rotation.y = 0x5800;
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        arg0->rotation[i].rotation.y = 0x5800;
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
     }
 
     for (i = 0; i < 3; i++) {
-        arg0->unk_04[4 + i].rotation.y = -0x5800;
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[4 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        arg0->rotation[4 + i].rotation.y = -0x5800;
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[4 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
     }
 }
 
-void BattlePrepTeamIcons_InitDisplayObjectsSingleHidden(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_InitDisplayObjectsSingleHidden(gTeamIconsState* arg0) {
     s32 i;
 
     for (i = 1; i < 7; i++) {
-        Model_InitDisplayObject(&arg0->unk_04[8 + i], 0, 0, arg0->unk_10);
-        arg0->unk_04[8 + i].node.callbackArg = arg0;
-        arg0->unk_04[8 + i].rotation.y = -0x8000;
+        Model_InitDisplayObject(&arg0->rotation[8 + i], 0, 0, arg0->unk_10);
+        arg0->rotation[8 + i].node.callbackArg = arg0;
+        arg0->rotation[8 + i].rotation.y = -0x8000;
     }
 
     for (i = 1; i < 4; i++) {
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[8 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[8 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
     }
 
     for (i = 0; i < 3; i++) {
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[12 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[12 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
     }
 }
 
-void BattlePrepTeamIcons_InitDisplayObjectsDoubleVisible(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_InitDisplayObjectsDoubleVisible(gTeamIconsState* arg0) {
     s32 i;
 
     for (i = 1; i < 4; i++) {
-        Model_InitDisplayObject(&arg0->unk_04[15 + i], 0, 0, arg0->unk_08);
-        Model_InitDisplayObject(&arg0->unk_04[18 + i], 0, 0, arg0->unk_0C);
-        arg0->unk_04[15 + i].node.callbackArg = arg0;
-        arg0->unk_04[18 + i].node.callbackArg = arg0;
+        Model_InitDisplayObject(&arg0->rotation[15 + i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
+        Model_InitDisplayObject(&arg0->rotation[18 + i], 0, 0, arg0->unk_0C);
+        arg0->rotation[15 + i].node.callbackArg = arg0;
+        arg0->rotation[18 + i].node.callbackArg = arg0;
 
-        arg0->unk_04[15 + i].rotation.y = 0x5800;
-        arg0->unk_04[18 + i].rotation.y = 0x5800;
+        arg0->rotation[15 + i].rotation.y = 0x5800;
+        arg0->rotation[18 + i].rotation.y = 0x5800;
 
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[15 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[18 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[15 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[18 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
     }
 
     for (i = 0; i < 3; i++) {
-        Model_InitDisplayObject(&arg0->unk_04[22 + i], 0, 0, arg0->unk_08);
-        Model_InitDisplayObject(&arg0->unk_04[25 + i], 0, 0, arg0->unk_0C);
-        arg0->unk_04[22 + i].node.callbackArg = arg0;
-        arg0->unk_04[25 + i].node.callbackArg = arg0;
+        Model_InitDisplayObject(&arg0->rotation[22 + i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
+        Model_InitDisplayObject(&arg0->rotation[25 + i], 0, 0, arg0->unk_0C);
+        arg0->rotation[22 + i].node.callbackArg = arg0;
+        arg0->rotation[25 + i].node.callbackArg = arg0;
 
-        arg0->unk_04[22 + i].rotation.y = -0x5800;
-        arg0->unk_04[25 + i].rotation.y = -0x5800;
+        arg0->rotation[22 + i].rotation.y = -0x5800;
+        arg0->rotation[25 + i].rotation.y = -0x5800;
 
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[22 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[25 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[22 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[25 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
     }
 }
 
-void BattlePrepTeamIcons_InitDisplayObjectsDoubleHidden(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_InitDisplayObjectsDoubleHidden(gTeamIconsState* arg0) {
     s32 i;
 
     for (i = 1; i < 4; i++) {
-        Model_InitDisplayObject(&arg0->unk_04[27 + i], 0, 0, arg0->unk_10);
-        Model_InitDisplayObject(&arg0->unk_04[30 + i], 0, 0, arg0->unk_14);
+        Model_InitDisplayObject(&arg0->rotation[27 + i], 0, 0, arg0->unk_10);
+        Model_InitDisplayObject(&arg0->rotation[30 + i], 0, 0, arg0->unk_14);
 
-        arg0->unk_04[27 + i].node.callbackArg = arg0;
-        arg0->unk_04[30 + i].node.callbackArg = arg0;
+        arg0->rotation[27 + i].node.callbackArg = arg0;
+        arg0->rotation[30 + i].node.callbackArg = arg0;
 
-        arg0->unk_04[27 + i].rotation.y = -0x8000;
-        arg0->unk_04[30 + i].rotation.y = -0x8000;
+        arg0->rotation[27 + i].rotation.y = -0x8000;
+        arg0->rotation[30 + i].rotation.y = -0x8000;
 
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[27 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[30 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[27 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[30 + i].position, (i * 64.0f) - 96.0f, 48.0f, -289.0f);
     }
 
     for (i = 0; i < 3; i++) {
-        Model_InitDisplayObject(&arg0->unk_04[34 + i], 0, 0, arg0->unk_10);
-        Model_InitDisplayObject(&arg0->unk_04[37 + i], 0, 0, arg0->unk_14);
-        arg0->unk_04[34 + i].node.callbackArg = arg0;
-        arg0->unk_04[37 + i].node.callbackArg = arg0;
+        Model_InitDisplayObject(&arg0->rotation[34 + i], 0, 0, arg0->unk_10);
+        Model_InitDisplayObject(&arg0->rotation[37 + i], 0, 0, arg0->unk_14);
+        arg0->rotation[34 + i].node.callbackArg = arg0;
+        arg0->rotation[37 + i].node.callbackArg = arg0;
 
-        arg0->unk_04[34 + i].rotation.y = -0x8000;
-        arg0->unk_04[37 + i].rotation.y = -0x8000;
+        arg0->rotation[34 + i].rotation.y = -0x8000;
+        arg0->rotation[37 + i].rotation.y = -0x8000;
 
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[34 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[37 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[34 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[37 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
     }
 }
 
-void BattlePrepTeamIcons_RevealStepSingle(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_RevealStepSingle(gTeamIconsState* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == 0) {
@@ -709,18 +709,18 @@ void BattlePrepTeamIcons_RevealStepSingle(unk_D_84B25A58* arg0, s16 arg1) {
 
     if (arg1 < 0xB) {
         for (i = 0; i < 4; i++) {
-            arg0->unk_04[i].rotation.y -= 0x800;
+            arg0->rotation[i].rotation.y -= 0x800;
         }
 
         for (i = 4; i < 8; i++) {
-            arg0->unk_04[i].rotation.y += 0x800;
+            arg0->rotation[i].rotation.y += 0x800;
         }
 
         BattlePrepTeamIcons_DrawHpBarsSingle(arg0, 0x64);
     }
 }
 
-void BattlePrepTeamIcons_RevealStepDouble(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_RevealStepDouble(gTeamIconsState* arg0, s16 arg1) {
     s16 i;
 
     if (arg1 == 0) {
@@ -728,22 +728,22 @@ void BattlePrepTeamIcons_RevealStepDouble(unk_D_84B25A58* arg0, s16 arg1) {
     }
 
     if (arg1 < 0xB) {
-        arg0->unk_04[0].rotation.y -= 0x800;
-        arg0->unk_04[7].rotation.y += 0x800;
+        arg0->rotation[0].rotation.y -= 0x800;
+        arg0->rotation[7].rotation.y += 0x800;
 
         for (i = 16; i < 22; i++) {
-            arg0->unk_04[i].rotation.y -= 0x800;
+            arg0->rotation[i].rotation.y -= 0x800;
         }
 
         for (i = 22; i < 28; i++) {
-            arg0->unk_04[i].rotation.y += 0x800;
+            arg0->rotation[i].rotation.y += 0x800;
         }
 
         BattlePrepTeamIcons_DrawHpBarsDouble(arg0, 0x64);
     }
 }
 
-void BattlePrepTeamIcons_HpDrainStepSingleNTSC(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_HpDrainStepSingleNTSC(gTeamIconsState* arg0, s16 arg1) {
     if (arg1 == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000A, 0, 0);
     }
@@ -757,7 +757,7 @@ void BattlePrepTeamIcons_HpDrainStepSingleNTSC(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_HpDrainStepDoubleNTSC(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_HpDrainStepDoubleNTSC(gTeamIconsState* arg0, s16 arg1) {
     if (arg1 == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000A, 0, 0);
     }
@@ -771,7 +771,7 @@ void BattlePrepTeamIcons_HpDrainStepDoubleNTSC(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_HpDrainStepSinglePAL(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_HpDrainStepSinglePAL(gTeamIconsState* arg0, s16 arg1) {
     if (arg1 == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000A, 0, 0);
     }
@@ -785,7 +785,7 @@ void BattlePrepTeamIcons_HpDrainStepSinglePAL(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_HpDrainStepDoublePAL(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_HpDrainStepDoublePAL(gTeamIconsState* arg0, s16 arg1) {
     if (arg1 == 0) {
         Audio_PlayCategory11SoundCommand(0x0110000A, 0, 0);
     }
@@ -799,7 +799,7 @@ void BattlePrepTeamIcons_HpDrainStepDoublePAL(unk_D_84B25A58* arg0, s16 arg1) {
     }
 }
 
-void BattlePrepTeamIcons_FinalRevealSingle(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_FinalRevealSingle(gTeamIconsState* arg0, s16 arg1) {
     s32 i;
     BattleMon* temp_s5 = gSessionContext.battleSides[0].teamMember[0]->pokemonPicked;
     BattleMon* temp_s6 = gSessionContext.battleSides[1].teamMember[0]->pokemonPicked;
@@ -811,56 +811,56 @@ void BattlePrepTeamIcons_FinalRevealSingle(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 < 0x10) {
         for (i = 0; i < gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen; i++) {
             if (temp_s5[i].unk_25 != 0) {
-                arg0->unk_04[1 + i].rotation.y += 0x800;
-                arg0->unk_04[9 + i].rotation.y += 0x800;
+                arg0->rotation[1 + i].rotation.y += 0x800;
+                arg0->rotation[9 + i].rotation.y += 0x800;
             }
         }
 
         for (i = 0; i < gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen; i++) {
             if (temp_s6[i].unk_25 != 0) {
-                arg0->unk_04[4 + i].rotation.y -= 0x800;
-                arg0->unk_04[12 + i].rotation.y -= 0x800;
+                arg0->rotation[4 + i].rotation.y -= 0x800;
+                arg0->rotation[12 + i].rotation.y -= 0x800;
             }
         }
     }
 
     if (arg1 == 0x10) {
         for (i = 1; i < 7; i++) {
-            ModelRenderer_ClearDisplayObject(&arg0->unk_04[i]);
-            BattlePrep_ResetDisplayObject(&arg0->unk_04[8 + i]);
-            arg0->unk_04[i].rotation.y = 0;
+            ModelRenderer_ClearDisplayObject(&arg0->rotation[i]);
+            BattlePrep_ResetDisplayObject(&arg0->rotation[8 + i]);
+            arg0->rotation[i].rotation.y = 0;
         }
 
         for (i = 0; i < 3; i++) {
             if ((i >= gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen) || (temp_s5[i].unk_25 == 0)) {
-                Model_InitDisplayObject(&arg0->unk_04[1 + i], 0, 0, arg0->unk_08);
+                Model_InitDisplayObject(&arg0->rotation[1 + i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
             } else {
-                Model_InitDisplayObject(&arg0->unk_04[1 + i], 0, 0, arg0->unk_10);
+                Model_InitDisplayObject(&arg0->rotation[1 + i], 0, 0, arg0->unk_10);
             }
         }
 
         for (i = 0; i < 3; i++) {
             if ((i >= gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen) || (temp_s6[i].unk_25 == 0)) {
-                Model_InitDisplayObject(&arg0->unk_04[4 + i], 0, 0, arg0->unk_08);
+                Model_InitDisplayObject(&arg0->rotation[4 + i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
             } else {
-                Model_InitDisplayObject(&arg0->unk_04[4 + i], 0, 0, arg0->unk_10);
+                Model_InitDisplayObject(&arg0->rotation[4 + i], 0, 0, arg0->unk_10);
             }
         }
     }
 }
 
-void BattlePrepTeamIcons_FinalRevealDouble(unk_D_84B25A58* arg0, s16 arg1) {
+void BattlePrepTeamIcons_FinalRevealDouble(gTeamIconsState* arg0, s16 arg1) {
     s32 i;
     BattleMon* temp_s0 = &gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[0];
     BattleMon* var_a3 = NULL;
     BattleMon* temp_t1 = &gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[0];
     BattleMon* var_t0 = NULL;
 
-    if (gSessionContext.battleSides[0].unk_01 == 2) {
+    if (gSessionContext.battleSides[0].TrainerSlotSaveData_GamePort == 2) {
         var_a3 = &gSessionContext.battleSides[0].teamMember[1]->pokemonPicked[0];
     }
 
-    if (gSessionContext.battleSides[1].unk_01 == 2) {
+    if (gSessionContext.battleSides[1].TrainerSlotSaveData_GamePort == 2) {
         var_t0 = &gSessionContext.battleSides[1].teamMember[1]->pokemonPicked[0];
     }
 
@@ -871,23 +871,23 @@ void BattlePrepTeamIcons_FinalRevealDouble(unk_D_84B25A58* arg0, s16 arg1) {
     if (arg1 < 0x10) {
         for (i = 0; i < gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen; i++) {
             if (temp_s0[i].unk_25 != 0) {
-                arg0->unk_04[16 + i].rotation.y += 0x800;
-                arg0->unk_04[28 + i].rotation.y += 0x800;
+                arg0->rotation[16 + i].rotation.y += 0x800;
+                arg0->rotation[28 + i].rotation.y += 0x800;
             }
         }
 
         for (i = 0; i < gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen; i++) {
             if (temp_t1[i].unk_25 != 0) {
-                arg0->unk_04[22 + i].rotation.y -= 0x800;
-                arg0->unk_04[34 + i].rotation.y -= 0x800;
+                arg0->rotation[22 + i].rotation.y -= 0x800;
+                arg0->rotation[34 + i].rotation.y -= 0x800;
             }
         }
 
         if (var_a3 != NULL) {
             for (i = 0; i < gSessionContext.battleSides[0].teamMember[1]->numberOfPokemonChosen; i++) {
                 if (var_a3[i].unk_25 != 0) {
-                    arg0->unk_04[19 + i].rotation.y += 0x800;
-                    arg0->unk_04[31 + i].rotation.y += 0x800;
+                    arg0->rotation[19 + i].rotation.y += 0x800;
+                    arg0->rotation[31 + i].rotation.y += 0x800;
                 }
             }
         }
@@ -895,8 +895,8 @@ void BattlePrepTeamIcons_FinalRevealDouble(unk_D_84B25A58* arg0, s16 arg1) {
         if (var_t0 != NULL) {
             for (i = 0; i < gSessionContext.battleSides[1].teamMember[1]->numberOfPokemonChosen; i++) {
                 if (var_t0[i].unk_25 != 0) {
-                    arg0->unk_04[25 + i].rotation.y -= 0x800;
-                    arg0->unk_04[37 + i].rotation.y -= 0x800;
+                    arg0->rotation[25 + i].rotation.y -= 0x800;
+                    arg0->rotation[37 + i].rotation.y -= 0x800;
                 }
             }
         }
@@ -904,129 +904,129 @@ void BattlePrepTeamIcons_FinalRevealDouble(unk_D_84B25A58* arg0, s16 arg1) {
 
     if (arg1 == 0x10) {
         for (i = 0; i < 3; i++) {
-            if (arg0->unk_04[16 + i].rotation.y == 0) {
-                Model_InitDisplayObject(&arg0->unk_04[1 + i], 0, 0, arg0->unk_08);
+            if (arg0->rotation[16 + i].rotation.y == 0) {
+                Model_InitDisplayObject(&arg0->rotation[1 + i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
             } else {
-                Model_InitDisplayObject(&arg0->unk_04[1 + i], 0, 0, arg0->unk_10);
+                Model_InitDisplayObject(&arg0->rotation[1 + i], 0, 0, arg0->unk_10);
             }
-            arg0->unk_04[1 + i].node.callbackArg = arg0;
-            Vec3f_SetComponentsDuplicate(&arg0->unk_04[1 + i].position, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
+            arg0->rotation[1 + i].node.callbackArg = arg0;
+            Vec3f_SetComponentsDuplicate(&arg0->rotation[1 + i].position, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
         }
 
         for (i = 0; i < 3; i++) {
-            if (arg0->unk_04[19 + i].rotation.y == 0) {
-                Model_InitDisplayObject(&arg0->unk_04[9 + i], 0, 0, arg0->unk_0C);
+            if (arg0->rotation[19 + i].rotation.y == 0) {
+                Model_InitDisplayObject(&arg0->rotation[9 + i], 0, 0, arg0->unk_0C);
             } else {
-                Model_InitDisplayObject(&arg0->unk_04[9 + i], 0, 0, arg0->unk_14);
+                Model_InitDisplayObject(&arg0->rotation[9 + i], 0, 0, arg0->unk_14);
             }
-            arg0->unk_04[9 + i].node.callbackArg = arg0;
-            Vec3f_SetComponentsDuplicate(&arg0->unk_04[9 + i].position, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
+            arg0->rotation[9 + i].node.callbackArg = arg0;
+            Vec3f_SetComponentsDuplicate(&arg0->rotation[9 + i].position, (i * 64.0f) - 32.0f, 48.0f, -289.0f);
         }
 
         for (i = 0; i < 3; i++) {
-            if (arg0->unk_04[22 + i].rotation.y == 0) {
-                Model_InitDisplayObject(&arg0->unk_04[4 + i], 0, 0, arg0->unk_08);
+            if (arg0->rotation[22 + i].rotation.y == 0) {
+                Model_InitDisplayObject(&arg0->rotation[4 + i], 0, 0, arg0->RentalSlotAnimData_PosePhase);
             } else {
-                Model_InitDisplayObject(&arg0->unk_04[4 + i], 0, 0, arg0->unk_10);
+                Model_InitDisplayObject(&arg0->rotation[4 + i], 0, 0, arg0->unk_10);
             }
-            arg0->unk_04[4 + i].node.callbackArg = arg0;
-            Vec3f_SetComponentsDuplicate(&arg0->unk_04[4 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+            arg0->rotation[4 + i].node.callbackArg = arg0;
+            Vec3f_SetComponentsDuplicate(&arg0->rotation[4 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
         }
 
         for (i = 0; i < 3; i++) {
-            if (arg0->unk_04[25 + i].rotation.y == 0) {
-                Model_InitDisplayObject(&arg0->unk_04[12 + i], 0, 0, arg0->unk_0C);
+            if (arg0->rotation[25 + i].rotation.y == 0) {
+                Model_InitDisplayObject(&arg0->rotation[12 + i], 0, 0, arg0->unk_0C);
             } else {
-                Model_InitDisplayObject(&arg0->unk_04[12 + i], 0, 0, arg0->unk_14);
+                Model_InitDisplayObject(&arg0->rotation[12 + i], 0, 0, arg0->unk_14);
             }
-            arg0->unk_04[12 + i].node.callbackArg = arg0;
-            Vec3f_SetComponentsDuplicate(&arg0->unk_04[12 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
+            arg0->rotation[12 + i].node.callbackArg = arg0;
+            Vec3f_SetComponentsDuplicate(&arg0->rotation[12 + i].position, (i * 64.0f) - 96.0f, -48.0f, -289.0f);
         }
 
         for (i = 16; i < 40; i++) {
-            BattlePrep_ResetDisplayObject(&arg0->unk_04[i]);
+            BattlePrep_ResetDisplayObject(&arg0->rotation[i]);
         }
     }
 }
 
-void BattlePrepTeamIcons_UpdateStep(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_UpdateStep(gTeamIconsState* arg0) {
     if (osTvType == OS_TV_PAL) {
-        if (arg0->unk_02 == 1) {
-            if (arg0->unk_01 >= 0) {
-                BattlePrepTeamIcons_RevealStepDouble(arg0, arg0->unk_01);
+        if (arg0->posY == 1) {
+            if (arg0->TrainerSlotSaveData_GamePort >= 0) {
+                BattlePrepTeamIcons_RevealStepDouble(arg0, arg0->TrainerSlotSaveData_GamePort);
             }
 
-            if (arg0->unk_01 >= 0xC) {
-                BattlePrepTeamIcons_HpDrainStepDoublePAL(arg0, arg0->unk_01 - 0xC);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0xC) {
+                BattlePrepTeamIcons_HpDrainStepDoublePAL(arg0, arg0->TrainerSlotSaveData_GamePort - 0xC);
             }
 
-            if (arg0->unk_01 >= 0x3E) {
-                BattlePrepTeamIcons_FinalRevealDouble(arg0, arg0->unk_01 - 0x3E);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0x3E) {
+                BattlePrepTeamIcons_FinalRevealDouble(arg0, arg0->TrainerSlotSaveData_GamePort - 0x3E);
             }
         } else {
-            if (arg0->unk_01 >= 0) {
-                BattlePrepTeamIcons_RevealStepSingle(arg0, arg0->unk_01);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0) {
+                BattlePrepTeamIcons_RevealStepSingle(arg0, arg0->TrainerSlotSaveData_GamePort);
             }
 
-            if (arg0->unk_01 >= 0xC) {
-                BattlePrepTeamIcons_HpDrainStepSinglePAL(arg0, arg0->unk_01 - 0xC);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0xC) {
+                BattlePrepTeamIcons_HpDrainStepSinglePAL(arg0, arg0->TrainerSlotSaveData_GamePort - 0xC);
             }
 
-            if (arg0->unk_01 >= 0x3E) {
-                BattlePrepTeamIcons_FinalRevealSingle(arg0, arg0->unk_01 - 0x3E);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0x3E) {
+                BattlePrepTeamIcons_FinalRevealSingle(arg0, arg0->TrainerSlotSaveData_GamePort - 0x3E);
             }
         }
 
-        arg0->unk_01++;
-        if (arg0->unk_01 == 0x50) {
-            arg0->unk_00 = 0;
+        arg0->TrainerSlotSaveData_GamePort++;
+        if (arg0->TrainerSlotSaveData_GamePort == 0x50) {
+            arg0->posX = 0;
         }
     } else {
-        if (arg0->unk_02 == 1) {
-            if (arg0->unk_01 >= 0) {
-                BattlePrepTeamIcons_RevealStepDouble(arg0, arg0->unk_01);
+        if (arg0->posY == 1) {
+            if (arg0->TrainerSlotSaveData_GamePort >= 0) {
+                BattlePrepTeamIcons_RevealStepDouble(arg0, arg0->TrainerSlotSaveData_GamePort);
             }
 
-            if (arg0->unk_01 >= 0xC) {
-                BattlePrepTeamIcons_HpDrainStepDoubleNTSC(arg0, arg0->unk_01 - 0xC);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0xC) {
+                BattlePrepTeamIcons_HpDrainStepDoubleNTSC(arg0, arg0->TrainerSlotSaveData_GamePort - 0xC);
             }
 
-            if (arg0->unk_01 >= 0x4A) {
-                BattlePrepTeamIcons_FinalRevealDouble(arg0, arg0->unk_01 - 0x4A);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0x4A) {
+                BattlePrepTeamIcons_FinalRevealDouble(arg0, arg0->TrainerSlotSaveData_GamePort - 0x4A);
             }
         } else {
-            if (arg0->unk_01 >= 0) {
-                BattlePrepTeamIcons_RevealStepSingle(arg0, arg0->unk_01);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0) {
+                BattlePrepTeamIcons_RevealStepSingle(arg0, arg0->TrainerSlotSaveData_GamePort);
             }
 
-            if (arg0->unk_01 >= 0xC) {
-                BattlePrepTeamIcons_HpDrainStepSingleNTSC(arg0, arg0->unk_01 - 0xC);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0xC) {
+                BattlePrepTeamIcons_HpDrainStepSingleNTSC(arg0, arg0->TrainerSlotSaveData_GamePort - 0xC);
             }
 
-            if (arg0->unk_01 >= 0x4A) {
-                BattlePrepTeamIcons_FinalRevealSingle(arg0, arg0->unk_01 - 0x4A);
+            if (arg0->TrainerSlotSaveData_GamePort >= 0x4A) {
+                BattlePrepTeamIcons_FinalRevealSingle(arg0, arg0->TrainerSlotSaveData_GamePort - 0x4A);
             }
         }
 
-        arg0->unk_01++;
-        if (arg0->unk_01 == 0x60) {
-            arg0->unk_00 = 0;
+        arg0->TrainerSlotSaveData_GamePort++;
+        if (arg0->TrainerSlotSaveData_GamePort == 0x60) {
+            arg0->posX = 0;
         }
     }
 }
 
-void BattlePrepTeamIcons_UpdateLoadingStep(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_UpdateLoadingStep(gTeamIconsState* arg0) {
     PokeIcon_ProcessNextSlot(arg0->unk_1C, 0);
 
-    arg0->unk_01++;
-    if ((arg0->unk_01 >= 0x1E) && (PokeIcon_AreSlotsIdle(arg0->unk_1C) != 0)) {
-        arg0->unk_01 = 0;
-        arg0->unk_00 = 2;
+    arg0->TrainerSlotSaveData_GamePort++;
+    if ((arg0->TrainerSlotSaveData_GamePort >= 0x1E) && (PokeIcon_AreSlotsIdle(arg0->unk_1C) != 0)) {
+        arg0->TrainerSlotSaveData_GamePort = 0;
+        arg0->posX = 2;
     }
 }
 
-void BattlePrepTeamIcons_Update(unk_D_84B25A58* arg0) {
-    switch (arg0->unk_00) {
+void BattlePrepTeamIcons_Update(gTeamIconsState* arg0) {
+    switch (arg0->posX) {
         case 1:
             BattlePrepTeamIcons_UpdateLoadingStep(arg0);
             break;
@@ -1037,7 +1037,7 @@ void BattlePrepTeamIcons_Update(unk_D_84B25A58* arg0) {
     }
 }
 
-void BattlePrepTeamIcons_LoadDexIdsSingle(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_LoadDexIdsSingle(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
     ModelLoadContext* temp_s0;
@@ -1046,15 +1046,15 @@ void BattlePrepTeamIcons_LoadDexIdsSingle(unk_D_84B25A58* arg0) {
     PokeIcon_AttachDepthBuffer(arg0->unk_1C, temp_s0, GfxImage_Allocate(0, 2, 0x80, 0xC0, 1));
 
     for (count = 0, i = 0; i < gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen; count++, i++) {
-        func_8001A324(arg0->unk_1C, count, gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[i].posX.posX, 0);
     }
 
     for (count = 3, i = 0; i < gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen; count++, i++) {
-        func_8001A324(arg0->unk_1C, count, gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[i].posX.posX, 0);
     }
 }
 
-void BattlePrepTeamIcons_LoadDexIdsDouble(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_LoadDexIdsDouble(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
     ModelLoadContext* temp_s0;
@@ -1063,27 +1063,27 @@ void BattlePrepTeamIcons_LoadDexIdsDouble(unk_D_84B25A58* arg0) {
     PokeIcon_AttachDepthBuffer(arg0->unk_1C, temp_s0, GfxImage_Allocate(0, 2, 0x80, 0x60, 1));
 
     for (count = 0, i = 0; i < gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen; count++, i++) {
-        func_8001A324(arg0->unk_1C, count, gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[i].posX.posX, 0);
     }
 
     for (count = 6, i = 0; i < gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen; count++, i++) {
-        func_8001A324(arg0->unk_1C, count, gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[i].unk_00.unk_00, 0);
+        SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[i].posX.posX, 0);
     }
 
     if (gSessionContext.battleSides[0].teamMember[1] != NULL) {
         for (count = 3, i = 0; i < gSessionContext.battleSides[0].teamMember[1]->numberOfPokemonChosen; count++, i++) {
-            func_8001A324(arg0->unk_1C, count, gSessionContext.battleSides[0].teamMember[1]->pokemonPicked[i].unk_00.unk_00, 0);
+            SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[0].teamMember[1]->pokemonPicked[i].posX.posX, 0);
         }
     }
 
     if (gSessionContext.battleSides[1].teamMember[1] != NULL) {
         for (count = 9, i = 0; i < gSessionContext.battleSides[1].teamMember[1]->numberOfPokemonChosen; count++, i++) {
-            func_8001A324(arg0->unk_1C, count, gSessionContext.battleSides[1].teamMember[1]->pokemonPicked[i].unk_00.unk_00, 0);
+            SpriteDisplay_SetupSlot(arg0->unk_1C, count, gSessionContext.battleSides[1].teamMember[1]->pokemonPicked[i].posX.posX, 0);
         }
     }
 }
 
-void BattlePrepTeamIcons_Load(unk_D_84B25A58* arg0, BinArchive* arg1) {
+void BattlePrepTeamIcons_Load(gTeamIconsState* arg0, BinArchive* arg1) {
     u8* sp24 = BinArchive_GetFile(arg1, gSessionContext.battleSides[0].teamMember[0]->rosterInfo->unk_003);
     u8* sp20 = BinArchive_GetFile(arg1, gSessionContext.battleSides[1].teamMember[0]->rosterInfo->unk_003);
 
@@ -1091,7 +1091,7 @@ void BattlePrepTeamIcons_Load(unk_D_84B25A58* arg0, BinArchive* arg1) {
 
     FRAGMENT_LOAD(FRAGMENT_PARTICLE_DATA_LIBRARY);
 
-    if (arg0->unk_02 == 1) {
+    if (arg0->posY == 1) {
         BattlePrepTeamIcons_LoadDexIdsDouble(arg0);
     } else {
         BattlePrepTeamIcons_LoadDexIdsSingle(arg0);
@@ -1099,96 +1099,96 @@ void BattlePrepTeamIcons_Load(unk_D_84B25A58* arg0, BinArchive* arg1) {
 
     BattlePrep_DrawTrainerStatusIcon(arg0->unk_24, 0, sp24, D_3000000);
     BattlePrep_DrawTrainerStatusIcon(arg0->unk_28, 1, sp20, D_3003000);
-    arg0->unk_00 = 1;
+    arg0->posX = 1;
 }
 
-s32 BattlePrepTeamIcons_InitDisplayObjects(unk_D_84B25A58* arg0, DisplayObject* arg1) {
-    if (arg0->unk_00 == 2) {
-        arg0->unk_00 = 3;
-        arg0->unk_04 = arg1;
-        arg0->unk_01 = 0;
+s32 BattlePrepTeamIcons_InitDisplayObjects(gTeamIconsState* arg0, DisplayObject* arg1) {
+    if (arg0->posX == 2) {
+        arg0->posX = 3;
+        arg0->rotation = arg1;
+        arg0->TrainerSlotSaveData_GamePort = 0;
         arg1->node.callbackArg = arg0;
 
-        arg0->unk_04[7].node.callbackArg = arg0;
-        arg0->unk_04[0].rotation.y = 0x5800;
-        arg0->unk_04[7].rotation.y = -0x5800;
+        arg0->rotation[7].node.callbackArg = arg0;
+        arg0->rotation[0].rotation.y = 0x5800;
+        arg0->rotation[7].rotation.y = -0x5800;
 
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[0].position, -96.0f, 48.0f, -289.0f);
-        Vec3f_SetComponentsDuplicate(&arg0->unk_04[7].position, 96.0f, -48.0f, -289.0f);
-        Model_InitDisplayObject(&arg0->unk_04[0], 0, 0, arg0->unk_18);
-        Model_InitDisplayObject(&arg0->unk_04[7], 0, 0, arg0->unk_18);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[0].position, -96.0f, 48.0f, -289.0f);
+        Vec3f_SetComponentsDuplicate(&arg0->rotation[7].position, 96.0f, -48.0f, -289.0f);
+        Model_InitDisplayObject(&arg0->rotation[0], 0, 0, arg0->unk_18);
+        Model_InitDisplayObject(&arg0->rotation[7], 0, 0, arg0->unk_18);
 
-        if (arg0->unk_02 == 1) {
+        if (arg0->posY == 1) {
             BattlePrepTeamIcons_InitDisplayObjectsDoubleVisible(arg0);
         } else {
             BattlePrepTeamIcons_InitDisplayObjectsSingleVisible(arg0);
         }
     }
-    return arg0->unk_00 == 3;
+    return arg0->posX == 3;
 }
 
-void BattlePrepTeamIcons_LoadIconTexturesSingle(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_LoadIconTexturesSingle(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
 
     for (i = 0, count = 0; i < gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen; count++, i++) {
-        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[i].unk_00.unk_00, NULL);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[i].posX.posX, NULL);
     }
 
     for (i = 0, count = 3; i < gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen; count++, i++) {
-        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[i].unk_00.unk_00, NULL);
+        PokeIcon_LoadModelTextureForMon(arg0->unk_20[count], gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[i].posX.posX, NULL);
     }
 }
 
-void BattlePrepTeamIcons_LoadIconTexturesDouble(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_LoadIconTexturesDouble(gTeamIconsState* arg0) {
     s32 i;
     s32 count;
 
     for (i = 0, count = 0; i < gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen; count++, i++) {
-        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[i].unk_00.unk_00, NULL);
+        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[0].teamMember[0]->pokemonPicked[i].posX.posX, NULL);
     }
 
     for (i = 0, count = 6; i < gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen; count++, i++) {
-        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[i].unk_00.unk_00, NULL);
+        PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[1].teamMember[0]->pokemonPicked[i].posX.posX, NULL);
     }
 
     if (gSessionContext.battleSides[0].teamMember[1] != NULL) {
         for (i = 0, count = 3; i < gSessionContext.battleSides[0].teamMember[1]->numberOfPokemonChosen; count++, i++) {
-            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[0].teamMember[1]->pokemonPicked[i].unk_00.unk_00, NULL);
+            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[0].teamMember[1]->pokemonPicked[i].posX.posX, NULL);
         }
     }
 
     if (gSessionContext.battleSides[1].teamMember[1] != NULL) {
         for (i = 0, count = 9; i < gSessionContext.battleSides[1].teamMember[1]->numberOfPokemonChosen; count++, i++) {
-            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[1].teamMember[1]->pokemonPicked[i].unk_00.unk_00, NULL);
+            PokeIcon_LoadModelTextureForMon(&arg0->unk_20[count], gSessionContext.battleSides[1].teamMember[1]->pokemonPicked[i].posX.posX, NULL);
         }
     }
 }
 
-void BattlePrepTeamIcons_Init(unk_D_84B25A58* arg0) {
+void BattlePrepTeamIcons_Init(gTeamIconsState* arg0) {
     MemoryBlock* sp2C;
     s32 i;
 
-    arg0->unk_00 = 0;
-    arg0->unk_01 = 0;
-    arg0->unk_02 = 0;
+    arg0->posX = 0;
+    arg0->TrainerSlotSaveData_GamePort = 0;
+    arg0->posY = 0;
     arg0->unk_24 = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
     arg0->unk_28 = GfxImage_Allocate(0, 2, 0x40, 0x60, 0);
 
     if ((gSessionContext.ruleCategory == 8) && (gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen >= 4)) {
-        arg0->unk_02 = 1;
+        arg0->posY = 1;
     }
 
     if (gSessionContext.ruleCategory == 0) {
-        if ((gSessionContext.battleSides[0].unk_01 == 2) || (gSessionContext.battleSides[1].unk_01 == 2)) {
-            arg0->unk_02 = 1;
+        if ((gSessionContext.battleSides[0].TrainerSlotSaveData_GamePort == 2) || (gSessionContext.battleSides[1].TrainerSlotSaveData_GamePort == 2)) {
+            arg0->posY = 1;
         } else {
             if (gSessionContext.battleSides[0].teamMember[0]->numberOfPokemonChosen >= 4) {
-                arg0->unk_02 = 1;
+                arg0->posY = 1;
             }
 
             if (gSessionContext.battleSides[1].teamMember[0]->numberOfPokemonChosen >= 4) {
-                arg0->unk_02 = 1;
+                arg0->posY = 1;
             }
         }
     }
@@ -1197,7 +1197,7 @@ void BattlePrepTeamIcons_Init(unk_D_84B25A58* arg0) {
         arg0->unk_2C[i] = 0;
     }
 
-    if (arg0->unk_02 == 1) {
+    if (arg0->posY == 1) {
         arg0->unk_1C = PokeIcon_CreateRenderList(NULL, 0xC, 0x80, 0x60);
         arg0->unk_20 = ALIGN64((u32)main_pool_alloc(0x9640, 0));
     } else {
@@ -1205,23 +1205,23 @@ void BattlePrepTeamIcons_Init(unk_D_84B25A58* arg0) {
         arg0->unk_20 = ALIGN64((u32)main_pool_alloc(0x4B40, 0));
     }
 
-    PokeIcon_SetNameTable(arg0->unk_1C, D_84B186C0);
+    PokeIcon_SetNameTable(arg0->unk_1C, gSpeciesDisplayParamsBack);
 
     sp2C = MainPool_AllocState(main_pool_get_available(), 0);
-    if (arg0->unk_02 == 1) {
-        arg0->unk_08 = process_geo_layout(sp2C, D_84B15F50);
-        arg0->unk_0C = process_geo_layout(sp2C, D_84B15FA8);
-        arg0->unk_10 = process_geo_layout(sp2C, D_84B162D8);
-        arg0->unk_14 = process_geo_layout(sp2C, D_84B16330);
+    if (arg0->posY == 1) {
+        arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gSmallMonIconNodeData);
+        arg0->unk_0C = process_geo_layout(sp2C, gSmallMonIconNodeDataOffset);
+        arg0->unk_10 = process_geo_layout(sp2C, gSmallMonIconDoubleNodeData);
+        arg0->unk_14 = process_geo_layout(sp2C, gHPBarNodeDataDoubleBadgeMirror);
     } else {
-        arg0->unk_08 = process_geo_layout(sp2C, D_84B15688);
-        arg0->unk_10 = process_geo_layout(sp2C, D_84B15A20);
+        arg0->RentalSlotAnimData_PosePhase = process_geo_layout(sp2C, gMonIconNodeData);
+        arg0->unk_10 = process_geo_layout(sp2C, gMonIconDoubleNodeData);
     }
 
-    arg0->unk_18 = process_geo_layout(sp2C, D_84B14DC8);
+    arg0->unk_18 = process_geo_layout(sp2C, gTeamBadgeNodeData);
     MainPool_FinalizeAllocation(sp2C);
 
-    if (arg0->unk_02 == 1) {
+    if (arg0->posY == 1) {
         BattlePrepTeamIcons_LoadIconTexturesDouble(arg0);
     } else {
         BattlePrepTeamIcons_LoadIconTexturesSingle(arg0);

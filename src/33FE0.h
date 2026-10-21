@@ -49,8 +49,8 @@ typedef struct ModelVertex {
 } ModelVertex;                      // size = 0x94
 
 typedef struct StadiumTransform {
-    /* 0x00 */ s16  unk_00;
-    /* 0x02 */ s16  unk_02;
+    /* 0x00 */ s16  posX;
+    /* 0x02 */ s16  posY;
     /* 0x04 */ f32  maxDist;
     /* 0x08 */ f32  x0;
     /* 0x0C */ f32  y0;
@@ -85,8 +85,8 @@ typedef struct ModelSegment {
 } ModelSegment; // size = 20
 
 typedef struct StadiumModel {
-    /* 0x00 */  s16 unk_00;
-    /* 0x02 */  s16 unk_02;
+    /* 0x00 */  s16 posX;
+    /* 0x02 */  s16 posY;
     /* 0x04 */  StadiumTransform transforms[5];
     /* 0x130 */ u32 modelSegment;
     /* 0x134 */ s8 pad134[0x4];
@@ -97,13 +97,13 @@ typedef struct StadiumModel {
     /* 0x170 */ ModelVertex mvtx;
 } StadiumModel; // size = 0x204
 
-extern ModelSegment D_800777A8;
-extern ModelSegment D_80077950;
+extern ModelSegment gNormalModelSegment;
+extern ModelSegment gSpecialModelSegment;
 
-void func_80033D1C(StadiumModel* model, MtxF* mtx);
+void Model_BuildVertexDataAndCommands(StadiumModel* model, MtxF* mtx);
 void Model_InitializeVertexPositions(ModelSegment*, MtxF*, ModelVertex*);
-void func_800357F4(StadiumModel* model);
+void Model_BuildTransformCommands(StadiumModel* model);
 void Model_ApplyTransformCommands(ModelSegment*, ModelVertex*, StadiumModel*, f32);
-void func_80035FA8(ModelSegment*, ModelVertex*);
+void Model_IntegrateVertexOffsets(ModelSegment*, ModelVertex*);
 
 #endif // _33E30_H_

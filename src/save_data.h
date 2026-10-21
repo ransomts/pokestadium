@@ -9,7 +9,7 @@ typedef struct GameOptions {
     /* 0x00 */ s16 gbTowerUnlockTier; // 0 = normal, 1 = Doduo, 2 = Dodrio.
     // Word carried into/out of GB Tower by State_GbTower; its pointer role is unknown.
     //@src/game_state.c
-    /* 0x04 */ struct GameOptions* unk_04;
+    /* 0x04 */ struct GameOptions* rotation;
 } GameOptions; // size = 0x8
 
 typedef struct ModeSettings {
@@ -22,11 +22,11 @@ typedef struct ModeSettings {
 } ModeSettings; // size = 0x8
 
 typedef struct SessionContinueData {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05[2][4];
     /* 0x0D */ u8 unk_0D;
     /* 0x0E */ u16 unk_0E;
@@ -40,8 +40,8 @@ typedef struct SessionContinueData {
 #endif
 
 typedef struct DeckRecordHeader {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0xA];
     /* 0x0C */ u16 unk_0C;
     /* 0x0E */ s16 unk_0E;
@@ -58,9 +58,9 @@ typedef struct RegisteredTeamBank {
 } RegisteredTeamBank; // size = 0x3700
 
 typedef struct SaveOptionsRecord {
-    /* 0x00 */ u8 unk_00;
-    /* 0x02 */ u16 unk_02;
-    /* 0x04 */ GameOptions unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x02 */ u16 posY;
+    /* 0x04 */ GameOptions rotation;
     /* 0x0C */ ModeSettings unk_0C[1];
     /* 0x14 */ char unk14[0x8];
     /* 0x1C */ u16 unk_1C;
@@ -69,28 +69,28 @@ typedef struct SaveOptionsRecord {
     /* 0x20 */ char unk20[0x8];
 } SaveOptionsRecord; // size = 0x28
 
-typedef struct unk_D_800AE4E8_004_2_0DC0_002 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u16 unk_02;
+typedef struct SaveBank_HallOfFameEntry {
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u16 posY;
 #if defined(VERSION_JP)
     // VictoryPalace_SaveSpeciesRecord transcodes the two names into 0x04 and 0x0A.
     //@src/pokemon_stats.c
-    /* 0x04 */ char unk_04[6];
+    /* 0x04 */ char rotation[6];
     /* 0x0A */ char unk_0A[6];
-} unk_D_800AE4E8_004_2_0DC0_002; // size = 0x10
+} SaveBank_HallOfFameEntry; // size = 0x10
 #else
-    /* 0x04 */ char unk_04[11];
+    /* 0x04 */ char rotation[11];
     /* 0x0F */ char unk_0F[11];
-} unk_D_800AE4E8_004_2_0DC0_002; // size = 0x1A
+} SaveBank_HallOfFameEntry; // size = 0x1A
 #endif
 
-typedef struct unk_D_800AE4E8_004_2_0DC0 {
+typedef struct SaveBank_HallOfFameRecord {
     /* 0x000 */ u8 unk_000;
     /* 0x001 */ char unk001[0x1];
-    /* 0x002 */ unk_D_800AE4E8_004_2_0DC0_002 unk_002[1];
+    /* 0x002 */ SaveBank_HallOfFameEntry unk_002[1];
     /* 0x01C */ char unk01C[0xF44];
-} unk_D_800AE4E8_004_2_0DC0; // size = 0xF60
+} SaveBank_HallOfFameRecord; // size = 0xF60
 
 typedef struct ContinueRecordBlock {
     /* 0x000 */ u8 unk_000;
@@ -102,54 +102,54 @@ typedef struct ContinueRecordBlock {
     /* 0x17A */ char unk17A[0x6];
 } ContinueRecordBlock; // size = 0x180
 
-typedef struct unk_D_800AE4E8_004_2_1EC8_0002 {
+typedef struct SaveBank_GalleryEntry {
     /* 0x00 */ char unk00[0x8C];
-} unk_D_800AE4E8_004_2_1EC8_0002; // size = 0x8C
+} SaveBank_GalleryEntry; // size = 0x8C
 
-typedef struct unk_D_800AE4E8_004_2_1EC8 {
+typedef struct SaveBank_GalleryRecord {
     /* 0x0000 */ u8 unk_0000;
     /* 0x0001 */ char unk0001[0x1];
-    /* 0x0002 */ unk_D_800AE4E8_004_2_1EC8_0002 unk_0002[1];
+    /* 0x0002 */ SaveBank_GalleryEntry unk_0002[1];
     /* 0x008E */ char unk008E[0x132A];
-} unk_D_800AE4E8_004_2_1EC8; // size = 0x13B8
+} SaveBank_GalleryRecord; // size = 0x13B8
 
 typedef struct unk_D_800AE4E8_004_2_3280 {
     /* 0x0000 */ u8 unk_0000;
     /* 0x0001 */ char unk0001[0x1];
-    /* 0x0002 */ unk_D_800AE4E8_004_2_1EC8_0002 unk_0002[1];
+    /* 0x0002 */ SaveBank_GalleryEntry unk_0002[1];
     /* 0x008E */ char unk008E[0xAF6];
 } unk_D_800AE4E8_004_2_3280; // size = 0xB84
 
 typedef struct unk_D_800AE4E8_004_2 {
     /* 0x0000 */ char unk0000[0xDC0];
-    /* 0x0DC0 */ unk_D_800AE4E8_004_2_0DC0 unk_0DC0;
+    /* 0x0DC0 */ SaveBank_HallOfFameRecord unk_0DC0;
     /* 0x1D20 */ ContinueRecordBlock unk_1D20;
     /* 0x1EA0 */ SaveOptionsRecord unk_1EA0;
-    /* 0x1EC8 */ unk_D_800AE4E8_004_2_1EC8 unk_1EC8;
+    /* 0x1EC8 */ SaveBank_GalleryRecord unk_1EC8;
     /* 0x3280 */ unk_D_800AE4E8_004_2_3280 unk_3280;
     /* 0x3E04 */ char unk3E04[0x17C];
 } unk_D_800AE4E8_004_2; // size = 0x3F80
 
-typedef struct unk_D_800AE4E8_004_3_0000 {
+typedef struct SaveBank_TrainerRecord {
     /* 0x0000 */ DeckRecordHeader unk_000;
     /* 0x0010 */ GbPokemonNamedRecord unk_010[1];
     /* 0x0047 */ char unk010[0x421];
-} unk_D_800AE4E8_004_3_0000; // size = 0x468
+} SaveBank_TrainerRecord; // size = 0x468
 
-typedef struct unk_D_800AE4E8_004_3_34E0_010 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-} unk_D_800AE4E8_004_3_34E0_010; // size = 0x2
+typedef struct SaveBank_ItemBoxEntry {
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+} SaveBank_ItemBoxEntry; // size = 0x2
 
-typedef struct unk_D_800AE4E8_004_3_34E0 {
-    /* 0x0000 */ DeckRecordHeader unk_00;
-    /* 0x0000 */ unk_D_800AE4E8_004_3_34E0_010 unk_10[1];
+typedef struct SaveBank_ItemBoxRecord {
+    /* 0x0000 */ DeckRecordHeader posX;
+    /* 0x0000 */ SaveBank_ItemBoxEntry unk_10[1];
     /* 0x0012 */ char unk12[0xCE];
-} unk_D_800AE4E8_004_3_34E0; // size = 0xE0
+} SaveBank_ItemBoxRecord; // size = 0xE0
 
 typedef struct unk_D_800AE4E8_004_3 {
-    /* 0x0000 */ unk_D_800AE4E8_004_3_0000 unk_0000[12];
-    /* 0x34E0 */ unk_D_800AE4E8_004_3_34E0 unk_34E0[4];
+    /* 0x0000 */ SaveBank_TrainerRecord unk_0000[12];
+    /* 0x34E0 */ SaveBank_ItemBoxRecord unk_34E0[4];
     /* 0x3860 */ char unk_3860[0x20];
 } unk_D_800AE4E8_004_3; // size = 0x3880
 
@@ -160,9 +160,9 @@ typedef union unk_D_800AE4E8_004 {
 } unk_D_800AE4E8_004;
 
 typedef struct SaveBank {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ unk_D_800AE4E8_004 unk_04;
-    /* 0x08 */ unk_D_800AE4E8_004 unk_08;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ unk_D_800AE4E8_004 rotation;
+    /* 0x08 */ unk_D_800AE4E8_004 RentalSlotAnimData_PosePhase;
 } SaveBank; // size = 0xC
 
 void Save_ResetBank(UNUSED MainPoolBlock* arg0, u32 arg1);
@@ -179,7 +179,7 @@ void GbSave_LoadBattleMonRecord(BattleMon* arg0, GbPokemonNamedRecord* arg1);
 void GbSave_SaveBattleMonRecord(BattleMon* arg0, GbPokemonNamedRecord* arg1);
 s32 Save_IsTypedRecordFlagSet(s32 arg0, s32 arg1, s16 arg2);
 void Save_MarkRecordDirty(s32 arg0, s32 arg1, s16 arg2);
-void func_8002667C(void);
+void Save_NoOp(void);
 void Save_CommitTypedRecord(s32 arg0, s32 arg1);
 void Save_InvalidateTypedRecord(s32 arg0, s32 arg1);
 void Save_RestoreTypedRecord(s32 arg0, s32 arg1);

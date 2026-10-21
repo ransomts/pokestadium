@@ -397,7 +397,7 @@ void AreaSelect_DrawNameBanner(s16 x, s16 y, s16 alpha, s16 area) {
     }
 }
 
-void func_822014C0(void) {
+void AreaSelect_Update(void) {
     // Empty function; purpose unknown.
 }
 

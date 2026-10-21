@@ -1,6 +1,6 @@
 #include "particle_math.h"
 
-static Gfx D_8140DA50[] = {
+static Gfx gDL_Default3DState[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetTextureLOD(G_TL_TILE),
@@ -21,7 +21,7 @@ static Gfx D_8140DA50[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DAE0[] = {
+Gfx gDL_End3D[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetColorDither(G_CD_MAGICSQ),
@@ -34,7 +34,7 @@ Gfx D_8140DAE0[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DB30[] = {
+Gfx gDL_Begin3D[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsDPSetTextureLUT(G_TT_NONE),
@@ -47,7 +47,7 @@ Gfx D_8140DB30[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_8140DB80[] = {
+static Gfx gDL_TextureBasicState[] = {
     gsDPPipeSync(),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsDPSetTextureFilter(G_TF_BILERP),
@@ -56,14 +56,14 @@ static Gfx D_8140DB80[] = {
 };
 
 Gfx gDL_ItemIcon[] = {
-    gsSPDisplayList(D_8140DB80),
+    gsSPDisplayList(gDL_TextureBasicState),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_OPA_SURF2),
     gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_PASS2),
     gsSPSetGeometryMode(G_SHADE | G_CULL_BACK | G_LIGHTING | G_SHADING_SMOOTH),
     gsSPEndDisplayList(),
 };
 
-static Gfx D_8140DBD0[] = {
+static Gfx gDL_UI_DecalState[] = {
     gsDPPipeSync(),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsDPSetTextureLUT(G_TT_NONE),
@@ -72,14 +72,14 @@ static Gfx D_8140DBD0[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DC00[] = {
-    gsSPDisplayList(D_8140DBD0),
+Gfx gDL_UI_DecalBilerpTexEdge[] = {
+    gsSPDisplayList(gDL_UI_DecalState),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_TEX_EDGE2),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsSPEndDisplayList(),
 };
 
-static Gfx D_8140DC20[] = {
+static Gfx gDL_UI_ModulateState[] = {
     gsDPPipeSync(),
     gsDPSetTexturePersp(G_TP_PERSP),
     gsDPSetTextureLUT(G_TT_NONE),
@@ -89,64 +89,64 @@ static Gfx D_8140DC20[] = {
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DC58[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_UI_ModulatePoint[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_POINT),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DC78[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_UI_ModulateBilerpXlu[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_XLU_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DC98[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_UI_ModulateBilerpCld[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_CLD_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DCB8[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_UI_ModulatePointAA[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_POINT),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_XLU_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DCD8[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_BaseUI[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_XLU_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DCF8[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_UI_ModulatePointZB[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_POINT),
     gsDPSetRenderMode(G_RM_PASS, G_RM_ZB_XLU_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DD18[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_UI_ModulateBilerpZB[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_ZB_XLU_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DD38[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_UI_ModulateBilerpZbCld[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_ZB_CLD_SURF2),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140DD58[] = {
-    gsSPDisplayList(D_8140DC20),
+Gfx gDL_OverlayUI[] = {
+    gsSPDisplayList(gDL_UI_ModulateState),
     gsDPSetTextureFilter(G_TF_BILERP),
     gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_XLU_SURF2),
     gsSPEndDisplayList(),
@@ -184,32 +184,32 @@ Gfx gDL_BeginColorFill[] = {
     gsSPEndDisplayList(),
 };
 
-static Gfx D_8140DE30[] = {
+static Gfx gDL_CycleCopy[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_COPY),
     gsSPEndDisplayList(),
 };
 
-static Gfx D_8140DE48[] = {
+static Gfx gDL_CycleOneCycle[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_1CYCLE),
     gsSPEndDisplayList(),
 };
 
-static Gfx D_8140DE60[] = {
+static Gfx gDL_CycleTwoCycle[] = {
     gsDPPipeSync(),
     gsDPSetCycleType(G_CYC_2CYCLE),
     gsSPEndDisplayList(),
 };
 
-Vtx D_8140DE78[] = {
+Vtx gVtx_UI_SmallQuad[] = {
     VTX(-4, -4, 0, 0, 224, 0xFF, 0xFF, 0xFF, 0xFF), VTX(3, -4, 0, 224, 224, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(3, 3, 0, 224, 0, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(-4, 3, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-4, -8, 0, 0, 480, 0xFF, 0xFF, 0xFF, 0xFF), VTX(3, -8, 0, 224, 480, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(3, 7, 0, 224, 0, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(-4, 7, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140DEF8[] = {
+Vtx gVtx_UI_LargeQuad[] = {
     VTX(-8, -8, 0, 0, 480, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(7, -8, 0, 480, 480, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(7, 7, 0, 480, 0, 0xFF, 0xFF, 0xFF, 0xFF),     VTX(-8, 7, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-8, -8, 0, 480, 480, 0xFF, 0xFF, 0xFF, 0xFF), VTX(7, -8, 0, 0, 480, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -228,21 +228,21 @@ Vtx gVtx_UI_TriangleLarge[] = {
     VTX(-32, 255, 0, 0, 8160, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140DFD8[] = {
+Vtx gVtx_UI_MediumQuad[] = {
     VTX(-12, -12, 0, 0, 736, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(11, -12, 0, 736, 736, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(11, 11, 0, 736, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-12, 11, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E018[] = {
+Vtx gMatrix_UITransform[] = {
     VTX(-16, -16, 0, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, -16, 0, 992, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 15, 0, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E058[] = {
+Vtx gVtx_UI_RectHorizontal[] = {
     VTX(-16, 0, 0, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 0, 0, 992, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 31, 0, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -256,40 +256,40 @@ Vtx gVtx_UI_RectVertical[] = {
     VTX(0, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E0D8[] = {
+Vtx gVtx_UI_TriangleDown[] = {
     VTX(0, 18, 0, 480, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, -9, 0, 992, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, -9, 0, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E108[] = {
+Vtx gVtx_UI_ColorQuad[] = {
     VTX(-16, -16, 0, 0, 992, 0xFF, 0x00, 0x00, 0xFF),
     VTX(15, -16, 0, 992, 992, 0xFF, 0xFF, 0x00, 0xFF),
     VTX(15, 15, 0, 992, 0, 0x00, 0xFF, 0x00, 0xFF),
     VTX(-16, 15, 0, 0, 0, 0x00, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E148[] = {
+Vtx gVtx_UI_PanelTriangle[] = {
     VTX(0, 18, 0, 480, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, -9, 0, 992, 992, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(16, -9, 0, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E178[] = {
+Vtx gVtx_UI_RectTall[] = {
     VTX(-16, -32, 0, 0, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, -32, 0, 992, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 31, 0, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, 31, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E1B8[] = {
+Vtx gVtx_UI_RectTallAnchoredTop[] = {
     VTX(-16, 0, 0, 0, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 0, 0, 992, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 63, 0, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-16, 63, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E1F8[] = {
+Vtx gVtx_UI_Square[] = {
     VTX(-16, -16, 0, 0, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, -16, 0, 992, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(15, 15, 0, 992, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -303,7 +303,7 @@ Vtx gVtx_UI_ComplexQuad[] = {
     VTX(31, 15, 0, 2016, 0, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(-32, 15, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E2B8[] = {
+Vtx gVtx_UI_GridQuad[] = {
     VTX(-32, -32, 0, 0, 2016, 0xFF, 0xFF, 0xFF, 0xFF), VTX(31, -32, 0, 2016, 2016, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(31, 31, 0, 2016, 0, 0xFF, 0xFF, 0xFF, 0xFF),   VTX(-32, 31, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(-32, 0, 0, 0, 992, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(31, 0, 0, 2016, 992, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -312,7 +312,7 @@ Vtx D_8140E2B8[] = {
     VTX(31, 0, 0, 2016, 0, 0xFF, 0xFF, 0xFF, 0xFF),    VTX(-32, 0, 0, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF),
 };
 
-Vtx D_8140E378[] = {
+Vtx gGroundQuadVtx[] = {
     VTX(-64, 0, 63, 0, 0, 0x00, 0x00, 0x78, 0xFF),
     VTX(63, 0, 63, 4064, 0, 0x00, 0x00, 0x78, 0xFF),
     VTX(63, 0, -64, 4064, 4064, 0x00, 0x00, 0x78, 0xFF),
@@ -326,31 +326,31 @@ Vtx gFullscreenQuadVtx[] = {
     VTX(-160, 120, 0, 0, 0, 0x00, 0x00, 0x78, 0xFF),
 };
 
-static Gfx D_8140E3F8[] = {
+static Gfx gDL_DrawTriangle[] = {
     gsSP1Triangle(0, 1, 2, 0),
     gsSPEndDisplayList(),
 };
 
-static Gfx D_8140E408[] = {
+static Gfx gDL_DrawQuad[] = {
     gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
     gsSPEndDisplayList(),
 };
 
 Gfx gDL_PanelBackground[] = {
-    gsSPVertex(D_8140E148, 4, 0),
-    gsSPDisplayList(D_8140E3F8),
+    gsSPVertex(gVtx_UI_PanelTriangle, 4, 0),
+    gsSPDisplayList(gDL_DrawTriangle),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140E430[] = {
-    gsSPVertex(D_8140DEF8, 4, 0),
-    gsSPDisplayList(D_8140E408),
+Gfx gDL_PanelQuad[] = {
+    gsSPVertex(gVtx_UI_LargeQuad, 4, 0),
+    gsSPDisplayList(gDL_DrawQuad),
     gsSPEndDisplayList(),
 };
 
-Gfx D_8140E448[] = {
-    gsSPVertex(D_8140E018, 4, 0),
-    gsSPDisplayList(D_8140E408),
+Gfx gDL_UITransformQuad[] = {
+    gsSPVertex(gMatrix_UITransform, 4, 0),
+    gsSPDisplayList(gDL_DrawQuad),
     gsSPEndDisplayList(),
 };
 
@@ -668,7 +668,7 @@ void ParticleGfx_LoadTextureDualRgba16I8(u8* texture1, u8* texture2, s32 width, 
 
 void ParticleGfx_DrawQuadVertices(Vtx* arg0) {
     gSPVertex(gDisplayListHead++, arg0, 4, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E408);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
 void ParticleGfx_NoopStub10(void) {
@@ -678,70 +678,70 @@ void ParticleGfx_DrawTransformedQuad(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3
     ParticleGfx_PushTransformMatrix(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E408);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
 void ParticleGfx_DrawTransformedQuadYScaled(Vec3f arg0, Vec3s arg1, f32 arg3, Vtx* arg4) {
     ParticleGfx_PushTransformMatrixYScaled(arg0, arg1, arg3);
 
     gSPVertex(gDisplayListHead++, arg4, 4, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E408);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
 void ParticleGfx_DrawTransformedQuadXYScaled(Vec3f arg0, Vec3s arg1, f32 arg2, f32 arg3, Vtx* arg4) {
     ParticleGfx_PushTransformMatrixXYScaled(arg0, arg1, arg2, arg3);
 
     gSPVertex(gDisplayListHead++, arg4, 4, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E408);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
 void ParticleGfx_DrawTransformedTriangle(Vec3f arg0, Vec3s arg1, f32 arg2, Vtx* arg3) {
     ParticleGfx_PushTransformMatrix(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 3, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E3F8);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawTriangle);
 }
 
 void ParticleGfx_DrawModelQuad(CameraNode* arg0, Vec3f arg1, f32 arg2, Vtx* arg3) {
     ParticleGfx_PushBillboardMatrix(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E408);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
 void ParticleGfx_DrawModelQuadRotated(CameraNode* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4) {
     ParticleGfx_PushBillboardRotatedMatrix(arg0, arg1, arg2, arg4);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E408);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
 void ParticleGfx_DrawModelQuadYScaled(CameraNode* arg0, Vec3f arg1, f32 arg2, Vtx* arg3) {
     ParticleGfx_PushBillboardMatrixYScaled(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E408);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
 void ParticleGfx_DrawModelQuadRotatedYScaled(CameraNode* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4) {
     ParticleGfx_PushBillboardRotatedMatrixYScaled(arg0, arg1, arg2, arg4);
 
     gSPVertex(gDisplayListHead++, arg3, 4, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E408);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 }
 
 void ParticleGfx_DrawModelTriangle(CameraNode* arg0, Vec3f arg1, f32 arg2, Vtx* arg3) {
     ParticleGfx_PushBillboardMatrix(arg0, arg1, arg2);
 
     gSPVertex(gDisplayListHead++, arg3, 3, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E3F8);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawTriangle);
 }
 
 void ParticleGfx_DrawModelTriangleRotated(CameraNode* arg0, Vec3f arg1, f32 arg2, Vtx* arg3, s16 arg4) {
     ParticleGfx_PushBillboardRotatedMatrix(arg0, arg1, arg2, arg4);
 
     gSPVertex(gDisplayListHead++, arg3, 3, 0);
-    gSPDisplayList(gDisplayListHead++, D_8140E3F8);
+    gSPDisplayList(gDisplayListHead++, gDL_DrawTriangle);
 }
 
 void ParticleGfx_DrawI8TextureAtlas(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s32 width, s32 height) {
@@ -755,7 +755,7 @@ void ParticleGfx_DrawI8TextureAtlas(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s
             ParticleGfx_LoadTextureI8(var_s3, width, height);
 
             gSPVertex(gDisplayListHead++, &vtx[var_s4], 4, 0);
-            gSPDisplayList(gDisplayListHead++, D_8140E408);
+            gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 
             var_s3 += width * height;
             var_s4 += 4;
@@ -776,7 +776,7 @@ void ParticleGfx_DrawIa16TextureAtlas(u8* texture, Vtx* vtx, s32 arg2, s32 arg3,
             ParticleGfx_LoadTextureIa16(var_s3, width, height);
 
             gSPVertex(gDisplayListHead++, &vtx[var_s4], 4, 0);
-            gSPDisplayList(gDisplayListHead++, D_8140E408);
+            gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 
             var_s3 += (width * height) * 2;
             var_s4 += 4;
@@ -797,7 +797,7 @@ void ParticleGfx_DrawIa8TextureAtlas(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, 
             ParticleGfx_LoadTextureIa8(var_s3, width, height);
 
             gSPVertex(gDisplayListHead++, &vtx[var_s4], 4, 0);
-            gSPDisplayList(gDisplayListHead++, D_8140E408);
+            gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 
             var_s3 += width * height;
             var_s4 += 4;
@@ -818,7 +818,7 @@ void ParticleGfx_DrawI4TextureAtlas(u8* texture, Vtx* vtx, s32 arg2, s32 arg3, s
             ParticleGfx_LoadTextureI4(var_s3, width, height);
 
             gSPVertex(gDisplayListHead++, &vtx[var_s4], 4, 0);
-            gSPDisplayList(gDisplayListHead++, D_8140E408);
+            gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 
             var_s3 += (width * height) / 2;
             var_s4 += 4;
@@ -839,7 +839,7 @@ void ParticleGfx_DrawI4TextureAtlasTiled(u8* texture, Vtx* vtx, s32 arg2, s32 ar
             ParticleGfx_LoadTextureTileI4(var_s3, width, height);
 
             gSPVertex(gDisplayListHead++, &vtx[var_s4], 4, 0);
-            gSPDisplayList(gDisplayListHead++, D_8140E408);
+            gSPDisplayList(gDisplayListHead++, gDL_DrawQuad);
 
             var_s3 += (width * height) / 2;
             var_s4 += 4;
@@ -1001,50 +1001,50 @@ void ParticleGfx_LoadTextureI4ToList(Gfx* gfx, u8* texture, s32 width, s32 heigh
 }
 
 Gfx* ParticleGfx_LoadDescriptorTexture(Gfx* arg0, u8* texture, arg1_func_81407874_014_004* arg2, s32 tmem, s32 rtile) {
-    switch (arg2->unk_04->fmt) {
+    switch (arg2->rotation->fmt) {
         case G_IM_FMT_RGBA:
-            switch (arg2->unk_04->size) {
+            switch (arg2->rotation->size) {
                 case G_IM_SIZ_16b:
-                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg2->unk_04->width,
-                                     arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1, 0,
-                                     arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks, arg2->unk_04->maskt,
-                                     arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_RGBA, G_IM_SIZ_16b, arg2->rotation->width,
+                                     arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1, 0,
+                                     arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks, arg2->rotation->maskt,
+                                     arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
             }
             break;
 
         case G_IM_FMT_IA:
-            switch (arg2->unk_04->size) {
+            switch (arg2->rotation->size) {
                 case G_IM_SIZ_8b:
-                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_IA, G_IM_SIZ_8b, arg2->unk_04->width,
-                                     arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1, 0,
-                                     arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks, arg2->unk_04->maskt,
-                                     arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_IA, G_IM_SIZ_8b, arg2->rotation->width,
+                                     arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1, 0,
+                                     arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks, arg2->rotation->maskt,
+                                     arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
 
                 case G_IM_SIZ_16b:
-                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_IA, G_IM_SIZ_16b, arg2->unk_04->width,
-                                     arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1, 0,
-                                     arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks, arg2->unk_04->maskt,
-                                     arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_IA, G_IM_SIZ_16b, arg2->rotation->width,
+                                     arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1, 0,
+                                     arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks, arg2->rotation->maskt,
+                                     arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
             }
             break;
 
         case G_IM_FMT_I:
-            switch (arg2->unk_04->size) {
+            switch (arg2->rotation->size) {
                 case G_IM_SIZ_4b:
-                    gDPLoadMultiTile_4b(arg0++, texture, tmem, rtile, G_IM_FMT_I, arg2->unk_04->width,
-                                        arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1,
-                                        0, arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks,
-                                        arg2->unk_04->maskt, arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile_4b(arg0++, texture, tmem, rtile, G_IM_FMT_I, arg2->rotation->width,
+                                        arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1,
+                                        0, arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks,
+                                        arg2->rotation->maskt, arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
 
                 case G_IM_SIZ_8b:
-                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_I, G_IM_SIZ_8b, arg2->unk_04->width,
-                                     arg2->unk_04->height, 0, 0, arg2->unk_04->width - 1, arg2->unk_04->height - 1, 0,
-                                     arg2->unk_04->cms, arg2->unk_04->cmt, arg2->unk_04->masks, arg2->unk_04->maskt,
-                                     arg2->unk_04->shfits, arg2->unk_04->shiftt);
+                    gDPLoadMultiTile(arg0++, texture, tmem, rtile, G_IM_FMT_I, G_IM_SIZ_8b, arg2->rotation->width,
+                                     arg2->rotation->height, 0, 0, arg2->rotation->width - 1, arg2->rotation->height - 1, 0,
+                                     arg2->rotation->cms, arg2->rotation->cmt, arg2->rotation->masks, arg2->rotation->maskt,
+                                     arg2->rotation->shfits, arg2->rotation->shiftt);
                     break;
             }
             break;
@@ -1059,26 +1059,26 @@ Gfx* ParticleGfx_LoadDescriptorTextureAndTile(Gfx* arg0, arg1_func_81407874_014_
 
     texture = NULL;
     if (arg1->unk_0C != NULL) {
-        ret = ParticleGfx_GetFrameDivisor(arg1->unk_0C->unk_06) % arg1->unk_0C->unk_04;
-        texture = arg1->unk_0C->unk_00.texture[ret];
-    } else if (arg1->unk_00 != NULL) {
-        texture = arg1->unk_00;
+        ret = ParticleGfx_GetFrameDivisor(arg1->unk_0C->unk_06) % arg1->unk_0C->rotation;
+        texture = arg1->unk_0C->posX.texture[ret];
+    } else if (arg1->posX != NULL) {
+        texture = arg1->posX;
     }
 
     if (texture != NULL) {
         arg0 = ParticleGfx_LoadDescriptorTexture(arg0, texture, arg1, tmem, rtile);
     }
 
-    if (arg1->unk_08 != NULL) {
+    if (arg1->RentalSlotAnimData_PosePhase != NULL) {
         switch (rtile) {
             case G_TX_RENDERTILE:
-                ParticleGfx_SetFrameIndexedTileSize(arg0++, arg1->unk_08->unk_00, arg1->unk_08->unk_02, arg1->unk_08->unk_04,
-                              arg1->unk_08->unk_06, arg1->unk_04->width, arg1->unk_04->height, arg1->unk_08->unk_08);
+                ParticleGfx_SetFrameIndexedTileSize(arg0++, arg1->RentalSlotAnimData_PosePhase->posX, arg1->RentalSlotAnimData_PosePhase->posY, arg1->RentalSlotAnimData_PosePhase->rotation,
+                              arg1->RentalSlotAnimData_PosePhase->unk_06, arg1->rotation->width, arg1->rotation->height, arg1->RentalSlotAnimData_PosePhase->RentalSlotAnimData_PosePhase);
                 break;
 
             case 1:
-                ParticleGfx_SetFrameIndexedAuxTileSize(arg0++, arg1->unk_08->unk_00, arg1->unk_08->unk_02, arg1->unk_08->unk_04,
-                              arg1->unk_08->unk_06, arg1->unk_04->width, arg1->unk_04->height, arg1->unk_08->unk_08);
+                ParticleGfx_SetFrameIndexedAuxTileSize(arg0++, arg1->RentalSlotAnimData_PosePhase->posX, arg1->RentalSlotAnimData_PosePhase->posY, arg1->RentalSlotAnimData_PosePhase->rotation,
+                              arg1->RentalSlotAnimData_PosePhase->unk_06, arg1->rotation->width, arg1->rotation->height, arg1->RentalSlotAnimData_PosePhase->RentalSlotAnimData_PosePhase);
                 break;
         }
     }
@@ -1087,27 +1087,27 @@ Gfx* ParticleGfx_LoadDescriptorTextureAndTile(Gfx* arg0, arg1_func_81407874_014_
 }
 
 Gfx* ParticleGfx_LoadPrimaryDescriptorTexture(Gfx* arg0, arg1_func_81407874_014* arg1) {
-    return ParticleGfx_LoadDescriptorTextureAndTile(arg0, arg1->unk_00, 0, G_TX_RENDERTILE);
+    return ParticleGfx_LoadDescriptorTextureAndTile(arg0, arg1->posX, 0, G_TX_RENDERTILE);
 }
 
 Gfx* ParticleGfx_LoadSecondaryDescriptorTexture(Gfx* arg0, arg1_func_81407874_014* arg1) {
     s32 var_a2 = 0;
 
-    if (arg1->unk_04->unk_00 != arg1->unk_00->unk_00) {
+    if (arg1->rotation->posX != arg1->posX->posX) {
         var_a2 = 0x100;
     }
-    return ParticleGfx_LoadDescriptorTextureAndTile(arg0, arg1->unk_04, var_a2, 1);
+    return ParticleGfx_LoadDescriptorTextureAndTile(arg0, arg1->rotation, var_a2, 1);
 }
 
 void ParticleGfx_SetCombineModeFromDescriptor(Gfx* arg0, arg1_func_81407874_014_000_010* arg1) {
     gDPSetCombine(arg0++,
-                  GCCc0w0(arg1->unk_00, arg1->unk_02, arg1->unk_04, arg1->unk_06) | GCCc1w0(arg1->unk_08, arg1->unk_0A),
+                  GCCc0w0(arg1->posX, arg1->posY, arg1->rotation, arg1->unk_06) | GCCc1w0(arg1->RentalSlotAnimData_PosePhase, arg1->unk_0A),
 
-                  GCCc0w1(arg1->unk_01, arg1->unk_03, arg1->unk_05, arg1->unk_07) |
+                  GCCc0w1(arg1->TrainerSlotSaveData_GamePort, arg1->unk_03, arg1->unk_05, arg1->unk_07) |
                       GCCc1w1(arg1->unk_09, arg1->unk_0C, arg1->unk_0E, arg1->unk_0B, arg1->unk_0D, arg1->unk_0F));
 }
 
-Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
+Gfx* Gfx_ApplyTextureState(Gfx* arg0, arg1_func_81407874_014* arg1) {
     arg1_func_81407874_014_000* var_a3;
     arg1_func_81407874_014_004* sp20;
     arg1_func_81407874_014_000_018_000_000* temp_v0;
@@ -1119,8 +1119,8 @@ Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
     s16 sp14;
     s16 sp10;
 
-    var_a3 = arg1->unk_00;
-    sp20 = arg1->unk_04;
+    var_a3 = arg1->posX;
+    sp20 = arg1->rotation;
 
     if (var_a3 != NULL) {
         if (var_a3->unk_10 != NULL) {
@@ -1128,8 +1128,8 @@ Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
         }
 
         if (var_a3->unk_14 != NULL) {
-            if (var_a3->unk_14->unk_04 == 0) {
-                color.rgba = var_a3->unk_14->unk_00.color.rgba;
+            if (var_a3->unk_14->rotation == 0) {
+                color.rgba = var_a3->unk_14->posX.color.rgba;
                 sp1c = color.rgba >> 0x18;
                 sp18 = color.rgba >> 0x10;
                 sp14 = color.rgba >> 0x8;
@@ -1138,8 +1138,8 @@ Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
                 gDPPipeSync(arg0++);
                 gDPSetPrimColor(arg0++, 0, 0xFF, sp1c, sp18, sp14, sp10);
             } else {
-                ret = ParticleGfx_GetFrameDivisor(var_a3->unk_14->unk_06) % var_a3->unk_14->unk_04;
-                temp_v1 = &var_a3->unk_14->unk_00.ptr5[ret];
+                ret = ParticleGfx_GetFrameDivisor(var_a3->unk_14->unk_06) % var_a3->unk_14->rotation;
+                temp_v1 = &var_a3->unk_14->posX.ptr5[ret];
 
                 gDPPipeSync(arg0++);
                 gDPSetPrimColor(arg0++, 0, temp_v1->l, temp_v1->color.r, temp_v1->color.g, temp_v1->color.b,
@@ -1148,11 +1148,11 @@ Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
         }
 
         if (var_a3->unk_18 != NULL) {
-            if (var_a3->unk_18->unk_04 == 0) {
-                gDPSetColor(arg0++, G_SETENVCOLOR, var_a3->unk_18->unk_00.color.rgba);
+            if (var_a3->unk_18->rotation == 0) {
+                gDPSetColor(arg0++, G_SETENVCOLOR, var_a3->unk_18->posX.color.rgba);
             } else {
-                ret = ParticleGfx_GetFrameDivisor(var_a3->unk_18->unk_06) % var_a3->unk_18->unk_04;
-                temp_v0 = &var_a3->unk_18->unk_00.ptr4[ret];
+                ret = ParticleGfx_GetFrameDivisor(var_a3->unk_18->unk_06) % var_a3->unk_18->rotation;
+                temp_v0 = &var_a3->unk_18->posX.ptr4[ret];
 
                 gDPSetEnvColor(arg0++, temp_v0->color.r, temp_v0->color.g, temp_v0->color.b, temp_v0->color.a);
             }
@@ -1160,16 +1160,16 @@ Gfx* func_81407590(Gfx* arg0, arg1_func_81407874_014* arg1) {
 
         if (var_a3->unk_1C != NULL) {
             gSPSetGeometryMode(arg0++, G_TEXTURE_GEN);
-            gSPTexture(arg0++, var_a3->unk_1C->unk_00, var_a3->unk_1C->unk_02, 0, G_TX_RENDERTILE, G_ON);
+            gSPTexture(arg0++, var_a3->unk_1C->posX, var_a3->unk_1C->posY, 0, G_TX_RENDERTILE, G_ON);
         }
 #if !defined(VERSION_JP)
-        // JP has neither the full-scale gSPTexture used when unk_1C is NULL and unk_04 is
-        // set, nor the G_TT_NONE TLUT reset for unk_04 != 0.
-        else if (var_a3->unk_04 != 0) {
+        // JP has neither the full-scale gSPTexture used when unk_1C is NULL and rotation is
+        // set, nor the G_TT_NONE TLUT reset for rotation != 0.
+        else if (var_a3->rotation != 0) {
             gSPTexture(arg0++, 0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON);
         }
 
-        if (var_a3->unk_04 != 0) {
+        if (var_a3->rotation != 0) {
             gDPSetTextureLUT(arg0++, G_TT_NONE);
         }
 #endif
@@ -1188,6 +1188,6 @@ void ParticleGfx_GraphNodeBuildDescriptorMaterialList(s32 arg0, arg1_func_87903D
     if (arg0 == 5) {
         arg1_func_81407874_014* tmp = arg1->unk_14;
 
-        gDisplayListHead = func_81407590(gDisplayListHead, tmp);
+        gDisplayListHead = Gfx_ApplyTextureState(gDisplayListHead, tmp);
     }
 }

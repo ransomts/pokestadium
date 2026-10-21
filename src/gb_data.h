@@ -15,11 +15,11 @@
 // Shifted, one-based view used by gBaseStats. Its named stat fields and
 // unk_13 address the same bytes as SpeciesData's stats and growthRate.
 typedef struct PokemonStats {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 baseHP;
     /* 0x07 */ u8 baseSpecial;
@@ -55,21 +55,21 @@ extern PokemonStats gBaseStats[];
 // Indexed by species ID - 1: Bulbasaur through Mew, then the Substitute doll.
 extern SpeciesData gSpeciesData[152];
 
-typedef struct unk_D_80071D88 {
+typedef struct TypeColorEntry {
     /* 0x00 */ char* type_name;
     /* 0x04 */ Color_RGBA8 color;
-} unk_D_80071D88; // size = 0x8
-extern unk_D_80071D88 D_80071D88[];
+} TypeColorEntry; // size = 0x8
+extern TypeColorEntry D_80071D88[];
 
 typedef struct GbPokemonRecord {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01[2];
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort[2];
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06;
     /* 0x07 */ u8 unk_07;
-    /* 0x08 */ u8 unk_08[4];
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase[4];
     /* 0x0C */ u8 unk_0C[2];
     /* 0x0E */ u8 unk_0E[3];
     /* 0x11 */ u8 unk_11[2];
@@ -82,13 +82,13 @@ typedef struct GbPokemonRecord {
 } GbPokemonRecord; // size = 0x21
 
 typedef struct GbPokemonNamedRecord {
-    /* 0x00 */ GbPokemonRecord unk_00;
+    /* 0x00 */ GbPokemonRecord posX;
     /* 0x21 */ u8 unk_21[11];
     /* 0x2C */ u8 unk_2C[11];
 } GbPokemonNamedRecord; // size = 0x37
 
 typedef struct GbPokemonRecordExt {
-    /* 0x00 */ GbPokemonRecord unk_00;
+    /* 0x00 */ GbPokemonRecord posX;
     /* 0x21 */ u8 unk_21;
     // Big-endian u16 stats, read and written with GbData_ReadU16BE/GbData_WriteU16BE. Byte arrays
     // keep the record unaligned: the Japanese GbSaveParty places it at odd offsets.
@@ -100,14 +100,14 @@ typedef struct GbPokemonRecordExt {
 } GbPokemonRecordExt; // size = 0x2C
 
 typedef struct DeckHandle {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ s16 unk_06;
-    /* 0x08 */ s16 unk_08;
+    /* 0x08 */ s16 RentalSlotAnimData_PosePhase;
     /* 0x0A */ s16 unk_0A;
 } DeckHandle; // size = 0xC
 
@@ -224,8 +224,8 @@ typedef struct GbSaveCurrentBox {
 } GbSaveCurrentBox; // size >= 0x391
 
 typedef struct GbSaveChecksumBlock {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x1];
     /* 0x03 */ u8 unk_03;
     /* 0x04 */ char unk04[0x1C];
@@ -285,13 +285,13 @@ typedef struct GbSaveBoxData {
 // The JP GbSave_RefreshPlayerIdentity copies a 6-byte trainer name (_bcopy size 6) to 0x42 and
 // GbSave_CopyPlayerIdentity copies one 8-byte word, so the identity block is 8 bytes.
 typedef struct GbSavePlayerIdentity {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[6];
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ char posY[6];
 } GbSavePlayerIdentity; // size = 0x8
 #else
 typedef struct GbSavePlayerIdentity {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ char unk_02[11];
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ char posY[11];
     /* 0x0D */ u8 unk_0D[2];
     /* 0x0F */ char unkF[0x1];
 } GbSavePlayerIdentity; // size = 0x10
@@ -299,10 +299,10 @@ typedef struct GbSavePlayerIdentity {
 
 #if defined(VERSION_JP)
 typedef struct GbSavePort {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06[0x13];
     /* 0x19 */ u8 unk_19[0x20];
@@ -313,10 +313,10 @@ typedef struct GbSavePort {
 } GbSavePort; // size = 0x50
 #else
 typedef struct GbSavePort {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
     /* 0x06 */ u8 unk_06[0x13];
     /* 0x19 */ u8 unk_19[0x20];

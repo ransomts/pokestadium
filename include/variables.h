@@ -107,7 +107,7 @@ extern u8 D_2000000[];
 extern u8 D_3000000[];
 extern u8 D_3000000_2[];
 extern u8 D_3000210[];
-extern u8 D_04000000[];
+extern u8 gRentalViewerIconTop[];
 extern u8 D_4000008[];
 extern u8 D_4000810[];
 extern u8 D_4001018[];
@@ -129,10 +129,10 @@ extern u8 D_400CE00[];
 extern u8 D_400CF00[];
 extern u8 D_400D100[];
 extern u8 D_400D200[];
-extern u8 D_04000000[];
+extern u8 gRentalViewerIconTop[];
 extern u8 D_04000800[];
 extern u8 D_04001000[];
-extern u8 D_04001800[];
+extern u8 gRentalIconTexEmpty[];
 extern u8 D_04002000[];
 extern u8 D_04002800[];
 extern u8 D_04003000[];
@@ -323,11 +323,11 @@ extern u8 D_2003900[];
 extern u8 D_2004900[];
 extern u8 D_2004C00[];
 extern u8 D_2005A10[];
-extern u8 D_2006820[];
-extern u8 D_20068A0[];
-extern u8 D_2006920[];
+extern u8 gTransferPakErrorHighlightOverlay[];
+extern u8 gTransferPakErrorCursorTexture[];
+extern u8 gTransferPakErrorHighlightTexture[];
 extern u8 D_20069A0[];
-extern u8 D_2002000[];
+extern u8 gTransferPakErrorIconTexture[];
 extern u8 D_30C1290[];
 extern u8 D_0302EE00[];
 extern u8 D_03034580[];
@@ -557,7 +557,7 @@ extern u8 D_3008200[];
 extern u8 D_4000C40[];
 extern u8 D_4000DD0[];
 #define ELIGIBILITY_PANEL_LEGEND D_4000DD0
-extern u8 D_300F780[];
+extern u8 gPrefBackgroundTexture[];
 extern u8 D_3024480[];
 extern u8 D_30256A0[];
 extern u8 D_3026AE0[];
@@ -870,7 +870,7 @@ extern u8 D_3008018[];
 extern u8 D_3007BE0[];
 extern u8 D_3007D48[];
 
-extern LEODiskID D_800818E0;
+extern LEODiskID gLeoDiskId;
 
 extern Gfx gUiEnvTintTextureDL[];
 extern Gfx gUiRestoreTextureDL[];
@@ -892,18 +892,18 @@ typedef struct Rectangle {
 	/* 0x02 */ s16 y1;
 	/* 0x04 */ s16 x2;
 	/* 0x06 */ s16 y2;
-} unk_D_800A7440; // size >= 0x8
-extern unk_D_800A7440 D_800A7440;
+} ClipRect; // size >= 0x8
+extern ClipRect gClipRect;
 
-extern struct DisplayNodeHeader D_800AC840;
-extern struct DisplayNodeHeader D_800AC858;
+extern struct DisplayNodeHeader gGraphRoot0;
+extern struct DisplayNodeHeader gGraphRoot1;
 
 typedef struct unk_D_8006FF00 {
-	/* 0x00 */ u8 unk_00;
-	/* 0x01 */ u8 unk_01;
-	/* 0x02 */ s16 unk_02;
+	/* 0x00 */ u8 posX;
+	/* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+	/* 0x02 */ s16 posY;
 	/* 0x04 */ char* name;
-	/* 0x08 */ s32 unk_08;
+	/* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 	/* 0x0C */ u8 unk_0C;
 	/* 0x0D */ u8 unk_0D;
 	/* 0x0E */ s16 unk_0E;
@@ -912,17 +912,17 @@ typedef struct unk_D_8006FF00 {
 	/* 0x14 */ u32 unk_14;
 	/* 0x18 */ u32 unk_18;
 } unk_D_8006FF00; // size = 0x1C
-extern unk_D_8006FF00 D_8006FF00[152];
+extern unk_D_8006FF00 gSpeciesDisplayTable[152];
 
 typedef struct FontSet {
-	/* 0x00 */ s16 unk_00;
-	/* 0x02 */ s16 unk_02;
-	/* 0x04 */ u8* unk_04;
-	/* 0x08 */ u8* unk_08;
+	/* 0x00 */ s16 posX;
+	/* 0x02 */ s16 posY;
+	/* 0x04 */ u8* rotation;
+	/* 0x08 */ u8* RentalSlotAnimData_PosePhase;
 } FontSet; // size = 0xC
 
 typedef struct FontContext {
-    /* 0x00 */ FontSet unk_00[6];
+    /* 0x00 */ FontSet posX[6];
     /* 0x48 */ void* unk_48;
     /* 0x4C */ s32 unk_4C;
     /* 0x50 */ u8 unk_50;
@@ -933,24 +933,24 @@ typedef struct FontContext {
 
 extern Gfx gUiTranslucentFillDL[];
 
-extern s32 D_80078E60;
-extern s32 D_80078E64;
-extern s32 D_80078E68;
-extern u8 D_8007840C;
-extern s32 D_80078E70;
-extern s32 D_80078ECC;
-extern u8 D_80078ED0;
-extern u8 D_80078390[];
-extern u32 D_80078404;
-extern s32 D_80078408;
-extern s32 D_80078E74;
-extern u8 D_80078E78;
-extern u8 D_80078E7C;
-extern u8 D_80078E80;
-extern s32 D_80078EC8;
-extern s32 D_80078ED4;
-extern s32 D_80078ED8;
-extern s32 D_80078EDC;
+extern s32 gMusicChannel2MasterVolume;
+extern s32 gMusicChannel1MasterVolume;
+extern s32 gMusicTransitionSfxId;
+extern u8 gAudioStadiumSfxEnabled;
+extern s32 gMusicHandle;
+extern s32 gCurrentBgmHandle;
+extern u8 gBgmFadeState;
+extern u8 gPlayerRemainingPokemon[];
+extern u32 gCurrentStadiumPhase;
+extern s32 gStadiumPhaseSubstate;
+extern s32 gDefaultMusicVolume;
+extern u8 gMusicStateFlag1;
+extern u8 gMusicStateFlag2;
+extern u8 gStadiumModeActive;
+extern s32 gMusicFadeDuration;
+extern s32 gSpecialSequenceState;
+extern s32 gSequenceMusicHandle1;
+extern s32 gSequenceMusicHandle2;
 
 typedef struct unk_D_800A6CF4 {
     /* 0x00 */ char unk00[0x20];
@@ -963,9 +963,9 @@ extern Mtx gIdentityMtx;
 extern u32 D_1003E78[];
 extern u32 D_304F120[];
 
-extern s32 D_800FC820;
+extern s32 gAudioDMAFlags;
 
-extern OSViMode D_800795C0;
+extern OSViMode gViMode;
 extern u8 D_ADC80[];
 extern u8 D_F4130[];
 extern u8 D_F4920[];
@@ -974,9 +974,9 @@ extern u8 D_FDE40[];
 extern u8 D_102BA0[];
 
 typedef struct unk_70D3A0 {
-    /* 0x00 */ f32 unk_00;
-    /* 0x04 */ f32 unk_04;
-    /* 0x08 */ f32 unk_08;
+    /* 0x00 */ f32 posX;
+    /* 0x04 */ f32 rotation;
+    /* 0x08 */ f32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ f32 unk_0C;
 } unk_70D3A0; // size = 0x10
 
@@ -987,20 +987,20 @@ typedef struct unk_D_70B10 {
 extern u32 D_8C000000; // start of some rom area
 
 typedef struct MoveData {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
     /* 0x03 */ u8 unk_03;
-    /* 0x04 */ u8 unk_04;
+    /* 0x04 */ u8 rotation;
     /* 0x05 */ u8 unk_05;
 } MoveData; // size = 0x6
 extern MoveData gMoveData[];
 
 typedef struct unk_D_80072338 {
     /* 0x00 */ char unk00[0x1];
-    /* 0x01 */ u8 unk_01;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x2];
-    /* 0x04 */ char* unk_04;
+    /* 0x04 */ char* rotation;
     /* 0x08 */ char* comment;
 } unk_D_80072338; // size = 0xC
 extern unk_D_80072338 gMoveDisplayInfo[];

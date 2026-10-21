@@ -14,7 +14,7 @@ void AreaSelect_DrawMagnemiteQuad(s16 x, s16 y, s16 diameter, u8* sprite, Color_
 void AreaSelect_DrawMagnemiteTrail(u8* sprite);
 void AreaSelect_DrawAndAdvanceMagnemites(void);
 void AreaSelect_DrawNameBanner(s16 x, s16 y, s16 alpha, s16 area);
-void func_822014C0(void);
+void AreaSelect_Update(void);
 void AreaSelect_DrawNameBannerCrossfade(s16 menu_state, s16 x, s16 y);
 void AreaSelect_DrawMewtwoMarker(s16 x, s16 y);
 void AreaSelect_DrawGlowCircle(s16 x, s16 y, s16 diameter);

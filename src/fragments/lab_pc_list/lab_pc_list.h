@@ -9,7 +9,7 @@
 
 typedef struct unk_func_8830867C_02C_04C_018 {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ WidgetNode* unk_08;
+    /* 0x08 */ WidgetNode* RentalSlotAnimData_PosePhase;
     /* 0x0C */ WidgetNode* unk_0C;
     /* 0x10 */ WidgetNode* unk_10;
     /* 0x14 */ WidgetNode* unk_14;
@@ -36,45 +36,45 @@ typedef struct unk_func_8830867C_02C_04C {
 } unk_func_8830867C_02C_04C; // size = 0x40
 
 typedef struct unk_func_8830867C_02C_050 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ struct unk_func_8830867C_02C* unk_2C;
 } unk_func_8830867C_02C_050; // size = 0x30
 
 typedef struct unk_func_8830867C_02C_0B4_030 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ char unk2C[0xC];
     /* 0x38 */ s32 unk_38;
     /* 0x3C */ char unk3C[0x18];
 } unk_func_8830867C_02C_0B4_030; // size = 0x54
 
-typedef struct unk_func_8830867C_02C_0B4 {
-    /* 0x00 */ WidgetNode unk_00;
+typedef struct YesNoDialog {
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ unk_func_8830867C_02C_0B4_030* unk_30;
     /* 0x34 */ unk_func_88200FA0_030_038 unk_34;
-} unk_func_8830867C_02C_0B4; // size = 0x40
+} YesNoDialog; // size = 0x40
 
-typedef struct unk_func_8830867C_02C_0C0 {
-    /* 0x00 */ unk_func_882173EC unk_00;
+typedef struct PpChangeBanner {
+    /* 0x00 */ unk_func_882173EC posX;
     /* 0x38 */ s32 unk_38;
-} unk_func_8830867C_02C_0C0; // size = 0x3C
+} PpChangeBanner; // size = 0x3C
 
 typedef struct unk_func_8830867C_034_03C_038_02C_000 {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ char unk0C[0x10];
 } unk_func_8830867C_034_03C_038_02C_000; // size = 0x1C
 
 typedef struct unk_func_8830867C_034_03C_038_02C {
-    /* 0x00 */ unk_func_8830867C_034_03C_038_02C_000* unk_00;
+    /* 0x00 */ unk_func_8830867C_034_03C_038_02C_000* posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_034_03C_038_02C; // size >= 0xC
 
 // Seems to be >= 0x58 in other places?
 typedef struct unk_func_8830867C_02C_144_000 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ char unk08[0x4];
     /* 0x0C */ unk_func_8830867C_02C_0CC_000_000* unk_0C;
     /* 0x10 */ char unk10[0x4];
@@ -90,17 +90,17 @@ typedef struct unk_func_8830867C_02C_144_000_alt {
 } unk_func_8830867C_02C_144_000_alt; // size >= 0x58
 
 typedef struct unk_func_8830867C_02C_144 {
-    /* 0x00 */ unk_func_8830867C_02C_144_000* unk_00;
+    /* 0x00 */ unk_func_8830867C_02C_144_000* posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_02C_144; // size >= 0xC
 
 typedef struct unk_func_8830867C_02C_154 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x02 */ u8 unk_02;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x02 */ u8 posY;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ u8* unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ s32 unk_14;
@@ -108,15 +108,15 @@ typedef struct unk_func_8830867C_02C_154 {
 } unk_func_8830867C_02C_154; // size = 0x1C
 
 typedef struct unk_func_8830867C_02C_1A8 {
-    /* 0x00 */ u8* unk_00;
-    /* 0x04 */ unk_func_8830867C_02C_154* unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ u8* posX;
+    /* 0x04 */ unk_func_8830867C_02C_154* rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
 } unk_func_8830867C_02C_1A8; // size = 0x10
 
 typedef struct unk_func_8830867C_030_03C_034 {
-    /* 0x00 */ u16 unk_00;
-    /* 0x02 */ u16 unk_02;
+    /* 0x00 */ u16 posX;
+    /* 0x02 */ u16 posY;
     /* 0x04 */ char unk04[0x2];
     /* 0x06 */ u16 unk_06;
     /* 0x08 */ char unk08[0x2];
@@ -124,7 +124,7 @@ typedef struct unk_func_8830867C_030_03C_034 {
 } unk_func_8830867C_030_03C_034; // size >= 0xC
 
 typedef struct unk_func_8830867C_030 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ WidgetPoint unk_30;
     /* 0x34 */ WidgetPoint unk_34;
@@ -136,13 +136,13 @@ typedef struct unk_func_8830867C_030 {
 } unk_func_8830867C_030; // size = 0x54
 
 typedef struct unk_func_8830867C_034_034 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ char unk2C[0x4];
     /* 0x30 */ s32 unk_30;
 } unk_func_8830867C_034_034; // size = 0x34
 
 typedef struct unk_func_8830867C_034_03C_038 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ unk_func_8830867C_034_03C_038_02C* unk_2C;
     /* 0x30 */ char unk30[0x4];
     /* 0x34 */ u16* unk_34;
@@ -153,7 +153,7 @@ typedef struct unk_func_8830867C_034_03C_038 {
 } unk_func_8830867C_034_03C_038; // size = 0x54
 
 typedef struct unk_func_8830867C_034_03C {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ unk_func_88500994* unk_30;
     /* 0x34 */ unk_func_88500994* unk_34;
@@ -162,7 +162,7 @@ typedef struct unk_func_8830867C_034_03C {
 } unk_func_8830867C_034_03C; // size = 0x44
 
 typedef struct unk_func_8830867C_034 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ unk_func_88200FA0_030_030_1CEA00* unk_30;
     /* 0x34 */ unk_func_8830867C_034_034* unk_34;
@@ -172,13 +172,13 @@ typedef struct unk_func_8830867C_034 {
 } unk_func_8830867C_034; // size = 0x44
 
 typedef struct unk_func_8830867C_038_034 {
-    /* 0x00 */ char** unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ char** posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_038_034; // size = 0xC
 
 typedef struct unk_func_8830867C_038 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ unk_func_88200FA0_030_030_1CEA00* unk_30;
     /* 0x34 */ unk_func_8830867C_038_034 unk_34;
@@ -186,12 +186,12 @@ typedef struct unk_func_8830867C_038 {
 } unk_func_8830867C_038; // size = 0x44
 
 typedef struct unk_func_8830867C_03C_030 {
-    /* 0x00 */ unk_func_8850878C* unk_00;
-    /* 0x00 */ s32 unk_04;
+    /* 0x00 */ unk_func_8850878C* posX;
+    /* 0x00 */ s32 rotation;
 } unk_func_8830867C_03C_030; // size = 0x8
 
 typedef struct unk_func_8830867C_03C {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ unk_func_8830867C_03C_030 unk_30[2];
     /* 0x40 */ unk_func_8850878C* unk_40;
@@ -206,12 +206,12 @@ typedef struct unk_func_8830867C_03C {
 } unk_func_8830867C_03C; // size = 0xE4
 
 typedef struct unk_func_8830867C_040_030 {
-    /* 0x00 */ unk_func_8850878C* unk_00;
-    /* 0x04 */ u8* unk_04;
+    /* 0x00 */ unk_func_8850878C* posX;
+    /* 0x04 */ u8* rotation;
 } unk_func_8830867C_040_030; // size = 0x8
 
 typedef struct unk_func_8830867C_040 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ unk_func_8830867C_040_030 unk_30[4];
     /* 0x50 */ unk_func_8850878C* unk_50;
@@ -225,14 +225,14 @@ typedef struct unk_func_8830867C_040 {
 } unk_func_8830867C_040; // size = 0x78
 
 typedef struct unk_func_8830867C_044_038 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ char unk2C[0x4];
-    /* 0x30 */ unk_func_8830867C_044_038_030 unk_30;
+    /* 0x30 */ NumericSelection unk_30;
     /* 0x44 */ unk_func_8820E99C_030_044* unk_44;
 } unk_func_8830867C_044_038; // size = 0x48
 
 typedef struct unk_func_8830867C_044 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ unk_func_8850878C* unk_30;
     /* 0x34 */ WidgetNode* unk_34;
@@ -249,7 +249,7 @@ typedef struct unk_func_8830867C_048_04C {
 } unk_func_8830867C_048_04C; // size = 0x24
 
 typedef struct unk_func_8830867C_048 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ WidgetAnimatedPanel* unk_30;
     /* 0x34 */ unk_func_88200FA0_030_030_1CEA00* unk_34;
@@ -262,25 +262,25 @@ typedef struct unk_func_8830867C_048 {
 } unk_func_8830867C_048; // size = 0xD0
 
 typedef struct unk_func_8830867C_04C_030_02C_000_000 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
     /* 0x02 */ char unk02[0x6];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ unk_func_8830867C_04C_030_02C_000_000_00C unk_0C;
 } unk_func_8830867C_04C_030_02C_000_000; // size >= 0x18
 
 typedef struct unk_func_8830867C_04C_030_02C_000 {
-    /* 0x00 */ unk_func_8830867C_04C_030_02C_000_000* unk_00[1];
+    /* 0x00 */ unk_func_8830867C_04C_030_02C_000_000* posX[1];
 } unk_func_8830867C_04C_030_02C_000; // size >= 0x8
 
 typedef struct unk_func_8830867C_04C_030_02C {
-    /* 0x00 */ unk_func_8830867C_04C_030_02C_000* unk_00;
+    /* 0x00 */ unk_func_8830867C_04C_030_02C_000* posX;
     /* 0x04 */ char unk04[0x4];
-    /* 0x08 */ s32 unk_08;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
 } unk_func_8830867C_04C_030_02C; // size >= 0xC
 
 typedef struct unk_func_8830867C_04C_030 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ unk_func_8830867C_04C_030_02C* unk_2C;
     /* 0x30 */ char unk30[0x4];
     /* 0x34 */ u16* unk_34;
@@ -295,7 +295,7 @@ typedef struct unk_func_8830867C_04C_030 {
 typedef void (*unk_func_8830867C_04C_078_030_040)();
 
 typedef struct unk_func_8830867C_04C_078_030 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ void* unk_2C;
     /* 0x30 */ s32 unk_30;
     /* 0x34 */ u16* unk_34;
@@ -313,12 +313,12 @@ typedef struct unk_func_8830867C_04C_078_030 {
 } unk_func_8830867C_04C_078_030; // size = 0x54
 
 typedef struct unk_func_8830867C_04C_078_044 {
-    /* 0x00 */ unk_func_88201DA0_034* unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ unk_func_88201DA0_034* posX;
+    /* 0x04 */ s32 rotation;
 } unk_func_8830867C_04C_078_044; // size = 0x8
 
 typedef struct unk_func_8830867C_04C_078 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ WidgetAnimatedPanel* unk_2C;
     /* 0x30 */ unk_func_8830867C_04C_078_030* unk_30;
     /* 0x34 */ unk_func_88201DA0_038 unk_34;
@@ -327,13 +327,13 @@ typedef struct unk_func_8830867C_04C_078 {
 } unk_func_8830867C_04C_078; // size = 0x64
 
 typedef struct unk_func_8830867C_04C_02C {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ s32 unk_2C;
     /* 0x30 */ s32 unk_30;
 } unk_func_8830867C_04C_02C; // size = 0x34
 
 typedef struct unk_func_8830867C_04C {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ unk_func_8830867C_04C_02C* unk_2C;
     /* 0x30 */ unk_func_8830867C_04C_030* unk_30;
     /* 0x34 */ unk_func_88500994* unk_34;
@@ -345,28 +345,28 @@ typedef struct unk_func_8830867C_04C {
     /* 0x84 */ s32 unk_84;
     /* 0x88 */ BattleMon* unk_88; // maybe unk_func_8830867C_02C_0CC_000_008
     /* 0x8C */ s32 unk_8C;
-    /* 0x90 */ unk_func_88503298* unk_90;
+    /* 0x90 */ WidgetVisibilityGate* unk_90;
 } unk_func_8830867C_04C; // size = 0x94
 
 typedef struct unk_func_8830867C_02C_C54_014 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u8 unk_04[2];
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ u8 rotation[2];
 } unk_func_8830867C_02C_C54_014; // size >= 0x8
 
 typedef struct unk_func_8830867C_02C_C54_01C {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ u8 unk_04[2];
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ u8 rotation[2];
 } unk_func_8830867C_02C_C54_01C; // size >= 0x8
 
 typedef struct unk_func_8830867C_02C_C54_024 {
-    /* 0x00 */ u8 unk_00[4];
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ u8 posX[4];
+    /* 0x04 */ s32 rotation;
 } unk_func_8830867C_02C_C54_024; // size >= 0x8
 
 typedef struct unk_func_8830867C_02C_C54 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ u8 unk_08;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ u8 unk_09;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
@@ -377,27 +377,27 @@ typedef struct unk_func_8830867C_02C_C54 {
 } unk_func_8830867C_02C_C54; // size = 0x30
 
 typedef struct unk_func_8830867C_054 {
-    /* 0x00 */ s16 unk_00;
-    /* 0x02 */ s16 unk_02;
-    /* 0x04 */ MemoryPool* unk_04;
-    /* 0x08 */ WidgetNode* unk_08;
+    /* 0x00 */ s16 posX;
+    /* 0x02 */ s16 posY;
+    /* 0x04 */ MemoryPool* rotation;
+    /* 0x08 */ WidgetNode* RentalSlotAnimData_PosePhase;
     /* 0x0C */ s32 unk_0C;
     /* 0x10 */ s32 unk_10;
     /* 0x14 */ WidgetNode* unk_14;
 } unk_func_8830867C_054; // size = 0x18
 
 typedef struct unk_func_8830867C_02C_0E4 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ unk_func_8820BE14_06C unk_0C;
     /* 0x1C */ s32 unk_1C;
 } unk_func_8830867C_02C_0E4; // size = 0x20
 
 typedef struct unk_func_8830867C_02C_0DC {
-    /* 0x00 */ s32* unk_00;
-    /* 0x04 */ s32 unk_04;
-    /* 0x08 */ s32 unk_08;
+    /* 0x00 */ s32* posX;
+    /* 0x04 */ s32 rotation;
+    /* 0x08 */ s32 RentalSlotAnimData_PosePhase;
     /* 0x0C */ char unk0C[0xC];
     /* 0x18 */ s32 unk_18;
     /* 0x1C */ char unk1C[0xC];
@@ -407,11 +407,11 @@ typedef struct unk_func_8830867C_02C_0DC {
 typedef struct unk_func_8830867C_02C {
     /* 0x000 */ WidgetNode unk_000;
     /* 0x02C */ WidgetAnimatedPanel* unk_02C;
-    /* 0x030 */ unk_func_8850B254* unk_030;
+    /* 0x030 */ DashedBorderFrame* unk_030;
     /* 0x034 */ unk_func_8830867C_02C_034* unk_034;
     /* 0x038 */ unk_func_88500994* unk_038;
     /* 0x03C */ unk_func_88200FA0_030_038 unk_03C;
-    /* 0x048 */ unk_func_8830867C_02C_048* unk_048;
+    /* 0x048 */ ChildSelectionProxy* unk_048;
     /* 0x04C */ unk_func_8830867C_02C_04C* unk_04C;
     /* 0x050 */ unk_func_8830867C_02C_050* unk_050;
     /* 0x054 */ WidgetNode* unk_054;
@@ -429,7 +429,7 @@ typedef struct unk_func_8830867C_02C {
     /* 0x084 */ WidgetNode* unk_084;
     /* 0x088 */ WidgetNode* unk_088;
     /* 0x08C */ unk_func_8830867C_030* unk_08C;
-    /* 0x090 */ unk_func_88509F48* unk_090;
+    /* 0x090 */ WidgetTree_MessagePanel* unk_090;
     /* 0x094 */ unk_func_8830867C_034* unk_094;
     /* 0x098 */ unk_func_8830867C_038* unk_098;
     /* 0x09C */ unk_func_8830867C_03C* unk_09C;
@@ -438,10 +438,10 @@ typedef struct unk_func_8830867C_02C {
     /* 0x0A8 */ unk_func_8830867C_048* unk_0A8;
     /* 0x0AC */ unk_func_8830867C_04C* unk_0AC;
     /* 0x0B0 */ unk_func_889000C4* unk_0B0;
-    /* 0x0B4 */ unk_func_8830867C_02C_0B4* unk_0B4;
-    /* 0x0B8 */ unk_func_8850CD44* unk_0B8;
+    /* 0x0B4 */ YesNoDialog* unk_0B4;
+    /* 0x0B8 */ ChildWidgetGroup* unk_0B8;
     /* 0x0BC */ unk_func_882173EC* unk_0BC;
-    /* 0x0C0 */ unk_func_8830867C_02C_0C0* unk_0C0;
+    /* 0x0C0 */ PpChangeBanner* unk_0C0;
     /* 0x0C4 */ unk_func_882173EC* unk_0C4;
     /* 0x0C8 */ unk_func_882173EC* unk_0C8;
     /* 0x0CC */ unk_func_88200FA0_030_038 unk_0CC;
@@ -471,7 +471,7 @@ typedef struct unk_func_8830867C_02C {
 } unk_func_8830867C_02C; // size = 0xCE0
 
 typedef struct unk_func_8830867C {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ unk_func_8830867C_02C* unk_2C;
     /* 0x30 */ unk_func_8830867C_030* unk_30;
     /* 0x34 */ unk_func_8830867C_034* unk_34;
@@ -494,14 +494,14 @@ typedef struct unk_func_8830867C {
 } unk_func_8830867C; // size = 0x8C
 
 typedef struct unk_func_88302D98 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ unk_func_8830867C_02C* unk_2C;
 } unk_func_88302D98; // size = 0x30
 
 typedef struct unk_func_88304850_arg2 {
-    /* 0x00 */ s32* unk_00;
+    /* 0x00 */ s32* posX;
     /* 0x04 */ char unk04[4];
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ char unk09[0xD];
     /* 0x16 */ s16 unk_16;
     /* 0x18 */ char unk18[0x14];
@@ -518,8 +518,8 @@ typedef struct unk_func_88304850_arg2 {
 } unk_func_88304850_arg2; // size >= 0x44
 
 typedef struct unk_func_88309C38_arg2_004 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ Color_RGBA8 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ Color_RGBA8 rotation;
 } unk_func_88309C38_arg2_004; // size >= 0x8
 
 typedef struct unk_func_88309C38_arg2_00C {
@@ -529,9 +529,9 @@ typedef struct unk_func_88309C38_arg2_00C {
 } unk_func_88309C38_arg2_00C; // size >= 0x1C
 
 typedef struct unk_func_88309C38_arg2 {
-    /* 0x00 */ u8 unk_00;
-    /* 0x01 */ u8 unk_01;
-    /* 0x04 */ unk_func_88309C38_arg2_004* unk_04;
+    /* 0x00 */ u8 posX;
+    /* 0x01 */ u8 TrainerSlotSaveData_GamePort;
+    /* 0x04 */ unk_func_88309C38_arg2_004* rotation;
     /* 0x08 */ char unk08[0x4];
     /* 0x0C */ unk_func_88309C38_arg2_00C* unk_0C;
     /* 0x10 */ char unk10[0x4];
@@ -540,8 +540,8 @@ typedef struct unk_func_88309C38_arg2 {
 } unk_func_88309C38_arg2; // size >= 0x1C
 
 typedef struct unk_func_88309160_arg2 {
-    /* 0x00 */ s32 unk_00;
-    /* 0x04 */ s32 unk_04;
+    /* 0x00 */ s32 posX;
+    /* 0x04 */ s32 rotation;
     /* 0x08 */ char unk08[0x4];
     /* 0x0C */ unk_func_88309C38_arg2_00C* unk_0C;
     /* 0x10 */ char unk10[0x4];
@@ -550,8 +550,8 @@ typedef struct unk_func_88309160_arg2 {
 } unk_func_88309160_arg2; // size >= 0x1C
 
 typedef struct unk_func_88310CA4_arg2 {
-    /* 0x00 */ u8* unk_00;
-    /* 0x04 */ u8* unk_04;
+    /* 0x00 */ u8* posX;
+    /* 0x04 */ u8* rotation;
     /* 0x08 */ char unk08[0x4];
     /* 0x0C */ unk_func_88309C38_arg2_00C* unk_0C;
     /* 0x10 */ char unk10[0x4];
@@ -560,7 +560,7 @@ typedef struct unk_func_88310CA4_arg2 {
 } unk_func_88310CA4_arg2; // size >= 0x1C
 
 typedef struct unk_func_88310B70 {
-    /* 0x00 */ WidgetNode unk_00;
+    /* 0x00 */ WidgetNode posX;
     /* 0x2C */ unk_func_8830867C_04C_030* unk_2C;
     /* 0x30 */ unk_func_8850878C* unk_30;
 } unk_func_88310B70; // size = 0x34
@@ -574,9 +574,9 @@ typedef struct unk_func_88313894_020 {
     /* 0x1C */ s32 unk_1C;
 } unk_func_88313894_020; // size = 0x20
 
-typedef struct unk_func_88316128 {
+typedef struct PokemonListEntry {
     /* 0x00 */ char unk00[0x8];
-    /* 0x08 */ u8 unk_08;
+    /* 0x08 */ u8 RentalSlotAnimData_PosePhase;
     /* 0x09 */ char unk09[0xD];
     /* 0x16 */ u16 unk_16;
     /* 0x18 */ char unk18[0x14];
@@ -589,26 +589,26 @@ typedef struct unk_func_88316128 {
     /* 0x38 */ u8 unk_38;
     /* 0x39 */ char unk39[0xA];
     /* 0x43 */ u8 unk_43;
-} unk_func_88316128; // size >= 0x44
+} PokemonListEntry; // size >= 0x44
 
-extern char** D_8831A4C0;
-extern char** D_8831A4C4;
-extern char** D_8831A4C8;
-extern char** D_8831A4CC;
-extern char** D_8831A4D0;
-extern char** D_8831A4D4;
-extern char** D_8831A4D8;
-extern Color_RGBA8 D_8831727C;
-extern Color_RGBA8 D_88317280;
-extern Color_RGBA8 D_88317284;
-extern u32 D_883176D8[];
-extern u32 D_88317920[];
-extern u32 D_88317F28[];
-extern u32 D_88318530[];
-extern u32 D_883186E8[];
-extern u32 D_88318898[];
-extern u32 D_883198A0[];
-extern unk_D_8831A1F8 D_8831A1F8[];
+extern char** gLabPcListGbSaveIdLabelBank;
+extern char** gLabPcListColumnLabelsBank;
+extern char** gLabPcListItemDescriptionsBank;
+extern char** gMoveNamesTable;
+extern char** gLabPcListSpeciesNamesBank;
+extern char** gTypeNamesTable;
+extern char** gLabPcListItemNamesBank;
+extern Color_RGBA8 gPartyLabelColor;
+extern Color_RGBA8 gGbLabelColor;
+extern Color_RGBA8 gN64LabelColor;
+extern u32 gLabPCListHeaderSelectIconTexture[];
+extern u32 gLabPCListHeaderLeftOrnamentTexture[];
+extern u32 gLabPCListHeaderTitleOrnamentTexture[];
+extern u32 gCheckerboardPattern[];
+extern u32 gCheckerboardPatternStatusEntry[];
+extern u32 gLabPCListBackgroundImage[];
+extern u32 gLabPCListCornerIconTexture[];
+extern unk_D_8831A1F8 gListSortComparators[];
 
 void LabPCList_InitHeaderSelectIcon(WidgetNode* arg0, s32 arg1, s32 arg2);
 s32 LabPCList_HeaderSelectIcon_Draw(WidgetNode* arg0, s32 arg1, s32 arg2);
@@ -654,7 +654,7 @@ void LabPCList_DrawPlainText(s32 arg0, s32 arg1, s8* arg2, s32 arg3);
 void LabPCList_DrawFormattedNumber(s32 arg0, s32 arg1, char* arg2, s32 arg3);
 void LabPCList_DrawStatNumber(s32 arg0, s32 arg1, char* arg2, s32 arg3, u8* arg4);
 s32 LabPCList_CheckStatFilterRange(unk_func_8830867C_02C* arg0, unk_func_88304850_arg2* arg1);
-void func_88304850(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s32 arg4,
+void LabPCList_DrawEntryCell(s32 arg0, s32 arg1, unk_func_88304850_arg2* arg2, s32 arg3, s32 arg4,
                    unk_func_8830867C_02C_034* arg5);
 void LabPCList_SaveFilterState(unk_func_8830867C_02C* arg0);
 void LabPCList_RestoreFilterState(unk_func_8830867C_02C* arg0);
@@ -667,34 +667,34 @@ s32 LabPCList_ToggleFilterFlag(unk_func_8830867C_02C* arg0, s32 arg1);
 void LabPCList_SetSortMode(unk_func_8830867C_02C* arg0, s32 arg1);
 void LabPCList_ApplyFiltersAndSort(unk_func_8830867C_02C* arg0);
 s32 LabPCList_CheckAnyDirty(unk_func_8830867C_02C* arg0);
-s32 LabPCList_FindEntryIndex(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_0CC_000* arg1);
-void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* arg1, Controller* arg2);
+s32 LabPCList_FindEntryIndex(unk_func_8830867C_02C_0CC* arg0, LabPCListEntry* arg1);
+void LabPCList_PerformMoveMon(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1, Controller* arg2);
 void LabPCList_ReindexBoxSlots(unk_func_8830867C_02C_0CC_000_000* arg0);
-void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, unk_func_8830867C_02C_0CC_000* arg1, s32 arg2, s32 arg3);
+void LabPCList_MoveEntryToBox(unk_func_8830867C_02C* arg0, LabPCListEntry* arg1, s32 arg2, s32 arg3);
 void LabPCList_ClearMovesFrom(unk_func_8830867C_02C_0CC_000_008* arg0, s32 arg1);
-void LabPCList_TeachTmMove(unk_func_8830867C_02C_0CC_000* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2);
+void LabPCList_TeachTmMove(LabPCListEntry* arg0, unk_func_8830867C_04C_030_02C_000* arg1, s32 arg2);
 void LabPCList_SetRowMenuState(unk_func_8830867C_02C* arg0, s32 arg1);
 s32 LabPCList_RowMenuHandleInput(unk_func_8830867C_02C* arg0, Controller* arg1);
 void LabPCList_RunPartySelectionModal(unk_func_8830867C_02C* arg0, Controller* arg1);
-void func_88305F28(unk_func_8830867C_02C* arg0);
+void LabPCList_ApplyItemToMon(unk_func_8830867C_02C* arg0);
 s32 LabPCList_OpenListMenu(unk_func_8830867C_02C* arg0, Controller* arg1);
 s32 LabPCList_OpenRowMenu(unk_func_8830867C_02C* arg0, Controller* arg1);
 s32 LabPCList_HandleColumnHeaderClick(unk_func_8830867C_02C* arg0, WidgetNode* arg1, s32 arg2, Controller* arg3);
 u32 LabPCList_GetColumnMenuIndex(unk_func_8830867C_02C* arg0);
 void func_88306FE4(void);
-void LabPCList_InitColumnSelectionProxy(unk_func_8830867C_02C_048* arg0, unk_func_8830867C_02C* arg1);
+void LabPCList_InitColumnSelectionProxy(ChildSelectionProxy* arg0, unk_func_8830867C_02C* arg1);
 void LabPCList_SaveAll(unk_func_8830867C_02C* arg0, s32 arg1);
 void LabPCList_MarkIneligibleEntries(unk_func_8830867C_02C* arg0);
 s32 LabPCList_IsGamePakBoxEmpty(unk_func_8830867C_02C* arg0);
 s32 LabPCList_ConfirmExit(unk_func_8830867C_02C* arg0, Controller* arg1, s32 arg2);
 void LabPCList_SetGridInteractive(unk_func_8830867C_02C* arg0, s32 arg1);
-void LabPCList_ResetGridSelection(unk_func_8830867C_02C_048* arg0);
-void LabPCList_HandleGridSelectionEntry(unk_func_8830867C_02C_048* arg0, Controller* arg1);
-s32 LabPCList_HandleBackButton(unk_func_8830867C_02C_048* arg0, Controller* arg1);
-s32 LabPCList_HandlePageSwitchInput(unk_func_8830867C_02C_048* arg0, Controller* arg1);
-s32 LabPCList_HandleGridInput(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2);
-s32 LabPCList_HandleColumnMenuInput(unk_func_8830867C_02C_048* arg0, Controller* arg1, s32 arg2);
-s32 LabPCList_HandleTopLevelInput(unk_func_8830867C_02C_048* arg0, Controller* arg1);
+void LabPCList_ResetGridSelection(ChildSelectionProxy* arg0);
+void LabPCList_HandleGridSelectionEntry(ChildSelectionProxy* arg0, Controller* arg1);
+s32 LabPCList_HandleBackButton(ChildSelectionProxy* arg0, Controller* arg1);
+s32 LabPCList_HandlePageSwitchInput(ChildSelectionProxy* arg0, Controller* arg1);
+s32 LabPCList_HandleGridInput(ChildSelectionProxy* arg0, Controller* arg1, s32 arg2);
+s32 LabPCList_HandleColumnMenuInput(ChildSelectionProxy* arg0, Controller* arg1, s32 arg2);
+s32 LabPCList_HandleTopLevelInput(ChildSelectionProxy* arg0, Controller* arg1);
 void LabPCList_RunWidgetLoop(unk_func_8830867C* arg0);
 void LabPCList_ScreenThreadEntry(unk_func_8830867C* arg0);
 s32 LabPCList_ShowListScreen(UNUSED s32 arg0, UNUSED s32 arg1);
@@ -706,9 +706,9 @@ void BattleMoveListWidget_DisableRestrictedMoves(unk_func_8830867C_04C_078* arg0
 s32 BattleMoveListWidget_HandleInput(unk_func_8830867C_04C_078* arg0, Controller* arg1);
 void BattleMoveListWidget_Destroy(unk_func_8830867C_04C_078* arg0);
 void BattleMoveListWidget_SetCloseState(unk_func_8830867C_04C_078* arg0);
-void func_883097E4(void);
+void BattleMoveListWidget_Update(void);
 s32 BattleInfoWidget_GetEntryDisabledFlags(unk_func_8830867C_034_03C_038_02C_000* arg0);
-void func_88309808(void);
+void BattleInfoWidget_Update(void);
 void BattleInfoWidget_ApplyEntryDisabledFlags(unk_func_8830867C_034_03C* arg0);
 void BattleInfoWidget_SetActivePageFlags(unk_func_8830867C_034_03C* arg0, s32 arg1);
 void BattleInfoWidget_SyncEntrySelection(unk_func_8830867C_034_03C* arg0);
@@ -769,7 +769,7 @@ s32 BattleInfoWidget_HandleTypePanelInput(unk_func_8830867C_03C* arg0, Controlle
 s32 BattleInfoWidget_RunTypeSelectionModal(unk_func_8830867C_03C* arg0, Controller* arg1);
 void BattleInfoWidget_InitTypeSelectionProxy(unk_func_8830867C_03C_04C* arg0, unk_func_8830867C_03C* arg1);
 s32 BattleInfoWidget_HandleTypeSelectionProxyInput(unk_func_8830867C_03C_04C* arg0, Controller* arg1);
-void func_8830FA10(void);
+void BattleInfoWidget_NoopStub1(void);
 void func_8830FA18(void);
 void BattleInfoWidget_CenterTypeLabel(unk_func_8830867C_040* arg0, unk_func_8850878C* arg1, char* arg2);
 void BattleInfoWidget_BuildMovePanel(unk_func_8830867C_040* arg0, s32 arg1, s32 arg2, WidgetNode* arg3, MemoryPool* arg4);
@@ -779,7 +779,7 @@ void BattleInfoWidget_SetMovePanelState(unk_func_8830867C_040* arg0, s32 arg1);
 s32 BattleInfoWidget_HandleMovePanelInput(unk_func_8830867C_040* arg0, Controller* arg1);
 s32 BattleInfoWidget_RunMovePanelModal(unk_func_8830867C_040* arg0, Controller* arg1);
 void BattleInfoWidget_InitMoveSelectionProxy(unk_func_8830867C_040_05C* arg0, unk_func_8830867C_040* arg1);
-s32 func_88310854(unk_func_8830867C_040_05C* arg0, Controller* arg1);
+s32 MenuItem_ProcessInput(unk_func_8830867C_040_05C* arg0, Controller* arg1);
 void BattleInfoWidget_InitGamePakSlotLabel(unk_func_88310B70* arg0, s32 arg1, s32 arg2, unk_func_8830867C_04C_030* arg3, MemoryPool* arg4);
 s32 BattleInfoWidget_DrawGamePakSlotLabel(unk_func_88310B70* arg0);
 void BattleInfoWidget_BuildItemMenu(unk_func_8830867C_04C* arg0, s32 arg1, s32 arg2, WidgetNode* arg3, MemoryPool* arg4);
@@ -807,8 +807,8 @@ void BattleInfoWidget_DrawSlotEntry(s32 arg0, s32 arg1, unk_func_88309160_arg2* 
 void BattleInfoWidget_DrawLocationEntry(s32 arg0, s32 arg1, unk_func_88309160_arg2* arg2, s32 arg3, s32 arg4, unk_func_88200FA0_030_030_1CEA00* arg5);
 void BattleInfoWidget_BuildMoveDestinationMenu(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2, WidgetNode* arg3, MemoryPool* arg4);
 void BattleInfoWidget_BindMoveDestinationData(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_144* arg1);
-void BattleInfoWidget_MarkFullBoxSlots(unk_func_88200FA0_030_030_1CEA00* arg0, unk_func_8830867C_02C_0CC_000* arg1, unk_func_88313894_020* arg2);
-void BattleInfoWidget_MarkIneligibleDestinations(unk_func_8830867C_048* arg0, unk_func_8830867C_02C_0CC_000* arg1);
+void BattleInfoWidget_MarkFullBoxSlots(unk_func_88200FA0_030_030_1CEA00* arg0, LabPCListEntry* arg1, unk_func_88313894_020* arg2);
+void BattleInfoWidget_MarkIneligibleDestinations(unk_func_8830867C_048* arg0, LabPCListEntry* arg1);
 void BattleInfoWidget_FormatLocationName(char* arg0, s32 arg1, s32 arg2);
 void BattleInfoWidget_SetMoveDestinationTitle(unk_func_8830867C_048* arg0, s32 arg1, s32 arg2);
 void BattleInfoWidget_SyncDestinationPage(unk_func_8830867C_048* arg0);
@@ -820,17 +820,17 @@ void BattleInfoWidget_InitMoveDestinationSelectionProxy(unk_func_8830867C_048_04
 s32 BattleInfoWidget_MoveDestinationSelectionInput(unk_func_8830867C_048_048* arg0, Controller* arg1);
 s32 BattleInfoWidget_RunMoveDestinationModal(unk_func_8830867C_048* arg0, Controller* arg1);
 void BattleInfoWidget_DrawSaveConfirmLabel(s32 arg0, s32 arg1, s8* arg2, s32 arg3);
-void BattleInfoWidget_BuildSaveConfirmDialog(unk_func_8830867C_02C_0B4* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
-s32 BattleInfoWidget_HandleSaveConfirmInput(unk_func_8830867C_02C_0B4* arg0, Controller* arg1);
-s32 BattleInfoWidget_RunSaveConfirmModal(unk_func_8830867C_02C_0B4* arg0, Controller* arg1);
+void BattleInfoWidget_BuildSaveConfirmDialog(YesNoDialog* arg0, s32 arg1, s32 arg2, MemoryPool* arg3);
+s32 BattleInfoWidget_HandleSaveConfirmInput(YesNoDialog* arg0, Controller* arg1);
+s32 BattleInfoWidget_RunSaveConfirmModal(YesNoDialog* arg0, Controller* arg1);
 void LabPCList_InitTextFadeWidget(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 s32 LabPCList_TextFadeWidget_Update(unk_func_882173EC* arg0);
 s32 LabPCList_DrawTextFadeWidget(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
 void LabPCList_TextFadeWidget_Start(unk_func_882173EC* arg0, s32 arg1, s32 arg2, WidgetPoint arg3);
-void LabPCList_InitPpUpAnimWidget(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
-s32 LabPCList_PpUpAnimWidget_Update(unk_func_8830867C_02C_0C0* arg0);
-s32 LabPCList_DrawPpUpAnimWidget(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2);
-void LabPCList_PpUpAnimWidget_Start(unk_func_8830867C_02C_0C0* arg0, s32 arg1, s32 arg2, s32 arg3, WidgetPoint arg4);
+void LabPCList_InitPpUpAnimWidget(PpChangeBanner* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
+s32 LabPCList_PpUpAnimWidget_Update(PpChangeBanner* arg0);
+s32 LabPCList_DrawPpUpAnimWidget(PpChangeBanner* arg0, s32 arg1, s32 arg2);
+void LabPCList_PpUpAnimWidget_Start(PpChangeBanner* arg0, s32 arg1, s32 arg2, s32 arg3, WidgetPoint arg4);
 void LabPCList_InitVitaminAnimWidget(unk_func_882173EC* arg0, s32 arg1, s32 arg2, s32 arg3, s32 arg4);
 s32 LabPCList_VitaminAnimWidget_Update(unk_func_882173EC* arg0);
 s32 LabPCList_DrawVitaminAnimWidget(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
@@ -841,23 +841,23 @@ void LabPCList_DrawLocationCaption(s32 arg0, s32 arg1, s32 arg2, s32 arg3, s32 a
 s32 LabPCList_DrawLocationCrossfadeWidget(unk_func_882173EC* arg0, s32 arg1, s32 arg2);
 void LabPCList_LocationCrossfadeWidget_Start(unk_func_882173EC* arg0, s32 arg1, s32 arg2, WidgetPoint arg3);
 
-s32 LabPCList_CompareByPointer(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareByLevelAsc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareByLevelDesc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareByHpAsc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareByHpDesc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareByAttackAsc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareByAttackDesc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareByDefenseAsc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareByDefenseDesc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareBySpeedAsc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareBySpeedDesc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareBySpecialAsc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareBySpecialDesc(unk_func_88316128*, unk_func_88316128*);
-s32 LabPCList_CompareById(unk_func_88316128*, unk_func_88316128*);
+s32 LabPCList_CompareByPointer(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareByLevelAsc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareByLevelDesc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareByHpAsc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareByHpDesc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareByAttackAsc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareByAttackDesc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareByDefenseAsc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareByDefenseDesc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareBySpeedAsc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareBySpeedDesc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareBySpecialAsc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareBySpecialDesc(PokemonListEntry*, PokemonListEntry*);
+s32 LabPCList_CompareById(PokemonListEntry*, PokemonListEntry*);
 s32 LabPCList_CompareByPokemonColumn(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*);
-s32 LabPCList_CompareByOtName(unk_func_88316128* arg0, unk_func_88316128* arg1);
-s32 LabPCList_CompareByNickname(unk_func_88316128*, unk_func_88316128*);
+s32 LabPCList_CompareByOtName(PokemonListEntry* arg0, PokemonListEntry* arg1);
+s32 LabPCList_CompareByNickname(PokemonListEntry*, PokemonListEntry*);
 s32 LabPCList_CompareBySpeciesDexOrder(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*);
 s32 LabPCList_CompareBySpeciesRawId(unk_func_8830867C_02C_0CC*, unk_func_8830867C_02C_0CC*);
 int LabPCList_FilterByLevelRange(unk_func_8830867C_02C_0CC* arg0, u8* arg1);
@@ -865,7 +865,7 @@ s32 LabPCList_FilterByAnyType(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C
 s32 LabPCList_FilterByAnyMove(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_024* arg1);
 s32 LabPCList_FilterBySpeciesId(unk_func_8830867C_02C_0CC* arg0, s32* arg1);
 s32 LabPCList_FilterByExactTypePair(unk_func_8830867C_02C_0CC* arg0, unk_func_8830867C_02C_C54_014* arg1);
-s32 LabPCList_FilterByCategoryBit(unk_func_88316128* arg0, u8* arg1);
+s32 LabPCList_FilterByCategoryBit(PokemonListEntry* arg0, u8* arg1);
 void LabPCList_AllocateBoxSlots(unk_func_8830867C_02C_0E4*, s32, s32, MemoryPool*);
 void LabPCList_LoadAllBoxes(unk_func_8830867C_02C_144*);
 void LabPCList_FlattenEntries(unk_func_88200FA0_030_038*, unk_func_8830867C_02C_144*);

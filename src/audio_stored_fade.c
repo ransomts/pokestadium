@@ -6,11 +6,11 @@
 #include "libnumus/player.h"
 
 // .data
-u8 D_80078A10[3] = { 0xFF, 0xFF, 0xFF };
-u32 D_80078A14 = 0;
-s32 D_80078A18 = 0;
-u8 D_80078A1C[4] = { 0 };
-u8 D_80078A20[16] = { 0 };
+u8 gMoveSoundCache[3] = { 0xFF, 0xFF, 0xFF };
+u32 gMoveSoundCachePos = 0;
+s32 gCurrentSoundHandle = 0;
+u8 gSoundDurationScale[4] = { 0 };
+u8 gSpecialMoveSoundFlag[16] = { 0 };
 
 // Related to Partner Pikachu, probably makes it go Pika Pika
 s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
@@ -26,8 +26,8 @@ s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     u8 flag;
 
     flag = 0;
-    D_80078A20[0] = 0;
-    Audio_QueueFadeSoundCommand(D_80078A18, 0xA);
+    gSpecialMoveSoundFlag[0] = 0;
+    Audio_QueueFadeSoundCommand(gCurrentSoundHandle, 0xA);
 
     if (arg2 == 0xC8) {
         flag = 1;
@@ -45,38 +45,38 @@ s32 PlayMoveSoundEffect(s32 arg0, u32 arg1, u32 arg2, u32 arg3) {
     }
 
     for (i = 0; i < 3; i++) {
-        if (arg2 == D_80078A10[i]) {
+        if (arg2 == gMoveSoundCache[i]) {
             slot = i;
             goto found;
         }
     }
 
-    slot = D_80078A14 % 3;
-    D_80078A14++;
-    D_80078A10[slot] = arg2;
+    slot = gMoveSoundCachePos % 3;
+    gMoveSoundCachePos++;
+    gMoveSoundCache[slot] = arg2;
     if (flag) {
         arg2 = 0x97;
     }
     arg2--;
-    if (arg2 < (D_800FC6FC->num_files - 1)) {
-        romAddr = ((u32*)D_800FC6FC)[arg2 + 3];
-        size = ((u32*)D_800FC6FC)[arg2 + 4] - romAddr;
+    if (arg2 < (gMoveSoundArchive->num_files - 1)) {
+        romAddr = ((u32*)gMoveSoundArchive)[arg2 + 3];
+        size = ((u32*)gMoveSoundArchive)[arg2 + 4] - romAddr;
     } else {
-        romAddr = ((u32*)D_800FC6FC)[arg2 + 3];
-        size = D_800FC6E8->seqArray[3].offset - romAddr;
+        romAddr = ((u32*)gMoveSoundArchive)[arg2 + 3];
+        size = gMoveSoundSeqInfo->seqArray[3].offset - romAddr;
     }
-    Rom_DmaRead(romAddr, D_800FC6DC, size);
-    Audio_CopyDataWithCacheSync(D_800FC6DC, D_800FC6B0[slot], 0x3E8);
-    Audio_RelocateSoundBankTable(D_800FC6B0[slot]);
+    Rom_DmaRead(romAddr, gMoveSoundTempBuffer, size);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gMoveSoundBankData[slot], 0x3E8);
+    Audio_RelocateSoundBankTable(gMoveSoundBankData[slot]);
     if (flag) {
         arg2 = 0x97;
     }
-    size = D_800FC700->seqArray[arg2].len;
+    size = gMoveSoundSeqTable->seqArray[arg2].len;
     if (size & 1) {
         size++;
     }
-    Rom_DmaRead((u32)D_800FC700->seqArray[arg2].offset, D_800FC6DC, size);
-    Audio_CopyDataWithCacheSync(D_800FC6DC, D_800FC6C0[slot], 0x44C);
+    Rom_DmaRead((u32)gMoveSoundSeqTable->seqArray[arg2].offset, gMoveSoundTempBuffer, size);
+    Audio_CopyDataWithCacheSync(gMoveSoundTempBuffer, gMoveSoundTables[slot], 0x44C);
 
 found:
     switch (arg3) {
@@ -103,33 +103,33 @@ found:
     if (arg3 == 0xB) {
         arg1 = 0;
     }
-    var_a0 = D_800FC6C0[slot]->entries;
+    var_a0 = gMoveSoundTables[slot]->entries;
     entry = &(var_a0 + arg1)->unk0[size];
     arg2 = entry[0];
-    D_80078A1C[0] = entry[1];
+    gSoundDurationScale[0] = entry[1];
 
 block_38:
-    seq = D_800FC6B0[slot];
+    seq = gMoveSoundBankData[slot];
     temp_v0 = *seq;
     if (!flag && (arg2 >= temp_v0)) {
         return 0;
     }
     if (flag) {
         if ((arg1 == 0x2D) || (arg1 == 0x2E)) {
-            D_80078A20[0] = 1;
+            gSpecialMoveSoundFlag[0] = 1;
         }
         if (arg2 != 0) {
             Cry_Play(arg2, 0xA);
         }
         return 0;
     }
-    temp_v0 = Audio_PlaySoundEffect(D_800FC6AC, seq, arg2, 0x80, 0x80, -1);
-    D_80078A18 = temp_v0;
+    temp_v0 = Audio_PlaySoundEffect(gMoveSoundBankBase, seq, arg2, 0x80, 0x80, -1);
+    gCurrentSoundHandle = temp_v0;
     return temp_v0;
 }
 
 void Audio_FadeStoredSound(void) {
-  if (D_80078A1C[0] != 0) {
-      Audio_QueueFadeSoundCommand(D_80078A18, (s32)D_80078A1C[0]);
+  if (gSoundDurationScale[0] != 0) {
+      Audio_QueueFadeSoundCommand(gCurrentSoundHandle, (s32)gSoundDurationScale[0]);
   }
 }
