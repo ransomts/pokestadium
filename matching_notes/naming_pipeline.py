@@ -352,11 +352,9 @@ def needs_revision(name):
                 return True
     # Banned terminology — check for yaw/roll ANYWHERE; pitch only outside audio domain
     # (Controller/Scroll contain the "roll" substring; audio pitch is a frequency term)
-    if re.search(r"yaw|roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll|Controller", name, re.I):
+    if re.search(r"yaw|roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll|Controller|RollAi", name, re.I):
         return True
     if re.search(r"pitch", name, re.I) and not re.search(r"(?:Sfx|Audio|Bgm|Music|Sound|Tone|Note|PitchTable|Cry|MenuPitch|PlayerPitch|ChannelPitch|TrackPitch|PitchModifier|PitchSlide)", name, re.I):
-        return True
-    if re.search(r"roll", name, re.I) and not re.search(r"Rollout|Rolling|Scroll|Controller|RollAi", name, re.I):
         return True
     if re.search(r"Custom$|Variant$|Type$", name) and not re.search(r"(?:Any|To|By|Of)Type$|SushiType$|EffectType$|TypeIndex$|ByVariant$|Trail40Variant$", name):
         return True
